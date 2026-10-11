@@ -421,6 +421,12 @@ rejection with a valid fresh Closure argument. Direct/repaired sources and 489
 state premises verify the error's argument trace and separate callback cleanup.
 Explicit `__invoke` agrees in two new originals; 536 state premises distinguish
 its copied buffer from two trace argument edges and validate caught-null cleanup.
+Captured factories also select bound `Fiber::isStarted`, `isRunning` and
+`isTerminated`. Three direct and three repaired captured originals preserve frozen
+names across INITIAL, running, suspended and terminated phases. The reduced 1287
+state premises check authentic caller/global owners and shared final capture/Fiber
+retirement;
+original Unsupported and failed admission retain zero credit.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;

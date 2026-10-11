@@ -1057,9 +1057,26 @@ CASES += [('from-callable-factory-bound-fiber-return', ['from-callable-factory-f
 CASES += [('from-callable-factory-bound-fiber-start', ['from-callable-factory-fiber-start'])]
 CASES += [('from-callable-factory-bound-fiber-constructor', ['from-callable-factory-fiber-constructor'])]
 CASES += [('from-callable-factory-bound-fiber-constructor-invoke', ['from-callable-factory-fiber-constructor-invoke'])]
+CASES += [('from-callable-factory-bound-fiber-statuses', [
+    'from-callable-factory-fiber-started', 'from-callable-factory-fiber-running',
+    'from-callable-factory-fiber-terminated'])]
 
 
 def render(name, sources):
+    if name == 'from-callable-factory-bound-fiber-statuses':
+        from from_callable_statuses_fiber_review import EXTRA as statuses_extra, render as render_statuses
+        text = statuses_extra + PREFIX[PREFIX.index('dec $outputs'):]
+        checks, entries = [], []
+        for tag, method in [('started', 'isStarted'), ('running', 'isRunning'), ('terminated', 'isTerminated')]:
+            row = sources['from-callable-factory-fiber-' + tag]
+            entry = 'statuses_' + tag
+            part, selected, _, _ = render_statuses(row['fixture'], row['filename'], row['expected_stdout'], method, entry, shared=False)
+            text += part
+            checks += selected
+            entries.append(entry)
+        text += '\ndec $main() : bool\ndef $main() = true\n'
+        text += ''.join('  -- if $' + entry + '()\n' for entry in entries)
+        return text, checks
     if name == 'from-callable-factory-bound-fiber-constructor-invoke':
         from from_callable_construct_invoke_fiber_review import render as render_construct_invoke
         row = sources['from-callable-factory-fiber-constructor-invoke']

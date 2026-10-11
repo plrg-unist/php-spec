@@ -2918,4 +2918,286 @@ echo "N:", $weakFresh->get() === null ? "gone" : "held", ";Z;";
         'expected_stdout': 'Q;A;M:isStarted;F;H:held;V;E:FiberError:Cannot call constructor twice;O:gone;C:gone;H:gone;N:held;E:held;E:gone;O:gone;C:gone;H:gone;N:gone;Z;',
         'discriminator': 'Explicit __invoke on a frozen bound constructor keeps the fresh registered Closure through two real trace argument edges after old callback, capture and Fiber retirement. Neither callback executes; clearing the caught FiberError retires both argument arrays and the same fresh Closure before the final weak reads.',
     },
+    {
+        'id': 'from-callable-direct-fiber-started',
+        'source': '''<?php
+function discardFactoryFiberStatesArgumentReview21() {
+    global $factory, $callback;
+    $factory = null;
+    echo "A;";
+    return $callback;
+}
+echo "Q;";
+$fiber = new Fiber(function () {
+    global $status;
+    echo "B:", $status() ? "yes" : "no", ";";
+    Fiber::suspend("pause");
+    echo "R:", $status() ? "yes" : "no", ";";
+    return "done";
+});
+$weak = WeakReference::create($fiber);
+$method = "isStarted";
+$callback = [$fiber, $method];
+$factory = null;
+$status = Closure::fromCallable(callback: discardFactoryFiberStatesArgumentReview21());
+$weakStatus = WeakReference::create($status);
+$callback[1] = "isTerminated";
+$method = $callback[1];
+$callback = null;
+$fiber = null;
+echo "M:", $method, ";F;";
+echo "H:", $weak->get() !== null ? "held" : "gone", ";";
+echo "I:", $status() ? "yes" : "no", ";";
+$active = $weak->get();
+$paused = $active->start();
+$active = null;
+echo "P:", $paused, ";S:", $status() ? "yes" : "no", ";";
+$active = $weak->get();
+$active->resume();
+$returned = $active->getReturn();
+$active = null;
+echo "T:", $status() ? "yes" : "no", ";V:", $returned, ";";
+echo "K:", $weak->get() !== null ? "held" : "gone", ";";
+$status = null;
+echo "C:", $weakStatus->get() === null ? "gone" : "held", ";";
+echo "L:", $weak->get() === null ? "gone" : "held", ";E;";
+''',
+        'expected_stdout': 'Q;A;M:isTerminated;F;H:held;I:no;B:yes;P:pause;S:yes;R:yes;T:yes;V:done;K:held;C:gone;L:gone;E;',
+        'discriminator': 'Frozen bound isStarted survives ordinary method-name mutation and factory/callback/receiver-cell retirement. Genuine INITIAL, running B, suspended S, running R and terminated T queries distinguish the changed member; status-null retires capture and receiver before final weak reads.',
+    },
+    {
+        'id': 'from-callable-direct-fiber-running',
+        'source': '''<?php
+function discardFactoryFiberStatesArgumentReview21() {
+    global $factory, $callback;
+    $factory = null;
+    echo "A;";
+    return $callback;
+}
+echo "Q;";
+$fiber = new Fiber(function () {
+    global $status;
+    echo "B:", $status() ? "yes" : "no", ";";
+    Fiber::suspend("pause");
+    echo "R:", $status() ? "yes" : "no", ";";
+    return "done";
+});
+$weak = WeakReference::create($fiber);
+$method = "isRunning";
+$callback = [$fiber, $method];
+$factory = null;
+$status = Closure::fromCallable(callback: discardFactoryFiberStatesArgumentReview21());
+$weakStatus = WeakReference::create($status);
+$callback[1] = "isStarted";
+$method = $callback[1];
+$callback = null;
+$fiber = null;
+echo "M:", $method, ";F;";
+echo "H:", $weak->get() !== null ? "held" : "gone", ";";
+echo "I:", $status() ? "yes" : "no", ";";
+$active = $weak->get();
+$paused = $active->start();
+$active = null;
+echo "P:", $paused, ";S:", $status() ? "yes" : "no", ";";
+$active = $weak->get();
+$active->resume();
+$returned = $active->getReturn();
+$active = null;
+echo "T:", $status() ? "yes" : "no", ";V:", $returned, ";";
+echo "K:", $weak->get() !== null ? "held" : "gone", ";";
+$status = null;
+echo "C:", $weakStatus->get() === null ? "gone" : "held", ";";
+echo "L:", $weak->get() === null ? "gone" : "held", ";E;";
+''',
+        'expected_stdout': 'Q;A;M:isStarted;F;H:held;I:no;B:yes;P:pause;S:no;R:yes;T:no;V:done;K:held;C:gone;L:gone;E;',
+        'discriminator': 'Frozen bound isRunning survives ordinary method-name mutation and factory/callback/receiver-cell retirement. Genuine INITIAL, running B, suspended S, running R and terminated T queries distinguish the changed member; status-null retires capture and receiver before final weak reads.',
+    },
+    {
+        'id': 'from-callable-direct-fiber-terminated',
+        'source': '''<?php
+function discardFactoryFiberStatesArgumentReview21() {
+    global $factory, $callback;
+    $factory = null;
+    echo "A;";
+    return $callback;
+}
+echo "Q;";
+$fiber = new Fiber(function () {
+    global $status;
+    echo "B:", $status() ? "yes" : "no", ";";
+    Fiber::suspend("pause");
+    echo "R:", $status() ? "yes" : "no", ";";
+    return "done";
+});
+$weak = WeakReference::create($fiber);
+$method = "isTerminated";
+$callback = [$fiber, $method];
+$factory = null;
+$status = Closure::fromCallable(callback: discardFactoryFiberStatesArgumentReview21());
+$weakStatus = WeakReference::create($status);
+$callback[1] = "isStarted";
+$method = $callback[1];
+$callback = null;
+$fiber = null;
+echo "M:", $method, ";F;";
+echo "H:", $weak->get() !== null ? "held" : "gone", ";";
+echo "I:", $status() ? "yes" : "no", ";";
+$active = $weak->get();
+$paused = $active->start();
+$active = null;
+echo "P:", $paused, ";S:", $status() ? "yes" : "no", ";";
+$active = $weak->get();
+$active->resume();
+$returned = $active->getReturn();
+$active = null;
+echo "T:", $status() ? "yes" : "no", ";V:", $returned, ";";
+echo "K:", $weak->get() !== null ? "held" : "gone", ";";
+$status = null;
+echo "C:", $weakStatus->get() === null ? "gone" : "held", ";";
+echo "L:", $weak->get() === null ? "gone" : "held", ";E;";
+''',
+        'expected_stdout': 'Q;A;M:isStarted;F;H:held;I:no;B:no;P:pause;S:no;R:no;T:yes;V:done;K:held;C:gone;L:gone;E;',
+        'discriminator': 'Frozen bound isTerminated survives ordinary method-name mutation and factory/callback/receiver-cell retirement. Genuine INITIAL, running B, suspended S, running R and terminated T queries distinguish the changed member; status-null retires capture and receiver before final weak reads.',
+    },
+    {
+        'id': 'from-callable-factory-fiber-started',
+        'source': '''<?php
+function discardFactoryFiberStatesArgumentReview21() {
+    global $factory, $callback;
+    $factory = null;
+    echo "A;";
+    return $callback;
+}
+echo "Q;";
+$fiber = new Fiber(function () {
+    global $status;
+    echo "B:", $status() ? "yes" : "no", ";";
+    Fiber::suspend("pause");
+    echo "R:", $status() ? "yes" : "no", ";";
+    return "done";
+});
+$weak = WeakReference::create($fiber);
+$method = "isStarted";
+$callback = [$fiber, $method];
+$factory = Closure::fromCallable(...);
+$status = $factory(callback: discardFactoryFiberStatesArgumentReview21());
+$weakStatus = WeakReference::create($status);
+$callback[1] = "isTerminated";
+$method = $callback[1];
+$callback = null;
+$fiber = null;
+echo "M:", $method, ";F;";
+echo "H:", $weak->get() !== null ? "held" : "gone", ";";
+echo "I:", $status() ? "yes" : "no", ";";
+$active = $weak->get();
+$paused = $active->start();
+$active = null;
+echo "P:", $paused, ";S:", $status() ? "yes" : "no", ";";
+$active = $weak->get();
+$active->resume();
+$returned = $active->getReturn();
+$active = null;
+echo "T:", $status() ? "yes" : "no", ";V:", $returned, ";";
+echo "K:", $weak->get() !== null ? "held" : "gone", ";";
+$status = null;
+echo "C:", $weakStatus->get() === null ? "gone" : "held", ";";
+echo "L:", $weak->get() === null ? "gone" : "held", ";E;";
+''',
+        'expected_stdout': 'Q;A;M:isTerminated;F;H:held;I:no;B:yes;P:pause;S:yes;R:yes;T:yes;V:done;K:held;C:gone;L:gone;E;',
+        'discriminator': 'Frozen bound isStarted survives ordinary method-name mutation and factory/callback/receiver-cell retirement. Genuine INITIAL, running B, suspended S, running R and terminated T queries distinguish the changed member; status-null retires capture and receiver before final weak reads.',
+    },
+    {
+        'id': 'from-callable-factory-fiber-running',
+        'source': '''<?php
+function discardFactoryFiberStatesArgumentReview21() {
+    global $factory, $callback;
+    $factory = null;
+    echo "A;";
+    return $callback;
+}
+echo "Q;";
+$fiber = new Fiber(function () {
+    global $status;
+    echo "B:", $status() ? "yes" : "no", ";";
+    Fiber::suspend("pause");
+    echo "R:", $status() ? "yes" : "no", ";";
+    return "done";
+});
+$weak = WeakReference::create($fiber);
+$method = "isRunning";
+$callback = [$fiber, $method];
+$factory = Closure::fromCallable(...);
+$status = $factory(callback: discardFactoryFiberStatesArgumentReview21());
+$weakStatus = WeakReference::create($status);
+$callback[1] = "isStarted";
+$method = $callback[1];
+$callback = null;
+$fiber = null;
+echo "M:", $method, ";F;";
+echo "H:", $weak->get() !== null ? "held" : "gone", ";";
+echo "I:", $status() ? "yes" : "no", ";";
+$active = $weak->get();
+$paused = $active->start();
+$active = null;
+echo "P:", $paused, ";S:", $status() ? "yes" : "no", ";";
+$active = $weak->get();
+$active->resume();
+$returned = $active->getReturn();
+$active = null;
+echo "T:", $status() ? "yes" : "no", ";V:", $returned, ";";
+echo "K:", $weak->get() !== null ? "held" : "gone", ";";
+$status = null;
+echo "C:", $weakStatus->get() === null ? "gone" : "held", ";";
+echo "L:", $weak->get() === null ? "gone" : "held", ";E;";
+''',
+        'expected_stdout': 'Q;A;M:isStarted;F;H:held;I:no;B:yes;P:pause;S:no;R:yes;T:no;V:done;K:held;C:gone;L:gone;E;',
+        'discriminator': 'Frozen bound isRunning survives ordinary method-name mutation and factory/callback/receiver-cell retirement. Genuine INITIAL, running B, suspended S, running R and terminated T queries distinguish the changed member; status-null retires capture and receiver before final weak reads.',
+    },
+    {
+        'id': 'from-callable-factory-fiber-terminated',
+        'source': '''<?php
+function discardFactoryFiberStatesArgumentReview21() {
+    global $factory, $callback;
+    $factory = null;
+    echo "A;";
+    return $callback;
+}
+echo "Q;";
+$fiber = new Fiber(function () {
+    global $status;
+    echo "B:", $status() ? "yes" : "no", ";";
+    Fiber::suspend("pause");
+    echo "R:", $status() ? "yes" : "no", ";";
+    return "done";
+});
+$weak = WeakReference::create($fiber);
+$method = "isTerminated";
+$callback = [$fiber, $method];
+$factory = Closure::fromCallable(...);
+$status = $factory(callback: discardFactoryFiberStatesArgumentReview21());
+$weakStatus = WeakReference::create($status);
+$callback[1] = "isStarted";
+$method = $callback[1];
+$callback = null;
+$fiber = null;
+echo "M:", $method, ";F;";
+echo "H:", $weak->get() !== null ? "held" : "gone", ";";
+echo "I:", $status() ? "yes" : "no", ";";
+$active = $weak->get();
+$paused = $active->start();
+$active = null;
+echo "P:", $paused, ";S:", $status() ? "yes" : "no", ";";
+$active = $weak->get();
+$active->resume();
+$returned = $active->getReturn();
+$active = null;
+echo "T:", $status() ? "yes" : "no", ";V:", $returned, ";";
+echo "K:", $weak->get() !== null ? "held" : "gone", ";";
+$status = null;
+echo "C:", $weakStatus->get() === null ? "gone" : "held", ";";
+echo "L:", $weak->get() === null ? "gone" : "held", ";E;";
+''',
+        'expected_stdout': 'Q;A;M:isStarted;F;H:held;I:no;B:no;P:pause;S:no;R:no;T:yes;V:done;K:held;C:gone;L:gone;E;',
+        'discriminator': 'Frozen bound isTerminated survives ordinary method-name mutation and factory/callback/receiver-cell retirement. Genuine INITIAL, running B, suspended S, running R and terminated T queries distinguish the changed member; status-null retires capture and receiver before final weak reads.',
+    },
 ]

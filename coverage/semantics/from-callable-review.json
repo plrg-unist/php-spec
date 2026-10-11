@@ -2061,5 +2061,141 @@
       "state_credit": 0,
       "private_runtime_renewal": 0
     }
+  },
+  "captured_factory_fiber_statuses": {
+    "status": "ACCEPTED_PARTIAL",
+    "baseline": "4e2702ce3c3a2bb34fdf70ba050c7d31d216fc7f",
+    "validation_revision": "280eac055572189b1af3291f9c237e9c1f06a7b9",
+    "modules": 375,
+    "code": "spec/semantics/358-fiber-from-callable.watsup",
+    "scope": "Captured Closure::fromCallable factories select exactly bound isStarted, isRunning and isTerminated with nonempty INPUT and original live factory/call-site authority. The existing isSuspended guard/certificate and 281/331/337 API/ownership protocols are unchanged.",
+    "behavior": "Frozen selection survives ordinary member mutation and factory/callback/main-receiver retirement. Each target has genuine INITIAL, running B, SUSPENDED, running R and TERMINATED CONFIG-to-RESULTfalse decisions with distinct B/R sites, authentic saved API/caller and shared global status cell. Running phases have three receiver owners (capture INPUT, main active cell, saved caller API), while main phases have one; status cell plus marker own capture twice. Started alone authenticates marker decref completion and the real status-null write/pruning before weak reads; Running/Terminated preserve the same heap across each bool step and finish their own zero-budget/source continuations. Shared malformed authority/INPUT/ALIAS/marker and both other-family KIND controls are separate.",
+    "engine_routes": [
+      "vendor/php-src/Zend/zend_fibers.c: ZEND_METHOD(Fiber, isStarted), isRunning and isTerminated",
+      "vendor/php-src/Zend/zend_closures.c: create_closure_from_callable and zend_create_closure_from_callable"
+    ],
+    "artifact_worktree": ".tools/captured-factory-fiber-throw-unhandled-21",
+    "artifact_root": ".tools/captured-factory-fiber-statuses-21",
+    "cuts": {
+      "native": {
+        "revision": "4e2702ce3c3a2bb34fdf70ba050c7d31d216fc7f",
+        "report": ".tools/captured-factory-fiber-statuses-21/captured-factory-fiber-statuses-native-21-brvhxu9g/report.json",
+        "sha256": "d1f5bf07145147698c1414839f280fd95b55655d441d9500ae8f0f59116c0866",
+        "oracle_cases": 6,
+        "source_credit": 0
+      },
+      "unchanged_public": {
+        "revision": "4e2702ce3c3a2bb34fdf70ba050c7d31d216fc7f",
+        "report": ".tools/captured-factory-fiber-statuses-21/captured-factory-fiber-statuses-model-21-bktce_jx/report.json",
+        "sha256": "113adf4024abb1fd358bc3dcb49f262ed113cd48aea146e5c0d976cc6421f1ba",
+        "direct_source_credit": 3,
+        "direct_seconds": [
+          27.81283950805664,
+          28.231468677520752,
+          28.75571870803833
+        ],
+        "captured_started": "Unsupported at genuine checked factory creation after Q;A;",
+        "captured_source_credit": 0,
+        "captured_running_terminated": "UNRUN after first nonagreement"
+      },
+      "initial_repair_failure": {
+        "revision": "f4f7dcfec10e5888ceb1f3716e4ba55b07198209",
+        "report": ".tools/captured-factory-fiber-statuses-21/captured-factory-fiber-statuses-repair-21-7ci8g187/report.json",
+        "sha256": "e558f7bbc370ab2ecec765ffc62e985aea995883523a703d26af36fd3cf127c2",
+        "source_credit": 0,
+        "outcome": "Started still Unsupported after Q;A;; other captured2 UNRUN. The new generic optional-INPUT pattern inferred an impossible nat? to nat cast."
+      },
+      "guard_probe": {
+        "revision": "f4f7dcfec10e5888ceb1f3716e4ba55b07198209",
+        "report": ".tools/captured-factory-fiber-statuses-21/factory-fiber-statuses-probe-21-lfx4lqz9/report.json",
+        "sha256": "f13deae27321d010f3c9d8e63fc559796f13a1cdde6aea96f8a22eb7e4a46275",
+        "source_credit": 0,
+        "state_credit": 0,
+        "outcome": "Genuine STARTED/isStarted/INPUT 0 selection, valid CONFIG/candidate/live/saved/source guards; only new family predicate false. Correction binds explicit optional INPUT and checks nonempty; no certificate/body change."
+      },
+      "captured_repair": {
+        "revision": "280eac055572189b1af3291f9c237e9c1f06a7b9",
+        "report": ".tools/captured-factory-fiber-statuses-21/captured-factory-fiber-statuses-repair-21-cjv6aewq/report.json",
+        "sha256": "8e53259c7c5c1f2ccdca1d052895becd1d49be3b03e311141e6b4fd440297e1a",
+        "source_credit": 3,
+        "seconds": [
+          26.092756748199463,
+          26.144965171813965,
+          26.07985281944275
+        ]
+      },
+      "state": {
+        "revision": "280eac055572189b1af3291f9c237e9c1f06a7b9",
+        "report": ".tools/captured-factory-fiber-statuses-21/factory-fiber-statuses-state-21-8rmtbtna/report.json",
+        "sha256": "725dc92e0fa1a18e2073cd147157c8eaea3dd7992a1f3356f86f898d63e730d1",
+        "compiler": "PASS",
+        "compiler_seconds": 5.367221117019653,
+        "initialized_SL1287": "PASS",
+        "state_seconds": 181.82813692092896,
+        "genuine_and_derived": 1230,
+        "constructed": 57,
+        "selections": {
+          "Started": {
+            "premises": 543,
+            "genuine_and_derived": 486,
+            "constructed": 57
+          },
+          "Running": {
+            "premises": 372,
+            "genuine_and_derived": 372,
+            "constructed": 0
+          },
+          "Terminated": {
+            "premises": 372,
+            "genuine_and_derived": 372,
+            "constructed": 0
+          }
+        },
+        "source_credit": 0
+      }
+    },
+    "maintained": {
+      "ids": [
+        "from-callable-direct-fiber-started",
+        "from-callable-direct-fiber-running",
+        "from-callable-direct-fiber-terminated",
+        "from-callable-factory-fiber-started",
+        "from-callable-factory-fiber-running",
+        "from-callable-factory-fiber-terminated"
+      ],
+      "sources": "tests/semantics/scoped_static_compound_cases.py",
+      "renderer": "tests/semantics/from_callable_statuses_fiber_review.py",
+      "renderer_sha256": "4ea3243ecb98b153b68cc86b6de2af9cc4a026559a7ae7f2697a0d88793f0dea",
+      "dispatch": "tests/semantics/scoped_static_compound_protocol.py: from-callable-factory-bound-fiber-statuses",
+      "fixture_bytes": 211293,
+      "fixture_sha256": "d86408d30e298740f523e1882a1469e1762862a7b36bd85ed7245ef6faf0e817",
+      "relocation_runtime_renewal": 0
+    },
+    "commands": [
+      "python3 .tools/captured-factory-fiber-statuses-21/run-captured-factory-fiber-statuses-native-21.py",
+      "python3 .tools/captured-factory-fiber-statuses-21/run-captured-factory-fiber-statuses-model-21.py .tools/captured-factory-fiber-statuses-21/captured-factory-fiber-statuses-native-21-brvhxu9g/report.json",
+      "python3 .tools/captured-factory-fiber-statuses-21/run-captured-factory-fiber-statuses-repair-21.py .tools/captured-factory-fiber-statuses-21/captured-factory-fiber-statuses-native-21-brvhxu9g/report.json",
+      "python3 .tools/captured-factory-fiber-statuses-21/run-factory-fiber-statuses-probe-21.py",
+      "python3 .tools/captured-factory-fiber-statuses-21/run-factory-fiber-statuses-state-21.py"
+    ],
+    "caps": {
+      "native": 45,
+      "CLI": 60,
+      "outer": 90,
+      "steps": 100000,
+      "worker_request": 30,
+      "compiler": 120,
+      "state": 300,
+      "probe": 90,
+      "seek": 1000,
+      "finish": 1000,
+      "jobs": 1
+    },
+    "recovery": "Original source6/native bytes, checked programs, bundled fixture, renderer/driver snapshots and raw exits remain below artifact_root in artifact_worktree. Native runs pinned PHP/profile; model/state cuts bind ordered 375 modules at their own clean revisions. Maintained relocation preserves exact bytes and adds no runtime credit.",
+    "review": "arguments_review_22 independently accepted native 6, direct 3/original captured Unsupported 0 and UNRUN 2, the disjoint 358 admission, failed repair 0 and genuine guard probe 0, optional-INPUT correction/captured-only source 3, reduced finite preflight and initialized raw 1287. Prior Fiber cuts and original source 7 OPEN remain separate.",
+    "remaining": [
+      "Wider selectors, explicit __invoke/C-root/clone consumers and nested/caller-only lifecycle interactions require separate validation.",
+      "Required original static-compound source 7 CLI60 timeout remains OPEN with zero agreement."
+    ]
   }
 }

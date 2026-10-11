@@ -483,9 +483,9 @@ static `getCurrent` with no bound input. The selected CONFIG owns the live facto
 during arguments; saved creation and invocation authority needs no live producer
 or current USER frame. Frozen members survive referenced-name mutation and array
 retirement. The returned Closure adds no factory/array root and reads the actual
-active Fiber across suspension. Other captured-factory Fiber kinds and bound
-inputs beyond the separately validated bound `isSuspended`/`resume`/`throw` and
-receiver-free static `suspend` remain explicit Unsupported boundaries. The [core-factory ledger](../../coverage/semantics/from-callable-review.json)
+active Fiber across suspension. The bound and static supported scopes below
+keep their separate evidence; wider selector and lifecycle forms require further
+validation. The [core-factory ledger](../../coverage/semantics/from-callable-review.json)
 keeps the direct control, repaired source and 270 state premises at distinct cuts.
 
 Bound captured-factory `isSuspended` keeps the selected Fiber through a single
@@ -496,6 +496,22 @@ last receiver retirement when the returned Closure is released. Immutable saved
 factory evidence remains valid afterward, while the bound capture source/live
 checks require an allocated receiver and become false. The direct and repaired
 372-module cuts and 241 state premises stay separate from getCurrent evidence.
+
+Captured factories also admit bound `isStarted`, `isRunning` and `isTerminated`
+through a disjoint nonempty-INPUT guard and saved factory/call-site authority.
+Frozen names preserve all 15 INITIAL/running B/SUSPENDED/running R/TERMINATED
+decisions after ordinary member mutation and producer retirement. During running
+queries, receiver ownership comes from capture INPUT, main active cell and the
+real saved caller API; the shared global status cell and marker own capture twice.
+The Started fixture alone follows actual marker decref completion and the real
+status-null write through final pruning before weak reads. Running/Terminated
+prove each bool step preserves the exact heap and finish their own source and
+zero-budget continuations. Native 6, direct 3 at 4e and captured 3/state 1287 at
+280e retain separate
+cuts: 1230 genuine/derived premises plus 57 shared authority/INPUT/ALIAS/marker and
+other-family KIND controls. The original Unsupported, failed generic-INPUT guard
+and diagnostic probe retain zero credit; nested/caller-only and wider consumers
+require separate validation.
 
 Receiver-free captured-factory `suspend` freezes its name before referenced-name
 mutation and factory/callback retirement. Argument evaluation may clear the

@@ -3170,6 +3170,15 @@ prune both trace paths before weak reads; prior cuts remain separate.
 Exact a1b606eb/375 validation-only composition is statically reviewed, including
 the reached generic emit BASE clearing and guarded disjoint parent paths. Native,
 source2 and state536 retain c21; current runtime is UNRUN with renewal 0.
+Module 358 now admits captured-factory bound isStarted/isRunning/isTerminated
+through a disjoint nonempty-INPUT guard and saved factory/site certificate.
+Direct 3 stay at 4e2702ce; captured 3 and 1287 premises (1230 genuine/derived,
+57 controls) pass at 280eac05/375. All 15 genuine phase results preserve real
+running caller/global owners; one shared marker-release/status-null suite prunes
+capture/Fiber before weak reads, while the other two retain exact heap and source
+resumption checks. Existing isSuspended and API protocols are unchanged. Original
+Unsupported, failed admission and the genuine guard probe retain zero credit;
+source 7 and wider consumers remain OPEN. [Status cuts](coverage/semantics/from-callable-review.json).
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 
