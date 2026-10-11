@@ -1329,7 +1329,10 @@ at root/namespace body, through authenticated standalone Block chains or directl
 in actual `if`, `elseif` and `else` bodies admit plain empty named declarations.
 The [conditional-Closure review](coverage/semantics/anonymous-conditional-closure-rtd-review.json)
 checks live anonymous names before creation, skipped assignments, actual capture,
-call-order publication and fresh defaults. The [block-Closure review](coverage/semantics/anonymous-block-closure-rtd-review.json)
+call-order publication and fresh defaults. Its 375 join over 4b13f151 passes strict3
+at 7983239b (5.925s), checking the shared task datatype. Review preserves the
+parentless class-link identity; private cuts retain their original revisions.
+The [block-Closure review](coverage/semantics/anonymous-block-closure-rtd-review.json)
 binds three originals and 18 actual steps for Block entry, Closure capture,
 call-order publication and fresh defaults. The earlier
 [direct-Closure review](coverage/semantics/anonymous-named-closure-rtd-review.json)

@@ -35,6 +35,9 @@ failure retains zero credit; only that type variable changed before affected EL/
 Syntax preparation/elaboration adds no runtime credit. Nested or Block-contained
 If paths, loops, nested factories, wider targets/captures/signatures and consumers
 remain required.
+The 375 join over 4b13f151 passes strict3 at 7983239b (5.925s), checking the
+shared task datatype. Review preserves the reached parentless class-link identity;
+private native/source/state cuts retain their original revisions without replay.
 [Conditional-Closure ledger](coverage/semantics/anonymous-conditional-closure-rtd-review.json).
 
 The earlier branch-function cut retains source4/state665 at d66d951a, selected
