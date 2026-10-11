@@ -33,6 +33,8 @@ compiled lexical namespace AT/result through genuine method frames after a switc
 Syntax preparation/elaboration adds zero runtime credit; lowering has no runtime
 namespace task. Both author binding/frontier failures retain zero credit. Named
 Function/Closure descendants and wider named/anonymous contexts remain required.
+Actual375 over 4fa216264 passes strict3 at e95aa8ce (5.922s); private
+native/source/state cuts retain their original revisions.
 [Unbracketed ledger](coverage/semantics/anonymous-unbracketed-rtd-review.json).
 The earlier [bracketed cut](coverage/semantics/anonymous-namespace-rtd-review.json)
 retains native/source3/state305 and its 375 join over 1dd6e543 at a219a473; its historical

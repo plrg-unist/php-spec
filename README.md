@@ -1225,6 +1225,8 @@ The [mixed](coverage/semantics/anonymous-mixed-rtd-review.json),
 [unbracketed reviews](coverage/semantics/anonymous-unbracketed-rtd-review.json)
 retain distinct native/source/state cuts and original failures. Three new originals
 agree at 919bdf8c; author and independent fixtures pass 392 checks with 16 actual steps.
+Actual375 over 4fa216264 passes strict3 at e95aa8ce (5.922s); private
+native/source/state cuts retain their original revisions.
 Named function/Closure descendants, wider RTD/factory/publication contexts,
 constructor arguments/types, inheritance, attributes and broader consumers remain required.
 [Internal `stdClass` identity](docs/semantics/SOURCE-STDCLASS.md)
