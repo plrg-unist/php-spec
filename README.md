@@ -1356,8 +1356,13 @@ top-level source slots now also stay separate from a real Closure caller's own
 table, preserving each unit's cached cells and escaped references while later
 units allocate fresh cells.
 [Identity review](coverage/semantics/source-static-identity-review.json) records
-the affected and independent source/state cuts. Abrupt/fatal retirement and
-throwing-destructor cleanup remain required.
+the affected and independent source/state cuts. Body throws now retire source
+slots before crossing to the caller, retaining the pending Throwable while
+destructors run. A normal-end destructor throw still releases remaining source
+slots in declaration order; replacement exceptions retain their Previous chain.
+[Throw review](coverage/semantics/source-static-throw-review.json) records the
+focused source and production-unwind checks. Graceful exit and hard-fatal
+shutdown roots remain required.
 [Real closure instances](docs/semantics/SOURCE-CLOSURES.md) now retain explicit captures,
 selected callee owners and per-instance statics through invocation and cleanup.
 [Independent review](coverage/semantics/closures-review.json) binds source, object

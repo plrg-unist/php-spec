@@ -1,0 +1,185 @@
+{
+  "scope": "Body-throw source-table retirement and remaining declaration slots after normal-end destructor throw, preserving pending Throwable identity, Previous chains and escaped references.",
+  "status": "independently_reviewed_private",
+  "published_revision": "87864cc3caa0f4abce6e8125e689caf868a002e1",
+  "tested_base_revision": "ff2772a855f1bdad8145e7d42f87b7c004637a70",
+  "modules": 377,
+  "target": "PHP8.5.10 CLI NTS64",
+  "engine_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "compiler_pin": "da36ac3c434cd291940293a63da64544307730a3",
+  "runtime_sha256": {
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "_build/default/adapter/main.exe": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+    "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "other": "inherited"
+  },
+  "caps_seconds": {
+    "model": 60,
+    "wrapper": 90,
+    "state_sl": 90
+  },
+  "design": [
+    "Eval/file THROW_SEARCH crossings release one authentic top-level source slot when one remains; the original crossing requires an empty source table. Context owner, tail and pending Throwable remain unchanged until release completes.",
+    "Existing270 production destruction carries the Throwable in OPERATION.PENDING through callback and restoration. Destructor replacement retains Previous; remaining slots use388 compiler declaration order, including reverse allocation.",
+    "Callable slots and escaped references retain their existing roots. No schema,270,parser or public guard change is made."
+  ],
+  "cut_binding": {
+    "semantic_diff_sha256": "915cc04ff7c26ba87ac1f45d58b7c1e72bcf0a7955fb2ace6a5f5e8e879cc121",
+    "changed_modules_sha256": {
+      "spec/semantics/160-eval-runtime.watsup": "af4636781f8c03f03dd0ef0984c29a63f359ad409126a18b48bfac89ef163eec",
+      "spec/semantics/171-include-runtime.watsup": "63f4631efa5acc03b0b4c75e2b993f9ba35aa2cca1022183261756a11d627d69"
+    },
+    "maintained_protocol": {
+      "path": "tests/semantics/source_static_throw_protocol.py",
+      "sha256": "cb0e562fa14f3fa79d88b6ac2d384c1692aba4f3fe9335842c63e065c4cba167"
+    },
+    "fixture_note": "Accepted original eval/file fixtures already assert the exact source-end operation. The corrected generator only anchors operation seeking to that marker for affected override and unrun remaining fixtures; assertions are unchanged.",
+    "report_note": "All semantic checks bind the same dirty-base18-line module bytes. Immutable reports retain full input maps, original bytes, commands/cwd, environment, providers, raw streams and checked outcomes."
+  },
+  "native": [
+    {
+      "path": ".tools/dynamic-review-02/static-native-v1/report.json",
+      "sha256": "841a7cca6f3c05035bac46d056feab66d79c5cb5e4069079dad4a637ef6c4659",
+      "selection": [
+        "eval-table-throw"
+      ]
+    },
+    {
+      "path": ".tools/dynamic-review-02/static-native-v2/report.json",
+      "sha256": "0918ac15847ff6bb7dcdc776ceb1e8ae9e53af4cf84e6edeef1ac692871364d3",
+      "selection": [
+        "eval-destructor-throw"
+      ]
+    },
+    {
+      "path": ".tools/dynamic-review-02/static-native-v3/report.json",
+      "sha256": "aa80ab7a1980112e867d95ed29577711a44d041d302c952642c987147d5e36ba",
+      "selection": [
+        "file-table-throw-rest"
+      ]
+    },
+    {
+      "path": ".tools/dynamic-review-02/static-native-v8/report.json",
+      "sha256": "0cf2d00070431b92374fa18cb9f1f8530c61e01020feafe77fbbbd18f1296c8d",
+      "selection": [
+        "eval-closure-body-throw",
+        "file-closure-body-throw",
+        "eval-closure-nested-body-throw",
+        "eval-closure-body-throw-reference",
+        "eval-closure-remaining-destructor-throw"
+      ]
+    }
+  ],
+  "source": {
+    "unique_agreements": 8,
+    "reports": [
+      {
+        "path": ".tools/dynamic-source-statics-throw-model-05/report.json",
+        "sha256": "70edb833f2c12fa1cd5a0abf71011e8bc8fd9619c6d6139ba185cf46e77aa922",
+        "selection": [
+          "eval-table-throw"
+        ],
+        "outcome": "Author affected: exact D|same|A|."
+      },
+      {
+        "path": ".tools/dynamic-review-02/throw-model-v1/report.json",
+        "sha256": "436027b284b570e0cf35bf5e0b0db481ae6acee747200b2c57744a3f9dd6cca1",
+        "selection": [
+          "eval-closure-body-throw",
+          "file-closure-body-throw",
+          "eval-closure-nested-body-throw",
+          "eval-closure-body-throw-reference",
+          "eval-closure-remaining-destructor-throw"
+        ],
+        "outcome": "Independent five: shared identity, nested inner/outer release, escaped reference lifetime and remaining-slot throw."
+      },
+      {
+        "path": ".tools/dynamic-source-statics-throw-controls-07/report.json",
+        "sha256": "e2f08b0a84202571c6a759a9ee7c610781cab6860c7bb8855a44133380883d30",
+        "selection": [
+          "eval-destructor-throw",
+          "file-table-throw-rest"
+        ],
+        "outcome": "Author controls: exact D|TypeError|held|A| and B|a|b|a|A|."
+      }
+    ],
+    "observation": "All eight checked accepted/program normal0 tuples exactly match native exit/stdout/stderr, CLI runner0 and stable inputs."
+  },
+  "state": {
+    "frontiers": 4,
+    "accepted_premises": 466,
+    "raw_phpsteps": 12,
+    "direct_production_drop_continuations": 4,
+    "reports": [
+      {
+        "path": ".tools/dynamic-source-statics-throw-state-01/check-report.json",
+        "sha256": "069594692a440dc06e617fc09ad7b037c3a420f5f5f23943bb244c2b0aff4e90",
+        "selection": {
+          "eval-body": 115
+        }
+      },
+      {
+        "path": ".tools/dynamic-source-statics-throw-state-01/check-2-report.json",
+        "sha256": "5cf6ea4ad3bce5921b55cd076cc03ce553cfcb1a5d60a5ecbb561d75d08b31f8",
+        "selection": {
+          "file-body": 118
+        },
+        "aggregate_result": "fail",
+        "accepted_prefix_only": true
+      },
+      {
+        "path": ".tools/dynamic-source-statics-throw-state-02/check-3-report.json",
+        "sha256": "18a49aadc3481de64f8eed98f1e85147d47d65957a8b079c7db884e7e2a9fda4",
+        "selection": {
+          "eval-override": 116,
+          "eval-remaining": 117
+        }
+      }
+    ],
+    "observations": "Genuine source THROW_SEARCH ownership and public guards; raw drop projection kept separate from production pre-drop drive; actual operation pending roots, saved destructor owner, replacement/Previous, restore/cross and exact final output. Remaining TypeError has no alternate machine root and one owner before B release.",
+    "observation_contract": "Accepted groups return true with empty stderr, runner0 and stable inputs through full377 SL. Twelve raw steps are drop/restore/cross; four production drops carry the real eager transition. The driver is never resumed from a raw table drop."
+  },
+  "preserved_discrepancies": [
+    {
+      "path": ".tools/dynamic-source-statics-throw-baseline-04/report.json",
+      "sha256": "0909337fe4208c7a16762b7bfb87212fd4ae62323ed3401e4422ab4e0a4462ca",
+      "selection": [
+        "eval-table-throw"
+      ],
+      "credit": 0,
+      "result": "Checked normal0 mismatch: model same|A|D|, native D|same|A|; no runtime failure."
+    },
+    {
+      "path": ".tools/dynamic-source-statics-throw-controls-06/preparation-failure.json",
+      "sha256": "10afa85c7734fbfa0e45922f7717cd15cfd857fd698d1a631e0bb112d4bbd55c",
+      "selection": [],
+      "credit": 0,
+      "result": "Recorder pin-path failure before any runtime actor. Original wrapper and captured traceback retained;07 removes only nonexistent old-suite generator pins."
+    },
+    {
+      "path": ".tools/dynamic-source-statics-throw-state-01/check-2-report.json",
+      "sha256": "5cf6ea4ad3bce5921b55cd076cc03ce553cfcb1a5d60a5ecbb561d75d08b31f8",
+      "selection": [
+        "eval-override"
+      ],
+      "credit": 0,
+      "result": "Failed operation-tail assertion after overly broad fixture seek stopped at callback cleanup; original116 group fails, only file118 prefix accepted. Source-marker correction passes in state02; remaining was unrun until then."
+    }
+  ],
+  "engine_routes": [
+    "Zend/zend_vm_def.h: zend_leave_helper",
+    "Zend/zend_opcode.c: zend_destroy_static_vars",
+    "Zend/zend_hash.c: zend_array_destroy"
+  ],
+  "limits": [
+    "Graceful-exit retirement and hard-fatal shutdown roots remain required; existing native observations are not implementation credit.",
+    "Wider destructor/return/GC interactions and method/trait static identity remain partial. No static/storage/callable family or full-core closure."
+  ],
+  "recovery": "Preserve branch dynamic/source-static-throw-04 and canonical ignored raw paths above. Reports/raw retain exact commands, original bytes and pins; restore the tested dirty-base module cut from published_revision over tested_base_revision. No external execution oracle, fallback, intended divergence or new schema."
+}

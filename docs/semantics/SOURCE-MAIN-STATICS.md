@@ -14,7 +14,9 @@ Normal source end and explicit return release initialized top-level slots in com
 
 With a real Closure caller, top-level eval/file declarations use the source-owned table and preserve the caller's own static cells, captures and scope metadata. Revisiting a declaration in one unit rebinds its cached cell; a new parser-backed unit initializes a fresh cell. Escaped references survive normal table retirement and remain separate from later units. Nested eval tables likewise retain separate source identities. The [identity review](../../coverage/semantics/source-static-identity-review.json) records this separate cut.
 
-Throw/graceful-exit retirement, hard-fatal shutdown roots and destructor-generated throw cleanup remain required. Wider method/trait/inherited identity and lifecycle behavior retain their earlier partial scope. No static/storage family closure is claimed.
+Body throws retire source slots before the source context crosses to the caller. Each decrement keeps the pending Throwable rooted through the existing eager destructor operation. A normal-end destructor throw leaves the remaining table slots to be released in compiler order before caller catch; a destructor replacing a body exception retains that exception in its Previous chain. The [throw review](../../coverage/semantics/source-static-throw-review.json) records these separate source and production-unwind frontiers.
+
+Graceful-exit retirement, hard-fatal shutdown roots and wider destructor/return interactions remain required. Wider method/trait/inherited identity and lifecycle behavior retain their earlier partial scope. No static/storage family closure is claimed.
 
 The reviewed candidate contains1,008 checked paths (`2829c2a0`). The [runtime evidence](../../coverage/semantics/main-statics-runtime.json) records16 native source agreements,12 compiler phase comparisons,9 protocol controls,12 regressions and two author dense cases. Its [originals archive](../../coverage/semantics/main-statics-runtime-originals.json) preserves exact first and final identities; independent review retains its own source, dense and complete compatibility profiles.
 

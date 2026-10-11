@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Eval/file top-level static tables now retire before body exceptions cross to
+caller catch. Pending Throwables remain rooted through real destructor operations;
+replacement exceptions retain Previous, and normal-end destructor throws still
+release remaining slots in declaration order. Nested source tables and escaped
+references retain their separate owners. At private 87864cc3c / 377, eight exact
+originals agree; four genuine groups pass 466 public/ownership premises, with
+12 raw PhpSteps and four production-drop continuations kept separate. Original
+recorder and broad-seek fixture failures retain zero failed-group credit.
+Graceful-exit retirement, hard-fatal shutdown roots and wider destructor/return
+interactions remain required; full core stays partial.
+[Source-static throw ledger](coverage/semantics/source-static-throw-review.json).
+
 Top-level eval/file statics now stay separate from a real Closure caller's
 instance table. Each source unit retains its cached cell, later units allocate
 fresh cells, and escaped references survive normal source-table retirement.
@@ -14,7 +26,8 @@ Caller captures, scope metadata and own statics remain intact; nested evals
 keep separate source tables. At private 93d2abdb1 / 377, one affected and five
 independent exact originals agree; three genuine groups pass 360 public/ownership
 premises and 16 explicit boundary PhpSteps. The original Closure/parser refusal
-remains zero credit. Abrupt/fatal/throwing-destructor cleanup remains required.
+remains zero credit. Graceful-exit, hard-fatal and wider destructor/return cleanup
+remain required.
 [Source-static identity ledger](coverage/semantics/source-static-identity-review.json).
 The 378 composition over e0668aabe passes one exact cache/reference source and
 118 public ownership premises at 3b9c3cd26. Earlier source/state cuts retain
@@ -41,8 +54,8 @@ second eval-response refusal is repaired without relaxing parser/public guards.
 At private 19b999682 / 377, four exact checked originals retain their source cuts;
 11 genuine frontiers pass 382 premises and 12 explicit boundary PhpSteps.
 Original parser, model and fixture failures retain zero failed-group credit.
-Abrupt/fatal retirement and throwing-destructor interactions remain required;
-full core stays partial.
+Graceful-exit retirement, hard-fatal shutdown roots and wider destructor/return
+interactions remain required; full core stays partial.
 [Source-static ledger](coverage/semantics/source-static-retirement-review.json).
 The 378 composition over a6fdf13c passes one exact returned-object source and
 34 public copied-return premises at 32670dbed. Earlier source/state cuts retain
