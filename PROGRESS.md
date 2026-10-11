@@ -823,6 +823,8 @@ The latter three groups are all reached; counts include four source setups.
 Two AL fixture stops and This85 false retain zero credit. Broader virtual type
 covariance remains required; prior hook cuts stay frozen.
 [Virtual override review](coverage/semantics/virtual-get-hook-override-review.json).
+Actual375 over `8b17c9ec` passes strict initialization at `2d234593` (5.833 s);
+private source2 and the four separate state cuts retain their accepted revisions.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
