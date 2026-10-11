@@ -693,6 +693,8 @@ keep their separate raw cuts. Original compiler/fixture failures and the expande
 descriptor discrepancy remain preserved in the same review. The first-Z helper
 remains nonpublic; other passages/layouts, lifecycle capture, wider operands and
 complete returns verification remain open.
+Actual375 over `5e28bb06` passes strict at `83375f47` in 5.663s,
+with zero application evaluations; private source/state/independent cuts remain separate.
 
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
