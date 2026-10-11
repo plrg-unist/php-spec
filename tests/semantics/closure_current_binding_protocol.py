@@ -10,6 +10,7 @@ import closure_current_argument_review as argument_review
 import closure_bind_capture_review as bind_review
 import closure_bind_argument_review as bind_argument_review
 import closure_bind_computed_review as bind_computed_review
+import closure_bind_method_review as bind_method_review
 
 CASES = {'bound-private-method-shared-statics-retired-source': {'source': '<?php\n'
                                                                   'class FakeOwner253 {\n'
@@ -1165,6 +1166,9 @@ for row in json.loads(CATALOGUE.read_text()):
     elif row['id'] in ('argument-direct-current-api-retirement', 'argument-captured-current-api-retirement'):
         CASES[row['id']] = {'source': row['source'], 'native_stdout': row['native_stdout'],
                             'current_argument_captured': '-captured-' in row['id']}
+    elif row['id'] == 'computed-method-captured-bind':
+        CASES[row['id']] = {'source': row['source'], 'native_stdout': row['native_stdout'],
+                            'bind_method_capture': True}
     elif row['id'] == 'computed-class-captured-bind':
         CASES[row['id']] = {'source': row['source'], 'native_stdout': row['native_stdout'],
                             'bind_computed_capture': True}
@@ -1177,6 +1181,9 @@ for row in json.loads(CATALOGUE.read_text()):
 
 
 def capture_fixture(case, program, filename):
+    if 'bind_method_capture' in case:
+        text, checks, _, _ = bind_method_review.render(program, filename, case['native_stdout'])
+        return text, len(checks)
     if 'bind_computed_capture' in case:
         text, checks, _, _ = bind_computed_review.render(program, filename, case['native_stdout'])
         return text, len(checks)
@@ -1210,5 +1217,6 @@ if __name__ == '__main__':
                                         Path(bind_review.__file__),
                                         Path(bind_argument_review.__file__),
                                         Path(bind_computed_review.__file__),
+                                        Path(bind_method_review.__file__),
                                         Path(__file__).with_name('error_handler_protocol.py')),
                  fixture_renderer=capture_fixture)

@@ -93,8 +93,18 @@ call and its existing copied receipt. Two native originals, one literal control,
 one repaired computed source and 161 state premises (148 genuine/derived plus
 13 controls) pass. The state test distinguishes the raw class operand, prepared
 class string and genuine mint with registered handles. The initial elaboration
-and raw-mint fixture failures retain zero credit; wider class expressions and
-computed method names remain required.
+and raw-mint fixture failures retain zero credit; wider class expressions remain
+required.
+
+Literal-class `Closure::$method(...)` capture resolves a simple method CV to bind
+bytes, including the authentic interned string carrier. A later write of
+`getCurrent` to that cell preserves the selected BIND API and its existing owned
+CONFIG and copied binding receipt. Native2/literal1 at 836b and computed source1
+and 169 state premises at 48fee/375 pass (150 genuine/derived plus 19 controls).
+The state test separates raw VARIABLE, resolved carrier and genuine handle-normalized
+mint; a byte-equivalent plain string also passes. Original Unsupported, first
+repair Unsupported and the diagnostic retain zero credit. Combined computed
+class/member and wider member expressions remain required.
 
 Module264 adds the admitted REAL static/internal warnings and `$this`-sensitive
 unbinding through the same genuine handler continuation; the
