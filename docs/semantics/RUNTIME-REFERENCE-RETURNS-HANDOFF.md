@@ -172,6 +172,17 @@ and non-W-X17 public refusals, late caller/error/budget and bypass checks.
 Preserve original parse failure71e18 zero state credit. No coercion, active branch
 or new Previous rule; post-W reconstruction stays local and broader returns OPEN.
 
+The lifecycle33 route admits checked direct GLOBALS W→X reference rebinding before
+echo/TypeError throw. Bind distinct ordinary f-local W/X strings, X's unchanged
+global/local identity and global W equal original W or exactly X; reconstruct W
+even at reduced [X]. Source2/state2/293 and independent public136/1 pass. Actual
+callback current8/saved21 queues include the extra reference-rebinding release/
+operation exit; global W=X and saved f-local W stays distinct. Wrong global W→Z
+and non-W global X targets refuse publicly. Caller alias/probe/error/budget and
+bypass pass. Preserve caller-table failure73a37924 zero state credit and retained
+bypass compilation. No new roots, rebinding/eager/Previous rules or native Previous
+observer; the certificate is local and wider rebinding/returns remain OPEN.
+
 Typed-property reference constraints, finally rechecks, objects/methods, dynamic
 sources and dynamic callables, named/unpacked/variadic calls, generators/Fibers and lifecycle remain
 required later core work. Publish reviewed paired code, evidence and concise docs

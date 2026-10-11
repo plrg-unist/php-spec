@@ -898,6 +898,11 @@ through public history retirement and caller cleanup; every other history keeps
 its string guard. Two originals, reached2/266 and independent saved109/1 pass
 separately; wrong W18 and non-W X17 are publicly refused. The selected bypass
 skips the write. Other scalar mutations and broader returns remain OPEN.
+Checked direct `$GLOBALS` W→X reference rebinding now preserves f's original local
+W while global W follows X through the caller's later write. Two originals,
+reached2/293 and independent public136/1 pass separately, including wrong global
+W/X refusals and selected bypass. Post-retirement W reconstruction remains local;
+wider rebinding and returns verification remain OPEN.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)

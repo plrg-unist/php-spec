@@ -255,6 +255,16 @@ The old string mutation helper still rejects integer W. Existing assignment and
 registered-prefix validation supply the effects; local reconstruction after W
 retirement and the integer17 witness do not close wider mutation/returns scope.
 
+An additive direct GLOBALS reference-rebinding route preserves distinct f-local W
+and X string cells while global W may equal original W or exactly X. Only the
+checked source-linked W gets that exception; every other history keeps the old
+global/string guards. W's same checked relation remains required after its marker
+retires. Source2,
+reached2/293 and independent public136/1 pass at `a850a5df`: global W follows X,
+local W stays unchanged, full registered prefixes admit and wrong global targets
+refuse. Existing rebinding/destructor rules supply the effects. The retained W
+relation is a local source certificate; wider rebinding and returns remain OPEN.
+
 Module 186 captures the physical cell of an ordinary live unconstrained aliased CV
 before weak Stringable conversion. Its retained current/saved f-local binding
 authenticates that selection independently of later GLOBALS rebind/unset. Success

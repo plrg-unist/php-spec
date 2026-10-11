@@ -1496,6 +1496,18 @@ observed, and wider mutation/lifecycle/returns remain OPEN.
 Actual377 over `a0e805cc` passes strict at `3d605669` in 6.002s with zero
 applications; original private source/state/independent cuts remain separate.
 
+The idle lifecycle certificate now admits checked `$GLOBALS["w"] =& $GLOBALS["x"]`
+before echo/TypeError throw. Global W follows X while f retains its distinct local
+W/string cell through public WX/X retirement. Source2 and reached2/293 (210+83)
+pass at `a850a5df`; caller alias/probe, fresh error/late Previous, budget equality
+and bypass are checked. Independent public136/1 validates the actual current8/
+saved21 registered prefix and refuses wrong global W→Z; author refuses wrong
+global X. Private strict377 passes in 6.026s with zero applications. The original
+caller-table fixture failure keeps zero state credit; bypass compilation is
+retained and the maintained producer is byte-identical. Post-W reconstruction
+remains a local source certificate; wider rebinding/lifecycle/returns remain OPEN.
+[Multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
 cell while GLOBALS may rebind or disappear; conversion writes the old cell atomically.
