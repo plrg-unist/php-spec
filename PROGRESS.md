@@ -731,6 +731,8 @@ Pending4/3 retain D scope and 2/1/0 follow its actual restore; the saved call ke
 root-free literal history/Notice0, then D;P;B restores one Notice and a fresh cell.
 Private strict375 passes in 5.659s with zero applications. Throwing, mutating and
 reentrant call bodies and broad returns_verify remain OPEN.
+Actual375 over `15951738` passes strict at `c1d95aaf` in 5.785s,
+with zero applications; private source/state/independent cuts retain their revisions.
 
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
