@@ -536,6 +536,20 @@ def $closure_bind_capture(S, phpType19, ptbytes_method, phpType7*, z) = true
   -- if $origin_node(S.SOURCES, porigin_name) = (NIdentifier (BYTES text_name) metadata_name)
   -- if $ptlc($base64(text_name)) = $ptascii("bind")
   -- if $ppfirstclass(phpType7*)
+def $closure_bind_capture(S, phpType19, ptbytes_method, phpType7*, z) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (SCOPED_CLASS phpType19 phpType20 phpType7* z) :: ptask_tail*
+  -- if phpType19 = NExprVariable (BYTES text_class) metadata_class
+  -- if S.RESULT = KNOWN (PSTRING ptbytes_class)
+  -- if $ptlc($typed_callable_name(ptbytes_class)) = $ptascii("closure")
+  -- if $ptlc(ptbytes_method) = $ptascii("bind")
+  -- if $call_task_valid(S, SCOPED_CLASS phpType19 phpType20 phpType7* z)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_name)
+  -- if $origin_node(S.SOURCES, porigin_name) = (NIdentifier (BYTES text_name) metadata_name)
+  -- if $ptlc($base64(text_name)) = $ptascii("bind")
+  -- if $ppfirstclass(phpType7*)
 def $closure_bind_capture(S, phpType19, ptbytes_method, phpType7*, z) = false -- otherwise
 def $scoped_select(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes_method, phpType7*, z) = $intrinsic_firstclass(S[.TODO = ptask_tail*], INTRINSIC_CLOSURE_BIND)
   -- if $ptlc($typed_callable_name(ptbytes_class)) = $ptascii("closure")

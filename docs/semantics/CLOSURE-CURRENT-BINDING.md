@@ -87,11 +87,20 @@ one direct and one repaired captured comparison, and 413 state premises
 recorded bridge for the old CONFIG tag/roots; the original 289 cut is unchanged.
 The initial global-table fixture failure retains zero credit.
 
+Simple class-CV `$class::bind(...)` capture resolves `Closure` before minting the
+API. Changing that class cell to `stdClass` afterward preserves the selected BIND
+call and its existing copied receipt. Two native originals, one literal control,
+one repaired computed source and 161 state premises (148 genuine/derived plus
+13 controls) pass. The state test distinguishes the raw class operand, prepared
+class string and genuine mint with registered handles. The initial elaboration
+and raw-mint fixture failures retain zero credit; wider class expressions and
+computed method names remain required.
+
 Module264 adds the admitted REAL static/internal warnings and `$this`-sensitive
 unbinding through the same genuine handler continuation; the
 [ordinary binding contract](CLOSURE-BINDING.md) records validation order, compiled
 flag authority and copied storage. Wider binding API captures and argument
-retirement beyond the literal dynamic BIND scope above, object/computed current
+retirement beyond the BIND scopes above, object/computed current
 captures, wider argument-retirement routes, temporary REAL `Closure::call` current-object
 escape and further internally scoped keyword consumers remain required.
 Temporary-call behavior stays separate.

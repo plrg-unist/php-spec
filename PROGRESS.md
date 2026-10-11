@@ -4035,6 +4035,13 @@ open; exact relocation needs no renewal. Exact 83186897/375 composition at 8a9e
 passes the preserved413 compiler/initialized-SL gate; current source/private
 renewal 0. See the [ledger](coverage/semantics/closure-current-binding-review.json).
 
+Simple class-CV BIND capture now resolves `Closure` and freezes that selection
+before the class cell changes to `stdClass`. Native2/literal1 at fee3 and repaired
+computed1/state161 at 275fc/375 pass (148 genuine/derived plus 13 controls), binding
+the raw/prepared class, genuine mint, class write and existing CONFIG/receipt.
+Original Unsupported, elaboration failure and raw-mint fixture failure remain 0;
+computed method names and wider class expressions stay open in the same ledger.
+
 Object defaults (module252) now create static/no-use source Closures and
 function/method callables in genuine declaring scope. Requested-class templates
 share their object values with instances and preserve exact successful bindings
