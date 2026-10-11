@@ -255,7 +255,7 @@ DERIVED=[
     r'~$property_hook_override_pair(S_virtual,ppropertydesc_parent,ppropertydesc_child) /\ $property_hook_parent_match(S_virtual,ppropertydesc_child,(ppropertydesc_parent))',
     r'ppropertyhook_wrong = ppropertyhook_S_grand[.PROPERTY = ppropertyhook_S_parent.PROPERTY][.HOOK = ppropertyhook_S_parent.HOOK]',
     r'~$property_hook_valid(S_grand,ppropertyhook_wrong,true) /\ ~$property_hook_pending_call(S_grand_call,ppropertyhook_wrong)',
-    r'~$property_hook_context_valid(S_grand_entered,pcallcontext_hook_S_grand[.LEXICAL_CLASS = (porigin_parent)]) /\ ~$property_hook_context_valid(S_grand_entered,pcallcontext_hook_S_grand[.CALLED_CLASS = (porigin_child)])',
+    r'~$call_context_valid(S_grand_entered,pcallcontext_hook_S_grand[.LEXICAL_CLASS = (porigin_parent)],S_grand_entered.CVS) /\ ~$call_context_valid(S_grand_entered,pcallcontext_hook_S_grand[.CALLED_CLASS = (porigin_child)],S_grand_entered.CVS)',
 ]
 
 
@@ -263,6 +263,7 @@ DERIVED=[
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--revision', required=True)
+    parser.add_argument('--group', choices=['all', 'scalar'], default='all')
     parser.add_argument('--prepare-only', action='store_true')
     args = parser.parse_args()
     recorder.ROOT = ROOT
@@ -273,6 +274,8 @@ def main():
     assert data['native_profile'] == profile
     selections = [('scalar', SCALAR, DERIVED), ('lifetime', LIFETIME, [])]
     cases = data['cases']
+    if args.group == 'scalar':
+        selections, cases = selections[:1], cases[:1]
     sources = [HERE / ('backed-get-hook-override-' + row[0] + '.php') for row in selections]
     php, adapter, bridge, worker, runner, compiler = (ROOT / name for name in [
         '.tools/php/bin/php', '_build/default/adapter/main.exe', '.tools/php-file.so',
@@ -293,7 +296,7 @@ def main():
     print(out, flush=True)
     derived = sum(len(row[2]) for row in selections)
     reached = sum(5 + len(row[1]) for row in selections)
-    report = {'revision': revision, 'inputs': before, 'profile': profile, 'module_count': len(modules),
+    report = {'revision': revision, 'group': args.group, 'inputs': before, 'profile': profile, 'module_count': len(modules),
               'mode': 'SL', 'cache': False, 'det': True, 'records': [],
               'application_invocations': 0, 'application_evaluations': 0, 'source_agreements': 0,
               'derived_premises': derived, 'reached_premises': reached, 'premises': derived + reached,
