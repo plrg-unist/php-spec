@@ -681,6 +681,8 @@ returned-object ownership through inherited receiver destruction. Earlier AL
 failures, false335 and localization diagnostics retain zero whole-gate credit.
 Virtual cross-shapes, broader type compatibility and other hook inheritance
 remain required. [Override review](coverage/semantics/backed-get-hook-override-review.json).
+Actual375 over `b1e869f5` passes strict initialization at `4534b2c2` (5.747 s);
+private source2/scalar238/lifetime97 retain their separate accepted revisions.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
