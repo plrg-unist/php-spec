@@ -4413,6 +4413,10 @@ the actual request carrier/index, registered mint, two real operand writes and
 unchanged owned CONFIG returning the exact immediate body. Native2/literal1 and
 original Unsupported0 retain f98; wider class/combined forms and source7 stay open.
 Exact maintained relocation preserves old dispatch without runtime renewal.
+Its 376-module join over c999a69f passes preserved242 at 7a205094
+(algo5.175s/initializedSL33.386s), checking reached emission/storage/pruning
+compatibility; guarded getter/reference/Iterator/factory routes stay disjoint.
+Private source/state cuts retain their revisions, without renewal.
 
 Captured CURRENT calls now pin the resolved selected API in CONFIG during
 ordinary argument evaluation; static receivers remain borrowed. A genuine helper
