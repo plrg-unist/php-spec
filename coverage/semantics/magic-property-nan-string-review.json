@@ -1,0 +1,105 @@
+{
+  "status": "Bounded source and reached-state milestone; independently reviewed semantics and retained results.",
+  "target": "PHP8.5.10 CLI NTS64; vendor/php-src release34308a6666b2d489c509541ea9befea9e2b42348; profile30719",
+  "accepted_parent": "7ba745ca5145c4a5c99cbfdd56a4181380dcc38c; phase40 evidence is frozen",
+  "runtime_revision": "b6fcc2d98abeef06092fcee76376feee1e98c136",
+  "tested_revision": "3f19892d8bf1bf9b70d28894f6946c4bc12726b9",
+  "scope": "Modules30/380 authenticate weak builtin-string MAGIC_GET NaN warning production on accepted literal CV/owned receivers. Select request NAN before dispatch; retain scalar callback mutation and source-preserved scope. Unconstrained REF commits saved string, BYVAL changes RV only; constrained conversion preserves the initial conflict decision and diagnoses the live post-handler value. Abrupt commit precedes receiver cleanup.",
+  "runtime": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "modules": 375,
+    "mode": "SL --sl/jobs1; native30/modelCLI60/process90/numeric120/100000 model steps; profile30719; LC_ALL=C/TZ=UTC; retained providers, no rebuild"
+  },
+  "input_sha256": {
+    "spec/semantics/30-storage.watsup": "1fd8ba4d804c2ad5bfae0c1e21a7b6acd4dd077c30bd5ba4ce755427b8351eaf",
+    "spec/semantics/380-magic-property-get.watsup": "a440f96c1574f809bd18c206a1d95e11b27129002572046af649a965f2860be6",
+    "tests/semantics/dynamic_property_warning_sources.py": "6aa4e1edf0f54355127e5834bdda5f88c22c978334585b65b2fdf6f3937c3ac2",
+    "tests/semantics/magic_property_nan_string_protocol.py": "88674f58cfb3080afe372fe4ac19184fa8ab130e7abd30c5de67b65fd5525a4e"
+  },
+  "native_first": {
+    "revision": "5daec64a29916e7c9396a2e28c17011ab7d0a605",
+    "cases": 6,
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-nan-string-native41-_u8hrafi/report.json",
+    "seconds": 0.16847385838627815,
+    "credit": "Observations only; exact six original processes exit0/empty. No model/state agreement."
+  },
+  "affected_native": {
+    "revision": "3f19892d8bf1bf9b70d28894f6946c4bc12726b9",
+    "cases": 6,
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-nan-string-native41-fst7umu_/report.json",
+    "seconds": 0.16952426731586456,
+    "credit": "Core self-nonidentity observers replace only redundant is_float conjuncts. Exact stdout equals original native6/unchanged EXPECTED; observations only."
+  },
+  "unsupported_baseline": {
+    "revision": "5daec64a29916e7c9396a2e28c17011ab7d0a605",
+    "case": "review-property-magic-nan-string-reference-kept41",
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-nan-string-baseline41-r96q80a7/report.json",
+    "process_exit": 1,
+    "modeled_exit_status": null,
+    "stdout": "C|G1|value|",
+    "reason": "magic getter property type coercion",
+    "seconds": 12.81137539446354,
+    "credit": 0
+  },
+  "strict": {
+    "revision": "00902286f03ecd271753eec60ad609e2556e1a20",
+    "parent": "032b42edf9c09f8091e03671be8b1fad76252491",
+    "modules": 375,
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-nan-string-strict41-_07p0faj/report.json",
+    "seconds": 6.193273900076747,
+    "exit": 0,
+    "stdout": "true\n",
+    "stderr": "",
+    "state_premises": 0
+  },
+  "source": {
+    "revision": "3f19892d8bf1bf9b70d28894f6946c4bc12726b9",
+    "cases": 6,
+    "raw": ".tools/properties-magic-decimal-current32/.tools/dynamic-property-warning-source-liq1ueio/report.json",
+    "outcomes": "Six accepted/checked normal model exits0 and native/process0; stdout equals native/EXPECTED bytes, all raw/modeled stderr empty and reason/diagnostic null."
+  },
+  "source_sha256": {
+    "review-property-magic-nan-string-reference-kept41": "cb194bb3c8e96f26be591ec6ebc617a8912da4be43853489311bac92709b2255",
+    "review-property-magic-nan-string-value41": "2005be68bab7c472978e8d4ac9be0a9094911f3e38c59703e2d03abb03729d4d",
+    "review-property-magic-nan-string-owned41": "6cff39c79df53afd18842c07a3e6b13cb41d9e01a102c0d7169454851013a431",
+    "review-property-magic-nan-string-source-conflict41": "b776110499a22d9e4158f31d7db86850079ddb42f6ea6556632c694c6c08d710",
+    "review-property-magic-nan-string-handler-throw41": "27acc94fc0d549b6538729e6f2f07fd39cf194adc8e36b86090ee0123a9cfd96",
+    "review-property-magic-nan-string-strict-getter41": "8021c889b66e85f889ed842b95186bdb4848dcb40e3d56462017c64f7d058494"
+  },
+  "reached_revision": "3f19892d8bf1bf9b70d28894f6946c4bc12726b9",
+  "reached": [
+    {"group": "reference-kept","premises": 267,"raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-nan-string-8cyxxh76/report.json"},
+    {"group": "value","premises": 150,"raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-nan-string-cnmhbyft/report.json"},
+    {"group": "owned","premises": 171,"raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-nan-string-m0zyyzu8/report.json"},
+    {"group": "source-conflict","premises": 163,"raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-nan-string-_o76q7ao/report.json"},
+    {"group": "handler-throw","premises": 145,"raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-nan-string-i2soe814/report.json"},
+    {"group": "strict-getter","premises": 118,"raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-nan-string-1uctltyt/report.json"}
+  ],
+  "setup_inclusive_premises": 1014,
+  "facts": [
+    "Whole actual entry/dispatch/resume/normal commit proves one saved REQUEST NAN allocation before warning. REPORTING0 masks default output yet an eligible handler runs; scalar REF mutation is overwritten while BYVAL preserves global changes. Constructed STRINGDATA growth retains original carrier/index without another allocation.",
+    "Genuine typed-source handler writes compatible string but still raises native first-source TypeError with current given type string; raw/source stays intact until destructor detach/repair. Declaration-strict rejection emits no warning.",
+    "Full wrapper discard restores handler callback and commits saved NAN under the real warning throw before reader destruction. Cleanup41 replaces warning41 with the genuine previous link. CV/BYVAL/owned reception, whole budgets and malformed input/carrier/site/tail/frame/source/PARAM exclusions are covered."
+  ],
+  "preparation": {
+    "current_six": ".tools/properties-magic-decimal-current32/.tools/property-magic-nan-string-state-prep41-6_gxbq08/report.json",
+    "earlier_first_three": ".tools/properties-magic-decimal-current32/.tools/property-magic-nan-string-state-prep41-ueod1h1l/report.json",
+    "earlier_tail_three": ".tools/properties-magic-decimal-current32/.tools/property-magic-nan-string-state-prep41-vl_vdypw/report.json",
+    "credit": "Current six full-sort fixtures1014/evaluation0 at3f198; all workers close0/empty. Earlier partial267/150/171 + tail163/145/118 preparation stays0."
+  },
+  "original_failures": [
+    {"revision": "d9a96c5134db1f7ca5dc7cf4a655a4a93f23358b","raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-nan-string-state-prep41-p0jzw1nw/report.json","cause": "NaN producer declaration followed its first call; corrected only interface declaration placement and exact inline live-reference/source guards. Preparation/evaluation0."},
+    {"revision": "c14c70293c9aeca6203ccfb437e74ba7c9818ebf","raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-nan-string-state-prep41-ueod1h1l/report.json","cause": "Unparenthesized nonempty SOURCES field in conflict fixture; first three prepared, fourth rejected. Fixture-only parentheses correction; preparation/evaluation0."},
+    {"revision": "00902286f03ecd271753eec60ad609e2556e1a20","raw": ".tools/properties-magic-decimal-current32/.tools/dynamic-property-warning-source-2jczsit_/report.json","cause": "Kept reaches handler is_float and returns registered-builtin Unsupported after successful masked conversion. Compiler87 metadata is not a runtime body. Observer-only source correction preserves native output; whole-source agreement0, remaining sources/states unrun."}
+  ],
+  "compatibility": "30/380/order are unchanged009\u21923f198; only six redundant type-observer conjuncts are removed, with affected native6 and six changed-program preparations. Accepted private strict is reused; no native baseline or phase40 renewal. No existing direct verify_value NaN outcome changed, so no legacy helper maintenance.",
+  "remaining": "Object/array callback replacements, changed/removed type sources, PARAMETERBACKINGS and wider receiver/signature/access/quiet/write/recursive/conversion scope remain required. The earlier phase40 native NaN control retains its historical zero model agreement.",
+  "engine": [
+    "vendor/php-src/Zend/zend_operators.c:zend_double_to_str/_convert_to_string; request allocation precedes warning and current operand destruction/commit follows callback",
+    "vendor/php-src/Zend/zend_API.c:zend_parse_arg_str_weak; Zend/zend_execute.c:zend_verify_prop_assignable_by_ref_ex selects possible conflict before warning and samples live referent afterward",
+    "vendor/php-src/Zend/zend_object_handlers.c:zend_std_read_property verification before OBJ_RELEASE; spec207/270 warning wrapper restoration and pending cleanup"
+  ],
+  "recovery": "Tracked dynamic_property_warning_sources.py and magic_property_nan_string_protocol.py reproduce six current originals/groups. Ignored exact-path raw trees retain original/changed inputs, checked/literal-eval programs, whole fixtures/premises, argv/cwd/process/streams and clean identities. current32/owned28 remain live providers; no portability/rebuild claim."
+}

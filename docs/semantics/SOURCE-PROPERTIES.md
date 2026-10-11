@@ -427,6 +427,22 @@ pending TypeError survive cleanup. The
 records seven source agreements and seven whole reached groups/1,351 premises,
 including real getter precision14→6 and two maintained constructed clauses.
 The original composite timeout keeps zero agreement after a source-only split.
-NaN warns even for constrained temporary conversion, so both new routes exclude it;
-its native-only control keeps zero model agreement. PARAMETERBACKINGS, Object/Stringable
+At the phase40 cut, NaN warns even for constrained temporary conversion, so both routes
+exclude it; its native-only control keeps zero model agreement. PARAMETERBACKINGS, Object/Stringable
 and wider getter/conversion scope remain required; earlier cuts are not renewed.
+
+Weak builtin-string MAGIC_GET NaN conversion now has an authenticated warning producer.
+The request string is allocated before dispatch and retained across handler string-data
+growth. Unconstrained REF commit overwrites a scalar callback change; BYVAL changes only
+RV, preserving the global change. A genuine source-constrained result retains its initial
+conflict decision and diagnoses the current referent after the callback, even if that
+referent is now a compatible string. The getter receiver remains held through warning
+and verification. A throwing handler still commits saved NAN before receiver cleanup;
+a later cleanup exception keeps the warning exception as previous. Owned reception
+detaches before BASE release, while declaration-strict rejection has no warning.
+The [NaN-string review](../../coverage/semantics/magic-property-nan-string-review.json)
+records six source agreements and six whole reached groups/1,014 premises, including
+full state/budget/owner checks and malformed continuation controls. Shared stringify,
+typed conversion and generic warning dispatch stay unchanged. Original observer and
+preparation failures retain zero credit; phase40 cuts are frozen. Object/array callback
+replacements, changed sources, PARAMETERBACKINGS and wider getter scope remain required.

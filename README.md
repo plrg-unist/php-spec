@@ -1871,10 +1871,18 @@ Every result retains a fresh request string, including digits, signed zero and i
 pass 1,351 setup-inclusive premises at `d8030561f`; strict375 retains `1923d7939`.
 REF/BYVAL/owned cleanup, genuine string|float conflicts and strict/null rejection agree.
 The original eight-read composite retains timeout/zero agreement; two smaller originals
-fit the same caps. A native NaN control observes both conversion warnings and keeps
-zero model agreement; NaN continuation support remains required.
+fit the same caps. At the phase40 cut, a native NaN control observes both conversion
+warnings and keeps zero model agreement.
 The actual375 join over `ca764836f` at `35f7dc33f` preserves disjoint parent paths.
 Accepted parent/private compiler cuts and private source7/state1351 are reused; no new numeric execution.
+Weak string MAGIC_GET now retains the allocated `NAN` request string before warning
+dispatch. Scalar handler mutation is overwritten only on an unconstrained returned
+reference; BYVAL preserves the changed global. A real source conflict instead reads
+the post-handler value, and handler throws commit before receiver cleanup.
+[Six source agreements and six reached groups](coverage/semantics/magic-property-nan-string-review.json)
+pass 1,014 premises at `3f19892d8`; strict375 retains `00902286f`.
+Strict getter rejection emits no warning. Original observer/preparation failures stay0;
+object/array callback replacements and changed source constraints remain required.
 PARAMETERBACKINGS and wider conversions remain required.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded

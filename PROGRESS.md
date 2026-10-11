@@ -3003,11 +3003,25 @@ bytes/carriers/one append, aliases, full driver budgets, CV versus owned cleanup
 real exact-first string|float conflicts and strict/null errors. One maintained
 constructed float control contributes two new kept clauses. The original composite
 keeps CLI60 timeout/source agreement0; source-only split preserves the runtime/caps
-and five original fixtures. NaN is guarded out of both new routes: its native control
-observes two warnings and keeps model/state/agreement0. Earlier cuts are not renewed.
+and five original fixtures. At the phase40 cut, NaN is guarded out of both new routes:
+its native control observes two warnings and keeps model/state/agreement0. Earlier cuts are not renewed.
 [Float-string ledger](coverage/semantics/magic-property-float-string-review.json).
 The actual375 join over `ca764836f` at `35f7dc33f` preserves disjoint parent paths.
 Accepted parent/private compiler cuts and private source7/state1351 are reused; no new numeric execution.
+Weak builtin-string MAGIC_GET NaN conversion now allocates its request carrier before
+warning dispatch and retains it through scalar handler mutation and string-data growth.
+Actual unconstrained references commit saved NAN; BYVAL leaves the changed global alone.
+Genuine constrained references retain the pre-warning conflict decision but diagnose the
+live post-handler value. Handler throws commit before getter receiver release; later
+cleanup preserves warning/cleanup previous links. Strict getters reject without warning.
+Native6/baseline1 retain `5daec64a2`, affected observer-only native6 `3f19892d8`, and
+strict375 `00902286f` (6.193s). Source6 and six whole reached groups pass 1,014 premises
+at `3f19892d8`, including full allocation/dispatch/commit/discard states, owners, budgets
+and malformed carrier/input/site/tail/PARAM guards. The original is_float observer
+Unsupported and both fixture preparation failures stay0; pure self-comparison observers
+preserve native output. Object/array callback replacements, changed type sources and wider
+getter/PARAM scope remain required; phase40 evidence is frozen.
+[NaN-string ledger](coverage/semantics/magic-property-nan-string-review.json).
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;

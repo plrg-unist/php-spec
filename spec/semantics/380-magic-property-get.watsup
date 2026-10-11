@@ -40,6 +40,15 @@ dec $property_get_complete(pstate, ppropertyget, poperand) : pstate
 dec $property_get_abrupt(pstate, ppropertyget) : pstate
 dec $property_get_drop_pending(pstate) : bool
 dec $property_get_projected_drop(pstate, ptask*, ppropertyget, pvalue) : bool
+dec $property_get_nan_context(pstate, ppropertyget) : bool
+dec $property_get_nan_sources(pstate, ppropertyget, poperand) : pproptypesource*?
+dec $property_get_nan_ready(pstate, ppropertyget) : bool
+dec $property_get_nan_begin(pstate, ppropertyget) : pstate
+dec $property_get_nan_input(poperand, nat) : bool
+dec $property_get_nan_valid(pstate, ppropertynan) : bool
+dec $property_get_nan_commit(pstate, ppropertynan) : pstate
+dec $property_get_nan_finish(pstate, ppropertynan) : pstate
+dec $property_get_nan_abrupt(pstate, ppropertynan) : pstate
 
 ;; Accessible INITIAL does not invoke __get. The UNSET state is distinct.
 def $property_get_method(S, n) = $effective_method(S, porigin, $ptascii("__get"), |S.CLASSES|)
@@ -438,12 +447,17 @@ def $property_get_float_string_apply(S, ppropertyget, REFERENCE n, n_float) = $w
   -- if S_string = $stringify(S, PFLOAT n_float, ppropertyget.LINE)
   -- if S_string.RESULT = KNOWN pvalue_string
 
+def $property_get_complete(S, ppropertyget, poperand) = $property_get_nan_begin(S, ppropertyget)
+  -- if poperand = S.RESULT
+  -- if $property_get_nan_ready(S, ppropertyget)
 def $property_get_complete(S, ppropertyget, poperand) = S_checked[.TODO = (PROPERTY_GET_COPY ppropertyget S_checked.RESULT) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
+  -- if ~$property_get_nan_ready(S, ppropertyget) \/ poperand =/= S.RESULT
   -- if S_checked = $property_get_verify(S, ppropertyget, poperand)
   -- if S_checked.COMPLETION = NORMAL
 def $property_get_complete(S, ppropertyget, poperand) = S_checked[.TODO = (PROPERTY_GET_COPY ppropertyget poperand) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
+  -- if ~$property_get_nan_ready(S, ppropertyget) \/ poperand =/= S.RESULT
   -- if S_checked = $property_get_verify(S, ppropertyget, poperand)
   -- if S_checked.COMPLETION =/= NORMAL
 ;; Verification can fail after a real RV was returned. Retain that raw owner
@@ -543,3 +557,137 @@ def $destructor_pending_finish(S, pdestructionoperation, n_pending, ptask_tail*)
   -- if pdestructionoperation.CALLER = S.CURRENT /\ pdestructionoperation.ORIGIN = S.ORIGIN
   -- if S.ORIGIN = (ppropertyget.SITE)
   -- if $heap_subset($value_nodes(pvalue), S.ALLOCATIONS)
+
+
+;; zend_double_to_str selects the request string before zend_error. Preserve
+;; the original RV/receiver owner while a handler runs; its compatible scalar
+;; writes cannot replace the selected bytes. A real source converts a temporary.
+def $property_get_nan_context(S, ppropertyget) = true
+  -- if $property_get_valid(S, ppropertyget, true)
+  -- if $property_get_tail_valid(S, ppropertyget)
+  -- if S.ORIGIN = (ppropertyget.SITE)
+  -- if S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if ppropertyget.DECL = (ppropertyid)
+  -- if $property_desc_at($property_layout(S, ppropertyget.CLASS, |S.CLASSES|), ppropertyget.NAME) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertyid
+  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "string"]))]
+  -- if $property_get_method(S, ppropertyget.OBJECT) = (pmethoddesc)
+  -- if ~pmethoddesc.FUNCTION.CODE.STRICT
+def $property_get_nan_context(S, ppropertyget) = false -- otherwise
+
+def $property_get_nan_sources(S, ppropertyget, poperand) = (eps)
+  -- if $call_reference_operand_valid(S, poperand)
+  -- if $property_get_unconstrained(S, poperand)
+def $property_get_nan_sources(S, ppropertyget, REFERENCE n) = (ppropref.SOURCES)
+  -- if $call_reference_operand_valid(S, REFERENCE n)
+  -- if $propref_at(S.PROPREFS, n) = (ppropref)
+  -- if ppropref.SOURCES =/= eps
+  -- if $proprefs_valid(S)
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
+def $property_get_nan_sources(S, ppropertyget, poperand) = eps -- otherwise
+
+def $property_get_nan_ready(S, ppropertyget) = true
+  -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
+  -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
+  -- if $property_get_nan_context(S, ppropertyget)
+  -- if $property_get_nan_sources(S, ppropertyget, S.RESULT) = (pproptypesource*)
+  -- if S_read = $quiet_operand(S, S.RESULT)
+  -- if S_read.RESULT = KNOWN (PFLOAT n_float)
+  -- if $(n_float < 18446744073709551616)
+  -- if $float_decode(n_float) = NOTNUMBER n_float
+  -- if $typed_conversion_at(S, [(PTBRANCH ([PTBUILTIN "string"]))], PFLOAT n_float, false) = TYPESTRING (PFLOAT n_float)
+def $property_get_nan_ready(S, ppropertyget) = false -- otherwise
+
+def $property_get_nan_begin(S, ppropertyget) = $error_dispatch(S_string[.RESULT = KNOWN PNULL], 2, $ptascii("unexpected NAN value was coerced to string"), ppropertyget.LINE, DIAGNOSTIC "Warning" ($ptascii("unexpected NAN value was coerced to string")) ppropertyget.LINE, PROPERTY_GET_NAN ppropertynan)
+  -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
+  -- if $property_get_nan_ready(S, ppropertyget)
+  -- if $property_get_nan_sources(S, ppropertyget, S.RESULT) = (pproptypesource*)
+  -- if S_read = $quiet_operand(S, S.RESULT)
+  -- if S_read.RESULT = KNOWN (PFLOAT n_float)
+  -- if S_string = $string_request(S, $ptascii("NAN"))
+  -- if S_string.RESULT = KNOWN pvalue_string
+  -- if ppropertynan = {GET ppropertyget, INPUT S.RESULT, FLOAT n_float, STRING pvalue_string, SOURCES pproptypesource*, OWNER (|S.FRAMES|), TAIL ptask_tail*}
+
+def $property_get_carrier(ptask, n, porigin) = 1
+  -- if $source_operand_marker(ptask) = PROPERTY_GET_NAN ppropertynan
+  -- if ppropertynan.GET.OBJECT = n /\ ppropertynan.GET.SITE = porigin
+def $property_get_base_pair(ptask :: (PROPERTY_GET_BASE ppropertyget) :: ptask_tail*, ppropertyget) = true
+  -- if $source_operand_marker(ptask) = PROPERTY_GET_NAN ppropertynan
+  -- if ppropertynan.GET = ppropertyget
+
+def $property_get_nan_input(KNOWN (PFLOAT n_float), n_float) = true
+def $property_get_nan_input(REFERENCE n, n_float) = true
+def $property_get_nan_input(poperand, n_float) = false -- otherwise
+
+def $property_get_nan_valid(S, ppropertynan) = true
+  -- if $property_get_nan_input(ppropertynan.INPUT, ppropertynan.FLOAT)
+  -- if $property_get_nan_context(S, ppropertynan.GET)
+  -- if ppropertynan.OWNER = |S.FRAMES|
+  -- if $source_operand_suffix(S.TODO, PROPERTY_GET_NAN ppropertynan, ppropertynan.TAIL)
+  -- if $(ppropertynan.FLOAT < 18446744073709551616)
+  -- if $float_decode(ppropertynan.FLOAT) = NOTNUMBER ppropertynan.FLOAT
+  -- if ppropertynan.STRING = PSTRING_CARRIER (REQUEST_STRING n_string) ($ptascii("NAN"))
+  -- if $string_carrier_valid(S, ppropertynan.STRING)
+  -- if $property_get_nan_sources(S, ppropertynan.GET, ppropertynan.INPUT) = (ppropertynan.SOURCES)
+  -- if S_read = $quiet_operand(S, ppropertynan.INPUT)
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if $value_nodes(pvalue) = eps
+def $property_get_nan_valid(S, ppropertynan) = false -- otherwise
+
+def $task_nodes(PROPERTY_GET_NAN ppropertynan) = [HOBJECT ppropertynan.GET.OBJECT] ++ $operand_nodes(ppropertynan.INPUT)
+def $call_task_valid(S, PROPERTY_GET_NAN ppropertynan) = $property_get_nan_valid(S, ppropertynan)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = PROPERTY_GET_NAN ppropertynan
+  -- if $property_get_nan_valid(S, ppropertynan)
+  -- if perrorcall.SITE = ppropertynan.GET.SITE /\ perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = ppropertynan.GET.LINE
+  -- if perrorcall.MESSAGE = $ptascii("unexpected NAN value was coerced to string")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
+
+;; convert_to_string commits after zend_error even when the handler throws.
+;; This bounded path excludes new object/array payloads and changed type sources.
+def $property_get_nan_commit(S, ppropertynan) = S[.RESULT = KNOWN ppropertynan.STRING]
+  -- if ppropertynan.INPUT = KNOWN (PFLOAT ppropertynan.FLOAT)
+  -- if ppropertynan.SOURCES = eps
+def $property_get_nan_commit(S, ppropertynan) = $write_cell_checked(S[.RESULT = REFERENCE n], n, ppropertynan.STRING, ppropertynan.GET.LINE)[.RESULT = REFERENCE n]
+  -- if ppropertynan.INPUT = REFERENCE n
+  -- if ppropertynan.SOURCES = eps
+def $property_get_nan_commit(S, ppropertynan) = $throw_scalar(S, "TypeError", $ptascii("Reference with value of type ") ++ $property_get_given(S, pvalue) ++ $ptascii(" held by ") ++ $propref_label(S, pproptypesource) ++ $ptascii(" is not compatible with property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertynan.GET.NAME ++ $ptascii(" of type ") ++ $property_type_name(S, ppropertydesc), ppropertynan.GET.LINE)
+  -- if ppropertynan.SOURCES = pproptypesource :: pproptypesource_tail*
+  -- if S_read = $quiet_operand(S, ppropertynan.INPUT)
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if $property_desc_at($property_layout(S, ppropertynan.GET.CLASS, |S.CLASSES|), ppropertynan.GET.NAME) = (ppropertydesc)
+
+def $property_get_nan_finish(S, ppropertynan) = S_checked[.TODO = (PROPERTY_GET_COPY ppropertynan.GET S_checked.RESULT) :: ppropertynan.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ppropertynan.SOURCES = eps
+  -- if S_checked = $property_get_nan_commit(S, ppropertynan)
+def $property_get_nan_finish(S, ppropertynan) = S_checked[.TODO = (PROPERTY_GET_COPY ppropertynan.GET ppropertynan.INPUT) :: ppropertynan.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ppropertynan.SOURCES =/= eps
+  -- if S_checked = $property_get_nan_commit(S, ppropertynan)
+rule PhpStep/property-get-nan: S ~> $property_get_nan_finish(S, ppropertynan)
+  -- if S.TODO = (PROPERTY_GET_NAN ppropertynan) :: ptask_tail*
+  -- if $property_get_nan_valid(S, ppropertynan)
+rule PhpStep/property-get-nan-invalid: S ~> S[.COMPLETION = UNSUPPORTED "magic getter NaN warning continuation"]
+  -- if S.TODO = (PROPERTY_GET_NAN ppropertynan) :: ptask_tail*
+  -- if ~$property_get_nan_valid(S, ppropertynan)
+
+def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = S_next
+  -- if S.TODO = (PROPERTY_GET_NAN ppropertynan) :: ptask_tail*
+  -- if $property_get_nan_valid(S, ppropertynan)
+  -- if S_next.TODO = (PROPERTY_GET_COPY ppropertynan.GET ppropertynan.INPUT) :: ptask_tail*
+  -- if S_next.RESULT = KNOWN PNULL /\ S_next.BASE = BASE_VALUE (KNOWN PNULL)
+
+def $property_get_nan_abrupt(S, ppropertynan) = S_committed[.TODO = (THROW_SEARCH n_error) :: (PROPERTY_GET_COPY ppropertynan.GET ppropertynan.INPUT) :: ppropertynan.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (THROW_SEARCH n_error) :: ppropertynan.TAIL
+  -- if $throwable_live(S, n_error)
+  -- if $property_get_nan_valid(S[.TODO = (PROPERTY_GET_NAN ppropertynan) :: ppropertynan.TAIL], ppropertynan)
+  -- if S_committed = $property_get_nan_commit(S, ppropertynan)
+  -- if ppropertynan.SOURCES = eps
+def $property_get_nan_abrupt(S, ppropertynan) = S[.TODO = (THROW_SEARCH n_error) :: (PROPERTY_GET_COPY ppropertynan.GET ppropertynan.INPUT) :: ppropertynan.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (THROW_SEARCH n_error) :: ppropertynan.TAIL
+  -- if $throwable_live(S, n_error)
+  -- if $property_get_nan_valid(S[.TODO = (PROPERTY_GET_NAN ppropertynan) :: ppropertynan.TAIL], ppropertynan)
+  -- if ppropertynan.SOURCES =/= eps
+def $property_get_nan_abrupt(S, ppropertynan) = S[.COMPLETION = UNSUPPORTED "magic getter NaN warning cleanup"] -- otherwise
+def $error_read_discard(S, PROPERTY_GET_NAN ppropertynan) = $property_get_nan_abrupt(S, ppropertynan)
+def $return_discard(S, PROPERTY_GET_NAN ppropertynan) = $property_get_nan_abrupt(S, ppropertynan)
