@@ -95,10 +95,56 @@ def $access_call(S, paccess, ptbytes) = $access_done(S_read[.OBJECTS[n_map] = WE
   -- if S_read = $quiet_operand(S, paccess.SELECTED)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue_result
+;; Ordinary dimension reads copy the stored value. Object-store handles,
+;; not permanent semantic IDs, appear in the missing-key Error message.
+dec $weakmap_read_allowed(pstate, paccess) : bool
+def $weakmap_read_allowed(S, paccess) = true
+  -- if paccess.MODE = ACCESS_READ KEY_R
+  -- if ~paccess.LATCH /\ ~paccess.KEYHOLE
+  -- if paccess.BASE = BASE_VALUE poperand
+  -- if paccess.BASE = BASE_VALUE S.RESULT
+  -- if paccess.TASK = KEY_READ_DIM paccess.INPUT paccess.LINE KEY_R
+  -- if S.TODO = paccess.TASK :: ptask_tail*
+  -- if paccess.OBJECT = (n_map)
+  -- if $weakmap_at(S, n_map)
+  -- if ~$instance_storage_freeing(S, n_map)
+  -- if S_base = $quiet_operand(S, poperand)
+  -- if S_base.COMPLETION = NORMAL
+  -- if S_base.RESULT = KNOWN (POBJECT n_map)
+  -- if S_key = $quiet_operand(S, paccess.INPUT)
+  -- if S_key.COMPLETION = NORMAL
+  -- if S_key.RESULT = KNOWN paccess.OFFSET
+  -- if $access_valid(S, paccess[.PHASE = ACCESS_CALL $ptascii("offsetGet")])
+  -- if paccess.OFFSET = POBJECT n_key
+  -- if $(n_key < |S.OBJECTS|)
+  -- if (HOBJECT n_key) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, n_key)
+  -- if $(n_key < |S.DESTRUCTION.HANDLES|)
+  -- if n_handle = S.DESTRUCTION.HANDLES[n_key]
+  -- if $(n_handle > 0) /\ $(n_handle < S.DESTRUCTION.NEXT)
+  -- if ~(n_handle <- S.DESTRUCTION.FREE)
+  -- if $destructor_handle(S, n_handle, 0) = (n_key)
+def $weakmap_read_allowed(S, paccess) = false -- otherwise
+def $access_call(S, paccess, ptbytes) = $key_read_done(S, pweakmapentry.VALUE)
+  -- if paccess.OBJECT = (n_map)
+  -- if $weakmap_at(S, n_map)
+  -- if ptbytes = $ptascii("offsetGet")
+  -- if $weakmap_read_allowed(S, paccess)
+  -- if paccess.OFFSET = POBJECT n_key
+  -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
+  -- if pweakmapentry.KEY = n_key
+def $access_call(S, paccess, ptbytes) = $throw_scalar(S, "Error", $ptascii("Object ") ++ $object_name(S, n_key) ++ $ptascii("#") ++ $ntunsigned(S.DESTRUCTION.HANDLES[n_key]) ++ $ptascii(" not contained in WeakMap"), paccess.LINE)
+  -- if paccess.OBJECT = (n_map)
+  -- if $weakmap_at(S, n_map)
+  -- if ptbytes = $ptascii("offsetGet")
+  -- if $weakmap_read_allowed(S, paccess)
+  -- if paccess.OFFSET = POBJECT n_key
+  -- if ~$weakmap_has_key(S, n_map, n_key)
 def $access_call(S, paccess, ptbytes) = S[.COMPLETION = UNSUPPORTED "WeakMap dimension protocol outside first insertion"]
   -- if paccess.OBJECT = (n_map)
   -- if $weakmap_at(S, n_map)
   -- if ptbytes =/= $ptascii("offsetSet") \/ ~$weakmap_write_allowed(S, paccess)
+  -- if ptbytes =/= $ptascii("offsetGet") \/ ~$weakmap_read_allowed(S, paccess)
 
 ;; Weak payload registration order is the actual wrapper identity at insertion.
 ;; Borrowed NOTIFY metadata stays on the existing physical key pin until the
