@@ -1128,6 +1128,8 @@ The initial count-based scalar Unsupported remains zero credit; only six slot
 predicates and its affected native/baseline were corrected. Pure variance/layout/
 runtime and earlier cuts retain their identities.
 [Effective-storage type-presence review](coverage/semantics/effective-backed-parent-unbacked-get-hook-type-presence-review.json).
+The actual377 join over `cfd262d2` passes init-only strict at `7aed3831` (6.106s,
+application0/source0); private source/state cuts retain their original identities.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
