@@ -1,0 +1,52 @@
+[
+  {
+    "id": "iterator-call-unpack-object-sent-positional-normal",
+    "source": "<?php\nclass OrderedEarlier23 { public function __destruct() { echo \"A|\"; } }\nclass OrderedCurrent23 { public function __destruct() { echo \"B|\"; } }\n$earlier = new OrderedEarlier23();\n$current = new OrderedCurrent23();\n$failure = new Exception(\"stop\", 51);\nclass OrderedSentIterator23 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 2; }\n    public function current(): mixed { global $earlier, $current; echo \"C|\"; return $this->position === 0 ? $earlier : $current; }\n    public function key(): mixed { echo \"K|\"; return $this->position; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction OrderedSentTarget23($first, &$second) { echo \"G|\"; $second = null; echo \"F|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $earlier, $current, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $earlier = null;\n    $current = null;\n    return true;\n});\ntry { OrderedSentTarget23(...new OrderedSentIterator23()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n$earlier = null;\n$current = null;\necho \"E\";\n",
+    "source_sha256": "002e09d6ce661c01967a6ca0d04e1d943f74f12c8198daf14addc3621e05c1ff",
+    "purpose": "Positional fixed slots keep earlier sent ownership and transfer the copied-object hold into a fresh private by-reference cell.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|X|V|C|K|H|2|Cannot pass by-reference argument 2 of OrderedSentTarget23() by unpacking a Traversable, passing by-value instead|24|X|V|I|G|B|F|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-object-sent-positional-throw",
+    "source": "<?php\nclass OrderedEarlier23 { public function __destruct() { echo \"A|\"; } }\nclass OrderedCurrent23 { public function __destruct() { echo \"B|\"; } }\n$earlier = new OrderedEarlier23();\n$current = new OrderedCurrent23();\n$failure = new Exception(\"stop\", 51);\nclass OrderedSentIterator23 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 2; }\n    public function current(): mixed { global $earlier, $current; echo \"C|\"; return $this->position === 0 ? $earlier : $current; }\n    public function key(): mixed { echo \"K|\"; return $this->position; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction OrderedSentTarget23($first, &$second) { echo \"G|\"; $second = null; echo \"F|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $earlier, $current, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $earlier = null;\n    $current = null;\n    throw $failure;\n});\ntry { OrderedSentTarget23(...new OrderedSentIterator23()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n$earlier = null;\n$current = null;\necho \"E\";\n",
+    "source_sha256": "45d46b641a9ebbc2330b963636b8d3ff58b1a806ebdf130e3e06ee12ae27f3f2",
+    "purpose": "Positional fixed slots keep earlier sent ownership and map failed copied-object cleanup by fixed parameter order.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|X|V|C|K|H|2|Cannot pass by-reference argument 2 of OrderedSentTarget23() by unpacking a Traversable, passing by-value instead|24|I|A|B|T|51|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-object-sent-reversed-named-normal",
+    "source": "<?php\nclass OrderedEarlier23 { public function __destruct() { echo \"A|\"; } }\nclass OrderedCurrent23 { public function __destruct() { echo \"B|\"; } }\n$earlier = new OrderedEarlier23();\n$current = new OrderedCurrent23();\n$failure = new Exception(\"stop\", 51);\nclass OrderedSentIterator23 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 2; }\n    public function current(): mixed { global $earlier, $current; echo \"C|\"; return $this->position === 0 ? $earlier : $current; }\n    public function key(): mixed { echo \"K|\"; return ($this->position === 0 ? \"second\" : \"first\"); }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction OrderedSentTarget23(&$first, $second) { echo \"G|\"; $first = null; echo \"F|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $earlier, $current, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $earlier = null;\n    $current = null;\n    return true;\n});\ntry { OrderedSentTarget23(...new OrderedSentIterator23()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n$earlier = null;\n$current = null;\necho \"E\";\n",
+    "source_sha256": "f55a5ab398fe0441faf2fe062704ac29c836e776704554eaaf2113c841e384f4",
+    "purpose": "Reversed named fixed slots keep earlier sent ownership and transfer the copied-object hold into a fresh private by-reference cell.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|X|V|C|K|H|2|Cannot pass by-reference argument 1 of OrderedSentTarget23() by unpacking a Traversable, passing by-value instead|24|X|V|I|G|B|F|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-object-sent-reversed-named-throw",
+    "source": "<?php\nclass OrderedEarlier23 { public function __destruct() { echo \"A|\"; } }\nclass OrderedCurrent23 { public function __destruct() { echo \"B|\"; } }\n$earlier = new OrderedEarlier23();\n$current = new OrderedCurrent23();\n$failure = new Exception(\"stop\", 51);\nclass OrderedSentIterator23 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 2; }\n    public function current(): mixed { global $earlier, $current; echo \"C|\"; return $this->position === 0 ? $earlier : $current; }\n    public function key(): mixed { echo \"K|\"; return ($this->position === 0 ? \"second\" : \"first\"); }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction OrderedSentTarget23(&$first, $second) { echo \"G|\"; $first = null; echo \"F|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $earlier, $current, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $earlier = null;\n    $current = null;\n    throw $failure;\n});\ntry { OrderedSentTarget23(...new OrderedSentIterator23()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n$earlier = null;\n$current = null;\necho \"E\";\n",
+    "source_sha256": "1b60cdd1943049be62a60fd13a6366945083bcaaa70afc81f97344e9f0a81df5",
+    "purpose": "Reversed named fixed slots keep earlier sent ownership and map failed copied-object cleanup by fixed parameter order.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|X|V|C|K|H|2|Cannot pass by-reference argument 1 of OrderedSentTarget23() by unpacking a Traversable, passing by-value instead|24|I|B|A|T|51|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-object-sent-reversed-named-parked-throw",
+    "source": "<?php\nclass OrderedEarlier23 { public function __destruct() { echo \"A|\"; } }\nclass OrderedCurrent23 { public function __destruct() { echo \"B|\"; } }\n$earlier = new OrderedEarlier23();\n$current = new OrderedCurrent23();\n$failure = new Exception(\"stop\", 51);\nclass OrderedSentIterator23 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 2; }\n    public function current(): mixed { global $earlier, $current; echo \"C|\"; return $this->position === 0 ? $earlier : $current; }\n    public function key(): mixed { echo \"K|\"; return ($this->position === 0 ? \"second\" : \"first\"); }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction OrderedSentTarget23(&$first, $second) { echo \"G|\"; $first = null; echo \"F|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $earlier, $current, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $earlier = null;\n    $current = null;\n    Fiber::suspend(\"P\");\n    return true;\n});\n$fiber = new Fiber(static function () {\n    try { OrderedSentTarget23(...new OrderedSentIterator23()); }\n    catch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n    echo \"FIB|\";\n});\necho \"S|\", $fiber->start(), \"|\";\n$earlier = 17;\n$current = 19;\n$fiber->throw($failure);\necho \"M|\", $earlier, \"|\", $current, \"|\";\n$earlier = null;\n$current = null;\necho \"E\";\n",
+    "source_sha256": "37bd1950870f5ddd2a8918852473b59699d21657fd87d0a3057284b24dce7788",
+    "purpose": "Reversed named fixed slots keep earlier sent ownership and map failed copied-object cleanup by fixed parameter order.",
+    "expected_model": "normal",
+    "native_stdout": "S|W|V|C|K|X|V|C|K|H|2|Cannot pass by-reference argument 1 of OrderedSentTarget23() by unpacking a Traversable, passing by-value instead|26|P|I|B|A|T|51|FIB|M|17|19|E",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
