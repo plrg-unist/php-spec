@@ -358,5 +358,14 @@
     "exit": 0,
     "status": "normal",
     "source_sha256": "593ab6d9684ee904aca20a4369cac1cf824c276f6fd5c8775a82f77f499b8ac4"
+  },
+  {
+    "id": "collector-main-second-pass-destructor-self-release-45",
+    "source": "<?php\nclass Later {\n    public $next;\n    public function __destruct() { echo \"L|\"; $this->next = null; }\n}\nclass First {\n    public $next;\n    public function __destruct() {\n        global $laterWeak;\n        echo \"F|\";\n        $later = new Later();\n        $later->next = $later;\n        $laterWeak = WeakReference::create($later);\n    }\n}\n$o = new First();\n$o->next = $o;\n$weak = WeakReference::create($o);\nunset($o);\necho gc_collect_cycles(), \"|\";\necho $weak->get() === null ? \"first-null|\" : \"first-live|\";\necho $laterWeak->get() === null ? \"later-null|\" : \"later-live|\";\necho gc_collect_cycles(), \"|\";\necho $laterWeak->get() === null ? \"later-null|END\" : \"later-live|END\";\n",
+    "stdout": "F|L|1|first-null|later-live|0|later-null|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "9d437bb8ea66f5d52cc2fc373dd6fa02b105bb65af3239eb40724722a61f7aba"
   }
 ]
