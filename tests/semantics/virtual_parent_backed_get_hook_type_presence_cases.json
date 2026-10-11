@@ -1,0 +1,57 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hash": "a28b763f965daff61c5a383bff37eeca4a7c30c4a2b31223ff5d3b5cb20f7711",
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "remove",
+      "source": "<?php\nclass CrossBackedRemoveParent45 {\n    public int $value { get => 7; }\n}\nclass CrossBackedRemoveChild45 extends CrossBackedRemoveParent45 {\n    public $value = 200 { get => $this->value; }\n}\necho \"UNREACHED|\";\n",
+      "source_sha256": "0b432a1a9795037c12f75393a26b5377f34183461aedd27696b435b2ed9e85bb",
+      "stdout_base64": "",
+      "stderr_template": "Fatal error: Declaration of CrossBackedRemoveChild45::$value::get() must be compatible with CrossBackedRemoveParent45::$value::get(): int in {FILE} on line 6\nStack trace:\n#0 {main}\n",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IERlY2xhcmF0aW9uIG9mIENyb3NzQmFja2VkUmVtb3ZlQ2hpbGQ0NTo6JHZhbHVlOjpnZXQoKSBtdXN0IGJlIGNvbXBhdGlibGUgd2l0aCBDcm9zc0JhY2tlZFJlbW92ZVBhcmVudDQ1OjokdmFsdWU6OmdldCgpOiBpbnQgaW4ge0ZJTEV9IG9uIGxpbmUgNgpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "virtual-parent-backed-get-hook-type-presence45-native3-c9377bec",
+      "native_raw_sha256": "a28b763f965daff61c5a383bff37eeca4a7c30c4a2b31223ff5d3b5cb20f7711"
+    },
+    {
+      "id": "add",
+      "source": "<?php\nclass CrossBackedAddParent45 {\n    public $value { get => 7; }\n}\nclass CrossBackedAddChild45 extends CrossBackedAddParent45 {\n    public int $value = 200 { get => $this->value; }\n}\necho \"UNREACHED|\";\n",
+      "source_sha256": "d24c00caa704a5fa398a4058129087d58f89f717ad2d1ea700cc8abda953493d",
+      "stdout_base64": "",
+      "stderr_template": "Fatal error: Type of CrossBackedAddChild45::$value must be omitted to match the parent definition in class CrossBackedAddParent45 in {FILE} on line 5\nStack trace:\n#0 {main}\n",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFR5cGUgb2YgQ3Jvc3NCYWNrZWRBZGRDaGlsZDQ1OjokdmFsdWUgbXVzdCBiZSBvbWl0dGVkIHRvIG1hdGNoIHRoZSBwYXJlbnQgZGVmaW5pdGlvbiBpbiBjbGFzcyBDcm9zc0JhY2tlZEFkZFBhcmVudDQ1IGluIHtGSUxFfSBvbiBsaW5lIDUKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "virtual-parent-backed-get-hook-type-presence45-native3-c9377bec",
+      "native_raw_sha256": "a28b763f965daff61c5a383bff37eeca4a7c30c4a2b31223ff5d3b5cb20f7711"
+    },
+    {
+      "id": "scalar",
+      "source": "<?php\nclass CrossBackedParent45 {\n    public $value {\n        get { echo \"P:\", __CLASS__, \"/\", static::class, \"|\"; return 7; }\n    }\n    public function parentRead() { echo \"H|\"; return $this->value; }\n}\nclass CrossBackedBridge45 extends CrossBackedParent45 {\n    private function answer() { return 500; }\n}\nclass CrossBackedChild45 extends CrossBackedBridge45 {\n    public $value = 200 {\n        get {\n            echo \"C:\", __CLASS__, \"/\", static::class, \"|\";\n            return $this->value + $this->answer();\n        }\n    }\n    private function answer() { return 13; }\n}\nclass CrossBackedGrand45 extends CrossBackedChild45 {\n    private function answer() { return 900; }\n}\n$parent = new CrossBackedParent45;\n$child = new CrossBackedChild45;\n$grand = new CrossBackedGrand45;\necho (array)$parent === [] ? \"EMPTY|\" : \"BAD|\";\necho (array)$child === [\"value\" => 200] ? \"C200|\" : \"BAD|\";\necho (array)$grand === [\"value\" => 200] ? \"G200|\" : \"BAD|\";\necho $parent->value, \"|\";\necho $child->value, \"|\";\necho $grand->parentRead(), \"|\";\necho (array)$grand === [\"value\" => 200] ? \"G200|\" : \"BAD|\";\n$grand->value = 300;\necho (array)$grand === [\"value\" => 300] ? \"G300|\" : \"BAD|\";\necho $grand->value, \"|\";\n",
+      "source_sha256": "418f45be1a84f384f542d0684da261bbd6a96b413b16c72830084fc5c999578a",
+      "stdout_base64": "RU1QVFl8QzIwMHxHMjAwfFA6Q3Jvc3NCYWNrZWRQYXJlbnQ0NS9Dcm9zc0JhY2tlZFBhcmVudDQ1fDd8QzpDcm9zc0JhY2tlZENoaWxkNDUvQ3Jvc3NCYWNrZWRDaGlsZDQ1fDIxM3xIfEM6Q3Jvc3NCYWNrZWRDaGlsZDQ1L0Nyb3NzQmFja2VkR3JhbmQ0NXwyMTN8RzIwMHxHMzAwfEM6Q3Jvc3NCYWNrZWRDaGlsZDQ1L0Nyb3NzQmFja2VkR3JhbmQ0NXwzMTN8",
+      "stderr_template": "",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "virtual-parent-backed-get-hook-type-presence45-native3-c9377bec",
+      "native_raw_sha256": "a28b763f965daff61c5a383bff37eeca4a7c30c4a2b31223ff5d3b5cb20f7711"
+    }
+  ]
+}
