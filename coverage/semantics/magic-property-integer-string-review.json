@@ -1,0 +1,98 @@
+{
+  "status": "Bounded source and reached-state milestone; independently reviewed semantics and retained results.",
+  "target": "PHP8.5.10 CLI NTS64; vendor/php-src release34308a6666b2d489c509541ea9befea9e2b42348; profile30719",
+  "accepted_parent": "324d3f889508c750f49f02e62b6623b44262c163; phase31–38 evidence is not renewed",
+  "runtime_revision": "0f910ddb42f3b8cc4fbf562317fb7e2bc7614d8a",
+  "tested_revision": "7556c579fd779a9abb3b2519a7dc48a736b9bab7",
+  "scope": "Modules380/384 weak builtin-string MAGIC_GET verification of original integers on accepted public literal-CV or owned ordinary-call receivers. Actual unconstrained REFERENCE cells convert in place; BYVAL changes only RV. Shared stringify retains interned digits and request-string allocation/identity. Real property sources select a diagnostic-only first-source conflict; getter declaration controls strictness and owner stages are unchanged.",
+  "runtime": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "modules": 375,
+    "mode": "SL --sl/jobs1; native30/modelCLI60/process90/numeric120/100000 model steps; profile30719; LC_ALL=C/TZ=UTC; retained tools, no rebuild"
+  },
+  "input_sha256": {
+    "spec/semantics/380-magic-property-get.watsup": "7e7bb1001f020c532c2ca41844621cc96ad65741e1a70e531d0647a1f6136246",
+    "spec/semantics/384-magic-property-reference-types.watsup": "e3a132f394b0fe3f7a1ef4c517f39f2ed12cd50b96f40fdf7486791b6f2bef1b",
+    "tests/semantics/dynamic_property_warning_sources.py": "aa6686f23ecc676a9edf0bb1cf50a84ce63c1d745147c33e0efd9a1892ba07d6",
+    "tests/semantics/magic_property_integer_string_protocol.py": "f7477c693c4ab6557519d71de87acf82b45ddc03a281dd171af80db0d874578d",
+    "tests/semantics/magic_property_boolean_string_protocol.py": "79e579a8081a3cf05376069b7fd9d1ce6141071110f019bf5bcd8283b9e5a707"
+  },
+  "native_first": {
+    "revision": "2e3c551a7f3249ffb3ecd914ddd0d3d3c6a89589",
+    "cases": 6,
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-integer-string-native39-585o_7js/report.json",
+    "seconds": 0.16703378036618233,
+    "credit": "Native observations only; exact originals, pinned binary, all exit0/empty stderr."
+  },
+  "unsupported_baseline": {
+    "revision": "2e3c551a7f3249ffb3ecd914ddd0d3d3c6a89589",
+    "case": "review-property-magic-integer-string-reference-kept39",
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-integer-string-baseline39-4o_2i6rs/report.json",
+    "process_exit": 1,
+    "modeled_exit_status": null,
+    "stdout": "C|G1|value|1/0|",
+    "reason": "magic getter property type coercion",
+    "seconds": 15.289164748042822,
+    "credit": 0
+  },
+  "strict": {
+    "revision": "0f910ddb42f3b8cc4fbf562317fb7e2bc7614d8a",
+    "parent": "2e3c551a7f3249ffb3ecd914ddd0d3d3c6a89589",
+    "modules": 375,
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-integer-string-strict39-n3ow65jx/report.json",
+    "seconds": 5.831247739493847,
+    "exit": 0, "stdout": "true\n", "stderr": "", "state_premises": 0
+  },
+  "source": {
+    "revision": "0f910ddb42f3b8cc4fbf562317fb7e2bc7614d8a",
+    "cases": 6,
+    "raw": ".tools/properties-magic-decimal-current32/.tools/dynamic-property-warning-source-2pwmswl3/report.json",
+    "outcomes": "All six accepted/checked programs and native/model processes normal exit0; native/model/EXPECTED stdout exact; raw/modeled stderr empty and diagnostics/reasons null."
+  },
+  "source_sha256": {
+    "review-property-magic-integer-string-reference-kept39": "7e19778d32f038ea57bd130855acb11f0a9f79f0e0b5187f336699041c0c2863",
+    "review-property-magic-integer-string-reference-drop39": "49f6cd03661ce0d16ff99d4a7533377d7ab57b7698a5b267dbd263b2700c084a",
+    "review-property-magic-integer-string-value39": "e5bf25ac400178134047e0d58b7e1bf06c1b81d8add900b4e1f3215473b06820",
+    "review-property-magic-integer-string-owned39": "2086f99c04069229aead8c2e68eec47fcc8253e48b5e9d750229e41e108a8ffa",
+    "review-property-magic-integer-string-source-conflict39": "f81cd04b8cfb676be342d3097cb7eb2c305414ec630bb845649cb18fd2d8f814",
+    "review-property-magic-integer-string-strict-getter39": "ec00931a5a1de1103a740f7910d733ce39af1aef1d43693f65e8a194b9e1d1ea"
+  },
+  "reached_revision": "7556c579fd779a9abb3b2519a7dc48a736b9bab7",
+  "reached": [
+    {"group": "reference-kept", "premises": 432, "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-integer-string-vud9cylj/report.json"},
+    {"group": "reference-drop", "premises": 133, "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-integer-string-yjxhsy9k/report.json"},
+    {"group": "value", "premises": 133, "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-integer-string-dmhjzryq/report.json"},
+    {"group": "owned", "premises": 138, "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-integer-string-37ox6gge/report.json"},
+    {"group": "source-conflict", "premises": 220, "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-integer-string-pgru_lg4/report.json"},
+    {"group": "strict-getter", "premises": 132, "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-integer-string-2dk9d8ez/report.json"}
+  ],
+  "setup_inclusive_premises": 1188,
+  "facts": [
+    "Whole-state verification fixes digit0/7, signed-7 and LONG_MIN/MAX bytes independently of stringify. Digits add no STRINGDATA; other integers append one request string at the observed index. REF preserves RESULT identity, aliases and checked cell write; BYVAL changes only RV. Repeated exact verification is whole-state identity; getter/caller strictness and readonly UNSET are distinct.",
+    "CV destruction sees converted LONG_MIN before mutation and reception copies the changed referent. BYVAL keeps raw LONG_MAX into destruction and forwards its detached carrier. Owned reception detaches request-string -7 before BASE destruction; later global writes preserve the copied string.",
+    "A genuine string|int source first returns exact -7 with whole-state identity and unchanged source/backing. The same cell later holds int; source accepts raw int and string yet getter verification conflicts without raw/source/STRINGDATA mutation. Native TypeError survives source detach/repair; declaration-strict rejection and null controls preserve original values until cleanup.",
+    "One maintained PINT7 constructed control contributes three distinctly named clauses only in new kept. Wrong marker/target/original/RV, invalid reference/range and PARAMETERBACKINGS controls stay explicit; no old whole campaign is renewed."
+  ],
+  "preparation": {
+    "states": ".tools/properties-magic-decimal-current32/.tools/property-magic-integer-string-state-prep39-i9pa54ps/report.json",
+    "affected_kept": ".tools/properties-magic-decimal-current32/.tools/property-magic-integer-string-state-prep39-nq20q4id/report.json",
+    "credit": "Full-sort six fixtures1188 at0f; affected kept432 at7556. Five other fixtures remain byte-identical. Preparation only, zero numeric application/state evaluation."
+  },
+  "original_failure": {
+    "revision": "0f910ddb42f3b8cc4fbf562317fb7e2bc7614d8a",
+    "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-integer-string-hk5vm49z/report.json",
+    "cause": "Whole kept group failed a driver budget1 assertion that omitted existing owner/GC transitions around the independently bound raw property completion.",
+    "exit": 1, "state_credit": 0
+  },
+  "compatibility": "7556 changes only two kept budget1 assertions to include the existing40 source/Throwable/sensitive/destruction/GC transition order. Budget0, independent raw completion/conversion/carrier/alias checks and other five fixtures stay intact. Runtime, originals, EXPECTED and legacy bytes are unchanged; strict/source retain0f and native/baseline retain2e3c.95/138/schema/owners/getter strictness and prior cuts are unchanged.",
+  "remaining": "PARAMETERBACKINGS, wider float/Object/Stringable conversions and target types, callback verification, receiver/signature/access/quiet/write/recursive residuals remain required.",
+  "engine": [
+    "vendor/php-src/Zend/zend_API.c:zend_parse_arg_str_weak; Zend/zend_operators.c:zend_long_to_str/_convert_to_string",
+    "vendor/php-src/Zend/zend_execute.c:zend_verify_scalar_type_hint/zend_verify_prop_assignable_by_ref_ex/zend_magic_get_property_type_inconsistency_error",
+    "vendor/php-src/Zend/zend_object_handlers.c:zend_std_read_property getter strictness and verification before receiver release",
+    "spec/semantics/35-scalar-operations.watsup:stringify;30-string-carriers.watsup:string_request;380:property_get_integer_string_apply"
+  ],
+  "recovery": "Tracked dynamic_property_warning_sources.py and magic_property_integer_string_protocol.py reproduce six originals/groups. Ignored raw trees retain exact originals, checked/eval sources, whole fixtures/premises, argv/cwd/process/streams and stable identities. Reused active private providers/parser closure; no portability/rebuild claim."
+}

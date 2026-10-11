@@ -51,6 +51,9 @@ def $property_get_propref_possible(S, ppropertyget, ppropertydesc, PBOOL b, ppro
   -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "float"]))]
   -- if $typed_number(PBOOL b) = (NINT i)
   -- if n_float = $float_of_int(i)
+def $property_get_propref_possible(S, ppropertyget, ppropertydesc, PINT i, pproptypesource, TYPESTRING (PINT i)) = $throw_scalar(S, "TypeError", $ptascii("Reference with value of type ") ++ $typed_given(S, PINT i) ++ $ptascii(" held by ") ++ $propref_label(S, pproptypesource) ++ $ptascii(" is not compatible with property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertyget.NAME ++ $ptascii(" of type ") ++ $property_type_name(S, ppropertydesc), ppropertyget.LINE)
+  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "string"]))]
+  -- if $long_range(i)
 def $property_get_propref_possible(S, ppropertyget, ppropertydesc, PBOOL b, pproptypesource, TYPESTRING (PBOOL b)) = $throw_scalar(S, "TypeError", $ptascii("Reference with value of type ") ++ $property_get_given(S, PBOOL b) ++ $ptascii(" held by ") ++ $propref_label(S, pproptypesource) ++ $ptascii(" is not compatible with property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertyget.NAME ++ $ptascii(" of type ") ++ $property_type_name(S, ppropertydesc), ppropertyget.LINE)
   -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "string"]))]
 def $property_get_propref_possible(S, ppropertyget, ppropertydesc, PBOOL b, pproptypesource, TYPEINTEGER (PBOOL b)) = $throw_scalar(S, "TypeError", $ptascii("Reference with value of type ") ++ $property_get_given(S, PBOOL b) ++ $ptascii(" held by ") ++ $propref_label(S, pproptypesource) ++ $ptascii(" is not compatible with property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertyget.NAME ++ $ptascii(" of type ") ++ $property_type_name(S, ppropertydesc), ppropertyget.LINE)

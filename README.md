@@ -1773,6 +1773,13 @@ source6 retain `b0a90ed31`. Throwing cleanup/previous links and concat timing ag
 plain strings remain admitted. Two fixture seek failures retain zero credit.
 The actual375 join over `3d54ec25a` passes strict at `b0d807f94` (5.774s);
 private source6/state787 and original failures retain their recorded cuts.
+Weak string getters now convert original integers on the actual unconstrained
+reference cell or only the by-value RV. Digits retain interned strings; signed and
+limit values retain newly allocated request strings through cleanup.
+[Six source agreements and six reached groups](coverage/semantics/magic-property-integer-string-review.json)
+pass 1,188 setup-inclusive premises at `7556c579f`; strict375/source6 retain
+`0f910ddb4`. Genuine string|int conflicts and strict/null rejection preserve raw
+values until cleanup; the original kept fixture failure retains zero credit.
 PARAMETERBACKINGS and wider conversions remain required.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded

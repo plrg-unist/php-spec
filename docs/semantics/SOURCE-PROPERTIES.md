@@ -352,6 +352,19 @@ premises. At that phase36 cut the original concatenated-echo consumer is Unsuppo
 its scratch BASE blocks getter entry. A comma-echo observation preserves native output;
 only affected checks resume. PARAMETERBACKINGS and wider targets/conversions remain required.
 
+Weak builtin-string MAGIC_GET also converts original integers through shared
+stringify. Digits use interned strings; signed and limit values append one request
+string and preserve its carrier through the actual unconstrained cell write.
+By-value conversion changes only RV; exact re-verification is whole-state identity.
+CV reception copies after destruction, while owned reception detaches before BASE
+release. Genuine string|int sources preserve an exact first read and select the
+later integer conflict without converting raw/source or allocating a request string.
+Getter-declaration strictness and null reject; pending TypeError survives repair.
+The [integer-string review](../../coverage/semantics/magic-property-integer-string-review.json)
+records six source agreements and six whole reached groups/1,188 setup-inclusive
+premises. Three maintained constructed clauses run only in the new kept group;
+the original budget fixture failure and earlier cuts retain their credit.
+
 Successful normal scalar EMIT now clears current-frame BASE together with RESULT after
 output. Concat still publishes its result until consumption; saved frame/continuation
 operands and real owners remain intact. Dynamic concat before a getter and inside its

@@ -2798,6 +2798,18 @@ Phase37 cuts are frozen; wider inputs/consumers remain required.
 [Stringable ECHO ledger](coverage/semantics/stringable-echo-review.json).
 The actual375 join over `3d54ec25a` passes strict at `b0d807f94` (5.774s,
 state/source/native credit0); private source6/state787 and original failures are not renewed.
+Weak builtin-string MAGIC_GET now converts original integers using shared stringify,
+preserving interned digits and request strings for signed/limit values. Actual
+unconstrained references update their cell; by-value results change only RV.
+Native6 and unchanged CLI1 Unsupported baseline retain `2e3c551a7`; strict375/source6
+pass at `0f910ddb4`. Six whole reached groups pass 1,188 setup-inclusive premises
+at `7556c579f`, including fixed bytes/carriers, one request append, exact reverify,
+alias and owner transitions, CV versus owned cleanup, real string|int conflicts
+and strict/null rejection. The original kept budget fixture failure stays0;
+only its two driver-transition assertions changed, with runtime/source unchanged.
+The maintained constructed integer control contributes three new kept clauses;
+phase31–38 cuts are not renewed.
+[Integer-string ledger](coverage/semantics/magic-property-integer-string-review.json).
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;

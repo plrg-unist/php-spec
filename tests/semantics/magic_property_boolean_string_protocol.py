@@ -128,7 +128,7 @@ def boundaries():
         '$property_get_verify_value(S_null_control, ppropertyget, ppropertydesc_get, PNULL, TYPESTRING PNULL) = S_null_control[.COMPLETION = UNSUPPORTED "magic getter property type coercion"]',
         'S_int_control = S_return[.RESULT = KNOWN (PINT 7)]',
         '$typed_conversion_at(S_int_control, ppropertydesc_get.TYPE, PINT 7, false) = TYPESTRING (PINT 7)',
-        '$property_get_verify_value(S_int_control, ppropertyget, ppropertydesc_get, PINT 7, TYPESTRING (PINT 7)) = S_int_control[.COMPLETION = UNSUPPORTED "magic getter property type coercion"]',
+        '$property_get_verify_value(S_int_control, ppropertyget, ppropertydesc_get, PINT 7, TYPESTRING (PINT 7)) = S_int_control[.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([55]))]',
         'S_invalid_rv = S_return[.RESULT = REFERENCE (|S_return.STORE|)]',
         '~$call_reference_operand_valid(S_invalid_rv, S_invalid_rv.RESULT)',
         '$property_get_verify_value(S_invalid_rv, ppropertyget, ppropertydesc_get, pvalue_raw, TYPESTRING pvalue_raw) = S_invalid_rv[.COMPLETION = UNSUPPORTED "magic getter property type coercion"]',
