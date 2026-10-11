@@ -1100,6 +1100,17 @@ Pure variance/layout/runtime and earlier hook cuts retain their identities.
 Exact `22dd4b27d` composition preserves these cuts through unchanged hook/type/layout paths;
 disjoint file-notice, Stringable and reference-finally additions require no current actor.
 
+Typed source-unbacked getters with published backing ancestry now reject an untyped
+source-unbacked child without an initializer at the getter declaration. Across Bridge,
+the error names declaring First at hook 10, before the property check at class 9;
+reverse addition and repeated null-slot/read/write behavior remain baseline controls.
+Strict376/source3 pass at `fdb60e53`; separate remove62 (32 reached, 30 derived),
+add32, CV75, This77 and write73 pass at `bc534b7d` (289 reached, 30 derived).
+The initial count-based scalar Unsupported remains zero credit; only six slot
+predicates and its affected native/baseline were corrected. Pure variance/layout/
+runtime and earlier cuts retain their identities.
+[Effective-storage type-presence review](coverage/semantics/effective-backed-parent-unbacked-get-hook-type-presence-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization
