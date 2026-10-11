@@ -1,0 +1,102 @@
+[
+  {
+    "id": "iterator-call-unpack-object-copied-positional-drop",
+    "source": "<?php\nclass HoldPayload22 { public function __destruct() { echo \"O|\"; } }\n$source = new HoldPayload22();\n$failure = new Exception(\"stop\", 51);\nclass HoldIterator22 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function current(): mixed { global $source; echo \"C|\"; return $source; }\n    public function key(): mixed { echo \"K|\"; return 0; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction HoldTarget22(&$item) { echo $item === null ? \"BAD|\" : \"B|\"; $item = null; echo \"F|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $source, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $source = null;\n    return true;\n});\ntry { HoldTarget22(...new HoldIterator22()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n$source = null;\necho \"E\";\n",
+    "source_sha256": "514ac3de04d8348b7f256d6804bc98cff3dc9cec98d178868df0f477c46b2b42",
+    "purpose": "Copied single-argument object keeps pre-warning hold through source drop, cache retirement and fresh private target cell.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 1 of HoldTarget22() by unpacking a Traversable, passing by-value instead|21|X|V|I|B|O|F|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-object-copied-positional-throw",
+    "source": "<?php\nclass HoldPayload22 { public function __destruct() { echo \"O|\"; } }\n$source = new HoldPayload22();\n$failure = new Exception(\"stop\", 51);\nclass HoldIterator22 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function current(): mixed { global $source; echo \"C|\"; return $source; }\n    public function key(): mixed { echo \"K|\"; return 0; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction HoldTarget22(&$item) { echo $item === null ? \"BAD|\" : \"B|\"; $item = null; echo \"F|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $source, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $source = null;\n    throw $failure;\n});\ntry { HoldTarget22(...new HoldIterator22()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n$source = null;\necho \"E\";\n",
+    "source_sha256": "e7fea547b3001f2f4a43a0181afa792d16394cba2aa3139e2bbb5f5ea5d3c7c1",
+    "purpose": "Copied single-argument object keeps pre-warning hold through shared Throwable throw and DATA/input retirement.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 1 of HoldTarget22() by unpacking a Traversable, passing by-value instead|21|I|O|T|51|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-object-copied-named-drop",
+    "source": "<?php\nclass HoldPayload22 { public function __destruct() { echo \"O|\"; } }\n$source = new HoldPayload22();\n$failure = new Exception(\"stop\", 51);\nclass HoldIterator22 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function current(): mixed { global $source; echo \"C|\"; return $source; }\n    public function key(): mixed { echo \"K|\"; return \"item\"; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction HoldTarget22(&$item) { echo $item === null ? \"BAD|\" : \"B|\"; $item = null; echo \"F|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $source, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $source = null;\n    return true;\n});\ntry { HoldTarget22(...new HoldIterator22()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n$source = null;\necho \"E\";\n",
+    "source_sha256": "11d9139293b89150074485a022ae7f0cb966c62608ebf5dd5d5fcf3a5366e9af",
+    "purpose": "Copied single-argument object keeps pre-warning hold through source drop, cache retirement and fresh private target cell.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 1 of HoldTarget22() by unpacking a Traversable, passing by-value instead|21|X|V|I|B|O|F|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-object-copied-fiber-resume",
+    "source": "<?php\nclass HoldPayload22 { public function __destruct() { echo \"O|\"; } }\n$source = new HoldPayload22();\n$failure = new Exception(\"stop\", 51);\nclass HoldIterator22 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function current(): mixed { global $source; echo \"C|\"; return $source; }\n    public function key(): mixed { echo \"K|\"; return 0; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction HoldTarget22(&$item) { echo $item === null ? \"BAD|\" : \"B|\"; $item = null; echo \"F|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $source, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $source = null;\n    Fiber::suspend(\"P\");\n    return true;\n});\n$fiber = new Fiber(static function () {\n    try { HoldTarget22(...new HoldIterator22()); }\n    catch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n    echo \"FIB|\";\n});\necho \"A\", $fiber->start(), \"|\";\n$source = 17;\n$fiber->resume();\necho \"M|\", $source, \"|E\";\n",
+    "source_sha256": "6bcf432e20fa64c130988cf1f554e93f1d4adc97787d2659f1047f3223321dab",
+    "purpose": "Copied single-argument object keeps native pre-warning hold in an authentic parked handler through fiber-resume.",
+    "expected_model": "normal",
+    "native_stdout": "AW|V|C|K|H|2|Cannot pass by-reference argument 1 of HoldTarget22() by unpacking a Traversable, passing by-value instead|23|P|X|V|I|B|O|F|FIB|M|17|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-object-copied-fiber-throw",
+    "source": "<?php\nclass HoldPayload22 { public function __destruct() { echo \"O|\"; } }\n$source = new HoldPayload22();\n$failure = new Exception(\"stop\", 51);\nclass HoldIterator22 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function current(): mixed { global $source; echo \"C|\"; return $source; }\n    public function key(): mixed { echo \"K|\"; return 0; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction HoldTarget22(&$item) { echo $item === null ? \"BAD|\" : \"B|\"; $item = null; echo \"F|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $source, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $source = null;\n    Fiber::suspend(\"P\");\n    return true;\n});\n$fiber = new Fiber(static function () {\n    try { HoldTarget22(...new HoldIterator22()); }\n    catch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n    echo \"FIB|\";\n});\necho \"A\", $fiber->start(), \"|\";\n$source = 17;\n$fiber->throw($failure);\necho \"M|\", $source, \"|E\";\n",
+    "source_sha256": "9a60125ff90a781f30b576eeb7484ab77e4f53b52c01c82ccf4b9d5c966f15de",
+    "purpose": "Copied single-argument object keeps native pre-warning hold in an authentic parked handler through fiber-throw.",
+    "expected_model": "normal",
+    "native_stdout": "AW|V|C|K|H|2|Cannot pass by-reference argument 1 of HoldTarget22() by unpacking a Traversable, passing by-value instead|23|P|I|O|T|51|FIB|M|17|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-object-reference-object-control",
+    "source": "<?php\nclass HoldPayload22 { public function __destruct() { echo \"O|\"; } }\n$source = new HoldPayload22();\n$failure = new Exception(\"stop\", 51);\nclass HoldIterator22 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { global $source; echo \"C|\"; return $source; }\n    public function key(): mixed { echo \"K|\"; return 0; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction HoldTarget22(&$item) { echo $item === null ? \"BAD|\" : \"B|\"; $item = null; echo \"F|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $source, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    return true;\n});\ntry { HoldTarget22(...new HoldIterator22()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n$source = null;\necho \"E\";\n",
+    "source_sha256": "d70fec267da81e6e5490a468bae1066e5046e99948da80ba91e07e61e7710b6a",
+    "purpose": "Initial raw REFERENCE object stays explicitly Unsupported; native handler does not replace its payload.",
+    "expected_model": "unsupported",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 1 of HoldTarget22() by unpacking a Traversable, passing by-value instead|20|X|V|I|B|F|O|E",
+    "native_stderr": "",
+    "native_exit": 0,
+    "unsupported_reason": "Iterator unpack by-reference raw payload",
+    "unsupported_stdout": "W|V|C|K|",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "87",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "86",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "67",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "75",
+            "124"
+          ]
+        ]
+      }
+    ]
+  }
+]

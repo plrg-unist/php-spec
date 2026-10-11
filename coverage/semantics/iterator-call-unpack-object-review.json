@@ -1,0 +1,140 @@
+{
+  "status": "private native/source/state and strict independently accepted",
+  "scope": [
+    "Direct ordinary source-function Iterator by-reference warnings admit copied KNOWN objects when CALL.SENT is empty.",
+    "Explicit pre-warning HOLD preserves the exact cached object through handler source drop and real Fiber park/throw. Normal resume transfers it into a fresh private callee cell; thrown warnings retire cache, DATA and INPUT before the failed argument payload."
+  ],
+  "remaining": [
+    "Arrays, REFERENCE object payloads and copied-object warnings after earlier sent arguments",
+    "REQUEST_STRING/plain reference strings and handler replacements with those strings",
+    "Direct Generator/IteratorAggregate unpack, other call targets and Generator callback methods",
+    "Nonnumeric raw valid-result changes"
+  ],
+  "parent": "6598b05925b197460bb9767320e987c9d88a85d5",
+  "implementation_revision": "7baa83b0a5eb85219f4993ebf105a078a87d302f",
+  "prior_evidence": "coverage/semantics/iterator-call-unpack-interned-reference-review.json",
+  "engine_route": "PHP8.5.10 Zend/zend_vm_def.h SEND_UNPACK Traversable named/positional arms dereference and Z_TRY_ADDREF_P before zend_error, then ZVAL_NEW_REF even with a pending exception. zend_user_it_move_forward in Zend/zend_interfaces.c invalidates cached current before next; zend_user_it_dtor retires current then DATA. HOLD therefore owns the copied object before the warning, transfers to the fresh cell on normal resume, or retires after cache/DATA/INPUT on throw. Empty SENT bounds the failed-argument cleanup order. Task and eager SOURCE admission authenticate HOLD shape; the retired receipt adds no owners.",
+  "target": {
+    "version": "8.5.10",
+    "sapi": "cli",
+    "int_size": 8,
+    "zts": false,
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "profile": "tests/semantics/profile.json",
+  "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+  "compiler": {
+    "mode": "SL",
+    "cache": false,
+    "determinism_checks": true,
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "jobs": 1
+  },
+  "native": {
+    "revision": "82b2581b602d44764042d021535b0cc2688621c6",
+    "report": ".tools/calls-iterator-copied-object-21/.tools/iterator-call-unpack-object-native-bp3kfouv/report.json",
+    "report_sha256": "4431bddb54d7d8f4fe34c1fbec02be3380ab0183331f2e42e12c0c754ee3b2fb",
+    "command": "timeout -k 10s 60s prlimit --as=6442450944 -- python3 -u .tools/native.py",
+    "runner_sha256": "b8d8062460a8d5eab522b28d70295163b73dddf5a18c89b1a44d06d0c74cb646",
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true,
+    "originals": 6,
+    "matching_native_expectations": 6,
+    "normal_agreements": 0,
+    "process_seconds": 8
+  },
+  "strict": {
+    "revision": "7baa83b0a5eb85219f4993ebf105a078a87d302f",
+    "report": ".tools/calls-iterator-copied-object-21/.tools/iterator-call-unpack-object-sl-46ecen2j/report.json",
+    "report_sha256": "201b31bba05c33ed8d881c416219ebcc9390ded59060d7f508556116f6c48ae7",
+    "command": "timeout -k 10s 150s prlimit --as=6442450944 -- python3 -u .tools/strict.py",
+    "runner_sha256": "c507caff4e0a4fce82ee99612f1a0077f8578a2b97adc8568dbddbb5f1807e18",
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true,
+    "modules": 375,
+    "ordered_inputs": "spec/semantics/modules.json",
+    "process_seconds": 120
+  },
+  "source": {
+    "status": "passed",
+    "command": "timeout -k 10s 600s prlimit --as=6442450944 -- python3 -u .tools/source.py --native-report .tools/iterator-call-unpack-object-native-bp3kfouv/report.json",
+    "runner_sha256": "b0db13bc908aab86094d5d5295e747c07a29abf4cc945164899a4ebfcb193ed4",
+    "selection": [
+      "iterator-call-unpack-object-copied-positional-drop",
+      "iterator-call-unpack-object-copied-positional-throw",
+      "iterator-call-unpack-object-copied-named-drop",
+      "iterator-call-unpack-object-copied-fiber-resume",
+      "iterator-call-unpack-object-copied-fiber-throw",
+      "iterator-call-unpack-object-reference-object-control"
+    ],
+    "revision": "7baa83b0a5eb85219f4993ebf105a078a87d302f",
+    "report": ".tools/calls-iterator-copied-object-21/.tools/iterator-call-unpack-object-source-tju64lnq/report.json",
+    "report_sha256": "5f12a85c189954e655b4c8b4b4b4114ec797445eaf7808fd3619ba2fd6869db2",
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "head_stable": true,
+    "passed": true,
+    "normal_agreements": 5,
+    "unsupported_controls": 1,
+    "unsupported_agreement": 0,
+    "unsupported_output_events": 4,
+    "new_native_executions": 0
+  },
+  "source_budgets": {
+    "steps": 100000,
+    "model_seconds": 60,
+    "process_seconds": 75
+  },
+  "state_review": {
+    "status": "passed",
+    "revision": "12a75251c90a5410b0d6ab8e8013b9c9c65a3408",
+    "command": "timeout -k 10s 1200s prlimit --as=6442450944 -- python3 -u .tools/object-state-stop-first.py",
+    "runner_sha256": "d682d54d2bbf729a480c817f2b6b3edf0413c98c1fd9bb380831b01c2358317d",
+    "groups": 9,
+    "physical_premises": 436,
+    "driver_clauses": 416,
+    "counterfactual_eligibility_queries": 2,
+    "budgets": {
+      "seek_steps": 4000,
+      "process_seconds": 120,
+      "jobs": 1
+    },
+    "report": ".tools/calls-iterator-copied-object-21/.tools/fiber-state-review-z40t9yp2/report.json",
+    "report_sha256": "ca63c718f0ba5ae4cd1804df52d48e807c5e57fa39a14a8c9aa9457c2439ccc0",
+    "fixture_sha256": "df417d973e86920b0e1cc601327224b29158d61af7a0359f0ef1fe72c49d9448",
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true,
+    "real_frontier_premises": 434
+  },
+  "resource_cap": {
+    "address_space_bytes": 6442450944,
+    "jobs": 1,
+    "stop_first": true,
+    "interrupt_cleanup": "SIGTERM raises KeyboardInterrupt; existing recorded BaseException cleanup kills and waits for the process group; providers close in finally."
+  },
+  "compatibility": "New HOLD is empty throughout accepted scalar/string/NaN paths. Earlier native/source/state cuts and all original failures retain their original inputs without replay.",
+  "failed_state_cut": {
+    "revision": "9519ed013dd96cd4b022bcff58bf3f9ae7a6d030",
+    "fixture_sha256": "374fabefc6973d1cc140e9995e3bff0599a090afbb4ceba0fa26dc8a9594a261",
+    "raw": ".tools/calls-iterator-copied-object-21/.tools/fiber-state-review-u881gxi5/copied-object-warning-adds-one-detached-owner-before-handler",
+    "exit": 1,
+    "timeout": false,
+    "final_report": null,
+    "campaign_credit": 0,
+    "unexecuted_groups": 8,
+    "reason": "First generated fixture parse error at test.watsup60.93; only inline SENT record-list expression corrected to a nested SENT.SLOTS update."
+  }
+}

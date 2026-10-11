@@ -221,6 +221,18 @@ Actual375 over `bbbf2c166` passes strict SL at `92ae3426c`; private native/sourc
 and independent state cuts retain their original inputs.
 [Interned reference review](coverage/semantics/iterator-call-unpack-interned-reference-review.json).
 
+Copied KNOWN objects now retain a pre-warning payload hold when the sent buffer
+is empty. Resume transfers it to a fresh private cell; thrown warnings retire
+raw cache, DATA and input before the failed argument payload, including actual
+Fiber park/throw after the handler drops its source owner. Native6 passes at
+`82b2581b6`; strict375 and five original agreements pass at `7baa83b0a`, with
+the REFERENCE object control Unsupported/zero agreement. Nine independent groups
+with 436 physical premises pass at `12a75251c` (two eligibility-only queries); the
+original `9519` fixture syntax failure retains zero credit. Arrays, REFERENCE
+objects, object warnings after earlier sent arguments and request/plain reference
+strings remain required. Earlier cuts keep their original inputs.
+[Object hold review](coverage/semantics/iterator-call-unpack-object-review.json).
+
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or
 reference. Borrowed CVs and owning cells retain their modes through initial

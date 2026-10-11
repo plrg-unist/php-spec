@@ -216,6 +216,8 @@ test-semantics: build
 	python3 tests/semantics/iterator_call_unpack_string_review.py
 	python3 tests/semantics/iterator_call_unpack_interned_ref_sources.py
 	python3 tests/semantics/iterator_call_unpack_interned_ref_review.py
+	python3 tests/semantics/iterator_call_unpack_object_sources.py
+	python3 tests/semantics/iterator_call_unpack_object_review.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py

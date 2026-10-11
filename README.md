@@ -468,12 +468,18 @@ Authenticated interned-string references and scalar references changed to an
 interned string now reread the handler's live value into a fresh private callee
 cell, including named variadic binding and Fiber park/throw. See the
 [interned reference review](coverage/semantics/iterator-call-unpack-interned-reference-review.json).
+Copied object payloads now keep a separate owner before the by-reference warning
+when no earlier arguments have been sent. Normal resume transfers that owner to
+the fresh callee cell; throw retires the cache and Iterator/input before the
+failed argument payload, including real Fiber park/throw. See the
+[object hold review](coverage/semantics/iterator-call-unpack-object-review.json).
 Valid NaN warnings retain the raw return through handler mutation, Fiber parking
 and throw. One numeric reread distinguishes copied NaN from a live reference;
 the raw return retires before current or iterator teardown.
 Generator/Aggregate ordinary-call unpack, Generator callback methods, nonnumeric
 raw valid changes, request/plain reference strings and handler replacements with
-those strings, and array/object by-reference warning payloads remain required.
+those strings, arrays, reference objects and object warnings after earlier sent
+arguments remain required.
 [Generators](docs/semantics/GENERATORS.md) receive arguments eagerly and defer
 ordinary bodies in object-owned frames. Value yields, literal iterator methods,
 `getReturn`, `send`, `throw` and value `foreach` retain real resumer scope and

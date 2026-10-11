@@ -122,13 +122,29 @@ is needed. The raw source cell retires before next(), independently of the new
 callee cell. Handler throw retires raw cell, DATA and temporary INPUT in order.
 REQUEST_STRING and plain reference strings, including handler replacements,
 remain Unsupported pending their separate pre-warning payload-hold contract.
-Direct Generator/Aggregate unpack, other call targets, Generator callbacks and
-array/object by-reference warning payloads remain explicit follow-ons. The
+Direct Generator/Aggregate unpack, other call targets and Generator callbacks
+remain explicit follow-ons. The
 [string review](../../coverage/semantics/iterator-call-unpack-string-review.json)
 records the bounded source and independent state cuts.
 The [interned reference review](../../coverage/semantics/iterator-call-unpack-interned-reference-review.json)
 retains the two affected originals' earlier native bytes without replaying the
 four copied-string agreements or six unaffected state groups.
+
+Copied KNOWN objects now acquire an explicit HOLD before the warning when SENT
+is empty. This matches SEND_UNPACK's Z_TRY_ADDREF_P before zend_error, followed
+by ZVAL_NEW_REF even when the handler throws. Normal resume transfers HOLD to
+the fresh private reference cell and retires the raw current cache before next().
+Throw retires cache, DATA and raw INPUT before the failed argument's hold, so
+the retained originals destroy the distinct Iterator before the payload after a
+handler drops the last independent source owner. Actual Fiber park/resume and
+injected throw keep that payload separate from a rewritten global source. HOLD
+matches the exact copied object only at byref; earlier, NaN and completed stages
+require no hold.
+The abort SOURCE receipt validates this shape after payload retirement without
+adding an owner. Arrays, REFERENCE objects and copied-object warnings after
+earlier sent arguments remain Unsupported. The
+[object hold review](../../coverage/semantics/iterator-call-unpack-object-review.json)
+records the native-first slice separately from earlier evidence.
 
 Iterator valid NaN warnings keep the raw retval in CURRENT through handler invoke,
 result, cleanup and saved Fiber frames. The native `zend_user_it_valid` wrapper

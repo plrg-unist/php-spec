@@ -18,6 +18,9 @@ dec $iterator_unpack_named_target(pstate, piteratorunpack) : pnamedtarget
 dec $iterator_unpack_warning_message(pstate, piteratorunpack) : ptbytes
 dec $iterator_unpack_scalar(pvalue) : bool
 dec $iterator_unpack_scalar_operand(pstate, poperand) : bool
+dec $iterator_unpack_known_object(poperand) : bool
+dec $iterator_unpack_hold_valid(piteratorunpack, text) : bool
+dec $iterator_unpack_warning_hold(pstate, piteratorunpack) : poperand?
 dec $iterator_unpack_warning_resume(ptask) : bool
 dec $iterator_unpack_discard(pstate, piteratorunpack, text) : pstate
 dec $iterator_unpack_abort_input(pstate, piteratorunpack) : bool
@@ -60,7 +63,7 @@ def $iterator_unpack_original(piteratorunpack) = (n = piteratorunpack.OBJECT) --
 def $iterator_unpack_original(piteratorunpack) = true -- if piteratorunpack.INPUT = REFERENCE n
 def $iterator_unpack_original(piteratorunpack) = true -- if piteratorunpack.INPUT = VARIABLE ptbytes z
 def $iterator_unpack_original(piteratorunpack) = false -- otherwise
-def $unpack_prepared(S, S_prepared, punpackcall, ptask_tail*) = S_prepared[.ITERATORS = S_prepared.ITERATORS ++ [OBJECTITER n_iterator n 0 false]][.NEXTITER = $(n_iterator + 1)][.ORIGIN = $unpack_origin(S, punpackcall)][.TODO = (ITERATOR_UNPACK {CALL punpackcall, ITERATOR n_iterator, OBJECT n, INPUT S.RESULT, CURRENT (KNOWN PNULL), KEY (KNOWN PNULL), NAMED false} "rewind-start") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = S.HELD]
+def $unpack_prepared(S, S_prepared, punpackcall, ptask_tail*) = S_prepared[.ITERATORS = S_prepared.ITERATORS ++ [OBJECTITER n_iterator n 0 false]][.NEXTITER = $(n_iterator + 1)][.ORIGIN = $unpack_origin(S, punpackcall)][.TODO = (ITERATOR_UNPACK {CALL punpackcall, ITERATOR n_iterator, OBJECT n, INPUT S.RESULT, CURRENT (KNOWN PNULL), KEY (KNOWN PNULL), HOLD (KNOWN PNULL), NAMED false} "rewind-start") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = S.HELD]
   -- if S_prepared.RESULT = KNOWN (POBJECT n)
   -- if $useriter_instance(S_prepared, n)
   -- if $iterator_unpack_plain(S, punpackcall)
@@ -100,6 +103,18 @@ def $iterator_unpack_stage(S, piteratorunpack, "valid-nan") = true
   -- if piteratorunpack.KEY = KNOWN PNULL
   -- if $generator_from_valid_operand(S, piteratorunpack.CURRENT)
 def $iterator_unpack_stage(S, piteratorunpack, text) = false -- otherwise
+;; Z_TRY_ADDREF holds a copied object before the warning. This first-send slice
+;; transfers that owner to the fresh reference, or releases it after DATA/INPUT.
+def $iterator_unpack_known_object(KNOWN (POBJECT n)) = true
+def $iterator_unpack_known_object(poperand) = false -- otherwise
+def $iterator_unpack_hold_valid(piteratorunpack, "byref") = true
+  -- if piteratorunpack.CURRENT = KNOWN (POBJECT n)
+  -- if piteratorunpack.HOLD = piteratorunpack.CURRENT
+  -- if piteratorunpack.CALL.SENT = {SLOTS eps, NAMED eps}
+def $iterator_unpack_hold_valid(piteratorunpack, text) = true
+  -- if piteratorunpack.HOLD = KNOWN PNULL
+  -- if ~(text = "byref" /\ $iterator_unpack_known_object(piteratorunpack.CURRENT))
+def $iterator_unpack_hold_valid(piteratorunpack, text) = false -- otherwise
 def $iterator_unpack_valid(S, piteratorunpack, text) = true
   -- if S.ORIGIN = $unpack_origin(S, piteratorunpack.CALL)
   -- if $iterator_unpack_plain(S, piteratorunpack.CALL)
@@ -110,6 +125,7 @@ def $iterator_unpack_valid(S, piteratorunpack, text) = true
   -- if $useriter_instance(S, piteratorunpack.OBJECT)
   -- if $useriter_cursor_valid(S, piteratorunpack.ITERATOR, piteratorunpack.OBJECT)
   -- if $iterator_unpack_stage(S, piteratorunpack, text)
+  -- if $iterator_unpack_hold_valid(piteratorunpack, text)
   -- if $generator_id_count($useriter_tasks_ids(S.TODO), piteratorunpack.ITERATOR) = 1
 def $iterator_unpack_valid(S, piteratorunpack, text) = false -- otherwise
 def $iterator_unpack_result_valid(S, piteratorunpack, text) = $iterator_unpack_valid(S, piteratorunpack, text)
@@ -155,7 +171,7 @@ def $reference_callback_used(S, pcallcontext) = (text <- ["valid", "current", "k
   -- if pframe.TODO = (ITERATOR_UNPACK piteratorunpack text) :: ptask_tail*
   -- if $iterator_unpack_frame(S, pcallcontext, pframe)
 
-def $iterator_unpack_nodes(piteratorunpack) = $operand_nodes(piteratorunpack.KEY) ++ $operand_nodes(piteratorunpack.CURRENT) ++ [HOBJECT piteratorunpack.OBJECT] ++ $operand_nodes(piteratorunpack.INPUT)
+def $iterator_unpack_nodes(piteratorunpack) = $operand_nodes(piteratorunpack.KEY) ++ $operand_nodes(piteratorunpack.CURRENT) ++ [HOBJECT piteratorunpack.OBJECT] ++ $operand_nodes(piteratorunpack.INPUT) ++ $operand_nodes(piteratorunpack.HOLD)
 def $task_nodes(ITERATOR_UNPACK piteratorunpack text) = $iterator_unpack_nodes(piteratorunpack) ++ $unpack_call_roots(piteratorunpack.CALL)
 def $call_task_valid(S, ITERATOR_UNPACK piteratorunpack text) = $iterator_unpack_result_valid(S, piteratorunpack, text)
 def $useriter_task_ids(ITERATOR_UNPACK piteratorunpack text) = [piteratorunpack.ITERATOR]
@@ -245,6 +261,12 @@ def $iterator_unpack_scalar_operand(S, REFERENCE n) = $iterator_unpack_scalar(pv
   -- if $string_bytes(pvalue) = eps
 def $iterator_unpack_scalar_operand(S, REFERENCE n) = $startup_bytes(n_bytes*) -- if S.STORE[n] = DEFINED (PSTRING_CARRIER INTERNED_STRING n_bytes*)
 def $iterator_unpack_scalar_operand(S, poperand) = false -- otherwise
+def $iterator_unpack_warning_hold(S, piteratorunpack) = (piteratorunpack.CURRENT)
+  -- if piteratorunpack.CURRENT = KNOWN (POBJECT n)
+  -- if piteratorunpack.CALL.SENT = {SLOTS eps, NAMED eps}
+def $iterator_unpack_warning_hold(S, piteratorunpack) = (KNOWN PNULL)
+  -- if $iterator_unpack_scalar_operand(S, piteratorunpack.CURRENT)
+def $iterator_unpack_warning_hold(S, piteratorunpack) = eps -- otherwise
 def $iterator_unpack_warning_message(S, piteratorunpack) = $ptascii("Cannot pass by-reference argument ") ++ $ntunsigned($(n + 1)) ++ $ptascii(" of ") ++ pfunction.NAME ++ $ptascii("() by unpacking a Traversable, passing by-value instead")
   -- if $target_function(S, piteratorunpack.CALL.FUNCTION) = (pfunction)
   -- if n = $named_index(pfunction.SIGNATURE.PARAMETERS, $iterator_unpack_named_target(S, piteratorunpack))
@@ -268,7 +290,7 @@ def $iterator_unpack_send(S, piteratorunpack, ptask_tail*) = $iterator_unpack_st
   -- if ~$named_reference(pfunction, pnamedtarget)
   -- if S_read = $resolve_at(S_check, piteratorunpack.CURRENT, $unpack_line(S, piteratorunpack.CALL))
   -- if S_read.COMPLETION = NORMAL
-def $iterator_unpack_send(S, piteratorunpack, ptask_tail*) = $error_dispatch(S, 2, ptbytes, z, DIAGNOSTIC "Warning" ptbytes z, ITERATOR_UNPACK piteratorunpack "byref")
+def $iterator_unpack_send(S, piteratorunpack, ptask_tail*) = $error_dispatch(S, 2, ptbytes, z, DIAGNOSTIC "Warning" ptbytes z, ITERATOR_UNPACK piteratorunpack[.HOLD = poperand_hold] "byref")
   -- if piteratorunpack.KEY = KNOWN pvalue
   -- if $fiber_traversal_key(pvalue) = (pkey)
   -- if $target_function(S, piteratorunpack.CALL.FUNCTION) = (pfunction)
@@ -276,7 +298,7 @@ def $iterator_unpack_send(S, piteratorunpack, ptask_tail*) = $error_dispatch(S, 
   -- if S_check = $unpack_check(S, piteratorunpack.CALL.SENT, pnamedtarget, pkey, piteratorunpack.NAMED, $unpack_line(S, piteratorunpack.CALL))
   -- if S_check.COMPLETION = NORMAL
   -- if $named_reference(pfunction, pnamedtarget)
-  -- if $iterator_unpack_scalar_operand(S, piteratorunpack.CURRENT)
+  -- if $iterator_unpack_warning_hold(S, piteratorunpack) = (poperand_hold)
   -- if ptbytes = $iterator_unpack_warning_message(S, piteratorunpack)
   -- if z = $unpack_line(S, piteratorunpack.CALL)
 def $iterator_unpack_send(S, piteratorunpack, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "Iterator unpack by-reference raw payload"]
@@ -287,24 +309,25 @@ def $iterator_unpack_send(S, piteratorunpack, ptask_tail*) = S[.COMPLETION = UNS
   -- if S_check = $unpack_check(S, piteratorunpack.CALL.SENT, pnamedtarget, pkey, piteratorunpack.NAMED, $unpack_line(S, piteratorunpack.CALL))
   -- if S_check.COMPLETION = NORMAL
   -- if $named_reference(pfunction, pnamedtarget)
-  -- if ~$iterator_unpack_scalar_operand(S, piteratorunpack.CURRENT)
+  -- if $iterator_unpack_warning_hold(S, piteratorunpack) = eps
 rule PhpStep/iterator-unpack-send: S ~> $iterator_unpack_send(S, piteratorunpack, ptask_tail*)
   -- if S.TODO = (ITERATOR_UNPACK piteratorunpack "send") :: ptask_tail*
 def $iterator_unpack_store(S, piteratorunpack, poperand, ptask_tail*) = $iterator_unpack_retire(S, piteratorunpack_next, "next-start", ptask_tail*, $operand_nodes(piteratorunpack.KEY) ++ $operand_nodes(piteratorunpack.CURRENT))
   -- if piteratorunpack.KEY = KNOWN pvalue
   -- if $fiber_traversal_key(pvalue) = (pkey)
   -- if pnamedtarget = $iterator_unpack_named_target(S, piteratorunpack)
-  -- if piteratorunpack_next = piteratorunpack[.CALL = piteratorunpack.CALL[.SENT = $named_store(piteratorunpack.CALL.SENT, pnamedtarget, poperand)]][.CURRENT = KNOWN PNULL][.KEY = KNOWN PNULL][.NAMED = (piteratorunpack.NAMED \/ $unpack_key_named(pkey))]
+  -- if piteratorunpack_next = piteratorunpack[.CALL = piteratorunpack.CALL[.SENT = $named_store(piteratorunpack.CALL.SENT, pnamedtarget, poperand)]][.CURRENT = KNOWN PNULL][.KEY = KNOWN PNULL][.HOLD = KNOWN PNULL][.NAMED = (piteratorunpack.NAMED \/ $unpack_key_named(pkey))]
 rule PhpStep/iterator-unpack-byref-send: S ~> $iterator_unpack_store(S_fresh, piteratorunpack, S_fresh.RESULT, ptask_tail*)
   -- if S.TODO = (ITERATOR_UNPACK piteratorunpack "byref") :: ptask_tail*
-  -- if $iterator_unpack_scalar_operand(S, piteratorunpack.CURRENT)
+  -- if $iterator_unpack_warning_hold(S, piteratorunpack) = (poperand_hold)
+  -- if piteratorunpack.HOLD = poperand_hold
   -- if S_read = $resolve_at(S, piteratorunpack.CURRENT, $unpack_line(S, piteratorunpack.CALL))
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
   -- if S_fresh = $call_fresh_reference(S_read, pvalue)
 rule PhpStep/iterator-unpack-byref-payload: S ~> S[.COMPLETION = UNSUPPORTED "Iterator unpack by-reference raw payload"]
   -- if S.TODO = (ITERATOR_UNPACK piteratorunpack "byref") :: ptask_tail*
-  -- if ~$iterator_unpack_scalar_operand(S, piteratorunpack.CURRENT)
+  -- if $iterator_unpack_warning_hold(S, piteratorunpack) = eps
 
 ;; A warning retains this exact cursor/raw cache through invoke/result/cleanup.
 def $iterator_unpack_warning_resume(ITERATOR_UNPACK piteratorunpack "byref") = true
@@ -355,6 +378,7 @@ def $iterator_unpack_abort_input(S, piteratorunpack) = false -- otherwise
 def $eager_operation_source_valid(S, pdestructionoperation) = true
   -- if pdestructionoperation.SOURCE = ITERATOR_UNPACK piteratorunpack text
   -- if text <- ["rewind-start", "rewind", "valid-start", "valid", "valid-nan", "current-start", "current", "key-start", "key", "send", "error", "byref", "next-start", "next", "finish"]
+  -- if $iterator_unpack_hold_valid(piteratorunpack, text)
   -- if pdestructionoperation.CLEANUP = eps /\ pdestructionoperation.NOGC = eps
   -- if pdestructionoperation.PENDING =/= eps
   -- if pdestructionoperation.COMPLETION = NORMAL
