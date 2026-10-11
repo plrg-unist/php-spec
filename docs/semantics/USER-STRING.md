@@ -153,9 +153,15 @@ operand that is itself a cast or print is converted by that inner operation,
 then emitted by echo. These are the only user-object callback consumers
 admitted by this increment; the remaining inventory above stays explicit.
 A later [temporary Stringable control](../../coverage/semantics/concat-emit-review.json)
-exposes premature receiver destruction before direct echo output. Its whole source
-retains zero agreement, including the matching concat suffix; scalar EMIT scratch
-consumption does not repair that separate callback/receiver lifetime defect.
+exposes premature destruction at the phase37 cut; its frozen whole source keeps zero
+agreement, including the matching concat suffix. Fresh
+[direct ECHO checks](../../coverage/semantics/stringable-echo-review.json) now cover
+named noarg NEW and borrowed CV inputs. An authenticated original NEW owner survives
+output separately from the cast pin; borrowed self-drop still destroys during cast
+release, then emits a successful string before searching a pending destructor exception.
+Plain strings and valid carriers are admitted. Six exact originals and six reached
+groups/787 premises cover normal/throwing cleanup, previous links, budgets and forged
+continuations. Generic cast release and concat are unchanged; wider inputs/consumers remain required.
 
 The frozen private 32-source catalogue has 20 exact normal outcomes, six exact
 PHP errors and five exact static rejections; explicit `implements Stringable`

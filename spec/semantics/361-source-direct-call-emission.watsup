@@ -167,13 +167,37 @@ def $declaration_method_selection(S, pmethoddesc, porigin_called, porigin_site, 
   -- if $dynamic_fixed_name(S, porigin_site) =/= eps
   -- if $echo_source_destructor_selection(S, pmethoddesc, porigin_called, porigin_site)
 
+;; A completed ordinary named noarg NEW leaves a real ECHO temporary.
+;; Its source class and compiled child are distinct from a borrowed CV input.
+dec $echo_new_class(pstate, porigin, int) : porigin?
+def $echo_new_class(S, PORIGIN n pcpath, z) = (porigin_class)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprNew name (SEQUENCE eps) metadata_new)
+  -- if $ppscoped_named(name) /\ ~$ppscoped_keyword(name)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes_class, eps))
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $(z > 0) /\ z = $source_line(metadata_new)
+  -- if $compiled_effects(S, PORIGIN n pcpath) = eps
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin_class)
+  -- if $echo_emit_source(S, PORIGIN n pcpath, z)
+def $echo_new_class(S, porigin_site, z) = eps -- otherwise
+
+dec $echo_new_receiver_valid(pstate, nat, porigin, int) : bool
+def $echo_new_receiver_valid(S, n, porigin_site, z) = true
+  -- if $echo_new_class(S, porigin_site, z) = (porigin_class)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+def $echo_new_receiver_valid(S, n, porigin_site, z) = true
+  -- if $echo_new_class(S, porigin_site, z) = eps
+def $echo_new_receiver_valid(S, n, porigin_site, z) = false -- otherwise
+
 dec $echo_call_site_valid(pstate, porigin, int) : bool
 def $echo_call_site_valid(S, PORIGIN n pcpath, z) = true
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
   -- if $source_emission_echo_call(S, n, pcpath, expression) = (z_init)
   -- if $source_emission_echo_line(S, n, pcpath, expression) = (z)
   -- if $echo_emit_source(S, PORIGIN n pcpath, z)
-def $echo_call_site_valid(S, porigin_site, z) = false -- otherwise
+def $echo_call_site_valid(S, porigin_site, z) = ($echo_new_class(S, porigin_site, z) =/= eps) -- otherwise
 
 ;; INIT_DYNAMIC_CALL uses the warning's captured null, even if its handler
 ;; replaces the live callee. Consume it directly instead of exposing an invalid
@@ -278,6 +302,8 @@ def $call_echo_string_plan(S) = ({TEMP S.RESULT, OBJECT n, SITE porigin_site, LI
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $stringable_instance(S_read, n)
   -- if $echo_call_site_valid(S, porigin_site, z)
+  -- if $echo_new_receiver_valid(S, n, porigin_site, z)
+  -- if $echo_new_class(S, porigin_site, z) = eps \/ S.RESULT = KNOWN (POBJECT n)
 def $call_echo_string_plan(S) = eps -- otherwise
 def $call_echo_string_pending(S) = ($call_echo_string_plan(S) =/= eps)
 
@@ -290,7 +316,7 @@ def $echo_call_temporary_shape(pechoresult) = (n = pechoresult.OBJECT)
   -- if pechoresult.TEMP = KNOWN (POBJECT n)
 def $echo_call_temporary_shape(pechoresult) = $echo_call_reference_operand(pechoresult.TEMP) -- otherwise
 dec $echo_call_result_source(pstate, pechoresult) : bool
-def $echo_call_result_source(S, pechoresult) = ($echo_call_site_valid(S, pechoresult.SITE, pechoresult.LINE) /\ $echo_call_temporary_shape(pechoresult))
+def $echo_call_result_source(S, pechoresult) = ($echo_call_site_valid(S, pechoresult.SITE, pechoresult.LINE) /\ $echo_call_temporary_shape(pechoresult) /\ ($echo_new_class(S, pechoresult.SITE, pechoresult.LINE) = eps \/ pechoresult.TEMP = KNOWN (POBJECT pechoresult.OBJECT)))
 
 ;; The cast pin and ECHO temporary are released at ECHO's instruction, after
 ;; DO_CALL. The consumed object/cell need not remain live to recover that line.
@@ -316,7 +342,7 @@ def $destructor_source_line(S) = z_init
   -- if $source_emission_dynamic_cv_call(S, n, pcpath, expression) = (z_init)
 
 dec $echo_call_temporary_valid(pstate, pechoresult) : bool
-def $echo_call_temporary_valid(S, pechoresult) = $stringable_instance(S, pechoresult.OBJECT)
+def $echo_call_temporary_valid(S, pechoresult) = ($stringable_instance(S, pechoresult.OBJECT) /\ $echo_new_receiver_valid(S, pechoresult.OBJECT, pechoresult.SITE, pechoresult.LINE))
   -- if pechoresult.TEMP = KNOWN (POBJECT pechoresult.OBJECT)
 def $echo_call_temporary_valid(S, pechoresult) = true
   -- if pechoresult.TEMP = REFERENCE n
@@ -337,7 +363,9 @@ rule PhpStep/echo-call-string-result: S ~> S[.TODO = ptask_tail*][.EVENTS = S.EV
   -- if S.TODO = (ECHO_CALL_RESULT pechoresult) :: ptask_tail*
   -- if $echo_call_result_valid(S, pechoresult)
   -- if pechoresult.TAIL = ptask_tail*
-  -- if S.RESULT = KNOWN (PSTRING n_text*)
+  -- if S.RESULT = KNOWN pvalue_text
+  -- if $string_bytes(pvalue_text) = (n_text*)
+  -- if pvalue_text = PSTRING n_text* \/ $string_carrier_valid(S, pvalue_text)
 
 ;; The consumed temporary can already be freed while its destructor operation
 ;; finishes; authenticate source/line without demanding a second live owner.
@@ -365,3 +393,19 @@ rule PhpStep/echo-call-string-pending: S ~> S[.TODO = (THROW_SEARCH n_pending) :
   -- if pechoresult.TAIL = ptask_tail*
 def $eager_operation_source_guard(S, pdestructionoperation) = ($echo_call_result_source(S, pechoresult) /\ $echo_call_reference_operand(pechoresult.TEMP) /\ pdestructionoperation.ORIGIN = (pechoresult.SITE) /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL))
   -- if pdestructionoperation.SOURCE = ECHO_CALL_PENDING pechoresult n_text* n_pending
+
+;; Non-try ECHO still writes a successful cast's bytes when releasing its
+;; borrowed cast pin raised an exception. The receiver can already be retired.
+def $destructor_pending_finish(S, pdestructionoperation, n_pending, (EMIT z) :: ptask_tail*) = S[.TODO = (EMIT z) :: (THROW_SEARCH n_pending) :: ptask_tail*][.RESULT = pdestructionoperation.VALUE][.BASE = pdestructionoperation.BASE][.CELL = pdestructionoperation.CELL][.KEY = pdestructionoperation.KEY][.LOCATION = pdestructionoperation.LOCATION][.COMPLETION = NORMAL]
+  -- if pdestructionoperation.SOURCE = STRINGIFY_RESULT n_receiver (PORIGIN n_unit pcpath) z
+  -- if pdestructionoperation.ORIGIN = (PORIGIN n_unit pcpath)
+  -- if pdestructionoperation.CALLER = S.CURRENT
+  -- if pdestructionoperation.COMPLETION = NORMAL
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprVariable (BYTES text) metadata_cv)
+  -- if $source_emission_cv(S, n_unit, pcpath, NExprVariable (BYTES text) metadata_cv)
+  -- if $stringify_source(S, PORIGIN n_unit pcpath, z, EMIT z)
+  -- if pdestructionoperation.VALUE = KNOWN pvalue_text
+  -- if pdestructionoperation.BASE = BASE_VALUE (KNOWN pvalue_text)
+  -- if $string_bytes(pvalue_text) = (n_text*)
+  -- if pvalue_text = PSTRING n_text* \/ $string_carrier_valid(S, pvalue_text)
+  -- if $eval_compile_pending_object(S, THROWING n_pending)

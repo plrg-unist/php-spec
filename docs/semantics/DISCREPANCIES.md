@@ -504,12 +504,17 @@ RW/sparse/deleted/reference/object/destructor and sole-owner/dangling capture re
 excluded. Source-reached capture proves actual old identity; consistently rewriting
 all historical metadata is outside that proof. No corrected-engine experiment was run.
 
-## Temporary Stringable direct echo: unresolved specification defect
+## Temporary Stringable direct echo: bounded input repair
 
-The phase37 control echoes a fresh ordinary Stringable temporary directly and through
+At the phase37 cut a fresh ordinary Stringable temporary is echoed directly and through
 concat. Native direct echo outputs `T|SD|`; the model outputs `T|D|S`, retiring the
 receiver before its returned string is emitted. The concat suffix agrees, but the
 combined original and unchanged model-only control retain whole-source agreement0.
 The [concat-consumer ledger](../../coverage/semantics/concat-emit-review.json) preserves
-both streams and the separate scalar BASE repair; generic STRINGIFY_RESULT retirement
-remains required. No intentional engine divergence is selected.
+both streams and the separate scalar BASE repair.
+Fresh [phase38 originals](../../coverage/semantics/stringable-echo-review.json) agree:
+361 holds the authenticated original named noarg NEW input through output separately
+from its cast pin. Borrowed CV self-drop retains cast-release destruction before output
+and writes a successful string before a pending destructor exception. Callback/cleanup
+previous links and concat timing agree. The frozen phase37 control is not renewed;
+wider owning inputs/consumers remain required. No intentional engine divergence is selected.

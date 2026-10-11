@@ -359,8 +359,10 @@ body now permits later authentic getter entry, including a saved outer concat wi
 delayed live CV read. Real source-conflict TypeError survives receiver detach/repair.
 The [concat-consumer review](../../coverage/semantics/concat-emit-review.json) records
 five exact originals and five whole reached groups/570 setup-inclusive premises.
-Abrupt stringify and existing getter guards stay unchanged. A separate temporary
-Stringable direct-echo timing mismatch remains open with whole-source agreement0.
+Abrupt stringify and existing getter guards stay unchanged. The phase37 temporary
+Stringable control keeps its frozen whole-source agreement0. Fresh
+[direct ECHO ownership checks](../../coverage/semantics/stringable-echo-review.json)
+repair named noarg NEW and borrowed CV pending-output timing without changing getters.
 
 The compiler and runtime rules are in `135-property-compiler.watsup` and
 `136-property-runtime.watsup`. [The review](../../coverage/semantics/properties-review.json)

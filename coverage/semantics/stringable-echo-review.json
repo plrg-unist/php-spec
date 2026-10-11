@@ -1,0 +1,127 @@
+{
+  "scope": "Direct ordinary ECHO separates named noarg NEW original-input ownership from the cast pin; borrowed CV successful bytes precede pending destructor exception search. Generic168 and concat unchanged.",
+  "target": "PHP8.5.10 CLI NTS64",
+  "raw_root": ".tools/properties-magic-decimal-current32",
+  "private_parent": "a1b606eb3ce45885179df7e8171816ff44f48800",
+  "runtime_tested_revision": "b0a90ed31f779c17dca12f26593c914a06aea945",
+  "final_fixture_revision": "e6ff87e9586d08c2b49911ab280b665c1edd5dad",
+  "module_count": 375,
+  "modules_manifest_sha256": "fd5102734c6f5967d60c0ca5985d8cac462eea06a09bf1bb8fe2c73ffb049a49",
+  "binaries": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "jobs": 1,
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "inputs_sha256": {
+    "spec/semantics/361-source-direct-call-emission.watsup": "8cb9c2a936365d2713723538a12791b39aaeaf2acfec2e7dc14750a4970a3970",
+    "tests/semantics/dynamic_property_warning_sources.py": "6577068e93fcc69e4d83b4c7f9035cc9f6f10e3e914925659b340d591c1e78c0",
+    "tests/semantics/stringable_echo_protocol.py": "f9a2337ffcb7d736a074999282fa9e1d917d5ded69be222523bae2cfcd0c1125"
+  },
+  "original_sources_sha256": {
+    "review-stringable-echo-owned38": "7827794d905770778ed2816181c5928be275550ad64a75e142b9696982b25b4a",
+    "review-stringable-echo-borrowed38": "ee780d947113766e999726c20102e3bed579375ebca6a1fee18c86cbc967cb32",
+    "review-stringable-echo-self-drop38": "ea462b4de7b41a6cb6a3ceabd91bd9ede3cc0c9893dee52e86ba5472fb24a591",
+    "review-stringable-echo-destructor-throw38": "9473f4175e787617d46ec3e6b3a3e1b9d4980026c08d1b65b02c0bf22439cf3f",
+    "review-stringable-echo-cast-throw38": "593547cf184fc799a638ac98be07af7450d629b87539500cabfabb43a3e12197",
+    "review-stringable-echo-concat-control38": "2a3a9fbeb2c65f032b8b0393b6f3c0f01c5878307ccf98a24a636c5a16460081"
+  },
+  "recorders_sha256": {
+    ".tools/stringable_echo_native38.py": "ca1c6033114d8eb4ba0448839c182c7b09e2c3147e81b85f523594e83fd14734",
+    ".tools/stringable_echo_baseline38.py": "99ec95d0e9ea4dcd02063c9687c504ed19af9b57d6de300534567d375f519c0b",
+    ".tools/stringable_echo_strict38.py": "62965a2706b54a9b3ffc7b18fc443e788d420252dbb984631f0051173029d8d8",
+    ".tools/stringable_echo_state_prepare38.py": "00858a7bc0c41a2787edeaefba14a3f2297402318196daa6141e8b94f63ef475",
+    ".tools/stringable_echo_exit_probe38.py": "4641835c73830abad62fcfbaa87e511c1e91756dc5cc5babcb32a139d317a61e"
+  },
+  "native": {
+    "revision": "c335d746fc13c6efa34e42f80b8ce59837abde8f",
+    "raw": ".tools/stringable-echo-native38-y73uqert/report.json",
+    "command": "python3 .tools/stringable_echo_native38.py",
+    "native_cap_seconds": 30,
+    "observations": 6,
+    "result": "all process0/empty stderr",
+    "agreement_credit": 0
+  },
+  "unchanged_baseline": {
+    "revision": "c335d746fc13c6efa34e42f80b8ce59837abde8f",
+    "raw": ".tools/stringable-echo-baseline38-_rjk5df5/report.json",
+    "command": "python3 .tools/stringable_echo_baseline38.py",
+    "model_cli_process_caps_seconds": [
+      60,
+      90
+    ],
+    "steps": 100000,
+    "result": "both checked accepted normal0/empty; owned destroys before S1; borrowed throwing self-drop omits V2",
+    "whole_source_agreement": 0
+  },
+  "strict": {
+    "raw": ".tools/stringable-echo-strict38-__dbpbir/report.json",
+    "command": "python3 .tools/stringable_echo_strict38.py 8cd825932b7688a2b2bfa02c9df28283d6e32583",
+    "runner": "SL/b57/jobs1/cap120",
+    "elapsed_seconds": 5.783324170857668,
+    "result": "process0 true\n/empty stderr",
+    "state_credit": 0
+  },
+  "source": {
+    "raw": ".tools/dynamic-property-warning-source-916709n3/report.json",
+    "command": "python3 tests/semantics/dynamic_property_warning_sources.py source --select review-stringable-echo-owned38,review-stringable-echo-borrowed38,review-stringable-echo-self-drop38,review-stringable-echo-destructor-throw38,review-stringable-echo-cast-throw38,review-stringable-echo-concat-control38",
+    "native_model_process_caps_seconds": [
+      30,
+      60,
+      90
+    ],
+    "steps": 100000,
+    "file_snapshot_version": 2,
+    "passed": 6,
+    "result": "checked accepted normal0; decoded model stdout = native raw = EXPECTED; all stderr empty, reason/diagnostic null"
+  },
+  "preparation": [
+    {"raw": ".tools/stringable-echo-state-prep38-vu1mom6s/report.json", "revision": "8cd825932b7688a2b2bfa02c9df28283d6e32583", "prepared_premises": 770, "evaluations": 0},
+    {"raw": ".tools/stringable-echo-state-prep38-i5prtxvx/report.json", "revision": "b0a90ed31f779c17dca12f26593c914a06aea945", "prepared_premises": 784, "evaluations": 0},
+    {"raw": ".tools/stringable-echo-state-prep38-qbq7vld_/report.json", "revision": "caf0f56ab9dd2d0923402b5b733c8b0e5fbd2d6f", "prepared_premises": 787, "evaluations": 0},
+    {"raw": ".tools/stringable-echo-state-prep38-yullzd_5/report.json", "revision": "e6ff87e9586d08c2b49911ab280b665c1edd5dad", "prepared_premises": 559, "evaluations": 0}
+  ],
+  "state": {
+    "command": "python3 tests/semantics/stringable_echo_protocol.py --group GROUP",
+    "runner": "SL/b57/jobs1/cap120",
+    "count_kind": "whole setup-inclusive body premises, not unique transitions",
+    "passed": 787,
+    "rows": [
+      {"group": "owned", "premises": 134, "raw": ".tools/stringable-echo-state38-t_oh1mhm/report.json", "revision": "caf0f56ab9dd2d0923402b5b733c8b0e5fbd2d6f"},
+      {"group": "borrowed", "premises": 94, "raw": ".tools/stringable-echo-state38-bxsplv8y/report.json", "revision": "caf0f56ab9dd2d0923402b5b733c8b0e5fbd2d6f"},
+      {"group": "self-drop", "premises": 262, "raw": ".tools/stringable-echo-state38-7cgdrl_u/report.json", "revision": "e6ff87e9586d08c2b49911ab280b665c1edd5dad"},
+      {"group": "destructor-throw", "premises": 146, "raw": ".tools/stringable-echo-state38-23scl1lb/report.json", "revision": "e6ff87e9586d08c2b49911ab280b665c1edd5dad"},
+      {"group": "cast-throw", "premises": 90, "raw": ".tools/stringable-echo-state38-5ia6zu36/report.json", "revision": "e6ff87e9586d08c2b49911ab280b665c1edd5dad"},
+      {"group": "concat-control", "premises": 61, "raw": ".tools/stringable-echo-state38-jtgpzse_/report.json", "revision": "e6ff87e9586d08c2b49911ab280b665c1edd5dad"}
+    ],
+    "result": "all process0 true\n/empty, clean before=after; separate owners, authentic source/carriers, raw whole steps, budgets0/1 and pending error roots"
+  },
+  "original_failures": [
+    {"raw": ".tools/stringable-echo-state38-suey2z6z/report.json", "revision": "b0a90ed31f779c17dca12f26593c914a06aea945", "cause": "phase0 queried production NORMAL plan on a BUDGET seek state; query-only normalization, explicit real BUDGET assertion", "state_credit": 0},
+    {"raw": ".tools/stringable-echo-state38-uf29ooy7/report.json", "revision": "caf0f56ab9dd2d0923402b5b733c8b0e5fbd2d6f", "cause": "phase5 stopped at nested THROW_SEARCH cleanup instead of original cast-release operation; exact immutable SOURCE seek in four uncredited groups", "state_credit": 0}
+  ],
+  "exit_diagnostic": {
+    "prepared": ".tools/stringable-echo-exit-probe38-5z2gwyvh/report.json",
+    "raw": ".tools/stringable-echo-exit-probe38-5z2gwyvh/diagnostic-report.json",
+    "command": "python3 .tools/stringable_echo_exit_probe38.py --run .tools/stringable-echo-exit-probe38-5z2gwyvh",
+    "revision": "caf0f56ab9dd2d0923402b5b733c8b0e5fbd2d6f",
+    "runner": "SL/b57/jobs1/cap120",
+    "diagnostic_executions": 1,
+    "agreement_credit": 0,
+    "result": "process0/empty; head SOURCE THROW_SEARCH4, no pending, null value/base; outer SOURCE STRINGIFY_RESULT2 at authenticated CV/+17"
+  },
+  "bridge": "b0a\u2192caf0\u2192e6ff changes only the fixture: NORMAL query at actual BUDGET and exact SOURCE seek for final four. Runtime/originals/EXPECTED unchanged; first2 bodies and phase5 calls unchanged, added unused prefix declarations require no renewal.",
+  "provenance": [
+    "vendor/php-src/Zend/zend_object_handlers.c: zend_std_cast_object_tostring releases GC-added cast pin before SUCCESS, including pending destructor exception",
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_ECHO non-try conversion/output precedes FREE_OP1 and exception check",
+    "spec/semantics/361-source-direct-call-emission.watsup: existing ECHO_CALL_RESULT original owner; source-authenticated borrowed pending EMIT; no168/59/40/270 change"
+  ],
+  "review": "props_review_21 independently accepted native/baseline, runtime guards, whole fixtures, failures/diagnostic and affected raw. Six directly related inventory records retain partial statuses; phase37 control/cuts frozen, wider inputs/consumers required.",
+  "recovery": "Raw paths resolve below raw_root and retain exact originals/checked programs/whole fixtures, commands/cwd/profile/ordered modules/streams/processes. Recover each run at its recorded cut; providers current32/owned28 remain active. No old source/native/state renewal."
+}

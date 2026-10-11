@@ -1735,10 +1735,17 @@ Successful scalar echo now consumes the current-frame concat scratch BASE after 
 [Five exact originals and five whole reached groups](coverage/semantics/concat-emit-review.json)
 pass 570 setup-inclusive premises at `a7ca4b349`, preserving inner getter output,
 saved outer concat continuations, delayed CV reads and pending-error cleanup.
-The separate temporary Stringable direct-echo control still destroys its receiver
-before output; its unchanged model-only observation has zero agreement credit.
+At the phase37 cut the separate temporary Stringable direct-echo control destroys
+its receiver before output; that frozen whole-source observation keeps zero agreement.
 The actual375 join over `f8ad4d4a4` passes strict at `3876bc706` (5.671s);
 private source/state/control cuts retain their original inputs.
+Direct Stringable echo now holds an authenticated named noarg NEW input through
+output separately from its cast pin. Borrowed CV self-drop still destroys during
+cast release, then writes a successful string before a pending destructor exception.
+[Six exact originals and six reached groups](coverage/semantics/stringable-echo-review.json)
+pass 787 setup-inclusive premises across `caf0f56ab`/`e6ff87e95`; strict375 and
+source6 retain `b0a90ed31`. Throwing cleanup/previous links and concat timing agree;
+plain strings remain admitted. Two fixture seek failures retain zero credit.
 PARAMETERBACKINGS and wider conversions remain required.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded

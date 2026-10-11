@@ -2740,12 +2740,24 @@ Successful normal scalar EMIT now clears current-frame scratch BASE after output
 without changing concat publication, saved owners or getter admission. Five originals
 agree and five whole reached groups pass 570 setup-inclusive premises at `a7ca4b349`;
 strict375 passes (5.730s). Native6 and unchanged baseline2 retain `7a3a39cda`; the kept
-BASE counterexample is now supported. The temporary Stringable control retains its
-preexisting early-destruction mismatch with whole-source agreement0, including its
+BASE counterexample is now supported. At that phase37 cut the temporary Stringable
+control retains its early-destruction mismatch with whole-source agreement0, including its
 matching concat suffix. The fixture preparation failure stays0; earlier cuts are
 not renewed. [Concat-consumer ledger](coverage/semantics/concat-emit-review.json).
 The actual375 join over `f8ad4d4a4` passes strict at `3876bc706` (5.671s,
 state/source/native credit0); private source5/state570 and control0 are not renewed.
+Direct ordinary Stringable ECHO now separates original named noarg NEW ownership
+from the cast pin; original-input destruction follows output. Borrowed CV self-drop
+keeps cast-release destruction before output, including successful returned bytes
+before a pending destructor exception. Native6 and unchanged mismatching baseline2
+retain `c335d746f`; strict375/source6 pass at `b0a90ed31`. Six whole reached groups
+pass 787 setup-inclusive premises: owned/borrowed228 at `caf0f56ab` and remaining559
+at `e6ff87e95`, with source/runtime unchanged across the fixture-only bridge.
+Plain-string compatibility, malformed carriers/source, budgets, error roots and
+callback/cleanup previous links are covered; concat and generic168 remain unchanged.
+Both original state seek failures stay0; one nested-cleanup diagnostic has agreement0.
+Phase37 cuts are frozen; wider inputs/consumers remain required.
+[Stringable ECHO ledger](coverage/semantics/stringable-echo-review.json).
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;
