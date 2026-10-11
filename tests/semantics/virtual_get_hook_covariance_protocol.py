@@ -306,7 +306,7 @@ INVALID = [
     r'ppropertydesc_child = pclassdesc_child.PROPERTIES[0]',
     r'$property_hook_origin(S,ppropertydesc_child) = (porigin_hook)',
     r'porigin_hook = PORIGIN n_unit pcpath_hook',
-    r'S.ERRORORIGIN = (PORIGIN n_unit eps) /\ pclassdesc_child.LINE = 5 /\ pcpath_hook =/= eps',
+    r'S.ERRORORIGIN = eps /\ pclassdesc_child.LINE = 5 /\ pcpath_hook =/= eps',
     r'$origin_node(S.SOURCES,porigin_hook) = (NPropertyHook phpType14_hook phpType24_hook phpType4_hook phpType11_hook phpType16_hook phpType39_hook metadata_hook)',
     r'$source_line(metadata_hook) = 6 /\ $class_named(S.CLASSNAMES,$ptlc(pclassdesc_child.NAME)) = eps /\ $class_link_at(S.LINKEDPARENTS,pclassdesc_child.ORIGIN) = eps /\ $class_named(S.CLASSNAMES,$ptlc(pclassdesc_parent.NAME)) = (pclassdesc_parent.ORIGIN)',
     r'$property_hook_covariance_parent(S,ppropertydesc_parent,ppropertydesc_child) /\ $property_hook_covariance(S,ppropertydesc_parent,ppropertydesc_child) = PVINCOMPATIBLE /\ ~$property_hook_virtual_edge(S,ppropertydesc_parent,ppropertydesc_child)',
