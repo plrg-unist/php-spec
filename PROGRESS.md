@@ -23,21 +23,25 @@ Private source2 / 228+6 checks retain their original cuts.
 [Declare ledger](coverage/semantics/compiler-declare-review.json).
 
 Exact noattr/noarg by-value untyped named functions and static no-capture Closure
-assignments now admit plain empty named descendants under authentic nested While
-hosts and existing standalone Block chains. Three originals agree at 8089eb5f /375
-(strict3 5.922s): skipped loops preserve precompiled anonymous identities, selected
-factories retain reverse publication and qualified early case ownership, and two
-Closure instances retain old/current targets and guarded first9/fresh0 defaults.
-Author492 and independent144 pass 636 premises: 598 setup/source-frontier and
-38 pure queries, with 23 real Block, publication, creation/capture, allocation and
-eligible no-op steps. Fixtures stop at required allocations; syntax preparation
-and elaboration add no runtime credit. No failures in this cut. If hosts inside While, other
-loops, nested factories and wider signatures/targets/captures remain required.
+assignments now admit plain empty named descendants in authentic If branches
+inside While ancestry, retaining existing standalone Block and nested If/While
+paths. Three originals agree at df0ae18c /375 (strict3 6.122s): selected If/CHOOSE
+steps precede callable publication or Closure creation; reverse calls and two live
+Closure receivers retain class history, lexical namespace and first9/fresh0 defaults.
+Author539 and independent183 pass 722 premises: 683 setup/source-frontier and
+39 pure queries, with 29 genuine selection, Block, publication, creation/capture,
+allocation and eligible no-op steps. Fixtures stop at required allocations;
+syntax preparation and elaboration add no runtime credit. The original author
+literal-list elaboration failure retains zero credit; its affected checks pass after
+two parentheses corrections. Do/other loops, nested factories and wider signatures,
+targets or captures remain required.
+[While-hosted If ledger](coverage/semantics/anonymous-while-if-rtd-review.json).
+
+The earlier nested-While cut retains source3/state636 at 8089eb5f and its
+fb295c7c/c40c6f57 strict3 join (5.976s), including the shared task datatype and
+reviewed parentless class linking. Historical If-inside-While negatives are superseded
+only for authenticated mixed ancestry; all original cuts remain frozen without replay.
 [Nested-While ledger](coverage/semantics/anonymous-nested-while-rtd-review.json).
-The 375 join over c40c6f57 passes strict3 at fb295c7c (5.976s), checking
-the shared PROPERTY_GET_STRING_LONG task datatype. Separate review preserves
-reached parentless class linking and excludes the specialized bind/getter/hook/collector
-routes. Private source3/state636 retain their original 8089 cuts without replay.
 
 The earlier If-hosted While cut retains source3/state887 at 376de1e1 and its
 zero-credit Else-union elaboration failure. Its 375 composition at aa241bdf over

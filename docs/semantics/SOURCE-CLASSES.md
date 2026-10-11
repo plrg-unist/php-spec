@@ -111,11 +111,11 @@ fail at the second statement, retaining the first callable and history before ei
 body runs. The [conditional-factory review](../../coverage/semantics/anonymous-conditional-factory-rtd-review.json)
 separates these real publication/allocation/fatal steps from pure placement queries.
 The If host may lie at root or a valid namespace body through authenticated
-standalone Block chains and nested main/elseif/else branches. Admission checks every real Block ancestor of that host
+standalone Block chains and mixed If/While ancestry. Admission checks every actual host ancestor
 and the actual main/elseif/else suffix; path lengths are checked before slicing.
 Standalone Block chains inside the branch body are also admitted. A shrinking
 path rule authenticates each actual parent Block and child before reaching the
-source-authenticated If/ElseIf/Else branch; same-shaped Do or loop paths fail.
+source-authenticated If/ElseIf/Else branch; same-shaped Do or other-loop paths fail.
 The [branch-body Block review](../../coverage/semantics/anonymous-branch-block-rtd-review.json)
 separates these real Block entries and publication/allocation frontiers from pure
 ancestry and receipt queries.
@@ -135,7 +135,7 @@ Named descendants under unsupported loop or function ancestors remain Unsupporte
 Variable assignments to static no-capture noarg by-value untyped Closures at root
 or a valid namespace body, through authenticated standalone Block chains or
 in actual `if` main, `elseif` or `else` bodies through authenticated branch-body
-Block chains and the same Block/nested-If host ancestry, or in authentic `while`
+Block chains and the same mixed Block/If/While host ancestry, or in authentic `while`
 bodies through standalone Block chains with the same root/namespace/Block/If or
 authenticated nested While host ancestry,
 admit plain empty named descendants.
@@ -158,7 +158,10 @@ then authentic targets, saved frames, class history and first allocations.
 The [nested-While review](../../coverage/semantics/anonymous-nested-while-rtd-review.json)
 authenticates both actual While ancestors and intervening/body Blocks, selected
 publication and genuine function or old/current Closure allocation targets.
-Named descendants under If hosts inside While, other loops,
+The [While-hosted If review](../../coverage/semantics/anonymous-while-if-rtd-review.json)
+authenticates each actual If/While host and selected branch, with genuine If/CHOOSE
+transitions before publication or creation and saved-frame allocations.
+Named descendants under Do or other loops,
 nested functions or nested Closures, other targets,
 captures and signatures remain Unsupported.
 The [block-Closure review](../../coverage/semantics/anonymous-block-closure-rtd-review.json)
