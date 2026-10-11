@@ -569,7 +569,8 @@ UNTYPED = ['$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryUnbackedUntypedPar
  'S_false_found = $opu_seek(S_after_write,3,1000)',
  'S_false_found.COMPLETION = NORMAL \\/ S_false_found.COMPLETION = BUDGET',
  'S_false = S_false_found[.COMPLETION = NORMAL]',
- 'S_false.TODO = (PROPERTY_HOOK_RESULT ppropertyhook_again) :: ptask_again* /\\ S_false.RESULT = KNOWN '
+ 'S_false.TODO = (PROPERTY_HOOK_RESULT ppropertyhook_again) :: ptask_again*',
+ 'S_false.RESULT = KNOWN '
  '(PBOOL false) /\\ S_false.CURRENT = eps /\\ $heap_owners($heap_prune($heap_graph(S_false)),HOBJECT n_child) = 1 '
  '/\\ ~$property_hook_backing(S_false,n_child,ppropertydesc_child) /\\ $opu_guard(S_false)',
  '$objectprops_at(S_false.OBJECTPROPS,n_child) = ([{ DECL (ppropertydesc_child.ORIGIN), NAME '
