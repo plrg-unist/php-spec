@@ -154,6 +154,18 @@ buffer slot remain until later cleanup. The original agrees with native PHP;
 203 reached source/control checks cover retention, coherent fences and the real
 acquisition/release sequence with budget replay.
 
+The same main PASS1 preparation admits one fresh `stdClass` leaf child of the
+called owner-zero target. The child must be allocated, absent from the frozen
+trace and FREESET, and owned only by that parent. The existing borrowed tag keeps
+their outgoing edge without adding a heap root. Native and model agree on the
+original: both weak targets survive the first collection, then ordinary parent
+acquisition/release disposes both before the second collection returns0. At
+`800e`/375, compiler/init, source agreement and199 reached checks pass (129/70),
+including coherent nonleaf/type/owner/frozen-plan/slot/DONE controls and budget
+replay. The first127 fixture run retains zero credit: an update-only slot helper
+left its supposed nonleaf unchanged. Wider children, shared ownership, references,
+arrays, workers and pending contexts remain required; folds and owners are unchanged.
+
 Module335 extends that storage admission to normal detached-worker close after
 the collection is quiescent. It requires the actual control-release, operation-exit
 and worker-release tail, a terminated graceful worker, and exactly the real
@@ -669,7 +681,7 @@ FREESET alongside F. One terminal continuation26 at0575 retires F and the refere
 keeps D allocated/weak-live, clears ACTIVE/PLAN/WORKER and matches native113 events.
 This check uses its recorded180-second case cap (123.814s); existing cases retain120.
 It checks neither E retirement nor terminal replay/global state validity.
-Compiler/init pass; baseline115 localizes the former refusal. Whole source41 CLI60
+Compiler/init pass; baseline115 localizes the former refusal. Whole source41 CLI60/180
 remains OPEN/zero agreement. Original197 runs, terminal81/57 timeouts and the E66
 syntax failure retain zero credit; old guard126/terminal142 remain unrun. Broader
 main/mixed layouts, external aliases, black/proxy components and non-idle workers

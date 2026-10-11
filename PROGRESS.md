@@ -1633,7 +1633,9 @@ leaves D weak-live, clears GC and matches native113 END events. Seven cuts execu
 326 genuine/control checks plus9 pure exclusions; exact transfers preserve all
 prior cases and only the new terminal uses180 (existing defaults120).
 Compiler/init pass at000bee and current-parent09be; baseline115 is localization only.
-Whole source41 CLI60 remains OPEN/zero agreement. Both image197 runs, terminal81/57
+Whole source41 CLI60/180 remains OPEN/zero agreement. Its finite100-step CLI cut
+establishes checked early progress only; counted seek120 timed out without a frontier.
+Both image197 runs, terminal81/57
 and E66's syntax failure retain zero credit. Wider main/mixed/black/external/reference
 layouts and non-idle workers remain required; source40 and earlier cuts are unchanged.
 [Ledger](coverage/semantics/cycle-collection-review.json).
@@ -1677,8 +1679,18 @@ The acquisition cut follows both BASE/operand owners through comparison and
 shared release to the actual storage pin: weak lookup is null while allocation
 and its physical GC_RETIRED slot remain. Zero/one-budget replay passes. Baseline39
 localizes the old refusal; the two premature fixture assertions and root tuple
-observation retain zero credit. Workers, pending collectors and outgoing-child
-targets remain required; count folding and old OPEN/zero cuts are unchanged.
+observation retain zero credit. Workers, pending collectors and wider child layouts
+remain required; count folding and old OPEN/zero cuts are unchanged.
+
+Main PASS1 preparation325 also retains one fresh `stdClass` leaf child owned only
+by that called owner-zero target, outside the frozen graph/FREESET. Existing BARE
+retention preserves the edge without an owner/count change. At `800e`/375, full
+compiler/init, native66 source agreement and199 reached source/control checks
+(retention129/child-temporary70) pass. Actual child copies release3→2→1 while the
+parent stays borrowed; ordinary parent acquisition/release later disposes both.
+Coherent graph/type/owner/slot/DONE negatives and zero/one replay pass. Baseline51
+localizes the former refusal; the original127 no-op nonleaf control retains zero
+credit. Wider child/reference/array/worker/pending graphs remain required.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning

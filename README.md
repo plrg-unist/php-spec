@@ -1133,7 +1133,7 @@ cuts execute 326 source/control checks plus nine pure array exclusions for the
 ordinary-Fiber F self-reference. Actual PASS1 retrace excludes the reference from
 COUNTED and includes it once in FREESET; one terminal continuation retires F and
 its reference, leaves D weak-live, clears collector state and matches native END events.
-Whole source41 CLI60 remains OPEN/zero agreement; broader reference layouts remain
+Whole source41 CLI60/180 remains OPEN/zero agreement; broader reference layouts remain
 required.
 
 Main-thread residual overlap handles a child held by a live CV with an ordinary
@@ -1157,7 +1157,10 @@ The final main retrace also retains a called ordinary zero-owner leaf in its
 existing borrowed root slot, without adding a heap owner. A real WeakReference
 temporary promotes that slot; ordinary release clears weak lookup under the
 storage cleanup pin. The original agrees with native PHP and 203 reached
-source/control checks pass. Wider worker and nonleaf cases remain required.
+source/control checks pass. One fresh `stdClass` leaf child created after the final
+trace is also retained without an added owner; native PHP agrees and199 reached checks
+cover retention and the child's temporary release. Wider worker, shared and nested
+child cases remain required.
 
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
