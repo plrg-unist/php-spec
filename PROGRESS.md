@@ -3311,6 +3311,20 @@ and wider getter/PARAM scope remain required. Phase42 cuts are frozen.
 [Numeric-string integer ledger](coverage/semantics/magic-property-numeric-string-integer-review.json).
 The join over `69333905f` at `0de05afcb` preserves reviewed parent routes with 375 modules.
 Retained private and parent-family compiler cuts are reused; fresh strict/source/state/native counts remain 0.
+Weak builtin-bool MAGIC_GET now converts original non-NaN floats, in-range ints and
+ordinary/valid-carrier strings using quiet scalar truth, without numeric parsing.
+Actual unconstrained references update their cell; BYVAL changes only RV. Genuine
+bool|string source references preserve whole-state exact bool reads, then select a
+raw-string conflict without conversion. CV reception sees destructor mutation;
+owned reception detaches before BASE cleanup. Strict getter/null rejection stays distinct.
+Native8/baseline1 retain `3cccdd0ea`; strict375/source7 and seven whole reached groups
+pass 1,053 setup-inclusive premises at `a303833a8`, including fixed truth values,
+aliases, full driver budgets, source/STRINGDATA preservation and constructed exclusions.
+The original fixture preparation failure stays0 after a one-line driver wrapper correction.
+NaN native control observes normal overwrite/current-type conflict/throw no-write,
+with model/state/agreement0; its warning continuation and wider target/PARAM scope
+remain required. Shared50/95 and owner rules stay unchanged; phase43 cuts are frozen.
+[Scalar-boolean ledger](coverage/semantics/magic-property-scalar-boolean-review.json).
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;

@@ -1,0 +1,151 @@
+{
+  "status": "Bounded quiet property conversion; independently reviewed semantics and retained validation.",
+  "target": "PHP8.5.10 CLI NTS64; vendor/php-src release34308a6666b2d489c509541ea9befea9e2b42348; profile30719",
+  "accepted_parent": "709fd7afe7901a54802396ff077cca98abc4fa92; phase43 cuts frozen",
+  "runtime_revision": "6bea6357a62380b1b6b673e5f1da088023f763cc",
+  "tested_revision": "a303833a8604cceab0a0f8e930f937bb57f2ab00",
+  "scope": "Modules380/384 verify original non-bool scalars against exact builtin-bool MAGIC_GET using quiet scalar truth. Non-NaN floats, in-range ints and ordinary/valid-carrier strings convert only the actual unconstrained RV/cell. Real property sources preserve exact bool reads and select conversion-conflict TypeError without writing the referent. Getter strictness and NULL rejection stay ordinary.",
+  "runtime": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "modules": 375,
+    "mode": "SL --sl/jobs1; native30/modelCLI60/process90/numeric120/100000 model steps; profile30719; LC_ALL=C/TZ=UTC; retained providers, no rebuild"
+  },
+  "input_sha256": {
+    "spec/semantics/380-magic-property-get.watsup": "db6a895b8e550d050f6f418f797de1089dd354e0efa2628ffe5ca08335ee4013",
+    "spec/semantics/384-magic-property-reference-types.watsup": "fb8be0e7d8a40a24486196a2539de25ae380c5e9c72df3b2ce847503af702ed7",
+    "tests/semantics/dynamic_property_warning_sources.py": "6761410dbe0a04945536b5ebb0e8a89a004c0c970ed6be983b0542f68f2a9c51",
+    "tests/semantics/magic_property_scalar_boolean_protocol.py": "b9512cb4ea50988b2ebc24ba23dab49580bd67e4f9bc46cc6c92e47be76cfbaa"
+  },
+  "native_first": {
+    "revision": "3cccdd0ea44c503721b1239a6f838aac0cc74846",
+    "primary_cases": 7,
+    "control_cases": 1,
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-scalar-boolean-native44-c777n5h0/report.json",
+    "seconds": 0.23109054565429688,
+    "credit": "Eight observed processes0/empty; model/state/agreement0."
+  },
+  "unsupported_baseline": {
+    "revision": "3cccdd0ea44c503721b1239a6f838aac0cc74846",
+    "case": "review-property-magic-scalar-boolean-reference-kept44",
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-scalar-boolean-baseline44-9ymcpymu/report.json",
+    "process_exit": 1,
+    "modeled_exit_status": null,
+    "stdout": "C|G1|value|",
+    "reason": "magic getter property type coercion",
+    "seconds": 8.739822465926409,
+    "credit": 0
+  },
+  "strict": {
+    "revision": "a303833a8604cceab0a0f8e930f937bb57f2ab00",
+    "parent": "6bea6357a62380b1b6b673e5f1da088023f763cc",
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-scalar-boolean-strict44-6xatf5mo/report.json",
+    "modules": 375,
+    "seconds": 6.040954453870654,
+    "exit": 0,
+    "stdout": "true\n",
+    "stderr": "",
+    "state_premises": 0
+  },
+  "source": {
+    "revision": "a303833a8604cceab0a0f8e930f937bb57f2ab00",
+    "cases": 7,
+    "raw": ".tools/properties-magic-decimal-current32/.tools/dynamic-property-warning-source-b9oowipd/report.json",
+    "outcomes": "Seven accepted/checked normal model exits0 and actual native/model processes0; model stdout=native=EXPECTED bytewise, all stderr empty and reason/diagnostic null."
+  },
+  "source_sha256": {
+    "review-property-magic-scalar-boolean-reference-kept44": "775ca91f5a5d5c10aaf5fb26c5e09e14e4d6a1c16d1daf0374034d11a864c7b1",
+    "review-property-magic-scalar-boolean-float-kept44": "0655f9c14bfa0588c2ca69b136815d3be4feb3b9870c7199a24370c96eb54ea2",
+    "review-property-magic-scalar-boolean-reference-drop44": "8a5304a5908c2cb3c4226c93685b130bc5516c818855bbd876bcb11bf29a01a5",
+    "review-property-magic-scalar-boolean-value44": "62327b062e788d3d90aa5f44da404dd1211fe25775995bd11e66d655ad5eed1e",
+    "review-property-magic-scalar-boolean-owned44": "f292293d14a81ab063a3604edc6f4598b1aec705b42354f7c21b56f1a71f46ca",
+    "review-property-magic-scalar-boolean-source-conflict44": "f565ebc82d514d2d6237227a68a011d3f78a672db843634dc2201c43a724226e",
+    "review-property-magic-scalar-boolean-strict-getter44": "867e6ec10f438ee078408092efb510db9393b234eeeb64fe98039acd0b8d96c5"
+  },
+  "reached": [
+    {
+      "group": "reference-kept",
+      "revision": "a303833a8604cceab0a0f8e930f937bb57f2ab00",
+      "premises": 206,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-scalar-boolean-39ifqa3y/report.json"
+    },
+    {
+      "group": "float-kept",
+      "revision": "a303833a8604cceab0a0f8e930f937bb57f2ab00",
+      "premises": 189,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-scalar-boolean-m4opviwe/report.json"
+    },
+    {
+      "group": "reference-drop",
+      "revision": "a303833a8604cceab0a0f8e930f937bb57f2ab00",
+      "premises": 123,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-scalar-boolean-afhkpx0w/report.json"
+    },
+    {
+      "group": "value",
+      "revision": "a303833a8604cceab0a0f8e930f937bb57f2ab00",
+      "premises": 123,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-scalar-boolean-nk4femkq/report.json"
+    },
+    {
+      "group": "owned",
+      "revision": "a303833a8604cceab0a0f8e930f937bb57f2ab00",
+      "premises": 128,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-scalar-boolean-nq6rcip1/report.json"
+    },
+    {
+      "group": "source-conflict",
+      "revision": "a303833a8604cceab0a0f8e930f937bb57f2ab00",
+      "premises": 165,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-scalar-boolean-uua5xop6/report.json"
+    },
+    {
+      "group": "strict-getter",
+      "revision": "a303833a8604cceab0a0f8e930f937bb57f2ab00",
+      "premises": 119,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-scalar-boolean-y2ev51_e/report.json"
+    }
+  ],
+  "setup_inclusive_premises": 1053,
+  "facts": [
+    "Actual string '0' becomes false and '0.0'/runtime nonnumeric string become true without numeric parsing; int0/negative int and floatnegativezero/positivezero/INF have independently fixed booleans. Whole verification/complete/reverify and full driver budget0/1 preserve every other field, including STRINGDATA and source metadata.",
+    "Genuine REF conversion happens before getter receiver retirement; a destructor can then change the referent copied into the CV. BYVAL leaves the raw int global for destruction while preserving its bool RV. Owned reception detaches the converted bool before BASE retirement.",
+    "The same genuine bool|string cell first returns exact bool with whole-state identity and source/backing preserved. Its later raw string conversion must conflict even though both raw string and bool satisfy that source; native string|bool error remains pending through destructor detachment/repair.",
+    "Strict getter/weak caller rejects the raw string without converting it; weak getter/strict caller converts. NULL rejects before scalar bool conversion. TYPEBOOL marker/actual-original/RV/target/PARAM, NaN/invalidbits/range/heap and forged-carrier checks are explicitly constructed. No legacy TYPEBOOL outcome maintenance was needed."
+  ],
+  "nan_control": {
+    "case": "review-property-magic-scalar-boolean-nan-control44",
+    "source_sha256": "522d4b1e9f072cdf6c61724bc8c0d55e17eea4dfcb30d21d16ba5bd7d08e1ca1",
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-scalar-boolean-native44-c777n5h0/report.json",
+    "observed": "Warning handler runs for unconstrained and constrained NaN; this handler-string mutation is overwritten by true on normal return, constrained diagnosis uses the current bool, and handler throw preserves the changed string without bool write. These observations do not establish a pre-warning captured bool.",
+    "native_observations": 1,
+    "model_evaluations": 0,
+    "state_premises": 0,
+    "agreement": 0,
+    "remaining": "NaN warning/callback continuation is excluded from both quiet rules; handler false/zero mutation needs separate native-first evidence."
+  },
+  "preparation": {
+    "revision": "a303833a8604cceab0a0f8e930f937bb57f2ab00",
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-scalar-boolean-state-prep44-yzzownqy/report.json",
+    "premises": 1053,
+    "credit": "Seven full-sort responses ok/workers closed0/empty; evaluation0."
+  },
+  "original_failures": [
+    {
+      "revision": "6bea6357a62380b1b6b673e5f1da088023f763cc",
+      "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-scalar-boolean-state-prep44-md_p5190/report.json",
+      "cause": "Fixture budget expression referenced undefined sensitive_transition before evaluation.",
+      "credit": 0
+    }
+  ],
+  "compatibility": "6bea to a303 changes only the fixture budget1 expression to the literal current40 driver transition; runtime/source/native EXPECTED bytes are unchanged. Original preparation failure stays0; all affected seven fixtures prepared and evaluated at a303.",
+  "remaining": "NaN warning continuation, conversion targets beyond exact builtin-bool, PARAMETERBACKINGS and wider receiver/signature/access/quiet/write/recursive/coercion domains remain required. Array/object conversion is not admitted; generic typed/scalar truth and owner protocols are unchanged.",
+  "engine": [
+    "vendor/php-src/Zend/zend_API.c:zend_parse_arg_bool_weak accepts scalar through string, calls zend_is_true, and checks EG(exception)",
+    "vendor/php-src/Zend/zend_operators.h:i_zend_is_true uses byte-string truth and warns on NaN before reading the value",
+    "vendor/php-src/Zend/zend_execute.c:zend_verify_scalar_type_hint rejects property NULL; zend_verify_weak_scalar_type_hint commits bool only after successful weak conversion; zend_verify_prop_assignable_by_ref_ex selects real-source conflict without changing the original",
+    "vendor/php-src/Zend/zend_object_handlers.c:zend_std_read_property uses getter declaration strictness and verifies before OBJ_RELEASE"
+  ],
+  "recovery": "Tracked catalog and scalar-boolean helper reproduce the seven originals/whole fixtures; separately classified NaN original remains observation-only. Ignored trees retain checked/literal-eval programs, whole assertions, argv/cwd/process/raw streams and original clean identities. current32/owned28 remain live providers; no portability/rebuild claim."
+}

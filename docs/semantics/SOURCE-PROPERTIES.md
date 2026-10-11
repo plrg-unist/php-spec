@@ -517,3 +517,21 @@ Scalar/string callback replacements and unchanged real sources/tails bound this 
 object/array replacements, PARAMETERBACKINGS and wider getter scope remain required.
 Shared numeric/typed conversion and generic warning dispatch stay unchanged;
 phase42 evidence retains its original cuts.
+
+Weak builtin-bool MAGIC_GET also converts original quiet scalar results. In-range
+integers use nonzero truth; non-NaN floats include false signed zeros and true INF.
+Strings use their complete bytes: `"0"` is false, `"0.0"`/nonnumeric strings are true.
+Only the actual live unconstrained RV/cell is converted; ordinary and authenticated
+carrier strings are accepted without numeric parsing or STRINGDATA allocation.
+Genuine bool|string sources preserve exact bool reads and reject possible conversion
+with the first-source diagnostic, leaving raw/source unchanged. Getter strictness
+and user-property null rejection retain existing errors and receiver cleanup.
+The [scalar-boolean review](../../coverage/semantics/magic-property-scalar-boolean-review.json)
+records seven source agreements and seven whole groups/1,053 setup-inclusive premises,
+including fixed values, aliases, full driver budgets, REF/BYVAL/owned reception,
+pending errors and constructed actual-RV/carrier/PARAM/NaN/invalid-bit exclusions.
+One preparation-only failure stays0. The separate native NaN control observes warning
+callbacks but has zero model/state/agreement; no pre-warning captured bool is claimed.
+NaN continuation, conversion targets beyond exact builtin-bool, PARAMETERBACKINGS and
+wider getter/coercion domains remain required. Shared truth/type/owner rules and prior
+phase43 evidence retain their original cuts.

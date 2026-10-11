@@ -2003,6 +2003,15 @@ Scalar/string callbacks and unchanged source/tail authority remain bounded;
 wider object/array replacements remain required.
 The join over `69333905f` at `0de05afcb` preserves reviewed parent routes with 375 modules.
 Retained private and parent-family compiler cuts are reused; fresh strict/source/state/native counts remain 0.
+Weak bool MAGIC_GET now converts original non-NaN scalar results with PHP byte-string
+truth: `"0"` is false while `"0.0"` and nonnumeric strings are true. Unconstrained
+references update their cell; BYVAL changes only RV, and owned reception detaches
+before receiver cleanup. Real bool|string sources preserve exact reads and diagnose
+later conversion conflicts without writing the referent; strict getters and null reject.
+[Seven source agreements and seven reached groups](coverage/semantics/magic-property-scalar-boolean-review.json)
+pass 1,053 premises at `a303833a8`, including signed zero/INF, aliases and full budgets.
+The fixture preparation failure stays0. NaN warning/control observations retain
+zero model/state/agreement; its continuation and wider target/PARAM scope remain required.
 PARAMETERBACKINGS and wider conversions remain required.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded

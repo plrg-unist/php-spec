@@ -31,6 +31,8 @@ dec $property_get_unconstrained(pstate, poperand) : bool
 dec $property_get_verify(pstate, ppropertyget, poperand) : pstate
 dec $property_get_verify_value(pstate, ppropertyget, ppropertydesc, pvalue, ptypeconversion) : pstate
 dec $property_get_given(pstate, pvalue) : ptbytes
+dec $property_get_bool_scalar(pstate, pvalue) : bool
+dec $property_get_bool_apply(pstate, ppropertyget, poperand, bool) : pstate
 dec $property_get_integer_apply(pstate, ppropertyget, poperand, int) : pstate
 dec $property_get_float_apply(pstate, ppropertyget, poperand, nat) : pstate
 dec $property_get_string_apply(pstate, ppropertyget, poperand, ptbytes) : pstate
@@ -368,7 +370,24 @@ def $property_get_verify(S, ppropertyget, poperand) = S[.COMPLETION = UNSUPPORTE
 def $property_get_given(S, PBOOL b) = $ptascii("bool")
 def $property_get_given(S, pvalue) = $typed_given(S, pvalue) -- otherwise
 
+;; Quiet weak-bool verification accepts scalar truth without numeric parsing.
+;; NaN has a warning continuation and is deliberately excluded here.
+def $property_get_bool_scalar(S, PINT i) = $long_range(i)
+def $property_get_bool_scalar(S, PFLOAT n_float) = true
+  -- if $(n_float < 18446744073709551616)
+  -- if ~($float_decode(n_float) = NOTNUMBER n_float)
+def $property_get_bool_scalar(S, PSTRING ptbytes) = true
+def $property_get_bool_scalar(S, PSTRING_CARRIER pstringidentity ptbytes) = $string_carrier_valid(S, PSTRING_CARRIER pstringidentity ptbytes)
+def $property_get_bool_scalar(S, pvalue) = false -- otherwise
+
 def $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, TYPEVALUE pvalue) = S
+def $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, TYPEBOOL pvalue) = $property_get_bool_apply(S, ppropertyget, S.RESULT, $truth(S, pvalue))
+  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "bool"]))]
+  -- if $property_get_bool_scalar(S, pvalue)
+  -- if $call_reference_operand_valid(S, S.RESULT)
+  -- if $property_get_unconstrained(S, S.RESULT)
+  -- if S_read = $quiet_operand(S, S.RESULT)
+  -- if S_read.RESULT = KNOWN pvalue
 def $property_get_verify_value(S, ppropertyget, ppropertydesc, PBOOL b, TYPEVALUE (PFLOAT n_float)) = $property_get_float_apply(S, ppropertyget, S.RESULT, n_float)
   -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "float"]))]
   -- if $typed_number(PBOOL b) = (NINT i)
@@ -463,6 +482,9 @@ def $property_get_verify_value(S, ppropertyget, ppropertydesc, PFLOAT n_float, T
   -- if S_read.RESULT = KNOWN (PFLOAT n_float)
 def $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, TYPEREJECT) = $throw_scalar(S, "TypeError", $ptascii("Value of type ") ++ $property_get_given(S, pvalue) ++ $ptascii(" returned from ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::__get() must be compatible with unset property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertyget.NAME ++ $ptascii(" of type ") ++ $property_type_name(S, ppropertydesc), ppropertyget.LINE)
 def $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, ptypeconversion) = S[.COMPLETION = UNSUPPORTED "magic getter property type coercion"] -- otherwise
+
+def $property_get_bool_apply(S, ppropertyget, KNOWN pvalue, b) = S[.RESULT = KNOWN (PBOOL b)]
+def $property_get_bool_apply(S, ppropertyget, REFERENCE n, b) = $write_cell_checked(S, n, PBOOL b, ppropertyget.LINE)[.RESULT = REFERENCE n]
 
 def $property_get_integer_apply(S, ppropertyget, KNOWN pvalue, i) = S[.RESULT = KNOWN (PINT i)]
 def $property_get_integer_apply(S, ppropertyget, REFERENCE n, i) = $write_cell_checked(S, n, PINT i, ppropertyget.LINE)[.RESULT = REFERENCE n]
