@@ -230,6 +230,19 @@ plus budget replay pass; the original source supplies eventual disposal.
 Wider finalizer effects, graphs, external sharing and worker/pending collectors
 remain required; no count/owner or general WeakReference closure is claimed.
 
+The same singly owned posttrace INSTANCE leaf may have an own private destructor
+authenticated by its owner and exact source member/name/flags. Existing public
+admission stays unchanged. `Zend/zend_objects.c:zend_objects_destroy_object`
+raises an access `Error` before the private body; `zend_objects_store_del`
+preserves destructor and storage pins during cleanup. At `6e12cf29e`/375,
+compiler/init, native 96-byte agreement and 272 reached checks (141/131) pass.
+The actual denied entry resumes its pending Error through a nested release
+operation into validated child and parent storage pins: both weak lookups are
+null while allocations remain present. Source agreement supplies eventual
+catch/disposal. A public throwing-child original already agrees at `69333905f`.
+Source/method forgeries, owner/shape/consumer controls and zero/one replay pass;
+inherited/protected methods, wider graphs and worker contexts remain required.
+
 Module335 extends that storage admission to normal detached-worker close after
 the collection is quiescent. It requires the actual control-release, operation-exit
 and worker-release tail, a terminated graceful worker, and exactly the real

@@ -2034,6 +2034,18 @@ pass. Baseline 61 localizes the original refusal. Wider child graphs, callbacks,
 worker/pending contexts and count/owner closure remain required; source 41 and
 prior OPEN/zero cuts are unchanged. [Ledger](coverage/semantics/cycle-collection-review.json).
 
+Main PASS1 preparation 325 also admits an own private child destructor, tying
+its cached owner and member path to the actual source declaration. Ordinary
+USER teardown raises `Error` before body entry; existing public dispatch and
+owner/count/free rules are unchanged. At `6e12cf29e`/375, compiler/init, native
+96-byte agreement and 272 reached checks (retention 141/access 131) pass.
+Pending-error cleanup reaches both validated storage pins with weak identities
+null and allocations retained; the original supplies eventual catch/disposal.
+The public throwing-child original already agrees with native 98 bytes at
+`69333905f`. Baseline 62 preserves the old private-child refusal as localization.
+Wider visibility, inherited methods, graphs and worker contexts remain required;
+source 41 OPEN/zero cuts remain unchanged. [Ledger](coverage/semantics/cycle-collection-review.json).
+
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
 resume fixes `Array` before live target lookup; handler/child exceptions abort FETCH.
 Seven exact originals and117 independent premises retain `c2a1051db`/331. Actual335
