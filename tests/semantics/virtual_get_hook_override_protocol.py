@@ -186,9 +186,10 @@ CV = classes('VirtualOverride') + [
 
 def write(s, line, value, class_name, owners, this=False):
     message = f'Property {class_name}::$value is read-only'
+    rhs = f'VARIABLE ($ptascii("value")) {line}' if this else f'KNOWN (PINT {value})'
     clauses = [
         f'{s}.TODO = (ASSIGN_ARRAY (BASE_PROPERTY_PENDING pbase_{s} poperand_{s} z_receiver_{s}) z_{s} b_{s}) :: ptask_{s}*',
-        f'z_{s} = {line} /\\ {s}.RESULT = KNOWN (PINT {value}) /\\ $call_task_valid({s},ASSIGN_ARRAY (BASE_PROPERTY_PENDING pbase_{s} poperand_{s} z_receiver_{s}) z_{s} b_{s}) /\\ $vo_guard({s})',
+        f'z_{s} = {line} /\\ {s}.RESULT = {rhs} /\\ $call_task_valid({s},ASSIGN_ARRAY (BASE_PROPERTY_PENDING pbase_{s} poperand_{s} z_receiver_{s}) z_{s} b_{s}) /\\ $vo_guard({s})',
         f'{s}_receiver = $property_pending_resolve({s},pbase_{s},poperand_{s},PPW,z_receiver_{s},z_{s})',
         f'{s}_receiver.COMPLETION = NORMAL',
         f'{s}_receiver.BASE = BASE_PROPERTY (POBJECT n_{s}) ($ptascii("value"))',
@@ -197,7 +198,9 @@ def write(s, line, value, class_name, owners, this=False):
     ]
     if this:
         clauses += [f'{s}.CURRENT = (pcallcontext_write)',
-                    f'$this_receiver({s}) = (n_{s}) /\\ pcallcontext_write.LEXICAL_CLASS = (porigin_parent) /\\ pcallcontext_write.CALLED_CLASS = (porigin_grand)']
+                    f'$this_receiver({s}) = (n_{s}) /\\ pcallcontext_write.LEXICAL_CLASS = (porigin_parent) /\\ pcallcontext_write.CALLED_CLASS = (porigin_grand)',
+                    f'{s}_rhs = $resolve({s},{s}.RESULT)',
+                    f'{s}_rhs.COMPLETION = NORMAL /\\ {s}_rhs.RESULT = KNOWN (PINT {value})']
     clauses += [
         f'PhpStep: {s} ~> {s}_raw',
         f'{s}_raw.COMPLETION = THROWN "Error" ($ptascii("{message}")) z_{s} /\\ {s}_raw.TODO = ptask_{s}* /\\ {s}_raw.BASE = BASE_PROPERTY (POBJECT n_{s}) ($ptascii("value"))',
