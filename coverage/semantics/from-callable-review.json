@@ -1628,5 +1628,103 @@
         "review": "arguments_review_22 accepted the actual seam: bool magic-getter conversion, property-hook coalesce tails, empty named-class RTD counting/scope and live-reference Iterator string unpack are absent. These originals contain no class declarations, so the new scope scans and empty-class counter preserve their existing path. Prior reference-return and GC-plan guards also remain disjoint. The 39/152/163/172/270/281/331/358 paths and shared renderer/source/dispatch parents are unchanged from tested624. Exact maintained tests preserve the original native2/source2/state456 cuts; no current actor is warranted."
       }
     }
+  },
+  "captured_factory_fiber_return": {
+    "status": "ACCEPTED_PARTIAL",
+    "base_revision": "96bbf526a0fadd91b7d20f7d1ad5108e1adaae2f",
+    "semantic_revision": "3a31fc7272fdb5a12c173c69df5c4c35ace8e481",
+    "modules": 375,
+    "scope": "Captured Closure::fromCallable factory selects bound getReturn through the existing API. Validation covers only a defined successful ordinary object result, with exact identity and separate capture/Fiber and returned-object retirement; broader status and reference-result paths require separate evidence.",
+    "implementation": [
+      "spec/semantics/358-fiber-from-callable.watsup"
+    ],
+    "behavior": "A real CONFIG factory and saved call-site certificate mint a bound nonempty INPUT. Dereferenced callback members freeze getReturn despite later isTerminated mutation and producer/callback retirement. Completed START leaves the payload solely in Fiber.VALUE after the main payload cell clears. Retrieval returns that same object through the actual RESULTfalse marker and its operational VALUE carrier. Separate selected-null and returned-null source steps retire capture/Fiber first, then payload and empty trace before weak reads.",
+    "engine_routes": [
+      "vendor/php-src/Zend/zend_fibers.c: ZEND_METHOD(Fiber, getReturn), RETURN_COPY_DEREF(&fiber->result)",
+      "vendor/php-src/Zend/zend_closures.c: zend_create_fake_closure bound this_ptr"
+    ],
+    "artifact_worktree": ".tools/captured-factory-fiber-throw-unhandled-21",
+    "artifact_root": ".tools/captured-factory-fiber-return-21",
+    "cuts": {
+      "native": {
+        "revision": "96bbf526a0fadd91b7d20f7d1ad5108e1adaae2f",
+        "report": ".tools/captured-factory-fiber-return-21/captured-factory-fiber-return-native-21-19nneobl/report.json",
+        "sha256": "ed51d4f747e73d50dfd39ed1283a2508f306f5f9b8b23d01d0c88a764da0d284",
+        "oracle_cases": 2,
+        "source_credit": 0
+      },
+      "unchanged_public": {
+        "revision": "96bbf526a0fadd91b7d20f7d1ad5108e1adaae2f",
+        "report": ".tools/captured-factory-fiber-return-21/captured-factory-fiber-return-model-21-asiuinsq/report.json",
+        "sha256": "6fedd871d09959e5dd02ea2b70b7a88be6c6609da2c069952b68134b88df3daa",
+        "direct_source_credit": 1,
+        "captured": "Unsupported at factory selection after Q;B;P:held;A;",
+        "captured_source_credit": 0
+      },
+      "captured_repair": {
+        "revision": "3a31fc7272fdb5a12c173c69df5c4c35ace8e481",
+        "report": ".tools/captured-factory-fiber-return-21/captured-factory-fiber-return-repair-21-7noqolwt/report.json",
+        "sha256": "15bf676cef6a98fc199d0917e14c64b7ead151a7daece8ee60a875734aabec11",
+        "source_credit": 1,
+        "seconds": 22.40101718902588
+      },
+      "state": {
+        "revision": "3a31fc7272fdb5a12c173c69df5c4c35ace8e481",
+        "report": ".tools/captured-factory-fiber-return-21/factory-fiber-return-state-21-nzppq08h/report.json",
+        "sha256": "5aed9f00e879cf1f8ff91b3077d2f90c05b57cc1da07bc6191ca8b734b49307a",
+        "compiler": "PASS",
+        "compiler_seconds": 5.721832513809204,
+        "initialized_SL413": "PASS",
+        "state_seconds": 49.977134704589844,
+        "genuine_and_derived": 363,
+        "constructed": 50,
+        "source_credit": 0
+      }
+    },
+    "preserved_fixture_failure": {
+      "report": ".tools/captured-factory-fiber-return-21/factory-fiber-return-state-21-3eecso48/report.json",
+      "sha256": "fa87b567aa6b94cdad7d21aa964ee7f9bc008b0aa89a5a7d09af0650521cc7a6",
+      "reason": "Original413 used three pdestruction_* operation variables with the wrong type prefix. The syntax gate rejected elaboration; the corrected renderer only names them pdestructionoperation_*. No semantic or source change.",
+      "state_execution": "UNRUN",
+      "state_credit": 0
+    },
+    "maintained": {
+      "ids": [
+        "from-callable-direct-fiber-return",
+        "from-callable-factory-fiber-return"
+      ],
+      "sources": "tests/semantics/scoped_static_compound_cases.py",
+      "renderer": "tests/semantics/from_callable_return_fiber_review.py",
+      "renderer_sha256": "4614087068a9537cb95d838bd0fde61160657b61f6534cecb4fa7d45113e5bc0",
+      "dispatch": "tests/semantics/scoped_static_compound_protocol.py: from-callable-factory-bound-fiber-return",
+      "fixture_bytes": 69475,
+      "fixture_sha256": "de6a5130a3b69d5adfe163c94a75f0b3fe3d0ea2f06006e8f3dd3038a3c552d1",
+      "relocation_runtime_renewal": 0
+    },
+    "commands": [
+      "python3 .tools/captured-factory-fiber-return-21/run-captured-factory-fiber-return-native-21.py",
+      "python3 .tools/captured-factory-fiber-return-21/run-captured-factory-fiber-return-model-21.py .tools/captured-factory-fiber-return-21/captured-factory-fiber-return-native-21-19nneobl/report.json",
+      "python3 .tools/captured-factory-fiber-return-21/run-captured-factory-fiber-return-repair-21.py .tools/captured-factory-fiber-return-21/captured-factory-fiber-return-native-21-19nneobl/report.json",
+      "python3 .tools/captured-factory-fiber-return-21/run-factory-fiber-return-state-21.py"
+    ],
+    "caps": {
+      "native": 45,
+      "CLI": 60,
+      "outer": 90,
+      "steps": 100000,
+      "worker_request": 30,
+      "compiler": 120,
+      "state": 300,
+      "seek": 1000,
+      "finish": 1000,
+      "jobs": 1
+    },
+    "recovery": "Original sources/native stdout, genuine checked program, fixture, driver snapshots and raw exit receipts remain below artifact_root in artifact_worktree. Each cut binds its own clean revision and pinned PHP/profile; model/state cuts bind actual ordered 375 modules. Maintained relocation preserves exact bytes and renews no runtime evidence.",
+    "review": "arguments_review_22 independently accepted native2, direct1/original captured Unsupported0, the minimal358 admission, captured-only source1 repair, finite preflight, original syntax failure0 and corrected raw state413. Old throw cuts, ENOSPC0 and required original source 7 OPEN remain separate.",
+    "remaining": [
+      "Undefined, failed and graceful getReturn statuses and wider producers need separate validation.",
+      "Reference-result and wider lifecycle/API/callback consumers remain open.",
+      "Required original static-compound source 7 CLI60 timeout stays OPEN with zero agreement."
+    ]
   }
 }

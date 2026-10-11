@@ -565,6 +565,17 @@ unchanged 62405de0a/375. The original fixture's derived trace owner assumption
 retains zero credit; no runtime edit or older-cut renewal is needed.
 Wider error forms and replacing/nested injections require separate evidence.
 
+Bound captured-factory `getReturn` requires a real receiver INPUT and immutable
+factory/call-site certificate. A defined ordinary object result follows the
+existing API: the terminated Fiber owns VALUE, and retrieval copies that same
+object into RESULT. The rewritten FIBER_CAPTURE_RESULTfalse marker retains the
+capture until its genuine eager operation releases that occurrence and restores
+the object-valued consumer result. Clearing selected then retires capture/Fiber
+while the returned cell solely owns the object; clearing returned retires it and
+its empty trace. Direct/repaired source cuts and 413 premises (363 genuine/derived,
+50 controls) retain their distinct 96bb/3a31 revisions. Original Unsupported and
+syntax failure keep zero credit; broader getReturn statuses require separate evidence.
+
 Module362 selects fixed bound and static APIs through ordinary callable-array
 invocation with simple method names. Dynamic INIT freezes dereferenced receiver
 and method members before arguments. Nonowning receipts authenticate genuine CONFIG, saved WAIT and static

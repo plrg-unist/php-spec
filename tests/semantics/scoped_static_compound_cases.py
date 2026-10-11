@@ -2508,4 +2508,84 @@ echo "H:", $weakFiber->get() === null ? "gone" : "held", ";Z;";
         'expected_stdout': 'Q;A;M:isStarted;F;H:held;V;T:FiberError;D:Cannot resume a fiber that is not suspended;X:held;C:gone;H:gone;E:held;E:gone;X:gone;C:gone;H:gone;Z;',
         'discriminator': 'Frozen bound throw accepts the same main-created Throwable, then rejects the INITIAL Fiber with FiberError before transfer. Caller/helper argument cells retire; the fresh error trace retains the supplied object after capture/Fiber cleanup. Clearing the outer caught cell retires both objects and trace graphs. Both U markers stay absent.',
     },
+    {
+        'id': 'from-callable-direct-fiber-return',
+        'source': '''<?php
+function discardReturnCallbackReview21() {
+    global $factory, $callback;
+    $factory = null;
+    echo "A;";
+    return $callback;
+}
+echo "Q;";
+$method = "getReturn";
+$payload = new Exception("payload");
+$weakPayload = WeakReference::create($payload);
+$fiber = new Fiber(function ($value) { echo "B;"; return $value; });
+$weakFiber = WeakReference::create($fiber);
+$fiber->start($payload);
+$payload = null;
+echo "P:", $weakPayload->get() === null ? "gone" : "held", ";";
+$callback = [$fiber, &$method];
+$factory = null;
+$selected = Closure::fromCallable(callback: discardReturnCallbackReview21());
+$weakSelected = WeakReference::create($selected);
+$callback[1] = "isTerminated";
+$callback = null;
+echo "M:", $method, ";F;";
+$fiber = null;
+echo "H:", $weakFiber->get() === null ? "gone" : "held", ";";
+$returned = $selected();
+echo "I:", $returned === $weakPayload->get() ? "same" : "different", ";";
+echo "C:", $weakSelected->get() === null ? "gone" : "held", ";";
+$selected = null;
+echo "C:", $weakSelected->get() === null ? "gone" : "held", ";";
+echo "H:", $weakFiber->get() === null ? "gone" : "held", ";";
+echo "P:", $weakPayload->get() === null ? "gone" : "held", ";";
+$returned = null;
+echo "P:", $weakPayload->get() === null ? "gone" : "held", ";Z;";
+''',
+        'expected_stdout': 'Q;B;P:held;A;M:isTerminated;F;H:held;I:same;C:held;C:gone;H:gone;P:held;P:gone;Z;',
+        'discriminator': 'Defined ordinary object getReturn preserves the exact payload after main argument retirement and frozen getReturn selection survives referenced-name mutation. Clearing selected retires capture/Fiber while the returned cell still owns the payload; clearing returned then retires it.',
+    },
+    {
+        'id': 'from-callable-factory-fiber-return',
+        'source': '''<?php
+function discardReturnCallbackReview21() {
+    global $factory, $callback;
+    $factory = null;
+    echo "A;";
+    return $callback;
+}
+echo "Q;";
+$method = "getReturn";
+$payload = new Exception("payload");
+$weakPayload = WeakReference::create($payload);
+$fiber = new Fiber(function ($value) { echo "B;"; return $value; });
+$weakFiber = WeakReference::create($fiber);
+$fiber->start($payload);
+$payload = null;
+echo "P:", $weakPayload->get() === null ? "gone" : "held", ";";
+$callback = [$fiber, &$method];
+$factory = Closure::fromCallable(...);
+$selected = $factory(callback: discardReturnCallbackReview21());
+$weakSelected = WeakReference::create($selected);
+$callback[1] = "isTerminated";
+$callback = null;
+echo "M:", $method, ";F;";
+$fiber = null;
+echo "H:", $weakFiber->get() === null ? "gone" : "held", ";";
+$returned = $selected();
+echo "I:", $returned === $weakPayload->get() ? "same" : "different", ";";
+echo "C:", $weakSelected->get() === null ? "gone" : "held", ";";
+$selected = null;
+echo "C:", $weakSelected->get() === null ? "gone" : "held", ";";
+echo "H:", $weakFiber->get() === null ? "gone" : "held", ";";
+echo "P:", $weakPayload->get() === null ? "gone" : "held", ";";
+$returned = null;
+echo "P:", $weakPayload->get() === null ? "gone" : "held", ";Z;";
+''',
+        'expected_stdout': 'Q;B;P:held;A;M:isTerminated;F;H:held;I:same;C:held;C:gone;H:gone;P:held;P:gone;Z;',
+        'discriminator': 'Defined ordinary object getReturn preserves the exact payload after main argument retirement and frozen getReturn selection survives referenced-name mutation. Clearing selected retires capture/Fiber while the returned cell still owns the payload; clearing returned then retires it.',
+    },
 ]

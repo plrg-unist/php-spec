@@ -408,6 +408,10 @@ Valid Throwable arguments instead raise FiberError on that INITIAL path; its tra
 retains the supplied object until caught-cell null. Two new originals and 456
 premises pass at 62405de0a/375, including retirement before the final weak reads.
 The existing rules require no change. Wider throw/error paths and original 7 remain open.
+Captured factories now select bound `Fiber::getReturn` for a defined ordinary
+object result. Direct and repaired sources preserve identity and separate
+capture/Fiber retirement from returned-object retirement; 413 state premises
+pass at 3a31fc727/375. Original Unsupported and fixture failure retain zero credit.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;

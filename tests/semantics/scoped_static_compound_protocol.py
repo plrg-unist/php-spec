@@ -1053,9 +1053,15 @@ CASES += [('from-callable-factory-bound-fiber-throw', ['from-callable-factory-fi
 CASES += [('from-callable-factory-bound-fiber-throw-unhandled', ['from-callable-factory-fiber-throw-unhandled'])]
 CASES += [('from-callable-factory-bound-fiber-throw-argument', ['from-callable-factory-fiber-throw-argument'])]
 CASES += [('from-callable-factory-bound-fiber-throw-initial', ['from-callable-factory-fiber-throw-initial'])]
+CASES += [('from-callable-factory-bound-fiber-return', ['from-callable-factory-fiber-return'])]
 
 
 def render(name, sources):
+    if name == 'from-callable-factory-bound-fiber-return':
+        from from_callable_return_fiber_review import render as render_return_fiber
+        row = sources['from-callable-factory-fiber-return']
+        text, checks, _, _ = render_return_fiber(row['fixture'], row['filename'], row['expected_stdout'])
+        return text, checks
     if name == 'from-callable-factory-bound-fiber-throw-initial':
         from from_callable_throw_initial_fiber_review import render as render_throw_initial
         row = sources['from-callable-factory-fiber-throw-initial']

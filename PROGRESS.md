@@ -2900,6 +2900,15 @@ fixture failure retains zero credit; runtime rules and older cuts are unchanged.
 Exact 6598b059/375 validation-only composition is statically reviewed; guarded
 magic-property, hook-coalesce, empty-class and Iterator unpack changes are absent.
 The 624 native2/source2/state456 cut stays distinct; current runtime is UNRUN.
+Module 358 now admits captured-factory bound getReturn through the existing API.
+A defined ordinary object remains owned by Fiber.VALUE after main argument
+retirement; retrieval returns that same object. Direct agreement stays at 96bbf526;
+repaired captured agreement and 413 premises (363 genuine/derived, 50 controls)
+pass at 3a31fc727/375. The genuine RESULTfalse release operation preserves the
+object until the original consumer resumes; selected-null retires capture/Fiber,
+then returned-null retires the object and empty trace. Original Unsupported and
+syntax failure retain zero credit. [GetReturn cuts](coverage/semantics/from-callable-review.json)
+stay separate; wider getReturn forms and source 7 remain OPEN.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 
