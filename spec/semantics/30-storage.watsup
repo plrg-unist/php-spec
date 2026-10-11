@@ -126,6 +126,9 @@ syntax passertflag = { VALUE bool, INITIAL nat*, RAW nat*, MODIFIED bool }
 syntax passertmode = { INPUT pvalue, VALUE int }
 syntax passertiniphase = ASSERTION_CONVERT | ASSERTION_PARSE | ASSERTION_REFUSE int
 syntax ptask
+syntax pintegeroperation
+syntax pintegerphase
+syntax pintegerconversion
 syntax passertiniconversion = { SOURCE ptask, VALUE pvalue }
 syntax passertini = { ID nat, CALL pconfigcall, CONVERSION passertiniconversion?, INPUT pvalue, OLDRAW pvalue, RETURNRAW pvalue, OLDRETURN pvalue, ORIGINAL pvalue, ENTRYMODIFIED bool, VALUE int, WARNING (nat*)?, PRECISION int, PHASE passertiniphase }
 syntax passertoption = { ID nat, CALL pconfigcall, OPTION int, OLD bool }
@@ -321,6 +324,7 @@ syntax ptask = PROPERTY_HOOK_RESULT ppropertyhook | PROPERTY_HOOK_ISSET_RESULT p
   | KEY_UNSET_BASE pbase bool | KEY_UNSET_DIM poperand int bool | KEY_UNSET_FETCH_RESULT pkeyread | KEY_UNSET_NULL_RESULT pkeyread | KEY_APPEND_RESULT pappendread
   | KEY_COALESCE_RHS_RESULT pcoalesceread
   | DEPRECATED_CONSTANT_RESULT pdeprecatedconstant | REPORTING_LONG_RESULT pconfigcall int
+  | INTEGER_OPERATOR_CONVERT pintegeroperation pintegerphase | INTEGER_OPERATOR_WARNING pintegeroperation pintegerphase pintegerconversion nat
   | GLOBAL_CONSTANT_METHOD_RESUME porigin porigin porigin nat
   | PARAMETER_CONSTANT_METHOD_RESUME porigin porigin porigin nat
   | GLOBAL_CONSTANT_DUPLICATE porigin pvalue pvalueclass nat pconstantfact* int

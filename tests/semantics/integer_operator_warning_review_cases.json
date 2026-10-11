@@ -1,0 +1,224 @@
+[
+  {
+    "id": "mod-rhs-ref-rebind",
+    "source": "<?php $x=5.75;$y=1;$old=&$y;$new=3;set_error_handler(function($level,$msg){$GLOBALS[\"y\"]=&$GLOBALS[\"new\"];echo \"H\";return true;});$r=$x % $y;echo \":\",$r,\":\",$y,\":\",$old;",
+    "stdout": "H:2:3:1",
+    "stderr": "",
+    "source_sha256": "6315ce5f5e9d6a33ae9672299aca6edee746734ade46f223640358d75f71229a"
+  },
+  {
+    "id": "mod-same-cv-write",
+    "source": "<?php $x=5.75;set_error_handler(function($level,$msg){$GLOBALS[\"x\"]=3;echo \"H\";return true;});$r=$x % $x;echo \":\",$r,\":\",$x;",
+    "stdout": "H:2:3",
+    "stderr": "",
+    "source_sha256": "484e07deda434448da03727a2c2eac5291c4c0b7555b533e93b50d2345f163e3"
+  },
+  {
+    "id": "mod-leading-string-save",
+    "source": "<?php $x=\"12.5tail\";$y=2;$calls=0;set_error_handler(function($level,$msg){$GLOBALS[\"calls\"]++;$GLOBALS[\"x\"]=\"99.75tail\";$GLOBALS[\"y\"]=5;echo $level,\":\",$msg,\";\";return true;});$r=$x % $y;echo \"R\",$r,\":\",$x,\":\",$y,\":\",$calls;",
+    "stdout": "2:A non-numeric value encountered;8192:Implicit conversion from float-string \"12.5tail\" to int loses precision;R2:99.75tail:5:2",
+    "stderr": "",
+    "source_sha256": "a3689ce66baea7e6e14b94a9ec1b82336a758d2163c5bbf95ca72341166a99d1"
+  },
+  {
+    "id": "mod-rhs-type-error",
+    "source": "<?php $x=5.75;$y=2;set_error_handler(function($level,$msg){$GLOBALS[\"x\"]=true;$GLOBALS[\"y\"]=[];echo \"H\";return true;});try{$r=$x % $y;}catch(TypeError $e){echo \":\",$e->getMessage();}echo \":\",$x;",
+    "stdout": "H:Unsupported operand types: bool % array:1",
+    "stderr": "",
+    "source_sha256": "7511d4a02484050a2842e3791c708d922e8c420fcc20fc3803c70f357c83b26c"
+  },
+  {
+    "id": "shl-rhs-ref-rebind",
+    "source": "<?php $x=5.75;$y=1;$old=&$y;$new=3;set_error_handler(function($level,$msg){$GLOBALS[\"y\"]=&$GLOBALS[\"new\"];echo \"H\";return true;});$r=$x << $y;echo \":\",$r,\":\",$y,\":\",$old;",
+    "stdout": "H:40:3:1",
+    "stderr": "",
+    "source_sha256": "9570d011dba5489ef86213a21b6e16d9a2de678a4e7b39ef7d23d37506d47fc7"
+  },
+  {
+    "id": "shl-same-cv-write",
+    "source": "<?php $x=5.75;set_error_handler(function($level,$msg){$GLOBALS[\"x\"]=3;echo \"H\";return true;});$r=$x << $x;echo \":\",$r,\":\",$x;",
+    "stdout": "H:40:3",
+    "stderr": "",
+    "source_sha256": "b6e03fb01e7b78744ff59cd80972b3bb57204b72a64560c058ae7a787b1fa266"
+  },
+  {
+    "id": "shl-leading-string-save",
+    "source": "<?php $x=\"12.5tail\";$y=2;$calls=0;set_error_handler(function($level,$msg){$GLOBALS[\"calls\"]++;$GLOBALS[\"x\"]=\"99.75tail\";$GLOBALS[\"y\"]=5;echo $level,\":\",$msg,\";\";return true;});$r=$x << $y;echo \"R\",$r,\":\",$x,\":\",$y,\":\",$calls;",
+    "stdout": "2:A non-numeric value encountered;8192:Implicit conversion from float-string \"12.5tail\" to int loses precision;R384:99.75tail:5:2",
+    "stderr": "",
+    "source_sha256": "ef38208996c72c4998b7a359db5af2d7bdce11b411ba92648137266add9e096c"
+  },
+  {
+    "id": "shl-rhs-type-error",
+    "source": "<?php $x=5.75;$y=2;set_error_handler(function($level,$msg){$GLOBALS[\"x\"]=true;$GLOBALS[\"y\"]=[];echo \"H\";return true;});try{$r=$x << $y;}catch(TypeError $e){echo \":\",$e->getMessage();}echo \":\",$x;",
+    "stdout": "H:Unsupported operand types: bool << array:1",
+    "stderr": "",
+    "source_sha256": "e65632a2e5ddbc8f113b7baf0b0dbf9728bea42ea9f17e8e8699caed9c238193"
+  },
+  {
+    "id": "shr-rhs-ref-rebind",
+    "source": "<?php $x=5.75;$y=1;$old=&$y;$new=3;set_error_handler(function($level,$msg){$GLOBALS[\"y\"]=&$GLOBALS[\"new\"];echo \"H\";return true;});$r=$x >> $y;echo \":\",$r,\":\",$y,\":\",$old;",
+    "stdout": "H:0:3:1",
+    "stderr": "",
+    "source_sha256": "5d58ab0e37d9bf4e6d44c5d40a0e9d7f3d5fc011bd86783b54e1ac11d992669b"
+  },
+  {
+    "id": "shr-same-cv-write",
+    "source": "<?php $x=5.75;set_error_handler(function($level,$msg){$GLOBALS[\"x\"]=3;echo \"H\";return true;});$r=$x >> $x;echo \":\",$r,\":\",$x;",
+    "stdout": "H:0:3",
+    "stderr": "",
+    "source_sha256": "814c51d6664bff58b07b0c20c65dfc09865ae1743cbf471601087d1b2a3a90d5"
+  },
+  {
+    "id": "shr-leading-string-save",
+    "source": "<?php $x=\"12.5tail\";$y=2;$calls=0;set_error_handler(function($level,$msg){$GLOBALS[\"calls\"]++;$GLOBALS[\"x\"]=\"99.75tail\";$GLOBALS[\"y\"]=5;echo $level,\":\",$msg,\";\";return true;});$r=$x >> $y;echo \"R\",$r,\":\",$x,\":\",$y,\":\",$calls;",
+    "stdout": "2:A non-numeric value encountered;8192:Implicit conversion from float-string \"12.5tail\" to int loses precision;R0:99.75tail:5:2",
+    "stderr": "",
+    "source_sha256": "7fe9e005b9e51a79073f71e2381bb1dd8460828aa63b99386aa168683d75d0ed"
+  },
+  {
+    "id": "shr-rhs-type-error",
+    "source": "<?php $x=5.75;$y=2;set_error_handler(function($level,$msg){$GLOBALS[\"x\"]=true;$GLOBALS[\"y\"]=[];echo \"H\";return true;});try{$r=$x >> $y;}catch(TypeError $e){echo \":\",$e->getMessage();}echo \":\",$x;",
+    "stdout": "H:Unsupported operand types: bool >> array:1",
+    "stderr": "",
+    "source_sha256": "b3ccaf729be4e716ada9da7a602645143ebc0ca179f45336eae772d116d1c3b0"
+  },
+  {
+    "id": "and-rhs-ref-rebind",
+    "source": "<?php $x=5.75;$y=1;$old=&$y;$new=3;set_error_handler(function($level,$msg){$GLOBALS[\"y\"]=&$GLOBALS[\"new\"];echo \"H\";return true;});$r=$x & $y;echo \":\",$r,\":\",$y,\":\",$old;",
+    "stdout": "H:1:3:1",
+    "stderr": "",
+    "source_sha256": "eda8feda37a0ca9deb9d8a1e616a663e12c2f2ae985de18c255026d32e10fb18"
+  },
+  {
+    "id": "and-same-cv-write",
+    "source": "<?php $x=5.75;set_error_handler(function($level,$msg){$GLOBALS[\"x\"]=3;echo \"H\";return true;});$r=$x & $x;echo \":\",$r,\":\",$x;",
+    "stdout": "H:1:3",
+    "stderr": "",
+    "source_sha256": "d5e00f742039b0896cc633bdc7264435b8d15dbaf43053556828b5348865a20f"
+  },
+  {
+    "id": "and-leading-string-save",
+    "source": "<?php $x=\"12.5tail\";$y=2;$calls=0;set_error_handler(function($level,$msg){$GLOBALS[\"calls\"]++;$GLOBALS[\"x\"]=\"99.75tail\";$GLOBALS[\"y\"]=5;echo $level,\":\",$msg,\";\";return true;});$r=$x & $y;echo \"R\",$r,\":\",$x,\":\",$y,\":\",$calls;",
+    "stdout": "2:A non-numeric value encountered;8192:Implicit conversion from float-string \"12.5tail\" to int loses precision;R4:99.75tail:5:2",
+    "stderr": "",
+    "source_sha256": "6a735bf823079ddcfe422ceced50591d6241ebe0a17ceb3536db2b82a433e245"
+  },
+  {
+    "id": "and-rhs-type-error",
+    "source": "<?php $x=5.75;$y=2;set_error_handler(function($level,$msg){$GLOBALS[\"x\"]=true;$GLOBALS[\"y\"]=[];echo \"H\";return true;});try{$r=$x & $y;}catch(TypeError $e){echo \":\",$e->getMessage();}echo \":\",$x;",
+    "stdout": "H:Unsupported operand types: bool & array:1",
+    "stderr": "",
+    "source_sha256": "a1eff8504f6af799676eaca1bef65d4272716cac2426da419684da9b4f80ae23"
+  },
+  {
+    "id": "or-rhs-ref-rebind",
+    "source": "<?php $x=5.75;$y=1;$old=&$y;$new=3;set_error_handler(function($level,$msg){$GLOBALS[\"y\"]=&$GLOBALS[\"new\"];echo \"H\";return true;});$r=$x | $y;echo \":\",$r,\":\",$y,\":\",$old;",
+    "stdout": "H:5:3:1",
+    "stderr": "",
+    "source_sha256": "96d8ec2d7ab43c6435d69637173f9ec54d7982f5690d123e79afd131267727cc"
+  },
+  {
+    "id": "or-same-cv-write",
+    "source": "<?php $x=5.75;set_error_handler(function($level,$msg){$GLOBALS[\"x\"]=3;echo \"H\";return true;});$r=$x | $x;echo \":\",$r,\":\",$x;",
+    "stdout": "H:7:3",
+    "stderr": "",
+    "source_sha256": "976c57c79589849f635aa36d8a222b62bc8da702bf4d98c2c91f56103638f5e2"
+  },
+  {
+    "id": "or-leading-string-save",
+    "source": "<?php $x=\"12.5tail\";$y=2;$calls=0;set_error_handler(function($level,$msg){$GLOBALS[\"calls\"]++;$GLOBALS[\"x\"]=\"99.75tail\";$GLOBALS[\"y\"]=5;echo $level,\":\",$msg,\";\";return true;});$r=$x | $y;echo \"R\",$r,\":\",$x,\":\",$y,\":\",$calls;",
+    "stdout": "2:A non-numeric value encountered;8192:Implicit conversion from float-string \"12.5tail\" to int loses precision;R13:99.75tail:5:2",
+    "stderr": "",
+    "source_sha256": "bc355c580b67df2456b3ea1b5bc9c6304c40a88216fe0779b5cf84d908c2e392"
+  },
+  {
+    "id": "or-rhs-type-error",
+    "source": "<?php $x=5.75;$y=2;set_error_handler(function($level,$msg){$GLOBALS[\"x\"]=true;$GLOBALS[\"y\"]=[];echo \"H\";return true;});try{$r=$x | $y;}catch(TypeError $e){echo \":\",$e->getMessage();}echo \":\",$x;",
+    "stdout": "H:Unsupported operand types: bool | array:1",
+    "stderr": "",
+    "source_sha256": "c9afcdffb994a815b388b97c564ae5ab1ec22432839696003f3f1985e36b602e"
+  },
+  {
+    "id": "xor-rhs-ref-rebind",
+    "source": "<?php $x=5.75;$y=1;$old=&$y;$new=3;set_error_handler(function($level,$msg){$GLOBALS[\"y\"]=&$GLOBALS[\"new\"];echo \"H\";return true;});$r=$x ^ $y;echo \":\",$r,\":\",$y,\":\",$old;",
+    "stdout": "H:4:3:1",
+    "stderr": "",
+    "source_sha256": "a9f7431b4178c9f3c812777752a2c5d36a2e8236b890c9d57c7280cce76d2e90"
+  },
+  {
+    "id": "xor-same-cv-write",
+    "source": "<?php $x=5.75;set_error_handler(function($level,$msg){$GLOBALS[\"x\"]=3;echo \"H\";return true;});$r=$x ^ $x;echo \":\",$r,\":\",$x;",
+    "stdout": "H:6:3",
+    "stderr": "",
+    "source_sha256": "f1815ef41cce460ea006f041fc2c197b98fc3814605c2ded480f14843e348442"
+  },
+  {
+    "id": "xor-leading-string-save",
+    "source": "<?php $x=\"12.5tail\";$y=2;$calls=0;set_error_handler(function($level,$msg){$GLOBALS[\"calls\"]++;$GLOBALS[\"x\"]=\"99.75tail\";$GLOBALS[\"y\"]=5;echo $level,\":\",$msg,\";\";return true;});$r=$x ^ $y;echo \"R\",$r,\":\",$x,\":\",$y,\":\",$calls;",
+    "stdout": "2:A non-numeric value encountered;8192:Implicit conversion from float-string \"12.5tail\" to int loses precision;R9:99.75tail:5:2",
+    "stderr": "",
+    "source_sha256": "43dc2cf8dc8d9a726579cd9dc1ce6717fba33128d2a14824ed62349d5f816ccf"
+  },
+  {
+    "id": "xor-rhs-type-error",
+    "source": "<?php $x=5.75;$y=2;set_error_handler(function($level,$msg){$GLOBALS[\"x\"]=true;$GLOBALS[\"y\"]=[];echo \"H\";return true;});try{$r=$x ^ $y;}catch(TypeError $e){echo \":\",$e->getMessage();}echo \":\",$x;",
+    "stdout": "H:Unsupported operand types: bool ^ array:1",
+    "stderr": "",
+    "source_sha256": "17ff6821adf3c2f15a5877bb92406b260eaae454f5f03df3f7289278b5868691"
+  },
+  {
+    "id": "and-eager-ref-live-write",
+    "source": "<?php $x=\"12.5tail\";$y=1;$old=&$y;$new=3;$count=0;set_error_handler(function($n,$m){echo $n,\";\";$GLOBALS[\"count\"]++;$GLOBALS[\"y\"]=&$GLOBALS[\"new\"];if($GLOBALS[\"count\"]===2){$GLOBALS[\"old\"]=7;}return true;});$r=$x&$y;echo \"R\",$r,\":\",$y,\":\",$old;",
+    "stdout": "2;8192;R4:3:7",
+    "stderr": "",
+    "source_sha256": "efde94545efe238800a7011a59a7211f9a67100f29bfb71a9a436824d4ed1818"
+  },
+  {
+    "id": "mod-left-ref-diagnostic",
+    "source": "<?php $x=5.75;$keep=&$x;$y=2;$new=true;set_error_handler(function($n,$m){$GLOBALS[\"x\"]=&$GLOBALS[\"new\"];$GLOBALS[\"y\"]=[];return true;});try{$r=$x%$y;}catch(TypeError $e){echo $e->getMessage();}echo \":\",$x===true,\":\",$keep;",
+    "stdout": "Unsupported operand types: float % array:1:5.75",
+    "stderr": "",
+    "source_sha256": "d3ca600ac36bc23b4a08b969aa1f9e6faa2b2377e583635a3a320d46d3c997f0"
+  },
+  {
+    "id": "and-left-ref-diagnostic",
+    "source": "<?php $x=5.75;$keep=&$x;$y=2;$new=true;set_error_handler(function($n,$m){$GLOBALS[\"x\"]=&$GLOBALS[\"new\"];$GLOBALS[\"y\"]=[];return true;});try{$r=$x&$y;}catch(TypeError $e){echo $e->getMessage();}echo \":\",$x===true,\":\",$keep;",
+    "stdout": "Unsupported operand types: float & array:1:5.75",
+    "stderr": "",
+    "source_sha256": "ec7bf4a3b5c91b11f87f424983b1b8465e7e67945ec0bf8432cf55902a53d1d3"
+  },
+  {
+    "id": "nan-normal",
+    "source": "<?php $y=2;$x=NAN;$t=new Exception(\"T\");$calls=0;set_error_handler(function($level,$msg){$GLOBALS[\"calls\"]++;echo $level,\":\",$msg,\";\";$GLOBALS[\"x\"]=3;return true;});try{$r=$x % $y;echo \"R\",$r;}catch(Exception $e){echo \"E\",$e===$t;}echo \":\",$x,\":\",$calls;",
+    "stdout": "2:The float NAN is not representable as an int, cast occurred;8192:Implicit conversion from float NAN to int loses precision;R0:3:2",
+    "stderr": "",
+    "derived_from": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-01/review-native-specials/nan-normal/source.php",
+      "reason": "Use a defined direct-CV RHS instead of a literal for the currently admitted source route."
+    },
+    "source_sha256": "d060c92f7fad62bae7c396be40a208c2c719719942a263c65a04889cb65b1a09"
+  },
+  {
+    "id": "nan-throw",
+    "source": "<?php $y=2;$x=NAN;$t=new Exception(\"T\");$calls=0;set_error_handler(function($level,$msg){$GLOBALS[\"calls\"]++;echo $level,\":\",$msg,\";\";$GLOBALS[\"x\"]=3;throw $GLOBALS[\"t\"];});try{$r=$x % $y;echo \"R\",$r;}catch(Exception $e){echo \"E\",$e===$t;}echo \":\",$x,\":\",$calls;",
+    "stdout": "2:The float NAN is not representable as an int, cast occurred;E1:3:1",
+    "stderr": "",
+    "derived_from": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-01/review-native-specials/nan-throw/source.php",
+      "reason": "Use a defined direct-CV RHS instead of a literal for the currently admitted source route."
+    },
+    "source_sha256": "b5180f06a6fecc57693ea7a5a341eac7ad89a9a1eeb95233c83b9022c37b2473"
+  },
+  {
+    "id": "leading-handler-replace",
+    "source": "<?php $y=5;$x=\"12.5tail\";function h2($n,$m){echo \"B\",$n,\";\";return true;}function h1($n,$m){echo \"A\",$n,\";\";set_error_handler(\"h2\");return true;}set_error_handler(\"h1\");$r=$x%$y;echo \"R\",$r;",
+    "stdout": "A2;B8192;R2",
+    "stderr": "",
+    "derived_from": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-01/review-native-specials/leading-handler-replace/source.php",
+      "reason": "Use a defined direct-CV RHS instead of a literal for the currently admitted source route."
+    },
+    "source_sha256": "98dab6a6a3023323e4c13ab62c5f84f1e87786682aa98223dfc5a4662dafb20d"
+  }
+]

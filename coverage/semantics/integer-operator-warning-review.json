@@ -1,0 +1,65 @@
+{
+  "scope": "%, <<, >> and numeric/mixed-scalar &, |, ^ with two initially defined direct CV operands and user error handlers.",
+  "status": "independently_reviewed_bounded_runtime_private",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "production_revision": "af04f2656fd6807bf05f488c84024afc24e65103",
+  "semantic_sha256": {
+    "spec/semantics/387-integer-operator-warnings.watsup": "e76b4c1280f3c53f5f86f6ae53d343e2bb8624b55a83a9ff544d3b6ee8601fc8"
+  },
+  "contract": [
+    "Float bits, parsed integer and original float-string warning bytes remain captured across callbacks; each notice selects the current handler registry.",
+    "%/shifts reread the direct RHS CV after left callbacks; numeric bitwise operators retain an initially referenced RHS cell before left conversion and retain numeric dispatch.",
+    "Borrowed direct-CV reference pointers add no owner. Later failures use current pointer values for operand type names; retained aliases keep old reference cells alive.",
+    "Source operator, direct operand names, compiled line, pointer bounds/kinds, signed saved integer, conversion record and notice cursor constrain continuation admission. No new frame/state field is needed.",
+    "Existing error dispatch, false fallback, suppression, handler unwind and ownership transitions provide callback execution and cleanup. Source/reached checks cover returning and throwing paths."
+  ],
+  "accepted": {
+    "strict": {
+      "revision": "af04f2656fd6807bf05f488c84024afc24e65103",
+      "mode": "SL",
+      "archive": "/home/user/workspace/php-spec-evidence-archive/operators-01/strict-af04f2656"
+    },
+    "author_source": {
+      "revision": "af04f2656fd6807bf05f488c84024afc24e65103",
+      "cases": ["live-right-0", "reference-rebind-3", "leading-frozen", "throw-second"],
+      "result": "4 checked original sources exactly match native normal exit/stdout/stderr",
+      "archive": "/home/user/workspace/php-spec-evidence-archive/operators-01/smoke-af04f2656"
+    },
+    "independent_source": {
+      "revision": "45ca2ab2797c8be9601f722bafee16f8ad65a91b",
+      "cases": 30,
+      "result": "All checked original sources exactly match native normal exit/stdout/stderr",
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-01/review-direct-source-45ca2ab27/report.json"
+    },
+    "author_reached": {
+      "revision": "b861c21ed8285f64d41a9d8ef3a040f1914988e5",
+      "mode": "SL",
+      "fixtures": 5,
+      "conditions": 304,
+      "result": "All true, exit0, no stderr; genuinely sought from checked source execution",
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-01/state-sl-b861c21ed/report.json"
+    },
+    "independent_reached": {
+      "revision": "90b2c61671d7ac3c97de5084e2fd0af195fb69d8",
+      "mode": "SL",
+      "conditions": {"mod-left-ref-diagnostic": 50, "and-eager-ref-live-write": 67, "leading-handler-replace": 57},
+      "result": "3 genuinely reached fixtures/174 conditions all true, exit0, no stderr; borrowed roots, old-cell writes, registry refresh, malformed records, zero/one-step and resumed execution",
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-01/review-direct-state-sl-90b2c6167/report.json"
+    }
+  },
+  "limitations": [
+    "Copied/literal/unary/assignment/reference-assignment/byref-call operands are a separate pending consumer increment; retained native-only originals receive no model agreement credit.",
+    "Initial object operands, objects introduced by callbacks and expired/unowned operand pointers remain outside admission or explicitly Unsupported. Other PHP operator/comparison gaps remain open.",
+    "Six native-only cases unsetting GLOBALS[y] while converting x=5.75 and changing x to true print the deprecation handler output then exit signal11. Preserve this excluded possible engine bug boundary; cause is not diagnosed and no ordinary TypeError semantics is inferred.",
+    "Private development reuses project binaries through tool links; independent review physically copies retained tools. Hashes/profile/effective C/UTC environment, commands, exits and frozen inputs are in the reports. This is not a fresh rebuild or portability result."
+  ],
+  "zero_credit": {
+    "archive_root": "/home/user/workspace/php-spec-evidence-archive/operators-01",
+    "preserved": ["author-native-prep", "baseline-74b7d95cb", "smoke-b0f3780d2", "strict-16efd5157", "smoke-af04f2656/state", "state-e3824c1c2", "state-cbab43a4f", "review-direct-state-45ca2ab27", "review-direct-state-fixed-00bc5775b", "review-native-unset-cv-prep"],
+    "reason": "Flawed native preparation, baseline Unsupported, pre-runtime syntax/elaboration failures, AL-only diagnostics/interruption and native signal11 probes remain separate from accepted source/SL reached evidence."
+  },
+  "recovery": [
+    "Use the recorded revisions, manifest/module fingerprints, target/profile and retained tool identities in each report. Raw original sources, fixture bytes and streams are external.",
+    "At the unchanged semantic cut, run integer_operator_warning_review.py for original-source checks and integer_operator_warning_review_protocol.py for the three SL reached fixtures, selecting a new external --output directory and a numeric lease."
+  ]
+}

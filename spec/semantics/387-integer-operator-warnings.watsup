@@ -1,0 +1,171 @@
+;; zendi_try_get_long snapshots the number and float-string before diagnostics.
+;; MOD/SL/SR dereference the right operand after the left conversion. BW_* does
+;; both dereferences before conversion; those pointers borrow real reference cells.
+syntax pintegerpointer = INTEGER_CV ptbytes | INTEGER_CELL nat
+syntax pintegeroperation = { SITE porigin, OP pbin, LINE int, LEFT ptbytes, RIGHT ptbytes, LEFTPOINTER pintegerpointer, RIGHTPOINTER pintegerpointer }
+syntax pintegerphase = INTEGER_LEFT | INTEGER_RIGHT int
+syntax pintegerconversion = { INPUT pvalue, VALUE int, NOTICES (int, ptbytes)* }
+
+dec $integer_bitwise(pbin) : bool
+def $integer_bitwise(pbin) = (pbin = BITAND \/ pbin = BITOR \/ pbin = BITXOR)
+dec $integer_source_operator(pcnode) : pbin?
+def $integer_source_operator(NExprBinaryOpMod expression_left expression_right metadata) = (MODULO)
+def $integer_source_operator(NExprBinaryOpShiftLeft expression_left expression_right metadata) = (SHIFTLEFT)
+def $integer_source_operator(NExprBinaryOpShiftRight expression_left expression_right metadata) = (SHIFTRIGHT)
+def $integer_source_operator(NExprBinaryOpBitwiseAnd expression_left expression_right metadata) = (BITAND)
+def $integer_source_operator(NExprBinaryOpBitwiseOr expression_left expression_right metadata) = (BITOR)
+def $integer_source_operator(NExprBinaryOpBitwiseXor expression_left expression_right metadata) = (BITXOR)
+def $integer_source_operator(pcnode) = eps -- otherwise
+dec $integer_operation_source(pstate, pintegeroperation) : bool
+def $integer_operation_source(S, pintegeroperation) = true
+  -- if S.ORIGIN = (pintegeroperation.SITE)
+  -- if $origin_node(S.SOURCES, pintegeroperation.SITE) = (pcnode)
+  -- if $integer_source_operator(pcnode) = (pintegeroperation.OP)
+  -- if $error_variable_source(S, S.ORIGIN, [PCFIELD 0], pintegeroperation.LEFT)
+  -- if $error_variable_source(S, S.ORIGIN, [PCFIELD 1], pintegeroperation.RIGHT)
+  -- if $code_expression_at_source(S, pintegeroperation.SITE, [PCFIELD 1]) = (pintegeroperation.LINE)
+def $integer_operation_source(S, pintegeroperation) = false -- otherwise
+
+dec $integer_pointer_select(pstate, ptbytes) : pintegerpointer?
+def $integer_pointer_select(S, ptbytes) = (INTEGER_CELL n)
+  -- if ~$environment_blocked(S, ptbytes)
+  -- if $lookup(S.ENV, ptbytes) = (n)
+  -- if $(n < |S.STORE|)
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if n <- S.REFCELLS
+def $integer_pointer_select(S, ptbytes) = (INTEGER_CV ptbytes)
+  -- if ~$environment_blocked(S, ptbytes)
+  -- if $lookup(S.ENV, ptbytes) = (n)
+  -- if $(n < |S.STORE|)
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if ~(n <- S.REFCELLS)
+def $integer_pointer_select(S, ptbytes) = eps -- otherwise
+dec $integer_pointer_value(pstate, pintegerpointer) : pvalue?
+def $integer_pointer_value(S, INTEGER_CV ptbytes) = (pvalue)
+  -- if ~$environment_blocked(S, ptbytes)
+  -- if $lookup(S.ENV, ptbytes) = (n)
+  -- if $(n < |S.STORE|)
+  -- if S.STORE[n] = DEFINED pvalue
+def $integer_pointer_value(S, INTEGER_CELL n) = (pvalue)
+  -- if $(n < |S.STORE|)
+  -- if n <- S.REFCELLS
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if $($heap_owners($heap_prune($heap_graph(S)), HCELL n) > 0)
+def $integer_pointer_value(S, pintegerpointer) = eps -- otherwise
+dec $integer_pointer_source(pstate, pintegerpointer, ptbytes) : bool
+def $integer_pointer_source(S, INTEGER_CV ptbytes, ptbytes) = true
+def $integer_pointer_source(S, INTEGER_CELL n, ptbytes) = $(n < |S.STORE|)
+def $integer_pointer_source(S, pintegerpointer, ptbytes) = false -- otherwise
+dec $integer_operation_valid(pstate, pintegeroperation) : bool
+def $integer_operation_valid(S, pintegeroperation) = ($integer_operation_source(S, pintegeroperation) /\ $integer_pointer_source(S, pintegeroperation.LEFTPOINTER, pintegeroperation.LEFT) /\ $integer_pointer_source(S, pintegeroperation.RIGHTPOINTER, pintegeroperation.RIGHT) /\ ($integer_bitwise(pintegeroperation.OP) \/ pintegeroperation.RIGHTPOINTER = INTEGER_CV pintegeroperation.RIGHT))
+
+dec $integer_right_pointer(pbin, ptbytes, pintegerpointer) : pintegerpointer
+def $integer_operator_plan(S) = (pintegeroperation)
+  -- if $error_handler_eligible(S, 2) \/ $error_handler_eligible(S, 8192)
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (BINARY_RIGHT pbin (VARIABLE n_left* z_left) z) :: ptask_tail*
+  -- if ~$gc_retired_binary(S, pbin, VARIABLE n_left* z_left)
+  -- if S.RESULT = VARIABLE n_right* z_right
+  -- if $integer_operator(pbin)
+  -- if $integer_pointer_select(S, n_left*) = (pintegerpointer_left)
+  -- if $integer_pointer_select(S, n_right*) = (pintegerpointer_right)
+  -- if $integer_pointer_value(S, pintegerpointer_left) = (pvalue_left)
+  -- if $integer_pointer_value(S, pintegerpointer_right) = (pvalue_right)
+  -- if ~$cast_object_value(pvalue_left) /\ ~$cast_object_value(pvalue_right)
+  -- if ~$byte_operator(pbin, pvalue_left, pvalue_right)
+  -- if pintegerpointer_saved = $integer_right_pointer(pbin, n_right*, pintegerpointer_right)
+  -- if pintegeroperation = {SITE porigin, OP pbin, LINE z, LEFT n_left*, RIGHT n_right*, LEFTPOINTER pintegerpointer_left, RIGHTPOINTER pintegerpointer_saved}
+  -- if $integer_operation_valid(S, pintegeroperation)
+def $integer_operator_plan(S) = eps -- otherwise
+def $integer_right_pointer(pbin, ptbytes, pintegerpointer) = pintegerpointer -- if $integer_bitwise(pbin)
+def $integer_right_pointer(pbin, ptbytes, pintegerpointer) = INTEGER_CV ptbytes -- if ~$integer_bitwise(pbin)
+
+dec $integer_float_notices(castnotice*, nat) : (int, ptbytes)*
+def $integer_float_notices(eps, n) = eps
+def $integer_float_notices(RANGEWARNING :: castnotice_tail*, n) = (2, $ptascii("The float ") ++ n_text* ++ $ptascii(" is not representable as an int, cast occurred")) :: $integer_float_notices(castnotice_tail*, n)
+  -- if (n_text*, b) = $number_text(NFLOAT n, $(-1))
+def $integer_float_notices(PRECISIONLOSS :: castnotice_tail*, n) = (8192, $ptascii("Implicit conversion from float ") ++ n_text* ++ $ptascii(" to int loses precision")) :: $integer_float_notices(castnotice_tail*, n)
+  -- if (n_text*, b) = $number_text(NFLOAT n, $(-1))
+dec $integer_string_notices(strcastnotice*, ptbytes) : (int, ptbytes)*
+def $integer_string_notices(eps, ptbytes) = eps
+def $integer_string_notices(LEADINGNUMBER :: strcastnotice_tail*, ptbytes) = (2, $ptascii("A non-numeric value encountered")) :: $integer_string_notices(strcastnotice_tail*, ptbytes)
+def $integer_string_notices(STRINGPRECISIONLOSS :: strcastnotice_tail*, ptbytes) = (8192, $ptascii("Implicit conversion from float-string ") ++ [34] ++ $c_string(ptbytes) ++ [34] ++ $ptascii(" to int loses precision")) :: $integer_string_notices(strcastnotice_tail*, ptbytes)
+dec $integer_conversion(pvalue) : pintegerconversion?
+def $integer_conversion(PINT i) = ({INPUT PINT i, VALUE i, NOTICES eps})
+def $integer_conversion(PNULL) = ({INPUT PNULL, VALUE 0, NOTICES eps})
+def $integer_conversion(PBOOL b) = ({INPUT PBOOL b, VALUE 1, NOTICES eps}) -- if b
+def $integer_conversion(PBOOL b) = ({INPUT PBOOL b, VALUE 0, NOTICES eps}) -- if ~b
+def $integer_conversion(PFLOAT n) = ({INPUT PFLOAT n, VALUE i, NOTICES $integer_float_notices(castnotice*, n)})
+  -- if (i, castnotice*) = $float_long(n, true)
+def $integer_conversion(pvalue) = ({INPUT pvalue, VALUE i, NOTICES $integer_string_notices(strcastnotice*, n*)})
+  -- if $string_bytes(pvalue) = (n*)
+  -- if $string_long(n*) = STRINT i strcastnotice*
+def $integer_conversion(pvalue) = eps -- otherwise
+dec $integer_phase_valid(pintegerphase) : bool
+def $integer_phase_valid(INTEGER_LEFT) = true
+def $integer_phase_valid(INTEGER_RIGHT i) = $(i >= -9223372036854775808 /\ i <= 9223372036854775807)
+dec $integer_phase_pointer(pintegeroperation, pintegerphase) : pintegerpointer
+def $integer_phase_pointer(pintegeroperation, INTEGER_LEFT) = pintegeroperation.LEFTPOINTER
+def $integer_phase_pointer(pintegeroperation, INTEGER_RIGHT i) = pintegeroperation.RIGHTPOINTER
+dec $integer_converted(pstate, pintegeroperation, pintegerphase, int) : pstate
+def $integer_converted(S, pintegeroperation, INTEGER_LEFT, i) = S[.TODO = (INTEGER_OPERATOR_CONVERT pintegeroperation (INTEGER_RIGHT i)) :: ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = ptask :: ptask_tail*
+def $integer_converted(S, pintegeroperation, INTEGER_RIGHT i_left, i_right) = $integer_result(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL], $integer_binary(pintegeroperation.OP, i_left, i_right), pintegeroperation.LINE)
+  -- if S.TODO = ptask :: ptask_tail*
+dec $integer_failure(pstate, pintegeroperation) : pstate
+def $integer_failure(S, pintegeroperation) = $type_failure(S[.TODO = ptask_tail*], pintegeroperation.OP, pvalue_left, pvalue_right, pintegeroperation.LINE)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $integer_pointer_value(S, pintegeroperation.LEFTPOINTER) = (pvalue_left)
+  -- if $integer_pointer_value(S, pintegeroperation.RIGHTPOINTER) = (pvalue_right)
+  -- if ~$cast_object_value(pvalue_left) /\ ~$cast_object_value(pvalue_right)
+def $integer_failure(S, pintegeroperation) = S[.COMPLETION = UNSUPPORTED "integer operator object or expired pointer"] -- otherwise
+dec $integer_warning_valid(pstate, pintegeroperation, pintegerphase, pintegerconversion, nat) : bool
+def $integer_warning_valid(S, pintegeroperation, pintegerphase, pintegerconversion, n) = ($integer_operation_valid(S, pintegeroperation) /\ $integer_phase_valid(pintegerphase) /\ $integer_conversion(pintegerconversion.INPUT) = (pintegerconversion) /\ $(n <= |pintegerconversion.NOTICES|))
+dec $integer_notice_name(int) : text
+def $integer_notice_name(2) = "Warning"
+def $integer_notice_name(8192) = "Deprecated"
+
+rule PhpStep/integer-operator-begin: S ~> S[.TODO = (INTEGER_OPERATOR_CONVERT pintegeroperation INTEGER_LEFT) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $integer_operator_plan(S) = (pintegeroperation)
+rule PhpStep/integer-operator-convert: S ~> S[.TODO = (INTEGER_OPERATOR_WARNING pintegeroperation pintegerphase pintegerconversion 0) :: ptask_tail*]
+  -- if S.TODO = (INTEGER_OPERATOR_CONVERT pintegeroperation pintegerphase) :: ptask_tail*
+  -- if $integer_operation_valid(S, pintegeroperation)
+  -- if $integer_phase_valid(pintegerphase)
+  -- if $integer_pointer_value(S, $integer_phase_pointer(pintegeroperation, pintegerphase)) = (pvalue)
+  -- if $integer_conversion(pvalue) = (pintegerconversion)
+rule PhpStep/integer-operator-invalid-type: S ~> $integer_failure(S, pintegeroperation)
+  -- if S.TODO = (INTEGER_OPERATOR_CONVERT pintegeroperation pintegerphase) :: ptask_tail*
+  -- if $integer_operation_valid(S, pintegeroperation)
+  -- if $integer_phase_valid(pintegerphase)
+  -- if $integer_pointer_value(S, $integer_phase_pointer(pintegeroperation, pintegerphase)) = (pvalue)
+  -- if $integer_conversion(pvalue) = eps
+rule PhpStep/integer-operator-expired: S ~> S[.COMPLETION = UNSUPPORTED "integer operator expired pointer"]
+  -- if S.TODO = (INTEGER_OPERATOR_CONVERT pintegeroperation pintegerphase) :: ptask_tail*
+  -- if $integer_operation_valid(S, pintegeroperation)
+  -- if $integer_phase_valid(pintegerphase)
+  -- if $integer_pointer_value(S, $integer_phase_pointer(pintegeroperation, pintegerphase)) = eps
+rule PhpStep/integer-operator-warning: S ~> $error_dispatch(S, i, n_message*, pintegeroperation.LINE, DIAGNOSTIC $integer_notice_name(i) n_message* pintegeroperation.LINE, INTEGER_OPERATOR_WARNING pintegeroperation pintegerphase pintegerconversion $(n + 1))
+  -- if S.TODO = (INTEGER_OPERATOR_WARNING pintegeroperation pintegerphase pintegerconversion n) :: ptask_tail*
+  -- if $integer_warning_valid(S, pintegeroperation, pintegerphase, pintegerconversion, n)
+  -- if $(n < |pintegerconversion.NOTICES|)
+  -- if pintegerconversion.NOTICES[n] = (i, n_message*)
+rule PhpStep/integer-operator-converted: S ~> $integer_converted(S, pintegeroperation, pintegerphase, pintegerconversion.VALUE)
+  -- if S.TODO = (INTEGER_OPERATOR_WARNING pintegeroperation pintegerphase pintegerconversion n) :: ptask_tail*
+  -- if $integer_warning_valid(S, pintegeroperation, pintegerphase, pintegerconversion, n)
+  -- if n = |pintegerconversion.NOTICES|
+
+;; The copied conversion has no array/object owners; the pointers are borrowed.
+def $task_nodes(INTEGER_OPERATOR_CONVERT pintegeroperation pintegerphase) = eps
+def $task_nodes(INTEGER_OPERATOR_WARNING pintegeroperation pintegerphase pintegerconversion n) = eps
+def $call_task_valid(S, INTEGER_OPERATOR_CONVERT pintegeroperation pintegerphase) = ($integer_operation_valid(S, pintegeroperation) /\ $integer_phase_valid(pintegerphase))
+def $call_task_valid(S, INTEGER_OPERATOR_WARNING pintegeroperation pintegerphase pintegerconversion n) = $integer_warning_valid(S, pintegeroperation, pintegerphase, pintegerconversion, n)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = INTEGER_OPERATOR_WARNING pintegeroperation pintegerphase pintegerconversion n
+  -- if $integer_warning_valid(S, pintegeroperation, pintegerphase, pintegerconversion, n)
+  -- if $(n > 0)
+  -- if n_previous = $(n - 1)
+  -- if pintegerconversion.NOTICES[n_previous] = (perrorcall.LEVEL, perrorcall.MESSAGE)
+  -- if perrorcall.SITE = pintegeroperation.SITE
+  -- if perrorcall.LINE = pintegeroperation.LINE
+  -- if perrorcall.EVENT = DIAGNOSTIC $integer_notice_name(perrorcall.LEVEL) perrorcall.MESSAGE perrorcall.LINE

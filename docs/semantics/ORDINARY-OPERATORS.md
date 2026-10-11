@@ -16,6 +16,19 @@ ending context for conversions and delayed reads. Parser-folded literal
 concatenations used as variable names remain distinguishable from unary or
 ternary expressions that merely produce the same bytes.
 
+For two defined direct CV operands, implicit integer conversion in `%`, `<<`,
+`>>` and mixed scalar `&`, `|`, `^` suspends through warning/deprecation handlers.
+Conversions capture the number and original float-string before diagnostics.
+`%` and shifts dereference the RHS after left conversion; bitwise operations
+dereference both before conversion and retain their original numeric dispatch.
+Borrowed reference pointers add no owner. Each notice reads the current handler
+registry; a thrown handler prevents later conversion notices and the result.
+The [review ledger](../../coverage/semantics/integer-operator-warning-review.json)
+keeps source and genuine production-SL state checks at their tested revisions.
+Copied/reference-result producers and object conversion remain open. Expired
+pointers stay Unsupported; six callback-unset native originals crashed with
+signal11, with no diagnosed engine cause or agreement claim.
+
 Concatenation has an additional compile/runtime distinction. The compiler visits
 both operands before converting known scalar operands and queuing conversion
 warnings. At execution, known array operands produce their conversion warnings

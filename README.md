@@ -436,6 +436,11 @@ original Unsupported and failed admission retain zero credit.
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;
 seven preserved request-environment boundaries now have separate explicit-input witnesses.
+Integer conversion warnings for `%`, shifts and mixed scalar bitwise operations
+now suspend through registered handlers for two defined direct CV operands.
+Captured numbers/strings, live versus borrowed RHS reads and fresh handler
+selection are checked in the [review ledger](coverage/semantics/integer-operator-warning-review.json).
+Copied/reference-result producers and object conversion remain open.
 [Destructuring and retained expression effects](docs/semantics/DESTRUCTURING.md)
 now execute current scalar/array list patterns and nonvariable-left coalescing.
 [Independent acceptance](coverage/semantics/destructuring-review.json) binds 263

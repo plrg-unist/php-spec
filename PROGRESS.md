@@ -22,6 +22,20 @@ The 376 composition over 804fe189 passes one exact repeated-exit source and
 41 public exit-frontier premises with full SL admission at b9dfa5def.
 Earlier source/state cuts retain their original revisions.
 
+Module387 stages scalar integer conversion warnings for `%`, shifts and mixed
+bitwise operations with two defined direct CV operands. It retains captured
+numbers and string spelling while callbacks mutate/rebind operands; `%`/shifts
+select the RHS referent after left conversion, and bitwise operations borrow it
+before conversion. Returning/throwing handlers, fresh registry selection and
+source lines are checked. Author source4 and independent source30 retain their
+separate cuts; author5 production-SL state fixtures pass304 premises and independent3
+pass174. The [ledger](coverage/semantics/integer-operator-warning-review.json) records
+their revisions and raw evidence.
+Fixture parser/elaboration failures and AL-only observations have zero credit.
+Copied/reference-result producers and object conversions remain open; genuinely
+expired pointers stay Unsupported. Six callback-unset native originals crashed
+with signal11 and receive no agreement or engine-cause claim.
+
 Unknown literal `declare` names now compile ordered E_COMPILE_WARNING (128)
 diagnostics with original spelling and the first item's line. Runtime no-op/body
 work authenticates the source and enters PCFIELD1 children; compilation retains
