@@ -35,6 +35,9 @@ Fixture parser/elaboration failures and AL-only observations have zero credit.
 Copied/reference-result producers and object conversions remain open; genuinely
 expired pointers stay Unsupported. Six callback-unset native originals crashed
 with signal11 and receive no agreement or engine-cause claim.
+The 377 composition over c5e88ccc passes strict3 at 7a0567247 (6.022s),
+preserving parent error-handler, property/WeakMap and return guards. Prior
+source/state evidence retains its original revisions without renewal.
 
 Unknown literal `declare` names now compile ordered E_COMPILE_WARNING (128)
 diagnostics with original spelling and the first item's line. Runtime no-op/body

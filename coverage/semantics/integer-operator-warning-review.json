@@ -1,6 +1,6 @@
 {
   "scope": "%, <<, >> and numeric/mixed-scalar &, |, ^ with two initially defined direct CV operands and user error handlers.",
-  "status": "independently_reviewed_bounded_runtime_private",
+  "status": "independently_reviewed_bounded_runtime",
   "target": "PHP 8.5.10 CLI NTS 64-bit",
   "production_revision": "af04f2656fd6807bf05f488c84024afc24e65103",
   "semantic_sha256": {
@@ -46,6 +46,18 @@
       "result": "3 genuinely reached fixtures/174 conditions all true, exit0, no stderr; borrowed roots, old-cell writes, registry refresh, malformed records, zero/one-step and resumed execution",
       "report": "/home/user/workspace/php-spec-evidence-archive/operators-01/review-direct-state-sl-90b2c6167/report.json"
     }
+  },
+  "actual_parent_composition": {
+    "parent": "c5e88cccde1b2078975fd2b59dcde4ebec8878fb",
+    "tested_revision": "7a056724789f4ea156b2bba07daa64f2af5ba1d3",
+    "modules": 377,
+    "gate": "SL strict main=true; compilation only",
+    "passed": true,
+    "elapsed_seconds": 6.022137641906738,
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-01/integration-7a0567247/report.json",
+    "report_sha256": "8716ab2dd43034bf87731a9a46e00e92e100b6de2f7517127d379bd8be5130e4",
+    "seam_review": "returns_review_21: accepted387 bytes, parent property/WeakMap/returns fields and error-handler string-carrier guard preserved",
+    "renewed_source_or_state_credit": 0
   },
   "limitations": [
     "Copied/literal/unary/assignment/reference-assignment/byref-call operands are a separate pending consumer increment; retained native-only originals receive no model agreement credit.",
