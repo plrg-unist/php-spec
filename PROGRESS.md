@@ -3087,6 +3087,8 @@ MIN/upper/nonfinite/invalid64 bounds remain constructed controls. Object/array
 callback replacements, changed sources/tails, PARAM and wider getter scope remain
 required; phase41 cuts are frozen.
 [Float-integer ledger](coverage/semantics/magic-property-float-integer-review.json).
+The join over `2b482deaa` at `751f6f917` preserves reviewed parent routes with 375 modules.
+Private and parent compiler cuts are reused; fresh strict/source/state/native counts remain 0.
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;

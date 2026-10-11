@@ -1907,6 +1907,8 @@ preserve their scalar writes before getter cleanup. Real source conflicts diagno
 pass 1,338 premises; strict375 retains `6674a8cdb`. The original whole425 fixture
 timeout stays0 after a fixture-only split. Range controls are constructed;
 object/array callback replacements and changed source constraints remain required.
+The join over `2b482deaa` at `751f6f917` preserves reviewed parent routes with 375 modules.
+Private and parent compiler cuts are reused; fresh strict/source/state/native counts remain 0.
 PARAMETERBACKINGS and wider conversions remain required.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded
