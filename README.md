@@ -1476,19 +1476,18 @@ Two live Closure instances from one compiled template preserve old/current targe
 one guarded class publication, lexical namespace and fresh defaults.
 Both exact factory forms also admit `do` bodies through authenticated standalone
 Block chains at root or a valid namespace body, including existing conditional
-ancestry and direct `while` hosts. Actual Do/While/Block ancestors, terminals and
-complete factory guards stay mandatory. Selected hosts publish functions or create
+ancestry, direct `while` hosts and nested `do` hosts. Actual Do/While/Block ancestors,
+terminals and complete factory guards stay mandatory. Selected hosts publish functions or create
 Closures; skipped hosts preserve missing callables while anonymous names already exist.
-The [While-hosted Do review](coverage/semantics/anonymous-while-do-rtd-review.json)
-checks reverse class publication, retained Closure receivers, saved caller frames
-and fresh defaults. Three originals agree at 5a13bfe4 /376 (strict3 6.026s), with
-683 focused premises and 23 genuine steps. Nested Do, If or While hosts beneath Do
-and wider factory guards remain Unsupported. The earlier [If-hosted Do review](coverage/semantics/anonymous-conditional-do-rtd-review.json)
+The [nested-Do review](coverage/semantics/anonymous-nested-do-rtd-review.json)
+checks both actual Do ancestors, reverse class publication, retained Closure receivers
+and fresh defaults. Three originals agree at 686cb43f /376 (strict3 6.126s), with
+702 focused premises and 25 genuine steps. If or While hosts beneath Do and wider
+factory guards remain Unsupported. The earlier [While-hosted Do review](coverage/semantics/anonymous-while-do-rtd-review.json)
+retains source3/state683 and its 5ff2413e/d02e5167 strict3 composition; only its
+nested-Do exclusion is superseded. The earlier [If-hosted Do review](coverage/semantics/anonymous-conditional-do-rtd-review.json)
 retains its original source/state cuts and WeakMap composition; only its direct
 While-host exclusion is superseded.
-The 376 join over d02e5167 passes strict3 at 5ff2413e (6.124s), checking the
-shared getter-string task domain. Review preserves parentless class linking;
-private source/state cuts retain their original revisions.
 The earlier [Do body-Block review](coverage/semantics/anonymous-do-block-rtd-review.json)
 binds three originals at 9d2ca309 /375 (strict3 6.025s) and 690 premises:
 648 setup/frontier, 42 pure, with 27 genuine Block, publication, creation/capture,

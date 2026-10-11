@@ -55,19 +55,20 @@ Private source2 / 228+6 checks retain their original cuts.
 [Declare ledger](coverage/semantics/compiler-declare-review.json).
 
 Exact noattr/noarg by-value untyped named functions and static no-capture Closure
-assignments now admit plain empty named descendants in direct While-hosted Do bodies,
-including existing While host ancestry and Do body-Block chains. Three originals
-agree at 5a13bfe4 /376 (strict3 6.026s), covering skipped hosts, reverse publication,
+assignments now admit plain empty named descendants in nested Do bodies through
+existing Do host ancestry and body-Block chains. Three originals agree at
+686cb43f /376 (strict3 6.126s), covering skipped outer hosts, reverse publication,
 retained Closure receivers, lexical namespace and fresh defaults. Author543 and
-independent140 pass 683 premises: 635 setup/frontier +48 pure, with 23 genuine Block,
+independent159 pass 702 premises: 649 setup/frontier +53 pure, with 25 genuine Block,
 publication, creation/capture, allocation and eligible no-op steps. Fixtures stop at
 required allocations; syntax-only preparation/elaboration has zero runtime credit.
-No executed COMP44 failures. Nested Do, If or While hosts beneath Do and wider
-factory guards remain Unsupported.
-[While-hosted Do ledger](coverage/semantics/anonymous-while-do-rtd-review.json).
-The 376 join over d02e5167 passes strict3 at 5ff2413e (6.124s), checking the
-shared getter-string task domain. Review preserves parentless class linking;
-private source/state cuts retain their original revisions.
+No executed COMP45 failures. If or While hosts beneath Do and wider factory guards
+remain Unsupported.
+[Nested-Do ledger](coverage/semantics/anonymous-nested-do-rtd-review.json).
+The [earlier While-hosted Do ledger](coverage/semantics/anonymous-while-do-rtd-review.json)
+retains source3/state683 at 5a13bfe4 and its 5ff2413e/d02e5167 strict3 composition.
+Only authenticated nested Do hosts supersede its placement exclusion; original cuts
+remain frozen.
 
 The [earlier If-hosted Do ledger](coverage/semantics/anonymous-conditional-do-rtd-review.json)
 retains its source3/state841 and accepted WeakMap composition; only authenticated

@@ -1,0 +1,53 @@
+{
+  "scope": "Plain empty named descendants in exact noattr/noarg/by-value/untyped named functions and exact static no-capture/noattr/noarg/by-value/untyped Closures assigned by value to ordinary variables in nested Do bodies through existing Do host ancestry and standalone body-Block chains. Actual Do/Block nodes, terminal presence and complete factory guards remain mandatory. Originals observe body-before-false-condition publication/creation, skipped outer While hosts, reverse class publication, two retained Closure instances from one compiled template, lexical namespace, fresh defaults and qualified prior-deferred versus case-spelled EARLY ownership. If or While hosts beneath Do, other intervening loops, nested factories and wider callable guards remain Unsupported by this Do context; earlier admitted and anonymous-only contexts stay supported.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "nested-do-reversed",
+      "source": "<?php\n$outerLeft = false; $innerLeft = false; $outerRight = false; $innerRight = false; $rightFactory = null;\n$leftName = 'class@anonymous' . \"\\0\" . __FILE__ . ':14$1';\n$rightName = 'class@anonymous' . \"\\0\" . __FILE__ . ':26$3';\n$before = new $leftName; $rightBefore = new $rightName;\necho $before::class === $leftName && $rightBefore::class === $rightName && $rightFactory === null ? 'before|' : 'BAD|';\ntry { makeNestedDoLeft(); echo 'BAD|'; } catch (Error $caught) { echo 'missing|'; }\ndo {\n    {\n        do {\n            {\n                function makeNestedDoLeft() {\n                    class NestedDoLeftPublished {}\n                    return new class { public function kind() { return 'left'; } };\n                }\n            }\n        } while ($innerLeft);\n    }\n} while ($outerLeft);\n{\n    do {\n        do {\n            {\n                $rightFactory = static function () {\n                    class NestedDoRightPublished {}\n                    return new class { public function kind() { return 'right'; } };\n                };\n            }\n        } while ($innerRight);\n    } while ($outerRight);\n}\n$right = $rightFactory(); $rightNamed = new NestedDoRightPublished;\necho $right::class === $rightName && $right->kind() === 'right' && $rightNamed::class === 'NestedDoRightPublished' ? 'right|' : 'BAD|';\ntry { new NestedDoLeftPublished; echo 'BAD|'; } catch (Error $caught) { echo 'left-missing|'; }\n$left = makeNestedDoLeft(); $leftNamed = new NestedDoLeftPublished;\necho $left::class === $leftName && $left->kind() === 'left' && $leftNamed::class === 'NestedDoLeftPublished' ? 'left|' : 'BAD|';\necho !$outerLeft && !$innerLeft && !$outerRight && !$innerRight && $before !== $left && $rightBefore !== $right ? 'fresh' : 'BAD';\n",
+      "source_sha256": "15cd314dabf3b2b3168e880fca7c0d202f789e811a22b54beaf7ff8131f733df",
+      "stdout_base64": "YmVmb3JlfG1pc3Npbmd8cmlnaHR8bGVmdC1taXNzaW5nfGxlZnR8ZnJlc2g=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/anonymous-class-20/.tools/anonymous-nested-do-native-45/run-v1/nested-do-reversed/command.json",
+      "native_raw_sha256": "5076f64b04946e358bc9d96889c62e608dec6dee990a424419233cedd6a675cb"
+    },
+    {
+      "id": "nested-do-repeated",
+      "source": "<?php\nnamespace RepeatNestedDoSide;\n$outer = false; $i = 0; $seen = false; $make = null; $previous = null;\n$name = 'class@anonymous' . \"\\0\" . __FILE__ . ':15$1';\n$before = new $name;\necho $before::class === $name && $before->value === 0 && $make === null && $previous === null ? 'before|' : 'BAD|';\ndo {\n    {\n        do {\n            {\n                $previous = $make;\n                $make = static function () {\n                    global $seen;\n                    if (!$seen) { $seen = true; class Published {} }\n                    return new class { public $value = 0; public function space() { return __NAMESPACE__; } };\n                };\n            }\n            $i = $i + 1;\n        } while ($i < 2);\n    }\n} while ($outer);\necho !$outer && $i === 2 && $previous !== $make && $previous !== null && $make !== null ? 'templates|' : 'BAD|';\nnamespace RepeatNestedDoCaller;\n$first = $previous(); $named = new \\RepeatNestedDoSide\\Published;\necho $first::class === $name && $first->space() === 'RepeatNestedDoSide' && $named::class === 'RepeatNestedDoSide\\Published' ? 'first|' : 'BAD|';\n$first->value = 9; $second = $make();\necho $second::class === $name && $second->space() === 'RepeatNestedDoSide' && $second->value === 0 ? 'second|' : 'BAD|';\necho $seen && $before !== $first && $first !== $second ? 'fresh|' : 'BAD|';\necho $before->value . ':' . $first->value . ':' . $second->value;\n",
+      "source_sha256": "aee6edc57bf5651d68b8afcfcede6dbff187ed3620ce31dbe55ace78e656fdb3",
+      "stdout_base64": "YmVmb3JlfHRlbXBsYXRlc3xmaXJzdHxzZWNvbmR8ZnJlc2h8MDo5OjA=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/anonymous-class-20/.tools/anonymous-nested-do-native-45/run-v1/nested-do-repeated/command.json",
+      "native_raw_sha256": "95a00a8d97eae3dd7c5203530bfde2618448b4763781d3e2fd3d541f8353d9a8"
+    },
+    {
+      "id": "nested-do-prior-deferred",
+      "source": "<?php\nnamespace NestedDoSelectedSide;\n$outer = false; $inner = false;\n$name = 'class@anonymous' . \"\\0\" . __FILE__ . ':15$2';\n$before = new $name; $early = new Exception;\necho $before::class === $name && $early::class === 'NestedDoSelectedSide\\\\eXcEpTiOn' ? 'before|' : 'BAD|';\ntry { chosenNestedDoFactory(); echo 'BAD|'; } catch (\\Error $caught) { echo 'missing|'; }\nwhile (false) { do { do { function skippedNestedDoFactory() { class HiddenNestedDo {} } } while (false); } while (false); }\ndo {\n    {\n        do {\n            {\n                function chosenNestedDoFactory() {\n                    if (false) { class Exception {} }\n                    return new class { public $value = 0; public function space() { return __NAMESPACE__; } };\n                }\n            }\n        } while ($inner);\n    }\n} while ($outer);\nclass eXcEpTiOn {};\nnamespace CallerNestedDoSide;\n$first = \\NestedDoSelectedSide\\chosenNestedDoFactory();\necho !$outer && !$inner && $first::class === $name && $first->space() === 'NestedDoSelectedSide' ? 'first|' : 'BAD|';\n$first->value = 9; $fresh = new $name;\necho $before !== $first && $fresh !== $first && $before->value === 0 && $first->value === 9 && $fresh->value === 0 && $fresh->space() === 'NestedDoSelectedSide' ? 'fresh|' : 'BAD|';\n$lastLine = __LINE__ + 1;\n$last = new class {};\n$lastName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . $lastLine . '$3';\necho $last::class === $lastName ? 'last|' : 'BAD|';\ntry { \\NestedDoSelectedSide\\skippedNestedDoFactory(); echo 'BAD'; } catch (\\Error $caught) { echo 'skipped'; }\n",
+      "source_sha256": "7fb9f003aae1990f2d15592b2f193ca8a17c93647e9efee121642332f31b37c6",
+      "stdout_base64": "YmVmb3JlfG1pc3Npbmd8Zmlyc3R8ZnJlc2h8bGFzdHxza2lwcGVk",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/anonymous-class-20/.tools/anonymous-nested-do-native-45/run-v1/nested-do-prior-deferred/command.json",
+      "native_raw_sha256": "84dba89f98c54bbf557c757c9e60b0cee970965add6c96071567982afb362c07"
+    }
+  ]
+}
