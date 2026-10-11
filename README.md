@@ -1333,7 +1333,14 @@ Getter rebinding preserves that selected target. Arithmetic errors keep it live
 through returned-value cleanup, then release it before catch. Three originals and
 separate scalar/derived and receiver/lifetime state cuts are recorded in the
 [addition-assignment review](coverage/semantics/backed-get-hook-addassign-review.json).
-Hooked iteration, defaulted virtual/set/reference, inherited/trait and wider
+Named subclasses can override a public backed by-value getter with another
+backed getter of the same normalized property type. The child supplies the
+effective slot/default and getter scope; inherited `$this` reads dispatch to it,
+while the called class remains the runtime descendant. Returned objects survive
+receiver cleanup independently. Two originals and separate scalar/lifetime state
+cuts are recorded in the
+[override review](coverage/semantics/backed-get-hook-override-review.json).
+Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
 and `implements` declarations, enforce method prototypes and abstract

@@ -78,9 +78,20 @@ through a pending arithmetic error; actual unwind then retires that hold before
 catch. Source selector metadata adds no second `$this` owner. Three originals
 and separate scalar291/affected129 state cuts are recorded in the
 [addition-assignment review](../../coverage/semantics/backed-get-hook-addassign-review.json).
+Named public backed by-value getters can override another such getter with an
+identical normalized property type. The child declaration replaces the effective
+slot/default and retains its getter body, lexical class and private-method scope;
+the called class remains the runtime descendant. Parent-defined `$this` reads use
+the effective child getter. Direct backing access still requires the active
+property and receiver; returning a fresh object does not store it in that slot.
+Two originals and separate scalar238/lifetime97 cuts are recorded in the
+[override review](../../coverage/semantics/backed-get-hook-override-review.json).
+Admission requires a nonabstract, nonfinal named subclass and backed bodies
+on both sides. Broader type equivalence/covariance, virtual cross-shapes and
+plain redeclarations of inherited hooks remain explicit Unsupported.
 Hooked object iteration is explicit Unsupported rather than a raw storage view;
 array casts retain ordinary storage only. Defaulted virtual/set/byref hooks,
-inheritance/traits, temporary/computed receivers, other compound operators/RHS
+other inheritance/traits, temporary/computed receivers, other compound operators/RHS
 forms, wider coalescing assignment and
 quiet/reference/indirect access and `__unset` declarations/consumers remain boundaries.
 

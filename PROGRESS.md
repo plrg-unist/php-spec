@@ -648,6 +648,17 @@ unchanged. [Addition-assignment review](coverage/semantics/backed-get-hook-addas
 Actual375 over `d233bb59` passes strict initialization at `8f3aae08` (5.854 s),
 preserving source3 and the separate scalar291/affected129 cuts.
 
+Public backed by-value getters now override another public backed getter with
+the same normalized property type in named subclasses. The child supplies one
+effective slot/default and getter lexical scope; inherited `$this` reads retain
+runtime descendant dispatch. Strict375 and two originals pass at `79d98c8e`.
+Separate scalar238 at `a166611d` (213 reached, 25 derived) and retained lifetime97
+at `e099fbf7` check child/private scope, backing access, exclusion/rollback and
+returned-object ownership through inherited receiver destruction. Earlier AL
+failures, false335 and localization diagnostics retain zero whole-gate credit.
+Virtual cross-shapes, broader type compatibility and other hook inheritance
+remain required. [Override review](coverage/semantics/backed-get-hook-override-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization

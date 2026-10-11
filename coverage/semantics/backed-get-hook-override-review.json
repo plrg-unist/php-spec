@@ -1,0 +1,130 @@
+{
+  "scope": "Named public by-value backed get-hook overrides with identical normalized property TYPE; nonabstract/nonfinal child declarations, no setters, references or traits.",
+  "implementation": {
+    "file": "spec/semantics/382-backed-get-hooks.watsup",
+    "route": "ppproperty_hook_group class-shape admission; property_hook_override_pair during property_hook_link_finish",
+    "engine": "vendor/php-src/Zend/zend_compile.c: zend_compile_property_hooks; Zend/zend_inheritance.c: do_inherit_property, inherit_property_hook; Zend/zend_object_handlers.c: zend_std_read_property",
+    "behavior": "Keep root admission and ordinary inheritance diagnostics/rollback. Admit only authentic public plain get origins with backed bodies and equal normalized TYPE on both sides. Reuse the child effective descriptor/default and existing declaring-function/runtime-called-class machinery; no task, context or ownership change."
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor pin 34308a6666b2d489c509541ea9befea9e2b42348",
+  "profile": "tests/semantics/profile.json; LC_ALL=C, TZ=UTC, jobs=1, cache=false, det=true",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "catalogue": "tests/semantics/backed_get_hook_override_cases.json",
+  "native": {
+    "revision": "3d54ec25ad7419edfeeef1ab59f103b345bf3b38",
+    "cases": 2,
+    "cap_seconds": 45,
+    "source_agreements": 0,
+    "observations": "Child default200 replaces parent100 in one effective slot; Child lexical/private scope survives Grand called scope and parent-defined This dispatch. Returned RV survives inherited B200 receiver destruction until kept unset D/weak-null. Scalar echo prefix precedes getter output, contrary to the preserved anticipation; actual native bytes are authoritative.",
+    "path": ".tools/coalesce-get-hooks-private-32/.tools/backed-get-hooks-override-probes-36/native-first/report.json",
+    "sha256": "81a9db00ae8c55667819c2a377734d59b89b847b2b39a378065e5be518c6f69c"
+  },
+  "unchanged_baseline": {
+    "revision": "3d54ec25ad7419edfeeef1ab59f103b345bf3b38",
+    "outcome": "Both checked originals Unsupported property hook visibility, inheritance, attributes or shape; empty bytes/events.",
+    "source_agreements": 0,
+    "path": ".tools/coalesce-get-hooks-private-32/.tools/backed-get-hooks-override-probes-36/accepted-current-baseline/report.json",
+    "sha256": "ffb8c4433220e23f49046125ca2eae4c1fe3654aef17c0d25018c16c1899c36d"
+  },
+  "strict": {
+    "revision": "79d98c8e473638b2a0321d910066d8544ecce430",
+    "modules": 375,
+    "mode": "SL init-only",
+    "cap_seconds": 60,
+    "elapsed_seconds": 5.702052,
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "path": ".tools/coalesce-get-hooks-private-32/.tools/backed-get-hooks-override-probes-36/backed-hook-override-compiler-awcwwrd9/report.json",
+    "sha256": "320e51920697b96ea57b86f296e9cf3c62a42b610e3e5f1cbc060316982c0e84"
+  },
+  "sources": {
+    "revision": "79d98c8e473638b2a0321d910066d8544ecce430",
+    "agreements": 2,
+    "model_cap_seconds": 60,
+    "outer_cap_seconds": 75,
+    "steps": 100000,
+    "outcome": "Normal, exact original native stdout/stderr/exit for scalar dispatch/default/private scope and returned-object cleanup.",
+    "path": ".tools/coalesce-get-hooks-private-32/.tools/backed-get-hooks-override-probes-36/changed-model-t60mrjc_/report.json",
+    "sha256": "f2797ba3c5b6e556533cc466e174e5be16801c27e78e9b1dcdfda2afc613513e"
+  },
+  "state": {
+    "scalar": {
+      "revision": "a166611dd1707ba420cf89c18fc6525d2770d8b0",
+      "mode": "AL90 -> SL90; --group scalar",
+      "reached": 213,
+      "derived": 25,
+      "total": 238,
+      "application_evaluations": 1,
+      "source_agreements": 0,
+      "outcome": "true",
+      "fixture_sha256": "e59cf78fee9f75c9975c538d0f8379a4e8f293d474327bdc57faec2297c42ce4",
+      "observations": "Genuine installed links and one child slot/default; parent/child/grand CV and inherited This reads, Child lexical/private vs Grand called scope, actual backing bypass and source caller/frame restoration.",
+      "derived_controls": "Exact type/name/source origin, final/asymmetric/readonly/visibility, virtual cross-shapes, missing/ordinary parent and plain redeclaration refusals; failed-link rollback and generic call_context_valid lexical/called-class negatives.",
+      "path": ".tools/coalesce-get-hooks-private-32/.tools/backed-get-hook-override-protocol-f6e10c4n/report.json",
+      "sha256": "3d11644134bfcf3bc4d1c80ade06b37870c62b92d02760984196fc4626ad0a91"
+    },
+    "lifetime": {
+      "revision": "e099fbf7624619af028c444c3ae1b230a0555b25",
+      "mode": "AL90 -> SL90; unchanged lifetime component of bool2 diagnostic",
+      "reached": 97,
+      "derived": 0,
+      "total": 97,
+      "source_agreements": 0,
+      "outcome": "true component in (false,true)",
+      "fixture_sha256": "277d93ee9e0d9b21738b493af12431f3a88b0bf35a80dfdef0068088265827f5",
+      "observations": "Actual inherited parentRead and child hook scope/backing; sole RV RESULT owner1 -> BASE+RESULT2 -> kept CV1, receiver inherited B200/weak-null while leaf lives, then real kept unset D/weak-null.",
+      "path": ".tools/coalesce-get-hooks-private-32/.tools/backed-hook-override-components-diagnostic-e099-r2/report.json",
+      "sha256": "e0de0b9e62250c21aed8b6f0be96c444ef74cf25ded34643cbdeaf8c0dd12979"
+    },
+    "compatibility": "Production unchanged from 79d; lifetime, PREFIX, SCALAR208 and first24 derived assertions unchanged from e099. Correct only final derived scope predicate from hook-specific validator to generic84 and add affected scalar selection. These are separate accepted scalar238/lifetime97 cuts; no renewed whole335 pass.",
+    "stability": "Both cuts exit0 with empty stderr, no timeout or surviving process group and stable inputs/fixture/HEAD/status."
+  },
+  "preserved_zero_credit": [
+    {
+      "kind": "First AL fixture stop: ppropertyid-to-porigin narrowing",
+      "path": ".tools/coalesce-get-hooks-private-32/.tools/backed-get-hook-override-protocol-m__shjg3/report.json",
+      "sha256": "bd4da7ae9d5cd28927028063fd7575502322befe5087427de82e9dd1f1267725"
+    },
+    {
+      "kind": "Second AL fixture stop: unavailable eval_order_set_occurrence; replaced with local occurrence primitive",
+      "path": ".tools/coalesce-get-hooks-private-32/.tools/backed-get-hook-override-protocol-b111gtd6/report.json",
+      "sha256": "5bc5a6e4df9a929ec14cd6fb272978e9889e1eb0c0bbd67c811a50a49d3c7bb1"
+    },
+    {
+      "kind": "Original whole335 false",
+      "path": ".tools/coalesce-get-hooks-private-32/.tools/backed-get-hook-override-protocol-ny2rj2pq/report.json",
+      "sha256": "26584bab632bf7be34e46802fca5d0514b49227c79185c221463b2ad38de6055"
+    },
+    {
+      "kind": "Bool2 diagnostic AL tuple-type parse stop",
+      "path": ".tools/coalesce-get-hooks-private-32/.tools/backed-hook-override-components-diagnostic-e099/report.json",
+      "sha256": "f34c586183ce9778262664528f89f0248c9a87680919beddc41f3830cbe7f63e"
+    },
+    {
+      "kind": "Corrected bool2 diagnostic: whole gate0, retained lifetime97 recorded separately above",
+      "path": ".tools/coalesce-get-hooks-private-32/.tools/backed-hook-override-components-diagnostic-e099-r2/report.json",
+      "sha256": "e0de0b9e62250c21aed8b6f0be96c444ef74cf25ded34643cbdeaf8c0dd12979"
+    },
+    {
+      "kind": "Scalar context diagnostic: all237 prior premises pass, hook-specific mutated validators true, generic validators false; fixture-only final derived correction",
+      "outcome": "(true,true,true,false,false); no whole-state/source credit",
+      "path": ".tools/coalesce-get-hooks-private-32/.tools/backed-hook-override-context-diagnostic-e099/report.json",
+      "sha256": "28289665e8fde5b486d4f4348333549c51888f20579d305c7e86bc012f6d51ef"
+    }
+  ],
+  "commands": [
+    "python3 .tools/backed-get-hooks-override-probes-36/run.py native --revision 3d54ec25ad7419edfeeef1ab59f103b345bf3b38",
+    "python3 .tools/backed-get-hooks-override-probes-36/run.py baseline --revision 3d54ec25ad7419edfeeef1ab59f103b345bf3b38",
+    "python3 .tools/backed-get-hooks-override-probes-36/run-compiler.py 3d54ec25ad7419edfeeef1ab59f103b345bf3b38 79d98c8e473638b2a0321d910066d8544ecce430",
+    "python3 .tools/backed-get-hooks-override-probes-36/run.py changed --revision 79d98c8e473638b2a0321d910066d8544ecce430",
+    "python3 .tools/backed-hook-override-components-diagnostic-e099-r2/run.py",
+    "python3 tests/semantics/backed_get_hook_override_protocol.py --revision a166611dd1707ba420cf89c18fc6525d2770d8b0 --group scalar"
+  ],
+  "recovery": "Commands run from retained private32. Permanent original bytes, source hashes and exact native outcomes are in the catalogue; ignored raw/probe/runner paths remain at original paths. Older hook cuts remain unchanged.",
+  "remaining": [
+    "Set/byref/defaulted virtual hooks and traits",
+    "Virtual cross-shapes and broader type equivalence/covariance",
+    "Plain redeclarations inheriting hooks and ordinary-parent new hooks",
+    "Wider receivers and other hook consumer families"
+  ]
+}
