@@ -110,9 +110,20 @@ writes raise read-only errors naming the runtime class at the actual write line,
 without getter dispatch or slot mutation. Returned objects can survive receiver
 cleanup. Two originals and four separate state cuts are recorded in the
 [virtual override review](../../coverage/semantics/virtual-get-hook-override-review.json).
+Public get-only virtual overrides without initializers now allow one-way type
+covariance when both declarations have a type. Comparison uses the actual
+declaring scopes and active nominal registry; builtin `int|string` to `int` and
+linked `Animal` to `Dog` narrowing retain child/private scope, empty storage and
+returned-value ownership. Known incompatible getter signatures fail at their
+hook line before the property-type diagnostic; static, readonly, visibility and
+final errors keep their existing priority. Unresolved comparisons defer to the
+hook-link refusal rather than becoming a known-incompatible fatal. Three originals
+and four separate state cuts are recorded in the
+[covariance review](../../coverage/semantics/virtual-get-hook-covariance-review.json).
 The hook linker still refuses ordinary-parent hooks, plain redeclarations and
-backed children of virtual parents. Broader type equivalence/covariance remains
-required; current ordinary invariant property-type checks precede hook linking.
+backed children of virtual parents. Physical backing retains invariant types;
+typed/untyped mismatches, broader type equivalence and wider hook variance remain
+required.
 Hooked object iteration is explicit Unsupported rather than a raw storage view;
 array casts retain ordinary storage only. Defaulted virtual/set/byref hooks,
 other inheritance/traits, temporary/computed receivers, other compound operators/RHS

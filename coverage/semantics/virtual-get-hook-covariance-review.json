@@ -1,0 +1,242 @@
+{
+  "scope": "Named nonabstract, nonfinal public get-only by-value virtual overrides without initializers; both property types present and one-way covariance. Builtin int|string to int and active nominal Animal to Dog; no physical backing or changed task/ownership protocol.",
+  "implementation": {
+    "files": [
+      "spec/semantics/134-inheritance-runtime.watsup",
+      "spec/semantics/238-trait-data.watsup",
+      "spec/semantics/382-backed-get-hooks.watsup"
+    ],
+    "engine": [
+      "vendor/php-src/Zend/zend_inheritance.c: do_inherit_property, inherit_property_hook, prop_get_variance, perform_delayable_implementation_check, emit_incompatible_method_error"
+    ],
+    "change": "The prepublication gate authenticates child source/default shape and a closed virtual parent. Post-link virtual edges use declaring scopes, active nominal registry and pvcovariant(child,parent), without weakening equal-TYPE backed walks. Only known incompatibility yields the getter declaration fatal at its authentic hook line; ordinary flag-error priority remains unchanged. PVNEEDS/PVUNSUPPORTED defer to hook-link refusal and rollback."
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor pin 34308a6666b2d489c509541ea9befea9e2b42348",
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "binaries": {
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "strict_compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+    "AL_compiler_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "SL_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "catalogue": {
+    "path": "tests/semantics/virtual_get_hook_covariance_cases.json",
+    "sha256": "9bf6f000dd8c3fb2c813ca18c5efb8918d2277272ad8f34599e32bc68aaebe79",
+    "protocol": "tests/semantics/virtual_get_hook_covariance_protocol.py",
+    "protocol_sha256": "2ca342ebfc1c3b6e387776c13bb83a709bbc0d49f3f7a4b38102be412b00716e"
+  },
+  "native": {
+    "revision": "2b482deaa4e77c78414bd6e884aa7f51ea0f2ae2",
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-covariance-probes-40/native-first/report.json",
+    "report_sha256": "e0b6b4234db45ac495c197324148ffb157c57d0f280cb527d2afdb65a1517ba6",
+    "seconds": {
+      "scalar-covariance": 0.003489,
+      "returned-payload-lifetime": 0.002616,
+      "invalid-widening": 0.002496
+    },
+    "stable_and_reaped": true,
+    "observations": 3,
+    "native_gate_completed": false,
+    "source_agreements": 0,
+    "result": "Two normal observations and one genuine compile-error255 with empty stdout/getter-declaration fatal stderr at line6. Original recorder gate remains false because its blanket empty-stderr assertion rejected the expected compile error. The retained reader validates these actual records without rewriting or rerunning them."
+  },
+  "unchanged_baseline": {
+    "revision": "2b482deaa4e77c78414bd6e884aa7f51ea0f2ae2",
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-covariance-probes-40/accepted-current-baseline/report.json",
+    "report_sha256": "393f1b95bccc6957f6e7f573924841d5baae9a56533a105115154e69bbbc635a",
+    "seconds": {
+      "scalar-covariance": 7.256471,
+      "returned-payload-lifetime": 7.795583,
+      "invalid-widening": 6.272358
+    },
+    "stable_and_reaped": true,
+    "source_agreements": 0,
+    "result": "All three genuine checked originals complete, but ordinary invariant property-type errors disagree with native: scalar class line9, nominal class line22 and invalid class line5."
+  },
+  "strict": {
+    "revision": "7259dc1ce748e29754fb7c1a37220a7b347bb190",
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-covariance-probes-40/virtual-get-hook-covariance-compiler-5nown6gv/report.json",
+    "report_sha256": "8c4672a17821e3a39846accf3d777ff23f7d28efa64f07e9df25010de8573695",
+    "seconds": 5.85435,
+    "stable_and_reaped": true,
+    "result": "PASS exact SL initialization375",
+    "application_evaluations": 0,
+    "source_agreements": 0
+  },
+  "sources": {
+    "revision": "7259dc1ce748e29754fb7c1a37220a7b347bb190",
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-covariance-probes-40/changed-model-p57num_y/report.json",
+    "report_sha256": "333084e8004026913b30d54c3848c7b6d426181b94ac8a3f6a27f975b6ec0464",
+    "seconds": {
+      "scalar-covariance": 12.350263,
+      "returned-payload-lifetime": 15.351712,
+      "invalid-widening": 6.598462
+    },
+    "stable_and_reaped": true,
+    "source_agreements": 3,
+    "retained_native_gate_completed": false,
+    "result": "All three genuine checked originals agree with retained full native streams and exits: two normal runs and one static_rejection255 getter-declaration fatal at line6, before child publication/body output."
+  },
+  "state": {
+    "cuts": [
+      {
+        "revision": "1abdd809637d75b4d28d3aaaeda7efee790a500e",
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-covariance-protocol-4pxk0x2q/report.json",
+        "report_sha256": "90c83498ead7003c7b87b7bea2c89fa8dcc8c5e88bfb4f9f5621daa41762062d",
+        "seconds": {
+          "algorithmic-compilation": 4.993217,
+          "strict-SL-application": 20.92985
+        },
+        "stable_and_reaped": true,
+        "group": "cv",
+        "fixture_sha256": "ad945b8e3d24da04dc54f4270a92755588ed92e2ba9cb5b328df49aa34cd1b32",
+        "reached": 65,
+        "derived": 50,
+        "application_evaluations": 1
+      },
+      {
+        "revision": "1abdd809637d75b4d28d3aaaeda7efee790a500e",
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-covariance-protocol-qzqywwr0/report.json",
+        "report_sha256": "b5f83ee2b9d0530dc92c2fd94faf7b88a00b591a2e055ff3b26abadd9c81d7bd",
+        "seconds": {
+          "algorithmic-compilation": 4.963313,
+          "strict-SL-application": 32.649255
+        },
+        "stable_and_reaped": true,
+        "group": "this",
+        "fixture_sha256": "a05979bbe259fc3853984616265f7fe77fd51bd316f1413a1c7b83844e7dd828",
+        "reached": 88,
+        "derived": 0,
+        "application_evaluations": 1
+      },
+      {
+        "revision": "1abdd809637d75b4d28d3aaaeda7efee790a500e",
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-covariance-protocol-ktic4mid/report.json",
+        "report_sha256": "35f4049d6ad0b954675d2ad91f263d284d22f133a0d95155bd8637c40f659025",
+        "seconds": {
+          "algorithmic-compilation": 5.020938,
+          "strict-SL-application": 40.745692
+        },
+        "stable_and_reaped": true,
+        "group": "lifetime",
+        "fixture_sha256": "aafb0afde6a020996ff302de61fcb02cf7d1013621a5d234cb6ed0a42df7f0bf",
+        "reached": 100,
+        "derived": 0,
+        "application_evaluations": 1
+      },
+      {
+        "revision": "4769720bc684105f6b4ff20faffdad7bedb9561a",
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-covariance-protocol-3dk2dj9d/report.json",
+        "report_sha256": "e0e6cf44ea86918403719c0566ab4c767ebdb701cf1f3a154191b4804ed0265e",
+        "seconds": {
+          "algorithmic-compilation": 5.086196,
+          "strict-SL-application": 6.716703
+        },
+        "stable_and_reaped": true,
+        "group": "invalid",
+        "fixture_sha256": "f3799fb7e8278ecc1cc0736ef9afd65a32cd3b67bea62613e25722d76f31f16a",
+        "reached": 14,
+        "derived": 0,
+        "application_evaluations": 1
+      }
+    ],
+    "result": "Four separate PASS invocations:317 premises=267 reached+50 derived, including repeated source setups; source agreements0. No combined invocation claimed."
+  },
+  "state_contract": [
+    "Actual linked Bridge layout selects the ancestor declaration; differing child TYPE and getter SIGNATURE.RETURNS retain Child lexical/private scope versus Grand called scope and no slots. CV and inherited This call/frame/result states are reached from checked originals.",
+    "Active linked Dog to Animal ancestry and actual Dog payload validate nominal covariance. Sole returned RESULT owner1 becomes BASE+RESULT2 then keptCV1; real inherited BEMPTY/receiver removal leaves Dog live until kept unset/DD/weak-null.",
+    "Genuine invalid boot returns exact getter incompatibility at hook line6, distinct from class line5. Main-unit ERRORORIGIN remains eps, parent is published while child is not, and no body effects occur.",
+    "50 derived controls separately check reverse direction/type presence, backed invariance, missing/broken/cyclic virtual ancestry, unknown nominal PVNEEDS refusal/rollback, source/slot/context mutations and unchanged static/readonly/access/final priority."
+  ],
+  "preserved_zero_credit": [
+    {
+      "revision": "357d8751009e74911182aaf404c656b42d868ea4",
+      "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-covariance-probes-40/virtual-get-hook-covariance-compiler-bp1jh6yh/report.json",
+      "report_sha256": "8697a93a88677265c0d26ebde1942dfe491f48842c67a205c4ec217e62997b64",
+      "seconds": 4.618658,
+      "stable_and_reaped": true,
+      "credit": 0,
+      "result": "Strict stop: structural otherwise with non-pure premises; corrected to total optional error-site helper and complementary guards. Application/source0; original3 unrun."
+    },
+    {
+      "revision": "0beb6b2ee6301c2bbf03ea8e3f2d08de7ad0c57d",
+      "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-covariance-protocol-g52863qh/report.json",
+      "report_sha256": "90162f6556192a0249cc7204446de82416ceb9a0f324aae4d42526241693b6ed",
+      "seconds": {
+        "algorithmic-compilation": 4.284936
+      },
+      "stable_and_reaped": true,
+      "credit": 0,
+      "result": "AL stop: getter return assertion projected pfunction.RETURNS; corrected to SIGNATURE.RETURNS. Application0; SL and later groups unrun.",
+      "fixture_sha256": "f67ccc576420606bd6ded95d1c7469b548072851b651ea0e58c55d1edb8be39a"
+    },
+    {
+      "revision": "2d160fa9049266d731fd043249b1941017643eb2",
+      "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-covariance-protocol-297_8dfy/report.json",
+      "report_sha256": "6dac7cf7fc43ded74d9d8a49f18c1ab2cc7ad3f4f4a0019bbe0460fe7c749b7c",
+      "seconds": {
+        "algorithmic-compilation": 5.031711,
+        "strict-SL-application": 21.375465
+      },
+      "stable_and_reaped": true,
+      "credit": 0,
+      "result": "CV115 false: derived main-unit fatal expected a unit root, but compiled_error_origin preserves the incoming origin for unit0. No state credit.",
+      "fixture_sha256": "51f667e3366aaae84c6689d63928369d1e3892d2fd708d8f9b0f21caab0c0655"
+    },
+    {
+      "revision": "2d160fa9049266d731fd043249b1941017643eb2",
+      "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-covariance-cv-derived-diagnostic-2d160/report.json",
+      "report_sha256": "3962d4c9e24e609a7e06108d1e96d6208aa96ab272d5ad1caf80aca6d6103cbc",
+      "seconds": {
+        "AL": 4.956409,
+        "SL": 21.066876
+      },
+      "stable_and_reaped": true,
+      "credit": 0,
+      "result": "Observation-only genuine CV65 plus all derived bindings: prefix true,23/24 indexed checks true; only D44 failed. Diagnostic0, no new source credit.",
+      "fixture_sha256": "ac01d04c84409de961b2b6e8972958a60f6a851d75e2c5b9d235f2e9fd1a1aeb"
+    },
+    {
+      "revision": "1abdd809637d75b4d28d3aaaeda7efee790a500e",
+      "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-covariance-protocol-qkirdi9t/report.json",
+      "report_sha256": "b134fd1e695352d46d4490d36fa978eff9a1a72ef3f4cbf55d40b226360f0819",
+      "seconds": {
+        "algorithmic-compilation": 4.934894,
+        "strict-SL-application": 6.329255
+      },
+      "stable_and_reaped": true,
+      "credit": 0,
+      "result": "Invalid14 false: the same unit0 origin contract preserves initial eps. Only that assertion was corrected; accepted CV/This/lifetime were not replayed.",
+      "fixture_sha256": "2477794c598cfce0d2f8667e60df2cc21fe00ef813bde0901fde4660b060111c"
+    }
+  ],
+  "commands": {
+    "native": "python3 .tools/virtual-get-hook-covariance-probes-40/run.py native --revision 2b482deaa4e77c78414bd6e884aa7f51ea0f2ae2",
+    "baseline": "python3 .tools/virtual-get-hook-covariance-probes-40/run-retained.py baseline --revision 2b482deaa4e77c78414bd6e884aa7f51ea0f2ae2",
+    "strict": "python3 .tools/virtual-get-hook-covariance-probes-40/run-compiler.py 2b482deaa4e77c78414bd6e884aa7f51ea0f2ae2 7259dc1ce748e29754fb7c1a37220a7b347bb190",
+    "sources": "python3 .tools/virtual-get-hook-covariance-probes-40/run-retained.py changed --revision 7259dc1ce748e29754fb7c1a37220a7b347bb190",
+    "state": "python3 tests/semantics/virtual_get_hook_covariance_protocol.py --revision <each cut revision> --group <cv|this|lifetime|invalid>",
+    "caps": "Native45, model60/outer75/100000 steps; strictSL60 init-only; each state AL90 then conditionalSL90; diagnosticAL90 thenSL60; jobs1, stop-first/group reap, LC_ALL=C/TZ=UTC."
+  },
+  "recovery": "Historical commands run from retained private32. Ignored original bytes/raws/recorders/binaries remain at original paths; permanent catalogue/protocol regenerate selected fixtures. Production134/238/382 is byte-identical strict/source-tested7259 throughout all accepted state cuts. Prior hook evidence keeps its original identities without renewal.",
+  "remaining": [
+    "Typed/untyped presence changes and broader type equivalence/variance are uncovered; they may still follow existing invariant-property error paths.",
+    "Physical-backed covariance, virtual-parent backed-child pairs, ordinary-parent hooks and plain redeclarations inheriting hooks.",
+    "Set/byref/defaulted virtual/trait hooks, abstract/final classes, unresolved nominal/autoload behavior and wider receiver/consumer families."
+  ],
+  "composition": null
+}

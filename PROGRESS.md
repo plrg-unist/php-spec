@@ -820,11 +820,23 @@ write line. Strict375 and two originals pass at `fbc19eb9`. Separate CV90 at
 `5d5e6361` (63 reached, 27 derived), This87/writes74 at `2318e256` and lifetime95
 at `44686722` check dispatch, pending errors, empty storage and kept-object cleanup.
 The latter three groups are all reached; counts include four source setups.
-Two AL fixture stops and This85 false retain zero credit. Broader virtual type
-covariance remains required; prior hook cuts stay frozen.
+Two AL fixture stops and This85 false retain zero credit. At that cut broader
+virtual type covariance remained required; prior hook cuts stay frozen.
 [Virtual override review](coverage/semantics/virtual-get-hook-override-review.json).
 Actual375 over `8b17c9ec` passes strict initialization at `2d234593` (5.833 s);
 private source2 and the four separate state cuts retain their accepted revisions.
+
+Public get-only virtual overrides without initializers now accept covariant types
+when both declarations have a type. Declaring scopes and active nominal ancestry
+support builtin and class narrowing; physical backing stays invariant. Known
+incompatible getter signatures fail at the hook line, preserving ordinary flag
+error priority. Strict375 and three originals pass at `7259dc1c`. Separate CV115
+(65 reached, 50 derived), This88 and lifetime100 pass at `1abdd809`; rejection14
+passes at `4769720b`. These check actual dispatch/return types, kept Dog ownership
+and line6 rejection before child publication. The original native recorder stop,
+strict/AL stops, false fixtures and diagnostic retain zero affected credit;
+the retained native process observations and prior hook cuts remain frozen.
+[Covariance review](coverage/semantics/virtual-get-hook-covariance-review.json).
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
