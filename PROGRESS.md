@@ -22,21 +22,21 @@ The actual composition of 374 modules over fa678cc48 passes strict3 at
 Private source2 / 228+6 checks retain their original cuts.
 [Declare ledger](coverage/semantics/compiler-declare-review.json).
 
-Bracketed namespaces now qualify plain empty named declarations alongside
-anonymous sites. Namespace body/root blocks retain early cost0; conditional
-declarations retain the prefix and cost1. Three fresh originals agree at
-6c8233e3 /375 (strict3 5.724s), including namespace-local `Exception`, same-short-name
-separation, an unnamed global namespace and shared cross-namespace counters.
-Author206 and independent99 pass 305 checks: 269 setup/source-frontier premises
-plus 36 pure queries, with 15 actual PhpSteps for block entry, qualified class
-no-op/publication and anonymous allocation. Syntax preparation/elaboration adds
-zero runtime credit; namespace lowering has no runtime namespace task. The initial
-duplicate fallback failed elaboration and retains zero credit; the explicit root
-guard fixes it. Unbracketed namespaces, named function/Closure descendants and
-wider named declarations/RTD ordering remain required.
-Actual375 over 1dd6e543 passes strict3 at a219a473 (5.671s), including the
-Iterator cursor datatype join; private native/source/state cuts retain their revisions.
-[Namespace-class ledger](coverage/semantics/anonymous-namespace-rtd-review.json).
+Valid named namespace sections now qualify plain empty named declarations beside
+anonymous sites, including repeated unbracketed sections. Eligible body/root-block
+classes cost0; deferred classes stay qualified and cost1 even when never published.
+Three fresh originals agree at 919bdf8c /375 (strict3 5.725s), preserving same-short-name
+separation, namespace-local `Exception`, case retention and shared compiler counters.
+Author and independent fixtures pass 392 checks: 360 setup/source-frontier premises plus
+32 pure queries, with 16 actual PhpSteps for early no-op/publication, allocation and
+compiled lexical namespace AT/result through genuine method frames after a switch.
+Syntax preparation/elaboration adds zero runtime credit; lowering has no runtime
+namespace task. Both author binding/frontier failures retain zero credit. Named
+Function/Closure descendants and wider named/anonymous contexts remain required.
+[Unbracketed ledger](coverage/semantics/anonymous-unbracketed-rtd-review.json).
+The earlier [bracketed cut](coverage/semantics/anonymous-namespace-rtd-review.json)
+retains native/source3/state305 and its 375 join over 1dd6e543 at a219a473; its historical
+style1 exclusion is superseded by the new positive/ABSENT-style1 controls.
 
 Standalone global blocks now preserve early class binding through each actual
 block ancestor; nested conditional blocks remain deferred. Three fresh originals
@@ -48,7 +48,7 @@ and anonymous allocation. Eligible named root-block classes cost0; deferred name
 classes cost1 even when never published. A same-shaped do-body path is rejected by checking
 the actual ancestor. Syntax-only preparation/elaboration adds no runtime credit.
 The missing retained-tool alias stopped before execution and retains zero credit;
-repaired exercised tools match accepted binaries. Namespaces/functions/Closures,
+repaired exercised tools match accepted binaries. At that cut, namespaces/functions/Closures,
 wider named declarations and RTD ordering remain required. Actual375 over
 651c4a5d passes strict3 at 4263f24e (5.625s); private cuts retain their revisions.
 [Block-class ledger](coverage/semantics/anonymous-block-rtd-review.json).
@@ -62,7 +62,7 @@ with 13 actual PhpSteps for early no-op, runtime publication and anonymous alloc
 Changed strict3 passes at c860 (5.671s). The independent Closure admission failure
 exposed shared pattern variables; the one-line fix keeps static/byref flags independent.
 That failure and the original reserved-name native probe retain zero credit;
-syntax-only preparation/elaboration adds none. Named declarations inside
+syntax-only preparation/elaboration adds none. At that cut, named declarations inside
 namespaces, functions or Closures, broader named headers/bodies
 and wider RTD ordering remain required. Actual375 over e68ebf38 passes strict3 at
 02c43d49 (5.575s); private source/author/peer cuts retain their revisions.

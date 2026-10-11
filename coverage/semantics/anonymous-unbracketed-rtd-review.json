@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "feature": "classes.anonymous",
+  "status": "partial",
+  "scope": "Plain empty named declarations in valid unbracketed named namespace sections alongside existing ordinary parentless anonymous classes. Repeated sections retain qualified early ownership, shared compiler RTD counters and lexical method namespace after caller switches. ABSENT namespaces remain bracketed-only; named function/Closure descendants and wider named bodies remain Unsupported.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/anonymous_unbracketed_class_cases.json"
+  },
+  "semantic_revision": "919bdf8c7b48a8402b92ef87518f3ffdb465bca6",
+  "prerequisite": "5e28bb064a1473f49e4d244fe347df7170721a08",
+  "module_count": 375,
+  "implementation": {
+    "path": "spec/semantics/383-anonymous-classes.watsup",
+    "rule": "The authenticated NName namespace arm admits styles1/2; ABSENT stays style2. Existing full qualified descriptor/source/body/line, actual root-block ancestry, prior EARLY/internal-name checks and compiler projection are reused. No new fields/tasks/modules/schema/adapter.",
+    "counter": "Qualified eligible root/block named+0; deferred named+1 even when never published; anonymous+1 in the shared unit compiler walk. Re-entering a namespace retains case-insensitive qualified ownership.",
+    "boundary": "Function/Closure named descendants remain whole-unit excluded; existing anonymous factory admission is unchanged. A namespace context alone does not authenticate the terminal occurrence, and a counter alone does not certify zero-cost ordering."
+  },
+  "engine_evidence": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_namespace, zend_compile_top_stmt, zend_compile_class_decl, zend_build_runtime_definition_key, zend_generate_anon_class_name",
+    "spec/semantics/21-source-context.watsup: plnamespace",
+    "spec/semantics/46-source-compiler.watsup: namespace lexical driver, ppstatement, ppblockstatements",
+    "spec/semantics/77-magic-constants.watsup and spec/semantics/33-runtime-compiler.watsup: lexical magic constant folding and compiled AT reads"
+  ],
+  "native": {
+    "revision": "7714f39a5536029a2fcb9df6d4471731b70f2ee3",
+    "report": ".tools/anonymous-class-20/.tools/anonymous-unbracketed-native-25/run-v1/report.json",
+    "normal_originals": 3
+  },
+  "source": {
+    "revision": "919bdf8c7b48a8402b92ef87518f3ffdb465bca6",
+    "report": ".tools/anonymous-class-20/.tools/anonymous-unbracketed-model-25/run-v1/report.json",
+    "native_agreements": 3,
+    "normal": 3
+  },
+  "strict": {
+    "revision": "919bdf8c7b48a8402b92ef87518f3ffdb465bca6",
+    "report": ".tools/anonymous-class-20/.tools/anonymous-unbracketed-gate-25/report.json",
+    "premises": 3,
+    "seconds": 5.7251129150390625
+  },
+  "state_revision": "919bdf8c7b48a8402b92ef87518f3ffdb465bca6",
+  "state_cuts": [
+    {
+      "group": "unbracketed-root",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-unbracketed-state-25/report-retry2.json",
+      "checks": 150,
+      "setup_source_frontier_checks": 138,
+      "pure_queries": 12,
+      "PhpSteps": 8,
+      "seconds": 20.28805661201477
+    },
+    {
+      "group": "unbracketed-deferred",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-unbracketed-state-25/report-retry2.json",
+      "checks": 129,
+      "setup_source_frontier_checks": 124,
+      "pure_queries": 5,
+      "PhpSteps": 5,
+      "seconds": 24.19203519821167
+    },
+    {
+      "group": "repeated-sections",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-unbracketed-peer-state-25/report.json",
+      "checks": 113,
+      "setup_source_frontier_checks": 98,
+      "pure_queries": 15,
+      "PhpSteps": 3,
+      "seconds": 21.803200006484985
+    }
+  ],
+  "state_totals": {
+    "checks": 392,
+    "setup_source_frontier_checks": 360,
+    "pure_queries": 32,
+    "PhpSteps": 16
+  },
+  "state_method": "Exact checked originals/file/cwd: real root-block entry and whole-state early class no-op, qualified conditional absence/publication/history, genuine anonymous allocations and dynamic fullname freshness. Repeated namespace sections preserve a late eligible class over an earlier deferred same-name descriptor. Actual compiled namespace AT reads consume lexical strings while retaining authentic method scope, receiver root, saved frame and return-statement origin; Ordinary return restores the caller before METHOD_RESULT preserves the value, including a fresh receiver called after switching namespaces. Namespace lowering has no runtime namespace task. Pure placement/admission/descriptor/receipt queries are separate; checks include setup and are not unique states.",
+  "historical_controls": "Namespace24 style1 named exclusion remains accepted only at its original 6c823 cut; this milestone intentionally replaces it with positive named style1 and negative ABSENT-style1/malformed-style controls. Bracketed source branches are unchanged; no historical fixture replay is claimed.",
+  "syntax_only": {
+    "preparation": ".tools/anonymous-class-20/.tools/anonymous-unbracketed-state-25/preparation.json",
+    "elaboration": [
+      ".tools/anonymous-class-20/.tools/anonymous-unbracketed-state-25/report-elab-retry2.json",
+      ".tools/anonymous-class-20/.tools/anonymous-unbracketed-peer-state-25/report-elab.json"
+    ],
+    "runtime_credit": 0
+  },
+  "preserved_failures": [
+    {
+      "report": ".tools/anonymous-class-20/.tools/anonymous-unbracketed-state-25/report.json",
+      "reason": "Original fixtures with 257 checks failed algorithmic binding before main: conjunctions bound multiple fresh variables. Narrow sequential bindings produced263; deferred execution remained unrun. Exact old fixtures/builder/plan/drivers stay in binding-failure-v1.",
+      "campaign_credit": 0
+    },
+    {
+      "report": ".tools/anonymous-class-20/.tools/anonymous-unbracketed-state-25/report-retry1.json",
+      "reason": "The author263 campaign root main stopped at a fixture ORIGIN assertion after seeking a nonexistent raw EVAL magic-constant head. Folded constants consume authentic AT directly, preserving the return-statement origin. Corrected fixtures with 279 checks follow that actual route; deferred execution remained unrun at the failed cut. Exact old fixtures/builder/plan/drivers stay in runtime-frontier-failure-v1.",
+      "campaign_credit": 0
+    }
+  ],
+  "validation": "Passing records retain exact originals/profile/file/cwd/raw streams, stable watched inputs, exit/cleanup0, empty owned groups and no unrun. Serial jobs1: native55s, model45s/55s host/100000 steps, syntax Worker30s, elab30s, strict/state120s. Retained project-local binaries reused; no fresh build/offline claim. Raw evidence stays ignored outside Git.",
+  "catalogue": {
+    "path": "tests/semantics/anonymous_unbracketed_class_cases.json",
+    "cases": 3,
+    "runner": "tests/semantics/method_runtime.py --cases tests/semantics/anonymous_unbracketed_class_cases.json",
+    "scope": "Metadata-only publication of unchanged normal native originals adds no execution credit; native_raw_sha256 follows the existing command-record hash convention."
+  },
+  "remaining": [
+    "Named declarations in functions/Closures; nonempty/modified/attributed/inherited named bodies, interfaces/traits/enums, RTD collisions/wrap and complete ordering.",
+    "Wider anonymous factory signatures/captures/class contexts, include/eval units, constructor arguments/types/access and broader consumers."
+  ],
+  "engine_bugs_or_intentional_divergence": "None identified.",
+  "independent_review": "comp_review_21 accepted the exact semantic net, original source3 and author279/independent113; independently read closed passing raw reports, pure controls and both fixture failure dispositions."
+}

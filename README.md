@@ -1213,29 +1213,20 @@ untyped constructors now initialize defaults before the body, ignore automatic
 return values and preserve shared Throwable identity through ordinary unwind.
 [Four further originals](coverage/semantics/anonymous-constructors-review.json)
 also check explicit calls, factory effects and constructor `finally` blocks.
-Plain empty global named classes can now share the unit: early declarations consume
-no RTD key; deferred declarations consume one even when never executed.
-[Three further originals](coverage/semantics/anonymous-mixed-rtd-review.json)
-check those counters, runtime publication and factory lookup before calls.
-Standalone global blocks preserve early binding through their actual block
-ancestors; blocks inside conditionals remain deferred. [Three block originals](coverage/semantics/anonymous-block-rtd-review.json)
-also check nested ancestry, earlier deferred names and case-insensitive lookup;
-259 reached-source and pure checks keep those observations separate.
-The previous block375 join over 651c4a5d passes strict3 at 4263f24e (5.625s),
-preserving the private native/source/state cuts.
-Bracketed namespaces now qualify plain empty named classes while sharing the
-anonymous RTD counter. Namespace body/root blocks bind early; conditional classes
-stay deferred. [Three namespace originals](coverage/semantics/anonymous-namespace-rtd-review.json)
-also check namespace-local `Exception`, same-short-name separation and an unnamed
-global namespace. Author and independent fixtures pass 269 setup/source-frontier
-checks plus 36 pure queries, with 15 actual steps; private strict3 passes at
-6c8233e3 (5.724s). Earlier cuts and the original elaboration failure stay separate.
-The namespace375 join over 1dd6e543 passes strict3 at a219a473 (5.671s);
-private namespace native/source/state cuts remain unchanged.
-Wider RTD counters, factory/publication contexts, constructor arguments/types,
-inheritance, attributes and broader consumers remain required.
-The actual375 join over 57f2f4b8 passes strict3 at 77f9c0eda (5.521s);
-private constructor source/state cuts remain unchanged.
+Plain empty named classes can share those units globally and in valid named
+namespace sections, including repeated unbracketed sections and bracketed global
+bodies. Eligible root/actual-block classes consume no RTD key; deferred classes
+consume one even when never published. Qualified names separate same-short-name
+and namespace-local internal-looking classes; anonymous sites share the compiler
+counter. Methods keep their lexical namespace after caller namespace switches.
+The [mixed](coverage/semantics/anonymous-mixed-rtd-review.json),
+[block](coverage/semantics/anonymous-block-rtd-review.json),
+[bracketed](coverage/semantics/anonymous-namespace-rtd-review.json) and
+[unbracketed reviews](coverage/semantics/anonymous-unbracketed-rtd-review.json)
+retain distinct native/source/state cuts and original failures. Three new originals
+agree at 919bdf8c; author and independent fixtures pass 392 checks with 16 actual steps.
+Named function/Closure descendants, wider RTD/factory/publication contexts,
+constructor arguments/types, inheritance, attributes and broader consumers remain required.
 [Internal `stdClass` identity](docs/semantics/SOURCE-STDCLASS.md)
 now allocates an owned empty object with exact nominal typing and ordinary
 empty-object behavior; its [review](coverage/semantics/stdclass-review.json)

@@ -1,0 +1,53 @@
+{
+  "scope": "Ordinary unit0 parentless anonymous classes mixed with plain empty named declarations in valid unbracketed named namespaces. Qualified early root/block classes cost0; deferred declarations cost1 even when never published. Repeated namespace sections share the anonymous RTD counter and preserve case-insensitive qualified ownership and lexical method namespace after a switch. ABSENT namespaces still require bracketed style; wider contexts remain required.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-unbracketed-root",
+      "source": "<?php\nnamespace LooseRoot;\n$early = new Early;\n{ { class Early {} } }\n$firstLine = __LINE__ + 1;\n$first = new class {\n    public $value = 0;\n    public function scope() { return self::class; }\n    public function space() { return __NAMESPACE__; }\n};\nclass After {}\n$secondLine = __LINE__ + 1;\n$second = new class {};\n$firstName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . $firstLine . '$0';\n$secondName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . $secondLine . '$1';\necho $early::class === 'LooseRoot\\Early' ? 'early|' : 'BAD|';\necho $first::class === $firstName && $first->scope() === $firstName && $first->space() === 'LooseRoot' ? 'first|' : 'BAD|';\necho $second::class === $secondName ? 'second|' : 'BAD|';\n$again = new $firstName;\n$again->value = 9;\necho $again !== $first && $again::class === $firstName && $again->space() === 'LooseRoot' ? 'fresh|' : 'BAD|';\necho $first->value, ':', $again->value, '|';\n$after = new After;\necho $after::class === 'LooseRoot\\After' ? 'named' : 'BAD';\n",
+      "source_sha256": "71ab8ed5508b2c8e94892cded290eeea4d63af74e77a1cb42dce3cf83538a424",
+      "stdout_base64": "ZWFybHl8Zmlyc3R8c2Vjb25kfGZyZXNofDA6OXxuYW1lZA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-unbracketed-native-25/run-v1/anonymous-unbracketed-root/command.json",
+      "native_raw_sha256": "c2ec494bffb713f1d781114250e058252a2d733df2ea902984c03443602a09a0"
+    },
+    {
+      "id": "anonymous-unbracketed-deferred",
+      "source": "<?php\nnamespace FirstFree;\n$first = new class { public function space() { return __NAMESPACE__; } }; $firstName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . __LINE__ . '$0';\nclass Same {}\n$namedFirst = new Same;\necho $first::class === $firstName && $namedFirst::class === 'FirstFree\\Same' && $first->space() === 'FirstFree' ? 'left|' : 'BAD|';\nnamespace SecondFree;\nif (false) { { class Hidden {} } }\ntry { $missing = new Hidden; echo 'BAD|'; }\ncatch (\\Error $caught) { echo 'hidden|'; }\ntry { $missing = new Same; echo 'BAD|'; }\ncatch (\\Error $caught) { echo 'missing|'; }\n$second = new class { public function space() { return __NAMESPACE__; } }; $secondName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . __LINE__ . '$2';\necho $second::class === $secondName && $second->space() === 'SecondFree' ? 'second|' : 'BAD|';\nif (true) { { { class Same {} } } }\n$namedSecond = new Same;\necho $namedSecond::class === 'SecondFree\\Same' && $namedSecond::class !== $namedFirst::class ? 'live|' : 'BAD|';\n$third = new class {}; $thirdName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . __LINE__ . '$4';\necho $third::class === $thirdName ? 'third|' : 'BAD|';\n$again = new $firstName;\necho $again !== $first && $again::class === $firstName && $again->space() === 'FirstFree' ? 'fresh' : 'BAD';\n",
+      "source_sha256": "5c660d993caadb6ad66d25c81143f7bd8674128e31775bd872bdc35a1c53a8f5",
+      "stdout_base64": "bGVmdHxoaWRkZW58bWlzc2luZ3xzZWNvbmR8bGl2ZXx0aGlyZHxmcmVzaA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-unbracketed-native-25/run-v1/anonymous-unbracketed-deferred/command.json",
+      "native_raw_sha256": "7bbd482c81e15ccd87b2770837c92f5c1d0e98fe689366ebff1d854502041f01"
+    },
+    {
+      "id": "anonymous-repeated-sections",
+      "source": "<?php\nnamespace RepeatLeft;\nif (false) { { class Exception {} } }\n$left = new Exception;\necho $left::class === 'RepeatLeft\\eXcEpTiOn' ? 'left|' : 'BAD|';\n$firstLine = __LINE__ + 1;\n$first = new class {};\n$firstName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . $firstLine . '$1';\necho $first::class === $firstName ? 'first|' : 'BAD|';\n\nnamespace RepeatRight;\n$right = new Exception;\n{ class Exception {} }\necho $right::class === 'RepeatRight\\Exception' ? 'right|' : 'BAD|';\n$secondLine = __LINE__ + 1;\n$second = new class {};\n$secondName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . $secondLine . '$2';\necho $second::class === $secondName ? 'second|' : 'BAD|';\n\nnamespace RepeatLeft;\n{ { class eXcEpTiOn {} } }\n$againNamed = new Exception;\necho $againNamed::class === $left::class ? 'again|' : 'BAD|';\n$thirdLine = __LINE__ + 1;\n$third = new class {};\n$thirdName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . $thirdLine . '$3';\necho $third::class === $thirdName ? 'third|' : 'BAD|';\necho $left::class !== $right::class ? 'separate|' : 'BAD|';\n$again = new $firstName;\necho $again::class === $firstName && $again !== $first && $first !== $second && $second !== $third ? 'fresh' : 'BAD';\n",
+      "source_sha256": "3061efb231ea91aea3c35389de393a8b2afccf3395f15b52e91199687cf2f7ad",
+      "stdout_base64": "bGVmdHxmaXJzdHxyaWdodHxzZWNvbmR8YWdhaW58dGhpcmR8c2VwYXJhdGV8ZnJlc2g=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-unbracketed-native-25/run-v1/anonymous-repeated-sections/command.json",
+      "native_raw_sha256": "a954052aaf14ebf95d46de00430ae047b4137ffa3756690ff8cbb2db10d9dba8"
+    }
+  ]
+}

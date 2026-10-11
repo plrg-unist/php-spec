@@ -60,7 +60,8 @@ on one physical line remain distinct. Each visit allocates a fresh object from
 the same class, with independent property storage and the real lexical scope.
 
 Module383 admits authentic unit0 contexts with plain empty named classes globally
-or in bracketed namespaces, including an unnamed global namespace body.
+or in valid named namespace sections (bracketed or unbracketed), including an
+unnamed bracketed global namespace body.
 Eligible root declarations bind early and consume no RTD key; deferred declarations
 consume one even when their branch never executes. The compiler folds descriptors
 in its actual walk order, authenticating source, name, line and derived early binding
@@ -72,7 +73,7 @@ field/index paths beneath conditionals or other control statements stay deferred
 An earlier deferred same-name declaration does not block a later eligible early
 declaration. The [block-class review](../../coverage/semantics/anonymous-block-rtd-review.json)
 separates native originals, real no-op/publication/allocation frontiers and pure
-ancestry/receipt queries. Bracketed namespace bodies qualify declaration names and
+ancestry/receipt queries. Namespace bodies qualify declaration names and
 retain root eligibility through actual block ancestors. Conditional declarations
 keep the namespace prefix while consuming a deferred key. Full qualified names
 separate same-short-name declarations and namespace-local internal-looking names;
@@ -80,15 +81,19 @@ anonymous names remain unqualified and use the shared unit counter. The namespac
 context helper supplies the prefix; exact class occurrence and terminal ancestry
 checks remain separate. The [namespace-class review](../../coverage/semantics/anonymous-namespace-rtd-review.json)
 separates native/source agreements, qualified publication and early no-op frontiers
-from pure placement/descriptor/receipt queries. Named declarations inside
-unbracketed namespaces, functions or Closures,
-other named bodies/modifiers, interfaces/traits/enums and nested class bodies remain
+from pure placement/descriptor/receipt queries. Repeated unbracketed sections
+retain qualified ownership and share the unit counter; methods keep their declaring
+namespace after caller namespace switches. The
+[unbracketed review](../../coverage/semantics/anonymous-unbracketed-rtd-review.json)
+separates actual compiled constant reads/method frames from pure admission queries.
+ABSENT namespace bodies still require bracketed style. Named declarations inside
+functions or Closures, other named bodies/modifiers, interfaces/traits/enums and nested class bodies remain
 Unsupported. Anonymous forms are parentless, without
 interfaces, attributes or constructor arguments; public untyped property defaults
 use the existing literal/constant-concat parser, and public noarg by-value nonmagic
 methods use existing body compilation. Plain global noarg/by-value/untyped named
-functions and static no-capture Closures can contain these classes. The compiler
-records only the authentic class checkpoint while inside the factory, then saves
+functions and static no-capture Closures can contain these anonymous classes.
+The compiler records only the authentic class checkpoint while inside the factory, then saves
 the image after restoring the containing unit scope. This publishes the class
 before any call and preserves compilation order independently of call order.
 Ordinary function/Closure declarations do not consume the RTD counter. Wider
