@@ -1089,6 +1089,14 @@ its reference, leaves D weak-live, clears collector state and matches native END
 Whole source41 CLI60 remains OPEN/zero agreement; broader reference layouts remain
 required.
 
+Main-thread residual overlap also handles an ordinary child held by a live CV.
+Eligible tracing removes D's old physical tag while D stays live; collection runs
+E, returns −1, and request shutdown calls D after `END`. One exact source agreement
+and 103 source/control checks plus two pure type exclusions pass. A separate
+held-F frontier preserves its untraced residual tag. That larger source CLI60
+remains OPEN/zero agreement; black reference/array components and wider overlap
+remain required.
+
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their

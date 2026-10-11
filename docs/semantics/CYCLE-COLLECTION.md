@@ -663,3 +663,21 @@ remains OPEN/zero agreement. Original197 runs, terminal81/57 timeouts and the E6
 syntax failure retain zero credit; old guard126/terminal142 remain unrun. Broader
 main/mixed layouts, external aliases, black/proxy components and non-idle workers
 remain required; earlier cuts and source40 are unchanged.
+
+Main-thread overlap301 also admits an ordinary externally live child inside
+fresh-DTORS reach. Admission requires fresh destructor candidates to be white;
+live children stay outside
+COUNTED. Eligible tracing makes D's old residual physical tag removable by the
+existing nested-data walk. The live CV preserves D; the weak reference observes it.
+Only live nodes reached by eligible tracing join the nested-removal black set,
+so an independent held F retains its untraced residual tag. Incoming-white, outside
+disjointness and object-only fences remain; count folding and owners are unchanged.
+
+The held-D source agrees with native81 at `8f630`/375: E runs during collection,
+the signed result is −1, and D runs only after END. Image/selection71 executes
+69 source/control checks plus2 pure type exclusions; held-F frontier34 binds
+its real CV/weak liveness and surviving physical slot. Zero/one-step replay,
+nonwhite/COUNTED, retained-tag and duplicate-consumer controls pass. Compiler/init
+also pass. Baseline35 localizes the former refusal; the larger held-F whole CLI60
+timeout retains OPEN/zero credit. Black reference/array components, broader
+external ownership, non-idle workers and wider overlap remain required.
