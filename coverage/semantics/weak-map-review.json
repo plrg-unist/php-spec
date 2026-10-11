@@ -108,5 +108,84 @@
     "vendor/php-src/Zend/zend_objects.c: std_dtor notification",
     "vendor/php-src/Zend/zend_objects_API.c: destructor/storage lifetime"
   ],
-  "boundaries": "Wider entries and key/value shapes, read/mutation/method/iteration protocols, nonempty-map free, late registration callback behavior and ephemeron collection remain required. Countable is nominal-only; count library execution is excluded/Unsupported per CORE. The new refusals are correctness boundaries, not complete WeakMap/GC semantics. Source41 wholeCLI60/180 remains OPEN/zero; all prior failures retain their original zero credit and unchanged evidence."
+  "boundaries": "Wider entries and key/value shapes, read/mutation/method/iteration protocols, nonempty-map free, late registration callback behavior and ephemeron collection remain required. Countable is nominal-only; count library execution is excluded/Unsupported per CORE. The new refusals are correctness boundaries, not complete WeakMap/GC semantics. Source41 wholeCLI60/180 remains OPEN/zero; all prior failures retain their original zero credit and unchanged evidence.",
+  "notification_order_56": {
+    "scope": "One map payload per stdClass leaf key: actual early-null/late-live callback GET, ordinary temporary key ownership, and notification through normal or throwing value cleanup.",
+    "base_revision": "1df8dd33c882bf6ebd6bd5f52d348de1eb2a2b44",
+    "tested_revision": "c1cf6c7023b3028a79978a37edf3847cf8f63a3d",
+    "modules": 376,
+    "raw_root": ".tools/weak-map-notification-order-56",
+    "recovery": "Reports are relative to raw_root except the late native report, which is the repository-relative preserved original55 path.",
+    "representation": "Entry BEFORE captures the actual wrapper identity at insertion. Borrowed key-pin NOTIFY adds no owner, survives callback/exception cleanup, clears before physical key finish, and does not keep a retired wrapper alive. GET separately requires the allocated wrapper and unique basic key pin.",
+    "source_agreements": [
+      {
+        "case": "weak-map-early-notification-order-56",
+        "source_sha256": "959503882ce13f603f0c14609feee00d06ab79d90da44b79ae15579169a0073f",
+        "stdout_bytes": 59,
+        "stdout_sha256": "063eeac0baae189528fcf8594e9d111177382db43999d6f1c20bbee598ca88fa",
+        "native_report": ".tools/weak-map-notification-order-early-native-56-gkq6ep87/report.json",
+        "model_report": ".tools/weak-map-notification-order-early-source-56-8hz85fxu/report.json"
+      },
+      {
+        "case": "weak-map-late-notification-order-56",
+        "source_sha256": "fc49fe3ab9ef84cdc82452a403b8b0b7e648ff080346a5f9001f7954604becb8",
+        "stdout_bytes": 59,
+        "stdout_sha256": "097feb2c2bbfabdef90511c0f2f56e51754182012d16dec034846a743fd4e03d",
+        "native_report": ".tools/weak-map-key-retirement-55/.tools/weak-map-notification-order-native-55-98bw10jy/report.json",
+        "model_report": ".tools/weak-map-notification-order-late-source-56-55ac06zl/report.json"
+      },
+      {
+        "case": "weak-map-throw-notification-order-56",
+        "source_sha256": "2c1e6666a459f6ed2d261ce0bff1387bbd7bce939ba98ad3dbe6a3a29a31a7bc",
+        "stdout_bytes": 66,
+        "stdout_sha256": "fb4ae2baad691208849d8910c638d096834bf6aa782be7dd175c4fdfcb648a83",
+        "native_report": ".tools/weak-map-notification-order-throw-native-56-af_9s3l_/report.json",
+        "model_report": ".tools/weak-map-notification-order-throw-source-56-r_aomhzs/report.json"
+      }
+    ],
+    "compiler_init": {
+      "compiler_report": ".tools/weak-map-notification-order-56-compiler-vdgfgtut/report.json",
+      "init_report": ".tools/weak-map-notification-order-56-init-uf_qp0ip/report.json",
+      "result": "Actual algo/struct syntax artifacts and strict true newline; exits0/no timeout/stderr0/interruptionNone/groups empty/stable."
+    },
+    "state": {
+      "assertions": [
+        73,
+        106,
+        119,
+        95
+      ],
+      "total_checked_assertions": 393,
+      "candidate_sha256": "14f87c6708a20a48beff203cfd021e2d27d6f8a2987c479a48d9bbd72e64cbad",
+      "corrected_normal_candidate_sha256": "3118781d67bd483936034d376511080dd0ecea3ddabe8e205761c9f5ad49fc36",
+      "reports": [
+        ".tools/weak-map-notification-order-state-56-l0rv6u6a/report.json",
+        ".tools/weak-map-notification-order-state-56-z20alaup/report.json",
+        ".tools/weak-map-notification-order-normal-pin-state-56-0y_bkgtq/report.json",
+        ".tools/weak-map-notification-order-state-56-mqngrgu_/report.json"
+      ],
+      "result": "Strict true newline/exits0/no timeout/stderr0/interruptionNone/groups empty/stable. Includes three setup assertions per case, not 393 distinct behaviors. Pin cuts execute NOTIFY-clear and physical key retirement, then authenticate the scheduled HANDLE release without consuming it; sources supply complete endings."
+    },
+    "localization": {
+      "revision": "1df8dd33c882bf6ebd6bd5f52d348de1eb2a2b44",
+      "report": ".tools/weak-map-notification-order-first-get-56-k_cxnpjt/report.json",
+      "candidate_sha256": "61046289f72518b997b8c5f7cff3bc2bbef125e48cec12bcb947c457e098d8d0",
+      "assertions": 63,
+      "result": "Genuine old callback GET Unsupported with whole state preserved except completion; localization only."
+    },
+    "preserved_zero_credit": [
+      ".tools/weak-map-notification-order-early-source-56-5f9_v879/report.json: original early callback GET Unsupported at1df8",
+      ".tools/weak-map-notification-order-state-56-yr3yvn5q/report.json: original normal119 elaboration failure; HELD requires pnode entries; this key uses HOBJECT, corrected119 is separate"
+    ],
+    "maintained": {
+      "transfer_revision": "afdc529fb69dcea84f109117c1845bd2407fd7ec",
+      "source_cases": 53,
+      "state_cases": 116,
+      "state_sha256": "b32321aad8ac3d37e188f90c922712f721b9561b2cae450155764a96847ce70b",
+      "change": "All old50 sources preserved, three originals added. Four BEFORE entry-literal adaptations are explicit in c1cf. All other112 c1cf CASES preserved; only active old refusal116 is replaced by tested late106, with early73/normal119/throw95 added. Historical EX55 raw/ledger116 and original failures remain unchanged."
+    },
+    "caps_environment": "Native30; original CLI60/recorder75/host180; state SL120/recorder200/host240/worker30; CPU2/jobs1/C/UTC/script encoding absent. Recorded runtime/profile identities match the initial WeakMap cut.",
+    "engine_basis": "Zend/zend_weakrefs.c zend_weakref_register/unref ordered payload notification with synchronous map-value destruction; ordinary storage pin authority from Zend/zend_objects.c and zend_objects_API.c.",
+    "boundaries": "Multiple map payloads per key, wrapper creation during freeing, retained strong key reacquisition, wider map/key/value/read/mutation/method/iteration protocols, nonempty-map free and ephemeron collection remain required. Countable stays nominal-only; count execution is excluded/Unsupported per CORE. No cycle/count closure or renewal of prior cuts is claimed."
+  }
 }

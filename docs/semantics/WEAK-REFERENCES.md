@@ -80,25 +80,34 @@ entry for the same key in another map stop explicitly.
 
 Ordinary key free creates the real stdClass storage359 pin before detaching the
 entry. Its value edge becomes an authentic DESTRUCTION_VALUE job, so shared
-owners survive and the last owner selects the value destructor once. The reached
-callback/storage cut keeps both key and value allocated under physical pins while
-their weak lookups are null; the original supplies eventual physical retirement.
+owners survive and the last owner selects the value destructor once. The initial
+callback/storage cut keeps both key and value allocated under physical pins
+while their weak lookups are null; the original supplies eventual physical retirement.
 Nonempty-map free and explicit collection with a live nonempty map remain
 Unsupported. No ephemeron tracing or cycle/count closure is claimed.
 
 Zend notification payloads preserve registration order. When a key wrapper is
 created after insertion, native PHP returns that key during the value callback;
-the old mask-on-pin GET returned null. A genuine reached GET localizes this
-counterexample. The current consumer stops explicitly for the authenticated leaf
-key pin, found in its saved frame using basic storage authority. Ordinary INSTANCE
-value reads and coherent nonleaf pins stay outside that fence; pure weakref_get
-and ownership are unchanged. Actual registration-order semantics remain required.
+an earlier wrapper is already null. Entry BEFORE records the actual wrapper
+identity at insertion; borrowed pin NOTIFY preserves a later wrapper through the
+value callback and cleanup. GET authenticates an allocated wrapper and the unique
+basic leaf-key pin, then creates ordinary temporary ownership. Notification clears
+only NOTIFY before unchanged physical key retirement. The pending Exception stays
+owned through both transitions when the callback throws. Retired wrapper metadata
+adds no root; coherent replacement-identity controls distinguish a new wrapper from
+the insertion snapshot without claiming creation during freeing is implemented.
 
-The original matches all 45 native output bytes at `0fc26e6`; 375 lifetime
+The initial original matches all 45 native output bytes at `0fc26e6`; 375 lifetime
 checks pass at `58b8873`, 49 GC refusal checks at `58b8873` and 116 notification
-refusal/control checks at `8df2808`. The combined 540 checks include three setup
-assertions per case and earn no collection agreement. The 59-byte late-registration
-native trace and 67-check old GET cut are counterexample and localization only. Maintained checks reuse cycle_collection_cases.json and
+refusal/control checks at `8df2808` remain historical. EX56 replaces only the active
+116-check refusal with the tested 106-check late GET record. Three early/late/throw
+originals agree at `c1cf6c7`; four source-reached groups pass 73/106/119/95 checks,
+totaling 393 with three setup assertions per case. Pin cuts stop at a scheduled valid HANDLE
+release; the originals supply complete endings. The first normal fixture's
+elaboration failure retains zero credit, separately from its corrected pass.
+Multiple maps per key, wrapper creation during freeing, retained strong keys,
+wider map protocols, nonempty-map free and ephemeron collection remain required. No collection/count
+closure is claimed. Maintained checks reuse cycle_collection_cases.json and
 cycle_collection_state_review.py; the
 [WeakMap ledger](../../coverage/semantics/weak-map-review.json) preserves all
 separate cuts, failures and raw recovery paths. The engine basis is

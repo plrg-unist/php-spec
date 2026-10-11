@@ -1047,10 +1047,14 @@ their referent retires; diagnostics retain the actual internal class name.
 [WeakMap386](docs/semantics/WEAK-REFERENCES.md) supports empty construction and one
 first insertion with a `stdClass` leaf key and ordinary leaf value. The map owns
 its value; the key stays nonowning. Actual key free transfers the entry to real
-destructor release jobs while retaining its storage pin. One original agrees
-with native PHP; 375 lifetime assertions and 165 refusal/control assertions pass
-at separate cuts. Nonempty-map free, ephemeron GC and registration-order-dependent
-callback reads stop explicitly; wider entry/read/mutation protocols remain required.
+destructor release jobs while retaining its storage pin. Early key wrappers become
+null before the value callback; a wrapper registered after insertion returns the
+pinned key until callback cleanup finishes, including a throwing callback.
+Borrowed notification metadata adds no owner; successful reads add ordinary
+temporary ownership. Three ordering originals agree with PHP and 393 reached
+checks pass at `c1cf6c7`, alongside the separate first-entry cuts. Nonempty-map free
+and ephemeron GC stop explicitly; multiple maps per key, wrapper creation during
+freeing, retained strong keys and wider entry/read/mutation protocols remain required.
 
 [Ordinary collection301](docs/semantics/CYCLE-COLLECTION.md) implements explicit
 object/array cycle collection, ordered destructor callbacks and real weak
