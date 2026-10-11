@@ -1,0 +1,90 @@
+{
+  "status": "private accepted",
+  "scope": "Copied KNOWN arrays in untyped named BYREF variadics at one direct statically named Iterator construction, with no positional extras, actual parameter/vacancy and direct-site authority. Private singleton named cells use separated logical DIRECT rest items. Originals use acyclic one-child containers.",
+  "remaining": [
+    "General shared named buffers, other type shapes and wider sites",
+    "Broader array contents, embedded references, cycles and COW interactions",
+    "Initial REFERENCE arrays/objects and live refcounted handler replacements"
+  ],
+  "engine_route": "SEND_UNPACK holds each copied array before its warning and transfers it to a fresh private reference. Untyped zero-positional-extra RECV_VARIADIC shares the extra-named table; Zend array duplication unwraps singleton reference entries on COW except a reference to the source table itself. The bounded model uses a separated logical DIRECT rest while retaining the original named-send cell, without claiming native shared-table identity or pre-COW owner counts. Nested alpha writes copy its container and leave B alive through F; frame cleanup releases zeta/alpha children in insertion order. Shared count2 cells retain ALIAS. Warning and parked throws retire Iterator before earlier/current containers and children. Documentary SOURCE checks metadata without retired contents.",
+  "implementation": [
+    "spec/semantics/385-call-iterator-unpack.watsup",
+    "spec/semantics/105-named-arguments.watsup",
+    "spec/semantics/39-ownership.watsup"
+  ],
+  "catalog": "tests/semantics/iterator_call_unpack_array_named_variadic_cases.json",
+  "source_runner": "tests/semantics/iterator_call_unpack_array_named_variadic_sources.py",
+  "state_runner": "tests/semantics/iterator_call_unpack_array_named_variadic_review.py",
+  "profile": "tests/semantics/profile.json",
+  "native": {
+    "revision": "c39b75bacca33ba875e444b96393d739285a7782",
+    "report": ".tools/calls-iterator-copied-array-named-variadic-33/.tools/iterator-call-unpack-array-named-variadic-native-c4mfmtx6/report.json",
+    "report_sha256": "d3dc53c18e56eac9b4b5113f8419b44ea58cf5861fa958dde84d54b5ac3f25cc",
+    "selection": [
+      "iterator-call-unpack-array-named-variadic-normal",
+      "iterator-call-unpack-array-named-variadic-second-warning-throw",
+      "iterator-call-unpack-array-named-variadic-parked-throw"
+    ],
+    "command": "timeout -k 10s 60s prlimit --as=6442450944 -- python3 -u .tools/native.py",
+    "runner_sha256": "8baa9369eac50c7911eab392f10273a16b3cc487d721c7f18c49157733ff34fc",
+    "process_seconds": 8,
+    "observed_originals": 3,
+    "model_agreements": 0,
+    "passed": true
+  },
+  "strict": {
+    "command": "timeout -k 10s 150s prlimit --as=6442450944 -- python3 -u .tools/strict.py",
+    "runner_sha256": "7e63fc3be52da4d8ea2da67770f261c7a52cb3d6b0c5065c3548bae7d82ffef3",
+    "modules": 375,
+    "process_seconds": 120,
+    "revision": "06189ef8d3943ad7608d87a9631af62132c21158",
+    "report": ".tools/calls-iterator-copied-array-named-variadic-33/.tools/iterator-call-unpack-array-named-variadic-sl-w7isf0ln/report.json",
+    "report_sha256": "6d0b5d8f54997ed1071ceb58dd1581e36691783a53a462218d1bc93b4bed0d3a",
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true
+  },
+  "source": {
+    "command": "timeout -k 10s 300s prlimit --as=6442450944 -- python3 -u .tools/source.py --native-report .tools/iterator-call-unpack-array-named-variadic-native-c4mfmtx6/report.json",
+    "runner_sha256": "341023451b70ce1f40653f594e42d5490df58b705171da2b311a532678be2870",
+    "source_process_seconds": 75,
+    "model_seconds": 60,
+    "steps": 100000,
+    "jobs": 1,
+    "native_executions": 0,
+    "revision": "06189ef8d3943ad7608d87a9631af62132c21158",
+    "report": ".tools/calls-iterator-copied-array-named-variadic-33/.tools/iterator-call-unpack-array-named-variadic-source-ddgacgfu/report.json",
+    "report_sha256": "473f5249b2fbdd17bd3463c7797e8785fb59897235dbef042343856a05d0cb83",
+    "selection": [
+      "iterator-call-unpack-array-named-variadic-normal",
+      "iterator-call-unpack-array-named-variadic-second-warning-throw",
+      "iterator-call-unpack-array-named-variadic-parked-throw"
+    ],
+    "normal_agreements": 3,
+    "inputs_stable": true,
+    "head_stable": true,
+    "passed": true
+  },
+  "state_review": {
+    "status": "passed",
+    "counterfactual_helper_controls": 3,
+    "pure_query_groups": 0,
+    "process_seconds": 180,
+    "seek_steps": 4000,
+    "finish_steps": 4000,
+    "jobs": 1,
+    "revision": "e6f8f16b5b1a2aad295257c147f41aca21789121",
+    "command": "timeout -k 10s 1550s prlimit --as=6442450944 -- python3 -u .tools/array-named-variadic-state-180.py",
+    "runner_sha256": "7b943c9d18aa656a3ff94006bfc93b0b20579e6eb0e0711224c0a75c3667a498",
+    "fixture_sha256": "e00caa894d87d056b30e0d62874845036da0623f3cfd2d73d585bb05a3a942e7",
+    "groups": 8,
+    "physical_main_premises": 608,
+    "driver_assertions": 579,
+    "report": ".tools/calls-iterator-copied-array-named-variadic-33/.tools/fiber-state-review-0wi_nala/report.json",
+    "report_sha256": "40306e582e98a3ffb714830574a8e3a96c2e43bfbab635c7a4ad0cd27572c48e",
+    "host_exit": 0,
+    "passed": true
+  },
+  "retention": "Earlier typed named and positional array cuts keep their original identities without replay. Original raw sources/processes/reports remain at recorded ignored paths; maintained files and project-local providers recover this slice."
+}

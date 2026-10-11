@@ -522,10 +522,26 @@ Nine genuine-source state groups pass 632 physical/601 driver premises at
 `70f7916d`, with no pure queries, including keyed ALIAS writes, parked authority
 and trace-only container/child ownership after private frame retirement.
 Untyped named arrays, other type shapes, wider sites, broader array/COW interactions
-and live REFERENCE payloads remain required; prior cuts stay frozen.
+and live REFERENCE payloads remained required at that typed cut; prior cuts stay
+frozen.
 Actual375 over `b10b0042` is composed at `720ec713`; independent pointwise seam
 review retains private strict/source/state cuts without a new current execution.
 [Typed named array review](coverage/semantics/iterator-call-unpack-array-typed-named-variadic-review.json).
+
+Untyped named by-reference variadics now admit copied arrays at the same direct
+Iterator site with no positional extras. Authenticated singleton private cells
+become DIRECT items in a separated logical rest array; the original named-send
+cells retain their containers. Nested alpha writes copy its container, keeping B
+through F, then releasing A and B in insertion order. This representation abstracts
+Zend's shared table before COW, without asserting native table identity or counts.
+Warning and real parked throws retain Iterator-before-A-before-B cleanup. Three
+native originals pass at `c39b75ba`; strict375 and three unchanged-source agreements
+pass at `06189ef8` using retained native bytes. Eight genuine-source state groups
+pass 608 physical/579 driver premises at `e6f8f16b`, including three counterfactual
+receive guards and no standalone pure-query groups.
+General shared named buffers, other types, wider sites, embedded references/cycles,
+broader array/COW interactions and live REFERENCE payloads remain required.
+[Untyped named array review](coverage/semantics/iterator-call-unpack-array-named-variadic-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or

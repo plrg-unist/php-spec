@@ -538,12 +538,19 @@ separately collected rest array. A nested current-item write destroys its child
 before later output; a rejected scalar leaves only the earlier rest item while
 the TypeError trace owns its keyed array snapshot. See the
 [typed named array review](coverage/semantics/iterator-call-unpack-array-typed-named-variadic-review.json).
+Untyped named tails collect authenticated singleton private array cells as DIRECT
+items in a separated logical rest array, retaining the original named-send owner.
+A nested current-item write copies its container; both original children survive
+through later body output and retire in named insertion order. This abstracts
+Zend's shared rest table before the write, without claiming native table identity
+or owner counts. See the
+[untyped named array review](coverage/semantics/iterator-call-unpack-array-named-variadic-review.json).
 Valid NaN warnings retain the raw return through handler mutation, Fiber parking
 and throw. One numeric reread distinguishes copied NaN from a live reference;
 the raw return retires before current or iterator teardown.
 Generator/Aggregate ordinary-call unpack, Generator callback methods, nonnumeric
 raw valid changes, request/plain reference strings and handler replacements with
-those strings, untyped named/other typed array warnings, broader array/COW interactions,
+those strings, other typed array warnings, broader array/COW interactions,
 reference arrays/objects, general shared named buffers and
 other type shapes and wider-site variadic object warnings remain
 required.

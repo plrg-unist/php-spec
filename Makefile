@@ -240,6 +240,8 @@ test-semantics: build
 	python3 tests/semantics/iterator_call_unpack_array_typed_positional_variadic_review.py
 	python3 tests/semantics/iterator_call_unpack_array_typed_named_variadic_sources.py
 	python3 tests/semantics/iterator_call_unpack_array_typed_named_variadic_review.py
+	python3 tests/semantics/iterator_call_unpack_array_named_variadic_sources.py
+	python3 tests/semantics/iterator_call_unpack_array_named_variadic_review.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py

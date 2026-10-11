@@ -281,9 +281,26 @@ scalar17 rejection leaves only zeta collected; its TypeError trace owns DIRECT
 keyed snapshots and retains the earlier container/child after call cells retire
 through E. Warning and parked throws retire Iterator then zeta and alpha in
 insertion order. Documentary SOURCE checks no retired contents. Untyped named
-arrays, other type shapes, broader COW and live references remain open. The
+arrays, other type shapes, broader COW and live references remained open at that
+cut. The
 [typed named array review](../../coverage/semantics/iterator-call-unpack-array-typed-named-variadic-review.json)
 records four new originals separately from the positional cut.
+
+Untyped named tails now admit copied arrays under the same direct-site,
+no-positional-extra guards. The private receive predicate requires an actual
+untyped by-reference variadic, the original named-send cell and exactly one cell
+owner. Its collected rest item is DIRECT to the payload array while the original
+send cell retains that array. This separated logical rest abstracts Zend's shared
+extra-named table before COW; it does not assert native table identity or owner
+counts. A nested alpha write copies its container, leaving the original child B
+alive through F; frame cleanup then releases zeta's A before alpha's B. Shared
+cells retain the existing ALIAS fallback, as do foreign sites and positional
+extras. Warning and parked throws preserve Iterator-before-container/child
+retirement in named insertion order, and documentary SOURCE reads no retired
+contents. General shared buffers, other types, wider sites, embedded references,
+cycles and broader COW/live-reference interactions remain required. The
+[untyped named array review](../../coverage/semantics/iterator-call-unpack-array-named-variadic-review.json)
+records three new originals separately from the typed cut.
 
 Iterator valid NaN warnings keep the raw retval in CURRENT through handler invoke,
 result, cleanup and saved Fiber frames. The native `zend_user_it_valid` wrapper

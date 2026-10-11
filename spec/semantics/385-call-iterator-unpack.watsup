@@ -319,7 +319,8 @@ def $iterator_unpack_extra_allowed(S, piteratorunpack, pfunction, NAMED_EXTRA pr
   -- if $(|piteratorunpack.CALL.SENT.SLOTS| <= n_fixed)
   -- if $iterator_unpack_extra_site(S, piteratorunpack.CALL.CALLSITE)
 def $iterator_unpack_extra_allowed(S, piteratorunpack, pfunction, pnamedtarget) = false -- otherwise
-def $named_variadic_private(S, pfunction, n, REFERENCE n_cell, POBJECT n_object) = true
+def $named_variadic_private(S, pfunction, n, REFERENCE n_cell, pvalue) = true
+  -- if $iterator_unpack_known_hold(KNOWN pvalue)
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.TARGET = pfunction.ORIGIN
   -- if $call_selected_valid(S, pfunction.ORIGIN, pcallcontext.CALLSITE)
@@ -332,7 +333,7 @@ def $named_variadic_private(S, pfunction, n, REFERENCE n_cell, POBJECT n_object)
   -- if $(n < |pcallcontext.NAMED|)
   -- if (preqbytes, REFERENCE n_cell) = pcallcontext.NAMED[n]
   -- if $(n_cell < |S.STORE|)
-  -- if S.STORE[n_cell] = DEFINED (POBJECT n_object)
+  -- if S.STORE[n_cell] = DEFINED pvalue
   -- if n_cell <- S.REFCELLS
   -- if $heap_owners($heap_prune($heap_graph(S)), HCELL n_cell) = 1
 def $iterator_unpack_warning_hold(S, piteratorunpack) = (piteratorunpack.CURRENT)
@@ -371,7 +372,7 @@ def $iterator_unpack_warning_hold(S, piteratorunpack) = (piteratorunpack.CURRENT
   -- if $(n_fixed < |pfunction.SIGNATURE.PARAMETERS|)
   -- if psparam = pfunction.SIGNATURE.PARAMETERS[n_fixed]
   -- if psparam.VARIADIC /\ psparam.BYREF
-  -- if psparam.TYPE = [(PTBRANCH ([PTBUILTIN "array"])), (PTBRANCH ([PTBUILTIN "null"]))]
+  -- if psparam.TYPE = eps \/ psparam.TYPE = [(PTBRANCH ([PTBUILTIN "array"])), (PTBRANCH ([PTBUILTIN "null"]))]
   -- if $(|piteratorunpack.CALL.SENT.SLOTS| <= n_fixed)
   -- if $named_can_store(piteratorunpack.CALL.SENT, NAMED_EXTRA preqbytes)
   -- if $iterator_unpack_extra_site(S, piteratorunpack.CALL.CALLSITE)
