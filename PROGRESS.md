@@ -545,6 +545,8 @@ fallback/write lines, current-CV refetch and sole returned-object cleanup.
 Earlier compiler/fixture failures and diagnostics retain zero affected credit;
 the ordinary receiver control and prior hook cuts remain separate.
 [Assignment review](coverage/semantics/coalesce-assignment-get-hooks-review.json).
+Actual375 over `5709f4f8` passes strict initialization at `576cfa58` (5.829 s);
+private source3/state308 and earlier hook cuts retain their original revisions.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
