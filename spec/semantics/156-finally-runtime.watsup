@@ -24,6 +24,7 @@ dec $ref_return_cursor_valid(pstate, prefreturncursor, porigin, int) : bool
 dec $ref_return_cursor_capture(pstate, porigin, porigin, poperand, int, porigin, poperand, int, bool, ptask*) : pstate
 dec $ref_return_cursor_task(ptask) : bool
 dec $destructor_operational(pstate) : bool
+dec $generator_request_operational(pstate) : bool
 dec $ref_chain_capture(pstate, porigin, porigin, poperand, int, porigin, poperand, int, bool, ptask*) : pstate?
 dec $ref_chain_pending_actual(pstate, ptask*) : bool
 dec $ref_chain_return_valid(pstate, prefreturncursor*, porigin, int) : bool
@@ -1679,6 +1680,54 @@ def $ref_chain_distinct(S, prefreturncursor :: prefreturncursor_tail*, n_seen*) 
 def $ref_chain_distinct(S, prefreturncursor :: eps, n_seen*) = $ref_chain_outer_literal(S, prefreturncursor)
   -- if $ref_return_cursor_literal(S, prefreturncursor) = (PSTRING_CARRIER INTERNED_STRING n_bytes*)
 def $ref_chain_distinct(S, prefreturncursor*, n_seen*) = false -- otherwise
+;; A registered echo-only destructor does not make retirement of globally live
+;; string CV histories effectful. Active disposal prefixes must first pass the
+;; existing destructor validators and project their metadata away.
+dec $ref_chain_string_cursors(pstate, prefreturncursor*) : bool
+def $ref_chain_string_cursors(S, eps) = true
+def $ref_chain_string_cursors(S, prefreturncursor :: prefreturncursor_tail*) = $ref_chain_string_cursors(S, prefreturncursor_tail*)
+  -- if $ref_chain_cursor(S, prefreturncursor)
+  -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprVariable (BYTES text_variable) metadata_variable) metadata_return)
+  -- if $lookup(S.ENV, $base64(text_variable)) = (n_cell)
+  -- if S.GLOBALTABLE = (psymboltable)
+  -- if $lookup(psymboltable.ENV, $base64(text_variable)) = (n_cell)
+  -- if $ref_return_pair_operand(S, prefreturncursor.SOURCE, REFERENCE n_cell)
+  -- if $propref_at(S.PROPREFS, n_cell) = eps
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if $string_bytes(pvalue) = (n_bytes*)
+def $ref_chain_string_cursors(S, prefreturncursor*) = false -- otherwise
+dec $ref_chain_echo_class(pstate) : bool
+def $ref_chain_echo_class(S) = true
+  -- if S.CLASSES = pclassdesc :: eps
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ pclassdesc.INTERFACES = eps
+  -- if pclassdesc.PROPERTIES = eps /\ pclassdesc.CONSTANTS = eps
+  -- if pclassdesc.METHODS = pmethoddesc :: eps
+  -- if pmethoddesc.OWNER = pclassdesc.ORIGIN /\ pmethoddesc.NAME = $ptascii("__destruct")
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (NStmtClass (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_class) metadata_name) ABSENT (SEQUENCE eps) (SEQUENCE ([statement_method])) metadata_class)
+  -- if $origin_child((pclassdesc.ORIGIN), [PCFIELD 5, PCINDEX 0]) = (pmethoddesc.FUNCTION.ORIGIN)
+  -- if $origin_node(S.SOURCES, pmethoddesc.FUNCTION.ORIGIN) = (statement_method)
+  -- if statement_method = NStmtClassMethod (SEQUENCE eps) (INTEGER 1) (BOOLEAN false) (NIdentifier (BYTES text_method) metadata_method_name) (SEQUENCE eps) ABSENT (SEQUENCE ([NStmtEcho (SEQUENCE ([NScalarString (BYTES text_echo) metadata_string])) metadata_echo])) metadata_method
+  -- if $base64(text_method) = $ptascii("__destruct")
+  -- if $ref_chain_function(S) = (PORIGIN n pcpath_function)
+  -- if pclassdesc.ORIGIN = PORIGIN n pcpath_class
+def $ref_chain_echo_class(S) = false -- otherwise
+dec $ref_chain_lifecycle_safe(pstate, prefreturncursor*) : bool
+def $ref_chain_lifecycle_safe(S, prefreturncursor*) = true -- if ~$destructor_operational(S)
+def $ref_chain_lifecycle_safe(S, prefreturncursor*) = true
+  -- if $ref_chain_echo_class(S)
+  -- if $ref_chain_string_cursors(S, prefreturncursor*)
+  -- if $ref_chain_distinct(S, prefreturncursor*, eps)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if pfunction.SIGNATURE.PARAMETERS = eps
+  -- if S.DESTRUCTION.PHASE = DESTRUCTION_PENDING
+  -- if S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.OPERATIONS = eps
+  -- if S.DESTRUCTION.FRAMES = eps /\ S.DESTRUCTION.CLEANUPS = eps /\ S.DESTRUCTION.ABANDONED = eps
+  -- if S.SHUTDOWN.PHASE = SHUTDOWN_PENDING
+  -- if S.ACTIVEFIBER = eps /\ S.FIBERSEQ = 1 /\ ~$generator_request_operational(S)
+  -- if S.GC.ACTIVE = eps /\ S.GC.PLAN = eps /\ S.GC.WORKER = eps
+def $ref_chain_lifecycle_safe(S, prefreturncursor*) = false -- otherwise
 dec $ref_chain_owners(prefreturncursor*) : porigin*
 def $ref_chain_owners(eps) = eps
 def $ref_chain_owners(prefreturncursor :: prefreturncursor_tail*) = prefreturncursor.OWNER :: $ref_chain_owners(prefreturncursor_tail*)
@@ -1727,7 +1776,7 @@ def $ref_chain_site(S, prefreturncursor*, PORIGIN n pcpath_source, z) = true
   -- if $(|prefreturncursor*| > 2)
   -- if prefreturncursor* = prefreturncursor_first :: prefreturncursor_tail*
   -- if $ref_chain_links(S, prefreturncursor*)
-  -- if ~$destructor_operational(S)
+  -- if $ref_chain_lifecycle_safe(S, prefreturncursor*)
   -- if $ref_return_cursor_inside(prefreturncursor_first.OWNER, PORIGIN n pcpath_source)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath_source) = (NStmtReturn (NExprVariable (BYTES text) metadata_variable) metadata_return)
   -- if $lookup(S.ENV, $base64(text)) = (n_y)
@@ -1900,7 +1949,7 @@ dec $ref_chain_consumed_valid(pstate, prefreturncursor*) : bool
 def $ref_chain_consumed_valid(S, prefreturncursor*) = true
   -- if prefreturncursor* = prefreturncursor_first :: prefreturncursor_tail*
   -- if $ref_chain_function(S) =/= eps
-  -- if ~$destructor_operational(S)
+  -- if $ref_chain_lifecycle_safe(S, prefreturncursor*)
   -- if $ref_chain_links(S, prefreturncursor*)
   -- if $finally_resume_valid(S, prefreturncursor_first.OWNER, eps)
   -- if $finally_phase_at(S.TODO, FINALLY_REF_CHAIN prefreturncursor*, 3)

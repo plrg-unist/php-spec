@@ -138,6 +138,15 @@ returns need their own source/ENDLINE behavior. Keep return/send/assignment
 Notices distinct, preserve cell owners through unwind, and test byvalue consumers,
 external aliases, held arrays, conversion failure and adjacent/full resumption.
 
+The bounded lifecycle29 chain keeps globally live string CV histories and a sole
+checked echo-only destructor. Validate the entire saved destructor result/release/
+operation-exit prefix before projecting to idle f scope; deleting the operation
+exit must reject publicly. Capture preserves the selected object until ordinary
+I2 disposal and retains the original Y TypeError. Use exact reached frontiers:
+eager retirement schedules real work even while other CV aliases survive. Source2,
+state3/306 and independent saved82/1 pass; active direct consumed validation and
+other destructor bodies/lifecycle layouts remain OPEN.
+
 Typed-property reference constraints, finally rechecks, objects/methods, dynamic
 sources and dynamic callables, named/unpacked/variadic calls, generators/Fibers and lifecycle remain
 required later core work. Publish reviewed paired code, evidence and concise docs

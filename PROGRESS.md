@@ -1269,6 +1269,20 @@ layouts/lifecycle/NULL-form restoration and broad returns_verify remain OPEN.
 Actual375 over `41db4e84` passes strict at `6e897cd2` in 5.972s with zero
 applications; original private source/state/independent cuts remain separate.
 
+Ordered Z/W/X global string histories now admit an idle lifecycle certificate for
+a sole checked plain class with an echo-only destructor. Capture retires only the
+history roots and keeps SelectedY live; ordinary I2 assignment emits D once, then
+the identical original Y TypeError escapes through ordered retirement. Selected Y
+keeps its alias without object birth. Source2 and reached3/306 (88+135 retained,
+83 affected) pass at `c121e080`; private strict375 passes in 5.852s with zero
+applications. Independent saved-D82/1 authenticates the full registered
+result/release/operation-exit prefix and existing projection to idle f scope;
+deleting the operation exit is publicly refused. Original declaration/fixture
+failures retain zero credit; exact frontier finders account for real eager work.
+The maintained producer is byte-identical to the tested producer. Other destructor
+effects, reentry/suspension, caught/mixed lifecycle and broad returns_verify remain
+OPEN. [Multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
 cell while GLOBALS may rebind or disappear; conversion writes the old cell atomically.

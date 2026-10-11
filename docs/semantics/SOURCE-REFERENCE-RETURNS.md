@@ -217,6 +217,16 @@ genuine saved nested frame59/1 pass at `23cde2d9`; a wrong Notice line is public
 refused. The helper is wider than this string-literal witness; other reentry,
 lifecycle and NULL-form restoration remain OPEN. See the [Notice review](../../coverage/semantics/reference-return-notice-review.json).
 
+Module156 also admits idle lifecycle for distinct globally aliased ordinary string
+CV histories under a sole source-checked plain echo-only destructor class. The
+selected Y object remains live during capture; ordinary I2 assignment invokes its
+destructor once, preserving the original SelectedY-return TypeError through Z/W/X
+retirement. Selected Y succeeds with its alias and no object birth. Source2,
+reached3/306 and independent saved-D82/1 pass at `c121e080`. The saved frame's full
+registered result/release/operation-exit prefix validates before existing projection
+reaches idle scope; deleting the exit is publicly refused. Direct active consumed
+validation and other lifecycle/caught/mixed domains remain OPEN.
+
 Module 186 captures the physical cell of an ordinary live unconstrained aliased CV
 before weak Stringable conversion. Its retained current/saved f-local binding
 authenticates that selection independently of later GLOBALS rebind/unset. Success
