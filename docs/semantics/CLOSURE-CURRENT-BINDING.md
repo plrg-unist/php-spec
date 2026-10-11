@@ -115,6 +115,17 @@ existing mint/tag/handler/receipt rules are unchanged. Original Unsupported and
 the initial EVAL-tail fixture elaboration failure retain zero credit. Wider class
 and member expressions remain required.
 
+Named-class computed-member BIND capture now accepts the existing evaluated
+member source/task authority. The concat witness `Closure::{$left . $right}(...)`
+reaches authentic interned operands and a request string before minting; later
+separate writes to `get` and `Current` preserve the selected API and receipt.
+Native2/literal1 at 64be and computed source1/state233 at 4ec/375 pass
+(214 genuine/derived plus 19 controls). The state cut distinguishes the derived
+string helper from the genuine normalized concat step and shares admission
+controls once. Original Unsupported and the source-name fixture-origin failure
+retain zero credit; checked packets are reused without old lifetime renewal.
+Wider class and combined expression contexts remain required.
+
 Module264 adds the admitted REAL static/internal warnings and `$this`-sensitive
 unbinding through the same genuine handler continuation; the
 [ordinary binding contract](CLOSURE-BINDING.md) records validation order, compiled

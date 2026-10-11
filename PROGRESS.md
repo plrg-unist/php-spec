@@ -4264,6 +4264,15 @@ runtime renewal. See the same ledger.
 Exact 592735d4/375 composition passes preserved state237; native/source/private
 cuts are not renewed.
 
+Named-class computed-member BIND capture now uses the existing evaluated member
+source/task authority. Genuine concat operands produce a request string at the
+actual STRINGDATA index, then minting and separate operand writes preserve the
+selected API and its CONFIG/receipt. Native2/literal1 at 64be and repaired computed1
+and state233 at 4ec/375 pass (214 genuine/derived plus 19 controls), reusing recorded
+checked packets after a source-name fixture-origin failure0. Handler/tag/ownership
+are unchanged; wider class/combined expressions and source7 remain open. Exact
+maintained relocation needs no runtime renewal; see the same ledger.
+
 Object defaults (module252) now create static/no-use source Closures and
 function/method callables in genuine declaring scope. Requested-class templates
 share their object values with instances and preserve exact successful bindings
