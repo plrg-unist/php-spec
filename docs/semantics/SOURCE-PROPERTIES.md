@@ -483,3 +483,22 @@ fixture-only split. Object/array callback replacements, changed sources/tails,
 PARAMETERBACKINGS and wider receiver/conversion scope remain required. Shared
 numeric/typed conversion and generic warning dispatch stay unchanged; phase41
 evidence retains its original cuts.
+
+Weak builtin-int MAGIC_GET also accepts original full NFLOAT numeric strings.
+Quiet integral spellings, including `7.0`/`-0.0`, convert without warning. Lossy
+strings retain their original bytes/carrier and captured truncation through the
+deprecation handler. Normal REF completion overwrites a scalar/string mutation;
+BYVAL changes only its RV, while a throwing handler preserves its mutation with
+no int write before receiver cleanup. A real int|string source keeps the initial
+conflict decision but diagnoses the handler-written current value. Owned reception
+detaches before BASE release; strict and numeric-prefix rejection remain distinct.
+The [numeric-string integer review](../../coverage/semantics/magic-property-numeric-string-integer-review.json)
+records six source agreements and eleven source-driven checks/1,469 premises,
+including compact dispatch, resume, quiet conversion and pending-error cleanup
+stages. Four whole timeouts and one transient cleanup-validator fixture failure
+remain0; unused diagnostic preparation adds no execution. Generic range clones
+gain no fresh credit; fractional direct-helper verification remains Unsupported.
+Scalar/string callback replacements and unchanged real sources/tails bound this producer;
+object/array replacements, PARAMETERBACKINGS and wider getter scope remain required.
+Shared numeric/typed conversion and generic warning dispatch stay unchanged;
+phase42 evidence retains its original cuts.

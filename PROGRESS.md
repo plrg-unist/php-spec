@@ -3245,6 +3245,21 @@ required; phase41 cuts are frozen.
 [Float-integer ledger](coverage/semantics/magic-property-float-integer-review.json).
 The join over `2b482deaa` at `751f6f917` preserves reviewed parent routes with 375 modules.
 Private and parent compiler cuts are reused; fresh strict/source/state/native counts remain 0.
+Weak builtin-int MAGIC_GET now accepts full NFLOAT numeric strings. Quiet `7.0`/`-0.0`
+convert without warning; fractional strings retain their original request spelling in
+the precision-loss deprecation. Normal REF return overwrites a scalar/string callback
+change; BYVAL updates only RV, and throwing handlers preserve their changed referent
+without an int write. Genuine source conflicts retain the initial decision and diagnose
+the live value; owned detachment, strict and prefix errors preserve cleanup timing.
+Native6/baseline1 retain `06c219141`; strict375/source6 retain `8e33f5c84` (5.966s).
+Eleven source-driven reached checks pass 1,469 setup-inclusive premises across
+`8c44a16a9`, `79d0c8abf`, `86cb4bdc5` and `854949ada`. Compact entry/resume and
+quiet/zero/prefix checks stop at their authentic physical stages. Four whole timeouts
+and the intermediate cleanup-validator failure remain0; unused diagnostic preparation
+adds no execution. Generic range clones earn no fresh credit. Scalar/string callback
+referents and unchanged sources/tails bound the producer; object/array replacements
+and wider getter/PARAM scope remain required. Phase42 cuts are frozen.
+[Numeric-string integer ledger](coverage/semantics/magic-property-numeric-string-integer-review.json).
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;

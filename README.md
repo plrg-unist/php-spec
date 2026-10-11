@@ -1968,6 +1968,15 @@ timeout stays0 after a fixture-only split. Range controls are constructed;
 object/array callback replacements and changed source constraints remain required.
 The join over `2b482deaa` at `751f6f917` preserves reviewed parent routes with 375 modules.
 Private and parent compiler cuts are reused; fresh strict/source/state/native counts remain 0.
+Weak int MAGIC_GET also converts full NFLOAT numeric strings, preserving the original
+spelling in precision-loss deprecations. Quiet `7.0`/`-0.0` convert without warning;
+normal handlers commit captured truncation, while throwing handlers preserve their writes.
+Real source conflicts diagnose the current value without committing the captured int.
+[Six source agreements and eleven reached checks](coverage/semantics/magic-property-numeric-string-integer-review.json)
+pass 1,469 premises, including compact authentic warning/return/error stages.
+Four original timeouts and a transient cleanup-validator fixture failure stay0.
+Scalar/string callbacks and unchanged source/tail authority remain bounded;
+wider object/array replacements remain required.
 PARAMETERBACKINGS and wider conversions remain required.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded
