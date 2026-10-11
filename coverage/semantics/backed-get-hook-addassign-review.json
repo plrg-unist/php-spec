@@ -1,0 +1,115 @@
+{
+  "scope": "Public backed by-value get-hook += through literal CV/This with an already evaluated integer RHS; other compound operators, deferred/noninteger RHS and wider hook/receiver families remain partial.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor pin 34308a6666b2d489c509541ea9befea9e2b42348",
+  "profile": "tests/semantics/profile.json; LC_ALL=C, TZ=UTC, jobs=1, cache=false, det=true",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "catalogue": "tests/semantics/backed_get_hook_addassign_cases.json",
+  "implementation": {
+    "files": [
+      "spec/semantics/30-storage.watsup",
+      "spec/semantics/55-compound-assignment.watsup",
+      "spec/semantics/382-backed-get-hooks.watsup"
+    ],
+    "engine": "vendor/php-src/Zend/zend_compile.c zend_compile_compound_assign; Zend/zend_vm_def.h ZEND_ASSIGN_OBJ_OP; Zend/zend_execute.c zend_assign_op_overloaded_property; Zend/zend_object_handlers.c zend_std_write_property.",
+    "behavior": "At final COMPOUND_APPLY, resolve the current pending receiver after RHS effects. Execute its getter, add to the returned value and store on that selected receiver despite getter rebinding. Preserve the original arithmetic expression result across ordinary destination checking. RESULT -> owned FINISH retires the RV before selected receiver release; preserve genuine pending Throwable through eager disposal and actual throw-search discard.",
+    "integrity": "Authenticate Plus parent, left/RHS children, property/getter/function and both emitted lines, saved caller context and original pending selector. The retained COMPOUND_PREP is a checked source witness, not a replayed RHS. RESULT/FINISH own one selected receiver and no selector/payload copy; live allocation/freeing checks protect both. Shared 152/270 files and manifest remain unchanged."
+  },
+  "native": {
+    "revision": "9ae5ca3330708cd5f947242a3d7e75aa2c698d75",
+    "cases": 3,
+    "cap_seconds": 45,
+    "source_agreements": 0,
+    "path": ".tools/coalesce-get-hooks-private-32/.tools/backed-get-hooks-addassign-probes-35/native-first/report.json",
+    "sha256": "5806070e8a59ea3c208035f5c94a3df3f40b651f2d6d13594ecf375b2343cb1b"
+  },
+  "unchanged_baseline": {
+    "revision": "9ae5ca3330708cd5f947242a3d7e75aa2c698d75",
+    "outcome": "Three checked Unsupported property hook read mode or receiver outcomes after genuine RHS output R| / R0|D1:100|RN| / R|.",
+    "source_agreements": 0,
+    "path": ".tools/coalesce-get-hooks-private-32/.tools/backed-get-hooks-addassign-probes-35/accepted-current-baseline/report.json",
+    "sha256": "c48bd502bd0712ac67f2e851f4e90ce0454faa6d0a9790d0cd94e3f1c9ec9fc8"
+  },
+  "strict": {
+    "revision": "ee1ae2f10e22dc1dce32504df9311cc664f19e1e",
+    "modules": 375,
+    "mode": "SL60 init-only",
+    "elapsed_seconds": 5.736029,
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "path": ".tools/coalesce-get-hooks-private-32/.tools/backed-get-hooks-addassign-probes-35/backed-hook-addassign-compiler-21ggzq_2/report.json",
+    "sha256": "33da1d317f9967f344ba79b608308042cb2921a40f35cbe15f43c6a9b25687d5"
+  },
+  "sources": {
+    "revision": "ee1ae2f10e22dc1dce32504df9311cc664f19e1e",
+    "agreements": 3,
+    "model_cap_seconds": 60,
+    "outer_cap_seconds": 75,
+    "steps": 100000,
+    "outcome": "Normal, exact retained native stdout/stderr/exit: null/false/0/7 getter values against backing100, CV/This, RHS refetch, getter-selected store and RV D|BL before B1:100/catch32. Hooked destination types are mixed; destination-coercion result preservation follows the engine/helper contract without new typed-source credit.",
+    "path": ".tools/coalesce-get-hooks-private-32/.tools/backed-get-hooks-addassign-probes-35/changed-model-vn7lxzpv/report.json",
+    "sha256": "94f5be47efe29f1a120069f6da5804fe2adf5ef89ebd7a35f9713c87fb87c7d8"
+  },
+  "state": {
+    "retained_scalar": {
+      "revision": "77a0f81c32c138ff44b29ec778443a6306866e90",
+      "reached": 265,
+      "derived": 26,
+      "total": 291,
+      "component_outcome": "true in (true,false,false); whole diagnostic state-gate credit0",
+      "source_agreements": 0,
+      "fixture_sha256": "65ac6c9d6575e24ba9b42a8bd22ac6b338aa28f318c020a18562019dad09f8bb",
+      "observations": "Eight genuine CV/This getter/math/store paths; actual call/frame/source validation, no extra This selector owner, normal direct FINISH. Derived mode/RHS/source/function/selector/line/marker and removed/freeing-target controls have separate credit.",
+      "path": ".tools/coalesce-get-hooks-private-32/.tools/backed-hook-addassign-components-diagnostic-77a0/report.json",
+      "sha256": "ad2e93fffd9695d877c181e4fce108d8389b87666e3d7e05a7caa329901a03c0"
+    },
+    "affected_receiver_lifetime": {
+      "revision": "7070262a0898e49f61519deb2797815012654d2e",
+      "group": "affected",
+      "mode": "AL90 -> SL90",
+      "reached": 129,
+      "derived": 0,
+      "application_evaluations": 1,
+      "source_agreements": 0,
+      "fixture_sha256": "0b413da82497621f25890b40b34f30d74672fabad000392315864871ff20dff5",
+      "outcome": "true",
+      "observations": "Authentic normal FINISH decrement parks the removed owner2 then real exit/finish restores CV-only1. RHS rebinding selects the replacement; getter rebinding keeps the selected old target. Raw RV TypeError32 materializes its trace array, then eager RV release yields D|BL while selected receiver has owner1. Real operation finish/THROW_SEARCH discards FINISH, yielding B1 before catch and weak-null; replacement backing remains100.",
+      "path": ".tools/coalesce-get-hooks-private-32/.tools/backed-get-hook-addassign-protocol-i0finkzd/report.json",
+      "sha256": "6f056ca06d7d9eb5df6e3ed535dea8aeefd472e589b82c9da68ddb2784c47a46"
+    },
+    "compatibility": "Separate accepted cuts. Scalar, derived clauses and helpers are unchanged; affected-only selection executes exactly rebind/lifetime, with production byte-identical to accepted ee1. No fresh full420 invocation or source/native/strict renewal."
+  },
+  "preserved_failure_localization": [
+    {
+      "kind": "Original state410 false",
+      "whole_state_gate_credit": 0,
+      "path": ".tools/coalesce-get-hooks-private-32/.tools/backed-get-hook-addassign-protocol-1_oc5dlf/report.json",
+      "sha256": "71a9883482e1aafd90c009273976f52eceda64914fa09dc5d821fd32e9069599"
+    },
+    {
+      "kind": "Output-only component diagnostic",
+      "outcome": "(true,false,false); scalar291 retained separately, zero whole-gate/source credit",
+      "path": ".tools/coalesce-get-hooks-private-32/.tools/backed-hook-addassign-components-diagnostic-77a0/report.json",
+      "sha256": "ad2e93fffd9695d877c181e4fce108d8389b87666e3d7e05a7caa329901a03c0"
+    },
+    {
+      "kind": "Two genuine observation walks",
+      "outcome": "Only rebind23 owner and lifetime25 RESULT atoms false among161; no gate/source credit. Fixture correction follows real parked FINISH decrement and binds trace ARRAY retained by152 allocation, checked against157 Throwable.trace.",
+      "path": ".tools/coalesce-get-hooks-private-32/.tools/backed-hook-addassign-observations-diagnostic-77a0/report.json",
+      "sha256": "3db916a5aeb3f5d0fbd5c0836883239ca210548bf6fefb1385d47f191886d282"
+    }
+  ],
+  "commands": [
+    "python3 .tools/backed-get-hooks-addassign-probes-35/run.py native --revision 9ae5ca3330708cd5f947242a3d7e75aa2c698d75",
+    "python3 .tools/backed-get-hooks-addassign-probes-35/run.py baseline --revision 9ae5ca3330708cd5f947242a3d7e75aa2c698d75",
+    "python3 .tools/backed-get-hooks-addassign-probes-35/run-compiler.py 9ae5ca3330708cd5f947242a3d7e75aa2c698d75 ee1ae2f10e22dc1dce32504df9311cc664f19e1e",
+    "python3 .tools/backed-get-hooks-addassign-probes-35/run.py changed --revision ee1ae2f10e22dc1dce32504df9311cc664f19e1e",
+    "python3 .tools/backed-hook-addassign-components-diagnostic-77a0/run.py",
+    "python3 tests/semantics/backed_get_hook_addassign_protocol.py --revision 7070262a0898e49f61519deb2797815012654d2e --group affected"
+  ],
+  "recovery": "Commands run from private32 at the indicated clean revision. Permanent originals/catalogue retain exact source bytes, raw expectations and native provenance; ignored probe/runner/raw paths stay at their original locations. Earlier hook cuts remain unchanged.",
+  "remaining": [
+    "Other compound operators and RHS forms",
+    "Virtual/set/byref hooks and wider receiver access",
+    "Inherited/trait/defaulted-hook families"
+  ]
+}

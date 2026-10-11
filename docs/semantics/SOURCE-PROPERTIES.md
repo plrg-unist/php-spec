@@ -68,9 +68,20 @@ line. It invokes no getter and preserves storage; active getter backing permissi
 does not permit unset. The backing payload survives each rejected unset and releases
 when receiver storage is freed. Two originals and 182 premises (178 reached,
 4 derived) pass in the [unset review](../../coverage/semantics/hooked-unset-review.json).
+Public backed by-value hook `+=` through literal CV or `$this` admits an already
+evaluated integer RHS. It selects the current receiver after RHS effects, invokes
+the getter and applies ordinary addition to its returned value, then stores on
+that selected receiver even if the getter rebinds the original CV. The expression
+retains the arithmetic result across existing destination type checks. An owned
+finish continuation keeps the receiver while the returned RV releases, including
+through a pending arithmetic error; actual unwind then retires that hold before
+catch. Source selector metadata adds no second `$this` owner. Three originals
+and separate scalar291/affected129 state cuts are recorded in the
+[addition-assignment review](../../coverage/semantics/backed-get-hook-addassign-review.json).
 Hooked object iteration is explicit Unsupported rather than a raw storage view;
 array casts retain ordinary storage only. Defaulted virtual/set/byref hooks,
-inheritance/traits, temporary/computed receivers, wider coalescing assignment and
+inheritance/traits, temporary/computed receivers, other compound operators/RHS
+forms, wider coalescing assignment and
 quiet/reference/indirect access and `__unset` declarations/consumers remain boundaries.
 
 Constructor promotion declares a property from its original parameter flags and

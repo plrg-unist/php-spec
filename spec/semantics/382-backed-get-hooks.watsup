@@ -346,6 +346,106 @@ rule PhpStep/property-hook-coalesce-assignment-absent: S ~> S[.TODO = [(ORIGIN_R
   -- if z = $runtime_line(S_parent, eps, NExprAssignOpCoalesce expression_target expression_rhs metadata)
   -- if S.RESULT = KNOWN PNULL
 
+;; ASSIGN_OBJ_OP selects the receiver after RHS evaluation, then retains it
+;; through the getter, arithmetic/write and RV disposal. The PREP tail is a
+;; checked source witness; its RHS has already executed.
+dec $property_hook_compound_parent(pstate, porigin) : porigin?
+def $property_hook_compound_parent(S, PORIGIN n pcpath) = (PORIGIN n pcpath_parent)
+  -- if $(|pcpath| >= 1)
+  -- if pcpath_parent = pcpath[0:$nabs($( |pcpath| - 1))]
+  -- if pcpath = pcpath_parent ++ [PCFIELD 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_parent) = (NExprAssignOpPlus expression_target expression_rhs metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression_target)
+def $property_hook_compound_parent(S, porigin) = eps -- otherwise
+dec $property_hook_compound_source(pstate, ppropertyhook, pbase, int) : bool
+def $property_hook_compound_source(S, ppropertyhook, pbase, z) = true
+  -- if $property_hook_valid(S, ppropertyhook, false)
+  -- if $property_hook_compound_parent(S, ppropertyhook.SITE) = (porigin_parent)
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprAssignOpPlus expression_target expression_rhs metadata)
+  -- if S_parent = S[.ORIGIN = (porigin_parent)]
+  -- if z = $runtime_line(S_parent, eps, NExprAssignOpPlus expression_target expression_rhs metadata)
+  -- if $property_pending_source_base(S[.ORIGIN = (ppropertyhook.SITE)], pbase, expression_target)
+  -- if S.OBJECTS[ppropertyhook.OBJECT] = INSTANCE porigin_class
+  -- if $hook_property_at($property_layout(S, porigin_class, |S.CLASSES|), ppropertyhook.PROPERTY) = (ppropertydesc)
+  -- if ~$property_hook_virtual(S, ppropertydesc)
+def $property_hook_compound_source(S, ppropertyhook, pbase, z) = false -- otherwise
+dec $property_hook_compound_tail(pstate, ppropertyhook, pbase, int, ptask*) : bool
+def $property_hook_compound_tail(S, ppropertyhook, pbase, z, (ORIGIN_RETURN (porigin_parent)) :: (COMPOUND_PREP ADD expression_target expression_rhs z) :: ptask_tail*) = true
+  -- if $property_hook_compound_source(S, ppropertyhook, pbase, z)
+  -- if $property_hook_compound_parent(S, ppropertyhook.SITE) = (porigin_parent)
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprAssignOpPlus expression_target expression_rhs metadata)
+def $property_hook_compound_tail(S, ppropertyhook, pbase, z, ptask*) = false -- otherwise
+def $property_hook_compound_pending(S) = true
+  -- if S.TODO = (COMPOUND_APPLY ADD (BASE_PROPERTY_PENDING pbase poperand z_receiver) false z) :: ptask_tail*
+  -- if S_receiver = $property_pending_resolve(S, pbase, poperand, PPRW, z_receiver, z)
+  -- if S_receiver.COMPLETION = NORMAL
+  -- if S_receiver.BASE = BASE_PROPERTY (POBJECT n) ptbytes
+  -- if $property_hook_read_needed(S, n, ptbytes)
+dec $property_hook_compound_plan(pstate) : ppropertyhook?
+def $property_hook_compound_plan(S) = (ppropertyhook)
+  -- if S.TODO = (COMPOUND_APPLY ADD (BASE_PROPERTY_PENDING pbase poperand z_receiver) false z) :: ptask_tail*
+  -- if S.RESULT = KNOWN (PINT i)
+  -- if S.ORIGIN = (porigin_parent)
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprAssignOpPlus expression_target expression_rhs metadata)
+  -- if $origin_child((porigin_parent), [PCFIELD 0]) = (porigin_site)
+  -- if S_receiver = $property_pending_resolve(S, pbase, poperand, PPRW, z_receiver, z)
+  -- if S_receiver.COMPLETION = NORMAL
+  -- if S_receiver.BASE = BASE_PROPERTY (POBJECT n) ptbytes
+  -- if $property_hook_read_needed(S, n, ptbytes)
+  -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes
+  -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
+  -- if $property_hook_origin(S, ppropertydesc) = (porigin_hook)
+  -- if z_property = $runtime_line(S[.ORIGIN = (porigin_site)], eps, expression_target)
+  -- if porigin_property = ppropertydesc.ORIGIN
+  -- if ppropertyhook = {SITE porigin_site, OBJECT n, PROPERTY porigin_property, HOOK porigin_hook, LINE z_property}
+  -- if $property_hook_valid(S, ppropertyhook, true)
+  -- if $property_hook_compound_source(S, ppropertyhook, BASE_PROPERTY_PENDING pbase poperand z_receiver, z)
+def $property_hook_compound_plan(S) = eps -- otherwise
+
+rule PhpStep/property-hook-compound-call: S ~> S[.TODO = [(CALL_ARGS (PROPERTY_HOOK_TARGET ppropertyhook) eps 0 eps (ppropertyhook.SITE) ppropertyhook.LINE), PROPERTY_HOOK_COMPOUND_RESULT ppropertyhook pbase i z, ORIGIN_RETURN S.ORIGIN, COMPOUND_PREP ADD expression_target expression_rhs z] ++ ptask_tail*][.ORIGIN = (ppropertyhook.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (COMPOUND_APPLY ADD pbase false z) :: ptask_tail*
+  -- if S.RESULT = KNOWN (PINT i)
+  -- if $property_hook_compound_plan(S) = (ppropertyhook)
+  -- if S.ORIGIN = (porigin_parent)
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprAssignOpPlus expression_target expression_rhs metadata)
+rule PhpStep/property-hook-compound-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "property hook compound source, RHS or function"]
+  -- if $property_hook_compound_pending(S)
+  -- if $property_hook_compound_plan(S) = eps
+dec $property_hook_compound_apply(pstate, ppropertyhook, pvalue, int, int) : pstate
+def $property_hook_compound_apply(S, ppropertyhook, pvalue_left, i, z) = S_binary[.RESULT = KNOWN PNULL]
+  -- if S_binary = $binary_apply(S, ADD, pvalue_left, PINT i, z)
+  -- if S_binary.COMPLETION =/= NORMAL
+def $property_hook_compound_apply(S, ppropertyhook, pvalue_left, i, z) = S_stored[.RESULT = S_binary.RESULT]
+  -- if S_binary = $binary_apply(S, ADD, pvalue_left, PINT i, z)
+  -- if S_binary.COMPLETION = NORMAL
+  -- if S_binary.RESULT = KNOWN pvalue
+  -- if $origin_node(S.SOURCES, ppropertyhook.SITE) = (NExprPropertyFetch expression_receiver (NIdentifier (BYTES text_name) metadata_name) metadata)
+  -- if S_stored = $property_store_value(S_binary, ppropertyhook.OBJECT, $base64(text_name), pvalue, z)
+  -- if S_stored.COMPLETION = NORMAL
+def $property_hook_compound_apply(S, ppropertyhook, pvalue_left, i, z) = S_stored[.RESULT = KNOWN PNULL]
+  -- if S_binary = $binary_apply(S, ADD, pvalue_left, PINT i, z)
+  -- if S_binary.COMPLETION = NORMAL
+  -- if S_binary.RESULT = KNOWN pvalue
+  -- if $origin_node(S.SOURCES, ppropertyhook.SITE) = (NExprPropertyFetch expression_receiver (NIdentifier (BYTES text_name) metadata_name) metadata)
+  -- if S_stored = $property_store_value(S_binary, ppropertyhook.OBJECT, $base64(text_name), pvalue, z)
+  -- if S_stored.COMPLETION =/= NORMAL
+rule PhpStep/property-hook-compound-result: S ~> $property_hook_compound_apply(S[.TODO = (PROPERTY_HOOK_COMPOUND_FINISH ppropertyhook pbase i z) :: ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)], ppropertyhook, pvalue, i, z)
+  -- if S.TODO = (PROPERTY_HOOK_COMPOUND_RESULT ppropertyhook pbase i z) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL /\ S.ORIGIN = (ppropertyhook.SITE)
+  -- if $property_hook_result_tail(S, ppropertyhook, S.TODO)
+  -- if S.RESULT = KNOWN pvalue
+rule PhpStep/property-hook-compound-finish: S ~> S[.TODO = (ORIGIN_RETURN (porigin_parent)) :: ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROPERTY_HOOK_COMPOUND_FINISH ppropertyhook pbase i z) :: (ORIGIN_RETURN (porigin_parent)) :: (COMPOUND_PREP ADD expression_target expression_rhs z) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL /\ S.ORIGIN = (ppropertyhook.SITE)
+  -- if $property_hook_valid(S, ppropertyhook, true)
+  -- if $property_hook_compound_tail(S, ppropertyhook, pbase, z, (ORIGIN_RETURN (porigin_parent)) :: (COMPOUND_PREP ADD expression_target expression_rhs z) :: ptask_tail*)
+def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = S_next
+  -- if S.TODO = (PROPERTY_HOOK_COMPOUND_RESULT ppropertyhook pbase i z) :: ptask_tail*
+  -- if $property_hook_result_tail(S, ppropertyhook, S.TODO)
+  -- if S.RESULT = KNOWN pvalue
+  -- if S_next.TODO = (PROPERTY_HOOK_COMPOUND_FINISH ppropertyhook pbase i z) :: ptask_tail*
+  -- if S_next.RESULT = KNOWN PNULL /\ S_next.BASE = BASE_VALUE (KNOWN PNULL)
+
 def $property_hook_pending(S) = true
   -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: (DIM_FETCH z) :: ptask_tail*
   -- if S_read = $quiet_operand(S, S.RESULT)
@@ -451,11 +551,16 @@ def $target_function(S, PROPERTY_HOOK_TARGET ppropertyhook) = $property_hook_fun
 def $task_nodes(PROPERTY_HOOK_RESULT ppropertyhook) = eps
 def $task_nodes(PROPERTY_HOOK_ISSET_RESULT ppropertyhook b) = eps
 def $task_nodes(PROPERTY_HOOK_ASSIGN_RESULT ppropertyhook pbase) = $base_nodes(pbase)
+;; BASE is only the original source selector here; OBJECT owns the selected
+;; receiver once, including when the This selector names that same receiver.
+def $task_nodes(PROPERTY_HOOK_COMPOUND_RESULT ppropertyhook pbase i z) = [HOBJECT ppropertyhook.OBJECT]
+def $task_nodes(PROPERTY_HOOK_COMPOUND_FINISH ppropertyhook pbase i z) = [HOBJECT ppropertyhook.OBJECT]
 
 def $property_hook_result_tail(S, ppropertyhook, (PROPERTY_HOOK_RESULT ppropertyhook) :: ptask_tail*) = true
   -- if $property_hook_valid(S, ppropertyhook, false)
   -- if ~$property_hook_isset_site(S, ppropertyhook.SITE, false) /\ ~$property_hook_isset_site(S, ppropertyhook.SITE, true)
   -- if $property_hook_assign_parent(S, ppropertyhook.SITE) = eps
+  -- if $property_hook_compound_parent(S, ppropertyhook.SITE) = eps
   -- if $property_hook_coalesce_result_tail(S, ppropertyhook, ptask_tail*)
 def $property_hook_result_tail(S, ppropertyhook, (PROPERTY_HOOK_ISSET_RESULT ppropertyhook b) :: ptask_tail*) = true
   -- if $property_hook_valid(S, ppropertyhook, false)
@@ -464,6 +569,7 @@ def $property_hook_result_tail(S, ppropertyhook, (PROPERTY_HOOK_ASSIGN_RESULT pp
   -- if $property_hook_assign_parent(S, ppropertyhook.SITE) = (porigin_parent)
   -- if $origin_node(S.SOURCES, porigin_parent) = (NExprAssignOpCoalesce expression_target expression_rhs metadata)
   -- if $property_hook_assign_source(S, ppropertyhook, pbase, z)
+def $property_hook_result_tail(S, ppropertyhook, (PROPERTY_HOOK_COMPOUND_RESULT ppropertyhook pbase i z) :: ptask_tail*) = ($property_hook_valid(S, ppropertyhook, true) /\ $property_hook_compound_tail(S, ppropertyhook, pbase, z, ptask_tail*))
 def $property_hook_result_tail(S, ppropertyhook, ptask*) = false -- otherwise
 
 dec $property_hook_pending_call(pstate, ppropertyhook) : bool
@@ -522,6 +628,18 @@ def $property_hook_assign_task_head((CALL_ARGS (PROPERTY_HOOK_TARGET ppropertyho
 def $property_hook_assign_task_head((PROPERTY_HOOK_ASSIGN_RESULT ppropertyhook pbase) :: ptask_tail*, ppropertyhook, pbase) = true
 def $property_hook_assign_task_head(ptask*, ppropertyhook, pbase) = false -- otherwise
 def $call_task_valid(S, PROPERTY_HOOK_ASSIGN_RESULT ppropertyhook pbase) = ($property_hook_assign_task_head(S.TODO, ppropertyhook, pbase) /\ ($property_hook_pending_call(S, ppropertyhook) \/ $property_hook_result_tail(S, ppropertyhook, S.TODO)))
+dec $property_hook_compound_task_head(ptask*, ppropertyhook, pbase, int, int) : bool
+def $property_hook_compound_task_head((CALL_ARGS (PROPERTY_HOOK_TARGET ppropertyhook) eps 0 eps porigin? z_call) :: ptask_tail*, ppropertyhook, pbase, i, z) = $property_hook_compound_task_head(ptask_tail*, ppropertyhook, pbase, i, z)
+  -- if porigin? = (ppropertyhook.SITE) /\ z_call = ppropertyhook.LINE
+def $property_hook_compound_task_head((PROPERTY_HOOK_COMPOUND_RESULT ppropertyhook pbase i z) :: ptask_tail*, ppropertyhook, pbase, i, z) = true
+def $property_hook_compound_task_head(ptask*, ppropertyhook, pbase, i, z) = false -- otherwise
+def $call_task_valid(S, PROPERTY_HOOK_COMPOUND_RESULT ppropertyhook pbase i z) = ($property_hook_compound_task_head(S.TODO, ppropertyhook, pbase, i, z) /\ ($property_hook_pending_call(S, ppropertyhook) \/ $property_hook_result_tail(S, ppropertyhook, S.TODO)))
+dec $property_hook_compound_finish_tail(pstate, ptask*, ppropertyhook, pbase, int, int) : bool
+def $property_hook_compound_finish_tail(S, eps, ppropertyhook, pbase, i, z) = false
+def $property_hook_compound_finish_tail(S, (PROPERTY_HOOK_COMPOUND_FINISH ppropertyhook pbase i z) :: ptask_tail*, ppropertyhook, pbase, i, z) = $property_hook_compound_tail(S, ppropertyhook, pbase, z, ptask_tail*)
+def $property_hook_compound_finish_tail(S, ptask :: ptask_tail*, ppropertyhook, pbase, i, z) = $property_hook_compound_finish_tail(S, ptask_tail*, ppropertyhook, pbase, i, z)
+  -- if ptask =/= PROPERTY_HOOK_COMPOUND_FINISH ppropertyhook pbase i z
+def $call_task_valid(S, PROPERTY_HOOK_COMPOUND_FINISH ppropertyhook pbase i z) = ($property_hook_valid(S, ppropertyhook, true) /\ $property_hook_compound_finish_tail(S, S.TODO, ppropertyhook, pbase, i, z))
 
 def $trace_context_function(S, pcallcontext) = $hook_name(ppropertydesc.NAME)
   -- if pcallcontext.TARGET = PROPERTY_HOOK_TARGET ppropertyhook
