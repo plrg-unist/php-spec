@@ -1,0 +1,53 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hash": "525ac11fe3d702c091ec12da6df3cb5dbcda1a305b78ca94d354e8e5b730e1be",
+  "cases": [
+    {
+      "id": "virtual-parent-backed-covariance-scalar",
+      "source": "<?php\nclass CovBackedParent44 {\n    public int|string $value {\n        get { echo \"P:\", __CLASS__, \"/\", static::class, \"|\"; return \"root\"; }\n    }\n    public function parentRead() { echo \"H|\"; return $this->value; }\n}\nclass CovBackedBridge44 extends CovBackedParent44 {\n    private function answer() { return 500; }\n}\nclass CovBackedChild44 extends CovBackedBridge44 {\n    public int $value = 200 {\n        get {\n            echo \"C:\", __CLASS__, \"/\", static::class, \"|\";\n            return $this->value + $this->answer();\n        }\n    }\n    private function answer() { return 13; }\n}\nclass CovBackedGrand44 extends CovBackedChild44 {\n    private function answer() { return 900; }\n}\nfunction covBackedBadRhs44() { echo \"R|\"; return \"bad\"; }\n$parent = new CovBackedParent44;\n$child = new CovBackedChild44;\n$grand = new CovBackedGrand44;\necho (array)$parent === [] ? \"EMPTY|\" : \"BAD|\";\necho (array)$child === [\"value\" => 200] ? \"C200|\" : \"BAD|\";\necho (array)$grand === [\"value\" => 200] ? \"G200|\" : \"BAD|\";\necho $parent->value, \"|\";\necho $child->value, \"|\";\necho $grand->parentRead(), \"|\";\necho (array)$grand === [\"value\" => 200] ? \"G200|\" : \"BAD|\";\n$grand->value = 300;\necho (array)$grand === [\"value\" => 300] ? \"G300|\" : \"BAD|\";\ntry { $grand->value = covBackedBadRhs44(); }\ncatch (TypeError $error) { echo $error->getMessage(), \":\", $error->getLine(), \"|\"; }\necho (array)$grand === [\"value\" => 300] ? \"UNCHANGED|\" : \"BAD|\";\necho $grand->value, \"|\";\n",
+      "source_sha256": "3a323345fb78e20aa4dd917025711a167b8d4432e3d80f2b7411bc5fd315fb87",
+      "stdout_base64": "RU1QVFl8QzIwMHxHMjAwfFA6Q292QmFja2VkUGFyZW50NDQvQ292QmFja2VkUGFyZW50NDR8cm9vdHxDOkNvdkJhY2tlZENoaWxkNDQvQ292QmFja2VkQ2hpbGQ0NHwyMTN8SHxDOkNvdkJhY2tlZENoaWxkNDQvQ292QmFja2VkR3JhbmQ0NHwyMTN8RzIwMHxHMzAwfFJ8Q2Fubm90IGFzc2lnbiBzdHJpbmcgdG8gcHJvcGVydHkgQ292QmFja2VkQ2hpbGQ0NDo6JHZhbHVlIG9mIHR5cGUgaW50OjM2fFVOQ0hBTkdFRHxDOkNvdkJhY2tlZENoaWxkNDQvQ292QmFja2VkR3JhbmQ0NHwzMTN8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "virtual-parent-backed-hook-covariance44-native3-661bfef1",
+      "native_raw_sha256": "525ac11fe3d702c091ec12da6df3cb5dbcda1a305b78ca94d354e8e5b730e1be"
+    },
+    {
+      "id": "virtual-parent-backed-covariance-lifetime",
+      "source": "<?php\nclass CovBackedAnimal44 {\n    public $tag;\n    public function __destruct() { echo \"D\", $this->tag, \"|\"; }\n}\nclass CovBackedDog44 extends CovBackedAnimal44 {}\nfunction freshCovBacked44($tag) {\n    global $weak_returned;\n    echo \"G\", $tag, \"|\";\n    $leaf = new CovBackedDog44;\n    $leaf->tag = $tag;\n    $weak_returned = WeakReference::create($leaf);\n    return $leaf;\n}\nclass CovBackedLifeParent44 {\n    public CovBackedAnimal44|null $value { get => null; }\n    public function parentRead() { return $this->value; }\n    public function __destruct() {\n        $raw = (array)$this;\n        $leaf = $raw[\"value\"];\n        echo \"B\", $leaf->tag, \"|\";\n    }\n}\nclass CovBackedLifeBridge44 extends CovBackedLifeParent44 {}\nclass CovBackedLifeChild44 extends CovBackedLifeBridge44 {\n    public CovBackedDog44|null $value = null {\n        get {\n            $backing = $this->value;\n            echo \"C\", $backing->tag, \"|\";\n            return freshCovBacked44(\"R\");\n        }\n    }\n}\nclass CovBackedLifeGrand44 extends CovBackedLifeChild44 {}\n$box = new CovBackedLifeGrand44;\n$weak_box = WeakReference::create($box);\necho (array)$box === [\"value\" => null] ? \"NULL_SLOT|\" : \"BAD|\";\n$stored = new CovBackedDog44;\n$stored->tag = \"S\";\n$weak_stored = WeakReference::create($stored);\n$box->value = $stored;\nunset($stored);\necho \"STORED|\";\n$kept = $box->parentRead();\necho \"H\", $kept->tag, \"|\";\necho ((array)$box)[\"value\"] === $weak_stored->get() ? \"SLOT_S|\" : \"BAD|\";\nunset($box);\necho $weak_box->get() === null ? \"BN|\" : \"BAD|\";\necho $weak_stored->get() === null ? \"SN|\" : \"BAD|\";\necho $weak_returned->get() !== null ? \"LIVE|\" : \"BAD|\";\nunset($kept);\necho $weak_returned->get() === null ? \"RN|\" : \"BAD|\";\n",
+      "source_sha256": "9215c9b0273945ee0d28826938b5686cf36f03c0519f2eadf84d5fe6731d4569",
+      "stdout_base64": "TlVMTF9TTE9UfFNUT1JFRHxDU3xHUnxIUnxTTE9UX1N8QlN8RFN8Qk58U058TElWRXxEUnxSTnw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "virtual-parent-backed-hook-covariance44-native3-661bfef1",
+      "native_raw_sha256": "525ac11fe3d702c091ec12da6df3cb5dbcda1a305b78ca94d354e8e5b730e1be"
+    },
+    {
+      "id": "virtual-parent-backed-covariance-invalid",
+      "source": "<?php\nclass CovBackedBadParent44 {\n    public int $value { get => 1; }\n}\nclass CovBackedBadChild44 extends CovBackedBadParent44 {\n    public int|string $value = 200 { get => $this->value; }\n}\necho \"UNREACHED|\";\n",
+      "source_sha256": "ff43cb4c91066a5634650c9441ee17f07c41afc9a3880c2cc9f4d28fc0f15a6e",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IERlY2xhcmF0aW9uIG9mIENvdkJhY2tlZEJhZENoaWxkNDQ6OiR2YWx1ZTo6Z2V0KCk6IHN0cmluZ3xpbnQgbXVzdCBiZSBjb21wYXRpYmxlIHdpdGggQ292QmFja2VkQmFkUGFyZW50NDQ6OiR2YWx1ZTo6Z2V0KCk6IGludCBpbiB7ZmlsZX0gb24gbGluZSA2ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "virtual-parent-backed-hook-covariance44-native3-661bfef1",
+      "native_raw_sha256": "525ac11fe3d702c091ec12da6df3cb5dbcda1a305b78ca94d354e8e5b730e1be"
+    }
+  ]
+}
