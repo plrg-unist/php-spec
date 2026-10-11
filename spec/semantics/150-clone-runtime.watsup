@@ -85,6 +85,7 @@ def $clone_is_object(POBJECT n) = true
 def $clone_is_object(pvalue) = false -- otherwise
 dec $weakref_object(pobject) : bool
 def $weakref_object(pobject) = false -- otherwise
+dec $weakmap_object(pobject) : bool
 dec $clone_value(pstate, pvalue, int) : pstate
 def $clone_value(S, POBJECT n, z) = $clone_object(S, n)
   -- if ~$instance_storage_freeing(S, n)

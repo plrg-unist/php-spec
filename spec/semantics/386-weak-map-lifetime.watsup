@@ -1,6 +1,5 @@
 ;; Zend/zend_weakrefs.c: the entry owns its value, never its key. This first
 ;; slice admits one ordinary key/leaf value and actual std_dtor notification.
-dec $weakmap_object(pobject) : bool
 def $weakmap_object(WEAKMAP pweakmapentry?) = true
 def $weakmap_object(pobject) = false -- otherwise
 dec $weakmap_at(pstate, nat) : bool
@@ -42,6 +41,7 @@ def $noctor_object_valid(S, pnoctorcall) = true
 ;; Reuse the language's ArrayAccess operand/source protocol, without invoking
 ;; an invented user method. RHS readback remains the assignment's result.
 dec $weakmap_key_maps(pstate, pnode*, nat) : nat*
+dec $weakmap_has_key(pstate, nat, nat) : bool
 def $weakmap_key_maps(S, eps, n_key) = eps
 def $weakmap_key_maps(S, (HOBJECT n) :: pnode_tail*, n_key) = n :: $weakmap_key_maps(S, pnode_tail*, n_key)
   -- if $weakmap_has_key(S, n, n_key)
@@ -49,7 +49,6 @@ def $weakmap_key_maps(S, (HOBJECT n) :: pnode_tail*, n_key) = $weakmap_key_maps(
   -- if ~$weakmap_has_key(S, n, n_key)
 def $weakmap_key_maps(S, (HCELL n) :: pnode_tail*, n_key) = $weakmap_key_maps(S, pnode_tail*, n_key)
 def $weakmap_key_maps(S, (HARRAY n) :: pnode_tail*, n_key) = $weakmap_key_maps(S, pnode_tail*, n_key)
-dec $weakmap_has_key(pstate, nat, nat) : bool
 def $weakmap_has_key(S, n, n_key) = true
   -- if $weakmap_at(S, n)
   -- if S.OBJECTS[n] = WEAKMAP (pweakmapentry) /\ pweakmapentry.KEY = n_key
@@ -90,7 +89,6 @@ def $access_call(S, paccess, ptbytes) = S[.COMPLETION = UNSUPPORTED "WeakMap dim
 
 ;; std_dtor has already hidden the key behind an authenticated physical pin.
 ;; Replace the map edge by one real VALUE job before executing the callback.
-dec $weakmap_key_notice(pstate, nat) : pstate
 def $weakmap_key_notice(S, n_key) = S -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = eps
 def $weakmap_key_notice(S, n_key) = $destructor_release_begin(S[.OBJECTS[n_map] = WEAKMAP eps], $destruction_values($value_nodes(pweakmapentry.VALUE)))
   -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map]
@@ -105,11 +103,10 @@ def $weakmap_key_notice(S, n_key) = S[.COMPLETION = UNSUPPORTED "WeakMap key not
 ;; free_obj ordering and ephemeron tracing require separate native evidence.
 def $destruction_storage_free(S, HOBJECT n, pdestructionrelease) = $destructor_release_replace(S, pdestructionrelease[.JOBS = (DESTRUCTION_VALUE (HOBJECT n)) :: pdestructionrelease.JOBS])[.COMPLETION = UNSUPPORTED "nonempty WeakMap storage destruction"]
   -- if S.OBJECTS[n] = WEAKMAP (pweakmapentry)
-dec $weakmap_nonempty(pstate, pnode*) : bool
+dec $weakmap_nonempty_node(pstate, pnode) : bool
 def $weakmap_nonempty(S, eps) = false
 def $weakmap_nonempty(S, pnode :: pnode_tail*) = true -- if $weakmap_nonempty_node(S, pnode)
 def $weakmap_nonempty(S, pnode :: pnode_tail*) = $weakmap_nonempty(S, pnode_tail*) -- if ~$weakmap_nonempty_node(S, pnode)
-dec $weakmap_nonempty_node(pstate, pnode) : bool
 def $weakmap_nonempty_node(S, HOBJECT n) = true
   -- if $weakmap_at(S, n)
   -- if S.OBJECTS[n] = WEAKMAP (pweakmapentry)

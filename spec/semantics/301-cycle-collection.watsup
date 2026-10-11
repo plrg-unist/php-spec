@@ -930,6 +930,7 @@ def $gc_receive(S, pconfigcall) = $gc_simple_done(S, PINT 0)
   -- if pconfigcall.KIND = INTRINSIC_GC_COLLECT /\ S.GC.ACTIVE =/= eps
 def $gc_receive(S, pconfigcall) = $gc_begin(S, pconfigcall)
   -- if pconfigcall.KIND = INTRINSIC_GC_COLLECT /\ S.GC.ACTIVE = eps
+dec $weakmap_nonempty(pstate, pnode*) : bool
 def $gc_begin(S, pconfigcall) = S[.GC.NEXT = $(S.GC.NEXT + 1)][.GC.ACTIVE = (pgccall)][.TODO = (GC_TRACE pgccall) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if ~$weakmap_nonempty(S, S.ALLOCATIONS)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask*
