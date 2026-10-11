@@ -1131,6 +1131,18 @@ runtime and earlier cuts retain their identities.
 The actual377 join over `cfd262d2` passes init-only strict at `7aed3831` (6.106s,
 application0/source0); private source/state cuts retain their original identities.
 
+Typed source-unbacked getters with published backing ancestry also reject an
+untyped child with genuine backing access and its own default at the getter
+declaration. Across Bridge, the error names declaring First at child hook 10,
+before property class 9; reverse addition and the existing own-slot/read/write
+behavior remain controls.
+Strict377/source3 pass at `9b5a12dd`; separate remove65 (32 reached, 33 derived),
+add32, CV75, This77 and write73 pass at `0b0acb56` (289 reached, 33 derived).
+Controls distinguish Root 100, First null and child backing 200/getter 213, then
+an ordinary write 300/getter 313. Pure variance/layout/runtime/lifetime and earlier
+cuts retain their identities.
+[Own-backed-child type-presence review](coverage/semantics/effective-backed-parent-backed-get-hook-type-presence-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization
