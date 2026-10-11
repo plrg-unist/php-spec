@@ -34,6 +34,8 @@ Closure targets/templates, lexical namespaces, callsites and saved frames remain
 authenticated. The original public-status fixture error and before-main binding
 failure retain zero affected credit; syntax preparation/elaboration adds none.
 Other targets, placements, captures/signatures and wider RTD contexts remain required.
+Actual375 over 096e3dd2 passes strict3 at c4a942ec (5.825s); private
+native/source/state cuts retain their original revisions.
 [Named-Closure ledger](coverage/semantics/anonymous-named-closure-rtd-review.json).
 
 The earlier named-function cut publishes from direct root or valid namespace-body

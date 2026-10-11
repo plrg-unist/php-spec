@@ -1256,6 +1256,8 @@ by-value untyped Closures also admit plain empty named declarations. Their
 [review](coverage/semantics/anonymous-named-closure-rtd-review.json) covers anonymous
 lookup before Closure creation, call-order publication, fresh repeated defaults
 and fatal redeclaration before another allocation.
+Actual375 over 096e3dd2 passes strict3 at c4a942ec (5.825s); private
+native/source/state cuts retain their original revisions.
 Wider Closure targets/placements/signatures, function placement/signatures and RTD/publication contexts,
 constructor arguments/types, inheritance, attributes and broader consumers remain required.
 [Internal `stdClass` identity](docs/semantics/SOURCE-STDCLASS.md)
