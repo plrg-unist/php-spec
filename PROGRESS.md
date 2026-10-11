@@ -878,7 +878,8 @@ Independent CLEARED75/5 passes separately. The saved-callsite fixture correction
 keeps its original group4 failure at zero credit; immediate Y success is source3
 evidence only and helper partial leaves remain nonpublic. Private strict375
 passes in 5.888s with zero applications. Other caught/mixed layouts, lifecycle
-capture and broad returns_verify remain OPEN; actual-parent compilation is pending.
+capture and broad returns_verify remain OPEN. Actual375 over `52180b3f` passes
+strict at `2d6ea69f4` in 6.082s with zero applications; private cuts remain separate.
 
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
