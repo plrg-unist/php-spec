@@ -1339,15 +1339,19 @@ factory/property/class interfaces preserve the original559 cuts and source40 OPE
 
 Disjoint residual-root reach301 now admits canonical unbuffered references while
 the protected component and outside-array fence remain unchanged. Live markers
-cover both protected and residual reach through SCAN and selected guards; fold,
-count and owner rules are unchanged. The literal F.s reference variant of source36
-passes first-SCAN55 at000bee, marker/shape57+pure9 at ac32, and genuine F65/E67
-selection at9140 (all374). Exact maintained transfers preserve every prior case.
-Compiler/init pass at000bee; baseline115 at983e is localization only. Native113
-is retained, while whole source41 CLI60, both image197 runs and terminal81 retain
-zero credit. E66's syntax-only failure is preserved separately from corrected67.
-Terminal reference retirement, wider main/mixed/black/external/reference layouts
-and non-idle workers remain required; source40 and earlier cuts are unchanged.
+cover protected and residual reach through SCAN and selected guards; fold, count
+and owners are unchanged. The literal F.s reference variant of source36 passes
+first-SCAN55, marker/shape57+pure9 and genuine F65/E67 selection at preserved374 cuts.
+At375, physical PASS1 frontier30 passes atb002 (112.390s), actual retrace transition26
+atbb1a (114.863s) excludes the reference from COUNTED and includes it once in
+FREESET, and one terminal continuation26 at0575 (123.814s/cap180) retires F/reference,
+leaves D weak-live, clears GC and matches native113 END events. Seven cuts execute
+326 genuine/control checks plus9 pure exclusions; exact transfers preserve all
+prior cases and only the new terminal uses180 (existing defaults120).
+Compiler/init pass at000bee and current-parent09be; baseline115 is localization only.
+Whole source41 CLI60 remains OPEN/zero agreement. Both image197 runs, terminal81/57
+and E66's syntax failure retain zero credit. Wider main/mixed/black/external/reference
+layouts and non-idle workers remain required; source40 and earlier cuts are unchanged.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning

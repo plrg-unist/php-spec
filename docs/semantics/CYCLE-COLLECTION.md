@@ -647,14 +647,19 @@ Live markers authenticate both protected and residual cells through SCAN and
 selected guards. Outside arrays remain excluded; fold, count and owners are
 unchanged. The source changes only F's value-self property to a reference.
 
-Four maintained cuts at374 modules execute244 source/control checks plus9 pure
-array exclusions: first-SCAN55 at000bee, marker/shape57+pure9 at ac32, and genuine
-F65/E67 selections at9140. They cover the actual F ALIAS/image, heap-identical
-missing markers, coherent frozen duplicate shapes and saved consumers, buffered
-and incoming fences, physical F clearing, live E guards and zero/one-step replay.
-Compiler/init pass; baseline115 localizes the former refusal. Retained native113
-is unchanged. Whole source41 CLI60 and terminal81 remain OPEN/zero credit, as do
-both original197 runs. The original E66 syntax failure is separate from corrected67;
-old guard126/terminal142 remain unrun. Reference retirement, broader main/mixed
-layouts, external aliases, black/proxy components and non-idle workers remain
-required; earlier cuts and source40 are unchanged.
+Seven maintained cuts execute326 source/control checks plus9 pure array exclusions.
+First-SCAN55 at000bee, marker/shape57+pure9 at ac32 and genuine F65/E67 selections
+at9140 retain their374-module cuts: actual F ALIAS/image, heap-identical missing
+markers, coherent frozen duplicate shapes and saved consumers, buffered/incoming
+fences, physical F clearing, live E guards and zero/one-step replay. At375 modules,
+physical PASS1 frontier30 atb002 and one real retrace PhpStep26 atbb1a bind the
+current worker and plan: the reference is outside COUNTED and occurs once in
+FREESET alongside F. One terminal continuation26 at0575 retires F and the reference,
+keeps D allocated/weak-live, clears ACTIVE/PLAN/WORKER and matches native113 events.
+This check uses its recorded180-second case cap (123.814s); existing cases retain120.
+It checks neither E retirement nor terminal replay/global state validity.
+Compiler/init pass; baseline115 localizes the former refusal. Whole source41 CLI60
+remains OPEN/zero agreement. Original197 runs, terminal81/57 timeouts and the E66
+syntax failure retain zero credit; old guard126/terminal142 remain unrun. Broader
+main/mixed layouts, external aliases, black/proxy components and non-idle workers
+remain required; earlier cuts and source40 are unchanged.

@@ -1061,11 +1061,13 @@ Whole source40 CLI60 remains OPEN/zero agreement; wider main/mixed, reference,
 outside-array, black/external and proxy layouts remain required.
 
 Disjoint residual reach also admits canonical unbuffered references, with live
-markers authenticated through the worker scan and selected guard. Four reached
-cuts execute 244 source/control checks plus nine pure array exclusions for the
-ordinary-Fiber F self-reference: its surviving tag and genuine F/E selections
-preserve the existing image, fold and owners. Whole source41 and terminal
-retirement remain OPEN/zero credit; broader reference layouts remain required.
+markers authenticated through the worker scan and selected guard. Seven reached
+cuts execute 326 source/control checks plus nine pure array exclusions for the
+ordinary-Fiber F self-reference. Actual PASS1 retrace excludes the reference from
+COUNTED and includes it once in FREESET; one terminal continuation retires F and
+its reference, leaves D weak-live, clears collector state and matches native END events.
+Whole source41 CLI60 remains OPEN/zero agreement; broader reference layouts remain
+required.
 
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
