@@ -142,6 +142,19 @@ def $closure_current_capture(S, phpType19, ptbytes_method, phpType7*, z) = true
   -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
   -- if $property_computed_name(phpType20)
   -- if $ppfirstclass(phpType7*)
+def $closure_current_capture(S, phpType19, ptbytes_method, phpType7*, z) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (SCOPED_NAME phpType19 (KNOWN (PSTRING ptbytes_class)) phpType7* z) :: ptask_tail*
+  -- if ~$ppscoped_named(phpType19)
+  -- if ptbytes_class = $ptascii("Closure")
+  -- if S.RESULT = KNOWN pvalue_method
+  -- if $string_bytes(pvalue_method) = (ptbytes_method)
+  -- if $ptlc(ptbytes_method) = $ptascii("getcurrent")
+  -- if $call_task_valid(S, SCOPED_NAME phpType19 (KNOWN (PSTRING ptbytes_class)) phpType7* z)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $property_computed_name(phpType20)
+  -- if $ppfirstclass(phpType7*)
 def $closure_current_capture(S, phpType19, ptbytes, phpType7*, z) = false -- otherwise
 
 def $closure_callable(S, n) = true

@@ -10,7 +10,8 @@ uses that object's type as historical selection evidence; its receiver adds no
 owner during argument effects.
 
 Literal named-static captures, evaluated nonnamed classes with literal members,
-and named classes with evaluated members create an API Closure.
+named classes with evaluated members, and combined evaluated class/member forms
+create an API Closure.
 Calling it observes the immediate ordinary body; a named helper still raises
 `Error` even under an ordinary outer Closure. Dynamic calls pin the selected API
 in CONFIG through argument evaluation. Its OWNER/SELECTION tag carries the
@@ -31,7 +32,7 @@ Native2/literal1 at 05679 and computed source1/state166 at 1cb70154/375 pass
 (152 genuine/derived plus 14 controls). The focused state cut binds raw VARIABLE,
 prepared class, registered mint, real class write and existing owned CONFIG/result;
 old lifetime and bridge cuts retain their original evidence. Original Unsupported
-stays zero; combined CURRENT capture expressions remain required.
+stays zero; broader evaluation evidence remains required.
 
 Named-class evaluated members resolve through genuine SCOPED_NAME authority
 before CURRENT capture. The get+Current concat witness binds its real request
@@ -39,8 +40,7 @@ index/carrier and registered mint, then changes both operand cells without
 changing the selected API or immediate ordinary body result. Affected source1
 and state242 at db0ef348/375 pass (223 genuine/derived plus 19 controls); native2,
 literal1 and original Unsupported0 stay at f98. General member admission is
-distinct from this concat evidence; combined forms and wider evaluation evidence
-remain required.
+distinct from this concat evidence; wider evaluation evidence remains required.
 
 Evaluated nonnamed classes with a literal `getCurrent` member reuse the existing
 class preparation and source/task authority. The `($prefix . $suffix)` witness
@@ -49,7 +49,18 @@ Closure before one registered mint; separate `std`/`Class` writes preserve the
 selected API and immediate ordinary body result. Native2/literal1 at 160b and
 affected source1/state240 at a6b8/375 pass (220 genuine/derived plus 20 controls).
 Original Unsupported stays zero. General evaluated-class admission is distinct
-from this concat evidence; combined forms and wider evaluation evidence stay open.
+from this concat evidence; wider evaluation evidence stays open.
+
+Evaluated nonnamed class and computed member CURRENT captures now reuse the
+existing internal Closure task certificate. The both-concat witness binds two
+actual request-string producers at distinct indexes, canonical saved Closure and
+authentic member source/compiler authority before the registered mint. Four real
+operand writes leave the API and its nonnull immediate ordinary body result intact.
+Native2/literal1 at 5c25 and affected source1/state353 at bf0e/375 pass
+(328 genuine/derived plus 25 controls). Original Unsupported remains zero.
+General class/member admission is distinct from this concat witness; object
+captures, wider evaluation evidence and source7 remain open. Mint, owned CONFIG,
+handler and old lifetime/bridge cuts are unchanged.
 
 An ordinary positional helper may clear the sole API cell after a call has been
 selected. Native static calls observe that API gone; captured calls observe it

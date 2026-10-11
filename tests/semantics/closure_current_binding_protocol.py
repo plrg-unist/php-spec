@@ -10,6 +10,7 @@ import closure_current_argument_review as argument_review
 import closure_current_class_review as current_class_review
 import closure_current_member_review as current_member_review
 import closure_current_class_expression_review as current_class_expression_review
+import closure_current_combined_expression_review as current_combined_expression_review
 import closure_bind_capture_review as bind_review
 import closure_bind_argument_review as bind_argument_review
 import closure_bind_computed_review as bind_computed_review
@@ -1167,7 +1168,10 @@ CASES = {'bound-private-method-shared-statics-retired-source': {'source': '<?php
 
 CATALOGUE = Path(__file__).with_name('closure_current_binding_cases.json')
 for row in json.loads(CATALOGUE.read_text()):
-    if row['id'] == 'class-expression-current-captured-body':
+    if row['id'] == 'combined-expression-current-captured-body':
+        CASES[row['id']] = {'source': row['source'], 'native_stdout': row['native_stdout'],
+                            'current_combined_expression_capture': True}
+    elif row['id'] == 'class-expression-current-captured-body':
         CASES[row['id']] = {'source': row['source'], 'native_stdout': row['native_stdout'],
                             'current_class_expression_capture': True}
     elif row['id'] == 'member-current-captured-body':
@@ -1209,6 +1213,9 @@ for row in json.loads(CATALOGUE.read_text()):
 
 
 def capture_fixture(case, program, filename):
+    if 'current_combined_expression_capture' in case:
+        text, checks, _, _ = current_combined_expression_review.render(program, filename, case['native_stdout'])
+        return text, len(checks)
     if 'current_class_expression_capture' in case:
         text, checks, _, _ = current_class_expression_review.render(program, filename, case['native_stdout'])
         return text, len(checks)
@@ -1266,6 +1273,7 @@ if __name__ == '__main__':
                                         Path(current_class_review.__file__),
                                         Path(current_member_review.__file__),
                                         Path(current_class_expression_review.__file__),
+                                        Path(current_combined_expression_review.__file__),
                                         Path(bind_review.__file__),
                                         Path(bind_argument_review.__file__),
                                         Path(bind_computed_review.__file__),

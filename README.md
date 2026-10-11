@@ -2365,6 +2365,9 @@ one concat original and 242 focused state premises validate the request carrier,
 two operand writes and the same immediate body result. Evaluated class expressions
 with a literal CURRENT member also freeze selection; one concat-class original and
 240 focused state premises validate canonical preparation before later writes.
+Combined evaluated class and member CURRENT captures also freeze selection;
+one both-concat original and 353 focused state premises validate distinct request
+indexes, source authority, four operand writes and the same immediate body result.
 Literal `Closure::bind(...)` capture also reaches the existing binding handler;
 its copied receipt survives original API/body retirement while the bound Closure
 and returned value retain the receiver separately. A captured BIND call now pins

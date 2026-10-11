@@ -4511,6 +4511,15 @@ replay/storage normalization. Replay clears the already empty error handler;
 file notices, typed property getters and conditional factories are absent.
 Private source/state cuts remain frozen.
 
+Evaluated nonnamed class and computed CURRENT member now reuse the existing
+internal Closure task certificate. The both-concat original agrees at bf0e/375;
+state353 passes (328 genuine/derived plus 25 controls), binding two real producers
+at distinct request indexes, canonical saved Closure/member authority, registered
+mint, four operand writes and unchanged owned CONFIG/immediate body result.
+Native2/literal1/original Unsupported0 retain 5c25; wider evaluation evidence,
+object captures and source7 stay open. Exact maintained relocation preserves old
+dispatch without runtime renewal; old lifetime/bridge cuts remain separate.
+
 Captured CURRENT calls now pin the resolved selected API in CONFIG during
 ordinary argument evaluation; static receivers remain borrowed. A genuine helper
 api-null write leaves the captured API held versus the direct API gone before
