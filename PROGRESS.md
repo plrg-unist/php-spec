@@ -261,7 +261,8 @@ throw preserves both earlier SENT and main scalar rewrites. Native5 passes at
 fresh native capture. Ten genuine-source state groups pass 586 physical/555 driver
 ownership and authority premises at `97b67a7b5`, including occupied-slot and retired
 SOURCE forgeries. Later extra-named/variadic object sends remain required; earlier
-cuts stay frozen.
+cuts stay frozen. Actual375 over `9cc8cfa8d` passes strict SL at `352bf99fd`;
+private native/source/state cuts retain their original inputs.
 [Fixed-slot review](coverage/semantics/iterator-call-unpack-object-sent-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected

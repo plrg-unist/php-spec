@@ -1,5 +1,5 @@
 {
-  "status": "private native, focused source, changed strict and independent state accepted; current-parent integration pending",
+  "status": "private native/source/state and actual-parent strict accepted",
   "scope": [
     "Copied KNOWN object by-reference warnings after prior fixed-slot sends, including reversed named keys and real Fiber park/injected throw.",
     "HOLD remains separate while parked, transfers to a fresh private cell on resume, or maps to its vacant fixed parameter slot in failed argument cleanup after cache/DATA/INPUT."
@@ -119,5 +119,22 @@
     "stop_first": true,
     "interrupt_cleanup": "SIGTERM raises KeyboardInterrupt; existing recorded BaseException cleanup kills and waits for the process group; providers close in finally."
   },
-  "compatibility": "The maintained two-argument hold_valid API and earlier source/state catalogs remain unchanged. Old cuts and original failures retain their inputs; the null-HOLD cleanup branch keeps its previous roots."
+  "compatibility": "The maintained two-argument hold_valid API and earlier source/state catalogs remain unchanged. Old cuts and original failures retain their inputs; the null-HOLD cleanup branch keeps its previous roots.",
+  "actual_composition": {
+    "parent": "9cc8cfa8deebb73e21b796425ef1ad268cb2dcd1",
+    "semantic_revision": "352bf99fd8870224e973cfcfce0e72ff0dfacecf",
+    "private_net": "ca4dc54fadd0f4fdb6ef16900bc3f482515760a7",
+    "report": ".tools/calls-iterator-copied-object-sent-current-22/.tools/iterator-call-unpack-object-sent-current-sl-xhmhsnfd/report.json",
+    "report_sha256": "c23c7192cf8b5892bdddc7deecbeaa985f6859a43bcbfa844e59e78a14a471cb",
+    "command": "timeout -k 10s 150s prlimit --as=6442450944 -- python3 -u .tools/strict.py",
+    "runner_sha256": "99fc2f368e8b1d11f3de702533e4b7b016c449b75752f5b78e4f6b3c8babd79a",
+    "modules": 375,
+    "ordered_inputs": "spec/semantics/modules.json",
+    "process_seconds": 120,
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true,
+    "seam_review": "Parent additions to finally reference transfer, property-hook/coalesce handling, early class contexts and fromCallable Fiber START are guarded away from these ordinary named Iterator, untyped function and new Fiber(Closure) sources. piteratorunpack and ordered modules are unchanged. Private implementation/catalog/source/state bytes are preserved; this strict composition adds no native/source/state agreement."
+  }
 }
