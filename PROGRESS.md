@@ -1438,6 +1438,8 @@ passes in 5.875s with zero applications; maintained producer is byte-identical.
 Post-W reconstruction remains a local source certificate; only integer17 is
 observed, and wider mutation/lifecycle/returns remain OPEN.
 [Multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+Actual377 over `a0e805cc` passes strict at `3d605669` in 6.002s with zero
+applications; original private source/state/independent cuts remain separate.
 
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
