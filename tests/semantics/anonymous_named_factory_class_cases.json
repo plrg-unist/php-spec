@@ -1,0 +1,53 @@
+{
+  "scope": "Ordinary unit0 parentless anonymous classes mixed with plain empty named declarations inside direct root or valid namespace-body noarg by-value untyped named functions. Function-body named classes consume one RTD key even when never published; anonymous names exist before calls. Runtime publication follows call order, guarded repeats preserve one publication and fresh defaults, and qualified lexical method namespaces survive caller switches. Named Closure, nested and function-in-block placements remain unsupported.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "named-factory-reversed",
+      "source": "<?php\nfunction leftFactory() {\n    class LeftPublished {}\n    return new class { public function scope() { return self::class; } };\n}\nfunction rightFactory() {\n    class RightPublished {}\n    return new class {};\n}\n$leftName = 'class@anonymous' . \"\\0\" . __FILE__ . ':4$1';\n$rightName = 'class@anonymous' . \"\\0\" . __FILE__ . ':8$3';\n$leftBefore = new $leftName;\n$rightBefore = new $rightName;\necho $leftBefore::class === $leftName && $leftBefore->scope() === $leftName && $rightBefore::class === $rightName ? 'before|' : 'BAD|';\ntry { $missing = new LeftPublished; echo 'BAD|'; }\ncatch (Error $caught) { echo 'left-missing|'; }\ntry { $missing = new RightPublished; echo 'BAD|'; }\ncatch (Error $caught) { echo 'right-missing|'; }\n$right = rightFactory();\n$rightNamed = new RightPublished;\necho $right::class === $rightName && $rightNamed::class === 'RightPublished' ? 'right|' : 'BAD|';\ntry { $missing = new LeftPublished; echo 'BAD|'; }\ncatch (Error $caught) { echo 'still-missing|'; }\n$left = leftFactory();\n$leftNamed = new LeftPublished;\necho $left::class === $leftName && $left->scope() === $leftName && $leftNamed::class === 'LeftPublished' ? 'left|' : 'BAD|';\necho $leftBefore !== $left && $rightBefore !== $right && $left !== $right ? 'fresh' : 'BAD';\n",
+      "source_sha256": "139df62982078061836125021918dfe73a734b078a912a48ef548ceefe5da1e0",
+      "stdout_base64": "YmVmb3JlfGxlZnQtbWlzc2luZ3xyaWdodC1taXNzaW5nfHJpZ2h0fHN0aWxsLW1pc3Npbmd8bGVmdHxmcmVzaA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-named-factory-native-26/run-v1/named-factory-reversed/command.json",
+      "native_raw_sha256": "a08fece5710821f9c4d3bd0b134c1fd0601b6b71e73527d5090d80b75bd4d9dd"
+    },
+    {
+      "id": "named-factory-repeated",
+      "source": "<?php\nnamespace DeclaringFactory {\n    $seen = false;\n    function make() {\n        global $seen;\n        if (!$seen) {\n            { class Published {} }\n            $seen = true;\n        }\n        return new class {\n            public $value = 0;\n            public function space() { return __NAMESPACE__; }\n        };\n    }\n}\nnamespace CallingFactory {\n    $name = 'class@anonymous' . \"\\0\" . __FILE__ . ':10$1';\n    $before = new $name;\n    echo $before::class === $name && $before->space() === 'DeclaringFactory' ? 'before|' : 'BAD|';\n    try { $missing = new \\DeclaringFactory\\Published; echo 'BAD|'; }\n    catch (\\Error $caught) { echo 'missing|'; }\n    $first = \\DeclaringFactory\\make();\n    $published = new \\DeclaringFactory\\Published;\n    echo $first::class === $name && $first->space() === 'DeclaringFactory' && $published::class === 'DeclaringFactory\\\\Published' ? 'first|' : 'BAD|';\n    $first->value = 9;\n    $second = \\DeclaringFactory\\make();\n    $namedAgain = new \\DeclaringFactory\\Published;\n    echo $second::class === $name && $second->space() === 'DeclaringFactory' && $namedAgain::class === $published::class ? 'second|' : 'BAD|';\n    echo $seen && $before !== $first && $first !== $second && $before !== $second ? 'fresh|' : 'BAD|';\n    echo $before->value, ':', $first->value, ':', $second->value;\n}\n",
+      "source_sha256": "0e75f6fc6a33fe9753a47bbde79966f619fc7f1c26af06aac88db3c97ada6aeb",
+      "stdout_base64": "YmVmb3JlfG1pc3Npbmd8Zmlyc3R8c2Vjb25kfGZyZXNofDA6OTow",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-named-factory-native-26/run-v1/named-factory-repeated/command.json",
+      "native_raw_sha256": "8371736c275788d8ebc1d060d13be20d5e6a1e419e16befad76f6a20f96c205c"
+    },
+    {
+      "id": "named-factory-prior-deferred",
+      "source": "<?php\nnamespace FactorySide;\nfunction make() {\n    if (false) { { class Exception {} } }\n    return new class {\n        public function space() { return __NAMESPACE__; }\n    };\n}\n{ class eXcEpTiOn {} }\n$named = new Exception;\necho $named::class === 'FactorySide\\eXcEpTiOn' ? 'named|' : 'BAD|';\n$factoryName = 'class@anonymous' . \"\\0\" . __FILE__ . ':5$1';\n$before = new $factoryName;\necho $before::class === $factoryName && $before->space() === 'FactorySide' ? 'before|' : 'BAD|';\n\nnamespace CallerSide;\n$first = \\FactorySide\\make();\necho $first::class === $factoryName && $first->space() === 'FactorySide' ? 'first|' : 'BAD|';\n$second = \\FactorySide\\make();\necho $second::class === $factoryName && $second->space() === 'FactorySide' ? 'second|' : 'BAD|';\n$lastLine = __LINE__ + 1;\n$last = new class {};\n$lastName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . $lastLine . '$2';\necho $last::class === $lastName ? 'last|' : 'BAD|';\necho $before !== $first && $first !== $second && $before !== $second && $last !== $first ? 'fresh' : 'BAD';\n",
+      "source_sha256": "623b26a2ddc98ce2dc8af918ebc0837cf9e41dd9fa5986d60fcb057bffdc10d2",
+      "stdout_base64": "bmFtZWR8YmVmb3JlfGZpcnN0fHNlY29uZHxsYXN0fGZyZXNo",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-named-factory-native-26/run-v1/named-factory-prior-deferred/command.json",
+      "native_raw_sha256": "93e0fc944ef0e395f03be8699ce3f62b10a208789ff3fd2af2b10d221c4f1156"
+    }
+  ]
+}

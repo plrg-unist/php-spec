@@ -22,18 +22,23 @@ The actual composition of 374 modules over fa678cc48 passes strict3 at
 Private source2 / 228+6 checks retain their original cuts.
 [Declare ledger](coverage/semantics/compiler-declare-review.json).
 
-Valid named namespace sections now qualify plain empty named declarations beside
-anonymous sites, including repeated unbracketed sections. Eligible body/root-block
-classes cost0; deferred classes stay qualified and cost1 even when never published.
-Three fresh originals agree at 919bdf8c /375 (strict3 5.725s), preserving same-short-name
-separation, namespace-local `Exception`, case retention and shared compiler counters.
-Author and independent fixtures pass 392 checks: 360 setup/source-frontier premises plus
-32 pure queries, with 16 actual PhpSteps for early no-op/publication, allocation and
-compiled lexical namespace AT/result through genuine method frames after a switch.
-Syntax preparation/elaboration adds zero runtime credit; lowering has no runtime
-namespace task. Both author binding/frontier failures retain zero credit. Named
-Function/Closure descendants and wider named/anonymous contexts remain required.
-Actual375 over 4fa216264 passes strict3 at e95aa8ce (5.922s); private
+Plain empty named declarations now publish from direct root or valid namespace-body
+noarg by-value untyped named functions, including guarded repeated calls. They cost
+one RTD key even when never published; anonymous names remain available before calls.
+Three originals agree at 65c3071c /375 (strict3 5.675s). Author and independent fixtures
+pass 388 checks: 356 setup/source-frontier premises and 32 pure queries, with ten actual
+PhpSteps for three named publications and seven anonymous allocations. Source-bound
+PDRCLASS causes retain function/callsite and saved caller frames; right-before-left
+publication follows calls, while one guarded publication retains fresh defaults.
+Syntax preparation/elaboration adds zero runtime credit. Named Closure descendants,
+wider function placements/signatures and named/anonymous contexts remain required.
+[Named-factory ledger](coverage/semantics/anonymous-named-factory-rtd-review.json).
+
+The earlier namespace cuts retain qualified early root/block cost0, deferred cost1,
+repeated unbracketed sections and lexical method namespaces. Their source3/state392
+and both fixture failures keep their original cuts; historical style1 exclusion is
+superseded by positive named/negative ABSENT-style1 controls.
+Their375 join over 4fa216264 passes strict3 at e95aa8ce (5.922s); private
 native/source/state cuts retain their original revisions.
 [Unbracketed ledger](coverage/semantics/anonymous-unbracketed-rtd-review.json).
 The earlier [bracketed cut](coverage/semantics/anonymous-namespace-rtd-review.json)

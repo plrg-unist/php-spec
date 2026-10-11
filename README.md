@@ -1232,9 +1232,14 @@ The [mixed](coverage/semantics/anonymous-mixed-rtd-review.json),
 [unbracketed reviews](coverage/semantics/anonymous-unbracketed-rtd-review.json)
 retain distinct native/source/state cuts and original failures. Three new originals
 agree at 919bdf8c; author and independent fixtures pass 392 checks with 16 actual steps.
-Actual375 over 4fa216264 passes strict3 at e95aa8ce (5.922s); private
-native/source/state cuts retain their original revisions.
-Named function/Closure descendants, wider RTD/factory/publication contexts,
+The previous namespace375 join over 4fa216264 passes strict3 at e95aa8ce (5.922s);
+private native/source/state cuts retain their original revisions.
+Plain empty named declarations also publish from direct root or namespace-body
+noarg by-value untyped named functions. Three originals agree at 65c3071c; the
+[named-factory review](coverage/semantics/anonymous-named-factory-rtd-review.json)
+records 388 checks with ten actual steps for call-order publication, function/callsite
+history, saved frames and guarded repeated fresh defaults.
+Named Closure descendants, wider function placement/signatures and RTD/publication contexts,
 constructor arguments/types, inheritance, attributes and broader consumers remain required.
 [Internal `stdClass` identity](docs/semantics/SOURCE-STDCLASS.md)
 now allocates an owned empty object with exact nominal typing and ordinary

@@ -86,8 +86,17 @@ retain qualified ownership and share the unit counter; methods keep their declar
 namespace after caller namespace switches. The
 [unbracketed review](../../coverage/semantics/anonymous-unbracketed-rtd-review.json)
 separates actual compiled constant reads/method frames from pure admission queries.
-ABSENT namespace bodies still require bracketed style. Named declarations inside
-functions or Closures, other named bodies/modifiers, interfaces/traits/enums and nested class bodies remain
+ABSENT namespace bodies still require bracketed style. Plain empty named declarations
+inside direct root or valid namespace-body noarg by-value untyped named functions
+are deferred and consume one key. Per-occurrence admission authenticates the actual
+function placement and signature; named descendants in nested, conditional or
+block-contained functions and in Closures remain Unsupported. Runtime publication appends a
+source-bound PDRCLASS cause with the function/callsite, preserving the saved caller
+frame. Reversed calls publish in call order, and a guarded repeat preserves one
+publication while returning independent defaults. The
+[named-factory review](../../coverage/semantics/anonymous-named-factory-rtd-review.json)
+separates actual publication/allocation frontiers from pure admission/cause queries.
+Other named bodies/modifiers, interfaces/traits/enums and nested class bodies remain
 Unsupported. Anonymous forms are parentless, without
 interfaces, attributes or constructor arguments; public untyped property defaults
 use the existing literal/constant-concat parser, and public noarg by-value nonmagic

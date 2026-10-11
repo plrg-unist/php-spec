@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "feature": "classes.anonymous",
+  "status": "partial",
+  "scope": "Plain empty named declarations inside direct root or valid namespace-body noarg by-value untyped named functions beside ordinary parentless anonymous forms. Function-body named classes consume one RTD key even when never published; runtime availability follows reached declarations and call order. Named Closure, nested/conditional/function-in-block placements and wider signatures remain Unsupported.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/anonymous_named_factory_class_cases.json"
+  },
+  "semantic_revision": "65c3071c3a12ee1c90b5e437b62c66946d2dc97c",
+  "private_base": "3cde548372ccd35a52bfe92d9013cfd37f147fcc",
+  "module_count": 375,
+  "implementation": {
+    "path": "spec/semantics/383-anonymous-classes.watsup",
+    "rule": "Canonical unit traversal admits the previously excluded named-function occurrence only when exact source placement and noattr/by-value/noarg/untyped signature are authenticated. Existing unit-node guards still reject named descendants in other function/Closure placements; full source/CODE projection, class descriptor/line/qualified name, EARLY/prior/internal checks and counters are reused. No new fields/tasks/modules/schema/adapter.",
+    "publication": "Existing class STMT activation appends PDRCLASS with genuine function/callsite cause and preserves current/saved frame. No new publication task or inner early checkpoint.",
+    "boundary": "Namespace context alone does not authenticate a terminal path; the counter alone is not a complete zero-cost ordering certificate. Terminal constructor receipts retain their preexisting allocated same-class acceptance."
+  },
+  "engine_evidence": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_func_decl_ex, zend_compile_top_stmt, zend_compile_class_decl, zend_build_runtime_definition_key, zend_generate_anon_class_name",
+    "spec/semantics/126-class-compiler.watsup and spec/semantics/46-source-compiler.watsup: function-body deferred compilation and restored unit images",
+    "spec/semantics/127-class-runtime.watsup, spec/semantics/190-declaration-publication.watsup and spec/semantics/196-declaration-causes.watsup: activation and source-owned call causes"
+  ],
+  "native": {
+    "revision": "3cde548372ccd35a52bfe92d9013cfd37f147fcc",
+    "report": ".tools/anonymous-class-20/.tools/anonymous-named-factory-native-26/run-v1/report.json",
+    "normal_originals": 3
+  },
+  "source": {
+    "revision": "65c3071c3a12ee1c90b5e437b62c66946d2dc97c",
+    "report": ".tools/anonymous-class-20/.tools/anonymous-named-factory-model-26/run-v1/report.json",
+    "native_agreements": 3,
+    "normal": 3
+  },
+  "strict": {
+    "revision": "65c3071c3a12ee1c90b5e437b62c66946d2dc97c",
+    "report": ".tools/anonymous-class-20/.tools/anonymous-named-factory-gate-26/report.json",
+    "premises": 3,
+    "seconds": 5.674768686294556
+  },
+  "state_revision": "65c3071c3a12ee1c90b5e437b62c66946d2dc97c",
+  "state_cuts": [
+    {
+      "group": "reversed",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-named-factory-state-26/report.json",
+      "checks": 136,
+      "setup_source_frontier_checks": 127,
+      "pure_queries": 9,
+      "PhpSteps": 4,
+      "seconds": 22.75163221359253
+    },
+    {
+      "group": "repeated",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-named-factory-state-26/report.json",
+      "checks": 124,
+      "setup_source_frontier_checks": 118,
+      "pure_queries": 6,
+      "PhpSteps": 3,
+      "seconds": 18.89392399787903
+    },
+    {
+      "group": "prior-deferred",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-named-factory-peer-state-26/report.json",
+      "checks": 128,
+      "setup_source_frontier_checks": 111,
+      "pure_queries": 17,
+      "PhpSteps": 3,
+      "seconds": 22.998831510543823
+    }
+  ],
+  "state_totals": {
+    "checks": 388,
+    "setup_source_frontier_checks": 356,
+    "pure_queries": 32,
+    "PhpSteps": 10
+  },
+  "state_method": "Exact checked originals/file/cwd: initial compiled descriptors/shared counters and pre-call dynamic fullname instances; three actual named STMT publications append exact registry/PDRCLASS causes in runtime call order while keeping function current/context/saved caller frame/store. Four author and three independent actual anonymous allocations retain source/name receipts, fresh identity and independent defaults; a guarded second call leaves publication history unchanged after first-object mutation. Pure source/placement/signature/prefix/cause/receipt queries are separate; setup counts are not unique states.",
+  "syntax_only": {
+    "preparation": ".tools/anonymous-class-20/.tools/anonymous-named-factory-state-26/preparation.json",
+    "elaboration": [
+      ".tools/anonymous-class-20/.tools/anonymous-named-factory-state-26/report-elab.json",
+      ".tools/anonymous-class-20/.tools/anonymous-named-factory-peer-state-26/report-elab.json"
+    ],
+    "runtime_credit": 0
+  },
+  "preserved_failures": [],
+  "validation": "All selected native/model/strict/state records pass with exact originals/profile/file/cwd/raw streams, stable watched inputs, exit/cleanup0, empty owned groups and no unrun. Serial jobs1: native55s, model45s/55s host/100000 steps, syntax Worker30s, elab30s, strict/state120s. Retained project-local binaries reused; no fresh build/offline claim. Prior milestone failures/cuts are retained, not replayed; raw evidence stays ignored outside Git.",
+  "catalogue": {
+    "path": "tests/semantics/anonymous_named_factory_class_cases.json",
+    "cases": 3,
+    "runner": "tests/semantics/method_runtime.py --cases tests/semantics/anonymous_named_factory_class_cases.json",
+    "scope": "Metadata-only publication of unchanged normal originals adds no execution credit; native_raw_sha256 follows the existing command-record hash convention."
+  },
+  "remaining": [
+    "Plain empty named declarations in Closure factories and wider function placement/signatures; nonempty/modified/attributed/inherited named bodies, interfaces/traits/enums, RTD collisions/wrap and complete ordering.",
+    "Wider anonymous factory signatures/captures/class contexts, include/eval units, constructor arguments/types/access and broader consumers."
+  ],
+  "engine_bugs_or_intentional_divergence": "None identified.",
+  "independent_review": "comp_review_21 accepted the exact semantic net, native/source3/strict3 and author260/independent128; independently read closed passing raw records and reviewed placement/signature/cause/receipt controls."
+}
