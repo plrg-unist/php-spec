@@ -141,3 +141,18 @@ def $value_order(S, POBJECT n_left, POBJECT n_right, pnode_seen*) = ORDERUNSUPPO
   -- if n_left =/= n_right
   -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if $weakmap_at(S, n_left) \/ $weakmap_at(S, n_right)
+
+;; A map-value callback may precede later key-wrapper notification.
+;; Registration-order-dependent reads stay outside this first entry protocol.
+def $weakmap_key_pin_read(S, n_wrapper) = true
+  -- if $weakref_at(S, n_wrapper) = (WEAKREFERENCE (n_key))
+  -- if $(n_key < |S.OBJECTS|) /\ (HOBJECT n_key) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_key] = STDINSTANCE
+  -- if $instance_storage_for(S, n_key) = (pinstancestorage)
+  -- if $instance_storage_basic(S, pinstancestorage)
+  -- if pinstancestorage.SLOTS = eps /\ pinstancestorage.NEXT = 0
+def $weakmap_key_pin_read(S, n_wrapper) = false -- otherwise
+def $weakref_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "WeakMap key notification reference order"]
+  -- if pconfigcall.KIND = INTRINSIC_WEAKREF_GET /\ pconfigcall.SENT = eps
+  -- if pconfigcall.OWNER = (n_wrapper)
+  -- if $weakmap_key_pin_read(S, n_wrapper)

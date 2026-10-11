@@ -211,6 +211,7 @@ def $config_trace_frames(S, pconfigcall, pvalue*) = [{FILE $call_sourcefile(S.FI
   -- if $weakref_static(pconfigcall.KIND)
 def $config_trace_frames(S, pconfigcall, pvalue*) = [{FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $weakref_method_name(pconfigcall.KIND), CLASS ($ptascii("WeakReference")), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}]
   -- if $weakref_kind(pconfigcall.KIND) /\ ~$weakref_static(pconfigcall.KIND)
+dec $weakmap_key_pin_read(pstate, nat) : bool
 dec $weakref_receive(pstate, pconfigcall) : pstate
 rule PhpStep/weakref-config-invoke: S ~> $weakref_receive(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
@@ -231,6 +232,7 @@ def $weakref_receive(S, pconfigcall) = $weakref_create(S, n)
 def $weakref_receive(S, pconfigcall) = $weakref_done(S, $weakref_get(S, n))
   -- if pconfigcall.KIND = INTRINSIC_WEAKREF_GET /\ pconfigcall.SENT = eps
   -- if pconfigcall.OWNER = (n)
+  -- if ~$weakmap_key_pin_read(S, n)
 
 dec $weakref_init_call(pstate, nat, pconfigcall) : bool
 ;; A NEW continuation returns the exact object selected before its arguments.
