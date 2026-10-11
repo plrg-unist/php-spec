@@ -128,10 +128,17 @@ return annotation, child/private scope and inherited `$this` dispatch without
 physical storage. Three originals and four separate compiler/dispatch state cuts
 are recorded in the
 [type-presence review](../../coverage/semantics/virtual-get-hook-type-presence-review.json).
+Public source-body-backed getter pairs with literal defaults have the same
+removal diagnostic priority. Passed TYPE/default descriptors must match the real
+declaring descriptors; both getter bodies must read their own backing property.
+Both-untyped controls retain the child effective slot/private scope through CV
+and inherited `$this` reads and ordinary integer writes. Three originals and five
+separate state cuts are recorded in the
+[backed type-presence review](../../coverage/semantics/backed-get-hook-type-presence-review.json).
 The hook linker still refuses ordinary-parent hooks, plain redeclarations and
 backed children of virtual parents. Physical backing retains invariant types;
-backed-property type-presence changes, broader type equivalence and wider hook
-variance remain required.
+TYPE-presence changes for body-unbacked declarations with inherited storage,
+broader type equivalence and wider hook variance remain required.
 Hooked object iteration is explicit Unsupported rather than a raw storage view;
 array casts retain ordinary storage only. Defaulted virtual/set/byref hooks,
 other inheritance/traits, temporary/computed receivers, other compound operators/RHS

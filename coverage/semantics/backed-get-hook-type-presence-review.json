@@ -1,0 +1,188 @@
+{
+  "scope": "Named nonabstract, nonfinal public plain by-value source-body-backed get overrides with literal defaults: typed parent to untyped child, untyped parent to typed child, and both-untyped inherited reads/writes. Body-unbacked declarations inheriting storage remain outside the new missing-return branch.",
+  "implementation": {
+    "files": [
+      "spec/semantics/382-backed-get-hooks.watsup"
+    ],
+    "engine": [
+      "vendor/php-src/Zend/zend_compile.c: zend_compile_property_hooks",
+      "vendor/php-src/Zend/zend_inheritance.c: do_inherit_property, inherit_property_hook, perform_delayable_implementation_check"
+    ],
+    "change": "The missing getter-return gate also accepts an authentic backed parent/child pair: both source bodies read their own property and the passed TYPE/default descriptors equal the actual declaring descriptors. Existing virtual admission, pure covariance, property type invariance, flag/access priority, formatting/error-site and runtime/storage/ownership rules are unchanged."
+  },
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "binaries": {
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "strict_compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+    "AL_compiler_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "SL_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "native": {
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/backed-get-hook-type-presence-probes-42/native-first/report.json",
+    "report_sha256": "7be047413608317e54e5bc1fec1dc00de7a12467bd716a4389ec8228d3665a6c",
+    "revision": "592735d4c5cec42a827ef98e019757d98b0d3635",
+    "process_observations": 3,
+    "exits": [
+      255,
+      255,
+      0
+    ],
+    "completed": true,
+    "stable_and_reaped": true,
+    "source_agreements": 0,
+    "result": "Actual getter fatal hook6 on removal, ordinary property fatal class5 on addition; both-untyped control keeps child backing200 during reads/returns213, then backing300/returned313."
+  },
+  "unchanged_baseline": {
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/backed-get-hook-type-presence-probes-42/accepted-current-baseline/report.json",
+    "report_sha256": "6096ac3c2a0b9e77b396fe088bb409fd702e9007138ee37905b8d0dcdba48d82",
+    "revision": "592735d4c5cec42a827ef98e019757d98b0d3635",
+    "checked_originals": 3,
+    "source_agreements": 2,
+    "stable_and_reaped": true,
+    "result": "Added-type rejection and backing/dispatch control already agree. Removal incorrectly emits the invariant property diagnostic at class5."
+  },
+  "strict": {
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/backed-get-hook-type-presence-probes-42/backed-get-hook-type-presence-compiler-9sq_7wwm/report.json",
+    "report_sha256": "df667968693e0015c0fb6770ee8d9bfc7d89bf91fb0efff8388bf25267e75de7",
+    "revision": "e347326594aa1f33e16ec8adb072e2799a17dde7",
+    "modules": 375,
+    "seconds": 5.854553,
+    "result": "PASS exact SL initialization",
+    "stable_and_reaped": true,
+    "application_evaluations": 0,
+    "source_agreements": 0
+  },
+  "sources": {
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/backed-get-hook-type-presence-probes-42/changed-model-dq88shau/report.json",
+    "report_sha256": "43e972d1d1a00851a8dfd5d57babee3ed38c37f3748bf733062836a593813b0d",
+    "revision": "e347326594aa1f33e16ec8adb072e2799a17dde7",
+    "checked_originals": 3,
+    "source_agreements": 3,
+    "seconds": {
+      "typed-to-untyped": 6.439538,
+      "untyped-to-typed": 6.256784,
+      "untyped-dispatch": 12.806647
+    },
+    "stable_and_reaped": true,
+    "result": "Three full-stream/exits255,255,0 agreements: one repaired diagnostic and two retained baseline controls."
+  },
+  "remaining": [
+    "TYPE-presence changes for body-unbacked declarations with inherited effective storage, broader type equivalence/variance and hook declaration families.",
+    "Ordinary-parent hooks, plain redeclarations inheriting hooks, virtual-parent backed-child pairs, setters/byref/trait hooks and wider receivers."
+  ],
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor pin 34308a6666b2d489c509541ea9befea9e2b42348",
+  "catalogue": {
+    "path": "tests/semantics/backed_get_hook_type_presence_cases.json",
+    "sha256": "6a13ef77e6179f49780ff7108e310c956200269072ddc97f90d48b565e9b82aa",
+    "protocol": "tests/semantics/backed_get_hook_type_presence_protocol.py",
+    "protocol_sha256": "487e8c37586b8510c62f501f2912937b21c4536b00e4243cd5dba6bf5e163bed"
+  },
+  "state": {
+    "cuts": [
+      {
+        "group": "remove",
+        "revision": "b739b230cffe33a24346cfc22a2e809b0f335df7",
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/backed-get-hook-type-presence-protocol-w8zf5plb/report.json",
+        "report_sha256": "650f690e15afa9e4e93691a4e375d64b14caea60ef4c8d35829074ac7ff42204",
+        "fixture_sha256": "eff99878948bf722a51cd2b2bd5e0f896d1acf567d01f974a3fedbc330c04e6e",
+        "reached": 26,
+        "derived": 23,
+        "AL_seconds": 5.028962,
+        "SL_seconds": 6.738341,
+        "result": "PASS true; exit0/empty stderr/no timeout/stable4/reaped",
+        "application_evaluations": 1,
+        "source_agreements": 0
+      },
+      {
+        "group": "add",
+        "revision": "b739b230cffe33a24346cfc22a2e809b0f335df7",
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/backed-get-hook-type-presence-protocol-wfoiynmc/report.json",
+        "report_sha256": "0b1f8089eb1a1205932900e4f4e7009a4299617d9a526984bc84f2269a420f6d",
+        "fixture_sha256": "a6ef34838e8a0ff798427cde81d56a7667367719c81f1917a1f653d7dd76e595",
+        "reached": 26,
+        "derived": 0,
+        "AL_seconds": 4.985408,
+        "SL_seconds": 6.127613,
+        "result": "PASS true; exit0/empty stderr/no timeout/stable4/reaped",
+        "application_evaluations": 1,
+        "source_agreements": 0
+      },
+      {
+        "group": "cv",
+        "revision": "b739b230cffe33a24346cfc22a2e809b0f335df7",
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/backed-get-hook-type-presence-protocol-w9itfr5z/report.json",
+        "report_sha256": "9e4b39b8d53c22f1ed53ee30b9e1c42c133564ab59952828c9c86d90b2630efe",
+        "fixture_sha256": "f2b6a056220067ece6cfcd8ca4f28d12eb84558aef686286adddb687aaa285da",
+        "reached": 65,
+        "derived": 0,
+        "AL_seconds": 5.018947,
+        "SL_seconds": 17.30953,
+        "result": "PASS true; exit0/empty stderr/no timeout/stable4/reaped",
+        "application_evaluations": 1,
+        "source_agreements": 0
+      },
+      {
+        "group": "this",
+        "revision": "b739b230cffe33a24346cfc22a2e809b0f335df7",
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/backed-get-hook-type-presence-protocol-5x3necn6/report.json",
+        "report_sha256": "30ce93e74e26a2183f52ed522aa81273b7ba728824039f6b909cba3cc207f5f5",
+        "fixture_sha256": "d78f12f8a4bf7db6fda9312b25275285e187ab3501a7f128c330b3ecaba47e73",
+        "reached": 67,
+        "derived": 0,
+        "AL_seconds": 5.152425,
+        "SL_seconds": 19.364249,
+        "result": "PASS true; exit0/empty stderr/no timeout/stable4/reaped",
+        "application_evaluations": 1,
+        "source_agreements": 0
+      },
+      {
+        "group": "write",
+        "revision": "b739b230cffe33a24346cfc22a2e809b0f335df7",
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/backed-get-hook-type-presence-protocol-enw7tufh/report.json",
+        "report_sha256": "aabb02d2e23c8a1ba629e0a1e97fb8f8d0a680a10f4ce682271c1bdeac29e2ed",
+        "fixture_sha256": "161f7de7ec85a897cc37e8aa133aa3873f4ec2adc1ebc1c7de271af4457d5b76",
+        "reached": 63,
+        "derived": 0,
+        "AL_seconds": 5.086104,
+        "SL_seconds": 21.459362,
+        "result": "PASS true; exit0/empty stderr/no timeout/stable4/reaped",
+        "application_evaluations": 1,
+        "source_agreements": 0
+      }
+    ],
+    "total_reached": 247,
+    "total_derived": 23,
+    "application_invocations": 5,
+    "source_agreements": 0,
+    "note": "Five separate selected invocations, with repeated source setup/metadata; no combined invocation claim."
+  },
+  "state_contract": [
+    "Actual rejection states bind synthesized getter SIGNATURE.RETURNS presence/absence, literal default values100/200, hook6 versus class5, ERRORORIGIN eps and parent-only publication with no body effects.",
+    "Removal has23 separate derived direction/type/default/source/own-descriptor/byref and final/static/readonly/access-priority checks. Pure covariance still treats missing TYPE as unsupported; the backed admission does not borrow virtual-chain link controls.",
+    "Fresh both-untyped controls authenticate one effective Child-origin backing slot200, genuine active-getter backing bypass, Child/private13 versus Grand called scope and real returned213. CV/This receiver owners are1\u21922\u21921 and3\u21923\u21922.",
+    "The actual pending Grand CV writer stores300 without getter dispatch; a genuine subsequent getter returns313 with the same receiver and single slot, and the final trace matches native. These supported baseline controls add state evidence, not a new runtime implementation."
+  ],
+  "commands": {
+    "native": "python3 .tools/backed-get-hook-type-presence-probes-42/run.py native --revision 592735d4c5cec42a827ef98e019757d98b0d3635",
+    "baseline": "python3 .tools/backed-get-hook-type-presence-probes-42/run.py baseline --revision 592735d4c5cec42a827ef98e019757d98b0d3635",
+    "strict": "python3 .tools/backed-get-hook-type-presence-probes-42/run-compiler.py 592735d4c5cec42a827ef98e019757d98b0d3635 e347326594aa1f33e16ec8adb072e2799a17dde7",
+    "sources": "python3 .tools/backed-get-hook-type-presence-probes-42/run.py changed --revision e347326594aa1f33e16ec8adb072e2799a17dde7",
+    "state": "python3 tests/semantics/backed_get_hook_type_presence_protocol.py --revision b739b230cffe33a24346cfc22a2e809b0f335df7 --group <remove|add|cv|this|write>",
+    "caps": "Native45; model60/outer75/100000 steps; strictSL60 init-only; each stateAL90 then conditionalSL90; jobs1/stop-first/reap, LC_ALL=C/TZ=UTC."
+  },
+  "recovery": "Historical commands run from retained private32; original ignored sources, raw streams, runners and binaries remain at their exact paths. Permanent catalogue/protocol regenerate the selected fixtures. Production382 is byte-identical to strict/source-tested e347 at all five accepted state cuts. Prior M41 cuts stay historical without renewal."
+}

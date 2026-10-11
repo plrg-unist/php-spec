@@ -1519,6 +1519,12 @@ an untyped parent retains the later property diagnostic at the class declaration
 both-untyped overrides retain child scope and inherited `$this` dispatch.
 Three originals and separate rejection/dispatch checks are recorded in the
 [type-presence review](coverage/semantics/virtual-get-hook-type-presence-review.json).
+Public source-body-backed getter pairs with literal defaults follow the same
+hook-line priority when an inherited type is removed. Both-untyped reads and
+inherited `$this` dispatch preserve one child backing slot; ordinary writes
+change that slot. Three originals and separate rejection/read/write checks are
+recorded in the
+[backed type-presence review](coverage/semantics/backed-get-hook-type-presence-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`

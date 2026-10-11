@@ -926,6 +926,17 @@ anticipation-suffix miss and prior hook cuts remain frozen.
 Actual375 over `709fd7af` passes strict initialization at `8846907e` (5.822 s);
 private source3 and four separate state cuts retain their accepted revisions.
 
+Public source-body-backed get overrides with literal defaults now reject removal
+of an inherited type at the child getter line, before property-type compatibility.
+A typed child overriding an untyped parent retains the class-line error; the
+both-untyped control keeps backing value 200 and getter result 213 through CV
+and inherited `$this` reads, then stores 300 and returns 313. Strict375 and three originals pass at
+`e3473265`, repairing one diagnostic and preserving two baseline controls. Separate
+remove49 (26 reached,23 derived), add26, CV65, This67 and write63 pass at
+`b739b230` (247 reached,23 derived across five setups). Runtime/storage and prior
+M41 cuts remain unchanged.
+[Backed type-presence review](coverage/semantics/backed-get-hook-type-presence-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization
