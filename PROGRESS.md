@@ -491,10 +491,25 @@ premises at `1369211ea`, with no pure queries, including partial typed receive,
 trace-held container/child lifetime after private cells retire, parked authority
 and nested ALIAS writes.
 Extra-named/other typed arrays, wider sites, broader array/COW interactions and live
-REFERENCE payloads remain required; earlier cuts retain their original inputs.
+REFERENCE payloads remained required at that cut; earlier cuts retain their inputs.
 Actual375 over `ab478bca` is composed at `86faf6cc`; independent pointwise seam
 review retains private strict/source/state cuts without a new current execution.
 [Typed positional array review](coverage/semantics/iterator-call-unpack-array-typed-positional-variadic-review.json).
+
+Nullable-array named by-reference variadics now preserve copied container holds
+at the same direct Iterator site, with no positional extras. Typed receive keeps
+keyed ALIAS items; nested current-child writes destroy it before F. A later scalar
+rejection leaves only the earlier rest alias and an owning keyed TypeError array
+snapshot that retains the child after private cells retire through E. Warning and
+parked throws retire Iterator before earlier/current containers and children in
+named insertion order. Four native originals pass at `2d6e8e83`; strict375 and four
+unchanged-source agreements pass at `7ea7489d` using retained native bytes.
+Nine genuine-source state groups pass 632 physical/601 driver premises at
+`70f7916d`, with no pure queries, including keyed ALIAS writes, parked authority
+and trace-only container/child ownership after private frame retirement.
+Untyped named arrays, other type shapes, wider sites, broader array/COW interactions
+and live REFERENCE payloads remain required; prior cuts stay frozen.
+[Typed named array review](coverage/semantics/iterator-call-unpack-array-typed-named-variadic-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or

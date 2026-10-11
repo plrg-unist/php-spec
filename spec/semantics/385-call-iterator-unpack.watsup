@@ -360,6 +360,21 @@ def $iterator_unpack_warning_hold(S, piteratorunpack) = (piteratorunpack.CURRENT
   -- if (~psparam.VARIADIC /\ $(|piteratorunpack.CALL.SENT.SLOTS| <= |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)) \/ (psparam.VARIADIC /\ ~$unpack_key_named(pkey))
   -- if $named_can_store(piteratorunpack.CALL.SENT, NAMED_POSITION n_i)
   -- if $iterator_unpack_extra_site(S, piteratorunpack.CALL.CALLSITE)
+def $iterator_unpack_warning_hold(S, piteratorunpack) = (piteratorunpack.CURRENT)
+  -- if piteratorunpack.CURRENT = KNOWN (PARRAY n)
+  -- if piteratorunpack.KEY = KNOWN pvalue_key
+  -- if $fiber_traversal_key(pvalue_key) = (pkey)
+  -- if $unpack_key_named(pkey)
+  -- if $target_function(S, piteratorunpack.CALL.FUNCTION) = (pfunction)
+  -- if $iterator_unpack_named_target(S, piteratorunpack) = NAMED_EXTRA preqbytes
+  -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
+  -- if $(n_fixed < |pfunction.SIGNATURE.PARAMETERS|)
+  -- if psparam = pfunction.SIGNATURE.PARAMETERS[n_fixed]
+  -- if psparam.VARIADIC /\ psparam.BYREF
+  -- if psparam.TYPE = [(PTBRANCH ([PTBUILTIN "array"])), (PTBRANCH ([PTBUILTIN "null"]))]
+  -- if $(|piteratorunpack.CALL.SENT.SLOTS| <= n_fixed)
+  -- if $named_can_store(piteratorunpack.CALL.SENT, NAMED_EXTRA preqbytes)
+  -- if $iterator_unpack_extra_site(S, piteratorunpack.CALL.CALLSITE)
 def $iterator_unpack_warning_hold(S, piteratorunpack) = (KNOWN PNULL)
   -- if $iterator_unpack_scalar_operand(S, piteratorunpack.CURRENT)
 def $iterator_unpack_warning_hold(S, piteratorunpack) = eps -- otherwise

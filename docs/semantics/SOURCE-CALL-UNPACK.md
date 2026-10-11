@@ -267,9 +267,23 @@ array snapshot after private cells retire, retaining its child through E. Normal
 nested writes destroy the current child before F, while warning and parked throws
 retire Iterator before earlier and current children. No receive, trace, schema or
 documentary contents rules change. Extra-named/other typed arrays, broader COW and
-live-reference payloads remain open. The
+live-reference payloads remained open at that cut. The
 [typed positional array review](../../coverage/semantics/iterator-call-unpack-array-typed-positional-variadic-review.json)
 keeps the four originals and their source frontiers separate from prior cuts.
+
+Nullable-array named by-reference tails admit copied containers at the same
+direct construction, with no positional extras. The disjoint NAMED_EXTRA arm
+requires a real array-plus-null variadic reference parameter and a vacant key.
+Typed RECV_VARIADIC verifies before adding each reference to its separate keyed
+rest array; the existing ALIAS fallback remains unchanged. A nested alpha-child
+write releases B before F while zeta retains A until frame cleanup. A later
+scalar17 rejection leaves only zeta collected; its TypeError trace owns DIRECT
+keyed snapshots and retains the earlier container/child after call cells retire
+through E. Warning and parked throws retire Iterator then zeta and alpha in
+insertion order. Documentary SOURCE checks no retired contents. Untyped named
+arrays, other type shapes, broader COW and live references remain open. The
+[typed named array review](../../coverage/semantics/iterator-call-unpack-array-typed-named-variadic-review.json)
+records four new originals separately from the positional cut.
 
 Iterator valid NaN warnings keep the raw retval in CURRENT through handler invoke,
 result, cleanup and saved Fiber frames. The native `zend_user_it_valid` wrapper

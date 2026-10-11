@@ -533,12 +533,17 @@ Nullable-array positional tails preserve the same warnings and packed aliases;
 a later scalar is rejected during receive, and its TypeError trace retains the
 earlier array and child after private call cells retire. See the
 [typed array review](coverage/semantics/iterator-call-unpack-array-typed-positional-variadic-review.json).
+Nullable-array named tails retain keyed aliases to the fresh private cells in a
+separately collected rest array. A nested current-item write destroys its child
+before later output; a rejected scalar leaves only the earlier rest item while
+the TypeError trace owns its keyed array snapshot. See the
+[typed named array review](coverage/semantics/iterator-call-unpack-array-typed-named-variadic-review.json).
 Valid NaN warnings retain the raw return through handler mutation, Fiber parking
 and throw. One numeric reread distinguishes copied NaN from a live reference;
 the raw return retires before current or iterator teardown.
 Generator/Aggregate ordinary-call unpack, Generator callback methods, nonnumeric
 raw valid changes, request/plain reference strings and handler replacements with
-those strings, extra-named/other typed array warnings, broader array/COW interactions,
+those strings, untyped named/other typed array warnings, broader array/COW interactions,
 reference arrays/objects, general shared named buffers and
 other type shapes and wider-site variadic object warnings remain
 required.
