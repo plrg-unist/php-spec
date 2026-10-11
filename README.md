@@ -1631,6 +1631,12 @@ getter declaration. The typed-child/untyped-parent direction retains the later
 class-line property error; both-untyped controls keep the child slot and writes.
 Three originals and separate rejection/read/write checks are recorded in the
 [cross-shape type-presence review](coverage/semantics/virtual-parent-backed-get-hook-type-presence-review.json).
+A typed, source-body-backed parent also rejects an untyped, body-unbacked child
+without an initializer at the getter declaration. Both-untyped controls retain one
+physical child slot with a null default; private and inherited reads still return
+13 after an ordinary write stores 300. Three originals and separate
+rejection/read/write checks are recorded in the
+[inherited-storage type-presence review](coverage/semantics/backed-parent-unbacked-get-hook-type-presence-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`

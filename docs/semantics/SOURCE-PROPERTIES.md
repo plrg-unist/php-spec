@@ -161,9 +161,18 @@ class-line property error. Both-untyped controls keep the child slot, private sc
 inherited `$this` dispatch and ordinary writes. Three originals and five separate
 state cuts are recorded in the
 [cross-shape type-presence review](../../coverage/semantics/virtual-parent-backed-get-hook-type-presence-review.json).
+Typed source-body-backed parents also reject an untyped, body-unbacked child
+without an initializer at the getter declaration. This prepublication proof checks
+both own descriptors and the child's implicit null default; it does not require a
+child ancestry link. The reverse typed-child direction keeps the class-line error.
+Both-untyped linked controls distinguish Parent backing 100 from one Child-origin
+null slot, source backing from effective storage, and Child/private scope from
+Grand called scope. An ordinary write stores 300 while the getter remains 13.
+Three originals and five separate state cuts are recorded in the
+[inherited-storage type-presence review](../../coverage/semantics/backed-parent-unbacked-get-hook-type-presence-review.json).
 The hook linker still refuses ordinary-parent hooks and plain redeclarations.
 Backed-parent inheritance retains invariant types;
-TYPE-presence changes for body-unbacked declarations with inherited storage,
+TYPE-presence below an immediate body-unbacked but effectively backed parent,
 broader type equivalence and wider hook variance remain required.
 Hooked object iteration is explicit Unsupported rather than a raw storage view;
 array casts retain ordinary storage only. Defaulted virtual/set/byref hooks,

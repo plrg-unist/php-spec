@@ -1,0 +1,191 @@
+{
+  "scope": "Named nonabstract, nonfinal public plain by-value get overrides: a genuine source-body-backed parent and a body-unbacked child without an initializer. Typed int parent to untyped child repairs getter compatibility priority; untyped parent to typed int child and both-untyped inherited-storage reads/writes are baseline controls.",
+  "implementation": {
+    "files": [
+      "spec/semantics/382-backed-get-hooks.watsup"
+    ],
+    "engine": [
+      "vendor/php-src/Zend/zend_compile.c: zend_compile_property_hooks",
+      "vendor/php-src/Zend/zend_inheritance.c: do_inherit_property, inherit_property_hook, perform_delayable_implementation_check"
+    ],
+    "change": "A disjoint missing-return arm authenticates both own descriptors, the parent backing body and the untyped child PROP_NULL/no-backing source before publication. It does not query effective child storage or require a child ancestry link. The directly superseded M41 source-body mutation now checks missing own-parent metadata. Flag/access priority, declaration formatting/error location, reverse type-presence checks, pure covariance, layout/defaults/tasks and runtime/ownership remain unchanged."
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor pin 34308a6666b2d489c509541ea9befea9e2b42348",
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "binaries": {
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "strict_compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+    "AL_compiler_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "SL_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "recorders": {
+    "native_source_sha256": "d02c571df44e04bbdf93e93b3b664d4e0781c4e0832eaf4d152b74df498379d6",
+    "strict_sha256": "d81a2397dd1d9a2d3e00679e5b195297db3be20fed6407d22ed5a625d92113b1",
+    "protocol_sha256": "653134c121337eac07431ad1db151427a068645a5c3b59ecad67177672985b94"
+  },
+  "native": {
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/backed-parent-unbacked-get-hook-type-presence-probes-46/native-first/report.json",
+    "report_sha256": "f7890b05401611b43f6cf73cd79723beb513d769fc29de983088bd5017ecbb97",
+    "revision": "0e36f8372a3c8ace81159fb71e61c580f6a938c2",
+    "process_observations": 3,
+    "exits": [
+      255,
+      255,
+      0
+    ],
+    "completed": true,
+    "stable_and_reaped": true,
+    "source_agreements": 0,
+    "result": "Actual removal getter fatal at hook6, added-child-type property fatal at class5, and Parent100 versus Child/Grand null physical slots. Child/private13 survives inherited Grand This and slot write300. All informational anticipations match; changed-source comparison establishes agreement."
+  },
+  "unchanged_baseline": {
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/backed-parent-unbacked-get-hook-type-presence-probes-46/accepted-current-baseline/report.json",
+    "report_sha256": "1d1255906ec71dae8ba523386e2f5f19e8d90f31c1fd5891860286863ee6edba",
+    "revision": "0e36f8372a3c8ace81159fb71e61c580f6a938c2",
+    "checked_originals": 3,
+    "source_agreements": 2,
+    "stable_and_reaped": true,
+    "result": "Removal alone differs: invariant property fatal at class5. Addition and untyped inherited-storage/dispatch/write control already agree."
+  },
+  "strict": {
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/backed-parent-unbacked-get-hook-type-presence-probes-46/backed-parent-unbacked-get-hook-type-presence-compiler-0ugr0eka/report.json",
+    "report_sha256": "45a4a1e2fb9ecf11b4e92affd5f77d4b355c3b8061ee2606f9f553ed6295d72e",
+    "revision": "ea5a608cfc25097d45ee6d9667ca8c3c619af722",
+    "modules": 376,
+    "seconds": 5.990651,
+    "result": "PASS exact SL initialization; exit0/empty stderr/no timeout",
+    "stable_and_reaped": true,
+    "application_evaluations": 0,
+    "source_agreements": 0
+  },
+  "sources": {
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/backed-parent-unbacked-get-hook-type-presence-probes-46/changed-model-ltxn0_yl/report.json",
+    "report_sha256": "515b5856e85f6c2d341ddbfa5719eac8e3c4c6ffee23660c9282e39af29c7f5e",
+    "revision": "ea5a608cfc25097d45ee6d9667ca8c3c619af722",
+    "checked_originals": 3,
+    "source_agreements": 3,
+    "seconds": {
+      "remove": 6.351043,
+      "add": 6.163049,
+      "scalar": 12.267641
+    },
+    "stable_and_reaped": true,
+    "result": "Three full-stream/exits255,255,0 agreements: one repaired hook-line diagnostic and two retained baseline controls."
+  },
+  "catalogue": {
+    "path": "tests/semantics/backed_parent_unbacked_get_hook_type_presence_cases.json",
+    "sha256": "af0d1cd9d6a35033b6d02f1f77b66e021c618329b6e7ba7edae09e8cb4e799e3"
+  },
+  "state": {
+    "cuts": [
+      {
+        "group": "remove",
+        "report_sha256": "38966d5ceb1874815c2aa1d4306d2e58a1186a8139c5916671f021212d43d124",
+        "fixture_sha256": "45938c39fd937262c7eefaca67e00b2cf63f08c5677b05d5cb9d78f010ec2e06",
+        "reached": 26,
+        "derived": 24,
+        "revision": "3bbfe1afd948673ce8b46ebb2e88c9678e6fa067",
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/backed-parent-unbacked-get-hook-type-presence-protocol-g27ne3pd/report.json",
+        "AL_seconds": 4.988138,
+        "SL_seconds": 6.492499,
+        "result": "PASS true; exit0/empty stderr/no timeout/stable4/reaped",
+        "application_evaluations": 1,
+        "source_agreements": 0
+      },
+      {
+        "group": "add",
+        "report_sha256": "f0377775fb0ab7c8c48639ba80ed5c11840304ba265eaa2f720cd88f676c1110",
+        "fixture_sha256": "a51b467a9a924c15c3dc07abdcbe5eed646b466da8d5decefb62a6c79d2cf739",
+        "reached": 26,
+        "derived": 0,
+        "revision": "3bbfe1afd948673ce8b46ebb2e88c9678e6fa067",
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/backed-parent-unbacked-get-hook-type-presence-protocol-pe2h5nej/report.json",
+        "AL_seconds": 4.962689,
+        "SL_seconds": 6.108997,
+        "result": "PASS true; exit0/empty stderr/no timeout/stable4/reaped",
+        "application_evaluations": 1,
+        "source_agreements": 0
+      },
+      {
+        "group": "cv",
+        "report_sha256": "26cf797f149f8ea323a7a2a0eabf0f82b7e2e7a6b597478cde3b1c353544d0bc",
+        "fixture_sha256": "eeb66c47636e9d9d6e192cbd30dbf955d23804ec694a47e8dcada4147219a8ed",
+        "reached": 69,
+        "derived": 0,
+        "revision": "3bbfe1afd948673ce8b46ebb2e88c9678e6fa067",
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/backed-parent-unbacked-get-hook-type-presence-protocol-3o0d9fcb/report.json",
+        "AL_seconds": 5.080268,
+        "SL_seconds": 17.769552,
+        "result": "PASS true; exit0/empty stderr/no timeout/stable4/reaped",
+        "application_evaluations": 1,
+        "source_agreements": 0
+      },
+      {
+        "group": "this",
+        "report_sha256": "0c4aa9439c0f9b46c8dedcced9bf1a7ce78253a3ec8c750e173b8e216032c61d",
+        "fixture_sha256": "a57f07f14bbe9e099902aa17fc3159294f1101ff8b1977ee474a6a96debc960a",
+        "reached": 71,
+        "derived": 0,
+        "revision": "3bbfe1afd948673ce8b46ebb2e88c9678e6fa067",
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/backed-parent-unbacked-get-hook-type-presence-protocol-adyyrqol/report.json",
+        "AL_seconds": 5.061724,
+        "SL_seconds": 19.612881,
+        "result": "PASS true; exit0/empty stderr/no timeout/stable4/reaped",
+        "application_evaluations": 1,
+        "source_agreements": 0
+      },
+      {
+        "group": "write",
+        "report_sha256": "b3836542180434f5289332a7ac364cef8f44cd6765ff2bb42867081a3b4dcec1",
+        "fixture_sha256": "49d91c413394b90c051e80ae491f4200c337a3ef2e9de38fb4745b7b60b3409b",
+        "reached": 67,
+        "derived": 0,
+        "revision": "3bbfe1afd948673ce8b46ebb2e88c9678e6fa067",
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/backed-parent-unbacked-get-hook-type-presence-protocol-yjqwlh9w/report.json",
+        "AL_seconds": 5.089844,
+        "SL_seconds": 21.25078,
+        "result": "PASS true; exit0/empty stderr/no timeout/stable4/reaped",
+        "application_evaluations": 1,
+        "source_agreements": 0
+      }
+    ],
+    "total_reached": 259,
+    "total_derived": 24,
+    "application_invocations": 5,
+    "source_agreements": 0,
+    "note": "Five separate selected invocations include repeated source setup; no combined invocation claim. Production382 is byte-identical to strict/source-tested ea5a608c."
+  },
+  "state_contract": [
+    "Actual rejection states authenticate parent backing/default100 versus untyped source-unbacked child PROP_NULL, synthesized getter SIGNATURE.RETURNS int/eps, hook6 versus class5, ERRORORIGIN eps and parent-only publication without body effects. The rejected child has no ancestry link; effective storage is not inferred there.",
+    "Removal has24 separate direction/default/own-parent/own-child/source/plain-get and final/static/readonly/access-priority controls. A child changed to genuinely backed source can enter the older M42 arm, so no global refusal is asserted for that mutation. The maintained M41 control is narrowed only to missing own-parent metadata.",
+    "Fresh both-untyped controls bind Parent backing100, authentic Bridge/Child/Grand links and one effective Child-origin null slot. Source backing is false while inherited physical backing is true. Child lexical/private13 and Grand called scope, actual getter13 and receiver roots1\u21922\u21921 (CV) and3\u21923\u21922 (This) are authenticated.",
+    "The real pending Grand CV writer stores300 without getter dispatch; a genuine subsequent getter still returns13 with the same receiver/single slot. Final output matches native. These controls add state evidence, not new layout/runtime/lifetime implementation."
+  ],
+  "remaining": [
+    "TYPE-presence across wider effective-backing chains with an immediate source-unbacked parent, broader type equivalence/variance and wider hooked declaration shapes.",
+    "Ordinary-parent hooks, plain redeclarations inheriting hooks, setter/byref/trait/attributed hooks and wider receivers."
+  ],
+  "commands": {
+    "native": "python3 .tools/backed-parent-unbacked-get-hook-type-presence-probes-46/run.py native --revision 0e36f8372a3c8ace81159fb71e61c580f6a938c2",
+    "baseline": "python3 .tools/backed-parent-unbacked-get-hook-type-presence-probes-46/run.py baseline --revision 0e36f8372a3c8ace81159fb71e61c580f6a938c2",
+    "strict": "python3 .tools/backed-parent-unbacked-get-hook-type-presence-probes-46/run-compiler.py 0e36f8372a3c8ace81159fb71e61c580f6a938c2 ea5a608cfc25097d45ee6d9667ca8c3c619af722",
+    "sources": "python3 .tools/backed-parent-unbacked-get-hook-type-presence-probes-46/run.py changed --revision ea5a608cfc25097d45ee6d9667ca8c3c619af722",
+    "state": "python3 tests/semantics/backed_parent_unbacked_get_hook_type_presence_protocol.py --revision 3bbfe1afd948673ce8b46ebb2e88c9678e6fa067 --group <remove|add|cv|this|write>",
+    "caps": "Native45; model60/outer75/100000 steps; strictSL60 init-only; each stateAL90 then conditionalSL90; jobs1/stop-first/reap, LC_ALL=C/TZ=UTC."
+  },
+  "recovery": "Historical commands run from retained private32; original ignored sources, raw streams, runners and binaries stay at exact paths. Permanent catalogue/protocol regenerate the selected fixtures. Production382 is byte-identical to strict/source-tested ea5a608c at all five accepted state cuts. Earlier hook evidence remains historical without renewal."
+}
