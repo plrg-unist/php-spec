@@ -1066,6 +1066,8 @@ repairing one diagnostic and preserving two baseline controls. Separate remove48
 (259 reached, 22 derived across five setups). The original AL fixture-domain stop
 stays zero credit; pure variance/layout/runtime and prior hook cuts stay unchanged.
 [Cross-shape type-presence review](coverage/semantics/virtual-parent-backed-get-hook-type-presence-review.json).
+Actual376 over `142e91d7` passes strict initialization at `9b39b8b1` (5.922 s);
+private source3 and five selected state cuts retain their accepted revisions.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
