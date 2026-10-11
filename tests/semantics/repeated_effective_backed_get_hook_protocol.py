@@ -314,6 +314,23 @@ LIFETIME = classes('RepeatedStorageLife') + [
 ]
 
 
+CONTROLS = classes('RepeatedStorage') + [
+    'S_child = S',
+    r'$property_hook_plan(S_child) = (ppropertyhook_S_child)',
+    r'ppropertyhook_S_child.PROPERTY = ppropertydesc_child.ORIGIN /\ S_child.OBJECTS[ppropertyhook_S_child.OBJECT] = INSTANCE porigin_child',
+    r'S_child_next = $drive_steps(S_child,1)',
+    r'S_child_next.COMPLETION = NORMAL \/ S_child_next.COMPLETION = BUDGET',
+    *reach('S_this','S_child_next',0),
+    r'$property_hook_plan(S_this) = (ppropertyhook_S_this)',
+    r'S_this.CURRENT = (pcallcontext_read)',
+    r'$method_named(pclassdesc_parent.METHODS,$ptascii("parentRead")) = (pmethoddesc_read)',
+    r'pcallcontext_read.FUNCTION = pmethoddesc_read.FUNCTION.ORIGIN /\ pcallcontext_read.LEXICAL_CLASS = (porigin_parent) /\ pcallcontext_read.CALLED_CLASS = (porigin_grand) /\ ppropertyhook_S_this.PROPERTY = ppropertydesc_child.ORIGIN /\ S_this.OBJECTS[ppropertyhook_S_this.OBJECT] = INSTANCE porigin_grand',
+    *reach('S_this_entered','S_this',1),
+    r'S_this_entered.CURRENT = (pcallcontext_hook_S_this)',
+    r'pcallcontext_hook_S_this.TARGET = PROPERTY_HOOK_TARGET ppropertyhook_S_this /\ pcallcontext_hook_S_this.LEXICAL_CLASS = (porigin_child) /\ pcallcontext_hook_S_this.CALLED_CLASS = (porigin_grand) /\ $call_context_valid(S_this_entered,pcallcontext_hook_S_this,S_this_entered.CVS)',
+]
+
+
 DERIVED = [
     r'~$property_hook_inherited_backing_walk(S,ppropertydesc_child,0) /\ ~$property_hook_inherited_backing_walk(S,ppropertydesc_child,1) /\ $property_hook_inherited_backing_walk(S,ppropertydesc_child,2)',
     r'~$property_hook_override_pair(S,ppropertydesc_child,ppropertydesc_child) /\ ~$property_hook_override_shape(S,ppropertydesc_child,ppropertydesc_child) /\ $property_hook_parent_match(S,ppropertydesc_child,eps)',
@@ -352,7 +369,7 @@ DERIVED = [
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--revision', required=True)
-    parser.add_argument('--group', choices=['typed', 'untyped', 'lifetime'], required=True)
+    parser.add_argument('--group', choices=['typed', 'controls', 'untyped', 'lifetime'], required=True)
     parser.add_argument('--prepare-only', action='store_true')
     args = parser.parse_args()
     recorder.ROOT = ROOT
@@ -362,7 +379,8 @@ def main():
     profile = json.loads(profile_file.read_bytes())
     assert data['native_profile'] == profile
     clauses, negatives, case_index, start_stage = {
-        'typed': (TYPED, DERIVED, 0, 12),
+        'typed': (TYPED, [], 0, 12),
+        'controls': (CONTROLS, DERIVED, 0, 12),
         'untyped': (UNTYPED, [], 0, 13),
         'lifetime': (LIFETIME, [], 1, 0),
     }[args.group]
