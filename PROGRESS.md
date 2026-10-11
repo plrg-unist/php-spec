@@ -288,7 +288,8 @@ six at `283f11cc` and affected five at `9ddd85c0`, including three counterfactua
 helper guards. The strict constructor/binder and state record-syntax/seek-binding
 stops retain zero campaign credit. General shared-buffer release before COW,
 extra-to-extra, later positional variadic, arrays and REFERENCE object payloads
-remain required. Earlier cuts stay frozen.
+remain required. Earlier cuts stay frozen. Actual375 over `9a478e060` passes
+strict SL at `e5119c633`; private native/source/state cuts retain their original inputs.
 [Extra-named review](coverage/semantics/iterator-call-unpack-object-extra-named-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected

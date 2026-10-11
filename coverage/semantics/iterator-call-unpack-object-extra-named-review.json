@@ -1,5 +1,5 @@
 {
-  "status": "private native/source/strict and composed independent state accepted",
+  "status": "integrated native/source/strict and composed independent state accepted",
   "scope": [
     "Copied KNOWN object warning after fixed sends into an untyped variadic extra name, or after an extra name into a vacant fixed slot with by-value variadic tail; one direct construction of a statically named Iterator implementation.",
     "HOLD maps through fixed-then-extra argument cleanup after cache/DATA/INPUT. A private singleton object reference in the untyped by-reference variadic is collected as DIRECT in a separated logical rest array; the original named-send cell survives rest-item writes."
@@ -193,5 +193,22 @@
     "stop_first": true,
     "interrupt_cleanup": "SIGTERM raises KeyboardInterrupt; existing recorded BaseException cleanup kills and waits for the process group; providers close in finally."
   },
-  "compatibility": "Prior source/state catalogs and the two-argument hold_valid API are unchanged. Null-HOLD cleanup and nonprivate variadic reception retain their old routes; earlier native/source/state cuts are not renewed."
+  "compatibility": "Prior source/state catalogs and the two-argument hold_valid API are unchanged. Null-HOLD cleanup and nonprivate variadic reception retain their old routes; earlier native/source/state cuts are not renewed.",
+  "actual_composition": {
+    "parent": "9a478e060b882edfe401f3cbb9af8d70fe6042e6",
+    "semantic_revision": "e5119c63398f67fa7304bd15673b0848d3f16685",
+    "private_net": "c61b6176f5219625e0bc40458d415dff994fce69",
+    "report": ".tools/calls-iterator-copied-object-extra-named-current-23/.tools/iterator-call-unpack-object-extra-named-current-sl-p6cqn69a/report.json",
+    "report_sha256": "597aa8236e99e909ab98e52c98f9329d1e973c8aa3fc53e7953525d489c98e4d",
+    "command": "timeout -k 10s 150s prlimit --as=6442450944 -- python3 -u .tools/strict.py",
+    "runner_sha256": "8775d412fb9b2a75087919c4f18e7371789af94d2d65e0473d149ed53a89e5ff",
+    "modules": 375,
+    "ordered_inputs": "spec/semantics/modules.json",
+    "process_seconds": 120,
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true,
+    "seam_review": "Parent hooked-unset, finally reference-return, overlap GC, fromCallable Fiber construction and named-factory rules are guarded away from these plain Iterator/global-reference/direct-Closure Fiber sources. EMIT clears stale BASE independently of the held payload and named-send cell; the rest item is null before F. ARG's final addition is validation/docs only. Modules, private implementation/catalog/source/state bytes and nonprivate fallback are preserved; this strict composition adds no native/source/state agreement."
+  }
 }
