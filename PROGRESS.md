@@ -423,10 +423,23 @@ Nine genuine-source groups compose 481 physical/456 driver premises from retaine
 six at `cf0cba5c` and corrected three at `7c6d28d3`, with no pure queries. The
 original injected-source fixture lookup failure remains zero credit. Later/named/
 typed array warnings, wider array/COW interactions and live REFERENCE payloads
-stay open; prior cuts remain frozen.
+remain required at that cut; prior cuts stay frozen.
 Actual375 over `32ed5056` passes strict SL at `79f2ad1b`; private native/source/state
 cuts and the original fixture failure retain their inputs without renewal.
 [Array review](coverage/semantics/iterator-call-unpack-array-review.json).
+
+Copied-array warnings now retain earlier fixed-slot sends and map failed holds
+by parameter order. Positional throws retire the earlier container/child first;
+reversed named keys retire the failed container/child first, after Iterator
+DATA/INPUT. Normal private element writes destroy the current child before F;
+real parked injection preserves both containers and main scalar rewrites.
+Five native originals pass at `302d31de`; strict375 and five unchanged-source
+agreements pass at `917659fd` using retained native bytes. Eleven genuine-source
+state groups pass 783 physical/750 driver premises at `0465c123`, with no pure
+queries, including container-to-child cleanup, retired SOURCE authority and real
+parked ownership. Extra-named/variadic/typed array warnings, broader array/COW
+interactions and live REFERENCE payloads stay open; prior cuts remain frozen.
+[Array fixed-slot review](coverage/semantics/iterator-call-unpack-array-sent-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or

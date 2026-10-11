@@ -1,0 +1,52 @@
+[
+  {
+    "id": "iterator-call-unpack-array-sent-positional-normal",
+    "source": "<?php\nclass ArraySentEarlier29 { public function __destruct() { echo \"A|\"; } }\nclass ArraySentCurrent29 { public function __destruct() { echo \"B|\"; } }\n$earlier = [new ArraySentEarlier29()];\n$current = [new ArraySentCurrent29()];\n$failure = new Exception(\"stop\", 51);\nclass ArraySentIterator29 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 2; }\n    public function current(): mixed { global $earlier, $current; echo \"C|\"; return $this->position === 0 ? $earlier : $current; }\n    public function key(): mixed { echo \"K|\"; return $this->position; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ArraySentTarget29($first, &$second) { echo \"G|\"; $second[0] = null; echo \"F|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $earlier, $current, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $earlier = null;\n    $current = null;\n    return true;\n});\ntry { ArraySentTarget29(...new ArraySentIterator29()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n$earlier = null;\n$current = null;\necho \"E\";\n",
+    "source_sha256": "9656974cadab030dfec21f60b6deac1a70306fe918485c54f8f7715b25f1d9d3",
+    "purpose": "Positional fixed slots keep earlier sent ownership and transfer the copied-array hold into a fresh private by-reference cell. Each copied array has one distinct destructible child; container retirement expands its child only once.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|X|V|C|K|H|2|Cannot pass by-reference argument 2 of ArraySentTarget29() by unpacking a Traversable, passing by-value instead|24|X|V|I|G|B|F|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-array-sent-positional-throw",
+    "source": "<?php\nclass ArraySentEarlier29 { public function __destruct() { echo \"A|\"; } }\nclass ArraySentCurrent29 { public function __destruct() { echo \"B|\"; } }\n$earlier = [new ArraySentEarlier29()];\n$current = [new ArraySentCurrent29()];\n$failure = new Exception(\"stop\", 51);\nclass ArraySentIterator29 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 2; }\n    public function current(): mixed { global $earlier, $current; echo \"C|\"; return $this->position === 0 ? $earlier : $current; }\n    public function key(): mixed { echo \"K|\"; return $this->position; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ArraySentTarget29($first, &$second) { echo \"G|\"; $second[0] = null; echo \"F|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $earlier, $current, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $earlier = null;\n    $current = null;\n    throw $failure;\n});\ntry { ArraySentTarget29(...new ArraySentIterator29()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n$earlier = null;\n$current = null;\necho \"E\";\n",
+    "source_sha256": "a36877f5f17eacc02e869f6fff67a9da5d24a7f3f1654e6c96b08a4a76f4740c",
+    "purpose": "Positional fixed slots keep earlier sent ownership and map failed copied-array cleanup by fixed parameter order. Each copied array has one distinct destructible child; container retirement expands its child only once.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|X|V|C|K|H|2|Cannot pass by-reference argument 2 of ArraySentTarget29() by unpacking a Traversable, passing by-value instead|24|I|A|B|T|51|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-array-sent-reversed-named-normal",
+    "source": "<?php\nclass ArraySentEarlier29 { public function __destruct() { echo \"A|\"; } }\nclass ArraySentCurrent29 { public function __destruct() { echo \"B|\"; } }\n$earlier = [new ArraySentEarlier29()];\n$current = [new ArraySentCurrent29()];\n$failure = new Exception(\"stop\", 51);\nclass ArraySentIterator29 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 2; }\n    public function current(): mixed { global $earlier, $current; echo \"C|\"; return $this->position === 0 ? $earlier : $current; }\n    public function key(): mixed { echo \"K|\"; return ($this->position === 0 ? \"second\" : \"first\"); }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ArraySentTarget29(&$first, $second) { echo \"G|\"; $first[0] = null; echo \"F|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $earlier, $current, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $earlier = null;\n    $current = null;\n    return true;\n});\ntry { ArraySentTarget29(...new ArraySentIterator29()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n$earlier = null;\n$current = null;\necho \"E\";\n",
+    "source_sha256": "dfb00e060ed11be26ae686575c7db5b40077b0a1c54b71d92fc12a28d192150c",
+    "purpose": "Reversed named fixed slots keep earlier sent ownership and transfer the copied-array hold into a fresh private by-reference cell. Each copied array has one distinct destructible child; container retirement expands its child only once.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|X|V|C|K|H|2|Cannot pass by-reference argument 1 of ArraySentTarget29() by unpacking a Traversable, passing by-value instead|24|X|V|I|G|B|F|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-array-sent-reversed-named-throw",
+    "source": "<?php\nclass ArraySentEarlier29 { public function __destruct() { echo \"A|\"; } }\nclass ArraySentCurrent29 { public function __destruct() { echo \"B|\"; } }\n$earlier = [new ArraySentEarlier29()];\n$current = [new ArraySentCurrent29()];\n$failure = new Exception(\"stop\", 51);\nclass ArraySentIterator29 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 2; }\n    public function current(): mixed { global $earlier, $current; echo \"C|\"; return $this->position === 0 ? $earlier : $current; }\n    public function key(): mixed { echo \"K|\"; return ($this->position === 0 ? \"second\" : \"first\"); }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ArraySentTarget29(&$first, $second) { echo \"G|\"; $first[0] = null; echo \"F|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $earlier, $current, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $earlier = null;\n    $current = null;\n    throw $failure;\n});\ntry { ArraySentTarget29(...new ArraySentIterator29()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n$earlier = null;\n$current = null;\necho \"E\";\n",
+    "source_sha256": "b99023958bae6b94d6e01c0cd7cc8ca60627cfd6e71254110bc8509c958c74b0",
+    "purpose": "Reversed named fixed slots keep earlier sent ownership and map failed copied-array cleanup by fixed parameter order. Each copied array has one distinct destructible child; container retirement expands its child only once.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|X|V|C|K|H|2|Cannot pass by-reference argument 1 of ArraySentTarget29() by unpacking a Traversable, passing by-value instead|24|I|B|A|T|51|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-array-sent-reversed-named-parked-throw",
+    "source": "<?php\nclass ArraySentEarlier29 { public function __destruct() { echo \"A|\"; } }\nclass ArraySentCurrent29 { public function __destruct() { echo \"B|\"; } }\n$earlier = [new ArraySentEarlier29()];\n$current = [new ArraySentCurrent29()];\n$failure = new Exception(\"stop\", 51);\nclass ArraySentIterator29 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 2; }\n    public function current(): mixed { global $earlier, $current; echo \"C|\"; return $this->position === 0 ? $earlier : $current; }\n    public function key(): mixed { echo \"K|\"; return ($this->position === 0 ? \"second\" : \"first\"); }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ArraySentTarget29(&$first, $second) { echo \"G|\"; $first[0] = null; echo \"F|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $earlier, $current, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $earlier = null;\n    $current = null;\n    Fiber::suspend(\"P\");\n    return true;\n});\n$fiber = new Fiber(static function () {\n    try { ArraySentTarget29(...new ArraySentIterator29()); }\n    catch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n    echo \"FIB|\";\n});\necho \"S|\", $fiber->start(), \"|\";\n$earlier = 17;\n$current = 19;\n$fiber->throw($failure);\necho \"M|\", $earlier, \"|\", $current, \"|\";\n$earlier = null;\n$current = null;\necho \"E\";\n",
+    "source_sha256": "bb7d571902b9d4aa2c59be83259caf2719e0e0b6f87b901810ad2a834a64ce8c",
+    "purpose": "Reversed named fixed slots keep earlier sent ownership and map failed copied-array cleanup by fixed parameter order. Each copied array has one distinct destructible child; container retirement expands its child only once.",
+    "expected_model": "normal",
+    "native_stdout": "S|W|V|C|K|X|V|C|K|H|2|Cannot pass by-reference argument 1 of ArraySentTarget29() by unpacking a Traversable, passing by-value instead|26|P|I|B|A|T|51|FIB|M|17|19|E",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]

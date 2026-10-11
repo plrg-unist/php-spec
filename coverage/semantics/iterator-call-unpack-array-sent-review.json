@@ -1,0 +1,108 @@
+{
+  "status": "private native/source/strict and independent state accepted",
+  "scope": "Copied KNOWN arrays with earlier fixed-slot sends and positional or reversed named fixed-slot destinations at one direct statically named Iterator construction. Selected parameters are fixed untyped BYREF, vacant; SENT.NAMED is empty and slot extent does not exceed fixed count. Originals use two acyclic containers with distinct destructible children.",
+  "remaining": [
+    "Extra-named, variadic or typed array warnings and wider sites",
+    "Broader array contents, embedded references, cycles and COW interactions",
+    "Initial REFERENCE arrays/objects and live refcounted handler replacements"
+  ],
+  "engine_route": "SEND_UNPACK adds the dereferenced array owner before the warning and installs the fresh reference even after handler throw. Iterator DATA/INPUT retire before zend_vm_stack_free_args walks fixed slots ascending. Existing mapped HOLD cleanup uses the generic container graph, expanding each child edge once. Documentary SOURCE authenticates key phase, slot vacancy and call metadata without consulting retired array contents.",
+  "implementation": [
+    "spec/semantics/385-call-iterator-unpack.watsup",
+    "spec/semantics/39-ownership.watsup"
+  ],
+  "catalog": "tests/semantics/iterator_call_unpack_array_sent_cases.json",
+  "source_runner": "tests/semantics/iterator_call_unpack_array_sent_sources.py",
+  "state_runner": "tests/semantics/iterator_call_unpack_array_sent_review.py",
+  "profile": "tests/semantics/profile.json",
+  "native": {
+    "revision": "302d31ded8606120a0e59641afbf16a673cc5354",
+    "report": ".tools/calls-iterator-copied-array-sent-29/.tools/iterator-call-unpack-array-sent-native-ynflc8o9/report.json",
+    "report_sha256": "6bc5b09a41aeb35284c40248854c248a7936db638e0e483790b8af36bdd0fe5d",
+    "selection": [
+      "iterator-call-unpack-array-sent-positional-normal",
+      "iterator-call-unpack-array-sent-positional-throw",
+      "iterator-call-unpack-array-sent-reversed-named-normal",
+      "iterator-call-unpack-array-sent-reversed-named-throw",
+      "iterator-call-unpack-array-sent-reversed-named-parked-throw"
+    ],
+    "command": "timeout -k 10s 60s prlimit --as=6442450944 -- python3 -u .tools/native.py",
+    "runner_sha256": "da2f212688db2f6119de169542564a6b7d8e1e13357becfa410bf849c91f028c",
+    "process_seconds": 8,
+    "observed_originals": 5,
+    "model_agreements": 0,
+    "passed": true
+  },
+  "strict": {
+    "command": "timeout -k 10s 150s prlimit --as=6442450944 -- python3 -u .tools/strict.py",
+    "runner_sha256": "93651f8724a8e11542e36a82399c5c1bd6e28ab4517c08de7f8bd80fcaa63d27",
+    "modules": 375,
+    "process_seconds": 120,
+    "revision": "917659fdc5d463c4c2c3984711842dcee2f58bce",
+    "report": ".tools/calls-iterator-copied-array-sent-29/.tools/iterator-call-unpack-array-sent-sl-uu2rwbyn/report.json",
+    "report_sha256": "aab996f9368068fc505ee00d5a68ada76aec3e0f241b60f42eddb65c09070ffe",
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true
+  },
+  "source": {
+    "command": "timeout -k 10s 450s prlimit --as=6442450944 -- python3 -u .tools/source.py --native-report .tools/iterator-call-unpack-array-sent-native-ynflc8o9/report.json",
+    "runner_sha256": "8b0201a7e9b623c774def65ecc95b1b70fa2f62f17da0cb97a8f6534182568a7",
+    "source_process_seconds": 75,
+    "model_seconds": 60,
+    "steps": 100000,
+    "jobs": 1,
+    "native_executions": 0,
+    "revision": "917659fdc5d463c4c2c3984711842dcee2f58bce",
+    "report": ".tools/calls-iterator-copied-array-sent-29/.tools/iterator-call-unpack-array-sent-source-kkttby45/report.json",
+    "report_sha256": "7c6be8dea2ed72ee46f361c26a404c6f85e508c90c1c31bbc0b5de8828d34d4e",
+    "selection": [
+      "iterator-call-unpack-array-sent-positional-normal",
+      "iterator-call-unpack-array-sent-positional-throw",
+      "iterator-call-unpack-array-sent-reversed-named-normal",
+      "iterator-call-unpack-array-sent-reversed-named-throw",
+      "iterator-call-unpack-array-sent-reversed-named-parked-throw"
+    ],
+    "normal_agreements": 5,
+    "inputs_stable": true,
+    "head_stable": true,
+    "passed": true
+  },
+  "state_review": {
+    "status": "passed",
+    "pure_queries": 0,
+    "process_seconds": 180,
+    "seek_steps": 4000,
+    "finish_steps": 4000,
+    "jobs": 1,
+    "revision": "0465c123ee792fc58b26a6560389994fb6806a05",
+    "command": "timeout -k 10s 2060s prlimit --as=6442450944 -- python3 -u .tools/array-sent-state-180.py",
+    "runner_sha256": "fbade7018094273e9b7726e537cc82e19c87bf44699ca3b679986452e272bcbf",
+    "fixture": "tests/semantics/iterator_call_unpack_array_sent_review.py",
+    "fixture_sha256": "796de0738577830d9000aa895f9cab0b1aaa25078efa601458bfdebbea99fd50",
+    "maintained_budget": "The sole new runner uses recorded180 and binds only its own new report to the actual180 process budget; old/shared runners remain unchanged.",
+    "report": ".tools/calls-iterator-copied-array-sent-29/.tools/fiber-state-review-t9wa49b_/report.json",
+    "report_sha256": "568cd0da81419aa3ff21e9c42e26d270adee27e0eabb92bde9bcadb0a8084e35",
+    "selection": [
+      "later-array-warning-adds-container-owner-with-child-edge-once",
+      "positional-resume-transfers-array-hold-into-vacant-fixed-cell",
+      "positional-throw-maps-array-hold-after-raw-data-and-input",
+      "positional-first-container-expands-child-in-fixed-slot-order",
+      "reversed-named-resume-transfers-array-hold-into-vacant-fixed-cell",
+      "reversed-named-throw-maps-array-hold-after-raw-data-and-input",
+      "reversed-named-first-container-expands-child-in-fixed-slot-order",
+      "retired-array-receipt-is-nonowning-and-rejects-phase-forgery",
+      "parked-named-array-sends-preserve-child-edges-and-vacant-slot",
+      "injected-named-array-throw-keeps-main-scalars-and-mapped-order",
+      "private-current-array-write-destroys-child-before-earlier-body-owner"
+    ],
+    "groups": 11,
+    "physical_premises": 783,
+    "driver_assertions": 750,
+    "host_exit": 0,
+    "reaped": true,
+    "passed": true
+  },
+  "retention": "The first-send array review and earlier Iterator/object/typed-tail ledgers retain their original cuts without renewal. Raw originals/processes/reports stay at recorded ignored paths; maintained catalog/source/review files and project-local providers reconstruct this slice."
+}

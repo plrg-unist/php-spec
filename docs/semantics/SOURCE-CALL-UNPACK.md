@@ -225,10 +225,25 @@ retire raw cache, DATA and INPUT before the last array owner expands child clean
 the acyclic one-child originals destroy the Iterator before the child. Normal
 element writes destroy the child before F. Parked handlers retain the same array
 through main-source replacement. Documentary SOURCE admission checks only shape,
-site, target and key phase after container retirement. Later/named/typed array
-warnings, broader array/COW interactions and raw REFERENCE arrays remain open.
+site, target and key phase after container retirement. At that first-send cut,
+later/named/typed array warnings, broader array/COW interactions and raw REFERENCE
+arrays remained open.
 The [array review](../../coverage/semantics/iterator-call-unpack-array-review.json)
 records these originals separately from previous object and typed-tail cuts.
+
+Copied arrays also admit earlier fixed-slot sends and named keys at the same
+direct construction. The selected parameter must be fixed, untyped and by
+reference, its slot vacant, and the sent buffer must contain only fixed slots.
+The existing hold maps into that slot on warning throw: positional sends release
+earlier then current containers, while reversed named slots release current then
+earlier. Each container expands its child edge once. Normal fresh-cell element
+writes destroy the current child before F, while the earlier child survives to
+frame cleanup. Real parked injection retains both containers and scalar main
+rewrites. Documentary SOURCE uses only call/key/slot metadata after array and
+child retirement. Extra-named, variadic and typed arrays stay unsupported by this
+new guard; broader COW and live-reference interactions remain open. The
+[array fixed-slot review](../../coverage/semantics/iterator-call-unpack-array-sent-review.json)
+keeps these originals and source frontiers separate from the first-send cut.
 
 Iterator valid NaN warnings keep the raw retval in CURRENT through handler invoke,
 result, cleanup and saved Fiber frames. The native `zend_user_it_valid` wrapper
