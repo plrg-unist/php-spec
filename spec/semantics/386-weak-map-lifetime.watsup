@@ -130,9 +130,52 @@ def $weakmap_key_notice(S, n_key) = $destructor_release_begin(S[.OBJECTS[n_map] 
   -- if $destructor_jobs_valid(S, $destruction_values($value_nodes(pweakmapentry.VALUE)))
 def $weakmap_key_notice(S, n_key) = S[.COMPLETION = UNSUPPORTED "WeakMap key notification storage authority"] -- otherwise
 
-;; free_obj ordering and ephemeron tracing require separate native evidence.
+;; WeakMap free_obj unregisters the entry before value destruction, but its
+;; own weak notification waits until the callback and cleanup have returned.
+dec $weakmap_free_allowed(pstate, nat, pdestructionrelease) : bool
+def $weakmap_free_allowed(S, n_map, pdestructionrelease) = true
+  -- if $weakmap_at(S, n_map)
+  -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
+  -- if ~$instance_storage_freeing(S, n_map)
+  -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
+  -- if $destructor_release_valid(S, pdestructionrelease)
+  -- if $heap_owners($heap_graph(S), HOBJECT n_map) = 0
+  -- if $weakmap_before_valid(S, pweakmapentry)
+  -- if $(pweakmapentry.KEY < |S.OBJECTS|)
+  -- if (HOBJECT pweakmapentry.KEY) <- S.ALLOCATIONS
+  -- if S.OBJECTS[pweakmapentry.KEY] = STDINSTANCE
+  -- if ~$instance_storage_freeing(S, pweakmapentry.KEY)
+  -- if $node_children(S, HOBJECT pweakmapentry.KEY) = eps
+  -- if $($heap_owners($heap_graph(S), HOBJECT pweakmapentry.KEY) > 0)
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, pweakmapentry.KEY) = [n_map]
+  -- if pweakmapentry.VALUE = POBJECT n_value
+  -- if $(n_value < |S.OBJECTS|)
+  -- if (HOBJECT n_value) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_value] = INSTANCE porigin
+  -- if ~$instance_storage_freeing(S, n_value)
+  -- if $node_children(S, HOBJECT n_value) = eps
+  -- if $destructor_jobs_valid(S, $destruction_values($value_nodes(pweakmapentry.VALUE)))
+def $weakmap_free_allowed(S, n_map, pdestructionrelease) = false -- otherwise
+
+def $instance_storage_basic(S, pinstancestorage) = true
+  -- if $weakmap_at(S, pinstancestorage.OBJECT)
+  -- if S.OBJECTS[pinstancestorage.OBJECT] = WEAKMAP eps
+  -- if pinstancestorage.SLOTS = eps /\ pinstancestorage.NEXT = 0
+  -- if $objectprops_at(S.OBJECTPROPS, pinstancestorage.OBJECT) = eps
+  -- if $object_table_at(S.OBJECTTABLES, pinstancestorage.OBJECT) = eps
+  -- if $weakmap_storage_notice_valid(S, pinstancestorage)
+  -- if $(pinstancestorage.OBJECT < |S.DESTRUCTION.HANDLES|)
+  -- if S.DESTRUCTION.HANDLES[pinstancestorage.OBJECT] = pinstancestorage.HANDLE
+  -- if $(pinstancestorage.HANDLE > 0) /\ $(pinstancestorage.HANDLE < S.DESTRUCTION.NEXT)
+  -- if ~(pinstancestorage.HANDLE <- S.DESTRUCTION.FREE)
+  -- if pinstancestorage.OBJECT <- S.DESTRUCTION.CALLED
+
+def $destruction_storage_free(S, HOBJECT n_map, pdestructionrelease) = $destructor_release_begin($gc_store_retire($instance_storage_called(S[.OBJECTS[n_map] = WEAKMAP eps][.TODO = (INSTANCE_STORAGE_STEP {OBJECT n_map, HANDLE S.DESTRUCTION.HANDLES[n_map], SLOTS eps, NEXT 0, NOTIFY $weakref_find(S, S.ALLOCATIONS, n_map), CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, USER $destructor_user_source(S)}) :: S.TODO], n_map), HOBJECT n_map), $destruction_values($value_nodes(pweakmapentry.VALUE)))
+  -- if $weakmap_free_allowed(S, n_map, pdestructionrelease)
+  -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
 def $destruction_storage_free(S, HOBJECT n, pdestructionrelease) = $destructor_release_replace(S, pdestructionrelease[.JOBS = (DESTRUCTION_VALUE (HOBJECT n)) :: pdestructionrelease.JOBS])[.COMPLETION = UNSUPPORTED "nonempty WeakMap storage destruction"]
   -- if S.OBJECTS[n] = WEAKMAP (pweakmapentry)
+  -- if ~$weakmap_free_allowed(S, n, pdestructionrelease)
 dec $weakmap_nonempty_node(pstate, pnode) : bool
 def $weakmap_nonempty(S, eps) = false
 def $weakmap_nonempty(S, pnode :: pnode_tail*) = true -- if $weakmap_nonempty_node(S, pnode)
@@ -167,7 +210,7 @@ def $weakmap_storage_notice_valid(S, pinstancestorage) = true
 def $weakmap_storage_notice_valid(S, pinstancestorage) = true
   -- if n_key = pinstancestorage.OBJECT
   -- if $(n_key < |S.OBJECTS|) /\ (HOBJECT n_key) <- S.ALLOCATIONS
-  -- if S.OBJECTS[n_key] = STDINSTANCE
+  -- if S.OBJECTS[n_key] = STDINSTANCE \/ S.OBJECTS[n_key] = WEAKMAP eps
   -- if pinstancestorage.SLOTS = eps /\ pinstancestorage.NEXT = 0
   -- if pinstancestorage.NOTIFY = (n_wrapper)
   -- if $(n_wrapper < |S.OBJECTS|) /\ $(n_key < n_wrapper)
