@@ -17,6 +17,9 @@ warning-dispatch failure0; SL11 groups/823 premises pass. Independent4 source
 interactions and3 Unsupported controls are accepted at their separate cuts. [Contract](docs/semantics/SHELL-DISPATCH.md),
 [author evidence](coverage/semantics/shell-dispatch-author.json),
 [independent review](coverage/semantics/shell-dispatch-review.json).
+The 379-module join over3faec9e passes the exact VDE eval-static retirement
+source and the warning-handler SL group/128 premises at54f60dde. The original
+ED expectation mismatch stays0; private source/state cuts retain their identities.
 
 Eval/file top-level static tables now retire before body exceptions cross to
 caller catch. Pending Throwables remain rooted through real destructor operations;

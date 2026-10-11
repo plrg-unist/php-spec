@@ -1,7 +1,7 @@
 {
   "target": "PHP 8.5.10 CLI NTS 64-bit",
   "reviewer": "/root/core_breadth_review_01",
-  "decision": "accepted bounded private semantics; master interaction remains pending",
+  "decision": "accepted bounded semantics and exact-parent composition",
   "base_revision": "2a5dcf424098344e9074caf7966c033e327c78c7",
   "implementation": {
     "spec/semantics/389-shell-dispatch.watsup": "1a0d590e0403e1ae6109e1bcc0e6d053737e08c6029c1b4dcb5e67a4349b9bcb",
@@ -71,5 +71,23 @@
     "no full-core equivalence, full obligation closure or portability claim"
   ],
   "raw_recovery": "Original sources, request/snapshot bytes, commands, native/model stdout/stderr/exits and reports are in the external roots above. The external independent.py is the review harness; its one-line control exit correction is recorded in the failed and corrected cuts. No external artifact is a production build dependency.",
-  "integration": null
+  "integration": {
+    "parent": "3faec9eb3aded7e14a82b863c5108ad7b2172304",
+    "tested_candidate": "54f60dde3377e216c74c383c713b68d46ee17ffd",
+    "decision": "FF clear",
+    "pointwise_review": "The actual parent changes only156/160/171/253/382/383. Shared shell state/adapter/bin/integrity/manifest files are unchanged from the private base; selected guarded extensions are disjoint. Current eval-static/empty-shell ValueError source directly exercises parent160/388 retirement. Net shell implementation hashes match private acceptance.",
+    "source_report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-01/join-3faec9e-vde-01/report.json",
+    "source_report_sha256": "714c93c0472fef0d98ae1664d3a5dc660f30ec5dd4a1a644ddaa2d9b6bfa0b16",
+    "source_result": "1 exact original, normal/native stdout VDE, exact stderr and exit; marker proves unset precedes destruction and source retirement precedes outer catch; no shell launched",
+    "state_report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-01/join-3faec9e-handler-sl-01/report.json",
+    "state_report_sha256": "789dd4db9f4c6e7926d55dbf1c3de802222517af9dffb0e9dec83ac85ad40def",
+    "state_result": "1 reached warning-handler group, SL128 premises, full joined module admission, stable inputs",
+    "original_failure": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-01/join-3faec9e-de-01/report.json",
+      "sha256": "bb19804d9366e3cd3a0ab80fa923a3c99776bed5bc9814baea66a07203fbd998",
+      "credit": 0,
+      "cause": "Initial expected DE overlooked retained global CV owner; native ED. Corrected specimen unsets CV and adds marker; no implementation change."
+    },
+    "limits": "These are actual-parent composition gates. Private source/state cuts retain original revisions and receive no current replay credit."
+  }
 }
