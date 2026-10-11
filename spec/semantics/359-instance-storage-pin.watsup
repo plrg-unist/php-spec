@@ -17,6 +17,7 @@ dec $instance_storage_for(pstate, nat) : pinstancestorage?
 dec $instance_storage_order(ppropertyslot*, bool, nat) : nat*
 dec $instance_storage_image(ppropertyslot*, ppropertyslot*, nat*, nat) : bool
 dec $instance_storage_table_valid(pstate, pinstancestorage) : bool
+dec $weakmap_storage_notice_valid(pstate, pinstancestorage) : bool
 dec $instance_storage_basic(pstate, pinstancestorage) : bool
 dec $instance_storage_basics(pstate, pinstancestorage*) : bool
 dec $instance_storage_ids(pinstancestorage*) : nat*
@@ -115,6 +116,7 @@ def $instance_storage_basic(S, pinstancestorage) = true
   -- if $(pinstancestorage.NEXT <= |nat_order*|)
   -- if $instance_storage_image(ppropertyslot*, pinstancestorage.SLOTS, nat_order*[0:pinstancestorage.NEXT], 0)
   -- if $instance_storage_table_valid(S, pinstancestorage)
+  -- if $weakmap_storage_notice_valid(S, pinstancestorage)
   -- if $(pinstancestorage.OBJECT < |S.DESTRUCTION.HANDLES|)
   -- if S.DESTRUCTION.HANDLES[pinstancestorage.OBJECT] = pinstancestorage.HANDLE
   -- if $(pinstancestorage.HANDLE > 0) /\ $(pinstancestorage.HANDLE < S.DESTRUCTION.NEXT)
@@ -146,7 +148,7 @@ def $instance_storage_valid(S, pinstancestorage) = false -- otherwise
 def $instance_storage_called(S, n) = S -- if n <- S.DESTRUCTION.CALLED
 def $instance_storage_called(S, n) = S[.DESTRUCTION.CALLED = S.DESTRUCTION.CALLED ++ [n]] -- if ~(n <- S.DESTRUCTION.CALLED)
 dec $weakmap_key_notice(pstate, nat) : pstate
-def $instance_storage_begin(S, n) = $weakmap_key_notice($gc_store_retire($instance_storage_called(S[.TODO = (INSTANCE_STORAGE_STEP {OBJECT n, HANDLE S.DESTRUCTION.HANDLES[n], SLOTS ppropertyslot*, NEXT 0, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, USER $destructor_user_source(S)}) :: S.TODO], n), HOBJECT n), n)
+def $instance_storage_begin(S, n) = $weakmap_key_notice($gc_store_retire($instance_storage_called(S[.TODO = (INSTANCE_STORAGE_STEP {OBJECT n, HANDLE S.DESTRUCTION.HANDLES[n], SLOTS ppropertyslot*, NEXT 0, NOTIFY eps, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, USER $destructor_user_source(S)}) :: S.TODO], n), HOBJECT n), n)
   -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
 def $destruction_storage_free(S, HOBJECT n, pdestructionrelease) = $instance_storage_begin(S, n)
   -- if $instance_storage_node(S, n)
@@ -184,12 +186,14 @@ rule PhpStep/instance-storage-finish: S ~> $destructor_release_begin(S[.TODO = p
   -- if $instance_storage_valid(S, pinstancestorage)
   -- if $object_table_at(S.OBJECTTABLES, pinstancestorage.OBJECT) = eps
   -- if pinstancestorage.NEXT = |pinstancestorage.SLOTS|
+  -- if pinstancestorage.NOTIFY = eps
   -- if $heap_owners($heap_graph(S), HOBJECT pinstancestorage.OBJECT) = 1
 rule PhpStep/instance-storage-escaped: S ~> S[.COMPLETION = UNSUPPORTED "freeing instance escaped reacquisition"]
   -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask*
   -- if $instance_storage_valid(S, pinstancestorage)
   -- if $object_table_at(S.OBJECTTABLES, pinstancestorage.OBJECT) = eps
   -- if pinstancestorage.NEXT = |pinstancestorage.SLOTS|
+  -- if pinstancestorage.NOTIFY = eps
   -- if $($heap_owners($heap_graph(S), HOBJECT pinstancestorage.OBJECT) > 1)
 
 ;; The logical buffer/store retirement precedes physical storage retirement.

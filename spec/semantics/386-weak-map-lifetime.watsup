@@ -86,7 +86,7 @@ def $weakmap_write_allowed(S, paccess) = true
   -- if ~$instance_storage_freeing(S, n_value)
   -- if $node_children(S, HOBJECT n_value) = eps
 def $weakmap_write_allowed(S, paccess) = false -- otherwise
-def $access_call(S, paccess, ptbytes) = $access_done(S_read[.OBJECTS[n_map] = WEAKMAP ({KEY n_key, VALUE paccess.VALUE})], paccess, pvalue_result)
+def $access_call(S, paccess, ptbytes) = $access_done(S_read[.OBJECTS[n_map] = WEAKMAP ({KEY n_key, VALUE paccess.VALUE, BEFORE $weakref_find(S, S.ALLOCATIONS, n_key)})], paccess, pvalue_result)
   -- if paccess.OBJECT = (n_map)
   -- if $weakmap_at(S, n_map)
   -- if ptbytes = $ptascii("offsetSet") /\ $weakmap_write_allowed(S, paccess)
@@ -99,15 +99,33 @@ def $access_call(S, paccess, ptbytes) = S[.COMPLETION = UNSUPPORTED "WeakMap dim
   -- if $weakmap_at(S, n_map)
   -- if ptbytes =/= $ptascii("offsetSet") \/ ~$weakmap_write_allowed(S, paccess)
 
-;; std_dtor has already hidden the key behind an authenticated physical pin.
+;; Weak payload registration order is the actual wrapper identity at insertion.
+;; Borrowed NOTIFY metadata stays on the existing physical key pin until the
+;; map-value callback and cleanup finish; it contributes no owner.
+dec $weakmap_before_valid(pstate, pweakmapentry) : bool
+def $weakmap_before_valid(S, pweakmapentry) = true -- if pweakmapentry.BEFORE = eps
+def $weakmap_before_valid(S, pweakmapentry) = true
+  -- if pweakmapentry.BEFORE = (n_wrapper)
+  -- if $(n_wrapper < |S.OBJECTS|) /\ $(pweakmapentry.KEY < n_wrapper)
+  -- if S.OBJECTS[n_wrapper] = WEAKREFERENCE (n_key)
+  -- if n_key = pweakmapentry.KEY
+def $weakmap_before_valid(S, pweakmapentry) = false -- otherwise
+dec $weakmap_notice_wrapper(pstate, pweakmapentry) : nat?
+def $weakmap_notice_wrapper(S, pweakmapentry) = (n_wrapper)
+  -- if $weakref_find(S, S.ALLOCATIONS, pweakmapentry.KEY) = (n_wrapper)
+  -- if pweakmapentry.BEFORE =/= (n_wrapper)
+def $weakmap_notice_wrapper(S, pweakmapentry) = eps -- otherwise
+
 ;; Replace the map edge by one real VALUE job before executing the callback.
 def $weakmap_key_notice(S, n_key) = S -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = eps
-def $weakmap_key_notice(S, n_key) = $destructor_release_begin(S[.OBJECTS[n_map] = WEAKMAP eps], $destruction_values($value_nodes(pweakmapentry.VALUE)))
+def $weakmap_key_notice(S, n_key) = $destructor_release_begin(S[.OBJECTS[n_map] = WEAKMAP eps][.TODO = (INSTANCE_STORAGE_STEP pinstancestorage[.NOTIFY = $weakmap_notice_wrapper(S, pweakmapentry)]) :: ptask_tail*], $destruction_values($value_nodes(pweakmapentry.VALUE)))
   -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map]
   -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
-  -- if $instance_storage_for(S, n_key) = (pinstancestorage)
+  -- if $weakmap_before_valid(S, pweakmapentry)
+  -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*
+  -- if pinstancestorage.OBJECT = n_key
   -- if $instance_storage_valid(S, pinstancestorage)
-  -- if pinstancestorage.NEXT = 0 /\ pinstancestorage.SLOTS = eps
+  -- if pinstancestorage.NEXT = 0 /\ pinstancestorage.SLOTS = eps /\ pinstancestorage.NOTIFY = eps
   -- if S.OBJECTS[n_key] = STDINSTANCE
   -- if $destructor_jobs_valid(S, $destruction_values($value_nodes(pweakmapentry.VALUE)))
 def $weakmap_key_notice(S, n_key) = S[.COMPLETION = UNSUPPORTED "WeakMap key notification storage authority"] -- otherwise
@@ -142,17 +160,27 @@ def $value_order(S, POBJECT n_left, POBJECT n_right, pnode_seen*) = ORDERUNSUPPO
   -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if $weakmap_at(S, n_left) \/ $weakmap_at(S, n_right)
 
-;; A map-value callback may precede later key-wrapper notification.
-;; Registration-order-dependent reads stay outside this first entry protocol.
-def $weakmap_key_pin_read(S, n_wrapper) = true
-  -- if $weakref_at(S, n_wrapper) = (WEAKREFERENCE (n_key))
+;; A retired wrapper is harmless borrowed history; a live GET additionally
+;; authenticates the unique current key pin and the allocated wrapper.
+def $weakmap_storage_notice_valid(S, pinstancestorage) = true
+  -- if pinstancestorage.NOTIFY = eps
+def $weakmap_storage_notice_valid(S, pinstancestorage) = true
+  -- if n_key = pinstancestorage.OBJECT
   -- if $(n_key < |S.OBJECTS|) /\ (HOBJECT n_key) <- S.ALLOCATIONS
   -- if S.OBJECTS[n_key] = STDINSTANCE
-  -- if $instance_storage_for(S, n_key) = (pinstancestorage)
-  -- if $instance_storage_basic(S, pinstancestorage)
   -- if pinstancestorage.SLOTS = eps /\ pinstancestorage.NEXT = 0
-def $weakmap_key_pin_read(S, n_wrapper) = false -- otherwise
-def $weakref_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "WeakMap key notification reference order"]
-  -- if pconfigcall.KIND = INTRINSIC_WEAKREF_GET /\ pconfigcall.SENT = eps
-  -- if pconfigcall.OWNER = (n_wrapper)
-  -- if $weakmap_key_pin_read(S, n_wrapper)
+  -- if pinstancestorage.NOTIFY = (n_wrapper)
+  -- if $(n_wrapper < |S.OBJECTS|) /\ $(n_key < n_wrapper)
+  -- if S.OBJECTS[n_wrapper] = WEAKREFERENCE (n_key)
+def $weakmap_storage_notice_valid(S, pinstancestorage) = false -- otherwise
+def $weakmap_storage_read(S, n_wrapper, n_key) = true
+  -- if $weakref_at(S, n_wrapper) = (WEAKREFERENCE (n_key))
+  -- if $instance_storage_for(S, n_key) = (pinstancestorage)
+  -- if pinstancestorage.NOTIFY = (n_wrapper)
+  -- if $instance_storage_basic(S, pinstancestorage)
+  -- if $instance_storage_state_valid(S)
+def $weakmap_storage_read(S, n_wrapper, n_key) = false -- otherwise
+rule PhpStep/weakmap-key-notify: S ~> S[.TODO = (INSTANCE_STORAGE_STEP pinstancestorage[.NOTIFY = eps]) :: ptask_tail*]
+  -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*
+  -- if $instance_storage_valid(S, pinstancestorage)
+  -- if pinstancestorage.NOTIFY =/= eps

@@ -42,11 +42,15 @@ def $weakref_create(S, n_target) = $weakref_done(S[.OBJECTS = S.OBJECTS ++ [WEAK
   -- if ~$instance_storage_freeing(S, n_target)
   -- if $weakref_find(S, S.ALLOCATIONS, n_target) = eps
   -- if n = |S.OBJECTS|
+dec $weakmap_storage_read(pstate, nat, nat) : bool
 dec $weakref_get(pstate, nat) : pvalue
 def $weakref_get(S, n) = POBJECT n_target
   -- if $weakref_at(S, n) = (WEAKREFERENCE (n_target))
   -- if ~$instance_storage_freeing(S, n_target)
   -- if (HOBJECT n_target) <- S.ALLOCATIONS
+def $weakref_get(S, n) = POBJECT n_target
+  -- if $weakref_at(S, n) = (WEAKREFERENCE (n_target))
+  -- if $weakmap_storage_read(S, n, n_target)
 def $weakref_get(S, n) = PNULL -- otherwise
 def $weakref_done(S, pvalue) = S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
@@ -211,7 +215,6 @@ def $config_trace_frames(S, pconfigcall, pvalue*) = [{FILE $call_sourcefile(S.FI
   -- if $weakref_static(pconfigcall.KIND)
 def $config_trace_frames(S, pconfigcall, pvalue*) = [{FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $weakref_method_name(pconfigcall.KIND), CLASS ($ptascii("WeakReference")), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}]
   -- if $weakref_kind(pconfigcall.KIND) /\ ~$weakref_static(pconfigcall.KIND)
-dec $weakmap_key_pin_read(pstate, nat) : bool
 dec $weakref_receive(pstate, pconfigcall) : pstate
 rule PhpStep/weakref-config-invoke: S ~> $weakref_receive(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
@@ -232,7 +235,6 @@ def $weakref_receive(S, pconfigcall) = $weakref_create(S, n)
 def $weakref_receive(S, pconfigcall) = $weakref_done(S, $weakref_get(S, n))
   -- if pconfigcall.KIND = INTRINSIC_WEAKREF_GET /\ pconfigcall.SENT = eps
   -- if pconfigcall.OWNER = (n)
-  -- if ~$weakmap_key_pin_read(S, n)
 
 dec $weakref_init_call(pstate, nat, pconfigcall) : bool
 ;; A NEW continuation returns the exact object selected before its arguments.
