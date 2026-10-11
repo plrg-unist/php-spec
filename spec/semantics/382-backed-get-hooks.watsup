@@ -716,7 +716,7 @@ def $trace_context_type(S, pcallcontext) = ($ptascii("->"))
 def $property_instance_indirect_check(S, n, ptbytes, b_object, z) = S[.COMPLETION = UNSUPPORTED "by-value property hook indirect access"]
   -- if $property_hook_read_needed(S, n, ptbytes)
 
-;; Backing stays invariant; closed virtual get-only chains allow covariance.
+;; Backed-parent inheritance stays invariant; virtual get-only parents allow covariance.
 ;; Other hook inheritance cannot borrow the ordinary property merge.
 def $property_hook_override_backed(S, ppropertydesc) = true
   -- if ~ppropertydesc.FINAL /\ ppropertydesc.SETVISIBILITY = eps
@@ -750,7 +750,7 @@ def $property_hook_virtual_edge(S, ppropertydesc_parent, ppropertydesc_child) = 
 def $property_hook_virtual_edge(S, ppropertydesc_parent, ppropertydesc_child) = false -- otherwise
 ;; A virtual parent leaves a genuinely backed child's own slot/default intact.
 def $property_hook_backed_over_virtual(S, ppropertydesc_parent, ppropertydesc_child) = true
-  -- if $property_hook_override_shape(S, ppropertydesc_parent, ppropertydesc_child)
+  -- if $property_hook_virtual_edge(S, ppropertydesc_parent, ppropertydesc_child)
   -- if $property_hook_override_backed(S, ppropertydesc_child)
   -- if $property_hook_virtual_chain(S, ppropertydesc_parent, |S.CLASSES|)
   -- if ppropertydesc_child.ORIGIN = porigin_property
@@ -771,6 +771,16 @@ def $property_hook_covariance_parent(S, ppropertydesc_parent, ppropertydesc_chil
   -- if $property_hook_override_shape(S, ppropertydesc_parent, ppropertydesc_child[.TYPE = ppropertydesc_parent.TYPE])
   -- if $property_hook_virtual_chain(S, ppropertydesc_parent, |S.CLASSES|)
   -- if $property_hook_override_virtual(S, ppropertydesc_child)
+def $property_hook_covariance_parent(S, ppropertydesc_parent, ppropertydesc_child) = true
+  -- if ~$trait_property_source_fast_equal(S, ppropertydesc_parent, ppropertydesc_child)
+  -- if ppropertydesc_parent.TYPE =/= eps /\ ppropertydesc_child.TYPE =/= eps
+  -- if $property_hook_override_shape(S, ppropertydesc_parent, ppropertydesc_child[.TYPE = ppropertydesc_parent.TYPE])
+  -- if $property_hook_virtual_chain(S, ppropertydesc_parent, |S.CLASSES|)
+  -- if $property_hook_override_backed(S, ppropertydesc_child)
+  -- if ppropertydesc_child.ORIGIN = porigin_property
+  -- if $property_declaring_class(S.CLASSES, porigin_property) = (porigin_child)
+  -- if $class_at(S.CLASSES, porigin_child) = (pclassdesc_child)
+  -- if $hook_property_at(pclassdesc_child.PROPERTIES, porigin_property) = (ppropertydesc_child)
 def $property_hook_covariance_parent(S, ppropertydesc_parent, ppropertydesc_child) = false -- otherwise
 ;; A typed getter's return declaration cannot be removed by its child.
 ;; Untyped-parent additions still reach the later ordinary property-type check.
