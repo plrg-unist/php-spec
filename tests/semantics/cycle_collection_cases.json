@@ -1,5 +1,32 @@
 [
   {
+    "id": "weak-map-early-notification-order-56",
+    "source": "<?php\nclass Value {\n    public function __destruct() { global $keyWeak; echo $keyWeak->get() === null ? \"callback-null|\" : \"callback-live|\"; echo \"V|\"; }\n}\n$map = new WeakMap();\n$key = new stdClass();\n$value = new Value();\n$valueWeak = WeakReference::create($value);\n$keyWeak = WeakReference::create($key);\n$map[$key] = $value;\nunset($value);\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $valueWeak->get() === null ? \"value-null|\" : \"value-live|\";\nunset($key);\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $valueWeak->get() === null ? \"value-null|END\" : \"value-live|END\";\n",
+    "source_sha256": "959503882ce13f603f0c14609feee00d06ab79d90da44b79ae15579169a0073f",
+    "stdout": "key-live|value-live|callback-null|V|key-null|value-null|END",
+    "stderr": "",
+    "status": "normal",
+    "exit": 0
+  },
+  {
+    "id": "weak-map-late-notification-order-56",
+    "source": "<?php\nclass Value {\n    public function __destruct() { global $keyWeak; echo $keyWeak->get() === null ? \"callback-null|\" : \"callback-live|\"; echo \"V|\"; }\n}\n$map = new WeakMap();\n$key = new stdClass();\n$value = new Value();\n$valueWeak = WeakReference::create($value);\n$map[$key] = $value;\n$keyWeak = WeakReference::create($key);\nunset($value);\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $valueWeak->get() === null ? \"value-null|\" : \"value-live|\";\nunset($key);\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $valueWeak->get() === null ? \"value-null|END\" : \"value-live|END\";\n",
+    "source_sha256": "fc49fe3ab9ef84cdc82452a403b8b0b7e648ff080346a5f9001f7954604becb8",
+    "stdout": "key-live|value-live|callback-live|V|key-null|value-null|END",
+    "stderr": "",
+    "status": "normal",
+    "exit": 0
+  },
+  {
+    "id": "weak-map-throw-notification-order-56",
+    "source": "<?php\nclass Value {\n    public function __destruct() { global $keyWeak; echo $keyWeak->get() === null ? \"callback-null|\" : \"callback-live|\"; echo \"V|\"; throw new Exception(\"stop\"); }\n}\n$map = new WeakMap();\n$key = new stdClass();\n$value = new Value();\n$valueWeak = WeakReference::create($value);\n$map[$key] = $value;\n$keyWeak = WeakReference::create($key);\nunset($value);\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $valueWeak->get() === null ? \"value-null|\" : \"value-live|\";\ntry { unset($key); } catch (Exception $e) { echo \"caught|\"; }\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $valueWeak->get() === null ? \"value-null|END\" : \"value-live|END\";\n",
+    "source_sha256": "2c1e6666a459f6ed2d261ce0bff1387bbd7bce939ba98ad3dbe6a3a29a31a7bc",
+    "stdout": "key-live|value-live|callback-live|V|caught|key-null|value-null|END",
+    "stderr": "",
+    "status": "normal",
+    "exit": 0
+  },
+  {
     "id": "weak-map-key-retirement-55",
     "source": "<?php\nclass Value {\n    public function __destruct() { echo \"V|\"; }\n}\n$map = new WeakMap();\n$key = new stdClass();\n$value = new Value();\n$keyWeak = WeakReference::create($key);\n$valueWeak = WeakReference::create($value);\n$map[$key] = $value;\nunset($value);\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $valueWeak->get() === null ? \"value-null|\" : \"value-live|\";\nunset($key);\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $valueWeak->get() === null ? \"value-null|END\" : \"value-live|END\";\n",
     "source_sha256": "547205105e5c95c1c80e92f9fd02b1d9f4d8157ceecca87a69b23f37be620eff",
