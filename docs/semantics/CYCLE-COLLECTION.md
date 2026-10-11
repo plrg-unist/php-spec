@@ -143,6 +143,17 @@ including both real C owners. Saved caller views borrow that exact shared contro
 retirement authority while ordinary closure checks retain their saved scope;
 the control gains no PHP catch authority.
 
+The final main retrace also leaves a called ordinary leaf at owner zero after
+its callback drops the bare pin. Preparation301/325 requires the actual valid
+PASS1 FREE consumer, no worker/pending scan, a DONE/called leaf outside FREESET
+and its existing unique ordinary root slot. Recording a borrowed tag changes no
+heap owner, allocation or count fold. Actual weak-temporary acquisition promotes
+the slot; release of its BASE/operand owners enters ordinary instance storage
+cleanup. Weak lookup clears there, while the allocated physical pin and retired
+buffer slot remain until later cleanup. The original agrees with native PHP;
+203 reached source/control checks cover retention, coherent fences and the real
+acquisition/release sequence with budget replay.
+
 Module335 extends that storage admission to normal detached-worker close after
 the collection is quiescent. It requires the actual control-release, operation-exit
 and worker-release tail, a terminated graceful worker, and exactly the real
@@ -179,8 +190,8 @@ plans, roots and metadata plus budget identity and resumption.
 Explicit boundaries remain for wider internal lifetime graphs, callback reentry
 during wider different active passes/internal takeover, active-pass failed close and wider
 callbackless close-return contexts,
-resurrection of initially free non-destructor garbage, a new zero-owner
-destructor target after the second trace, and automatic threshold collection.
+wider resurrection of initially free non-destructor garbage, nonleaf/worker or
+pending zero-owner targets after the second trace, and automatic threshold collection.
 Wider GC, WeakMap and final combined offline validation remain required.
 
 Engine sources: `Zend/zend_gc.c::{gc_call_destructors,gc_destructor_fiber}`,

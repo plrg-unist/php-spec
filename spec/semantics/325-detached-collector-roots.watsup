@@ -56,7 +56,7 @@ def $gc_worker_guard_zero(S, pgcguard) = $gc_bare_return($gc_bare_record(S_dropp
   -- if $gc_ordinary_node(S_dropped, HOBJECT pgcguard.OBJECT)
 
 ;; The final retrace also drops the callback pin with bare GC_DELREF. A called
-;; ordinary leaf at owner zero keeps its existing root slot until acquisition.
+;; ordinary leaf at owner zero retains its existing root slot after the callback.
 dec $gc_terminal_leaf(pstate, nat) : bool
 dec $gc_terminal_leaves(pstate, pnode*) : bool
 dec $gc_terminal_record(pstate, pnode*) : pstate

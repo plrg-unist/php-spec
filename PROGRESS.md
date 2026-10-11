@@ -1570,6 +1570,20 @@ retains zero gate credit. Broader retired-object identity, containers, pending o
 workers/later passes and resurrection remain required; old whole CLI OPEN/zero cuts
 are unchanged. [Ledger](coverage/semantics/cycle-collection-review.json).
 
+Main final-retrace preparation301/325 preserves the existing root slot of an
+authenticated called ordinary zero-owner leaf outside FREESET. The borrowed tag
+adds no owner; actual weak-temporary acquisition promotes it to an ordinary root.
+At `1496e`/375, compiler/init, one exact native44 source agreement and203 reached
+source/control checks (113/90) pass. Real FREE-to-finish retention, coherent leaf,
+slot, called/DONE/consumer controls and one native continuation are covered.
+The acquisition cut follows both BASE/operand owners through comparison and
+shared release to the actual storage pin: weak lookup is null while allocation
+and its physical GC_RETIRED slot remain. Zero/one-budget replay passes. Baseline39
+localizes the old refusal; the two premature fixture assertions and root tuple
+observation retain zero credit. Workers, pending collectors and outgoing-child
+targets remain required; count folding and old OPEN/zero cuts are unchanged.
+[Ledger](coverage/semantics/cycle-collection-review.json).
+
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
 resume fixes `Array` before live target lookup; handler/child exceptions abort FETCH.
 Seven exact originals and117 independent premises retain `c2a1051db`/331. Actual335

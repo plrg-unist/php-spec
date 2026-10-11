@@ -1136,6 +1136,12 @@ comparison and release work, and unsafe reads remain explicit Unsupported.
 The original agrees with native PHP; 146 reached source/control checks pass.
 Broader retired-object comparisons, container owners and resurrection remain open.
 
+The final main retrace also retains a called ordinary zero-owner leaf in its
+existing borrowed root slot, without adding a heap owner. A real WeakReference
+temporary promotes that slot; ordinary release clears weak lookup under the
+storage cleanup pin. The original agrees with native PHP and 203 reached
+source/control checks pass. Wider worker and nonleaf cases remain required.
+
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their
