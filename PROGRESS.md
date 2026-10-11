@@ -22,25 +22,27 @@ The actual composition of 374 modules over fa678cc48 passes strict3 at
 Private source2 / 228+6 checks retain their original cuts.
 [Declare ledger](coverage/semantics/compiler-declare-review.json).
 
-Plain empty named descendants now compile inside exact noarg by-value untyped
-named functions directly in actual root or valid namespace `if`, `elseif` and
-`else` bodies. Four fresh originals agree at d66d951a /375 (strict3 5.972s):
-anonymous fullnames are live before callable publication, skipped branches stay
-absent, reversed calls publish named classes in call order, and guarded repeats
-return independent defaults with lexical namespaces. Mutually exclusive
-case-insensitive same-name functions dispatch to the published else origin.
-Author and independent fixtures pass 665 premises: 617 setup/source-frontier
-premises and 48 pure queries, with 18 actual PhpSteps for function/class publication,
-eligible class no-op and saved-frame anonymous allocation. The two original state
-failures retain zero credit: the copied guard expected false after source assignment
-to true, and the whole-state class equality omitted existing CCLINK history.
-Only these affected fixtures change; passed groups and source/native/strict cuts
-remain frozen. Syntax preparation/elaboration adds no runtime credit. Nested or
-Block-contained If function paths, loops, wider signatures and conditional Closure
-assignments remain required.
-The 375 join over a123a1a5 passes strict3 at 8bde7b9d (5.925s), checking the
-shared task datatype. Review preserves the parentless class-link identity; private
-native/source/state cuts retain their original revisions; no evidence was replayed.
+Static no-capture noarg by-value untyped Closure assignments directly in actual
+root or valid namespace `if`, `elseif` and `else` bodies now admit plain empty named
+descendants. Three originals agree at 80a2707 /375 (strict3 5.875s): anonymous
+fullnames preexist Closure creation, skipped variables stay untouched, reversed
+calls publish named classes in call order, and guarded repeats preserve one
+publication with independent defaults and lexical namespaces. Author and independent
+fixtures pass 577 premises: 527 setup/source-frontier and 50 pure queries, with 19
+actual PhpSteps for creation/capture, PDRCLASS/CCLINK publication, eligible class
+no-op and saved-frame allocation. The original peer elseif-list type elaboration
+failure retains zero credit; only that type variable changed before affected EL/SL.
+Syntax preparation/elaboration adds no runtime credit. Nested or Block-contained
+If paths, loops, nested factories, wider targets/captures/signatures and consumers
+remain required.
+[Conditional-Closure ledger](coverage/semantics/anonymous-conditional-closure-rtd-review.json).
+
+The earlier branch-function cut retains source4/state665 at d66d951a, selected
+case-insensitive same-name callable origins and both original fixture failures0.
+Its 375 join over a123a1a5 passes strict3 at 8bde7b9d (5.925s); independent review
+preserves the reached parentless class-link identity. Historical conditional-Closure
+admission negatives are superseded only for the new direct forms, at their original
+cut without replay. Private native/source/state records retain their revisions.
 [Branch-factory ledger](coverage/semantics/anonymous-branch-factory-rtd-review.json).
 
 The earlier direct-main cut retains source4/state578 at 9386d628, duplicate executed

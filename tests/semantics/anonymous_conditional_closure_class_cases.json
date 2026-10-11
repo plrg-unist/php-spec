@@ -1,0 +1,53 @@
+{
+  "scope": "Plain empty named descendants in exact static no-capture/noattr/noarg/by-value/untyped Closures assigned by value to ordinary named variables directly in actual root or valid namespace If main/elseif/else bodies. Compiled anonymous names exist before selected Closure creation, skipped assignments preserve null sentinels, calls publish the real Closure-owned named class in reverse order, and guarded repeats preserve one publication, independent fresh defaults and lexical namespaces. Named descendants in Closure assignments under nested or Block-contained If paths, loops, nested functions or nested Closures, other targets/captures/signatures and wider consumers remain unsupported.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "conditional-closure-reversed",
+      "source": "<?php\n$leftName = 'class@anonymous' . \"\\0\" . __FILE__ . ':9$1';\n$rightName = 'class@anonymous' . \"\\0\" . __FILE__ . ':15$3';\n$leftBefore = new $leftName; $rightBefore = new $rightName;\necho $leftBefore::class === $leftName && $leftBefore->scope() === $leftName && $rightBefore::class === $rightName ? 'before|' : 'BAD|';\nif (true) {\n    $leftFactory = static function () {\n        class LeftBranchClosurePublished {}\n        return new class { public function scope() { return self::class; } };\n    };\n} elseif (false) {} else {}\nif (false) {} elseif (true) {\n    $rightFactory = static function () {\n        class RightBranchClosurePublished {}\n        return new class {};\n    };\n} else {}\ntry { new LeftBranchClosurePublished; echo 'BAD|'; } catch (Error $caught) { echo 'left-missing|'; }\ntry { new RightBranchClosurePublished; echo 'BAD|'; } catch (Error $caught) { echo 'right-missing|'; }\n$right = $rightFactory();\n$rightNamed = new RightBranchClosurePublished;\necho $right::class === $rightName && $rightNamed::class === 'RightBranchClosurePublished' ? 'right|' : 'BAD|';\ntry { new LeftBranchClosurePublished; echo 'BAD|'; } catch (Error $caught) { echo 'still-missing|'; }\n$left = $leftFactory();\n$leftNamed = new LeftBranchClosurePublished;\necho $left::class === $leftName && $left->scope() === $leftName && $leftNamed::class === 'LeftBranchClosurePublished' ? 'left|' : 'BAD|';\necho $leftBefore !== $left && $rightBefore !== $right && $left !== $right ? 'fresh' : 'BAD';\n",
+      "source_sha256": "0e9d67e1d933cda098d3078dc98c95449d93c5d6f40fb78d6f9c57272a2608d9",
+      "stdout_base64": "YmVmb3JlfGxlZnQtbWlzc2luZ3xyaWdodC1taXNzaW5nfHJpZ2h0fHN0aWxsLW1pc3Npbmd8bGVmdHxmcmVzaA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-conditional-closure-native-32/run-v1/conditional-closure-reversed/command.json",
+      "native_raw_sha256": "8c1bebeabae5fc7d0e99897033227d8141a082ffdcae45b631156775c46b3810"
+    },
+    {
+      "id": "conditional-closure-repeated",
+      "source": "<?php\nnamespace DeclaringBranchClosure;\n$seen = false;\n$name = 'class@anonymous' . \"\\0\" . __FILE__ . ':11$1';\n$before = new $name;\necho $before::class === $name && $before->space() === 'DeclaringBranchClosure' ? 'before|' : 'BAD|';\nif (false) {} elseif (false) {} else {\n    $make = static function () {\n        global $seen;\n        if (!$seen) { $seen = true; class Published {} }\n        return new class {\n            public $value = 0;\n            public function space() { return __NAMESPACE__; }\n        };\n    };\n}\ntry { new Published; echo 'BAD|'; } catch (\\Error $caught) { echo 'missing|'; }\nnamespace CallingBranchClosure;\n$first = $make();\n$published = new \\DeclaringBranchClosure\\Published;\necho $first::class === $name && $first->space() === 'DeclaringBranchClosure' && $published::class === 'DeclaringBranchClosure\\\\Published' ? 'first|' : 'BAD|';\n$first->value = 9;\n$second = $make();\n$namedAgain = new \\DeclaringBranchClosure\\Published;\necho $second::class === $name && $second->space() === 'DeclaringBranchClosure' && $namedAgain::class === $published::class ? 'second|' : 'BAD|';\necho $seen && $before !== $first && $first !== $second && $before !== $second ? 'fresh|' : 'BAD|';\necho $before->value, ':', $first->value, ':', $second->value;\n",
+      "source_sha256": "19d97f672b8488f3d05daf11984c24d031c7c25dd35b7121c2a6c04c97840cd8",
+      "stdout_base64": "YmVmb3JlfG1pc3Npbmd8Zmlyc3R8c2Vjb25kfGZyZXNofDA6OTow",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-conditional-closure-native-32/run-v1/conditional-closure-repeated/command.json",
+      "native_raw_sha256": "5a55765349e03445892274e9b0c9870d6e09f0529cfde83c741f445ebe417809"
+    },
+    {
+      "id": "conditional-closure-prior-deferred",
+      "source": "<?php\nnamespace BranchClosureSide;\n$chosenName = 'class@anonymous' . \"\\0\" . __FILE__ . ':23$5';\n$skippedName = 'class@anonymous' . \"\\0\" . __FILE__ . ':28$7';\n$make = null; $main = null; $falseElseif = null; $skipped = null;\n$before = new $chosenName;\n$skippedBefore = new $skippedName;\n$namedBefore = new Exception;\necho $before::class === $chosenName && $before->space() === 'BranchClosureSide' && $skippedBefore::class === $skippedName && $namedBefore::class === 'BranchClosureSide\\\\eXcEpTiOn' && $make === null ? 'before|' : 'BAD|';\nif (false) {\n    $main = static function () {\n        class MainHidden {}\n        return new class {};\n    };\n} elseif (false) {\n    $falseElseif = static function () {\n        class FalseHidden {}\n        return new class {};\n    };\n} elseif (true) {\n    $make = static function () {\n        if (false) { class Exception {} }\n        return new class { public $value = 0; public function space() { return __NAMESPACE__; } };\n    };\n} else {\n    $skipped = static function () {\n        class ElseHidden {}\n        return new class {};\n    };\n}\necho $main === null && $falseElseif === null && $skipped === null ? 'skipped|' : 'BAD|';\nclass eXcEpTiOn {}\n$first = $make();\necho $first::class === $chosenName && $first->space() === 'BranchClosureSide' && $first->value === 0 ? 'first|' : 'BAD|';\n$first->value = 9;\nnamespace BranchClosureCaller;\n$second = $make();\necho $second::class === $chosenName && $second->space() === 'BranchClosureSide' && $second->value === 0 ? 'second|' : 'BAD|';\ntry { new \\BranchClosureSide\\FalseHidden; echo 'BAD|'; } catch (\\Error $caught) { echo 'elseif-skipped|' ; }\ntry { new \\BranchClosureSide\\ElseHidden; echo 'BAD|'; } catch (\\Error $caught) { echo 'else-skipped|' ; }\n$lastLine = __LINE__ + 1;\n$last = new class {};\n$lastName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . $lastLine . '$8';\necho $last::class === $lastName && $last !== $before && $last !== $skippedBefore ? 'last|' : 'BAD|';\necho $before !== $first && $first !== $second && $before->value === 0 && $first->value === 9 ? 'fresh' : 'BAD';\n",
+      "source_sha256": "af20655a970c4fdc750271d69360b45c9be025d54b3d4308fd1ead4c9195dcb5",
+      "stdout_base64": "YmVmb3JlfHNraXBwZWR8Zmlyc3R8c2Vjb25kfGVsc2VpZi1za2lwcGVkfGVsc2Utc2tpcHBlZHxsYXN0fGZyZXNo",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-conditional-closure-native-32/run-v1/conditional-closure-prior-deferred/command.json",
+      "native_raw_sha256": "f80bb15d7d5fcc3cb774a6f93b4e81890a39496052cb224897534b1ac9dbf108"
+    }
+  ]
+}

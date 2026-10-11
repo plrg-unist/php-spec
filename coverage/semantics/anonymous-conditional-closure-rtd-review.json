@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "feature": "classes.anonymous",
+  "status": "partial",
+  "scope": "Plain empty named descendants inside exact static no-capture/noattr/noarg/by-value/untyped Closures assigned by value to ordinary named variables directly in actual root or valid namespace If main/elseif/else bodies. Existing authenticated Block and direct named-function contexts remain admitted. Named descendants under nested or Block-contained If paths, loops, nested functions or nested Closures, other targets/captures/signatures and wider consumers remain Unsupported; anonymous-only historical contexts are preserved.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/anonymous_conditional_closure_class_cases.json"
+  },
+  "semantic_revision": "80a2707ffd335253edd6273bbd8dfd793aab6316",
+  "private_base": "9ac477cb893ce9065596a5f4c80b2238079b0285",
+  "module_count": 375,
+  "implementation": {
+    "path": "spec/semantics/383-anonymous-classes.watsup",
+    "rule": "The existing full Closure-assignment arm now requires authenticated top_path OR the existing source-authenticated conditional_factory_path for its containing statement. Length is checked before slicing; the exact RHS suffix, real expression statement, by-value assignment, ordinary variable LHS and exact static/noattr/noarg/no-capture/by-value/untyped Closure stay mandatory. Actual If and ElseIf/Else ancestry and namespace hosts are authenticated. Named-function admission, canonical occurrences, full class/source/CODE/name/EARLY/count and runtime rules are unchanged; no new tasks, fields, modules, schema or adapter.",
+    "publication": "Anonymous fullnames exist before selected Closure creation. Skipped assignment variables retain their prior values. Actual creation/capture creates the selected REALCLOSURE instance from its compiled template; calls publish its source-selected named class and PDRCLASS/CCLINK history under genuine Closure targets/current/callsite and saved caller frames. Reversed calls publish in call order; guarded repeats preserve one class publication and independent defaults with lexical namespaces.",
+    "boundary": "Historical31 conditional-Closure admission negatives are superseded only for the admitted direct forms, at their original d66d cut without replay. Placement helpers alone certify placement/presence, not a full assignment/signature or terminal occurrence. Namespace helper-alone terminal and zero-cost ordering limits remain; terminal constructor receipts accept older allocated same-class objects."
+  },
+  "engine_evidence": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_if (around 6186) compiles each branch body with selection jumps; anonymous/class RTD keys are consumed at compilation independently of runtime branch selection.",
+    "vendor/php-src/Zend/zend_compile.c: zend_begin_func_decl (around 8418) emits ZEND_DECLARE_LAMBDA_FUNCTION for the selected Closure expression; zend_compile_func_decl_ex and zend_compile_closure_uses preserve lexical function scope and capture definitions. Closure definitions do not consume a class RTD key.",
+    "spec/semantics/116-closures.watsup: closure_create/closure_capture use genuine REALCLOSURE objects and CLOSURE_CAPTURE tasks. Existing 80 calls select the actual Closure target/template; 190/196 authenticate named publication/callsite causes and 184 adds CCLINK for empty named classes."
+  ],
+  "native_cut": {
+    "revision": "9ac477cb893ce9065596a5f4c80b2238079b0285",
+    "report": ".tools/anonymous-class-20/.tools/anonymous-conditional-closure-native-32/run-v1/report.json",
+    "originals": 3,
+    "normal": 3,
+    "exit_status": 0
+  },
+  "source_cut": {
+    "revision": "80a2707ffd335253edd6273bbd8dfd793aab6316",
+    "report": ".tools/anonymous-class-20/.tools/anonymous-conditional-closure-model-32/run-v1/report.json",
+    "native_agreements": 3,
+    "normal": 3,
+    "seconds": [
+      15.689059706404805,
+      13.887376498430967,
+      44.126694990321994
+    ]
+  },
+  "strict": {
+    "revision": "80a2707ffd335253edd6273bbd8dfd793aab6316",
+    "report": ".tools/anonymous-class-20/.tools/anonymous-conditional-closure-gate-32/report.json",
+    "premises": 3,
+    "seconds": 5.874964952468872
+  },
+  "state_revision": "80a2707ffd335253edd6273bbd8dfd793aab6316",
+  "state_cuts": [
+    {
+      "group": "reversed",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-conditional-closure-state-32/report.json",
+      "checks": 204,
+      "setup_source_frontier_checks": 195,
+      "pure_queries": 9,
+      "PhpSteps": 8,
+      "seconds": 34.35580849647522
+    },
+    {
+      "group": "repeated",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-conditional-closure-state-32/report.json",
+      "checks": 161,
+      "setup_source_frontier_checks": 155,
+      "pure_queries": 6,
+      "PhpSteps": 5,
+      "seconds": 21.3900408744812
+    },
+    {
+      "group": "prior-deferred",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-conditional-closure-peer-state-32/report-retry1.json",
+      "checks": 212,
+      "setup_source_frontier_checks": 177,
+      "pure_queries": 35,
+      "PhpSteps": 6,
+      "seconds": 114.38926577568054
+    }
+  ],
+  "state_totals": {
+    "checks": 577,
+    "setup_source_frontier_checks": 527,
+    "pure_queries": 50,
+    "PhpSteps": 19
+  },
+  "state_method": "Exact original bytes/file/cwd/checked programmes and installed source/CODE projections authenticate shared RTD counts, qualified eligible owners, selected and skipped templates and genuine branch execution heads. Eight real creation/capture steps prove three author and one independent selected Closure instances before calls, while anonymous instances already exist. Three actual named-class STMT steps append authentic Closure/callsite PDRCLASS and CCLINK histories in reversed/guarded call order under saved caller frames. Seven real anonymous allocations preserve selected template/instance/current and fresh defaults, including mutation0\u21929\u2192fresh0 across namespace switches. One eligible case-spelled class statement preserves the whole state apart from its task. The skipped variables remain null sentinels; selected and skipped anonymous names remain live before creation. Fifty distinct placement/signature/target/prefix/receipt/cause queries are pure; setup premises are not unique PHP states or behaviours.",
+  "syntax_only": {
+    "preparation": ".tools/anonymous-class-20/.tools/anonymous-conditional-closure-state-32/preparation.json",
+    "checked_originals": 3,
+    "frontend_adapter_workers": 6,
+    "elaboration": [
+      ".tools/anonymous-class-20/.tools/anonymous-conditional-closure-state-32/report-elab.json",
+      ".tools/anonymous-class-20/.tools/anonymous-conditional-closure-peer-state-32/report-elab-retry1.json"
+    ],
+    "scope": "Accepted author EL2 and affected peer EL1 perform parse/type elaboration only, before their strict SL execution. Preparation runs syntax-only Workers; no PHP semantic execution.",
+    "runtime_credit": 0
+  },
+  "validation": "Closed selected records preserve original bytes/profile/file/cwd/streams, executed binary identities and stable watched inputs. All three native/source programmes complete normally with exact bytes/exit0. Accepted strict/state/elaboration exits+cleanup0, empty owned groups and no unrun. Serial jobs1: PHP55s, model45s/host55s/100000steps, syntax Worker30s, elab30s, strict/state120s. Retained project-local binaries reused; no fresh build/offline claim. Large raw evidence remains ignored outside Git; original cuts/failures retain their identities.",
+  "catalogue": {
+    "path": "tests/semantics/anonymous_conditional_closure_class_cases.json",
+    "cases": 3,
+    "runner": "tests/semantics/method_runtime.py --catalogue tests/semantics/anonymous_conditional_closure_class_cases.json",
+    "scope": "Metadata-only publication of unchanged originals adds no execution credit. Native hashes identify retained immutable START records; source/path/cwd/raw observations retain their original native/model cuts."
+  },
+  "remaining": [
+    "Named descendants under nested or Block-contained If factory paths, loops, nested functions or nested Closures; other Closure targets, captures/signatures, wider named bodies/modifiers and complete RTD/publication ordering.",
+    "Include/eval units, parents/interfaces/attributes, wider anonymous members/defaults/consumers and constructor arguments/types/nonpublic access."
+  ],
+  "engine_bugs_or_intentional_divergence": "None identified.",
+  "failures": [
+    {
+      "phase": "original peer212 type elaboration before main",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-conditional-closure-peer-state-32/report-elab.json",
+      "scope": "The outer If source pattern used general statement_elseif* where generated phpType53 requires SEQUENCE phpType54*. Original builder/fixture/plan/drivers remain in branch-type-failure-v1 with raw stdout elaboration error at 64; CLI exit+cleanup0 is not a pass. Stable inputs, reaped/empty group; original SL remained unrun and runtime credit 0. Correct only the narrow elseif-list type variable, then affected EL1/SL1 passes. Semantics/source/native/strict and author365 are unchanged, with no unrelated replay.",
+      "runtime_credit": 0
+    }
+  ],
+  "independent_review": "comp_review_21 accepted exact383, native3/source3/strict3, authentic source/CODE projections and reached state heads/deltas plus pure controls. Author365 and independent212 closed records are independently raw-bound at 80a; original peer type failure 0 is retained and only its narrow fixture correction was rerun."
+}

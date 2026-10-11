@@ -113,11 +113,16 @@ separates these real publication/allocation/fatal steps from pure placement quer
 Named descendants in nested or Block-contained If function paths, loops and
 other unsupported function ancestors remain Unsupported.
 Variable assignments to static no-capture noarg by-value untyped Closures at root
-or a valid namespace body, including authenticated standalone Block chains, also
-admit plain empty named descendants. Admission authenticates the actual expression
-statement, by-value assignment, ordinary variable target, Closure signature and every
-Block ancestor. Named descendants in assignments under conditional/loop/nested-function
-or nested-Closure ancestors, other targets, captures and signatures remain Unsupported.
+or a valid namespace body, through authenticated standalone Block chains or directly
+in actual `if` main, `elseif` or `else` bodies, admit plain empty named descendants.
+Admission authenticates the expression statement, by-value assignment, ordinary
+variable target, exact Closure signature and actual Block or conditional ancestors.
+Anonymous names exist before creation; skipped assignments preserve their variables.
+The [conditional-Closure review](../../coverage/semantics/anonymous-conditional-closure-rtd-review.json)
+separates real creation/capture, named publication and fresh allocations from pure
+placement/signature/receipt queries. Named descendants under nested or Block-contained
+If paths, loops, nested functions or nested Closures, other targets, captures and
+signatures remain Unsupported.
 The [block-Closure review](../../coverage/semantics/anonymous-block-closure-rtd-review.json)
 separates real Block/creation/publication/allocation steps from pure admission queries.
 Runtime publication appends a
