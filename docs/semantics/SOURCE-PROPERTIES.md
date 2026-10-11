@@ -47,9 +47,16 @@ origin restoration through the call. `isset` tests the returned nullness;
 boolean branch while the receiver remains live. Two originals and 162 state
 premises (143 reached, 19 derived) pass in the
 [quiet hook review](../../coverage/semantics/quiet-get-hooks-review.json).
+Literal CV and `$this` coalescing also invoke these getters and retain their
+actual returned value. Zero and false skip the fallback; null evaluates the
+original RHS at the restored parent and its emitted child line. Result ownership
+survives the extra base-copy decrement and receiver cleanup; the last kept owner
+then releases the returned object. Two originals and 249 state premises
+(224 reached, 25 derived) pass in the
+[coalesce review](../../coverage/semantics/coalesce-get-hooks-review.json).
 Hooked object iteration is explicit Unsupported rather than a raw storage view;
 array casts retain ordinary storage only. Defaulted virtual/set/byref hooks,
-inheritance/traits, temporary/computed receivers, coalescing and wider
+inheritance/traits, temporary/computed receivers, coalescing assignment and wider
 quiet/reference/indirect access
 and hooked unset remain boundaries.
 
