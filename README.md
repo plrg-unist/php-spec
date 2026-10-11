@@ -1303,13 +1303,15 @@ binds three originals to actual publication, no-op and fresh-allocation checks.
 Its 375 join over 0d53475a retains the tested 55dc compiler check after review of
 the guarded retired-object paths; no private cuts were replayed.
 Exact noarg by-value untyped named functions directly in root or namespace `if`
-main bodies now admit plain empty named declarations. Anonymous fullnames exist
-before callable publication; executed function statements publish once, and calls
-then publish their named classes. The [conditional-factory review](coverage/semantics/anonymous-conditional-factory-rtd-review.json)
-checks skipped declarations, reverse calls, fresh defaults and a second executed
-same-name declaration failing before either body runs.
-Its 375 join over 8087545b passes strict3 at 78decf21 (5.875s), covering the shared
-task datatype and scalar-echo guard compatibility; private source/state cuts retain
+main, `elseif` or `else` bodies admit plain empty named declarations. Anonymous
+fullnames exist before callable publication; executed function statements publish once, and calls
+then publish their named classes. The [branch-factory review](coverage/semantics/anonymous-branch-factory-rtd-review.json)
+checks skipped branches, reverse calls, fresh defaults and the selected callable
+origin when mutually exclusive branches share a case-insensitive function name.
+The earlier [conditional-factory review](coverage/semantics/anonymous-conditional-factory-rtd-review.json)
+retains duplicate executed declaration failure before either body runs.
+Its earlier 375 join over 8087545b passes strict3 at 78decf21 (5.875s), covering
+the shared task datatype and scalar-echo guard compatibility; private source/state cuts retain
 their original revisions.
 Static no-capture noarg by-value untyped Closures assigned to ordinary variables
 at root/namespace body or through authenticated standalone Block chains also admit
@@ -1318,7 +1320,7 @@ binds three originals and 18 actual steps for Block entry, Closure capture,
 call-order publication and fresh defaults. The earlier
 [direct-Closure review](coverage/semantics/anonymous-named-closure-rtd-review.json)
 retains fatal redeclaration before another allocation.
-The current Block Closure join of 375 modules over 92f726a3 passes strict3 at
+The earlier Block Closure join of 375 modules over 92f726a3 passes strict3 at
 fbacca7a (5.976s); private native/source/state cuts retain their original revisions.
 Wider Closure targets/placements/signatures, function placement/signatures and RTD/publication contexts,
 constructor arguments/types, inheritance, attributes and broader consumers remain required.

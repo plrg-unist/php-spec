@@ -1,0 +1,64 @@
+{
+  "scope": "Plain empty named descendants in exact noattr/noarg/by-value/untyped functions directly in actual root or valid namespace If elseif/else bodies. Compiled anonymous names precede branch callable publication; selected calls publish named classes in actual call order, guarded repeats preserve fresh defaults/lexical namespaces, and skipped functions/classes remain absent. Mutually exclusive same-casefold functions select the executed else origin, including its distinct class and method result. Named descendants in functions under nested or Block-contained If paths, loops or other unsupported ancestors, wider signatures and conditional Closure assignments remain unsupported.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "branch-factory-reversed",
+      "source": "<?php\n$leftName = 'class@anonymous' . \"\\0\" . __FILE__ . ':12$1';\n$rightName = 'class@anonymous' . \"\\0\" . __FILE__ . ':18$3';\n$leftBefore = new $leftName;\n$rightBefore = new $rightName;\necho $leftBefore::class === $leftName && $rightBefore::class === $rightName ? 'before|' : 'BAD|';\ntry { makeElseIfLeft(); echo 'BAD|'; } catch (Error $caught) { echo 'left-function-missing|'; }\ntry { makeElseRight(); echo 'BAD|'; } catch (Error $caught) { echo 'right-function-missing|'; }\nif (false) { echo 'BAD|'; } elseif (false) { echo 'BAD|'; } elseif (true) {\n    function makeElseIfLeft() {\n        class ElseIfLeftPublished {}\n        return new class {};\n    }\n} else { echo 'BAD|'; }\nif (false) { echo 'BAD|'; } else {\n    function makeElseRight() {\n        class ElseRightPublished {}\n        return new class {};\n    }\n}\ntry { new ElseIfLeftPublished; echo 'BAD|'; } catch (Error $caught) { echo 'left-class-missing|'; }\ntry { new ElseRightPublished; echo 'BAD|'; } catch (Error $caught) { echo 'right-class-missing|'; }\n$right = makeElseRight();\necho $right::class === $rightName ? 'right|' : 'BAD|';\nnew ElseRightPublished;\ntry { new ElseIfLeftPublished; echo 'BAD|'; } catch (Error $caught) { echo 'left-still-missing|'; }\n$left = makeElseIfLeft();\necho $left::class === $leftName ? 'left|' : 'BAD|';\nnew ElseIfLeftPublished;\necho $leftBefore !== $left && $rightBefore !== $right ? 'fresh' : 'BAD';\n",
+      "source_sha256": "35a88195c59212f99ad838cc168e9640e840ef8b167ba1377c9c9a8d60c66d30",
+      "stdout_base64": "YmVmb3JlfGxlZnQtZnVuY3Rpb24tbWlzc2luZ3xyaWdodC1mdW5jdGlvbi1taXNzaW5nfGxlZnQtY2xhc3MtbWlzc2luZ3xyaWdodC1jbGFzcy1taXNzaW5nfHJpZ2h0fGxlZnQtc3RpbGwtbWlzc2luZ3xsZWZ0fGZyZXNo",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-branch-factory-native-31/run-v1/branch-factory-reversed/command.json",
+      "native_raw_sha256": "73a874ecfd2ad33a2be5bc49d254c57d38fbd6389399aeb1135c091c758545a8"
+    },
+    {
+      "id": "branch-factory-repeated",
+      "source": "<?php\nnamespace DeclaringBranches;\n$seen = false;\n$anonName = 'class@anonymous' . \"\\0\" . __FILE__ . ':12$1';\n$before = new $anonName;\necho $before::class === $anonName ? 'before|' : 'BAD|';\ntry { makeElseGuarded(); echo 'BAD|'; } catch (\\Error $caught) { echo 'function-missing|'; }\nif (false) { echo 'BAD|'; } elseif (false) { echo 'BAD|'; } else {\n    function makeElseGuarded() {\n        global $seen;\n        if (!$seen) { $seen = true; class Published {} }\n        return new class {\n            public $value = 0;\n            public function space() { return __NAMESPACE__; }\n        };\n    }\n}\ntry { new Published; echo 'BAD|'; } catch (\\Error $caught) { echo 'class-missing|'; }\nnamespace CallingBranches;\n$first = \\DeclaringBranches\\makeElseGuarded();\necho $first::class === $anonName && $first->space() === 'DeclaringBranches' ? 'first|' : 'BAD|';\nnew \\DeclaringBranches\\Published;\n$first->value = 9;\n$second = \\DeclaringBranches\\makeElseGuarded();\necho $second::class === $anonName && $second->space() === 'DeclaringBranches' ? 'second|' : 'BAD|';\necho $first !== $second && $before !== $first && $before !== $second ? 'fresh|' : 'BAD|';\necho $before->value, ':', $first->value, ':', $second->value;\n",
+      "source_sha256": "b1bd94876e55057e1b6a9219c6940e150d7ac634aa31aa8eaf7eb49b17e7441c",
+      "stdout_base64": "YmVmb3JlfGZ1bmN0aW9uLW1pc3Npbmd8Y2xhc3MtbWlzc2luZ3xmaXJzdHxzZWNvbmR8ZnJlc2h8MDo5OjA=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-branch-factory-native-31/run-v1/branch-factory-repeated/command.json",
+      "native_raw_sha256": "148587c71cac382a73e7bac98c08a825416bdfb9c8c5b03c8915413d3c6fe45e"
+    },
+    {
+      "id": "branch-factory-prior-deferred",
+      "source": "<?php\nnamespace BranchFactorySide;\n$selectedName = 'class@anonymous' . \"\\0\" . __FILE__ . ':24$5';\n$skippedName = 'class@anonymous' . \"\\0\" . __FILE__ . ':29$7';\n$before = new $selectedName;\n$skipped = new $skippedName;\n$named = new Exception;\necho $before::class === $selectedName && $before->space() === 'BranchFactorySide' && $skipped::class === $skippedName && $named::class === 'BranchFactorySide\\\\eXcEpTiOn' ? 'before|' : 'BAD|';\ntry { Make(); echo 'BAD|'; } catch (\\Error $caught) { echo 'missing|'; }\ntry { SkippedElse(); echo 'BAD|'; } catch (\\Error $caught) { echo 'skipped|'; }\nif (false) {\n    function MainSkipped() {\n        class MainHidden {}\n        return new class {};\n    }\n} elseif (false) {\n    function FalseElseif() {\n        class FalseHidden {}\n        return new class {};\n    }\n} elseif (true) {\n    function Make() {\n        if (false) { class Exception {} }\n        return new class { public $value = 0; public function space() { return __NAMESPACE__; } };\n    }\n} else {\n    function SkippedElse() {\n        class ElseHidden {}\n        return new class {};\n    }\n}\nclass eXcEpTiOn {}\n$first = Make();\necho $first::class === $selectedName && $first->space() === 'BranchFactorySide' && $first->value === 0 ? 'first|' : 'BAD|';\n$first->value = 9;\nnamespace BranchFactoryCaller;\n$second = \\BranchFactorySide\\Make();\necho $second::class === $selectedName && $second->space() === 'BranchFactorySide' && $second->value === 0 ? 'second|' : 'BAD|';\ntry { \\BranchFactorySide\\FalseElseif(); echo 'BAD|'; } catch (\\Error $caught) { echo 'elseif-skipped|'; }\ntry { \\BranchFactorySide\\SkippedElse(); echo 'BAD|'; } catch (\\Error $caught) { echo 'else-skipped|'; }\n$lastLine = __LINE__ + 1;\n$last = new class {};\n$lastName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . $lastLine . '$8';\necho $last::class === $lastName ? 'last|' : 'BAD|';\necho $before !== $first && $first !== $second && $before !== $second && $skipped !== $first && $last !== $first && $before->value === 0 && $first->value === 9 ? 'fresh' : 'BAD';\n",
+      "source_sha256": "fcc46830018456dcaa58b8a11ccf5f6ad1da3e3511e664263cee9796f5d00da4",
+      "stdout_base64": "YmVmb3JlfG1pc3Npbmd8c2tpcHBlZHxmaXJzdHxzZWNvbmR8ZWxzZWlmLXNraXBwZWR8ZWxzZS1za2lwcGVkfGxhc3R8ZnJlc2g=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-branch-factory-native-31/run-v1/branch-factory-prior-deferred/command.json",
+      "native_raw_sha256": "c2a3038187df4ccb111f3c6855d426e6a99893a6eb5e655183a738aceace3282"
+    },
+    {
+      "id": "branch-factory-exclusive-name",
+      "source": "<?php\n$chosenName = 'class@anonymous' . \"\\0\" . __FILE__ . ':13$3';\n$before = new $chosenName;\necho $before::class === $chosenName && $before->kind() === 'chosen' ? 'before|' : 'BAD|';\nif (false) {} elseif (false) {\n    function SameBranches() {\n        class HiddenDuplicateBranch {}\n        return new class { public function kind() { return 'hidden'; } };\n    }\n} else {\n    function samebranches() {\n        class ChosenDuplicateBranch {}\n        return new class { public function kind() { return 'chosen'; } };\n    }\n}\n$chosen = SameBranches();\n$named = new ChosenDuplicateBranch;\necho $chosen::class === $chosenName && $chosen->kind() === 'chosen' && $named::class === 'ChosenDuplicateBranch' ? 'selected|' : 'BAD|';\ntry { new HiddenDuplicateBranch; echo 'BAD|'; } catch (Error $caught) { echo 'hidden|'; }\necho $before !== $chosen ? 'fresh' : 'BAD';\n",
+      "source_sha256": "a39dc00aaa6e5df68e522f5fb02f290c820d04777d225dea518035b853990a20",
+      "stdout_base64": "YmVmb3JlfHNlbGVjdGVkfGhpZGRlbnxmcmVzaA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-branch-factory-native-31/run-exclusive-name/branch-factory-exclusive-name/command.json",
+      "native_raw_sha256": "f4be584949c110a40b4f7cf977374ff4d1a649f196f1522c53ee39353074ab58"
+    }
+  ]
+}

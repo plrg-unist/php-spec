@@ -23,23 +23,28 @@ Private source2 / 228+6 checks retain their original cuts.
 [Declare ledger](coverage/semantics/compiler-declare-review.json).
 
 Plain empty named descendants now compile inside exact noarg by-value untyped
-named functions directly in actual root or valid namespace `if` main bodies.
-Four fresh originals agree at 9386d628 /375 (strict3 5.775s): anonymous fullnames
-are live before callable publication; skipped functions stay absent, calls publish
-named classes in their actual order, and guarded repeats return fresh defaults with
-lexical namespaces. A second executed same-name function declaration fails before
-either body runs, preserving the first callable and history. Author and independent
-fixtures pass 578 checks: 536 setup/source-frontier premises and 42 pure queries,
-with 17 actual PhpSteps for function/class publication, eligible class no-op,
-anonymous allocation under saved frames and immediate duplicate-callable fatal.
-The fatal fixture preserves all class/object/allocation state; no shutdown cleanup
-claim is made. The original author fixture
-parser failure retains zero credit; only chained-update spelling was corrected.
-Syntax preparation/elaboration adds no runtime credit. Elseif/else, nested or
-Block-contained If paths, loops, wider signatures and conditional Closure
+named functions directly in actual root or valid namespace `if`, `elseif` and
+`else` bodies. Four fresh originals agree at d66d951a /375 (strict3 5.972s):
+anonymous fullnames are live before callable publication, skipped branches stay
+absent, reversed calls publish named classes in call order, and guarded repeats
+return independent defaults with lexical namespaces. Mutually exclusive
+case-insensitive same-name functions dispatch to the published else origin.
+Author and independent fixtures pass 665 premises: 617 setup/source-frontier
+premises and 48 pure queries, with 18 actual PhpSteps for function/class publication,
+eligible class no-op and saved-frame anonymous allocation. The two original state
+failures retain zero credit: the copied guard expected false after source assignment
+to true, and the whole-state class equality omitted existing CCLINK history.
+Only these affected fixtures change; passed groups and source/native/strict cuts
+remain frozen. Syntax preparation/elaboration adds no runtime credit. Nested or
+Block-contained If function paths, loops, wider signatures and conditional Closure
 assignments remain required.
-The 375 join over 8087545b passes strict3 at 78decf21 (5.875s), including shared
-task structuring and scalar-echo guard compatibility. Private source/state cuts
+[Branch-factory ledger](coverage/semantics/anonymous-branch-factory-rtd-review.json).
+
+The earlier direct-main cut retains source4/state578 at 9386d628, duplicate executed
+callable fatal before either body runs, and its original parser failure with zero
+credit. The fatal frontier preserves all class/object/allocation state; it makes no
+shutdown cleanup claim. Its 375 join over 8087545b passes strict3 at 78decf21
+(5.875s), including shared task structuring and scalar-echo guard compatibility. Private source/state cuts
 retain their original revisions; no accepted evidence was replayed.
 [Conditional-factory ledger](coverage/semantics/anonymous-conditional-factory-rtd-review.json).
 

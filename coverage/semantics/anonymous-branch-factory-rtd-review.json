@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "feature": "classes.anonymous",
+  "status": "partial",
+  "scope": "Plain empty named descendants inside exact noattr/noarg/by-value/untyped named functions directly in actual root or valid namespace If elseif/else bodies. Existing main-body and authenticated Block functions and exact static Closure assignments remain admitted. Named descendants under nested or Block-contained If function paths, loops or wider signatures remain Unsupported; anonymous-only historical contexts are preserved.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/anonymous_branch_factory_class_cases.json"
+  },
+  "semantic_revision": "d66d951ac444dd98a756e60b741af476c629ae94",
+  "private_base": "9aca6a8a4beb59df2799fad275c5d4bfb89e009b",
+  "module_count": 375,
+  "implementation": {
+    "path": "spec/semantics/383-anonymous-classes.watsup",
+    "rule": "Four disjoint source-authenticated placement arms add root/Ns elseif and else bodies. Each requires actual If and ElseIf/Else ancestors and terminal presence; namespace arms authenticate their real host via top_path. Root elseif5 and namespace main5 are distinguished by actual source nodes. The existing whole named-function source/signature guard remains mandatory. Main/Block/Closure admission, canonical occurrences, complete class/source/CODE/name/EARLY/count receipts and runtime rules are unchanged; no new tasks, fields, modules, schema or adapter.",
+    "publication": "Anonymous class names are live before deferred callable publication. Only an executed branch function STMT appends the authenticated case-folded CALLABLES/PDRFUNCTION entry. Calls use that published origin, including mutually exclusive case-fold-equal names whose first compiled descriptor is skipped, then publish the actual named class under its source-selected function/callsite and saved frame. Guarded repeated calls keep one class publication and fresh defaults.",
+    "boundary": "Historical30 elseif/else admission negatives are superseded only for these direct forms, at their original cut with no replay. Placement helpers alone certify placement/presence, not a complete function-kind/signature occurrence. Namespace helper-alone terminal and zero-cost ordering limits remain; terminal constructor receipts accept older allocated same-class objects."
+  },
+  "engine_evidence": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_if (around6186) compiles every branch body with zend_compile_stmt and emits selection jumps; class RTD consumption is independent of the selected runtime branch.",
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_func_decl_ex/zend_compile_func_decl (around8422) use dynamic function definitions/ZEND_DECLARE_FUNCTION for deferred declarations, without consuming a class RTD key; zend_generate_anon_class_name and zend_build_runtime_definition_key retain class-key consumption.",
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_DECLARE_FUNCTION (around8013) invokes do_bind_function for the actually executed declaration.",
+    "spec/semantics/80-call-control.watsup: call_target selects the case-folded CALLABLES origin and function_at resolves that descriptor; 190-declaration-publication and 196-declaration-causes authenticate publication/callsite histories. Existing184 class_constant_publish adds CCLINK even for an empty published named class."
+  ],
+  "native_cuts": [
+    {
+      "revision": "c61e18d49f810d4895e76ebd9e912b2484c4b146",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-branch-factory-native-31/run-v1/report.json",
+      "originals": 3,
+      "normal": 3,
+      "exit_status": 0
+    },
+    {
+      "revision": "9aca6a8a4beb59df2799fad275c5d4bfb89e009b",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-branch-factory-native-31/run-exclusive-name/report.json",
+      "originals": 1,
+      "normal": 1,
+      "exit_status": 0
+    }
+  ],
+  "source_cuts": [
+    {
+      "revision": "d66d951ac444dd98a756e60b741af476c629ae94",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-branch-factory-model-31/run-v1/report.json",
+      "native_agreements": 4,
+      "normal": 4,
+      "seconds": [
+        12.829523608088493,
+        11.889159463346004,
+        38.009567672386765,
+        9.42597565613687
+      ]
+    }
+  ],
+  "strict": {
+    "revision": "d66d951ac444dd98a756e60b741af476c629ae94",
+    "report": ".tools/anonymous-class-20/.tools/anonymous-branch-factory-gate-31/report.json",
+    "premises": 3,
+    "seconds": 5.9721245765686035
+  },
+  "state_revision": "d66d951ac444dd98a756e60b741af476c629ae94",
+  "state_cuts": [
+    {
+      "group": "reversed",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-branch-factory-state-31/report.json",
+      "checks": 184,
+      "setup_source_frontier_checks": 175,
+      "pure_queries": 9,
+      "PhpSteps": 6,
+      "seconds": 34.31302309036255
+    },
+    {
+      "group": "repeated",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-branch-factory-state-31/report-retry1.json",
+      "checks": 150,
+      "setup_source_frontier_checks": 144,
+      "pure_queries": 6,
+      "PhpSteps": 4,
+      "seconds": 21.853434324264526
+    },
+    {
+      "group": "prior-deferred",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-branch-factory-peer-state-31/report.json",
+      "checks": 211,
+      "setup_source_frontier_checks": 181,
+      "pure_queries": 30,
+      "PhpSteps": 5,
+      "seconds": 116.14824151992798
+    },
+    {
+      "group": "exclusive-name",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-branch-factory-peer-state-31/report-retry1.json",
+      "checks": 120,
+      "setup_source_frontier_checks": 117,
+      "pure_queries": 3,
+      "PhpSteps": 3,
+      "seconds": 19.638367652893066
+    }
+  ],
+  "state_totals": {
+    "checks": 665,
+    "setup_source_frontier_checks": 617,
+    "pure_queries": 48,
+    "PhpSteps": 18
+  },
+  "state_method": "Exact original bytes/file/cwd/checked programs and installed source/CODE projections bind RTD counts, qualified eligible owners, all four branch callables and genuine execution heads. Five real function STMT steps append exact CALLABLES/PDRFUNCTION deltas only for selected branches. Four named-class STMT steps publish the real source-selected function/callsite cause and existing CCLINK history; genuine CURRENT and saved caller frames are checked. Eight actual anonymous allocations distinguish pre-publication instances, reversed calls and repeated independent defaults with lexical namespaces. One eligible case-spelled class statement preserves the whole state apart from its task. The exclusive-name case authenticates the second compiled function as the published call target, then its chosen named class/anonymous instance, while the hidden branch remains unpublished. Forty-eight distinct placement/signature/prefix/receipt/cause queries are pure; setup premises are not unique PHP states or behaviors.",
+  "syntax_only": {
+    "preparation": ".tools/anonymous-class-20/.tools/anonymous-branch-factory-state-31/preparation.json",
+    "checked_originals": 4,
+    "frontend_adapter_workers": 8,
+    "elaboration": [
+      ".tools/anonymous-class-20/.tools/anonymous-branch-factory-state-31/report-elab.json",
+      ".tools/anonymous-class-20/.tools/anonymous-branch-factory-peer-state-31/report-elab.json",
+      ".tools/anonymous-class-20/.tools/anonymous-branch-factory-peer-state-31/report-elab-retry1.json"
+    ],
+    "scope": "Original author/peer EL2 passed at their original fixture cuts. The author literal-only source-order correction reused that grammatical check; the peer added-history equality was elaborated separately before affected SL1. Preparation/elaboration execute no PHP semantics.",
+    "runtime_credit": 0
+  },
+  "validation": "Selected closed records preserve exact source bytes/profile/file/cwd/streams and stable watched inputs. All four native/source programs complete normally with exact bytes and exit0. Accepted strict/state/elaboration host exits+cleanup0, empty owned groups and no unrun; partial original campaigns retain their successful groups separately from failed groups. Serial jobs1: PHP55s, model45s/host55s/100000steps, syntax Worker30s, elab30s, strict/state120s. Retained project-local binaries reused; no fresh build/offline claim. Large raw evidence remains ignored outside Git; historical cuts/failures keep their original identities.",
+  "catalogue": {
+    "path": "tests/semantics/anonymous_branch_factory_class_cases.json",
+    "cases": 4,
+    "runner": "tests/semantics/method_runtime.py --catalogue tests/semantics/anonymous_branch_factory_class_cases.json",
+    "scope": "Metadata-only publication of unchanged originals adds no execution credit. Native command hashes refer to retained immutable START records; source/path/cwd and raw observations remain bound to their original native/model cuts."
+  },
+  "remaining": [
+    "Named descendants in nested or Block-contained If function paths, loops or other unsupported function ancestors; wider signatures/bodies/modifiers and complete RTD/publication ordering.",
+    "Closure assignments under conditional/loop/nested-function/nested-Closure ancestors, other targets/captures/signatures, include/eval units, wider anonymous class and constructor signatures/consumers."
+  ],
+  "engine_bugs_or_intentional_divergence": "None identified.",
+  "failures": [
+    {
+      "phase": "original author repeated150 state expectation",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-branch-factory-state-31/report.json",
+      "scope": "The authentic named-class frontier failed the copied false guard assertion at103 after source line11 had assigned seen=true. Original builder/fixture/plan are preserved in source-order-failure-v1 with raw failure; repeated exit+cleanup1 and zero affected-group runtime credit. Reversed184 passed and remains frozen. Correct only false to true, then affected repeated150 SL-only passes; source/native/strict and accepted reversed184/peer211 were not renewed.",
+      "runtime_credit": 0
+    },
+    {
+      "phase": "original peer exclusive120 publication equality",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-branch-factory-peer-state-31/report.json",
+      "scope": "Chosen callable/current/target/callsite controls passed, then the whole-state class equality omitted existing184 CLASSCONSTANTHISTORY CCLINK at111. Original builder/fixture/plan remain in class-publication-failure-v1 with raw failure, exit+cleanup1 and zero affected-group runtime credit. Prior211 passed and remains frozen. Add only exact CCLINK at the new declaration prefix, then affected exclusive120 EL1/SL1 passes; no prior/source/native/strict replay.",
+      "runtime_credit": 0
+    }
+  ],
+  "independent_review": "comp_review_21 accepted exact383, original native4/source4/strict3, complete checked source/CODE projections and actual state heads/deltas plus pure controls. Both closed author334 and independent331 accepted groups are independently raw-bound at d66d; original failed affected groups remain zero credit and only their narrow fixture corrections were rerun."
+}
