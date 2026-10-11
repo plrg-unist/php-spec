@@ -35,6 +35,8 @@ def $property_info_layout(S, porigin, n) = $property_info_append(pclassdesc.PROP
 def $property_info_layout(S, porigin, n) = eps -- otherwise
 
 dec $trait_property_inherit_message(pstate, ptbytes, ptbytes, ppropertydesc, ppropertydesc) : ptbytes?
+dec $property_hook_covariance_parent(pstate, ppropertydesc, ppropertydesc) : bool
+dec $property_hook_override_fatal(pstate, pclassdesc, ptbytes) : pstate
 dec $class_property_override_issue(pstate, pclassdesc, ppropertydesc*, ppropertydesc*) : ptbytes?
 def $class_property_override_issue(S, pclassdesc_child, eps, ppropertydesc_own*) = eps
 def $class_property_override_issue(S, pclassdesc_child, ppropertydesc_parent :: ppropertydesc_tail*, ppropertydesc_own*) = $class_property_override_issue(S, pclassdesc_child, ppropertydesc_tail*, ppropertydesc_own*)
@@ -68,7 +70,7 @@ def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = ST
   -- if pclassdesc_parent.KIND = "class"
   -- if ~pclassdesc_parent.FINAL
   -- if ~pclassdesc.READONLY /\ pclassdesc_parent.READONLY
-def $activate_parented_class(S, pclassdesc, ptbytes_parent) = $pil_method_fatal(S, pclassdesc.ORIGIN, ptbytes_message, pclassdesc.LINE)
+def $activate_parented_class(S, pclassdesc, ptbytes_parent) = $property_hook_override_fatal(S, pclassdesc, ptbytes_message)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
   -- if pclassdesc_parent.KIND = "class"
