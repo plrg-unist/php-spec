@@ -1373,6 +1373,9 @@ fails; the fatal probe reaches this before any factory body call.
 The [While review](coverage/semantics/anonymous-while-factory-rtd-review.json)
 binds four exact originals, genuine loop selection and publication/allocation
 frontiers; state fixtures stop after their required allocation or direct fatal.
+The 375 join over 30a22375 passes strict3 at 1c0ffdae (5.925s), checking the
+shared task datatype. Review preserves the parentless class-link identity;
+private cuts retain their original revisions.
 The earlier [nested-host review](coverage/semantics/anonymous-nested-branch-rtd-review.json)
 retains source3/state882 and its strict reuse over f37653ce, without replay.
 The earlier [branch-body Block review](coverage/semantics/anonymous-branch-block-rtd-review.json)

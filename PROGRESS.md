@@ -38,6 +38,11 @@ and the direct fatal. Fixtures stop after required allocation or fatal; syntax
 preparation/elaboration add no runtime credit. No executed COMP36 failures.
 Conditional/nested While hosts, additional body Blocks, other loops, nested
 functions/Closures and wider signatures/targets/captures remain required.
+The 375 join over 30a22375 passes strict3 at 1c0ffdae (5.925s), checking the
+shared PROPERTY_GET_LONG task datatype. Independent review preserves the reached
+parentless class-link identity and excludes the intrinsic-bind, typed-getter,
+virtual-hook, collector and Iterator reception paths; private native/source/state
+cuts retain their original revisions without replay.
 [While ledger](coverage/semantics/anonymous-while-factory-rtd-review.json).
 
 The earlier nested-host cut retains source3/state882 and its 75edad90/f37653ce
