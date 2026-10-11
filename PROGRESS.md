@@ -4197,6 +4197,8 @@ Native2/literal1 at 1cb688 and repaired computed1/state237 at 06e6/375 pass
 elaboration failure retain 0; the corrected state reuses its checked program with
 frontend0. Wider expressions remain open; exact maintained relocation needs no
 runtime renewal. See the same ledger.
+Exact 592735d4/375 composition passes preserved state237; native/source/private
+cuts are not renewed.
 
 Object defaults (module252) now create static/no-use source Closures and
 function/method callables in genuine declaring scope. Requested-class templates
