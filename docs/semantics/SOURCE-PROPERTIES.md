@@ -337,9 +337,19 @@ destructor repair. CV reception copies after destruction; owned results detach
 before BASE release, and pending TypeError survives repair.
 The [boolean-string review](../../coverage/semantics/magic-property-boolean-string-review.json)
 records six source agreements and six whole reached groups/997 setup-inclusive
-premises. The original concatenated-echo consumer remains Unsupported: its scratch
-BASE blocks getter entry. A comma-echo observation preserves native output; only
-affected checks resume. PARAMETERBACKINGS and wider targets/conversions remain required.
+premises. At that phase36 cut the original concatenated-echo consumer is Unsupported:
+its scratch BASE blocks getter entry. A comma-echo observation preserves native output;
+only affected checks resume. PARAMETERBACKINGS and wider targets/conversions remain required.
+
+Successful normal scalar EMIT now clears current-frame BASE together with RESULT after
+output. Concat still publishes its result until consumption; saved frame/continuation
+operands and real owners remain intact. Dynamic concat before a getter and inside its
+body now permits later authentic getter entry, including a saved outer concat with a
+delayed live CV read. Real source-conflict TypeError survives receiver detach/repair.
+The [concat-consumer review](../../coverage/semantics/concat-emit-review.json) records
+five exact originals and five whole reached groups/570 setup-inclusive premises.
+Abrupt stringify and existing getter guards stay unchanged. A separate temporary
+Stringable direct-echo timing mismatch remains open with whole-source agreement0.
 
 The compiler and runtime rules are in `135-property-compiler.watsup` and
 `136-property-runtime.watsup`. [The review](../../coverage/semantics/properties-review.json)

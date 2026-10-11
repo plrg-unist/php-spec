@@ -2652,12 +2652,20 @@ Native6 and unchanged CLI1 Unsupported baseline retain `90347840c`; strict375 an
 four source passes retain `eaaf00ba0`. A comma-echo observation correction has identical
 native output; affected conflict/strict source checks and six whole reached groups
 pass 997 setup-inclusive premises at `cdbd762a1`, completing source6 without renewal.
-The original concatenated-echo source remains Unsupported because scratch BASE blocks
-getter entry; its one diagnostic execution has zero agreement credit. Both preparation
+At the phase36 cut the original concatenated-echo source is Unsupported because scratch
+BASE blocks getter entry; its one diagnostic execution has zero agreement credit. Both preparation
 failures retain zero credit. PARAMETERBACKINGS and wider conversions remain required.
 [Boolean-string ledger](coverage/semantics/magic-property-boolean-string-review.json).
 The actual375 join over `619170565` passes strict at `828bad179` (5.769s,
 state/source/native credit0); private source6/state997 are not renewed.
+Successful normal scalar EMIT now clears current-frame scratch BASE after output,
+without changing concat publication, saved owners or getter admission. Five originals
+agree and five whole reached groups pass 570 setup-inclusive premises at `a7ca4b349`;
+strict375 passes (5.730s). Native6 and unchanged baseline2 retain `7a3a39cda`; the kept
+BASE counterexample is now supported. The temporary Stringable control retains its
+preexisting early-destruction mismatch with whole-source agreement0, including its
+matching concat suffix. The fixture preparation failure stays0; earlier cuts are
+not renewed. [Concat-consumer ledger](coverage/semantics/concat-emit-review.json).
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;

@@ -124,7 +124,7 @@ rule PhpStep/name-read-abrupt: S ~> S_name[.TODO = eps]
   -- if ~$computed_string_name_pending(S)
   -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 0], S.RESULT), z)
   -- if S_name.COMPLETION =/= NORMAL
-rule PhpStep/emit: S ~> S_text[.TODO = ptask_tail*][.EVENTS = S_text.EVENTS ++ [OUTPUT n_text*]][.RESULT = KNOWN PNULL]
+rule PhpStep/emit: S ~> S_text[.TODO = ptask_tail*][.EVENTS = S_text.EVENTS ++ [OUTPUT n_text*]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (EMIT z) :: ptask_tail*
   -- if S_read = $resolve(S, S.RESULT)
   -- if S_read.COMPLETION = NORMAL

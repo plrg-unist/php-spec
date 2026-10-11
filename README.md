@@ -1689,10 +1689,16 @@ select a later boolean conflict without converting the cell.
 [Six source agreements and six reached groups](coverage/semantics/magic-property-boolean-string-review.json)
 pass 997 setup-inclusive premises at `cdbd762a1`, covering CV/owned cleanup and
 pending errors. Source credit retains four passes at `eaaf00ba0` and two at `cdbd762a1`.
-The original concatenated-echo source still leaves scratch BASE that blocks getter
-entry; its failure and diagnostic retain zero agreement credit.
+At the phase36 cut the original concatenated-echo source leaves scratch BASE that blocks
+getter entry; its failure and diagnostic retain zero agreement credit.
 The actual375 join over `619170565` passes strict at `828bad179` (5.769s);
 private source/state cuts retain their original inputs.
+Successful scalar echo now consumes the current-frame concat scratch BASE after output.
+[Five exact originals and five whole reached groups](coverage/semantics/concat-emit-review.json)
+pass 570 setup-inclusive premises at `a7ca4b349`, preserving inner getter output,
+saved outer concat continuations, delayed CV reads and pending-error cleanup.
+The separate temporary Stringable direct-echo control still destroys its receiver
+before output; its unchanged model-only observation has zero agreement credit.
 PARAMETERBACKINGS and wider conversions remain required.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded

@@ -503,3 +503,13 @@ switch END consumes identity without reading or releasing it. Shared immutable e
 RW/sparse/deleted/reference/object/destructor and sole-owner/dangling capture remain
 excluded. Source-reached capture proves actual old identity; consistently rewriting
 all historical metadata is outside that proof. No corrected-engine experiment was run.
+
+## Temporary Stringable direct echo: unresolved specification defect
+
+The phase37 control echoes a fresh ordinary Stringable temporary directly and through
+concat. Native direct echo outputs `T|SD|`; the model outputs `T|D|S`, retiring the
+receiver before its returned string is emitted. The concat suffix agrees, but the
+combined original and unchanged model-only control retain whole-source agreement0.
+The [concat-consumer ledger](../../coverage/semantics/concat-emit-review.json) preserves
+both streams and the separate scalar BASE repair; generic STRINGIFY_RESULT retirement
+remains required. No intentional engine divergence is selected.

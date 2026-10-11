@@ -1,0 +1,180 @@
+{
+  "scope": "Normal scalar EMIT consumes current-frame scratch BASE after output; saved continuations and owners, concat publication and abrupt routes remain unchanged.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendored release 34308a6666b2d489c509541ea9befea9e2b42348",
+  "raw_root": ".tools/properties-magic-decimal-current32",
+  "private_parent": "15951738d48e789bda5ef24bc89f2e8403283a0e",
+  "tested_revision": "a7ca4b3493e79fa4058efe5fc4e5cb24ee528c12",
+  "module_count": 375,
+  "modules_manifest_sha256": "fd5102734c6f5967d60c0ca5985d8cac462eea06a09bf1bb8fe2c73ffb049a49",
+  "binaries": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "jobs": 1,
+    "profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  "inputs_sha256": {
+    "spec/semantics/40-control.watsup": "2487324854d214f97bae6bc666d6c46f67bb38a5218b607875b719969a6917bc",
+    "tests/semantics/dynamic_property_warning_sources.py": "13e18907dfebdba3717de2223efff850bd570233dd3be1cc4300a1e34d39381e",
+    "tests/semantics/concat_property_emit_protocol.py": "3d5fdfab63f66e8ec7eab0cdc81c706d82658bd434acdfe80822b4852752b3ef"
+  },
+  "recorder_sha256": {
+    ".tools/concat_emit_native37.py": "72d8748959b6590ef5f23eba3f8c2a476503678aa79fa980d080f695d2779dcc",
+    ".tools/concat_emit_baseline37.py": "8737b90587fe9860e0fc2c55a76959f1aa0c154e0d6ba4007f38a137160a0a2f",
+    ".tools/concat_emit_strict37.py": "185fd1b5dfc9424e4f651b8eb5706366c3b6a18ecc91bee02fd9b635d26ed71b",
+    ".tools/concat_emit_control37.py": "a803af136f63bdf2487bc0876ada1a8b77b67cd3521a21f6ed7e4c6a37ccd8e8",
+    ".tools/concat_emit_state_prepare37.py": "342871f097a1c885654d48081aff1b0ef92e6bb0f22f8729aa2c5357581f70e2"
+  },
+  "primary_sources_sha256": {
+    "review-property-concat-emit-reference-kept37": "b1ba9aa5484b8a23bcdbcabb37b240550fb25f7845a75bdb586c66e2e29cb563",
+    "review-property-concat-emit-reference-drop37": "ac68aa9fa453def8b94fbdd4f7261b3bb75b5662dfcef9985716ca2f4f361099",
+    "review-property-concat-emit-owned37": "88cb9450b7326027699845e57457eaff9f878efadda8441ecd2e0e4d77d991f1",
+    "review-property-concat-emit-source-conflict37": "1aacbca5bece128745a714c5a51701bd7e81f1c1be194117df1ef934b0eb6bdd",
+    "review-property-concat-emit-inner-getter37": "33d2c7b3e8fa7a2bf96ec29b405f9e49357e9c93ea280ada3b26bb832ca159f6"
+  },
+  "stringable_control_sha256": "45b32e83c8a6eb716bec9f477a6b45e99decce284cb7bd7e75ef3921e328e9c9",
+  "native": {
+    "revision": "7a3a39cdae59ccf3554a77dffa8c5d4877df7764",
+    "raw": ".tools/property-concat-emit-native37-w63v5958/report.json",
+    "observations": 6,
+    "native_cap_seconds": 30,
+    "process_exits": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "stderr": "empty",
+    "agreement_credit": 0,
+    "command": "python3 .tools/concat_emit_native37.py"
+  },
+  "unchanged_baseline": {
+    "revision": "7a3a39cdae59ccf3554a77dffa8c5d4877df7764",
+    "raw": ".tools/property-concat-emit-baseline37-lv6t7t_x/report.json",
+    "command": "python3 .tools/concat_emit_baseline37.py",
+    "model_cli_seconds": 60,
+    "process_cap_seconds": 90,
+    "steps": 100000,
+    "kept": "checked CLI1 Unsupported magic getter receiver, signature or recursive access after before|1|",
+    "control": "checked normal0; direct Stringable destruction precedes output",
+    "agreement_credit": 0
+  },
+  "strict": {
+    "raw": ".tools/property-concat-emit-strict37-767d3uu1/report.json",
+    "command": "python3 .tools/concat_emit_strict37.py 1b36f8d0050928504f31f09bc5f0dbc8b1811275",
+    "runner_mode": "SL",
+    "cap_seconds": 120,
+    "process_exit": 0,
+    "stdout": "true\n",
+    "stderr": "",
+    "elapsed_seconds": 5.730340018868446,
+    "state_credit": 0
+  },
+  "source": {
+    "raw": ".tools/dynamic-property-warning-source-gazxhltu/report.json",
+    "command": "python3 tests/semantics/dynamic_property_warning_sources.py source --select review-property-concat-emit-reference-kept37,review-property-concat-emit-reference-drop37,review-property-concat-emit-owned37,review-property-concat-emit-source-conflict37,review-property-concat-emit-inner-getter37",
+    "native_model_process_caps_seconds": [
+      30,
+      60,
+      90
+    ],
+    "steps": 100000,
+    "file_snapshot_version": 2,
+    "passed": 5,
+    "outcomes": "checked accepted normal0; model stdout = raw native = EXPECTED, all stderr empty, diagnostic/reason null"
+  },
+  "stringable_control": {
+    "raw": ".tools/property-concat-emit-control37-rvvjrokz/report.json",
+    "command": "python3 .tools/concat_emit_control37.py",
+    "model_cli_process_caps_seconds": [
+      60,
+      90
+    ],
+    "whole_outcome": "identical to unchanged baseline; normal0/empty stderr",
+    "native_stdout": "direct|T|SD||after-direct|1/1|T|D|concat|S|end|after-concat|2/2|done",
+    "model_stdout": "direct|T|D|S|after-direct|1/1|T|D|concat|S|end|after-concat|2/2|done",
+    "source_agreement": 0,
+    "native_evaluations": 0,
+    "state_credit": 0,
+    "status": "OPEN generic STRINGIFY_RESULT receiver retirement; matching concat suffix adds no agreement"
+  },
+  "preparation": {
+    "revision": "1b36f8d0050928504f31f09bc5f0dbc8b1811275",
+    "raw": ".tools/property-concat-emit-state-prep37-msce6pcb/report.json",
+    "prepared_premises": 570,
+    "evaluations": 0,
+    "bridge": "a7ca classification-only move of unchanged Stringable bytes to NATIVE_CONTROLS; five originals/helper/modules unchanged",
+    "command": "python3 .tools/concat_emit_state_prepare37.py"
+  },
+  "state": {
+    "command": "python3 tests/semantics/concat_property_emit_protocol.py --group GROUP",
+    "runner_mode": "SL",
+    "cap_seconds": 120,
+    "count_kind": "whole setup-inclusive body premises, not unique transitions",
+    "passed": 570,
+    "rows": [
+      {
+        "group": "reference-kept",
+        "premises": 87,
+        "raw": ".tools/property-concat-emit-yrypwl4d/report.json"
+      },
+      {
+        "group": "reference-drop",
+        "premises": 129,
+        "raw": ".tools/property-concat-emit-j0nwmt72/report.json"
+      },
+      {
+        "group": "owned",
+        "premises": 116,
+        "raw": ".tools/property-concat-emit-p33ccozn/report.json"
+      },
+      {
+        "group": "source-conflict",
+        "premises": 135,
+        "raw": ".tools/property-concat-emit-9fgn50zr/report.json"
+      },
+      {
+        "group": "inner-getter",
+        "premises": 103,
+        "raw": ".tools/property-concat-emit-sr9_vb83/report.json"
+      }
+    ],
+    "result": "all process0 true\\n/empty; clean before=after tested revision; raw steps and budget0/1 whole-state equality; actual frames/HELD/heap preserved"
+  },
+  "original_failures": [
+    {
+      "raw": ".tools/property-concat-emit-state-prep37-3j1q0uj4/report.json",
+      "cause": "fixture raw PhpStep relation was prefixed as a boolean; formatter-only correction",
+      "records": 0,
+      "evaluations": 0,
+      "credit": 0
+    }
+  ],
+  "provenance": [
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_ECHO FREE_OP1 after output; ZEND_CONCAT temporary operand release/result lifetime",
+    "spec/semantics/59-concat-expressions.watsup: concat result BASE publication retained",
+    "spec/semantics/168-user-string-runtime.watsup: separate early receiver retirement remains unchanged"
+  ],
+  "review": "props_review_21 independently accepted source/runtime guards, whole reached fixtures and affected raw; no old campaign renewal or engine divergence",
+  "recovery": "Raw paths resolve below raw_root; reports retain exact source/program/fixture/commands/ordered modules/profile/streams. Run native/baseline recovery at their original cut; run affected source/control/state at tested_revision. Providers current32/owned28 remain protected."
+}
