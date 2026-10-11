@@ -38,6 +38,9 @@ parser failure retains zero credit; only chained-update spelling was corrected.
 Syntax preparation/elaboration adds no runtime credit. Elseif/else, nested or
 Block-contained If paths, loops, wider signatures and conditional Closure
 assignments remain required.
+The 375 join over 8087545b passes strict3 at 78decf21 (5.875s), including shared
+task structuring and scalar-echo guard compatibility. Private source/state cuts
+retain their original revisions; no accepted evidence was replayed.
 [Conditional-factory ledger](coverage/semantics/anonymous-conditional-factory-rtd-review.json).
 
 The earlier Block-Closure cut retains source3/state539 at 6e5f5075, with 18 actual

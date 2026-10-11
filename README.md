@@ -1296,6 +1296,9 @@ before callable publication; executed function statements publish once, and call
 then publish their named classes. The [conditional-factory review](coverage/semantics/anonymous-conditional-factory-rtd-review.json)
 checks skipped declarations, reverse calls, fresh defaults and a second executed
 same-name declaration failing before either body runs.
+Its 375 join over 8087545b passes strict3 at 78decf21 (5.875s), covering the shared
+task datatype and scalar-echo guard compatibility; private source/state cuts retain
+their original revisions.
 Static no-capture noarg by-value untyped Closures assigned to ordinary variables
 at root/namespace body or through authenticated standalone Block chains also admit
 plain empty named declarations. The [block-Closure review](coverage/semantics/anonymous-block-closure-rtd-review.json)
