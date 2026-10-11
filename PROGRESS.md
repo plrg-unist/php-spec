@@ -717,10 +717,25 @@ dispatch keep the child slot and scope. Strict375 and two originals pass at
 `64d12f44`. Separate scalar185 (161 reached, 24 derived) and lifetime100
 (all reached) pass at `b589ca70`, checking distinct stored/returned payload
 cleanup. The combined285 timeout retains zero credit; M36 cuts remain frozen.
-Repeated body-unbacked overrides, virtual parents and broader hook inheritance
-remain required. [Effective backing review](coverage/semantics/effective-backed-get-hook-review.json).
+At this cut repeated body-unbacked overrides remained excluded; virtual parents
+and broader hook inheritance remain required.
+[Effective backing review](coverage/semantics/effective-backed-get-hook-review.json).
 Actual375 over `7ba745ca` passes strict initialization at `5afd646c` (5.959 s);
 private source2/scalar185/lifetime100 retain their separate accepted revisions.
+
+Repeated public by-value getter overrides now retain physical backing through
+body-unbacked equal-type declarations without initializers and intervening
+classes without a redeclaration. A bounded walk follows authentic declaring
+descriptors and source parent links to a backed getter; the latest child supplies
+the slot/default and lexical scope. Strict375 and two originals pass at `2549e260`.
+Separate state cuts
+at `4dc91304` retain untyped58, lifetime109 and controls73 (42 reached, 31 derived);
+CV62, inherited This74 and write60 pass at `4503b112`. These check uninitialized/null
+defaults, private/called scope, ordinary writes, bounded ancestry refusals and
+separate stored/returned-object cleanup. Counts include repeated setup and metadata.
+Typed159/typed128 timeouts retain zero credit; M37 cuts stay frozen. No-backed-anchor
+virtual pairs, ordinary-parent/plain redeclarations and broader hook inheritance
+remain required. [Repeated override review](coverage/semantics/repeated-effective-backed-get-hook-review.json).
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,

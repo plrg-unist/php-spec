@@ -1,0 +1,172 @@
+{
+  "scope": "Repeated body-unbacked public plain by-value get overrides with no initializer, identical normalized property TYPE and a source-backed hook anchor, in nonabstract/nonfinal named classes. Plain intervening inheritance retains the ancestor-declared effective descriptor; literal CV/This reads and ordinary writes.",
+  "implementation": {
+    "file": "spec/semantics/382-backed-get-hooks.watsup",
+    "engine": "vendor/php-src/Zend/zend_inheritance.c: do_inherit_property, inherit_property_hook; Zend/zend_compile.c: zend_compile_property_hooks; Zend/zend_object_handlers.c: zend_std_read_property",
+    "behavior": "Keep hook_body_backed and child/default occurrence guards unchanged. Separate override shape from backing evidence and use a class-count-bounded declaring-descriptor/SOURCE_PARENT/parent-layout walk, decreasing fuel at each override hop until a source-body-backed anchor. Distinct declaration origins prevent self-pair admission. No task, default, slot, context or ownership change."
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor pin 34308a6666b2d489c509541ea9befea9e2b42348",
+  "profile": "tests/semantics/profile.json; LC_ALL=C, TZ=UTC, jobs=1, cache=false, det=true",
+  "binaries": {
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "strict_compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+    "AL_compiler_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "SL_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "catalogue": "tests/semantics/repeated_effective_backed_get_hook_cases.json",
+  "native": {
+    "revision": "d6df5f11fc502fbe9c5d511c620cc430dee8133d",
+    "cases": 2,
+    "cap_seconds": 45,
+    "source_agreements": 0,
+    "observations": "Repeated typed declarations begin without initialized storage; untyped declarations retain one null slot. Writes expose one slot 300/5 while newest getters return13/0. Bridge and Grand private helpers are bypassed in favor of Second lexical scope. Stored S releases BS/DS with receiver cleanup while retained R stays LIVE until DR/RN.",
+    "path": ".tools/coalesce-get-hooks-private-32/.tools/repeated-effective-backed-get-hooks-probes-38/native-first/report.json",
+    "sha256": "b7b137317e222cb8dd95f7dbb79173f9251e71f0294b25071733cc1b26abce53"
+  },
+  "unchanged_baseline": {
+    "revision": "d6df5f11fc502fbe9c5d511c620cc430dee8133d",
+    "outcome": "Both genuine checked originals Unsupported inherited property hook override, with empty bytes/events.",
+    "source_agreements": 0,
+    "path": ".tools/coalesce-get-hooks-private-32/.tools/repeated-effective-backed-get-hooks-probes-38/accepted-current-baseline/report.json",
+    "sha256": "5d50efccf705eafcdb55d9f25de643f491f69ecec226262faafed6aa9ccd6d98"
+  },
+  "strict": {
+    "revision": "2549e260d2d9b1ec45a601da7f9e8a0e65a0cf31",
+    "modules": 375,
+    "mode": "SL60 init-only",
+    "elapsed_seconds": 5.779867,
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "path": ".tools/coalesce-get-hooks-private-32/.tools/repeated-effective-backed-get-hooks-probes-38/repeated-effective-backed-hook-compiler-npdx6138/report.json",
+    "sha256": "5c3298901311c99f14ed61c2a495e44f139e2e733268ac7f60a3491f9143f5a7"
+  },
+  "sources": {
+    "revision": "2549e260d2d9b1ec45a601da7f9e8a0e65a0cf31",
+    "agreements": 2,
+    "mode": "model60/outer75/100000 steps, serial jobs1",
+    "outcome": "Both checked originals normal and byte-exact against retained native stdout/stderr/exit.",
+    "path": ".tools/coalesce-get-hooks-private-32/.tools/repeated-effective-backed-get-hooks-probes-38/changed-model-w4dh6s31/report.json",
+    "sha256": "88fbb4226ea028ab9694ca8a3e9f4c2356222e83c5db040811bf6c33878fe6e5"
+  },
+  "state": {
+    "cv": {
+      "revision": "4503b11220b92e428f03b583f89a1798fd28afa0",
+      "reached": 62,
+      "derived": 0,
+      "outcome": "true",
+      "application_evaluations": 1,
+      "source_agreements": 0,
+      "AL_seconds": 5.108173,
+      "SL_seconds": 56.513015,
+      "fixture_sha256": "84710ab80882733f7dd25c6c9be7c5c650a1ac83be5bc5dd370ce6bf25061d08",
+      "observations": "Actual Second descriptor, effective PROP_INITIAL slot and declaring scope; genuine call/frame/result13 and receiver owners1 ->2 ->1.",
+      "path": ".tools/coalesce-get-hooks-private-32/.tools/repeated-effective-backed-get-hook-protocol-4kqxgdko/report.json",
+      "sha256": "bfa8a8166ced5b1de3b4a9f6e44539465a3f3ec82a1be147220bdd29a6b7ff36"
+    },
+    "this": {
+      "revision": "4503b11220b92e428f03b583f89a1798fd28afa0",
+      "reached": 74,
+      "derived": 0,
+      "outcome": "true",
+      "application_evaluations": 1,
+      "source_agreements": 0,
+      "AL_seconds": 5.138678,
+      "SL_seconds": 68.315994,
+      "fixture_sha256": "6bfb8d487d7d2f5fc177e26013c728947c5c731c6bb6bb3910c18f68c677f0a7",
+      "observations": "Inherited Root::parentRead on Grand dispatches the Second getter/private helper with Second lexical scope and Grand called scope; receiver3 ->3 ->2.",
+      "path": ".tools/coalesce-get-hooks-private-32/.tools/repeated-effective-backed-get-hook-protocol-ynhoau2q/report.json",
+      "sha256": "632c92ce4e84744970b934d6155d0a53a37e64fdcbc5f240efb4600d75916e15"
+    },
+    "write": {
+      "revision": "4503b11220b92e428f03b583f89a1798fd28afa0",
+      "reached": 60,
+      "derived": 0,
+      "outcome": "true",
+      "application_evaluations": 1,
+      "source_agreements": 0,
+      "AL_seconds": 5.052988,
+      "SL_seconds": 66.843821,
+      "fixture_sha256": "da1a7b95311799aa8c9e6de87c2e84761934590df42740760192f73d00615e35",
+      "observations": "Genuine Grand CV ASSIGN_ARRAY changes PROP_INITIAL to DIRECT300, then the same effective getter returns13 and the original completes with exact native bytes.",
+      "path": ".tools/coalesce-get-hooks-private-32/.tools/repeated-effective-backed-get-hook-protocol-1zrbbb7z/report.json",
+      "sha256": "554aa589785b33410869dd64eece3f784e2a7e73bfb6cf77c14eb8ca7abce35b"
+    },
+    "controls": {
+      "revision": "4dc9130416c83a1f1a5416ae289776f96c402ea5",
+      "reached": 42,
+      "derived": 31,
+      "outcome": "true",
+      "application_evaluations": 1,
+      "source_agreements": 0,
+      "AL_seconds": 5.198155,
+      "SL_seconds": 26.051076,
+      "fixture_sha256": "e082eeaba188203c09abcd9b4ca89d5295f6ea859241fbf193c13142385f5082",
+      "observations": "Real Second prep and Grand hook entry precede derived fuel/exhaustion, self-pair, type/name/default/source/body/parent/link/cycle, rollback and context-scope refusals.",
+      "path": ".tools/coalesce-get-hooks-private-32/.tools/repeated-effective-backed-get-hook-protocol-_q22qfqc/report.json",
+      "sha256": "31c0d4c67eb2ea674f4d558e1257d9b527ab2fa2084e7569d7fba6128ad927ea"
+    },
+    "untyped": {
+      "revision": "4dc9130416c83a1f1a5416ae289776f96c402ea5",
+      "reached": 58,
+      "derived": 0,
+      "outcome": "true",
+      "application_evaluations": 1,
+      "source_agreements": 0,
+      "AL_seconds": 5.183614,
+      "SL_seconds": 71.08041,
+      "fixture_sha256": "4371523194d292daae7062cb430cd2e0529ca7e1000b19c178a72b291148b12a",
+      "observations": "Actual untyped effective null slot, getter0 and ordinary write5; the checked original completes with exact native bytes.",
+      "path": ".tools/coalesce-get-hooks-private-32/.tools/repeated-effective-backed-get-hook-protocol-ei70qyaj/report.json",
+      "sha256": "d6005f2cead5552df26637e2db4c9e5c40ab39357a18c464882379031d7dcf1a"
+    },
+    "lifetime": {
+      "revision": "4dc9130416c83a1f1a5416ae289776f96c402ea5",
+      "reached": 109,
+      "derived": 0,
+      "outcome": "true",
+      "application_evaluations": 1,
+      "source_agreements": 0,
+      "AL_seconds": 5.189871,
+      "SL_seconds": 58.265835,
+      "fixture_sha256": "3a0a00b031cb9298c7b4cb35f6072e6cac0d872034ba65885ac32ee7c293e5f2",
+      "observations": "Distinct stored S slot and returned R RESULT1 ->BASE+RESULT2 ->keptCV1. Actual post-destructor storage NEXT0, slot release and filtered UNSET-box exit dispose S while R stays live; kept unset then disposes R and clears its weak reference.",
+      "path": ".tools/coalesce-get-hooks-private-32/.tools/repeated-effective-backed-get-hook-protocol-11e41f1d/report.json",
+      "sha256": "e5269bf00d4f035b468e2987095d46421920dd4bfdc053a15e0eaebba169bee7"
+    }
+  },
+  "state_contract": "Six separate AL90 ->SL90 invocations, each rawtrue/exit0/empty stderr/stable inputs, fixture, HEAD and status/reaped. Counts include repeated genuine setup/metadata; no combined or whole typed pass. Original typed assertions are retained across CV/This/write cuts, with only transition-seek prefixes replaced by genuine selected frontiers. Controls/untyped/lifetime clauses and PREFIX remain unchanged from their accepted 4dc913 cuts.",
+  "preserved_zero_credit": [
+    {
+      "revision": "0ec2491833ea016d3c4b17ff2521d98eb93c037d",
+      "kind": "Typed159 timeout",
+      "outcome": "AL passed; SL killed after90.125497s, exit-9 and empty stdout/stderr; evaluation/state/source0, stable4/reaped.",
+      "path": ".tools/coalesce-get-hooks-private-32/.tools/repeated-effective-backed-get-hook-protocol-tu3734ao/report.json",
+      "sha256": "afec85fb6b0fd9ad855c0296a06b1a5afd46d13fb02d561764a0560179980d1e"
+    },
+    {
+      "revision": "4dc9130416c83a1f1a5416ae289776f96c402ea5",
+      "kind": "Typed128 timeout",
+      "outcome": "AL passed; SL killed after90.131704s, exit-9 and empty stdout/stderr; evaluation/state/source0, stable4/reaped.",
+      "path": ".tools/coalesce-get-hooks-private-32/.tools/repeated-effective-backed-get-hook-protocol-rhuppz0z/report.json",
+      "sha256": "10552a1d0e46964bae1243f15b054fb58f475a9438961cc064cccb4f96fb759a"
+    }
+  ],
+  "commands": [
+    "python3 .tools/repeated-effective-backed-get-hooks-probes-38/run.py native --revision d6df5f11fc502fbe9c5d511c620cc430dee8133d",
+    "python3 .tools/repeated-effective-backed-get-hooks-probes-38/run.py baseline --revision d6df5f11fc502fbe9c5d511c620cc430dee8133d",
+    "python3 .tools/repeated-effective-backed-get-hooks-probes-38/run-compiler.py d6df5f11fc502fbe9c5d511c620cc430dee8133d 2549e260d2d9b1ec45a601da7f9e8a0e65a0cf31",
+    "python3 .tools/repeated-effective-backed-get-hooks-probes-38/run.py changed --revision 2549e260d2d9b1ec45a601da7f9e8a0e65a0cf31",
+    "python3 tests/semantics/repeated_effective_backed_get_hook_protocol.py --revision 4503b11220b92e428f03b583f89a1798fd28afa0 --group cv",
+    "python3 tests/semantics/repeated_effective_backed_get_hook_protocol.py --revision 4503b11220b92e428f03b583f89a1798fd28afa0 --group this",
+    "python3 tests/semantics/repeated_effective_backed_get_hook_protocol.py --revision 4503b11220b92e428f03b583f89a1798fd28afa0 --group write",
+    "python3 tests/semantics/repeated_effective_backed_get_hook_protocol.py --revision 4dc9130416c83a1f1a5416ae289776f96c402ea5 --group controls",
+    "python3 tests/semantics/repeated_effective_backed_get_hook_protocol.py --revision 4dc9130416c83a1f1a5416ae289776f96c402ea5 --group untyped",
+    "python3 tests/semantics/repeated_effective_backed_get_hook_protocol.py --revision 4dc9130416c83a1f1a5416ae289776f96c402ea5 --group lifetime"
+  ],
+  "recovery": "Historical commands run from retained private32. Permanent originals, case hashes and exact native observations are in the catalogue; ignored probe/raw/runner/binary paths remain at their original locations. Production 382 is byte-identical to strict/source-tested 2549; earlier M37 and all prior hook cuts retain their separate identities without renewal.",
+  "remaining": [
+    "Hook chains without a source-backed anchor, including genuinely virtual-parent pairs",
+    "Ordinary-parent new hooks and plain redeclarations inheriting hooks",
+    "Broader type equivalence/covariance, set/byref/defaulted virtual/trait hooks and wider receivers/consumers"
+  ]
+}

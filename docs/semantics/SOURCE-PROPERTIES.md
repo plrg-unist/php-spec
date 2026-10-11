@@ -93,8 +93,14 @@ writes use that slot while reads still invoke the child getter. Receiver cleanup
 releases the backing reference independently of a returned object retained by
 the caller. Two originals and separate scalar185/lifetime100 cuts are recorded
 in the [effective backing review](../../coverage/semantics/effective-backed-get-hook-review.json).
+Storage also propagates through repeated body-unbacked overrides and intervening
+classes without a redeclaration. A bounded linked-ancestry walk follows each
+effective property's authentic declaring class to a source-backed getter anchor.
+The newest child retains its own default, slot and getter scope. Separate CV,
+inherited `$this`, write, ancestry, untyped and lifetime checks are recorded in the
+[repeated override review](../../coverage/semantics/repeated-effective-backed-get-hook-review.json).
 Admission requires a nonabstract, nonfinal named subclass, public by-value getters
-and identical normalized types. Overrides of a body-unbacked immediate parent,
+and identical normalized types. Chains without a source-backed hook anchor,
 virtual-parent pairs, broader type equivalence/covariance and plain redeclarations
 of inherited hooks remain explicit Unsupported.
 Hooked object iteration is explicit Unsupported rather than a raw storage view;
