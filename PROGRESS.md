@@ -3834,6 +3834,18 @@ supply endings. The original Unsupported, initial-state arity and reach-order
 fixture failures retain zero credit. Wider methods, graphs and contexts remain
 required. [Ledger](coverage/semantics/weak-map-review.json).
 
+Methodless singleton ephemerons now compose with allocated, nonfreeing ordinary
+`stdClass` graphs. Only module386 admission changes; physical edges and
+collector301 remain unchanged. Two originals agree at `fa2e00c6`: an independent self-cycle
+collects with the unheld pair (3), or alone while Key is held (1), followed by
+pair collection (2). Source-reached unheld (150), held (207) and destructor-boundary
+(48) checks total 405. Rerooting the real Key CV to Other and then routing Other→Key
+are coherent counterfactuals, with fresh plans 2/0. The old destructor/nonleaf
+refusal remains. Checks stop at GC return, plan or refusal; originals supply
+endings. The original Unsupported and pre-reroot-edge fixture failure stay zero.
+Wider value classes, maps and contexts remain open.
+[Ledger](coverage/semantics/weak-map-review.json).
+
 ArrayAccess304 reconstructs intermediate `[]` after ordinary by-value Get and
 supports final compound append, including null-key Get/Set on returned children.
 Returned temporary arrays extract selected rows before retirement; copied real

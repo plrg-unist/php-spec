@@ -102,7 +102,8 @@ failures retain their separate evidence in the
 Modules301/386 admit explicit collection for one live map, a `stdClass` leaf key
 and a parentless value with no declared methods and one public untyped key
 property. Insertion occurs while that property is null; the ordinary property
-write then supplies the backedge. Other allocated objects are weak wrappers.
+write then supplies the backedge. The initial cut limited other allocated
+objects to weak wrappers.
 
 The physical graph still contains Map→Value→Key for eager ownership. GC first
 excludes Map→Value, then restores it only when both map and key are reachable.
@@ -128,6 +129,35 @@ properties, inactive contexts, unheld-map and general ephemeron graphs remain
 required. Countable remains nominal-only and count library execution is excluded
 by CORE. Earlier cuts retain their evidence in the
 [ledger](../../coverage/semantics/weak-map-review.json).
+
+## Ordinary Std graphs beside a methodless ephemeron
+
+Module386 also admits allocated, nonfreeing outside `stdClass` graphs when the
+conditional Value has no methods or destructor. The earlier independently
+rooted leaf arm is unchanged; its new complement admits nonleaf or unrooted Std
+objects only in that methodless lane. Existing full property/heap authority and
+the live singleton map/key/value shape still apply. Physical edges, conditional
+tracing, GC plans and disposal in301 are unchanged.
+
+Two originals (93/103 bytes) agree at `fa2e00c6`. An independent `Other.self=Other`
+cycle collects with the unheld pair (count 3), while a held Key protects the pair
+and lets only Other collect (1); later Key release permits pair collection (2).
+The unheld (150) and corrected held (207) checks bind real CONFIG/TRACE/plan/FREE
+states, exact disposal and weak outcomes, stale-owner rejection and budget
+replay. At the held stage, coherently rerooting its actual Key CV to Other
+protects only Other (fresh plan 2); redirecting its materialized self property
+to Key protects the pair too (fresh plan 0).
+
+A separate 48-check source-reached post-destructor control preserves the earlier
+destructor/nonleaf refusal using a valid Other→Key graph. Total 405 checks end at
+GC return, fresh plan or completion-only refusal; originals supply endings.
+The original ephemeron Unsupported and failed 207-check fixture that reused
+physical edges from before the CV reroot remain zero credit. Wider Value classes,
+destructor-created graphs, map shapes and inactive contexts remain required.
+The basis remains `gc_scan_black` and `zend_gc_collect_cycles` in
+`Zend/zend_gc.c`, including its `get_gc == zend_weakmap_get_gc` branch, and
+`zend_weakmap_get_key_entry_gc` in `Zend/zend_weakrefs.c`.
+[Ledger](../../coverage/semantics/weak-map-review.json).
 
 ## Destructor callbacks and ephemeron retracing
 

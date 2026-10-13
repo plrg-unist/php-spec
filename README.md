@@ -1234,6 +1234,12 @@ Two originals agree at `0167ec6c`; 439 reached checks validate conditional traci
 entry disposal and held owners. Wider maps, callbacks and ephemeron graphs remain
 required. [Review](coverage/semantics/weak-map-review.json).
 
+That methodless singleton can now coexist with ordinary `stdClass` graphs.
+Two originals agree at `fa2e00c6`: an independent self-cycle collects alongside
+the pair, or alone while Key is held. The 405 focused checks cover real GC
+disposal, indirect Key protection and the preserved destructor/nonleaf refusal.
+The collector and physical ownership graph are unchanged.
+
 The same bounded backedge now supports one ordinary public value destructor.
 Its first GC pass protects the pair through the callback; retracing then collects
 it or preserves it if the callback saves the key. Later collection runs no second

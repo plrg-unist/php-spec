@@ -1386,5 +1386,119 @@
       "Presence/KEY_IS, references, mutations, methods/iteration and wider registration/ephemeron protocols remain required.",
       "No general freeing-key admission, source/operand relaxation, GC extension or full WeakMap closure."
     ]
+  },
+  "ordinary_std_graphs_66": {
+    "scope": "Main-thread live singleton ephemeron with methodless/destructor-free Value and ordinary allocated nonfreeing outside Std graphs. Native originals combine the pair with one independent stdClass self-cycle.",
+    "base_revision": "aba5383efa0fa54195340151fc92edb7378c2e4d",
+    "tested_revision": "fa2e00c6023f4750a62672156b3080056e06a345",
+    "modules": 387,
+    "raw_root": ".tools/weak-map-gc-ordinary-cycles-66",
+    "representation": [
+      "Only386 object admission changes. Existing rooted-leaf arm is literal; the disjoint new Std-graph arm requires Value.METHODS eps and no destructor.",
+      "301 physical ownership, conditional tracing, plans, counted disposal and entry preparation are unchanged. Held Key protects the pair while Other collects; unheld pair plus Other collect three.",
+      "At the genuine held stage, coherent Key-CV rerooting to Other gives fresh plan 2; materialized Other-to-Key routing gives plan 0. These counterfactuals preserve real source/cell/property and heap/call validity.",
+      "A separate source-reached post-destructor Other-to-Key control still produces completion-only Unsupported; no old positive destructor campaign is replayed."
+    ],
+    "sources": [
+      {
+        "id": "weak-map-gc-unheld-66",
+        "source_sha256": "4f7ce4f9d125515ae138be7c2c4fc047777b52f49588b6b429a4af280f5c92d4",
+        "native_report": ".tools/weak-map-gc-unheld-66-native-fbp1vt4c/report.json",
+        "native_stdout": "c2b5ddb6b306f84c1fb29ad796826a8232c2ac11022881cb85cf7a9206b67381",
+        "native_bytes": 93,
+        "checked_report": ".tools/weak-map-gc-unheld-66-source-ftxipv95/report.json",
+        "checked_seconds": 18.976666927337646
+      },
+      {
+        "id": "weak-map-gc-held-key-66",
+        "source_sha256": "4e415d2578ab1e33eefdc60f12142a192489f0a7bdcccb7a3284afd74e116237",
+        "native_report": ".tools/weak-map-gc-held-key-66-native-mpi2lya9/report.json",
+        "native_stdout": "743034b9873a794a9cc896893cdc71b59129bf2c79987734be537f25a7842cd2",
+        "native_bytes": 103,
+        "checked_report": ".tools/weak-map-gc-held-key-66-source-zh5tiek2/report.json",
+        "checked_seconds": 20.336127758026123
+      }
+    ],
+    "state": {
+      "assertions": 405,
+      "cases": [
+        {
+          "id": "weak-map-gc-unheld-66",
+          "assertions": 150,
+          "candidate_sha256": "3561110661a6a82ca423fa09ee7d190ebc11ad6d1da35fbdb8991a6a53c813ca",
+          "observer_sha256": "572364b21494b83255bc849c83af501ec433f1f7ad7413c9a25594de76466005",
+          "report": ".tools/weak-map-gc-66-state-ag4_6fs9/report.json",
+          "inner": ".tools/shutdown-state-review-i0qt287a/report.json"
+        },
+        {
+          "id": "weak-map-gc-held-key-66",
+          "assertions": 207,
+          "candidate_sha256": "01b20f4e2908059ac896683f7bd6b07e15fa089c51924324c4734c92c43c4e42",
+          "observer_sha256": "b9809d6da22cc11e9326d247279a5be7323cd6a6779d96bba562960bef4945eb",
+          "report": ".tools/weak-map-gc-66-held-corrected-jkgdxdrt/report.json",
+          "inner": ".tools/shutdown-state-review-qtsibj3p/report.json"
+        },
+        {
+          "id": "weak-map-gc-destructor-boundary-66",
+          "assertions": 48,
+          "candidate_sha256": "3561110661a6a82ca423fa09ee7d190ebc11ad6d1da35fbdb8991a6a53c813ca",
+          "observer_sha256": "572364b21494b83255bc849c83af501ec433f1f7ad7413c9a25594de76466005",
+          "report": ".tools/weak-map-gc-66-state-8tg7dqoo/report.json",
+          "inner": ".tools/shutdown-state-review-8_91w80b/report.json"
+        }
+      ],
+      "endpoints": "Real GC return for source-reached positive cuts; fresh plans for rerouting controls; completion-only refusal for destructor/nonleaf boundary. Originals supply later teardown/recollect endings."
+    },
+    "compiler_init": {
+      "compiler_report": ".tools/weak-map-gc-66-compiler-4boki0p1/report.json",
+      "artifacts": [
+        {
+          "mode": "algo",
+          "bytes": 14187146,
+          "sha256": "531843c4302eb78d8b55239d4354242c3b54751c1ac10b1050dbcd1ebb1fab7a"
+        },
+        {
+          "mode": "struct",
+          "bytes": 14277094,
+          "sha256": "61fa39096204123f6a55ee016a70288aa47d0b6ffdaab18640629bce8bebd98a"
+        }
+      ],
+      "strict_init_report": ".tools/weak-map-gc-66-init-pct1iq0w/report.json",
+      "strict_init_assertions": 7
+    },
+    "preserved_zero_credit": [
+      {
+        "report": ".tools/weak-map-gc-unheld-66-source-gw9cbog1/report.json",
+        "reason": "Genuine unchanged-source Unsupported WeakMap ephemeron collection after accepted insertion/backedge."
+      },
+      {
+        "report": ".tools/weak-map-gc-66-state-9_gg6jca/report.json",
+        "reason": "Failed held (207) expectation reused physical HCELL edges from before actual CV rerooting. Separate correction changes only that equality; original candidate/raw remain unchanged."
+      }
+    ],
+    "maintained": {
+      "source_path": "tests/semantics/cycle_collection_cases.json",
+      "source_rows": 79,
+      "state_path": "tests/semantics/cycle_collection_state_review.py",
+      "state_records": 154,
+      "state_sha256": "0a7b29df6147324a162577f321ea223297423b1fe38d311b41327b7c31e4a493",
+      "preservation": "All prior 77 source rows and 151 evaluated CASE values/order plus outside-CASES harness AST unchanged; only two originals and three exact tested records added."
+    },
+    "runtime": {
+      "target": "PHP 8.5.10 CLI NTS 64-bit",
+      "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+      "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+    },
+    "execution": "LC_ALL=C, TZ=UTC, script encoding removed, jobs1. Native/compiler/init on CPU2, checked originals and states on CPU3. Native30, CLI60/recorder75, compiler/init/state120, state recorder200; all accepted processes exited0 with stable inputs, no timeout/interruption/stderr/groups or remaining inner users.",
+    "recovery": "Retain ignored originals/runtime/raw/failure paths and private publication/current refs. Maintained literals recover accepted source/state contents; TAKE/RELEASE and original process/artifact records retain exact runtime inputs and argv.",
+    "engine_basis": [
+      "Zend/zend_gc.c:gc_scan_black and zend_gc_collect_cycles preserve ordinary graph reachability alongside conditional entries.",
+      "Zend/zend_weakrefs.c:zend_weakmap_get_key_entry_gc supplies the conditional Key-entry route; gc_scan_black handles get_gc == zend_weakmap_get_gc, whose callback enumerates values."
+    ],
+    "boundaries": [
+      "Value methods/destructor plus nonleaf/unrooted outside graphs remain fenced; old EX63 refusal is preserved.",
+      "Wider map/value shapes, unheld maps, inactive/Fiber contexts and general ephemeron graphs remain required; no full core/GC closure claim."
+    ]
   }
 }
