@@ -43,7 +43,7 @@ def $declaration_entry_site(pdeclaration :: pdeclaration_tail*, n) = $declaratio
 
 dec $declaration_history_seed(pstate) : pstate
 ;; Replay authenticates compiler records without invoking today's error handler.
-def $declaration_history_seed(S) = S[.SOURCEPENDING = eps][.CLASSNAMES = eps][.CALLABLES = eps][.CLASSSTATICS = eps][.LINKEDPARENTS = eps][.LINKEDINTERFACES = eps][.DECLARATIONS = eps][.CLASSCONSTANTHISTORY = eps][.CLASSCONSTANTCACHE = eps][.CLASSCONSTANTINIT = eps][.EVENTS = eps][.COMPLETION = NORMAL][.TODO = eps][.ERRORORIGIN = eps][.TRACE = eps][.CURRENT = eps][.FRAMES = eps][.EVALCONTEXTS = eps][.FILECONTEXTS = eps][.SILENCES = eps][.CONSTCONTEXT = eps][.DEFAULTCACHE = eps][.ERRORHANDLER = {CALLBACK eps, LEVELS 0}]
+def $declaration_history_seed(S) = S[.SOURCEPENDING = eps][.CLASSNAMES = eps][.CALLABLES = eps][.CLASSSTATICS = eps][.LINKEDPARENTS = eps][.LINKEDINTERFACES = eps][.DECLARATIONS = eps][.CLASSCONSTANTHISTORY = eps][.CLASSCONSTANTCACHE = eps][.CLASSCONSTANTINIT = eps][.EVENTS = eps][.COMPLETION = NORMAL][.TODO = eps][.ERRORORIGIN = eps][.RECORDEDCOMPILEERROR = eps][.TRACE = eps][.CURRENT = eps][.FRAMES = eps][.EVALCONTEXTS = eps][.FILECONTEXTS = eps][.SILENCES = eps][.CONSTCONTEXT = eps][.DEFAULTCACHE = eps][.ERRORHANDLER = {CALLBACK eps, LEVELS 0}]
 dec $declaration_replay_receipts(pstate) : pclassconstantevent*
 def $declaration_replay_receipts(S) = eps -- otherwise
 
@@ -112,7 +112,7 @@ def $declaration_file_wait(pfilecontext :: pfilecontext_tail*, n, porigin, S_pre
 dec $declaration_service_available(pstate, porigin?) : bool
 dec $declaration_cause_valid(pstate, porigin, pdeclcause) : bool
 dec $declaration_history_final(pstate, pstate) : bool
-def $declaration_history_final(S, S_prefix) = (S.CLASSES = S_prefix.CLASSES /\ $declaration_registries_equal(S, S_prefix) /\ $declaration_units_entered(S_prefix.DECLARATIONS, S.SOURCES) /\ $declaration_failures_entered(S_prefix.DECLARATIONS, S.FAILEDSOURCES))
+def $declaration_history_final(S, S_prefix) = (S.CLASSES = S_prefix.CLASSES /\ S.RECORDEDCOMPILEERROR = S_prefix.RECORDEDCOMPILEERROR /\ $declaration_registries_equal(S, S_prefix) /\ $declaration_units_entered(S_prefix.DECLARATIONS, S.SOURCES) /\ $declaration_failures_entered(S_prefix.DECLARATIONS, S.FAILEDSOURCES))
 dec $declaration_stop_terminal(pcompletion) : bool
 def $declaration_stop_terminal(THROWN text ptbytes z) = false
 def $declaration_stop_terminal(COMPILETHROWN ptbytes z) = false

@@ -1027,11 +1027,12 @@ def $eager_fatal_compiler_valid(S, pdestructioncleanup, pdestructionfatal) = tru
   -- if $(|pdestructionfatal.DECLARATIONS| <= |S.DECLARATIONS|)
   -- if pdestructionfatal.DECLARATIONS = S.DECLARATIONS[0:|pdestructionfatal.DECLARATIONS|]
   -- if $shutdown_compiler_snapshot(pdestructionfatal.COMPLETION) = (pdestructionfatal.FROZEN)
+  -- if $recorded_compile_certificate(pdestructionfatal.DECLARATIONS, pdestructionfatal.COMPLETION, pdestructionfatal.ERRORORIGIN)
   -- if S_history = $eager_fatal_history(S, pdestructionfatal)
   -- if $eager_fatal_cursor_plans_valid(S_history, $eval_compile_cursors(S_history))
   ;; Full history uses current parser entries, completion and reporting; saved
   ;; execution and the failed compiler tuple remain separately authenticated.
-  -- if S_proof = S_history[.DECLARATIONS = S.DECLARATIONS][.EVALCONTEXTS = S.EVALCONTEXTS][.FILECONTEXTS = S.FILECONTEXTS][.TODO = eps][.FRAMES = eps][.COMPLETION = S.COMPLETION][.REPORTING = S.REPORTING][.COMPILESTOP = pdestructionfatal.COMPILESTOP][.DESTRUCTION.PHASE = DESTRUCTION_PENDING][.DESTRUCTION.ABANDONED = [pdestructioncleanup]][.SHUTDOWN.PHASE = SHUTDOWN_PENDING][.SHUTDOWN.COMPLETION = NORMAL]
+  -- if S_proof = S_history[.DECLARATIONS = S.DECLARATIONS][.EVALCONTEXTS = S.EVALCONTEXTS][.FILECONTEXTS = S.FILECONTEXTS][.TODO = eps][.FRAMES = eps][.COMPLETION = S.COMPLETION][.ERRORORIGIN = S.ERRORORIGIN][.REPORTING = S.REPORTING][.COMPILESTOP = pdestructionfatal.COMPILESTOP][.DESTRUCTION.PHASE = DESTRUCTION_PENDING][.DESTRUCTION.ABANDONED = S.DESTRUCTION.ABANDONED][.SHUTDOWN.PHASE = SHUTDOWN_PENDING][.SHUTDOWN.COMPLETION = NORMAL]
   -- if $declaration_history_valid(S_proof)
 def $eager_fatal_compiler_valid(S, pdestructioncleanup, pdestructionfatal) = false -- otherwise
 def $eager_fatal_valid(S, pdestructioncleanup, pdestructionfatal) = true
