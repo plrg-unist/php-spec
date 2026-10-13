@@ -379,6 +379,17 @@ to returned REFERENCE, caller r/a aliases, writes and caller-cut budget equality
 The return temporary stays live; physical cell collection and released borrowed
 Stringable targets are outside this validation.
 
+M43 follows an untyped by-reference return whose `finally` removes x, then either
+returns y or preserves the pending x carrier. Source2 and late2/230 at `43df347e`
+distinguish the delivered cell, D/R order, caller aliases and caller-cut budget.
+At active cancellation the old HCELL leaves modeled allocations/roots while the
+old HOBJECT remains rooted by its destructor; stale STORE data is not collection.
+Deleting only a saved operation EXIT exposed a real public integrity gap. The
+scoped84/270 guard at `b6805e2` requires at least one exact EXIT per registered
+operation in current or saved tasks. Active68 and genuine parked23 plus two
+refusals pass with strict/source2. Synthetic fatal history views retain their old
+checks. No physical Zend collection or wider returns coverage is claimed.
+
 Caller demand comes from the original checked callsite's immediate source
 consumers. Expression statements and discarded for clauses have unused results;
 casts to void, ternary/coalesce expressions and value/reference consumers retain

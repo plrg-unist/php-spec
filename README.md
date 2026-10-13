@@ -2696,6 +2696,12 @@ Separate validation at `b55942bc` checks an ordinary local `unset` and its contr
 the original selected cell remains in the protected return carrier during `ping`,
 then reaches the caller's `r/a` aliases and write. The owning temporary persists;
 physical collection and released borrowed-cell conversion remain open.
+An untyped `finally` return override cancels the earlier reference carrier;
+its destructor runs before caller output, while the control delivers the old cell.
+Scoped descriptor checks now require every registered destructor operation's exact
+exit marker in current or saved tasks, including parked Fibers. Focused source,
+carrier/caller and public refusal checks pass; physical cell collection and broader
+returns remain open. Details are in the local CV lifetime review above.
 [Weak Stringable parameters](coverage/semantics/weak-string-parameters-review.json)
 now convert supplied fixed parameters in receive order, preserving caller
 strictness, nominal/callable precedence and the entered formal cell. Existing

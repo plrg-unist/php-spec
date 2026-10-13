@@ -2051,6 +2051,16 @@ carrier still owns the cell. Fixture parse/elaboration failures retain zero
 credit; publication changes only validation metadata and the exact maintained
 producer. Released borrowed-cell conversion and broad returns remain OPEN.
 
+M43 validates untyped by-reference `finally` cancellation: an override returns a
+new y cell and runs D before R; its control returns the original x cell and runs
+D after R. Source2 and late2/230 pass at `43df347e`; the old cell's modeled
+allocation/root retirement is distinct from physical Zend collection. Genuine
+active cleanup exposed a missing registered-operation exit check (81fe failure0).
+The scoped84/270 repair at `b6805e2` passes strict385/source2 and independent
+active68 + parked23 premises with two exact EXIT-only refusals. Generic fatal
+history validation stays unchanged; broad returns_verify remains OPEN.
+[Cancellation and integrity evidence](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
 Per-constant protection survives namespace publication and parked handlers.
