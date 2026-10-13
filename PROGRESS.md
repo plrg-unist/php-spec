@@ -7,6 +7,16 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Dynamic file compiler FATAL now retains its recorded diagnostic across bailout.
+Later file/eval compiler fatals drain that tuple with the current trace while
+retaining the actual new cutoff. Own receipts authenticate both abandoned records;
+stale extra, raw/origin/index forgeries are rejected. b98bc436e /385 retains four
+exact source tuples and one genuine public group109 atc1127. No raw projections,
+lifetime or opened-membership changes; original native expectation failure,
+baselines/diagnostics and model14 pre-runtime failure remain0. Wider recorded
+runtime errors/compiler/formatter combinations stay partial.
+[Recorded-fatal ledger](coverage/semantics/source-recorded-fatal-review.json).
+
 Redeclaration compiler fatals now admit fresh shutdown eval/file sources through
 full declaration-history authentication. Current waiting contexts, completion and
 reporting stay separate from the saved failed prefix/raw snapshot and source owner.

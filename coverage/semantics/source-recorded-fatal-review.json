@@ -1,0 +1,118 @@
+{
+  "status": "reviewed-private",
+  "target": "PHP 8.5.10 CLI NTS64",
+  "base": "d3a27d76c5a673c11e6aa23f42756bd8718afd1b",
+  "implementation_revision": "b98bc436e7b9042df28c6a98546a195d41d1bc4b",
+  "tested_cut": {
+    "module_count": 385,
+    "semantic_diff_sha256": "c1127cd7a09a70e4728f50c34aa8d7e9f12d04f23dce078619c1e975d56741f3",
+    "files_sha256": {
+      "spec/semantics/30-storage.watsup": "2eb29a16a6d358e1a1f97524904ea4b53c71a031d26aff1a80520b0eb9018d92",
+      "spec/semantics/40-control.watsup": "0215a0b36aef7964803aaa7c5ab536208c29f840886dfb44ad335716f80bcd7c",
+      "spec/semantics/159-dynamic-source.watsup": "890bb333718bb3fa7e1add3557d6a699b0dedfe61076d625649feead9cebeb64",
+      "spec/semantics/190-declaration-publication.watsup": "5db7b1ffb4f21e6d6ae3d00f0af9a644506edb235f230aae084b7b9b1ee4c53d",
+      "spec/semantics/195-declaration-history.watsup": "7edc6fbdb07d978c134a2245a1063bcd26c65c74abc3658ae4715ba4347b529c",
+      "spec/semantics/270-eager-destructors.watsup": "1ec3e0166bb2e2e1d57c1157c55fe86147b583c43d9c833bab0336f5adb6a38c",
+      "tests/semantics/recorded_compiler_fatal_protocol.py": "2c22ba69c3ec3c49b9ee1d6dacc614c636b2673f79810258135bc483f6ce72f4"
+    }
+  },
+  "behavior": [
+    "A dynamic file compiler FATAL retains diagnostic completion/location when bailout skips scanner cleanup.",
+    "A later file/eval compiler fatal clears the recorded index and delivers its cached tuple using the current trace; the new raw cutoff stays distinct.",
+    "Declaration-free file compilation preserves the record; eval-first fatal creates no file recording.",
+    "Full chronological replay authenticates the request index and each abandoned certificate at its own receipt, including genuine two-record histories.",
+    "Static lifetime, automatic-destructor policy and opened-file membership are unchanged."
+  ],
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_language_scanner.l: compile_file",
+    "vendor/php-src/Zend/zend.c: zend_error_zstr_at, zend_emit_recorded_errors_ex",
+    "vendor/php-src/main/main.c: php_error_cb"
+  ],
+  "accepted": {
+    "exact_cli_sources": 4,
+    "public_groups": 1,
+    "public_premises": 109,
+    "raw_projections": 0,
+    "source_cases": [
+      "static-native-v27/file-distinct-redeclaration-fatals",
+      "static-native-v28/file-fatal-shutdown-declaration-free-file",
+      "static-native-v28/eval-fatal-shutdown-g-file",
+      "static-native-v29/file-fatal-shutdown-eval-g"
+    ],
+    "result": "All checked/native255 full stdout/stderr tuples agree at the same tested cut; SL public fixture returns true with empty stderr and stable inputs.",
+    "public_checks": [
+      "Genuine file capture followed by raw g/cached f delivery and live retained roots.",
+      "Both abandoned compiler certificates, public parser states and final state validate.",
+      "Appending a shortened old certificate keeps both genuine records and is rejected.",
+      "Borrowed raw tuple/paired FROZEN, delivered origin, stale/out-of-range index and coordinated live/captured receipt forgery are rejected."
+    ],
+    "execution": "Genuine checked main/child sources, file parser resumes and production drives; no proof view is executed."
+  },
+  "preserved_zero_credit": [
+    "Timing baseline physically agrees; no registration change was inferred.",
+    "The multi-fatal public diagnostic exposed second historical destruction/compiler authority failure.",
+    "Original native expected f then g report failed; adjacent native observation preserves the actual f twice tuple. This is matching PHP recorded-diagnostic behavior, not an engine-bug or divergence claim.",
+    "Recording baseline13 reports new g/late.php instead of native retained f/inner.php.",
+    "Affected model14 stopped before runtime at a duplicate forward declaration; only that declaration was removed before fresh15.",
+    "Native observations/adjudication, diagnostics and fixture preparation carry zero agreement credit."
+  ],
+  "remaining": [
+    "Recorded runtime warnings/USERFATAL and broader compiler diagnostic queues remain required.",
+    "Wider formatter, callback, precision and destructor/return combinations remain partial."
+  ],
+  "artifacts": {
+    "native_timing": {
+      "path": ".tools/dynamic-review-02/static-native-v26/report.json",
+      "sha256": "5304ebdcad4377110cdba6f9e21f19ca593d638036d662cd92d281335766baea"
+    },
+    "timing_baseline": {
+      "path": ".tools/dynamic-source-statics-redeclare-repeat-baseline-11/report.json",
+      "sha256": "3ca9a1f96825d4b534b6c751249739432cd4e186d4e89e73c3b6a60a7009406c"
+    },
+    "multi_fatal_diagnostic": {
+      "path": ".tools/dynamic-source-statics-redeclare-repeat-public-12/run-report.json",
+      "sha256": "dc1097eb902f27665539f593bb4b9338b438307d9fe2be4b04234fac9220d72e"
+    },
+    "native_original_expectation_failure": {
+      "path": ".tools/dynamic-review-02/static-native-v27/report.json",
+      "sha256": "c2c7bee964a01e735f0214fe80ffca26347e0dee2dd86a74f522fca5c128a190"
+    },
+    "native_observation": {
+      "path": ".tools/dynamic-review-02/static-native-v27/adjudication.json",
+      "sha256": "d07543cb03131c7cd4dc213826b4b680eef8bc2d63843dce9d9c6775471732bc"
+    },
+    "native_contrasts": {
+      "path": ".tools/dynamic-review-02/static-native-v28/report.json",
+      "sha256": "b5f37de32daea6a53794827c37f2dff9435b3411762e75a1be74980272c0b01e"
+    },
+    "native_eval_drain": {
+      "path": ".tools/dynamic-review-02/static-native-v29/report.json",
+      "sha256": "487730f0e37d853ce4d9583ff4bed74375af34c25d420e3a57414045a03e8677"
+    },
+    "recording_baseline": {
+      "path": ".tools/dynamic-source-statics-recorded-fatal-baseline-13/report.json",
+      "sha256": "2e8ab5d9b18f56e17de82b01ece227a219d36e5e8e09058edde757de456f137b"
+    },
+    "pre_runtime_failure": {
+      "path": ".tools/dynamic-source-statics-recorded-fatal-model-14/report.json",
+      "sha256": "c0248305ca539c8059f0d60426ce51fe0b97b40569c2f0152f0e670e65d2dd28"
+    },
+    "affected_source": {
+      "path": ".tools/dynamic-source-statics-recorded-fatal-model-15/report.json",
+      "sha256": "656fa97a21cc3e45b9141d8e5184d6635f7a1974bdc71a8a6d3ce0443f85612f"
+    },
+    "independent_sources": {
+      "path": ".tools/dynamic-review-02/recorded-fatal-model-v1/report.json",
+      "sha256": "748fb8289d4b704dc3a3c6c8f3586038b92bfa78dc4c63bb9d343a8f92f7e00b"
+    },
+    "state_preparation": {
+      "path": ".tools/dynamic-source-statics-recorded-fatal-state-01/fixtures-report.json",
+      "sha256": "20069b1d39083cadfb7ade125fbb747b4909131ea88097edab150fe0fe338c44"
+    },
+    "public_state": {
+      "path": ".tools/dynamic-source-statics-recorded-fatal-state-01/check-report.json",
+      "sha256": "39a8b7b655d861d218d67b42af7665daabfd864e25715ccf7d67bde87aacb6b9"
+    }
+  },
+  "recovery": "Preserve canonical ignored originals/raw and branches. Maintained recorded_compiler_fatal_protocol.py prepares selected fixture then checks full modules with --sl under90s; CLI source wrappers use60s/90s. Do not renew earlier evidence for metadata."
+}

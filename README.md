@@ -1500,8 +1500,12 @@ records the focused source/public checks. Redeclaration compiler cutoffs now
 authenticate fresh shutdown eval/file entries against full current history while
 retaining the exact failed prefix and source owner.
 [Redeclaration review](coverage/semantics/source-redeclare-fatal-review.json)
-records this separate admission repair. Wider fatal/compiler producers and
-destructor/return interactions remain required.
+records this separate admission repair. File compilation now retains its recorded
+hard diagnostic after bailout; a later compiler fatal delivers that message and
+location with the current trace. Cutoff receipts authenticate both abandoned
+records independently. [Recorded-fatal review](coverage/semantics/source-recorded-fatal-review.json)
+records the source and public checks. Wider recorded warnings/runtime errors,
+formatter combinations and destructor/return interactions remain required.
 [Real closure instances](docs/semantics/SOURCE-CLOSURES.md) now retain explicit captures,
 selected callee owners and per-instance statics through invocation and cleanup.
 [Independent review](coverage/semantics/closures-review.json) binds source, object
