@@ -46,8 +46,13 @@ def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array($objectprops_mark(
   -- if ~$aggregate_projection_plain(S, n)
   -- if ~$instance_storage_freeing(S, n)
   -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $object_table_at(S.OBJECTTABLES, n) = eps
   -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
   -- if $property_unique_names(ppropertyslot*)
+def $cast_value(S, CASTARRAY, POBJECT n, z) = $object_table_cast_ordinary(S, n)
+  -- if ~$instance_storage_freeing(S, n)
+  -- if $object_table_ordinary(S, n)
+  -- if $object_table_at(S.OBJECTTABLES, n) = (n_table)
 def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array(S, {ITEMS ([ENTRY (KINT 0) (DIRECT (POBJECT n))]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1})
   -- if ~$instance_storage_freeing(S, n)
   -- if $object_body(S.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell*

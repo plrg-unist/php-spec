@@ -12,6 +12,7 @@ dec $aggregate_property_effect(pstate, nat, nat, nat, pcompareguard*, int) : (ps
 dec $aggregate_materialized_order(porder) : porder
 dec $aggregate_std_pair(pstate, nat, nat) : bool
 dec $aggregate_std_order(pstate, nat, nat, pcompareguard*, int) : (pstate, porder)
+dec $aggregate_cached_order(pstate, nat, nat, pcompareguard*) : porder
 dec $aggregate_decl_pair(pstate, nat, nat) : bool
 dec $aggregate_decl_order(pstate, nat, nat, pcompareguard*, int) : (pstate, porder)
 dec $aggregate_object_guard(pstate, nat, nat) : pcompareguard
@@ -257,15 +258,21 @@ def $value_order(S, PARRAY n_left, PARRAY n_right, pcompareguard_seen*) = $entri
 def $value_order(S, POBJECT n, POBJECT n, pcompareguard_seen*) = ORDER 0
 def $value_order(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*) = ORDER 0
   -- if $aggregate_std_same_table(S, n_left, n_right)
+def $value_order(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*) = $aggregate_cached_order(S, n_left, n_right, pcompareguard_seen*)
+  -- if n_left =/= n_right
+  -- if $aggregate_std_pair(S, n_left, n_right)
+  -- if ~$aggregate_std_same_table(S, n_left, n_right)
 def $value_order(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*) = ORDERRECURSIVE
   -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if n_left =/= n_right
+  -- if ~$aggregate_std_pair(S, n_left, n_right)
   -- if ~$aggregate_std_same_table(S, n_left, n_right)
   -- if $empty_instance_same(S, n_left, n_right)
   -- if ($aggregate_object_guard(S, n_left, n_right)) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S))
 def $value_order(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*) = $property_order(S, ppropertyslot_left*, ppropertyslot_right*, ($aggregate_object_guard(S, n_left, n_right)) :: pcompareguard_seen*)
   -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if n_left =/= n_right
+  -- if ~$aggregate_std_pair(S, n_left, n_right)
   -- if ~$aggregate_std_same_table(S, n_left, n_right)
   -- if $empty_instance_same(S, n_left, n_right)
   -- if ~(($aggregate_object_guard(S, n_left, n_right)) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S)))
@@ -276,6 +283,7 @@ def $value_order(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*) = $pro
 def $value_order(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*) = ORDER $compare_int($property_hash_count(ppropertyslot_left*), $property_hash_count(ppropertyslot_right*))
   -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if n_left =/= n_right
+  -- if ~$aggregate_std_pair(S, n_left, n_right)
   -- if ~$aggregate_std_same_table(S, n_left, n_right)
   -- if $empty_instance_same(S, n_left, n_right)
   -- if ~(($aggregate_object_guard(S, n_left, n_right)) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S)))
@@ -286,6 +294,7 @@ def $value_order(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*) = ORDE
 def $value_order(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*) = $property_hash_order(S, ppropertyslot_left*, ppropertyslot_right*, ($aggregate_object_guard(S, n_left, n_right)) :: pcompareguard_seen*)
   -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if n_left =/= n_right
+  -- if ~$aggregate_std_pair(S, n_left, n_right)
   -- if ~$aggregate_std_same_table(S, n_left, n_right)
   -- if $empty_instance_same(S, n_left, n_right)
   -- if ~(($aggregate_object_guard(S, n_left, n_right)) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S)))

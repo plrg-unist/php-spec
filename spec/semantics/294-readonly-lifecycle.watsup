@@ -51,7 +51,7 @@ def $property_receiver_copy(S, n, ptbytes) = false -- otherwise
 def $property_reference_copy(S, n, ptbytes) = $reference_cell(S[.STORE = S.STORE ++ [DEFINED (POBJECT n_value)]][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n_cell]], n_cell)[.CELL = n_cell][.RESULT = REFERENCE n_cell]
   -- if $location_slot(S, PROPERTY n ptbytes) = DEFINED (POBJECT n_value)
   -- if n_cell = |S.STORE|
-def $property_reference_slot(S, n, ptbytes, z) = $object_table_sync($property_reference_fetch_unshared($object_table_write(S, n), n, ptbytes, z), n)
+def $property_reference_slot(S, n, ptbytes, z) = $object_table_sync($property_reference_fetch_unshared($object_table_write_key(S, n, ptbytes), n, ptbytes, z), n)
 def $property_reference_target_check(S, n, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot assign by reference to overloaded object"), z)
   -- if $property_receiver_copy(S, n, ptbytes)
 def $property_reference_target_check(S, n, ptbytes, z) = $property_instance_indirect_check(S, n, ptbytes, false, z)
@@ -205,4 +205,4 @@ rule PhpStep/readonly-string-complete: S ~> S_written[.HELD = S.HELD]
   -- if S.RESULT = KNOWN pvalue_string
   -- if $string_bytes(pvalue_string) = (ptbytes)
   -- if S_inputs = $hold_task_inputs(S)
-  -- if S_written = $object_table_sync($property_store_key_unshared($object_table_write(S_inputs, ppropertystring.TARGET), ppropertystring.TARGET, ppropertystring.KEY, pvalue_string, ppropertystring.LINE), ppropertystring.TARGET)
+  -- if S_written = $object_table_sync($property_store_key_unshared($object_table_write_key(S_inputs, ppropertystring.TARGET, ppropertystring.KEY), ppropertystring.TARGET, ppropertystring.KEY, pvalue_string, ppropertystring.LINE), ppropertystring.TARGET)

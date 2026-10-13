@@ -1,5 +1,7 @@
 dec $aggregate_decl_retained(pstate, nat) : bool
 dec $aggregate_membership_boundary(pstate) : pstate
+dec $aggregate_creation_blocked(pstate, nat) : bool
+def $aggregate_creation_blocked(S, n) = ($aggregate_decl_retained(S, n) \/ ($object_table_at(S.OBJECTTABLES, n) = eps /\ $aggregate_direct_guarded(S, n)))
 dec $class_dynamic_attribute(pstate, porigin) : bool
 dec $class_dynamic_parent(pstate, pclassdesc, nat) : bool
 dec $class_allows_dynamic(pstate, porigin, nat) : bool
@@ -223,18 +225,25 @@ def $property_cast_array(ppropertyslot*) = {ITEMS pentry*, NEXT $(-9223372036854
   -- if n_serial = |pentry*|
 
 ;; The cursor addresses the live table, so later writes become visible.
+def $property_next(S, n_object, ppropertyslot*, n, n_absolute) = $object_table_next(S, n_object, S.ARRAYS[n_table].ITEMS, n, 0)
+  -- if $object_table_at(S.OBJECTTABLES, n_object) = (n_table)
 def $property_next(S, n_object, eps, n, n_absolute) = eps
+  -- if $object_table_at(S.OBJECTTABLES, n_object) = eps
 def $property_next(S, n_object, ppropertyslot :: ppropertyslot_tail*, 0, n_absolute) = (ppropertyslot.NAME, pitem, $(n_absolute + 1))
   -- if ppropertyslot.STATE = PROP_VALUE pitem
   -- if pitem =/= UNINITIALIZED
   -- if $property_visible_key(S, n_object, ppropertyslot.NAME)
+  -- if $object_table_at(S.OBJECTTABLES, n_object) = eps
 def $property_next(S, n_object, ppropertyslot :: ppropertyslot_tail*, 0, n_absolute) = $property_next(S, n_object, ppropertyslot_tail*, 0, $(n_absolute + 1))
   -- if ppropertyslot.STATE = PROP_INITIAL \/ ppropertyslot.STATE = PROP_UNSET \/ ppropertyslot.STATE = PROP_VALUE UNINITIALIZED
+  -- if $object_table_at(S.OBJECTTABLES, n_object) = eps
 def $property_next(S, n_object, ppropertyslot :: ppropertyslot_tail*, 0, n_absolute) = $property_next(S, n_object, ppropertyslot_tail*, 0, $(n_absolute + 1))
   -- if ppropertyslot.STATE = PROP_VALUE pitem
   -- if ~$property_visible_key(S, n_object, ppropertyslot.NAME)
+  -- if $object_table_at(S.OBJECTTABLES, n_object) = eps
 def $property_next(S, n_object, ppropertyslot :: ppropertyslot_tail*, n, n_absolute) = $property_next(S, n_object, ppropertyslot_tail*, $nabs($(n - 1)), $(n_absolute + 1))
   -- if $(n > 0)
+  -- if $object_table_at(S.OBJECTTABLES, n_object) = eps
 
 dec $property_slot_valid(pstate, ppropertydesc, ppropertyslot) : bool
 def $property_slot_valid(S, ppropertydesc, ppropertyslot) = true
@@ -457,7 +466,7 @@ def $property_reference_check(S, n, ptbytes, z) = $property_instance_indirect_ch
 def $property_store_key(S, n, ptbytes, pvalue, z) = $property_set_check(S, n, ptbytes, $ptascii("modify"), z)
   -- if ~$instance_storage_freeing(S, n)
   -- if $property_set_denied(S, n, ptbytes)
-def $property_store_key(S, n, ptbytes, pvalue, z) = $object_table_sync($property_store_key_unshared($object_table_write(S, n), n, ptbytes, pvalue, z), n)
+def $property_store_key(S, n, ptbytes, pvalue, z) = $object_table_sync($property_store_key_unshared($object_table_write_key(S, n, ptbytes), n, ptbytes, pvalue, z), n)
   -- if ~$instance_storage_freeing(S, n)
   -- if ~$property_set_denied(S, n, ptbytes)
 ;; Declared types convert before the live alias checks its other type sources.
@@ -530,7 +539,7 @@ def $property_store_key_unshared(S, n, ptbytes, pvalue, z) = $throw_scalar(S, "E
   -- if pclassdesc.READONLY
   -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ptbytes) = eps
 def $property_store_key_unshared(S, n, ptbytes, pvalue, z) = S_warned[.OBJECTPROPS = $objectprops_set(S_warned.OBJECTPROPS, n, pobjectprops.SLOTS ++ [{DECL eps, NAME ptbytes, STATE PROP_VALUE (DIRECT pvalue)}])][.RESULT = KNOWN pvalue]
-  -- if ~$aggregate_decl_retained(S, n)
+  -- if ~$aggregate_creation_blocked(S, n)
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if ~pclassdesc.READONLY
@@ -541,7 +550,7 @@ def $property_store_key_unshared(S, n, ptbytes, pvalue, z) = S_warned[.OBJECTPRO
   -- if S_warned = $diagnostic($objectprops_mark(S, n), "Deprecated", $ptascii("Creation of dynamic property ") ++ $object_name(S, n) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)) ++ $ptascii(" is deprecated"), z)
   -- if S_warned.COMPLETION = NORMAL
 def $property_store_key_unshared(S, n, ptbytes, pvalue, z) = S_warned
-  -- if ~$aggregate_decl_retained(S, n)
+  -- if ~$aggregate_creation_blocked(S, n)
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if ~pclassdesc.READONLY
@@ -552,7 +561,7 @@ def $property_store_key_unshared(S, n, ptbytes, pvalue, z) = S_warned
   -- if S_warned = $diagnostic($objectprops_mark(S, n), "Deprecated", $ptascii("Creation of dynamic property ") ++ $object_name(S, n) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)) ++ $ptascii(" is deprecated"), z)
   -- if S_warned.COMPLETION =/= NORMAL
 def $property_store_key_unshared(S, n, ptbytes, pvalue, z) = S_marked[.OBJECTPROPS = $objectprops_set(S_marked.OBJECTPROPS, n, pobjectprops.SLOTS ++ [{DECL eps, NAME ptbytes, STATE PROP_VALUE (DIRECT pvalue)}])][.RESULT = KNOWN pvalue]
-  -- if ~$aggregate_decl_retained(S, n)
+  -- if ~$aggregate_creation_blocked(S, n)
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if ~pclassdesc.READONLY
@@ -570,7 +579,7 @@ def $property_store_key_unshared(S, n, ptbytes, pvalue, z) = S_marked[.OBJECTPRO
 def $aggregate_membership_boundary(S) = S[.COMPLETION = UNSUPPORTED "retained declared property-table membership mutation"] -- if S.COMPLETION = NORMAL
 def $aggregate_membership_boundary(S) = S -- if S.COMPLETION =/= NORMAL
 def $property_store_key_unshared(S, n, ptbytes, pvalue, z) = $aggregate_membership_boundary(S)
-  -- if $aggregate_decl_retained(S, n)
+  -- if $aggregate_creation_blocked(S, n)
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if ~pclassdesc.READONLY
@@ -579,7 +588,7 @@ def $property_store_key_unshared(S, n, ptbytes, pvalue, z) = $aggregate_membersh
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = eps
 def $property_store_key_unshared(S, n, ptbytes, pvalue, z) = $aggregate_membership_boundary($diagnostic(S, "Deprecated", $ptascii("Creation of dynamic property ") ++ $object_name(S, n) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)) ++ $ptascii(" is deprecated"), z))
-  -- if $aggregate_decl_retained(S, n)
+  -- if $aggregate_creation_blocked(S, n)
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if ~pclassdesc.READONLY
@@ -594,7 +603,7 @@ def $isset_base(S, BASE_PROPERTY pvalue ptbytes, b, z) = S[.RESULT = KNOWN (PBOO
   -- if $stdclass_raw_undefined(S, pvalue, ptbytes)
 def $isset_base(S, BASE_PROPERTY pvalue ptbytes, b, z) = $isset_simple(S, BASE_PROPERTY pvalue ptbytes, b, z)
   -- if ~$stdclass_raw_undefined(S, pvalue, ptbytes)
-def $base_acquire(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = $property_instance_indirect_check($object_table_write(S, n)[.LOCATION = PROPERTY n ptbytes_key], n, ptbytes_key, true, z)
+def $base_acquire(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = $property_instance_indirect_check($object_table_write_key(S, n, ptbytes_key)[.LOCATION = PROPERTY n ptbytes_key], n, ptbytes_key, true, z)
   -- if ~$instance_storage_freeing(S, n)
   -- if $class_plain_instance(S, n)
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes_key
@@ -620,7 +629,7 @@ def $location_write(S, PROPERTY n ptbytes, pvalue) = $property_store_key(S, n, p
   -- if ~$property_set_denied(S, n, ptbytes)
   -- if $update_alias_cell(S, PROPERTY n ptbytes) = eps
 def $location_reference(S, PROPERTY n ptbytes) = false
-def $base_find(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = $property_unset_indirect_check($property_quiet_key($object_table_write(S, n)[.LOCATION = PROPERTY n ptbytes_key], POBJECT n, ptbytes_key, z), n, ptbytes_key, z)
+def $base_find(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = $property_unset_indirect_check($property_quiet_key($object_table_write_key(S, n, ptbytes_key)[.LOCATION = PROPERTY n ptbytes_key], POBJECT n, ptbytes_key, z), n, ptbytes_key, z)
   -- if ~$instance_storage_freeing(S, n)
   -- if $class_plain_instance(S, n)
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes_key
@@ -660,7 +669,7 @@ def $property_unset_key(S, POBJECT n, ptbytes, z) = $property_set_check(S, n, pt
   -- if ~$instance_storage_freeing(S, n)
   -- if ~$property_hook_declared(S, n, ptbytes)
   -- if $property_set_denied(S, n, ptbytes)
-def $property_unset_key(S, POBJECT n, ptbytes, z) = $object_table_sync_value($property_unset_key_unshared($object_table_write_value(S, POBJECT n), POBJECT n, ptbytes, z), POBJECT n)
+def $property_unset_key(S, POBJECT n, ptbytes, z) = $object_table_sync_value($property_unset_key_unshared($object_table_write_key(S, n, ptbytes), POBJECT n, ptbytes, z), POBJECT n)
   -- if ~$instance_storage_freeing(S, n)
   -- if ~$property_hook_declared(S, n, ptbytes)
   -- if ~$property_set_denied(S, n, ptbytes)

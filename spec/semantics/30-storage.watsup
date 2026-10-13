@@ -524,6 +524,15 @@ dec $entry_read_value(pstate, pitem) : pvalue
 dec $stdclass_raw_undefined(pstate, pvalue, ptbytes) : bool
 dec $defined_positions(pposition*, pentry*) : pposition*
 dec $object_table_at(pobjecttable*, nat) : nat?
+dec $object_table_item(pstate, pitem) : pitem
+dec $object_table_write_key(pstate, nat, ptbytes) : pstate
+dec $instance_table_nodes(pstate, nat, ppropertyslot*) : pnode*
+dec $object_table_ordinary(pstate, nat) : bool
+dec $aggregate_direct_guarded(pstate, nat) : bool
+dec $object_table_next(pstate, nat, pentry*, nat, nat) : (ptbytes, pitem, nat)?
+dec $object_table_cast_ordinary(pstate, nat) : pstate
+dec $object_table_gc_boundary(pstate) : bool
+dec $instance_storage_for(pstate, nat) : pinstancestorage?
 dec $object_tables_prune(pobjecttable*, pnode*) : pobjecttable*
 dec $object_table_write(pstate, nat) : pstate
 dec $object_table_write_value(pstate, pvalue) : pstate

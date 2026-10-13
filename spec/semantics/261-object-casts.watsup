@@ -1,3 +1,124 @@
+;; Cached ordinary tables contain borrowed declared-slot locators. Duplication
+;; dereferences them; copied buckets may then differ from live declared slots.
+dec $object_table_declared_nodes(ppropertyslot*) : pnode*
+dec $object_table_insert_entries(pentry*, parray) : parray
+dec $object_table_sync_rows(ppropertyslot*, parray) : parray
+dec $object_table_slots_at(pstate, nat) : ppropertyslot*
+dec $object_table_indirect_entries(pentry*) : bool
+dec $object_table_gc_node(pstate, pnode) : bool
+dec $object_table_gc_nodes(pstate, pnode*) : bool
+dec $object_table_dynamic(ppropertyslot*) : bool
+def $object_table_slots_at(S, n) = ppropertyslot_rows*
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_rows*)
+def $object_table_slots_at(S, n) = eps -- otherwise
+def $object_table_indirect_entries(eps) = false
+def $object_table_indirect_entries((ENTRY pkey pitem) :: pentry_tail*) = ($indirect_item(pitem) \/ $object_table_indirect_entries(pentry_tail*))
+def $object_table_gc_node(S, HARRAY n) = $object_table_indirect_entries(S.ARRAYS[n].ITEMS)
+  -- if $(n < |S.ARRAYS|)
+def $object_table_gc_node(S, HOBJECT n) = true
+  -- if $object_table_ordinary(S, n)
+  -- if $object_table_at(S.OBJECTTABLES, n) =/= eps
+def $object_table_gc_node(S, HOBJECT n) = true
+  -- if $object_table_ordinary(S, n)
+  -- if $instance_storage_for(S, n) = (pinstancestorage)
+  -- if $object_table_dynamic(pinstancestorage.SLOTS)
+def $object_table_gc_node(S, pnode) = false -- otherwise
+def $object_table_gc_nodes(S, eps) = false
+def $object_table_gc_nodes(S, pnode :: pnode_tail*) = ($object_table_gc_node(S, pnode) \/ $object_table_gc_nodes(S, pnode_tail*))
+def $object_table_gc_boundary(S) = $object_table_gc_nodes(S, S.ALLOCATIONS)
+def $object_table_declared_nodes(eps) = eps
+def $object_table_declared_nodes(ppropertyslot :: ppropertyslot_tail*) = $property_release_nodes([ppropertyslot]) ++ $object_table_declared_nodes(ppropertyslot_tail*)
+  -- if ppropertyslot.DECL =/= eps
+def $object_table_declared_nodes(ppropertyslot :: ppropertyslot_tail*) = $object_table_declared_nodes(ppropertyslot_tail*)
+  -- if ppropertyslot.DECL = eps
+def $instance_table_nodes(S, n, ppropertyslot*) = [HARRAY n_table] ++ $object_table_declared_nodes(ppropertyslot*)
+  -- if $object_table_at(S.OBJECTTABLES, n) = (n_table)
+def $instance_table_nodes(S, n, ppropertyslot*) = $property_release_nodes(ppropertyslot*)
+  -- if $object_table_at(S.OBJECTTABLES, n) = eps
+def $object_table_item(S, INDIRECT n ptbytes) = pitem
+  -- if $(n < |S.OBJECTS|)
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_rows*)
+  -- if $property_slot_at(ppropertyslot_rows*, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.DECL =/= eps
+  -- if ppropertyslot.STATE = PROP_VALUE pitem
+  -- if ~$indirect_item(pitem)
+def $object_table_item(S, INDIRECT n ptbytes) = UNINITIALIZED -- otherwise
+def $object_table_item(S, DIRECT pvalue) = DIRECT pvalue
+def $object_table_item(S, ALIAS n) = ALIAS n
+def $object_table_item(S, UNINITIALIZED) = UNINITIALIZED
+
+dec $object_table_ordinary_rows(pstate, nat, ppropertyslot*) : bool
+dec $object_table_ordinary_entries(nat, ppropertyslot*) : pentry*
+def $object_table_ordinary_rows(S, n, eps) = true
+def $object_table_ordinary_rows(S, n, ppropertyslot :: ppropertyslot_tail*) = $object_table_ordinary_rows(S, n, ppropertyslot_tail*)
+  -- if ppropertyslot.DECL = eps
+  -- if ppropertyslot.STATE = PROP_VALUE pitem
+  -- if ~$indirect_item(pitem)
+def $object_table_ordinary_rows(S, n, ppropertyslot :: ppropertyslot_tail*) = $object_table_ordinary_rows(S, n, ppropertyslot_tail*)
+  -- if ppropertyslot.DECL = eps
+  -- if ppropertyslot.STATE = PROP_UNSET
+def $object_table_ordinary_rows(S, n, ppropertyslot :: ppropertyslot_tail*) = $object_table_ordinary_rows(S, n, ppropertyslot_tail*)
+  -- if ppropertyslot.DECL = (ppropertyid)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ppropertyslot.NAME) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertyid
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if ppropertydesc.KEY = ppropertyslot.NAME
+  -- if ~$property_hook_declared(S, n, ppropertyslot.NAME)
+  -- if ppropertyslot.STATE = PROP_VALUE pitem
+  -- if ~$indirect_item(pitem)
+def $object_table_ordinary_rows(S, n, ppropertyslot :: ppropertyslot_tail*) = $object_table_ordinary_rows(S, n, ppropertyslot_tail*)
+  -- if ppropertyslot.DECL = (ppropertyid)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ppropertyslot.NAME) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertyid
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if ppropertydesc.KEY = ppropertyslot.NAME
+  -- if ~$property_hook_declared(S, n, ppropertyslot.NAME)
+  -- if ppropertyslot.STATE = PROP_UNSET
+def $object_table_ordinary_rows(S, n, ppropertyslot*) = false -- otherwise
+def $object_table_ordinary(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if ~pclassdesc.READONLY
+  -- if $property_layout(S, porigin, |S.CLASSES|) =/= eps
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_rows*)
+  -- if $property_unique_names(ppropertyslot_rows*)
+  -- if $object_table_ordinary_rows(S, n, ppropertyslot_rows*)
+def $object_table_ordinary(S, n) = false -- otherwise
+def $object_table_dynamic(eps) = false
+def $object_table_dynamic(ppropertyslot :: ppropertyslot_tail*) = true
+  -- if ppropertyslot.DECL = eps
+  -- if ppropertyslot.STATE = PROP_VALUE pitem
+def $object_table_dynamic(ppropertyslot :: ppropertyslot_tail*) = $object_table_dynamic(ppropertyslot_tail*)
+  -- if ppropertyslot.DECL =/= eps \/ ppropertyslot.STATE = PROP_UNSET
+def $object_table_ordinary_entries(n, eps) = eps
+def $object_table_ordinary_entries(n, ppropertyslot :: ppropertyslot_tail*) = (ENTRY (KSTRING ppropertyslot.NAME) (INDIRECT n ppropertyslot.NAME)) :: $object_table_ordinary_entries(n, ppropertyslot_tail*)
+  -- if ppropertyslot.DECL =/= eps
+  -- if ppropertyslot.STATE = PROP_VALUE pitem
+def $object_table_ordinary_entries(n, ppropertyslot :: ppropertyslot_tail*) = (ENTRY (KSTRING ppropertyslot.NAME) (INDIRECT n ppropertyslot.NAME)) :: $object_table_ordinary_entries(n, ppropertyslot_tail*)
+  -- if ppropertyslot.DECL =/= eps
+  -- if ppropertyslot.STATE = PROP_UNSET
+def $object_table_ordinary_entries(n, ppropertyslot :: ppropertyslot_tail*) = (ENTRY (KSTRING ppropertyslot.NAME) pitem) :: $object_table_ordinary_entries(n, ppropertyslot_tail*)
+  -- if ppropertyslot.DECL = eps
+  -- if ppropertyslot.STATE = PROP_VALUE pitem
+def $object_table_ordinary_entries(n, ppropertyslot :: ppropertyslot_tail*) = $object_table_ordinary_entries(n, ppropertyslot_tail*)
+  -- if ppropertyslot.DECL = eps
+  -- if ppropertyslot.STATE = PROP_UNSET
+
+;; Only dynamic writable lookup separates a cached ordinary table. Declared
+;; stores and references still address the actual object's inline slot.
+def $object_table_write_key(S, n, ptbytes) = S
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ptbytes) = (ppropertydesc)
+def $object_table_write_key(S, n, ptbytes) = $object_table_write(S, n)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ptbytes) = eps
+def $object_table_write_key(S, n, ptbytes) = $object_table_write(S, n)
+  -- if S.OBJECTS[n] = STDINSTANCE
+def $object_table_write_key(S, n, ptbytes) = S -- otherwise
+
 ;; stdClass may own the same HashTable as an array or another stdClass. Its
 ;; projected slots are lookup metadata; only the table owns their items.
 def $object_table_at(eps, n) = eps
@@ -35,6 +156,46 @@ def $object_table_entries_valid(S, (ENTRY (KSTRING ptbytes) pitem) :: pentry_tai
   -- if $startup_bytes(ptbytes)
   -- if $entry_lookup(pentry_tail*, KSTRING ptbytes) = eps
 def $object_table_entries_valid(S, pentry*) = false -- otherwise
+dec $object_table_image_item(pstate, nat, ptbytes, pitem) : bool
+dec $object_table_image_entries(pstate, nat, pentry*) : bool
+dec $object_table_image(pstate, nat, nat) : bool
+dec $object_table_dynamic_projection(pstate, nat, ppropertyslot*) : bool
+dec $object_table_current_entries(ppropertyslot*, pentry*) : bool
+def $object_table_image_item(S, n, ptbytes, INDIRECT n ptbytes) = true
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_rows*)
+  -- if $property_slot_at(ppropertyslot_rows*, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.DECL =/= eps
+def $object_table_image_item(S, n, ptbytes, pitem) = $object_table_item_valid(S, pitem)
+  -- if ~$indirect_item(pitem)
+def $object_table_image_item(S, n, ptbytes, pitem) = false -- otherwise
+def $object_table_image_entries(S, n, eps) = true
+def $object_table_image_entries(S, n, (ENTRY (KSTRING ptbytes) pitem) :: pentry_tail*) = ($object_table_image_item(S, n, ptbytes, pitem) /\ $object_table_image_entries(S, n, pentry_tail*))
+  -- if $startup_bytes(ptbytes)
+  -- if $entry_lookup(pentry_tail*, KSTRING ptbytes) = eps
+def $object_table_image_entries(S, n, pentry*) = false -- otherwise
+def $object_table_image(S, n, n_table) = true
+  -- if $object_table_ordinary(S, n)
+  -- if $(n_table < |S.ARRAYS|)
+  -- if $heap_subset([HOBJECT n, HARRAY n_table], S.ALLOCATIONS)
+  -- if $object_table_image_entries(S, n, S.ARRAYS[n_table].ITEMS)
+def $object_table_image(S, n, n_table) = false -- otherwise
+def $object_table_dynamic_projection(S, n_table, eps) = true
+def $object_table_dynamic_projection(S, n_table, ppropertyslot :: ppropertyslot_tail*) = $object_table_dynamic_projection(S, n_table, ppropertyslot_tail*)
+  -- if ppropertyslot.DECL =/= eps \/ ppropertyslot.STATE = PROP_UNSET
+def $object_table_dynamic_projection(S, n_table, ppropertyslot :: ppropertyslot_tail*) = $object_table_dynamic_projection(S, n_table, ppropertyslot_tail*)
+  -- if ppropertyslot.DECL = eps
+  -- if ppropertyslot.STATE = PROP_VALUE pitem
+  -- if $entry_lookup(S.ARRAYS[n_table].ITEMS, KSTRING ppropertyslot.NAME) = (pitem)
+def $object_table_dynamic_projection(S, n_table, ppropertyslot*) = false -- otherwise
+def $object_table_current_entries(ppropertyslot_rows*, eps) = true
+def $object_table_current_entries(ppropertyslot_rows*, (ENTRY (KSTRING ptbytes) pitem) :: pentry_tail*) = $object_table_current_entries(ppropertyslot_rows*, pentry_tail*)
+  -- if $property_slot_at(ppropertyslot_rows*, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.DECL =/= eps
+def $object_table_current_entries(ppropertyslot_rows*, (ENTRY (KSTRING ptbytes) pitem) :: pentry_tail*) = $object_table_current_entries(ppropertyslot_rows*, pentry_tail*)
+  -- if $property_slot_at(ppropertyslot_rows*, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.DECL = eps
+  -- if ppropertyslot.STATE = PROP_VALUE pitem
+def $object_table_current_entries(ppropertyslot_rows*, pentry*) = false -- otherwise
 def $stdclass_slots_valid(S, eps) = true
 def $stdclass_slots_valid(S, ppropertyslot :: ppropertyslot_tail*) = ($object_table_item_valid(S, pitem) /\ $stdclass_slots_valid(S, ppropertyslot_tail*))
   -- if ppropertyslot.DECL = eps
@@ -58,6 +219,13 @@ def $object_tables_list_valid(S, pobjecttable :: pobjecttable_tail*) = $object_t
   -- if pobjectprops.MATERIALIZED
   -- if $object_table_entries_valid(S, S.ARRAYS[pobjecttable.TABLE].ITEMS)
   -- if $property_entries(pobjectprops.SLOTS) = S.ARRAYS[pobjecttable.TABLE].ITEMS
+def $object_tables_list_valid(S, pobjecttable :: pobjecttable_tail*) = $object_tables_list_valid(S, pobjecttable_tail*)
+  -- if $object_table_image(S, pobjecttable.OBJECT, pobjecttable.TABLE)
+  -- if $object_table_at(pobjecttable_tail*, pobjecttable.OBJECT) = eps
+  -- if $objectprops_record_at(S.OBJECTPROPS, pobjecttable.OBJECT) = (pobjectprops)
+  -- if pobjectprops.MATERIALIZED
+  -- if $object_table_dynamic_projection(S, pobjecttable.TABLE, pobjectprops.SLOTS)
+  -- if $object_table_current_entries(pobjectprops.SLOTS, S.ARRAYS[pobjecttable.TABLE].ITEMS)
 def $object_tables_list_valid(S, pobjecttable*) = false -- otherwise
 def $object_tables_valid(S) = $object_tables_list_valid(S, S.OBJECTTABLES)
 
@@ -66,16 +234,30 @@ def $object_tables_valid(S) = $object_tables_list_valid(S, S.OBJECTTABLES)
 dec $object_table_write_slots(pstate, nat, ppropertyslot*) : ppropertyslot*
 def $object_table_write_slots(S, n_table, eps) = eps
 def $object_table_write_slots(S, n_table, ppropertyslot :: ppropertyslot_tail*) = ppropertyslot[.STATE = PROP_UNSET] :: $object_table_write_slots(S, n_table, ppropertyslot_tail*)
+  -- if ppropertyslot.DECL = eps
   -- if ppropertyslot.STATE = PROP_VALUE UNINITIALIZED
 def $object_table_write_slots(S, n_table, ppropertyslot :: ppropertyslot_tail*) = ppropertyslot[.STATE = PROP_VALUE $duplicate_item(S, n_table, pitem)] :: $object_table_write_slots(S, n_table, ppropertyslot_tail*)
+  -- if ppropertyslot.DECL = eps
   -- if ppropertyslot.STATE = PROP_VALUE pitem
   -- if pitem =/= UNINITIALIZED
 def $object_table_write_slots(S, n_table, ppropertyslot :: ppropertyslot_tail*) = ppropertyslot :: $object_table_write_slots(S, n_table, ppropertyslot_tail*)
+  -- if ppropertyslot.DECL =/= eps
+def $object_table_write_slots(S, n_table, ppropertyslot :: ppropertyslot_tail*) = ppropertyslot :: $object_table_write_slots(S, n_table, ppropertyslot_tail*)
+  -- if ppropertyslot.DECL = eps
   -- if ppropertyslot.STATE = PROP_UNSET
 def $object_table_write(S, n) = S[.ARRAYS = S.ARRAYS ++ [S.ARRAYS[n_table][.ITEMS = $property_entries(ppropertyslot_new*)][.POSITIONS = $defined_positions(S.ARRAYS[n_table].POSITIONS, $property_entries(ppropertyslot_new*))]]][.ALLOCATIONS = S.ALLOCATIONS ++ [HARRAY n_new]][.OBJECTTABLES = $object_table_remove(S.OBJECTTABLES, n) ++ [{OBJECT n, TABLE n_new}]][.OBJECTPROPS = $objectprops_set(S.OBJECTPROPS, n, ppropertyslot_new*)]
+  -- if S.OBJECTS[n] = STDINSTANCE
   -- if $object_table_at(S.OBJECTTABLES, n) = (n_table)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $($heap_owners($heap_prune($heap_graph(S)), HARRAY n_table) > 1)
+  -- if ppropertyslot_new* = $object_table_write_slots(S, n_table, pobjectprops.SLOTS)
+  -- if n_new = |S.ARRAYS|
+def $object_table_write(S, n) = S[.ARRAYS = S.ARRAYS ++ [S.ARRAYS[n_table][.ITEMS = pentry_new*][.POSITIONS = $defined_positions(S.ARRAYS[n_table].POSITIONS, pentry_new*)]]][.ALLOCATIONS = S.ALLOCATIONS ++ [HARRAY n_new]][.OBJECTTABLES = $object_table_remove(S.OBJECTTABLES, n) ++ [{OBJECT n, TABLE n_new}]][.OBJECTPROPS = $objectprops_set(S.OBJECTPROPS, n, ppropertyslot_new*)]
+  -- if $object_table_ordinary(S, n)
+  -- if $object_table_at(S.OBJECTTABLES, n) = (n_table)
+  -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
+  -- if $($heap_owners($heap_prune($heap_graph(S)), HARRAY n_table) > 1)
+  -- if pentry_new* = $duplicate_entries(S, n_table, S.ARRAYS[n_table].ITEMS)
   -- if ppropertyslot_new* = $object_table_write_slots(S, n_table, pobjectprops.SLOTS)
   -- if n_new = |S.ARRAYS|
 def $object_table_write(S, n) = S
@@ -128,9 +310,27 @@ def $cast_value(S, CASTINT, PUNDEFINED, z) = S[.RESULT = KNOWN (PINT 0)]
 def $object_table_materialize(S, n) = S
   -- if $object_table_at(S.OBJECTTABLES, n) = (n_table)
 def $object_table_materialize(S, n) = S[.ARRAYS = S.ARRAYS ++ [$property_cast_array(pobjectprops.SLOTS)]][.ALLOCATIONS = S.ALLOCATIONS ++ [HARRAY n_table]][.OBJECTTABLES = S.OBJECTTABLES ++ [{OBJECT n, TABLE n_table}]][.OBJECTPROPS = $objectprops_mark(S, n).OBJECTPROPS]
+  -- if S.OBJECTS[n] = STDINSTANCE
   -- if $object_table_at(S.OBJECTTABLES, n) = eps
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if n_table = |S.ARRAYS|
+def $object_table_materialize(S, n) = S[.ARRAYS = S.ARRAYS ++ [parray]][.ALLOCATIONS = S.ALLOCATIONS ++ [HARRAY n_table]][.OBJECTTABLES = S.OBJECTTABLES ++ [{OBJECT n, TABLE n_table}]][.OBJECTPROPS = $objectprops_mark(S, n).OBJECTPROPS]
+  -- if $object_table_at(S.OBJECTTABLES, n) = eps
+  -- if $object_table_ordinary(S, n)
+  -- if S.GC.ACTIVE = eps
+  -- if ~$aggregate_direct_guarded(S, n)
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_rows*)
+  -- if parray = $object_table_insert_entries($object_table_ordinary_entries(n, ppropertyslot_rows*), $array_empty())
+  -- if n_table = |S.ARRAYS|
+def $object_table_materialize(S, n) = S[.COMPLETION = UNSUPPORTED "direct comparison property-table materialization"]
+  -- if $object_table_at(S.OBJECTTABLES, n) = eps
+  -- if $object_table_ordinary(S, n)
+  -- if S.GC.ACTIVE = eps
+  -- if $aggregate_direct_guarded(S, n)
+def $object_table_materialize(S, n) = S[.COMPLETION = UNSUPPORTED "cached ordinary property-table construction during collection"]
+  -- if $object_table_at(S.OBJECTTABLES, n) = eps
+  -- if $object_table_ordinary(S, n)
+  -- if S.GC.ACTIVE =/= eps
 dec $object_table_numeric_keys(pentry*) : bool
 def $object_table_numeric_keys(eps) = false
 def $object_table_numeric_keys((ENTRY (KSTRING ptbytes) pitem) :: pentry_tail*) = true
@@ -142,10 +342,16 @@ def $object_table_to_array(S, n_source, eps, parray) = parray
 def $object_table_to_array(S, n_source, (ENTRY (KSTRING ptbytes) UNINITIALIZED) :: pentry_tail*, parray) = $object_table_to_array(S, n_source, pentry_tail*, parray)
 def $object_table_to_array(S, n_source, (ENTRY (KSTRING ptbytes) pitem) :: pentry_tail*, parray) = $object_table_to_array(S, n_source, pentry_tail*, $array_insert(parray, KINT z, $object_table_copy_item(S, n_source, pitem)))
   -- if pitem =/= UNINITIALIZED
+  -- if ~$indirect_item(pitem)
   -- if $string_key(ptbytes) = INTEGERKEY z
 def $object_table_to_array(S, n_source, (ENTRY (KSTRING ptbytes) pitem) :: pentry_tail*, parray) = $object_table_to_array(S, n_source, pentry_tail*, $array_insert(parray, KSTRING ptbytes, $object_table_copy_item(S, n_source, pitem)))
   -- if pitem =/= UNINITIALIZED
+  -- if ~$indirect_item(pitem)
   -- if $string_key(ptbytes) = STRINGKEY
+def $object_table_to_array(S, n_source, (ENTRY (KSTRING ptbytes) (INDIRECT n ptbytes_slot)) :: pentry_tail*, parray) = $object_table_to_array(S, n_source, (ENTRY (KSTRING ptbytes) pitem) :: pentry_tail*, parray)
+  -- if pitem = $object_table_item(S, INDIRECT n ptbytes_slot)
+def $object_table_cast_ordinary(S, n) = $allocate_array(S, $object_table_to_array(S, n_table, S.ARRAYS[n_table].ITEMS, $array_empty()))
+  -- if $object_table_at(S.OBJECTTABLES, n) = (n_table)
 def $stdclass_cast_array(S, n) = S_table[.RESULT = KNOWN (PARRAY n_table)]
   -- if S_table = $object_table_materialize(S, n)
   -- if $object_table_at(S_table.OBJECTTABLES, n) = (n_table)
@@ -168,15 +374,39 @@ def $object_table_prune_keys((ENTRY pkey pitem) :: pentry_tail*, pentry_new*, pa
   -- if $entry_lookup(pentry_new*, pkey) = eps
 def $object_table_prune_keys((ENTRY pkey pitem) :: pentry_tail*, pentry_new*, parray) = $object_table_prune_keys(pentry_tail*, pentry_new*, parray)
   -- if $entry_lookup(pentry_new*, pkey) = (pitem_new)
-dec $object_table_insert_entries(pentry*, parray) : parray
 def $object_table_insert_entries(eps, parray) = parray
 def $object_table_insert_entries((ENTRY pkey pitem) :: pentry_tail*, parray) = $object_table_insert_entries(pentry_tail*, $array_insert(parray, pkey, pitem))
+def $object_table_sync_rows(eps, parray) = parray
+def $object_table_sync_rows(ppropertyslot :: ppropertyslot_tail*, parray) = $object_table_sync_rows(ppropertyslot_tail*, parray)
+  -- if ppropertyslot.DECL =/= eps
+def $object_table_sync_rows(ppropertyslot :: ppropertyslot_tail*, parray) = $object_table_sync_rows(ppropertyslot_tail*, $array_insert(parray, KSTRING ppropertyslot.NAME, pitem))
+  -- if ppropertyslot.DECL = eps
+  -- if ppropertyslot.STATE = PROP_VALUE pitem
+def $object_table_sync_rows(ppropertyslot :: ppropertyslot_tail*, parray) = $object_table_sync_rows(ppropertyslot_tail*, parray[.ITEMS = $entry_delete(parray.ITEMS, KSTRING ppropertyslot.NAME)][.POSITIONS = $position_delete(parray.POSITIONS, KSTRING ppropertyslot.NAME)])
+  -- if ppropertyslot.DECL = eps
+  -- if ppropertyslot.STATE = PROP_UNSET
 def $object_table_sync(S, n) = S[.ARRAYS = $array_replace(S.ARRAYS, n_table, $object_table_insert_entries(pentry*, $object_table_prune_keys(S.ARRAYS[n_table].ITEMS, pentry*, S.ARRAYS[n_table])))]
+  -- if S.OBJECTS[n] = STDINSTANCE
   -- if $object_table_at(S.OBJECTTABLES, n) = (n_table)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if pentry* = $property_entries(pobjectprops.SLOTS)
+def $object_table_sync(S, n) = S[.ARRAYS = $array_replace(S.ARRAYS, n_table, $object_table_sync_rows(pobjectprops.SLOTS, S.ARRAYS[n_table]))]
+  -- if $object_table_ordinary(S, n)
+  -- if $object_table_at(S.OBJECTTABLES, n) = (n_table)
+  -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
+def $object_table_sync(S, n) = S[.COMPLETION = UNSUPPORTED "cached ordinary property-table shape change"]
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $object_table_at(S.OBJECTTABLES, n) = (n_table)
+  -- if ~$object_table_ordinary(S, n)
+def $object_table_sync(S, n) = $object_table_materialize(S, n)
+  -- if $object_table_at(S.OBJECTTABLES, n) = eps
+  -- if $object_table_ordinary(S, n)
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_rows*)
+  -- if $object_table_dynamic(ppropertyslot_rows*)
+  -- if S.COMPLETION = NORMAL
 def $object_table_sync(S, n) = S
   -- if $object_table_at(S.OBJECTTABLES, n) = eps
+  -- if ~$object_table_ordinary(S, n) \/ ~$object_table_dynamic($object_table_slots_at(S, n)) \/ S.COMPLETION =/= NORMAL
 def $object_table_sync_value(S, POBJECT n) = $object_table_sync(S, n)
 def $object_table_sync_value(S, pvalue) = S -- otherwise
 
@@ -186,8 +416,14 @@ dec $object_table_reference_slots(pstate, nat, ptbytes, nat, pobjectprops*) : po
 def $object_table_reference_slots(S, n_table, ptbytes, n_cell, eps) = eps
 def $object_table_reference_slots(S, n_table, ptbytes, n_cell, pobjectprops :: pobjectprops_tail*) = pobjectprops[.SLOTS = $property_slot_set(pobjectprops.SLOTS, ptbytes, PROP_VALUE (ALIAS n_cell))] :: $object_table_reference_slots(S, n_table, ptbytes, n_cell, pobjectprops_tail*)
   -- if $object_table_at(S.OBJECTTABLES, pobjectprops.OBJECT) = (n_table)
+  -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.DECL = eps
 def $object_table_reference_slots(S, n_table, ptbytes, n_cell, pobjectprops :: pobjectprops_tail*) = pobjectprops :: $object_table_reference_slots(S, n_table, ptbytes, n_cell, pobjectprops_tail*)
-  -- if $object_table_at(S.OBJECTTABLES, pobjectprops.OBJECT) =/= (n_table)
+  -- if $object_table_at(S.OBJECTTABLES, pobjectprops.OBJECT) =/= (n_table) \/ $property_slot_at(pobjectprops.SLOTS, ptbytes) = eps
+def $object_table_reference_slots(S, n_table, ptbytes, n_cell, pobjectprops :: pobjectprops_tail*) = pobjectprops :: $object_table_reference_slots(S, n_table, ptbytes, n_cell, pobjectprops_tail*)
+  -- if $object_table_at(S.OBJECTTABLES, pobjectprops.OBJECT) = (n_table)
+  -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.DECL =/= eps
 dec $object_table_reference_bucket(pstate, nat, ptbytes) : pstate
 def $object_table_reference_bucket(S, n_table, ptbytes) = $reference_cell(S, n_cell)[.CELL = n_cell][.RESULT = REFERENCE n_cell]
   -- if $entry_lookup(S.ARRAYS[n_table].ITEMS, KSTRING ptbytes) = (ALIAS n_cell)
@@ -332,6 +568,7 @@ def $error_read_discard(S, OBJECT_CAST_RESULT pobjectcast) = S[.OBJECTCAST = eps
 ;; Raw IS_UNDEF can be exposed by the post-warning scalar insertion. Quiet
 ;; reads and hash comparison retain their own null/skip rules.
 def $entry_read_value(S, UNINITIALIZED) = PUNDEFINED
+def $entry_read_value(S, INDIRECT n ptbytes) = $entry_read_value(S, $object_table_item(S, INDIRECT n ptbytes))
 def $entry_read_value(S, pitem) = $entry_value(S, pitem) -- otherwise
 def $stdclass_raw_undefined(S, POBJECT n, ptbytes) = true
   -- if S.OBJECTS[n] = STDINSTANCE
@@ -421,6 +658,11 @@ def $object_foreach_reset(S, n) = $objectprops_mark(S, n)
   -- if ~$property_hook_instance(S, n)
   -- if S.OBJECTS[n] =/= STDINSTANCE
   -- if ~$weakmap_object(S.OBJECTS[n])
+  -- if ~$object_table_ordinary(S, n)
+def $object_foreach_reset(S, n) = $object_table_materialize($object_table_write(S, n), n)
+  -- if ~$instance_storage_freeing(S, n)
+  -- if ~$property_hook_instance(S, n)
+  -- if $object_table_ordinary(S, n)
 dec $object_foreach_select(pstate, nat) : pstate
 def $object_foreach_select(S, n) = S[.COMPLETION = UNSUPPORTED "property hook iteration"]
   -- if ~$instance_storage_freeing(S, n)
@@ -433,6 +675,37 @@ def $object_foreach_select(S, n) = $objectprops_mark(S, n)
   -- if ~$instance_storage_freeing(S, n)
   -- if ~$property_hook_instance(S, n)
   -- if S.OBJECTS[n] =/= STDINSTANCE
+  -- if ~$object_table_ordinary(S, n)
+def $object_foreach_select(S, n) = $object_table_materialize(S, n)
+  -- if ~$instance_storage_freeing(S, n)
+  -- if ~$property_hook_instance(S, n)
+  -- if $object_table_ordinary(S, n)
+
+;; A cached table is authoritative even when a duplicated declared bucket has
+;; diverged from the object's inline slot. Only INDIRECT reads that live slot.
+def $object_table_next(S, n_object, eps, n, n_absolute) = eps
+def $object_table_next(S, n_object, (ENTRY (KSTRING ptbytes) pitem) :: pentry_tail*, 0, n_absolute) = (ptbytes, pitem, $(n_absolute + 1))
+  -- if $object_table_item(S, pitem) =/= UNINITIALIZED
+  -- if $property_visible_key(S, n_object, ptbytes)
+def $object_table_next(S, n_object, (ENTRY (KSTRING ptbytes) pitem) :: pentry_tail*, 0, n_absolute) = $object_table_next(S, n_object, pentry_tail*, 0, $(n_absolute + 1))
+  -- if $object_table_item(S, pitem) = UNINITIALIZED \/ ~$property_visible_key(S, n_object, ptbytes)
+def $object_table_next(S, n_object, pentry :: pentry_tail*, n, n_absolute) = $object_table_next(S, n_object, pentry_tail*, $nabs($(n - 1)), $(n_absolute + 1))
+  -- if $(n > 0)
+
+dec $object_foreach_reference(pstate, nat, ptbytes, int) : pstate
+def $object_foreach_reference(S, n, ptbytes, z) = $property_foreach_reference(S, n, ptbytes, z)
+  -- if $object_table_at(S.OBJECTTABLES, n) = (n_table)
+  -- if $entry_lookup(S.ARRAYS[n_table].ITEMS, KSTRING ptbytes) = (INDIRECT n ptbytes)
+def $object_foreach_reference(S, n, ptbytes, z) = $object_table_reference_bucket(S, n_table, ptbytes)
+  -- if $object_table_at(S.OBJECTTABLES, n) = (n_table)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ptbytes) = eps
+def $object_foreach_reference(S, n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "copied declared-table bucket reference iteration"]
+  -- if $object_table_at(S.OBJECTTABLES, n) = (n_table)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ptbytes) = (ppropertydesc)
+  -- if $entry_lookup(S.ARRAYS[n_table].ITEMS, KSTRING ptbytes) = (pitem)
+  -- if ~$indirect_item(pitem)
 
 dec $object_foreach_key_used(statement) : bool
 def $object_foreach_key_used(NStmtForeach expression phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata) = (phpType5 =/= ABSENT)
@@ -473,11 +746,23 @@ def $object_foreach_fetch(S, n, n_object, statement, porigin?, z, ptbytes, pitem
   -- if S_ref = $object_table_reference_bucket(S[.ORIGIN = porigin?][.ITERATORS = $iterator_set(S.ITERATORS, OBJECTITER n n_object n_next true)], n_table, ptbytes)
 def $object_foreach_fetch(S, n, n_object, statement, porigin?, z, ptbytes, pitem, n_next, true) = $object_foreach_deliver(S_ref, n, n_object, statement, z, $property_visible_name(S, n_object, ptbytes), REFERENCE S_ref.CELL, true)
   -- if S.OBJECTS[n_object] =/= STDINSTANCE
+  -- if $object_table_at(S.OBJECTTABLES, n_object) = eps
   -- if S_ref = $property_foreach_selected_reference(S[.ORIGIN = porigin?][.ITERATORS = $iterator_set(S.ITERATORS, OBJECTITER n n_object n_next true)], n_object, n_next, ptbytes, z)
   -- if S_ref.COMPLETION = NORMAL
 def $object_foreach_fetch(S, n, n_object, statement, porigin?, z, ptbytes, pitem, n_next, true) = S_ref[.TODO = eps]
   -- if S.OBJECTS[n_object] =/= STDINSTANCE
+  -- if $object_table_at(S.OBJECTTABLES, n_object) = eps
   -- if S_ref = $property_foreach_selected_reference(S[.ORIGIN = porigin?][.ITERATORS = $iterator_set(S.ITERATORS, OBJECTITER n n_object n_next true)], n_object, n_next, ptbytes, z)
+  -- if S_ref.COMPLETION =/= NORMAL
+def $object_foreach_fetch(S, n, n_object, statement, porigin?, z, ptbytes, pitem, n_next, true) = $object_foreach_deliver(S_ref, n, n_object, statement, z, $property_visible_name(S, n_object, ptbytes), REFERENCE S_ref.CELL, true)
+  -- if S.OBJECTS[n_object] =/= STDINSTANCE
+  -- if $object_table_at(S.OBJECTTABLES, n_object) = (n_table)
+  -- if S_ref = $object_foreach_reference(S[.ORIGIN = porigin?][.ITERATORS = $iterator_set(S.ITERATORS, OBJECTITER n n_object n_next true)], n_object, ptbytes, z)
+  -- if S_ref.COMPLETION = NORMAL
+def $object_foreach_fetch(S, n, n_object, statement, porigin?, z, ptbytes, pitem, n_next, true) = S_ref[.TODO = eps]
+  -- if S.OBJECTS[n_object] =/= STDINSTANCE
+  -- if $object_table_at(S.OBJECTTABLES, n_object) = (n_table)
+  -- if S_ref = $object_foreach_reference(S[.ORIGIN = porigin?][.ITERATORS = $iterator_set(S.ITERATORS, OBJECTITER n n_object n_next true)], n_object, ptbytes, z)
   -- if S_ref.COMPLETION =/= NORMAL
 
 dec $object_foreach_task_count(ptask, nat) : nat
@@ -511,9 +796,9 @@ def $object_foreach_owner_valid(S, pobjectforeach) = false -- otherwise
 dec $object_foreach_selected_valid(pstate, pobjectforeach) : bool
 def $object_foreach_selected_valid(S, pobjectforeach) = true
   -- if (HOBJECT pobjectforeach.OBJECT) <- S.ALLOCATIONS
-  -- if $objectprops_record_at(S.OBJECTPROPS, pobjectforeach.OBJECT) = (pobjectprops)
-  -- if $(pobjectforeach.POSITION > 0) /\ $(pobjectforeach.POSITION <= |pobjectprops.SLOTS|)
-  -- if pobjectprops.SLOTS[$nabs($(pobjectforeach.POSITION - 1))].NAME = pobjectforeach.KEY
+  -- if $(pobjectforeach.TABLE < |S.ARRAYS|)
+  -- if $(pobjectforeach.POSITION > 0) /\ $(pobjectforeach.POSITION <= |S.ARRAYS[pobjectforeach.TABLE].ITEMS|)
+  -- if S.ARRAYS[pobjectforeach.TABLE].ITEMS[$nabs($(pobjectforeach.POSITION - 1))] = ENTRY (KSTRING pobjectforeach.KEY) pitem
 def $object_foreach_selected_valid(S, pobjectforeach) = true
   -- if ~((HOBJECT pobjectforeach.OBJECT) <- S.ALLOCATIONS)
   -- if pobjectforeach.OWNER = HCELL n_receiver

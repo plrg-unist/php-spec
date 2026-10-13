@@ -27,9 +27,13 @@ def $clone_slots(S, n, ppropertyslot :: ppropertyslot_tail*) = $clone_slots($clo
 
 dec $clone_plain(pstate, nat) : pstate
 def $clone_plain(S, n_source) = $clone_slots(S_new, n, pobjectprops.SLOTS)
+  -- if ~$object_table_ordinary(S, n_source) \/ $object_table_at(S.OBJECTTABLES, n_source) = eps
   -- if n = |S.OBJECTS|
   -- if $objectprops_record_at(S.OBJECTPROPS, n_source) = (pobjectprops)
   -- if S_new = S[.OBJECTS = S.OBJECTS ++ [S.OBJECTS[n_source]]][.OBJECTPROPS = S.OBJECTPROPS ++ [{OBJECT n, SLOTS eps, MATERIALIZED pobjectprops.MATERIALIZED}]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)]
+def $clone_plain(S, n_source) = S[.COMPLETION = UNSUPPORTED "cached ordinary property-table cloning"]
+  -- if $object_table_ordinary(S, n_source)
+  -- if $object_table_at(S.OBJECTTABLES, n_source) = (n_table)
 
 ;; Real closure hash duplication copies singleton static/capture wrappers, but
 ;; retains wrappers also owned by active invocation locals or escaped aliases.
@@ -313,7 +317,17 @@ def $clone_receive(S, pclonecall) = S_cloned[.TODO = (CLONE_UPDATE pclonecall n_
   -- if $clone_method(S, n) = eps
   -- if ~$clone_readonly_updates(S, n)
   -- if S_cloned = $clone_object(S, n)
+  -- if S_cloned.COMPLETION = NORMAL
   -- if S_cloned.RESULT = KNOWN (POBJECT n_object)
+def $clone_receive(S, pclonecall) = S_cloned[.TODO = eps]
+  -- if pclonecall.SENT = [NAMED_SENT (KNOWN (POBJECT n)), NAMED_SENT (KNOWN (PARRAY n_array))]
+  -- if ~$instance_storage_freeing(S, n)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if ~$throwable_object(S, n)
+  -- if $clone_method(S, n) = eps
+  -- if ~$clone_readonly_updates(S, n)
+  -- if S_cloned = $clone_object(S, n)
+  -- if S_cloned.COMPLETION = UNSUPPORTED text
 def $clone_receive(S, pclonecall) = $clone_error(S, pclonecall, "Error", $ptascii("Trying to clone an uncloneable object of class ") ++ $object_name(S, n))
   -- if pclonecall.SENT = [NAMED_SENT (KNOWN (POBJECT n))]
   -- if $throwable_object(S, n)

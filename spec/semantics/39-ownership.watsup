@@ -227,6 +227,7 @@ dec $item_nodes(pitem) : pnode*
 def $item_nodes(DIRECT pvalue) = $value_nodes(pvalue)
 def $item_nodes(ALIAS n) = [HCELL n]
 def $item_nodes(UNINITIALIZED) = eps
+def $item_nodes(INDIRECT n ptbytes) = eps
 
 dec $entries_nodes(pentry*) : pnode*
 def $entries_nodes(eps) = eps
@@ -347,6 +348,10 @@ def $prune_live(S, pnode_live*) = S[.GC = $gc_prune_buffer(S, pnode_live*)][.ALL
 ;; the source array. Count surviving incoming edges, including uncollected cycles
 ;; and owning temporaries, rather than expanding every environment alias.
 dec $duplicate_item(pstate, nat, pitem) : pitem
+def $duplicate_item(S, n_source, INDIRECT n_object ptbytes) = $duplicate_item(S, n_source, $object_table_item(S, INDIRECT n_object ptbytes))
+  -- if $object_table_item(S, INDIRECT n_object ptbytes) =/= UNINITIALIZED
+def $duplicate_item(S, n_source, INDIRECT n_object ptbytes) = UNINITIALIZED
+  -- if $object_table_item(S, INDIRECT n_object ptbytes) = UNINITIALIZED
 def $duplicate_item(S, n_source, ALIAS n_cell) = DIRECT pvalue
   -- if H = $heap_prune($heap_graph(S)[.ROOTS = $machine_roots(S) ++ [HARRAY n_source]])
   -- if $heap_owners(H, HCELL n_cell) = 1
@@ -360,8 +365,11 @@ def $duplicate_item(S, n_source, pitem) = pitem
 ;; It must not release unrelated builder allocations in that caller's state.
 def $duplicate_entries(S, n_source, eps) = eps
 def $duplicate_entries(S, n_source, (ENTRY pkey UNINITIALIZED) :: pentry_tail*) = $duplicate_entries(S, n_source, pentry_tail*)
+def $duplicate_entries(S, n_source, (ENTRY pkey (INDIRECT n_object ptbytes)) :: pentry_tail*) = $duplicate_entries(S, n_source, pentry_tail*)
+  -- if $object_table_item(S, INDIRECT n_object ptbytes) = UNINITIALIZED
 def $duplicate_entries(S, n_source, (ENTRY pkey pitem) :: pentry_tail*) = (ENTRY pkey $duplicate_item(S, n_source, pitem)) :: $duplicate_entries(S, n_source, pentry_tail*)
   -- if pitem =/= UNINITIALIZED
+  -- if $object_table_item(S, pitem) =/= UNINITIALIZED
 
 ;; zend_hash_merge calls zval_add_ref only for inserted entries. This copy
 ;; constructor unwraps every singleton reference, without the source-self

@@ -253,14 +253,14 @@ rule PhpStep/readonly-clone-update-string-result: S ~> $clone_readonly_advance(S
   -- if $clone_update_string_valid(S, pcloneupdatestring)
   -- if S.RESULT = KNOWN (PSTRING ptbytes)
   -- if S_inputs = $hold_task_inputs(S)
-  -- if S_written = $object_table_sync($property_store_key_unshared($object_table_write(S_inputs, pcloneupdatestring.UPDATE.OPERATION.TARGET), pcloneupdatestring.UPDATE.OPERATION.TARGET, pcloneupdatestring.KEY, PSTRING ptbytes, pcloneupdatestring.UPDATE.OPERATION.LINE), pcloneupdatestring.UPDATE.OPERATION.TARGET)
+  -- if S_written = $object_table_sync($property_store_key_unshared($object_table_write_key(S_inputs, pcloneupdatestring.UPDATE.OPERATION.TARGET, pcloneupdatestring.KEY), pcloneupdatestring.UPDATE.OPERATION.TARGET, pcloneupdatestring.KEY, PSTRING ptbytes, pcloneupdatestring.UPDATE.OPERATION.LINE), pcloneupdatestring.UPDATE.OPERATION.TARGET)
   -- if S_written.COMPLETION = NORMAL
 rule PhpStep/readonly-clone-update-string-error: S ~> S_error[.TODO = ptask_tail*][.CLONES = $clone_window_delete(S_error.CLONES, pcloneupdatestring.UPDATE.OPERATION)][.HELD = S.HELD]
   -- if S.TODO = (CLONE_READONLY_STRING pcloneupdatestring) :: ptask_tail*
   -- if $clone_update_string_valid(S, pcloneupdatestring)
   -- if S.RESULT = KNOWN (PSTRING ptbytes)
   -- if S_inputs = $hold_task_inputs(S)
-  -- if S_written = $object_table_sync($property_store_key_unshared($object_table_write(S_inputs, pcloneupdatestring.UPDATE.OPERATION.TARGET), pcloneupdatestring.UPDATE.OPERATION.TARGET, pcloneupdatestring.KEY, PSTRING ptbytes, pcloneupdatestring.UPDATE.OPERATION.LINE), pcloneupdatestring.UPDATE.OPERATION.TARGET)
+  -- if S_written = $object_table_sync($property_store_key_unshared($object_table_write_key(S_inputs, pcloneupdatestring.UPDATE.OPERATION.TARGET, pcloneupdatestring.KEY), pcloneupdatestring.UPDATE.OPERATION.TARGET, pcloneupdatestring.KEY, PSTRING ptbytes, pcloneupdatestring.UPDATE.OPERATION.LINE), pcloneupdatestring.UPDATE.OPERATION.TARGET)
   -- if S_written.COMPLETION = THROWN text preqbytes z
   -- if pcloneupdatestring.UPDATE.OPERATION.CALL = (pclonecall)
   -- if S_error = $clone_error(S_written, pclonecall, text, preqbytes)

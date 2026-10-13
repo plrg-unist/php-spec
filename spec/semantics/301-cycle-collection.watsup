@@ -936,8 +936,13 @@ def $gc_receive(S, pconfigcall) = $gc_begin(S, pconfigcall)
 dec $weakmap_nonempty(pstate, pnode*) : bool
 def $gc_begin(S, pconfigcall) = S[.GC.NEXT = $(S.GC.NEXT + 1)][.GC.ACTIVE = (pgccall)][.TODO = (GC_TRACE pgccall) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if ~$weakmap_nonempty(S, S.ALLOCATIONS) \/ $weakmap_gc_map(S, S.ALLOCATIONS) =/= eps
+  -- if ~$object_table_gc_boundary(S)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask*
   -- if pgccall = {NONCE S.GC.NEXT, CALL pconfigcall, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, PASS 0, TOTAL 0, PENDING eps}
+def $gc_begin(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "cached ordinary property-table collection"]
+  -- if ~$weakmap_nonempty(S, S.ALLOCATIONS) \/ $weakmap_gc_map(S, S.ALLOCATIONS) =/= eps
+  -- if $object_table_gc_boundary(S)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask*
 def $task_nodes(GC_TRACE pgccall) = $instance_roots(pgccall.CALL.OWNER) ++ $instance_roots(pgccall.PENDING)
 def $task_nodes(GC_DTORS pgcplan) = $instance_roots(pgcplan.CALL.CALL.OWNER) ++ $instance_roots(pgcplan.CALL.PENDING)
 def $task_nodes(GC_DTOR_RETURN pgcplan n) = [HOBJECT n] ++ $instance_roots(pgcplan.CALL.CALL.OWNER) ++ $instance_roots(pgcplan.CALL.PENDING)

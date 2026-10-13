@@ -66,6 +66,10 @@ dec $aggregate_decl_continue(pstate, porder, nat, nat, ptbytes*, nat, pcomparegu
 dec $aggregate_tasks_declared(ptask*, nat) : bool
 dec $aggregate_frames_declared(pstate, pcallcontext?, pframe*, nat) : bool
 dec $aggregate_cursor_declared(paggregatecursor*, nat) : bool
+dec $aggregate_hash_image(pstate, nat, nat) : bool
+dec $aggregate_item_order(pstate, pitem, pitem, pcompareguard*) : porder
+dec $aggregate_item_order_effect(pstate, pitem, pitem, pcompareguard*, int) : (pstate, porder)
+dec $aggregate_entries_order(pstate, pentry*, pentry*, pcompareguard*) : porder
 
 ;; A concrete stdClass table is pinned in addition to each enclosing object.
 ;; Its captured identity survives COW even when the live object map changes.
@@ -73,6 +77,12 @@ def $aggregate_std_pair(S, n_left, n_right) = true
   -- if $(n_left < |S.OBJECTS| /\ n_right < |S.OBJECTS|)
   -- if S.OBJECTS[n_left] = STDINSTANCE
   -- if S.OBJECTS[n_right] = STDINSTANCE
+  -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
+def $aggregate_std_pair(S, n_left, n_right) = true
+  -- if $object_table_ordinary(S, n_left) /\ $object_table_ordinary(S, n_right)
+  -- if S.OBJECTS[n_left] = INSTANCE porigin
+  -- if S.OBJECTS[n_right] = INSTANCE porigin
+  -- if $object_table_at(S.OBJECTTABLES, n_left) =/= eps \/ $object_table_at(S.OBJECTTABLES, n_right) =/= eps
   -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
 def $aggregate_std_pair(S, n_left, n_right) = false -- otherwise
 def $aggregate_std_same_table(S, n_left, n_right) = true
@@ -84,6 +94,7 @@ def $aggregate_object_guard(S, n_left, n_right) = HARRAY n_table
   -- if $aggregate_std_pair(S, n_left, n_right)
   -- if $object_table_at(S.OBJECTTABLES, n_left) = (n_table)
 def $aggregate_object_guard(S, n_left, n_right) = DECLARED_TABLE n_left
+  -- if ~$aggregate_std_pair(S, n_left, n_right)
   -- if S.OBJECTS[n_left] = INSTANCE porigin
   -- if S.OBJECTS[n_right] = INSTANCE porigin
   -- if $objectprops_materialized(S.OBJECTPROPS, n_left) \/ $objectprops_materialized(S.OBJECTPROPS, n_right)
@@ -119,9 +130,71 @@ def $aggregate_std_tables(S, n_left, n_right, n_tableleft, n_tableright, pcompar
   -- if ~((HARRAY n_tableleft) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S)))
   -- if $aggregate_table_count(S.ARRAYS[n_tableleft].ITEMS) = $aggregate_table_count(S.ARRAYS[n_tableright].ITEMS)
 def $aggregate_std_order(S, n_left, n_right, pcompareguard_seen*, z) = $aggregate_std_tables(S_tables, n_left, n_right, n_tableleft, n_tableright, pcompareguard_seen*, z)
-  -- if S_tables = $object_table_materialize($object_table_materialize(S, n_left), n_right)
+  -- if S_left = $object_table_materialize(S, n_left)
+  -- if S_left.COMPLETION = NORMAL
+  -- if S_tables = $object_table_materialize(S_left, n_right)
+  -- if S_tables.COMPLETION = NORMAL
   -- if $object_table_at(S_tables.OBJECTTABLES, n_left) = (n_tableleft)
   -- if $object_table_at(S_tables.OBJECTTABLES, n_right) = (n_tableright)
+def $aggregate_std_order(S, n_left, n_right, pcompareguard_seen*, z) = (S_left, ORDERUNSUPPORTED text)
+  -- if S_left = $object_table_materialize(S, n_left)
+  -- if S_left.COMPLETION = UNSUPPORTED text
+def $aggregate_std_order(S, n_left, n_right, pcompareguard_seen*, z) = (S_tables, ORDERUNSUPPORTED text)
+  -- if S_left = $object_table_materialize(S, n_left)
+  -- if S_left.COMPLETION = NORMAL
+  -- if S_tables = $object_table_materialize(S_left, n_right)
+  -- if S_tables.COMPLETION = UNSUPPORTED text
+
+;; DEINDIRECT happens before reference unwrapping. Physical bucket counts stay
+;; unchanged by an inline unset; its resulting UNDEF has explicit child order.
+def $aggregate_item_order(S, UNINITIALIZED, UNINITIALIZED, pcompareguard_seen*) = ORDER 0
+def $aggregate_item_order(S, UNINITIALIZED, pitem, pcompareguard_seen*) = ORDER $(-1) -- if pitem =/= UNINITIALIZED
+def $aggregate_item_order(S, pitem, UNINITIALIZED, pcompareguard_seen*) = ORDER 1 -- if pitem =/= UNINITIALIZED
+def $aggregate_item_order(S, pitem_left, pitem_right, pcompareguard_seen*) = $value_order(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), pcompareguard_seen*)
+  -- if pitem_left =/= UNINITIALIZED /\ pitem_right =/= UNINITIALIZED
+def $aggregate_item_order_effect(S, UNINITIALIZED, UNINITIALIZED, pcompareguard_seen*, z) = (S, ORDER 0)
+def $aggregate_item_order_effect(S, UNINITIALIZED, pitem, pcompareguard_seen*, z) = (S, ORDER $(-1)) -- if pitem =/= UNINITIALIZED
+def $aggregate_item_order_effect(S, pitem, UNINITIALIZED, pcompareguard_seen*, z) = (S, ORDER 1) -- if pitem =/= UNINITIALIZED
+def $aggregate_item_order_effect(S, pitem_left, pitem_right, pcompareguard_seen*, z) = $value_order_effect(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), pcompareguard_seen*, z)
+  -- if pitem_left =/= UNINITIALIZED /\ pitem_right =/= UNINITIALIZED
+def $aggregate_entries_order(S, eps, pentry_right*, pcompareguard_seen*) = ORDER 0
+def $aggregate_entries_order(S, (ENTRY pkey UNINITIALIZED) :: pentry_left*, pentry_right*, pcompareguard_seen*) = $aggregate_entries_order(S, pentry_left*, pentry_right*, pcompareguard_seen*)
+def $aggregate_entries_order(S, (ENTRY pkey pitem) :: pentry_left*, pentry_right*, pcompareguard_seen*) = ORDER 1
+  -- if pitem =/= UNINITIALIZED
+  -- if $entry_lookup(pentry_right*, pkey) = eps \/ $entry_lookup(pentry_right*, pkey) = (UNINITIALIZED)
+def $aggregate_entries_order(S, (ENTRY pkey pitem_left) :: pentry_left*, pentry_right*, pcompareguard_seen*) = $aggregate_entries_order(S, pentry_left*, pentry_right*, pcompareguard_seen*)
+  -- if pitem_left =/= UNINITIALIZED
+  -- if $entry_lookup(pentry_right*, pkey) = (pitem_right)
+  -- if pitem_right =/= UNINITIALIZED
+  -- if $aggregate_item_order(S, $object_table_item(S, pitem_left), $object_table_item(S, pitem_right), pcompareguard_seen*) = ORDER 0
+def $aggregate_entries_order(S, (ENTRY pkey pitem_left) :: pentry_left*, pentry_right*, pcompareguard_seen*) = porder
+  -- if pitem_left =/= UNINITIALIZED
+  -- if $entry_lookup(pentry_right*, pkey) = (pitem_right)
+  -- if pitem_right =/= UNINITIALIZED
+  -- if porder = $aggregate_item_order(S, $object_table_item(S, pitem_left), $object_table_item(S, pitem_right), pcompareguard_seen*)
+  -- if porder =/= ORDER 0
+def $aggregate_cached_order(S, n_left, n_right, pcompareguard_seen*) = ORDERRECURSIVE
+  -- if $object_table_at(S.OBJECTTABLES, n_left) = (n_tableleft)
+  -- if $object_table_at(S.OBJECTTABLES, n_right) = (n_tableright)
+  -- if n_tableleft =/= n_tableright
+  -- if (HARRAY n_tableleft) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S))
+def $aggregate_cached_order(S, n_left, n_right, pcompareguard_seen*) = ORDER 0
+  -- if $object_table_at(S.OBJECTTABLES, n_left) = (n_table)
+  -- if $object_table_at(S.OBJECTTABLES, n_right) = (n_table)
+def $aggregate_cached_order(S, n_left, n_right, pcompareguard_seen*) = ORDER $compare_int($aggregate_table_count(S.ARRAYS[n_tableleft].ITEMS), $aggregate_table_count(S.ARRAYS[n_tableright].ITEMS))
+  -- if $object_table_at(S.OBJECTTABLES, n_left) = (n_tableleft)
+  -- if $object_table_at(S.OBJECTTABLES, n_right) = (n_tableright)
+  -- if n_tableleft =/= n_tableright
+  -- if ~((HARRAY n_tableleft) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S)))
+  -- if $aggregate_table_count(S.ARRAYS[n_tableleft].ITEMS) =/= $aggregate_table_count(S.ARRAYS[n_tableright].ITEMS)
+def $aggregate_cached_order(S, n_left, n_right, pcompareguard_seen*) = $aggregate_entries_order(S, S.ARRAYS[n_tableleft].ITEMS, S.ARRAYS[n_tableright].ITEMS, (HARRAY n_tableleft) :: pcompareguard_seen*)
+  -- if $object_table_at(S.OBJECTTABLES, n_left) = (n_tableleft)
+  -- if $object_table_at(S.OBJECTTABLES, n_right) = (n_tableright)
+  -- if n_tableleft =/= n_tableright
+  -- if ~((HARRAY n_tableleft) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S)))
+  -- if $aggregate_table_count(S.ARRAYS[n_tableleft].ITEMS) = $aggregate_table_count(S.ARRAYS[n_tableright].ITEMS)
+def $aggregate_cached_order(S, n_left, n_right, pcompareguard_seen*) = ORDERUNSUPPORTED "cached property-table comparison materialization"
+  -- if $object_table_at(S.OBJECTTABLES, n_left) = eps \/ $object_table_at(S.OBJECTTABLES, n_right) = eps
 
 ;; A declared-only hash contains indirect pointers to initialized public slots.
 ;; Key order is captured, while selected and future slot values remain live.
@@ -149,6 +222,7 @@ def $aggregate_decl_image(S, n, ptbytes*) = true
   -- if ptbytes* = $aggregate_decl_keys(ppropertyslot_rows*)
 def $aggregate_decl_image(S, n, ptbytes*) = false -- otherwise
 def $aggregate_decl_pair(S, n_left, n_right) = true
+  -- if ~$aggregate_std_pair(S, n_left, n_right)
   -- if $(n_left < |S.OBJECTS| /\ n_right < |S.OBJECTS|)
   -- if S.OBJECTS[n_left] = INSTANCE porigin
   -- if S.OBJECTS[n_right] = INSTANCE porigin
@@ -209,6 +283,7 @@ def $aggregate_projection_blocked(S, n) = true
   -- if (HOBJECT n) <- $aggregate_compare_seen(S)
   -- if $aggregate_projection_plain(S, n)
 def $aggregate_projection_blocked(S, n) = false -- otherwise
+def $aggregate_direct_guarded(S, n) = ((HOBJECT n) <- $aggregate_compare_seen(S))
 
 def $aggregate_node_value(HARRAY n) = PARRAY n
 def $aggregate_node_value(HOBJECT n) = POBJECT n
@@ -261,11 +336,12 @@ def $aggregate_pointer(paggregatecursor, false) = AGGREGATE_PROPERTY n ptbytes
   -- if ~$aggregate_std_kind(paggregatecursor.KIND)
   -- if paggregatecursor.KEY = KSTRING ptbytes
 def $aggregate_pointer_value(S, AGGREGATE_CELL n) = $string_compare_pointer_value(S, COMPARE_CELL n)
-def $aggregate_pointer_value(S, AGGREGATE_ARRAY n pkey) = ($entry_value(S, pitem))
+def $aggregate_pointer_value(S, AGGREGATE_ARRAY n pkey) = ($entry_value(S, pitem_effective))
   -- if (HARRAY n) <- S.ALLOCATIONS
   -- if $(n < |S.ARRAYS|)
   -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = (pitem)
-  -- if pitem =/= UNINITIALIZED
+  -- if pitem_effective = $object_table_item(S, pitem)
+  -- if pitem_effective =/= UNINITIALIZED
 def $aggregate_pointer_value(S, AGGREGATE_PROPERTY n ptbytes) = ($entry_value(S, pitem))
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_rows*)
@@ -297,13 +373,15 @@ def $aggregate_array_effect(S, n_left, n_right, n_index, n_width, pcompareguard_
   -- if $entry_lookup(S.ARRAYS[n_right].ITEMS, pkey) = eps \/ $entry_lookup(S.ARRAYS[n_right].ITEMS, pkey) = (UNINITIALIZED)
 def $aggregate_array_effect(S, n_left, n_right, n_index, n_width, pcompareguard_seen*, z) = $aggregate_array_continue(S_next, $aggregate_push(porder, paggregatecursor), n_left, n_right, $(n_index + 1), n_width, pcompareguard_seen*, z)
   -- if $(n_index < n_width)
-  -- if S.ARRAYS[n_left].ITEMS[n_index] = ENTRY pkey pitem_left
-  -- if pitem_left =/= UNINITIALIZED
-  -- if $entry_lookup(S.ARRAYS[n_right].ITEMS, pkey) = (pitem_right)
-  -- if pitem_right =/= UNINITIALIZED
-  -- if pvalue_left = $entry_value(S, pitem_left)
-  -- if pvalue_right = $entry_value(S, pitem_right)
-  -- if (S_next, porder) = $value_order_effect(S, pvalue_left, pvalue_right, pcompareguard_seen*, z)
+  -- if S.ARRAYS[n_left].ITEMS[n_index] = ENTRY pkey pitem_rawleft
+  -- if pitem_rawleft =/= UNINITIALIZED
+  -- if $entry_lookup(S.ARRAYS[n_right].ITEMS, pkey) = (pitem_rawright)
+  -- if pitem_rawright =/= UNINITIALIZED
+  -- if pitem_left = $object_table_item(S, pitem_rawleft)
+  -- if pitem_right = $object_table_item(S, pitem_rawright)
+  -- if pvalue_left = $entry_read_value(S, pitem_left)
+  -- if pvalue_right = $entry_read_value(S, pitem_right)
+  -- if (S_next, porder) = $aggregate_item_order_effect(S, pitem_left, pitem_right, pcompareguard_seen*, z)
   -- if n_next = $(n_index + 1)
   -- if paggregatecursor = {KIND AGGREGATE_PLAIN, LEFT HARRAY n_left, RIGHT HARRAY n_right, INDEX n_next, WIDTH n_width, KEY pkey, LEFTITEM pitem_left, RIGHTITEM pitem_right, LEFTVALUE pvalue_left, RIGHTVALUE pvalue_right}
 def $aggregate_array_continue(S, ORDER 0, n_left, n_right, n_index, n_width, pcompareguard_seen*, z) = $aggregate_array_effect(S, n_left, n_right, n_index, n_width, pcompareguard_seen*, z)
@@ -346,6 +424,15 @@ def $aggregate_property_continue(S, porder, n_left, n_right, n_index, pcomparegu
 def $aggregate_item_image(DIRECT pvalue, pvalue) = true
 def $aggregate_item_image(ALIAS n, pvalue) = true
 def $aggregate_item_image(pitem, pvalue) = false -- otherwise
+def $aggregate_hash_image(S, n, n_table) = true
+  -- if $(n < |S.OBJECTS| /\ n_table < |S.ARRAYS|)
+  -- if S.OBJECTS[n] = STDINSTANCE
+  -- if $heap_subset([HOBJECT n, HARRAY n_table], S.ALLOCATIONS)
+  -- if $object_table_entries_valid(S, S.ARRAYS[n_table].ITEMS)
+def $aggregate_hash_image(S, n, n_table) = $object_table_image(S, n, n_table)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+def $aggregate_hash_image(S, n, n_table) = false -- otherwise
 def $aggregate_cursor_valid(S, paggregatecursor) = true
   -- if paggregatecursor.KIND = AGGREGATE_PLAIN
   -- if paggregatecursor.LEFT = HARRAY n_left
@@ -381,8 +468,9 @@ def $aggregate_cursor_valid(S, paggregatecursor) = true
   -- if paggregatecursor.RIGHT = HOBJECT n_right
   -- if n_left =/= n_right
   -- if $(n_left < |S.OBJECTS| /\ n_right < |S.OBJECTS|)
-  -- if S.OBJECTS[n_left] = STDINSTANCE
-  -- if S.OBJECTS[n_right] = STDINSTANCE
+  -- if $empty_instance_same(S, n_left, n_right)
+  -- if $aggregate_hash_image(S, n_left, n_tableleft)
+  -- if $aggregate_hash_image(S, n_right, n_tableright)
   -- if $aggregate_cursor_valid(S, paggregatecursor[.KIND = AGGREGATE_PLAIN][.LEFT = HARRAY n_tableleft][.RIGHT = HARRAY n_tableright])
   -- if $heap_subset([HOBJECT n_left, HOBJECT n_right], S.ALLOCATIONS)
 def $aggregate_cursor_valid(S, paggregatecursor) = true

@@ -3,7 +3,7 @@ syntax pmagic = MAGICFILE | MAGICDIR | MAGICLINE | MAGICNAMESPACE | MAGICCLASS |
 syntax pstringidentity = INTERNED_STRING | REQUEST_STRING nat
 syntax pvalue = PUNDEFINED | PNULL | PBOOL bool | PINT int | PFLOAT nat | PSTRING nat* | PSTRING_CARRIER pstringidentity nat* | PARRAY nat | POBJECT nat
 syntax pkey = KINT int | KSTRING nat*
-syntax pitem = DIRECT pvalue | UNINITIALIZED | ALIAS nat
+syntax pitem = DIRECT pvalue | UNINITIALIZED | ALIAS nat | INDIRECT nat nat*
 syntax pentry = ENTRY pkey pitem
 syntax pposition = POSITION pkey nat
 syntax parray = { ITEMS pentry*, NEXT int, POSITIONS pposition*, SERIAL nat }
@@ -16,6 +16,10 @@ syntax punary = POSITIVE | NEGATIVE
 syntax pcast = CASTBOOL | CASTINT | CASTFLOAT | CASTSTRING | CASTARRAY | CASTOBJECT
 syntax pcomparison = COMPARED bool | RECURSIVE
 var z : int
+
+dec $indirect_item(pitem) : bool
+def $indirect_item(INDIRECT n ptbytes) = true
+def $indirect_item(pitem) = false -- otherwise
 
 dec $metadata_line(metadataEntry) : int
 def $metadata_line(MstartLine z) = z

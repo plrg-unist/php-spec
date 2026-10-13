@@ -230,8 +230,16 @@ def $clone_lifecycle_start(S, n_source, porigin_site, z, pclonecall?) = S_copied
   -- if $method_accessible(S, pmethoddesc, $method_current_scope(S))
   -- if S.TODO = ptask :: ptask_tail*
   -- if S_copied = $clone_object($hold_task_inputs(S), n_source)
+  -- if S_copied.COMPLETION = NORMAL
   -- if S_copied.RESULT = KNOWN (POBJECT n_target)
   -- if pcloneoperation = {SITE porigin_site, LINE z, SOURCE n_source, TARGET n_target, INPUT $clone_input(S, porigin_site, pclonecall?), CALL pclonecall?, SCOPE $method_current_scope(S)}
+def $clone_lifecycle_start(S, n_source, porigin_site, z, pclonecall?) = S_copied[.TODO = eps][.HELD = S.HELD]
+  -- if ~$instance_storage_freeing(S, n_source)
+  -- if $clone_method(S, n_source) = (pmethoddesc)
+  -- if $method_accessible(S, pmethoddesc, $method_current_scope(S))
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S_copied = $clone_object($hold_task_inputs(S), n_source)
+  -- if S_copied.COMPLETION = UNSUPPORTED text
 
 def $clone_receive(S, pclonecall) = $clone_lifecycle_start(S, n_source, pclonecall.SITE, pclonecall.LINE, (pclonecall))
   -- if $named_slot_at(pclonecall.SENT, 0) = NAMED_SENT (KNOWN (POBJECT n_source))
@@ -248,8 +256,18 @@ def $clone_receive(S, pclonecall) = $clone_readonly_start(S_copied[.HELD = S.HEL
   -- if S.ARRAYS[n_array].ITEMS =/= eps
   -- if S.TODO = ptask :: ptask_tail*
   -- if S_copied = $clone_object($hold_task_inputs(S), n_source)
+  -- if S_copied.COMPLETION = NORMAL
   -- if S_copied.RESULT = KNOWN (POBJECT n_target)
   -- if pcloneoperation = {SITE pclonecall.SITE, LINE pclonecall.LINE, SOURCE n_source, TARGET n_target, INPUT eps, CALL (pclonecall), SCOPE $method_current_scope(S)}
+def $clone_receive(S, pclonecall) = S_copied[.TODO = eps][.HELD = S.HELD]
+  -- if pclonecall.SENT = [NAMED_SENT (KNOWN (POBJECT n_source)), NAMED_SENT (KNOWN (PARRAY n_array))]
+  -- if ~$instance_storage_freeing(S, n_source)
+  -- if $clone_method(S, n_source) = eps
+  -- if $clone_readonly_updates(S, n_source)
+  -- if S.ARRAYS[n_array].ITEMS =/= eps
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S_copied = $clone_object($hold_task_inputs(S), n_source)
+  -- if S_copied.COMPLETION = UNSUPPORTED text
 def $clone_receive(S, pclonecall) = $clone_object($hold_task_inputs(S), n_source)[.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = S.HELD]
   -- if pclonecall.SENT = [NAMED_SENT (KNOWN (POBJECT n_source)), NAMED_SENT (KNOWN (PARRAY n_array))]
   -- if ~$instance_storage_freeing(S, n_source)
