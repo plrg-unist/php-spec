@@ -7,6 +7,15 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Direct ordinary Stringable/string comparisons now call `__toString()` for seven
+loose operators and non-bool Switch cases. Captured CV/copy/reference-cell reads,
+GLOBALS rebinding, caster ownership, lazy fallthrough and nested scalar Switch
+with a caught TypeError and finally entry are validated at aabff656 /381: six exact
+source agreements and 487 reached predicates with 26 real PhpSteps; strict 3
+passes. Original baseline, pre-main and fixture-selector failures retain zero credit. Recursive casts, wider
+internal handlers and lifetimes remain required; full core stays partial.
+[Comparison ledger](coverage/semantics/stringable-comparison-review.json).
+
 Caught source-static destructor exceptions now keep user execution through caller
 catch and remaining-slot release, preserving Previous without treating exit as a
 Throwable. Request signed32 EXITSTATUS survives caught replacement; integer/default

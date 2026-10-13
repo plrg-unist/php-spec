@@ -23,5 +23,10 @@ The pinned engine anchors are `determine_switch_jumptable_type` and
 conditional jump, and free handlers in `Zend/zend_vm_def.h`.
 [The review record](../../coverage/semantics/switch-review.json) distinguishes
 the maintained source/compiler/paused tests from independent original-source
-and ownership audits. Object-dependent comparisons, class linking, and the
-remaining control constructs are separate core obligations.
+and ownership audits. Direct ordinary Stringable/string comparisons now suspend
+through 392 while preserving the original subject and captured opposite pointer.
+The [comparison increment](../../coverage/semantics/stringable-comparison-review.json)
+checks delayed default, body-only fallthrough without later case evaluation, and
+the same TypeError caught after caster restoration, followed by finally entry.
+The caster first reenters a nested scalar Switch. Reached recursive casts, broader internal handlers and wider control
+remain separate core obligations.

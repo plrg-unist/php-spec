@@ -4488,10 +4488,17 @@
       "obligations": [
         "control.switch"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/124-switch-compiler.watsup",
+        "spec/semantics/125-switch-runtime.watsup",
+        "spec/semantics/392-stringable-comparisons.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/switch.py",
+        "tests/semantics/stringable_comparison_cases.json"
+      ],
+      "review": "Existing ordered/default/fallthrough/break/continue and compiler bool paths are partial; this increment adds direct ordinary Stringable/string case comparisons. See control.switch and stringable-comparison-review.json; broader handlers/control remain required."
     },
     {
       "node": "Stmt_Catch",
@@ -5621,10 +5628,17 @@
       "obligations": [
         "control.switch"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/124-switch-compiler.watsup",
+        "spec/semantics/125-switch-runtime.watsup",
+        "spec/semantics/392-stringable-comparisons.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/switch.py",
+        "tests/semantics/stringable_comparison_cases.json"
+      ],
+      "review": "Existing ordered/default/fallthrough/break/continue and compiler bool paths are partial; this increment adds direct ordinary Stringable/string case comparisons. See control.switch and stringable-comparison-review.json; broader handlers/control remain required."
     },
     {
       "node": "Stmt_Trait",
@@ -7542,7 +7556,9 @@
       "implementation": [
         "spec/semantics/20-machine.watsup",
         "spec/semantics/45-constant-context.watsup",
-        "spec/semantics/52-comparison.watsup"
+        "spec/semantics/52-comparison.watsup",
+        "spec/semantics/168-user-string-runtime.watsup",
+        "spec/semantics/392-stringable-comparisons.watsup"
       ],
       "helper_tests": [
         "tests/semantics/comparison.py",
@@ -7550,12 +7566,15 @@
       ],
       "source_tests": [
         "tests/semantics/validate.py",
-        "coverage/semantics/source.json"
+        "coverage/semantics/source.json",
+        "tests/semantics/stringable_comparison_cases.json"
       ],
       "evidence": [
-        "vendor/php-src/Zend/zend_operators.c"
+        "vendor/php-src/Zend/zend_operators.c",
+        "vendor/php-src/Zend/zend_object_handlers.c",
+        "coverage/semantics/stringable-comparison-review.json"
       ],
-      "review": "Reviewed original-source loose/ordered comparison for null, bool, int, float, bytes and arrays, including overflow provenance, greater operand order, recursive errors and result types: comparison-review.json. Object contexts, callbacks and broader source integration remain pending.",
+      "review": "Reviewed original-source loose/ordered comparison for null, bool, int, float, bytes and arrays, including overflow provenance, greater operand order, recursive errors and result types: comparison-review.json. Object contexts, callbacks and broader source integration remain pending. Direct ordinary Stringable INSTANCE/string operators and non-bool Switch cases now suspend through 392, preserving captured COPY/CV/pre-unwrapped CELL reads and original operand/BASE/caster owners. Six exact source agreements and 487 reached predicates/26 raw Steps pass at aabff656/381; nested scalar Switch, throw/catch/finally and lazy fallthrough are included. Reached recursive casts and broader internal handlers/lifetimes remain required; see stringable-comparison-review.json.",
       "planned_source_tests": [
         "tests/semantics/conformance/switch-match.php"
       ]
@@ -9756,7 +9775,9 @@
         "spec/semantics/129-goto-runtime.watsup",
         "spec/semantics/151-throwable-compiler.watsup",
         "spec/semantics/156-finally-runtime.watsup",
-        "spec/semantics/378-reference-retired-owners.watsup"
+        "spec/semantics/378-reference-retired-owners.watsup",
+        "spec/semantics/168-user-string-runtime.watsup",
+        "spec/semantics/392-stringable-comparisons.watsup"
       ],
       "helper_tests": [
         "tests/switch_case_separator.py",
@@ -9771,7 +9792,8 @@
         "tests/semantics/switch.py",
         "tests/semantics/reference_replay_switch_cases.json",
         "tests/semantics/reference_retired_owner_cases.json",
-        "tests/semantics/reference_retired_owner_extended_cases.json"
+        "tests/semantics/reference_retired_owner_extended_cases.json",
+        "tests/semantics/stringable_comparison_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
@@ -9779,9 +9801,11 @@
         "coverage/semantics/switch-review.json",
         "docs/semantics/SOURCE-SWITCH.md",
         "coverage/semantics/reference-return-switch-replay-review.json",
-        "coverage/semantics/reference-return-retired-owner-review.json"
+        "coverage/semantics/reference-return-retired-owner-review.json",
+        "vendor/php-src/Zend/zend_object_handlers.c",
+        "coverage/semantics/stringable-comparison-review.json"
       ],
-      "review": "Ordered case/default/fallthrough, typed break/continue, compiler diagnostics, subject ownership and compiled boolean branch are reviewed with 18 source outcomes, compiler projections and six paused stages/85 assertions. Independent original6 and paused6 gates are separate. Object-dependent comparisons and wider control remain open. Source-authenticated no-FREE CV/compiled-CONST switch continuation preserves selected-case remainder/fallthrough without repeating subject/case evaluation or creating a payload owner. Seven preserved originals and 14 reached current/saved fixtures/1339 assertions pass at retained private361 cuts; actual-parent strict compilation is separate. END/PHASE are consumed together on end/jump/transfer, and enclosing TRY/selected-CATCH region is authenticated. Physical VAR/TMP owners, active-finalizer replay and NULL/186 remain open; see reference-return-switch-replay-review.json. Mutable/refcounted physical-array replay preserves one real end-owner cleanup and non-owning source/identity/cursor rows under conservative >=3-before/>=2-after admission. Four exact sources and nine intentional native8/spec1 COW controls, state23/1873 plus independent98 and actual carrier71 pass; actual364 strict is separate. Wider payloads, active-finalizer replay and protected NULL/186 remain required; see reference-return-retired-owner-review.json.",
+      "review": "Ordered case/default/fallthrough, typed break/continue, compiler diagnostics, subject ownership and compiled boolean branch are reviewed with 18 source outcomes, compiler projections and six paused stages/85 assertions. Independent original6 and paused6 gates are separate. Object-dependent comparisons and wider control remain open. Source-authenticated no-FREE CV/compiled-CONST switch continuation preserves selected-case remainder/fallthrough without repeating subject/case evaluation or creating a payload owner. Seven preserved originals and 14 reached current/saved fixtures/1339 assertions pass at retained private361 cuts; actual-parent strict compilation is separate. END/PHASE are consumed together on end/jump/transfer, and enclosing TRY/selected-CATCH region is authenticated. Physical VAR/TMP owners, active-finalizer replay and NULL/186 remain open; see reference-return-switch-replay-review.json. Mutable/refcounted physical-array replay preserves one real end-owner cleanup and non-owning source/identity/cursor rows under conservative >=3-before/>=2-after admission. Four exact sources and nine intentional native8/spec1 COW controls, state23/1873 plus independent98 and actual carrier71 pass; actual364 strict is separate. Wider payloads, active-finalizer replay and protected NULL/186 remain required; see reference-return-retired-owner-review.json. Direct ordinary Stringable INSTANCE/string operators and non-bool Switch cases now suspend through 392, preserving captured COPY/CV/pre-unwrapped CELL reads and original operand/BASE/caster owners. Six exact source agreements and 487 reached predicates/26 raw Steps pass at aabff656/381; nested scalar Switch, throw/catch/finally and lazy fallthrough are included. Reached recursive casts and broader internal handlers/lifetimes remain required; see stringable-comparison-review.json.",
       "planned_source_tests": [
         "tests/semantics/conformance/switch-match.php"
       ]
@@ -13205,15 +13229,22 @@
     {
       "id": "classes.magic-string",
       "milestone": "4a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_inheritance.c"
+      "implementation": [
+        "spec/semantics/168-user-string-runtime.watsup",
+        "spec/semantics/392-stringable-comparisons.watsup"
       ],
-      "review": null
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/stringable_comparison_cases.json"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c",
+        "vendor/php-src/Zend/zend_object_handlers.c",
+        "coverage/semantics/stringable-comparison-review.json"
+      ],
+      "review": "Ordinary source __toString declarations and authenticated callbacks reuse168; magic string behavior remains partial. Direct ordinary Stringable INSTANCE/string operators and non-bool Switch cases now suspend through 392, preserving captured COPY/CV/pre-unwrapped CELL reads and original operand/BASE/caster owners. Six exact source agreements and 487 reached predicates/26 raw Steps pass at aabff656/381; nested scalar Switch, throw/catch/finally and lazy fallthrough are included. Reached recursive casts and broader internal handlers/lifetimes remain required; see stringable-comparison-review.json."
     },
     {
       "id": "properties.typed",

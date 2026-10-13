@@ -112,6 +112,17 @@ producers and source contexts remain required. Internal
 Throwable `__toString` uses its own finite trace/property protocol; user
 subclass overrides remain a separate dependency.
 
+Direct ordinary Stringable/string pairs now convert the instance once for all
+seven loose comparison operators and non-bool Switch cases through 392. The opposing value
+keeps its pre-cast COPY/CV/reference-cell identity: copied text stays fixed, a CV
+follows rebinding, and a pre-unwrapped reference reads its captured cell. Original
+operands/BASE and the caster retain their own owners; documentary pointer images
+add none. [Six originals and 487 reached checks](../../coverage/semantics/stringable-comparison-review.json)
+cover mutation, saved caster frames, lazy fallthrough and a nested scalar Switch
+whose TypeError is caught after caster restoration, followed by finally entry. Reached recursive comparisons, expired pointers and
+post-cast object operands remain Unsupported; wider internal handlers and lifetimes
+remain required. Strict identity and compiled bool Switch do not invoke the cast.
+
 The installed [file operand bridge](../../coverage/semantics/file-operand-review.json)
 converts all four include/require forms before path lookup or once skipping.
 Receiver retention, callback mutation, nested eval and throwing cleanup use the

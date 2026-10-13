@@ -1445,6 +1445,9 @@ and separate paused-state controls.
 retains the subject through fallthrough, and distinguishes constant-boolean
 branching from dynamic equality; its [review](coverage/semantics/switch-review.json)
 binds 18 source outcomes and separate compiler and paused-state checks.
+[Stringable comparisons](coverage/semantics/stringable-comparison-review.json) now
+resume direct instance/string operators and cases after authentic casts, retaining
+CV/copy/reference reads, lazy fallthrough and throwing callback control.
 [Match expressions](docs/semantics/SOURCE-MATCH.md) preserve strict, lazy arm
 selection, delayed CV subjects, ordered compiler diagnostics and owned value
 results; their [review](coverage/semantics/match-review.json) binds source, compiler
