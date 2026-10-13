@@ -1493,6 +1493,17 @@ Other inherited getter roots, wider type/reference/trait/flag families remain re
 Joined exact `61cd4dc8`/384; one count-only current init check passes with no application.
 Private cuts remain retained through disjoint aggregate/update-warning and WeakMap callback paths.
 
+A public equal-normalized-TYPE plain Child now inherits a source-unbacked getter
+directly backed by an ordinary Root. One terminal guard accepts the authenticated
+ordinary proof with its supplied fuel; defaults, layouts, stores and owners are unchanged.
+Typed Parent starts uninitialized; Child owns 200 then 300 while the getter returns 13.
+Parent retains function/lexical/private/trace identity, receiver its called scope;
+active source backing bypass is false. Strict384/source1 pass at `3e6ef25b`.
+Three separate states at `2171db7c` pass controls82 (42 reached, 40 derived),
+entered Child61 and writer77: 180 reached plus 40 derived. D40 is task-local
+parent matching, not another native class case; virtual/wider roots remain required.
+[Ordinary-backed inherited-getter review](coverage/semantics/ordinary-backed-parent-plain-inherited-getter-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization

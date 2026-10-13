@@ -235,6 +235,13 @@ descriptors and immediate selected parent; decreasing fuel closes at a genuine
 local backed getter. Latest Second storage 300→400 stays separate from original
 Parent function/lexical/private/trace and receiver called scope, returning 313→413;
 [repeated inherited-getter review](../../coverage/semantics/repeated-plain-child-inherited-backed-get-hook-review.json).
+A source-unbacked, no-initializer getter directly backed by an ordinary ancestor
+can also be inherited by a plain equal-TYPE child. The existing terminal proof
+accepts that positive ordinary anchor with the supplied fuel. Parent starts
+uninitialized, Child owns 200 then 300, and the original getter returns 13;
+function/lexical/private/trace remain Parent's and called scope follows the receiver.
+Active source backing bypass stays false despite the physical slot;
+[ordinary-backed inherited-getter review](../../coverage/semantics/ordinary-backed-parent-plain-inherited-getter-review.json).
 Other inherited getter roots/shapes and wider
 type-presence combinations remain required.
 Backed-parent inheritance retains invariant types; broader type equivalence and
