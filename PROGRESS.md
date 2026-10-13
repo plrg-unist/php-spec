@@ -1934,6 +1934,8 @@ with zero applications. Original parse7709 stays0; corrected-primary elab680e
 is syntax-only. Native Previous messages, modeled identity/trace and early/late
 state cuts remain separate; local source reconstruction and wider returns OPEN.
 [Multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+Actual385 over `ad50ffd2` passes strict at `6d36ef8b` in 6.574s with zero
+applications; private source/state/public cuts retain their original identities.
 
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
