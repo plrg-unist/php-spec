@@ -8259,7 +8259,8 @@
         "spec/semantics/171-include-runtime.watsup",
         "spec/semantics/388-source-statics.watsup",
         "spec/semantics/148-core-intrinsics.watsup",
-        "spec/semantics/270-eager-destructors.watsup"
+        "spec/semantics/270-eager-destructors.watsup",
+        "spec/semantics/207-error-handler-runtime.watsup"
       ],
       "helper_tests": [
         "tests/semantics/function_statics_protocol.py",
@@ -8268,7 +8269,8 @@
         "tests/semantics/source_static_identity_protocol.py",
         "tests/semantics/source_static_throw_protocol.py",
         "tests/semantics/source_static_exit_protocol.py",
-        "tests/semantics/source_static_exit_status_protocol.py"
+        "tests/semantics/source_static_exit_status_protocol.py",
+        "tests/semantics/source_static_fatal_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/function_statics.py",
@@ -8287,14 +8289,15 @@
         "coverage/semantics/source-static-identity-review.json",
         "coverage/semantics/source-static-throw-review.json",
         "coverage/semantics/source-static-exit-review.json",
-        "coverage/semantics/source-static-exit-status-review.json"
+        "coverage/semantics/source-static-exit-status-review.json",
+        "coverage/semantics/source-static-fatal-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
         "vendor/php-src/Zend/zend_vm_def.h",
         "coverage/semantics/function-statics-review.json"
       ],
-      "review": "Named-function111/112 and initial-main-script113/114 statics preserve initialized-only persistent reference cells, cached null, recursive winners, aliases, COW and suppression/error cleanup. Main static bindings use the existing active/global table movement; source-owned unit0 slots exclude named-function ancestry. function-statics-review.json retains the named-static999 checkpoint and its repaired receive-readiness evidence. Current main-statics-review.json binds1008/2829 source16, compiler12/59 projections, protocol9/173, author dense2/283, independent dense4/623 and20 old999 complete responses with no projection. Parser-backed top-level statics388 now authenticate source ownership and release normal/explicit-return slots in compiler declaration order, preserving callable slots and copied return roots. Four checked originals and genuine public frontiers are separate retained cuts in source-static-retirement-review.json. Module116 now keeps authentic top-level eval/file slots outside a real Closure caller's table. Fresh source units, within-unit cache, escaped references, nested source cells and unchanged caller metadata have separate source/state cuts in source-static-identity-review.json. Body throws now release source slots before caller unwind; normal-end destructor throws release remaining slots while pending Throwable identity, Previous chains and escaped roots survive. source-static-throw-review.json records the separate source and production-unwind checks. Graceful exit now keeps an authenticated source-end barrier through real callee restoration and compiler-order table release. Nested source order, destructor parser reentry, saved ownership and escaped roots are checked separately in source-static-exit-review.json. Source-owned throwing exit destructors now retain user catch/remaining-slot execution and Previous identity. Request signed32 EXITSTATUS survives caught replacement; integer/default calls overwrite it, strings preserve it, and nested resets remain independent of saved EXIT control. source-static-exit-status-review.json separates owner and status source/public cuts. Hard-fatal roots and wider static identity/lifecycle remain required. No storage family closure.",
+      "review": "Named-function111/112 and initial-main-script113/114 statics preserve initialized-only persistent reference cells, cached null, recursive winners, aliases, COW and suppression/error cleanup. Main static bindings use the existing active/global table movement; source-owned unit0 slots exclude named-function ancestry. function-statics-review.json retains the named-static999 checkpoint and its repaired receive-readiness evidence. Current main-statics-review.json binds1008/2829 source16, compiler12/59 projections, protocol9/173, author dense2/283, independent dense4/623 and20 old999 complete responses with no projection. Parser-backed top-level statics388 now authenticate source ownership and release normal/explicit-return slots in compiler declaration order, preserving callable slots and copied return roots. Four checked originals and genuine public frontiers are separate retained cuts in source-static-retirement-review.json. Module116 now keeps authentic top-level eval/file slots outside a real Closure caller's table. Fresh source units, within-unit cache, escaped references, nested source cells and unchanged caller metadata have separate source/state cuts in source-static-identity-review.json. Body throws now release source slots before caller unwind; normal-end destructor throws release remaining slots while pending Throwable identity, Previous chains and escaped roots survive. source-static-throw-review.json records the separate source and production-unwind checks. Graceful exit now keeps an authenticated source-end barrier through real callee restoration and compiler-order table release. Nested source order, destructor parser reentry, saved ownership and escaped roots are checked separately in source-static-exit-review.json. Source-owned throwing exit destructors now retain user catch/remaining-slot execution and Previous identity. Request signed32 EXITSTATUS survives caught replacement; integer/default calls overwrite it, strings preserve it, and nested resets remain independent of saved EXIT control. source-static-exit-status-review.json separates owner and status source/public cuts. Parser-backed USERFATAL now captures the actual source origin and retires execution contexts through an authenticated fatal snapshot, even without transient frame roots. Static cells retain their existing bailout roots; shutdown source reentry and new-object destruction reuse the established retention/destructor policy. source-static-fatal-review.json records exact source and public-origin/END checks. Wider fatal/compiler producers and static identity/lifecycle remain required. No storage family closure.",
       "planned_source_tests": [
         "tests/semantics/conformance/function-statics.php"
       ]
@@ -11484,7 +11487,8 @@
         "spec/semantics/171-include-runtime.watsup",
         "spec/semantics/388-source-statics.watsup",
         "spec/semantics/148-core-intrinsics.watsup",
-        "spec/semantics/270-eager-destructors.watsup"
+        "spec/semantics/270-eager-destructors.watsup",
+        "spec/semantics/207-error-handler-runtime.watsup"
       ],
       "helper_tests": [
         "tests/semantics/function_static_compiler.py",
@@ -11500,7 +11504,8 @@
         "tests/semantics/source_static_identity_protocol.py",
         "tests/semantics/source_static_throw_protocol.py",
         "tests/semantics/source_static_exit_protocol.py",
-        "tests/semantics/source_static_exit_status_protocol.py"
+        "tests/semantics/source_static_exit_status_protocol.py",
+        "tests/semantics/source_static_fatal_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/function_statics.py",
@@ -11510,7 +11515,8 @@
         "coverage/semantics/source-static-identity-review.json",
         "coverage/semantics/source-static-throw-review.json",
         "coverage/semantics/source-static-exit-review.json",
-        "coverage/semantics/source-static-exit-status-review.json"
+        "coverage/semantics/source-static-exit-status-review.json",
+        "coverage/semantics/source-static-fatal-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c",
@@ -11521,7 +11527,7 @@
         "docs/semantics/SOURCE-MAIN-STATICS.md",
         "docs/semantics/SOURCE-CLOSURES.md"
       ],
-      "review": "Bounded named111/112, initial-main113/114 and explicit-Closure115/116 statics are independently accepted: initialized persistent reference cells, null initialization, recursive winners and distinct function/main/instance storage. Their historical 999/048498dc, 1008/2829c2a0 and 1017/9325300f evidence stays separate. Method/inherited, bind and clone interactions have further bounded milestones; broader trait/inheritance sharing and lifecycle/GC remain required. Parser-backed source statics388 now admit authentic cells and retire normal/explicit-return top-level slots without consuming callable tables or copied return roots; source-static-retirement-review.json keeps the response repair and selected normal source/state cuts separate. Module116 now separates top-level source slots from a real Closure caller's instance table, preserving cached cells, fresh unit identities, escaped aliases and caller metadata; source-static-identity-review.json records the new source/state cut. Source tables now retire on body throw and finish remaining slots after normal-end destructor throw, retaining pending Throwable roots and Previous identity; source-static-throw-review.json separates the selected source and production frontiers. Graceful exit now keeps an authenticated source-end barrier through real callee restoration and compiler-order table release. Nested source order, destructor parser reentry, saved ownership and escaped roots are checked separately in source-static-exit-review.json. Source-owned throwing exit destructors now retain user catch/remaining-slot execution and Previous identity. Request signed32 EXITSTATUS survives caught replacement; integer/default calls overwrite it, strings preserve it, and nested resets remain independent of saved EXIT control. source-static-exit-status-review.json separates owner and status source/public cuts. Hard-fatal roots and wider destructor/return interactions remain required. No complete static-variable or callable-family acceptance.",
+      "review": "Bounded named111/112, initial-main113/114 and explicit-Closure115/116 statics are independently accepted: initialized persistent reference cells, null initialization, recursive winners and distinct function/main/instance storage. Their historical 999/048498dc, 1008/2829c2a0 and 1017/9325300f evidence stays separate. Method/inherited, bind and clone interactions have further bounded milestones; broader trait/inheritance sharing and lifecycle/GC remain required. Parser-backed source statics388 now admit authentic cells and retire normal/explicit-return top-level slots without consuming callable tables or copied return roots; source-static-retirement-review.json keeps the response repair and selected normal source/state cuts separate. Module116 now separates top-level source slots from a real Closure caller's instance table, preserving cached cells, fresh unit identities, escaped aliases and caller metadata; source-static-identity-review.json records the new source/state cut. Source tables now retire on body throw and finish remaining slots after normal-end destructor throw, retaining pending Throwable roots and Previous identity; source-static-throw-review.json separates the selected source and production frontiers. Graceful exit now keeps an authenticated source-end barrier through real callee restoration and compiler-order table release. Nested source order, destructor parser reentry, saved ownership and escaped roots are checked separately in source-static-exit-review.json. Source-owned throwing exit destructors now retain user catch/remaining-slot execution and Previous identity. Request signed32 EXITSTATUS survives caught replacement; integer/default calls overwrite it, strings preserve it, and nested resets remain independent of saved EXIT control. source-static-exit-status-review.json separates owner and status source/public cuts. Parser-backed USERFATAL now captures the actual source origin and retires execution contexts through an authenticated fatal snapshot, even without transient frame roots. Static cells retain their existing bailout roots; shutdown source reentry and new-object destruction reuse the established retention/destructor policy. source-static-fatal-review.json records exact source and public-origin/END checks. Wider fatal/compiler producers and destructor/return interactions remain required. No complete static-variable or callable-family acceptance.",
       "planned_source_tests": [
         "tests/semantics/conformance/function-statics.php"
       ]
@@ -15859,15 +15865,24 @@
     {
       "id": "diagnostics.runtime-fatal",
       "milestone": "3a-5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
+      "implementation": [
+        "spec/semantics/207-error-handler-runtime.watsup",
+        "spec/semantics/231-shutdown-functions.watsup",
+        "spec/semantics/270-eager-destructors.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/source_static_fatal_protocol.py"
+      ],
+      "source_tests": [
+        "coverage/semantics/source-static-fatal-review.json"
+      ],
       "evidence": [
+        "vendor/php-src/main/main.c",
         "vendor/php-src/Zend/zend.c"
       ],
-      "review": null
+      "review": "Literal E_USER_ERROR in parser-backed eval/file units captures its real source filename before fatal shutdown, including a false-returning registered handler. The existing fatal snapshot retires execution contexts while persistent static cells remain roots. Public history checks authenticate captured producer origin and source-end authority; malformed origin/END controls are rejected. Wider fatal producers, reporting/handler/compiler combinations and lifecycle cleanup remain required."
     },
     {
       "id": "diagnostics.compile-fatal",
@@ -18257,7 +18272,8 @@
         "tests/semantics/shutdown_state_review.py",
         "tests/semantics/shutdown_render_state.py",
         "tests/semantics/eager_destructor_state_review.py",
-        "tests/semantics/eager_fatal_state_review.py"
+        "tests/semantics/eager_fatal_state_review.py",
+        "tests/semantics/source_static_fatal_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/shutdown_functions.py",
@@ -18269,7 +18285,8 @@
         "tests/semantics/eager_destructor_review.py",
         "tests/semantics/eager_destructor_review_cases.json",
         "tests/semantics/eager_fatal_review.py",
-        "tests/semantics/eager_fatal_review_cases.json"
+        "tests/semantics/eager_fatal_review_cases.json",
+        "coverage/semantics/source-static-fatal-review.json"
       ],
       "evidence": [
         "vendor/php-src/ext/standard/basic_functions.c",
@@ -18285,7 +18302,7 @@
         "coverage/semantics/eager-destructors-review.json",
         "coverage/semantics/eager-destructor-review.json"
       ],
-      "review": "231 caches accepted ordinary source callable families and copied arguments after all SEND effects, preserving private/rebound permission, selected receivers and embedded array references. Ordered weak C calls run after normal/exit/fatal and serviced compiler stops; append, handled throw, callback exit, authentic warning continuation, exact original/converted arguments and ownership remain distinct. Diagnostics freeze after renderer callbacks and before queue entry. Wider callable dependencies, GC, output and later freeing remain required; queue entries stay owned through DONE and complete request cleanup is not claimed. User formatter overrides use existing176 calls; handled throws retain the original C continuation, and actual237 destinations freeze after rendering. Author29 source tuples and three/149 state checks retain separate cuts; independent coverage is recorded in its ledger. Actual228 caches retired imported-maker permission; actual240 default effects keep their owners. Runtime/compile severity is captured before callback reporting writes, with distinct native mask controls. Request-stage destructors257 follow the queue and are reviewed separately; shutdown entries remain owned until later freeing. Module270 orders frozen fatal emission, original-Throwable release, then stage1; native abandoned C receiver owners survive bailout into stage2."
+      "review": "231 caches accepted ordinary source callable families and copied arguments after all SEND effects, preserving private/rebound permission, selected receivers and embedded array references. Ordered weak C calls run after normal/exit/fatal and serviced compiler stops; append, handled throw, callback exit, authentic warning continuation, exact original/converted arguments and ownership remain distinct. Diagnostics freeze after renderer callbacks and before queue entry. Wider callable dependencies, GC, output and later freeing remain required; queue entries stay owned through DONE and complete request cleanup is not claimed. User formatter overrides use existing176 calls; handled throws retain the original C continuation, and actual237 destinations freeze after rendering. Author29 source tuples and three/149 state checks retain separate cuts; independent coverage is recorded in its ledger. Actual228 caches retired imported-maker permission; actual240 default effects keep their owners. Runtime/compile severity is captured before callback reporting writes, with distinct native mask controls. Request-stage destructors257 follow the queue and are reviewed separately; shutdown entries remain owned until later freeing. Module270 orders frozen fatal emission, original-Throwable release, then stage1; native abandoned C receiver owners survive bailout into stage2. Parser-backed USERFATAL now captures the actual source origin and retires execution contexts through an authenticated fatal snapshot, even without transient frame roots. Static cells retain their existing bailout roots; shutdown source reentry and new-object destruction reuse the established retention/destructor policy. source-static-fatal-review.json records exact source and public-origin/END checks. Wider fatal/compiler and later freeing behavior remains partial."
     },
     {
       "id": "lifecycle.exit-unwind",

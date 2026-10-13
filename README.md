@@ -1430,8 +1430,12 @@ execution through caller catch and remaining-slot cleanup. Request exit status
 survives a caught replacement: integer/default exit updates it, strings preserve
 it, and nested resets remain distinct from saved exit control.
 [Status review](coverage/semantics/source-static-exit-status-review.json) records
-the focused source and public checks. Hard-fatal shutdown roots and wider
-destructor/return interactions remain required.
+the focused source and public checks. `E_USER_ERROR` now captures the dynamic
+source location and retires authenticated execution contexts before shutdown.
+Static cells retain their existing roots while shutdown evals and destructors of
+new objects run. [Fatal review](coverage/semantics/source-static-fatal-review.json)
+records source and public checks. Wider fatal/compiler and destructor/return
+interactions remain required.
 [Real closure instances](docs/semantics/SOURCE-CLOSURES.md) now retain explicit captures,
 selected callee owners and per-instance statics through invocation and cleanup.
 [Independent review](coverage/semantics/closures-review.json) binds source, object

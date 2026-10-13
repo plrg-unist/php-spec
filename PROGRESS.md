@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Parser-backed USERFATAL now captures its actual eval/file location and retires
+execution contexts through an authenticated fatal snapshot. Static cells retain
+their existing bailout roots, allowing fresh shutdown evals while interrupted
+objects remain alive. Historical origin/END and false-handler-result forgeries
+are rejected; destructor flags/table ownership reuse their existing policy.
+Private a31b12ffc /381 keeps seven exact source tuples at1+6 cuts and three
+public groups/281 premises at210+71 cuts. Three raw projections remain separate
+from three production fatal transitions; original failures/diagnostics remain0.
+Wider fatal/compiler producers and lifecycle/return cleanup stay partial.
+[Source-static fatal ledger](coverage/semantics/source-static-fatal-review.json).
+
 Module390 now releases callback-installed object/array payloads before captured
 inc/dec scalar commit. Destructors see the old slot; scalar writes are overwritten
 afterward, while pending/replacement Throwables preserve identity and Previous.
