@@ -140,70 +140,10 @@ PREFIX = ('dec $oru_replace(pcoccurrence*,pcpath,pcnode) : pcoccurrence*\n'
  '(CLASSLINK porigin_other pclassparent_old) :: $oru_link_replace(pclasslink*,porigin,pclassparent)\n'
  '  -- if porigin_other =/= porigin\n')
 
-CV = ['$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryRepeatRoot51"))) = (porigin_parent)',
- '$class_at(S.CLASSES,porigin_parent) = (pclassdesc_parent)',
- '$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryRepeatFirst51"))) = (porigin_first)',
- '$class_at(S.CLASSES,porigin_first) = (pclassdesc_first)',
- '$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryRepeatBridge51"))) = (porigin_bridge)',
- '$class_at(S.CLASSES,porigin_bridge) = (pclassdesc_bridge)',
- '$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryRepeatSecond51"))) = (porigin_child)',
+CV = ['$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryRepeatSecond51"))) = (porigin_child)',
  '$class_at(S.CLASSES,porigin_child) = (pclassdesc_child)',
- '$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryRepeatGrand51"))) = (porigin_grand)',
- '$class_at(S.CLASSES,porigin_grand) = (pclassdesc_grand)',
- '$class_link_at(S.LINKEDPARENTS,porigin_parent) = eps /\\ $class_link_at(S.LINKEDPARENTS,porigin_first) = '
- '(SOURCE_PARENT porigin_parent) /\\ $class_link_at(S.LINKEDPARENTS,porigin_bridge) = (SOURCE_PARENT '
- 'porigin_first) /\\ $class_link_at(S.LINKEDPARENTS,porigin_child) = (SOURCE_PARENT porigin_bridge) /\\ '
- '$class_link_at(S.LINKEDPARENTS,porigin_grand) = (SOURCE_PARENT porigin_child)',
- '|pclassdesc_parent.PROPERTIES| = 1 /\\ |pclassdesc_first.PROPERTIES| = 1 /\\ '
- '|pclassdesc_child.PROPERTIES| = 1 /\\ pclassdesc_bridge.PROPERTIES = eps /\\ pclassdesc_grand.PROPERTIES '
- '= eps',
- 'ppropertydesc_parent = pclassdesc_parent.PROPERTIES[0]',
- 'ppropertydesc_first = pclassdesc_first.PROPERTIES[0]',
  'ppropertydesc_child = pclassdesc_child.PROPERTIES[0]',
- 'ppropertydesc_parent.TYPE = [PTBRANCH ([PTBUILTIN "int"])] /\\ ppropertydesc_first.TYPE = '
- 'ppropertydesc_parent.TYPE /\\ ppropertydesc_child.TYPE = ppropertydesc_parent.TYPE /\\ '
- '$property_default_state(S,ppropertydesc_parent) = (PROP_VALUE (DIRECT (PINT 100))) /\\ '
- '$property_default_state(S,ppropertydesc_first) = (PROP_INITIAL) /\\ '
- '$property_default_state(S,ppropertydesc_child) = (PROP_INITIAL)',
- '$property_layout(S,porigin_bridge,|S.CLASSES|) = [ppropertydesc_first] /\\ '
- '$property_layout(S,porigin_grand,|S.CLASSES|) = [ppropertydesc_child]',
- '$property_hook_origin(S,ppropertydesc_parent) = eps /\\ ~$property_hook_virtual(S,ppropertydesc_parent) '
- '/\\ ~$property_hook_override_backed(S,ppropertydesc_parent) /\\ '
- '~$property_hook_virtual_chain(S,ppropertydesc_parent,|S.CLASSES|)',
- '~$property_hook_override_backed(S,ppropertydesc_first) /\\ '
- '~$property_hook_inherited_backing(S,ppropertydesc_first) /\\ '
- '$property_hook_ordinary_backing(S,ppropertydesc_first,|S.CLASSES|) /\\ '
- '~$property_hook_virtual(S,ppropertydesc_first)',
- '~$property_hook_override_backed(S,ppropertydesc_child) /\\ '
- '$property_hook_inherited_backing(S,ppropertydesc_child) /\\ '
- '~$property_hook_ordinary_backing(S,ppropertydesc_child,|S.CLASSES|) /\\ '
- '~$property_hook_virtual(S,ppropertydesc_child) /\\ '
- '~$property_hook_virtual_chain(S,ppropertydesc_child,|S.CLASSES|)',
- '$property_hook_unbacked_over_ordinary(S,ppropertydesc_parent,ppropertydesc_first,|S.CLASSES|) /\\ '
- '$property_hook_override_pair(S,ppropertydesc_parent,ppropertydesc_first) /\\ '
- '$property_hook_override_shape(S,ppropertydesc_first,ppropertydesc_child) /\\ '
- '$property_hook_override_pair(S,ppropertydesc_first,ppropertydesc_child) /\\ $oru_guard(S)',
- '$property_hook_ordinary_parent(S,ppropertydesc_first,|S.CLASSES|) = (ppropertydesc_parent) /\\ '
- '$property_hook_ordinary_parent(S,ppropertydesc_child,|S.CLASSES|) = (ppropertydesc_first)',
- '$method_named(pclassdesc_parent.METHODS,$ptascii("parentRead")) = (pmethoddesc_read)',
  '$method_named(pclassdesc_child.METHODS,$ptascii("answer")) = (pmethoddesc_answer)',
- '$method_named(pclassdesc_bridge.METHODS,$ptascii("answer")) = (pmethoddesc_bridge_answer)',
- '$method_named(pclassdesc_grand.METHODS,$ptascii("answer")) = (pmethoddesc_grand_answer)',
- 'pmethoddesc_answer.VISIBILITY = PROPERTY_PRIVATE /\\ pmethoddesc_answer.OWNER = porigin_child /\\ '
- 'pmethoddesc_bridge_answer.VISIBILITY = PROPERTY_PRIVATE /\\ pmethoddesc_grand_answer.VISIBILITY = '
- 'PROPERTY_PRIVATE /\\ pmethoddesc_answer.FUNCTION.ORIGIN =/= pmethoddesc_bridge_answer.FUNCTION.ORIGIN '
- '/\\ pmethoddesc_answer.FUNCTION.ORIGIN =/= pmethoddesc_grand_answer.FUNCTION.ORIGIN',
- 'S_globals = $global_table_view(S)',
- '$lookup(S_globals.ENV,$ptascii("root")) = (n_parent_cell)',
- 'S.STORE[n_parent_cell] = DEFINED (POBJECT n_parent)',
- 'S.OBJECTS[n_parent] = INSTANCE porigin_parent /\\ $objectprops_at(S.OBJECTPROPS,n_parent) = ([{ DECL '
- '(ppropertydesc_parent.ORIGIN), NAME ppropertydesc_parent.KEY, STATE PROP_VALUE (DIRECT (PINT 100)) }])',
- '$lookup(S_globals.ENV,$ptascii("first")) = (n_first_cell)',
- 'S.STORE[n_first_cell] = DEFINED (POBJECT n_first)',
- 'S.OBJECTS[n_first] = INSTANCE porigin_first /\\ $objectprops_at(S.OBJECTPROPS,n_first) = ([{ DECL '
- '(ppropertydesc_first.ORIGIN), NAME ppropertydesc_first.KEY, STATE PROP_INITIAL }])',
- '$oru_output(S.EVENTS) = '
- '$ptascii("P100|FEMPTY|CEMPTY|GEMPTY|100|F:OrdinaryRepeatFirst51/OrdinaryRepeatFirst51|7|")',
  'S_child = S',
  '$property_hook_plan(S_child) = (ppropertyhook_S_child)',
  'S_child.TODO = (PROPERTY_PREP phpType20_S_child z_S_child) :: (DIM_FETCH z_S_child) :: ptask_S_child*',
@@ -273,6 +213,74 @@ CV = ['$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryRepeatRoot51"))) = (por
  'S_child_result.EVENTS /\\ S_child_base_raw.OBJECTPROPS = S_child_result.OBJECTPROPS',
  'S_child_base = $oru_after(S_child_result,S_child_base_raw)',
  '$oru_guard(S_child_base)']
+
+CV_METADATA = ['$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryRepeatRoot51"))) = (porigin_parent)',
+ '$class_at(S.CLASSES,porigin_parent) = (pclassdesc_parent)',
+ '$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryRepeatFirst51"))) = (porigin_first)',
+ '$class_at(S.CLASSES,porigin_first) = (pclassdesc_first)',
+ '$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryRepeatBridge51"))) = (porigin_bridge)',
+ '$class_at(S.CLASSES,porigin_bridge) = (pclassdesc_bridge)',
+ '$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryRepeatSecond51"))) = (porigin_child)',
+ '$class_at(S.CLASSES,porigin_child) = (pclassdesc_child)',
+ '$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryRepeatGrand51"))) = (porigin_grand)',
+ '$class_at(S.CLASSES,porigin_grand) = (pclassdesc_grand)',
+ '$class_link_at(S.LINKEDPARENTS,porigin_parent) = eps /\\ $class_link_at(S.LINKEDPARENTS,porigin_first) = '
+ '(SOURCE_PARENT porigin_parent) /\\ $class_link_at(S.LINKEDPARENTS,porigin_bridge) = (SOURCE_PARENT '
+ 'porigin_first) /\\ $class_link_at(S.LINKEDPARENTS,porigin_child) = (SOURCE_PARENT porigin_bridge) /\\ '
+ '$class_link_at(S.LINKEDPARENTS,porigin_grand) = (SOURCE_PARENT porigin_child)',
+ '|pclassdesc_parent.PROPERTIES| = 1 /\\ |pclassdesc_first.PROPERTIES| = 1 /\\ '
+ '|pclassdesc_child.PROPERTIES| = 1 /\\ pclassdesc_bridge.PROPERTIES = eps /\\ pclassdesc_grand.PROPERTIES '
+ '= eps',
+ 'ppropertydesc_parent = pclassdesc_parent.PROPERTIES[0]',
+ 'ppropertydesc_first = pclassdesc_first.PROPERTIES[0]',
+ 'ppropertydesc_child = pclassdesc_child.PROPERTIES[0]',
+ 'ppropertydesc_parent.TYPE = [PTBRANCH ([PTBUILTIN "int"])] /\\ ppropertydesc_first.TYPE = '
+ 'ppropertydesc_parent.TYPE /\\ ppropertydesc_child.TYPE = ppropertydesc_parent.TYPE /\\ '
+ '$property_default_state(S,ppropertydesc_parent) = (PROP_VALUE (DIRECT (PINT 100))) /\\ '
+ '$property_default_state(S,ppropertydesc_first) = (PROP_INITIAL) /\\ '
+ '$property_default_state(S,ppropertydesc_child) = (PROP_INITIAL)',
+ '$property_layout(S,porigin_bridge,|S.CLASSES|) = [ppropertydesc_first] /\\ '
+ '$property_layout(S,porigin_grand,|S.CLASSES|) = [ppropertydesc_child]',
+ '$property_hook_origin(S,ppropertydesc_parent) = eps /\\ ~$property_hook_virtual(S,ppropertydesc_parent) '
+ '/\\ ~$property_hook_override_backed(S,ppropertydesc_parent) /\\ '
+ '~$property_hook_virtual_chain(S,ppropertydesc_parent,|S.CLASSES|)',
+ '~$property_hook_override_backed(S,ppropertydesc_first) /\\ '
+ '~$property_hook_inherited_backing(S,ppropertydesc_first) /\\ '
+ '$property_hook_ordinary_backing(S,ppropertydesc_first,|S.CLASSES|) /\\ '
+ '~$property_hook_virtual(S,ppropertydesc_first)',
+ '~$property_hook_override_backed(S,ppropertydesc_child) /\\ '
+ '$property_hook_inherited_backing(S,ppropertydesc_child) /\\ '
+ '~$property_hook_ordinary_backing(S,ppropertydesc_child,|S.CLASSES|) /\\ '
+ '~$property_hook_virtual(S,ppropertydesc_child) /\\ '
+ '~$property_hook_virtual_chain(S,ppropertydesc_child,|S.CLASSES|)',
+ '$property_hook_unbacked_over_ordinary(S,ppropertydesc_parent,ppropertydesc_first,|S.CLASSES|) /\\ '
+ '$property_hook_override_pair(S,ppropertydesc_parent,ppropertydesc_first) /\\ '
+ '$property_hook_override_shape(S,ppropertydesc_first,ppropertydesc_child) /\\ '
+ '$property_hook_override_pair(S,ppropertydesc_first,ppropertydesc_child) /\\ $oru_guard(S)',
+ '$property_hook_ordinary_parent(S,ppropertydesc_first,|S.CLASSES|) = (ppropertydesc_parent) /\\ '
+ '$property_hook_ordinary_parent(S,ppropertydesc_child,|S.CLASSES|) = (ppropertydesc_first)',
+ '$method_named(pclassdesc_parent.METHODS,$ptascii("parentRead")) = (pmethoddesc_read)',
+ '$method_named(pclassdesc_child.METHODS,$ptascii("answer")) = (pmethoddesc_answer)',
+ '$method_named(pclassdesc_bridge.METHODS,$ptascii("answer")) = (pmethoddesc_bridge_answer)',
+ '$method_named(pclassdesc_grand.METHODS,$ptascii("answer")) = (pmethoddesc_grand_answer)',
+ 'pmethoddesc_answer.VISIBILITY = PROPERTY_PRIVATE /\\ pmethoddesc_answer.OWNER = porigin_child /\\ '
+ 'pmethoddesc_bridge_answer.VISIBILITY = PROPERTY_PRIVATE /\\ pmethoddesc_grand_answer.VISIBILITY = '
+ 'PROPERTY_PRIVATE /\\ pmethoddesc_answer.FUNCTION.ORIGIN =/= pmethoddesc_bridge_answer.FUNCTION.ORIGIN '
+ '/\\ pmethoddesc_answer.FUNCTION.ORIGIN =/= pmethoddesc_grand_answer.FUNCTION.ORIGIN',
+ 'S_globals = $global_table_view(S)',
+ '$lookup(S_globals.ENV,$ptascii("root")) = (n_parent_cell)',
+ 'S.STORE[n_parent_cell] = DEFINED (POBJECT n_parent)',
+ 'S.OBJECTS[n_parent] = INSTANCE porigin_parent /\\ $objectprops_at(S.OBJECTPROPS,n_parent) = ([{ DECL '
+ '(ppropertydesc_parent.ORIGIN), NAME ppropertydesc_parent.KEY, STATE PROP_VALUE (DIRECT (PINT 100)) }])',
+ '$lookup(S_globals.ENV,$ptascii("first")) = (n_first_cell)',
+ 'S.STORE[n_first_cell] = DEFINED (POBJECT n_first)',
+ 'S.OBJECTS[n_first] = INSTANCE porigin_first /\\ $objectprops_at(S.OBJECTPROPS,n_first) = ([{ DECL '
+ '(ppropertydesc_first.ORIGIN), NAME ppropertydesc_first.KEY, STATE PROP_INITIAL }])',
+ '$oru_output(S.EVENTS) = '
+ '$ptascii("P100|FEMPTY|CEMPTY|GEMPTY|100|F:OrdinaryRepeatFirst51/OrdinaryRepeatFirst51|7|")',
+ '$property_hook_plan(S) = (ppropertyhook_metadata)',
+ 'ppropertyhook_metadata.PROPERTY = ppropertydesc_child.ORIGIN /\\ '
+ 'S.OBJECTS[ppropertyhook_metadata.OBJECT] = INSTANCE porigin_child']
 
 THIS = ['$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryRepeatRoot51"))) = (porigin_parent)',
  '$class_at(S.CLASSES,porigin_parent) = (pclassdesc_parent)',
@@ -1003,7 +1011,7 @@ DERIVED = ['~$property_hook_override_pair(S,ppropertydesc_first,ppropertydesc_ch
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--revision', required=True)
-    parser.add_argument('--group', choices=['cv', 'this', 'write', 'untyped', 'lifetime', 'controls'], required=True)
+    parser.add_argument('--group', choices=['cv', 'this', 'write', 'untyped', 'lifetime', 'controls', 'cv_metadata'], required=True)
     parser.add_argument('--prepare-only', action='store_true')
     args = parser.parse_args()
     recorder.ROOT = ROOT
@@ -1014,6 +1022,7 @@ def main():
     assert data['native_profile'] == profile
     clauses, negatives, case_index, start_stage = {
         'cv': (CV, [], 0, 0),
+        'cv_metadata': (CV_METADATA, [], 0, 0),
         'controls': (CONTROLS, DERIVED, 0, 0),
         'this': (THIS, [], 0, 1),
         'write': (WRITE, [], 0, 5),
