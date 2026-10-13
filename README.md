@@ -1165,9 +1165,17 @@ teardown also releases its single leaf value while retaining the emptied map's
 physical pin and live weak identity through normal or throwing callback cleanup.
 Two originals agree at `0c9b358`; 467 lifetime checks and 86 freeing-write refusal
 checks pass at their separate cuts. Wider map free and wider ephemeron GC stop explicitly;
-multiple maps per key, wider wrapper creation or mutation during freeing,
+general multi-map order, wider wrapper creation or mutation during freeing,
 additional strong key/map owners retained beyond callback cleanup and wider
 entry/read/mutation protocols remain required.
+
+Two singleton maps can now register the same leaf key on either side of its weak
+wrapper. Entry snapshots determine notification order even when map allocation
+order is reversed: the first callback sees the key live, then notification clears
+before the second callback. Only the current entry transfers its value owner;
+the later entry stays intact through the first callback. The normal original
+agrees at `e5b19d0`; the throwing original and 405 reached checks pass at `b12f93a`.
+General registration order and wider map shapes remain required.
 
 Ordinary object-key dimension reads now copy the stored value into a strong
 result, so a held copy survives key removal. A missing key throws Error using its

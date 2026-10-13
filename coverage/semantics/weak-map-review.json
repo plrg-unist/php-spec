@@ -1018,5 +1018,197 @@
       "Only independently rooted allocated nonfreeing stdClass leaves are additionally admitted. Nonleaf/unrooted outside changes are fenced; throwing, inactive/Fiber/worker/freeing contexts remain unvalidated.",
       "Other WeakMap reference/presence/iteration protocols remain open. Countable is nominal-only; count execution is excluded/Unsupported per CORE."
     ]
+  },
+  "interleaved_notification_64": {
+    "scope": "Two live singleton WeakMaps share one leaf stdClass Key and ordinary leaf INSTANCE values, with the current Key wrapper registered between the two entries. No key/value property graph or escaped callback owner.",
+    "base_revision": "b4ff30143b13ae984c0d6dd55d0c9fe48471abd5",
+    "tested_revisions": {
+      "normal_source": "e5b19d0a03103c15cce62658be76e20da7e4b1ba",
+      "throw_source_and_state": "b12f93acf17eddf6e1996911132134e423e42688"
+    },
+    "modules": 385,
+    "raw_root": ".tools/weak-map-notification-sequence-64",
+    "recovery": "Semantic cuts e5b19d0/b12f93a and exact maintained literals at 6020acf76 are retained in Git; ignored originals, observers and raw reports remain at original paths after tracked-only retirement.",
+    "representation": [
+      "A separate current-source/current-operand second-write arm admits one authentic earlier map entry and an allocated Key wrapper. The new entry snapshots that wrapper; old empty-write and replacement predicates are unchanged.",
+      "Actual entry BEFORE identities choose the earlier entry in either allocation-scan order. Only its edge transfers to a real VALUE release; the later entry and its owner remain intact during the first callback.",
+      "One existing physical Key pin borrows NOTIFY without ownership. After the first cleanup, notice clearing precedes the remaining VALUE transfer. Nonempty historical BEFORE and current find=eps or that identity prevent a cleared notification from reopening.",
+      "The same pending Exception stays owned through notice clearing and later VALUE scheduling. Existing storage finish cannot physically retire Key while a map entry is still waiting."
+    ],
+    "native": [
+      {
+        "case": "normal",
+        "source_sha256": "134eb6eb08d32341c6030ca94797ff140f45c63152673393c095be26b3797cf8",
+        "report": ".tools/weak-map-notification-sequence-64-native-vrsu_7pe/report.json",
+        "stdout_bytes": 93,
+        "stdout_sha256": "f6fcda5549e97a370e38a4ba1b3b735fb728d6dab4b9216eb30ca39fb661bf5f",
+        "elapsed_seconds": 0.004472255706787109
+      },
+      {
+        "case": "throw",
+        "source_sha256": "5d445784fadf3e3ac64631110b978ff6d9df7baf4407c60f2c7c334b5765a104",
+        "report": ".tools/weak-map-notification-sequence-throw-64-native-y28z3c3z/report.json",
+        "stdout_bytes": 100,
+        "stdout_sha256": "af62f692aefbcb3d7bf567a005dcacdb25dd900aa8be90df3356d447d452c426",
+        "elapsed_seconds": 0.004617929458618164
+      }
+    ],
+    "source_agreements": [
+      {
+        "case": "normal",
+        "revision": "e5b19d0a03103c15cce62658be76e20da7e4b1ba",
+        "report": ".tools/weak-map-notification-sequence-64-source-1mr5dfjo/report.json",
+        "elapsed_seconds": 19.355228424072266
+      },
+      {
+        "case": "throw",
+        "revision": "b12f93acf17eddf6e1996911132134e423e42688",
+        "report": ".tools/weak-map-notification-sequence-throw-64-source-jshzshfd/report.json",
+        "elapsed_seconds": 21.189176321029663
+      }
+    ],
+    "state": {
+      "tested_revision": "b12f93acf17eddf6e1996911132134e423e42688",
+      "total_assertions": 405,
+      "records": [
+        {
+          "case": "second_insertion",
+          "assertions": 106,
+          "report": ".tools/weak-map-notification-sequence-64-insertion-state-4j5t3njo/report.json",
+          "inner": ".tools/shutdown-state-review-jympwm9n",
+          "elapsed_seconds": 14.699578523635864
+        },
+        {
+          "case": "first_transfer",
+          "assertions": 99,
+          "report": ".tools/weak-map-notification-sequence-64-transfer-state-ntt6qsx1/report.json",
+          "inner": ".tools/shutdown-state-review-o_neew82",
+          "elapsed_seconds": 15.30712342262268
+        },
+        {
+          "case": "notification_head",
+          "assertions": 103,
+          "report": ".tools/weak-map-notification-sequence-64-head-state-wbe47nht/report.json",
+          "inner": ".tools/shutdown-state-review-li9ufiup",
+          "elapsed_seconds": 16.950475215911865
+        },
+        {
+          "case": "pending_head",
+          "assertions": 97,
+          "report": ".tools/weak-map-notification-sequence-64-head-state-lbdl9465/report.json",
+          "inner": ".tools/shutdown-state-review-l46sbisc",
+          "elapsed_seconds": 18.110538005828857
+        }
+      ],
+      "candidate_sha256": {
+        "insertion": "0fa966f5177bcba6e70e69518d400f78850e5483453fe01fc31e4e516ffb438a",
+        "prefix": "b8f0d20b9e64dfbc62560a69c32736606a32d4781b7706405641199ee8a52a3b",
+        "transfer": "4cac671a18811d95c3bd66593958012763821b74587022dd0b28d6994f7312d3",
+        "head": "6e3f053308898abe614c22814a81258b23d03ab1a670f51ef6564deaac6166de"
+      },
+      "endpoint": "Actual second insertion, consumed Key release/first VALUE scheduling, and post-first-cleanup notice clear/second VALUE scheduling. No terminal drive; the two originals supply complete endings.",
+      "controls": "Current task/RHS/selected/source authority; reversed map scan; equal-BEFORE refusal; untouched later edge; coherent shared-Value redirection with unused Second retained in HELD; malformed/duplicate pins; valid-heap BEFOREeps no-reopening refusal; pending Exception owner and zero/one budget replay."
+    },
+    "compiler_init": [
+      {
+        "revision": "e5b19d0a03103c15cce62658be76e20da7e4b1ba",
+        "compiler_report": ".tools/weak-map-notification-sequence-64-gate-retry-compiler-1tdycbeb/report.json",
+        "artifacts": [
+          {
+            "mode": "algo",
+            "bytes": 14004874,
+            "sha256": "e0b014561b1b231f0a7f00d1bea8394258095cc97d3d6c618b37069a5adf5252",
+            "elapsed_seconds": 5.495143413543701
+          },
+          {
+            "mode": "struct",
+            "bytes": 14098428,
+            "sha256": "6f2abe7974a412fe2a22bbb4a66c9f76c002ad5d8fa9210da73ed9d7bb14d81e",
+            "elapsed_seconds": 7.307244539260864
+          }
+        ],
+        "strict_init_report": ".tools/weak-map-notification-sequence-64-gate-retry-init-vuz6tbgn/report.json",
+        "init_checks": 6,
+        "init_stdout": "true\n",
+        "init_elapsed_seconds": 6.651776552200317
+      },
+      {
+        "revision": "b12f93acf17eddf6e1996911132134e423e42688",
+        "compiler_report": ".tools/weak-map-notification-sequence-64-continuation-compiler-q98gbqb6/report.json",
+        "artifacts": [
+          {
+            "mode": "algo",
+            "bytes": 14006392,
+            "sha256": "ffa8582a18d198ca338869a866b9a8149f1da8c7881d9b97527ab2a5e8032e54",
+            "elapsed_seconds": 5.594800710678101
+          },
+          {
+            "mode": "struct",
+            "bytes": 14100736,
+            "sha256": "89ac4a240cbba2c68bfc5f4108a558ff8b3bda193b46e254e6e42fc06d86c3e1",
+            "elapsed_seconds": 7.173339128494263
+          }
+        ],
+        "strict_init_report": ".tools/weak-map-notification-sequence-64-continuation-init-ryoz0jaz/report.json",
+        "init_checks": 6,
+        "init_stdout": "true\n",
+        "init_elapsed_seconds": 6.725911617279053
+      }
+    ],
+    "preserved_zero_credit": [
+      {
+        "report": ".tools/weak-map-notification-sequence-64-source-mfam4tma/report.json",
+        "revision": "b4ff30143b13ae984c0d6dd55d0c9fe48471abd5",
+        "reason": "WeakMap dimension protocol outside first insertion",
+        "stdout_prefix": "insert-second|",
+        "accepted_source_agreement": false
+      },
+      {
+        "report": ".tools/weak-map-notification-sequence-64-compiler-wd9f_20n/report.json",
+        "reason": "Original compiler wrapper passed spec/php.watsup twice because the ordered manifest already contains it; the duplicate-definition diagnostic failed artifact recognition. Struct/init were unrun; only corrected unique-input gates ran.",
+        "accepted": false
+      }
+    ],
+    "maintained": {
+      "source_path": "tests/semantics/cycle_collection_cases.json",
+      "source_rows": 75,
+      "state_path": "tests/semantics/cycle_collection_state_review.py",
+      "state_records": 148,
+      "state_sha256": "f2a50e87a4dd6aa4c45acdca2d297dbfaaee8cdb4269d6f44a58b3fa89436add",
+      "preservation": "All prior 73 source rows and 144 CASE values/order plus harness AST unchanged; exact two originals and four tested literals only."
+    },
+    "runtime": {
+      "target": "PHP 8.5.10 CLI NTS 64-bit",
+      "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+      "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+      "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      "php_file_sha256": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f"
+    },
+    "caps_environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": null,
+      "CPU": 2,
+      "jobs": 1,
+      "native_seconds": 30,
+      "CLI_seconds": 60,
+      "CLI_recorder_seconds": 75,
+      "compiler_seconds": 120,
+      "state_model_seconds": 120,
+      "state_recorder_seconds": 200
+    },
+    "engine_basis": [
+      "Zend/zend_weakrefs.c:zend_weakref_register payload insertion order",
+      "Zend/zend_weakrefs.c:zend_weakref_unref sequential payload traversal",
+      "Zend/zend_weakrefs.c:zend_weakref_unref_single wrapper clearing and map entry deletion"
+    ],
+    "compatibility": "Old empty-write/single-map notification producers, heap roots/schema and GC are unchanged. With no remaining map entry, new storage-finish complements are identity. The b12 continuation premises are true for the normal e5b source (remaining BEFORE is the original wrapper and current find is that identity or eps), retaining its cut without renewal.",
+    "boundaries": [
+      "Exactly two singleton leaf maps with a wrapper between their registrations. Equal-BEFORE, more maps, multiple entries and general payload registration order remain required; no object-ID order authority.",
+      "Mutation/read with a freeing Key, wider key/value graphs or methods, callback owners escaping cleanup, inactive/Fiber and wider abrupt contexts remain required. Shared-Value is a coherent state control, not a third source campaign.",
+      "No new ephemeron, reference/presence/method/iteration protocol or wrapper-create claim. Countable remains nominal-only; count execution is excluded/Unsupported per CORE."
+    ]
   }
 }

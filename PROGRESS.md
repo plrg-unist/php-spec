@@ -3571,6 +3571,20 @@ endings. Wider maps, wrapper creation or mutation during freeing, additional key
 owners retained beyond callback cleanup and ephemeron collection remain required.
 Earlier failures retain zero credit.
 
+Two singleton maps sharing one leaf Key now admit a wrapper between their entry
+registrations. BEFORE identities select the earlier entry independently of map
+allocation order, and only that value edge transfers during its callback. One
+Key pin clears notification before scheduling the later value release; a valid
+heap with a forged empty BEFORE cannot reopen GET. The normal 93-byte original
+agrees at `e5b19d0`; the throwing 100-byte original and 106 insertion, 99 transfer,
+103 notification and 97 pending-Exception checks pass at `b12f93a`, totaling 405.
+The shared-Value redirect with unused Second held is a coherent counterfactual;
+other cuts are source-reached and stop at insertion or scheduled VALUE releases.
+Originals supply endings. The original Unsupported and duplicate-schema compiler
+wrapper failure stay zero. General/equal-BEFORE registration order, wider maps,
+freeing mutations/reads and escaped callback owners remain required.
+[Ledger](coverage/semantics/weak-map-review.json).
+
 Ordinary object-key reads now create a strong stored-value copy; its held CV
 survives removal of the map edge and delays the value destructor. Missing keys
 throw Error with the actual object-store handle while preserving the existing

@@ -169,8 +169,9 @@ ArrayAccess, Countable, IteratorAggregate and Traversable identities are preserv
 Countable is nominal-only here; count library execution is excluded by
 [CORE](CORE.md) and stays Unsupported. Other map methods and iteration remain
 required. The entry owns its value and keeps only a nonowning key ID. Source, current BASE/key/RHS operands and the
-assignment result remain authenticated; replacement, wider shapes and an existing
-entry for the same key in another map stop explicitly.
+assignment result remain authenticated. This first-entry lane stops on occupied
+entries, wider shapes and an existing entry for the key in another map; bounded
+extensions are described below.
 
 Ordinary key free creates the real stdClass storage359 pin before detaching the
 entry. Its value edge becomes an authentic DESTRUCTION_VALUE job, so shared
@@ -199,7 +200,7 @@ originals agree at `c1cf6c7`; four source-reached groups pass 73/106/119/95 chec
 totaling 393 with three setup assertions per case. Pin cuts stop at a scheduled valid HANDLE
 release; the originals supply complete endings. The first normal fixture's
 elaboration failure retains zero credit, separately from its corrected pass.
-Multiple maps per key, wider wrapper creation during freeing, retained strong keys,
+General multi-map order, wider wrapper creation during freeing, retained strong keys,
 wider map protocols, wider nonempty-map free and ephemeron collection remain
 required. No collection/count closure is claimed. Maintained checks reuse cycle_collection_cases.json and
 cycle_collection_state_review.py; the
@@ -208,6 +209,38 @@ separate cuts, failures and raw recovery paths. The engine basis is
 `Zend/zend_weakrefs.c` (entry addref, zend_weakref_register/unref and
 zend_weakmap_free_obj), plus `Zend/zend_objects.c` and
 `Zend/zend_objects_API.c` for ordinary storage notification and destructor order.
+
+## Interleaved notifications across two maps
+
+A separate module386 second-write lane admits two singleton maps sharing a leaf
+`stdClass` Key and ordinary leaf INSTANCE values, with the actual Key wrapper
+registered between the entries. Current task, RHS, selected value and quiet
+operands authenticate the new insertion. BEFORE snapshots select the earlier
+entry in either map allocation order; equal snapshots remain outside this scope.
+
+Key retirement detaches only that earlier value edge into a real VALUE release.
+The later entry and its value owner stay intact through the first callback. One
+physical Key pin borrows NOTIFY: the first callback sees Key live, then notice
+clearing makes GET null before the later VALUE release is scheduled. Continuation
+requires the remaining historical wrapper identity and current find result, so a
+coherent empty BEFORE cannot reopen notification. Shared value ownership and the
+same pending Exception survive the existing release paths.
+
+The normal 93-byte original agrees at `e5b19d0`; the throwing 100-byte original and
+106 insertion, 99 first-transfer, 103 notification-head and 97 pending-head checks
+pass at `b12f93a`, totaling 405. The continuation premises are true for the earlier
+normal cut, which retains its evidence. Shared-Value redirection with unused Second
+in HELD is a coherent counterfactual; the other boundaries are source-reached.
+Checks stop at insertion or scheduled VALUE releases, with originals supplying
+complete endings. Original Unsupported and duplicate-schema compiler-wrapper
+failures retain zero credit.
+
+The engine basis is payload insertion order in `zend_weakref_register` and
+sequential `zend_weakref_unref`/`zend_weakref_unref_single` in `Zend/zend_weakrefs.c`.
+More maps/entries, equal-BEFORE or general registration order, mutation/read while
+Key is freeing, wider graphs and escaped callback owners remain required. No
+GC, reference, presence, method or iteration widening is claimed. Countable stays
+nominal-only. [Ledger](../../coverage/semantics/weak-map-review.json).
 
 ## WeakMap own teardown
 
