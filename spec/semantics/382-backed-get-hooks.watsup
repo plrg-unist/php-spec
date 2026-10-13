@@ -46,6 +46,13 @@ def $hook_name(ptbytes) = [36] ++ ptbytes ++ $ptascii("::get")
 dec $pphook_compile(ppstate, pcpath, ppropertydesc, phpType38, pchheader) : ppstate
 dec $pphook_finish(ppstate, ppstate, pcpath, ppropertydesc, metadata, pchheader) : ppstate
 dec $pphook_class_shape(pchheader, phpType40, phpType38) : bool
+dec $pphook_owner_shape(pchheader, phpType40, phpType38) : bool
+def $pphook_owner_shape(pchheader, phpType40, phpType38) = true -- if pchheader.KIND = "class"
+def $pphook_owner_shape(pchheader, NVarLikeIdentifier (BYTES text) metadata_name, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_get) (SEQUENCE eps) (SEQUENCE statement*) metadata) = true
+  -- if pchheader.KIND = "trait"
+  -- if $ptlc($base64(text_get)) = $ptascii("get")
+  -- if $hook_body_backed(SEQUENCE statement*, $base64(text))
+def $pphook_owner_shape(pchheader, phpType40, phpType38) = false -- otherwise
 def $pphook_class_shape(pchheader, phpType40, phpType38) = true
   -- if pchheader.PARENT = eps
 def $pphook_class_shape(pchheader, NVarLikeIdentifier (BYTES text) metadata_name, NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 phpType39 metadata) = true
@@ -54,7 +61,7 @@ def $pphook_class_shape(pchheader, NVarLikeIdentifier (BYTES text) metadata_name
 def $pphook_class_shape(pchheader, phpType40, phpType38) = false -- otherwise
 
 def $ppproperty_hook_group(P, pcpath, NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text) metadata_name) phpType5 metadata_item])) (SEQUENCE ([phpType38])) metadata, ppropertydesc*, pchheader) = PPROPERTIES $pphook_compile(P_next, pcpath ++ [PCFIELD 4, PCINDEX 0], ppropertydesc_new, phpType38, pchheader) ppropertydesc_next*
-  -- if flags <- [0,1] /\ pchheader.KIND = "class" /\ ~pchheader.READONLY
+  -- if flags <- [0,1] /\ ~pchheader.READONLY /\ $pphook_owner_shape(pchheader, NVarLikeIdentifier (BYTES text) metadata_name, phpType38)
   -- if $pphook_class_shape(pchheader, NVarLikeIdentifier (BYTES text) metadata_name, phpType38) /\ ~$pptrait_body_uses(pchheader.BODY)
   -- if $ppproperty_group_line_valid(P, metadata)
   -- if PPROPERTIES P_next ppropertydesc_next* = $ppproperty_group($pplocate(P, pcpath, $source_line(metadata)), pcpath, flags, phpType18, [NPropertyItem (NVarLikeIdentifier (BYTES text) metadata_name) phpType5 metadata_item], ppropertydesc*, pchheader, $source_line(metadata))
@@ -62,7 +69,7 @@ def $ppproperty_hook_group(P, pcpath, NStmtProperty (SEQUENCE eps) (INTEGER flag
   -- if |ppropertydesc_next*| = $(|ppropertydesc*| + 1)
   -- if ppropertydesc_new = ppropertydesc_next*[|ppropertydesc*|]
 def $ppproperty_hook_group(P, pcpath, NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem phpType40 phpType5 metadata_item])) (SEQUENCE ([phpType38])) metadata, ppropertydesc*, pchheader) = PPROPERTIES P_next ppropertydesc_next*
-  -- if flags <- [0,1] /\ pchheader.KIND = "class" /\ ~pchheader.READONLY
+  -- if flags <- [0,1] /\ ~pchheader.READONLY /\ $pphook_owner_shape(pchheader, phpType40, phpType38)
   -- if $pphook_class_shape(pchheader, phpType40, phpType38) /\ ~$pptrait_body_uses(pchheader.BODY)
   -- if $ppproperty_group_line_valid(P, metadata)
   -- if PPROPERTIES P_next ppropertydesc_next* = $ppproperty_group($pplocate(P, pcpath, $source_line(metadata)), pcpath, flags, phpType18, [NPropertyItem phpType40 phpType5 metadata_item], ppropertydesc*, pchheader, $source_line(metadata))
@@ -92,7 +99,7 @@ def $pphook_finish(P_outer, P_body, pcpath, ppropertydesc, metadata, pchheader) 
   -- if P_restored = P_body[.CLOSURE = P_outer.CLOSURE][.CLASSCONTEXT = P_outer.CLASSCONTEXT][.EVALCLASS = P_outer.EVALCLASS][.RETURNREF = P_outer.RETURNREF][.RETURNS = P_outer.RETURNS][.CVS = P_outer.CVS][.HEADERASSIGNED = P_outer.HEADERASSIGNED][.LOOPS = P_outer.LOOPS][.SWITCHES = P_outer.SWITCHES][.GOTOROOT = P_outer.GOTOROOT][.LABELS = P_outer.LABELS][.GOTOS = P_outer.GOTOS][.EARLY = P_outer.EARLY][.FOLD = P_body.FOLD[.FUNCTION = P_outer.FOLD.FUNCTION][.CLASSCONTEXT = P_outer.FOLD.CLASSCONTEXT][.CLOSURE = P_outer.FOLD.CLOSURE][.VALUE = eps]][.LOCATION = P_outer.LOCATION][.EXPRESSIONS = P_outer.EXPRESSIONS ++ P_body.EXPRESSIONS][.ACCESS = P_outer.ACCESS ++ P_body.ACCESS][.NAMES = P_outer.NAMES ++ P_body.NAMES][.REDIRECTS = P_outer.REDIRECTS ++ P_body.REDIRECTS][.WRITES = P_outer.WRITES ++ P_body.WRITES][.GLOBALS = P_outer.GLOBALS ++ P_body.GLOBALS]
 
 def $function_body_tasks(S, pfunction) = $statement_tasks(statement*, (PORIGIN n pfunction.BODY), 0) ++ [$function_fallthrough(S, pfunction)]
-  -- if pfunction.ORIGIN = PORIGIN n pcpath
+  -- if $origin_source(pfunction.ORIGIN) = PORIGIN n pcpath
   -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NPropertyHook phpType14 phpType24 (BOOLEAN false) phpType11 (SEQUENCE eps) (SEQUENCE statement*) metadata)
 def $function_body_tasks(S, pfunction) = $arrow_tasks(pfunction, expression, z)
   -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_name) (SEQUENCE eps) expression metadata)
@@ -120,6 +127,74 @@ def $property_hook_origin(S, ppropertydesc) = (PORIGIN n (pcpath_group ++ [PCFIE
   -- if $hook_body_supported(phpType39)
   -- if ($hook_body_backed(phpType39, ppropertydesc.NAME) \/ phpType5 = ABSENT)
 def $property_hook_origin(S, ppropertydesc) = eps -- otherwise
+
+;; Imported hooks retain their physical code and magic spelling. Only their
+;; callable identity and lexical owner are rebound to the actual using class.
+dec $property_hook_trait_origin(pstate, ppropertydesc) : porigin?
+def $property_hook_trait_origin(S, ppropertydesc) = (TRAIT_ORIGIN porigin_owner porigin_hook ($hook_name(ppropertydesc.NAME)))
+  -- if ppropertydesc.ORIGIN = TRAIT_MEMBER_ORIGIN porigin_owner porigin_source
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ ~pclassdesc.READONLY
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_owner)
+  -- if $hook_property_at(pclassdesc.PROPERTIES, ppropertydesc.ORIGIN) = (ppropertydesc)
+  -- if $trait_property_source_at(S.CLASSES, $origin_source(porigin_source)) = (ppropertydesc_source)
+  -- if ppropertydesc_source.ORIGIN = PORIGIN n pcpath
+  -- if $property_declaring_class(S.CLASSES, ppropertydesc_source.ORIGIN) = (porigin_trait)
+  -- if $class_at(S.CLASSES, porigin_trait) = (pclassdesc_trait)
+  -- if pclassdesc_trait.KIND = "trait"
+  -- if $trait_fetch(S, $trait_plan(S, pclassdesc).TRAITS, eps) = TRAITFETCHED pclassdesc_traits*
+  -- if pclassdesc_trait <- pclassdesc_traits*
+  -- if $trait_plan(S, pclassdesc_trait).TRAITS = eps
+  -- if ppropertydesc = $trait_data_property(pclassdesc, ppropertydesc_source)
+  -- if $property_hook_origin(S, ppropertydesc_source) = (porigin_hook)
+  -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 (SEQUENCE statement*) metadata)
+  -- if $hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME)
+def $property_hook_trait_origin(S, ppropertydesc) = eps -- otherwise
+def $property_hook_origin(S, ppropertydesc) = $property_hook_trait_origin(S, ppropertydesc)
+  -- if ppropertydesc.ORIGIN = TRAIT_MEMBER_ORIGIN porigin_owner porigin_source
+
+dec $property_hook_trait_property_functions(pstate, ppropertydesc*) : pfunction*
+def $property_hook_trait_property_functions(S, eps) = eps
+def $property_hook_trait_property_functions(S, ppropertydesc :: ppropertydesc_tail*) = [pfunction[.ORIGIN = porigin_hook][.NAME = pclassdesc.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)][.SIGNATURE = pfunction.SIGNATURE[.RETURNS = ppropertydesc.TYPE]]] ++ $property_hook_trait_property_functions(S, ppropertydesc_tail*)
+  -- if $property_hook_trait_origin(S, ppropertydesc) = (porigin_hook)
+  -- if $function_at(S.FUNCTIONS, $origin_source(porigin_hook)) = (pfunction)
+  -- if $trait_property_source_at(S.CLASSES, $origin_source(ppropertydesc.ORIGIN)) = (ppropertydesc_source)
+  -- if $property_declaring_class(S.CLASSES, ppropertydesc_source.ORIGIN) = (porigin_trait)
+  -- if $class_at(S.CLASSES, porigin_trait) = (pclassdesc_trait)
+  -- if pfunction.NAME = pclassdesc_trait.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)
+  -- if pfunction.SIGNATURE = {PARAMETERS eps, RETURNS ppropertydesc_source.TYPE, BYREF false}
+  -- if pfunction.DEFAULTS = eps /\ ~pfunction.EARLY
+  -- if $origin_source(pfunction.ORIGIN) = PORIGIN n pcpath_hook
+  -- if pfunction.BODY = pcpath_hook ++ [PCFIELD 5]
+  -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (porigin_owner)
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+def $property_hook_trait_property_functions(S, ppropertydesc :: ppropertydesc_tail*) = $property_hook_trait_property_functions(S, ppropertydesc_tail*) -- otherwise
+def $property_hook_trait_functions(S, eps) = eps
+def $property_hook_trait_functions(S, pclassdesc :: pclassdesc_tail*) = $property_hook_trait_property_functions(S, pclassdesc.PROPERTIES) ++ $property_hook_trait_functions(S, pclassdesc_tail*)
+
+def $property_hook_source_declared(S, ppropertydesc) = true
+  -- if $origin_source(ppropertydesc.ORIGIN) = PORIGIN n pcpath
+  -- if $(|pcpath| >= 2)
+  -- if pcpath_group = pcpath[0:$nabs($( |pcpath| - 2))]
+  -- if pcpath = pcpath_group ++ [PCFIELD 3, PCINDEX 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_group) = (NStmtProperty phpType14 phpType24 phpType18 phpType56 (SEQUENCE (phpType38 :: phpType38_tail*)) metadata)
+def $property_hook_source_declared(S, ppropertydesc) = false -- otherwise
+def $property_hook_trait_import_supported(S, pclassdesc, ppropertydesc) = true
+  -- if ~$property_hook_source_declared(S, ppropertydesc)
+def $property_hook_trait_import_supported(S, pclassdesc, ppropertydesc) = true
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ ~pclassdesc.READONLY
+  -- if ppropertydesc.ORIGIN = PORIGIN n pcpath
+  -- if $property_hook_origin(S, ppropertydesc) = (porigin_hook)
+  -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 (SEQUENCE statement*) metadata)
+  -- if $hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME)
+def $property_hook_trait_import_supported(S, pclassdesc, ppropertydesc) = false -- otherwise
+def $trait_data_property_one(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*) = S[.COMPLETION = UNSUPPORTED "nested, parented or readonly trait property hook import"]
+  -- if $ppproperty_desc_at(pclassdesc.PROPERTIES, ppropertydesc.NAME) = eps
+  -- if ~pclassdesc.READONLY \/ ppropertydesc.READONLY
+  -- if ~$property_hook_trait_import_supported(S, pclassdesc, ppropertydesc)
+def $trait_data_property_one(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*) = $trait_data_fatal(S, pclassdesc, $trait_data_prior(pclassdesc_prior*, ppropertydesc.NAME, false, pclassdesc.NAME) ++ $ptascii(" and ") ++ pclassdesc_trait.NAME ++ $ptascii(" define the same hooked property ($") ++ ppropertydesc.NAME ++ $ptascii(") in the composition of ") ++ pclassdesc.NAME ++ $ptascii(". Conflict resolution between hooked properties is currently not supported. Class was composed"))
+  -- if $ppproperty_desc_at(pclassdesc.PROPERTIES, ppropertydesc.NAME) = (ppropertydesc_prior)
+  -- if $property_hook_source_declared(S, ppropertydesc_prior) \/ $property_hook_source_declared(S, ppropertydesc)
 
 ;; A backed hooked parent gives a child getter physical storage independently
 ;; of whether the child's own body uses that storage.
@@ -254,13 +329,13 @@ def $property_hook_function(S, ppropertyhook) = (pfunction)
   -- if ppropertydesc.ORIGIN = ppropertyhook.PROPERTY
   -- if $property_hook_getter(S, ppropertydesc) = (ppropertydesc_getter)
   -- if $property_hook_origin(S, ppropertydesc_getter) = (ppropertyhook.HOOK)
-  -- if $function_at(S.FUNCTIONS, ppropertyhook.HOOK) = (pfunction)
+  -- if $function_at($all_functions(S), ppropertyhook.HOOK) = (pfunction)
   -- if $property_declaring_class(S.CLASSES, ppropertydesc_getter.ORIGIN) = (porigin_owner)
   -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc_owner)
   -- if pfunction.NAME = pclassdesc_owner.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)
   -- if pfunction.SIGNATURE = {PARAMETERS eps, RETURNS ppropertydesc_getter.TYPE, BYREF false}
   -- if pfunction.DEFAULTS = eps /\ ~pfunction.EARLY
-  -- if pfunction.ORIGIN = PORIGIN n pcpath_hook
+  -- if $origin_source(pfunction.ORIGIN) = PORIGIN n pcpath_hook
   -- if pfunction.BODY = pcpath_hook ++ [PCFIELD 5]
   -- if ~$function_generator(S, pfunction)
 def $property_hook_function(S, ppropertyhook) = eps -- otherwise
