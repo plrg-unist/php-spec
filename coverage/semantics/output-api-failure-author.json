@@ -1,0 +1,166 @@
+{
+  "feature": "explicit output API receive/body-throw cleanup",
+  "status": "private independently accepted; actual-parent integration pending",
+  "base_revision": "6f7e99f6da8ff95e6d0eaf03c5f4ac02e869cbb7",
+  "implementation_revision": "4f2a945ddbdaa910810967828771e287977270fc",
+  "scope": "Internal weak API entry; running argv release, actual Throwable/Previous, clean discard, flush restore, pop/lower routing before sole zoh release, frozen getter ownership and interrupted assignment. Normal upper completion survives lower failure; destructors save/clear the old exception and retain the API trace. Full core stays partial.",
+  "implementation_hashes": {
+    "spec/semantics/30-storage.watsup": "21c089a55197234ebaf8c98aa87243fd8d0a52fed472e0f2a2cf2749c3590677",
+    "spec/semantics/270-eager-destructors.watsup": "cfaf6ab45de03b9470d5a297c7661549bd528f9d7e98bde359eec046be389e87",
+    "spec/semantics/396-output-chunks.watsup": "add720f148fc8dfdb6b3cccd1be8e3d55db63873b574f661f07ca04326a725f5",
+    "spec/semantics/397-output-handler-failures.watsup": "7498dfcd5c3d38433e83853b6a5c49ffd2f4a2037114ab818ac96eeae818887f",
+    "spec/semantics/398-output-api-failures.watsup": "a8dc6ecee949dc5fed1feede84345657aae72dd4c996741a3389687b75e54401",
+    "spec/semantics/modules.json": "3f4f92a1f8040e290968f02f3fb1983809b4f2d7476e51522d87f25129e85aa7"
+  },
+  "runtime": {
+    "identity": "PHP8.5.10 CLI NTS64, sole project-local oracle",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "profile": "tests/semantics/profile.json",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PATH": "/usr/bin:/bin"
+    }
+  },
+  "author_sources": {
+    "exact_originals": 8,
+    "runs": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-07/source-gate-01/report.json",
+        "sha256": "4da8823b415e99317f19cb29f80c4d1482d0bcf11aa5df9d9c0fe148f164c39b",
+        "revision": "1b79ec7cd23586160c25d459c7fde5b0ba2f0bce",
+        "credit": {
+          "exact": 1
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-07/sources-01/report.json",
+        "sha256": "50d2798cb606843a7f3357afacb2072e92dc81534177fb7ab02c452fd782c5bb",
+        "revision": "1b79ec7cd23586160c25d459c7fde5b0ba2f0bce",
+        "credit": {
+          "exact": 7,
+          "unsupported_controls": 3,
+          "control_native_credit": 0
+        }
+      }
+    ]
+  },
+  "independent_sources": {
+    "exact_originals": 3,
+    "runs": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-07/sources-01/report.json",
+        "sha256": "7f4a6daf2c751555625fc69ff93e60f320676083fa3edb9e61216a2779201a21",
+        "revision": "1b79ec7cd23586160c25d459c7fde5b0ba2f0bce",
+        "credit": {
+          "exact_prefix": 2,
+          "whole_failed_campaign": 0
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-07/source-trace-03/report.json",
+        "sha256": "e6241040b14c01dc941f6e506d410aaa517ae023ea40e0de5016c807de550f36",
+        "revision": "3954c40c6a84bf9292cb2e7597cb11e5302ee77a",
+        "credit": {
+          "exact": 1
+        }
+      }
+    ]
+  },
+  "state": {
+    "reached_groups": 3,
+    "premises": 202,
+    "runs": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-07/state-selected-01/clean-argv/report.json",
+        "sha256": "52162e175d63f7425ff89154fd1ef0efaa0e5b7f5ea741b17ba9a95ec2e75705",
+        "revision": "6dc521bec5477082b2576a181a8cdad15c52b7e9",
+        "credit": {
+          "groups": 1,
+          "premises": 68
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-07/state-selected-01/detached-restore/report.json",
+        "sha256": "a236ebdac2e03214fcd0333765b3e876900ddcc17e34d304bded9dcf70eb6d42",
+        "revision": "6dc521bec5477082b2576a181a8cdad15c52b7e9",
+        "credit": {
+          "groups": 1,
+          "premises": 49
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-07/state-selected-02/get-clean-release/report.json",
+        "sha256": "1bd7b60c9ddcc4265029132027e1020d65420e01b9adf5cddcb4e7ad1c865592",
+        "revision": "4f2a945ddbdaa910810967828771e287977270fc",
+        "credit": {
+          "groups": 1,
+          "premises": 85
+        }
+      }
+    ],
+    "fronts": "Genuine clean argv destructor replacement; normal-upper/failed-lower detached restoration; get-clean sole zoh release with frozen getter and lower callback during destructor. Public/heap/output, zero-budget preservation and mode/site/context/tail/header/getter/source refusals. No standalone constructed-state credit."
+  },
+  "compatibility": "1b79 retains eight author and two peer originals.836bb adds a readonly genuine operation API trace suffix;3954 adds a site-only classifier without changing USER, eager source classification, ownership or completion. Third trace source passes at3954.4f2a replaces repeated optional-pattern matching with whole-value successor/source equality for saved-frame DONE pending validation; the same first EXIT and source/caller/tail/cleanup/live Throwable guards remain. No generic validation changes or earlier source/state replay credit.",
+  "preserved_zero_credit": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-07/sources-01/report.json",
+      "sha256": "7f4a6daf2c751555625fc69ff93e60f320676083fa3edb9e61216a2779201a21",
+      "revision": "1b79ec7cd23586160c25d459c7fde5b0ba2f0bce",
+      "credit": 0
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-07/source-trace-02/report.json",
+      "sha256": "a90e014a9edea27f1c9633ba2ad46c80ee8b8e1283c4d5ec9246b840625d3f86",
+      "revision": "836bb730ac07b9436c47f4343368081feadf0fdf",
+      "credit": 0
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-07/state-selected-01/get-clean-release/report.json",
+      "sha256": "92977b49695dd7ec0ef8fd2ac999ec6cce5075d746574a4036cb908cefda6a84",
+      "revision": "6dc521bec5477082b2576a181a8cdad15c52b7e9",
+      "credit": 0
+    }
+  ],
+  "diagnostics_zero_credit": [
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-07/trace-debug-01",
+      "result_sha256": "a4f7f8a7596b3dd5ae46559bc6079d9f8497fac03130ebc2cf87058658d1acad",
+      "credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-07/state-debug-01",
+      "result_sha256": "22d7e8895fb559a41bbaaf0f750e61655c1207a86e6607b94fe9c2dd5e6891fa",
+      "credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-07/state-debug-02",
+      "result_sha256": "3a5c722892ee111cc0ddeda1dbf46c753dd983343c7882dec4cc9a5362ed6db6",
+      "credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-07/state-debug-03",
+      "result_sha256": "3469b32d9e3ecb689114168a9bf40893af49dfd961da667d7dc59e747a2ea463",
+      "credit": 0
+    }
+  ],
+  "preparation": "Original diagnostic DSL type/list/binder failures and native-only observations remain outside runtime agreement; raw inputs/results retained. Current full388 checked-source struct passes at state-preflight-05. First117 state premises remain at6dc; affected85 at4f2a.",
+  "limits": [
+    "Normal-result argv/retval cleanup throws (required follow-on399), callback exit and throwing warning handlers.",
+    "Other byte producers, request-end/fatal drains and wider received/return conversions.",
+    "Wider callable/capability/mutation/Fiber behavior, owned Stringable forms and buffered stdout diagnostics."
+  ],
+  "commands": [
+    "python3 tests/semantics/output_api_failure_sources.py --select ID,... --output RAW",
+    "python3 tests/semantics/output_api_failure_review_sources.py --select ID,... --output RAW",
+    "python3 tests/semantics/output_api_failure_state.py --select GROUP --output RAW"
+  ],
+  "resources": "CPU4/SLOT2, serial stop-first/reaped, AS1536MiB; source model60s/process90s, state120s in fresh selector processes. Struct DATA6GiB.",
+  "raw_recovery": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-07",
+  "independent_review": "coverage/semantics/output-api-failure-review.json",
+  "integration": {
+    "status": "pending root writer and actual-parent review"
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "milestone": "Explicit output API receive/body-throw cleanup (398)",
+  "status": "accepted bounded private milestone; actual-parent integration pending",
+  "reviewer": "core_breadth_review_01",
+  "base_revision": "6f7e99f6da8ff95e6d0eaf03c5f4ac02e869cbb7",
+  "implementation_revision": "4f2a945ddbdaa910810967828771e287977270fc",
+  "implementation_sha256": "a8dc6ecee949dc5fed1feede84345657aae72dd4c996741a3389687b75e54401",
+  "scope": [
+    "Explicit flush/clean/end/get callbacks retain internal weak reception and release argv while running, preserving the actual pending Throwable and Previous",
+    "Clean discards live bytes; flush restores its disabled upper; end/get pop and route lower before releasing the sole raw callback owner",
+    "Frozen getters remain owned while failure interrupts assignment; a normally completed upper retains its processed header if a lower handler fails",
+    "Destructors save and clear the older exception, permitting normal lower callback entry, while retaining user catch scope and the genuine internal API trace"
+  ],
+  "authority": [
+    "vendor/php-src/main/output.c:php_output_handler_op, php_output_flush, php_output_clean, php_output_stack_pop, php_output_handler_free",
+    "vendor/php-src/Zend/zend_execute_API.c:zend_call_function pending-exception path",
+    "vendor/php-src/Zend/zend_objects.c:zend_objects_destroy_object exception save/restore"
+  ],
+  "author_evidence_reviewed": {
+    "ledger": "coverage/semantics/output-api-failure-author.json",
+    "source_agreements": 8,
+    "revision": "1b79ec7cd23586160c25d459c7fde5b0ba2f0bce",
+    "runs": "source-gate-01 (one receive/trace original) and sources-01 (seven distinct API mode/lower-cascade originals)",
+    "unsupported_controls": 3,
+    "control_native_credit": 0
+  },
+  "independent_sources": {
+    "agreements": 3,
+    "observations": "Original bytes, stdout, stderr, normal completion and exit status; sole pinned PHP8.5.10 CLI NTS64 with tests/semantics/profile.json",
+    "runner": "tests/semantics/output_api_failure_review_sources.py",
+    "runner_sha256": "68d06ab381d4ecb98025c321bf02f6ec31e360f80856eedbe9cffe976a4f29dc",
+    "runs": [
+      {
+        "revision": "1b79ec7cd23586160c25d459c7fde5b0ba2f0bce",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-07/sources-01/report.json",
+        "report_sha256": "7f4a6daf2c751555625fc69ff93e60f320676083fa3edb9e61216a2779201a21",
+        "accepted_completed_prefix": {
+          "popped-zoh-destructor-replaces-error": "AD1FP:12401|Z",
+          "flush-alias-receiver-unwind": "AD2|C|113:1|45169:0|20592:0Z"
+        },
+        "whole_campaign_passed": false
+      },
+      {
+        "revision": "3954c40c6a84bf9292cb2e7597cb11e5302ee77a",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-07/source-trace-03/report.json",
+        "report_sha256": "e6241040b14c01dc941f6e506d410aaa517ae023ea40e0de5016c807de550f36",
+        "cases": {"get-clean-zoh-fresh-throw-trace": "D0__destruct:ob_get_clean:F:9:P:99Z"},
+        "passed": true
+      }
+    ],
+    "inputs_stable": true,
+    "actors_reaped": true,
+    "other_runner_cases": "The clean-argv source is exercised by its genuine state group; the separate popped-threshold source remains native-only, with no CLI agreement credit"
+  },
+  "state_review": {
+    "groups": 3,
+    "premises": 202,
+    "runs": [
+      {
+        "id": "clean-argv", "premises": 68,
+        "revision": "6dc521bec5477082b2576a181a8cdad15c52b7e9",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-07/state-selected-01/clean-argv/report.json",
+        "report_sha256": "52162e175d63f7425ff89154fd1ef0efaa0e5b7f5ea741b17ba9a95ec2e75705"
+      },
+      {
+        "id": "detached-restore", "premises": 49,
+        "revision": "6dc521bec5477082b2576a181a8cdad15c52b7e9",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-07/state-selected-01/detached-restore/report.json",
+        "report_sha256": "a236ebdac2e03214fcd0333765b3e876900ddcc17e34d304bded9dcf70eb6d42"
+      },
+      {
+        "id": "get-clean-release", "premises": 85,
+        "revision": "4f2a945ddbdaa910810967828771e287977270fc",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-07/state-selected-02/get-clean-release/report.json",
+        "report_sha256": "1bd7b60c9ddcc4265029132027e1020d65420e01b9adf5cddcb4e7ad1c865592"
+      }
+    ],
+    "review": "Reached argv destruction, detached restoration and sole-zoh release/normal lower entry; public/heap/output and zero-budget preservation plus source/context/site/tail/mode/getter refusals. The valid-B getter forgery changes bytes while retaining a valid carrier; callsite forgery also projects CURRENT to avoid identity-only rejection.",
+    "execution": "Fresh serial selector processes, CPU4/SLOT2, AS1536MiB, worker120s; stable inputs, true result, empty stderr, exit0 and reaped actors",
+    "helper_native_credit": 0
+  },
+  "repairs_reviewed": [
+    "A source-authenticated operation suffix retains the real API frame during argv/zoh cleanup; the dedicated270 site classifier preserves USER and the original eager source/cleanup classification",
+    "The first-EXIT pending matcher compares whole optional caller and successor/source values, avoiding an elaborated optional guard that skipped global callers; all source, caller, origin, tail, cleanup and live-Throwable checks remain"
+  ],
+  "compatibility": "The trace/site repair affects genuine API cleanup destructors; earlier eight author/two peer cases keep their original cuts. The final matcher repair changes only readonly saved-frame pending validation; the unchanged third85 fixture discriminates it. No earlier source/state or397 campaign is replayed or renewed.",
+  "preserved_zero_credit": {
+    "source_failures": "The whole sources-01 campaign failed at its third case; source-trace-02 retains its failed original, with only two completed sources accepted separately",
+    "state_failure": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-07/state-selected-01/get-clean-release/report.json",
+    "state_failure_sha256": "92977b49695dd7ec0ef8fd2ac999ec6cce5075d746574a4036cb908cefda6a84",
+    "diagnostics": "Author trace-debug-01 and state-debug-01/02/03 are bounded observations, not source/state acceptance; original static/fixture failures and native-only preparation also retain zero"
+  },
+  "limits": [
+    "Normal-result argv/retval cleanup throws remain the separate required399 frontier; no398 failure-dispatch rule handles that normal commit path",
+    "Callback exit, warning-handler throws, other byte producers, request-end/fatal drains and wider conversion/callable/capability/mutation/Fiber/stdout protocols remain dependencies; full core stays partial"
+  ],
+  "recovery": "Use exact source selectors and output_api_failure_state.py --select GROUP in fresh processes; raw evidence is external. Author ledger supplies complete implementation/runtime identities and preparation/failure paths.",
+  "integration": {"status": "pending actual-parent pointwise review and root writer grant"}
+}

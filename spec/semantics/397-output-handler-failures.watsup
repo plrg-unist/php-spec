@@ -120,6 +120,8 @@ rule PhpStep/ob-user-fail-commit: S ~> S[.OUTPUTBUFFERS = $output_set(S.OUTPUTBU
   -- if $output_selected(S, pobinvoke) = (poutputbuffer)
 
 def $output_failure_valid(S, pobwrite, n) = ($output_vm_source(pobwrite.CALLER) /\ pobwrite.FINISH = OUTPUT_VM_DONE /\ $output_write_valid(S, pobwrite) /\ $throwable_live(S, n) /\ S.CURRENT = pobwrite.CONTEXT /\ S.ORIGIN = ($output_caller_site(pobwrite.CALLER)))
+  -- if $output_vm_source(pobwrite.CALLER)
+def $output_failure_valid(S, pobwrite, n) = false -- otherwise
 def $call_task_valid(S, OUTPUT_FAIL_WRITE pobwrite n) = ($output_failure_valid(S, pobwrite, n) /\ $source_operand_suffix(S.TODO, OUTPUT_FAIL_WRITE pobwrite n, pobwrite.TAIL))
 def $call_task_valid(S, OUTPUT_FAIL_FINISH pobwrite n) = ($output_failure_valid(S, pobwrite, n) /\ $source_operand_suffix(S.TODO, OUTPUT_FAIL_FINISH pobwrite n, pobwrite.TAIL))
 def $output_failure_next(S, pobwrite, n, n_bytes*) = S[.TODO = (OUTPUT_FAIL_WRITE pobwrite[.INDEX = $(pobwrite.INDEX + 1)][.BYTES = n_bytes*] n) :: pobwrite.TAIL]
@@ -164,10 +166,13 @@ rule PhpStep/output-fail-user: S ~> $output_failure_next(S[.OUTPUTBUFFERS = $out
 rule PhpStep/output-fail-finish: S ~> S[.TODO = (THROW_SEARCH n) :: pobwrite.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (OUTPUT_FAIL_FINISH pobwrite n) :: ptask_tail*
   -- if $call_task_valid(S, OUTPUT_FAIL_FINISH pobwrite n)
+  -- if pobwrite.FINISH = OUTPUT_VM_DONE
 
 ;; Producer operands can already be retired after their real decrement. The
 ;; SOURCE is a witness; source/caller/stack/cursor metadata remain checkable.
 def $output_failure_source(S, pobwrite) = ($output_vm_source(pobwrite.CALLER) /\ pobwrite.FINISH = OUTPUT_VM_DONE /\ $output_source_valid(S[.CURRENT = pobwrite.CONTEXT], pobwrite.CALLER) /\ pobwrite.IDS = $output_ids(S.OUTPUTBUFFERS) /\ $(pobwrite.INDEX <= |pobwrite.IDS|) /\ $output_prefix_done(S.OUTPUTBUFFERS, pobwrite.INDEX) /\ $startup_bytes(pobwrite.BYTES))
+  -- if $output_vm_source(pobwrite.CALLER)
+def $output_failure_source(S, pobwrite) = false -- otherwise
 def $output_failure_exit_frames(eps, pdestructionoperation, pobwrite) = false
 def $output_failure_exit_frames(pframe :: pframe_tail*, pdestructionoperation, pobwrite) = ((pframe.CONTEXT = pobwrite.CONTEXT /\ pframe.ORIGIN = ($output_caller_site(pobwrite.CALLER)) /\ $source_operand_suffix(pframe.TODO, DESTRUCTOR_OPERATION_EXIT pdestructionoperation, pobwrite.TAIL)) \/ $output_failure_exit_frames(pframe_tail*, pdestructionoperation, pobwrite))
 def $output_failure_exit(S, pdestructionoperation, pobwrite) = ((S.CURRENT = pobwrite.CONTEXT /\ S.ORIGIN = ($output_caller_site(pobwrite.CALLER)) /\ $source_operand_suffix(S.TODO, DESTRUCTOR_OPERATION_EXIT pdestructionoperation, pobwrite.TAIL)) \/ $output_failure_exit_frames(S.FRAMES, pdestructionoperation, pobwrite))

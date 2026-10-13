@@ -19476,13 +19476,15 @@
         "spec/semantics/391-output-buffers.watsup",
         "spec/semantics/395-output-handlers.watsup",
         "spec/semantics/396-output-chunks.watsup",
-        "spec/semantics/397-output-handler-failures.watsup"
+        "spec/semantics/397-output-handler-failures.watsup",
+        "spec/semantics/398-output-api-failures.watsup"
       ],
       "helper_tests": [
         "tests/semantics/output_buffer_state.py",
         "tests/semantics/output_handler_state.py",
         "tests/semantics/output_chunk_state.py",
-        "tests/semantics/output_abrupt_state.py"
+        "tests/semantics/output_abrupt_state.py",
+        "tests/semantics/output_api_failure_state.py"
       ],
       "source_tests": [
         "tests/semantics/output_buffer_sources.py",
@@ -19491,7 +19493,9 @@
         "tests/semantics/output_chunk_sources.py",
         "tests/semantics/output_chunk_review_sources.py",
         "tests/semantics/output_abrupt_sources.py",
-        "tests/semantics/output_abrupt_review_sources.py"
+        "tests/semantics/output_abrupt_review_sources.py",
+        "tests/semantics/output_api_failure_sources.py",
+        "tests/semantics/output_api_failure_review_sources.py"
       ],
       "evidence": [
         "vendor/php-src/main/output.c",
@@ -19505,9 +19509,12 @@
         "coverage/semantics/output-chunk-author.json",
         "coverage/semantics/output-chunk-review.json",
         "coverage/semantics/output-abrupt-author.json",
-        "coverage/semantics/output-abrupt-review.json"
+        "coverage/semantics/output-abrupt-review.json",
+        "vendor/php-src/Zend/zend_objects.c",
+        "coverage/semantics/output-api-failure-author.json",
+        "coverage/semantics/output-api-failure-review.json"
       ],
-      "review": "Module391 default/NULL stacks, Module395 explicit normal user operations and Module396 normal positive chunks retain their accepted source/state cuts. Module397 adds automatic receive/throw cleanup: pending identity/Previous, running argv destruction, live raw forwarding, lower threshold skip/disable and interrupted print; direct named Stringable temporaries release after writing and before assignment/catch. Eight author and four independent originals agree at separate cuts. Three genuine groups pass 166 premises in fresh processes (63+44 at 20d44,59 at 85fd); the pending-witness validation repair and one-variable phase correction preserve failed originals/diagnostics at zero. Callback exit, explicit API failure, warning-handler throws, other producers/request-end/fatal drains and wider conversion/callable/capability/mutation/Fiber/stdout protocols remain required; full obligation stays partial."
+      "review": "Modules391/395/396/397 retain their accepted default, explicit normal, automatic chunk and automatic failure cuts. Module398 adds explicit API receive/body-throw cleanup: clean discards, flush restores, and end/get pop and release the sole zoh after lower routing. Frozen getters, actual Throwable/Previous and saved/cleared destructor exceptions retain caller behavior and API traces. Eight author and three independent originals agree at separate cuts; three genuine groups pass 202 premises (117 at6dc,85 at4f2a). Site-only trace and whole-option replay matching repairs preserve source/state failures and bounded diagnostics at zero. Normal-result cleanup throws, callback exit, warning-handler throws, other producers/request-end/fatal drains and wider conversion/callable/capability/mutation/Fiber/stdout protocols remain required; full obligation stays partial."
     },
     {
       "id": "environment.request-inputs",
