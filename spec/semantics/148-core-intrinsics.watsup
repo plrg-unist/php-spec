@@ -142,14 +142,17 @@ def $exit_ready(S, z) = $exit_start_unwind(S[.RETIREDOWNERS = eps][.COMPLETION =
   -- if $source_static_exit_tail(S, S.TODO) =/= eps
 def $exit_ready(S, z) = S[.RETIREDOWNERS = eps][.TODO = eps][.ORIGIN = eps][.COMPLETION = EXITED z][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.TRACE = eps][.ERRORORIGIN = eps] -- otherwise
 dec $exit_finish(pstate) : pstate
-def $exit_finish(S) = $exit_ready(S, $ntprecision32(z))
+;; Process status survives a caught unwind replacement and is shared by saved
+;; frames. String exit writes bytes without changing the last integer status.
+def $exit_status_valid(S) = (S.EXITSTATUS = $ntprecision32(S.EXITSTATUS))
+def $exit_finish(S) = $exit_ready(S[.EXITSTATUS = $ntprecision32(z)], $ntprecision32(z))
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN (PINT z)
-def $exit_finish(S) = $exit_ready(S, 0)
+def $exit_finish(S) = $exit_ready(S, S.EXITSTATUS)
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN pvalue_string
   -- if $string_bytes(pvalue_string) = (eps)
-def $exit_finish(S) = $exit_ready($output_write(S, n*), 0)
+def $exit_finish(S) = $exit_ready($output_write(S, n*), S.EXITSTATUS)
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN pvalue_string
   -- if $string_bytes(pvalue_string) = (n*)
