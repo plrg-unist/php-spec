@@ -275,6 +275,16 @@ child class. The scoped prelink exception handles source-fast-equal linking; the
 linked edge additionally authenticates Child ancestry and normalized setter flags.
 TYPE/covariance, defaults, layouts, stores and permission rules are unchanged;
 [protected setter review](../../coverage/semantics/virtual-parent-protected-set-plain-inherited-getter-review.json).
+A plain untyped Child removing the closed virtual Parent's int TYPE receives
+"must be subtype of int" at the child class. There is no child getter declaration
+to reattribute to a hook line. Reverse type addition under an untyped Parent
+keeps the later "must be omitted" property error. Both-untyped inheritance retains
+Parent's RETURNS eps/private method and string "13" result, while the plain Child
+owns 200 then 300. In the untyped control, Parent's NULL default metadata creates no slot;
+active source backing bypass stays false. This only extends authenticated
+diagnostic-family recognition; pure variance and linked compatible admission,
+getter/default/layout/store/owner rules remain unchanged;
+[plain-child type-presence review](../../coverage/semantics/virtual-parent-plain-type-presence-review.json).
 Other inherited getter roots/shapes and wider
 type-presence combinations remain required.
 Backed-parent inheritance retains invariant types; broader type equivalence and

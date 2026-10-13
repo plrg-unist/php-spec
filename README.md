@@ -1973,6 +1973,12 @@ getter. Global writes fail without changing its slot; Child and inherited Parent
 methods store 300 and 400 while the getter stays 13. A body-backed parent still
 rejects setter narrowing. Two originals and five focused states are in the
 [protected setter review](coverage/semantics/virtual-parent-protected-set-plain-inherited-getter-review.json).
+Removing a virtual parent's `int` type on a plain child reports the subtype
+property error at the child class; adding `int` under an untyped parent reports
+that the type must be omitted. Both-untyped inheritance keeps Parent's string "13"
+return and the child's physical slot 200→300. Three originals and three focused
+states are in the
+[plain-child type-presence review](coverage/semantics/virtual-parent-plain-type-presence-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`

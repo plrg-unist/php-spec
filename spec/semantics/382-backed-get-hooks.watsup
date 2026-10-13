@@ -853,7 +853,7 @@ def $property_hook_ordinary_backing(S, ppropertydesc, n) = false -- otherwise
 def $property_hook_plain_covariance_parent(S, ppropertydesc_parent, ppropertydesc_child, n) = true
   -- if $(n > 0)
   -- if ppropertydesc_parent.NAME = ppropertydesc_child.NAME /\ ppropertydesc_parent.ORIGIN =/= ppropertydesc_child.ORIGIN
-  -- if ppropertydesc_parent.TYPE =/= eps /\ ppropertydesc_child.TYPE =/= eps
+  -- if ppropertydesc_parent.TYPE =/= eps
   -- if ppropertydesc_parent.VISIBILITY = PROPERTY_PUBLIC /\ ~ppropertydesc_parent.STATIC /\ ~ppropertydesc_parent.READONLY /\ ~ppropertydesc_parent.FINAL /\ ppropertydesc_parent.SETVISIBILITY = eps
   -- if ppropertydesc_child.VISIBILITY = PROPERTY_PUBLIC /\ ~ppropertydesc_child.STATIC /\ ~ppropertydesc_child.READONLY /\ ~ppropertydesc_child.FINAL /\ ppropertydesc_child.SETVISIBILITY = eps
   -- if $property_hook_virtual_chain(S, ppropertydesc_parent, n)
@@ -1050,6 +1050,9 @@ def $property_hook_covariance_message(S, ppropertydesc_parent, ppropertydesc_chi
 def $property_hook_covariance_message(S, ppropertydesc_parent, ppropertydesc_child, pvresult) = eps -- otherwise
 def $trait_property_inherit_message(S, ptbytes_child, ptbytes_parent, ppropertydesc_parent, ppropertydesc_child) = $property_hook_covariance_message(S, ppropertydesc_parent, ppropertydesc_child, $property_hook_covariance(S, ppropertydesc_parent, ppropertydesc_child))
   -- if $property_hook_covariance_parent(S, ppropertydesc_parent, ppropertydesc_child)
+  -- if ppropertydesc_child.TYPE =/= eps
+def $trait_property_inherit_message(S, ptbytes_child, ptbytes_parent, ppropertydesc_parent, ppropertydesc_child) = $property_hook_covariance_message(S, ppropertydesc_parent, ppropertydesc_child, PVINCOMPATIBLE)
+  -- if $property_hook_covariance_parent(S, ppropertydesc_parent, ppropertydesc_child) /\ ppropertydesc_child.TYPE = eps
 def $trait_property_inherit_message(S, ptbytes_child, ptbytes_parent, ppropertydesc_parent, ppropertydesc_child) = $property_hook_covariance_message(S, ppropertydesc_parent, ppropertydesc_child, PVINCOMPATIBLE)
   -- if $property_hook_missing_return_parent(S, ppropertydesc_parent, ppropertydesc_child)
 def $trait_property_inherit_message(S, ptbytes_child, ptbytes_parent, ppropertydesc_parent, ppropertydesc_child) = eps
