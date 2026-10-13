@@ -145,6 +145,18 @@ rule PhpStep/weakmap-set-resume: S ~> $weakmap_set_finish(S, paccess)
   -- if $weakmap_set_resume(S, paccess)
 ;; Ordinary dimension reads copy the stored value. Object-store handles,
 ;; not permanent semantic IDs, appear in the missing-key Error message.
+;; A pending current-frame key notification keeps the physical leaf Key
+;; readable, without admitting notified or inactive storage carriers.
+dec $weakmap_read_key_allowed(pstate, nat) : bool
+def $weakmap_read_key_allowed(S, n_key) = true -- if ~$instance_storage_freeing(S, n_key)
+def $weakmap_read_key_allowed(S, n_key) = true
+  -- if $instance_storage_for(S, n_key) = (pinstancestorage)
+  -- if pinstancestorage.NOTIFY = (n_wrapper)
+  -- if pinstancestorage <- ($instance_storage_tasks(S.TODO) ++ $instance_storage_frames(S.FRAMES))
+  -- if $weakmap_storage_read(S, n_wrapper, n_key)
+  -- if S.OBJECTS[n_key] = STDINSTANCE
+  -- if $weakref_find(S, S.ALLOCATIONS, n_key) = (n_wrapper)
+def $weakmap_read_key_allowed(S, n_key) = false -- otherwise
 dec $weakmap_read_allowed(pstate, paccess) : bool
 def $weakmap_read_allowed(S, paccess) = true
   -- if paccess.MODE = ACCESS_READ KEY_R
@@ -166,7 +178,7 @@ def $weakmap_read_allowed(S, paccess) = true
   -- if paccess.OFFSET = POBJECT n_key
   -- if $(n_key < |S.OBJECTS|)
   -- if (HOBJECT n_key) <- S.ALLOCATIONS
-  -- if ~$instance_storage_freeing(S, n_key)
+  -- if $weakmap_read_key_allowed(S, n_key)
   -- if $(n_key < |S.DESTRUCTION.HANDLES|)
   -- if n_handle = S.DESTRUCTION.HANDLES[n_key]
   -- if $(n_handle > 0) /\ $(n_handle < S.DESTRUCTION.NEXT)
