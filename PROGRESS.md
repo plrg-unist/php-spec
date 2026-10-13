@@ -3159,6 +3159,16 @@ missing-key Error pass, totaling 297. The Error cut stops after real materializa
 originals supply catch and complete endings. The original 73-check owner forecast remains zero;
 its corrected control authenticates the two real destructor-entry task roots.
 Presence/reference/method and wider key/map protocols remain required.
+
+Explicit object-key entry unset now clears only the map's value edge; existing
+eager comparison transfers that owner into an authentic VALUE release. Missing
+keys preserve the entry, and a held CV keeps the removed value live and uncalled.
+The normal 62-byte, throwing 69-byte and held/missing 87-byte originals agree at
+`0c01e5f`. Removal (136), missing no-op (100), held-value release (94) and corrected
+pending-throw (88) checks total 418. Actual Value cleanup leaves the same Exception
+owned until the UNSET operation transfers it to THROW_SEARCH. The original
+plain-string message premise remains zero; its correction compares string bytes.
+Wider map protocols and ephemeron collection remain open.
 [Ledger](coverage/semantics/weak-map-review.json).
 
 ArrayAccess304 reconstructs intermediate `[]` after ordinary by-value Get and

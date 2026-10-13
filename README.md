@@ -1120,6 +1120,12 @@ actual object-store handle and preserves the existing entry. Two originals agree
 with PHP at `c4c097e`; 297 reached checks pass. Presence,
 reference and wider map protocols remain required.
 
+Explicit `unset($map[$key])` removes a matching entry before its value destructor
+while the map and key stay live. Missing object keys are no-ops; a separately held
+value survives entry removal. Throwing cleanup resumes the same pending Exception.
+Three originals agree at `0c01e5f`; 418 reached checks pass. Earlier cuts retain
+their original evidence.
+
 [Ordinary collection301](docs/semantics/CYCLE-COLLECTION.md) implements explicit
 object/array cycle collection, ordered destructor callbacks and real weak
 retirement. Fiber protection scans reuse one graph within an unchanged state,

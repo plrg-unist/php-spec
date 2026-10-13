@@ -353,5 +353,88 @@
     "engine_basis": "Zend/zend_weakrefs.c zend_weakmap_read_dimension: ordinary BP_VAR_R stored-zval read and missing-object-key Error with class and object-store handle.",
     "compatibility": "New arms require WeakMap ACCESS_READ KEY_R and the actual current consumer/operands; prior write, notification/storage and ordinary ArrayAccess arms are unchanged. Earlier cuts retain their tested revisions without renewal.",
     "boundaries": "Presence/isset, reference/compound reads, other key types, method/iteration, replacement/wider entry shapes, mutation during freeing and ephemeron collection remain required. Countable is nominal-only; count execution stays excluded/Unsupported per CORE. Earlier failures retain zero credit."
+  },
+  "entry_unset_59": {
+    "scope": "Explicit object-key entry unset, missing-key no-op, retained-value shared release and pending throwing cleanup.",
+    "base_revision": "fb9d482af09e314c7c6f42bdc23c548bcf29c4c8",
+    "tested_revision": "0c01e5f7ef6b318a78c06c8c85c90d8a526caf35",
+    "modules": 380,
+    "raw_root": ".tools/weak-map-entry-unset-59",
+    "recovery": "Reports below are relative to raw_root; original source bytes, commands and raw streams remain at their ignored paths.",
+    "representation": "Source access, current UNSET_ARRAY/BASE_DIM and actual map/key/selected operands agree. Clearing the matching entry removes only its value edge; existing eager comparison creates the real VALUE job and UNSET operation. A missing key preserves the entry; an outside Value CV survives shared release.",
+    "source_agreements": [
+      {
+        "case": "weak-map-entry-unset-59",
+        "source_sha256": "a9c9ba5d9a0fed5ce238a4339f664b30d7d0255e33a1c59989f0bc3f01b56dcb",
+        "stdout_bytes": 62,
+        "stdout_sha256": "b81021124bbc0f3624cc739a0f5a0e5786b3828557734a71934cb7ef09b6cad2",
+        "native_report": ".tools/weak-map-entry-unset-59-native-txkbckt3/report.json",
+        "model_report": ".tools/weak-map-entry-unset-source-59-bg_aort0/report.json"
+      },
+      {
+        "case": "weak-map-entry-unset-throw-59",
+        "source_sha256": "fb96514ce71e9cc2637e4f6d311411a29e5ebe1303a68d5de432ed3030612cfa",
+        "stdout_bytes": 69,
+        "stdout_sha256": "dbba8f75971562f5c22dfc174c9db13a08e3cc390ea8ccaabfeed5c07ed35b26",
+        "native_report": ".tools/weak-map-entry-unset-throw-59-native-v69g24m4/report.json",
+        "model_report": ".tools/weak-map-entry-unset-throw-source-59-rpd1k_79/report.json"
+      },
+      {
+        "case": "weak-map-entry-unset-held-missing-59",
+        "source_sha256": "ba9200d86c091d94fe8d2abbea564f563d99f04a816239a22c74e8b6bd17cab9",
+        "stdout_bytes": 87,
+        "stdout_sha256": "41515e0cb06bf4f2cdf0c949680daac15f4c6d9ab76f452b0d522970dd18ba8c",
+        "native_report": ".tools/weak-map-entry-unset-held-missing-59-native-f0z7vzoe/report.json",
+        "model_report": ".tools/weak-map-entry-unset-held-missing-source-59-lc7w6c3a/report.json"
+      }
+    ],
+    "state": {
+      "assertions": [
+        136,
+        100,
+        94,
+        88
+      ],
+      "total_checked_assertions": 418,
+      "candidate_sha256": [
+        "0a273751c537fb40c2c1296268e90f0ede8c1cced743814eb540f564ce98bc7b",
+        "0aca5978d3432850946c4e768c4e2cef719c52b8d89b78a9211374118e9b4559",
+        "85d9c44c1197f66afdffe640dd75e21ed92635e7ec9b5e6b1edac79914b928a4"
+      ],
+      "reports": [
+        ".tools/weak-map-entry-unset-removal-state-59-3aqelx0u/report.json",
+        ".tools/weak-map-entry-unset-held-state-59-p77t25zm/report.json",
+        ".tools/weak-map-entry-unset-held-state-59-m4nh4v8o/report.json",
+        ".tools/weak-map-entry-unset-throw-corrected-state-59-u2falr76/report.json"
+      ],
+      "result": "Strict true newline/exits0/no timeout/stderr0/interruptionNone/groups empty/stable. Includes three setup assertions per case. Real lost-edge transfer selects Value with two ENTER task roots; held-value shared release reduces owners2 to1 without callback. Actual Value cleanup leaves the original Exception owner1 through OP_EXIT to THROW_SEARCH. No full terminal drive; originals supply endings."
+    },
+    "compiler_init": {
+      "compiler_report": ".tools/weak-map-entry-unset-59-compiler-3owz1upq/report.json",
+      "init_report": ".tools/weak-map-entry-unset-59-init-6ucxrlb3/report.json",
+      "result": "Actual algo/struct syntax artifacts include the new unset definition/body; strict init true newline. All recorded process and stability guards pass."
+    },
+    "localization": {
+      "revision": "fb9d482af09e314c7c6f42bdc23c548bcf29c4c8",
+      "candidate_sha256": "1e600d5b4fb90e9fbd91b8a52ccd0bdf1c7017c0286fd58f3b01bfca2ace0137",
+      "assertions": 61,
+      "report": ".tools/weak-map-entry-unset-baseline-59-sqx7ssnj/report.json",
+      "result": "Genuine UNSET_ARRAY Unsupported preserves the entire raw state except completion; localization only."
+    },
+    "preserved_zero_credit": [
+      ".tools/weak-map-entry-unset-source-59-i_yxhu80/report.json: original accepted-source explicit-unset Unsupported after key-live|value-live|.",
+      ".tools/weak-map-entry-unset-throw-state-59-d8fi_y_e/report.json: original88 plain PSTRING message premise rejects the source string carrier; separate corrected88 compares message bytes only."
+    ],
+    "maintained": {
+      "transfer_revision": "9647b1eb2670a15124d3c68a43920de980c94c07",
+      "source_cases": 60,
+      "state_cases": 128,
+      "state_sha256": "2277e3477e2c4e01a796f8bb09bb302cf7d648a0b292a0c687af0309dfec2945",
+      "change": "All prior57 source rows/order and124 CASES/order preserved; three exact normal originals and four literal tested records added. Harness outside CASES unchanged."
+    },
+    "caps_environment": "Native30/host120; original CLI60/recorder75/host180; state SL120/recorder200/host240/worker30; CPU2/jobs1/C/UTC/script encoding absent. Runtime/profile identities match the initial WeakMap cut.",
+    "engine_basis": "Zend/zend_weakrefs.c zend_weakmap_unset_dimension and zend_weakref_unregister: absent object keys do nothing; matching entry removal releases its stored value independently of key ownership.",
+    "compatibility": "New arms require WeakMap offsetUnset with actual current UNSET_ARRAY, source and operands; prior read/write/notification/storage consumers are unchanged. Earlier source/state cuts keep their exact revisions without renewal.",
+    "boundaries": "Nonobject keys, wider unset contexts, presence/reference/method/iteration/replacement and wider map/ephemeron protocols remain required; mutation during freeing stays Unsupported. Countable remains nominal-only; count execution is excluded/Unsupported per CORE. Earlier evidence and failures retain their original cuts."
   }
 }
