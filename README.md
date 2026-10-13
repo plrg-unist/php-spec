@@ -1784,6 +1784,11 @@ latest getter and its private scope, while writes update the physical slots.
 Distinct backing and retained result references use the existing cleanup rules.
 Two originals and nine separate state checks are recorded in the
 [repeated ordinary-storage review](coverage/semantics/repeated-ordinary-unbacked-get-hook-review.json).
+A typed getter directly backed by an ordinary parent also rejects an untyped,
+source-unbacked child at its getter declaration. Across intervening classes, the
+error names the actual declaring getter; reverse type addition keeps the property
+error. Three originals and focused rejection/plan checks are recorded in the
+[ordinary-backing type-presence review](coverage/semantics/ordinary-backed-parent-unbacked-get-hook-type-presence-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`

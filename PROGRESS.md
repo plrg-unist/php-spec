@@ -1327,6 +1327,16 @@ authentic frontier partitions keep all assertions, with AL90 and affected SL150.
 Joined exact `af903227`/381; one count-only current init check passes with no application.
 Private cuts remain retained through neutral output-buffer state and disjoint incoming paths.
 
+Removing the type from a source-unbacked child below a typed getter directly
+backed by an ordinary Root now reports the getter error at child hook 10, naming
+declaring First across Bridge. The existing missing-return guard accepts the
+authenticated ordinary parent basis; reverse addition keeps property class 9.
+Strict381/source3 pass at `196c13eb` (one repaired source, two baseline controls).
+Three separate state checks pass at `814991e9`: remove62 (32 reached, 30 derived),
+add32 and actual scalar plan47, totaling 111 reached plus 30 derived. Runtime,
+defaults, layouts, pure covariance and earlier cuts retain their identities.
+[Ordinary-backing type-presence review](coverage/semantics/ordinary-backed-parent-unbacked-get-hook-type-presence-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization

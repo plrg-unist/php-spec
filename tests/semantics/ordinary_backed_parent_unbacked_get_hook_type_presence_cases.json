@@ -1,0 +1,57 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hash": "766aa1e338d89862e10108db6910cc0b30d571d70b2bd70154f6820394847d81",
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "remove",
+      "source": "<?php\nclass OrdinaryRemoveRoot52 {\n    public int $value = 100;\n}\nclass OrdinaryRemoveFirst52 extends OrdinaryRemoveRoot52 {\n    public int $value { get => 7; }\n}\nclass OrdinaryRemoveBridge52 extends OrdinaryRemoveFirst52 {}\nclass OrdinaryRemoveSecond52 extends OrdinaryRemoveBridge52 {\n    public $value { get => 13; }\n}\necho \"UNREACHED|\";\n",
+      "source_sha256": "81972b691beb0537e4715e69a16f3d7569d4d10d13868e94919313680e128674",
+      "stdout_base64": "",
+      "stderr_template": "Fatal error: Declaration of OrdinaryRemoveSecond52::$value::get() must be compatible with OrdinaryRemoveFirst52::$value::get(): int in {FILE} on line 10\nStack trace:\n#0 {main}\n",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IERlY2xhcmF0aW9uIG9mIE9yZGluYXJ5UmVtb3ZlU2Vjb25kNTI6OiR2YWx1ZTo6Z2V0KCkgbXVzdCBiZSBjb21wYXRpYmxlIHdpdGggT3JkaW5hcnlSZW1vdmVGaXJzdDUyOjokdmFsdWU6OmdldCgpOiBpbnQgaW4ge0ZJTEV9IG9uIGxpbmUgMTAKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "ordinary-backed-parent-unbacked-get-hook-type-presence52-native-e3824694",
+      "native_raw_sha256": "766aa1e338d89862e10108db6910cc0b30d571d70b2bd70154f6820394847d81"
+    },
+    {
+      "id": "add",
+      "source": "<?php\nclass OrdinaryAddRoot52 {\n    public $value = 100;\n}\nclass OrdinaryAddFirst52 extends OrdinaryAddRoot52 {\n    public $value { get => 7; }\n}\nclass OrdinaryAddBridge52 extends OrdinaryAddFirst52 {}\nclass OrdinaryAddSecond52 extends OrdinaryAddBridge52 {\n    public int $value { get => 13; }\n}\necho \"UNREACHED|\";\n",
+      "source_sha256": "bf1af6f70fec4338c791f029735e237552b77a9e5f25e522520a44b5d3878c50",
+      "stdout_base64": "",
+      "stderr_template": "Fatal error: Type of OrdinaryAddSecond52::$value must be omitted to match the parent definition in class OrdinaryAddFirst52 in {FILE} on line 9\nStack trace:\n#0 {main}\n",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFR5cGUgb2YgT3JkaW5hcnlBZGRTZWNvbmQ1Mjo6JHZhbHVlIG11c3QgYmUgb21pdHRlZCB0byBtYXRjaCB0aGUgcGFyZW50IGRlZmluaXRpb24gaW4gY2xhc3MgT3JkaW5hcnlBZGRGaXJzdDUyIGluIHtGSUxFfSBvbiBsaW5lIDkKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "ordinary-backed-parent-unbacked-get-hook-type-presence52-native-e3824694",
+      "native_raw_sha256": "766aa1e338d89862e10108db6910cc0b30d571d70b2bd70154f6820394847d81"
+    },
+    {
+      "id": "control",
+      "source": "<?php\nclass OrdinaryPresenceRoot52 {\n    public $value = 100;\n    public function parentRead() { echo \"H|\"; return $this->value; }\n}\nclass OrdinaryPresenceFirst52 extends OrdinaryPresenceRoot52 {\n    public $value { get => $this->answer(); }\n    private function answer() {\n        echo \"F:\", self::class, \"/\", static::class, \"|\";\n        return 7;\n    }\n}\nclass OrdinaryPresenceBridge52 extends OrdinaryPresenceFirst52 {\n    private function answer() { return 500; }\n}\nclass OrdinaryPresenceSecond52 extends OrdinaryPresenceBridge52 {\n    public $value { get => $this->answer(); }\n    private function answer() {\n        echo \"C:\", self::class, \"/\", static::class, \"|\";\n        return 13;\n    }\n}\nclass OrdinaryPresenceGrand52 extends OrdinaryPresenceSecond52 {\n    private function answer() { return 900; }\n}\n$parent = new OrdinaryPresenceRoot52();\n$first = new OrdinaryPresenceFirst52();\n$child = new OrdinaryPresenceSecond52();\n$grand = new OrdinaryPresenceGrand52();\n$raw = (array) $parent;\necho $raw === [\"value\" => 100] ? \"P100|\" : \"BAD|\";\n$raw = (array) $first;\necho $raw === [\"value\" => null] ? \"FNULL|\" : \"BAD|\";\n$raw = (array) $child;\necho $raw === [\"value\" => null] ? \"CNULL|\" : \"BAD|\";\n$raw = (array) $grand;\necho $raw === [\"value\" => null] ? \"GNULL|\" : \"BAD|\";\necho $first->value, \"|\";\necho $child->value, \"|\";\necho $grand->parentRead(), \"|\";\n$raw = (array) $grand;\necho $raw === [\"value\" => null] ? \"GNULL|\" : \"BAD|\";\n$grand->value = 300;\n$raw = (array) $grand;\necho $raw === [\"value\" => 300] ? \"G300|\" : \"BAD|\";\necho $grand->value, \"|\";\n",
+      "source_sha256": "3f5b0cee0e1abe98c5067354ef6b633f3b3b38c776e7198f6048c7e7e95030ef",
+      "stdout_base64": "UDEwMHxGTlVMTHxDTlVMTHxHTlVMTHxGOk9yZGluYXJ5UHJlc2VuY2VGaXJzdDUyL09yZGluYXJ5UHJlc2VuY2VGaXJzdDUyfDd8QzpPcmRpbmFyeVByZXNlbmNlU2Vjb25kNTIvT3JkaW5hcnlQcmVzZW5jZVNlY29uZDUyfDEzfEh8QzpPcmRpbmFyeVByZXNlbmNlU2Vjb25kNTIvT3JkaW5hcnlQcmVzZW5jZUdyYW5kNTJ8MTN8R05VTEx8RzMwMHxDOk9yZGluYXJ5UHJlc2VuY2VTZWNvbmQ1Mi9PcmRpbmFyeVByZXNlbmNlR3JhbmQ1MnwxM3w=",
+      "stderr_template": "",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "ordinary-backed-parent-unbacked-get-hook-type-presence52-native-e3824694",
+      "native_raw_sha256": "766aa1e338d89862e10108db6910cc0b30d571d70b2bd70154f6820394847d81"
+    }
+  ]
+}

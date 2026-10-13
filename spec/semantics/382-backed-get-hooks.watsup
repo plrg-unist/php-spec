@@ -904,7 +904,7 @@ def $property_hook_missing_return_parent(S, ppropertydesc_parent, ppropertydesc_
   -- if $property_hook_origin(S, ppropertydesc_parent) = (porigin_parent_hook)
   -- if $origin_node(S.SOURCES, porigin_parent_hook) = (NPropertyHook phpType14_parent phpType24_parent phpType4_parent phpType11_parent phpType16_parent phpType39_parent metadata_parent)
   -- if ~$hook_body_backed(phpType39_parent, ppropertydesc_parent.NAME)
-  -- if $property_hook_inherited_backing(S, ppropertydesc_parent)
+  -- if $property_hook_inherited_backing(S, ppropertydesc_parent) \/ $property_hook_ordinary_backing(S, ppropertydesc_parent, |S.CLASSES|)
   -- if ppropertydesc_child.DEFAULT = PROP_NULL
   -- if $property_hook_origin(S, ppropertydesc_child) = (porigin_child_hook)
   -- if $origin_node(S.SOURCES, porigin_child_hook) = (NPropertyHook phpType14_child phpType24_child phpType4_child phpType11_child phpType16_child phpType39_child metadata_child)
