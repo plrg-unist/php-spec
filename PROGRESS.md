@@ -16,7 +16,10 @@ Eight author and four independent originals agree at separate cuts. Three genuin
 state groups pass 166 premises (63+44 at 20d44,59 at 85fd); saved-frame pending
 validation and the producer phase fixture were corrected narrowly. Original
 source/state failures and bounded tuples keep zero credit. The private milestone
-is independently accepted; composition over f7f7/386 is under current review.
+is independently accepted. The 387-module composition over f7f7 passes pointwise
+review, both builds, full structuring and the inventory check. Parent warning-exit
+history, recorded-fatal receipts and virtual-property behavior are preserved; no
+new numeric source/state evidence is claimed.
 [Contract](docs/semantics/OUTPUT-HANDLERS.md),
 [author evidence](coverage/semantics/output-abrupt-author.json),
 [independent review](coverage/semantics/output-abrupt-review.json).
