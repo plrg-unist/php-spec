@@ -378,6 +378,7 @@ dec $throwable_result_valid(pstate) : bool
 dec $getter_result_valid(pstate) : bool
 dec $ctor_native_result_valid(pstate) : bool
 dec $exit_result_valid(pstate) : bool
+dec $exit_status_valid(pstate) : bool
 dec $static_cells_valid(pstate, pstaticcell*) : bool
 dec $finally_state_valid(pstate) : bool
 dec $eval_state_valid(pstate) : bool
@@ -400,6 +401,7 @@ def $call_descriptors_scoped_valid(S_live, S) = true
   -- if $startup_state_valid(S)
   -- if $display_state_valid(S)
   -- if $precision_state_valid(S)
+  -- if $exit_status_valid(S_live)
   -- if $object_tables_valid(S)
   -- if $eval_state_valid(S_live)
   -- if $class_state_valid(S_live)

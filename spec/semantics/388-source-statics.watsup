@@ -86,6 +86,27 @@ def $source_static_exit_tail(S, (FILE_END n) :: ptask*) = (FILE_END n) :: ptask*
 def $source_static_exit_tail(S, ptask :: ptask_tail*) = $source_static_exit_tail(S, ptask_tail*)
   -- if ~$eval_end_marker(ptask)
 def $source_static_exit_tail(S, ptask*) = eps -- otherwise
+;; The exact live source end remains a user boundary after exit loses ORIGIN
+;; and after a destructor replaces that exit with a pending Throwable.
+def $source_static_user_source(S) = ($source_static_exit_tail(S, S.TODO) =/= eps)
+
+;; Tail validation follows the preceding public destructor ownership checks.
+;; The copied certificates still authenticate an override after those checks
+;; have consumed their borrowed registry entries in the validation view.
+dec $source_static_exit_operation(pstate, pdestructionoperation?, int) : bool
+def $source_static_exit_operation(S, (pdestructionoperation), z) = ($exit_unwind_operation((pdestructionoperation[.PENDING = eps]), z) /\ $destructor_pending_valid(S, pdestructionoperation.PENDING) /\ $source_static_user_source(S))
+def $source_static_exit_operation(S, eps, z) = false
+def $source_static_exit_prefix(S, DESTRUCTOR_ENTER pdestructorcall, z) = (pdestructorcall.USER /\ pdestructorcall.PENDING =/= eps /\ $source_static_exit_operation(S, pdestructorcall.OPERATION, z))
+def $source_static_exit_prefix(S, DESTRUCTOR_RESULT pdestructorcall, z) = (pdestructorcall.USER /\ pdestructorcall.PENDING =/= eps /\ $source_static_exit_operation(S, pdestructorcall.OPERATION, z))
+def $source_static_exit_prefix(S, DESTRUCTOR_OPERATION_EXIT pdestructionoperation, z) = (pdestructionoperation.PENDING =/= eps /\ $source_static_exit_operation(S, (pdestructionoperation), z))
+def $source_static_exit_prefix(S, ptask, z) = false -- otherwise
+def $source_static_exit_throw(S, n, (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*, z) = (pdestructorcall.USER /\ S.CURRENT = pdestructorcall.CALLER /\ S.ORIGIN = pdestructorcall.ORIGIN /\ S.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT /\ $destructor_boundary_valid(S, pdestructorcall) /\ $throwable_live(S, n) /\ $source_static_exit_operation(S, pdestructorcall.OPERATION, z))
+def $source_static_exit_throw(S, n, ptask*, z) = false -- otherwise
+def $destructor_pending_finish(S, pdestructionoperation, n, (EXIT_UNWIND z) :: ptask_tail*) = S[.TODO = (THROW_SEARCH n) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = NORMAL]
+  -- if pdestructionoperation.PENDING = (n)
+  -- if $source_static_exit_operation(S, (pdestructionoperation), z)
+  -- if ptask_tail* =/= eps
+  -- if $source_static_exit_tail(S, ptask_tail*) = ptask_tail*
 
 rule PhpStep/source-static-exit-eval-release: S ~> $source_static_drop(S, n)
   -- if S.TODO = (EXIT_UNWIND z) :: (EVAL_END n) :: ptask_tail*

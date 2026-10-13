@@ -299,6 +299,32 @@ call/reference/eager rules supply all effects; local source certificates and
 reached alias evidence do not authenticate arbitrary historical alias rewrites.
 Wider demand/returns remain OPEN.
 
+A separate exact caught-call certificate admits a TypeError catch around guarded
+AssignRef/probe, with ordinary inner/caught names and a matching getMessage
+receiver. Source2, reached2/350 and independent public99/1 pass at `8a125248`.
+Nested failure cancels both binding and probe; y stays fixed and no inner alias is
+created. The caught fresh error has empty Previous, while the original Y error
+remains in the outer FINALLY_RESUME and reaches the caller after C/T/D and ordered
+retirement. Full saved cleanup/public refusal and late budget continuation pass.
+M35/M36 and common idle/string/prefix rules remain exact; no generic active/catch
+admission or historical-certificate claim is added. Wider catch/returns stay OPEN.
+Validation-only M37 source2/public96/1 at `2f15e222` separately cover escaping
+nested failure: the fresh error reaches the caller with old Y as Previous only
+after callback unwind. Its verbatim producer requires the retained checked query
+in an ignored recovery directory; the ledger keeps this older cut separate.
+
+An additive exact caught-rethrow class certificate links catch echo receiver and
+throw variable to the same ordinary local. Source2, reached2/353 and independent
+public132/1 pass at `64d33559`: failed reference binding/probe stays canceled,
+the same caught TypeError survives late replacement/caller with its creation
+origin, line4 and all reached trace-array payloads preserved. Previous is empty
+at callback rethrow and old Y at later cuts; T/D never executes. Full registered
+prefix/public refusal, ordered WX/X retirement, counter control, selected alias
+and budget continuation are separate checks. M38/M36/common idle guards and
+throw/Previous rules remain exact. These trace/identity assertions are modeled
+state evidence with engine corroboration, not native trace comparison. Local
+source reconstruction and broader catch/rethrow/returns remain OPEN.
+
 Module 186 captures the physical cell of an ordinary live unconstrained aliased CV
 before weak Stringable conversion. Its retained current/saved f-local binding
 authenticates that selection independently of later GLOBALS rebind/unset. Success

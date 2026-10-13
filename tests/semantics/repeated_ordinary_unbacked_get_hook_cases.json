@@ -1,0 +1,44 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hash": "6b407820be1f386d58efe144a560d0e767ee285cca1db89beeb56d38b297c77a",
+  "cases": [
+    {
+      "id": "repeated-ordinary-unbacked-scalar",
+      "source": "<?php\nclass OrdinaryRepeatRoot51 {\n    public int $value = 100;\n    public function parentRead() {\n        echo \"H|\";\n        return $this->value;\n    }\n}\nclass OrdinaryRepeatFirst51 extends OrdinaryRepeatRoot51 {\n    public int $value {\n        get {\n            echo \"F:\", __CLASS__, \"/\", static::class, \"|\";\n            return $this->answer();\n        }\n    }\n    private function answer() { return 7; }\n}\nclass OrdinaryRepeatBridge51 extends OrdinaryRepeatFirst51 {\n    private function answer() { return 500; }\n}\nclass OrdinaryRepeatSecond51 extends OrdinaryRepeatBridge51 {\n    public int $value {\n        get {\n            echo \"C:\", __CLASS__, \"/\", static::class, \"|\";\n            return $this->answer();\n        }\n    }\n    private function answer() { return 13; }\n}\nclass OrdinaryRepeatGrand51 extends OrdinaryRepeatSecond51 {\n    private function answer() { return 900; }\n}\n$root = new OrdinaryRepeatRoot51;\n$first = new OrdinaryRepeatFirst51;\n$second = new OrdinaryRepeatSecond51;\n$grand = new OrdinaryRepeatGrand51;\necho (array)$root === [\"value\" => 100] ? \"P100|\" : \"BAD|\";\necho (array)$first === [] ? \"FEMPTY|\" : \"BAD|\";\necho (array)$second === [] ? \"CEMPTY|\" : \"BAD|\";\necho (array)$grand === [] ? \"GEMPTY|\" : \"BAD|\";\necho $root->value, \"|\";\necho $first->value, \"|\";\necho $second->value, \"|\";\necho $grand->parentRead(), \"|\";\necho (array)$grand === [] ? \"GEMPTY|\" : \"BAD|\";\n$grand->value = 300;\necho (array)$grand === [\"value\" => 300] ? \"G300|\" : \"BAD|\";\necho $grand->value, \"|\";\nclass OrdinaryRepeatUntypedRoot51 {\n    public $value = 100;\n    public function parentRead() { return $this->value; }\n}\nclass OrdinaryRepeatUntypedFirst51 extends OrdinaryRepeatUntypedRoot51 {\n    public $value { get { return $this->answer(); } }\n    private function answer() { return false; }\n}\nclass OrdinaryRepeatUntypedBridge51 extends OrdinaryRepeatUntypedFirst51 {\n    private function answer() { return 500; }\n}\nclass OrdinaryRepeatUntypedSecond51 extends OrdinaryRepeatUntypedBridge51 {\n    public $value { get { return $this->answer(); } }\n    private function answer() { return 0; }\n}\nclass OrdinaryRepeatUntypedGrand51 extends OrdinaryRepeatUntypedSecond51 {\n    private function answer() { return 900; }\n}\n$null_root = new OrdinaryRepeatUntypedRoot51;\n$null_first = new OrdinaryRepeatUntypedFirst51;\n$null_second = new OrdinaryRepeatUntypedSecond51;\n$null_grand = new OrdinaryRepeatUntypedGrand51;\necho (array)$null_root === [\"value\" => 100] ? \"NP100|\" : \"BAD|\";\necho (array)$null_first === [\"value\" => null] ? \"NFNULL|\" : \"BAD|\";\necho (array)$null_second === [\"value\" => null] ? \"NCNULL|\" : \"BAD|\";\necho (array)$null_grand === [\"value\" => null] ? \"NGNULL|\" : \"BAD|\";\necho $null_first->value === false ? \"NFALSE|\" : \"BAD|\";\necho $null_second->value === 0 ? \"NZERO|\" : \"BAD|\";\necho $null_grand->parentRead() === 0 ? \"HZERO|\" : \"BAD|\";\n$null_grand->value = 5;\necho (array)$null_grand === [\"value\" => 5] ? \"N5|\" : \"BAD|\";\necho $null_grand->value === 0 ? \"NZERO|\" : \"BAD|\";\n",
+      "source_sha256": "a68727be198583cece9ee3bc05667615607692328e03e42e98bef3703f439c4c",
+      "stdout_base64": "UDEwMHxGRU1QVFl8Q0VNUFRZfEdFTVBUWXwxMDB8RjpPcmRpbmFyeVJlcGVhdEZpcnN0NTEvT3JkaW5hcnlSZXBlYXRGaXJzdDUxfDd8QzpPcmRpbmFyeVJlcGVhdFNlY29uZDUxL09yZGluYXJ5UmVwZWF0U2Vjb25kNTF8MTN8SHxDOk9yZGluYXJ5UmVwZWF0U2Vjb25kNTEvT3JkaW5hcnlSZXBlYXRHcmFuZDUxfDEzfEdFTVBUWXxHMzAwfEM6T3JkaW5hcnlSZXBlYXRTZWNvbmQ1MS9PcmRpbmFyeVJlcGVhdEdyYW5kNTF8MTN8TlAxMDB8TkZOVUxMfE5DTlVMTHxOR05VTEx8TkZBTFNFfE5aRVJPfEhaRVJPfE41fE5aRVJPfA==",
+      "stderr_base64": "",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "repeated-ordinary-unbacked-hook51-native2-fb9d482a",
+      "native_raw_sha256": "6b407820be1f386d58efe144a560d0e767ee285cca1db89beeb56d38b297c77a"
+    },
+    {
+      "id": "repeated-ordinary-unbacked-lifetime",
+      "source": "<?php\nclass OrdinaryRepeatLeaf51 {\n    public $tag;\n    public function __destruct() { echo \"D\", $this->tag, \"|\"; }\n}\nfunction ordinaryRepeatFresh51($tag) {\n    global $weak_returned;\n    echo \"G\", $tag, \"|\";\n    $leaf = new OrdinaryRepeatLeaf51;\n    $leaf->tag = $tag;\n    $weak_returned = WeakReference::create($leaf);\n    return $leaf;\n}\nclass OrdinaryRepeatLifeRoot51 {\n    public mixed $value = null;\n    public function parentRead() { return $this->value; }\n    public function __destruct() {\n        $raw = (array)$this;\n        $leaf = $raw[\"value\"];\n        echo \"B\", $leaf->tag, \"|\";\n    }\n}\nclass OrdinaryRepeatLifeFirst51 extends OrdinaryRepeatLifeRoot51 {\n    public mixed $value {\n        get {\n            echo \"F|\";\n            return ordinaryRepeatFresh51(\"F\");\n        }\n    }\n}\nclass OrdinaryRepeatLifeBridge51 extends OrdinaryRepeatLifeFirst51 {}\nclass OrdinaryRepeatLifeSecond51 extends OrdinaryRepeatLifeBridge51 {\n    public mixed $value {\n        get {\n            echo \"C|\";\n            return ordinaryRepeatFresh51(\"R\");\n        }\n    }\n}\nclass OrdinaryRepeatLifeGrand51 extends OrdinaryRepeatLifeSecond51 {}\n$box = new OrdinaryRepeatLifeGrand51;\n$weak_box = WeakReference::create($box);\necho ((array)$box === [] ? \"EMPTY_SLOT|\" : \"BAD|\");\n$stored = new OrdinaryRepeatLeaf51;\n$stored->tag = \"S\";\n$weak_stored = WeakReference::create($stored);\n$box->value = $stored;\nunset($stored);\necho \"STORED|\";\n$kept = $box->parentRead();\necho \"H\", $kept->tag, \"|\";\necho ((array)$box === [\"value\" => $weak_stored->get()] ? \"SLOT_S|\" : \"BAD|\");\nunset($box);\necho ($weak_box->get() === null ? \"BN|\" : \"BL|\");\necho ($weak_stored->get() === null ? \"SN|\" : \"SL|\");\necho ($weak_returned->get() === null ? \"RN|\" : \"LIVE|\");\nunset($kept);\necho ($weak_returned->get() === null ? \"RN|\" : \"LIVE|\");\n",
+      "source_sha256": "1e42be1437e4bee5217b8256552dd1105c02cc8518b77138c8d17332fa5d115c",
+      "stdout_base64": "RU1QVFlfU0xPVHxTVE9SRUR8Q3xHUnxIUnxTTE9UX1N8QlN8RFN8Qk58U058TElWRXxEUnxSTnw=",
+      "stderr_base64": "",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "repeated-ordinary-unbacked-hook51-native2-fb9d482a",
+      "native_raw_sha256": "6b407820be1f386d58efe144a560d0e767ee285cca1db89beeb56d38b297c77a"
+    }
+  ]
+}

@@ -21,14 +21,22 @@ ownership. The selected closure remains owned while arguments execute and
 while user frames are suspended. The finite identity seam can admit another
 reviewed language intrinsic; it is not a general library dispatcher.
 
-Successful invocation completes with `EXITED int`, independently of ordinary
-return and error completion. The integer is normalized to the engine's signed
-32-bit exit-status slot. The CLI observer reports `explicit_exit` and the
-process status modulo 256. String status writes its nonempty bytes and uses
-status zero. The internal unwind path releases evaluation and user-frame
+Successful invocation starts an internal unwind that may complete with
+`EXITED int`. A separate signed32 request `EXITSTATUS` register records the
+last integer/default status; string status writes its nonempty bytes and keeps
+that register. The CLI observer reports its low byte for both normal and explicit
+exit completion, retaining fatal-error status255 precedence. The unwind releases evaluation and user-frame
 owners without capturing a Throwable trace or executing ordinary finally
 continuations. Request global/static roots remain available for subsequent
 lifecycle integration.
+
+A throwing source-table destructor may replace exit and resume caller catch
+after remaining slots retire, while request status remains set. Nested exits
+can update status even when an older saved exit continues unwinding; saved
+frames and destructor operations do not restore the request register.
+[The scoped status review](../../coverage/semantics/source-static-exit-status-review.json)
+keeps source ownership and status validation separate. Hard-fatal shutdown roots
+and wider lifecycle interactions remain required.
 
 Exit clears the active source origin with the discarded continuation. Saved
 frames keep their own context until they unwind. A budget pause during exit

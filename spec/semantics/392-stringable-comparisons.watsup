@@ -1,0 +1,238 @@
+;; zend_std_compare_objects dereferences before the cast, then rereads the
+;; opposing zval. Pointer images are documentary; only INPUTS/BASE own values.
+syntax pcomparepointer = COMPARE_COPY pvalue | COMPARE_CV ptbytes | COMPARE_CELL nat
+syntax pstringcompare = { SITE porigin, CASTSITE porigin, OP pbin, LINE int, LEFT poperand, RIGHT poperand, LEFTVALUE pvalue, RIGHTVALUE pvalue, INPUTBASE pbase, RECEIVER nat, OBJECTLEFT bool, POINTER pcomparepointer, ENV pbinding*, REFS nat*, CALLER pcallcontext?, OWNER nat, CONSUMER ptask, TAIL ptask* }
+
+dec $string_compare_operator(pcnode) : pbin?
+def $string_compare_operator(NExprBinaryOpEqual expression_left expression_right metadata) = (EQUAL)
+def $string_compare_operator(NExprBinaryOpNotEqual expression_left expression_right metadata) = (NOTEQUAL)
+def $string_compare_operator(NExprBinaryOpSmaller expression_left expression_right metadata) = (LESS)
+def $string_compare_operator(NExprBinaryOpSmallerOrEqual expression_left expression_right metadata) = (LESSEQUAL)
+def $string_compare_operator(NExprBinaryOpGreater expression_left expression_right metadata) = (GREATER)
+def $string_compare_operator(NExprBinaryOpGreaterOrEqual expression_left expression_right metadata) = (GREATEREQUAL)
+def $string_compare_operator(NExprBinaryOpSpaceship expression_left expression_right metadata) = (SPACESHIP)
+def $string_compare_operator(pcnode) = eps -- otherwise
+
+dec $string_compare_values(pstate, poperand, poperand, int) : (pstate, pvalue, pvalue)?
+def $string_compare_values(S, poperand_left, poperand_right, z) = ((S_right, pvalue_left, pvalue_right))
+  -- if S_left = $resolve_at($hold_task_inputs(S), poperand_left, z)
+  -- if S_left.COMPLETION = NORMAL
+  -- if S_left.RESULT = KNOWN pvalue_left
+  -- if S_right = $resolve_at(S_left, poperand_right, z)
+  -- if S_right.COMPLETION = NORMAL
+  -- if S_right.RESULT = KNOWN pvalue_right
+def $string_compare_values(S, poperand_left, poperand_right, z) = eps -- otherwise
+
+dec $string_compare_selection(pstate, pvalue, pvalue) : (nat, bool)?
+def $string_compare_selection(S, POBJECT n, pvalue) = ((n, true))
+  -- if $stringable_instance(S, n)
+  -- if $string_bytes(pvalue) =/= eps
+def $string_compare_selection(S, pvalue, POBJECT n) = ((n, false))
+  -- if $stringable_instance(S, n)
+  -- if $string_bytes(pvalue) =/= eps
+def $string_compare_selection(S, pvalue_left, pvalue_right) = eps -- otherwise
+
+def $string_compare_pending(S) = true
+  -- if S.TODO = (BINARY_RIGHT pbin poperand_left z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if ~$gc_retired_binary(S, pbin, poperand_left)
+  -- if $comparison_operator(pbin)
+  -- if $string_compare_values(S, poperand_left, S.RESULT, z) = ((S_read, pvalue_left, pvalue_right))
+  -- if $string_compare_selection(S_read, pvalue_left, pvalue_right) =/= eps
+def $string_compare_pending(S) = true
+  -- if S.TODO = (SWITCH_COMPARE statement porigin poperand_left n z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $switch_compare_valid(S, statement, porigin, n, z)
+  -- if $switch_bool_mode(S, porigin) = eps
+  -- if $string_compare_values(S, poperand_left, S.RESULT, z) = ((S_read, pvalue_left, pvalue_right))
+  -- if $string_compare_selection(S_read, pvalue_left, pvalue_right) =/= eps
+def $string_compare_pending(S) = false -- otherwise
+
+dec $string_compare_opposing(bool, poperand, poperand) : poperand
+def $string_compare_opposing(true, poperand_left, poperand_right) = poperand_right
+def $string_compare_opposing(false, poperand_left, poperand_right) = poperand_left
+dec $string_compare_other(pstringcompare) : poperand
+def $string_compare_other(pstringcompare) = $string_compare_opposing(pstringcompare.OBJECTLEFT, pstringcompare.LEFT, pstringcompare.RIGHT)
+dec $string_compare_pointer(pbinding*, nat*, poperand) : pcomparepointer?
+def $string_compare_pointer(pbinding*, nat*, KNOWN pvalue) = (COMPARE_COPY pvalue)
+  -- if $string_bytes(pvalue) =/= eps
+def $string_compare_pointer(pbinding*, nat*, REFERENCE n) = (COMPARE_CELL n)
+def $string_compare_pointer(pbinding*, nat_reference*, VARIABLE ptbytes z) = (COMPARE_CELL n)
+  -- if $lookup(pbinding*, ptbytes) = (n)
+  -- if n <- nat_reference*
+def $string_compare_pointer(pbinding*, nat_reference*, VARIABLE ptbytes z) = (COMPARE_CV ptbytes)
+  -- if $lookup(pbinding*, ptbytes) = (n)
+  -- if ~(n <- nat_reference*)
+def $string_compare_pointer(pbinding*, nat*, poperand) = eps -- otherwise
+
+dec $string_compare_pointer_value(pstate, pcomparepointer) : pvalue?
+def $string_compare_pointer_value(S, COMPARE_COPY pvalue) = (pvalue)
+def $string_compare_pointer_value(S, COMPARE_CV ptbytes) = (pvalue)
+  -- if ~$environment_blocked(S, ptbytes)
+  -- if $lookup(S.ENV, ptbytes) = (n)
+  -- if $(n < |S.STORE|)
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if (HCELL n) <- S.ALLOCATIONS
+def $string_compare_pointer_value(S, COMPARE_CELL n) = (pvalue)
+  -- if $(n < |S.STORE|)
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if (HCELL n) <- S.ALLOCATIONS
+  -- if $($heap_owners($heap_prune($heap_graph(S)), HCELL n) > 0)
+def $string_compare_pointer_value(S, pcomparepointer) = eps -- otherwise
+
+;; The source determines each operand's location class. An evaluated temporary
+;; remains its own value; this check does not reconstruct its mutable history.
+dec $string_compare_operand(pstate, porigin, poperand) : bool
+def $string_compare_operand(S, porigin, VARIABLE ptbytes z) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprVariable phpType32 metadata)
+  -- if $cv_name(phpType32) = (ptbytes)
+  -- if ~$direct_this(phpType32)
+  -- if ~$ppglobals_base(NExprVariable phpType32 metadata)
+  -- if z = $variable_line(phpType32, metadata)
+def $string_compare_operand(S, porigin, KNOWN pvalue) = true
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $reference_cv(expression) = eps
+  -- if $compiled_read(S, porigin) = eps
+def $string_compare_operand(S, porigin, KNOWN pvalue) = true
+  -- if $compiled_read(S, porigin) = (pvalue_compiled)
+  -- if pvalue = $compiled_string_value(S, porigin, pvalue_compiled)
+def $string_compare_operand(S, porigin, REFERENCE n) = true
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $reference_cv(expression) = eps
+  -- if $compiled_read(S, porigin) = eps
+  -- if $call_reference_operand_valid(S, REFERENCE n)
+def $string_compare_operand(S, porigin, poperand) = false -- otherwise
+
+dec $string_compare_source(pstate, pstringcompare) : bool
+def $string_compare_source(S, pstringcompare) = true
+  -- if pstringcompare.CONSUMER = BINARY_RIGHT pstringcompare.OP pstringcompare.LEFT pstringcompare.LINE
+  -- if $origin_node(S.SOURCES, pstringcompare.SITE) = (pcnode)
+  -- if $string_compare_operator(pcnode) = (pstringcompare.OP)
+  -- if $origin_child((pstringcompare.SITE), [PCFIELD 1]) = (porigin_right)
+  -- if $origin_node(S.SOURCES, porigin_right) = (expression_right)
+  -- if pstringcompare.LINE = $runtime_line(S[.ORIGIN = (pstringcompare.SITE)], [PCFIELD 1], expression_right)
+  -- if pstringcompare.CASTSITE = pstringcompare.SITE
+  -- if $origin_child((pstringcompare.SITE), [PCFIELD 0]) = (porigin_left)
+  -- if $string_compare_operand(S, porigin_left, pstringcompare.LEFT)
+  -- if $string_compare_operand(S, porigin_right, pstringcompare.RIGHT)
+def $string_compare_source(S, pstringcompare) = true
+  -- if pstringcompare.OP = EQUAL
+  -- if pstringcompare.CONSUMER = SWITCH_COMPARE statement pstringcompare.SITE pstringcompare.LEFT n pstringcompare.LINE
+  -- if $switch_compare_valid(S, statement, pstringcompare.SITE, n, pstringcompare.LINE)
+  -- if $switch_bool_mode(S, pstringcompare.SITE) = eps
+  -- if $origin_child((pstringcompare.SITE), [PCFIELD 1, PCINDEX n, PCFIELD 0]) = (pstringcompare.CASTSITE)
+  -- if $origin_child((pstringcompare.SITE), [PCFIELD 0]) = (porigin_left)
+  -- if $string_compare_operand(S, porigin_left, pstringcompare.LEFT)
+  -- if $string_compare_operand(S, pstringcompare.CASTSITE, pstringcompare.RIGHT)
+def $string_compare_source(S, pstringcompare) = false -- otherwise
+
+dec $string_compare_image(pstringcompare) : bool
+dec $string_compare_valid(pstate, pstringcompare) : bool
+def $string_compare_valid(S, pstringcompare) = true
+  -- if $string_compare_source(S, pstringcompare)
+  -- if S.CURRENT = pstringcompare.CALLER
+  -- if |S.FRAMES| = pstringcompare.OWNER
+  -- if $string_compare_image(pstringcompare)
+  -- if $string_compare_pointer(pstringcompare.ENV, pstringcompare.REFS, $string_compare_other(pstringcompare)) = (pstringcompare.POINTER)
+  -- if $(pstringcompare.RECEIVER < |S.OBJECTS|)
+  -- if $heap_subset($operand_nodes(pstringcompare.LEFT) ++ $operand_nodes(pstringcompare.RIGHT) ++ $base_nodes(pstringcompare.INPUTBASE), S.ALLOCATIONS)
+def $string_compare_valid(S, pstringcompare) = false -- otherwise
+
+def $string_compare_image(pstringcompare) = true
+  -- if pstringcompare.OBJECTLEFT
+  -- if pstringcompare.LEFTVALUE = POBJECT pstringcompare.RECEIVER
+  -- if $string_bytes(pstringcompare.RIGHTVALUE) =/= eps
+def $string_compare_image(pstringcompare) = true
+  -- if ~pstringcompare.OBJECTLEFT
+  -- if pstringcompare.RIGHTVALUE = POBJECT pstringcompare.RECEIVER
+  -- if $string_bytes(pstringcompare.LEFTVALUE) =/= eps
+def $string_compare_image(pstringcompare) = false -- otherwise
+
+dec $string_compare_suffix(ptask*, pstringcompare) : bool
+def $string_compare_suffix((STRING_COMPARE_RESULT pstringcompare) :: ptask_tail*, pstringcompare) = (ptask_tail* = pstringcompare.TAIL)
+def $string_compare_suffix(ptask :: ptask_tail*, pstringcompare) = $string_compare_suffix(ptask_tail*, pstringcompare)
+  -- if ptask =/= STRING_COMPARE_RESULT pstringcompare
+def $string_compare_suffix(eps, pstringcompare) = false
+def $task_nodes(STRING_COMPARE_RESULT pstringcompare) = $operand_nodes(pstringcompare.LEFT) ++ $operand_nodes(pstringcompare.RIGHT) ++ $base_nodes(pstringcompare.INPUTBASE)
+def $call_task_valid(S, STRING_COMPARE_RESULT pstringcompare) = ($string_compare_valid(S, pstringcompare) /\ S.ORIGIN = (pstringcompare.CASTSITE) /\ $string_compare_suffix(S.TODO, pstringcompare))
+
+def $stringify_source(S, porigin, z, STRING_COMPARE_RESULT pstringcompare) = ($string_compare_valid(S, pstringcompare) /\ porigin = pstringcompare.CASTSITE /\ z = pstringcompare.LINE)
+def $stringify_source_consumer(STRING_COMPARE_RESULT pstringcompare) = true
+def $stringify_consumer_tail_valid(S, porigin, z, STRING_COMPARE_RESULT pstringcompare, ptask_tail*) = ($stringify_source(S, porigin, z, STRING_COMPARE_RESULT pstringcompare) /\ ptask_tail* = pstringcompare.TAIL)
+def $stringify_consumer_receiver_valid(S, n, STRING_COMPARE_RESULT pstringcompare) = (n = pstringcompare.RECEIVER)
+
+dec $string_compare_frame(ptask*) : bool
+def $string_compare_frame((STRINGIFY_RESULT n porigin z) :: (STRING_COMPARE_RESULT pstringcompare) :: ptask_tail*) = (n = pstringcompare.RECEIVER /\ porigin = pstringcompare.CASTSITE /\ z = pstringcompare.LINE /\ ptask_tail* = pstringcompare.TAIL)
+def $string_compare_frame(ptask*) = false -- otherwise
+def $parameter_string_frame_scope(S, pframe, pframe_tail*) = $constant_frame_scope(S, pframe, pframe_tail*)
+  -- if $string_compare_frame(pframe.TODO)
+
+;; This source-only predicate is used to classify active implicit call contexts.
+def $comparison_string_site(S, porigin, z) = true
+  -- if $origin_node(S.SOURCES, porigin) = (pcnode)
+  -- if $string_compare_operator(pcnode) =/= eps
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $origin_node(S.SOURCES, porigin_right) = (expression_right)
+  -- if z = $runtime_line(S[.ORIGIN = (porigin)], [PCFIELD 1], expression_right)
+def $comparison_string_site(S, PORIGIN n_unit pcpath, z) = true
+  -- if $(|pcpath| >= 3)
+  -- if n_parent = $nabs($(|pcpath| - 3))
+  -- if pcpath[n_parent:3] = [PCFIELD 1, PCINDEX n_case, PCFIELD 0]
+  -- if porigin_switch = PORIGIN n_unit pcpath[0:n_parent]
+  -- if $origin_node(S.SOURCES, porigin_switch) = (statement)
+  -- if $switch_compare_valid(S, statement, porigin_switch, n_case, z)
+  -- if $switch_bool_mode(S, porigin_switch) = eps
+def $comparison_string_site(S, porigin, z) = false -- otherwise
+
+dec $string_compare_begin(pstate, pstate, ptask, porigin, porigin, pbin, poperand, poperand, pvalue, pvalue, nat, bool, int, ptask*) : pstate
+def $string_compare_begin(S_before, S, ptask_consumer, porigin, porigin_cast, pbin, poperand_left, poperand_right, pvalue_left, pvalue_right, n, b_left, z, ptask_tail*) = $user_string_begin(S[.HELD = S_before.HELD][.ORIGIN = (porigin_cast)], n, porigin_cast, z, STRING_COMPARE_RESULT pstringcompare, ptask_tail*)
+  -- if poperand_other = $string_compare_opposing(b_left, poperand_left, poperand_right)
+  -- if $string_compare_pointer(S_before.ENV, S_before.REFCELLS, poperand_other) = (pcomparepointer)
+  -- if n_owner = |S_before.FRAMES|
+  -- if pstringcompare = {SITE porigin, CASTSITE porigin_cast, OP pbin, LINE z, LEFT poperand_left, RIGHT poperand_right, LEFTVALUE pvalue_left, RIGHTVALUE pvalue_right, INPUTBASE S_before.BASE, RECEIVER n, OBJECTLEFT b_left, POINTER pcomparepointer, ENV S_before.ENV, REFS S_before.REFCELLS, CALLER S_before.CURRENT, OWNER n_owner, CONSUMER ptask_consumer, TAIL ptask_tail*}
+  -- if $string_compare_valid(S, pstringcompare)
+def $string_compare_begin(S_before, S, ptask, porigin, porigin_cast, pbin, poperand_left, poperand_right, pvalue_left, pvalue_right, n, b_left, z, ptask_tail*) = S[.HELD = S_before.HELD][.TODO = eps][.COMPLETION = UNSUPPORTED "Stringable comparison operand or source"] -- otherwise
+
+rule PhpStep/string-compare-binary: S ~> $string_compare_begin(S, S_read, BINARY_RIGHT pbin poperand_left z, porigin, porigin, pbin, poperand_left, S.RESULT, pvalue_left, pvalue_right, n, b_left, z, ptask_tail*)
+  -- if S.TODO = (BINARY_RIGHT pbin poperand_left z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if ~$gc_retired_binary(S, pbin, poperand_left)
+  -- if $comparison_operator(pbin)
+  -- if $string_compare_values(S, poperand_left, S.RESULT, z) = ((S_read, pvalue_left, pvalue_right))
+  -- if $string_compare_selection(S_read, pvalue_left, pvalue_right) = ((n, b_left))
+rule PhpStep/string-compare-switch: S ~> $string_compare_begin(S, S_read, SWITCH_COMPARE statement porigin poperand_left n_case z, porigin, porigin_cast, EQUAL, poperand_left, S.RESULT, pvalue_left, pvalue_right, n, b_left, z, ptask_tail*)
+  -- if S.TODO = (SWITCH_COMPARE statement porigin poperand_left n_case z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $switch_compare_valid(S, statement, porigin, n_case, z)
+  -- if $switch_bool_mode(S, porigin) = eps
+  -- if $origin_child((porigin), [PCFIELD 1, PCINDEX n_case, PCFIELD 0]) = (porigin_cast)
+  -- if $string_compare_values(S, poperand_left, S.RESULT, z) = ((S_read, pvalue_left, pvalue_right))
+  -- if $string_compare_selection(S_read, pvalue_left, pvalue_right) = ((n, b_left))
+
+dec $string_compare_finish(pstate, pstringcompare, pvalue, pvalue) : pstate
+def $string_compare_finish(S, pstringcompare, pvalue_left, pvalue_right) = $binary_apply(S[.TODO = pstringcompare.TAIL][.ORIGIN = (pstringcompare.SITE)][.BASE = BASE_VALUE (KNOWN PNULL)], pstringcompare.OP, pvalue_left, pvalue_right, pstringcompare.LINE)
+  -- if pstringcompare.CONSUMER = BINARY_RIGHT pstringcompare.OP pstringcompare.LEFT pstringcompare.LINE
+def $string_compare_finish(S, pstringcompare, pvalue_left, pvalue_right) = $switch_compare_result(S, S[.TODO = pstringcompare.TAIL][.ORIGIN = (pstringcompare.SITE)][.BASE = BASE_VALUE (KNOWN PNULL)], statement, pstringcompare.SITE, pstringcompare.LEFT, n, pstringcompare.LINE, pvalue_left, pvalue_right)
+  -- if pstringcompare.CONSUMER = SWITCH_COMPARE statement pstringcompare.SITE pstringcompare.LEFT n pstringcompare.LINE
+
+dec $string_compare_return(pstate, pstringcompare, pvalue, pvalue) : pstate
+def $string_compare_return(S, pstringcompare, pvalue_text, pvalue_other) = $string_compare_finish(S, pstringcompare, pvalue_text, pvalue_other)
+  -- if pstringcompare.OBJECTLEFT
+  -- if $type_bytes(pvalue_other) =/= $ptascii("object")
+def $string_compare_return(S, pstringcompare, pvalue_text, pvalue_other) = $string_compare_finish(S, pstringcompare, pvalue_other, pvalue_text)
+  -- if ~pstringcompare.OBJECTLEFT
+  -- if $type_bytes(pvalue_other) =/= $ptascii("object")
+def $string_compare_return(S, pstringcompare, pvalue_text, pvalue_other) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "Stringable comparison changed object operand"] -- otherwise
+rule PhpStep/string-compare-return: S ~> $string_compare_return(S, pstringcompare, pvalue_text, pvalue_other)
+  -- if S.TODO = (STRING_COMPARE_RESULT pstringcompare) :: ptask_tail*
+  -- if $call_task_valid(S, STRING_COMPARE_RESULT pstringcompare)
+  -- if S.RESULT = KNOWN pvalue_text
+  -- if $string_bytes(pvalue_text) =/= eps
+  -- if $string_compare_pointer_value(S, pstringcompare.POINTER) = (pvalue_other)
+rule PhpStep/string-compare-pointer-expired: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "Stringable comparison expired operand"]
+  -- if S.TODO = (STRING_COMPARE_RESULT pstringcompare) :: ptask_tail*
+  -- if $call_task_valid(S, STRING_COMPARE_RESULT pstringcompare)
+  -- if $string_compare_pointer_value(S, pstringcompare.POINTER) = eps
+rule PhpStep/string-compare-invalid: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid Stringable comparison continuation"]
+  -- if S.TODO = (STRING_COMPARE_RESULT pstringcompare) :: ptask_tail*
+  -- if ~$call_task_valid(S, STRING_COMPARE_RESULT pstringcompare)

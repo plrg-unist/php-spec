@@ -201,8 +201,28 @@ slots start uninitialized, untyped slots null; source backing and active getter
 bypass remain false. Writes update physical slots while getter results stay
 independent. Distinct stored S and retained returned R use the existing cleanup;
 [ordinary-storage review](../../coverage/semantics/ordinary-parent-unbacked-get-hook-review.json).
-Repeated hooked redeclarations over this ordinary backing and plain declarations
-inheriting hooks remain required.
+Repeated plain by-value, no-initializer/no-backing-read getter declarations now
+carry the same ordinary anchor through the existing bounded backing walk. Actual
+parent layout selects the declaring getter across intervening classes; typed
+physical slots start uninitialized and untyped slots null. Latest private/called
+scope and getter results remain independent of raw writes, with distinct stored S
+and retained R cleanup;
+[repeated ordinary-storage review](../../coverage/semantics/repeated-ordinary-unbacked-get-hook-review.json).
+A typed, source-unbacked getter directly backed by an ordinary parent now rejects
+a source-unbacked/no-initializer child that omits its type. The existing
+missing-return check accepts the positive ordinary parent proof before child
+publication; the error names the declaring getter at the child hook line. Reverse
+addition retains the property class-line error, and untyped null-slot reads/writes
+remain controls;
+[ordinary-backing type-presence review](../../coverage/semantics/ordinary-backed-parent-unbacked-get-hook-type-presence-review.json).
+A genuinely own-body-backed child omitting its type now receives the same
+getter-declaration error before the invariant property check. The sixth
+missing-return arm accepts the authenticated ordinary parent basis; the rejected
+child's own descriptor and backing body remain required. Reverse addition keeps
+the class-line error. Untyped controls retain the child slot 200→300 and getter
+213→313; a real entered getter confirms active backing bypass.
+[Own-backed type-presence review](../../coverage/semantics/ordinary-backed-parent-backed-get-hook-type-presence-review.json).
+Plain declarations inheriting hooks and wider type-presence combinations remain required.
 Backed-parent inheritance retains invariant types; broader type equivalence and
 wider hook variance remain required.
 Hooked object iteration is explicit Unsupported rather than a raw storage view;

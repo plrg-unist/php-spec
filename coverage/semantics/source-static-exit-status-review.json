@@ -1,0 +1,195 @@
+{
+  "milestone": "caught source-static destructor overrides and sticky request exit status",
+  "status": "integrated; private source/state cuts retain their tested revisions",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "implementations": {
+    "owner_private_commit": "1e3067c606935decf3b110a98c4e946bd863f83a",
+    "owner_tested_base": "663f0ef446c6a2de5d207d38b97049bf4fd5cbd5",
+    "owner_tested_module_count": 380,
+    "owner_tested_semantic_diff_sha256": "f69d7560b0afba865fcb68ac8ae54559daa4b9cb4e1c421a083f6a06b1b05d0c",
+    "owner_rebased_over_output391": "e69fb106e835a09dbbd2cbdaa7eb9d31c552d51d",
+    "status_tested_base": "e69fb106e835a09dbbd2cbdaa7eb9d31c552d51d",
+    "status_tested_module_count": 381,
+    "status_tested_semantic_diff_sha256": "36cb774140a8e95b91ff9c86acef2b7e40579903d47900bbb904c7c56478cfa7",
+    "status_private_commit": "3d8014372fcb0ef18969b62ba8ffd964cc53ce1b",
+    "status_semantic_modules": [
+      "30-storage",
+      "40-control",
+      "84-call-integrity",
+      "148-core-intrinsics"
+    ],
+    "owner_semantic_modules": [
+      "148-core-intrinsics",
+      "270-eager-destructors",
+      "388-source-statics"
+    ],
+    "observer": "bin/php-semantics",
+    "maintained_protocol": "tests/semantics/source_static_exit_status_protocol.py"
+  },
+  "behavior": [
+    "Exact authenticated source-end ownership remains user execution after exit clears ORIGIN and after its destructor replacement enters THROW_SEARCH.",
+    "Destructor boundary validation uses the exact saved DESTRUCTOR_RESULT frame scope without recursively validating that result.",
+    "Public exit-tail checks retain actual source/Throwable and copied operation certificates after prior public checks consume their borrowed registries. No general throw prefix is admitted; the old no-pending certificate stays strict.",
+    "Real pending operation finish removes only the superseded matching EXIT marker, retaining source END, caller tail and pending Throwable through remaining compiler-order decrements and Previous chaining.",
+    "Request EXITSTATUS is signed32/initial0, separate from control completion. Integer/default calls overwrite it, strings preserve it, and saved frames/operations never restore it.",
+    "NORMAL and EXITED CLI observations use its low byte. Fatal-error255 observation retains precedence. Output391 fields, routing and driver guards remain intact."
+  ],
+  "baseline_findings": {
+    "original": "native exit7 B|D|TypeError|null|A|/empty stderr; original model uncaught php_error255 B|D|.",
+    "diagnostic": "Genuine restored USER=false destructor result with an authentic live source end/catch; public false, null-C terminal and bailout true.",
+    "owner_observation": "After owner repair, model NORMAL0 has exact catch bytes/empty stderr, isolating native7 mismatch; full agreement credit0."
+  },
+  "accepted_cuts": {
+    "owner_sources": {
+      "author_reset1": "owner_reset_source",
+      "independent_two_slot2": "independent_owner2",
+      "full_agreements": 3
+    },
+    "owner_fronts": {
+      "report": "owner_state325",
+      "groups": [
+        "eval-owner161",
+        "file-owner164"
+      ],
+      "premises": 325,
+      "raw_php_steps": 8,
+      "direct_production_table_drops": 4
+    },
+    "status_sources": {
+      "affected_original1": "status_original",
+      "independent6": "independent_status6",
+      "full_agreements": 7,
+      "independent_cases": [
+        "file-string-after-catch",
+        "eval-reset-default",
+        "eval-negative-retained",
+        "eval-later-uncaught",
+        "eval-reset-inside-destructor-0",
+        "eval-reset-inside-destructor-13"
+      ]
+    },
+    "status_fronts": {
+      "reports": [
+        "corrected_status66",
+        "empty33_nested51"
+      ],
+      "groups": [
+        "eval-status66",
+        "eval-empty33",
+        "nested-status51"
+      ],
+      "premises": 150,
+      "raw_php_steps": 4
+    },
+    "totals": {
+      "unique_full_cli_sources": 10,
+      "reached_fronts": 5,
+      "premises": 475,
+      "raw_php_steps": 12,
+      "direct_production_table_drops": 4
+    },
+    "empty_string": "Native v15 original supplies source-derived empty33 production/public evidence, with no extra CLI source credit."
+  },
+  "preserved_zero_credit": [
+    "original_baseline, owner_diagnostic and owner_observation retain zero full source agreement credit.",
+    "failed_status65 remains FAIL/stable/zero runtime assertions: EXIT_INVOKE still had expression sequencing before END. Corrected only its fixture tail binding; empty/nested originals were unrun in that failed packet.",
+    "Unused independent status-model v1/v2 wrappers remain preparation-only; six selected v3 originals earned credit. Unselected native v12/v14 observations receive no model credit."
+  ],
+  "operation_contract": {
+    "source_command": "bin/php-semantics ORIGINAL --steps 100000 --timeout 60 [--file-snapshot FINITE_V2]",
+    "state_command": "numeric_runner.exe --sl MODULES... IMMUTABLE_PROTOCOL",
+    "source_wrapper_seconds": 90,
+    "state_wrapper_seconds": 90,
+    "serial_stop_first": true,
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "other": "inherited"
+    },
+    "profile": "tests/semantics/profile.json; exact CLI settings are retained in the linked source reports",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "input_stability": "Accepted reports bind full relevant module/schema/frontend/adapter/CLI/profile/original/fixture inputs before and after. Commands, process exits, complete stdout/stderr and immutable checked originals are adjacent to each report."
+  },
+  "source_authority": [
+    "vendor/php-src/Zend/zend_builtin_functions.c:ZEND_FUNCTION(exit) and EG(exit_status)",
+    "vendor/php-src/Zend/zend_vm_def.h:zend_leave_helper",
+    "vendor/php-src/Zend/zend_opcode.c:zend_destroy_static_vars"
+  ],
+  "reports": {
+    "original_baseline": {
+      "path": ".tools/dynamic-source-statics-sticky-baseline-06/report.json",
+      "sha256": "33f73dd92c01f05454a5a7d205df87d9a2b4e0951e913e77e8b90830eb053e05"
+    },
+    "owner_diagnostic": {
+      "path": ".tools/dynamic-source-statics-sticky-diagnosis-07/run-report.json",
+      "sha256": "fe891be9e70bc7ff6d883d8993651c7d94bf7fc7bec69e9c315d8e081a4c4b2c"
+    },
+    "owner_observation": {
+      "path": ".tools/dynamic-source-statics-sticky-owner-observation-08/report.json",
+      "sha256": "5a21e8aab63405029598603a83c29531fcbab5777b323525094720e99c64b855"
+    },
+    "owner_reset_source": {
+      "path": ".tools/dynamic-source-statics-sticky-reset-model-09/report.json",
+      "sha256": "84fbb3de5d20098695603cff4d0782c356abc6a5c36e2367a3fd52382ad884cb"
+    },
+    "independent_owner2": {
+      "path": ".tools/dynamic-review-02/exit-owner-model-v1/report.json",
+      "sha256": "e58d1ad648ef1fd4761d4d34690863d755697a5aaa3ff03d695cf39c67f8c872"
+    },
+    "owner_state325": {
+      "path": ".tools/dynamic-source-statics-sticky-owner-state-01/check-report.json",
+      "sha256": "4528966944ae9f61a0fdac269de67440910d21b41dadeeec6b493781e23cc041"
+    },
+    "status_original": {
+      "path": ".tools/dynamic-source-statics-sticky-status-model-10/report.json",
+      "sha256": "e2750f810031f8f87c3e70d37a92657880786016a7a396bd2758d9f9e3f93bff"
+    },
+    "independent_status6": {
+      "path": ".tools/dynamic-review-02/exit-status-model-v3/report.json",
+      "sha256": "4de2aba576f694f4620b98501c80ce8a2291f2efb15b02fe0e43457710f31a57"
+    },
+    "failed_status65": {
+      "path": ".tools/dynamic-source-statics-sticky-status-state-02/check-report.json",
+      "sha256": "283dba94793d4c518079767ffc93fc7b0e9bb8c7703b70f2432a37fdbfc545ba"
+    },
+    "corrected_status66": {
+      "path": ".tools/dynamic-source-statics-sticky-status-state-03/check-2-report.json",
+      "sha256": "421742acaf0c0a9bec5c254db544d2cae4536eeb3a3a8d6f47ac6c1fe3955544"
+    },
+    "empty33_nested51": {
+      "path": ".tools/dynamic-source-statics-sticky-status-state-02/check-2-report.json",
+      "sha256": "c499000f692a1594e0683ae50079986349ca2a0a41ceb41c2e806f051af5bc52"
+    },
+    "native_status8": {
+      "path": ".tools/dynamic-review-02/static-native-v12/report.json",
+      "sha256": "844e7aaf0dde623073edf49a200fce138017404b7d9839e90889006736f43650"
+    },
+    "native_nested2": {
+      "path": ".tools/dynamic-review-02/static-native-v13/report.json",
+      "sha256": "8eecaa2502f6f6d3475e5e27bbaf4f4cc519613ae7e19ed8fc2206c0515c052b"
+    },
+    "native_remaining3": {
+      "path": ".tools/dynamic-review-02/static-native-v14/report.json",
+      "sha256": "b64a72b243cabdb1838d0f2bb3efd1d26cfe6053cba7257ac7e6709a907b7b42"
+    },
+    "native_empty1": {
+      "path": ".tools/dynamic-review-02/static-native-v15/report.json",
+      "sha256": "35a17182ca28e67c71fb8200ddf5fa2df4f3606cc98bc43ef515593363ebbb4e"
+    }
+  },
+  "remaining": [
+    "Hard-fatal source-table retention/cleanup and shutdown roots remain required.",
+    "Wider destructor/return, output-handler and lifecycle interactions remain partial; no static/storage/exit family or complete-core closure.",
+    "No intentional engine divergence is introduced by this scoped milestone."
+  ],
+  "recovery": "Raw originals/reports/commands/streams remain outside Git in canonical .tools paths. Recreate the tested checkout and provision project-local dependencies from pinned source; reports retain original revisions/module/binary/profile hashes. Owner-private branch dynamic/source-static-sticky-owner-06 preserves its original cut; current branch dynamic/source-static-sticky-exit-06 carries output391 composition and status implementation. No copied-build/portable claim is renewed.",
+  "actual_composition": {
+    "parent": "f59b1c76fb6e9690cf14870b0d2a355c72a64369",
+    "joined": "df505395fff7940a28de9c184bbfae756414d8d2",
+    "module_count": 381,
+    "review": "Independent pointwise FF clearance: eight runtime/observer/protocol files exactly match private b7fdfdfe9; parent382/386/391/schema/manifest/adapter/Makefile are preserved.",
+    "evidence": "No new actor or renewed numeric/source/state credit. Parent additions select hooks/WeakMap, absent from these source shapes; output391 was already included in the tested status parent."
+  }
+}

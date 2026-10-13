@@ -10,8 +10,6 @@ SHOW = '''function show($v) {
 }
 '''
 CASES = {}
-BOUNDARIES = {name: 'increment/decrement restoration requires destructor-before-commit continuation'
-              for name in ('destructor-bool-return', 'destructor-bool-throw', 'destructor-string-return')}
 
 for mode, expression in MODES.items():
     values = {'bool-true': 'true', 'bool-false': 'false', 'string': "'Az9'", 'empty': "''"}

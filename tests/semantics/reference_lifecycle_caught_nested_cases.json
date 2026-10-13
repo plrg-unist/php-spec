@@ -1,0 +1,16 @@
+[
+  {
+    "id": "destructor-y-replay",
+    "source": "<?php\n$x=\"old\";$w=\"extra\";$z=\"mid\";$y=\"new\";$n=0;\nfunction ping(){echo \"P;\";}class SelectedY{public function __destruct(){if($GLOBALS[\"n\"]===2){echo \"Q;\";try{$inner =& f();$inner=\"probe\";}catch(TypeError $nested){echo \"C:\",$nested->getMessage(),\";\";}echo \"T;\";}echo \"D;\";}}\nfunction &f():string{global $x,$w,$z,$y,$n;try{return $x;}finally{echo \"O;\";ping();try{return $w;}finally{echo \"W;\";ping();try{return $z;}finally{echo \"M;\";ping();try{return $y;}finally{++$n;echo \"I\",$n,\";\";ping();if($n===1){$y=new SelectedY;}else{if($n===3){throw new TypeError(\"nested\");}$y=\"fixed\";}}}}}}\ntry{$r=&f();echo \"rnull=\",(int)($r===null),\";\";$r=\"changed\";}catch(TypeError $e){echo \"R:\",$e->getMessage(),\";\";}\necho \"x=\",$x,\";w=\",$w,\";z=\",$z,\";n=\",$n,\";yfixed=\",(int)($y===\"fixed\"),\";\";\n",
+    "stdout": "O;P;W;P;M;P;I1;P;I2;P;Q;O;P;W;P;M;P;I3;P;C:nested;T;D;R:f(): Return value must be of type string, SelectedY returned;x=old;w=extra;z=mid;n=3;yfixed=1;",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "id": "destructor-y-selected",
+    "source": "<?php\n$x=\"old\";$w=\"extra\";$z=\"mid\";$y=\"new\";$n=1;\nfunction ping(){echo \"P;\";}class SelectedY{public function __destruct(){if($GLOBALS[\"n\"]===2){echo \"Q;\";try{$inner =& f();$inner=\"probe\";}catch(TypeError $nested){echo \"C:\",$nested->getMessage(),\";\";}echo \"T;\";}echo \"D;\";}}\nfunction &f():string{global $x,$w,$z,$y,$n;try{return $x;}finally{echo \"O;\";ping();try{return $w;}finally{echo \"W;\";ping();try{return $z;}finally{echo \"M;\";ping();try{return $y;}finally{++$n;echo \"I\",$n,\";\";ping();if($n===1){$y=new SelectedY;}else{if($n===3){throw new TypeError(\"nested\");}$y=\"fixed\";}}}}}}\ntry{$r=&f();echo \"rnull=\",(int)($r===null),\";\";$r=\"changed\";}catch(TypeError $e){echo \"R:\",$e->getMessage(),\";\";}\necho \"x=\",$x,\";w=\",$w,\";z=\",$z,\";n=\",$n,\";yfixed=\",(int)($y===\"fixed\"),\";\";\n",
+    "stdout": "O;P;W;P;M;P;I2;P;rnull=0;x=old;w=extra;z=mid;n=2;yfixed=0;",
+    "stderr": "",
+    "exit": 0
+  }
+]

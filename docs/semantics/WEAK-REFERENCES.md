@@ -168,3 +168,24 @@ class and object-store handle. Presence/isset, reference/compound reads, other k
 types, methods/iteration, wider entry shapes, mutation during freeing and ephemeron
 collection remain required. Countable stays nominal-only; count execution remains
 excluded/Unsupported per CORE.
+
+## Explicit entry unset
+
+Module386 authenticates the actual `UNSET_ARRAY` task, source access certificate
+and current map/key operands. A matching entry clears before value release; the
+existing eager edge comparison transfers its owner into a real VALUE job and
+UNSET operation. Missing live object keys leave the entry unchanged. A separate
+value CV survives matching removal and delays the destructor.
+
+The normal 62-byte, throwing 69-byte and held/missing 87-byte originals agree at
+`0c01e5f`. Four reached groups pass 136/100/94/88 checks, totaling 418. The pending
+throw cut follows actual Value cleanup and transfers the same Exception owner
+from operation exit to THROW_SEARCH; originals supply the complete endings.
+The original message assertion expected a plain string and remains zero; the
+corrected case checks bytes while preserving string-carrier identity.
+
+The engine basis is `zend_weakmap_unset_dimension` and `zend_weakref_unregister`
+in `Zend/zend_weakrefs.c`: absent object keys are no-ops; matching removal releases
+the stored value while the key remains independent. Nonobject keys, wider unset
+contexts, reference/method/iteration and ephemeron protocols remain required;
+mutation during freeing stays Unsupported. Earlier evidence retains its cuts.

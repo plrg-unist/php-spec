@@ -51,6 +51,7 @@ def $isset_dimension_value(S, pvalue_base, pvalue, b, z) = S[.RESULT = KNOWN (PB
 
 dec $isset_simple(pstate, pbase, bool, int) : pstate
 dec $isset_base(pstate, pbase, bool, int) : pstate
+dec $update_released_isset(pstate, pbase, bool, int) : bool
 def $isset_base(S, BASE_DIM pbase poperand z_key, b, z) = S_read
   -- if S_read = $quiet_base(S, pbase, z_key)
   -- if S_read.COMPLETION =/= NORMAL
@@ -67,9 +68,11 @@ def $isset_base(S, BASE_DIM pbase poperand z_key, b, z) = $isset_dimension_value
   -- if S_key.COMPLETION = NORMAL
   -- if S_key.RESULT = KNOWN pvalue
 def $isset_simple(S, pbase, b, z) = S_read
+  -- if ~$update_released_isset(S, pbase, b, z)
   -- if S_read = $quiet_base(S, pbase, z)
   -- if S_read.COMPLETION =/= NORMAL
 def $isset_simple(S, pbase, b, z) = $isset_value(S_read, pvalue, b, z)
+  -- if ~$update_released_isset(S, pbase, b, z)
   -- if S_read = $quiet_base(S, pbase, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue

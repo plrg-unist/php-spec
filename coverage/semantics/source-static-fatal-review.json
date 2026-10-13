@@ -1,0 +1,171 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "status": "integrated; full core remains partial",
+  "implementation_revision": "a31b12ffc4af4591b63c0a140e8b70ec9c26d736",
+  "base_revision": "3506800143d4573d4c721139e6ed31a6caa3d1c3",
+  "module_count": 381,
+  "implementation": [
+    "spec/semantics/207-error-handler-runtime.watsup",
+    "spec/semantics/270-eager-destructors.watsup"
+  ],
+  "protocol": {
+    "path": "tests/semantics/source_static_fatal_protocol.py",
+    "sha256": "9d855074fe71374ac28807a8bd0ac3369b639627d6c413982f2c166ec46d988a"
+  },
+  "design": [
+    "The unchanged baseline already retained the static Box and WeakReference through shutdown and skipped its destructor. Its actual mismatch was the fatal filename; source execution contexts also remained orphaned under public validation.",
+    "USERFATAL captures its actual producer ORIGIN. Exact live source END authority activates the existing fatal snapshot/retirement even when transient frame/value roots are empty; STATICS and the existing called-all policy are preserved.",
+    "Fatal history rechecks the original readiness authority and captured producer origin. A false-returning handler must retain the actual KNOWN false result; erased/borrowed origin, missing END and substituted true-result records are rejected.",
+    "New shutdown evals allocate fresh units while interrupted static roots remain alive. Existing old-object suppression and new-object destruction are observed policies, not new table or destructor-flag implementations."
+  ],
+  "tested_cuts": [
+    {
+      "semantic_diff_sha256": "5eb6e4acced0a42158157eeb6f32f9c8fc3fb1375c6b3484323bc39e2fa36035",
+      "sources": 1,
+      "scope": "Affected original exact php_error255, B|alive| and full native stderr after origin/retirement correction."
+    },
+    {
+      "semantic_diff_sha256": "ece945f233d7b66429937ddc6c30b5e6e5df2d77349a716c43ead1ed30b407bc",
+      "sources": 6,
+      "state_groups": 2,
+      "premises": 210,
+      "scope": "Independent reentry/nested/caller5 plus handler-false1; eval87 and file-shutdown123 reject origin/END forgeries and retain static roots through real cleanup and shutdown parser resumes."
+    },
+    {
+      "semantic_diff_sha256": "295d5416ed8a7abaca8fce2354ccf72fb267df15572c8ae98806785c28ded80c",
+      "state_groups": 1,
+      "premises": 71,
+      "scope": "Actual handler RESULT/fatal history/public positive and copied true-result rejection; the final condition affects only that captured handler certificate."
+    }
+  ],
+  "counts": {
+    "unique_full_source_agreements": 7,
+    "state_groups": 3,
+    "premises": 281,
+    "isolated_raw_php_steps": 3,
+    "production_fatal_transitions": 3,
+    "shutdown_eval_resumes": 2
+  },
+  "source_cases": [
+    "static-native-v2/eval-fatal-weak",
+    "static-native-v16/eval-fatal-reentry-new",
+    "static-native-v16/file-fatal-reentry-new",
+    "static-native-v16/eval-eval-fatal-nested",
+    "static-native-v16/file-eval-fatal-nested",
+    "static-native-v16/eval-fatal-empty-caller",
+    "static-native-v17/eval-fatal-handler-false"
+  ],
+  "source_contract": "Original bytes, fixed cwd/profile/runtime, checked accepted/program, php_error255, and complete raw stdout/stderr equality. CLI60/process90 serial stop-first; state full381 --sl90. All production continuations and final execution start from genuine pre-producer states, not raw projections.",
+  "compatibility": "The source and state cuts keep their tested revisions. Final readiness/origin checks preserve the genuine direct producer in eval87/file123; the final handler-only KNOWN false check is established by the separate handler71 frontier. No earlier source/state evidence is renewed.",
+  "failures": "Baseline and diagnostics receive zero agreement credit. Failed eval87 and handler71 groups remain failed/zero, with raw reports retained. Diagnostic08 missed PHASE1 because its receiver inspected BUDGET; only fixture selection was corrected. Unused handler preparations preserve the invalid PFALSE premise and its constructor-only correction without runtime credit.",
+  "engine": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "source": "vendor/php-src/main/main.c",
+    "symbol": "php_error_cb",
+    "route": "Sets fatal status, marks existing objects destructed, then zend_bailout bypasses normal temporary-op-array teardown."
+  },
+  "limits": [
+    "Literal E_USER_ERROR direct/default and a false-returning registered handler are the focused producer cuts. Wider runtime/compiler fatal producers and reporting/handler combinations remain required.",
+    "Later request freeing, shutdown exit-status overrides and wider static identity/destructor/return interactions remain partial. No fatal/static/storage/lifecycle family closure is claimed."
+  ],
+  "reports": [
+    {
+      "kind": "baseline",
+      "path": ".tools/dynamic-source-statics-fatal-baseline-07/report.json",
+      "sha256": "046ea845481e0070af1079d8df082ea48388658e3072fa18195b651c52472ccb",
+      "accepted": 0
+    },
+    {
+      "kind": "failed-diagnostic-setup",
+      "path": ".tools/dynamic-source-statics-fatal-diagnosis-08/run-report.json",
+      "sha256": "5757aea3444bf5f6197747e538738419b56a8e32f62b52ce333dbd91eaa576d7",
+      "accepted": 0
+    },
+    {
+      "kind": "producer-shutdown-diagnostic",
+      "path": ".tools/dynamic-source-statics-fatal-diagnosis-09/run-report.json",
+      "sha256": "d228dea44ea758a76da3a6ecd5750c6922c3c378249fc850016aff5fe1a7281b",
+      "accepted": 0
+    },
+    {
+      "kind": "affected-source",
+      "path": ".tools/dynamic-source-statics-fatal-model-10/report.json",
+      "sha256": "c00d351589738a9d34c157cda88e3872774f5035bf72b6b1005d02f2d4e525e5",
+      "accepted": 1
+    },
+    {
+      "kind": "failed-public-origin",
+      "path": ".tools/dynamic-source-statics-fatal-state-01/check-report.json",
+      "sha256": "9621609e3408d2ba94345ccd2760e4e99ef6c40b55c057dc655a7efc3dc44e03",
+      "accepted": 0
+    },
+    {
+      "kind": "public-forgery-diagnostic",
+      "path": ".tools/dynamic-source-statics-fatal-origin-controls-11/report.json",
+      "sha256": "1612bd2c0e09ce2707d16b5d306f0c20bc965b8d370e4fb0eff5945047f97719",
+      "accepted": 0
+    },
+    {
+      "kind": "public-source-retirement",
+      "path": ".tools/dynamic-source-statics-fatal-state-01/check-2-report.json",
+      "sha256": "2a2e152c40c06e6627a52e36f518aa272937ee02adcd7d1c953be76ccd1e688f",
+      "accepted": 210
+    },
+    {
+      "kind": "independent-sources",
+      "path": ".tools/dynamic-review-02/fatal-source-model-v1/report.json",
+      "sha256": "5f19b96524717db48d90cc85315351d6619668de7f8738ffc51fac8be00cabfa",
+      "accepted": 5
+    },
+    {
+      "kind": "independent-handler-source",
+      "path": ".tools/dynamic-review-02/fatal-handler-model-v1/report.json",
+      "sha256": "a462da7ea06b5fdb781c0aa608cab65cae0907f60418569f297dae9868558e26",
+      "accepted": 1
+    },
+    {
+      "kind": "failed-public-handler-result",
+      "path": ".tools/dynamic-source-statics-fatal-state-04/check-report.json",
+      "sha256": "b6642e4df762362f3bfe823622e397e17cb3568b5dbf788fb5a2e9761e47eed5",
+      "accepted": 0
+    },
+    {
+      "kind": "public-handler-result",
+      "path": ".tools/dynamic-source-statics-fatal-state-04/check-2-report.json",
+      "sha256": "902847e42866dad9eee6853d92b7b72c45db83ee178107bc8fa74a892ded2338",
+      "accepted": 71
+    },
+    {
+      "kind": "native-independent5",
+      "path": ".tools/dynamic-review-02/static-native-v16/report.json",
+      "sha256": "efc1bb9780b9b460ec2998093757800ce75b2196fcb02a720b5d4b4c0ed6c1a1",
+      "accepted": 0
+    },
+    {
+      "kind": "native-handler1",
+      "path": ".tools/dynamic-review-02/static-native-v17/report.json",
+      "sha256": "020d7dc50fcb716f03b5e2e77366612dfc39697e65a6b1ea517a22a8e7da8fcf",
+      "accepted": 0
+    },
+    {
+      "kind": "unused-handler-preparation",
+      "path": ".tools/dynamic-source-statics-fatal-state-02/fixtures-report.json",
+      "sha256": "249e4bbf17b712f3989c5684a3693ed3c99afba7eb3e9f0feb128ded53b22d6f",
+      "accepted": 0
+    },
+    {
+      "kind": "unused-handler-preparation",
+      "path": ".tools/dynamic-source-statics-fatal-state-03/fixtures-report.json",
+      "sha256": "b023b270d6f9fc73e6b534ea442afeb52600ee19d6a5bdb3139e378e4a1704f1",
+      "accepted": 0
+    }
+  ],
+  "recovery": "All paths are relative to canonical php-spec. Reports retain commands, cwd/profile/environment, source/parser snapshots, executed binary/module pins, raw stdout/stderr and exits in adjacent directories. Preserve these ignored artifacts and branches; no native rerun, metadata retest, portable rebuild or complete-equivalence claim is implied.",
+  "actual_composition": {
+    "parent": "1fe8fae6539b4d4d11a5967100b8a91c9bc7011e",
+    "joined_revision": "3a4b0921e532c5b87ac9fa4f33bcee2f2c21eae2",
+    "module_count": 382,
+    "review": "Independent pointwise FF clearance: accepted runtime/protocol bytes are unchanged, all newer parent operational/schema/observer/provider inputs and current checkpoints are preserved. Stringable, warning-release, backed-getter and M39 return selectors are disjoint from the selected originals.",
+    "new_actor_source_state_credit": 0
+  }
+}

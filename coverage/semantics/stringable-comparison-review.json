@@ -1,0 +1,178 @@
+{
+  "scope": "Direct ordinary Stringable INSTANCE/string loose comparison in seven operators and non-bool Switch cases. Pointer kind is captured before __toString; scalar comparison reads the captured COPY/current CV/pre-unwrapped CELL afterward.",
+  "status": "partial; independently reviewed private increment",
+  "tested_revision": "aabff65651f4957ec87adef19254bd1f2928d720",
+  "baseline_revision": "2f15e222f74c670ff158675b9d3be021d80689d7",
+  "module_count": 381,
+  "runtime": {
+    "php_source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_binary": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "numeric_runner": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "adapter": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "elaborator": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "profile": {
+      "path": "tests/semantics/profile.json",
+      "sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+    },
+    "new_module": {
+      "path": "spec/semantics/392-stringable-comparisons.watsup",
+      "sha256": "53c5621f8c0fd7847df59b4095bd11810a6b9705d7078f8063e569ff14c4c054"
+    },
+    "module_manifest": {
+      "path": "spec/semantics/modules.json",
+      "sha256": "80015bfa0398f9551f6fc555195f588db872ac3c7aef1026a4c36359c8b28caf"
+    },
+    "build_claim": "Retained project-local binaries; no fresh/offline rebuild claim.",
+    "engine_anchors": [
+      "Zend/zend_operators.c:zend_compare (reference dereference)",
+      "Zend/zend_object_handlers.c:zend_std_compare_objects (cast to opposing scalar type, then compare)"
+    ]
+  },
+  "native": {
+    "report": {
+      "path": ".tools/switch-stringable-native-47/run-v1/report.json",
+      "sha256": "01d586c62258b118419c649c832b9ae9eb1a105b1b700541f3597c090fef2e35"
+    },
+    "originals": 6,
+    "normal": 6,
+    "module_count_at_recording": 380,
+    "cpu": 3,
+    "slot": 3,
+    "credit": "Native facts only, no model agreement."
+  },
+  "baseline": {
+    "report": {
+      "path": ".tools/switch-stringable-baseline-47/run-v1/report.json",
+      "sha256": "478be4c8c23555f962d6221fa18e1784e3cfb94495b8797d036db6bc111bcd0e"
+    },
+    "seconds": 8.132174026221037,
+    "checked_status": "accepted/program/normal",
+    "actual_stdout": "L0100111|00SIBADBADB",
+    "native_agreements": 0,
+    "result": "Measured mismatch: casts were skipped and both non-bool Switches misselected."
+  },
+  "strict": {
+    "report": {
+      "path": ".tools/switch-stringable-gate-47/report-retry1.json",
+      "sha256": "480c8f42db37fcb24ae5fd8181a3406bc739de464d77cc519559e451b94fc121"
+    },
+    "checks": 3,
+    "seconds": 6.32862114906311,
+    "passed": true,
+    "lease": "Actual CPU5/SLOT3; frozen original recorder calls CPU argument5 slot5. This label correction adds no execution or coverage."
+  },
+  "sources": {
+    "report": {
+      "path": ".tools/switch-stringable-model-47/run-v1/report.json",
+      "sha256": "891cbc84fd344fe3a4f1cb0faf6bfb3143b57312aada48e3f6e99d05ec286cb3"
+    },
+    "catalogue": {
+      "path": "tests/semantics/stringable_comparison_cases.json",
+      "sha256": "94bd2946741c5777e9969e2cb250d50b9eed751835437b542504f10c96e1592b"
+    },
+    "normal_native_agreements": 6,
+    "seconds": [
+      9.384769771248102,
+      9.486403197050095,
+      8.834850439801812,
+      8.68459653481841,
+      6.930458223447204,
+      7.5818838104605675
+    ]
+  },
+  "syntax_only": {
+    "preparation": {
+      "path": ".tools/switch-stringable-state-47/preparation.json",
+      "sha256": "2f992dd89d1e823b55b1792d5255905b861e0946125fb6f5ab48f8259cdd4aaa"
+    },
+    "closed_workers": 12,
+    "programs": 6,
+    "trusted_module_elaboration": {
+      "path": ".tools/switch-stringable-gate-47/report-owner-elab-retry1.json",
+      "sha256": "1a9c7d08de312477853da9c63dba5ba65df20cab64ad58a53032a80e4b87a373"
+    },
+    "author_fixture_elaboration": {
+      "path": ".tools/switch-stringable-state-47/report-elab.json",
+      "sha256": "906e8b42d320bed1fbe731fbb1fa10f1044b42f79cba2855ad74f0a97013ba3a"
+    },
+    "peer_fixture_elaboration": {
+      "path": ".tools/switch-stringable-peer-state-47/report-elab.json",
+      "sha256": "9aa5131258e7e0ef29d109f5229f6b7adf39b3cc1b0d5370e6323d6f6d6da0df"
+    },
+    "runtime_credit": 0,
+    "author_fixture_correction": "Original two fixtures elaborated. Sole subsequent helper change supplies the already-typed S[.COMPLETION=NORMAL] view to pending classification; no declaration/type/production change."
+  },
+  "reached_states": {
+    "author_report": {
+      "path": ".tools/switch-stringable-state-47/report-retry1.json",
+      "sha256": "efa39e2bffe24a3a9b6e022be6b274e68bcda634702309018610ea62b04d43fd"
+    },
+    "peer_report": {
+      "path": ".tools/switch-stringable-peer-state-47/report.json",
+      "sha256": "2c77f40cdc2a3d62460ffc437139fd8ff2b60034a076aff74cdd6927149e6720"
+    },
+    "author_plan": {
+      "path": ".tools/switch-stringable-state-47/fixture-plan.json",
+      "sha256": "e4ed015e68a508a7dae971ec6dba4dd150b36ae77879e5daae77c7da0bc301c5"
+    },
+    "peer_plan": {
+      "path": ".tools/switch-stringable-peer-state-47/fixture-plan.json",
+      "sha256": "1bc513daa57ec08932de99d62f295d1626823e8ce08ca8d92efe82b74d2a1535"
+    },
+    "checks": 487,
+    "setup_frontier": 407,
+    "pure_controls": 80,
+    "explicit_raw_php_steps": 26,
+    "author_checks": 294,
+    "peer_checks": 193,
+    "author_seconds": [
+      13.492594003677368,
+      15.647171258926392
+    ],
+    "peer_seconds": 12.593873739242554,
+    "scope": "Actual capture, implicit caster entry/return and scalar resume; live CV versus copied text and GLOBALS retarget versus retained old reference cell; case-side caster, delayed default/body-only fallthrough, nested scalar Switch while caster active, identical TypeError observed by the restored caller catch, then genuine finally entry. Seek queries are setup/frontier, not extra PhpSteps."
+  },
+  "retained_zero_credit": [
+    {
+      "path": ".tools/switch-stringable-native-47/launch-failure-v1.json",
+      "result": "Wrapper option parsing failed before any recorder or PHP actor."
+    },
+    {
+      "report": {
+        "path": ".tools/switch-stringable-gate-47/report.json",
+        "sha256": "4f3696a22896c348989dd6a1f4fe5dbebe3ca8189528449fc6dd8c95f1713d84"
+      },
+      "result": "Before-main record syntax error, 0.36765170097351074 seconds."
+    },
+    {
+      "report": {
+        "path": ".tools/switch-stringable-gate-47/report-owner-elab.json",
+        "sha256": "c211ae5b919801ca32418e34d8b347bd7be8808bc775a37dd454f3e9a9cd2d7d"
+      },
+      "result": "Before-main undefined helper declaration, 4.476399898529053 seconds; EL tool exit0 did not constitute success."
+    },
+    {
+      "report": {
+        "path": ".tools/switch-stringable-state-47/report.json",
+        "sha256": "2958020f5f291d965e8b68669be1c0de76637773be5f738e5448e754aaf7cbd8"
+      },
+      "result": "First author selector queried BUDGET instead of NORMAL, 9.83525276184082 seconds before explicit Step; second fixture unrun. Original small inputs at budget-selector-failure-v1; raw unchanged."
+    }
+  ],
+  "acceptance": "All credited source/state/strict records are closed once, stable, exact final command/raw, empty stderr, exit+cleanup0, empty owned groups and no conditional unrun. Independent reviewer comp_review_21 bound each closed result; no private replay for metadata.",
+  "ownership": "Only original operands/INPUTBASE and genuine STRINGIFY_RESULT receiver own nodes. Captured values, ENV/REFS, pointer and caller/tail images are documentary and non-owning; they certify selection relative to the recorded image, not full historical unforgeability.",
+  "residuals": [
+    "Reached recursive array/property Stringable/string pairs refuse explicitly; scalar short-circuits before that pair retain their prior route.",
+    "Expired captured pointers and post-cast object operands refuse explicitly.",
+    "Broader internal Stringable handlers, numeric object warnings, lvalue/producer lifetimes and recursively reentered Stringable callbacks require further work; no END/shutdown coverage claimed.",
+    "Strict identity and compiled bool Switch retain their existing no-cast behavior. Full core remains partial; no intentional engine divergence."
+  ],
+  "recovery": "Original ignored inputs/raw remain at .tools/switch-stringable-47/.tools/switch-stringable-{native,baseline,gate,model,state,peer-state}-47 after integration/retirement. Maintained original bytes/START hashes are in the source catalogue; commands, exits, environments and watched identities are in the original reports. Do not copy/move bulky evidence for cleanup.",
+  "actual_composition": {
+    "parent": "f97a4bb1d210528284a9d93755935799e65e7bdf",
+    "candidate": "efdfb913b1850cf997023e41cb70a5dc3564d1a1",
+    "module_count": 382,
+    "manifest_sha256": "028186b085b3f0c67a01034eeb6b62f32ff5ad6549a2194eb746992dd2737d79",
+    "review": "Owned semantic blobs are private-exact. All original sources have empty output buffers, unblocked output and EXITSTATUS0: parent output writes equal prior append, guard/finalize are identity and added validity predicates hold. Destructor/reference-finally, source-static, WeakMap and parented-hook premises are absent. Preserve the original381 private evidence; no current numeric gate or new execution credit."
+  }
+}

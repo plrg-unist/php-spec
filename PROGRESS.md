@@ -21,6 +21,59 @@ zero credit. Wider placement and callable dependencies remain explicit.
 [Contract](docs/semantics/TICKS.md), [author evidence](coverage/semantics/tick-author.json),
 [independent review](coverage/semantics/tick-review.json).
 
+Parser-backed USERFATAL now captures its actual eval/file location and retires
+execution contexts through an authenticated fatal snapshot. Static cells retain
+their existing bailout roots, allowing fresh shutdown evals while interrupted
+objects remain alive. Historical origin/END and false-handler-result forgeries
+are rejected; destructor flags/table ownership reuse their existing policy.
+Private a31b12ffc /381 keeps seven exact source tuples at1+6 cuts and three
+public groups/281 premises at210+71 cuts. Three raw projections remain separate
+from three production fatal transitions; original failures/diagnostics remain0.
+Wider fatal/compiler producers and lifecycle/return cleanup stay partial.
+[Source-static fatal ledger](coverage/semantics/source-static-fatal-review.json).
+The382 composition over1fe8fae6 passes independent pointwise review at3a4b0921;
+accepted runtime/protocol bytes and all newer parent behavior are preserved.
+No renewed actor/source/state evidence is claimed.
+
+Module390 now releases callback-installed object/array payloads before captured
+inc/dec scalar commit. Destructors see the old slot; scalar writes are overwritten
+afterward, while pending/replacement Throwables preserve identity and Previous.
+Real aliases keep nonlast objects alive, and callback wrappers detach without
+adding borrowed owners. Ten author and ten independent new originals agree at
+retained cuts; four earlier restoration controls now agree separately. Eleven
+author SL fixtures pass 893 conditions, the changed earlier fixture passes 54,
+and four independent fixtures pass 290 (1,237 total). Five Unsupported source
+controls receive zero agreement. Original baseline, wrapper-option and two isset
+failures remain preserved; unselected native repetitions receive no source credit.
+Late typed sources, destructor ownership changes, exit, ordinary/nested/empty
+released-array reads and wider update locations remain required.
+[Restoration ledger](coverage/semantics/incdec-restoration-review.json).
+The 382-module join over 69ff passes strict SL (6.256s) and one exact both-throw
+destructor original at 3d1dcba90; earlier source/state cuts keep their revisions.
+
+Direct ordinary Stringable/string comparisons now call `__toString()` for seven
+loose operators and non-bool Switch cases. Captured CV/copy/reference-cell reads,
+GLOBALS rebinding, caster ownership, lazy fallthrough and nested scalar Switch
+with a caught TypeError and finally entry are validated at aabff656 /381: six exact
+source agreements and 487 reached predicates with 26 real PhpSteps; strict 3
+passes. Original baseline, pre-main and fixture-selector failures retain zero credit. Recursive casts, wider
+internal handlers and lifetimes remain required; full core stays partial.
+[Comparison ledger](coverage/semantics/stringable-comparison-review.json).
+
+Caught source-static destructor exceptions now keep user execution through caller
+catch and remaining-slot release, preserving Previous without treating exit as a
+Throwable. Request signed32 EXITSTATUS survives caught replacement; integer/default
+exit updates it, strings retain it, and nested resets remain independent of saved
+exit control. Private owner1e3067/380 keeps three exact originals and325 public
+premises; status3d8014372/381 keeps seven exact originals and150 new premises.
+Five fronts/475 premises,12 raw steps and four production table drops retain their
+separate cuts; original baseline/fixture failures remain0. Hard-fatal shutdown
+roots and wider lifecycle work remain required; full core stays partial.
+[Source-static status ledger](coverage/semantics/source-static-exit-status-review.json).
+The381 composition overf59 passes independent pointwise review atdf505395,
+with accepted runtime/protocol bytes unchanged and parent382/386/391 preserved.
+No new actor or source/state credit is claimed.
+
 Default output buffers391 now route exact echo/print/inline/exit/direct-call bytes
 through nested NULL handlers, whole chunks, capabilities, copied get results,
 Notice-handler reentry and exact status. Forced flush follows shutdown/destructors;
@@ -43,8 +96,8 @@ destructor parser reentry and escaped references retain their owners. At private
 agree at separate cuts. Six genuine fronts pass 950 public/ownership premises,
 with 24 raw PhpSteps separate from six production table drops and one callee
 restoration. Original parser/fixture failures retain zero failed-group credit.
-Hard-fatal shutdown roots, caught destructor exceptions' sticky exit status and
-wider lifecycle work remain required; full core stays partial.
+Hard-fatal shutdown roots and wider lifecycle work remain required; full core
+stays partial. Caught destructor status now has the separate extension above.
 [Source-static exit ledger](coverage/semantics/source-static-exit-review.json).
 The 380 composition over7d694efd passes one exact destructor-reentry source
 and72 saved parser/exit ownership premises at a974afec0, retaining390
@@ -58,8 +111,8 @@ agree at retained cuts; eight explicit Unsupported controls receive zero agreeme
 Nine author SL fixtures pass 539 conditions at 585/9c and three independent fixtures
 pass 155 at 585, including genuine throw roots, alias detachment, fresh nested
 registry selection and budget resume. Original fixture failures retain zero failed-group
-credit. Destructor-before-commit, late typed sources and handler exit are the next
-required work; wider locations stay partial.
+credit. The earlier warning cuts remain distinct from the restoration extension;
+late typed sources, exit and wider locations stay partial.
 [Inc/dec warning ledger](coverage/semantics/incdec-warning-review.json).
 The 380-module join over f12 passes strict SL (6.121s) and the affected
 GLOBALS-unset callback original at 0b564; earlier source/state cuts retain their revisions.
@@ -1312,6 +1365,44 @@ default/layout/store/task/owner rules and earlier cuts retain their identities.
 Joined exact `3fd8e25a`/380; one count-only current init check passes with no application.
 Private source/state cuts remain retained through neutral shell state and disjoint incoming paths.
 
+Repeated plain by-value getters without initializers or backing reads now retain
+ordinary storage at equal normalized TYPE. Two parent-basis predicates carry the
+authenticated ordinary anchor through the existing bounded hook ancestry walk;
+defaults, layouts, stores and ownership rules remain unchanged. Across Bridge,
+First and Second retain typed uninitialized/untyped null slots; latest private
+getters return 13/0 independently of writes 300/5, with distinct S/R cleanup.
+Strict380/source2 pass at `f56c3ad8`. Nine separate selected state checks pass
+542 premises (497 reached, 45 derived), including repeated setup: controls at
+`7d89eed2`, metadata/CV at `bb27b579`, This/write at `aff64add`, and untyped
+metadata/read/write/lifetime at `0932752f`. Four SL caps retain zero credit;
+authentic frontier partitions keep all assertions, with AL90 and affected SL150.
+[Repeated ordinary-storage review](coverage/semantics/repeated-ordinary-unbacked-get-hook-review.json).
+Joined exact `af903227`/381; one count-only current init check passes with no application.
+Private cuts remain retained through neutral output-buffer state and disjoint incoming paths.
+
+Removing the type from a source-unbacked child below a typed getter directly
+backed by an ordinary Root now reports the getter error at child hook 10, naming
+declaring First across Bridge. The existing missing-return guard accepts the
+authenticated ordinary parent basis; reverse addition keeps property class 9.
+Strict381/source3 pass at `196c13eb` (one repaired source, two baseline controls).
+Three separate state checks pass at `814991e9`: remove62 (32 reached, 30 derived),
+add32 and actual scalar plan47, totaling 111 reached plus 30 derived. Runtime,
+defaults, layouts, pure covariance and earlier cuts retain their identities.
+[Ordinary-backing type-presence review](coverage/semantics/ordinary-backed-parent-unbacked-get-hook-type-presence-review.json).
+Joined exact `35068001`/381; one current init-only check passes with no application.
+Private cuts remain retained through neutral EXITSTATUS 0 and disjoint WeakMap/source-exit paths.
+
+Removing the type from a genuine own-body-backed child below the same ordinary-backed
+First now reports the getter error at child hook 10, naming First across Bridge,
+before property class 9. One sixth-arm parent-basis OR repairs this priority;
+reverse addition and child backing 200→300/getter 213→313 remain baseline controls.
+Strict381/source3 pass at `37bc2d87`. Three separate state checks at `0e0d255d`
+pass remove62 (32 reached, 30 derived), add32 and entered-getter50: 114 reached
+plus 30 derived. Runtime, defaults, layouts, pure covariance and ownership stay unchanged.
+[Own-backed type-presence review](coverage/semantics/ordinary-backed-parent-backed-get-hook-type-presence-review.json).
+Joined exact `08666ae75`/382; one count-only current init check passes with no application.
+Private cuts remain retained through disjoint comparison, update-warning and ref-chain paths.
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization
@@ -1684,6 +1775,45 @@ provenance; wider demand/lifecycle and broad returns_verify remain OPEN.
 [Multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
 Actual380 over `663f0ef4` passes strict at `ac9a8f50` in 6.081s with zero
 applications; original private source/state/independent cuts remain separate.
+
+The guarded destructor additionally admits an exact local TypeError catch around
+nested AssignRef/probe, with ordinary local names and the checked getMessage
+receiver. Old M35/M36 and common idle/string/prefix rules are unchanged. Source2
+and reached2/350 (264+86) pass at `8a125248`: the failed inner binding/probe is
+canceled, C/T/D continues, and the same original outer Y TypeError survives
+ordered Z/W/X/public retirement, caller and budget continuation. The caught
+nested error stays distinct with empty Previous; selected bypass keeps its alias
+without object birth. Independent early-catch public99/1 admits the actual
+current6/outer f21/main registered1/1/1 prefix and refuses missing outer operation
+exit; author counter-PBOOL refusal is separate. Private strict381 passes in
+6.089s with zero applications. Sparse-import and catch-sort failures retain zero
+credit. Source reconstruction remains local; broader catch/reentry/returns OPEN.
+M37 is validation-only: source2 and public96/1 at `2f15e222` preserve a fresh
+escaping nested TypeError. Previous is empty at the reached nested throw; the
+caller catches the same error with old Y as Previous. Its
+original fixture elaboration failure remains zero; the exact maintained producer
+requires the retained checked query beside it in an ignored recovery directory.
+[Multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+Actual381 over `4d26abc3` passes strict at `de54edc1` in 6.244s with zero
+applications; original private source/state/public and M37 validation cuts stay separate.
+
+The idle class certificate additionally admits catch echo followed by throwing
+the same decoded ordinary caught local. Old M38/M36 and common guards remain
+exact; no throw/Previous/active rule changed. Source2 and reached2/353 (267+86)
+pass at `64d33559`: the same caught error retains creation origin, line4 and its
+entire reached trace-array graph through late Y replacement and caller catch.
+Previous is empty at callback rethrow; old Y is linked at the later cuts. T/D
+and the failed inner binding/probe stay canceled. Ordered Z/W/X/public retirement,
+counter-PBOOL refusal, budget continuation and quiet selected alias bypass pass.
+Independent public132/1 binds actual current11/outer f21/main registered1/1/1,
+early trace graph and missing-operation-exit refusal. Private strict381 passes in
+6.173s with zero applications. The original public restore-origin fixture failure
+keeps zero credit. Trace/identity are reached-state/engine-derived evidence,
+separate from native output agreement. Local source reconstruction and wider
+catch/rethrow/lifecycle/returns remain OPEN.
+[Multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+Actual382 over `aa8ddc73` passes strict at `eebde3e7` in 6.216s with zero
+applications; the private source/state/public cuts retain their original identities.
 
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
@@ -3158,6 +3288,16 @@ missing-key Error pass, totaling 297. The Error cut stops after real materializa
 originals supply catch and complete endings. The original 73-check owner forecast remains zero;
 its corrected control authenticates the two real destructor-entry task roots.
 Presence/reference/method and wider key/map protocols remain required.
+
+Explicit object-key entry unset now clears only the map's value edge; existing
+eager comparison transfers that owner into an authentic VALUE release. Missing
+keys preserve the entry, and a held CV keeps the removed value live and uncalled.
+The normal 62-byte, throwing 69-byte and held/missing 87-byte originals agree at
+`0c01e5f`. Removal (136), missing no-op (100), held-value release (94) and corrected
+pending-throw (88) checks total 418. Actual Value cleanup leaves the same Exception
+owned until the UNSET operation transfers it to THROW_SEARCH. The original
+plain-string message premise remains zero; its correction compares string bytes.
+Wider map protocols and ephemeron collection remain open.
 [Ledger](coverage/semantics/weak-map-review.json).
 
 ArrayAccess304 reconstructs intermediate `[]` after ordinary by-value Get and

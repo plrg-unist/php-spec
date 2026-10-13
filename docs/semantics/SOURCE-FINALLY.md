@@ -254,6 +254,29 @@ alias without object birth. M35 and shared call/reference/active lifecycle rules
 are unchanged. Local reconstruction and reached alias evidence leave broader
 reference demand, historical alias provenance and returns verification OPEN.
 
+An additive checked destructor-local TypeError catch surrounds the same ordinary
+reference binding/probe. Source2, reached2/350 and independent public99/1 pass at
+`8a125248`: local catching cancels the inner binding/probe, retains fresh nested
+error with empty Previous separately from old Y in outer FINALLY_RESUME, and
+continues C/T/D. The identical original Y TypeError then survives ordered Z/W/X
+retirement, caller catch and budget splitting. Full current6/outer f21/main
+registered1/1/1 admits; missing operation exit and counter-PBOOL refuse. Existing
+catch/reference/destructor/Previous rules are unchanged; wider layouts remain OPEN.
+Separately, M37 source2/public96/1 at `2f15e222` validate escaping nested error:
+fresh Previous is empty at nested throw, then the same caller error links old Y.
+This is validation-only; its exact recovery generator depends on the retained
+checked query. See the multiple-history review for distinct cuts/failures0.
+
+The checked destructor-local catch additionally admits echo then throw of the
+same ordinary caught variable. Source2, reached2/353 and independent public132/1
+pass at `64d33559`: the fresh error has empty Previous at callback rethrow; later
+Y replacement/caller preserves its identity, original line4 and full reached trace
+array graph while linking the parked old Y. No T/D or probe executes. Ordered
+retirement, public counter-PBOOL/missing-operation-exit refusals and budget
+continuation pass; selected bypass stays quiet. Existing throw/Previous/active
+rules and old class certificates are unchanged. Trace is modeled reached-state
+and matching-engine evidence, without a native trace observer. Wider returns OPEN.
+
 Module 186 converts a selected live unconstrained aliased return CV before protected
 finalizer entry. Stringable callbacks may rebind/unset GLOBALS without redirecting
 the captured cell; current/saved f-local bindings authenticate it. Success writes

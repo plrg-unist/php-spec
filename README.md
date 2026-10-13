@@ -318,7 +318,11 @@ current scalar/array locations, preserving copied results and diagnostic order;
 [Direct-CV warning callbacks](coverage/semantics/incdec-warning-review.json) now
 restore captured bool/null values even after a handler throws; strings restore
 only after normal handling. Aliases, fresh handlers and copied results are checked.
-Restoration destructors, late type sources and handler exit remain explicit obligations.
+[Before-commit restoration](coverage/semantics/incdec-restoration-review.json)
+now runs callback-installed object/array destructors while the old slot is visible,
+then restores captured scalars before propagating pending throws. Aliases, ordered
+cleanup and Previous chains retain their actual owners. Late typed sources,
+destructor ownership changes, exit and wider update locations remain required.
 All twelve [compound assignments](docs/semantics/UPDATES.md) preserve captured
 targets, delayed reads and alias ownership; [independent evidence](coverage/semantics/compound-review.json)
 records 2,639 exact source comparisons and the corrected diagnostic phases.
@@ -938,6 +942,20 @@ and write a literal through it. Two originals, reached2/332 and independent
 public150/1 pass separately: inner aliases Y before the probe, the original outer
 error survives T/D and cleanup, and the bypass skips reentry. Shared reference
 and lifecycle rules are unchanged; wider demand/returns verification remains OPEN.
+The guarded destructor can catch a nested TypeError around the reference binding
+and probe. The failed binding and probe are canceled; C/T/D resumes, then the
+original outer Y error reaches the caller. Two originals, reached2/350 and
+independent early-catch public99/1 pass separately. Shared catch, reference and
+lifecycle rules are unchanged; wider catch/reentry and returns remain OPEN.
+A separate validation-only escaping nested-throw case passes two originals and
+public96/1: the fresh error acquires the old Y as Previous only after leaving the
+callback. Its maintained generator and recovery prerequisites are in the
+[multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+The checked local catch may also rethrow its caught TypeError. Two originals,
+reached2/353 and independent public132/1 pass separately: the same error retains
+its construction line and trace, late cleanup links old Y as Previous, and T/D
+and the probe stay canceled. Existing throw/Previous rules are unchanged; wider
+catch/rethrow and returns verification remain OPEN.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)
@@ -1124,6 +1142,12 @@ result, so a held copy survives key removal. A missing key throws Error using it
 actual object-store handle and preserves the existing entry. Two originals agree
 with PHP at `c4c097e`; 297 reached checks pass. Presence,
 reference and wider map protocols remain required.
+
+Explicit `unset($map[$key])` removes a matching entry before its value destructor
+while the map and key stay live. Missing object keys are no-ops; a separately held
+value survives entry removal. Throwing cleanup resumes the same pending Exception.
+Three originals agree at `0c01e5f`; 418 reached checks pass. Earlier cuts retain
+their original evidence.
 
 [Ordinary collection301](docs/semantics/CYCLE-COLLECTION.md) implements explicit
 object/array cycle collection, ordered destructor callbacks and real weak
@@ -1406,8 +1430,17 @@ focused source and production-unwind checks. Graceful exit now retires source
 tables before shutdown, preserving callee and nested-source release order.
 Destructor source reentry keeps the saved exit owner valid; escaped references
 retain their objects through shutdown. [Exit review](coverage/semantics/source-static-exit-review.json)
-records this separate cut. Hard-fatal shutdown roots and caught destructor
-exceptions' sticky exit status remain required.
+records this separate cut. Throwing source-table destructors now retain user
+execution through caller catch and remaining-slot cleanup. Request exit status
+survives a caught replacement: integer/default exit updates it, strings preserve
+it, and nested resets remain distinct from saved exit control.
+[Status review](coverage/semantics/source-static-exit-status-review.json) records
+the focused source and public checks. `E_USER_ERROR` now captures the dynamic
+source location and retires authenticated execution contexts before shutdown.
+Static cells retain their existing roots while shutdown evals and destructors of
+new objects run. [Fatal review](coverage/semantics/source-static-fatal-review.json)
+records source and public checks. Wider fatal/compiler and destructor/return
+interactions remain required.
 [Real closure instances](docs/semantics/SOURCE-CLOSURES.md) now retain explicit captures,
 selected callee owners and per-instance statics through invocation and cleanup.
 [Independent review](coverage/semantics/closures-review.json) binds source, object
@@ -1430,6 +1463,9 @@ and separate paused-state controls.
 retains the subject through fallthrough, and distinguishes constant-boolean
 branching from dynamic equality; its [review](coverage/semantics/switch-review.json)
 binds 18 source outcomes and separate compiler and paused-state checks.
+[Stringable comparisons](coverage/semantics/stringable-comparison-review.json) now
+resume direct instance/string operators and cases after authentic casts, retaining
+CV/copy/reference reads, lazy fallthrough and throwing callback control.
 [Match expressions](docs/semantics/SOURCE-MATCH.md) preserve strict, lazy arm
 selection, delayed CV subjects, ordered compiler diagnostics and owned value
 results; their [review](coverage/semantics/match-review.json) binds source, compiler
@@ -1772,6 +1808,21 @@ start null. Ordinary writes update those slots while getters keep their independ
 results. Two originals and separate read, write, untyped and lifetime checks are
 recorded in the
 [ordinary-storage review](coverage/semantics/ordinary-parent-unbacked-get-hook-review.json).
+Repeated getter declarations now carry this ordinary storage through intervening
+classes. Typed slots start uninitialized and untyped slots null; reads select the
+latest getter and its private scope, while writes update the physical slots.
+Distinct backing and retained result references use the existing cleanup rules.
+Two originals and nine separate state checks are recorded in the
+[repeated ordinary-storage review](coverage/semantics/repeated-ordinary-unbacked-get-hook-review.json).
+A typed getter directly backed by an ordinary parent also rejects an untyped,
+source-unbacked child at its getter declaration. Across intervening classes, the
+error names the actual declaring getter; reverse type addition keeps the property
+error. Three originals and focused rejection/plan checks are recorded in the
+[ordinary-backing type-presence review](coverage/semantics/ordinary-backed-parent-unbacked-get-hook-type-presence-review.json).
+The same priority now covers a genuinely own-body-backed child that removes the
+type. Reverse addition and existing backing 200→300/getter 213→313 remain controls;
+focused states check rejection before publication and genuine getter entry.
+[Own-backed type-presence review](coverage/semantics/ordinary-backed-parent-backed-get-hook-type-presence-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
