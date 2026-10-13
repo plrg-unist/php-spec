@@ -12,6 +12,7 @@ dec $output_source_valid(pstate, pobcaller) : bool
 dec $output_vm_source(pobcaller) : bool
 dec $output_context_anchor(pframe, pobwrite) : bool
 dec $output_context_frame(pframe*, pobwrite) : bool
+dec $output_context_tasks(ptask*, pobwrite) : bool
 dec $output_restore_head(ptask) : poutputbuffer?
 dec $output_write_context(pstate, pobwrite) : bool
 dec $output_write_valid(pstate, pobwrite) : bool
@@ -112,7 +113,12 @@ def $output_context_anchor(pframe, pobwrite) = (pframe.CONTEXT = pobwrite.CONTEX
   -- if n_tail = $nabs($(|pframe.TODO| - 1))
 def $output_context_frame(eps, pobwrite) = false
 def $output_context_frame(pframe :: pframe_tail*, pobwrite) = ($output_context_anchor(pframe, pobwrite) \/ $output_context_frame(pframe_tail*, pobwrite))
-def $output_write_context(S, pobwrite) = (S.CURRENT = pobwrite.CONTEXT \/ $output_context_frame(S.FRAMES, pobwrite))
+def $output_context_tasks(eps, pobwrite) = false
+def $output_context_tasks(ptask :: ptask_tail*, pobwrite) = (ptask_tail* = pobwrite.TAIL)
+  -- if $output_task_write(ptask) = (pobwrite)
+def $output_context_tasks(ptask :: ptask_tail*, pobwrite) = $output_context_tasks(ptask_tail*, pobwrite)
+  -- if $output_task_write(ptask) =/= (pobwrite)
+def $output_write_context(S, pobwrite) = (S.CURRENT = pobwrite.CONTEXT /\ $output_context_tasks(S.TODO, pobwrite) \/ $output_context_frame(S.FRAMES, pobwrite))
 def $output_write_valid(S, pobwrite) = ($output_source_valid(S[.CURRENT = pobwrite.CONTEXT], pobwrite.CALLER) /\ $output_write_context(S, pobwrite) /\ pobwrite.IDS = $output_ids(S.OUTPUTBUFFERS) /\ $(pobwrite.INDEX <= |pobwrite.IDS|) /\ $output_prefix_done(S.OUTPUTBUFFERS, pobwrite.INDEX) /\ $startup_bytes(pobwrite.BYTES) /\ (pobwrite.INDEX =/= 0 \/ $output_origin_bytes(pobwrite) = (pobwrite.BYTES)) /\ $config_slots_valid(S, [NAMED_SENT pobwrite.VALUE]) /\ $heap_subset($base_nodes(pobwrite.BASE), S.ALLOCATIONS) /\ $output_finish_valid(S, pobwrite))
 
 def $output_origin_bytes(pobwrite) = $string_bytes(pvalue)
