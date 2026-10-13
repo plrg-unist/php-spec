@@ -18,7 +18,7 @@ syntax pcomparison = COMPARED bool | RECURSIVE
 var z : int
 
 dec $indirect_item(pitem) : bool
-def $indirect_item(INDIRECT n ptbytes) = true
+def $indirect_item(INDIRECT n n_key*) = true
 def $indirect_item(pitem) = false -- otherwise
 
 dec $metadata_line(metadataEntry) : int
