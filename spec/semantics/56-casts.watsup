@@ -1,5 +1,4 @@
 dec $aggregate_projection_plain(pstate, nat) : bool
-dec $aggregate_projection_blocked(pstate, nat) : bool
 dec $cast_array_notice(pstate, pvalue, int) : pstate
 dec $cast_apply(pstate, pcast, pvalue, int) : pstate
 dec $cast_value(pstate, pcast, pvalue, int) : pstate
@@ -34,14 +33,12 @@ def $cast_value(S, CASTFLOAT, pvalue, z) = S[.RESULT = KNOWN (PFLOAT $float_of_i
 def $cast_value(S, CASTARRAY, PARRAY n, z) = S[.RESULT = KNOWN (PARRAY n)]
 def $cast_value(S, CASTARRAY, PNULL, z) = $allocate_immutable_empty(S)
 def $cast_value(S, CASTARRAY, PUNDEFINED, z) = $allocate_array(S, {ITEMS ([ENTRY (KINT 0) UNINITIALIZED]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1})
-def $cast_value(S, CASTARRAY, POBJECT n, z) = S[.COMPLETION = UNSUPPORTED "guarded declared-object array projection"]
-  -- if ~$instance_storage_freeing(S, n)
-  -- if $aggregate_projection_blocked(S, n)
-def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array(S, $property_cast_array(ppropertyslot*))
+def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array(S, parray[.ITEMS = (ENTRY pkey $merge_item(S, pitem))*])
   -- if ~$instance_storage_freeing(S, n)
   -- if $aggregate_projection_plain(S, n)
-  -- if ~$aggregate_projection_blocked(S, n)
   -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
+  -- if parray = $property_cast_array(ppropertyslot*)
+  -- if parray.ITEMS = (ENTRY pkey pitem)*
 def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array($objectprops_mark(S, n), $property_cast_array(ppropertyslot*))
   -- if ~$aggregate_projection_plain(S, n)
   -- if ~$instance_storage_freeing(S, n)

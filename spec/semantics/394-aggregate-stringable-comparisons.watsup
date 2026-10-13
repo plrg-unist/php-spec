@@ -279,10 +279,6 @@ def $aggregate_projection_plain(S, n) = true
   -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_rows*)
   -- if $property_unique_names(ppropertyslot_rows*)
 def $aggregate_projection_plain(S, n) = false -- otherwise
-def $aggregate_projection_blocked(S, n) = true
-  -- if (HOBJECT n) <- $aggregate_compare_seen(S)
-  -- if $aggregate_projection_plain(S, n)
-def $aggregate_projection_blocked(S, n) = false -- otherwise
 
 def $aggregate_node_value(HARRAY n) = PARRAY n
 def $aggregate_node_value(HOBJECT n) = POBJECT n
