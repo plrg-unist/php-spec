@@ -243,3 +243,13 @@ restored main L/G/E and caller-cut budget; worker R is canceled. Recover with
 reference_orphaned_cv_state.py and orphaned_carrier_validation in the local-CV
 ledger. Preserve parse d5310, syntax-only0db9app0 and unrun c677 marker correction0.
 Physical collection, wider abrupt close and broad returns verification remain OPEN.
+
+M47 is validation only at `0df6172`/387: throwing old-O orphan close source2,
+early102/one saved-f operation EXIT refusal and separate late260 pass. Late fixtures
+start at their own post-D source New/ordinary Exception, preserving the same
+error/line2/pure trace and null Previous at main catch/caller; no delivered r/a.
+Fiber FAILED=true/GRACEFUL=false differs from M46, and final error retirement
+follows the live-caller identity checks. Budget starts at that restored caller.
+Recover reference_orphaned_throw_state.py via orphaned_throw_validation in the
+local-CV ledger; preserve both unrun source-wrapper/origin packets0. No native
+trace/identity, cross-fixture identity, physical collection or returns closure.

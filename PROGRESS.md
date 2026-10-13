@@ -2210,6 +2210,17 @@ worker R, retire modeled allocations, restore main and preserve caller-cut budge
 Parse d531 remains0; corrected paired elaboration0db9 is syntax-only/app0. No runtime
 change, cross-fixture identity, physical collection or broad returns completion.
 
+M47 validates throwing old-O destruction during orphan Fiber close at `0df6172`/387.
+Source/native2 agrees for early/delayed drop. Early102/one refusal authenticates
+original x/O to parked carrier and fresh Exception, distinct from the private
+graceful-exit control; deleting saved f's operation EXIT while retaining the active
+operation registry is heap-valid and refuses publicly.
+Separate late130+130 executions preserve that fresh error/New origin/line2/pure
+trace through main catch/caller with null Previous, then failed Fiber retirement,
+canceled worker R and caller-cut budget. Final request error retirement is separate.
+Both prelaunch wrapper/origin corrections remain unrun0. No runtime change, native
+identity/trace, cross-fixture identity, physical collection or broad returns closure.
+
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
 Per-constant protection survives namespace publication and parked handlers.

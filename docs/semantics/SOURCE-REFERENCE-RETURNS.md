@@ -450,3 +450,12 @@ agrees for early/delayed drop. Separate late135+135 executions follow their own
 pre-drop carrier through active D to graceful, non-returning Fiber retirement,
 main L/G/E, canceled worker R and budget from the restored caller cut. Modeled
 allocation/root retirement is not physical Zend collection; wider returns stay OPEN.
+
+M47 at `0df6172`/387 validates an Exception raised by the selected O destructor
+during orphan close. Source/native2 agrees. Early102/one saved-f operation EXIT refusal
+binds original x/O through parking to fresh ordinary error versus private close
+control. Separate late130+130 executions source-bind ExprThrow versus creation
+New, then preserve the same error/line2/pure trace and null Previous at main
+catch/caller. Failed, non-graceful Fiber termination cancels worker R; caller-cut
+budget and final request error retirement are separate checks. Native messages
+add no identity/trace claim; physical collection and wider returns remain OPEN.

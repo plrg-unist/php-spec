@@ -2767,6 +2767,10 @@ Dropping an orphaned suspended Fiber also validates without a runtime change at
 `27a92e4b`: early D precedes L; delayed drop keeps the carrier through GC and emits
 D between G/E. Source2, early98/two refusals and separate late270 pass, including
 canceled worker R, drained close controls and caller-budget continuation.
+A selected O destructor may instead raise an Exception during orphan close.
+Source2, early102/one refusal and separate late260 validate catch delivery with
+null Previous, preserved modeled trace at the live caller and failed Fiber
+retirement. Native outputs establish messages, without identity or trace claims.
 [Weak Stringable parameters](coverage/semantics/weak-string-parameters-review.json)
 now convert supplied fixed parameters in receive order, preserving caller
 strictness, nominal/callable precedence and the entered formal cell. Existing
