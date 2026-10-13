@@ -1,6 +1,7 @@
 ;; zend_hash_compare and zend_std_compare_objects retain both aggregates and
 ;; protect only the left one until their reached child comparison returns.
 syntax paggregatecompare = {SITE porigin, CASTSITE porigin, OP pbin, LINE int, LEFT poperand, RIGHT poperand, ROOTLEFT pvalue, ROOTRIGHT pvalue, INPUTBASE pbase, CALLER pcallcontext?, OWNER nat, CONSUMER ptask, TAIL ptask*, CAST paggregatecallback}
+syntax paggregatevm = {OBJECT nat?, VM pfibervm}
 
 dec $aggregate_node_value(pnode) : pvalue
 dec $aggregate_property_keys(pstate, ppropertydesc*) : ptbytes*
@@ -31,6 +32,18 @@ dec $aggregate_frame_pair(ptask*) : bool
 dec $aggregate_current_seen(pstate) : pcompareguard*
 dec $aggregate_frame_seen(pstate, pcallcontext?, pframe, pframe*) : pcompareguard*
 dec $aggregate_frames_seen(pstate, pcallcontext?, pframe*) : pcompareguard*
+dec $aggregate_local_seen(pstate) : pcompareguard*
+dec $aggregate_local_declared(pstate, nat) : bool
+dec $aggregate_vm_scope(pstate, paggregatevm) : pstate
+dec $aggregate_suspended_view(pstate, pnode) : paggregatevm*
+dec $aggregate_suspended_views(pstate, pnode*) : paggregatevm*
+dec $aggregate_caller_view(pstate, pfibercaller) : paggregatevm*
+dec $aggregate_caller_views(pstate, pfibercaller*) : paggregatevm*
+dec $aggregate_closer_view(pstate, pfiberclose) : paggregatevm*
+dec $aggregate_closer_views(pstate, pfiberclose*) : paggregatevm*
+dec $aggregate_parked_views(pstate) : paggregatevm*
+dec $aggregate_views_seen(pstate, paggregatevm*) : pcompareguard*
+dec $aggregate_views_declared(pstate, paggregatevm*, nat) : bool
 dec $aggregate_order_values(pbin, pvalue, pvalue) : (pvalue, pvalue)
 dec $aggregate_leaf_values(paggregatecallback, pvalue, pvalue) : (pvalue, pvalue)
 dec $aggregate_order_cast(porder) : bool
@@ -182,7 +195,8 @@ def $aggregate_tasks_declared((AGGREGATE_COMPARE_RESULT paggregatecompare) :: pt
 def $aggregate_tasks_declared(ptask*, n) = false -- otherwise
 def $aggregate_frames_declared(S, pcallcontext?, eps, n) = false
 def $aggregate_frames_declared(S, pcallcontext?, pframe :: pframe_tail*, n) = (($aggregate_frame_seen(S, pcallcontext?, pframe, pframe_tail*) =/= eps /\ $aggregate_tasks_declared(pframe.TODO, n)) \/ $aggregate_frames_declared(S, pframe.CONTEXT, pframe_tail*, n))
-def $aggregate_decl_retained(S, n) = (($aggregate_current_seen(S) =/= eps /\ $aggregate_tasks_declared(S.TODO, n)) \/ $aggregate_frames_declared(S, S.CURRENT, S.FRAMES, n))
+def $aggregate_local_declared(S, n) = (($aggregate_current_seen(S) =/= eps /\ $aggregate_tasks_declared(S.TODO, n)) \/ $aggregate_frames_declared(S, S.CURRENT, S.FRAMES, n))
+def $aggregate_decl_retained(S, n) = ($aggregate_local_declared(S, n) \/ $aggregate_views_declared(S, $aggregate_parked_views(S), n))
 def $aggregate_projection_plain(S, n) = true
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = INSTANCE porigin
@@ -479,8 +493,50 @@ def $aggregate_frame_seen(S, (pcallcontext), pframe, pframe_tail*) = $aggregate_
 def $aggregate_frame_seen(S, pcallcontext?, pframe, pframe_tail*) = eps -- otherwise
 def $aggregate_frames_seen(S, pcallcontext?, eps) = eps
 def $aggregate_frames_seen(S, pcallcontext?, pframe :: pframe_tail*) = $aggregate_frame_seen(S, pcallcontext?, pframe, pframe_tail*) ++ $aggregate_frames_seen(S, pframe.CONTEXT, pframe_tail*)
-def $aggregate_compare_seen(S) = $aggregate_current_seen(S) ++ $aggregate_frames_seen(S, S.CURRENT, S.FRAMES)
-def $aggregate_compare_active(S) = ($aggregate_compare_seen(S) =/= eps)
+def $aggregate_local_seen(S) = $aggregate_current_seen(S) ++ $aggregate_frames_seen(S, S.CURRENT, S.FRAMES)
+
+;; Only actual Fiber owners expose saved VM stacks. Restoring their local view
+;; authenticates the immediate caster/consumer pair without re-entering global
+;; descriptor validation. The views are queries and add no roots or GC owners.
+def $aggregate_vm_scope(S, paggregatevm) = $fiber_vm_restore(S, paggregatevm.VM)[.ACTIVEFIBER = paggregatevm.OBJECT][.COMPLETION = NORMAL][.EVALCONTEXTS = eps][.FILECONTEXTS = eps][.DIRCONTEXT = eps]
+def $aggregate_suspended_view(S, HOBJECT n) = [paggregatevm]
+  -- if (n) =/= S.ACTIVEFIBER
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if pfiber.READY /\ pfiber.STATUS = FIBER_SUSPENDED
+  -- if ~pfiber.RETURNED /\ ~pfiber.FAILED /\ pfiber.ENTRY =/= eps
+  -- if pfiber.VM = (pfibervm)
+  -- if ~pfibervm.GLOBAL
+  -- if pfibervm.TODO = (FIBER_CONTINUE pfiberapi) :: ptask_tail*
+  -- if pfiberapi.OBJECT = n /\ pfiberapi.SEQUENCE = pfiber.SEQUENCE
+  -- if paggregatevm = {OBJECT (n), VM pfibervm}
+  -- if $fiber_continue_valid($aggregate_vm_scope(S, paggregatevm), pfiberapi)
+def $aggregate_suspended_view(S, pnode) = eps -- otherwise
+def $aggregate_suspended_views(S, eps) = eps
+def $aggregate_suspended_views(S, pnode :: pnode_tail*) = $aggregate_suspended_view(S, pnode) ++ $aggregate_suspended_views(S, pnode_tail*)
+def $aggregate_caller_view(S, pfibercaller) = [paggregatevm]
+  -- if pfibercaller <- S.FIBERCALLERS
+  -- if pfibercaller.PREVIOUS =/= S.ACTIVEFIBER
+  -- if pfibercaller.OBJECT = pfibercaller.API.OBJECT
+  -- if $fiber_caller_wait(S, pfibercaller)
+  -- if paggregatevm = {OBJECT pfibercaller.PREVIOUS, VM pfibercaller.VM}
+  -- if $fiber_wait_valid($aggregate_vm_scope(S, paggregatevm), pfibercaller.API)
+def $aggregate_caller_view(S, pfibercaller) = eps -- otherwise
+def $aggregate_caller_views(S, eps) = eps
+def $aggregate_caller_views(S, pfibercaller :: pfibercaller_tail*) = $aggregate_caller_view(S, pfibercaller) ++ $aggregate_caller_views(S, pfibercaller_tail*)
+def $aggregate_closer_view(S, pfiberclose) = [paggregatevm]
+  -- if pfiberclose <- S.FIBERCLOSERS
+  -- if pfiberclose.PREVIOUS =/= S.ACTIVEFIBER
+  -- if $fiber_close_valid(S, pfiberclose)
+  -- if paggregatevm = {OBJECT pfiberclose.PREVIOUS, VM pfiberclose.VM}
+def $aggregate_closer_view(S, pfiberclose) = eps -- otherwise
+def $aggregate_closer_views(S, eps) = eps
+def $aggregate_closer_views(S, pfiberclose :: pfiberclose_tail*) = $aggregate_closer_view(S, pfiberclose) ++ $aggregate_closer_views(S, pfiberclose_tail*)
+def $aggregate_parked_views(S) = $aggregate_suspended_views(S, S.ALLOCATIONS) ++ $aggregate_caller_views(S, S.FIBERCALLERS) ++ $aggregate_closer_views(S, S.FIBERCLOSERS)
+def $aggregate_views_seen(S, eps) = eps
+def $aggregate_views_seen(S, paggregatevm :: paggregatevm_tail*) = $aggregate_local_seen($aggregate_vm_scope(S, paggregatevm)) ++ $aggregate_views_seen(S, paggregatevm_tail*)
+def $aggregate_views_declared(S, eps, n) = false
+def $aggregate_views_declared(S, paggregatevm :: paggregatevm_tail*, n) = ($aggregate_local_declared($aggregate_vm_scope(S, paggregatevm), n) \/ $aggregate_views_declared(S, paggregatevm_tail*, n))
+def $aggregate_compare_seen(S) = $aggregate_local_seen(S) ++ $aggregate_views_seen(S, $aggregate_parked_views(S))
 
 def $aggregate_order_values(pbin, pvalue_left, pvalue_right) = (pvalue_right, pvalue_left)
   -- if pbin = GREATER \/ pbin = GREATEREQUAL
