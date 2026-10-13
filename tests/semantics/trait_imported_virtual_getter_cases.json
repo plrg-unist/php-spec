@@ -1,0 +1,35 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hashes": {
+    "scalar": "42c4d9bcd678f589b03dc21cc62d37440d7b2dc3ea3432af40b38f243375b373"
+  },
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "scalar",
+      "source": "<?php\ntrait ImportedVirtualGetterTrait64 {\n    public int $value {\n        get {\n            echo 'GET:', self::class, '/', static::class, '/', __METHOD__, '|';\n            return $this->answer();\n        }\n    }\n}\nclass ImportedVirtualGetterConsumer64 {\n    use ImportedVirtualGetterTrait64;\n    private function answer(): int { return 13; }\n}\nclass ImportedVirtualGetterGrand64 extends ImportedVirtualGetterConsumer64 {\n    private function answer(): int { return 900; }\n}\n$consumer = new ImportedVirtualGetterConsumer64();\n$grand = new ImportedVirtualGetterGrand64();\n$raw = (array) $consumer;\necho $raw === [] ? 'CEMPTY|' : ($raw === ['value' => null] ? 'CNULL|' : 'CBAD|');\n$raw = (array) $grand;\necho $raw === [] ? 'GEMPTY|' : ($raw === ['value' => null] ? 'GNULL|' : 'GBAD|');\necho $consumer->value, '|';\necho $grand->value, '|';\ntry {\n    $grand->value = 300;\n    echo 'WRITE|';\n} catch (Error $error) {\n    echo 'ERR:', $error->getMessage(), '|';\n}\n$raw = (array) $grand;\necho $raw === [] ? 'GEMPTY|' : ($raw === ['value' => null] ? 'GNULL|' : 'GBAD|');\necho $grand->value, '|';\n",
+      "source_sha256": "9d90807f4e85036f5ccd5506f3a335b0a7ecaaca372a1fea5560866805073c57",
+      "stdout_base64": "Q0VNUFRZfEdFTVBUWXxHRVQ6SW1wb3J0ZWRWaXJ0dWFsR2V0dGVyQ29uc3VtZXI2NC9JbXBvcnRlZFZpcnR1YWxHZXR0ZXJDb25zdW1lcjY0L0ltcG9ydGVkVmlydHVhbEdldHRlclRyYWl0NjQ6OiR2YWx1ZTo6Z2V0fDEzfEdFVDpJbXBvcnRlZFZpcnR1YWxHZXR0ZXJDb25zdW1lcjY0L0ltcG9ydGVkVmlydHVhbEdldHRlckdyYW5kNjQvSW1wb3J0ZWRWaXJ0dWFsR2V0dGVyVHJhaXQ2NDo6JHZhbHVlOjpnZXR8MTN8RVJSOlByb3BlcnR5IEltcG9ydGVkVmlydHVhbEdldHRlckdyYW5kNjQ6OiR2YWx1ZSBpcyByZWFkLW9ubHl8R0VNUFRZfEdFVDpJbXBvcnRlZFZpcnR1YWxHZXR0ZXJDb25zdW1lcjY0L0ltcG9ydGVkVmlydHVhbEdldHRlckdyYW5kNjQvSW1wb3J0ZWRWaXJ0dWFsR2V0dGVyVHJhaXQ2NDo6JHZhbHVlOjpnZXR8MTN8",
+      "stderr_template": "",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "trait-imported-virtual-getter64-scalar-native-deb864a7",
+      "native_raw_sha256": "42c4d9bcd678f589b03dc21cc62d37440d7b2dc3ea3432af40b38f243375b373"
+    }
+  ]
+}
