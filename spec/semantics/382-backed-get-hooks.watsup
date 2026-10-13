@@ -129,6 +129,7 @@ dec $property_hook_backed_over_ordinary(pstate, ppropertydesc, ppropertydesc) : 
 dec $property_hook_ordinary_parent(pstate, ppropertydesc, nat) : ppropertydesc?
 dec $property_hook_plain_over_backed(pstate, ppropertydesc, ppropertydesc, nat) : bool
 dec $property_hook_plain_edge(pstate, ppropertydesc, ppropertydesc, nat) : bool
+dec $property_hook_plain_covariance_parent(pstate, ppropertydesc, ppropertydesc, nat) : bool
 dec $property_hook_plain_getter_walk(pstate, ppropertydesc, nat) : ppropertydesc?
 dec $property_hook_getter(pstate, ppropertydesc) : ppropertydesc?
 dec $property_hook_effective_origin(pstate, ppropertydesc) : porigin?
@@ -849,8 +850,27 @@ def $property_hook_ordinary_backing(S, ppropertydesc, n) = true
   -- if $property_hook_ordinary_parent(S, ppropertydesc, n) = (ppropertydesc_parent)
   -- if $property_hook_unbacked_over_ordinary(S, ppropertydesc_parent, ppropertydesc, n)
 def $property_hook_ordinary_backing(S, ppropertydesc, n) = false -- otherwise
+def $property_hook_plain_covariance_parent(S, ppropertydesc_parent, ppropertydesc_child, n) = true
+  -- if $(n > 0)
+  -- if ppropertydesc_parent.NAME = ppropertydesc_child.NAME /\ ppropertydesc_parent.ORIGIN =/= ppropertydesc_child.ORIGIN
+  -- if ppropertydesc_parent.TYPE =/= eps /\ ppropertydesc_child.TYPE =/= eps
+  -- if ppropertydesc_parent.VISIBILITY = PROPERTY_PUBLIC /\ ~ppropertydesc_parent.STATIC /\ ~ppropertydesc_parent.READONLY /\ ~ppropertydesc_parent.FINAL /\ ppropertydesc_parent.SETVISIBILITY = eps
+  -- if ppropertydesc_child.VISIBILITY = PROPERTY_PUBLIC /\ ~ppropertydesc_child.STATIC /\ ~ppropertydesc_child.READONLY /\ ~ppropertydesc_child.FINAL /\ ppropertydesc_child.SETVISIBILITY = eps
+  -- if $property_hook_virtual_chain(S, ppropertydesc_parent, n)
+  -- if ppropertydesc_child.ORIGIN = porigin_property
+  -- if $property_declaring_class(S.CLASSES, porigin_property) = (porigin_child)
+  -- if $class_at(S.CLASSES, porigin_child) = (pclassdesc_child)
+  -- if $hook_property_at(pclassdesc_child.PROPERTIES, porigin_property) = (ppropertydesc_child)
+  -- if porigin_property = PORIGIN n_child pcpath_child
+  -- if $(|pcpath_child| >= 2)
+  -- if pcpath_group = pcpath_child[0:$nabs($(|pcpath_child| - 2))]
+  -- if pcpath_child = pcpath_group ++ [PCFIELD 3, PCINDEX 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n_child pcpath_group) = (NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text_name) metadata_name) phpType5 metadata_item])) (SEQUENCE eps) metadata_child)
+  -- if flags <- [0,1] /\ ppropertydesc_child.NAME = $base64(text_name) /\ ppropertydesc_child.KEY = ppropertydesc_child.NAME
+  -- if $property_hook_origin(S, ppropertydesc_child) = eps
+def $property_hook_plain_covariance_parent(S, ppropertydesc_parent, ppropertydesc_child, n) = false -- otherwise
 def $property_hook_plain_edge(S, ppropertydesc_parent, ppropertydesc_child, n) = true
-  -- if ppropertydesc_parent.NAME = ppropertydesc_child.NAME /\ ppropertydesc_parent.TYPE = ppropertydesc_child.TYPE /\ ppropertydesc_parent.ORIGIN =/= ppropertydesc_child.ORIGIN
+  -- if ppropertydesc_parent.NAME = ppropertydesc_child.NAME /\ (ppropertydesc_parent.TYPE = ppropertydesc_child.TYPE \/ ($property_hook_plain_covariance_parent(S, ppropertydesc_parent, ppropertydesc_child, n) /\ $property_hook_covariance(S, ppropertydesc_parent, ppropertydesc_child) = PVCOMPATIBLE)) /\ ppropertydesc_parent.ORIGIN =/= ppropertydesc_child.ORIGIN
   -- if ppropertydesc_parent.VISIBILITY = PROPERTY_PUBLIC /\ ~ppropertydesc_parent.STATIC /\ ~ppropertydesc_parent.READONLY /\ ~ppropertydesc_parent.FINAL /\ ppropertydesc_parent.SETVISIBILITY = eps
   -- if ppropertydesc_child.VISIBILITY = PROPERTY_PUBLIC /\ ~ppropertydesc_child.STATIC /\ ~ppropertydesc_child.READONLY /\ ~ppropertydesc_child.FINAL /\ ppropertydesc_child.SETVISIBILITY = eps
   -- if $property_hook_ordinary_parent(S, ppropertydesc_child, n) = (ppropertydesc_parent)
@@ -907,6 +927,9 @@ def $property_hook_covariance_parent(S, ppropertydesc_parent, ppropertydesc_chil
   -- if $property_declaring_class(S.CLASSES, porigin_property) = (porigin_child)
   -- if $class_at(S.CLASSES, porigin_child) = (pclassdesc_child)
   -- if $hook_property_at(pclassdesc_child.PROPERTIES, porigin_property) = (ppropertydesc_child)
+def $property_hook_covariance_parent(S, ppropertydesc_parent, ppropertydesc_child) = true
+  -- if ~$trait_property_source_fast_equal(S, ppropertydesc_parent, ppropertydesc_child)
+  -- if $property_hook_plain_covariance_parent(S, ppropertydesc_parent, ppropertydesc_child, |S.CLASSES|)
 def $property_hook_covariance_parent(S, ppropertydesc_parent, ppropertydesc_child) = false -- otherwise
 ;; A typed getter's return declaration cannot be removed by its child.
 ;; Untyped-parent additions still reach the later ordinary property-type check.
@@ -998,6 +1021,12 @@ dec $property_hook_covariance_message(pstate, ppropertydesc, ppropertydesc, pvre
 def $property_hook_covariance_message(S, ppropertydesc_parent, ppropertydesc_child, PVINCOMPATIBLE) = ($ptascii("Declaration of ") ++ ptbytes_child ++ $ptascii(" must be compatible with ") ++ ptbytes_parent)
   -- if $property_hook_get_declaration(S, ppropertydesc_child) = (ptbytes_child)
   -- if $property_hook_get_declaration(S, ppropertydesc_parent) = (ptbytes_parent)
+def $property_hook_covariance_message(S, ppropertydesc_parent, ppropertydesc_child, PVINCOMPATIBLE) = ($ptascii("Type of ") ++ pclassdesc_child.NAME ++ $ptascii("::$") ++ ppropertydesc_child.NAME ++ $ptascii(" must be subtype of ") ++ $pmtypename(ppropertydesc_parent.TYPE, $trait_data_scope(S, pclassdesc_parent)) ++ $ptascii(" (as in class ") ++ pclassdesc_parent.NAME ++ [41])
+  -- if $property_hook_plain_covariance_parent(S, ppropertydesc_parent, ppropertydesc_child, |S.CLASSES|)
+  -- if $property_declaring_class(S.CLASSES, ppropertydesc_parent.ORIGIN) = (porigin_parent)
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if $property_declaring_class(S.CLASSES, ppropertydesc_child.ORIGIN) = (porigin_child)
+  -- if $class_at(S.CLASSES, porigin_child) = (pclassdesc_child)
 def $property_hook_covariance_message(S, ppropertydesc_parent, ppropertydesc_child, pvresult) = eps -- otherwise
 def $trait_property_inherit_message(S, ptbytes_child, ptbytes_parent, ppropertydesc_parent, ppropertydesc_child) = $property_hook_covariance_message(S, ppropertydesc_parent, ppropertydesc_child, $property_hook_covariance(S, ppropertydesc_parent, ppropertydesc_child))
   -- if $property_hook_covariance_parent(S, ppropertydesc_parent, ppropertydesc_child)
