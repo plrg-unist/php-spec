@@ -13166,17 +13166,6 @@ CASES = {
             '(HOBJECT n_other) <- S_done.ALLOCATIONS',
             '$heap_owners($heap_graph(S_done), HOBJECT n_other) = 1',
             'S_done.STORE[n_other_cell] = S.STORE[n_other_cell]',
-            'S_nonleaf = $objectprops_mark(S[.OBJECTPROPS = $objectprops_set(S.OBJECTPROPS, n_other, [ppropertyslot[.DECL = eps]])], n_other)',
-            '$objectprops_valid(S_nonleaf, S_nonleaf.OBJECTPROPS)',
-            '$node_children(S_nonleaf, HOBJECT n_other) = [HOBJECT n_key]',
-            '$heap_valid($heap_graph(S_nonleaf))',
-            '$call_descriptors_valid(S_nonleaf)',
-            '$call_task_valid(S_nonleaf, GC_TRACE pgccall)',
-            '$weakmap_nonempty(S_nonleaf, S_nonleaf.ALLOCATIONS)',
-            '$weakmap_gc_map(S_nonleaf, S_nonleaf.ALLOCATIONS) = eps',
-            'PhpStep: S_nonleaf ~> S_denied',
-            'S_denied.COMPLETION = UNSUPPORTED "WeakMap ephemeron collection"',
-            'S_denied[.COMPLETION = NORMAL] = S_nonleaf',
         ],
     },
     'weak-map-notification-sequence-second-insertion-64': {'source': '<?php\n'
@@ -14617,21 +14606,24 @@ CASES = {
                 '$heap_valid($heap_graph(S_routed_plan))',
                 '$gc_pass_count(pgcplan_routed) = 0',
                 'pgcplan_routed.FREESET = eps']},
-    'weak-map-gc-destructor-boundary-66': {'source': '<?php\n'
+    'weak-map-gc-destructor-independent-67': {'source': '<?php\n'
                'class EphemeronValue {\n'
                '    public $key = null;\n'
                '    public function __destruct() {\n'
-               '        global $map, $keyWeak, $valueWeak, $other;\n'
+               '        global $map, $keyWeak, $valueWeak, $other, $otherWeak;\n'
                '        echo ($keyWeak->get() === $this->key ? "callback-key-live|" : '
                '"callback-key-other|");\n'
                '        echo ($valueWeak->get() === $this ? "callback-value-live|" : '
                '"callback-value-other|");\n'
                '        echo ($map[$this->key] === $this ? "entry-live|" : "entry-other|");\n'
                '        $other = new stdClass();\n'
+               '        $other->self = $other;\n'
+               '        $otherWeak = WeakReference::create($other);\n'
                '        echo "outside|D|";\n'
                '    }\n'
                '}\n'
                '$other = null;\n'
+               '$otherWeak = null;\n'
                '$map = new WeakMap();\n'
                '$key = new stdClass();\n'
                '$value = new EphemeronValue();\n'
@@ -14647,12 +14639,13 @@ CASES = {
                'echo gc_collect_cycles(), "|";\n'
                'echo ($keyWeak->get() === null ? "key-null|" : "key-live|");\n'
                'echo ($valueWeak->get() === null ? "value-null|" : "value-live|");\n'
-               'echo ($other === null ? "other-null|" : "other-live|");\n'
+               'echo ($otherWeak->get() === $other ? "other-same|" : "other-other|");\n'
                'unset($other);\n'
                'echo "again|";\n'
                'echo gc_collect_cycles(), "|";\n'
                'echo ($keyWeak->get() === null ? "key-null|" : "key-live|");\n'
                'echo ($valueWeak->get() === null ? "value-null|" : "value-live|");\n'
+               'echo ($otherWeak->get() === null ? "other-null|" : "other-live|");\n'
                'echo ($mapWeak->get() === $map ? "map-live|" : "map-other|");\n'
                'unset($map);\n'
                'echo ($mapWeak->get() === null ? "map-null|" : "map-live|");\n'
@@ -14664,46 +14657,382 @@ CASES = {
                 'S.HELD = eps',
                 'S.ACTIVEFIBER = eps',
                 'S.GC.WORKER = eps',
+                'S.GC.ENABLED',
                 'pconfigcall = pgccall.CALL',
                 'pconfigcall.KIND = INTRINSIC_GC_COLLECT',
-                '$call_task_valid(S, GC_TRACE pgccall)',
+                'pconfigcall.SENT = eps',
+                'pconfigcall.OWNER = eps',
+                'S.ORIGIN = (pconfigcall.SITE)',
+                '$origin_node(S.SOURCES, pconfigcall.SITE) = (NExprFuncCall name (SEQUENCE eps) metadata)',
                 '$lookup(S.ENV, $ptascii("map")) = (n_map_cell)',
                 'S.STORE[n_map_cell] = DEFINED (POBJECT n_map)',
                 'S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)',
                 'n_key = pweakmapentry.KEY',
                 'pweakmapentry.VALUE = POBJECT n_value',
+                'S.OBJECTS[n_key] = STDINSTANCE',
                 'S.OBJECTS[n_value] = INSTANCE porigin_value',
                 '$class_at(S.CLASSES, porigin_value) = (pclassdesc)',
                 'pclassdesc.METHODS = [pmethoddesc]',
                 '$destructor_method(S, n_value) = (pmethoddesc)',
                 '$weakmap_gc_methods(S, n_value, pclassdesc)',
                 '$declaration_history_valid(S)',
-                'n_value <- S.DESTRUCTION.CALLED',
-                '$objectprops_at(S.OBJECTPROPS, n_value) = ([ppropertyslot])',
-                'ppropertyslot.STATE = PROP_VALUE (DIRECT (POBJECT n_key))',
+                '$objectprops_at(S.OBJECTPROPS, n_value) = ([ppropertyslot_value])',
+                'ppropertyslot_value.STATE = PROP_VALUE (DIRECT (POBJECT n_key))',
+                '$node_children(S, HOBJECT n_key) = eps',
+                '$node_children(S, HOBJECT n_value) = [HOBJECT n_key]',
+                '$node_children(S, HOBJECT n_map) = [HOBJECT n_value]',
+                '$lookup(S.ENV, $ptascii("key")) = eps',
+                '$lookup(S.ENV, $ptascii("value")) = eps',
                 '$lookup(S.ENV, $ptascii("other")) = (n_other_cell)',
                 'S.STORE[n_other_cell] = DEFINED (POBJECT n_other)',
                 'S.OBJECTS[n_other] = STDINSTANCE',
-                '$node_children(S, HOBJECT n_other) = eps',
+                '~$instance_storage_freeing(S, n_other)',
+                'S.GC.ACTIVE = (pgccall)',
+                'S.GC.PLAN = (pgcplan)',
+                'pgcplan.CALL = pgccall',
+                'pgcplan.DTORS = [HOBJECT n_value]',
+                'pgcplan.FREESET = eps',
+                'pgcplan.DONE = [HOBJECT n_value]',
+                'pgcplan.STEPS = [GC_CALLED (HOBJECT n_value)]',
+                'pgcplan.INDEX = 1',
+                'pgccall.PASS = 1',
+                'pgccall.TOTAL = 0',
+                'S.DESTRUCTION.CALLED = [n_value]',
+                'S.DESTRUCTION.CALLS = eps',
+                '~$destructor_uncalled_node(S, HOBJECT n_value)',
+                '$call_task_valid(S, GC_TRACE pgccall)',
                 '$objectprops_valid(S, S.OBJECTPROPS)',
                 '$call_descriptors_valid(S)',
+                '$weakref_state_valid(S)',
+                '$gc_state_valid(S)',
                 'H = $heap_graph(S)',
                 '$heap_valid(H)',
-                '$heap_owners(H, HOBJECT n_other) = 1',
-                '(HOBJECT n_other) <- $heap_reach(H.ROOTS, eps, $weakmap_gc_strip(H.EDGES, n_map, n_value))',
+                '(HCELL n_map_cell) <- H.ROOTS',
+                '(HCELL n_other_cell) <- H.ROOTS',
+                '$heap_owners(H, HOBJECT n_map) = 1',
+                '$heap_owners(H, HOBJECT n_value) = 1',
+                '$heap_owners(H, HOBJECT n_other) = 2',
                 '$weakmap_gc_shape(S, n_map)',
-                'S_nonleaf = $objectprops_mark(S[.OBJECTPROPS = $objectprops_set(S.OBJECTPROPS, n_other, '
-                '[ppropertyslot[.DECL = eps]])], n_other)',
-                '$objectprops_valid(S_nonleaf, S_nonleaf.OBJECTPROPS)',
-                '$node_children(S_nonleaf, HOBJECT n_other) = [HOBJECT n_key]',
-                '$heap_valid($heap_graph(S_nonleaf))',
-                '$call_descriptors_valid(S_nonleaf)',
-                '$call_task_valid(S_nonleaf, GC_TRACE pgccall)',
-                '$weakmap_nonempty(S_nonleaf, S_nonleaf.ALLOCATIONS)',
-                '$weakmap_gc_map(S_nonleaf, S_nonleaf.ALLOCATIONS) = eps',
-                'PhpStep: S_nonleaf ~> S_denied',
-                'S_denied.COMPLETION = UNSUPPORTED "WeakMap ephemeron collection"',
-                'S_denied[.COMPLETION = NORMAL] = S_nonleaf']},
+                '$weakmap_gc_map(S, S.ALLOCATIONS) = (n_map)',
+                'S.EVENTS = [OUTPUT $ptascii("key-live|"), OUTPUT $ptascii("value-live|"), OUTPUT '
+                '$ptascii("collect|"), OUTPUT $ptascii("callback-key-live|"), OUTPUT '
+                '$ptascii("callback-value-live|"), OUTPUT $ptascii("entry-live|"), OUTPUT '
+                '$ptascii("outside|D|")]',
+                '$lookup(S.ENV, $ptascii("keyWeak")) = (n_key_wrapper_cell)',
+                'S.STORE[n_key_wrapper_cell] = DEFINED (POBJECT n_key_wrapper)',
+                '$weakref_get(S, n_key_wrapper) = POBJECT n_key',
+                '$node_children(S, HOBJECT n_key_wrapper) = eps',
+                '$lookup(S.ENV, $ptascii("valueWeak")) = (n_value_wrapper_cell)',
+                'S.STORE[n_value_wrapper_cell] = DEFINED (POBJECT n_value_wrapper)',
+                '$weakref_get(S, n_value_wrapper) = POBJECT n_value',
+                '$node_children(S, HOBJECT n_value_wrapper) = eps',
+                '$lookup(S.ENV, $ptascii("mapWeak")) = (n_map_wrapper_cell)',
+                'S.STORE[n_map_wrapper_cell] = DEFINED (POBJECT n_map_wrapper)',
+                '$weakref_get(S, n_map_wrapper) = POBJECT n_map',
+                '$node_children(S, HOBJECT n_map_wrapper) = eps',
+                '$lookup(S.ENV, $ptascii("otherWeak")) = (n_other_wrapper_cell)',
+                'S.STORE[n_other_wrapper_cell] = DEFINED (POBJECT n_other_wrapper)',
+                '$weakref_get(S, n_other_wrapper) = POBJECT n_other',
+                '$node_children(S, HOBJECT n_other_wrapper) = eps',
+                '$objectprops_at(S.OBJECTPROPS, n_other) = ([ppropertyslot_self])',
+                'ppropertyslot_self.NAME = $ptascii("self")',
+                'ppropertyslot_self.DECL = eps',
+                'ppropertyslot_self.STATE = PROP_VALUE (DIRECT (POBJECT n_other))',
+                '$node_children(S, HOBJECT n_other) = [HOBJECT n_other]',
+                '$heap_owners(H, HOBJECT n_key) = 1',
+                'H_gc = $gc_graph(S)',
+                '$heap_valid(H_gc)',
+                'H_gc.EDGES = $weakmap_gc_strip($heap_live_edges(H.EDGES, H_gc.NODES), n_map, n_value)',
+                '(HEDGE (HOBJECT n_other) (HOBJECT n_other)) <- H_gc.EDGES',
+                '(HOBJECT n_other) <- $heap_reach(H_gc.ROOTS, eps, H_gc.EDGES)',
+                '$heap_intersect([HOBJECT n_key, HOBJECT n_value], $heap_reach(H_gc.ROOTS, eps, '
+                'H_gc.EDGES)) = eps',
+                'S_uncalled = S[.DESTRUCTION.CALLED = eps]',
+                '$heap_graph(S_uncalled) = H',
+                '$objectprops_valid(S_uncalled, S_uncalled.OBJECTPROPS)',
+                '$weakmap_gc_methods(S_uncalled, n_value, pclassdesc)',
+                '~$weakmap_gc_objects(S_uncalled, S_uncalled.ALLOCATIONS, n_map, n_key, n_value)',
+                '~$weakmap_gc_shape(S_uncalled, n_map)',
+                '$weakmap_gc_map(S_uncalled, S_uncalled.ALLOCATIONS) = eps',
+                'S_paused = $drive_steps(S, 0)',
+                'S_paused = S[.COMPLETION = BUDGET]',
+                'PhpStep: S ~> S_plan',
+                'S_plan.COMPLETION = NORMAL',
+                'S_plan.TODO = (GC_DTORS pgcplan_next) :: ptask_tail*',
+                'pgcplan_next.CALL = pgccall',
+                'pgcplan_next.DTORS = eps',
+                '$heap_subset(pgcplan_next.FREESET, [HOBJECT n_key, HOBJECT n_value])',
+                '$heap_subset([HOBJECT n_key, HOBJECT n_value], pgcplan_next.FREESET)',
+                '~((HOBJECT n_other) <- pgcplan_next.FREESET)',
+                '$gc_pass_count(pgcplan_next) = 2',
+                '$gc_plan_valid(S_plan, pgcplan_next)',
+                '$drive_steps(S_paused[.COMPLETION = NORMAL], 1)[.COMPLETION = NORMAL] = S_plan',
+                'PhpStep: S_plan ~> S_free',
+                'S_free.TODO = (GC_FREE pgcplan_next) :: ptask_tail*',
+                '$call_task_valid(S_free, GC_FREE pgcplan_next)',
+                '$gc_nested_boundary(S_free, pgcplan_next)',
+                'S_prepared = $weakmap_gc_prepare(S_free, pgcplan_next)',
+                'S_prepared = S_free[.OBJECTS[n_map] = WEAKMAP eps]',
+                '~$gc_nested_boundary(S_prepared, pgcplan_next)',
+                '$gc_free_prepare(S_free, pgcplan_next) = (S_prepared)',
+                'S_held = S_free[.HELD = [HOBJECT n_key]]',
+                '$heap_valid($heap_graph(S_held))',
+                '~$call_task_valid(S_held, GC_FREE pgcplan_next)',
+                '$weakmap_gc_prepare(S_held, pgcplan_next) = S_held',
+                '$gc_free_prepare(S_held, pgcplan_next) = eps',
+                'PhpStep: S_free ~> S_done',
+                'S_done.COMPLETION = NORMAL',
+                'S_done.TODO = ptask_tail*',
+                'S_done.RESULT = KNOWN (PINT 2)',
+                'S_done.GC.ACTIVE = eps',
+                'S_done.GC.PLAN = eps',
+                'S_done.OBJECTS[n_map] = WEAKMAP eps',
+                '~((HOBJECT n_key) <- S_done.ALLOCATIONS)',
+                '~((HOBJECT n_value) <- S_done.ALLOCATIONS)',
+                '(HOBJECT n_other) <- S_done.ALLOCATIONS',
+                '$node_children(S_done, HOBJECT n_other) = [HOBJECT n_other]',
+                '$weakref_get(S_done, n_key_wrapper) = PNULL',
+                '$weakref_get(S_done, n_value_wrapper) = PNULL',
+                '$weakref_get(S_done, n_other_wrapper) = POBJECT n_other',
+                '$weakref_get(S_done, n_map_wrapper) = POBJECT n_map',
+                'S_done.DESTRUCTION.CALLED = S.DESTRUCTION.CALLED',
+                'S_done.EVENTS = S.EVENTS',
+                '$gc_state_valid(S_done)',
+                '$call_descriptors_valid(S_done)',
+                '$heap_valid($heap_graph(S_done))',
+                '$drive_steps(S, 3)[.COMPLETION = NORMAL] = S_done']},
+    'weak-map-gc-destructor-key-reachable-67': {'source': '<?php\n'
+               'class EphemeronValue {\n'
+               '    public $key = null;\n'
+               '    public function __destruct() {\n'
+               '        global $map, $keyWeak, $valueWeak, $other, $otherWeak;\n'
+               '        echo ($keyWeak->get() === $this->key ? "callback-key-live|" : '
+               '"callback-key-other|");\n'
+               '        echo ($valueWeak->get() === $this ? "callback-value-live|" : '
+               '"callback-value-other|");\n'
+               '        echo ($map[$this->key] === $this ? "entry-live|" : "entry-other|");\n'
+               '        $other = new stdClass();\n'
+               '        $other->self = $other;\n'
+               '        $other->key = $this->key;\n'
+               '        $otherWeak = WeakReference::create($other);\n'
+               '        echo "outside|D|";\n'
+               '    }\n'
+               '}\n'
+               '$other = null;\n'
+               '$otherWeak = null;\n'
+               '$map = new WeakMap();\n'
+               '$key = new stdClass();\n'
+               '$value = new EphemeronValue();\n'
+               '$keyWeak = WeakReference::create($key);\n'
+               '$valueWeak = WeakReference::create($value);\n'
+               '$mapWeak = WeakReference::create($map);\n'
+               '$map[$key] = $value;\n'
+               '$value->key = $key;\n'
+               'unset($value, $key);\n'
+               'echo ($keyWeak->get() === null ? "key-null|" : "key-live|");\n'
+               'echo ($valueWeak->get() === null ? "value-null|" : "value-live|");\n'
+               'echo "collect|";\n'
+               'echo gc_collect_cycles(), "|";\n'
+               'echo ($keyWeak->get() === null ? "key-null|" : "key-live|");\n'
+               'echo ($valueWeak->get() === null ? "value-null|" : "value-live|");\n'
+               'echo ($otherWeak->get() === $other ? "other-same|" : "other-other|");\n'
+               'unset($other);\n'
+               'echo "again|";\n'
+               'echo gc_collect_cycles(), "|";\n'
+               'echo ($keyWeak->get() === null ? "key-null|" : "key-live|");\n'
+               'echo ($valueWeak->get() === null ? "value-null|" : "value-live|");\n'
+               'echo ($otherWeak->get() === null ? "other-null|" : "other-live|");\n'
+               'echo ($mapWeak->get() === $map ? "map-live|" : "map-other|");\n'
+               'unset($map);\n'
+               'echo ($mapWeak->get() === null ? "map-null|" : "map-live|");\n'
+               'echo "END";\n',
+     'stage': 'S.TODO = (GC_TRACE pgccall) :: ptask_tail* -- if pgccall.PASS = 1',
+     'checks': ['S.COMPLETION = NORMAL',
+                'S.CURRENT = eps',
+                'S.FRAMES = eps',
+                'S.HELD = eps',
+                'S.ACTIVEFIBER = eps',
+                'S.GC.WORKER = eps',
+                'S.GC.ENABLED',
+                'pconfigcall = pgccall.CALL',
+                'pconfigcall.KIND = INTRINSIC_GC_COLLECT',
+                'pconfigcall.SENT = eps',
+                'pconfigcall.OWNER = eps',
+                'S.ORIGIN = (pconfigcall.SITE)',
+                '$origin_node(S.SOURCES, pconfigcall.SITE) = (NExprFuncCall name (SEQUENCE eps) metadata)',
+                '$lookup(S.ENV, $ptascii("map")) = (n_map_cell)',
+                'S.STORE[n_map_cell] = DEFINED (POBJECT n_map)',
+                'S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)',
+                'n_key = pweakmapentry.KEY',
+                'pweakmapentry.VALUE = POBJECT n_value',
+                'S.OBJECTS[n_key] = STDINSTANCE',
+                'S.OBJECTS[n_value] = INSTANCE porigin_value',
+                '$class_at(S.CLASSES, porigin_value) = (pclassdesc)',
+                'pclassdesc.METHODS = [pmethoddesc]',
+                '$destructor_method(S, n_value) = (pmethoddesc)',
+                '$weakmap_gc_methods(S, n_value, pclassdesc)',
+                '$declaration_history_valid(S)',
+                '$objectprops_at(S.OBJECTPROPS, n_value) = ([ppropertyslot_value])',
+                'ppropertyslot_value.STATE = PROP_VALUE (DIRECT (POBJECT n_key))',
+                '$node_children(S, HOBJECT n_key) = eps',
+                '$node_children(S, HOBJECT n_value) = [HOBJECT n_key]',
+                '$node_children(S, HOBJECT n_map) = [HOBJECT n_value]',
+                '$lookup(S.ENV, $ptascii("key")) = eps',
+                '$lookup(S.ENV, $ptascii("value")) = eps',
+                '$lookup(S.ENV, $ptascii("other")) = (n_other_cell)',
+                'S.STORE[n_other_cell] = DEFINED (POBJECT n_other)',
+                'S.OBJECTS[n_other] = STDINSTANCE',
+                '~$instance_storage_freeing(S, n_other)',
+                'S.GC.ACTIVE = (pgccall)',
+                'S.GC.PLAN = (pgcplan)',
+                'pgcplan.CALL = pgccall',
+                'pgcplan.DTORS = [HOBJECT n_value]',
+                'pgcplan.FREESET = eps',
+                'pgcplan.DONE = [HOBJECT n_value]',
+                'pgcplan.STEPS = [GC_CALLED (HOBJECT n_value)]',
+                'pgcplan.INDEX = 1',
+                'pgccall.PASS = 1',
+                'pgccall.TOTAL = 0',
+                'S.DESTRUCTION.CALLED = [n_value]',
+                'S.DESTRUCTION.CALLS = eps',
+                '~$destructor_uncalled_node(S, HOBJECT n_value)',
+                '$call_task_valid(S, GC_TRACE pgccall)',
+                '$objectprops_valid(S, S.OBJECTPROPS)',
+                '$call_descriptors_valid(S)',
+                '$weakref_state_valid(S)',
+                '$gc_state_valid(S)',
+                'H = $heap_graph(S)',
+                '$heap_valid(H)',
+                '(HCELL n_map_cell) <- H.ROOTS',
+                '(HCELL n_other_cell) <- H.ROOTS',
+                '$heap_owners(H, HOBJECT n_map) = 1',
+                '$heap_owners(H, HOBJECT n_value) = 1',
+                '$heap_owners(H, HOBJECT n_other) = 2',
+                '$weakmap_gc_shape(S, n_map)',
+                '$weakmap_gc_map(S, S.ALLOCATIONS) = (n_map)',
+                'S.EVENTS = [OUTPUT $ptascii("key-live|"), OUTPUT $ptascii("value-live|"), OUTPUT '
+                '$ptascii("collect|"), OUTPUT $ptascii("callback-key-live|"), OUTPUT '
+                '$ptascii("callback-value-live|"), OUTPUT $ptascii("entry-live|"), OUTPUT '
+                '$ptascii("outside|D|")]',
+                '$lookup(S.ENV, $ptascii("keyWeak")) = (n_key_wrapper_cell)',
+                'S.STORE[n_key_wrapper_cell] = DEFINED (POBJECT n_key_wrapper)',
+                '$weakref_get(S, n_key_wrapper) = POBJECT n_key',
+                '$node_children(S, HOBJECT n_key_wrapper) = eps',
+                '$lookup(S.ENV, $ptascii("valueWeak")) = (n_value_wrapper_cell)',
+                'S.STORE[n_value_wrapper_cell] = DEFINED (POBJECT n_value_wrapper)',
+                '$weakref_get(S, n_value_wrapper) = POBJECT n_value',
+                '$node_children(S, HOBJECT n_value_wrapper) = eps',
+                '$lookup(S.ENV, $ptascii("mapWeak")) = (n_map_wrapper_cell)',
+                'S.STORE[n_map_wrapper_cell] = DEFINED (POBJECT n_map_wrapper)',
+                '$weakref_get(S, n_map_wrapper) = POBJECT n_map',
+                '$node_children(S, HOBJECT n_map_wrapper) = eps',
+                '$lookup(S.ENV, $ptascii("otherWeak")) = (n_other_wrapper_cell)',
+                'S.STORE[n_other_wrapper_cell] = DEFINED (POBJECT n_other_wrapper)',
+                '$weakref_get(S, n_other_wrapper) = POBJECT n_other',
+                '$node_children(S, HOBJECT n_other_wrapper) = eps',
+                '$objectprops_at(S.OBJECTPROPS, n_other) = ([ppropertyslot_self, ppropertyslot_key])',
+                'ppropertyslot_self.NAME = $ptascii("self")',
+                'ppropertyslot_self.DECL = eps',
+                'ppropertyslot_self.STATE = PROP_VALUE (DIRECT (POBJECT n_other))',
+                'ppropertyslot_key.NAME = $ptascii("key")',
+                'ppropertyslot_key.DECL = eps',
+                'ppropertyslot_key.STATE = PROP_VALUE (DIRECT (POBJECT n_key))',
+                '$node_children(S, HOBJECT n_other) = [HOBJECT n_other, HOBJECT n_key]',
+                '$heap_owners(H, HOBJECT n_key) = 2',
+                'H_gc = $gc_graph(S)',
+                '$heap_valid(H_gc)',
+                'H_gc.EDGES = $heap_live_edges(H.EDGES, H_gc.NODES)',
+                '$heap_subset([HOBJECT n_map, HOBJECT n_other, HOBJECT n_key, HOBJECT n_value], '
+                '$heap_reach(H_gc.ROOTS, eps, H_gc.EDGES))',
+                'S_uncalled = S[.DESTRUCTION.CALLED = eps]',
+                '$heap_graph(S_uncalled) = H',
+                '$objectprops_valid(S_uncalled, S_uncalled.OBJECTPROPS)',
+                '$weakmap_gc_methods(S_uncalled, n_value, pclassdesc)',
+                '~$weakmap_gc_objects(S_uncalled, S_uncalled.ALLOCATIONS, n_map, n_key, n_value)',
+                '~$weakmap_gc_shape(S_uncalled, n_map)',
+                '$weakmap_gc_map(S_uncalled, S_uncalled.ALLOCATIONS) = eps',
+                'PhpStep: S ~> S_plan',
+                'S_plan.COMPLETION = NORMAL',
+                'S_plan.TODO = (GC_DTORS pgcplan_next) :: ptask_tail*',
+                'pgcplan_next.CALL = pgccall',
+                'pgcplan_next.DTORS = eps',
+                'pgcplan_next.FREESET = eps',
+                '$gc_pass_count(pgcplan_next) = 0',
+                '$gc_plan_valid(S_plan, pgcplan_next)',
+                'PhpStep: S_plan ~> S_free',
+                'S_free.TODO = (GC_FREE pgcplan_next) :: ptask_tail*',
+                '$weakmap_gc_prepare(S_free, pgcplan_next) = S_free',
+                '$gc_free_prepare(S_free, pgcplan_next) = (S_free)',
+                'PhpStep: S_free ~> S_done',
+                'S_done.COMPLETION = NORMAL',
+                'S_done.TODO = ptask_tail*',
+                'S_done.RESULT = KNOWN (PINT 0)',
+                'S_done.ALLOCATIONS = S.ALLOCATIONS',
+                'S_done.OBJECTS = S.OBJECTS',
+                '$weakref_get(S_done, n_key_wrapper) = POBJECT n_key',
+                '$weakref_get(S_done, n_value_wrapper) = POBJECT n_value',
+                '$weakref_get(S_done, n_other_wrapper) = POBJECT n_other',
+                'S_done.DESTRUCTION.CALLED = S.DESTRUCTION.CALLED',
+                'S_done.EVENTS = S.EVENTS',
+                '$gc_state_valid(S_done)',
+                '$call_descriptors_valid(S_done)',
+                '$heap_valid($heap_graph(S_done))',
+                '$drive_steps(S, 3)[.COMPLETION = NORMAL] = S_done',
+                'S_unheld = S[.STORE[n_other_cell] = DEFINED PNULL]',
+                '$objectprops_valid(S_unheld, S_unheld.OBJECTPROPS)',
+                '$call_descriptors_valid(S_unheld)',
+                '$call_task_valid(S_unheld, GC_TRACE pgccall)',
+                '$heap_valid($heap_graph(S_unheld))',
+                '$heap_owners($heap_graph(S_unheld), HOBJECT n_other) = 1',
+                '$weakmap_gc_shape(S_unheld, n_map)',
+                'H_unheld = $gc_graph(S_unheld)',
+                'H_unheld.EDGES = $weakmap_gc_strip($heap_live_edges($heap_graph(S_unheld).EDGES, '
+                'H_unheld.NODES), n_map, n_value)',
+                '$heap_intersect([HOBJECT n_other, HOBJECT n_key, HOBJECT n_value], '
+                '$heap_reach(H_unheld.ROOTS, eps, H_unheld.EDGES)) = eps',
+                'PhpStep: S_unheld ~> S_unheld_plan',
+                'S_unheld_plan.COMPLETION = NORMAL',
+                'S_unheld_plan.TODO = (GC_DTORS pgcplan_unheld) :: ptask_tail*',
+                'pgcplan_unheld.CALL = pgccall',
+                'pgcplan_unheld.DTORS = eps',
+                '$heap_subset(pgcplan_unheld.FREESET, [HOBJECT n_key, HOBJECT n_value, HOBJECT n_other])',
+                '$heap_subset([HOBJECT n_key, HOBJECT n_value, HOBJECT n_other], pgcplan_unheld.FREESET)',
+                '$gc_pass_count(pgcplan_unheld) = 3',
+                '$gc_plan_valid(S_unheld_plan, pgcplan_unheld)',
+                'PhpStep: S_unheld_plan ~> S_unheld_free',
+                'S_unheld_free.TODO = (GC_FREE pgcplan_unheld) :: ptask_tail*',
+                '$call_task_valid(S_unheld_free, GC_FREE pgcplan_unheld)',
+                '$gc_nested_boundary(S_unheld_free, pgcplan_unheld)',
+                'S_unheld_prepared = $weakmap_gc_prepare(S_unheld_free, pgcplan_unheld)',
+                'S_unheld_prepared = S_unheld_free[.OBJECTS[n_map] = WEAKMAP eps]',
+                '~$gc_nested_boundary(S_unheld_prepared, pgcplan_unheld)',
+                '$gc_free_prepare(S_unheld_free, pgcplan_unheld) = (S_unheld_prepared)',
+                'S_held = S_unheld_free[.HELD = [HOBJECT n_other]]',
+                '$heap_valid($heap_graph(S_held))',
+                '~$call_task_valid(S_held, GC_FREE pgcplan_unheld)',
+                '$weakmap_gc_prepare(S_held, pgcplan_unheld) = S_held',
+                '$gc_free_prepare(S_held, pgcplan_unheld) = eps',
+                'PhpStep: S_unheld_free ~> S_unheld_done',
+                'S_unheld_done.COMPLETION = NORMAL',
+                'S_unheld_done.TODO = ptask_tail*',
+                'S_unheld_done.RESULT = KNOWN (PINT 3)',
+                'S_unheld_done.GC.ACTIVE = eps',
+                'S_unheld_done.GC.PLAN = eps',
+                'S_unheld_done.OBJECTS[n_map] = WEAKMAP eps',
+                '~((HOBJECT n_key) <- S_unheld_done.ALLOCATIONS)',
+                '~((HOBJECT n_value) <- S_unheld_done.ALLOCATIONS)',
+                '~((HOBJECT n_other) <- S_unheld_done.ALLOCATIONS)',
+                '$weakref_get(S_unheld_done, n_key_wrapper) = PNULL',
+                '$weakref_get(S_unheld_done, n_value_wrapper) = PNULL',
+                '$weakref_get(S_unheld_done, n_other_wrapper) = PNULL',
+                '$weakref_get(S_unheld_done, n_map_wrapper) = POBJECT n_map',
+                'S_unheld_done.DESTRUCTION.CALLED = S.DESTRUCTION.CALLED',
+                'S_unheld_done.EVENTS = S.EVENTS',
+                '$gc_state_valid(S_unheld_done)',
+                '$call_descriptors_valid(S_unheld_done)',
+                '$heap_valid($heap_graph(S_unheld_done))',
+                '$drive_steps(S_unheld, 3)[.COMPLETION = NORMAL] = S_unheld_done'],
+     'timeout': 160},
 }
 
 runner.CASES = CASES
