@@ -189,3 +189,31 @@ in `Zend/zend_weakrefs.c`: absent object keys are no-ops; matching removal relea
 the stored value while the key remains independent. Nonobject keys, wider unset
 contexts, reference/method/iteration and ephemeron protocols remain required;
 mutation during freeing stays Unsupported. Earlier evidence retains its cuts.
+
+## Occupied entry replacement
+
+Module386 admits same-key replacement in one map with a leaf `stdClass` key and
+ordinary leaf old/new INSTANCE values. Only VALUE changes: KEY and BEFORE preserve
+the original registration, and the old callback observes the new entry.
+Existing eager release handles shared and same-value owners. ACCESS_RESUME
+retains the receiver through old cleanup without copying
+the new value or key; original owned operands keep their ordinary roots. Unused
+results finish with NULL, while used results copy the selected RHS value after
+cleanup.
+The carrier releases OP_DATA, the receiver, OP2 key and OP1 base in engine order.
+
+Five normal/throwing/held/reentrant/result originals agree and 548 reached checks
+pass at `70bf0c4`. The owned-key original and 94 checks pass at `302b5c9`, totaling
+642. The later ordering change leaves prior variable-key roots literally [Map].
+Reached cuts authenticate real VALUE jobs, shared release, a copied live object,
+pending Exception transfer and map storage pin creation; originals supply endings.
+The original budget-resume fixture failure and key-order mismatch retain zero
+credit; the old 74-check preparation was never run.
+
+The engine basis is `zend_weakmap_write_dimension` in `Zend/zend_weakrefs.c` and
+`zend_assign_to_object_dim`/`ZEND_ASSIGN_DIM` in `Zend/zend_execute.c` and
+`Zend/zend_vm_def.h`. Replacement publishes before old destruction without key
+re-registration; assignment result copying follows the handler. Other key/value
+shapes, wider entries, mutation during freeing, reference/method/iteration and
+ephemeron protocols remain required. Countable stays nominal-only, with count
+execution excluded/Unsupported per CORE.

@@ -26,9 +26,16 @@ An initially plain CV detaches a reference wrapper created by the callback. Post
 returns the prior scalar snapshot; prefix returns the restored value. Source lines,
 fresh handler selection, supplied Throwable identity and real alias owners are checked
 in the [focused ledger](../../coverage/semantics/incdec-warning-review.json).
-Object-bearing restoration needs a destructor before scalar commit, including objects
-inside arrays. Late typed-cell attachment and handler exit also remain explicit
-Unsupported boundaries in this cut; the retained native originals are next obligations.
+The [restoration extension](../../coverage/semantics/incdec-restoration-review.json)
+releases callback-installed objects and object-bearing arrays before the captured
+scalar store. Destructors retain the old slot view; scalar writes are overwritten
+afterward, including when a destructor throws. Replacement Throwables preserve
+Previous. Borrowed cells add no owner, surviving wrapper aliases keep their
+referents alive, and ordered child cleanup continues after a supplied throw.
+Released arrays permit authenticated strict comparisons with literal scalars and
+terminal isset; ordinary, nested and empty reads remain Unsupported. Late type-source
+attachment, destructor rebinding/new owned payloads and graceful exit retain
+explicit boundaries and native obligations. Wider update locations remain partial.
 
 String dimensions validate the key before rejecting increment/decrement; nested
 string dimensions retain the separate nested-array error. Generic dimension

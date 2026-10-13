@@ -57,6 +57,9 @@ inventory: build
 	python3 scripts/encoding-spellings.py
 
 test-semantics: build
+	python3 tests/semantics/tick_sources.py
+	python3 tests/semantics/tick_review_sources.py
+	python3 tests/semantics/tick_state.py
 	python3 tests/semantics/output_buffer_sources.py
 	python3 tests/semantics/output_buffer_state.py
 	python3 tests/semantics/request_provider.py
@@ -754,6 +757,15 @@ test-semantics: build
 	python3 tests/semantics/ordinary_backed_parent_unbacked_get_hook_type_presence_protocol.py --revision "$$(git rev-parse HEAD)" --group remove
 	python3 tests/semantics/ordinary_backed_parent_unbacked_get_hook_type_presence_protocol.py --revision "$$(git rev-parse HEAD)" --group add
 	python3 tests/semantics/ordinary_backed_parent_unbacked_get_hook_type_presence_protocol.py --revision "$$(git rev-parse HEAD)" --group control
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/ordinary_backed_parent_backed_get_hook_type_presence_cases.json
+	python3 tests/semantics/ordinary_backed_parent_backed_get_hook_type_presence_protocol.py --revision "$$(git rev-parse HEAD)" --group remove
+	python3 tests/semantics/ordinary_backed_parent_backed_get_hook_type_presence_protocol.py --revision "$$(git rev-parse HEAD)" --group add
+	python3 tests/semantics/ordinary_backed_parent_backed_get_hook_type_presence_protocol.py --revision "$$(git rev-parse HEAD)" --group control
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/plain_child_inherited_backed_get_hook_cases.json
+	python3 tests/semantics/plain_child_inherited_backed_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group controls
+	python3 tests/semantics/plain_child_inherited_backed_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group entry
+	python3 tests/semantics/plain_child_inherited_backed_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group this
+	python3 tests/semantics/plain_child_inherited_backed_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group write
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_publication_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_composed_retry_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/assertion_cases.json

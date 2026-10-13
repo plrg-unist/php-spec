@@ -792,7 +792,7 @@ def $eager_fatal_reported(S, pcompletion) = true
   -- if ~$declaration_early(S.DECLARATIONS, porigin, PPCLASS)
   -- if $origin_node(S.SOURCES, porigin) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
 def $eager_fatal_reported(S, pcompletion) = false -- otherwise
-def $eager_fatal_ready(S, pcompletion) = (($destructor_bailout(pcompletion) \/ $eager_fatal_reported(S, pcompletion)) /\ $eager_fatal_target(S) =/= eps /\ ($frames_roots($eager_fatal_frame(S) :: S.FRAMES) ++ $operand_nodes(S.RESULT) ++ $base_nodes(S.BASE)) =/= eps) -- otherwise
+def $eager_fatal_ready(S, pcompletion) = (($destructor_bailout(pcompletion) \/ $eager_fatal_reported(S, pcompletion)) /\ $eager_fatal_target(S) =/= eps /\ (($frames_roots($eager_fatal_frame(S) :: S.FRAMES) ++ $operand_nodes(S.RESULT) ++ $base_nodes(S.BASE)) =/= eps \/ $source_static_user_source(S))) -- otherwise
 def $eager_fatal_nodes(pdestructionfatal) = $frames_roots(pdestructionfatal.FRAME :: pdestructionfatal.FRAMES) ++ $operand_nodes(pdestructionfatal.VALUE) ++ $base_nodes(pdestructionfatal.BASE)
 ;; Handler registries and callback array/reference rows are borrowed lookup
 ;; evidence. Later queue writes cannot alter the interrupted selection input.
@@ -903,12 +903,15 @@ def $eager_fatal_history(S, pdestructionfatal) = $eager_fatal_cursor_history($ea
   -- if S_view = S[.CURRENT = pframe.CONTEXT][.RETIREDOWNERS = pframe.RETIREDOWNERS][.FRAMES = pdestructionfatal.FRAMES][.SILENCES = pframe.SILENCES][.TODO = pframe.TODO][.ORIGIN = pframe.ORIGIN][.HELD = pframe.HELD][.BORROWEDREAD = pframe.BORROWEDREAD][.OBJECTCAST = pframe.OBJECTCAST][.CONSTCONTEXT = pframe.CONSTCONTEXT][.RESULT = pdestructionfatal.VALUE][.BASE = pdestructionfatal.BASE][.DESTRUCTION = pdestructionfatal.DESTRUCTION][.DESTRUCTION.HANDLES = S.DESTRUCTION.HANDLES][.DESTRUCTION.FREE = S.DESTRUCTION.FREE][.DESTRUCTION.NEXT = S.DESTRUCTION.NEXT][.SHUTDOWN = pdestructionfatal.SHUTDOWN][.ERRORHANDLER = pdestructionfatal.ERRORHANDLER][.ERRORHANDLERS = pdestructionfatal.ERRORHANDLERS][.EXCEPTIONHANDLER = pdestructionfatal.EXCEPTIONHANDLER][.EXCEPTIONHANDLERS = pdestructionfatal.EXCEPTIONHANDLERS][.EVALCONTEXTS = pdestructionfatal.EVALCONTEXTS][.FILECONTEXTS = pdestructionfatal.FILECONTEXTS][.COMPLETION = $eager_fatal_lookup_completion(pdestructionfatal)][.ERRORORIGIN = pdestructionfatal.ERRORORIGIN][.TRACE = pdestructionfatal.TRACE][.ERRORFATALTRACE = pdestructionfatal.ERRORTRACE][.COMPILESTOP = pdestructionfatal.COMPILESTOP][.REPORTING = pdestructionfatal.REPORTING]
 def $eager_fatal_source_valid(S, USERFATAL ptbytes z b) = true
   -- if S.TODO = (ERROR_TRIGGER_PHASE pconfigcall 1) :: ptask_tail*
+  -- if S.ERRORORIGIN = S.ORIGIN
   -- if $error_trigger_level(S, pconfigcall) = (256)
   -- if $error_trigger_message(S, pconfigcall) = (ptbytes)
   -- if z = pconfigcall.LINE
   -- if b = ($long_and(S.REPORTING, 256) =/= 0)
 def $eager_fatal_source_valid(S, USERFATAL ptbytes z b) = true
   -- if S.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if S.RESULT = KNOWN (PBOOL false)
+  -- if S.ERRORORIGIN = S.ORIGIN
   -- if perrorcall.LEVEL = 256 /\ perrorcall.MESSAGE = ptbytes /\ perrorcall.LINE = z
   -- if $error_entered_call_valid(S, perrorcall)
   -- if b = ($long_and(S.REPORTING, 256) =/= 0)
@@ -1040,6 +1043,7 @@ def $eager_fatal_valid(S, pdestructioncleanup, pdestructionfatal) = true
   -- if $eager_fatal_handler_bounds(S, pdestructionfatal.HANDLERS)
   -- if S_history = $eager_fatal_history(S, pdestructionfatal)
   -- if pdestructionfatal.HANDLERS = $eager_fatal_handler_frames(S_history, pdestructionfatal.FRAME :: pdestructionfatal.FRAMES)
+  -- if $eager_fatal_ready(S_history, pdestructionfatal.COMPLETION)
   -- if $eager_fatal_target(S_history) = (pdestructioncleanup.TARGET.TARGET)
   -- if pdestructioncleanup.TARGET = $eager_cleanup_target(S_history, pdestructioncleanup.TARGET.TARGET)
   -- if $call_current_valid(S_history) /\ $call_frames_valid(S_history, S_history.FRAMES)

@@ -3,6 +3,7 @@
 ;; A handler-created CV reference is destroyed, not followed for restoration.
 syntax pupdatepointer = UPDATE_CV ptbytes | UPDATE_CELL nat
 syntax pupdatewarning = { SITE porigin, OP pupdate, POST bool, NAME ptbytes, LINE int, POINTER pupdatepointer, INPUT pvalue, PENDING nat? }
+syntax pupdaterestore = { WARNING pupdatewarning, CELL nat, WRAPPER nat?, VALUE pvalue, CALLER pcallcontext?, CONSTCONTEXT pconstantcontext? }
 
 dec $update_warning_kind(pcnode) : (pupdate, bool)?
 def $update_warning_kind(NExprPreInc expression metadata) = ((INCREMENT, false))
@@ -90,9 +91,8 @@ def $update_warning_plan(S) = (pupdatewarning)
 def $update_warning_plan(S) = eps -- otherwise
 def $update_warning_pending(S) = ($update_warning_plan(S) =/= eps)
 
-;; Releasing a callback-owned object (also inside an array/reference) can call
-;; its destructor before the captured scalar is stored. That continuation is
-;; still required; this cut does not silently write first and prune afterward.
+;; Releasing a callback-owned object, including an array child, precedes the
+;; captured scalar store. The old raw slot remains visible during its destructor.
 dec $update_warning_no_objects(pnode*) : bool
 def $update_warning_no_objects(eps) = true
 def $update_warning_no_objects((HOBJECT n) :: pnode*) = false
@@ -103,6 +103,7 @@ def $update_warning_release_safe(S, UNDEFINED) = true
 def $update_warning_release_safe(S, DEFINED pvalue) = $update_warning_no_objects($heap_reach($value_nodes(pvalue), eps, $allocation_edges(S, S.ALLOCATIONS)))
 def $update_warning_release_safe(S, pslot) = false -- otherwise
 dec $update_warning_store(pstate, pupdatepointer, pvalue) : pstate
+dec $update_restore_capture(pstate, pupdatewarning) : pupdaterestore?
 def $update_warning_store(S, UPDATE_CELL n, pvalue) = $reference_coercion_store(S, n, DEFINED pvalue)
 def $update_warning_store(S, UPDATE_CV ptbytes, pvalue) = $reference_coercion_store(S, n, DEFINED pvalue)
   -- if $lookup(S.ENV, ptbytes) = (n)
@@ -126,11 +127,9 @@ rule PhpStep/update-warning-expired: S ~> S[.COMPLETION = UNSUPPORTED "increment
   -- if S.TODO = (UPDATE_WARNING_RESTORE pupdatewarning) :: ptask_tail*
   -- if $update_warning_valid(S, pupdatewarning)
   -- if $update_warning_pointer_value(S, pupdatewarning.POINTER) = eps
-rule PhpStep/update-warning-object-boundary: S ~> S[.COMPLETION = UNSUPPORTED "increment/decrement restoration requires destructor-before-commit continuation"]
+rule PhpStep/update-warning-release-prepare: S ~> S[.TODO = (UPDATE_WARNING_RELEASE pupdaterestore) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (UPDATE_WARNING_RESTORE pupdatewarning) :: ptask_tail*
-  -- if $update_warning_valid(S, pupdatewarning)
-  -- if $update_warning_pointer_value(S, pupdatewarning.POINTER) = (pslot)
-  -- if ~$update_warning_release_safe(S, pslot)
+  -- if $update_restore_capture(S, pupdatewarning) = (pupdaterestore)
 rule PhpStep/update-warning-restore: S ~> S_written[.TODO = (UPDATE_WARNING_DONE pupdatewarning) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (UPDATE_WARNING_RESTORE pupdatewarning) :: ptask_tail*
   -- if $update_warning_valid(S, pupdatewarning)
@@ -169,6 +168,8 @@ dec $update_warning_exit_marker(ptask) : bool
 def $update_warning_exit_marker(UPDATE_WARNING_NOTICE pupdatewarning) = true
 def $update_warning_exit_marker(UPDATE_WARNING_RESTORE pupdatewarning) = true
 def $update_warning_exit_marker(UPDATE_WARNING_DONE pupdatewarning) = true
+def $update_warning_exit_marker(UPDATE_WARNING_RELEASE pupdaterestore) = true
+def $update_warning_exit_marker(UPDATE_WARNING_COMMIT pupdaterestore) = true
 def $update_warning_exit_marker(ERROR_HANDLER_INVOKE perrorcall) = $update_warning_exit_marker(perrorcall.RESUME)
 def $update_warning_exit_marker(ERROR_HANDLER_RESULT perrorcall) = $update_warning_exit_marker(perrorcall.RESUME)
 def $update_warning_exit_marker(ERROR_HANDLER_CLEAN perrorcall) = $update_warning_exit_marker(perrorcall.RESUME)
@@ -217,3 +218,274 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.SITE = pupdatewarning.SITE
   -- if perrorcall.LINE = pupdatewarning.LINE
   -- if perrorcall.EVENT = DIAGNOSTIC $integer_notice_name(perrorcall.LEVEL) perrorcall.MESSAGE perrorcall.LINE
+
+;; The physical CV may now contain a reference wrapper. A shadow borrows its
+;; raw payload while the CV's real wrapper owner is decremented; peer aliases
+;; keep their referent. An initially borrowed CELL releases its payload once.
+dec $update_restore_cell(pstate, pupdatepointer) : (nat, nat?)?
+def $update_restore_cell(S, UPDATE_CELL n) = ((n, eps))
+def $update_restore_cell(S, UPDATE_CV ptbytes) = ((n, eps))
+  -- if $lookup(S.ENV, ptbytes) = (n)
+  -- if ~(n <- S.REFCELLS)
+def $update_restore_cell(S, UPDATE_CV ptbytes) = ((|S.STORE|, $lookup(S.ENV, ptbytes)))
+  -- if $lookup(S.ENV, ptbytes) = (n)
+  -- if n <- S.REFCELLS
+def $update_restore_cell(S, pupdatepointer) = eps -- otherwise
+def $update_restore_capture(S, pupdatewarning) = (pupdaterestore)
+  -- if $update_warning_valid(S, pupdatewarning)
+  -- if $update_warning_pointer_value(S, pupdatewarning.POINTER) = (DEFINED pvalue)
+  -- if ~$update_warning_release_safe(S, DEFINED pvalue)
+  -- if $update_restore_cell(S, pupdatewarning.POINTER) = ((n, n_wrapper?))
+  -- if pupdaterestore = {WARNING pupdatewarning, CELL n, WRAPPER n_wrapper?, VALUE pvalue, CALLER S.CURRENT, CONSTCONTEXT S.CONSTCONTEXT}
+def $update_restore_capture(S, pupdatewarning) = eps -- otherwise
+dec $update_restore_pointer_record(pstate, pupdaterestore) : bool
+def $update_restore_pointer_record(S, pupdaterestore) = true
+  -- if pupdaterestore.WARNING.POINTER = UPDATE_CELL pupdaterestore.CELL
+  -- if pupdaterestore.WRAPPER = eps
+  -- if pupdaterestore.CELL <- S.REFCELLS
+def $update_restore_pointer_record(S, pupdaterestore) = true
+  -- if pupdaterestore.WARNING.POINTER = UPDATE_CV pupdaterestore.WARNING.NAME
+  -- if pupdaterestore.WRAPPER = eps
+def $update_restore_pointer_record(S, pupdaterestore) = true
+  -- if pupdaterestore.WARNING.POINTER = UPDATE_CV pupdaterestore.WARNING.NAME
+  -- if pupdaterestore.WRAPPER = (n)
+  -- if $(n < pupdaterestore.CELL)
+  -- if n <- S.REFCELLS
+  -- if S.STORE[n] = DEFINED pupdaterestore.VALUE
+def $update_restore_pointer_record(S, pupdaterestore) = false -- otherwise
+dec $update_restore_record_valid(pstate, pupdaterestore) : bool
+def $update_restore_record_valid(S, pupdaterestore) = ($update_warning_valid(S, pupdaterestore.WARNING) /\ S.CURRENT = pupdaterestore.CALLER /\ S.CONSTCONTEXT = pupdaterestore.CONSTCONTEXT /\ $(pupdaterestore.CELL < |S.STORE|) /\ $value_nodes(pupdaterestore.VALUE) =/= eps /\ $update_restore_pointer_record(S, pupdaterestore))
+dec $update_restore_operation_task(ptask, pupdaterestore) : bool
+dec $update_restore_operation_queued(ptask*, pupdaterestore) : bool
+dec $update_restore_commit_match(ptask, pupdaterestore) : nat
+dec $update_restore_commit_count(ptask*, pupdaterestore) : nat
+def $update_restore_operation_task(DESTRUCTOR_OPERATION_EXIT pdestructionoperation, pupdaterestore) = (pdestructionoperation.SOURCE = UPDATE_WARNING_RELEASE pupdaterestore)
+def $update_restore_operation_task(ptask, pupdaterestore) = false -- otherwise
+def $update_restore_operation_queued(eps, pupdaterestore) = false
+def $update_restore_operation_queued(ptask :: ptask_tail*, pupdaterestore) = ($update_restore_operation_task(ptask, pupdaterestore) \/ $update_restore_operation_queued(ptask_tail*, pupdaterestore))
+def $update_restore_commit_match(AT porigin ptask, pupdaterestore) = $update_restore_commit_match(ptask, pupdaterestore)
+def $update_restore_commit_match(UPDATE_WARNING_COMMIT pupdaterestore, pupdaterestore) = 1
+def $update_restore_commit_match(ptask, pupdaterestore) = 0 -- otherwise
+def $update_restore_commit_count(eps, pupdaterestore) = 0
+def $update_restore_commit_count(ptask :: ptask_tail*, pupdaterestore) = $($update_restore_commit_match(ptask, pupdaterestore) + $update_restore_commit_count(ptask_tail*, pupdaterestore))
+def $call_task_valid(S, UPDATE_WARNING_RELEASE pupdaterestore) = ($update_restore_capture(S, pupdaterestore.WARNING) = (pupdaterestore))
+def $call_task_valid(S, UPDATE_WARNING_COMMIT pupdaterestore) = ($update_restore_record_valid(S, pupdaterestore) /\ $update_restore_commit_count(S.TODO, pupdaterestore) = 1 /\ (~$destructor_operational(S) \/ $update_restore_operation_queued(S.TODO, pupdaterestore)))
+def $task_nodes(UPDATE_WARNING_RELEASE pupdaterestore) = $instance_roots(pupdaterestore.WARNING.PENDING)
+def $task_nodes(UPDATE_WARNING_COMMIT pupdaterestore) = eps
+def $throwable_marker(UPDATE_WARNING_COMMIT pupdaterestore) = true
+def $source_operand_marker(UPDATE_WARNING_RELEASE pupdaterestore) = UPDATE_PREP pupdaterestore.WARNING.OP pupdaterestore.WARNING.POST pupdaterestore.WARNING.LINE
+def $source_operand_marker(UPDATE_WARNING_COMMIT pupdaterestore) = UPDATE_PREP pupdaterestore.WARNING.OP pupdaterestore.WARNING.POST pupdaterestore.WARNING.LINE
+dec $update_restore_shadow_local(pstate, pupdaterestore) : pstate
+def $update_restore_shadow_local(S, pupdaterestore) = S[.STORE = S.STORE ++ [DEFINED pupdaterestore.VALUE]][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL pupdaterestore.CELL]][.ENV = (BIND pupdaterestore.WARNING.NAME pupdaterestore.CELL) :: $unbind(S.ENV, pupdaterestore.WARNING.NAME)]
+dec $update_restore_shadow(pstate, pupdaterestore) : pstate
+def $update_restore_shadow(S, pupdaterestore) = S -- if pupdaterestore.WRAPPER = eps
+def $update_restore_shadow(S, pupdaterestore) = $global_table_view($update_restore_shadow_local($global_table_view(S), pupdaterestore))
+  -- if pupdaterestore.WRAPPER =/= eps /\ $scope_global(S, eps)
+def $update_restore_shadow(S, pupdaterestore) = $update_restore_shadow_local(S, pupdaterestore)
+  -- if pupdaterestore.WRAPPER =/= eps /\ ~$scope_global(S, eps)
+dec $update_restore_release(pstate, pupdaterestore, ptask*) : pstate
+def $update_restore_release(S, pupdaterestore, ptask_tail*) = $update_restore_shadow(S[.TODO = (UPDATE_WARNING_COMMIT pupdaterestore) :: ptask_tail*], pupdaterestore)
+  -- if pupdaterestore.WARNING.PENDING = eps
+def $update_restore_release(S, pupdaterestore, ptask_tail*) = $update_restore_shadow(S[.TODO = (THROW_SEARCH n) :: (UPDATE_WARNING_COMMIT pupdaterestore) :: ptask_tail*], pupdaterestore)
+  -- if pupdaterestore.WARNING.PENDING = (n)
+rule PhpStep/update-warning-release: S ~> $update_restore_release(S, pupdaterestore, ptask_tail*)
+  -- if S.TODO = (UPDATE_WARNING_RELEASE pupdaterestore) :: ptask_tail*
+  -- if $call_task_valid(S, UPDATE_WARNING_RELEASE pupdaterestore)
+
+;; These scans inspect authentic current/saved queues without an OLD root or a
+;; recursive heap-liveness query. D's scalar writes keep the certificate but a
+;; newly installed container retains its own real edge until the named boundary.
+dec $update_restore_commit_task(ptask) : bool
+dec $update_restore_commit_tasks(ptask*) : bool
+dec $update_restore_released_task(pstate, nat, ptask) : bool
+dec $update_restore_pending_after(pstate, ptask) : pstate
+dec $update_restore_pending_scan(pstate, nat, ptask*) : bool
+dec $update_restore_pending_tasks(pstate, nat, ptask*) : bool
+dec $update_restore_pending_frames(pstate, nat, pframe*) : bool
+dec $update_restore_pending_vm(pstate, nat, pfibervm) : bool
+dec $update_restore_pending_object(pstate, nat, pobject) : bool
+dec $update_restore_pending_objects(pstate, nat, pobject*) : bool
+dec $update_restore_pending_callers(pstate, nat, pfibercaller*) : bool
+dec $update_restore_pending_closers(pstate, nat, pfiberclose*) : bool
+def $update_restore_commit_task(AT porigin ptask) = $update_restore_commit_task(ptask)
+def $update_restore_commit_task(UPDATE_WARNING_COMMIT pupdaterestore) = true
+def $update_restore_commit_task(ptask) = false -- otherwise
+def $update_restore_commit_tasks(eps) = false
+def $update_restore_commit_tasks(ptask :: ptask_tail*) = ($update_restore_commit_task(ptask) \/ $update_restore_commit_tasks(ptask_tail*))
+def $update_restore_released_task(S, n, AT porigin ptask) = $update_restore_released_task(S[.ORIGIN = (porigin)], n, ptask)
+def $update_restore_released_task(S, n, UPDATE_WARNING_COMMIT pupdaterestore) = (n = pupdaterestore.CELL /\ $update_restore_record_valid(S, pupdaterestore) /\ $update_restore_commit_count(S.TODO, pupdaterestore) = 1 /\ S.STORE[n] = DEFINED pupdaterestore.VALUE)
+def $update_restore_released_task(S, n, ptask) = false -- otherwise
+def $update_restore_pending_after(S, UPDATE_WARNING_COMMIT pupdaterestore) = S
+def $update_restore_pending_after(S, ptask) = $call_after_origin(S, ptask) -- otherwise
+def $update_restore_pending_scan(S, n, eps) = false
+def $update_restore_pending_scan(S, n, ptask :: ptask_tail*) = ($update_restore_released_task(S, n, ptask) \/ $update_restore_pending_scan($update_restore_pending_after(S, ptask), n, ptask_tail*))
+def $update_restore_pending_tasks(S, n, ptask*) = false -- if ~$update_restore_commit_tasks(ptask*)
+def $update_restore_pending_tasks(S, n, ptask*) = $update_restore_pending_scan(S, n, ptask*) -- if $update_restore_commit_tasks(ptask*)
+def $update_restore_pending_frames(S, n, eps) = false
+def $update_restore_pending_frames(S, n, pframe :: pframe_tail*) = ($update_restore_pending_tasks($constant_frame_scope(S, pframe, pframe_tail*), n, pframe.TODO) \/ $update_restore_pending_frames(S, n, pframe_tail*))
+def $update_restore_pending_vm(S, n, pfibervm) = ($update_restore_pending_tasks(S_view, n, S_view.TODO) \/ $update_restore_pending_frames(S_view, n, S_view.FRAMES))
+  -- if S_view = $fiber_vm_restore(S, pfibervm)
+def $update_restore_pending_object(S, n, FIBER pfiber) = $update_restore_pending_vm(S, n, pfibervm) -- if pfiber.VM = (pfibervm)
+def $update_restore_pending_object(S, n, GENERATOR pgenerator) = $update_restore_pending_tasks($constant_frame_scope(S, pframe, eps), n, pframe.TODO) -- if pgenerator.FRAME = (pframe)
+def $update_restore_pending_object(S, n, pobject) = false -- otherwise
+def $update_restore_pending_objects(S, n, eps) = false
+def $update_restore_pending_objects(S, n, pobject :: pobject_tail*) = ($update_restore_pending_object(S, n, pobject) \/ $update_restore_pending_objects(S, n, pobject_tail*))
+def $update_restore_pending_callers(S, n, eps) = false
+def $update_restore_pending_callers(S, n, pfibercaller :: pfibercaller_tail*) = ($update_restore_pending_vm(S, n, pfibercaller.VM) \/ $update_restore_pending_callers(S, n, pfibercaller_tail*))
+def $update_restore_pending_closers(S, n, eps) = false
+def $update_restore_pending_closers(S, n, pfiberclose :: pfiberclose_tail*) = ($update_restore_pending_vm(S, n, pfiberclose.VM) \/ $update_restore_pending_closers(S, n, pfiberclose_tail*))
+def $update_released_cell(S, n) = ($update_restore_pending_tasks(S, n, S.TODO) \/ $update_restore_pending_frames(S, n, S.FRAMES) \/ $update_restore_pending_objects(S, n, S.OBJECTS) \/ $update_restore_pending_callers(S, n, S.FIBERCALLERS) \/ $update_restore_pending_closers(S, n, S.FIBERCLOSERS))
+
+dec $update_restore_same_scope(pstate, pupdaterestore) : bool
+dec $update_restore_scope(pstate, pupdaterestore, pframe*) : pstate?
+dec $update_restore_operation_source_valid(pstate, pdestructionoperation, pupdaterestore) : bool
+def $update_restore_same_scope(S, pupdaterestore) = (S.CURRENT = pupdaterestore.CALLER /\ S.ORIGIN = (pupdaterestore.WARNING.SITE) /\ S.CONSTCONTEXT = pupdaterestore.CONSTCONTEXT)
+def $update_restore_scope(S, pupdaterestore, pframe*) = (S) -- if $update_restore_same_scope(S, pupdaterestore)
+def $update_restore_scope(S, pupdaterestore, pframe :: pframe_tail*) = $update_restore_scope($constant_frame_scope(S, pframe, pframe_tail*), pupdaterestore, pframe_tail*) -- if ~$update_restore_same_scope(S, pupdaterestore)
+def $update_restore_scope(S, pupdaterestore, eps) = eps -- if ~$update_restore_same_scope(S, pupdaterestore)
+def $update_restore_operation_source_valid(S, pdestructionoperation, pupdaterestore) = true
+  -- if pdestructionoperation.CALLER = pupdaterestore.CALLER /\ pdestructionoperation.ORIGIN = (pupdaterestore.WARNING.SITE) /\ pdestructionoperation.CONSTCONTEXT = pupdaterestore.CONSTCONTEXT
+  -- if $update_restore_scope(S, pupdaterestore, S.FRAMES) = (S_scope)
+  -- if $update_restore_record_valid(S_scope, pupdaterestore)
+  -- if $update_restore_operation_queued(S_scope.TODO, pupdaterestore)
+  -- if $update_restore_commit_count(S_scope.TODO, pupdaterestore) = 1
+def $update_restore_operation_source_valid(S, pdestructionoperation, pupdaterestore) = false -- otherwise
+def $eager_operation_source_guard(S, pdestructionoperation) = $update_restore_operation_source_valid(S, pdestructionoperation, pupdaterestore)
+  -- if pdestructionoperation.SOURCE = UPDATE_WARNING_RELEASE pupdaterestore
+
+;; zval_ptr_dtor can throw, but these helpers still commit their captured scalar
+;; before checking EG(exception). Postfinish moves only the actual pending root.
+dec $update_restore_unconstrained(pstate, pupdaterestore) : bool
+dec $update_restore_address_valid(pstate, pupdaterestore) : bool
+dec $update_restore_payload_valid(pstate, pupdaterestore) : bool
+dec $update_restore_commit(pstate, pupdaterestore, nat?, ptask*) : pstate
+def $update_restore_unconstrained(S, pupdaterestore) = true -- if pupdaterestore.WARNING.POINTER = UPDATE_CV ptbytes
+def $update_restore_unconstrained(S, pupdaterestore) = true
+  -- if pupdaterestore.WARNING.POINTER = UPDATE_CELL n
+  -- if n <- S.REFCELLS /\ $propref_at(S.PROPREFS, n) = eps
+  -- if $($heap_owners($heap_prune($heap_graph(S)), HCELL n) > 0)
+def $update_restore_unconstrained(S, pupdaterestore) = false -- otherwise
+def $update_restore_address_valid(S, pupdaterestore) = true -- if pupdaterestore.WARNING.POINTER = UPDATE_CELL pupdaterestore.CELL
+def $update_restore_address_valid(S, pupdaterestore) = true
+  -- if pupdaterestore.WARNING.POINTER = UPDATE_CV pupdaterestore.WARNING.NAME
+  -- if $lookup(S.ENV, pupdaterestore.WARNING.NAME) = (pupdaterestore.CELL)
+  -- if ~(pupdaterestore.CELL <- S.REFCELLS)
+def $update_restore_address_valid(S, pupdaterestore) = false -- otherwise
+def $update_restore_payload_valid(S, pupdaterestore) = true -- if S.STORE[pupdaterestore.CELL] = DEFINED pupdaterestore.VALUE
+def $update_restore_payload_valid(S, pupdaterestore) = true -- if S.STORE[pupdaterestore.CELL] = UNDEFINED
+def $update_restore_payload_valid(S, pupdaterestore) = true
+  -- if S.STORE[pupdaterestore.CELL] = DEFINED pvalue
+  -- if $value_nodes(pvalue) = eps
+def $update_restore_payload_valid(S, pupdaterestore) = false -- otherwise
+def $update_restore_commit(S, pupdaterestore, n_pending?, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "increment/decrement restoration target is expired or constrained"]
+  -- if ~$update_restore_unconstrained(S, pupdaterestore)
+def $update_restore_commit(S, pupdaterestore, n_pending?, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "increment/decrement destructor changed restored target ownership"]
+  -- if $update_restore_unconstrained(S, pupdaterestore)
+  -- if ~$update_restore_address_valid(S, pupdaterestore) \/ ~$update_restore_payload_valid(S, pupdaterestore)
+def $update_restore_commit(S, pupdaterestore, n_pending?, ptask_tail*) = S_written[.TODO = (UPDATE_WARNING_DONE pupdaterestore.WARNING[.PENDING = n_pending?]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $update_restore_unconstrained(S, pupdaterestore) /\ $update_restore_address_valid(S, pupdaterestore) /\ $update_restore_payload_valid(S, pupdaterestore)
+  -- if $update_warning_after(pupdaterestore.WARNING.OP, pupdaterestore.WARNING.INPUT) = (pvalue)
+  -- if S_written = $update_warning_store(S, pupdaterestore.WARNING.POINTER, pvalue)
+def $destructor_operation_postfinish(S, pdestructionoperation) = $update_restore_commit(S, pupdaterestore, eps, ptask_tail*)
+  -- if pdestructionoperation.SOURCE = UPDATE_WARNING_RELEASE pupdaterestore
+  -- if S.TODO = (UPDATE_WARNING_COMMIT pupdaterestore) :: ptask_tail*
+def $destructor_operation_postfinish(S, pdestructionoperation) = $update_restore_commit(S, pupdaterestore, (n), ptask_tail*)
+  -- if pdestructionoperation.SOURCE = UPDATE_WARNING_RELEASE pupdaterestore
+  -- if S.TODO = (THROW_SEARCH n) :: (UPDATE_WARNING_COMMIT pupdaterestore) :: ptask_tail*
+rule PhpStep/update-warning-commit-no-destructor: S ~> $update_restore_commit(S, pupdaterestore, pupdaterestore.WARNING.PENDING, ptask_tail*)
+  -- if S.TODO = (UPDATE_WARNING_COMMIT pupdaterestore) :: ptask_tail*
+  -- if ~$destructor_operational(S)
+  -- if $call_task_valid(S, UPDATE_WARNING_COMMIT pupdaterestore)
+rule PhpStep/update-warning-commit-pending-no-destructor: S ~> $update_restore_commit(S, pupdaterestore, (n), ptask_tail*)
+  -- if S.TODO = (THROW_SEARCH n) :: (UPDATE_WARNING_COMMIT pupdaterestore) :: ptask_tail*
+  -- if ~$destructor_operational(S)
+  -- if pupdaterestore.WARNING.PENDING = (n)
+  -- if $call_task_valid(S, UPDATE_WARNING_COMMIT pupdaterestore)
+
+;; Zend marks an array as destroying before running child destructors. Its raw
+;; tag may be tested without copying the retired table into an owning RESULT.
+dec $update_released_array_cell(pstate, nat) : bool
+dec $update_raw_array_source(pstate, porigin) : bool
+dec $update_raw_scalar(expression) : bool
+dec $update_raw_identity_side(pstate, porigin, porigin) : bool
+def $update_released_array_cell(S, n) = true
+  -- if $(n < |S.STORE|)
+  -- if S.STORE[n] = DEFINED (PARRAY n_array)
+  -- if ~((HARRAY n_array) <- S.ALLOCATIONS)
+  -- if $update_released_cell(S, n)
+def $update_released_array_cell(S, n) = false -- otherwise
+def $update_released_array_name(S, ptbytes) = $update_released_array_cell(S, n) -- if $lookup(S.ENV, ptbytes) = (n)
+def $update_released_array_name(S, ptbytes) = false -- otherwise
+def $read_name(S, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "increment/decrement released array payload read"]
+  -- if ~$environment_blocked(S, ptbytes)
+  -- if $update_released_array_name(S, ptbytes)
+def $global_read_local(S, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "increment/decrement released array payload read"]
+  -- if ~$environment_blocked(S, ptbytes) /\ ~$this_name(ptbytes)
+  -- if $update_released_array_name(S, ptbytes)
+def $quiet_name(S, ptbytes) = S[.COMPLETION = UNSUPPORTED "increment/decrement released array payload read"]
+  -- if ~$environment_blocked(S, ptbytes)
+  -- if $update_released_array_name(S, ptbytes)
+def $update_released_isset(S, BASE_GLOBAL poperand z_name, false, z) = true
+  -- if S_name = $resolve_name(S, poperand, z_name)
+  -- if S_name.COMPLETION = NORMAL
+  -- if S_name.RESULT = KNOWN (PSTRING ptbytes)
+  -- if $update_released_array_name($global_table_view(S_name), ptbytes)
+def $update_released_isset(S, BASE_VALUE (VARIABLE ptbytes z_name), false, z) = $update_released_array_name(S, ptbytes)
+def $update_released_isset(S, pbase, b, z) = false -- otherwise
+def $isset_simple(S, BASE_GLOBAL poperand z_name, false, z) = S_name[.RESULT = KNOWN (PBOOL true)]
+  -- if S_name = $resolve_name(S, poperand, z_name)
+  -- if S_name.COMPLETION = NORMAL
+  -- if S_name.RESULT = KNOWN (PSTRING ptbytes)
+  -- if $update_released_array_name($global_table_view(S_name), ptbytes)
+def $isset_simple(S, BASE_VALUE (VARIABLE ptbytes z_name), false, z) = S[.RESULT = KNOWN (PBOOL true)]
+  -- if $update_released_array_name(S, ptbytes)
+def $update_released_key_isset(S, KNOWN (PSTRING ptbytes), ptbytes, z, KEY_TEST false) = true
+  -- if S.TODO = (KEY_READ_GLOBAL (KNOWN (PSTRING ptbytes)) z (KEY_TEST false)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $global_read_source(S, {SITE porigin, NAME ptbytes, LINE z})
+  -- if $key_context_tasks(S, S.TODO, porigin, KEY_TEST false)
+  -- if $update_released_array_name($global_table_view(S), ptbytes)
+def $update_released_key_isset(S, poperand, ptbytes, z, pkeymode) = false -- otherwise
+def $key_global_lookup(S, poperand, ptbytes, z, KEY_TEST false) = $key_read_done(S, PBOOL true)
+  -- if $update_released_key_isset(S, poperand, ptbytes, z, KEY_TEST false)
+def $update_raw_array_source(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprVariable (BYTES text) metadata)
+  -- if $code_expression_at_source(S, porigin, eps) = (z)
+  -- if ~$environment_blocked(S, $base64(text))
+  -- if $update_released_array_name(S, $base64(text))
+def $update_raw_array_source(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression_base expression_key metadata)
+  -- if $ppglobals_base(expression_base)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_key)
+  -- if $compiled_read(S, porigin_key) = (pvalue_key)
+  -- if $string_bytes(pvalue_key) = (ptbytes)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 1]) = (z)
+  -- if $global_read_source(S, {SITE porigin, NAME ptbytes, LINE z})
+  -- if $update_released_array_name($global_table_view(S), ptbytes)
+def $update_raw_array_source(S, porigin) = false -- otherwise
+def $update_raw_scalar(NScalarInt phpType24 metadata) = true
+def $update_raw_scalar(NScalarFloat phpType41 metadata) = true
+def $update_raw_scalar(NScalarString phpType33 metadata) = true
+def $update_raw_scalar(NExprConstFetch (NName (BYTES text) metadata_name) metadata) = ($special_constant($base64(text)) =/= eps)
+def $update_raw_scalar(expression) = false -- otherwise
+def $update_raw_identity_side(S, porigin_array, porigin_scalar) = true
+  -- if $update_raw_array_source(S, porigin_array)
+  -- if $origin_node(S.SOURCES, porigin_scalar) = (expression)
+  -- if $update_raw_scalar(expression)
+  -- if $compiled_read(S, porigin_scalar) = (pvalue)
+  -- if $value_nodes(pvalue) = eps
+def $update_raw_identity_side(S, porigin_array, porigin_scalar) = false -- otherwise
+def $update_raw_identity_plan(S) = ((pbin = NOTIDENTICAL))
+  -- if S.TODO = (EVAL expression) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $code_expression_at_source(S, porigin, eps) = (z)
+  -- if $error_binary_source(expression) = (pbin)
+  -- if pbin = IDENTICAL \/ pbin = NOTIDENTICAL
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $update_raw_identity_side(S, porigin_left, porigin_right) \/ $update_raw_identity_side(S, porigin_right, porigin_left)
+def $update_raw_identity_plan(S) = eps -- otherwise
+rule PhpStep/update-raw-array-identity: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL b)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (EVAL expression) :: ptask_tail*
+  -- if $update_raw_identity_plan(S) = (b)

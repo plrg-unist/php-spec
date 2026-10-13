@@ -19,6 +19,7 @@ def $quiet_name(S, n_name*) = S[.RESULT = KNOWN pvalue]
   -- if $lookup(S.ENV, n_name*) = (n_cell)
   -- if S.STORE[n_cell] = DEFINED pvalue
   -- if ~$foreach_released_container_cell(S, n_cell)
+  -- if ~$update_released_array_name(S, n_name*)
 
 dec $quiet_operand(pstate, poperand) : pstate
 def $quiet_operand(S, VARIABLE n_name* z) = $quiet_name(S, n_name*)

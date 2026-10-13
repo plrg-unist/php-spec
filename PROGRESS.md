@@ -20,6 +20,65 @@ handlers/lifetimes remain required; full core stays partial.
 The preceding [direct comparison increment](coverage/semantics/stringable-comparison-review.json)
 retains its six sources and 487/26 state cut at aabff656 /381.
 
+Hard bailout now records request EXITSTATUS255 before shutdown. Direct callback
+strings preserve it; integer/default exits replace it and skip later callbacks.
+One-line257 and protocol20db1b23e /382 retain four exact source tuples and three
+public groups/238 premises at the single6c91c81d cut. Three raw exit projections
+stay separate from three production fatal and final-exit continuations; the
+original exit0/native255 baseline remains0. Static roots/destructor policy are
+unchanged. Caught shutdown-exit replacement returning to frozen fatal completion
+remains a next observer gap (native v19).
+[Fatal-status ledger](coverage/semantics/source-static-fatal-status-review.json).
+The383 composition over2676 passes independent pointwise review at0f51a247;
+parent ticks/WeakMap behavior is preserved. No renewed source/state evidence.
+
+Ticks393 is independently accepted; its current383 composition is checked.
+Source-derived
+marker plans cover lexical frequencies, compiler adjacency/control and certified
+callback lines; the live registry retains arguments, supports mutation and keeps
+calling/Fiber restrictions through post-return destruction. Author26 distinct
+originals agree at retained21+5 cuts, with3 Unsupported controls; the earlier
+TATBT original retains its own cut. Independent16 originals and3 controls pass
+at separate4+3+3+6 cuts, including cached-receiver release on normal/throw/exit.
+Seven genuine state groups pass334 premises at6/269+1/65 cuts; the hold fixture
+waits until the queued alias decrement finishes. Failed whole campaigns retain
+zero credit. Wider placement and callable dependencies remain explicit.
+[Contract](docs/semantics/TICKS.md), [author evidence](coverage/semantics/tick-author.json),
+[independent review](coverage/semantics/tick-review.json).
+The383 join over557fc63 preserves parent exit status and source-frame cleanup;
+one new exact AHDZ eval-static/post-return original passes at3c02667e3.
+Earlier source/state cuts retain their identities.
+
+Parser-backed USERFATAL now captures its actual eval/file location and retires
+execution contexts through an authenticated fatal snapshot. Static cells retain
+their existing bailout roots, allowing fresh shutdown evals while interrupted
+objects remain alive. Historical origin/END and false-handler-result forgeries
+are rejected; destructor flags/table ownership reuse their existing policy.
+Private a31b12ffc /381 keeps seven exact source tuples at1+6 cuts and three
+public groups/281 premises at210+71 cuts. Three raw projections remain separate
+from three production fatal transitions; original failures/diagnostics remain0.
+Wider fatal/compiler producers and lifecycle/return cleanup stay partial.
+[Source-static fatal ledger](coverage/semantics/source-static-fatal-review.json).
+The382 composition over1fe8fae6 passes independent pointwise review at3a4b0921;
+accepted runtime/protocol bytes and all newer parent behavior are preserved.
+No renewed actor/source/state evidence is claimed.
+
+Module390 now releases callback-installed object/array payloads before captured
+inc/dec scalar commit. Destructors see the old slot; scalar writes are overwritten
+afterward, while pending/replacement Throwables preserve identity and Previous.
+Real aliases keep nonlast objects alive, and callback wrappers detach without
+adding borrowed owners. Ten author and ten independent new originals agree at
+retained cuts; four earlier restoration controls now agree separately. Eleven
+author SL fixtures pass 893 conditions, the changed earlier fixture passes 54,
+and four independent fixtures pass 290 (1,237 total). Five Unsupported source
+controls receive zero agreement. Original baseline, wrapper-option and two isset
+failures remain preserved; unselected native repetitions receive no source credit.
+Late typed sources, destructor ownership changes, exit, ordinary/nested/empty
+released-array reads and wider update locations remain required.
+[Restoration ledger](coverage/semantics/incdec-restoration-review.json).
+The 382-module join over 69ff passes strict SL (6.256s) and one exact both-throw
+destructor original at 3d1dcba90; earlier source/state cuts keep their revisions.
+
 Caught source-static destructor exceptions now keep user execution through caller
 catch and remaining-slot release, preserving Previous without treating exit as a
 Throwable. Request signed32 EXITSTATUS survives caught replacement; integer/default
@@ -71,8 +130,8 @@ agree at retained cuts; eight explicit Unsupported controls receive zero agreeme
 Nine author SL fixtures pass 539 conditions at 585/9c and three independent fixtures
 pass 155 at 585, including genuine throw roots, alias detachment, fresh nested
 registry selection and budget resume. Original fixture failures retain zero failed-group
-credit. Destructor-before-commit, late typed sources and handler exit are the next
-required work; wider locations stay partial.
+credit. The earlier warning cuts remain distinct from the restoration extension;
+late typed sources, exit and wider locations stay partial.
 [Inc/dec warning ledger](coverage/semantics/incdec-warning-review.json).
 The 380-module join over f12 passes strict SL (6.121s) and the affected
 GLOBALS-unset callback original at 0b564; earlier source/state cuts retain their revisions.
@@ -1305,7 +1364,7 @@ result 213, then slot 300/getter 313; separate stored S and returned R cleanup.
 Strict378/source2 pass at `0dda8304`; separate CV111 (70 reached, 41 derived),
 This68, write64 and lifetime104 pass at `83b032a1` (306 reached, 41 derived).
 Existing layout/default/store/task/owner rules and earlier cuts retain their identities;
-plain children inheriting hooks remain required.
+wider plain-child inherited-getter shapes remain required.
 [Ordinary-parent review](coverage/semantics/ordinary-parent-backed-get-hook-review.json).
 Joined released `0940b7ee`/378 with retained private cuts and zero current actors;
 incoming Closure/reference/WeakMap/operator/anonymous-factory paths are disjoint.
@@ -1351,6 +1410,29 @@ defaults, layouts, pure covariance and earlier cuts retain their identities.
 [Ordinary-backing type-presence review](coverage/semantics/ordinary-backed-parent-unbacked-get-hook-type-presence-review.json).
 Joined exact `35068001`/381; one current init-only check passes with no application.
 Private cuts remain retained through neutral EXITSTATUS 0 and disjoint WeakMap/source-exit paths.
+
+Removing the type from a genuine own-body-backed child below the same ordinary-backed
+First now reports the getter error at child hook 10, naming First across Bridge,
+before property class 9. One sixth-arm parent-basis OR repairs this priority;
+reverse addition and child backing 200→300/getter 213→313 remain baseline controls.
+Strict381/source3 pass at `37bc2d87`. Three separate state checks at `0e0d255d`
+pass remove62 (32 reached, 30 derived), add32 and entered-getter50: 114 reached
+plus 30 derived. Runtime, defaults, layouts, pure covariance and ownership stay unchanged.
+[Own-backed type-presence review](coverage/semantics/ordinary-backed-parent-backed-get-hook-type-presence-review.json).
+Joined exact `08666ae75`/382; one count-only current init check passes with no application.
+Private cuts remain retained through disjoint comparison, update-warning and ref-chain paths.
+
+A public plain child property of equal normalized TYPE now inherits a genuinely
+backed parent getter across Bridge. Its effective property/default/slot remain
+Child's (200→300), while function, lexical/private scope and trace class remain
+Parent's; called scope follows Child or Grand. Strict382/source1 pass at `771ad7b9`.
+Four separate states at `6617e08a` pass controls69 (33 reached, 36 derived),
+Child entry52, inherited Grand54 and write68: 207 reached plus 36 derived.
+The original anticipation-encoding failure and two AL fixture failures remain zero.
+Further plain redeclarations and wider hook/type/reference families remain required.
+[Inherited-getter review](coverage/semantics/plain-child-inherited-backed-get-hook-review.json).
+Joined exact `706af40d`/383; one count-only current init check passes with no application.
+Private cuts remain retained through neutral tick state and disjoint incoming callback/source paths.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
@@ -1745,6 +1827,24 @@ requires the retained checked query beside it in an ignored recovery directory.
 [Multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
 Actual381 over `4d26abc3` passes strict at `de54edc1` in 6.244s with zero
 applications; original private source/state/public and M37 validation cuts stay separate.
+
+The idle class certificate additionally admits catch echo followed by throwing
+the same decoded ordinary caught local. Old M38/M36 and common guards remain
+exact; no throw/Previous/active rule changed. Source2 and reached2/353 (267+86)
+pass at `64d33559`: the same caught error retains creation origin, line4 and its
+entire reached trace-array graph through late Y replacement and caller catch.
+Previous is empty at callback rethrow; old Y is linked at the later cuts. T/D
+and the failed inner binding/probe stay canceled. Ordered Z/W/X/public retirement,
+counter-PBOOL refusal, budget continuation and quiet selected alias bypass pass.
+Independent public132/1 binds actual current11/outer f21/main registered1/1/1,
+early trace graph and missing-operation-exit refusal. Private strict381 passes in
+6.173s with zero applications. The original public restore-origin fixture failure
+keeps zero credit. Trace/identity are reached-state/engine-derived evidence,
+separate from native output agreement. Local source reconstruction and wider
+catch/rethrow/lifecycle/returns remain OPEN.
+[Multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+Actual382 over `aa8ddc73` passes strict at `eebde3e7` in 6.216s with zero
+applications; the private source/state/public cuts retain their original identities.
 
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
@@ -3230,6 +3330,19 @@ owned until the UNSET operation transfers it to THROW_SEARCH. The original
 plain-string message premise remains zero; its correction compares string bytes.
 Wider map protocols and ephemeron collection remain open.
 [Ledger](coverage/semantics/weak-map-review.json).
+
+Occupied same-key replacement now preserves KEY/BEFORE and publishes the new
+value before old cleanup. Existing ACCESS_RESUME retains only the receiver and
+original operands; unused results avoid a copy, while used results read the
+selected RHS value after cleanup. Five originals and 548 state checks pass at
+`70bf0c4`.
+An owned-key counterexample then grounds receiver-before-OP2 release order; its
+original and 94 reached checks pass at `302b5c9`. The prior variable-key root list
+remains literally [Map], preserving those cuts. Total 642 includes transfer,
+same-value/shared release, reentrant result copies and pending-throw cleanup;
+originals supply complete endings. The original paused-state fixture failure and
+owned-key mismatch stay zero. Wider map/freeing/reference/iteration and ephemeron
+protocols remain required.
 
 ArrayAccess304 reconstructs intermediate `[]` after ordinary by-value Get and
 supports final compound append, including null-key Get/Set on returned children.

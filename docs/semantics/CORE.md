@@ -203,6 +203,13 @@ User output handlers and buffered stdout diagnostic rendering remain Unsupported
 masking and handler-true cases preserve ordinary execution. Wider startup/SAPI
 output effects remain required.
 
+[Module393](TICKS.md) derives tick markers and compiler lines from checked source,
+with lexical frequencies and a request-global uint32 counter. Its live registry
+supports captured arguments, callback mutation, source strictness/traces and
+cleanup while retaining the calling/Fiber restrictions. Removed parameters finish
+destructing before cached receivers are released. Wider placement and callable
+dependencies stay explicit; this tick obligation remains partial.
+
 Backticks remain core syntax. [Module389](SHELL-DISPATCH.md) constructs commands
 through ordinary interpolation, retains compile-time deprecation and builtin
 validation/trace behavior, and consumes finite pipe/output facts with explicit

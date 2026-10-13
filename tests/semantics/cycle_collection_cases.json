@@ -1,5 +1,59 @@
 [
   {
+    "id": "weak-map-entry-replace-60",
+    "source": "<?php\nclass OldValue {\n    public function __destruct() {\n        global $map, $key, $newWeak;\n        echo $map[$key] === $newWeak->get() ? \"new-entry|\" : \"wrong-entry|\";\n        echo \"O|\";\n    }\n}\nclass NewValue {\n    public function __destruct() {\n        global $keyWeak;\n        echo $keyWeak->get() === null ? \"callback-key-null|\" : \"callback-key-live|\";\n        echo \"N|\";\n    }\n}\n$map = new WeakMap();\n$key = new stdClass();\n$old = new OldValue();\n$oldWeak = WeakReference::create($old);\n$map[$key] = $old;\n$keyWeak = WeakReference::create($key);\n$new = new NewValue();\n$newWeak = WeakReference::create($new);\nunset($old);\necho \"replace|\";\n$map[$key] = $new;\nunset($new);\necho $oldWeak->get() === null ? \"old-null|\" : \"old-live|\";\necho $newWeak->get() === null ? \"new-null|\" : \"new-live|\";\nunset($key);\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $newWeak->get() === null ? \"new-null|END\" : \"new-live|END\";\n",
+    "source_sha256": "9ac3300e42422e4c6cfe304a8c61097b3a6d9aac64c71ace13b4159bd4ba3fd0",
+    "stdout": "replace|new-entry|O|old-null|new-live|callback-key-live|N|key-null|new-null|END",
+    "stderr": "",
+    "status": "normal",
+    "exit": 0
+  },
+  {
+    "id": "weak-map-entry-replace-throw-60",
+    "source": "<?php\nclass OldValue {\n    public function __destruct() {\n        global $map, $key, $newWeak;\n        echo $map[$key] === $newWeak->get() ? \"new-entry|\" : \"wrong-entry|\";\n        echo \"O|\";\n        throw new Exception(\"replace cleanup\");\n    }\n}\nclass NewValue {\n    public function __destruct() {\n        global $keyWeak;\n        echo $keyWeak->get() === null ? \"callback-key-null|\" : \"callback-key-live|\";\n        echo \"N|\";\n    }\n}\n$map = new WeakMap();\n$key = new stdClass();\n$old = new OldValue();\n$oldWeak = WeakReference::create($old);\n$map[$key] = $old;\n$keyWeak = WeakReference::create($key);\n$new = new NewValue();\n$newWeak = WeakReference::create($new);\nunset($old);\necho \"replace|\";\ntry { $map[$key] = $new; } catch (Exception $e) { echo \"caught|\"; }\nunset($new);\necho $oldWeak->get() === null ? \"old-null|\" : \"old-live|\";\necho $newWeak->get() === null ? \"new-null|\" : \"new-live|\";\nunset($key);\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $newWeak->get() === null ? \"new-null|END\" : \"new-live|END\";\n",
+    "source_sha256": "3e5e130154d072896721a8f490f57a885e4e3b06348b33a6473dd10ba7096515",
+    "stdout": "replace|new-entry|O|caught|old-null|new-live|callback-key-live|N|key-null|new-null|END",
+    "stderr": "",
+    "status": "normal",
+    "exit": 0
+  },
+  {
+    "id": "weak-map-entry-replace-held-60",
+    "source": "<?php\nclass OldValue {\n    public function __destruct() {\n        global $map, $key, $newWeak;\n        echo $map[$key] === $newWeak->get() ? \"new-entry|\" : \"wrong-entry|\";\n        echo \"O|\";\n    }\n}\nclass NewValue {\n    public function __destruct() {\n        global $keyWeak;\n        echo $keyWeak->get() === null ? \"callback-key-null|\" : \"callback-key-live|\";\n        echo \"N|\";\n    }\n}\n$map = new WeakMap();\n$key = new stdClass();\n$old = new OldValue();\n$oldWeak = WeakReference::create($old);\n$map[$key] = $old;\n$keyWeak = WeakReference::create($key);\n$new = new NewValue();\n$newWeak = WeakReference::create($new);\necho \"replace|\";\n$map[$key] = $new;\nunset($new);\necho $oldWeak->get() === null ? \"old-null|\" : \"old-live|\";\necho $newWeak->get() === null ? \"new-null|\" : \"new-live|\";\nunset($old);\nunset($key);\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $newWeak->get() === null ? \"new-null|END\" : \"new-live|END\";\n",
+    "source_sha256": "2776c00324827126ecf81fe7bbabfb9c061b55223f092417f7faf7250e48e0e7",
+    "stdout": "replace|old-live|new-live|new-entry|O|callback-key-live|N|key-null|new-null|END",
+    "stderr": "",
+    "status": "normal",
+    "exit": 0
+  },
+  {
+    "id": "weak-map-entry-replace-reentrant-60",
+    "source": "<?php\nclass OldValue {\n    public function __destruct() {\n        global $map, $key, $new, $newWeak, $mapWeak;\n        echo $map[$key] === $newWeak->get() ? \"new-entry|\" : \"wrong-entry|\";\n        $new = null;\n        unset($map[$key]);\n        echo $newWeak->get() === null ? \"new-null-in-old|\" : \"new-held-in-old|\";\n        $map = null;\n        echo $mapWeak->get() === null ? \"map-null-in-old|\" : \"map-live-in-old|\";\n        echo \"O|\";\n    }\n}\nclass NewValue {\n    public function __destruct() {\n        global $keyWeak;\n        echo $keyWeak->get() === null ? \"callback-key-null|\" : \"callback-key-live|\";\n        echo \"N|\";\n    }\n}\n$map = new WeakMap();\n$mapWeak = WeakReference::create($map);\n$key = new stdClass();\n$old = new OldValue();\n$oldWeak = WeakReference::create($old);\n$map[$key] = $old;\n$keyWeak = WeakReference::create($key);\n$new = new NewValue();\n$newWeak = WeakReference::create($new);\nunset($old);\necho \"replace|\";\n$map[$key] = $new;\necho $mapWeak->get() === null ? \"map-null-after|\" : \"map-live-after|\";\nunset($new);\necho $oldWeak->get() === null ? \"old-null|\" : \"old-live|\";\necho $newWeak->get() === null ? \"new-null|\" : \"new-live|\";\nunset($key);\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $newWeak->get() === null ? \"new-null|END\" : \"new-live|END\";\n",
+    "source_sha256": "f050d091d2f7c465f8ab9044df33c5a06459fb2dfca48731fedde4558965bee8",
+    "stdout": "replace|new-entry|callback-key-live|N|new-null-in-old|map-live-in-old|O|map-null-after|old-null|new-null|key-null|new-null|END",
+    "stderr": "",
+    "status": "normal",
+    "exit": 0
+  },
+  {
+    "id": "weak-map-entry-replace-result-60",
+    "source": "<?php\nclass OldValue {\n    public function __destruct() {\n        global $map, $key, $new, $newWeak, $mapWeak;\n        echo $map[$key] === $newWeak->get() ? \"new-entry|\" : \"wrong-entry|\";\n        $new = null;\n        unset($map[$key]);\n        echo $newWeak->get() === null ? \"new-null-in-old|\" : \"new-held-in-old|\";\n        $map = null;\n        echo $mapWeak->get() === null ? \"map-null-in-old|\" : \"map-live-in-old|\";\n        echo \"O|\";\n    }\n}\nclass NewValue {\n    public function __destruct() {\n        global $keyWeak;\n        echo $keyWeak->get() === null ? \"callback-key-null|\" : \"callback-key-live|\";\n        echo \"N|\";\n    }\n}\n$map = new WeakMap();\n$mapWeak = WeakReference::create($map);\n$key = new stdClass();\n$old = new OldValue();\n$oldWeak = WeakReference::create($old);\n$map[$key] = $old;\n$keyWeak = WeakReference::create($key);\n$new = new NewValue();\n$newWeak = WeakReference::create($new);\nunset($old);\necho \"replace|\";\n$result = ($map[$key] = $new);\necho $result === null ? \"result-null|\" : \"result-live|\";\necho $mapWeak->get() === null ? \"map-null-after|\" : \"map-live-after|\";\nunset($new);\necho $oldWeak->get() === null ? \"old-null|\" : \"old-live|\";\necho $newWeak->get() === null ? \"new-null|\" : \"new-live|\";\nunset($key);\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $newWeak->get() === null ? \"new-null|END\" : \"new-live|END\";\n",
+    "source_sha256": "2a1f30a107bd9ac9d2dd6ef5148d65e900b9b2927fe5ce1c8b56097bcff0d80d",
+    "stdout": "replace|new-entry|callback-key-live|N|new-null-in-old|map-live-in-old|O|result-null|map-null-after|old-null|new-null|key-null|new-null|END",
+    "stderr": "",
+    "status": "normal",
+    "exit": 0
+  },
+  {
+    "id": "weak-map-entry-replace-owned-key-60",
+    "source": "<?php\nclass OldValue {\n    public function __destruct() {\n        global $map, $key, $new, $newWeak;\n        echo $map[$key] === $newWeak->get() ? \"new-entry|\" : \"wrong-entry|\";\n        $key = null;\n        $new = null;\n        $map = null;\n        echo \"O|\";\n    }\n}\nclass NewValue {\n    public function __destruct() {\n        global $keyWeak;\n        echo $keyWeak->get() === null ? \"callback-key-null|\" : \"callback-key-live|\";\n        echo \"N|\";\n    }\n}\n$map = new WeakMap();\n$key = new stdClass();\n$old = new OldValue();\n$oldWeak = WeakReference::create($old);\n$keyWeak = WeakReference::create($key);\n$map[$key] = $old;\n$new = new NewValue();\n$newWeak = WeakReference::create($new);\nunset($old);\necho \"replace|\";\n$map[$keyWeak->get()] = $new;\nunset($new);\necho $oldWeak->get() === null ? \"old-null|\" : \"old-live|\";\necho $newWeak->get() === null ? \"new-null|\" : \"new-live|\";\nunset($key);\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $newWeak->get() === null ? \"new-null|END\" : \"new-live|END\";\n",
+    "source_sha256": "637e4c48a6caa03daae4db5ad8cfd3730bfcd4b34f9c44f59bec5f30471aafcc",
+    "stdout": "replace|new-entry|O|callback-key-live|N|old-null|new-null|key-null|new-null|END",
+    "stderr": "",
+    "status": "normal",
+    "exit": 0
+  },
+  {
     "id": "weak-map-entry-unset-59",
     "source": "<?php\nclass Value {\n    public function __destruct() {\n        global $map, $key;\n        try { $map[$key]; } catch (Error $e) { echo \"removed|\"; }\n        echo \"V|\";\n    }\n}\n$map = new WeakMap();\n$key = new stdClass();\n$value = new Value();\n$keyWeak = WeakReference::create($key);\n$valueWeak = WeakReference::create($value);\n$map[$key] = $value;\nunset($value);\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $valueWeak->get() === null ? \"value-null|\" : \"value-live|\";\nunset($map[$key]);\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $valueWeak->get() === null ? \"value-null|\" : \"value-live|\";\nunset($key);\necho $keyWeak->get() === null ? \"key-null|END\" : \"key-live|END\";\n",
     "source_sha256": "a9c9ba5d9a0fed5ce238a4339f664b30d7d0255e33a1c59989f0bc3f01b56dcb",

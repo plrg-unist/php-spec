@@ -27,7 +27,7 @@ def $ppstrict_item(P, pcpath, phpType47, NDeclareItem (NIdentifier (BYTES text) 
   -- if $ptlc($base64(text)) = $ptascii("strict_types")
 def $ppstrict_item(P, pcpath, phpType47, NDeclareItem (NIdentifier (BYTES text) metadata_name) expression metadata) = $ppunsupported(P, "other declare directive compilation")
   -- if $parser_literal(expression) = (pvalue)
-  -- if $ptlc($base64(text)) = $ptascii("ticks") \/ $ptlc($base64(text)) = $ptascii("encoding")
+  -- if $ptlc($base64(text)) = $ptascii("encoding")
 def $ppstrict_item(P, pcpath, phpType47, NDeclareItem (NIdentifier (BYTES text) metadata_name) expression metadata) = P[.DIAGNOSTICS = P.DIAGNOSTICS ++ [PLDIAGNOSTIC "warning" "unknown-declare" ([$base64(text)]) P.LOCATION]]
   -- if $parser_literal(expression) = (pvalue)
   -- if $ppunknown_declare($base64(text))

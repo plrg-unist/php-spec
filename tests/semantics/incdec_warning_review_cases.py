@@ -38,7 +38,6 @@ CASES = {
 
 BOUNDARIES = {
     "review-late-property-source": "increment/decrement restoration target is expired or constrained",
-    "review-array-owned-destructor-before-commit": "increment/decrement restoration requires destructor-before-commit continuation",
     'review-handler-exit-bool': "increment/decrement warning exit continuation",
     'review-handler-exit-null': "increment/decrement warning exit continuation",
     'review-handler-exit-string': "increment/decrement warning exit continuation",

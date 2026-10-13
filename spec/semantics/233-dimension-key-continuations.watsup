@@ -22,6 +22,7 @@ dec $key_base_value(pstate, pbase, pkeymode) : pstate
 dec $key_read_global(pstate, poperand, int, pkeymode) : pstate
 dec $key_global_value(pstate, poperand, pvalue, int, pkeymode) : pstate
 dec $key_global_lookup(pstate, poperand, nat*, int, pkeymode) : pstate
+dec $update_released_key_isset(pstate, poperand, nat*, int, pkeymode) : bool
 dec $key_read_dimension(pstate, poperand, int, pkeymode) : pstate
 dec $key_dimension_value(pstate, pkeyread) : pstate
 dec $key_dimension_convert(pstate, pkeyread) : pstate
@@ -192,6 +193,7 @@ def $key_global_lookup(S, poperand, n_name*, z, KEY_R) = $key_read_done(S, pvalu
   -- if S_read.RESULT = KNOWN pvalue
 def $key_global_lookup(S, poperand, n_name*, z, pkeymode) = $key_read_done(S, pvalue)
   -- if pkeymode =/= KEY_R
+  -- if ~$update_released_key_isset(S, poperand, n_name*, z, pkeymode)
   -- if S_read = $global_quiet_name(S, n_name*)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
@@ -201,6 +203,7 @@ def $key_global_lookup(S, poperand, n_name*, z, KEY_R) = S_read
   -- if S_read.COMPLETION =/= NORMAL
 def $key_global_lookup(S, poperand, n_name*, z, pkeymode) = S_read
   -- if pkeymode =/= KEY_R
+  -- if ~$update_released_key_isset(S, poperand, n_name*, z, pkeymode)
   -- if S_read = $global_quiet_name(S, n_name*)
   -- if S_read.COMPLETION =/= NORMAL
 rule PhpStep/key-read-global: S ~> $key_read_global(S, poperand, z, pkeymode)

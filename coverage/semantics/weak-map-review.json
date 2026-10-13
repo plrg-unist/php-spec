@@ -436,5 +436,131 @@
     "engine_basis": "Zend/zend_weakrefs.c zend_weakmap_unset_dimension and zend_weakref_unregister: absent object keys do nothing; matching entry removal releases its stored value independently of key ownership.",
     "compatibility": "New arms require WeakMap offsetUnset with actual current UNSET_ARRAY, source and operands; prior read/write/notification/storage consumers are unchanged. Earlier source/state cuts keep their exact revisions without renewal.",
     "boundaries": "Nonobject keys, wider unset contexts, presence/reference/method/iteration/replacement and wider map/ephemeron protocols remain required; mutation during freeing stays Unsupported. Countable remains nominal-only; count execution is excluded/Unsupported per CORE. Earlier evidence and failures retain their original cuts."
+  },
+  "entry_replace_60": {
+    "scope": "Occupied same-key leaf entry replacement, registration preservation, receiver lifetime, delayed assignment result and owned-key release order.",
+    "base_revision": "3506800143d4573d4c721139e6ed31a6caa3d1c3",
+    "modules": 381,
+    "raw_root": ".tools/weak-map-entry-replace-60",
+    "recovery": "Reports below are relative to raw_root; original sources, commands, streams and failures remain at their ignored paths.",
+    "representation": "Only entry.VALUE changes; KEY/BEFORE preserve actual registration. Existing ACCESS_RESUME retains original operands and one outer receiver without extra New/key copies. Unused results finish NULL; used results read current selected RHS after cleanup. A disjoint SET/CALL shape orders the same roots as OP_DATA, receiver, OP2, OP1; existing eager release remains unchanged.",
+    "source_agreements": [
+      {
+        "case": "weak-map-entry-replace-60",
+        "tested_revision": "70bf0c4788c40a288fc39a0df081e84732aaa6f8",
+        "source_sha256": "9ac3300e42422e4c6cfe304a8c61097b3a6d9aac64c71ace13b4159bd4ba3fd0",
+        "stdout_bytes": 79,
+        "stdout_sha256": "b2fa9337b1be057624a36bac40e6426d6f7b19051ee76988a3d4426b9cc8a3eb",
+        "native_report": ".tools/weak-map-entry-replace-60-native-__5i5odo/report.json",
+        "model_report": ".tools/weak-map-entry-replace-source-60-zi8y7i47/report.json"
+      },
+      {
+        "case": "weak-map-entry-replace-throw-60",
+        "tested_revision": "70bf0c4788c40a288fc39a0df081e84732aaa6f8",
+        "source_sha256": "3e5e130154d072896721a8f490f57a885e4e3b06348b33a6473dd10ba7096515",
+        "stdout_bytes": 86,
+        "stdout_sha256": "152149e7eae2e49142e3ffd49d5d47ec6b72b360a8e3a59287c0bd1f4bd9b043",
+        "native_report": ".tools/weak-map-entry-replace-throw-60-native-bxcwqtbq/report.json",
+        "model_report": ".tools/weak-map-entry-replace-throw-source-60-37pznt5m/report.json"
+      },
+      {
+        "case": "weak-map-entry-replace-held-60",
+        "tested_revision": "70bf0c4788c40a288fc39a0df081e84732aaa6f8",
+        "source_sha256": "2776c00324827126ecf81fe7bbabfb9c061b55223f092417f7faf7250e48e0e7",
+        "stdout_bytes": 79,
+        "stdout_sha256": "34ef16337cbb05c3ce01e892a420a63547a0569b0ecd5122b66d9a0b2905352c",
+        "native_report": ".tools/weak-map-entry-replace-held-60-native-lm17urd5/report.json",
+        "model_report": ".tools/weak-map-entry-replace-held-source-60-3fmr6j0p/report.json"
+      },
+      {
+        "case": "weak-map-entry-replace-reentrant-60",
+        "tested_revision": "70bf0c4788c40a288fc39a0df081e84732aaa6f8",
+        "source_sha256": "f050d091d2f7c465f8ab9044df33c5a06459fb2dfca48731fedde4558965bee8",
+        "stdout_bytes": 126,
+        "stdout_sha256": "e97aea02fc362d7f3d1118ef22d4bd2145c637cb94bb9dca0549cfaca2aa4a6d",
+        "native_report": ".tools/weak-map-entry-replace-reentrant-60-native-esavtyou/report.json",
+        "model_report": ".tools/weak-map-entry-replace-reentrant-source-60-q3iktnmc/report.json"
+      },
+      {
+        "case": "weak-map-entry-replace-result-60",
+        "tested_revision": "70bf0c4788c40a288fc39a0df081e84732aaa6f8",
+        "source_sha256": "2a1f30a107bd9ac9d2dd6ef5148d65e900b9b2927fe5ce1c8b56097bcff0d80d",
+        "stdout_bytes": 138,
+        "stdout_sha256": "068d468ad9ad604c904d71a665c57bd805bccc5d1c5cbe25c43a326fe6c4a9ff",
+        "native_report": ".tools/weak-map-entry-replace-result-60-native-xsf8xtss/report.json",
+        "model_report": ".tools/weak-map-entry-replace-result-source-60-9blek809/report.json"
+      },
+      {
+        "case": "weak-map-entry-replace-owned-key-60",
+        "tested_revision": "302b5c9910df38b1dd691b91a3d51bd792ab819b",
+        "source_sha256": "637e4c48a6caa03daae4db5ad8cfd3730bfcd4b34f9c44f59bec5f30471aafcc",
+        "stdout_bytes": 79,
+        "stdout_sha256": "79f4fdcfa76a6c4ae6742abdb227496454a70dc914cc5bd6ee50dd9addf11a1e",
+        "native_report": ".tools/weak-map-entry-replace-owned-key-60-native-zox17_yh/report.json",
+        "model_report": ".tools/weak-map-entry-replace-owned-key-source-60-e_jj3rkv/report.json"
+      }
+    ],
+    "state": {
+      "assertions": [
+        137,
+        115,
+        94,
+        109,
+        93,
+        94
+      ],
+      "total_checked_assertions": 642,
+      "cuts": {
+        "70bf0c4788c40a288fc39a0df081e84732aaa6f8": 548,
+        "302b5c9910df38b1dd691b91a3d51bd792ab819b": 94
+      },
+      "candidate_sha256": [
+        "60d4d6d32854116b19537dcd8393825ee8dd4be50e8d852d6c836e534662650a",
+        "1ba3ac6c52f8b0a08483ea256c188b6e90460b9e54e9f86507f1b7357d8573b0",
+        "8ec7a1b07cc7f6378cd6eb8e8013a8bd8c14d2d815f899f2b9ea827ee0d2935b",
+        "bc2c1612886a5eb44bc6ec76ce591b3cb763ac56960bafa7ee60f5ce11b9c587",
+        "835ab07e089570628a22cd37f1a40d1965f2716b85559bc3d17a9a3007a03d4f"
+      ],
+      "reports": [
+        ".tools/weak-map-entry-replace-transfer-corrected-state-60-dmb_zu0t/report.json",
+        ".tools/weak-map-entry-replace-held-state-60-cjk8i3ez/report.json",
+        ".tools/weak-map-entry-replace-result-state-60-cc1k0c39/report.json",
+        ".tools/weak-map-entry-replace-result-state-60-8h8sehu3/report.json",
+        ".tools/weak-map-entry-replace-throw-state-60-685yueec/report.json",
+        ".tools/weak-map-entry-replace-owned-key-state-60-sua79v0s/report.json"
+      ],
+      "result": "Strict true newline/exits0/no timeout/stderr0/interruptionNone/groups empty/stable; three setup clauses per case. Real transfer/shared release, same-value no-loss, copied live object owners2-to3, budget replay and pending Exception ownership. Owned-key cut stops at the Map pin with queued New VALUE and live queued Key; originals supply complete endings."
+    },
+    "compiler_init": [
+      {
+        "revision": "70bf0c4788c40a288fc39a0df081e84732aaa6f8",
+        "cpu": 2,
+        "compiler_report": ".tools/weak-map-entry-replace-60-compiler-79o2nio7/report.json",
+        "init_report": ".tools/weak-map-entry-replace-60-init-3rnta00y/report.json"
+      },
+      {
+        "revision": "302b5c9910df38b1dd691b91a3d51bd792ab819b",
+        "cpu": 1,
+        "compiler_report": ".tools/weak-map-entry-replace-owned-key-60-compiler-yo_xb7za/report.json",
+        "init_report": ".tools/weak-map-entry-replace-owned-key-60-init-8eeqnhr7/report.json"
+      }
+    ],
+    "preserved_zero_credit": [
+      ".tools/weak-map-entry-replace-source-60-g2w3jd87/report.json: original accepted-source occupied-write Unsupported after replace| at350680.",
+      ".tools/weak-map-entry-replace-transfer-state-60-y8xz0p79/report.json: original137 reuses a BUDGET checkpoint without normalizing before the next step; separate corrected137 changes only that resume input.",
+      ".tools/weak-map-entry-replace-owned-key-source-60-olw04ws0/report.json: original70bf normal model clears the key before the receiver; callback-key-null differs from native callback-key-live."
+    ],
+    "unrun_preparation": "The74-check first-refusal file supplied an authentic65-clause prefix but was never run; it has zero numerical credit. Prototype5dfb was neither compiled nor credited with model agreement.",
+    "maintained": {
+      "transfer_revision": "44dd5452df35ab0ed4a8341bf09ac4e1f1ec21f2",
+      "source_cases": 66,
+      "state_cases": 134,
+      "state_sha256": "b36cd84411ee451d2e6a6840a274f1fec4b3755d041ecc1565e22b9a3fa8afa0",
+      "change": "All prior60 source rows/order and128 evaluated CASES/order preserved; six exact originals and six tested literals added, no harness change."
+    },
+    "caps_environment": "Native30/host120; CLI60/recorder75/host180; state SL120/recorder200/host240/worker30; jobs1/C/UTC/script encoding absent. Five variable-key sources/state548 atCPU2; owned native/mismatch atCPU3, final owned source/state94/gates atCPU1. Runtime/profile identities unchanged.",
+    "engine_basis": "Zend/zend_weakrefs.c zend_weakmap_write_dimension publishes before old-value destruction without key re-registration; Zend/zend_execute.c zend_assign_to_object_dim and Zend/zend_vm_def.h ZEND_ASSIGN_DIM copy used results after the handler and release OP_DATA, receiver, OP2, OP1.",
+    "compatibility": "The order specialization permutes the same roots only for the newly valid WeakMap SET/CALL carrier. All prior variable-key marker operand roots are eps, leaving exactly[Map], so source5/state548 keep their70bf cuts at302b. Ordinary ArrayAccess and earlier WeakMap consumers are unchanged.",
+    "boundaries": "Other key/value shapes, wider entries/freeing mutation, reference/method/iteration and ephemeron protocols remain required. Countable is nominal-only; count execution excluded/Unsupported per CORE. No full WeakMap closure."
   }
 }

@@ -43,6 +43,8 @@ dec $access_source(pstate, paccess) : bool
 dec $access_base_source(pstate, paccess) : bool
 dec $access_phase(paccess) : bool
 dec $access_valid(pstate, paccess) : bool
+dec $weakmap_set_resume(pstate, paccess) : bool
+dec $weakmap_set_shape(paccess) : bool
 dec $access_capture_valid(paccess) : bool
 dec $access_selected_valid(paccess) : bool
 dec $access_rhs_selected(poperand, poperand, pvalue) : bool
@@ -445,7 +447,7 @@ def $access_object_roots(n?, b) = eps -- otherwise
 def $access_offset_roots(pvalue, true) = $value_nodes(pvalue)
 def $access_offset_roots(pvalue, false) = eps
 def $task_nodes(ACCESS_RESULT paccess) = $access_roots(paccess, true)
-def $task_nodes(ACCESS_RESUME paccess) = $access_roots(paccess, $access_inner_phase(paccess.PHASE))
+def $task_nodes(ACCESS_RESUME paccess) = $access_roots(paccess, $access_inner_phase(paccess.PHASE)) -- if ~$weakmap_set_shape(paccess)
 def $return_discard(S, ACCESS_RESULT paccess) = $access_compound_discard(S[.ORIGIN = (paccess.SITE)], paccess)
 def $return_discard(S, ACCESS_RESUME paccess) = $access_compound_discard(S[.ORIGIN = (paccess.SITE)], paccess)
 
@@ -585,7 +587,7 @@ def $access_object_valid(S, (n)) = true
 def $access_object_valid(S, n?) = false -- otherwise
 
 def $call_task_valid(S, ACCESS_RESULT paccess) = ($access_valid(S, paccess) /\ $access_call_phase(paccess.PHASE))
-def $call_task_valid(S, ACCESS_RESUME paccess) = ($access_valid(S, paccess) /\ ~$access_call_phase(paccess.PHASE))
+def $call_task_valid(S, ACCESS_RESUME paccess) = ($access_valid(S, paccess) /\ (~$access_call_phase(paccess.PHASE) \/ $weakmap_set_resume(S, paccess)))
 def $access_call_phase(ACCESS_CALL ptbytes) = true
 def $access_call_phase(paccessphase) = false -- otherwise
 def $error_call_valid(S, perrorcall) = true

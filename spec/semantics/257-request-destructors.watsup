@@ -200,7 +200,7 @@ def $destructor_bailout(COMPILETHROWN preqbytes z) = true
 def $destructor_bailout(pcompletion) = false -- otherwise
 def $destructor_unsupported(UNSUPPORTED text) = true
 def $destructor_unsupported(pcompletion) = false -- otherwise
-def $request_fatal_state(S) = S[.DESTRUCTION.CALLED = $destructor_all(0, |S.OBJECTS|)]
+def $request_fatal_state(S) = S[.EXITSTATUS = 255][.DESTRUCTION.CALLED = $destructor_all(0, |S.OBJECTS|)]
   -- if $destructor_bailout(S.COMPLETION)
 
 ;; A failed automatic constructor is permanently ineligible, including escaped
