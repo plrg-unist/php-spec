@@ -247,9 +247,18 @@ cuts; 743 reached premises (676 setup, 67 pure controls, 37 raw steps) pass at
 468275 /386. Ordered skips, retained UNDEF, old/new guard identity and the same
 TypeError through catch/finally are checked. Compiler3 is reused across the sole
 same-object exclusivity guard. Original pre-main, timeout, nondeterminism and
-cleanup-fixture failures retain zero credit. Cached clone/collector visitation,
-copied-declared reference iteration, and materialization while a direct-object
-comparison guard is active remain open.
+cleanup-fixture failures retain zero credit. Cached clone/collector visitation and
+copied-declared reference iteration remain open.
+
+[Materialization under direct comparison](coverage/semantics/direct-table-comparison-review.json)
+now leaves the captured direct cursor on declared inline slots while a nested
+comparison creates and pins actual tables under an independent guard. Three exact
+originals agree at 8d897ce /387; 383 reached premises (361 setup,
+22 pure controls, 26 raw steps) check one-sided/implicit materialization,
+unequal newly added dynamic fields, live slot versus old cell and identical TypeError
+through both caster finally blocks and caller catch/finally. Strict 4 passes; the original
+pre-main fixture failure retains zero credit. Guarded fast array projection and the
+existing GC/clone/reference-iteration/lifetime limits remain open.
 
 Hard bailout now records request EXITSTATUS255 before shutdown. Direct callback
 strings preserve it; integer/default exits replace it and skip later callbacks.

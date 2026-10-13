@@ -49,6 +49,11 @@ now retain the old concrete generation across case casts while dynamic writes
 create copied buckets. Later comparisons use the current map. Early skips, delayed
 default/fallthrough, old-table recursion and the identical thrown TypeError through
 caller catch/finally retain six exact sources and focused state evidence.
+[Materialization during direct comparison](../../coverage/semantics/direct-table-comparison-review.json)
+now keeps an outer direct case comparison on its original inline slots while a
+nested comparison uses newly created tables and a separate recursion guard. The
+same TypeError crosses both caster finally blocks and reaches caller catch/finally;
+later cases remain unvisited. Three exact sources and focused state evidence pass.
 [Fiber comparison transfers](../../coverage/semantics/fiber-aggregate-stringable-comparison-review.json)
 now retain the parked array guard through injected TypeError and caster finally
 entry, then remove it on pair unwind before caller catch/finally entry. Same-table

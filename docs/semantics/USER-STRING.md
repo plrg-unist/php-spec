@@ -158,8 +158,19 @@ identity. Dynamic add, remove and missing-key unset can detach a new generation
 with its own recursion guard. Six exact sources and 743 reached premises/37 raw
 steps cover those distinctions, repeated casts and the same TypeError through
 caller catch/finally. Counterfactual helper controls add no Step credit. Cached
-cloning/collection, copied declared-bucket reference iteration, and materialization
-while a direct-object comparison guard is active remain explicit Unsupported boundaries.
+cloning/collection and copied declared-bucket reference iteration remain explicit
+Unsupported boundaries.
+
+[Materialization during a direct comparison](../../coverage/semantics/direct-table-comparison-review.json)
+now preserves the original declared-slot cursor and object guard through genuine
+foreach or dynamic-field table creation. A nested comparison can materialize the
+other object and pin both real tables under its separate table guard; it does not
+restart the outer walk or add new dynamic buckets to it. Selected live slots and
+pre-unwrapped cells stay distinct. Three exact sources and 383 reached
+premises/26 raw steps cover normal return and the same TypeError through nested
+and outer caster finally blocks, caller restoration/catch/finally and guard cleanup.
+Optimized unmaterialized array projection remains independently guarded; no broader
+receiver/destructor or END/shutdown coverage follows.
 
 [Fiber transfers during these comparisons](../../coverage/semantics/fiber-aggregate-stringable-comparison-review.json)
 now preserve active left guards in authentic waiting callers and allocated suspended

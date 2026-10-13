@@ -24,10 +24,17 @@ old-table bucket count includes an INDIRECT whose slot becomes unset.
 
 Source construction keeps these locators internal; ordinary array casts export
 copied values. Copied declared-bucket reference iteration, cached ordinary cloning
-and collector visitation remain explicit Unsupported boundaries. Materialization while a direct-object comparison guard is active remains
-Unsupported. Six exact sources
+and collector visitation remain explicit Unsupported boundaries. Six exact sources
 and 743 reached premises/37 raw steps cover table generations, slot/cell ownership,
-UNDEF and throw cleanup; no broader lifetime or shutdown claim follows.
+UNDEF and throw cleanup.
+
+[Direct comparison materialization](../../coverage/semantics/direct-table-comparison-review.json)
+now permits genuine foreach and dynamic-property table creation while the original
+object-protected inline-slot comparison is active. Its captured cursor ignores new
+dynamic membership; a nested cached comparison independently owns and protects the
+actual tables, including implicit materialization of the other object. Three exact
+sources and 383 reached premises/26 raw steps pass. Optimized fast array
+projection remains independently guarded; no broader lifetime or shutdown claim follows.
 
 A NaN cast allocates the object before delivering its warning through the real
 error handler. Its continuation retains the original operand category and zval

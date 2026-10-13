@@ -1,0 +1,156 @@
+{
+  "scope": "Ordinary public no-hook objects may materialize cached tables by foreach or dynamic-property creation while an authenticated PLAIN Stringable comparison is active; the original inline-slot cursor and object guard survive while nested cached comparisons use concrete table pins and separate table guards.",
+  "status": "partial; independently reviewed private increment",
+  "tested_revision": "8d897ce1f78a9a0feca43fb5456ef856f596f744",
+  "baseline_revision": "0186877ee54c6f654f93010d9a541e781782408c",
+  "module_count": 387,
+  "engine_anchors": [
+    "Zend/zend_object_handlers.c:rebuild_object_properties_internal, zend_std_compare_objects, zend_std_write_property",
+    "Zend/zend_vm_def.h:ZEND_FE_RESET_R"
+  ],
+  "runtime": {
+    "php": {
+      "path": ".tools/php/bin/php",
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    "numeric_runner": {
+      "path": "tests/semantics/_build/default/numeric_runner.exe",
+      "sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    },
+    "elaborator": {
+      "path": ".tools/spectec/bin/p4spectec",
+      "sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "adapter": {
+      "path": "_build/default/adapter/main.exe",
+      "sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7"
+    },
+    "profile": {
+      "path": "tests/semantics/profile.json",
+      "sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+    },
+    "manifest": {
+      "path": "spec/semantics/modules.json",
+      "sha256": "f135c0159bf19d30dd55e4d1694d69765e990637e7d1f6e87c491102edcb4295"
+    },
+    "php_source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "build_claim": "Retained local binaries; no new build claim."
+  },
+  "baseline": {
+    "report": {
+      "path": ".tools/direct-table-baseline-52/run-v1/report.json",
+      "sha256": "81bdc59535a4706737bfcb257d776e896547d53886200b0283ae74ac59d92695"
+    },
+    "outcome": "accepted/program/Unsupported: direct comparison property-table materialization",
+    "stdout": "outer-cast|",
+    "native_agreements": 0
+  },
+  "native": {
+    "report": {
+      "path": ".tools/direct-table-native-52/run-v1/report.json",
+      "sha256": "88bb11693b2d90a1fed97e140dbbdad4c1f48d175f541fbc223ec0b208f497de"
+    },
+    "originals": 3,
+    "observations": "Actual one-sided foreach then nested implicit other-table materialization and bounded table recursion; direct inline-slot walk ignores unequal new dynamic fields, selected live PROPERTY versus old CELL; identical injected TypeError through both caster finally blocks and caller catch/finally."
+  },
+  "strict": {
+    "report": {
+      "path": ".tools/direct-table-gate-52/run-retry1/report.json",
+      "sha256": "3ac57d381224ad1085c0fd101499043e10ca955081ccab0fcbaede0b1d3535ae"
+    },
+    "pure_checks": 4,
+    "PHP_Steps": 0
+  },
+  "sources": {
+    "report": {
+      "path": ".tools/direct-table-model-52/run-v1/report.json",
+      "sha256": "8870191fbe1426dc9c59909bc98b4e5a5c75b6ec1a1041909a89169313fb02d0"
+    },
+    "catalogue": {
+      "path": "tests/semantics/direct_table_comparison_cases.json",
+      "sha256": "539670e3bfde793da993c8203c8fb4054d32b56a2d7e502999a6c9dbdf26e883"
+    },
+    "normal_native_agreements": 3,
+    "limits": "45 semantic/55 host seconds,100000 steps,jobs1"
+  },
+  "syntax_only": {
+    "report": {
+      "path": ".tools/direct-table-prepare-52/syntax-v1/report.json",
+      "sha256": "d6ea2399f9dd17534f5e1a8b906c1c84bc9344d575a16efb173a0fa41cd11701"
+    },
+    "programmes": 3,
+    "closed_workers": 6,
+    "runtime_credit": 0,
+    "author_el": {
+      "path": ".tools/direct-table-state-52/run-elab-v1/report.json",
+      "sha256": "338e64d75ea7b7e68b08543b2cc03f9b3e379e9fb3f866e653a06a1b72a29f2b"
+    },
+    "peer_el": {
+      "path": ".tools/direct-table-peer-state-52/run-elab-v1/report.json",
+      "sha256": "58f0b6b07de7e2b51b73bdb174f5f4bab36ec1be9eb155612d5c3122a79d56e8"
+    }
+  },
+  "reached_states": {
+    "author": {
+      "path": ".tools/direct-table-state-52/run-sl-v1/report.json",
+      "sha256": "41b27beefe89a8354801e9a8e4ea19e355ec42188fdf0009e42132516fed49d2"
+    },
+    "peer": {
+      "path": ".tools/direct-table-peer-state-52/run-sl-v1/report.json",
+      "sha256": "9d03bd68663dc4d1063a5fc79fedda18c7cc0931df584d3831d7b2a5a0fcf0e1"
+    },
+    "author_plan": {
+      "path": ".tools/direct-table-state-52/plan.json",
+      "sha256": "f8bf5ae99feca10abc7a082d2d4df9c4a084f6d5f37c1d2720eb7785c9051054"
+    },
+    "peer_plan": {
+      "path": ".tools/direct-table-peer-state-52/plan.json",
+      "sha256": "95d302adb81ae0a045de82c532f4b4b5f16a4197eae2d4e09d744d81904a8c10"
+    },
+    "premises": 383,
+    "setup_frontier_premises": 361,
+    "marked_pure_checks": 22,
+    "PhpSteps": 26,
+    "groups": [
+      {
+        "id": "foreach-reenter",
+        "premises": 101,
+        "pure": 6,
+        "PhpSteps": 6,
+        "seconds": 15.979797426611185
+      },
+      {
+        "id": "dynamic-slot-cell",
+        "premises": 129,
+        "pure": 8,
+        "PhpSteps": 8,
+        "seconds": 23.370040314272046
+      },
+      {
+        "id": "peer-table-throw",
+        "premises": 153,
+        "pure": 8,
+        "PhpSteps": 12,
+        "seconds": 17.490951634943485
+      }
+    ],
+    "limits": "EL30 then separate explicit SL120; bounded source seeks, no END/shutdown drive. Seek/driver queries add no raw Step credit."
+  },
+  "ownership": "Captured PLAIN cursors pin both parent objects and keep the declared-layout width and selected PROPERTY/pre-unwrapped CELL. Creating a table adds its current object edge, not a table owner to that existing cursor. A genuine nested STD_HASH capture pins both actual tables, including materialization of the previously missing map. Its HARRAY guard drops at its own return/unwind, while the outer HOBJECT guard persists through the outer caster finally until its pair unwinds. Images are documentary and do not prove an immutable history.",
+  "residuals": [
+    "Optimized unmaterialized array projection remains independently guarded.",
+    "Existing cached ordinary clone, collector visitation and copied-declared reference foreach limits remain explicit.",
+    "Wider access/handlers/layouts, receiver/destructor lifetimes and full-core/END/shutdown behavior are not established."
+  ],
+  "original_zero_credit": [
+    {
+      "report": {
+        "path": ".tools/direct-table-gate-52/run-v1/report.json",
+        "sha256": "83430fe8cd34fe5df6e35cd340378cfd06f197b1292e2b7b5d08f683a388c54d"
+      },
+      "result": "Pre-main compiler fixture supplied text to two PSTRING nat-list payloads; corrected only those payloads. Production code and native/baseline evidence unchanged; source3 was unrun in the failed attempt."
+    }
+  ],
+  "acceptance": "All credited cuts closed with stable watched inputs, actual source/File/CWD/profile and immutable START/closed/raw bindings, empty tool stderr, exits+cleanup0 and empty owned groups. Independent comp_review_21 cleared the exact semantics, author packet and final scoped publication; the independent peer packet and raw were separately accepted.",
+  "recovery": "Original ignored source/programme/recorder/START/raw/binaries remain in .tools/direct-table-comparison-52/.tools/direct-table-{native,baseline,gate,model,prepare,state,peer-state,support}-52 at their exact paths; preserve the branch and providers, no bulky evidence in Git."
+}

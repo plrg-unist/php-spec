@@ -1616,8 +1616,12 @@ steps. Broader close/destructor lifetimes remain required.
 now keep declared slots live in retained tables while copied generations keep their
 own values. Dynamic add/unset, shared cells, physical unset buckets and throw cleanup
 pass six exact sources and 743 reached premises/37 raw steps. Foreach and array casts
-read the current table. Cached cloning and collector traversal remain explicit limits, as does
-materialization while a direct-object comparison guard is active.
+read the current table. Cached cloning and collector traversal remain explicit limits.
+[Materialization during direct comparison](coverage/semantics/direct-table-comparison-review.json)
+now preserves the original inline-slot walk while nested comparisons use separate
+concrete-table guards and pins. Live slots versus retained cells, newly added dynamic
+fields and nested throw/finally cleanup pass three exact sources and 383 reached
+premises/26 raw steps. Guarded fast array projection remains a separate limit.
 [Match expressions](docs/semantics/SOURCE-MATCH.md) preserve strict, lazy arm
 selection, delayed CV subjects, ordered compiler diagnostics and owned value
 results; their [review](coverage/semantics/match-review.json) binds source, compiler
