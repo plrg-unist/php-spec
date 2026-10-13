@@ -1,5 +1,32 @@
 [
   {
+    "id": "weak-map-entry-unset-59",
+    "source": "<?php\nclass Value {\n    public function __destruct() {\n        global $map, $key;\n        try { $map[$key]; } catch (Error $e) { echo \"removed|\"; }\n        echo \"V|\";\n    }\n}\n$map = new WeakMap();\n$key = new stdClass();\n$value = new Value();\n$keyWeak = WeakReference::create($key);\n$valueWeak = WeakReference::create($value);\n$map[$key] = $value;\nunset($value);\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $valueWeak->get() === null ? \"value-null|\" : \"value-live|\";\nunset($map[$key]);\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $valueWeak->get() === null ? \"value-null|\" : \"value-live|\";\nunset($key);\necho $keyWeak->get() === null ? \"key-null|END\" : \"key-live|END\";\n",
+    "source_sha256": "a9c9ba5d9a0fed5ce238a4339f664b30d7d0255e33a1c59989f0bc3f01b56dcb",
+    "stdout": "key-live|value-live|removed|V|key-live|value-null|key-null|END",
+    "stderr": "",
+    "status": "normal",
+    "exit": 0
+  },
+  {
+    "id": "weak-map-entry-unset-throw-59",
+    "source": "<?php\nclass Value {\n    public function __destruct() {\n        global $map, $key;\n        try { $map[$key]; } catch (Error $e) { echo \"removed|\"; }\n        echo \"V|\";\n        throw new Exception(\"entry cleanup\");\n    }\n}\n$map = new WeakMap();\n$key = new stdClass();\n$value = new Value();\n$keyWeak = WeakReference::create($key);\n$valueWeak = WeakReference::create($value);\n$map[$key] = $value;\nunset($value);\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $valueWeak->get() === null ? \"value-null|\" : \"value-live|\";\ntry { unset($map[$key]); } catch (Exception $e) { echo \"caught|\"; }\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $valueWeak->get() === null ? \"value-null|\" : \"value-live|\";\nunset($key);\necho $keyWeak->get() === null ? \"key-null|END\" : \"key-live|END\";\n",
+    "source_sha256": "fb96514ce71e9cc2637e4f6d311411a29e5ebe1303a68d5de432ed3030612cfa",
+    "stdout": "key-live|value-live|removed|V|caught|key-live|value-null|key-null|END",
+    "stderr": "",
+    "status": "normal",
+    "exit": 0
+  },
+  {
+    "id": "weak-map-entry-unset-held-missing-59",
+    "source": "<?php\nclass Value {\n    public function __destruct() {\n        global $map, $key;\n        try { $map[$key]; } catch (Error $e) { echo \"removed|\"; }\n        echo \"V|\";\n    }\n}\n$map = new WeakMap();\n$key = new stdClass();\n$missing = new stdClass();\n$value = new Value();\n$keyWeak = WeakReference::create($key);\n$valueWeak = WeakReference::create($value);\n$map[$key] = $value;\nunset($map[$missing]);\necho \"missing-unset|\";\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $valueWeak->get() === null ? \"value-null|\" : \"value-live|\";\nunset($map[$key]);\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $valueWeak->get() === null ? \"value-null|\" : \"value-live|\";\nunset($value);\necho $valueWeak->get() === null ? \"value-null|\" : \"value-live|\";\nunset($key);\necho $keyWeak->get() === null ? \"key-null|END\" : \"key-live|END\";\n",
+    "source_sha256": "ba9200d86c091d94fe8d2abbea564f563d99f04a816239a22c74e8b6bd17cab9",
+    "stdout": "missing-unset|key-live|value-live|key-live|value-live|removed|V|value-null|key-null|END",
+    "stderr": "",
+    "status": "normal",
+    "exit": 0
+  },
+  {
     "id": "weak-map-read-value-copy-58",
     "source": "<?php\nclass Value {\n    public function __destruct() { echo \"V|\"; }\n}\n$map = new WeakMap();\n$key = new stdClass();\n$value = new Value();\n$keyWeak = WeakReference::create($key);\n$valueWeak = WeakReference::create($value);\n$map[$key] = $value;\nunset($value);\n$held = $map[$key];\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $valueWeak->get() === null ? \"value-null|\" : \"value-live|\";\nunset($key);\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $valueWeak->get() === null ? \"value-null|\" : \"value-live|\";\nunset($held);\necho $valueWeak->get() === null ? \"value-null|END\" : \"value-live|END\";\n",
     "source_sha256": "dbac4e88e7a8dfa1c0f3d4d302e212eb1e7b64809da20a20e4544dd3911e2d2b",
