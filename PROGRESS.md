@@ -18,6 +18,9 @@ Unsupported baseline, reversed-order failure and fixture/launcher failures retai
 Owning callbacks, unsafe targets, wider owning holders and unmodeled enclosing
 control remain required; full core stays partial.
 [Parent cancellation ledger](coverage/semantics/incdec-parent-exit-cancellation-review.json).
+The 386-module join over cbc57 preserves current output/compile/fatal state and
+operation validation. Current strict and the sole two-retired original pass at
+63e5dd8df; earlier source/state cuts retain their original identities.
 
 Nonfatal runtime diagnostics now skip handler/default delivery while a genuine
 file-compiler fatal receipt remains retained. Trigger_error returns true and an
