@@ -234,8 +234,10 @@ def $ob_api_done_pending(S, pobrelease, pcallcontext?, ptask*) = pdestructionope
   -- if $destructor_operation_for(S) = (pdestructionoperation)
 def $ob_api_done_pending(S, pobrelease, pcallcontext?, ptask*) = $ob_api_done_replay_pending(S, S.TODO, pobrelease, pcallcontext?, ptask*)
   -- if $eager_operation_pending(S) = eps /\ $destructor_operation_for(S) = eps
-def $ob_api_done_replay_pending(S, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (OB_API_FAIL_DONE pobrelease pcallcontext? ptask_tail*) :: ptask_tail*, pobrelease, pcallcontext?, ptask_tail*) = (n)
-  -- if pdestructionoperation.SOURCE = OB_API_FAIL_RELEASE pobrelease pcallcontext? ptask_tail* n_original
+def $ob_api_done_replay_pending(S, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_after*, pobrelease, pcallcontext?, ptask_tail*) = (n)
+  -- if ptask_after* = (OB_API_FAIL_DONE pobrelease pcallcontext? ptask_tail*) :: ptask_tail*
+  -- if pdestructionoperation.SOURCE = OB_API_FAIL_RELEASE pobrelease_source pcallcontext_source? ptask_source* n_original
+  -- if pobrelease_source = pobrelease /\ pcallcontext_source? = pcallcontext? /\ ptask_source* = ptask_tail*
   -- if pdestructionoperation.PENDING = (n)
   -- if pdestructionoperation.CLEANUP = eps
   -- if pdestructionoperation.CALLER = S.CURRENT /\ pdestructionoperation.ORIGIN = S.ORIGIN
