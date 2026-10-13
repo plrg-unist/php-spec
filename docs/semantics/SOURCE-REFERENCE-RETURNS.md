@@ -299,6 +299,20 @@ call/reference/eager rules supply all effects; local source certificates and
 reached alias evidence do not authenticate arbitrary historical alias rewrites.
 Wider demand/returns remain OPEN.
 
+A separate exact caught-call certificate admits a TypeError catch around guarded
+AssignRef/probe, with ordinary inner/caught names and a matching getMessage
+receiver. Source2, reached2/350 and independent public99/1 pass at `8a125248`.
+Nested failure cancels both binding and probe; y stays fixed and no inner alias is
+created. The caught fresh error has empty Previous, while the original Y error
+remains in the outer FINALLY_RESUME and reaches the caller after C/T/D and ordered
+retirement. Full saved cleanup/public refusal and late budget continuation pass.
+M35/M36 and common idle/string/prefix rules remain exact; no generic active/catch
+admission or historical-certificate claim is added. Wider catch/returns stay OPEN.
+Validation-only M37 source2/public96/1 at `2f15e222` separately cover escaping
+nested failure: the fresh error reaches the caller with old Y as Previous only
+after callback unwind. Its verbatim producer requires the retained checked query
+in an ignored recovery directory; the ledger keeps this older cut separate.
+
 Module 186 captures the physical cell of an ordinary live unconstrained aliased CV
 before weak Stringable conversion. Its retained current/saved f-local binding
 authenticates that selection independently of later GLOBALS rebind/unset. Success

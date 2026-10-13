@@ -1712,6 +1712,25 @@ provenance; wider demand/lifecycle and broad returns_verify remain OPEN.
 Actual380 over `663f0ef4` passes strict at `ac9a8f50` in 6.081s with zero
 applications; original private source/state/independent cuts remain separate.
 
+The guarded destructor additionally admits an exact local TypeError catch around
+nested AssignRef/probe, with ordinary local names and the checked getMessage
+receiver. Old M35/M36 and common idle/string/prefix rules are unchanged. Source2
+and reached2/350 (264+86) pass at `8a125248`: the failed inner binding/probe is
+canceled, C/T/D continues, and the same original outer Y TypeError survives
+ordered Z/W/X/public retirement, caller and budget continuation. The caught
+nested error stays distinct with empty Previous; selected bypass keeps its alias
+without object birth. Independent early-catch public99/1 admits the actual
+current6/outer f21/main registered1/1/1 prefix and refuses missing outer operation
+exit; author counter-PBOOL refusal is separate. Private strict381 passes in
+6.089s with zero applications. Sparse-import and catch-sort failures retain zero
+credit. Source reconstruction remains local; broader catch/reentry/returns OPEN.
+M37 is validation-only: source2 and public96/1 at `2f15e222` preserve a fresh
+escaping nested TypeError. Previous is empty at the reached nested throw; the
+caller catches the same error with old Y as Previous. Its
+original fixture elaboration failure remains zero; the exact maintained producer
+requires the retained checked query beside it in an ignored recovery directory.
+[Multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
 cell while GLOBALS may rebind or disappear; conversion writes the old cell atomically.

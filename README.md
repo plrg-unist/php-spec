@@ -933,6 +933,15 @@ and write a literal through it. Two originals, reached2/332 and independent
 public150/1 pass separately: inner aliases Y before the probe, the original outer
 error survives T/D and cleanup, and the bypass skips reentry. Shared reference
 and lifecycle rules are unchanged; wider demand/returns verification remains OPEN.
+The guarded destructor can catch a nested TypeError around the reference binding
+and probe. The failed binding and probe are canceled; C/T/D resumes, then the
+original outer Y error reaches the caller. Two originals, reached2/350 and
+independent early-catch public99/1 pass separately. Shared catch, reference and
+lifecycle rules are unchanged; wider catch/reentry and returns remain OPEN.
+A separate validation-only escaping nested-throw case passes two originals and
+public96/1: the fresh error acquires the old Y as Previous only after leaving the
+callback. Its maintained generator and recovery prerequisites are in the
+[multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)
