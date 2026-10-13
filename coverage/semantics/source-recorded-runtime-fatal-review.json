@@ -1,0 +1,120 @@
+{
+  "status": "private_accepted",
+  "target": "PHP 8.5.10 CLI NTS64",
+  "base": "6bb6c386c7c9294aa99dba72bd2d374927beda74",
+  "implementation_revision": "2a863d1c0ad315a3597a691b84c4d4592b47e3a4",
+  "tested_cut": {
+    "module_count": 386,
+    "semantic_diff_sha256": "a9c7a993a914a6570606732196df53f5a5e25b52ded68e20b998339312d47c45",
+    "files_sha256": {
+      "spec/semantics/30-storage.watsup": "c379c7e3f975deae6eeda51d0ab007ea824b6893fcc869487d487c24cb8fb78d",
+      "spec/semantics/190-declaration-publication.watsup": "ba2d07d09e4bbf121a2febefa69373b6dbbcac18df64410a30678f11deb246d0",
+      "spec/semantics/195-declaration-history.watsup": "3f536fb484556cec1d2a2495e72f9b274ab37bff590e8309c73bb4125b8fea13",
+      "spec/semantics/207-error-handler-runtime.watsup": "907bbbe471ce8ef7076c5dbe15a6d449563c4d7e4a30b3b5a4114a1b45570f83",
+      "spec/semantics/270-eager-destructors.watsup": "606919741165935f20befac8226e1c692d907fee45186ad1e656099c687d4fc9",
+      "tests/semantics/recorded_runtime_fatal_protocol.py": "b91ed369ae3c0a3d3dc0bd331d9cb2cc261944174b52f50f928bc65318544484"
+    }
+  },
+  "behavior": [
+    "A fixed-name trigger_error/user_error with E_USER_ERROR drains an authenticated retained file-compiler FATAL before handler selection.",
+    "The delivered message and location come from the retained record; the trace comes from the actual triggering callback. Cached-fatal bailout prevents delivery of the new message.",
+    "One chronological runtime receipt consumes the existing request index and authenticates its actual source occurrence, producer scope and own saved fatal cutoff independently of the prior compiler record.",
+    "The existing formatter route remains disjoint, eval-first delivery remains ordinary, and dynamic call selection explicitly returns Unsupported.",
+    "No request-state field, status, static ownership, destructor policy or opened-file registration change."
+  ],
+  "engine_routes": [
+    "vendor/php-src/Zend/zend.c: zend_error_zstr_at delayed fatal drain before handler delivery",
+    "vendor/php-src/Zend/zend_language_scanner.l: compile_file retained recording after bailout"
+  ],
+  "accepted": {
+    "exact_cli_sources": 2,
+    "public_groups": 1,
+    "public_premises": 117,
+    "raw_phpstep_projections": 1,
+    "production_continuations_from_genuine_prestate": 1,
+    "source_cases": [
+      "static-native-v32/file-fatal-shutdown-recorded-user-error",
+      "static-native-v32/eval-fatal-shutdown-ordinary-user-error"
+    ],
+    "source_result": "Checked/native php_error255 statuses and complete original streams agree at one tested cut; file noH/cached-f fatal1041 stderr bytes, eval H|H|/ordinary late1177 bytes. Both CLI runners0/stable.",
+    "public_checks": [
+      "Real checked file responses reach shutdown phase1/level256 with eligible handler and retained receipt; an isolated raw PhpStep captures the exact cached tuple, consumed index and current trigger trace.",
+      "A separate production drive starts from the genuine prestate, preserves the old static/WeakReference root and validates both authentic abandoned fatal records.",
+      "Whole public rejects a shortened stale extra record alongside both genuine authorities, altered phase/level, borrowed origin, paired raw/FROZEN tuple and coordinated source-site/index receipts.",
+      "Lookup-only pre-drain restoration and pure replay authenticate the own final receipt without driving a proof view or restoring the consumed live index."
+    ]
+  },
+  "explicit_boundary": {
+    "case": "static-native-v33/file-fatal-shutdown-dynamic-user-error",
+    "checked_result": "Unsupported: recorded fatal call selection",
+    "runner_exit": 1,
+    "agreement_credit": 0,
+    "prefix": "B|S|alive| and first fatal488 stderr bytes only"
+  },
+  "preserved_zero_credit": [
+    "Unchanged baseline invokes H and reports new late/main11 instead of retained f/inner1; its status, roots and triggering trace already agree.",
+    "Model14 stops before runtime because the new append definition precedes declaration_cause; model15 stops before runtime on the later formatter predicate signature. Surgical definition relocation and an equivalent existing forward-declared predicate correct only those dependencies.",
+    "State01 is preparation only. State02 groups the nested site payload but stops before runtime on an ungrouped constructor length; the fresh state03 adds only that grouping and preserves all117 premises.",
+    "Native observations, preparation, parse-only preflight and the dynamic-selection refusal carry zero supported agreement; invalid Unsupported v1 preparation remains unrun0.",
+    "Earlier recorded-fatal4/109 and recorded-warning3/185 retain their original identities without renewal."
+  ],
+  "remaining": [
+    "Owning call forms and other recorded runtime fatal producers remain required.",
+    "E_DONT_BAIL, wider diagnostic queues and compiler/formatter/callback/lifecycle combinations remain partial."
+  ],
+  "artifacts": {
+    "native_pair": {
+      "path": ".tools/dynamic-review-02/static-native-v32/report.json",
+      "sha256": "74cd2d60599f491920266339acf5be712b6e901aa00427ad64080e4e5e4f308e"
+    },
+    "native_dynamic_selection": {
+      "path": ".tools/dynamic-review-02/static-native-v33/report.json",
+      "sha256": "5a37f7a86f2cd8623bc575dd4c6187d88861fb4dd3a6633b233bdec28f1f1489"
+    },
+    "unchanged_baseline": {
+      "path": ".tools/dynamic-source-recorded-runtime-fatal-baseline-13/report.json",
+      "sha256": "9a76e406a30c92d7af911b4f223ed7fc70ed618bd393b9bcbe0744127542ad1c"
+    },
+    "original_append_order_failure": {
+      "path": ".tools/dynamic-source-recorded-runtime-fatal-model-14/report.json",
+      "sha256": "0e0734a66bb007a7ca69544fd0147eb9239eeeab17bbccde5c6d10a1baef4442"
+    },
+    "original_forward_predicate_failure": {
+      "path": ".tools/dynamic-source-recorded-runtime-fatal-model-15/report.json",
+      "sha256": "79dff211501b655f50733662c263485c57ae8871e70d504bc3e74fc074ece9f6"
+    },
+    "affected_source": {
+      "path": ".tools/dynamic-source-recorded-runtime-fatal-model-16/report.json",
+      "sha256": "3f612c5e139e36557fffc9e71dc355f3424eee3a9fef187a675e2fc3494e60bb"
+    },
+    "independent_eval_source": {
+      "path": ".tools/dynamic-review-02/recorded-runtime-fatal-model-v1/report.json",
+      "sha256": "11a7efc3768c2f95ac1da4dea95bc784aad8e562c190e574a3f9b169d6510a39"
+    },
+    "explicit_unsupported_control": {
+      "path": ".tools/dynamic-review-02/recorded-runtime-fatal-unsupported-model-v2/report.json",
+      "sha256": "ca1b76729060ad5a42770e7c5ae3dd31421d0aacabc9261c3a27c81663536cae"
+    },
+    "original_preparation": {
+      "path": ".tools/dynamic-source-recorded-runtime-fatal-state-01/fixtures-report.json",
+      "sha256": "ac1ecbb063b0307bff2e1afb0f533fa7f914677fad5265511c2eb7697061daf5"
+    },
+    "grouped_site_preparation": {
+      "path": ".tools/dynamic-source-recorded-runtime-fatal-state-02/fixtures-report.json",
+      "sha256": "3b6a4176f2fa3e72bb8114c76cfbdabd626b75a551da66fa4ea2816f2c394111"
+    },
+    "original_public_syntax_failure": {
+      "path": ".tools/dynamic-source-recorded-runtime-fatal-state-02/check-report.json",
+      "sha256": "5c994a3e0d94fc18f69cac2c45218f9ba4d418392eac7311b0bbe361a4e25bdf"
+    },
+    "corrected_preparation": {
+      "path": ".tools/dynamic-source-recorded-runtime-fatal-state-03/fixtures-report.json",
+      "sha256": "37ff7eb84fe0a89e98e584c787e0349b92294f6449c6c8543b9188d0af9630c5"
+    },
+    "public_check": {
+      "path": ".tools/dynamic-source-recorded-runtime-fatal-state-03/check-report.json",
+      "sha256": "0dca3b46ff7a43f9957d57d35b1159ab82d3e2c5b79584541aac13bf8b64993e"
+    }
+  },
+  "recovery": "Preserve canonical ignored originals/raw and branches. The maintained protocol prepares checked sources then runs the selected full modules with --sl under90s; CLI wrappers use60s/process90s. Original failures remain immutable; metadata alone requires no semantic rerun."
+}

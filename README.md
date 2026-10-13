@@ -1531,8 +1531,13 @@ records the source and public checks. While that record is retained, nonfatal
 runtime diagnostics skip handler/default delivery without interrupting the operation:
 `trigger_error` returns true and an undefined-variable read yields null.
 [Recorded-warning review](coverage/semantics/source-recorded-warning-review.json)
-records three exact sources and two genuine public fronts. Recorded runtime fatals,
-broader queues, formatter combinations and destructor/return interactions remain required.
+records three exact sources and two genuine public fronts. A fixed-name
+`trigger_error`/`user_error` with `E_USER_ERROR` now drains a retained file fatal
+before handler selection, delivering its cached message/location with the current
+call trace. Eval-first delivery remains ordinary; dynamic call selection is
+explicitly Unsupported. [Runtime-drain review](coverage/semantics/source-recorded-runtime-fatal-review.json)
+records this bounded route. Other fatal producers, broader queues, formatter
+combinations and destructor/return interactions remain required.
 [Real closure instances](docs/semantics/SOURCE-CLOSURES.md) now retain explicit captures,
 selected callee owners and per-instance statics through invocation and cleanup.
 [Independent review](coverage/semantics/closures-review.json) binds source, object

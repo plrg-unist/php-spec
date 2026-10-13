@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Fixed-name `trigger_error`/`user_error` with `E_USER_ERROR` now drains a retained
+file-compiler fatal before handler selection, delivering the cached message/location
+with the current callback trace. Its own runtime receipt consumes the index and
+authenticates both saved fatal records. Five runtime modules and the maintained
+protocol at 2a863d1c0 /386 retain two exact sources and one genuine public front/117
+premises at a9c7. One raw projection is separate from production starting at the
+genuine prestate. Dynamic selection stays explicitly Unsupported0; baseline,
+signature-order and original fixture-syntax failures retain0. Owning forms, other
+fatal producers and wider queues remain required; full core stays partial.
+[Runtime-drain ledger](coverage/semantics/source-recorded-runtime-fatal-review.json).
+
 Caller-temporary cleanup Throwables now cancel a named inc/dec warning-handler
 exit after the warning helper finishes: bool/null restore their capture while
 strings skip the store. Authentic main/function catch/finally resumes without
@@ -28,7 +39,7 @@ undefined-variable read yields null; the new receipt branch excludes fatal-mask 
 Module236 and its maintained protocol at 3f28d7ddc /385 retain three exact source
 tuples and two public fronts/185 premises at 571d3211. No raw projections or ownership/lifetime
 changes; baseline and the original typed-subtraction fixture failure remain0.
-Recorded runtime fatals, E_DONT_BAIL and broader diagnostic/formatter queues stay partial.
+Other recorded runtime fatal producers, E_DONT_BAIL and broader diagnostic/formatter queues stay partial.
 [Recorded-warning ledger](coverage/semantics/source-recorded-warning-review.json).
 The386 composition over eeb6a7bb passes independent pointwise review at efc0d7147;
 accepted236/protocol and parent output/public/comparison behavior are preserved.
