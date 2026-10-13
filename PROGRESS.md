@@ -1471,6 +1471,8 @@ states at `55768b65` pass controls91 (45 reached, 46 derived), Second64, Grand66
 writer80: 255 reached plus 46 derived. Defaults/layouts/stores/owners remain unchanged.
 Other inherited getter roots, wider type/reference/trait/flag families remain required.
 [Repeated inherited-getter review](coverage/semantics/repeated-plain-child-inherited-backed-get-hook-review.json).
+Joined exact `61cd4dc8`/384; one count-only current init check passes with no application.
+Private cuts remain retained through disjoint aggregate/update-warning and WeakMap callback paths.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
