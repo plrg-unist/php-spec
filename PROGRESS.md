@@ -1730,6 +1730,8 @@ caller catches the same error with old Y as Previous. Its
 original fixture elaboration failure remains zero; the exact maintained producer
 requires the retained checked query beside it in an ignored recovery directory.
 [Multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+Actual381 over `4d26abc3` passes strict at `de54edc1` in 6.244s with zero
+applications; original private source/state/public and M37 validation cuts stay separate.
 
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
