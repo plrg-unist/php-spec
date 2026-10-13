@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Caught source-static destructor exceptions now keep user execution through caller
+catch and remaining-slot release, preserving Previous without treating exit as a
+Throwable. Request signed32 EXITSTATUS survives caught replacement; integer/default
+exit updates it, strings retain it, and nested resets remain independent of saved
+exit control. Private owner1e3067/380 keeps three exact originals and325 public
+premises; status3d8014372/381 keeps seven exact originals and150 new premises.
+Five fronts/475 premises,12 raw steps and four production table drops retain their
+separate cuts; original baseline/fixture failures remain0. Hard-fatal shutdown
+roots and wider lifecycle work remain required; full core stays partial.
+[Source-static status ledger](coverage/semantics/source-static-exit-status-review.json).
+
 Default output buffers391 now route exact echo/print/inline/exit/direct-call bytes
 through nested NULL handlers, whole chunks, capabilities, copied get results,
 Notice-handler reentry and exact status. Forced flush follows shutdown/destructors;
@@ -29,8 +40,8 @@ destructor parser reentry and escaped references retain their owners. At private
 agree at separate cuts. Six genuine fronts pass 950 public/ownership premises,
 with 24 raw PhpSteps separate from six production table drops and one callee
 restoration. Original parser/fixture failures retain zero failed-group credit.
-Hard-fatal shutdown roots, caught destructor exceptions' sticky exit status and
-wider lifecycle work remain required; full core stays partial.
+Hard-fatal shutdown roots and wider lifecycle work remain required; full core
+stays partial. Caught destructor status now has the separate extension above.
 [Source-static exit ledger](coverage/semantics/source-static-exit-review.json).
 The 380 composition over7d694efd passes one exact destructor-reentry source
 and72 saved parser/exit ownership premises at a974afec0, retaining390

@@ -1407,8 +1407,13 @@ focused source and production-unwind checks. Graceful exit now retires source
 tables before shutdown, preserving callee and nested-source release order.
 Destructor source reentry keeps the saved exit owner valid; escaped references
 retain their objects through shutdown. [Exit review](coverage/semantics/source-static-exit-review.json)
-records this separate cut. Hard-fatal shutdown roots and caught destructor
-exceptions' sticky exit status remain required.
+records this separate cut. Throwing source-table destructors now retain user
+execution through caller catch and remaining-slot cleanup. Request exit status
+survives a caught replacement: integer/default exit updates it, strings preserve
+it, and nested resets remain distinct from saved exit control.
+[Status review](coverage/semantics/source-static-exit-status-review.json) records
+the focused source and public checks. Hard-fatal shutdown roots and wider
+destructor/return interactions remain required.
 [Real closure instances](docs/semantics/SOURCE-CLOSURES.md) now retain explicit captures,
 selected callee owners and per-instance statics through invocation and cleanup.
 [Independent review](coverage/semantics/closures-review.json) binds source, object
