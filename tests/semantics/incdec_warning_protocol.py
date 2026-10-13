@@ -130,11 +130,16 @@ def conditions(name, program, path, stdout):
         return checks + [
             'pslot_changed = DEFINED (POBJECT n_object)',
             '~$update_warning_release_safe(S_return, pslot_changed)',
-            'PhpStep: S_return ~> S_failure',
-            'S_failure.COMPLETION = UNSUPPORTED "increment/decrement restoration requires destructor-before-commit continuation"',
-            'S_failure.STORE = S_return.STORE', 'S_failure.EVENTS = S_return.EVENTS',
-            '~(n_object <- S_failure.DESTRUCTION.CALLED)',
+            'PhpStep: S_return ~> S_prepare',
+            'S_prepare.TODO = (UPDATE_WARNING_RELEASE pupdaterestore) :: ptask_return*',
+            'pupdaterestore.WARNING = pupdatewarning_return',
+            'S_prepare.STORE = S_return.STORE', 'S_prepare.EVENTS = S_return.EVENTS',
+            '~(n_object <- S_prepare.DESTRUCTION.CALLED)',
             '$drive_steps(S_return, 0) = S_return[.COMPLETION = BUDGET]',
+            'S_done = $drive_steps(S_prepare, 2500)', 'S_done.COMPLETION = NORMAL',
+            '$integer_outputs(S_done.EVENTS) = ([' + ','.join(map(str, stdout)) + '])',
+            'n_object <- S_done.DESTRUCTION.CALLED',
+            '$call_descriptors_valid(S_done)', '$heap_valid($heap_graph(S_done))',
         ]
     checks += ['$update_warning_release_safe(S_return, pslot_changed)']
     if name == 'pre-dec-null-throw':

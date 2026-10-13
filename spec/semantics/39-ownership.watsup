@@ -235,11 +235,12 @@ def $entries_nodes((ENTRY pkey pitem) :: pentry_tail*) = $item_nodes(pitem) ++ $
 dec $node_children(pstate, pnode) : pnode*
 dec $typed_cv_string_released_cell(pstate, nat) : bool
 dec $typed_cv_string_released_scope(pstate, nat) : bool
+dec $update_released_cell(pstate, nat) : bool
 def $node_children(S, HCELL n) = eps
-  -- if S.STORE[n] = UNDEFINED \/ $foreach_released_cell(S, n) \/ $typed_cv_string_released_cell(S, n)
+  -- if S.STORE[n] = UNDEFINED \/ $foreach_released_cell(S, n) \/ $typed_cv_string_released_cell(S, n) \/ $update_released_cell(S, n)
 def $node_children(S, HCELL n) = $value_nodes(pvalue)
   -- if S.STORE[n] = DEFINED pvalue
-  -- if ~$foreach_released_cell(S, n) /\ ~$typed_cv_string_released_cell(S, n)
+  -- if ~$foreach_released_cell(S, n) /\ ~$typed_cv_string_released_cell(S, n) /\ ~$update_released_cell(S, n)
 def $node_children(S, HARRAY n) = $entries_nodes(S.ARRAYS[n].ITEMS)
 
 dec $node_edges(pnode, pnode*) : hedge*

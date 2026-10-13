@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Module390 now releases callback-installed object/array payloads before captured
+inc/dec scalar commit. Destructors see the old slot; scalar writes are overwritten
+afterward, while pending/replacement Throwables preserve identity and Previous.
+Real aliases keep nonlast objects alive, and callback wrappers detach without
+adding borrowed owners. Ten author and ten independent new originals agree at
+retained cuts; four earlier restoration controls now agree separately. Eleven
+author SL fixtures pass 893 conditions, the changed earlier fixture passes 54,
+and four independent fixtures pass 290 (1,237 total). Five Unsupported source
+controls receive zero agreement. Original baseline, wrapper-option and two isset
+failures remain preserved; unselected native repetitions receive no source credit.
+Late typed sources, destructor ownership changes, exit, ordinary/nested/empty
+released-array reads and wider update locations remain required.
+[Restoration ledger](coverage/semantics/incdec-restoration-review.json).
+
 Direct ordinary Stringable/string comparisons now call `__toString()` for seven
 loose operators and non-bool Switch cases. Captured CV/copy/reference-cell reads,
 GLOBALS rebinding, caster ownership, lazy fallthrough and nested scalar Switch
@@ -67,8 +81,8 @@ agree at retained cuts; eight explicit Unsupported controls receive zero agreeme
 Nine author SL fixtures pass 539 conditions at 585/9c and three independent fixtures
 pass 155 at 585, including genuine throw roots, alias detachment, fresh nested
 registry selection and budget resume. Original fixture failures retain zero failed-group
-credit. Destructor-before-commit, late typed sources and handler exit are the next
-required work; wider locations stay partial.
+credit. The earlier warning cuts remain distinct from the restoration extension;
+late typed sources, exit and wider locations stay partial.
 [Inc/dec warning ledger](coverage/semantics/incdec-warning-review.json).
 The 380-module join over f12 passes strict SL (6.121s) and the affected
 GLOBALS-unset callback original at 0b564; earlier source/state cuts retain their revisions.

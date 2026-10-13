@@ -313,7 +313,11 @@ current scalar/array locations, preserving copied results and diagnostic order;
 [Direct-CV warning callbacks](coverage/semantics/incdec-warning-review.json) now
 restore captured bool/null values even after a handler throws; strings restore
 only after normal handling. Aliases, fresh handlers and copied results are checked.
-Restoration destructors, late type sources and handler exit remain explicit obligations.
+[Before-commit restoration](coverage/semantics/incdec-restoration-review.json)
+now runs callback-installed object/array destructors while the old slot is visible,
+then restores captured scalars before propagating pending throws. Aliases, ordered
+cleanup and Previous chains retain their actual owners. Late typed sources,
+destructor ownership changes, exit and wider update locations remain required.
 All twelve [compound assignments](docs/semantics/UPDATES.md) preserve captured
 targets, delayed reads and alias ownership; [independent evidence](coverage/semantics/compound-review.json)
 records 2,639 exact source comparisons and the corrected diagnostic phases.

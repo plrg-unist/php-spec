@@ -158,10 +158,13 @@ rule PhpStep/unary-plus: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIE
   -- if S.TODO = (EVAL (NExprUnaryPlus expression metadata)) :: ptask_tail*
 rule PhpStep/unary-minus: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), UNARY NEGATIVE $runtime_line(S, [PCFIELD 0], expression)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprUnaryMinus expression metadata)) :: ptask_tail*
+dec $update_raw_identity_plan(pstate) : bool?
 rule PhpStep/binary-identical: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_1), BINARY_LEFT IDENTICAL expression_2 $runtime_line(S, [PCFIELD 1], expression_2)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprBinaryOpIdentical expression_1 expression_2 metadata)) :: ptask_tail*
+  -- if $update_raw_identity_plan(S) = eps
 rule PhpStep/binary-notidentical: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_1), BINARY_LEFT NOTIDENTICAL expression_2 $runtime_line(S, [PCFIELD 1], expression_2)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprBinaryOpNotIdentical expression_1 expression_2 metadata)) :: ptask_tail*
+  -- if $update_raw_identity_plan(S) = eps
 rule PhpStep/binary-left: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression), BINARY_RIGHT pbin S.RESULT z] ++ ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (BINARY_LEFT pbin expression z) :: ptask_tail*
 dec $gc_retired_binary(pstate, pbin, poperand) : bool

@@ -88,6 +88,7 @@ def $global_read_local(S, n_name*, z) = S[.RESULT = KNOWN pvalue]
   -- if $lookup(S.ENV, n_name*) = (n)
   -- if S.STORE[n] = DEFINED pvalue
   -- if ~$foreach_released_container_cell(S, n)
+  -- if ~$update_released_array_name(S, n_name*)
 def $global_read_local(S, n_name*, z) = $global_missing(S, n_name*, z)
   -- if ~$environment_blocked(S, n_name*)
   -- if $lookup(S.ENV, n_name*) = eps

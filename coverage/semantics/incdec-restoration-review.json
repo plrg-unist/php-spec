@@ -1,0 +1,134 @@
+{
+  "scope": "Destructor-before-commit restoration after registered direct untyped-CV pre/post inc/dec warning callbacks; normal return or supplied-Throwable throw.",
+  "status": "independently_reviewed_bounded_runtime_private",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "production_revision": "bdbad303a81ecb6d4aba62d51204fdbf026cd7d9",
+  "semantic_sha256": {
+    "spec/semantics/390-incdec-warning-continuations.watsup": "dc84957bfc96b16452a6ac5c6775693c40ce9a69659374a8ca2b521acfdc30b1"
+  },
+  "engine_basis": [
+    "vendor/php-src/Zend/zend_operators.c: increment_function/decrement_function/increment_string release the callback-installed zval before storing the captured scalar. Bool/null restore despite pending handler throws; strings restore only after normal handling. The store is a raw overwrite after zval_ptr_dtor, with no second destructor.",
+    "vendor/php-src/Zend/zend_vm_def.h: pre/post inc/dec select the initially dereferenced target; prefix copies after the helper and postfix before it. Typed references follow their separate helper.",
+    "vendor/php-src/Zend/zend_hash.c: zend_array_destroy marks the container destroying before child destruction and frees it afterward; raw type observations do not acquire a live owning array.",
+    "vendor/php-src/Zend/zend_execute.h: zend_assign_to_variable copies an incoming value before releasing the old payload; the target-only same-object self-write native WeakReference probe confirms no lasting owner after captured commit."
+  ],
+  "contract": [
+    "Source-bound RELEASE/COMMIT records preserve the historical selected cell and raw old payload without adding an owner. Exactly one matching COMMIT authenticates the release. Only that historical payload edge is suppressed; destructor-installed values retain their real edges.",
+    "Borrowed reference cells survive caller rebinding when real aliases keep them live. Initially plain CVs detach callback-created wrappers; surviving wrapper peers keep the referent alive without a forced destructor, while sole wrappers release it normally.",
+    "Existing eager cleanup runs direct/transitive object destructors before captured scalar commit. Scalar writes during destruction are overwritten afterward. Ordered child cleanup continues after a supplied throw; resurrection retains its real escaped owner.",
+    "The handler Throwable transfers once into eager pending ownership. Commit precedes propagation of the final Throwable, and a destructor replacement keeps the original in Previous. No-destructor pending COMMIT is protected from generic throw discard.",
+    "Released-array existence and authenticated whole strict comparisons against literal scalars avoid fabricating array owners. Effectful operands still evaluate normally. Ordinary owning reads, late typed sources, destructor ownership changes and exit remain explicit boundaries."
+  ],
+  "accepted": {
+    "strict": {
+      "revision": "1146a00085d65130e336a8f88479bd1e7804b4fa",
+      "modules": 380,
+      "mode": "SL main=true; compilation/init only, zero PHP runtime credit",
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-04/strict-1146a0008/report.json"
+    },
+    "source": {
+      "new_author_ordinary": 10,
+      "repaired_earlier_ordinary": 4,
+      "independent_ordinary": 10,
+      "explicit_unsupported_controls": 5,
+      "control_agreement_credit": 0,
+      "result": "Ordinary originals require checked normal status and exact native stdout/stderr/exit; controls require checked Unsupported with the exact documented reason.",
+      "cuts": [
+        {
+          "revision": "1146a00085d65130e336a8f88479bd1e7804b4fa",
+          "new_ordinary": 2,
+          "reports": [
+            "/home/user/workspace/php-spec-evidence-archive/operators-04/smoke-1146a0008-pre-inc-object-string/report.json",
+            "/home/user/workspace/php-spec-evidence-archive/operators-04/smoke-1146a0008-pre-inc-plain-object-handler-throw/report.json"
+          ]
+        },
+        {
+          "revision": "82e4cbecf7b8eeb6de1618f4010ced0a6d11e977",
+          "new_ordinary": 5,
+          "report": "/home/user/workspace/php-spec-evidence-archive/operators-04/focus-82e4cbecf/report.json",
+          "qualification": "Only the first five source rows pass; the following wrapper-option failure and unrun tail remain zero credit."
+        },
+        {
+          "revision": "1ae186bfc22ef6502d283259de8c02c98bc806b8",
+          "new_ordinary": 3,
+          "repaired_ordinary": 4,
+          "report": "/home/user/workspace/php-spec-evidence-archive/operators-04/focus-1ae186bfc-suffix/report.json"
+        },
+        {
+          "revision": "e24c8d17c5512c5bed42e981ba92a8e444c0404e",
+          "independent_ordinary": 5,
+          "report": "/home/user/workspace/php-spec-evidence-archive/operators-incdec-restoration-review-04/focus-e24c8d17c/report.json",
+          "qualification": "Only the first five originals pass; the following array-isset failure and unrun tail remain zero credit."
+        },
+        {
+          "revision": "1aac178f0145def0747a7727b3dfcdf734222687",
+          "independent_ordinary": 5,
+          "controls": 5,
+          "report": "/home/user/workspace/php-spec-evidence-archive/operators-incdec-restoration-review-04/focus-1aac178f0-suffix/report.json"
+        }
+      ],
+      "total_ordinary": 24
+    },
+    "author_reached": {
+      "revision": "1ae186bfc22ef6502d283259de8c02c98bc806b8",
+      "mode": "SL",
+      "new_fixtures": 11,
+      "new_conditions": 893,
+      "changed_earlier_fixtures": 1,
+      "changed_earlier_conditions": 54,
+      "result": "Genuine release/commit frontiers, old-slot visibility, direct/unique-wrapper/array cleanup, pending and Previous roots, resurrection, no-destructor throw, source/certificate negatives, zero/one/resumed execution and explicit late-type/exit guards.",
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-04/focus-1ae186bfc-suffix/report.json"
+    },
+    "independent_reached": {
+      "revision": "1aac178f0145def0747a7727b3dfcdf734222687",
+      "mode": "SL",
+      "fixtures": 4,
+      "conditions": 290,
+      "result": "Kept borrowed CELL versus rebound caller with one pending Throwable owner; surviving wrapper without a forced destructor; new object edge preserved before named boundary; source-authenticated GLOBALS isset with no retired-array owner revival. Actual PhpSteps and public zero/one/resume/certificate negatives use genuine source frontiers.",
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-incdec-restoration-review-04/focus-1aac178f0-suffix/report.json"
+    }
+  },
+  "preserved_zero_credit": [
+    "The unchanged-production pre-inc-object-string baseline preserves the genuine checked Unsupported destructor-before-commit gap at 04bd92011.",
+    "focus-82e4cbecf preserves post-dec-unique-wrapper-bool's interpreter failure: a tuple optional constructor erased the wrapper option. The one-line 1ae fix returns the already-proved typed lookup option; only the failed/unrun suffix ran again.",
+    "focus-e24c8d17c and focus-242cb4075-suffix preserve review-array-destructor-write's genuine Unsupported. Its first five originals agree only at e24; both failed/unrun suffixes receive zero credit. Terminal isset guards are needed for direct CVs, while GLOBALS also enters the earlier source-authenticated233 key-read protocol; bdbad handles that distinct ingress without an array owner.",
+    "Sixteen unselected authored source repetitions and four independent source repetitions remain native-only. Syntax/frontend/native preparations receive zero public model agreement; reached-state native endings remain distinct from public source comparisons.",
+    "Earlier OP390 source/state evidence retains its original cuts. Only three earlier direct-object boundaries and one array-object boundary, plus their changed object state fixture, are repaired here.",
+    "The external self-write wrapper first failed its case-module relative-path assertion before launching PHP. The original script/trace remains zero credit; a thin recorded native-only correction observed the unchanged original once."
+  ],
+  "boundaries": [
+    "Initial typed cells remain outside this route. Late property type sources, expired borrowed cells and wider names/dimensions/properties need their separate contracts.",
+    "Destructor rebinding or a newly installed owned payload needs raw-overwrite lifetime semantics, not a second eager destructor. Graceful handler/destructor exit needs captured commit during exit continuation.",
+    "Ordinary, nested and empty reads of a destroying/released array remain Unsupported; literal strict type mismatches and terminal isset do not establish general array access support. Suspension and other object update handlers remain partial.",
+    "Five retained independent source controls require exact reasons for late typed source, destructor CV rebind, new object write and bool/string destructor exit. Unsupported is not native agreement."
+  ],
+  "recovery": {
+    "author_archive": "/home/user/workspace/php-spec-evidence-archive/operators-04",
+    "independent_archive": "/home/user/workspace/php-spec-evidence-archive/operators-incdec-restoration-review-04",
+    "source_helpers": [
+      "tests/semantics/incdec_restoration.py",
+      "tests/semantics/incdec_restoration_review.py"
+    ],
+    "state_helpers": [
+      "tests/semantics/incdec_restoration_protocol.py",
+      "tests/semantics/incdec_restoration_state_review.py"
+    ],
+    "runtime": {
+      "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+    },
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": null
+    },
+    "instructions": "Reports retain exact sources, commands, streams, exits, tools and clean revision/input snapshots; accepted processes have no timeout/interruption and empty reaped groups. Use fresh external outputs and explicit SL under root slot coordination. Linked retained tools are not a fresh rebuild or portability claim. Renew only affected checks; metadata-only changes do not renew semantics."
+  },
+  "native_lifetime_check": {
+    "revision": "1aac178f0145def0747a7727b3dfcdf734222687",
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-incdec-restoration-review-04/weak-self-native-1aac178f0/native-corrected/report.json",
+    "result": "Target-only same-self write leaves WeakReference::get() null after captured commit; exact native stdout H;D:1;R:1:1:;E;, exit0, empty stderr, no timeout/interruption and empty reaped groups. Native-only, zero model agreement.",
+    "agreement_credit": 0
+  }
+}

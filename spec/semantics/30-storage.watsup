@@ -134,6 +134,7 @@ syntax pintegerconversion
 syntax pstringcompare
 syntax pupdatepointer
 syntax pupdatewarning
+syntax pupdaterestore
 syntax passertiniconversion = { SOURCE ptask, VALUE pvalue }
 syntax passertini = { ID nat, CALL pconfigcall, CONVERSION passertiniconversion?, INPUT pvalue, OLDRAW pvalue, RETURNRAW pvalue, OLDRETURN pvalue, ORIGINAL pvalue, ENTRYMODIFIED bool, VALUE int, WARNING (nat*)?, PRECISION int, PHASE passertiniphase }
 syntax passertoption = { ID nat, CALL pconfigcall, OPTION int, OLD bool }
@@ -331,6 +332,7 @@ syntax ptask = PROPERTY_HOOK_RESULT ppropertyhook | PROPERTY_HOOK_ISSET_RESULT p
   | DEPRECATED_CONSTANT_RESULT pdeprecatedconstant | REPORTING_LONG_RESULT pconfigcall int
   | INTEGER_OPERATOR_CONVERT pintegeroperation pintegerphase | INTEGER_OPERATOR_WARNING pintegeroperation pintegerphase pintegerconversion nat
   | UPDATE_WARNING_NOTICE pupdatewarning | UPDATE_WARNING_RESTORE pupdatewarning | UPDATE_WARNING_DONE pupdatewarning
+  | UPDATE_WARNING_RELEASE pupdaterestore | UPDATE_WARNING_COMMIT pupdaterestore
   | GLOBAL_CONSTANT_METHOD_RESUME porigin porigin porigin nat
   | PARAMETER_CONSTANT_METHOD_RESUME porigin porigin porigin nat
   | GLOBAL_CONSTANT_DUPLICATE porigin pvalue pvalueclass nat pconstantfact* int
@@ -729,6 +731,7 @@ def $ensure(S, n_name*) = S[.CELL = n_cell][.STORE = S.STORE ++ [UNDEFINED]][.EN
 ;; unwrap an ALIAS into DIRECT while the original cell's wrapper remains intact.
 dec $reference_cell(pstate, nat) : pstate
 dec $foreach_released_cell(pstate, nat) : bool
+dec $update_released_array_name(pstate, nat*) : bool
 dec $foreach_released_wrapper_cell(pstate, nat) : bool
 dec $foreach_released_wrapper_name(pstate, nat*) : bool
 dec $foreach_released_container_cell(pstate, nat) : bool
@@ -786,6 +789,7 @@ def $read_name(S, n_name*, z) = S[.RESULT = KNOWN pvalue]
   -- if $lookup(S.ENV, n_name*) = (n_cell)
   -- if S.STORE[n_cell] = DEFINED pvalue
   -- if ~$foreach_released_container_cell(S, n_cell)
+  -- if ~$update_released_array_name(S, n_name*)
 
 dec $resolve(pstate, poperand) : pstate
 def $resolve(S, KNOWN pvalue) = S[.RESULT = KNOWN pvalue]
