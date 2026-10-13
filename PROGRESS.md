@@ -1457,10 +1457,20 @@ Parent's; called scope follows Child or Grand. Strict382/source1 pass at `771ad7
 Four separate states at `6617e08a` pass controls69 (33 reached, 36 derived),
 Child entry52, inherited Grand54 and write68: 207 reached plus 36 derived.
 The original anticipation-encoding failure and two AL fixture failures remain zero.
-Further plain redeclarations and wider hook/type/reference families remain required.
+Wider inherited-getter and hook/type/reference families remain required.
 [Inherited-getter review](coverage/semantics/plain-child-inherited-backed-get-hook-review.json).
 Joined exact `706af40d`/383; one count-only current init check passes with no application.
 Private cuts remain retained through neutral tick state and disjoint incoming callback/source paths.
+
+Repeated public plain properties of equal normalized TYPE now retain the original
+backed getter through a bounded, authenticated ancestry walk. First's default 200
+gives way to Second's default 300; Grand writes 400 and gets 413. Second supplies
+the property and slot, Parent the function, lexical/private scope and trace, and
+the receiver its called class. Strict383/source1 pass at `9d0e4d88`; four separate
+states at `55768b65` pass controls91 (45 reached, 46 derived), Second64, Grand66 and
+writer80: 255 reached plus 46 derived. Defaults/layouts/stores/owners remain unchanged.
+Other inherited getter roots, wider type/reference/trait/flag families remain required.
+[Repeated inherited-getter review](coverage/semantics/repeated-plain-child-inherited-backed-get-hook-review.json).
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,

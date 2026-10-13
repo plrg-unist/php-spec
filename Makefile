@@ -766,6 +766,11 @@ test-semantics: build
 	python3 tests/semantics/plain_child_inherited_backed_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group entry
 	python3 tests/semantics/plain_child_inherited_backed_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group this
 	python3 tests/semantics/plain_child_inherited_backed_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group write
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/repeated_plain_child_inherited_backed_get_hook_cases.json
+	python3 tests/semantics/repeated_plain_child_inherited_backed_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group controls
+	python3 tests/semantics/repeated_plain_child_inherited_backed_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group entry
+	python3 tests/semantics/repeated_plain_child_inherited_backed_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group this
+	python3 tests/semantics/repeated_plain_child_inherited_backed_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group write
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_publication_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_composed_retry_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/assertion_cases.json

@@ -128,6 +128,8 @@ dec $property_hook_backed_over_virtual(pstate, ppropertydesc, ppropertydesc) : b
 dec $property_hook_backed_over_ordinary(pstate, ppropertydesc, ppropertydesc) : bool
 dec $property_hook_ordinary_parent(pstate, ppropertydesc, nat) : ppropertydesc?
 dec $property_hook_plain_over_backed(pstate, ppropertydesc, ppropertydesc, nat) : bool
+dec $property_hook_plain_edge(pstate, ppropertydesc, ppropertydesc, nat) : bool
+dec $property_hook_plain_getter_walk(pstate, ppropertydesc, nat) : ppropertydesc?
 dec $property_hook_getter(pstate, ppropertydesc) : ppropertydesc?
 dec $property_hook_effective_origin(pstate, ppropertydesc) : porigin?
 dec $property_hook_unbacked_over_ordinary(pstate, ppropertydesc, ppropertydesc, nat) : bool
@@ -141,10 +143,8 @@ dec $property_hook_inherited_backing_walk(pstate, ppropertydesc, nat) : bool
 ;; Plain redeclarations retain their own storage and inherit the parent getter.
 def $property_hook_getter(S, ppropertydesc) = (ppropertydesc)
   -- if $property_hook_origin(S, ppropertydesc) =/= eps
-def $property_hook_getter(S, ppropertydesc) = (ppropertydesc_parent)
+def $property_hook_getter(S, ppropertydesc) = $property_hook_plain_getter_walk(S, ppropertydesc, |S.CLASSES|)
   -- if $property_hook_origin(S, ppropertydesc) = eps
-  -- if $property_hook_ordinary_parent(S, ppropertydesc, |S.CLASSES|) = (ppropertydesc_parent)
-  -- if $property_hook_plain_over_backed(S, ppropertydesc_parent, ppropertydesc, |S.CLASSES|)
 def $property_hook_getter(S, ppropertydesc) = eps -- otherwise
 def $property_hook_effective_origin(S, ppropertydesc) = $property_hook_origin(S, ppropertydesc_getter)
   -- if $property_hook_getter(S, ppropertydesc) = (ppropertydesc_getter)
@@ -849,7 +849,7 @@ def $property_hook_ordinary_backing(S, ppropertydesc, n) = true
   -- if $property_hook_ordinary_parent(S, ppropertydesc, n) = (ppropertydesc_parent)
   -- if $property_hook_unbacked_over_ordinary(S, ppropertydesc_parent, ppropertydesc, n)
 def $property_hook_ordinary_backing(S, ppropertydesc, n) = false -- otherwise
-def $property_hook_plain_over_backed(S, ppropertydesc_parent, ppropertydesc_child, n) = true
+def $property_hook_plain_edge(S, ppropertydesc_parent, ppropertydesc_child, n) = true
   -- if ppropertydesc_parent.NAME = ppropertydesc_child.NAME /\ ppropertydesc_parent.TYPE = ppropertydesc_child.TYPE /\ ppropertydesc_parent.ORIGIN =/= ppropertydesc_child.ORIGIN
   -- if ppropertydesc_parent.VISIBILITY = PROPERTY_PUBLIC /\ ~ppropertydesc_parent.STATIC /\ ~ppropertydesc_parent.READONLY /\ ~ppropertydesc_parent.FINAL /\ ppropertydesc_parent.SETVISIBILITY = eps
   -- if ppropertydesc_child.VISIBILITY = PROPERTY_PUBLIC /\ ~ppropertydesc_child.STATIC /\ ~ppropertydesc_child.READONLY /\ ~ppropertydesc_child.FINAL /\ ppropertydesc_child.SETVISIBILITY = eps
@@ -858,9 +858,6 @@ def $property_hook_plain_over_backed(S, ppropertydesc_parent, ppropertydesc_chil
   -- if $property_declaring_class(S.CLASSES, porigin_parent_property) = (porigin_parent)
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
   -- if $hook_property_at(pclassdesc_parent.PROPERTIES, porigin_parent_property) = (ppropertydesc_parent)
-  -- if $property_hook_origin(S, ppropertydesc_parent) = (porigin_parent_hook)
-  -- if $origin_node(S.SOURCES, porigin_parent_hook) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_name) (SEQUENCE eps) phpType39 metadata_hook)
-  -- if $ptlc($base64(text_get)) = $ptascii("get") /\ $hook_body_supported(phpType39) /\ $hook_body_backed(phpType39, ppropertydesc_parent.NAME)
   -- if ppropertydesc_child.ORIGIN = PORIGIN n_child pcpath_child
   -- if $(|pcpath_child| >= 2)
   -- if pcpath_group = pcpath_child[0:$nabs($(|pcpath_child| - 2))]
@@ -868,6 +865,27 @@ def $property_hook_plain_over_backed(S, ppropertydesc_parent, ppropertydesc_chil
   -- if $origin_node(S.SOURCES, PORIGIN n_child pcpath_group) = (NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text_name) metadata_name_child) phpType5 metadata_item])) (SEQUENCE eps) metadata_child)
   -- if flags <- [0,1] /\ ppropertydesc_child.NAME = $base64(text_name) /\ ppropertydesc_child.KEY = ppropertydesc_child.NAME
   -- if $property_hook_origin(S, ppropertydesc_child) = eps
+def $property_hook_plain_edge(S, ppropertydesc_parent, ppropertydesc_child, n) = false -- otherwise
+def $property_hook_plain_getter_walk(S, ppropertydesc, n) = (ppropertydesc)
+  -- if $(n > 0)
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ~ppropertydesc.FINAL /\ ppropertydesc.SETVISIBILITY = eps
+  -- if ppropertydesc.ORIGIN = porigin_property
+  -- if $property_declaring_class(S.CLASSES, porigin_property) = (porigin_parent)
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if $hook_property_at(pclassdesc_parent.PROPERTIES, porigin_property) = (ppropertydesc)
+  -- if $property_hook_origin(S, ppropertydesc) = (porigin_hook)
+  -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_name) (SEQUENCE eps) phpType39 metadata_hook)
+  -- if $ptlc($base64(text_get)) = $ptascii("get") /\ $hook_body_supported(phpType39) /\ $hook_body_backed(phpType39, ppropertydesc.NAME)
+def $property_hook_plain_getter_walk(S, ppropertydesc, n) = (ppropertydesc_getter)
+  -- if $(n > 0)
+  -- if $property_hook_origin(S, ppropertydesc) = eps
+  -- if $property_hook_ordinary_parent(S, ppropertydesc, n) = (ppropertydesc_parent)
+  -- if $property_hook_plain_edge(S, ppropertydesc_parent, ppropertydesc, n)
+  -- if $property_hook_plain_getter_walk(S, ppropertydesc_parent, $nabs($(n - 1))) = (ppropertydesc_getter)
+def $property_hook_plain_getter_walk(S, ppropertydesc, n) = eps -- otherwise
+def $property_hook_plain_over_backed(S, ppropertydesc_parent, ppropertydesc_child, n) = true
+  -- if $property_hook_plain_edge(S, ppropertydesc_parent, ppropertydesc_child, n)
+  -- if $property_hook_plain_getter_walk(S, ppropertydesc_parent, $nabs($(n - 1))) = (ppropertydesc_getter)
 def $property_hook_plain_over_backed(S, ppropertydesc_parent, ppropertydesc_child, n) = false -- otherwise
 def $property_hook_override_pair(S, ppropertydesc_parent, ppropertydesc_child) = (($property_hook_override_shape(S, ppropertydesc_parent, ppropertydesc_child) /\ ($property_hook_override_backed(S, ppropertydesc_parent) \/ $property_hook_inherited_backing(S, ppropertydesc_parent) \/ $property_hook_ordinary_backing(S, ppropertydesc_parent, |S.CLASSES|))) \/ ($property_hook_virtual_edge(S, ppropertydesc_parent, ppropertydesc_child) /\ $property_hook_virtual_chain(S, ppropertydesc_parent, |S.CLASSES|) /\ $property_hook_virtual_chain(S, ppropertydesc_child, |S.CLASSES|)) \/ $property_hook_backed_over_virtual(S, ppropertydesc_parent, ppropertydesc_child) \/ $property_hook_backed_over_ordinary(S, ppropertydesc_parent, ppropertydesc_child) \/ $property_hook_unbacked_over_ordinary(S, ppropertydesc_parent, ppropertydesc_child, |S.CLASSES|) \/ $property_hook_plain_over_backed(S, ppropertydesc_parent, ppropertydesc_child, |S.CLASSES|))
 
