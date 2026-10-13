@@ -370,7 +370,7 @@ rule PhpStep/ob-user-result: S ~> S[.TODO = (OB_USER_COMMIT pobinvoke[.SENT = ep
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN pvalue
   -- if $ob_user_scalar(pvalue)
-  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if $output_selected(S, pobinvoke) = (poutputbuffer)
   -- if $long_and(poutputbuffer.FLAGS, 32768) = 0
 rule PhpStep/ob-user-nonscalar: S ~> S[.COMPLETION = UNSUPPORTED "non-scalar user output-handler return conversion"]
   -- if S.TODO = (OB_USER_RESULT pobinvoke) :: ptask_tail*
