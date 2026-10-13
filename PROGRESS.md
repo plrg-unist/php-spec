@@ -17,6 +17,9 @@ one pure binding projection stay separate from two production continuations.
 Baseline, two original public failures and eval preparation failure retain0.
 Other producers/formatter combinations remain required; full core stays partial.
 [Function-drain ledger](coverage/semantics/source-recorded-function-fatal-review.json).
+The 387-module composition over 96f29b4f passes independent pointwise review at
+f2b4d9ce; accepted runtime/protocol and parent WeakMap/output/callback/type behavior
+are preserved. No renewed actor/source/state evidence is claimed.
 
 Owning invokable warning callbacks now release their selected receiver and raw
 handler before the inc/dec helper finishes. The saved handler returns to the
