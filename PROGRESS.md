@@ -1860,6 +1860,8 @@ Worker60 and pre/post-C timeouts stay zero, and Q-step cuts are diagnostic only.
 Identity/trace/Previous are reached-state and engine evidence, separate from
 native output agreement; local reconstruction and broader returns remain OPEN.
 [Multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+Actual384 over `30057795` passes strict at `b89cdc07` in 6.291s with zero
+applications; private source/state/public cuts retain their original identities.
 
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
