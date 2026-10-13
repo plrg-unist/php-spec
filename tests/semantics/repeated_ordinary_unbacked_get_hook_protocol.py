@@ -523,7 +523,7 @@ WRITE = ['$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryRepeatRoot51"))) = (
  '$objectprops_at(S_done.OBJECTPROPS,n_grand) = ([{ DECL (ppropertydesc_child.ORIGIN), NAME '
  'ppropertydesc_child.KEY, STATE PROP_VALUE (DIRECT (PINT 300)) }])']
 
-UNTYPED = ['$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryRepeatUntypedRoot51"))) = (porigin_parent)',
+UNTYPED_METADATA = ['$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryRepeatUntypedRoot51"))) = (porigin_parent)',
  '$class_at(S.CLASSES,porigin_parent) = (pclassdesc_parent)',
  '$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryRepeatUntypedFirst51"))) = (porigin_first)',
  '$class_at(S.CLASSES,porigin_first) = (pclassdesc_first)',
@@ -581,6 +581,19 @@ UNTYPED = ['$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryRepeatUntypedRoot5
  'S.OBJECTS[n_first] = INSTANCE porigin_first /\\ $objectprops_at(S.OBJECTPROPS,n_first) = ([{ DECL '
  '(ppropertydesc_first.ORIGIN), NAME ppropertydesc_first.KEY, STATE PROP_VALUE (DIRECT PNULL) }]) /\\ '
  'S.OBJECTS[n_child] = INSTANCE porigin_child /\\ S.OBJECTS[n_grand] = INSTANCE porigin_grand',
+ '$property_hook_plan(S) = (ppropertyhook_metadata)',
+ 'ppropertyhook_metadata.OBJECT = n_child /\\ ppropertyhook_metadata.PROPERTY = ppropertydesc_child.ORIGIN']
+
+UNTYPED_READ = ['$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryRepeatUntypedSecond51"))) = (porigin_child)',
+ '$class_at(S.CLASSES,porigin_child) = (pclassdesc_child)',
+ 'ppropertydesc_child = pclassdesc_child.PROPERTIES[0]',
+ '$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryRepeatUntypedGrand51"))) = (porigin_grand)',
+ 'S_globals = $global_table_view(S)',
+ '$lookup(S_globals.ENV,$ptascii("null_second")) = (n_child_cell)',
+ 'S.STORE[n_child_cell] = DEFINED (POBJECT n_child)',
+ '$lookup(S_globals.ENV,$ptascii("null_grand")) = (n_grand_cell)',
+ 'S.STORE[n_grand_cell] = DEFINED (POBJECT n_grand)',
+ 'S.OBJECTS[n_child] = INSTANCE porigin_child /\\ S.OBJECTS[n_grand] = INSTANCE porigin_grand',
  'S_null = S',
  '$property_hook_plan(S_null) = (ppropertyhook_S_null)',
  'S_null.TODO = (PROPERTY_PREP phpType20_S_null z_S_null) :: (DIM_FETCH z_S_null) :: ptask_S_null*',
@@ -631,6 +644,22 @@ UNTYPED = ['$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryRepeatUntypedRoot5
  'S_write_found = $oru_seek(S_null_base,17,1000)',
  'S_write_found.COMPLETION = NORMAL \\/ S_write_found.COMPLETION = BUDGET',
  'S_write = S_write_found[.COMPLETION = NORMAL]',
+ 'S_write.TODO = (ASSIGN_ARRAY pbase_write z_write b_write) :: ptask_write*',
+ '$property_pending_base(pbase_write) /\\ S_write.RESULT = KNOWN (PINT 5) /\\ z_write = 78 /\\ '
+ '$call_task_valid(S_write,ASSIGN_ARRAY pbase_write z_write b_write) /\\ '
+ '$heap_owners($heap_prune($heap_graph(S_write)),HOBJECT n_grand) = 1 /\\ $oru_guard(S_write)',
+ '$objectprops_at(S_write.OBJECTPROPS,n_grand) = ([{ DECL (ppropertydesc_child.ORIGIN), NAME '
+ 'ppropertydesc_child.KEY, STATE PROP_VALUE (DIRECT (PNULL)) }])']
+
+UNTYPED_WRITE = ['$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryRepeatUntypedSecond51"))) = (porigin_child)',
+ '$class_at(S.CLASSES,porigin_child) = (pclassdesc_child)',
+ 'ppropertydesc_child = pclassdesc_child.PROPERTIES[0]',
+ '$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryRepeatUntypedGrand51"))) = (porigin_grand)',
+ 'S_globals = $global_table_view(S)',
+ '$lookup(S_globals.ENV,$ptascii("null_grand")) = (n_grand_cell)',
+ 'S.STORE[n_grand_cell] = DEFINED (POBJECT n_grand)',
+ 'S.OBJECTS[n_grand] = INSTANCE porigin_grand',
+ 'S_write = S',
  'S_write.TODO = (ASSIGN_ARRAY pbase_write z_write b_write) :: ptask_write*',
  '$property_pending_base(pbase_write) /\\ S_write.RESULT = KNOWN (PINT 5) /\\ z_write = 78 /\\ '
  '$call_task_valid(S_write,ASSIGN_ARRAY pbase_write z_write b_write) /\\ '
@@ -1011,7 +1040,7 @@ DERIVED = ['~$property_hook_override_pair(S,ppropertydesc_first,ppropertydesc_ch
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--revision', required=True)
-    parser.add_argument('--group', choices=['cv', 'this', 'write', 'untyped', 'lifetime', 'controls', 'cv_metadata'], required=True)
+    parser.add_argument('--group', choices=['cv', 'this', 'write', 'untyped_metadata', 'untyped_read', 'untyped_write', 'lifetime', 'controls', 'cv_metadata'], required=True)
     parser.add_argument('--prepare-only', action='store_true')
     args = parser.parse_args()
     recorder.ROOT = ROOT
@@ -1026,10 +1055,12 @@ def main():
         'controls': (CONTROLS, DERIVED, 0, 0),
         'this': (THIS, [], 0, 1),
         'write': (WRITE, [], 0, 5),
-        'untyped': (UNTYPED, [], 0, 16),
+        'untyped_metadata': (UNTYPED_METADATA, [], 0, 16),
+        'untyped_read': (UNTYPED_READ, [], 0, 16),
+        'untyped_write': (UNTYPED_WRITE, [], 0, 17),
         'lifetime': (LIFETIME, [], 1, 7),
     }[args.group]
-    sl_cap = 150 if args.group in ('this', 'write', 'untyped', 'lifetime') else 90
+    sl_cap = 150 if args.group in ('this', 'write', 'untyped_metadata', 'untyped_read', 'untyped_write', 'lifetime') else 90
     selections = [(args.group, clauses, negatives)]
     cases = [data['cases'][case_index]]
     sources = [HERE / ('repeated-ordinary-unbacked-get-hook-' + ['scalar', 'lifetime'][case_index] + '.php')]
