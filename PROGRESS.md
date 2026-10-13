@@ -1661,6 +1661,19 @@ setter/flags/hook families remain required.
 Joined exact `2fa9fb92`/386; one current init-only check passes with no application.
 Private cuts remain retained through inactive runtime journals and disjoint update-warning/WeakMap paths.
 
+Closed virtual int Parent to plain untyped Child now reports the subtype property
+error at class13. No child getter is synthesized; reverse addition under an
+untyped Parent still requires omitted TYPE. Both-untyped inheritance retains
+Parent's untyped string "13" getter and private scope, empty Parent storage versus
+NULL metadata, and own Child/Grand slot200→300 with false active backing bypass.
+Strict386/source3 pass at `e03ade5d`; three separate states at `da64048c` pass
+remove71 (36 reached, 35 derived), add26 and entered67: 129 reached plus 35 derived.
+Only diagnostic-family routing changed; pure variance and runtime/default/layout/
+store/owner rules are unchanged. The removal article hypothesis miss is
+informational/raw-preserved; no failed actor. Wider hook/type roots and flags
+remain required.
+[Plain-child type-presence review](coverage/semantics/virtual-parent-plain-type-presence-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization

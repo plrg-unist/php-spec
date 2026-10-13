@@ -1,0 +1,254 @@
+{
+  "scope": "Selected public closed virtual get-only Parent to actual own plain public Child across Bridge/Grand: int TYPE removal, untyped-parent int addition and both-untyped inherited getter control.",
+  "implementation": {
+    "base": "f7f7efdaf08e5b204243dfb9e5a5b0c5e3c90db6",
+    "revision": "e03ade5ddeb95a0ff85b8b4ce1226facfe4d780e",
+    "files": [
+      "spec/semantics/382-backed-get-hooks.watsup"
+    ],
+    "change": "Recognize an authentic absent-TYPE plain Child in the typed virtual-parent diagnostic family and route explicit property incompatibility separately from present-TYPE covariance.",
+    "unchanged": "Pure 19 variance, computed property covariance, linked compatible admission, getter signatures/resolution/coercion, physical defaults/layout/store/permission/owner rules."
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor 34308a6666b2d489c509541ea9befea9e2b42348",
+  "engine_basis": [
+    "Zend/zend_inheritance.c:full_property_types_compatible TYPE-presence mismatch",
+    "Zend/zend_inheritance.c:prop_get_variance and emit_incompatible_property_error",
+    "Zend/zend_inheritance.c:do_inherit_property omitted-type check after inherit_property_hook"
+  ],
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "absent",
+    "jobs": 1
+  },
+  "binaries": {
+    "php": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/php/bin/php",
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    "strict_compiler": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/cprefix-compiler/compiler",
+      "sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d"
+    },
+    "algorithmic": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/spectec/bin/p4spectec",
+      "sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "strict_application": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/tests/semantics/_build/default/numeric_runner.exe",
+      "sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    }
+  },
+  "recorders": {
+    "source": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/virtual-parent-plain-type-presence-probes-61/run.py",
+      "sha256": "a4ad9a83e0bf757d3fa6a489fd82ce45c83302cb9bf6c7476cb2749e3486b952"
+    },
+    "strict": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/virtual-parent-plain-type-presence-probes-61/run-compiler.py",
+      "sha256": "aba0340737938f0f5d21d3f84a4f509da4a0006e8ae3de6e0f24ea23d8487d25"
+    },
+    "state": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/tests/semantics/virtual_parent_plain_type_presence_protocol.py",
+      "sha256": "8477d5fc782ec248eaeac2f2556e9d75cadfc77baaef27c4ae6b439301abce68"
+    }
+  },
+  "native": {
+    "report": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/virtual-parent-plain-type-presence-probes-61/native-first/report.json",
+      "sha256": "118f3ac0b8b15deb31509b29949e6a4c866c19f1f6bd51d6505bae78ec6f9200"
+    },
+    "revision": "f7f7efdaf08e5b204243dfb9e5a5b0c5e3c90db6",
+    "observed_exits": [
+      255,
+      255,
+      0
+    ],
+    "source_agreements": 0,
+    "observations": "Removal reports must be subtype of int at Child class13; addition reports must be omitted at class13. No Child getter is declared. Both-untyped Parent owns no slot, Child/Grand own200 then Grand300; inherited Parent untyped getter returns STRING13 with Parent private/function/lexical scope and receiver called scope."
+  },
+  "native_anticipation_misses": [
+    {
+      "case": "remove",
+      "kind": "informational article in subtype text",
+      "anticipated": "must be a subtype of int",
+      "actual": "must be subtype of int",
+      "raw_preserved": true,
+      "native_completion_not_gated_by_anticipation": true
+    }
+  ],
+  "unchanged_baseline": {
+    "report": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/virtual-parent-plain-type-presence-probes-61/accepted-current-baseline/report.json",
+      "sha256": "b5d3b300dbb6d68d37af1f72eea472aadd1762bf493379de118b730c788320fe"
+    },
+    "revision": "f7f7efdaf08e5b204243dfb9e5a5b0c5e3c90db6",
+    "checked": 3,
+    "source_agreements": 2,
+    "gap": "Removal used invariant must-be-int text at the same class13; reverse omission and both-untyped scalar already agree in full streams and logical exits."
+  },
+  "strict": {
+    "report": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/virtual-parent-plain-type-presence-probes-61/virtual-parent-plain-type-presence-compiler-6qx9gfjv/report.json",
+      "sha256": "75b9f3e1277cca3590ed65ae3e1815699fd1ee15202eee02ca331a74d60628d5"
+    },
+    "application_evaluations": 0,
+    "source_agreements": 0
+  },
+  "sources": {
+    "report": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/virtual-parent-plain-type-presence-probes-61/changed-model-smd1lbzi/report.json",
+      "sha256": "d52e105beaa5b4e25627929e16ab2590efd78e85a9b2902ea89f673252ae1ae3"
+    },
+    "checked": 3,
+    "source_agreements": 3,
+    "statuses": [
+      "static_rejection",
+      "static_rejection",
+      "normal"
+    ],
+    "logical_exits": [
+      255,
+      255,
+      0
+    ]
+  },
+  "catalogue": {
+    "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/tests/semantics/virtual_parent_plain_type_presence_cases.json",
+    "sha256": "8baa476965c2a4fe3bb6ced9bd13658d116c807f07bfddc4053cc01e065f6861"
+  },
+  "state": {
+    "revision": "da64048c115bac9504854ee33b73b3697e763fa8",
+    "records": [
+      {
+        "group": "remove",
+        "report": {
+          "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/virtual-parent-plain-type-presence-protocol-vhpofnb7/report.json",
+          "sha256": "fda75d75ef099cc5529d076090c929f33bc4a7dc9d2574168779fbfb812682f9"
+        },
+        "fixture": {
+          "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/virtual-parent-plain-type-presence-protocol-vhpofnb7/hook.watsup",
+          "sha256": "2d0ec4a2afff29c3ba42c25f552e5f0b327d65628b5729f7fc9fb819ed0aba9f"
+        },
+        "revision": "da64048c115bac9504854ee33b73b3697e763fa8",
+        "premises": 71,
+        "reached_premises": 36,
+        "derived_premises": 35,
+        "caps": {
+          "algorithmic": 90,
+          "strict": 90
+        },
+        "algorithmic_seconds": 5.7932448387146,
+        "strict_seconds": 10.108968019485474,
+        "exits": [
+          0,
+          0
+        ],
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "stable": true,
+        "reaped": true
+      },
+      {
+        "group": "add",
+        "report": {
+          "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/virtual-parent-plain-type-presence-protocol-dz78c_ir/report.json",
+          "sha256": "89ba2ff5c22e7ae71b2d9c9c8cd896f44837a6d32f21f3eecd034c1d44076e29"
+        },
+        "fixture": {
+          "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/virtual-parent-plain-type-presence-protocol-dz78c_ir/hook.watsup",
+          "sha256": "0ecf543c4ce93e8a8b77b36ee12d7ec6fe82a0e2a98932ab7da62586a1aac139"
+        },
+        "revision": "da64048c115bac9504854ee33b73b3697e763fa8",
+        "premises": 26,
+        "reached_premises": 26,
+        "derived_premises": 0,
+        "caps": {
+          "algorithmic": 90,
+          "strict": 90
+        },
+        "algorithmic_seconds": 5.714596509933472,
+        "strict_seconds": 9.681971073150635,
+        "exits": [
+          0,
+          0
+        ],
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "stable": true,
+        "reaped": true
+      },
+      {
+        "group": "control",
+        "report": {
+          "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/virtual-parent-plain-type-presence-protocol-83vuq4km/report.json",
+          "sha256": "3302c6cb45eb8d387da0cececa61cac7c2f7fdbd80d05b590e5a7ee405e3c80a"
+        },
+        "fixture": {
+          "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/virtual-parent-plain-type-presence-protocol-83vuq4km/hook.watsup",
+          "sha256": "46d870830260ec417db28c8ee9c11be18f60e1a24212acd122f6caa51a657fd8"
+        },
+        "revision": "da64048c115bac9504854ee33b73b3697e763fa8",
+        "premises": 67,
+        "reached_premises": 67,
+        "derived_premises": 0,
+        "caps": {
+          "algorithmic": 90,
+          "strict": 90
+        },
+        "algorithmic_seconds": 5.665157318115234,
+        "strict_seconds": 22.715139389038086,
+        "exits": [
+          0,
+          0
+        ],
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "stable": true,
+        "reaped": true
+      }
+    ],
+    "premises": 164,
+    "reached_premises": 129,
+    "derived_premises": 35,
+    "application_evaluations": 3,
+    "source_agreements": 0,
+    "counting": "Three separate invocations: two direct rejected-source setups and one genuine five-premise entered-getter setup; not 164 unique program states."
+  },
+  "state_contract": [
+    "Genuine class13 rejections preserve installed Parent signature and actual absent/present Child TYPE, no Child local getter/error site, and no Child/Grand publication or ancestry link.",
+    "Typed virtual-parent removal has positive source/own/fuel authenticated family recognition and explicit subtype property text, while computed pure variance remains unsupported for absent TYPE.",
+    "Derived own/source/header/flags/Parent-link/default/fuel controls refuse only the scoped family. They are malformed-helper discriminators, not new native classes.",
+    "Genuine entered both-untyped Child uses Parent RETURNS eps, Parent private answer and interned STRING13; helper Parent NULL metadata coexists with actual empty Parent slots, own Child200 and false active source bypass."
+  ],
+  "preserved_failures": [],
+  "remaining": [
+    "Broader virtual roots, TYPE-presence/type families, protected setter combinations, traits/set/ref hooks and repeated plain redeclarations.",
+    "No new runtime/default/layout/store/permission/coercion/owner or lifetime implementation is claimed."
+  ],
+  "commands": [
+    "python3 .tools/virtual-parent-plain-type-presence-probes-61/run.py native --revision f7f7efdaf08e5b204243dfb9e5a5b0c5e3c90db6",
+    "python3 .tools/virtual-parent-plain-type-presence-probes-61/run.py baseline --revision f7f7efdaf08e5b204243dfb9e5a5b0c5e3c90db6",
+    "python3 .tools/virtual-parent-plain-type-presence-probes-61/run-compiler.py f7f7efdaf08e5b204243dfb9e5a5b0c5e3c90db6 e03ade5ddeb95a0ff85b8b4ce1226facfe4d780e",
+    "python3 .tools/virtual-parent-plain-type-presence-probes-61/run.py changed --revision e03ade5ddeb95a0ff85b8b4ce1226facfe4d780e",
+    "python3 tests/semantics/virtual_parent_plain_type_presence_protocol.py --revision da64048c115bac9504854ee33b73b3697e763fa8 --group remove",
+    "python3 tests/semantics/virtual_parent_plain_type_presence_protocol.py --revision da64048c115bac9504854ee33b73b3697e763fa8 --group add",
+    "python3 tests/semantics/virtual_parent_plain_type_presence_protocol.py --revision da64048c115bac9504854ee33b73b3697e763fa8 --group control"
+  ],
+  "recovery": "Original native/baseline/compiler/source/state raw/process/report paths remain ignored in protected private32; prepared-summary.json and state-summary.json retain exact fixture/receipt identities. No failed actor or historical campaign renewal."
+}

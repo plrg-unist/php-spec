@@ -794,6 +794,10 @@ test-semantics: build
 	python3 tests/semantics/virtual_parent_protected_set_plain_inherited_getter_protocol.py --revision "$$(git rev-parse HEAD)" --group child_write
 	python3 tests/semantics/virtual_parent_protected_set_plain_inherited_getter_protocol.py --revision "$$(git rev-parse HEAD)" --group parent_write
 	python3 tests/semantics/virtual_parent_protected_set_plain_inherited_getter_protocol.py --revision "$$(git rev-parse HEAD)" --group backed
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/virtual_parent_plain_type_presence_cases.json
+	python3 tests/semantics/virtual_parent_plain_type_presence_protocol.py --revision "$$(git rev-parse HEAD)" --group remove
+	python3 tests/semantics/virtual_parent_plain_type_presence_protocol.py --revision "$$(git rev-parse HEAD)" --group add
+	python3 tests/semantics/virtual_parent_plain_type_presence_protocol.py --revision "$$(git rev-parse HEAD)" --group control
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_publication_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_composed_retry_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/assertion_cases.json
