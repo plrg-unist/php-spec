@@ -157,7 +157,7 @@ def main():
         path = out / (name + '.php')
         path.write_bytes(sources.CASES[name])
         native = recorded([str(ROOT / '.tools/php/bin/php'), '-n', *flags, str(path)], out / (name + '-native'), 30)
-        assert native['exit'] == 0 and not native['timeout']
+        assert native['exit'] == getattr(sources, 'EXIT_CODES', {}).get(name, 0) and not native['timeout']
         checks = conditions(name, programs[name], path, (out / (name + '-native.stdout')).read_bytes())
         fixture = out / (name + '.watsup')
         fixture.write_text(HELPERS + '\ndec $main() : bool\ndef $main() = true\n'

@@ -331,8 +331,10 @@ locations remain required.
 finish handler-local cleanup before restoring captured bool/decrement-null
 values; strings retain callback writes. Registry restoration, caller temporaries,
 nested handlers, surviving aliases and request exit status are checked through
-shutdown. Owning callback cleanup and caught cleanup throws that cancel exit
-remain required.
+shutdown. [Handler-local cleanup cancellation](coverage/semantics/incdec-exit-cancellation-review.json)
+now restores safe captured values and resumes real caller catch/finally, preserving
+Throwable identity, aliases, registry changes and request exit status. Owning callback
+release and pending-exit parent cleanup throws remain required.
 All twelve [compound assignments](docs/semantics/UPDATES.md) preserve captured
 targets, delayed reads and alias ownership; [independent evidence](coverage/semantics/compound-review.json)
 records 2,639 exact source comparisons and the corrected diagnostic phases.
@@ -973,6 +975,13 @@ creation line/trace reach the same caller with old Y as Previous, while the
 caught-only nested error retires. T/D and the failed probe stay canceled; budget
 continuation and the selected alias pass. Worker120 is a cap-only retry; original
 timeouts keep zero credit. Wider replacement/returns verification remains OPEN.
+
+The same guarded catch can explicitly pass its caught error as Previous. Two
+originals, reached2/411 and independent public163/1 pass separately: early
+replacement→caught becomes replacement→caught→oldY during cleanup, keeping both
+trace graphs and the caught error alive through retirement and caller reads.
+Caller-cut budgets and selected alias pass; the original fixture parse failure
+keeps zero credit. Wider Previous/returns verification remains OPEN.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)
@@ -1149,7 +1158,7 @@ checks pass at `c1cf6c7`, alongside the separate first-entry cuts. Last-owner ma
 teardown also releases its single leaf value while retaining the emptied map's
 physical pin and live weak identity through normal or throwing callback cleanup.
 Two originals agree at `0c9b358`; 467 lifetime checks and 86 freeing-write refusal
-checks pass at their separate cuts. Wider map free and ephemeron GC stop explicitly;
+checks pass at their separate cuts. Wider map free and wider ephemeron GC stop explicitly;
 multiple maps per key, wider wrapper creation or mutation during freeing,
 additional strong key/map owners retained beyond callback cleanup and wider
 entry/read/mutation protocols remain required.
@@ -1182,6 +1191,22 @@ wrapper adds no target owner and becomes null when cleanup notifies it. Two
 originals agree at `ac980b0`; 333 reached checks cover reuse, real wrapper
 retirement/recreation and notification. Wider freeing contexts and inactive
 carriers remain required; earlier evidence and the original refusal stay separate.
+
+A live singleton WeakMap now supports explicit collection of a destructor-free
+value-to-key backedge. Ordinary value ownership remains strong; GC traces the
+entry only when both map and key are reachable. Holding either key or value
+protects the pair; dropping both allows collection while the map survives.
+Two originals agree at `0167ec6c`; 439 reached checks validate conditional tracing,
+entry disposal and held owners. Wider maps, callbacks and ephemeron graphs remain
+required. [Review](coverage/semantics/weak-map-review.json).
+
+The same bounded backedge now supports one ordinary public value destructor.
+Its first GC pass protects the pair through the callback; retracing then collects
+it or preserves it if the callback saves the key. Later collection runs no second
+destructor. An independently rooted `stdClass` leaf also survives without keeping
+the pair alive; wider callback changes fail explicitly. Three originals agree at
+`18a03e08`; 583 reached checks cover destructor entry, retracing and retained
+roots. Wider destructor and graph behavior remains required.
 
 [Ordinary collection301](docs/semantics/CYCLE-COLLECTION.md) implements explicit
 object/array cycle collection, ordered destructor callbacks and real weak
@@ -1480,8 +1505,16 @@ records this separate cut. Frozen fatal completion now reports the request statu
 after caught shutdown-exit replacement, preserving continued callbacks and
 diagnostics. A fresh fatal writes255 even when reporting is suppressed.
 [Observer review](coverage/semantics/source-static-fatal-observer-review.json)
-records the focused source/public checks. Wider fatal/compiler producers and
-destructor/return interactions remain required.
+records the focused source/public checks. Redeclaration compiler cutoffs now
+authenticate fresh shutdown eval/file entries against full current history while
+retaining the exact failed prefix and source owner.
+[Redeclaration review](coverage/semantics/source-redeclare-fatal-review.json)
+records this separate admission repair. File compilation now retains its recorded
+hard diagnostic after bailout; a later compiler fatal delivers that message and
+location with the current trace. Cutoff receipts authenticate both abandoned
+records independently. [Recorded-fatal review](coverage/semantics/source-recorded-fatal-review.json)
+records the source and public checks. Wider recorded warnings/runtime errors,
+formatter combinations and destructor/return interactions remain required.
 [Real closure instances](docs/semantics/SOURCE-CLOSURES.md) now retain explicit captures,
 selected callee owners and per-instance statics through invocation and cleanup.
 [Independent review](coverage/semantics/closures-review.json) binds source, object
@@ -1510,8 +1543,11 @@ CV/copy/reference reads, lazy fallthrough and throwing callback control.
 [Recursive Stringable comparisons](coverage/semantics/aggregate-stringable-comparison-review.json)
 now retain enclosing arrays and declared-property objects across casts, preserving
 copy-on-write, live slots/cells, successive casts and active recursion guards.
-Six exact sources and 521 reached checks pass; materialized-property casts and
-Fiber VM transfer during this continuation remain explicit Unsupported.
+The preceding six-source/521-check cut remains frozen. [Property-table casts](coverage/semantics/materialized-stringable-comparison-review.json)
+now retain stdClass objects and their concrete tables, preserving old dynamic buckets
+under copy-on-write. Initialized public declared tables keep live slots and old
+reference cells distinct. Six new exact sources and 576 reached premises/28 raw
+steps pass; mixed membership, guarded projection and Fiber transfer remain required.
 [Match expressions](docs/semantics/SOURCE-MATCH.md) preserve strict, lazy arm
 selection, delayed CV subjects, ordered compiler diagnostics and owned value
 results; their [review](coverage/semantics/match-review.json) binds source, compiler
@@ -1880,6 +1916,23 @@ inheritance edges. The latest property supplies the slot and default; original
 parent function/private scope remains distinct from receiver called scope.
 One original and four focused states cover slot 300→400/getter 313→413 in the
 [repeated inherited-getter review](coverage/semantics/repeated-plain-child-inherited-backed-get-hook-review.json).
+A plain equal-type child also inherits a getter without a source backing read
+when an authenticated ordinary ancestor supplies its parent's storage. The typed
+parent starts uninitialized; the child owns 200 then 300 while the inherited getter
+returns 13 with the parent's function and private scope. One original and three
+focused states are recorded in the
+[ordinary-backed inherited-getter review](coverage/semantics/ordinary-backed-parent-plain-inherited-getter-review.json).
+A genuine hooked backing ancestor now supplies the same positive storage proof.
+The nearest source-unbacked parent still supplies the getter and private scope:
+Root gets 107, Parent and plain Child get 13, and Child's slot changes 200 to 300.
+One original and three focused states distinguish that backing witness from the
+selected getter in the
+[hook-backed inherited-getter review](coverage/semantics/inherited-backed-parent-plain-inherited-getter-review.json).
+A closed virtual get-only parent also passes its getter to a plain public equal-type
+child. Parent owns no physical slot; Child owns 200 then 300, while the inherited
+getter uses Parent's private method and returns 13. Called scope follows the receiver.
+One original and three focused states are recorded in the
+[virtual-root inherited-getter review](coverage/semantics/virtual-parent-plain-inherited-getter-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
@@ -2640,6 +2693,16 @@ captured cell; callback failure retains the object through finally and chains th
 callback Exception. Five exact originals and eight reached fixtures/871 assertions
 pass. Genuinely released targets, destructor throw/reentry, real suspension and
 wider typed consumers remain open.
+Separate validation at `b55942bc` checks an ordinary local `unset` and its control:
+the original selected cell remains in the protected return carrier during `ping`,
+then reaches the caller's `r/a` aliases and write. The owning temporary persists;
+physical collection and released borrowed-cell conversion remain open.
+An untyped `finally` return override cancels the earlier reference carrier;
+its destructor runs before caller output, while the control delivers the old cell.
+Scoped descriptor checks now require every registered destructor operation's exact
+exit marker in current or saved tasks, including parked Fibers. Focused source,
+carrier/caller and public refusal checks pass; physical cell collection and broader
+returns remain open. Details are in the local CV lifetime review above.
 [Weak Stringable parameters](coverage/semantics/weak-string-parameters-review.json)
 now convert supplied fixed parameters in receive order, preserving caller
 strictness, nominal/callable precedence and the entered formal cell. Existing

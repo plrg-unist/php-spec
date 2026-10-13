@@ -336,7 +336,10 @@ def $gc_graph_node(S, pnode) = true -- otherwise
 def $gc_graph_nodes(S, eps) = eps
 def $gc_graph_nodes(S, pnode :: pnode_tail*) = pnode :: $gc_graph_nodes(S, pnode_tail*) -- if $gc_graph_node(S, pnode)
 def $gc_graph_nodes(S, pnode :: pnode_tail*) = $gc_graph_nodes(S, pnode_tail*) -- if ~$gc_graph_node(S, pnode)
-def $gc_graph(S) = H[.NODES = pnode*][.ROOTS = $heap_intersect(H.ROOTS, pnode*)][.EDGES = $heap_live_edges(H.EDGES, pnode*)]
+dec $weakmap_gc_map(pstate, pnode*) : nat?
+dec $weakmap_gc_edges(pstate, hedge*, pnode*) : hedge*
+dec $weakmap_gc_prepare(pstate, pgcplan) : pstate
+def $gc_graph(S) = H[.NODES = pnode*][.ROOTS = $heap_intersect(H.ROOTS, pnode*)][.EDGES = $weakmap_gc_edges(S, $heap_live_edges(H.EDGES, pnode*), H.ROOTS)]
   -- if H = $heap_graph(S)
   -- if pnode* = $gc_graph_nodes(S, H.NODES)
 
@@ -932,7 +935,7 @@ def $gc_receive(S, pconfigcall) = $gc_begin(S, pconfigcall)
   -- if pconfigcall.KIND = INTRINSIC_GC_COLLECT /\ S.GC.ACTIVE = eps
 dec $weakmap_nonempty(pstate, pnode*) : bool
 def $gc_begin(S, pconfigcall) = S[.GC.NEXT = $(S.GC.NEXT + 1)][.GC.ACTIVE = (pgccall)][.TODO = (GC_TRACE pgccall) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if ~$weakmap_nonempty(S, S.ALLOCATIONS)
+  -- if ~$weakmap_nonempty(S, S.ALLOCATIONS) \/ $weakmap_gc_map(S, S.ALLOCATIONS) =/= eps
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask*
   -- if pgccall = {NONCE S.GC.NEXT, CALL pconfigcall, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, PASS 0, TOTAL 0, PENDING eps}
 def $task_nodes(GC_TRACE pgccall) = $instance_roots(pgccall.CALL.OWNER) ++ $instance_roots(pgccall.PENDING)
@@ -1005,6 +1008,7 @@ def $gc_trace(S, pgccall) = S[.COMPLETION = UNSUPPORTED "residual destructor tag
 rule PhpStep/gc-trace: S ~> $gc_trace(S, pgccall)
   -- if S.TODO = (GC_TRACE pgccall) :: ptask*
   -- if $call_task_valid(S, GC_TRACE pgccall)
+  -- if ~$weakmap_nonempty(S, S.ALLOCATIONS) \/ $weakmap_gc_map(S, S.ALLOCATIONS) =/= eps
 rule PhpStep/gc-dtors-done: S ~> S[.TODO = (GC_FREE pgcplan) :: ptask*]
   -- if S.TODO = (GC_DTORS pgcplan) :: ptask*
   -- if $gc_plan_valid(S, pgcplan) /\ pgcplan.INDEX = |pgcplan.DTORS|
@@ -1046,7 +1050,9 @@ def $gc_nested_boundary(S, pgcplan) = ($heap_intersect(pgcplan.FREESET, $heap_re
 def $gc_terminal_park(S, pgcplan) = (pgcplan.CALL.PASS = 1 /\ $destruction_zero($heap_graph(S), $heap_intersect(pgcplan.DONE, S.ALLOCATIONS)) =/= eps)
 def $gc_terminal_prepare(S, pgcplan) = (S) -- if ~$gc_terminal_park(S, pgcplan)
 def $gc_terminal_prepare(S, pgcplan) = eps -- otherwise
-def $gc_free_prepare(S, pgcplan) = (S) -- if ~$gc_nested_boundary(S, pgcplan)
+def $gc_free_prepare(S, pgcplan) = (S_prepared)
+  -- if S_prepared = $weakmap_gc_prepare(S, pgcplan)
+  -- if ~$gc_nested_boundary(S_prepared, pgcplan)
 def $gc_free_prepare(S, pgcplan) = eps -- otherwise
 def $gc_free(S, pgcplan) = S[.COMPLETION = UNSUPPORTED "resurrection of non-destructor garbage during collection"]
   -- if $gc_free_prepare(S, pgcplan) = eps

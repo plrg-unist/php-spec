@@ -1,0 +1,179 @@
+{
+  "scope": "Named public equal-normalized-TYPE plain Child inherits a plain by-value closed virtual get-only Parent getter across Bridge. Parent owns no physical slot; Child owns200 then300 while the original Parent getter returns13 independently.",
+  "implementation": {
+    "files": [
+      "spec/semantics/382-backed-get-hooks.watsup"
+    ],
+    "engine": [
+      "vendor/php-src/Zend/zend_inheritance.c: zend_duplicate_function, do_inherit_property, inherit_property_hook, zend_verify_hooked_property"
+    ],
+    "change": "One existing terminal guard also accepts positive virtual_chain(S,descriptor,n) with the supplied n. Actual-own/public/plain by-value/header/body-supported guards, nearest Parent descriptor and decreasing getter walk remain unchanged. No classifier/layout/default/store/owner/runtime-consumer/type-variance change."
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor pin 34308a6666b2d489c509541ea9befea9e2b42348",
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "binaries": {
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "strict_compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+    "AL_compiler_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "SL_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "absent",
+    "jobs": 1
+  },
+  "recorders": {
+    "native_source_sha256": "a54169daff84d91013e3bf3f6eb9337fcd9d2f0e51ebaffc4eb5d61a0f6eebba",
+    "catalogue_sha256": "4ef58bcfe9a64e68c25947a65253706b81016e31be35d7a215931257239ca98e",
+    "strict_sha256": "c730d976b66ebddc2680fbc1d4dca4dd75d3deb95188f3e0200b21a0a09d6519",
+    "protocol_sha256": "2546b6b20a94548491f0c1dc3b13bec494f5a4600e6e07dbd78d664151506812"
+  },
+  "native": {
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-parent-plain-inherited-getter-probes-58/native-first/report.json",
+    "report_sha256": "d0c1c3f047e66d17c587dc40fb51739854d9cfe10a41dcf8ae3d8305e00a9a75",
+    "revision": "a80ff9a87b8b503d50d0426a866fa860d8d841f3",
+    "process_observations": 1,
+    "exits": [
+      0
+    ],
+    "completed": true,
+    "stable_and_reaped": true,
+    "source_agreements": 0,
+    "result": "Actual EMPTY Parent, plain Child/Grand200 then Grand300; original Parent function/lexical/private13 with called Child/Grand; getter13 independent of physical slot. Full raw streams retained."
+  },
+  "unchanged_baseline": {
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-parent-plain-inherited-getter-probes-58/accepted-current-baseline/report.json",
+    "report_sha256": "cbf6493e5ee097a9adf3b57969d175b10dcb283ac8716b673715f539972e1c50",
+    "revision": "a80ff9a87b8b503d50d0426a866fa860d8d841f3",
+    "checked_originals": 1,
+    "source_agreements": 0,
+    "stable_and_reaped": true,
+    "seconds": 8.238024950027466,
+    "result": "Genuine frontend accepted/adapter checked Unsupported inherited property hook override; CLI1, empty modeled streams/events. Zero source agreement."
+  },
+  "strict": {
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-parent-plain-inherited-getter-probes-58/virtual-parent-plain-inherited-getter-compiler-52ihv4rt/report.json",
+    "report_sha256": "586e33a23a85361e192eb997cf34fcdd03b88263cf448caa35087e01913f7330",
+    "revision": "55fd85843aa61127c0e28aaa517d43f413ee868a",
+    "modules": 385,
+    "seconds": 6.603663682937622,
+    "cap_seconds": 60,
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "result": "PASS exact five-line SL initialization; exit0/empty stderr/stable4/reaped."
+  },
+  "sources": {
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-parent-plain-inherited-getter-probes-58/changed-model-gdv07p8m/report.json",
+    "report_sha256": "1251d9492e7ba0a41e8aae8256d335230235bba10c1708720f3403858d34a058",
+    "revision": "55fd85843aa61127c0e28aaa517d43f413ee868a",
+    "checked_originals": 1,
+    "source_agreements": 1,
+    "seconds": 16.11455726623535,
+    "native_cap_seconds": 45,
+    "model_cap_seconds": 60,
+    "outer_cap_seconds": 75,
+    "steps": 100000,
+    "result": "Genuine checked normal original1; full modeled stdout/stderr and exit0 equal actual native bytes, stable3/reaped."
+  },
+  "catalogue": {
+    "path": "tests/semantics/virtual_parent_plain_inherited_getter_cases.json",
+    "sha256": "4e5d92891170780cdf25967966fc17254beb4c300671f3460a673021214b6fc8",
+    "source": "tests/semantics/virtual-parent-plain-inherited-getter.php",
+    "source_sha256": "31b59ed6c01f89a5b91b85781a3472372443242ba756e7e630badbcdffd61c63",
+    "origin": "Actual natived0c1c3f0 full streams/profile; native/source/permanent PHP bytes identical."
+  },
+  "state": {
+    "cuts": [
+      {
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-parent-plain-inherited-getter-protocol-p3wxdbrt/report.json",
+        "report_sha256": "071a1d0c8bfe73db48c89d65480f92d7185fa758de75ee3ac72ed8964ac4a1bd",
+        "revision": "1e2c28c043a9ee034bb1d462ef25f3c30148d557",
+        "group": "controls",
+        "fixture_sha256": "c8a22da1bd24442560fe34f445f4abf5d98e1f1c2caf2615b88b01912c5e7679",
+        "reached": 39,
+        "derived": 45,
+        "AL_seconds": 5.539368391036987,
+        "SL_seconds": 14.062130212783813,
+        "AL_cap_seconds": 90,
+        "SL_cap_seconds": 90,
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "result": "PASS raw true; exits0/empty stderr/no timeout/survivors, stable4/reaped."
+      },
+      {
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-parent-plain-inherited-getter-protocol-s118wonh/report.json",
+        "report_sha256": "118a7f22e9001beb4a96a54b7dac80061fa415f61c77c861ffef22e8d63a6eed",
+        "revision": "1e2c28c043a9ee034bb1d462ef25f3c30148d557",
+        "group": "entry",
+        "fixture_sha256": "646014ae760d3f4b2b3208e4190f292c60870d610e1907bc7deebc56a37c6731",
+        "reached": 58,
+        "derived": 0,
+        "AL_seconds": 5.567249774932861,
+        "SL_seconds": 17.696528673171997,
+        "AL_cap_seconds": 90,
+        "SL_cap_seconds": 90,
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "result": "PASS raw true; exits0/empty stderr/no timeout/survivors, stable4/reaped."
+      },
+      {
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-parent-plain-inherited-getter-protocol-2w5uco_u/report.json",
+        "report_sha256": "60ed63ccd7fce0f033e75ecb3a53d037dfa13fca230a8d7ce3bf8967a9302ded",
+        "revision": "1e2c28c043a9ee034bb1d462ef25f3c30148d557",
+        "group": "write",
+        "fixture_sha256": "5c257763f92fa2898a8824e40e01c8dc28fac2fedf4e8bd54c2366d78d7dd853",
+        "reached": 74,
+        "derived": 0,
+        "AL_seconds": 5.441587686538696,
+        "SL_seconds": 24.11599349975586,
+        "AL_cap_seconds": 90,
+        "SL_cap_seconds": 90,
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "result": "PASS raw true; exits0/empty stderr/no timeout/survivors, stable4/reaped."
+      }
+    ],
+    "reached_premises": 171,
+    "derived_premises": 45,
+    "total_premises": 216,
+    "application_evaluations": 3,
+    "source_agreements": 0,
+    "counting": "Three separate selected invocations including repeated genuine setup: controls39 reached+45 derived, entered Child58, writer74. AL90/SL90/jobs1; no combined invocation claim."
+  },
+  "state_contract": [
+    "Actual Parent has authentic no-initializer descriptor DEFAULT UNINITIALIZED and helper default(INITIAL), but owns empty OBJECTPROPS slots because it is virtual. Closed virtual_chain true, source-body/ordinary/inherited backing false. Bridge layout selects Parent; Grand selects plain Child, which is nonvirtual and owns200.",
+    "Forty-five derived clauses bind Parent virtual/getter fuel0 refusal/1 success and Child0/1/2 refusal/3 success, actual own/TYPE/default/flags/byref/source/link guards. Forged root link or authentic-own default mutation preserve the immediate plain edge but refuse closed virtual ancestry. D45 is task-local parent_match detection, not another native class counterexample; source/default mutations are derived only.",
+    "Genuine entered Child PROPERTY/slot200 and Grand postwrite PROPERTY/slot300 resolve original Parent HOOK/function/signature/lexical/private/trace, with called Child/Grand. Active source backing bypass stays false. Real ASSIGN34 stores300; authentic hook-result continuation retains independent13 and the slot300."
+  ],
+  "preserved_failures": [],
+  "remaining": [
+    "Wider virtual roots/chains/defaults, repeated plain redeclarations and untyped roots beyond this selected typed slice.",
+    "Unequal TYPE/type-presence/equivalence, set/ref/trait/attributed hooks, wider flags/receivers/quiet/operator/indirect families; hooked iteration remains Unsupported.",
+    "No new physical/default/layout/store/owner/lifetime/GC implementation or complete hook-family claim. Earlier CLASS54\u201357 and all historical cuts retain their original identities."
+  ],
+  "commands": [
+    "python3 .tools/virtual-parent-plain-inherited-getter-probes-58/run.py native --revision a80ff9a87b8b503d50d0426a866fa860d8d841f3",
+    "python3 .tools/virtual-parent-plain-inherited-getter-probes-58/run.py baseline --revision a80ff9a87b8b503d50d0426a866fa860d8d841f3",
+    "python3 .tools/virtual-parent-plain-inherited-getter-probes-58/run-compiler.py a80ff9a87b8b503d50d0426a866fa860d8d841f3 55fd85843aa61127c0e28aaa517d43f413ee868a",
+    "python3 .tools/virtual-parent-plain-inherited-getter-probes-58/run.py changed --revision 55fd85843aa61127c0e28aaa517d43f413ee868a",
+    "python3 tests/semantics/virtual_parent_plain_inherited_getter_protocol.py --revision 1e2c28c043a9ee034bb1d462ef25f3c30148d557 --group controls",
+    "python3 tests/semantics/virtual_parent_plain_inherited_getter_protocol.py --revision 1e2c28c043a9ee034bb1d462ef25f3c30148d557 --group entry",
+    "python3 tests/semantics/virtual_parent_plain_inherited_getter_protocol.py --revision 1e2c28c043a9ee034bb1d462ef25f3c30148d557 --group write"
+  ],
+  "recovery": "Historical revisions and original ignored packet/raw/compiler paths remain in activeprivate32. Permanent catalogue/protocol regenerate only these three source-driven frontiers; accepted source/strict/earlier cuts stay frozen. No failed CLASS58 actor; unchanged baseline Unsupported retains zero source agreement."
+}

@@ -328,6 +328,13 @@ def $destructor_selected_pending(S, pdestructionframe?) = $destructor_frame_pend
 def $eager_operation_value_valid(S, pdestructionoperation) = $destructor_return_operand_valid(S, pdestructionoperation.VALUE) -- otherwise
 def $destructor_operation_live(S, pdestructionoperation) = ($destructor_operational(S) /\ pdestructionoperation <- S.DESTRUCTION.OPERATIONS /\ $destructor_pending_valid(S, pdestructionoperation.PENDING) /\ $eager_operation_value_valid(S, pdestructionoperation) /\ $heap_subset($base_nodes(pdestructionoperation.BASE) ++ $eager_operation_completion_roots(pdestructionoperation), S.ALLOCATIONS) /\ $eager_operation_source_valid(S, pdestructionoperation) /\ $gc_operation_metadata_valid(S, pdestructionoperation))
 def $destructor_operation_valid(S, pdestructionoperation) = ($destructor_operation_live(S, pdestructionoperation) /\ S.CURRENT = pdestructionoperation.CALLER /\ S.ORIGIN = pdestructionoperation.ORIGIN /\ S.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT)
+;; Check real scoped controls, separately from synthetic cleanup histories.
+dec $destructor_operation_frame_exit(pframe*, pdestructionoperation) : bool
+def $destructor_operation_frame_exit(eps, pdestructionoperation) = false
+def $destructor_operation_frame_exit(pframe :: pframe_tail*, pdestructionoperation) = (((DESTRUCTOR_OPERATION_EXIT pdestructionoperation) <- pframe.TODO) \/ $destructor_operation_frame_exit(pframe_tail*, pdestructionoperation))
+def $destructor_operation_exits_valid(S, eps) = true
+def $destructor_operation_exits_valid(S, pdestructionoperation :: pdestructionoperation_tail*) = ((((DESTRUCTOR_OPERATION_EXIT pdestructionoperation) <- S.TODO) \/ $destructor_operation_frame_exit(S.FRAMES, pdestructionoperation)) /\ $destructor_operation_exits_valid(S, pdestructionoperation_tail*))
+
 def $destructor_operations_valid(S, eps) = true
 def $destructor_operations_valid(S, pdestructionoperation :: pdestructionoperation_tail*) = ($destructor_operation_live(S, pdestructionoperation) /\ $destructor_operations_valid(S, pdestructionoperation_tail*))
 def $call_task_valid(S, DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = $destructor_operation_valid(S, pdestructionoperation)
@@ -1027,9 +1034,12 @@ def $eager_fatal_compiler_valid(S, pdestructioncleanup, pdestructionfatal) = tru
   -- if $(|pdestructionfatal.DECLARATIONS| <= |S.DECLARATIONS|)
   -- if pdestructionfatal.DECLARATIONS = S.DECLARATIONS[0:|pdestructionfatal.DECLARATIONS|]
   -- if $shutdown_compiler_snapshot(pdestructionfatal.COMPLETION) = (pdestructionfatal.FROZEN)
+  -- if $recorded_compile_certificate(pdestructionfatal.DECLARATIONS, pdestructionfatal.COMPLETION, pdestructionfatal.ERRORORIGIN)
   -- if S_history = $eager_fatal_history(S, pdestructionfatal)
   -- if $eager_fatal_cursor_plans_valid(S_history, $eval_compile_cursors(S_history))
-  -- if S_proof = S_history[.DECLARATIONS = S.DECLARATIONS][.TODO = eps][.FRAMES = eps][.COMPLETION = pdestructionfatal.COMPLETION][.COMPILESTOP = pdestructionfatal.COMPILESTOP][.DESTRUCTION.PHASE = DESTRUCTION_PENDING][.DESTRUCTION.ABANDONED = [pdestructioncleanup]][.SHUTDOWN.PHASE = SHUTDOWN_PENDING][.SHUTDOWN.COMPLETION = NORMAL]
+  ;; Full history uses current parser entries, completion and reporting; saved
+  ;; execution and the failed compiler tuple remain separately authenticated.
+  -- if S_proof = S_history[.DECLARATIONS = S.DECLARATIONS][.EVALCONTEXTS = S.EVALCONTEXTS][.FILECONTEXTS = S.FILECONTEXTS][.TODO = eps][.FRAMES = eps][.COMPLETION = S.COMPLETION][.ERRORORIGIN = S.ERRORORIGIN][.REPORTING = S.REPORTING][.COMPILESTOP = pdestructionfatal.COMPILESTOP][.DESTRUCTION.PHASE = DESTRUCTION_PENDING][.DESTRUCTION.ABANDONED = S.DESTRUCTION.ABANDONED][.SHUTDOWN.PHASE = SHUTDOWN_PENDING][.SHUTDOWN.COMPLETION = NORMAL]
   -- if $declaration_history_valid(S_proof)
 def $eager_fatal_compiler_valid(S, pdestructioncleanup, pdestructionfatal) = false -- otherwise
 def $eager_fatal_valid(S, pdestructioncleanup, pdestructionfatal) = true

@@ -337,6 +337,17 @@ rules remain exact; Worker120 changes only the source cap. No native trace or
 identity comparison or physical predecessor-history proof is added. Broader
 replacement, explicit Previous and returns remain OPEN.
 
+The next exact certificate permits positional New TypeError(literal,0,caught).
+Source2, reached2/411 and independent public163/1 pass at `aed60b2e`. The fresh
+replacement directly retains the caught nested error; old Y is appended to that
+error's tail during finally unwind. All three objects remain distinct; caught
+and replacement keep their own creation origins/lines/trace-array payloads
+through Z/W/X/empty and caller e/p/q reads. T/D/probe are canceled. Budget
+resumption starts at the genuine caller before R, and selected alias remains
+quiet. Counter and missing-operation-exit refusals are separate. Original parse
+failure0 and syntax-only elab retain their cuts. No native identity/trace or
+physical predecessor-history proof is inferred; wider Previous/returns OPEN.
+
 Module 186 captures the physical cell of an ordinary live unconstrained aliased CV
 before weak Stringable conversion. Its retained current/saved f-local binding
 authenticates that selection independently of later GLOBALS rebind/unset. Success
@@ -359,6 +370,25 @@ records five exact originals and eight reached fixtures/871 assertions, separate
 from the aliased-CV cut. Matching source/cell/task copies do not reconstruct a fully
 coherently rewritten history; parked-VM checks are helper-only. Genuinely released
 targets, destructor throw/reentry, real suspension and wider typed consumers remain open.
+
+Validation-only M42 at `b55942bc`/385 follows a protected ordinary string return
+through local `unset($x)` and a retained-binding control. Independent107/2 ties
+the pre-unset cell to the saved FINALLY_REF_RETURN carrier and checks whole-state
+public admission plus phase deletion refusal. Late2/176 follows the same carrier
+to returned REFERENCE, caller r/a aliases, writes and caller-cut budget equality.
+The return temporary stays live; physical cell collection and released borrowed
+Stringable targets are outside this validation.
+
+M43 follows an untyped by-reference return whose `finally` removes x, then either
+returns y or preserves the pending x carrier. Source2 and late2/230 at `43df347e`
+distinguish the delivered cell, D/R order, caller aliases and caller-cut budget.
+At active cancellation the old HCELL leaves modeled allocations/roots while the
+old HOBJECT remains rooted by its destructor; stale STORE data is not collection.
+Deleting only a saved operation EXIT exposed a real public integrity gap. The
+scoped84/270 guard at `b6805e2` requires at least one exact EXIT per registered
+operation in current or saved tasks. Active68 and genuine parked23 plus two
+refusals pass with strict/source2. Synthetic fatal history views retain their old
+checks. No physical Zend collection or wider returns coverage is claimed.
 
 Caller demand comes from the original checked callsite's immediate source
 consumers. Expression statements and discarded for clauses have unused results;

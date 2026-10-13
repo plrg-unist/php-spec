@@ -1,0 +1,33 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hash": "4e4d8c8eaf19fd9f898e922dfec3a604ea1257185a2ec7ad2f621698311fb790",
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "scalar",
+      "source": "<?php\nclass OrdinaryPlainRoot56 {\n    public int $value = 100;\n}\nclass OrdinaryPlainParent56 extends OrdinaryPlainRoot56 {\n    public int $value {\n        get {\n            echo \"GET:\", self::class, \"/\", static::class, \"|\";\n            return $this->answer();\n        }\n    }\n    private function answer() { return 13; }\n    public function parentRead() { echo \"H|\"; return $this->value; }\n}\nclass OrdinaryPlainBridge56 extends OrdinaryPlainParent56 {}\nclass OrdinaryPlainChild56 extends OrdinaryPlainBridge56 {\n    public int $value = 200;\n    private function answer() { return 500; }\n}\nclass OrdinaryPlainGrand56 extends OrdinaryPlainChild56 {\n    private function answer() { return 900; }\n}\n$root = new OrdinaryPlainRoot56;\n$parent = new OrdinaryPlainParent56;\n$child = new OrdinaryPlainChild56;\n$grand = new OrdinaryPlainGrand56;\n$raw = (array) $root;\necho $raw === [\"value\" => 100] ? \"R100|\" : \"BAD|\";\n$raw = (array) $parent;\necho $raw === [] ? \"EMPTY|\" : ($raw === [\"value\" => null] ? \"NULL|\" : \"BAD|\");\n$raw = (array) $child;\necho $raw === [\"value\" => 200] ? \"C200|\" : \"BAD|\";\n$raw = (array) $grand;\necho $raw === [\"value\" => 200] ? \"G200|\" : \"BAD|\";\necho $root->value, \"|\";\necho $parent->value, \"|\";\necho $child->value, \"|\";\necho $grand->parentRead(), \"|\";\n$raw = (array) $grand;\necho $raw === [\"value\" => 200] ? \"G200|\" : \"BAD|\";\n$grand->value = 300;\n$raw = (array) $grand;\necho $raw === [\"value\" => 300] ? \"G300|\" : \"BAD|\";\necho $grand->value, \"|\";\n",
+      "source_sha256": "d0d49b589cb87788e7aa6078cf934965baf767651c8719d6e3efe0497dcc485e",
+      "stdout_base64": "UjEwMHxFTVBUWXxDMjAwfEcyMDB8MTAwfEdFVDpPcmRpbmFyeVBsYWluUGFyZW50NTYvT3JkaW5hcnlQbGFpblBhcmVudDU2fDEzfEdFVDpPcmRpbmFyeVBsYWluUGFyZW50NTYvT3JkaW5hcnlQbGFpbkNoaWxkNTZ8MTN8SHxHRVQ6T3JkaW5hcnlQbGFpblBhcmVudDU2L09yZGluYXJ5UGxhaW5HcmFuZDU2fDEzfEcyMDB8RzMwMHxHRVQ6T3JkaW5hcnlQbGFpblBhcmVudDU2L09yZGluYXJ5UGxhaW5HcmFuZDU2fDEzfA==",
+      "stderr_template": "",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "ordinary-backed-parent-plain-inherited-getter56-native-2baa8072",
+      "native_raw_sha256": "4e4d8c8eaf19fd9f898e922dfec3a604ea1257185a2ec7ad2f621698311fb790"
+    }
+  ]
+}

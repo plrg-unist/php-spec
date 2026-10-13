@@ -235,6 +235,26 @@ descriptors and immediate selected parent; decreasing fuel closes at a genuine
 local backed getter. Latest Second storage 300→400 stays separate from original
 Parent function/lexical/private/trace and receiver called scope, returning 313→413;
 [repeated inherited-getter review](../../coverage/semantics/repeated-plain-child-inherited-backed-get-hook-review.json).
+A source-unbacked, no-initializer getter directly backed by an ordinary ancestor
+can also be inherited by a plain equal-TYPE child. The existing terminal proof
+accepts that positive ordinary anchor with the supplied fuel. Parent starts
+uninitialized, Child owns 200 then 300, and the original getter returns 13;
+function/lexical/private/trace remain Parent's and called scope follows the receiver.
+Active source backing bypass stays false despite the physical slot;
+[ordinary-backed inherited-getter review](../../coverage/semantics/ordinary-backed-parent-plain-inherited-getter-review.json).
+The terminal also accepts an authenticated hooked backing ancestor through the
+existing inherited walk with supplied fuel. Root's genuine backed getter returns
+107, while source-unbacked Parent remains the selected getter/function/private
+owner and returns 13 on plain Child/Grand. Parent starts uninitialized and Child's
+own slot changes 200 to 300 with active backing bypass false;
+[hook-backed inherited-getter review](../../coverage/semantics/inherited-backed-parent-plain-inherited-getter-review.json).
+A closed virtual get-only Parent is also an authenticated terminal basis with the
+supplied fuel. Its descriptor default helper yields INITIAL, but the virtual
+object owns no physical slot. A plain public equal-TYPE Child remains nonvirtual
+and owns 200 then 300; the inherited Parent function/lexical/private/trace identity
+and receiver called scope stay distinct. Active source backing bypass is false
+and the getter returns 13 independently of the slot;
+[virtual-root inherited-getter review](../../coverage/semantics/virtual-parent-plain-inherited-getter-review.json).
 Other inherited getter roots/shapes and wider
 type-presence combinations remain required.
 Backed-parent inheritance retains invariant types; broader type equivalence and

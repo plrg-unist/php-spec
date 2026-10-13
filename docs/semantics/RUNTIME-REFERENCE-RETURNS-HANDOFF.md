@@ -194,6 +194,24 @@ two source-qualified WARNING(w,6) reads. Bypass is quiet; late error/budget chec
 remain separate from the older native Previous observer. Reconstruction remains
 local, with no unset/eager/active/Notice rule change; wider returns stay OPEN.
 
+M42 adds validation only at `b55942bc`/385: pre-unset x and the saved owning return
+carrier stay identical despite absent/present local bindings (public107/2), then
+the carrier reaches main r/a and write-through with caller-cut budget equality
+(reached2/176). The selected cell remains owned; physical collection and wider
+released borrowed-cell conversion stay open. Recover with
+`tests/semantics/reference_released_cv_state.py` and the local-CV lifetime ledger.
+
+M43's untyped cancellation/control source2 and late2/230 stay at `43df347e`.
+The real active cleanup exposed missing registered-operation EXIT integrity.
+Require exact EXIT presence in scoped current/saved TODO via84/270; never add this
+reverse check to generic operations_valid, whose fatal histories replace TODO.
+The patched `b6805e2` passes strict/source2 and active68 + genuine parked23/two
+EXIT-only refusals. Recover old late fixtures with reference_finally_cancelled_state.py.
+reference_registered_exit_recovery.py is evidence recovery: copy it to preserved
+private43 verifier make_parked_exit.py before running; it needs archived0bf9 and
+emits exact50e1 at that original path. The ledger records paths/hashes. Abstract
+HCELL retirement does not establish Zend physical collection; broad returns OPEN.
+
 Typed-property reference constraints, finally rechecks, objects/methods, dynamic
 sources and dynamic callables, named/unpacked/variadic calls, generators/Fibers and lifecycle remain
 required later core work. Publish reviewed paired code, evidence and concise docs

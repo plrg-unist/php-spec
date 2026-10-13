@@ -133,9 +133,20 @@ active left guards expose nested recursion errors and leave on actual unwind.
 [Six originals and 521 reached premises](../../coverage/semantics/aggregate-stringable-comparison-review.json)
 cover those distinctions, a caught recursion Error, and the same TypeError caught
 after caller restoration followed by finally entry. Cursor and pointer images are
-documentary and non-owning. Materialized-property casts and Fiber VM transfer
-during this continuation remain explicit Unsupported; no END/shutdown coverage
-or broader receiver/destructor lifetime coverage is claimed.
+documentary and non-owning. The preceding cut remains frozen.
+
+[Property-table comparisons](../../coverage/semantics/materialized-stringable-comparison-review.json)
+now retain stdClass objects plus both exact tables. Dynamic DIRECT buckets remain
+in the pinned old table under COW; embedded reference cells stay live. Initialized
+public declared-only tables retain captured key order and live slots, with an old
+pre-unwrapped cell remaining distinct. Ordinary array casts produce copied views;
+`foreach` supplies the genuine declared-table producer in these tests. Identical
+concrete tables compare equal before recursion checks. Separate object/table guard
+kinds preserve cursor restart, alias-array recursion and TypeError caller catch
+followed by finally entry. Six exact sources and 576 reached premises/28 raw steps
+pass. Mixed declared/dynamic tables or declared-table detachment, guarded declared-object projection,
+Fiber VM transfer and broader receiver/destructor lifetimes remain explicit
+obligations; no END/shutdown coverage is claimed.
 
 The installed [file operand bridge](../../coverage/semantics/file-operand-review.json)
 converts all four include/require forms before path lookup or once skipping.

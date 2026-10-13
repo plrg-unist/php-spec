@@ -47,7 +47,47 @@ def $declaration_enter_at(S, n, porigin?, 14) = S[.DECLARATIONS = S.DECLARATIONS
 def $declaration_enter_at(S, n, porigin?, z_precision) = S[.DECLARATIONS = S.DECLARATIONS ++ [PDENTERPRECISION n porigin? S.REPORTING z_precision]]
   -- if z_precision =/= 14
   -- if $(z_precision >= -1 /\ z_precision <= 9223372036854775807)
-def $declaration_exit(S, n, pcompilestop) = S[.DECLARATIONS = S.DECLARATIONS ++ [PDEXIT n pcompilestop]]
+dec $recorded_compile_exit(pstate, nat) : pstate
+dec $recorded_compile_at(pdeclaration*, nat?) : (pcompletion, porigin?)?
+dec $recorded_compile_cutoff(pdeclaration*) : (nat, pcompletion, porigin?)?
+dec $recorded_compile_certificate(pdeclaration*, pcompletion, porigin?) : bool
+dec $recorded_compile_fatal(pcompletion) : bool
+def $declaration_exit(S, n, pcompilestop) = $recorded_compile_exit(S[.DECLARATIONS = S.DECLARATIONS ++ [PDEXIT n pcompilestop]], n)
+
+;; File compilation retains a hard diagnostic when bailout skips scanner cleanup.
+;; A later compiler fatal drains that tuple before delivering the new diagnostic.
+;; The receipt keeps both tuples; traces still come from the current caller.
+def $recorded_compile_at(pdeclaration*, (n)) = ((pcompletion_raw, porigin_raw?))
+  -- if $(n < |pdeclaration*|)
+  -- if pdeclaration*[n] = PDCOMPILERFATAL n_unit pcompletion_raw porigin_raw? pcompletion porigin?
+def $recorded_compile_at(pdeclaration*, n?) = eps -- otherwise
+def $recorded_compile_exit(S, n) = S[.RECORDEDCOMPILEERROR = eps][.COMPLETION = pcompletion][.ERRORORIGIN = porigin?][.DECLARATIONS = S.DECLARATIONS ++ [PDCOMPILERFATAL n (FATAL ptbytes z) S.ERRORORIGIN pcompletion porigin?]]
+  -- if S.COMPLETION = FATAL ptbytes z
+  -- if $recorded_compile_at(S.DECLARATIONS, S.RECORDEDCOMPILEERROR) = ((pcompletion, porigin?))
+def $recorded_compile_exit(S, n) = S[.RECORDEDCOMPILEERROR = (|S.DECLARATIONS|)][.DECLARATIONS = S.DECLARATIONS ++ [PDCOMPILERFATAL n S.COMPLETION S.ERRORORIGIN S.COMPLETION S.ERRORORIGIN]]
+  -- if S.COMPLETION = FATAL ptbytes z
+  -- if S.RECORDEDCOMPILEERROR = eps
+  -- if $file_binding_at(S.FILEBINDINGS, n) =/= eps /\ $eval_binding_at(S.EVALBINDINGS, n) = eps
+def $recorded_compile_exit(S, n) = S[.DECLARATIONS = S.DECLARATIONS ++ [PDCOMPILERFATAL n S.COMPLETION S.ERRORORIGIN S.COMPLETION S.ERRORORIGIN]]
+  -- if S.COMPLETION = FATAL ptbytes z
+  -- if S.RECORDEDCOMPILEERROR = eps
+  -- if $file_binding_at(S.FILEBINDINGS, n) = eps
+def $recorded_compile_exit(S, n) = S -- otherwise
+
+def $recorded_compile_cutoff([PDEXIT n pcompilestop, PDCOMPILERFATAL n pcompletion_raw porigin_raw? pcompletion porigin?]) = ((n, pcompletion, porigin?))
+def $recorded_compile_cutoff(pdeclaration :: pdeclaration_tail*) = $recorded_compile_cutoff(pdeclaration_tail*)
+  -- if $(|pdeclaration_tail*| > 1)
+def $recorded_compile_cutoff(pdeclaration*) = eps -- otherwise
+def $recorded_compile_certificate(pdeclaration*, FATAL ptbytes z, porigin?) = true
+  -- if $recorded_compile_cutoff(pdeclaration*) = ((n, FATAL ptbytes z, porigin?))
+def $recorded_compile_fatal(FATAL ptbytes z) = true
+def $recorded_compile_fatal(pcompletion) = false -- otherwise
+def $recorded_compile_certificate(pdeclaration*, pcompletion, porigin?) = true
+  -- if ~$recorded_compile_fatal(pcompletion)
+def $recorded_compile_certificate(pdeclaration*, pcompletion, porigin?) = false -- otherwise
+def $recorded_compile_origin(S, n) = S.ERRORORIGIN
+  -- if $recorded_compile_cutoff(S.DECLARATIONS) = ((n, S.COMPLETION, S.ERRORORIGIN))
+def $recorded_compile_origin(S, n) = $compiled_error_origin(S.ERRORORIGIN, S.COMPLETION, n) -- otherwise
 
 ;; Default entries keep their original spelling. Both forms are one entry event.
 def $declaration_entry_input(PDENTER n porigin? z, n) = ((porigin?, z, 14))

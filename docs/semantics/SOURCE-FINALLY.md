@@ -288,6 +288,15 @@ Worker120 is cap-only; original timeouts0 and diagnostic progress stay separate.
 Native message/order agreement does not establish identity/trace/Previous. Wider
 replacement and returns remain OPEN.
 
+A separate certificate admits the same positional literal-message New with
+code0 and the identical ordinary caught local as explicit Previous. Source2,
+reached2/411 and independent public163/1 pass at `aed60b2e`: replacement→caught
+is already present at the early cut, while old Y is still parked. Finally
+cleanup appends old Y at caught.previous, keeps caught live, and preserves both
+creation traces through Z/W/X/caller. T/D/probe stay canceled. The budget cut
+is the real pre-R main e/p/q state; parse failure0 and no-main elab stay separate.
+Native P1/P2 message agreement adds no identity/trace claim. Wider returns OPEN.
+
 Module 186 converts a selected live unconstrained aliased return CV before protected
 finalizer entry. Stringable callbacks may rebind/unset GLOBALS without redirecting
 the captured cell; current/saved f-local bindings authenticate it. Success writes

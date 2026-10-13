@@ -1,5 +1,50 @@
 [
   {
+    "id": "weak-map-ephemeron-observer-63",
+    "source": "<?php\nclass EphemeronValue {\n    public $key = null;\n    public function __destruct() {\n        global $map, $keyWeak, $valueWeak;\n        echo ($keyWeak->get() === $this->key ? \"callback-key-live|\" : \"callback-key-other|\");\n        echo ($valueWeak->get() === $this ? \"callback-value-live|\" : \"callback-value-other|\");\n        echo ($map[$this->key] === $this ? \"entry-live|\" : \"entry-other|\");\n        echo \"D|\";\n    }\n}\n$map = new WeakMap();\n$key = new stdClass();\n$value = new EphemeronValue();\n$keyWeak = WeakReference::create($key);\n$valueWeak = WeakReference::create($value);\n$mapWeak = WeakReference::create($map);\n$map[$key] = $value;\n$value->key = $key;\nunset($value, $key);\necho ($keyWeak->get() === null ? \"key-null|\" : \"key-live|\");\necho ($valueWeak->get() === null ? \"value-null|\" : \"value-live|\");\necho \"collect|\";\necho gc_collect_cycles(), \"|\";\necho ($keyWeak->get() === null ? \"key-null|\" : \"key-live|\");\necho ($valueWeak->get() === null ? \"value-null|\" : \"value-live|\");\necho \"again|\";\necho gc_collect_cycles(), \"|\";\necho ($keyWeak->get() === null ? \"key-null|\" : \"key-live|\");\necho ($valueWeak->get() === null ? \"value-null|\" : \"value-live|\");\necho ($mapWeak->get() === $map ? \"map-live|\" : \"map-other|\");\nunset($map);\necho ($mapWeak->get() === null ? \"map-null|\" : \"map-live|\");\necho \"END\";\n",
+    "source_sha256": "607816ff8ac0482ed76cb6933dc872906ca689e91277ae001f43226e8d238e28",
+    "stdout": "key-live|value-live|collect|callback-key-live|callback-value-live|entry-live|D|2|key-null|value-null|again|0|key-null|value-null|map-live|map-null|END",
+    "stderr": "",
+    "status": "normal",
+    "exit": 0
+  },
+  {
+    "id": "weak-map-ephemeron-retained-key-63",
+    "source": "<?php\nclass EphemeronValue {\n    public $key = null;\n    public function __destruct() {\n        global $map, $keyWeak, $valueWeak, $savedKey;\n        echo ($keyWeak->get() === $this->key ? \"callback-key-live|\" : \"callback-key-other|\");\n        echo ($valueWeak->get() === $this ? \"callback-value-live|\" : \"callback-value-other|\");\n        echo ($map[$this->key] === $this ? \"entry-live|\" : \"entry-other|\");\n        $savedKey = $this->key;\n        echo \"saved|D|\";\n    }\n}\n$savedKey = null;\n$map = new WeakMap();\n$key = new stdClass();\n$value = new EphemeronValue();\n$keyWeak = WeakReference::create($key);\n$valueWeak = WeakReference::create($value);\n$mapWeak = WeakReference::create($map);\n$map[$key] = $value;\n$value->key = $key;\nunset($value, $key);\necho ($keyWeak->get() === null ? \"key-null|\" : \"key-live|\");\necho ($valueWeak->get() === null ? \"value-null|\" : \"value-live|\");\necho \"collect|\";\necho gc_collect_cycles(), \"|\";\necho ($keyWeak->get() === $savedKey ? \"key-saved|\" : \"key-other|\");\necho ($valueWeak->get() === null ? \"value-null|\" : \"value-live|\");\nunset($savedKey);\necho \"unheld|\";\necho gc_collect_cycles(), \"|\";\necho ($keyWeak->get() === null ? \"key-null|\" : \"key-live|\");\necho ($valueWeak->get() === null ? \"value-null|\" : \"value-live|\");\necho ($mapWeak->get() === $map ? \"map-live|\" : \"map-other|\");\nunset($map);\necho ($mapWeak->get() === null ? \"map-null|\" : \"map-live|\");\necho \"END\";\n",
+    "source_sha256": "d1fe58ca5beb6bcea360b999e18060be4c58d12d6430228614ed58052e533b22",
+    "stdout": "key-live|value-live|collect|callback-key-live|callback-value-live|entry-live|saved|D|0|key-saved|value-live|unheld|2|key-null|value-null|map-live|map-null|END",
+    "stderr": "",
+    "status": "normal",
+    "exit": 0
+  },
+  {
+    "id": "weak-map-ephemeron-extra-object-63",
+    "source": "<?php\nclass EphemeronValue {\n    public $key = null;\n    public function __destruct() {\n        global $map, $keyWeak, $valueWeak, $other;\n        echo ($keyWeak->get() === $this->key ? \"callback-key-live|\" : \"callback-key-other|\");\n        echo ($valueWeak->get() === $this ? \"callback-value-live|\" : \"callback-value-other|\");\n        echo ($map[$this->key] === $this ? \"entry-live|\" : \"entry-other|\");\n        $other = new stdClass();\n        echo \"outside|D|\";\n    }\n}\n$other = null;\n$map = new WeakMap();\n$key = new stdClass();\n$value = new EphemeronValue();\n$keyWeak = WeakReference::create($key);\n$valueWeak = WeakReference::create($value);\n$mapWeak = WeakReference::create($map);\n$map[$key] = $value;\n$value->key = $key;\nunset($value, $key);\necho ($keyWeak->get() === null ? \"key-null|\" : \"key-live|\");\necho ($valueWeak->get() === null ? \"value-null|\" : \"value-live|\");\necho \"collect|\";\necho gc_collect_cycles(), \"|\";\necho ($keyWeak->get() === null ? \"key-null|\" : \"key-live|\");\necho ($valueWeak->get() === null ? \"value-null|\" : \"value-live|\");\necho ($other === null ? \"other-null|\" : \"other-live|\");\nunset($other);\necho \"again|\";\necho gc_collect_cycles(), \"|\";\necho ($keyWeak->get() === null ? \"key-null|\" : \"key-live|\");\necho ($valueWeak->get() === null ? \"value-null|\" : \"value-live|\");\necho ($mapWeak->get() === $map ? \"map-live|\" : \"map-other|\");\nunset($map);\necho ($mapWeak->get() === null ? \"map-null|\" : \"map-live|\");\necho \"END\";\n",
+    "source_sha256": "461e2c2ebe594011ef018da41d9a9b639fbd0bca3ff8e2bb0f07eca246b7e441",
+    "stdout": "key-live|value-live|collect|callback-key-live|callback-value-live|entry-live|outside|D|2|key-null|value-null|other-live|again|0|key-null|value-null|map-live|map-null|END",
+    "stderr": "",
+    "status": "normal",
+    "exit": 0
+  },
+  {
+    "id": "weak-map-ephemeron-unheld-62",
+    "source": "<?php\nclass EphemeronValue { public $key = null; }\n$map = new WeakMap();\n$key = new stdClass();\n$value = new EphemeronValue();\n$keyWeak = WeakReference::create($key);\n$valueWeak = WeakReference::create($value);\n$mapWeak = WeakReference::create($map);\n$map[$key] = $value;\n$value->key = $key;\nunset($value, $key);\necho ($keyWeak->get() === null ? \"key-null|\" : \"key-live|\");\necho ($valueWeak->get() === null ? \"value-null|\" : \"value-live|\");\necho gc_collect_cycles(), \"|\";\necho ($keyWeak->get() === null ? \"key-null|\" : \"key-live|\");\necho ($valueWeak->get() === null ? \"value-null|\" : \"value-live|\");\necho ($mapWeak->get() === $map ? \"map-live|\" : \"map-other|\");\nunset($map);\necho ($mapWeak->get() === null ? \"map-null|\" : \"map-live|\");\necho \"END\";\n",
+    "source_sha256": "69606106367b383b1eee4adfdce79e6e61fee59bcb2193c9764bac3e2968032f",
+    "stdout": "key-live|value-live|2|key-null|value-null|map-live|map-null|END",
+    "stderr": "",
+    "status": "normal",
+    "exit": 0
+  },
+  {
+    "id": "weak-map-ephemeron-held-62",
+    "source": "<?php\nclass EphemeronValue { public $key = null; }\n$map = new WeakMap();\n$key = new stdClass();\n$value = new EphemeronValue();\n$keyWeak = WeakReference::create($key);\n$valueWeak = WeakReference::create($value);\n$mapWeak = WeakReference::create($map);\n$map[$key] = $value;\n$value->key = $key;\nunset($value);\necho \"held-key|\", gc_collect_cycles(), \"|\";\necho ($keyWeak->get() === null ? \"key-null|\" : \"key-live|\");\necho ($valueWeak->get() === null ? \"value-null|\" : \"value-live|\");\n$held = $valueWeak->get();\nunset($key);\necho \"held-value|\", gc_collect_cycles(), \"|\";\necho ($keyWeak->get() === null ? \"key-null|\" : \"key-live|\");\necho ($valueWeak->get() === $held ? \"value-held|\" : \"value-other|\");\nunset($held);\necho \"unheld|\", gc_collect_cycles(), \"|\";\necho ($keyWeak->get() === null ? \"key-null|\" : \"key-live|\");\necho ($valueWeak->get() === null ? \"value-null|\" : \"value-live|\");\necho ($mapWeak->get() === $map ? \"map-live|\" : \"map-other|\");\nunset($map);\necho ($mapWeak->get() === null ? \"map-null|\" : \"map-live|\");\necho \"END\";\n",
+    "source_sha256": "fd72b92d1b8570879a02783f033b42d2a467e186cfbbd7281fff5c9e9b53f3f0",
+    "stdout": "held-key|0|key-live|value-live|held-value|0|key-live|value-held|unheld|2|key-null|value-null|map-live|map-null|END",
+    "stderr": "",
+    "status": "normal",
+    "exit": 0
+  },
+  {
     "id": "weak-reference-freeing-create-reuse-61",
     "source": "<?php\nclass Value {\n    public function __destruct() {\n        global $mapWeak;\n        $local = $mapWeak->get();\n        $first = WeakReference::create($local);\n        $second = WeakReference::create($local);\n        echo $first === $mapWeak ? \"same-wrapper|\" : \"different-wrapper|\";\n        echo $second === $first ? \"memoized|\" : \"fresh-wrapper|\";\n        echo $first->get() === $local ? \"first-live|\" : \"first-null|\";\n        echo $second->get() === $local ? \"second-live|\" : \"second-null|\";\n        unset($first, $second, $local);\n        echo \"V|\";\n    }\n}\n$map = new WeakMap();\n$key = new stdClass();\n$value = new Value();\n$keyWeak = WeakReference::create($key);\n$valueWeak = WeakReference::create($value);\n$mapWeak = WeakReference::create($map);\n$map[$key] = $value;\nunset($value);\nunset($map);\necho $mapWeak->get() === null ? \"map-null|\" : \"map-live|\";\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $valueWeak->get() === null ? \"value-null|\" : \"value-live|\";\nunset($key);\necho $keyWeak->get() === null ? \"key-null|END\" : \"key-live|END\";\n",
     "source_sha256": "a1f6e90c563e24f6bbd2181c5e704d59f4fe5cc382a6adefcf4bcc00379b652f",
