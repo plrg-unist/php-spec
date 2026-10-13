@@ -1503,6 +1503,8 @@ Three separate states at `2171db7c` pass controls82 (42 reached, 40 derived),
 entered Child61 and writer77: 180 reached plus 40 derived. D40 is task-local
 parent matching, not another native class case; virtual/wider roots remain required.
 [Ordinary-backed inherited-getter review](coverage/semantics/ordinary-backed-parent-plain-inherited-getter-review.json).
+Joined exact `b55942bc`/385; one count-only current init check passes with no application.
+Private cuts remain retained through neutral output-handler state and disjoint reference-return cleanup.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
