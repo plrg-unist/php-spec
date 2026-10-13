@@ -1,0 +1,465 @@
+;; PHP 8.5.10 main/output.c: default internal handlers, top-first stack.
+;; Output handlers that run user code and buffered stdout diagnostics remain
+;; explicit dependencies. Stderr never enters this stack.
+syntax pobconversion = OB_VALUE pvalue | OB_DEPRECATED pvalue preqbytes | OB_REJECT
+dec $ob_is_deprecated(pobconversion) : bool
+dec $output_initial_size(nat) : nat
+dec $output_grown_size(poutputbuffer, nat) : nat
+dec $output_processed(poutputbuffer) : poutputbuffer
+dec $output_deferred_stdout(pstate) : bool
+dec $output_exception_level(preqbytes) : int
+dec $output_force_flush(pstate) : pstate
+dec $output_buffers_valid(poutputbuffer*) : bool
+dec $ob_max(pintrinsic) : nat
+dec $ob_default(pintrinsic, nat) : pvalue
+dec $ob_type(pintrinsic, nat) : text
+dec $ob_integer(pvalue) : pobconversion
+dec $ob_conversion(pstate, pconfigcall, nat) : pobconversion
+dec $ob_null(text) : pvalue
+dec $ob_converted(pobconversion) : pvalue?
+dec $ob_values_valid(pstate, pconfigcall, pvalue*, nat) : bool
+dec $ob_parse_valid(pstate, pconfigcall, nat, pvalue*) : bool
+dec $ob_count_phrase(pintrinsic) : preqbytes
+dec $ob_return(pstate, pvalue) : pstate
+dec $ob_get_kind(pintrinsic) : bool
+dec $ob_clean_kind(pintrinsic) : bool
+dec $ob_active_operation(pintrinsic) : bool
+dec $ob_pop_kind(pintrinsic) : bool
+dec $ob_capability(pintrinsic) : int
+dec $ob_failure_verb(pintrinsic) : preqbytes
+dec $ob_notice_message(pobnotice) : preqbytes
+dec $ob_notice(pstate, pconfigcall, pvalue, bool, bool, nat?) : pstate
+dec $ob_notice_valid(pstate, pobnotice) : bool
+dec $ob_notice_task(ptask, pobnotice) : bool
+dec $ob_operation(pstate, pconfigcall, pvalue*) : pstate
+dec $ob_chunk(int) : int
+dec $ob_snapshot(pstate, pintrinsic, preqbytes) : pstate
+dec $ob_process(pstate, pintrinsic, poutputbuffer, poutputbuffer*) : pstate
+dec $ob_handler_list(poutputbuffer*) : parray
+dec $ob_status_array(poutputbuffer, nat) : parray
+dec $ob_entries(pentry*) : parray
+dec $ob_entries_acc(pentry*, parray) : parray
+dec $ob_status(pstate, bool) : pstate
+dec $ob_status_full(pstate, poutputbuffer*) : pstate
+dec $ob_failure_value(pintrinsic, pvalue) : pvalue
+
+def $output_initial_size(0) = 16384
+def $output_initial_size(n) = $nabs($(((n + 4095) / 4096) * 4096)) -- if $(n > 0)
+def $output_grown_size(poutputbuffer, n) = poutputbuffer.SIZE
+  -- if n = 0 \/ $(poutputbuffer.SIZE - |poutputbuffer.BYTES| > n)
+def $output_grown_size(poutputbuffer, n) = $(poutputbuffer.SIZE + n_grow)
+  -- if $(n > 0 /\ poutputbuffer.SIZE - |poutputbuffer.BYTES| <= n)
+  -- if n_chunk = $output_initial_size(poutputbuffer.CHUNK)
+  -- if n_bytes = $output_initial_size($nabs($(n - (poutputbuffer.SIZE - |poutputbuffer.BYTES|))))
+  -- if n_grow = n_chunk -- if $(n_chunk >= n_bytes)
+def $output_grown_size(poutputbuffer, n) = $(poutputbuffer.SIZE + n_bytes)
+  -- if $(n > 0 /\ poutputbuffer.SIZE - |poutputbuffer.BYTES| <= n)
+  -- if n_chunk = $output_initial_size(poutputbuffer.CHUNK)
+  -- if n_bytes = $output_initial_size($nabs($(n - (poutputbuffer.SIZE - |poutputbuffer.BYTES|))))
+  -- if $(n_chunk < n_bytes)
+def $output_processed(poutputbuffer) = poutputbuffer[.FLAGS = $long_or(poutputbuffer.FLAGS, 20480)][.BYTES = eps]
+def $output_write(S, n*) = S[.EVENTS = S.EVENTS ++ [OUTPUT n*]] -- if S.OUTPUTBUFFERS = eps
+def $output_write(S, eps) = S -- if S.OUTPUTBUFFERS =/= eps
+def $output_write(S, n*) = S[.OUTPUTBUFFERS = poutputbuffer_next :: poutputbuffer_tail*]
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if n* =/= eps
+  -- if poutputbuffer_next = poutputbuffer[.SIZE = $output_grown_size(poutputbuffer, |n*|)][.BYTES = poutputbuffer.BYTES ++ n*]
+  -- if poutputbuffer.CHUNK = 0 \/ $(|poutputbuffer_next.BYTES| < poutputbuffer.CHUNK)
+def $output_write(S, n*) = S_lower[.OUTPUTBUFFERS = ($output_processed(poutputbuffer_next)) :: S_lower.OUTPUTBUFFERS]
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if n* =/= eps
+  -- if poutputbuffer_next = poutputbuffer[.SIZE = $output_grown_size(poutputbuffer, |n*|)][.BYTES = poutputbuffer.BYTES ++ n*]
+  -- if $(poutputbuffer.CHUNK > 0 /\ |poutputbuffer_next.BYTES| >= poutputbuffer.CHUNK)
+  -- if S_lower = $output_write(S[.OUTPUTBUFFERS = poutputbuffer_tail*], poutputbuffer_next.BYTES)
+
+;; The caller selects the diagnostic destination and suppression before here.
+;; BLOCKED survives compiler/lifecycle wrappers which reset COMPLETION.
+def $output_display(S, [DISPLAY_STDOUT pevent]) = S[.OUTPUTBLOCKED = true][.COMPLETION = UNSUPPORTED "stdout diagnostic rendering inside an output buffer"]
+  -- if S.OUTPUTBUFFERS =/= eps
+def $output_display(S, pevent*) = S[.EVENTS = S.EVENTS ++ pevent*] -- otherwise
+def $output_guard(S) = S[.COMPLETION = UNSUPPORTED "stdout diagnostic rendering inside an output buffer"] -- if S.OUTPUTBLOCKED
+def $output_guard(S) = S -- if ~S.OUTPUTBLOCKED
+
+def $output_deferred_stdout(S) = ($long_and(S.REPORTING, 1) =/= 0) -- if S.COMPLETION = FATAL n* z
+def $output_deferred_stdout(S) = ($long_and(S.REPORTING, 64) =/= 0) -- if S.COMPLETION = STATICERROR text z
+def $output_deferred_stdout(S) = ($long_and(S.REPORTING, 64) =/= 0) -- if S.COMPLETION = STATICBYTES n* z
+def $output_deferred_stdout(S) = b -- if S.COMPLETION = USERFATAL n* z b
+def $output_deferred_stdout(S) = b -- if S.COMPLETION = INTERNALFATAL n* b
+def $output_deferred_stdout(S) = true -- if S.COMPLETION = COMPILETHROWN n* z
+def $output_deferred_stdout(S) = ($long_and(S.REPORTING, i) =/= 0)
+  -- if S.COMPLETION = UNCAUGHT n
+  -- if i = $output_exception_level($object_name(S, n))
+def $output_deferred_stdout(S) = ($long_and(S.REPORTING, i) =/= 0)
+  -- if S.COMPLETION = UNCAUGHT_RENDERED n n_text*
+  -- if i = $output_exception_level($object_name(S, n))
+def $output_deferred_stdout(S) = false -- otherwise
+def $output_exception_level(n*) = 4 -- if n* = $ptascii("ParseError")
+def $output_exception_level(n*) = 64 -- if n* = $ptascii("CompileError")
+def $output_exception_level(n*) = 1 -- otherwise
+def $output_force_flush(S) = S -- if S.OUTPUTBUFFERS = eps
+def $output_force_flush(S) = $output_force_flush($output_write(S[.OUTPUTBUFFERS = poutputbuffer_tail*], poutputbuffer.BYTES))
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+def $output_finalize(S) = $output_guard(S) -- if S.OUTPUTBLOCKED
+def $output_finalize(S) = S[.OUTPUTBLOCKED = true][.COMPLETION = UNSUPPORTED "stdout fatal rendering inside an output buffer"]
+  -- if ~S.OUTPUTBLOCKED
+  -- if S.OUTPUTBUFFERS =/= eps
+  -- if $display_state_mode(S) = 1
+  -- if $output_deferred_stdout(S)
+def $output_finalize(S) = $output_force_flush(S)
+  -- if ~S.OUTPUTBLOCKED
+  -- if $shutdown_terminal(S.COMPLETION)
+  -- if S.OUTPUTBUFFERS = eps \/ $display_state_mode(S) =/= 1 \/ ~$output_deferred_stdout(S)
+def $output_finalize(S) = S
+  -- if ~S.OUTPUTBLOCKED
+  -- if ~$shutdown_terminal(S.COMPLETION)
+  -- if S.OUTPUTBUFFERS = eps \/ $display_state_mode(S) =/= 1 \/ ~$output_deferred_stdout(S)
+
+def $output_buffers_valid(eps) = true
+def $output_buffers_valid(poutputbuffer :: poutputbuffer_tail*) = ($(poutputbuffer.CHUNK <= 9223372036854775807) /\ $reporting_valid(poutputbuffer.FLAGS) /\ $long_and(poutputbuffer.FLAGS, 40975) = 0 /\ $long_and(poutputbuffer.FLAGS, 20480) <- [0, 20480] /\ (poutputbuffer.CHUNK = 0 \/ $(|poutputbuffer.BYTES| < poutputbuffer.CHUNK)) /\ $(poutputbuffer.SIZE >= $output_initial_size(poutputbuffer.CHUNK) /\ poutputbuffer.SIZE \ 4096 = 0 /\ |poutputbuffer.BYTES| < poutputbuffer.SIZE) /\ $startup_bytes(poutputbuffer.BYTES) /\ $output_buffers_valid(poutputbuffer_tail*))
+def $output_state_valid(S) = $output_buffers_valid(S.OUTPUTBUFFERS)
+
+;; Callable lookup and CONFIG argument capture are shared with core APIs.
+def $intrinsic_name(INTRINSIC_OB_START) = $ptascii("ob_start")
+def $intrinsic_named(preqbytes) = (INTRINSIC_OB_START) -- if $ptlc(preqbytes) = $ptascii("ob_start")
+def $output_buffer_kind(INTRINSIC_OB_START) = true
+def $intrinsic_name(INTRINSIC_OB_FLUSH) = $ptascii("ob_flush")
+def $intrinsic_named(preqbytes) = (INTRINSIC_OB_FLUSH) -- if $ptlc(preqbytes) = $ptascii("ob_flush")
+def $output_buffer_kind(INTRINSIC_OB_FLUSH) = true
+def $intrinsic_name(INTRINSIC_OB_CLEAN) = $ptascii("ob_clean")
+def $intrinsic_named(preqbytes) = (INTRINSIC_OB_CLEAN) -- if $ptlc(preqbytes) = $ptascii("ob_clean")
+def $output_buffer_kind(INTRINSIC_OB_CLEAN) = true
+def $intrinsic_name(INTRINSIC_OB_END_FLUSH) = $ptascii("ob_end_flush")
+def $intrinsic_named(preqbytes) = (INTRINSIC_OB_END_FLUSH) -- if $ptlc(preqbytes) = $ptascii("ob_end_flush")
+def $output_buffer_kind(INTRINSIC_OB_END_FLUSH) = true
+def $intrinsic_name(INTRINSIC_OB_END_CLEAN) = $ptascii("ob_end_clean")
+def $intrinsic_named(preqbytes) = (INTRINSIC_OB_END_CLEAN) -- if $ptlc(preqbytes) = $ptascii("ob_end_clean")
+def $output_buffer_kind(INTRINSIC_OB_END_CLEAN) = true
+def $intrinsic_name(INTRINSIC_OB_GET_FLUSH) = $ptascii("ob_get_flush")
+def $intrinsic_named(preqbytes) = (INTRINSIC_OB_GET_FLUSH) -- if $ptlc(preqbytes) = $ptascii("ob_get_flush")
+def $output_buffer_kind(INTRINSIC_OB_GET_FLUSH) = true
+def $intrinsic_name(INTRINSIC_OB_GET_CLEAN) = $ptascii("ob_get_clean")
+def $intrinsic_named(preqbytes) = (INTRINSIC_OB_GET_CLEAN) -- if $ptlc(preqbytes) = $ptascii("ob_get_clean")
+def $output_buffer_kind(INTRINSIC_OB_GET_CLEAN) = true
+def $intrinsic_name(INTRINSIC_OB_GET_CONTENTS) = $ptascii("ob_get_contents")
+def $intrinsic_named(preqbytes) = (INTRINSIC_OB_GET_CONTENTS) -- if $ptlc(preqbytes) = $ptascii("ob_get_contents")
+def $output_buffer_kind(INTRINSIC_OB_GET_CONTENTS) = true
+def $intrinsic_name(INTRINSIC_OB_GET_LENGTH) = $ptascii("ob_get_length")
+def $intrinsic_named(preqbytes) = (INTRINSIC_OB_GET_LENGTH) -- if $ptlc(preqbytes) = $ptascii("ob_get_length")
+def $output_buffer_kind(INTRINSIC_OB_GET_LENGTH) = true
+def $intrinsic_name(INTRINSIC_OB_GET_LEVEL) = $ptascii("ob_get_level")
+def $intrinsic_named(preqbytes) = (INTRINSIC_OB_GET_LEVEL) -- if $ptlc(preqbytes) = $ptascii("ob_get_level")
+def $output_buffer_kind(INTRINSIC_OB_GET_LEVEL) = true
+def $intrinsic_name(INTRINSIC_OB_LIST_HANDLERS) = $ptascii("ob_list_handlers")
+def $intrinsic_named(preqbytes) = (INTRINSIC_OB_LIST_HANDLERS) -- if $ptlc(preqbytes) = $ptascii("ob_list_handlers")
+def $output_buffer_kind(INTRINSIC_OB_LIST_HANDLERS) = true
+def $intrinsic_name(INTRINSIC_OB_GET_STATUS) = $ptascii("ob_get_status")
+def $intrinsic_named(preqbytes) = (INTRINSIC_OB_GET_STATUS) -- if $ptlc(preqbytes) = $ptascii("ob_get_status")
+def $output_buffer_kind(INTRINSIC_OB_GET_STATUS) = true
+def $intrinsic_name(INTRINSIC_OB_IMPLICIT_FLUSH) = $ptascii("ob_implicit_flush")
+def $intrinsic_named(preqbytes) = (INTRINSIC_OB_IMPLICIT_FLUSH) -- if $ptlc(preqbytes) = $ptascii("ob_implicit_flush")
+def $output_buffer_kind(INTRINSIC_OB_IMPLICIT_FLUSH) = true
+def $output_buffer_kind(pintrinsic) = false -- otherwise
+def $config_kind(pintrinsic) = true -- if $output_buffer_kind(pintrinsic)
+def $config_parameter(INTRINSIC_OB_START, preqbytes) = (0) -- if preqbytes = $ptascii("callback")
+def $config_parameter_name(INTRINSIC_OB_START, 0) = $ptascii("callback")
+def $config_parameter(INTRINSIC_OB_START, preqbytes) = (1) -- if preqbytes = $ptascii("chunk_size")
+def $config_parameter_name(INTRINSIC_OB_START, 1) = $ptascii("chunk_size")
+def $config_parameter(INTRINSIC_OB_START, preqbytes) = (2) -- if preqbytes = $ptascii("flags")
+def $config_parameter_name(INTRINSIC_OB_START, 2) = $ptascii("flags")
+def $config_parameter(INTRINSIC_OB_GET_STATUS, preqbytes) = (0) -- if preqbytes = $ptascii("full_status")
+def $config_parameter_name(INTRINSIC_OB_GET_STATUS, 0) = $ptascii("full_status")
+def $config_parameter(INTRINSIC_OB_IMPLICIT_FLUSH, preqbytes) = (0) -- if preqbytes = $ptascii("enable")
+def $config_parameter_name(INTRINSIC_OB_IMPLICIT_FLUSH, 0) = $ptascii("enable")
+def $builtin_value_bytes(preqbytes) = (PINT 0) -- if preqbytes = $ptascii("PHP_OUTPUT_HANDLER_WRITE")
+def $builtin_value_bytes(preqbytes) = (PINT 1) -- if preqbytes = $ptascii("PHP_OUTPUT_HANDLER_START")
+def $builtin_value_bytes(preqbytes) = (PINT 2) -- if preqbytes = $ptascii("PHP_OUTPUT_HANDLER_CLEAN")
+def $builtin_value_bytes(preqbytes) = (PINT 4) -- if preqbytes = $ptascii("PHP_OUTPUT_HANDLER_FLUSH")
+def $builtin_value_bytes(preqbytes) = (PINT 8) -- if preqbytes = $ptascii("PHP_OUTPUT_HANDLER_FINAL")
+def $builtin_value_bytes(preqbytes) = (PINT 0) -- if preqbytes = $ptascii("PHP_OUTPUT_HANDLER_CONT")
+def $builtin_value_bytes(preqbytes) = (PINT 8) -- if preqbytes = $ptascii("PHP_OUTPUT_HANDLER_END")
+def $builtin_value_bytes(preqbytes) = (PINT 16) -- if preqbytes = $ptascii("PHP_OUTPUT_HANDLER_CLEANABLE")
+def $builtin_value_bytes(preqbytes) = (PINT 32) -- if preqbytes = $ptascii("PHP_OUTPUT_HANDLER_FLUSHABLE")
+def $builtin_value_bytes(preqbytes) = (PINT 64) -- if preqbytes = $ptascii("PHP_OUTPUT_HANDLER_REMOVABLE")
+def $builtin_value_bytes(preqbytes) = (PINT 112) -- if preqbytes = $ptascii("PHP_OUTPUT_HANDLER_STDFLAGS")
+def $builtin_value_bytes(preqbytes) = (PINT 4096) -- if preqbytes = $ptascii("PHP_OUTPUT_HANDLER_STARTED")
+def $builtin_value_bytes(preqbytes) = (PINT 8192) -- if preqbytes = $ptascii("PHP_OUTPUT_HANDLER_DISABLED")
+def $builtin_value_bytes(preqbytes) = (PINT 16384) -- if preqbytes = $ptascii("PHP_OUTPUT_HANDLER_PROCESSED")
+
+def $ob_max(INTRINSIC_OB_START) = 3
+def $ob_max(INTRINSIC_OB_GET_STATUS) = 1
+def $ob_max(INTRINSIC_OB_IMPLICIT_FLUSH) = 1
+def $ob_max(pintrinsic) = 0 -- otherwise
+def $ob_default(INTRINSIC_OB_START, 0) = PNULL
+def $ob_default(INTRINSIC_OB_START, 1) = PINT 0
+def $ob_default(INTRINSIC_OB_START, 2) = PINT 112
+def $ob_default(INTRINSIC_OB_GET_STATUS, 0) = PBOOL false
+def $ob_default(INTRINSIC_OB_IMPLICIT_FLUSH, 0) = PBOOL true
+def $ob_type(INTRINSIC_OB_START, 0) = "mixed"
+def $ob_type(INTRINSIC_OB_START, n) = "int" -- if n <- [1,2]
+def $ob_type(INTRINSIC_OB_GET_STATUS, 0) = "bool"
+def $ob_type(INTRINSIC_OB_IMPLICIT_FLUSH, 0) = "bool"
+def $ob_integer(PINT i) = OB_VALUE (PINT i)
+def $ob_integer(PBOOL false) = OB_VALUE (PINT 0)
+def $ob_integer(PBOOL true) = OB_VALUE (PINT 1)
+def $ob_integer(PFLOAT n) = OB_VALUE (PINT i) -- if $typed_integer_fit(NFLOAT n) -- if (i, eps) = $float_long(n, true)
+def $ob_integer(PFLOAT n) = OB_DEPRECATED (PINT i) ($ptascii("Implicit conversion from float ") ++ n_text* ++ $ptascii(" to int loses precision"))
+  -- if $typed_integer_fit(NFLOAT n)
+  -- if (i, [PRECISIONLOSS]) = $float_long(n, true)
+  -- if (n_text*, b) = $number_text(NFLOAT n, $(-1))
+def $ob_integer(pvalue) = OB_VALUE (PINT i)
+  -- if $string_bytes(pvalue) = (n*)
+  -- if $numeric_string(n*) = FULLNUM pnumber
+  -- if $typed_integer_fit(pnumber)
+  -- if $string_long(n*) = STRINT i eps
+def $ob_integer(pvalue) = OB_DEPRECATED (PINT i) ($ptascii("Implicit conversion from float-string \"") ++ $c_string(n*) ++ $ptascii("\" to int loses precision"))
+  -- if $string_bytes(pvalue) = (n*)
+  -- if $numeric_string(n*) = FULLNUM pnumber
+  -- if $typed_integer_fit(pnumber)
+  -- if $string_long(n*) = STRINT i ([STRINGPRECISIONLOSS])
+def $ob_integer(pvalue) = OB_REJECT -- otherwise
+def $ob_conversion(S, pconfigcall, n) = OB_VALUE pvalue
+  -- if pvalue = $error_api_value(pconfigcall, n, $ob_default(pconfigcall.KIND, n))
+  -- if $ob_type(pconfigcall.KIND, n) = "mixed" \/ $typed_tag(pvalue) = $ob_type(pconfigcall.KIND, n) \/ ($ob_type(pconfigcall.KIND, n) = "bool" /\ $typed_tag(pvalue) <- ["true", "false"])
+def $ob_conversion(S, pconfigcall, n) = OB_DEPRECATED pvalue_new ($intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Passing null to parameter #") ++ $decimal_integer($(n + 1)) ++ $ptascii(" ($") ++ $config_parameter_name(pconfigcall.KIND, n) ++ $ptascii(") of type ") ++ $ptascii($ob_type(pconfigcall.KIND, n)) ++ $ptascii(" is deprecated"))
+  -- if ~$config_strict(S, pconfigcall)
+  -- if $error_api_value(pconfigcall, n, $ob_default(pconfigcall.KIND, n)) = PNULL
+  -- if $ob_type(pconfigcall.KIND, n) =/= "mixed"
+  -- if pvalue_new = $ob_null($ob_type(pconfigcall.KIND, n))
+def $ob_conversion(S, pconfigcall, n) = $ob_integer(pvalue)
+  -- if ~$config_strict(S, pconfigcall)
+  -- if pvalue = $error_api_value(pconfigcall, n, $ob_default(pconfigcall.KIND, n))
+  -- if $ob_type(pconfigcall.KIND, n) = "int"
+  -- if $typed_tag(pvalue) =/= "int" /\ pvalue =/= PNULL
+def $ob_conversion(S, pconfigcall, n) = OB_VALUE (PBOOL $truth(S, pvalue))
+  -- if ~$config_strict(S, pconfigcall)
+  -- if pvalue = $error_api_value(pconfigcall, n, $ob_default(pconfigcall.KIND, n))
+  -- if $ob_type(pconfigcall.KIND, n) = "bool"
+  -- if $typed_scalar(pvalue)
+  -- if ~($typed_tag(pvalue) <- ["true", "false"])
+def $ob_conversion(S, pconfigcall, n) = OB_REJECT -- otherwise
+def $ob_null("int") = PINT 0
+def $ob_null("bool") = PBOOL false
+def $ob_converted(OB_VALUE pvalue) = (pvalue)
+def $ob_converted(OB_DEPRECATED pvalue n*) = (pvalue)
+def $ob_converted(OB_REJECT) = eps
+def $ob_values_valid(S, pconfigcall, eps, n) = true
+def $ob_values_valid(S, pconfigcall, pvalue :: pvalue_tail*, n) = ($ob_converted($ob_conversion(S, pconfigcall, n)) = (pvalue) /\ $ob_values_valid(S, pconfigcall, pvalue_tail*, $(n + 1)))
+def $ob_parse_valid(S, pconfigcall, n, pvalue_values*) = ($output_buffer_kind(pconfigcall.KIND) /\ $config_invoke_valid(S, pconfigcall) /\ $(|pconfigcall.SENT| <= $ob_max(pconfigcall.KIND) /\ n <= $ob_max(pconfigcall.KIND)) /\ |pvalue_values*| = n /\ $ob_values_valid(S, pconfigcall, pvalue_values*, 0))
+def $call_task_valid(S, OB_PARSE pconfigcall n pvalue_values*) = $ob_parse_valid(S, pconfigcall, n, pvalue_values*)
+def $call_task_valid(S, OB_PARSE_DEPRECATED pconfigcall n pvalue_values*) = ($ob_parse_valid(S, pconfigcall, n, pvalue_values*) /\ $(n > 0) /\ $ob_is_deprecated($ob_conversion(S, pconfigcall, $nabs($(n - 1)))))
+def $task_nodes(OB_PARSE pconfigcall n pvalue_values*) = $config_nodes(pconfigcall)
+def $task_nodes(OB_PARSE_DEPRECATED pconfigcall n pvalue_values*) = $config_nodes(pconfigcall)
+def $selected_task_nonce(OB_PARSE pconfigcall n pvalue_values*) = pconfigcall.SELECTION
+def $selected_task_nonce(OB_PARSE_DEPRECATED pconfigcall n pvalue_values*) = pconfigcall.SELECTION
+rule PhpStep/ob-invoke-count: S ~> $config_error(S, pconfigcall, "ArgumentCountError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("() expects ") ++ $ob_count_phrase(pconfigcall.KIND) ++ $decimal_integer(|pconfigcall.SENT|) ++ $ptascii(" given"))
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if $output_buffer_kind(pconfigcall.KIND)
+  -- if $(|pconfigcall.SENT| > $ob_max(pconfigcall.KIND))
+def $ob_count_phrase(pintrinsic) = $ptascii("exactly 0 arguments, ") -- if $ob_max(pintrinsic) = 0
+def $ob_count_phrase(pintrinsic) = $ptascii("at most ") ++ $decimal_integer($ob_max(pintrinsic)) ++ $ptascii(" argument") ++ $config_plural($ob_max(pintrinsic)) ++ $ptascii(", ") -- if $ob_max(pintrinsic) =/= 0
+rule PhpStep/ob-invoke: S ~> S[.TODO = (OB_PARSE pconfigcall 0 eps) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if $output_buffer_kind(pconfigcall.KIND)
+  -- if $(|pconfigcall.SENT| <= $ob_max(pconfigcall.KIND))
+rule PhpStep/ob-parse-value: S ~> S[.TODO = (OB_PARSE pconfigcall $(n + 1) (pvalue_values* ++ [pvalue])) :: ptask_tail*]
+  -- if S.TODO = (OB_PARSE pconfigcall n pvalue_values*) :: ptask_tail*
+  -- if $ob_parse_valid(S, pconfigcall, n, pvalue_values*)
+  -- if $(n < $ob_max(pconfigcall.KIND))
+  -- if $ob_conversion(S, pconfigcall, n) = OB_VALUE pvalue
+rule PhpStep/ob-parse-deprecated: S ~> $error_dispatch(S, 8192, n_message*, pconfigcall.LINE, DIAGNOSTIC "Deprecated" n_message* pconfigcall.LINE, OB_PARSE_DEPRECATED pconfigcall $(n + 1) (pvalue_values* ++ [pvalue]))
+  -- if S.TODO = (OB_PARSE pconfigcall n pvalue_values*) :: ptask_tail*
+  -- if $ob_parse_valid(S, pconfigcall, n, pvalue_values*)
+  -- if $(n < $ob_max(pconfigcall.KIND))
+  -- if $ob_conversion(S, pconfigcall, n) = OB_DEPRECATED pvalue n_message*
+rule PhpStep/ob-parse-deprecated-result: S ~> S[.TODO = (OB_PARSE pconfigcall n pvalue_values*) :: ptask_tail*]
+  -- if S.TODO = (OB_PARSE_DEPRECATED pconfigcall n pvalue_values*) :: ptask_tail*
+  -- if $call_task_valid(S, OB_PARSE_DEPRECATED pconfigcall n pvalue_values*)
+rule PhpStep/ob-parse-type-error: S ~> $config_error(S, pconfigcall, "TypeError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Argument #") ++ $decimal_integer($(n + 1)) ++ $ptascii(" ($") ++ $config_parameter_name(pconfigcall.KIND, n) ++ $ptascii(") must be of type ") ++ $ptascii($ob_type(pconfigcall.KIND, n)) ++ $ptascii(", ") ++ $typed_given(S, pvalue) ++ $ptascii(" given"))
+  -- if S.TODO = (OB_PARSE pconfigcall n pvalue_values*) :: ptask_tail*
+  -- if $ob_parse_valid(S, pconfigcall, n, pvalue_values*)
+  -- if $(n < $ob_max(pconfigcall.KIND))
+  -- if $ob_conversion(S, pconfigcall, n) = OB_REJECT
+  -- if pvalue = $error_api_value(pconfigcall, n, $ob_default(pconfigcall.KIND, n))
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = OB_PARSE_DEPRECATED pconfigcall n pvalue_values*
+  -- if $call_task_valid(S, OB_PARSE_DEPRECATED pconfigcall n pvalue_values*)
+  -- if perrorcall.SITE = pconfigcall.SITE /\ perrorcall.LINE = pconfigcall.LINE
+  -- if $ob_conversion(S, pconfigcall, $nabs($(n - 1))) = OB_DEPRECATED pvalue perrorcall.MESSAGE
+  -- if perrorcall.LEVEL = 8192 /\ perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE perrorcall.LINE
+def $error_context_trigger(S, pcallcontext) = (pconfigcall)
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = OB_PARSE_DEPRECATED pconfigcall n pvalue_values*
+def $error_handler_trace_values(S, pcallcontext, pconfigcall) = $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT))
+  -- if $output_buffer_kind(pconfigcall.KIND)
+def $pending_error_api_argument(S, pconfigcall, text) = true
+  -- if S.SOURCEPENDING =/= eps
+  -- if $output_buffer_kind(pconfigcall.KIND)
+  -- if text = "TypeError" \/ text = "ValueError"
+
+;; Copied get_* results are owned independently of the active buffer. A
+;; failed pop reports twice; the wrapper uses the live stack after callback.
+def $ob_return(S, pvalue) = S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)] -- if S.TODO = ptask :: ptask_tail*
+def $ob_get_kind(pintrinsic) = (pintrinsic <- [INTRINSIC_OB_GET_CLEAN, INTRINSIC_OB_GET_FLUSH])
+def $ob_clean_kind(pintrinsic) = (pintrinsic <- [INTRINSIC_OB_CLEAN, INTRINSIC_OB_END_CLEAN, INTRINSIC_OB_GET_CLEAN])
+def $ob_active_operation(pintrinsic) = (pintrinsic <- [INTRINSIC_OB_CLEAN, INTRINSIC_OB_FLUSH])
+def $ob_pop_kind(pintrinsic) = (pintrinsic <- [INTRINSIC_OB_END_CLEAN, INTRINSIC_OB_END_FLUSH, INTRINSIC_OB_GET_CLEAN, INTRINSIC_OB_GET_FLUSH])
+def $ob_capability(INTRINSIC_OB_CLEAN) = 16
+def $ob_capability(INTRINSIC_OB_FLUSH) = 32
+def $ob_capability(pintrinsic) = 64 -- if $ob_pop_kind(pintrinsic)
+def $ob_failure_verb(INTRINSIC_OB_FLUSH) = $ptascii("flush")
+def $ob_failure_verb(INTRINSIC_OB_CLEAN) = $ptascii("delete")
+def $ob_failure_verb(pintrinsic) = $ptascii("discard") -- if $ob_pop_kind(pintrinsic) /\ $ob_clean_kind(pintrinsic)
+def $ob_failure_verb(pintrinsic) = $ptascii("send") -- if $ob_pop_kind(pintrinsic) /\ ~$ob_clean_kind(pintrinsic)
+def $ob_notice_message(pobnotice) = $intrinsic_name(pobnotice.CALL.KIND) ++ $ptascii("(): Failed to delete buffer of default output handler (") ++ $decimal_integer(n) ++ [41]
+  -- if pobnotice.WRAPPER
+  -- if pobnotice.LEVEL = (n)
+def $ob_notice_message(pobnotice) = $intrinsic_name(pobnotice.CALL.KIND) ++ $ptascii("(): Failed to ") ++ $ob_failure_verb(pobnotice.CALL.KIND) ++ $ptascii(" buffer of default output handler (") ++ $decimal_integer(n) ++ [41]
+  -- if ~pobnotice.WRAPPER
+  -- if pobnotice.LEVEL = (n)
+def $ob_notice_message(pobnotice) = $intrinsic_name(pobnotice.CALL.KIND) ++ $ptascii("(): Failed to flush buffer. No buffer to flush")
+  -- if ~pobnotice.WRAPPER /\ pobnotice.LEVEL = eps /\ pobnotice.CALL.KIND = INTRINSIC_OB_FLUSH
+def $ob_notice_message(pobnotice) = $intrinsic_name(pobnotice.CALL.KIND) ++ $ptascii("(): Failed to delete buffer. No buffer to delete")
+  -- if ~pobnotice.WRAPPER /\ pobnotice.LEVEL = eps /\ pobnotice.CALL.KIND <- [INTRINSIC_OB_CLEAN, INTRINSIC_OB_END_CLEAN]
+def $ob_notice_message(pobnotice) = $intrinsic_name(pobnotice.CALL.KIND) ++ $ptascii("(): Failed to delete and flush buffer. No buffer to delete or flush")
+  -- if ~pobnotice.WRAPPER /\ pobnotice.LEVEL = eps /\ pobnotice.CALL.KIND <- [INTRINSIC_OB_END_FLUSH, INTRINSIC_OB_GET_FLUSH]
+def $ob_notice(S, pconfigcall, pvalue, b_second, b_wrapper, n_level?) = $error_dispatch(S, 8, n_message*, pconfigcall.LINE, DIAGNOSTIC "Notice" n_message* pconfigcall.LINE, OB_NOTICE_RESULT pobnotice)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if pobnotice = {CALL pconfigcall, VALUE pvalue, SECOND b_second, WRAPPER b_wrapper, LEVEL n_level?, OWNER (|S.FRAMES|), TAIL ptask_tail*}
+  -- if n_message* = $ob_notice_message(pobnotice)
+def $ob_notice_valid(S, pobnotice) = true
+  -- if $output_buffer_kind(pobnotice.CALL.KIND)
+  -- if $config_invoke_valid(S, pobnotice.CALL)
+  -- if S.ORIGIN = (pobnotice.CALL.SITE)
+  -- if pobnotice.OWNER = $dir_warning_owner(S, S.FRAMES)
+  -- if pobnotice.CALL.SENT = eps
+  -- if $config_slots_valid(S, [NAMED_SENT (KNOWN pobnotice.VALUE)])
+  -- if $ob_pop_kind(pobnotice.CALL.KIND) \/ $ob_active_operation(pobnotice.CALL.KIND)
+  -- if pobnotice.WRAPPER = false \/ ($ob_get_kind(pobnotice.CALL.KIND) /\ ~pobnotice.SECOND /\ pobnotice.LEVEL =/= eps)
+  -- if ~pobnotice.SECOND \/ ($ob_get_kind(pobnotice.CALL.KIND) /\ ~pobnotice.WRAPPER /\ pobnotice.LEVEL =/= eps)
+  -- if $ob_get_kind(pobnotice.CALL.KIND) /\ pobnotice.LEVEL =/= eps \/ pobnotice.VALUE = PBOOL false
+  -- if ~$ob_get_kind(pobnotice.CALL.KIND) \/ pobnotice.LEVEL = eps \/ $string_bytes(pobnotice.VALUE) =/= eps
+  -- if S.TODO = ptask :: pobnotice.TAIL
+  -- if $ob_notice_task(ptask, pobnotice)
+def $ob_notice_valid(S, pobnotice) = false -- otherwise
+def $ob_notice_task(OB_NOTICE_RESULT pobnotice, pobnotice) = true
+def $ob_notice_task(ERROR_HANDLER_INVOKE perrorcall, pobnotice) = (perrorcall.RESUME = OB_NOTICE_RESULT pobnotice)
+def $ob_notice_task(ERROR_HANDLER_RESULT perrorcall, pobnotice) = (perrorcall.RESUME = OB_NOTICE_RESULT pobnotice)
+def $ob_notice_task(ptask, pobnotice) = false -- otherwise
+def $call_task_valid(S, OB_NOTICE_RESULT pobnotice) = $ob_notice_valid(S, pobnotice)
+def $task_nodes(OB_NOTICE_RESULT pobnotice) = $config_nodes(pobnotice.CALL)
+def $selected_task_nonce(OB_NOTICE_RESULT pobnotice) = pobnotice.CALL.SELECTION
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = OB_NOTICE_RESULT pobnotice
+  -- if $ob_notice_valid(S, pobnotice)
+  -- if perrorcall.SITE = pobnotice.CALL.SITE /\ perrorcall.LINE = pobnotice.CALL.LINE
+  -- if perrorcall.LEVEL = 8 /\ perrorcall.MESSAGE = $ob_notice_message(pobnotice)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Notice" perrorcall.MESSAGE perrorcall.LINE
+def $error_context_trigger(S, pcallcontext) = (pobnotice.CALL)
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = OB_NOTICE_RESULT pobnotice
+rule PhpStep/ob-notice-result: S ~> $ob_return(S, pobnotice.VALUE)
+  -- if S.TODO = (OB_NOTICE_RESULT pobnotice) :: ptask_tail*
+  -- if $ob_notice_valid(S, pobnotice)
+  -- if ~pobnotice.SECOND
+rule PhpStep/ob-notice-wrapper: S ~> $ob_notice(S, pobnotice.CALL, pobnotice.VALUE, false, true, (|poutputbuffer_tail*|))
+  -- if S.TODO = (OB_NOTICE_RESULT pobnotice) :: ptask_tail*
+  -- if $ob_notice_valid(S, pobnotice)
+  -- if pobnotice.SECOND
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+rule PhpStep/ob-notice-wrapper-no-active: S ~> S[.COMPLETION = UNSUPPORTED "output-buffer wrapper notice with no live handler"]
+  -- if S.TODO = (OB_NOTICE_RESULT pobnotice) :: ptask_tail*
+  -- if $ob_notice_valid(S, pobnotice)
+  -- if pobnotice.SECOND
+  -- if S.OUTPUTBUFFERS = eps
+
+def $ob_operation(S, pconfigcall, [PNULL, PINT i_chunk, PINT i_flags]) = $ob_return(S[.OUTPUTBUFFERS = poutputbuffer :: S.OUTPUTBUFFERS], PBOOL true)
+  -- if pconfigcall.KIND = INTRINSIC_OB_START
+  -- if n_chunk = $nabs($ob_chunk(i_chunk))
+  -- if poutputbuffer = {CHUNK n_chunk, FLAGS $long_and($error_int32(i_flags), $(-61456)), SIZE $output_initial_size(n_chunk), BYTES eps}
+def $ob_operation(S, pconfigcall, pvalue_values*) = S[.COMPLETION = UNSUPPORTED "ob_start output-handler callback dependency"]
+  -- if pconfigcall.KIND = INTRINSIC_OB_START
+  -- if pvalue_values* = pvalue :: pvalue_tail*
+  -- if pvalue =/= PNULL
+def $ob_chunk(i) = 0 -- if $(i < 0)
+def $ob_chunk(i) = i -- if $(i >= 0)
+def $ob_operation(S, pconfigcall, [PBOOL b]) = $ob_return(S[.OUTPUTIMPLICIT = b], PNULL) -- if pconfigcall.KIND = INTRINSIC_OB_IMPLICIT_FLUSH
+def $ob_operation(S, pconfigcall, eps) = $ob_return(S, PINT (|S.OUTPUTBUFFERS|)) -- if pconfigcall.KIND = INTRINSIC_OB_GET_LEVEL
+def $ob_operation(S, pconfigcall, eps) = $ob_return(S, PBOOL false)
+  -- if pconfigcall.KIND <- [INTRINSIC_OB_GET_CONTENTS, INTRINSIC_OB_GET_LENGTH, INTRINSIC_OB_GET_CLEAN]
+  -- if S.OUTPUTBUFFERS = eps
+def $ob_operation(S, pconfigcall, eps) = $ob_return(S_copy, pvalue)
+  -- if pconfigcall.KIND = INTRINSIC_OB_GET_CONTENTS
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if S_copy = $string_request(S, poutputbuffer.BYTES)
+  -- if S_copy.RESULT = KNOWN pvalue
+def $ob_operation(S, pconfigcall, eps) = $ob_return(S, PINT (|poutputbuffer.BYTES|))
+  -- if pconfigcall.KIND = INTRINSIC_OB_GET_LENGTH
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+def $ob_operation(S, pconfigcall, eps) = $ob_return(S_list, pvalue)
+  -- if pconfigcall.KIND = INTRINSIC_OB_LIST_HANDLERS
+  -- if S_list = $allocate_array(S, $ob_handler_list(S.OUTPUTBUFFERS))
+  -- if S_list.RESULT = KNOWN pvalue
+def $ob_operation(S, pconfigcall, [PBOOL b]) = $ob_return(S_status, pvalue)
+  -- if pconfigcall.KIND = INTRINSIC_OB_GET_STATUS
+  -- if S_status = $ob_status(S, b)
+  -- if S_status.RESULT = KNOWN pvalue
+def $ob_operation(S, pconfigcall, eps) = $ob_notice(S, pconfigcall, PBOOL false, false, false, eps)
+  -- if $ob_active_operation(pconfigcall.KIND) \/ $ob_pop_kind(pconfigcall.KIND)
+  -- if pconfigcall.KIND =/= INTRINSIC_OB_GET_CLEAN
+  -- if S.OUTPUTBUFFERS = eps
+def $ob_operation(S, pconfigcall, eps) = $ob_notice(S_copy, pconfigcall, $ob_failure_value(pconfigcall.KIND, pvalue), $ob_get_kind(pconfigcall.KIND), false, (|poutputbuffer_tail*|))
+  -- if $ob_active_operation(pconfigcall.KIND) \/ $ob_pop_kind(pconfigcall.KIND)
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if $long_and(poutputbuffer.FLAGS, $ob_capability(pconfigcall.KIND)) = 0
+  -- if S_copy = $ob_snapshot(S, pconfigcall.KIND, poutputbuffer.BYTES)
+  -- if S_copy.RESULT = KNOWN pvalue
+def $ob_operation(S, pconfigcall, eps) = $ob_return(S_done, pvalue)
+  -- if $ob_active_operation(pconfigcall.KIND) \/ $ob_pop_kind(pconfigcall.KIND)
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if $long_and(poutputbuffer.FLAGS, $ob_capability(pconfigcall.KIND)) =/= 0
+  -- if S_copy = $ob_snapshot(S, pconfigcall.KIND, poutputbuffer.BYTES)
+  -- if S_copy.RESULT = KNOWN pvalue
+  -- if S_done = $ob_process(S_copy, pconfigcall.KIND, poutputbuffer, poutputbuffer_tail*)
+def $ob_snapshot(S, pintrinsic, n*) = $string_request(S, n*) -- if $ob_get_kind(pintrinsic)
+def $ob_snapshot(S, pintrinsic, n*) = S[.RESULT = KNOWN (PBOOL true)] -- if ~$ob_get_kind(pintrinsic)
+;; A permission failure has false, while a successful operation returns true.
+;; get_* owns its pre-pop copy in both branches.
+def $ob_process(S, pintrinsic, poutputbuffer, poutputbuffer_tail*) = S[.OUTPUTBUFFERS = ($output_processed(poutputbuffer)) :: poutputbuffer_tail*]
+  -- if pintrinsic = INTRINSIC_OB_CLEAN
+def $ob_process(S, pintrinsic, poutputbuffer, poutputbuffer_tail*) = S_lower[.OUTPUTBUFFERS = ($output_processed(poutputbuffer)) :: S_lower.OUTPUTBUFFERS]
+  -- if pintrinsic = INTRINSIC_OB_FLUSH
+  -- if S_lower = $output_write(S[.OUTPUTBUFFERS = poutputbuffer_tail*], poutputbuffer.BYTES)
+def $ob_process(S, pintrinsic, poutputbuffer, poutputbuffer_tail*) = S[.OUTPUTBUFFERS = poutputbuffer_tail*]
+  -- if $ob_pop_kind(pintrinsic) /\ $ob_clean_kind(pintrinsic)
+def $ob_process(S, pintrinsic, poutputbuffer, poutputbuffer_tail*) = $output_write(S[.OUTPUTBUFFERS = poutputbuffer_tail*], poutputbuffer.BYTES)
+  -- if $ob_pop_kind(pintrinsic) /\ ~$ob_clean_kind(pintrinsic)
+rule PhpStep/ob-operation: S ~> $ob_operation(S, pconfigcall, pvalue_values*)
+  -- if S.TODO = (OB_PARSE pconfigcall n pvalue_values*) :: ptask_tail*
+  -- if $ob_parse_valid(S, pconfigcall, n, pvalue_values*)
+  -- if n = $ob_max(pconfigcall.KIND)
+
+def $ob_handler_list(eps) = $array_empty()
+def $ob_handler_list(poutputbuffer :: poutputbuffer_tail*) = $array_insert($ob_handler_list(poutputbuffer_tail*), KINT (|poutputbuffer_tail*|), DIRECT (PSTRING_CARRIER INTERNED_STRING ($ptascii("default output handler"))))
+def $ob_status_array(poutputbuffer, n_level) = $ob_entries([ENTRY (KSTRING ($ptascii("name"))) (DIRECT (PSTRING_CARRIER INTERNED_STRING ($ptascii("default output handler")))), ENTRY (KSTRING ($ptascii("type"))) (DIRECT (PINT 0)), ENTRY (KSTRING ($ptascii("flags"))) (DIRECT (PINT poutputbuffer.FLAGS)), ENTRY (KSTRING ($ptascii("level"))) (DIRECT (PINT n_level)), ENTRY (KSTRING ($ptascii("chunk_size"))) (DIRECT (PINT poutputbuffer.CHUNK)), ENTRY (KSTRING ($ptascii("buffer_size"))) (DIRECT (PINT poutputbuffer.SIZE)), ENTRY (KSTRING ($ptascii("buffer_used"))) (DIRECT (PINT (|poutputbuffer.BYTES|)))])
+def $ob_entries(eps) = $array_empty()
+def $ob_entries(pentry :: pentry_tail*) = $ob_entries_acc(pentry :: pentry_tail*, $array_empty())
+def $ob_entries_acc(eps, parray) = parray
+def $ob_entries_acc((ENTRY pkey pitem) :: pentry_tail*, parray) = $ob_entries_acc(pentry_tail*, $array_insert(parray, pkey, pitem))
+def $ob_status(S, b) = $allocate_array(S, $array_empty()) -- if S.OUTPUTBUFFERS = eps
+def $ob_status(S, false) = $allocate_array(S, $ob_status_array(poutputbuffer, |poutputbuffer_tail*|)) -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+def $ob_status(S, true) = $ob_status_full(S, S.OUTPUTBUFFERS) -- if S.OUTPUTBUFFERS =/= eps
+def $ob_status_full(S, eps) = $allocate_array(S, $array_empty())
+def $ob_status_full(S, poutputbuffer :: poutputbuffer_tail*) = $allocate_array(S_one, $array_insert(parray, KINT (|poutputbuffer_tail*|), DIRECT pvalue))
+  -- if S_lower = $ob_status_full(S, poutputbuffer_tail*)
+  -- if S_lower.RESULT = KNOWN (PARRAY n_list)
+  -- if parray = S_lower.ARRAYS[n_list]
+  -- if S_one = $allocate_array(S_lower, $ob_status_array(poutputbuffer, |poutputbuffer_tail*|))
+  -- if S_one.RESULT = KNOWN pvalue
+
+def $ob_failure_value(pintrinsic, pvalue) = pvalue -- if $ob_get_kind(pintrinsic)
+def $ob_failure_value(pintrinsic, pvalue) = PBOOL false -- if ~$ob_get_kind(pintrinsic)
+
+def $ob_is_deprecated(OB_DEPRECATED pvalue preqbytes) = true
+def $ob_is_deprecated(pobconversion) = false -- otherwise

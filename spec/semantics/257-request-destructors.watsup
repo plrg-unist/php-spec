@@ -308,10 +308,10 @@ def $destructor_begin(S) = S_clean[.SHUTDOWN.PHASE = SHUTDOWN_DONE][.DESTRUCTION
   -- if S.SHUTDOWN.PHASE = SHUTDOWN_DONE
 def $destructor_stop(S) = S_clean[.DESTRUCTION.PHASE = DESTRUCTION_DONE][.DESTRUCTION.CALLED = $destructor_all(0, |S_clean.OBJECTS|)][.DESTRUCTION.RELEASES = eps][.DESTRUCTION.CALLS = eps][.DESTRUCTION.FRAMES = eps][.DESTRUCTION.OPERATIONS = eps]
   -- if S_clean = $shutdown_terminal_clean(S, $shutdown_freeze(S))
-def $drive_steps(S, n) = $drive_steps($prune_allocations($destructor_begin(S)), n)
+def $drive_steps(S, n) = $drive_steps($output_guard($prune_allocations($destructor_begin(S))), n)
   -- if $destructor_ready(S)
   -- if S.DESTRUCTION.PHASE = DESTRUCTION_PENDING
-def $drive_steps(S, n) = $prune_allocations($destructor_stop(S))
+def $drive_steps(S, n) = $output_finalize($prune_allocations($destructor_stop(S)))
   -- if $destructor_ready(S)
   -- if $destructor_active(S)
 

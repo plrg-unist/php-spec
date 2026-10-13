@@ -495,7 +495,7 @@ def $task_nodes(EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender) = $comple
 def $call_task_valid(S, EVAL_COMPILE_FATAL pevalcompilefatal) = $eval_compile_fatal_valid(S, pevalcompilefatal)
 def $call_task_valid(S, EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender) = ($eval_compile_fatal_valid(S, pevalcompilefatal) /\ pevalcompilefatal.CURSOR.PENDING = THROWING pshutdownrender.ROOT /\ $shutdown_render_path(S, pshutdownrender.ROOT, pshutdownrender.CURRENT, pshutdownrender.SEEN) /\ pshutdownrender.PENDING = eps /\ pshutdownrender.PHASE <- [SHUTDOWN_RENDER_MESSAGE, SHUTDOWN_RENDER_TRACE])
 
-def $eval_compile_exception_warning(S, n, preqbytes) = S[.EVENTS = S.EVENTS ++ $display_events(S, STDERR ($ptascii("Warning: Uncaught ") ++ preqbytes ++ $shutdown_exception_suffix(S, n)))]
+def $eval_compile_exception_warning(S, n, preqbytes) = $output_display(S, $display_events(S, STDERR ($ptascii("Warning: Uncaught ") ++ preqbytes ++ $shutdown_exception_suffix(S, n))))
   -- if $long_and(S.REPORTING, 2) =/= 0
 def $eval_compile_exception_warning(S, n, preqbytes) = S -- if $long_and(S.REPORTING, 2) = 0
 def $eval_compile_fatal_finish(S, pevalcompilefatal, preqbytes) = $eval_compile_primary_report($eval_compile_stop_context(S_report[.COMPLETION = pevalcompilefatal.COMPLETION][.ERRORORIGIN = pevalcompilefatal.ORIGIN][.TRACE = eps][.ERRORFATALTRACE = eps][.TODO = eps], pevalcompilefatal.CURSOR.PLAN.UNIT), pevalcompilefatal.COMPLETION, false)
@@ -630,7 +630,7 @@ rule PhpStep/eval-compile-formatter-throw: S ~> $eval_compile_fatal_finish(S_war
 def $eval_compile_formatter_warning(S, n, n_root) = $eval_compile_formatter_failure(S, $object_name(S, n), n_root, ptbytes_file, z)
   -- if $throwable_field(S, n, "file") = PSTRING ptbytes_file
   -- if $throwable_field(S, n, "line") = PINT z
-def $eval_compile_formatter_failure(S, ptbytes_name, n_root, ptbytes_file, z) = S[.ERRORFATALTRACE = eps][.EVENTS = S.EVENTS ++ $display_events(S, STDERR ($ptascii("Warning: Uncaught ") ++ ptbytes_name ++ $ptascii(" in exception handling during call to ") ++ $object_name(S, n_root) ++ $ptascii("::__toString() in ") ++ ptbytes_file ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ [10]))]
+def $eval_compile_formatter_failure(S, ptbytes_name, n_root, ptbytes_file, z) = $output_display(S[.ERRORFATALTRACE = eps], $display_events(S, STDERR ($ptascii("Warning: Uncaught ") ++ ptbytes_name ++ $ptascii(" in exception handling during call to ") ++ $object_name(S, n_root) ++ $ptascii("::__toString() in ") ++ ptbytes_file ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ [10])))
   -- if $long_and(S.REPORTING, 2) =/= 0
 def $eval_compile_formatter_failure(S, ptbytes_name, n_root, ptbytes_file, z) = S[.ERRORFATALTRACE = eps]
   -- if $long_and(S.REPORTING, 2) = 0

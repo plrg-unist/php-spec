@@ -320,10 +320,10 @@ def $file_open_resume_checked(S, pfileopenresponse, false) = S[.COMPLETION = UNS
 dec $file_open_continue(pstate, pfileopenresponse) : pstate
 dec $file_open_continued(pstate, pstate) : pstate
 def $file_open_continue(S, pfileopenresponse) = $file_open_continued(S, $file_open_resume(S, pfileopenresponse))
-def $file_open_continued(S, S_next) = $drive_steps(S_next, n)
+def $file_open_continued(S, S_next) = $drive_steps($output_guard(S_next), n)
   -- if S.SERVICELEFT = (n)
   -- if S_next.COMPLETION = NORMAL \/ $shutdown_ready(S_next) \/ $destructor_ready(S_next)
-def $file_open_continued(S, S_next) = $drive_steps(S_next, n)
+def $file_open_continued(S, S_next) = $drive_steps($output_guard(S_next), n)
   -- if S.SERVICELEFT = (n)
   -- if S_next.COMPLETION = THROWN text n_message* z
 def $file_open_continued(S, S_next) = S_next
@@ -422,7 +422,7 @@ def $file_parse_resume_checked(S, psourceresponse, false) = S[.COMPLETION = UNSU
 dec $file_parse_continue(pstate, psourceresponse) : pstate
 dec $file_parse_continued(pstate, pstate) : pstate
 def $file_parse_continue(S, psourceresponse) = $file_parse_continued(S, $file_parse_resume(S, psourceresponse))
-def $file_parse_continued(S, S_next) = $drive_steps(S_next, n)
+def $file_parse_continued(S, S_next) = $drive_steps($output_guard(S_next), n)
   -- if S.SERVICELEFT = (n)
   -- if S_next.COMPLETION = NORMAL \/ $shutdown_ready(S_next) \/ $destructor_ready(S_next)
 def $file_parse_continued(S, S_next) = S_next

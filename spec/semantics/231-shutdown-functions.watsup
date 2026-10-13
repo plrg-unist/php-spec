@@ -240,7 +240,7 @@ def $shutdown_args_valid(S, eps) = true
 def $shutdown_args_valid(S, pvalue :: pvalue_tail*) = ($config_slots_valid(S, [NAMED_SENT (KNOWN pvalue)]) /\ $shutdown_args_valid(S, pvalue_tail*))
 
 ;; Snapshot terminal reporting before shutdown callbacks can mutate its inputs.
-def $shutdown_reported(S, preqbytes_class, preqbytes_message, z, preqbytes, true) = S[.COMPLETION = REQUESTFATAL preqbytes_class preqbytes_message z][.EVENTS = S.EVENTS ++ $display_events(S, STDERR preqbytes)]
+def $shutdown_reported(S, preqbytes_class, preqbytes_message, z, preqbytes, true) = $output_display(S[.COMPLETION = REQUESTFATAL preqbytes_class preqbytes_message z], $display_events(S, STDERR preqbytes))
 def $shutdown_reported(S, preqbytes_class, preqbytes_message, z, preqbytes, false) = S[.COMPLETION = REQUESTFATAL preqbytes_class preqbytes_message z]
 def $shutdown_file(S) = $call_sourcefile(S.FILES, porigin) -- if S.ERRORORIGIN = (porigin)
 def $shutdown_file(S) = $call_sourcefile(S.FILES, PORIGIN 0 eps) -- if S.ERRORORIGIN = eps
@@ -316,10 +316,10 @@ def $shutdown_begin(S) = $shutdown_prequeue(S, S_clean, S_report.COMPLETION)
   -- if S_clean = $shutdown_terminal_clean(S, S_report)
 def $shutdown_stop(S) = S_clean[.SHUTDOWN.PHASE = SHUTDOWN_DONE][.SHUTDOWN.SENT = eps][.SHUTDOWN.RECEIVED = eps]
   -- if S_clean = $shutdown_terminal_clean(S, $shutdown_freeze(S))
-def $drive_steps(S, n) = $drive_steps($prune_allocations($shutdown_begin(S)), n)
+def $drive_steps(S, n) = $drive_steps($output_guard($prune_allocations($shutdown_begin(S))), n)
   -- if $shutdown_ready(S)
   -- if S.SHUTDOWN.PHASE = SHUTDOWN_PENDING
-def $drive_steps(S, n) = $drive_steps($prune_allocations($shutdown_stop(S)), n)
+def $drive_steps(S, n) = $drive_steps($output_guard($prune_allocations($shutdown_stop(S))), n)
   -- if $shutdown_ready(S)
   -- if S.SHUTDOWN.PHASE = SHUTDOWN_RUNNING
 
@@ -598,7 +598,7 @@ def $shutdown_render_base(S, n) = $ptascii($throwable_base(text_kind))
 def $shutdown_render_begin(S, n) = S_clean[.SHUTDOWN.RENDER = (pshutdownrender)][.TODO = [SHUTDOWN_RENDER pshutdownrender]][.ORIGIN = ($shutdown_render_origin(S, n))][.COMPLETION = NORMAL]
   -- if S_clean = $shutdown_clean(S)
   -- if pshutdownrender = {ROOT n, CURRENT n, SEEN eps, TEXT eps, MESSAGE eps, ROOTMESSAGE eps, PENDING eps, PHASE SHUTDOWN_RENDER_MESSAGE}
-def $drive_steps(S, n) = $drive_steps($prune_allocations($shutdown_render_begin(S, n_object)), n)
+def $drive_steps(S, n) = $drive_steps($output_guard($prune_allocations($shutdown_render_begin(S, n_object))), n)
   -- if $shutdown_render_ready(S)
   -- if S.COMPLETION = UNCAUGHT n_object
 

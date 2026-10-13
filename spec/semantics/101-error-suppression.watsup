@@ -21,7 +21,7 @@ def $report_event(S, pevent, i_level) = S[.ERRORFATALTRACE = eps][.COMPLETION = 
   -- if S.SOURCEPENDING = eps
   -- if ~$eval_compile_recorded_error(S, i_level)
   -- if $error_handler_eligible(S, i_level)
-def $report_event(S, pevent, i_level) = S[.ERRORFATALTRACE = eps][.EVENTS = S.EVENTS ++ $display_events(S, $event_source(S, pevent))]
+def $report_event(S, pevent, i_level) = $output_display(S[.ERRORFATALTRACE = eps], $display_events(S, $event_source(S, pevent)))
   -- if ~$eval_compile_recorded_error(S, i_level)
   -- if ~$error_handler_eligible(S, i_level)
   -- if $long_and(S.REPORTING, i_level) =/= 0

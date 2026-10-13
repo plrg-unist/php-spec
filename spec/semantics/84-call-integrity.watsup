@@ -373,6 +373,7 @@ dec $config_result_valid(pstate) : bool
 dec $selected_log_valid(pstate, pselectedcall*, nat) : bool
 dec $dir_state_valid(pstate) : bool
 dec $shell_state_valid(pstate) : bool
+dec $output_state_valid(pstate) : bool
 dec $throwable_result_valid(pstate) : bool
 dec $getter_result_valid(pstate) : bool
 dec $ctor_native_result_valid(pstate) : bool
@@ -437,6 +438,7 @@ def $call_descriptors_scoped_valid(S_live, S) = true
   -- if $config_result_valid(S)
   -- if $dir_state_valid(S_live)
   -- if $shell_state_valid(S_live)
+  -- if $output_state_valid(S_live)
   -- if $throwable_result_valid(S)
   -- if $dynamic_result_valid(S)
   -- if $static_result_valid(S)

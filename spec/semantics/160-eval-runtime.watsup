@@ -612,7 +612,7 @@ def $eval_resume_checked(S, psourceresponse, false) = S[.COMPLETION = UNSUPPORTE
 dec $eval_continue(pstate, psourceresponse) : pstate
 dec $eval_continue_result(nat?, pstate) : pstate
 def $eval_continue(S, psourceresponse) = $eval_continue_result(S.SERVICELEFT, $eval_resume(S, psourceresponse))
-def $eval_continue_result((n), S_next) = $drive_steps(S_next, n)
+def $eval_continue_result((n), S_next) = $drive_steps($output_guard(S_next), n)
   -- if S_next.COMPLETION = NORMAL \/ $shutdown_ready(S_next) \/ $destructor_ready(S_next)
 def $eval_continue_result(n?, S_next) = S_next
   -- if S_next.COMPLETION =/= NORMAL

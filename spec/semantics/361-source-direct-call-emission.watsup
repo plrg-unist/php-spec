@@ -359,7 +359,7 @@ def $stringify_source(S, porigin_site, z, ECHO_CALL_RESULT pechoresult) = (porig
 def $stringify_consumer_receiver_valid(S, n, ECHO_CALL_RESULT pechoresult) = (n = pechoresult.OBJECT)
 def $stringify_consumer_tail_valid(S, porigin_site, z, ECHO_CALL_RESULT pechoresult, ptask_tail*) = ($stringify_source(S, porigin_site, z, ECHO_CALL_RESULT pechoresult) /\ pechoresult.TAIL = ptask_tail*)
 
-rule PhpStep/echo-call-string-result: S ~> S[.TODO = ptask_tail*][.EVENTS = S.EVENTS ++ [OUTPUT n_text*]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/echo-call-string-result: S ~> $output_write(S, n_text*)[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (ECHO_CALL_RESULT pechoresult) :: ptask_tail*
   -- if $echo_call_result_valid(S, pechoresult)
   -- if pechoresult.TAIL = ptask_tail*
@@ -387,7 +387,7 @@ def $destructor_pending_finish(S, pdestructionoperation, n_pending, (ECHO_CALL_R
   -- if $eval_compile_pending_object(S, THROWING n_pending)
 def $task_nodes(ECHO_CALL_PENDING pechoresult n_text* n_pending) = $operand_nodes(pechoresult.TEMP) ++ [HOBJECT n_pending]
 def $call_task_valid(S, ECHO_CALL_PENDING pechoresult n_text* n_pending) = (S.ORIGIN = (pechoresult.SITE) /\ $echo_call_result_source(S, pechoresult) /\ $echo_call_reference_operand(pechoresult.TEMP) /\ $echo_call_temporary_valid(S, pechoresult) /\ $source_operand_suffix(S.TODO, ECHO_CALL_PENDING pechoresult n_text* n_pending, pechoresult.TAIL) /\ $eval_compile_pending_object(S, THROWING n_pending))
-rule PhpStep/echo-call-string-pending: S ~> S[.TODO = (THROW_SEARCH n_pending) :: ptask_tail*][.EVENTS = S.EVENTS ++ [OUTPUT n_text*]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/echo-call-string-pending: S ~> $output_write(S, n_text*)[.TODO = (THROW_SEARCH n_pending) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (ECHO_CALL_PENDING pechoresult n_text* n_pending) :: ptask_tail*
   -- if $call_task_valid(S, ECHO_CALL_PENDING pechoresult n_text* n_pending)
   -- if pechoresult.TAIL = ptask_tail*

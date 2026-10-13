@@ -149,7 +149,7 @@ def $exit_finish(S) = $exit_ready(S, 0)
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN pvalue_string
   -- if $string_bytes(pvalue_string) = (eps)
-def $exit_finish(S) = $exit_ready(S[.EVENTS = S.EVENTS ++ [OUTPUT n*]], 0)
+def $exit_finish(S) = $exit_ready($output_write(S, n*), 0)
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN pvalue_string
   -- if $string_bytes(pvalue_string) = (n*)
