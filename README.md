@@ -1157,7 +1157,7 @@ checks pass at `c1cf6c7`, alongside the separate first-entry cuts. Last-owner ma
 teardown also releases its single leaf value while retaining the emptied map's
 physical pin and live weak identity through normal or throwing callback cleanup.
 Two originals agree at `0c9b358`; 467 lifetime checks and 86 freeing-write refusal
-checks pass at their separate cuts. Wider map free and ephemeron GC stop explicitly;
+checks pass at their separate cuts. Wider map free and wider ephemeron GC stop explicitly;
 multiple maps per key, wider wrapper creation or mutation during freeing,
 additional strong key/map owners retained beyond callback cleanup and wider
 entry/read/mutation protocols remain required.
@@ -1190,6 +1190,14 @@ wrapper adds no target owner and becomes null when cleanup notifies it. Two
 originals agree at `ac980b0`; 333 reached checks cover reuse, real wrapper
 retirement/recreation and notification. Wider freeing contexts and inactive
 carriers remain required; earlier evidence and the original refusal stay separate.
+
+A live singleton WeakMap now supports explicit collection of a destructor-free
+value-to-key backedge. Ordinary value ownership remains strong; GC traces the
+entry only when both map and key are reachable. Holding either key or value
+protects the pair; dropping both allows collection while the map survives.
+Two originals agree at `0167ec6c`; 439 reached checks validate conditional tracing,
+entry disposal and held owners. Wider maps, callbacks and ephemeron graphs remain
+required. [Review](coverage/semantics/weak-map-review.json).
 
 [Ordinary collection301](docs/semantics/CYCLE-COLLECTION.md) implements explicit
 object/array cycle collection, ordered destructor callbacks and real weak

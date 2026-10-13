@@ -97,6 +97,38 @@ cleanup and wider map/ephemeron protocols remain required. Earlier cuts and
 failures retain their separate evidence in the
 [ledger](../../coverage/semantics/weak-map-review.json).
 
+## Destructor-free singleton ephemeron collection
+
+Modules301/386 admit explicit collection for one live map, a `stdClass` leaf key
+and a parentless value with no declared methods and one public untyped key
+property. Insertion occurs while that property is null; the ordinary property
+write then supplies the backedge. Other allocated objects are weak wrappers.
+
+The physical graph still contains Map→Value→Key for eager ownership. GC first
+excludes Map→Value, then restores it only when both map and key are reachable.
+A held key protects the value, and a held value reaches its key. With neither
+held, the pair is logically white despite the live map's physical value edge.
+An authentic destructor-free GC_FREE plan clears that entry before the unchanged
+strong resurrection guard and existing count, buffer, store and handle disposal.
+
+The unheld and held originals (63/114 bytes) agree at `0167ec6c`; the held source
+observes key-only and value-only protection before releasing both. Three reached
+cuts pass 169/135/135 checks, totaling 439 with three setup assertions per case.
+They authenticate source/current call and property authority, logical versus
+physical reachability, count two or zero, dead-entry cleanup and live-map
+preservation. Empty-map identity, coherent nonbackedge refusal, malformed call
+line, stale held-white-root and zero/one-budget controls pass. Checks stop at the
+collection return; originals supply complete endings. The original accepted
+source's `WeakMap ephemeron collection` refusal remains zero agreement.
+
+The basis is `zend_weakmap_get_gc`, key-entry helpers and `gc_scan_black` in
+`Zend/zend_weakrefs.c` / `Zend/zend_gc.c`: an entry is retained when both map and
+key are live. Wider maps, destructor callbacks, typed/reference or wider value
+properties, inactive contexts, unheld-map and general ephemeron graphs remain
+required. Countable remains nominal-only and count library execution is excluded
+by CORE. Earlier cuts retain their evidence in the
+[ledger](../../coverage/semantics/weak-map-review.json).
+
 ## WeakMap first entry and key retirement
 
 Module386 admits zero-argument `new WeakMap()` and one first insertion with a
@@ -113,8 +145,8 @@ entry. Its value edge becomes an authentic DESTRUCTION_VALUE job, so shared
 owners survive and the last owner selects the value destructor once. The initial
 callback/storage cut keeps both key and value allocated under physical pins
 while their weak lookups are null; the original supplies eventual physical retirement.
-Wider nonempty-map free and explicit collection with a live nonempty map remain
-Unsupported. No ephemeron tracing or cycle/count closure is claimed.
+Wider nonempty-map free and wider collection with a live nonempty map remain
+Unsupported. The initial cut claims no ephemeron tracing or cycle/count closure.
 
 Zend notification payloads preserve registration order. When a key wrapper is
 created after insertion, native PHP returns that key during the value callback;

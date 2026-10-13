@@ -701,5 +701,145 @@
       "Throwing callbacks after wrapper creation, targets retained beyond callback cleanup, wider map shapes and ephemeron collection.",
       "Countable is nominal-only; count execution stays excluded/Unsupported per CORE."
     ]
+  },
+  "singleton_ephemeron_62": {
+    "scope": "Explicit collection of one live singleton WeakMap, a leaf stdClass key and destructor-free parentless Value with one public untyped DIRECT key property; insertion precedes the backedge.",
+    "base_revision": "61cd4dc85738dec751f96ef43da8ccd8672616b4",
+    "tested_revision": "0167ec6cbfcda4cce25e58facbbf8878d4c42669",
+    "modules": 384,
+    "raw_root": ".tools/weak-map-ephemeron-62",
+    "recovery": "Tested rules at 0167ec6c and maintained literals at b6a5d087; ignored original sources, scripts, producers and raw artifacts remain at original paths after tracked-only retirement.",
+    "representation": [
+      "Ordinary heap_graph/node_children retain the physical Map-to-Value owner. GC excludes that edge and restores it only if both Map and Key are reachable without it.",
+      "Key or Value external ownership protects the pair; no external owner makes Key and Value white while the Map remains live.",
+      "Actual valid destructor-free GC_FREE clears only the dead entry before the unchanged strong resurrection guard and existing counted/buffer/store/handle disposal. No gc_ordinary_node relaxation."
+    ],
+    "native": {
+      "revision": "61cd4dc85738dec751f96ef43da8ccd8672616b4",
+      "records": [
+        {
+          "case": "unheld",
+          "source_sha256": "69606106367b383b1eee4adfdce79e6e61fee59bcb2193c9764bac3e2968032f",
+          "stdout_bytes": 63,
+          "stdout_sha256": "dcd4e1c9b763d94e89580f4f51b6cecd822164a76f9357da46cbc2f3c0b6b58c",
+          "report": ".tools/weak-map-ephemeron-unheld-62-native-bl8idm1m/report.json",
+          "elapsed_seconds": 0.004966020584106445
+        },
+        {
+          "case": "held",
+          "source_sha256": "fd72b92d1b8570879a02783f033b42d2a467e186cfbbd7281fff5c9e9b53f3f0",
+          "stdout_bytes": 114,
+          "stdout_sha256": "5122af759b25a488d3b042733f1000c72cc1a35dc3dca180e255a8c682f93a21",
+          "report": ".tools/weak-map-ephemeron-held-62-native-k5gh5bjc/report.json",
+          "elapsed_seconds": 0.004774808883666992
+        }
+      ]
+    },
+    "source_agreements": [
+      {
+        "case": "unheld",
+        "report": ".tools/weak-map-ephemeron-unheld-62-source-j647yejz/report.json",
+        "elapsed_seconds": 13.912095785140991
+      },
+      {
+        "case": "held",
+        "report": ".tools/weak-map-ephemeron-held-62-source-9ne25c29/report.json",
+        "elapsed_seconds": 18.52468967437744
+      }
+    ],
+    "state": {
+      "total_assertions": 439,
+      "records": [
+        {
+          "case": "unheld",
+          "assertions": 169,
+          "report": ".tools/weak-map-ephemeron-62-state-fal6g3vg/report.json",
+          "inner": "/home/user/workspace/php-spec/.tools/weak-map-ephemeron-62/.tools/shutdown-state-review-08be90xk",
+          "elapsed_seconds": 15.109621047973633
+        },
+        {
+          "case": "held_key",
+          "assertions": 135,
+          "report": ".tools/weak-map-ephemeron-62-state-ie1rsb9q/report.json",
+          "inner": "/home/user/workspace/php-spec/.tools/weak-map-ephemeron-62/.tools/shutdown-state-review-2zqfva2r",
+          "elapsed_seconds": 14.605590581893921
+        },
+        {
+          "case": "held_value",
+          "assertions": 135,
+          "report": ".tools/weak-map-ephemeron-62-state-7owfcsgz/report.json",
+          "inner": "/home/user/workspace/php-spec/.tools/weak-map-ephemeron-62/.tools/shutdown-state-review-_v4pqku0",
+          "elapsed_seconds": 16.911184072494507
+        }
+      ],
+      "candidate_sha256": "7640f18f3c0b59583553a8b592ad988e6b11b3fc76356598c773556eaa91eeb9",
+      "endpoint": "Genuine CONFIG_INVOKE to GC_TRACE/plan/GC_FREE and collection return. Unheld removes entry/Key/Value and returns 2; held roots preserve physical graph/entry and return 0. No terminal drive."
+    },
+    "compiler_init": {
+      "compiler_report": ".tools/weak-map-ephemeron-62-compiler-bpcjo6xr/report.json",
+      "artifacts": [
+        {
+          "mode": "algo",
+          "bytes": 13859068,
+          "sha256": "aa5544c8c1e594e25ba81b137b8fcb17ca36412260bfde0f25174d707968bb5d",
+          "elapsed_seconds": 5.489237308502197
+        },
+        {
+          "mode": "struct",
+          "bytes": 13905812,
+          "sha256": "3a52f3d4083a299e69683f349480cf3cf74aa35bb7ab5aa72e262cc2d0852059",
+          "elapsed_seconds": 6.991616487503052
+        }
+      ],
+      "strict_init_report": ".tools/weak-map-ephemeron-62-init-gssp8lvl/report.json",
+      "init_checks": 5,
+      "init_stdout": "true\n",
+      "init_elapsed_seconds": 6.552670240402222
+    },
+    "preserved_zero_credit": {
+      "report": ".tools/weak-map-ephemeron-unheld-62-source-6mhgs308/report.json",
+      "revision": "61cd4dc85738dec751f96ef43da8ccd8672616b4",
+      "reason": "WeakMap ephemeron collection",
+      "stdout_prefix": "key-live|value-live|",
+      "accepted_source_agreement": false
+    },
+    "maintained": {
+      "source_path": "tests/semantics/cycle_collection_cases.json",
+      "source_rows": 70,
+      "state_path": "tests/semantics/cycle_collection_state_review.py",
+      "state_records": 140,
+      "state_sha256": "c160e5ec06f37d5787b8e952465ae78bb05173be4ec67ddfcb2f5376cca85b22",
+      "preservation": "All prior 68 source rows and 137 CASE values/order plus harness AST are unchanged; exact two sources and three evaluated tested records only."
+    },
+    "runtime": {
+      "target": "PHP 8.5.10 CLI NTS 64-bit",
+      "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+    },
+    "caps_environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": null,
+      "CPU": 2,
+      "jobs": 1,
+      "native_seconds": 30,
+      "CLI_seconds": 60,
+      "CLI_recorder_seconds": 75,
+      "compiler_seconds": 120,
+      "state_model_seconds": 120,
+      "state_recorder_seconds": 200
+    },
+    "engine_basis": [
+      "Zend/zend_weakrefs.c:zend_weakmap_get_gc",
+      "Zend/zend_weakrefs.c:zend_weakmap_get_key_entry_gc",
+      "Zend/zend_weakrefs.c:zend_weakmap_get_object_key_entry_gc",
+      "Zend/zend_gc.c:gc_scan_black; GC_FROM_WEAKMAP / GC_FROM_WEAKMAP_KEY"
+    ],
+    "compatibility": "No eligible map gives identity GC edges/preparation. Earlier nonempty leaf/destructor-bearing maps keep the old refusal. Ordinary ownership, gc_ordinary_node, wrapper getters and eager release are unchanged.",
+    "boundaries": [
+      "Main context only, no active Fiber/frame/worker/freeing pin; one live map and one key backedge, no destructor callbacks.",
+      "Wider or unheld maps, typed/reference/wider value properties, additional object graphs, multi-map order and general ephemeron collection remain required.",
+      "Other WeakMap reference/presence/iteration protocols remain open; Countable is nominal-only and count execution is excluded/Unsupported per CORE."
+    ]
   }
 }

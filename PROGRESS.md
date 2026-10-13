@@ -3486,6 +3486,19 @@ Unsupported retains zero agreement. Wider/nonmap freeing, inactive carriers
 and retained strong targets remain required; prior cuts retain their evidence.
 [Ledger](coverage/semantics/weak-map-review.json).
 
+Destructor-free singleton WeakMap collection now separates conditional GC
+tracing from physical value ownership. The value is inserted as a leaf before
+its sole public key backedge is assigned. A live map keeps the value only when
+the key is reachable; an external value owner also reaches that key. The unheld
+pair expires with count two while the map survives. Held-key and held-value
+passes each return zero. Two originals agree at `0167ec6c`; unheld (169), held-key
+(135) and held-value (135) source-reached checks total 439. Actual GC_FREE clears
+the dead entry before the unchanged strong resurrection guard and ordinary
+counted/store/handle disposal. Checks stop at the collection return; originals
+supply later teardown. The original nonempty-map Unsupported stays zero.
+Wider/destructor-bearing maps, inactive contexts and general ephemeron graphs
+remain required. [Ledger](coverage/semantics/weak-map-review.json).
+
 ArrayAccess304 reconstructs intermediate `[]` after ordinary by-value Get and
 supports final compound append, including null-key Get/Set on returned children.
 Returned temporary arrays extract selected rows before retirement; copied real
