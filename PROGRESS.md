@@ -1593,6 +1593,8 @@ source2 pass at `5012d481`; four separate states at `c5bfa53f` pass controls95
 Natives were observed separately; the positive wrong-invariant baseline keeps zero
 agreement. Wider types/roots/flags/hook families remain required.
 [Plain-child covariance review](coverage/semantics/virtual-parent-covariant-plain-inherited-getter-review.json).
+Joined exact `fdf9903d`/386; one count-only current init check passes with no application.
+Private cuts remain retained through neutral output/compile-error state and disjoint destructor/WeakMap paths.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
