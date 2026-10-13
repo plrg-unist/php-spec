@@ -1310,6 +1310,8 @@ Strict380/source2 pass at `f56c3ad8`. Nine separate selected state checks pass
 metadata/read/write/lifetime at `0932752f`. Four SL caps retain zero credit;
 authentic frontier partitions keep all assertions, with AL90 and affected SL150.
 [Repeated ordinary-storage review](coverage/semantics/repeated-ordinary-unbacked-get-hook-review.json).
+Joined exact `af903227`/381; one count-only current init check passes with no application.
+Private cuts remain retained through neutral output-buffer state and disjoint incoming paths.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
