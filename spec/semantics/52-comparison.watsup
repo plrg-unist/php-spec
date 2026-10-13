@@ -257,6 +257,7 @@ def $value_order(S, PARRAY n_left, PARRAY n_right, pcompareguard_seen*) = $entri
   -- if |S.ARRAYS[n_left].ITEMS| = |S.ARRAYS[n_right].ITEMS|
 def $value_order(S, POBJECT n, POBJECT n, pcompareguard_seen*) = ORDER 0
 def $value_order(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*) = ORDER 0
+  -- if n_left =/= n_right
   -- if $aggregate_std_same_table(S, n_left, n_right)
 def $value_order(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*) = $aggregate_cached_order(S, n_left, n_right, pcompareguard_seen*)
   -- if n_left =/= n_right
