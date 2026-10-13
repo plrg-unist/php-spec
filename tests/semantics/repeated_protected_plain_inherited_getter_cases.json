@@ -1,0 +1,48 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hashes": {
+    "scalar": "dc57792ffb61acb2fa3ba9c8c3963611706f428bdcbd924b14897278d41c6089",
+    "narrow": "dc57792ffb61acb2fa3ba9c8c3963611706f428bdcbd924b14897278d41c6089"
+  },
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "scalar",
+      "source": "<?php\nclass RepeatedProtectedPlainParent62 {\n    public int $value {\n        get {\n            echo \"GET:\", self::class, \"/\", static::class, \"|\";\n            return $this->answer();\n        }\n    }\n    private function answer() { return 13; }\n    public function parentRead() { echo \"H|\"; return $this->value; }\n}\nclass RepeatedProtectedPlainFirst62 extends RepeatedProtectedPlainParent62 {\n    public protected(set) int $value = 200;\n    private function answer() { return 500; }\n}\nclass RepeatedProtectedPlainBridge62 extends RepeatedProtectedPlainFirst62 {}\nclass RepeatedProtectedPlainSecond62 extends RepeatedProtectedPlainBridge62 {\n    public protected(set) int $value = 300;\n    private function answer() { return 700; }\n    public function write($value) {\n        echo \"WRITE:\", self::class, \"/\", static::class, \"|\";\n        $this->value = $value;\n    }\n}\nclass RepeatedProtectedPlainGrand62 extends RepeatedProtectedPlainSecond62 {\n    private function answer() { return 900; }\n}\n$parent = new RepeatedProtectedPlainParent62;\n$first = new RepeatedProtectedPlainFirst62;\n$second = new RepeatedProtectedPlainSecond62;\n$grand = new RepeatedProtectedPlainGrand62;\n$raw = (array) $parent;\necho $raw === [] ? \"EMPTY|\" : ($raw === [\"value\" => null] ? \"NULL|\" : \"BAD|\");\n$raw = (array) $first;\necho $raw === [\"value\" => 200] ? \"F200|\" : \"BAD|\";\n$raw = (array) $second;\necho $raw === [\"value\" => 300] ? \"S300|\" : \"BAD|\";\n$raw = (array) $grand;\necho $raw === [\"value\" => 300] ? \"G300|\" : \"BAD|\";\necho $parent->value, \"|\";\necho $first->value, \"|\";\necho $second->value, \"|\";\necho $grand->parentRead(), \"|\";\n$raw = (array) $grand;\necho $raw === [\"value\" => 300] ? \"G300|\" : \"BAD|\";\ntry { $grand->value = 999; } catch (Error $error) { echo \"GLOBAL:\", $error->getMessage(), \"|\"; }\n$raw = (array) $grand;\necho $raw === [\"value\" => 300] ? \"G300|\" : \"BAD|\";\n$grand->write(400);\n$raw = (array) $grand;\necho $raw === [\"value\" => 400] ? \"G400|\" : \"BAD|\";\necho $grand->value, \"|\";\n",
+      "source_sha256": "569549b3076b76669d038ee5591e43f83b9dc0442e366c9a1fd782ea48f46085",
+      "stdout_base64": "RU1QVFl8RjIwMHxTMzAwfEczMDB8R0VUOlJlcGVhdGVkUHJvdGVjdGVkUGxhaW5QYXJlbnQ2Mi9SZXBlYXRlZFByb3RlY3RlZFBsYWluUGFyZW50NjJ8MTN8R0VUOlJlcGVhdGVkUHJvdGVjdGVkUGxhaW5QYXJlbnQ2Mi9SZXBlYXRlZFByb3RlY3RlZFBsYWluRmlyc3Q2MnwxM3xHRVQ6UmVwZWF0ZWRQcm90ZWN0ZWRQbGFpblBhcmVudDYyL1JlcGVhdGVkUHJvdGVjdGVkUGxhaW5TZWNvbmQ2MnwxM3xIfEdFVDpSZXBlYXRlZFByb3RlY3RlZFBsYWluUGFyZW50NjIvUmVwZWF0ZWRQcm90ZWN0ZWRQbGFpbkdyYW5kNjJ8MTN8RzMwMHxHTE9CQUw6Q2Fubm90IG1vZGlmeSBwcm90ZWN0ZWQoc2V0KSBwcm9wZXJ0eSBSZXBlYXRlZFByb3RlY3RlZFBsYWluU2Vjb25kNjI6OiR2YWx1ZSBmcm9tIGdsb2JhbCBzY29wZXxHMzAwfFdSSVRFOlJlcGVhdGVkUHJvdGVjdGVkUGxhaW5TZWNvbmQ2Mi9SZXBlYXRlZFByb3RlY3RlZFBsYWluR3JhbmQ2MnxHNDAwfEdFVDpSZXBlYXRlZFByb3RlY3RlZFBsYWluUGFyZW50NjIvUmVwZWF0ZWRQcm90ZWN0ZWRQbGFpbkdyYW5kNjJ8MTN8",
+      "stderr_template": "",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "repeated-protected-plain-inherited-getter62-scalar-native-70f124b2",
+      "native_raw_sha256": "dc57792ffb61acb2fa3ba9c8c3963611706f428bdcbd924b14897278d41c6089"
+    },
+    {
+      "id": "narrow",
+      "source": "<?php\nclass RepeatedProtectedNarrowParent62 {\n    public int $value {\n        get {\n            echo \"GET:\", self::class, \"/\", static::class, \"|\";\n            return $this->answer();\n        }\n    }\n    private function answer() { return 13; }\n    public function parentRead() { echo \"H|\"; return $this->value; }\n}\nclass RepeatedProtectedNarrowFirst62 extends RepeatedProtectedNarrowParent62 {\n    public protected(set) int $value = 200;\n    private function answer() { return 500; }\n}\nclass RepeatedProtectedNarrowBridge62 extends RepeatedProtectedNarrowFirst62 {}\nclass RepeatedProtectedNarrowSecond62 extends RepeatedProtectedNarrowBridge62 {\n    public private(set) int $value = 300;\n    private function answer() { return 700; }\n    public function write($value) {\n        echo \"WRITE:\", self::class, \"/\", static::class, \"|\";\n        $this->value = $value;\n    }\n}\nclass RepeatedProtectedNarrowGrand62 extends RepeatedProtectedNarrowSecond62 {\n    private function answer() { return 900; }\n}\n$parent = new RepeatedProtectedNarrowParent62;\n$first = new RepeatedProtectedNarrowFirst62;\n$second = new RepeatedProtectedNarrowSecond62;\n$grand = new RepeatedProtectedNarrowGrand62;\n$raw = (array) $parent;\necho $raw === [] ? \"EMPTY|\" : ($raw === [\"value\" => null] ? \"NULL|\" : \"BAD|\");\n$raw = (array) $first;\necho $raw === [\"value\" => 200] ? \"F200|\" : \"BAD|\";\n$raw = (array) $second;\necho $raw === [\"value\" => 300] ? \"S300|\" : \"BAD|\";\n$raw = (array) $grand;\necho $raw === [\"value\" => 300] ? \"G300|\" : \"BAD|\";\necho $parent->value, \"|\";\necho $first->value, \"|\";\necho $second->value, \"|\";\necho $grand->parentRead(), \"|\";\n$raw = (array) $grand;\necho $raw === [\"value\" => 300] ? \"G300|\" : \"BAD|\";\ntry { $grand->value = 999; } catch (Error $error) { echo \"GLOBAL:\", $error->getMessage(), \"|\"; }\n$raw = (array) $grand;\necho $raw === [\"value\" => 300] ? \"G300|\" : \"BAD|\";\n$grand->write(400);\n$raw = (array) $grand;\necho $raw === [\"value\" => 400] ? \"G400|\" : \"BAD|\";\necho $grand->value, \"|\";\n",
+      "source_sha256": "d5c960d0ee22aff933f402baeb4234f0a3de5cd2fa011c5774ffc3fa088d423b",
+      "stdout_base64": "",
+      "stderr_template": "Fatal error: Set access level of RepeatedProtectedNarrowSecond62::$value must be protected(set) (as in class RepeatedProtectedNarrowFirst62) or weaker in {FILE} on line 17\nStack trace:\n#0 {main}\n",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFNldCBhY2Nlc3MgbGV2ZWwgb2YgUmVwZWF0ZWRQcm90ZWN0ZWROYXJyb3dTZWNvbmQ2Mjo6JHZhbHVlIG11c3QgYmUgcHJvdGVjdGVkKHNldCkgKGFzIGluIGNsYXNzIFJlcGVhdGVkUHJvdGVjdGVkTmFycm93Rmlyc3Q2Mikgb3Igd2Vha2VyIGluIHtGSUxFfSBvbiBsaW5lIDE3ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "repeated-protected-plain-inherited-getter62-narrow-native-70f124b2",
+      "native_raw_sha256": "dc57792ffb61acb2fa3ba9c8c3963611706f428bdcbd924b14897278d41c6089"
+    }
+  ]
+}
