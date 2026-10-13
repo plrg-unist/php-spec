@@ -17,6 +17,9 @@ restoration. Original parser/fixture failures retain zero failed-group credit.
 Hard-fatal shutdown roots, caught destructor exceptions' sticky exit status and
 wider lifecycle work remain required; full core stays partial.
 [Source-static exit ledger](coverage/semantics/source-static-exit-review.json).
+The 380 composition over7d694efd passes one exact destructor-reentry source
+and72 saved parser/exit ownership premises at a974afec0, retaining390
+warning-exit refusal. Earlier source/state cuts keep their revisions.
 
 Module390 resumes direct defined untyped-CV pre/post inc/dec warnings. Bool/null
 restore captured values after returning or throwing handlers; strings restore
