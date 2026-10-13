@@ -17,6 +17,8 @@ Unsupported baseline and native/preparation-only records retain zero credit; old
 campaigns are unchanged. Owning callbacks, unsafe targets and pending-exit parent
 cleanup throw remain required next cuts; full core stays partial.
 [Cancellation ledger](coverage/semantics/incdec-exit-cancellation-review.json).
+The 385-module join over c8aa passes current strict SL and one exact parent-owner
+original at 24dba6266; earlier source/state cuts retain their identities.
 
 Module395 normal user-output-handler callbacks are independently
 accepted; the current385 composition is checked. Chunk0 explicit flush/clean/end/get
