@@ -15,6 +15,9 @@ tuples and two public fronts/185 premises at 571d3211. No raw projections or own
 changes; baseline and the original typed-subtraction fixture failure remain0.
 Recorded runtime fatals, E_DONT_BAIL and broader diagnostic/formatter queues stay partial.
 [Recorded-warning ledger](coverage/semantics/source-recorded-warning-review.json).
+The386 composition over eeb6a7bb passes independent pointwise review at efc0d7147;
+accepted236/protocol and parent output/public/comparison behavior are preserved.
+No renewed actor/source/state evidence is claimed.
 
 Module396 is independently accepted for normal positive-chunk user output handlers from source
 echo/print/inline and explicit lower WRITE cascades. Whole buffers preserve
