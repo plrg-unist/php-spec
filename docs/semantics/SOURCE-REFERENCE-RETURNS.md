@@ -371,6 +371,14 @@ from the aliased-CV cut. Matching source/cell/task copies do not reconstruct a f
 coherently rewritten history; parked-VM checks are helper-only. Genuinely released
 targets, destructor throw/reentry, real suspension and wider typed consumers remain open.
 
+Validation-only M42 at `b55942bc`/385 follows a protected ordinary string return
+through local `unset($x)` and a retained-binding control. Independent107/2 ties
+the pre-unset cell to the saved FINALLY_REF_RETURN carrier and checks whole-state
+public admission plus phase deletion refusal. Late2/176 follows the same carrier
+to returned REFERENCE, caller r/a aliases, writes and caller-cut budget equality.
+The return temporary stays live; physical cell collection and released borrowed
+Stringable targets are outside this validation.
+
 Caller demand comes from the original checked callsite's immediate source
 consumers. Expression statements and discarded for clauses have unused results;
 casts to void, ternary/coalesce expressions and value/reference consumers retain

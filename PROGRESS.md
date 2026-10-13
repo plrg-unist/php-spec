@@ -1996,6 +1996,16 @@ plus 383 at `fbb5d0a`). Actual 371 over `3d99674e` passes strict at `cf1094`
 keeps these cuts separate from the earlier aliased-CV evidence. Genuinely released
 targets, destructor throw/reentry, real suspension and wider typed consumers remain open.
 
+M42 validates existing protected string-return behavior at `b55942bc`/385. The
+unchanged model agrees with both native unset/control originals. Independent
+public107/2 ties the original pre-unset x to the same saved return carrier, with
+the local binding absent/present, and refuses deletion of only FINALLY_PHASE.
+Reached2/176 delivers that cell as REFERENCE to main r/a, checks write-through,
+quiet cleanup and budget equality from the alias caller cut. The protected
+carrier still owns the cell. Fixture parse/elaboration failures retain zero
+credit; publication changes only validation metadata and the exact maintained
+producer. Released borrowed-cell conversion and broad returns remain OPEN.
+
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
 Per-constant protection survives namespace publication and parked handlers.

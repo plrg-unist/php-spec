@@ -194,6 +194,13 @@ two source-qualified WARNING(w,6) reads. Bypass is quiet; late error/budget chec
 remain separate from the older native Previous observer. Reconstruction remains
 local, with no unset/eager/active/Notice rule change; wider returns stay OPEN.
 
+M42 adds validation only at `b55942bc`/385: pre-unset x and the saved owning return
+carrier stay identical despite absent/present local bindings (public107/2), then
+the carrier reaches main r/a and write-through with caller-cut budget equality
+(reached2/176). The selected cell remains owned; physical collection and wider
+released borrowed-cell conversion stay open. Recover with
+`tests/semantics/reference_released_cv_state.py` and the local-CV lifetime ledger.
+
 Typed-property reference constraints, finally rechecks, objects/methods, dynamic
 sources and dynamic callables, named/unpacked/variadic calls, generators/Fibers and lifecycle remain
 required later core work. Publish reviewed paired code, evidence and concise docs

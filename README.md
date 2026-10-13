@@ -2666,6 +2666,10 @@ captured cell; callback failure retains the object through finally and chains th
 callback Exception. Five exact originals and eight reached fixtures/871 assertions
 pass. Genuinely released targets, destructor throw/reentry, real suspension and
 wider typed consumers remain open.
+Separate validation at `b55942bc` checks an ordinary local `unset` and its control:
+the original selected cell remains in the protected return carrier during `ping`,
+then reaches the caller's `r/a` aliases and write. The owning temporary persists;
+physical collection and released borrowed-cell conversion remain open.
 [Weak Stringable parameters](coverage/semantics/weak-string-parameters-review.json)
 now convert supplied fixed parameters in receive order, preserving caller
 strictness, nominal/callable precedence and the entered formal cell. Existing
