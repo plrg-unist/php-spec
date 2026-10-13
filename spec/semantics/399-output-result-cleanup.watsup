@@ -112,6 +112,12 @@ def $ob_normal_certificate(S, pobinvoke, pdestructionframe) = false -- otherwise
 ;; The C API frame remains the caller while callee CVs are released. Authentic
 ;; sealed-return or pending body-throw prefixes supply its site and trace suffix.
 def $ob_callee_cleanup_call(S, pdestructionframe, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*) = $ob_callee_cleanup_call(S, pdestructionframe, ptask_tail*)
+def $ob_callee_cleanup_call(S, pdestructionframe, (DESTRUCTOR_ENTER pdestructorcall) :: ptask_tail*) = $ob_callee_cleanup_call(S, pdestructionframe, ptask_tail*)
+  -- if pdestructorcall.FRAME = (pdestructionframe) /\ pdestructorcall.OPERATION = eps
+  -- if pdestructorcall.CALLER = pdestructionframe.CALLER /\ pdestructorcall.ORIGIN = pdestructionframe.ORIGIN
+def $ob_callee_cleanup_call(S, pdestructionframe, (DESTRUCTOR_WARNING pdestructorcall) :: ptask_tail*) = $ob_callee_cleanup_call(S, pdestructionframe, ptask_tail*)
+  -- if pdestructorcall.FRAME = (pdestructionframe) /\ pdestructorcall.OPERATION = eps
+  -- if pdestructorcall.CALLER = pdestructionframe.CALLER /\ pdestructorcall.ORIGIN = pdestructionframe.ORIGIN
 def $ob_callee_cleanup_call(S, pdestructionframe, (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*) = $ob_callee_cleanup_call(S, pdestructionframe, ptask_tail*)
   -- if pdestructorcall.FRAME = (pdestructionframe) /\ pdestructorcall.OPERATION = eps
   -- if pdestructorcall.CALLER = pdestructionframe.CALLER /\ pdestructorcall.ORIGIN = pdestructionframe.ORIGIN
