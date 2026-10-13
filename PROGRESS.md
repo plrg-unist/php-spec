@@ -1336,6 +1336,8 @@ Three separate state checks pass at `814991e9`: remove62 (32 reached, 30 derived
 add32 and actual scalar plan47, totaling 111 reached plus 30 derived. Runtime,
 defaults, layouts, pure covariance and earlier cuts retain their identities.
 [Ordinary-backing type-presence review](coverage/semantics/ordinary-backed-parent-unbacked-get-hook-type-presence-review.json).
+Joined exact `35068001`/381; one current init-only check passes with no application.
+Private cuts remain retained through neutral EXITSTATUS 0 and disjoint WeakMap/source-exit paths.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
