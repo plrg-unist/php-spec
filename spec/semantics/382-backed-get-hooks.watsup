@@ -34,6 +34,9 @@ def $hook_uses_children(eps, ptbytes) = false
 def $hook_uses_children((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*, ptbytes) = ($hook_uses_node(pcnode, ptbytes) \/ $hook_uses_children(pcoccurrence*, ptbytes))
 dec $hook_body_backed(phpType39, ptbytes) : bool
 dec $hook_body_supported(phpType39) : bool
+dec $hook_statement_body(phpType39) : bool
+def $hook_statement_body(SEQUENCE statement*) = true
+def $hook_statement_body(phpType39) = false -- otherwise
 def $hook_body_supported(SEQUENCE statement*) = (~$generator_statements(statement*))
 def $hook_body_supported(expression) = (~$generator_syntax(expression))
 def $hook_body_supported(phpType39) = false -- otherwise
@@ -48,10 +51,10 @@ dec $pphook_finish(ppstate, ppstate, pcpath, ppropertydesc, metadata, pchheader)
 dec $pphook_class_shape(pchheader, phpType40, phpType38) : bool
 dec $pphook_owner_shape(pchheader, phpType40, phpType38, phpType5) : bool
 def $pphook_owner_shape(pchheader, phpType40, phpType38, phpType5) = true -- if pchheader.KIND = "class"
-def $pphook_owner_shape(pchheader, NVarLikeIdentifier (BYTES text) metadata_name, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_get) (SEQUENCE eps) (SEQUENCE statement*) metadata, phpType5) = true
+def $pphook_owner_shape(pchheader, NVarLikeIdentifier (BYTES text) metadata_name, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_get) (SEQUENCE eps) phpType39 metadata, phpType5) = true
   -- if pchheader.KIND = "trait"
   -- if $ptlc($base64(text_get)) = $ptascii("get")
-  -- if $hook_body_backed(SEQUENCE statement*, $base64(text)) \/ phpType5 = ABSENT
+  -- if $hook_body_backed(phpType39, $base64(text)) \/ ($hook_statement_body(phpType39) /\ phpType5 = ABSENT)
 def $pphook_owner_shape(pchheader, phpType40, phpType38, phpType5) = false -- otherwise
 def $pphook_class_shape(pchheader, phpType40, phpType38) = true
   -- if pchheader.PARENT = eps
@@ -147,8 +150,8 @@ def $property_hook_trait_origin(S, ppropertydesc) = (TRAIT_ORIGIN porigin_owner 
   -- if $trait_plan(S, pclassdesc_trait).TRAITS = eps
   -- if ppropertydesc = $trait_data_property(pclassdesc, ppropertydesc_source)
   -- if $property_hook_origin(S, ppropertydesc_source) = (porigin_hook)
-  -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 (SEQUENCE statement*) metadata)
-  -- if $hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME) \/ $property_hook_virtual(S, ppropertydesc_source)
+  -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 phpType39 metadata)
+  -- if $hook_body_backed(phpType39, ppropertydesc.NAME) \/ ($hook_statement_body(phpType39) /\ $property_hook_virtual(S, ppropertydesc_source))
 def $property_hook_trait_origin(S, ppropertydesc) = eps -- otherwise
 def $property_hook_origin(S, ppropertydesc) = $property_hook_trait_origin(S, ppropertydesc)
   -- if ppropertydesc.ORIGIN = TRAIT_MEMBER_ORIGIN porigin_owner porigin_source
@@ -192,8 +195,8 @@ def $property_hook_trait_import_supported(S, pclassdesc, ppropertydesc) = true
   -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ ~pclassdesc.READONLY
   -- if ppropertydesc.ORIGIN = PORIGIN n pcpath
   -- if $property_hook_origin(S, ppropertydesc) = (porigin_hook)
-  -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 (SEQUENCE statement*) metadata)
-  -- if $hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME) \/ $property_hook_virtual(S, ppropertydesc)
+  -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 phpType39 metadata)
+  -- if $hook_body_backed(phpType39, ppropertydesc.NAME) \/ ($hook_statement_body(phpType39) /\ $property_hook_virtual(S, ppropertydesc))
 def $property_hook_trait_import_supported(S, pclassdesc, ppropertydesc) = false -- otherwise
 def $trait_data_property_one(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*) = S[.COMPLETION = UNSUPPORTED "nested, parented or readonly trait property hook import"]
   -- if $ppproperty_desc_at(pclassdesc.PROPERTIES, ppropertydesc.NAME) = eps
