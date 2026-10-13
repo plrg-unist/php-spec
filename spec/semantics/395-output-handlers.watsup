@@ -327,7 +327,6 @@ def $ob_user_api(S, pcallcontext) = (pobinvoke.CALL) -- if $ob_user_context(pcal
 def $ob_user_api(S, pcallcontext) = $ob_user_resume_api(perrorcall.RESUME) -- if $error_context_call(S, pcallcontext) = (perrorcall)
 def $ob_user_api(S, pcallcontext) = eps -- otherwise
 def $error_context_trigger(S, pcallcontext) = (pconfigcall) -- if $ob_user_api(S, pcallcontext) = (pconfigcall)
-def $error_handler_trace_values(S, pcallcontext, pconfigcall) = $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT)) -- if $ob_user_api(S, pcallcontext) = (pconfigcall)
 def $reference_call_frame_site(pcallcontext, pframe) = true -- if pframe.TODO = (OB_USER_RESULT pobinvoke) :: ptask* -- if pcallcontext.CALLSITE = eps /\ pcallcontext.LINE = $(-1)
 def $throwable_continuation(S, S_next) = S_next
   -- if S.TODO = (OB_USER_ENTER pobinvoke) :: ptask_tail*
