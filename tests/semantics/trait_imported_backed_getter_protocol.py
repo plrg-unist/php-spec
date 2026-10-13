@@ -491,8 +491,8 @@ COLLISION = ['$tih_stage(S,6)',
  'ppropertydesc_consumer.VISIBILITY = ppropertydesc_source.VISIBILITY /\\ $property_default_state(S,ppropertydesc_consumer) '
  '= (PROP_VALUE (DIRECT (PINT 100))) /\\ $property_default_state(S,ppropertydesc_source) = (PROP_VALUE (DIRECT (PINT 100)))',
  '$property_hook_source_declared(S,ppropertydesc_source) /\\ ~$property_hook_source_declared(S,ppropertydesc_consumer)',
- '$property_hook_origin(S,ppropertydesc_source) = (porigin_hook_source) /\\ $property_hook_origin(S,ppropertydesc_consumer) '
- '= eps',
+ '$property_hook_origin(S,ppropertydesc_source) = (porigin_hook_source)',
+ '$property_hook_origin(S,ppropertydesc_consumer) = eps',
  '$function_at(S.FUNCTIONS,porigin_hook_source) = (pfunction_source)',
  '$property_hook_trait_function(S,ppropertydesc_consumer) = eps /\\ '
  '$method_named(pclassdesc_consumer.METHODS,$hook_name(ppropertydesc_consumer.NAME)) = eps',
