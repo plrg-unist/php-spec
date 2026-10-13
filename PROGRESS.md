@@ -17,6 +17,9 @@ Five fronts/475 premises,12 raw steps and four production table drops retain the
 separate cuts; original baseline/fixture failures remain0. Hard-fatal shutdown
 roots and wider lifecycle work remain required; full core stays partial.
 [Source-static status ledger](coverage/semantics/source-static-exit-status-review.json).
+The381 composition overf59 passes independent pointwise review atdf505395,
+with accepted runtime/protocol bytes unchanged and parent382/386/391 preserved.
+No new actor or source/state credit is claimed.
 
 Default output buffers391 now route exact echo/print/inline/exit/direct-call bytes
 through nested NULL handlers, whole chunks, capabilities, copied get results,
