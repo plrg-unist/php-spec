@@ -1427,6 +1427,8 @@ Child entry52, inherited Grand54 and write68: 207 reached plus 36 derived.
 The original anticipation-encoding failure and two AL fixture failures remain zero.
 Further plain redeclarations and wider hook/type/reference families remain required.
 [Inherited-getter review](coverage/semantics/plain-child-inherited-backed-get-hook-review.json).
+Joined exact `706af40d`/383; one count-only current init check passes with no application.
+Private cuts remain retained through neutral tick state and disjoint incoming callback/source paths.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
