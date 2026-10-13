@@ -1,5 +1,23 @@
 [
   {
+    "id": "weak-map-notification-sequence-normal-64",
+    "source": "<?php\nclass FirstValue {\n    public function __destruct() {\n        global $keyWeak;\n        echo ($keyWeak->get() === null ? \"first-key-null|\" : \"first-key-live|\");\n        echo \"A|\";\n    }\n}\nclass SecondValue {\n    public function __destruct() {\n        global $keyWeak;\n        echo ($keyWeak->get() === null ? \"second-key-null|\" : \"second-key-live|\");\n        echo \"B|\";\n    }\n}\n$secondMap = new WeakMap();\n$firstMap = new WeakMap();\n$key = new stdClass();\n$first = new FirstValue();\n$second = new SecondValue();\n$firstWeak = WeakReference::create($first);\n$secondWeak = WeakReference::create($second);\n$firstMap[$key] = $first;\n$keyWeak = WeakReference::create($key);\necho \"insert-second|\";\n$secondMap[$key] = $second;\nunset($first);\nunset($second);\necho \"drop-key|\";\nunset($key);\necho ($keyWeak->get() === null ? \"key-null|\" : \"key-live|\");\necho ($firstWeak->get() === null ? \"first-null|\" : \"first-live|\");\necho ($secondWeak->get() === null ? \"second-null|\" : \"second-live|\");\nunset($firstMap);\nunset($secondMap);\necho \"END\";\n",
+    "source_sha256": "134eb6eb08d32341c6030ca94797ff140f45c63152673393c095be26b3797cf8",
+    "stdout": "insert-second|drop-key|first-key-live|A|second-key-null|B|key-null|first-null|second-null|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "weak-map-notification-sequence-throw-64",
+    "source": "<?php\nclass FirstValue {\n    public function __destruct() {\n        global $keyWeak;\n        echo ($keyWeak->get() === null ? \"first-key-null|\" : \"first-key-live|\");\n        echo \"A|\";\n        throw new Exception(\"first cleanup\");\n    }\n}\nclass SecondValue {\n    public function __destruct() {\n        global $keyWeak;\n        echo ($keyWeak->get() === null ? \"second-key-null|\" : \"second-key-live|\");\n        echo \"B|\";\n    }\n}\n$secondMap = new WeakMap();\n$firstMap = new WeakMap();\n$key = new stdClass();\n$first = new FirstValue();\n$second = new SecondValue();\n$firstWeak = WeakReference::create($first);\n$secondWeak = WeakReference::create($second);\n$firstMap[$key] = $first;\n$keyWeak = WeakReference::create($key);\necho \"insert-second|\";\n$secondMap[$key] = $second;\nunset($first);\nunset($second);\necho \"drop-key|\";\ntry {\n    unset($key);\n} catch (Exception $error) {\n    echo \"caught|\";\n}\necho ($keyWeak->get() === null ? \"key-null|\" : \"key-live|\");\necho ($firstWeak->get() === null ? \"first-null|\" : \"first-live|\");\necho ($secondWeak->get() === null ? \"second-null|\" : \"second-live|\");\nunset($firstMap);\nunset($secondMap);\necho \"END\";\n",
+    "source_sha256": "5d445784fadf3e3ac64631110b978ff6d9df7baf4407c60f2c7c334b5765a104",
+    "stdout": "insert-second|drop-key|first-key-live|A|second-key-null|B|caught|key-null|first-null|second-null|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
     "id": "weak-map-ephemeron-observer-63",
     "source": "<?php\nclass EphemeronValue {\n    public $key = null;\n    public function __destruct() {\n        global $map, $keyWeak, $valueWeak;\n        echo ($keyWeak->get() === $this->key ? \"callback-key-live|\" : \"callback-key-other|\");\n        echo ($valueWeak->get() === $this ? \"callback-value-live|\" : \"callback-value-other|\");\n        echo ($map[$this->key] === $this ? \"entry-live|\" : \"entry-other|\");\n        echo \"D|\";\n    }\n}\n$map = new WeakMap();\n$key = new stdClass();\n$value = new EphemeronValue();\n$keyWeak = WeakReference::create($key);\n$valueWeak = WeakReference::create($value);\n$mapWeak = WeakReference::create($map);\n$map[$key] = $value;\n$value->key = $key;\nunset($value, $key);\necho ($keyWeak->get() === null ? \"key-null|\" : \"key-live|\");\necho ($valueWeak->get() === null ? \"value-null|\" : \"value-live|\");\necho \"collect|\";\necho gc_collect_cycles(), \"|\";\necho ($keyWeak->get() === null ? \"key-null|\" : \"key-live|\");\necho ($valueWeak->get() === null ? \"value-null|\" : \"value-live|\");\necho \"again|\";\necho gc_collect_cycles(), \"|\";\necho ($keyWeak->get() === null ? \"key-null|\" : \"key-live|\");\necho ($valueWeak->get() === null ? \"value-null|\" : \"value-live|\");\necho ($mapWeak->get() === $map ? \"map-live|\" : \"map-other|\");\nunset($map);\necho ($mapWeak->get() === null ? \"map-null|\" : \"map-live|\");\necho \"END\";\n",
     "source_sha256": "607816ff8ac0482ed76cb6933dc872906ca689e91277ae001f43226e8d238e28",
