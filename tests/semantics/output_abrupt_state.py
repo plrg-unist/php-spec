@@ -97,7 +97,17 @@ def assertions(name, fixture, directory, path):
                    '$output_at(S_child.OUTPUTBUFFERS, pobinvoke.BUFFER.ID) = (poutputbuffer_child)',
                    r'poutputbuffer_child.FLAGS = 113 /\ poutputbuffer_child.BYTES = ([65])',
                    '~$call_task_valid(S_child, OB_USER_FAIL_ARGS pobinvoke n_pending)',
-                   '~$eager_operation_source_guard(S_child, pdestructionoperation[.COMPLETION = NORMAL])']
+                   '~$eager_operation_source_guard(S_child, pdestructionoperation[.COMPLETION = NORMAL])',
+                   'S_child.FRAMES = pframe :: pframe_tail*',
+                   'pframe.TODO = (DESTRUCTOR_RESULT pdestructorcall_replay) :: (DESTRUCTOR_RELEASE pdestructionrelease_replay) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (OB_USER_FAIL_DONE pobinvoke[.SENT = eps]) :: pobwrite.TAIL',
+                   'S_frame = $constant_frame_scope(S_child, pframe, pframe_tail*)',
+                   'S_tasks = $destructor_saved_frame_scope($api_saved_frame_scope($parameter_string_frame_scope(S_frame, pframe, pframe_tail*), pframe, pframe_tail*), pframe)',
+                   'S_replay = $call_after_origin($call_after_origin($call_after_origin(S_tasks, DESTRUCTOR_RESULT pdestructorcall_replay), DESTRUCTOR_RELEASE pdestructionrelease_replay), DESTRUCTOR_OPERATION_EXIT pdestructionoperation)',
+                   'S_replay.DESTRUCTION.OPERATIONS = eps',
+                   '$ob_user_failure_replay_pending(S_replay, S_replay.TODO, pobinvoke[.SENT = eps]) = (n_pending)',
+                   '$ob_user_failure_replay_pending(S_replay, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation[.ORIGIN = eps]) :: (OB_USER_FAIL_DONE pobinvoke[.SENT = eps]) :: pobwrite.TAIL, pobinvoke[.SENT = eps]) = eps',
+                   '$ob_user_failure_replay_pending(S_replay, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (OB_USER_FAIL_DONE pobinvoke[.SENT = eps]) :: eps, pobinvoke[.SENT = eps]) = eps',
+                   '$ob_user_failure_replay_pending(S_replay, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation[.COMPLETION = NORMAL]) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (OB_USER_FAIL_DONE pobinvoke[.SENT = eps]) :: pobwrite.TAIL, pobinvoke[.SENT = eps]) = eps']
     else:
         task = 'OUTPUT_FAIL_WRITE' if name == 'pending-lower' else 'OUTPUT_FAIL_FINISH'
         checks += ['S_reached.TODO = (' + task + ' pobwrite n_pending) :: ptask_tail*',

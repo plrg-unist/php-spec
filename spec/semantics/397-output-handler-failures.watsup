@@ -6,7 +6,9 @@ dec $ob_user_failure_frame(pframe*, pobwrite) : bool
 dec $ob_user_failure_context(pstate, pobwrite) : bool
 dec $ob_user_failure_live(pstate, pobinvoke) : bool
 dec $ob_user_failure_current(pstate, pobinvoke) : bool
-dec $ob_user_failure_pending(pstate) : nat?
+dec $ob_user_failure_pending(pstate, pobinvoke) : nat?
+dec $ob_user_failure_replay_pending(pstate, ptask*, pobinvoke) : nat?
+dec $ob_user_failure_exit_task(ptask) : bool
 dec $output_failure_valid(pstate, pobwrite, nat) : bool
 dec $output_failure_next(pstate, pobwrite, nat, preqbytes) : pstate
 dec $output_failure_buffer(poutputbuffer) : poutputbuffer
@@ -37,12 +39,31 @@ def $ob_user_failure_live(S, pobinvoke) = false -- otherwise
 def $ob_user_failure_current(S, pobinvoke) = (S.CURRENT = pobwrite.CONTEXT /\ S.ORIGIN = ($output_caller_site(pobwrite.CALLER)))
   -- if pobinvoke.CALL = OB_WRITE pobwrite
 def $ob_user_failure_current(S, pobinvoke) = false -- otherwise
-def $ob_user_failure_pending(S) = $eager_operation_pending(S)
+def $ob_user_failure_pending(S, pobinvoke) = $eager_operation_pending(S)
   -- if $eager_operation_pending(S) =/= eps
-def $ob_user_failure_pending(S) = pdestructionoperation.PENDING
+def $ob_user_failure_pending(S, pobinvoke) = pdestructionoperation.PENDING
   -- if $eager_operation_pending(S) = eps
   -- if $destructor_operation_for(S) = (pdestructionoperation)
-def $ob_user_failure_pending(S) = eps -- otherwise
+;; Saved-frame validation projects EXIT before checking DONE. The original
+;; TODO still certifies that exact cleanup and its actual pending Throwable.
+def $ob_user_failure_pending(S, pobinvoke) = $ob_user_failure_replay_pending(S, S.TODO, pobinvoke)
+  -- if $eager_operation_pending(S) = eps
+  -- if $destructor_operation_for(S) = eps
+def $ob_user_failure_replay_pending(S, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (OB_USER_FAIL_DONE pobinvoke) :: ptask_tail*, pobinvoke) = (n)
+  -- if pdestructionoperation.SOURCE = OB_USER_FAIL_ARGS pobinvoke_original n_original
+  -- if pobinvoke = pobinvoke_original[.SENT = eps]
+  -- if pobinvoke.CALL = OB_WRITE pobwrite
+  -- if ptask_tail* = pobwrite.TAIL
+  -- if pdestructionoperation.PENDING = (n)
+  -- if pdestructionoperation.CLEANUP = eps
+  -- if pdestructionoperation.CALLER = S.CURRENT
+  -- if pdestructionoperation.ORIGIN = S.ORIGIN
+  -- if $eager_operation_source_guard(S, pdestructionoperation) /\ $throwable_live(S, n)
+def $ob_user_failure_replay_pending(S, ptask :: ptask_tail*, pobinvoke) = $ob_user_failure_replay_pending(S, ptask_tail*, pobinvoke)
+  -- if ~$ob_user_failure_exit_task(ptask)
+def $ob_user_failure_replay_pending(S, ptask*, pobinvoke) = eps -- otherwise
+def $ob_user_failure_exit_task(DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = true
+def $ob_user_failure_exit_task(ptask) = false -- otherwise
 
 def $output_task_write(OB_USER_FAIL_ARGS pobinvoke n) = $output_call_write(pobinvoke.CALL)
 def $output_task_write(OB_USER_FAIL_DONE pobinvoke) = $output_call_write(pobinvoke.CALL)
@@ -58,7 +79,7 @@ def $task_nodes(OB_USER_FAIL_COMMIT pobinvoke n) = $ob_user_nodes(pobinvoke) ++ 
 def $task_nodes(OUTPUT_FAIL_WRITE pobwrite n) = $output_write_nodes(pobwrite) ++ [HOBJECT n]
 def $task_nodes(OUTPUT_FAIL_FINISH pobwrite n) = $output_write_nodes(pobwrite) ++ [HOBJECT n]
 def $call_task_valid(S, OB_USER_FAIL_ARGS pobinvoke n) = ($ob_user_failure_live(S, pobinvoke) /\ $ob_user_failure_current(S, pobinvoke) /\ |pobinvoke.SENT| = 2 /\ $ob_user_sent_valid(S, pobinvoke, pobinvoke.SENT, 0) /\ $throwable_live(S, n))
-def $call_task_valid(S, OB_USER_FAIL_DONE pobinvoke) = ($ob_user_failure_live(S, pobinvoke) /\ $ob_user_failure_current(S, pobinvoke) /\ pobinvoke.SENT = eps /\ $ob_user_failure_pending(S) =/= eps)
+def $call_task_valid(S, OB_USER_FAIL_DONE pobinvoke) = ($ob_user_failure_live(S, pobinvoke) /\ $ob_user_failure_current(S, pobinvoke) /\ pobinvoke.SENT = eps /\ $ob_user_failure_pending(S, pobinvoke) =/= eps)
 def $call_task_valid(S, OB_USER_FAIL_COMMIT pobinvoke n) = ($ob_user_failure_live(S, pobinvoke) /\ $ob_user_failure_current(S, pobinvoke) /\ pobinvoke.SENT = eps /\ $throwable_live(S, n))
 
 def $ob_user_result_discard(S, pobinvoke) = S[.TODO = (OB_USER_FAIL_ARGS pobinvoke n) :: ptask_tail*]
