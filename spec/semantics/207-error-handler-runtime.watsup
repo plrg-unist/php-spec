@@ -102,8 +102,30 @@ def $error_level_name(1024) = "Notice"
 def $error_level_name(8192) = "Deprecated"
 def $error_level_name(16384) = "Deprecated"
 def $error_user_deprecation() = $ptascii("Passing E_USER_ERROR to trigger_error() is deprecated since 8.4, throw an exception or call exit with a string message instead")
+dec $recorded_runtime_pending(pstate, int) : bool
+def $recorded_runtime_pending(S, 256) = true
+  -- if ~$eval_compile_recorded_error(S, 256)
+  -- if S.TODO = (ERROR_TRIGGER_PHASE pconfigcall 1) :: ptask_tail*
+  -- if $call_task_valid(S, ERROR_TRIGGER_PHASE pconfigcall 1)
+  -- if $error_trigger_level(S, pconfigcall) = (256)
+  -- if $recorded_compile_at(S.DECLARATIONS, S.RECORDEDCOMPILEERROR) = ((FATAL ptbytes z, porigin?))
+def $recorded_runtime_pending(S, i) = false -- otherwise
+dec $recorded_runtime_fatal(pstate, pconfigcall) : pstate
+def $recorded_runtime_fatal(S, pconfigcall) = S_clear[.TODO = eps][.COMPLETION = pcompletion][.ERRORORIGIN = porigin?][.TRACE = S_trace.ERRORFATALTRACE][.ERRORFATALTRACE = eps]
+  -- if $recorded_runtime_pending(S, 256)
+  -- if S.TODO = (ERROR_TRIGGER_PHASE pconfigcall 1) :: ptask_tail*
+  -- if $recorded_runtime_site(S, pconfigcall.SITE)
+  -- if S.RECORDEDCOMPILEERROR = (n_record)
+  -- if $recorded_compile_at(S.DECLARATIONS, (n_record)) = ((pcompletion, porigin?))
+  -- if S_trace = $error_trace_capture(S, 256, ERROR_TRIGGER_PHASE pconfigcall 1)
+  -- if S_clear = $recorded_runtime_append(S_trace, pconfigcall.SITE, n_record)
+def $recorded_runtime_fatal(S, pconfigcall) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "recorded fatal call selection"] -- otherwise
+def $error_dispatch(S, 256, n_message*, z, pevent, ptask_resume) = $recorded_runtime_fatal(S, pconfigcall)
+  -- if $recorded_runtime_pending(S, 256)
+  -- if S.TODO = (ERROR_TRIGGER_PHASE pconfigcall 1) :: ptask_tail*
 def $error_dispatch(S, i, n_message*, z, pevent, ptask_resume) = S_trace[.TODO = (ERROR_HANDLER_INVOKE {SITE porigin, LEVEL i, MESSAGE n_message*, LINE z, EVENT pevent, CALLBACK pvalue, TARGET eps, RESUME ptask_resume}) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if ~$eval_compile_recorded_error(S, i)
+  -- if ~$recorded_runtime_pending(S, i)
   -- if S_trace = $error_trace_capture(S, i, ptask_resume)
   -- if $error_handler_eligible(S, i)
   -- if S.SOURCEPENDING = eps
@@ -112,6 +134,7 @@ def $error_dispatch(S, i, n_message*, z, pevent, ptask_resume) = S_trace[.TODO =
   -- if S.TODO = ptask :: ptask_tail*
 def $error_dispatch(S, i, n_message*, z, pevent, ptask_resume) = $error_default(S_trace[.TODO = ptask_resume :: ptask_tail*], pevent, i)
   -- if ~$eval_compile_recorded_error(S, i)
+  -- if ~$recorded_runtime_pending(S, i)
   -- if S_trace = $error_trace_capture(S, i, ptask_resume)
   -- if ~$error_handler_eligible(S, i)
   -- if S.TODO = ptask :: ptask_tail*

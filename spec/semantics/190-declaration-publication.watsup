@@ -89,6 +89,22 @@ def $recorded_compile_origin(S, n) = S.ERRORORIGIN
   -- if $recorded_compile_cutoff(S.DECLARATIONS) = ((n, S.COMPLETION, S.ERRORORIGIN))
 def $recorded_compile_origin(S, n) = $compiled_error_origin(S.ERRORORIGIN, S.COMPLETION, n) -- otherwise
 
+;; Runtime drain records its actual source producer, not a compiler cutoff.
+dec $recorded_runtime_site(pstate, porigin) : bool
+def $recorded_runtime_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
+  -- if $exit_fixed(S, porigin) = ((preqbytes, preqbytes_fallback?))
+  -- if $call_target(S, preqbytes, preqbytes_fallback?) = eps
+  -- if $intrinsic_lookup(preqbytes, preqbytes_fallback?) = (pintrinsic)
+  -- if pintrinsic = INTRINSIC_TRIGGER_ERROR \/ pintrinsic = INTRINSIC_USER_ERROR
+def $recorded_runtime_site(S, porigin) = false -- otherwise
+dec $recorded_runtime_append(pstate, porigin, nat) : pstate
+dec $recorded_runtime_cutoff(pdeclaration*) : (porigin, pdeclcause, nat)?
+def $recorded_runtime_cutoff([PDRECORDEDFATAL porigin pdeclcause n]) = ((porigin, pdeclcause, n))
+def $recorded_runtime_cutoff(pdeclaration :: pdeclaration_tail*) = $recorded_runtime_cutoff(pdeclaration_tail*)
+  -- if pdeclaration_tail* =/= eps
+def $recorded_runtime_cutoff(pdeclaration*) = eps -- otherwise
+
 ;; Default entries keep their original spelling. Both forms are one entry event.
 def $declaration_entry_input(PDENTER n porigin? z, n) = ((porigin?, z, 14))
 def $declaration_entry_input(PDENTERPRECISION n porigin? z z_precision, n) = ((porigin?, z, z_precision))
@@ -141,6 +157,8 @@ def $declaration_context(S, pcallcontext?) = eps -- otherwise
 def $declaration_frames(S, eps) = eps
 def $declaration_frames(S, pframe :: pframe_tail*) = $declaration_context(S, pframe.CONTEXT) ++ $declaration_frames(S, pframe_tail*)
 def $declaration_cause(S) = { UNIT $pmmax($declaration_eval_unit(S.EVALCONTEXTS, |S.FRAMES|), $declaration_file_unit(S.FILECONTEXTS, |S.FRAMES|)), CALLS ($declaration_context(S, S.CURRENT) ++ $declaration_frames(S, S.FRAMES)), AUTOLOAD $declaration_autoload(S) }
+
+def $recorded_runtime_append(S, porigin, n) = S[.RECORDEDCOMPILEERROR = eps][.DECLARATIONS = S.DECLARATIONS ++ [PDRECORDEDFATAL porigin $declaration_cause(S) n]]
 
 dec $declaration_success(pstate, pstate, porigin, ppubkind) : pstate
 def $declaration_success(S, S_published, PORIGIN n pcpath, PPCLASS) = S_published[.DECLARATIONS = S.DECLARATIONS ++ [PDECLASS n (PORIGIN n pcpath)]]

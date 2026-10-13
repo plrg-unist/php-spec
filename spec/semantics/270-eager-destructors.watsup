@@ -900,6 +900,14 @@ def $eager_fatal_cursor_history(S, pdestructionfatal) = S[.DECLARATIONS = pdecla
   -- if pdestructionfatal.COMPILESTOP
   -- if pdestructionfatal.FRAME.TODO = (EVAL_COMPILE_RESUME pevalcompile) :: ptask_tail*
   -- if $eager_fatal_resume_prefix(pdestructionfatal.DECLARATIONS, pevalcompile.PLAN.UNIT) = (pdeclaration_prefix*)
+def $eager_fatal_cursor_history(S, pdestructionfatal) = S[.DECLARATIONS = pdeclaration_prefix*][.RECORDEDCOMPILEERROR = (n_record)]
+  -- if ~pdestructionfatal.COMPILESTOP
+  -- if pdestructionfatal.COMPLETION = FATAL ptbytes z
+  -- if pdestructionfatal.FRAME.TODO = (ERROR_TRIGGER_PHASE pconfigcall 1) :: ptask_tail*
+  -- if $recorded_runtime_cutoff(pdestructionfatal.DECLARATIONS) = ((pconfigcall.SITE, pdeclcause, n_record))
+  -- if $(|pdestructionfatal.DECLARATIONS| > 0)
+  -- if n_prefix = $nabs($(|pdestructionfatal.DECLARATIONS| - 1))
+  -- if pdeclaration_prefix* = pdestructionfatal.DECLARATIONS[0:n_prefix]
 def $eager_fatal_cursor_history(S, pdestructionfatal) = S -- otherwise
 ;; A retired cursor can precede a precision image refresh. Its plan is proved
 ;; from that source prefix; live compiler images use the full chronology below.
@@ -979,6 +987,9 @@ def $eager_fatal_replay(S) = ($api_after_class(S, papiquery))
 def $eager_fatal_replay(S) = ($api_after_method(S, papiquery))
   -- if S.TODO = (API_CALLABLE_RESULT papiquery 1) :: ptask_tail*
   -- if $call_task_valid(S, API_CALLABLE_RESULT papiquery 1)
+def $eager_fatal_replay(S) = ($recorded_runtime_fatal(S, pconfigcall))
+  -- if S.TODO = (ERROR_TRIGGER_PHASE pconfigcall 1) :: ptask_tail*
+  -- if $recorded_runtime_pending(S, 256)
 def $eager_fatal_replay(S) = eps -- otherwise
 def $eager_fatal_source_valid(S, INTERNALFATAL ptbytes b) = true
   -- if S.TODO = ptask :: ptask_tail*
@@ -1045,6 +1056,28 @@ def $eager_fatal_compiler_valid(S, pdestructioncleanup, pdestructionfatal) = tru
   -- if S_proof = S_history[.DECLARATIONS = S.DECLARATIONS][.EVALCONTEXTS = S.EVALCONTEXTS][.FILECONTEXTS = S.FILECONTEXTS][.TODO = eps][.FRAMES = eps][.COMPLETION = S.COMPLETION][.ERRORORIGIN = S.ERRORORIGIN][.REPORTING = S.REPORTING][.COMPILESTOP = pdestructionfatal.COMPILESTOP][.DESTRUCTION.PHASE = DESTRUCTION_PENDING][.DESTRUCTION.ABANDONED = S.DESTRUCTION.ABANDONED][.SHUTDOWN.PHASE = SHUTDOWN_PENDING][.SHUTDOWN.COMPLETION = NORMAL]
   -- if $declaration_history_valid(S_proof)
 def $eager_fatal_compiler_valid(S, pdestructioncleanup, pdestructionfatal) = false -- otherwise
+dec $recorded_runtime_snapshot_required(pdestructionfatal) : bool
+def $recorded_runtime_snapshot_required(pdestructionfatal) = true
+  -- if ~pdestructionfatal.COMPILESTOP
+  -- if pdestructionfatal.COMPLETION = FATAL ptbytes z
+  -- if pdestructionfatal.FRAME.TODO = (ERROR_TRIGGER_PHASE pconfigcall 1) :: ptask_tail*
+def $recorded_runtime_snapshot_required(pdestructionfatal) = false -- otherwise
+dec $recorded_runtime_snapshot_valid(pstate, pstate, pdestructionfatal) : bool
+def $recorded_runtime_snapshot_valid(S, S_history, pdestructionfatal) = true
+  -- if ~$recorded_runtime_snapshot_required(pdestructionfatal)
+def $recorded_runtime_snapshot_valid(S, S_history, pdestructionfatal) = true
+  -- if $recorded_runtime_snapshot_required(pdestructionfatal)
+  -- if $(|pdestructionfatal.DECLARATIONS| <= |S.DECLARATIONS|)
+  -- if pdestructionfatal.DECLARATIONS = S.DECLARATIONS[0:|pdestructionfatal.DECLARATIONS|]
+  -- if pdestructionfatal.FRAME.TODO = (ERROR_TRIGGER_PHASE pconfigcall 1) :: ptask_tail*
+  -- if $recorded_runtime_cutoff(pdestructionfatal.DECLARATIONS) = ((pconfigcall.SITE, pdeclcause, n_record))
+  -- if $declaration_cause(S_history) = pdeclcause
+  -- if S_history.RECORDEDCOMPILEERROR = (n_record)
+  -- if S_after = $recorded_runtime_fatal(S_history, pconfigcall)
+  -- if S_after.DECLARATIONS = pdestructionfatal.DECLARATIONS
+  -- if S_after.COMPLETION = pdestructionfatal.COMPLETION /\ S_after.ERRORORIGIN = pdestructionfatal.ERRORORIGIN
+  -- if S_after.TRACE = pdestructionfatal.TRACE /\ S_after.ERRORFATALTRACE = pdestructionfatal.ERRORTRACE
+def $recorded_runtime_snapshot_valid(S, S_history, pdestructionfatal) = false -- otherwise
 def $eager_fatal_valid(S, pdestructioncleanup, pdestructionfatal) = true
   -- if pdestructioncleanup.SOURCE = DESTRUCTOR_FATAL pdestructionfatal
   -- if pdestructioncleanup <- S.DESTRUCTION.ABANDONED
@@ -1056,6 +1089,7 @@ def $eager_fatal_valid(S, pdestructioncleanup, pdestructionfatal) = true
   -- if $heap_subset($eager_fatal_nodes(pdestructionfatal), S.ALLOCATIONS)
   -- if $eager_fatal_handler_bounds(S, pdestructionfatal.HANDLERS)
   -- if S_history = $eager_fatal_history(S, pdestructionfatal)
+  -- if $recorded_runtime_snapshot_valid(S, S_history, pdestructionfatal)
   -- if pdestructionfatal.HANDLERS = $eager_fatal_handler_frames(S_history, pdestructionfatal.FRAME :: pdestructionfatal.FRAMES)
   -- if $eager_fatal_ready(S_history, pdestructionfatal.COMPLETION)
   -- if $eager_fatal_target(S_history) = (pdestructioncleanup.TARGET.TARGET)
