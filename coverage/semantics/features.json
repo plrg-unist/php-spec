@@ -16123,15 +16123,27 @@
     {
       "id": "diagnostics.compile-fatal",
       "milestone": "3a-5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend.c"
+      "implementation": [
+        "spec/semantics/160-eval-runtime.watsup",
+        "spec/semantics/171-include-runtime.watsup",
+        "spec/semantics/195-declaration-history.watsup",
+        "spec/semantics/231-shutdown-functions.watsup",
+        "spec/semantics/270-eager-destructors.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/source_redeclare_fatal_protocol.py"
+      ],
+      "source_tests": [
+        "coverage/semantics/source-redeclare-fatal-review.json"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend.c",
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/main/main.c"
+      ],
+      "review": "Nested eval/file function redeclaration retains an authenticated compiler-fatal cutoff while shutdown callbacks enter fresh eval/file units. Full history uses current waiting contexts, completion and reporting; captured prefix/raw tuple/FROZEN and interrupted source-owner checks remain separate. Four exact native/checked source tuples and two genuine public groups218 are recorded in source-redeclare-fatal-review.json. Existing static retention, destructor flags/rendering/status policy are reused. Wider compiler/static fatal and warning/callback/precision combinations remain required."
     },
     {
       "id": "dynamic.eval-mode",
@@ -16295,15 +16307,18 @@
         "spec/semantics/160-eval-runtime.watsup",
         "spec/semantics/152-throwable-runtime.watsup",
         "spec/semantics/184-class-constants.watsup",
-        "spec/semantics/195-declaration-history.watsup"
+        "spec/semantics/195-declaration-history.watsup",
+        "spec/semantics/270-eager-destructors.watsup"
       ],
       "helper_tests": [
         "tests/semantics/eval_protocol.py",
-        "tests/semantics/eval_location_protocol.py"
+        "tests/semantics/eval_location_protocol.py",
+        "tests/semantics/source_redeclare_fatal_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/eval_execution.py",
-        "tests/semantics/include_execution.py"
+        "tests/semantics/include_execution.py",
+        "coverage/semantics/source-redeclare-fatal-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c",
@@ -16311,7 +16326,7 @@
         "coverage/semantics/eval-scope-followup-author.json",
         "coverage/semantics/compound-eval-location-review.json"
       ],
-      "review": "Checked dynamic-source execution retains actual eval scope, source units and one-shot parser continuations; earlier cutoffs remain in dynamic-eval-author.json and eval-scope-followup-author.json. Compound initializer eval creation retains authenticated filename owner/root/child separately from actual lexical scope and SITE, including retired bindings, rebound Closure units, private emitter scope and inherited static defaults. Genuine compiler ParseError/CompileError allocation uses its failed unit; runtime-created exceptions keep execution override. Five original source agreements/81 controls and separate current219 source1/214 compilation at2c0c retain their actual cutoffs. Wider initializer/callback/compile-warning consumers remain open; see compound-eval-location-review.json. Private-final severity128 versus eligible warning2/deprecation8192 now passes two new exact originals and231 source-frontier checks plus10 pure projections at dec3e9968/371; shared-Throwable source cleanup skips body/assignment. Broader compile-warning consumers remain required; compiler-warning-severity-review.json keeps the initial mismatch separate. Unknown literal declare names now emit ordered E_COMPILE_WARNING (128) with original spelling/first-item line and compile/execute optional nested bodies. Two fresh eval originals, strict3 and 228 source-frontier/guard checks plus six pure exclusions pass at 713be74f4 /373. Ticks/encoding, wider literal and body/publication contexts remain required; compiler-declare-review.json preserves the compile-stage Unsupported0 and earlier strict cuts."
+      "review": "Checked dynamic-source execution retains actual eval scope, source units and one-shot parser continuations; earlier cutoffs remain in dynamic-eval-author.json and eval-scope-followup-author.json. Compound initializer eval creation retains authenticated filename owner/root/child separately from actual lexical scope and SITE, including retired bindings, rebound Closure units, private emitter scope and inherited static defaults. Genuine compiler ParseError/CompileError allocation uses its failed unit; runtime-created exceptions keep execution override. Five original source agreements/81 controls and separate current219 source1/214 compilation at2c0c retain their actual cutoffs. Wider initializer/callback/compile-warning consumers remain open; see compound-eval-location-review.json. Private-final severity128 versus eligible warning2/deprecation8192 now passes two new exact originals and231 source-frontier checks plus10 pure projections at dec3e9968/371; shared-Throwable source cleanup skips body/assignment. Broader compile-warning consumers remain required; compiler-warning-severity-review.json keeps the initial mismatch separate. Unknown literal declare names now emit ordered E_COMPILE_WARNING (128) with original spelling/first-item line and compile/execute optional nested bodies. Two fresh eval originals, strict3 and 228 source-frontier/guard checks plus six pure exclusions pass at 713be74f4 /373. Ticks/encoding, wider literal and body/publication contexts remain required; compiler-declare-review.json preserves the compile-stage Unsupported0 and earlier strict cuts. Function-redeclaration compiler cutoffs now admit fresh shutdown eval/file entries using current lookup/completion/reporting while independently authenticating the failed prefix/raw snapshot and source owner; source-redeclare-fatal-review.json records the separate source/public cut."
     },
     {
       "id": "dynamic.include",
@@ -18512,7 +18527,8 @@
         "tests/semantics/eager_fatal_state_review.py",
         "tests/semantics/source_static_fatal_protocol.py",
         "tests/semantics/source_static_fatal_status_protocol.py",
-        "tests/semantics/source_static_fatal_observer_protocol.py"
+        "tests/semantics/source_static_fatal_observer_protocol.py",
+        "tests/semantics/source_redeclare_fatal_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/shutdown_functions.py",
@@ -18527,7 +18543,8 @@
         "tests/semantics/eager_fatal_review_cases.json",
         "coverage/semantics/source-static-fatal-review.json",
         "coverage/semantics/source-static-fatal-status-review.json",
-        "coverage/semantics/source-static-fatal-observer-review.json"
+        "coverage/semantics/source-static-fatal-observer-review.json",
+        "coverage/semantics/source-redeclare-fatal-review.json"
       ],
       "evidence": [
         "vendor/php-src/ext/standard/basic_functions.c",
@@ -18543,7 +18560,7 @@
         "coverage/semantics/eager-destructors-review.json",
         "coverage/semantics/eager-destructor-review.json"
       ],
-      "review": "231 caches accepted ordinary source callable families and copied arguments after all SEND effects, preserving private/rebound permission, selected receivers and embedded array references. Ordered weak C calls run after normal/exit/fatal and serviced compiler stops; append, handled throw, callback exit, authentic warning continuation, exact original/converted arguments and ownership remain distinct. Diagnostics freeze after renderer callbacks and before queue entry. Wider callable dependencies, GC, output and later freeing remain required; queue entries stay owned through DONE and complete request cleanup is not claimed. User formatter overrides use existing176 calls; handled throws retain the original C continuation, and actual237 destinations freeze after rendering. Author29 source tuples and three/149 state checks retain separate cuts; independent coverage is recorded in its ledger. Actual228 caches retired imported-maker permission; actual240 default effects keep their owners. Runtime/compile severity is captured before callback reporting writes, with distinct native mask controls. Request-stage destructors257 follow the queue and are reviewed separately; shutdown entries remain owned until later freeing. Module270 orders frozen fatal emission, original-Throwable release, then stage1; native abandoned C receiver owners survive bailout into stage2. Parser-backed USERFATAL now captures the actual source origin and retires execution contexts through an authenticated fatal snapshot, even without transient frame roots. Static cells retain their existing bailout roots; shutdown source reentry and new-object destruction reuse the established retention/destructor policy. source-static-fatal-review.json records exact source and public-origin/END checks. Hard bailout257 now sets request EXITSTATUS255 before shutdown; direct callback strings preserve it while integer/default exits overwrite it and skip later callbacks. source-static-fatal-status-review.json records separate exact sources and genuine public status fronts. Frozen fatal completion now observes request status after caught shutdown-exit replacement while callbacks continue. Fresh fatal reporting writes255 in both displayed/suppressed branches; frozen passthrough preserves resets. source-static-fatal-observer-review.json records the distinct source/public cut without altering lifetime policy. Wider fatal/compiler and later freeing behavior remains partial."
+      "review": "231 caches accepted ordinary source callable families and copied arguments after all SEND effects, preserving private/rebound permission, selected receivers and embedded array references. Ordered weak C calls run after normal/exit/fatal and serviced compiler stops; append, handled throw, callback exit, authentic warning continuation, exact original/converted arguments and ownership remain distinct. Diagnostics freeze after renderer callbacks and before queue entry. Wider callable dependencies, GC, output and later freeing remain required; queue entries stay owned through DONE and complete request cleanup is not claimed. User formatter overrides use existing176 calls; handled throws retain the original C continuation, and actual237 destinations freeze after rendering. Author29 source tuples and three/149 state checks retain separate cuts; independent coverage is recorded in its ledger. Actual228 caches retired imported-maker permission; actual240 default effects keep their owners. Runtime/compile severity is captured before callback reporting writes, with distinct native mask controls. Request-stage destructors257 follow the queue and are reviewed separately; shutdown entries remain owned until later freeing. Module270 orders frozen fatal emission, original-Throwable release, then stage1; native abandoned C receiver owners survive bailout into stage2. Parser-backed USERFATAL now captures the actual source origin and retires execution contexts through an authenticated fatal snapshot, even without transient frame roots. Static cells retain their existing bailout roots; shutdown source reentry and new-object destruction reuse the established retention/destructor policy. source-static-fatal-review.json records exact source and public-origin/END checks. Hard bailout257 now sets request EXITSTATUS255 before shutdown; direct callback strings preserve it while integer/default exits overwrite it and skip later callbacks. source-static-fatal-status-review.json records separate exact sources and genuine public status fronts. Frozen fatal completion now observes request status after caught shutdown-exit replacement while callbacks continue. Fresh fatal reporting writes255 in both displayed/suppressed branches; frozen passthrough preserves resets. source-static-fatal-observer-review.json records the distinct source/public cut without altering lifetime policy. Redeclaration compiler cutoffs now retain full current history through fresh shutdown eval/file entries, including changed reporting and real named callers; source-redeclare-fatal-review.json records the admission repair without changing lifetime policy. Wider fatal/compiler and later freeing behavior remains partial."
     },
     {
       "id": "lifecycle.exit-unwind",

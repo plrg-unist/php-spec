@@ -7,6 +7,15 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Redeclaration compiler fatals now admit fresh shutdown eval/file sources through
+full declaration-history authentication. Current waiting contexts, completion and
+reporting stay separate from the saved failed prefix/raw snapshot and source owner.
+Module270/protocol86611341e /384 keeps four exact source tuples and two genuine
+public groups/218 premises at28138624. No raw projections or lifetime policy changes;
+original baseline, lookup diagnostics and fixture-name failure retain zero credit.
+Wider compiler/fatal/source lifecycle remains partial.
+[Redeclaration-fatal ledger](coverage/semantics/source-redeclare-fatal-review.json).
+
 Handler-local cleanup Throwables now cancel named inc/dec warning-handler exit,
 restore safe captured bool/decrement-null values (strings retain writes), and resume
 real caller catch/finally without delivering the interrupted result. Supplied identity,

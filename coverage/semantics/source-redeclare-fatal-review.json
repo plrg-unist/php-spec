@@ -1,0 +1,115 @@
+{
+  "version": 1,
+  "status": "private-reviewed",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+  "implementation": {
+    "base": "214ae54e885a579f8911a92c8f76623f73c6fb90",
+    "commit": "86611341eec690b6a61d8898ab8f13553cae2dda",
+    "modules": 384,
+    "tested_diff_sha256": "281386244f927969dd9aca198fd17891d6de95cc80c8a44490dd9c61bbeb7f2d",
+    "files_sha256": {
+      "spec/semantics/270-eager-destructors.watsup": "9fbe00c4bb11a55ed208b2102d8c5419224d5962eacf97f21bb107820a20facf",
+      "tests/semantics/source_redeclare_fatal_protocol.py": "a0b18db4fe9a8b514ad08a66712c9f480aeb40e5ec12d33ceddf077a350901a4"
+    }
+  },
+  "behavior": [
+    "A function-redeclaration compiler fatal in nested eval/file code retains its authenticated cutoff while named shutdown callbacks enter fresh eval/file units.",
+    "Compiler proof replays full current declaration history with current waiting contexts, completion and reporting; saved execution/readiness, exact failed prefix/raw tuple/FROZEN and singleton certificate remain separately checked. Ambient queue authority remains disabled in that proof.",
+    "The unchanged baseline already retained the outer static object and rendered the exact fatal stderr. The measured delta repairs parser-response refusal; table ownership, interrupted-object flags, new-object destruction and status policy are unchanged."
+  ],
+  "engine": [
+    "Zend/zend_compile.c:do_bind_function and zend_error_noreturn supply the redeclaration cutoff",
+    "main/main.c:php_error_cb fatal bailout skips ordinary temporary-code retirement; existing objects are marked before shutdown",
+    "main/main.c:php_request_shutdown and ext/standard/basic_functions.c:php_call_shutdown_functions execute the queue after bailout"
+  ],
+  "validation": {
+    "sources": {
+      "author": {
+        "report": ".tools/dynamic-source-statics-redeclare-model-13/report.json",
+        "ids": [
+          "eval-inner-redeclare-retained-static"
+        ],
+        "count": 1
+      },
+      "independent": {
+        "report": ".tools/dynamic-review-02/redeclare-model-v1/report.json",
+        "ids": [
+          "file-inner-redeclare-retained-static",
+          "named-file-eval-redeclare-retained-static",
+          "redeclare-shutdown-file-wait-reporting-zero"
+        ],
+        "count": 3
+      },
+      "unique_full_agreements": 4,
+      "tuple": "checked accepted/program php_error255; exact original native stdout B|S|alive|5|5|N| and complete stderr",
+      "cuts": "All four at the same tested270 diff28138624/214ae/full384; original byte/CWD/snapshot/profile/runtime/command/exit pins stay in raw reports."
+    },
+    "states": {
+      "reports": [
+        ".tools/dynamic-source-statics-redeclare-state-02/check-2-report.json",
+        ".tools/dynamic-source-statics-redeclare-state-02/check-3-report.json"
+      ],
+      "groups": [
+        {
+          "id": "eval-wait",
+          "premises": 102
+        },
+        {
+          "id": "file-wait",
+          "premises": 116
+        }
+      ],
+      "total_premises": 218,
+      "raw_step_projections": 0,
+      "checks": "Two real main/outer1/failed2 chains reach pending3, accept source3, reach pending4 and finish. Whole public/declaration/heap positives, current waiting UNIT/SITE/reporting and response negatives, and captured prefix/raw/FROZEN/location forgeries remain distinct. Projection views are never executed. File open and checked parse resumes use original finite facts.",
+      "lifetime": "Old static/WeakReference roots remain alive with old destructor suppressed; native source tuples also observe new shutdown-object destruction. This reuses existing policy."
+    },
+    "bounds": "CLI model60/process90; full384 SL90 per group; serial stop-first, stable and reaped. No earlier accepted campaign is renewed.",
+    "zero_credit": [
+      {
+        "report": ".tools/dynamic-source-statics-redeclare-baseline-10/report.json",
+        "reason": "unchanged model Unsupported invalid eval parser response at B|S|alive|; full fatal stderr and root retention already matched"
+      },
+      {
+        "reports": [
+          ".tools/dynamic-source-statics-redeclare-diagnosis-11/prepare-report.json",
+          ".tools/dynamic-source-statics-redeclare-diagnosis-11/run-report.json",
+          ".tools/dynamic-source-statics-redeclare-proof-12/report.json"
+        ],
+        "reason": "checked fixture preparation and genuine lookup-only diagnostics32 and6; no native/source/public credit"
+      },
+      {
+        "reports": [
+          ".tools/dynamic-source-statics-redeclare-state-01/fixtures-report.json",
+          ".tools/dynamic-source-statics-redeclare-state-02/fixtures-report.json"
+        ],
+        "reason": "fixture preparation only"
+      },
+      {
+        "report": ".tools/dynamic-source-statics-redeclare-state-01/check-report.json",
+        "reason": "whole first102 stopped before runtime on undeclared digit-attached pevalcontext3; file116 unrun. Only context aliases changed in fresh state02, all102/116 checks unchanged."
+      }
+    ]
+  },
+  "report_sha256": {
+    ".tools/dynamic-review-02/static-native-v23/report.json": "93620a8ea70cf51d922f63c14df5cbcfea9843e4727d7c84415e3753fae8f6d0",
+    ".tools/dynamic-review-02/static-native-v24/report.json": "c9c827cc89da87f96cb89b0d72785f30d4a539afc3c82d62574cb98d6a0a8cdb",
+    ".tools/dynamic-review-02/static-native-v25/report.json": "1ffb071eab528d5d4fe58a0becef4fe24605034cbd4df473abf85e76f5a2a178",
+    ".tools/dynamic-source-statics-redeclare-baseline-10/report.json": "619b9099166abf0a0cb456a68cf97a3651ecfee40420597f43e5ccbfe606233c",
+    ".tools/dynamic-source-statics-redeclare-diagnosis-11/prepare-report.json": "e70a072288304d2a9135ae8f5b2a996f7f73934db2b9bfe2f7b6013fc97e25c0",
+    ".tools/dynamic-source-statics-redeclare-diagnosis-11/run-report.json": "e2d861bbf7cc1d41641f3cf3d198078aabc93578e1c1d317688176504c938dff",
+    ".tools/dynamic-source-statics-redeclare-proof-12/report.json": "28a5361c65a9d2e0678019c8bcc2c9eb470eba61da14d4ae6be64b99ecbfcfa1",
+    ".tools/dynamic-source-statics-redeclare-model-13/report.json": "c23b5d27201f71e34cfb22bf4bf870eb929c58254172322b7479dd8abf15225d",
+    ".tools/dynamic-review-02/redeclare-model-v1/report.json": "60642dd24ff59af8ad0cd7e775e8a9dab233c574ffebb6425d73df9073b886b0",
+    ".tools/dynamic-source-statics-redeclare-state-01/fixtures-report.json": "89877943c8ccf900bf59f5d18ad62a3962b49e008351b8a75ab78b513c3fca7f",
+    ".tools/dynamic-source-statics-redeclare-state-01/check-report.json": "ebedf0302edce761b386391035ef2e7e17f2fd3bdc030f93705870322ee814e0",
+    ".tools/dynamic-source-statics-redeclare-state-02/fixtures-report.json": "eaf762344d0b205dd2848fe849ac18492e3141603457f79c98c040cca9760066",
+    ".tools/dynamic-source-statics-redeclare-state-02/check-2-report.json": "b93a0759fc7fd2dd76dd0822b38129c302d18b62d7c79392744407443ef61a73",
+    ".tools/dynamic-source-statics-redeclare-state-02/check-3-report.json": "d2ca7bdc93764855833958f53e60d5e99ed22ded205caa7fb81a603bd2b44c10"
+  },
+  "remaining": [
+    "Wider compiler/static fatal producers, warning/callback/precision combinations, source/static lifecycle and full request cleanup remain partial.",
+    "No fatal lifetime policy, family closure, portability rebuild or deliberate native divergence is claimed."
+  ],
+  "recovery": "Canonical ignored .tools holds original sources, finite-v2 snapshots, checked AST workers, native/model/SL commands, streams, exits, binary/profile/input hashes and original failures. Recreate the implementation checkout and provision canonical providers/references before rerunning wrappers naming redeclare-10. The maintained protocol takes explicit --sources/--output and preserves attempts."
+}

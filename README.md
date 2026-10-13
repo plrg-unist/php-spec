@@ -1488,7 +1488,11 @@ records this separate cut. Frozen fatal completion now reports the request statu
 after caught shutdown-exit replacement, preserving continued callbacks and
 diagnostics. A fresh fatal writes255 even when reporting is suppressed.
 [Observer review](coverage/semantics/source-static-fatal-observer-review.json)
-records the focused source/public checks. Wider fatal/compiler producers and
+records the focused source/public checks. Redeclaration compiler cutoffs now
+authenticate fresh shutdown eval/file entries against full current history while
+retaining the exact failed prefix and source owner.
+[Redeclaration review](coverage/semantics/source-redeclare-fatal-review.json)
+records this separate admission repair. Wider fatal/compiler producers and
 destructor/return interactions remain required.
 [Real closure instances](docs/semantics/SOURCE-CLOSURES.md) now retain explicit captures,
 selected callee owners and per-instance statics through invocation and cleanup.
