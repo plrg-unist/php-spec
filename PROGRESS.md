@@ -16,7 +16,10 @@ Eight author and three independent originals agree at separate cuts. Three
 reached state groups pass 202 premises (117 at6dc,85 at4f2a). Site-only trace
 classification and optional-caller replay matching were corrected narrowly;
 original failures and bounded diagnostics retain zero credit. The bounded private
-milestone is independently accepted; actual-parent integration is pending.
+milestone is independently accepted. The 388-module composition over6b203c519
+passes pointwise review, both builds, full structuring and the inventory check.
+Parent fatal/cancellation/WeakMap/cast behavior is preserved; no renewed numeric
+source/state evidence is claimed.
 [Contract](docs/semantics/OUTPUT-HANDLERS.md),
 [author evidence](coverage/semantics/output-api-failure-author.json),
 [independent review](coverage/semantics/output-api-failure-review.json).

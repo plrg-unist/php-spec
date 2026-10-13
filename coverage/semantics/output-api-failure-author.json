@@ -1,6 +1,6 @@
 {
   "feature": "explicit output API receive/body-throw cleanup",
-  "status": "private independently accepted; actual-parent integration pending",
+  "status": "accepted; exact-parent fast-forward independently cleared",
   "base_revision": "6f7e99f6da8ff95e6d0eaf03c5f4ac02e869cbb7",
   "implementation_revision": "4f2a945ddbdaa910810967828771e287977270fc",
   "scope": "Internal weak API entry; running argv release, actual Throwable/Previous, clean discard, flush restore, pop/lower routing before sole zoh release, frozen getter ownership and interrupted assignment. Normal upper completion survives lower failure; destructors save/clear the old exception and retain the API trace. Full core stays partial.",
@@ -161,6 +161,28 @@
   "raw_recovery": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-07",
   "independent_review": "coverage/semantics/output-api-failure-review.json",
   "integration": {
-    "status": "pending root writer and actual-parent review"
+    "status": "independently accepted and cleared for canonical fast-forward",
+    "parent": "6b203c519fc122b6e2281755cc49f7c92102993d",
+    "candidate": "40ed65bc578ef4c7c2b836402526d2485915df55",
+    "modules": 388,
+    "checks": {
+      "adapter": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-07/join-checks-01/adapter.json",
+        "sha256": "8752ba315acce32e22924c2989074157786cfea1c3d070a694ebd4f10288bac5"
+      },
+      "numeric": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-07/join-checks-01/numeric.json",
+        "sha256": "aefb5761cb1cd3e7b065d90385a84eb108037ad184ed3c1b8d635352a6706d1a"
+      },
+      "struct": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-07/join-checks-01/struct.json",
+        "sha256": "ca46debcd5b55dc4fdd456587224744b98c000d4a093885740648688ac733fe6"
+      },
+      "inventory": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-07/join-checks-01/inventory.json",
+        "sha256": "c141e4053a51fc71d3059ed50e135f6e09de97921658b48cdfb3eabe48221fbc"
+      }
+    },
+    "review": "Parent-relative runtime net is30/270/396/397/398/manifest. Accepted396/397/398 bytes are unchanged;30 preserves parent callback cancellation and object-table declarations.270 changes only the site-classifier default and two site consumers, preserving fatal cursor/snapshot/source/cleanup logic. Parent GC/WeakMap/casts/cancellation modules are unchanged. No concrete new numeric gate or private replay warranted."
   }
 }
