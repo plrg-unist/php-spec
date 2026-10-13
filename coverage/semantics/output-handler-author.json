@@ -1,6 +1,6 @@
 {
   "target": "PHP8.5.10 CLI NTS64",
-  "status": "accepted private bounded milestone; integration pending",
+  "status": "accepted; checked actual-parent composition; fast-forward cleared",
   "base_revision": "2676fe06548d122f601f3612e5d90cc1941aa8f8",
   "implementation_revision": "c3b5be40176642046a64f1e48bf6912c6df62829",
   "scope": "Chunk0 user handlers, explicit normal flush/clean/end/get operations, scalar results, live/frozen bytes, produced-output deprecation and zoh-only ownership; full core remains partial.",
@@ -156,5 +156,44 @@
   "resources": "CPU4/SLOT2,1.5GiB virtual-memory cap; serial stop-first/reaped actors1345624/1347006/1349049/1351133. Static struct DATA6GiB.",
   "raw_recovery": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-04",
   "independent_review": "coverage/semantics/output-handler-review.json",
-  "integration": "pending root writer grant and exact-parent review"
+  "integration": {
+    "parent": "2baa80724a64c200ef4e62d6d8d930950c64d311",
+    "candidate": "315859d24567663b225661a7120c75f2cec89a52",
+    "modules": 385,
+    "source": {
+      "report": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-04/join-lower-running-02/report.json",
+        "sha256": "42f1bf77050bbfc5291db0d7c8be398a86de36367c69d9e956dd31077d06d060"
+      },
+      "originals": 1,
+      "result": "exact native/model EXA|1:32880|0:53360, normal, empty stderr, exit0, stable inputs"
+    },
+    "state": {
+      "report": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-04/join-lower-state-01/report.json",
+        "sha256": "1f0bbcca6fa3e45f86f9731b95db215a40900986b58fcb521f14b6f1566fd4a2"
+      },
+      "groups": 1,
+      "premises": 49,
+      "result": "genuine busy and post-clean saturated lower-buffer fronts; budget/public guards; next write flushes EB; stable inputs"
+    },
+    "original_mismatch": {
+      "report": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-04/join-lower-running-01/report.json",
+        "sha256": "8067b1bde91cb63793376c3f5e00dd71d49fc8a6693c9f0e759722f47e4c484f"
+      },
+      "native_credit": 0,
+      "result": "native1:32880 vs model0:53360 during busy lower write; preserved failed original"
+    },
+    "repair": "391 defers enabled lower chunk processing while any user handler runs and admits saturated default buffers with PRODUCED; no automatic user callback added",
+    "compatibility": "Shared parent fields, aggregate394, fatal/shutdown and update-warning changes retained. Prior15 author and9 independent originals and state4/227 keep their cuts: changed guard affects only running positive-threshold lower defaults, absent from those selected paths. No old campaign replay.",
+    "commands": [
+      "scripts/opam-exec.sh dune build --root .",
+      "scripts/opam-exec.sh dune build --root tests/semantics numeric_runner.exe",
+      "taskset -c 4 python3 external join_lower_running.py PRIVATE_ROOT EXTERNAL_OUTPUT (child RLIMIT_AS1536MiB, model timeout60s)",
+      "prlimit --as=1610612736:1610612736 -- taskset -c 4 python3 tests/semantics/output_handler_state.py --select lower-running-threshold --output EXTERNAL_OUTPUT"
+    ],
+    "resources": "CPU4/SLOT2, serial, both actors reaped; lease released",
+    "current_391_sha256": "54c260da9d844eb6a630a36401f7e384e66951ebf54f7f37b67d6f532b1dfd84"
+  }
 }

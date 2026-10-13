@@ -1,6 +1,6 @@
 {
   "milestone": "Explicit chunk0 user output handlers (395)",
-  "status": "accepted privately; actual-parent integration pending",
+  "status": "accepted; checked actual-parent composition; fast-forward cleared",
   "reviewer": "core_breadth_review_01",
   "implementation_revision": "c3b5be40176642046a64f1e48bf6912c6df62829",
   "implementation_sha256": "ea20bf28524e6a181690a4a18ddb04c81cd49cdfcc247aeb7f1abc99efa0a05f",
@@ -94,6 +94,37 @@
     "Buffered stdout diagnostics retain391 boundary; full core remains partial"
   ],
   "integration": {
-    "status": "pending root sole-writer grant; no previous campaign renewal"
+    "parent": "2baa80724a64c200ef4e62d6d8d930950c64d311",
+    "candidate": "315859d24567663b225661a7120c75f2cec89a52",
+    "modules": 385,
+    "review": "Parent runtime changes retained; shared30/40 add output state only,39 adds zoh roots, manifest retains394 and395. No unrelated parent semantics replaced.",
+    "repair": "391 stores reached lower default thresholds while a user handler runs, then processes after running clears. Saturated default shape requires persistent PRODUCED witness.",
+    "current_391_sha256": "54c260da9d844eb6a630a36401f7e384e66951ebf54f7f37b67d6f532b1dfd84",
+    "source": {
+      "report": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-04/join-lower-running-02/report.json",
+        "sha256": "42f1bf77050bbfc5291db0d7c8be398a86de36367c69d9e956dd31077d06d060"
+      },
+      "originals": 1,
+      "exact": "EXA|1:32880|0:53360, normal, empty stderr, exit0"
+    },
+    "state": {
+      "report": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-04/join-lower-state-01/report.json",
+        "sha256": "1f0bbcca6fa3e45f86f9731b95db215a40900986b58fcb521f14b6f1566fd4a2"
+      },
+      "groups": 1,
+      "premises": 49,
+      "fronts": "Busy then retained saturated lower buffer, budget/empty-write preservation, next write EB and malformed-state rejection"
+    },
+    "preserved_mismatch": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-04/join-lower-running-01/report.json",
+      "credit": 0,
+      "native": "EXA|1:32880|0:53360",
+      "model": "EXA|0:53360|0:53360"
+    },
+    "retained_cuts": "Private author15, independent9/control4 and state4/227 retain their cuts. Busy positive lower-threshold branch was absent from those originals; no historical replay or receipt upgrade.",
+    "actors_reaped": true,
+    "ff_clear": true
   }
 }

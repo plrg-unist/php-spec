@@ -7,8 +7,8 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Module395 private normal user-output-handler callbacks are independently
-accepted and validated. Chunk0 explicit flush/clean/end/get
+Module395 normal user-output-handler callbacks are independently
+accepted; the current385 composition is checked. Chunk0 explicit flush/clean/end/get
 operations retain frozen inputs/getter copies, weak internal calls and builtin
 traces; live callback writes follow PHP8.5 deprecation and false/disabled routing.
 Only raw zoh owns the callback; cached FCC metadata survives alias receiver
@@ -17,10 +17,14 @@ retirement, and lower routing precedes zoh release. Author15 originals agree at
 controls retain2+3 cuts with zero native credit. Four genuine SL groups pass227
 premises; the duplicate trace observer failure remains0. Automatic/request-end
 callback drains, wider conversion/callable/mutation/Fiber protocols and buffered
-stdout rendering remain explicit dependencies. Master integration is pending.
+stdout rendering remain explicit dependencies.
 [Contract](docs/semantics/OUTPUT-HANDLERS.md),
 [author evidence](coverage/semantics/output-handler-author.json),
 [independent review](coverage/semantics/output-handler-review.json).
+The385 join over2baa807 preserves current parent behavior and repairs lower
+default chunk deferral while a user handler runs. One exact current source and
+one genuine busy/retained state group pass49 premises at315859d24; the original
+status mismatch remains0. Earlier source/state cuts keep their identities.
 
 Named inc/dec warning-handler exits now finish handler-local cleanup and registry
 restoration before bool/decrement-null commit; strings skip restoration. Caller
