@@ -17,6 +17,7 @@ def $class_named((preqbytes_other, porigin) :: (preqbytes_tail, porigin_tail)*, 
   -- if preqbytes_other =/= preqbytes
 
 dec $activate_class(pstate, pclassdesc) : pstate
+dec $recorded_class_step(pstate, pclassdesc) : pstate
 dec $iterator_notice_publication(pstate, pstate, pclassdesc) : pstate
 dec $activate_class_body(pstate, pclassdesc) : pstate
 dec $activate_class_base_body(pstate, pclassdesc) : pstate
@@ -72,7 +73,7 @@ rule PhpStep/class-declaration-early: S ~> S[.TODO = ptask_tail*]
   -- if $origin_node(S.SOURCES, porigin) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if $declaration_early(S.DECLARATIONS, porigin, PPCLASS)
-rule PhpStep/class-declaration-runtime: S ~> $activate_class(S[.TODO = ptask_tail*], pclassdesc)
+rule PhpStep/class-declaration-runtime: S ~> $recorded_class_step(S, pclassdesc)
   -- if S.TODO = (STMT (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if $origin_node(S.SOURCES, porigin) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)

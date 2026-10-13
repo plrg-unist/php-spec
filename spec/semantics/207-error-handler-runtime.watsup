@@ -144,6 +144,30 @@ def $recorded_function_step(S, pfunction) = $recorded_function_fatal(S, pfunctio
 def $recorded_function_step(S, pfunction) = $activate_function(S[.TODO = ptask_tail*], pfunction)
   -- if ~$recorded_function_pending(S, pfunction)
   -- if S.TODO = (STMT statement) :: ptask_tail*
+dec $recorded_class_pending(pstate, pclassdesc) : bool
+def $recorded_class_pending(S, pclassdesc) = true
+  -- if S.COMPLETION = NORMAL
+  -- if ~$eval_compile_recorded_error(S, 64)
+  -- if $recorded_compile_at(S.DECLARATIONS, S.RECORDEDCOMPILEERROR) = ((FATAL ptbytes z, porigin?))
+  -- if S.TODO = (STMT (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (pclassdesc.ORIGIN)
+  -- if $class_at(S.CLASSES, pclassdesc.ORIGIN) = (pclassdesc)
+  -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
+  -- if $recorded_class_site(S, pclassdesc.ORIGIN)
+def $recorded_class_pending(S, pclassdesc) = false -- otherwise
+dec $recorded_class_fatal(pstate, pclassdesc) : pstate
+def $recorded_class_fatal(S, pclassdesc) = S_clear[.TODO = eps][.COMPLETION = pcompletion][.ERRORORIGIN = porigin?]
+  -- if $recorded_class_pending(S, pclassdesc)
+  -- if S.TODO = (STMT statement) :: ptask_tail*
+  -- if S.RECORDEDCOMPILEERROR = (n_record)
+  -- if $recorded_compile_at(S.DECLARATIONS, (n_record)) = ((pcompletion, porigin?))
+  -- if S_bound = $activate_class_base_body(S[.TODO = ptask_tail*], pclassdesc)
+  -- if S_clear = $recorded_runtime_append(S_bound, pclassdesc.ORIGIN, n_record)
+def $recorded_class_step(S, pclassdesc) = $recorded_class_fatal(S, pclassdesc)
+  -- if $recorded_class_pending(S, pclassdesc)
+def $recorded_class_step(S, pclassdesc) = $activate_class(S[.TODO = ptask_tail*], pclassdesc)
+  -- if ~$recorded_class_pending(S, pclassdesc)
+  -- if S.TODO = (STMT statement) :: ptask_tail*
 def $error_dispatch(S, 256, n_message*, z, pevent, ptask_resume) = $recorded_runtime_fatal(S, pconfigcall)
   -- if $recorded_runtime_pending(S, 256)
   -- if S.TODO = (ERROR_TRIGGER_PHASE pconfigcall 1) :: ptask_tail*

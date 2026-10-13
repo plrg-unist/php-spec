@@ -199,6 +199,11 @@ def $declaration_history_fold(S, S_prefix, (n, P)*, (PDRECORDEDFATAL porigin pde
   -- if $recorded_compile_at(S_prefix.DECLARATIONS, (n_record)) = ((FATAL ptbytes z, porigin_raw?))
   -- if $recorded_function_site(S_prefix, porigin)
   -- if $declaration_cause_valid(S_prefix, porigin, pdeclcause)
+def $declaration_history_fold(S, S_prefix, (n, P)*, (PDRECORDEDFATAL porigin pdeclcause n_record) :: pdeclaration*, n_next) = $declaration_history_fold(S, S_prefix[.RECORDEDCOMPILEERROR = eps][.DECLARATIONS = S_prefix.DECLARATIONS ++ [PDRECORDEDFATAL porigin pdeclcause n_record]], (n, P)*, pdeclaration*, n_next)
+  -- if S_prefix.RECORDEDCOMPILEERROR = (n_record)
+  -- if $recorded_compile_at(S_prefix.DECLARATIONS, (n_record)) = ((FATAL ptbytes z, porigin_raw?))
+  -- if $recorded_class_site(S_prefix, porigin)
+  -- if $declaration_cause_valid(S_prefix, porigin, pdeclcause)
 def $declaration_history_fold(S, S_prefix, (n, P)*, pdeclaration*, n_next) = false -- otherwise
 
 dec $runtime_class_report_valid(pstate) : bool
