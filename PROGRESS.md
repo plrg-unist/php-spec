@@ -18,6 +18,9 @@ Unsupported baseline and native/preparation runs retain zero credit.
 Exit during callback-owner destruction, unsafe targets and wider callbacks/control
 remain required; full core stays partial.
 [Callback-local cancellation ledger](coverage/semantics/incdec-callback-exit-cancellation-review.json).
+The 387-module join over 0186877ee preserves current shared cleanup and output
+state. Current strict and the sole secondary-throw/borrowed-cell original pass at
+350237d11; private source/state cuts retain their identities.
 
 Deferred runtime function redeclaration now drains a retained file fatal with the
 current binding trace. Its receipt records the actual function site/call cause/index;
