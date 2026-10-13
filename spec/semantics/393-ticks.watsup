@@ -1,6 +1,6 @@
 ;; Zend compile_stmt/emit_tick: lexical frequency belongs to the file context;
 ;; adjacency belongs to the current op array. Plans are derived, never supplied.
-syntax pticksummary = { FREQUENCY int, LAST bool, MARKERS ptickmarker*, DEPENDENCY text? }
+syntax pticksummary = { FREQUENCY int, LAST bool, LINE int, MARKERS ptickmarker*, DEPENDENCY text? }
 var T : pticksummary
 
 dec $tick_plan(program, pcodeexpr*) : pticksummary
@@ -8,6 +8,9 @@ dec $tick_contains(pcnode) : bool
 dec $tick_contains_nodes(pcoccurrence*) : bool
 dec $tick_statements(pticksummary, pcodeexpr*, pcpath, nat, statement*, bool) : pticksummary
 dec $tick_statement(pticksummary, pcodeexpr*, pcpath, statement, bool) : pticksummary
+dec $tick_begin_statement(pticksummary, statement) : pticksummary
+dec $tick_expression_line(pticksummary, pcodeexpr*, pcpath, expression) : pticksummary
+dec $tick_control_body(pticksummary, pcodeexpr*, pcpath, statement*, metadata) : pticksummary
 dec $tick_statement_body(pticksummary, pcodeexpr*, pcpath, statement, bool) : pticksummary
 dec $tick_expression(pticksummary, pcodeexpr*, pcpath, expression) : pticksummary
 dec $tick_expression_body(pticksummary, pcodeexpr*, pcpath, expression) : pticksummary
@@ -20,7 +23,9 @@ dec $tick_emit(pticksummary, pcpath, int) : pticksummary
 dec $tick_long(pvalue) : int
 dec $tick_directives(pticksummary, phpType49*) : pticksummary
 dec $tick_directive(pticksummary, phpType49) : pticksummary
+dec $tick_empty_multiline_declare(phpType47, metadata) : bool
 dec $tick_declare_body(pticksummary, pcodeexpr*, pcpath, phpType47, int) : pticksummary
+dec $tick_if_jump(pticksummary, bool, metadata) : pticksummary
 dec $tick_if_tail(pticksummary, pcodeexpr*, pcpath, nat, phpType54*, phpType55) : pticksummary
 dec $tick_catches(pticksummary, pcodeexpr*, pcpath, nat, phpType66*) : pticksummary
 dec $tick_finally(pticksummary, pcodeexpr*, pcpath, phpType67) : pticksummary
@@ -42,18 +47,18 @@ def $tick_contains(NDeclareItem (NIdentifier (BYTES text) metadata_name) express
 def $tick_contains(pcnode) = $tick_contains_nodes($pcchildren(pcnode, eps)) -- otherwise
 def $tick_contains_nodes(eps) = false
 def $tick_contains_nodes((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ($tick_contains(pcnode) \/ $tick_contains_nodes(pcoccurrence*))
-def $tick_plan(PROGRAM statement*, pcodeexpr*) = {FREQUENCY 0, LAST false, MARKERS eps, DEPENDENCY eps}
+def $tick_plan(PROGRAM statement*, pcodeexpr*) = {FREQUENCY 0, LAST false, LINE 1, MARKERS eps, DEPENDENCY eps}
   -- if ~$tick_contains_nodes($pcfield_phpType23(SEQUENCE statement*, eps))
-def $tick_plan(PROGRAM statement*, pcodeexpr*) = $tick_statements({FREQUENCY 0, LAST false, MARKERS eps, DEPENDENCY eps}, pcodeexpr*, eps, 0, statement*, true)
+def $tick_plan(PROGRAM statement*, pcodeexpr*) = $tick_statements({FREQUENCY 0, LAST false, LINE 1, MARKERS eps, DEPENDENCY eps}, pcodeexpr*, eps, 0, statement*, true)
   -- if $tick_contains_nodes($pcfield_phpType23(SEQUENCE statement*, eps))
 
 def $tick_statements(T, pcodeexpr*, pcpath, n, eps, b_top) = T
 def $tick_statements(T, pcodeexpr*, pcpath, n, statement :: statement_tail*, b_top) = $tick_statements($tick_statement(T, pcodeexpr*, pcpath ++ [PCINDEX n], statement, b_top), pcodeexpr*, pcpath, $(n + 1), statement_tail*, b_top)
 def $tick_statement(T, pcodeexpr*, pcpath, statement, b_top) = T_body
-  -- if T_body = $tick_statement_body(T, pcodeexpr*, pcpath, statement, b_top)
+  -- if T_body = $tick_statement_body($tick_begin_statement(T, statement), pcodeexpr*, pcpath, statement, b_top)
   -- if $tick_unticked(statement) \/ $tick_early(statement, b_top)
-def $tick_statement(T, pcodeexpr*, pcpath, statement, b_top) = $tick_emit(T_body, pcpath, $source_end_line($pcmetadata(statement)))
-  -- if T_body = $tick_statement_body(T, pcodeexpr*, pcpath, statement, b_top)
+def $tick_statement(T, pcodeexpr*, pcpath, statement, b_top) = $tick_emit(T_body, pcpath, T_body.LINE)
+  -- if T_body = $tick_statement_body($tick_begin_statement(T, statement), pcodeexpr*, pcpath, statement, b_top)
   -- if ~$tick_unticked(statement) /\ ~$tick_early(statement, b_top)
 
 def $tick_early(NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata, true) = true
@@ -99,6 +104,7 @@ def $tick_directive(T, NDeclareItem (NIdentifier (BYTES text) metadata_name) exp
 def $tick_directive(T, phpType49) = T -- otherwise
 
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtDeclare (SEQUENCE phpType49*) phpType47 metadata, b) = $tick_declare_body($tick_directives(T, phpType49*), pcodeexpr*, pcpath, phpType47, T.FREQUENCY)
+  -- if phpType47 = ABSENT \/ ~$tick_empty_multiline_declare(phpType47, metadata)
 def $tick_declare_body(T, pcodeexpr*, pcpath, ABSENT, i_old) = T
 def $tick_declare_body(T, pcodeexpr*, pcpath, SEQUENCE statement*, i_old) = T_body[.FREQUENCY = i_old]
   -- if T_body = $tick_statements(T, pcodeexpr*, pcpath ++ [PCFIELD 1], 0, statement*, false)
@@ -108,11 +114,12 @@ def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtLabel phpType11 metadata, b
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtUse phpType24 phpType51 metadata, b) = T
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtGroupUse phpType24 name phpType51 metadata, b) = T
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtNamespace phpType44 (SEQUENCE statement*) metadata, b) = $tick_statements(T, pcodeexpr*, pcpath ++ [PCFIELD 1], 0, statement*, true)
-def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata, b_top) = T_body[.LAST = (b_top /\ T.LAST)]
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata, b_top) = T_body[.LAST = (b_top /\ T.LAST)][.LINE = $source_end_line(metadata)]
   -- if $tick_inputs_clean(NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata, 5)
   -- if T_body = $tick_function(T, pcodeexpr*, pcpath ++ [PCFIELD 5], statement*)
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 ABSENT metadata, b) = T
-def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata, b) = $tick_function(T, pcodeexpr*, pcpath ++ [PCFIELD 6], statement*)
+  -- if $tick_inputs_clean(NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 ABSENT metadata, 6)
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata, b) = $tick_function(T, pcodeexpr*, pcpath ++ [PCFIELD 6], statement*)[.LINE = $source_end_line(metadata)]
   -- if $tick_inputs_clean(NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata, 6)
 def $tick_function(T, pcodeexpr*, pcpath, statement*) = T_body[.LAST = T.LAST]
   -- if T_body = $tick_statements(T[.LAST = false], pcodeexpr*, pcpath, 0, statement*, false)
@@ -128,18 +135,18 @@ def $tick_expression_zero(pcodeexpr*, pcpath, expression) = true
 def $tick_expression_zero(pcodeexpr*, pcpath, expression) = false -- otherwise
 
 def $tick_expression(T, pcodeexpr*, pcpath, expression) = T_body
-  -- if T_body = $tick_expression_body(T, pcodeexpr*, pcpath, expression)
+  -- if T_body = $tick_expression_line($tick_expression_body(T[.LINE = $source_line($pcmetadata(expression))], pcodeexpr*, pcpath, expression), pcodeexpr*, pcpath, expression)
   -- if $tick_expression_opcode(expression)
   -- if $tick_expression_zero(pcodeexpr*, pcpath, expression)
 def $tick_expression(T, pcodeexpr*, pcpath, expression) = T_body[.LAST = false]
-  -- if T_body = $tick_expression_body(T, pcodeexpr*, pcpath, expression)
+  -- if T_body = $tick_expression_line($tick_expression_body(T[.LINE = $source_line($pcmetadata(expression))], pcodeexpr*, pcpath, expression), pcodeexpr*, pcpath, expression)
   -- if $tick_expression_opcode(expression)
   -- if ~$tick_expression_zero(pcodeexpr*, pcpath, expression)
 def $tick_expression(T, pcodeexpr*, pcpath, expression) = T_body
-  -- if T_body = $tick_expression_body(T, pcodeexpr*, pcpath, expression)
+  -- if T_body = $tick_expression_line($tick_expression_body(T[.LINE = $source_line($pcmetadata(expression))], pcodeexpr*, pcpath, expression), pcodeexpr*, pcpath, expression)
   -- if ~$tick_expression_opcode(expression) /\ ~T_body.LAST
 def $tick_expression(T, pcodeexpr*, pcpath, expression) = T_body[.DEPENDENCY = ("tick adjacency for this expression opcode summary")]
-  -- if T_body = $tick_expression_body(T, pcodeexpr*, pcpath, expression)
+  -- if T_body = $tick_expression_line($tick_expression_body(T[.LINE = $source_line($pcmetadata(expression))], pcodeexpr*, pcpath, expression), pcodeexpr*, pcpath, expression)
   -- if ~$tick_expression_opcode(expression) /\ T_body.LAST
 def $tick_expression_body(T, pcodeexpr*, pcpath, NExprClosure phpType14 phpType4_1 phpType4_2 phpType16 phpType21 phpType18 (SEQUENCE statement*) metadata) = $tick_function(T, pcodeexpr*, pcpath ++ [PCFIELD 6], statement*)
   -- if $tick_inputs_clean(NExprClosure phpType14 phpType4_1 phpType4_2 phpType16 phpType21 phpType18 (SEQUENCE statement*) metadata, 6)
@@ -156,7 +163,7 @@ def $tick_expression_body(T, pcodeexpr*, pcpath, expression) = T[.DEPENDENCY = (
 
 def $tick_nodes(T, pcodeexpr*, eps) = T
 def $tick_nodes(T, pcodeexpr*, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = $tick_nodes($tick_node(T, pcodeexpr*, pcpath, pcnode), pcodeexpr*, pcoccurrence*)
-def $tick_node(T, pcodeexpr*, pcpath, expression) = $tick_expression_body(T, pcodeexpr*, pcpath, expression)
+def $tick_node(T, pcodeexpr*, pcpath, expression) = $tick_expression_line($tick_expression_body(T[.LINE = $source_line($pcmetadata(expression))], pcodeexpr*, pcpath, expression), pcodeexpr*, pcpath, expression)
 def $tick_node(T, pcodeexpr*, pcpath, statement) = $tick_statement(T, pcodeexpr*, pcpath, statement, false)
 def $tick_node(T, pcodeexpr*, pcpath, pcnode) = $tick_nodes(T, pcodeexpr*, $pcchildren(pcnode, pcpath)) -- otherwise
 
@@ -173,24 +180,26 @@ def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtGoto phpType11 metadata, b)
 
 ;; Conditional jumps precede each branch. Only the actual final emitted body
 ;; can suppress the enclosing IF marker, including an unselected final branch.
-def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtIf expression (SEQUENCE statement*) (SEQUENCE phpType54*) phpType55 metadata, b) = $tick_if_tail(T_body, pcodeexpr*, pcpath, 0, phpType54*, phpType55)
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtIf expression (SEQUENCE statement*) (SEQUENCE phpType54*) phpType55 metadata, b) = $tick_if_tail($tick_if_jump(T_body, phpType54* =/= eps \/ phpType55 =/= ABSENT, metadata), pcodeexpr*, pcpath, 0, phpType54*, phpType55)
   -- if T_condition = $tick_expression(T, pcodeexpr*, pcpath ++ [PCFIELD 0], expression)
-  -- if T_body = $tick_statements(T_condition[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 1], 0, statement*, false)
+  -- if T_body = $tick_control_body(T_condition[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 1], statement*, metadata)
+def $tick_if_jump(T, true, metadata) = T[.LAST = false][.LINE = $source_line(metadata)]
+def $tick_if_jump(T, false, metadata) = T
 def $tick_if_tail(T, pcodeexpr*, pcpath, n, eps, ABSENT) = T
-def $tick_if_tail(T, pcodeexpr*, pcpath, n, eps, NStmtElse (SEQUENCE statement*) metadata) = $tick_statements(T[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 3, PCFIELD 0], 0, statement*, false)
-def $tick_if_tail(T, pcodeexpr*, pcpath, n, (NStmtElseIf expression (SEQUENCE statement*) metadata) :: phpType54*, phpType55) = $tick_if_tail(T_body, pcodeexpr*, pcpath, $(n + 1), phpType54*, phpType55)
+def $tick_if_tail(T, pcodeexpr*, pcpath, n, eps, NStmtElse (SEQUENCE statement*) metadata) = $tick_control_body(T[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 3, PCFIELD 0], statement*, metadata)
+def $tick_if_tail(T, pcodeexpr*, pcpath, n, (NStmtElseIf expression (SEQUENCE statement*) metadata) :: phpType54*, phpType55) = $tick_if_tail($tick_if_jump(T_body, phpType54* =/= eps \/ phpType55 =/= ABSENT, metadata), pcodeexpr*, pcpath, $(n + 1), phpType54*, phpType55)
   -- if T_condition = $tick_expression(T[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 2, PCINDEX n, PCFIELD 0], expression)
-  -- if T_body = $tick_statements(T_condition[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 2, PCINDEX n, PCFIELD 1], 0, statement*, false)
+  -- if T_body = $tick_control_body(T_condition[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 2, PCINDEX n, PCFIELD 1], statement*, metadata)
 
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtWhile expression (SEQUENCE statement*) metadata, b) = $tick_expression(T_body, pcodeexpr*, pcpath ++ [PCFIELD 0], expression)[.LAST = false]
-  -- if T_body = $tick_statements(T[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 1], 0, statement*, false)
+  -- if T_body = $tick_control_body(T[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 1], statement*, metadata)
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtDo (SEQUENCE statement*) expression metadata, b) = $tick_expression(T_body, pcodeexpr*, pcpath ++ [PCFIELD 1], expression)[.LAST = false]
-  -- if T_body = $tick_statements(T, pcodeexpr*, pcpath ++ [PCFIELD 0], 0, statement*, false)
+  -- if T_body = $tick_control_body(T, pcodeexpr*, pcpath ++ [PCFIELD 0], statement*, metadata)
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtFor phpType25_init phpType25_cond phpType25_loop (SEQUENCE statement*) metadata, b) = $tick_nodes(T_loop, pcodeexpr*, $pcfield_phpType25(phpType25_cond, pcpath ++ [PCFIELD 1]))[.LAST = false]
   -- if T_init = $tick_nodes(T, pcodeexpr*, $pcfield_phpType25(phpType25_init, pcpath ++ [PCFIELD 0]))
-  -- if T_body = $tick_statements(T_init[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 3], 0, statement*, false)
+  -- if T_body = $tick_control_body(T_init[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 3], statement*, metadata)
   -- if T_loop = $tick_nodes(T_body, pcodeexpr*, $pcfield_phpType25(phpType25_loop, pcpath ++ [PCFIELD 2]))
-def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtForeach expression phpType5 phpType4 expression_value (SEQUENCE statement*) phpType4_ref metadata, b) = $tick_statements(T_input[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 4], 0, statement*, false)[.LAST = false]
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtForeach expression phpType5 phpType4 expression_value (SEQUENCE statement*) phpType4_ref metadata, b) = $tick_control_body(T_input[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 4], statement*, metadata)[.LAST = false][.LINE = $source_line(metadata)]
   -- if ~$tick_contains_nodes($pcfield_phpType5(phpType5, eps)) /\ ~$tick_function_nodes($pcfield_phpType5(phpType5, eps)) /\ ~$tick_functions(expression_value)
   -- if T_input = $tick_expression(T, pcodeexpr*, pcpath ++ [PCFIELD 0], expression)
 
@@ -198,14 +207,19 @@ def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtTryCatch (SEQUENCE statemen
   -- if T_body = $tick_statements(T, pcodeexpr*, pcpath ++ [PCFIELD 0], 0, statement*, false)
 def $tick_catches(T, pcodeexpr*, pcpath, n, eps) = T
 def $tick_catches(T, pcodeexpr*, pcpath, n, (NStmtCatch phpType42 phpType43 (SEQUENCE statement*) metadata) :: phpType66*) = $tick_catches(T_body, pcodeexpr*, pcpath, $(n + 1), phpType66*)
-  -- if T_body = $tick_statements(T[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 1, PCINDEX n, PCFIELD 2], 0, statement*, false)
+  -- if T_body = $tick_statements(T[.LAST = false][.LINE = $source_line(metadata)], pcodeexpr*, pcpath ++ [PCFIELD 1, PCINDEX n, PCFIELD 2], 0, statement*, false)
+  -- if ~$ppnullbody(statement*) \/ $source_line(metadata) = $source_end_line(metadata)
+def $tick_catches(T, pcodeexpr*, pcpath, n, (NStmtCatch phpType42 phpType43 (SEQUENCE statement*) metadata) :: phpType66*) = T[.DEPENDENCY = ("tick compiler line for empty multiline catch")]
+  -- if $ppnullbody(statement*) /\ $source_line(metadata) =/= $source_end_line(metadata)
 def $tick_finally(T, pcodeexpr*, pcpath, ABSENT) = T
-def $tick_finally(T, pcodeexpr*, pcpath, NStmtFinally (SEQUENCE statement*) metadata) = $tick_statements(T[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 2, PCFIELD 0], 0, statement*, false)[.LAST = false]
+def $tick_finally(T, pcodeexpr*, pcpath, NStmtFinally (SEQUENCE statement*) metadata) = $tick_statements(T[.LAST = false][.LINE = $source_line(metadata)], pcodeexpr*, pcpath ++ [PCFIELD 2, PCFIELD 0], 0, statement*, false)[.LAST = false]
+  -- if ~$ppnullbody(statement*) \/ $source_line(metadata) = $source_end_line(metadata)
+def $tick_finally(T, pcodeexpr*, pcpath, phpType67) = T[.DEPENDENCY = ("tick compiler line for empty multiline finally")] -- otherwise
 
 ;; Class member op arrays share file declarables, but their statement-list does
 ;; not execute in the surrounding op array. Wider class/linking placement stays
 ;; explicit until its actual emitted-op summaries are supplied.
-def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 (SEQUENCE statement*) metadata, b_top) = T_body[.LAST = T.LAST]
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 (SEQUENCE statement*) metadata, b_top) = T_body[.LAST = T.LAST][.LINE = $source_end_line(metadata)]
   -- if T.FREQUENCY = 0 /\ b_top /\ ~T.LAST
   -- if T_body = $tick_statements(T, pcodeexpr*, pcpath ++ [PCFIELD 5], 0, statement*, false)
 def $tick_statement_body(T, pcodeexpr*, pcpath, statement, b) = T[.DEPENDENCY = ("tick opcode placement for this statement")]
@@ -519,7 +533,7 @@ def $tick_reference_message(S, ptickdispatch, n) = pfunction.NAME ++ $ptascii("(
   -- if $tick_selected(S, ptickdispatch) = (ptickentry)
   -- if $target_function(S, ptickentry.ENTRY.TARGET) = (pfunction)
   -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, n) = (psparam)
-rule PhpStep/tick-reference-warning: S ~> $error_dispatch(S[.ORIGIN = (pfunction.ORIGIN)], 2, ptbytes, 0, DIAGNOSTIC_INTERNAL "Warning" ptbytes 0, TICK_REFERENCE ptickdispatch n)
+rule PhpStep/tick-reference-warning: S ~> $error_dispatch(S[.ORIGIN = (ptickdispatch.SITE)], 2, ptbytes, ptickdispatch.MARKER.LINE, DIAGNOSTIC "Warning" ptbytes ptickdispatch.MARKER.LINE, TICK_REFERENCE ptickdispatch n)
   -- if S.TODO = (TICK_SEND ptickdispatch n) :: ptask_tail*
   -- if $tick_send_valid(S, ptickdispatch, n)
   -- if $tick_selected(S, ptickdispatch) = (ptickentry)
@@ -532,18 +546,17 @@ rule PhpStep/tick-reference-return: S ~> S_cell[.TODO = (TICK_SEND ptickdispatch
   -- if $call_task_valid(S, TICK_REFERENCE ptickdispatch n)
   -- if $tick_selected(S, ptickdispatch) = (ptickentry)
   -- if S_cell = $call_fresh_reference(S, ptickentry.ENTRY.ARGS[n])
-def $exception_warning_resume(TICK_REFERENCE ptickdispatch n) = true
 def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.RESUME = TICK_REFERENCE ptickdispatch n
   -- if $call_task_valid(S, TICK_REFERENCE ptickdispatch n)
   -- if $tick_selected(S, ptickdispatch) = (ptickentry)
   -- if $target_function(S, ptickentry.ENTRY.TARGET) = (pfunction)
-  -- if S.ORIGIN = (pfunction.ORIGIN) /\ perrorcall.SITE = pfunction.ORIGIN
-  -- if perrorcall.LEVEL = 2 /\ perrorcall.LINE = 0
+  -- if S.ORIGIN = (ptickdispatch.SITE) /\ perrorcall.SITE = ptickdispatch.SITE
+  -- if perrorcall.LEVEL = 2 /\ perrorcall.LINE = ptickdispatch.MARKER.LINE
   -- if perrorcall.MESSAGE = $tick_reference_message(S, ptickdispatch, n)
-  -- if perrorcall.EVENT = DIAGNOSTIC_INTERNAL "Warning" perrorcall.MESSAGE 0
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE ptickdispatch.MARKER.LINE
 
-rule PhpStep/tick-enter: S ~> $call_arity($target_after_enter($call_enter(S[.TODO = (TICK_RESULT ptickdispatch) :: ptask_tail*], pfunction, ptickdispatch.SENT, eps, $(-1)), ptickentry.ENTRY.TARGET), pfunction, |ptickdispatch.SENT|, eps, $(-1))
+rule PhpStep/tick-enter: S ~> $call_arity($target_after_enter($call_enter(S[.TODO = (TICK_RESULT ptickdispatch) :: ptask_tail*], pfunction, ptickdispatch.SENT, (ptickdispatch.SITE), ptickdispatch.MARKER.LINE), ptickentry.ENTRY.TARGET), pfunction, |ptickdispatch.SENT|, (ptickdispatch.SITE), ptickdispatch.MARKER.LINE)
   -- if S.TODO = (TICK_ENTER ptickdispatch) :: ptask_tail*
   -- if $call_task_valid(S, TICK_ENTER ptickdispatch)
   -- if $tick_selected(S, ptickdispatch) = (ptickentry)
@@ -554,7 +567,8 @@ rule PhpStep/tick-result: S ~> S[.TODO = (TICK_NEXT ptickdispatch[.CURSOR = $(n 
   -- if ptickdispatch.ENTRY = (n)
   -- if $exception_return_operand(S.RESULT)
 
-;; Tick callbacks are internal weak invocations with genuine ordinary frames.
+;; Tick callbacks inherit the executing source frame and use ordinary receives,
+;; strictness, trace locations and unused-return cleanup.
 def $tick_context_call(pcallcontext, (pcallcontext), pframe :: pframe_tail*) = (ptickdispatch)
   -- if pframe.TODO = (TICK_RESULT ptickdispatch) :: ptask_tail*
 def $tick_context_call(pcallcontext, pcallcontext_other?, pframe :: pframe_tail*) = $tick_context_call(pcallcontext, pframe.CONTEXT, pframe_tail*) -- if pcallcontext_other? =/= (pcallcontext)
@@ -565,7 +579,7 @@ def $tick_context_valid(S, pcallcontext) = true
   -- if $tick_result_valid(S, ptickdispatch)
   -- if $tick_selected(S, ptickdispatch) = (ptickentry)
   -- if pcallcontext.TARGET = ptickentry.ENTRY.TARGET
-  -- if pcallcontext.CALLSITE = eps /\ pcallcontext.LINE = $(-1)
+  -- if pcallcontext.CALLSITE = (ptickdispatch.SITE) /\ pcallcontext.LINE = ptickdispatch.MARKER.LINE
   -- if pcallcontext.ARGC = |ptickdispatch.SENT| /\ pcallcontext.WRAPPER = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.HOLES = eps
   -- if $target_function(S, pcallcontext.TARGET) = (pfunction)
   -- if n_received = $call_received(pcallcontext.ARGC, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
@@ -575,17 +589,9 @@ def $tick_context_valid(S, pcallcontext) = true
 def $tick_context_valid(S, pcallcontext) = false -- otherwise
 def $error_context_kind(S, pcallcontext) = true -- if $tick_context_kind(S, pcallcontext)
 def $error_context_valid(S, pcallcontext) = true -- if $tick_context_valid(S, pcallcontext)
-def $typed_caller_strict(S) = false -- if S.CURRENT = (pcallcontext) -- if $tick_context_valid(S, pcallcontext)
-def $wrapper_called_suffix(S, pcallcontext) = eps -- if $tick_context_kind(S, pcallcontext)
-def $wrapper_passed_suffix(S, pcallcontext) = $ptascii(" passed") -- if $tick_context_kind(S, pcallcontext)
 def $reference_call_frame_site(pcallcontext, pframe) = true
-  -- if pcallcontext.CALLSITE = eps /\ pcallcontext.LINE = $(-1)
   -- if pframe.TODO = (TICK_RESULT ptickdispatch) :: ptask_tail*
-def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE $trace_context_type(S, pcallcontext), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}]
-  -- if $tick_context_kind(S, pcallcontext)
-  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
-  -- if psparam* = $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)
-  -- if pvalue* = $trace_parameters(S, pbinding*, (psparam.NAME)*, pcallcontext.ARGC) ++ $trace_extra(S, pcallcontext.EXTRA)
+  -- if pcallcontext.CALLSITE = (ptickdispatch.SITE) /\ pcallcontext.LINE = ptickdispatch.MARKER.LINE
 
 ;; An arity/type error at internal tick entry retains the exact saved marker.
 def $throwable_continuation(S, S_next) = S_next
@@ -688,3 +694,20 @@ def $tick_expression_opcode(NScalarInt phpType24 metadata) = true
 def $tick_expression_opcode(NScalarInterpolatedString phpType29 metadata) = true
 def $tick_expression_opcode(NScalarString phpType33 metadata) = true
 def $tick_expression_opcode(expression) = false -- otherwise
+
+;; Compiler line contexts already authenticated by the source/operand pipeline.
+def $tick_begin_statement(T, NStmtNop metadata) = T
+def $tick_begin_statement(T, statement) = T[.LINE = $source_line($pcmetadata(statement))] -- otherwise
+def $tick_expression_line(T, pcodeexpr*, pcpath, expression) = T[.LINE = z]
+  -- if $code_expression(pcodeexpr*, pcpath) = ((z, b))
+def $tick_expression_line(T, pcodeexpr*, pcpath, expression) = T -- otherwise
+
+def $tick_control_body(T, pcodeexpr*, pcpath, statement*, metadata) = $tick_statements(T[.LINE = z], pcodeexpr*, pcpath, 0, statement*, false)
+  -- if $ppbodyline(metadata) = (z)
+  -- if $(z > 0)
+def $tick_control_body(T, pcodeexpr*, pcpath, statement*, metadata) = $tick_statements(T, pcodeexpr*, pcpath, 0, statement*, false)
+  -- if $ppbodyline(metadata) = (0)
+def $tick_control_body(T, pcodeexpr*, pcpath, statement*, metadata) = T[.DEPENDENCY = ("missing tick control body compiler line")] -- otherwise
+
+def $tick_empty_multiline_declare(SEQUENCE statement*, metadata) = ($ppnullbody(statement*) /\ $source_line(metadata) =/= $source_end_line(metadata))
+def $tick_empty_multiline_declare(phpType47, metadata) = false -- otherwise
