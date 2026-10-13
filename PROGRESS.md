@@ -7,6 +7,15 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Frozen fatal completion now observes request status after caught shutdown-exit
+replacement, retaining diagnostics while callbacks continue. Fresh fatal reporting
+writes255 in both display branches; frozen passthrough preserves resets.
+Three-line231/observer and protocol3a517483e /383 retain six exact source tuples
+and three public fronts/133 premises at paired207947da. No raw projections or
+old lifecycle/guard renewals are claimed. Original baseline/diagnostic and
+fixture compiler failure remain0; wider fatal/lifecycle work stays partial.
+[Fatal-observer ledger](coverage/semantics/source-static-fatal-observer-review.json).
+
 Recursive array and declared-property Stringable/string comparisons now suspend
 at the reached leaf through 394. Real aggregate pins preserve array copy-on-write;
 live slots and captured cells stay distinct, and the active left recursion guard
@@ -26,8 +35,7 @@ One-line257 and protocol20db1b23e /382 retain four exact source tuples and three
 public groups/238 premises at the single6c91c81d cut. Three raw exit projections
 stay separate from three production fatal and final-exit continuations; the
 original exit0/native255 baseline remains0. Static roots/destructor policy are
-unchanged. Caught shutdown-exit replacement returning to frozen fatal completion
-remains a next observer gap (native v19).
+unchanged. Its later frozen-completion observation is recorded above.
 [Fatal-status ledger](coverage/semantics/source-static-fatal-status-review.json).
 The383 composition over2676 passes independent pointwise review at0f51a247;
 parent ticks/WeakMap behavior is preserved. No renewed source/state evidence.

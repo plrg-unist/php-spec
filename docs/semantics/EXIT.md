@@ -41,8 +41,12 @@ lifecycle interactions remain required.
 Hard bailout writes255 to the request register before shutdown. A direct string
 exit in a shutdown callback preserves it, while integer/default exit replaces it.
 [The fatal-status review](../../coverage/semantics/source-static-fatal-status-review.json)
-keeps this cut separate. A caught shutdown-exit replacement that returns normally
-to frozen fatal completion still needs observation support.
+keeps this cut separate. Frozen fatal completion observes the current request
+register after caught shutdown-exit replacement; the original fatal diagnostic
+remains while the callback and later queue continue. A fresh fatal writes255 in
+both displayed and suppressed reporting branches, and frozen passthrough leaves
+later resets intact. [Observer review](../../coverage/semantics/source-static-fatal-observer-review.json)
+records the separate source/public cut; wider fatal/lifecycle work remains open.
 
 Exit clears the active source origin with the discarded continuation. Saved
 frames keep their own context until they unwind. A budget pause during exit

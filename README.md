@@ -1458,9 +1458,12 @@ new objects run. [Fatal review](coverage/semantics/source-static-fatal-review.js
 records source and public checks. Hard bailout now sets request status255 before
 shutdown: a direct string exit preserves it, while integer/default exits replace
 it. [Fatal-status review](coverage/semantics/source-static-fatal-status-review.json)
-records this separate cut. Caught shutdown-exit replacement that returns to frozen
-fatal completion, wider fatal/compiler producers and destructor/return
-interactions remain required.
+records this separate cut. Frozen fatal completion now reports the request status
+after caught shutdown-exit replacement, preserving continued callbacks and
+diagnostics. A fresh fatal writes255 even when reporting is suppressed.
+[Observer review](coverage/semantics/source-static-fatal-observer-review.json)
+records the focused source/public checks. Wider fatal/compiler producers and
+destructor/return interactions remain required.
 [Real closure instances](docs/semantics/SOURCE-CLOSURES.md) now retain explicit captures,
 selected callee owners and per-instance statics through invocation and cleanup.
 [Independent review](coverage/semantics/closures-review.json) binds source, object

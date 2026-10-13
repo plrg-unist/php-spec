@@ -1,0 +1,157 @@
+{
+  "version": 1,
+  "status": "private-reviewed",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+  "implementation": {
+    "base": "706af40d642f051dd9aacc0ce32e729049894819",
+    "commit": "3a517483e4be9dc945eb92652382faa9464de149",
+    "modules": 383,
+    "tested_paired_diff_sha256": "207947daf223a2b558e0f753204cece0088a9a99c1b69749d01b5b871d6b4baa",
+    "files_sha256": {
+      "spec/semantics/231-shutdown-functions.watsup": "14ab87e040514ba70fd4cea47fd9cad13734ca49647a6582340fe33b5ed4d3a7",
+      "bin/php-semantics": "ceb24962859f24f68ea86f359e87ae89a0e44813099896586703691fcdc77659",
+      "tests/semantics/source_static_fatal_observer_protocol.py": "97cfc5a6946396e5e238f0e03a098672c205ab86f9b6c8522d770cbb8f18cd92"
+    },
+    "author_report_note": "Affected11 semantic_diff_sha256 d8c4c607 covers231 only; its input map binds the same observer SHA above. Independent/state reports bind the full paired231+bin diff."
+  },
+  "behavior": [
+    "A caught shutdown source-exit replacement can return normally to frozen REQUESTFATAL; observation uses the current signed32 request register low byte while retaining fatal severity/diagnostic.",
+    "New fatal reporting writes255 for both displayed and suppressed branches. Frozen completion passthrough preserves later resets.",
+    "Lifetime/table/marking/source-owner and public admission rules are unchanged; original interrupted objects remain alive and ineligible for automatic destruction."
+  ],
+  "engine": [
+    "main/main.c:php_error_cb writes EG(exit_status)=255 before the E_DONT_BAIL marking/bailout distinction",
+    "Zend/zend_builtin_functions.c:ZEND_FUNCTION(exit) writes integer/default status; strings preserve it",
+    "sapi/cli/php_cli.c:CLI process status follows EG(exit_status) after request shutdown"
+  ],
+  "validation": {
+    "sources": {
+      "author": {
+        "report": ".tools/dynamic-source-statics-fatal-observer-model-11/report.json",
+        "ids": [
+          "eval-fatal-caught-reset-zero"
+        ],
+        "count": 1
+      },
+      "independent": {
+        "report": ".tools/dynamic-review-02/fatal-observer-model-v1/report.json",
+        "ids": [
+          "file-fatal-caught-reset-default",
+          "eval-fatal-caught-reset-large",
+          "eval-fatal-caught-reset-new-uncaught",
+          "eval-uncaught-shutdown-string",
+          "eval-fatal-caught-reset-hidden-uncaught"
+        ],
+        "count": 5
+      },
+      "unique_full_agreements": 6,
+      "tuple": "checked accepted/program; physical native code/stdout/full stderr exactly equal; modeled severity remains php_error or explicit_exit as recorded",
+      "unselected": "Native-v20 caught-string is not an additional model agreement."
+    },
+    "states": {
+      "reports": [
+        ".tools/dynamic-source-statics-fatal-observer-state-02/check-2-report.json",
+        ".tools/dynamic-source-statics-fatal-observer-state-02/check-3-report.json"
+      ],
+      "groups": [
+        {
+          "id": "frozen-reset",
+          "premises": 37
+        },
+        {
+          "id": "new-visible",
+          "premises": 48
+        },
+        {
+          "id": "new-hidden",
+          "premises": 48
+        }
+      ],
+      "total_premises": 133,
+      "raw_step_projections": 0,
+      "checks": "Real main/outer eval1/callback eval2 resumes and production continuations. Frozen completion/register0 plus idempotent freeze; fresh late Throwable has register0 before new visible/hidden reporting and255 afterward. Whole public/declaration/heap, empty contexts, old static/WeakReference roots, original cached fatal, stdout and emitted STDERR counts1/2/1 remain distinct.",
+      "stderr": "Complete stderr equality belongs to six CLI source tuples, not an extra state serialization comparison."
+    },
+    "bounds": "CLI model60/process90, full383 SL90 per state group, serial stop-first/reaped. All accepted inputs stable; earlier setter/source/lifetime/status cuts retain their revisions.",
+    "zero_credit": [
+      {
+        "report": ".tools/dynamic-source-statics-fatal-observer-baseline-09/report.json",
+        "reason": "unchanged baseline returns255 versus native0, both streams already exact"
+      },
+      {
+        "report": ".tools/dynamic-source-statics-fatal-observer-diagnosis-10/run-report.json",
+        "reason": "genuine final-state diagnostic15 true; REQUESTFATAL/register0 and public/heap/roots localized, not a full source agreement"
+      },
+      {
+        "reports": [
+          ".tools/dynamic-source-statics-fatal-observer-state-01/fixtures-report.json",
+          ".tools/dynamic-source-statics-fatal-observer-state-02/fixtures-report.json"
+        ],
+        "reason": "checked fixture preparation only"
+      },
+      {
+        "report": ".tools/dynamic-source-statics-fatal-observer-state-01/check-report.json",
+        "reason": "whole first37 group stopped before runtime: recursive otherwise in fixture STDERR counter; fixed only helper in fresh state02, assertions byte-identical"
+      }
+    ]
+  },
+  "reports": [
+    {
+      "path": ".tools/dynamic-review-02/static-native-v19/report.json",
+      "sha256": "b925994186f0907c51a4314d0062643c02036c41216f247cacc9b3df05390ec6"
+    },
+    {
+      "path": ".tools/dynamic-review-02/static-native-v20/report.json",
+      "sha256": "b0cfb16e70cb1a7dab5f8c827904ddfb776ec534d6e15e44d1876968ed16a157"
+    },
+    {
+      "path": ".tools/dynamic-review-02/static-native-v21/report.json",
+      "sha256": "3b1ca4d1da65c430139f928b150fe4dee98df54d2a135c6652ec849231d556cd"
+    },
+    {
+      "path": ".tools/dynamic-review-02/static-native-v22/report.json",
+      "sha256": "4fadb184bc0fca5b2456a2e589e142eb21becdd510e81e47d7db09ff49f5d0aa"
+    },
+    {
+      "path": ".tools/dynamic-source-statics-fatal-observer-baseline-09/report.json",
+      "sha256": "d9449a23a0cbff862f169b86fba6cbacff86c295f9e232cf0975428c45d03f59"
+    },
+    {
+      "path": ".tools/dynamic-source-statics-fatal-observer-diagnosis-10/run-report.json",
+      "sha256": "e78a12c62e8b8e2f04e9eb02638aeadbe2eb06a18dfb0e4b277309d400d0281a"
+    },
+    {
+      "path": ".tools/dynamic-source-statics-fatal-observer-model-11/report.json",
+      "sha256": "3096fd1e3074cb4f806d949a14dd10456c357712dae9b0a98d87d188eeed6e1d"
+    },
+    {
+      "path": ".tools/dynamic-review-02/fatal-observer-model-v1/report.json",
+      "sha256": "471a0c9d7a66e1fa994bb821e9eb345b59205dc971bafc0e0f4a9abf8eb519d0"
+    },
+    {
+      "path": ".tools/dynamic-source-statics-fatal-observer-state-01/fixtures-report.json",
+      "sha256": "30ead9de99fdef7ecb18cc90d61274e00e80a271161ae84c9d1d6507cbc4d7e0"
+    },
+    {
+      "path": ".tools/dynamic-source-statics-fatal-observer-state-01/check-report.json",
+      "sha256": "c2a7ed591e8e9c018165535ce890e232ddd83b1fd6f70bb0d804b62a64178c59"
+    },
+    {
+      "path": ".tools/dynamic-source-statics-fatal-observer-state-02/fixtures-report.json",
+      "sha256": "3b372624fa21586a53e5a2b2330e249e24e3d2c6631febdfe00da859c61bd207"
+    },
+    {
+      "path": ".tools/dynamic-source-statics-fatal-observer-state-02/check-2-report.json",
+      "sha256": "809ca5c94f2404dc0d06df21b4c5b3ac972e7c8b9829be0f559742e05790abf6"
+    },
+    {
+      "path": ".tools/dynamic-source-statics-fatal-observer-state-02/check-3-report.json",
+      "sha256": "3a411231a7a3b29d7c5be85ed75ec02e3fbcc118c8c87ff8630e6f07b3288a74"
+    }
+  ],
+  "remaining": [
+    "Wider fatal/compiler/reporting/handler producers and status replacements, output callbacks, later freeing/destructor/return interactions and full request lifecycle remain partial.",
+    "No earlier family closure or portability/build claim is renewed; this slice does not revise ownership, fatal marking or compiler/source acceptance."
+  ],
+  "recovery": "Canonical ignored .tools holds original bytes, native/model commands/streams/exits, snapshots, profile/runtime/pipeline hashes, diagnosis and original failures. Recreate a project-local checkout of implementation commit and provision canonical providers/references before rerunning source wrappers naming fatal-observer09. Maintained protocol takes explicit --sources/--output and preserves attempt labels."
+}
