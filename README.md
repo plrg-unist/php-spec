@@ -1149,6 +1149,15 @@ value survives entry removal. Throwing cleanup resumes the same pending Exceptio
 Three originals agree at `0c01e5f`; 418 reached checks pass. Earlier cuts retain
 their original evidence.
 
+Occupied same-key replacement publishes the new value before releasing the old
+value and preserves key registration. A receiver continuation retains the map
+through cleanup; unused results add no owner, and used results copy the selected
+RHS value afterward. Owned key temporaries release after the receiver.
+Six originals agree across `70bf0c4`/`302b5c9`; 642 reached checks pass with prior
+cuts retained.
+Wider entries, freeing mutation, reference/iteration and ephemeron protocols remain
+open.
+
 [Ordinary collection301](docs/semantics/CYCLE-COLLECTION.md) implements explicit
 object/array cycle collection, ordered destructor callbacks and real weak
 retirement. Fiber protection scans reuse one graph within an unchanged state,

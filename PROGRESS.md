@@ -3303,6 +3303,19 @@ plain-string message premise remains zero; its correction compares string bytes.
 Wider map protocols and ephemeron collection remain open.
 [Ledger](coverage/semantics/weak-map-review.json).
 
+Occupied same-key replacement now preserves KEY/BEFORE and publishes the new
+value before old cleanup. Existing ACCESS_RESUME retains only the receiver and
+original operands; unused results avoid a copy, while used results read the
+selected RHS value after cleanup. Five originals and 548 state checks pass at
+`70bf0c4`.
+An owned-key counterexample then grounds receiver-before-OP2 release order; its
+original and 94 reached checks pass at `302b5c9`. The prior variable-key root list
+remains literally [Map], preserving those cuts. Total 642 includes transfer,
+same-value/shared release, reentrant result copies and pending-throw cleanup;
+originals supply complete endings. The original paused-state fixture failure and
+owned-key mismatch stay zero. Wider map/freeing/reference/iteration and ephemeron
+protocols remain required.
+
 ArrayAccess304 reconstructs intermediate `[]` after ordinary by-value Get and
 supports final compound append, including null-key Get/Set on returned children.
 Returned temporary arrays extract selected rows before retirement; copied real
