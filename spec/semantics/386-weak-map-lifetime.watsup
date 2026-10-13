@@ -481,8 +481,8 @@ def $weakmap_gc_objects(S, (HOBJECT n) :: pnode_tail*, n_map, n_key, n_value) = 
   -- if $node_children(S, HOBJECT n) = eps
   -- if H = $heap_graph(S)
   -- if (HOBJECT n) <- $heap_reach(H.ROOTS, eps, $weakmap_gc_strip(H.EDGES, n_map, n_value))
-;; Methodless-value collection also admits ordinary Std graphs. Keep the
-;; earlier destructor-callback boundary for nonleaf/unrooted outside objects.
+;; Outside Std graphs also fit when Value is methodless or already called.
+;; Before its destructor runs, only the independently rooted leaf arm fits.
 def $weakmap_gc_objects(S, (HOBJECT n) :: pnode_tail*, n_map, n_key, n_value) = $weakmap_gc_objects(S, pnode_tail*, n_map, n_key, n_value)
   -- if ~(n <- [n_map, n_key, n_value])
   -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
@@ -491,7 +491,7 @@ def $weakmap_gc_objects(S, (HOBJECT n) :: pnode_tail*, n_map, n_key, n_value) = 
   -- if $(n_value < |S.OBJECTS|)
   -- if S.OBJECTS[n_value] = INSTANCE porigin_value
   -- if $class_at(S.CLASSES, porigin_value) = (pclassdesc)
-  -- if pclassdesc.METHODS = eps /\ $destructor_method(S, n_value) = eps
+  -- if (pclassdesc.METHODS = eps /\ $destructor_method(S, n_value) = eps) \/ (n_value <- S.DESTRUCTION.CALLED)
   -- if H = $heap_graph(S)
   -- if $node_children(S, HOBJECT n) =/= eps \/ ~((HOBJECT n) <- $heap_reach(H.ROOTS, eps, $weakmap_gc_strip(H.EDGES, n_map, n_value)))
 def $weakmap_gc_objects(S, (HCELL n) :: pnode_tail*, n_map, n_key, n_value) = $weakmap_gc_objects(S, pnode_tail*, n_map, n_key, n_value)
