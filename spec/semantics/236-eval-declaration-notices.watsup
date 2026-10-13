@@ -638,7 +638,7 @@ def $eval_compile_formatter_failure(S, ptbytes_name, n_root, ptbytes_file, z) = 
 ;; Fatal linking keeps Zend's diagnostic recording active during formatting.
 ;; Ordinary nonfatal errors resume their operation; the terminal bailout drops
 ;; that recorded tail. The two explicit uncaught reports call the C reporter.
-def $eval_compile_recorded_error(S, i) = ($eval_compile_fatal_current(S) =/= eps)
+def $eval_compile_recorded_error(S, i) = ($eval_compile_fatal_current(S) =/= eps \/ ($long_and(i, 4437) = 0 /\ $recorded_compile_at(S.DECLARATIONS, S.RECORDEDCOMPILEERROR) =/= eps))
 def $report_event(S, pevent, i_level) = S
   -- if $eval_compile_recorded_error(S, i_level)
 def $error_dispatch(S, i, n_message*, z, pevent, ptask_resume) = S[.TODO = ptask_resume :: ptask_tail*]
