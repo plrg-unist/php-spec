@@ -249,6 +249,8 @@ def $ob_api_done_replay_pending(S, ptask*, pobrelease, pcallcontext?, ptask_tail
 def $ob_api_failure_source_call(OB_USER_FAIL_ARGS pobinvoke n) = $ob_call_api(pobinvoke.CALL)
 def $ob_api_failure_source_call(OB_API_FAIL_RELEASE pobrelease pcallcontext? ptask* n) = (pobrelease.CALL)
 def $ob_api_failure_source_call(ptask) = eps -- otherwise
+def $destructor_internal_site_source(OB_API_FAIL_RELEASE pobrelease pcallcontext? ptask* n) = true
+def $destructor_internal_site_source(OB_USER_FAIL_ARGS pobinvoke n) = ($ob_call_api(pobinvoke.CALL) =/= eps)
 def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S_history, pconfigcall, eps)
   -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
   -- if pdestructorcall.OPERATION = (pdestructionoperation)
