@@ -1,5 +1,23 @@
 [
   {
+    "id": "weak-reference-freeing-create-reuse-61",
+    "source": "<?php\nclass Value {\n    public function __destruct() {\n        global $mapWeak;\n        $local = $mapWeak->get();\n        $first = WeakReference::create($local);\n        $second = WeakReference::create($local);\n        echo $first === $mapWeak ? \"same-wrapper|\" : \"different-wrapper|\";\n        echo $second === $first ? \"memoized|\" : \"fresh-wrapper|\";\n        echo $first->get() === $local ? \"first-live|\" : \"first-null|\";\n        echo $second->get() === $local ? \"second-live|\" : \"second-null|\";\n        unset($first, $second, $local);\n        echo \"V|\";\n    }\n}\n$map = new WeakMap();\n$key = new stdClass();\n$value = new Value();\n$keyWeak = WeakReference::create($key);\n$valueWeak = WeakReference::create($value);\n$mapWeak = WeakReference::create($map);\n$map[$key] = $value;\nunset($value);\nunset($map);\necho $mapWeak->get() === null ? \"map-null|\" : \"map-live|\";\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $valueWeak->get() === null ? \"value-null|\" : \"value-live|\";\nunset($key);\necho $keyWeak->get() === null ? \"key-null|END\" : \"key-live|END\";\n",
+    "source_sha256": "a1f6e90c563e24f6bbd2181c5e704d59f4fe5cc382a6adefcf4bcc00379b652f",
+    "stdout": "same-wrapper|memoized|first-live|second-live|V|map-null|key-live|value-null|key-null|END",
+    "stderr": "",
+    "status": "normal",
+    "exit": 0
+  },
+  {
+    "id": "weak-reference-freeing-create-replacement-61",
+    "source": "<?php\nclass Value {\n    public function __destruct() {\n        global $mapWeak, $oldWrapperWeak, $replacementWeak;\n        $local = $mapWeak->get();\n        $mapWeak = null;\n        echo $oldWrapperWeak->get() === null ? \"old-wrapper-null|\" : \"old-wrapper-live|\";\n        $replacementWeak = WeakReference::create($local);\n        $second = WeakReference::create($local);\n        echo $second === $replacementWeak ? \"memoized|\" : \"fresh-wrapper|\";\n        echo $replacementWeak->get() === $local ? \"replacement-live|\" : \"replacement-null|\";\n        unset($second, $local);\n        echo \"V|\";\n    }\n}\n$map = new WeakMap();\n$key = new stdClass();\n$value = new Value();\n$keyWeak = WeakReference::create($key);\n$valueWeak = WeakReference::create($value);\n$mapWeak = WeakReference::create($map);\n$oldWrapperWeak = WeakReference::create($mapWeak);\n$replacementWeak = null;\n$map[$key] = $value;\nunset($value);\nunset($map);\necho $replacementWeak->get() === null ? \"replacement-null-after|\" : \"replacement-live-after|\";\necho $oldWrapperWeak->get() === null ? \"old-wrapper-null-after|\" : \"old-wrapper-live-after|\";\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $valueWeak->get() === null ? \"value-null|\" : \"value-live|\";\nunset($key);\necho $keyWeak->get() === null ? \"key-null|END\" : \"key-live|END\";\n",
+    "source_sha256": "1b6081fea7ac685eca078913f1225c051ad2f3874f4340e051fe320eb6509d89",
+    "stdout": "old-wrapper-null|memoized|replacement-live|V|replacement-null-after|old-wrapper-null-after|key-live|value-null|key-null|END",
+    "stderr": "",
+    "status": "normal",
+    "exit": 0
+  },
+  {
     "id": "weak-map-entry-replace-60",
     "source": "<?php\nclass OldValue {\n    public function __destruct() {\n        global $map, $key, $newWeak;\n        echo $map[$key] === $newWeak->get() ? \"new-entry|\" : \"wrong-entry|\";\n        echo \"O|\";\n    }\n}\nclass NewValue {\n    public function __destruct() {\n        global $keyWeak;\n        echo $keyWeak->get() === null ? \"callback-key-null|\" : \"callback-key-live|\";\n        echo \"N|\";\n    }\n}\n$map = new WeakMap();\n$key = new stdClass();\n$old = new OldValue();\n$oldWeak = WeakReference::create($old);\n$map[$key] = $old;\n$keyWeak = WeakReference::create($key);\n$new = new NewValue();\n$newWeak = WeakReference::create($new);\nunset($old);\necho \"replace|\";\n$map[$key] = $new;\nunset($new);\necho $oldWeak->get() === null ? \"old-null|\" : \"old-live|\";\necho $newWeak->get() === null ? \"new-null|\" : \"new-live|\";\nunset($key);\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $newWeak->get() === null ? \"new-null|END\" : \"new-live|END\";\n",
     "source_sha256": "9ac3300e42422e4c6cfe304a8c61097b3a6d9aac64c71ace13b4159bd4ba3fd0",
