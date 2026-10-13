@@ -43,6 +43,7 @@ dec $aggregate_resume_join(pstate, porder, paggregatecursor*, int) : (pstate, po
 dec $aggregate_compare_return(pstate, paggregatecompare, pvalue, pvalue) : pstate
 
 dec $aggregate_std_kind(paggregatekind) : bool
+dec $aggregate_decl_kind(paggregatekind) : bool
 dec $aggregate_guards_unique(pcompareguard*) : bool
 dec $aggregate_decl_rows(pstate, nat, ppropertyslot*) : bool
 dec $aggregate_decl_keys(ppropertyslot*) : ptbytes*
@@ -76,6 +77,8 @@ def $aggregate_object_guard(S, n_left, n_right) = DECLARED_TABLE n_left
 def $aggregate_object_guard(S, n_left, n_right) = HOBJECT n_left -- otherwise
 def $aggregate_std_kind(AGGREGATE_STD_HASH n_left n_right) = true
 def $aggregate_std_kind(paggregatekind) = false -- otherwise
+def $aggregate_decl_kind(AGGREGATE_DECL_HASH ptbytes*) = true
+def $aggregate_decl_kind(paggregatekind) = false -- otherwise
 def $aggregate_guards_unique(eps) = true
 def $aggregate_guards_unique(pcompareguard :: pcompareguard_tail*) = (~(pcompareguard <- pcompareguard_tail*) /\ $aggregate_guards_unique(pcompareguard_tail*))
 def $aggregate_table_count(eps) = 0
@@ -172,10 +175,7 @@ def $aggregate_decl_continue(S, porder, n_left, n_right, ptbytes*, n_index, pcom
 ;; Comparison images add no value roots. Membership mutation cannot detach an
 ;; abstract declared table; that boundary is explicit rather than reclassified.
 def $aggregate_cursor_declared(eps, n) = false
-def $aggregate_cursor_declared(paggregatecursor :: paggregatecursor_tail*, n) = true
-  -- if paggregatecursor.KIND = AGGREGATE_DECL_HASH ptbytes*
-  -- if paggregatecursor.LEFT = HOBJECT n \/ paggregatecursor.RIGHT = HOBJECT n
-def $aggregate_cursor_declared(paggregatecursor :: paggregatecursor_tail*, n) = $aggregate_cursor_declared(paggregatecursor_tail*, n) -- otherwise
+def $aggregate_cursor_declared(paggregatecursor :: paggregatecursor_tail*, n) = (($aggregate_decl_kind(paggregatecursor.KIND) /\ (paggregatecursor.LEFT = HOBJECT n \/ paggregatecursor.RIGHT = HOBJECT n)) \/ $aggregate_cursor_declared(paggregatecursor_tail*, n))
 def $aggregate_tasks_declared((CALL_ARGS pcalltarget phpType7* n_index poperand* porigin? z) :: (STRINGIFY_RESULT n_receiver porigin_site z_line) :: (AGGREGATE_COMPARE_RESULT paggregatecompare) :: ptask_tail*, n) = $aggregate_cursor_declared(paggregatecompare.CAST.STACK, n)
 def $aggregate_tasks_declared((STRINGIFY_RESULT n_receiver porigin_site z_line) :: (AGGREGATE_COMPARE_RESULT paggregatecompare) :: ptask_tail*, n) = $aggregate_cursor_declared(paggregatecompare.CAST.STACK, n)
 def $aggregate_tasks_declared((AGGREGATE_COMPARE_RESULT paggregatecompare) :: ptask_tail*, n) = $aggregate_cursor_declared(paggregatecompare.CAST.STACK, n)
