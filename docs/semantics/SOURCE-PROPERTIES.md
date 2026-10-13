@@ -201,8 +201,15 @@ slots start uninitialized, untyped slots null; source backing and active getter
 bypass remain false. Writes update physical slots while getter results stay
 independent. Distinct stored S and retained returned R use the existing cleanup;
 [ordinary-storage review](../../coverage/semantics/ordinary-parent-unbacked-get-hook-review.json).
-Repeated hooked redeclarations over this ordinary backing and plain declarations
-inheriting hooks remain required.
+Repeated plain by-value, no-initializer/no-backing-read getter declarations now
+carry the same ordinary anchor through the existing bounded backing walk. Actual
+parent layout selects the declaring getter across intervening classes; typed
+physical slots start uninitialized and untyped slots null. Latest private/called
+scope and getter results remain independent of raw writes, with distinct stored S
+and retained R cleanup;
+[repeated ordinary-storage review](../../coverage/semantics/repeated-ordinary-unbacked-get-hook-review.json).
+TYPE-presence changes in this ordinary ancestry and plain declarations inheriting
+hooks remain required.
 Backed-parent inheritance retains invariant types; broader type equivalence and
 wider hook variance remain required.
 Hooked object iteration is explicit Unsupported rather than a raw storage view;

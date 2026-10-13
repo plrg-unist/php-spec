@@ -738,6 +738,16 @@ test-semantics: build
 	python3 tests/semantics/ordinary_parent_unbacked_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group write
 	python3 tests/semantics/ordinary_parent_unbacked_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group untyped
 	python3 tests/semantics/ordinary_parent_unbacked_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group lifetime
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/repeated_ordinary_unbacked_get_hook_cases.json
+	python3 tests/semantics/repeated_ordinary_unbacked_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group controls
+	python3 tests/semantics/repeated_ordinary_unbacked_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group cv_metadata
+	python3 tests/semantics/repeated_ordinary_unbacked_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group cv
+	python3 tests/semantics/repeated_ordinary_unbacked_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group this
+	python3 tests/semantics/repeated_ordinary_unbacked_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group write
+	python3 tests/semantics/repeated_ordinary_unbacked_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group untyped_metadata
+	python3 tests/semantics/repeated_ordinary_unbacked_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group untyped_read
+	python3 tests/semantics/repeated_ordinary_unbacked_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group untyped_write
+	python3 tests/semantics/repeated_ordinary_unbacked_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group lifetime
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_publication_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_composed_retry_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/assertion_cases.json
