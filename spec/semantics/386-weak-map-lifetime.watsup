@@ -57,6 +57,30 @@ def $weakmap_has_key(S, n, n_key) = true
   -- if S.OBJECTS[n] = WEAKMAP (pweakmapentry)
   -- if pweakmapentry.KEY = n_key
 def $weakmap_has_key(S, n, n_key) = false -- otherwise
+;; Scalar entries add no heap edge. Keep their actual string carrier and
+;; authenticate the current write operands before admitting this new lane.
+dec $weakmap_scalar_value(pstate, pvalue) : bool
+def $weakmap_scalar_value(S, PNULL) = true
+def $weakmap_scalar_value(S, PBOOL b) = true
+def $weakmap_scalar_value(S, PINT i) = true
+def $weakmap_scalar_value(S, pvalue) = true
+  -- if $string_bytes(pvalue) = (n_bytes*)
+  -- if pvalue = PSTRING n_bytes* \/ $string_carrier_valid(S, pvalue)
+  -- if $startup_bytes(n_bytes*)
+def $weakmap_scalar_value(S, pvalue) = false -- otherwise
+dec $weakmap_write_value_allowed(pstate, paccess) : bool
+def $weakmap_write_value_allowed(S, paccess) = true
+  -- if paccess.VALUE = POBJECT n_value
+  -- if $(n_value < |S.OBJECTS|) /\ (HOBJECT n_value) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_value] = INSTANCE porigin
+  -- if ~$instance_storage_freeing(S, n_value)
+  -- if $node_children(S, HOBJECT n_value) = eps
+def $weakmap_write_value_allowed(S, paccess) = true
+  -- if $weakmap_scalar_value(S, paccess.VALUE)
+  -- if S.TODO = paccess.TASK :: ptask_tail*
+  -- if paccess.RHS = S.RESULT
+  -- if paccess.SELECTED = $rcontainer_selected(S, paccess.RHS)
+def $weakmap_write_value_allowed(S, paccess) = false -- otherwise
 dec $weakmap_write_allowed(pstate, paccess) : bool
 def $weakmap_write_allowed(S, paccess) = true
   -- if paccess.MODE = ACCESS_SET /\ ~paccess.LATCH /\ ~paccess.KEYHOLE
@@ -81,11 +105,7 @@ def $weakmap_write_allowed(S, paccess) = true
   -- if S.OBJECTS[n_key] = STDINSTANCE /\ ~$instance_storage_freeing(S, n_key)
   -- if $node_children(S, HOBJECT n_key) = eps
   -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = eps
-  -- if paccess.VALUE = POBJECT n_value
-  -- if $(n_value < |S.OBJECTS|) /\ (HOBJECT n_value) <- S.ALLOCATIONS
-  -- if S.OBJECTS[n_value] = INSTANCE porigin
-  -- if ~$instance_storage_freeing(S, n_value)
-  -- if $node_children(S, HOBJECT n_value) = eps
+  -- if $weakmap_write_value_allowed(S, paccess)
 def $weakmap_write_allowed(S, paccess) = false -- otherwise
 dec $weakmap_replace_allowed(pstate, paccess) : bool
 dec $weakmap_second_write_allowed(pstate, paccess) : bool
@@ -209,6 +229,44 @@ def $access_call(S, paccess, ptbytes) = $throw_scalar(S, "Error", $ptascii("Obje
   -- if $weakmap_read_allowed(S, paccess)
   -- if paccess.OFFSET = POBJECT n_key
   -- if ~$weakmap_has_key(S, n_map, n_key)
+;; has_dimension tests the stored zval directly. It neither calls offsetGet
+;; nor copies the value, and uses the ordinary terminal test carrier.
+dec $weakmap_presence_allowed(pstate, paccess) : bool
+def $weakmap_presence_allowed(S, paccess) = true
+  -- if paccess.MODE = ACCESS_READ (KEY_TEST b)
+  -- if ~paccess.LATCH /\ ~paccess.KEYHOLE /\ ~paccess.OUTER
+  -- if paccess.BASE = BASE_VALUE S.RESULT
+  -- if paccess.SELECTED = $rcontainer_selected(S, S.RESULT)
+  -- if paccess.TASK = KEY_READ_DIM paccess.INPUT paccess.LINE (KEY_TEST b)
+  -- if S.TODO = paccess.TASK :: ptask_tail*
+  -- if paccess.OBJECT = (n_map)
+  -- if $weakmap_at(S, n_map) /\ ~$instance_storage_freeing(S, n_map)
+  -- if S_base = $quiet_operand(S, paccess.SELECTED)
+  -- if S_base.COMPLETION = NORMAL /\ S_base.RESULT = KNOWN (POBJECT n_map)
+  -- if S_key = $quiet_operand(S, paccess.INPUT)
+  -- if S_key.COMPLETION = NORMAL /\ S_key.RESULT = KNOWN paccess.OFFSET
+  -- if $access_valid(S, paccess[.PHASE = ACCESS_CALL $ptascii("offsetExists")])
+  -- if paccess.OFFSET = POBJECT n_key
+  -- if $(n_key < |S.OBJECTS|) /\ (HOBJECT n_key) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_key] = STDINSTANCE /\ ~$instance_storage_freeing(S, n_key)
+  -- if $node_children(S, HOBJECT n_key) = eps
+  -- if paccess.VALUE = PNULL
+def $weakmap_presence_allowed(S, paccess) = false -- otherwise
+def $access_call(S, paccess, ptbytes) = $access_predicate(S, paccess, b)
+  -- if ptbytes = $ptascii("offsetExists") /\ $weakmap_presence_allowed(S, paccess)
+  -- if paccess.MODE = ACCESS_READ (KEY_TEST b)
+  -- if paccess.OBJECT = (n_map) /\ paccess.OFFSET = POBJECT n_key
+  -- if ~$weakmap_has_key(S, n_map, n_key)
+def $access_call(S, paccess, ptbytes) = $access_predicate(S, paccess, pweakmapentry.VALUE =/= PNULL)
+  -- if ptbytes = $ptascii("offsetExists") /\ $weakmap_presence_allowed(S, paccess)
+  -- if paccess.MODE = ACCESS_READ (KEY_TEST false)
+  -- if paccess.OBJECT = (n_map) /\ paccess.OFFSET = POBJECT n_key
+  -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry) /\ pweakmapentry.KEY = n_key
+def $access_call(S, paccess, ptbytes) = $access_predicate(S, paccess, ~$truth(S, pweakmapentry.VALUE))
+  -- if ptbytes = $ptascii("offsetExists") /\ $weakmap_presence_allowed(S, paccess)
+  -- if paccess.MODE = ACCESS_READ (KEY_TEST true)
+  -- if paccess.OBJECT = (n_map) /\ paccess.OFFSET = POBJECT n_key
+  -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry) /\ pweakmapentry.KEY = n_key
 ;; Explicit object-key entry removal leaves the key and map alive. The
 ;; ordinary eager edge comparison transfers the removed value owner.
 dec $weakmap_unset_allowed(pstate, paccess) : bool
@@ -255,6 +313,7 @@ def $access_call(S, paccess, ptbytes) = S[.COMPLETION = UNSUPPORTED "WeakMap dim
   -- if ptbytes =/= $ptascii("offsetSet") \/ (~$weakmap_write_allowed(S, paccess) /\ ~$weakmap_second_write_allowed(S, paccess) /\ ~$weakmap_replace_allowed(S, paccess))
   -- if ptbytes =/= $ptascii("offsetGet") \/ ~$weakmap_read_allowed(S, paccess)
   -- if ptbytes =/= $ptascii("offsetUnset") \/ ~$weakmap_unset_allowed(S, paccess)
+  -- if ptbytes =/= $ptascii("offsetExists") \/ ~$weakmap_presence_allowed(S, paccess)
 
 ;; Weak payload registration order is the actual wrapper identity at insertion.
 ;; Borrowed NOTIFY metadata stays on the existing physical key pin until the
