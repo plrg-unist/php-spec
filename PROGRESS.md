@@ -16,6 +16,9 @@ lifetime or opened-membership changes; original native expectation failure,
 baselines/diagnostics and model14 pre-runtime failure remain0. Wider recorded
 runtime errors/compiler/formatter combinations stay partial.
 [Recorded-fatal ledger](coverage/semantics/source-recorded-fatal-review.json).
+The385 composition overa377 passes independent pointwise review at6659a8b89;
+accepted runtime/protocol and newer parent behavior are preserved.
+No renewed actor/source/state evidence is claimed.
 
 Redeclaration compiler fatals now admit fresh shutdown eval/file sources through
 full declaration-history authentication. Current waiting contexts, completion and
