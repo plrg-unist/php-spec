@@ -69,7 +69,7 @@ dec $error_trace_lines(pstate, ptraceframe*, nat) : preqbytes
 ;; this request-global snapshot, including a masked warning inside the callback.
 def $error_trace_capture(S, 256, ERROR_TRIGGER_PHASE pconfigcall n) = $sensitive_trace_freeze(S[.ERRORFATALTRACE = $source_trace_prefixed(S, $config_trace_frames(S, pconfigcall, $error_trigger_trace_values(S, pconfigcall)))])
 def $error_trace_capture(S, i, ptask) = S[.ERRORFATALTRACE = eps] -- if i =/= 256
-def $error_default(S, pevent, 256) = S[.TODO = eps][.TRACE = S.ERRORFATALTRACE][.ERRORFATALTRACE = eps][.COMPLETION = USERFATAL n_message* z ($long_and(S.REPORTING, 256) =/= 0)]
+def $error_default(S, pevent, 256) = S[.TODO = eps][.TRACE = S.ERRORFATALTRACE][.ERRORFATALTRACE = eps][.ERRORORIGIN = S.ORIGIN][.COMPLETION = USERFATAL n_message* z ($long_and(S.REPORTING, 256) =/= 0)]
   -- if pevent = DIAGNOSTIC "Fatal error" n_message* z
 def $error_default(S, pevent, i) = $output_display(S, $display_events(S, $error_default_event(S, pevent)))
   -- if i =/= 256
