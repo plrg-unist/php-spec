@@ -329,15 +329,9 @@ def $object_table_materialize(S, n) = S[.ARRAYS = S.ARRAYS ++ [parray]][.ALLOCAT
   -- if $object_table_at(S.OBJECTTABLES, n) = eps
   -- if $object_table_ordinary(S, n)
   -- if S.GC.ACTIVE = eps
-  -- if ~$aggregate_direct_guarded(S, n)
   -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_rows*)
   -- if parray = $object_table_insert_entries($object_table_ordinary_entries(n, ppropertyslot_rows*), $array_empty())
   -- if n_table = |S.ARRAYS|
-def $object_table_materialize(S, n) = S[.COMPLETION = UNSUPPORTED "direct comparison property-table materialization"]
-  -- if $object_table_at(S.OBJECTTABLES, n) = eps
-  -- if $object_table_ordinary(S, n)
-  -- if S.GC.ACTIVE = eps
-  -- if $aggregate_direct_guarded(S, n)
 def $object_table_materialize(S, n) = S[.COMPLETION = UNSUPPORTED "cached ordinary property-table construction during collection"]
   -- if $object_table_at(S.OBJECTTABLES, n) = eps
   -- if $object_table_ordinary(S, n)

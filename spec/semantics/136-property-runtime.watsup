@@ -1,7 +1,7 @@
 dec $aggregate_decl_retained(pstate, nat) : bool
 dec $aggregate_membership_boundary(pstate) : pstate
 dec $aggregate_creation_blocked(pstate, nat) : bool
-def $aggregate_creation_blocked(S, n) = ($aggregate_decl_retained(S, n) \/ ($object_table_at(S.OBJECTTABLES, n) = eps /\ $aggregate_direct_guarded(S, n)))
+def $aggregate_creation_blocked(S, n) = $aggregate_decl_retained(S, n)
 dec $class_dynamic_attribute(pstate, porigin) : bool
 dec $class_dynamic_parent(pstate, pclassdesc, nat) : bool
 dec $class_allows_dynamic(pstate, porigin, nat) : bool

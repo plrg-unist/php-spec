@@ -283,7 +283,6 @@ def $aggregate_projection_blocked(S, n) = true
   -- if (HOBJECT n) <- $aggregate_compare_seen(S)
   -- if $aggregate_projection_plain(S, n)
 def $aggregate_projection_blocked(S, n) = false -- otherwise
-def $aggregate_direct_guarded(S, n) = ((HOBJECT n) <- $aggregate_compare_seen(S))
 
 def $aggregate_node_value(HARRAY n) = PARRAY n
 def $aggregate_node_value(HOBJECT n) = POBJECT n
