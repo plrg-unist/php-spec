@@ -104,7 +104,7 @@ def $pphook_finish(P_outer, P_body, pcpath, ppropertydesc, metadata, pchheader) 
 def $function_body_tasks(S, pfunction) = $statement_tasks(statement*, (PORIGIN n pfunction.BODY), 0) ++ [$function_fallthrough(S, pfunction)]
   -- if $origin_source(pfunction.ORIGIN) = PORIGIN n pcpath
   -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NPropertyHook phpType14 phpType24 (BOOLEAN false) phpType11 (SEQUENCE eps) (SEQUENCE statement*) metadata)
-def $function_body_tasks(S, pfunction) = $arrow_tasks(pfunction, expression, z)
+def $function_body_tasks(S, pfunction) = $arrow_tasks(pfunction[.ORIGIN = $origin_source(pfunction.ORIGIN)], expression, z)
   -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_name) (SEQUENCE eps) expression metadata)
   -- if $ptlc($base64(text_get)) = $ptascii("get")
   -- if $arrow_line(pfunction.CODE.EXPRESSIONS, pfunction.BODY) = (z)
@@ -368,6 +368,17 @@ def $property_hook_expression_return(S, PORIGIN n pcpath_hook, z) = (expression)
   -- if pfunction.BODY = pcpath_hook ++ [PCFIELD 5]
   -- if $origin_node(S.SOURCES, PORIGIN n pfunction.BODY) = (expression)
   -- if $arrow_line(pfunction.CODE.EXPRESSIONS, pfunction.BODY) = (z)
+def $property_hook_expression_return(S, TRAIT_ORIGIN porigin_owner porigin_source ptbytes_hook, z) = $property_hook_expression_return(S, porigin_source, z)
+  -- if porigin_source = PORIGIN n pcpath_hook
+  -- if $(|pcpath_hook| >= 2)
+  -- if pcpath_group = pcpath_hook[0:$nabs($( |pcpath_hook| - 2))]
+  -- if pcpath_hook = pcpath_group ++ [PCFIELD 4, PCINDEX 0]
+  -- if porigin_property = PORIGIN n (pcpath_group ++ [PCFIELD 3, PCINDEX 0])
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if $hook_property_at(pclassdesc.PROPERTIES, TRAIT_MEMBER_ORIGIN porigin_owner porigin_property) = (ppropertydesc)
+  -- if $property_hook_trait_origin(S, ppropertydesc) = (TRAIT_ORIGIN porigin_owner porigin_source ptbytes_hook)
+  -- if $property_hook_trait_function(S, ppropertydesc) = (pfunction)
+  -- if $function_at($all_functions(S), TRAIT_ORIGIN porigin_owner porigin_source ptbytes_hook) = (pfunction)
 def $property_hook_expression_return(S, porigin, z) = eps -- otherwise
 def $property_hook_expression_context(S) = true
   -- if S.CURRENT = (pcallcontext)
