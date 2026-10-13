@@ -222,7 +222,15 @@ child's own descriptor and backing body remain required. Reverse addition keeps
 the class-line error. Untyped controls retain the child slot 200→300 and getter
 213→313; a real entered getter confirms active backing bypass.
 [Own-backed type-presence review](../../coverage/semantics/ordinary-backed-parent-backed-get-hook-type-presence-review.json).
-Plain declarations inheriting hooks and wider type-presence combinations remain required.
+An equal-TYPE public plain child now inherits a genuine body-backed parent's
+by-value getter across intervening classes. Own descriptors, source and bounded
+parent layout authenticate the pair. The effective property and physical slot
+stay Child's, while the resolved getter/function, lexical/private scope and trace
+class stay Parent's; called scope follows the receiver. Child 200→300 and getter
+213→313 are covered by genuine entered Child/Grand and writer states;
+[inherited-getter review](../../coverage/semantics/plain-child-inherited-backed-get-hook-review.json).
+Further plain redeclarations, other inherited getter shapes and wider
+type-presence combinations remain required.
 Backed-parent inheritance retains invariant types; broader type equivalence and
 wider hook variance remain required.
 Hooked object iteration is explicit Unsupported rather than a raw storage view;

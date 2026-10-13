@@ -1809,6 +1809,12 @@ The same priority now covers a genuinely own-body-backed child that removes the
 type. Reverse addition and existing backing 200→300/getter 213→313 remain controls;
 focused states check rejection before publication and genuine getter entry.
 [Own-backed type-presence review](coverage/semantics/ordinary-backed-parent-backed-get-hook-type-presence-review.json).
+An equal-type plain child property now inherits a genuine backed parent getter.
+The child keeps its own default and storage, while the getter's function, lexical
+scope, private helper and trace class remain the parent's; called scope follows
+the receiver. One original and four focused states cover child/Grand entry and
+write 300/getter 313 in the
+[inherited-getter review](coverage/semantics/plain-child-inherited-backed-get-hook-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
