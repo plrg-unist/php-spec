@@ -50,8 +50,8 @@ def $pih_stage(S,3) = true
   -- if $class_at(S.CLASSES,porigin) = (pclassdesc)
   -- if $ptlc(pclassdesc.NAME) = $ptascii("plaininheritedgrand54")
   -- if $objectprops_at(S.OBJECTPROPS,ppropertyhook.OBJECT) = (ppropertyslot*)
-  -- if $property_slot_at(ppropertyslot*,$ptascii("value")) = (ppropertyslot)
-  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (PINT 300))
+  -- if $property_slot_at(ppropertyslot*,$ptascii("value")) = (ppropertyslot_value)
+  -- if ppropertyslot_value.STATE = PROP_VALUE (DIRECT (PINT 300))
 def $pih_stage(S,4) = true
   -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
   -- if S.TODO = (PROPERTY_HOOK_RESULT ppropertyhook) :: ptask*
