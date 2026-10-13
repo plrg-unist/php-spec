@@ -1448,6 +1448,11 @@ binds 18 source outcomes and separate compiler and paused-state checks.
 [Stringable comparisons](coverage/semantics/stringable-comparison-review.json) now
 resume direct instance/string operators and cases after authentic casts, retaining
 CV/copy/reference reads, lazy fallthrough and throwing callback control.
+[Recursive Stringable comparisons](coverage/semantics/aggregate-stringable-comparison-review.json)
+now retain enclosing arrays and declared-property objects across casts, preserving
+copy-on-write, live slots/cells, successive casts and active recursion guards.
+Six exact sources and 521 reached checks pass; materialized-property casts and
+Fiber VM transfer during this continuation remain explicit Unsupported.
 [Match expressions](docs/semantics/SOURCE-MATCH.md) preserve strict, lazy arm
 selection, delayed CV subjects, ordered compiler diagnostics and owned value
 results; their [review](coverage/semantics/match-review.json) binds source, compiler

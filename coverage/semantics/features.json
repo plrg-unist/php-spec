@@ -7558,7 +7558,8 @@
         "spec/semantics/45-constant-context.watsup",
         "spec/semantics/52-comparison.watsup",
         "spec/semantics/168-user-string-runtime.watsup",
-        "spec/semantics/392-stringable-comparisons.watsup"
+        "spec/semantics/392-stringable-comparisons.watsup",
+        "spec/semantics/394-aggregate-stringable-comparisons.watsup"
       ],
       "helper_tests": [
         "tests/semantics/comparison.py",
@@ -7567,14 +7568,16 @@
       "source_tests": [
         "tests/semantics/validate.py",
         "coverage/semantics/source.json",
-        "tests/semantics/stringable_comparison_cases.json"
+        "tests/semantics/stringable_comparison_cases.json",
+        "tests/semantics/aggregate_stringable_comparison_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c",
         "vendor/php-src/Zend/zend_object_handlers.c",
-        "coverage/semantics/stringable-comparison-review.json"
+        "coverage/semantics/stringable-comparison-review.json",
+        "coverage/semantics/aggregate-stringable-comparison-review.json"
       ],
-      "review": "Reviewed original-source loose/ordered comparison for null, bool, int, float, bytes and arrays, including overflow provenance, greater operand order, recursive errors and result types: comparison-review.json. Object contexts, callbacks and broader source integration remain pending. Direct ordinary Stringable INSTANCE/string operators and non-bool Switch cases now suspend through 392, preserving captured COPY/CV/pre-unwrapped CELL reads and original operand/BASE/caster owners. Six exact source agreements and 487 reached predicates/26 raw Steps pass at aabff656/381; nested scalar Switch, throw/catch/finally and lazy fallthrough are included. Reached recursive casts and broader internal handlers/lifetimes remain required; see stringable-comparison-review.json.",
+      "review": "Reviewed original-source loose/ordered comparison for null, bool, int, float, bytes and arrays, including overflow provenance, greater operand order, recursive errors and result types: comparison-review.json. Object contexts, callbacks and broader source integration remain pending. Direct ordinary Stringable INSTANCE/string operators and non-bool Switch cases now suspend through 392, preserving captured COPY/CV/pre-unwrapped CELL reads and original operand/BASE/caster owners. Six exact source agreements and 487 reached predicates/26 raw Steps pass at aabff656/381; nested scalar Switch, throw/catch/finally and lazy fallthrough are included. The direct-comparison cut is recorded in stringable-comparison-review.json. Recursive array/ordinary declared-property Stringable/string pairs now suspend at the reached leaf through 394, retaining both parent owners, pinned-array COW, live property slots versus captured cells, cursor restart and authenticated active-left recursion across caster frames. Six exact originals and 521 reached premises (473 setup/frontier, 48 pure controls, 31 raw PhpSteps) pass at b28d9/383. Materialized-property casts, Fiber VM transfer during this continuation and broader handlers/lifetimes remain required; see aggregate-stringable-comparison-review.json.",
       "planned_source_tests": [
         "tests/semantics/conformance/switch-match.php"
       ]
@@ -8719,20 +8722,24 @@
         "spec/semantics/36-arrays.watsup",
         "spec/semantics/41-array-control.watsup",
         "spec/semantics/52-comparison.watsup",
-        "spec/semantics/136-property-runtime.watsup"
+        "spec/semantics/136-property-runtime.watsup",
+        "spec/semantics/394-aggregate-stringable-comparisons.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/validate.py",
         "coverage/semantics/source.json",
         "tests/semantics/properties.py",
-        "tests/semantics/properties_task_protocol.py"
+        "tests/semantics/properties_task_protocol.py",
+        "tests/semantics/aggregate_stringable_comparison_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c",
-        "coverage/semantics/properties-review.json"
+        "coverage/semantics/properties-review.json",
+        "coverage/semantics/aggregate-stringable-comparison-review.json",
+        "vendor/php-src/Zend/zend_object_handlers.c"
       ],
-      "review": "Array comparison history remains under the existing container evidence. Populated public object comparison now observes declared slots, dynamic entries and materialized property-table order (properties-review.json); general object handlers remain open.",
+      "review": "Array comparison history remains under the existing container evidence. Populated public object comparison now observes declared slots, dynamic entries and materialized property-table order (properties-review.json); general object handlers remain open. Recursive array/ordinary declared-property Stringable/string pairs now suspend at the reached leaf through 394, retaining both parent owners, pinned-array COW, live property slots versus captured cells, cursor restart and authenticated active-left recursion across caster frames. Six exact originals and 521 reached premises (473 setup/frontier, 48 pure controls, 31 raw PhpSteps) pass at b28d9/383. Materialized-property casts, Fiber VM transfer during this continuation and broader handlers/lifetimes remain required; see aggregate-stringable-comparison-review.json.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-dynamic-self-cycle.php",
         "tests/semantics/conformance/array-alias-self-cycle.php",
@@ -9777,7 +9784,8 @@
         "spec/semantics/156-finally-runtime.watsup",
         "spec/semantics/378-reference-retired-owners.watsup",
         "spec/semantics/168-user-string-runtime.watsup",
-        "spec/semantics/392-stringable-comparisons.watsup"
+        "spec/semantics/392-stringable-comparisons.watsup",
+        "spec/semantics/394-aggregate-stringable-comparisons.watsup"
       ],
       "helper_tests": [
         "tests/switch_case_separator.py",
@@ -9793,7 +9801,8 @@
         "tests/semantics/reference_replay_switch_cases.json",
         "tests/semantics/reference_retired_owner_cases.json",
         "tests/semantics/reference_retired_owner_extended_cases.json",
-        "tests/semantics/stringable_comparison_cases.json"
+        "tests/semantics/stringable_comparison_cases.json",
+        "tests/semantics/aggregate_stringable_comparison_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
@@ -9803,9 +9812,10 @@
         "coverage/semantics/reference-return-switch-replay-review.json",
         "coverage/semantics/reference-return-retired-owner-review.json",
         "vendor/php-src/Zend/zend_object_handlers.c",
-        "coverage/semantics/stringable-comparison-review.json"
+        "coverage/semantics/stringable-comparison-review.json",
+        "coverage/semantics/aggregate-stringable-comparison-review.json"
       ],
-      "review": "Ordered case/default/fallthrough, typed break/continue, compiler diagnostics, subject ownership and compiled boolean branch are reviewed with 18 source outcomes, compiler projections and six paused stages/85 assertions. Independent original6 and paused6 gates are separate. Object-dependent comparisons and wider control remain open. Source-authenticated no-FREE CV/compiled-CONST switch continuation preserves selected-case remainder/fallthrough without repeating subject/case evaluation or creating a payload owner. Seven preserved originals and 14 reached current/saved fixtures/1339 assertions pass at retained private361 cuts; actual-parent strict compilation is separate. END/PHASE are consumed together on end/jump/transfer, and enclosing TRY/selected-CATCH region is authenticated. Physical VAR/TMP owners, active-finalizer replay and NULL/186 remain open; see reference-return-switch-replay-review.json. Mutable/refcounted physical-array replay preserves one real end-owner cleanup and non-owning source/identity/cursor rows under conservative >=3-before/>=2-after admission. Four exact sources and nine intentional native8/spec1 COW controls, state23/1873 plus independent98 and actual carrier71 pass; actual364 strict is separate. Wider payloads, active-finalizer replay and protected NULL/186 remain required; see reference-return-retired-owner-review.json. Direct ordinary Stringable INSTANCE/string operators and non-bool Switch cases now suspend through 392, preserving captured COPY/CV/pre-unwrapped CELL reads and original operand/BASE/caster owners. Six exact source agreements and 487 reached predicates/26 raw Steps pass at aabff656/381; nested scalar Switch, throw/catch/finally and lazy fallthrough are included. Reached recursive casts and broader internal handlers/lifetimes remain required; see stringable-comparison-review.json.",
+      "review": "Ordered case/default/fallthrough, typed break/continue, compiler diagnostics, subject ownership and compiled boolean branch are reviewed with 18 source outcomes, compiler projections and six paused stages/85 assertions. Independent original6 and paused6 gates are separate. Object-dependent comparisons and wider control remain open. Source-authenticated no-FREE CV/compiled-CONST switch continuation preserves selected-case remainder/fallthrough without repeating subject/case evaluation or creating a payload owner. Seven preserved originals and 14 reached current/saved fixtures/1339 assertions pass at retained private361 cuts; actual-parent strict compilation is separate. END/PHASE are consumed together on end/jump/transfer, and enclosing TRY/selected-CATCH region is authenticated. Physical VAR/TMP owners, active-finalizer replay and NULL/186 remain open; see reference-return-switch-replay-review.json. Mutable/refcounted physical-array replay preserves one real end-owner cleanup and non-owning source/identity/cursor rows under conservative >=3-before/>=2-after admission. Four exact sources and nine intentional native8/spec1 COW controls, state23/1873 plus independent98 and actual carrier71 pass; actual364 strict is separate. Wider payloads, active-finalizer replay and protected NULL/186 remain required; see reference-return-retired-owner-review.json. Direct ordinary Stringable INSTANCE/string operators and non-bool Switch cases now suspend through 392, preserving captured COPY/CV/pre-unwrapped CELL reads and original operand/BASE/caster owners. Six exact source agreements and 487 reached predicates/26 raw Steps pass at aabff656/381; nested scalar Switch, throw/catch/finally and lazy fallthrough are included. The direct-comparison cut is recorded in stringable-comparison-review.json. Recursive array/ordinary declared-property Stringable/string pairs now suspend at the reached leaf through 394, retaining both parent owners, pinned-array COW, live property slots versus captured cells, cursor restart and authenticated active-left recursion across caster frames. Six exact originals and 521 reached premises (473 setup/frontier, 48 pure controls, 31 raw PhpSteps) pass at b28d9/383. Materialized-property casts, Fiber VM transfer during this continuation and broader handlers/lifetimes remain required; see aggregate-stringable-comparison-review.json.",
       "planned_source_tests": [
         "tests/semantics/conformance/switch-match.php"
       ]
@@ -13233,18 +13243,21 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/168-user-string-runtime.watsup",
-        "spec/semantics/392-stringable-comparisons.watsup"
+        "spec/semantics/392-stringable-comparisons.watsup",
+        "spec/semantics/394-aggregate-stringable-comparisons.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
-        "tests/semantics/stringable_comparison_cases.json"
+        "tests/semantics/stringable_comparison_cases.json",
+        "tests/semantics/aggregate_stringable_comparison_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c",
         "vendor/php-src/Zend/zend_object_handlers.c",
-        "coverage/semantics/stringable-comparison-review.json"
+        "coverage/semantics/stringable-comparison-review.json",
+        "coverage/semantics/aggregate-stringable-comparison-review.json"
       ],
-      "review": "Ordinary source __toString declarations and authenticated callbacks reuse168; magic string behavior remains partial. Direct ordinary Stringable INSTANCE/string operators and non-bool Switch cases now suspend through 392, preserving captured COPY/CV/pre-unwrapped CELL reads and original operand/BASE/caster owners. Six exact source agreements and 487 reached predicates/26 raw Steps pass at aabff656/381; nested scalar Switch, throw/catch/finally and lazy fallthrough are included. Reached recursive casts and broader internal handlers/lifetimes remain required; see stringable-comparison-review.json."
+      "review": "Ordinary source __toString declarations and authenticated callbacks reuse168; magic string behavior remains partial. Direct ordinary Stringable INSTANCE/string operators and non-bool Switch cases now suspend through 392, preserving captured COPY/CV/pre-unwrapped CELL reads and original operand/BASE/caster owners. Six exact source agreements and 487 reached predicates/26 raw Steps pass at aabff656/381; nested scalar Switch, throw/catch/finally and lazy fallthrough are included. The direct-comparison cut is recorded in stringable-comparison-review.json. Recursive array/ordinary declared-property Stringable/string pairs now suspend at the reached leaf through 394, retaining both parent owners, pinned-array COW, live property slots versus captured cells, cursor restart and authenticated active-left recursion across caster frames. Six exact originals and 521 reached premises (473 setup/frontier, 48 pure controls, 31 raw PhpSteps) pass at b28d9/383. Materialized-property casts, Fiber VM transfer during this continuation and broader handlers/lifetimes remain required; see aggregate-stringable-comparison-review.json."
     },
     {
       "id": "properties.typed",

@@ -7,14 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Direct ordinary Stringable/string comparisons now call `__toString()` for seven
-loose operators and non-bool Switch cases. Captured CV/copy/reference-cell reads,
-GLOBALS rebinding, caster ownership, lazy fallthrough and nested scalar Switch
-with a caught TypeError and finally entry are validated at aabff656 /381: six exact
-source agreements and 487 reached predicates with 26 real PhpSteps; strict 3
-passes. Original baseline, pre-main and fixture-selector failures retain zero credit. Recursive casts, wider
-internal handlers and lifetimes remain required; full core stays partial.
-[Comparison ledger](coverage/semantics/stringable-comparison-review.json).
+Recursive array and declared-property Stringable/string comparisons now suspend
+at the reached leaf through 394. Real aggregate pins preserve array copy-on-write;
+live slots and captured cells stay distinct, and the active left recursion guard
+survives caster entry. Successive casts, nested recursion Error and TypeError
+catch/finally entry pass at b28d9 /383: six exact source agreements and 521 reached
+premises, including 48 pure controls and 31 raw PhpSteps; strict 3 passes.
+Original baseline, pre-main and fixture-selector failures retain zero credit.
+Materialized-property casts, Fiber VM transfer during this continuation and wider
+handlers/lifetimes remain required; full core stays partial.
+[Aggregate comparison ledger](coverage/semantics/aggregate-stringable-comparison-review.json).
+The preceding [direct comparison increment](coverage/semantics/stringable-comparison-review.json)
+retains its six sources and 487/26 state cut at aabff656 /381.
 
 Caught source-static destructor exceptions now keep user execution through caller
 catch and remaining-slot release, preserving Previous without treating exit as a
