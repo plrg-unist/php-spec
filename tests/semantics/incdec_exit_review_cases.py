@@ -98,7 +98,3 @@ try { $v = (new T) === ++$x; echo 'R;'; } catch (Throwable $e) { echo 'C:', $e =
 echo 'END;';
 ''',
 }
-
-BOUNDARIES = {
-    'review-exit-callable-owner': 'increment/decrement warning exit continuation',
-}

@@ -335,14 +335,20 @@ values; strings retain callback writes. Registry restoration, caller temporaries
 nested handlers, surviving aliases and request exit status are checked through
 shutdown. [Handler-local cleanup cancellation](coverage/semantics/incdec-exit-cancellation-review.json)
 now restores safe captured values and resumes real caller catch/finally, preserving
-Throwable identity, aliases, registry changes and request exit status. Owning callback
-release and unsafe restoration targets remain required.
+Throwable identity, aliases, registry changes and request exit status. Unsafe
+restoration targets remain required.
 [Caller-temporary cleanup cancellation](coverage/semantics/incdec-parent-exit-cancellation-review.json)
 now resumes caller catch/finally after the warning helper finishes: bool/null
 restore their capture while strings skip the store. Request status, later destructor
 writes and retired operand/finally owners are preserved. Unfinished binary
 operands retire in source lifetime order. Wider owning holders and control forms
 remain explicit dependencies.
+[Owning invokable warning callbacks](coverage/semantics/incdec-callback-exit-review.json)
+now release receiver and saved handler before bool/decrement-null restoration;
+strings skip the store. Registry replacement/clearing and surviving owners persist;
+callback-destructor throws resume caller catch/finally. Seven new and one repaired
+source agree, with 568 genuine SL conditions. Owning handler-local throws,
+exit during callback-owner destruction, unsafe targets and wider callback forms remain required.
 All twelve [compound assignments](docs/semantics/UPDATES.md) preserve captured
 targets, delayed reads and alias ownership; [independent evidence](coverage/semantics/compound-review.json)
 records 2,639 exact source comparisons and the corrected diagnostic phases.

@@ -187,6 +187,8 @@ def $update_warning_exit_frames(S, eps) = false
 def $update_warning_exit_frames(S, pframe :: pframe_tail*) = ($update_warning_exit_tasks($constant_frame_scope(S, pframe, pframe_tail*), pframe.TODO) \/ $update_warning_exit_frames(S, pframe_tail*))
 def $update_warning_exit_pending(S) = ($update_warning_exit_tasks(S, S.TODO) \/ $update_warning_exit_frames(S, S.FRAMES))
 dec $update_warning_exit_named(pstate, perrorcall) : bool
+dec $update_warning_exit_owning(pstate, perrorcall) : bool
+dec $update_warning_exit_admitted(pstate, perrorcall) : bool
 def $update_warning_exit_named(S, perrorcall) = true
   -- if perrorcall.RESUME = UPDATE_WARNING_RESTORE pupdatewarning
   -- if pupdatewarning.PENDING = eps
@@ -194,16 +196,26 @@ def $update_warning_exit_named(S, perrorcall) = true
   -- if $value_nodes(perrorcall.CALLBACK) = eps
   -- if $error_entered_call_valid(S, perrorcall)
 def $update_warning_exit_named(S, perrorcall) = false -- otherwise
+def $update_warning_exit_owning(S, perrorcall) = true
+  -- if perrorcall.RESUME = UPDATE_WARNING_RESTORE pupdatewarning
+  -- if pupdatewarning.PENDING = eps
+  -- if perrorcall.CALLBACK = POBJECT n
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if perrorcall.TARGET = (METHOD_TARGET n porigin_method)
+  -- if $error_entered_call_valid(S, perrorcall)
+def $update_warning_exit_owning(S, perrorcall) = false -- otherwise
+def $update_warning_exit_admitted(S, perrorcall) = ($update_warning_exit_named(S, perrorcall) \/ $update_warning_exit_owning(S, perrorcall))
 dec $update_warning_exit_call(pstate) : perrorcall?
 def $update_warning_exit_call(S) = (perrorcall)
   -- if S.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
-  -- if $update_warning_exit_named(S, perrorcall)
+  -- if $update_warning_exit_admitted(S, perrorcall)
 def $update_warning_exit_call(S) = eps -- otherwise
 dec $update_warning_exit_handler_head(pstate, pcallcontext?, pframe, pframe*) : bool
 def $update_warning_exit_handler_head(S, (pcallcontext), pframe, pframe_tail*) = true
   -- if pframe.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
   -- if perrorcall.TARGET = (pcallcontext.TARGET)
-  -- if $update_warning_exit_named($constant_frame_scope(S, pframe, pframe_tail*), perrorcall)
+  -- if $update_warning_exit_admitted($constant_frame_scope(S, pframe, pframe_tail*), perrorcall)
   -- if $error_context_valid(S, pcallcontext)
 def $update_warning_exit_handler_head(S, pcallcontext?, pframe, pframe_tail*) = false -- otherwise
 dec $update_warning_exit_handler(pstate, pcallcontext?, pframe*) : bool
@@ -227,25 +239,28 @@ def $exit_start_unwind(S, z) = S[.COMPLETION = UNSUPPORTED "increment/decrement 
   -- if $update_warning_exit_call(S) = eps
 
 def $task_nodes(UPDATE_WARNING_EXIT perrorcall z) = $value_nodes(perrorcall.CALLBACK) ++ $error_selected_roots(perrorcall.TARGET)
-def $call_task_valid(S, UPDATE_WARNING_EXIT perrorcall z) = ($update_warning_exit_named(S, perrorcall) /\ z = $ntprecision32(z))
+def $call_task_valid(S, UPDATE_WARNING_EXIT perrorcall z) = ($update_warning_exit_admitted(S, perrorcall) /\ z = $ntprecision32(z))
 def $source_operand_marker(UPDATE_WARNING_EXIT perrorcall z) = $source_operand_marker(perrorcall.RESUME)
 def $throwable_marker(UPDATE_WARNING_EXIT perrorcall z) = true
 dec $update_exit_order_supported(pstate) : bool
 rule PhpStep/update-warning-exit-string: S ~> $exit_start_unwind($error_handler_restore(S[.TODO = ptask_tail*], perrorcall.CALLBACK), z)
   -- if S.TODO = (UPDATE_WARNING_EXIT perrorcall z) :: ptask_tail*
   -- if $call_task_valid(S, UPDATE_WARNING_EXIT perrorcall z)
+  -- if $update_warning_exit_named(S, perrorcall)
   -- if perrorcall.RESUME = UPDATE_WARNING_RESTORE pupdatewarning
   -- if ~$update_warning_restores_throw(pupdatewarning.INPUT)
   -- if $update_exit_order_supported(S)
 rule PhpStep/update-warning-exit-expired: S ~> S[.COMPLETION = UNSUPPORTED "increment/decrement restoration target is expired or constrained"]
   -- if S.TODO = (UPDATE_WARNING_EXIT perrorcall z) :: ptask_tail*
   -- if $call_task_valid(S, UPDATE_WARNING_EXIT perrorcall z)
+  -- if $update_warning_exit_named(S, perrorcall)
   -- if perrorcall.RESUME = UPDATE_WARNING_RESTORE pupdatewarning
   -- if $update_warning_restores_throw(pupdatewarning.INPUT)
   -- if $update_warning_pointer_value(S, pupdatewarning.POINTER) = eps
 rule PhpStep/update-warning-exit-owned: S ~> S[.COMPLETION = UNSUPPORTED "increment/decrement warning exit continuation"]
   -- if S.TODO = (UPDATE_WARNING_EXIT perrorcall z) :: ptask_tail*
   -- if $call_task_valid(S, UPDATE_WARNING_EXIT perrorcall z)
+  -- if $update_warning_exit_named(S, perrorcall)
   -- if perrorcall.RESUME = UPDATE_WARNING_RESTORE pupdatewarning
   -- if $update_warning_restores_throw(pupdatewarning.INPUT)
   -- if $update_warning_pointer_value(S, pupdatewarning.POINTER) = (pslot)
@@ -253,6 +268,7 @@ rule PhpStep/update-warning-exit-owned: S ~> S[.COMPLETION = UNSUPPORTED "increm
 rule PhpStep/update-warning-exit-restore: S ~> $exit_start_unwind($update_warning_store($error_handler_restore(S[.TODO = ptask_tail*], perrorcall.CALLBACK), pupdatewarning.POINTER, pvalue), z)
   -- if S.TODO = (UPDATE_WARNING_EXIT perrorcall z) :: ptask_tail*
   -- if $call_task_valid(S, UPDATE_WARNING_EXIT perrorcall z)
+  -- if $update_warning_exit_named(S, perrorcall)
   -- if perrorcall.RESUME = UPDATE_WARNING_RESTORE pupdatewarning
   -- if $update_warning_restores_throw(pupdatewarning.INPUT)
   -- if $update_warning_pointer_value(S, pupdatewarning.POINTER) = (pslot)
@@ -274,17 +290,20 @@ def $update_warning_exit_cancel_safe(S, perrorcall) = false -- otherwise
 rule PhpStep/update-warning-exit-cleanup-order: S ~> S[.COMPLETION = UNSUPPORTED "increment/decrement warning exit temporary cleanup order"]
   -- if S.TODO = (UPDATE_WARNING_EXIT perrorcall z) :: ptask_tail*
   -- if $call_task_valid(S, UPDATE_WARNING_EXIT perrorcall z)
+  -- if $update_warning_exit_named(S, perrorcall)
   -- if $update_warning_exit_cancel_safe(S, perrorcall)
   -- if ~$update_exit_order_supported(S)
 rule PhpStep/update-warning-exit-cleanup-throw-string: S ~> $error_handler_restore(S[.TODO = (UPDATE_WARNING_DONE pupdatewarning[.PENDING = (n)]) :: ptask_tail*], perrorcall.CALLBACK)
   -- if S.TODO = (THROW_SEARCH n) :: (UPDATE_WARNING_EXIT perrorcall z) :: ptask_tail*
   -- if $call_task_valid(S, UPDATE_WARNING_EXIT perrorcall z)
+  -- if $update_warning_exit_named(S, perrorcall)
   -- if $throwable_live(S, n)
   -- if perrorcall.RESUME = UPDATE_WARNING_RESTORE pupdatewarning
   -- if ~$update_warning_restores_throw(pupdatewarning.INPUT)
 rule PhpStep/update-warning-exit-cleanup-throw-restore: S ~> $update_warning_store($error_handler_restore(S[.TODO = (UPDATE_WARNING_DONE pupdatewarning[.PENDING = (n)]) :: ptask_tail*], perrorcall.CALLBACK), pupdatewarning.POINTER, pvalue)
   -- if S.TODO = (THROW_SEARCH n) :: (UPDATE_WARNING_EXIT perrorcall z) :: ptask_tail*
   -- if $call_task_valid(S, UPDATE_WARNING_EXIT perrorcall z)
+  -- if $update_warning_exit_named(S, perrorcall)
   -- if $throwable_live(S, n)
   -- if perrorcall.RESUME = UPDATE_WARNING_RESTORE pupdatewarning
   -- if $update_warning_restores_throw(pupdatewarning.INPUT)
@@ -294,7 +313,126 @@ rule PhpStep/update-warning-exit-cleanup-throw-restore: S ~> $update_warning_sto
 rule PhpStep/update-warning-exit-cleanup-throw: S ~> S[.COMPLETION = UNSUPPORTED "increment/decrement warning exit cleanup throw"]
   -- if S.TODO = (THROW_SEARCH n) :: (UPDATE_WARNING_EXIT perrorcall z) :: ptask_tail*
   -- if $call_task_valid(S, UPDATE_WARNING_EXIT perrorcall z)
+  -- if $update_warning_exit_named(S, perrorcall)
   -- if ~$update_warning_exit_cancel_safe(S, perrorcall)
+
+;; zend_error releases the selected receiver before deciding whether to restore
+;; or drop its old raw callback. Its destructor precedes the captured store.
+;; The final phase borrows the existing cleanup certificate, never the object.
+dec $update_callback_exit_source_valid(pstate, pdestructioncleanup) : bool
+dec $update_callback_exit_valid(pstate, pdestructioncleanup, int, nat) : bool
+dec $update_callback_selected_release(pstate, pdestructioncleanup, int, ptask*) : pstate
+dec $update_callback_raw_release(pstate, pdestructioncleanup, int, ptask*) : pstate
+dec $update_exit_control_call(pstate) : (perrorcall, int, ptask*)?
+def $update_callback_exit_source_valid(S, pdestructioncleanup) = true
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if $eager_cleanup_valid(S, pdestructioncleanup)
+  -- if $update_warning_exit_owning($eager_cleanup_history(S, pdestructioncleanup), perrorcall)
+def $update_callback_exit_source_valid(S, pdestructioncleanup) = false -- otherwise
+def $update_callback_exit_valid(S, pdestructioncleanup, z, n_phase) = true
+  -- if $(n_phase <= 2) /\ z = $ntprecision32(z)
+  -- if $update_callback_exit_source_valid(S, pdestructioncleanup)
+  -- if S.CURRENT = pdestructioncleanup.CALLER /\ S.ORIGIN = pdestructioncleanup.ORIGIN /\ S.CONSTCONTEXT = pdestructioncleanup.CONSTCONTEXT
+  -- if pdestructioncleanup.RELEASED = $(n_phase = 2)
+  -- if n_phase = 0 \/ n_phase = 2
+  -- if $eager_cleanup_find(S.DESTRUCTION.CLEANUPS, pdestructioncleanup.SOURCE) = eps
+  -- if $heap_subset($task_nodes(UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z n_phase), S.ALLOCATIONS)
+def $update_callback_exit_valid(S, pdestructioncleanup, z, 1) = true
+  -- if z = $ntprecision32(z)
+  -- if $update_callback_exit_source_valid(S, pdestructioncleanup)
+  -- if S.CURRENT = pdestructioncleanup.CALLER /\ S.ORIGIN = pdestructioncleanup.ORIGIN /\ S.CONSTCONTEXT = pdestructioncleanup.CONSTCONTEXT
+  -- if ~pdestructioncleanup.RELEASED
+  -- if S.DESTRUCTION.CLEANUPS = pdestructioncleanup :: pdestructioncleanup_tail*
+  -- if $heap_subset($task_nodes(UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z 1), S.ALLOCATIONS)
+def $update_callback_exit_valid(S, pdestructioncleanup, z, n_phase) = false -- otherwise
+def $task_nodes(UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z 0) = $value_nodes(perrorcall.CALLBACK) ++ $error_selected_roots(perrorcall.TARGET)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+def $task_nodes(UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z 1) = $value_nodes(perrorcall.CALLBACK)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+def $task_nodes(UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z n_phase) = eps -- if $(n_phase >= 2)
+def $call_task_valid(S, UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z n_phase) = $update_callback_exit_valid(S, pdestructioncleanup, z, n_phase)
+def $source_operand_marker(UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z n_phase) = $source_operand_marker(perrorcall.RESUME)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+def $throwable_marker(UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z n_phase) = true
+def $update_warning_exit_marker(UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z n_phase) = true
+def $eager_explicit_task(UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z n_phase) = $(n_phase < 2)
+def $eager_cleanup_source(UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z n_phase) = pdestructioncleanup.SOURCE
+rule PhpStep/update-warning-exit-owning: S ~> S[.TODO = (UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z 0) :: ptask_tail*]
+  -- if S.TODO = (UPDATE_WARNING_EXIT perrorcall z) :: ptask_tail*
+  -- if $call_task_valid(S, UPDATE_WARNING_EXIT perrorcall z)
+  -- if $update_warning_exit_owning(S, perrorcall)
+  -- if pdestructioncleanup = $eager_cleanup_record(S, ERROR_HANDLER_RESULT perrorcall)
+rule PhpStep/update-warning-exit-owning-local-throw: S ~> S[.COMPLETION = UNSUPPORTED "increment/decrement warning exit owning handler-local cleanup throw"]
+  -- if S.TODO = (THROW_SEARCH n) :: (UPDATE_WARNING_EXIT perrorcall z) :: ptask_tail*
+  -- if $call_task_valid(S, UPDATE_WARNING_EXIT perrorcall z)
+  -- if $update_warning_exit_owning(S, perrorcall) /\ $throwable_live(S, n)
+def $update_callback_selected_release(S, pdestructioncleanup, z, ptask_tail*) = $eager_operation_begin(S_next, S_next, ERROR_HANDLER_RESULT perrorcall, $error_selected_roots(perrorcall.TARGET))
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if S_next = S[.TODO = (UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z 1) :: ptask_tail*][.DESTRUCTION.CLEANUPS = pdestructioncleanup :: S.DESTRUCTION.CLEANUPS][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/update-callback-exit-selected: S ~> $update_callback_selected_release(S, pdestructioncleanup, z, ptask_tail*)
+  -- if S.TODO = (UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z 0) :: ptask_tail*
+  -- if $update_callback_exit_valid(S, pdestructioncleanup, z, 0)
+def $update_callback_raw_release(S, pdestructioncleanup, z, ptask_tail*) = $eager_operation_begin(S_next, S_next, ERROR_HANDLER_CLEAN perrorcall, $value_nodes(perrorcall.CALLBACK))
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if S.DESTRUCTION.CLEANUPS = pdestructioncleanup :: pdestructioncleanup_tail*
+  -- if pdestructioncleanup_done = pdestructioncleanup[.RELEASED = true]
+  -- if S_next = $error_handler_restore(S[.TODO = (UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup_done z 2) :: ptask_tail*][.DESTRUCTION.CLEANUPS = pdestructioncleanup_done :: pdestructioncleanup_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], perrorcall.CALLBACK)
+rule PhpStep/update-callback-exit-raw: S ~> $update_callback_raw_release(S, pdestructioncleanup, z, ptask_tail*)
+  -- if S.TODO = (UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z 1) :: ptask_tail*
+  -- if $update_callback_exit_valid(S, pdestructioncleanup, z, 1)
+rule PhpStep/update-callback-exit-finish-string: S ~> $exit_start_unwind(S[.TODO = ptask_tail*], z)
+  -- if S.TODO = (UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z 2) :: ptask_tail*
+  -- if $update_callback_exit_valid(S, pdestructioncleanup, z, 2)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if perrorcall.RESUME = UPDATE_WARNING_RESTORE pupdatewarning
+  -- if ~$update_warning_restores_throw(pupdatewarning.INPUT) /\ $update_exit_order_supported(S)
+rule PhpStep/update-callback-exit-finish-restore: S ~> $exit_start_unwind($update_warning_store(S[.TODO = ptask_tail*], pupdatewarning.POINTER, pvalue), z)
+  -- if S.TODO = (UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z 2) :: ptask_tail*
+  -- if $update_callback_exit_valid(S, pdestructioncleanup, z, 2)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if perrorcall.RESUME = UPDATE_WARNING_RESTORE pupdatewarning
+  -- if $update_warning_restores_throw(pupdatewarning.INPUT)
+  -- if $update_warning_pointer_value(S, pupdatewarning.POINTER) = (pslot)
+  -- if $update_warning_release_safe(S, pslot) /\ $update_exit_order_supported(S)
+  -- if $update_warning_after(pupdatewarning.OP, pupdatewarning.INPUT) = (pvalue)
+rule PhpStep/update-callback-exit-finish-unsafe: S ~> S[.COMPLETION = UNSUPPORTED "increment/decrement warning exit continuation"]
+  -- if S.TODO = (UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z 2) :: ptask_tail*
+  -- if $update_callback_exit_valid(S, pdestructioncleanup, z, 2)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if ~$update_warning_exit_cancel_safe(S, perrorcall)
+rule PhpStep/update-callback-exit-cleanup-order: S ~> S[.COMPLETION = UNSUPPORTED "increment/decrement warning exit temporary cleanup order"]
+  -- if S.TODO = (UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z 2) :: ptask_tail*
+  -- if $update_callback_exit_valid(S, pdestructioncleanup, z, 2)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if $update_warning_exit_cancel_safe(S, perrorcall) /\ ~$update_exit_order_supported(S)
+rule PhpStep/update-callback-exit-throw-string: S ~> S[.TODO = (UPDATE_WARNING_DONE pupdatewarning[.PENDING = (n)]) :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n) :: (UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z 2) :: ptask_tail*
+  -- if $update_callback_exit_valid(S, pdestructioncleanup, z, 2) /\ $throwable_live(S, n)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if perrorcall.RESUME = UPDATE_WARNING_RESTORE pupdatewarning
+  -- if ~$update_warning_restores_throw(pupdatewarning.INPUT)
+rule PhpStep/update-callback-exit-throw-restore: S ~> $update_warning_store(S[.TODO = (UPDATE_WARNING_DONE pupdatewarning[.PENDING = (n)]) :: ptask_tail*], pupdatewarning.POINTER, pvalue)
+  -- if S.TODO = (THROW_SEARCH n) :: (UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z 2) :: ptask_tail*
+  -- if $update_callback_exit_valid(S, pdestructioncleanup, z, 2) /\ $throwable_live(S, n)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if perrorcall.RESUME = UPDATE_WARNING_RESTORE pupdatewarning
+  -- if $update_warning_restores_throw(pupdatewarning.INPUT)
+  -- if $update_warning_pointer_value(S, pupdatewarning.POINTER) = (pslot)
+  -- if $update_warning_release_safe(S, pslot)
+  -- if $update_warning_after(pupdatewarning.OP, pupdatewarning.INPUT) = (pvalue)
+rule PhpStep/update-callback-exit-throw-unsafe: S ~> S[.COMPLETION = UNSUPPORTED "increment/decrement warning exit cleanup throw"]
+  -- if S.TODO = (THROW_SEARCH n) :: (UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z 2) :: ptask_tail*
+  -- if $update_callback_exit_valid(S, pdestructioncleanup, z, 2) /\ $throwable_live(S, n)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if ~$update_warning_exit_cancel_safe(S, perrorcall)
+def $update_exit_control_call(S) = ((perrorcall, z, ptask_tail*))
+  -- if S.TODO = (UPDATE_WARNING_EXIT perrorcall z) :: ptask_tail*
+  -- if $call_task_valid(S, UPDATE_WARNING_EXIT perrorcall z)
+def $update_exit_control_call(S) = ((perrorcall, z, ptask_tail*))
+  -- if S.TODO = (UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z 2) :: ptask_tail*
+  -- if $update_callback_exit_valid(S, pdestructioncleanup, z, 2)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+def $update_exit_control_call(S) = eps -- otherwise
 
 ;; Exit retires operands and pending finally outcomes before parent cleanup.
 ;; Recover only the ordered caller control from source; no released value is
@@ -359,10 +497,10 @@ def $update_exit_inputs(S, porigin_child, (ORIGIN_RETURN (porigin)) :: DISCARD :
 def $update_exit_inputs(S, porigin, ptask_tail*, ptask_history*) = UPDATE_EXIT_UNORDERED -- otherwise
 dec $update_exit_order(pstate) : pupdateexitorder
 def $update_exit_order(S) = UPDATE_EXIT_ORDER eps
-  -- if S.TODO = (UPDATE_WARNING_EXIT perrorcall z) :: ptask_tail*
+  -- if $update_exit_control_call(S) = ((perrorcall, z, ptask_tail*))
   -- if S.HELD = eps /\ $tasks_nodes(ptask_tail*) = eps
 def $update_exit_order(S) = $update_exit_inputs(S, perrorcall.SITE, ptask_tail*, ptask_history*)
-  -- if S.TODO = (UPDATE_WARNING_EXIT perrorcall z) :: ptask_tail*
+  -- if $update_exit_control_call(S) = ((perrorcall, z, ptask_tail*))
   -- if S.HELD = eps /\ $tasks_nodes(ptask_tail*) =/= eps
   -- if S.ORIGIN = (perrorcall.SITE)
   -- if $update_exit_history(S, perrorcall.SITE) = GOTOTASKS ptask_history*
@@ -370,8 +508,7 @@ def $update_exit_order(S) = $update_exit_inputs(S, perrorcall.SITE, ptask_tail*,
 def $update_exit_order(S) = UPDATE_EXIT_UNORDERED -- otherwise
 def $update_exit_order_supported(S) = ($update_exit_order(S) =/= UPDATE_EXIT_UNORDERED)
 def $update_exit_owner_reordered(S) = true
-  -- if S.TODO = (UPDATE_WARNING_EXIT perrorcall z) :: ptask_tail*
-  -- if $call_task_valid(S, UPDATE_WARNING_EXIT perrorcall z)
+  -- if $update_exit_control_call(S) = ((perrorcall, z, ptask_tail*))
   -- if $update_exit_order(S) = UPDATE_EXIT_ORDER pnode*
   -- if pnode* =/= $tasks_nodes(ptask_tail*)
 def $eager_owner_order(S) = $eager_edge_nodes($heap_graph(S).EDGES) ++ $eager_task_inputs(S, ptask) ++ $operand_nodes(S.RESULT) ++ $eager_base_inputs(S, ptask) ++ $machine_roots(S[.TODO = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = pnode* ++ S.HELD])
@@ -383,6 +520,12 @@ def $eager_operation_source(S, UPDATE_WARNING_EXIT perrorcall z) = UPDATE_WARNIN
   -- if $update_exit_history(S, perrorcall.SITE) = GOTOTASKS ptask_history*
   -- if $tasks_nodes(ptask_history*) = eps
 def $task_nodes(UPDATE_WARNING_EXIT_HISTORY perrorcall z ptask_history*) = eps
+def $eager_operation_source(S, UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z 2) = UPDATE_WARNING_CALLBACK_HISTORY pdestructioncleanup z ptask_history*
+  -- if $update_callback_exit_valid(S, pdestructioncleanup, z, 2)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if $update_exit_history(S, perrorcall.SITE) = GOTOTASKS ptask_history*
+  -- if $tasks_nodes(ptask_history*) = eps
+def $task_nodes(UPDATE_WARNING_CALLBACK_HISTORY pdestructioncleanup z ptask_history*) = eps
 dec $update_exit_history_source_valid(pstate, pdestructionoperation) : bool
 def $update_exit_history_source_valid(S, pdestructionoperation) = true
   -- if pdestructionoperation.SOURCE = UPDATE_WARNING_EXIT_HISTORY perrorcall z ptask_history*
@@ -393,8 +536,33 @@ def $update_exit_history_source_valid(S, pdestructionoperation) = true
 def $update_exit_history_source_valid(S, pdestructionoperation) = false -- otherwise
 def $eager_operation_source_guard(S, pdestructionoperation) = $update_exit_history_source_valid(S, pdestructionoperation)
   -- if pdestructionoperation.SOURCE = UPDATE_WARNING_EXIT_HISTORY perrorcall z ptask_history*
+dec $update_callback_parent_source_valid(pstate, pdestructionoperation) : bool
+def $update_callback_parent_source_valid(S, pdestructionoperation) = true
+  -- if pdestructionoperation.SOURCE = UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z 2
+  -- if pdestructioncleanup.RELEASED /\ pdestructioncleanup.CALLER = pdestructionoperation.CALLER
+  -- if z = $ntprecision32(z)
+  -- if $update_callback_exit_source_valid(S, pdestructioncleanup)
+def $update_callback_parent_source_valid(S, pdestructionoperation) = true
+  -- if pdestructionoperation.SOURCE = UPDATE_WARNING_CALLBACK_HISTORY pdestructioncleanup z ptask_history*
+  -- if pdestructioncleanup.RELEASED /\ pdestructioncleanup.CALLER = pdestructionoperation.CALLER
+  -- if z = $ntprecision32(z)
+  -- if $update_callback_exit_source_valid(S, pdestructioncleanup)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if S_caller = S[.CURRENT = pdestructioncleanup.CALLER][.ORIGIN = pdestructioncleanup.ORIGIN][.CONSTCONTEXT = pdestructioncleanup.CONSTCONTEXT]
+  -- if $update_exit_history(S_caller, perrorcall.SITE) = GOTOTASKS ptask_history*
+  -- if $tasks_nodes(ptask_history*) = eps
+def $update_callback_parent_source_valid(S, pdestructionoperation) = false -- otherwise
+def $eager_operation_source_guard(S, pdestructionoperation) = $update_callback_parent_source_valid(S, pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z n_phase
+def $eager_operation_source_guard(S, pdestructionoperation) = $update_callback_parent_source_valid(S, pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = UPDATE_WARNING_CALLBACK_HISTORY pdestructioncleanup z ptask_history*
 def $destructor_operation_postfinish(S, pdestructionoperation) = S[.TODO = (THROW_SEARCH n) :: ptask_history*][.ORIGIN = eps]
   -- if pdestructionoperation.SOURCE = UPDATE_WARNING_EXIT_HISTORY perrorcall z ptask_history*
+  -- if pdestructionoperation.PENDING = (n)
+  -- if $eager_operation_source_guard(S, pdestructionoperation)
+  -- if $throwable_live(S, n)
+def $destructor_operation_postfinish(S, pdestructionoperation) = S[.TODO = (THROW_SEARCH n) :: ptask_history*][.ORIGIN = eps]
+  -- if pdestructionoperation.SOURCE = UPDATE_WARNING_CALLBACK_HISTORY pdestructioncleanup z ptask_history*
   -- if pdestructionoperation.PENDING = (n)
   -- if $eager_operation_source_guard(S, pdestructionoperation)
   -- if $throwable_live(S, n)
@@ -407,6 +575,12 @@ def $update_warning_exit_parent_call(pdestructorcall) = true
 def $update_warning_exit_parent_call(pdestructorcall) = true
   -- if pdestructorcall.OPERATION = (pdestructionoperation)
   -- if pdestructionoperation.SOURCE = UPDATE_WARNING_EXIT_HISTORY perrorcall z ptask_history*
+def $update_warning_exit_parent_call(pdestructorcall) = true
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z 2
+def $update_warning_exit_parent_call(pdestructorcall) = true
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = UPDATE_WARNING_CALLBACK_HISTORY pdestructioncleanup z ptask_history*
 def $update_warning_exit_parent_call(pdestructorcall) = false -- otherwise
 def $eager_operation_source_guard(S, pdestructionoperation) = ($update_warning_exit_named(S[.CURRENT = pdestructionoperation.CALLER][.ORIGIN = (perrorcall.SITE)][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT], perrorcall) /\ z = $ntprecision32(z))
   -- if pdestructionoperation.SOURCE = UPDATE_WARNING_EXIT perrorcall z
@@ -416,6 +590,18 @@ dec $update_warning_exit_parent_operation(pstate, pdestructionoperation?, int) :
 def $update_warning_exit_parent_operation(S, (pdestructionoperation), z) = true
   -- if pdestructionoperation.SOURCE = UPDATE_WARNING_EXIT perrorcall z
   -- if pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = eps
+  -- if pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if pdestructionoperation.ORIGIN = eps /\ pdestructionoperation.CONSTCONTEXT = eps /\ pdestructionoperation.CLEANUP = eps
+  -- if $eager_operation_source_guard(S, pdestructionoperation)
+def $update_warning_exit_parent_operation(S, (pdestructionoperation), z) = true
+  -- if pdestructionoperation.SOURCE = UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z 2
+  -- if pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = eps
+  -- if pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if pdestructionoperation.ORIGIN = eps /\ pdestructionoperation.CONSTCONTEXT = eps /\ pdestructionoperation.CLEANUP = eps
+  -- if $eager_operation_source_guard(S, pdestructionoperation)
+def $update_warning_exit_parent_operation(S, (pdestructionoperation), z) = true
+  -- if pdestructionoperation.SOURCE = UPDATE_WARNING_CALLBACK_HISTORY pdestructioncleanup z ptask_history*
+  -- if pdestructionoperation.COMPLETION = NORMAL /\ $destructor_pending_valid(S, pdestructionoperation.PENDING)
   -- if pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL)
   -- if pdestructionoperation.ORIGIN = eps /\ pdestructionoperation.CONSTCONTEXT = eps /\ pdestructionoperation.CLEANUP = eps
   -- if $eager_operation_source_guard(S, pdestructionoperation)
@@ -444,11 +630,22 @@ rule PhpStep/update-warning-exit-parent-resume: S ~> $destructor_resume_pending(
   -- if $destructor_result_valid(S, pdestructorcall)
   -- if $throwable_live(S, n)
   -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
+rule PhpStep/update-callback-exit-parent-resume: S ~> $destructor_resume_pending($destructor_chain_pending(S[.TODO = (THROW_SEARCH n) :: ptask_tail*][.DESTRUCTION.CALLS = pdestructorcall_tail*], pdestructorcall), pdestructorcall)
+  -- if S.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = UPDATE_WARNING_CALLBACK_HISTORY pdestructioncleanup z ptask_history*
+  -- if $destructor_result_valid(S, pdestructorcall) /\ $throwable_live(S, n)
+  -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
 rule PhpStep/update-warning-exit-parent-cleanup-throw: S ~> S[.COMPLETION = UNSUPPORTED "increment/decrement warning exit parent cleanup throw"]
   -- if S.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
   -- if $update_warning_exit_parent_call(pdestructorcall)
   -- if pdestructorcall.OPERATION = (pdestructionoperation)
   -- if pdestructionoperation.SOURCE = UPDATE_WARNING_EXIT perrorcall z
+  -- if $destructor_result_valid(S, pdestructorcall)
+rule PhpStep/update-callback-exit-parent-cleanup-throw: S ~> S[.COMPLETION = UNSUPPORTED "increment/decrement warning exit parent cleanup throw"]
+  -- if S.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z 2
   -- if $destructor_result_valid(S, pdestructorcall)
 
 def $task_nodes(UPDATE_WARNING_NOTICE pupdatewarning) = $instance_roots(pupdatewarning.PENDING)

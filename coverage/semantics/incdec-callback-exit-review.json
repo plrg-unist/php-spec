@@ -1,0 +1,96 @@
+{
+  "status": "independently_reviewed_private",
+  "scope": "Warning-handler exit for ordinary invokable INSTANCE callbacks, defined untyped scalar direct CV/live borrowed-cell targets and safe object-free restoring payloads; selected receiver and raw callback release before bool/decrement-null capture restoration, with string store skip.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "production_revision": "2bc9dc8e99dfc433158f1f57aeee9f7e8e936408",
+  "semantic_sha256": {
+    "spec/semantics/30-storage.watsup": "bd4229710b33ac2829a8d0bc1add0ae02c1e1914e1a7ae62e95c88bc1af04be0",
+    "spec/semantics/390-incdec-warning-continuations.watsup": "262996c91fe711965fe7df34c2abedaec8a583b8b5b697a07c0d3125f48af93c"
+  },
+  "engine_basis": [
+    "vendor/php-src/Zend/zend.c: zend_error_zstr_at moves/disables the saved handler, releases call receiver/retval/params, then restores the raw handler only if the registry is empty; otherwise it destroys that saved value.",
+    "Zend/zend_execute_API.c: _call_user_function_impl/zend_call_function receiver lifetime; Zend/zend_operators.c bool/decrement-null restoration versus string-helper exit skip.",
+    "Existing source-authenticated eager cleanup and ordered caller-history rules retain real destructor queues, supplied Throwable identity and caller catch/finally."
+  ],
+  "contract": [
+    "Genuine entered owning callbacks stage selected-receiver release, one registry restore/drop decision and raw callback release. Existing real registry/external owners suppress destruction; callback task roots decrease from 2 to 1 to 0.",
+    "The released cleanup certificate authenticates historical source/caller metadata with zero callback roots. It neither requires a retired callback allocation nor revives it. A destructor-installed or cleared registry survives helper completion.",
+    "Bool/decrement-null restore the captured safe target after callback-owner destruction; strings retain callback/destructor writes. Borrowed old cells remain distinct from a rebound caller and add no owner.",
+    "A callback-owner destructor Throwable moves once from operation.PENDING through DONE to caller THROW_SEARCH. Captured restoration precedes catch/finally, without result delivery, Previous synthesis or request-status reset. Owning handler-local throws remain an explicit boundary; old named rules are disjoint."
+  ],
+  "accepted": {
+    "strict": {
+      "revision": "2bc9dc8e99dfc433158f1f57aeee9f7e8e936408",
+      "modules": 386,
+      "mode": "SL main=true; zero PHP runtime credit",
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-08/strict-2bc9dc8e9/report.json"
+    },
+    "source": {
+      "new_ordinary": 7,
+      "repaired_earlier_ordinary": 1,
+      "distinct_ordinary": 8,
+      "cuts": [
+        {
+          "revision": "2bc9dc8e99dfc433158f1f57aeee9f7e8e936408",
+          "ordinary": 2,
+          "reports": [
+            "/home/user/workspace/php-spec-evidence-archive/operators-08/smoke-2bc9dc8e9-bool-owner-write/report.json",
+            "/home/user/workspace/php-spec-evidence-archive/operators-08/smoke-2bc9dc8e9-int23-owner-throw/report.json"
+          ]
+        },
+        {
+          "revision": "34c8f2548f75c3142bf39a9ab5a2911222546a81",
+          "ordinary": 6,
+          "reports": [
+            "/home/user/workspace/php-spec-evidence-archive/operators-08/source-34c8f2548-original/report.json",
+            "/home/user/workspace/php-spec-evidence-archive/operators-08/source-34c8f2548-empty/report.json",
+            "/home/user/workspace/php-spec-evidence-archive/operators-incdec-callback-exit-review-08/focus-34c8f2548-four-three/report.json"
+          ]
+        }
+      ],
+      "result": "Exact checked explicit_exit or normal stdout/stderr and PHP exit_status. The caught owner-destructor throw retains native/request status 23 with model process0. All credited actors uninterrupted and reaped; no Unsupported agreement credit."
+    },
+    "author_reached": {
+      "revision": "34c8f2548f75c3142bf39a9ab5a2911222546a81",
+      "mode": "SL",
+      "fixtures": 3,
+      "conditions": 299,
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-08/state-34c8f2548-author-three/report.json",
+      "result": "Real selected/raw/finished phases, callback roots 2 to 1 to 0, historical certificates, safe bool restore/string skip, live raw-operation pending root count 2 and operation to DONE to THROW transfer, status 23/source negatives/public budget resumes."
+    },
+    "independent_reached": {
+      "revision": "34c8f2548f75c3142bf39a9ab5a2911222546a81",
+      "mode": "SL",
+      "fixtures": 3,
+      "conditions": 269,
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-incdec-callback-exit-review-08/focus-34c8f2548-four-three/report.json",
+      "result": "Retained registry prevents destruction; retired handler has no root or weak target; borrowed null restores old CELL while caller/h3 survive; destructor-cleared registry stays NULL. Genuine descriptors, source/phase/certificate negatives and public one-step/native endings."
+    },
+    "total_reached_conditions": 568,
+    "compatibility": "The 34c8 helper commit preserves the tested 2bc9 executable/source bytes. Later boundary/publication metadata changes do not renew source/state evidence; earlier operator campaigns retain their identities."
+  },
+  "preserved_zero_credit": [
+    "/home/user/workspace/php-spec-evidence-archive/operators-08/baseline-b333808f3-original/report.json: genuine checked Unsupported exit-continuation gap after model H and callback-D output; not an absent-destructor claim.",
+    "/home/user/workspace/php-spec-evidence-archive/operators-08/strict-f03598872/report.json: pre-runtime duplicate task_nodes fallback; source smoke then unrun. Sole explicit phase>=2 fallback correction passes strict at 2bc9.",
+    "Author native4, independent native3 plus sole registry-clear native and frontend/AST/native state preparation retain original reports with zero model agreement credit."
+  ],
+  "maintenance": "Remove only the repaired old review-exit-callable-owner BOUNDARIES entry/export; its byte-identical PHP original and explicit_exit expectation remain. No old suite/state count is renewed.",
+  "required_follow_on": [
+    "Owning handler-local cleanup throw, exit during callback-owner destruction, unsafe/expired/constrained/owned restoring targets and wider callable forms remain required; they are not completed by this slice.",
+    "Unmodeled enclosing control/owning holders and wider update locations retain explicit source/cleanup boundaries. All six affected inventory rows and full core remain partial."
+  ],
+  "recovery": {
+    "author_archive": "/home/user/workspace/php-spec-evidence-archive/operators-08",
+    "independent_archive": "/home/user/workspace/php-spec-evidence-archive/operators-incdec-callback-exit-review-08",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "environment": "CPU2 affinity, LC_ALL=C, TZ=UTC, no PHP_SPEC_SCRIPT_ENCODING; native cap 30/model cap 90 and explicit --sl with cap 120 with process-group reap guards.",
+    "commands": [
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 tests/semantics/incdec_callback_exit.py --case CASE --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 tests/semantics/incdec_callback_exit_review.py --case CASE --output NEW_EXTERNAL_DIRECTORY",
+      "/home/user/workspace/php-spec-evidence-archive/operators-08/state-34c8f2548-author-three/run-state.py: frozen author299 packet; /home/user/workspace/php-spec-evidence-archive/operators-incdec-callback-exit-review-08/focus-34c8f2548-four-three/run-focused.py: independent source4/state269 packet."
+    ],
+    "record": "Raw reports retain original bytes, exact selection/revision, binary/profile/fixture hashes, effective ENV, commands, checked outcomes, streams, exit/interruption/group and worker-close fields."
+  }
+}

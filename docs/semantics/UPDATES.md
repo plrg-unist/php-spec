@@ -52,8 +52,8 @@ retain writes. Catch/finally and subsequent code resume without delivering the
 interrupted result or synthesizing Previous. Live borrowed cells, late peer
 detachment, nested handlers, request status23 and nonthrowing parent-temporary
 cleanup are validated by seven new and one repaired original plus 499 genuine SL
-conditions at separate cuts. Owning callback release and unsafe restoring targets
-keep their native obligations and named boundaries.
+conditions at separate cuts. Unsafe restoring targets keep their native obligations
+and named boundaries.
 
 [Caller-temporary cleanup Throwables](../../coverage/semantics/incdec-parent-exit-cancellation-review.json)
 now cancel pending exit after the warning helper finishes: bool/decrement-null
@@ -66,8 +66,23 @@ outcomes retire before unfinished binary holders, which follow source lifetime
 order while each container retains its own child order. Seven new and one repaired source agree; 342 author
 and 341 independent genuine SL conditions retain separate cuts. The repaired old
 parent control/state expectation is maintained without renewing older counts.
-Wider owning call builders, returns/loops/iterators, owning callbacks and unsafe
-restoration remain required; unknown cleanup ordering stops before observable release.
+Wider owning call builders, returns/loops/iterators and unsafe restoration remain
+required; unknown cleanup ordering stops before observable release.
+
+[Owning invokable warning callbacks](../../coverage/semantics/incdec-callback-exit-review.json)
+now stage selected receiver release, one registry restore/drop decision, then raw
+handler release before helper completion. Retained registry or external owners
+prevent destruction. Last-owner destruction may mutate or clear the registry;
+that result survives and the dead handler is not restored again. A root-free
+historical certificate retains source authority without reviving callback owners.
+Bool/decrement-null restore their safe capture after destruction, including a
+supplied callback-destructor throw; strings skip the store. Borrowed old cells
+remain distinct from rebound callers. Pending ownership transfers once into
+caller throw search, preserving identity, Previous and request status 23.
+Seven new and one repaired source agree; 299 author and 269 independent genuine
+SL conditions retain separate cuts. The repaired old callable-owner expectation
+is maintained without renewing historical counts. Owning handler-local throws,
+exit during callback-owner destruction, unsafe targets and wider callbacks/control remain required.
 
 String dimensions validate the key before rejecting increment/decrement; nested
 string dimensions retain the separate nested-array error. Generic dimension

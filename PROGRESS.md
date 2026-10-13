@@ -7,6 +7,19 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Owning invokable warning callbacks now release their selected receiver and raw
+handler before the inc/dec helper finishes. The saved handler returns to the
+registry or is released once; replacement/clearing by its destructor survives. Bool/decrement-null
+restore their safe capture afterward, while strings skip the store. Real callback
+owners prevent premature destruction; a supplied Throwable from the callback destructor
+cancels exit into caller catch/finally without changing request status 23.
+Seven new and one repaired source agree at 2bc9/34c8. Three author SL fixtures
+pass 299 conditions and three independent fixtures pass 269 (568 total).
+The original Unsupported baseline and pre-runtime compile failure retain zero credit.
+Owning handler-local throws, unsafe targets, wider callbacks/control and
+exit during callback-owner destruction remain required; full core stays partial.
+[Callback-exit ledger](coverage/semantics/incdec-callback-exit-review.json).
+
 Module397 implements automatic VM output-handler receive/throw cleanup. Arguments
 are released while running, then failed layers disable and forward live bytes with
 the actual pending Throwable. Lower thresholds skip callback entry; caller catch
@@ -49,8 +62,9 @@ request status23 survive; nested binary operands retire in source lifetime order
 Seven new and one repaired original agree at retained cuts. Three author SL fixtures
 pass 342 conditions and three independent fixtures pass 341 (683 total). The original
 Unsupported baseline, reversed-order failure and fixture/launcher failures retain zero credit.
-Owning callbacks, unsafe targets, wider owning holders and unmodeled enclosing
-control remain required; full core stays partial.
+Unsafe targets, wider owning holders and unmodeled enclosing control remain
+required; callback ownership is covered by the current bounded milestone. Full
+core stays partial.
 [Parent cancellation ledger](coverage/semantics/incdec-parent-exit-cancellation-review.json).
 The 386-module join over cbc57 preserves current output/compile/fatal state and
 operation validation. Current strict and the sole two-retired original pass at
