@@ -1372,6 +1372,8 @@ Strict381/source3 pass at `37bc2d87`. Three separate state checks at `0e0d255d`
 pass remove62 (32 reached, 30 derived), add32 and entered-getter50: 114 reached
 plus 30 derived. Runtime, defaults, layouts, pure covariance and ownership stay unchanged.
 [Own-backed type-presence review](coverage/semantics/ordinary-backed-parent-backed-get-hook-type-presence-review.json).
+Joined exact `08666ae75`/382; one count-only current init check passes with no application.
+Private cuts remain retained through disjoint comparison, update-warning and ref-chain paths.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
