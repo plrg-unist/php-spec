@@ -264,12 +264,16 @@ def $exit_unwind_prefix(DESTRUCTOR_RESULT pdestructorcall, z) = $exit_unwind_ope
 def $exit_unwind_prefix(DESTRUCTOR_WARNING pdestructorcall, z) = $exit_unwind_operation(pdestructorcall.OPERATION, z)
 def $exit_unwind_prefix(DESTRUCTOR_OPERATION_EXIT pdestructionoperation, z) = $exit_unwind_operation((pdestructionoperation), z)
 def $exit_unwind_prefix(ptask, z) = false -- otherwise
+dec $source_static_exit_prefix(pstate, ptask, int) : bool
+dec $source_static_exit_throw(pstate, nat, ptask*, int) : bool
 dec $exit_unwind_tasks(pstate, ptask*, int) : bool
 def $exit_unwind_tasks(S, [EXIT_UNWIND z], z) = true
 def $exit_unwind_tasks(S, (EXIT_UNWIND z) :: ptask*, z) = ($source_static_exit_tail(S, ptask*) = ptask*)
   -- if ptask* =/= eps
 def $exit_unwind_tasks(S, ptask :: ptask_tail*, z) = $exit_unwind_tasks(S, ptask_tail*, z)
-  -- if $exit_unwind_prefix(ptask, z)
+  -- if $exit_unwind_prefix(ptask, z) \/ $source_static_exit_prefix(S, ptask, z)
+def $exit_unwind_tasks(S, (THROW_SEARCH n) :: ptask_tail*, z) = $exit_unwind_tasks(S, ptask_tail*, z)
+  -- if $source_static_exit_throw(S, n, ptask_tail*, z)
 def $exit_unwind_tasks(S, ptask*, z) = false -- otherwise
 dec $exit_unwind_valid(pstate, int) : bool
 def $exit_unwind_valid(S, z) = true

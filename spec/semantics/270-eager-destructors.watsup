@@ -2,6 +2,9 @@
 ;; request stage2. The consumed operation supplies native decrement order; a
 ;; heap-wide allocation-order scan cannot order two independent temporaries.
 dec $eager_source_origin(pstate, porigin?) : bool
+dec $source_static_user_source(pstate) : bool
+dec $destructor_boundary_frame(pframe, pdestructorcall) : bool
+dec $destructor_boundary_scope(pstate, pdestructorcall, pframe*) : pstate
 dec $eager_explicit_task(ptask) : bool
 dec $eager_edge_nodes(hedge*) : pnode*
 dec $eager_owner_order(pstate) : pnode*
@@ -134,7 +137,7 @@ def $eager_source_origin(S, (porigin)) = true
 def $eager_source_origin(S, porigin?) = false -- otherwise
 ;; A running Fiber also has an internal execute boundary after its user callback
 ;; has returned; it grants no lexical class scope or source callsite.
-def $destructor_user_source(S) = (S.CURRENT =/= eps \/ S.ACTIVEFIBER =/= eps \/ $eager_source_origin(S, S.ORIGIN))
+def $destructor_user_source(S) = (S.CURRENT =/= eps \/ S.ACTIVEFIBER =/= eps \/ $eager_source_origin(S, S.ORIGIN) \/ $source_static_user_source(S))
 
 def $eager_explicit_task(AT porigin ptask) = $eager_explicit_task(ptask)
 def $eager_explicit_task(DESTRUCTOR_RELEASE pdestructionrelease) = true
@@ -398,8 +401,17 @@ def $destructor_source_site_gc(S, b_gc) = eps -- if ~$destructor_user_source(S)
 def $eager_operation_internal(S) = $eager_internal_source(pdestructionoperation.SOURCE)
   -- if $destructor_operation_for(S) = (pdestructionoperation)
 def $eager_operation_internal(S) = false -- otherwise
+def $destructor_boundary_frame(pframe, pdestructorcall) = true
+  -- if pframe.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
+  -- if pframe.CONTEXT = pdestructorcall.CALLER /\ pframe.ORIGIN = pdestructorcall.ORIGIN /\ pframe.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT
+def $destructor_boundary_frame(pframe, pdestructorcall) = false -- otherwise
+def $destructor_boundary_scope(S, pdestructorcall, pframe :: pframe_tail*) = $constant_frame_scope(S, pframe, pframe_tail*)
+  -- if $destructor_boundary_frame(pframe, pdestructorcall)
+def $destructor_boundary_scope(S, pdestructorcall, pframe :: pframe_tail*) = $destructor_boundary_scope(S, pdestructorcall, pframe_tail*)
+  -- if ~$destructor_boundary_frame(pframe, pdestructorcall)
+def $destructor_boundary_scope(S, pdestructorcall, eps) = S
 def $destructor_boundary_valid(S, pdestructorcall) = true
-  -- if S_view = S[.CURRENT = pdestructorcall.CALLER][.ORIGIN = pdestructorcall.ORIGIN][.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT]
+  -- if S_view = $destructor_boundary_scope(S, pdestructorcall, S.FRAMES)[.CURRENT = pdestructorcall.CALLER][.ORIGIN = pdestructorcall.ORIGIN][.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT]
   -- if pdestructorcall.USER = $destructor_user_source(S_view)
   -- if pdestructorcall.SITE = $destructor_source_site(S_view)
   -- if pdestructorcall.LINE = $destructor_source_line(S_view)
