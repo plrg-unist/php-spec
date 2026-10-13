@@ -1500,5 +1500,116 @@
       "Value methods/destructor plus nonleaf/unrooted outside graphs remain fenced; old EX63 refusal is preserved.",
       "Wider map/value shapes, unheld maps, inactive/Fiber contexts and general ephemeron graphs remain required; no full core/GC closure claim."
     ]
+  },
+  "called_std_graphs_67": {
+    "scope": "Ordinary outside Std graphs after the source-backed singleton Value destructor is actually CALLED; existing main-thread/live-map/leaf-Key/public-backedge bounds remain. Native sources create rooted Other.self during D, with Other-to-Key companion.",
+    "base_revision": "04a9a2319fa086b29ed07026c5d8799347e4e6f4",
+    "tested_revision": "c3e844a5cb98e30c3032a9541bc7f4ffef9dccdb",
+    "modules": 388,
+    "raw_root": ".tools/weak-map-gc-destructor-graphs-67",
+    "representation": [
+      "Only one386 admission premise changes: old methodless arm OR actual Value in DESTRUCTION.CALLED. Enclosing weakmap_gc_shape still authenticates its sole source-backed public destructor; rooted-leaf and graph arms remain disjoint.",
+      "301 roots, tracing, plans, physical edges and disposal remain unchanged. Independent Other permits pair2 then Other1; Other-to-Key preserves pair0, then later unheld graph collects3 without another D.",
+      "331 checks start at genuine post-D PASS1. Coherent real global-CV root drop reaches a fresh three-node plan/free; stale held-white plans reject. Uncalled-history control is helper/shape denial only, with no valid-continuation or PhpStep-refusal claim."
+    ],
+    "sources": [
+      {
+        "id": "weak-map-gc-destructor-independent-67",
+        "source_sha256": "7c9f0b5f7e6bd273d560a1be089627f2f22829d3adc2c1ad509e8f142cc76b50",
+        "native_report": ".tools/weak-map-gc-destructor-independent-67-native-kvngo028/report.json",
+        "stdout_bytes": 180,
+        "stdout_sha256": "a617940f746561bcee23c0c6ca2879a26bd32695917462a20d744256d0f14a25",
+        "source_report": ".tools/weak-map-gc-destructor-independent-67-source-long-tyhom454/report.json",
+        "seconds": 64.85897707939148
+      },
+      {
+        "id": "weak-map-gc-destructor-key-reachable-67",
+        "source_sha256": "56bcdc76d15e089353d0f6278c7a9814f6ec6ed9b9736aed8bdfa7b7233ee589",
+        "native_report": ".tools/weak-map-gc-destructor-key-reachable-67-native-b6wohhit/report.json",
+        "stdout_bytes": 180,
+        "stdout_sha256": "e2dc015be21c8710d07df6e0e3974955bae40fe4db001c2c337837e6d069ec39",
+        "source_report": ".tools/weak-map-gc-destructor-key-reachable-67-source-long-lcwiu31z/report.json",
+        "seconds": 85.55118083953857
+      }
+    ],
+    "state": {
+      "assertions": 331,
+      "cases": [
+        {
+          "id": "weak-map-gc-destructor-independent-67",
+          "assertions": 149,
+          "model_cap": 120,
+          "candidate_sha256": "33fcef83a88f97dc3c06a6f9b23fa7c8c55f315f420e9c0a09b4656945784c03",
+          "observer_sha256": "7fa8e378e4b0ff6689989cc8751e89c3a178cd2f63fcdb5869bdc7c799c7f83b",
+          "report": ".tools/weak-map-gc-destructor-67-state-_zk8hor0/report.json",
+          "inner": ".tools/shutdown-state-review-_acmpv9y/report.json",
+          "seconds": 107.51970791816711
+        },
+        {
+          "id": "weak-map-gc-destructor-key-reachable-67",
+          "assertions": 182,
+          "model_cap": 160,
+          "candidate_sha256": "064b857a2d159dec5c6aefbee1e3a5be0b0c310ec75f23699959b347248b5a73",
+          "observer_sha256": "cc5313b61023824a76029cf59434da970cc29fcc8dea36dda40750b9035c333d",
+          "report": ".tools/weak-map-gc-destructor-67-key-long-state-ea4avnf0/report.json",
+          "inner": ".tools/shutdown-state-review-gyw7pk8t/report.json",
+          "seconds": 156.15869641304016
+        }
+      ],
+      "endpoint": "Real collection return; originals supply full later teardown/recollection endings."
+    },
+    "compiler_init": {
+      "compiler_report": ".tools/weak-map-gc-destructor-67-compiler-5mfguh_d/report.json",
+      "artifacts": [
+        {
+          "mode": "algo",
+          "bytes": 14295317,
+          "sha256": "29b0a1eba6e5fb8cb5b388a931f81909e22d3335c4bff8b636c55521743dd285"
+        },
+        {
+          "mode": "struct",
+          "bytes": 14378487,
+          "sha256": "11d95fdc950b8eafb3fd82354883c7691399dfa537d9d6625b20f9f1e2e44e2a"
+        }
+      ],
+      "strict_init_report": ".tools/weak-map-gc-destructor-67-init-wsmv695i/report.json",
+      "strict_init_assertions": 7
+    },
+    "preserved_zero_credit": [
+      {
+        "report": ".tools/weak-map-gc-destructor-independent-67-source-mt2nq9lj/report.json",
+        "reason": "Genuine unchanged checked-source Unsupported WeakMap ephemeron collection immediately after D; no agreement."
+      },
+      {
+        "report": ".tools/weak-map-gc-destructor-independent-67-source-yyz5j02q/report.json",
+        "reason": "CLI60 timeout; secondary observer frontend-KeyError reflects missing fields in timeout object, not PHP semantics. Cap-only120 retry preserves source/outcome guards."
+      },
+      {
+        "report": ".tools/weak-map-gc-destructor-67-state-nk597ztq/report.json",
+        "reason": "Numeric120 timeout/exit-9 with blank numeric streams; no failed-predicate result. Separate182 retry changes only timeout160 metadata."
+      }
+    ],
+    "maintained": {
+      "source_path": "tests/semantics/cycle_collection_cases.json",
+      "source_rows": 81,
+      "source_timeout": 120,
+      "state_path": "tests/semantics/cycle_collection_state_review.py",
+      "state_records": 155,
+      "state_sha256": "51d2922d1317eb4c1f2d142786e1e3d811f7332c22f5b9bb3a1d1351054e32ec",
+      "preservation": "All79 prior source rows/order and152 untouched state values/order plus outside-CASES AST identical. Both new source rows keep timeout120; the182 state keeps tested timeout160.",
+      "superseded": "Drop only obsolete weak-map-gc-destructor-boundary-66 (historical48). Trim only the final11 obsolete refusal clauses from weak-map-ephemeron-destructor-extra-object-63, retaining its exact143 positive prefix. Historical154/48 ledger/Git evidence remains unchanged; no old positive campaign renewed."
+    },
+    "runtime": {
+      "target": "PHP 8.5.10 CLI NTS64-bit",
+      "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+      "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+    },
+    "execution": "LC_ALL=C, TZ=UTC, script encoding removed, jobs1. Native/compiler/init onCPU5; changed originals/state onCPU3. Native30, acceptedCLI120/recorder135, compiler/init120, state120 or160/outer200; accepted processes exit0 with stable inputs/no timeout/stderr/interruption/groups or inner users.",
+    "engine_basis": "Zend/zend_gc.c:gc_call_destructors sets IS_OBJ_DESTRUCTOR_CALLED; zend_gc_collect_cycles retraces externally visible reachability after callbacks. Conditional Key route is zend_weakmap_get_key_entry_gc plus gc_scan_black/get_gc==zend_weakmap_get_gc.",
+    "boundaries": [
+      "Uncalled nonleaf/unrooted outside graphs, wider Value methods/classes, map shapes and inactive contexts remain fenced. No full GC/WeakMap closure."
+    ],
+    "recovery": "Keep ignored native/source/runtime/raw/failure paths and private publication/current refs. Maintained literals recover accepted source/state contents; original reports/TAKE/RELEASE/artifacts retain exact inputs/argv."
   }
 }

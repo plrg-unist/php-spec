@@ -3891,10 +3891,22 @@ collector301 remain unchanged. Two originals agree at `fa2e00c6`: an independent
 collects with the unheld pair (3), or alone while Key is held (1), followed by
 pair collection (2). Source-reached unheld (150), held (207) and destructor-boundary
 (48) checks total 405. Rerooting the real Key CV to Other and then routing Other→Key
-are coherent counterfactuals, with fresh plans 2/0. The old destructor/nonleaf
-refusal remains. Checks stop at GC return, plan or refusal; originals supply
+are coherent counterfactuals, with fresh plans 2/0. That cut retains its historical destructor/nonleaf
+refusal. Checks stop at GC return, plan or refusal; originals supply
 endings. The original Unsupported and pre-reroot-edge fixture failure stay zero.
 Wider value classes, maps and contexts remain open.
+[Ledger](coverage/semantics/weak-map-review.json).
+
+Already-called value destructors now admit ordinary outside `stdClass` graphs
+through a single module386 premise;301 and physical ownership remain unchanged. Two
+180-byte originals agree at `c3e844a5`: independent Other.self survives pair collection (2), while Other→Key protects the pair (0); dropping Other then collects
+1 or 3 respectively, without a second destructor. Source-reached 149/182 checks
+total 331, including coherent real-CV root drop and stale-plan rejection. Cleared
+CALLED history tests helper/shape denial only, with no valid-continuation claim.
+The obsolete active 48-check record and old 154-check case's final 11 negative clauses are superseded;
+the 143-check positive prefix and historical ledger/Git results remain. Checks end at
+GC return; originals supply endings. Unsupported/CLI60/numeric120 failures stay
+zero. Maintained source caps (120 seconds) and final state cap (160 seconds) match accepted runs.
 [Ledger](coverage/semantics/weak-map-review.json).
 
 ArrayAccess304 reconstructs intermediate `[]` after ordinary by-value Get and

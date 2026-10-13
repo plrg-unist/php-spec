@@ -132,7 +132,7 @@ by CORE. Earlier cuts retain their evidence in the
 
 ## Ordinary Std graphs beside a methodless ephemeron
 
-Module386 also admits allocated, nonfreeing outside `stdClass` graphs when the
+At `fa2e00c6`, module386 admitted allocated, nonfreeing outside `stdClass` graphs when the
 conditional Value has no methods or destructor. The earlier independently
 rooted leaf arm is unchanged; its new complement admits nonleaf or unrooted Std
 objects only in that methodless lane. Existing full property/heap authority and
@@ -148,7 +148,7 @@ replay. At the held stage, coherently rerooting its actual Key CV to Other
 protects only Other (fresh plan 2); redirecting its materialized self property
 to Key protects the pair too (fresh plan 0).
 
-A separate 48-check source-reached post-destructor control preserves the earlier
+A separate 48-check source-reached post-destructor control preserved the then-active
 destructor/nonleaf refusal using a valid Other→Key graph. Total 405 checks end at
 GC return, fresh plan or completion-only refusal; originals supply endings.
 The original ephemeron Unsupported and failed 207-check fixture that reused
@@ -171,13 +171,14 @@ through the conditional map edge; dropping that root permits collection without
 calling the destructor again. Physical ownership and destructor-free entry
 preparation remain unchanged.
 
-An additional allocated, nonfreeing `stdClass` leaf is admitted only when it is
-independently reachable without Map→Value. A source-valid later GC_TRACE refuses
-wider changed shapes instead of silently restoring a strong map edge.
+The earlier cut admitted an additional allocated, nonfreeing `stdClass` leaf
+only when independently reachable without Map→Value. Its source-valid later
+GC_TRACE refused wider changed shapes; the already-called extension below
+supersedes that negative for ordinary Std graphs.
 Three originals (150/158/169 bytes) agree at `18a03e08`; 128/136/165/154 reached
 checks total 583. They authenticate first-pass protection and destructor entry,
 post-callback disposal, saved-Key retention and the rooted outside leaf, with
-malformed method/source, stale-owner and materialized nonleaf refusal controls.
+malformed method/source, stale-owner and then-active nonleaf refusal controls.
 The saved-Key stage is genuine; dropping its root in the same stage is a
 coherent counterfactual, with the original supplying the later source execution.
 Checks stop at destructor entry or collection return. Original Unsupported,
@@ -190,6 +191,34 @@ unheld/multiple maps, inactive contexts and throwing callbacks remain required.
 Countable stays nominal-only; count execution is excluded by CORE. Earlier cuts
 retain their evidence in the
 [ledger](../../coverage/semantics/weak-map-review.json).
+
+## Std graphs after the value destructor
+
+The graph admission arm also accepts the actual Value in DESTRUCTION.CALLED.
+The enclosing singleton/main-thread shape still authenticates its sole public
+source-backed destructor, live map/leaf Key and public key backedge. The old
+rooted-leaf arm and its graph complement remain disjoint; no roots, tracing,
+plans or disposal in301 change. An uncalled destructor still denies the
+nonleaf/unrooted outside graph.
+
+Both originals (180 bytes each) agree at `c3e844a5`: independent callback-created
+Other.self lets Key/Value collect (2) while Other survives, then Other collects
+after its global root drops (1). Other→Key instead retains the pair (0), then
+all three collect after Other drops (3), with one destructor invocation.
+The 149/182 source-reached checks total 331. They authenticate post-D PASS1,
+physical versus conditional edges and real plans/free; a coherent existing-CV
+root drop proves count 3 without changing CALLED. Stale held-owner plans reject.
+Clearing borrowed CALLED history tests helper/shape denial only; it does not
+claim the old collector continuation remains valid. Checks stop at GC return,
+with originals supplying full endings.
+
+Active tests replace the obsolete EX66 post-D 48-check negative and trim only the 11
+now-false EX63 negative clauses, retaining its exact 143-check positive prefix. Earlier
+154/48 results remain historical at their original cuts. The accepted source
+rows retain timeout 120 and the 182-check state retains timeout 160; original Unsupported,
+CLI60 and numeric120 timeout records stay zero. Wider Value methods/classes,
+map shapes and inactive contexts remain required.
+[Ledger](../../coverage/semantics/weak-map-review.json).
 
 ## WeakMap first entry and key retirement
 

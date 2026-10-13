@@ -1238,16 +1238,25 @@ required. [Review](coverage/semantics/weak-map-review.json).
 That methodless singleton can now coexist with ordinary `stdClass` graphs.
 Two originals agree at `fa2e00c6`: an independent self-cycle collects alongside
 the pair, or alone while Key is held. The 405 focused checks cover real GC
-disposal, indirect Key protection and the preserved destructor/nonleaf refusal.
+disposal, indirect Key protection and its then-active destructor/nonleaf refusal.
 The collector and physical ownership graph are unchanged.
 
 The same bounded backedge now supports one ordinary public value destructor.
 Its first GC pass protects the pair through the callback; retracing then collects
 it or preserves it if the callback saves the key. Later collection runs no second
 destructor. An independently rooted `stdClass` leaf also survives without keeping
-the pair alive; wider callback changes fail explicitly. Three originals agree at
+the pair alive; changes outside the admitted shapes fail explicitly. Three
+originals agree at
 `18a03e08`; 583 reached checks cover destructor entry, retracing and retained
 roots. Wider destructor and graph behavior remains required.
+
+Once the value destructor is recorded as called, the singleton ephemeron can
+coexist with ordinary outside `stdClass` graphs. A callback-created self-cycle
+survives independently, while Other→Key protects the pair until Other is dropped.
+Two originals agree and 331 focused checks pass at `c3e844a5`; collector301 is
+unchanged.
+This supersedes the earlier post-destructor nonleaf negatives; uncalled and wider
+shapes remain fenced. [Review](coverage/semantics/weak-map-review.json).
 
 [Ordinary collection301](docs/semantics/CYCLE-COLLECTION.md) implements explicit
 object/array cycle collection, ordered destructor callbacks and real weak
