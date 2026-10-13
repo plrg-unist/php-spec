@@ -18,6 +18,7 @@ dec $instance_storage_order(ppropertyslot*, bool, nat) : nat*
 dec $instance_storage_image(ppropertyslot*, ppropertyslot*, nat*, nat) : bool
 dec $instance_storage_table_valid(pstate, pinstancestorage) : bool
 dec $weakmap_storage_notice_valid(pstate, pinstancestorage) : bool
+dec $weakmap_storage_create(pstate, nat) : bool
 dec $instance_storage_basic(pstate, pinstancestorage) : bool
 dec $instance_storage_basics(pstate, pinstancestorage*) : bool
 dec $instance_storage_ids(pinstancestorage*) : nat*
@@ -381,7 +382,8 @@ def $clone_lifecycle_start(S, n_source, porigin_site, z, pclonecall?) = S[.COMPL
 def $cast_value(S, CASTARRAY, POBJECT n, z) = S[.COMPLETION = UNSUPPORTED "freeing instance array cast"] -- if $instance_storage_freeing(S, n)
 def $object_foreach_reset(S, n) = S[.COMPLETION = UNSUPPORTED "freeing instance foreach"] -- if $instance_storage_freeing(S, n)
 def $object_foreach_select(S, n) = S[.COMPLETION = UNSUPPORTED "freeing instance foreach"] -- if $instance_storage_freeing(S, n)
-def $weakref_create(S, n_target) = S[.COMPLETION = UNSUPPORTED "freeing instance new weak reference"] -- if $instance_storage_freeing(S, n_target)
+def $weakref_create(S, n_target) = S[.COMPLETION = UNSUPPORTED "freeing instance new weak reference"]
+  -- if $instance_storage_freeing(S, n_target) /\ ~$weakmap_storage_create(S, n_target)
 def $value_order(S, POBJECT n_left, POBJECT n_right, pnode_seen*) = ORDERUNSUPPORTED "freeing instance structural comparison"
   -- if n_left =/= n_right
   -- if $instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right)

@@ -401,3 +401,36 @@ rule PhpStep/weakmap-key-notify: S ~> S[.TODO = (INSTANCE_STORAGE_STEP pinstance
   -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*
   -- if $instance_storage_valid(S, pinstancestorage)
   -- if pinstancestorage.NOTIFY =/= eps
+
+;; A live own-free callback may reuse or recreate its weak wrapper. Only the
+;; borrowed notification identity changes; the physical pin still owns the map.
+def $weakmap_storage_create(S, n_map) = true
+  -- if $weakmap_at(S, n_map)
+  -- if S.OBJECTS[n_map] = WEAKMAP eps
+  -- if $instance_storage_for(S, n_map) = (pinstancestorage)
+  -- if pinstancestorage.NOTIFY = (n_wrapper)
+  -- if $instance_storage_basic(S, pinstancestorage)
+  -- if $instance_storage_state_valid(S)
+  -- if $instance_storage_select($instance_storage_tasks(S.TODO) ++ $instance_storage_frames(S.FRAMES), n_map) = (pinstancestorage)
+  -- if $weakref_find(S, S.ALLOCATIONS, n_map) = eps \/ $weakmap_storage_read(S, n_wrapper, n_map)
+def $weakmap_storage_create(S, n_map) = false -- otherwise
+
+dec $weakmap_notify_task(ptask, nat, nat) : ptask
+dec $weakmap_notify_tasks(ptask*, nat, nat) : ptask*
+dec $weakmap_notify_frames(pframe*, nat, nat) : pframe*
+def $weakmap_notify_task(INSTANCE_STORAGE_STEP pinstancestorage, n_map, n_wrapper) = INSTANCE_STORAGE_STEP pinstancestorage[.NOTIFY = (n_wrapper)]
+  -- if pinstancestorage.OBJECT = n_map
+def $weakmap_notify_task(AT porigin ptask, n_map, n_wrapper) = AT porigin ($weakmap_notify_task(ptask, n_map, n_wrapper))
+def $weakmap_notify_task(ptask, n_map, n_wrapper) = ptask -- otherwise
+def $weakmap_notify_tasks(eps, n_map, n_wrapper) = eps
+def $weakmap_notify_tasks(ptask :: ptask_tail*, n_map, n_wrapper) = $weakmap_notify_task(ptask, n_map, n_wrapper) :: $weakmap_notify_tasks(ptask_tail*, n_map, n_wrapper)
+def $weakmap_notify_frames(eps, n_map, n_wrapper) = eps
+def $weakmap_notify_frames(pframe :: pframe_tail*, n_map, n_wrapper) = pframe[.TODO = $weakmap_notify_tasks(pframe.TODO, n_map, n_wrapper)] :: $weakmap_notify_frames(pframe_tail*, n_map, n_wrapper)
+
+def $weakref_create(S, n_map) = $weakref_done(S, POBJECT n_wrapper)
+  -- if $weakmap_storage_create(S, n_map)
+  -- if $weakref_find(S, S.ALLOCATIONS, n_map) = (n_wrapper)
+def $weakref_create(S, n_map) = $weakref_done(S[.OBJECTS = S.OBJECTS ++ [WEAKREFERENCE (n_map)]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n_wrapper]][.TODO = $weakmap_notify_tasks(S.TODO, n_map, n_wrapper)][.FRAMES = $weakmap_notify_frames(S.FRAMES, n_map, n_wrapper)], POBJECT n_wrapper)
+  -- if $weakmap_storage_create(S, n_map)
+  -- if $weakref_find(S, S.ALLOCATIONS, n_map) = eps
+  -- if n_wrapper = |S.OBJECTS|
