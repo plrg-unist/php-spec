@@ -17,6 +17,9 @@ continuations. The original mismatching baseline retains0; class activation help
 compiler publication, request schema/status rules and retention policy are unchanged.
 Other class/fatal producers and formatter combinations remain partial.
 [Class-drain ledger](coverage/semantics/source-recorded-class-fatal-review.json).
+The 388-module composition over 04a9a231 passes independent pointwise review at
+cd9cc619; accepted runtime deltas/protocol and parent output/class/WeakMap behavior
+are preserved. No renewed actor/source/state evidence is claimed.
 
 Module398 implements explicit output API reception failures and callback throws.
 Arguments release while running; clean discards live bytes, flush restores its
