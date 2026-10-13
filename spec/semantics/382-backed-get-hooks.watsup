@@ -875,7 +875,7 @@ def $property_hook_plain_getter_walk(S, ppropertydesc, n) = (ppropertydesc)
   -- if $hook_property_at(pclassdesc_parent.PROPERTIES, porigin_property) = (ppropertydesc)
   -- if $property_hook_origin(S, ppropertydesc) = (porigin_hook)
   -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_name) (SEQUENCE eps) phpType39 metadata_hook)
-  -- if $ptlc($base64(text_get)) = $ptascii("get") /\ $hook_body_supported(phpType39) /\ ($hook_body_backed(phpType39, ppropertydesc.NAME) \/ $property_hook_ordinary_backing(S, ppropertydesc, n) \/ $property_hook_inherited_backing_walk(S, ppropertydesc, n))
+  -- if $ptlc($base64(text_get)) = $ptascii("get") /\ $hook_body_supported(phpType39) /\ ($hook_body_backed(phpType39, ppropertydesc.NAME) \/ $property_hook_ordinary_backing(S, ppropertydesc, n) \/ $property_hook_inherited_backing_walk(S, ppropertydesc, n) \/ $property_hook_virtual_chain(S, ppropertydesc, n))
 def $property_hook_plain_getter_walk(S, ppropertydesc, n) = (ppropertydesc_getter)
   -- if $(n > 0)
   -- if $property_hook_origin(S, ppropertydesc) = eps
