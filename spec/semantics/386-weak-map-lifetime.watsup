@@ -87,11 +87,22 @@ def $weakmap_write_allowed(S, paccess) = true
   -- if ~$instance_storage_freeing(S, n_value)
   -- if $node_children(S, HOBJECT n_value) = eps
 def $weakmap_write_allowed(S, paccess) = false -- otherwise
+dec $weakmap_replace_allowed(pstate, paccess) : bool
 def $access_call(S, paccess, ptbytes) = $access_done(S_read[.OBJECTS[n_map] = WEAKMAP ({KEY n_key, VALUE paccess.VALUE, BEFORE $weakref_find(S, S.ALLOCATIONS, n_key)})], paccess, pvalue_result)
   -- if paccess.OBJECT = (n_map)
   -- if $weakmap_at(S, n_map)
   -- if ptbytes = $ptascii("offsetSet") /\ $weakmap_write_allowed(S, paccess)
   -- if paccess.OFFSET = POBJECT n_key
+  -- if S_read = $quiet_operand(S, paccess.SELECTED)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue_result
+;; Replacing an existing key keeps its registration and publishes the new
+;; value before ordinary eager release of the old value.
+def $access_call(S, paccess, ptbytes) = $access_done(S_read[.OBJECTS[n_map] = WEAKMAP (pweakmapentry[.VALUE = paccess.VALUE])], paccess, pvalue_result)
+  -- if paccess.OBJECT = (n_map)
+  -- if $weakmap_at(S, n_map)
+  -- if ptbytes = $ptascii("offsetSet") /\ $weakmap_replace_allowed(S, paccess)
+  -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
   -- if S_read = $quiet_operand(S, paccess.SELECTED)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue_result
@@ -183,7 +194,7 @@ def $access_call(S, paccess, ptbytes) = $access_done(S, paccess, PNULL)
 def $access_call(S, paccess, ptbytes) = S[.COMPLETION = UNSUPPORTED "WeakMap dimension protocol outside first insertion"]
   -- if paccess.OBJECT = (n_map)
   -- if $weakmap_at(S, n_map)
-  -- if ptbytes =/= $ptascii("offsetSet") \/ ~$weakmap_write_allowed(S, paccess)
+  -- if ptbytes =/= $ptascii("offsetSet") \/ (~$weakmap_write_allowed(S, paccess) /\ ~$weakmap_replace_allowed(S, paccess))
   -- if ptbytes =/= $ptascii("offsetGet") \/ ~$weakmap_read_allowed(S, paccess)
   -- if ptbytes =/= $ptascii("offsetUnset") \/ ~$weakmap_unset_allowed(S, paccess)
 
@@ -198,6 +209,45 @@ def $weakmap_before_valid(S, pweakmapentry) = true
   -- if S.OBJECTS[n_wrapper] = WEAKREFERENCE (n_key)
   -- if n_key = pweakmapentry.KEY
 def $weakmap_before_valid(S, pweakmapentry) = false -- otherwise
+def $weakmap_replace_allowed(S, paccess) = true
+  -- if paccess.MODE = ACCESS_SET /\ ~paccess.LATCH /\ ~paccess.KEYHOLE
+  -- if paccess.BASE = BASE_VALUE poperand
+  -- if paccess.TASK = ASSIGN_ARRAY (BASE_DIM paccess.BASE paccess.INPUT paccess.KEYLINE) paccess.LINE false
+  -- if S.TODO = paccess.TASK :: ptask_tail*
+  -- if paccess.RHS = S.RESULT
+  -- if paccess.SELECTED = $rcontainer_selected(S, paccess.RHS)
+  -- if paccess.OBJECT = (n_map)
+  -- if $weakmap_at(S, n_map)
+  -- if ~$instance_storage_freeing(S, n_map)
+  -- if S_base = $quiet_operand(S, poperand)
+  -- if S_base.COMPLETION = NORMAL
+  -- if S_base.RESULT = KNOWN (POBJECT n_map)
+  -- if S_key = $quiet_operand(S, paccess.INPUT)
+  -- if S_key.COMPLETION = NORMAL
+  -- if S_key.RESULT = KNOWN paccess.OFFSET
+  -- if S_value = $quiet_operand(S, paccess.SELECTED)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN paccess.VALUE
+  -- if $access_valid(S, paccess[.PHASE = ACCESS_CALL $ptascii("offsetSet")])
+  -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
+  -- if paccess.OFFSET = POBJECT n_key
+  -- if pweakmapentry.KEY = n_key
+  -- if $weakmap_before_valid(S, pweakmapentry)
+  -- if $(n_key < |S.OBJECTS|) /\ (HOBJECT n_key) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_key] = STDINSTANCE /\ ~$instance_storage_freeing(S, n_key)
+  -- if $node_children(S, HOBJECT n_key) = eps
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map]
+  -- if pweakmapentry.VALUE = POBJECT n_old
+  -- if $(n_old < |S.OBJECTS|) /\ (HOBJECT n_old) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_old] = INSTANCE porigin_old
+  -- if ~$instance_storage_freeing(S, n_old)
+  -- if $node_children(S, HOBJECT n_old) = eps
+  -- if paccess.VALUE = POBJECT n_new
+  -- if $(n_new < |S.OBJECTS|) /\ (HOBJECT n_new) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_new] = INSTANCE porigin_new
+  -- if ~$instance_storage_freeing(S, n_new)
+  -- if $node_children(S, HOBJECT n_new) = eps
+def $weakmap_replace_allowed(S, paccess) = false -- otherwise
 dec $weakmap_notice_wrapper(pstate, pweakmapentry) : nat?
 def $weakmap_notice_wrapper(S, pweakmapentry) = (n_wrapper)
   -- if $weakref_find(S, S.ALLOCATIONS, pweakmapentry.KEY) = (n_wrapper)
