@@ -956,6 +956,13 @@ reached2/353 and independent public132/1 pass separately: the same error retains
 its construction line and trace, late cleanup links old Y as Previous, and T/D
 and the probe stay canceled. Existing throw/Previous rules are unchanged; wider
 catch/rethrow and returns verification remain OPEN.
+
+The guarded catch may instead create a fresh literal-message TypeError. Two
+originals, reached2/368 and independent public161/1 pass separately: its own
+creation line/trace reach the same caller with old Y as Previous, while the
+caught-only nested error retires. T/D and the failed probe stay canceled; budget
+continuation and the selected alias pass. Worker120 is a cap-only retry; original
+timeouts keep zero credit. Wider replacement/returns verification remains OPEN.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)

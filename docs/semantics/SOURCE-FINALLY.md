@@ -277,6 +277,17 @@ continuation pass; selected bypass stays quiet. Existing throw/Previous/active
 rules and old class certificates are unchanged. Trace is modeled reached-state
 and matching-engine evidence, without a native trace observer. Wider returns OPEN.
 
+The checked catch can create a fresh literal-message TypeError instead of
+rethrowing. Source2, reached2/368 and independent public161/1 pass at `98aacd7d`.
+Fresh replacement and caught nested errors have distinct creation origins, lines
+3/4 and trace graphs, with empty Previous at the early cut. Wrapping-finally
+cleanup later links old Y to the same replacement and retires the caught-only
+error; its own trace remains exact through Z/W/X/caller/budget. T/D and failed
+binding/probe stay canceled. Shared exception/active rules remain unchanged.
+Worker120 is cap-only; original timeouts0 and diagnostic progress stay separate.
+Native message/order agreement does not establish identity/trace/Previous. Wider
+replacement and returns remain OPEN.
+
 Module 186 converts a selected live unconstrained aliased return CV before protected
 finalizer entry. Stringable callbacks may rebind/unset GLOBALS without redirecting
 the captured cell; current/saved f-local bindings authenticate it. Success writes

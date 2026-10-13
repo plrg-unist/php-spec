@@ -1846,6 +1846,21 @@ catch/rethrow/lifecycle/returns remain OPEN.
 Actual382 over `aa8ddc73` passes strict at `eebde3e7` in 6.216s with zero
 applications; the private source/state/public cuts retain their original identities.
 
+The same idle/source certificate now admits a checked catch that creates a fresh
+one-literal TypeError. Old helpers, string/prefix guards and throw/Previous rules
+remain unchanged. Source2, reached2/368 (282+86) and independent public161/1 pass
+at `98aacd7d`/382. The replacement has its own New origin, line3 and two-frame
+trace; caught nested retains line4/three frames, and both have empty Previous at
+the early callback cut. Late cleanup links old Y to the identical replacement,
+retires the caught-only error, and preserves the replacement trace through ordered
+Z/W/X/caller/budget. T/D/probe stay canceled; counter and operation-exit controls
+refuse, while selected bypass retains its alias. Private strict passes in 6.484s
+with zero applications. Worker120 source retry changes only the cap; original
+Worker60 and pre/post-C timeouts stay zero, and Q-step cuts are diagnostic only.
+Identity/trace/Previous are reached-state and engine evidence, separate from
+native output agreement; local reconstruction and broader returns remain OPEN.
+[Multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
 cell while GLOBALS may rebind or disappear; conversion writes the old cell atomically.
