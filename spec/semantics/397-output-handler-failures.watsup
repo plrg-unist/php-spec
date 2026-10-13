@@ -1,0 +1,229 @@
+;; main/output.c::php_output_handler_op treats an undefined callback retval as
+;; failure. Argv dies while running; the live bytes then pass through lower
+;; handlers with EG(exception) still pending, before the source opcode unwinds.
+dec $ob_user_failure_vm(pobinvoke) : bool
+dec $ob_user_failure_frame(pframe*, pobwrite) : bool
+dec $ob_user_failure_context(pstate, pobwrite) : bool
+dec $ob_user_failure_live(pstate, pobinvoke) : bool
+dec $ob_user_failure_current(pstate, pobinvoke) : bool
+dec $ob_user_failure_pending(pstate, pobinvoke) : nat?
+dec $ob_user_failure_replay_pending(pstate, ptask*, pobinvoke) : nat?
+dec $ob_user_failure_exit_task(ptask) : bool
+dec $output_failure_valid(pstate, pobwrite, nat) : bool
+dec $output_failure_next(pstate, pobwrite, nat, preqbytes) : pstate
+dec $output_failure_buffer(poutputbuffer) : poutputbuffer
+dec $output_failure_source(pstate, pobwrite) : bool
+dec $output_failure_exit_frames(pframe*, pdestructionoperation, pobwrite) : bool
+dec $output_failure_exit(pstate, pdestructionoperation, pobwrite) : bool
+dec $output_string_caller(porigin, int, ptask) : pobcaller?
+dec $output_string_operand(pobcaller) : porigin?
+dec $output_string_owned(pstate, pobcaller, nat) : bool
+dec $output_string_borrowed(pstate, pobcaller) : bool
+dec $output_string_certificate(pstate, pobstringrelease) : bool
+dec $output_string_release_valid(pstate, pobstringrelease) : bool
+dec $output_string_exit_frames(pframe*, pdestructionoperation, pobstringrelease) : bool
+dec $output_string_exit(pstate, pdestructionoperation, pobstringrelease) : bool
+
+def $ob_user_failure_vm(pobinvoke) = ($output_vm_source(pobwrite.CALLER) /\ pobwrite.FINISH = OUTPUT_VM_DONE)
+  -- if pobinvoke.CALL = OB_WRITE pobwrite
+def $ob_user_failure_vm(pobinvoke) = false -- otherwise
+def $ob_user_failure_frame(eps, pobwrite) = false
+def $ob_user_failure_frame(pframe :: pframe_tail*, pobwrite) = ((pframe.CONTEXT = pobwrite.CONTEXT /\ pframe.ORIGIN = ($output_caller_site(pobwrite.CALLER)) /\ $output_context_tasks(pframe.TODO, pobwrite)) \/ $ob_user_failure_frame(pframe_tail*, pobwrite))
+def $ob_user_failure_context(S, pobwrite) = ((S.CURRENT = pobwrite.CONTEXT /\ S.ORIGIN = ($output_caller_site(pobwrite.CALLER)) /\ $output_context_tasks(S.TODO, pobwrite)) \/ $ob_user_failure_frame(S.FRAMES, pobwrite))
+def $ob_user_failure_live(S, pobinvoke) = true
+  -- if pobinvoke.CALL = OB_WRITE pobwrite
+  -- if $ob_user_failure_vm(pobinvoke) /\ $ob_user_failure_context(S, pobwrite)
+  -- if S_scope = S[.CURRENT = pobwrite.CONTEXT][.ORIGIN = ($output_caller_site(pobwrite.CALLER))][.TODO = (OB_USER_FAIL_DONE pobinvoke) :: pobwrite.TAIL]
+  -- if $ob_user_live(S_scope, pobinvoke)
+def $ob_user_failure_live(S, pobinvoke) = false -- otherwise
+def $ob_user_failure_current(S, pobinvoke) = (S.CURRENT = pobwrite.CONTEXT /\ S.ORIGIN = ($output_caller_site(pobwrite.CALLER)))
+  -- if pobinvoke.CALL = OB_WRITE pobwrite
+def $ob_user_failure_current(S, pobinvoke) = false -- otherwise
+def $ob_user_failure_pending(S, pobinvoke) = $eager_operation_pending(S)
+  -- if $eager_operation_pending(S) =/= eps
+def $ob_user_failure_pending(S, pobinvoke) = pdestructionoperation.PENDING
+  -- if $eager_operation_pending(S) = eps
+  -- if $destructor_operation_for(S) = (pdestructionoperation)
+;; Saved-frame validation projects EXIT before checking DONE. The original
+;; TODO still certifies that exact cleanup and its actual pending Throwable.
+def $ob_user_failure_pending(S, pobinvoke) = $ob_user_failure_replay_pending(S, S.TODO, pobinvoke)
+  -- if $eager_operation_pending(S) = eps
+  -- if $destructor_operation_for(S) = eps
+def $ob_user_failure_replay_pending(S, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (OB_USER_FAIL_DONE pobinvoke) :: ptask_tail*, pobinvoke) = (n)
+  -- if pdestructionoperation.SOURCE = OB_USER_FAIL_ARGS pobinvoke_original n_original
+  -- if pobinvoke = pobinvoke_original[.SENT = eps]
+  -- if pobinvoke.CALL = OB_WRITE pobwrite
+  -- if ptask_tail* = pobwrite.TAIL
+  -- if pdestructionoperation.PENDING = (n)
+  -- if pdestructionoperation.CLEANUP = eps
+  -- if pdestructionoperation.CALLER = S.CURRENT
+  -- if pdestructionoperation.ORIGIN = S.ORIGIN
+  -- if $eager_operation_source_guard(S, pdestructionoperation) /\ $throwable_live(S, n)
+def $ob_user_failure_replay_pending(S, ptask :: ptask_tail*, pobinvoke) = $ob_user_failure_replay_pending(S, ptask_tail*, pobinvoke)
+  -- if ~$ob_user_failure_exit_task(ptask)
+def $ob_user_failure_replay_pending(S, ptask*, pobinvoke) = eps -- otherwise
+def $ob_user_failure_exit_task(DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = true
+def $ob_user_failure_exit_task(ptask) = false -- otherwise
+
+def $output_task_write(OB_USER_FAIL_ARGS pobinvoke n) = $output_call_write(pobinvoke.CALL)
+def $output_task_write(OB_USER_FAIL_DONE pobinvoke) = $output_call_write(pobinvoke.CALL)
+def $output_task_write(OB_USER_FAIL_COMMIT pobinvoke n) = $output_call_write(pobinvoke.CALL)
+def $output_task_write(OUTPUT_FAIL_WRITE pobwrite n) = (pobwrite)
+def $output_task_write(OUTPUT_FAIL_FINISH pobwrite n) = (pobwrite)
+def $ob_user_active_task(OB_USER_FAIL_ARGS pobinvoke n) = (pobinvoke.BUFFER.ID)
+def $ob_user_active_task(OB_USER_FAIL_DONE pobinvoke) = (pobinvoke.BUFFER.ID)
+def $ob_user_active_task(OB_USER_FAIL_COMMIT pobinvoke n) = (pobinvoke.BUFFER.ID)
+def $task_nodes(OB_USER_FAIL_ARGS pobinvoke n) = $ob_user_nodes(pobinvoke) ++ [HOBJECT n]
+def $task_nodes(OB_USER_FAIL_DONE pobinvoke) = $ob_user_nodes(pobinvoke)
+def $task_nodes(OB_USER_FAIL_COMMIT pobinvoke n) = $ob_user_nodes(pobinvoke) ++ [HOBJECT n]
+def $task_nodes(OUTPUT_FAIL_WRITE pobwrite n) = $output_write_nodes(pobwrite) ++ [HOBJECT n]
+def $task_nodes(OUTPUT_FAIL_FINISH pobwrite n) = $output_write_nodes(pobwrite) ++ [HOBJECT n]
+def $call_task_valid(S, OB_USER_FAIL_ARGS pobinvoke n) = ($ob_user_failure_live(S, pobinvoke) /\ $ob_user_failure_current(S, pobinvoke) /\ |pobinvoke.SENT| = 2 /\ $ob_user_sent_valid(S, pobinvoke, pobinvoke.SENT, 0) /\ $throwable_live(S, n))
+def $call_task_valid(S, OB_USER_FAIL_DONE pobinvoke) = ($ob_user_failure_live(S, pobinvoke) /\ $ob_user_failure_current(S, pobinvoke) /\ pobinvoke.SENT = eps /\ $ob_user_failure_pending(S, pobinvoke) =/= eps)
+def $call_task_valid(S, OB_USER_FAIL_COMMIT pobinvoke n) = ($ob_user_failure_live(S, pobinvoke) /\ $ob_user_failure_current(S, pobinvoke) /\ pobinvoke.SENT = eps /\ $throwable_live(S, n))
+
+def $ob_user_result_discard(S, pobinvoke) = S[.TODO = (OB_USER_FAIL_ARGS pobinvoke n) :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $ob_user_failure_vm(pobinvoke)
+  -- if S_proof = S[.TODO = (OB_USER_RESULT pobinvoke) :: ptask_tail*]
+  -- if $call_task_valid(S_proof, OB_USER_RESULT pobinvoke)
+  -- if $throwable_live(S, n)
+;; These warning callbacks have different pre-entry/deprecation cleanup. Keep
+;; their real resume and owners visible until that protocol is authored.
+def $error_read_discard(S, OB_USER_REFERENCE pobinvoke n) = S[.TODO = (OB_USER_REFERENCE pobinvoke n) :: S.TODO][.COMPLETION = UNSUPPORTED "abrupt user output-handler callback cleanup"]
+def $error_read_discard(S, OB_USER_DEPRECATED pobinvoke pvalue) = $return_discard(S, OB_USER_DEPRECATED pobinvoke pvalue)
+rule PhpStep/ob-user-fail-args: S ~> S[.TODO = (OB_USER_FAIL_DONE pobinvoke[.SENT = eps]) :: ptask_tail*][.COMPLETION = THROWING n][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (OB_USER_FAIL_ARGS pobinvoke n) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_FAIL_ARGS pobinvoke n)
+def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = S_next
+  -- if S.TODO = (OB_USER_FAIL_ARGS pobinvoke n) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_FAIL_ARGS pobinvoke n)
+  -- if S_next.TODO = (OB_USER_FAIL_DONE pobinvoke[.SENT = eps]) :: ptask_tail*
+  -- if S_next.COMPLETION = THROWING n
+  -- if S_next.RESULT = KNOWN PNULL /\ S_next.BASE = BASE_VALUE (KNOWN PNULL)
+;; DONE owns no pending exception: ordinary destruction saves it exactly once.
+;; A destructor can replace it; capture the actual resumed THROW_SEARCH value.
+def $return_discard(S, OB_USER_FAIL_DONE pobinvoke) = S[.TODO = (OB_USER_FAIL_COMMIT pobinvoke n) :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $ob_user_failure_vm(pobinvoke) /\ pobinvoke.SENT = eps
+  -- if S_proof = S[.TODO = (THROW_SEARCH n) :: (OB_USER_FAIL_DONE pobinvoke) :: ptask_tail*]
+  -- if $call_task_valid(S_proof, OB_USER_FAIL_DONE pobinvoke) /\ $throwable_live(S, n)
+def $eager_operation_source_guard(S, pdestructionoperation) = ($ob_user_failure_live(S, pobinvoke) /\ pdestructionoperation.ORIGIN = ($ob_call_site(pobinvoke.CALL)) /\ pdestructionoperation.CALLER = pobwrite.CONTEXT /\ pdestructionoperation.COMPLETION = THROWING n /\ pdestructionoperation.PENDING =/= eps /\ $throwable_live(S, n) /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL))
+  -- if pdestructionoperation.SOURCE = OB_USER_FAIL_ARGS pobinvoke n
+  -- if pobinvoke.CALL = OB_WRITE pobwrite
+
+def $output_failure_buffer(poutputbuffer) = poutputbuffer[.FLAGS = $long_or(poutputbuffer.FLAGS, 12288)][.SIZE = 0][.BYTES = eps]
+rule PhpStep/ob-user-fail-commit: S ~> S[.OUTPUTBUFFERS = $output_set(S.OUTPUTBUFFERS, poutputbuffer.ID, $output_failure_buffer(poutputbuffer))][.TODO = (OUTPUT_FAIL_WRITE pobwrite[.INDEX = $(pobwrite.INDEX + 1)][.BYTES = poutputbuffer.BYTES] n) :: pobwrite.TAIL]
+  -- if S.TODO = (OB_USER_FAIL_COMMIT pobinvoke n) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_FAIL_COMMIT pobinvoke n)
+  -- if pobinvoke.CALL = OB_WRITE pobwrite
+  -- if $output_selected(S, pobinvoke) = (poutputbuffer)
+
+def $output_failure_valid(S, pobwrite, n) = ($output_vm_source(pobwrite.CALLER) /\ pobwrite.FINISH = OUTPUT_VM_DONE /\ $output_write_valid(S, pobwrite) /\ $throwable_live(S, n) /\ S.CURRENT = pobwrite.CONTEXT /\ S.ORIGIN = ($output_caller_site(pobwrite.CALLER)))
+def $call_task_valid(S, OUTPUT_FAIL_WRITE pobwrite n) = ($output_failure_valid(S, pobwrite, n) /\ $source_operand_suffix(S.TODO, OUTPUT_FAIL_WRITE pobwrite n, pobwrite.TAIL))
+def $call_task_valid(S, OUTPUT_FAIL_FINISH pobwrite n) = ($output_failure_valid(S, pobwrite, n) /\ $source_operand_suffix(S.TODO, OUTPUT_FAIL_FINISH pobwrite n, pobwrite.TAIL))
+def $output_failure_next(S, pobwrite, n, n_bytes*) = S[.TODO = (OUTPUT_FAIL_WRITE pobwrite[.INDEX = $(pobwrite.INDEX + 1)][.BYTES = n_bytes*] n) :: pobwrite.TAIL]
+rule PhpStep/output-fail-empty: S ~> S[.TODO = (OUTPUT_FAIL_FINISH pobwrite n) :: pobwrite.TAIL]
+  -- if S.TODO = (OUTPUT_FAIL_WRITE pobwrite n) :: ptask_tail*
+  -- if $call_task_valid(S, OUTPUT_FAIL_WRITE pobwrite n) /\ pobwrite.BYTES = eps
+rule PhpStep/output-fail-sapi: S ~> S[.EVENTS = S.EVENTS ++ [OUTPUT pobwrite.BYTES]][.TODO = (OUTPUT_FAIL_FINISH pobwrite n) :: pobwrite.TAIL]
+  -- if S.TODO = (OUTPUT_FAIL_WRITE pobwrite n) :: ptask_tail*
+  -- if $call_task_valid(S, OUTPUT_FAIL_WRITE pobwrite n)
+  -- if pobwrite.BYTES =/= eps /\ pobwrite.INDEX = (|pobwrite.IDS|)
+rule PhpStep/output-fail-disabled: S ~> $output_failure_next(S, pobwrite, n, pobwrite.BYTES)
+  -- if S.TODO = (OUTPUT_FAIL_WRITE pobwrite n) :: ptask_tail*
+  -- if $call_task_valid(S, OUTPUT_FAIL_WRITE pobwrite n)
+  -- if pobwrite.BYTES =/= eps /\ $(pobwrite.INDEX < |pobwrite.IDS|)
+  -- if $output_at(S.OUTPUTBUFFERS, pobwrite.IDS[pobwrite.INDEX]) = (poutputbuffer)
+  -- if $ob_user_disabled(poutputbuffer)
+rule PhpStep/output-fail-store: S ~> S[.OUTPUTBUFFERS = $output_set(S.OUTPUTBUFFERS, poutputbuffer.ID, poutputbuffer_next)][.TODO = (OUTPUT_FAIL_FINISH pobwrite n) :: pobwrite.TAIL]
+  -- if S.TODO = (OUTPUT_FAIL_WRITE pobwrite n) :: ptask_tail*
+  -- if $call_task_valid(S, OUTPUT_FAIL_WRITE pobwrite n)
+  -- if pobwrite.BYTES =/= eps /\ $(pobwrite.INDEX < |pobwrite.IDS|)
+  -- if $output_at(S.OUTPUTBUFFERS, pobwrite.IDS[pobwrite.INDEX]) = (poutputbuffer)
+  -- if ~$ob_user_disabled(poutputbuffer)
+  -- if poutputbuffer_next = $output_append(S, poutputbuffer, pobwrite.BYTES)
+  -- if poutputbuffer.CHUNK = 0 \/ $(|poutputbuffer_next.BYTES| < poutputbuffer.CHUNK)
+rule PhpStep/output-fail-default: S ~> $output_failure_next(S[.OUTPUTBUFFERS = $output_set(S.OUTPUTBUFFERS, poutputbuffer.ID, $output_processed(poutputbuffer_next))], pobwrite, n, poutputbuffer_next.BYTES)
+  -- if S.TODO = (OUTPUT_FAIL_WRITE pobwrite n) :: ptask_tail*
+  -- if $call_task_valid(S, OUTPUT_FAIL_WRITE pobwrite n)
+  -- if pobwrite.BYTES =/= eps /\ $(pobwrite.INDEX < |pobwrite.IDS|)
+  -- if $output_at(S.OUTPUTBUFFERS, pobwrite.IDS[pobwrite.INDEX]) = (poutputbuffer)
+  -- if ~$ob_user_disabled(poutputbuffer) /\ poutputbuffer.HANDLER = eps
+  -- if poutputbuffer_next = $output_append(S, poutputbuffer, pobwrite.BYTES)
+  -- if $(poutputbuffer.CHUNK > 0 /\ |poutputbuffer_next.BYTES| >= poutputbuffer.CHUNK)
+;; zend_call_function observes EG(exception) before resolving or entering FCC.
+rule PhpStep/output-fail-user: S ~> $output_failure_next(S[.OUTPUTBUFFERS = $output_set(S.OUTPUTBUFFERS, poutputbuffer.ID, $output_failure_buffer(poutputbuffer_next))], pobwrite, n, poutputbuffer_next.BYTES)
+  -- if S.TODO = (OUTPUT_FAIL_WRITE pobwrite n) :: ptask_tail*
+  -- if $call_task_valid(S, OUTPUT_FAIL_WRITE pobwrite n)
+  -- if pobwrite.BYTES =/= eps /\ $(pobwrite.INDEX < |pobwrite.IDS|)
+  -- if $output_at(S.OUTPUTBUFFERS, pobwrite.IDS[pobwrite.INDEX]) = (poutputbuffer)
+  -- if ~$ob_user_disabled(poutputbuffer) /\ poutputbuffer.HANDLER =/= eps
+  -- if poutputbuffer_next = $output_append(S, poutputbuffer, pobwrite.BYTES)
+  -- if $(poutputbuffer.CHUNK > 0 /\ |poutputbuffer_next.BYTES| >= poutputbuffer.CHUNK)
+rule PhpStep/output-fail-finish: S ~> S[.TODO = (THROW_SEARCH n) :: pobwrite.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (OUTPUT_FAIL_FINISH pobwrite n) :: ptask_tail*
+  -- if $call_task_valid(S, OUTPUT_FAIL_FINISH pobwrite n)
+
+;; Producer operands can already be retired after their real decrement. The
+;; SOURCE is a witness; source/caller/stack/cursor metadata remain checkable.
+def $output_failure_source(S, pobwrite) = ($output_vm_source(pobwrite.CALLER) /\ pobwrite.FINISH = OUTPUT_VM_DONE /\ $output_source_valid(S[.CURRENT = pobwrite.CONTEXT], pobwrite.CALLER) /\ pobwrite.IDS = $output_ids(S.OUTPUTBUFFERS) /\ $(pobwrite.INDEX <= |pobwrite.IDS|) /\ $output_prefix_done(S.OUTPUTBUFFERS, pobwrite.INDEX) /\ $startup_bytes(pobwrite.BYTES))
+def $output_failure_exit_frames(eps, pdestructionoperation, pobwrite) = false
+def $output_failure_exit_frames(pframe :: pframe_tail*, pdestructionoperation, pobwrite) = ((pframe.CONTEXT = pobwrite.CONTEXT /\ pframe.ORIGIN = ($output_caller_site(pobwrite.CALLER)) /\ $source_operand_suffix(pframe.TODO, DESTRUCTOR_OPERATION_EXIT pdestructionoperation, pobwrite.TAIL)) \/ $output_failure_exit_frames(pframe_tail*, pdestructionoperation, pobwrite))
+def $output_failure_exit(S, pdestructionoperation, pobwrite) = ((S.CURRENT = pobwrite.CONTEXT /\ S.ORIGIN = ($output_caller_site(pobwrite.CALLER)) /\ $source_operand_suffix(S.TODO, DESTRUCTOR_OPERATION_EXIT pdestructionoperation, pobwrite.TAIL)) \/ $output_failure_exit_frames(S.FRAMES, pdestructionoperation, pobwrite))
+def $eager_operation_source_guard(S, pdestructionoperation) = ($output_failure_source(S, pobwrite) /\ $output_failure_exit(S, pdestructionoperation, pobwrite) /\ pdestructionoperation.ORIGIN = ($output_caller_site(pobwrite.CALLER)) /\ pdestructionoperation.CALLER = pobwrite.CONTEXT /\ pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING =/= eps /\ $throwable_live(S, n) /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL))
+  -- if pdestructionoperation.SOURCE = OUTPUT_FAIL_FINISH pobwrite n
+
+;; ZEND_ECHO frees a temporary object operand only after zend_write. A named
+;; construction owns that operand; a plain CV remains borrowed. The holder is
+;; in the real producer tail, so WRITE snapshots add no second receiver root.
+def $output_string_caller(porigin, z, EMIT z) = (OUTPUT_VM porigin (EMIT z) z)
+def $output_string_caller(porigin, z, PRINT_EMIT porigin z) = (OUTPUT_VM porigin (PRINT_EMIT porigin z) z)
+def $output_string_caller(porigin, z, ptask) = eps -- otherwise
+def $output_string_operand(OUTPUT_VM porigin (EMIT z) z) = (porigin)
+def $output_string_operand(OUTPUT_VM porigin (PRINT_EMIT porigin z) z) = $origin_child((porigin), [PCFIELD 0])
+def $output_string_operand(pobcaller) = eps -- otherwise
+def $output_string_owned(S, pobcaller, n) = true
+  -- if $output_string_operand(pobcaller) = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew phpType28 phpType6 metadata)
+  -- if $tick_new_named(phpType28)
+  -- if $new_source_name(S, porigin) = (n_name*)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $class_named(S.CLASSNAMES, $ptlc(n_name*)) = (porigin_class)
+  -- if $stringable_instance(S, n)
+def $output_string_owned(S, pobcaller, n) = false -- otherwise
+def $output_string_borrowed(S, pobcaller) = true
+  -- if $output_string_operand(pobcaller) = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprVariable (BYTES text) metadata)
+def $output_string_borrowed(S, pobcaller) = false -- otherwise
+def $stringify_return_state(S, ptask, pvalue_text, ptask_tail*) = S[.TODO = ptask :: (OUTPUT_STRING_RELEASE pobstringrelease) :: ptask_tail*][.RESULT = KNOWN pvalue_text][.BASE = BASE_VALUE (KNOWN pvalue_text)]
+  -- if S.TODO = (STRINGIFY_RESULT n porigin z) :: ptask :: ptask_tail*
+  -- if $output_string_caller(porigin, z, ptask) = (pobcaller)
+  -- if $output_positive(S.OUTPUTBUFFERS)
+  -- if $output_string_owned(S, pobcaller, n)
+  -- if pobstringrelease = {OBJECT n, CALLER pobcaller, CONTEXT S.CURRENT, TAIL ptask_tail*}
+def $stringify_return_state(S, ptask, pvalue_text, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "owned Stringable output operand outside direct named construction"]
+  -- if S.TODO = (STRINGIFY_RESULT n porigin z) :: ptask :: ptask_tail*
+  -- if $output_string_caller(porigin, z, ptask) = (pobcaller)
+  -- if $output_positive(S.OUTPUTBUFFERS)
+  -- if ~$output_string_owned(S, pobcaller, n) /\ ~$output_string_borrowed(S, pobcaller)
+def $output_string_certificate(S, pobstringrelease) = true
+  -- if S_history = S[.CURRENT = pobstringrelease.CONTEXT][.ORIGIN = ($output_caller_site(pobstringrelease.CALLER))][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT pobstringrelease.OBJECT]]
+  -- if $output_source_valid(S_history, pobstringrelease.CALLER)
+  -- if $output_string_owned(S_history, pobstringrelease.CALLER, pobstringrelease.OBJECT)
+def $output_string_certificate(S, pobstringrelease) = false -- otherwise
+def $output_string_release_valid(S, pobstringrelease) = ($output_string_certificate(S, pobstringrelease) /\ (HOBJECT pobstringrelease.OBJECT) <- S.ALLOCATIONS /\ S.CURRENT = pobstringrelease.CONTEXT /\ S.ORIGIN = ($output_caller_site(pobstringrelease.CALLER)) /\ $source_operand_suffix(S.TODO, OUTPUT_STRING_RELEASE pobstringrelease, pobstringrelease.TAIL))
+def $task_nodes(OUTPUT_STRING_RELEASE pobstringrelease) = [HOBJECT pobstringrelease.OBJECT]
+def $call_task_valid(S, OUTPUT_STRING_RELEASE pobstringrelease) = $output_string_release_valid(S, pobstringrelease)
+rule PhpStep/output-string-release: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (OUTPUT_STRING_RELEASE pobstringrelease) :: ptask_tail*
+  -- if $call_task_valid(S, OUTPUT_STRING_RELEASE pobstringrelease)
+def $eager_operation_source(S, THROW_SEARCH n) = OUTPUT_STRING_RELEASE pobstringrelease
+  -- if S.TODO = (THROW_SEARCH n) :: (OUTPUT_STRING_RELEASE pobstringrelease) :: ptask_tail*
+  -- if $call_task_valid(S, OUTPUT_STRING_RELEASE pobstringrelease)
+def $output_string_exit_frames(eps, pdestructionoperation, pobstringrelease) = false
+def $output_string_exit_frames(pframe :: pframe_tail*, pdestructionoperation, pobstringrelease) = ((pframe.CONTEXT = pobstringrelease.CONTEXT /\ pframe.ORIGIN = ($output_caller_site(pobstringrelease.CALLER)) /\ $source_operand_suffix(pframe.TODO, DESTRUCTOR_OPERATION_EXIT pdestructionoperation, pobstringrelease.TAIL)) \/ $output_string_exit_frames(pframe_tail*, pdestructionoperation, pobstringrelease))
+def $output_string_exit(S, pdestructionoperation, pobstringrelease) = ((S.CURRENT = pobstringrelease.CONTEXT /\ S.ORIGIN = ($output_caller_site(pobstringrelease.CALLER)) /\ $source_operand_suffix(S.TODO, DESTRUCTOR_OPERATION_EXIT pdestructionoperation, pobstringrelease.TAIL)) \/ $output_string_exit_frames(S.FRAMES, pdestructionoperation, pobstringrelease))
+def $eager_operation_source_guard(S, pdestructionoperation) = ($output_string_certificate(S, pobstringrelease) /\ $output_string_exit(S, pdestructionoperation, pobstringrelease) /\ pdestructionoperation.CALLER = pobstringrelease.CONTEXT /\ pdestructionoperation.ORIGIN = ($output_caller_site(pobstringrelease.CALLER)) /\ pdestructionoperation.COMPLETION = NORMAL)
+  -- if pdestructionoperation.SOURCE = OUTPUT_STRING_RELEASE pobstringrelease

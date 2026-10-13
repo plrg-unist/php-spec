@@ -19213,19 +19213,23 @@
       "implementation": [
         "spec/semantics/391-output-buffers.watsup",
         "spec/semantics/395-output-handlers.watsup",
-        "spec/semantics/396-output-chunks.watsup"
+        "spec/semantics/396-output-chunks.watsup",
+        "spec/semantics/397-output-handler-failures.watsup"
       ],
       "helper_tests": [
         "tests/semantics/output_buffer_state.py",
         "tests/semantics/output_handler_state.py",
-        "tests/semantics/output_chunk_state.py"
+        "tests/semantics/output_chunk_state.py",
+        "tests/semantics/output_abrupt_state.py"
       ],
       "source_tests": [
         "tests/semantics/output_buffer_sources.py",
         "tests/semantics/output_handler_sources.py",
         "tests/semantics/output_handler_review_sources.py",
         "tests/semantics/output_chunk_sources.py",
-        "tests/semantics/output_chunk_review_sources.py"
+        "tests/semantics/output_chunk_review_sources.py",
+        "tests/semantics/output_abrupt_sources.py",
+        "tests/semantics/output_abrupt_review_sources.py"
       ],
       "evidence": [
         "vendor/php-src/main/output.c",
@@ -19237,9 +19241,11 @@
         "coverage/semantics/output-handler-review.json",
         "vendor/php-src/Zend/zend_execute_API.c",
         "coverage/semantics/output-chunk-author.json",
-        "coverage/semantics/output-chunk-review.json"
+        "coverage/semantics/output-chunk-review.json",
+        "coverage/semantics/output-abrupt-author.json",
+        "coverage/semantics/output-abrupt-review.json"
       ],
-      "review": "Module391 implements default/NULL stacks and lifecycle flush; Module395 stages explicit normal scalar-result user operations with copied strings, internal weak traces, produced-output deprecation, live false forwarding and zoh-only ownership. Their accepted ledgers retain original cuts. Module396 adds positive chunks for source echo/print/inline and explicit lower cascades, with whole-buffer WRITE phases, VM strictness/file/line, active-versus-running layers, detached flush getter views and authenticated operand/continuation transfer. Eight author and five independent originals keep distinct cuts; the lower-result failure remains zero and the tail guard gets an affected alias source. Five genuine state groups pass 210 premises in separately capped processes at 4a1a; validator/forgery/resource failures remain zero, and original assertions/caps are unchanged. Abrupt cleanup, other byte producers, request-end/fatal drains, wider conversion/callable/mutation/Fiber protocols and buffered stdout rendering remain required; full obligation stays partial."
+      "review": "Module391 default/NULL stacks, Module395 explicit normal user operations and Module396 normal positive chunks retain their accepted source/state cuts. Module397 adds automatic receive/throw cleanup: pending identity/Previous, running argv destruction, live raw forwarding, lower threshold skip/disable and interrupted print; direct named Stringable temporaries release after writing and before assignment/catch. Eight author and four independent originals agree at separate cuts. Three genuine groups pass 166 premises in fresh processes (63+44 at 20d44,59 at 85fd); the pending-witness validation repair and one-variable phase correction preserve failed originals/diagnostics at zero. Callback exit, explicit API failure, warning-handler throws, other producers/request-end/fatal drains and wider conversion/callable/capability/mutation/Fiber/stdout protocols remain required; full obligation stays partial."
     },
     {
       "id": "environment.request-inputs",
