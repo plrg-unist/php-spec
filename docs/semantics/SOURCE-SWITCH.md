@@ -54,6 +54,11 @@ now keeps an outer direct case comparison on its original inline slots while a
 nested comparison uses newly created tables and a separate recursion guard. The
 same TypeError crosses both caster finally blocks and reaches caller catch/finally;
 later cases remain unvisited. Three exact sources and focused state evidence pass.
+[Fast projections in case casts](../../coverage/semantics/direct-projection-comparison-review.json)
+now preserve that object guard without materializing cached tables. Projected
+arrays have independent guards; the identical thrown TypeError crosses both
+caster finally blocks and reaches caller catch/finally. Fresh comparisons on the
+unchanged object and array identities confirm guard cleanup.
 [Fiber comparison transfers](../../coverage/semantics/fiber-aggregate-stringable-comparison-review.json)
 now retain the parked array guard through injected TypeError and caster finally
 entry, then remove it on pair unwind before caller catch/finally entry. Same-table

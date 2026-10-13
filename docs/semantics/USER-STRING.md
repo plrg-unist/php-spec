@@ -169,8 +169,14 @@ restart the outer walk or add new dynamic buckets to it. Selected live slots and
 pre-unwrapped cells stay distinct. Three exact sources and 383 reached
 premises/26 raw steps cover normal return and the same TypeError through nested
 and outer caster finally blocks, caller restoration/catch/finally and guard cleanup.
-Optimized unmaterialized array projection remains independently guarded; no broader
-receiver/destructor or END/shutdown coverage follows.
+[Fast array projection](../../coverage/semantics/direct-projection-comparison-review.json)
+now also runs under the direct guard. It copies direct values and singleton
+reference wrappers while preserving shared cells, with no cached-table flag or map.
+The original object cursor remains inline; comparisons of the exported arrays use
+their own array guards. Three exact sources and 503 reached premises/35 raw steps
+cover normal return and identical TypeError through both caster finally blocks,
+caller catch/finally and fresh comparisons on unchanged object/array identities.
+No broader receiver/destructor or END/shutdown coverage follows.
 
 [Fiber transfers during these comparisons](../../coverage/semantics/fiber-aggregate-stringable-comparison-review.json)
 now preserve active left guards in authentic waiting callers and allocated suspended

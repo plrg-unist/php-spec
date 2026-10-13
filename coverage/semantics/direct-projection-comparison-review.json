@@ -1,0 +1,167 @@
+{
+  "scope": "Fast unmaterialized ordinary declared-property array casts during an authenticated PLAIN Stringable comparison preserve the object cursor and guard without creating cached tables; direct and singleton-reference values copy while retained shared references remain live.",
+  "status": "partial; independently reviewed private increment",
+  "tested_revision": "04743e74b510ba19d1cc2bbc5f9123923d2b0c72",
+  "baseline_revision": "7d361d4c1c426c6ad245c1b821f2bcd985235010",
+  "module_count": 388,
+  "engine_anchors": [
+    "Zend/zend_operators.c:convert_to_array",
+    "Zend/zend_object_handlers.c:zend_std_build_object_properties_array, zend_std_compare_objects"
+  ],
+  "runtime": {
+    "php": {
+      "path": ".tools/php/bin/php",
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    "numeric_runner": {
+      "path": "tests/semantics/_build/default/numeric_runner.exe",
+      "sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    },
+    "elaborator": {
+      "path": ".tools/spectec/bin/p4spectec",
+      "sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "adapter": {
+      "path": "_build/default/adapter/main.exe",
+      "sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7"
+    },
+    "profile": {
+      "path": "tests/semantics/profile.json",
+      "sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+    },
+    "manifest": {
+      "path": "spec/semantics/modules.json",
+      "sha256": "3f4f92a1f8040e290968f02f3fb1983809b4f2d7476e51522d87f25129e85aa7"
+    },
+    "php_source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "build_claim": "Retained local binaries; no new build claim."
+  },
+  "baseline": {
+    "report": {
+      "path": ".tools/direct-projection-baseline-53/run-v1/report.json",
+      "sha256": "4191464e1b47943544f92ab041722fa7a4512c4c7328e9936d1e7894838f92d6"
+    },
+    "outcome": "accepted/program/Unsupported: guarded declared-object array projection",
+    "stdout": "outer-cast|",
+    "native_agreements": 0
+  },
+  "native": {
+    "report": {
+      "path": ".tools/direct-projection-native-53/run-v1/report.json",
+      "sha256": "326423f9f0f78cf5d77e8cb75e67539b85e4006d9ede8071534bb15593727735"
+    },
+    "originals": 3,
+    "observations": "Projection leaves original object recursion active, exported arrays use independent recursion protection, direct and singleton-reference views keep old while retained shared cells see new; identical TypeError crosses both caster finally blocks and caller catch/finally before unchanged-identity fresh comparisons."
+  },
+  "strict": {
+    "report": {
+      "path": ".tools/direct-projection-gate-53/run-v1/report.json",
+      "sha256": "ee0c44e6905d1652d2e7299911dea07dd2d8a749d913be57a46c1cd50e735ffa"
+    },
+    "initialization_only": true,
+    "semantic_assertions": 0,
+    "PHP_Steps": 0
+  },
+  "sources": {
+    "report": {
+      "path": ".tools/direct-projection-model-53/run-v1/report.json",
+      "sha256": "93a557f2c9e78dc6a52ee4a41d5c37cc327aff80767070974839a1740028742c"
+    },
+    "catalogue": {
+      "path": "tests/semantics/direct_projection_comparison_cases.json",
+      "sha256": "631987c74dee9c1f918cd184e38d97c43ac9663c8b1092650dd91436fc19c04b"
+    },
+    "normal_native_agreements": 3,
+    "limits": "45 semantic/55 host seconds,100000 steps,jobs1"
+  },
+  "syntax_only": {
+    "report": {
+      "path": ".tools/direct-projection-prepare-53/syntax-v1/report.json",
+      "sha256": "ea44e7774937896b6c3bd6bbf65178bf6ee946e75f6f5bbe259e7102b493dc33"
+    },
+    "programmes": 3,
+    "closed_workers": 6,
+    "runtime_credit": 0,
+    "author_original_el": {
+      "path": ".tools/direct-projection-state-53/run-elab-v1/report.json",
+      "sha256": "e90d1dd339a55daf401781e75baf770fc722970b7355f37ddc3e27eac9a6df93"
+    },
+    "author_affected_el": {
+      "path": ".tools/direct-projection-state-53/run-elab-grouping-retry1/report.json",
+      "sha256": "b012d593bb880054582179a53c78b8d41560df0c80b69712edabbe3254cc41ed"
+    },
+    "peer_el": {
+      "path": ".tools/direct-projection-peer-state-53/run-elab-v1/report.json",
+      "sha256": "a465a2c8e1618cc6a2a395bced51de919280dbc8ae4bef197fc594f364617c29"
+    }
+  },
+  "reached_states": {
+    "author": {
+      "path": ".tools/direct-projection-state-53/run-sl-grouping-retry1/report.json",
+      "sha256": "acda1e32abb402d0164e8586c9d53a02231fc2f9e8ac87077c354b2567d1c156"
+    },
+    "peer": {
+      "path": ".tools/direct-projection-peer-state-53/run-sl-recursion-retry1/report.json",
+      "sha256": "e188429ef925499aee53ccbb0be69b8849d1bec84a4e0e4e4a930ff52cb27afd"
+    },
+    "author_plan": {
+      "path": ".tools/direct-projection-state-53/plan.json",
+      "sha256": "c20bbecb0a144c4c73bdccfaf58206ddecc4d407e41677b989f7f3fcb003e093"
+    },
+    "peer_plan": {
+      "path": ".tools/direct-projection-peer-state-53/plan.json",
+      "sha256": "fbd8366bd5dba20d1d28e25be52732a5042282b2341dcb158df52b93307f93c8"
+    },
+    "premises": 503,
+    "setup_frontier_premises": 483,
+    "marked_pure_checks": 20,
+    "PhpSteps": 35,
+    "groups": [
+      {
+        "id": "projection-reenter",
+        "premises": 121,
+        "pure": 5,
+        "PhpSteps": 8,
+        "seconds": 16.36102800257504
+      },
+      {
+        "id": "projection-reference-copy",
+        "premises": 173,
+        "pure": 7,
+        "PhpSteps": 6,
+        "seconds": 28.592184580862522
+      },
+      {
+        "id": "peer-projection-throw",
+        "premises": 209,
+        "pure": 8,
+        "PhpSteps": 21,
+        "seconds": 32.027225852012634
+      }
+    ],
+    "limits": "Separate EL30 and explicit SL120; bounded authentic source seeks, no END/shutdown drive. Driver seeks and helper controls add no raw Step credit."
+  },
+  "ownership": "The real CAST_RESULT operand roots its parent object while merge_item inspects pruned reference owners. A singleton ALIAS becomes DIRECT and adds no CELL edge; a retained shared CELL keeps its ALIAS and gains one view owner. Projection copies the receiver edge into a real fresh HARRAY while preserving OBJECTPROPS, OBJECTTABLES and MATERIALIZED flags. The outer cursor owns only its original objects; a nested projected-array cursor owns its arrays and uses a separate HARRAY guard. Both guards persist through their actual caster finally and drop at their own frame unwind or successful comparison. Documentary cursor images add no owners or immutable historical guarantee.",
+  "residuals": [
+    "Existing cached ordinary clone, collector visitation and copied-declared reference foreach bounds remain explicit.",
+    "Wider handler/layout/access, receiver/destructor lifetimes and full-core/END/shutdown behavior are not established."
+  ],
+  "original_zero_credit": [
+    {
+      "report": {
+        "path": ".tools/direct-projection-state-53/run-elab-v1/report.json",
+        "sha256": "e90d1dd339a55daf401781e75baf770fc722970b7355f37ddc3e27eac9a6df93"
+      },
+      "result": "Reference fixture EL could not group a singleton DIRECT value as ENTRY item. Original normal121 typed pass reused; only three constructor-grouping occurrences changed before affected reference EL and both original unrun SL checks."
+    },
+    {
+      "report": {
+        "path": ".tools/direct-projection-peer-state-53/run-sl-v1/report.json",
+        "sha256": "1d5bbd3cb958475316b3240b5a61fb3005045aaf36ea1041de75030206c9f502"
+      },
+      "result": "Peer fixture expected allocated THROWING from a raw recursive comparison, but throw_scalar emits THROWN before driver materialization. Original failed group retains zero credit; only its raw completion observer is corrected."
+    }
+  ],
+  "acceptance": "Credited cuts have immutable START/closed/raw bindings, stable watched production/source/File/CWD/profile inputs, normal exits and empty owned groups. Independent comp_review_21 cleared the semantics, author packet and final scoped publication; the independent peer packet and raw were separately accepted.",
+  "recovery": "Original ignored sources, checked programmes, recorders, START/raw records and retained binaries stay at exact .tools/direct-projection-comparison-53/.tools/direct-projection-{native,baseline,gate,model,prepare,state,peer-state,support}-53 paths. Preserve Git branches and ignored providers; no bulky evidence is tracked."
+}

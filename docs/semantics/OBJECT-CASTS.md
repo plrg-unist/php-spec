@@ -33,8 +33,15 @@ now permits genuine foreach and dynamic-property table creation while the origin
 object-protected inline-slot comparison is active. Its captured cursor ignores new
 dynamic membership; a nested cached comparison independently owns and protects the
 actual tables, including implicit materialization of the other object. Three exact
-sources and 383 reached premises/26 raw steps pass. Optimized fast array
-projection remains independently guarded; no broader lifetime or shutdown claim follows.
+sources and 383 reached premises/26 raw steps pass.
+
+[Fast declared-property projections](../../coverage/semantics/direct-projection-comparison-review.json)
+now run during the same object-protected walk without creating a cached table.
+Their fresh arrays copy direct values and singleton references; shared references
+remain live. Actual cast states verify copied entries, cell/object owners and
+unchanged object maps/flags. Independent projected-array comparison and throwing
+cleanup pass three exact sources and 503 reached premises/35 raw steps. Existing
+GC, cached-clone, reference-iteration and broader lifetime limits remain open.
 
 A NaN cast allocates the object before delivering its warning through the real
 error handler. Its continuation retains the original operand category and zval

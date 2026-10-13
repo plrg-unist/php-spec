@@ -1636,7 +1636,12 @@ read the current table. Cached cloning and collector traversal remain explicit l
 now preserves the original inline-slot walk while nested comparisons use separate
 concrete-table guards and pins. Live slots versus retained cells, newly added dynamic
 fields and nested throw/finally cleanup pass three exact sources and 383 reached
-premises/26 raw steps. Guarded fast array projection remains a separate limit.
+premises/26 raw steps.
+[Fast projections during comparison](coverage/semantics/direct-projection-comparison-review.json)
+now copy ordinary declared properties without creating cached tables or replacing
+the object guard. Singleton references copy their values; shared references stay
+live. Independent projected-array guards and identical TypeError cleanup pass
+three exact sources and 503 reached premises/35 raw steps.
 [Match expressions](docs/semantics/SOURCE-MATCH.md) preserve strict, lazy arm
 selection, delayed CV subjects, ordered compiler diagnostics and owned value
 results; their [review](coverage/semantics/match-review.json) binds source, compiler

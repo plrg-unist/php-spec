@@ -276,8 +276,18 @@ originals agree at 8d897ce /387; 383 reached premises (361 setup,
 22 pure controls, 26 raw steps) check one-sided/implicit materialization,
 unequal newly added dynamic fields, live slot versus old cell and identical TypeError
 through both caster finally blocks and caller catch/finally. Strict 4 passes; the original
-pre-main fixture failure retains zero credit. Guarded fast array projection and the
-existing GC/clone/reference-iteration/lifetime limits remain open.
+pre-main fixture failure retains zero credit. Existing GC/clone/reference-iteration/
+lifetime limits remain open.
+
+[Fast projections under direct comparison](coverage/semantics/direct-projection-comparison-review.json)
+now export copied property arrays while preserving the original inline cursor and
+object guard, without creating cached tables. Singleton reference wrappers unwrap;
+retained shared cells stay live in the view. Three original sources agree at
+04743e74 /388. Author and independent states pass 503 reached premises
+(483 setup, 20 pure controls, 35 raw steps), covering actual cast allocation,
+reference owners, independent array recursion and identical TypeError through both
+caster finally blocks and caller catch/finally. Strict initialization and syntax-only
+preparation add no semantic credit; the original grouping fixture failure remains zero.
 
 Hard bailout now records request EXITSTATUS255 before shutdown. Direct callback
 strings preserve it; integer/default exits replace it and skip later callbacks.
