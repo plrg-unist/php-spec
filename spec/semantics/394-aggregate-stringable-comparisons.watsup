@@ -181,14 +181,8 @@ def $aggregate_tasks_declared((STRINGIFY_RESULT n_receiver porigin_site z_line) 
 def $aggregate_tasks_declared((AGGREGATE_COMPARE_RESULT paggregatecompare) :: ptask_tail*, n) = $aggregate_cursor_declared(paggregatecompare.CAST.STACK, n)
 def $aggregate_tasks_declared(ptask*, n) = false -- otherwise
 def $aggregate_frames_declared(S, pcallcontext?, eps, n) = false
-def $aggregate_frames_declared(S, pcallcontext?, pframe :: pframe_tail*, n) = true
-  -- if $aggregate_frame_seen(S, pcallcontext?, pframe, pframe_tail*) =/= eps
-  -- if $aggregate_tasks_declared(pframe.TODO, n)
-def $aggregate_frames_declared(S, pcallcontext?, pframe :: pframe_tail*, n) = $aggregate_frames_declared(S, pframe.CONTEXT, pframe_tail*, n) -- otherwise
-def $aggregate_decl_retained(S, n) = true
-  -- if $aggregate_current_seen(S) =/= eps
-  -- if $aggregate_tasks_declared(S.TODO, n)
-def $aggregate_decl_retained(S, n) = $aggregate_frames_declared(S, S.CURRENT, S.FRAMES, n) -- otherwise
+def $aggregate_frames_declared(S, pcallcontext?, pframe :: pframe_tail*, n) = (($aggregate_frame_seen(S, pcallcontext?, pframe, pframe_tail*) =/= eps /\ $aggregate_tasks_declared(pframe.TODO, n)) \/ $aggregate_frames_declared(S, pframe.CONTEXT, pframe_tail*, n))
+def $aggregate_decl_retained(S, n) = (($aggregate_current_seen(S) =/= eps /\ $aggregate_tasks_declared(S.TODO, n)) \/ $aggregate_frames_declared(S, S.CURRENT, S.FRAMES, n))
 def $aggregate_projection_plain(S, n) = true
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = INSTANCE porigin
