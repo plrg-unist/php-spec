@@ -1,0 +1,125 @@
+;; Dynamic global constants capture the evaluated arguments in the ordinary
+;; constant table. Primitive variable payloads keep its structural value policy.
+def $intrinsic_name(INTRINSIC_DEFINE) = $ptascii("define")
+def $intrinsic_name(INTRINSIC_DEFINED) = $ptascii("defined")
+def $intrinsic_named(preqbytes) = (INTRINSIC_DEFINE) -- if $ptlc(preqbytes) = $ptascii("define")
+def $intrinsic_named(preqbytes) = (INTRINSIC_DEFINED) -- if $ptlc(preqbytes) = $ptascii("defined")
+def $config_kind(INTRINSIC_DEFINE) = true
+def $config_kind(INTRINSIC_DEFINED) = true
+def $dynamic_constant_kind(INTRINSIC_DEFINE) = true
+def $dynamic_constant_kind(INTRINSIC_DEFINED) = true
+def $config_parameter(INTRINSIC_DEFINE, preqbytes) = (0) -- if preqbytes = $ptascii("constant_name")
+def $config_parameter(INTRINSIC_DEFINE, preqbytes) = (1) -- if preqbytes = $ptascii("value")
+def $config_parameter(INTRINSIC_DEFINE, preqbytes) = (2) -- if preqbytes = $ptascii("case_insensitive")
+def $config_parameter(INTRINSIC_DEFINED, preqbytes) = (0) -- if preqbytes = $ptascii("constant_name")
+def $config_parameter_name(INTRINSIC_DEFINE, 0) = $ptascii("constant_name")
+def $config_parameter_name(INTRINSIC_DEFINE, 1) = $ptascii("value")
+def $config_parameter_name(INTRINSIC_DEFINE, 2) = $ptascii("case_insensitive")
+def $config_parameter_name(INTRINSIC_DEFINED, 0) = $ptascii("constant_name")
+
+dec $dynamic_constant_class_name(preqbytes) : bool
+def $dynamic_constant_class_name(eps) = false
+def $dynamic_constant_class_name([n_byte]) = false
+def $dynamic_constant_class_name(n_first :: n_second :: n_tail*) = ((n_first = 58 /\ n_second = 58) \/ $dynamic_constant_class_name(n_second :: n_tail*))
+dec $dynamic_constant_global_name(preqbytes) : bool
+def $dynamic_constant_global_name(preqbytes) = (~(0 <- preqbytes) /\ ~$dynamic_constant_class_name(preqbytes) /\ preqbytes =/= $ptascii("__COMPILER_HALT_OFFSET__"))
+dec $dynamic_constant_initial(preqbytes) : bool
+def $dynamic_constant_initial(preqbytes) = ($initial_constant_bytes(preqbytes) \/ $special_constant(preqbytes) =/= eps)
+dec $dynamic_constant_query(preqbytes) : preqbytes
+def $dynamic_constant_query(92 :: n_tail*) = n_tail*
+def $dynamic_constant_query(preqbytes) = preqbytes -- otherwise
+dec $dynamic_constant_exists(pstate, preqbytes) : bool
+def $dynamic_constant_exists(S, preqbytes) = ($source_constant_lookup(S, $dynamic_constant_query(preqbytes)) =/= eps \/ $special_constant($dynamic_constant_query(preqbytes)) =/= eps)
+dec $dynamic_constant_class(pvalue) : pvalueclass?
+def $dynamic_constant_class(PSTRING_CARRIER INTERNED_STRING n_bytes*) = (PVSTRING true)
+def $dynamic_constant_class(PSTRING_CARRIER (REQUEST_STRING n_string) n_bytes*) = (PVSTRING false)
+def $dynamic_constant_class(pvalue) = (PVSCALAR) -- if $constant_nonstring_scalar(pvalue)
+def $dynamic_constant_class(pvalue) = eps -- otherwise
+
+;; A historical definition does not resolve mutable CVs or a namespace fallback
+;; that a later conditional function declaration could shadow.
+dec $dynamic_define_selected(pstate, porigin, pselectedcall*) : bool
+def $dynamic_define_selected(S, porigin, eps) = false
+def $dynamic_define_selected(S, porigin, pselectedcall :: pselectedcall_tail*) = true
+  -- if pselectedcall.SITE = porigin
+  -- if pselectedcall.KIND = INTRINSIC_DEFINE
+  -- if $selected_entry_source_valid(S, pselectedcall)
+def $dynamic_define_selected(S, porigin, pselectedcall :: pselectedcall_tail*) = $dynamic_define_selected(S, porigin, pselectedcall_tail*)
+  -- if pselectedcall.SITE =/= porigin \/ pselectedcall.KIND =/= INTRINSIC_DEFINE \/ ~$selected_entry_source_valid(S, pselectedcall)
+dec $dynamic_define_source(pstate, porigin) : bool
+def $dynamic_define_source(S, porigin) = true
+  -- if $exit_fixed(S, porigin) = ((preqbytes, preqbytes_fallback?))
+  -- if $intrinsic_named(preqbytes) = (INTRINSIC_DEFINE)
+  -- if $intrinsic_count(S, porigin) = (n_count)
+  -- if $(n_count >= 2 /\ n_count <= 3)
+def $dynamic_define_source(S, porigin) = true
+  -- if $exit_fixed(S, porigin) = eps
+  -- if $dynamic_define_selected(S, porigin, S.SELECTEDCALLS)
+  -- if $intrinsic_count(S, porigin) = (n_count)
+  -- if $(n_count >= 2 /\ n_count <= 3)
+def $dynamic_define_source(S, porigin) = false -- otherwise
+dec $dynamic_define_values(pconfigcall) : (preqbytes, pvalue)?
+def $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_name), NAMED_SENT (KNOWN pvalue)]
+  -- if $string_bytes(pvalue_name) = (preqbytes)
+def $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_name), NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN (PBOOL false))]
+  -- if $string_bytes(pvalue_name) = (preqbytes)
+def $dynamic_define_values(pconfigcall) = eps -- otherwise
+
+dec $dynamic_constant_receive(pstate, pconfigcall) : pstate
+def $dynamic_constant_receive(S, pconfigcall) = S[.TODO = ptask_tail*][.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME $user_constant_key(preqbytes), ORIGIN pconfigcall.SITE, VALUE pvalue, CLASS pvalueclass, READS eps, RECEIVES eps}]][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pconfigcall.KIND = INTRINSIC_DEFINE
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps
+  -- if $dynamic_define_source(S, pconfigcall.SITE)
+  -- if $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
+  -- if $dynamic_constant_global_name(preqbytes)
+  -- if $dynamic_constant_class(pvalue) = (pvalueclass)
+  -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
+  -- if ~$dynamic_constant_initial(preqbytes)
+  -- if $source_constant_lookup(S, preqbytes) = eps
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_constant_receive(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL $dynamic_constant_exists(S, preqbytes))][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pconfigcall.KIND = INTRINSIC_DEFINED
+  -- if pconfigcall.OWNER = eps
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_name)]
+  -- if $string_bytes(pvalue_name) = (preqbytes)
+  -- if $dynamic_constant_global_name($dynamic_constant_query(preqbytes))
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_constant_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "dynamic constant call domain"] -- otherwise
+
+rule PhpStep/dynamic-constant-invoke: S ~> $dynamic_constant_receive(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if $dynamic_constant_kind(pconfigcall.KIND)
+
+;; Only immutable compiler facts constrain literal payloads. A mutable variable
+;; argument is captured by the runtime row and is never evaluated again here.
+dec $dynamic_define_known(pstate, porigin, nat) : pvalue?
+def $dynamic_define_known(S, porigin, 0) = $compiled_read(S, porigin_argument)
+  -- if $intrinsic_argument(S, porigin, 0) = ((expression, false, eps, porigin_argument, z))
+def $dynamic_define_known(S, porigin, 1) = $compiled_read(S, porigin_argument)
+  -- if $intrinsic_argument(S, porigin, 0) = ((expression_name, false, eps, porigin_name, z_name))
+  -- if $intrinsic_argument(S, porigin, 1) = ((expression, false, eps, porigin_argument, z))
+def $dynamic_define_known(S, porigin, n) = eps -- otherwise
+dec $dynamic_define_name_matches(preqbytes, pvalue?) : bool
+def $dynamic_define_name_matches(preqbytes, eps) = true
+def $dynamic_define_name_matches(preqbytes, (pvalue)) = (preqbytes = $user_constant_key(n_name*))
+  -- if $string_bytes(pvalue) = (n_name*)
+def $dynamic_define_name_matches(preqbytes, pvalue?) = false -- otherwise
+dec $dynamic_define_value_matches(pvalue, pvalue?) : bool
+def $dynamic_define_value_matches(pvalue, eps) = true
+def $dynamic_define_value_matches(pvalue, (pvalue_expected)) = ($string_plain(pvalue) = $string_plain(pvalue_expected))
+def $user_constants_valid(S, puserconstant :: puserconstant_tail*) = true
+  -- if $dynamic_define_source(S, puserconstant.ORIGIN)
+  -- if $dynamic_constant_global_name(puserconstant.NAME)
+  -- if puserconstant.NAME = $user_constant_key(puserconstant.NAME)
+  -- if ~$dynamic_constant_initial(puserconstant.NAME)
+  -- if $dynamic_constant_class(puserconstant.VALUE) = (puserconstant.CLASS)
+  -- if $string_plain(puserconstant.VALUE) = puserconstant.VALUE \/ $string_carrier_valid(S, puserconstant.VALUE)
+  -- if puserconstant.READS = eps
+  -- if puserconstant.RECEIVES = eps
+  -- if $dynamic_define_name_matches(puserconstant.NAME, $dynamic_define_known(S, puserconstant.ORIGIN, 0))
+  -- if $dynamic_define_value_matches(puserconstant.VALUE, $dynamic_define_known(S, puserconstant.ORIGIN, 1))
+  -- if $user_constant_at(puserconstant_tail*, puserconstant.NAME) = eps
+  -- if $user_constants_valid(S, puserconstant_tail*)
