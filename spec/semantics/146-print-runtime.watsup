@@ -4,7 +4,7 @@ rule PhpStep/print-expression: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, 
   -- if S.TODO = (EVAL (NExprPrint expression metadata)) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
 
-rule PhpStep/print-emit: S ~> $output_write(S_text, n_text*)[.TODO = ptask_tail*][.RESULT = KNOWN (PINT 1)]
+rule PhpStep/print-emit: S ~> $output_vm_write(S_text, n_text*, porigin, PRINT_EMIT porigin z, z)
   -- if S.TODO = (PRINT_EMIT porigin z) :: ptask_tail*
   -- if S_read = $resolve(S, S.RESULT)
   -- if S_read.COMPLETION = NORMAL

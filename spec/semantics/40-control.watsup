@@ -32,6 +32,7 @@ def $atomic_expression(NExprConstFetch name metadata) = true
 def $atomic_expression(expression) = false
   -- otherwise
 
+dec $output_vm_write(pstate, preqbytes, porigin, ptask, int) : pstate
 relation PhpStep: pstate ~> pstate
   hint(input %0)
 dec $enter_constant_task(pstate, porigin, ptask, ptask*) : pstate
@@ -60,8 +61,9 @@ rule PhpStep/halt-compiler-invalid: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTE
   -- if ~$halt_statement_valid(S, NStmtHaltCompiler phpType33 metadata)
 rule PhpStep/block: S ~> S[.TODO = $statement_tasks(statement_tail*, $origin_child(S.ORIGIN, [PCFIELD 0]), 0) ++ ptask_tail*]
   -- if S.TODO = (STMT (NStmtBlock (SEQUENCE statement_tail*) metadata)) :: ptask_tail*
-rule PhpStep/inline: S ~> $output_write(S, $base64(text))[.TODO = ptask_tail*]
+rule PhpStep/inline: S ~> $output_vm_write(S, $base64(text), porigin, STMT (NStmtInlineHTML (BYTES text) metadata), $source_line(metadata))
   -- if S.TODO = (STMT (NStmtInlineHTML (BYTES text) metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
 rule PhpStep/echo: S ~> S[.TODO = $echo_tasks(S, expression_tail*, $origin_child(S.ORIGIN, [PCFIELD 0]), 0) ++ ptask_tail*]
   -- if S.TODO = (STMT (NStmtEcho (SEQUENCE expression_tail*) metadata)) :: ptask_tail*
 rule PhpStep/expression: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), DISCARD] ++ ptask_tail*]
@@ -125,8 +127,9 @@ rule PhpStep/name-read-abrupt: S ~> S_name[.TODO = eps]
   -- if ~$computed_string_name_pending(S)
   -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 0], S.RESULT), z)
   -- if S_name.COMPLETION =/= NORMAL
-rule PhpStep/emit: S ~> $output_write(S_text, n_text*)[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/emit: S ~> $output_vm_write(S_text, n_text*, porigin, EMIT z, z)
   -- if S.TODO = (EMIT z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
   -- if S_read = $resolve(S, S.RESULT)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue

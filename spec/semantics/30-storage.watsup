@@ -127,7 +127,7 @@ syntax passertmode = { INPUT pvalue, VALUE int }
 syntax passertiniphase = ASSERTION_CONVERT | ASSERTION_PARSE | ASSERTION_REFUSE int
 syntax ptask
 syntax pshellcontext
-syntax pobnotice, pobinvoke, poboutput, pobrelease
+syntax pobnotice, pobinvoke, poboutput, pobrelease, pobcall, pobwrite, pobfinish, pobcaller
 syntax ptickmarker, ptickentry, ptickdispatch
 syntax pintegeroperation
 syntax pintegerphase
@@ -286,6 +286,7 @@ syntax pforeachaggregate = { STATEMENT statement, SITE porigin, LINE int, AGGREG
 syntax pfibertraversal = { CAPTURE nat?, START pfiberstart, OBJECT nat, AGGREGATE nat?, ACQUIRED nat*, INPUT poperand, SITE porigin, LINE int, CURRENT poperand, SENT pnamedargs, ITEMS pentry* }
 syntax pfiberfinish = { OBJECT nat, PENDING nat?, SEQUENCE nat, PROTECTED (nat, nat)? }
 syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND ptickdispatch nat | TICK_REFERENCE ptickdispatch nat | TICK_ENTER ptickdispatch | TICK_RESULT ptickdispatch | TICK_UNREGISTER_RELEASE pshutdownentry ptickentry
+  | OUTPUT_WRITE pobwrite | OUTPUT_FINISH pobwrite
   | OB_USER_SEND pobinvoke nat | OB_USER_REFERENCE pobinvoke nat | OB_USER_ENTER pobinvoke | OB_USER_RESULT pobinvoke | OB_USER_DEPRECATED pobinvoke pvalue | OB_USER_COMMIT pobinvoke poboutput | OB_USER_RELEASE pobrelease
   | PROPERTY_HOOK_RESULT ppropertyhook | PROPERTY_HOOK_ISSET_RESULT ppropertyhook bool | PROPERTY_HOOK_ASSIGN_RESULT ppropertyhook pbase | PROPERTY_HOOK_COMPOUND_RESULT ppropertyhook pbase int int | PROPERTY_HOOK_COMPOUND_FINISH ppropertyhook pbase int int | INSTANCE_STORAGE_STEP pinstancestorage | FOREACH_BIND_RELEASE pforeachbind | FOREACH_BIND_COMMIT pforeachbind | FOREACH_SCALAR_END nat nat porigin pvalue int
   | PROMOTE_PARAMETER porigin nat
@@ -486,7 +487,11 @@ syntax psourcepending = { OPERAND psourceoperand, UNIT nat, HELPER psourcehelper
 
 syntax poutputhandler = { ENTRY pshutdownentry, VALUES pvalue*, ZOH pvalue, NAME preqbytes }
 syntax poutputbuffer = { ID nat, HANDLER poutputhandler?, CHUNK nat, FLAGS int, SIZE nat, BYTES preqbytes }
-syntax pobinvoke = { CALL pconfigcall, BUFFER poutputbuffer, VALUE pvalue, INPUT pvalue, PHASE int, SENT poperand* }
+syntax pobcaller = OUTPUT_API pconfigcall | OUTPUT_VM porigin ptask int
+syntax pobfinish = OUTPUT_VM_DONE | OUTPUT_DEFAULT_DONE pconfigcall poutputbuffer pvalue bool | OUTPUT_USER_DONE pobinvoke poutputbuffer poboutput bool
+syntax pobwrite = { CALLER pobcaller, CONTEXT pcallcontext?, IDS nat*, INDEX nat, BYTES preqbytes, VALUE poperand, BASE pbase, TAIL ptask*, FINISH pobfinish }
+syntax pobcall = OB_API pconfigcall | OB_WRITE pobwrite
+syntax pobinvoke = { CALL pobcall, BUFFER poutputbuffer, VALUE pvalue, INPUT pvalue, PHASE int, SENT poperand* }
 syntax poboutput = { VALUE pvalue, BYTES preqbytes, PRECISION int, FAILED bool }
 syntax pobrelease = { CALL pconfigcall, BUFFER poutputbuffer, VALUE pvalue }
 syntax pobnotice = { CALL pconfigcall, VALUE pvalue, SECOND bool, WRAPPER bool, LEVEL nat?, OWNER nat, TAIL ptask* }

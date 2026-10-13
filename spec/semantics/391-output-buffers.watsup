@@ -9,6 +9,8 @@ dec $output_deferred_stdout(pstate) : bool
 dec $output_exception_level(preqbytes) : int
 dec $output_force_flush(pstate) : pstate
 dec $output_buffers_valid(poutputbuffer*) : bool
+dec $output_getter_buffers(pstate) : poutputbuffer*
+dec $output_default_operation(pstate, pconfigcall, poutputbuffer, poutputbuffer*, pvalue) : pstate
 dec $output_buffer_valid(poutputbuffer) : bool
 dec $output_buffer_ids(poutputbuffer*, nat) : bool
 dec $output_user_buffers_valid(pstate, poutputbuffer*) : bool
@@ -94,6 +96,12 @@ def $output_write(S, n*) = S_lower[.OUTPUTBUFFERS = ($output_processed(poutputbu
   -- if poutputbuffer_next = $output_append(S, poutputbuffer, n*)
   -- if $(poutputbuffer.CHUNK > 0 /\ |poutputbuffer_next.BYTES| >= poutputbuffer.CHUNK)
   -- if S_lower = $output_write(S[.OUTPUTBUFFERS = poutputbuffer_tail*], poutputbuffer_next.BYTES)
+
+def $output_write(S, n*) = S[.COMPLETION = UNSUPPORTED "automatic user output-handler dispatch from this byte producer"]
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if n* =/= eps /\ $long_and(poutputbuffer.FLAGS, 8192) = 0
+  -- if poutputbuffer.HANDLER =/= eps /\ ~$ob_user_running(S)
+  -- if $(poutputbuffer.CHUNK > 0 /\ |poutputbuffer.BYTES ++ n*| >= poutputbuffer.CHUNK)
 
 ;; The caller selects the diagnostic destination and suppression before here.
 ;; BLOCKED survives compiler/lifecycle wrappers which reset COMPLETION.
@@ -428,15 +436,15 @@ def $ob_operation(S, pconfigcall, [PBOOL b]) = $ob_return(S[.OUTPUTIMPLICIT = b]
 def $ob_operation(S, pconfigcall, eps) = $ob_return(S, PINT (|S.OUTPUTBUFFERS|)) -- if pconfigcall.KIND = INTRINSIC_OB_GET_LEVEL
 def $ob_operation(S, pconfigcall, eps) = $ob_return(S, PBOOL false)
   -- if pconfigcall.KIND <- [INTRINSIC_OB_GET_CONTENTS, INTRINSIC_OB_GET_LENGTH, INTRINSIC_OB_GET_CLEAN]
-  -- if S.OUTPUTBUFFERS = eps
+  -- if $output_getter_buffers(S) = eps
 def $ob_operation(S, pconfigcall, eps) = $ob_return(S_copy, pvalue)
   -- if pconfigcall.KIND = INTRINSIC_OB_GET_CONTENTS
-  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if $output_getter_buffers(S) = poutputbuffer :: poutputbuffer_tail*
   -- if S_copy = $string_request(S, poutputbuffer.BYTES)
   -- if S_copy.RESULT = KNOWN pvalue
 def $ob_operation(S, pconfigcall, eps) = $ob_return(S, PINT (|poutputbuffer.BYTES|))
   -- if pconfigcall.KIND = INTRINSIC_OB_GET_LENGTH
-  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if $output_getter_buffers(S) = poutputbuffer :: poutputbuffer_tail*
 def $ob_operation(S, pconfigcall, eps) = $ob_return(S_list, pvalue)
   -- if pconfigcall.KIND = INTRINSIC_OB_LIST_HANDLERS
   -- if S_list = $allocate_array(S, $ob_handler_list(S.OUTPUTBUFFERS))
@@ -458,7 +466,7 @@ def $ob_operation(S, pconfigcall, eps) = $ob_notice(S_copy, pconfigcall, $ob_fai
   -- if $long_and(poutputbuffer.FLAGS, $ob_capability(pconfigcall.KIND)) = 0
   -- if S_copy = $ob_snapshot(S, pconfigcall.KIND, poutputbuffer.BYTES)
   -- if S_copy.RESULT = KNOWN pvalue
-def $ob_operation(S, pconfigcall, eps) = $ob_return(S_done, pvalue)
+def $ob_operation(S, pconfigcall, eps) = $output_default_operation(S_copy, pconfigcall, poutputbuffer, poutputbuffer_tail*, pvalue)
   -- if $ob_active_operation(pconfigcall.KIND) \/ $ob_pop_kind(pconfigcall.KIND)
   -- if ~$ob_user_running(S)
   -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
@@ -466,7 +474,6 @@ def $ob_operation(S, pconfigcall, eps) = $ob_return(S_done, pvalue)
   -- if $long_and(poutputbuffer.FLAGS, $ob_capability(pconfigcall.KIND)) =/= 0
   -- if S_copy = $ob_snapshot(S, pconfigcall.KIND, poutputbuffer.BYTES)
   -- if S_copy.RESULT = KNOWN pvalue
-  -- if S_done = $ob_process(S_copy, pconfigcall.KIND, poutputbuffer, poutputbuffer_tail*)
 def $ob_snapshot(S, pintrinsic, n*) = $string_request(S, n*) -- if $ob_get_kind(pintrinsic)
 def $ob_snapshot(S, pintrinsic, n*) = S[.RESULT = KNOWN (PBOOL true)] -- if ~$ob_get_kind(pintrinsic)
 ;; A permission failure has false, while a successful operation returns true.
@@ -496,8 +503,9 @@ def $ob_entries(eps) = $array_empty()
 def $ob_entries(pentry :: pentry_tail*) = $ob_entries_acc(pentry :: pentry_tail*, $array_empty())
 def $ob_entries_acc(eps, parray) = parray
 def $ob_entries_acc((ENTRY pkey pitem) :: pentry_tail*, parray) = $ob_entries_acc(pentry_tail*, $array_insert(parray, pkey, pitem))
-def $ob_status(S, b) = $allocate_array(S, $array_empty()) -- if S.OUTPUTBUFFERS = eps
-def $ob_status(S, false) = $allocate_array(S, $ob_status_array(poutputbuffer, |poutputbuffer_tail*|)) -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+def $ob_status(S, false) = $allocate_array(S, $array_empty()) -- if $output_getter_buffers(S) = eps
+def $ob_status(S, true) = $allocate_array(S, $array_empty()) -- if S.OUTPUTBUFFERS = eps
+def $ob_status(S, false) = $allocate_array(S, $ob_status_array(poutputbuffer, |poutputbuffer_tail*|)) -- if $output_getter_buffers(S) = poutputbuffer :: poutputbuffer_tail*
 def $ob_status(S, true) = $ob_status_full(S, S.OUTPUTBUFFERS) -- if S.OUTPUTBUFFERS =/= eps
 def $ob_status_full(S, eps) = $allocate_array(S, $array_empty())
 def $ob_status_full(S, poutputbuffer :: poutputbuffer_tail*) = $allocate_array(S_one, $array_insert(parray, KINT (|poutputbuffer_tail*|), DIRECT pvalue))

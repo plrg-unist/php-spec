@@ -1,0 +1,333 @@
+;; PHP8.5.10 main/output.c: ordinary WRITE walks the live stack. Its active
+;; getter buffer can differ from the selected running handler.
+dec $output_caller_api(pobcaller) : pconfigcall?
+dec $output_caller_site(pobcaller) : porigin
+dec $output_caller_line(pobcaller) : int
+dec $output_write_nodes(pobwrite) : pnode*
+dec $output_finish_nodes(pobfinish) : pnode*
+dec $output_buffer_nodes(poutputbuffer) : pnode*
+dec $output_ids(poutputbuffer*) : nat*
+dec $output_at(poutputbuffer*, nat) : poutputbuffer?
+dec $output_source_valid(pstate, pobcaller) : bool
+dec $output_vm_source(pobcaller) : bool
+dec $output_context_anchor(pframe, pobwrite) : bool
+dec $output_context_frame(pframe*, pobwrite) : bool
+dec $output_restore_head(ptask) : poutputbuffer?
+dec $output_write_context(pstate, pobwrite) : bool
+dec $output_write_valid(pstate, pobwrite) : bool
+dec $output_finish_valid(pstate, pobwrite) : bool
+dec $output_positive(poutputbuffer*) : bool
+dec $output_vm_finish(pstate, pobwrite) : pstate
+dec $output_next(pstate, pobwrite, preqbytes) : pstate
+dec $output_auto_begin(pstate, pobwrite, poutputbuffer) : pstate
+dec $output_api_begin(pstate, pconfigcall, preqbytes, pobfinish) : pstate
+dec $output_finish(pstate, pobwrite) : pstate
+dec $output_threshold_tasks(ptask*, nat) : bool
+dec $output_threshold_frames(pframe*, nat) : bool
+dec $output_threshold_ops(pdestructionoperation*, nat) : bool
+dec $output_task_write(ptask) : pobwrite?
+dec $output_call_write(pobcall) : pobwrite?
+dec $output_restore(pobwrite) : poutputbuffer?
+dec $output_restore_tasks(ptask*) : poutputbuffer?
+dec $output_restore_frames(pframe*) : poutputbuffer?
+dec $output_restore_ops(pdestructionoperation*) : poutputbuffer?
+dec $output_restore_active(pstate) : poutputbuffer?
+dec $output_origin_bytes(pobwrite) : preqbytes?
+dec $output_prefix_done(poutputbuffer*, nat) : bool
+
+def $output_caller_api(OUTPUT_API pconfigcall) = (pconfigcall)
+def $output_caller_api(OUTPUT_VM porigin ptask z) = eps
+def $output_caller_site(OUTPUT_API pconfigcall) = pconfigcall.SITE
+def $output_caller_site(OUTPUT_VM porigin ptask z) = porigin
+def $output_caller_line(OUTPUT_API pconfigcall) = pconfigcall.LINE
+def $output_caller_line(OUTPUT_VM porigin ptask z) = z
+def $ob_call_api(OB_API pconfigcall) = (pconfigcall)
+def $ob_call_api(OB_WRITE pobwrite) = $output_caller_api(pobwrite.CALLER)
+def $ob_call_site(OB_API pconfigcall) = pconfigcall.SITE
+def $ob_call_site(OB_WRITE pobwrite) = $output_caller_site(pobwrite.CALLER)
+def $ob_call_line(OB_API pconfigcall) = pconfigcall.LINE
+def $ob_call_line(OB_WRITE pobwrite) = $output_caller_line(pobwrite.CALLER)
+def $ob_call_entry_site(OB_API pconfigcall) = eps
+def $ob_call_entry_site(OB_WRITE pobwrite) = (porigin) -- if pobwrite.CALLER = OUTPUT_VM porigin ptask z
+def $ob_call_entry_site(OB_WRITE pobwrite) = eps -- if pobwrite.CALLER = OUTPUT_API pconfigcall
+def $ob_call_entry_line(OB_API pconfigcall) = $(-1)
+def $ob_call_entry_line(OB_WRITE pobwrite) = z -- if pobwrite.CALLER = OUTPUT_VM porigin ptask z
+def $ob_call_entry_line(OB_WRITE pobwrite) = $(-1) -- if pobwrite.CALLER = OUTPUT_API pconfigcall
+def $ob_call_docref(OB_API pconfigcall) = $intrinsic_name(pconfigcall.KIND)
+def $ob_call_docref(OB_WRITE pobwrite) = $intrinsic_name(pconfigcall.KIND) -- if pobwrite.CALLER = OUTPUT_API pconfigcall
+def $ob_call_docref(OB_WRITE pobwrite) = $ptascii("main")
+  -- if pobwrite.CALLER = OUTPUT_VM porigin ptask z
+  -- if pobwrite.CONTEXT = eps
+def $ob_call_docref(OB_WRITE pobwrite) = pcallcontext.NAME
+  -- if pobwrite.CALLER = OUTPUT_VM porigin ptask z
+  -- if pobwrite.CONTEXT = (pcallcontext)
+
+;; Transfer the pre-write machine operands once. VARIABLE/BORROWED operands
+;; remain borrowed; producer/TAIL/context snapshots add no independent owner.
+def $output_buffer_nodes(poutputbuffer) = eps -- if poutputbuffer.HANDLER = eps
+def $output_buffer_nodes(poutputbuffer) = $value_nodes(poutputhandler.ZOH) -- if poutputbuffer.HANDLER = (poutputhandler)
+def $output_finish_nodes(OUTPUT_VM_DONE) = eps
+def $output_finish_nodes(OUTPUT_DEFAULT_DONE pconfigcall poutputbuffer pvalue b) = eps
+def $output_finish_nodes(OUTPUT_USER_DONE pobinvoke poutputbuffer poboutput b) = $output_buffer_nodes(poutputbuffer)
+def $output_write_nodes(pobwrite) = $operand_nodes(pobwrite.VALUE) ++ $base_nodes(pobwrite.BASE) ++ $output_finish_nodes(pobwrite.FINISH) ++ $config_nodes(pconfigcall)
+  -- if pobwrite.CALLER = OUTPUT_API pconfigcall
+def $output_write_nodes(pobwrite) = $operand_nodes(pobwrite.VALUE) ++ $base_nodes(pobwrite.BASE) ++ $output_finish_nodes(pobwrite.FINISH)
+  -- if pobwrite.CALLER = OUTPUT_VM porigin ptask z
+def $ob_call_nodes(OB_API pconfigcall) = $config_nodes(pconfigcall)
+def $ob_call_nodes(OB_WRITE pobwrite) = $output_write_nodes(pobwrite)
+def $task_nodes(OUTPUT_WRITE pobwrite) = $output_write_nodes(pobwrite)
+def $task_nodes(OUTPUT_FINISH pobwrite) = $output_write_nodes(pobwrite)
+
+def $output_ids(eps) = eps
+def $output_ids(poutputbuffer :: poutputbuffer_tail*) = poutputbuffer.ID :: $output_ids(poutputbuffer_tail*)
+def $output_at(eps, n) = eps
+def $output_at(poutputbuffer :: poutputbuffer_tail*, n) = (poutputbuffer) -- if poutputbuffer.ID = n
+def $output_at(poutputbuffer :: poutputbuffer_tail*, n) = $output_at(poutputbuffer_tail*, n) -- if poutputbuffer.ID =/= n
+def $output_set(eps, n, poutputbuffer) = eps
+def $output_set(poutputbuffer :: poutputbuffer_tail*, n, poutputbuffer_next) = poutputbuffer_next :: poutputbuffer_tail* -- if poutputbuffer.ID = n
+def $output_set(poutputbuffer :: poutputbuffer_tail*, n, poutputbuffer_next) = poutputbuffer :: $output_set(poutputbuffer_tail*, n, poutputbuffer_next) -- if poutputbuffer.ID =/= n
+def $output_selected(S, pobinvoke) = (poutputbuffer)
+  -- if pobinvoke.CALL = OB_API pconfigcall
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if poutputbuffer.ID = pobinvoke.BUFFER.ID
+def $output_selected(S, pobinvoke) = $output_at(S.OUTPUTBUFFERS, pobinvoke.BUFFER.ID)
+  -- if pobinvoke.CALL = OB_WRITE pobwrite
+  -- if $(pobwrite.INDEX < |pobwrite.IDS|)
+  -- if pobwrite.IDS[pobwrite.INDEX] = pobinvoke.BUFFER.ID
+def $output_selected(S, pobinvoke) = eps -- otherwise
+
+def $output_source_valid(S, OUTPUT_API pconfigcall) = ($config_invoke_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall) /\ pconfigcall.SENT = eps /\ (pconfigcall.KIND = INTRINSIC_OB_FLUSH \/ $ob_pop_kind(pconfigcall.KIND)))
+def $output_source_valid(S, OUTPUT_VM porigin (EMIT z) z) = $echo_emit_source(S[.ORIGIN = (porigin)], porigin, z)
+def $output_source_valid(S, OUTPUT_VM porigin (PRINT_EMIT porigin z) z) = $print_task_valid(S[.ORIGIN = (porigin)], porigin, z)
+def $output_source_valid(S, OUTPUT_VM porigin (STMT (NStmtInlineHTML (BYTES text) metadata)) z) = ($origin_accepts(S.SOURCES, porigin, STMT (NStmtInlineHTML (BYTES text) metadata)) /\ z = $source_line(metadata))
+def $output_source_valid(S, pobcaller) = false -- otherwise
+def $output_vm_source(OUTPUT_VM porigin ptask z) = true
+def $output_vm_source(OUTPUT_API pconfigcall) = false
+
+;; During ordinary receives/callbacks, the saved source caller and unchanged
+;; suffix authenticate the descriptor. CONTEXT is a witness, not another root.
+def $output_context_anchor(pframe, pobwrite) = false -- if pframe.TODO = eps
+def $output_context_anchor(pframe, pobwrite) = (pframe.CONTEXT = pobwrite.CONTEXT /\ pframe.ORIGIN = ($output_caller_site(pobwrite.CALLER)) /\ $output_task_write(pframe.TODO[0]) = (pobwrite) /\ pframe.TODO[1:n_tail] = pobwrite.TAIL)
+  -- if pframe.TODO =/= eps
+  -- if n_tail = $nabs($(|pframe.TODO| - 1))
+def $output_context_frame(eps, pobwrite) = false
+def $output_context_frame(pframe :: pframe_tail*, pobwrite) = ($output_context_anchor(pframe, pobwrite) \/ $output_context_frame(pframe_tail*, pobwrite))
+def $output_write_context(S, pobwrite) = (S.CURRENT = pobwrite.CONTEXT \/ $output_context_frame(S.FRAMES, pobwrite))
+def $output_write_valid(S, pobwrite) = ($output_source_valid(S[.CURRENT = pobwrite.CONTEXT], pobwrite.CALLER) /\ $output_write_context(S, pobwrite) /\ pobwrite.IDS = $output_ids(S.OUTPUTBUFFERS) /\ $(pobwrite.INDEX <= |pobwrite.IDS|) /\ $output_prefix_done(S.OUTPUTBUFFERS, pobwrite.INDEX) /\ $startup_bytes(pobwrite.BYTES) /\ (pobwrite.INDEX =/= 0 \/ $output_origin_bytes(pobwrite) = (pobwrite.BYTES)) /\ $config_slots_valid(S, [NAMED_SENT pobwrite.VALUE]) /\ $heap_subset($base_nodes(pobwrite.BASE), S.ALLOCATIONS) /\ $output_finish_valid(S, pobwrite))
+
+def $output_origin_bytes(pobwrite) = $string_bytes(pvalue)
+  -- if pobwrite.CALLER = OUTPUT_VM porigin ptask z
+  -- if ptask = EMIT z \/ ptask = PRINT_EMIT porigin z
+  -- if pobwrite.VALUE = KNOWN pvalue
+def $output_origin_bytes(pobwrite) = ($base64(text))
+  -- if pobwrite.CALLER = OUTPUT_VM porigin (STMT (NStmtInlineHTML (BYTES text) metadata)) z
+def $output_origin_bytes(pobwrite) = (poutputbuffer.BYTES)
+  -- if pobwrite.FINISH = OUTPUT_DEFAULT_DONE pconfigcall poutputbuffer pvalue b
+def $output_origin_bytes(pobwrite) = ($ob_user_routed_bytes(poutputbuffer, poboutput))
+  -- if pobwrite.FINISH = OUTPUT_USER_DONE pobinvoke poutputbuffer poboutput b
+def $output_origin_bytes(pobwrite) = eps -- otherwise
+def $output_prefix_done(poutputbuffer*, 0) = true
+def $output_prefix_done(eps, n) = false -- if $(n > 0)
+def $output_prefix_done(poutputbuffer :: poutputbuffer_tail*, n) = (($long_and(poutputbuffer.FLAGS, 8192) =/= 0 \/ $long_and(poutputbuffer.FLAGS, 20480) = 20480 /\ (poutputbuffer.BYTES = eps \/ $long_and(poutputbuffer.FLAGS, 32768) =/= 0)) /\ $output_prefix_done(poutputbuffer_tail*, $nabs($(n - 1)))) -- if $(n > 0)
+
+def $output_finish_valid(S, pobwrite) = $output_vm_source(pobwrite.CALLER)
+  -- if pobwrite.FINISH = OUTPUT_VM_DONE
+def $output_finish_valid(S, pobwrite) = true
+  -- if pobwrite.CALLER = OUTPUT_API pconfigcall
+  -- if pobwrite.FINISH = OUTPUT_DEFAULT_DONE pconfigcall poutputbuffer pvalue b_restore
+  -- if poutputbuffer.HANDLER = eps /\ $output_buffer_valid(poutputbuffer)
+  -- if $long_and(poutputbuffer.FLAGS, $ob_capability(pconfigcall.KIND)) =/= 0
+  -- if b_restore = (pconfigcall.KIND = INTRINSIC_OB_FLUSH)
+  -- if ~$ob_clean_kind(pconfigcall.KIND)
+  -- if ~$ob_user_present(S.OUTPUTBUFFERS, poutputbuffer.ID)
+  -- if $output_buffer_ids(poutputbuffer :: S.OUTPUTBUFFERS, S.OUTPUTSEQ)
+  -- if $(poutputbuffer.ID < S.OUTPUTSEQ)
+  -- if $config_slots_valid(S, [NAMED_SENT (KNOWN pvalue)])
+  -- if ~$ob_get_kind(pconfigcall.KIND) /\ pvalue = PBOOL true \/ $ob_get_kind(pconfigcall.KIND) /\ $string_bytes(pvalue) = (poutputbuffer.BYTES)
+def $output_finish_valid(S, pobwrite) = true
+  -- if pobwrite.CALLER = OUTPUT_API pconfigcall
+  -- if pobwrite.FINISH = OUTPUT_USER_DONE pobinvoke poutputbuffer poboutput b_restore
+  -- if pobinvoke.CALL = OB_API pconfigcall
+  -- if $ob_user_invoke_valid(S, pobinvoke) /\ pobinvoke.SENT = eps
+  -- if $ob_user_output_valid(S, poboutput)
+  -- if poutputbuffer.HANDLER = pobinvoke.BUFFER.HANDLER /\ poutputbuffer.ID = pobinvoke.BUFFER.ID
+  -- if $ob_user_live(S[.OUTPUTBUFFERS = poutputbuffer :: S.OUTPUTBUFFERS], pobinvoke)
+  -- if $output_buffer_valid(poutputbuffer)
+  -- if b_restore = (pconfigcall.KIND = INTRINSIC_OB_FLUSH)
+  -- if ~$ob_clean_kind(pconfigcall.KIND)
+  -- if ~$ob_user_present(S.OUTPUTBUFFERS, poutputbuffer.ID)
+  -- if $output_buffer_ids(poutputbuffer :: S.OUTPUTBUFFERS, S.OUTPUTSEQ)
+def $output_finish_valid(S, pobwrite) = false -- otherwise
+
+def $output_positive(eps) = false
+def $output_positive(poutputbuffer :: poutputbuffer_tail*) = (poutputbuffer.HANDLER =/= eps /\ $(poutputbuffer.CHUNK > 0) \/ $output_positive(poutputbuffer_tail*))
+def $output_vm_write(S, n*, porigin, ptask, z) = S[.TODO = (OUTPUT_WRITE pobwrite) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if n* =/= eps /\ $output_positive(S.OUTPUTBUFFERS) /\ ~$ob_user_running(S)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if pobwrite = {CALLER (OUTPUT_VM porigin ptask z), CONTEXT S.CURRENT, IDS $output_ids(S.OUTPUTBUFFERS), INDEX 0, BYTES n*, VALUE S.RESULT, BASE S.BASE, TAIL ptask_tail*, FINISH OUTPUT_VM_DONE}
+def $output_vm_write(S, n*, porigin, ptask, z) = $output_vm_finish($output_write(S, n*), {CALLER (OUTPUT_VM porigin ptask z), CONTEXT S.CURRENT, IDS $output_ids(S.OUTPUTBUFFERS), INDEX 0, BYTES n*, VALUE S.RESULT, BASE S.BASE, TAIL ptask_tail*, FINISH OUTPUT_VM_DONE})
+  -- if n* = eps \/ ~$output_positive(S.OUTPUTBUFFERS) \/ $ob_user_running(S)
+  -- if S.TODO = ptask :: ptask_tail*
+def $output_vm_finish(S, pobwrite) = S[.TODO = pobwrite.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pobwrite.CALLER = OUTPUT_VM porigin (EMIT z) z
+def $output_vm_finish(S, pobwrite) = S[.TODO = pobwrite.TAIL][.RESULT = KNOWN (PINT 1)][.BASE = pobwrite.BASE]
+  -- if pobwrite.CALLER = OUTPUT_VM porigin (PRINT_EMIT porigin z) z
+def $output_vm_finish(S, pobwrite) = S[.TODO = pobwrite.TAIL][.RESULT = pobwrite.VALUE][.BASE = pobwrite.BASE]
+  -- if pobwrite.CALLER = OUTPUT_VM porigin (STMT (NStmtInlineHTML phpType33 metadata)) z
+
+def $output_threshold_tasks(eps, n) = false
+def $output_threshold_tasks(ptask :: ptask_tail*, n) = ($ob_user_active_task(ptask) = (n) \/ $output_threshold_tasks(ptask_tail*, n))
+def $output_threshold_frames(eps, n) = false
+def $output_threshold_frames(pframe :: pframe_tail*, n) = ($output_threshold_tasks(pframe.TODO, n) \/ $output_threshold_frames(pframe_tail*, n))
+def $output_threshold_ops(eps, n) = false
+def $output_threshold_ops(pdestructionoperation :: pdestructionoperation_tail*, n) = ($ob_user_active_task(pdestructionoperation.SOURCE) = (n) \/ $output_threshold_ops(pdestructionoperation_tail*, n))
+def $output_threshold_pending(S, n) = ($output_threshold_tasks(S.TODO, n) \/ $output_threshold_frames(S.FRAMES, n) \/ $output_threshold_ops(S.DESTRUCTION.OPERATIONS, n))
+
+def $call_task_valid(S, OUTPUT_WRITE pobwrite) = ($output_write_valid(S, pobwrite) /\ S.ORIGIN = ($output_caller_site(pobwrite.CALLER)) /\ S.CURRENT = pobwrite.CONTEXT /\ $source_operand_suffix(S.TODO, OUTPUT_WRITE pobwrite, pobwrite.TAIL))
+def $call_task_valid(S, OUTPUT_FINISH pobwrite) = ($output_write_valid(S, pobwrite) /\ S.ORIGIN = ($output_caller_site(pobwrite.CALLER)) /\ S.CURRENT = pobwrite.CONTEXT /\ $source_operand_suffix(S.TODO, OUTPUT_FINISH pobwrite, pobwrite.TAIL))
+def $output_next(S, pobwrite, n*) = S[.TODO = (OUTPUT_WRITE pobwrite[.INDEX = $(pobwrite.INDEX + 1)][.BYTES = n*]) :: pobwrite.TAIL]
+rule PhpStep/output-write-empty: S ~> S[.TODO = (OUTPUT_FINISH pobwrite) :: pobwrite.TAIL]
+  -- if S.TODO = (OUTPUT_WRITE pobwrite) :: ptask_tail*
+  -- if $call_task_valid(S, OUTPUT_WRITE pobwrite)
+  -- if pobwrite.BYTES = eps
+rule PhpStep/output-write-sapi: S ~> S[.EVENTS = S.EVENTS ++ [OUTPUT pobwrite.BYTES]][.TODO = (OUTPUT_FINISH pobwrite) :: pobwrite.TAIL]
+  -- if S.TODO = (OUTPUT_WRITE pobwrite) :: ptask_tail*
+  -- if $call_task_valid(S, OUTPUT_WRITE pobwrite)
+  -- if pobwrite.BYTES =/= eps /\ pobwrite.INDEX = (|pobwrite.IDS|)
+rule PhpStep/output-write-disabled: S ~> $output_next(S, pobwrite, pobwrite.BYTES)
+  -- if S.TODO = (OUTPUT_WRITE pobwrite) :: ptask_tail*
+  -- if $call_task_valid(S, OUTPUT_WRITE pobwrite)
+  -- if pobwrite.BYTES =/= eps /\ $(pobwrite.INDEX < |pobwrite.IDS|)
+  -- if $output_at(S.OUTPUTBUFFERS, pobwrite.IDS[pobwrite.INDEX]) = (poutputbuffer)
+  -- if $long_and(poutputbuffer.FLAGS, 8192) =/= 0
+rule PhpStep/output-write-store: S ~> S[.OUTPUTBUFFERS = $output_set(S.OUTPUTBUFFERS, poutputbuffer.ID, poutputbuffer_next)][.TODO = (OUTPUT_FINISH pobwrite) :: pobwrite.TAIL]
+  -- if S.TODO = (OUTPUT_WRITE pobwrite) :: ptask_tail*
+  -- if $call_task_valid(S, OUTPUT_WRITE pobwrite)
+  -- if pobwrite.BYTES =/= eps /\ $(pobwrite.INDEX < |pobwrite.IDS|)
+  -- if $output_at(S.OUTPUTBUFFERS, pobwrite.IDS[pobwrite.INDEX]) = (poutputbuffer)
+  -- if $long_and(poutputbuffer.FLAGS, 8192) = 0
+  -- if poutputbuffer_next = $output_append(S, poutputbuffer, pobwrite.BYTES)
+  -- if poutputbuffer.CHUNK = 0 \/ $(|poutputbuffer_next.BYTES| < poutputbuffer.CHUNK)
+rule PhpStep/output-write-default: S ~> $output_next(S[.OUTPUTBUFFERS = $output_set(S.OUTPUTBUFFERS, poutputbuffer.ID, $output_processed(poutputbuffer_next))], pobwrite, poutputbuffer_next.BYTES)
+  -- if S.TODO = (OUTPUT_WRITE pobwrite) :: ptask_tail*
+  -- if $call_task_valid(S, OUTPUT_WRITE pobwrite)
+  -- if pobwrite.BYTES =/= eps /\ $(pobwrite.INDEX < |pobwrite.IDS|)
+  -- if $output_at(S.OUTPUTBUFFERS, pobwrite.IDS[pobwrite.INDEX]) = (poutputbuffer)
+  -- if $long_and(poutputbuffer.FLAGS, 8192) = 0 /\ poutputbuffer.HANDLER = eps
+  -- if poutputbuffer_next = $output_append(S, poutputbuffer, pobwrite.BYTES)
+  -- if $(poutputbuffer.CHUNK > 0 /\ |poutputbuffer_next.BYTES| >= poutputbuffer.CHUNK)
+rule PhpStep/output-write-user: S ~> $output_auto_begin(S[.OUTPUTBUFFERS = $output_set(S.OUTPUTBUFFERS, poutputbuffer.ID, poutputbuffer_next)], pobwrite, poutputbuffer_next)
+  -- if S.TODO = (OUTPUT_WRITE pobwrite) :: ptask_tail*
+  -- if $call_task_valid(S, OUTPUT_WRITE pobwrite)
+  -- if pobwrite.BYTES =/= eps /\ $(pobwrite.INDEX < |pobwrite.IDS|)
+  -- if $output_at(S.OUTPUTBUFFERS, pobwrite.IDS[pobwrite.INDEX]) = (poutputbuffer)
+  -- if $long_and(poutputbuffer.FLAGS, 8192) = 0 /\ poutputbuffer.HANDLER =/= eps
+  -- if poutputbuffer_next = $output_append(S, poutputbuffer, pobwrite.BYTES)
+  -- if $(poutputbuffer.CHUNK > 0 /\ |poutputbuffer_next.BYTES| >= poutputbuffer.CHUNK)
+
+def $output_auto_begin(S, pobwrite, poutputbuffer) = S_input[.TODO = (OB_USER_SEND pobinvoke 0) :: pobwrite.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if poutputbuffer.HANDLER = (poutputhandler)
+  -- if $heap_subset($target_nodes(poutputhandler.ENTRY.TARGET), S.ALLOCATIONS)
+  -- if S_input = $string_request(S, poutputbuffer.BYTES)
+  -- if S_input.RESULT = KNOWN pvalue_input
+  -- if $long_and(poutputbuffer.FLAGS, 4096) = 0
+  -- if pobinvoke = {CALL (OB_WRITE pobwrite), BUFFER poutputbuffer, VALUE (PBOOL true), INPUT pvalue_input, PHASE 1, SENT eps}
+def $output_auto_begin(S, pobwrite, poutputbuffer) = S_input[.TODO = (OB_USER_SEND pobinvoke 0) :: pobwrite.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if poutputbuffer.HANDLER = (poutputhandler)
+  -- if $heap_subset($target_nodes(poutputhandler.ENTRY.TARGET), S.ALLOCATIONS)
+  -- if $long_and(poutputbuffer.FLAGS, 4096) =/= 0
+  -- if S_input = $string_request(S, poutputbuffer.BYTES)
+  -- if S_input.RESULT = KNOWN pvalue_input
+  -- if pobinvoke = {CALL (OB_WRITE pobwrite), BUFFER poutputbuffer, VALUE (PBOOL true), INPUT pvalue_input, PHASE 0, SENT eps}
+def $output_auto_begin(S, pobwrite, poutputbuffer) = S[.COMPLETION = UNSUPPORTED "automatic user output-handler cached target has retired"] -- otherwise
+def $ob_user_invoke_valid(S, pobinvoke) = true
+  -- if pobinvoke.CALL = OB_WRITE pobwrite
+  -- if $output_write_valid(S, pobwrite)
+  -- if $(pobwrite.INDEX < |pobwrite.IDS|)
+  -- if pobwrite.IDS[pobwrite.INDEX] = pobinvoke.BUFFER.ID
+  -- if pobinvoke.BUFFER.HANDLER = (poutputhandler)
+  -- if $ob_user_handler_valid(S, poutputhandler) /\ $output_buffer_valid(pobinvoke.BUFFER)
+  -- if $(pobinvoke.BUFFER.ID < S.OUTPUTSEQ /\ pobinvoke.BUFFER.CHUNK > 0 /\ |pobinvoke.BUFFER.BYTES| >= pobinvoke.BUFFER.CHUNK)
+  -- if ~$ob_user_disabled(pobinvoke.BUFFER)
+  -- if pobinvoke.PHASE = 1 /\ $long_and(pobinvoke.BUFFER.FLAGS, 4096) = 0 \/ pobinvoke.PHASE = 0 /\ $long_and(pobinvoke.BUFFER.FLAGS, 4096) =/= 0
+  -- if pobinvoke.INPUT = PSTRING_CARRIER (REQUEST_STRING n_input) pobinvoke.BUFFER.BYTES
+  -- if $string_carrier_valid(S, pobinvoke.INPUT) /\ pobinvoke.VALUE = PBOOL true
+def $ob_user_commit(S, pobinvoke, poboutput) = $output_next(S[.OUTPUTBUFFERS = $output_set(S.OUTPUTBUFFERS, poutputbuffer.ID, $ob_user_committed(poutputbuffer, poboutput))], pobwrite, $ob_user_routed_bytes(poutputbuffer, poboutput))
+  -- if pobinvoke.CALL = OB_WRITE pobwrite
+  -- if $output_selected(S, pobinvoke) = (poutputbuffer)
+
+;; FINISH retains the precommit live buffer witness. Scalar getters derive its
+;; committed view; pop/restore owns only zoh through the entire lower route.
+def $output_api_begin(S, pconfigcall, n*, pobfinish) = S[.TODO = (OUTPUT_WRITE pobwrite) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if pobwrite = {CALLER (OUTPUT_API pconfigcall), CONTEXT S.CURRENT, IDS $output_ids(S.OUTPUTBUFFERS), INDEX 0, BYTES n*, VALUE S.RESULT, BASE S.BASE, TAIL ptask_tail*, FINISH pobfinish}
+def $output_user_api_commit(S, pobinvoke, poboutput) = $ob_return(S[.OUTPUTBUFFERS = ($ob_user_committed(poutputbuffer, poboutput)) :: poutputbuffer_tail*], pobinvoke.VALUE)
+  -- if pobinvoke.CALL = OB_API pconfigcall
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if pconfigcall.KIND = INTRINSIC_OB_CLEAN
+def $output_user_api_commit(S, pobinvoke, poboutput) = $ob_user_release(S[.OUTPUTBUFFERS = poutputbuffer_tail*], pconfigcall, pobinvoke.BUFFER, pobinvoke.VALUE)
+  -- if pobinvoke.CALL = OB_API pconfigcall
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if $ob_pop_kind(pconfigcall.KIND) /\ $ob_clean_kind(pconfigcall.KIND)
+def $output_user_api_commit(S, pobinvoke, poboutput) = $output_api_begin(S[.OUTPUTBUFFERS = poutputbuffer_tail*], pconfigcall, $ob_user_routed_bytes(poutputbuffer, poboutput), OUTPUT_USER_DONE pobinvoke poutputbuffer poboutput (pconfigcall.KIND = INTRINSIC_OB_FLUSH))
+  -- if pobinvoke.CALL = OB_API pconfigcall
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if pconfigcall.KIND = INTRINSIC_OB_FLUSH \/ $ob_pop_kind(pconfigcall.KIND) /\ ~$ob_clean_kind(pconfigcall.KIND)
+def $output_default_operation(S, pconfigcall, poutputbuffer, poutputbuffer_tail*, pvalue) = $ob_return($ob_process(S, pconfigcall.KIND, poutputbuffer, poutputbuffer_tail*), pvalue)
+  -- if $ob_clean_kind(pconfigcall.KIND)
+def $output_default_operation(S, pconfigcall, poutputbuffer, poutputbuffer_tail*, pvalue) = $output_api_begin(S[.OUTPUTBUFFERS = poutputbuffer_tail*], pconfigcall, poutputbuffer.BYTES, OUTPUT_DEFAULT_DONE pconfigcall poutputbuffer pvalue (pconfigcall.KIND = INTRINSIC_OB_FLUSH))
+  -- if ~$ob_clean_kind(pconfigcall.KIND)
+def $output_finish(S, pobwrite) = $output_vm_finish(S, pobwrite) -- if pobwrite.FINISH = OUTPUT_VM_DONE
+def $output_finish(S, pobwrite) = $ob_return(S[.OUTPUTBUFFERS = ($output_processed(poutputbuffer)) :: S.OUTPUTBUFFERS], pvalue)
+  -- if pobwrite.FINISH = OUTPUT_DEFAULT_DONE pconfigcall poutputbuffer pvalue true
+def $output_finish(S, pobwrite) = $ob_return(S, pvalue)
+  -- if pobwrite.FINISH = OUTPUT_DEFAULT_DONE pconfigcall poutputbuffer pvalue false
+def $output_finish(S, pobwrite) = $ob_return(S[.OUTPUTBUFFERS = ($ob_user_committed(poutputbuffer, poboutput)) :: S.OUTPUTBUFFERS], pobinvoke.VALUE)
+  -- if pobwrite.FINISH = OUTPUT_USER_DONE pobinvoke poutputbuffer poboutput true
+def $output_finish(S, pobwrite) = $ob_user_release(S, pconfigcall, pobinvoke.BUFFER, pobinvoke.VALUE)
+  -- if pobwrite.FINISH = OUTPUT_USER_DONE pobinvoke poutputbuffer poboutput false
+  -- if pobinvoke.CALL = OB_API pconfigcall
+rule PhpStep/output-finish: S ~> $output_finish(S, pobwrite)
+  -- if S.TODO = (OUTPUT_FINISH pobwrite) :: ptask_tail*
+  -- if $call_task_valid(S, OUTPUT_FINISH pobwrite)
+
+;; php_output_flush removes the top stack entry, retaining OG(active). Scalar
+;; getters see that processed detached buffer; level/full-status see the stack.
+def $output_call_write(OB_WRITE pobwrite) = (pobwrite)
+def $output_call_write(OB_API pconfigcall) = eps
+def $output_task_write(OUTPUT_WRITE pobwrite) = (pobwrite)
+def $output_task_write(OUTPUT_FINISH pobwrite) = (pobwrite)
+def $output_task_write(OB_USER_SEND pobinvoke n) = $output_call_write(pobinvoke.CALL)
+def $output_task_write(OB_USER_REFERENCE pobinvoke n) = $output_call_write(pobinvoke.CALL)
+def $output_task_write(OB_USER_ENTER pobinvoke) = $output_call_write(pobinvoke.CALL)
+def $output_task_write(OB_USER_RESULT pobinvoke) = $output_call_write(pobinvoke.CALL)
+def $output_task_write(OB_USER_DEPRECATED pobinvoke pvalue) = $output_call_write(pobinvoke.CALL)
+def $output_task_write(OB_USER_COMMIT pobinvoke poboutput) = $output_call_write(pobinvoke.CALL)
+def $output_task_write(ERROR_HANDLER_INVOKE perrorcall) = $output_task_write(perrorcall.RESUME)
+def $output_task_write(ERROR_HANDLER_RESULT perrorcall) = $output_task_write(perrorcall.RESUME)
+def $output_task_write(ERROR_HANDLER_CLEAN perrorcall) = $output_task_write(perrorcall.RESUME)
+def $output_task_write(ptask) = eps -- otherwise
+def $output_restore(pobwrite) = ($output_processed(poutputbuffer))
+  -- if pobwrite.FINISH = OUTPUT_DEFAULT_DONE pconfigcall poutputbuffer pvalue true
+def $output_restore(pobwrite) = ($ob_user_committed(poutputbuffer, poboutput))
+  -- if pobwrite.FINISH = OUTPUT_USER_DONE pobinvoke poutputbuffer poboutput true
+def $output_restore(pobwrite) = eps -- otherwise
+def $output_restore_head(ptask) = eps -- if $output_task_write(ptask) = eps
+def $output_restore_head(ptask) = $output_restore(pobwrite) -- if $output_task_write(ptask) = (pobwrite)
+def $output_restore_tasks(eps) = eps
+def $output_restore_tasks(ptask :: ptask_tail*) = (poutputbuffer) -- if $output_restore_head(ptask) = (poutputbuffer)
+def $output_restore_tasks(ptask :: ptask_tail*) = $output_restore_tasks(ptask_tail*) -- if $output_restore_head(ptask) = eps
+def $output_restore_frames(eps) = eps
+def $output_restore_frames(pframe :: pframe_tail*) = (poutputbuffer) -- if $output_restore_tasks(pframe.TODO) = (poutputbuffer)
+def $output_restore_frames(pframe :: pframe_tail*) = $output_restore_frames(pframe_tail*) -- if $output_restore_tasks(pframe.TODO) = eps
+def $output_restore_ops(eps) = eps
+def $output_restore_ops(pdestructionoperation :: pdestructionoperation_tail*) = (poutputbuffer) -- if $output_restore_head(pdestructionoperation.SOURCE) = (poutputbuffer)
+def $output_restore_ops(pdestructionoperation :: pdestructionoperation_tail*) = $output_restore_ops(pdestructionoperation_tail*) -- if $output_restore_head(pdestructionoperation.SOURCE) = eps
+def $output_restore_active(S) = (poutputbuffer) -- if $output_restore_tasks(S.TODO) = (poutputbuffer)
+def $output_restore_active(S) = (poutputbuffer)
+  -- if $output_restore_tasks(S.TODO) = eps
+  -- if $output_restore_frames(S.FRAMES) = (poutputbuffer)
+def $output_restore_active(S) = $output_restore_ops(S.DESTRUCTION.OPERATIONS)
+  -- if $output_restore_tasks(S.TODO) = eps /\ $output_restore_frames(S.FRAMES) = eps
+def $output_getter_buffers(S) = poutputbuffer :: S.OUTPUTBUFFERS -- if $output_restore_active(S) = (poutputbuffer)
+def $output_getter_buffers(S) = S.OUTPUTBUFFERS -- if $output_restore_active(S) = eps
