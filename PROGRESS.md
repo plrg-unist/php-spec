@@ -87,8 +87,15 @@ survives caster entry. Successive casts, nested recursion Error and TypeError
 catch/finally entry pass at b28d9 /383: six exact source agreements and 521 reached
 premises, including 48 pure controls and 31 raw PhpSteps; strict 3 passes.
 Original baseline, pre-main and fixture-selector failures retain zero credit.
-Materialized-property casts, Fiber VM transfer during this continuation and wider
-handlers/lifetimes remain required; full core stays partial.
+The [property-table increment](coverage/semantics/materialized-stringable-comparison-review.json)
+passes six new exact sources, strict 3 and 576 reached premises/28 raw steps at
+447859 /384. stdClass owns both objects and concrete tables, keeping old dynamic
+buckets under COW; genuine foreach-produced declared tables use live slots and
+captured cells. Identical tables precede recursion checks, and throw/normal return
+remove the guard. Ordinary `(array)` views remain copied projections. Mixed
+membership, guarded projection, Fiber transfer and wider lifetimes remain required;
+full core stays partial. The disproved transition and original fixture/compiler
+failures retain zero credit.
 [Aggregate comparison ledger](coverage/semantics/aggregate-stringable-comparison-review.json).
 The preceding [direct comparison increment](coverage/semantics/stringable-comparison-review.json)
 retains its six sources and 487/26 state cut at aabff656 /381.

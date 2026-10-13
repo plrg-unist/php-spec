@@ -1530,8 +1530,11 @@ CV/copy/reference reads, lazy fallthrough and throwing callback control.
 [Recursive Stringable comparisons](coverage/semantics/aggregate-stringable-comparison-review.json)
 now retain enclosing arrays and declared-property objects across casts, preserving
 copy-on-write, live slots/cells, successive casts and active recursion guards.
-Six exact sources and 521 reached checks pass; materialized-property casts and
-Fiber VM transfer during this continuation remain explicit Unsupported.
+The preceding six-source/521-check cut remains frozen. [Property-table casts](coverage/semantics/materialized-stringable-comparison-review.json)
+now retain stdClass objects and their concrete tables, preserving old dynamic buckets
+under copy-on-write. Initialized public declared tables keep live slots and old
+reference cells distinct. Six new exact sources and 576 reached premises/28 raw
+steps pass; mixed membership, guarded projection and Fiber transfer remain required.
 [Match expressions](docs/semantics/SOURCE-MATCH.md) preserve strict, lazy arm
 selection, delayed CV subjects, ordered compiler diagnostics and owned value
 results; their [review](coverage/semantics/match-review.json) binds source, compiler

@@ -1,0 +1,201 @@
+{
+  "scope": "Reached stdClass concrete-property-table and initialized public declared-only cached-table Stringable/string loose comparisons, including non-bool Switch. Sequential count/key/earlier-value short-circuit and authentic caster source/caller guards are preserved.",
+  "status": "partial; independently reviewed private increment",
+  "tested_revision": "447859825525a8f2350571922114d9ca29f8121b",
+  "baseline_revision": "300577957dfaf731aa3999b0211bf2a7ac7bf078",
+  "module_count": 384,
+  "runtime": {
+    "php_source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_binary": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "numeric_runner": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "adapter": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "elaborator": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "profile": {
+      "path": "tests/semantics/profile.json",
+      "sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+    },
+    "module": {
+      "path": "spec/semantics/394-aggregate-stringable-comparisons.watsup",
+      "sha256": "de8cc8901416a71996fce7ee28b8b18ac5483f297f157424cb644aee8ea0eea6"
+    },
+    "manifest": {
+      "path": "spec/semantics/modules.json",
+      "sha256": "cec723d2266376b0709f4e8f70cb2382fde44b370680586c8c9d56cfa3402588"
+    },
+    "build_claim": "Retained project-local binaries; no fresh/offline rebuild claim.",
+    "engine_anchors": [
+      "Zend/zend_object_handlers.c:zend_std_compare_objects (object pins and direct versus cached-table paths)",
+      "Zend/zend_operators.c:compare_symbol_tables (both exact table pins and table identity)",
+      "Zend/zend_hash.c:zend_hash_compare (identity before active-left recursion and ordered child effects)",
+      "Zend/zend_vm_def.h:ZEND_FE_RESET_R (genuine declared-table materialization through get_properties)",
+      "Zend/zend_operators.c:convert_to_array and Zend/zend_object_handlers.c:zend_std_build_object_properties_array (ordinary copied projection)"
+    ]
+  },
+  "native": {
+    "original5": {
+      "path": ".tools/materialized-stringable-native-49/run-v1/report.json",
+      "sha256": "1e78444cf8fc6536c3d620c4a650aaf4f97cd2172e8dc1f3017dc98f4ea21151"
+    },
+    "genuine_declared1": {
+      "path": ".tools/materialized-stringable-declared-native-49/run-v1/report.json",
+      "sha256": "922531cd2d860c6e15f28f9d8d816e142c25ea5f877009b7d9e1fd71d779a1d0"
+    },
+    "normal_originals": 6,
+    "credit": "Native facts only; model agreements are recorded below. Original file/CWD/START/source hashes and observed tuples are maintained in the catalogue."
+  },
+  "baseline": {
+    "report": {
+      "path": ".tools/materialized-stringable-baseline-49/run-v1/report.json",
+      "sha256": "27d3aa50715aadb179a1d55f507a0ca570f829fccb0c4c256b78cd6ccfcecbd1"
+    },
+    "checked_status": "accepted/program/Unsupported: materialized-property Stringable comparison continuation",
+    "actual_stdout": "count|N|key|N|early|N|restart|",
+    "native_agreements": 0
+  },
+  "strict": {
+    "report": {
+      "path": ".tools/materialized-stringable-gate-49/run-retry2/report.json",
+      "sha256": "fabab37a4da99fa1c50c483b2ad801ae7e8743b9f5f1c9a3ee715213c77174b2"
+    },
+    "checks": 3,
+    "seconds": 6.5307749435305595,
+    "passed": true
+  },
+  "sources": {
+    "report": {
+      "path": ".tools/materialized-stringable-model-49/run-v1/report.json",
+      "sha256": "8a1f827feea6bd5bae7b446626e91ea609bbf7ee507e544357c5c859a67fd648"
+    },
+    "catalogue": {
+      "path": "tests/semantics/materialized_stringable_comparison_cases.json",
+      "sha256": "38ac849f53ec76ca3a15dcae0d962c66b49c6006eb6eb61ea1ca5441f4bdcbc8"
+    },
+    "normal_native_agreements": 6
+  },
+  "syntax_only": {
+    "preparation": {
+      "path": ".tools/materialized-stringable-state-49/prepared-v1/report.json",
+      "sha256": "ce911d93bd1b26bc67838631e879a010f90bdca41465c34dba570a7509596060"
+    },
+    "programmes": 6,
+    "closed_workers": 12,
+    "author_el": {
+      "path": ".tools/materialized-stringable-state-49/run-elab-v1/report.json",
+      "sha256": "e64c0359c40d3070f78cfe632d2f6b06a898ad5eb98682a98f0a45484497172b"
+    },
+    "peer_el": {
+      "path": ".tools/materialized-stringable-peer-state-49/run-elab-spacing-retry1/report.json",
+      "sha256": "c4c76065e758c5dae41d47f18b8d81fc141f165a67f4961926281fe964e442dd"
+    },
+    "runtime_credit": 0,
+    "author_observer_delta": "Five bare-PSTRING pointer observers were corrected to actual pvalue plus unchanged string_bytes; exact reviewed old\u2192new inputs bind accepted EL without replay."
+  },
+  "reached_states": {
+    "author_report": {
+      "path": ".tools/materialized-stringable-state-49/run-sl-observer-retry1/report.json",
+      "sha256": "765522b43533f6793524bf6b12b99ce0b12ac8a0a3b981f596888cc8e2a0c2df"
+    },
+    "peer_report": {
+      "path": ".tools/materialized-stringable-peer-state-49/run-sl-spacing-retry1/report.json",
+      "sha256": "6519a582f0f92cad73fc4d86ef5d2338eceea04141668cc5def0561eaecffc90"
+    },
+    "author_plan": {
+      "path": ".tools/materialized-stringable-state-49/plan.json",
+      "sha256": "97c440e8e210656f18be9ac729ebb4125a6a51e96d51b72573c3e7d24de931ed"
+    },
+    "peer_plan": {
+      "path": ".tools/materialized-stringable-peer-state-49/plan.json",
+      "sha256": "2c195b278f761ec012865df6d396a8db12efff4b925ce44cde4f964641ece4b8"
+    },
+    "premises": 576,
+    "setup_frontier_premises": 519,
+    "marked_pure_checks": 57,
+    "PhpSteps": 28,
+    "author_groups": [
+      {
+        "id": "dynamic",
+        "premises": 131,
+        "PhpSteps": 6,
+        "seconds": 26.816626673564315
+      },
+      {
+        "id": "declared",
+        "premises": 147,
+        "PhpSteps": 6,
+        "seconds": 34.17660462670028
+      },
+      {
+        "id": "restart",
+        "premises": 55,
+        "PhpSteps": 5,
+        "seconds": 13.442812830209732
+      }
+    ],
+    "peer_groups": [
+      {
+        "id": "peer-table-throw",
+        "premises": 115,
+        "PhpSteps": 5,
+        "seconds": 13.493977958336473
+      },
+      {
+        "id": "peer-table-reenter",
+        "premises": 128,
+        "PhpSteps": 6,
+        "seconds": 11.38916638866067
+      }
+    ],
+    "scope": "Genuine capture/entered-caster/returned-leaf/cursor restart and selected-switch frontiers; dynamic table COW versus cells, foreach-declared retarget versus old CELL, same-table identity before alias recursion, identical TypeError through restored caller catch and real finally entry. No END/shutdown drive."
+  },
+  "original_zero_credit": [
+    {
+      "report": {
+        "path": ".tools/materialized-stringable-gate-49/run-v1/report.json",
+        "sha256": "c74bda648fb1fd111365f89224196745ea4e8cf55eb1010d922b1f063b6bdc64"
+      },
+      "result": "Pre-main non-pure premises alongside otherwise in retained-frame lookup; total Boolean recursion repair."
+    },
+    {
+      "report": {
+        "path": ".tools/materialized-stringable-gate-49/run-retry1/report.json",
+        "sha256": "24a60839c911a920adc8fa9706064ad1a060175445138909c660f9df944fdda9"
+      },
+      "result": "Pre-main same grammar issue in remaining cursor lookup; total Boolean recursion repair."
+    },
+    {
+      "report": {
+        "path": ".tools/materialized-stringable-state-49/run-sl-v1/report.json",
+        "sha256": "246f5c716f2290ab8cb6e30ba6710ee42138f958687106994db0cf0d891fff9b"
+      },
+      "result": "Dynamic group expected bare PSTRING at the old-tail pointer observer; literal carriers require string_bytes. Other groups unrun. Original small inputs retained in string-carrier-observer-failure-v1."
+    },
+    {
+      "report": {
+        "path": ".tools/materialized-stringable-peer-state-49/run-elab-v1/report.json",
+        "sha256": "e92868234d30df4cf76546b685200691d927f1bfdc37cc3fdd9ef792e6837fcc"
+      },
+      "result": "Pre-main blank separators split the main premise block; only two blank lines per fixture removed. All SL and second EL unrun. Original small inputs retained in main-spacing-failure-v1."
+    }
+  ],
+  "disproved_transition": {
+    "report": {
+      "path": ".tools/materialized-stringable-transition-native-49/run-v1/report.json",
+      "sha256": "870b9ae56f9ed3cee9f8daf8736d42db933bae8aecb242025b86985afb493923"
+    },
+    "source_sha256": "eee9da1f2a6972b56bfcf1a5fc8e0cd1a06d8ef49a5a611c9fbcfcfc07c5b3bf",
+    "observed_stdout": "cast|Nesting level too deep - recursive dependency?|direct-match|",
+    "observed_exit": 255,
+    "native_agreements": 0,
+    "interpretation": "The source used optimized copied array views, not a cached-table producer. It observed caught direct recursion then an uncaught recursion Error. Global-CV reference promotion affecting native unprotection is an inference, not supported behavior or an engine-bug claim. Genuine foreach producer separately supplies declared-table evidence."
+  },
+  "ownership": "Original operands/INPUTBASE and real STRINGIFY_RESULT receiver remain distinct owners. Each STD_HASH cursor owns both enclosing objects and both captured tables, even after COW changes the live map. DECL_HASH owns only its objects, with captured key order and live declared slots; copied array views are not table roots. Cursor/pointer/value images remain documentary and non-owning, certifying their recorded selection rather than full historical unforgeability.",
+  "residuals": [
+    "Mixed declared/dynamic or hook-backed cached tables remain outside this continuation; reached unsupported casts refuse explicitly.",
+    "Active declared-table membership creation or unset (including missing-key unset that can COW) is explicit Unsupported; initialized stores/reference rebinds remain admitted, with existing property error priorities preserved.",
+    "Guarded ordinary declared-object array projection is explicit Unsupported; callback global-CV promotion and broader materialization/lifetime transitions need separate evidence/model.",
+    "Authentic Fiber VM transfer during an active aggregate continuation remains explicit Unsupported; broader handlers and receiver/destructor lifetimes remain required. No END/shutdown or full-core completion claim.",
+    "Strict identity and compiled bool Switch retain their existing no-cast paths; no intentional native divergence is claimed."
+  ],
+  "acceptance": "Closed credited cuts independently raw-bound once with stable watched inputs, exact command/CWD/profile, empty stderr, exit+cleanup0, empty owned groups and no conditional unrun. Independent comp_review_21 cleared the exact six-path publication; no accepted evidence replay.",
+  "recovery": "Original ignored source/programme/driver/START/raw/binary providers remain at .tools/materialized-stringable-49/.tools/materialized-stringable-{native,declared-native,transition-native,baseline,gate,model,state,peer-state,support}-49. Catalogue and reports bind exact original file/CWD/hash, profile, commands, caps and exits. Preserve original paths without copying/moving bulky evidence for cleanup."
+}

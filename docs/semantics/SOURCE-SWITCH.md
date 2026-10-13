@@ -36,5 +36,11 @@ while a reached Stringable/string leaf casts. Early count/key/value differences
 still short-circuit. Successive casters resume the same comparison; nested recursion
 Error can be caught inside the caster, and a thrown TypeError reaches caller catch
 then finally entry. The restart fixture reads the authentic compiled case marker,
-including its folded line. Materialized-property casts, Fiber VM transfer during
-this continuation, broader internal handlers and wider control remain required.
+including its folded line. The preceding cut remains frozen.
+[Property-table comparison](../../coverage/semantics/materialized-stringable-comparison-review.json)
+now covers retained stdClass table snapshots, initialized public declared-table
+slots and successive casts. Identical tables win before the active-left guard;
+ARRAY aliases expose the same table recursion domain. The same TypeError reaches
+caller catch and then finally entry, with later properties/cases skipped. Six new
+exact sources and 576 reached premises/28 raw steps pass. Mixed membership, guarded
+projection, Fiber VM transfer, broader handlers and wider control remain required.
