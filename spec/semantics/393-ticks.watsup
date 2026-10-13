@@ -614,8 +614,7 @@ def $tick_function_nodes((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ($tick
 
 def $tick_expression_children_safe(NExprAssign (NExprVariable (BYTES text) metadata_var) expression metadata) = true
 def $tick_expression_children_safe(NExprFuncCall phpType19 phpType6 metadata) = true
-def $tick_expression_children_safe(expression) = true -- if ~$tick_functions(expression)
-def $tick_expression_children_safe(expression) = false -- otherwise
+def $tick_expression_children_safe(expression) = ~$tick_functions(expression) -- otherwise
 
 ;; These constructors have a direct emitter or the ordinary compiler's exact
 ;; constant operand plus retained-effect projection. Conditional elision, void,
