@@ -10,6 +10,40 @@ dec $ob_normal_report(pstate, pobinvoke) : pstate
 dec $ob_normal_commit(pstate, pobinvoke, pdestructionframe, poboutput) : pstate
 dec $ob_normal_api_commit(pstate, pobinvoke, poboutput, nat) : pstate
 dec $ob_normal_failed_write(pstate, nat) : pstate
+dec $ob_retired_read_task(ptask) : bool
+
+;; zend_call_function's TOP_FUNCTION borrows this from the cached FCC. Closure
+;; instances retain their ordinary ownership and binding machinery.
+def $ob_user_target(METHOD_TARGET n porigin) = OUTPUT_BORROWED_TARGET (METHOD_TARGET n porigin)
+def $ob_user_target(HANDLER_METHOD_TARGET b porigin ptbytes pcalltarget) = OUTPUT_BORROWED_TARGET (HANDLER_METHOD_TARGET b porigin ptbytes pcalltarget)
+def $target_nodes(OUTPUT_BORROWED_TARGET pcalltarget) = eps
+def $target_instance(OUTPUT_BORROWED_TARGET pcalltarget) = eps
+def $call_receiver_roots(pcallcontext) = eps -- if pcallcontext.TARGET = OUTPUT_BORROWED_TARGET pcalltarget
+def $target_receiver(S, OUTPUT_BORROWED_TARGET pcalltarget) = $target_receiver(S, pcalltarget)
+def $target_lexical_class(S, OUTPUT_BORROWED_TARGET pcalltarget) = $target_lexical_class(S, pcalltarget)
+def $target_called_class(S, OUTPUT_BORROWED_TARGET pcalltarget) = $target_called_class(S, pcalltarget)
+;; Only metadata receives this readonly historical allocation view. Real reads
+;; and pre-entry selection still use the actual live allocation set.
+def $target_function(S, OUTPUT_BORROWED_TARGET pcalltarget) = $target_function(S[.ALLOCATIONS = S.ALLOCATIONS ++ $target_nodes(pcalltarget)], pcalltarget)
+  -- if $ob_user_target(pcalltarget) = OUTPUT_BORROWED_TARGET pcalltarget
+def $ob_retired_read_task(EVAL (NExprVariable phpType32 metadata)) = $direct_this(phpType32)
+def $ob_retired_read_task(DIM_PREP (NExprVariable phpType32 metadata)) = $direct_this(phpType32)
+def $ob_retired_read_task(FOREACH_PREP (NStmtForeach (NExprVariable phpType32 metadata_var) phpType5 phpType4_ref expression_value phpType23 phpType4_unpack metadata) z) = $direct_this(phpType32)
+def $ob_retired_read_task(NAME_READ z) = true
+def $ob_retired_read_task(EVAL (NExprClosure phpType14 (BOOLEAN false) phpType4_ref phpType16 phpType21 phpType18 phpType23 metadata)) = true
+def $ob_retired_read_task(EVAL (NExprArrowFunction phpType14 (BOOLEAN false) phpType4_ref phpType16 phpType18 expression metadata)) = true
+def $ob_retired_read_task(ptask) = false -- otherwise
+def $ob_user_access_pending(S) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = OUTPUT_BORROWED_TARGET pcalltarget
+  -- if pcallcontext.RECEIVER = (n)
+  -- if ~((HOBJECT n) <- S.ALLOCATIONS)
+  -- if $ob_user_context_valid(S, pcallcontext)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $ob_retired_read_task(ptask)
+def $ob_user_boundary_reason(S) = "access through a retired output-handler receiver"
+  -- if $ob_user_access_pending(S)
 
 def $ob_normal_reference_rest(eps) = false
 def $ob_normal_reference_rest(psparam :: psparam_tail*) = psparam.BYREF -- if psparam.VARIADIC

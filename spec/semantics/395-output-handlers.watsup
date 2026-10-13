@@ -40,6 +40,8 @@ dec $ob_user_invoke_valid(pstate, pobinvoke) : bool
 dec $ob_user_live(pstate, pobinvoke) : bool
 dec $ob_user_send_valid(pstate, pobinvoke, nat) : bool
 dec $ob_user_entry_supported(pstate, pobinvoke) : bool
+dec $ob_user_target(pcalltarget) : pcalltarget
+dec $ob_user_access_pending(pstate) : bool
 dec $ob_user_sent_valid(pstate, pobinvoke, poperand*, nat) : bool
 dec $ob_user_fci_arguments(pobinvoke) : bool
 dec $ob_user_argument(pobinvoke, nat) : pvalue
@@ -173,7 +175,8 @@ def $ob_user_disabled_tasks(ptask :: ptask_tail*, n) = ($ob_user_disabled_task(p
 def $ob_user_disabled_frames(eps, n) = false
 def $ob_user_disabled_frames(pframe :: pframe_tail*, n) = ($ob_user_disabled_tasks(pframe.TODO, n) \/ $ob_user_disabled_frames(pframe_tail*, n))
 def $ob_user_temporary(S, n) = ($ob_user_disabled_tasks(S.TODO, n) \/ $ob_user_disabled_frames(S.FRAMES, n))
-def $ob_user_boundary(S) = ($ob_user_running(S) /\ ($ob_user_control_pending(S) \/ $ob_user_abrupt_completion(S.COMPLETION)))
+def $ob_user_access_pending(S) = false -- otherwise
+def $ob_user_boundary(S) = ($ob_user_running(S) /\ ($ob_user_control_pending(S) \/ $ob_user_abrupt_completion(S.COMPLETION) \/ $ob_user_access_pending(S)))
 def $ob_user_control_pending(S) = $ob_user_switch_task(ptask) -- if S.TODO = ptask :: ptask_tail*
 def $ob_user_control_pending(S) = false -- if S.TODO = eps
 def $ob_user_abrupt_completion(UNSUPPORTED text) = false
@@ -308,7 +311,8 @@ rule PhpStep/ob-user-reference: S ~> S_cell[.TODO = (OB_USER_SEND pobinvoke[.SEN
   -- if S_cell = $call_fresh_reference(S, $ob_user_argument(pobinvoke, n))
 ;; zend_call_function wraps only callee parameters; fci.params retains its copies.
 def $ob_user_entry_supported(S, pobinvoke) = true -- otherwise
-rule PhpStep/ob-user-enter: S ~> $call_arity($target_after_enter($call_enter(S[.TODO = (OB_USER_RESULT pobinvoke[.SENT = [KNOWN pobinvoke.INPUT, KNOWN (PINT pobinvoke.PHASE)]]) :: ptask_tail*], pfunction, pobinvoke.SENT, $ob_call_entry_site(pobinvoke.CALL), $ob_call_entry_line(pobinvoke.CALL)), poutputhandler.ENTRY.TARGET), pfunction, 2, $ob_call_entry_site(pobinvoke.CALL), $ob_call_entry_line(pobinvoke.CALL))
+def $ob_user_target(pcalltarget) = pcalltarget -- otherwise
+rule PhpStep/ob-user-enter: S ~> $call_arity($target_after_enter($call_enter(S[.TODO = (OB_USER_RESULT pobinvoke[.SENT = [KNOWN pobinvoke.INPUT, KNOWN (PINT pobinvoke.PHASE)]]) :: ptask_tail*], pfunction, pobinvoke.SENT, $ob_call_entry_site(pobinvoke.CALL), $ob_call_entry_line(pobinvoke.CALL)), $ob_user_target(poutputhandler.ENTRY.TARGET)), pfunction, 2, $ob_call_entry_site(pobinvoke.CALL), $ob_call_entry_line(pobinvoke.CALL))
   -- if S.TODO = (OB_USER_ENTER pobinvoke) :: ptask_tail*
   -- if $call_task_valid(S, OB_USER_ENTER pobinvoke)
   -- if $ob_user_entry_supported(S, pobinvoke)
@@ -324,7 +328,7 @@ def $ob_user_context_valid(S, pcallcontext) = true
   -- if $ob_user_context(pcallcontext, S.CURRENT, S.FRAMES) = (pobinvoke)
   -- if $ob_user_live(S, pobinvoke)
   -- if pobinvoke.BUFFER.HANDLER = (poutputhandler)
-  -- if pcallcontext.TARGET = poutputhandler.ENTRY.TARGET
+  -- if pcallcontext.TARGET = $ob_user_target(poutputhandler.ENTRY.TARGET)
   -- if pcallcontext.CALLSITE = $ob_call_entry_site(pobinvoke.CALL) /\ pcallcontext.LINE = $ob_call_entry_line(pobinvoke.CALL)
   -- if pcallcontext.ARGC = 2 /\ $ob_user_fci_arguments(pobinvoke)
   -- if pcallcontext.WRAPPER = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.HOLES = eps
