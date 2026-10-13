@@ -126,6 +126,7 @@ def $string_compare_source(S, pstringcompare) = true
   -- if $string_compare_operand(S, pstringcompare.CASTSITE, pstringcompare.RIGHT)
 def $string_compare_source(S, pstringcompare) = false -- otherwise
 
+dec $string_compare_image(pstringcompare) : bool
 dec $string_compare_valid(pstate, pstringcompare) : bool
 def $string_compare_valid(S, pstringcompare) = true
   -- if $string_compare_source(S, pstringcompare)
@@ -137,7 +138,6 @@ def $string_compare_valid(S, pstringcompare) = true
   -- if $heap_subset($operand_nodes(pstringcompare.LEFT) ++ $operand_nodes(pstringcompare.RIGHT) ++ $base_nodes(pstringcompare.INPUTBASE), S.ALLOCATIONS)
 def $string_compare_valid(S, pstringcompare) = false -- otherwise
 
-dec $string_compare_image(pstringcompare) : bool
 def $string_compare_image(pstringcompare) = true
   -- if pstringcompare.OBJECTLEFT
   -- if pstringcompare.LEFTVALUE = POBJECT pstringcompare.RECEIVER
@@ -188,7 +188,8 @@ dec $string_compare_begin(pstate, pstate, ptask, porigin, porigin, pbin, poperan
 def $string_compare_begin(S_before, S, ptask_consumer, porigin, porigin_cast, pbin, poperand_left, poperand_right, pvalue_left, pvalue_right, n, b_left, z, ptask_tail*) = $user_string_begin(S[.HELD = S_before.HELD][.ORIGIN = (porigin_cast)], n, porigin_cast, z, STRING_COMPARE_RESULT pstringcompare, ptask_tail*)
   -- if poperand_other = $string_compare_opposing(b_left, poperand_left, poperand_right)
   -- if $string_compare_pointer(S_before.ENV, S_before.REFCELLS, poperand_other) = (pcomparepointer)
-  -- if pstringcompare = {SITE porigin, CASTSITE porigin_cast, OP pbin, LINE z, LEFT poperand_left, RIGHT poperand_right, LEFTVALUE pvalue_left, RIGHTVALUE pvalue_right, INPUTBASE S_before.BASE, RECEIVER n, OBJECTLEFT b_left, POINTER pcomparepointer, ENV S_before.ENV, REFS S_before.REFCELLS, CALLER S_before.CURRENT, OWNER |S_before.FRAMES|, CONSUMER ptask_consumer, TAIL ptask_tail*}
+  -- if n_owner = |S_before.FRAMES|
+  -- if pstringcompare = {SITE porigin, CASTSITE porigin_cast, OP pbin, LINE z, LEFT poperand_left, RIGHT poperand_right, LEFTVALUE pvalue_left, RIGHTVALUE pvalue_right, INPUTBASE S_before.BASE, RECEIVER n, OBJECTLEFT b_left, POINTER pcomparepointer, ENV S_before.ENV, REFS S_before.REFCELLS, CALLER S_before.CURRENT, OWNER n_owner, CONSUMER ptask_consumer, TAIL ptask_tail*}
   -- if $string_compare_valid(S, pstringcompare)
 def $string_compare_begin(S_before, S, ptask, porigin, porigin_cast, pbin, poperand_left, poperand_right, pvalue_left, pvalue_right, n, b_left, z, ptask_tail*) = S[.HELD = S_before.HELD][.TODO = eps][.COMPLETION = UNSUPPORTED "Stringable comparison operand or source"] -- otherwise
 
