@@ -55,7 +55,7 @@ def $aggregate_cursor_lefts(paggregatecursor :: paggregatecursor_tail*) = paggre
 def $aggregate_other_item(paggregatecursor, true) = paggregatecursor.RIGHTITEM
 def $aggregate_other_item(paggregatecursor, false) = paggregatecursor.LEFTITEM
 def $aggregate_pointer(paggregatecursor, b) = AGGREGATE_CELL n
-  -- if $aggregate_other_item(paggregatecursor, b) = REFERENCE n
+  -- if $aggregate_other_item(paggregatecursor, b) = ALIAS n
 def $aggregate_pointer(paggregatecursor, true) = AGGREGATE_ARRAY n paggregatecursor.KEY
   -- if paggregatecursor.RIGHTITEM = DIRECT pvalue
   -- if paggregatecursor.RIGHT = HARRAY n
@@ -154,7 +154,7 @@ def $aggregate_property_continue(S, porder, n_left, n_right, n_index, pnode_seen
 
 ;; Cursor images certify their internal selection, not an immutable history.
 def $aggregate_item_image(DIRECT pvalue, pvalue) = true
-def $aggregate_item_image(REFERENCE n, pvalue) = true
+def $aggregate_item_image(ALIAS n, pvalue) = true
 def $aggregate_item_image(pitem, pvalue) = false -- otherwise
 def $aggregate_cursor_valid(S, paggregatecursor) = true
   -- if paggregatecursor.LEFT = HARRAY n_left
