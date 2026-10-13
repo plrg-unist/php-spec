@@ -1,0 +1,458 @@
+;; PHP8.5.10 main/output.c: explicit chunk0 user-handler calls. zoh is owned;
+;; the cached FCC and registration snapshots are borrowed certificates.
+dec $ob_user_phase_extra(bool, bool) : int
+dec $ob_user_copy_valid(pstate, pvalue, preqbytes, nat) : bool
+dec $ob_user_routed_bytes(poutputbuffer, poboutput) : preqbytes
+dec $ob_user_switch_task(ptask) : bool
+dec $ob_user_control_pending(pstate) : bool
+dec $ob_user_abrupt_completion(pcompletion) : bool
+dec $ob_user_start(pstate, pconfigcall, pvalue*, phandlerresolution) : pstate
+dec $ob_user_name(pstate, pvalue, parray?, pcalltarget) : preqbytes?
+dec $ob_user_array_name(pstate, parray) : preqbytes?
+dec $ob_user_plain_closure(pobject) : bool
+dec $ob_user_handler_valid(pstate, poutputhandler) : bool
+dec $ob_user_history(pstate, poutputhandler) : pstate
+dec $ob_user_flags(poutputhandler) : int
+dec $ob_user_buffer_valid(pstate, poutputbuffer) : bool
+dec $ob_user_disabled(poutputbuffer) : bool
+dec $ob_user_active_task(ptask) : nat?
+dec $ob_user_running_tasks(ptask*) : bool
+dec $ob_user_running_frames(pframe*) : bool
+dec $ob_user_running_operations(pdestructionoperation*) : bool
+dec $ob_user_disabled_task(ptask, nat) : bool
+dec $ob_user_disabled_tasks(ptask*, nat) : bool
+dec $ob_user_disabled_frames(pframe*, nat) : bool
+dec $ob_user_temporary(pstate, nat) : bool
+dec $ob_user_begin(pstate, pconfigcall, poutputbuffer) : pstate
+dec $ob_user_phase(pintrinsic, int) : int
+dec $ob_user_invoke_valid(pstate, pobinvoke) : bool
+dec $ob_user_live(pstate, pobinvoke) : bool
+dec $ob_user_send_valid(pstate, pobinvoke, nat) : bool
+dec $ob_user_sent_valid(pstate, pobinvoke, poperand*, nat) : bool
+dec $ob_user_argument(pobinvoke, nat) : pvalue
+dec $ob_user_reference_message(pstate, pobinvoke, nat) : preqbytes
+dec $ob_user_context(pcallcontext, pcallcontext?, pframe*) : pobinvoke?
+dec $ob_user_context_valid(pstate, pcallcontext) : bool
+dec $ob_user_api(pstate, pcallcontext) : pconfigcall?
+dec $ob_user_resume_api(ptask) : pconfigcall?
+dec $ob_user_deprecation(pobinvoke) : preqbytes
+dec $ob_user_nodes(pobinvoke) : pnode*
+dec $ob_user_scalar(pvalue) : bool
+dec $ob_user_bytes(pvalue, int) : preqbytes
+dec $ob_user_output(pstate, pvalue) : poboutput
+dec $ob_user_output_valid(pstate, poboutput) : bool
+dec $ob_user_commit(pstate, pobinvoke, poboutput) : pstate
+dec $ob_user_committed(poutputbuffer, poboutput) : poutputbuffer
+dec $ob_user_route(pstate, pintrinsic, poutputbuffer, preqbytes) : pstate
+dec $ob_user_release(pstate, pconfigcall, poutputbuffer, pvalue) : pstate
+dec $ob_user_release_valid(pstate, pobrelease) : bool
+dec $ob_user_present(poutputbuffer*, nat) : bool
+
+;; Source selection happens after ordinary ZPP conversion. Invalid/effectful
+;; callback creation has its own Warning+Notice protocol, not a tick TypeError.
+def $ob_operation(S, pconfigcall, pvalue_values*) = S[.COMPLETION = UNSUPPORTED "output-buffer mutation from a running user handler"]
+  -- if pconfigcall.KIND = INTRINSIC_OB_START \/ $ob_active_operation(pconfigcall.KIND) \/ $ob_pop_kind(pconfigcall.KIND)
+  -- if $ob_user_running(S)
+def $ob_operation(S, pconfigcall, [pvalue, PINT i_chunk, PINT i_flags]) = S[.COMPLETION = UNSUPPORTED "automatic user output-handler chunk dispatch"]
+  -- if pconfigcall.KIND = INTRINSIC_OB_START
+  -- if ~$ob_user_running(S)
+  -- if pvalue =/= PNULL /\ $(i_chunk > 0)
+def $ob_operation(S, pconfigcall, [pvalue, PINT i_chunk, PINT i_flags]) = $ob_user_start(S, pconfigcall, [pvalue, PINT i_chunk, PINT i_flags], $error_handler_resolution(S, pvalue))
+  -- if pconfigcall.KIND = INTRINSIC_OB_START
+  -- if ~$ob_user_running(S)
+  -- if pvalue =/= PNULL /\ $(i_chunk <= 0)
+  -- if ~$exception_deprecated_raw(S, pvalue) /\ ~$api_special(S, pvalue)
+def $ob_operation(S, pconfigcall, [pvalue, PINT i_chunk, PINT i_flags]) = S[.COMPLETION = UNSUPPORTED "effectful user output-handler callable selection"]
+  -- if pconfigcall.KIND = INTRINSIC_OB_START
+  -- if ~$ob_user_running(S)
+  -- if pvalue =/= PNULL /\ $(i_chunk <= 0)
+  -- if $exception_deprecated_raw(S, pvalue) \/ $api_special(S, pvalue)
+def $ob_user_start(S, pconfigcall, pvalue_values*, HANDLERINVALID ptbytes) = S[.COMPLETION = UNSUPPORTED "invalid output-handler Warning and Notice creation protocol"]
+def $ob_user_start(S, pconfigcall, pvalue_values*, HANDLERUNKNOWN text) = S[.COMPLETION = UNSUPPORTED "user output-handler outside admitted callable forms"]
+def $ob_user_start(S, pconfigcall, pvalue_values*, HANDLERRESOLVED pcalltarget) = $ob_return(S[.OUTPUTSEQ = $(S.OUTPUTSEQ + 1)][.OUTPUTBUFFERS = poutputbuffer :: S.OUTPUTBUFFERS], PBOOL true)
+  -- if pvalue_values* = [pvalue, PINT i_chunk, PINT i_flags]
+  -- if $tick_callback_supported(S, pcalltarget)
+  -- if parray? = $shutdown_snapshot(S, pvalue)
+  -- if $ob_user_name(S, pvalue, parray?, pcalltarget) = (n_name*)
+  -- if pshutdownentry = {CALL pconfigcall, BIRTH eps, CAPTURE $method_capture_current(S, pconfigcall.SITE), PRODUCER eps, RAW parray?, TARGET pcalltarget, ARGS eps}
+  -- if poutputhandler = {ENTRY pshutdownentry, VALUES pvalue_values*, ZOH pvalue, NAME n_name*}
+  -- if poutputbuffer = {ID S.OUTPUTSEQ, HANDLER (poutputhandler), CHUNK 0, FLAGS $ob_user_flags(poutputhandler), SIZE 16384, BYTES eps}
+def $ob_user_start(S, pconfigcall, pvalue_values*, phandlerresolution) = S[.COMPLETION = UNSUPPORTED "user output-handler signature or callable name"] -- otherwise
+
+def $ob_user_name(S, pvalue, eps, pcalltarget) = (n*) -- if $string_bytes(pvalue) = (n*)
+def $ob_user_name(S, PARRAY n, (parray), pcalltarget) = $ob_user_array_name(S, parray)
+def $ob_user_array_name(S, parray) = (n_class* ++ $ptascii("::") ++ n_method*)
+  -- if |parray.ITEMS| = 2
+  -- if $entry_lookup(parray.ITEMS, KINT 0) = (DIRECT pvalue)
+  -- if $entry_lookup(parray.ITEMS, KINT 1) = (DIRECT pvalue_method)
+  -- if $error_receiver_name(S, pvalue) = (n_class*)
+  -- if $string_bytes(pvalue_method) = (n_method*)
+def $ob_user_array_name(S, parray) = eps -- otherwise
+def $ob_user_name(S, POBJECT n, eps, CLOSURE_TARGET n) = (pfunction.NAME)
+  -- if $ob_user_plain_closure($object_body(S.OBJECTS[n]))
+  -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)
+def $ob_user_name(S, POBJECT n, eps, METHOD_TARGET n porigin) = ($object_name(S, n) ++ $ptascii("::__invoke"))
+def $ob_user_name(S, pvalue, parray?, pcalltarget) = eps -- otherwise
+def $ob_user_plain_closure(REALCLOSURE porigin pitem* pstaticcell*) = true
+def $ob_user_plain_closure(NAMEDCLOSURE porigin) = true
+def $ob_user_plain_closure(pobject) = false -- otherwise
+
+def $ob_user_history(S, poutputhandler) = S[.ORIGIN = (poutputhandler.ENTRY.CALL.SITE)][.ALLOCATIONS = S.ALLOCATIONS ++ $config_nodes(poutputhandler.ENTRY.CALL) ++ $target_nodes(poutputhandler.ENTRY.TARGET)]
+def $ob_user_flags(poutputhandler) = $long_or($long_and($error_int32(i_flags), $(-61456)), 1)
+  -- if poutputhandler.VALUES = [pvalue, PINT i_chunk, PINT i_flags]
+def $ob_user_handler_valid(S, poutputhandler) = true
+  -- if S_history = $ob_user_history(S, poutputhandler)
+  -- if pshutdownentry = poutputhandler.ENTRY
+  -- if pshutdownentry.CALL.KIND = INTRINSIC_OB_START
+  -- if $config_invoke_valid(S_history, pshutdownentry.CALL)
+  -- if $ob_values_valid(S_history, pshutdownentry.CALL, poutputhandler.VALUES, 0)
+  -- if poutputhandler.VALUES = [poutputhandler.ZOH, PINT i_chunk, PINT i_flags]
+  -- if poutputhandler.ZOH =/= PNULL /\ $(i_chunk <= 0)
+  -- if pshutdownentry.BIRTH = eps /\ pshutdownentry.PRODUCER = eps /\ pshutdownentry.ARGS = eps
+  -- if $exception_raw_selected(S_history, poutputhandler.ZOH, pshutdownentry.RAW, pshutdownentry.TARGET)
+  -- if $shutdown_selection_scope(S_history, pshutdownentry)
+  -- if $tick_callback_supported(S_history, pshutdownentry.TARGET)
+  -- if $ob_user_name(S_history, poutputhandler.ZOH, pshutdownentry.RAW, pshutdownentry.TARGET) = (poutputhandler.NAME)
+def $ob_user_handler_valid(S, poutputhandler) = false -- otherwise
+def $output_buffer_valid(poutputbuffer) = ($reporting_valid(poutputbuffer.FLAGS) /\ $long_and(poutputbuffer.FLAGS, 15) = 1 /\ poutputbuffer.CHUNK = 0 /\ $startup_bytes(poutputbuffer.BYTES) /\ ((poutputbuffer.SIZE = 0 /\ poutputbuffer.BYTES = eps /\ $ob_user_disabled(poutputbuffer)) \/ $(poutputbuffer.SIZE >= 16384 /\ poutputbuffer.SIZE \ 4096 = 0 /\ |poutputbuffer.BYTES| < poutputbuffer.SIZE)))
+  -- if poutputbuffer.HANDLER =/= eps
+def $output_user_buffers_valid(S, eps) = true
+def $output_user_buffers_valid(S, poutputbuffer :: poutputbuffer_tail*) = $output_user_buffers_valid(S, poutputbuffer_tail*) -- if poutputbuffer.HANDLER = eps
+def $output_user_buffers_valid(S, poutputbuffer :: poutputbuffer_tail*) = ($ob_user_buffer_valid(S, poutputbuffer) /\ $output_user_buffers_valid(S, poutputbuffer_tail*)) -- if poutputbuffer.HANDLER =/= eps
+def $ob_user_buffer_valid(S, poutputbuffer) = true
+  -- if poutputbuffer.HANDLER = (poutputhandler)
+  -- if $ob_user_handler_valid(S, poutputhandler)
+  -- if $heap_subset($value_nodes(poutputhandler.ZOH), S.ALLOCATIONS)
+  -- if $long_and(poutputbuffer.FLAGS, $(-61441)) = $ob_user_flags(poutputhandler)
+  -- if $long_and(poutputbuffer.FLAGS, 16384) = 0 \/ $long_and(poutputbuffer.FLAGS, 4096) =/= 0
+  -- if ~$ob_user_disabled(poutputbuffer) \/ poutputbuffer.SIZE = 0 /\ $long_and(poutputbuffer.FLAGS, 4096) =/= 0 \/ $ob_user_temporary(S, poutputbuffer.ID)
+def $ob_user_buffer_valid(S, poutputbuffer) = false -- otherwise
+def $ob_user_disabled(poutputbuffer) = ($long_and(poutputbuffer.FLAGS, 8192) =/= 0)
+def $output_roots(eps) = eps
+def $output_roots(poutputbuffer :: poutputbuffer_tail*) = $output_roots(poutputbuffer_tail*) -- if poutputbuffer.HANDLER = eps
+def $output_roots(poutputbuffer :: poutputbuffer_tail*) = $value_nodes(poutputhandler.ZOH) ++ $output_roots(poutputbuffer_tail*) -- if poutputbuffer.HANDLER = (poutputhandler)
+
+;; The active continuation also spans ordinary parameter-warning callbacks and
+;; eager post-return argument destruction. Historical abandoned records do not.
+def $ob_user_active_task(OB_USER_SEND pobinvoke n) = (pobinvoke.BUFFER.ID)
+def $ob_user_active_task(OB_USER_REFERENCE pobinvoke n) = (pobinvoke.BUFFER.ID)
+def $ob_user_active_task(OB_USER_ENTER pobinvoke) = (pobinvoke.BUFFER.ID)
+def $ob_user_active_task(OB_USER_RESULT pobinvoke) = (pobinvoke.BUFFER.ID)
+def $ob_user_active_task(OB_USER_DEPRECATED pobinvoke pvalue) = (pobinvoke.BUFFER.ID)
+def $ob_user_active_task(OB_USER_COMMIT pobinvoke poboutput) = (pobinvoke.BUFFER.ID)
+def $ob_user_active_task(ERROR_HANDLER_INVOKE perrorcall) = $ob_user_active_task(perrorcall.RESUME)
+def $ob_user_active_task(ERROR_HANDLER_RESULT perrorcall) = $ob_user_active_task(perrorcall.RESUME)
+def $ob_user_active_task(ERROR_HANDLER_CLEAN perrorcall) = $ob_user_active_task(perrorcall.RESUME)
+def $ob_user_active_task(ptask) = eps -- otherwise
+def $ob_user_running_tasks(eps) = false
+def $ob_user_running_tasks(ptask :: ptask_tail*) = ($ob_user_active_task(ptask) =/= eps \/ $ob_user_running_tasks(ptask_tail*))
+def $ob_user_running_frames(eps) = false
+def $ob_user_running_frames(pframe :: pframe_tail*) = ($ob_user_running_tasks(pframe.TODO) \/ $ob_user_running_frames(pframe_tail*))
+def $ob_user_running_operations(eps) = false
+def $ob_user_running_operations(pdestructionoperation :: pdestructionoperation_tail*) = ($ob_user_active_task(pdestructionoperation.SOURCE) =/= eps \/ $ob_user_running_operations(pdestructionoperation_tail*))
+def $ob_user_running(S) = ($ob_user_running_tasks(S.TODO) \/ $ob_user_running_frames(S.FRAMES) \/ $ob_user_running_operations(S.DESTRUCTION.OPERATIONS))
+def $ob_user_disabled_task(OB_USER_DEPRECATED pobinvoke pvalue, n) = (pobinvoke.BUFFER.ID = n)
+def $ob_user_disabled_task(ERROR_HANDLER_INVOKE perrorcall, n) = $ob_user_disabled_task(perrorcall.RESUME, n)
+def $ob_user_disabled_task(ERROR_HANDLER_RESULT perrorcall, n) = $ob_user_disabled_task(perrorcall.RESUME, n)
+def $ob_user_disabled_task(ERROR_HANDLER_CLEAN perrorcall, n) = $ob_user_disabled_task(perrorcall.RESUME, n)
+def $ob_user_disabled_task(ptask, n) = false -- otherwise
+def $ob_user_disabled_tasks(eps, n) = false
+def $ob_user_disabled_tasks(ptask :: ptask_tail*, n) = ($ob_user_disabled_task(ptask, n) \/ $ob_user_disabled_tasks(ptask_tail*, n))
+def $ob_user_disabled_frames(eps, n) = false
+def $ob_user_disabled_frames(pframe :: pframe_tail*, n) = ($ob_user_disabled_tasks(pframe.TODO, n) \/ $ob_user_disabled_frames(pframe_tail*, n))
+def $ob_user_temporary(S, n) = ($ob_user_disabled_tasks(S.TODO, n) \/ $ob_user_disabled_frames(S.FRAMES, n))
+def $ob_user_boundary(S) = ($ob_user_running(S) /\ ($ob_user_control_pending(S) \/ $ob_user_abrupt_completion(S.COMPLETION)))
+def $ob_user_control_pending(S) = $ob_user_switch_task(ptask) -- if S.TODO = ptask :: ptask_tail*
+def $ob_user_control_pending(S) = false -- if S.TODO = eps
+def $ob_user_abrupt_completion(UNSUPPORTED text) = false
+def $ob_user_abrupt_completion(pcompletion) = false -- if pcompletion <- [NORMAL, BUDGET, SOURCE_PENDING]
+def $ob_user_abrupt_completion(pcompletion) = ~$throwable_pending(pcompletion) -- otherwise
+def $ob_user_boundary_reason(S) = "Fiber switching from a user output handler"
+  -- if S.TODO = (FIBER_ARGS pfiberstart) :: ptask*
+def $ob_user_boundary_reason(S) = "Fiber switching from a user output handler"
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask*
+  -- if pconfigcall.KIND <- [INTRINSIC_FIBER_RESUME, INTRINSIC_FIBER_THROW, INTRINSIC_FIBER_SUSPEND]
+def $ob_user_boundary_reason(S) = "abrupt user output-handler callback cleanup" -- otherwise
+def $ob_user_switch_task(EXIT_UNWIND z) = true
+def $ob_user_switch_task(FIBER_ARGS pfiberstart) = true
+def $ob_user_switch_task(CONFIG_INVOKE pconfigcall) = (pconfigcall.KIND <- [INTRINSIC_FIBER_RESUME, INTRINSIC_FIBER_THROW, INTRINSIC_FIBER_SUSPEND])
+def $ob_user_switch_task(ptask) = false -- otherwise
+
+def $ob_operation(S, pconfigcall, eps) = S[.COMPLETION = UNSUPPORTED "user output-handler capability-failure notices"]
+  -- if $ob_active_operation(pconfigcall.KIND) \/ $ob_pop_kind(pconfigcall.KIND)
+  -- if ~$ob_user_running(S)
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if poutputbuffer.HANDLER =/= eps
+  -- if $long_and(poutputbuffer.FLAGS, $ob_capability(pconfigcall.KIND)) = 0
+def $ob_operation(S, pconfigcall, eps) = $ob_user_begin(S, pconfigcall, poutputbuffer)
+  -- if $ob_active_operation(pconfigcall.KIND) \/ $ob_pop_kind(pconfigcall.KIND)
+  -- if ~$ob_user_running(S)
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if poutputbuffer.HANDLER =/= eps
+  -- if $long_and(poutputbuffer.FLAGS, $ob_capability(pconfigcall.KIND)) =/= 0
+  -- if ~$ob_user_disabled(poutputbuffer)
+def $ob_user_begin(S, pconfigcall, poutputbuffer) = S_input[.TODO = (OB_USER_SEND pobinvoke 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if poutputbuffer.HANDLER = (poutputhandler)
+  -- if $heap_subset($target_nodes(poutputhandler.ENTRY.TARGET), S.ALLOCATIONS)
+  -- if S_copy = $ob_snapshot(S, pconfigcall.KIND, poutputbuffer.BYTES)
+  -- if S_copy.RESULT = KNOWN pvalue
+  -- if S_input = $string_request(S_copy, poutputbuffer.BYTES)
+  -- if S_input.RESULT = KNOWN pvalue_input
+  -- if pobinvoke = {CALL pconfigcall, BUFFER poutputbuffer, VALUE pvalue, INPUT pvalue_input, PHASE $ob_user_phase(pconfigcall.KIND, poutputbuffer.FLAGS), SENT eps}
+def $ob_user_begin(S, pconfigcall, poutputbuffer) = S[.COMPLETION = UNSUPPORTED "user output-handler cached target has retired"] -- otherwise
+def $ob_user_phase(INTRINSIC_OB_FLUSH, i_flags) = 5 -- if $long_and(i_flags, 4096) = 0
+def $ob_user_phase(INTRINSIC_OB_FLUSH, i_flags) = 4 -- if $long_and(i_flags, 4096) =/= 0
+def $ob_user_phase(INTRINSIC_OB_CLEAN, i_flags) = 3 -- if $long_and(i_flags, 4096) = 0
+def $ob_user_phase(INTRINSIC_OB_CLEAN, i_flags) = 2 -- if $long_and(i_flags, 4096) =/= 0
+def $ob_user_phase(pintrinsic, i_flags) = $long_or(8, i_extra)
+  -- if $ob_pop_kind(pintrinsic)
+  -- if i_extra = $ob_user_phase_extra($ob_clean_kind(pintrinsic), $long_and(i_flags, 4096) = 0)
+def $ob_user_phase_extra(false, false) = 0
+def $ob_user_phase_extra(false, true) = 1
+def $ob_user_phase_extra(true, false) = 2
+def $ob_user_phase_extra(true, true) = 3
+
+def $ob_user_invoke_valid(S, pobinvoke) = true
+  -- if pconfigcall = pobinvoke.CALL
+  -- if $config_invoke_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
+  -- if pconfigcall.SENT = eps /\ ($ob_active_operation(pconfigcall.KIND) \/ $ob_pop_kind(pconfigcall.KIND))
+  -- if pobinvoke.BUFFER.HANDLER = (poutputhandler)
+  -- if $ob_user_handler_valid(S, poutputhandler)
+  -- if $output_buffer_valid(pobinvoke.BUFFER)
+  -- if $(pobinvoke.BUFFER.ID < S.OUTPUTSEQ)
+  -- if ~$ob_user_disabled(pobinvoke.BUFFER)
+  -- if $long_and(pobinvoke.BUFFER.FLAGS, $ob_capability(pconfigcall.KIND)) =/= 0
+  -- if pobinvoke.PHASE = $ob_user_phase(pconfigcall.KIND, pobinvoke.BUFFER.FLAGS)
+  -- if pobinvoke.INPUT = PSTRING_CARRIER (REQUEST_STRING n_input) pobinvoke.BUFFER.BYTES
+  -- if $string_carrier_valid(S, pobinvoke.INPUT)
+  -- if ~$ob_get_kind(pconfigcall.KIND) /\ pobinvoke.VALUE = PBOOL true \/ $ob_get_kind(pconfigcall.KIND) /\ $ob_user_copy_valid(S, pobinvoke.VALUE, pobinvoke.BUFFER.BYTES, n_input)
+def $ob_user_invoke_valid(S, pobinvoke) = false -- otherwise
+def $ob_user_copy_valid(S, PSTRING_CARRIER (REQUEST_STRING n) n_bytes*, n_bytes*, n_input) = ($string_carrier_valid(S, PSTRING_CARRIER (REQUEST_STRING n) n_bytes*) /\ $(n_input = n + 1))
+def $ob_user_copy_valid(S, pvalue, n_bytes*, n_input) = false -- otherwise
+def $ob_user_live(S, pobinvoke) = true
+  -- if $ob_user_invoke_valid(S, pobinvoke)
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if poutputbuffer.ID = pobinvoke.BUFFER.ID /\ poutputbuffer.HANDLER = pobinvoke.BUFFER.HANDLER
+  -- if poutputbuffer.CHUNK = 0
+  -- if $long_and(poutputbuffer.FLAGS, $(-40961)) = $long_and(pobinvoke.BUFFER.FLAGS, $(-40961))
+  -- if $(|pobinvoke.BUFFER.BYTES| <= |poutputbuffer.BYTES|)
+  -- if poutputbuffer.BYTES[0:|pobinvoke.BUFFER.BYTES|] = pobinvoke.BUFFER.BYTES
+def $ob_user_live(S, pobinvoke) = false -- otherwise
+def $ob_user_argument(pobinvoke, 0) = pobinvoke.INPUT
+def $ob_user_argument(pobinvoke, 1) = PINT pobinvoke.PHASE
+def $ob_user_sent_valid(S, pobinvoke, eps, n) = true
+def $ob_user_sent_valid(S, pobinvoke, (KNOWN pvalue) :: poperand*, n) = $ob_user_sent_valid(S, pobinvoke, poperand*, $(n + 1))
+  -- if pvalue = $ob_user_argument(pobinvoke, n)
+def $ob_user_sent_valid(S, pobinvoke, (REFERENCE n_cell) :: poperand*, n) = $ob_user_sent_valid(S, pobinvoke, poperand*, $(n + 1))
+  -- if pobinvoke.BUFFER.HANDLER = (poutputhandler)
+  -- if $call_parameter_reference(S, poutputhandler.ENTRY.TARGET, n)
+  -- if $call_reference_operand_valid(S, REFERENCE n_cell)
+def $ob_user_sent_valid(S, pobinvoke, poperand*, n) = false -- otherwise
+def $ob_user_send_valid(S, pobinvoke, n) = true
+  -- if $ob_user_live(S, pobinvoke)
+  -- if |pobinvoke.SENT| = n /\ $(n <= 2)
+  -- if pobinvoke.BUFFER.HANDLER = (poutputhandler)
+  -- if $heap_subset($target_nodes(poutputhandler.ENTRY.TARGET), S.ALLOCATIONS)
+  -- if $ob_user_sent_valid(S, pobinvoke, pobinvoke.SENT, 0)
+  -- if $call_sent_operands_valid(S, poutputhandler.ENTRY.TARGET, 0, pobinvoke.SENT)
+def $ob_user_send_valid(S, pobinvoke, n) = false -- otherwise
+def $ob_user_nodes(pobinvoke) = $config_nodes(pobinvoke.CALL) ++ $value_nodes(pobinvoke.VALUE) ++ $value_nodes(pobinvoke.INPUT) ++ $operands_roots(pobinvoke.SENT)
+def $task_nodes(OB_USER_SEND pobinvoke n) = $ob_user_nodes(pobinvoke)
+def $task_nodes(OB_USER_REFERENCE pobinvoke n) = $ob_user_nodes(pobinvoke)
+def $task_nodes(OB_USER_ENTER pobinvoke) = $ob_user_nodes(pobinvoke)
+def $task_nodes(OB_USER_RESULT pobinvoke) = $ob_user_nodes(pobinvoke)
+def $task_nodes(OB_USER_DEPRECATED pobinvoke pvalue) = $ob_user_nodes(pobinvoke) ++ $value_nodes(pvalue)
+def $task_nodes(OB_USER_COMMIT pobinvoke poboutput) = $config_nodes(pobinvoke.CALL) ++ $value_nodes(pobinvoke.VALUE)
+def $call_task_valid(S, OB_USER_SEND pobinvoke n) = ($ob_user_send_valid(S, pobinvoke, n) /\ S.ORIGIN = (pobinvoke.CALL.SITE))
+def $call_task_valid(S, OB_USER_REFERENCE pobinvoke n) = ($ob_user_send_valid(S, pobinvoke, n) /\ $call_parameter_reference(S, poutputhandler.ENTRY.TARGET, n) /\ S.ORIGIN = (pobinvoke.CALL.SITE)) -- if pobinvoke.BUFFER.HANDLER = (poutputhandler)
+def $call_task_valid(S, OB_USER_ENTER pobinvoke) = ($ob_user_send_valid(S, pobinvoke, 2) /\ S.ORIGIN = (pobinvoke.CALL.SITE))
+def $call_task_valid(S, OB_USER_RESULT pobinvoke) = ($ob_user_live(S, pobinvoke) /\ |pobinvoke.SENT| = 2)
+def $call_task_valid(S, OB_USER_DEPRECATED pobinvoke pvalue) = ($ob_user_live(S, pobinvoke) /\ $ob_user_scalar(pvalue) /\ $config_slots_valid(S, [NAMED_SENT (KNOWN pvalue)]) /\ $ob_user_temporary(S, pobinvoke.BUFFER.ID))
+def $call_task_valid(S, OB_USER_COMMIT pobinvoke poboutput) = ($ob_user_live(S, pobinvoke) /\ pobinvoke.SENT = eps /\ $ob_user_output_valid(S, poboutput) /\ S.ORIGIN = (pobinvoke.CALL.SITE))
+
+rule PhpStep/ob-user-send: S ~> S[.TODO = (OB_USER_SEND pobinvoke[.SENT = pobinvoke.SENT ++ [KNOWN $ob_user_argument(pobinvoke, n)]] $(n + 1)) :: ptask_tail*]
+  -- if S.TODO = (OB_USER_SEND pobinvoke n) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_SEND pobinvoke n) /\ $(n < 2)
+  -- if pobinvoke.BUFFER.HANDLER = (poutputhandler)
+  -- if ~$call_parameter_reference(S, poutputhandler.ENTRY.TARGET, n)
+rule PhpStep/ob-user-send-done: S ~> S[.TODO = (OB_USER_ENTER pobinvoke) :: ptask_tail*]
+  -- if S.TODO = (OB_USER_SEND pobinvoke 2) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_SEND pobinvoke 2)
+def $ob_user_reference_message(S, pobinvoke, n) = pfunction.NAME ++ $ptascii("(): Argument #") ++ $decimal_integer($(n + 1)) ++ $call_parameter_name(psparam) ++ $ptascii(" must be passed by reference, value given")
+  -- if pobinvoke.BUFFER.HANDLER = (poutputhandler)
+  -- if $target_function(S, poutputhandler.ENTRY.TARGET) = (pfunction)
+  -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, n) = (psparam)
+rule PhpStep/ob-user-reference-warning: S ~> $error_dispatch(S, 2, n_message*, pobinvoke.CALL.LINE, DIAGNOSTIC "Warning" n_message* pobinvoke.CALL.LINE, OB_USER_REFERENCE pobinvoke n)
+  -- if S.TODO = (OB_USER_SEND pobinvoke n) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_SEND pobinvoke n) /\ $(n < 2)
+  -- if pobinvoke.BUFFER.HANDLER = (poutputhandler)
+  -- if $call_parameter_reference(S, poutputhandler.ENTRY.TARGET, n)
+  -- if n_message* = $ob_user_reference_message(S, pobinvoke, n)
+rule PhpStep/ob-user-reference: S ~> S_cell[.TODO = (OB_USER_SEND pobinvoke[.SENT = pobinvoke.SENT ++ [S_cell.RESULT]] $(n + 1)) :: ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (OB_USER_REFERENCE pobinvoke n) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_REFERENCE pobinvoke n)
+  -- if S_cell = $call_fresh_reference(S, $ob_user_argument(pobinvoke, n))
+rule PhpStep/ob-user-enter: S ~> $call_arity($target_after_enter($call_enter(S[.TODO = (OB_USER_RESULT pobinvoke) :: ptask_tail*], pfunction, pobinvoke.SENT, eps, $(-1)), poutputhandler.ENTRY.TARGET), pfunction, 2, eps, $(-1))
+  -- if S.TODO = (OB_USER_ENTER pobinvoke) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_ENTER pobinvoke)
+  -- if pobinvoke.BUFFER.HANDLER = (poutputhandler)
+  -- if $target_function(S, poutputhandler.ENTRY.TARGET) = (pfunction)
+
+;; Ordinary callback contexts are internal/weak. The saved builtin API is still
+;; observable in traces, unlike source TICKS or shutdown queue calls.
+def $ob_user_context(pcallcontext, (pcallcontext), pframe :: pframe_tail*) = (pobinvoke) -- if pframe.TODO = (OB_USER_RESULT pobinvoke) :: ptask_tail*
+def $ob_user_context(pcallcontext, pcallcontext_other?, pframe :: pframe_tail*) = $ob_user_context(pcallcontext, pframe.CONTEXT, pframe_tail*) -- if pcallcontext_other? =/= (pcallcontext)
+def $ob_user_context(pcallcontext, pcallcontext_other?, pframe*) = eps -- otherwise
+def $ob_user_context_valid(S, pcallcontext) = true
+  -- if $ob_user_context(pcallcontext, S.CURRENT, S.FRAMES) = (pobinvoke)
+  -- if $ob_user_live(S, pobinvoke)
+  -- if pobinvoke.BUFFER.HANDLER = (poutputhandler)
+  -- if pcallcontext.TARGET = poutputhandler.ENTRY.TARGET
+  -- if pcallcontext.CALLSITE = eps /\ pcallcontext.LINE = $(-1)
+  -- if pcallcontext.ARGC = 2 /\ |pobinvoke.SENT| = 2
+  -- if pcallcontext.WRAPPER = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.HOLES = eps
+  -- if $target_function(S, pcallcontext.TARGET) = (pfunction)
+  -- if n_received = $call_received(2, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if n_extra = $nabs($(2 - n_received))
+  -- if pcallcontext.EXTRA = pobinvoke.SENT[n_received:n_extra]
+  -- if $call_sent_operands_valid(S, pcallcontext.TARGET, n_received, pcallcontext.EXTRA)
+def $ob_user_context_valid(S, pcallcontext) = false -- otherwise
+def $error_context_kind(S, pcallcontext) = true -- if $ob_user_context(pcallcontext, S.CURRENT, S.FRAMES) =/= eps
+def $error_context_valid(S, pcallcontext) = true -- if $ob_user_context_valid(S, pcallcontext)
+def $ob_user_resume_api(OB_USER_REFERENCE pobinvoke n) = (pobinvoke.CALL)
+def $ob_user_resume_api(OB_USER_DEPRECATED pobinvoke pvalue) = (pobinvoke.CALL)
+def $ob_user_resume_api(ptask) = eps -- otherwise
+def $ob_user_api(S, pcallcontext) = (pobinvoke.CALL) -- if $ob_user_context(pcallcontext, S.CURRENT, S.FRAMES) = (pobinvoke)
+def $ob_user_api(S, pcallcontext) = $ob_user_resume_api(perrorcall.RESUME) -- if $error_context_call(S, pcallcontext) = (perrorcall)
+def $ob_user_api(S, pcallcontext) = eps -- otherwise
+def $error_context_trigger(S, pcallcontext) = (pconfigcall) -- if $ob_user_api(S, pcallcontext) = (pconfigcall)
+def $error_handler_trace_values(S, pcallcontext, pconfigcall) = $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT)) -- if $ob_user_api(S, pcallcontext) = (pconfigcall)
+def $reference_call_frame_site(pcallcontext, pframe) = true -- if pframe.TODO = (OB_USER_RESULT pobinvoke) :: ptask* -- if pcallcontext.CALLSITE = eps /\ pcallcontext.LINE = $(-1)
+def $throwable_continuation(S, S_next) = S_next
+  -- if S.TODO = (OB_USER_ENTER pobinvoke) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_ENTER pobinvoke)
+  -- if S_next.FRAMES = pframe :: S.FRAMES
+  -- if pframe.TODO = (OB_USER_RESULT pobinvoke) :: ptask_tail*
+  -- if pframe.CONTEXT = S.CURRENT /\ pframe.ORIGIN = S.ORIGIN /\ pframe.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if pframe.SILENCES = S.SILENCES /\ pframe.BORROWEDREAD = S.BORROWEDREAD /\ pframe.OBJECTCAST = S.OBJECTCAST
+def $return_discard(S, OB_USER_RESULT pobinvoke) = S[.TODO = (OB_USER_RESULT pobinvoke) :: S.TODO][.COMPLETION = UNSUPPORTED "abrupt user output-handler callback cleanup"]
+def $return_discard(S, OB_USER_DEPRECATED pobinvoke pvalue) = S[.TODO = (OB_USER_DEPRECATED pobinvoke pvalue) :: S.TODO][.COMPLETION = UNSUPPORTED "abrupt user output-handler deprecation callback cleanup"]
+
+def $ob_user_scalar(pvalue) = (pvalue = PNULL \/ $typed_scalar(pvalue))
+def $ob_user_bytes(PNULL, z) = eps
+def $ob_user_bytes(PBOOL b, z) = eps
+def $ob_user_bytes(PINT i, z) = $decimal_integer(i)
+def $ob_user_bytes(PFLOAT n, z) = n_text* -- if (n_text*, b) = $number_text(NFLOAT n, z)
+def $ob_user_bytes(pvalue, z) = n* -- if $string_bytes(pvalue) = (n*)
+def $ob_user_output(S, pvalue) = {VALUE pvalue, BYTES $ob_user_bytes(pvalue, $precision_value(S)), PRECISION $precision_value(S), FAILED (pvalue = PBOOL false)}
+def $ob_user_output_valid(S, poboutput) = ($ob_user_scalar(poboutput.VALUE) /\ $config_slots_valid(S, [NAMED_SENT (KNOWN poboutput.VALUE)]) /\ $precision_ini_valid($decimal_integer(poboutput.PRECISION)) /\ poboutput.BYTES = $ob_user_bytes(poboutput.VALUE, poboutput.PRECISION) /\ poboutput.FAILED = (poboutput.VALUE = PBOOL false))
+def $ob_user_deprecation(pobinvoke) = $intrinsic_name(pobinvoke.CALL.KIND) ++ $ptascii("(): Producing output from user output handler ") ++ $ob_buffer_name(pobinvoke.BUFFER) ++ $ptascii(" is deprecated")
+rule PhpStep/ob-user-produced: S ~> $error_dispatch(S[.OUTPUTBUFFERS = poutputbuffer[.FLAGS = $long_or($long_and(poutputbuffer.FLAGS, $(-32769)), 8192)] :: poutputbuffer_tail*], 8192, $ob_user_deprecation(pobinvoke), pobinvoke.CALL.LINE, DIAGNOSTIC "Deprecated" $ob_user_deprecation(pobinvoke) pobinvoke.CALL.LINE, OB_USER_DEPRECATED pobinvoke pvalue)
+  -- if S.TODO = (OB_USER_RESULT pobinvoke) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_RESULT pobinvoke)
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN pvalue
+  -- if $ob_user_scalar(pvalue)
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if $long_and(poutputbuffer.FLAGS, 32768) =/= 0
+rule PhpStep/ob-user-result: S ~> S[.TODO = (OB_USER_COMMIT pobinvoke[.SENT = eps] $ob_user_output(S, pvalue)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (OB_USER_RESULT pobinvoke) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_RESULT pobinvoke)
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN pvalue
+  -- if $ob_user_scalar(pvalue)
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if $long_and(poutputbuffer.FLAGS, 32768) = 0
+rule PhpStep/ob-user-nonscalar: S ~> S[.COMPLETION = UNSUPPORTED "non-scalar user output-handler return conversion"]
+  -- if S.TODO = (OB_USER_RESULT pobinvoke) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_RESULT pobinvoke)
+  -- if S.RESULT = KNOWN pvalue
+  -- if ~$ob_user_scalar(pvalue)
+rule PhpStep/ob-user-reference-return: S ~> S[.COMPLETION = UNSUPPORTED "reference user output-handler return conversion"]
+  -- if S.TODO = (OB_USER_RESULT pobinvoke) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_RESULT pobinvoke)
+  -- if S.RESULT = REFERENCE n
+rule PhpStep/ob-user-deprecated: S ~> S[.OUTPUTBUFFERS = poutputbuffer[.FLAGS = $long_and(poutputbuffer.FLAGS, $(-8193))] :: poutputbuffer_tail*][.TODO = (OB_USER_COMMIT pobinvoke[.SENT = eps] $ob_user_output(S, pvalue)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (OB_USER_DEPRECATED pobinvoke pvalue) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_DEPRECATED pobinvoke pvalue)
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = OB_USER_REFERENCE pobinvoke n
+  -- if $call_task_valid(S, OB_USER_REFERENCE pobinvoke n)
+  -- if perrorcall.SITE = pobinvoke.CALL.SITE /\ perrorcall.LINE = pobinvoke.CALL.LINE
+  -- if perrorcall.LEVEL = 2 /\ perrorcall.MESSAGE = $ob_user_reference_message(S, pobinvoke, n)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = OB_USER_DEPRECATED pobinvoke pvalue
+  -- if $call_task_valid(S, OB_USER_DEPRECATED pobinvoke pvalue)
+  -- if perrorcall.SITE = pobinvoke.CALL.SITE /\ perrorcall.LINE = pobinvoke.CALL.LINE
+  -- if perrorcall.LEVEL = 8192 /\ perrorcall.MESSAGE = $ob_user_deprecation(pobinvoke)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE perrorcall.LINE
+
+;; Arguments/retval are destroyed with running still true, then bytes reset.
+;; A pop writes lower layers before dropping its sole zoh owner.
+def $eager_operation_source_guard(S, pdestructionoperation) = ($ob_user_live(S, pobinvoke) /\ pdestructionoperation.ORIGIN = (pobinvoke.CALL.SITE) /\ pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL))
+  -- if pdestructionoperation.SOURCE = OB_USER_RESULT pobinvoke
+def $eager_operation_source_guard(S, pdestructionoperation) = ($ob_user_live(S, pobinvoke) /\ pdestructionoperation.ORIGIN = (pobinvoke.CALL.SITE) /\ pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL))
+  -- if pdestructionoperation.SOURCE = OB_USER_DEPRECATED pobinvoke pvalue
+def $ob_user_committed(poutputbuffer, poboutput) = poutputbuffer[.FLAGS = $long_or(poutputbuffer.FLAGS, 12288)][.SIZE = 0][.BYTES = eps] -- if poboutput.FAILED
+def $ob_user_committed(poutputbuffer, poboutput) = $output_processed(poutputbuffer) -- if ~poboutput.FAILED
+def $ob_user_route(S, pintrinsic, poutputbuffer, n*) = S -- if $ob_clean_kind(pintrinsic)
+def $ob_user_route(S, pintrinsic, poutputbuffer, eps) = S -- if ~$ob_clean_kind(pintrinsic)
+def $ob_user_route(S, pintrinsic, poutputbuffer, n*) = S_written[.TODO = S.TODO]
+  -- if ~$ob_clean_kind(pintrinsic) /\ n* =/= eps
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S_written = $output_write(S[.TODO = ptask_tail*], n*)
+def $ob_user_commit(S, pobinvoke, poboutput) = $ob_return(S[.OUTPUTBUFFERS = ($ob_user_committed(poutputbuffer, poboutput)) :: poutputbuffer_tail*], pobinvoke.VALUE)
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if pobinvoke.CALL.KIND = INTRINSIC_OB_CLEAN
+def $ob_user_commit(S, pobinvoke, poboutput) = $ob_return(S_lower[.OUTPUTBUFFERS = ($ob_user_committed(poutputbuffer, poboutput)) :: S_lower.OUTPUTBUFFERS], pobinvoke.VALUE)
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if pobinvoke.CALL.KIND = INTRINSIC_OB_FLUSH
+  -- if S_lower = $ob_user_route(S[.OUTPUTBUFFERS = poutputbuffer_tail*], pobinvoke.CALL.KIND, poutputbuffer, $ob_user_routed_bytes(poutputbuffer, poboutput))
+def $ob_user_commit(S, pobinvoke, poboutput) = $ob_user_release(S_lower, pobinvoke.CALL, pobinvoke.BUFFER, pobinvoke.VALUE)
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if $ob_pop_kind(pobinvoke.CALL.KIND)
+  -- if S_lower = $ob_user_route(S[.OUTPUTBUFFERS = poutputbuffer_tail*], pobinvoke.CALL.KIND, poutputbuffer, $ob_user_routed_bytes(poutputbuffer, poboutput))
+def $ob_user_routed_bytes(poutputbuffer, poboutput) = poutputbuffer.BYTES -- if poboutput.FAILED
+def $ob_user_routed_bytes(poutputbuffer, poboutput) = poboutput.BYTES -- if ~poboutput.FAILED
+rule PhpStep/ob-user-commit: S ~> $ob_user_commit(S, pobinvoke, poboutput)
+  -- if S.TODO = (OB_USER_COMMIT pobinvoke poboutput) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_COMMIT pobinvoke poboutput)
+def $ob_operation(S, pconfigcall, eps) = $ob_return(S, PBOOL true)
+  -- if $ob_active_operation(pconfigcall.KIND)
+  -- if ~$ob_user_running(S)
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if poutputbuffer.HANDLER =/= eps /\ $ob_user_disabled(poutputbuffer)
+  -- if $long_and(poutputbuffer.FLAGS, $ob_capability(pconfigcall.KIND)) =/= 0
+def $ob_operation(S, pconfigcall, eps) = $ob_user_release(S_copy[.OUTPUTBUFFERS = poutputbuffer_tail*], pconfigcall, poutputbuffer, pvalue)
+  -- if $ob_pop_kind(pconfigcall.KIND)
+  -- if ~$ob_user_running(S)
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if poutputbuffer.HANDLER =/= eps /\ $ob_user_disabled(poutputbuffer)
+  -- if $long_and(poutputbuffer.FLAGS, $ob_capability(pconfigcall.KIND)) =/= 0
+  -- if S_copy = $ob_snapshot(S, pconfigcall.KIND, poutputbuffer.BYTES)
+  -- if S_copy.RESULT = KNOWN pvalue
+def $ob_user_release(S, pconfigcall, poutputbuffer, pvalue) = S[.TODO = (OB_USER_RELEASE {CALL pconfigcall, BUFFER poutputbuffer, VALUE pvalue}) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+def $ob_user_present(eps, n) = false
+def $ob_user_present(poutputbuffer :: poutputbuffer_tail*, n) = (poutputbuffer.ID = n \/ $ob_user_present(poutputbuffer_tail*, n))
+def $ob_user_release_valid(S, pobrelease) = true
+  -- if $config_invoke_valid(S[.ORIGIN = (pobrelease.CALL.SITE)], pobrelease.CALL)
+  -- if $ob_pop_kind(pobrelease.CALL.KIND) /\ pobrelease.CALL.SENT = eps
+  -- if pobrelease.BUFFER.HANDLER = (poutputhandler)
+  -- if $ob_user_handler_valid(S, poutputhandler)
+  -- if $(pobrelease.BUFFER.ID < S.OUTPUTSEQ)
+  -- if ~$ob_user_present(S.OUTPUTBUFFERS, pobrelease.BUFFER.ID)
+  -- if $long_and(pobrelease.BUFFER.FLAGS, 64) =/= 0
+  -- if $config_slots_valid(S, [NAMED_SENT (KNOWN pobrelease.VALUE)])
+  -- if $ob_get_kind(pobrelease.CALL.KIND) /\ $string_bytes(pobrelease.VALUE) = (pobrelease.BUFFER.BYTES) \/ ~$ob_get_kind(pobrelease.CALL.KIND) /\ pobrelease.VALUE = PBOOL true
+def $ob_user_release_valid(S, pobrelease) = false -- otherwise
+def $task_nodes(OB_USER_RELEASE pobrelease) = $config_nodes(pobrelease.CALL) ++ $value_nodes(pobrelease.VALUE) ++ $value_nodes(poutputhandler.ZOH) -- if pobrelease.BUFFER.HANDLER = (poutputhandler)
+def $call_task_valid(S, OB_USER_RELEASE pobrelease) = ($ob_user_release_valid(S, pobrelease) /\ S.ORIGIN = (pobrelease.CALL.SITE) /\ $heap_subset($value_nodes(poutputhandler.ZOH), S.ALLOCATIONS)) -- if pobrelease.BUFFER.HANDLER = (poutputhandler)
+rule PhpStep/ob-user-release: S ~> $ob_return(S, pobrelease.VALUE)
+  -- if S.TODO = (OB_USER_RELEASE pobrelease) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_RELEASE pobrelease)
+def $eager_operation_source_guard(S, pdestructionoperation) = ($ob_user_release_valid(S, pobrelease) /\ pdestructionoperation.ORIGIN = (pobrelease.CALL.SITE) /\ pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.VALUE = KNOWN pobrelease.VALUE /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL))
+  -- if pdestructionoperation.SOURCE = OB_USER_RELEASE pobrelease

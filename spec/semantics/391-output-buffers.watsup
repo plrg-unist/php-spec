@@ -1,6 +1,5 @@
-;; PHP 8.5.10 main/output.c: default internal handlers, top-first stack.
-;; Output handlers that run user code and buffered stdout diagnostics remain
-;; explicit dependencies. Stderr never enters this stack.
+;; PHP 8.5.10 main/output.c: top-first buffer stack. Module395 stages admitted
+;; user handlers; buffered stdout diagnostics remain a dependency.
 syntax pobconversion = OB_VALUE pvalue | OB_DEPRECATED pvalue preqbytes | OB_REJECT
 dec $ob_is_deprecated(pobconversion) : bool
 dec $output_initial_size(nat) : nat
@@ -10,6 +9,16 @@ dec $output_deferred_stdout(pstate) : bool
 dec $output_exception_level(preqbytes) : int
 dec $output_force_flush(pstate) : pstate
 dec $output_buffers_valid(poutputbuffer*) : bool
+dec $output_buffer_valid(poutputbuffer) : bool
+dec $output_buffer_ids(poutputbuffer*, nat) : bool
+dec $output_user_buffers_valid(pstate, poutputbuffer*) : bool
+dec $output_has_user(poutputbuffer*) : bool
+dec $output_append(pstate, poutputbuffer, preqbytes) : poutputbuffer
+dec $ob_user_running(pstate) : bool
+dec $ob_user_boundary(pstate) : bool
+dec $ob_user_boundary_reason(pstate) : text
+dec $ob_buffer_name(poutputbuffer) : preqbytes
+dec $ob_name_value(poutputbuffer) : pvalue
 dec $ob_max(pintrinsic) : nat
 dec $ob_default(pintrinsic, nat) : pvalue
 dec $ob_type(pintrinsic, nat) : text
@@ -58,17 +67,30 @@ def $output_grown_size(poutputbuffer, n) = $(poutputbuffer.SIZE + n_bytes)
   -- if n_bytes = $output_initial_size($nabs($(n - (poutputbuffer.SIZE - |poutputbuffer.BYTES|))))
   -- if $(n_chunk < n_bytes)
 def $output_processed(poutputbuffer) = poutputbuffer[.FLAGS = $long_or(poutputbuffer.FLAGS, 20480)][.BYTES = eps]
+def $output_append(S, poutputbuffer, n*) = poutputbuffer_next[.FLAGS = $long_or(poutputbuffer_next.FLAGS, 32768)]
+  -- if poutputbuffer_next = poutputbuffer[.SIZE = $output_grown_size(poutputbuffer, |n*|)][.BYTES = poutputbuffer.BYTES ++ n*]
+  -- if $ob_user_running(S)
+def $output_append(S, poutputbuffer, n*) = poutputbuffer[.SIZE = $output_grown_size(poutputbuffer, |n*|)][.BYTES = poutputbuffer.BYTES ++ n*]
+  -- if ~$ob_user_running(S)
 def $output_write(S, n*) = S[.EVENTS = S.EVENTS ++ [OUTPUT n*]] -- if S.OUTPUTBUFFERS = eps
 def $output_write(S, eps) = S -- if S.OUTPUTBUFFERS =/= eps
+def $output_write(S, n*) = S_lower[.OUTPUTBUFFERS = poutputbuffer :: S_lower.OUTPUTBUFFERS]
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if n* =/= eps
+  -- if $long_and(poutputbuffer.FLAGS, 8192) =/= 0
+  -- if S_lower = $output_write(S[.OUTPUTBUFFERS = poutputbuffer_tail*], n*)
 def $output_write(S, n*) = S[.OUTPUTBUFFERS = poutputbuffer_next :: poutputbuffer_tail*]
   -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
   -- if n* =/= eps
-  -- if poutputbuffer_next = poutputbuffer[.SIZE = $output_grown_size(poutputbuffer, |n*|)][.BYTES = poutputbuffer.BYTES ++ n*]
+  -- if $long_and(poutputbuffer.FLAGS, 8192) = 0
+  -- if poutputbuffer_next = $output_append(S, poutputbuffer, n*)
   -- if poutputbuffer.CHUNK = 0 \/ $(|poutputbuffer_next.BYTES| < poutputbuffer.CHUNK)
 def $output_write(S, n*) = S_lower[.OUTPUTBUFFERS = ($output_processed(poutputbuffer_next)) :: S_lower.OUTPUTBUFFERS]
   -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
   -- if n* =/= eps
-  -- if poutputbuffer_next = poutputbuffer[.SIZE = $output_grown_size(poutputbuffer, |n*|)][.BYTES = poutputbuffer.BYTES ++ n*]
+  -- if $long_and(poutputbuffer.FLAGS, 8192) = 0
+  -- if poutputbuffer.HANDLER = eps
+  -- if poutputbuffer_next = $output_append(S, poutputbuffer, n*)
   -- if $(poutputbuffer.CHUNK > 0 /\ |poutputbuffer_next.BYTES| >= poutputbuffer.CHUNK)
   -- if S_lower = $output_write(S[.OUTPUTBUFFERS = poutputbuffer_tail*], poutputbuffer_next.BYTES)
 
@@ -78,7 +100,8 @@ def $output_display(S, [DISPLAY_STDOUT pevent]) = S[.OUTPUTBLOCKED = true][.COMP
   -- if S.OUTPUTBUFFERS =/= eps
 def $output_display(S, pevent*) = S[.EVENTS = S.EVENTS ++ pevent*] -- otherwise
 def $output_guard(S) = S[.COMPLETION = UNSUPPORTED "stdout diagnostic rendering inside an output buffer"] -- if S.OUTPUTBLOCKED
-def $output_guard(S) = S -- if ~S.OUTPUTBLOCKED
+def $output_guard(S) = S[.COMPLETION = UNSUPPORTED $ob_user_boundary_reason(S)] -- if ~S.OUTPUTBLOCKED /\ $ob_user_boundary(S)
+def $output_guard(S) = S -- if ~S.OUTPUTBLOCKED /\ ~$ob_user_boundary(S)
 
 def $output_deferred_stdout(S) = ($long_and(S.REPORTING, 1) =/= 0) -- if S.COMPLETION = FATAL n* z
 def $output_deferred_stdout(S) = ($long_and(S.REPORTING, 64) =/= 0) -- if S.COMPLETION = STATICERROR text z
@@ -105,9 +128,15 @@ def $output_finalize(S) = S[.OUTPUTBLOCKED = true][.COMPLETION = UNSUPPORTED "st
   -- if S.OUTPUTBUFFERS =/= eps
   -- if $display_state_mode(S) = 1
   -- if $output_deferred_stdout(S)
+def $output_finalize(S) = S[.COMPLETION = UNSUPPORTED "request-end user output-handler callback drain"]
+  -- if ~S.OUTPUTBLOCKED
+  -- if $shutdown_terminal(S.COMPLETION)
+  -- if $output_has_user(S.OUTPUTBUFFERS)
+  -- if $display_state_mode(S) =/= 1 \/ ~$output_deferred_stdout(S)
 def $output_finalize(S) = $output_force_flush(S)
   -- if ~S.OUTPUTBLOCKED
   -- if $shutdown_terminal(S.COMPLETION)
+  -- if ~$output_has_user(S.OUTPUTBUFFERS)
   -- if S.OUTPUTBUFFERS = eps \/ $display_state_mode(S) =/= 1 \/ ~$output_deferred_stdout(S)
 def $output_finalize(S) = S
   -- if ~S.OUTPUTBLOCKED
@@ -115,8 +144,14 @@ def $output_finalize(S) = S
   -- if S.OUTPUTBUFFERS = eps \/ $display_state_mode(S) =/= 1 \/ ~$output_deferred_stdout(S)
 
 def $output_buffers_valid(eps) = true
-def $output_buffers_valid(poutputbuffer :: poutputbuffer_tail*) = ($(poutputbuffer.CHUNK <= 9223372036854775807) /\ $reporting_valid(poutputbuffer.FLAGS) /\ $long_and(poutputbuffer.FLAGS, 40975) = 0 /\ $long_and(poutputbuffer.FLAGS, 20480) <- [0, 20480] /\ (poutputbuffer.CHUNK = 0 \/ $(|poutputbuffer.BYTES| < poutputbuffer.CHUNK)) /\ $(poutputbuffer.SIZE >= $output_initial_size(poutputbuffer.CHUNK) /\ poutputbuffer.SIZE \ 4096 = 0 /\ |poutputbuffer.BYTES| < poutputbuffer.SIZE) /\ $startup_bytes(poutputbuffer.BYTES) /\ $output_buffers_valid(poutputbuffer_tail*))
-def $output_state_valid(S) = $output_buffers_valid(S.OUTPUTBUFFERS)
+def $output_buffers_valid(poutputbuffer :: poutputbuffer_tail*) = ($output_buffer_valid(poutputbuffer) /\ $output_buffers_valid(poutputbuffer_tail*))
+def $output_buffer_valid(poutputbuffer) = ($(poutputbuffer.CHUNK <= 9223372036854775807) /\ $reporting_valid(poutputbuffer.FLAGS) /\ $long_and(poutputbuffer.FLAGS, 8207) = 0 /\ $long_and(poutputbuffer.FLAGS, 20480) <- [0, 20480] /\ (poutputbuffer.CHUNK = 0 \/ $(|poutputbuffer.BYTES| < poutputbuffer.CHUNK)) /\ $(poutputbuffer.SIZE >= $output_initial_size(poutputbuffer.CHUNK) /\ poutputbuffer.SIZE \ 4096 = 0 /\ |poutputbuffer.BYTES| < poutputbuffer.SIZE) /\ $startup_bytes(poutputbuffer.BYTES))
+  -- if poutputbuffer.HANDLER = eps
+def $output_buffer_ids(eps, n) = true
+def $output_buffer_ids(poutputbuffer :: poutputbuffer_tail*, n) = ($(poutputbuffer.ID < n) /\ $output_buffer_ids(poutputbuffer_tail*, poutputbuffer.ID))
+def $output_has_user(eps) = false
+def $output_has_user(poutputbuffer :: poutputbuffer_tail*) = (poutputbuffer.HANDLER =/= eps \/ $output_has_user(poutputbuffer_tail*))
+def $output_state_valid(S) = ($output_buffers_valid(S.OUTPUTBUFFERS) /\ $output_buffer_ids(S.OUTPUTBUFFERS, S.OUTPUTSEQ) /\ $output_user_buffers_valid(S, S.OUTPUTBUFFERS))
 
 ;; Callable lookup and CONFIG argument capture are shared with core APIs.
 def $intrinsic_name(INTRINSIC_OB_START) = $ptascii("ob_start")
@@ -368,20 +403,24 @@ rule PhpStep/ob-notice-wrapper: S ~> $ob_notice(S, pobnotice.CALL, pobnotice.VAL
   -- if $ob_notice_valid(S, pobnotice)
   -- if pobnotice.SECOND
   -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if poutputbuffer.HANDLER = eps
+rule PhpStep/ob-notice-wrapper-user: S ~> S[.COMPLETION = UNSUPPORTED "user output-handler wrapper capability notice"]
+  -- if S.TODO = (OB_NOTICE_RESULT pobnotice) :: ptask_tail*
+  -- if $ob_notice_valid(S, pobnotice)
+  -- if pobnotice.SECOND
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if poutputbuffer.HANDLER =/= eps
 rule PhpStep/ob-notice-wrapper-no-active: S ~> S[.COMPLETION = UNSUPPORTED "output-buffer wrapper notice with no live handler"]
   -- if S.TODO = (OB_NOTICE_RESULT pobnotice) :: ptask_tail*
   -- if $ob_notice_valid(S, pobnotice)
   -- if pobnotice.SECOND
   -- if S.OUTPUTBUFFERS = eps
 
-def $ob_operation(S, pconfigcall, [PNULL, PINT i_chunk, PINT i_flags]) = $ob_return(S[.OUTPUTBUFFERS = poutputbuffer :: S.OUTPUTBUFFERS], PBOOL true)
+def $ob_operation(S, pconfigcall, [PNULL, PINT i_chunk, PINT i_flags]) = $ob_return(S[.OUTPUTSEQ = $(S.OUTPUTSEQ + 1)][.OUTPUTBUFFERS = poutputbuffer :: S.OUTPUTBUFFERS], PBOOL true)
   -- if pconfigcall.KIND = INTRINSIC_OB_START
+  -- if ~$ob_user_running(S)
   -- if n_chunk = $nabs($ob_chunk(i_chunk))
-  -- if poutputbuffer = {CHUNK n_chunk, FLAGS $long_and($error_int32(i_flags), $(-61456)), SIZE $output_initial_size(n_chunk), BYTES eps}
-def $ob_operation(S, pconfigcall, pvalue_values*) = S[.COMPLETION = UNSUPPORTED "ob_start output-handler callback dependency"]
-  -- if pconfigcall.KIND = INTRINSIC_OB_START
-  -- if pvalue_values* = pvalue :: pvalue_tail*
-  -- if pvalue =/= PNULL
+  -- if poutputbuffer = {ID S.OUTPUTSEQ, HANDLER eps, CHUNK n_chunk, FLAGS $long_and($error_int32(i_flags), $(-61456)), SIZE $output_initial_size(n_chunk), BYTES eps}
 def $ob_chunk(i) = 0 -- if $(i < 0)
 def $ob_chunk(i) = i -- if $(i >= 0)
 def $ob_operation(S, pconfigcall, [PBOOL b]) = $ob_return(S[.OUTPUTIMPLICIT = b], PNULL) -- if pconfigcall.KIND = INTRINSIC_OB_IMPLICIT_FLUSH
@@ -408,16 +447,21 @@ def $ob_operation(S, pconfigcall, [PBOOL b]) = $ob_return(S_status, pvalue)
 def $ob_operation(S, pconfigcall, eps) = $ob_notice(S, pconfigcall, PBOOL false, false, false, eps)
   -- if $ob_active_operation(pconfigcall.KIND) \/ $ob_pop_kind(pconfigcall.KIND)
   -- if pconfigcall.KIND =/= INTRINSIC_OB_GET_CLEAN
+  -- if ~$ob_user_running(S)
   -- if S.OUTPUTBUFFERS = eps
 def $ob_operation(S, pconfigcall, eps) = $ob_notice(S_copy, pconfigcall, $ob_failure_value(pconfigcall.KIND, pvalue), $ob_get_kind(pconfigcall.KIND), false, (|poutputbuffer_tail*|))
   -- if $ob_active_operation(pconfigcall.KIND) \/ $ob_pop_kind(pconfigcall.KIND)
+  -- if ~$ob_user_running(S)
   -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if poutputbuffer.HANDLER = eps
   -- if $long_and(poutputbuffer.FLAGS, $ob_capability(pconfigcall.KIND)) = 0
   -- if S_copy = $ob_snapshot(S, pconfigcall.KIND, poutputbuffer.BYTES)
   -- if S_copy.RESULT = KNOWN pvalue
 def $ob_operation(S, pconfigcall, eps) = $ob_return(S_done, pvalue)
   -- if $ob_active_operation(pconfigcall.KIND) \/ $ob_pop_kind(pconfigcall.KIND)
+  -- if ~$ob_user_running(S)
   -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if poutputbuffer.HANDLER = eps
   -- if $long_and(poutputbuffer.FLAGS, $ob_capability(pconfigcall.KIND)) =/= 0
   -- if S_copy = $ob_snapshot(S, pconfigcall.KIND, poutputbuffer.BYTES)
   -- if S_copy.RESULT = KNOWN pvalue
@@ -441,8 +485,12 @@ rule PhpStep/ob-operation: S ~> $ob_operation(S, pconfigcall, pvalue_values*)
   -- if n = $ob_max(pconfigcall.KIND)
 
 def $ob_handler_list(eps) = $array_empty()
-def $ob_handler_list(poutputbuffer :: poutputbuffer_tail*) = $array_insert($ob_handler_list(poutputbuffer_tail*), KINT (|poutputbuffer_tail*|), DIRECT (PSTRING_CARRIER INTERNED_STRING ($ptascii("default output handler"))))
-def $ob_status_array(poutputbuffer, n_level) = $ob_entries([ENTRY (KSTRING ($ptascii("name"))) (DIRECT (PSTRING_CARRIER INTERNED_STRING ($ptascii("default output handler")))), ENTRY (KSTRING ($ptascii("type"))) (DIRECT (PINT 0)), ENTRY (KSTRING ($ptascii("flags"))) (DIRECT (PINT poutputbuffer.FLAGS)), ENTRY (KSTRING ($ptascii("level"))) (DIRECT (PINT n_level)), ENTRY (KSTRING ($ptascii("chunk_size"))) (DIRECT (PINT poutputbuffer.CHUNK)), ENTRY (KSTRING ($ptascii("buffer_size"))) (DIRECT (PINT poutputbuffer.SIZE)), ENTRY (KSTRING ($ptascii("buffer_used"))) (DIRECT (PINT (|poutputbuffer.BYTES|)))])
+def $ob_buffer_name(poutputbuffer) = $ptascii("default output handler") -- if poutputbuffer.HANDLER = eps
+def $ob_buffer_name(poutputbuffer) = poutputhandler.NAME -- if poutputbuffer.HANDLER = (poutputhandler)
+def $ob_name_value(poutputbuffer) = PSTRING_CARRIER INTERNED_STRING ($ptascii("default output handler")) -- if poutputbuffer.HANDLER = eps
+def $ob_name_value(poutputbuffer) = PSTRING poutputhandler.NAME -- if poutputbuffer.HANDLER = (poutputhandler)
+def $ob_handler_list(poutputbuffer :: poutputbuffer_tail*) = $array_insert($ob_handler_list(poutputbuffer_tail*), KINT (|poutputbuffer_tail*|), DIRECT ($ob_name_value(poutputbuffer)))
+def $ob_status_array(poutputbuffer, n_level) = $ob_entries([ENTRY (KSTRING ($ptascii("name"))) (DIRECT ($ob_name_value(poutputbuffer))), ENTRY (KSTRING ($ptascii("type"))) (DIRECT (PINT $long_and(poutputbuffer.FLAGS, 15))), ENTRY (KSTRING ($ptascii("flags"))) (DIRECT (PINT poutputbuffer.FLAGS)), ENTRY (KSTRING ($ptascii("level"))) (DIRECT (PINT n_level)), ENTRY (KSTRING ($ptascii("chunk_size"))) (DIRECT (PINT poutputbuffer.CHUNK)), ENTRY (KSTRING ($ptascii("buffer_size"))) (DIRECT (PINT poutputbuffer.SIZE)), ENTRY (KSTRING ($ptascii("buffer_used"))) (DIRECT (PINT (|poutputbuffer.BYTES|)))])
 def $ob_entries(eps) = $array_empty()
 def $ob_entries(pentry :: pentry_tail*) = $ob_entries_acc(pentry :: pentry_tail*, $array_empty())
 def $ob_entries_acc(eps, parray) = parray
