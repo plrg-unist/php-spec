@@ -2289,6 +2289,8 @@ through second GC/E to its O destructor, retirement and actual caller-cut budget
 Original first-GC141d/later-store0c1b failures and fixture-analysis0411 remain0;
 source-qualified diagnostic tuples are separate. Wider layouts, native ownership,
 physical collection and broad returns verification remain OPEN.
+Actual `fa74e4b0`/387 composition passes one quiet ff24 strict gate (app0);
+the parent cached-table GC guard is preserved without private evidence renewal.
 
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
