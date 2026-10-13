@@ -84,12 +84,13 @@ def $output_write(S, n*) = S[.OUTPUTBUFFERS = poutputbuffer_next :: poutputbuffe
   -- if n* =/= eps
   -- if $long_and(poutputbuffer.FLAGS, 8192) = 0
   -- if poutputbuffer_next = $output_append(S, poutputbuffer, n*)
-  -- if poutputbuffer.CHUNK = 0 \/ $(|poutputbuffer_next.BYTES| < poutputbuffer.CHUNK)
+  -- if poutputbuffer.CHUNK = 0 \/ $(|poutputbuffer_next.BYTES| < poutputbuffer.CHUNK) \/ $ob_user_running(S)
 def $output_write(S, n*) = S_lower[.OUTPUTBUFFERS = ($output_processed(poutputbuffer_next)) :: S_lower.OUTPUTBUFFERS]
   -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
   -- if n* =/= eps
   -- if $long_and(poutputbuffer.FLAGS, 8192) = 0
   -- if poutputbuffer.HANDLER = eps
+  -- if ~$ob_user_running(S)
   -- if poutputbuffer_next = $output_append(S, poutputbuffer, n*)
   -- if $(poutputbuffer.CHUNK > 0 /\ |poutputbuffer_next.BYTES| >= poutputbuffer.CHUNK)
   -- if S_lower = $output_write(S[.OUTPUTBUFFERS = poutputbuffer_tail*], poutputbuffer_next.BYTES)
@@ -145,7 +146,7 @@ def $output_finalize(S) = S
 
 def $output_buffers_valid(eps) = true
 def $output_buffers_valid(poutputbuffer :: poutputbuffer_tail*) = ($output_buffer_valid(poutputbuffer) /\ $output_buffers_valid(poutputbuffer_tail*))
-def $output_buffer_valid(poutputbuffer) = ($(poutputbuffer.CHUNK <= 9223372036854775807) /\ $reporting_valid(poutputbuffer.FLAGS) /\ $long_and(poutputbuffer.FLAGS, 8207) = 0 /\ $long_and(poutputbuffer.FLAGS, 20480) <- [0, 20480] /\ (poutputbuffer.CHUNK = 0 \/ $(|poutputbuffer.BYTES| < poutputbuffer.CHUNK)) /\ $(poutputbuffer.SIZE >= $output_initial_size(poutputbuffer.CHUNK) /\ poutputbuffer.SIZE \ 4096 = 0 /\ |poutputbuffer.BYTES| < poutputbuffer.SIZE) /\ $startup_bytes(poutputbuffer.BYTES))
+def $output_buffer_valid(poutputbuffer) = ($(poutputbuffer.CHUNK <= 9223372036854775807) /\ $reporting_valid(poutputbuffer.FLAGS) /\ $long_and(poutputbuffer.FLAGS, 8207) = 0 /\ $long_and(poutputbuffer.FLAGS, 20480) <- [0, 20480] /\ (poutputbuffer.CHUNK = 0 \/ $(|poutputbuffer.BYTES| < poutputbuffer.CHUNK) \/ $long_and(poutputbuffer.FLAGS, 32768) =/= 0) /\ $(poutputbuffer.SIZE >= $output_initial_size(poutputbuffer.CHUNK) /\ poutputbuffer.SIZE \ 4096 = 0 /\ |poutputbuffer.BYTES| < poutputbuffer.SIZE) /\ $startup_bytes(poutputbuffer.BYTES))
   -- if poutputbuffer.HANDLER = eps
 def $output_buffer_ids(eps, n) = true
 def $output_buffer_ids(poutputbuffer :: poutputbuffer_tail*, n) = ($(poutputbuffer.ID < n) /\ $output_buffer_ids(poutputbuffer_tail*, poutputbuffer.ID))

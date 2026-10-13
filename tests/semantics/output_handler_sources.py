@@ -26,6 +26,7 @@ CASES = {
     'negative-chunk-wide-flags': (b'<?php function h($b,$p){return $p.$b;}ob_start("h",-2,4294967408);$s=ob_get_status();echo "A";ob_end_flush();echo ":".$s["flags"].":".$s["chunk_size"];', b'9A:113:0'),
     'named-unpack-selection': (b'<?php function h($b,$p){return $p.$b;}ob_start(flags:112,callback:"h",chunk_size:0);echo "N";ob_end_flush();$f="ob_start";$f(...["callback"=>"h","chunk_size"=>0]);echo "U";ob_end_flush();', b'9N9U'),
     'produced-api-lines': (b'<?php\nfunction h($b,$p){echo "H";return $b;}\nob_start("h");\necho "A";\nob_flush();\nob_end_clean();', b'A'),
+    'lower-default-running-threshold': (b'<?php $seen="";function h($b,$p){echo "H";return "X".$b;}function eh($n,$m){global $seen;echo "E";$a=ob_get_status(true);$seen=$a[0]["buffer_used"].":".$a[0]["flags"];return true;}set_error_handler("eh");ob_start(null,1);ob_start("h");echo "A";ob_end_flush();$s=ob_get_status();ob_end_clean();echo "|".$seen."|".$s["buffer_used"].":".$s["flags"];', b'EXA|1:32880|0:53360'),
     'default-none-routing': (b'<?php ob_start();echo "A";ob_start(null,3);echo "BCD";ob_end_flush();$s=ob_get_clean();echo $s;', b'ABCD'),
 }
 CONTROLS = {

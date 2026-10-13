@@ -15,6 +15,7 @@ CASES = {
     'owned-pop': (b'<?php $log="";class C{function h($b,$p){return "X".$b;}function __destruct(){global $log;$log.="D".ob_get_level();}}$r=new C;$cb=[$r,"h"];ob_start($cb);unset($r,$cb);echo "A";ob_end_flush();echo "(".$log.")";', b'XA(D0)'),
     'produced-deprecation': (b'<?php $log="";set_error_handler(function($n,$m){global $log;$s=ob_get_status();$log=$s["flags"].":".ob_get_contents();echo "E";return true;});function h($b,$p){echo "H";return "X".$b;}ob_start("h");echo "A";ob_end_flush();echo "(".$log.")";', b'EXA(8305:AH)'),
     'frozen-getter': sources.CASES['get-clean-snapshot'],
+    'lower-running-threshold': (b'<?php $seen="";function h($b,$p){echo "H";return "X".$b;}function eh($n,$m){global $seen;echo "E";$a=ob_get_status(true);$seen=$a[0]["buffer_used"].":".$a[0]["flags"];return true;}set_error_handler("eh");ob_start(null,1);ob_start("h");echo "A";ob_end_clean();echo "B";ob_end_clean();echo "|".$seen;', b'EB|1:32880'),
 }
 PREFIX = r'''
 dec $oh_test_output(pevent*) : preqbytes
@@ -52,6 +53,14 @@ def $oh_test_phase(S, 4) = true
 def $oh_test_phase(S, 5) = true
   -- if S.TODO = (OB_USER_RELEASE pobrelease) :: ptask_tail*
   -- if pobrelease.CALL.KIND = INTRINSIC_OB_GET_CLEAN
+def $oh_test_phase(S, 6) = true
+  -- if S.OUTPUTBUFFERS = [poutputbuffer, {ID 0, HANDLER eps, CHUNK 1, FLAGS 32880, SIZE 4096, BYTES ([69])}]
+  -- if poutputbuffer.ID = 1 /\ poutputbuffer.FLAGS = 8305
+  -- if $ob_user_running(S)
+def $oh_test_phase(S, 7) = true
+  -- if S.TODO = (AT porigin (STMT (NStmtEcho (SEQUENCE ([NScalarString (BYTES "Qg==") metadata_string])) metadata_echo))) :: ptask_tail*
+  -- if S.OUTPUTBUFFERS = [{ID 0, HANDLER eps, CHUNK 1, FLAGS 32880, SIZE 4096, BYTES ([69])}]
+  -- if ~$ob_user_running(S)
 def $oh_test_phase(S, n) = false -- otherwise
 dec $oh_test_seek(pstate, nat, nat) : pstate
 def $oh_test_seek(S, n_phase, n) = S -- if S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET
@@ -86,6 +95,31 @@ def seek(parent, state, phase):
 def assertions(name, fixture, directory, path):
     initial = '$php_file_run(' + fixture + ', 0, ' + bytes_expr(os.fsencode(path)) + ', ' + bytes_expr(os.fsencode(directory)) + ')'
     checks = ['S_initial = ' + initial, 'S_initial.COMPLETION = BUDGET', *valid('S_initial')]
+    if name == 'lower-running-threshold':
+        checks += seek('S_initial', 'S_busy', 6)
+        checks += ['$oh_test_output(S_busy.EVENTS) = eps',
+                   'S_busy.OUTPUTBUFFERS = poutputbuffer_user :: poutputbuffer_lower :: eps',
+                   '$long_and(poutputbuffer_lower.FLAGS, 32768) = 32768',
+                   '$output_buffer_valid(poutputbuffer_lower)',
+                   '~$output_buffer_valid(poutputbuffer_lower[.FLAGS = 112])',
+                   '~$output_buffer_valid(poutputbuffer_lower[.SIZE = 4095])',
+                   'S_busy_budget = $drive_steps(S_busy, 0)',
+                   'S_busy_budget.COMPLETION = BUDGET',
+                   'S_busy_budget.OUTPUTBUFFERS = S_busy.OUTPUTBUFFERS', *valid('S_busy_budget')]
+        checks += seek('S_busy', 'S_retained', 7)
+        checks += ['S_retained.OUTPUTBUFFERS = [poutputbuffer_lower]',
+                   '$oh_test_output(S_retained.EVENTS) = eps',
+                   '$output_write(S_retained, eps).OUTPUTBUFFERS = S_retained.OUTPUTBUFFERS',
+                   'S_retained_budget = $drive_steps(S_retained, 0)',
+                   'S_retained_budget.COMPLETION = BUDGET',
+                   'S_retained_budget.OUTPUTBUFFERS = S_retained.OUTPUTBUFFERS', *valid('S_retained_budget'),
+                   '~$output_state_valid(S_retained[.OUTPUTBUFFERS = [poutputbuffer_lower[.FLAGS = 112]]])',
+                   '~$output_state_valid(S_retained[.OUTPUTBUFFERS = [poutputbuffer_lower[.BYTES = ([256])]]])',
+                   'S_done = $drive_steps(S_retained, 1024)',
+                   r'S_done.COMPLETION = NORMAL /\ S_done.TODO = eps /\ S_done.CURRENT = eps /\ S_done.FRAMES = eps',
+                   r'S_done.OUTPUTBUFFERS = eps /\ ~$ob_user_running(S_done)',
+                   '$oh_test_output(S_done.EVENTS) = ' + bytes_expr(CASES[name][1]), *valid('S_done')]
+        return checks
     phase = {'borrowed-alias': 0, 'owned-pop': 1, 'produced-deprecation': 3, 'frozen-getter': 4}[name]
     checks += seek('S_initial', 'S_reached', phase)
     checks += ['S_reached.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*',

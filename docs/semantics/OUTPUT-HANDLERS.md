@@ -15,6 +15,9 @@ disabling that layer. Error-handler writes then bypass it, including the native
 PRODUCED bit on an enabled lower default layer. FALSE forwards the current live
 bytes and permanently disables the handler, with empty storage of size0. TRUE
 and NULL suppress output; other admitted scalars supply converted bytes.
+Lower default layers defer reached chunk thresholds while a user handler runs.
+Those bytes can remain buffered after a clean operation until the next write or
+an explicit flush.
 
 The raw callback value (`zoh`) is the buffer's sole callback owner. Cached FCC
 selection and original snapshots are readonly witnesses. Reference-backed raw
