@@ -3688,6 +3688,18 @@ originals supply catch and complete endings. The original 73-check owner forecas
 its corrected control authenticates the two real destructor-entry task roots.
 Presence/reference/method and wider key/map protocols remain required.
 
+Reads during postponed Key notification now require the unique active stdClass
+pin, its live allocated wrapper and its actual store handle. A later-entry read
+creates a strong Value copy; a missing entry throws the handle-based Error while
+the later edge stays intact. Notice clearing denies reads even with an extra Key
+owner. The 111-byte normal and 162-byte caught-Error originals agree at
+`2565d378`; copy (146), cleanup (65) and Error/search (98) checks total 309.
+They stop at shared release, scheduled later VALUE or THROW_SEARCH; originals
+supply endings. Both Unsupported attempts, the diagnostic tuple and failed
+148/146 receiver forecasts retain zero credit. Inactive/wider freeing reads,
+escaped targets and the other map protocols remain required.
+[Ledger](coverage/semantics/weak-map-review.json).
+
 Explicit object-key entry unset now clears only the map's value edge; existing
 eager comparison transfers that owner into an authentic VALUE release. Missing
 keys preserve the entry, and a held CV keeps the removed value live and uncalled.

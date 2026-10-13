@@ -237,8 +237,8 @@ failures retain zero credit.
 
 The engine basis is payload insertion order in `zend_weakref_register` and
 sequential `zend_weakref_unref`/`zend_weakref_unref_single` in `Zend/zend_weakrefs.c`.
-More maps/entries, equal-BEFORE or general registration order, mutation/read while
-Key is freeing, wider graphs and escaped callback owners remain required. No
+More maps/entries, equal-BEFORE or general registration order, wider mutation/read
+while Key is freeing, wider graphs and escaped callback owners remain required. No
 GC, reference, presence, method or iteration widening is claimed. Countable stays
 nominal-only. [Ledger](../../coverage/semantics/weak-map-review.json).
 
@@ -294,6 +294,37 @@ ordinary `BP_VAR_R` read returns the stored zval; a missing object key reports t
 class and object-store handle. Presence/isset, reference/compound reads, other key
 types, methods/iteration, wider entry shapes, mutation during freeing and ephemeron collection remain required. Countable stays nominal-only; count execution remains
 excluded/Unsupported per CORE.
+
+## Reads during postponed Key notification
+
+An ordinary `KEY_R` read can use a physically pinned leaf stdClass Key while its
+unique active TODO/saved-frame pin has pending NOTIFY. The allocated wrapper must
+be the actual find result and match NOTIFY. The existing current task, base, input
+and source certificate still authenticate the read, and the map must be live.
+The pin supplies the actual object-store handle; shutdown handle iteration keeps
+its existing exclusion of freeing instances.
+
+A matching read creates an ordinary strong Value result and releases its temporary
+Key owner through the shared release path. A missing entry materializes Error with
+the actual handle, then retains that Error through temporary-Key cleanup until
+THROW_SEARCH. The later map edge and Value owner stay intact. Once NOTIFY clears,
+neither an extra strong Key owner nor inactive, duplicate or competing notice
+metadata authorizes another read.
+
+Two originals (111/162 bytes) agree at `2565d378`; copy (146), cleanup (65) and
+missing Error (98) checks total 309. Reached cuts stop at shared release, scheduled
+later VALUE or THROW_SEARCH, with originals supplying complete endings. Coherent
+cleared-notice/extra-owner controls are distinct from malformed or inactive-only
+carrier controls. Earlier Unsupported attempts, the operand diagnostic and both
+receiver-fixture forecasts retain zero credit; the final fixture authenticates the
+real destructor METHOD_TARGET.
+
+The engine basis is `zend_weakmap_read_dimension`, `zend_weakref_get` and sequential
+`zend_weakref_unref_single` in `Zend/zend_weakrefs.c`, with the physical free_obj pin
+in `zend_objects_store_del`. Wider freeing keys/maps, escaped targets, inactive
+carriers, mutations, presence/reference/method/iteration and general registration
+or ephemeron protocols remain required. Existing get and cleanup rules are unchanged.
+[Ledger](../../coverage/semantics/weak-map-review.json).
 
 ## Explicit entry unset
 

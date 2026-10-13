@@ -1191,6 +1191,13 @@ actual object-store handle and preserves the existing entry. Two originals agree
 with PHP at `c4c097e`; 297 reached checks pass. Presence,
 reference and wider map protocols remain required.
 
+A callback can also read while a leaf key's unique active storage pin still has
+pending notification. The read copies the later entry's value; a missing entry
+throws Error with the pin's actual object-store handle. Clearing notification
+denies further reads even with a retained key owner. Two originals (111/162 bytes)
+and 309 reached checks pass at `2565d378`. Inactive carriers, escaped targets and
+wider freeing reads remain required.
+
 Explicit `unset($map[$key])` removes a matching entry before its value destructor
 while the map and key stay live. Missing object keys are no-ops; a separately held
 value survives entry removal. Throwing cleanup resumes the same pending Exception.
