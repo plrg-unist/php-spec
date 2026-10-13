@@ -30,20 +30,20 @@ dec $ob_test_phase(pstate, nat) : bool
 def $ob_test_phase(S, 0) = true
   -- if S.TODO = (OB_PARSE pconfigcall 0 eps) :: ptask_tail*
   -- if pconfigcall.KIND = INTRINSIC_OB_GET_CONTENTS
-  -- if S.OUTPUTBUFFERS = [{CHUNK 0, FLAGS 112, SIZE 16384, BYTES ([65])}]
+  -- if S.OUTPUTBUFFERS = [{ID 0, HANDLER eps, CHUNK 0, FLAGS 112, SIZE 16384, BYTES ([65])}]
 def $ob_test_phase(S, 1) = true
-  -- if S.OUTPUTBUFFERS = [{CHUNK 3, FLAGS 20592, SIZE 4096, BYTES eps}, {CHUNK 0, FLAGS 112, SIZE 16384, BYTES ([97,98,99,100,101,102])}]
+  -- if S.OUTPUTBUFFERS = [{ID 1, HANDLER eps, CHUNK 3, FLAGS 20592, SIZE 4096, BYTES eps}, {ID 0, HANDLER eps, CHUNK 0, FLAGS 112, SIZE 16384, BYTES ([97,98,99,100,101,102])}]
 def $ob_test_phase(S, 2) = true
   -- if S.TODO = (OB_NOTICE_RESULT pobnotice) :: ptask_tail*
   -- if pobnotice.SECOND /\ ~pobnotice.WRAPPER
-  -- if S.OUTPUTBUFFERS = [{CHUNK 0, FLAGS 112, SIZE 16384, BYTES ([72])}, {CHUNK 0, FLAGS 0, SIZE 16384, BYTES ([65])}]
+  -- if S.OUTPUTBUFFERS = [{ID 1, HANDLER eps, CHUNK 0, FLAGS 112, SIZE 16384, BYTES ([72])}, {ID 0, HANDLER eps, CHUNK 0, FLAGS 0, SIZE 16384, BYTES ([65])}]
 def $ob_test_phase(S, 3) = true
   -- if S.TODO = (OB_NOTICE_RESULT pobnotice) :: ptask_tail*
   -- if pobnotice.WRAPPER
-  -- if S.OUTPUTBUFFERS = [{CHUNK 0, FLAGS 112, SIZE 16384, BYTES ([72,72])}, {CHUNK 0, FLAGS 0, SIZE 16384, BYTES ([65])}]
+  -- if S.OUTPUTBUFFERS = [{ID 1, HANDLER eps, CHUNK 0, FLAGS 112, SIZE 16384, BYTES ([72,72])}, {ID 0, HANDLER eps, CHUNK 0, FLAGS 0, SIZE 16384, BYTES ([65])}]
 def $ob_test_phase(S, 4) = true
   -- if S.SHUTDOWN.PHASE = SHUTDOWN_RUNNING
-  -- if S.OUTPUTBUFFERS = [{CHUNK 0, FLAGS 0, SIZE 16384, BYTES ([65])}]
+  -- if S.OUTPUTBUFFERS = [{ID 0, HANDLER eps, CHUNK 0, FLAGS 0, SIZE 16384, BYTES ([65])}]
 def $ob_test_phase(S, n) = false -- otherwise
 dec $ob_test_seek(pstate, nat, nat) : pstate
 def $ob_test_seek(S, n_phase, n) = S -- if S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET
@@ -83,7 +83,7 @@ def assertions(name, fixture, directory, path):
     if name == 'blocked-warning':
         return checks + ['S_blocked = $drive_steps(S_initial[.COMPLETION = NORMAL], 1024)',
                          'S_blocked.COMPLETION = UNSUPPORTED "stdout diagnostic rendering inside an output buffer"',
-                         'S_blocked.OUTPUTBLOCKED /\\ S_blocked.OUTPUTBUFFERS = [{CHUNK 0, FLAGS 112, SIZE 16384, BYTES eps}]',
+                         'S_blocked.OUTPUTBLOCKED /\\ S_blocked.OUTPUTBUFFERS = [{ID 0, HANDLER eps, CHUNK 0, FLAGS 112, SIZE 16384, BYTES eps}]',
                          '$ob_test_output(S_blocked.EVENTS) = ([80])',
                          'S_reblocked = $output_guard(S_blocked[.COMPLETION = NORMAL])',
                          'S_reblocked.COMPLETION = S_blocked.COMPLETION',
@@ -106,14 +106,14 @@ def assertions(name, fixture, directory, path):
                    'n_copy = |S_reached.STRINGDATA|',
                    'S_copied.STRINGDATA[n_copy] = ([65])',
                    'S_copied.OUTPUTBUFFERS = S_reached.OUTPUTBUFFERS', *valid('S_copied'),
-                   'S_malformed = S_reached[.OUTPUTBUFFERS = [{CHUNK 0, FLAGS 112, SIZE 4096, BYTES ([65])}]]',
+                   'S_malformed = S_reached[.OUTPUTBUFFERS = [{ID 0, HANDLER eps, CHUNK 0, FLAGS 112, SIZE 4096, BYTES ([65])}]]',
                    '~$output_state_valid(S_malformed) /\\ ~$call_descriptors_valid(S_malformed)',
-                   '~$output_state_valid(S_reached[.OUTPUTBUFFERS = [{CHUNK 0, FLAGS 112, SIZE 16384, BYTES ([256])}]])',
-                   '~$output_state_valid(S_reached[.OUTPUTBUFFERS = [{CHUNK 0, FLAGS 8192, SIZE 16384, BYTES eps}]])',
-                   '~$output_state_valid(S_reached[.OUTPUTBUFFERS = [{CHUNK 0, FLAGS 4096, SIZE 16384, BYTES eps}]])',
-                   '~$output_state_valid(S_reached[.OUTPUTBUFFERS = [{CHUNK 0, FLAGS 4294967408, SIZE 16384, BYTES eps}]])']
+                   '~$output_state_valid(S_reached[.OUTPUTBUFFERS = [{ID 0, HANDLER eps, CHUNK 0, FLAGS 112, SIZE 16384, BYTES ([256])}]])',
+                   '~$output_state_valid(S_reached[.OUTPUTBUFFERS = [{ID 0, HANDLER eps, CHUNK 0, FLAGS 8192, SIZE 16384, BYTES eps}]])',
+                   '~$output_state_valid(S_reached[.OUTPUTBUFFERS = [{ID 0, HANDLER eps, CHUNK 0, FLAGS 4096, SIZE 16384, BYTES eps}]])',
+                   '~$output_state_valid(S_reached[.OUTPUTBUFFERS = [{ID 0, HANDLER eps, CHUNK 0, FLAGS 4294967408, SIZE 16384, BYTES eps}]])']
     if name == 'chunks':
-        checks += ['~$output_state_valid(S_reached[.OUTPUTBUFFERS = [{CHUNK 3, FLAGS 112, SIZE 4096, BYTES ([65,66,67])}]])',
+        checks += ['~$output_state_valid(S_reached[.OUTPUTBUFFERS = [{ID 0, HANDLER eps, CHUNK 3, FLAGS 112, SIZE 4096, BYTES ([65,66,67])}]])',
                    '$ob_test_output($output_finalize(S_reached[.COMPLETION = SOURCE_PENDING]).EVENTS) = eps',
                    '$output_finalize(S_reached[.COMPLETION = SOURCE_PENDING]).OUTPUTBUFFERS = S_reached.OUTPUTBUFFERS',
                    '$output_finalize(S_reached[.COMPLETION = UNSUPPORTED "dependency"]).OUTPUTBUFFERS = S_reached.OUTPUTBUFFERS']
