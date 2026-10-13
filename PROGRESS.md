@@ -16,6 +16,8 @@ original exit0/native255 baseline remains0. Static roots/destructor policy are
 unchanged. Caught shutdown-exit replacement returning to frozen fatal completion
 remains a next observer gap (native v19).
 [Fatal-status ledger](coverage/semantics/source-static-fatal-status-review.json).
+The383 composition over2676 passes independent pointwise review at0f51a247;
+parent ticks/WeakMap behavior is preserved. No renewed source/state evidence.
 
 Ticks393 is independently accepted; its current383 composition is checked.
 Source-derived
