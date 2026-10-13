@@ -232,6 +232,17 @@ wrong-line refusal, fresh caller-cell checks and a late budget comparison. The
 generic helper exceeds this string-literal witness; broader reentry/lifecycle/NULL-form
 restoration and complete returns verification remain OPEN.
 
+A source-bound counter-guarded destructor now admits a noarg call to the same named
+f, with the selected Y increment and ordinary string history guards preserved.
+Source2, reached2/324 and independent nested public129/1 pass at `7ab32609`.
+The actual saved destructor7/outer f21/main registered1/1/1 prefix publicly admits;
+missing outer operation exit refuses. The unused nested return resumes the genuine
+destructor before T, followed by D, while the same original Y TypeError survives
+ordered Z/W/X retirement and caller catch. Selected bypass skips object birth and
+keeps its alias; counter-PBOOL refusal and a budget split before T are checked.
+No active lifecycle, error-chaining, Notice or root rule changed. The local source
+certificate and this guarded witness leave wider reentry/returns OPEN.
+
 Module 186 converts a selected live unconstrained aliased return CV before protected
 finalizer entry. Stringable callbacks may rebind/unset GLOBALS without redirecting
 the captured cell; current/saved f-local bindings authenticate it. Success writes

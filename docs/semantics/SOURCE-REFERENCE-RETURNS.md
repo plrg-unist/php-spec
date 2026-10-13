@@ -274,6 +274,18 @@ prefixes admit, wrong global W/X targets refuse, and both caller reads warn on
 line6 only after retirement. Existing unset/destructor rules supply all effects;
 local reconstruction and the bounded witness leave wider unset/returns OPEN.
 
+An additive checked destructor route links a GLOBALS counter guard to the selected
+Y finalizer's first increment and resolves its noarg call to the current named f.
+All histories retain their ordinary string/global/source guards, and common idle
+admission is unchanged. Source2, reached2/324 and independent public129/1 pass at
+`7ab32609`: actual nested f and the full registered saved-frame stack admit,
+unused return resumes the destructor before T/D, and the original outer Y error
+survives ordered retirement/caller cleanup. Missing outer operation exit and
+counter-only PBOOL payload refuse. The selected bypass retains its alias without
+object birth/reentry. Existing active machinery supplies all callback effects;
+source reconstruction after reduced history remains local, and the exact linked
+shape exceeds this n2/Q/T/D witness. Wider reentry/returns remain OPEN.
+
 Module 186 captures the physical cell of an ordinary live unconstrained aliased CV
 before weak Stringable conversion. Its retained current/saved f-local binding
 authenticates that selection independently of later GLOBALS rebind/unset. Success

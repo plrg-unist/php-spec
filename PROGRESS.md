@@ -1607,6 +1607,21 @@ remains a local source certificate; wider unset/lifecycle/returns remain OPEN.
 Actual379 over `03ebb6ed` passes strict at `f01eb8f8` in 6.274s with zero
 applications; original private source/state/independent cuts remain separate.
 
+The idle lifecycle certificate now admits a checked counter-guarded destructor
+call to the same named f, retaining all original string/idle/prefix guards.
+Source2 and reached2/324 (238+86) pass at `7ab32609`: nested f returns unused PNULL
+to the genuine destructor before T; T then D preserves the original Y TypeError
+through ordered Z/W/X retirement and the caller. Public counter-PBOOL refusal,
+late budget equality and the selected alias/no-object bypass pass. Independent
+public129/1 binds actual nested f/saved destructor7/outer f21/main registered1/1/1
+and refuses a missing outer operation exit. Private strict379 passes in 5.969s
+with zero applications; maintained producer is byte-identical. The original
+fixture parse and qualified-name finder failures keep zero state/diagnostic
+credit; separate elaboration checks are syntax-only. No active lifecycle guard
+changed. Reduced-history reconstruction remains a local source certificate;
+wider reentry/lifecycle and broad returns_verify remain OPEN.
+[Multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
 cell while GLOBALS may rebind or disappear; conversion writes the old cell atomically.

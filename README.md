@@ -917,6 +917,12 @@ removing its global binding. Two originals, reached2/326 and independent public1
 pass separately; both caller reads emit their original line6 Warning, with none
 during retirement. The bypass stays quiet. Post-W reconstruction remains local;
 wider unset/lifecycle and returns verification remain OPEN.
+A checked counter-guarded destructor may call the same named f before its literal
+tail. Two originals, reached2/324 and independent nested public129/1 pass
+separately: nested return precedes T/D, the original Y error reaches the caller,
+and selected bypass keeps its alias without object birth. Missing cleanup and a
+bool counter payload are publicly refused. Existing active lifecycle rules are
+unchanged; wider reentry and returns verification remain OPEN.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)
