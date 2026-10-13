@@ -154,8 +154,8 @@ def $property_hook_origin(S, ppropertydesc) = $property_hook_trait_origin(S, ppr
   -- if ppropertydesc.ORIGIN = TRAIT_MEMBER_ORIGIN porigin_owner porigin_source
 
 dec $property_hook_trait_property_functions(pstate, ppropertydesc*) : pfunction*
-def $property_hook_trait_property_functions(S, eps) = eps
-def $property_hook_trait_property_functions(S, ppropertydesc :: ppropertydesc_tail*) = [pfunction[.ORIGIN = porigin_hook][.NAME = pclassdesc.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)][.SIGNATURE = pfunction.SIGNATURE[.RETURNS = ppropertydesc.TYPE]]] ++ $property_hook_trait_property_functions(S, ppropertydesc_tail*)
+dec $property_hook_trait_function(pstate, ppropertydesc) : pfunction?
+def $property_hook_trait_function(S, ppropertydesc) = (pfunction[.ORIGIN = porigin_hook][.NAME = pclassdesc.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)][.SIGNATURE = pfunction.SIGNATURE[.RETURNS = ppropertydesc.TYPE]])
   -- if $property_hook_trait_origin(S, ppropertydesc) = (porigin_hook)
   -- if $function_at(S.FUNCTIONS, $origin_source(porigin_hook)) = (pfunction)
   -- if ppropertydesc.ORIGIN = porigin_property
@@ -169,7 +169,12 @@ def $property_hook_trait_property_functions(S, ppropertydesc :: ppropertydesc_ta
   -- if pfunction.BODY = pcpath_hook ++ [PCFIELD 5]
   -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (porigin_owner)
   -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
-def $property_hook_trait_property_functions(S, ppropertydesc :: ppropertydesc_tail*) = $property_hook_trait_property_functions(S, ppropertydesc_tail*) -- otherwise
+def $property_hook_trait_function(S, ppropertydesc) = eps -- otherwise
+def $property_hook_trait_property_functions(S, eps) = eps
+def $property_hook_trait_property_functions(S, ppropertydesc :: ppropertydesc_tail*) = [pfunction] ++ $property_hook_trait_property_functions(S, ppropertydesc_tail*)
+  -- if $property_hook_trait_function(S, ppropertydesc) = (pfunction)
+def $property_hook_trait_property_functions(S, ppropertydesc :: ppropertydesc_tail*) = $property_hook_trait_property_functions(S, ppropertydesc_tail*)
+  -- if $property_hook_trait_function(S, ppropertydesc) = eps
 def $property_hook_trait_functions(S, eps) = eps
 def $property_hook_trait_functions(S, pclassdesc :: pclassdesc_tail*) = $property_hook_trait_property_functions(S, pclassdesc.PROPERTIES) ++ $property_hook_trait_functions(S, pclassdesc_tail*)
 
