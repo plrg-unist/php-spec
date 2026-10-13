@@ -1621,6 +1621,8 @@ credit; separate elaboration checks are syntax-only. No active lifecycle guard
 changed. Reduced-history reconstruction remains a local source certificate;
 wider reentry/lifecycle and broad returns_verify remain OPEN.
 [Multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+Actual380 over `fb9d482a` passes strict at `b453661a` in 6.001s with zero
+applications; original private source/state/independent cuts remain separate.
 
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
