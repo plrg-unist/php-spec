@@ -248,6 +248,13 @@ existing inherited walk with supplied fuel. Root's genuine backed getter returns
 owner and returns 13 on plain Child/Grand. Parent starts uninitialized and Child's
 own slot changes 200 to 300 with active backing bypass false;
 [hook-backed inherited-getter review](../../coverage/semantics/inherited-backed-parent-plain-inherited-getter-review.json).
+A closed virtual get-only Parent is also an authenticated terminal basis with the
+supplied fuel. Its descriptor default helper yields INITIAL, but the virtual
+object owns no physical slot. A plain public equal-TYPE Child remains nonvirtual
+and owns 200 then 300; the inherited Parent function/lexical/private/trace identity
+and receiver called scope stay distinct. Active source backing bypass is false
+and the getter returns 13 independently of the slot;
+[virtual-root inherited-getter review](../../coverage/semantics/virtual-parent-plain-inherited-getter-review.json).
 Other inherited getter roots/shapes and wider
 type-presence combinations remain required.
 Backed-parent inheritance retains invariant types; broader type equivalence and

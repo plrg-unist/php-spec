@@ -1533,7 +1533,7 @@ Parent retains function/lexical/private/trace identity, receiver its called scop
 active source backing bypass is false. Strict384/source1 pass at `3e6ef25b`.
 Three separate states at `2171db7c` pass controls82 (42 reached, 40 derived),
 entered Child61 and writer77: 180 reached plus 40 derived. D40 is task-local
-parent matching, not another native class case; virtual/wider roots remain required.
+parent matching, not another native class case; wider inherited roots remain required.
 [Ordinary-backed inherited-getter review](coverage/semantics/ordinary-backed-parent-plain-inherited-getter-review.json).
 Joined exact `b55942bc`/385; one count-only current init check passes with no application.
 Private cuts remain retained through neutral output-handler state and disjoint reference-return cleanup.
@@ -1551,6 +1551,17 @@ or lifetime behavior is claimed. Wider inherited roots and hook families remain 
 [Hook-backed inherited-getter review](coverage/semantics/inherited-backed-parent-plain-inherited-getter-review.json).
 Joined exact `98d1efd6`/385 by pointwise compatibility bridge; zero current actors.
 Private cuts remain retained through hook-excluded plain projection and disjoint comparison/lifecycle paths.
+
+A public plain Child of equal normalized TYPE now inherits a closed virtual Parent
+get-only getter across Bridge. One terminal basis uses the existing virtual chain
+with supplied fuel; Parent owns no slot, while Child owns 200 then 300. Original
+Parent function/lexical/private/trace and receiver called scope remain distinct;
+the getter returns 13 with false active source bypass. Strict385/source1 pass at
+`55fd8584`; three separate states at `1e2c28c0` pass controls84 (39 reached, 45 derived),
+Child58 and writer74: 171 reached plus 45 derived. D45 is task-local matching; no
+new classifier/layout/default/store/owner or lifetime behavior is claimed. Wider
+roots and hook/type/reference families remain required.
+[Virtual-root inherited-getter review](coverage/semantics/virtual-parent-plain-inherited-getter-review.json).
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,

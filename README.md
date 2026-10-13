@@ -1915,6 +1915,11 @@ Root gets 107, Parent and plain Child get 13, and Child's slot changes 200 to 30
 One original and three focused states distinguish that backing witness from the
 selected getter in the
 [hook-backed inherited-getter review](coverage/semantics/inherited-backed-parent-plain-inherited-getter-review.json).
+A closed virtual get-only parent also passes its getter to a plain public equal-type
+child. Parent owns no physical slot; Child owns 200 then 300, while the inherited
+getter uses Parent's private method and returns 13. Called scope follows the receiver.
+One original and three focused states are recorded in the
+[virtual-root inherited-getter review](coverage/semantics/virtual-parent-plain-inherited-getter-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
