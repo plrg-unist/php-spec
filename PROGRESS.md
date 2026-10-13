@@ -2387,6 +2387,8 @@ admission-only bridge. Early store INDEX refusal is helper-only; line and sequen
 controls use the actual driver. Original Unsupported/trace mismatch, transient
 fixture overclaim, genuine budget gap and compiler-binding failure retain0.
 Physical collection, other layouts and broad returns_verify remain OPEN.
+Actual `a1c76bf2`/388 composition preserves current class/output/callback rules;
+one quiet ff24 SL45 compiler gate passes (app0), without private evidence renewal.
 
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
