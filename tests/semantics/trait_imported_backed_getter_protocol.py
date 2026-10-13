@@ -507,7 +507,7 @@ COLLISION = ['$tih_stage(S,6)',
  'ptbytes_message = $ptascii("ImportedBackedCollisionConsumer63 and ImportedBackedCollisionTrait63 define the same hooked '
  'property ($value) in the composition of ImportedBackedCollisionConsumer63. Conflict resolution between hooked properties '
  'is currently not supported. Class was composed")',
- 'S_raw.COMPLETION = REQUESTFATAL $ptascii("CompileError") ptbytes_message 10',
+ 'S_raw.COMPLETION = STATICBYTES ptbytes_message 10',
  'S_failed = $tih_after(S,S_raw)',
  'S_failed.COMPLETION = S_raw.COMPLETION /\\ S_failed.CLASSNAMES = S.CLASSNAMES /\\ S_failed.CLASSES = S.CLASSES',
  '$class_named(S_failed.CLASSNAMES,$ptlc(pclassdesc_consumer.NAME)) = eps /\\ '
