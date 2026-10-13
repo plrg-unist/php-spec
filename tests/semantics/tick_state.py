@@ -78,6 +78,7 @@ def $tick_test_phase(S, 7) = true
   -- if pdestructionoperation.SOURCE = CONFIG_INVOKE pshutdownentry.CALL
   -- if S.TICKENTRIES = eps /\ $tick_test_output(S.EVENTS) = eps
 def $tick_test_phase(S, 8) = true
+  -- if S.TODO = (AT porigin (STMT (NStmtEcho (SEQUENCE ([NScalarString (BYTES "Mg==") metadata_string])) metadata_echo))) :: ptask_tail*
   -- if $tick_test_hold_frames(S.FRAMES) = ((pshutdownentry, ptickentry))
   -- if S.GLOBALTABLE = (psymboltable)
   -- if $lookup(psymboltable.ENV, [114]) = (n_cell)
