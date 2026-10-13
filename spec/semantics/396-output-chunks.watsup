@@ -97,7 +97,7 @@ def $output_selected(S, pobinvoke) = $output_at(S.OUTPUTBUFFERS, pobinvoke.BUFFE
   -- if pobwrite.IDS[pobwrite.INDEX] = pobinvoke.BUFFER.ID
 def $output_selected(S, pobinvoke) = eps -- otherwise
 
-def $output_source_valid(S, OUTPUT_API pconfigcall) = ($config_invoke_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall) /\ pconfigcall.SENT = eps /\ (pconfigcall.KIND = INTRINSIC_OB_FLUSH \/ $ob_pop_kind(pconfigcall.KIND)))
+def $output_source_valid(S, OUTPUT_API pconfigcall) = ($config_invoke_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall) /\ pconfigcall.SENT = eps /\ ($ob_active_operation(pconfigcall.KIND) \/ $ob_pop_kind(pconfigcall.KIND)))
 def $output_source_valid(S, OUTPUT_VM porigin (EMIT z) z) = $echo_emit_source(S[.ORIGIN = (porigin)], porigin, z)
 def $output_source_valid(S, OUTPUT_VM porigin (PRINT_EMIT porigin z) z) = $print_task_valid(S[.ORIGIN = (porigin)], porigin, z)
 def $output_source_valid(S, OUTPUT_VM porigin (STMT (NStmtInlineHTML (BYTES text) metadata)) z) = ($origin_accepts(S.SOURCES, porigin, STMT (NStmtInlineHTML (BYTES text) metadata)) /\ z = $source_line(metadata))

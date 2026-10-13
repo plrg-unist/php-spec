@@ -1,0 +1,244 @@
+;; main/output.c finishes explicit stack operations even with EG(exception).
+;; Failure-only caller snapshots do not add owners or change normal API entry.
+dec $ob_api_failed(pobinvoke) : bool
+dec $ob_api_failure_tasks(ptask*, pobcall) : bool
+dec $ob_api_failure_frames(pframe*, pobcall) : bool
+dec $ob_api_failure_context(pstate, pobcall) : bool
+dec $ob_api_failure_task(ptask) : pobcall?
+dec $ob_api_write(pobwrite) : bool
+dec $ob_api_mode(pintrinsic) : pobapimode
+dec $ob_api_original(pobinvoke) : pobinvoke
+dec $ob_api_buffer_live(pstate, pobinvoke, poutputbuffer) : bool
+dec $ob_api_failure_commit(pstate, pobinvoke, nat) : pstate
+dec $ob_api_failure_finish(pstate, pobwrite, nat) : pstate
+dec $ob_api_failure_return(pstate, nat, ptask*) : pstate
+dec $ob_api_failure_release(pstate, pobrelease, pcallcontext?, ptask*, nat) : pstate
+dec $ob_api_commit_stack(pstate, poutputbuffer, pobapimode) : pstate
+dec $ob_api_commit_bytes(poutputbuffer, pintrinsic) : preqbytes
+dec $ob_api_finish_stack(pstate, poutputbuffer, pobapimode) : bool
+dec $ob_api_release_history(pstate, pobrelease, pcallcontext?) : bool
+dec $ob_api_release_exit(pstate, pdestructionoperation, pobrelease, pcallcontext?, ptask*) : bool
+dec $ob_api_release_exit_frames(pframe*, pdestructionoperation, pobrelease, pcallcontext?, ptask*) : bool
+dec $ob_api_done_pending(pstate, pobrelease, pcallcontext?, ptask*) : nat?
+dec $ob_api_done_replay_pending(pstate, ptask*, pobrelease, pcallcontext?, ptask*) : nat?
+
+def $ob_call_api(OB_API_FAILED pconfigcall pcallcontext? ptask*) = (pconfigcall)
+def $ob_call_site(OB_API_FAILED pconfigcall pcallcontext? ptask*) = pconfigcall.SITE
+def $ob_call_line(OB_API_FAILED pconfigcall pcallcontext? ptask*) = pconfigcall.LINE
+def $ob_call_entry_site(OB_API_FAILED pconfigcall pcallcontext? ptask*) = eps
+def $ob_call_entry_line(OB_API_FAILED pconfigcall pcallcontext? ptask*) = $(-1)
+def $ob_call_docref(OB_API_FAILED pconfigcall pcallcontext? ptask*) = $intrinsic_name(pconfigcall.KIND)
+def $ob_call_nodes(OB_API_FAILED pconfigcall pcallcontext? ptask*) = $config_nodes(pconfigcall)
+def $output_call_write(OB_API_FAILED pconfigcall pcallcontext? ptask*) = eps
+def $output_selected(S, pobinvoke) = (poutputbuffer)
+  -- if pobinvoke.CALL = OB_API_FAILED pconfigcall pcallcontext? ptask*
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if poutputbuffer.ID = pobinvoke.BUFFER.ID
+
+def $ob_api_failed(pobinvoke) = true -- if pobinvoke.CALL = OB_API_FAILED pconfigcall pcallcontext? ptask*
+def $ob_api_failed(pobinvoke) = false -- otherwise
+def $ob_api_failure_task(OB_USER_FAIL_ARGS pobinvoke n) = (pobinvoke.CALL)
+def $ob_api_failure_task(OB_USER_FAIL_DONE pobinvoke) = (pobinvoke.CALL)
+def $ob_api_failure_task(OB_USER_FAIL_COMMIT pobinvoke n) = (pobinvoke.CALL)
+def $ob_api_failure_task(ptask) = eps -- otherwise
+def $ob_api_failure_tasks(eps, pobcall) = false
+def $ob_api_failure_tasks(ptask :: ptask_tail*, pobcall) = (ptask_tail* = ptask_native*)
+  -- if pobcall = OB_API_FAILED pconfigcall pcallcontext? ptask_native*
+  -- if $ob_api_failure_task(ptask) = (pobcall)
+def $ob_api_failure_tasks(ptask :: ptask_tail*, pobcall) = $ob_api_failure_tasks(ptask_tail*, pobcall)
+  -- if $ob_api_failure_task(ptask) =/= (pobcall)
+def $ob_api_failure_tasks(ptask*, pobcall) = false -- otherwise
+def $ob_api_failure_frames(eps, pobcall) = false
+def $ob_api_failure_frames(pframe :: pframe_tail*, pobcall) = ((pframe.CONTEXT = pcallcontext? /\ pframe.ORIGIN = (pconfigcall.SITE) /\ $ob_api_failure_tasks(pframe.TODO, pobcall)) \/ $ob_api_failure_frames(pframe_tail*, pobcall))
+  -- if pobcall = OB_API_FAILED pconfigcall pcallcontext? ptask*
+def $ob_api_failure_frames(pframe*, pobcall) = false -- otherwise
+def $ob_api_failure_context(S, pobcall) = ((S.CURRENT = pcallcontext? /\ S.ORIGIN = (pconfigcall.SITE) /\ $ob_api_failure_tasks(S.TODO, pobcall)) \/ $ob_api_failure_frames(S.FRAMES, pobcall))
+  -- if pobcall = OB_API_FAILED pconfigcall pcallcontext? ptask*
+def $ob_api_failure_context(S, pobcall) = false -- otherwise
+
+def $ob_user_failure_live(S, pobinvoke) = true
+  -- if pobinvoke.CALL = OB_API_FAILED pconfigcall pcallcontext? ptask_native*
+  -- if $ob_api_failure_context(S, pobinvoke.CALL)
+  -- if S_scope = S[.CURRENT = pcallcontext?][.ORIGIN = (pconfigcall.SITE)][.TODO = (OB_USER_FAIL_DONE pobinvoke) :: ptask_native*]
+  -- if $ob_user_live(S_scope, pobinvoke[.CALL = OB_API pconfigcall])
+def $ob_user_failure_current(S, pobinvoke) = (S.CURRENT = pcallcontext? /\ S.ORIGIN = (pconfigcall.SITE))
+  -- if pobinvoke.CALL = OB_API_FAILED pconfigcall pcallcontext? ptask*
+def $ob_user_result_discard(S, pobinvoke) = S[.TODO = (OB_USER_FAIL_ARGS pobinvoke[.CALL = OB_API_FAILED pconfigcall S.CURRENT ptask_tail*] n) :: ptask_tail*]
+  -- if pobinvoke.CALL = OB_API pconfigcall
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if S_proof = S[.TODO = (OB_USER_RESULT pobinvoke) :: ptask_tail*]
+  -- if $call_task_valid(S_proof, OB_USER_RESULT pobinvoke) /\ $throwable_live(S, n)
+def $return_discard(S, OB_USER_FAIL_DONE pobinvoke) = S[.TODO = (OB_USER_FAIL_COMMIT pobinvoke n) :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $ob_api_failed(pobinvoke) /\ pobinvoke.SENT = eps
+  -- if S_proof = S[.TODO = (THROW_SEARCH n) :: (OB_USER_FAIL_DONE pobinvoke) :: ptask_tail*]
+  -- if $call_task_valid(S_proof, OB_USER_FAIL_DONE pobinvoke) /\ $throwable_live(S, n)
+def $eager_operation_source_guard(S, pdestructionoperation) = ($ob_user_failure_live(S, pobinvoke) /\ pdestructionoperation.ORIGIN = (pconfigcall.SITE) /\ pdestructionoperation.CALLER = pcallcontext? /\ pdestructionoperation.COMPLETION = THROWING n /\ pdestructionoperation.PENDING =/= eps /\ $throwable_live(S, n) /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL))
+  -- if pdestructionoperation.SOURCE = OB_USER_FAIL_ARGS pobinvoke n
+  -- if pobinvoke.CALL = OB_API_FAILED pconfigcall pcallcontext? ptask*
+def $ob_user_failure_replay_pending(S, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (OB_USER_FAIL_DONE pobinvoke) :: ptask_tail*, pobinvoke) = (n)
+  -- if pdestructionoperation.SOURCE = OB_USER_FAIL_ARGS pobinvoke_original n_original
+  -- if pobinvoke = pobinvoke_original[.SENT = eps]
+  -- if pobinvoke.CALL = OB_API_FAILED pconfigcall pcallcontext? ptask_native*
+  -- if ptask_tail* = ptask_native*
+  -- if pdestructionoperation.PENDING = (n)
+  -- if pdestructionoperation.CLEANUP = eps
+  -- if pdestructionoperation.CALLER = S.CURRENT /\ pdestructionoperation.ORIGIN = S.ORIGIN
+  -- if $eager_operation_source_guard(S, pdestructionoperation) /\ $throwable_live(S, n)
+
+def $ob_api_mode(INTRINSIC_OB_CLEAN) = OB_API_RETAIN
+def $ob_api_mode(INTRINSIC_OB_FLUSH) = OB_API_RESTORE
+def $ob_api_mode(pintrinsic) = OB_API_RELEASE -- if $ob_pop_kind(pintrinsic)
+
+def $ob_api_original(pobinvoke) = pobinvoke[.CALL = OB_API pconfigcall]
+  -- if pobinvoke.CALL = OB_API_FAILED pconfigcall pcallcontext? ptask*
+def $ob_api_original(pobinvoke) = pobinvoke -- otherwise
+def $ob_api_buffer_live(S, pobinvoke, poutputbuffer) = $ob_user_live(S[.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*], $ob_api_original(pobinvoke))
+  -- if S.OUTPUTBUFFERS = poutputbuffer_tail*
+def $ob_api_write(pobwrite) = true
+  -- if pobwrite.CALLER = OUTPUT_API pconfigcall
+  -- if pobwrite.FINISH = OUTPUT_DEFAULT_DONE pconfigcall poutputbuffer pvalue b
+def $ob_api_write(pobwrite) = true
+  -- if pobwrite.CALLER = OUTPUT_API pconfigcall
+  -- if pobwrite.FINISH = OUTPUT_USER_DONE pobinvoke poutputbuffer poboutput b
+  -- if pobinvoke.CALL = OB_API pconfigcall
+def $ob_api_write(pobwrite) = true
+  -- if pobwrite.CALLER = OUTPUT_API pconfigcall
+  -- if pobwrite.FINISH = OUTPUT_API_FAILED pobinvoke poutputbuffer pobapimode
+  -- if $ob_call_api(pobinvoke.CALL) = (pconfigcall)
+def $ob_api_write(pobwrite) = false -- otherwise
+
+def $ob_user_failure_live(S, pobinvoke) = true
+  -- if pobinvoke.CALL = OB_WRITE pobwrite
+  -- if $ob_api_write(pobwrite) /\ $ob_user_failure_context(S, pobwrite)
+  -- if S_scope = S[.CURRENT = pobwrite.CONTEXT][.ORIGIN = ($output_caller_site(pobwrite.CALLER))][.TODO = (OB_USER_FAIL_DONE pobinvoke) :: pobwrite.TAIL]
+  -- if $ob_user_live(S_scope, pobinvoke)
+def $ob_user_result_discard(S, pobinvoke) = S[.TODO = (OB_USER_FAIL_ARGS pobinvoke n) :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if pobinvoke.CALL = OB_WRITE pobwrite
+  -- if $ob_api_write(pobwrite)
+  -- if S_proof = S[.TODO = (OB_USER_RESULT pobinvoke) :: ptask_tail*]
+  -- if $call_task_valid(S_proof, OB_USER_RESULT pobinvoke) /\ $throwable_live(S, n)
+def $return_discard(S, OB_USER_FAIL_DONE pobinvoke) = S[.TODO = (OB_USER_FAIL_COMMIT pobinvoke n) :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if pobinvoke.CALL = OB_WRITE pobwrite
+  -- if $ob_api_write(pobwrite) /\ pobinvoke.SENT = eps
+  -- if S_proof = S[.TODO = (THROW_SEARCH n) :: (OB_USER_FAIL_DONE pobinvoke) :: ptask_tail*]
+  -- if $call_task_valid(S_proof, OB_USER_FAIL_DONE pobinvoke) /\ $throwable_live(S, n)
+
+def $output_finish_nodes(OUTPUT_API_FAILED pobinvoke poutputbuffer OB_API_RETAIN) = $value_nodes(pobinvoke.VALUE)
+def $output_finish_nodes(OUTPUT_API_FAILED pobinvoke poutputbuffer pobapimode) = $output_buffer_nodes(poutputbuffer) ++ $value_nodes(pobinvoke.VALUE)
+  -- if pobapimode = OB_API_RESTORE \/ pobapimode = OB_API_RELEASE
+def $output_origin_bytes(pobwrite) = (poutputbuffer.BYTES)
+  -- if pobwrite.CALLER = OUTPUT_API pconfigcall
+  -- if pobwrite.FINISH = OUTPUT_API_FAILED pobinvoke poutputbuffer pobapimode
+  -- if pobapimode = OB_API_RESTORE \/ pobapimode = OB_API_RELEASE
+  -- if $ob_call_api(pobinvoke.CALL) = (pconfigcall) /\ ~$ob_clean_kind(pconfigcall.KIND)
+def $output_origin_bytes(pobwrite) = (eps)
+  -- if pobwrite.CALLER = OUTPUT_API pconfigcall
+  -- if pobwrite.FINISH = OUTPUT_API_FAILED pobinvoke poutputbuffer pobapimode
+  -- if $ob_call_api(pobinvoke.CALL) = (pconfigcall) /\ $ob_clean_kind(pconfigcall.KIND)
+def $output_finish_valid(S, pobwrite) = true
+  -- if pobwrite.CALLER = OUTPUT_API pconfigcall
+  -- if pobwrite.FINISH = OUTPUT_API_FAILED pobinvoke poutputbuffer pobapimode
+  -- if pobinvoke.CALL = OB_API_FAILED pconfigcall pobwrite.CONTEXT pobwrite.TAIL
+  -- if pobinvoke.SENT = eps /\ ($ob_active_operation(pconfigcall.KIND) \/ $ob_pop_kind(pconfigcall.KIND))
+  -- if pobapimode = $ob_api_mode(pconfigcall.KIND)
+  -- if $ob_api_buffer_live(S[.OUTPUTBUFFERS = eps], pobinvoke, poutputbuffer)
+  -- if $output_buffer_valid(poutputbuffer)
+  -- if $ob_api_finish_stack(S, poutputbuffer, pobapimode)
+def $ob_api_finish_stack(S, poutputbuffer, OB_API_RETAIN) = (poutputbuffer_head = $output_failure_buffer(poutputbuffer))
+  -- if S.OUTPUTBUFFERS = poutputbuffer_head :: poutputbuffer_tail*
+def $ob_api_finish_stack(S, poutputbuffer, pobapimode) = (~$ob_user_present(S.OUTPUTBUFFERS, poutputbuffer.ID) /\ $output_buffer_ids(poutputbuffer :: S.OUTPUTBUFFERS, S.OUTPUTSEQ))
+  -- if pobapimode = OB_API_RESTORE \/ pobapimode = OB_API_RELEASE
+def $ob_api_finish_stack(S, poutputbuffer, pobapimode) = false -- otherwise
+def $output_restore(pobwrite) = ($output_failure_buffer(poutputbuffer))
+  -- if pobwrite.FINISH = OUTPUT_API_FAILED pobinvoke poutputbuffer OB_API_RESTORE
+
+def $output_failure_valid(S, pobwrite, n) = ($ob_api_write(pobwrite) /\ $output_write_valid(S, pobwrite) /\ $throwable_live(S, n) /\ S.CURRENT = pobwrite.CONTEXT /\ S.ORIGIN = ($output_caller_site(pobwrite.CALLER)))
+  -- if pobwrite.CALLER = OUTPUT_API pconfigcall
+def $output_failure_source(S, pobwrite) = ($ob_api_write(pobwrite) /\ $output_source_valid(S[.CURRENT = pobwrite.CONTEXT], pobwrite.CALLER) /\ $output_finish_valid(S[.CURRENT = pobwrite.CONTEXT], pobwrite) /\ pobwrite.IDS = $output_ids(S.OUTPUTBUFFERS) /\ $(pobwrite.INDEX <= |pobwrite.IDS|) /\ $output_prefix_done(S.OUTPUTBUFFERS, pobwrite.INDEX) /\ $startup_bytes(pobwrite.BYTES))
+  -- if pobwrite.CALLER = OUTPUT_API pconfigcall
+
+rule PhpStep/ob-api-fail-commit: S ~> $ob_api_failure_commit(S, pobinvoke, n)
+  -- if S.TODO = (OB_USER_FAIL_COMMIT pobinvoke n) :: ptask_tail*
+  -- if $ob_api_failed(pobinvoke) /\ $call_task_valid(S, OB_USER_FAIL_COMMIT pobinvoke n)
+def $ob_api_failure_commit(S, pobinvoke, n) = S_next[.TODO = (OUTPUT_FAIL_WRITE pobwrite n) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if pobinvoke.CALL = OB_API_FAILED pconfigcall pcallcontext? ptask_tail*
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_lower*
+  -- if pobapimode = $ob_api_mode(pconfigcall.KIND)
+  -- if S_next = $ob_api_commit_stack(S, poutputbuffer, pobapimode)
+  -- if n_bytes* = $ob_api_commit_bytes(poutputbuffer, pconfigcall.KIND)
+  -- if pobwrite = {CALLER (OUTPUT_API pconfigcall), CONTEXT pcallcontext?, IDS $output_ids(S_next.OUTPUTBUFFERS), INDEX 0, BYTES n_bytes*, VALUE (KNOWN PNULL), BASE (BASE_VALUE (KNOWN PNULL)), TAIL ptask_tail*, FINISH (OUTPUT_API_FAILED pobinvoke poutputbuffer pobapimode)}
+def $ob_api_commit_stack(S, poutputbuffer, OB_API_RETAIN) = S[.OUTPUTBUFFERS = ($output_failure_buffer(poutputbuffer)) :: poutputbuffer_lower*]
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_lower*
+def $ob_api_commit_stack(S, poutputbuffer, pobapimode) = S[.OUTPUTBUFFERS = poutputbuffer_lower*]
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_lower*
+  -- if pobapimode = OB_API_RESTORE \/ pobapimode = OB_API_RELEASE
+def $ob_api_commit_bytes(poutputbuffer, pintrinsic) = eps -- if $ob_clean_kind(pintrinsic)
+def $ob_api_commit_bytes(poutputbuffer, pintrinsic) = poutputbuffer.BYTES -- if ~$ob_clean_kind(pintrinsic)
+
+rule PhpStep/output-api-fail-finish: S ~> $ob_api_failure_finish(S, pobwrite, n)
+  -- if S.TODO = (OUTPUT_FAIL_FINISH pobwrite n) :: ptask_tail*
+  -- if $ob_api_write(pobwrite) /\ $call_task_valid(S, OUTPUT_FAIL_FINISH pobwrite n)
+def $ob_api_failure_return(S, n, ptask*) = S[.TODO = (THROW_SEARCH n) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $ob_api_failure_finish(S, pobwrite, n) = $ob_api_failure_return(S, n, pobwrite.TAIL)
+  -- if pobwrite.FINISH = OUTPUT_API_FAILED pobinvoke poutputbuffer OB_API_RETAIN
+def $ob_api_failure_finish(S, pobwrite, n) = $ob_api_failure_return(S[.OUTPUTBUFFERS = ($output_failure_buffer(poutputbuffer)) :: S.OUTPUTBUFFERS], n, pobwrite.TAIL)
+  -- if pobwrite.FINISH = OUTPUT_API_FAILED pobinvoke poutputbuffer OB_API_RESTORE
+def $ob_api_failure_finish(S, pobwrite, n) = $ob_api_failure_release(S, {CALL pconfigcall, BUFFER pobinvoke.BUFFER, VALUE pobinvoke.VALUE}, pobwrite.CONTEXT, pobwrite.TAIL, n)
+  -- if pobwrite.FINISH = OUTPUT_API_FAILED pobinvoke poutputbuffer OB_API_RELEASE
+  -- if $ob_call_api(pobinvoke.CALL) = (pconfigcall)
+def $ob_api_failure_finish(S, pobwrite, n) = $ob_api_failure_return(S[.OUTPUTBUFFERS = ($output_processed(poutputbuffer)) :: S.OUTPUTBUFFERS], n, pobwrite.TAIL)
+  -- if pobwrite.FINISH = OUTPUT_DEFAULT_DONE pconfigcall poutputbuffer pvalue true
+def $ob_api_failure_finish(S, pobwrite, n) = $ob_api_failure_return(S, n, pobwrite.TAIL)
+  -- if pobwrite.FINISH = OUTPUT_DEFAULT_DONE pconfigcall poutputbuffer pvalue false
+def $ob_api_failure_finish(S, pobwrite, n) = $ob_api_failure_return(S[.OUTPUTBUFFERS = ($ob_user_committed(poutputbuffer, poboutput)) :: S.OUTPUTBUFFERS], n, pobwrite.TAIL)
+  -- if pobwrite.FINISH = OUTPUT_USER_DONE pobinvoke poutputbuffer poboutput true
+def $ob_api_failure_finish(S, pobwrite, n) = $ob_api_failure_release(S, {CALL pconfigcall, BUFFER pobinvoke.BUFFER, VALUE pobinvoke.VALUE}, pobwrite.CONTEXT, pobwrite.TAIL, n)
+  -- if pobwrite.FINISH = OUTPUT_USER_DONE pobinvoke poutputbuffer poboutput false
+  -- if pobinvoke.CALL = OB_API pconfigcall
+
+;; ZOH releases only after pop and lower routing. The completion owns pending E
+;; during real destruction; DONE owns only the still-live intrinsic/getter value.
+def $ob_api_failure_release(S, pobrelease, pcallcontext?, ptask_tail*, n) = S[.TODO = (OB_API_FAIL_RELEASE pobrelease pcallcontext? ptask_tail* n) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $ob_api_release_history(S, pobrelease, pcallcontext?) = $ob_user_release_valid(S[.CURRENT = pcallcontext?][.ORIGIN = (pobrelease.CALL.SITE)], pobrelease)
+def $task_nodes(OB_API_FAIL_RELEASE pobrelease pcallcontext? ptask* n) = $config_nodes(pobrelease.CALL) ++ $value_nodes(pobrelease.VALUE) ++ $output_buffer_nodes(pobrelease.BUFFER) ++ [HOBJECT n]
+def $task_nodes(OB_API_FAIL_DONE pobrelease pcallcontext? ptask*) = $config_nodes(pobrelease.CALL) ++ $value_nodes(pobrelease.VALUE)
+def $call_task_valid(S, OB_API_FAIL_RELEASE pobrelease pcallcontext? ptask_tail* n) = ($ob_api_release_history(S, pobrelease, pcallcontext?) /\ S.CURRENT = pcallcontext? /\ S.ORIGIN = (pobrelease.CALL.SITE) /\ $source_operand_suffix(S.TODO, OB_API_FAIL_RELEASE pobrelease pcallcontext? ptask_tail* n, ptask_tail*) /\ $heap_subset($output_buffer_nodes(pobrelease.BUFFER), S.ALLOCATIONS) /\ $throwable_live(S, n))
+def $call_task_valid(S, OB_API_FAIL_DONE pobrelease pcallcontext? ptask_tail*) = ($ob_api_release_history(S, pobrelease, pcallcontext?) /\ S.CURRENT = pcallcontext? /\ S.ORIGIN = (pobrelease.CALL.SITE) /\ $source_operand_suffix(S.TODO, OB_API_FAIL_DONE pobrelease pcallcontext? ptask_tail*, ptask_tail*) /\ $ob_api_done_pending(S, pobrelease, pcallcontext?, ptask_tail*) =/= eps)
+rule PhpStep/ob-api-fail-release: S ~> S[.TODO = (OB_API_FAIL_DONE pobrelease pcallcontext? ptask_tail*) :: ptask_tail*][.COMPLETION = THROWING n][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (OB_API_FAIL_RELEASE pobrelease pcallcontext? ptask_tail* n) :: ptask_tail*
+  -- if $call_task_valid(S, OB_API_FAIL_RELEASE pobrelease pcallcontext? ptask_tail* n)
+def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = S_next
+  -- if S.TODO = (OB_API_FAIL_RELEASE pobrelease pcallcontext? ptask_tail* n) :: ptask_tail*
+  -- if $call_task_valid(S, OB_API_FAIL_RELEASE pobrelease pcallcontext? ptask_tail* n)
+  -- if S_next.TODO = (OB_API_FAIL_DONE pobrelease pcallcontext? ptask_tail*) :: ptask_tail*
+  -- if S_next.COMPLETION = THROWING n
+  -- if S_next.RESULT = KNOWN PNULL /\ S_next.BASE = BASE_VALUE (KNOWN PNULL)
+def $return_discard(S, OB_API_FAIL_DONE pobrelease pcallcontext? ptask_tail*) = $ob_api_failure_return(S, n, ptask_tail*)
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if S_proof = S[.TODO = (THROW_SEARCH n) :: (OB_API_FAIL_DONE pobrelease pcallcontext? ptask_tail*) :: ptask_tail*]
+  -- if $call_task_valid(S_proof, OB_API_FAIL_DONE pobrelease pcallcontext? ptask_tail*) /\ $throwable_live(S, n)
+
+def $ob_api_release_exit_frames(eps, pdestructionoperation, pobrelease, pcallcontext?, ptask*) = false
+def $ob_api_release_exit_frames(pframe :: pframe_tail*, pdestructionoperation, pobrelease, pcallcontext?, ptask_tail*) = ((pframe.CONTEXT = pcallcontext? /\ pframe.ORIGIN = (pobrelease.CALL.SITE) /\ $source_operand_suffix(pframe.TODO, DESTRUCTOR_OPERATION_EXIT pdestructionoperation, (OB_API_FAIL_DONE pobrelease pcallcontext? ptask_tail*) :: ptask_tail*)) \/ $ob_api_release_exit_frames(pframe_tail*, pdestructionoperation, pobrelease, pcallcontext?, ptask_tail*))
+def $ob_api_release_exit(S, pdestructionoperation, pobrelease, pcallcontext?, ptask_tail*) = ((S.CURRENT = pcallcontext? /\ S.ORIGIN = (pobrelease.CALL.SITE) /\ $source_operand_suffix(S.TODO, DESTRUCTOR_OPERATION_EXIT pdestructionoperation, (OB_API_FAIL_DONE pobrelease pcallcontext? ptask_tail*) :: ptask_tail*)) \/ $ob_api_release_exit_frames(S.FRAMES, pdestructionoperation, pobrelease, pcallcontext?, ptask_tail*))
+def $eager_operation_source_guard(S, pdestructionoperation) = ($ob_api_release_history(S, pobrelease, pcallcontext?) /\ $ob_api_release_exit(S, pdestructionoperation, pobrelease, pcallcontext?, ptask_tail*) /\ pdestructionoperation.ORIGIN = (pobrelease.CALL.SITE) /\ pdestructionoperation.CALLER = pcallcontext? /\ pdestructionoperation.COMPLETION = THROWING n /\ pdestructionoperation.PENDING =/= eps /\ $throwable_live(S, n) /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL))
+  -- if pdestructionoperation.SOURCE = OB_API_FAIL_RELEASE pobrelease pcallcontext? ptask_tail* n
+def $ob_api_done_pending(S, pobrelease, pcallcontext?, ptask*) = $eager_operation_pending(S) -- if $eager_operation_pending(S) =/= eps
+def $ob_api_done_pending(S, pobrelease, pcallcontext?, ptask*) = pdestructionoperation.PENDING
+  -- if $eager_operation_pending(S) = eps
+  -- if $destructor_operation_for(S) = (pdestructionoperation)
+def $ob_api_done_pending(S, pobrelease, pcallcontext?, ptask*) = $ob_api_done_replay_pending(S, S.TODO, pobrelease, pcallcontext?, ptask*)
+  -- if $eager_operation_pending(S) = eps /\ $destructor_operation_for(S) = eps
+def $ob_api_done_replay_pending(S, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (OB_API_FAIL_DONE pobrelease pcallcontext? ptask_tail*) :: ptask_tail*, pobrelease, pcallcontext?, ptask_tail*) = (n)
+  -- if pdestructionoperation.SOURCE = OB_API_FAIL_RELEASE pobrelease pcallcontext? ptask_tail* n_original
+  -- if pdestructionoperation.PENDING = (n)
+  -- if pdestructionoperation.CLEANUP = eps
+  -- if pdestructionoperation.CALLER = S.CURRENT /\ pdestructionoperation.ORIGIN = S.ORIGIN
+  -- if $eager_operation_source_guard(S, pdestructionoperation) /\ $throwable_live(S, n)
+def $ob_api_done_replay_pending(S, ptask :: ptask_rest*, pobrelease, pcallcontext?, ptask_tail*) = $ob_api_done_replay_pending(S, ptask_rest*, pobrelease, pcallcontext?, ptask_tail*)
+  -- if ~$ob_user_failure_exit_task(ptask)
+def $ob_api_done_replay_pending(S, ptask*, pobrelease, pcallcontext?, ptask_tail*) = eps -- otherwise
