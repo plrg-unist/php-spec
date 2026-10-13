@@ -1,0 +1,145 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "status": "accepted private bounded milestone; actual-parent integration pending",
+  "base_revision": "af903227c2498a73ea9b2140eb191f81a6657a6d",
+  "reviewed_revision": "3b28418c35df883a64d72f8946bf0f0f17ac987d",
+  "implementation_revision": "d2f2dbd9dea01a204675e339720d6e03afcde162",
+  "modules": 382,
+  "implementation_hashes": {
+    "spec/semantics/172-file-context-intrinsics.watsup": "19f9d157cfd307117e8797d0f49970d9123393e1a2817fe5ea6364c91bd3d1cb",
+    "spec/semantics/206-error-handlers.watsup": "1f8827885e29498fab48a5f6465337bbdaeb61935eb92ff84adbe5e16d9d660c",
+    "spec/semantics/281-fibers.watsup": "a3937ebda15a6f2455e9df9b53bfebb44ded0b7a3e0832eaec52729233d584cf",
+    "spec/semantics/30-storage.watsup": "72c04c836f9afd2c777bcdabe0946551d3db238d3f72d93593e5be2d735134a5",
+    "spec/semantics/39-ownership.watsup": "fef1659881ba8b719f9a73a582df6130edf5e7e10fa22247132ff6d2a02020e2",
+    "spec/semantics/393-ticks.watsup": "c6dfcdb9603a3e579e3a1f155bd7e8e96e1c69bd25e2b94a487e90c74601cb93",
+    "spec/semantics/40-control.watsup": "7b1b9ee0e6a6f23b34c9e5ba526ff78ebbdab34b09a8714f7d098734f78be8f0",
+    "spec/semantics/46-source-compiler.watsup": "ca291e387bfc332de30457a910df37131b113aa689ee09f805023b48c20920ea",
+    "spec/semantics/84-call-integrity.watsup": "b5d29b41154f09b48aa39a0a5b64771fdbe81740af70754ae703babb1aeb617f",
+    "spec/semantics/92-strict-compiler.watsup": "faa803158d3aea80597da69e59592c5c12cdbd39dd234b47da07e1091fc5a69c",
+    "spec/semantics/modules.json": "139f4b6762e19ffea609fc1209eb6cbbcf0c70f447e783db5def1fb81f0e72f9"
+  },
+  "independent_runner_sha256": "77f6ae23a22122d97f7ddd2b41877d72c550f92b53f83acef5d7ec19d9b3aca8",
+  "profile": "tests/semantics/profile.json; LC_ALL=C, TZ=UTC, PATH=/usr/bin:/bin; pinned -n CLI; CPU4/SLOT2 serial actors capped at1536MiB",
+  "runtime_identity": {
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "independent_sources": {
+    "native_originals": 16,
+    "unsupported_controls": 3,
+    "cuts": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-03/repaired-02/report.json",
+        "sha256": "99dac5d2f605d6f4b11385ba88263682f65ce47941ddc922fb6f5a682c58b78e",
+        "revision": "5a0d61e8bf110466f9f7f4255d744dd1993900cb",
+        "originals": [
+          "strict-source-entry",
+          "empty-if-source-trace",
+          "byref-source-warning",
+          "return-destructor-unregister"
+        ],
+        "controls": [],
+        "credit": "completed exact rows only; failed whole campaign0"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-03/repaired-03/report.json",
+        "sha256": "ae17cb2a26789b9385439fda0dc856d716288e159c5d0a14f365d99abde2ab7b",
+        "revision": "6669c7a6e58e45d440212044676ce915d1cc8bd9",
+        "originals": [
+          "return-destructor-fiber",
+          "return-destructor-caller-scope",
+          "calling-scope-identity"
+        ],
+        "controls": [],
+        "credit": "exact originals; controls0 native credit"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-03/ownership-02/report.json",
+        "sha256": "a1655417e53b67da5023b2f8ee9b92b68d0ad9b448d1fe2fd3b9f644aec8791a",
+        "revision": "e1a18ee0e59774d6b25e15866f8fc3e26a83a162",
+        "originals": [
+          "unregister-argument-before-receiver",
+          "unregister-throw-before-receiver",
+          "unregister-exit-before-shutdown"
+        ],
+        "controls": [],
+        "credit": "exact originals; controls0 native credit"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-03/remaining-01/report.json",
+        "sha256": "8ba8b2e6adaf1818a21e507acad93d1b091167834fed249464c1f18c899c5563",
+        "revision": "3b28418c35df883a64d72f8946bf0f0f17ac987d",
+        "originals": [
+          "uint32-frequency-zero",
+          "literal-dim-adjacency",
+          "callback-eval-counter",
+          "closure-first-unregister",
+          "active-match-removes-later-duplicate",
+          "two-active-error-chain"
+        ],
+        "controls": [
+          "parameter-default-closure",
+          "foreach-value-key-closure",
+          "abstract-parameter-default-closure"
+        ],
+        "credit": "exact originals; controls0 native credit"
+      }
+    ]
+  },
+  "author_sources": {
+    "native_originals": 27,
+    "cuts": "one original straight gate plus retained21 and affected5;3 controls have0 native credit",
+    "ledger": "coverage/semantics/tick-author.json"
+  },
+  "reached_states": {
+    "groups": 7,
+    "physical_premises": 334,
+    "cuts": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-03/state-01/report.json",
+        "sha256": "b2a7b3422b3841f263195d1444d1a748f73dd3357f479a13c3a050ef864d3d66",
+        "revision": "e1a18ee0e59774d6b25e15866f8fc3e26a83a162",
+        "groups": 6,
+        "premises": 269,
+        "credit": "completed six-group prefix only; failed whole campaign0"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-03/state-02/report.json",
+        "sha256": "8fa16b39293d3a729a11c0106fb2676e9135877f3c7b65d48568ea8c33615948",
+        "revision": "3b28418c35df883a64d72f8946bf0f0f17ac987d",
+        "groups": 1,
+        "premises": 65,
+        "credit": "sole affected hold group PASS"
+      }
+    ],
+    "synthetic_controls": "uint32-max wrap and malformed public-state variants are helper controls, not native source agreements"
+  },
+  "semantic_review": [
+    "Checked source-derived lexical frequency leakage/restoration, op-array marker adjacency, folded/no-op and control placement against pinned Zend compiler; dynamic source plans restart frequency while sharing request counter.",
+    "Checked ordinary callback strictness, compiler-line traces, reference-warning reentry and post-return object cleanup; calling and Fiber restrictions survive authentic live destructor operations.",
+    "Checked live append/remove traversal, Closure identity, calling_scope identity, first-live cursor, continued unregister scan and repeated Error.previous allocation.",
+    "Independently found12AZ versus1A2Z lifetime mismatch; verified source-authenticated cached-FCC retention until removed params finish on normal/throw/exit originals12AZ,12ACZ,1EAS. Historical arguments remain nonowning certificates.",
+    "Checked live and historical release guards, including source/line/origin/ID/target, absent removed row, allocated live roots and retirement-safe source validation;206 default preserves former TODO/base behavior.",
+    "Reviewed genuinely reached copy/COW sole registry ownership, shared Throwable identity, post-return running/Fiber block, pending Error before destructor and sole FCC holder after old-alias decrement."
+  ],
+  "historical_cut_review": "Earlier cuts retain their tested identities and receive no replay credit. The172 fix only changes REGISTER_TICK named destinations;206 default is unchanged and the FCC hold only applies to nonempty targets. The prior calling-scope method original retains its global receiver, has no destructor and executes no tick markers during unregister; its added hold steps are unobservable. Newly exercised Closure and method cleanup paths pass on the final runtime.",
+  "preserved_failures": {
+    "failed_whole_credit": 0,
+    "paths": [
+      "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-03/repaired-01/wrapper-failure.json",
+      "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-03/repaired-02/report.json",
+      "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-03/ownership-01/report.json",
+      "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-03/native-20/report.json",
+      "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-03/state-01/report.json"
+    ],
+    "notes": "Original launcher, inline-New boundary, receiver-lifetime mismatch and premature-owner fixture failures remain external and unchanged. Native20 initial1ESA expectation was wrong; actual1EAS is verified in ownership02. Completed prefixes are explicitly separated from failed rows/campaigns."
+  },
+  "limits": [
+    "Ticks obligation and full core remain partial.",
+    "Wider class/linking/control/opcode summaries, nested callable/tick headers and foreach targets remain explicit Unsupported.",
+    "Dynamic/anonymous construction, missing empty multiline compiler-line descriptions, effectful keyword/compound callable selection, builtin callback bodies and typed variadic tick reception remain required.",
+    "No engine bug, intentional divergence or portability claim."
+  ],
+  "recovery": "External reports retain exact PHP bytes, commands/environment/exits, full input fingerprints and failed observations; actor.json records bounds and reap. Runners are self-contained and raw archives are not operational inputs."
+}
