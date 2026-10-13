@@ -7,7 +7,7 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Ticks393 is independently accepted privately; actual-parent integration is pending.
+Ticks393 is independently accepted; its current383 composition is checked.
 Source-derived
 marker plans cover lexical frequencies, compiler adjacency/control and certified
 callback lines; the live registry retains arguments, supports mutation and keeps
@@ -20,6 +20,9 @@ waits until the queued alias decrement finishes. Failed whole campaigns retain
 zero credit. Wider placement and callable dependencies remain explicit.
 [Contract](docs/semantics/TICKS.md), [author evidence](coverage/semantics/tick-author.json),
 [independent review](coverage/semantics/tick-review.json).
+The383 join over557fc63 preserves parent exit status and source-frame cleanup;
+one new exact AHDZ eval-static/post-return original passes at3c02667e3.
+Earlier source/state cuts retain their identities.
 
 Parser-backed USERFATAL now captures its actual eval/file location and retires
 execution contexts through an authenticated fatal snapshot. Static cells retain

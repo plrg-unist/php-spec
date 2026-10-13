@@ -1,6 +1,6 @@
 {
   "target": "PHP 8.5.10 CLI NTS 64-bit",
-  "status": "accepted private bounded milestone; actual-parent integration pending",
+  "status": "accepted private milestone and actual-parent composition; fast-forward cleared",
   "base_revision": "af903227c2498a73ea9b2140eb191f81a6657a6d",
   "reviewed_revision": "3b28418c35df883a64d72f8946bf0f0f17ac987d",
   "implementation_revision": "d2f2dbd9dea01a204675e339720d6e03afcde162",
@@ -141,5 +141,28 @@
     "Dynamic/anonymous construction, missing empty multiline compiler-line descriptions, effectful keyword/compound callable selection, builtin callback bodies and typed variadic tick reception remain required.",
     "No engine bug, intentional divergence or portability claim."
   ],
-  "recovery": "External reports retain exact PHP bytes, commands/environment/exits, full input fingerprints and failed observations; actor.json records bounds and reap. Runners are self-contained and raw archives are not operational inputs."
+  "recovery": "External reports retain exact PHP bytes, commands/environment/exits, full input fingerprints and failed observations; actor.json records bounds and reap. Runners are self-contained and raw archives are not operational inputs.",
+  "integration": {
+    "status": "accepted; fast-forward cleared",
+    "parent": "557fc63b3a310f3612944a8a60be71e0846bd3f7",
+    "candidate": "3c02667e314fd53ffda1e6047f116fd2a6db5e46",
+    "semantic_candidate": "2635e7f4374ac5b9a16623cfa033d60e5d5e078c",
+    "modules": 383,
+    "pointwise": "Shared30/40 merge preserves parent EXITSTATUS and tick state/init/origin hook;39 retains parent390 released-cell logic plus tick roots;84 retains both exit/tick validity; manifest keeps392 then393. Private393/206/281 bytes and parent270/388/392 remain unchanged.",
+    "current_gate": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-03/join-01/report.json",
+      "sha256": "fa0f7c6a245a94aaa3fdc80b954dd7cef13c05c072865af090bc826846ce637d",
+      "revision": "3c02667e314fd53ffda1e6047f116fd2a6db5e46",
+      "native_originals": 1,
+      "case": "joined-eval-static-return-cleanup",
+      "stdout": "AHDZ",
+      "stderr": "empty",
+      "native_exit": 0,
+      "model_status": "normal",
+      "inputs_stable": true,
+      "review_runner_sha256": "0fb1b75574243b31a71aa7a89094fc8c768e2298ed73f19b4df5308e07bab08b"
+    },
+    "interaction": "Post-return tick-result destructor cleanup restores an active eval caller; the eval static-only owner then retires through parent source/destructor boundary rules.",
+    "credit": "One new exact original only. Earlier private16 sources, author27 and state334 keep their cuts; no replay or portability claim."
+  }
 }
