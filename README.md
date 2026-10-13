@@ -2040,6 +2040,11 @@ method and returns 13, with called scope following the receiver. A Grand write
 throws the read-only Error and leaves storage empty. The
 [virtual-trait review](coverage/semantics/trait-imported-virtual-getter-review.json)
 records one original and three focused states.
+A trait’s body-backed expression getter also retains its physical expression
+and magic name while executing in Consumer scope. A real backing write 100→300
+changes its result 113→313. Physical task lowering and logical imported return
+checks are covered by one original and three states in the
+[expression-trait review](coverage/semantics/trait-imported-expression-getter-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
