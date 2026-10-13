@@ -268,13 +268,15 @@ dec $tick_seek(ptickentry*, nat) : ptickentry?
 dec $tick_identity(pstate, pshutdownentry) : (porigin, nat?, porigin?, nat?)?
 dec $tick_calling_scope(pstate, pcalltarget) : porigin?
 dec $tick_same(pstate, pshutdownentry, pshutdownentry) : bool
-dec $tick_find(pstate, ptickentry*, pshutdownentry) : ptickentry?
 dec $tick_remove(ptickentry*, nat) : ptickentry*
 dec $tick_registration(pstate, pconfigcall) : pstate
 dec $tick_registration_resolved(pstate, pconfigcall, phandlerresolution) : pstate
 dec $tick_store(pstate, pconfigcall, pcalltarget) : pstate
 dec $tick_callback_supported(pstate, pcalltarget) : bool
-dec $tick_unregister(pstate, pconfigcall, pshutdownentry, ptickentry?) : pstate
+dec $tick_unregister(pstate, pconfigcall, pshutdownentry, ptickentry*) : pstate
+dec $tick_unregister_live(pstate, pconfigcall, pshutdownentry, ptickentry*) : pstate
+dec $tick_unregister_error(pstate, pconfigcall) : pstate
+dec $tick_unregister_previous(pstate, pstate) : pstate
 dec $tick_active_task(ptask) : nat?
 dec $tick_active_tasks(ptask*, nat) : bool
 dec $tick_active_frames(pframe*, nat) : bool
@@ -372,7 +374,7 @@ def $tick_store(S, pconfigcall, pcalltarget) = S[.TICKSEQ = $(S.TICKSEQ + 1)][.T
   -- if $tick_callback_supported(S, pcalltarget)
   -- if pconfigcall.SENT = (NAMED_SENT (KNOWN pvalue)) :: pnamedslot*
   -- if pshutdownentry = {CALL pconfigcall, BIRTH eps, CAPTURE $method_capture_current(S, pconfigcall.SITE), PRODUCER eps, RAW $shutdown_snapshot(S, pvalue), TARGET pcalltarget, ARGS $shutdown_values(pnamedslot*)}
-def $tick_store(S, pconfigcall, pcalltarget) = $tick_unregister(S, pconfigcall, pshutdownentry, $tick_find(S, S.TICKENTRIES, pshutdownentry))
+def $tick_store(S, pconfigcall, pcalltarget) = $tick_unregister(S, pconfigcall, pshutdownentry, S.TICKENTRIES)
   -- if pconfigcall.KIND = INTRINSIC_UNREGISTER_TICK
   -- if pvalue = $error_api_value(pconfigcall, 0, PNULL)
   -- if pshutdownentry = {CALL pconfigcall, BIRTH eps, CAPTURE $method_capture_current(S, pconfigcall.SITE), PRODUCER eps, RAW $shutdown_snapshot(S, pvalue), TARGET pcalltarget, ARGS eps}
@@ -385,18 +387,27 @@ def $tick_identity(S, pshutdownentry) = ((pfunction.ORIGIN, $target_receiver(S, 
   -- if n_closure? = $target_instance(pshutdownentry.TARGET)
 def $tick_identity(S, pshutdownentry) = eps -- otherwise
 def $tick_same(S, pshutdownentry_left, pshutdownentry_right) = ($tick_identity(S, pshutdownentry_left) = $tick_identity(S, pshutdownentry_right))
-def $tick_find(S, eps, pshutdownentry) = eps
-def $tick_find(S, ptickentry :: ptickentry_tail*, pshutdownentry) = (ptickentry) -- if $tick_same(S, ptickentry.ENTRY, pshutdownentry)
-def $tick_find(S, ptickentry :: ptickentry_tail*, pshutdownentry) = $tick_find(S, ptickentry_tail*, pshutdownentry) -- if ~$tick_same(S, ptickentry.ENTRY, pshutdownentry)
 def $tick_remove(eps, n) = eps
 def $tick_remove(ptickentry :: ptickentry_tail*, n) = ptickentry_tail* -- if ptickentry.ID = n
 def $tick_remove(ptickentry :: ptickentry_tail*, n) = ptickentry :: $tick_remove(ptickentry_tail*, n) -- if ptickentry.ID =/= n
 
-def $tick_unregister(S, pconfigcall, pshutdownentry, eps) = S[.RESULT = KNOWN PNULL]
-def $tick_unregister(S, pconfigcall, pshutdownentry, (ptickentry)) = $config_error(S, pconfigcall, "Error", $ptascii("Registered tick function cannot be unregistered while it is being executed"))
-  -- if $tick_is_calling(S, ptickentry.ID)
-def $tick_unregister(S, pconfigcall, pshutdownentry, (ptickentry)) = S[.TICKENTRIES = $tick_remove(S.TICKENTRIES, ptickentry.ID)][.RESULT = KNOWN PNULL]
-  -- if ~$tick_is_calling(S, ptickentry.ID)
+;; A running match raises Error but returns false to the linked-list comparator:
+;; scanning continues and can remove a later inactive equal entry.
+def $tick_unregister(S, pconfigcall, pshutdownentry, ptickentry*) = $tick_unregister_live(S, pconfigcall, pshutdownentry, ptickentry*)
+  -- if S.COMPLETION = NORMAL \/ $throwable_pending(S.COMPLETION)
+def $tick_unregister(S, pconfigcall, pshutdownentry, ptickentry*) = S -- otherwise
+def $tick_unregister_live(S, pconfigcall, pshutdownentry, eps) = S[.RESULT = KNOWN PNULL]
+def $tick_unregister_live(S, pconfigcall, pshutdownentry, ptickentry :: ptickentry_tail*) = $tick_unregister(S, pconfigcall, pshutdownentry, ptickentry_tail*)
+  -- if ~$tick_same(S, ptickentry.ENTRY, pshutdownentry)
+def $tick_unregister_live(S, pconfigcall, pshutdownentry, ptickentry :: ptickentry_tail*) = $tick_unregister($tick_unregister_error(S, pconfigcall), pconfigcall, pshutdownentry, ptickentry_tail*)
+  -- if $tick_same(S, ptickentry.ENTRY, pshutdownentry) /\ $tick_is_calling(S, ptickentry.ID)
+def $tick_unregister_live(S, pconfigcall, pshutdownentry, ptickentry :: ptickentry_tail*) = S[.TICKENTRIES = $tick_remove(S.TICKENTRIES, ptickentry.ID)][.RESULT = KNOWN PNULL]
+  -- if $tick_same(S, ptickentry.ENTRY, pshutdownentry) /\ ~$tick_is_calling(S, ptickentry.ID)
+def $tick_unregister_error(S, pconfigcall) = $tick_unregister_previous(S, $config_error(S, pconfigcall, "Error", $ptascii("Registered tick function cannot be unregistered while it is being executed")))
+def $tick_unregister_previous(S, S_next) = $throwable_previous(S_next, n_new, n_old)
+  -- if S.COMPLETION = THROWING n_old
+  -- if S_next.COMPLETION = THROWING n_new
+def $tick_unregister_previous(S, S_next) = S_next -- otherwise
 
 def $tick_entry_at(eps, n) = eps
 def $tick_entry_at(ptickentry :: ptickentry_tail*, n) = (ptickentry) -- if ptickentry.ID = n
@@ -466,7 +477,7 @@ def $tick_dispatch_valid(S, ptickdispatch) = true
   -- if ptickdispatch.ENTRY = (n)
   -- if $tick_entry_at(S.TICKENTRIES, n) = (ptickentry)
   -- if $tick_entry_valid(S, ptickentry)
-  -- if $(ptickdispatch.CURSOR <= n)
+  -- if $tick_seek(S.TICKENTRIES, ptickdispatch.CURSOR) = (ptickentry)
   -- if $(|ptickdispatch.SENT| <= |ptickentry.ENTRY.ARGS|)
   -- if $shutdown_sent_valid(S, ptickentry.ENTRY, ptickdispatch.SENT, 0)
 def $tick_dispatch_valid(S, ptickdispatch) = false -- otherwise
