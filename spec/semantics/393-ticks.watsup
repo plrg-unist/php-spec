@@ -266,6 +266,7 @@ dec $tick_entries_valid(pstate, ptickentry*, nat) : bool
 dec $tick_entry_at(ptickentry*, nat) : ptickentry?
 dec $tick_seek(ptickentry*, nat) : ptickentry?
 dec $tick_identity(pstate, pshutdownentry) : (porigin, nat?, porigin?, nat?)?
+dec $tick_calling_scope(pstate, pcalltarget) : porigin?
 dec $tick_same(pstate, pshutdownentry, pshutdownentry) : bool
 dec $tick_find(pstate, ptickentry*, pshutdownentry) : ptickentry?
 dec $tick_remove(ptickentry*, nat) : ptickentry*
@@ -277,9 +278,11 @@ dec $tick_unregister(pstate, pconfigcall, pshutdownentry, ptickentry?) : pstate
 dec $tick_active_task(ptask) : nat?
 dec $tick_active_tasks(ptask*, nat) : bool
 dec $tick_active_frames(pframe*, nat) : bool
+dec $tick_active_operations(pdestructionoperation*, nat) : bool
 dec $tick_is_calling(pstate, nat) : bool
 dec $tick_running_tasks(ptask*) : bool
 dec $tick_running_frames(pframe*) : bool
+dec $tick_running_operations(pdestructionoperation*) : bool
 dec $tick_dispatch_valid(pstate, ptickdispatch) : bool
 dec $tick_selected(pstate, ptickdispatch) : ptickentry?
 dec $tick_send_valid(pstate, ptickdispatch, nat) : bool
@@ -374,7 +377,10 @@ def $tick_store(S, pconfigcall, pcalltarget) = $tick_unregister(S, pconfigcall, 
   -- if pvalue = $error_api_value(pconfigcall, 0, PNULL)
   -- if pshutdownentry = {CALL pconfigcall, BIRTH eps, CAPTURE $method_capture_current(S, pconfigcall.SITE), PRODUCER eps, RAW $shutdown_snapshot(S, pvalue), TARGET pcalltarget, ARGS eps}
 
-def $tick_identity(S, pshutdownentry) = ((pfunction.ORIGIN, $target_receiver(S, pshutdownentry.TARGET), $target_called_class(S, pshutdownentry.TARGET), n_closure?))
+;; FCC equality uses calling_scope, which can differ from late called_scope.
+def $tick_calling_scope(S, HANDLER_METHOD_TARGET b_class porigin ptbytes pcalltarget) = (porigin)
+def $tick_calling_scope(S, pcalltarget) = $target_called_class(S, pcalltarget) -- otherwise
+def $tick_identity(S, pshutdownentry) = ((pfunction.ORIGIN, $target_receiver(S, pshutdownentry.TARGET), $tick_calling_scope(S, pshutdownentry.TARGET), n_closure?))
   -- if $target_function(S, pshutdownentry.TARGET) = (pfunction)
   -- if n_closure? = $target_instance(pshutdownentry.TARGET)
 def $tick_identity(S, pshutdownentry) = eps -- otherwise
@@ -433,12 +439,21 @@ def $tick_active_tasks(eps, n) = false
 def $tick_active_tasks(ptask :: ptask_tail*, n) = ($tick_active_task(ptask) = (n) \/ $tick_active_tasks(ptask_tail*, n))
 def $tick_active_frames(eps, n) = false
 def $tick_active_frames(pframe :: pframe_tail*, n) = ($tick_active_tasks(pframe.TODO, n) \/ $tick_active_frames(pframe_tail*, n))
-def $tick_is_calling(S, n) = ($tick_active_tasks(S.TODO, n) \/ $tick_active_frames(S.FRAMES, n))
+def $tick_active_operations(eps, n) = false
+def $tick_active_operations(pdestructionoperation :: pdestructionoperation_tail*, n) = ($tick_active_task(pdestructionoperation.SOURCE) = (n) \/ $tick_active_operations(pdestructionoperation_tail*, n))
+def $tick_is_calling(S, n) = ($tick_active_tasks(S.TODO, n) \/ $tick_active_frames(S.FRAMES, n) \/ $tick_active_operations(S.DESTRUCTION.OPERATIONS, n))
 def $tick_running_tasks(eps) = false
 def $tick_running_tasks(ptask :: ptask_tail*) = ($tick_active_task(ptask) =/= eps \/ $tick_running_tasks(ptask_tail*))
 def $tick_running_frames(eps) = false
 def $tick_running_frames(pframe :: pframe_tail*) = ($tick_running_tasks(pframe.TODO) \/ $tick_running_frames(pframe_tail*))
-def $tick_running(S) = ($tick_running_tasks(S.TODO) \/ $tick_running_frames(S.FRAMES))
+def $tick_running_operations(eps) = false
+def $tick_running_operations(pdestructionoperation :: pdestructionoperation_tail*) = ($tick_active_task(pdestructionoperation.SOURCE) =/= eps \/ $tick_running_operations(pdestructionoperation_tail*))
+def $tick_running(S) = ($tick_running_tasks(S.TODO) \/ $tick_running_frames(S.FRAMES) \/ $tick_running_operations(S.DESTRUCTION.OPERATIONS))
+
+;; The returned value is discarded after callee restoration. Eager destruction
+;; retains the original tick result as its live source until cleanup completes.
+def $eager_operation_source_guard(S, pdestructionoperation) = ($tick_result_valid(S, ptickdispatch) /\ pdestructionoperation.ORIGIN = (ptickdispatch.SITE) /\ pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL))
+  -- if pdestructionoperation.SOURCE = TICK_RESULT ptickdispatch
 
 ;; Monotone IDs implement live linked-list traversal: appended rows participate
 ;; immediately, deleted future rows disappear, and running equal rows are skipped.
@@ -668,6 +683,7 @@ def $tick_expression_opcode(NExprBinaryOpSpaceship expression_1 expression_2 met
 def $tick_expression_opcode(NExprBitwiseNot expression metadata) = true
 def $tick_expression_opcode(NExprBooleanNot expression metadata) = true
 def $tick_expression_opcode(NExprClosure phpType14 phpType4_1 phpType4_2 phpType16 phpType21 phpType18 phpType23 metadata) = true
+def $tick_expression_opcode(NExprConstFetch (NName (BYTES text) metadata_name) metadata) = ($ptlc($base64(text)) <- [$ptascii("true"), $ptascii("false"), $ptascii("null")])
 def $tick_expression_opcode(NExprErrorSuppress expression metadata) = true
 def $tick_expression_opcode(NExprEval expression metadata) = true
 def $tick_expression_opcode(NExprExit phpType5 metadata) = true
