@@ -136,7 +136,7 @@ def $property_hook_trait_origin(S, ppropertydesc) = (TRAIT_ORIGIN porigin_owner 
   -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
   -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ ~pclassdesc.READONLY
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_owner)
-  -- if $hook_property_at(pclassdesc.PROPERTIES, ppropertydesc.ORIGIN) = (ppropertydesc)
+  -- if $hook_property_at(pclassdesc.PROPERTIES, TRAIT_MEMBER_ORIGIN porigin_owner porigin_source) = (ppropertydesc)
   -- if $trait_property_source_at(S.CLASSES, $origin_source(porigin_source)) = (ppropertydesc_source)
   -- if ppropertydesc_source.ORIGIN = PORIGIN n pcpath
   -- if $property_declaring_class(S.CLASSES, ppropertydesc_source.ORIGIN) = (porigin_trait)
@@ -158,7 +158,8 @@ def $property_hook_trait_property_functions(S, eps) = eps
 def $property_hook_trait_property_functions(S, ppropertydesc :: ppropertydesc_tail*) = [pfunction[.ORIGIN = porigin_hook][.NAME = pclassdesc.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)][.SIGNATURE = pfunction.SIGNATURE[.RETURNS = ppropertydesc.TYPE]]] ++ $property_hook_trait_property_functions(S, ppropertydesc_tail*)
   -- if $property_hook_trait_origin(S, ppropertydesc) = (porigin_hook)
   -- if $function_at(S.FUNCTIONS, $origin_source(porigin_hook)) = (pfunction)
-  -- if $trait_property_source_at(S.CLASSES, $origin_source(ppropertydesc.ORIGIN)) = (ppropertydesc_source)
+  -- if ppropertydesc.ORIGIN = porigin_property
+  -- if $trait_property_source_at(S.CLASSES, $origin_source(porigin_property)) = (ppropertydesc_source)
   -- if $property_declaring_class(S.CLASSES, ppropertydesc_source.ORIGIN) = (porigin_trait)
   -- if $class_at(S.CLASSES, porigin_trait) = (pclassdesc_trait)
   -- if pfunction.NAME = pclassdesc_trait.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)
@@ -173,7 +174,8 @@ def $property_hook_trait_functions(S, eps) = eps
 def $property_hook_trait_functions(S, pclassdesc :: pclassdesc_tail*) = $property_hook_trait_property_functions(S, pclassdesc.PROPERTIES) ++ $property_hook_trait_functions(S, pclassdesc_tail*)
 
 def $property_hook_source_declared(S, ppropertydesc) = true
-  -- if $origin_source(ppropertydesc.ORIGIN) = PORIGIN n pcpath
+  -- if ppropertydesc.ORIGIN = porigin_property
+  -- if $origin_source(porigin_property) = PORIGIN n pcpath
   -- if $(|pcpath| >= 2)
   -- if pcpath_group = pcpath[0:$nabs($( |pcpath| - 2))]
   -- if pcpath = pcpath_group ++ [PCFIELD 3, PCINDEX 0]
