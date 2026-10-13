@@ -287,6 +287,7 @@ syntax pfibertraversal = { CAPTURE nat?, START pfiberstart, OBJECT nat, AGGREGAT
 syntax pfiberfinish = { OBJECT nat, PENDING nat?, SEQUENCE nat, PROTECTED (nat, nat)? }
 syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND ptickdispatch nat | TICK_REFERENCE ptickdispatch nat | TICK_ENTER ptickdispatch | TICK_RESULT ptickdispatch | TICK_UNREGISTER_RELEASE pshutdownentry ptickentry
   | OUTPUT_WRITE pobwrite | OUTPUT_FINISH pobwrite
+  | OB_USER_FAIL_ARGS pobinvoke nat | OB_USER_FAIL_DONE pobinvoke | OB_USER_FAIL_COMMIT pobinvoke nat | OUTPUT_FAIL_WRITE pobwrite nat | OUTPUT_FAIL_FINISH pobwrite nat
   | OB_USER_SEND pobinvoke nat | OB_USER_REFERENCE pobinvoke nat | OB_USER_ENTER pobinvoke | OB_USER_RESULT pobinvoke | OB_USER_DEPRECATED pobinvoke pvalue | OB_USER_COMMIT pobinvoke poboutput | OB_USER_RELEASE pobrelease
   | PROPERTY_HOOK_RESULT ppropertyhook | PROPERTY_HOOK_ISSET_RESULT ppropertyhook bool | PROPERTY_HOOK_ASSIGN_RESULT ppropertyhook pbase | PROPERTY_HOOK_COMPOUND_RESULT ppropertyhook pbase int int | PROPERTY_HOOK_COMPOUND_FINISH ppropertyhook pbase int int | INSTANCE_STORAGE_STEP pinstancestorage | FOREACH_BIND_RELEASE pforeachbind | FOREACH_BIND_COMMIT pforeachbind | FOREACH_SCALAR_END nat nat porigin pvalue int
   | PROMOTE_PARAMETER porigin nat
