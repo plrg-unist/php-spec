@@ -2034,6 +2034,12 @@ scope follows the using class and called scope follows the receiver. Slot 100→
 yields 113→313. An identical plain own property still conflicts. Two originals
 and four focused states are in the
 [trait-getter review](coverage/semantics/trait-imported-backed-getter-review.json).
+A direct trait’s virtual get-only `int` getter also imports without physical
+storage. Consumer and Grand casts are empty; the getter uses Consumer’s private
+method and returns 13, with called scope following the receiver. A Grand write
+throws the read-only Error and leaves storage empty. The
+[virtual-trait review](coverage/semantics/trait-imported-virtual-getter-review.json)
+records one original and three focused states.
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`

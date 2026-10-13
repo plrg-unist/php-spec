@@ -17,6 +17,14 @@ Two originals and four separate checks/267 premises are recorded in the
 [trait-getter review](../../coverage/semantics/trait-imported-backed-getter-review.json).
 Nested/parented imports and other hook shapes remain required.
 
+Direct public virtual get-only `int` trait getters with no initializer also
+import into a parentless Consumer. Raw Trait and imported own metadata stay
+virtual: the helper default is INITIAL, but Consumer/Grand own no physical
+slot. Consumer lexical/private scope returns13 with false backing bypass;
+a Grand write raises its read-only Error and keeps storage empty. One source
+and three separate checks/242 premises are in the
+[virtual-trait review](../../coverage/semantics/trait-imported-virtual-getter-review.json).
+
 Imports retain two identities. The declaring owner and lexical `self` scope are
 the using class; the body, filename, line and `__TRAIT__`, `__METHOD__` and
 `__FUNCTION__` remain those of the original trait method. Aliases have their own

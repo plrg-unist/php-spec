@@ -1794,6 +1794,16 @@ remain zero; wider trait hook imports/types/flags/ref/set/lifetime remain requir
 Joined exact `7d361d4c`/388; the count-only current init passes with no application.
 Private cuts retain their identities through the hooked-slot cast and inactive callback/fatal paths.
 
+Direct public virtual get-only `int` trait getters now import with no
+initializer or physical slot. Consumer lexical/private13, Trait magic spelling
+and receiver called scope remain distinct; a Grand write raises its exact
+read-only Error and leaves both objects empty. Only compiler/import admission
+changes; storage, classifier and permission rules stay unchanged. Strict388 and
+source1 pass at `287151403`; three states at `0265e795` pass242 =205 reached
++37 derived. Default/initializer/header refusals are derived, no failed actor;
+wider trait hook shapes remain required.
+[Virtual trait getter review](coverage/semantics/trait-imported-virtual-getter-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization
