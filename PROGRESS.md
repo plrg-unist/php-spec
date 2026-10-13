@@ -15,6 +15,9 @@ and three public fronts/133 premises at paired207947da. No raw projections or
 old lifecycle/guard renewals are claimed. Original baseline/diagnostic and
 fixture compiler failure remain0; wider fatal/lifecycle work stays partial.
 [Fatal-observer ledger](coverage/semantics/source-static-fatal-observer-review.json).
+The384 composition over7d4fb passes independent pointwise review at78c7ff03;
+accepted runtime/protocol and parent M40/394/pipeline bytes are preserved.
+No renewed actor/source/state evidence is claimed.
 
 Recursive array and declared-property Stringable/string comparisons now suspend
 at the reached leaf through 394. Real aggregate pins preserve array copy-on-write;
