@@ -867,6 +867,39 @@ LIFETIME = ['$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryRepeatLifeRoot51"
  '$weakref_get(S_done,n_weak_box) = PNULL /\\ $oru_output(S_done.EVENTS) = EXPECTED_OUTPUT /\\ '
  '$oru_guard(S_done)']
 
+CONTROLS = ['$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryRepeatRoot51"))) = (porigin_parent)',
+ '$class_at(S.CLASSES,porigin_parent) = (pclassdesc_parent)',
+ '$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryRepeatFirst51"))) = (porigin_first)',
+ '$class_at(S.CLASSES,porigin_first) = (pclassdesc_first)',
+ '$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryRepeatBridge51"))) = (porigin_bridge)',
+ '$class_at(S.CLASSES,porigin_bridge) = (pclassdesc_bridge)',
+ '$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryRepeatSecond51"))) = (porigin_child)',
+ '$class_at(S.CLASSES,porigin_child) = (pclassdesc_child)',
+ '$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryRepeatGrand51"))) = (porigin_grand)',
+ '$class_at(S.CLASSES,porigin_grand) = (pclassdesc_grand)',
+ '$class_link_at(S.LINKEDPARENTS,porigin_parent) = eps /\\ $class_link_at(S.LINKEDPARENTS,porigin_first) = '
+ '(SOURCE_PARENT porigin_parent) /\\ $class_link_at(S.LINKEDPARENTS,porigin_bridge) = (SOURCE_PARENT '
+ 'porigin_first) /\\ $class_link_at(S.LINKEDPARENTS,porigin_child) = (SOURCE_PARENT porigin_bridge) /\\ '
+ '$class_link_at(S.LINKEDPARENTS,porigin_grand) = (SOURCE_PARENT porigin_child)',
+ '|pclassdesc_parent.PROPERTIES| = 1 /\\ |pclassdesc_first.PROPERTIES| = 1 /\\ '
+ '|pclassdesc_child.PROPERTIES| = 1 /\\ pclassdesc_bridge.PROPERTIES = eps /\\ pclassdesc_grand.PROPERTIES '
+ '= eps',
+ 'ppropertydesc_parent = pclassdesc_parent.PROPERTIES[0]',
+ 'ppropertydesc_first = pclassdesc_first.PROPERTIES[0]',
+ 'ppropertydesc_child = pclassdesc_child.PROPERTIES[0]',
+ 'ppropertydesc_parent.TYPE = [PTBRANCH ([PTBUILTIN "int"])] /\\ ppropertydesc_first.TYPE = '
+ 'ppropertydesc_parent.TYPE /\\ ppropertydesc_child.TYPE = ppropertydesc_parent.TYPE /\\ '
+ '$property_default_state(S,ppropertydesc_parent) = (PROP_VALUE (DIRECT (PINT 100))) /\\ '
+ '$property_default_state(S,ppropertydesc_first) = (PROP_INITIAL) /\\ '
+ '$property_default_state(S,ppropertydesc_child) = (PROP_INITIAL)',
+ '$property_layout(S,porigin_bridge,|S.CLASSES|) = [ppropertydesc_first] /\\ '
+ '$property_layout(S,porigin_grand,|S.CLASSES|) = [ppropertydesc_child]',
+ '$property_hook_ordinary_backing(S,ppropertydesc_first,|S.CLASSES|) /\\ '
+ '$property_hook_inherited_backing(S,ppropertydesc_child)',
+ '$property_hook_plan(S) = (ppropertyhook_S_child)',
+ 'ppropertyhook_S_child.PROPERTY = ppropertydesc_child.ORIGIN /\\ '
+ '~$property_hook_backing(S,ppropertyhook_S_child.OBJECT,ppropertydesc_child)']
+
 DERIVED = ['~$property_hook_override_pair(S,ppropertydesc_first,ppropertydesc_child[.TYPE = eps]) /\\ '
  '~$property_hook_override_pair(S,ppropertydesc_first,ppropertydesc_child[.TYPE = [PTBRANCH ([PTBUILTIN '
  '"string"])]])',
@@ -970,7 +1003,7 @@ DERIVED = ['~$property_hook_override_pair(S,ppropertydesc_first,ppropertydesc_ch
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--revision', required=True)
-    parser.add_argument('--group', choices=['cv', 'this', 'write', 'untyped', 'lifetime'], required=True)
+    parser.add_argument('--group', choices=['cv', 'this', 'write', 'untyped', 'lifetime', 'controls'], required=True)
     parser.add_argument('--prepare-only', action='store_true')
     args = parser.parse_args()
     recorder.ROOT = ROOT
@@ -980,7 +1013,8 @@ def main():
     profile = json.loads(profile_file.read_bytes())
     assert data['native_profile'] == profile
     clauses, negatives, case_index, start_stage = {
-        'cv': (CV, DERIVED, 0, 0),
+        'cv': (CV, [], 0, 0),
+        'controls': (CONTROLS, DERIVED, 0, 0),
         'this': (THIS, [], 0, 1),
         'write': (WRITE, [], 0, 5),
         'untyped': (UNTYPED, [], 0, 16),
