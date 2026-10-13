@@ -602,9 +602,25 @@ rule PhpStep/weakmap-key-notify: S ~> S[.TODO = (INSTANCE_STORAGE_STEP pinstance
   -- if $instance_storage_valid(S, pinstancestorage)
   -- if pinstancestorage.NOTIFY =/= eps
 
+;; Continuation must preserve the already-cleared wrapper notification.
+;; A historical retired wrapper is allowed, but a different current one is not.
+dec $weakmap_key_continue(pstate, nat) : pstate
+def $weakmap_key_continue(S, n_key) = $weakmap_key_notice(S, n_key)
+  -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*
+  -- if pinstancestorage.OBJECT = n_key
+  -- if $instance_storage_valid(S, pinstancestorage)
+  -- if pinstancestorage.NEXT = 0 /\ pinstancestorage.SLOTS = eps /\ pinstancestorage.NOTIFY = eps
+  -- if S.OBJECTS[n_key] = STDINSTANCE
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map]
+  -- if $weakmap_entry_leaf(S, n_map, n_key)
+  -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
+  -- if pweakmapentry.BEFORE = (n_wrapper)
+  -- if $weakref_find(S, S.ALLOCATIONS, n_key) = eps \/ $weakref_find(S, S.ALLOCATIONS, n_key) = (n_wrapper)
+def $weakmap_key_continue(S, n_key) = S[.COMPLETION = UNSUPPORTED "WeakMap key notification storage authority"] -- otherwise
+
 ;; After callback cleanup and wrapper notification, visit the remaining entry
 ;; before the same physical Key pin may finish. No second edge is detached early.
-rule PhpStep/weakmap-key-next: S ~> $weakmap_key_notice(S, pinstancestorage.OBJECT)
+rule PhpStep/weakmap-key-next: S ~> $weakmap_key_continue(S, pinstancestorage.OBJECT)
   -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*
   -- if $instance_storage_valid(S, pinstancestorage)
   -- if S.OBJECTS[pinstancestorage.OBJECT] = STDINSTANCE
