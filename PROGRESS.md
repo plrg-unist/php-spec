@@ -1339,6 +1339,15 @@ defaults, layouts, pure covariance and earlier cuts retain their identities.
 Joined exact `35068001`/381; one current init-only check passes with no application.
 Private cuts remain retained through neutral EXITSTATUS 0 and disjoint WeakMap/source-exit paths.
 
+Removing the type from a genuine own-body-backed child below the same ordinary-backed
+First now reports the getter error at child hook 10, naming First across Bridge,
+before property class 9. One sixth-arm parent-basis OR repairs this priority;
+reverse addition and child backing 200→300/getter 213→313 remain baseline controls.
+Strict381/source3 pass at `37bc2d87`. Three separate state checks at `0e0d255d`
+pass remove62 (32 reached, 30 derived), add32 and entered-getter50: 114 reached
+plus 30 derived. Runtime, defaults, layouts, pure covariance and ownership stay unchanged.
+[Own-backed type-presence review](coverage/semantics/ordinary-backed-parent-backed-get-hook-type-presence-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization

@@ -754,6 +754,10 @@ test-semantics: build
 	python3 tests/semantics/ordinary_backed_parent_unbacked_get_hook_type_presence_protocol.py --revision "$$(git rev-parse HEAD)" --group remove
 	python3 tests/semantics/ordinary_backed_parent_unbacked_get_hook_type_presence_protocol.py --revision "$$(git rev-parse HEAD)" --group add
 	python3 tests/semantics/ordinary_backed_parent_unbacked_get_hook_type_presence_protocol.py --revision "$$(git rev-parse HEAD)" --group control
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/ordinary_backed_parent_backed_get_hook_type_presence_cases.json
+	python3 tests/semantics/ordinary_backed_parent_backed_get_hook_type_presence_protocol.py --revision "$$(git rev-parse HEAD)" --group remove
+	python3 tests/semantics/ordinary_backed_parent_backed_get_hook_type_presence_protocol.py --revision "$$(git rev-parse HEAD)" --group add
+	python3 tests/semantics/ordinary_backed_parent_backed_get_hook_type_presence_protocol.py --revision "$$(git rev-parse HEAD)" --group control
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_publication_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_composed_retry_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/assertion_cases.json

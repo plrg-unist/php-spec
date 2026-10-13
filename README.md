@@ -1789,6 +1789,10 @@ source-unbacked child at its getter declaration. Across intervening classes, the
 error names the actual declaring getter; reverse type addition keeps the property
 error. Three originals and focused rejection/plan checks are recorded in the
 [ordinary-backing type-presence review](coverage/semantics/ordinary-backed-parent-unbacked-get-hook-type-presence-review.json).
+The same priority now covers a genuinely own-body-backed child that removes the
+type. Reverse addition and existing backing 200→300/getter 213→313 remain controls;
+focused states check rejection before publication and genuine getter entry.
+[Own-backed type-presence review](coverage/semantics/ordinary-backed-parent-backed-get-hook-type-presence-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
