@@ -1,4 +1,4 @@
-# Non-object casts and stdClass property tables
+# Object casts and cached property tables
 
 `(object)` preserves existing object identity and allocates a fresh `stdClass`
 for scalar and array operands. Null creates no property; other ordinary scalars
@@ -12,6 +12,22 @@ separate shared tables; a sole reference wrapper unwraps only on a genuine copy.
 Fast stdClass clones share the table. Array round trips convert canonical numeric
 names back to integer keys and preserve append history. Materialization and copies
 retain live object-foreach cursor positions across unset tombstones.
+
+[Ordinary mixed tables](../../coverage/semantics/mixed-property-stringable-comparison-review.json)
+now cache nonowning INDIRECT locators for public declared slots alongside owning
+dynamic buckets. The instance owns inline declared values and its current table;
+dynamic mirrors add no duplicate owners. COW dereferences locators, drops underlying
+UNDEF and applies normal reference-copy rules. The pinned old table still follows
+live slots, while copied declared buckets keep their values. Property reads can
+therefore differ from foreach and copied array views of the new table. Physical
+old-table bucket count includes an INDIRECT whose slot becomes unset.
+
+Source construction keeps these locators internal; ordinary array casts export
+copied values. Copied declared-bucket reference iteration, cached ordinary cloning
+and collector visitation remain explicit Unsupported boundaries. Materialization while a direct-object comparison guard is active remains
+Unsupported. Six exact sources
+and 743 reached premises/37 raw steps cover table generations, slot/cell ownership,
+UNDEF and throw cleanup; no broader lifetime or shutdown claim follows.
 
 A NaN cast allocates the object before delivering its warning through the real
 error handler. Its continuation retains the original operand category and zval

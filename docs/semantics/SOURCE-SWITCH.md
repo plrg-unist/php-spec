@@ -42,8 +42,13 @@ now covers retained stdClass table snapshots, initialized public declared-table
 slots and successive casts. Identical tables win before the active-left guard;
 ARRAY aliases expose the same table recursion domain. The same TypeError reaches
 caller catch and then finally entry, with later properties/cases skipped. Six new
-exact sources and 576 reached premises/28 raw steps pass. Mixed membership, guarded
-projection, broader handlers and wider control remain required.
+exact sources and 576 reached premises/28 raw steps pass. That cut left mixed
+membership and guarded projection open; broader handlers/control remain required.
+[Mixed ordinary tables](../../coverage/semantics/mixed-property-stringable-comparison-review.json)
+now retain the old concrete generation across case casts while dynamic writes
+create copied buckets. Later comparisons use the current map. Early skips, delayed
+default/fallthrough, old-table recursion and the identical thrown TypeError through
+caller catch/finally retain six exact sources and focused state evidence.
 [Fiber comparison transfers](../../coverage/semantics/fiber-aggregate-stringable-comparison-review.json)
 now retain the parked array guard through injected TypeError and caster finally
 entry, then remove it on pair unwind before caller catch/finally entry. Same-table

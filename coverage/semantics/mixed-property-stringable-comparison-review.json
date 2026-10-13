@@ -1,0 +1,242 @@
+{
+  "scope": "Mixed public no-hook ordinary declared/dynamic cached tables in Stringable/string loose comparison and non-bool Switch; physical unset buckets, old live INDIRECT locations versus new copied values, concrete generation pins and recursion guards.",
+  "status": "partial; independently reviewed private increment",
+  "tested_revision": "468275585906e352a94d0403d4c0f4d99b28942d",
+  "baseline_revision": "6bb6c386c7c9294aa99dba72bd2d374927beda74",
+  "module_count": 386,
+  "engine_anchors": [
+    "Zend/zend_object_handlers.c:rebuild_object_properties_internal, zend_std_write_property, zend_std_unset_property, zend_std_get_property_ptr_ptr, zend_std_compare_objects",
+    "Zend/zend_hash.c:zend_array_dup_value, zend_hash_compare, zend_hash_compare_impl",
+    "Zend/zend_operators.c:compare_symbol_tables, convert_to_array",
+    "Zend/zend_vm_def.h:ZEND_FE_RESET_R, ZEND_FE_RESET_RW",
+    "Zend/zend_objects.c:zend_object_std_dtor, zend_objects_clone_members; Zend/zend_object_handlers.c:zend_std_get_gc"
+  ],
+  "runtime": {
+    "php_source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "php": {
+      "path": ".tools/php/bin/php",
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    "numeric_runner": {
+      "path": "tests/semantics/_build/default/numeric_runner.exe",
+      "sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    },
+    "elaborator": {
+      "path": ".tools/spectec/bin/p4spectec",
+      "sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "adapter": {
+      "path": "_build/default/adapter/main.exe",
+      "sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7"
+    },
+    "profile": {
+      "path": "tests/semantics/profile.json",
+      "sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+    },
+    "manifest": {
+      "path": "spec/semantics/modules.json",
+      "sha256": "555fd8e7f37bd49daecf0ba4e3fbeedd7165cc33159659e92dd8c78570bb692f"
+    },
+    "build_claim": "Retained project-local tools; no new offline-build claim."
+  },
+  "native": {
+    "original5": {
+      "path": ".tools/mixed-property-stringable-native-51/run-v1/report.json",
+      "sha256": "382e35954f9836f495211cecb1a108ecfd5ef8b238843ffe686f6445ebcb9f80"
+    },
+    "post_detach1": {
+      "path": ".tools/mixed-property-stringable-detach-native-51/run-v1/report.json",
+      "sha256": "ec967492f9965ac8a883fe3fd60eda0391b0fc7b4dfd5c7bdf060d0c41081c58"
+    },
+    "normal_originals": 6,
+    "model_credit": 0
+  },
+  "baseline": {
+    "report": {
+      "path": ".tools/mixed-property-stringable-baseline-51/run-v1/report.json",
+      "sha256": "e06f2d950b13e671d7dc9acc0b88eeacb9ae900173c1351de19b62c348cd4b8e"
+    },
+    "outcome": "accepted/program/Unsupported: materialized-property Stringable comparison continuation",
+    "stdout": "count|N|key|N|early|N|nested|",
+    "native_agreements": 0
+  },
+  "strict": {
+    "report": {
+      "path": ".tools/mixed-property-stringable-gate-51/run-retry2/report.json",
+      "sha256": "5c40700b0c24357af752c214d39fd37d996972202dded018aac5935b429838e0"
+    },
+    "tested_revision": "fa6fb85419b6b8969fd5c754a7849667862b4913",
+    "checks": 3,
+    "bridge": "The later52 guard adds only n_left != n_right to the duplicate same-table ORDER0 arm, preserving the earlier same-object result and distinct shared-table fast path; no compiler replay."
+  },
+  "sources": {
+    "cuts": [
+      {
+        "report": {
+          "path": ".tools/mixed-property-stringable-model-51/run-v1/report.json",
+          "sha256": "612a907524e6d9c6bc23261d08a6a99a220c2834b748f1ebedafdeee199dfad5"
+        },
+        "credited_rows": [
+          "mixed-short-circuit",
+          "mixed-live-leaves"
+        ]
+      },
+      {
+        "report": {
+          "path": ".tools/mixed-property-stringable-model-51/run-source-retry1/report.json",
+          "sha256": "62cfbb99b1bbcd260f71cd6be4cb7ca67345f9a579fc5b8b9eaf3f8e790a43c6"
+        },
+        "credited_rows": [
+          "mixed-generations"
+        ]
+      },
+      {
+        "report": {
+          "path": ".tools/mixed-property-stringable-model-51/run-source-retry2/report.json",
+          "sha256": "fb3387183e7f3bbcc96e3c7f2859ad6aa65938d5e4a8fdbf1bbfb683116592da"
+        },
+        "credited_rows": [
+          "peer-left-generation",
+          "peer-mixed-throw",
+          "mixed-post-detach-declared"
+        ]
+      }
+    ],
+    "catalogue": {
+      "path": "tests/semantics/mixed_property_stringable_comparison_cases.json",
+      "sha256": "53e875b2f1582e569eebd063b65eddd9fd280abee1e79b9be1beb7029cd0db9a"
+    },
+    "normal_native_agreements": 6,
+    "caps": "First generations45/55 timed out semantically; only that affected source used90/100 on retry. All other sources45/55,100000 steps,jobs1."
+  },
+  "syntax_only": {
+    "report": {
+      "path": ".tools/mixed-property-stringable-prepare-51/syntax-v1/report.json",
+      "sha256": "98963c9805e928871a9d266eaf2fc8e05a1d1bebd5ecddd4d79e12bbcbb94c0c"
+    },
+    "programmes": 6,
+    "closed_workers": 12,
+    "runtime_credit": 0,
+    "author_el": {
+      "path": ".tools/mixed-property-stringable-state-51/run-elab-v1/report.json",
+      "sha256": "49aa4b68cb76ba924e8445b4694aca2b03948738b56dcb98a9c3c91597166599"
+    },
+    "peer_el": {
+      "path": ".tools/mixed-property-stringable-peer-state-51/run-elab-v1/report.json",
+      "sha256": "07c1f0e9b86149575934dc772bb58e223cb11f1f1bc0056f2f081ce3db951c04"
+    },
+    "peer_fixture_bridge": "Two final Boolean premises correct the cleanup table expectation: after actual pair unwind the sole table owner permits an in-place write. Original successful EL remains bound by the exact three-input bridge; no EL renewal."
+  },
+  "ownership": "INDIRECT(object,key) is an internal nonowning declared-slot locator. INSTANCE owns inline declared slots plus its current table; the table owns dynamic buckets and any copied declared values. Dynamic mirrors add no roots. Each active cached-table cursor retains both enclosing objects and both captured tables, including old unmapped generations. Effective item/pointer images remain documentary. Retained old INDIRECT follows live slots, while zend_array_dup-style new buckets dereference/drop underlying UNDEF and apply existing singleton-reference duplication.",
+  "residuals": [
+    "Ordinary cached tables remain bounded to public no-hook supported layouts; wider handlers/access/layouts remain partial.",
+    "Direct object-protected comparison to newly materialized cached table is explicit Unsupported at the reached producer.",
+    "Cached ordinary collector visitation and construction during active collection are explicit Unsupported; RC owner correctness does not establish Zend cycle-collector physical visitation.",
+    "Reference foreach of copied declared DIRECT/ALIAS buckets is explicit Unsupported; live INDIRECT uses the existing checked declared-slot reference route.",
+    "Cached ordinary cloning is explicit Unsupported; faithful inline-slot cloning, locator remap and copied-bucket preservation remain required.",
+    "No END/shutdown, broader receiver/destructor lifetime or full-core closure claim."
+  ],
+  "acceptance": "All credited cuts independently bound once with stable watched inputs, exact original source/File/CWD/profile and immutable START/final/closed records, empty tool stderr, owned exits+cleanup0 and empty groups. Independent comp_review_21 cleared the exact scoped publication; failed inputs and raw remain preserved with zero credit for failed groups.",
+  "recovery": "Original ignored sources/programmes/recorders/START/raw/binaries remain at .tools/mixed-property-stringable-51/.tools/mixed-property-stringable-{native,detach-native,baseline,gate,model,prepare,state,peer-state,support}-51. Preserve paths and branches; no bulky evidence in Git.",
+  "original_zero_credit": [
+    {
+      "report": {
+        "path": ".tools/mixed-property-stringable-gate-51/run-v1/report.json",
+        "sha256": "9ddd11abacdd25546c11d264b6c4b5268eb1c1b01e3f7a0084f06e953d6487b6"
+      },
+      "result": "Pre-main early INDIRECT binder used unavailable ptbytes; corrected to the available nat-list binder."
+    },
+    {
+      "report": {
+        "path": ".tools/mixed-property-stringable-gate-51/run-retry1/report.json",
+        "sha256": "6bca892975b472234d21fac7853bfee67f8f46ad0828498121b43babf9c6e6f2"
+      },
+      "result": "Pre-main constructor-specific otherwise fallback; explicit pure live predicate and negative fallback corrected only grammar."
+    },
+    {
+      "report": {
+        "path": ".tools/mixed-property-stringable-model-51/run-v1/report.json",
+        "sha256": "612a907524e6d9c6bc23261d08a6a99a220c2834b748f1ebedafdeee199dfad5"
+      },
+      "result": "Generations semantic timeout0; first2 source agreements retained."
+    },
+    {
+      "report": {
+        "path": ".tools/mixed-property-stringable-model-51/run-source-retry1/report.json",
+        "sha256": "62cfbb99b1bbcd260f71cd6be4cb7ca67345f9a579fc5b8b9eaf3f8e790a43c6"
+      },
+      "result": "Same-object cached-table ORDER0 overlap caused interpreter nondeterminism0; one distinct-object guard corrected it, with accepted generations1 retained."
+    },
+    {
+      "report": {
+        "path": ".tools/mixed-property-stringable-peer-state-51/run-sl-v1/report.json",
+        "sha256": "a661c213e7623d9e00cf46a2c78b5e18d1f8ffe884e36c2591e2791aca1181e0"
+      },
+      "result": "Original throw145 fixture returned false0 because it demanded table detachment after real cursor unwind. Sole owner permits an in-place right-table write; corrected throw146 retains all10 Steps and adds the exact owner count. Generation125 PASS is retained separately."
+    }
+  ],
+  "reached_states": {
+    "author": {
+      "path": ".tools/mixed-property-stringable-state-51/run-sl-v1/report.json",
+      "sha256": "d2c5b8761c00bed56f0163e1fc4249dbbc92e63a04692719a9920f2158d78c7a"
+    },
+    "peer_generation": {
+      "path": ".tools/mixed-property-stringable-peer-state-51/run-sl-v1/report.json",
+      "sha256": "a661c213e7623d9e00cf46a2c78b5e18d1f8ffe884e36c2591e2791aca1181e0"
+    },
+    "peer_throw": {
+      "path": ".tools/mixed-property-stringable-peer-state-51/run-sl-cleanup-retry1/report.json",
+      "sha256": "e7b7cf61151a04b9fe79e94f4162e602f7d1c51f7319670c78b578760a1a1231"
+    },
+    "author_plan": {
+      "path": ".tools/mixed-property-stringable-state-51/plan.json",
+      "sha256": "f43c2da8648ec4b196d83f1837cf8317352fcc29297e55d8007dd79c92a505dd"
+    },
+    "peer_plan": {
+      "path": ".tools/mixed-property-stringable-peer-state-51/plan.json",
+      "sha256": "2a09c7e76bb9b26cbaaecbcdc271503f7f3488a23ca509c467f7dcaa34d17f1e"
+    },
+    "premises": 743,
+    "setup_frontier_premises": 676,
+    "marked_pure_checks": 67,
+    "PhpSteps": 37,
+    "groups": [
+      {
+        "id": "one-map",
+        "premises": 34,
+        "pure_controls": 10,
+        "PhpSteps": 1,
+        "seconds": 11.8752545081079
+      },
+      {
+        "id": "live-leaves",
+        "premises": 254,
+        "pure_controls": 12,
+        "PhpSteps": 12,
+        "seconds": 50.226792922243476
+      },
+      {
+        "id": "post-detach",
+        "premises": 184,
+        "pure_controls": 29,
+        "PhpSteps": 8,
+        "seconds": 21.73439645394683
+      },
+      {
+        "id": "peer-left-generation",
+        "premises": 125,
+        "pure_controls": 8,
+        "PhpSteps": 6,
+        "seconds": 14.859095182269812
+      },
+      {
+        "id": "peer-mixed-throw",
+        "premises": 146,
+        "pure_controls": 8,
+        "PhpSteps": 10,
+        "seconds": 14.849103791639209
+      }
+    ],
+    "scope": "Authentic one-map count shortcut/materialization, live declared slot versus captured old CELL, shared dynamic CELL, copied-table versus live-slot values and fresh second caster; old-table recursion and dynamic generation detach; identical TypeError through caster finally, caller restoration/catch/finally and unchanged-left guard cleanup. Counterfactual UNDEF/duplication, altered owner edges, GC marker and clone refusal controls add no Step credit. No END/shutdown drive."
+  }
+}

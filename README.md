@@ -1590,12 +1590,18 @@ The preceding six-source/521-check cut remains frozen. [Property-table casts](co
 now retain stdClass objects and their concrete tables, preserving old dynamic buckets
 under copy-on-write. Initialized public declared tables keep live slots and old
 reference cells distinct. Six new exact sources and 576 reached premises/28 raw
-steps pass; mixed membership and guarded projection remain required.
+steps pass; that cut left mixed membership and guarded projection open.
 [Fiber comparison transfers](coverage/semantics/fiber-aggregate-stringable-comparison-review.json)
 now preserve recursion guards in authentic waiting and suspended VMs. Array COW,
 declared live slots versus captured cells, and injected TypeError through caster
 and caller finally entry pass three exact sources and 315 reached premises/23 raw
 steps. Broader close/destructor lifetimes remain required.
+[Mixed ordinary tables](coverage/semantics/mixed-property-stringable-comparison-review.json)
+now keep declared slots live in retained tables while copied generations keep their
+own values. Dynamic add/unset, shared cells, physical unset buckets and throw cleanup
+pass six exact sources and 743 reached premises/37 raw steps. Foreach and array casts
+read the current table. Cached cloning and collector traversal remain explicit limits, as does
+materialization while a direct-object comparison guard is active.
 [Match expressions](docs/semantics/SOURCE-MATCH.md) preserve strict, lazy arm
 selection, delayed CV subjects, ordered compiler diagnostics and owned value
 results; their [review](coverage/semantics/match-review.json) binds source, compiler

@@ -144,9 +144,22 @@ pre-unwrapped cell remaining distinct. Ordinary array casts produce copied views
 concrete tables compare equal before recursion checks. Separate object/table guard
 kinds preserve cursor restart, alias-array recursion and TypeError caller catch
 followed by finally entry. Six exact sources and 576 reached premises/28 raw steps
-pass. Mixed declared/dynamic tables or declared-table detachment, guarded declared-object projection,
-and broader receiver/destructor lifetimes remain explicit
-obligations; no END/shutdown coverage is claimed.
+pass. That cut left mixed tables, detachment and guarded projection open;
+broader receiver/destructor lifetimes remain explicit obligations. Its state tests
+claim no END/shutdown coverage.
+
+[Mixed ordinary cached tables](../../coverage/semantics/mixed-property-stringable-comparison-review.json)
+now retain both objects and concrete table generations. Internal INDIRECT entries
+borrow live declared slots; dynamic entries own their values. Table copies dereference
+those entries and drop underlying unset values, so later property writes can differ
+from current-table foreach/array reads. Retained tables preserve physical bucket
+counts and live slots, including UNDEF ordering; pre-unwrapped cells keep their
+identity. Dynamic add, remove and missing-key unset can detach a new generation
+with its own recursion guard. Six exact sources and 743 reached premises/37 raw
+steps cover those distinctions, repeated casts and the same TypeError through
+caller catch/finally. Counterfactual helper controls add no Step credit. Cached
+cloning/collection, copied declared-bucket reference iteration, and materialization
+while a direct-object comparison guard is active remain explicit Unsupported boundaries.
 
 [Fiber transfers during these comparisons](../../coverage/semantics/fiber-aggregate-stringable-comparison-review.json)
 now preserve active left guards in authentic waiting callers and allocated suspended
@@ -157,7 +170,7 @@ pre-unwrapped cell keeps its identity. Identical tables remain equal before recu
 checks. The same injected TypeError keeps the guard through caster finally entry,
 then clears it on real pair unwind before caller catch and finally entry. Three
 exact sources and 315 reached premises/23 raw steps pass. Retained declared membership
-and projection restrictions also apply while parked. Broader close/destructor
+and projection restrictions applied while parked at that cut. Broader close/destructor
 lifetimes remain required; no END/shutdown coverage is claimed.
 
 The installed [file operand bridge](../../coverage/semantics/file-operand-review.json)

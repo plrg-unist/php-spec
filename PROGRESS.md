@@ -189,7 +189,7 @@ passes six new exact sources, strict 3 and 576 reached premises/28 raw steps at
 buckets under COW; genuine foreach-produced declared tables use live slots and
 captured cells. Identical tables precede recursion checks, and throw/normal return
 remove the guard. Ordinary `(array)` views remain copied projections. Mixed
-membership, guarded projection and wider lifetimes remain required;
+membership, guarded projection and wider lifetimes remained open at that cut;
 full core stays partial. The disproved transition and original fixture/compiler
 failures retain zero credit.
 [Aggregate comparison ledger](coverage/semantics/aggregate-stringable-comparison-review.json).
@@ -203,7 +203,20 @@ captured cells, and the identical injected TypeError through caster/caller final
 entry pass at f536e6ea /385: three exact sources, strict 3 and 315 reached premises
 (292 setup/frontier, 23 pure controls, 23 raw PhpSteps). The original peer EL recorder
 label failure keeps zero runtime credit; its genuine closed elaboration is reused.
-Mixed tables, guarded projection and broader close/destructor lifetimes remain open.
+That cut left mixed tables and guarded projection open; broader close/destructor
+lifetimes remain required.
+
+[Mixed cached-table comparison](coverage/semantics/mixed-property-stringable-comparison-review.json)
+now retains concrete old table generations with live declared-slot locators while
+dynamic writes produce copied buckets. Actual foreach and array views can differ
+from later property reads. Six original sources agree across the retained fa6f/468275
+cuts; 743 reached premises (676 setup, 67 pure controls, 37 raw steps) pass at
+468275 /386. Ordered skips, retained UNDEF, old/new guard identity and the same
+TypeError through catch/finally are checked. Compiler3 is reused across the sole
+same-object exclusivity guard. Original pre-main, timeout, nondeterminism and
+cleanup-fixture failures retain zero credit. Cached clone/collector visitation,
+copied-declared reference iteration, and materialization while a direct-object
+comparison guard is active remain open.
 
 Hard bailout now records request EXITSTATUS255 before shutdown. Direct callback
 strings preserve it; integer/default exits replace it and skip later callbacks.
