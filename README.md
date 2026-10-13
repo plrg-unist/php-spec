@@ -1877,6 +1877,12 @@ inheritance edges. The latest property supplies the slot and default; original
 parent function/private scope remains distinct from receiver called scope.
 One original and four focused states cover slot 300→400/getter 313→413 in the
 [repeated inherited-getter review](coverage/semantics/repeated-plain-child-inherited-backed-get-hook-review.json).
+A plain equal-type child also inherits a getter without a source backing read
+when an authenticated ordinary ancestor supplies its parent's storage. The typed
+parent starts uninitialized; the child owns 200 then 300 while the inherited getter
+returns 13 with the parent's function and private scope. One original and three
+focused states are recorded in the
+[ordinary-backed inherited-getter review](coverage/semantics/ordinary-backed-parent-plain-inherited-getter-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
