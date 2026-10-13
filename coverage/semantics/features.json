@@ -18815,16 +18815,20 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/391-output-buffers.watsup",
-        "spec/semantics/395-output-handlers.watsup"
+        "spec/semantics/395-output-handlers.watsup",
+        "spec/semantics/396-output-chunks.watsup"
       ],
       "helper_tests": [
         "tests/semantics/output_buffer_state.py",
-        "tests/semantics/output_handler_state.py"
+        "tests/semantics/output_handler_state.py",
+        "tests/semantics/output_chunk_state.py"
       ],
       "source_tests": [
         "tests/semantics/output_buffer_sources.py",
         "tests/semantics/output_handler_sources.py",
-        "tests/semantics/output_handler_review_sources.py"
+        "tests/semantics/output_handler_review_sources.py",
+        "tests/semantics/output_chunk_sources.py",
+        "tests/semantics/output_chunk_review_sources.py"
       ],
       "evidence": [
         "vendor/php-src/main/output.c",
@@ -18833,9 +18837,12 @@
         "coverage/semantics/output-buffer-review.json",
         "vendor/php-src/Zend/zend_API.c",
         "coverage/semantics/output-handler-author.json",
-        "coverage/semantics/output-handler-review.json"
+        "coverage/semantics/output-handler-review.json",
+        "vendor/php-src/Zend/zend_execute_API.c",
+        "coverage/semantics/output-chunk-author.json",
+        "coverage/semantics/output-chunk-review.json"
       ],
-      "review": "Module391 implements default/NULL stacks, nested whole chunks, capabilities, getter Notice reentry, exact status and final default flush after lifecycle; its earlier source/state cuts stay frozen. Module395 stages chunk0 scalar-result user callbacks on explicit flush/clean/end/get operations, with weak internal entry/builtin traces, frozen input/getter copies, PHP8.5 produced-output deprecation, live false forwarding/disablement, raw zoh ownership and borrowed FCC history. Author15 exact originals retain1+14 cuts, independent9 exact originals pass separately; five author/four independent dependency controls have zero native agreement credit. Four genuinely reached state groups pass227 premises, including borrowed alias retirement, sole raw ownership/post-route release and a valid forged getter string. Automatic/request-end callback drains, wider conversion/callable/mutation/Fiber protocols, buffered stdout diagnostics and wider startup/SAPI effects remain required; full obligation stays partial."
+      "review": "Module391 implements default/NULL stacks and lifecycle flush; Module395 stages explicit normal scalar-result user operations with copied strings, internal weak traces, produced-output deprecation, live false forwarding and zoh-only ownership. Their accepted ledgers retain original cuts. Module396 adds positive chunks for source echo/print/inline and explicit lower cascades, with whole-buffer WRITE phases, VM strictness/file/line, active-versus-running layers, detached flush getter views and authenticated operand/continuation transfer. Eight author and five independent originals keep distinct cuts; the lower-result failure remains zero and the tail guard gets an affected alias source. Five genuine state groups pass 210 premises in separately capped processes at 4a1a; validator/forgery/resource failures remain zero, and original assertions/caps are unchanged. Abrupt cleanup, other byte producers, request-end/fatal drains, wider conversion/callable/mutation/Fiber protocols and buffered stdout rendering remain required; full obligation stays partial."
     },
     {
       "id": "environment.request-inputs",

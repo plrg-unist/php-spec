@@ -40,9 +40,10 @@ environment order and current CWD; the semantic process never launches a shell.
 [Default output buffers](docs/semantics/OUTPUT-BUFFERS.md) now route exact bytes
 through nested default handlers, chunk/clean/flush/get/status operations and
 request-end flushing after shutdown/destructors. [User output handlers](docs/semantics/OUTPUT-HANDLERS.md)
-now support chunk0 explicit flush/clean/end/get callbacks, copied snapshots and
-PHP8.5 callback-output deprecation. Automatic/request-end callback dispatch and
-buffered stdout diagnostics remain explicit dependencies.
+support explicit flush/clean/end/get and normal positive-chunk callbacks from
+echo, print and inline output, with copied snapshots, source call contexts and
+PHP8.5 callback-output deprecation. Abrupt callbacks, other byte producers,
+request-end dispatch and buffered stdout diagnostics remain dependencies.
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback

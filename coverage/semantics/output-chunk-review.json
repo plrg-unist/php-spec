@@ -1,0 +1,82 @@
+{
+  "milestone": "Normal automatic user output-handler chunks (396)",
+  "status": "accepted privately; actual-parent integration pending",
+  "reviewer": "core_breadth_review_01",
+  "base_revision": "ad50ffd284217c2a5a5190eccde751bcc823d3a5",
+  "implementation_revision": "4a1a368763499360f73f9f8d303f2ca50fb5e5cf",
+  "implementation_sha256": "e7590494e84f65ad434afb2443c2b94e90eab8c676de47e58f70a54fb2c56237",
+  "shared_handler_sha256": "eeb9fa9bacadade984d1a82e60d073d9cec14cd479131d09ffbcb0b02c4ca5ca",
+  "scope": [
+    "Whole-buffer positive thresholds from source echo, print, inline output and explicit lower WRITE cascades",
+    "VM source strictness/file/line, API internal weak entry and native WRITE phases",
+    "Selected lower buffer versus active top; detached flush scalar getters versus actual stack observers",
+    "Busy upper output retained until the next nonempty write; live FALSE forwarding and disablement",
+    "Transferred operand ownership, sole raw zoh ownership, cached FCC as a borrowed witness"
+  ],
+  "authority": [
+    "vendor/php-src/main/output.c:php_output_handler_append, php_output_handler_op, php_output_stack_apply_op, php_output_stack_pop",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_ECHO, ZEND_PRINT",
+    "vendor/php-src/Zend/zend_execute_API.c:zend_call_function"
+  ],
+  "independent_sources": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-05/sources-02/report.json",
+    "report_sha256": "dc47c838954c915f53c939ca8a28b4a92070325a4526756e85c2e1dff7627528",
+    "revision": "262288fddfbfd830dc7a443930091656bdca01f4",
+    "agreements": 5,
+    "exact_observations": ["stdout", "stderr", "exit_status", "normal completion"],
+    "cases": [
+      "lower-user-active-upper-default",
+      "flush-detached-active-getters",
+      "auto-alias-false-retirement",
+      "api-cascade-weak-owned-pop",
+      "busy-upper-user-next-write"
+    ],
+    "runner_sha256": "53df7a36f3b397a6bc58faf012ef9766914b7fe7ebb30734fe9409a78c51707a",
+    "passed": true,
+    "inputs_stable": true,
+    "actor_reaped": true
+  },
+  "author_cuts_reviewed": {
+    "source_originals": 8,
+    "retained_cuts": "1 phase gate plus 7 originals at4670634c; three explicit Unsupported controls have zero agreement credit",
+    "ledger": "coverage/semantics/output-chunk-author.json",
+    "affected_alias_recheck": "Exact AB(D1) at17583d58a after the live task/suffix guard; repeats one independent original and adds zero distinct agreements"
+  },
+  "state_review": {
+    "revision": "4a1a368763499360f73f9f8d303f2ca50fb5e5cf",
+    "groups": 5,
+    "premises": 210,
+    "report_directory": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-05/state-selected-01",
+    "fronts": [
+      {"id": "vm-strict-print", "premises": 53, "report_sha256": "9e9ca65bfdc942b6aa767f72e15c81c0f51b82aad74de272ceeac3d4e3cd2c10"},
+      {"id": "lower-active", "premises": 36, "report_sha256": "1673746538b3896e600b427c9495a0c8649efb1eeae2f3e87906627a54e043d7"},
+      {"id": "detached-flush", "premises": 45, "report_sha256": "fab7c3c149d0dc4d4ba797f5ee6134a96e45a2da456e934fe0610274b30a47a9"},
+      {"id": "popped-owner", "premises": 46, "report_sha256": "de71075f860f09b70644db4772fd23cafd44b4a35cee7a3326e3d80c60480890"},
+      {"id": "retained-upper", "premises": 30, "report_sha256": "3ef8d5d0356681cfdd1f3b92b0ec85e02cf94835994cbbb6aab200170cf2405c"}
+    ],
+    "review": "Genuine reached states, public/budget resume, entered source context, sole popped receiver owner, absent-but-misordered detached ID and malformed source/byte/index/context/tail refusals",
+    "execution": "Serial unchanged one-group selectors, AS1536MiB and120s worker; all passed with stable inputs and reaped actors",
+    "helper_controls_native_credit": 0
+  },
+  "repairs_reviewed": [
+    "Normal callback result selects its authenticated buffer ID, matching produced-output handling",
+    "Current context authority requires an actual write descriptor with its exact suffix; the saved-frame arm remains",
+    "Typed output callbacks authenticate the bound fixed-prefix through their genuine handler context",
+    "API origin bytes require the matching API caller/finish, keeping malformed VM/API combinations deterministic"
+  ],
+  "preserved_zero_credit": {
+    "independent_source_failure": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-05/sources-01/report.json",
+    "public_readiness_failure": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-05/state-01/report.json",
+    "origin_nondeterminism_failure": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-05/state-02/report.json",
+    "combined_allocation_failure": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-05/state-03/report.json",
+    "note": "Whole failed campaigns remain zero; the combined allocation failure proves no group result. Tuple01 is diagnostic only; tuple02 was prepared but never executed. Earlier source cuts are not renewed by later guards or selected state runs."
+  },
+  "limits": [
+    "Abrupt callback/receive/result cleanup and request-end/fatal handler drains remain dependencies",
+    "Automatic dispatch from exit/builtin/direct-call producers remains Unsupported",
+    "Non-scalar/reference returns, typed variadic reception, wider callable/capability/mutation/Fiber protocols remain dependencies",
+    "Buffered stdout diagnostics and wider startup/SAPI effects remain dependencies; full core remains partial"
+  ],
+  "recovery": "Use the self-contained source runners and output_chunk_state.py --select ID --output RAW; raw evidence remains outside Git. Accepted395 cuts are retained without replay.",
+  "integration": "pending root writer and exact-parent review"
+}

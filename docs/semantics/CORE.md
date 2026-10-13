@@ -201,7 +201,10 @@ and forced request-end flush after shutdown/destructors. Error-handler reentry
 preserves frozen results and samples the live layer for the wrapper Notice.
 [Module395](OUTPUT-HANDLERS.md) adds chunk0 scalar-result user callbacks on
 explicit operations, copied inputs/results, native phase flags, callback-output
-deprecation and borrowed FCC lifetime. Automatic/request-end callback dispatch,
+deprecation and borrowed FCC lifetime. Module396 adds normal positive-chunk
+callbacks from source echo/print/inline and explicit lower cascades, preserving
+VM strictness/traces, active-versus-running layers and detached flush getters.
+Abrupt callbacks, other byte producers, request-end dispatch,
 wider returns/mutation/Fiber switching and buffered stdout diagnostic rendering
 remain dependencies; masking and handler-true cases preserve ordinary execution.
 Wider startup/SAPI output effects remain required.

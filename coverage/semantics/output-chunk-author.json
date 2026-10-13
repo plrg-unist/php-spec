@@ -1,0 +1,220 @@
+{
+  "feature": "normal automatic user output-handler chunks",
+  "status": "accepted private milestone; exact-parent integration pending",
+  "base_revision": "ad50ffd284217c2a5a5190eccde751bcc823d3a5",
+  "implementation_revision": "4a1a368763499360f73f9f8d303f2ca50fb5e5cf",
+  "fixture_revision": "17583d58a54cb1e3da07e30b48a8224de7169e5b",
+  "scope": "Normal scalar user handlers on source echo/print/inline and lower WRITE cascades from explicit APIs; whole buffers, native source/internal call contexts, active-top versus selected ID, detached flush getters, one-time operand/zoh ownership and authenticated suffixes. Full core remains partial.",
+  "implementation_hashes": {
+    "spec/semantics/30-storage.watsup": "6cc8ec0ed71a551bede65758e656f9df74c19ec0c5c194450b2587469769cffd",
+    "spec/semantics/40-control.watsup": "cee083a4b5f01782237c5f319981cb3d11eaf92a3aa024ee36ad9c0ad2462371",
+    "spec/semantics/146-print-runtime.watsup": "0b6eb59d2618fad387841d9e738296d48eaf96795429990e7bbf4a0ffe32d736",
+    "spec/semantics/391-output-buffers.watsup": "624637c8dc5aeaeb2bae8abbc1adcc643494fbe13502877ebf52d7911ab70296",
+    "spec/semantics/395-output-handlers.watsup": "eeb9fa9bacadade984d1a82e60d073d9cec14cd479131d09ffbcb0b02c4ca5ca",
+    "spec/semantics/396-output-chunks.watsup": "e7590494e84f65ad434afb2443c2b94e90eab8c676de47e58f70a54fb2c56237",
+    "spec/semantics/modules.json": "555fd8e7f37bd49daecf0ba4e3fbeedd7165cc33159659e92dd8c78570bb692f"
+  },
+  "runtime": {
+    "identity": "PHP8.5.10 CLI NTS64, sole project-local oracle",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "profile": "tests/semantics/profile.json",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PATH": "/usr/bin:/bin"
+    }
+  },
+  "author_sources": {
+    "distinct_agreements": 8,
+    "first1": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-05/source-gate-01/report.json",
+      "sha256": "a43fd29a298a030876a011d26cf1482e373e4c33f5d99e2bd8becb2d1b72a327",
+      "revision": "4670634c342310fadc1e68abd08b6c919012f361",
+      "passed": true,
+      "completed": true,
+      "stable_inputs": true,
+      "selected": [
+        "whole-buffer-phases"
+      ]
+    },
+    "remaining7_and_controls3": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-05/sources-01/report.json",
+      "sha256": "528506697ece38bd602778a75ec1541efda44a75464da121e44e5e04ae855381",
+      "revision": "4670634c342310fadc1e68abd08b6c919012f361",
+      "passed": true,
+      "completed": true,
+      "stable_inputs": true,
+      "selected": [
+        "source-file-line-trace",
+        "print-inline-continuation",
+        "weak-typed-false-disable",
+        "false-live-forwarding",
+        "lower-user-cascade",
+        "produced-source-and-api-lines",
+        "cv-capture-print-result",
+        "strict-failing-receive",
+        "callback-throw",
+        "callback-exit"
+      ]
+    },
+    "controls_native_credit": 0
+  },
+  "independent_sources": {
+    "distinct_agreements": 5,
+    "report": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-05/sources-02/report.json",
+      "sha256": "dc47c838954c915f53c939ca8a28b4a92070325a4526756e85c2e1dff7627528",
+      "revision": "262288fddfbfd830dc7a443930091656bdca01f4",
+      "passed": true,
+      "completed": true,
+      "stable_inputs": true,
+      "selected": [
+        "lower-user-active-upper-default",
+        "flush-detached-active-getters",
+        "auto-alias-false-retirement",
+        "api-cascade-weak-owned-pop",
+        "busy-upper-user-next-write"
+      ]
+    },
+    "review_ledger": "coverage/semantics/output-chunk-review.json"
+  },
+  "affected_guard_source": {
+    "report": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-05/tail-source-01/report.json",
+      "sha256": "9fb71b9d10214d06a7adf24b87d94746f7fd4acb8dfb10acb0ba1c72b6470f00",
+      "revision": "17583d58a54cb1e3da07e30b48a8224de7169e5b",
+      "passed": true,
+      "completed": true,
+      "stable_inputs": true,
+      "selected": [
+        "auto-alias-false-retirement"
+      ]
+    },
+    "expected": "AB(D1)",
+    "new_distinct_agreements": 0,
+    "result": "exact affected original after live task/suffix anchor"
+  },
+  "compatibility": "4670634c to262288f changes only normal callback result selection from active top to selected ID; existing top-selected cases are unchanged.20dee strengthens current-context authority with the actual descriptor/suffix, retaining frame anchors. Prior source cuts stay at their revisions; sole alias-FALSE affected source is rerun and reached state tests cover both context arms, source/ID/byte/tail forgeries and lower/API frontiers. No prior campaign renewal.667a adds authenticated fixed-prefix readiness only for genuine output callback contexts, repairing public TYPE_RECEIVE validation without changing runtime reception.4a1a qualifies API origin clauses by the matching caller, making malformed VM/API cross-FINISH inputs deterministic. Earlier source observations retain their revisions; corrected reached-state checks validate these pure guards.",
+  "state": {
+    "reports": [
+      {
+        "id": "vm-strict-print",
+        "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-05/state-selected-01/vm-strict-print/report.json",
+        "sha256": "9e9ca65bfdc942b6aa767f72e15c81c0f51b82aad74de272ceeac3d4e3cd2c10",
+        "revision": "4a1a368763499360f73f9f8d303f2ca50fb5e5cf",
+        "premises": 53,
+        "passed": true,
+        "stable_inputs": true
+      },
+      {
+        "id": "lower-active",
+        "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-05/state-selected-01/lower-active/report.json",
+        "sha256": "1673746538b3896e600b427c9495a0c8649efb1eeae2f3e87906627a54e043d7",
+        "revision": "4a1a368763499360f73f9f8d303f2ca50fb5e5cf",
+        "premises": 36,
+        "passed": true,
+        "stable_inputs": true
+      },
+      {
+        "id": "detached-flush",
+        "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-05/state-selected-01/detached-flush/report.json",
+        "sha256": "fab7c3c149d0dc4d4ba797f5ee6134a96e45a2da456e934fe0610274b30a47a9",
+        "revision": "4a1a368763499360f73f9f8d303f2ca50fb5e5cf",
+        "premises": 45,
+        "passed": true,
+        "stable_inputs": true
+      },
+      {
+        "id": "popped-owner",
+        "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-05/state-selected-01/popped-owner/report.json",
+        "sha256": "de71075f860f09b70644db4772fd23cafd44b4a35cee7a3326e3d80c60480890",
+        "revision": "4a1a368763499360f73f9f8d303f2ca50fb5e5cf",
+        "premises": 46,
+        "passed": true,
+        "stable_inputs": true
+      },
+      {
+        "id": "retained-upper",
+        "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-05/state-selected-01/retained-upper/report.json",
+        "sha256": "3ef8d5d0356681cfdd1f3b92b0ec85e02cf94835994cbbb6aab200170cf2405c",
+        "revision": "4a1a368763499360f73f9f8d303f2ca50fb5e5cf",
+        "premises": 30,
+        "passed": true,
+        "stable_inputs": true
+      }
+    ],
+    "groups": 5,
+    "total_premises": 210,
+    "execution": "same original assertions/cap; serial one-group processes after combined resource failure, no combined-prefix credit"
+  },
+  "preserved_zero_credit": [
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-05/sources-01/report.json",
+      "reason": "first lower-selected original interpreter failure; zero passed records, whole failed0"
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-05/static-02",
+      "reason": "duplicate forward declaration compiler failure"
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-05/static-03",
+      "reason": "recursive otherwise compiler restriction"
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-05/state-preflight-01",
+      "reason": "fixture forward declaration ordering"
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-05/state-preflight-02",
+      "reason": "fresh write binding inside non-invertible conjunction"
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-05/state-01/report.json",
+      "sha256": "1da54b004108499a3057d39675b854b858a1b07579f65ee4cdaaa55a67db84ff",
+      "reason": "entered TYPE_RECEIVE failed public readiness; whole failed0"
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-05/state-02/report.json",
+      "sha256": "3b440de09185f550cfe9ae0f69c94b84f5dbb45665eb01b3dd7b2199a885370d",
+      "reason": "forged VM caller/API FINISH exposed origin-helper nondeterminism; whole failed0"
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-05/state-03/report.json",
+      "sha256": "9fc4bea8bc209ce8b97a2f966dd29de47125f08d5cf49502ba7c60bcf3b0a9e6",
+      "reason": "combined worker allocation failure under1536MiB; whole0, no group credit inferred"
+    }
+  ],
+  "limits": [
+    "abrupt callback/result cleanup",
+    "automatic dispatch from exit/builtin/direct-call byte producers",
+    "request-end/fatal user-handler drains",
+    "non-scalar/reference-return conversion and typed variadic reception",
+    "wider callable selection, user capability failure, reentrant stack mutation and Fiber switching",
+    "buffered stdout diagnostics and wider startup/SAPI effects"
+  ],
+  "commands": [
+    "scripts/opam-exec.sh dune build --root .",
+    "scripts/opam-exec.sh dune build --root tests/semantics numeric_runner.exe",
+    "python3 tests/semantics/output_chunk_sources.py --select ID,... --output RAW",
+    "python3 tests/semantics/output_chunk_review_sources.py --select ID,... --output RAW",
+    "python3 tests/semantics/output_chunk_state.py --output RAW"
+  ],
+  "resources": "CPU4/SLOT2, serial stop-first/reaped, process AS1536MiB; model60s/worker90s; state120s. Struct-only DATA6GiB.",
+  "raw_recovery": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-05",
+  "independent_review": "coverage/semantics/output-chunk-review.json",
+  "integration": "pending root writer and exact-parent review",
+  "diagnostic": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-05/state-debug-01/numeric.json",
+    "sha256": "c7ba4508878b1610d5a0abb1e77b3aea57d5ee024a428a150db18d7be2b5b7ca",
+    "result": "bounded257-step tuple: only entered call_descriptors_valid false; heap/output/context/strictness and all caller/tail refusals true",
+    "native_credit": 0,
+    "state_premise_credit": 0
+  },
+  "static": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-05/static-08/report.json",
+    "sha256": "1c35e027ae6c28dc4d243a54367ee3d01e03197b783dbb6821420a2b3e6d8e36",
+    "result": "full386 plus unchanged210 fixture struct pass; structural evidence only"
+  }
+}

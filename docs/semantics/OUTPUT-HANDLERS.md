@@ -1,4 +1,4 @@
-# Explicit user output handlers
+# User output handlers
 
 Module395 extends the Module391 stack with chunk0 user handlers for explicit
 flush, clean, end and content-get operations. Ordinary named functions, simple
@@ -7,11 +7,21 @@ weak internal parameter reception. Traces retain the internal handler frame and
 the originating builtin API frame. Handler names preserve raw string/array
 spelling; wider Closure and effectful callable forms remain dependencies.
 
+Module396 adds normal scalar-result automatic callbacks for positive chunks from
+source echo, print and inline output, and from lower routing after explicit
+flush/end operations. A reached threshold processes the whole accumulated buffer;
+WRITE phases are START on the first call and zero thereafter. VM entry preserves
+source strictness, file and compiled line; an explicit API cascade remains an
+internal weak call. Print restores its result1 after the whole cascade.
+
 The handler receives a copied input string and the native START/CLEAN/FLUSH/FINAL
-phase flags. Get-clean/get-flush return a separate frozen copy. The live top
-buffer remains visible through callback getters. Callback writes append there
-and mark PRODUCED_OUTPUT; PHP8.5 deprecates those writes while temporarily
-disabling that layer. Error-handler writes then bypass it, including the native
+phase flags. Get-clean/get-flush return a separate frozen copy. The active top
+buffer remains visible through callback getters, even when a lower handler is
+running. Callback writes append to the first enabled layer of the actual stack
+and mark PRODUCED_OUTPUT there. PHP8.5 deprecates output when the selected handler
+has that flag, temporarily disabling it. A lower callback writing into an upper
+layer does not immediately deprecate the lower handler. Error-handler writes
+bypass the disabled layer, including the native
 PRODUCED bit on an enabled lower default layer. FALSE forwards the current live
 bytes and permanently disables the handler, with empty storage of size0. TRUE
 and NULL suppress output; other admitted scalars supply converted bytes.
@@ -19,14 +29,24 @@ Lower default layers defer reached chunk thresholds while a user handler runs.
 Those bytes can remain buffered after a clean operation until the next nonempty
 write or an explicit flush.
 
+Ordinary WRITE retains the full stack and commits only the selected buffer by ID,
+preserving upper callback writes. Explicit flush instead detaches its upper entry:
+scalar getters still observe that processed upper buffer, while level/full-status
+observe the remaining stack. End operations make the lower layer active. A busy
+positive user layer can retain PRODUCED bytes at its threshold; empty output keeps
+them, and the next nonempty write processes the whole buffer.
+
 The raw callback value (`zoh`) is the buffer's sole callback owner. Cached FCC
 selection and original snapshots are readonly witnesses. Reference-backed raw
 arrays can release a receiver when the callee returns, while ordinary raw arrays
 retain it until buffer removal. Arguments/retval finish cleanup before buffer
 reset and the running state ends. End operations write lower layers before
 releasing `zoh`; budget pauses retain every live owner and continuation.
+Saved VM operands transfer once to the write continuation. Source/context, live
+cursor and exact task suffix authenticate it; snapshots do not create owners.
 
-Automatic chunk callbacks, request-end/fatal callback drains, non-scalar or
+Abrupt automatic/explicit callback cleanup, automatic dispatch from other byte
+producers, request-end/fatal callback drains, non-scalar or
 reference-return conversion, typed variadic reception, mutating buffer APIs
 during a handler, capability
 failure notices for user handlers, and invalid/effectful callable creation stay

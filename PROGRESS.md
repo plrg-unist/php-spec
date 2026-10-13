@@ -7,24 +7,29 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Module395 normal user-output-handler callbacks are independently
-accepted; the current385 composition is checked. Chunk0 explicit flush/clean/end/get
-operations retain frozen inputs/getter copies, weak internal calls and builtin
-traces; live callback writes follow PHP8.5 deprecation and false/disabled routing.
-Only raw zoh owns the callback; cached FCC metadata survives alias receiver
-retirement, and lower routing precedes zoh release. Author15 originals agree at
-1+14 cuts; independent9 and4 Unsupported controls pass separately. Author5
-controls retain2+3 cuts with zero native credit. Four genuine SL groups pass227
-premises; the duplicate trace observer failure remains0. Automatic/request-end
-callback drains, wider conversion/callable/mutation/Fiber protocols and buffered
-stdout rendering remain explicit dependencies.
+Module396 is independently accepted for normal positive-chunk user output handlers from source
+echo/print/inline and explicit lower WRITE cascades. Whole buffers preserve
+VM strictness/file/line, active-top versus selected-lower behavior, detached flush
+getters and one-time operand/zoh ownership. Eight author originals agree in
+separate runs of 1 and 7; five independent originals pass at 262288f. Their first
+lower-result interpreter failure keeps zero credit. Selection by buffer ID and
+an authentic live task/suffix retain those cuts with an affected alias-retirement
+original at 17583d58a. Five genuine groups pass 210 premises in separate capped
+processes at 4a1a. Original validator/nondeterminism failures, the bounded tuple
+and combined allocation failure keep zero credit. The fixed-prefix readiness
+and disjoint API/VM origin guards preserve ordinary runtime behavior.
 [Contract](docs/semantics/OUTPUT-HANDLERS.md),
-[author evidence](coverage/semantics/output-handler-author.json),
-[independent review](coverage/semantics/output-handler-review.json).
-The385 join over2baa807 preserves current parent behavior and repairs lower
-default chunk deferral while a user handler runs. One exact current source and
-one genuine busy/retained state group pass49 premises at315859d24; the original
-status mismatch remains0. Earlier source/state cuts keep their identities.
+[author evidence](coverage/semantics/output-chunk-author.json),
+[independent review](coverage/semantics/output-chunk-review.json).
+The private candidate has 386 modules over ad50ffd (385); integration on current
+master cb498f9 awaits final review. Abrupt callbacks, other byte producers,
+request-end/fatal drains, wider conversion/callable/mutation/Fiber protocols and
+buffered stdout diagnostics remain required; full core stays partial.
+
+Module395 explicit chunk0 normal callbacks remain integrated. Its frozen source
+and state cuts, including the 385-module busy-lower repair with one source and
+49 state premises, are retained
+without replay in [the accepted ledger](coverage/semantics/output-handler-review.json).
 
 Named inc/dec warning-handler exits now finish handler-local cleanup and registry
 restoration before bool/decrement-null commit; strings skip restoration. Caller
