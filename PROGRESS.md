@@ -1725,6 +1725,18 @@ No failed actor; broader setter/type/root/hook families remain required.
 Joined exact `aba5383e`/387; one retained current init check passes with no application.
 Private cuts remain retained through inactive warning-callback, recorded-function and WeakMap paths.
 
+A direct trait’s public body-backed by-value `int` getter now imports with an
+authenticated Consumer callable and property, preserving physical Trait code and
+`__METHOD__` spelling. Consumer lexical/private13 and receiver called scope stay
+distinct; real backing100→300 yields113→313. Even an identical plain own property
+conflicts before Consumer publication: raw runtime STATICBYTES at class10 and
+public php_error/CompileError are distinct observations. Strict387 passes at
+`10c953cb`; scalar and collision source agreements are separate retained cuts.
+Four states pass267 =231 reached +36 derived (first235 at `ea101806`, collision32
+at `37476242`). Initial compiler, recorder-classification and fixture failures
+remain zero; wider trait hook imports/types/flags/ref/set/lifetime remain required.
+[Imported trait getter review](coverage/semantics/trait-imported-backed-getter-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization

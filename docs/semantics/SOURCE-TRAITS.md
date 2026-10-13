@@ -1,12 +1,21 @@
 # Source trait composition
 
-Modules 228, 238, 254, 259, 266, 274, 290, 297, 299, 307 and 347 compile, link and access source
+Modules 228, 238, 254, 259, 266, 274, 290, 297, 299, 307, 347 and 382 compile, link and access source
 traits under pinned PHP 8.5.10.
 A using class overrides trait methods; trait methods override inherited methods.
 Nested uses, duplicate imports, `insteadof`, aliases, visibility changes and final
 adaptations preserve Zend's method selection and diagnostics. Abstract trait
 requirements are checked against the selected implementation after parent
 inheritance and before interface contracts.
+
+Selected direct-trait public by-value statement-body-backed `int` getters import
+into a parentless named class. The imported property owns its physical slot, while
+a derived callable keeps Trait code/`__METHOD__` and uses Consumer lexical/private
+scope; called scope follows Consumer or Grand. A real slot 100→300 produces
+113→313. Matching own type/default100 does not permit a property collision.
+Two originals and four separate checks/267 premises are recorded in the
+[trait-getter review](../../coverage/semantics/trait-imported-backed-getter-review.json).
+Nested/parented imports and other hook shapes remain required.
 
 Imports retain two identities. The declaring owner and lexical `self` scope are
 the using class; the body, filename, line and `__TRAIT__`, `__METHOD__` and
@@ -322,5 +331,5 @@ trait `parent` parameter remains a valid declaration; receiving that unresolved
 dependent type retains the existing Unsupported boundary. Closure keyword NEW
 defaults use the separate module245 protocol; broader body keyword NEW retains
 its existing boundary. Broader
-attributes, autoload, hooks, lifecycle services and paused return work remain
+attributes, autoload, other hook shapes, lifecycle services and paused return work remain
 separate obligations.
