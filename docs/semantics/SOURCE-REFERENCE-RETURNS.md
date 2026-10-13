@@ -313,6 +313,18 @@ nested failure: the fresh error reaches the caller with old Y as Previous only
 after callback unwind. Its verbatim producer requires the retained checked query
 in an ignored recovery directory; the ledger keeps this older cut separate.
 
+An additive exact caught-rethrow class certificate links catch echo receiver and
+throw variable to the same ordinary local. Source2, reached2/353 and independent
+public132/1 pass at `64d33559`: failed reference binding/probe stays canceled,
+the same caught TypeError survives late replacement/caller with its creation
+origin, line4 and all reached trace-array payloads preserved. Previous is empty
+at callback rethrow and old Y at later cuts; T/D never executes. Full registered
+prefix/public refusal, ordered WX/X retirement, counter control, selected alias
+and budget continuation are separate checks. M38/M36/common idle guards and
+throw/Previous rules remain exact. These trace/identity assertions are modeled
+state evidence with engine corroboration, not native trace comparison. Local
+source reconstruction and broader catch/rethrow/returns remain OPEN.
+
 Module 186 captures the physical cell of an ordinary live unconstrained aliased CV
 before weak Stringable conversion. Its retained current/saved f-local binding
 authenticates that selection independently of later GLOBALS rebind/unset. Success

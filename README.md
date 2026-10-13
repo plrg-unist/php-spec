@@ -946,6 +946,11 @@ A separate validation-only escaping nested-throw case passes two originals and
 public96/1: the fresh error acquires the old Y as Previous only after leaving the
 callback. Its maintained generator and recovery prerequisites are in the
 [multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+The checked local catch may also rethrow its caught TypeError. Two originals,
+reached2/353 and independent public132/1 pass separately: the same error retains
+its construction line and trace, late cleanup links old Y as Previous, and T/D
+and the probe stay canceled. Existing throw/Previous rules are unchanged; wider
+catch/rethrow and returns verification remain OPEN.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)

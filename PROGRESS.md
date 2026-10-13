@@ -1769,6 +1769,22 @@ requires the retained checked query beside it in an ignored recovery directory.
 Actual381 over `4d26abc3` passes strict at `de54edc1` in 6.244s with zero
 applications; original private source/state/public and M37 validation cuts stay separate.
 
+The idle class certificate additionally admits catch echo followed by throwing
+the same decoded ordinary caught local. Old M38/M36 and common guards remain
+exact; no throw/Previous/active rule changed. Source2 and reached2/353 (267+86)
+pass at `64d33559`: the same caught error retains creation origin, line4 and its
+entire reached trace-array graph through late Y replacement and caller catch.
+Previous is empty at callback rethrow; old Y is linked at the later cuts. T/D
+and the failed inner binding/probe stay canceled. Ordered Z/W/X/public retirement,
+counter-PBOOL refusal, budget continuation and quiet selected alias bypass pass.
+Independent public132/1 binds actual current11/outer f21/main registered1/1/1,
+early trace graph and missing-operation-exit refusal. Private strict381 passes in
+6.173s with zero applications. The original public restore-origin fixture failure
+keeps zero credit. Trace/identity are reached-state/engine-derived evidence,
+separate from native output agreement. Local source reconstruction and wider
+catch/rethrow/lifecycle/returns remain OPEN.
+[Multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
 cell while GLOBALS may rebind or disappear; conversion writes the old cell atomically.
