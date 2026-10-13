@@ -215,8 +215,14 @@ publication; the error names the declaring getter at the child hook line. Revers
 addition retains the property class-line error, and untyped null-slot reads/writes
 remain controls;
 [ordinary-backing type-presence review](../../coverage/semantics/ordinary-backed-parent-unbacked-get-hook-type-presence-review.json).
-Own-body-backed children in this type-presence direction and plain declarations
-inheriting hooks remain required.
+A genuinely own-body-backed child omitting its type now receives the same
+getter-declaration error before the invariant property check. The sixth
+missing-return arm accepts the authenticated ordinary parent basis; the rejected
+child's own descriptor and backing body remain required. Reverse addition keeps
+the class-line error. Untyped controls retain the child slot 200→300 and getter
+213→313; a real entered getter confirms active backing bypass.
+[Own-backed type-presence review](../../coverage/semantics/ordinary-backed-parent-backed-get-hook-type-presence-review.json).
+Plain declarations inheriting hooks and wider type-presence combinations remain required.
 Backed-parent inheritance retains invariant types; broader type equivalence and
 wider hook variance remain required.
 Hooked object iteration is explicit Unsupported rather than a raw storage view;
