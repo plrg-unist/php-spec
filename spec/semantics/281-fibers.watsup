@@ -408,7 +408,8 @@ def $fiber_return_error(pfiber) = $ptascii("Cannot get fiber return value: The f
 def $fiber_return_error(pfiber) = $ptascii("Cannot get fiber return value: The fiber has not returned") -- if pfiber.STATUS =/= FIBER_INIT /\ pfiber.STATUS =/= FIBER_TERMINATED
 def $fiber_return_error(pfiber) = $ptascii("Cannot get fiber return value: The fiber threw an exception") -- if pfiber.STATUS = FIBER_TERMINATED /\ pfiber.FAILED
 
-def $fiber_blocked(S) = false
+dec $tick_running(pstate) : bool
+def $fiber_blocked(S) = $tick_running(S)
 def $fiber_receive_value(S, pconfigcall, pvalue) = $config_error(S, pconfigcall, "TypeError", $ptascii("Fiber::throw(): Argument #1 ($exception) must be of type Throwable, ") ++ $typed_given(S, pvalue) ++ $ptascii(" given"))
   -- if pconfigcall.KIND = INTRINSIC_FIBER_THROW
   -- if ~$class_instanceof(S, pvalue, $ptascii("Throwable"))

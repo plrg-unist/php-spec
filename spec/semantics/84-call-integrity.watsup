@@ -385,6 +385,7 @@ dec $error_handlers_valid(pstate, perrorhandler*) : bool
 dec $exception_handlers_valid(pstate, pvalue?*) : bool
 dec $eval_compile_owners_valid(pstate) : bool
 dec $generator_state_valid(pstate) : bool
+dec $tick_state_valid(pstate) : bool
 dec $call_descriptors_valid(pstate) : bool
 dec $source_pending_state_valid(pstate) : bool
 def $source_pending_state_valid(S) = true -- otherwise
@@ -439,6 +440,7 @@ def $call_descriptors_scoped_valid(S_live, S) = true
   -- if $dir_state_valid(S_live)
   -- if $shell_state_valid(S_live)
   -- if $output_state_valid(S_live)
+  -- if $tick_state_valid(S_live)
   -- if $throwable_result_valid(S)
   -- if $dynamic_result_valid(S)
   -- if $static_result_valid(S)
