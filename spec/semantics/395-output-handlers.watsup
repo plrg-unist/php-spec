@@ -39,6 +39,7 @@ dec $ob_user_phase(pintrinsic, int) : int
 dec $ob_user_invoke_valid(pstate, pobinvoke) : bool
 dec $ob_user_live(pstate, pobinvoke) : bool
 dec $ob_user_send_valid(pstate, pobinvoke, nat) : bool
+dec $ob_user_entry_supported(pstate, pobinvoke) : bool
 dec $ob_user_sent_valid(pstate, pobinvoke, poperand*, nat) : bool
 dec $ob_user_argument(pobinvoke, nat) : pvalue
 dec $ob_user_reference_message(pstate, pobinvoke, nat) : preqbytes
@@ -303,9 +304,12 @@ rule PhpStep/ob-user-reference: S ~> S_cell[.TODO = (OB_USER_SEND pobinvoke[.SEN
   -- if S.TODO = (OB_USER_REFERENCE pobinvoke n) :: ptask_tail*
   -- if $call_task_valid(S, OB_USER_REFERENCE pobinvoke n)
   -- if S_cell = $call_fresh_reference(S, $ob_user_argument(pobinvoke, n))
-rule PhpStep/ob-user-enter: S ~> $call_arity($target_after_enter($call_enter(S[.TODO = (OB_USER_RESULT pobinvoke) :: ptask_tail*], pfunction, pobinvoke.SENT, $ob_call_entry_site(pobinvoke.CALL), $ob_call_entry_line(pobinvoke.CALL)), poutputhandler.ENTRY.TARGET), pfunction, 2, $ob_call_entry_site(pobinvoke.CALL), $ob_call_entry_line(pobinvoke.CALL))
+;; zend_call_function wraps only callee parameters; fci.params retains its copies.
+def $ob_user_entry_supported(S, pobinvoke) = true -- otherwise
+rule PhpStep/ob-user-enter: S ~> $call_arity($target_after_enter($call_enter(S[.TODO = (OB_USER_RESULT pobinvoke[.SENT = [KNOWN pobinvoke.INPUT, KNOWN (PINT pobinvoke.PHASE)]]) :: ptask_tail*], pfunction, pobinvoke.SENT, $ob_call_entry_site(pobinvoke.CALL), $ob_call_entry_line(pobinvoke.CALL)), poutputhandler.ENTRY.TARGET), pfunction, 2, $ob_call_entry_site(pobinvoke.CALL), $ob_call_entry_line(pobinvoke.CALL))
   -- if S.TODO = (OB_USER_ENTER pobinvoke) :: ptask_tail*
   -- if $call_task_valid(S, OB_USER_ENTER pobinvoke)
+  -- if $ob_user_entry_supported(S, pobinvoke)
   -- if pobinvoke.BUFFER.HANDLER = (poutputhandler)
   -- if $target_function(S, poutputhandler.ENTRY.TARGET) = (pfunction)
 
