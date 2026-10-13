@@ -1,0 +1,126 @@
+{
+  "scope": "Named non-owning warning-handler exit during direct defined untyped-scalar CV/borrowed live-CELL pre/post increment/decrement, with primitive or object-free restoration payloads and nonthrowing cleanup.",
+  "status": "independently_reviewed_bounded_runtime",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "production_revision": "96b7daef4cdc3b3284894a0acab777f971980cbf",
+  "semantic_sha256": {
+    "spec/semantics/30-storage.watsup": "9bcdab52aa27f630e0d7d5588564c3236a7dda7647d909dfb6fca3fde6fc4032",
+    "spec/semantics/148-core-intrinsics.watsup": "2940fa1a47d7060c7a341f84525614174167593c8658bd107a97805faefc9121",
+    "spec/semantics/257-request-destructors.watsup": "519b994f9547f79519c061db9a6c3af919516905a87101e42744c1e348acacf4",
+    "spec/semantics/270-eager-destructors.watsup": "e389ff208039a60c75d790d227997eda38b781ac6f2c1d62abdcc01f128ab417",
+    "spec/semantics/390-incdec-warning-continuations.watsup": "a9fb720c21bb5c8c90728fb8bacd921954655c96e911325fe095e4d10aa8eb79"
+  },
+  "engine_basis": [
+    "vendor/php-src/Zend/zend_operators.c: increment_function/decrement_function restore captured bool/decrement-null after zend_error returns even with UnwindExit pending; increment_string and string decrement check the pending exception before restoration.",
+    "vendor/php-src/Zend/zend.c: zend_error calls the selected handler, finishes its locals/params, then restores or releases orig_user_error_handler before returning to the scalar helper.",
+    "vendor/php-src/Zend/zend_builtin_functions.c and Zend/zend_exceptions.c: exit updates the request status and raises internal UnwindExit; a real cleanup Throwable can replace it. Exit is not synthesized as an ordinary Throwable.",
+    "vendor/php-src/Zend/zend_vm_def.h: pre/post update results are interrupted on exit; caller operand cleanup follows the scalar helper. Retained native local/caller/temporary observers distinguish the order."
+  ],
+  "contract": [
+    "A source-authenticated named handler context permits descendant exit unwinding to reach the real handler return. Pending caller tasks, protected-region markers and temporary owners survive handler-local cleanup.",
+    "Registry restoration precedes captured bool/decrement-null store; strings retain callback writes. The subsequent ordinary exit discards result assignment/catch/finally and retires caller temporaries before caller cleanup/shutdown.",
+    "Initially referenced targets keep a borrowed old cell with genuine surviving aliases; initially plain CVs retain their separate GLOBALS unset/rebind behavior. Nested handlers restore inner then outer captures with fresh registry selection.",
+    "Signed32 request EXITSTATUS is separate from captured exit control; native exit23 matches JSON exit_status23 while the model process succeeds with exit0.",
+    "Parent cleanup histories validate copied source/control metadata after borrowed destructor registries have been consumed. Normal/null/empty-origin exit metadata and immediate live-Throwable prefixes remain authenticated. Cleanup throws and owning callback release retain exact named Unsupported boundaries."
+  ],
+  "accepted": {
+    "strict": {
+      "revision": "35abdc5b0eccc0bfdf184fbaca9e462967ac4f69",
+      "modules": 382,
+      "mode": "SL main=true; compilation/init only, zero PHP runtime credit",
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-05/strict-35abdc5b0/report.json"
+    },
+    "source": {
+      "new_author_ordinary": 4,
+      "new_independent_ordinary": 7,
+      "repaired_earlier_ordinary": 1,
+      "total_distinct_ordinary": 12,
+      "explicit_unsupported_controls": 3,
+      "control_agreement_credit": 0,
+      "result": "Ordinary originals require checked explicit_exit and exact native stdout/stderr/exit_status, including status23. Controls require checked Unsupported with the exact reason; they do not count as PHP agreement.",
+      "cuts": [
+        {
+          "revision": "3189b8f30cee2f7a66d2206337e4446226ed3644",
+          "ordinary_rows": 2,
+          "reports": [
+            "/home/user/workspace/php-spec-evidence-archive/operators-05/smoke-3189b8f30-bool/report.json",
+            "/home/user/workspace/php-spec-evidence-archive/operators-05/smoke-3189b8f30-local/report.json"
+          ]
+        },
+        {
+          "revision": "93c66468cc2c050820d16013bdaf79ada0304b71",
+          "ordinary_rows": 2,
+          "reports": [
+            "/home/user/workspace/php-spec-evidence-archive/operators-05/smoke-93c66468c-bool/report.json",
+            "/home/user/workspace/php-spec-evidence-archive/operators-05/smoke-93c66468c-parent/report.json"
+          ],
+          "qualification": "Affected bool replay and first parent-temporary observation after retaining the caller tail. Repeated originals are counted once."
+        },
+        {
+          "revision": "29afcfbc776404d8ba6cfcc7629a0f648cce02f0",
+          "ordinary_rows": 10,
+          "controls": 3,
+          "report": "/home/user/workspace/php-spec-evidence-archive/operators-incdec-exit-review-05/focus-29afcfbc7/report.json",
+          "qualification": "Only normal parent is replayed for the changed operation-source guard; other selected originals were unrun. The repaired mixed-suite old source receives new source credit, with no renewal of its historical state fixture."
+        }
+      ]
+    },
+    "author_reached": {
+      "revision": "93c66468cc2c050820d16013bdaf79ada0304b71",
+      "mode": "SL",
+      "fixtures": 3,
+      "conditions": 203,
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-05/state-93c66468c-author3/report.json",
+      "result": "Genuine handler exit/cleanup/commit frontiers, kept borrowed CELL versus rebound caller, temporary ownership, source/range negatives and public zero/one/budget resume."
+    },
+    "independent_reached": {
+      "revision": "96b7daef4cdc3b3284894a0acab777f971980cbf",
+      "mode": "SL",
+      "fixtures": 4,
+      "conditions": 245,
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-incdec-exit-review-05/state-96b7daef4-four/report.json",
+      "result": "String skip, caller destructor after commit, registry replacement, valid normal/pending parent cleanup histories, counterfeit metadata rejection and the source-reached parent-throw refusal. Original190 fixtures reused; only affected55 main regenerated from retained AST/source/native."
+    },
+    "total_reached_conditions": 448
+  },
+  "preserved_zero_credit": [
+    "baseline-8a287d06b-bool retains the unchanged-production checked Unsupported exit continuation gap. Native/frontends/preparation alone have zero model agreement.",
+    "smoke-35abdc5b0-bool retains the wrong expected status label: actual explicit_exit and exact streams were rejected by expected exited. Only the two suite labels changed; affected source retry did not renew strict/native preparations.",
+    "state-a338d3245-author3 retains the genuine descriptor failure: the initial exit arm lost TRY_END while keeping protected ORIGIN. Retaining actual caller tail/context/owners repaired it without weakening156 or dropping the positive assertion.",
+    "focus-29afcfbc7 retains the failed parentguard39 descriptor check and unrun190. Missing UPDATEEXIT cleanup-prefix admission was corrected narrowly; state-only55 plus unrun190 passed, without source13/author203 renewal.",
+    "Earlier OP390/OP04 evidence keeps its original revisions. Exactly three old exit boundary expectations and their old exit helper were repaired; only one old mixed source ran here, with no renewed historical state credit."
+  ],
+  "boundaries": {
+    "review-exit-callable-owner": "increment/decrement warning exit continuation",
+    "review-exit-handler-local-throw": "increment/decrement warning exit cleanup throw",
+    "review-exit-parent-throw": "increment/decrement warning exit parent cleanup throw"
+  },
+  "required_follow_on": [
+    "Native callable-handler owner destruction precedes captured commit; support its release rather than merely named no-owning callbacks.",
+    "Native handler-local and parent-temporary cleanup throws cancel exit, restore the appropriate capture, and resume the original caller catch/finally with supplied identity. Implement that full continuation; the exact Unsupported controls are temporary boundaries.",
+    "Replacement-object/destructor exit, late type sources, expired pointers, wider update locations and suspension retain their separate obligations."
+  ],
+  "recovery": {
+    "author_archive": "/home/user/workspace/php-spec-evidence-archive/operators-05",
+    "independent_archive": "/home/user/workspace/php-spec-evidence-archive/operators-incdec-exit-review-05",
+    "source_helpers": [
+      "tests/semantics/incdec_exit.py",
+      "tests/semantics/incdec_exit_review.py"
+    ],
+    "state_helpers": [
+      "tests/semantics/incdec_exit_protocol.py",
+      "tests/semantics/incdec_exit_state_review.py"
+    ],
+    "runtime": {
+      "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+    },
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": null
+    },
+    "instructions": "Reports bind exact sources, commands, tools, streams, exit codes and frozen clean revision/inputs. Accepted actors have no timeout/interruption and empty reaped groups. Use fresh external outputs and explicit SL under root resource coordination; linked retained tools are not a fresh rebuild/portability claim. Renew affected checks only; metadata-only publication does not renew semantics."
+  }
+}

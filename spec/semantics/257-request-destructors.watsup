@@ -590,7 +590,8 @@ def $call_after_origin(S, ERROR_HANDLER_RESULT perrorcall) = $call_after_origin(
   -- if $error_call_valid(S, perrorcall)
 def $call_after_origin(S, DESTRUCTOR_RELEASE pdestructionrelease) = S[.DESTRUCTION.RELEASES = pdestructionrelease_tail*]
   -- if S.DESTRUCTION.RELEASES = pdestructionrelease :: pdestructionrelease_tail*
-def $throwable_marker(DESTRUCTOR_RESULT pdestructorcall) = ~pdestructorcall.USER
+dec $update_warning_exit_parent_call(pdestructorcall) : bool
+def $throwable_marker(DESTRUCTOR_RESULT pdestructorcall) = (~pdestructorcall.USER \/ $update_warning_exit_parent_call(pdestructorcall))
 dec $fiber_protected_previous_needed(pstate, pdestructorcall) : bool
 def $fiber_protected_previous_needed(S, pdestructorcall) = false -- otherwise
 def $return_discard(S, DESTRUCTOR_RESULT pdestructorcall) = $destructor_resume_pending($destructor_chain_pending(S[.DESTRUCTION.CALLS = pdestructorcall_tail*], pdestructorcall), pdestructorcall)
@@ -601,7 +602,7 @@ def $return_discard(S, DESTRUCTOR_RELEASE pdestructionrelease) = S[.DESTRUCTION.
   -- if S.DESTRUCTION.RELEASES = pdestructionrelease :: pdestructionrelease_tail*
 dec $generator_request_release_abrupt(pstate) : bool
 def $generator_request_release_abrupt(S) = false -- otherwise
-def $exception_terminal_tail(S, (DESTRUCTOR_RESULT pdestructorcall) :: ptask*) = (~pdestructorcall.USER /\ $destructor_result_valid(S, pdestructorcall) /\ ~$generator_request_release_abrupt(S))
+def $exception_terminal_tail(S, (DESTRUCTOR_RESULT pdestructorcall) :: ptask*) = (~pdestructorcall.USER /\ ~$update_warning_exit_parent_call(pdestructorcall) /\ $destructor_result_valid(S, pdestructorcall) /\ ~$generator_request_release_abrupt(S))
 def $throwable_continuation(S, S_next) = S_next
   -- if S.TODO = (DESTRUCTOR_ENTER pdestructorcall) :: ptask_tail*
   -- if $destructor_enter_valid(S, pdestructorcall)

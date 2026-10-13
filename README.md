@@ -322,7 +322,14 @@ only after normal handling. Aliases, fresh handlers and copied results are check
 now runs callback-installed object/array destructors while the old slot is visible,
 then restores captured scalars before propagating pending throws. Aliases, ordered
 cleanup and Previous chains retain their actual owners. Late typed sources,
-destructor ownership changes, exit and wider update locations remain required.
+destructor ownership changes, replacement/destructor exit and wider update
+locations remain required.
+[Named warning-handler exits](coverage/semantics/incdec-exit-review.json) now
+finish handler-local cleanup before restoring captured bool/decrement-null
+values; strings retain callback writes. Registry restoration, caller temporaries,
+nested handlers, surviving aliases and request exit status are checked through
+shutdown. Owning callback cleanup and caught cleanup throws that cancel exit
+remain required.
 All twelve [compound assignments](docs/semantics/UPDATES.md) preserve captured
 targets, delayed reads and alias ownership; [independent evidence](coverage/semantics/compound-review.json)
 records 2,639 exact source comparisons and the corrected diagnostic phases.

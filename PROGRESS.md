@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Named inc/dec warning-handler exits now finish handler-local cleanup and registry
+restoration before bool/decrement-null commit; strings skip restoration. Caller
+temporaries remain alive until that commit, then cleanup precedes shutdown.
+Kept borrowed cells, GLOBALS unset, nested handlers and integer exit status 23
+retain their native observations. Eleven new and one repaired earlier original
+agree at separate cuts; three named Unsupported controls have zero agreement.
+Three author SL fixtures pass 203 conditions at 93c and four independent fixtures
+pass 245 at 96b7 (448 total), including normal/pending parent cleanup validation,
+source/metadata negatives and public budget resume. Original baseline, status-label
+and descriptor failures remain zero credit; older campaigns are not renewed.
+Owning callback release and cleanup throws that cancel exit remain required next
+continuations, alongside replacement/destructor exit and wider update locations.
+[Exit ledger](coverage/semantics/incdec-exit-review.json).
+
 Frozen fatal completion now observes request status after caught shutdown-exit
 replacement, retaining diagnostics while callbacks continue. Fresh fatal reporting
 writes255 in both display branches; frozen passthrough preserves resets.

@@ -38,7 +38,7 @@ CASES = {
 
 BOUNDARIES = {
     "review-late-property-source": "increment/decrement restoration target is expired or constrained",
-    'review-handler-exit-bool': "increment/decrement warning exit continuation",
-    'review-handler-exit-null': "increment/decrement warning exit continuation",
-    'review-handler-exit-string': "increment/decrement warning exit continuation",
 }
+
+STATUSES = {name: 'explicit_exit' for name in (
+    'review-handler-exit-bool', 'review-handler-exit-null', 'review-handler-exit-string')}
