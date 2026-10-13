@@ -1791,6 +1791,8 @@ Four states pass267 =231 reached +36 derived (first235 at `ea101806`, collision3
 at `37476242`). Initial compiler, recorder-classification and fixture failures
 remain zero; wider trait hook imports/types/flags/ref/set/lifetime remain required.
 [Imported trait getter review](coverage/semantics/trait-imported-backed-getter-review.json).
+Joined exact `7d361d4c`/388; the count-only current init passes with no application.
+Private cuts retain their identities through the hooked-slot cast and inactive callback/fatal paths.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
