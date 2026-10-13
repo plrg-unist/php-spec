@@ -1,5 +1,8 @@
 ;; Six-value comparison. Sources: zend_operators.c:2260-2468,
 ;; 3421-3498 and zend_hash.c:3104-3236. Callback/object comparisons are separate.
+syntax paggregatepointer = AGGREGATE_ARRAY nat pkey | AGGREGATE_PROPERTY nat ptbytes | AGGREGATE_CELL nat
+syntax paggregatecursor = {LEFT pnode, RIGHT pnode, INDEX nat, WIDTH nat, KEY pkey, LEFTITEM pitem, RIGHTITEM pitem, LEFTVALUE pvalue, RIGHTVALUE pvalue}
+syntax paggregatecallback = {LEFT pvalue, RIGHT pvalue, RECEIVER nat, OBJECTLEFT bool, POINTER paggregatepointer?, STACK paggregatecursor*}
 syntax porder = ORDER int | ORDERRECURSIVE | ORDERUNSUPPORTED text | ORDERSTRING paggregatecallback
 dec $aggregate_compare_seen(pstate) : pnode*
 dec $aggregate_array_effect(pstate, nat, nat, nat, nat, pnode*, int) : (pstate, porder)

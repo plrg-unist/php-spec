@@ -1,8 +1,5 @@
 ;; zend_hash_compare and zend_std_compare_objects retain both aggregates and
 ;; protect only the left one until their reached child comparison returns.
-syntax paggregatepointer = AGGREGATE_ARRAY nat pkey | AGGREGATE_PROPERTY nat ptbytes | AGGREGATE_CELL nat
-syntax paggregatecursor = {LEFT pnode, RIGHT pnode, INDEX nat, WIDTH nat, KEY pkey, LEFTITEM pitem, RIGHTITEM pitem, LEFTVALUE pvalue, RIGHTVALUE pvalue}
-syntax paggregatecallback = {LEFT pvalue, RIGHT pvalue, RECEIVER nat, OBJECTLEFT bool, POINTER paggregatepointer?, STACK paggregatecursor*}
 syntax paggregatecompare = {SITE porigin, CASTSITE porigin, OP pbin, LINE int, LEFT poperand, RIGHT poperand, ROOTLEFT pvalue, ROOTRIGHT pvalue, INPUTBASE pbase, CALLER pcallcontext?, OWNER nat, CONSUMER ptask, TAIL ptask*, CAST paggregatecallback}
 
 dec $aggregate_node_value(pnode) : pvalue
@@ -229,8 +226,8 @@ def $aggregate_compare_valid(S, paggregatecompare) = true
   -- if paggregatecallback.STACK = paggregatecursor :: paggregatecursor_tail*
   -- if $aggregate_callback_image(paggregatecallback)
   -- if $(paggregatecallback.RECEIVER < |S.OBJECTS|)
-  -- if paggregatecallback.POINTER = ($aggregate_pointer(paggregatecursor, paggregatecallback.OBJECTLEFT))
   -- if $aggregate_stack_image(S, paggregatecallback.STACK, paggregatecallback.LEFT, paggregatecallback.RIGHT, paggregatecompare.ROOTLEFT, paggregatecompare.ROOTRIGHT)
+  -- if paggregatecallback.POINTER = ($aggregate_pointer(paggregatecursor, paggregatecallback.OBJECTLEFT))
   -- if $heap_unique($aggregate_cursor_lefts(paggregatecallback.STACK))
   -- if $heap_subset($operand_nodes(paggregatecompare.LEFT) ++ $operand_nodes(paggregatecompare.RIGHT) ++ $base_nodes(paggregatecompare.INPUTBASE), S.ALLOCATIONS)
 def $aggregate_compare_valid(S, paggregatecompare) = false -- otherwise
