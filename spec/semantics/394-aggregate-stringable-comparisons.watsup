@@ -1,0 +1,384 @@
+;; zend_hash_compare and zend_std_compare_objects retain both aggregates and
+;; protect only the left one until their reached child comparison returns.
+syntax paggregatecompare = {SITE porigin, CASTSITE porigin, OP pbin, LINE int, LEFT poperand, RIGHT poperand, ROOTLEFT pvalue, ROOTRIGHT pvalue, INPUTBASE pbase, CALLER pcallcontext?, OWNER nat, CONSUMER ptask, TAIL ptask*, CAST paggregatecallback}
+
+dec $aggregate_node_value(pnode) : pvalue
+dec $aggregate_property_keys(pstate, ppropertydesc*) : ptbytes*
+dec $aggregate_object_keys(pstate, nat) : ptbytes*
+dec $aggregate_cursor_pins(paggregatecursor*) : pnode*
+dec $aggregate_cursor_lefts(paggregatecursor*) : pnode*
+dec $aggregate_other_item(paggregatecursor, bool) : pitem
+dec $aggregate_pointer(paggregatecursor, bool) : paggregatepointer
+dec $aggregate_pointer_value(pstate, paggregatepointer) : pvalue?
+dec $aggregate_push(porder, paggregatecursor) : porder
+dec $aggregate_array_continue(pstate, porder, nat, nat, nat, nat, pnode*, int) : (pstate, porder)
+dec $aggregate_property_continue(pstate, porder, nat, nat, nat, pnode*, int) : (pstate, porder)
+dec $aggregate_cursor_valid(pstate, paggregatecursor) : bool
+dec $aggregate_item_image(pitem, pvalue) : bool
+dec $aggregate_stack_image(pstate, paggregatecursor*, pvalue, pvalue, pvalue, pvalue) : bool
+dec $aggregate_compare_source(pstate, paggregatecompare) : bool
+dec $aggregate_callback_image(paggregatecallback) : bool
+dec $aggregate_compare_valid(pstate, paggregatecompare) : bool
+dec $aggregate_compare_suffix(ptask*, paggregatecompare) : bool
+dec $aggregate_frame_pair(ptask*) : bool
+dec $aggregate_current_seen(pstate) : pnode*
+dec $aggregate_frame_seen(pstate, pcallcontext?, pframe, pframe*) : pnode*
+dec $aggregate_frames_seen(pstate, pcallcontext?, pframe*) : pnode*
+dec $aggregate_order_values(pbin, pvalue, pvalue) : (pvalue, pvalue)
+dec $aggregate_leaf_values(paggregatecallback, pvalue, pvalue) : (pvalue, pvalue)
+dec $aggregate_order_cast(porder) : bool
+dec $aggregate_order(pstate, pbin, pvalue, pvalue, int) : (pstate, porder)
+dec $aggregate_pending_order(pstate) : porder?
+dec $aggregate_compare_begin(pstate, pstate, porigin, porigin, pbin, poperand, poperand, pvalue, pvalue, int, ptask, ptask*, paggregatecallback) : pstate
+dec $aggregate_order_finish(pstate, paggregatecompare, porder) : pstate
+dec $aggregate_resume(pstate, porder, paggregatecursor*, int) : (pstate, porder)
+dec $aggregate_resume_join(pstate, porder, paggregatecursor*, int) : (pstate, porder)
+dec $aggregate_compare_return(pstate, paggregatecompare, pvalue, pvalue) : pstate
+
+def $aggregate_node_value(HARRAY n) = PARRAY n
+def $aggregate_node_value(HOBJECT n) = POBJECT n
+def $aggregate_node_value(HCELL n) = PNULL
+def $aggregate_property_keys(S, eps) = eps
+def $aggregate_property_keys(S, ppropertydesc :: ppropertydesc_tail*) = $aggregate_property_keys(S, ppropertydesc_tail*)
+  -- if $property_hook_virtual(S, ppropertydesc)
+def $aggregate_property_keys(S, ppropertydesc :: ppropertydesc_tail*) = ppropertydesc.KEY :: $aggregate_property_keys(S, ppropertydesc_tail*)
+  -- if ~$property_hook_virtual(S, ppropertydesc)
+def $aggregate_object_keys(S, n) = $aggregate_property_keys(S, $property_layout(S, porigin, |S.CLASSES|))
+  -- if S.OBJECTS[n] = INSTANCE porigin
+def $aggregate_object_keys(S, n) = eps -- otherwise
+def $aggregate_cursor_pins(eps) = eps
+def $aggregate_cursor_pins(paggregatecursor :: paggregatecursor_tail*) = [paggregatecursor.LEFT, paggregatecursor.RIGHT] ++ $aggregate_cursor_pins(paggregatecursor_tail*)
+def $aggregate_cursor_lefts(eps) = eps
+def $aggregate_cursor_lefts(paggregatecursor :: paggregatecursor_tail*) = paggregatecursor.LEFT :: $aggregate_cursor_lefts(paggregatecursor_tail*)
+
+;; A reference is unwrapped before the caster; a direct item retains its slot.
+def $aggregate_other_item(paggregatecursor, true) = paggregatecursor.RIGHTITEM
+def $aggregate_other_item(paggregatecursor, false) = paggregatecursor.LEFTITEM
+def $aggregate_pointer(paggregatecursor, b) = AGGREGATE_CELL n
+  -- if $aggregate_other_item(paggregatecursor, b) = ALIAS n
+def $aggregate_pointer(paggregatecursor, true) = AGGREGATE_ARRAY n paggregatecursor.KEY
+  -- if paggregatecursor.RIGHTITEM = DIRECT pvalue
+  -- if paggregatecursor.RIGHT = HARRAY n
+def $aggregate_pointer(paggregatecursor, false) = AGGREGATE_ARRAY n paggregatecursor.KEY
+  -- if paggregatecursor.LEFTITEM = DIRECT pvalue
+  -- if paggregatecursor.LEFT = HARRAY n
+def $aggregate_pointer(paggregatecursor, true) = AGGREGATE_PROPERTY n ptbytes
+  -- if paggregatecursor.RIGHTITEM = DIRECT pvalue
+  -- if paggregatecursor.RIGHT = HOBJECT n
+  -- if paggregatecursor.KEY = KSTRING ptbytes
+def $aggregate_pointer(paggregatecursor, false) = AGGREGATE_PROPERTY n ptbytes
+  -- if paggregatecursor.LEFTITEM = DIRECT pvalue
+  -- if paggregatecursor.LEFT = HOBJECT n
+  -- if paggregatecursor.KEY = KSTRING ptbytes
+def $aggregate_pointer_value(S, AGGREGATE_CELL n) = $string_compare_pointer_value(S, COMPARE_CELL n)
+def $aggregate_pointer_value(S, AGGREGATE_ARRAY n pkey) = ($entry_value(S, pitem))
+  -- if (HARRAY n) <- S.ALLOCATIONS
+  -- if $(n < |S.ARRAYS|)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = (pitem)
+  -- if pitem =/= UNINITIALIZED
+def $aggregate_pointer_value(S, AGGREGATE_PROPERTY n ptbytes) = ($entry_value(S, pitem))
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_rows*)
+  -- if $property_slot_at(ppropertyslot_rows*, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.STATE = PROP_VALUE pitem
+  -- if pitem =/= UNINITIALIZED
+def $aggregate_pointer_value(S, paggregatepointer) = eps -- otherwise
+
+def $aggregate_push(ORDERSTRING paggregatecallback, paggregatecursor) = ORDERSTRING paggregatecallback[.POINTER = ($aggregate_pointer(paggregatecursor, paggregatecallback.OBJECTLEFT))][.STACK = [paggregatecursor]]
+  -- if paggregatecallback.STACK = eps
+def $aggregate_push(ORDERSTRING paggregatecallback, paggregatecursor) = ORDERSTRING paggregatecallback[.STACK = paggregatecallback.STACK ++ [paggregatecursor]]
+  -- if paggregatecallback.STACK =/= eps
+def $aggregate_push(porder, paggregatecursor) = porder -- otherwise
+def $aggregate_materialized_order(ORDERSTRING paggregatecallback) = ORDERUNSUPPORTED "materialized-property Stringable comparison continuation"
+def $aggregate_materialized_order(porder) = porder -- otherwise
+def $comparison_result(S, pbin, ORDERSTRING paggregatecallback, z) = S[.COMPLETION = UNSUPPORTED "nested Stringable comparison source or consumer"]
+
+;; Counts were checked on entry. Pinned arrays retain their identities; keys
+;; and embedded reference cells are read in order, never searched for casters.
+def $aggregate_array_effect(S, n_left, n_right, n_index, n_width, pnode_seen*, z) = (S, ORDER 0)
+  -- if n_index = n_width
+def $aggregate_array_effect(S, n_left, n_right, n_index, n_width, pnode_seen*, z) = $aggregate_array_effect(S, n_left, n_right, $(n_index + 1), n_width, pnode_seen*, z)
+  -- if $(n_index < n_width)
+  -- if S.ARRAYS[n_left].ITEMS[n_index] = ENTRY pkey UNINITIALIZED
+def $aggregate_array_effect(S, n_left, n_right, n_index, n_width, pnode_seen*, z) = (S, ORDER 1)
+  -- if $(n_index < n_width)
+  -- if S.ARRAYS[n_left].ITEMS[n_index] = ENTRY pkey pitem
+  -- if pitem =/= UNINITIALIZED
+  -- if $entry_lookup(S.ARRAYS[n_right].ITEMS, pkey) = eps \/ $entry_lookup(S.ARRAYS[n_right].ITEMS, pkey) = (UNINITIALIZED)
+def $aggregate_array_effect(S, n_left, n_right, n_index, n_width, pnode_seen*, z) = $aggregate_array_continue(S_next, $aggregate_push(porder, paggregatecursor), n_left, n_right, $(n_index + 1), n_width, pnode_seen*, z)
+  -- if $(n_index < n_width)
+  -- if S.ARRAYS[n_left].ITEMS[n_index] = ENTRY pkey pitem_left
+  -- if pitem_left =/= UNINITIALIZED
+  -- if $entry_lookup(S.ARRAYS[n_right].ITEMS, pkey) = (pitem_right)
+  -- if pitem_right =/= UNINITIALIZED
+  -- if pvalue_left = $entry_value(S, pitem_left)
+  -- if pvalue_right = $entry_value(S, pitem_right)
+  -- if (S_next, porder) = $value_order_effect(S, pvalue_left, pvalue_right, pnode_seen*, z)
+  -- if n_next = $(n_index + 1)
+  -- if paggregatecursor = {LEFT HARRAY n_left, RIGHT HARRAY n_right, INDEX n_next, WIDTH n_width, KEY pkey, LEFTITEM pitem_left, RIGHTITEM pitem_right, LEFTVALUE pvalue_left, RIGHTVALUE pvalue_right}
+def $aggregate_array_continue(S, ORDER 0, n_left, n_right, n_index, n_width, pnode_seen*, z) = $aggregate_array_effect(S, n_left, n_right, n_index, n_width, pnode_seen*, z)
+def $aggregate_array_continue(S, porder, n_left, n_right, n_index, n_width, pnode_seen*, z) = (S, porder) -- otherwise
+
+;; The direct object path follows backed declaration slots, even if a callback
+;; later materializes a property table. Getters are not invoked by this walk.
+def $aggregate_property_effect(S, n_left, n_right, n_index, pnode_seen*, z) = (S, ORDER 0)
+  -- if n_index = |$aggregate_object_keys(S, n_left)|
+def $aggregate_property_effect(S, n_left, n_right, n_index, pnode_seen*, z) = $aggregate_property_effect(S, n_left, n_right, $(n_index + 1), pnode_seen*, z)
+  -- if ptbytes* = $aggregate_object_keys(S, n_left)
+  -- if $(n_index < |ptbytes*|)
+  -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_rowsleft*)
+  -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_rowsright*)
+  -- if $property_slot_at(ppropertyslot_rowsleft*, ptbytes*[n_index]) = (ppropertyslot_left)
+  -- if $property_slot_at(ppropertyslot_rowsright*, ptbytes*[n_index]) = (ppropertyslot_right)
+  -- if ppropertyslot_left.STATE = PROP_INITIAL \/ ppropertyslot_left.STATE = PROP_UNSET
+  -- if ppropertyslot_right.STATE = PROP_INITIAL \/ ppropertyslot_right.STATE = PROP_UNSET
+def $aggregate_property_effect(S, n_left, n_right, n_index, pnode_seen*, z) = $aggregate_property_continue(S_next, $aggregate_push(porder, paggregatecursor), n_left, n_right, $(n_index + 1), pnode_seen*, z)
+  -- if ptbytes* = $aggregate_object_keys(S, n_left)
+  -- if $(n_index < |ptbytes*|)
+  -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_rowsleft*)
+  -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_rowsright*)
+  -- if $property_slot_at(ppropertyslot_rowsleft*, ptbytes*[n_index]) = (ppropertyslot_left)
+  -- if $property_slot_at(ppropertyslot_rowsright*, ptbytes*[n_index]) = (ppropertyslot_right)
+  -- if ppropertyslot_left.STATE = PROP_VALUE pitem_left
+  -- if ppropertyslot_right.STATE = PROP_VALUE pitem_right
+  -- if pvalue_left = $entry_value(S, pitem_left)
+  -- if pvalue_right = $entry_value(S, pitem_right)
+  -- if (S_next, porder) = $value_order_effect(S, pvalue_left, pvalue_right, pnode_seen*, z)
+  -- if n_next = $(n_index + 1)
+  -- if n_width = |ptbytes*|
+  -- if pkey = KSTRING ptbytes*[n_index]
+  -- if paggregatecursor = {LEFT HOBJECT n_left, RIGHT HOBJECT n_right, INDEX n_next, WIDTH n_width, KEY pkey, LEFTITEM pitem_left, RIGHTITEM pitem_right, LEFTVALUE pvalue_left, RIGHTVALUE pvalue_right}
+def $aggregate_property_effect(S, n_left, n_right, n_index, pnode_seen*, z) = (S, ORDER 1) -- otherwise
+def $aggregate_property_continue(S, ORDER 0, n_left, n_right, n_index, pnode_seen*, z) = $aggregate_property_effect(S, n_left, n_right, n_index, pnode_seen*, z)
+def $aggregate_property_continue(S, porder, n_left, n_right, n_index, pnode_seen*, z) = (S, porder) -- otherwise
+
+;; Cursor images certify their internal selection, not an immutable history.
+def $aggregate_item_image(DIRECT pvalue, pvalue) = true
+def $aggregate_item_image(ALIAS n, pvalue) = true
+def $aggregate_item_image(pitem, pvalue) = false -- otherwise
+def $aggregate_cursor_valid(S, paggregatecursor) = true
+  -- if paggregatecursor.LEFT = HARRAY n_left
+  -- if paggregatecursor.RIGHT = HARRAY n_right
+  -- if n_left =/= n_right
+  -- if $(n_left < |S.ARRAYS| /\ n_right < |S.ARRAYS|)
+  -- if $heap_subset([HARRAY n_left, HARRAY n_right], S.ALLOCATIONS)
+  -- if paggregatecursor.WIDTH = |S.ARRAYS[n_left].ITEMS|
+  -- if $(paggregatecursor.INDEX > 0 /\ paggregatecursor.INDEX <= paggregatecursor.WIDTH)
+  -- if n_previous = $nabs($(paggregatecursor.INDEX - 1))
+  -- if S.ARRAYS[n_left].ITEMS[n_previous] = ENTRY paggregatecursor.KEY pitem
+  -- if $aggregate_item_image(paggregatecursor.LEFTITEM, paggregatecursor.LEFTVALUE)
+  -- if $aggregate_item_image(paggregatecursor.RIGHTITEM, paggregatecursor.RIGHTVALUE)
+def $aggregate_cursor_valid(S, paggregatecursor) = true
+  -- if paggregatecursor.LEFT = HOBJECT n_left
+  -- if paggregatecursor.RIGHT = HOBJECT n_right
+  -- if n_left =/= n_right
+  -- if $(n_left < |S.OBJECTS| /\ n_right < |S.OBJECTS|)
+  -- if $heap_subset([HOBJECT n_left, HOBJECT n_right], S.ALLOCATIONS)
+  -- if S.OBJECTS[n_left] = INSTANCE porigin
+  -- if S.OBJECTS[n_right] = INSTANCE porigin
+  -- if ptbytes* = $aggregate_object_keys(S, n_left)
+  -- if paggregatecursor.WIDTH = |ptbytes*|
+  -- if $(paggregatecursor.INDEX > 0 /\ paggregatecursor.INDEX <= paggregatecursor.WIDTH)
+  -- if n_previous = $nabs($(paggregatecursor.INDEX - 1))
+  -- if paggregatecursor.KEY = KSTRING ptbytes*[n_previous]
+  -- if $aggregate_item_image(paggregatecursor.LEFTITEM, paggregatecursor.LEFTVALUE)
+  -- if $aggregate_item_image(paggregatecursor.RIGHTITEM, paggregatecursor.RIGHTVALUE)
+def $aggregate_cursor_valid(S, paggregatecursor) = false -- otherwise
+def $aggregate_stack_image(S, eps, pvalue_left, pvalue_right, pvalue_left, pvalue_right) = true
+def $aggregate_stack_image(S, paggregatecursor :: paggregatecursor_tail*, pvalue_left, pvalue_right, pvalue_rootleft, pvalue_rootright) = ($aggregate_cursor_valid(S, paggregatecursor) /\ paggregatecursor.LEFTVALUE = pvalue_left /\ paggregatecursor.RIGHTVALUE = pvalue_right /\ $aggregate_stack_image(S, paggregatecursor_tail*, $aggregate_node_value(paggregatecursor.LEFT), $aggregate_node_value(paggregatecursor.RIGHT), pvalue_rootleft, pvalue_rootright))
+def $aggregate_stack_image(S, paggregatecursor*, pvalue_left, pvalue_right, pvalue_rootleft, pvalue_rootright) = false -- otherwise
+
+def $aggregate_compare_source(S, paggregatecompare) = true
+  -- if paggregatecompare.CONSUMER = BINARY_RIGHT paggregatecompare.OP paggregatecompare.LEFT paggregatecompare.LINE
+  -- if $origin_node(S.SOURCES, paggregatecompare.SITE) = (pcnode)
+  -- if $string_compare_operator(pcnode) = (paggregatecompare.OP)
+  -- if $origin_child((paggregatecompare.SITE), [PCFIELD 1]) = (porigin_right)
+  -- if $origin_node(S.SOURCES, porigin_right) = (expression_right)
+  -- if paggregatecompare.LINE = $runtime_line(S[.ORIGIN = (paggregatecompare.SITE)], [PCFIELD 1], expression_right)
+  -- if paggregatecompare.CASTSITE = paggregatecompare.SITE
+  -- if $origin_child((paggregatecompare.SITE), [PCFIELD 0]) = (porigin_left)
+  -- if $string_compare_operand(S, porigin_left, paggregatecompare.LEFT)
+  -- if $string_compare_operand(S, porigin_right, paggregatecompare.RIGHT)
+def $aggregate_compare_source(S, paggregatecompare) = true
+  -- if paggregatecompare.OP = EQUAL
+  -- if paggregatecompare.CONSUMER = SWITCH_COMPARE statement paggregatecompare.SITE paggregatecompare.LEFT n paggregatecompare.LINE
+  -- if $switch_compare_valid(S, statement, paggregatecompare.SITE, n, paggregatecompare.LINE)
+  -- if $switch_bool_mode(S, paggregatecompare.SITE) = eps
+  -- if $origin_child((paggregatecompare.SITE), [PCFIELD 1, PCINDEX n, PCFIELD 0]) = (paggregatecompare.CASTSITE)
+  -- if $origin_child((paggregatecompare.SITE), [PCFIELD 0]) = (porigin_left)
+  -- if $string_compare_operand(S, porigin_left, paggregatecompare.LEFT)
+  -- if $string_compare_operand(S, paggregatecompare.CASTSITE, paggregatecompare.RIGHT)
+def $aggregate_compare_source(S, paggregatecompare) = false -- otherwise
+def $aggregate_callback_image(paggregatecallback) = true
+  -- if paggregatecallback.OBJECTLEFT
+  -- if paggregatecallback.LEFT = POBJECT paggregatecallback.RECEIVER
+  -- if $string_bytes(paggregatecallback.RIGHT) =/= eps
+def $aggregate_callback_image(paggregatecallback) = true
+  -- if ~paggregatecallback.OBJECTLEFT
+  -- if paggregatecallback.RIGHT = POBJECT paggregatecallback.RECEIVER
+  -- if $string_bytes(paggregatecallback.LEFT) =/= eps
+def $aggregate_callback_image(paggregatecallback) = false -- otherwise
+def $aggregate_compare_valid(S, paggregatecompare) = true
+  -- if $aggregate_compare_source(S, paggregatecompare)
+  -- if S.CURRENT = paggregatecompare.CALLER
+  -- if |S.FRAMES| = paggregatecompare.OWNER
+  -- if paggregatecallback = paggregatecompare.CAST
+  -- if paggregatecallback.STACK = paggregatecursor :: paggregatecursor_tail*
+  -- if $aggregate_callback_image(paggregatecallback)
+  -- if $(paggregatecallback.RECEIVER < |S.OBJECTS|)
+  -- if $aggregate_stack_image(S, paggregatecallback.STACK, paggregatecallback.LEFT, paggregatecallback.RIGHT, paggregatecompare.ROOTLEFT, paggregatecompare.ROOTRIGHT)
+  -- if paggregatecallback.POINTER = ($aggregate_pointer(paggregatecursor, paggregatecallback.OBJECTLEFT))
+  -- if $heap_unique($aggregate_cursor_lefts(paggregatecallback.STACK))
+  -- if $heap_subset($operand_nodes(paggregatecompare.LEFT) ++ $operand_nodes(paggregatecompare.RIGHT) ++ $base_nodes(paggregatecompare.INPUTBASE), S.ALLOCATIONS)
+def $aggregate_compare_valid(S, paggregatecompare) = false -- otherwise
+def $aggregate_compare_suffix((AGGREGATE_COMPARE_RESULT paggregatecompare) :: ptask_tail*, paggregatecompare) = (ptask_tail* = paggregatecompare.TAIL)
+def $aggregate_compare_suffix(ptask :: ptask_tail*, paggregatecompare) = $aggregate_compare_suffix(ptask_tail*, paggregatecompare)
+  -- if ptask =/= AGGREGATE_COMPARE_RESULT paggregatecompare
+def $aggregate_compare_suffix(eps, paggregatecompare) = false
+def $task_nodes(AGGREGATE_COMPARE_RESULT paggregatecompare) = $operand_nodes(paggregatecompare.LEFT) ++ $operand_nodes(paggregatecompare.RIGHT) ++ $base_nodes(paggregatecompare.INPUTBASE) ++ $aggregate_cursor_pins(paggregatecompare.CAST.STACK)
+def $call_task_valid(S, AGGREGATE_COMPARE_RESULT paggregatecompare) = ($aggregate_compare_valid(S, paggregatecompare) /\ S.ORIGIN = (paggregatecompare.CASTSITE) /\ $aggregate_compare_suffix(S.TODO, paggregatecompare))
+def $stringify_source(S, porigin, z, AGGREGATE_COMPARE_RESULT paggregatecompare) = ($aggregate_compare_valid(S, paggregatecompare) /\ porigin = paggregatecompare.CASTSITE /\ z = paggregatecompare.LINE)
+def $stringify_source_consumer(AGGREGATE_COMPARE_RESULT paggregatecompare) = true
+def $stringify_consumer_tail_valid(S, porigin, z, AGGREGATE_COMPARE_RESULT paggregatecompare, ptask_tail*) = ($stringify_source(S, porigin, z, AGGREGATE_COMPARE_RESULT paggregatecompare) /\ ptask_tail* = paggregatecompare.TAIL)
+def $stringify_consumer_receiver_valid(S, n, AGGREGATE_COMPARE_RESULT paggregatecompare) = (n = paggregatecompare.CAST.RECEIVER)
+def $aggregate_frame_pair((STRINGIFY_RESULT n porigin z) :: (AGGREGATE_COMPARE_RESULT paggregatecompare) :: ptask_tail*) = (n = paggregatecompare.CAST.RECEIVER /\ porigin = paggregatecompare.CASTSITE /\ z = paggregatecompare.LINE /\ ptask_tail* = paggregatecompare.TAIL)
+def $aggregate_frame_pair(ptask*) = false -- otherwise
+def $parameter_string_frame_scope(S, pframe, pframe_tail*) = $constant_frame_scope(S, pframe, pframe_tail*)
+  -- if $aggregate_frame_pair(pframe.TODO)
+
+;; Guards are exposed only by the actual pending caster or its immediately
+;; saved caller pair. Unwinding that pair removes both the guard and its pins.
+def $aggregate_current_seen(S) = $aggregate_cursor_lefts(paggregatecompare.CAST.STACK)
+  -- if S.TODO = (CALL_ARGS (METHOD_TARGET n porigin_method) eps 0 eps (porigin_site) z) :: (STRINGIFY_RESULT n porigin_site z) :: (AGGREGATE_COMPARE_RESULT paggregatecompare) :: ptask_tail*
+  -- if $aggregate_frame_pair((STRINGIFY_RESULT n porigin_site z) :: (AGGREGATE_COMPARE_RESULT paggregatecompare) :: ptask_tail*)
+  -- if $call_task_valid(S, AGGREGATE_COMPARE_RESULT paggregatecompare)
+  -- if $stringify_method_selected(S, n, porigin_method, porigin_site)
+def $aggregate_current_seen(S) = $aggregate_cursor_lefts(paggregatecompare.CAST.STACK)
+  -- if S.TODO = (STRINGIFY_RESULT n porigin_site z) :: (AGGREGATE_COMPARE_RESULT paggregatecompare) :: ptask_tail*
+  -- if $aggregate_frame_pair(S.TODO)
+  -- if $call_task_valid(S, AGGREGATE_COMPARE_RESULT paggregatecompare)
+  -- if $stringify_result_valid(S, n, porigin_site, z)
+def $aggregate_current_seen(S) = $aggregate_cursor_lefts(paggregatecompare.CAST.STACK)
+  -- if S.TODO = (AGGREGATE_COMPARE_RESULT paggregatecompare) :: ptask_tail*
+  -- if $call_task_valid(S, AGGREGATE_COMPARE_RESULT paggregatecompare)
+def $aggregate_current_seen(S) = eps -- otherwise
+def $aggregate_frame_seen(S, (pcallcontext), pframe, pframe_tail*) = $aggregate_cursor_lefts(paggregatecompare.CAST.STACK)
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin_site z) :: (AGGREGATE_COMPARE_RESULT paggregatecompare) :: ptask_tail*
+  -- if $aggregate_frame_pair(pframe.TODO)
+  -- if $context_target(pcallcontext) = METHOD_TARGET n porigin_method
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if pcallcontext.LINE = z
+  -- if pframe.ORIGIN = (porigin_site)
+  -- if $stringify_method_selected(S, n, porigin_method, porigin_site)
+  -- if S_scope = $constant_frame_scope(S, pframe, pframe_tail*)
+  -- if $call_task_valid(S_scope, AGGREGATE_COMPARE_RESULT paggregatecompare)
+  -- if $stringify_context_frame_valid(S_scope, pcallcontext, pframe)
+def $aggregate_frame_seen(S, pcallcontext?, pframe, pframe_tail*) = eps -- otherwise
+def $aggregate_frames_seen(S, pcallcontext?, eps) = eps
+def $aggregate_frames_seen(S, pcallcontext?, pframe :: pframe_tail*) = $aggregate_frame_seen(S, pcallcontext?, pframe, pframe_tail*) ++ $aggregate_frames_seen(S, pframe.CONTEXT, pframe_tail*)
+def $aggregate_compare_seen(S) = $aggregate_current_seen(S) ++ $aggregate_frames_seen(S, S.CURRENT, S.FRAMES)
+def $aggregate_compare_active(S) = ($aggregate_compare_seen(S) =/= eps)
+
+def $aggregate_order_values(pbin, pvalue_left, pvalue_right) = (pvalue_right, pvalue_left)
+  -- if pbin = GREATER \/ pbin = GREATEREQUAL
+def $aggregate_order_values(pbin, pvalue_left, pvalue_right) = (pvalue_left, pvalue_right) -- otherwise
+def $aggregate_leaf_values(paggregatecallback, pvalue_text, pvalue_other) = (pvalue_text, pvalue_other) -- if paggregatecallback.OBJECTLEFT
+def $aggregate_leaf_values(paggregatecallback, pvalue_text, pvalue_other) = (pvalue_other, pvalue_text) -- if ~paggregatecallback.OBJECTLEFT
+def $aggregate_order_cast(ORDERSTRING paggregatecallback) = true
+def $aggregate_order_cast(porder) = false -- otherwise
+def $aggregate_order(S, pbin, pvalue_left, pvalue_right, z) = $value_order_effect(S, pvalue_first, pvalue_second, eps, z)
+  -- if (pvalue_first, pvalue_second) = $aggregate_order_values(pbin, pvalue_left, pvalue_right)
+def $aggregate_pending_order(S) = (porder)
+  -- if S.TODO = (BINARY_RIGHT pbin poperand_left z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if ~$gc_retired_binary(S, pbin, poperand_left)
+  -- if $comparison_operator(pbin)
+  -- if $string_compare_values(S, poperand_left, S.RESULT, z) = ((S_read, pvalue_left, pvalue_right))
+  -- if (S_next, porder) = $aggregate_order(S_read, pbin, pvalue_left, pvalue_right, z)
+def $aggregate_pending_order(S) = (porder)
+  -- if S.TODO = (SWITCH_COMPARE statement porigin poperand_left n z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $switch_compare_valid(S, statement, porigin, n, z)
+  -- if $switch_bool_mode(S, porigin) = eps
+  -- if $string_compare_values(S, poperand_left, S.RESULT, z) = ((S_read, pvalue_left, pvalue_right))
+  -- if (S_next, porder) = $aggregate_order(S_read, EQUAL, pvalue_left, pvalue_right, z)
+def $aggregate_pending_order(S) = eps -- otherwise
+def $aggregate_compare_pending(S) = true
+  -- if $aggregate_pending_order(S) = (ORDERSTRING paggregatecallback)
+  -- if paggregatecallback.STACK =/= eps
+def $aggregate_compare_pending(S) = false -- otherwise
+
+def $aggregate_compare_begin(S_before, S, porigin, porigin_cast, pbin, poperand_left, poperand_right, pvalue_rootleft, pvalue_rootright, z, ptask_consumer, ptask_tail*, paggregatecallback) = $user_string_begin(S[.HELD = S_before.HELD][.ORIGIN = (porigin_cast)], paggregatecallback.RECEIVER, porigin_cast, z, AGGREGATE_COMPARE_RESULT paggregatecompare, ptask_tail*)
+  -- if n_owner = |S_before.FRAMES|
+  -- if paggregatecompare = {SITE porigin, CASTSITE porigin_cast, OP pbin, LINE z, LEFT poperand_left, RIGHT poperand_right, ROOTLEFT pvalue_rootleft, ROOTRIGHT pvalue_rootright, INPUTBASE S_before.BASE, CALLER S_before.CURRENT, OWNER n_owner, CONSUMER ptask_consumer, TAIL ptask_tail*, CAST paggregatecallback}
+  -- if $aggregate_compare_valid(S, paggregatecompare)
+  -- if $string_compare_selection(S, paggregatecallback.LEFT, paggregatecallback.RIGHT) = ((paggregatecallback.RECEIVER, paggregatecallback.OBJECTLEFT))
+def $aggregate_compare_begin(S_before, S, porigin, porigin_cast, pbin, poperand_left, poperand_right, pvalue_rootleft, pvalue_rootright, z, ptask_consumer, ptask_tail*, paggregatecallback) = S[.HELD = S_before.HELD][.TODO = eps][.COMPLETION = UNSUPPORTED "nested Stringable comparison source or operand"] -- otherwise
+rule PhpStep/aggregate-compare-binary: S ~> $aggregate_compare_begin(S, S_next, porigin, porigin, pbin, poperand_left, S.RESULT, pvalue_rootleft, pvalue_rootright, z, BINARY_RIGHT pbin poperand_left z, ptask_tail*, paggregatecallback)
+  -- if S.TODO = (BINARY_RIGHT pbin poperand_left z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $aggregate_compare_pending(S)
+  -- if $string_compare_values(S, poperand_left, S.RESULT, z) = ((S_read, pvalue_left, pvalue_right))
+  -- if (S_next, ORDERSTRING paggregatecallback) = $aggregate_order(S_read, pbin, pvalue_left, pvalue_right, z)
+  -- if (pvalue_rootleft, pvalue_rootright) = $aggregate_order_values(pbin, pvalue_left, pvalue_right)
+rule PhpStep/aggregate-compare-switch: S ~> $aggregate_compare_begin(S, S_next, porigin, porigin_cast, EQUAL, poperand_left, S.RESULT, pvalue_left, pvalue_right, z, SWITCH_COMPARE statement porigin poperand_left n z, ptask_tail*, paggregatecallback)
+  -- if S.TODO = (SWITCH_COMPARE statement porigin poperand_left n z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $aggregate_compare_pending(S)
+  -- if $origin_child((porigin), [PCFIELD 1, PCINDEX n, PCFIELD 0]) = (porigin_cast)
+  -- if $string_compare_values(S, poperand_left, S.RESULT, z) = ((S_read, pvalue_left, pvalue_right))
+  -- if (S_next, ORDERSTRING paggregatecallback) = $aggregate_order(S_read, EQUAL, pvalue_left, pvalue_right, z)
+
+def $aggregate_order_finish(S, paggregatecompare, porder) = $comparison_result(S[.TODO = paggregatecompare.TAIL][.ORIGIN = (paggregatecompare.SITE)][.BASE = BASE_VALUE (KNOWN PNULL)], paggregatecompare.OP, porder, paggregatecompare.LINE)
+  -- if paggregatecompare.CONSUMER = BINARY_RIGHT paggregatecompare.OP paggregatecompare.LEFT paggregatecompare.LINE
+def $aggregate_order_finish(S, paggregatecompare, ORDER 0) = S[.TODO = $switch_body_from($switch_cases(statement), paggregatecompare.SITE, n, 0) ++ [SWITCH_NEXT statement paggregatecompare.SITE paggregatecompare.LEFT] ++ paggregatecompare.TAIL][.ORIGIN = (paggregatecompare.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if paggregatecompare.CONSUMER = SWITCH_COMPARE statement paggregatecompare.SITE paggregatecompare.LEFT n paggregatecompare.LINE
+def $aggregate_order_finish(S, paggregatecompare, ORDER i) = S[.TODO = (SWITCH_SCAN statement paggregatecompare.SITE paggregatecompare.LEFT $(n + 1)) :: paggregatecompare.TAIL][.ORIGIN = (paggregatecompare.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if paggregatecompare.CONSUMER = SWITCH_COMPARE statement paggregatecompare.SITE paggregatecompare.LEFT n paggregatecompare.LINE
+  -- if i =/= 0
+def $aggregate_order_finish(S, paggregatecompare, porder) = $comparison_result(S[.TODO = eps][.ORIGIN = (paggregatecompare.SITE)], EQUAL, porder, paggregatecompare.LINE) -- otherwise
+def $aggregate_resume(S, porder, eps, z) = (S, porder)
+def $aggregate_resume(S, ORDER 0, paggregatecursor :: paggregatecursor_tail*, z) = $aggregate_resume_join(S_next, porder, paggregatecursor_tail*, z)
+  -- if paggregatecursor.LEFT = HARRAY n_left
+  -- if paggregatecursor.RIGHT = HARRAY n_right
+  -- if pnode_seen* = $aggregate_cursor_lefts(paggregatecursor :: paggregatecursor_tail*)
+  -- if (S_next, porder) = $aggregate_array_effect(S, n_left, n_right, paggregatecursor.INDEX, paggregatecursor.WIDTH, pnode_seen*, z)
+def $aggregate_resume(S, ORDER 0, paggregatecursor :: paggregatecursor_tail*, z) = $aggregate_resume_join(S_next, porder, paggregatecursor_tail*, z)
+  -- if paggregatecursor.LEFT = HOBJECT n_left
+  -- if paggregatecursor.RIGHT = HOBJECT n_right
+  -- if pnode_seen* = $aggregate_cursor_lefts(paggregatecursor :: paggregatecursor_tail*)
+  -- if (S_next, porder) = $aggregate_property_effect(S, n_left, n_right, paggregatecursor.INDEX, pnode_seen*, z)
+def $aggregate_resume(S, porder, paggregatecursor*, z) = (S, porder) -- otherwise
+def $aggregate_resume_join(S, ORDERSTRING paggregatecallback, paggregatecursor*, z) = (S, ORDERSTRING paggregatecallback[.STACK = paggregatecallback.STACK ++ paggregatecursor*])
+def $aggregate_resume_join(S, porder, paggregatecursor*, z) = $aggregate_resume(S, porder, paggregatecursor*, z) -- otherwise
+def $aggregate_compare_return(S, paggregatecompare, pvalue_text, pvalue_other) = $user_string_begin(S_next[.TODO = paggregatecompare.TAIL][.ORIGIN = (paggregatecompare.CASTSITE)], paggregatecallback_next.RECEIVER, paggregatecompare.CASTSITE, paggregatecompare.LINE, AGGREGATE_COMPARE_RESULT paggregatecompare[.CAST = paggregatecallback_next], paggregatecompare.TAIL)
+  -- if $type_bytes(pvalue_other) =/= $ptascii("object")
+  -- if paggregatecallback = paggregatecompare.CAST
+  -- if (pvalue_left, pvalue_right) = $aggregate_leaf_values(paggregatecallback, pvalue_text, pvalue_other)
+  -- if S_clear = S[.TODO = paggregatecompare.TAIL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if (S_leaf, porder_leaf) = $value_order_effect(S_clear, pvalue_left, pvalue_right, $aggregate_cursor_lefts(paggregatecallback.STACK), paggregatecompare.LINE)
+  -- if (S_next, ORDERSTRING paggregatecallback_next) = $aggregate_resume(S_leaf, porder_leaf, paggregatecallback.STACK, paggregatecompare.LINE)
+def $aggregate_compare_return(S, paggregatecompare, pvalue_text, pvalue_other) = $aggregate_order_finish(S_next, paggregatecompare, porder)
+  -- if $type_bytes(pvalue_other) =/= $ptascii("object")
+  -- if paggregatecallback = paggregatecompare.CAST
+  -- if (pvalue_left, pvalue_right) = $aggregate_leaf_values(paggregatecallback, pvalue_text, pvalue_other)
+  -- if S_clear = S[.TODO = paggregatecompare.TAIL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if (S_leaf, porder_leaf) = $value_order_effect(S_clear, pvalue_left, pvalue_right, $aggregate_cursor_lefts(paggregatecallback.STACK), paggregatecompare.LINE)
+  -- if (S_next, porder) = $aggregate_resume(S_leaf, porder_leaf, paggregatecallback.STACK, paggregatecompare.LINE)
+  -- if ~$aggregate_order_cast(porder)
+def $aggregate_compare_return(S, paggregatecompare, pvalue_text, pvalue_other) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "nested Stringable comparison changed object operand"] -- otherwise
+rule PhpStep/aggregate-compare-return: S ~> $aggregate_compare_return(S, paggregatecompare, pvalue_text, pvalue_other)
+  -- if S.TODO = (AGGREGATE_COMPARE_RESULT paggregatecompare) :: ptask_tail*
+  -- if $call_task_valid(S, AGGREGATE_COMPARE_RESULT paggregatecompare)
+  -- if S.RESULT = KNOWN pvalue_text
+  -- if $string_bytes(pvalue_text) =/= eps
+  -- if paggregatecompare.CAST.POINTER = (paggregatepointer)
+  -- if $aggregate_pointer_value(S, paggregatepointer) = (pvalue_other)
+rule PhpStep/aggregate-compare-expired: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "nested Stringable comparison expired operand"]
+  -- if S.TODO = (AGGREGATE_COMPARE_RESULT paggregatecompare) :: ptask_tail*
+  -- if $call_task_valid(S, AGGREGATE_COMPARE_RESULT paggregatecompare)
+  -- if paggregatecompare.CAST.POINTER = (paggregatepointer)
+  -- if $aggregate_pointer_value(S, paggregatepointer) = eps
+rule PhpStep/aggregate-compare-invalid: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid nested Stringable comparison continuation"]
+  -- if S.TODO = (AGGREGATE_COMPARE_RESULT paggregatecompare) :: ptask_tail*
+  -- if ~$call_task_valid(S, AGGREGATE_COMPARE_RESULT paggregatecompare)

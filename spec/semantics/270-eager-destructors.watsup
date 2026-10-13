@@ -683,6 +683,7 @@ def $eager_bailout_unwind(S) = false -- otherwise
 def $eager_bailout_source(S) = (DESTRUCTOR_RESULT pdestructorcall)
   -- if S.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
   -- if S.CURRENT = eps /\ S.FRAMES = eps /\ ~pdestructorcall.USER
+  -- if ~$update_warning_exit_parent_call(pdestructorcall)
   -- if $destructor_result_valid(S, pdestructorcall)
   -- if ~$exception_dispatch_ready(S)
   -- if ~$generator_request_fatal_ready(S)

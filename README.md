@@ -324,7 +324,14 @@ only after normal handling. Aliases, fresh handlers and copied results are check
 now runs callback-installed object/array destructors while the old slot is visible,
 then restores captured scalars before propagating pending throws. Aliases, ordered
 cleanup and Previous chains retain their actual owners. Late typed sources,
-destructor ownership changes, exit and wider update locations remain required.
+destructor ownership changes, replacement/destructor exit and wider update
+locations remain required.
+[Named warning-handler exits](coverage/semantics/incdec-exit-review.json) now
+finish handler-local cleanup before restoring captured bool/decrement-null
+values; strings retain callback writes. Registry restoration, caller temporaries,
+nested handlers, surviving aliases and request exit status are checked through
+shutdown. Owning callback cleanup and caught cleanup throws that cancel exit
+remain required.
 All twelve [compound assignments](docs/semantics/UPDATES.md) preserve captured
 targets, delayed reads and alias ownership; [independent evidence](coverage/semantics/compound-review.json)
 records 2,639 exact source comparisons and the corrected diagnostic phases.
@@ -958,6 +965,13 @@ reached2/353 and independent public132/1 pass separately: the same error retains
 its construction line and trace, late cleanup links old Y as Previous, and T/D
 and the probe stay canceled. Existing throw/Previous rules are unchanged; wider
 catch/rethrow and returns verification remain OPEN.
+
+The guarded catch may instead create a fresh literal-message TypeError. Two
+originals, reached2/368 and independent public161/1 pass separately: its own
+creation line/trace reach the same caller with old Y as Previous, while the
+caught-only nested error retires. T/D and the failed probe stay canceled; budget
+continuation and the selected alias pass. Worker120 is a cap-only retry; original
+timeouts keep zero credit. Wider replacement/returns verification remains OPEN.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)
@@ -1135,9 +1149,9 @@ teardown also releases its single leaf value while retaining the emptied map's
 physical pin and live weak identity through normal or throwing callback cleanup.
 Two originals agree at `0c9b358`; 467 lifetime checks and 86 freeing-write refusal
 checks pass at their separate cuts. Wider map free and ephemeron GC stop explicitly;
-multiple maps per key, wrapper creation or mutation during freeing, retained strong
-additional key/map owners retained beyond callback cleanup and wider entry/read/
-mutation protocols remain required.
+multiple maps per key, wider wrapper creation or mutation during freeing,
+additional strong key/map owners retained beyond callback cleanup and wider
+entry/read/mutation protocols remain required.
 
 Ordinary object-key dimension reads now copy the stored value into a strong
 result, so a held copy survives key removal. A missing key throws Error using its
@@ -1159,6 +1173,14 @@ Six originals agree across `70bf0c4`/`302b5c9`; 642 reached checks pass with pri
 cuts retained.
 Wider entries, freeing mutation, reference/iteration and ephemeron protocols remain
 open.
+
+`WeakReference::create` now reuses or recreates a wrapper during a live map
+teardown callback. Only a unique active empty-map pin with pending notification
+is admitted; the callback releases its strong map copy before returning. A fresh
+wrapper adds no target owner and becomes null when cleanup notifies it. Two
+originals agree at `ac980b0`; 333 reached checks cover reuse, real wrapper
+retirement/recreation and notification. Wider freeing contexts and inactive
+carriers remain required; earlier evidence and the original refusal stay separate.
 
 [Ordinary collection301](docs/semantics/CYCLE-COLLECTION.md) implements explicit
 object/array cycle collection, ordered destructor callbacks and real weak
@@ -1450,8 +1472,15 @@ the focused source and public checks. `E_USER_ERROR` now captures the dynamic
 source location and retires authenticated execution contexts before shutdown.
 Static cells retain their existing roots while shutdown evals and destructors of
 new objects run. [Fatal review](coverage/semantics/source-static-fatal-review.json)
-records source and public checks. Wider fatal/compiler and destructor/return
-interactions remain required.
+records source and public checks. Hard bailout now sets request status255 before
+shutdown: a direct string exit preserves it, while integer/default exits replace
+it. [Fatal-status review](coverage/semantics/source-static-fatal-status-review.json)
+records this separate cut. Frozen fatal completion now reports the request status
+after caught shutdown-exit replacement, preserving continued callbacks and
+diagnostics. A fresh fatal writes255 even when reporting is suppressed.
+[Observer review](coverage/semantics/source-static-fatal-observer-review.json)
+records the focused source/public checks. Wider fatal/compiler producers and
+destructor/return interactions remain required.
 [Real closure instances](docs/semantics/SOURCE-CLOSURES.md) now retain explicit captures,
 selected callee owners and per-instance statics through invocation and cleanup.
 [Independent review](coverage/semantics/closures-review.json) binds source, object
@@ -1477,6 +1506,11 @@ binds 18 source outcomes and separate compiler and paused-state checks.
 [Stringable comparisons](coverage/semantics/stringable-comparison-review.json) now
 resume direct instance/string operators and cases after authentic casts, retaining
 CV/copy/reference reads, lazy fallthrough and throwing callback control.
+[Recursive Stringable comparisons](coverage/semantics/aggregate-stringable-comparison-review.json)
+now retain enclosing arrays and declared-property objects across casts, preserving
+copy-on-write, live slots/cells, successive casts and active recursion guards.
+Six exact sources and 521 reached checks pass; materialized-property casts and
+Fiber VM transfer during this continuation remain explicit Unsupported.
 [Match expressions](docs/semantics/SOURCE-MATCH.md) preserve strict, lazy arm
 selection, delayed CV subjects, ordered compiler diagnostics and owned value
 results; their [review](coverage/semantics/match-review.json) binds source, compiler
@@ -1834,6 +1868,17 @@ The same priority now covers a genuinely own-body-backed child that removes the
 type. Reverse addition and existing backing 200→300/getter 213→313 remain controls;
 focused states check rejection before publication and genuine getter entry.
 [Own-backed type-presence review](coverage/semantics/ordinary-backed-parent-backed-get-hook-type-presence-review.json).
+An equal-type plain child property now inherits a genuine backed parent getter.
+The child keeps its own default and storage, while the getter's function, lexical
+scope, private helper and trace class remain the parent's; called scope follows
+the receiver. One original and four focused states cover child/Grand entry and
+write 300/getter 313 in the
+[inherited-getter review](coverage/semantics/plain-child-inherited-backed-get-hook-review.json).
+Repeated plain redeclarations now retain that original getter through authenticated
+inheritance edges. The latest property supplies the slot and default; original
+parent function/private scope remains distinct from receiver called scope.
+One original and four focused states cover slot 300→400/getter 313→413 in the
+[repeated inherited-getter review](coverage/semantics/repeated-plain-child-inherited-backed-get-hook-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`

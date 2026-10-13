@@ -1,0 +1,33 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hash": "e17a5e78b8722190e709060e13a0a99d30ed241cafb3cb6efad9d7b29f4f1320",
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "scalar",
+      "source": "<?php\nclass RepeatedPlainParent55 {\n    public int $value = 100 {\n        get {\n            echo \"GET:\", self::class, \"/\", static::class, \"|\";\n            return $this->value + $this->answer();\n        }\n    }\n    private function answer() { return 13; }\n    public function parentRead() { echo \"H|\"; return $this->value; }\n}\nclass RepeatedPlainFirst55 extends RepeatedPlainParent55 {\n    public int $value = 200;\n    private function answer() { return 500; }\n}\nclass RepeatedPlainBridge55 extends RepeatedPlainFirst55 {}\nclass RepeatedPlainSecond55 extends RepeatedPlainBridge55 {\n    public int $value = 300;\n    private function answer() { return 700; }\n}\nclass RepeatedPlainGrand55 extends RepeatedPlainSecond55 {\n    private function answer() { return 900; }\n}\n$parent = new RepeatedPlainParent55;\n$first = new RepeatedPlainFirst55;\n$second = new RepeatedPlainSecond55;\n$grand = new RepeatedPlainGrand55;\n$raw = (array) $parent;\necho $raw === [\"value\" => 100] ? \"P100|\" : \"BAD|\";\n$raw = (array) $first;\necho $raw === [\"value\" => 200] ? \"F200|\" : \"BAD|\";\n$raw = (array) $second;\necho $raw === [\"value\" => 300] ? \"S300|\" : \"BAD|\";\n$raw = (array) $grand;\necho $raw === [\"value\" => 300] ? \"G300|\" : \"BAD|\";\necho $parent->value, \"|\";\necho $first->value, \"|\";\necho $second->value, \"|\";\necho $grand->parentRead(), \"|\";\n$raw = (array) $grand;\necho $raw === [\"value\" => 300] ? \"G300|\" : \"BAD|\";\n$grand->value = 400;\n$raw = (array) $grand;\necho $raw === [\"value\" => 400] ? \"G400|\" : \"BAD|\";\necho $grand->value, \"|\";\n",
+      "source_sha256": "f4b538f452b2e08126876f3c460f3722a3a0ada53f7585ccc4103ff2a0d1f690",
+      "stdout_base64": "UDEwMHxGMjAwfFMzMDB8RzMwMHxHRVQ6UmVwZWF0ZWRQbGFpblBhcmVudDU1L1JlcGVhdGVkUGxhaW5QYXJlbnQ1NXwxMTN8R0VUOlJlcGVhdGVkUGxhaW5QYXJlbnQ1NS9SZXBlYXRlZFBsYWluRmlyc3Q1NXwyMTN8R0VUOlJlcGVhdGVkUGxhaW5QYXJlbnQ1NS9SZXBlYXRlZFBsYWluU2Vjb25kNTV8MzEzfEh8R0VUOlJlcGVhdGVkUGxhaW5QYXJlbnQ1NS9SZXBlYXRlZFBsYWluR3JhbmQ1NXwzMTN8RzMwMHxHNDAwfEdFVDpSZXBlYXRlZFBsYWluUGFyZW50NTUvUmVwZWF0ZWRQbGFpbkdyYW5kNTV8NDEzfA==",
+      "stderr_template": "",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "repeated-plain-child-inherited-backed-get-hook55-native-859d32fe",
+      "native_raw_sha256": "e17a5e78b8722190e709060e13a0a99d30ed241cafb3cb6efad9d7b29f4f1320"
+    }
+  ]
+}

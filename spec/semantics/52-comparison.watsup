@@ -1,6 +1,14 @@
 ;; Six-value comparison. Sources: zend_operators.c:2260-2468,
 ;; 3421-3498 and zend_hash.c:3104-3236. Callback/object comparisons are separate.
-syntax porder = ORDER int | ORDERRECURSIVE | ORDERUNSUPPORTED text
+syntax paggregatepointer = AGGREGATE_ARRAY nat pkey | AGGREGATE_PROPERTY nat ptbytes | AGGREGATE_CELL nat
+syntax paggregatecursor = {LEFT pnode, RIGHT pnode, INDEX nat, WIDTH nat, KEY pkey, LEFTITEM pitem, RIGHTITEM pitem, LEFTVALUE pvalue, RIGHTVALUE pvalue}
+syntax paggregatecallback = {LEFT pvalue, RIGHT pvalue, RECEIVER nat, OBJECTLEFT bool, POINTER paggregatepointer?, STACK paggregatecursor*}
+syntax porder = ORDER int | ORDERRECURSIVE | ORDERUNSUPPORTED text | ORDERSTRING paggregatecallback
+dec $aggregate_compare_seen(pstate) : pnode*
+dec $aggregate_array_effect(pstate, nat, nat, nat, nat, pnode*, int) : (pstate, porder)
+dec $aggregate_property_effect(pstate, nat, nat, nat, pnode*, int) : (pstate, porder)
+dec $aggregate_materialized_order(porder) : porder
+dec $string_compare_selection(pstate, pvalue, pvalue) : (nat, bool)?
 
 ;; The scanner overflows after twenty significant integer-prefix digits, before
 ;; inspecting a decimal/exponent suffix. Rescaling does not erase this provenance.
@@ -226,26 +234,26 @@ def $entries_order(S, (ENTRY pkey pitem_left) :: pentry_left*, pentry_right*, pn
 def $value_order(S, PARRAY n, PARRAY n, pnode_seen*) = ORDER 0
 def $value_order(S, PARRAY n_left, PARRAY n_right, pnode_seen*) = ORDERRECURSIVE
   -- if n_left =/= n_right
-  -- if (HARRAY n_left) <- pnode_seen*
+  -- if (HARRAY n_left) <- (pnode_seen* ++ $aggregate_compare_seen(S))
 def $value_order(S, PARRAY n_left, PARRAY n_right, pnode_seen*) = ORDER $compare_int(|S.ARRAYS[n_left].ITEMS|, |S.ARRAYS[n_right].ITEMS|)
   -- if n_left =/= n_right
-  -- if ~((HARRAY n_left) <- pnode_seen*)
+  -- if ~((HARRAY n_left) <- (pnode_seen* ++ $aggregate_compare_seen(S)))
   -- if |S.ARRAYS[n_left].ITEMS| =/= |S.ARRAYS[n_right].ITEMS|
 def $value_order(S, PARRAY n_left, PARRAY n_right, pnode_seen*) = $entries_order(S, S.ARRAYS[n_left].ITEMS, S.ARRAYS[n_right].ITEMS, (HARRAY n_left) :: pnode_seen*)
   -- if n_left =/= n_right
-  -- if ~((HARRAY n_left) <- pnode_seen*)
+  -- if ~((HARRAY n_left) <- (pnode_seen* ++ $aggregate_compare_seen(S)))
   -- if |S.ARRAYS[n_left].ITEMS| = |S.ARRAYS[n_right].ITEMS|
 def $value_order(S, POBJECT n, POBJECT n, pnode_seen*) = ORDER 0
 def $value_order(S, POBJECT n_left, POBJECT n_right, pnode_seen*) = ORDERRECURSIVE
   -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if n_left =/= n_right
   -- if $empty_instance_same(S, n_left, n_right)
-  -- if (HOBJECT n_left) <- pnode_seen*
+  -- if (HOBJECT n_left) <- (pnode_seen* ++ $aggregate_compare_seen(S))
 def $value_order(S, POBJECT n_left, POBJECT n_right, pnode_seen*) = $property_order(S, ppropertyslot_left*, ppropertyslot_right*, (HOBJECT n_left) :: pnode_seen*)
   -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if n_left =/= n_right
   -- if $empty_instance_same(S, n_left, n_right)
-  -- if ~((HOBJECT n_left) <- pnode_seen*)
+  -- if ~((HOBJECT n_left) <- (pnode_seen* ++ $aggregate_compare_seen(S)))
   -- if ~$objectprops_materialized(S.OBJECTPROPS, n_left)
   -- if ~$objectprops_materialized(S.OBJECTPROPS, n_right)
   -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left*)
@@ -254,7 +262,7 @@ def $value_order(S, POBJECT n_left, POBJECT n_right, pnode_seen*) = ORDER $compa
   -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if n_left =/= n_right
   -- if $empty_instance_same(S, n_left, n_right)
-  -- if ~((HOBJECT n_left) <- pnode_seen*)
+  -- if ~((HOBJECT n_left) <- (pnode_seen* ++ $aggregate_compare_seen(S)))
   -- if $objectprops_materialized(S.OBJECTPROPS, n_left) \/ $objectprops_materialized(S.OBJECTPROPS, n_right)
   -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left*)
   -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
@@ -263,7 +271,7 @@ def $value_order(S, POBJECT n_left, POBJECT n_right, pnode_seen*) = $property_ha
   -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if n_left =/= n_right
   -- if $empty_instance_same(S, n_left, n_right)
-  -- if ~((HOBJECT n_left) <- pnode_seen*)
+  -- if ~((HOBJECT n_left) <- (pnode_seen* ++ $aggregate_compare_seen(S)))
   -- if $objectprops_materialized(S.OBJECTPROPS, n_left) \/ $objectprops_materialized(S.OBJECTPROPS, n_right)
   -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left*)
   -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
@@ -278,29 +286,6 @@ def $object_comparison_notice(S, PFLOAT n, POBJECT n_object, z) = $diagnostic(S,
 def $object_comparison_notice(S, pvalue_left, pvalue_right, z) = S -- otherwise
 
 dec $value_order_effect(pstate, pvalue, pvalue, pnode*, int) : (pstate, porder)
-dec $entries_order_effect(pstate, pentry*, pentry*, pnode*, int) : (pstate, porder)
-dec $entries_order_continue(pstate, porder, pentry*, pentry*, pnode*, int) : (pstate, porder)
-dec $property_order_effect(pstate, ppropertyslot*, ppropertyslot*, pnode*, int) : (pstate, porder)
-def $property_order_effect(S, eps, eps, pnode_seen*, z) = (S, ORDER 0)
-def $property_order_effect(S, (ppropertyslot_left :: ppropertyslot_tail_left*), (ppropertyslot_right :: ppropertyslot_tail_right*), pnode_seen*, z) = $property_order_effect(S, ppropertyslot_tail_left*, ppropertyslot_tail_right*, pnode_seen*, z)
-  -- if ppropertyslot_left.STATE = PROP_INITIAL \/ ppropertyslot_left.STATE = PROP_UNSET
-  -- if ppropertyslot_right.STATE = PROP_INITIAL \/ ppropertyslot_right.STATE = PROP_UNSET
-def $property_order_effect(S, (ppropertyslot_left :: ppropertyslot_tail_left*), (ppropertyslot_right :: ppropertyslot_tail_right*), pnode_seen*, z) = (S, ORDER 1)
-  -- if ppropertyslot_left.STATE = PROP_VALUE pitem
-  -- if ppropertyslot_right.STATE = PROP_INITIAL \/ ppropertyslot_right.STATE = PROP_UNSET
-def $property_order_effect(S, (ppropertyslot_left :: ppropertyslot_tail_left*), (ppropertyslot_right :: ppropertyslot_tail_right*), pnode_seen*, z) = (S, ORDER 1)
-  -- if ppropertyslot_left.STATE = PROP_INITIAL \/ ppropertyslot_left.STATE = PROP_UNSET
-  -- if ppropertyslot_right.STATE = PROP_VALUE pitem
-def $property_order_effect(S, (ppropertyslot_left :: ppropertyslot_tail_left*), (ppropertyslot_right :: ppropertyslot_tail_right*), pnode_seen*, z) = $property_order_effect(S_next, ppropertyslot_tail_left*, ppropertyslot_tail_right*, pnode_seen*, z)
-  -- if ppropertyslot_left.STATE = PROP_VALUE pitem_left
-  -- if ppropertyslot_right.STATE = PROP_VALUE pitem_right
-  -- if (S_next, ORDER 0) = $value_order_effect(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), pnode_seen*, z)
-def $property_order_effect(S, (ppropertyslot_left :: ppropertyslot_tail_left*), (ppropertyslot_right :: ppropertyslot_tail_right*), pnode_seen*, z) = (S_next, porder)
-  -- if ppropertyslot_left.STATE = PROP_VALUE pitem_left
-  -- if ppropertyslot_right.STATE = PROP_VALUE pitem_right
-  -- if (S_next, porder) = $value_order_effect(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), pnode_seen*, z)
-  -- if porder =/= ORDER 0
-def $property_order_effect(S, ppropertyslot_left*, ppropertyslot_right*, pnode_seen*, z) = (S, ORDER 1) -- otherwise
 dec $property_hash_order_effect(pstate, ppropertyslot*, ppropertyslot*, pnode*, int) : (pstate, porder)
 def $property_hash_order_effect(S, eps, ppropertyslot_right*, pnode_seen*, z) = (S, ORDER 0)
 def $property_hash_order_effect(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pnode_seen*, z) = $property_hash_order_effect(S, ppropertyslot_tail*, ppropertyslot_right*, pnode_seen*, z)
@@ -336,7 +321,7 @@ def $property_hash_order_effect(S, ppropertyslot_left :: ppropertyslot_tail*, pp
   -- if pitem_left =/= UNINITIALIZED
   -- if pitem_right =/= UNINITIALIZED
   -- if (S_next, ORDER 0) = $value_order_effect(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), pnode_seen*, z)
-def $property_hash_order_effect(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pnode_seen*, z) = (S_next, porder)
+def $property_hash_order_effect(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pnode_seen*, z) = (S_next, $aggregate_materialized_order(porder))
   -- if $property_slot_at(ppropertyslot_right*, ppropertyslot_left.NAME) = (ppropertyslot_found)
   -- if ppropertyslot_left.STATE = PROP_VALUE pitem_left
   -- if ppropertyslot_found.STATE = PROP_VALUE pitem_right
@@ -344,31 +329,15 @@ def $property_hash_order_effect(S, ppropertyslot_left :: ppropertyslot_tail*, pp
   -- if pitem_right =/= UNINITIALIZED
   -- if (S_next, porder) = $value_order_effect(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), pnode_seen*, z)
   -- if porder =/= ORDER 0
-def $entries_order_continue(S, ORDER 0, pentry_left*, pentry_right*, pnode_seen*, z) = $entries_order_effect(S, pentry_left*, pentry_right*, pnode_seen*, z)
-def $entries_order_continue(S, porder, pentry_left*, pentry_right*, pnode_seen*, z) = (S, porder) -- otherwise
-
-def $entries_order_effect(S, eps, pentry_right*, pnode_seen*, z) = (S, ORDER 0)
-def $entries_order_effect(S, (ENTRY pkey UNINITIALIZED) :: pentry_left*, pentry_right*, pnode_seen*, z) = $entries_order_effect(S, pentry_left*, pentry_right*, pnode_seen*, z)
-def $entries_order_effect(S, (ENTRY pkey pitem_left) :: pentry_left*, pentry_right*, pnode_seen*, z) = (S, ORDER 1)
-  -- if pitem_left =/= UNINITIALIZED
-  -- if $entry_lookup(pentry_right*, pkey) = eps
-def $entries_order_effect(S, (ENTRY pkey pitem_left) :: pentry_left*, pentry_right*, pnode_seen*, z) = (S, ORDER 1)
-  -- if pitem_left =/= UNINITIALIZED
-  -- if $entry_lookup(pentry_right*, pkey) = (UNINITIALIZED)
-def $entries_order_effect(S, (ENTRY pkey pitem_left) :: pentry_left*, pentry_right*, pnode_seen*, z) = $entries_order_continue(S_next, porder, pentry_left*, pentry_right*, pnode_seen*, z)
-  -- if pitem_left =/= UNINITIALIZED
-  -- if $entry_lookup(pentry_right*, pkey) = (pitem_right)
-  -- if pitem_right =/= UNINITIALIZED
-  -- if (S_next, porder) = $value_order_effect(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), pnode_seen*, z)
-def $value_order_effect(S, PARRAY n_left, PARRAY n_right, pnode_seen*, z) = $entries_order_effect(S, S.ARRAYS[n_left].ITEMS, S.ARRAYS[n_right].ITEMS, (HARRAY n_left) :: pnode_seen*, z)
+def $value_order_effect(S, PARRAY n_left, PARRAY n_right, pnode_seen*, z) = $aggregate_array_effect(S, n_left, n_right, 0, |S.ARRAYS[n_left].ITEMS|, (HARRAY n_left) :: pnode_seen*, z)
   -- if n_left =/= n_right
-  -- if ~((HARRAY n_left) <- pnode_seen*)
+  -- if ~((HARRAY n_left) <- (pnode_seen* ++ $aggregate_compare_seen(S)))
   -- if |S.ARRAYS[n_left].ITEMS| = |S.ARRAYS[n_right].ITEMS|
-def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pnode_seen*, z) = $property_order_effect(S, ppropertyslot_left*, ppropertyslot_right*, (HOBJECT n_left) :: pnode_seen*, z)
+def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pnode_seen*, z) = $aggregate_property_effect(S, n_left, n_right, 0, (HOBJECT n_left) :: pnode_seen*, z)
   -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if n_left =/= n_right
   -- if $empty_instance_same(S, n_left, n_right)
-  -- if ~((HOBJECT n_left) <- pnode_seen*)
+  -- if ~((HOBJECT n_left) <- (pnode_seen* ++ $aggregate_compare_seen(S)))
   -- if ~$objectprops_materialized(S.OBJECTPROPS, n_left)
   -- if ~$objectprops_materialized(S.OBJECTPROPS, n_right)
   -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left*)
@@ -377,7 +346,7 @@ def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pnode_seen*, z) = (S
   -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if n_left =/= n_right
   -- if $empty_instance_same(S, n_left, n_right)
-  -- if ~((HOBJECT n_left) <- pnode_seen*)
+  -- if ~((HOBJECT n_left) <- (pnode_seen* ++ $aggregate_compare_seen(S)))
   -- if $objectprops_materialized(S.OBJECTPROPS, n_left) \/ $objectprops_materialized(S.OBJECTPROPS, n_right)
   -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left*)
   -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
@@ -387,19 +356,15 @@ def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pnode_seen*, z) = $p
   -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if n_left =/= n_right
   -- if $empty_instance_same(S, n_left, n_right)
-  -- if ~((HOBJECT n_left) <- pnode_seen*)
+  -- if ~((HOBJECT n_left) <- (pnode_seen* ++ $aggregate_compare_seen(S)))
   -- if $objectprops_materialized(S.OBJECTPROPS, n_left) \/ $objectprops_materialized(S.OBJECTPROPS, n_right)
   -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left*)
   -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
   -- if $property_hash_count(ppropertyslot_left*) = $property_hash_count(ppropertyslot_right*)
   -- if S_marked = $objectprops_mark($objectprops_mark(S, n_left), n_right)
-;; A reached nested comparison cannot run a user cast without a continuation.
-def $value_order_effect(S, POBJECT n, pvalue, pnode_seen*, z) = (S, ORDERUNSUPPORTED "Stringable comparison continuation")
-  -- if $stringable_instance(S, n)
-  -- if $string_bytes(pvalue) =/= eps
-def $value_order_effect(S, pvalue, POBJECT n, pnode_seen*, z) = (S, ORDERUNSUPPORTED "Stringable comparison continuation")
-  -- if $stringable_instance(S, n)
-  -- if $string_bytes(pvalue) =/= eps
+;; Only a reached leaf requests the source-authenticated callback consumer.
+def $value_order_effect(S, pvalue_left, pvalue_right, pnode_seen*, z) = (S, ORDERSTRING {LEFT pvalue_left, RIGHT pvalue_right, RECEIVER n, OBJECTLEFT b, POINTER eps, STACK eps})
+  -- if $string_compare_selection(S, pvalue_left, pvalue_right) = ((n, b))
 def $value_order_effect(S, pvalue_left, pvalue_right, pnode_seen*, z) = ($object_comparison_notice(S, pvalue_left, pvalue_right, z), $value_order(S, pvalue_left, pvalue_right, pnode_seen*)) -- otherwise
 
 dec $comparison_operator(pbin) : bool

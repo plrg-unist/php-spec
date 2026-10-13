@@ -325,6 +325,18 @@ throw/Previous rules remain exact. These trace/identity assertions are modeled
 state evidence with engine corroboration, not native trace comparison. Local
 source reconstruction and broader catch/rethrow/returns remain OPEN.
 
+A separate exact certificate admits the guarded catch echo followed by a
+one-literal New TypeError. Source2, reached2/368 and independent public161/1 pass
+at `98aacd7d`: failed inner binding/probe stays canceled; the new replacement
+retains its own source New, line3 and captured trace-array graph through ordered
+retirement and the same caller. Caught nested is distinct with line4/its own trace
+and retires after callback unwind. Early Previous is empty; late replacement
+Previous is old Y. Full saved-prefix/public refusal, counter control, selected
+alias and budget continuation are separate checks. Old class/call/throw/idle
+rules remain exact; Worker120 changes only the source cap. No native trace or
+identity comparison or physical predecessor-history proof is added. Broader
+replacement, explicit Previous and returns remain OPEN.
+
 Module 186 captures the physical cell of an ordinary live unconstrained aliased CV
 before weak Stringable conversion. Its retained current/saved f-local binding
 authenticates that selection independently of later GLOBALS rebind/unset. Success

@@ -133,6 +133,7 @@ syntax pintegeroperation
 syntax pintegerphase
 syntax pintegerconversion
 syntax pstringcompare
+syntax paggregatecompare
 syntax pupdatepointer
 syntax pupdatewarning
 syntax pupdaterestore
@@ -336,6 +337,7 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | INTEGER_OPERATOR_CONVERT pintegeroperation pintegerphase | INTEGER_OPERATOR_WARNING pintegeroperation pintegerphase pintegerconversion nat
   | UPDATE_WARNING_NOTICE pupdatewarning | UPDATE_WARNING_RESTORE pupdatewarning | UPDATE_WARNING_DONE pupdatewarning
   | UPDATE_WARNING_RELEASE pupdaterestore | UPDATE_WARNING_COMMIT pupdaterestore
+  | UPDATE_WARNING_EXIT perrorcall int
   | GLOBAL_CONSTANT_METHOD_RESUME porigin porigin porigin nat
   | PARAMETER_CONSTANT_METHOD_RESUME porigin porigin porigin nat
   | GLOBAL_CONSTANT_DUPLICATE porigin pvalue pvalueclass nat pconstantfact* int
@@ -378,7 +380,7 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | PROPERTY_REF_PREP expression int | PROPERTY_REF_CAPTURE pbase int | PROPERTY_REF_BIND pbase nat int | PROPERTY_REF_BIND_CV pbase nat* int | PROPERTY_REF_FETCH int
   | LIST_TEMP_CAPTURE expression int | CALL_REF_PREP pcalltarget nat porigin? | CALL_REF_FETCH pcalltarget nat porigin? | ERROR_UNWIND pcompletion | GLOBAL_BIND expression int | GLOBAL_BIND_NAME int | CALL_DYNAMIC porigin int int | FIRSTCLASS_CONVERT porigin int int | CALL_ARGS pcalltarget phpType7* nat poperand* porigin? int | CALL_SEND pcalltarget phpType7* nat poperand* porigin? int | RETURN_REF_FETCH int | RETURN_REF_VALUE int | RETURN_REF_NULL int | REF_RETURN_NOTICE porigin int prefreturnnotice | REF_RETURN_NOTICE_BEGIN porigin poperand int prefreturnnotice | REF_RETURN_NOTICE_RESULT porigin poperand int prefreturnnotice | RETURN_VALUE int | RETURN_NULL | RETURN_UNWIND poperand porigin? | RETURN_REF_UNWIND poperand int bool porigin | GLOBAL_NAME int | ISSET_PREP expression bool | ISSET_RESULT bool int | ISSET_NEXT expression* nat | COALESCE_ASSIGN_PREP expression expression int | COALESCE_ASSIGN_WRITE pbase bool int | COALESCE_QUIET expression int int | FOREACH_PREP statement int | FOREACH_CV statement nat* int | FOREACH_NAME statement int | FOREACH_DIM statement int | FOREACH_RESET statement plocation bool int | FOREACH_NEXT nat pnode statement porigin? int | COALESCE_RESULT expression int int | EVAL_EFFECT | COMPILED_RESULT bool | LIST_CAPTURE expression bool int | LIST_PATTERN expression poperand int | LIST_NEXT poperand nat phpType13* int | LIST_FETCH poperand nat expression bool phpType13* int | LIST_STORE expression poperand bool int | LIST_STORE_NAME poperand bool int | LIST_STORE_DIM poperand bool int | ARRAY_UNPACK nat phpType13* int | CONCAT_LEFT expression bool bool int | CONCAT_RIGHT poperand bool bool int | CONCAT_PREP poperand poperand bool bool int | CONCAT_AFTER_LEFT porigin poperand bool int | CONCAT_AFTER_RIGHT porigin pvalue int | CAST_RESULT pcast int | BITNOT_RESULT int | COMPOUND_PREP pbin expression expression int | COMPOUND_APPLY pbin pbase bool int | UPDATE_PREP pupdate bool int | TRUTH_RESULT bool int | SHORT_RESULT bool expression int int | VALUE_COPY int | SELECT_VALUE phpType5 expression int int int
   | CHOOSE ptask* ptask* int | LOOP_TEST statement porigin? | LOOP_NEXT statement porigin?
-  | STRING_COMPARE_RESULT pstringcompare
+  | STRING_COMPARE_RESULT pstringcompare | AGGREGATE_COMPARE_RESULT paggregatecompare
   | AT porigin ptask | ORIGIN_RETURN porigin? | DISCARD | UNSET_ARRAY | ASSIGN_PREP expression expression | ASSIGN_ARRAY pbase int bool | DIM_APPEND int
   | REF_ARRAY_PREP expression int | REF_ARRAY_CAPTURE pbase int | REF_ARRAY pbase nat int | REF_ARRAY_CV pbase nat* int
   | ARRAY_NEXT nat phpType13* | ARRAY_KEY nat expression phpType13* | ARRAY_VALUE nat poperand? phpType13* int

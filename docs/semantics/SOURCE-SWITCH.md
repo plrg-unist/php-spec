@@ -28,5 +28,13 @@ through 392 while preserving the original subject and captured opposite pointer.
 The [comparison increment](../../coverage/semantics/stringable-comparison-review.json)
 checks delayed default, body-only fallthrough without later case evaluation, and
 the same TypeError caught after caster restoration, followed by finally entry.
-The caster first reenters a nested scalar Switch. Reached recursive casts, broader internal handlers and wider control
-remain separate core obligations.
+The caster first reenters a nested scalar Switch.
+
+[Recursive comparison through 394](../../coverage/semantics/aggregate-stringable-comparison-review.json)
+retains real enclosing array/property owners and the active left recursion guard
+while a reached Stringable/string leaf casts. Early count/key/value differences
+still short-circuit. Successive casters resume the same comparison; nested recursion
+Error can be caught inside the caster, and a thrown TypeError reaches caller catch
+then finally entry. The restart fixture reads the authentic compiled case marker,
+including its folded line. Materialized-property casts, Fiber VM transfer during
+this continuation, broader internal handlers and wider control remain required.

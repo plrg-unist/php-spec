@@ -47,10 +47,12 @@ def main():
         native = recorded([str(ROOT / '.tools/php/bin/php'), '-n', *flags, str(source)], directory / 'native', 30)
         row = {'id': name, 'source_sha256': digest(source), 'native': native, 'agreement_credit': 0}
         boundary = getattr(cases, 'BOUNDARIES', {}).get(name)
+        exit_code = getattr(cases, 'EXIT_CODES', {}).get(name, 0)
+        status = getattr(cases, 'STATUSES', {}).get(name, getattr(cases, 'STATUS', 'normal'))
         if boundary is not None:
             row['expected_boundary'] = boundary
         if args.native_only:
-            row['passed'] = native['exit'] == 0 and not native['timeout'] and native['interruption'] is None
+            row['passed'] = native['exit'] == exit_code and not native['timeout'] and native['interruption'] is None
         else:
             model = recorded([str(ROOT / 'bin/php-semantics'), str(source), '--steps', '100000', '--timeout', '60'], directory / 'model', 90)
             try:
@@ -59,14 +61,14 @@ def main():
                 outcome = {}
             row['model'] = model
             row['outcome'] = outcome
-            ordinary = (native['exit'] == model['exit'] == 0 and not native['timeout'] and not model['timeout']
+            ordinary = (native['exit'] == exit_code and model['exit'] == 0 and not native['timeout'] and not model['timeout']
                 and native['interruption'] is None and model['interruption'] is None
                 and not (directory / 'model.stderr').read_bytes() and outcome.get('frontend') == 'accepted'
-                and outcome.get('checked') == 'program' and outcome.get('status') == 'normal'
-                and outcome.get('exit_status') == 0 and outcome.get('reason') is None
+                and outcome.get('checked') == 'program' and outcome.get('status') == status
+                and outcome.get('exit_status') == native['exit'] and outcome.get('reason') is None
                 and base64.b64decode(outcome.get('stdout', '')) == (directory / 'native.stdout').read_bytes()
                 and base64.b64decode(outcome.get('stderr', '')) == (directory / 'native.stderr').read_bytes())
-            explicit_boundary = (boundary is not None and native['exit'] == 0 and model['exit'] == 1
+            explicit_boundary = (boundary is not None and native['exit'] == exit_code and model['exit'] == 1
                 and not native['timeout'] and not model['timeout']
                 and native['interruption'] is None and model['interruption'] is None
                 and not (directory / 'model.stderr').read_bytes() and outcome.get('frontend') == 'accepted'

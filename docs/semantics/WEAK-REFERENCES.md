@@ -67,6 +67,36 @@ compiler, source and reached-state failures remain in ignored `.tools` with
 zero credit. The final combined offline rebuild remains required; paused return
 verification is unchanged.
 
+## Wrapper creation during live map teardown
+
+Modules359/386 admit `WeakReference::create` for a unique allocated empty-map
+storage pin with pending NOTIFY in the current tasks or saved frames. The
+existing wrapper must be the actual allocated find result and match NOTIFY.
+After that wrapper's ordinary retirement, creation appends a fresh wrapper
+and changes only the pin's borrowed notification identity. Neither the wrapper
+nor NOTIFY owns the map; the existing physical pin and callback-local copy do.
+The callback releases that copy before returning.
+
+The reuse/recreation originals (88/123 bytes) agree at `ac980b0`.
+Three reached groups pass 123/133/77 checks, totaling 333. The first two bind
+actual CONFIG_INVOKE/source/frame authority and argument-owner removal
+(three to two map owners), with stale notice, handle, duplicate-pin and
+competing-find controls. The last reaches notification after callback cleanup: clearing
+only NOTIFY makes the new wrapper null while the map stays physically pinned,
+then physical retirement schedules a valid HANDLE release. It stops before
+consuming that job; originals supply complete endings. The original
+`freeing instance new weak reference` refusal remains zero agreement.
+
+The engine basis is `zend_weakref_find`, `zend_weakref_create`,
+`zend_weakref_register` and `zend_weakmap_free_obj` in `Zend/zend_weakrefs.c`.
+Map value cleanup precedes its std_dtor notification, allowing wrapper
+reuse or fresh registration while the callback-local target remains live.
+Nonmap/freeing-key creation, notified pins, inactive or fatal carriers,
+throwing callbacks after creation, additional strong targets retained beyond
+cleanup and wider map/ephemeron protocols remain required. Earlier cuts and
+failures retain their separate evidence in the
+[ledger](../../coverage/semantics/weak-map-review.json).
+
 ## WeakMap first entry and key retirement
 
 Module386 admits zero-argument `new WeakMap()` and one first insertion with a
@@ -105,7 +135,7 @@ originals agree at `c1cf6c7`; four source-reached groups pass 73/106/119/95 chec
 totaling 393 with three setup assertions per case. Pin cuts stop at a scheduled valid HANDLE
 release; the originals supply complete endings. The first normal fixture's
 elaboration failure retains zero credit, separately from its corrected pass.
-Multiple maps per key, wrapper creation during freeing, retained strong keys,
+Multiple maps per key, wider wrapper creation during freeing, retained strong keys,
 wider map protocols, wider nonempty-map free and ephemeron collection remain
 required. No collection/count closure is claimed. Maintained checks reuse cycle_collection_cases.json and
 cycle_collection_state_review.py; the
@@ -140,9 +170,9 @@ The engine basis is `zend_weakrefs_hash_clean_ex` and `zend_weakmap_free_obj` in
 `Zend/zend_weakrefs.c`: key registrations detach and stored values destruct before
 the map's own std_dtor notification. `zend_objects_store_del` gives free_obj its
 physical pin; `zend_weakref_get` adds the callback's real temporary owner. Wider
-map teardown, mutation or wrapper creation during freeing, additional strong key/map
-owners retained beyond callback cleanup, wider entry/key/value protocols and ephemeron
-collection remain required. Countable
+map teardown, mutation or wider wrapper creation during freeing, additional strong
+key/map owners retained beyond callback cleanup, wider entry/key/value protocols
+and ephemeron collection remain required. Countable
 is nominal-only; count execution remains excluded/Unsupported per CORE.
 
 ## Ordinary dimension reads
@@ -165,8 +195,7 @@ stay at their tested revisions.
 The engine basis is `zend_weakmap_read_dimension` in `Zend/zend_weakrefs.c`: an
 ordinary `BP_VAR_R` read returns the stored zval; a missing object key reports the
 class and object-store handle. Presence/isset, reference/compound reads, other key
-types, methods/iteration, wider entry shapes, mutation during freeing and ephemeron
-collection remain required. Countable stays nominal-only; count execution remains
+types, methods/iteration, wider entry shapes, mutation during freeing and ephemeron collection remain required. Countable stays nominal-only; count execution remains
 excluded/Unsupported per CORE.
 
 ## Explicit entry unset

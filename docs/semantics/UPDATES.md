@@ -34,8 +34,20 @@ Previous. Borrowed cells add no owner, surviving wrapper aliases keep their
 referents alive, and ordered child cleanup continues after a supplied throw.
 Released arrays permit authenticated strict comparisons with literal scalars and
 terminal isset; ordinary, nested and empty reads remain Unsupported. Late type-source
-attachment, destructor rebinding/new owned payloads and graceful exit retain
-explicit boundaries and native obligations. Wider update locations remain partial.
+attachment, destructor rebinding/new owned payloads and replacement/destructor
+exit retain explicit boundaries and native obligations. Wider update locations
+remain partial.
+
+[Named warning-handler exits](../../coverage/semantics/incdec-exit-review.json)
+unwind the real handler frame and its locals before restoring the registry and
+captured bool/decrement-null value. Strings skip restoration. Pending caller
+operands survive handler cleanup, then retire before caller cleanup and shutdown;
+catch/finally and interrupted result assignment are skipped while exit remains
+pending. Borrowed old cells, genuine GLOBALS rebinding/unset, nested handlers,
+registry replacement and request exit status preserve their distinct effects.
+Owning callbacks and handler-local/parent cleanup throws that cancel exit have
+native originals and exact Unsupported controls; their full caught continuations
+remain required follow-on work.
 
 String dimensions validate the key before rejecting increment/decrement; nested
 string dimensions retain the separate nested-array error. Generic dimension

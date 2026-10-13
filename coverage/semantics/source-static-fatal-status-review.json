@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "status": "integrated",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+  "implementation": {
+    "base": "557fc63b3a310f3612944a8a60be71e0846bd3f7",
+    "commit": "20db1b23e779425f69a3d510a5d963bb78a91798",
+    "modules": 382,
+    "tested_dirty_diff_sha256": "6c91c81dbd56b059bb3ed1419a1ec8a0b1d1d84c616fceffbd1251e8e59acb9f",
+    "module_sha256": "6e514ca35e25ef251d5fafd2a6e62cd30432dc027ea7fc317c3d85eeca5999a7",
+    "protocol_sha256": "2095db60a61ee6bf32262f9c57379bb593de2a432a558faaeeb03bf57925d529"
+  },
+  "behavior": [
+    "request_fatal_state257 writes EXITSTATUS255 under its existing raw-bailout predicate before shutdown callbacks.",
+    "Direct shutdown string exits preserve255; integer/default exits overwrite it with0 and stop later callbacks.",
+    "Existing static/WeakReference roots and interrupted-object destructor flags are unchanged. REQUESTFATAL and EXITED are not raw-bailout kinds, so the frozen fatal does not overwrite a callback reset.",
+    "The original baseline already matched both streams and retained-object behavior; genuine checked explicit_exit0 differed from native process255."
+  ],
+  "engine": [
+    "vendor/php-src/main/main.c:php_error_cb sets EG(exit_status)=255 before fatal bailout",
+    "vendor/php-src/Zend/zend_builtin_functions.c:ZEND_FUNCTION(exit) overwrites integer/default status and preserves it for strings"
+  ],
+  "validation": {
+    "sources": {
+      "author": {
+        "report": ".tools/dynamic-source-statics-fatal-status-model-09/report.json",
+        "count": 1,
+        "ids": [
+          "eval-fatal-shutdown-string"
+        ]
+      },
+      "independent": {
+        "report": ".tools/dynamic-review-02/fatal-status-model-v1/report.json",
+        "count": 3,
+        "ids": [
+          "file-fatal-shutdown-string",
+          "eval-fatal-shutdown-zero",
+          "eval-fatal-shutdown-default"
+        ]
+      },
+      "unique_full_agreements": 4,
+      "tuple": "checked accepted/program, explicit_exit, exact native process code, stdout and full stderr",
+      "unselected": "Native file-zero/file-default are not extra CLI agreements; file-zero supplies a genuine state frontier."
+    },
+    "states": {
+      "reports": [
+        ".tools/dynamic-source-statics-fatal-status-state-01/check-report.json",
+        ".tools/dynamic-source-statics-fatal-status-state-01/check-2-report.json"
+      ],
+      "groups": [
+        {
+          "id": "eval-string",
+          "premises": 79
+        },
+        {
+          "id": "file-zero",
+          "premises": 81
+        },
+        {
+          "id": "eval-default",
+          "premises": 78
+        }
+      ],
+      "total_premises": 238,
+      "isolated_raw_exit_steps": 3,
+      "production_fatal_transitions": 3,
+      "production_exit_continuations": 3,
+      "checks": "Real parser resume/producer/fatal freeze/callback EXIT_INVOKE; request status, events, whole public/heap/declaration admission and surviving old roots/CALLED. Final drive starts from genuine callback prestate, never raw projection.",
+      "stderr": "Full stderr agreement belongs to CLI sources; no extra state stderr comparison is claimed."
+    },
+    "limits": "CLI model60/process90; full382 SL90 per group; serial stop-first. Accepted reports stable; actors reaped. Earlier source/static/fatal campaigns retain their cuts.",
+    "zero_credit": [
+      {
+        "report": ".tools/dynamic-source-statics-fatal-status-baseline-08/report.json",
+        "reason": "unchanged baseline exit0 versus native255"
+      },
+      {
+        "report": ".tools/dynamic-source-statics-fatal-status-state-01/fixtures-report.json",
+        "reason": "checked fixture preparation only"
+      },
+      {
+        "report": ".tools/dynamic-review-02/static-native-v19/report.json",
+        "reason": "native-only next observer counterexample; no model run"
+      }
+    ]
+  },
+  "reports": [
+    {
+      "path": ".tools/dynamic-review-02/static-native-v18/report.json",
+      "sha256": "8a0d8de8b97de617a50159f0e8a8d8d2ed770e2bf7f72280222cb8cb035b97a8"
+    },
+    {
+      "path": ".tools/dynamic-source-statics-fatal-status-baseline-08/report.json",
+      "sha256": "de6311c969737164836d86052d65893cca702ecdfcc8cf4b8647a160936f0b9e"
+    },
+    {
+      "path": ".tools/dynamic-source-statics-fatal-status-model-09/report.json",
+      "sha256": "5e5d7e5aa0fd13fbf5acc3f54b7e83b4110e3fa74f648d2634373b35bbea7225"
+    },
+    {
+      "path": ".tools/dynamic-source-statics-fatal-status-state-01/fixtures-report.json",
+      "sha256": "0332f615ee3245d4c163f66d942978ab9b62afc54035932d27e2ca7465b75816"
+    },
+    {
+      "path": ".tools/dynamic-source-statics-fatal-status-state-01/check-report.json",
+      "sha256": "1ec8f45b047445e3f26b932b8e52c8c1db9149a240f389e31a5714edfd662a6b"
+    },
+    {
+      "path": ".tools/dynamic-source-statics-fatal-status-state-01/check-2-report.json",
+      "sha256": "3ef0a69c1a6bedacba6d88c5e601b702f104439adec38efd9e96adaa6029744d"
+    },
+    {
+      "path": ".tools/dynamic-review-02/fatal-status-model-v1/report.json",
+      "sha256": "51c4939452a72b2cb5730be073c77e6bf6f2c3c84352d622cd1c9ed2d46345ce"
+    },
+    {
+      "path": ".tools/dynamic-review-02/static-native-v19/report.json",
+      "sha256": "b925994186f0907c51a4314d0062643c02036c41216f247cacc9b3df05390ec6"
+    }
+  ],
+  "remaining": [
+    "Native v19 eval-fatal-caught-reset-zero exits0 after a shutdown source exit is replaced by a caught destructor throw; callback and later queue continue. At this setter cut, the frozen REQUESTFATAL observer still forced255. This was outside this setter cut; the follow_up pointer records its separate observer implementation.",
+    "Wider fatal/compiler/reporting/handler producers, shutdown status replacements, freeing/destructor/return interactions and full request lifecycle remain partial."
+  ],
+  "recovery": "Raw originals, native/process/model commands, binary/profile/input hashes and streams remain in canonical ignored .tools paths above. Recreate a project-local checkout of implementation commit and provision canonical providers/references before rerunning. Source wrappers name fatal-status-08; maintained protocol takes explicit --sources/--output and preserves attempts. No new portability/build claim.",
+  "actual_composition": {
+    "parent": "2676fe06548d122f601f3612e5d90cc1941aa8f8",
+    "reviewed_join": "0f51a2471546740b43f8e7555098670fd5559d26",
+    "modules": 383,
+    "review": "Independent pointwise clearance: accepted257/protocol unchanged; parent tick fields, compiler/public hooks, WeakMap behavior and pipeline preserved. No-declare/empty tick defaults reduce to prior behavior.",
+    "new_actor_source_state_credit": 0
+  },
+  "follow_up": "The frozen-completion observer obligation is implemented separately in source-static-fatal-observer-review.json; this setter ledger and its source4/state238 cuts are unchanged."
+}

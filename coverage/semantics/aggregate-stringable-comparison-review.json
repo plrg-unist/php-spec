@@ -1,0 +1,203 @@
+{
+  "scope": "Reached recursive array and ordinary declared-property Stringable/string loose comparison, including non-bool Switch. Count/key/earlier-value short-circuit stays sequential; genuine cursor/caster continuations retain parents and active-left recursion guards.",
+  "status": "partial; independently reviewed private increment",
+  "tested_revision": "b28d9f6258782c6be4e1fea9e9a94873349cf3bf",
+  "baseline_revision": "69ff1534ebf4257f9fbdfd28a3b0bbf11dd014fc",
+  "module_count": 383,
+  "runtime": {
+    "php_source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_binary": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "numeric_runner": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "adapter": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "elaborator": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "profile": {
+      "path": "tests/semantics/profile.json",
+      "sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+    },
+    "new_module": {
+      "path": "spec/semantics/394-aggregate-stringable-comparisons.watsup",
+      "sha256": "5183001dc3e5f59d0f9fc7c365c69e60cff87988949ff78ef3f72e3fcb9cbdf9"
+    },
+    "module_manifest": {
+      "path": "spec/semantics/modules.json",
+      "sha256": "f2a6a86762d4756a66ffa32264ac4cf1af778254779dbaf1bc158a90fb25658f"
+    },
+    "build_claim": "Retained project-local binaries; no fresh/offline rebuild claim.",
+    "engine_anchors": [
+      "Zend/zend_hash.c:zend_hash_compare (sequential table comparison and left recursion protection)",
+      "Zend/zend_operators.c:compare_symbol_tables (both table pins)",
+      "Zend/zend_object_handlers.c:zend_std_compare_objects (parent pins, declared slots and callback-visible recursion protection)"
+    ]
+  },
+  "native": {
+    "original5": {
+      "path": ".tools/recursive-stringable-native-48/run-v1/report.json",
+      "sha256": "1a878d5bb25af4ae2d09eb024a8d97fd48f82eaac588afed86b3ca4a813e8f1f"
+    },
+    "restart1": {
+      "path": ".tools/recursive-stringable-restart-native-48/report.json",
+      "sha256": "4e960e5b602a0a9097c6e6ea2cb67659afab77c06c8d3cdde1ebadefb020c9e2"
+    },
+    "originals": 6,
+    "normal": 6,
+    "lease": "Original5 at 69ff/382 CPU3/SLOT5; restart1 at 95baf/383 CPU5/SLOT3.",
+    "credit": "Native facts only; no model agreement."
+  },
+  "baseline": {
+    "report": {
+      "path": ".tools/recursive-stringable-baseline-48/run-v1/report.json",
+      "sha256": "264ca7dc22382dfcc002b3c78462ca83ab68c4e97d5aae3e8954a5cd467b97f0"
+    },
+    "checked_status": "accepted/program/Unsupported: Stringable comparison continuation",
+    "actual_stdout": "count|N|key|N|early|N|nested|",
+    "native_agreements": 0,
+    "result": "Measured refusal only at the reached nested leaf; prior no-cast short-circuit prefix agrees."
+  },
+  "strict": {
+    "report": {
+      "path": ".tools/recursive-stringable-gate-48/report-retry3.json",
+      "sha256": "c0e1722dcbd81ecd82d5dc5eb91b10dc77922a763840ac9c0d18c92154e4d0c1"
+    },
+    "checks": 3,
+    "seconds": 6.2297235652804375,
+    "passed": true
+  },
+  "sources": {
+    "report": {
+      "path": ".tools/recursive-stringable-model-48/report.json",
+      "sha256": "96b49351dd7fd61a1ded434ba915dda32ed60e021cf45f886dc54d3b881180cb"
+    },
+    "catalogue": {
+      "path": "tests/semantics/aggregate_stringable_comparison_cases.json",
+      "sha256": "46c26cf2435179603c2bf8b743f317ba63ad28cb2dd3b8aba6fb9de6cceafb4a"
+    },
+    "normal_native_agreements": 6
+  },
+  "syntax_only": {
+    "preparation": {
+      "path": ".tools/recursive-stringable-state-48/prepared/report.json",
+      "sha256": "63dd2f28d612007117339abc31cab7a39d8c10f266819fb6ecbc4f97c1120a8c"
+    },
+    "programmes": 6,
+    "closed_workers": 12,
+    "author_el": {
+      "path": ".tools/recursive-stringable-state-48/report-el-retry1.json",
+      "sha256": "76fd0fad162cb2de7a50b0c5ccab0bdeca3463d5082c8f31fa79aa604cb81f87"
+    },
+    "peer_el": {
+      "path": ".tools/recursive-stringable-peer-state-48/report-elab-retry1.json",
+      "sha256": "241a2fa914ddeb289cf07acd54823219a542154265236e337b87e3a4a6ade768"
+    },
+    "runtime_credit": 0,
+    "final_restart": "Two authentic source-marker bindings and scalar line substitution were checked through final SL compilation; no separate EL replay."
+  },
+  "reached_states": {
+    "author_partial_report": {
+      "path": ".tools/recursive-stringable-state-48/report-sl.json",
+      "sha256": "a0d8084f7c653c59dad5d2dbc3f3428be5c49db29f0d9414ed98d64658fddd3d"
+    },
+    "author_credited_groups": [
+      "array-live-ref",
+      "property-live-ref"
+    ],
+    "restart_report": {
+      "path": ".tools/recursive-stringable-state-48/report-sl-restart-retry2.json",
+      "sha256": "e34a4efb95fc841ff62f401a84b08e492c6561c945704487e83da7997c7ad8da"
+    },
+    "peer_report": {
+      "path": ".tools/recursive-stringable-peer-state-48/report-sl-retry1.json",
+      "sha256": "e241a4abb154d6bda3223cb80d3749d00292c7374f8a74c7e7a25e0c0ff93912"
+    },
+    "author_plan": {
+      "path": ".tools/recursive-stringable-state-48/plan.json",
+      "sha256": "17fbc6335e49651d1e30ded1a998e8b642f7f1082b4f186aa818ad6b4c50a317"
+    },
+    "peer_plan": {
+      "path": ".tools/recursive-stringable-peer-state-48/plan.json",
+      "sha256": "d2a19f028c029eab3b8abea9f512de83f3bea491391d9d944cf99a4fa6e9295c"
+    },
+    "checks": 521,
+    "setup_frontier": 473,
+    "pure_controls": 48,
+    "explicit_raw_php_steps": 31,
+    "author_checks": 318,
+    "peer_checks": 203,
+    "author_seconds": [
+      14.796228501945734,
+      18.902290420606732,
+      8.533748650923371
+    ],
+    "peer_seconds": [
+      9.634261121973395,
+      8.031633300706744
+    ],
+    "scope": "Actual capture, entered/returned caster and leaf/cursor resume; pinned-array COW versus embedded cells, retargeted property slots versus old cells, first-zero/second-nested-caster restart and authentic folded Switch marker. Peer frontiers expose protected same-pair recursion Error caught inside the caster, then normal return/selection; identical TypeError reaches restored caller catch and finally entry, dropping cursor pins/guards on unwind. Bounded seeks are setup/frontier, not extra PhpSteps."
+  },
+  "retained_zero_credit": [
+    {
+      "report": {
+        "path": ".tools/recursive-stringable-gate-48/report.json",
+        "sha256": "c6ffa2d2513a88af04f8d827c8f0913eeef9f641cb7d69bc31558f486bc16454"
+      },
+      "result": "Before-main concrete type declaration-order failure."
+    },
+    {
+      "report": {
+        "path": ".tools/recursive-stringable-gate-48/report-retry1.json",
+        "sha256": "274df46fa0992c2351dc9ac107c100f768a27b9a62ab1990bc43776c0d50020b"
+      },
+      "result": "Before-main pitem constructor failure; repaired only REFERENCE to ALIAS patterns."
+    },
+    {
+      "report": {
+        "path": ".tools/recursive-stringable-gate-48/report-retry2.json",
+        "sha256": "2ee8961f51decf1ff70e1addcff065ac5405bc8f21990fad894cda112737cd2c"
+      },
+      "result": "Before-main list/scalar dimension collision; repaired only list binder names."
+    },
+    {
+      "report": {
+        "path": ".tools/recursive-stringable-state-48/report-el.json",
+        "sha256": "21d4afd890736a810d39ed963ed83c2a99a50327d8266120615e965ef7ccd3e6"
+      },
+      "result": "Before-main fixture observer used nonexistent heap_roots; corrected to actual heap_graph(S).ROOTS. Original small inputs at heap-roots-helper-failure-v1."
+    },
+    {
+      "report": {
+        "path": ".tools/recursive-stringable-state-48/report-sl.json",
+        "sha256": "a0d8084f7c653c59dad5d2dbc3f3428be5c49db29f0d9414ed98d64658fddd3d"
+      },
+      "result": "Only restart group failed before its raw Steps: guessed AST case line13 instead of authentic folded marker line11. Other two groups pass and are credited separately. Original small inputs at restart-selector-failure-v1."
+    },
+    {
+      "report": {
+        "path": ".tools/recursive-stringable-state-48/report-sl-restart-retry1.json",
+        "sha256": "40ddf41726cbf3aea7aeea49534f5616f75a8d7b834fa5b2895d5449d6757487"
+      },
+      "result": "Before-main PORIGIN literal list syntax failure; parenthesized list argument repair only. Original small inputs at origin-literal-syntax-failure-v1."
+    },
+    {
+      "report": {
+        "path": ".tools/recursive-stringable-peer-state-48/report-sl.json",
+        "sha256": "cc85afea42345c08a5fd193b4a9d3f6567ff8e8b34f6d8fc1c000a7e74fd053e"
+      },
+      "result": "Before-main recursive fixture RHS with otherwise premise; replaced by pure event projection and total output fold. Original small inputs at otherwise-output-failure-v1."
+    }
+  ],
+  "acceptance": "All credited groups are closed once with stable watched inputs, exact final command/raw, empty stderr, exit+cleanup0, empty owned groups and no conditional unrun. Independent comp_review_21 bound closed results and cleared the six-path publication. No accepted evidence replay.",
+  "ownership": "Original operands/INPUTBASE, both parent nodes for every active cursor, and the genuine STRINGIFY_RESULT receiver own independently. Leaf pointer, cursor value/slot and caller/tail images are documentary and non-owning; validation certifies selection relative to those images, not full historical unforgeability.",
+  "residuals": [
+    "Reached materialized-property Stringable casts remain explicit Unsupported; existing pure materialized comparisons are unchanged.",
+    "Authentic Fiber VM transfer while an aggregate continuation is active remains explicit Unsupported; inspection APIs and casts within the current Fiber without transfer retain their existing paths.",
+    "Broader internal handlers, getter/materialized property producers and receiver/destructor lifetimes remain required. No END/shutdown coverage or full-core completion claim.",
+    "Strict identity and compiled bool Switch keep their existing no-cast behavior; no intentional engine divergence."
+  ],
+  "recovery": "Original ignored inputs/raw/binaries remain under .tools/recursive-stringable-48/.tools/recursive-stringable-{native,restart-native,baseline,gate,model,state,peer-state,support}-48. Maintained original bytes/START digests are in the source catalogue; reports retain exact command/environment/caps/exits and watched inputs. Preserve paths without copying/moving bulky artifacts for cleanup.",
+  "actual_composition": {
+    "parent": "859d32fe4a0a46e9de1bae9722e755a2b8ea8f32",
+    "candidate": "56381170fc7a312d700c422acbb71856359e8164",
+    "module_count": 384,
+    "manifest_sha256": "cec723d2266376b0709f4e8f70cb2382fde44b370680586c8c9d56cfa3402588",
+    "review": "Owned blobs and foreign parent rules preserved. Source6 has no tick directive/registry: empty plan and roots, unchanged entry, added validity true. Parentless/nohook classes retain the prior382 path; WeakMap, fatal/destructor, reference-return and incdec-restoration producers are absent. Reuse original b28d9/383 strict3, source6 and state521/31 cuts; no current numeric gate or execution credit."
+  }
+}

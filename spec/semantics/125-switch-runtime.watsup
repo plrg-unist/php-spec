@@ -127,6 +127,7 @@ def $switch_compare_result(S_before, S, statement, porigin, poperand, n, z, pval
 rule PhpStep/switch-compare: S ~> $switch_compare_result(S, S_case, statement, porigin, poperand, n, z, pvalue_subject, pvalue_case)
   -- if S.TODO = (SWITCH_COMPARE statement porigin poperand n z) :: ptask_tail*
   -- if ~$string_compare_pending(S)
+  -- if ~$aggregate_compare_pending(S)
   -- if $switch_compare_valid(S, statement, porigin, n, z)
   -- if poperand_case = S.RESULT
   -- if S_subject = $resolve_at($hold_task_inputs(S), poperand, z)

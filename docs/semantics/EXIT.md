@@ -35,8 +35,18 @@ after remaining slots retire, while request status remains set. Nested exits
 can update status even when an older saved exit continues unwinding; saved
 frames and destructor operations do not restore the request register.
 [The scoped status review](../../coverage/semantics/source-static-exit-status-review.json)
-keeps source ownership and status validation separate. Hard-fatal shutdown roots
-and wider lifecycle interactions remain required.
+keeps source ownership and status validation separate. Wider fatal producers and
+lifecycle interactions remain required.
+
+Hard bailout writes255 to the request register before shutdown. A direct string
+exit in a shutdown callback preserves it, while integer/default exit replaces it.
+[The fatal-status review](../../coverage/semantics/source-static-fatal-status-review.json)
+keeps this cut separate. Frozen fatal completion observes the current request
+register after caught shutdown-exit replacement; the original fatal diagnostic
+remains while the callback and later queue continue. A fresh fatal writes255 in
+both displayed and suppressed reporting branches, and frozen passthrough leaves
+later resets intact. [Observer review](../../coverage/semantics/source-static-fatal-observer-review.json)
+records the separate source/public cut; wider fatal/lifecycle work remains open.
 
 Exit clears the active source origin with the discarded continuation. Saved
 frames keep their own context until they unwind. A budget pause during exit

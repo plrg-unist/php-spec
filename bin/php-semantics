@@ -289,7 +289,7 @@ def observe(state, filename, display_mode=2):
     if tag == 'REQUESTFATAL':
         diagnostic = {'class': bytes(map(int, fields[0])).decode('utf-8', 'surrogateescape'),
                       'message': b64(bytes(map(int, fields[1]))), 'line': int(fields[2])}
-        exit_status = 255
+        exit_status = int(state['EXITSTATUS']) % 256
     elif tag == 'EXITED':
         exit_status = int(state['EXITSTATUS']) % 256
     elif tag == 'PHPERROR':

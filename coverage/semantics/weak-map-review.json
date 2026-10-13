@@ -562,5 +562,144 @@
     "engine_basis": "Zend/zend_weakrefs.c zend_weakmap_write_dimension publishes before old-value destruction without key re-registration; Zend/zend_execute.c zend_assign_to_object_dim and Zend/zend_vm_def.h ZEND_ASSIGN_DIM copy used results after the handler and release OP_DATA, receiver, OP2, OP1.",
     "compatibility": "The order specialization permutes the same roots only for the newly valid WeakMap SET/CALL carrier. All prior variable-key marker operand roots are eps, leaving exactly[Map], so source5/state548 keep their70bf cuts at302b. Ordinary ArrayAccess and earlier WeakMap consumers are unchanged.",
     "boundaries": "Other key/value shapes, wider entries/freeing mutation, reference/method/iteration and ephemeron protocols remain required. Countable is nominal-only; count execution excluded/Unsupported per CORE. No full WeakMap closure."
+  },
+  "freeing_create_61": {
+    "scope": "WeakReference::create during own teardown of one singleton WeakMap with a held leaf stdClass key and ordinary leaf Value; callback-local Map is released before return.",
+    "base_revision": "2676fe06548d122f601f3612e5d90cc1941aa8f8",
+    "tested_revision": "ac980b0b64d62fb1d84b64425c2253b55d6c26c5",
+    "modules": 383,
+    "raw_root": ".tools/weak-reference-freeing-create-61",
+    "recovery": "Tested rules are recoverable at ac980b0; maintained literals at 83ad9c5. Original ignored sources, scripts, producers and raw reports remain in place after tracked-only retirement.",
+    "representation": [
+      "Unique allocated WEAKMAPeps basic pin with pending NOTIFY, also present in current TODO/FRAMES.",
+      "Memoized reuse requires actual allocated find result to equal pin.NOTIFY.",
+      "Fresh creation after old wrapper retirement appends only a nonowning wrapper and rebinds matching active/saved pin NOTIFY, preserving AT origins.",
+      "Actual create removes the SENT target owner: Map3 (local, argument, physical pin) to Map2 (local, pin). Notification itself adds no owner."
+    ],
+    "native": {
+      "revision": "2676fe06548d122f601f3612e5d90cc1941aa8f8",
+      "records": [
+        {
+          "case": "reuse",
+          "source_sha256": "a1f6e90c563e24f6bbd2181c5e704d59f4fe5cc382a6adefcf4bcc00379b652f",
+          "stdout_bytes": 88,
+          "stdout_sha256": "489c68abf6c7748c34844b769a9065b129b027be7e78c8ae8d7ac523f2432b94",
+          "report": ".tools/weak-reference-freeing-create-reuse-61-native-e__x_239/report.json"
+        },
+        {
+          "case": "replacement",
+          "source_sha256": "1b6081fea7ac685eca078913f1225c051ad2f3874f4340e051fe320eb6509d89",
+          "stdout_bytes": 123,
+          "stdout_sha256": "02d3a74a3ecf0c9fcf1228c26a66ee63cc011ea4ea08a71b68daf8872f5d843e",
+          "report": ".tools/weak-reference-freeing-create-replacement-61-native-7gcnhrws/report.json"
+        }
+      ]
+    },
+    "source_agreements": [
+      {
+        "case": "reuse",
+        "report": ".tools/weak-reference-freeing-create-reuse-61-source-n8i0vjcu/report.json",
+        "elapsed_seconds": 21.33668303489685
+      },
+      {
+        "case": "replacement",
+        "report": ".tools/weak-reference-freeing-create-replacement-61-source-fuza82iq/report.json",
+        "elapsed_seconds": 25.090945720672607
+      }
+    ],
+    "state": {
+      "total_assertions": 333,
+      "records": [
+        {
+          "case": "reuse",
+          "assertions": 123,
+          "report": ".tools/weak-reference-freeing-create-61-state-h_3oik9h/report.json",
+          "inner": "/home/user/workspace/php-spec/.tools/weak-reference-freeing-create-61/.tools/shutdown-state-review-k1277ju8",
+          "elapsed_seconds": 15.909300327301025
+        },
+        {
+          "case": "replacement",
+          "assertions": 133,
+          "report": ".tools/weak-reference-freeing-create-61-state-vvgrymed/report.json",
+          "inner": "/home/user/workspace/php-spec/.tools/weak-reference-freeing-create-61/.tools/shutdown-state-review-7l3937sy",
+          "elapsed_seconds": 19.461148023605347
+        },
+        {
+          "case": "notification",
+          "assertions": 77,
+          "report": ".tools/weak-reference-freeing-create-61-state-mh3_w6_j/report.json",
+          "inner": "/home/user/workspace/php-spec/.tools/weak-reference-freeing-create-61/.tools/shutdown-state-review-7b_ql3xu",
+          "elapsed_seconds": 22.821229457855225
+        }
+      ],
+      "candidate_sha256": "38938c72a00cced710062c36dd0a8bdfb47dc04687df96e53484086d0944c6be",
+      "endpoint": "Real new-wrapper notification clears only NOTIFY; Map remains pinned/weak-null, then allocation retires and a valid HANDLE release is scheduled but unconsumed."
+    },
+    "compiler_init": {
+      "compiler_report": ".tools/weak-reference-freeing-create-61-compiler-9m5eov_z/report.json",
+      "artifacts": [
+        {
+          "mode": "algo",
+          "bytes": 13770357,
+          "sha256": "d9b27db3494cac6c9829ac3892499d9f44c486fbb2038706b3fba65888d400e3",
+          "elapsed_seconds": 5.4050867557525635
+        },
+        {
+          "mode": "struct",
+          "bytes": 13776844,
+          "sha256": "edfa22673a46ada0401a17a7b74795eab6dea105651088649a43369942d7e774",
+          "elapsed_seconds": 6.844829797744751
+        }
+      ],
+      "strict_init_report": ".tools/weak-reference-freeing-create-61-init-p4ei5gsb/report.json",
+      "init_checks": 5,
+      "init_stdout": "true\n",
+      "init_elapsed_seconds": 6.482649326324463
+    },
+    "preserved_zero_credit": {
+      "report": ".tools/weak-reference-freeing-create-replacement-61-source-xjqsx0gh/report.json",
+      "revision": "2676fe06548d122f601f3612e5d90cc1941aa8f8",
+      "reason": "freeing instance new weak reference",
+      "stdout_prefix": "old-wrapper-null|",
+      "accepted_source_agreement": false
+    },
+    "maintained": {
+      "source_path": "tests/semantics/cycle_collection_cases.json",
+      "source_rows": 68,
+      "state_path": "tests/semantics/cycle_collection_state_review.py",
+      "state_records": 137,
+      "state_sha256": "5177f7226581312d619f72737cfb134a4b35c1d9cf23072d6e9f18f0251453c6",
+      "preservation": "All prior66 source rows and134 CASE values/order plus harness AST are unchanged; exact two source/three evaluated tested records only."
+    },
+    "runtime": {
+      "target": "PHP 8.5.10 CLI NTS 64-bit",
+      "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+    },
+    "caps_environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": null,
+      "CPU": 2,
+      "jobs": 1,
+      "native_seconds": 30,
+      "CLI_seconds": 60,
+      "CLI_recorder_seconds": 75,
+      "state_model_seconds": 120,
+      "state_recorder_seconds": 200
+    },
+    "engine_basis": [
+      "Zend/zend_weakrefs.c:zend_weakref_find",
+      "Zend/zend_weakrefs.c:zend_weakref_create",
+      "Zend/zend_weakrefs.c:zend_weakref_register",
+      "Zend/zend_weakrefs.c:zend_weakmap_free_obj",
+      "Zend/zend_objects_API.c:zend_objects_store_del"
+    ],
+    "compatibility": "Nonfreeing296 arms are unchanged; nonmap/notified/inactive/fatal pins keep the old359 refusal. Existing Map GET/notification/release and all EX60 cuts remain separate and unchanged.",
+    "boundaries": [
+      "Nonmap and freeing-key targets; notified or inactive/Fiber-only/fatal pins.",
+      "Throwing callbacks after wrapper creation, targets retained beyond callback cleanup, wider map shapes and ephemeron collection.",
+      "Countable is nominal-only; count execution stays excluded/Unsupported per CORE."
+    ]
   }
 }

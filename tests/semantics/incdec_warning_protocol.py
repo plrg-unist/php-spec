@@ -31,6 +31,8 @@ def $update_frontier(S, 3) = true
 def $update_frontier(S, 4) = true
   -- if S.TODO = (EXIT_INVOKE pexitcall) :: ptask_tail*
   -- if $update_warning_exit_pending(S)
+def $update_frontier(S, 5) = true
+  -- if S.TODO = (UPDATE_WARNING_EXIT perrorcall z) :: ptask_tail*
 def $update_frontier(S, n) = false -- otherwise
 dec $update_seek(pstate, nat, nat) : pstate
 def $update_seek(S, n_stage, n) = S -- if $update_frontier(S, n_stage)
@@ -99,11 +101,16 @@ def conditions(name, program, path, stdout):
             'S_global = $global_table_view(S_exit)',
             '$lookup(S_global.ENV, $ptascii("x")) = (n_live)',
             'S_exit.STORE[n_live] = DEFINED (PINT 41)',
-            'S_failure = $exit_start_unwind(S_exit, 0)',
-            'S_failure.COMPLETION = UNSUPPORTED "increment/decrement warning exit continuation"',
-            'S_failure.STORE = S_exit.STORE', 'S_failure.EVENTS = S_exit.EVENTS',
+            'S_unwind = $exit_start_unwind(S_exit, 0)',
+            'S_unwind.COMPLETION = NORMAL', 'S_unwind.TODO = [EXIT_UNWIND 0]',
+            'S_restore = $update_seek(S_unwind, 5, 2500)[.COMPLETION = NORMAL]',
+            'S_restore.TODO = (UPDATE_WARNING_EXIT perrorcall_exit 0) :: ptask_exit*',
+            'perrorcall_exit.RESUME = UPDATE_WARNING_RESTORE pupdatewarning',
+            '$call_descriptors_valid(S_restore)',
+            '$update_warning_pointer_value(S_restore, pupdatewarning.POINTER) = (DEFINED (PINT 41))',
             'S_closed = $drive_steps(S_exit, 2500)',
-            'S_closed.COMPLETION = UNSUPPORTED "increment/decrement warning exit continuation"',
+            'S_closed.COMPLETION = EXITED 0', 'S_closed.EXITSTATUS = 0',
+            '$integer_outputs(S_closed.EVENTS) = ([' + ','.join(map(str, stdout)) + '])',
         ]
     if name == 'post-dec-string-throw':
         return checks + [

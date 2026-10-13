@@ -119,9 +119,23 @@ follows rebinding, and a pre-unwrapped reference reads its captured cell. Origin
 operands/BASE and the caster retain their own owners; documentary pointer images
 add none. [Six originals and 487 reached checks](../../coverage/semantics/stringable-comparison-review.json)
 cover mutation, saved caster frames, lazy fallthrough and a nested scalar Switch
-whose TypeError is caught after caster restoration, followed by finally entry. Reached recursive comparisons, expired pointers and
+whose TypeError is caught after caster restoration, followed by finally entry. Expired pointers and
 post-cast object operands remain Unsupported; wider internal handlers and lifetimes
 remain required. Strict identity and compiled bool Switch do not invoke the cast.
+
+Recursive arrays and ordinary declared-property objects now suspend only at a
+reached Stringable/string leaf through 394. Count, key and earlier-value differences
+short-circuit before casting. Both enclosing aggregates remain owned: array writes
+copy the pinned container, embedded cells stay live, and a selected property slot
+can retarget while a pre-unwrapped reference keeps its old cell. Cursor resumption
+can enter a second caster without repeating earlier comparisons. Authenticated
+active left guards expose nested recursion errors and leave on actual unwind.
+[Six originals and 521 reached premises](../../coverage/semantics/aggregate-stringable-comparison-review.json)
+cover those distinctions, a caught recursion Error, and the same TypeError caught
+after caller restoration followed by finally entry. Cursor and pointer images are
+documentary and non-owning. Materialized-property casts and Fiber VM transfer
+during this continuation remain explicit Unsupported; no END/shutdown coverage
+or broader receiver/destructor lifetime coverage is claimed.
 
 The installed [file operand bridge](../../coverage/semantics/file-operand-review.json)
 converts all four include/require forms before path lookup or once skipping.
