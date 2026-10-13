@@ -1947,6 +1947,11 @@ integer slot 200→300, while the inherited getter keeps Parent's `mixed` return
 declaration and returns the string "13". Illegal widening reports the subtype
 property error at the child class. Two originals and four focused states are in
 [the plain-child covariance review](coverage/semantics/virtual-parent-covariant-plain-inherited-getter-review.json).
+A plain public `protected(set) int` child can also inherit the closed virtual
+getter. Global writes fail without changing its slot; Child and inherited Parent
+methods store 300 and 400 while the getter stays 13. A body-backed parent still
+rejects setter narrowing. Two originals and five focused states are in the
+[protected setter review](coverage/semantics/virtual-parent-protected-set-plain-inherited-getter-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
