@@ -20,6 +20,9 @@ and descriptor failures remain zero credit; older campaigns are not renewed.
 Owning callback release and cleanup throws that cancel exit remain required next
 continuations, alongside replacement/destructor exit and wider update locations.
 [Exit ledger](coverage/semantics/incdec-exit-review.json).
+The 384-module join over 214ae passes strict SL (6.421s) and the sole parent-throw
+source control at 4f935, preserving fatal-status and aggregate394 behavior. The
+control remains zero agreement; earlier private cuts retain their revisions.
 
 Frozen fatal completion now observes request status after caught shutdown-exit
 replacement, retaining diagnostics while callbacks continue. Fresh fatal reporting
