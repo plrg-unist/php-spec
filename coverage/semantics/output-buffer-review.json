@@ -1,6 +1,6 @@
 {
   "milestone": "default output-buffer stack (module391)",
-  "status": "accepted private; actual-parent integration pending",
+  "status": "accepted",
   "target": "PHP 8.5.10 CLI NTS 64-bit",
   "tested_cut": {
     "parent": "f12dcab8db85a6c4f3505f554c0da79d8a950186",
@@ -93,5 +93,26 @@
     "Active-buffer stdout diagnostic rendering and native unsafe wrapper reentry with no live handler.",
     "Wider startup buffering/handler profiles and non-CLI SAPI output effects."
   ],
-  "integration": "Pending root writer grant: review actual parent, compose shared148 graceful-exit retirement with output_write, and use only a discriminating current composition gate."
+  "integration": {
+    "parent": "2f15e222f74c670ff158675b9d3be021d80689d7",
+    "candidate": "894561c4298a8b30d1e2f3ec44f9911d589311c7",
+    "module_count": 381,
+    "pointwise_review": "148 composes exit_ready(output_write(S, bytes),0); parent390 warning guards and388 source-static retirement remain intact. M36/156 reentry certificates add no terminal reset. Other parent semantic additions and tested buffer code/runners remain unchanged.",
+    "gate_report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-02/join-01/report.json",
+    "gate_report_sha256": "07b9bd06cfd63c168bfa8f6257b1b2f06eab32474c76f0110ba70b728d556995",
+    "current_strict_sl": {
+      "premises": 4,
+      "scope": "initial output state; full381-module SL admission"
+    },
+    "current_exact_source": {
+      "source_sha256": "ec6af8d96e3d97d491754ccc4114bbdd673332e1995c25f2d22e6b7f537b6980",
+      "stdout": "AED1S1",
+      "stderr": "",
+      "exit_status": 0,
+      "status": "explicit_exit",
+      "meaning": "Exit message enters the buffer before static-only eval object retirement; destructor and shutdown each observe level1 before forced flush."
+    },
+    "clearance": "Approved for root-authorized fast-forward; canonical build/publication remains author responsibility.",
+    "historical_credit": "Private source/state cuts retain their original identities; no prior campaign was renewed."
+  }
 }

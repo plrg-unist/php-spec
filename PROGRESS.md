@@ -17,7 +17,10 @@ and SL5 groups177 premises pass separately. Original compiler/PRINT/fixture
 failures retain zero credit. [Contract](docs/semantics/OUTPUT-BUFFERS.md),
 [author evidence](coverage/semantics/output-buffer-author.json),
 [independent review](coverage/semantics/output-buffer-review.json). Private review
-is accepted; actual-parent integration is pending and full core stays partial.
+is accepted; the381 composition over2f15e222 passes current strict SL and one
+exact AED1S1 buffered eval-static/string-exit/destructor/shutdown original at
+894561c42, preserving390 warning-exit guards. Earlier cuts retain their identities;
+full core stays partial.
 
 Graceful exit now retires parser-backed static tables before shutdown through
 real callee restoration and source-frame steps. Nested eval/file order, saved
