@@ -1,0 +1,35 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hashes": {
+    "scalar": "5bfd71e8cb5a983b0c8e63fdb5690b0e304a2f235e4ddc04f3c3ae3bec0cbd5b"
+  },
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "scalar",
+      "source": "<?php\ntrait ImportedExpressionGetterTrait65 {\n    public int $value = 100 {\n        get => $this->value + $this->answer(__METHOD__);\n    }\n}\nclass ImportedExpressionGetterConsumer65 {\n    use ImportedExpressionGetterTrait65;\n    private function answer(string $method): int {\n        echo 'ANSWER:', self::class, '/', static::class, '/', $method, '|';\n        return 13;\n    }\n}\nclass ImportedExpressionGetterGrand65 extends ImportedExpressionGetterConsumer65 {\n    private function answer(string $method): int { return 900; }\n}\n$consumer = new ImportedExpressionGetterConsumer65();\n$grand = new ImportedExpressionGetterGrand65();\n$raw = (array) $consumer;\necho $raw === ['value' => 100] ? 'C100|' : 'CBAD|';\n$raw = (array) $grand;\necho $raw === ['value' => 100] ? 'G100|' : 'GBAD|';\necho $consumer->value, '|';\necho $grand->value, '|';\n$grand->value = 300;\n$raw = (array) $grand;\necho $raw === ['value' => 300] ? 'G300|' : 'GBAD|';\necho $grand->value, '|';\n",
+      "source_sha256": "824ea122f877c59bdff0e320006bf3ce7f035bb85d319d9a6dc30911789a6d91",
+      "stdout_base64": "QzEwMHxHMTAwfEFOU1dFUjpJbXBvcnRlZEV4cHJlc3Npb25HZXR0ZXJDb25zdW1lcjY1L0ltcG9ydGVkRXhwcmVzc2lvbkdldHRlckNvbnN1bWVyNjUvSW1wb3J0ZWRFeHByZXNzaW9uR2V0dGVyVHJhaXQ2NTo6JHZhbHVlOjpnZXR8MTEzfEFOU1dFUjpJbXBvcnRlZEV4cHJlc3Npb25HZXR0ZXJDb25zdW1lcjY1L0ltcG9ydGVkRXhwcmVzc2lvbkdldHRlckdyYW5kNjUvSW1wb3J0ZWRFeHByZXNzaW9uR2V0dGVyVHJhaXQ2NTo6JHZhbHVlOjpnZXR8MTEzfEczMDB8QU5TV0VSOkltcG9ydGVkRXhwcmVzc2lvbkdldHRlckNvbnN1bWVyNjUvSW1wb3J0ZWRFeHByZXNzaW9uR2V0dGVyR3JhbmQ2NS9JbXBvcnRlZEV4cHJlc3Npb25HZXR0ZXJUcmFpdDY1OjokdmFsdWU6OmdldHwzMTN8",
+      "stderr_template": "",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "trait-imported-expression-getter65-scalar-native-b17f815a",
+      "native_raw_sha256": "5bfd71e8cb5a983b0c8e63fdb5690b0e304a2f235e4ddc04f3c3ae3bec0cbd5b"
+    }
+  ]
+}

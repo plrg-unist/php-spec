@@ -1823,6 +1823,17 @@ source1 pass at `287151403`; three states at `0265e795` pass242 =205 reached
 wider trait hook shapes remain required.
 [Virtual trait getter review](coverage/semantics/trait-imported-virtual-getter-review.json).
 
+Body-backed expression trait getters now use physical expression tasks with
+authenticated logical Consumer returns. Trait magic, Consumer private13 and
+receiver called scope stay distinct; Grand backing100→300 yields113→313.
+Initial strict388 at `ed187985` is retained; its source interpreter failure
+remains0. Corrected source1 passes at `d745b7d5`, and three states at
+`d1bfb49b` pass263 =240 reached +23 derived. Global arrow, storage and permission
+rules stay unchanged; virtual expressions and wider imports remain required.
+[Expression trait getter review](coverage/semantics/trait-imported-expression-getter-review.json).
+Joined exact `e3ba712d`/388 with no current actor; accepted private cuts retain their identities.
+Inactive callback-destructor exit and WeakMap GC paths preserve the ordinary expression/getter/write route.
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization
