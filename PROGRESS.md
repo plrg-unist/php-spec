@@ -1722,6 +1722,8 @@ defaults/layouts/stores/owners remain unchanged. Strict387/source2 pass at
 52 derived), Second73, writer93 and narrow23: 243 reached plus 52 derived.
 No failed actor; broader setter/type/root/hook families remain required.
 [Repeated protected-setter review](coverage/semantics/repeated-protected-plain-inherited-getter-review.json).
+Joined exact `aba5383e`/387; one retained current init check passes with no application.
+Private cuts remain retained through inactive warning-callback, recorded-function and WeakMap paths.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
