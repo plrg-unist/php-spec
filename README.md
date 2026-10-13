@@ -1147,9 +1147,9 @@ teardown also releases its single leaf value while retaining the emptied map's
 physical pin and live weak identity through normal or throwing callback cleanup.
 Two originals agree at `0c9b358`; 467 lifetime checks and 86 freeing-write refusal
 checks pass at their separate cuts. Wider map free and ephemeron GC stop explicitly;
-multiple maps per key, wrapper creation or mutation during freeing, retained strong
-additional key/map owners retained beyond callback cleanup and wider entry/read/
-mutation protocols remain required.
+multiple maps per key, wider wrapper creation or mutation during freeing,
+additional strong key/map owners retained beyond callback cleanup and wider
+entry/read/mutation protocols remain required.
 
 Ordinary object-key dimension reads now copy the stored value into a strong
 result, so a held copy survives key removal. A missing key throws Error using its
@@ -1171,6 +1171,14 @@ Six originals agree across `70bf0c4`/`302b5c9`; 642 reached checks pass with pri
 cuts retained.
 Wider entries, freeing mutation, reference/iteration and ephemeron protocols remain
 open.
+
+`WeakReference::create` now reuses or recreates a wrapper during a live map
+teardown callback. Only a unique active empty-map pin with pending notification
+is admitted; the callback releases its strong map copy before returning. A fresh
+wrapper adds no target owner and becomes null when cleanup notifies it. Two
+originals agree at `ac980b0`; 333 reached checks cover reuse, real wrapper
+retirement/recreation and notification. Wider freeing contexts and inactive
+carriers remain required; earlier evidence and the original refusal stay separate.
 
 [Ordinary collection301](docs/semantics/CYCLE-COLLECTION.md) implements explicit
 object/array cycle collection, ordered destructor callbacks and real weak

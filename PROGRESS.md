@@ -3389,6 +3389,19 @@ originals supply complete endings. The original paused-state fixture failure and
 owned-key mismatch stay zero. Wider map/freeing/reference/iteration and ephemeron
 protocols remain required.
 
+WeakReference creation during live map teardown now authenticates the exact
+allocated wrapper found for a unique active empty-map pin. After ordinary old
+wrapper retirement, creation appends a nonowning replacement and rebinds only
+the saved pin's borrowed NOTIFY. The callback-local map copy is released before
+return. Reuse/recreation originals (88/123 bytes) agree at `ac980b0`;
+reuse (123), fresh creation (133) and notification retirement (77) checks total
+333. The real
+argument owner drops from three to two map owners; the pin cut stops at its
+scheduled HANDLE release, with originals supplying endings. The original freeing-create
+Unsupported retains zero agreement. Wider/nonmap freeing, inactive carriers
+and retained strong targets remain required; prior cuts retain their evidence.
+[Ledger](coverage/semantics/weak-map-review.json).
+
 ArrayAccess304 reconstructs intermediate `[]` after ordinary by-value Get and
 supports final compound append, including null-key Get/Set on returned children.
 Returned temporary arrays extract selected rows before retirement; copied real
