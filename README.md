@@ -42,7 +42,9 @@ through nested default handlers, chunk/clean/flush/get/status operations and
 request-end flushing after shutdown/destructors. [User output handlers](docs/semantics/OUTPUT-HANDLERS.md)
 support explicit flush/clean/end/get and normal positive-chunk callbacks from
 echo, print and inline output, with copied snapshots, source call contexts and
-PHP8.5 callback-output deprecation. Abrupt callbacks, other byte producers,
+PHP8.5 callback-output deprecation. Automatic receive/throw failures preserve
+pending cleanup and raw bytes before caller catch. Callback exit, explicit API
+failure, warning-handler throws, other byte producers,
 request-end dispatch and buffered stdout diagnostics remain dependencies.
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a

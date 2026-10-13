@@ -1,0 +1,164 @@
+{
+  "feature": "automatic user output-handler receive/throw cleanup",
+  "status": "independently accepted private milestone; exact-parent integration pending",
+  "base_revision": "fdf9903d4cc25f21c519633e5f68931970d1ec56",
+  "implementation_revision": "20d44ae17173525c85bd6ed7e4d376364c18ed5e",
+  "fixture_revision": "85fd5ba2fce1543e4dafc7bd04af9f5ee552453c",
+  "scope": "VM echo/print/inline failure cleanup retains pending Throwable identity/Previous, releases arguments while running, disables and forwards live bytes, skips lower callbacks at pending thresholds, and interrupts normal producer results. Direct named Stringable temporaries release after writing and before assignment/catch. Full core stays partial.",
+  "implementation_hashes": {
+    "spec/semantics/30-storage.watsup": "5f4cf8ea8df7782cf3f8dc0492b73cee2eaf0e6419923a9b931cfea233fe693a",
+    "spec/semantics/395-output-handlers.watsup": "6a56d14a2590f7f0006945030166ecb62672e6bd349c9afd55111f839004c25f",
+    "spec/semantics/397-output-handler-failures.watsup": "7163c61353073d15a9e9f0283e81c2d9d10904235cfb6a61d1d6b7644ef9bf41",
+    "spec/semantics/modules.json": "f135c0159bf19d30dd55e4d1694d69765e990637e7d1f6e87c491102edcb4295"
+  },
+  "runtime": {
+    "identity": "PHP8.5.10 CLI NTS64, sole project-local oracle",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "profile": "tests/semantics/profile.json",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PATH": "/usr/bin:/bin"
+    }
+  },
+  "author_sources": {
+    "exact_originals": 8,
+    "runs": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-06/source-gate-01/report.json",
+        "sha256": "c4a1e7640f2467a4005a14b82fa10672661e8df1565bf036ad33d115858cfffa",
+        "revision": "a5f824e8cab7615a1cbe1aa2dd946c7cd363e8f6",
+        "credit": {
+          "exact": 1
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-06/sources-01/report.json",
+        "sha256": "d40f44249c924d127e53b3b69622297b91bb998d49aa593cd63b4d8ebd2cd371",
+        "revision": "a5f824e8cab7615a1cbe1aa2dd946c7cd363e8f6",
+        "credit": {
+          "exact": 6,
+          "unsupported_controls": 4,
+          "control_native_credit": 0
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-06/producer-source-02/report.json",
+        "sha256": "39a9b33cc89dbad63b36904a12840d8206a8fdb36679886787afe4978f427eaa",
+        "revision": "d39b05dfba4dabbe92bd5709419e6e7c3a07ab8a",
+        "credit": {
+          "exact": 1
+        }
+      }
+    ]
+  },
+  "independent_sources": {
+    "exact_originals": 4,
+    "runs": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-06/sources-01/report.json",
+        "sha256": "d73b1aa73d65a2951a1ffc74f9137fa7182cee804eb65a80021130e71d4201f0",
+        "revision": "a5f824e8cab7615a1cbe1aa2dd946c7cd363e8f6",
+        "credit": {
+          "exact": 3
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-06/normal-producer-source-01/report.json",
+        "sha256": "a9cb2beb9a705bca84b2b88d0a61dea5d6f4d5f6187700e8767e3a041bcd5fc4",
+        "revision": "d39b05dfba4dabbe92bd5709419e6e7c3a07ab8a",
+        "credit": {
+          "exact": 1
+        }
+      }
+    ]
+  },
+  "state": {
+    "reached_groups": 3,
+    "premises": 166,
+    "runs": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-06/state-selected-02/argv-cleanup/report.json",
+        "sha256": "71559edae04fa502a226eaec3b8c8b0534f5656797626fc5af62d89437bb9f8c",
+        "revision": "20d44ae17173525c85bd6ed7e4d376364c18ed5e",
+        "credit": {
+          "groups": 1,
+          "premises": 63
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-06/state-selected-02/pending-lower/report.json",
+        "sha256": "eba301cd515a41b87d24bde02ce94424924a3ab751065cbcce39ac8ef931097f",
+        "revision": "20d44ae17173525c85bd6ed7e4d376364c18ed5e",
+        "credit": {
+          "groups": 1,
+          "premises": 44
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-06/state-producer-01/report.json",
+        "sha256": "656728205b873b82454b7e5c48e778809161e02b1a07cfd72da51bcc9495c630",
+        "revision": "85fd5ba2fce1543e4dafc7bd04af9f5ee552453c",
+        "credit": {
+          "groups": 1,
+          "premises": 59
+        }
+      }
+    ],
+    "fronts": "Real argv release and destructor SOURCE with pending identity; lower pending WRITE skip/disable; producer receiver sole tail root and genuine release SOURCE/EXIT. Budget/public/heap/output checks and source/context/tail/Throwable forgeries. Readonly projected-frame controls are derived from the genuine argv frame and carry no separate native credit."
+  },
+  "compatibility": "d39 adds receiver retention only at positive-buffer Stringify handoff for named construction; earlier seven author/three independent originals do not use that owned producer frontier.20d44 adds a readonly authentic EXIT-to-DONE pending witness for saved-frame validation, with no root or runtime completion change.85fd changes only the producer phase suffix fixture. Prior source/state reports retain their exact revisions; no replay credit.",
+  "preserved_zero_credit": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-06/producer-source-01/report.json",
+      "sha256": "6ccc425344ba0abdf9df7aef9fa5ae98475c8c21404c93606679ddf66cf3274f",
+      "revision": "a5f824e8cab7615a1cbe1aa2dd946c7cd363e8f6",
+      "credit": 0
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-06/state-selected-01/argv-cleanup/report.json",
+      "sha256": "1a438f44422dd5450219b48ff987c4dafea3d28194a09028b57636185e7490e0",
+      "revision": "cc90640a2dc887b6d5867144df520d61b9a9769e",
+      "credit": 0
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-06/state-selected-02/producer-finish/report.json",
+      "sha256": "24661b69d43df3c90d4a26f908d3429b4f2220dd354750cea5c527e1f9ec92f2",
+      "revision": "20d44ae17173525c85bd6ed7e4d376364c18ed5e",
+      "credit": 0
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-06/state-debug-01/report.json",
+      "sha256": "464824afa94751346bc72e78d2ccde5358dbc1752daa0fa43632cc59354f06e6",
+      "revision": "cc90640a2dc887b6d5867144df520d61b9a9769e",
+      "credit": 0
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-06/state-debug-02/report.json",
+      "sha256": "5e90ae3f605d56d15647c908ae05168dc1c7c169e475aa08331835c8db463105",
+      "revision": "cc90640a2dc887b6d5867144df520d61b9a9769e",
+      "credit": 0
+    }
+  ],
+  "preparation": "static-01 duplicate manifest input failure, static/checked-source passes and native-only producer probes carry zero runtime credit; original raw artifacts are retained.",
+  "limits": [
+    "Callback exit and explicit API callback failure; throwing reference-warning/deprecation handlers.",
+    "Other byte producers, request-end/fatal callback drains and wider received/return conversion.",
+    "Owned Stringable producer forms beyond direct named construction; broader callable/capability/mutation/Fiber and buffered stdout diagnostics."
+  ],
+  "commands": [
+    "scripts/opam-exec.sh dune build --root .",
+    "scripts/opam-exec.sh dune build --root tests/semantics numeric_runner.exe",
+    "python3 tests/semantics/output_abrupt_sources.py --select ID,... --output RAW",
+    "python3 tests/semantics/output_abrupt_review_sources.py --select ID,... --output RAW",
+    "python3 tests/semantics/output_abrupt_state.py --select GROUP --output RAW"
+  ],
+  "resources": "CPU4/SLOT2 serial stop-first/reaped, process AS1536MiB; source model60s/worker90s, state120s in fresh one-group processes. Struct DATA6GiB.",
+  "raw_recovery": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-06",
+  "independent_review": "coverage/semantics/output-abrupt-review.json",
+  "integration": {
+    "status": "pending root writer and exact-parent independent review"
+  }
+}

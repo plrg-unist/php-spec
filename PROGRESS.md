@@ -7,26 +7,27 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Module396 is independently accepted for normal positive-chunk user output handlers from source
-echo/print/inline and explicit lower WRITE cascades. Whole buffers preserve
-VM strictness/file/line, active-top versus selected-lower behavior, detached flush
-getters and one-time operand/zoh ownership. Eight author originals agree in
-separate runs of 1 and 7; five independent originals pass at 262288f. Their first
-lower-result interpreter failure keeps zero credit. Selection by buffer ID and
-an authentic live task/suffix retain those cuts with an affected alias-retirement
-original at 17583d58a. Five genuine groups pass 210 premises in separate capped
-processes at 4a1a. Original validator/nondeterminism failures, the bounded tuple
-and combined allocation failure keep zero credit. The fixed-prefix readiness
-and disjoint API/VM origin guards preserve ordinary runtime behavior.
+Module397 implements automatic VM output-handler receive/throw cleanup. Arguments
+are released while running, then failed layers disable and forward live bytes with
+the actual pending Throwable. Lower thresholds skip callback entry; caller catch
+retains identity/Previous and interrupted print skips assignment. Direct named
+Stringable temporaries release after writing and before assignment/catch.
+Eight author and four independent originals agree at separate cuts. Three genuine
+state groups pass 166 premises (63+44 at 20d44,59 at 85fd); saved-frame pending
+validation and the producer phase fixture were corrected narrowly. Original
+source/state failures and bounded tuples keep zero credit. The private milestone
+is independently accepted; exact-parent integration awaits the writer queue.
 [Contract](docs/semantics/OUTPUT-HANDLERS.md),
-[author evidence](coverage/semantics/output-chunk-author.json),
-[independent review](coverage/semantics/output-chunk-review.json).
-The 386-module composition over cb498f9 passes pointwise review and one new
-native-grounded SL group with 45 premises at 57ce90059. A real destructor WRITE
-keeps its operation EXIT anchored across typed handler entry and returns exact
-XA|1:A;10:;. Earlier source/state cuts retain their identities. Abrupt callbacks, other byte producers,
-request-end/fatal drains, wider conversion/callable/mutation/Fiber protocols and
-buffered stdout diagnostics remain required; full core stays partial.
+[author evidence](coverage/semantics/output-abrupt-author.json),
+[independent review](coverage/semantics/output-abrupt-review.json).
+Callback exit, explicit API failure, warning-handler throws, other byte producers,
+request-end/fatal drains and wider conversion/callable/mutation/Fiber/stdout
+protocols remain required; full core stays partial.
+
+Module396 normal positive chunks remain integrated at fdf9903d/386. Its eight author,
+five independent originals and five groups/210 retain their cuts, including the
+current-parent live destructor EXIT/typed callback gate45 over cb498.
+[Accepted ledger](coverage/semantics/output-chunk-review.json).
 
 Module395 explicit chunk0 normal callbacks remain integrated. Its frozen source
 and state cuts, including the 385-module busy-lower repair with one source and

@@ -1,0 +1,85 @@
+{
+  "milestone": "Automatic VM output-handler receive/throw cleanup (397)",
+  "status": "accepted bounded private milestone; exact-parent integration pending",
+  "reviewer": "core_breadth_review_01",
+  "base_revision": "fdf9903d4cc25f21c519633e5f68931970d1ec56",
+  "implementation_revision": "20d44ae17173525c85bd6ed7e4d376364c18ed5e",
+  "implementation_sha256": "7163c61353073d15a9e9f0283e81c2d9d10904235cfb6a61d1d6b7644ef9bf41",
+  "scope": [
+    "Automatic source echo/print/inline callback receive or body throws preserve the actual pending Throwable through cleanup and raw-byte routing",
+    "Argv release and ordinary callee unwind retain running status; failures preserve PRODUCED without failure-path deprecation",
+    "Pending lower thresholds disable and forward without entering callbacks; below-threshold layers retain bytes for later normal processing",
+    "Interrupted print skips assignment; ordinary cleanup preserves replacement identity and Previous",
+    "Direct named Stringable temporary receivers remain owned once in the actual producer tail until release before assignment or catch"
+  ],
+  "authority": [
+    "vendor/php-src/main/output.c:php_output_handler_op, php_output_handler_append",
+    "vendor/php-src/Zend/zend_execute_API.c:zend_call_function pending-exception early return",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_ECHO and FREE_OP1 after zend_write; zend_compile.c:zend_compile_print"
+  ],
+  "independent_sources": {
+    "agreements": 4,
+    "observations": ["original bytes", "stdout", "stderr", "normal completion", "exit_status"],
+    "runs": [
+      {
+        "revision": "a5f824e8cab7615a1cbe1aa2dd946c7cd363e8f6",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-06/sources-01/report.json",
+        "report_sha256": "d73b1aa73d65a2951a1ffc74f9137fa7182cee804eb65a80021130e71d4201f0",
+        "runner_sha256": "3034a4a2b105ebb2ce823d63dcf213165afa5ab62de464c845b12bc3b9046911",
+        "cases": {
+          "argv-destructor-replaces-error": "AD1SP:45169:0:0Z",
+          "alias-receiver-unwind-output": "AD1C|113:1|45169Z",
+          "lower-below-threshold-resume": "LBAC|BAC|2:113|9:BAC;"
+        }
+      },
+      {
+        "revision": "d39b05dfba4dabbe92bd5709419e6e7c3a07ab8a",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-06/normal-producer-source-01/report.json",
+        "report_sha256": "a9cb2beb9a705bca84b2b88d0a61dea5d6f4d5f6187700e8767e3a041bcd5fc4",
+        "runner_sha256": "a1d271304b22aa95857997b093e5f50b66c48e58a19920911cb09ce92f0cfcb2",
+        "cases": {"normal-stringable-producer-release": "AD1:99;:1Z"}
+      }
+    ],
+    "passed": true,
+    "inputs_stable": true,
+    "actors_reaped": true,
+    "original_runner": "sources-01/original-inputs/output_abrupt_review_sources.py retains the exact3034 bytes; the current runner only adds the separate normal receiver original"
+  },
+  "author_evidence_reviewed": {
+    "ledger": "coverage/semantics/output-abrupt-author.json",
+    "source_agreements": 8,
+    "cuts": "One strict-receive gate plus six distinct originals at a5f824e8; one repaired abrupt Stringable original AD1C:99Z at d39b05dfb",
+    "unsupported_controls": 4,
+    "control_native_credit": 0
+  },
+  "state_review": {
+    "groups": 3,
+    "premises": 166,
+    "runs": [
+      {"id": "argv-cleanup", "premises": 63, "revision": "20d44ae17173525c85bd6ed7e4d376364c18ed5e", "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-06/state-selected-02/argv-cleanup/report.json", "report_sha256": "71559edae04fa502a226eaec3b8c8b0534f5656797626fc5af62d89437bb9f8c"},
+      {"id": "pending-lower", "premises": 44, "revision": "20d44ae17173525c85bd6ed7e4d376364c18ed5e", "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-06/state-selected-02/pending-lower/report.json", "report_sha256": "eba301cd515a41b87d24bde02ce94424924a3ab751065cbcce39ac8ef931097f"},
+      {"id": "producer-finish", "premises": 59, "revision": "85fd5ba2fce1543e4dafc7bd04af9f5ee552453c", "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-06/state-producer-01/report.json", "report_sha256": "656728205b873b82454b7e5c48e778809161e02b1a07cfd72da51bcc9495c630"}
+    ],
+    "review": "Genuine argv destruction SOURCE/pending, lower threshold skip/disable, sole receiver tail root and real release EXIT; public/heap/output and zero-budget checks plus malformed source/context/tail/Throwable and authentic saved-frame replay refusals",
+    "execution": "Fresh serial one-group processes, AS1536MiB/120s worker, stable inputs and reaped actors",
+    "helper_controls_native_credit": 0
+  },
+  "repairs_reviewed": [
+    "One source-authenticated receiver release task transfers ownership from STRINGIFY_RESULT without changing ordinary BASE or adding a cached FCC owner",
+    "Saved-frame DONE validation recovers pending only from the first authentic EXIT with exact original invocation, successor, tail, caller, origin and live Throwable; generic270/84 are unchanged",
+    "Producer phase inner suffix renamed because the original rule demanded a finite list equal to release::itself"
+  ],
+  "compatibility": "Receiver retention is disjoint from the original7 author/3 reviewer cases. The later pending helper adds a readonly replay witness without new roots or completion changes; the final correction changes only phase3 of the state fixture. All accepted cuts retain their original revisions and counts.",
+  "preserved_zero_credit": {
+    "producer_source_mismatch": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-06/producer-source-01/report.json",
+    "argv_public_failure": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-06/state-selected-01/argv-cleanup/report.json",
+    "producer_fixture_failure": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-06/state-selected-02/producer-finish/report.json",
+    "diagnostics": "state-debug-01 and state-debug-02 identify the saved-frame gap but add zero acceptance credit; native-only/static preparation is also zero"
+  },
+  "limits": [
+    "Callback exit, explicit API callback failure, throwing reference-warning and produced-output warning handlers remain Unsupported",
+    "Other byte producers and request-end/fatal callback drains remain dependencies",
+    "Owned Stringable producers beyond direct named construction, wider callable/receive/return/capability/mutation/Fiber protocols and buffered stdout diagnostics remain dependencies; full core stays partial"
+  ],
+  "recovery": "Use the self-contained output_abrupt_sources.py and output_abrupt_review_sources.py exact selectors; output_abrupt_state.py --select GROUP runs each genuine state group. Raw evidence remains external;395/396 acceptance is retained without replay."
+}

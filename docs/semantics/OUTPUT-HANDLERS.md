@@ -12,7 +12,16 @@ source echo, print and inline output, and from lower routing after explicit
 flush/end operations. A reached threshold processes the whole accumulated buffer;
 WRITE phases are START on the first call and zero thereafter. VM entry preserves
 source strictness, file and compiled line; an explicit API cascade remains an
-internal weak call. Print restores its result1 after the whole cascade.
+internal weak call. Normal print restores its result1 after the whole cascade.
+
+Module397 handles automatic VM callback throws and parameter-reception failures.
+Arguments finish cleanup while the handler is still running, then the failed
+handler disables and forwards its live bytes with the Throwable still pending.
+Lower user layers reached at a threshold skip callback entry and disable; layers
+below their threshold retain bytes for the caller's caught continuation. Callback
+output retains PRODUCED without a failure-path deprecation. Interrupted print
+does not assign its normal result, and ordinary cleanup preserves replacement
+Throwables and their Previous links.
 
 The handler receives a copied input string and the native START/CLEAN/FLUSH/FINAL
 phase flags. Get-clean/get-flush return a separate frozen copy. The active top
@@ -44,8 +53,13 @@ reset and the running state ends. End operations write lower layers before
 releasing `zoh`; budget pauses retain every live owner and continuation.
 Saved VM operands transfer once to the write continuation. Source/context, live
 cursor and exact task suffix authenticate it; snapshots do not create owners.
+Direct named Stringable constructions retain the temporary receiver in the real
+producer tail until writing finishes, releasing it before print assignment or
+caller catch. Plain variable operands stay borrowed; wider owned Stringable
+forms remain an explicit dependency.
 
-Abrupt automatic/explicit callback cleanup, automatic dispatch from other byte
+Callback exit, explicit API callback failure, throwing reference-warning or
+produced-output warning handlers, automatic dispatch from other byte
 producers, request-end/fatal callback drains, non-scalar or
 reference-return conversion, typed variadic reception, mutating buffer APIs
 during a handler, capability
