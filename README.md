@@ -2717,6 +2717,10 @@ Scoped descriptor checks now require every registered destructor operation's exa
 exit marker in current or saved tasks, including parked Fibers. Focused source,
 carrier/caller and public refusal checks pass; physical cell collection and broader
 returns remain open. Details are in the local CV lifetime review above.
+A separate Fiber validation keeps a protected string-return carrier live after
+local unset and suspension, then delivers that cell to the resumed worker's r/a
+aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;
+these are separate executions, with no runtime change or physical collection claim.
 [Weak Stringable parameters](coverage/semantics/weak-string-parameters-review.json)
 now convert supplied fixed parameters in receive order, preserving caller
 strictness, nominal/callable precedence and the entered formal cell. Existing

@@ -212,6 +212,15 @@ private43 verifier make_parked_exit.py before running; it needs archived0bf9 and
 emits exact50e1 at that original path. The ledger records paths/hashes. Abstract
 HCELL retirement does not establish Zend physical collection; broad returns OPEN.
 
+M44 changes no runtime: source2, early parked58/two controls and late2/230 pass at
+`cb498f92`/385. The Fiber object retains the selected HCELL through its saved VM;
+late checks resume the same in-fixture carrier into the anonymous worker's r/a,
+write and completion/main E. Budget begins at that worker alias state. Early
+pre-unset history and late delivery are separate executions. Recover with
+reference_suspended_cv_state.py and suspended_carrier_validation in the local-CV
+ledger; retain elaboration059ac0, syntax-only6c05app0 and unrun6909field0. Broader
+suspension/borrowed conversion/physical collection and returns remain OPEN.
+
 Typed-property reference constraints, finally rechecks, objects/methods, dynamic
 sources and dynamic callables, named/unpacked/variadic calls, generators/Fibers and lifecycle remain
 required later core work. Publish reviewed paired code, evidence and concise docs

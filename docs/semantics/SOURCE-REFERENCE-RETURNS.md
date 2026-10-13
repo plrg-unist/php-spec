@@ -390,6 +390,15 @@ operation in current or saved tasks. Active68 and genuine parked23 plus two
 refusals pass with strict/source2. Synthetic fatal history views retain their old
 checks. No physical Zend collection or wider returns coverage is claimed.
 
+Validation-only M44 at `cb498f92`/385 checks protected string return through local
+unset and a genuine Fiber suspension. Early58/two refusals binds pre-unset x to
+the parked VM carrier and a Fiber-to-cell heap edge; phase and allocation controls
+remain distinct. Separate late124+106 executions capture the parked/resumed or
+direct carrier, then authenticate its returned REFERENCE and worker Closure
+source/target, r/a aliases, writes, main E and budget from the worker alias state.
+Source2 agrees with native2. This is an owning temporary, with no released borrowed
+Stringable, physical collection or cross-fixture identity claim.
+
 Caller demand comes from the original checked callsite's immediate source
 consumers. Expression statements and discarded for clauses have unused results;
 casts to void, ternary/coalesce expressions and value/reference consumers retain

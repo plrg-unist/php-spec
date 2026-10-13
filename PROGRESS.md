@@ -2102,6 +2102,15 @@ active68 + parked23 premises with two exact EXIT-only refusals. Generic fatal
 history validation stays unchanged; broad returns_verify remains OPEN.
 Actual385 over `b4ff3014` passes joined strict SL initialization at `87ea3155` (6.464 s).
 Private source/public/native and original230 cuts keep their tested revisions.
+
+M44 adds validation only at `cb498f92`/385. Two originals agree: suspension
+interposes B:1 before the resumed worker delivers the selected cell; direct control
+reports B:0 after its worker. Independent58/two refusals authenticates pre-unset x
+and the parked Fiber-to-cell edge; late124+106 follows its own carrier to resumed
+f/worker returned REFERENCE, r/a writes, main E and budget from the worker alias
+state. These are separate reached executions. Original059ac elaboration0,
+6c05 syntax-only app0 and unrun6909 field correction0 stay distinct. No runtime
+patch, physical collection or broad returns completion is claimed.
 [Cancellation and integrity evidence](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
