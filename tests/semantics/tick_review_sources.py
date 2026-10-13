@@ -29,6 +29,7 @@ CASES = {
     'unregister-argument-before-receiver': (b'<?php class A{function m($v){}function __destruct(){echo "A";}}class B{function __destruct(){global $r;echo "1";$r=null;echo "2";}}$x=new A;$r=&$x;$cb=[&$r,"m"];register_tick_function($cb,new B);unset($x);unregister_tick_function($cb);echo "Z";', b'12AZ'),
     'unregister-throw-before-receiver': (b'<?php class A{function m($v){}function __destruct(){echo "A";}}class B{function __destruct(){global $r;echo "1";$r=null;echo "2";throw new Exception("E");}}$x=new A;$r=&$x;$cb=[&$r,"m"];register_tick_function($cb,new B);unset($x);try{unregister_tick_function($cb);}catch(Exception $e){echo "C";}echo "Z";', b'12ACZ'),
     'unregister-exit-before-shutdown': (b'<?php class A{function m($v){}function __destruct(){echo "A";}}class B{function __destruct(){global $r;echo "1";$r=null;exit("E");}}$x=new A;$r=&$x;$cb=[&$r,"m"];register_tick_function($cb,new B);unset($x);register_shutdown_function(function(){echo "S";});unregister_tick_function($cb);echo "Z";', b'1EAS'),
+    'joined-eval-static-return-cleanup': (b'<?php class R{function __destruct(){echo "D";}}class C{function __destruct(){try{unregister_tick_function("t");echo "U";}catch(Error $e){echo "H";}}}function t(){return new C;}register_tick_function("t");eval(\'static $owner;$owner=new R;unset($owner);declare(ticks=1){echo "A";}\');echo "Z";', b'AHDZ'),
 }
 STATUSES = {
     'uint32-frequency-zero': 'normal',
@@ -47,6 +48,7 @@ STATUSES = {
     'unregister-argument-before-receiver': 'normal',
     'unregister-throw-before-receiver': 'normal',
     'unregister-exit-before-shutdown': 'explicit_exit',
+    'joined-eval-static-return-cleanup': 'normal',
 }
 EXITS = {
     'uint32-frequency-zero': 0,
@@ -65,6 +67,7 @@ EXITS = {
     'unregister-argument-before-receiver': 0,
     'unregister-throw-before-receiver': 0,
     'unregister-exit-before-shutdown': 0,
+    'joined-eval-static-return-cleanup': 0,
 }
 CONTROLS = {
     'parameter-default-closure': (b'<?php function tick(){echo "T";}register_tick_function("tick");function f($x=static function(){declare(ticks=1);echo "C";}){return $x;}$c=f();$c();echo "Z";', b''),
