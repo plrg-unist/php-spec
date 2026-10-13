@@ -1,6 +1,6 @@
 {
   "feature": "normal automatic user output-handler chunks",
-  "status": "accepted private milestone; exact-parent integration pending",
+  "status": "accepted; exact-parent composition and fast-forward independently cleared",
   "base_revision": "ad50ffd284217c2a5a5190eccde751bcc823d3a5",
   "implementation_revision": "4a1a368763499360f73f9f8d303f2ca50fb5e5cf",
   "fixture_revision": "17583d58a54cb1e3da07e30b48a8224de7169e5b",
@@ -204,7 +204,30 @@
   "resources": "CPU4/SLOT2, serial stop-first/reaped, process AS1536MiB; model60s/worker90s; state120s. Struct-only DATA6GiB.",
   "raw_recovery": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-05",
   "independent_review": "coverage/semantics/output-chunk-review.json",
-  "integration": "pending root writer and exact-parent review",
+  "integration": {
+    "parent": "cb498f92293d2045aae60e524ec20e729fab2390",
+    "candidate": "57ce90059a684762ea79517e151b6641b9b37bed",
+    "modules": 386,
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-05/join-gate-01/report.json",
+    "report_sha256": "64135f218944e800ef0f89e0753ff5e7a54a00b3d5517dd9af8a013b10a0c3c7",
+    "premises": 45,
+    "native_stdout": "XA|1:A;10:;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "actor": 1402020,
+    "reaped": true,
+    "result": "PASS/stable; genuine destructor operation remains EXIT-anchored through typed automatic callback entry, budget pause and final exact bytes",
+    "review": "accepted pointwise review and sole current45 gate; parent RECORDEDCOMPILEERROR init,84/270 real operation EXIT guards and M43/hooks/WeakMap/aggregate changes preserved; no old source/state replay",
+    "implementation_hashes": {
+      "spec/semantics/30-storage.watsup": "0f09fe0bdd3a22ca920cfa7d6242b58f97652e09ce9c692106808b6348aafe01",
+      "spec/semantics/40-control.watsup": "556e93c71d8f4bcaa1b7695f59702770dcf38aa9a9006f65e3a13c81eefa2949",
+      "spec/semantics/146-print-runtime.watsup": "0b6eb59d2618fad387841d9e738296d48eaf96795429990e7bbf4a0ffe32d736",
+      "spec/semantics/391-output-buffers.watsup": "624637c8dc5aeaeb2bae8abbc1adcc643494fbe13502877ebf52d7911ab70296",
+      "spec/semantics/395-output-handlers.watsup": "eeb9fa9bacadade984d1a82e60d073d9cec14cd479131d09ffbcb0b02c4ca5ca",
+      "spec/semantics/396-output-chunks.watsup": "e7590494e84f65ad434afb2443c2b94e90eab8c676de47e58f70a54fb2c56237",
+      "spec/semantics/modules.json": "555fd8e7f37bd49daecf0ba4e3fbeedd7165cc33159659e92dd8c78570bb692f"
+    }
+  },
   "diagnostic": {
     "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-05/state-debug-01/numeric.json",
     "sha256": "c7ba4508878b1610d5a0abb1e77b3aea57d5ee024a428a150db18d7be2b5b7ca",

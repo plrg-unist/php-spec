@@ -21,7 +21,10 @@ and disjoint API/VM origin guards preserve ordinary runtime behavior.
 [Contract](docs/semantics/OUTPUT-HANDLERS.md),
 [author evidence](coverage/semantics/output-chunk-author.json),
 [independent review](coverage/semantics/output-chunk-review.json).
-The 386-module composition on current master cb498f9 awaits final review. Abrupt callbacks, other byte producers,
+The 386-module composition over cb498f9 passes pointwise review and one new
+native-grounded SL group with 45 premises at 57ce90059. A real destructor WRITE
+keeps its operation EXIT anchored across typed handler entry and returns exact
+XA|1:A;10:;. Earlier source/state cuts retain their identities. Abrupt callbacks, other byte producers,
 request-end/fatal drains, wider conversion/callable/mutation/Fiber protocols and
 buffered stdout diagnostics remain required; full core stays partial.
 
