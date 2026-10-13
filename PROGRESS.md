@@ -1506,6 +1506,18 @@ parent matching, not another native class case; virtual/wider roots remain requi
 Joined exact `b55942bc`/385; one count-only current init check passes with no application.
 Private cuts remain retained through neutral output-handler state and disjoint reference-return cleanup.
 
+A source-unbacked Parent getter over a genuinely body-backed hooked Root can now
+be inherited by an equal-normalized-TYPE plain Child across Bridge. One terminal
+OR uses the existing inherited backing walk with supplied fuel; nearest Parent
+remains the getter descriptor. Root100/get107/private7 is only the backing witness;
+Parent starts uninitialized, Child owns 200 then 300, and Parent's getter/private13
+remains independent with false active bypass and actual receiver called scope.
+Strict385/source1 pass at `42870592`; three separate states at `953039ba` pass
+controls95 (49 reached, 46 derived), Child68 and writer84: 201 reached plus 46 derived.
+Root-source removal is derived and D46 task-local; no new default/layout/store/owner
+or lifetime behavior is claimed. Wider inherited roots and hook families remain required.
+[Hook-backed inherited-getter review](coverage/semantics/inherited-backed-parent-plain-inherited-getter-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization

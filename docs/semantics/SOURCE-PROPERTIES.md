@@ -242,6 +242,12 @@ uninitialized, Child owns 200 then 300, and the original getter returns 13;
 function/lexical/private/trace remain Parent's and called scope follows the receiver.
 Active source backing bypass stays false despite the physical slot;
 [ordinary-backed inherited-getter review](../../coverage/semantics/ordinary-backed-parent-plain-inherited-getter-review.json).
+The terminal also accepts an authenticated hooked backing ancestor through the
+existing inherited walk with supplied fuel. Root's genuine backed getter returns
+107, while source-unbacked Parent remains the selected getter/function/private
+owner and returns 13 on plain Child/Grand. Parent starts uninitialized and Child's
+own slot changes 200 to 300 with active backing bypass false;
+[hook-backed inherited-getter review](../../coverage/semantics/inherited-backed-parent-plain-inherited-getter-review.json).
 Other inherited getter roots/shapes and wider
 type-presence combinations remain required.
 Backed-parent inheritance retains invariant types; broader type equivalence and

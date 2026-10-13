@@ -775,6 +775,10 @@ test-semantics: build
 	python3 tests/semantics/ordinary_backed_parent_plain_inherited_getter_protocol.py --revision "$$(git rev-parse HEAD)" --group controls
 	python3 tests/semantics/ordinary_backed_parent_plain_inherited_getter_protocol.py --revision "$$(git rev-parse HEAD)" --group entry
 	python3 tests/semantics/ordinary_backed_parent_plain_inherited_getter_protocol.py --revision "$$(git rev-parse HEAD)" --group write
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/inherited_backed_parent_plain_inherited_getter_cases.json
+	python3 tests/semantics/inherited_backed_parent_plain_inherited_getter_protocol.py --revision "$$(git rev-parse HEAD)" --group controls
+	python3 tests/semantics/inherited_backed_parent_plain_inherited_getter_protocol.py --revision "$$(git rev-parse HEAD)" --group entry
+	python3 tests/semantics/inherited_backed_parent_plain_inherited_getter_protocol.py --revision "$$(git rev-parse HEAD)" --group write
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_publication_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_composed_retry_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/assertion_cases.json
