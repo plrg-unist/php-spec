@@ -1638,6 +1638,22 @@ wider reentry/lifecycle and broad returns_verify remain OPEN.
 Actual380 over `fb9d482a` passes strict at `b453661a` in 6.001s with zero
 applications; original private source/state/independent cuts remain separate.
 
+The guarded destructor additionally admits an ordinary local reference binding
+from nested f followed by a literal write through that same local. M35's bare-call
+route and all common idle/string/prefix guards are unchanged. Source2 and
+reached2/332 (246+86) pass at `30e2fdbc`: inner/global/saved Y share the real return
+cell before the probe write; probe/T/D preserves the original outer Y TypeError
+through ordered Z/W/X/public retirement, caller and budget continuation. The
+selected bypass keeps its alias without object birth. Independent public150/1
+admits the full bound-inner prefix and refuses missing outer operation exit;
+author counter-PBOOL refusal is separate. Private strict380 passes in 6.050s,
+zero applications, and maintained producer is byte-identical. Worker60 source2
+is a cap-only retry after genuine progress; original Worker45 timeout/trailing
+closure and unrun selected-payload correction keep zero credit. Local source
+reconstruction and reachable alias evidence do not prove historical alias
+provenance; wider demand/lifecycle and broad returns_verify remain OPEN.
+[Multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
 cell while GLOBALS may rebind or disappear; conversion writes the old cell atomically.

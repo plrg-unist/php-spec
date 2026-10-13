@@ -286,6 +286,19 @@ object birth/reentry. Existing active machinery supplies all callback effects;
 source reconstruction after reduced history remains local, and the exact linked
 shape exceeds this n2/Q/T/D witness. Wider reentry/returns remain OPEN.
 
+An additive guarded reference-demand route checks a noarg call on the RHS of an
+AssignRef and a following literal write to the same decoded ordinary local,
+excluding environment names. M35's bare-call route and common idle/string/prefix
+checks are unchanged. Source2, reached2/332 and independent public150/1 pass at
+`30e2fdbc`: cleanup first carries the returned reference in DESTRUCTOR_FRAME_EXIT.VALUE,
+then actual inner/global/saved Y share it before the probe. The write changes Y,
+while the original outer TypeError survives T/D, history retirement and caller
+catch. Full public prefixes, missing operation exit and counter-PBOOL controls,
+late budget equality and quiet selected bypass are checked separately. Existing
+call/reference/eager rules supply all effects; local source certificates and
+reached alias evidence do not authenticate arbitrary historical alias rewrites.
+Wider demand/returns remain OPEN.
+
 Module 186 captures the physical cell of an ordinary live unconstrained aliased CV
 before weak Stringable conversion. Its retained current/saved f-local binding
 authenticates that selection independently of later GLOBALS rebind/unset. Success

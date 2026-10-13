@@ -923,6 +923,11 @@ separately: nested return precedes T/D, the original Y error reaches the caller,
 and selected bypass keeps its alias without object birth. Missing cleanup and a
 bool counter payload are publicly refused. Existing active lifecycle rules are
 unchanged; wider reentry and returns verification remain OPEN.
+The guarded destructor may also bind an ordinary local by reference to nested f
+and write a literal through it. Two originals, reached2/332 and independent
+public150/1 pass separately: inner aliases Y before the probe, the original outer
+error survives T/D and cleanup, and the bypass skips reentry. Shared reference
+and lifecycle rules are unchanged; wider demand/returns verification remains OPEN.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)

@@ -243,6 +243,17 @@ keeps its alias; counter-PBOOL refusal and a budget split before T are checked.
 No active lifecycle, error-chaining, Notice or root rule changed. The local source
 certificate and this guarded witness leave wider reentry/returns OPEN.
 
+The guarded destructor additionally permits an ordinary local AssignRef from the
+same named f and a literal write through that local. Source2, reached2/332 and
+independent public150/1 pass at `30e2fdbc`. The real return reference survives
+queued frame cleanup and binds inner to global/saved Y before the probe write.
+Probe/T/D leaves the original outer Y TypeError unchanged through ordered Z/W/X
+retirement and caller catch, with public admissions and late budget equality.
+Missing outer operation exit and counter-PBOOL refuse; selected bypass keeps its
+alias without object birth. M35 and shared call/reference/active lifecycle rules
+are unchanged. Local reconstruction and reached alias evidence leave broader
+reference demand, historical alias provenance and returns verification OPEN.
+
 Module 186 converts a selected live unconstrained aliased return CV before protected
 finalizer entry. Stringable callbacks may rebind/unset GLOBALS without redirecting
 the captured cell; current/saved f-local bindings authenticate it. Success writes

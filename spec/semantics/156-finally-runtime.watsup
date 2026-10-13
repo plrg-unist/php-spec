@@ -1914,10 +1914,51 @@ def $ref_chain_reentrant_class(S, prefreturncursor_chain*) = true
   -- if $long_range(z_counter)
   -- if $ref_chain_string_cursors(S, prefreturncursor_chain*)
 def $ref_chain_reentrant_class(S, prefreturncursor_chain*) = false -- otherwise
+;; The guarded call binds and writes one ordinary local reference.
+dec $ref_chain_reentrant_ref_class(pstate, prefreturncursor*) : bool
+def $ref_chain_reentrant_ref_class(S, prefreturncursor_chain*) = true
+  -- if S.CLASSES = pclassdesc :: eps
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ pclassdesc.INTERFACES = eps
+  -- if pclassdesc.PROPERTIES = eps /\ pclassdesc.CONSTANTS = eps
+  -- if pclassdesc.METHODS = pmethoddesc :: eps
+  -- if pmethoddesc.OWNER = pclassdesc.ORIGIN /\ pmethoddesc.NAME = $ptascii("__destruct")
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (NStmtClass (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_class) metadata_name) ABSENT (SEQUENCE eps) (SEQUENCE ([statement_method])) metadata_class)
+  -- if $origin_child((pclassdesc.ORIGIN), [PCFIELD 5, PCINDEX 0]) = (pmethoddesc.FUNCTION.ORIGIN)
+  -- if $origin_node(S.SOURCES, pmethoddesc.FUNCTION.ORIGIN) = (statement_method)
+  -- if statement_method = NStmtClassMethod (SEQUENCE eps) (INTEGER 1) (BOOLEAN false) (NIdentifier (BYTES text_method) metadata_method_name) (SEQUENCE eps) ABSENT (SEQUENCE ([statement_guard, statement_d])) metadata_method
+  -- if statement_guard = NStmtIf (NExprBinaryOpIdentical (NExprArrayDimFetch (NExprVariable (BYTES text_globals_n) metadata_globals_n) (NScalarString (BYTES text_key_n) metadata_key_n) metadata_fetch_n) (NScalarInt (INTEGER 2) metadata_two) metadata_identical) (SEQUENCE ([statement_q, statement_ref, statement_write, statement_t])) (SEQUENCE eps) ABSENT metadata_guard
+  -- if $base64(text_globals_n) = $ptascii("GLOBALS")
+  -- if $ref_chain_destructor_body([statement_q]) /\ $ref_chain_destructor_body([statement_t]) /\ $ref_chain_destructor_body([statement_d])
+  -- if statement_ref = NStmtExpression (NExprAssignRef (NExprVariable (BYTES text_inner_ref) metadata_inner_ref) (NExprFuncCall (NName (BYTES text_call) metadata_call_name) (SEQUENCE eps) metadata_call) metadata_assign_ref) metadata_ref_statement
+  -- if statement_write = NStmtExpression (NExprAssign (NExprVariable (BYTES text_inner_write) metadata_inner_write) (NScalarString (BYTES text_inner_value) metadata_inner_value) metadata_assign_write) metadata_write_statement
+  -- if $base64(text_inner_ref) = $base64(text_inner_write)
+  -- if ~$environment_name($base64(text_inner_ref))
+  -- if $base64(text_method) = $ptascii("__destruct")
+  -- if $ref_chain_function(S) = (PORIGIN n pcpath_function)
+  -- if pclassdesc.ORIGIN = PORIGIN n pcpath_class
+  -- if $origin_child((pmethoddesc.FUNCTION.ORIGIN), [PCFIELD 6, PCINDEX 0, PCFIELD 1, PCINDEX 1, PCFIELD 0, PCFIELD 1]) = (porigin_call)
+  -- if $call_selected_valid(S, PORIGIN n pcpath_function, (porigin_call))
+  -- if prefreturncursor_chain* =/= eps
+  -- if n_last = $nabs($(|prefreturncursor_chain*| - 1))
+  -- if prefreturncursor_outer = prefreturncursor_chain*[n_last]
+  -- if $origin_child((prefreturncursor_outer.OWNER), [PCFIELD 2, PCFIELD 0, PCINDEX 2, PCFIELD 2, PCFIELD 0, PCINDEX 2, PCFIELD 2, PCFIELD 0, PCINDEX 2]) = (porigin_y)
+  -- if $ref_chain_selected_owner(S, porigin_y)
+  -- if $origin_child((porigin_y), [PCFIELD 2, PCFIELD 0, PCINDEX 0]) = (porigin_increment)
+  -- if $origin_node(S.SOURCES, porigin_increment) = (NStmtExpression (NExprPreInc (NExprVariable (BYTES text_counter) metadata_counter) metadata_increment) metadata_increment_statement)
+  -- if $base64(text_counter) = $base64(text_key_n)
+  -- if $lookup(S.ENV, $base64(text_counter)) = (n_counter)
+  -- if S.GLOBALTABLE = (psymboltable)
+  -- if $lookup(psymboltable.ENV, $base64(text_counter)) = (n_counter)
+  -- if $propref_at(S.PROPREFS, n_counter) = eps
+  -- if S.STORE[n_counter] = DEFINED (PINT z_counter)
+  -- if $long_range(z_counter)
+  -- if $ref_chain_string_cursors(S, prefreturncursor_chain*)
+def $ref_chain_reentrant_ref_class(S, prefreturncursor_chain*) = false -- otherwise
 dec $ref_chain_lifecycle_safe(pstate, prefreturncursor*) : bool
 def $ref_chain_lifecycle_safe(S, prefreturncursor*) = true -- if ~$destructor_operational(S)
 def $ref_chain_lifecycle_safe(S, prefreturncursor*) = true
-  -- if ($ref_chain_echo_class(S) /\ $ref_chain_string_cursors(S, prefreturncursor*)) \/ $ref_chain_mutating_class(S, prefreturncursor*) \/ $ref_chain_rebinding_class(S, prefreturncursor*) \/ $ref_chain_unsetting_class(S, prefreturncursor*) \/ $ref_chain_reentrant_class(S, prefreturncursor*)
+  -- if ($ref_chain_echo_class(S) /\ $ref_chain_string_cursors(S, prefreturncursor*)) \/ $ref_chain_mutating_class(S, prefreturncursor*) \/ $ref_chain_rebinding_class(S, prefreturncursor*) \/ $ref_chain_unsetting_class(S, prefreturncursor*) \/ $ref_chain_reentrant_class(S, prefreturncursor*) \/ $ref_chain_reentrant_ref_class(S, prefreturncursor*)
   -- if $ref_chain_distinct(S, prefreturncursor*, eps)
   -- if S.CURRENT = (pcallcontext)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
