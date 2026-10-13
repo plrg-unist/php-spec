@@ -1,0 +1,272 @@
+{
+  "scope": "Selected public virtual get-only int Parent -> protected(set) plain First200 -> Bridge -> equal-TYPE protected(set) plain Second300 -> Grand, with later private(set) narrowing rejection control.",
+  "implementation": {
+    "base": "70f124b2b54c25efc4f6060c2a009396a68fde69",
+    "revision": "87331b3347f24960eea75d73a5b138cdf2f46e8d",
+    "files": [
+      "spec/semantics/382-backed-get-hooks.watsup"
+    ],
+    "change": "Two existing plain-edge SET guards accept equal protected(set) and equal TYPE. Existing actual own/source/immediate-parent/layout proof and decreasing getter walk authenticate each edge separately.",
+    "unchanged": "Local/terminal getter proof, virtual-parent prelink setter exception, covariance, signatures/coercion, physical defaults/layout/store/permission/owner rules."
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor 34308a6666b2d489c509541ea9befea9e2b42348",
+  "engine_basis": [
+    "Zend/zend_inheritance.c:do_inherit_property equal setter-visibility comparison after first get-only virtual exception",
+    "Zend/zend_inheritance.c:inherit_property_hook retains original getter function/scope while each nonvirtual child owns its physical slot"
+  ],
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "absent",
+    "jobs": 1
+  },
+  "binaries": {
+    "php": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/php/bin/php",
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    "strict_compiler": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/cprefix-compiler/compiler",
+      "sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d"
+    },
+    "algorithmic": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/spectec/bin/p4spectec",
+      "sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "strict_application": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/tests/semantics/_build/default/numeric_runner.exe",
+      "sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    }
+  },
+  "recorders": {
+    "source": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/repeated-protected-plain-inherited-getter-probes-62/run.py",
+      "sha256": "d3f63986f0ce8acb8aaae28dd04832e60fb706b3febac09a8b0e8633ac3a8990"
+    },
+    "strict": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/repeated-protected-plain-inherited-getter-probes-62/run-compiler.py",
+      "sha256": "528d81ddb67d93e41c65e14d0b1bbfe9a6e2f9a220cbadaf77651466a52d3691"
+    },
+    "state": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/tests/semantics/repeated_protected_plain_inherited_getter_protocol.py",
+      "sha256": "f9da608fc7c3c490200f3b24585010274690b372d5473b8ff1ecf69347a42351"
+    }
+  },
+  "native": {
+    "report": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/repeated-protected-plain-inherited-getter-probes-62/native-first/report.json",
+      "sha256": "dc57792ffb61acb2fa3ba9c8c3963611706f428bdcbd924b14897278d41c6089"
+    },
+    "revision": "70f124b2b54c25efc4f6060c2a009396a68fde69",
+    "observed_exits": [
+      0,
+      255
+    ],
+    "source_agreements": 0,
+    "observations": "Parent empty, First200 versus Second/Grand300; original Parent getter/private13 and receiver called scope. Global denial names latest Second and retains300; actual Second-scope write stores400 while getter stays13. Private(set) narrowing requires protected(set) or weaker, names immediate First at Second class17."
+  },
+  "native_anticipation_misses": [],
+  "unchanged_baseline": {
+    "report": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/repeated-protected-plain-inherited-getter-probes-62/accepted-current-baseline/report.json",
+      "sha256": "72f0b6eca3122aa75b3dafed3d8c22379c434924a678b9e888841ff1e15f8ab1"
+    },
+    "revision": "70f124b2b54c25efc4f6060c2a009396a68fde69",
+    "checked": 2,
+    "source_agreements": 1,
+    "gap": "Legal repeated protected plain scalar was genuinely checked Unsupported inherited property hook override; private(set) narrowing already agrees in full bytes and logical exit."
+  },
+  "strict": {
+    "report": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/repeated-protected-plain-inherited-getter-probes-62/repeated-protected-plain-inherited-getter-compiler-4tfyaysi/report.json",
+      "sha256": "af0abcdf4cda2470f7edbfa2273092a9445c73e92d1a6741e2f33dac73a5804a"
+    },
+    "application_evaluations": 0,
+    "source_agreements": 0
+  },
+  "sources": {
+    "report": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/repeated-protected-plain-inherited-getter-probes-62/changed-model-8nwkn9xb/report.json",
+      "sha256": "6debcdfd2b04eecf97f7e1030208eac375a6920f07bff870d0609062bfcf8582"
+    },
+    "checked": 2,
+    "source_agreements": 2,
+    "statuses": [
+      "normal",
+      "static_rejection"
+    ],
+    "logical_exits": [
+      0,
+      255
+    ]
+  },
+  "catalogue": {
+    "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/tests/semantics/repeated_protected_plain_inherited_getter_cases.json",
+    "sha256": "48df5767f22150288e989b639065a3003c764943b4f1b7b050e8561cc363ac96"
+  },
+  "state": {
+    "revision": "64d31c3a67b8dc038307afc2de9f6d20894564ca",
+    "records": [
+      {
+        "group": "controls",
+        "report": {
+          "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/repeated-protected-plain-inherited-getter-protocol-3p7e09oq/report.json",
+          "sha256": "e8e6c72094cb36cc44b582097f0a89e91fbd156562eddccc86a0e8fc664dedfc"
+        },
+        "fixture": {
+          "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/repeated-protected-plain-inherited-getter-protocol-3p7e09oq/hook.watsup",
+          "sha256": "c18bfa59d21da7bc2b1ffded3f60505ef395d9f8fb0f2ac908f16722fd6af839"
+        },
+        "revision": "64d31c3a67b8dc038307afc2de9f6d20894564ca",
+        "premises": 106,
+        "reached_premises": 54,
+        "derived_premises": 52,
+        "caps": {
+          "algorithmic": 90,
+          "strict": 90
+        },
+        "algorithmic_seconds": 5.9936439990997314,
+        "strict_seconds": 26.661222219467163,
+        "exits": [
+          0,
+          0
+        ],
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "stable": true,
+        "reaped": true
+      },
+      {
+        "group": "entry",
+        "report": {
+          "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/repeated-protected-plain-inherited-getter-protocol-c5_sgy4y/report.json",
+          "sha256": "f2f0bd26d138d31deb4f7a53e99316941b85db22b754652027891dedc39fc10a"
+        },
+        "fixture": {
+          "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/repeated-protected-plain-inherited-getter-protocol-c5_sgy4y/hook.watsup",
+          "sha256": "e5c005e60400daaacf55c78ff444792a91ef0403a73d90f9aa475ef62368d8d9"
+        },
+        "revision": "64d31c3a67b8dc038307afc2de9f6d20894564ca",
+        "premises": 73,
+        "reached_premises": 73,
+        "derived_premises": 0,
+        "caps": {
+          "algorithmic": 90,
+          "strict": 90
+        },
+        "algorithmic_seconds": 5.553170919418335,
+        "strict_seconds": 34.780678510665894,
+        "exits": [
+          0,
+          0
+        ],
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "stable": true,
+        "reaped": true
+      },
+      {
+        "group": "write",
+        "report": {
+          "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/repeated-protected-plain-inherited-getter-protocol-2fbr_n2e/report.json",
+          "sha256": "0216018167c9ade85cf9142b0a79ca087ad435e4cc8c59b1ab63399181006fe8"
+        },
+        "fixture": {
+          "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/repeated-protected-plain-inherited-getter-protocol-2fbr_n2e/hook.watsup",
+          "sha256": "5baff7e9f2b31ffd0f5e714a9cb6da014b579db894e29a0c86a9a760893738ed"
+        },
+        "revision": "64d31c3a67b8dc038307afc2de9f6d20894564ca",
+        "premises": 93,
+        "reached_premises": 93,
+        "derived_premises": 0,
+        "caps": {
+          "algorithmic": 90,
+          "strict": 90
+        },
+        "algorithmic_seconds": 5.615457057952881,
+        "strict_seconds": 53.962563037872314,
+        "exits": [
+          0,
+          0
+        ],
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "stable": true,
+        "reaped": true
+      },
+      {
+        "group": "narrow",
+        "report": {
+          "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/repeated-protected-plain-inherited-getter-protocol-b9ll74e8/report.json",
+          "sha256": "458ff16f9b5664dccf7d0078c5ff422054c678f7c5849b25da247741f7d748a8"
+        },
+        "fixture": {
+          "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/repeated-protected-plain-inherited-getter-protocol-b9ll74e8/hook.watsup",
+          "sha256": "dbe520f98a1ed6293015470ef4ba434531d8ace42deaa99f1f66394f0e80140f"
+        },
+        "revision": "64d31c3a67b8dc038307afc2de9f6d20894564ca",
+        "premises": 23,
+        "reached_premises": 23,
+        "derived_premises": 0,
+        "caps": {
+          "algorithmic": 90,
+          "strict": 90
+        },
+        "algorithmic_seconds": 5.734473705291748,
+        "strict_seconds": 12.837609767913818,
+        "exits": [
+          0,
+          0
+        ],
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "stable": true,
+        "reaped": true
+      }
+    ],
+    "premises": 295,
+    "reached_premises": 243,
+    "derived_premises": 52,
+    "application_evaluations": 4,
+    "source_agreements": 0,
+    "counting": "Four separate invocations: three repeated genuine five-premise setups and one direct rejected-source setup; not 295 unique program states."
+  },
+  "state_contract": [
+    "Authentic First and Second empty-hook protected sources, actual declaring descriptors/immediate parent layout, Root virtual/empty storage versus First200 and latest Second300.",
+    "Derived source/link/root-own/fuel controls distinguish a positive immediate Second metadata edge from refusal of full getter closure. They are malformed-helper discriminators, not further native classes.",
+    "Genuine entered Second effective PROPERTY/storage resolves original Parent function/signature/lexical/private/trace owner with called Second and false active backing bypass.",
+    "Genuine method line22 delayed VARIABLE RHS is resolved only by the observer/input assertion; original S feeds PhpStep. Actual slot300->400 and subsequent Grand Parent getter13 remain independent.",
+    "Genuine private(set) rejection at class17 names immediate First, retains implicit FINAL and actual descriptors/defaults, and leaves Second/Grand unpublished/linkless. A distant virtual root does not waive the current parent setter constraint. Final parent_match checks are task-local only."
+  ],
+  "preserved_failures": [],
+  "remaining": [
+    "Other setter levels/weakening and unequal TYPE/TYPE-presence combinations, broader roots and trait/set/ref/readonly/final families.",
+    "No new runtime permission, default/layout/store/coercion/owner or lifetime implementation is claimed."
+  ],
+  "commands": [
+    "python3 .tools/repeated-protected-plain-inherited-getter-probes-62/run.py native --revision 70f124b2b54c25efc4f6060c2a009396a68fde69",
+    "python3 .tools/repeated-protected-plain-inherited-getter-probes-62/run.py baseline --revision 70f124b2b54c25efc4f6060c2a009396a68fde69",
+    "python3 .tools/repeated-protected-plain-inherited-getter-probes-62/run-compiler.py 70f124b2b54c25efc4f6060c2a009396a68fde69 87331b3347f24960eea75d73a5b138cdf2f46e8d",
+    "python3 .tools/repeated-protected-plain-inherited-getter-probes-62/run.py changed --revision 87331b3347f24960eea75d73a5b138cdf2f46e8d",
+    "python3 tests/semantics/repeated_protected_plain_inherited_getter_protocol.py --revision 64d31c3a67b8dc038307afc2de9f6d20894564ca --group controls",
+    "python3 tests/semantics/repeated_protected_plain_inherited_getter_protocol.py --revision 64d31c3a67b8dc038307afc2de9f6d20894564ca --group entry",
+    "python3 tests/semantics/repeated_protected_plain_inherited_getter_protocol.py --revision 64d31c3a67b8dc038307afc2de9f6d20894564ca --group write",
+    "python3 tests/semantics/repeated_protected_plain_inherited_getter_protocol.py --revision 64d31c3a67b8dc038307afc2de9f6d20894564ca --group narrow"
+  ],
+  "recovery": "Original native/baseline/compiler/source/state raw/process/report paths remain ignored in protected private32; prepared-summary.json and state-summary.json retain exact fixture/receipt identities. Source/object ordinal collision was corrected before evaluation; no failed actor or historical campaign renewal."
+}
