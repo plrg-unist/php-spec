@@ -13755,6 +13755,458 @@ CASES = {
                 '$destructor_operation_valid(S_transfer, pdestructionoperation)',
                 '$heap_owners($heap_graph(S_transfer), HOBJECT n_error) = 1',
                 '~$destructor_pending_valid(S, (n_second))']},
+    'weak-map-freeing-key-read-copy-65': {'source': '<?php\n'
+               'class FirstValue {\n'
+               '    public function __destruct() {\n'
+               '        global $keyWeak, $secondMap, $secondWeak;\n'
+               '        echo ($keyWeak->get() === null ? "first-key-null|" : "first-key-live|");\n'
+               '        echo ($secondMap[$keyWeak->get()] === $secondWeak->get() ? "second-entry-same|" : '
+               '"second-entry-wrong|");\n'
+               '        echo "A|";\n'
+               '    }\n'
+               '}\n'
+               'class SecondValue {\n'
+               '    public function __destruct() {\n'
+               '        global $keyWeak;\n'
+               '        echo ($keyWeak->get() === null ? "second-key-null|" : "second-key-live|");\n'
+               '        echo "B|";\n'
+               '    }\n'
+               '}\n'
+               '$secondMap = new WeakMap();\n'
+               '$firstMap = new WeakMap();\n'
+               '$key = new stdClass();\n'
+               '$first = new FirstValue();\n'
+               '$second = new SecondValue();\n'
+               '$firstWeak = WeakReference::create($first);\n'
+               '$secondWeak = WeakReference::create($second);\n'
+               '$firstMap[$key] = $first;\n'
+               '$keyWeak = WeakReference::create($key);\n'
+               'echo "insert-second|";\n'
+               '$secondMap[$key] = $second;\n'
+               'unset($first);\n'
+               'unset($second);\n'
+               'echo "drop-key|";\n'
+               'unset($key);\n'
+               'echo ($keyWeak->get() === null ? "key-null|" : "key-live|");\n'
+               'echo ($firstWeak->get() === null ? "first-null|" : "first-live|");\n'
+               'echo ($secondWeak->get() === null ? "second-null|" : "second-live|");\n'
+               'unset($firstMap);\n'
+               'unset($secondMap);\n'
+               'echo "END";\n',
+     'stage': 'S.TODO = (KEY_READ_DIM poperand_key z KEY_R) :: ptask_tail* -- if S_read = $quiet_operand(S, '
+              'S.RESULT) -- if S_read.RESULT = KNOWN (POBJECT n_map) -- if $weakmap_at(S, n_map) -- if S.CURRENT '
+              '= (pcallcontext)',
+     'checks': ['S.COMPLETION = NORMAL',
+                'S.ORIGIN = (porigin_read)',
+                'S.BASE = BASE_VALUE (KNOWN PNULL)',
+                'S.FRAMES = [pframe_saved]',
+                '$class_named(S.CLASSNAMES, $ptascii("firstvalue")) = (porigin_first)',
+                '$effective_method(S, porigin_first, $ptascii("__destruct"), |S.CLASSES|) = (pmethoddesc)',
+                'pcallcontext.FUNCTION = pmethoddesc.FUNCTION.ORIGIN',
+                'pcallcontext.TARGET = METHOD_TARGET n_first pmethoddesc.FUNCTION.ORIGIN',
+                'S.OBJECTS[n_first] = INSTANCE porigin_first',
+                'n_first <- S.DESTRUCTION.CALLED',
+                'S_map = $quiet_operand(S, VARIABLE $ptascii("secondMap") z)',
+                'S_map.COMPLETION = NORMAL',
+                'S_map.RESULT = KNOWN (POBJECT n_map)',
+                'S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)',
+                'n_key = pweakmapentry.KEY',
+                'pweakmapentry.VALUE = POBJECT n_value',
+                'S.OBJECTS[n_key] = STDINSTANCE',
+                'S.OBJECTS[n_value] = INSTANCE porigin_value',
+                '$node_children(S, HOBJECT n_key) = eps',
+                '$node_children(S, HOBJECT n_value) = eps',
+                '~(n_value <- S.DESTRUCTION.CALLED)',
+                '$weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map]',
+                '$instance_storage_for(S, n_key) = (pinstancestorage)',
+                'pinstancestorage.NOTIFY = (n_wrapper)',
+                'pinstancestorage.OBJECT = n_key',
+                'pinstancestorage.NEXT = 0',
+                'pinstancestorage.SLOTS = eps',
+                'pinstancestorage <- $instance_storage_frames(S.FRAMES)',
+                '$instance_storage_basic(S, pinstancestorage)',
+                '$instance_storage_state_valid(S)',
+                '$instance_storage_freeing(S, n_key)',
+                '~$instance_storage_freeing(S, n_map)',
+                '~$instance_storage_freeing(S, n_value)',
+                'pweakmapentry.BEFORE = (n_wrapper)',
+                '$weakmap_before_valid(S, pweakmapentry)',
+                '$weakref_at(S, n_wrapper) = (WEAKREFERENCE (n_key))',
+                '$weakref_find(S, S.ALLOCATIONS, n_key) = (n_wrapper)',
+                '$weakmap_storage_read(S, n_wrapper, n_key)',
+                '$weakref_get(S, n_wrapper) = POBJECT n_key',
+                'S_key = $quiet_operand(S, poperand_key)',
+                'S_key.COMPLETION = NORMAL',
+                'S_key.RESULT = KNOWN (POBJECT n_key)',
+                '$operand_nodes(poperand_key) = [HOBJECT n_key]',
+                'S_read.COMPLETION = NORMAL',
+                'paccess = $access_record(S, porigin_read, z, ACCESS_READ KEY_R, BASE_VALUE S.RESULT, '
+                'poperand_key, KNOWN PNULL, KEY_READ_DIM poperand_key z KEY_R, (n_map), true)',
+                'paccess_live = paccess[.SELECTED = $rcontainer_selected(S, S.RESULT)][.OFFSET = POBJECT '
+                'n_key][.PHASE = ACCESS_CALL $ptascii("offsetGet")]',
+                '$access_valid(S, paccess_live)',
+                '$access_dimension_pending(S)',
+                '$call_descriptors_valid(S)',
+                'H = $heap_graph(S)',
+                '$heap_valid(H)',
+                '$heap_children(HOBJECT n_map, H.EDGES) = [HOBJECT n_value]',
+                '~((HEDGE (HOBJECT n_map) (HOBJECT n_key)) <- H.EDGES)',
+                '$heap_owners(H, HOBJECT n_map) = 1',
+                '$heap_owners(H, HOBJECT n_key) = 2',
+                '$heap_owners(H, HOBJECT n_value) = 1',
+                '$weakmap_read_key_allowed(S, n_key)',
+                'n_handle = S.DESTRUCTION.HANDLES[n_key]',
+                'pinstancestorage.HANDLE = n_handle',
+                '$destructor_handle(S, n_handle, 0) = eps',
+                '$weakmap_read_handle_allowed(S, n_key, n_handle)',
+                '~$weakmap_read_handle_allowed(S, n_key, 0)',
+                '~$weakmap_read_handle_allowed(S, n_key, $nabs($(n_handle + 1)))',
+                '$weakmap_read_allowed(S, paccess_live)',
+                'PhpStep: S ~> S_copy',
+                'S_copy = $key_read_done(S, POBJECT n_value)',
+                'S_copy.RESULT = KNOWN (POBJECT n_value)',
+                'S_copy.TODO = ptask_tail*',
+                'S_copy.OBJECTS = S.OBJECTS',
+                'S_copy.ALLOCATIONS = S.ALLOCATIONS',
+                'S_copy.STORE = S.STORE',
+                'S_copy.FRAMES = S.FRAMES',
+                '$heap_valid($heap_graph(S_copy))',
+                '$heap_owners($heap_graph(S_copy), HOBJECT n_key) = 1',
+                '$heap_owners($heap_graph(S_copy), HOBJECT n_value) = 2',
+                '$weakref_get(S_copy, n_wrapper) = POBJECT n_key',
+                'S_paused = $drive_steps(S, 0)',
+                'S_paused = S[.COMPLETION = BUDGET]',
+                'S_release = $drive_steps(S, 1)[.COMPLETION = NORMAL]',
+                '$drive_steps(S_paused[.COMPLETION = NORMAL], 1)[.COMPLETION = NORMAL] = S_release',
+                'S_release.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT '
+                'pdestructionoperation) :: ptask_tail*',
+                'pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HOBJECT n_key)]',
+                'pdestructionoperation.SOURCE = KEY_READ_DIM poperand_key z KEY_R',
+                'pdestructionoperation.VALUE = KNOWN (POBJECT n_value)',
+                'pdestructionoperation.PENDING = eps',
+                '$destructor_release_valid(S_release, pdestructionrelease)',
+                '$destructor_operation_live(S_release, pdestructionoperation)',
+                '$call_descriptors_valid(S_release)',
+                '$heap_valid($heap_graph(S_release))',
+                '$heap_owners($heap_graph(S_release), HOBJECT n_key) = 2',
+                '$heap_owners($heap_graph(S_release), HOBJECT n_value) = 2',
+                'S_keep = $drive_steps(S_release[.COMPLETION = NORMAL], 1)[.COMPLETION = NORMAL]',
+                'S_keep.OBJECTS = S.OBJECTS',
+                'S_keep.ALLOCATIONS = S.ALLOCATIONS',
+                'S_keep.DESTRUCTION.CALLED = S.DESTRUCTION.CALLED',
+                '$heap_owners($heap_graph(S_keep), HOBJECT n_key) = 1',
+                '$heap_owners($heap_graph(S_keep), HOBJECT n_value) = 2',
+                '$weakref_get(S_keep, n_wrapper) = POBJECT n_key',
+                '$call_descriptors_valid(S_keep)',
+                '$heap_valid($heap_graph(S_keep))',
+                '$instance_storage_tail(pframe_saved.TODO, pinstancestorage) = (ptask_saved_tail*)',
+                'n_pin = $(|pframe_saved.TODO| - |ptask_saved_tail*| - 1)',
+                'pframe_saved.TODO[n_pin] = INSTANCE_STORAGE_STEP pinstancestorage',
+                'S_cleared = S[.FRAMES = [pframe_saved[.TODO[n_pin] = INSTANCE_STORAGE_STEP '
+                'pinstancestorage[.NOTIFY = eps]]]]',
+                '$heap_graph(S_cleared) = H',
+                '$instance_storage_basic(S_cleared, pinstancestorage[.NOTIFY = eps])',
+                '$instance_storage_state_valid(S_cleared)',
+                '$call_descriptors_valid(S_cleared)',
+                '$weakref_get(S_cleared, n_wrapper) = PNULL',
+                '$heap_owners($heap_graph(S_cleared), HOBJECT n_key) = 2',
+                '~$weakmap_read_key_allowed(S_cleared, n_key)',
+                '~$weakmap_read_handle_allowed(S_cleared, n_key, n_handle)',
+                '~$weakmap_read_allowed(S_cleared, paccess_live)',
+                'PhpStep: S_cleared ~> S_refused',
+                'S_refused.COMPLETION = UNSUPPORTED "WeakMap dimension protocol outside first insertion"',
+                'S_refused[.COMPLETION = NORMAL] = S_cleared',
+                'S_duplicate = S[.FRAMES = [pframe_saved[.TODO = pframe_saved.TODO ++ [INSTANCE_STORAGE_STEP '
+                'pinstancestorage]]]]',
+                '~$instance_storage_state_valid(S_duplicate)',
+                '~$weakmap_read_key_allowed(S_duplicate, n_key)',
+                '~$weakmap_read_allowed(S_duplicate, paccess_live)',
+                'n_competing_wrapper = |S.OBJECTS|',
+                'S_competing = S[.OBJECTS = S.OBJECTS ++ [WEAKREFERENCE (n_key)]][.ALLOCATIONS = S.ALLOCATIONS '
+                '++ [HOBJECT n_competing_wrapper]][.HELD = S.HELD ++ [HOBJECT n_competing_wrapper]][.FRAMES = '
+                '[pframe_saved[.TODO[n_pin] = INSTANCE_STORAGE_STEP pinstancestorage[.NOTIFY = '
+                '(n_competing_wrapper)]]]]',
+                '$instance_storage_basic(S_competing, pinstancestorage[.NOTIFY = (n_competing_wrapper)])',
+                '$weakmap_storage_read(S_competing, n_competing_wrapper, n_key)',
+                '$weakref_find(S_competing, S_competing.ALLOCATIONS, n_key) = (n_wrapper)',
+                '~$weakmap_read_key_allowed(S_competing, n_key)',
+                '~$weakmap_read_handle_allowed(S_competing, n_key, n_handle)',
+                '~$weakmap_read_allowed(S_competing, paccess_live)',
+                'pdestructionfatal = {FRAME $eager_fatal_frame(S), FRAMES S.FRAMES, GLOBAL '
+                '$eager_fatal_global(S), VALUE S.RESULT, BASE S.BASE, DESTRUCTION S.DESTRUCTION, SHUTDOWN '
+                'S.SHUTDOWN, ERRORHANDLER S.ERRORHANDLER, ERRORHANDLERS S.ERRORHANDLERS, EXCEPTIONHANDLER '
+                'S.EXCEPTIONHANDLER, EXCEPTIONHANDLERS S.EXCEPTIONHANDLERS, HANDLERS eps, EVALCONTEXTS '
+                'S.EVALCONTEXTS, FILECONTEXTS S.FILECONTEXTS, DECLARATIONS S.DECLARATIONS, COMPLETION '
+                'S.COMPLETION, FROZEN S.COMPLETION, ERRORORIGIN S.ERRORORIGIN, TRACE S.TRACE, ERRORTRACE '
+                'S.ERRORFATALTRACE, COMPILESTOP S.COMPILESTOP, REPORTING S.REPORTING}',
+                'pdestructioncleanup_inactive = {SOURCE DESTRUCTOR_FATAL pdestructionfatal, TARGET '
+                '$eager_cleanup_target(S, pcallcontext.TARGET), CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT '
+                'S.CONSTCONTEXT, RELEASED false}',
+                'S_inactive = S[.FRAMES = eps][.DESTRUCTION.ABANDONED = [pdestructioncleanup_inactive]]',
+                '$instance_storage_for(S_inactive, n_key) = (pinstancestorage)',
+                '$instance_storage_basic(S_inactive, pinstancestorage)',
+                '$weakmap_storage_read(S_inactive, n_wrapper, n_key)',
+                '~(pinstancestorage <- ($instance_storage_tasks(S_inactive.TODO) ++ '
+                '$instance_storage_frames(S_inactive.FRAMES)))',
+                '~$weakmap_read_key_allowed(S_inactive, n_key)',
+                '~$weakmap_read_handle_allowed(S_inactive, n_key, n_handle)',
+                '~$weakmap_read_allowed(S_inactive, paccess_live)',
+                '~$weakmap_read_allowed(S[.TODO = (KEY_READ_DIM poperand_key $(z + 1) KEY_R) :: ptask_tail*], '
+                'paccess_live)',
+                '~$weakmap_read_allowed(S[.RESULT = KNOWN PNULL], paccess_live)',
+                '~$weakmap_read_allowed(S, paccess_live[.LINE = $(z + 1)])',
+                '~$weakmap_read_allowed(S, paccess_live[.OFFSET = PNULL])',
+                '~$weakmap_read_allowed(S, paccess_live[.MODE = ACCESS_READ KEY_IS])']},
+    'weak-map-freeing-key-read-cleanup-65': {'source': '<?php\n'
+               'class FirstValue {\n'
+               '    public function __destruct() {\n'
+               '        global $keyWeak, $secondMap, $secondWeak;\n'
+               '        echo ($keyWeak->get() === null ? "first-key-null|" : "first-key-live|");\n'
+               '        echo ($secondMap[$keyWeak->get()] === $secondWeak->get() ? "second-entry-same|" : '
+               '"second-entry-wrong|");\n'
+               '        echo "A|";\n'
+               '    }\n'
+               '}\n'
+               'class SecondValue {\n'
+               '    public function __destruct() {\n'
+               '        global $keyWeak;\n'
+               '        echo ($keyWeak->get() === null ? "second-key-null|" : "second-key-live|");\n'
+               '        echo "B|";\n'
+               '    }\n'
+               '}\n'
+               '$secondMap = new WeakMap();\n'
+               '$firstMap = new WeakMap();\n'
+               '$key = new stdClass();\n'
+               '$first = new FirstValue();\n'
+               '$second = new SecondValue();\n'
+               '$firstWeak = WeakReference::create($first);\n'
+               '$secondWeak = WeakReference::create($second);\n'
+               '$firstMap[$key] = $first;\n'
+               '$keyWeak = WeakReference::create($key);\n'
+               'echo "insert-second|";\n'
+               '$secondMap[$key] = $second;\n'
+               'unset($first);\n'
+               'unset($second);\n'
+               'echo "drop-key|";\n'
+               'unset($key);\n'
+               'echo ($keyWeak->get() === null ? "key-null|" : "key-live|");\n'
+               'echo ($firstWeak->get() === null ? "first-null|" : "first-live|");\n'
+               'echo ($secondWeak->get() === null ? "second-null|" : "second-live|");\n'
+               'unset($firstMap);\n'
+               'unset($secondMap);\n'
+               'echo "END";\n',
+     'stage': 'S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail* -- if pinstancestorage.NOTIFY = '
+              '(n_wrapper) -- if S.OBJECTS[pinstancestorage.OBJECT] = STDINSTANCE -- if S.CURRENT = eps -- if '
+              'S.FRAMES = eps',
+     'checks': ['S.COMPLETION = NORMAL',
+                'n_key = pinstancestorage.OBJECT',
+                'S.EVENTS = [OUTPUT $ptascii("insert-second|"), OUTPUT $ptascii("drop-key|"), OUTPUT '
+                '$ptascii("first-key-live|"), OUTPUT $ptascii("second-entry-same|"), OUTPUT $ptascii("A|")]',
+                'S.RESULT = KNOWN PNULL',
+                'S.BASE = BASE_VALUE (KNOWN PNULL)',
+                'S.HELD = eps',
+                '$lookup(S.ENV, $ptascii("key")) = eps',
+                '$lookup(S.ENV, $ptascii("first")) = eps',
+                '$lookup(S.ENV, $ptascii("second")) = eps',
+                'S_map = $quiet_operand(S, VARIABLE $ptascii("secondMap") 0)',
+                'S_map.COMPLETION = NORMAL',
+                'S_map.RESULT = KNOWN (POBJECT n_map)',
+                'S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)',
+                'pweakmapentry.KEY = n_key',
+                'pweakmapentry.VALUE = POBJECT n_value',
+                'pweakmapentry.BEFORE = (n_wrapper)',
+                '$weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map]',
+                'S_weak = $quiet_operand(S, VARIABLE $ptascii("secondWeak") 0)',
+                'S_weak.COMPLETION = NORMAL',
+                'S_weak.RESULT = KNOWN (POBJECT n_value_wrapper)',
+                '$weakref_get(S, n_value_wrapper) = POBJECT n_value',
+                'S_first_weak = $quiet_operand(S, VARIABLE $ptascii("firstWeak") 0)',
+                'S_first_weak.COMPLETION = NORMAL',
+                'S_first_weak.RESULT = KNOWN (POBJECT n_first_wrapper)',
+                '$weakref_get(S, n_first_wrapper) = PNULL',
+                '~(n_value <- S.DESTRUCTION.CALLED)',
+                '$instance_storage_valid(S, pinstancestorage)',
+                '$weakref_find(S, S.ALLOCATIONS, n_key) = (n_wrapper)',
+                '$weakref_get(S, n_wrapper) = POBJECT n_key',
+                '$weakmap_read_key_allowed(S, n_key)',
+                '$call_descriptors_valid(S)',
+                'H = $heap_graph(S)',
+                '$heap_valid(H)',
+                '$heap_owners(H, HOBJECT n_map) = 1',
+                '$heap_owners(H, HOBJECT n_key) = 1',
+                '$heap_owners(H, HOBJECT n_value) = 1',
+                'PhpStep: S ~> S_notified',
+                'S_notified = S[.TODO = (INSTANCE_STORAGE_STEP pinstancestorage[.NOTIFY = eps]) :: ptask_tail*]',
+                '$heap_graph(S_notified) = H',
+                '$weakref_get(S_notified, n_wrapper) = PNULL',
+                '~$weakmap_read_key_allowed(S_notified, n_key)',
+                'S_held = S_notified[.HELD = [HOBJECT n_key]]',
+                '$heap_valid($heap_graph(S_held))',
+                '$heap_owners($heap_graph(S_held), HOBJECT n_key) = 2',
+                '$weakref_get(S_held, n_wrapper) = PNULL',
+                '~$weakmap_read_key_allowed(S_held, n_key)',
+                'PhpStep: S_notified ~> S_next',
+                'S_next = $weakmap_key_continue(S_notified, n_key)',
+                'S_next.OBJECTS[n_map] = WEAKMAP eps',
+                'S_next.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (INSTANCE_STORAGE_STEP '
+                'pinstancestorage[.NOTIFY = eps]) :: ptask_tail*',
+                'pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HOBJECT n_value)]',
+                '$destructor_release_valid(S_next, pdestructionrelease)',
+                '$call_descriptors_valid(S_next)',
+                '$heap_valid($heap_graph(S_next))',
+                '$heap_owners($heap_graph(S_next), HOBJECT n_key) = 1',
+                '$heap_owners($heap_graph(S_next), HOBJECT n_value) = 1',
+                'S_next.DESTRUCTION.CALLED = S.DESTRUCTION.CALLED',
+                '$weakref_get(S_next, n_wrapper) = PNULL',
+                '$weakref_get(S_next, n_value_wrapper) = POBJECT n_value',
+                'S_next.EVENTS = S.EVENTS',
+                '$drive_steps(S, 0) = S[.COMPLETION = BUDGET]',
+                '$drive_steps(S, 1)[.COMPLETION = NORMAL] = S_notified']},
+    'weak-map-freeing-key-missing-error-65': {'source': '<?php\n'
+               'class FirstValue {\n'
+               '    public function __destruct() {\n'
+               '        global $keyWeak, $secondMap, $secondWeak, $firstMap;\n'
+               '        echo ($keyWeak->get() === null ? "first-key-null|" : "first-key-live|");\n'
+               '        echo ($secondMap[$keyWeak->get()] === $secondWeak->get() ? "second-entry-same|" : '
+               '"second-entry-wrong|");\n'
+               '        try {\n'
+               '            $firstMap[$keyWeak->get()];\n'
+               '        } catch (Error $e) {\n'
+               '            echo "missing|", $e->getMessage(), "|";\n'
+               '        }\n'
+               '        echo "A|";\n'
+               '    }\n'
+               '}\n'
+               'class SecondValue {\n'
+               '    public function __destruct() {\n'
+               '        global $keyWeak;\n'
+               '        echo ($keyWeak->get() === null ? "second-key-null|" : "second-key-live|");\n'
+               '        echo "B|";\n'
+               '    }\n'
+               '}\n'
+               '$secondMap = new WeakMap();\n'
+               '$firstMap = new WeakMap();\n'
+               '$key = new stdClass();\n'
+               '$first = new FirstValue();\n'
+               '$second = new SecondValue();\n'
+               '$firstWeak = WeakReference::create($first);\n'
+               '$secondWeak = WeakReference::create($second);\n'
+               '$firstMap[$key] = $first;\n'
+               '$keyWeak = WeakReference::create($key);\n'
+               'echo "insert-second|";\n'
+               '$secondMap[$key] = $second;\n'
+               'unset($first);\n'
+               'unset($second);\n'
+               'echo "drop-key|";\n'
+               'unset($key);\n'
+               'echo ($keyWeak->get() === null ? "key-null|" : "key-live|");\n'
+               'echo ($firstWeak->get() === null ? "first-null|" : "first-live|");\n'
+               'echo ($secondWeak->get() === null ? "second-null|" : "second-live|");\n'
+               'unset($firstMap);\n'
+               'unset($secondMap);\n'
+               'echo "END";\n',
+     'stage': 'S.TODO = (KEY_READ_DIM poperand_key z KEY_R) :: ptask_tail* -- if S_read = $quiet_operand(S, '
+              'S.RESULT) -- if S_read.RESULT = KNOWN (POBJECT n_map) -- if $weakmap_at(S, n_map) -- if '
+              'S.OBJECTS[n_map] = WEAKMAP eps -- if S.CURRENT = (pcallcontext)',
+     'checks': ['S.COMPLETION = NORMAL',
+                'S.ORIGIN = (porigin_read)',
+                'S.BASE = BASE_VALUE (KNOWN PNULL)',
+                '$class_named(S.CLASSNAMES, $ptascii("firstvalue")) = (porigin_first)',
+                '$effective_method(S, porigin_first, $ptascii("__destruct"), |S.CLASSES|) = (pmethoddesc)',
+                'pcallcontext.FUNCTION = pmethoddesc.FUNCTION.ORIGIN',
+                'pcallcontext.TARGET = METHOD_TARGET n_first pmethoddesc.FUNCTION.ORIGIN',
+                'S.OBJECTS[n_first] = INSTANCE porigin_first',
+                'n_first <- S.DESTRUCTION.CALLED',
+                'S_first_map = $quiet_operand(S, VARIABLE $ptascii("firstMap") z)',
+                'S_first_map.COMPLETION = NORMAL',
+                'S_first_map.RESULT = KNOWN (POBJECT n_map)',
+                'S_key = $quiet_operand(S, poperand_key)',
+                'S_key.COMPLETION = NORMAL',
+                'S_key.RESULT = KNOWN (POBJECT n_key)',
+                '$operand_nodes(poperand_key) = [HOBJECT n_key]',
+                'S.OBJECTS[n_key] = STDINSTANCE',
+                '$instance_storage_for(S, n_key) = (pinstancestorage)',
+                'pinstancestorage.NOTIFY = (n_wrapper)',
+                'pinstancestorage <- ($instance_storage_tasks(S.TODO) ++ $instance_storage_frames(S.FRAMES))',
+                '$instance_storage_basic(S, pinstancestorage)',
+                '$instance_storage_state_valid(S)',
+                '$weakref_find(S, S.ALLOCATIONS, n_key) = (n_wrapper)',
+                '$weakref_get(S, n_wrapper) = POBJECT n_key',
+                'S_map = $quiet_operand(S, VARIABLE $ptascii("secondMap") z)',
+                'S_map.COMPLETION = NORMAL',
+                'S_map.RESULT = KNOWN (POBJECT n_later_map)',
+                'S.OBJECTS[n_later_map] = WEAKMAP (pweakmapentry)',
+                'pweakmapentry.KEY = n_key',
+                'pweakmapentry.VALUE = POBJECT n_value',
+                'pweakmapentry.BEFORE = (n_wrapper)',
+                '$weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_later_map]',
+                '~$weakmap_has_key(S, n_map, n_key)',
+                '~(n_value <- S.DESTRUCTION.CALLED)',
+                'paccess = $access_record(S, porigin_read, z, ACCESS_READ KEY_R, BASE_VALUE S.RESULT, '
+                'poperand_key, KNOWN PNULL, KEY_READ_DIM poperand_key z KEY_R, (n_map), true)',
+                'paccess_live = paccess[.SELECTED = $rcontainer_selected(S, S.RESULT)][.OFFSET = POBJECT '
+                'n_key][.PHASE = ACCESS_CALL $ptascii("offsetGet")]',
+                '$access_valid(S, paccess_live)',
+                '$weakmap_read_allowed(S, paccess_live)',
+                'n_handle = S.DESTRUCTION.HANDLES[n_key]',
+                'pinstancestorage.HANDLE = n_handle',
+                'n_handle =/= n_key',
+                '$destructor_handle(S, n_handle, 0) = eps',
+                '$weakmap_read_handle_allowed(S, n_key, n_handle)',
+                '$object_name(S, n_key) = $ptascii("stdClass")',
+                'ptbytes_message = $ptascii("Object ") ++ $object_name(S, n_key) ++ $ptascii("#") ++ '
+                '$ntunsigned(n_handle) ++ $ptascii(" not contained in WeakMap")',
+                'ptbytes_message = $ptascii("Object stdClass#3 not contained in WeakMap")',
+                '$call_descriptors_valid(S)',
+                'H = $heap_graph(S)',
+                '$heap_valid(H)',
+                '$heap_owners(H, HOBJECT n_key) = 2',
+                '$heap_owners(H, HOBJECT n_value) = 1',
+                '$heap_children(HOBJECT n_later_map, H.EDGES) = [HOBJECT n_value]',
+                'PhpStep: S ~> S_thrown',
+                'S_thrown.COMPLETION = THROWN "Error" ptbytes_message z',
+                'S_thrown[.COMPLETION = S.COMPLETION] = S',
+                '$heap_graph(S_thrown) = H',
+                '$weakref_get(S_thrown, n_wrapper) = POBJECT n_key',
+                'S_paused = $drive_steps(S, 0)',
+                'S_paused = S[.COMPLETION = BUDGET]',
+                'S_release = $drive_steps(S, 1)[.COMPLETION = NORMAL]',
+                '$drive_steps(S_paused[.COMPLETION = NORMAL], 1)[.COMPLETION = NORMAL] = S_release',
+                'S_release.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT '
+                'pdestructionoperation) :: ptask_tail*',
+                'pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HOBJECT n_key)]',
+                'pdestructionoperation.SOURCE = KEY_READ_DIM poperand_key z KEY_R',
+                'pdestructionoperation.COMPLETION = THROWING n_error',
+                'pdestructionoperation.PENDING = (n_error)',
+                'S_release.OBJECTS[n_error] = THROWABLE pthrowable',
+                'pthrowable.KIND = "Error"',
+                '$string_bytes($throwable_field(S_release, n_error, "message")) = ptbytes_message',
+                '$throwable_object_image_valid(S_release, n_error)',
+                '$destructor_release_valid(S_release, pdestructionrelease)',
+                '$call_descriptors_valid(S_release)',
+                '$heap_valid($heap_graph(S_release))',
+                '$heap_owners($heap_graph(S_release), HOBJECT n_error) = 1',
+                '$heap_owners($heap_graph(S_release), HOBJECT n_key) = 2',
+                '$heap_owners($heap_graph(S_release), HOBJECT n_value) = 1',
+                'S_keep = $drive_steps(S_release[.COMPLETION = NORMAL], 1)[.COMPLETION = NORMAL]',
+                '$heap_owners($heap_graph(S_keep), HOBJECT n_key) = 1',
+                '$heap_owners($heap_graph(S_keep), HOBJECT n_error) = 1',
+                '$heap_owners($heap_graph(S_keep), HOBJECT n_value) = 1',
+                'S_keep.OBJECTS[n_map] = WEAKMAP eps',
+                'S_keep.OBJECTS[n_later_map] = WEAKMAP (pweakmapentry)',
+                '$weakref_get(S_keep, n_wrapper) = POBJECT n_key',
+                'S_keep.DESTRUCTION.CALLED = S.DESTRUCTION.CALLED',
+                'S_search = $drive_steps(S_keep[.COMPLETION = NORMAL], 2)[.COMPLETION = NORMAL]',
+                'S_search.TODO = (THROW_SEARCH n_error) :: ptask_tail*',
+                '$call_task_valid(S_search, THROW_SEARCH n_error)',
+                '$call_descriptors_valid(S_search)',
+                '$heap_valid($heap_graph(S_search))',
+                '$heap_owners($heap_graph(S_search), HOBJECT n_error) = 1',
+                '$heap_owners($heap_graph(S_search), HOBJECT n_key) = 1',
+                '$heap_owners($heap_graph(S_search), HOBJECT n_value) = 1',
+                '$weakref_get(S_search, n_wrapper) = POBJECT n_key',
+                'S_search.OBJECTS[n_later_map] = WEAKMAP (pweakmapentry)',
+                'S_search.EVENTS = S.EVENTS']},
 }
 
 runner.CASES = CASES

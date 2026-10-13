@@ -1,5 +1,23 @@
 [
   {
+    "id": "weak-map-freeing-key-read-65",
+    "source": "<?php\nclass FirstValue {\n    public function __destruct() {\n        global $keyWeak, $secondMap, $secondWeak;\n        echo ($keyWeak->get() === null ? \"first-key-null|\" : \"first-key-live|\");\n        echo ($secondMap[$keyWeak->get()] === $secondWeak->get() ? \"second-entry-same|\" : \"second-entry-wrong|\");\n        echo \"A|\";\n    }\n}\nclass SecondValue {\n    public function __destruct() {\n        global $keyWeak;\n        echo ($keyWeak->get() === null ? \"second-key-null|\" : \"second-key-live|\");\n        echo \"B|\";\n    }\n}\n$secondMap = new WeakMap();\n$firstMap = new WeakMap();\n$key = new stdClass();\n$first = new FirstValue();\n$second = new SecondValue();\n$firstWeak = WeakReference::create($first);\n$secondWeak = WeakReference::create($second);\n$firstMap[$key] = $first;\n$keyWeak = WeakReference::create($key);\necho \"insert-second|\";\n$secondMap[$key] = $second;\nunset($first);\nunset($second);\necho \"drop-key|\";\nunset($key);\necho ($keyWeak->get() === null ? \"key-null|\" : \"key-live|\");\necho ($firstWeak->get() === null ? \"first-null|\" : \"first-live|\");\necho ($secondWeak->get() === null ? \"second-null|\" : \"second-live|\");\nunset($firstMap);\nunset($secondMap);\necho \"END\";\n",
+    "source_sha256": "b82f9ce712a958caac5e1eb83381a2403d5f5a5ac5e7ccc81070c3dfa8b26b3d",
+    "stdout": "insert-second|drop-key|first-key-live|second-entry-same|A|second-key-null|B|key-null|first-null|second-null|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "weak-map-freeing-key-missing-65",
+    "source": "<?php\nclass FirstValue {\n    public function __destruct() {\n        global $keyWeak, $secondMap, $secondWeak, $firstMap;\n        echo ($keyWeak->get() === null ? \"first-key-null|\" : \"first-key-live|\");\n        echo ($secondMap[$keyWeak->get()] === $secondWeak->get() ? \"second-entry-same|\" : \"second-entry-wrong|\");\n        try {\n            $firstMap[$keyWeak->get()];\n        } catch (Error $e) {\n            echo \"missing|\", $e->getMessage(), \"|\";\n        }\n        echo \"A|\";\n    }\n}\nclass SecondValue {\n    public function __destruct() {\n        global $keyWeak;\n        echo ($keyWeak->get() === null ? \"second-key-null|\" : \"second-key-live|\");\n        echo \"B|\";\n    }\n}\n$secondMap = new WeakMap();\n$firstMap = new WeakMap();\n$key = new stdClass();\n$first = new FirstValue();\n$second = new SecondValue();\n$firstWeak = WeakReference::create($first);\n$secondWeak = WeakReference::create($second);\n$firstMap[$key] = $first;\n$keyWeak = WeakReference::create($key);\necho \"insert-second|\";\n$secondMap[$key] = $second;\nunset($first);\nunset($second);\necho \"drop-key|\";\nunset($key);\necho ($keyWeak->get() === null ? \"key-null|\" : \"key-live|\");\necho ($firstWeak->get() === null ? \"first-null|\" : \"first-live|\");\necho ($secondWeak->get() === null ? \"second-null|\" : \"second-live|\");\nunset($firstMap);\nunset($secondMap);\necho \"END\";\n",
+    "source_sha256": "46f33ace5419e1d7b3a64d014c9b8deb591362e07138b6f539d7b0c826f55532",
+    "stdout": "insert-second|drop-key|first-key-live|second-entry-same|missing|Object stdClass#3 not contained in WeakMap|A|second-key-null|B|key-null|first-null|second-null|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
     "id": "weak-map-notification-sequence-normal-64",
     "source": "<?php\nclass FirstValue {\n    public function __destruct() {\n        global $keyWeak;\n        echo ($keyWeak->get() === null ? \"first-key-null|\" : \"first-key-live|\");\n        echo \"A|\";\n    }\n}\nclass SecondValue {\n    public function __destruct() {\n        global $keyWeak;\n        echo ($keyWeak->get() === null ? \"second-key-null|\" : \"second-key-live|\");\n        echo \"B|\";\n    }\n}\n$secondMap = new WeakMap();\n$firstMap = new WeakMap();\n$key = new stdClass();\n$first = new FirstValue();\n$second = new SecondValue();\n$firstWeak = WeakReference::create($first);\n$secondWeak = WeakReference::create($second);\n$firstMap[$key] = $first;\n$keyWeak = WeakReference::create($key);\necho \"insert-second|\";\n$secondMap[$key] = $second;\nunset($first);\nunset($second);\necho \"drop-key|\";\nunset($key);\necho ($keyWeak->get() === null ? \"key-null|\" : \"key-live|\");\necho ($firstWeak->get() === null ? \"first-null|\" : \"first-live|\");\necho ($secondWeak->get() === null ? \"second-null|\" : \"second-live|\");\nunset($firstMap);\nunset($secondMap);\necho \"END\";\n",
     "source_sha256": "134eb6eb08d32341c6030ca94797ff140f45c63152673393c095be26b3797cf8",
