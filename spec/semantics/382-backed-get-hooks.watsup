@@ -146,7 +146,7 @@ def $property_hook_inherited_backing_walk(S, ppropertydesc, n) = true
   -- if $class_link_at(S.LINKEDPARENTS, porigin_class) = (SOURCE_PARENT porigin_parent)
   -- if $property_desc_at($property_layout(S, porigin_parent, |S.CLASSES|), ppropertydesc.KEY) = (ppropertydesc_parent)
   -- if $property_hook_override_shape(S, ppropertydesc_parent, ppropertydesc)
-  -- if $property_hook_override_backed(S, ppropertydesc_parent) \/ $property_hook_inherited_backing_walk(S, ppropertydesc_parent, $nabs($(n - 1)))
+  -- if $property_hook_override_backed(S, ppropertydesc_parent) \/ $property_hook_inherited_backing_walk(S, ppropertydesc_parent, $nabs($(n - 1))) \/ $property_hook_ordinary_backing(S, ppropertydesc_parent, $nabs($(n - 1)))
 def $property_hook_inherited_backing_walk(S, ppropertydesc, n) = false -- otherwise
 
 ;; Effective virtual declarations retain metadata, but own no slot.
@@ -827,7 +827,7 @@ def $property_hook_ordinary_backing(S, ppropertydesc, n) = true
   -- if $property_hook_ordinary_parent(S, ppropertydesc, n) = (ppropertydesc_parent)
   -- if $property_hook_unbacked_over_ordinary(S, ppropertydesc_parent, ppropertydesc, n)
 def $property_hook_ordinary_backing(S, ppropertydesc, n) = false -- otherwise
-def $property_hook_override_pair(S, ppropertydesc_parent, ppropertydesc_child) = (($property_hook_override_shape(S, ppropertydesc_parent, ppropertydesc_child) /\ ($property_hook_override_backed(S, ppropertydesc_parent) \/ $property_hook_inherited_backing(S, ppropertydesc_parent))) \/ ($property_hook_virtual_edge(S, ppropertydesc_parent, ppropertydesc_child) /\ $property_hook_virtual_chain(S, ppropertydesc_parent, |S.CLASSES|) /\ $property_hook_virtual_chain(S, ppropertydesc_child, |S.CLASSES|)) \/ $property_hook_backed_over_virtual(S, ppropertydesc_parent, ppropertydesc_child) \/ $property_hook_backed_over_ordinary(S, ppropertydesc_parent, ppropertydesc_child) \/ $property_hook_unbacked_over_ordinary(S, ppropertydesc_parent, ppropertydesc_child, |S.CLASSES|))
+def $property_hook_override_pair(S, ppropertydesc_parent, ppropertydesc_child) = (($property_hook_override_shape(S, ppropertydesc_parent, ppropertydesc_child) /\ ($property_hook_override_backed(S, ppropertydesc_parent) \/ $property_hook_inherited_backing(S, ppropertydesc_parent) \/ $property_hook_ordinary_backing(S, ppropertydesc_parent, |S.CLASSES|))) \/ ($property_hook_virtual_edge(S, ppropertydesc_parent, ppropertydesc_child) /\ $property_hook_virtual_chain(S, ppropertydesc_parent, |S.CLASSES|) /\ $property_hook_virtual_chain(S, ppropertydesc_child, |S.CLASSES|)) \/ $property_hook_backed_over_virtual(S, ppropertydesc_parent, ppropertydesc_child) \/ $property_hook_backed_over_ordinary(S, ppropertydesc_parent, ppropertydesc_child) \/ $property_hook_unbacked_over_ordinary(S, ppropertydesc_parent, ppropertydesc_child, |S.CLASSES|))
 
 ;; Before publication only the parent's chain is closed. The child's real
 ;; source/default shape supplies its declaring scope without registering it.
