@@ -1909,6 +1909,12 @@ parent starts uninitialized; the child owns 200 then 300 while the inherited get
 returns 13 with the parent's function and private scope. One original and three
 focused states are recorded in the
 [ordinary-backed inherited-getter review](coverage/semantics/ordinary-backed-parent-plain-inherited-getter-review.json).
+A genuine hooked backing ancestor now supplies the same positive storage proof.
+The nearest source-unbacked parent still supplies the getter and private scope:
+Root gets 107, Parent and plain Child get 13, and Child's slot changes 200 to 300.
+One original and three focused states distinguish that backing witness from the
+selected getter in the
+[hook-backed inherited-getter review](coverage/semantics/inherited-backed-parent-plain-inherited-getter-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
