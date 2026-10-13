@@ -2059,6 +2059,8 @@ active cleanup exposed a missing registered-operation exit check (81fe failure0)
 The scoped84/270 repair at `b6805e2` passes strict385/source2 and independent
 active68 + parked23 premises with two exact EXIT-only refusals. Generic fatal
 history validation stays unchanged; broad returns_verify remains OPEN.
+Actual385 over `b4ff3014` passes joined strict SL initialization at `87ea3155` (6.464 s).
+Private source/public/native and original230 cuts keep their tested revisions.
 [Cancellation and integrity evidence](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
