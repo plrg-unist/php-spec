@@ -106,10 +106,19 @@ def $access_call(S, paccess, ptbytes) = S[.OBJECTS[n_map] = WEAKMAP (pweakmapent
   -- if S.TODO = paccess.TASK :: ptask_tail*
 ;; The receiver survives old-value cleanup, but the assignment result is not
 ;; copied until write_dimension returns. An unused result needs no RHS read.
-def $weakmap_set_resume(S, paccess) = true
+;; ASSIGN_DIM frees OP_DATA, the receiver pin, OP2, then OP1. These are
+;; the same owning roots as the ordinary access carrier, in decrement order.
+def $weakmap_set_shape(paccess) = true
   -- if paccess.MODE = ACCESS_SET /\ ~paccess.LATCH /\ ~paccess.KEYHOLE
   -- if paccess.PHASE = ACCESS_CALL $ptascii("offsetSet")
   -- if paccess.TASK = ASSIGN_ARRAY (BASE_DIM paccess.BASE paccess.INPUT paccess.KEYLINE) paccess.LINE false
+  -- if paccess.OUTER
+  -- if paccess.OBJECT =/= eps
+def $weakmap_set_shape(paccess) = false -- otherwise
+def $task_nodes(ACCESS_RESUME paccess) = $operand_nodes(paccess.RHS) ++ $access_object_roots(paccess.OBJECT, paccess.OUTER) ++ $operand_nodes(paccess.INPUT) ++ $base_nodes(paccess.BASE)
+  -- if $weakmap_set_shape(paccess)
+def $weakmap_set_resume(S, paccess) = true
+  -- if $weakmap_set_shape(paccess)
   -- if paccess.OBJECT = (n_map)
   -- if $weakmap_at(S, n_map)
   -- if ~$instance_storage_freeing(S, n_map)
