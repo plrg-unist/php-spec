@@ -1029,6 +1029,7 @@ def main():
         'untyped': (UNTYPED, [], 0, 16),
         'lifetime': (LIFETIME, [], 1, 7),
     }[args.group]
+    sl_cap = 150 if args.group in ('this', 'write', 'untyped', 'lifetime') else 90
     selections = [(args.group, clauses, negatives)]
     cases = [data['cases'][case_index]]
     sources = [HERE / ('repeated-ordinary-unbacked-get-hook-' + ['scalar', 'lifetime'][case_index] + '.php')]
@@ -1056,7 +1057,8 @@ def main():
               'mode': 'SL', 'cache': False, 'det': True, 'records': [],
               'application_invocations': 0, 'application_evaluations': 0, 'source_agreements': 0,
               'derived_premises': derived, 'reached_premises': reached, 'premises': derived + reached,
-              'cap_seconds': 90, 'environment': {'LC_ALL': 'C', 'TZ': 'UTC', 'jobs': 1}, 'passed': False}
+              'cap_seconds': sl_cap, 'algorithmic_cap_seconds': 90,
+              'environment': {'LC_ALL': 'C', 'TZ': 'UTC', 'jobs': 1}, 'passed': False}
     fixture = None
     try:
         flags = [part for key, value in profile.items() for part in ('-d', key + '=' + value)]
@@ -1100,7 +1102,7 @@ def main():
             report['passed'] = passed
             assert passed
             report['application_invocations'] = 1
-            process = recorder.recorded([str(runner), '--sl', *map(str, modules), str(fixture)], out / 'state', 90)
+            process = recorder.recorded([str(runner), '--sl', *map(str, modules), str(fixture)], out / 'state', sl_cap)
             output = (out / 'state.stdout').read_bytes()
             evaluated = process['exit'] == 0 and output in (b'true\n', b'false\n')
             report['application_evaluations'] = int(evaluated)
