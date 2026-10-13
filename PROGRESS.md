@@ -1658,6 +1658,8 @@ zero; the diagnostic and native newline anticipation miss are retained separatel
 Existing TYPE/default/layout/store/permission/owner rules are unchanged; wider
 setter/flags/hook families remain required.
 [Protected setter review](coverage/semantics/virtual-parent-protected-set-plain-inherited-getter-review.json).
+Joined exact `2fa9fb92`/386; one current init-only check passes with no application.
+Private cuts remain retained through inactive runtime journals and disjoint update-warning/WeakMap paths.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
