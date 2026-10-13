@@ -98,14 +98,41 @@ def $access_call(S, paccess, ptbytes) = $access_done(S_read[.OBJECTS[n_map] = WE
   -- if S_read.RESULT = KNOWN pvalue_result
 ;; Replacing an existing key keeps its registration and publishes the new
 ;; value before ordinary eager release of the old value.
-def $access_call(S, paccess, ptbytes) = $access_done(S_read[.OBJECTS[n_map] = WEAKMAP (pweakmapentry[.VALUE = paccess.VALUE])], paccess, pvalue_result)
+def $access_call(S, paccess, ptbytes) = S[.OBJECTS[n_map] = WEAKMAP (pweakmapentry[.VALUE = paccess.VALUE])][.TODO = (ACCESS_RESUME paccess[.PHASE = ACCESS_CALL ptbytes]) :: ptask_tail*][.ORIGIN = (paccess.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if paccess.OBJECT = (n_map)
   -- if $weakmap_at(S, n_map)
   -- if ptbytes = $ptascii("offsetSet") /\ $weakmap_replace_allowed(S, paccess)
   -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
+  -- if S.TODO = paccess.TASK :: ptask_tail*
+;; The receiver survives old-value cleanup, but the assignment result is not
+;; copied until write_dimension returns. An unused result needs no RHS read.
+def $weakmap_set_resume(S, paccess) = true
+  -- if paccess.MODE = ACCESS_SET /\ ~paccess.LATCH /\ ~paccess.KEYHOLE
+  -- if paccess.PHASE = ACCESS_CALL $ptascii("offsetSet")
+  -- if paccess.TASK = ASSIGN_ARRAY (BASE_DIM paccess.BASE paccess.INPUT paccess.KEYLINE) paccess.LINE false
+  -- if paccess.OBJECT = (n_map)
+  -- if $weakmap_at(S, n_map)
+  -- if ~$instance_storage_freeing(S, n_map)
+  -- if $access_valid(S, paccess)
+def $weakmap_set_resume(S, paccess) = false -- otherwise
+dec $weakmap_set_finish(pstate, paccess) : pstate
+def $weakmap_set_finish(S, paccess) = $access_done(S, paccess, PNULL)
+  -- if S.TODO = (ACCESS_RESUME paccess) :: ptask_tail*
+  -- if $destructor_return_discarded(ptask_tail*)
+def $weakmap_set_finish(S, paccess) = $access_done(S_read, paccess, pvalue_result)
+  -- if S.TODO = (ACCESS_RESUME paccess) :: ptask_tail*
+  -- if ~$destructor_return_discarded(ptask_tail*)
   -- if S_read = $quiet_operand(S, paccess.SELECTED)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue_result
+def $weakmap_set_finish(S, paccess) = S_read
+  -- if S.TODO = (ACCESS_RESUME paccess) :: ptask_tail*
+  -- if ~$destructor_return_discarded(ptask_tail*)
+  -- if S_read = $quiet_operand(S, paccess.SELECTED)
+  -- if S_read.COMPLETION =/= NORMAL
+rule PhpStep/weakmap-set-resume: S ~> $weakmap_set_finish(S, paccess)
+  -- if S.TODO = (ACCESS_RESUME paccess) :: ptask_tail*
+  -- if $weakmap_set_resume(S, paccess)
 ;; Ordinary dimension reads copy the stored value. Object-store handles,
 ;; not permanent semantic IDs, appear in the missing-key Error message.
 dec $weakmap_read_allowed(pstate, paccess) : bool

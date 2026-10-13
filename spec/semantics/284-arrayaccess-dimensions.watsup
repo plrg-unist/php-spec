@@ -43,6 +43,7 @@ dec $access_source(pstate, paccess) : bool
 dec $access_base_source(pstate, paccess) : bool
 dec $access_phase(paccess) : bool
 dec $access_valid(pstate, paccess) : bool
+dec $weakmap_set_resume(pstate, paccess) : bool
 dec $access_capture_valid(paccess) : bool
 dec $access_selected_valid(paccess) : bool
 dec $access_rhs_selected(poperand, poperand, pvalue) : bool
@@ -585,7 +586,7 @@ def $access_object_valid(S, (n)) = true
 def $access_object_valid(S, n?) = false -- otherwise
 
 def $call_task_valid(S, ACCESS_RESULT paccess) = ($access_valid(S, paccess) /\ $access_call_phase(paccess.PHASE))
-def $call_task_valid(S, ACCESS_RESUME paccess) = ($access_valid(S, paccess) /\ ~$access_call_phase(paccess.PHASE))
+def $call_task_valid(S, ACCESS_RESUME paccess) = ($access_valid(S, paccess) /\ (~$access_call_phase(paccess.PHASE) \/ $weakmap_set_resume(S, paccess)))
 def $access_call_phase(ACCESS_CALL ptbytes) = true
 def $access_call_phase(paccessphase) = false -- otherwise
 def $error_call_valid(S, perrorcall) = true
