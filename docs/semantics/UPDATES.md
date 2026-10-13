@@ -45,9 +45,15 @@ operands survive handler cleanup, then retire before caller cleanup and shutdown
 catch/finally and interrupted result assignment are skipped while exit remains
 pending. Borrowed old cells, genuine GLOBALS rebinding/unset, nested handlers,
 registry replacement and request exit status preserve their distinct effects.
-Owning callbacks and handler-local/parent cleanup throws that cancel exit have
-native originals and exact Unsupported controls; their full caught continuations
-remain required follow-on work.
+[Handler-local cleanup Throwables](../../coverage/semantics/incdec-exit-cancellation-review.json)
+now cancel exit for the named, safe-restoration slice. Registry restoration and
+captured bool/decrement-null commit precede the original caller throw; strings
+retain writes. Catch/finally and subsequent code resume without delivering the
+interrupted result or synthesizing Previous. Live borrowed cells, late peer
+detachment, nested handlers, request status23 and nonthrowing parent-temporary
+cleanup are validated by seven new and one repaired original plus 499 genuine SL
+conditions at separate cuts. Owning callback release, unsafe restoring targets and
+pending-exit parent cleanup throws keep their native obligations and named boundaries.
 
 String dimensions validate the key before rejecting increment/decrement; nested
 string dimensions retain the separate nested-array error. Generic dimension

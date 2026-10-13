@@ -1,0 +1,111 @@
+{
+  "scope": "Supplied handler-local cleanup Throwables cancel named non-owning inc/dec warning-handler exit for defined initially untyped scalar direct CVs and live borrowed cells, with safe primitive/object-free restoring targets.",
+  "status": "independently_reviewed_bounded_runtime",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "production_revision": "66cb8fde173c84c3525876c9a48fd52bb3e73a76",
+  "semantic_sha256": {
+    "spec/semantics/390-incdec-warning-continuations.watsup": "f5b802c2e39f00af760b527a3ae6d9a9baa628cca0671633b3750618fe239af5"
+  },
+  "engine_basis": [
+    "vendor/php-src/Zend/zend_operators.c: increment_function/decrement_function restore captured bool/decrement-null after zend_error despite a pending cleanup exception; string helpers skip restoration on exception.",
+    "vendor/php-src/Zend/zend.c: zend_error finishes handler locals before registry restoration and returns the real pending exception to the scalar helper.",
+    "vendor/php-src/Zend/zend_exceptions.c and Zend/zend_vm_def.h: a real cleanup Throwable replaces internal UnwindExit, keeps its identity/Previous, and resumes caller exception control; request exit status survives cancellation."
+  ],
+  "contract": [
+    "At the authentic THROW_SEARCH plus UPDATE_WARNING_EXIT boundary, a live supplied Throwable moves to the existing DONE pending root. Registry restoration precedes safe captured bool/null store; string updates retain callback writes.",
+    "DONE resumes the actual caller THROW_SEARCH with one pending owner, retaining caller tasks/context and temporary owners. Interrupted update results are not delivered; catch/finally and subsequent code execute. No UnwindExit object or Previous link is synthesized.",
+    "Borrowed old cells remain distinct from rebound caller variables; a callback-created reference detaches from an initially plain CV without overwriting its surviving peer. Nested inner cancellation resumes the outer handler, and a newly installed registry survives.",
+    "Request EXITSTATUS is preserved, including native exit 23 with checked normal JSON exit_status 23 and model process 0. Nonthrowing parent temporaries survive captured restoration and retire during ordinary exception cleanup before catch."
+  ],
+  "accepted": {
+    "strict": {
+      "revision": "5887c448f3765beb03dfb97ac2711ebbbda38901",
+      "modules": 382,
+      "mode": "SL main=true; compilation/init only, zero PHP runtime credit",
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-06/strict-5887c448f/report.json"
+    },
+    "source": {
+      "new_author_ordinary": 4,
+      "new_independent_ordinary": 3,
+      "repaired_earlier_ordinary": 1,
+      "total_distinct_ordinary": 8,
+      "cuts": [
+        {
+          "revision": "5887c448f3765beb03dfb97ac2711ebbbda38901",
+          "ordinary_rows": 2,
+          "reports": [
+            "/home/user/workspace/php-spec-evidence-archive/operators-06/smoke-5887c448f-int23/report.json",
+            "/home/user/workspace/php-spec-evidence-archive/operators-06/smoke-5887c448f-string-post/report.json"
+          ]
+        },
+        {
+          "revision": "f2a377e79f85ee588c613abcc038451e60067bb5",
+          "ordinary_rows": 3,
+          "report": "/home/user/workspace/php-spec-evidence-archive/operators-06/focus-f2a377e79-cpu4/report.json",
+          "qualification": "Remaining null/kept-cell sources and one repaired old mixed-suite local-throw expectation. Original PHP bytes remain unchanged; older campaigns are not renewed."
+        },
+        {
+          "revision": "66cb8fde173c84c3525876c9a48fd52bb3e73a76",
+          "ordinary_rows": 3,
+          "report": "/home/user/workspace/php-spec-evidence-archive/operators-incdec-exit-cancellation-review-06/focus-66cb8fde1/report.json"
+        }
+      ],
+      "result": "Checked normal outcomes match exact native stdout/stderr/exit_status; native status 23 is case-specific. Every accepted actor is uninterrupted, reaped and bound to frozen revision/inputs."
+    },
+    "author_reached": {
+      "revision": "f2a377e79f85ee588c613abcc038451e60067bb5",
+      "mode": "SL",
+      "fixtures": 3,
+      "conditions": 240,
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-06/focus-f2a377e79-cpu4/report.json",
+      "result": "Actual cancel/DONE/THROW_SEARCH frontiers, one pending Throwable owner plus its real global owner, Previous null, native status 23/string/kept-cell endings, source/range negatives and public zero/one/budget resume."
+    },
+    "independent_reached": {
+      "revision": "66cb8fde173c84c3525876c9a48fd52bb3e73a76",
+      "mode": "SL",
+      "fixtures": 3,
+      "conditions": 259,
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-incdec-exit-cancellation-review-06/focus-66cb8fde1/report.json",
+      "result": "Late peer owners2 to1 plus fresh CV1, inner versus outer capture and fresh h3 registry, parent owner1 through commit/search then ordinary destructor cleanup; positive descriptors/heap and native/public resume."
+    },
+    "total_reached_conditions": 499
+  },
+  "preserved_zero_credit": [
+    "baseline-e34c25b52-int23 retains the unchanged-production checked Unsupported increment/decrement warning exit cleanup throw, matching only the native prefix. It is the genuine gap, not PHP agreement.",
+    "Native/frontend/AST preparation has zero model credit. The unrun CPU3 draft remains unrun; the executed CPU4 author packet differs only by affinity/output location.",
+    "Exactly one earlier local-throw control becomes a normal expectation; old source bytes and all other controls remain intact. The state-prep recorder accepts only fixed case EXIT_CODES with legacy 0 default. No OP05/OP04/OP390 campaign or historical state count is renewed."
+  ],
+  "retained_boundaries": {
+    "owning_callback_release": "increment/decrement warning exit continuation",
+    "pending_exit_parent_cleanup_throw": "increment/decrement warning exit parent cleanup throw",
+    "unsafe_restoring_target_after_local_throw": "increment/decrement warning exit cleanup throw"
+  },
+  "required_follow_on": [
+    "Implement pending-exit parent-temporary cleanup throws that cancel exit after captured commit, preserving historical caller catch/finally and real retired operand ownership. The OP05 parent-throw native/control remains required.",
+    "Implement owning callback release before captured commit and unsafe owned/expired/constrained restoration targets after cleanup throws.",
+    "Replacement/destructor exit, wider update locations, typed references/properties and suspension retain separate obligations; full core and all six inventory rows remain partial."
+  ],
+  "recovery": {
+    "author_archive": "/home/user/workspace/php-spec-evidence-archive/operators-06",
+    "independent_archive": "/home/user/workspace/php-spec-evidence-archive/operators-incdec-exit-cancellation-review-06",
+    "source_helpers": [
+      "tests/semantics/incdec_exit_cancellation.py",
+      "tests/semantics/incdec_exit_cancellation_review.py"
+    ],
+    "state_helpers": [
+      "tests/semantics/incdec_exit_cancellation_protocol.py",
+      "tests/semantics/incdec_exit_cancellation_state_review.py"
+    ],
+    "runtime": {
+      "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+    },
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": null
+    },
+    "instructions": "Use fresh external outputs and explicit SL under root resource coordination. Reports retain commands, source/fixture/tool identities, raw streams, exits and reaped groups. Linked retained tools are not a fresh rebuild or portability claim; renew affected checks only."
+  }
+}

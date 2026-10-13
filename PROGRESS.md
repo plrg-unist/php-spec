@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Handler-local cleanup Throwables now cancel named inc/dec warning-handler exit,
+restore safe captured bool/decrement-null values (strings retain writes), and resume
+real caller catch/finally without delivering the interrupted result. Supplied identity,
+Previous null, live aliases, fresh nested registry and request status23 are preserved.
+Seven new and one repaired earlier original agree at 5887/f2a/66cb. Three author
+fixtures pass 240 conditions and three independent fixtures pass 259 (499 total). The original
+Unsupported baseline and native/preparation-only records retain zero credit; older
+campaigns are unchanged. Owning callbacks, unsafe targets and pending-exit parent
+cleanup throw remain required next cuts; full core stays partial.
+[Cancellation ledger](coverage/semantics/incdec-exit-cancellation-review.json).
+
 Module395 normal user-output-handler callbacks are independently
 accepted; the current385 composition is checked. Chunk0 explicit flush/clean/end/get
 operations retain frozen inputs/getter copies, weak internal calls and builtin

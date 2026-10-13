@@ -256,9 +256,37 @@ rule PhpStep/update-warning-exit-restore: S ~> $exit_start_unwind($update_warnin
   -- if $update_warning_pointer_value(S, pupdatewarning.POINTER) = (pslot)
   -- if $update_warning_release_safe(S, pslot)
   -- if $update_warning_after(pupdatewarning.OP, pupdatewarning.INPUT) = (pvalue)
+;; A real handler-local Throwable replaces UnwindExit. Restore the helper,
+;; then continue through the retained caller tail without resetting EXITSTATUS.
+dec $update_warning_exit_cancel_safe(pstate, perrorcall) : bool
+def $update_warning_exit_cancel_safe(S, perrorcall) = true
+  -- if perrorcall.RESUME = UPDATE_WARNING_RESTORE pupdatewarning
+  -- if ~$update_warning_restores_throw(pupdatewarning.INPUT)
+def $update_warning_exit_cancel_safe(S, perrorcall) = true
+  -- if perrorcall.RESUME = UPDATE_WARNING_RESTORE pupdatewarning
+  -- if $update_warning_restores_throw(pupdatewarning.INPUT)
+  -- if $update_warning_pointer_value(S, pupdatewarning.POINTER) = (pslot)
+  -- if $update_warning_release_safe(S, pslot)
+def $update_warning_exit_cancel_safe(S, perrorcall) = false -- otherwise
+rule PhpStep/update-warning-exit-cleanup-throw-string: S ~> $error_handler_restore(S[.TODO = (UPDATE_WARNING_DONE pupdatewarning[.PENDING = (n)]) :: ptask_tail*], perrorcall.CALLBACK)
+  -- if S.TODO = (THROW_SEARCH n) :: (UPDATE_WARNING_EXIT perrorcall z) :: ptask_tail*
+  -- if $call_task_valid(S, UPDATE_WARNING_EXIT perrorcall z)
+  -- if $throwable_live(S, n)
+  -- if perrorcall.RESUME = UPDATE_WARNING_RESTORE pupdatewarning
+  -- if ~$update_warning_restores_throw(pupdatewarning.INPUT)
+rule PhpStep/update-warning-exit-cleanup-throw-restore: S ~> $update_warning_store($error_handler_restore(S[.TODO = (UPDATE_WARNING_DONE pupdatewarning[.PENDING = (n)]) :: ptask_tail*], perrorcall.CALLBACK), pupdatewarning.POINTER, pvalue)
+  -- if S.TODO = (THROW_SEARCH n) :: (UPDATE_WARNING_EXIT perrorcall z) :: ptask_tail*
+  -- if $call_task_valid(S, UPDATE_WARNING_EXIT perrorcall z)
+  -- if $throwable_live(S, n)
+  -- if perrorcall.RESUME = UPDATE_WARNING_RESTORE pupdatewarning
+  -- if $update_warning_restores_throw(pupdatewarning.INPUT)
+  -- if $update_warning_pointer_value(S, pupdatewarning.POINTER) = (pslot)
+  -- if $update_warning_release_safe(S, pslot)
+  -- if $update_warning_after(pupdatewarning.OP, pupdatewarning.INPUT) = (pvalue)
 rule PhpStep/update-warning-exit-cleanup-throw: S ~> S[.COMPLETION = UNSUPPORTED "increment/decrement warning exit cleanup throw"]
   -- if S.TODO = (THROW_SEARCH n) :: (UPDATE_WARNING_EXIT perrorcall z) :: ptask_tail*
   -- if $call_task_valid(S, UPDATE_WARNING_EXIT perrorcall z)
+  -- if ~$update_warning_exit_cancel_safe(S, perrorcall)
 
 ;; A parent temporary can also cancel exit by throwing after the scalar store.
 ;; Its caller catch continuation needs a separate restoration protocol.

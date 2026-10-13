@@ -330,8 +330,10 @@ locations remain required.
 finish handler-local cleanup before restoring captured bool/decrement-null
 values; strings retain callback writes. Registry restoration, caller temporaries,
 nested handlers, surviving aliases and request exit status are checked through
-shutdown. Owning callback cleanup and caught cleanup throws that cancel exit
-remain required.
+shutdown. [Handler-local cleanup cancellation](coverage/semantics/incdec-exit-cancellation-review.json)
+now restores safe captured values and resumes real caller catch/finally, preserving
+Throwable identity, aliases, registry changes and request exit status. Owning callback
+release and pending-exit parent cleanup throws remain required.
 All twelve [compound assignments](docs/semantics/UPDATES.md) preserve captured
 targets, delayed reads and alias ownership; [independent evidence](coverage/semantics/compound-review.json)
 records 2,639 exact source comparisons and the corrected diagnostic phases.
