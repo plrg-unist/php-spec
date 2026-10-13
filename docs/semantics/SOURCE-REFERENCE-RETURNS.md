@@ -441,3 +441,12 @@ ownership machinery. Suppression, named/unpacked/variadic calls, closures/callab
 objects, exceptions/finally, dynamic sources, generators/Fibers, lifecycle and
 intrinsics remain required, followed by callable integration and final complete
 source/syntax/fresh offline checks. No intentional engine departure is introduced.
+
+M46 at `27a92e4b`/386 validates external destruction of a suspended Fiber
+with an object-valued owning reference-return carrier. Early98/two heap-valid
+refusals binds original x/O to parking and drop-triggered destruction; parked
+phase and close-caller VM operation EXIT remain separate controls. Source/native2
+agrees for early/delayed drop. Separate late135+135 executions follow their own
+pre-drop carrier through active D to graceful, non-returning Fiber retirement,
+main L/G/E, canceled worker R and budget from the restored caller cut. Modeled
+allocation/root retirement is not physical Zend collection; wider returns stay OPEN.

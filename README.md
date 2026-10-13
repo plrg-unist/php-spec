@@ -2751,6 +2751,10 @@ Suspended untyped `finally` cancellation also validates at `cbc57fdb`: the old
 object carrier survives parking, then an override triggers its destructor before
 delivery of the new y cell to worker aliases. Source2, early92/two controls and
 separate late214 pass; abstract cell retirement is not physical Zend collection.
+Dropping an orphaned suspended Fiber also validates without a runtime change at
+`27a92e4b`: early D precedes L; delayed drop keeps the carrier through GC and emits
+D between G/E. Source2, early98/two refusals and separate late270 pass, including
+canceled worker R, drained close controls and caller-budget continuation.
 [Weak Stringable parameters](coverage/semantics/weak-string-parameters-review.json)
 now convert supplied fixed parameters in receive order, preserving caller
 strictness, nominal/callable precedence and the entered formal cell. Existing

@@ -2169,6 +2169,15 @@ main E and budget from the worker alias state, with direct control. No runtime
 change, cross-fixture identity, physical collection or broad returns completion.
 [Cancellation and integrity evidence](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
+M46 validates orphaned suspended object-reference carriers at `27a92e4b`/386.
+Source/native2 agrees: early external drop emits D before L, delayed drop after
+the first GC emits D between G/E. Early98/two refusals follows original x/O through
+parking to drop-triggered destruction and checks parked phase/close-VM EXIT integrity.
+Separate late135+135 executions retain their own carrier until drop, then cancel
+worker R, retire modeled allocations, restore main and preserve caller-cut budget.
+Parse d531 remains0; corrected paired elaboration0db9 is syntax-only/app0. No runtime
+change, cross-fixture identity, physical collection or broad returns completion.
+
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
 Per-constant protection survives namespace publication and parked handlers.

@@ -234,3 +234,12 @@ Typed-property reference constraints, finally rechecks, objects/methods, dynamic
 sources and dynamic callables, named/unpacked/variadic calls, generators/Fibers and lifecycle remain
 required later core work. Publish reviewed paired code, evidence and concise docs
 in small commits after exact canonical equality and CLI validation. Never push.
+
+M46 is validation only at `27a92e4b`/386: early/delayed external Fiber drop
+source2, early98/two phase/close-VM EXIT refusals and separate late270 pass.
+Late executions authenticate their own pre-drop carrier (delayed control retains
+it through the first GC), active D, graceful non-returning Fiber retirement,
+restored main L/G/E and caller-cut budget; worker R is canceled. Recover with
+reference_orphaned_cv_state.py and orphaned_carrier_validation in the local-CV
+ledger. Preserve parse d5310, syntax-only0db9app0 and unrun c677 marker correction0.
+Physical collection, wider abrupt close and broad returns verification remain OPEN.
