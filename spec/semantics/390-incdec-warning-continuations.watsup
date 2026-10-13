@@ -185,7 +185,10 @@ def $update_warning_exit_tasks(S, ptask :: ptask_tail*) = $update_warning_exit_t
 dec $update_warning_exit_frames(pstate, pframe*) : bool
 def $update_warning_exit_frames(S, eps) = false
 def $update_warning_exit_frames(S, pframe :: pframe_tail*) = ($update_warning_exit_tasks($constant_frame_scope(S, pframe, pframe_tail*), pframe.TODO) \/ $update_warning_exit_frames(S, pframe_tail*))
-def $update_warning_exit_pending(S) = ($update_warning_exit_tasks(S, S.TODO) \/ $update_warning_exit_frames(S, S.FRAMES))
+dec $update_callback_destructor_exit_pending(pstate) : bool
+dec $update_callback_destructor_exit_entered(pstate) : bool
+dec $update_callback_destructor_exit_return(pstate) : bool
+def $update_warning_exit_pending(S) = ($update_warning_exit_tasks(S, S.TODO) \/ $update_warning_exit_frames(S, S.FRAMES) \/ $update_callback_destructor_exit_pending(S))
 dec $update_warning_exit_named(pstate, perrorcall) : bool
 dec $update_warning_exit_owning(pstate, perrorcall) : bool
 dec $update_warning_exit_admitted(pstate, perrorcall) : bool
@@ -221,7 +224,7 @@ def $update_warning_exit_handler_head(S, pcallcontext?, pframe, pframe_tail*) = 
 dec $update_warning_exit_handler(pstate, pcallcontext?, pframe*) : bool
 def $update_warning_exit_handler(S, pcallcontext?, pframe :: pframe_tail*) = ($update_warning_exit_handler_head(S, pcallcontext?, pframe, pframe_tail*) \/ $update_warning_exit_handler(S, pframe.CONTEXT, pframe_tail*))
 def $update_warning_exit_handler(S, pcallcontext?, eps) = false
-def $update_warning_exit_unwind(S) = ($update_warning_exit_call(S) = eps /\ $update_warning_exit_handler(S, S.CURRENT, S.FRAMES))
+def $update_warning_exit_unwind(S) = ((~$update_callback_destructor_exit_pending(S) /\ $update_warning_exit_call(S) = eps /\ $update_warning_exit_handler(S, S.CURRENT, S.FRAMES)) \/ $update_callback_destructor_exit_entered(S))
 ;; Caller operands and protected-region markers remain pending until the
 ;; warning helper returns. Its final exit step drops them without executing them.
 def $exit_start_unwind(S, z) = S[.TODO = (UPDATE_WARNING_EXIT perrorcall z) :: ptask_tail*][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -237,6 +240,7 @@ def $exit_start_unwind(S, z) = S[.COMPLETION = UNSUPPORTED "increment/decrement 
   -- if $update_warning_exit_pending(S)
   -- if ~$update_warning_exit_unwind(S)
   -- if $update_warning_exit_call(S) = eps
+  -- if ~$update_callback_destructor_exit_return(S)
 
 def $task_nodes(UPDATE_WARNING_EXIT perrorcall z) = $value_nodes(perrorcall.CALLBACK) ++ $error_selected_roots(perrorcall.TARGET)
 def $call_task_valid(S, UPDATE_WARNING_EXIT perrorcall z) = ($update_warning_exit_admitted(S, perrorcall) /\ z = $ntprecision32(z))
@@ -452,6 +456,65 @@ def $update_exit_control_call(S) = ((perrorcall, z, ptask_tail*))
   -- if $update_callback_exit_valid(S, pdestructioncleanup, z, 2)
   -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
 def $update_exit_control_call(S) = eps -- otherwise
+
+;; A raw callback destructor can replace pending exit control. Its real frame
+;; unwinds first, then returns through objects_destroy_object and the helper;
+;; caller operands remain owned until phase2 has restored or skipped the store.
+dec $update_callback_destructor_exit_call(pstate) : pdestructorcall?
+dec $update_callback_destructor_exit_head(pstate, pcallcontext?, pframe, pframe*) : bool
+dec $update_callback_destructor_exit_frames(pstate, pcallcontext?, pframe*) : bool
+def $update_callback_destructor_exit_call(S) = (pdestructorcall)
+  -- if S.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z 2) :: ptask_tail*
+  -- if $destructor_result_valid(S, pdestructorcall)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if $destructor_operation_valid(S, pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = ERROR_HANDLER_CLEAN perrorcall
+  -- if pdestructionoperation.CLEANUP = (pdestructioncleanup)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall /\ pdestructioncleanup.RELEASED
+  -- if perrorcall.CALLBACK = POBJECT n
+  -- if pdestructorcall.OBJECT = n
+  -- if pdestructorcall.RELEASE = (pdestructionrelease_source)
+  -- if pdestructionrelease_source.JOBS = pdestructionjob :: pdestructionjob_tail*
+  -- if $destruction_job_node(pdestructionjob) = (HOBJECT n)
+  -- if pdestructionrelease = pdestructionrelease_source[.JOBS = pdestructionjob_tail*]
+  -- if $update_callback_exit_source_valid(S, pdestructioncleanup)
+  -- if $destructor_release_live(S, pdestructionrelease)
+  -- if z = $ntprecision32(z)
+def $update_callback_destructor_exit_call(S) = eps -- otherwise
+def $update_callback_destructor_exit_return(S) = true
+  -- if $update_callback_destructor_exit_call(S) = (pdestructorcall)
+  -- if S.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail*
+  -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
+  -- if S.DESTRUCTION.RELEASES = pdestructionrelease :: pdestructionrelease_tail*
+  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+  -- if pdestructorcall.PENDING = eps /\ pdestructionoperation.PENDING = eps
+def $update_callback_destructor_exit_return(S) = false -- otherwise
+def $update_callback_destructor_exit_head(S, (pcallcontext), pframe, pframe_tail*) = true
+  -- if $update_callback_destructor_exit_call($constant_frame_scope(S, pframe, pframe_tail*)) = (pdestructorcall)
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if $destructor_context_valid(S, pcallcontext)
+def $update_callback_destructor_exit_head(S, pcallcontext?, pframe, pframe_tail*) = false -- otherwise
+def $update_callback_destructor_exit_frames(S, pcallcontext?, eps) = false
+def $update_callback_destructor_exit_frames(S, pcallcontext?, pframe :: pframe_tail*) = ($update_callback_destructor_exit_head(S, pcallcontext?, pframe, pframe_tail*) \/ $update_callback_destructor_exit_frames(S, pframe.CONTEXT, pframe_tail*))
+def $update_callback_destructor_exit_pending(S) = ($update_callback_destructor_exit_call(S) =/= eps \/ $update_callback_destructor_exit_frames(S, S.CURRENT, S.FRAMES))
+def $update_callback_destructor_exit_entered(S) = true
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if $update_callback_destructor_exit_head(S, S.CURRENT, pframe, pframe_tail*)
+  -- if $update_callback_destructor_exit_return($constant_frame_scope(S, pframe, pframe_tail*))
+  -- if $destructor_local_cells(S.ENV, S.SYMBOLS) = eps
+  -- if S.HELD = eps /\ $tasks_nodes(S.TODO) = eps
+def $update_callback_destructor_exit_entered(S) = false -- otherwise
+def $exit_drive(S, n) = S
+  -- if S.COMPLETION = UNSUPPORTED "increment/decrement warning exit continuation"
+  -- if $update_callback_destructor_exit_pending(S)
+  -- if ~$update_callback_destructor_exit_entered(S)
+  -- if ~$update_callback_destructor_exit_return(S)
+def $exit_start_unwind(S, z) = $destructor_finish(S[.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z 2) :: ptask_tail*][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pdestructorcall)
+  -- if ~$fiber_closing(S, S.ACTIVEFIBER)
+  -- if ~$property_dynamic_exit_pending(S)
+  -- if ~$foreach_bind_exit_pending(S)
+  -- if $update_callback_destructor_exit_return(S) /\ z = $ntprecision32(z)
+  -- if S.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z_old 2) :: ptask_tail*
 
 ;; Exit retires operands and pending finally outcomes before parent cleanup.
 ;; Recover only the ordered caller control from source; no released value is

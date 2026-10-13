@@ -202,7 +202,9 @@ def $exit_start_unwind(S, z) = $clone_exit_drop($error_release_iterators($silenc
   -- if ~$update_warning_exit_pending(S) \/ $update_warning_exit_unwind(S)
   -- if ptask* = $source_static_exit_tail(S, S.TODO)
   -- if ptask* =/= eps
-def $drive_steps(S, n) = $drive_steps($exit_start_unwind(S, z), n)
+dec $exit_drive(pstate, nat) : pstate
+def $exit_drive(S, n) = $drive_steps(S, n) -- otherwise
+def $drive_steps(S, n) = $exit_drive($exit_start_unwind(S, z), n)
   -- if S.COMPLETION = EXITED z
   -- if S.FRAMES =/= eps
   -- if ~$eval_compile_exit_pending(S)

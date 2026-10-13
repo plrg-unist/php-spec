@@ -1,0 +1,124 @@
+{
+  "status": "independently_reviewed_private",
+  "scope": "Exit from a direct raw owning invokable INSTANCE warning-handler destructor, with no pending user Throwable, no destructor-local cells and no owned HELD/TODO operands. Defined untyped scalar direct-CV/live borrowed-cell targets retain safe bool/decrement-null restoration or string store skip before caller-temporary cleanup.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "production_revision": "2cd6b6481701764fd82d9e52e9f3cf725b689163",
+  "semantic_sha256": {
+    "spec/semantics/148-core-intrinsics.watsup": "4ae551d2043e8b43d489bb41a21aed250b58ef465285a0dfd5f9293ac5601d2b",
+    "spec/semantics/390-incdec-warning-continuations.watsup": "477e956d44cad9495bd02c0d0fc37b4a047f664fa338fcf96446d5e3e93e4085"
+  },
+  "engine_basis": [
+    "Zend/zend.c: zend_error_zstr_at finishes callback receiver cleanup, its one saved-handler registry decision and raw handler destruction before returning to the inc/dec helper.",
+    "Zend/zend_objects.c: zend_objects_destroy_object and the ordinary destructor return retain the genuine caller until raw object release finishes. The observed nested exit replaces exit control without requiring a fabricated Throwable.",
+    "Zend/zend_operators.c: bool/decrement-null capture restoration follows warning cleanup; string helpers skip that store on abrupt completion. Native integer exit17 replaces body23, while string exit retains request status23."
+  ],
+  "contract": [
+    "Authenticate the actual raw-H DESTRUCTOR_RESULT/call/operation/released cleanup certificate and the exact remaining release after consuming its H job. Broad recognition includes excluded pending/nested scopes; admission requires the direct entered destructor, empty pending Throwable and empty local/held/operand cleanup.",
+    "The destructor unwinds through its genuine saved frame. Ordinary destructor_finish preserves surviving owners, and only the queued phase2 exit status changes; the release operation, historical source certificate and caller operands remain intact.",
+    "Existing phase2 restores safe bool/decrement-null or skips the string store, then resumes exit before parent cleanup and shutdown. Registry replacement or clearing survives; the interrupted result assignment and caller catch/finally remain skipped.",
+    "The authentic pending-Throwable control is explicitly refused before parent cleanup. A narrowly scoped exit-driver handoff returns that Unsupported state without starting the generic error unwind; every other exit keeps the previous driver path."
+  ],
+  "accepted": {
+    "strict": {
+      "revision": "cdc375d6d487ff8cfcae4edacb82207610071e53",
+      "modules": 387,
+      "mode": "SL main=true; zero PHP runtime credit",
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-10/strict-cdc375d6d/report.json"
+    },
+    "source": {
+      "new_ordinary": 4,
+      "distinct_ordinary": 4,
+      "unsupported_controls": 1,
+      "control_agreement_credit": 0,
+      "cuts": [
+        {
+          "revision": "cdc375d6d487ff8cfcae4edacb82207610071e53",
+          "ordinary": 1,
+          "reports": [
+            "/home/user/workspace/php-spec-evidence-archive/operators-10/smoke-cdc375d6d-bool17/report.json"
+          ]
+        },
+        {
+          "revision": "951ffe0e2521973b61ccefba4b6acebd84bcd076",
+          "ordinary": 1,
+          "reports": [
+            "/home/user/workspace/php-spec-evidence-archive/operators-10/focus-951ffe0e2-author/source-callback-destructor-exit-empty-string/report.json"
+          ]
+        },
+        {
+          "revision": "a3f256992da3c4314e6fcd2d18fe59ed07fab4d5",
+          "ordinary": 2,
+          "reports": [
+            "/home/user/workspace/php-spec-evidence-archive/operators-incdec-callback-destructor-exit-review-10/focus-a3f256992-three-three/source-review-callback-dexit-null-rebind/report.json",
+            "/home/user/workspace/php-spec-evidence-archive/operators-incdec-callback-destructor-exit-review-10/focus-a3f256992-three-three/source-review-callback-dexit-cleared-registry/report.json"
+          ]
+        },
+        {
+          "revision": "2cd6b6481701764fd82d9e52e9f3cf725b689163",
+          "ordinary": 0,
+          "controls": 1,
+          "report": "/home/user/workspace/php-spec-evidence-archive/operators-incdec-callback-destructor-exit-review-10/focus-2cd6b6481-pending-only/report.json",
+          "result": "Exact checked Unsupported with model prefix H:2;L:1;D:1; and no Parent effects; native17/model-process1, agreement0."
+        }
+      ],
+      "result": "Four exact checked explicit_exit stdout/stderr and PHP exit_status comparisons, including native17 or23/model-process0/JSON17 or23. All credited actors uninterrupted and reaped, with no group survivors."
+    },
+    "author_reached": {
+      "revision": "a3f256992da3c4314e6fcd2d18fe59ed07fab4d5",
+      "mode": "SL",
+      "fixtures": 2,
+      "conditions": 240,
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-10/state-a3f256992-author-two/report.json",
+      "result": "Real destructor exit invocation, internal unwind/return and public handoff retain H2→1→0 and Parent ownership, source/certificate authority, latest status, bool restoration/string skip and exact budget/native endings."
+    },
+    "independent_reached": {
+      "mode": "SL",
+      "fixtures": 3,
+      "conditions": 313,
+      "cuts": [
+        {
+          "revision": "a3f256992da3c4314e6fcd2d18fe59ed07fab4d5",
+          "conditions": 247,
+          "fixtures": 2,
+          "report": "/home/user/workspace/php-spec-evidence-archive/operators-incdec-callback-destructor-exit-review-10/focus-a3f256992-three-three/report.json",
+          "result": "Positive127/120 rows pass: old borrowed null versus rebound caller/peer73, registry clearing, exact release linkage, descriptors/weak retirement and public budget/native endings. The final66 row failed and is not credited at this cut."
+        },
+        {
+          "revision": "2cd6b6481701764fd82d9e52e9f3cf725b689163",
+          "conditions": 66,
+          "fixtures": 1,
+          "report": "/home/user/workspace/php-spec-evidence-archive/operators-incdec-callback-destructor-exit-review-10/focus-2cd6b6481-pending-only/report.json",
+          "result": "Genuine supplied pending Throwable remains live with global+operation owners2, Parent owner1 and unchanged captured target99 at the early refusal; manual and public driver results agree. This is a boundary guard, not native agreement."
+        }
+      ]
+    },
+    "total_reached_conditions": 553,
+    "compatibility": "The a3f helper correction preserves executable/source bytes tested at cdc and951. The2cd change affects only the exact authentic raw-exit Unsupported handoff; its default is the previous drive_steps call. Positive487/source4 keep their original cuts; the current PN66 fixture compiles the joined private modules. Earlier milestones are not renewed."
+  },
+  "preserved_zero_credit": [
+    "/home/user/workspace/php-spec-evidence-archive/operators-10/baseline-9b1e9ea68-bool17/report.json: unchanged checked Unsupported after model H:2;L:1;D:1:;P::1:1;. Parent already observed99, while native restores true first. Baseline agreement0.",
+    "/home/user/workspace/php-spec-evidence-archive/operators-10/preflight-e1418f9c1.json: metadata accidentally entered PHP literals; peer caught it before any actor. Footer correction restored all four original CASES bytes exactly; preflight0.",
+    "/home/user/workspace/php-spec-evidence-archive/operators-10/strict-463f121be/report.json: pre-runtime premise-binding elaboration failure; only binding order was corrected before the accepted cdc strict/source gate.",
+    "/home/user/workspace/php-spec-evidence-archive/operators-10/focus-951ffe0e2-author/report.json: empty source passes, first120 fixture fails because it reads the direct CV in the destructor scope. Saved-caller correction regenerates only affected mains from retained AST/source/native; failed state0.",
+    "/home/user/workspace/php-spec-evidence-archive/operators-incdec-callback-destructor-exit-review-10/focus-a3f256992-three-three/report.json: positive247 accepted; PN66 fails only public-driver equality after its early manual guard passes. Recursive driving of Unsupported caused later Parent99 effects. Original failed66 and late-prefix control remain0.",
+    "Author native2, independent native2 plus the one real pending control, and frontend/AST/native preparation retain original reports and zero model agreement credit."
+  ],
+  "required_follow_on": [
+    "The native raw callback-destructor exit with a pending user Throwable restores the capture and discards pending throw control, but remains Unsupported here; full continuation is required next.",
+    "Nested/descendant destructor exits, destructor-local/owned operand cleanup, unsafe/expired/constrained/owned restoring targets, wider callable/control forms and update locations remain required. All six inventory rows and full core remain partial."
+  ],
+  "recovery": {
+    "author_archive": "/home/user/workspace/php-spec-evidence-archive/operators-10",
+    "independent_archive": "/home/user/workspace/php-spec-evidence-archive/operators-incdec-callback-destructor-exit-review-10",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "environment": "CPU2 affinity, LC_ALL=C, TZ=UTC, no PHP_SPEC_SCRIPT_ENCODING; native cap30/model cap90; explicit --sl cap120 with owned process-group reap guards.",
+    "commands": [
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 tests/semantics/incdec_callback_destructor_exit.py --case CASE --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 tests/semantics/incdec_callback_destructor_exit_review.py --case CASE --output NEW_EXTERNAL_DIRECTORY",
+      "/home/user/workspace/php-spec-evidence-archive/operators-10/state-a3f256992-author-two/run-state.py: retained corrected240; /home/user/workspace/php-spec-evidence-archive/operators-incdec-callback-destructor-exit-review-10/focus-a3f256992-three-three/run-focused.py: source3/positive247; /home/user/workspace/php-spec-evidence-archive/operators-incdec-callback-destructor-exit-review-10/focus-2cd6b6481-pending-only/run-focused.py: only affected control0/66."
+    ],
+    "record": "External raw retains original sources/native streams, retained951 AST/path/native preparation, regenerated mains, exact revisions/selections/hashes/environment/commands and structured process exits/interruption/reap. No native/frontend renewal accompanied the caller-view or driver corrections."
+  }
+}

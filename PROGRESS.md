@@ -7,6 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Exit from a raw invokable warning-handler destructor now returns through the real
+release operation before helper completion. Safe bool/decrement-null captures
+restore before caller-temporary cleanup; strings skip the store. Integer exit 17
+replaces body exit 23, while string exit retains 23. Destructor registry changes and
+weak retirement survive. Admission requires no pending user Throwable, destructor
+local cells or owned pending operands. Four new originals agree at cdc375d6d,
+951ffe0e2 and a3f256992. Two author fixtures pass 240 conditions; independent
+positive fixtures pass 247 and the pending-boundary fixture passes 66 (553 total).
+The pending case remains Unsupported with zero agreement credit and stops before
+caller cleanup. Its driver handoff correction at 2cd6b6481 preserves the earlier
+positive cuts; the original baseline, preflight/compile and fixture/driver failures
+retain zero credit.
+Destructor exits with a pending Throwable, nested destructor exits, owning cleanup,
+unsafe targets and wider callbacks/control remain required; full core stays partial.
+[Callback-destructor exit ledger](coverage/semantics/incdec-callback-destructor-exit-review.json).
+
 Deferred named user-class duplicates now drain a retained file fatal with the
 current binding trace. The existing receipt records the real class site/cause/index;
 captured-prefix index and journal replay reject omitted-entry extra records while
@@ -49,7 +65,7 @@ caller catch/finally are preserved, including request status 23 and late-peer de
 Five new originals agree at retained 1fd8/f352 cuts. Three author SL fixtures pass
 383 conditions and two independent fixtures pass 264 (647 total). The original
 Unsupported baseline and native/preparation runs retain zero credit.
-Exit during callback-owner destruction, unsafe targets and wider callbacks/control
+Broader callback-destructor exits, unsafe targets and wider callbacks/control
 remain required; full core stays partial.
 [Callback-local cancellation ledger](coverage/semantics/incdec-callback-exit-cancellation-review.json).
 The 387-module join over 0186877ee preserves current shared cleanup and output
@@ -79,8 +95,8 @@ cancels exit into caller catch/finally without changing request status 23.
 Seven new and one repaired source agree at 2bc9/34c8. Three author SL fixtures
 pass 299 conditions and three independent fixtures pass 269 (568 total).
 The original Unsupported baseline and pre-runtime compile failure retain zero credit.
-Unsafe targets, wider callbacks/control and
-exit during callback-owner destruction remain required; full core stays partial.
+Unsafe targets, wider callbacks/control and broader callback-destructor exits
+remain required; full core stays partial.
 [Callback-exit ledger](coverage/semantics/incdec-callback-exit-review.json).
 The 387-module join over 70f124b2 preserves current output/fatal/class state and
 cleanup validation. Current strict and the sole int23 owner-throw original pass at

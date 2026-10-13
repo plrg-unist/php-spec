@@ -353,8 +353,14 @@ source agree, with 568 genuine SL conditions.
 now carries the supplied Throwable through both callback releases before safe
 bool/null restoration or string store skip, retaining caller catch/finally,
 registry/alias effects, secondary Previous and request status 23. Five new
-originals agree, with 647 genuine SL conditions. Exit during callback-owner
-destruction, unsafe targets and wider callback forms remain required.
+originals agree, with 647 genuine SL conditions.
+[Callback-owner destructor exits](coverage/semantics/incdec-callback-destructor-exit-review.json)
+now preserve caller operands until safe bool/decrement-null restoration or string
+store skip. Integer exit replaces the earlier status; string exit retains it.
+Four originals agree, with 553 genuine SL conditions. A pending user Throwable,
+nested destructor exits, owning destructor cleanup, unsafe targets and wider
+callback forms remain required; the focused pending control stops before caller
+cleanup with zero agreement credit.
 All twelve [compound assignments](docs/semantics/UPDATES.md) preserve captured
 targets, delayed reads and alias ownership; [independent evidence](coverage/semantics/compound-review.json)
 records 2,639 exact source comparisons and the corrected diagnostic phases.

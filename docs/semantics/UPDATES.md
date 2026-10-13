@@ -81,8 +81,8 @@ remain distinct from rebound callers. Pending ownership transfers once into
 caller throw search, preserving identity, Previous and request status 23.
 Seven new and one repaired source agree; 299 author and 269 independent genuine
 SL conditions retain separate cuts. The repaired old callable-owner expectation
-is maintained without renewing historical counts. Exit during callback-owner
-destruction, unsafe targets and wider callbacks/control remain required.
+is maintained without renewing historical counts. Broader callback-destructor
+exits, unsafe targets and wider callbacks/control remain required.
 
 [Owning handler-local cleanup Throwables](../../coverage/semantics/incdec-callback-exit-cancellation-review.json)
 now cancel warning-handler exit while callback-owner release continues. The real
@@ -94,6 +94,20 @@ keeps the first as Previous. Caller catch/finally, late-peer detachment, old bor
 cells and request status 23 survive without result delivery. Five new sources,
 383 author and 264 independent genuine SL conditions retain separate tested cuts.
 The original Unsupported baseline remains zero; older campaigns are not renewed.
+
+[Raw callback-destructor exits](../../coverage/semantics/incdec-callback-destructor-exit-review.json)
+now unwind a direct entered destructor and finish its real raw-handler release
+before the warning helper completes. The saved caller operands remain owned until
+safe bool/decrement-null capture restoration or string store skip. A later integer
+exit replaces body exit 23; string exit retains the request status. Registry clearing
+or replacement survives; weak-reference probes observe callback retirement before
+caller-temporary cleanup.
+Admission excludes a pending user Throwable, destructor local cells and owned
+pending operands. The authentic pending-Throwable control stops before caller cleanup;
+its Unsupported result has zero agreement credit. Four new originals and 240 author
+plus 313 independent genuine SL conditions retain their actual cuts and original
+failures. Destructor exits with a pending Throwable, nested destructor exits, owning cleanup,
+unsafe targets and wider callback/control forms remain required.
 
 String dimensions validate the key before rejecting increment/decrement; nested
 string dimensions retain the separate nested-array error. Generic dimension
