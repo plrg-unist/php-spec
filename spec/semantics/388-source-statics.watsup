@@ -68,3 +68,46 @@ def $source_static_remove(pstaticcell :: pstaticcell_tail*, porigin) = pstaticce
 def $source_static_drop(S, n) = S[.STATICS = $source_static_remove(S.STATICS, porigin)]
   -- if $source_static_next(S, n) = (porigin)
 def $source_static_drop(S, n) = S -- otherwise
+
+;; Exit keeps the earliest live source marker, including its exact outer tail.
+;; The real step that drops a slot supplies the eager destructor transition.
+dec $source_static_exit_eval(pstate, nat, ptask*) : bool
+def $source_static_exit_eval(S, n, ptask*) = (pevalcontext.UNIT = n /\ pevalcontext.TAIL = ptask* /\ $source_static_eval_owner(S, (pevalcontext)) /\ $source_static_caller(S, n))
+  -- if $eval_context_at(S.EVALCONTEXTS, n) = (pevalcontext)
+def $source_static_exit_eval(S, n, ptask*) = false -- otherwise
+dec $source_static_exit_file(pstate, nat, ptask*) : bool
+def $source_static_exit_file(S, n, ptask*) = (pfilecontext.TAIL = ptask* /\ $source_static_file_owner(S, pfilecontext, n) /\ $source_static_caller(S, n))
+  -- if $source_operand_file_context(S.FILECONTEXTS, n) = (pfilecontext)
+def $source_static_exit_file(S, n, ptask*) = false -- otherwise
+def $source_static_exit_tail(S, (EVAL_END n) :: ptask*) = (EVAL_END n) :: ptask*
+  -- if $source_static_exit_eval(S, n, ptask*)
+def $source_static_exit_tail(S, (FILE_END n) :: ptask*) = (FILE_END n) :: ptask*
+  -- if $source_static_exit_file(S, n, ptask*)
+def $source_static_exit_tail(S, ptask :: ptask_tail*) = $source_static_exit_tail(S, ptask_tail*)
+  -- if ~$eval_end_marker(ptask)
+def $source_static_exit_tail(S, ptask*) = eps -- otherwise
+
+rule PhpStep/source-static-exit-eval-release: S ~> $source_static_drop(S, n)
+  -- if S.TODO = (EXIT_UNWIND z) :: (EVAL_END n) :: ptask_tail*
+  -- if S.EVALCONTEXTS = pevalcontext :: pevalcontext_tail*
+  -- if pevalcontext.UNIT = n
+  -- if $exit_unwind_valid(S, z)
+  -- if $source_static_next(S, n) =/= eps
+rule PhpStep/source-static-exit-file-release: S ~> $source_static_drop(S, n)
+  -- if S.TODO = (EXIT_UNWIND z) :: (FILE_END n) :: ptask_tail*
+  -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
+  -- if pfilecontext.UNIT = (n)
+  -- if $exit_unwind_valid(S, z)
+  -- if $source_static_next(S, n) =/= eps
+rule PhpStep/source-static-exit-eval-cross: S ~> $exit_start_unwind(S[.EVALCONTEXTS = pevalcontext_tail*][.TODO = ptask_tail*], z)
+  -- if S.TODO = (EXIT_UNWIND z) :: (EVAL_END n) :: ptask_tail*
+  -- if S.EVALCONTEXTS = pevalcontext :: pevalcontext_tail*
+  -- if pevalcontext.UNIT = n
+  -- if $exit_unwind_valid(S, z)
+  -- if $source_static_next(S, n) = eps
+rule PhpStep/source-static-exit-file-cross: S ~> $exit_start_unwind(S[.FILECONTEXTS = pfilecontext_tail*][.TODO = ptask_tail*], z)
+  -- if S.TODO = (EXIT_UNWIND z) :: (FILE_END n) :: ptask_tail*
+  -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
+  -- if pfilecontext.UNIT = (n)
+  -- if $exit_unwind_valid(S, z)
+  -- if $source_static_next(S, n) = eps
