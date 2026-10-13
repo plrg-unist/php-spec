@@ -5,7 +5,6 @@ dec $ob_normal_reference_rest(psparam*) : bool
 dec $ob_normal_prefix(ptask*, pdestructionframe, pobinvoke, ptask*) : bool
 dec $ob_normal_seal(ptask*, pdestructionframe, pobinvoke, ptask*) : ptask*
 dec $ob_normal_certificate(pstate, pobinvoke, pdestructionframe) : bool
-dec $ob_normal_arguments(pobinvoke) : bool
 dec $ob_normal_deprecation(pstate, pobinvoke, pdestructionframe) : pstate
 dec $ob_normal_report(pstate, pobinvoke) : pstate
 dec $ob_normal_commit(pstate, pobinvoke, pdestructionframe, poboutput) : pstate
@@ -46,8 +45,24 @@ def $generator_frame_release(S_before, S_after) = S_after[.TODO = $ob_normal_sea
   -- if pdestructionframe.CALLER = pframe.CONTEXT /\ pdestructionframe.ORIGIN = pframe.ORIGIN /\ pdestructionframe.CONSTCONTEXT = pframe.CONSTCONTEXT
   -- if S_after.CURRENT = pframe.CONTEXT /\ S_after.ORIGIN = pframe.ORIGIN
   -- if $ob_normal_prefix(S_after.TODO, pdestructionframe, pobinvoke, ptask_native*)
+def $generator_frame_release(S_before, S_after) = S_after[.COMPLETION = UNSUPPORTED "non-scalar user output-handler return conversion"]
+  -- if S_before.COMPLETION = NORMAL /\ S_before.TODO = eps
+  -- if S_before.RESULT = KNOWN pvalue
+  -- if ~$ob_user_scalar(pvalue)
+  -- if S_before.CURRENT = (pcallcontext)
+  -- if $ob_user_context_valid(S_before, pcallcontext)
+  -- if S_before.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (OB_USER_RESULT pobinvoke) :: ptask_native*
+  -- if S_after.CURRENT = pframe.CONTEXT /\ S_after.ORIGIN = pframe.ORIGIN
+def $generator_frame_release(S_before, S_after) = S_after[.COMPLETION = UNSUPPORTED "reference user output-handler return conversion"]
+  -- if S_before.COMPLETION = NORMAL /\ S_before.TODO = eps
+  -- if S_before.RESULT = REFERENCE n
+  -- if S_before.CURRENT = (pcallcontext)
+  -- if $ob_user_context_valid(S_before, pcallcontext)
+  -- if S_before.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (OB_USER_RESULT pobinvoke) :: ptask_native*
+  -- if S_after.CURRENT = pframe.CONTEXT /\ S_after.ORIGIN = pframe.ORIGIN
 
-def $ob_normal_arguments(pobinvoke) = (pobinvoke.SENT = [KNOWN pobinvoke.INPUT, KNOWN (PINT pobinvoke.PHASE)])
 def $ob_normal_certificate(S, pobinvoke, pdestructionframe) = true
   -- if $ob_user_live(S, pobinvoke)
   -- if pdestructionframe.VALUE = KNOWN pvalue
@@ -68,8 +83,8 @@ def $ob_user_active_task(OB_USER_NORMAL_COMMIT pobinvoke pdestructionframe pobou
 def $output_task_write(OB_USER_NORMAL_RESULT pobinvoke pdestructionframe) = $output_call_write(pobinvoke.CALL)
 def $output_task_write(OB_USER_NORMAL_PENDING pobinvoke pdestructionframe) = $output_call_write(pobinvoke.CALL)
 def $output_task_write(OB_USER_NORMAL_COMMIT pobinvoke pdestructionframe poboutput) = $output_call_write(pobinvoke.CALL)
-def $call_task_valid(S, OB_USER_NORMAL_RESULT pobinvoke pdestructionframe) = ($ob_normal_certificate(S, pobinvoke, pdestructionframe) /\ $ob_normal_arguments(pobinvoke) /\ pdestructionframe.PENDING = eps)
-def $call_task_valid(S, OB_USER_NORMAL_PENDING pobinvoke pdestructionframe) = ($ob_normal_certificate(S, pobinvoke, pdestructionframe) /\ $ob_normal_arguments(pobinvoke) /\ $throwable_live(S, n))
+def $call_task_valid(S, OB_USER_NORMAL_RESULT pobinvoke pdestructionframe) = ($ob_normal_certificate(S, pobinvoke, pdestructionframe) /\ $ob_user_fci_arguments(pobinvoke) /\ pdestructionframe.PENDING = eps)
+def $call_task_valid(S, OB_USER_NORMAL_PENDING pobinvoke pdestructionframe) = ($ob_normal_certificate(S, pobinvoke, pdestructionframe) /\ $ob_user_fci_arguments(pobinvoke) /\ $throwable_live(S, n))
   -- if pdestructionframe.PENDING = (n)
 def $call_task_valid(S, OB_USER_NORMAL_COMMIT pobinvoke pdestructionframe poboutput) = ($ob_normal_certificate(S, pobinvoke, pdestructionframe) /\ pobinvoke.SENT = eps /\ $throwable_live(S, n) /\ $ob_user_output_valid(S, poboutput) /\ pdestructionframe.VALUE = KNOWN poboutput.VALUE)
   -- if pdestructionframe.PENDING = (n)

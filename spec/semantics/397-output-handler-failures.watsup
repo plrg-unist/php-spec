@@ -78,7 +78,7 @@ def $task_nodes(OB_USER_FAIL_DONE pobinvoke) = $ob_user_nodes(pobinvoke)
 def $task_nodes(OB_USER_FAIL_COMMIT pobinvoke n) = $ob_user_nodes(pobinvoke) ++ [HOBJECT n]
 def $task_nodes(OUTPUT_FAIL_WRITE pobwrite n) = $output_write_nodes(pobwrite) ++ [HOBJECT n]
 def $task_nodes(OUTPUT_FAIL_FINISH pobwrite n) = $output_write_nodes(pobwrite) ++ [HOBJECT n]
-def $call_task_valid(S, OB_USER_FAIL_ARGS pobinvoke n) = ($ob_user_failure_live(S, pobinvoke) /\ $ob_user_failure_current(S, pobinvoke) /\ |pobinvoke.SENT| = 2 /\ $ob_user_sent_valid(S, pobinvoke, pobinvoke.SENT, 0) /\ $throwable_live(S, n))
+def $call_task_valid(S, OB_USER_FAIL_ARGS pobinvoke n) = ($ob_user_failure_live(S, pobinvoke) /\ $ob_user_failure_current(S, pobinvoke) /\ $ob_user_fci_arguments(pobinvoke) /\ $throwable_live(S, n))
 def $call_task_valid(S, OB_USER_FAIL_DONE pobinvoke) = ($ob_user_failure_live(S, pobinvoke) /\ $ob_user_failure_current(S, pobinvoke) /\ pobinvoke.SENT = eps /\ $ob_user_failure_pending(S, pobinvoke) =/= eps)
 def $call_task_valid(S, OB_USER_FAIL_COMMIT pobinvoke n) = ($ob_user_failure_live(S, pobinvoke) /\ $ob_user_failure_current(S, pobinvoke) /\ pobinvoke.SENT = eps /\ $throwable_live(S, n))
 
@@ -108,7 +108,7 @@ def $return_discard(S, OB_USER_FAIL_DONE pobinvoke) = S[.TODO = (OB_USER_FAIL_CO
   -- if $ob_user_failure_vm(pobinvoke) /\ pobinvoke.SENT = eps
   -- if S_proof = S[.TODO = (THROW_SEARCH n) :: (OB_USER_FAIL_DONE pobinvoke) :: ptask_tail*]
   -- if $call_task_valid(S_proof, OB_USER_FAIL_DONE pobinvoke) /\ $throwable_live(S, n)
-def $eager_operation_source_guard(S, pdestructionoperation) = ($ob_user_failure_live(S, pobinvoke) /\ pdestructionoperation.ORIGIN = ($ob_call_site(pobinvoke.CALL)) /\ pdestructionoperation.CALLER = pobwrite.CONTEXT /\ pdestructionoperation.COMPLETION = THROWING n /\ pdestructionoperation.PENDING =/= eps /\ $throwable_live(S, n) /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL))
+def $eager_operation_source_guard(S, pdestructionoperation) = ($ob_user_failure_live(S, pobinvoke) /\ $ob_user_fci_arguments(pobinvoke) /\ pdestructionoperation.ORIGIN = ($ob_call_site(pobinvoke.CALL)) /\ pdestructionoperation.CALLER = pobwrite.CONTEXT /\ pdestructionoperation.COMPLETION = THROWING n /\ pdestructionoperation.PENDING =/= eps /\ $throwable_live(S, n) /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL))
   -- if pdestructionoperation.SOURCE = OB_USER_FAIL_ARGS pobinvoke n
   -- if pobinvoke.CALL = OB_WRITE pobwrite
 
