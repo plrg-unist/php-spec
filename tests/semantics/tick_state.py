@@ -18,6 +18,7 @@ CASES = {
     'throw-cleanup': (b'<?php $e=new Exception("E");function a(){global $e;echo "A";throw $e;}function b(){echo "B";}register_tick_function("a");register_tick_function("b");try{declare(ticks=1){echo "X";}}catch(Exception $c){echo $c===$e?"C":"bad";}unregister_tick_function("a");unregister_tick_function("b");echo "Z";', b'XACZ'),
     'returned-object': (b'<?php class C{function __destruct(){try{unregister_tick_function("t");echo "U";}catch(Error $e){echo "H";}}}function t(){return new C;}register_tick_function("t");declare(ticks=1){echo "A";}', b'AH'),
     'unregister-pending': (b'<?php $e=new Exception("E");class C{function __destruct(){global $e;echo "D";throw $e;}}function t($x){echo "A";try{unregister_tick_function("t");}catch(Throwable $c){global $e;echo $c===$e?"same":"bad";echo $c->getPrevious() instanceof Error?"P":"N";}}register_tick_function("t","A");register_tick_function("t",new C);declare(ticks=1){echo "X";}echo "Z";', b'XADsamePZ'),
+    'unregister-target': (b'<?php class A{function m($v){}function __destruct(){echo "A";}}class B{function __destruct(){global $r;echo "1";$r=null;echo "2";}}$x=new A;$r=&$x;$cb=[&$r,"m"];register_tick_function($cb,new B);unset($x);unregister_tick_function($cb);echo "Z";', b'12AZ'),
 }
 PREFIX = r'''
 dec $tick_test_output(pevent*) : preqbytes
@@ -30,6 +31,19 @@ def $tick_test_output(pevent :: pevent_tail*) = $tick_test_output(pevent_tail*) 
 dec $tick_test_only_output(pevent*) : bool
 def $tick_test_only_output(eps) = true
 def $tick_test_only_output(pevent :: pevent_tail*) = ($tick_test_is_output(pevent) /\ $tick_test_only_output(pevent_tail*))
+dec $tick_test_hold_tasks(ptask*) : (pshutdownentry, ptickentry)?
+dec $tick_test_hold_task(ptask) : bool
+def $tick_test_hold_task(TICK_UNREGISTER_RELEASE pshutdownentry ptickentry) = true
+def $tick_test_hold_task(ptask) = false -- otherwise
+def $tick_test_hold_tasks(eps) = eps
+def $tick_test_hold_tasks((TICK_UNREGISTER_RELEASE pshutdownentry ptickentry) :: ptask_tail*) = ((pshutdownentry, ptickentry))
+def $tick_test_hold_tasks(ptask :: ptask_tail*) = $tick_test_hold_tasks(ptask_tail*) -- if ~$tick_test_hold_task(ptask)
+dec $tick_test_hold_frames(pframe*) : (pshutdownentry, ptickentry)?
+def $tick_test_hold_frames(pframe :: pframe_tail*) = ((pshutdownentry, ptickentry))
+  -- if $tick_test_hold_tasks(pframe.TODO) = ((pshutdownentry, ptickentry))
+def $tick_test_hold_frames(pframe :: pframe_tail*) = $tick_test_hold_frames(pframe_tail*)
+  -- if $tick_test_hold_tasks(pframe.TODO) = eps
+def $tick_test_hold_frames(eps) = eps
 dec $tick_test_phase(pstate, nat) : bool
 def $tick_test_phase(S, 0) = true
   -- if S.TODO = (TICK porigin ptickmarker) :: ptask_tail*
@@ -59,6 +73,16 @@ def $tick_test_phase(S, 5) = true
 def $tick_test_phase(S, 6) = true
   -- if S.TODO = (TICK_RESULT ptickdispatch) :: ptask_tail*
   -- if $tick_test_output(S.EVENTS) = ([88,65,68,115,97,109,101,80])
+def $tick_test_phase(S, 7) = true
+  -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (TICK_UNREGISTER_RELEASE pshutdownentry ptickentry) :: ptask_tail*
+  -- if pdestructionoperation.SOURCE = CONFIG_INVOKE pshutdownentry.CALL
+  -- if S.TICKENTRIES = eps /\ $tick_test_output(S.EVENTS) = eps
+def $tick_test_phase(S, 8) = true
+  -- if $tick_test_hold_frames(S.FRAMES) = ((pshutdownentry, ptickentry))
+  -- if S.GLOBALTABLE = (psymboltable)
+  -- if $lookup(psymboltable.ENV, [114]) = (n_cell)
+  -- if S.STORE[n_cell] = DEFINED PNULL
+  -- if S.TICKENTRIES = eps /\ $tick_test_output(S.EVENTS) = ([49])
 def $tick_test_phase(S, n) = false -- otherwise
 dec $tick_test_seek(pstate, nat, nat) : pstate
 def $tick_test_seek(S, n_phase, n) = S -- if S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET
@@ -84,7 +108,7 @@ def valid(state):
 
 
 def assertions(name, fixture, directory, path):
-    phase = list(CASES).index(name)
+    phase = 7 if name == 'unregister-target' else list(CASES).index(name)
     initial = '$php_file_run(' + fixture + ', 0, ' + bytes_expr(os.fsencode(path)) + ', ' + bytes_expr(os.fsencode(directory)) + ')'
     checks = ['S_initial = ' + initial, 'S_initial.COMPLETION = BUDGET',
               'S_initial.TICKCOUNT = 0 /\\ S_initial.TICKSEQ = 0 /\\ S_initial.TICKENTRIES = eps',
@@ -178,6 +202,38 @@ def assertions(name, fixture, directory, path):
                    'S_return.TICKENTRIES = S.TICKENTRIES',
                    '$throwable_previous_id(S_return, n_shared) = (n_pending)',
                    'S_return.DESTRUCTION.OPERATIONS = eps', *valid('S_return')]
+    elif name == 'unregister-target':
+        checks += ['S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (TICK_UNREGISTER_RELEASE pshutdownentry_key ptickentry_removed) :: ptask_tail*',
+                   'S.TICKENTRIES = eps /\\ S.TICKSEQ = 1',
+                   'pdestructionoperation.SOURCE = CONFIG_INVOKE pshutdownentry_key.CALL',
+                   'pdestructionoperation.PENDING = eps',
+                   '$target_receiver(S, ptickentry_removed.ENTRY.TARGET) = (n_receiver)',
+                   '(HOBJECT n_receiver) <- $task_nodes(TICK_UNREGISTER_RELEASE pshutdownentry_key ptickentry_removed)',
+                   '$call_task_valid(S, TICK_UNREGISTER_RELEASE pshutdownentry_key ptickentry_removed)',
+                   '~$call_task_valid(S[.ORIGIN = (PORIGIN 999 eps)], TICK_UNREGISTER_RELEASE pshutdownentry_key ptickentry_removed)',
+                   '~$call_task_valid(S, TICK_UNREGISTER_RELEASE pshutdownentry_key[.CALL = pshutdownentry_key.CALL[.KIND = INTRINSIC_REGISTER_TICK]] ptickentry_removed)',
+                   '~$call_task_valid(S, TICK_UNREGISTER_RELEASE pshutdownentry_key[.CALL = pshutdownentry_key.CALL[.SITE = PORIGIN 999 eps]] ptickentry_removed)',
+                   '~$call_task_valid(S, TICK_UNREGISTER_RELEASE pshutdownentry_key[.CALL = pshutdownentry_key.CALL[.LINE = $(pshutdownentry_key.CALL.LINE + 1)]] ptickentry_removed)',
+                   '~$call_task_valid(S, TICK_UNREGISTER_RELEASE pshutdownentry_key ptickentry_removed[.ID = S.TICKSEQ])',
+                   '~$call_task_valid(S, TICK_UNREGISTER_RELEASE pshutdownentry_key ptickentry_removed[.ENTRY = ptickentry_removed.ENTRY[.CALL = ptickentry_removed.ENTRY.CALL[.KIND = INTRINSIC_UNREGISTER_TICK]]])',
+                   '~$call_task_valid(S, TICK_UNREGISTER_RELEASE pshutdownentry_key[.TARGET = PORIGIN 999 eps] ptickentry_removed)',
+                   '~$call_task_valid(S, TICK_UNREGISTER_RELEASE pshutdownentry_key ptickentry_removed[.ENTRY = ptickentry_removed.ENTRY[.TARGET = PORIGIN 999 eps]])',
+                   '~$call_task_valid(S, TICK_UNREGISTER_RELEASE pshutdownentry_key ptickentry_removed[.ENTRY = ptickentry_removed.ENTRY[.ARGS = [PINT 7]]])',
+                   '~$call_task_valid(S[.TICKENTRIES = [ptickentry_removed]], TICK_UNREGISTER_RELEASE pshutdownentry_key ptickentry_removed)',
+                   '~$call_task_valid(S[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS, HOBJECT n_receiver)], TICK_UNREGISTER_RELEASE pshutdownentry_key ptickentry_removed)',
+                   'S_alias_found = $tick_test_seek(S, 8, 1024)',
+                   'S_alias_found.COMPLETION = NORMAL \\/ S_alias_found.COMPLETION = BUDGET',
+                   'S_alias = S_alias_found[.COMPLETION = NORMAL]',
+                   '$tick_test_phase(S_alias, 8)',
+                   '$tick_test_hold_frames(S_alias.FRAMES) = ((pshutdownentry_key, ptickentry_removed))',
+                   '$heap_owners($heap_graph(S_alias), HOBJECT n_receiver) = 1',
+                   'S_alias.FRAMES = pframe :: pframe_tail*',
+                   'pframe.ORIGIN = (pshutdownentry_key.CALL.SITE)',
+                   '$call_task_valid(S_alias[.ORIGIN = pframe.ORIGIN][.CURRENT = pframe.CONTEXT], TICK_UNREGISTER_RELEASE pshutdownentry_key ptickentry_removed)',
+                   'S_alias_budget = $drive_steps(S_alias, 0)',
+                   'S_alias_budget.COMPLETION = BUDGET /\\ S_alias_budget.TODO = S_alias.TODO /\\ S_alias_budget.FRAMES = S_alias.FRAMES',
+                   'S_alias_budget.TICKENTRIES = eps /\\ $heap_owners($heap_graph(S_alias_budget), HOBJECT n_receiver) = 1',
+                   *valid('S_alias'), *valid('S_alias_budget')]
     if name != 'throw-cleanup':
         checks += ['S_done = $drive_steps(S, 2048)']
     checks += ['S_done.COMPLETION = NORMAL /\\ S_done.TODO = eps /\\ S_done.CURRENT = eps /\\ S_done.FRAMES = eps',
