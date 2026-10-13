@@ -267,8 +267,8 @@ def $task_nodes(OB_USER_COMMIT pobinvoke poboutput) = $config_nodes(pobinvoke.CA
 def $call_task_valid(S, OB_USER_SEND pobinvoke n) = ($ob_user_send_valid(S, pobinvoke, n) /\ S.ORIGIN = (pobinvoke.CALL.SITE))
 def $call_task_valid(S, OB_USER_REFERENCE pobinvoke n) = ($ob_user_send_valid(S, pobinvoke, n) /\ $call_parameter_reference(S, poutputhandler.ENTRY.TARGET, n) /\ S.ORIGIN = (pobinvoke.CALL.SITE)) -- if pobinvoke.BUFFER.HANDLER = (poutputhandler)
 def $call_task_valid(S, OB_USER_ENTER pobinvoke) = ($ob_user_send_valid(S, pobinvoke, 2) /\ S.ORIGIN = (pobinvoke.CALL.SITE))
-def $call_task_valid(S, OB_USER_RESULT pobinvoke) = ($ob_user_live(S, pobinvoke) /\ |pobinvoke.SENT| = 2)
-def $call_task_valid(S, OB_USER_DEPRECATED pobinvoke pvalue) = ($ob_user_live(S, pobinvoke) /\ $ob_user_scalar(pvalue) /\ $config_slots_valid(S, [NAMED_SENT (KNOWN pvalue)]) /\ $ob_user_temporary(S, pobinvoke.BUFFER.ID))
+def $call_task_valid(S, OB_USER_RESULT pobinvoke) = ($ob_user_live(S, pobinvoke) /\ |pobinvoke.SENT| = 2 /\ $ob_user_sent_valid(S, pobinvoke, pobinvoke.SENT, 0))
+def $call_task_valid(S, OB_USER_DEPRECATED pobinvoke pvalue) = ($call_task_valid(S, OB_USER_RESULT pobinvoke) /\ $ob_user_scalar(pvalue) /\ $config_slots_valid(S, [NAMED_SENT (KNOWN pvalue)]) /\ $ob_user_temporary(S, pobinvoke.BUFFER.ID))
 def $call_task_valid(S, OB_USER_COMMIT pobinvoke poboutput) = ($ob_user_live(S, pobinvoke) /\ pobinvoke.SENT = eps /\ $ob_user_output_valid(S, poboutput) /\ S.ORIGIN = (pobinvoke.CALL.SITE))
 
 rule PhpStep/ob-user-send: S ~> S[.TODO = (OB_USER_SEND pobinvoke[.SENT = pobinvoke.SENT ++ [KNOWN $ob_user_argument(pobinvoke, n)]] $(n + 1)) :: ptask_tail*]
@@ -443,6 +443,8 @@ def $ob_user_release_valid(S, pobrelease) = true
   -- if $ob_pop_kind(pobrelease.CALL.KIND) /\ pobrelease.CALL.SENT = eps
   -- if pobrelease.BUFFER.HANDLER = (poutputhandler)
   -- if $ob_user_handler_valid(S, poutputhandler)
+  -- if $output_buffer_valid(pobrelease.BUFFER)
+  -- if $long_and(pobrelease.BUFFER.FLAGS, $(-61441)) = $ob_user_flags(poutputhandler)
   -- if $(pobrelease.BUFFER.ID < S.OUTPUTSEQ)
   -- if ~$ob_user_present(S.OUTPUTBUFFERS, pobrelease.BUFFER.ID)
   -- if $long_and(pobrelease.BUFFER.FLAGS, 64) =/= 0
