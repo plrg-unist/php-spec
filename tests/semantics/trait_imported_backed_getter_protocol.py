@@ -449,7 +449,14 @@ DERIVED = ['$property_hook_trait_origin(S,ppropertydesc_source) = eps',
  'phpType14_consumer phpType24_consumer phpType3_consumer phpType44_consumer phpType42_consumer (SEQUENCE eps) '
  'metadata_consumer)] :: pcunit_tail*]',
  '$property_hook_trait_origin(S_no_use,ppropertydesc_consumer) = eps',
- 'S_byref = S[.SOURCES = pcunit[.OCCURRENCES = $tih_replace(pcunit.OCCURRENCES,pcpath_hook,NPropertyHook phpType14_hook '
+ 'porigin_property_source = PORIGIN n_source pcpath_property',
+ 'pcpath_property_group = pcpath_property[0:$nabs($(|pcpath_property| - 2))]',
+ '$origin_node(S.SOURCES,PORIGIN n_source pcpath_property_group) = (NStmtProperty phpType14_property phpType24_property '
+ 'phpType18_property phpType56_property phpType37_property metadata_property)',
+ 'S_byref = S[.SOURCES = pcunit[.OCCURRENCES = '
+ '$tih_replace($tih_replace(pcunit.OCCURRENCES,pcpath_property_group,NStmtProperty phpType14_property phpType24_property '
+ 'phpType18_property phpType56_property (SEQUENCE ([NPropertyHook phpType14_hook phpType24_hook (BOOLEAN true) '
+ 'phpType11_hook phpType16_hook phpType39_hook metadata_hook])) metadata_property),pcpath_hook,NPropertyHook phpType14_hook '
  'phpType24_hook (BOOLEAN true) phpType11_hook phpType16_hook phpType39_hook metadata_hook)] :: pcunit_tail*]',
  '$property_hook_trait_origin(S_byref,ppropertydesc_consumer) = eps /\\ '
  '$property_hook_trait_function(S_byref,ppropertydesc_consumer) = eps',
@@ -467,10 +474,6 @@ DERIVED = ['$property_hook_trait_origin(S,ppropertydesc_source) = eps',
  '~$property_hook_trait_import_supported(S,pclassdesc_consumer[.PARENT = (pclassdesc_trait.NAME)],ppropertydesc_source)',
  '~$property_hook_trait_import_supported(S,pclassdesc_consumer[.KIND = "trait"],ppropertydesc_source)',
  '~$property_hook_trait_import_supported(S,pclassdesc_consumer[.READONLY = true],ppropertydesc_source)',
- 'porigin_property_source = PORIGIN n_source pcpath_property',
- 'pcpath_property_group = pcpath_property[0:$nabs($(|pcpath_property| - 2))]',
- '$origin_node(S.SOURCES,PORIGIN n_source pcpath_property_group) = (NStmtProperty phpType14_property phpType24_property '
- 'phpType18_property phpType56_property phpType37_property metadata_property)',
  'S_plain = S[.SOURCES = pcunit[.OCCURRENCES = $tih_replace(pcunit.OCCURRENCES,pcpath_property_group,NStmtProperty '
  'phpType14_property phpType24_property phpType18_property phpType56_property (SEQUENCE eps) metadata_property)] :: '
  'pcunit_tail*]',
