@@ -100,6 +100,7 @@ dec $eager_fatal_clean(pstate, pstate, pcompletion) : pstate
 dec $eager_fatal_begin(pstate, pstate) : pstate
 dec $eager_fatal_history(pstate, pdestructionfatal) : pstate
 dec $eager_fatal_lookup_completion(pdestructionfatal) : pcompletion
+dec $recorded_runtime_snapshot_required(pdestructionfatal) : bool
 dec $eager_fatal_cursor_history(pstate, pdestructionfatal) : pstate
 dec $eager_fatal_cursor_plans_valid(pstate, pevalcompile*) : bool
 dec $eager_fatal_resume_prefix(pdeclaration*, nat) : pdeclaration*?
@@ -908,6 +909,21 @@ def $eager_fatal_cursor_history(S, pdestructionfatal) = S[.DECLARATIONS = pdecla
   -- if $(|pdestructionfatal.DECLARATIONS| > 0)
   -- if n_prefix = $nabs($(|pdestructionfatal.DECLARATIONS| - 1))
   -- if pdeclaration_prefix* = pdestructionfatal.DECLARATIONS[0:n_prefix]
+def $eager_fatal_cursor_history(S, pdestructionfatal) = S[.DECLARATIONS = pdeclaration_prefix*][.RECORDEDCOMPILEERROR = (n_record)]
+  -- if ~pdestructionfatal.COMPILESTOP
+  -- if pdestructionfatal.COMPLETION = FATAL ptbytes z
+  -- if pdestructionfatal.FRAME.TODO = (STMT (NStmtFunction phpType14 (BOOLEAN b) phpType11 phpType16 phpType18 phpType23 metadata)) :: ptask_tail*
+  -- if pdestructionfatal.FRAME.ORIGIN = (porigin)
+  -- if $recorded_runtime_cutoff(pdestructionfatal.DECLARATIONS) = ((porigin, pdeclcause, n_record))
+  -- if $(|pdestructionfatal.DECLARATIONS| > 0)
+  -- if n_prefix = $nabs($(|pdestructionfatal.DECLARATIONS| - 1))
+  -- if pdeclaration_prefix* = pdestructionfatal.DECLARATIONS[0:n_prefix]
+def $eager_fatal_cursor_history(S, pdestructionfatal) = S[.DECLARATIONS = pdestructionfatal.DECLARATIONS][.RECORDEDCOMPILEERROR = $recorded_history_index(S, pdestructionfatal.DECLARATIONS)]
+  -- if ~pdestructionfatal.COMPILESTOP
+  -- if pdestructionfatal.COMPLETION = FATAL ptbytes z
+  -- if pdestructionfatal.FRAME.TODO = (STMT (NStmtFunction phpType14 (BOOLEAN b) phpType11 phpType16 phpType18 phpType23 metadata)) :: ptask_tail*
+  -- if pdestructionfatal.FRAME.ORIGIN = (porigin)
+  -- if ~$recorded_runtime_snapshot_required(pdestructionfatal)
 def $eager_fatal_cursor_history(S, pdestructionfatal) = S -- otherwise
 ;; A retired cursor can precede a precision image refresh. Its plan is proved
 ;; from that source prefix; live compiler images use the full chronology below.
@@ -958,7 +974,7 @@ def $eager_fatal_replay(S) = ($activate_class(S[.TODO = ptask_tail*], pclassdesc
   -- if $origin_node(S.SOURCES, porigin) = (NStmtTrait phpType14 phpType3 phpType23 metadata)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if ~$declaration_early(S.DECLARATIONS, porigin, PPCLASS)
-def $eager_fatal_replay(S) = ($activate_function(S[.TODO = ptask_tail*], pfunction))
+def $eager_fatal_replay(S) = ($recorded_function_step(S, pfunction))
   -- if S.TODO = (STMT (NStmtFunction phpType14 (BOOLEAN b) phpType11 phpType16 phpType18 phpType23 metadata)) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if $origin_node(S.SOURCES, porigin) = (NStmtFunction phpType14 (BOOLEAN b) phpType11 phpType16 phpType18 phpType23 metadata)
@@ -1056,11 +1072,33 @@ def $eager_fatal_compiler_valid(S, pdestructioncleanup, pdestructionfatal) = tru
   -- if S_proof = S_history[.DECLARATIONS = S.DECLARATIONS][.EVALCONTEXTS = S.EVALCONTEXTS][.FILECONTEXTS = S.FILECONTEXTS][.TODO = eps][.FRAMES = eps][.COMPLETION = S.COMPLETION][.ERRORORIGIN = S.ERRORORIGIN][.REPORTING = S.REPORTING][.COMPILESTOP = pdestructionfatal.COMPILESTOP][.DESTRUCTION.PHASE = DESTRUCTION_PENDING][.DESTRUCTION.ABANDONED = S.DESTRUCTION.ABANDONED][.SHUTDOWN.PHASE = SHUTDOWN_PENDING][.SHUTDOWN.COMPLETION = NORMAL]
   -- if $declaration_history_valid(S_proof)
 def $eager_fatal_compiler_valid(S, pdestructioncleanup, pdestructionfatal) = false -- otherwise
-dec $recorded_runtime_snapshot_required(pdestructionfatal) : bool
+dec $recorded_function_snapshot(pdestructionfatal) : bool
+def $recorded_function_snapshot(pdestructionfatal) = true
+  -- if ~pdestructionfatal.COMPILESTOP
+  -- if pdestructionfatal.COMPLETION = FATAL ptbytes z
+  -- if pdestructionfatal.FRAME.TODO = (STMT (NStmtFunction phpType14 (BOOLEAN b) phpType11 phpType16 phpType18 phpType23 metadata)) :: ptask_tail*
+def $recorded_function_snapshot(pdestructionfatal) = false -- otherwise
+dec $recorded_function_snapshot_valid(pstate, pstate, pdestructionfatal) : bool
+def $recorded_function_snapshot_valid(S, S_history, pdestructionfatal) = true
+  -- if ~$recorded_function_snapshot(pdestructionfatal)
+def $recorded_function_snapshot_valid(S, S_history, pdestructionfatal) = true
+  -- if $recorded_function_snapshot(pdestructionfatal)
+  -- if $(|pdestructionfatal.DECLARATIONS| <= |S.DECLARATIONS|)
+  -- if pdestructionfatal.DECLARATIONS = S.DECLARATIONS[0:|pdestructionfatal.DECLARATIONS|]
+  -- if S_history.RECORDEDCOMPILEERROR = $recorded_history_index(S, S_history.DECLARATIONS)
+  -- if $eager_fatal_replay(S_history) = (S_after)
+  -- if S_after.DECLARATIONS = pdestructionfatal.DECLARATIONS
+def $recorded_function_snapshot_valid(S, S_history, pdestructionfatal) = false -- otherwise
 def $recorded_runtime_snapshot_required(pdestructionfatal) = true
   -- if ~pdestructionfatal.COMPILESTOP
   -- if pdestructionfatal.COMPLETION = FATAL ptbytes z
   -- if pdestructionfatal.FRAME.TODO = (ERROR_TRIGGER_PHASE pconfigcall 1) :: ptask_tail*
+def $recorded_runtime_snapshot_required(pdestructionfatal) = true
+  -- if ~pdestructionfatal.COMPILESTOP
+  -- if pdestructionfatal.COMPLETION = FATAL ptbytes z
+  -- if pdestructionfatal.FRAME.TODO = (STMT (NStmtFunction phpType14 (BOOLEAN b) phpType11 phpType16 phpType18 phpType23 metadata)) :: ptask_tail*
+  -- if pdestructionfatal.FRAME.ORIGIN = (porigin)
+  -- if $recorded_runtime_cutoff(pdestructionfatal.DECLARATIONS) = ((porigin, pdeclcause, n_record))
 def $recorded_runtime_snapshot_required(pdestructionfatal) = false -- otherwise
 dec $recorded_runtime_snapshot_valid(pstate, pstate, pdestructionfatal) : bool
 def $recorded_runtime_snapshot_valid(S, S_history, pdestructionfatal) = true
@@ -1077,6 +1115,20 @@ def $recorded_runtime_snapshot_valid(S, S_history, pdestructionfatal) = true
   -- if S_after.DECLARATIONS = pdestructionfatal.DECLARATIONS
   -- if S_after.COMPLETION = pdestructionfatal.COMPLETION /\ S_after.ERRORORIGIN = pdestructionfatal.ERRORORIGIN
   -- if S_after.TRACE = pdestructionfatal.TRACE /\ S_after.ERRORFATALTRACE = pdestructionfatal.ERRORTRACE
+def $recorded_runtime_snapshot_valid(S, S_history, pdestructionfatal) = true
+  -- if $recorded_runtime_snapshot_required(pdestructionfatal)
+  -- if $(|pdestructionfatal.DECLARATIONS| <= |S.DECLARATIONS|)
+  -- if pdestructionfatal.DECLARATIONS = S.DECLARATIONS[0:|pdestructionfatal.DECLARATIONS|]
+  -- if pdestructionfatal.FRAME.TODO = (STMT (NStmtFunction phpType14 (BOOLEAN b) phpType11 phpType16 phpType18 phpType23 metadata)) :: ptask_tail*
+  -- if pdestructionfatal.FRAME.ORIGIN = (porigin)
+  -- if $recorded_runtime_cutoff(pdestructionfatal.DECLARATIONS) = ((porigin, pdeclcause, n_record))
+  -- if $declaration_cause(S_history) = pdeclcause
+  -- if S_history.RECORDEDCOMPILEERROR = (n_record)
+  -- if $function_at(S_history.FUNCTIONS, porigin) = (pfunction)
+  -- if S_after = $recorded_function_step(S_history, pfunction)
+  -- if S_after.DECLARATIONS = pdestructionfatal.DECLARATIONS
+  -- if S_after.COMPLETION = pdestructionfatal.COMPLETION /\ S_after.ERRORORIGIN = pdestructionfatal.ERRORORIGIN
+  -- if S_after.TRACE = pdestructionfatal.TRACE /\ S_after.ERRORFATALTRACE = pdestructionfatal.ERRORTRACE
 def $recorded_runtime_snapshot_valid(S, S_history, pdestructionfatal) = false -- otherwise
 def $eager_fatal_valid(S, pdestructioncleanup, pdestructionfatal) = true
   -- if pdestructioncleanup.SOURCE = DESTRUCTOR_FATAL pdestructionfatal
@@ -1089,6 +1141,7 @@ def $eager_fatal_valid(S, pdestructioncleanup, pdestructionfatal) = true
   -- if $heap_subset($eager_fatal_nodes(pdestructionfatal), S.ALLOCATIONS)
   -- if $eager_fatal_handler_bounds(S, pdestructionfatal.HANDLERS)
   -- if S_history = $eager_fatal_history(S, pdestructionfatal)
+  -- if $recorded_function_snapshot_valid(S, S_history, pdestructionfatal)
   -- if $recorded_runtime_snapshot_valid(S, S_history, pdestructionfatal)
   -- if pdestructionfatal.HANDLERS = $eager_fatal_handler_frames(S_history, pdestructionfatal.FRAME :: pdestructionfatal.FRAMES)
   -- if $eager_fatal_ready(S_history, pdestructionfatal.COMPLETION)

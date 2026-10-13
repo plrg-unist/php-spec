@@ -98,12 +98,33 @@ def $recorded_runtime_site(S, porigin) = true
   -- if $intrinsic_lookup(preqbytes, preqbytes_fallback?) = (pintrinsic)
   -- if pintrinsic = INTRINSIC_TRIGGER_ERROR \/ pintrinsic = INTRINSIC_USER_ERROR
 def $recorded_runtime_site(S, porigin) = false -- otherwise
+dec $recorded_function_site(pstate, porigin) : bool
+def $recorded_function_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtFunction phpType14 (BOOLEAN b) phpType11 phpType16 phpType18 phpType23 metadata)
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if ~$declaration_early(S.DECLARATIONS, porigin, PPFUNCTION)
+  -- if S_bound = $activate_function_body(S[.COMPLETION = NORMAL], pfunction)
+  -- if $recorded_compile_fatal(S_bound.COMPLETION)
+def $recorded_function_site(S, porigin) = false -- otherwise
 dec $recorded_runtime_append(pstate, porigin, nat) : pstate
 dec $recorded_runtime_cutoff(pdeclaration*) : (porigin, pdeclcause, nat)?
 def $recorded_runtime_cutoff([PDRECORDEDFATAL porigin pdeclcause n]) = ((porigin, pdeclcause, n))
 def $recorded_runtime_cutoff(pdeclaration :: pdeclaration_tail*) = $recorded_runtime_cutoff(pdeclaration_tail*)
   -- if pdeclaration_tail* =/= eps
 def $recorded_runtime_cutoff(pdeclaration*) = eps -- otherwise
+
+;; Historical lookup follows authenticated receipts, independently of the live index.
+dec $recorded_history_index_step(pstate, pdeclaration, nat, nat?) : nat?
+def $recorded_history_index_step(S, PDCOMPILERFATAL n_unit (FATAL ptbytes z) porigin_raw? pcompletion porigin?, n, (n_record)) = eps
+def $recorded_history_index_step(S, PDCOMPILERFATAL n_unit (FATAL ptbytes z) porigin_raw? pcompletion porigin?, n, eps) = (n)
+  -- if $file_binding_at(S.FILEBINDINGS, n_unit) =/= eps /\ $eval_binding_at(S.EVALBINDINGS, n_unit) = eps
+def $recorded_history_index_step(S, PDRECORDEDFATAL porigin pdeclcause n_record, n, n_active?) = eps
+def $recorded_history_index_step(S, pdeclaration, n, n_active?) = n_active? -- otherwise
+dec $recorded_history_index_from(pstate, pdeclaration*, nat, nat?) : nat?
+def $recorded_history_index_from(S, eps, n, n_active?) = n_active?
+def $recorded_history_index_from(S, pdeclaration :: pdeclaration_tail*, n, n_active?) = $recorded_history_index_from(S, pdeclaration_tail*, $(n + 1), $recorded_history_index_step(S, pdeclaration, n, n_active?))
+dec $recorded_history_index(pstate, pdeclaration*) : nat?
+def $recorded_history_index(S, pdeclaration*) = $recorded_history_index_from(S, pdeclaration*, 0, eps)
 
 ;; Default entries keep their original spelling. Both forms are one entry event.
 def $declaration_entry_input(PDENTER n porigin? z, n) = ((porigin?, z, 14))
