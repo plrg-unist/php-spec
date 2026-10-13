@@ -841,5 +841,182 @@
       "Wider or unheld maps, typed/reference/wider value properties, additional object graphs, multi-map order and general ephemeron collection remain required.",
       "Other WeakMap reference/presence/iteration protocols remain open; Countable is nominal-only and count execution is excluded/Unsupported per CORE."
     ]
+  },
+  "singleton_ephemeron_destructor_63": {
+    "scope": "One live singleton WeakMap, leaf stdClass Key and parentless Value with one public untyped DIRECT key property and sole local public ordinary __destruct; insertion precedes the backedge.",
+    "base_revision": "02353596acc53f403f475da973a40a617b2f5dc6",
+    "tested_revision": "18a03e0853f6129e38c1cf82dbca2968e32e4198",
+    "modules": 385,
+    "raw_root": ".tools/weak-map-ephemeron-destructor-63",
+    "recovery": "Tested rules at 18a03e08 and maintained literals at 324314d0; ignored originals, scripts and raw artifacts remain at original paths after tracked-only retirement.",
+    "representation": [
+      "Physical Map-to-Value-to-Key ownership and conditional map tracing are unchanged. Existing GC protects the DTOR-reachable pair from first-pass disposal, invokes the destructor once, then retraces current roots.",
+      "A saved Key root protects both nodes through the conditional map edge. After root loss, CALLED history prevents another destructor and the unchanged destructor-free entry preparation disposes the pair.",
+      "Additional allocated nonfreeing stdClass leaves must be independently reachable after stripping Map-to-Value. A complementary real source-valid GC_TRACE fence refuses wider changed shapes rather than silently restoring the strong edge."
+    ],
+    "native": {
+      "revision": "02353596acc53f403f475da973a40a617b2f5dc6",
+      "records": [
+        {
+          "case": "observer",
+          "source_sha256": "607816ff8ac0482ed76cb6933dc872906ca689e91277ae001f43226e8d238e28",
+          "stdout_bytes": 150,
+          "stdout_sha256": "3b4953b4848e63e350fb32f31739f32db5e14d98cd7a873e1f0ef06d3532875b",
+          "report": ".tools/weak-map-ephemeron-observer-63-native-yl05r7qm/report.json"
+        },
+        {
+          "case": "retained_key",
+          "source_sha256": "d1fe58ca5beb6bcea360b999e18060be4c58d12d6430228614ed58052e533b22",
+          "stdout_bytes": 158,
+          "stdout_sha256": "b9b8be762ce7a054171d5fbb051a39073fb04f199fae7d61e5e9b28a3d44484c",
+          "report": ".tools/weak-map-ephemeron-retained-key-63-native-wvf6zpuz/report.json"
+        },
+        {
+          "case": "extra_object",
+          "source_sha256": "461e2c2ebe594011ef018da41d9a9b639fbd0bca3ff8e2bb0f07eca246b7e441",
+          "stdout_bytes": 169,
+          "stdout_sha256": "73a0db0b1f560fc282ceca66f585ff3b7c78ebb0737472217740622706d3aa37",
+          "report": ".tools/weak-map-ephemeron-extra-object-63-native-7s96t3cs/report.json"
+        }
+      ]
+    },
+    "source_agreements": [
+      {
+        "case": "observer",
+        "report": ".tools/weak-map-ephemeron-observer-63-source-i20yjn21/report.json",
+        "elapsed_seconds": 42.6206955909729
+      },
+      {
+        "case": "retained_key",
+        "report": ".tools/weak-map-ephemeron-retained-key-63-source-k6frvi4p/report.json",
+        "elapsed_seconds": 59.76486396789551
+      },
+      {
+        "case": "extra_object",
+        "report": ".tools/weak-map-ephemeron-extra-object-63-source-h1f4ool9/report.json",
+        "elapsed_seconds": 51.11103296279907
+      }
+    ],
+    "state": {
+      "total_assertions": 583,
+      "records": [
+        {
+          "case": "trace",
+          "assertions": 128,
+          "report": ".tools/weak-map-ephemeron-destructor-63-trace-retry-zierhfga/report.json",
+          "inner": ".tools/shutdown-state-review-0rkfyh4d",
+          "elapsed_seconds": 28.63253355026245
+        },
+        {
+          "case": "retrace",
+          "assertions": 136,
+          "report": ".tools/weak-map-ephemeron-destructor-63-state-rv44q_k0/report.json",
+          "inner": ".tools/shutdown-state-review-hy4tg8oh",
+          "elapsed_seconds": 62.04879665374756
+        },
+        {
+          "case": "saved_key",
+          "assertions": 165,
+          "report": ".tools/weak-map-ephemeron-destructor-63-state-ulje2lht/report.json",
+          "inner": ".tools/shutdown-state-review-w_8fzqk4",
+          "elapsed_seconds": 88.4362370967865
+        },
+        {
+          "case": "extra_object",
+          "assertions": 154,
+          "report": ".tools/weak-map-ephemeron-destructor-63-state-9hhdqys9/report.json",
+          "inner": ".tools/shutdown-state-review-6ihimbpl",
+          "elapsed_seconds": 76.7138786315918
+        }
+      ],
+      "base_candidate_sha256": "19feb31fd6d9cf75fa11ae6fa25a0f3f926395d01678fefcfc70da4b3c37a5b4",
+      "controls_sha256": "0bb9f5694a575c9e0d4b360c0ae8e731ce8e7902d0a343f0a4b2ccc1483511cb",
+      "corrected_trace_sha256": "45446e8e801db971246b3fc9f8823bbf268614501826ee5104d396f06fc6847c",
+      "endpoint": "Genuine first-pass plan/destructor entry and post-callback retrace/collection return. Saved-Key retention is source-reached; same-stage root drop is a coherent counterfactual. Originals supply later source collection and complete endings; no terminal drive.",
+      "controls": "Source/method authority, exact protected pair, real destructor roots, stale held-Key plan rejection, independently rooted outside leaf and materialized nonleaf trace refusal; zero/one budget resumes."
+    },
+    "compiler_init": {
+      "compiler_report": ".tools/weak-map-ephemeron-destructor-63-compiler-xs41h25n/report.json",
+      "artifacts": [
+        {
+          "mode": "algo",
+          "bytes": 13950535,
+          "sha256": "da9895e66331bae3a0ce1eaabf44e25795e486cfd082902cbaf1b2b676e70ea9",
+          "elapsed_seconds": 5.503902196884155
+        },
+        {
+          "mode": "struct",
+          "bytes": 14038810,
+          "sha256": "5241e71f9aefbaf936392cda0ae256d382db9aea7091fd2ac8028ef4293cb0bd",
+          "elapsed_seconds": 7.091509103775024
+        }
+      ],
+      "strict_init_report": ".tools/weak-map-ephemeron-destructor-63-init-retry-lctso5gb/report.json",
+      "init_fixture_sha256": "8b7422ad01dcd09ce725abe2bc452cd570852f092bbb5b75fc9079570b98ad9e",
+      "init_checks": 6,
+      "init_stdout": "true\n",
+      "init_elapsed_seconds": 6.478406190872192
+    },
+    "preserved_zero_credit": [
+      {
+        "report": ".tools/weak-map-ephemeron-observer-63-source-8twsdbym/report.json",
+        "revision": "02353596acc53f403f475da973a40a617b2f5dc6",
+        "reason": "WeakMap ephemeron collection",
+        "stdout_prefix": "key-live|value-live|collect|",
+        "accepted_source_agreement": false
+      },
+      {
+        "report": ".tools/weak-map-ephemeron-destructor-63-init-4m_tn7fb/report.json",
+        "reason": "Fixture initial_state() omitted the required completion argument; only corrected initial_state(NORMAL) was rerun.",
+        "accepted": false
+      },
+      {
+        "report": ".tools/weak-map-ephemeron-destructor-63-state-vdylyfp7/report.json",
+        "reason": "Original 127-check fixture forecast ordered reach as [Value,Key]; heap_reach prepends seen nodes. Only exact two-way subset trace128 was rerun.",
+        "accepted": false
+      }
+    ],
+    "maintained": {
+      "source_path": "tests/semantics/cycle_collection_cases.json",
+      "source_rows": 73,
+      "state_path": "tests/semantics/cycle_collection_state_review.py",
+      "state_records": 144,
+      "state_sha256": "bec32873d3072d0a4112090e64697aecd2c566a7accb6f5802738741f7615ebb",
+      "preservation": "All prior 70 source rows and 140 CASE values/order plus harness AST are unchanged; exact three originals and four tested literal records only."
+    },
+    "runtime": {
+      "target": "PHP 8.5.10 CLI NTS 64-bit",
+      "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+      "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+      "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      "php_file_sha256": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f"
+    },
+    "caps_environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": null,
+      "CPU": 2,
+      "jobs": 1,
+      "native_seconds": 30,
+      "CLI_seconds": 60,
+      "CLI_recorder_seconds": 75,
+      "compiler_seconds": 120,
+      "state_model_seconds": 120,
+      "state_recorder_seconds": 200
+    },
+    "engine_basis": [
+      "Zend/zend_gc.c:gc_call_destructors",
+      "Zend/zend_gc.c:zend_gc_collect_cycles destructor marking, nested-component protection and retracing",
+      "Zend/zend_gc.c:gc_scan_black",
+      "Zend/zend_weakrefs.c:zend_weakmap_get_gc and key-entry GC helpers"
+    ],
+    "compatibility": "The methodless EX62 lane is exact. Existing DTOR protection, callback, retrace, CALLED history, destructor-free entry preparation and strong disposal guard are unchanged. With no nonempty map the new trace guard is identity; prior cuts remain at their original inputs.",
+    "boundaries": [
+      "Main live singleton map/key backedge only; sole local public ordinary destructor. Wider methods, typed/reference/wider properties, unheld/multiple maps and general ephemeron graphs remain required.",
+      "Only independently rooted allocated nonfreeing stdClass leaves are additionally admitted. Nonleaf/unrooted outside changes are fenced; throwing, inactive/Fiber/worker/freeing contexts remain unvalidated.",
+      "Other WeakMap reference/presence/iteration protocols remain open. Countable is nominal-only; count execution is excluded/Unsupported per CORE."
+    ]
   }
 }

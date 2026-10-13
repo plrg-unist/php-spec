@@ -3551,8 +3551,21 @@ passes each return zero. Two originals agree at `0167ec6c`; unheld (169), held-k
 the dead entry before the unchanged strong resurrection guard and ordinary
 counted/store/handle disposal. Checks stop at the collection return; originals
 supply later teardown. The original nonempty-map Unsupported stays zero.
-Wider/destructor-bearing maps, inactive contexts and general ephemeron graphs
+Wider maps/destructor callbacks, inactive contexts and general ephemeron graphs
 remain required. [Ledger](coverage/semantics/weak-map-review.json).
+
+Singleton ephemeron collection now admits one source-backed public value
+destructor. Existing GC protects Value and Key through the first callback and
+retraces current roots afterward: observer-only cleanup collects two nodes;
+saved Key protects both, then later collection disposes them without a second
+destructor. A separately rooted `stdClass` leaf is preserved; wider changed
+shapes stop at the real GC_TRACE boundary. Three originals agree at `18a03e08`;
+128 entry, 136 retrace, 165 saved-Key and 154 outside-leaf checks total 583.
+The saved-Key stage is source-reached; its root-drop check is a coherent
+counterfactual. Checks stop at destructor entry or collection return; originals
+supply endings. The original Unsupported, initial-state arity and reach-order
+fixture failures retain zero credit. Wider methods, graphs and contexts remain
+required. [Ledger](coverage/semantics/weak-map-review.json).
 
 ArrayAccess304 reconstructs intermediate `[]` after ordinary by-value Get and
 supports final compound append, including null-key Get/Set on returned children.

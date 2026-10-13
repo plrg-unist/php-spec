@@ -1199,6 +1199,14 @@ Two originals agree at `0167ec6c`; 439 reached checks validate conditional traci
 entry disposal and held owners. Wider maps, callbacks and ephemeron graphs remain
 required. [Review](coverage/semantics/weak-map-review.json).
 
+The same bounded backedge now supports one ordinary public value destructor.
+Its first GC pass protects the pair through the callback; retracing then collects
+it or preserves it if the callback saves the key. Later collection runs no second
+destructor. An independently rooted `stdClass` leaf also survives without keeping
+the pair alive; wider callback changes fail explicitly. Three originals agree at
+`18a03e08`; 583 reached checks cover destructor entry, retracing and retained
+roots. Wider destructor and graph behavior remains required.
+
 [Ordinary collection301](docs/semantics/CYCLE-COLLECTION.md) implements explicit
 object/array cycle collection, ordered destructor callbacks and real weak
 retirement. Fiber protection scans reuse one graph within an unchanged state,

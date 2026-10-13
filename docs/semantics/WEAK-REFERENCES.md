@@ -123,10 +123,42 @@ source's `WeakMap ephemeron collection` refusal remains zero agreement.
 
 The basis is `zend_weakmap_get_gc`, key-entry helpers and `gc_scan_black` in
 `Zend/zend_weakrefs.c` / `Zend/zend_gc.c`: an entry is retained when both map and
-key are live. Wider maps, destructor callbacks, typed/reference or wider value
+key are live. Wider maps/destructor callbacks, typed/reference or wider value
 properties, inactive contexts, unheld-map and general ephemeron graphs remain
 required. Countable remains nominal-only and count library execution is excluded
 by CORE. Earlier cuts retain their evidence in the
+[ledger](../../coverage/semantics/weak-map-review.json).
+
+## Destructor callbacks and ephemeron retracing
+
+The singleton cut also admits a sole local public ordinary `__destruct` on the
+parentless Value, with no parameters or return type, alongside its one public
+untyped key property. The live map and leaf `stdClass` key bounds remain.
+Existing module301 protects the destructor-reachable Value/Key pair in the
+first pass, invokes the real callback once, then retraces current roots.
+Callback weak and entry reads see the pair alive. Saving Key protects Value
+through the conditional map edge; dropping that root permits collection without
+calling the destructor again. Physical ownership and destructor-free entry
+preparation remain unchanged.
+
+An additional allocated, nonfreeing `stdClass` leaf is admitted only when it is
+independently reachable without Map→Value. A source-valid later GC_TRACE refuses
+wider changed shapes instead of silently restoring a strong map edge.
+Three originals (150/158/169 bytes) agree at `18a03e08`; 128/136/165/154 reached
+checks total 583. They authenticate first-pass protection and destructor entry,
+post-callback disposal, saved-Key retention and the rooted outside leaf, with
+malformed method/source, stale-owner and materialized nonleaf refusal controls.
+The saved-Key stage is genuine; dropping its root in the same stage is a
+coherent counterfactual, with the original supplying the later source execution.
+Checks stop at destructor entry or collection return. Original Unsupported,
+initial-state arity and ordered-reach fixture failures retain zero credit.
+
+The basis is `gc_call_destructors` and `zend_gc_collect_cycles` in
+`Zend/zend_gc.c`: destructor marking and nested-component protection precede
+callbacks, then tracing runs again. Wider methods, properties, outside graphs,
+unheld/multiple maps, inactive contexts and throwing callbacks remain required.
+Countable stays nominal-only; count execution is excluded by CORE. Earlier cuts
+retain their evidence in the
 [ledger](../../coverage/semantics/weak-map-review.json).
 
 ## WeakMap first entry and key retirement
