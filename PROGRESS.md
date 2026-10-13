@@ -1653,6 +1653,8 @@ closure and unrun selected-payload correction keep zero credit. Local source
 reconstruction and reachable alias evidence do not prove historical alias
 provenance; wider demand/lifecycle and broad returns_verify remain OPEN.
 [Multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+Actual380 over `663f0ef4` passes strict at `ac9a8f50` in 6.081s with zero
+applications; original private source/state/independent cuts remain separate.
 
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
