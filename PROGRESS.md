@@ -7,6 +7,15 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Nonfatal runtime diagnostics now skip handler/default delivery while a genuine
+file-compiler fatal receipt remains retained. Trigger_error returns true and an
+undefined-variable read yields null; the new receipt branch excludes fatal-mask errors.
+Module236 and its maintained protocol at 3f28d7ddc /385 retain three exact source
+tuples and two public fronts/185 premises at 571d3211. No raw projections or ownership/lifetime
+changes; baseline and the original typed-subtraction fixture failure remain0.
+Recorded runtime fatals, E_DONT_BAIL and broader diagnostic/formatter queues stay partial.
+[Recorded-warning ledger](coverage/semantics/source-recorded-warning-review.json).
+
 Module396 is independently accepted for normal positive-chunk user output handlers from source
 echo/print/inline and explicit lower WRITE cascades. Whole buffers preserve
 VM strictness/file/line, active-top versus selected-lower behavior, detached flush

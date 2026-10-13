@@ -1,0 +1,97 @@
+{
+  "status": "accepted_private",
+  "target": "PHP 8.5.10 CLI NTS64",
+  "base": "4501633fcac8d16658ac8498427235a3390c0238",
+  "implementation_revision": "3f28d7ddcd1b520e991209e3fbea2cd8bd73c59e",
+  "tested_cut": {
+    "module_count": 385,
+    "semantic_diff_sha256": "571d32116066472ed5bdbbff034f7d95800a8a49dba6486e75913a6efdd5cbbf",
+    "files_sha256": {
+      "spec/semantics/236-eval-declaration-notices.watsup": "dfa911fda6c92191af4108b13e4c8ce6af002ef28f39eee76757846bdac961c9",
+      "tests/semantics/recorded_warning_protocol.py": "173ec8cbf8b4cdd32b3e711518649a6a2df645b5f67647072a7dd8ed311d7e03"
+    }
+  },
+  "behavior": [
+    "A valid retained file-compiler FATAL receipt suppresses nonfatal runtime handler/default delivery through the existing recorded-error gate.",
+    "Trigger_error still returns true; an undefined-variable read still yields null and resumes its consumer.",
+    "The gate preserves existing compiler formatter behavior; its new receipt branch excludes Zend E_FATAL_ERRORS mask4437 and uses the replay-authenticated request index.",
+    "No request-state fields, static ownership, destructor policy or opened-file membership change."
+  ],
+  "engine_routes": [
+    "vendor/php-src/Zend/zend.c: zend_error_zstr_at recorded-error early return",
+    "vendor/php-src/Zend/zend_errors.h: E_FATAL_ERRORS",
+    "vendor/php-src/Zend/zend_language_scanner.l: compile_file retained recording after bailout"
+  ],
+  "accepted": {
+    "exact_cli_sources": 3,
+    "public_groups": 2,
+    "public_premises": 185,
+    "raw_projections": 0,
+    "source_cases": [
+      "static-native-v30/file-fatal-shutdown-recorded-user-warning",
+      "static-native-v30/eval-fatal-shutdown-ordinary-user-warning",
+      "static-native-v31/file-fatal-shutdown-recorded-variable-warning"
+    ],
+    "source_result": "All checked/native php_error255 statuses and complete original stdout/stderr agree at the same tested cut; CLI runner0 and stable inputs.",
+    "public_checks": [
+      "API512 dispatch and read2 begin/result run through real production steps with true/null results and no callback/default event.",
+      "Actual receipt/index, caller/frames/handler, public declarations/heap and fresh shutdown eval3 remain valid.",
+      "Absent/dangling index fails whole-state admission; each fatal-mask bit is excluded from the new receipt branch.",
+      "Retained old static/WeakReference and new shutdown-object destruction reuse the established lifetime policy."
+    ],
+    "execution": "Original checked main/file sources, real open/parse responses and production drives only; no raw PhpStep or executed proof view."
+  },
+  "preserved_zero_credit": [
+    "Unchanged baseline invokes H and emits an extra Warning: late (649 stderr bytes versus native497); the source/static/status path already agrees.",
+    "Original state01 stops before runtime because nat subtraction was used without the declared conversion; API92 group remains0 and read93 was unrun.",
+    "Fresh state02 changes only the seek decrement to nabs(n-1) under n>0; both assertion files remain byte-identical.",
+    "Native observations and fixture preparation have zero model/state agreement credit; earlier recorded-fatal4/109 evidence is not renewed."
+  ],
+  "remaining": [
+    "Recorded runtime fatal producers, including E_USER_ERROR, remain a separate required behavior.",
+    "E_DONT_BAIL, broader recorded diagnostic queues and compiler/formatter/callback/lifecycle combinations remain partial."
+  ],
+  "artifacts": {
+    "native_warning_pair": {
+      "path": ".tools/dynamic-review-02/static-native-v30/report.json",
+      "sha256": "a4ad12f2e8a6c0317f79ccd860c7cff1a9aed4e9c8faa9bb67034392496a1c08"
+    },
+    "native_variable_warning": {
+      "path": ".tools/dynamic-review-02/static-native-v31/report.json",
+      "sha256": "1d0b246a8174fe2afb1e51b30ed0cec21046ba2f49bb194bc93aea34be2532f5"
+    },
+    "unchanged_baseline": {
+      "path": ".tools/dynamic-source-recorded-warning-baseline-12/report.json",
+      "sha256": "39174b92b40af908fd602bbcf3da8243c6670e4947624a071d34d65e56f3f523"
+    },
+    "affected_source": {
+      "path": ".tools/dynamic-source-recorded-warning-model-13/report.json",
+      "sha256": "c832183df1dbf9df1d3f14600acd1982b26ab4a6684fb1cb18892a4ab6c5ba3c"
+    },
+    "independent_sources": {
+      "path": ".tools/dynamic-review-02/recorded-warning-model-v1/report.json",
+      "sha256": "b3caba3a307ab8a31b678886453ab772dc0555e3cc59692fc80b03f3ec382133"
+    },
+    "original_preparation": {
+      "path": ".tools/dynamic-source-recorded-warning-state-01/fixtures-report.json",
+      "sha256": "41aaec39f57196201fe613136bd5704a4bf45248f3b26228bf2a523494ceca94"
+    },
+    "pre_runtime_failure": {
+      "path": ".tools/dynamic-source-recorded-warning-state-01/check-report.json",
+      "sha256": "4deacacd882b6048b82b7fe82ea8beb0fd05b815619c5a70db48d4e1b9ee3702"
+    },
+    "corrected_preparation": {
+      "path": ".tools/dynamic-source-recorded-warning-state-02/fixtures-report.json",
+      "sha256": "6b30697452eaa145ec50915adecef4276bcc2307112e62833567eb1a25894edd"
+    },
+    "api_public": {
+      "path": ".tools/dynamic-source-recorded-warning-state-02/check-2-report.json",
+      "sha256": "c12dfb2fe02d5ce3dac6cba5e9778ef1cd266a821931fd39014060433c5eb89f"
+    },
+    "read_public": {
+      "path": ".tools/dynamic-source-recorded-warning-state-02/check-3-report.json",
+      "sha256": "24213fc9e6ff1ed8c0da9c7803d7e0152fa5e46ad7e04a016c2a26e453b97bdb"
+    }
+  },
+  "recovery": "Preserve canonical ignored originals/raw and branches. recorded_warning_protocol.py prepares fixtures and checks selected full modules with --sl under90s; source wrappers use CLI60/process90. Original failure outputs remain immutable; metadata alone requires no semantic rerun."
+}
