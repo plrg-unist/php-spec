@@ -35,11 +35,13 @@ PREFIX = ('dec $psp_replace(pcoccurrence*,pcpath,pcnode) : pcoccurrence*\n'
  'def $psp_stage(S,2) = true\n'
  '  -- if S.COMPLETION = NORMAL \\/ S.COMPLETION = BUDGET\n'
  '  -- if S.TODO = (ASSIGN_ARRAY pbase 22 b) :: ptask*\n'
- '  -- if S.RESULT = KNOWN (PINT 300)\n'
+ '  -- if S_rhs_stage = $resolve_at(S[.COMPLETION = NORMAL],S.RESULT,22)\n'
+ '  -- if S_rhs_stage.COMPLETION = NORMAL /\\ S_rhs_stage.RESULT = KNOWN (PINT 300)\n'
  'def $psp_stage(S,3) = true\n'
  '  -- if S.COMPLETION = NORMAL \\/ S.COMPLETION = BUDGET\n'
  '  -- if S.TODO = (ASSIGN_ARRAY pbase 13 b) :: ptask*\n'
- '  -- if S.RESULT = KNOWN (PINT 400)\n'
+ '  -- if S_rhs_stage = $resolve_at(S[.COMPLETION = NORMAL],S.RESULT,13)\n'
+ '  -- if S_rhs_stage.COMPLETION = NORMAL /\\ S_rhs_stage.RESULT = KNOWN (PINT 400)\n'
  'def $psp_stage(S,4) = true\n'
  '  -- if S.COMPLETION = NORMAL \\/ S.COMPLETION = BUDGET\n'
  '  -- if S.CURRENT = (pcallcontext)\n'
@@ -424,8 +426,9 @@ CHILD_WRITE = ['$class_named(S.CLASSNAMES,$ptlc($ptascii("ProtectedSetPlainParen
  '(n_grand)',
  '$objectprops_at(S.OBJECTPROPS,n_grand) = ([{DECL (ppropertydesc_child.ORIGIN), NAME '
  'ppropertydesc_child.KEY, STATE PROP_VALUE (DIRECT (PINT 200))}])',
- '$property_pending_base(pbase_write) /\\ S.RESULT = KNOWN (PINT 300) /\\ z_write = 22 /\\ '
- '$call_task_valid(S,ASSIGN_ARRAY pbase_write z_write b_write) /\\ $psp_guard(S)',
+ 'S_rhs = $resolve_at(S,S.RESULT,z_write)',
+ '$property_pending_base(pbase_write) /\\ S_rhs.COMPLETION = NORMAL /\\ S_rhs.RESULT = KNOWN (PINT 300) /\\ '
+ 'z_write = 22 /\\ $call_task_valid(S,ASSIGN_ARRAY pbase_write z_write b_write) /\\ $psp_guard(S)',
  '$property_instance_set_desc(S,n_grand,$ptascii("value")) = (ppropertydesc_child)',
  '$property_protected_allowed(S,ppropertydesc_child) /\\ $class_static_set_allowed(S,ppropertydesc_child) '
  '/\\ ~$property_set_denied(S,n_grand,$ptascii("value"))',
@@ -543,8 +546,9 @@ PARENT_WRITE = ['$class_named(S.CLASSNAMES,$ptlc($ptascii("ProtectedSetPlainPare
  '(n_grand)',
  '$objectprops_at(S.OBJECTPROPS,n_grand) = ([{DECL (ppropertydesc_child.ORIGIN), NAME '
  'ppropertydesc_child.KEY, STATE PROP_VALUE (DIRECT (PINT 300))}])',
- '$property_pending_base(pbase_write) /\\ S.RESULT = KNOWN (PINT 400) /\\ z_write = 13 /\\ '
- '$call_task_valid(S,ASSIGN_ARRAY pbase_write z_write b_write) /\\ $psp_guard(S)',
+ 'S_rhs = $resolve_at(S,S.RESULT,z_write)',
+ '$property_pending_base(pbase_write) /\\ S_rhs.COMPLETION = NORMAL /\\ S_rhs.RESULT = KNOWN (PINT 400) /\\ '
+ 'z_write = 13 /\\ $call_task_valid(S,ASSIGN_ARRAY pbase_write z_write b_write) /\\ $psp_guard(S)',
  '$property_instance_set_desc(S,n_grand,$ptascii("value")) = (ppropertydesc_child)',
  '$property_protected_allowed(S,ppropertydesc_child) /\\ $class_static_set_allowed(S,ppropertydesc_child) '
  '/\\ ~$property_set_denied(S,n_grand,$ptascii("value"))',
