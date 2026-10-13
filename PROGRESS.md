@@ -17,6 +17,9 @@ public groups/281 premises at210+71 cuts. Three raw projections remain separate
 from three production fatal transitions; original failures/diagnostics remain0.
 Wider fatal/compiler producers and lifecycle/return cleanup stay partial.
 [Source-static fatal ledger](coverage/semantics/source-static-fatal-review.json).
+The382 composition over1fe8fae6 passes independent pointwise review at3a4b0921;
+accepted runtime/protocol bytes and all newer parent behavior are preserved.
+No renewed actor/source/state evidence is claimed.
 
 Module390 now releases callback-installed object/array payloads before captured
 inc/dec scalar commit. Destructors see the old slot; scalar writes are overwritten
