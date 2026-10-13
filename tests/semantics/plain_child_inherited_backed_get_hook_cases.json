@@ -1,0 +1,33 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hash": "b8c26a3a04cf431a5f01d658b50c6f98f4bf23f136e32942b2400dd42c8bcaff",
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "scalar",
+      "source": "<?php\nclass PlainInheritedParent54 {\n    public int $value = 100 {\n        get {\n            echo \"GET:\", self::class, \"/\", static::class, \"|\";\n            return $this->value + $this->answer();\n        }\n    }\n    private function answer() { return 13; }\n    public function parentRead() { echo \"H|\"; return $this->value; }\n}\nclass PlainInheritedBridge54 extends PlainInheritedParent54 {}\nclass PlainInheritedChild54 extends PlainInheritedBridge54 {\n    public int $value = 200;\n    private function answer() { return 500; }\n}\nclass PlainInheritedGrand54 extends PlainInheritedChild54 {\n    private function answer() { return 900; }\n}\n$parent = new PlainInheritedParent54();\n$child = new PlainInheritedChild54();\n$grand = new PlainInheritedGrand54();\n$raw = (array) $parent;\necho $raw === [\"value\" => 100] ? \"P100|\" : \"BAD|\";\n$raw = (array) $child;\necho $raw === [\"value\" => 200] ? \"C200|\" : \"BAD|\";\n$raw = (array) $grand;\necho $raw === [\"value\" => 200] ? \"G200|\" : \"BAD|\";\necho $parent->value, \"|\";\necho $child->value, \"|\";\necho $grand->parentRead(), \"|\";\n$raw = (array) $grand;\necho $raw === [\"value\" => 200] ? \"G200|\" : \"BAD|\";\n$grand->value = 300;\n$raw = (array) $grand;\necho $raw === [\"value\" => 300] ? \"G300|\" : \"BAD|\";\necho $grand->value, \"|\";\n",
+      "source_sha256": "d80739c123766e8cedf42cd6b28838a59387ab4a867de2a27800daf9cd6ad3b4",
+      "stdout_base64": "UDEwMHxDMjAwfEcyMDB8R0VUOlBsYWluSW5oZXJpdGVkUGFyZW50NTQvUGxhaW5Jbmhlcml0ZWRQYXJlbnQ1NHwxMTN8R0VUOlBsYWluSW5oZXJpdGVkUGFyZW50NTQvUGxhaW5Jbmhlcml0ZWRDaGlsZDU0fDIxM3xIfEdFVDpQbGFpbkluaGVyaXRlZFBhcmVudDU0L1BsYWluSW5oZXJpdGVkR3JhbmQ1NHwyMTN8RzIwMHxHMzAwfEdFVDpQbGFpbkluaGVyaXRlZFBhcmVudDU0L1BsYWluSW5oZXJpdGVkR3JhbmQ1NHwzMTN8",
+      "stderr_template": "",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "plain-child-inherited-backed-get-hook54-native-aa8ddc73-r2",
+      "native_raw_sha256": "b8c26a3a04cf431a5f01d658b50c6f98f4bf23f136e32942b2400dd42c8bcaff"
+    }
+  ]
+}

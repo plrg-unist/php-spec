@@ -1360,7 +1360,7 @@ result 213, then slot 300/getter 313; separate stored S and returned R cleanup.
 Strict378/source2 pass at `0dda8304`; separate CV111 (70 reached, 41 derived),
 This68, write64 and lifetime104 pass at `83b032a1` (306 reached, 41 derived).
 Existing layout/default/store/task/owner rules and earlier cuts retain their identities;
-plain children inheriting hooks remain required.
+wider plain-child inherited-getter shapes remain required.
 [Ordinary-parent review](coverage/semantics/ordinary-parent-backed-get-hook-review.json).
 Joined released `0940b7ee`/378 with retained private cuts and zero current actors;
 incoming Closure/reference/WeakMap/operator/anonymous-factory paths are disjoint.
@@ -1417,6 +1417,16 @@ plus 30 derived. Runtime, defaults, layouts, pure covariance and ownership stay 
 [Own-backed type-presence review](coverage/semantics/ordinary-backed-parent-backed-get-hook-type-presence-review.json).
 Joined exact `08666ae75`/382; one count-only current init check passes with no application.
 Private cuts remain retained through disjoint comparison, update-warning and ref-chain paths.
+
+A public plain child property of equal normalized TYPE now inherits a genuinely
+backed parent getter across Bridge. Its effective property/default/slot remain
+Child's (200→300), while function, lexical/private scope and trace class remain
+Parent's; called scope follows Child or Grand. Strict382/source1 pass at `771ad7b9`.
+Four separate states at `6617e08a` pass controls69 (33 reached, 36 derived),
+Child entry52, inherited Grand54 and write68: 207 reached plus 36 derived.
+The original anticipation-encoding failure and two AL fixture failures remain zero.
+Further plain redeclarations and wider hook/type/reference families remain required.
+[Inherited-getter review](coverage/semantics/plain-child-inherited-backed-get-hook-review.json).
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
