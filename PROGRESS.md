@@ -1922,6 +1922,19 @@ native output agreement; local reconstruction and broader returns remain OPEN.
 Actual384 over `30057795` passes strict at `b89cdc07` in 6.291s with zero
 applications; private source/state/public cuts retain their original identities.
 
+The bounded class certificate now admits positional New TypeError(literal,0,
+same ordinary caught local), preserving old helpers and common guards. Source2,
+reached2/411 (325+86) and independent public163/1 pass at `aed60b2e`/384. Early
+replacement.previous=caught and caught.previous=null; later old Y is appended
+to the caught tail. All three identities and both creation-line/trace graphs
+survive ordered Z/W/X/caller, with caught kept live and T/D/probe canceled.
+Budget resumption starts after actual main e/p/q bindings, before R output; the
+counter control refuses and selected alias passes. Private strict takes 6.362s
+with zero applications. Original parse7709 stays0; corrected-primary elab680e
+is syntax-only. Native Previous messages, modeled identity/trace and early/late
+state cuts remain separate; local source reconstruction and wider returns OPEN.
+[Multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
 cell while GLOBALS may rebind or disappear; conversion writes the old cell atomically.

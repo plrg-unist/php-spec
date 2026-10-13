@@ -337,6 +337,17 @@ rules remain exact; Worker120 changes only the source cap. No native trace or
 identity comparison or physical predecessor-history proof is added. Broader
 replacement, explicit Previous and returns remain OPEN.
 
+The next exact certificate permits positional New TypeError(literal,0,caught).
+Source2, reached2/411 and independent public163/1 pass at `aed60b2e`. The fresh
+replacement directly retains the caught nested error; old Y is appended to that
+error's tail during finally unwind. All three objects remain distinct; caught
+and replacement keep their own creation origins/lines/trace-array payloads
+through Z/W/X/empty and caller e/p/q reads. T/D/probe are canceled. Budget
+resumption starts at the genuine caller before R, and selected alias remains
+quiet. Counter and missing-operation-exit refusals are separate. Original parse
+failure0 and syntax-only elab retain their cuts. No native identity/trace or
+physical predecessor-history proof is inferred; wider Previous/returns OPEN.
+
 Module 186 captures the physical cell of an ordinary live unconstrained aliased CV
 before weak Stringable conversion. Its retained current/saved f-local binding
 authenticates that selection independently of later GLOBALS rebind/unset. Success

@@ -972,6 +972,13 @@ creation line/trace reach the same caller with old Y as Previous, while the
 caught-only nested error retires. T/D and the failed probe stay canceled; budget
 continuation and the selected alias pass. Worker120 is a cap-only retry; original
 timeouts keep zero credit. Wider replacement/returns verification remains OPEN.
+
+The same guarded catch can explicitly pass its caught error as Previous. Two
+originals, reached2/411 and independent public163/1 pass separately: early
+replacement→caught becomes replacement→caught→oldY during cleanup, keeping both
+trace graphs and the caught error alive through retirement and caller reads.
+Caller-cut budgets and selected alias pass; the original fixture parse failure
+keeps zero credit. Wider Previous/returns verification remains OPEN.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)
