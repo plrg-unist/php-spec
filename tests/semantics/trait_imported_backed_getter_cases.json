@@ -1,0 +1,48 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hashes": {
+    "scalar": "81249b3308a99f0e3bba19aff769ee7a4c1356b6c7e1d7a234399a5ec210a8a9",
+    "collision": "81249b3308a99f0e3bba19aff769ee7a4c1356b6c7e1d7a234399a5ec210a8a9"
+  },
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "scalar",
+      "source": "<?php\ntrait ImportedBackedGetterTrait63 {\n    public int $value = 100 {\n        get {\n            echo 'GET:', self::class, '/', static::class, '/', __METHOD__, '|';\n            return $this->value + $this->answer();\n        }\n    }\n}\nclass ImportedBackedGetterConsumer63 {\n    use ImportedBackedGetterTrait63;\n    private function answer(): int { return 13; }\n    public function consumerRead(): int {\n        echo 'READ:', self::class, '/', static::class, '|';\n        return $this->value;\n    }\n}\nclass ImportedBackedGetterGrand63 extends ImportedBackedGetterConsumer63 {\n    private function answer(): int { return 900; }\n}\n$consumer = new ImportedBackedGetterConsumer63();\n$grand = new ImportedBackedGetterGrand63();\n$raw = (array) $consumer;\necho 'C', $raw['value'], '|';\n$raw = (array) $grand;\necho 'G', $raw['value'], '|';\necho $consumer->value, '|';\necho $grand->value, '|';\necho $grand->consumerRead(), '|';\n$grand->value = 300;\n$raw = (array) $grand;\necho 'G', $raw['value'], '|';\necho $grand->value, '|';\n",
+      "source_sha256": "7d73c1ca300e08ad06dd539d82b105db1b45413f3243a92afafa3c6a0de6db56",
+      "stdout_base64": "QzEwMHxHMTAwfEdFVDpJbXBvcnRlZEJhY2tlZEdldHRlckNvbnN1bWVyNjMvSW1wb3J0ZWRCYWNrZWRHZXR0ZXJDb25zdW1lcjYzL0ltcG9ydGVkQmFja2VkR2V0dGVyVHJhaXQ2Mzo6JHZhbHVlOjpnZXR8MTEzfEdFVDpJbXBvcnRlZEJhY2tlZEdldHRlckNvbnN1bWVyNjMvSW1wb3J0ZWRCYWNrZWRHZXR0ZXJHcmFuZDYzL0ltcG9ydGVkQmFja2VkR2V0dGVyVHJhaXQ2Mzo6JHZhbHVlOjpnZXR8MTEzfFJFQUQ6SW1wb3J0ZWRCYWNrZWRHZXR0ZXJDb25zdW1lcjYzL0ltcG9ydGVkQmFja2VkR2V0dGVyR3JhbmQ2M3xHRVQ6SW1wb3J0ZWRCYWNrZWRHZXR0ZXJDb25zdW1lcjYzL0ltcG9ydGVkQmFja2VkR2V0dGVyR3JhbmQ2My9JbXBvcnRlZEJhY2tlZEdldHRlclRyYWl0NjM6OiR2YWx1ZTo6Z2V0fDExM3xHMzAwfEdFVDpJbXBvcnRlZEJhY2tlZEdldHRlckNvbnN1bWVyNjMvSW1wb3J0ZWRCYWNrZWRHZXR0ZXJHcmFuZDYzL0ltcG9ydGVkQmFja2VkR2V0dGVyVHJhaXQ2Mzo6JHZhbHVlOjpnZXR8MzEzfA==",
+      "stderr_template": "",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "trait-imported-backed-getter63-scalar-native-51b6ecf1",
+      "native_raw_sha256": "81249b3308a99f0e3bba19aff769ee7a4c1356b6c7e1d7a234399a5ec210a8a9"
+    },
+    {
+      "id": "collision",
+      "source": "<?php\ntrait ImportedBackedCollisionTrait63 {\n    public int $value = 100 {\n        get {\n            echo 'GET:', self::class, '/', static::class, '/', __METHOD__, '|';\n            return $this->value + $this->answer();\n        }\n    }\n}\nclass ImportedBackedCollisionConsumer63 {\n    use ImportedBackedCollisionTrait63;\n    public int $value = 100;\n    private function answer(): int { return 13; }\n}\n",
+      "source_sha256": "1655bf1759d80a3055452e91cadd0e80cfc60783ef36b9daf51f94f895fad69c",
+      "stdout_base64": "",
+      "stderr_template": "Fatal error: ImportedBackedCollisionConsumer63 and ImportedBackedCollisionTrait63 define the same hooked property ($value) in the composition of ImportedBackedCollisionConsumer63. Conflict resolution between hooked properties is currently not supported. Class was composed in {FILE} on line 10\nStack trace:\n#0 {main}\n",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEltcG9ydGVkQmFja2VkQ29sbGlzaW9uQ29uc3VtZXI2MyBhbmQgSW1wb3J0ZWRCYWNrZWRDb2xsaXNpb25UcmFpdDYzIGRlZmluZSB0aGUgc2FtZSBob29rZWQgcHJvcGVydHkgKCR2YWx1ZSkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEltcG9ydGVkQmFja2VkQ29sbGlzaW9uQ29uc3VtZXI2My4gQ29uZmxpY3QgcmVzb2x1dGlvbiBiZXR3ZWVuIGhvb2tlZCBwcm9wZXJ0aWVzIGlzIGN1cnJlbnRseSBub3Qgc3VwcG9ydGVkLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgMTAKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "trait-imported-backed-getter63-collision-native-51b6ecf1",
+      "native_raw_sha256": "81249b3308a99f0e3bba19aff769ee7a4c1356b6c7e1d7a234399a5ec210a8a9"
+    }
+  ]
+}

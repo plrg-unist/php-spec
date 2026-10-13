@@ -131,7 +131,8 @@ def $target_nodes(PORIGIN n pcpath) = eps
 def $target_nodes(CLOSURE_TARGET n) = [HOBJECT n]
 dec $trait_fcc_retained_functions(pstate) : pfunction*
 def $trait_fcc_retained_functions(S) = eps -- otherwise
-def $all_functions(S) = S.FUNCTIONS ++ S.CLOSURETEMPLATES ++ $class_method_functions(S.CLASSES) ++ $trait_fcc_retained_functions(S)
+dec $property_hook_trait_functions(pstate, pclassdesc*) : pfunction*
+def $all_functions(S) = S.FUNCTIONS ++ S.CLOSURETEMPLATES ++ $class_method_functions(S.CLASSES) ++ $trait_fcc_retained_functions(S) ++ $property_hook_trait_functions(S, S.CLASSES)
 def $target_function(S, PORIGIN n pcpath) = $function_at(S.FUNCTIONS ++ S.CLOSURETEMPLATES, PORIGIN n pcpath)
 def $target_function(S, CLOSURE_TARGET n) = $function_at(S.CLOSURETEMPLATES, porigin)
   -- if $object_body(S.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell*

@@ -2028,6 +2028,12 @@ First owns 200; Second and Grand start at 300, then Grand's slot becomes 400. Th
 getter remains 13; later `private(set)` narrowing fails against the immediate parent. Two
 originals and four focused states are in the
 [repeated protected-setter review](coverage/semantics/repeated-protected-plain-inherited-getter-review.json).
+A direct trait’s public body-backed `int` getter also imports into a parentless
+using class. Its code and `__METHOD__` spelling remain the trait’s; lexical/private
+scope follows the using class and called scope follows the receiver. Slot 100→300
+yields 113→313. An identical plain own property still conflicts. Two originals
+and four focused states are in the
+[trait-getter review](coverage/semantics/trait-imported-backed-getter-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`

@@ -72,6 +72,8 @@ dec $trait_type_atom_nominal(ptatom) : nat
 dec $trait_data_needs(pvresult) : bool
 dec $trait_static_property_read_pending(ptask*) : bool
 dec $trait_data_fatal(pstate, pclassdesc, ptbytes) : pstate
+dec $property_hook_source_declared(pstate, ppropertydesc) : bool
+dec $property_hook_trait_import_supported(pstate, pclassdesc, ppropertydesc) : bool
 
 def $trait_data_import_type(pclassdesc, ptbranch*) = ptbranch* -- if pclassdesc.KIND = "trait"
 def $trait_data_import_type(pclassdesc, ptbranch*) = $trait_type_branches(ptbranch*, pclassdesc.NAME, pclassdesc.PARENT) -- if pclassdesc.KIND =/= "trait"
@@ -408,11 +410,14 @@ def $trait_data_property_one(S, pclassdesc, pclassdesc_trait, ppropertydesc, pcl
 def $trait_data_property_one(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*) = S[.CLASSES = $trait_class_set(S.CLASSES, pclassdesc[.PROPERTIES = pclassdesc.PROPERTIES ++ [$trait_data_property(pclassdesc, ppropertydesc)]])]
   -- if $ppproperty_desc_at(pclassdesc.PROPERTIES, ppropertydesc.NAME) = eps
   -- if ~pclassdesc.READONLY \/ ppropertydesc.READONLY
+  -- if $property_hook_trait_import_supported(S, pclassdesc, ppropertydesc)
 def $trait_data_property_one(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*) = $trait_data_property_error(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*)
   -- if $ppproperty_desc_at(pclassdesc.PROPERTIES, ppropertydesc.NAME) = (ppropertydesc_prior)
+  -- if ~$property_hook_source_declared(S, ppropertydesc_prior) /\ ~$property_hook_source_declared(S, ppropertydesc)
   -- if ppropertydesc_prior.VISIBILITY =/= ppropertydesc.VISIBILITY \/ ppropertydesc_prior.STATIC =/= ppropertydesc.STATIC \/ ppropertydesc_prior.READONLY =/= ppropertydesc.READONLY
 def $trait_data_property_one(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*) = $trait_data_property_checked(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, $trait_data_types(S, pclassdesc, $trait_property_source_type(S, ppropertydesc_prior), pclassdesc_trait, ppropertydesc.TYPE, false, $trait_property_source_fast_equal(S, ppropertydesc_prior, ppropertydesc)))
   -- if $ppproperty_desc_at(pclassdesc.PROPERTIES, ppropertydesc.NAME) = (ppropertydesc_prior)
+  -- if ~$property_hook_source_declared(S, ppropertydesc_prior) /\ ~$property_hook_source_declared(S, ppropertydesc)
   -- if ppropertydesc_prior.VISIBILITY = ppropertydesc.VISIBILITY /\ ppropertydesc_prior.STATIC = ppropertydesc.STATIC /\ ppropertydesc_prior.READONLY = ppropertydesc.READONLY
 def $trait_data_property_checked(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, TRAITDATABAD) = $trait_data_property_error(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*)
 def $trait_data_property_checked(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, TRAITDATAUNKNOWN text) = S[.COMPLETION = UNSUPPORTED text]
