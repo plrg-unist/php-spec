@@ -470,3 +470,18 @@ and separate late163+99 pass: the same post-G carrier survives second GC/E,
 then its O destructor runs during shutdown, followed by retirement and caller
 budget checks. Native evidence is output timing; broader layouts and physical
 collection remain OPEN.
+
+M49 adds a bounded request-store error consumer: with genuine root-scope
+USER=false Fiber hold and physical INDEX provenance, a live ordinary Throwable
+becomes UNCAUGHT directly, matching `zend_fiber_object_destroy` when there is no
+executing PHP frame. The existing shutdown formatter renders the fatal; the null
+control still delivers the same error to the source catch. A direct-finally
+source/operation guard derives the destructor trace line from the suspended
+callsite for both USER origins, preserving the creation line and pure trace.
+Source2/early139 retain `0ec20831`; late262/paused123 at `d16a062b` additionally
+admit only the actual ordered private-control retirement state. The explicit
+storage-admission bridge preserves original source evidence. Raw PhpStep UNCAUGHT
+is an internal transient; public resumption is checked after driver postprocessing.
+Split/full budget equality, exact fatal stderr/255 and normal null continuation
+pass. See pending_carrier_cycle_throw in the local-CV ledger. Broader layouts,
+physical collection and complete returns remain OPEN.

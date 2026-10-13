@@ -2373,6 +2373,21 @@ physical collection and broad returns verification remain OPEN.
 Actual `fa74e4b0`/387 composition passes one quiet ff24 strict gate (app0);
 the parent cached-table GC guard is preserved without private evidence renewal.
 
+M49 handles a selected O destructor error during request-store Fiber close.
+With no executing PHP frame, the genuine USER=false store consumer transfers the
+same ordinary error directly to UNCAUGHT, then fatal cleanup; no handler dispatch.
+The direct-finally trace site derives from the authenticated suspended callsite.
+Source/native2 and early139 pass at `0ec20831`/387. At `d16a062b`, a separate
+storage-only rule admits the exact private-control release/callback operation/store
+hold, preserving old USER=true rules. Fresh compile2 and late125+137 preserve
+same-error trace, fatal255/null catch, retirement and split/full budget equality;
+paused123 adds public admission and coordinated stale-sequence refusal.
+The source/early cuts retain their original revision through an explicit
+admission-only bridge. Early store INDEX refusal is helper-only; line and sequence
+controls use the actual driver. Original Unsupported/trace mismatch, transient
+fixture overclaim, genuine budget gap and compiler-binding failure retain0.
+Physical collection, other layouts and broad returns_verify remain OPEN.
+
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
 Per-constant protection survives namespace publication and parked handlers.

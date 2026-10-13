@@ -47,6 +47,7 @@ dec $fiber_request_ref_tasks(ptask*) : bool
 dec $fiber_request_selected(pstate, nat) : bool
 dec $fiber_request_close(pstate, nat) : pstate
 dec $fiber_close_release_source_valid(pstate, pfiberclose) : bool
+dec $fiber_request_error_ready(pstate, nat) : bool
 dec $gc_worker_idle_store_ready(pstate) : bool
 def $gc_worker_idle_store_ready(S) = false -- otherwise
 
@@ -109,6 +110,33 @@ def $fiber_graceful_retiring(S, n) = true
   -- if $fiber_retired_source_valid(S, n, pdestructionoperation.SOURCE, pfiber)
   -- if n_owners = $heap_count(HOBJECT n, $destruction_job_nodes(pdestructionrelease.JOBS))
   -- if $(n_owners > 0) /\ $heap_owners($heap_graph(S), HOBJECT n) = n_owners
+;; A request-store error also retains the private control for one ordered
+;; decrement before restoring the terminal operation. This grants storage only.
+def $fiber_graceful_retiring(S, n) = true
+  -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
+  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = FIBERGRACEFUL n_fiber n_sequence
+  -- if $(n_fiber < n) /\ $(n_sequence > 0) /\ $(n_sequence < S.FIBERSEQ)
+  -- if $fiber_at(S, n_fiber) = (pfiber)
+  -- if pfiber.STATUS = FIBER_TERMINATED /\ pfiber.SEQUENCE = n_sequence /\ pfiber.FINISH = eps
+  -- if n_fiber <- S.DESTRUCTION.CALLED
+  -- if S.TODO = [DESTRUCTOR_RELEASE pdestructionrelease, DESTRUCTOR_OPERATION_EXIT pdestructionoperation, DESTRUCTOR_RELEASE pdestructionrelease_store, DESTRUCTOR_STORE]
+  -- if S.DESTRUCTION.RELEASES = [pdestructionrelease, pdestructionrelease_store]
+  -- if S.DESTRUCTION.OPERATIONS = [pdestructionoperation]
+  -- if ~pdestructionrelease.USER /\ $destructor_release_valid(S, pdestructionrelease)
+  -- if pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HOBJECT n)]
+  -- if $destructor_operation_valid(S, pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = FIBER_CALLBACK_FINISH pfiberfinish
+  -- if pfiberfinish.OBJECT = n_fiber /\ pfiberfinish.SEQUENCE = n_sequence
+  -- if pfiberfinish.PENDING = (n_error)
+  -- if n_error =/= n
+  -- if pdestructionoperation.COMPLETION = UNCAUGHT n_error
+  -- if pdestructionoperation.PENDING = eps /\ pdestructionoperation.CLEANUP = eps
+  -- if $fiber_retired_source_valid(S, n, pdestructionoperation.SOURCE, pfiber)
+  -- if pdestructionrelease_store.JOBS = [DESTRUCTION_VALUE (HOBJECT n_fiber)]
+  -- if S_store = S[.COMPLETION = NORMAL][.TODO = [DESTRUCTOR_RELEASE pdestructionrelease_store, DESTRUCTOR_STORE]][.DESTRUCTION.RELEASES = [pdestructionrelease_store]][.DESTRUCTION.OPERATIONS = eps]
+  -- if $fiber_request_error_ready(S_store, n_error)
+  -- if $heap_owners($heap_graph(S), HOBJECT n) = 1
 def $fiber_graceful_retiring(S, n) = false -- otherwise
 def $fiber_retired_pending_valid(S, n_exit, pfiberfinish, pfiber) = (~pfiber.FAILED /\ ~pfiber.GRACEFUL /\ $fiber_finish_protected_valid(S, pfiberfinish))
   -- if pfiberfinish.PENDING = eps
@@ -167,6 +195,21 @@ def $fiber_close_release_source_valid(S, pfiberclose) = true
   -- if S_source.DESTRUCTION.COMPLETION = NORMAL
   -- if $(S_source.DESTRUCTION.HANDLES[pfiberclose.OBJECT] + 1) = S_source.DESTRUCTION.INDEX
 def $fiber_close_release_source_valid(S, pfiberclose) = false -- otherwise
+;; HANDLE_EXCEPTION retains the original throw-opline while destroying the
+;; pending return. This direct-finally source shape owns the suspend callsite.
+def $destructor_source_line(S) = pfiberclose.SUSPEND.LINE
+  -- if S.FIBERCLOSERS = pfiberclose :: pfiberclose_tail*
+  -- if $fiber_close_boundary(S) /\ $fiber_graceful_live(S, pfiberclose.EXIT)
+  -- if pfiberclose.SUSPEND.KIND = (INTRINSIC_FIBER_SUSPEND)
+  -- if $fiber_api_valid(S, pfiberclose.SUSPEND)
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.ORIGIN = (pcallcontext.FUNCTION)
+  -- if $origin_child((pcallcontext.FUNCTION), [PCFIELD 5, PCINDEX 2, PCFIELD 2, PCFIELD 0, PCINDEX 2, PCFIELD 0]) = (pfiberclose.SUSPEND.SITE)
+  -- if $destructor_operation_for(S) = (pdestructionoperation)
+  -- if pdestructionoperation.CALLER = S.CURRENT /\ pdestructionoperation.ORIGIN = S.ORIGIN
+  -- if pdestructionoperation.SOURCE = THROW_SEARCH pfiberclose.EXIT
+  -- if pdestructionoperation.PENDING = (pfiberclose.EXIT)
+
 def $fiber_close_valid(S, pfiberclose) = true
   -- if $fiber_at(S, pfiberclose.OBJECT) = (pfiber)
   -- if pfiber.STATUS = FIBER_RUNNING /\ pfiber.SEQUENCE = pfiberclose.SEQUENCE
@@ -502,6 +545,29 @@ def $fiber_close_error_return(S, n) = $fiber_put(S_linked[.TODO = $fiber_finish_
   -- if $fiber_at(S, pfiberfinish.OBJECT) = (pfiber)
   -- if S_linked = $fiber_close_chain(S, n, pfiberfinish.PENDING)
   -- if pfiberfinish_new = pfiberfinish[.PENDING = (n)]
+;; With no executing PHP frame, Fiber object_destroy reports the exception
+;; directly. The object-store temporary hold remains until the fatal cleanup.
+def $fiber_request_error_ready(S, n) = true
+  -- if S.COMPLETION = NORMAL /\ S.DESTRUCTION.COMPLETION = NORMAL
+  -- if $shutdown_task_scope(S) /\ S.ORIGIN = eps
+  -- if S.ACTIVEFIBER = eps /\ S.FIBERCALLERS = eps /\ S.FIBERCLOSERS = eps
+  -- if S.SHUTDOWN.PHASE = SHUTDOWN_DONE
+  -- if S.DESTRUCTION.PHASE = DESTRUCTION_STORE /\ S.DESTRUCTION.NOREUSE
+  -- if S.TODO = [DESTRUCTOR_RELEASE pdestructionrelease, DESTRUCTOR_STORE]
+  -- if S.DESTRUCTION.RELEASES = [pdestructionrelease]
+  -- if ~pdestructionrelease.USER /\ $destructor_release_valid(S, pdestructionrelease)
+  -- if pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HOBJECT n_fiber)]
+  -- if $(S.DESTRUCTION.HANDLES[n_fiber] + 1) = S.DESTRUCTION.INDEX
+  -- if n_fiber <- S.DESTRUCTION.CALLED
+  -- if $fiber_at(S, n_fiber) = (pfiber)
+  -- if pfiber.STATUS = FIBER_TERMINATED /\ pfiber.FAILED /\ ~pfiber.GRACEFUL /\ ~pfiber.RETURNED
+  -- if pfiber.VM = eps /\ pfiber.FINISH = eps
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if $throwable_member(S, n) /\ $throwable_terminal_renderable(S, n, eps)
+def $fiber_request_error_ready(S, n) = false -- otherwise
+def $fiber_close_error_return(S, n) = S[.RETIREDOWNERS = eps][.COMPLETION = UNCAUGHT n][.TRACE = eps][.ERRORORIGIN = pthrowable.FILEORIGIN]
+  -- if $fiber_request_error_ready(S, n)
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
 def $fiber_close_error_return(S, n) = S[.COMPLETION = UNSUPPORTED "Fiber destruction with no supported pending exception consumer"] -- otherwise
 
 ;; The accepted ordinary exit protocol terminates a request. Suppression and

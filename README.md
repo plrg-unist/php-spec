@@ -2851,6 +2851,12 @@ across explicit GC. A bounded normal request-store path later force-closes that
 Fiber with a temporary receiver hold. Two source comparisons and separate 122/262
 state checks cover collector roots, shutdown provenance, D after E and cleanup;
 broader shutdown layouts and physical collection remain open.
+A destructor error during that request-store close now reports an uncaught fatal
+with the original creation line and source-derived destructor trace site. An
+ordered private-control release remains valid when execution pauses before the
+fatal cleanup. Source2/early139 at `0ec20831` and separate late262/paused123 at
+`d16a062b` cover fatal output, normal null control, cleanup and budget resumption;
+the latter revision adds only storage admission. Wider layouts remain open.
 [Weak Stringable parameters](coverage/semantics/weak-string-parameters-review.json)
 now convert supplied fixed parameters in receive order, preserving caller
 strictness, nominal/callable precedence and the entered formal cell. Existing

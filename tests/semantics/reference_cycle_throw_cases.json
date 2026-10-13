@@ -1,0 +1,16 @@
+[
+  {
+    "id": "cycle",
+    "source": "<?php\nclass O { public $back; function __destruct(){echo \"D;\";throw new Exception(\"old\");} }\nfunction &f(){$x=new O;$x->back=$GLOBALS['w'];try{return $x;}finally{unset($x);echo \"U;\";Fiber::suspend();}}\n$w=new Fiber(function(){$r=&f();echo \"R;\";});$w->start();echo \"B:\",(int)$w->isSuspended(),\";\";try{unset($w);}catch(Throwable $e){echo \"C:\",$e->getMessage(),\";P:\",($e->getPrevious()?$e->getPrevious()->getMessage():\"null\"),\";\";}echo \"L;\";gc_collect_cycles();echo \"G;\";gc_collect_cycles();echo \"E;\";\n",
+    "stdout": "U;B:1;L;G;E;D;",
+    "stderr": "Fatal error: Uncaught Exception: old in /home/user/workspace/php-spec/.tools/returns-chain-owner-catch-current-24/.tools/returns-cycle-throw49/cycle/source.php:2\nStack trace:\n#0 /home/user/workspace/php-spec/.tools/returns-chain-owner-catch-current-24/.tools/returns-cycle-throw49/cycle/source.php(3): O->__destruct()\n#1 /home/user/workspace/php-spec/.tools/returns-chain-owner-catch-current-24/.tools/returns-cycle-throw49/cycle/source.php(4): f()\n#2 [internal function]: {closure:/home/user/workspace/php-spec/.tools/returns-chain-owner-catch-current-24/.tools/returns-cycle-throw49/cycle/source.php:4}()\n#3 {main}\n  thrown in /home/user/workspace/php-spec/.tools/returns-chain-owner-catch-current-24/.tools/returns-cycle-throw49/cycle/source.php on line 2\n",
+    "exit": 255
+  },
+  {
+    "id": "null-control",
+    "source": "<?php\nclass O { public $back; function __destruct(){echo \"D;\";throw new Exception(\"old\");} }\nfunction &f(){$x=new O;$x->back=null;try{return $x;}finally{unset($x);echo \"U;\";Fiber::suspend();}}\n$w=new Fiber(function(){$r=&f();echo \"R;\";});$w->start();echo \"B:\",(int)$w->isSuspended(),\";\";try{unset($w);}catch(Throwable $e){echo \"C:\",$e->getMessage(),\";P:\",($e->getPrevious()?$e->getPrevious()->getMessage():\"null\"),\";\";}echo \"L;\";gc_collect_cycles();echo \"G;\";gc_collect_cycles();echo \"E;\";\n",
+    "stdout": "U;B:1;D;C:old;P:null;L;G;E;",
+    "stderr": "",
+    "exit": 0
+  }
+]

@@ -263,3 +263,19 @@ Recover reference_cycle_carrier_state.py and the two-case catalogue through
 pending_carrier_cycle in the local-CV ledger. Preserve original141d/0c1b failures
 and fixture-analysis0411 zero; no source/public renewal followed that fixture fix.
 Wider shutdown/GC layouts, physical collection and broad returns remain OPEN.
+
+M49 keeps old operation/frame/finish error consumers and USER=true retirement
+unchanged. The new root-store consumer requires the exact false release/STORE
+hold, failed terminated Fiber and handle+INDEX; it produces UNCAUGHT with that
+same ordinary error and retained hold. The bounded trace overload requires the
+matching graceful close SOURCE/PENDING and direct-finally suspended API site.
+At `d16a062b`, paused private control is storage-valid only with one false VALUE
+release, matching registered callback-finish operation/UNCAUGHT error and sequence,
+then the same false Fiber hold/STORE. It gains no Throwable or catch authority.
+Source2/early139 stay at `0ec20831`; fresh late262 and independent paused123 verify
+the admission-only extension, split/full budget and stale-sequence refusal.
+Early line rollback is an actual-driver refusal; INDEX rollback is helper-only.
+Recover byte-exact late fixtures with reference_cycle_throw_state.py and the
+pending_carrier_cycle_throw ledger object. Preserve original6490 raw-transient
+fixture failure, real budget7337/projection0869 and compiler338a0 separately.
+Other source/store/handler layouts, physical collection and broad returns stay OPEN.
