@@ -1551,7 +1551,12 @@ records three exact sources and two genuine public fronts. A fixed-name
 before handler selection, delivering its cached message/location with the current
 call trace. Eval-first delivery remains ordinary; dynamic call selection is
 explicitly Unsupported. [Runtime-drain review](coverage/semantics/source-recorded-runtime-fatal-review.json)
-records this bounded route. Other fatal producers, broader queues, formatter
+records this bounded route. Deferred runtime function redeclaration now drains the
+same retained fatal using the actual binding trace. Its receipt records the
+function site and consumed index; the raw failure is reconstructed from historical
+bindings. Captured-prefix replay rejects omitted-entry records while keeping
+genuine no-record binding valid. [Function-drain review](coverage/semantics/source-recorded-function-fatal-review.json)
+records this separate cut. Other fatal producers, broader queues, formatter
 combinations and destructor/return interactions remain required.
 [Real closure instances](docs/semantics/SOURCE-CLOSURES.md) now retain explicit captures,
 selected callee owners and per-instance statics through invocation and cleanup.

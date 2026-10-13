@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Deferred runtime function redeclaration now drains a retained file fatal with the
+current binding trace. Its receipt records the actual function site/call cause/index;
+historical bindings reconstruct the raw failure. Captured-prefix index replay and
+exact replayed-journal equality reject both shortened extra records while keeping
+genuine no-record binding valid. Five runtime files/protocol at edbc95f71 /386 retain
+two exact sources at302a and two public fronts/157 premises at69fc. One raw step and
+one pure binding projection stay separate from two production continuations.
+Baseline, two original public failures and eval preparation failure retain0.
+Other producers/formatter combinations remain required; full core stays partial.
+[Function-drain ledger](coverage/semantics/source-recorded-function-fatal-review.json).
+
 Owning invokable warning callbacks now release their selected receiver and raw
 handler before the inc/dec helper finishes. The saved handler returns to the
 registry or is released once; replacement/clearing by its destructor survives. Bool/decrement-null
