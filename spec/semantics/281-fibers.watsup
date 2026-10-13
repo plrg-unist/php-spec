@@ -65,9 +65,11 @@ dec $fiber_caller_api_nodes(pfibercaller) : pnode*
 dec $fiber_transfer_context(pstate, pcallcontext?) : bool
 dec $fiber_transfer_frames(pstate, pframe*) : bool
 dec $fiber_transfer_reason(pstate) : text
+dec $aggregate_compare_active(pstate) : bool
 dec $fiber_generator_transfer(pstate) : bool
 ;; The five active destruction lists move with the real VM stack.
-def $fiber_transfer_reason(S) = "Fiber switch during an initializer, source loader or Generator continuation"
+def $fiber_transfer_reason(S) = "Fiber VM transfer during aggregate comparison" -- if $aggregate_compare_active(S)
+def $fiber_transfer_reason(S) = "Fiber switch during an initializer, source loader or Generator continuation" -- otherwise
 def $fiber_transfer_context(S, eps) = true
 def $fiber_transfer_context(S, (pcallcontext)) = (pcallcontext.DEFAULTRECEIVE = eps /\ ~$autoload_context_kind(S, pcallcontext))
 def $fiber_transfer_frames(S, eps) = true
@@ -75,7 +77,7 @@ def $fiber_transfer_frames(S, pframe :: pframe_tail*) = (pframe.CONSTCONTEXT = e
 def $fiber_generator_transfer(S) = ($generator_resume_ids(S.TODO) = eps /\ $generator_saved_ids(S.FRAMES) = eps) -- otherwise
 dec $generator_storage_transfer(pstate) : bool
 def $generator_storage_transfer(S) = true -- otherwise
-def $fiber_transfer_domain(S) = (S.CLASSCONSTANTINIT = eps /\ S.CONSTCONTEXT = eps /\ S.DIRCONTEXT = eps /\ S.FILECONTEXTS = eps /\ S.EVALCONTEXTS = eps /\ $fiber_generator_transfer(S) /\ $fiber_transfer_context(S, S.CURRENT) /\ $fiber_transfer_frames(S, S.FRAMES) /\ $generator_storage_transfer(S))
+def $fiber_transfer_domain(S) = (S.CLASSCONSTANTINIT = eps /\ S.CONSTCONTEXT = eps /\ S.DIRCONTEXT = eps /\ S.FILECONTEXTS = eps /\ S.EVALCONTEXTS = eps /\ $fiber_generator_transfer(S) /\ $fiber_transfer_context(S, S.CURRENT) /\ $fiber_transfer_frames(S, S.FRAMES) /\ $generator_storage_transfer(S) /\ ~$aggregate_compare_active(S))
 
 ;; Fixed-signature Fiber methods reuse CONFIG's by-value SEND and named slots.
 def $fiber_kind(INTRINSIC_FIBER_CONSTRUCT) = true

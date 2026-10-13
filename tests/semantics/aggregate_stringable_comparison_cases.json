@@ -1,0 +1,196 @@
+{
+  "scope": "Reached recursive array and declared-property Stringable/string comparisons; native original file/CWD/START and observed tuple retained. Materialized-property caster and Fiber VM transfer remain explicit dependencies.",
+  "native_profile": {
+    "version": "8.5.10",
+    "sapi": "cli",
+    "NTS": true,
+    "int_size": 8,
+    "ini": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  "cases": [
+    {
+      "id": "recursive-stringable48-short-circuit",
+      "source": "<?php\nclass NestedOrderCast {\n    public function __toString(): string { echo \"C\"; return \"007\"; }\n}\n$cast = new NestedOrderCast;\necho \"count|\", [$cast] == [] ? \"BAD\" : \"N\";\necho \"|key|\", [\"left\" => $cast] == [\"right\" => \"7\"] ? \"BAD\" : \"N\";\necho \"|early|\", [0, $cast] == [1, \"7\"] ? \"BAD\" : \"N\";\necho \"|nested|\", [\"k\" => [$cast, 9]] == [\"k\" => [\"7\", 9]] ? \"Y\" : \"N\";\necho \"|reverse|\", [\"k\" => [\"7\", 9]] == [\"k\" => [$cast, 9]] ? \"Y\" : \"N\";\necho \"|strict|\", [$cast] === [\"007\"] ? \"BAD\" : \"N\";\necho \"|switch|\";\nswitch ([$cast]) {\n    case [\"7\"]: echo \"S\"; break;\n    default: echo \"BAD\";\n}\n",
+      "source_sha256": "e7cc28db32f81824ad4ea4654c8912fcbfe459eef476ea473017a48922b2eb79",
+      "original_file": "/home/user/workspace/php-spec/.tools/recursive-stringable-48/.tools/recursive-stringable-native-48/short-circuit.php",
+      "original_cwd": "/home/user/workspace/php-spec/.tools/recursive-stringable-48/.tools/recursive-stringable-native-48",
+      "native_group": "/home/user/workspace/php-spec/.tools/recursive-stringable-48/.tools/recursive-stringable-native-48/run-v1/short-circuit/command-start.json",
+      "native_raw_sha256": "39ba3814d838ba2fb079f7febc32166ea5d2c9f597f371dc2278eb6f6694b2ec",
+      "native_profile": {
+        "version": "8.5.10",
+        "sapi": "cli",
+        "NTS": true,
+        "int_size": 8,
+        "ini": {
+          "opcache.enable_cli": "0",
+          "opcache.jit": "disable",
+          "precision": "14",
+          "serialize_precision": "-1",
+          "display_errors": "stderr",
+          "display_startup_errors": "1",
+          "html_errors": "0",
+          "log_errors": "0",
+          "error_reporting": "30719",
+          "date.timezone": "UTC",
+          "output_buffering": "0",
+          "implicit_flush": "1",
+          "zend.assertions": "1"
+        }
+      },
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "Y291bnR8TnxrZXl8TnxlYXJseXxOfG5lc3RlZHxDWXxyZXZlcnNlfENZfHN0cmljdHxOfHN3aXRjaHxDUw==",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "recursive-stringable48-array-live-ref",
+      "source": "<?php\nclass NestedArrayCast {\n    public function __toString(): string {\n        global $right;\n        $right[0] = \"after\";\n        $right[1] = \"new\";\n        echo \"C\";\n        return \"after\";\n    }\n}\n$cast = new NestedArrayCast;\n$right = [\"before\", \"old\"];\necho \"value|\", [$cast, \"new\"] == $right ? \"Y\" : \"N\";\necho \":\", $right[0], \":\", $right[1], \"|\";\n$leaf = \"before\"; $tail = \"old\";\n$right = [&$leaf, &$tail];\necho \"reference|\", [$cast, \"new\"] == $right ? \"Y\" : \"N\";\necho \":\", $leaf, \":\", $tail;\n",
+      "source_sha256": "9642d271a8491f8fef647fcff1a6e4745f5489b74b4ee5bd138816af700bfa54",
+      "original_file": "/home/user/workspace/php-spec/.tools/recursive-stringable-48/.tools/recursive-stringable-native-48/array-live-ref.php",
+      "original_cwd": "/home/user/workspace/php-spec/.tools/recursive-stringable-48/.tools/recursive-stringable-native-48",
+      "native_group": "/home/user/workspace/php-spec/.tools/recursive-stringable-48/.tools/recursive-stringable-native-48/run-v1/array-live-ref/command-start.json",
+      "native_raw_sha256": "45b4a7274c7e4484f3ddee97e55a1e557f1b63b20a946d2f0c4f43cf95deb88a",
+      "native_profile": {
+        "version": "8.5.10",
+        "sapi": "cli",
+        "NTS": true,
+        "int_size": 8,
+        "ini": {
+          "opcache.enable_cli": "0",
+          "opcache.jit": "disable",
+          "precision": "14",
+          "serialize_precision": "-1",
+          "display_errors": "stderr",
+          "display_startup_errors": "1",
+          "html_errors": "0",
+          "log_errors": "0",
+          "error_reporting": "30719",
+          "date.timezone": "UTC",
+          "output_buffering": "0",
+          "implicit_flush": "1",
+          "zend.assertions": "1"
+        }
+      },
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "dmFsdWV8Q046YWZ0ZXI6bmV3fHJlZmVyZW5jZXxDWTphZnRlcjpuZXc=",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "recursive-stringable48-property-live-ref",
+      "source": "<?php\nclass NestedPropertyPair {\n    public $leaf;\n    public $tail = \"old\";\n    public $replacement = \"after\";\n}\nclass NestedPropertyCast {\n    public function __toString(): string {\n        global $right;\n        $right->leaf =& $right->replacement;\n        $right->tail = \"new\";\n        echo \"C\";\n        return \"after\";\n    }\n}\n$cast = new NestedPropertyCast;\n$left = new NestedPropertyPair; $left->leaf = $cast; $left->tail = \"new\";\n$right = new NestedPropertyPair; $right->leaf = \"before\";\necho \"slot|\", $left == $right ? \"Y\" : \"N\";\necho \":\", $right->leaf, \":\", $right->tail, \"|\";\n$right = new NestedPropertyPair; $right->leaf = \"before\";\n$retained =& $right->leaf;\necho \"cell|\", $left == $right ? \"Y\" : \"N\";\necho \":\", $retained, \":\", $right->leaf, \":\", $right->tail;\n",
+      "source_sha256": "983918abeaf731012b54ce2d725b91e0ee2125c1d120642aa7b27cca06cfdfd2",
+      "original_file": "/home/user/workspace/php-spec/.tools/recursive-stringable-48/.tools/recursive-stringable-native-48/property-live-ref.php",
+      "original_cwd": "/home/user/workspace/php-spec/.tools/recursive-stringable-48/.tools/recursive-stringable-native-48",
+      "native_group": "/home/user/workspace/php-spec/.tools/recursive-stringable-48/.tools/recursive-stringable-native-48/run-v1/property-live-ref/command-start.json",
+      "native_raw_sha256": "b8313e6059babafb92d8bec25c43b007be0ebc2126eb4d678e00049b1fa035ac",
+      "native_profile": {
+        "version": "8.5.10",
+        "sapi": "cli",
+        "NTS": true,
+        "int_size": 8,
+        "ini": {
+          "opcache.enable_cli": "0",
+          "opcache.jit": "disable",
+          "precision": "14",
+          "serialize_precision": "-1",
+          "display_errors": "stderr",
+          "display_startup_errors": "1",
+          "html_errors": "0",
+          "log_errors": "0",
+          "error_reporting": "30719",
+          "date.timezone": "UTC",
+          "output_buffering": "0",
+          "implicit_flush": "1",
+          "zend.assertions": "1"
+        }
+      },
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "c2xvdHxDWTphZnRlcjpuZXd8Y2VsbHxDTjpiZWZvcmU6YWZ0ZXI6bmV3",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "recursive-stringable48-peer-property-throw",
+      "source": "<?php\nclass PeerCompareBox {\n    public $first;\n    public $later;\n}\nclass PeerPropertyThrow {\n    public function __toString(): string {\n        echo 'cast|';\n        switch ('inner') {\n            default: echo 'bad-inner|'; break;\n            case 'inner': echo 'inner|'; break;\n        }\n        throw new TypeError('property-case');\n    }\n}\nclass PeerLaterProperty {\n    public function __toString(): string {\n        echo 'late-property|';\n        return 'unused';\n    }\n}\n$left = new PeerCompareBox;\n$right = new PeerCompareBox;\n$left->first = new PeerPropertyThrow;\n$right->first = 'hit';\n$left->later = 'unused';\n$right->later = new PeerLaterProperty;\nfunction peerLaterBox() {\n    global $right;\n    echo 'late-case|';\n    return $right;\n}\ntry {\n    switch ($left) {\n        default: echo 'bad-default|'; break;\n        case $right: echo 'bad-match|'; break;\n        case peerLaterBox(): echo 'bad-later|';\n    }\n} catch (Throwable $caught) {\n    echo $caught::class, '|', $caught->getMessage(), '|';\n} finally {\n    echo 'finally|';\n}\necho 'done';\n",
+      "source_sha256": "8343adf26a6414d46d7b4d51c07f24cc5d538fe1e47c6830f6f391b9eb6764f5",
+      "original_file": "/home/user/workspace/php-spec/.tools/recursive-stringable-48/.tools/recursive-stringable-native-48/peer-property-throw.php",
+      "original_cwd": "/home/user/workspace/php-spec/.tools/recursive-stringable-48/.tools/recursive-stringable-native-48",
+      "native_group": "/home/user/workspace/php-spec/.tools/recursive-stringable-48/.tools/recursive-stringable-native-48/run-v1/peer-property-throw/command-start.json",
+      "native_raw_sha256": "12caae97beea4f9b4c9261a1f5f1e922ad69b45fc117fb0361bc82e77384c2c0",
+      "native_profile": {
+        "version": "8.5.10",
+        "sapi": "cli",
+        "NTS": true,
+        "int_size": 8,
+        "ini": {
+          "opcache.enable_cli": "0",
+          "opcache.jit": "disable",
+          "precision": "14",
+          "serialize_precision": "-1",
+          "display_errors": "stderr",
+          "display_startup_errors": "1",
+          "html_errors": "0",
+          "log_errors": "0",
+          "error_reporting": "30719",
+          "date.timezone": "UTC",
+          "output_buffering": "0",
+          "implicit_flush": "1",
+          "zend.assertions": "1"
+        }
+      },
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "Y2FzdHxpbm5lcnxUeXBlRXJyb3J8cHJvcGVydHktY2FzZXxmaW5hbGx5fGRvbmU=",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "recursive-stringable48-peer-property-reenter",
+      "source": "<?php\nclass PeerRecursiveBox {\n    public $value;\n}\nclass PeerPropertyReenter {\n    public function __toString(): string {\n        global $left, $right;\n        echo 'cast|';\n        try {\n            $nested = $left == $right;\n            echo $nested ? 'bad-true|' : 'bad-false|';\n        } catch (Error $caught) {\n            echo $caught->getMessage(), '|';\n        }\n        return '7';\n    }\n}\n$left = new PeerRecursiveBox;\n$right = new PeerRecursiveBox;\n$left->value = new PeerPropertyReenter;\n$right->value = '007';\nswitch ($left) {\n    default: echo 'bad-default|'; break;\n    case $right: echo 'matched|'; break;\n}\necho 'done';\n",
+      "source_sha256": "84affd85734cfdfa34c6ea04c93f9cb0ffc0329824152f2da3b078b4c8a028f2",
+      "original_file": "/home/user/workspace/php-spec/.tools/recursive-stringable-48/.tools/recursive-stringable-native-48/peer-property-reenter.php",
+      "original_cwd": "/home/user/workspace/php-spec/.tools/recursive-stringable-48/.tools/recursive-stringable-native-48",
+      "native_group": "/home/user/workspace/php-spec/.tools/recursive-stringable-48/.tools/recursive-stringable-native-48/run-v1/peer-property-reenter/command-start.json",
+      "native_raw_sha256": "d8872f232f089d4cc286c574219764e80842f96ef87c098ad750e17276ac5a5d",
+      "native_profile": {
+        "version": "8.5.10",
+        "sapi": "cli",
+        "NTS": true,
+        "int_size": 8,
+        "ini": {
+          "opcache.enable_cli": "0",
+          "opcache.jit": "disable",
+          "precision": "14",
+          "serialize_precision": "-1",
+          "display_errors": "stderr",
+          "display_startup_errors": "1",
+          "html_errors": "0",
+          "log_errors": "0",
+          "error_reporting": "30719",
+          "date.timezone": "UTC",
+          "output_buffering": "0",
+          "implicit_flush": "1",
+          "zend.assertions": "1"
+        }
+      },
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "Y2FzdHxOZXN0aW5nIGxldmVsIHRvbyBkZWVwIC0gcmVjdXJzaXZlIGRlcGVuZGVuY3k/fG1hdGNoZWR8ZG9uZQ==",
+      "stderr_template_base64": ""
+    }
+  ]
+}
