@@ -42,6 +42,11 @@ through nested default handlers, chunk/clean/flush/get/status operations and
 request-end flushing after shutdown/destructors. User output handlers and
 buffered stdout diagnostics remain explicit dependencies.
 
+[Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
+shared request counter. The live registry preserves captured arguments, callback
+mutation and cleanup order; wider compiler placement and callable forms remain
+explicit dependencies.
+
 [Recorded file-compiler diagnostics](coverage/semantics/file-compile-notice-review.json)
 now delay ordinary include/require registration through warning callbacks;
 the once forms register before compilation. Handler throws and graceful exit
@@ -762,7 +767,7 @@ execute with source-checked unit/function flags; [independent review](coverage/s
 binds917 source, protocol, cache/resume and complete weak-state bridges.
 Unknown literal `declare` names now emit ordered E_COMPILE_WARNING (128), bypass
 registered handlers and continue into the real body. Two fresh originals and
-focused notice/body/shared-throw checks pass; ticks, encoding and wider directive
+focused notice/body/shared-throw checks pass; wider ticks, encoding and directive
 values remain required. [Declare review](coverage/semantics/compiler-declare-review.json).
 [Typed positional parameters and value returns](docs/semantics/SOURCE-TYPED-FUNCTIONS.md)
 now execute builtin scalar/container checks, sequential receives and uncoerced

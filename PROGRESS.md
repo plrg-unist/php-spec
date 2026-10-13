@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Ticks393 is independently accepted privately; actual-parent integration is pending.
+Source-derived
+marker plans cover lexical frequencies, compiler adjacency/control and certified
+callback lines; the live registry retains arguments, supports mutation and keeps
+calling/Fiber restrictions through post-return destruction. Author26 distinct
+originals agree at retained21+5 cuts, with3 Unsupported controls; the earlier
+TATBT original retains its own cut. Independent16 originals and3 controls pass
+at separate4+3+3+6 cuts, including cached-receiver release on normal/throw/exit.
+Seven genuine state groups pass334 premises at6/269+1/65 cuts; the hold fixture
+waits until the queued alias decrement finishes. Failed whole campaigns retain
+zero credit. Wider placement and callable dependencies remain explicit.
+[Contract](docs/semantics/TICKS.md), [author evidence](coverage/semantics/tick-author.json),
+[independent review](coverage/semantics/tick-review.json).
+
 Default output buffers391 now route exact echo/print/inline/exit/direct-call bytes
 through nested NULL handlers, whole chunks, capabilities, copied get results,
 Notice-handler reentry and exact status. Forced flush follows shutdown/destructors;

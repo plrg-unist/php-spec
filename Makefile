@@ -57,6 +57,9 @@ inventory: build
 	python3 scripts/encoding-spellings.py
 
 test-semantics: build
+	python3 tests/semantics/tick_sources.py
+	python3 tests/semantics/tick_review_sources.py
+	python3 tests/semantics/tick_state.py
 	python3 tests/semantics/output_buffer_sources.py
 	python3 tests/semantics/output_buffer_state.py
 	python3 tests/semantics/request_provider.py

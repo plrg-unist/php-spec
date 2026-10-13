@@ -275,16 +275,23 @@
       "implementation": [
         "spec/semantics/92-strict-compiler.watsup",
         "spec/semantics/93-strict-declarations.watsup",
-        "spec/semantics/84-call-integrity.watsup"
+        "spec/semantics/84-call-integrity.watsup",
+        "spec/semantics/46-source-compiler.watsup",
+        "spec/semantics/393-ticks.watsup"
       ],
       "source_tests": [
         "tests/semantics/strict_declarations.py",
         "tests/semantics/strict_declaration_compiler.py",
         "tests/semantics/strict_declaration_protocol.py",
         "tests/semantics/strict_declaration_state.py",
-        "coverage/semantics/strict-declaration-review.json"
+        "coverage/semantics/strict-declaration-review.json",
+        "tests/semantics/tick_sources.py",
+        "tests/semantics/tick_review_sources.py",
+        "tests/semantics/tick_state.py",
+        "coverage/semantics/tick-author.json",
+        "coverage/semantics/tick-review.json"
       ],
-      "review": "Independent lexical strict declaration review on917/309b046c: source literal/placement/line rules, no-op work, source-derived unit/function flags and forged-metadata rejection;21 source profiles18native+3pending,7builtin boundaries,2cache states543assertions,17protocol168 and three complete909 weak-state bridges. Parameter/return enforcement, builtin execution, ticks/encoding and wider declare contexts and dependent core protocols remain pending; no family closes. Unknown literal declare names now emit ordered E_COMPILE_WARNING (128) with original spelling/first-item line and compile/execute optional nested bodies. Two fresh eval originals, strict3 and 228 source-frontier/guard checks plus six pure exclusions pass at 713be74f4 /373. Ticks/encoding, wider literal and body/publication contexts remain required; compiler-declare-review.json preserves the compile-stage Unsupported0 and earlier strict cuts."
+      "review": "Independent lexical strict declaration review on917/309b046c: source literal/placement/line rules, no-op work, source-derived unit/function flags and forged-metadata rejection;21 source profiles18native+3pending,7builtin boundaries,2cache states543assertions,17protocol168 and three complete909 weak-state bridges. Parameter/return enforcement, builtin execution, ticks/encoding and wider declare contexts and dependent core protocols remain pending; no family closes. Unknown literal declare names now emit ordered E_COMPILE_WARNING (128) with original spelling/first-item line and compile/execute optional nested bodies. Two fresh eval originals, strict3 and 228 source-frontier/guard checks plus six pure exclusions pass at 713be74f4 /373. Encoding and wider literal/body/publication contexts remain required; compiler-declare-review.json preserves the compile-stage Unsupported0 and earlier strict cuts. Module393 now derives whole-source tick plans, lexical frequencies and compiler lines, and executes the live callback registry with source frames, mutation and cached-receiver cleanup. Wider placement/header/foreach/callable dependencies remain Unsupported; tick-review.json keeps the obligation partial."
     },
     {
       "node": "Expr_Array",
@@ -4736,16 +4743,23 @@
       "implementation": [
         "spec/semantics/92-strict-compiler.watsup",
         "spec/semantics/93-strict-declarations.watsup",
-        "spec/semantics/84-call-integrity.watsup"
+        "spec/semantics/84-call-integrity.watsup",
+        "spec/semantics/46-source-compiler.watsup",
+        "spec/semantics/393-ticks.watsup"
       ],
       "source_tests": [
         "tests/semantics/strict_declarations.py",
         "tests/semantics/strict_declaration_compiler.py",
         "tests/semantics/strict_declaration_protocol.py",
         "tests/semantics/strict_declaration_state.py",
-        "coverage/semantics/strict-declaration-review.json"
+        "coverage/semantics/strict-declaration-review.json",
+        "tests/semantics/tick_sources.py",
+        "tests/semantics/tick_review_sources.py",
+        "tests/semantics/tick_state.py",
+        "coverage/semantics/tick-author.json",
+        "coverage/semantics/tick-review.json"
       ],
-      "review": "Independent lexical strict declaration review on917/309b046c: source literal/placement/line rules, no-op work, source-derived unit/function flags and forged-metadata rejection;21 source profiles18native+3pending,7builtin boundaries,2cache states543assertions,17protocol168 and three complete909 weak-state bridges. Parameter/return enforcement, builtin execution, ticks/encoding and wider declare contexts and dependent core protocols remain pending; no family closes. Unknown literal declare names now emit ordered E_COMPILE_WARNING (128) with original spelling/first-item line and compile/execute optional nested bodies. Two fresh eval originals, strict3 and 228 source-frontier/guard checks plus six pure exclusions pass at 713be74f4 /373. Ticks/encoding, wider literal and body/publication contexts remain required; compiler-declare-review.json preserves the compile-stage Unsupported0 and earlier strict cuts."
+      "review": "Independent lexical strict declaration review on917/309b046c: source literal/placement/line rules, no-op work, source-derived unit/function flags and forged-metadata rejection;21 source profiles18native+3pending,7builtin boundaries,2cache states543assertions,17protocol168 and three complete909 weak-state bridges. Parameter/return enforcement, builtin execution, ticks/encoding and wider declare contexts and dependent core protocols remain pending; no family closes. Unknown literal declare names now emit ordered E_COMPILE_WARNING (128) with original spelling/first-item line and compile/execute optional nested bodies. Two fresh eval originals, strict3 and 228 source-frontier/guard checks plus six pure exclusions pass at 713be74f4 /373. Encoding and wider literal/body/publication contexts remain required; compiler-declare-review.json preserves the compile-stage Unsupported0 and earlier strict cuts. Module393 now derives whole-source tick plans, lexical frequencies and compiler lines, and executes the live callback registry with source frames, mutation and cached-receiver cleanup. Wider placement/header/foreach/callable dependencies remain Unsupported; tick-review.json keeps the obligation partial."
     },
     {
       "node": "Stmt_Do",
@@ -18380,15 +18394,27 @@
     {
       "id": "lifecycle.ticks",
       "milestone": "5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_gc.c"
+      "implementation": [
+        "spec/semantics/393-ticks.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/tick_state.py"
+      ],
+      "source_tests": [
+        "tests/semantics/tick_sources.py",
+        "tests/semantics/tick_review_sources.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "vendor/php-src/ext/standard/basic_functions.c",
+        "vendor/php-src/main/php_ticks.c",
+        "coverage/semantics/tick-author.json",
+        "coverage/semantics/tick-review.json"
+      ],
+      "review": "Module393 derives certified compiler marker plans, lexical frequency leakage/restoration and exact callback source lines; request-global uint32 counting and live FCC registry dispatch preserve captured arguments, calling/Fiber restrictions, duplicate scan Errors, source strictness/traces, post-return destruction and cached receiver release after removed params. The ledgers separate original-source agreements, reached-state cuts and zero-credit failures/Unsupported controls. Wider opcode/class/linking placement, ignored callable headers/foreach targets, dynamic/anonymous construction and wider callback forms remain required; no tick or full-core closure."
     },
     {
       "id": "lifecycle.output-buffer-callbacks",

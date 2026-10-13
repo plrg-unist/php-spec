@@ -1,0 +1,184 @@
+{
+  "target": "PHP8.5.10 CLI NTS64-bit",
+  "status": "independently accepted private milestone; actual-parent integration pending",
+  "base_revision": "af903227c2498a73ea9b2140eb191f81a6657a6d",
+  "implementation_revision": "d2f2dbd9dea01a204675e339720d6e03afcde162",
+  "publication_revision": "3b28418c35df883a64d72f8946bf0f0f17ac987d",
+  "implementation_hashes": {
+    "spec/semantics/172-file-context-intrinsics.watsup": "19f9d157cfd307117e8797d0f49970d9123393e1a2817fe5ea6364c91bd3d1cb",
+    "spec/semantics/206-error-handlers.watsup": "1f8827885e29498fab48a5f6465337bbdaeb61935eb92ff84adbe5e16d9d660c",
+    "spec/semantics/281-fibers.watsup": "a3937ebda15a6f2455e9df9b53bfebb44ded0b7a3e0832eaec52729233d584cf",
+    "spec/semantics/30-storage.watsup": "72c04c836f9afd2c777bcdabe0946551d3db238d3f72d93593e5be2d735134a5",
+    "spec/semantics/39-ownership.watsup": "fef1659881ba8b719f9a73a582df6130edf5e7e10fa22247132ff6d2a02020e2",
+    "spec/semantics/393-ticks.watsup": "c6dfcdb9603a3e579e3a1f155bd7e8e96e1c69bd25e2b94a487e90c74601cb93",
+    "spec/semantics/40-control.watsup": "7b1b9ee0e6a6f23b34c9e5ba526ff78ebbdab34b09a8714f7d098734f78be8f0",
+    "spec/semantics/46-source-compiler.watsup": "ca291e387bfc332de30457a910df37131b113aa689ee09f805023b48c20920ea",
+    "spec/semantics/84-call-integrity.watsup": "b5d29b41154f09b48aa39a0a5b64771fdbe81740af70754ae703babb1aeb617f",
+    "spec/semantics/92-strict-compiler.watsup": "faa803158d3aea80597da69e59592c5c12cdbd39dd234b47da07e1091fc5a69c",
+    "spec/semantics/modules.json": "139f4b6762e19ffea609fc1209eb6cbbcf0c70f447e783db5def1fb81f0e72f9"
+  },
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+  "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+  "profile": "tests/semantics/profile.json; LC_ALL=C,TZ=UTC,PATH=/usr/bin:/bin; sole project-pinned CLI oracle; CPU4/SLOT2,1536MiB serial actors",
+  "source": {
+    "native_originals": 27,
+    "cuts": "straight1 + author21 retained prefix + affected5; controls3 have no native agreement credit",
+    "reports": [
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-03/source-gate-02/report.json",
+        "sha256": "09d55588a64899884cf136680a20eeeee5e5a7b759c1d6074fd8f8903bf2ad2c",
+        "revision": "93e71513af8078e7be619d7f2d9abcc906c31a7e",
+        "native_originals": 1,
+        "controls": 0,
+        "credit": "exact originals; controls0",
+        "cases": [
+          "straight"
+        ]
+      },
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-03/author-sources-01/report.json",
+        "sha256": "81c2e2ec92793d8557efd9e09ad64237d2757a307f99076b6082f10441228041",
+        "revision": "6669c7a6e58e45d440212044676ce915d1cc8bd9",
+        "native_originals": 21,
+        "controls": 0,
+        "credit": "exact retained rows only",
+        "cases": [
+          "frequency2",
+          "if-false",
+          "if-empty",
+          "for-body",
+          "break-skips-tick",
+          "goto-skips-tick",
+          "return-skips-tick",
+          "nested-scope-dedup",
+          "dynamic-not-inherited",
+          "dynamic-own-count",
+          "registration-duplicates",
+          "self-unregister-error",
+          "callback-throws-order",
+          "exit-no-post-tick",
+          "literal-string-float",
+          "literal-negative",
+          "append-during-dispatch",
+          "remove-next-during-dispatch",
+          "exit-running-bit",
+          "captured-reference-argument",
+          "byref-warning"
+        ]
+      },
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-03/author-sources-02/report.json",
+        "sha256": "aa9394e93b044643e047cd15d35397234d4c468731db46e7fe5181902eb87d31",
+        "revision": "a92bd0bb69fce209b3124f72098e75eacfc8ef5f",
+        "native_originals": 5,
+        "controls": 3,
+        "credit": "exact originals; controls0",
+        "cases": [
+          "named-extra-reject",
+          "empty-statements",
+          "function-directive-leaks",
+          "balanced-function-directive",
+          "callback-owned-arg",
+          "class-placement",
+          "typed-variadic",
+          "builtin-callback"
+        ]
+      }
+    ]
+  },
+  "state": {
+    "mode": "SL",
+    "groups": 7,
+    "premises": 334,
+    "reports": [
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-03/state-01/report.json",
+        "sha256": "b2a7b3422b3841f263195d1444d1a748f73dd3357f479a13c3a050ef864d3d66",
+        "revision": "e1a18ee0e59774d6b25e15866f8fc3e26a83a162",
+        "groups": [
+          {
+            "id": "counter",
+            "premises": 49
+          },
+          {
+            "id": "live-append",
+            "premises": 51
+          },
+          {
+            "id": "captured-array",
+            "premises": 40
+          },
+          {
+            "id": "throw-cleanup",
+            "premises": 37
+          },
+          {
+            "id": "returned-object",
+            "premises": 40
+          },
+          {
+            "id": "unregister-pending",
+            "premises": 52
+          }
+        ],
+        "credit": "six passed prefix groups; failed whole campaign0"
+      },
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-03/state-02/report.json",
+        "sha256": "8fa16b39293d3a729a11c0106fb2676e9135877f3c7b65d48568ea8c33615948",
+        "revision": "3b28418c35df883a64d72f8946bf0f0f17ac987d",
+        "groups": [
+          {
+            "id": "unregister-target",
+            "premises": 65
+          }
+        ],
+        "credit": "sole affected group PASS"
+      }
+    ],
+    "reached": [
+      "counter/marker dispatch",
+      "live append and first-live cursor",
+      "copied runtime-array sole registry owner",
+      "shared Throwable unwind and cleared calling state",
+      "post-return discarded object with active calling/Fiber block",
+      "pending unregister Error before removed-param destructor",
+      "cached FCC receiver after alias decrement and before release"
+    ],
+    "helper_controls": [
+      "uint32-max counter wrap; malformed markers/IDs/cursors/source/args/target/line/origin",
+      "zero-budget preservation at genuine reached frontiers"
+    ]
+  },
+  "original_failures": {
+    "paths": [
+      "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-03/source-gate-01/report.json",
+      "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-03/author-sources-01/report.json",
+      "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-03/repaired-02/report.json",
+      "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-03/ownership-01/report.json",
+      "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-03/state-01/report.json"
+    ],
+    "failed_whole_credit": 0,
+    "corrections": "Disjoint children classifier and named intrinsic mapping; named-New placement extension; source strictness/lines, FCC scope and continued error scan; real cached receiver lifetime fix; hold fixture moved after queued old-alias decrement. Static fixture/compiler failures remain outside Git with zero execution credit."
+  },
+  "diagnostic": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-03/hold-debug-01/report.json",
+    "sha256": "f20a203802f5caa6763cbbe6c59266a99b13eeb041a1b2fb8b88eefc3837fcf1",
+    "credit": "localization only; showed holder plus queued WRITE_NAME decrement (two roots) before next echo2"
+  },
+  "commands": [
+    "python3 tests/semantics/tick_sources.py --select <recorded IDs> --output <external>",
+    "python3 tests/semantics/tick_state.py --output <external>/state-01",
+    "python3 tests/semantics/tick_state.py --select unregister-target --output <external>/state-02"
+  ],
+  "limits": [
+    "wider class/linking/control and opcode-placement summaries remain Unsupported",
+    "nested callable/tick declarations in callable headers and foreach targets remain Unsupported",
+    "dynamic/anonymous New, missing multiline body-line descriptions, effectful keyword/compound callable selection, builtin callback bodies and typed variadic reception remain required",
+    "full core and ticks obligation remain partial; no engine bug, intentional divergence or portability claim"
+  ],
+  "raw_recovery": "Original PHP bytes, checked packets, command/environment/exits, model observations and SL fixtures remain at the external paths. No archive is an operational input.",
+  "independent_review": "coverage/semantics/tick-review.json",
+  "compatibility": "Historical cuts retain their original identities. The172 change excludes only register_tick unknown named mapping; later FCC hold applies only nonempty target_nodes and the206 finish default is exactly prior behavior. The affected method/Closure cleanup sources are independently checked; fixture3b changes only the alias-null pause phase, so first6/269 are not renewed."
+}
