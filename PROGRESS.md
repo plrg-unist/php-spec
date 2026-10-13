@@ -19,6 +19,9 @@ The original Unsupported baseline and pre-runtime compile failure retain zero cr
 Owning handler-local throws, unsafe targets, wider callbacks/control and
 exit during callback-owner destruction remain required; full core stays partial.
 [Callback-exit ledger](coverage/semantics/incdec-callback-exit-review.json).
+The 387-module join over 70f124b2 preserves current output/fatal/class state and
+cleanup validation. Current strict and the sole int23 owner-throw original pass at
+ee074563e; private source/state cuts retain their identities.
 
 Module397 implements automatic VM output-handler receive/throw cleanup. Arguments
 are released while running, then failed layers disable and forward live bytes with
