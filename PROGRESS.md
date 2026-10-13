@@ -17,6 +17,9 @@ genuine prestate. Dynamic selection stays explicitly Unsupported0; baseline,
 signature-order and original fixture-syntax failures retain0. Owning forms, other
 fatal producers and wider queues remain required; full core stays partial.
 [Runtime-drain ledger](coverage/semantics/source-recorded-runtime-fatal-review.json).
+The386 composition over27a92 passes independent pointwise review at a9821407;
+accepted runtime deltas/protocol and parent cancellation/WeakMap paths are preserved.
+No renewed actor/source/state evidence is claimed.
 
 Caller-temporary cleanup Throwables now cancel a named inc/dec warning-handler
 exit after the warning helper finishes: bool/null restore their capture while
