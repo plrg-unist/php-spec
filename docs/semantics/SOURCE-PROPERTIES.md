@@ -208,8 +208,15 @@ physical slots start uninitialized and untyped slots null. Latest private/called
 scope and getter results remain independent of raw writes, with distinct stored S
 and retained R cleanup;
 [repeated ordinary-storage review](../../coverage/semantics/repeated-ordinary-unbacked-get-hook-review.json).
-TYPE-presence changes in this ordinary ancestry and plain declarations inheriting
-hooks remain required.
+A typed, source-unbacked getter directly backed by an ordinary parent now rejects
+a source-unbacked/no-initializer child that omits its type. The existing
+missing-return check accepts the positive ordinary parent proof before child
+publication; the error names the declaring getter at the child hook line. Reverse
+addition retains the property class-line error, and untyped null-slot reads/writes
+remain controls;
+[ordinary-backing type-presence review](../../coverage/semantics/ordinary-backed-parent-unbacked-get-hook-type-presence-review.json).
+Own-body-backed children in this type-presence direction and plain declarations
+inheriting hooks remain required.
 Backed-parent inheritance retains invariant types; broader type equivalence and
 wider hook variance remain required.
 Hooked object iteration is explicit Unsupported rather than a raw storage view;
