@@ -2277,6 +2277,19 @@ canceled worker R and caller-cut budget. Final request error retirement is separ
 Both prelaunch wrapper/origin corrections remain unrun0. No runtime change, native
 identity/trace, cross-fixture identity, physical collection or broad returns closure.
 
+M48 at `059bc886`/387 repairs cycle GC and later request-store Fiber refusal.
+Collector roots now include suspended live-VM selected reference-return temporaries;
+the ordinary ownership graph and internal-node rejection stay intact. A bounded
+normal idle store route closes an empty-local pending-REF Fiber with INDEX+1 and
+one truthful USER=false receiver hold; eager zero-owner selection is unchanged.
+Source/native2 agrees: cycle D follows both GC calls/E, while null-control D is early.
+Independent122/two heap-valid refusals checks coordinated plan-root deletion and
+in-range store-index rollback. Separate late163+99 follows the same post-G carrier
+through second GC/E to its O destructor, retirement and actual caller-cut budget.
+Original first-GC141d/later-store0c1b failures and fixture-analysis0411 remain0;
+source-qualified diagnostic tuples are separate. Wider layouts, native ownership,
+physical collection and broad returns verification remain OPEN.
+
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
 Per-constant protection survives namespace publication and parked handlers.

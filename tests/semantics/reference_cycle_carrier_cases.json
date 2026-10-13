@@ -1,0 +1,16 @@
+[
+  {
+    "id": "cycle",
+    "source": "<?php\nclass O { public $back; function __destruct(){echo \"D;\";} }\nfunction &f(){$x=new O;$x->back=$GLOBALS['w'];try{return $x;}finally{unset($x);echo \"U;\";Fiber::suspend();}}\n$w=new Fiber(function(){$r=&f();echo \"R;\";});$w->start();echo \"B:\",(int)$w->isSuspended(),\";\";unset($w);echo \"L;\";gc_collect_cycles();echo \"G;\";gc_collect_cycles();echo \"E;\";\n",
+    "stdout": "U;B:1;L;G;E;D;",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "id": "null-control",
+    "source": "<?php\nclass O { public $back; function __destruct(){echo \"D;\";} }\nfunction &f(){$x=new O;$x->back=null;try{return $x;}finally{unset($x);echo \"U;\";Fiber::suspend();}}\n$w=new Fiber(function(){$r=&f();echo \"R;\";});$w->start();echo \"B:\",(int)$w->isSuspended(),\";\";unset($w);echo \"L;\";gc_collect_cycles();echo \"G;\";gc_collect_cycles();echo \"E;\";\n",
+    "stdout": "U;B:1;D;L;G;E;",
+    "stderr": "",
+    "exit": 0
+  }
+]

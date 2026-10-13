@@ -253,3 +253,13 @@ follows the live-caller identity checks. Budget starts at that restored caller.
 Recover reference_orphaned_throw_state.py via orphaned_throw_validation in the
 local-CV ledger; preserve both unrun source-wrapper/origin packets0. No native
 trace/identity, cross-fixture identity, physical collection or returns closure.
+
+M48 at `059bc886`/387 adds selected-return effective roots only to `$gc_graph`;
+ordinary owning edges stay exact. The empty-local pending-REF normal store route
+uses one USER=false VALUE hold and INDEX+1; close validity authenticates its saved
+release/STORE tail and physical handle. Eager USER=true/zero-owner paths retain
+their guards. Source2, independent122/two controls and separate late262 pass.
+Recover reference_cycle_carrier_state.py and the two-case catalogue through
+pending_carrier_cycle in the local-CV ledger. Preserve original141d/0c1b failures
+and fixture-analysis0411 zero; no source/public renewal followed that fixture fix.
+Wider shutdown/GC layouts, physical collection and broad returns remain OPEN.

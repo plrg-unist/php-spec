@@ -459,3 +459,14 @@ New, then preserve the same error/line2/pure trace and null Previous at main
 catch/caller. Failed, non-graceful Fiber termination cancels worker R; caller-cut
 budget and final request error retirement are separate checks. Native messages
 add no identity/trace claim; physical collection and wider returns remain OPEN.
+
+M48 at `059bc886`/387 distinguishes owning edges from collector visibility for
+selected reference-return temporaries in suspended Fiber VMs. Their effective
+collector roots keep the Fiber/cell/O cycle out of white candidates, without
+admitting general internal cycles. A normal idle request-store selection can
+then close an empty-local pending-REF Fiber with an actual USER=false receiver
+hold and advanced physical handle. Source/native2, independent122/two controls
+and separate late163+99 pass: the same post-G carrier survives second GC/E,
+then its O destructor runs during shutdown, followed by retirement and caller
+budget checks. Native evidence is output timing; broader layouts and physical
+collection remain OPEN.

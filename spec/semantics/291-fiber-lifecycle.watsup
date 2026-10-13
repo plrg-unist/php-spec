@@ -42,6 +42,11 @@ dec $fiber_close_chain(pstate, nat, nat?) : pstate
 dec $fiber_close_error_return(pstate, nat) : pstate
 dec $fiber_release_operation(ptask*) : pdestructionoperation?
 dec $fiber_request_store_ready(pstate) : bool
+dec $fiber_request_ref_task(ptask) : bool
+dec $fiber_request_ref_tasks(ptask*) : bool
+dec $fiber_request_selected(pstate, nat) : bool
+dec $fiber_request_close(pstate, nat) : pstate
+dec $fiber_close_release_source_valid(pstate, pfiberclose) : bool
 dec $gc_worker_idle_store_ready(pstate) : bool
 def $gc_worker_idle_store_ready(S) = false -- otherwise
 
@@ -147,6 +152,21 @@ def $finally_exception_previous(S, n_new, n_old) = $throwable_previous(S, n_new,
   -- if ~$fiber_graceful_live(S, n_new)
 
 def $fiber_close_source(S, pfiberclose) = $fiber_vm_restore(S, pfiberclose.VM)[.ACTIVEFIBER = pfiberclose.PREVIOUS]
+;; User decrements keep their original scope. The request store has its own
+;; temporary ADDREF and advances the selected physical handle before resuming.
+def $fiber_close_release_source_valid(S, pfiberclose) = true -- if pfiberclose.RELEASE.USER
+def $fiber_close_release_source_valid(S, pfiberclose) = true
+  -- if ~pfiberclose.RELEASE.USER
+  -- if pfiberclose.PREVIOUS = eps /\ pfiberclose.CALLERS = 0
+  -- if S_source = $fiber_close_source(S, pfiberclose)
+  -- if S_source.TODO = [DESTRUCTOR_RELEASE pfiberclose.RELEASE, DESTRUCTOR_STORE]
+  -- if pfiberclose.RELEASE.JOBS = [DESTRUCTION_VALUE (HOBJECT pfiberclose.OBJECT)]
+  -- if $shutdown_task_scope(S_source) /\ S_source.ORIGIN = eps
+  -- if S_source.SHUTDOWN.PHASE = SHUTDOWN_DONE
+  -- if S_source.DESTRUCTION.PHASE = DESTRUCTION_STORE /\ S_source.DESTRUCTION.NOREUSE
+  -- if S_source.DESTRUCTION.COMPLETION = NORMAL
+  -- if $(S_source.DESTRUCTION.HANDLES[pfiberclose.OBJECT] + 1) = S_source.DESTRUCTION.INDEX
+def $fiber_close_release_source_valid(S, pfiberclose) = false -- otherwise
 def $fiber_close_valid(S, pfiberclose) = true
   -- if $fiber_at(S, pfiberclose.OBJECT) = (pfiber)
   -- if pfiber.STATUS = FIBER_RUNNING /\ pfiber.SEQUENCE = pfiberclose.SEQUENCE
@@ -162,6 +182,7 @@ def $fiber_close_valid(S, pfiberclose) = true
   -- if pfiberclose.VM.TODO = (DESTRUCTOR_RELEASE pfiberclose.RELEASE) :: ptask*
   -- if pfiberclose.VM.DESTRUCTORRELEASES = pfiberclose.RELEASE :: pdestructionrelease*
   -- if $destructor_release_valid($fiber_close_source(S, pfiberclose), pfiberclose.RELEASE)
+  -- if $fiber_close_release_source_valid(S, pfiberclose)
 def $fiber_close_valid(S, pfiberclose) = false -- otherwise
 
 ;; The existing API caller chain is interrupted only at the authentic internal
@@ -201,8 +222,35 @@ def $fiber_request_store_ready(S) = true
   -- if $destructor_handle(S, S.DESTRUCTION.INDEX, 0) = (n)
   -- if $internal_destructor_pending(S, HOBJECT n)
 def $fiber_request_store_ready(S) = false -- otherwise
+def $fiber_request_ref_task(FINALLY_REF_RETURN porigin porigin_source (REFERENCE n) z) = true
+def $fiber_request_ref_task(AT porigin ptask) = $fiber_request_ref_task(ptask)
+def $fiber_request_ref_task(ptask) = false -- otherwise
+def $fiber_request_ref_tasks(eps) = false
+def $fiber_request_ref_tasks(ptask :: ptask_tail*) = ($fiber_request_ref_task(ptask) \/ $fiber_request_ref_tasks(ptask_tail*))
+def $fiber_request_selected(S, n) = true
+  -- if S.COMPLETION = NORMAL /\ S.DESTRUCTION.COMPLETION = NORMAL
+  -- if S.SHUTDOWN.PHASE = SHUTDOWN_DONE
+  -- if S.ACTIVEFIBER = eps /\ S.FIBERCALLERS = eps /\ S.FIBERCLOSERS = eps
+  -- if S.GC.ACTIVE = eps /\ S.GC.PLAN = eps /\ S.GC.WORKER = eps
+  -- if $fiber_transfer_domain(S)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if pfiber.STATUS = FIBER_SUSPENDED /\ pfiber.GC = eps
+  -- if pfiber.VM = (pfibervm)
+  -- if pfibervm.TABLE.ENV = eps
+  -- if $fiber_request_ref_tasks(pfibervm.TODO)
+def $fiber_request_selected(S, n) = false -- otherwise
+def $fiber_request_close(S, n) = $fiber_close_start(S_held, n, pdestructionrelease)
+  -- if S_next = S[.DESTRUCTION.INDEX = $(S.DESTRUCTION.INDEX + 1)]
+  -- if S_held = $destructor_release_begin(S_next, [DESTRUCTION_VALUE (HOBJECT n)])
+  -- if S_held.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
+rule PhpStep/fiber-request-store-close: S ~> $fiber_request_close(S, n)
+  -- if $fiber_request_store_ready(S)
+  -- if $destructor_handle(S, S.DESTRUCTION.INDEX, 0) = (n)
+  -- if $fiber_request_selected(S, n)
 rule PhpStep/fiber-request-store: S ~> S[.COMPLETION = UNSUPPORTED "Fiber destruction during request cleanup"]
   -- if $fiber_request_store_ready(S)
+  -- if $destructor_handle(S, S.DESTRUCTION.INDEX, 0) = (n)
+  -- if ~$fiber_request_selected(S, n)
 
 def $fiber_close_selected(S, n, pdestructionrelease) = true
   -- if $internal_destructor_pending(S, HOBJECT n)

@@ -2799,6 +2799,11 @@ A selected O destructor may instead raise an Exception during orphan close.
 Source2, early102/one refusal and separate late260 validate catch delivery with
 null Previous, preserved modeled trace at the live caller and failed Fiber
 retirement. Native outputs establish messages, without identity or trace claims.
+Pending reference-return temporaries now keep a suspended Fiber/object cycle live
+across explicit GC. A bounded normal request-store path later force-closes that
+Fiber with a temporary receiver hold. Two source comparisons and separate 122/262
+state checks cover collector roots, shutdown provenance, D after E and cleanup;
+broader shutdown layouts and physical collection remain open.
 [Weak Stringable parameters](coverage/semantics/weak-string-parameters-review.json)
 now convert supplied fixed parameters in receive order, preserving caller
 strictness, nominal/callable precedence and the entered formal cell. Existing

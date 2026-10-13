@@ -141,6 +141,11 @@ dec $gc_immutable_flags_valid(pstate, nat*) : bool
 dec $gc_graph_node(pstate, pnode) : bool
 dec $gc_graph_nodes(pstate, pnode*) : pnode*
 dec $gc_graph(pstate) : hgraph
+dec $gc_finally_ref_task(ptask) : pnode*
+dec $gc_finally_ref_tasks(ptask*) : pnode*
+dec $gc_finally_ref_frames(pframe*) : pnode*
+dec $gc_finally_ref_fiber(pstate, pnode) : pnode*
+dec $gc_finally_ref_fibers(pstate, pnode*) : pnode*
 dec $gc_transition_done(pstate, pstate, pgc) : pstate
 dec $gc_terminal_park(pstate, pgcplan) : bool
 dec $gc_terminal_prepare(pstate, pgcplan) : pstate?
@@ -339,9 +344,27 @@ def $gc_graph_nodes(S, pnode :: pnode_tail*) = $gc_graph_nodes(S, pnode_tail*) -
 dec $weakmap_gc_map(pstate, pnode*) : nat?
 dec $weakmap_gc_edges(pstate, hedge*, pnode*) : hedge*
 dec $weakmap_gc_prepare(pstate, pgcplan) : pstate
-def $gc_graph(S) = H[.NODES = pnode*][.ROOTS = $heap_intersect(H.ROOTS, pnode*)][.EDGES = $weakmap_gc_edges(S, $heap_live_edges(H.EDGES, pnode*), H.ROOTS)]
+;; zend_compile_return's selected MAKE_REF temporary is outside the finally
+;; opcode's linear live range. Fiber get_gc does not enumerate that owner;
+;; preserve its referent as externally live without changing the owning graph.
+def $gc_finally_ref_task(FINALLY_REF_RETURN porigin porigin_source (REFERENCE n) z) = [HCELL n]
+def $gc_finally_ref_task(AT porigin ptask) = $gc_finally_ref_task(ptask)
+def $gc_finally_ref_task(ptask) = eps -- otherwise
+def $gc_finally_ref_tasks(eps) = eps
+def $gc_finally_ref_tasks(ptask :: ptask_tail*) = $gc_finally_ref_task(ptask) ++ $gc_finally_ref_tasks(ptask_tail*)
+def $gc_finally_ref_frames(eps) = eps
+def $gc_finally_ref_frames(pframe :: pframe_tail*) = $gc_finally_ref_tasks(pframe.TODO) ++ $gc_finally_ref_frames(pframe_tail*)
+def $gc_finally_ref_fiber(S, HOBJECT n) = $gc_finally_ref_tasks(pfibervm.TODO) ++ $gc_finally_ref_frames(pfibervm.FRAMES)
+  -- if S.OBJECTS[n] = FIBER pfiber
+  -- if pfiber.STATUS = FIBER_SUSPENDED
+  -- if pfiber.VM = (pfibervm)
+def $gc_finally_ref_fiber(S, pnode) = eps -- otherwise
+def $gc_finally_ref_fibers(S, eps) = eps
+def $gc_finally_ref_fibers(S, pnode :: pnode_tail*) = $gc_finally_ref_fiber(S, pnode) ++ $gc_finally_ref_fibers(S, pnode_tail*)
+def $gc_graph(S) = H[.NODES = pnode*][.ROOTS = pnode_roots*][.EDGES = $weakmap_gc_edges(S, $heap_live_edges(H.EDGES, pnode*), pnode_roots*)]
   -- if H = $heap_graph(S)
   -- if pnode* = $gc_graph_nodes(S, H.NODES)
+  -- if pnode_roots* = $heap_intersect(H.ROOTS ++ $gc_finally_ref_fibers(S, S.ALLOCATIONS), pnode*)
 
 ;; A still-live reference decrement checks its referent, just like
 ;; gc_check_possible_root. Plain CV cells expand only when their slot retires.
