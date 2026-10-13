@@ -1784,6 +1784,8 @@ keeps zero credit. Trace/identity are reached-state/engine-derived evidence,
 separate from native output agreement. Local source reconstruction and wider
 catch/rethrow/lifecycle/returns remain OPEN.
 [Multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+Actual382 over `aa8ddc73` passes strict at `eebde3e7` in 6.216s with zero
+applications; the private source/state/public cuts retain their original identities.
 
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
