@@ -1677,6 +1677,8 @@ store/owner rules are unchanged. The removal article hypothesis miss is
 informational/raw-preserved; no failed actor. Wider hook/type roots and flags
 remain required.
 [Plain-child type-presence review](coverage/semantics/virtual-parent-plain-type-presence-review.json).
+Joined exact `0df6172c`/387; one count-only current init check passes with no application.
+Private cuts remain retained through inactive output-handler/Stringable cleanup and empty output buffers.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
