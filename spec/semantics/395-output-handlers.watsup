@@ -327,6 +327,12 @@ def $ob_user_context_valid(S, pcallcontext) = true
   -- if pcallcontext.EXTRA = pobinvoke.SENT[n_received:n_extra]
   -- if $call_sent_operands_valid(S, pcallcontext.TARGET, n_received, pcallcontext.EXTRA)
 def $ob_user_context_valid(S, pcallcontext) = false -- otherwise
+def $named_receives_ready(S, pfunction) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if $ob_user_context_valid(S, pcallcontext)
+  -- if n_received = $call_received(pcallcontext.ARGC, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if $unpack_defined_prefix(S, $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS), n_received)
 def $error_context_kind(S, pcallcontext) = true -- if $ob_user_context(pcallcontext, S.CURRENT, S.FRAMES) =/= eps
 def $error_context_valid(S, pcallcontext) = true -- if $ob_user_context_valid(S, pcallcontext)
 def $ob_user_resume_api(OB_USER_REFERENCE pobinvoke n) = $ob_call_api(pobinvoke.CALL)
