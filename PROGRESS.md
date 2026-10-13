@@ -7,6 +7,21 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Module395 private normal user-output-handler callbacks are independently
+accepted and validated. Chunk0 explicit flush/clean/end/get
+operations retain frozen inputs/getter copies, weak internal calls and builtin
+traces; live callback writes follow PHP8.5 deprecation and false/disabled routing.
+Only raw zoh owns the callback; cached FCC metadata survives alias receiver
+retirement, and lower routing precedes zoh release. Author15 originals agree at
+1+14 cuts; independent9 and4 Unsupported controls pass separately. Author5
+controls retain2+3 cuts with zero native credit. Four genuine SL groups pass227
+premises; the duplicate trace observer failure remains0. Automatic/request-end
+callback drains, wider conversion/callable/mutation/Fiber protocols and buffered
+stdout rendering remain explicit dependencies. Master integration is pending.
+[Contract](docs/semantics/OUTPUT-HANDLERS.md),
+[author evidence](coverage/semantics/output-handler-author.json),
+[independent review](coverage/semantics/output-handler-review.json).
+
 Ticks393 is independently accepted; its current383 composition is checked.
 Source-derived
 marker plans cover lexical frequencies, compiler adjacency/control and certified
@@ -80,8 +95,8 @@ No new actor or source/state credit is claimed.
 Default output buffers391 now route exact echo/print/inline/exit/direct-call bytes
 through nested NULL handlers, whole chunks, capabilities, copied get results,
 Notice-handler reentry and exact status. Forced flush follows shutdown/destructors;
-BUDGET and Unsupported preserve buffers. Buffered stdout diagnostics and output
-handler callbacks remain explicit dependencies. Author26 originals agree at
+BUDGET and Unsupported preserve buffers. Buffered stdout diagnostics and wider
+handler dispatch remain dependencies; Module395 adds explicit user operations above. Author26 originals agree at
 identical1+25 cuts, with4 Unsupported controls; independent6 originals/2 controls
 and SL5 groups177 premises pass separately. Original compiler/PRINT/fixture
 failures retain zero credit. [Contract](docs/semantics/OUTPUT-BUFFERS.md),

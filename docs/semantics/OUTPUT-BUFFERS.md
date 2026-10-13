@@ -1,8 +1,9 @@
 # Default output buffers
 
 Module391 implements PHP 8.5.10 CLI default output handlers. `ob_start()` and
-an explicit NULL callback create a request-global stack; non-NULL handlers,
-including invalid callback strings, remain explicit Unsupported dependencies.
+an explicit NULL callback create a request-global stack;
+[Module395](OUTPUT-HANDLERS.md) stages chunk0 user callbacks on explicit
+operations. Invalid/effectful callback creation remains a dependency.
 The APIs share checked source-call argument capture, named/unpacked defaults,
 strict/weak scalar conversion and real builtin error traces.
 
@@ -24,8 +25,9 @@ callback. A throwing handler preserves its Throwable and prevents the wrapper
 notice. The no-active get-clean case returns false quietly. The native unsafe
 wrapper frontier with no live handler remains explicitly Unsupported.
 
-Request completion forces top-to-bottom flush after shutdown callbacks and
-request destructors, ignoring removal capabilities. BUDGET, service pauses and
+Request completion forces top-to-bottom default-handler flush after shutdown
+callbacks and request destructors, ignoring removal capabilities. Remaining user
+handler drains are explicit dependencies. BUDGET, service pauses and
 Unsupported retain the stack. Output buffers are global across calls and Fiber
 VM switches; stored bytes add no object/reference roots.
 
@@ -42,7 +44,7 @@ The authority is `main/output.c` (handler append/op, stack pop, status and the
 The source runner compares original bytes and exact stdout/stderr/exit against
 the sole pinned oracle. Source-reached SL checks cover copies, lower-layer writes,
 notice reentry, shutdown and malformed state; synthetic completion probes are
-helper controls, separate from reached service pauses. Callback handlers, wider
+helper controls, separate from reached service pauses. Wider callback dispatch,
 startup buffering/handler profiles, stdout diagnostic rendering and non-CLI SAPI
 output effects remain required. Full core stays partial.
 

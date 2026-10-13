@@ -199,9 +199,12 @@ wider formatter consumers and Array eval/include warning ingress remain required
 stack, nested/chunk byte routing, capabilities, copied get results, live status
 and forced request-end flush after shutdown/destructors. Error-handler reentry
 preserves frozen results and samples the live layer for the wrapper Notice.
-User output handlers and buffered stdout diagnostic rendering remain Unsupported;
-masking and handler-true cases preserve ordinary execution. Wider startup/SAPI
-output effects remain required.
+[Module395](OUTPUT-HANDLERS.md) adds chunk0 scalar-result user callbacks on
+explicit operations, copied inputs/results, native phase flags, callback-output
+deprecation and borrowed FCC lifetime. Automatic/request-end callback dispatch,
+wider returns/mutation/Fiber switching and buffered stdout diagnostic rendering
+remain dependencies; masking and handler-true cases preserve ordinary execution.
+Wider startup/SAPI output effects remain required.
 
 [Module393](TICKS.md) derives tick markers and compiler lines from checked source,
 with lexical frequencies and a request-global uint32 counter. Its live registry

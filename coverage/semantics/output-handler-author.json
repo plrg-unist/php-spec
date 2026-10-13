@@ -1,0 +1,160 @@
+{
+  "target": "PHP8.5.10 CLI NTS64",
+  "status": "accepted private bounded milestone; integration pending",
+  "base_revision": "2676fe06548d122f601f3612e5d90cc1941aa8f8",
+  "implementation_revision": "c3b5be40176642046a64f1e48bf6912c6df62829",
+  "scope": "Chunk0 user handlers, explicit normal flush/clean/end/get operations, scalar results, live/frozen bytes, produced-output deprecation and zoh-only ownership; full core remains partial.",
+  "implementation_hashes": {
+    "spec/semantics/30-storage.watsup": "56bff4d9f46fa2414cad5048ada87af721e9b2ba02e43e099594937d943d1864",
+    "spec/semantics/39-ownership.watsup": "6145957babc8d319b40d1536350d006d843e9750b02ba6b1eed49ee848cf4248",
+    "spec/semantics/40-control.watsup": "3916d1d6b39f3feaccbd2149e1a581b20829cefec9f4ec69c73bdecb73517559",
+    "spec/semantics/391-output-buffers.watsup": "8248b1758bae8e8dd95db8bfe894466d9b79354202e7b63bd658fa003bf67074",
+    "spec/semantics/395-output-handlers.watsup": "ea20bf28524e6a181690a4a18ddb04c81cd49cdfcc247aeb7f1abc99efa0a05f",
+    "spec/semantics/modules.json": "f0cbccfe346d77f0d95206e8fac713a259b8859f6d938886e476136be75b622e"
+  },
+  "runtime": {
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  "source": {
+    "exact_originals": 15,
+    "gate1": {
+      "report": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-04/source-gate-01/report.json",
+        "sha256": "fcf4b74eeab141fc08256397054e60865001e1d197c05b38d53170df3515ebe7"
+      },
+      "revision": "e3c762eeca0655a42d003496c5f8e5eb1579a282",
+      "selected": [
+        "phase-sequence"
+      ],
+      "completed": true
+    },
+    "retained14": {
+      "report": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-04/sources-01/report.json",
+        "sha256": "8ecb2954b446a94ffcdd08f63330d208493b14cbca426f1bbeb9f342fe64d4cf"
+      },
+      "revision": "e3c762eeca0655a42d003496c5f8e5eb1579a282",
+      "accepted_prefix": [
+        "first-clean",
+        "get-clean-snapshot",
+        "scalar-results",
+        "false-disable",
+        "empty-calls",
+        "nested-users",
+        "lower-default-chunk",
+        "callable-name-spelling",
+        "invokable-handler",
+        "closure-handler",
+        "negative-chunk-wide-flags",
+        "named-unpack-selection",
+        "produced-api-lines",
+        "default-none-routing"
+      ],
+      "whole_campaign_credit": 0,
+      "failure": "callback-throw interpreter failure from duplicate trace-values observer; no positive source discrepancy"
+    },
+    "controls": {
+      "native_agreement_credit": 0,
+      "retained2": [
+        "invalid-callback",
+        "builtin-callback"
+      ],
+      "affected3": {
+        "report": {
+          "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-04/controls-02/report.json",
+          "sha256": "7898557a52c4c5c821d6caaad09aac06370e4250ac21fc52309bd5301f0dbd71"
+        },
+        "revision": "c3b5be40176642046a64f1e48bf6912c6df62829",
+        "selected": [
+          "callback-throw",
+          "callback-exit",
+          "handler-fiber-switch"
+        ],
+        "completed": true
+      }
+    },
+    "compatibility_bridge": "e3c762 to c3b5 removes only the duplicate395 trace-values clause.391 already handles every output-buffer API with identical bytes; prior normal and2 dependency rows retain their original cut without replay."
+  },
+  "state": {
+    "report": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-04/state-01/report.json",
+      "sha256": "940cd6a32bfaf76cf8b613ebabc1d9feb097ad031ef6250e8ba2e9194d5400a8"
+    },
+    "groups": [
+      {
+        "id": "borrowed-alias",
+        "premises": 51,
+        "source_sha256": "cafee0193fa9de6f524709da2b3f617d21b98913e685b28d58d83acbbe410300"
+      },
+      {
+        "id": "owned-pop",
+        "premises": 64,
+        "source_sha256": "4684f994d84536a679c502b8a50e3aaccf76f058dd71bfb1aa327a46443e9a13"
+      },
+      {
+        "id": "produced-deprecation",
+        "premises": 50,
+        "source_sha256": "1ea59f56c336930ffbc44d17323e6256880c7b316a20ab113cd8a058dfc2252c"
+      },
+      {
+        "id": "frozen-getter",
+        "premises": 62,
+        "source_sha256": "9c364c591b988ba7adac15f4e11395063944eec1168adc4d9743e2358f442214"
+      }
+    ],
+    "total_premises": 227,
+    "completed": true,
+    "notes": "All four fronts are reached from original source; SOURCE_PENDING/Unsupported variants are synthetic finalizer preservation controls, not reached service evidence. Valid freshly allocated B string is rejected as forged get-clean snapshot A."
+  },
+  "static": {
+    "full_manifest_struct": {
+      "directory": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-04/static-13",
+      "exit": 0,
+      "stderr_bytes": 0,
+      "credit": "structural only"
+    },
+    "state_fixture_struct": {
+      "directory": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-04/state-preflight-02",
+      "exit": 0,
+      "credit": "synthetic empty-program compile preflight only"
+    }
+  },
+  "original_failures": {
+    "directory": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-04",
+    "preserved": "static01..10 preparatory syntax/elaboration/command failures and sources-01 whole failure; zero failed-campaign credit"
+  },
+  "limits": [
+    "Automatic chunk and request-end/fatal callback drains",
+    "Non-scalar/reference-return conversion and wider Closure/callable forms and typed variadic reception",
+    "Reentrant buffer mutation and user capability-failure notices",
+    "Fiber switching is native-allowed but explicit Unsupported here",
+    "Active-buffer stdout diagnostic rendering and wider startup/SAPI effects"
+  ],
+  "commands": [
+    "scripts/opam-exec.sh dune build --root .",
+    "scripts/opam-exec.sh dune build --root tests/semantics numeric_runner.exe",
+    "python3 tests/semantics/output_handler_sources.py --select ID,... --output RAW",
+    "python3 tests/semantics/output_handler_state.py --output RAW"
+  ],
+  "resources": "CPU4/SLOT2,1.5GiB virtual-memory cap; serial stop-first/reaped actors1345624/1347006/1349049/1351133. Static struct DATA6GiB.",
+  "raw_recovery": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-04",
+  "independent_review": "coverage/semantics/output-handler-review.json",
+  "integration": "pending root writer grant and exact-parent review"
+}

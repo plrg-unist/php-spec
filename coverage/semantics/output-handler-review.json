@@ -1,0 +1,99 @@
+{
+  "milestone": "Explicit chunk0 user output handlers (395)",
+  "status": "accepted privately; actual-parent integration pending",
+  "reviewer": "core_breadth_review_01",
+  "implementation_revision": "c3b5be40176642046a64f1e48bf6912c6df62829",
+  "implementation_sha256": "ea20bf28524e6a181690a4a18ddb04c81cd49cdfcc247aeb7f1abc99efa0a05f",
+  "scope": [
+    "Normal explicit flush, clean, end and get operations with copied input/return snapshots",
+    "Weak internal callback reception and source-attributed builtin API trace frame",
+    "Live callback-produced bytes/getters, temporary disable/deprecation and FALSE permanent disable",
+    "Owned raw callable value; cached FCC/history adds no independent owner"
+  ],
+  "authority": [
+    "vendor/php-src/main/output.c:php_output_handler_create_user, php_output_handler_op, php_output_stack_pop, php_output_handler_dtor",
+    "vendor/php-src/Zend/zend_API.c:zend_fcall_info_init, zend_get_callable_name_ex",
+    "vendor/php-src/Zend/zend_execute_API.c:zend_call_function"
+  ],
+  "independent_sources": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-04/sources-01/report.json",
+    "report_sha256": "ee81c826538a26b51563bcc6f9ee4ce0874aa172fef0bd66bb0f8d34411acacd",
+    "revision": "c3b5be40176642046a64f1e48bf6912c6df62829",
+    "agreements": 9,
+    "unsupported_controls": 4,
+    "exact_observations": [
+      "stdout",
+      "stderr",
+      "exit_status",
+      "normal completion"
+    ],
+    "cases": [
+      "internal-weak-entry",
+      "internal-builtin-trace",
+      "byref-copy-and-frozen-getter",
+      "produced-live-getters",
+      "false-forwards-live-buffer",
+      "deprecation-handler-bypass",
+      "lower-default-produced-flag",
+      "alias-receiver-return-timing",
+      "raw-callable-owns-receiver"
+    ],
+    "controls": [
+      "automatic-handler-chunk",
+      "request-end-handler-drain",
+      "nonscalar-handler-result",
+      "handler-stack-mutation"
+    ],
+    "passed": true,
+    "inputs_stable": true,
+    "actor_reaped": true
+  },
+  "state_review": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-04/state-01/report.json",
+    "report_sha256": "940cd6a32bfaf76cf8b613ebabc1d9feb097ad031ef6250e8ba2e9194d5400a8",
+    "runtime_revision": "c3b5be40176642046a64f1e48bf6912c6df62829",
+    "groups": 4,
+    "premises": 227,
+    "fixture_sha256": "7521fccd8e214ffe31312c89916eecc1d1878c984639ce3d5e415280a6e16b65",
+    "fronts": [
+      {
+        "id": "borrowed-alias",
+        "premises": 51
+      },
+      {
+        "id": "owned-pop",
+        "premises": 64
+      },
+      {
+        "id": "produced-deprecation",
+        "premises": 50
+      },
+      {
+        "id": "frozen-getter",
+        "premises": 62
+      }
+    ],
+    "passed": true,
+    "inputs_stable": true,
+    "helper_controls_native_credit": 0
+  },
+  "author_cuts_reviewed": {
+    "source_originals": 15,
+    "retained_cuts": "1 phase gate plus 14 successful prefix records at e3c762eeca0655a42d003496c5f8e5eb1579a282",
+    "unsupported_controls": "2 successful prefix records at e3c762 plus 3 affected controls at c3b5be401",
+    "author_ledger": "coverage/semantics/output-handler-author.json",
+    "preserved_failure": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-04/sources-01/report.json",
+    "whole_failed_campaign_credit": 0,
+    "correction": "Removed redundant395 trace-argument observer; existing391 observer has identical RHS and covers every new OB API. Earlier source observations retain their cuts."
+  },
+  "limits": [
+    "Automatic chunks and request-end/fatal/abrupt callback drains remain Unsupported",
+    "Invalid/effectful/builtin/wider Closure selection and typed variadic reception remain dependencies",
+    "Non-scalar/reference returns, capability-failure notices, running-handler mutation and Fiber switching remain dependencies",
+    "A retired borrowed target is historical metadata; no native dangling-target reinvocation was executed",
+    "Buffered stdout diagnostics retain391 boundary; full core remains partial"
+  ],
+  "integration": {
+    "status": "pending root sole-writer grant; no previous campaign renewal"
+  }
+}

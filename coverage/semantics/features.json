@@ -18669,21 +18669,28 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/391-output-buffers.watsup"
+        "spec/semantics/391-output-buffers.watsup",
+        "spec/semantics/395-output-handlers.watsup"
       ],
       "helper_tests": [
-        "tests/semantics/output_buffer_state.py"
+        "tests/semantics/output_buffer_state.py",
+        "tests/semantics/output_handler_state.py"
       ],
       "source_tests": [
-        "tests/semantics/output_buffer_sources.py"
+        "tests/semantics/output_buffer_sources.py",
+        "tests/semantics/output_handler_sources.py",
+        "tests/semantics/output_handler_review_sources.py"
       ],
       "evidence": [
         "vendor/php-src/main/output.c",
         "vendor/php-src/main/php_output.h",
         "coverage/semantics/output-buffer-author.json",
-        "coverage/semantics/output-buffer-review.json"
+        "coverage/semantics/output-buffer-review.json",
+        "vendor/php-src/Zend/zend_API.c",
+        "coverage/semantics/output-handler-author.json",
+        "coverage/semantics/output-handler-review.json"
       ],
-      "review": "Module391 implements default/NULL-handler stacks, nested bytes and whole chunks, capabilities, copied get results with Notice-handler reentry, exact status and forced flush after shutdown/destructors. Author26 originals and4 Unsupported controls pass at identical gate1+remaining25 cuts; independent6 originals/2 controls and SL5 groups177 premises are separate. Output-handler callbacks, buffered stdout diagnostic rendering and wider startup/SAPI effects remain required; full obligation stays partial."
+      "review": "Module391 implements default/NULL stacks, nested whole chunks, capabilities, getter Notice reentry, exact status and final default flush after lifecycle; its earlier source/state cuts stay frozen. Module395 stages chunk0 scalar-result user callbacks on explicit flush/clean/end/get operations, with weak internal entry/builtin traces, frozen input/getter copies, PHP8.5 produced-output deprecation, live false forwarding/disablement, raw zoh ownership and borrowed FCC history. Author15 exact originals retain1+14 cuts, independent9 exact originals pass separately; five author/four independent dependency controls have zero native agreement credit. Four genuinely reached state groups pass227 premises, including borrowed alias retirement, sole raw ownership/post-route release and a valid forged getter string. Automatic/request-end callback drains, wider conversion/callable/mutation/Fiber protocols, buffered stdout diagnostics and wider startup/SAPI effects remain required; full obligation stays partial."
     },
     {
       "id": "environment.request-inputs",
