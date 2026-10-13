@@ -78,8 +78,8 @@ def $aggregate_pointer_value(S, AGGREGATE_ARRAY n pkey) = ($entry_value(S, pitem
   -- if pitem =/= UNINITIALIZED
 def $aggregate_pointer_value(S, AGGREGATE_PROPERTY n ptbytes) = ($entry_value(S, pitem))
   -- if (HOBJECT n) <- S.ALLOCATIONS
-  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
-  -- if $property_slot_at(ppropertyslot*, ptbytes) = (ppropertyslot)
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_rows*)
+  -- if $property_slot_at(ppropertyslot_rows*, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.STATE = PROP_VALUE pitem
   -- if pitem =/= UNINITIALIZED
 def $aggregate_pointer_value(S, paggregatepointer) = eps -- otherwise
@@ -126,19 +126,19 @@ def $aggregate_property_effect(S, n_left, n_right, n_index, pnode_seen*, z) = (S
 def $aggregate_property_effect(S, n_left, n_right, n_index, pnode_seen*, z) = $aggregate_property_effect(S, n_left, n_right, $(n_index + 1), pnode_seen*, z)
   -- if ptbytes* = $aggregate_object_keys(S, n_left)
   -- if $(n_index < |ptbytes*|)
-  -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left*)
-  -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
-  -- if $property_slot_at(ppropertyslot_left*, ptbytes*[n_index]) = (ppropertyslot_left)
-  -- if $property_slot_at(ppropertyslot_right*, ptbytes*[n_index]) = (ppropertyslot_right)
+  -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_rowsleft*)
+  -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_rowsright*)
+  -- if $property_slot_at(ppropertyslot_rowsleft*, ptbytes*[n_index]) = (ppropertyslot_left)
+  -- if $property_slot_at(ppropertyslot_rowsright*, ptbytes*[n_index]) = (ppropertyslot_right)
   -- if ppropertyslot_left.STATE = PROP_INITIAL \/ ppropertyslot_left.STATE = PROP_UNSET
   -- if ppropertyslot_right.STATE = PROP_INITIAL \/ ppropertyslot_right.STATE = PROP_UNSET
 def $aggregate_property_effect(S, n_left, n_right, n_index, pnode_seen*, z) = $aggregate_property_continue(S_next, $aggregate_push(porder, paggregatecursor), n_left, n_right, $(n_index + 1), pnode_seen*, z)
   -- if ptbytes* = $aggregate_object_keys(S, n_left)
   -- if $(n_index < |ptbytes*|)
-  -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left*)
-  -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
-  -- if $property_slot_at(ppropertyslot_left*, ptbytes*[n_index]) = (ppropertyslot_left)
-  -- if $property_slot_at(ppropertyslot_right*, ptbytes*[n_index]) = (ppropertyslot_right)
+  -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_rowsleft*)
+  -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_rowsright*)
+  -- if $property_slot_at(ppropertyslot_rowsleft*, ptbytes*[n_index]) = (ppropertyslot_left)
+  -- if $property_slot_at(ppropertyslot_rowsright*, ptbytes*[n_index]) = (ppropertyslot_right)
   -- if ppropertyslot_left.STATE = PROP_VALUE pitem_left
   -- if ppropertyslot_right.STATE = PROP_VALUE pitem_right
   -- if pvalue_left = $entry_value(S, pitem_left)
