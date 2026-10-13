@@ -1,0 +1,86 @@
+{
+  "scope": "Stringable INSTANCE/string loose comparison through the seven ordinary operators and non-bool Switch cases, with pre-cast COPY/CV/CELL selection and post-callback reads. Strict identity and compiled bool Switch retain their no-cast paths; reached recursive object/string pairs and expired or post-cast object pointers remain explicit Unsupported.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "orientation",
+      "source": "<?php\nclass CompareOrientation {\n    public function __toString(): string {\n        echo \"C\";\n        return \"007\";\n    }\n}\n$object = new CompareOrientation;\necho \"L\";\necho $object == \"7\" ? \"1\" : \"0\";\necho $object != \"8\" ? \"1\" : \"0\";\necho $object < \"8\" ? \"1\" : \"0\";\necho $object <= \"7\" ? \"1\" : \"0\";\necho $object > \"6\" ? \"1\" : \"0\";\necho $object >= \"7\" ? \"1\" : \"0\";\necho $object <=> \"8\";\necho \"|\";\necho \"7\" == $object ? \"1\" : \"0\";\necho \"8\" > $object ? \"1\" : \"0\";\necho $object === \"007\" ? \"BAD\" : \"S\";\necho \"007\" !== $object ? \"I\" : \"BAD\";\nswitch ($object) {\n    case \"7\": echo \"T\"; break;\n    default: echo \"BAD\";\n}\nswitch (\"7\") {\n    case $object: echo \"U\"; break;\n    default: echo \"BAD\";\n}\nswitch (true) {\n    case $object: echo \"B\"; break;\n    default: echo \"BAD\";\n}\n",
+      "source_sha256": "4f8acf2e7128f8e337a52a66b363b44dd63eeff4dcc7ee11c5e8a31a49d4258b",
+      "stdout_base64": "TEMxQzFDMUMxQzFDMUMtMXxDMUMxU0lDVENVQg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/switch-stringable-47/.tools/switch-stringable-native-47/run-v1/orientation/command.json",
+      "native_raw_sha256": "a6b57507c24f1a1f97017a0efcf005b5f014d848a41b84099af074173c467112"
+    },
+    {
+      "id": "live-cv",
+      "source": "<?php\nclass CompareLive {\n    public function __toString(): string {\n        global $right;\n        $right = \"after\";\n        echo \"C\";\n        return \"after\";\n    }\n}\n$object = new CompareLive;\necho \"A\";\n$right = \"before\";\necho $object == $right ? \"Y\" : \"N\";\n$right = \"before\";\necho $right == $object ? \"Y\" : \"N\";\n$right = \"before\";\n$alias =& $right;\necho $object == $alias ? \"Y\" : \"N\";\n$right = \"before\";\necho $object == (\"\" . $right) ? \"Y\" : \"N\";\necho \"|\";\n$right = \"before\";\nswitch ($object) {\n    case $right: echo \"S\"; break;\n    default: echo \"BAD\";\n}\n$right = \"before\";\nswitch ($right) {\n    case $object: echo \"T\"; break;\n    default: echo \"BAD\";\n}\n$right = \"before\";\nswitch (\"\" . $right) {\n    case $object: echo \"BAD\"; break;\n    default: echo \"D\";\n}\n",
+      "source_sha256": "ba089fb82dcddf26293fa529433d7f05b91c052ddca014e674ba494cfad5cb00",
+      "stdout_base64": "QUNZQ1lDWUNOfENTQ1RDRA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/switch-stringable-47/.tools/switch-stringable-native-47/run-v1/live-cv/command.json",
+      "native_raw_sha256": "097c0d2eee7f563f960d7693c822fd66ea792754f863b1bb0eb20e2a11199d97"
+    },
+    {
+      "id": "rebind",
+      "source": "<?php\nclass CompareRebindPlain {\n    public function __toString(): string {\n        global $plain, $otherPlain;\n        $plain =& $otherPlain;\n        echo \"P\";\n        return \"after\";\n    }\n}\nclass CompareRebindReference {\n    public function __toString(): string {\n        global $reference, $otherReference;\n        $reference =& $otherReference;\n        echo \"R\";\n        return \"after\";\n    }\n}\n$plain = \"before\";\n$otherPlain = \"after\";\n$plainObject = new CompareRebindPlain;\necho \"p\";\necho $plainObject == $plain ? \"Y\" : \"N\";\necho \":\", $plain, \"|\";\n$reference = \"before\";\n$retained =& $reference;\n$otherReference = \"after\";\n$referenceObject = new CompareRebindReference;\necho \"r\";\necho $referenceObject == $reference ? \"Y\" : \"N\";\necho \":\", $retained, \":\", $reference;\n",
+      "source_sha256": "28c8f7b7f12349c05afb5eda83c573a538360cbb0b47907cfc29aed3d33f066d",
+      "stdout_base64": "cFBOOmJlZm9yZXxyUk46YmVmb3JlOmJlZm9yZQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/switch-stringable-47/.tools/switch-stringable-native-47/run-v1/rebind/command.json",
+      "native_raw_sha256": "661ef9ebfa6938f18587a878ef46f5438bad86f0f15461badb3f18ca0eced95c"
+    },
+    {
+      "id": "global-rebind",
+      "source": "<?php\nclass CompareGlobalPlain {\n    public function __toString(): string {\n        $GLOBALS[\"plain\"] =& $GLOBALS[\"otherPlain\"];\n        echo \"P\";\n        return \"after\";\n    }\n}\nclass CompareGlobalReference {\n    public function __toString(): string {\n        $GLOBALS[\"reference\"] =& $GLOBALS[\"otherReference\"];\n        echo \"R\";\n        return \"after\";\n    }\n}\n$plain = \"before\";\n$otherPlain = \"after\";\n$plainObject = new CompareGlobalPlain;\necho \"p\";\necho $plainObject == $plain ? \"Y\" : \"N\";\necho \":\", $plain, \"|\";\n$reference = \"before\";\n$retained =& $reference;\n$otherReference = \"after\";\n$referenceObject = new CompareGlobalReference;\necho \"r\";\necho $referenceObject == $reference ? \"Y\" : \"N\";\necho \":\", $retained, \":\", $reference;\n",
+      "source_sha256": "dd66899ad324ed30ac7ffa27c55a06353f13dff10c9e73d02ea6f7e92e5f9e03",
+      "stdout_base64": "cFBZOmFmdGVyfHJSTjpiZWZvcmU6YWZ0ZXI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/switch-stringable-47/.tools/switch-stringable-native-47/run-v1/global-rebind/command.json",
+      "native_raw_sha256": "327b386ca41ae1cab50cd97b8d063a33c822d8b6642b4c080c78f58c97f10bc2"
+    },
+    {
+      "id": "peer-fallthrough",
+      "source": "<?php\nclass PeerStringableCase {\n    public function __toString(): string {\n        echo 'cast|';\n        return '007';\n    }\n}\nfunction peerLaterCase() {\n    echo 'late-condition|';\n    return 'unused';\n}\nswitch ('7') {\n    default:\n        echo 'default|';\n        break;\n    case new PeerStringableCase():\n        echo 'matched|';\n    case peerLaterCase():\n        echo 'fallthrough|';\n        break;\n}\necho 'done';\n",
+      "source_sha256": "227c4b72c0e02c2002ebab1b91c20f7778a3f89a56e747cfabacd87e912a24b5",
+      "stdout_base64": "Y2FzdHxtYXRjaGVkfGZhbGx0aHJvdWdofGRvbmU=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/switch-stringable-47/.tools/switch-stringable-native-47/run-v1/peer-fallthrough/command.json",
+      "native_raw_sha256": "97de429a39f017c8ba02753bfcc81ddb1bb4982f2265f7865eba03263cf3a440"
+    },
+    {
+      "id": "peer-throw-reenter",
+      "source": "<?php\nclass PeerThrowingCase {\n    public function __toString(): string {\n        echo 'outer-cast|';\n        switch ('inner') {\n            default:\n                echo 'inner-default|';\n                break;\n            case 'inner':\n                echo 'inner-match|';\n                break;\n        }\n        throw new TypeError('case-cast');\n    }\n}\ntry {\n    switch ('hit') {\n        default:\n            echo 'outer-default|';\n            break;\n        case new PeerThrowingCase():\n            echo 'outer-match|';\n            break;\n        case 'hit':\n            echo 'later-match|';\n    }\n} catch (Throwable $caught) {\n    echo $caught::class, '|', $caught->getMessage(), '|';\n} finally {\n    echo 'finally|';\n}\necho 'done';\n",
+      "source_sha256": "23b85d9fd2cf6a8f69ba080787010e11a1e1f88a2d3ae3106389e5b3a22e63e0",
+      "stdout_base64": "b3V0ZXItY2FzdHxpbm5lci1tYXRjaHxUeXBlRXJyb3J8Y2FzZS1jYXN0fGZpbmFsbHl8ZG9uZQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/switch-stringable-47/.tools/switch-stringable-native-47/run-v1/peer-throw-reenter/command.json",
+      "native_raw_sha256": "02a443aff0f7f32414bb911af491295836173d738f4c1bc2823fd09224930c58"
+    }
+  ]
+}

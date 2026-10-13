@@ -393,6 +393,13 @@ def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pnode_seen*, z) = $p
   -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
   -- if $property_hash_count(ppropertyslot_left*) = $property_hash_count(ppropertyslot_right*)
   -- if S_marked = $objectprops_mark($objectprops_mark(S, n_left), n_right)
+;; A reached nested comparison cannot run a user cast without a continuation.
+def $value_order_effect(S, POBJECT n, pvalue, pnode_seen*, z) = (S, ORDERUNSUPPORTED "Stringable comparison continuation")
+  -- if $stringable_instance(S, n)
+  -- if $string_bytes(pvalue) =/= eps
+def $value_order_effect(S, pvalue, POBJECT n, pnode_seen*, z) = (S, ORDERUNSUPPORTED "Stringable comparison continuation")
+  -- if $stringable_instance(S, n)
+  -- if $string_bytes(pvalue) =/= eps
 def $value_order_effect(S, pvalue_left, pvalue_right, pnode_seen*, z) = ($object_comparison_notice(S, pvalue_left, pvalue_right, z), $value_order(S, pvalue_left, pvalue_right, pnode_seen*)) -- otherwise
 
 dec $comparison_operator(pbin) : bool
