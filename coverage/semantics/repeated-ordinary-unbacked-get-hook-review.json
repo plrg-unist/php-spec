@@ -1,0 +1,339 @@
+{
+  "scope": "Repeated named public plain by-value get declarations without initializer or own-property backing read, at equal normalized TYPE, over a genuine ordinary Root property. First is directly ordinarily backed; Bridge selects First as Second's inherited descriptor; Grand preserves latest declaring/private and called scope.",
+  "implementation": {
+    "files": [
+      "spec/semantics/382-backed-get-hooks.watsup"
+    ],
+    "engine": [
+      "vendor/php-src/Zend/zend_inheritance.c: do_inherit_property, zend_verify_hooked_property"
+    ],
+    "change": "Two existing parent-basis predicates add positive ordinary_backing: decreasing n-1 fuel inside inherited_backing_walk and full class bound in the task-local override pair. Actual own descriptors, SOURCE_PARENT and pure parent layout authenticate the ordinary empty-hook anchor. First retains ordinary_backing=true/inherited_backing=false; Second inherited_backing=true. No new helper, recursion, default, layout, store, task or ownership rule."
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor pin 34308a6666b2d489c509541ea9befea9e2b42348",
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "binaries": {
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "strict_compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+    "AL_compiler_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "SL_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "recorders": {
+    "native_source_sha256": "8b3e20f4694d0ee6480deb79469972d8c58e082e78052c7e09060dffb8ea9b6e",
+    "strict_sha256": "cf45d948eb34d840b7cf99419d28ed16d9eb50d76920fa6ef47fb6c9be7957fa",
+    "protocol_sha256": "350cbbe727b32ba042ef2495756f8194d86353b03cb38f1f48f73f6f121f65b3"
+  },
+  "native": {
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/repeated-ordinary-unbacked-get-hook-probes-51/native-first/report.json",
+    "report_sha256": "6b407820be1f386d58efe144a560d0e767ee285cca1db89beeb56d38b297c77a",
+    "revision": "fb9d482af09e314c7c6f42bdc23c548bcf29c4c8",
+    "process_observations": 2,
+    "exits": [
+      0,
+      0
+    ],
+    "completed": true,
+    "stable_and_reaped": true,
+    "source_agreements": 0,
+    "result": "Typed First/Second/Grand physical slots are uninitialized; untyped slots are null. Latest Second getters return13/0 with Grand called scope independently of stores300/5. Distinct stored S releases after box cleanup while retained fresh R survives until kept is unset.",
+    "anticipation": "Both stdout/stderr anticipations match actual native streams; only actual raw observations ground expectations."
+  },
+  "unchanged_baseline": {
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/repeated-ordinary-unbacked-get-hook-probes-51/accepted-current-baseline/report.json",
+    "report_sha256": "c37682dbe7b8995329bcf03a586156fdc813243b0290bee48b021ee4debec6ac",
+    "revision": "fb9d482af09e314c7c6f42bdc23c548bcf29c4c8",
+    "checked_originals": 2,
+    "source_agreements": 0,
+    "stable_and_reaped": true,
+    "result": "Both genuine checked originals are Unsupported: inherited property hook override; empty modeled streams/events, CLI exit1. Zero agreement credit."
+  },
+  "strict": {
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/repeated-ordinary-unbacked-get-hook-probes-51/repeated-ordinary-unbacked-get-hook-compiler-qzpj0e3w/report.json",
+    "report_sha256": "db3cbf5c70d98a6c1dea9f2bbf801e46808988b36b502ddd64aa042b4d57ab63",
+    "revision": "f56c3ad8e0a9b7d44b36cc5e6acd52f2639d8fdd",
+    "modules": 380,
+    "seconds": 6.003586,
+    "cap_seconds": 60,
+    "result": "PASS exact five-line SL initialization, exit0/empty stderr/stable4/reaped.",
+    "application_evaluations": 0,
+    "source_agreements": 0
+  },
+  "sources": {
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/repeated-ordinary-unbacked-get-hook-probes-51/changed-model-s5sihce0/report.json",
+    "report_sha256": "4a542a80fd135a22eb8b1f32bc6158ba73155eaf9dda981f01417d457c30e2f7",
+    "revision": "f56c3ad8e0a9b7d44b36cc5e6acd52f2639d8fdd",
+    "checked_originals": 2,
+    "source_agreements": 2,
+    "seconds": {
+      "scalar": 43.523062,
+      "lifetime": 24.026693
+    },
+    "stable_and_reaped": true,
+    "result": "Both genuine checked originals complete normally; full stdout/stderr and exits equal actual retained native streams."
+  },
+  "catalogue": {
+    "path": "tests/semantics/repeated_ordinary_unbacked_get_hook_cases.json",
+    "sha256": "180c04aab5b0091e100e2c65e735140a00c15562290e0c3c8b642086cf0ee70d"
+  },
+  "state": {
+    "cuts": [
+      {
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/repeated-ordinary-unbacked-get-hook-protocol-3q_33vds/report.json",
+        "report_sha256": "c348b1c06283bd0dc54ee9fca89b93b6313ebcf9298b57918e75f1a61ec38b51",
+        "revision": "7d89eed2be4a17152405be25adf7818f08f00230",
+        "group": "controls",
+        "fixture_sha256": "b9432db0dddd60937be7161744edfbad84b6a2586970f84f853e8d67f4b01afe",
+        "reached": 25,
+        "derived": 45,
+        "AL_seconds": 5.159092,
+        "SL_seconds": 25.986107,
+        "AL_cap_seconds": 90,
+        "SL_cap_seconds": 90,
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "result": "PASS raw true; stable4, exit0/empty stderr/no timeout, reaped."
+      },
+      {
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/repeated-ordinary-unbacked-get-hook-protocol-7jdnp7m1/report.json",
+        "report_sha256": "7c3a90984462c151110c0a309076a3784caaf94951fa0708d077c296ff7e8ffb",
+        "revision": "bb27b579baa840717a51233c7412106ed4e4da37",
+        "group": "cv_metadata",
+        "fixture_sha256": "4bbbea886d139f3ac4db1f36387ccbe41ef7cc1015078cf29cc563add4a07790",
+        "reached": 42,
+        "derived": 0,
+        "AL_seconds": 5.203155,
+        "SL_seconds": 37.599144,
+        "AL_cap_seconds": 90,
+        "SL_cap_seconds": 90,
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "result": "PASS raw true; stable4, exit0/empty stderr/no timeout, reaped."
+      },
+      {
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/repeated-ordinary-unbacked-get-hook-protocol-bcghx4l2/report.json",
+        "report_sha256": "77f81c7808bcc8e08932e97b246b78328b59daecccf075146573629a8afb73f7",
+        "revision": "bb27b579baa840717a51233c7412106ed4e4da37",
+        "group": "cv",
+        "fixture_sha256": "2ff9c4b682e4ae01d52a1786145b3de741bf75245f911b44f73baef3ba8b8c70",
+        "reached": 48,
+        "derived": 0,
+        "AL_seconds": 5.199713,
+        "SL_seconds": 81.465669,
+        "AL_cap_seconds": 90,
+        "SL_cap_seconds": 90,
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "result": "PASS raw true; stable4, exit0/empty stderr/no timeout, reaped."
+      },
+      {
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/repeated-ordinary-unbacked-get-hook-protocol-mjip39c7/report.json",
+        "report_sha256": "1e652983cb0a36b11bbcbc36ede56f9d5f1d8204b01b1fdefa39c013cb11cc5c",
+        "revision": "aff64adde8dd456e47aa1a8a048179931556df63",
+        "group": "this",
+        "fixture_sha256": "4cda35d263b4a9de40a223267cd6d28bebac1ae0ed49c3642cc0911e5257c72e",
+        "reached": 73,
+        "derived": 0,
+        "AL_seconds": 5.231695,
+        "SL_seconds": 97.431545,
+        "AL_cap_seconds": 90,
+        "SL_cap_seconds": 150,
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "result": "PASS raw true; stable4, exit0/empty stderr/no timeout, reaped."
+      },
+      {
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/repeated-ordinary-unbacked-get-hook-protocol-ww5c74ng/report.json",
+        "report_sha256": "e4ea7d39c075b57686ff6edd68a77a094388fbf5ccab4e2b612cffc3d12c13a8",
+        "revision": "aff64adde8dd456e47aa1a8a048179931556df63",
+        "group": "write",
+        "fixture_sha256": "7ac47330429a5480268994f86dbd4d49e36eb8876be2734fdaae43ac06ae3a8f",
+        "reached": 69,
+        "derived": 0,
+        "AL_seconds": 5.21365,
+        "SL_seconds": 121.788604,
+        "AL_cap_seconds": 90,
+        "SL_cap_seconds": 150,
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "result": "PASS raw true; stable4, exit0/empty stderr/no timeout, reaped."
+      },
+      {
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/repeated-ordinary-unbacked-get-hook-protocol-g5roice_/report.json",
+        "report_sha256": "03508ea8f0021302f0b99731507eaa900b0ce30afc3fb78ee20045571c7cb973",
+        "revision": "0932752fd72d86d37a5e7989eb512f2ee9e7e397",
+        "group": "untyped_metadata",
+        "fixture_sha256": "cd5a2636cea160ca73f9a69752930538a7e4b91a073893039b36555747448686",
+        "reached": 40,
+        "derived": 0,
+        "AL_seconds": 5.22436,
+        "SL_seconds": 52.728419,
+        "AL_cap_seconds": 90,
+        "SL_cap_seconds": 150,
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "result": "PASS raw true; stable4, exit0/empty stderr/no timeout, reaped."
+      },
+      {
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/repeated-ordinary-unbacked-get-hook-protocol-7udmpryx/report.json",
+        "report_sha256": "5b54279292b0539e3888c9696a22e53a38f996d381bbeb26cb01c363e8db3426",
+        "revision": "0932752fd72d86d37a5e7989eb512f2ee9e7e397",
+        "group": "untyped_read",
+        "fixture_sha256": "806c9b5dcdcd1eac35171bac93efdc792f718a4916e442cfc28c9a593cd93fe3",
+        "reached": 50,
+        "derived": 0,
+        "AL_seconds": 5.205467,
+        "SL_seconds": 111.677113,
+        "AL_cap_seconds": 90,
+        "SL_cap_seconds": 150,
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "result": "PASS raw true; stable4, exit0/empty stderr/no timeout, reaped."
+      },
+      {
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/repeated-ordinary-unbacked-get-hook-protocol-qxvh5yi_/report.json",
+        "report_sha256": "7678ef7cb05582a0e705deee8af12231b1d639eb8bf43b6424d4da54f3e258b4",
+        "revision": "0932752fd72d86d37a5e7989eb512f2ee9e7e397",
+        "group": "untyped_write",
+        "fixture_sha256": "f03d42b623d470fc920c830233ece837f5fea7f09a9807e5727a2e872545057f",
+        "reached": 41,
+        "derived": 0,
+        "AL_seconds": 5.200335,
+        "SL_seconds": 112.646803,
+        "AL_cap_seconds": 90,
+        "SL_cap_seconds": 150,
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "result": "PASS raw true; stable4, exit0/empty stderr/no timeout, reaped."
+      },
+      {
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/repeated-ordinary-unbacked-get-hook-protocol-isac0c8x/report.json",
+        "report_sha256": "bea8a1711c2ed38be0a35b55a30c441df9a7b06b8e8c63d7634ee7dd5512c575",
+        "revision": "0932752fd72d86d37a5e7989eb512f2ee9e7e397",
+        "group": "lifetime",
+        "fixture_sha256": "78aa7dbeda97e3bb793b57b4a52a5bc92717b91bf288e1de9a16272a8f10be1e",
+        "reached": 109,
+        "derived": 0,
+        "AL_seconds": 5.256889,
+        "SL_seconds": 62.570325,
+        "AL_cap_seconds": 90,
+        "SL_cap_seconds": 150,
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "result": "PASS raw true; stable4, exit0/empty stderr/no timeout, reaped."
+      }
+    ],
+    "reached_premises": 497,
+    "derived_premises": 45,
+    "total_premises": 542,
+    "application_evaluations": 9,
+    "source_agreements": 0,
+    "counting": "Nine separate selected invocations include repeated setup/metadata; no combined application claim. AL90 for all, SL90 for controls/metadata/CV and SL150 for the affected This/write/untyped/lifetime selections."
+  },
+  "state_contract": [
+    "Actual ordinary Root100, First ordinary backing and Second inherited backing are authenticated across Bridge, with typed PROP_INITIAL and untyped PROP_VALUE(DIRECT PNULL). Source backing and active getter bypass remain false in both getters; physical classification is positive.",
+    "Latest Second lexical/private13 versus Grand called scope and inherited Root caller restoration use genuine call frames/roots. Actual raw stores300/5 update the same physical slots while getters remain13/0; First7/false distinguish earlier dispatch.",
+    "Real lifetime frontiers distinguish stored S from fresh returned R: sole RESULT R1 to BASE R2 to kept R1; inherited raw-array destructor completes before actual Grand storage NEXT0 transfers the S slot. Filtered box UNSET disposes box/S while kept R1 survives; separate kept UNSET yields DR/weak-null. First fresh F is never substituted for latest R.",
+    "Forty-five derived premises discriminate positive ordinary anchor, selected declaring descriptor, equal TYPE, own/source/default/flag, fuel and bounded-cycle guards. Broken Second/Bridge links refuse inherited classification; the task-local pair on already selected descriptors can remain true. Added backing or parent-hook mutations are scoped to the appropriate helper."
+  ],
+  "preserved_failures": [
+    {
+      "report": ".tools/coalesce-get-hooks-private-32/.tools/repeated-ordinary-unbacked-get-hook-protocol-8t5bsdec/report.json",
+      "report_sha256": "e769b08bc687d7891c1d070b4099b71decc49b71e49aa12d2e7d4845690f550d",
+      "revision": "a53476062c6374c742583789016d9d3b737f11de",
+      "fixture_sha256": "f918f4badc0fb742813189d92f35351211a278a1fe8f9517df94352040ab5b79",
+      "result": "CV124 combined reached/derived: AL passed; SL cap with empty output, no semantic false observation. All assertions retained in accepted source-frontier partitions or the affected higher limit.",
+      "AL_seconds": 5.251423,
+      "SL_seconds": 90.043889,
+      "AL_cap_seconds": 90,
+      "SL_cap_seconds": 90,
+      "application_invocations": 1,
+      "application_evaluations": 0,
+      "source_agreements": 0,
+      "credit": 0,
+      "stable_and_reaped": true
+    },
+    {
+      "report": ".tools/coalesce-get-hooks-private-32/.tools/repeated-ordinary-unbacked-get-hook-protocol-tekjtl2x/report.json",
+      "report_sha256": "13be616e9ac4a5a4e0e38bf0cd0c1a4cd16f48314efb86cd78e4bb222f3fb4c0",
+      "revision": "7d89eed2be4a17152405be25adf7818f08f00230",
+      "fixture_sha256": "bd5613a37ea7c09ae48f0219143f7e3cf8f671c9899b99a70853287efabecd90",
+      "result": "CV79 unsplit reached walk: AL passed; SL cap with empty output, no semantic false observation. All assertions retained in accepted source-frontier partitions or the affected higher limit.",
+      "AL_seconds": 5.224479,
+      "SL_seconds": 90.125342,
+      "AL_cap_seconds": 90,
+      "SL_cap_seconds": 90,
+      "application_invocations": 1,
+      "application_evaluations": 0,
+      "source_agreements": 0,
+      "credit": 0,
+      "stable_and_reaped": true
+    },
+    {
+      "report": ".tools/coalesce-get-hooks-private-32/.tools/repeated-ordinary-unbacked-get-hook-protocol-fq4dde5v/report.json",
+      "report_sha256": "cc4db0a0a802642131716cc63140c0f710be442218afc8ce593f1a743148d23d",
+      "revision": "bb27b579baa840717a51233c7412106ed4e4da37",
+      "fixture_sha256": "4cda35d263b4a9de40a223267cd6d28bebac1ae0ed49c3642cc0911e5257c72e",
+      "result": "This73 initial cap: AL passed; SL cap with empty output, no semantic false observation. All assertions retained in accepted source-frontier partitions or the affected higher limit.",
+      "AL_seconds": 5.228637,
+      "SL_seconds": 90.126397,
+      "AL_cap_seconds": 90,
+      "SL_cap_seconds": 90,
+      "application_invocations": 1,
+      "application_evaluations": 0,
+      "source_agreements": 0,
+      "credit": 0,
+      "stable_and_reaped": true
+    },
+    {
+      "report": ".tools/coalesce-get-hooks-private-32/.tools/repeated-ordinary-unbacked-get-hook-protocol-zmrvki1r/report.json",
+      "report_sha256": "f06f59b41d597708ab8400487d290e249ad0afb262a3258760ed8eefa50a63cc",
+      "revision": "aff64adde8dd456e47aa1a8a048179931556df63",
+      "fixture_sha256": "90913a399f2e22ea4cb01874a9b17b8d2650ae2727eb8a9b25f181a4aa7d0f75",
+      "result": "Untyped97 unsplit reached walk: AL passed; SL cap with empty output, no semantic false observation. All assertions retained in accepted source-frontier partitions or the affected higher limit.",
+      "AL_seconds": 5.211695,
+      "SL_seconds": 150.144671,
+      "AL_cap_seconds": 90,
+      "SL_cap_seconds": 150,
+      "application_invocations": 1,
+      "application_evaluations": 0,
+      "source_agreements": 0,
+      "credit": 0,
+      "stable_and_reaped": true
+    }
+  ],
+  "remaining": [
+    "TYPE-presence changes in this ordinary ancestry, unequal TYPE/type equivalence, and plain declarations inheriting parent hooks.",
+    "Set/ref/trait/attributed hooks, wider flags/receivers/operators and hooked iteration; no wider lifecycle or GC closure."
+  ],
+  "commands": {
+    "native": "python3 .tools/repeated-ordinary-unbacked-get-hook-probes-51/run.py native --revision fb9d482af09e314c7c6f42bdc23c548bcf29c4c8",
+    "baseline": "python3 .tools/repeated-ordinary-unbacked-get-hook-probes-51/run.py baseline --revision fb9d482af09e314c7c6f42bdc23c548bcf29c4c8",
+    "strict": "python3 .tools/repeated-ordinary-unbacked-get-hook-probes-51/run-compiler.py fb9d482af09e314c7c6f42bdc23c548bcf29c4c8 f56c3ad8e0a9b7d44b36cc5e6acd52f2639d8fdd",
+    "changed": "python3 .tools/repeated-ordinary-unbacked-get-hook-probes-51/run.py changed --revision f56c3ad8e0a9b7d44b36cc5e6acd52f2639d8fdd",
+    "state": [
+      "python3 tests/semantics/repeated_ordinary_unbacked_get_hook_protocol.py --revision 7d89eed2be4a17152405be25adf7818f08f00230 --group controls",
+      "python3 tests/semantics/repeated_ordinary_unbacked_get_hook_protocol.py --revision bb27b579baa840717a51233c7412106ed4e4da37 --group cv_metadata",
+      "python3 tests/semantics/repeated_ordinary_unbacked_get_hook_protocol.py --revision bb27b579baa840717a51233c7412106ed4e4da37 --group cv",
+      "python3 tests/semantics/repeated_ordinary_unbacked_get_hook_protocol.py --revision aff64adde8dd456e47aa1a8a048179931556df63 --group this",
+      "python3 tests/semantics/repeated_ordinary_unbacked_get_hook_protocol.py --revision aff64adde8dd456e47aa1a8a048179931556df63 --group write",
+      "python3 tests/semantics/repeated_ordinary_unbacked_get_hook_protocol.py --revision 0932752fd72d86d37a5e7989eb512f2ee9e7e397 --group untyped_metadata",
+      "python3 tests/semantics/repeated_ordinary_unbacked_get_hook_protocol.py --revision 0932752fd72d86d37a5e7989eb512f2ee9e7e397 --group untyped_read",
+      "python3 tests/semantics/repeated_ordinary_unbacked_get_hook_protocol.py --revision 0932752fd72d86d37a5e7989eb512f2ee9e7e397 --group untyped_write",
+      "python3 tests/semantics/repeated_ordinary_unbacked_get_hook_protocol.py --revision 0932752fd72d86d37a5e7989eb512f2ee9e7e397 --group lifetime"
+    ]
+  },
+  "recovery": "Historical commands run from retained activeprivate32 with original ignored sources, recorders, raw reports/streams and compiler paths. Permanent catalogue/protocol regenerate each selector. Earlier milestones and already accepted cuts are not renewed."
+}

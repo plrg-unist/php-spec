@@ -1298,6 +1298,19 @@ default/layout/store/task/owner rules and earlier cuts retain their identities.
 Joined exact `3fd8e25a`/380; one count-only current init check passes with no application.
 Private source/state cuts remain retained through neutral shell state and disjoint incoming paths.
 
+Repeated plain by-value getters without initializers or backing reads now retain
+ordinary storage at equal normalized TYPE. Two parent-basis predicates carry the
+authenticated ordinary anchor through the existing bounded hook ancestry walk;
+defaults, layouts, stores and ownership rules remain unchanged. Across Bridge,
+First and Second retain typed uninitialized/untyped null slots; latest private
+getters return 13/0 independently of writes 300/5, with distinct S/R cleanup.
+Strict380/source2 pass at `f56c3ad8`. Nine separate selected state checks pass
+542 premises (497 reached, 45 derived), including repeated setup: controls at
+`7d89eed2`, metadata/CV at `bb27b579`, This/write at `aff64add`, and untyped
+metadata/read/write/lifetime at `0932752f`. Four SL caps retain zero credit;
+authentic frontier partitions keep all assertions, with AL90 and affected SL150.
+[Repeated ordinary-storage review](coverage/semantics/repeated-ordinary-unbacked-get-hook-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization

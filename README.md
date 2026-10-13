@@ -1767,6 +1767,12 @@ start null. Ordinary writes update those slots while getters keep their independ
 results. Two originals and separate read, write, untyped and lifetime checks are
 recorded in the
 [ordinary-storage review](coverage/semantics/ordinary-parent-unbacked-get-hook-review.json).
+Repeated getter declarations now carry this ordinary storage through intervening
+classes. Typed slots start uninitialized and untyped slots null; reads select the
+latest getter and its private scope, while writes update the physical slots.
+Distinct backing and retained result references use the existing cleanup rules.
+Two originals and nine separate state checks are recorded in the
+[repeated ordinary-storage review](coverage/semantics/repeated-ordinary-unbacked-get-hook-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
