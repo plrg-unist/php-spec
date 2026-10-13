@@ -22,6 +22,9 @@ retain zero credit.
 Destructor exits with a pending Throwable, nested destructor exits, owning cleanup,
 unsafe targets and wider callbacks/control remain required; full core stays partial.
 [Callback-destructor exit ledger](coverage/semantics/incdec-callback-destructor-exit-review.json).
+The 388-module join over bbb9c5eab preserves current output, class and cleanup
+state. Current strict and the sole bool/status-17 original pass at 91db163c1;
+private source/state cuts retain their identities.
 
 Deferred named user-class duplicates now drain a retained file fatal with the
 current binding trace. The existing receipt records the real class site/cause/index;
