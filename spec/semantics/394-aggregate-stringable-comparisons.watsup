@@ -5,14 +5,21 @@ syntax paggregatecompare = {SITE porigin, CASTSITE porigin, OP pbin, LINE int, L
 dec $aggregate_node_value(pnode) : pvalue
 dec $aggregate_property_keys(pstate, ppropertydesc*) : ptbytes*
 dec $aggregate_object_keys(pstate, nat) : ptbytes*
+dec $aggregate_kind_pins(paggregatekind) : pnode*
+dec $aggregate_cursor_guard(paggregatecursor) : pcompareguard
+dec $aggregate_table_count(pentry*) : nat
+dec $aggregate_std_stack(paggregatecursor*, nat, nat, nat, nat) : paggregatecursor*
+dec $aggregate_std_order_result(porder, nat, nat, nat, nat) : porder
+dec $aggregate_std_tables(pstate, nat, nat, nat, nat, pcompareguard*, int) : (pstate, porder)
+dec $aggregate_std_effect(pstate, nat, nat, nat, nat, nat, nat, pcompareguard*, int) : (pstate, porder)
 dec $aggregate_cursor_pins(paggregatecursor*) : pnode*
-dec $aggregate_cursor_lefts(paggregatecursor*) : pnode*
+dec $aggregate_cursor_lefts(paggregatecursor*) : pcompareguard*
 dec $aggregate_other_item(paggregatecursor, bool) : pitem
 dec $aggregate_pointer(paggregatecursor, bool) : paggregatepointer
 dec $aggregate_pointer_value(pstate, paggregatepointer) : pvalue?
 dec $aggregate_push(porder, paggregatecursor) : porder
-dec $aggregate_array_continue(pstate, porder, nat, nat, nat, nat, pnode*, int) : (pstate, porder)
-dec $aggregate_property_continue(pstate, porder, nat, nat, nat, pnode*, int) : (pstate, porder)
+dec $aggregate_array_continue(pstate, porder, nat, nat, nat, nat, pcompareguard*, int) : (pstate, porder)
+dec $aggregate_property_continue(pstate, porder, nat, nat, nat, pcompareguard*, int) : (pstate, porder)
 dec $aggregate_cursor_valid(pstate, paggregatecursor) : bool
 dec $aggregate_item_image(pitem, pvalue) : bool
 dec $aggregate_stack_image(pstate, paggregatecursor*, pvalue, pvalue, pvalue, pvalue) : bool
@@ -21,9 +28,9 @@ dec $aggregate_callback_image(paggregatecallback) : bool
 dec $aggregate_compare_valid(pstate, paggregatecompare) : bool
 dec $aggregate_compare_suffix(ptask*, paggregatecompare) : bool
 dec $aggregate_frame_pair(ptask*) : bool
-dec $aggregate_current_seen(pstate) : pnode*
-dec $aggregate_frame_seen(pstate, pcallcontext?, pframe, pframe*) : pnode*
-dec $aggregate_frames_seen(pstate, pcallcontext?, pframe*) : pnode*
+dec $aggregate_current_seen(pstate) : pcompareguard*
+dec $aggregate_frame_seen(pstate, pcallcontext?, pframe, pframe*) : pcompareguard*
+dec $aggregate_frames_seen(pstate, pcallcontext?, pframe*) : pcompareguard*
 dec $aggregate_order_values(pbin, pvalue, pvalue) : (pvalue, pvalue)
 dec $aggregate_leaf_values(paggregatecallback, pvalue, pvalue) : (pvalue, pvalue)
 dec $aggregate_order_cast(porder) : bool
@@ -34,6 +41,166 @@ dec $aggregate_order_finish(pstate, paggregatecompare, porder) : pstate
 dec $aggregate_resume(pstate, porder, paggregatecursor*, int) : (pstate, porder)
 dec $aggregate_resume_join(pstate, porder, paggregatecursor*, int) : (pstate, porder)
 dec $aggregate_compare_return(pstate, paggregatecompare, pvalue, pvalue) : pstate
+
+dec $aggregate_std_kind(paggregatekind) : bool
+dec $aggregate_guards_unique(pcompareguard*) : bool
+dec $aggregate_decl_rows(pstate, nat, ppropertyslot*) : bool
+dec $aggregate_decl_keys(ppropertyslot*) : ptbytes*
+dec $aggregate_decl_image(pstate, nat, ptbytes*) : bool
+dec $aggregate_decl_effect(pstate, nat, nat, ptbytes*, nat, pcompareguard*, int) : (pstate, porder)
+dec $aggregate_decl_continue(pstate, porder, nat, nat, ptbytes*, nat, pcompareguard*, int) : (pstate, porder)
+dec $aggregate_tasks_declared(ptask*, nat) : bool
+dec $aggregate_frames_declared(pstate, pcallcontext?, pframe*, nat) : bool
+dec $aggregate_cursor_declared(paggregatecursor*, nat) : bool
+
+;; A concrete stdClass table is pinned in addition to each enclosing object.
+;; Its captured identity survives COW even when the live object map changes.
+def $aggregate_std_pair(S, n_left, n_right) = true
+  -- if $(n_left < |S.OBJECTS| /\ n_right < |S.OBJECTS|)
+  -- if S.OBJECTS[n_left] = STDINSTANCE
+  -- if S.OBJECTS[n_right] = STDINSTANCE
+  -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
+def $aggregate_std_pair(S, n_left, n_right) = false -- otherwise
+def $aggregate_std_same_table(S, n_left, n_right) = true
+  -- if $aggregate_std_pair(S, n_left, n_right)
+  -- if $object_table_at(S.OBJECTTABLES, n_left) = (n_table)
+  -- if $object_table_at(S.OBJECTTABLES, n_right) = (n_table)
+def $aggregate_std_same_table(S, n_left, n_right) = false -- otherwise
+def $aggregate_object_guard(S, n_left, n_right) = HARRAY n_table
+  -- if $aggregate_std_pair(S, n_left, n_right)
+  -- if $object_table_at(S.OBJECTTABLES, n_left) = (n_table)
+def $aggregate_object_guard(S, n_left, n_right) = DECLARED_TABLE n_left
+  -- if S.OBJECTS[n_left] = INSTANCE porigin
+  -- if S.OBJECTS[n_right] = INSTANCE porigin
+  -- if $objectprops_materialized(S.OBJECTPROPS, n_left) \/ $objectprops_materialized(S.OBJECTPROPS, n_right)
+def $aggregate_object_guard(S, n_left, n_right) = HOBJECT n_left -- otherwise
+def $aggregate_std_kind(AGGREGATE_STD_HASH n_left n_right) = true
+def $aggregate_std_kind(paggregatekind) = false -- otherwise
+def $aggregate_guards_unique(eps) = true
+def $aggregate_guards_unique(pcompareguard :: pcompareguard_tail*) = (~(pcompareguard <- pcompareguard_tail*) /\ $aggregate_guards_unique(pcompareguard_tail*))
+def $aggregate_table_count(eps) = 0
+def $aggregate_table_count((ENTRY pkey UNINITIALIZED) :: pentry_tail*) = $aggregate_table_count(pentry_tail*)
+def $aggregate_table_count((ENTRY pkey pitem) :: pentry_tail*) = $(1 + $aggregate_table_count(pentry_tail*)) -- if pitem =/= UNINITIALIZED
+
+;; The last cursor belongs to this table; any reached inner cursors stay first.
+def $aggregate_std_stack([paggregatecursor], n_left, n_right, n_tableleft, n_tableright) = [paggregatecursor[.KIND = AGGREGATE_STD_HASH n_tableleft n_tableright][.LEFT = HOBJECT n_left][.RIGHT = HOBJECT n_right]]
+def $aggregate_std_stack(paggregatecursor :: paggregatecursor_tail*, n_left, n_right, n_tableleft, n_tableright) = paggregatecursor :: $aggregate_std_stack(paggregatecursor_tail*, n_left, n_right, n_tableleft, n_tableright)
+  -- if paggregatecursor_tail* =/= eps
+def $aggregate_std_order_result(ORDERSTRING paggregatecallback, n_left, n_right, n_tableleft, n_tableright) = ORDERSTRING paggregatecallback[.STACK = $aggregate_std_stack(paggregatecallback.STACK, n_left, n_right, n_tableleft, n_tableright)]
+def $aggregate_std_order_result(porder, n_left, n_right, n_tableleft, n_tableright) = porder -- otherwise
+def $aggregate_std_effect(S, n_left, n_right, n_tableleft, n_tableright, n_index, n_width, pcompareguard_seen*, z) = (S_next, $aggregate_std_order_result(porder, n_left, n_right, n_tableleft, n_tableright))
+  -- if (S_next, porder) = $aggregate_array_effect(S, n_tableleft, n_tableright, n_index, n_width, pcompareguard_seen*, z)
+def $aggregate_std_tables(S, n_left, n_right, n_table, n_table, pcompareguard_seen*, z) = (S, ORDER 0)
+def $aggregate_std_tables(S, n_left, n_right, n_tableleft, n_tableright, pcompareguard_seen*, z) = (S, ORDERRECURSIVE)
+  -- if n_tableleft =/= n_tableright
+  -- if (HARRAY n_tableleft) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S))
+def $aggregate_std_tables(S, n_left, n_right, n_tableleft, n_tableright, pcompareguard_seen*, z) = (S, ORDER $compare_int($aggregate_table_count(S.ARRAYS[n_tableleft].ITEMS), $aggregate_table_count(S.ARRAYS[n_tableright].ITEMS)))
+  -- if n_tableleft =/= n_tableright
+  -- if ~((HARRAY n_tableleft) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S)))
+  -- if $aggregate_table_count(S.ARRAYS[n_tableleft].ITEMS) =/= $aggregate_table_count(S.ARRAYS[n_tableright].ITEMS)
+def $aggregate_std_tables(S, n_left, n_right, n_tableleft, n_tableright, pcompareguard_seen*, z) = $aggregate_std_effect(S, n_left, n_right, n_tableleft, n_tableright, 0, |S.ARRAYS[n_tableleft].ITEMS|, (HARRAY n_tableleft) :: pcompareguard_seen*, z)
+  -- if n_tableleft =/= n_tableright
+  -- if ~((HARRAY n_tableleft) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S)))
+  -- if $aggregate_table_count(S.ARRAYS[n_tableleft].ITEMS) = $aggregate_table_count(S.ARRAYS[n_tableright].ITEMS)
+def $aggregate_std_order(S, n_left, n_right, pcompareguard_seen*, z) = $aggregate_std_tables(S_tables, n_left, n_right, n_tableleft, n_tableright, pcompareguard_seen*, z)
+  -- if S_tables = $object_table_materialize($object_table_materialize(S, n_left), n_right)
+  -- if $object_table_at(S_tables.OBJECTTABLES, n_left) = (n_tableleft)
+  -- if $object_table_at(S_tables.OBJECTTABLES, n_right) = (n_tableright)
+
+;; A declared-only hash contains indirect pointers to initialized public slots.
+;; Key order is captured, while selected and future slot values remain live.
+def $aggregate_decl_rows(S, n, eps) = true
+def $aggregate_decl_rows(S, n, ppropertyslot :: ppropertyslot_tail*) = ($aggregate_decl_rows(S, n, ppropertyslot_tail*))
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if ppropertyslot.DECL = (ppropertyid)
+  -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ppropertyslot.NAME) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertyid
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if ppropertydesc.KEY = ppropertyslot.NAME
+  -- if ~$property_hook_declared(S, n, ppropertyslot.NAME)
+  -- if ppropertyslot.STATE = PROP_VALUE pitem
+  -- if pitem =/= UNINITIALIZED
+def $aggregate_decl_rows(S, n, ppropertyslot*) = false -- otherwise
+def $aggregate_decl_keys(eps) = eps
+def $aggregate_decl_keys(ppropertyslot :: ppropertyslot_tail*) = ppropertyslot.NAME :: $aggregate_decl_keys(ppropertyslot_tail*)
+def $aggregate_decl_image(S, n, ptbytes*) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if ~$property_hook_instance(S, n)
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_rows*)
+  -- if $aggregate_decl_rows(S, n, ppropertyslot_rows*)
+  -- if ptbytes* = $aggregate_decl_keys(ppropertyslot_rows*)
+def $aggregate_decl_image(S, n, ptbytes*) = false -- otherwise
+def $aggregate_decl_pair(S, n_left, n_right) = true
+  -- if $(n_left < |S.OBJECTS| /\ n_right < |S.OBJECTS|)
+  -- if S.OBJECTS[n_left] = INSTANCE porigin
+  -- if S.OBJECTS[n_right] = INSTANCE porigin
+  -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
+  -- if $objectprops_materialized(S.OBJECTPROPS, n_left) \/ $objectprops_materialized(S.OBJECTPROPS, n_right)
+  -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left_rows*)
+  -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right_rows*)
+  -- if $aggregate_decl_image(S, n_left, $aggregate_decl_keys(ppropertyslot_left_rows*))
+  -- if $aggregate_decl_image(S, n_right, $aggregate_decl_keys(ppropertyslot_right_rows*))
+def $aggregate_decl_pair(S, n_left, n_right) = false -- otherwise
+def $aggregate_decl_order(S, n_left, n_right, pcompareguard_seen*, z) = (S, ORDERRECURSIVE)
+  -- if (DECLARED_TABLE n_left) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S))
+def $aggregate_decl_order(S, n_left, n_right, pcompareguard_seen*, z) = $aggregate_decl_effect($objectprops_mark($objectprops_mark(S, n_left), n_right), n_left, n_right, $aggregate_decl_keys(ppropertyslot_rows*), 0, (DECLARED_TABLE n_left) :: pcompareguard_seen*, z)
+  -- if ~((DECLARED_TABLE n_left) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S)))
+  -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_rows*)
+def $aggregate_decl_effect(S, n_left, n_right, ptbytes*, n_index, pcompareguard_seen*, z) = (S, ORDER 0)
+  -- if n_index = |ptbytes*|
+def $aggregate_decl_effect(S, n_left, n_right, ptbytes*, n_index, pcompareguard_seen*, z) = $aggregate_decl_continue(S_next, $aggregate_push(porder, paggregatecursor), n_left, n_right, ptbytes*, $(n_index + 1), pcompareguard_seen*, z)
+  -- if $(n_index < |ptbytes*|)
+  -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left_rows*)
+  -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right_rows*)
+  -- if $property_slot_at(ppropertyslot_left_rows*, ptbytes*[n_index]) = (ppropertyslot_left)
+  -- if $property_slot_at(ppropertyslot_right_rows*, ptbytes*[n_index]) = (ppropertyslot_right)
+  -- if ppropertyslot_left.STATE = PROP_VALUE pitem_left
+  -- if ppropertyslot_right.STATE = PROP_VALUE pitem_right
+  -- if pvalue_left = $entry_value(S, pitem_left)
+  -- if pvalue_right = $entry_value(S, pitem_right)
+  -- if (S_next, porder) = $value_order_effect(S, pvalue_left, pvalue_right, pcompareguard_seen*, z)
+  -- if n_next = $(n_index + 1)
+  -- if n_width = |ptbytes*|
+  -- if pkey = KSTRING ptbytes*[n_index]
+  -- if paggregatecursor = {KIND AGGREGATE_DECL_HASH ptbytes*, LEFT HOBJECT n_left, RIGHT HOBJECT n_right, INDEX n_next, WIDTH n_width, KEY pkey, LEFTITEM pitem_left, RIGHTITEM pitem_right, LEFTVALUE pvalue_left, RIGHTVALUE pvalue_right}
+def $aggregate_decl_effect(S, n_left, n_right, ptbytes*, n_index, pcompareguard_seen*, z) = (S, ORDERUNSUPPORTED "declared property-table comparison shape change") -- otherwise
+def $aggregate_decl_continue(S, ORDER 0, n_left, n_right, ptbytes*, n_index, pcompareguard_seen*, z) = $aggregate_decl_effect(S, n_left, n_right, ptbytes*, n_index, pcompareguard_seen*, z)
+def $aggregate_decl_continue(S, porder, n_left, n_right, ptbytes*, n_index, pcompareguard_seen*, z) = (S, porder) -- otherwise
+
+;; Comparison images add no value roots. Membership mutation cannot detach an
+;; abstract declared table; that boundary is explicit rather than reclassified.
+def $aggregate_cursor_declared(eps, n) = false
+def $aggregate_cursor_declared(paggregatecursor :: paggregatecursor_tail*, n) = true
+  -- if paggregatecursor.KIND = AGGREGATE_DECL_HASH ptbytes*
+  -- if paggregatecursor.LEFT = HOBJECT n \/ paggregatecursor.RIGHT = HOBJECT n
+def $aggregate_cursor_declared(paggregatecursor :: paggregatecursor_tail*, n) = $aggregate_cursor_declared(paggregatecursor_tail*, n) -- otherwise
+def $aggregate_tasks_declared((CALL_ARGS pcalltarget phpType7* n_index poperand* porigin? z) :: (STRINGIFY_RESULT n_receiver porigin_site z_line) :: (AGGREGATE_COMPARE_RESULT paggregatecompare) :: ptask_tail*, n) = $aggregate_cursor_declared(paggregatecompare.CAST.STACK, n)
+def $aggregate_tasks_declared((STRINGIFY_RESULT n_receiver porigin_site z_line) :: (AGGREGATE_COMPARE_RESULT paggregatecompare) :: ptask_tail*, n) = $aggregate_cursor_declared(paggregatecompare.CAST.STACK, n)
+def $aggregate_tasks_declared((AGGREGATE_COMPARE_RESULT paggregatecompare) :: ptask_tail*, n) = $aggregate_cursor_declared(paggregatecompare.CAST.STACK, n)
+def $aggregate_tasks_declared(ptask*, n) = false -- otherwise
+def $aggregate_frames_declared(S, pcallcontext?, eps, n) = false
+def $aggregate_frames_declared(S, pcallcontext?, pframe :: pframe_tail*, n) = true
+  -- if $aggregate_frame_seen(S, pcallcontext?, pframe, pframe_tail*) =/= eps
+  -- if $aggregate_tasks_declared(pframe.TODO, n)
+def $aggregate_frames_declared(S, pcallcontext?, pframe :: pframe_tail*, n) = $aggregate_frames_declared(S, pframe.CONTEXT, pframe_tail*, n) -- otherwise
+def $aggregate_decl_retained(S, n) = true
+  -- if $aggregate_current_seen(S) =/= eps
+  -- if $aggregate_tasks_declared(S.TODO, n)
+def $aggregate_decl_retained(S, n) = $aggregate_frames_declared(S, S.CURRENT, S.FRAMES, n) -- otherwise
+def $aggregate_projection_plain(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if ~$objectprops_materialized(S.OBJECTPROPS, n)
+  -- if ~$property_hook_instance(S, n)
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_rows*)
+  -- if $property_unique_names(ppropertyslot_rows*)
+def $aggregate_projection_plain(S, n) = false -- otherwise
+def $aggregate_projection_blocked(S, n) = true
+  -- if (HOBJECT n) <- $aggregate_compare_seen(S)
+  -- if $aggregate_projection_plain(S, n)
+def $aggregate_projection_blocked(S, n) = false -- otherwise
 
 def $aggregate_node_value(HARRAY n) = PARRAY n
 def $aggregate_node_value(HOBJECT n) = POBJECT n
@@ -46,10 +213,17 @@ def $aggregate_property_keys(S, ppropertydesc :: ppropertydesc_tail*) = ppropert
 def $aggregate_object_keys(S, n) = $aggregate_property_keys(S, $property_layout(S, porigin, |S.CLASSES|))
   -- if S.OBJECTS[n] = INSTANCE porigin
 def $aggregate_object_keys(S, n) = eps -- otherwise
+def $aggregate_kind_pins(AGGREGATE_STD_HASH n_left n_right) = [HARRAY n_left, HARRAY n_right]
+def $aggregate_kind_pins(paggregatekind) = eps -- otherwise
+def $aggregate_cursor_guard(paggregatecursor) = HARRAY n_left -- if paggregatecursor.KIND = AGGREGATE_STD_HASH n_left n_right
+def $aggregate_cursor_guard(paggregatecursor) = DECLARED_TABLE n
+  -- if paggregatecursor.KIND = AGGREGATE_DECL_HASH ptbytes*
+  -- if paggregatecursor.LEFT = HOBJECT n
+def $aggregate_cursor_guard(paggregatecursor) = paggregatecursor.LEFT -- otherwise
 def $aggregate_cursor_pins(eps) = eps
-def $aggregate_cursor_pins(paggregatecursor :: paggregatecursor_tail*) = [paggregatecursor.LEFT, paggregatecursor.RIGHT] ++ $aggregate_cursor_pins(paggregatecursor_tail*)
+def $aggregate_cursor_pins(paggregatecursor :: paggregatecursor_tail*) = [paggregatecursor.LEFT, paggregatecursor.RIGHT] ++ $aggregate_kind_pins(paggregatecursor.KIND) ++ $aggregate_cursor_pins(paggregatecursor_tail*)
 def $aggregate_cursor_lefts(eps) = eps
-def $aggregate_cursor_lefts(paggregatecursor :: paggregatecursor_tail*) = paggregatecursor.LEFT :: $aggregate_cursor_lefts(paggregatecursor_tail*)
+def $aggregate_cursor_lefts(paggregatecursor :: paggregatecursor_tail*) = $aggregate_cursor_guard(paggregatecursor) :: $aggregate_cursor_lefts(paggregatecursor_tail*)
 
 ;; A reference is unwrapped before the caster; a direct item retains its slot.
 def $aggregate_other_item(paggregatecursor, true) = paggregatecursor.RIGHTITEM
@@ -62,13 +236,21 @@ def $aggregate_pointer(paggregatecursor, true) = AGGREGATE_ARRAY n paggregatecur
 def $aggregate_pointer(paggregatecursor, false) = AGGREGATE_ARRAY n paggregatecursor.KEY
   -- if paggregatecursor.LEFTITEM = DIRECT pvalue
   -- if paggregatecursor.LEFT = HARRAY n
+def $aggregate_pointer(paggregatecursor, true) = AGGREGATE_ARRAY n_right paggregatecursor.KEY
+  -- if paggregatecursor.KIND = AGGREGATE_STD_HASH n_left n_right
+  -- if paggregatecursor.RIGHTITEM = DIRECT pvalue
+def $aggregate_pointer(paggregatecursor, false) = AGGREGATE_ARRAY n_left paggregatecursor.KEY
+  -- if paggregatecursor.KIND = AGGREGATE_STD_HASH n_left n_right
+  -- if paggregatecursor.LEFTITEM = DIRECT pvalue
 def $aggregate_pointer(paggregatecursor, true) = AGGREGATE_PROPERTY n ptbytes
   -- if paggregatecursor.RIGHTITEM = DIRECT pvalue
   -- if paggregatecursor.RIGHT = HOBJECT n
+  -- if ~$aggregate_std_kind(paggregatecursor.KIND)
   -- if paggregatecursor.KEY = KSTRING ptbytes
 def $aggregate_pointer(paggregatecursor, false) = AGGREGATE_PROPERTY n ptbytes
   -- if paggregatecursor.LEFTITEM = DIRECT pvalue
   -- if paggregatecursor.LEFT = HOBJECT n
+  -- if ~$aggregate_std_kind(paggregatecursor.KIND)
   -- if paggregatecursor.KEY = KSTRING ptbytes
 def $aggregate_pointer_value(S, AGGREGATE_CELL n) = $string_compare_pointer_value(S, COMPARE_CELL n)
 def $aggregate_pointer_value(S, AGGREGATE_ARRAY n pkey) = ($entry_value(S, pitem))
@@ -95,17 +277,17 @@ def $comparison_result(S, pbin, ORDERSTRING paggregatecallback, z) = S[.COMPLETI
 
 ;; Counts were checked on entry. Pinned arrays retain their identities; keys
 ;; and embedded reference cells are read in order, never searched for casters.
-def $aggregate_array_effect(S, n_left, n_right, n_index, n_width, pnode_seen*, z) = (S, ORDER 0)
+def $aggregate_array_effect(S, n_left, n_right, n_index, n_width, pcompareguard_seen*, z) = (S, ORDER 0)
   -- if n_index = n_width
-def $aggregate_array_effect(S, n_left, n_right, n_index, n_width, pnode_seen*, z) = $aggregate_array_effect(S, n_left, n_right, $(n_index + 1), n_width, pnode_seen*, z)
+def $aggregate_array_effect(S, n_left, n_right, n_index, n_width, pcompareguard_seen*, z) = $aggregate_array_effect(S, n_left, n_right, $(n_index + 1), n_width, pcompareguard_seen*, z)
   -- if $(n_index < n_width)
   -- if S.ARRAYS[n_left].ITEMS[n_index] = ENTRY pkey UNINITIALIZED
-def $aggregate_array_effect(S, n_left, n_right, n_index, n_width, pnode_seen*, z) = (S, ORDER 1)
+def $aggregate_array_effect(S, n_left, n_right, n_index, n_width, pcompareguard_seen*, z) = (S, ORDER 1)
   -- if $(n_index < n_width)
   -- if S.ARRAYS[n_left].ITEMS[n_index] = ENTRY pkey pitem
   -- if pitem =/= UNINITIALIZED
   -- if $entry_lookup(S.ARRAYS[n_right].ITEMS, pkey) = eps \/ $entry_lookup(S.ARRAYS[n_right].ITEMS, pkey) = (UNINITIALIZED)
-def $aggregate_array_effect(S, n_left, n_right, n_index, n_width, pnode_seen*, z) = $aggregate_array_continue(S_next, $aggregate_push(porder, paggregatecursor), n_left, n_right, $(n_index + 1), n_width, pnode_seen*, z)
+def $aggregate_array_effect(S, n_left, n_right, n_index, n_width, pcompareguard_seen*, z) = $aggregate_array_continue(S_next, $aggregate_push(porder, paggregatecursor), n_left, n_right, $(n_index + 1), n_width, pcompareguard_seen*, z)
   -- if $(n_index < n_width)
   -- if S.ARRAYS[n_left].ITEMS[n_index] = ENTRY pkey pitem_left
   -- if pitem_left =/= UNINITIALIZED
@@ -113,17 +295,17 @@ def $aggregate_array_effect(S, n_left, n_right, n_index, n_width, pnode_seen*, z
   -- if pitem_right =/= UNINITIALIZED
   -- if pvalue_left = $entry_value(S, pitem_left)
   -- if pvalue_right = $entry_value(S, pitem_right)
-  -- if (S_next, porder) = $value_order_effect(S, pvalue_left, pvalue_right, pnode_seen*, z)
+  -- if (S_next, porder) = $value_order_effect(S, pvalue_left, pvalue_right, pcompareguard_seen*, z)
   -- if n_next = $(n_index + 1)
-  -- if paggregatecursor = {LEFT HARRAY n_left, RIGHT HARRAY n_right, INDEX n_next, WIDTH n_width, KEY pkey, LEFTITEM pitem_left, RIGHTITEM pitem_right, LEFTVALUE pvalue_left, RIGHTVALUE pvalue_right}
-def $aggregate_array_continue(S, ORDER 0, n_left, n_right, n_index, n_width, pnode_seen*, z) = $aggregate_array_effect(S, n_left, n_right, n_index, n_width, pnode_seen*, z)
-def $aggregate_array_continue(S, porder, n_left, n_right, n_index, n_width, pnode_seen*, z) = (S, porder) -- otherwise
+  -- if paggregatecursor = {KIND AGGREGATE_PLAIN, LEFT HARRAY n_left, RIGHT HARRAY n_right, INDEX n_next, WIDTH n_width, KEY pkey, LEFTITEM pitem_left, RIGHTITEM pitem_right, LEFTVALUE pvalue_left, RIGHTVALUE pvalue_right}
+def $aggregate_array_continue(S, ORDER 0, n_left, n_right, n_index, n_width, pcompareguard_seen*, z) = $aggregate_array_effect(S, n_left, n_right, n_index, n_width, pcompareguard_seen*, z)
+def $aggregate_array_continue(S, porder, n_left, n_right, n_index, n_width, pcompareguard_seen*, z) = (S, porder) -- otherwise
 
 ;; The direct object path follows backed declaration slots, even if a callback
 ;; later materializes a property table. Getters are not invoked by this walk.
-def $aggregate_property_effect(S, n_left, n_right, n_index, pnode_seen*, z) = (S, ORDER 0)
+def $aggregate_property_effect(S, n_left, n_right, n_index, pcompareguard_seen*, z) = (S, ORDER 0)
   -- if n_index = |$aggregate_object_keys(S, n_left)|
-def $aggregate_property_effect(S, n_left, n_right, n_index, pnode_seen*, z) = $aggregate_property_effect(S, n_left, n_right, $(n_index + 1), pnode_seen*, z)
+def $aggregate_property_effect(S, n_left, n_right, n_index, pcompareguard_seen*, z) = $aggregate_property_effect(S, n_left, n_right, $(n_index + 1), pcompareguard_seen*, z)
   -- if ptbytes* = $aggregate_object_keys(S, n_left)
   -- if $(n_index < |ptbytes*|)
   -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_rowsleft*)
@@ -132,7 +314,7 @@ def $aggregate_property_effect(S, n_left, n_right, n_index, pnode_seen*, z) = $a
   -- if $property_slot_at(ppropertyslot_rowsright*, ptbytes*[n_index]) = (ppropertyslot_right)
   -- if ppropertyslot_left.STATE = PROP_INITIAL \/ ppropertyslot_left.STATE = PROP_UNSET
   -- if ppropertyslot_right.STATE = PROP_INITIAL \/ ppropertyslot_right.STATE = PROP_UNSET
-def $aggregate_property_effect(S, n_left, n_right, n_index, pnode_seen*, z) = $aggregate_property_continue(S_next, $aggregate_push(porder, paggregatecursor), n_left, n_right, $(n_index + 1), pnode_seen*, z)
+def $aggregate_property_effect(S, n_left, n_right, n_index, pcompareguard_seen*, z) = $aggregate_property_continue(S_next, $aggregate_push(porder, paggregatecursor), n_left, n_right, $(n_index + 1), pcompareguard_seen*, z)
   -- if ptbytes* = $aggregate_object_keys(S, n_left)
   -- if $(n_index < |ptbytes*|)
   -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_rowsleft*)
@@ -143,20 +325,21 @@ def $aggregate_property_effect(S, n_left, n_right, n_index, pnode_seen*, z) = $a
   -- if ppropertyslot_right.STATE = PROP_VALUE pitem_right
   -- if pvalue_left = $entry_value(S, pitem_left)
   -- if pvalue_right = $entry_value(S, pitem_right)
-  -- if (S_next, porder) = $value_order_effect(S, pvalue_left, pvalue_right, pnode_seen*, z)
+  -- if (S_next, porder) = $value_order_effect(S, pvalue_left, pvalue_right, pcompareguard_seen*, z)
   -- if n_next = $(n_index + 1)
   -- if n_width = |ptbytes*|
   -- if pkey = KSTRING ptbytes*[n_index]
-  -- if paggregatecursor = {LEFT HOBJECT n_left, RIGHT HOBJECT n_right, INDEX n_next, WIDTH n_width, KEY pkey, LEFTITEM pitem_left, RIGHTITEM pitem_right, LEFTVALUE pvalue_left, RIGHTVALUE pvalue_right}
-def $aggregate_property_effect(S, n_left, n_right, n_index, pnode_seen*, z) = (S, ORDER 1) -- otherwise
-def $aggregate_property_continue(S, ORDER 0, n_left, n_right, n_index, pnode_seen*, z) = $aggregate_property_effect(S, n_left, n_right, n_index, pnode_seen*, z)
-def $aggregate_property_continue(S, porder, n_left, n_right, n_index, pnode_seen*, z) = (S, porder) -- otherwise
+  -- if paggregatecursor = {KIND AGGREGATE_PLAIN, LEFT HOBJECT n_left, RIGHT HOBJECT n_right, INDEX n_next, WIDTH n_width, KEY pkey, LEFTITEM pitem_left, RIGHTITEM pitem_right, LEFTVALUE pvalue_left, RIGHTVALUE pvalue_right}
+def $aggregate_property_effect(S, n_left, n_right, n_index, pcompareguard_seen*, z) = (S, ORDER 1) -- otherwise
+def $aggregate_property_continue(S, ORDER 0, n_left, n_right, n_index, pcompareguard_seen*, z) = $aggregate_property_effect(S, n_left, n_right, n_index, pcompareguard_seen*, z)
+def $aggregate_property_continue(S, porder, n_left, n_right, n_index, pcompareguard_seen*, z) = (S, porder) -- otherwise
 
 ;; Cursor images certify their internal selection, not an immutable history.
 def $aggregate_item_image(DIRECT pvalue, pvalue) = true
 def $aggregate_item_image(ALIAS n, pvalue) = true
 def $aggregate_item_image(pitem, pvalue) = false -- otherwise
 def $aggregate_cursor_valid(S, paggregatecursor) = true
+  -- if paggregatecursor.KIND = AGGREGATE_PLAIN
   -- if paggregatecursor.LEFT = HARRAY n_left
   -- if paggregatecursor.RIGHT = HARRAY n_right
   -- if n_left =/= n_right
@@ -169,6 +352,7 @@ def $aggregate_cursor_valid(S, paggregatecursor) = true
   -- if $aggregate_item_image(paggregatecursor.LEFTITEM, paggregatecursor.LEFTVALUE)
   -- if $aggregate_item_image(paggregatecursor.RIGHTITEM, paggregatecursor.RIGHTVALUE)
 def $aggregate_cursor_valid(S, paggregatecursor) = true
+  -- if paggregatecursor.KIND = AGGREGATE_PLAIN
   -- if paggregatecursor.LEFT = HOBJECT n_left
   -- if paggregatecursor.RIGHT = HOBJECT n_right
   -- if n_left =/= n_right
@@ -177,6 +361,31 @@ def $aggregate_cursor_valid(S, paggregatecursor) = true
   -- if S.OBJECTS[n_left] = INSTANCE porigin
   -- if S.OBJECTS[n_right] = INSTANCE porigin
   -- if ptbytes* = $aggregate_object_keys(S, n_left)
+  -- if paggregatecursor.WIDTH = |ptbytes*|
+  -- if $(paggregatecursor.INDEX > 0 /\ paggregatecursor.INDEX <= paggregatecursor.WIDTH)
+  -- if n_previous = $nabs($(paggregatecursor.INDEX - 1))
+  -- if paggregatecursor.KEY = KSTRING ptbytes*[n_previous]
+  -- if $aggregate_item_image(paggregatecursor.LEFTITEM, paggregatecursor.LEFTVALUE)
+  -- if $aggregate_item_image(paggregatecursor.RIGHTITEM, paggregatecursor.RIGHTVALUE)
+def $aggregate_cursor_valid(S, paggregatecursor) = true
+  -- if paggregatecursor.KIND = AGGREGATE_STD_HASH n_tableleft n_tableright
+  -- if paggregatecursor.LEFT = HOBJECT n_left
+  -- if paggregatecursor.RIGHT = HOBJECT n_right
+  -- if n_left =/= n_right
+  -- if $(n_left < |S.OBJECTS| /\ n_right < |S.OBJECTS|)
+  -- if S.OBJECTS[n_left] = STDINSTANCE
+  -- if S.OBJECTS[n_right] = STDINSTANCE
+  -- if $aggregate_cursor_valid(S, paggregatecursor[.KIND = AGGREGATE_PLAIN][.LEFT = HARRAY n_tableleft][.RIGHT = HARRAY n_tableright])
+  -- if $heap_subset([HOBJECT n_left, HOBJECT n_right], S.ALLOCATIONS)
+def $aggregate_cursor_valid(S, paggregatecursor) = true
+  -- if paggregatecursor.KIND = AGGREGATE_DECL_HASH ptbytes*
+  -- if paggregatecursor.LEFT = HOBJECT n_left
+  -- if paggregatecursor.RIGHT = HOBJECT n_right
+  -- if n_left =/= n_right
+  -- if $aggregate_decl_image(S, n_left, ptbytes*)
+  -- if $aggregate_decl_image(S, n_right, ptbytes*)
+  -- if S.OBJECTS[n_left] = INSTANCE porigin
+  -- if S.OBJECTS[n_right] = INSTANCE porigin
   -- if paggregatecursor.WIDTH = |ptbytes*|
   -- if $(paggregatecursor.INDEX > 0 /\ paggregatecursor.INDEX <= paggregatecursor.WIDTH)
   -- if n_previous = $nabs($(paggregatecursor.INDEX - 1))
@@ -228,7 +437,7 @@ def $aggregate_compare_valid(S, paggregatecompare) = true
   -- if $(paggregatecallback.RECEIVER < |S.OBJECTS|)
   -- if $aggregate_stack_image(S, paggregatecallback.STACK, paggregatecallback.LEFT, paggregatecallback.RIGHT, paggregatecompare.ROOTLEFT, paggregatecompare.ROOTRIGHT)
   -- if paggregatecallback.POINTER = ($aggregate_pointer(paggregatecursor, paggregatecallback.OBJECTLEFT))
-  -- if $heap_unique($aggregate_cursor_lefts(paggregatecallback.STACK))
+  -- if $aggregate_guards_unique($aggregate_cursor_lefts(paggregatecallback.STACK))
   -- if $heap_subset($operand_nodes(paggregatecompare.LEFT) ++ $operand_nodes(paggregatecompare.RIGHT) ++ $base_nodes(paggregatecompare.INPUTBASE), S.ALLOCATIONS)
 def $aggregate_compare_valid(S, paggregatecompare) = false -- otherwise
 def $aggregate_compare_suffix((AGGREGATE_COMPARE_RESULT paggregatecompare) :: ptask_tail*, paggregatecompare) = (ptask_tail* = paggregatecompare.TAIL)
@@ -339,15 +548,29 @@ def $aggregate_order_finish(S, paggregatecompare, ORDER i) = S[.TODO = (SWITCH_S
 def $aggregate_order_finish(S, paggregatecompare, porder) = $comparison_result(S[.TODO = eps][.ORIGIN = (paggregatecompare.SITE)], EQUAL, porder, paggregatecompare.LINE) -- otherwise
 def $aggregate_resume(S, porder, eps, z) = (S, porder)
 def $aggregate_resume(S, ORDER 0, paggregatecursor :: paggregatecursor_tail*, z) = $aggregate_resume_join(S_next, porder, paggregatecursor_tail*, z)
+  -- if paggregatecursor.KIND = AGGREGATE_PLAIN
   -- if paggregatecursor.LEFT = HARRAY n_left
   -- if paggregatecursor.RIGHT = HARRAY n_right
-  -- if pnode_seen* = $aggregate_cursor_lefts(paggregatecursor :: paggregatecursor_tail*)
-  -- if (S_next, porder) = $aggregate_array_effect(S, n_left, n_right, paggregatecursor.INDEX, paggregatecursor.WIDTH, pnode_seen*, z)
+  -- if pcompareguard_seen* = $aggregate_cursor_lefts(paggregatecursor :: paggregatecursor_tail*)
+  -- if (S_next, porder) = $aggregate_array_effect(S, n_left, n_right, paggregatecursor.INDEX, paggregatecursor.WIDTH, pcompareguard_seen*, z)
 def $aggregate_resume(S, ORDER 0, paggregatecursor :: paggregatecursor_tail*, z) = $aggregate_resume_join(S_next, porder, paggregatecursor_tail*, z)
+  -- if paggregatecursor.KIND = AGGREGATE_PLAIN
   -- if paggregatecursor.LEFT = HOBJECT n_left
   -- if paggregatecursor.RIGHT = HOBJECT n_right
-  -- if pnode_seen* = $aggregate_cursor_lefts(paggregatecursor :: paggregatecursor_tail*)
-  -- if (S_next, porder) = $aggregate_property_effect(S, n_left, n_right, paggregatecursor.INDEX, pnode_seen*, z)
+  -- if pcompareguard_seen* = $aggregate_cursor_lefts(paggregatecursor :: paggregatecursor_tail*)
+  -- if (S_next, porder) = $aggregate_property_effect(S, n_left, n_right, paggregatecursor.INDEX, pcompareguard_seen*, z)
+def $aggregate_resume(S, ORDER 0, paggregatecursor :: paggregatecursor_tail*, z) = $aggregate_resume_join(S_next, porder, paggregatecursor_tail*, z)
+  -- if paggregatecursor.KIND = AGGREGATE_STD_HASH n_tableleft n_tableright
+  -- if paggregatecursor.LEFT = HOBJECT n_left
+  -- if paggregatecursor.RIGHT = HOBJECT n_right
+  -- if pcompareguard_seen* = $aggregate_cursor_lefts(paggregatecursor :: paggregatecursor_tail*)
+  -- if (S_next, porder) = $aggregate_std_effect(S, n_left, n_right, n_tableleft, n_tableright, paggregatecursor.INDEX, paggregatecursor.WIDTH, pcompareguard_seen*, z)
+def $aggregate_resume(S, ORDER 0, paggregatecursor :: paggregatecursor_tail*, z) = $aggregate_resume_join(S_next, porder, paggregatecursor_tail*, z)
+  -- if paggregatecursor.KIND = AGGREGATE_DECL_HASH ptbytes*
+  -- if paggregatecursor.LEFT = HOBJECT n_left
+  -- if paggregatecursor.RIGHT = HOBJECT n_right
+  -- if pcompareguard_seen* = $aggregate_cursor_lefts(paggregatecursor :: paggregatecursor_tail*)
+  -- if (S_next, porder) = $aggregate_decl_effect(S, n_left, n_right, ptbytes*, paggregatecursor.INDEX, pcompareguard_seen*, z)
 def $aggregate_resume(S, porder, paggregatecursor*, z) = (S, porder) -- otherwise
 def $aggregate_resume_join(S, ORDERSTRING paggregatecallback, paggregatecursor*, z) = (S, ORDERSTRING paggregatecallback[.STACK = paggregatecallback.STACK ++ paggregatecursor*])
 def $aggregate_resume_join(S, porder, paggregatecursor*, z) = $aggregate_resume(S, porder, paggregatecursor*, z) -- otherwise

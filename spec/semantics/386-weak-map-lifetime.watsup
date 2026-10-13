@@ -461,7 +461,7 @@ def $cast_value(S, CASTARRAY, POBJECT n, z) = S[.COMPLETION = UNSUPPORTED "WeakM
 def $object_foreach_reset(S, n) = S[.COMPLETION = UNSUPPORTED "WeakMap iteration protocol"] -- if $weakmap_at(S, n)
 def $property_unset_key_unshared(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "WeakMap property unset protocol"] -- if $weakmap_at(S, n)
 def $property_quiet_key(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "WeakMap quiet property protocol"] -- if $weakmap_at(S, n)
-def $value_order(S, POBJECT n_left, POBJECT n_right, pnode_seen*) = ORDERUNSUPPORTED "WeakMap comparison protocol"
+def $value_order(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*) = ORDERUNSUPPORTED "WeakMap comparison protocol"
   -- if n_left =/= n_right
   -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if $weakmap_at(S, n_left) \/ $weakmap_at(S, n_right)

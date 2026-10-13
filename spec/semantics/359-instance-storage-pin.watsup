@@ -384,10 +384,10 @@ def $object_foreach_reset(S, n) = S[.COMPLETION = UNSUPPORTED "freeing instance 
 def $object_foreach_select(S, n) = S[.COMPLETION = UNSUPPORTED "freeing instance foreach"] -- if $instance_storage_freeing(S, n)
 def $weakref_create(S, n_target) = S[.COMPLETION = UNSUPPORTED "freeing instance new weak reference"]
   -- if $instance_storage_freeing(S, n_target) /\ ~$weakmap_storage_create(S, n_target)
-def $value_order(S, POBJECT n_left, POBJECT n_right, pnode_seen*) = ORDERUNSUPPORTED "freeing instance structural comparison"
+def $value_order(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*) = ORDERUNSUPPORTED "freeing instance structural comparison"
   -- if n_left =/= n_right
   -- if $instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right)
-def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pnode_seen*, z) = (S, ORDERUNSUPPORTED "freeing instance structural comparison")
+def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = (S, ORDERUNSUPPORTED "freeing instance structural comparison")
   -- if n_left =/= n_right
   -- if $instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right)
 def $comparison_result(S, pbin, ORDERUNSUPPORTED text, z) = S[.COMPLETION = UNSUPPORTED text]

@@ -1,13 +1,21 @@
 ;; Six-value comparison. Sources: zend_operators.c:2260-2468,
 ;; 3421-3498 and zend_hash.c:3104-3236. Callback/object comparisons are separate.
+syntax pcompareguard = pnode | DECLARED_TABLE nat
 syntax paggregatepointer = AGGREGATE_ARRAY nat pkey | AGGREGATE_PROPERTY nat ptbytes | AGGREGATE_CELL nat
-syntax paggregatecursor = {LEFT pnode, RIGHT pnode, INDEX nat, WIDTH nat, KEY pkey, LEFTITEM pitem, RIGHTITEM pitem, LEFTVALUE pvalue, RIGHTVALUE pvalue}
+syntax paggregatekind = AGGREGATE_PLAIN | AGGREGATE_STD_HASH nat nat | AGGREGATE_DECL_HASH ptbytes*
+syntax paggregatecursor = {KIND paggregatekind, LEFT pnode, RIGHT pnode, INDEX nat, WIDTH nat, KEY pkey, LEFTITEM pitem, RIGHTITEM pitem, LEFTVALUE pvalue, RIGHTVALUE pvalue}
 syntax paggregatecallback = {LEFT pvalue, RIGHT pvalue, RECEIVER nat, OBJECTLEFT bool, POINTER paggregatepointer?, STACK paggregatecursor*}
 syntax porder = ORDER int | ORDERRECURSIVE | ORDERUNSUPPORTED text | ORDERSTRING paggregatecallback
-dec $aggregate_compare_seen(pstate) : pnode*
-dec $aggregate_array_effect(pstate, nat, nat, nat, nat, pnode*, int) : (pstate, porder)
-dec $aggregate_property_effect(pstate, nat, nat, nat, pnode*, int) : (pstate, porder)
+dec $aggregate_compare_seen(pstate) : pcompareguard*
+dec $aggregate_array_effect(pstate, nat, nat, nat, nat, pcompareguard*, int) : (pstate, porder)
+dec $aggregate_property_effect(pstate, nat, nat, nat, pcompareguard*, int) : (pstate, porder)
 dec $aggregate_materialized_order(porder) : porder
+dec $aggregate_std_pair(pstate, nat, nat) : bool
+dec $aggregate_std_order(pstate, nat, nat, pcompareguard*, int) : (pstate, porder)
+dec $aggregate_decl_pair(pstate, nat, nat) : bool
+dec $aggregate_decl_order(pstate, nat, nat, pcompareguard*, int) : (pstate, porder)
+dec $aggregate_object_guard(pstate, nat, nat) : pcompareguard
+dec $aggregate_std_same_table(pstate, nat, nat) : bool
 dec $string_compare_selection(pstate, pvalue, pvalue) : (nat, bool)?
 
 ;; The scanner overflows after twenty significant integer-prefix digits, before
@@ -123,6 +131,9 @@ dec $empty_instance_same(pstate, nat, nat) : bool
 def $empty_instance_same(S, n_left, n_right) = true
   -- if S.OBJECTS[n_left] = INSTANCE porigin
   -- if S.OBJECTS[n_right] = INSTANCE porigin
+def $empty_instance_same(S, n_left, n_right) = true
+  -- if S.OBJECTS[n_left] = STDINSTANCE
+  -- if S.OBJECTS[n_right] = STDINSTANCE
 def $empty_instance_same(S, n_left, n_right) = false -- otherwise
 def $scalar_plain_order(S, POBJECT n, POBJECT n) = 0
 def $scalar_plain_order(S, POBJECT n_left, POBJECT n_right) = 0
@@ -140,143 +151,149 @@ def $scalar_plain_order(S, PSTRING n_bytes*, POBJECT n) = $(-1)
 def $scalar_plain_order(S, POBJECT n_object, PARRAY n_array) = 1
 def $scalar_plain_order(S, PARRAY n_array, POBJECT n_object) = $(-1)
 
-dec $value_order(pstate, pvalue, pvalue, pnode*) : porder
-dec $entries_order(pstate, pentry*, pentry*, pnode*) : porder
-dec $property_order(pstate, ppropertyslot*, ppropertyslot*, pnode*) : porder
-def $property_order(S, eps, eps, pnode_seen*) = ORDER 0
-def $property_order(S, (ppropertyslot_left :: ppropertyslot_tail_left*), (ppropertyslot_right :: ppropertyslot_tail_right*), pnode_seen*) = $property_order(S, ppropertyslot_tail_left*, ppropertyslot_tail_right*, pnode_seen*)
+dec $value_order(pstate, pvalue, pvalue, pcompareguard*) : porder
+dec $entries_order(pstate, pentry*, pentry*, pcompareguard*) : porder
+dec $property_order(pstate, ppropertyslot*, ppropertyslot*, pcompareguard*) : porder
+def $property_order(S, eps, eps, pcompareguard_seen*) = ORDER 0
+def $property_order(S, (ppropertyslot_left :: ppropertyslot_tail_left*), (ppropertyslot_right :: ppropertyslot_tail_right*), pcompareguard_seen*) = $property_order(S, ppropertyslot_tail_left*, ppropertyslot_tail_right*, pcompareguard_seen*)
   -- if ppropertyslot_left.STATE = PROP_INITIAL \/ ppropertyslot_left.STATE = PROP_UNSET
   -- if ppropertyslot_right.STATE = PROP_INITIAL \/ ppropertyslot_right.STATE = PROP_UNSET
-def $property_order(S, (ppropertyslot_left :: ppropertyslot_tail_left*), (ppropertyslot_right :: ppropertyslot_tail_right*), pnode_seen*) = ORDER 1
+def $property_order(S, (ppropertyslot_left :: ppropertyslot_tail_left*), (ppropertyslot_right :: ppropertyslot_tail_right*), pcompareguard_seen*) = ORDER 1
   -- if ppropertyslot_left.STATE = PROP_VALUE pitem
   -- if ppropertyslot_right.STATE = PROP_INITIAL \/ ppropertyslot_right.STATE = PROP_UNSET
-def $property_order(S, (ppropertyslot_left :: ppropertyslot_tail_left*), (ppropertyslot_right :: ppropertyslot_tail_right*), pnode_seen*) = ORDER 1
+def $property_order(S, (ppropertyslot_left :: ppropertyslot_tail_left*), (ppropertyslot_right :: ppropertyslot_tail_right*), pcompareguard_seen*) = ORDER 1
   -- if ppropertyslot_left.STATE = PROP_INITIAL \/ ppropertyslot_left.STATE = PROP_UNSET
   -- if ppropertyslot_right.STATE = PROP_VALUE pitem
-def $property_order(S, (ppropertyslot_left :: ppropertyslot_tail_left*), (ppropertyslot_right :: ppropertyslot_tail_right*), pnode_seen*) = $property_order(S, ppropertyslot_tail_left*, ppropertyslot_tail_right*, pnode_seen*)
+def $property_order(S, (ppropertyslot_left :: ppropertyslot_tail_left*), (ppropertyslot_right :: ppropertyslot_tail_right*), pcompareguard_seen*) = $property_order(S, ppropertyslot_tail_left*, ppropertyslot_tail_right*, pcompareguard_seen*)
   -- if ppropertyslot_left.STATE = PROP_VALUE pitem_left
   -- if ppropertyslot_right.STATE = PROP_VALUE pitem_right
-  -- if $value_order(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), pnode_seen*) = ORDER 0
-def $property_order(S, (ppropertyslot_left :: ppropertyslot_tail_left*), (ppropertyslot_right :: ppropertyslot_tail_right*), pnode_seen*) = porder
+  -- if $value_order(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), pcompareguard_seen*) = ORDER 0
+def $property_order(S, (ppropertyslot_left :: ppropertyslot_tail_left*), (ppropertyslot_right :: ppropertyslot_tail_right*), pcompareguard_seen*) = porder
   -- if ppropertyslot_left.STATE = PROP_VALUE pitem_left
   -- if ppropertyslot_right.STATE = PROP_VALUE pitem_right
-  -- if $value_order(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), pnode_seen*) = porder
+  -- if $value_order(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), pcompareguard_seen*) = porder
   -- if porder =/= ORDER 0
-def $property_order(S, ppropertyslot_left*, ppropertyslot_right*, pnode_seen*) = ORDER 1 -- otherwise
-dec $property_hash_order(pstate, ppropertyslot*, ppropertyslot*, pnode*) : porder
-def $property_hash_order(S, eps, ppropertyslot_right*, pnode_seen*) = ORDER 0
-def $property_hash_order(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pnode_seen*) = $property_hash_order(S, ppropertyslot_tail*, ppropertyslot_right*, pnode_seen*)
+def $property_order(S, ppropertyslot_left*, ppropertyslot_right*, pcompareguard_seen*) = ORDER 1 -- otherwise
+dec $property_hash_order(pstate, ppropertyslot*, ppropertyslot*, pcompareguard*) : porder
+def $property_hash_order(S, eps, ppropertyslot_right*, pcompareguard_seen*) = ORDER 0
+def $property_hash_order(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pcompareguard_seen*) = $property_hash_order(S, ppropertyslot_tail*, ppropertyslot_right*, pcompareguard_seen*)
   -- if ppropertyslot_left.STATE = PROP_VALUE UNINITIALIZED
-def $property_hash_order(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pnode_seen*) = $property_hash_order(S, ppropertyslot_tail*, ppropertyslot_right*, pnode_seen*)
+def $property_hash_order(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pcompareguard_seen*) = $property_hash_order(S, ppropertyslot_tail*, ppropertyslot_right*, pcompareguard_seen*)
   -- if ppropertyslot_left.DECL = eps
   -- if ppropertyslot_left.STATE = PROP_UNSET
-def $property_hash_order(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pnode_seen*) = ORDER 1
+def $property_hash_order(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pcompareguard_seen*) = ORDER 1
   -- if ppropertyslot_left.STATE =/= PROP_VALUE UNINITIALIZED
   -- if $property_slot_at(ppropertyslot_right*, ppropertyslot_left.NAME) = eps
-def $property_hash_order(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pnode_seen*) = $property_hash_order(S, ppropertyslot_tail*, ppropertyslot_right*, pnode_seen*)
+def $property_hash_order(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pcompareguard_seen*) = $property_hash_order(S, ppropertyslot_tail*, ppropertyslot_right*, pcompareguard_seen*)
   -- if $property_slot_at(ppropertyslot_right*, ppropertyslot_left.NAME) = (ppropertyslot_found)
   -- if ppropertyslot_left.STATE = PROP_INITIAL \/ ppropertyslot_left.STATE = PROP_UNSET
   -- if ppropertyslot_found.STATE = PROP_INITIAL \/ ppropertyslot_found.STATE = PROP_UNSET
-def $property_hash_order(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pnode_seen*) = ORDER $(-1)
+def $property_hash_order(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pcompareguard_seen*) = ORDER $(-1)
   -- if $property_slot_at(ppropertyslot_right*, ppropertyslot_left.NAME) = (ppropertyslot_found)
   -- if ppropertyslot_left.STATE = PROP_INITIAL \/ ppropertyslot_left.STATE = PROP_UNSET
   -- if ppropertyslot_found.STATE = PROP_VALUE pitem
-def $property_hash_order(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pnode_seen*) = ORDER 1
+def $property_hash_order(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pcompareguard_seen*) = ORDER 1
   -- if $property_slot_at(ppropertyslot_right*, ppropertyslot_left.NAME) = (ppropertyslot_found)
   -- if ppropertyslot_left.STATE = PROP_VALUE pitem
   -- if pitem =/= UNINITIALIZED
   -- if ppropertyslot_found.STATE = PROP_INITIAL \/ ppropertyslot_found.STATE = PROP_UNSET
-def $property_hash_order(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pnode_seen*) = ORDER 1
+def $property_hash_order(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pcompareguard_seen*) = ORDER 1
   -- if $property_slot_at(ppropertyslot_right*, ppropertyslot_left.NAME) = (ppropertyslot_found)
   -- if ppropertyslot_left.STATE = PROP_VALUE pitem
   -- if pitem =/= UNINITIALIZED
   -- if ppropertyslot_found.STATE = PROP_VALUE UNINITIALIZED
-def $property_hash_order(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pnode_seen*) = $property_hash_order(S, ppropertyslot_tail*, ppropertyslot_right*, pnode_seen*)
+def $property_hash_order(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pcompareguard_seen*) = $property_hash_order(S, ppropertyslot_tail*, ppropertyslot_right*, pcompareguard_seen*)
   -- if $property_slot_at(ppropertyslot_right*, ppropertyslot_left.NAME) = (ppropertyslot_found)
   -- if ppropertyslot_left.STATE = PROP_VALUE pitem_left
   -- if ppropertyslot_found.STATE = PROP_VALUE pitem_right
   -- if pitem_left =/= UNINITIALIZED
   -- if pitem_right =/= UNINITIALIZED
-  -- if $value_order(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), pnode_seen*) = ORDER 0
-def $property_hash_order(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pnode_seen*) = porder
+  -- if $value_order(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), pcompareguard_seen*) = ORDER 0
+def $property_hash_order(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pcompareguard_seen*) = porder
   -- if $property_slot_at(ppropertyslot_right*, ppropertyslot_left.NAME) = (ppropertyslot_found)
   -- if ppropertyslot_left.STATE = PROP_VALUE pitem_left
   -- if ppropertyslot_found.STATE = PROP_VALUE pitem_right
   -- if pitem_left =/= UNINITIALIZED
   -- if pitem_right =/= UNINITIALIZED
-  -- if $value_order(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), pnode_seen*) = porder
+  -- if $value_order(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), pcompareguard_seen*) = porder
   -- if porder =/= ORDER 0
-def $entries_order(S, eps, pentry_right*, pnode_seen*) = ORDER 0
-def $entries_order(S, (ENTRY pkey UNINITIALIZED) :: pentry_left*, pentry_right*, pnode_seen*) = $entries_order(S, pentry_left*, pentry_right*, pnode_seen*)
-def $entries_order(S, (ENTRY pkey pitem_left) :: pentry_left*, pentry_right*, pnode_seen*) = ORDER 1
+def $entries_order(S, eps, pentry_right*, pcompareguard_seen*) = ORDER 0
+def $entries_order(S, (ENTRY pkey UNINITIALIZED) :: pentry_left*, pentry_right*, pcompareguard_seen*) = $entries_order(S, pentry_left*, pentry_right*, pcompareguard_seen*)
+def $entries_order(S, (ENTRY pkey pitem_left) :: pentry_left*, pentry_right*, pcompareguard_seen*) = ORDER 1
   -- if pitem_left =/= UNINITIALIZED
   -- if $entry_lookup(pentry_right*, pkey) = eps
-def $entries_order(S, (ENTRY pkey pitem_left) :: pentry_left*, pentry_right*, pnode_seen*) = ORDER 1
+def $entries_order(S, (ENTRY pkey pitem_left) :: pentry_left*, pentry_right*, pcompareguard_seen*) = ORDER 1
   -- if pitem_left =/= UNINITIALIZED
   -- if $entry_lookup(pentry_right*, pkey) = (UNINITIALIZED)
-def $entries_order(S, (ENTRY pkey pitem_left) :: pentry_left*, pentry_right*, pnode_seen*) = $entries_order(S, pentry_left*, pentry_right*, pnode_seen*)
+def $entries_order(S, (ENTRY pkey pitem_left) :: pentry_left*, pentry_right*, pcompareguard_seen*) = $entries_order(S, pentry_left*, pentry_right*, pcompareguard_seen*)
   -- if pitem_left =/= UNINITIALIZED
   -- if $entry_lookup(pentry_right*, pkey) = (pitem_right)
   -- if pitem_right =/= UNINITIALIZED
-  -- if $value_order(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), pnode_seen*) = ORDER 0
-def $entries_order(S, (ENTRY pkey pitem_left) :: pentry_left*, pentry_right*, pnode_seen*) = ORDER i
+  -- if $value_order(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), pcompareguard_seen*) = ORDER 0
+def $entries_order(S, (ENTRY pkey pitem_left) :: pentry_left*, pentry_right*, pcompareguard_seen*) = ORDER i
   -- if pitem_left =/= UNINITIALIZED
   -- if $entry_lookup(pentry_right*, pkey) = (pitem_right)
   -- if pitem_right =/= UNINITIALIZED
-  -- if $value_order(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), pnode_seen*) = ORDER i
+  -- if $value_order(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), pcompareguard_seen*) = ORDER i
   -- if i =/= 0
-def $entries_order(S, (ENTRY pkey pitem_left) :: pentry_left*, pentry_right*, pnode_seen*) = ORDERRECURSIVE
+def $entries_order(S, (ENTRY pkey pitem_left) :: pentry_left*, pentry_right*, pcompareguard_seen*) = ORDERRECURSIVE
   -- if pitem_left =/= UNINITIALIZED
   -- if $entry_lookup(pentry_right*, pkey) = (pitem_right)
   -- if pitem_right =/= UNINITIALIZED
-  -- if $value_order(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), pnode_seen*) = ORDERRECURSIVE
+  -- if $value_order(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), pcompareguard_seen*) = ORDERRECURSIVE
 
-def $value_order(S, PARRAY n, PARRAY n, pnode_seen*) = ORDER 0
-def $value_order(S, PARRAY n_left, PARRAY n_right, pnode_seen*) = ORDERRECURSIVE
+def $value_order(S, PARRAY n, PARRAY n, pcompareguard_seen*) = ORDER 0
+def $value_order(S, PARRAY n_left, PARRAY n_right, pcompareguard_seen*) = ORDERRECURSIVE
   -- if n_left =/= n_right
-  -- if (HARRAY n_left) <- (pnode_seen* ++ $aggregate_compare_seen(S))
-def $value_order(S, PARRAY n_left, PARRAY n_right, pnode_seen*) = ORDER $compare_int(|S.ARRAYS[n_left].ITEMS|, |S.ARRAYS[n_right].ITEMS|)
+  -- if (HARRAY n_left) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S))
+def $value_order(S, PARRAY n_left, PARRAY n_right, pcompareguard_seen*) = ORDER $compare_int(|S.ARRAYS[n_left].ITEMS|, |S.ARRAYS[n_right].ITEMS|)
   -- if n_left =/= n_right
-  -- if ~((HARRAY n_left) <- (pnode_seen* ++ $aggregate_compare_seen(S)))
+  -- if ~((HARRAY n_left) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S)))
   -- if |S.ARRAYS[n_left].ITEMS| =/= |S.ARRAYS[n_right].ITEMS|
-def $value_order(S, PARRAY n_left, PARRAY n_right, pnode_seen*) = $entries_order(S, S.ARRAYS[n_left].ITEMS, S.ARRAYS[n_right].ITEMS, (HARRAY n_left) :: pnode_seen*)
+def $value_order(S, PARRAY n_left, PARRAY n_right, pcompareguard_seen*) = $entries_order(S, S.ARRAYS[n_left].ITEMS, S.ARRAYS[n_right].ITEMS, (HARRAY n_left) :: pcompareguard_seen*)
   -- if n_left =/= n_right
-  -- if ~((HARRAY n_left) <- (pnode_seen* ++ $aggregate_compare_seen(S)))
+  -- if ~((HARRAY n_left) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S)))
   -- if |S.ARRAYS[n_left].ITEMS| = |S.ARRAYS[n_right].ITEMS|
-def $value_order(S, POBJECT n, POBJECT n, pnode_seen*) = ORDER 0
-def $value_order(S, POBJECT n_left, POBJECT n_right, pnode_seen*) = ORDERRECURSIVE
+def $value_order(S, POBJECT n, POBJECT n, pcompareguard_seen*) = ORDER 0
+def $value_order(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*) = ORDER 0
+  -- if $aggregate_std_same_table(S, n_left, n_right)
+def $value_order(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*) = ORDERRECURSIVE
   -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if n_left =/= n_right
+  -- if ~$aggregate_std_same_table(S, n_left, n_right)
   -- if $empty_instance_same(S, n_left, n_right)
-  -- if (HOBJECT n_left) <- (pnode_seen* ++ $aggregate_compare_seen(S))
-def $value_order(S, POBJECT n_left, POBJECT n_right, pnode_seen*) = $property_order(S, ppropertyslot_left*, ppropertyslot_right*, (HOBJECT n_left) :: pnode_seen*)
+  -- if ($aggregate_object_guard(S, n_left, n_right)) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S))
+def $value_order(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*) = $property_order(S, ppropertyslot_left*, ppropertyslot_right*, ($aggregate_object_guard(S, n_left, n_right)) :: pcompareguard_seen*)
   -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if n_left =/= n_right
+  -- if ~$aggregate_std_same_table(S, n_left, n_right)
   -- if $empty_instance_same(S, n_left, n_right)
-  -- if ~((HOBJECT n_left) <- (pnode_seen* ++ $aggregate_compare_seen(S)))
+  -- if ~(($aggregate_object_guard(S, n_left, n_right)) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S)))
   -- if ~$objectprops_materialized(S.OBJECTPROPS, n_left)
   -- if ~$objectprops_materialized(S.OBJECTPROPS, n_right)
   -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left*)
   -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
-def $value_order(S, POBJECT n_left, POBJECT n_right, pnode_seen*) = ORDER $compare_int($property_hash_count(ppropertyslot_left*), $property_hash_count(ppropertyslot_right*))
+def $value_order(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*) = ORDER $compare_int($property_hash_count(ppropertyslot_left*), $property_hash_count(ppropertyslot_right*))
   -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if n_left =/= n_right
+  -- if ~$aggregate_std_same_table(S, n_left, n_right)
   -- if $empty_instance_same(S, n_left, n_right)
-  -- if ~((HOBJECT n_left) <- (pnode_seen* ++ $aggregate_compare_seen(S)))
+  -- if ~(($aggregate_object_guard(S, n_left, n_right)) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S)))
   -- if $objectprops_materialized(S.OBJECTPROPS, n_left) \/ $objectprops_materialized(S.OBJECTPROPS, n_right)
   -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left*)
   -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
   -- if $property_hash_count(ppropertyslot_left*) =/= $property_hash_count(ppropertyslot_right*)
-def $value_order(S, POBJECT n_left, POBJECT n_right, pnode_seen*) = $property_hash_order(S, ppropertyslot_left*, ppropertyslot_right*, (HOBJECT n_left) :: pnode_seen*)
+def $value_order(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*) = $property_hash_order(S, ppropertyslot_left*, ppropertyslot_right*, ($aggregate_object_guard(S, n_left, n_right)) :: pcompareguard_seen*)
   -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if n_left =/= n_right
+  -- if ~$aggregate_std_same_table(S, n_left, n_right)
   -- if $empty_instance_same(S, n_left, n_right)
-  -- if ~((HOBJECT n_left) <- (pnode_seen* ++ $aggregate_compare_seen(S)))
+  -- if ~(($aggregate_object_guard(S, n_left, n_right)) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S)))
   -- if $objectprops_materialized(S.OBJECTPROPS, n_left) \/ $objectprops_materialized(S.OBJECTPROPS, n_right)
   -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left*)
   -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
   -- if $property_hash_count(ppropertyslot_left*) = $property_hash_count(ppropertyslot_right*)
-def $value_order(S, pvalue_left, pvalue_right, pnode_seen*) = ORDER $scalar_order(S, pvalue_left, pvalue_right) -- otherwise
+def $value_order(S, pvalue_left, pvalue_right, pcompareguard_seen*) = ORDER $scalar_order(S, pvalue_left, pvalue_right) -- otherwise
 
 dec $object_comparison_notice(pstate, pvalue, pvalue, int) : pstate
 def $object_comparison_notice(S, POBJECT n, PINT i, z) = $diagnostic(S, "Notice", $ptascii("Object of class ") ++ $object_name(S, n) ++ $ptascii(" could not be converted to int"), z)
@@ -285,87 +302,99 @@ def $object_comparison_notice(S, POBJECT n_object, PFLOAT n, z) = $diagnostic(S,
 def $object_comparison_notice(S, PFLOAT n, POBJECT n_object, z) = $diagnostic(S, "Notice", $ptascii("Object of class ") ++ $object_name(S, n_object) ++ $ptascii(" could not be converted to float"), z)
 def $object_comparison_notice(S, pvalue_left, pvalue_right, z) = S -- otherwise
 
-dec $value_order_effect(pstate, pvalue, pvalue, pnode*, int) : (pstate, porder)
-dec $property_hash_order_effect(pstate, ppropertyslot*, ppropertyslot*, pnode*, int) : (pstate, porder)
-def $property_hash_order_effect(S, eps, ppropertyslot_right*, pnode_seen*, z) = (S, ORDER 0)
-def $property_hash_order_effect(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pnode_seen*, z) = $property_hash_order_effect(S, ppropertyslot_tail*, ppropertyslot_right*, pnode_seen*, z)
+dec $value_order_effect(pstate, pvalue, pvalue, pcompareguard*, int) : (pstate, porder)
+dec $property_hash_order_effect(pstate, ppropertyslot*, ppropertyslot*, pcompareguard*, int) : (pstate, porder)
+def $property_hash_order_effect(S, eps, ppropertyslot_right*, pcompareguard_seen*, z) = (S, ORDER 0)
+def $property_hash_order_effect(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pcompareguard_seen*, z) = $property_hash_order_effect(S, ppropertyslot_tail*, ppropertyslot_right*, pcompareguard_seen*, z)
   -- if ppropertyslot_left.STATE = PROP_VALUE UNINITIALIZED
-def $property_hash_order_effect(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pnode_seen*, z) = $property_hash_order_effect(S, ppropertyslot_tail*, ppropertyslot_right*, pnode_seen*, z)
+def $property_hash_order_effect(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pcompareguard_seen*, z) = $property_hash_order_effect(S, ppropertyslot_tail*, ppropertyslot_right*, pcompareguard_seen*, z)
   -- if ppropertyslot_left.DECL = eps
   -- if ppropertyslot_left.STATE = PROP_UNSET
-def $property_hash_order_effect(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pnode_seen*, z) = (S, ORDER 1)
+def $property_hash_order_effect(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pcompareguard_seen*, z) = (S, ORDER 1)
   -- if ppropertyslot_left.STATE =/= PROP_VALUE UNINITIALIZED
   -- if $property_slot_at(ppropertyslot_right*, ppropertyslot_left.NAME) = eps
-def $property_hash_order_effect(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pnode_seen*, z) = $property_hash_order_effect(S, ppropertyslot_tail*, ppropertyslot_right*, pnode_seen*, z)
+def $property_hash_order_effect(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pcompareguard_seen*, z) = $property_hash_order_effect(S, ppropertyslot_tail*, ppropertyslot_right*, pcompareguard_seen*, z)
   -- if $property_slot_at(ppropertyslot_right*, ppropertyslot_left.NAME) = (ppropertyslot_found)
   -- if ppropertyslot_left.STATE = PROP_INITIAL \/ ppropertyslot_left.STATE = PROP_UNSET
   -- if ppropertyslot_found.STATE = PROP_INITIAL \/ ppropertyslot_found.STATE = PROP_UNSET
-def $property_hash_order_effect(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pnode_seen*, z) = (S, ORDER $(-1))
+def $property_hash_order_effect(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pcompareguard_seen*, z) = (S, ORDER $(-1))
   -- if $property_slot_at(ppropertyslot_right*, ppropertyslot_left.NAME) = (ppropertyslot_found)
   -- if ppropertyslot_left.STATE = PROP_INITIAL \/ ppropertyslot_left.STATE = PROP_UNSET
   -- if ppropertyslot_found.STATE = PROP_VALUE pitem
-def $property_hash_order_effect(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pnode_seen*, z) = (S, ORDER 1)
+def $property_hash_order_effect(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pcompareguard_seen*, z) = (S, ORDER 1)
   -- if $property_slot_at(ppropertyslot_right*, ppropertyslot_left.NAME) = (ppropertyslot_found)
   -- if ppropertyslot_left.STATE = PROP_VALUE pitem
   -- if pitem =/= UNINITIALIZED
   -- if ppropertyslot_found.STATE = PROP_INITIAL \/ ppropertyslot_found.STATE = PROP_UNSET
-def $property_hash_order_effect(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pnode_seen*, z) = (S, ORDER 1)
+def $property_hash_order_effect(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pcompareguard_seen*, z) = (S, ORDER 1)
   -- if $property_slot_at(ppropertyslot_right*, ppropertyslot_left.NAME) = (ppropertyslot_found)
   -- if ppropertyslot_left.STATE = PROP_VALUE pitem
   -- if pitem =/= UNINITIALIZED
   -- if ppropertyslot_found.STATE = PROP_VALUE UNINITIALIZED
-def $property_hash_order_effect(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pnode_seen*, z) = $property_hash_order_effect(S_next, ppropertyslot_tail*, ppropertyslot_right*, pnode_seen*, z)
+def $property_hash_order_effect(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pcompareguard_seen*, z) = $property_hash_order_effect(S_next, ppropertyslot_tail*, ppropertyslot_right*, pcompareguard_seen*, z)
   -- if $property_slot_at(ppropertyslot_right*, ppropertyslot_left.NAME) = (ppropertyslot_found)
   -- if ppropertyslot_left.STATE = PROP_VALUE pitem_left
   -- if ppropertyslot_found.STATE = PROP_VALUE pitem_right
   -- if pitem_left =/= UNINITIALIZED
   -- if pitem_right =/= UNINITIALIZED
-  -- if (S_next, ORDER 0) = $value_order_effect(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), pnode_seen*, z)
-def $property_hash_order_effect(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pnode_seen*, z) = (S_next, $aggregate_materialized_order(porder))
+  -- if (S_next, ORDER 0) = $value_order_effect(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), pcompareguard_seen*, z)
+def $property_hash_order_effect(S, ppropertyslot_left :: ppropertyslot_tail*, ppropertyslot_right*, pcompareguard_seen*, z) = (S_next, $aggregate_materialized_order(porder))
   -- if $property_slot_at(ppropertyslot_right*, ppropertyslot_left.NAME) = (ppropertyslot_found)
   -- if ppropertyslot_left.STATE = PROP_VALUE pitem_left
   -- if ppropertyslot_found.STATE = PROP_VALUE pitem_right
   -- if pitem_left =/= UNINITIALIZED
   -- if pitem_right =/= UNINITIALIZED
-  -- if (S_next, porder) = $value_order_effect(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), pnode_seen*, z)
+  -- if (S_next, porder) = $value_order_effect(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), pcompareguard_seen*, z)
   -- if porder =/= ORDER 0
-def $value_order_effect(S, PARRAY n_left, PARRAY n_right, pnode_seen*, z) = $aggregate_array_effect(S, n_left, n_right, 0, |S.ARRAYS[n_left].ITEMS|, (HARRAY n_left) :: pnode_seen*, z)
+def $value_order_effect(S, PARRAY n_left, PARRAY n_right, pcompareguard_seen*, z) = $aggregate_array_effect(S, n_left, n_right, 0, |S.ARRAYS[n_left].ITEMS|, (HARRAY n_left) :: pcompareguard_seen*, z)
   -- if n_left =/= n_right
-  -- if ~((HARRAY n_left) <- (pnode_seen* ++ $aggregate_compare_seen(S)))
+  -- if ~((HARRAY n_left) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S)))
   -- if |S.ARRAYS[n_left].ITEMS| = |S.ARRAYS[n_right].ITEMS|
-def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pnode_seen*, z) = $aggregate_property_effect(S, n_left, n_right, 0, (HOBJECT n_left) :: pnode_seen*, z)
+def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = $aggregate_property_effect(S, n_left, n_right, 0, ($aggregate_object_guard(S, n_left, n_right)) :: pcompareguard_seen*, z)
+  -- if ~$aggregate_std_pair(S, n_left, n_right)
+  -- if ~$aggregate_decl_pair(S, n_left, n_right)
   -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if n_left =/= n_right
   -- if $empty_instance_same(S, n_left, n_right)
-  -- if ~((HOBJECT n_left) <- (pnode_seen* ++ $aggregate_compare_seen(S)))
+  -- if ~(($aggregate_object_guard(S, n_left, n_right)) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S)))
   -- if ~$objectprops_materialized(S.OBJECTPROPS, n_left)
   -- if ~$objectprops_materialized(S.OBJECTPROPS, n_right)
   -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left*)
   -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
-def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pnode_seen*, z) = (S_marked, ORDER $compare_int($property_hash_count(ppropertyslot_left*), $property_hash_count(ppropertyslot_right*)))
+def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = (S_marked, ORDER $compare_int($property_hash_count(ppropertyslot_left*), $property_hash_count(ppropertyslot_right*)))
+  -- if ~$aggregate_std_pair(S, n_left, n_right)
+  -- if ~$aggregate_decl_pair(S, n_left, n_right)
   -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if n_left =/= n_right
   -- if $empty_instance_same(S, n_left, n_right)
-  -- if ~((HOBJECT n_left) <- (pnode_seen* ++ $aggregate_compare_seen(S)))
+  -- if ~(($aggregate_object_guard(S, n_left, n_right)) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S)))
   -- if $objectprops_materialized(S.OBJECTPROPS, n_left) \/ $objectprops_materialized(S.OBJECTPROPS, n_right)
   -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left*)
   -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
   -- if $property_hash_count(ppropertyslot_left*) =/= $property_hash_count(ppropertyslot_right*)
   -- if S_marked = $objectprops_mark($objectprops_mark(S, n_left), n_right)
-def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pnode_seen*, z) = $property_hash_order_effect(S_marked, ppropertyslot_left*, ppropertyslot_right*, (HOBJECT n_left) :: pnode_seen*, z)
+def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = $property_hash_order_effect(S_marked, ppropertyslot_left*, ppropertyslot_right*, ($aggregate_object_guard(S, n_left, n_right)) :: pcompareguard_seen*, z)
+  -- if ~$aggregate_std_pair(S, n_left, n_right)
+  -- if ~$aggregate_decl_pair(S, n_left, n_right)
   -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if n_left =/= n_right
   -- if $empty_instance_same(S, n_left, n_right)
-  -- if ~((HOBJECT n_left) <- (pnode_seen* ++ $aggregate_compare_seen(S)))
+  -- if ~(($aggregate_object_guard(S, n_left, n_right)) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S)))
   -- if $objectprops_materialized(S.OBJECTPROPS, n_left) \/ $objectprops_materialized(S.OBJECTPROPS, n_right)
   -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left*)
   -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
   -- if $property_hash_count(ppropertyslot_left*) = $property_hash_count(ppropertyslot_right*)
   -- if S_marked = $objectprops_mark($objectprops_mark(S, n_left), n_right)
+def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = $aggregate_std_order(S, n_left, n_right, pcompareguard_seen*, z)
+  -- if n_left =/= n_right
+  -- if $aggregate_std_pair(S, n_left, n_right)
 ;; Only a reached leaf requests the source-authenticated callback consumer.
-def $value_order_effect(S, pvalue_left, pvalue_right, pnode_seen*, z) = (S, ORDERSTRING {LEFT pvalue_left, RIGHT pvalue_right, RECEIVER n, OBJECTLEFT b, POINTER eps, STACK eps})
+def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = $aggregate_decl_order(S, n_left, n_right, pcompareguard_seen*, z)
+  -- if n_left =/= n_right
+  -- if $aggregate_decl_pair(S, n_left, n_right)
+def $value_order_effect(S, pvalue_left, pvalue_right, pcompareguard_seen*, z) = (S, ORDERSTRING {LEFT pvalue_left, RIGHT pvalue_right, RECEIVER n, OBJECTLEFT b, POINTER eps, STACK eps})
   -- if $string_compare_selection(S, pvalue_left, pvalue_right) = ((n, b))
-def $value_order_effect(S, pvalue_left, pvalue_right, pnode_seen*, z) = ($object_comparison_notice(S, pvalue_left, pvalue_right, z), $value_order(S, pvalue_left, pvalue_right, pnode_seen*)) -- otherwise
+def $value_order_effect(S, pvalue_left, pvalue_right, pcompareguard_seen*, z) = ($object_comparison_notice(S, pvalue_left, pvalue_right, z), $value_order(S, pvalue_left, pvalue_right, pcompareguard_seen*)) -- otherwise
 
 dec $comparison_operator(pbin) : bool
 def $comparison_operator(pbin) = (pbin <- [EQUAL, NOTEQUAL, LESS, LESSEQUAL, GREATER, GREATEREQUAL, SPACESHIP])
