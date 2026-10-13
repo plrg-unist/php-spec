@@ -1,0 +1,33 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hash": "85c1437aa5b3a9b1f006dca0c9ed6544bbd8614c7343d9955b4f684e694bfb26",
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "scalar",
+      "source": "<?php\nclass InheritedPlainRoot57 {\n    public int $value = 100 {\n        get {\n            echo \"ROOT:\", self::class, \"/\", static::class, \"|\";\n            return $this->value + $this->answer();\n        }\n    }\n    private function answer() { return 7; }\n}\nclass InheritedPlainParent57 extends InheritedPlainRoot57 {\n    public int $value {\n        get {\n            echo \"GET:\", self::class, \"/\", static::class, \"|\";\n            return $this->answer();\n        }\n    }\n    private function answer() { return 13; }\n    public function parentRead() { echo \"H|\"; return $this->value; }\n}\nclass InheritedPlainBridge57 extends InheritedPlainParent57 {}\nclass InheritedPlainChild57 extends InheritedPlainBridge57 {\n    public int $value = 200;\n    private function answer() { return 500; }\n}\nclass InheritedPlainGrand57 extends InheritedPlainChild57 {\n    private function answer() { return 900; }\n}\n$root = new InheritedPlainRoot57;\n$parent = new InheritedPlainParent57;\n$child = new InheritedPlainChild57;\n$grand = new InheritedPlainGrand57;\n$raw = (array) $root;\necho $raw === [\"value\" => 100] ? \"R100|\" : \"BAD|\";\n$raw = (array) $parent;\necho $raw === [] ? \"EMPTY|\" : ($raw === [\"value\" => null] ? \"NULL|\" : \"BAD|\");\n$raw = (array) $child;\necho $raw === [\"value\" => 200] ? \"C200|\" : \"BAD|\";\n$raw = (array) $grand;\necho $raw === [\"value\" => 200] ? \"G200|\" : \"BAD|\";\necho $root->value, \"|\";\necho $parent->value, \"|\";\necho $child->value, \"|\";\necho $grand->parentRead(), \"|\";\n$raw = (array) $grand;\necho $raw === [\"value\" => 200] ? \"G200|\" : \"BAD|\";\n$grand->value = 300;\n$raw = (array) $grand;\necho $raw === [\"value\" => 300] ? \"G300|\" : \"BAD|\";\necho $grand->value, \"|\";\n",
+      "source_sha256": "c2ae75c278078ffd2f8c05c50b6af4e31114048e5accc424e0285e7918f14e4c",
+      "stdout_base64": "UjEwMHxFTVBUWXxDMjAwfEcyMDB8Uk9PVDpJbmhlcml0ZWRQbGFpblJvb3Q1Ny9Jbmhlcml0ZWRQbGFpblJvb3Q1N3wxMDd8R0VUOkluaGVyaXRlZFBsYWluUGFyZW50NTcvSW5oZXJpdGVkUGxhaW5QYXJlbnQ1N3wxM3xHRVQ6SW5oZXJpdGVkUGxhaW5QYXJlbnQ1Ny9Jbmhlcml0ZWRQbGFpbkNoaWxkNTd8MTN8SHxHRVQ6SW5oZXJpdGVkUGxhaW5QYXJlbnQ1Ny9Jbmhlcml0ZWRQbGFpbkdyYW5kNTd8MTN8RzIwMHxHMzAwfEdFVDpJbmhlcml0ZWRQbGFpblBhcmVudDU3L0luaGVyaXRlZFBsYWluR3JhbmQ1N3wxM3w=",
+      "stderr_template": "",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "inherited-backed-parent-plain-inherited-getter57-native-c8aa93cd",
+      "native_raw_sha256": "85c1437aa5b3a9b1f006dca0c9ed6544bbd8614c7343d9955b4f684e694bfb26"
+    }
+  ]
+}
