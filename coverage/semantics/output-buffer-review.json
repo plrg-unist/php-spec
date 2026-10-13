@@ -1,0 +1,97 @@
+{
+  "milestone": "default output-buffer stack (module391)",
+  "status": "accepted private; actual-parent integration pending",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "tested_cut": {
+    "parent": "f12dcab8db85a6c4f3505f554c0da79d8a950186",
+    "module_count": 380,
+    "working_tree_inputs": "Exact source/runtime identities are in each report; source and state semantic inputs agree.",
+    "module391_sha256": "1d64bef895666169df9aa032b933b36444d5e4cce2ce7e00edaa6374bdb32b8f",
+    "module146_sha256": "e94bee818c8aba638b94f7cf1aafbc48d6985a75d645d141d1116f858a911505",
+    "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "reviewed_behavior": [
+    "NULL/default handlers, captured named/unpacked arguments, strict/weak conversions and builtin traces.",
+    "Six ordinary output producers route exact bytes through nested buffers; whole accumulated chunks enter lower layers.",
+    "Clean/flush/removal capabilities, signed C int flags, bottom-up status/list order and native buffer growth.",
+    "Content snapshots survive permission notices and handler reentry; wrapper notices sample the current live layer.",
+    "Forced final flush occurs after shutdown/destructors; budget, dependency and service pauses retain bytes.",
+    "Five diagnostic sinks preserve mask/handler selection; sticky blocked output survives compiler/lifecycle resets."
+  ],
+  "evidence": {
+    "author_basic": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-02/source-gate-04/report.json",
+      "sha256": "7d8f3a016d02595b66a81728efe7fc79ca1bcf74daee5c3f0cf9d482844eeb2c",
+      "exact_sources": 1
+    },
+    "author_remaining": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-02/sources-01/report.json",
+      "sha256": "f3ae137e9a5c883aa3bce786c41bb6ebc374b165e1e432d4f963eb721ff9bbba",
+      "exact_sources": 25,
+      "unsupported_controls": 4,
+      "control_agreement_credit": 0
+    },
+    "independent": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-02/independent-01/report.json",
+      "sha256": "71ac162a4de1b33fd8a567a5ea88e8d9dc078f94b60ddda6867517d7a69c3237",
+      "exact_sources": 6,
+      "unsupported_controls": 2,
+      "control_agreement_credit": 0
+    },
+    "source_reached_states": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-02/state-02/report.json",
+      "sha256": "24dd72443a3c76cb2a63c40187784b9baeb331ff59ac849d408bf8a92e249c20",
+      "sl_groups": 5,
+      "physical_premises": 177,
+      "groups": [
+        {
+          "id": "budget-copy",
+          "premises": 47,
+          "source_sha256": "828c08cc5c9e794c84df9ca8b6a6a6703762859b79f374529ba7c75d8f2608fc"
+        },
+        {
+          "id": "chunks",
+          "premises": 32,
+          "source_sha256": "1f59d0cdc27cb687ea0caf76795c572c963ee87e3ef41f22feda7ff6a1feeaf8"
+        },
+        {
+          "id": "notice-child",
+          "premises": 53,
+          "source_sha256": "56e8f45228aba3ea5f737a5b628031b01b0eb758036bd2f15ddaec9e7406b65e"
+        },
+        {
+          "id": "shutdown-order",
+          "premises": 28,
+          "source_sha256": "9742c91f078657b49c6c53fa0039cba4d403b845f0d4465c5bc7d8a25951e709"
+        },
+        {
+          "id": "blocked-warning",
+          "premises": 17,
+          "source_sha256": "68658166221736573c104019e5a75b3223892240158c14df41f4d7167a071ea1"
+        }
+      ]
+    }
+  },
+  "independent_counterexamples": [
+    "Both nested chunk layers process the complete bytes and acquire STARTED/PROCESSED flags.",
+    "First get_clean notice opens a child: copied A stays frozen, while second notice observes level1.",
+    "NULL-bool deprecation callback opens a buffer; callback and later bytes share it.",
+    "NULL-chunk deprecation mutates aliased flags to0; captured third argument still creates flags112.",
+    "Invalid callback plus array chunk produces the parameter TypeError before callback selection.",
+    "Caught eval throwable keeps the buffer and its ABC1 bytes through genuine parser service/resume.",
+    "Eval compiler stdout diagnostic and fatal reported before shutdown destination mutation stop with only the P prefix."
+  ],
+  "preserved_failures": [
+    "Original parser/elaboration/structure attempts and source-gate03 PRINT interpreter failure have zero source credit.",
+    "Paused-debug01 reached PRINT_EMIT with an interned string carrier. The minimal146 string_bytes acceptance repair is covered by affected gate04.",
+    "Whole state01 failure has zero group credit. Copy diagnostic passed; only the fixture shutdown-phase NORMAL predicate was removed for queued BUDGET work."
+  ],
+  "test_limits": "Synthetic SOURCE_PENDING/Unsupported finalizer variants are helper controls, not reached service-state or native-agreement credit. Reports preserve commands, exits, environment and raw originals externally; no accepted source campaign was replayed for fixture-only corrections.",
+  "remaining_dependencies": [
+    "Non-NULL user output handlers, including invalid callback lookup.",
+    "Active-buffer stdout diagnostic rendering and native unsafe wrapper reentry with no live handler.",
+    "Wider startup buffering/handler profiles and non-CLI SAPI output effects."
+  ],
+  "integration": "Pending root writer grant: review actual parent, compose shared148 graceful-exit retirement with output_write, and use only a discriminating current composition gate."
+}

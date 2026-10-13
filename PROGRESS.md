@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Default output buffers391 now route exact echo/print/inline/exit/direct-call bytes
+through nested NULL handlers, whole chunks, capabilities, copied get results,
+Notice-handler reentry and exact status. Forced flush follows shutdown/destructors;
+BUDGET and Unsupported preserve buffers. Buffered stdout diagnostics and output
+handler callbacks remain explicit dependencies. Author26 originals agree at
+identical1+25 cuts, with4 Unsupported controls; independent6 originals/2 controls
+and SL5 groups177 premises pass separately. Original compiler/PRINT/fixture
+failures retain zero credit. [Contract](docs/semantics/OUTPUT-BUFFERS.md),
+[author evidence](coverage/semantics/output-buffer-author.json),
+[independent review](coverage/semantics/output-buffer-review.json). Private review
+is accepted; actual-parent integration is pending and full core stays partial.
+
 Graceful exit now retires parser-backed static tables before shutdown through
 real callee restoration and source-frame steps. Nested eval/file order, saved
 destructor parser reentry and escaped references retain their owners. At private

@@ -1,0 +1,109 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "status": "independently accepted bounded private milestone; actual-parent integration pending",
+  "base_revision": "f12dcab8db85a6c4f3505f554c0da79d8a950186",
+  "implementation_hashes": {
+    "spec/semantics/101-error-suppression.watsup": "16d7a6f75aaa4d88858b55407445082bc8029f1a66984cb54550b7a2a9c1c208",
+    "spec/semantics/146-print-runtime.watsup": "e94bee818c8aba638b94f7cf1aafbc48d6985a75d645d141d1116f858a911505",
+    "spec/semantics/148-core-intrinsics.watsup": "e0ed3edb6160bf7b4ac572329cb7ecdb930262ec07d31ef3ce027b74b8b1851f",
+    "spec/semantics/160-eval-runtime.watsup": "ed0d4140473460a84da9ea6663fb67045f46c96494430c427b993fe5868c8232",
+    "spec/semantics/171-include-runtime.watsup": "469ab1ea1f63d12f68377b6274c964803e59bc6e7d0647393426e7aeb3bc9dc7",
+    "spec/semantics/172-file-context-intrinsics.watsup": "a2abae71b6712b6654dd322810ba630b231635e9900744e1b44727a24cb07e26",
+    "spec/semantics/207-error-handler-runtime.watsup": "948443575c08ee39d083539d1314d5e5350430309a1a8e741139489251fec991",
+    "spec/semantics/231-shutdown-functions.watsup": "c5096d71bb528cf1ef2e8b9c18d33f61a1f2be078ad8973a09800eae1cfaf4df",
+    "spec/semantics/236-eval-declaration-notices.watsup": "a0bd87a015d0701d0f87a01347e8df9456fe62e00128761b54ad756918ecd70c",
+    "spec/semantics/257-request-destructors.watsup": "467685459606dcdeaaff42184b69fc0040090abc8150b4394a9b9899e0d1f52b",
+    "spec/semantics/30-storage.watsup": "797c554c45812cda8137268baf8b460b20fcb503b956df12a08955e979182d34",
+    "spec/semantics/361-source-direct-call-emission.watsup": "f499d3dd1da28a4149bb41d47a432e98a932ab8a7169bc88b7f7832664a389c7",
+    "spec/semantics/40-control.watsup": "b978a81e2d91d1ca086d37b5bd129eb7020d1adc0c5473adbf4fea796d2a46ac",
+    "spec/semantics/84-call-integrity.watsup": "057c151df639777922267dc6dfa3f93296607c4a0888b86be1345f69a19d79ab",
+    "spec/semantics/modules.json": "379a7946aef414f74e76c0c9afc7cac80c32f351b53977570387e7f6b577764d",
+    "spec/semantics/391-output-buffers.watsup": "1d64bef895666169df9aa032b933b36444d5e4cce2ce7e00edaa6374bdb32b8f"
+  },
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+  "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+  "profile": "tests/semantics/profile.json; LC_ALL=C, TZ=UTC, PATH=/usr/bin:/bin; ordinary uninstrumented CLI oracle",
+  "source": {
+    "reports": [
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-02/source-gate-04/report.json",
+        "sha256": "7d8f3a016d02595b66a81728efe7fc79ca1bcf74daee5c3f0cf9d482844eeb2c"
+      },
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-02/sources-01/report.json",
+        "sha256": "f3ae137e9a5c883aa3bce786c41bb6ebc374b165e1e432d4f963eb721ff9bbba"
+      }
+    ],
+    "exact_originals": 26,
+    "cuts": "basic1 + remaining25 at identical semantic/runtime inputs",
+    "unsupported_controls": 4,
+    "control_native_credit": 0
+  },
+  "state": {
+    "report": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-02/state-02/report.json",
+      "sha256": "24dd72443a3c76cb2a63c40187784b9baeb331ff59ac849d408bf8a92e249c20"
+    },
+    "mode": "SL",
+    "groups": 5,
+    "premises": 177,
+    "source_reached": [
+      "fresh content copy",
+      "whole chunk into lower buffer with started/processed flags",
+      "nonremovable get snapshot and live wrapper level after handler child push",
+      "forced flush after shutdown/destructor despite nonremovable flags",
+      "sticky stdout diagnostic dependency preserves prefix and buffers"
+    ],
+    "helper_controls": [
+      "BUDGET/SOURCE_PENDING/Unsupported finalizer preservation",
+      "malformed flags/capacity/bytes/parsed-values/source-site/line/owner/notice-tail/stale string identity"
+    ],
+    "pending_service_credit": 0
+  },
+  "original_failures": {
+    "paths": [
+      "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-02/native-01/native.json",
+      "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-02/source-gate-01/report.json",
+      "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-02/source-gate-02/report.json",
+      "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-02/source-gate-03/report.json",
+      "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-02/static-preflight-01",
+      "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-02/static-preflight-02",
+      "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-02/static-preflight-03",
+      "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-02/static-preflight-04",
+      "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-02/static-structure-01",
+      "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-02/static-structure-02",
+      "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-02/static-structure-03",
+      "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-02/state-01/report.json"
+    ],
+    "credit": 0,
+    "corrections": "Native notice/echo expectation order; DSL syntax/binding forms; actual reached PRINT carrier accepted through string_bytes in146; state shutdown phase accepts a BUDGET pause. No spec edit for the state correction."
+  },
+  "diagnostics": {
+    "print_frontier": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-02/paused-debug-01/report.json",
+      "sha256": "3e4ebcdeb9da23cadccd5b543b4932ddc9299ac93fdfba8267c7925f0e34e23d"
+    },
+    "copy_state": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-02/state-debug-01/report.json",
+      "sha256": "bc65f13ad0ba2278235cc1e2222550aa7218716a15959f3f6d52d597adc2de35"
+    },
+    "struct_only": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-02/static-structure-04",
+    "credit": "structural/diagnostic only"
+  },
+  "commands": [
+    "python3 tests/semantics/output_buffer_sources.py --select basic-bytes --output <external>/source-gate-04",
+    "python3 tests/semantics/output_buffer_sources.py --select <remaining25>,<controls4> --output <external>/sources-01",
+    "python3 tests/semantics/output_buffer_state.py --output <external>/state-02"
+  ],
+  "limits": [
+    "default/NULL output handlers only; non-NULL callbacks are Unsupported",
+    "active-buffer stdout diagnostic rendering is Unsupported",
+    "no-live-handler failed get wrapper remains Unsupported",
+    "startup buffering/output-handler profiles and non-CLI SAPI effects remain required",
+    "no full-core equivalence or fresh portability claim"
+  ],
+  "raw_recovery": "Exact original source bytes, native/model commands, stdout/stderr/exits, checked syntax packets and SL fixtures remain at the external paths; no archive is an operational prerequisite.",
+  "independent_review": "coverage/semantics/output-buffer-review.json",
+  "implementation_revision": "20d49688718aa6b7ee69bce99a59f9c3af8ddb5f"
+}

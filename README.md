@@ -37,6 +37,11 @@ ordinary interpolation, retain compiler deprecations and `shell_exec` errors and
 traces, and consume explicit finite pipe/output facts. Requests preserve raw
 environment order and current CWD; the semantic process never launches a shell.
 
+[Default output buffers](docs/semantics/OUTPUT-BUFFERS.md) now route exact bytes
+through nested default handlers, chunk/clean/flush/get/status operations and
+request-end flushing after shutdown/destructors. User output handlers and
+buffered stdout diagnostics remain explicit dependencies.
+
 [Recorded file-compiler diagnostics](coverage/semantics/file-compile-notice-review.json)
 now delay ordinary include/require registration through warning callbacks;
 the once forms register before compilation. Handler throws and graceful exit

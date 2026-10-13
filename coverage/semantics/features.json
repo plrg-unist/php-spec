@@ -3152,15 +3152,17 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/145-print-compiler.watsup",
-        "spec/semantics/146-print-runtime.watsup"
+        "spec/semantics/146-print-runtime.watsup",
+        "spec/semantics/391-output-buffers.watsup"
       ],
       "source_tests": [
         "tests/semantics/print_expressions.py",
         "tests/semantics/print_compiler.py",
         "tests/semantics/print_protocol.py",
-        "tests/semantics/print_controls.py"
+        "tests/semantics/print_controls.py",
+        "tests/semantics/output_buffer_sources.py"
       ],
-      "review": "Bounded ordinary print execution: constant integer1 retains ordered output effects through folding, nesting and reference-result demand; source-authenticated conversion lines and paused ownership guards. See print-review.json and SOURCE-PRINT.md. User-defined __toString, conversion callbacks and output-handler/lifecycle protocols remain core dependencies; no family closure."
+      "review": "Bounded ordinary print execution: constant integer1 retains ordered output effects through folding, nesting and reference-result demand; source-authenticated conversion lines and paused ownership guards. See print-review.json and SOURCE-PRINT.md. User-defined __toString, conversion callbacks and output-handler/lifecycle protocols remain core dependencies; no family closure. Default buffering391 adds shared byte routing; an actual PRINT_EMIT carrier frontier corrects146 to use string_bytes while retaining PINT1. The original interpreter failure remains zero credit and the affected original now agrees. Wider print consumers remain partial."
     },
     {
       "node": "Expr_PropertyFetch",
@@ -18391,15 +18393,24 @@
     {
       "id": "lifecycle.output-buffer-callbacks",
       "milestone": "5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_gc.c"
+      "implementation": [
+        "spec/semantics/391-output-buffers.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/output_buffer_state.py"
+      ],
+      "source_tests": [
+        "tests/semantics/output_buffer_sources.py"
+      ],
+      "evidence": [
+        "vendor/php-src/main/output.c",
+        "vendor/php-src/main/php_output.h",
+        "coverage/semantics/output-buffer-author.json",
+        "coverage/semantics/output-buffer-review.json"
+      ],
+      "review": "Module391 implements default/NULL-handler stacks, nested bytes and whole chunks, capabilities, copied get results with Notice-handler reentry, exact status and forced flush after shutdown/destructors. Author26 originals and4 Unsupported controls pass at identical gate1+remaining25 cuts; independent6 originals/2 controls and SL5 groups177 premises are separate. Output-handler callbacks, buffered stdout diagnostic rendering and wider startup/SAPI effects remain required; full obligation stays partial."
     },
     {
       "id": "environment.request-inputs",
@@ -18555,19 +18566,24 @@
         "spec/semantics/101-error-suppression.watsup",
         "spec/semantics/207-error-handler-runtime.watsup",
         "bin/php-semantics",
-        "adapter/main.ml"
+        "adapter/main.ml",
+        "spec/semantics/391-output-buffers.watsup"
       ],
       "helper_tests": [
-        "tests/semantics/display_errors_protocol.py"
+        "tests/semantics/display_errors_protocol.py",
+        "tests/semantics/output_buffer_state.py"
       ],
       "source_tests": [
-        "tests/semantics/display_errors.py"
+        "tests/semantics/display_errors.py",
+        "tests/semantics/output_buffer_sources.py"
       ],
       "evidence": [
         "vendor/php-src/main/main.c",
-        "coverage/semantics/display-errors-review.json"
+        "coverage/semantics/display-errors-review.json",
+        "coverage/semantics/output-buffer-author.json",
+        "coverage/semantics/output-buffer-review.json"
       ],
-      "review": "Live display_errors237 adds nullable original/live raw get/set/Restore and captured ordinary text-CLI destinations;11 exact profile/source comparisons,76 state premises and17 transport controls pass at b8e8/223. Actualddb6/233 preservation adds no execution credit. Actual231/237 held-original fatal freezing agrees atccd900 after rendering and before queue mode writes; shutdown-functions-review.json records that separate composition. Wider display/configuration and later request stages remain required."
+      "review": "Live display_errors237 adds nullable original/live raw get/set/Restore and captured ordinary text-CLI destinations;11 exact profile/source comparisons,76 state premises and17 transport controls pass at b8e8/223. Actualddb6/233 preservation adds no execution credit. Actual231/237 held-original fatal freezing agrees atccd900 after rendering and before queue mode writes; shutdown-functions-review.json records that separate composition. Wider display/configuration and later request stages remain required. Module391 routes PHP bytes through default output buffers. Selected stdout diagnostics with active buffers retain an explicit sticky Unsupported boundary through compiler/resume/lifecycle resets; masked and handler-true stdout cases remain normal. Buffered diagnostic rendering and wider SAPI effects stay open."
     },
     {
       "id": "environment.finite-fixtures",

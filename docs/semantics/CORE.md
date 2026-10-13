@@ -195,6 +195,14 @@ images preserve escaped tables, callback allocations and bound class data.
 Deferred AST operands instead convert with live precision. `serialize_precision`,
 wider formatter consumers and Array eval/include warning ingress remain required.
 
+[Default output buffers](OUTPUT-BUFFERS.md) implement the NULL/default-handler
+stack, nested/chunk byte routing, capabilities, copied get results, live status
+and forced request-end flush after shutdown/destructors. Error-handler reentry
+preserves frozen results and samples the live layer for the wrapper Notice.
+User output handlers and buffered stdout diagnostic rendering remain Unsupported;
+masking and handler-true cases preserve ordinary execution. Wider startup/SAPI
+output effects remain required.
+
 Backticks remain core syntax. [Module389](SHELL-DISPATCH.md) constructs commands
 through ordinary interpolation, retains compile-time deprecation and builtin
 validation/trace behavior, and consumes finite pipe/output facts with explicit
