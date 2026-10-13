@@ -21,6 +21,7 @@ dec $ob_api_release_exit(pstate, pdestructionoperation, pobrelease, pcallcontext
 dec $ob_api_release_exit_frames(pframe*, pdestructionoperation, pobrelease, pcallcontext?, ptask*) : bool
 dec $ob_api_done_pending(pstate, pobrelease, pcallcontext?, ptask*) : nat?
 dec $ob_api_done_replay_pending(pstate, ptask*, pobrelease, pcallcontext?, ptask*) : nat?
+dec $ob_api_failure_source_call(ptask) : pconfigcall?
 
 def $ob_call_api(OB_API_FAILED pconfigcall pcallcontext? ptask*) = (pconfigcall)
 def $ob_call_site(OB_API_FAILED pconfigcall pcallcontext? ptask*) = pconfigcall.SITE
@@ -242,3 +243,15 @@ def $ob_api_done_replay_pending(S, (DESTRUCTOR_OPERATION_EXIT pdestructionoperat
 def $ob_api_done_replay_pending(S, ptask :: ptask_rest*, pobrelease, pcallcontext?, ptask_tail*) = $ob_api_done_replay_pending(S, ptask_rest*, pobrelease, pcallcontext?, ptask_tail*)
   -- if ~$ob_user_failure_exit_task(ptask)
 def $ob_api_done_replay_pending(S, ptask*, pobrelease, pcallcontext?, ptask_tail*) = eps -- otherwise
+
+;; The internal API frame outlives callback entry and its argv/ZOH cleanup.
+;; A real operation certifies the saved caller; snapshots add no trace owners.
+def $ob_api_failure_source_call(OB_USER_FAIL_ARGS pobinvoke n) = $ob_call_api(pobinvoke.CALL)
+def $ob_api_failure_source_call(OB_API_FAIL_RELEASE pobrelease pcallcontext? ptask* n) = (pobrelease.CALL)
+def $ob_api_failure_source_call(ptask) = eps -- otherwise
+def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S_history, pconfigcall, eps)
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if $eager_operation_source_valid(S, pdestructionoperation)
+  -- if $ob_api_failure_source_call(pdestructionoperation.SOURCE) = (pconfigcall)
+  -- if S_history = S[.CURRENT = pdestructionoperation.CALLER][.ORIGIN = pdestructionoperation.ORIGIN][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT]
