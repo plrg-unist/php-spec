@@ -8,6 +8,7 @@ dec $destructor_boundary_scope(pstate, pdestructorcall, pframe*) : pstate
 dec $eager_explicit_task(ptask) : bool
 dec $eager_edge_nodes(hedge*) : pnode*
 dec $eager_owner_order(pstate) : pnode*
+dec $update_exit_owner_reordered(pstate) : bool
 dec $eager_task_inputs(pstate, ptask) : pnode*
 dec $eager_base_inputs(pstate, ptask) : pnode*
 dec $eager_cv_property(pstate) : bool
@@ -156,6 +157,8 @@ def $eager_edge_nodes((HEDGE pnode_from pnode_to) :: hedge*) = pnode_to :: $eage
 ;; In particular BINARY_RIGHT owns OP1 in its task and OP2 in RESULT.
 def $eager_owner_order(S) = $eager_edge_nodes($heap_graph(S).EDGES) ++ $eager_task_inputs(S, ptask) ++ $operand_nodes(S.RESULT) ++ $eager_base_inputs(S, ptask) ++ $machine_roots(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)])
   -- if S.TODO = ptask :: ptask_tail*
+  -- if ~$update_exit_owner_reordered(S)
+def $update_exit_owner_reordered(S) = false -- otherwise
 ;; ASSIGN_OBJ keeps OP_DATA's RHS but the plain CV receiver is borrowed.
 ;; Its completed BASE cache must not become an extra owner across GC(old slot).
 def $eager_cv_property(S) = true

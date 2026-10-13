@@ -230,11 +230,13 @@ def $task_nodes(UPDATE_WARNING_EXIT perrorcall z) = $value_nodes(perrorcall.CALL
 def $call_task_valid(S, UPDATE_WARNING_EXIT perrorcall z) = ($update_warning_exit_named(S, perrorcall) /\ z = $ntprecision32(z))
 def $source_operand_marker(UPDATE_WARNING_EXIT perrorcall z) = $source_operand_marker(perrorcall.RESUME)
 def $throwable_marker(UPDATE_WARNING_EXIT perrorcall z) = true
+dec $update_exit_order_supported(pstate) : bool
 rule PhpStep/update-warning-exit-string: S ~> $exit_start_unwind($error_handler_restore(S[.TODO = ptask_tail*], perrorcall.CALLBACK), z)
   -- if S.TODO = (UPDATE_WARNING_EXIT perrorcall z) :: ptask_tail*
   -- if $call_task_valid(S, UPDATE_WARNING_EXIT perrorcall z)
   -- if perrorcall.RESUME = UPDATE_WARNING_RESTORE pupdatewarning
   -- if ~$update_warning_restores_throw(pupdatewarning.INPUT)
+  -- if $update_exit_order_supported(S)
 rule PhpStep/update-warning-exit-expired: S ~> S[.COMPLETION = UNSUPPORTED "increment/decrement restoration target is expired or constrained"]
   -- if S.TODO = (UPDATE_WARNING_EXIT perrorcall z) :: ptask_tail*
   -- if $call_task_valid(S, UPDATE_WARNING_EXIT perrorcall z)
@@ -256,6 +258,7 @@ rule PhpStep/update-warning-exit-restore: S ~> $exit_start_unwind($update_warnin
   -- if $update_warning_pointer_value(S, pupdatewarning.POINTER) = (pslot)
   -- if $update_warning_release_safe(S, pslot)
   -- if $update_warning_after(pupdatewarning.OP, pupdatewarning.INPUT) = (pvalue)
+  -- if $update_exit_order_supported(S)
 ;; A real handler-local Throwable replaces UnwindExit. Restore the helper,
 ;; then continue through the retained caller tail without resetting EXITSTATUS.
 dec $update_warning_exit_cancel_safe(pstate, perrorcall) : bool
@@ -268,6 +271,11 @@ def $update_warning_exit_cancel_safe(S, perrorcall) = true
   -- if $update_warning_pointer_value(S, pupdatewarning.POINTER) = (pslot)
   -- if $update_warning_release_safe(S, pslot)
 def $update_warning_exit_cancel_safe(S, perrorcall) = false -- otherwise
+rule PhpStep/update-warning-exit-cleanup-order: S ~> S[.COMPLETION = UNSUPPORTED "increment/decrement warning exit temporary cleanup order"]
+  -- if S.TODO = (UPDATE_WARNING_EXIT perrorcall z) :: ptask_tail*
+  -- if $call_task_valid(S, UPDATE_WARNING_EXIT perrorcall z)
+  -- if $update_warning_exit_cancel_safe(S, perrorcall)
+  -- if ~$update_exit_order_supported(S)
 rule PhpStep/update-warning-exit-cleanup-throw-string: S ~> $error_handler_restore(S[.TODO = (UPDATE_WARNING_DONE pupdatewarning[.PENDING = (n)]) :: ptask_tail*], perrorcall.CALLBACK)
   -- if S.TODO = (THROW_SEARCH n) :: (UPDATE_WARNING_EXIT perrorcall z) :: ptask_tail*
   -- if $call_task_valid(S, UPDATE_WARNING_EXIT perrorcall z)
@@ -288,11 +296,117 @@ rule PhpStep/update-warning-exit-cleanup-throw: S ~> S[.COMPLETION = UNSUPPORTED
   -- if $call_task_valid(S, UPDATE_WARNING_EXIT perrorcall z)
   -- if ~$update_warning_exit_cancel_safe(S, perrorcall)
 
-;; A parent temporary can also cancel exit by throwing after the scalar store.
-;; Its caller catch continuation needs a separate restoration protocol.
+;; Exit retires operands and pending finally outcomes before parent cleanup.
+;; Recover only the ordered caller control from source; no released value is
+;; retained by this history or restored when a destructor cancels exit.
+dec $update_exit_history_find(pstate, porigin, ptask*, porigin?) : pgototasks
+dec $update_exit_history_open(pstate, porigin, statement, porigin, ptask*, porigin?) : pgototasks
+dec $update_exit_history_catch(pstate, porigin, phpType66*, porigin, ptask*, porigin?, nat) : pgototasks
+dec $update_exit_history(pstate, porigin) : pgototasks
+def $update_exit_history(S, porigin) = $update_exit_history_find(S, porigin, ptask_base*, $goto_callable_origin(S))
+  -- if $goto_base(S, porigin) = GOTOTASKS ptask_base*
+def $update_exit_history(S, porigin) = GOTOMISSING -- otherwise
+def $update_exit_history_find(S, porigin, eps, porigin_outer?) = GOTOMISSING
+def $update_exit_history_find(S, PORIGIN n pcpath_site, (AT (PORIGIN n pcpath) (STMT statement)) :: ptask_tail*, porigin_outer?) = $update_exit_history_open(S, PORIGIN n pcpath_site, statement, PORIGIN n pcpath, ptask_tail*, porigin_outer?)
+  -- if $effect_below(pcpath, pcpath_site)
+def $update_exit_history_find(S, porigin, ptask :: ptask_tail*, porigin_outer?) = $update_exit_history_find(S, porigin, ptask_tail*, porigin_outer?)
+  -- if ~$goto_task_contains(ptask, porigin)
+def $update_exit_history_open(S, porigin_site, NStmtExpression expression metadata, porigin, ptask_tail*, porigin_outer?) = GOTOTASKS ((ORIGIN_RETURN porigin_outer?) :: ptask_tail*)
+def $update_exit_history_open(S, porigin_site, NStmtBlock (SEQUENCE statement*) metadata, porigin, ptask_tail*, porigin_outer?) = $update_exit_history_find(S, porigin_site, $statement_tasks(statement*, $origin_child((porigin), [PCFIELD 0]), 0) ++ [ORIGIN_RETURN porigin_outer?] ++ ptask_tail*, (porigin))
+def $update_exit_history_open(S, PORIGIN n pcpath_site, NStmtTryCatch (SEQUENCE statement*) phpType65 phpType67 metadata, PORIGIN n pcpath, ptask_tail*, porigin_outer?) = $update_exit_history_find(S, PORIGIN n pcpath_site, $statement_tasks(statement*, (PORIGIN n (pcpath ++ [PCFIELD 0])), 0) ++ [TRY_END (PORIGIN n pcpath), ORIGIN_RETURN porigin_outer?] ++ ptask_tail*, (PORIGIN n pcpath))
+  -- if $effect_below(pcpath ++ [PCFIELD 0], pcpath_site)
+def $update_exit_history_open(S, PORIGIN n pcpath_site, NStmtTryCatch phpType23 (SEQUENCE phpType66*) phpType67 metadata, PORIGIN n pcpath, ptask_tail*, porigin_outer?) = $update_exit_history_catch(S, PORIGIN n pcpath_site, phpType66*, PORIGIN n pcpath, ptask_tail*, porigin_outer?, 0)
+  -- if $effect_below(pcpath ++ [PCFIELD 1], pcpath_site)
+def $update_exit_history_open(S, PORIGIN n pcpath_site, NStmtTryCatch phpType23 phpType65 (NStmtFinally (SEQUENCE statement*) metadata_final) metadata, PORIGIN n pcpath, ptask_tail*, porigin_outer?) = $update_exit_history_find(S, PORIGIN n pcpath_site, $statement_tasks(statement*, (PORIGIN n (pcpath ++ [PCFIELD 2, PCFIELD 0])), 0) ++ [FINALLY_RESUME (PORIGIN n pcpath) eps, FINALLY_PHASE (PORIGIN n pcpath) 0, ORIGIN_RETURN porigin_outer?] ++ ptask_tail*, (PORIGIN n (pcpath ++ [PCFIELD 2])))
+  -- if $effect_below(pcpath ++ [PCFIELD 2], pcpath_site)
+def $update_exit_history_open(S, porigin_site, statement, porigin, ptask_tail*, porigin_outer?) = GOTOMISSING -- otherwise
+def $update_exit_history_catch(S, porigin_site, eps, porigin, ptask_tail*, porigin_outer?, n_index) = GOTOMISSING
+def $update_exit_history_catch(S, PORIGIN n pcpath_site, (NStmtCatch phpType42 phpType43 (SEQUENCE statement*) metadata) :: phpType66_tail*, PORIGIN n pcpath, ptask_tail*, porigin_outer?, n_index) = $update_exit_history_find(S, PORIGIN n pcpath_site, $statement_tasks(statement*, (PORIGIN n (pcpath ++ [PCFIELD 1, PCINDEX n_index, PCFIELD 2])), 0) ++ $finally_catch_tail(S, PORIGIN n pcpath, (ORIGIN_RETURN porigin_outer?) :: ptask_tail*), (PORIGIN n (pcpath ++ [PCFIELD 1, PCINDEX n_index])))
+  -- if $effect_below(pcpath ++ [PCFIELD 1, PCINDEX n_index, PCFIELD 2], pcpath_site)
+def $update_exit_history_catch(S, PORIGIN n pcpath_site, phpType66 :: phpType66_tail*, PORIGIN n pcpath, ptask_tail*, porigin_outer?, n_index) = $update_exit_history_catch(S, PORIGIN n pcpath_site, phpType66_tail*, PORIGIN n pcpath, ptask_tail*, porigin_outer?, $(n_index + 1))
+  -- if ~$effect_below(pcpath ++ [PCFIELD 1, PCINDEX n_index, PCFIELD 2], pcpath_site)
+
+;; Zend cleanup_live_vars visits increasing live-range starts. The pending
+;; fast_call outcome retires first; outer binary holders precede inner ones.
+;; Each operand's own node group and container child order stay unchanged.
+syntax pupdateexitorder = UPDATE_EXIT_ORDER pnode* | UPDATE_EXIT_UNORDERED
+dec $update_exit_finally_pair(ptask*) : bool
+def $update_exit_finally_pair((FINALLY_RESUME porigin n?) :: (FINALLY_PHASE porigin n_phase) :: ptask*) = true
+def $update_exit_finally_pair(ptask*) = false -- otherwise
+dec $update_exit_control(pstate, ptask*, ptask*) : bool
+def $update_exit_control(S, eps, eps) = true
+def $update_exit_control(S, (FINALLY_RESUME porigin n?) :: (FINALLY_PHASE porigin n_phase) :: ptask_old*, (FINALLY_RESUME porigin eps) :: (FINALLY_PHASE porigin 0) :: ptask_history*) = ($destructor_pending_valid(S, n?) /\ n_phase = $finally_outcome_phase(n?) /\ $update_exit_control(S, ptask_old*, ptask_history*))
+def $update_exit_control(S, ptask :: ptask_old*, ptask :: ptask_history*) = $update_exit_control(S, ptask_old*, ptask_history*)
+  -- if ~$update_exit_finally_pair(ptask :: ptask_old*)
+def $update_exit_control(S, ptask_old*, ptask_history*) = false -- otherwise
+dec $update_exit_inputs(pstate, porigin, ptask*, ptask*) : pupdateexitorder
+def $update_exit_inputs(S, porigin_child, (ORIGIN_RETURN (porigin)) :: (BINARY_RIGHT pbin poperand z) :: ptask_tail*, ptask_history*) = UPDATE_EXIT_ORDER (pnode_outer* ++ $operand_nodes(poperand))
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_child)
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $error_binary_source(expression) = (pbin)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 1]) = (z)
+  -- if $integer_operand_source(S, porigin, [PCFIELD 0], poperand)
+  -- if $update_exit_inputs(S, porigin, ptask_tail*, ptask_history*) = UPDATE_EXIT_ORDER pnode_outer*
+def $update_exit_inputs(S, porigin_child, (ORIGIN_RETURN (porigin)) :: (WRITE_NAME n_name* z) :: ptask_tail*, ptask_history*) = $update_exit_inputs(S, porigin, ptask_tail*, ptask_history*)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_child)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssign (NExprVariable phpType32 metadata_cv) expression metadata)
+  -- if $cv_source_name(S, phpType32) = (n_name*)
+  -- if $variable_line(phpType32, metadata_cv) = z
+def $update_exit_inputs(S, porigin_child, (ORIGIN_RETURN (porigin)) :: DISCARD :: ptask_tail*, ptask_history*) = UPDATE_EXIT_ORDER $tasks_nodes(ptask_tail*)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtExpression expression metadata)
+  -- if $update_exit_control(S, ptask_tail*, ptask_history*)
+def $update_exit_inputs(S, porigin, ptask_tail*, ptask_history*) = UPDATE_EXIT_UNORDERED -- otherwise
+dec $update_exit_order(pstate) : pupdateexitorder
+def $update_exit_order(S) = UPDATE_EXIT_ORDER eps
+  -- if S.TODO = (UPDATE_WARNING_EXIT perrorcall z) :: ptask_tail*
+  -- if S.HELD = eps /\ $tasks_nodes(ptask_tail*) = eps
+def $update_exit_order(S) = $update_exit_inputs(S, perrorcall.SITE, ptask_tail*, ptask_history*)
+  -- if S.TODO = (UPDATE_WARNING_EXIT perrorcall z) :: ptask_tail*
+  -- if S.HELD = eps /\ $tasks_nodes(ptask_tail*) =/= eps
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if $update_exit_history(S, perrorcall.SITE) = GOTOTASKS ptask_history*
+  -- if $tasks_nodes(ptask_history*) = eps
+def $update_exit_order(S) = UPDATE_EXIT_UNORDERED -- otherwise
+def $update_exit_order_supported(S) = ($update_exit_order(S) =/= UPDATE_EXIT_UNORDERED)
+def $update_exit_owner_reordered(S) = true
+  -- if S.TODO = (UPDATE_WARNING_EXIT perrorcall z) :: ptask_tail*
+  -- if $call_task_valid(S, UPDATE_WARNING_EXIT perrorcall z)
+  -- if $update_exit_order(S) = UPDATE_EXIT_ORDER pnode*
+  -- if pnode* =/= $tasks_nodes(ptask_tail*)
+def $eager_owner_order(S) = $eager_edge_nodes($heap_graph(S).EDGES) ++ $eager_task_inputs(S, ptask) ++ $operand_nodes(S.RESULT) ++ $eager_base_inputs(S, ptask) ++ $machine_roots(S[.TODO = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = pnode* ++ S.HELD])
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $update_exit_owner_reordered(S)
+  -- if $update_exit_order(S) = UPDATE_EXIT_ORDER pnode*
+def $eager_operation_source(S, UPDATE_WARNING_EXIT perrorcall z) = UPDATE_WARNING_EXIT_HISTORY perrorcall z ptask_history*
+  -- if $call_task_valid(S, UPDATE_WARNING_EXIT perrorcall z)
+  -- if $update_exit_history(S, perrorcall.SITE) = GOTOTASKS ptask_history*
+  -- if $tasks_nodes(ptask_history*) = eps
+def $task_nodes(UPDATE_WARNING_EXIT_HISTORY perrorcall z ptask_history*) = eps
+dec $update_exit_history_source_valid(pstate, pdestructionoperation) : bool
+def $update_exit_history_source_valid(S, pdestructionoperation) = true
+  -- if pdestructionoperation.SOURCE = UPDATE_WARNING_EXIT_HISTORY perrorcall z ptask_history*
+  -- if S_caller = S[.CURRENT = pdestructionoperation.CALLER][.ORIGIN = (perrorcall.SITE)][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT]
+  -- if $update_warning_exit_named(S_caller, perrorcall) /\ z = $ntprecision32(z)
+  -- if $update_exit_history(S_caller, perrorcall.SITE) = GOTOTASKS ptask_history*
+  -- if $tasks_nodes(ptask_history*) = eps
+def $update_exit_history_source_valid(S, pdestructionoperation) = false -- otherwise
+def $eager_operation_source_guard(S, pdestructionoperation) = $update_exit_history_source_valid(S, pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = UPDATE_WARNING_EXIT_HISTORY perrorcall z ptask_history*
+def $destructor_operation_postfinish(S, pdestructionoperation) = S[.TODO = (THROW_SEARCH n) :: ptask_history*][.ORIGIN = eps]
+  -- if pdestructionoperation.SOURCE = UPDATE_WARNING_EXIT_HISTORY perrorcall z ptask_history*
+  -- if pdestructionoperation.PENDING = (n)
+  -- if $eager_operation_source_guard(S, pdestructionoperation)
+  -- if $throwable_live(S, n)
+
+;; Unsupported control forms retain the earlier explicit boundary. Both tags
+;; still describe USER cleanup; neither turns exit into a Throwable.
 def $update_warning_exit_parent_call(pdestructorcall) = true
   -- if pdestructorcall.OPERATION = (pdestructionoperation)
   -- if pdestructionoperation.SOURCE = UPDATE_WARNING_EXIT perrorcall z
+def $update_warning_exit_parent_call(pdestructorcall) = true
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = UPDATE_WARNING_EXIT_HISTORY perrorcall z ptask_history*
 def $update_warning_exit_parent_call(pdestructorcall) = false -- otherwise
 def $eager_operation_source_guard(S, pdestructionoperation) = ($update_warning_exit_named(S[.CURRENT = pdestructionoperation.CALLER][.ORIGIN = (perrorcall.SITE)][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT], perrorcall) /\ z = $ntprecision32(z))
   -- if pdestructionoperation.SOURCE = UPDATE_WARNING_EXIT perrorcall z
@@ -302,6 +416,12 @@ dec $update_warning_exit_parent_operation(pstate, pdestructionoperation?, int) :
 def $update_warning_exit_parent_operation(S, (pdestructionoperation), z) = true
   -- if pdestructionoperation.SOURCE = UPDATE_WARNING_EXIT perrorcall z
   -- if pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = eps
+  -- if pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if pdestructionoperation.ORIGIN = eps /\ pdestructionoperation.CONSTCONTEXT = eps /\ pdestructionoperation.CLEANUP = eps
+  -- if $eager_operation_source_guard(S, pdestructionoperation)
+def $update_warning_exit_parent_operation(S, (pdestructionoperation), z) = true
+  -- if pdestructionoperation.SOURCE = UPDATE_WARNING_EXIT_HISTORY perrorcall z ptask_history*
+  -- if pdestructionoperation.COMPLETION = NORMAL /\ $destructor_pending_valid(S, pdestructionoperation.PENDING)
   -- if pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL)
   -- if pdestructionoperation.ORIGIN = eps /\ pdestructionoperation.CONSTCONTEXT = eps /\ pdestructionoperation.CLEANUP = eps
   -- if $eager_operation_source_guard(S, pdestructionoperation)
@@ -317,9 +437,18 @@ def $exit_unwind_tasks(S, ptask :: ptask_tail*, z) = $exit_unwind_tasks(S, ptask
 def $exit_unwind_tasks(S, (THROW_SEARCH n) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*, z) = $exit_unwind_tasks(S, (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*, z)
   -- if $throwable_live(S, n)
   -- if $update_warning_exit_parent_prefix(S, DESTRUCTOR_RESULT pdestructorcall, z)
+rule PhpStep/update-warning-exit-parent-resume: S ~> $destructor_resume_pending($destructor_chain_pending(S[.TODO = (THROW_SEARCH n) :: ptask_tail*][.DESTRUCTION.CALLS = pdestructorcall_tail*], pdestructorcall), pdestructorcall)
+  -- if S.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = UPDATE_WARNING_EXIT_HISTORY perrorcall z ptask_history*
+  -- if $destructor_result_valid(S, pdestructorcall)
+  -- if $throwable_live(S, n)
+  -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
 rule PhpStep/update-warning-exit-parent-cleanup-throw: S ~> S[.COMPLETION = UNSUPPORTED "increment/decrement warning exit parent cleanup throw"]
   -- if S.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
   -- if $update_warning_exit_parent_call(pdestructorcall)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = UPDATE_WARNING_EXIT perrorcall z
   -- if $destructor_result_valid(S, pdestructorcall)
 
 def $task_nodes(UPDATE_WARNING_NOTICE pupdatewarning) = $instance_roots(pupdatewarning.PENDING)

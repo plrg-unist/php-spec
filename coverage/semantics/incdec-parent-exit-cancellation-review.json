@@ -1,0 +1,98 @@
+{
+  "status": "independently_reviewed_private_milestone",
+  "scope": "Pending-exit parent-temporary cleanup Throwables after the inc/dec warning helper finishes (bool/decrement-null restoration or string store skip), for named non-owning callbacks and safe direct CV/live borrowed-cell targets; bounded expression statements in main/functions and blocks/try/catch/finally.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "production_revision": "e06ee9520a4d985c6c1e5f5395a7361162031179",
+  "semantic_sha256": {
+    "spec/semantics/30-storage.watsup": "c12d7da91475aae00cc0afc1430b46e421cfdb5615e237e53de266734ea7c3d4",
+    "spec/semantics/270-eager-destructors.watsup": "ad16bb16255d18c30d5528ea34a326d656c8d7439dbdbc06ff13ed3921e2c00d",
+    "spec/semantics/390-incdec-warning-continuations.watsup": "f3a67ee6321c85a77252f5b80aca798bb402549618b8049ee916fa94f51dfd13"
+  },
+  "engine_basis": [
+    "vendor/php-src/Zend/zend_operators.c: captured bool/decrement-null restoration survives UnwindExit; string helpers skip restoration.",
+    "Zend/zend_vm_def.h: zend_dispatch_try_catch_finally_helper discards fast_call prior exception on UnwindExit and retains caller exception control if cleanup throws.",
+    "Zend/zend_execute.c: cleanup_live_vars drains unfinished temporaries without rewinding after a destructor changes EG(exception); cleanup_unfinished_calls is separate.",
+    "Zend/zend_opcode.c: cmp_live_range sorts increasing start oplines; recognized outer binary holder groups retire before inner groups without reordering container children."
+  ],
+  "contract": [
+    "A root-free ordered caller suffix is reconstructed from real source and current callable context. Only paired FINALLY_RESUME/PHASE normalizes the already-retired outcome; foreign/reordered statements and try markers fail source authority.",
+    "The genuine protected destructor-result step removes its actual task/call markers and uses existing pending chaining and release queues. Only after real queue completion does one pending root return to caller THROW_SEARCH. No old operand/finally owner is revived.",
+    "Bool/null captured commit and registry restoration do not repeat. Bool/null restoration has already occurred; string exit skips it. Later destructor writes, supplied Throwable identity/Previous and live request status survive cancellation.",
+    "Exact source/operator/line/left-operand and scope-return pairs authenticate binary holder cleanup; prior finally outcomes retire first. Unknown owning holders/HELD/control forms refuse before observable cleanup, irrespective of whether cleanup would throw."
+  ],
+  "accepted": {
+    "strict": {
+      "revision": "e06ee9520a4d985c6c1e5f5395a7361162031179",
+      "modules": 385,
+      "mode": "SL main=true; zero PHP runtime credit",
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-07/strict-e06ee9520/report.json"
+    },
+    "source": {
+      "new_ordinary": 7,
+      "repaired_earlier_ordinary": 1,
+      "distinct_ordinary": 8,
+      "cuts": [
+        {
+          "revision": "018f883ee24379feed78c4cb01f9a2ac53e2d8bc",
+          "ordinary": 2,
+          "reports": [
+            "/home/user/workspace/php-spec-evidence-archive/operators-07/smoke-018f883ee-original/report.json",
+            "/home/user/workspace/php-spec-evidence-archive/operators-07/smoke-018f883ee-int23/report.json"
+          ]
+        },
+        {
+          "revision": "5fad9ffd66736cb6a16e940d03bea42a33043c34",
+          "ordinary": 2,
+          "reports": [
+            "/home/user/workspace/php-spec-evidence-archive/operators-07/source-5fad9ffd6-function/report.json",
+            "/home/user/workspace/php-spec-evidence-archive/operators-07/source-5fad9ffd6-kept/report.json"
+          ]
+        },
+        {
+          "revision": "e06ee9520a4d985c6c1e5f5395a7361162031179",
+          "ordinary": 4,
+          "reports": [
+            "/home/user/workspace/php-spec-evidence-archive/operators-07/order-smoke-e06ee9520-two-retired/report.json",
+            "/home/user/workspace/php-spec-evidence-archive/operators-incdec-parent-exit-cancellation-review-07/focus-e06ee9520-suffix/report.json"
+          ]
+        }
+      ],
+      "result": "Exact checked normal stdout/stderr and PHP exit_status, including native/request status23 with model process0; every credited actor uninterrupted and reaped."
+    },
+    "author_reached": {
+      "revision": "5fad9ffd66736cb6a16e940d03bea42a33043c34",
+      "mode": "SL",
+      "fixtures": 3,
+      "conditions": 342,
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-07/state-5fad9ffd6-author-three/report.json",
+      "result": "Genuine parent entry/throw/queue/restore frontiers, main/function context, one pending owner plus its global owner, old kept cell versus rebound caller, status23, root-free ordered-source negatives and public budget resume."
+    },
+    "independent_reached": {
+      "revision": "c521ccfe31116a074272687b6410a27f65a29d3a",
+      "mode": "SL",
+      "fixtures": 3,
+      "conditions": 341,
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-incdec-parent-exit-cancellation-review-07/state-c521ccfe3-three/report.json",
+      "result": "First-before-Last weak retirement, escaped alias death inside Last, earlier finally exception owners2 to1 and Previous null; authenticated order/operator/line/scope/CV/source negatives and genuine public steps/resumption."
+    },
+    "total_reached_conditions": 683,
+    "compatibility": "The ordering correction changes only recognized node lists that differ from current TODO order. Author single-holder/no-pending-finally routes retain the same ordering and source authority; their accepted4/342 cuts are preserved, not rerun. Current source4 and independent341 exercise the changed nested/finally routes."
+  },
+  "preserved_zero_credit": [
+    "/home/user/workspace/php-spec-evidence-archive/operators-07/baseline-8afe327f3-original/report.json: genuine checked Unsupported parent-cleanup throw gap.",
+    "/home/user/workspace/php-spec-evidence-archive/operators-incdec-parent-exit-cancellation-review-07/focus-5fad9ffd6/report.json: genuine native First-before-Last versus reversed model order; unrun suffix was zero.",
+    "/home/user/workspace/php-spec-evidence-archive/operators-incdec-parent-exit-cancellation-review-07/focus-e06ee9520-suffix/report.json: source3 passed but new129 fixture syntax failed pre-runtime; state341 then had zero credit.",
+    "/home/user/workspace/php-spec-evidence-archive/operators-07/strict-e06ee9520/launcher-failure.txt: taskset compact-flag rejection before Python/PHP/SpecTec; corrected only command spacing.",
+    "Initial author prepared owner1 premise was never run; corrected to actual DESTRUCTOR_ENTER owner2 using retained AST/native. Native/frontend preparation and prior unrun drafts receive zero model credit."
+  ],
+  "maintenance": "Exactly the old parent-throw boundary becomes fixed STATUSnormal; its source bytes are unchanged and its old state expectation delegates the native-bound current protocol. No older source campaign or historical state count is renewed.",
+  "required_follow_on": [
+    "Owning callback release before captured commit, unsafe/expired/constrained restoration and replacement/destructor exit remain required.",
+    "Owning call builders/HELD values and enclosing returns/loops/iterators or other unmodeled control histories require source-authenticated cleanup order/control. Wider update locations and full core stay partial."
+  ],
+  "recovery": {
+    "author_archive": "/home/user/workspace/php-spec-evidence-archive/operators-07",
+    "independent_archive": "/home/user/workspace/php-spec-evidence-archive/operators-incdec-parent-exit-cancellation-review-07",
+    "commands": "Use checked source wrappers for selected originals and explicit --sl numeric fixtures. Raw reports retain exact revisions, module/runtime/profile identities, C/UTC/no-script-encoding ENV, commands, exits, groups, fixture inputs and original failures."
+  }
+}

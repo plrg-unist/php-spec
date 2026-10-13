@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Caller-temporary cleanup Throwables now cancel a named inc/dec warning-handler
+exit after the warning helper finishes: bool/null restore their capture while
+strings skip the store. Authentic main/function catch/finally resumes without
+reviving retired operands or a previous finally exception. Post-commit writes and
+request status23 survive; nested binary operands retire in source lifetime order.
+Seven new and one repaired original agree at retained cuts. Three author SL fixtures
+pass 342 conditions and three independent fixtures pass 341 (683 total). The original
+Unsupported baseline, reversed-order failure and fixture/launcher failures retain zero credit.
+Owning callbacks, unsafe targets, wider owning holders and unmodeled enclosing
+control remain required; full core stays partial.
+[Parent cancellation ledger](coverage/semantics/incdec-parent-exit-cancellation-review.json).
+
 Nonfatal runtime diagnostics now skip handler/default delivery while a genuine
 file-compiler fatal receipt remains retained. Trigger_error returns true and an
 undefined-variable read yields null; the new receipt branch excludes fatal-mask errors.
@@ -77,8 +89,8 @@ Previous null, live aliases, fresh nested registry and request status23 are pres
 Seven new and one repaired earlier original agree at 5887/f2a/66cb. Three author
 fixtures pass 240 conditions and three independent fixtures pass 259 (499 total). The original
 Unsupported baseline and native/preparation-only records retain zero credit; older
-campaigns are unchanged. Owning callbacks, unsafe targets and pending-exit parent
-cleanup throw remain required next cuts; full core stays partial.
+campaigns are unchanged. Owning callbacks and unsafe targets remain required;
+parent cleanup cancellation is covered by the current milestone. Full core stays partial.
 [Cancellation ledger](coverage/semantics/incdec-exit-cancellation-review.json).
 The 385-module join over c8aa passes current strict SL and one exact parent-owner
 original at 24dba6266; earlier source/state cuts retain their identities.

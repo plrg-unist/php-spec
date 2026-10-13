@@ -339,6 +339,7 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | UPDATE_WARNING_NOTICE pupdatewarning | UPDATE_WARNING_RESTORE pupdatewarning | UPDATE_WARNING_DONE pupdatewarning
   | UPDATE_WARNING_RELEASE pupdaterestore | UPDATE_WARNING_COMMIT pupdaterestore
   | UPDATE_WARNING_EXIT perrorcall int
+  | UPDATE_WARNING_EXIT_HISTORY perrorcall int ptask*
   | GLOBAL_CONSTANT_METHOD_RESUME porigin porigin porigin nat
   | PARAMETER_CONSTANT_METHOD_RESUME porigin porigin porigin nat
   | GLOBAL_CONSTANT_DUPLICATE porigin pvalue pvalueclass nat pconstantfact* int

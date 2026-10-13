@@ -2,7 +2,8 @@
 
 STATUS = 'explicit_exit'
 EXIT_CODES = {'review-exit-null-status23': 23}
-STATUSES = {'review-exit-handler-local-throw': 'normal'}
+STATUSES = {'review-exit-handler-local-throw': 'normal',
+            'review-exit-parent-throw': 'normal'}
 
 CASES = {
     'review-exit-null-status23': b'''<?php
@@ -100,5 +101,4 @@ echo 'END;';
 
 BOUNDARIES = {
     'review-exit-callable-owner': 'increment/decrement warning exit continuation',
-    'review-exit-parent-throw': 'increment/decrement warning exit parent cleanup throw',
 }

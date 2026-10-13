@@ -52,8 +52,22 @@ retain writes. Catch/finally and subsequent code resume without delivering the
 interrupted result or synthesizing Previous. Live borrowed cells, late peer
 detachment, nested handlers, request status23 and nonthrowing parent-temporary
 cleanup are validated by seven new and one repaired original plus 499 genuine SL
-conditions at separate cuts. Owning callback release, unsafe restoring targets and
-pending-exit parent cleanup throws keep their native obligations and named boundaries.
+conditions at separate cuts. Owning callback release and unsafe restoring targets
+keep their native obligations and named boundaries.
+
+[Caller-temporary cleanup Throwables](../../coverage/semantics/incdec-parent-exit-cancellation-review.json)
+now cancel pending exit after the warning helper finishes: bool/decrement-null
+restore their capture while strings skip the store. Main/function expression
+statements inside bounded blocks/try/catch/finally recover their ordered source
+control without retired operand or prior finally-exception owners. Existing eager
+cleanup drains before caller throw search; destructor writes and request status23
+survive without repeating the scalar store or registry restoration. Pending finally
+outcomes retire before unfinished binary holders, which follow source lifetime
+order while each container retains its own child order. Seven new and one repaired source agree; 342 author
+and 341 independent genuine SL conditions retain separate cuts. The repaired old
+parent control/state expectation is maintained without renewing older counts.
+Wider owning call builders, returns/loops/iterators, owning callbacks and unsafe
+restoration remain required; unknown cleanup ordering stops before observable release.
 
 String dimensions validate the key before rejecting increment/decrement; nested
 string dimensions retain the separate nested-array error. Generic dimension

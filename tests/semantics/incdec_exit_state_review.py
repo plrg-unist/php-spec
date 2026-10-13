@@ -10,6 +10,7 @@ import tempfile
 
 import incdec_exit_protocol as protocol
 import incdec_exit_review_cases as cases
+import incdec_parent_exit_cancellation_protocol as parent_protocol
 
 CASES = ('review-exit-empty-postdec', 'review-exit-caller-destructor',
          'review-exit-registry-replacement', 'review-exit-parent-throw')
@@ -18,70 +19,15 @@ def $update_exit_frontier(S, 3) = true
   -- if S.TODO = (DESTRUCTOR_ENTER pdestructorcall) :: ptask_tail*
   -- if pdestructorcall.OPERATION = (pdestructionoperation)
   -- if pdestructionoperation.SOURCE = EXIT_UNWIND z
-def $update_exit_frontier(S, 4) = true
-  -- if S.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
-  -- if $update_warning_exit_parent_call(pdestructorcall)
-def $update_exit_frontier(S, 5) = true
-  -- if S.TODO = (DESTRUCTOR_ENTER pdestructorcall) :: ptask_tail*
-  -- if $update_warning_exit_parent_call(pdestructorcall)
 '''
 
 
 def parent_throw_conditions(program, path, stdout):
-    prefix, _ = stdout.split(b'C:', 1)
-    return [
-        'S_initial = $php_run(' + program + ', 0, ' + json.dumps(base64.b64encode(bytes(path)).decode()) + ')',
-        'S_initial.COMPLETION = BUDGET',
-        'S_parent = $update_exit_seek(S_initial, 5, 2500)[.COMPLETION = NORMAL]',
-        'S_parent.TODO = (DESTRUCTOR_ENTER pdestructorcall_enter) :: ptask_parent*',
-        '$call_descriptors_valid(S_parent)',
-        'pdestructorcall_enter.OPERATION = (pdestructionoperation_enter)',
-        'pdestructionoperation_enter.SOURCE = UPDATE_WARNING_EXIT perrorcall_enter 0',
-        '$update_warning_exit_parent_operation(S_parent, (pdestructionoperation_enter), 0)',
-        '$update_warning_exit_parent_prefix(S_parent, DESTRUCTOR_ENTER pdestructorcall_enter, 0)',
-        '$exit_unwind_tasks(S_parent, S_parent.TODO, 0)',
-        '$lookup($global_table_view(S_parent).ENV, $ptascii("second")) = (n_second_cell)',
-        'S_parent.STORE[n_second_cell] = DEFINED (POBJECT n_second)',
-        '~$update_warning_exit_parent_operation(S_parent, (pdestructionoperation_enter[.SOURCE = UPDATE_WARNING_EXIT perrorcall_enter 1]), 0)',
-        '~$update_warning_exit_parent_operation(S_parent, (pdestructionoperation_enter[.PENDING = (n_second)]), 0)',
-        '~$update_warning_exit_parent_operation(S_parent, (pdestructionoperation_enter[.VALUE = KNOWN (PINT 41)]), 0)',
-        '~$update_warning_exit_parent_operation(S_parent[.CODE = eps], (pdestructionoperation_enter), 0)',
-        'S_guard = $update_exit_seek(S_parent, 4, 2500)[.COMPLETION = NORMAL]',
-        'S_guard.TODO = (THROW_SEARCH n_second) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*',
-        '$call_descriptors_valid(S_guard)', '$heap_valid($heap_graph(S_guard))',
-        '$destructor_result_valid(S_guard, pdestructorcall)',
-        'pdestructorcall.OPERATION = (pdestructionoperation)',
-        'pdestructionoperation.SOURCE = UPDATE_WARNING_EXIT perrorcall 0',
-        'perrorcall.RESUME = UPDATE_WARNING_RESTORE pupdatewarning',
-        'pupdatewarning.INPUT = PBOOL true',
-        'S_global = $global_table_view(S_guard)',
+    return parent_protocol.conditions('parent-exit-original', program, path, stdout) + [
         '$lookup(S_global.ENV, $ptascii("x")) = (n_x)',
-        '$lookup(S_global.ENV, $ptascii("v")) = (n_value)',
-        '$lookup(S_global.ENV, $ptascii("second")) = (n_second_cell)',
-        'S_guard.STORE[n_x] = DEFINED (PBOOL true)',
-        'S_guard.STORE[n_value] = DEFINED (PINT 100)',
-        'S_guard.STORE[n_second_cell] = DEFINED (POBJECT n_second)',
-        '$task_nodes(THROW_SEARCH n_second) = [HOBJECT n_second]',
-        '$integer_outputs(S_guard.EVENTS) = ([' + ','.join(map(str, prefix)) + '])',
-        '$update_warning_exit_parent_call(pdestructorcall)',
-        '$throwable_marker(DESTRUCTOR_RESULT pdestructorcall)',
-        '~$exception_terminal_tail(S_guard, (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*)',
-        '$eager_bailout_source(S_guard) = eps',
-        '$eager_operation_source_guard(S_guard, pdestructionoperation)',
-        '$update_warning_exit_parent_prefix(S_guard, DESTRUCTOR_RESULT pdestructorcall, 0)',
-        '$exit_unwind_tasks(S_guard, S_guard.TODO, 0)',
-        '~$eager_operation_source_guard(S_guard, pdestructionoperation[.SOURCE = UPDATE_WARNING_EXIT perrorcall[.MESSAGE = eps] 0])',
-        '~$eager_operation_source_guard(S_guard, pdestructionoperation[.SOURCE = UPDATE_WARNING_EXIT perrorcall 2147483648])',
-        '~$eager_operation_source_guard(S_guard[.CODE = eps], pdestructionoperation)',
-        'PhpStep: S_guard ~> S_failure',
-        'S_failure.COMPLETION = UNSUPPORTED "increment/decrement warning exit parent cleanup throw"',
-        'S_failure.STORE = S_guard.STORE', 'S_failure.EVENTS = S_guard.EVENTS',
-        'S_failure.TODO = S_guard.TODO', 'S_failure.ALLOCATIONS = S_guard.ALLOCATIONS',
-        'S_failure.DESTRUCTION = S_guard.DESTRUCTION',
-        '$drive_steps(S_guard, 0) = S_guard[.COMPLETION = BUDGET]',
-        'S_closed = $drive_steps(S_guard, 1)',
-        'S_closed.COMPLETION = UNSUPPORTED "increment/decrement warning exit parent cleanup throw"',
-        'S_closed.EVENTS = S_guard.EVENTS',
+        'S_enter.STORE[n_x] = DEFINED (PBOOL true)',
+        'S_throw.STORE[n_x] = DEFINED (PBOOL true)',
+        'S_restore.STORE[n_x] = DEFINED (PBOOL true)',
     ]
 
 
@@ -212,16 +158,17 @@ def main():
     if out is None:
         out = Path(tempfile.mkdtemp(prefix='incdec-exit-state-review-', dir=protocol.runner.ROOT / '.tools'))
         sys.argv += ['--output', str(out)]
-    wrapper = Path(__file__)
-    before = hashlib.sha256(wrapper.read_bytes()).hexdigest()
+    watched = [Path(__file__), Path(parent_protocol.__file__)]
+    digest = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
+    before = {str(path): digest(path) for path in watched}
     protocol.CASES, protocol.conditions, protocol.cases = CASES, conditions, cases
-    protocol.HELPERS += CALLER_HELPERS
+    protocol.HELPERS = parent_protocol.HELPERS + CALLER_HELPERS
     passed = protocol.main()
-    assert before == hashlib.sha256(wrapper.read_bytes()).hexdigest()
+    assert before == {str(path): digest(path) for path in watched}
     report = json.loads((out / 'report.json').read_bytes())
-    report['helper_inputs'][str(wrapper)] = before
+    report['helper_inputs'].update(before)
     for row in report['rows']:
-        row['boundary_control'] = row['id'] == 'review-exit-parent-throw'
+        row['boundary_control'] = False
     (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
     return passed
 
