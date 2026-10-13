@@ -1,0 +1,91 @@
+{
+  "status": "private_accepted",
+  "target": "PHP 8.5.10 CLI NTS64",
+  "base": "0186877ee54c6f654f93010d9a541e781782408c",
+  "implementation_revision": "70270d8cd4a7cf67a29df95be315dde1e40da34b",
+  "tested_cut": {
+    "module_count": 387,
+    "semantic_diff_sha256": "3258ebe87051da3100aa09ef69ab8df0413dfa078faae0ec1100aa5ded2c12d4",
+    "files_sha256": {
+      "spec/semantics/127-class-runtime.watsup": "1a8a12adf474d8c1797f75debeae63e133fee366b66259133484bdbb324b632a",
+      "spec/semantics/190-declaration-publication.watsup": "0f3c85a86b52f6095d74ba79b0c77ef6fcfded999f74da2fcba25de26877dfeb",
+      "spec/semantics/195-declaration-history.watsup": "990227c6f357f1de2f0b18895f1d9d8f0791fdd3202f489429f1facd95e690ef",
+      "spec/semantics/207-error-handler-runtime.watsup": "616325c84b1b312f8656b9dc11996fa2c71a203e8daee218038c3b11405a99b9",
+      "spec/semantics/270-eager-destructors.watsup": "1db33cfc3b920d933d5c890082c69888c0c9a68540233bf0b9b2748b03d985fb",
+      "tests/semantics/recorded_class_fatal_protocol.py": "1989f94a102a82ff0aec75a169e30e5d67947cda6af44fab9a081cc23c077dbd"
+    }
+  },
+  "behavior": [
+    "A source-authenticated not-early named class statement with an existing user binding drains a retained file-compiler FATAL when the pure base activation query yields its duplicate fatal.",
+    "The delivered message/location are cached; the trace comes from the real current class-binding scope. Its bailout prevents the new class diagnostic and later shutdown callback.",
+    "The existing runtime receipt stores the actual class site, call cause and consumed index. Chronological replay reconstructs the raw duplicate from that source and the user class binding.",
+    "Captured class history restores its exact prefix and derived pre-drain index. Pure producer replay must reproduce the captured journal and tuple/origin/trace, including ordinary no-record failure.",
+    "The original class activation/compiler/linking helpers, request schema/status rules, static retention and opened membership are unchanged; the existing index and journal are updated by the drain."
+  ],
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c: do_bind_class, zend_bind_class_in_slot and zend_class_redeclaration_error (E_COMPILE_ERROR)",
+    "vendor/php-src/Zend/zend.c: zend_error_zstr_at retained fatal delivery before the new diagnostic"
+  ],
+  "accepted": {
+    "exact_cli_sources": 2,
+    "source_cases": [
+      "static-native-v37/file-fatal-shutdown-class-redeclaration",
+      "static-native-v37/eval-fatal-shutdown-class-redeclaration"
+    ],
+    "source_result": "Both checked/program php_error255 tuples match native stdout B|S|alive| and full stderr: file cached-f884 bytes, eval fresh-G913; runner0 and stable inputs.",
+    "public_groups": 2,
+    "file_public_premises": 131,
+    "eval_public_premises": 34,
+    "public_premises": 165,
+    "public_result": "Both full387 SL runners0/true/empty stderr/stable at the same tested cut. Own drain and genuine eval no-record history pass whole public, declaration and heap checks.",
+    "isolated_raw_phpstep_projections": 1,
+    "pure_base_activation_projections": 1,
+    "production_continuations": 2,
+    "counterexamples": "Whole public rejects shortened cached-f and coordinated fresh-G/origin/trace/FROZEN extra records while retaining both genuine records, plus source-site/index/origin/tuple mutations.",
+    "views": "Historical restoration and pure producer replay are lookup/proof views only. File production starts from the real pre-step state independently of the raw projection; eval starts from its genuine parser resume."
+  },
+  "preserved_zero_credit": [
+    "The unchanged file baseline has correct status/stdout/first diagnostic/current trace but reports fresh class G/main9 instead of cached function f/inner2; its agreement credit remains0.",
+    "Native observations, fixture preparation and standalone parse-only checks have no model/runtime agreement credit. Full-file parse precedes the expected missing-module type error.",
+    "Earlier v32/v34 cuts and original failures are not renewed."
+  ],
+  "remaining": [
+    "Other class-link, internal/anonymous/interface/trait fatal producers and formatter combinations remain partial.",
+    "Owning call forms, broader diagnostic queues, E_DONT_BAIL combinations and dynamic-source/callback/lifecycle completeness remain required."
+  ],
+  "artifacts": {
+    "native_pair": {
+      "path": ".tools/dynamic-review-02/static-native-v37/report.json",
+      "sha256": "08df7d95492dbafd4540996d677d0a9150a8d9c0bbe009975b5c52730d139f01"
+    },
+    "unchanged_baseline": {
+      "path": ".tools/dynamic-source-recorded-class-fatal-baseline-17/report.json",
+      "sha256": "d27619a9b5f707ec6e4587f0f810aae73187fd4435ef7fdfac679908f4ef82ea"
+    },
+    "affected_file_source": {
+      "path": ".tools/dynamic-source-recorded-class-fatal-model-18/report.json",
+      "sha256": "f84faaff36894195dcef0cf2e41369882343225a72bd29482ee75190b797a21e"
+    },
+    "independent_eval_source": {
+      "path": ".tools/dynamic-review-02/recorded-class-fatal-model-v1/report.json",
+      "sha256": "4bde888bcd981baf0e3bf6d34381a52bcc657874e9b9cde16b694008d12b9141"
+    },
+    "file_preparation": {
+      "path": ".tools/dynamic-source-recorded-class-fatal-state-01/fixtures-report.json",
+      "sha256": "a640f63bf3c25ce093e09857ec555a8b341f4ea42b15500bd86b93e96b4fdfc5"
+    },
+    "eval_preparation": {
+      "path": ".tools/dynamic-source-recorded-class-fatal-state-02/fixtures-report.json",
+      "sha256": "f28d91c47b1243b3cbda712ff4e9133075e5dc00e95ac62f59967756eec71acd"
+    },
+    "file_public": {
+      "path": ".tools/dynamic-source-recorded-class-fatal-state-01/check-report.json",
+      "sha256": "c1064ba55805950ae08886cc50526b1418ff707af2806a6569d9d11915b990a1"
+    },
+    "eval_public": {
+      "path": ".tools/dynamic-source-recorded-class-fatal-state-02/check-report.json",
+      "sha256": "093eae32e3ee1878a598a09d429036ca1d0980585c07c6c8c65bf3c478065c6d"
+    }
+  },
+  "recovery": "Retain canonical ignored originals/raw and both branches. recorded_class_fatal_protocol.py prepares file-record or eval-ordinary with --phase fixtures/--sources/--output and checks full modules with --sl under90s. Source wrappers use CLI60/process90. Metadata changes need no semantic rerun; no rebuild or full-core claim."
+}

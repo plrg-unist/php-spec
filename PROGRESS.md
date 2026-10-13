@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Deferred named user-class duplicates now drain a retained file fatal with the
+current binding trace. The existing receipt records the real class site/cause/index;
+captured-prefix index and journal replay reject omitted-entry extra records while
+genuine no-record binding remains valid. Five runtime files and the protocol at
+70270d8cd /387 retain two exact sources and two public fronts/165 premises at3258.
+One raw step and one pure base activation projection stay separate from two production
+continuations. The original mismatching baseline retains0; class activation helpers,
+compiler publication, request schema/status rules and retention policy are unchanged.
+Other class/fatal producers and formatter combinations remain partial.
+[Class-drain ledger](coverage/semantics/source-recorded-class-fatal-review.json).
+
 Module398 implements explicit output API reception failures and callback throws.
 Arguments release while running; clean discards live bytes, flush restores its
 upper, and end/get pop before lower routing and sole callback-owner release.

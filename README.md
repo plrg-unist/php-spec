@@ -1568,7 +1568,11 @@ same retained fatal using the actual binding trace. Its receipt records the
 function site and consumed index; the raw failure is reconstructed from historical
 bindings. Captured-prefix replay rejects omitted-entry records while keeping
 genuine no-record binding valid. [Function-drain review](coverage/semantics/source-recorded-function-fatal-review.json)
-records this separate cut. Other fatal producers, broader queues, formatter
+records this separate cut. Deferred named user-class duplicates now deliver the
+retained diagnostic with the current binding trace. Their real-statement receipt
+and prefix replay reject omitted entries while ordinary class activation remains
+unchanged. [Class-drain review](coverage/semantics/source-recorded-class-fatal-review.json)
+records the focused source/public checks. Other fatal producers, broader queues, formatter
 combinations and destructor/return interactions remain required.
 [Real closure instances](docs/semantics/SOURCE-CLOSURES.md) now retain explicit captures,
 selected callee owners and per-instance statics through invocation and cleanup.
