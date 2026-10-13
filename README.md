@@ -1448,7 +1448,11 @@ the focused source and public checks. `E_USER_ERROR` now captures the dynamic
 source location and retires authenticated execution contexts before shutdown.
 Static cells retain their existing roots while shutdown evals and destructors of
 new objects run. [Fatal review](coverage/semantics/source-static-fatal-review.json)
-records source and public checks. Wider fatal/compiler and destructor/return
+records source and public checks. Hard bailout now sets request status255 before
+shutdown: a direct string exit preserves it, while integer/default exits replace
+it. [Fatal-status review](coverage/semantics/source-static-fatal-status-review.json)
+records this separate cut. Caught shutdown-exit replacement that returns to frozen
+fatal completion, wider fatal/compiler producers and destructor/return
 interactions remain required.
 [Real closure instances](docs/semantics/SOURCE-CLOSURES.md) now retain explicit captures,
 selected callee owners and per-instance statics through invocation and cleanup.

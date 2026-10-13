@@ -7,6 +7,16 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Hard bailout now records request EXITSTATUS255 before shutdown. Direct callback
+strings preserve it; integer/default exits replace it and skip later callbacks.
+One-line257 and protocol20db1b23e /382 retain four exact source tuples and three
+public groups/238 premises at the single6c91c81d cut. Three raw exit projections
+stay separate from three production fatal and final-exit continuations; the
+original exit0/native255 baseline remains0. Static roots/destructor policy are
+unchanged. Caught shutdown-exit replacement returning to frozen fatal completion
+remains a next observer gap (native v19).
+[Fatal-status ledger](coverage/semantics/source-static-fatal-status-review.json).
+
 Ticks393 is independently accepted; its current383 composition is checked.
 Source-derived
 marker plans cover lexical frequencies, compiler adjacency/control and certified

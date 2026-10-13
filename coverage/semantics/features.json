@@ -10194,28 +10194,32 @@
         "spec/semantics/30-storage.watsup",
         "spec/semantics/40-control.watsup",
         "spec/semantics/84-call-integrity.watsup",
-        "bin/php-semantics"
+        "bin/php-semantics",
+        "spec/semantics/257-request-destructors.watsup"
       ],
       "helper_tests": [
         "tests/semantics/exit_compiler.py",
         "tests/semantics/exit_protocol.py",
         "tests/semantics/source_static_exit_protocol.py",
-        "tests/semantics/source_static_exit_status_protocol.py"
+        "tests/semantics/source_static_exit_status_protocol.py",
+        "tests/semantics/source_static_fatal_status_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/exit_expressions.py",
         "tests/semantics/exit_cases.json",
         "coverage/semantics/source-static-exit-review.json",
-        "coverage/semantics/source-static-exit-status-review.json"
+        "coverage/semantics/source-static-exit-status-review.json",
+        "coverage/semantics/source-static-fatal-status-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_builtin_functions.c",
         "vendor/php-src/Zend/zend_API.c",
         "vendor/php-src/Zend/zend_vm_def.h",
         "docs/semantics/EXIT.md",
-        "coverage/semantics/exit-review.json"
+        "coverage/semantics/exit-review.json",
+        "vendor/php-src/main/main.c"
       ],
-      "review": "Exit/die147/148 models genuine intrinsic identities, literal/dynamic/first-class/pipe calls, ordered positional/named/array-unpacked binding, weak/strict string|int conversion, builtin receive-error traces and distinct signed32 EXITED completion with CLI low8 status. Source comparisons claim exact observable tuples only; model tags and paused ownership/authenticity assertions are separate. Wider shutdown/destructors, output/error/Stringable callbacks and general Throwable/catch/finally remain open; no full request-lifecycle claim. See exit-review.json and EXIT.md. Source-static148/388 exit continuation now retains authentic eval/file frame ownership until table release, including callee/mixed-source order, saved destructor reentry and escaped references. source-static-exit-review.json keeps that scoped source/state cut separate. Source-owned throwing exit destructors now retain user catch/remaining-slot execution and Previous identity. Request signed32 EXITSTATUS survives caught replacement; integer/default calls overwrite it, strings preserve it, and nested resets remain independent of saved EXIT control. source-static-exit-status-review.json separates owner and status source/public cuts. Hard-fatal shutdown roots and wider lifecycle remain open; no full request-lifecycle closure."
+      "review": "Exit/die147/148 models genuine intrinsic identities, literal/dynamic/first-class/pipe calls, ordered positional/named/array-unpacked binding, weak/strict string|int conversion, builtin receive-error traces and distinct signed32 EXITED completion with CLI low8 status. Source comparisons claim exact observable tuples only; model tags and paused ownership/authenticity assertions are separate. Wider shutdown/destructors, output/error/Stringable callbacks and general Throwable/catch/finally remain open; no full request-lifecycle claim. See exit-review.json and EXIT.md. Source-static148/388 exit continuation now retains authentic eval/file frame ownership until table release, including callee/mixed-source order, saved destructor reentry and escaped references. source-static-exit-review.json keeps that scoped source/state cut separate. Source-owned throwing exit destructors now retain user catch/remaining-slot execution and Previous identity. Request signed32 EXITSTATUS survives caught replacement; integer/default calls overwrite it, strings preserve it, and nested resets remain independent of saved EXIT control. source-static-exit-status-review.json separates owner and status source/public cuts. Hard bailout257 now sets request EXITSTATUS255 before shutdown; direct callback strings preserve it while integer/default exits overwrite it and skip later callbacks. source-static-fatal-status-review.json records separate exact sources and genuine public status fronts. Caught shutdown-exit replacement returning to frozen fatal completion still needs observation support. Wider fatal producers/lifecycle remain open; no full request-lifecycle closure."
     },
     {
       "id": "control.cleanup",
@@ -15884,19 +15888,22 @@
       "implementation": [
         "spec/semantics/207-error-handler-runtime.watsup",
         "spec/semantics/231-shutdown-functions.watsup",
-        "spec/semantics/270-eager-destructors.watsup"
+        "spec/semantics/270-eager-destructors.watsup",
+        "spec/semantics/257-request-destructors.watsup"
       ],
       "helper_tests": [
-        "tests/semantics/source_static_fatal_protocol.py"
+        "tests/semantics/source_static_fatal_protocol.py",
+        "tests/semantics/source_static_fatal_status_protocol.py"
       ],
       "source_tests": [
-        "coverage/semantics/source-static-fatal-review.json"
+        "coverage/semantics/source-static-fatal-review.json",
+        "coverage/semantics/source-static-fatal-status-review.json"
       ],
       "evidence": [
         "vendor/php-src/main/main.c",
         "vendor/php-src/Zend/zend.c"
       ],
-      "review": "Literal E_USER_ERROR in parser-backed eval/file units captures its real source filename before fatal shutdown, including a false-returning registered handler. The existing fatal snapshot retires execution contexts while persistent static cells remain roots. Public history checks authenticate captured producer origin and source-end authority; malformed origin/END controls are rejected. Wider fatal producers, reporting/handler/compiler combinations and lifecycle cleanup remain required."
+      "review": "Literal E_USER_ERROR in parser-backed eval/file units captures its real source filename before fatal shutdown, including a false-returning registered handler. The existing fatal snapshot retires execution contexts while persistent static cells remain roots. Public history checks authenticate captured producer origin and source-end authority; malformed origin/END controls are rejected. Hard bailout257 now sets request EXITSTATUS255 before shutdown; direct callback strings preserve it while integer/default exits overwrite it and skip later callbacks. source-static-fatal-status-review.json records separate exact sources and genuine public status fronts. Caught shutdown-exit replacement returning to frozen fatal completion still needs observation support. Wider fatal producers, reporting/handler/compiler combinations and lifecycle cleanup remain required."
     },
     {
       "id": "diagnostics.compile-fatal",
@@ -18287,7 +18294,8 @@
         "tests/semantics/shutdown_render_state.py",
         "tests/semantics/eager_destructor_state_review.py",
         "tests/semantics/eager_fatal_state_review.py",
-        "tests/semantics/source_static_fatal_protocol.py"
+        "tests/semantics/source_static_fatal_protocol.py",
+        "tests/semantics/source_static_fatal_status_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/shutdown_functions.py",
@@ -18300,7 +18308,8 @@
         "tests/semantics/eager_destructor_review_cases.json",
         "tests/semantics/eager_fatal_review.py",
         "tests/semantics/eager_fatal_review_cases.json",
-        "coverage/semantics/source-static-fatal-review.json"
+        "coverage/semantics/source-static-fatal-review.json",
+        "coverage/semantics/source-static-fatal-status-review.json"
       ],
       "evidence": [
         "vendor/php-src/ext/standard/basic_functions.c",
@@ -18316,7 +18325,7 @@
         "coverage/semantics/eager-destructors-review.json",
         "coverage/semantics/eager-destructor-review.json"
       ],
-      "review": "231 caches accepted ordinary source callable families and copied arguments after all SEND effects, preserving private/rebound permission, selected receivers and embedded array references. Ordered weak C calls run after normal/exit/fatal and serviced compiler stops; append, handled throw, callback exit, authentic warning continuation, exact original/converted arguments and ownership remain distinct. Diagnostics freeze after renderer callbacks and before queue entry. Wider callable dependencies, GC, output and later freeing remain required; queue entries stay owned through DONE and complete request cleanup is not claimed. User formatter overrides use existing176 calls; handled throws retain the original C continuation, and actual237 destinations freeze after rendering. Author29 source tuples and three/149 state checks retain separate cuts; independent coverage is recorded in its ledger. Actual228 caches retired imported-maker permission; actual240 default effects keep their owners. Runtime/compile severity is captured before callback reporting writes, with distinct native mask controls. Request-stage destructors257 follow the queue and are reviewed separately; shutdown entries remain owned until later freeing. Module270 orders frozen fatal emission, original-Throwable release, then stage1; native abandoned C receiver owners survive bailout into stage2. Parser-backed USERFATAL now captures the actual source origin and retires execution contexts through an authenticated fatal snapshot, even without transient frame roots. Static cells retain their existing bailout roots; shutdown source reentry and new-object destruction reuse the established retention/destructor policy. source-static-fatal-review.json records exact source and public-origin/END checks. Wider fatal/compiler and later freeing behavior remains partial."
+      "review": "231 caches accepted ordinary source callable families and copied arguments after all SEND effects, preserving private/rebound permission, selected receivers and embedded array references. Ordered weak C calls run after normal/exit/fatal and serviced compiler stops; append, handled throw, callback exit, authentic warning continuation, exact original/converted arguments and ownership remain distinct. Diagnostics freeze after renderer callbacks and before queue entry. Wider callable dependencies, GC, output and later freeing remain required; queue entries stay owned through DONE and complete request cleanup is not claimed. User formatter overrides use existing176 calls; handled throws retain the original C continuation, and actual237 destinations freeze after rendering. Author29 source tuples and three/149 state checks retain separate cuts; independent coverage is recorded in its ledger. Actual228 caches retired imported-maker permission; actual240 default effects keep their owners. Runtime/compile severity is captured before callback reporting writes, with distinct native mask controls. Request-stage destructors257 follow the queue and are reviewed separately; shutdown entries remain owned until later freeing. Module270 orders frozen fatal emission, original-Throwable release, then stage1; native abandoned C receiver owners survive bailout into stage2. Parser-backed USERFATAL now captures the actual source origin and retires execution contexts through an authenticated fatal snapshot, even without transient frame roots. Static cells retain their existing bailout roots; shutdown source reentry and new-object destruction reuse the established retention/destructor policy. source-static-fatal-review.json records exact source and public-origin/END checks. Hard bailout257 now sets request EXITSTATUS255 before shutdown; direct callback strings preserve it while integer/default exits overwrite it and skip later callbacks. source-static-fatal-status-review.json records separate exact sources and genuine public status fronts. Caught shutdown-exit replacement returning to frozen fatal completion still needs observation support. Wider fatal/compiler and later freeing behavior remains partial."
     },
     {
       "id": "lifecycle.exit-unwind",
