@@ -1920,6 +1920,11 @@ child. Parent owns no physical slot; Child owns 200 then 300, while the inherite
 getter uses Parent's private method and returns 13. Called scope follows the receiver.
 One original and three focused states are recorded in the
 [virtual-root inherited-getter review](coverage/semantics/virtual-parent-plain-inherited-getter-review.json).
+A virtual `mixed` getter also passes to a plain `int` child. The child keeps its
+integer slot 200→300, while the inherited getter keeps Parent's `mixed` return
+declaration and returns the string "13". Illegal widening reports the subtype
+property error at the child class. Two originals and four focused states are in
+[the plain-child covariance review](coverage/semantics/virtual-parent-covariant-plain-inherited-getter-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`

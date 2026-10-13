@@ -255,6 +255,15 @@ and owns 200 then 300; the inherited Parent function/lexical/private/trace ident
 and receiver called scope stay distinct. Active source backing bypass is false
 and the getter returns 13 independently of the slot;
 [virtual-root inherited-getter review](../../coverage/semantics/virtual-parent-plain-inherited-getter-review.json).
+Plain children under that closed virtual get-only family also admit compatible
+covariance. Actual source/own descriptors authenticate the prepublication family;
+the linked edge additionally requires the existing scoped subtype result. A mixed
+Parent getter on an int Child retains its original mixed return declaration and
+returns the string "13", independently of the integer slot 200→300. Reverse
+widening receives "must be subtype of int" at the child class, with no synthesized
+child getter declaration or hook-line reattribution. Function/private/called scope
+and false active source bypass remain unchanged;
+[plain-child covariance review](../../coverage/semantics/virtual-parent-covariant-plain-inherited-getter-review.json).
 Other inherited getter roots/shapes and wider
 type-presence combinations remain required.
 Backed-parent inheritance retains invariant types; broader type equivalence and

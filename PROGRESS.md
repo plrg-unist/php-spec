@@ -1563,6 +1563,17 @@ new classifier/layout/default/store/owner or lifetime behavior is claimed. Wider
 roots and hook/type/reference families remain required.
 [Virtual-root inherited-getter review](coverage/semantics/virtual-parent-plain-inherited-getter-review.json).
 
+Closed virtual get-only Parent to plain Child now recognizes covariance separately
+from linked compatible admission. The selected mixed→int original preserves Parent's
+mixed getter/string "13" while Child's slot changes 200 to 300; reverse int→mixed
+reports the subtype property error at class13 before Child publication. No getter
+return/coercion or physical/default/layout/store/owner rules changed. Strict385 and
+source2 pass at `5012d481`; four separate states at `c5bfa53f` pass controls95
+(41 reached, 54 derived), Child67, writer76 and reverse26: 210 reached plus 54 derived.
+Natives were observed separately; the positive wrong-invariant baseline keeps zero
+agreement. Wider types/roots/flags/hook families remain required.
+[Plain-child covariance review](coverage/semantics/virtual-parent-covariant-plain-inherited-getter-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization

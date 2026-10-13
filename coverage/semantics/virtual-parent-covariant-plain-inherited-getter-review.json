@@ -1,0 +1,237 @@
+{
+  "scope": "Named public plain Child under a closed virtual get-only Parent across Bridge: explicit mixed Parent to int Child is covariant, retains Parent mixed getter returning STRING13 versus physical Child200 then300; reverse int Parent to mixed Child fails with subtype property diagnostic at class13.",
+  "implementation": {
+    "files": [
+      "spec/semantics/382-backed-get-hooks.watsup"
+    ],
+    "engine": [
+      "vendor/php-src/Zend/zend_inheritance.c: zend_duplicate_function, do_inherit_property, inherit_property_hook, zend_verify_hooked_property",
+      "vendor/php-src/Zend/zend_inheritance.c: prop_get_variance, verify_property_type_compatibility, emit_incompatible_property_error"
+    ],
+    "change": "Authenticated plain-child/closed-virtual-parent family is independent of compatibility and needs no unpublished child link. Existing plain_edge admits differing TYPE only when the existing scoped covariance result is PVCOMPATIBLE, retaining actual child link/layout. Covariance family recognition excludes invariant fallback; incompatible plain child uses subtype property wording and existing class-site fallback. Existing nearest-getter recursion, function/return contract, local hook/source classifiers, physical/default/layout/coercion/store/owner rules are unchanged."
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor pin 34308a6666b2d489c509541ea9befea9e2b42348",
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "binaries": {
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "strict_compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+    "AL_compiler_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "SL_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "absent",
+    "jobs": 1
+  },
+  "recorders": {
+    "positive_native_source_sha256": "e219549e30ec1c628c99e4f38a6bb396516e2d51bdd9bcbe352be3691decef6b",
+    "positive_catalogue_sha256": "3f52579c63dfdf3a9c9aa682637edfec44aeb553765b44a74090b5aea7f43485",
+    "reverse_native_source_sha256": "bd4ca1fac55970109cfb66351df6da40adda61eee5db2727217f5a0d845c9e1d",
+    "reverse_catalogue_sha256": "e1fcf4c6450cfbec1827912c8acf7781c406603fe9234d029e2e78f966ea5114",
+    "checked_source_sha256": "46d75a5952fd1f4f48d201ae0dc5c7489e155392cb6590b95aead8577ef68619",
+    "checked_catalogue_sha256": "bcfb2f1c8723b135477d4d596fd82d1e01a67ec13d6b4bd439516243303cd0a8",
+    "strict_sha256": "f1a91451f978f7dce3874139945f316f2fd7b819a6c010009e4a94a68cd1564b",
+    "protocol_sha256": "881334ad921295b507425a4f79d279c450dc5e05463093081df4eb5e7be00900"
+  },
+  "natives": [
+    {
+      "id": "scalar",
+      "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-parent-covariant-plain-inherited-getter-probes-59/native-first/report.json",
+      "report_sha256": "9dfc420bcbf9446f11bfad6df2dadcb2ce9e3129cc9b6dad4dd3cfcd27f85052",
+      "revision": "a377bade99cb362848d63433402cc8f3dc56b9b5",
+      "process_observations": 1,
+      "exit": 0,
+      "completed": true,
+      "stable_and_reaped": true,
+      "source_agreements": 0,
+      "result": "Legal mixed-to-int override: ParentEMPTY/Child200/Grand300, CS/GS prove STRING13 retained under Parent function/private/called scope."
+    },
+    {
+      "id": "reverse",
+      "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-parent-covariant-plain-inherited-getter-reverse-probes-59/native-first/report.json",
+      "report_sha256": "5da5197c14b7f09841b950c8bdbc443e8939296c9e2078028bda07a2d0c0ec04",
+      "revision": "a377bade99cb362848d63433402cc8f3dc56b9b5",
+      "process_observations": 1,
+      "exit": 255,
+      "completed": true,
+      "stable_and_reaped": true,
+      "source_agreements": 0,
+      "result": "Illegal int-to-mixed override: actual subtype-of-int property fatal/class13, empty stdout, exact stack suffix and exit255."
+    }
+  ],
+  "unchanged_baseline": {
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-parent-covariant-plain-inherited-getter-probes-59/accepted-current-baseline/report.json",
+    "report_sha256": "46bb833652af520281191bc5be95e9a259c42d718780a488964ffdd1953829a0",
+    "revision": "a377bade99cb362848d63433402cc8f3dc56b9b5",
+    "checked_originals": 1,
+    "source_agreements": 0,
+    "stable_and_reaped": true,
+    "seconds": 8.55605435371399,
+    "result": "Positive source genuinely checked but wrongly statically rejected: invariant must-be-mixed property message/class13, logical255/CLI0, empty stdout. Zero source agreement. Reverse direction was freshly measured native-only before patch; no reverse unchanged-baseline or positive native replay."
+  },
+  "strict": {
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-parent-covariant-plain-inherited-getter-probes-59/virtual-parent-covariant-plain-inherited-getter-compiler-oppazfm5/report.json",
+    "report_sha256": "14f26116c3d741ba5fbe92239d1b4c4a50b5b737f03990daeb9ee4fb2f078832",
+    "revision": "5012d481ff0eb79230982b8351a1632ae95c8800",
+    "modules": 385,
+    "seconds": 6.507230520248413,
+    "cap_seconds": 60,
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "result": "PASS exact five-line SL initialization; exit0/empty stderr/stable4/reaped."
+  },
+  "sources": {
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-parent-covariant-plain-inherited-getter-checked-probes-59/changed-model-p6v03c0k/report.json",
+    "report_sha256": "a9c63bc560712748783f6fc9371a335d2f2c00592f87e31d3914840cfb573e8b",
+    "revision": "5012d481ff0eb79230982b8351a1632ae95c8800",
+    "checked_originals": 2,
+    "source_agreements": 2,
+    "cases": [
+      {
+        "id": "scalar",
+        "status": "normal",
+        "logical_exit": 0,
+        "seconds": 19.46266198158264
+      },
+      {
+        "id": "reverse",
+        "status": "static_rejection",
+        "logical_exit": 255,
+        "seconds": 8.996198177337646
+      }
+    ],
+    "native_cap_seconds": 45,
+    "model_cap_seconds": 60,
+    "outer_cap_seconds": 75,
+    "steps": 100000,
+    "result": "Two genuine checked originals; positive normal/STRING13 and reverse static subtype/class13 match their separately retained native full stdout/stderr/logical exits exactly, stable3/reaped."
+  },
+  "catalogue": {
+    "path": "tests/semantics/virtual_parent_covariant_plain_inherited_getter_cases.json",
+    "sha256": "d436f8f4c1f3b7becbbb687897651414f40536aa69d60c8d31ff29c38d427cf1",
+    "sources": [
+      {
+        "path": "tests/semantics/virtual-parent-covariant-plain-inherited-getter.php",
+        "sha256": "858c245f8552f450e538f52c9feec815f4f341ce4450a3b9d38e83c6d80c4c60"
+      },
+      {
+        "path": "tests/semantics/virtual-parent-covariant-plain-inherited-getter-reverse.php",
+        "sha256": "3db8e20f87f693c1ea0666fc0ef81dcf9855e27fa414124d3422c3b7049954df"
+      }
+    ],
+    "origin": "Actual separate native9dfc420b and5da5197c full streams/profile; PHP copies exact, reverse stderr retains {FILE} template."
+  },
+  "state": {
+    "cuts": [
+      {
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-parent-covariant-plain-inherited-getter-protocol-i_5fb379/report.json",
+        "report_sha256": "b7f4cb5617a849574718ed3663e51968a515be8f5d7911421c2e541e3b641837",
+        "revision": "c5bfa53f137f6259721e20b71411a79407f7729c",
+        "group": "controls",
+        "fixture_sha256": "487d3b328ac2343f58fff6bcb28aa4776ed84db08c815c0046c468862e399b54",
+        "reached": 41,
+        "derived": 54,
+        "AL_seconds": 5.453208684921265,
+        "SL_seconds": 16.351086378097534,
+        "AL_cap_seconds": 90,
+        "SL_cap_seconds": 90,
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "result": "PASS actual true; exits0/empty stderr/no timeout/survivors, stable4/reaped."
+      },
+      {
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-parent-covariant-plain-inherited-getter-protocol-84m0n46s/report.json",
+        "report_sha256": "5e10d6e7e7b61a755e42f41842b64b6f0315297cffdf91c2c6934ad3a61b4a38",
+        "revision": "c5bfa53f137f6259721e20b71411a79407f7729c",
+        "group": "entry",
+        "fixture_sha256": "6f7090459a59c5f7ebdcab49d188d3644a0fc7733fa97f61dcbb5f6427471846",
+        "reached": 67,
+        "derived": 0,
+        "AL_seconds": 5.4646315574646,
+        "SL_seconds": 25.35714817047119,
+        "AL_cap_seconds": 90,
+        "SL_cap_seconds": 90,
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "result": "PASS actual true; exits0/empty stderr/no timeout/survivors, stable4/reaped."
+      },
+      {
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-parent-covariant-plain-inherited-getter-protocol-e3q6hhj8/report.json",
+        "report_sha256": "a2991a5419419ce311f5e760b71a8be17cbe3cfe44985f55751ac3853b16e8d0",
+        "revision": "c5bfa53f137f6259721e20b71411a79407f7729c",
+        "group": "write",
+        "fixture_sha256": "eb86de8d092e1b191fbc83bbf0e62a297d3c59f18fe11e59edbdc794842ab279",
+        "reached": 76,
+        "derived": 0,
+        "AL_seconds": 5.469939470291138,
+        "SL_seconds": 31.35754156112671,
+        "AL_cap_seconds": 90,
+        "SL_cap_seconds": 90,
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "result": "PASS actual true; exits0/empty stderr/no timeout/survivors, stable4/reaped."
+      },
+      {
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-parent-covariant-plain-inherited-getter-protocol-ijf52qr3/report.json",
+        "report_sha256": "451da7e00ff1d3b93b46dd13fd94a9a7b9c5283e16d2f38d094d8a5b0294c2aa",
+        "revision": "c5bfa53f137f6259721e20b71411a79407f7729c",
+        "group": "invalid",
+        "fixture_sha256": "49212a0e55319a6549e724f304534a64de5d65157aaf5cdb5eed314cdc5bb9d0",
+        "reached": 26,
+        "derived": 0,
+        "AL_seconds": 5.460765600204468,
+        "SL_seconds": 9.918164253234863,
+        "AL_cap_seconds": 90,
+        "SL_cap_seconds": 90,
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "result": "PASS actual true; exits0/empty stderr/no timeout/survivors, stable4/reaped."
+      }
+    ],
+    "reached_premises": 210,
+    "derived_premises": 54,
+    "total_premises": 264,
+    "application_evaluations": 4,
+    "source_agreements": 0,
+    "counting": "Four separate selected invocations: controls41 reached+54 derived, entered Child67, writer76, reverse rejection26. Positive selectors include genuine setup5; reverse has sole direct php_run0 setup. AL90/SL90/jobs1; no combined invocation claim."
+  },
+  "state_contract": [
+    "Actual Parent mixed TYPE/signature and empty physical slots differ from Child int TYPE/default200; positive covariance family and PVCOMPATIBLE edge resolve original Parent getter/function/lexical/private/trace, called receiver. Descriptor helper Parent(INITIAL) does not imply a physical Parent slot.",
+    "Fifty-four derived clauses distinguish prelink family proof from actual linked edge/resolver. Family fuel0 refuses/1 succeeds; Child/Bridge link corruption leaves family true but refuses edge/resolver. Actual own/default/TYPE/flag/byref/source/closed-root controls are scoped; D45 self-origin matching is task-local, source/default mutations are derived only.",
+    "Real entered Child and Grand after ASSIGN35 retain Parent mixed return declaration and actual INTERNED_STRING carrier13, not a child-int coercion. Physical Child-origin slot remains200 then300 and active source bypass false; authentic result continuations and caller/private scope are retained.",
+    "Genuine reverse php_run0 returns subtype property text/class13 with Parent int signature, own Child mixed/default200, family recognition true/PVINCOMPATIBLE and no Child/Grand registry or links. Child local getter is absent; error_site EPS preserves class-line rejection before publication."
+  ],
+  "preserved_failures": [],
+  "remaining": [
+    "Wider nominal/union/intersection covariance, type-presence/equivalence and repeated plain covariance beyond this selected builtin mixed/int slice.",
+    "Source headers/flags/roots, set/ref/trait/attributed hooks, wider receivers/quiet/operator/indirect families and hooked iteration remain partial.",
+    "No new return coercion, physical/default/layout/store/owner/lifetime/GC implementation or complete hook-family claim. All prior CLASS58 and historical cuts retain their original identities."
+  ],
+  "commands": [
+    "python3 .tools/virtual-parent-covariant-plain-inherited-getter-probes-59/run.py native --revision a377bade99cb362848d63433402cc8f3dc56b9b5",
+    "python3 .tools/virtual-parent-covariant-plain-inherited-getter-probes-59/run.py baseline --revision a377bade99cb362848d63433402cc8f3dc56b9b5",
+    "python3 .tools/virtual-parent-covariant-plain-inherited-getter-reverse-probes-59/run.py native --revision a377bade99cb362848d63433402cc8f3dc56b9b5",
+    "python3 .tools/virtual-parent-covariant-plain-inherited-getter-probes-59/run-compiler.py a377bade99cb362848d63433402cc8f3dc56b9b5 5012d481ff0eb79230982b8351a1632ae95c8800",
+    "python3 .tools/virtual-parent-covariant-plain-inherited-getter-checked-probes-59/run.py changed --revision 5012d481ff0eb79230982b8351a1632ae95c8800",
+    "python3 tests/semantics/virtual_parent_covariant_plain_inherited_getter_protocol.py --revision c5bfa53f137f6259721e20b71411a79407f7729c --group controls",
+    "python3 tests/semantics/virtual_parent_covariant_plain_inherited_getter_protocol.py --revision c5bfa53f137f6259721e20b71411a79407f7729c --group entry",
+    "python3 tests/semantics/virtual_parent_covariant_plain_inherited_getter_protocol.py --revision c5bfa53f137f6259721e20b71411a79407f7729c --group write",
+    "python3 tests/semantics/virtual_parent_covariant_plain_inherited_getter_protocol.py --revision c5bfa53f137f6259721e20b71411a79407f7729c --group invalid"
+  ],
+  "recovery": "Original positive/reverse native, positive unchanged baseline, strict/source2 and four state raw paths remain in activeprivate32. Permanent catalogue/protocol regenerate only these focused selectors. Reverse native was fresh and distinct; no historical replay, failed actor or source/runtime coercion divergence."
+}
