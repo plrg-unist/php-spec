@@ -1,5 +1,23 @@
 [
   {
+    "id": "weak-map-gc-unheld-66",
+    "source": "<?php\nclass EphemeronValue { public $key = null; }\n$map = new WeakMap();\n$key = new stdClass();\n$value = new EphemeronValue();\n$keyWeak = WeakReference::create($key);\n$valueWeak = WeakReference::create($value);\n$mapWeak = WeakReference::create($map);\n$map[$key] = $value;\n$value->key = $key;\n$other = new stdClass();\n$other->self = $other;\n$otherWeak = WeakReference::create($other);\nunset($value, $key, $other);\necho ($keyWeak->get() === null ? \"key-null|\" : \"key-live|\");\necho ($valueWeak->get() === null ? \"value-null|\" : \"value-live|\");\necho ($otherWeak->get() === null ? \"other-null|\" : \"other-live|\");\necho \"collect|\", gc_collect_cycles(), \"|\";\necho ($keyWeak->get() === null ? \"key-null|\" : \"key-live|\");\necho ($valueWeak->get() === null ? \"value-null|\" : \"value-live|\");\necho ($otherWeak->get() === null ? \"other-null|\" : \"other-live|\");\necho ($mapWeak->get() === $map ? \"map-live|\" : \"map-other|\");\nunset($map);\necho ($mapWeak->get() === null ? \"map-null|\" : \"map-live|\");\necho \"END\";\n",
+    "source_sha256": "4f7ce4f9d125515ae138be7c2c4fc047777b52f49588b6b429a4af280f5c92d4",
+    "stdout": "key-live|value-live|other-live|collect|3|key-null|value-null|other-null|map-live|map-null|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "weak-map-gc-held-key-66",
+    "source": "<?php\nclass EphemeronValue { public $key = null; }\n$map = new WeakMap();\n$key = new stdClass();\n$value = new EphemeronValue();\n$keyWeak = WeakReference::create($key);\n$valueWeak = WeakReference::create($value);\n$mapWeak = WeakReference::create($map);\n$map[$key] = $value;\n$value->key = $key;\n$other = new stdClass();\n$other->self = $other;\n$otherWeak = WeakReference::create($other);\nunset($value, $other);\necho \"held-key|\", gc_collect_cycles(), \"|\";\necho ($keyWeak->get() === null ? \"key-null|\" : \"key-live|\");\necho ($valueWeak->get() === null ? \"value-null|\" : \"value-live|\");\necho ($otherWeak->get() === null ? \"other-null|\" : \"other-live|\");\nunset($key);\necho \"unheld|\", gc_collect_cycles(), \"|\";\necho ($keyWeak->get() === null ? \"key-null|\" : \"key-live|\");\necho ($valueWeak->get() === null ? \"value-null|\" : \"value-live|\");\necho ($otherWeak->get() === null ? \"other-null|\" : \"other-live|\");\necho ($mapWeak->get() === $map ? \"map-live|\" : \"map-other|\");\nunset($map);\necho ($mapWeak->get() === null ? \"map-null|\" : \"map-live|\");\necho \"END\";\n",
+    "source_sha256": "4e415d2578ab1e33eefdc60f12142a192489f0a7bdcccb7a3284afd74e116237",
+    "stdout": "held-key|1|key-live|value-live|other-null|unheld|2|key-null|value-null|other-null|map-live|map-null|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
     "id": "weak-map-freeing-key-read-65",
     "source": "<?php\nclass FirstValue {\n    public function __destruct() {\n        global $keyWeak, $secondMap, $secondWeak;\n        echo ($keyWeak->get() === null ? \"first-key-null|\" : \"first-key-live|\");\n        echo ($secondMap[$keyWeak->get()] === $secondWeak->get() ? \"second-entry-same|\" : \"second-entry-wrong|\");\n        echo \"A|\";\n    }\n}\nclass SecondValue {\n    public function __destruct() {\n        global $keyWeak;\n        echo ($keyWeak->get() === null ? \"second-key-null|\" : \"second-key-live|\");\n        echo \"B|\";\n    }\n}\n$secondMap = new WeakMap();\n$firstMap = new WeakMap();\n$key = new stdClass();\n$first = new FirstValue();\n$second = new SecondValue();\n$firstWeak = WeakReference::create($first);\n$secondWeak = WeakReference::create($second);\n$firstMap[$key] = $first;\n$keyWeak = WeakReference::create($key);\necho \"insert-second|\";\n$secondMap[$key] = $second;\nunset($first);\nunset($second);\necho \"drop-key|\";\nunset($key);\necho ($keyWeak->get() === null ? \"key-null|\" : \"key-live|\");\necho ($firstWeak->get() === null ? \"first-null|\" : \"first-live|\");\necho ($secondWeak->get() === null ? \"second-null|\" : \"second-live|\");\nunset($firstMap);\nunset($secondMap);\necho \"END\";\n",
     "source_sha256": "b82f9ce712a958caac5e1eb83381a2403d5f5a5ac5e7ccc81070c3dfa8b26b3d",
