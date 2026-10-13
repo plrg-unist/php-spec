@@ -284,8 +284,12 @@ dec $tick_store(pstate, pconfigcall, pcalltarget) : pstate
 dec $tick_callback_supported(pstate, pcalltarget) : bool
 dec $tick_unregister(pstate, pconfigcall, pshutdownentry, ptickentry*) : pstate
 dec $tick_unregister_live(pstate, pconfigcall, pshutdownentry, ptickentry*) : pstate
+dec $tick_unregister_remove(pstate, pshutdownentry, ptickentry) : pstate
 dec $tick_unregister_error(pstate, pconfigcall) : pstate
 dec $tick_unregister_previous(pstate, pstate) : pstate
+dec $tick_unregister_certificate(pstate, pshutdownentry, ptickentry) : bool
+dec $tick_unregister_entry_certificate(pstate, ptickentry) : bool
+dec $tick_unregister_release_valid(pstate, pshutdownentry, ptickentry) : bool
 dec $tick_active_task(ptask) : nat?
 dec $tick_active_tasks(ptask*, nat) : bool
 dec $tick_active_frames(pframe*, nat) : bool
@@ -410,13 +414,61 @@ def $tick_unregister_live(S, pconfigcall, pshutdownentry, ptickentry :: ptickent
   -- if ~$tick_same(S, ptickentry.ENTRY, pshutdownentry)
 def $tick_unregister_live(S, pconfigcall, pshutdownentry, ptickentry :: ptickentry_tail*) = $tick_unregister($tick_unregister_error(S, pconfigcall), pconfigcall, pshutdownentry, ptickentry_tail*)
   -- if $tick_same(S, ptickentry.ENTRY, pshutdownentry) /\ $tick_is_calling(S, ptickentry.ID)
-def $tick_unregister_live(S, pconfigcall, pshutdownentry, ptickentry :: ptickentry_tail*) = S[.TICKENTRIES = $tick_remove(S.TICKENTRIES, ptickentry.ID)][.RESULT = KNOWN PNULL]
+def $tick_unregister_live(S, pconfigcall, pshutdownentry, ptickentry :: ptickentry_tail*) = $tick_unregister_remove(S, pshutdownentry, ptickentry)
   -- if $tick_same(S, ptickentry.ENTRY, pshutdownentry) /\ ~$tick_is_calling(S, ptickentry.ID)
+;; user_tick_function_dtor releases params before its cached FCC. This task owns
+;; only that FCC and the entered unregister call, not the removed params.
+def $tick_unregister_remove(S, pshutdownentry, ptickentry) = S[.TICKENTRIES = $tick_remove(S.TICKENTRIES, ptickentry.ID)][.RESULT = KNOWN PNULL]
+  -- if $target_nodes(ptickentry.ENTRY.TARGET) = eps
+def $tick_unregister_remove(S, pshutdownentry, ptickentry) = S[.TICKENTRIES = $tick_remove(S.TICKENTRIES, ptickentry.ID)][.TODO = (TICK_UNREGISTER_RELEASE pshutdownentry ptickentry) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = (pshutdownentry.CALL.SITE)]
+  -- if $target_nodes(ptickentry.ENTRY.TARGET) =/= eps
+  -- if S.TODO = (CONFIG_INVOKE pshutdownentry.CALL) :: ptask_tail*
+def $error_api_finish(S, pconfigcall, ptask_tail*) = S
+  -- if pconfigcall.KIND = INTRINSIC_UNREGISTER_TICK
+  -- if S.TODO = (TICK_UNREGISTER_RELEASE pshutdownentry ptickentry) :: ptask_tail*
+  -- if pshutdownentry.CALL = pconfigcall
 def $tick_unregister_error(S, pconfigcall) = $tick_unregister_previous(S, $config_error(S, pconfigcall, "Error", $ptascii("Registered tick function cannot be unregistered while it is being executed")))
 def $tick_unregister_previous(S, S_next) = $throwable_previous(S_next, n_new, n_old)
   -- if S.COMPLETION = THROWING n_old
   -- if S_next.COMPLETION = THROWING n_new
 def $tick_unregister_previous(S, S_next) = S_next -- otherwise
+
+;; These immutable selection witnesses remain checkable after params or FCC are
+;; retired. The temporary allocation view validates identity; it owns no zvals.
+def $tick_unregister_entry_certificate(S, ptickentry) = true
+  -- if $(ptickentry.ID < S.TICKSEQ)
+  -- if pshutdownentry = ptickentry.ENTRY
+  -- if pshutdownentry.CALL.KIND = INTRINSIC_REGISTER_TICK
+  -- if $tick_registration_valid(S, pshutdownentry.CALL)
+  -- if pshutdownentry.CALL.SENT = (NAMED_SENT (KNOWN pvalue)) :: pnamedslot*
+  -- if pshutdownentry.ARGS = $shutdown_values(pnamedslot*)
+  -- if pshutdownentry.BIRTH = eps /\ pshutdownentry.PRODUCER = eps
+  -- if $exception_raw_selected(S, pvalue, pshutdownentry.RAW, pshutdownentry.TARGET)
+  -- if $shutdown_selection_scope(S, pshutdownentry)
+  -- if $target_function(S, pshutdownentry.TARGET) = (pfunction)
+def $tick_unregister_entry_certificate(S, ptickentry) = false -- otherwise
+def $tick_unregister_certificate(S, pshutdownentry, ptickentry) = true
+  -- if pshutdownentry.CALL.KIND = INTRINSIC_UNREGISTER_TICK
+  -- if $tick_registration_valid(S, pshutdownentry.CALL)
+  -- if pshutdownentry.CALL.SENT = [NAMED_SENT (KNOWN pvalue)]
+  -- if pshutdownentry.BIRTH = eps /\ pshutdownentry.PRODUCER = eps /\ pshutdownentry.ARGS = eps
+  -- if S_history = S[.ALLOCATIONS = S.ALLOCATIONS ++ $target_nodes(pshutdownentry.TARGET) ++ $target_nodes(ptickentry.ENTRY.TARGET)]
+  -- if $exception_raw_selected(S_history, pvalue, pshutdownentry.RAW, pshutdownentry.TARGET)
+  -- if $shutdown_selection_scope(S_history, pshutdownentry)
+  -- if $tick_unregister_entry_certificate(S_history, ptickentry)
+  -- if $target_nodes(ptickentry.ENTRY.TARGET) =/= eps
+  -- if $tick_same(S_history, pshutdownentry, ptickentry.ENTRY)
+  -- if $tick_entry_at(S.TICKENTRIES, ptickentry.ID) = eps
+def $tick_unregister_certificate(S, pshutdownentry, ptickentry) = false -- otherwise
+def $tick_unregister_release_valid(S, pshutdownentry, ptickentry) = ($tick_unregister_certificate(S, pshutdownentry, ptickentry) /\ S.ORIGIN = (pshutdownentry.CALL.SITE) /\ $heap_subset($target_nodes(ptickentry.ENTRY.TARGET) ++ $config_nodes(pshutdownentry.CALL), S.ALLOCATIONS))
+def $call_task_valid(S, TICK_UNREGISTER_RELEASE pshutdownentry ptickentry) = $tick_unregister_release_valid(S, pshutdownentry, ptickentry)
+def $task_nodes(TICK_UNREGISTER_RELEASE pshutdownentry ptickentry) = $target_nodes(ptickentry.ENTRY.TARGET) ++ $config_nodes(pshutdownentry.CALL)
+rule PhpStep/tick-unregister-release: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = (pshutdownentry.CALL.SITE)]
+  -- if S.TODO = (TICK_UNREGISTER_RELEASE pshutdownentry ptickentry) :: ptask_tail*
+  -- if $call_task_valid(S, TICK_UNREGISTER_RELEASE pshutdownentry ptickentry)
+  -- if S.ORIGIN = (pshutdownentry.CALL.SITE)
+def $eager_operation_source_guard(S, pdestructionoperation) = ($tick_unregister_certificate(S, pshutdownentry, ptickentry) /\ pdestructionoperation.ORIGIN = (pshutdownentry.CALL.SITE) /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL) /\ (pdestructionoperation.COMPLETION = NORMAL \/ $throwable_pending(pdestructionoperation.COMPLETION)))
+  -- if pdestructionoperation.SOURCE = TICK_UNREGISTER_RELEASE pshutdownentry ptickentry
 
 def $tick_entry_at(eps, n) = eps
 def $tick_entry_at(ptickentry :: ptickentry_tail*, n) = (ptickentry) -- if ptickentry.ID = n

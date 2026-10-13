@@ -246,8 +246,10 @@ def $error_api_body(S, pconfigcall) = $error_handler_pop(S)[.RESULT = KNOWN (PBO
 def $error_api_body(S, pconfigcall) = S[.RESULT = KNOWN $error_handler_value(S.ERRORHANDLER)] -- if pconfigcall.KIND = INTRINSIC_GET_ERROR_HANDLER
 def $error_api_body(S, pconfigcall) = $error_trigger_receive(S, pconfigcall) -- if $error_trigger_kind(pconfigcall.KIND)
 dec $error_api_receive(pstate, pconfigcall) : pstate
+dec $error_api_finish(pstate, pconfigcall, ptask*) : pstate
+def $error_api_finish(S, pconfigcall, ptask*) = S[.TODO = ptask*][.BASE = BASE_VALUE (KNOWN PNULL)] -- otherwise
 def $error_api_receive(S, pconfigcall) = S_arity -- if S_arity = $error_api_arity(S, pconfigcall) -- if S_arity.COMPLETION =/= NORMAL
-def $error_api_receive(S, pconfigcall) = S_body[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $error_api_receive(S, pconfigcall) = $error_api_finish(S_body, pconfigcall, ptask_tail*)
   -- if S_arity = $error_api_arity(S, pconfigcall)
   -- if S_arity.COMPLETION = NORMAL
   -- if ~$error_trigger_kind(pconfigcall.KIND)
