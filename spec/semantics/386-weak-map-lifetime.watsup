@@ -88,10 +88,11 @@ def $weakmap_write_allowed(S, paccess) = true
   -- if $node_children(S, HOBJECT n_value) = eps
 def $weakmap_write_allowed(S, paccess) = false -- otherwise
 dec $weakmap_replace_allowed(pstate, paccess) : bool
+dec $weakmap_second_write_allowed(pstate, paccess) : bool
 def $access_call(S, paccess, ptbytes) = $access_done(S_read[.OBJECTS[n_map] = WEAKMAP ({KEY n_key, VALUE paccess.VALUE, BEFORE $weakref_find(S, S.ALLOCATIONS, n_key)})], paccess, pvalue_result)
   -- if paccess.OBJECT = (n_map)
   -- if $weakmap_at(S, n_map)
-  -- if ptbytes = $ptascii("offsetSet") /\ $weakmap_write_allowed(S, paccess)
+  -- if ptbytes = $ptascii("offsetSet") /\ ($weakmap_write_allowed(S, paccess) \/ $weakmap_second_write_allowed(S, paccess))
   -- if paccess.OFFSET = POBJECT n_key
   -- if S_read = $quiet_operand(S, paccess.SELECTED)
   -- if S_read.COMPLETION = NORMAL
@@ -230,7 +231,7 @@ def $access_call(S, paccess, ptbytes) = $access_done(S, paccess, PNULL)
 def $access_call(S, paccess, ptbytes) = S[.COMPLETION = UNSUPPORTED "WeakMap dimension protocol outside first insertion"]
   -- if paccess.OBJECT = (n_map)
   -- if $weakmap_at(S, n_map)
-  -- if ptbytes =/= $ptascii("offsetSet") \/ (~$weakmap_write_allowed(S, paccess) /\ ~$weakmap_replace_allowed(S, paccess))
+  -- if ptbytes =/= $ptascii("offsetSet") \/ (~$weakmap_write_allowed(S, paccess) /\ ~$weakmap_second_write_allowed(S, paccess) /\ ~$weakmap_replace_allowed(S, paccess))
   -- if ptbytes =/= $ptascii("offsetGet") \/ ~$weakmap_read_allowed(S, paccess)
   -- if ptbytes =/= $ptascii("offsetUnset") \/ ~$weakmap_unset_allowed(S, paccess)
 
@@ -245,6 +246,58 @@ def $weakmap_before_valid(S, pweakmapentry) = true
   -- if S.OBJECTS[n_wrapper] = WEAKREFERENCE (n_key)
   -- if n_key = pweakmapentry.KEY
 def $weakmap_before_valid(S, pweakmapentry) = false -- otherwise
+
+;; A second entry is admitted only across an actual intervening wrapper.
+;; Its saved identity establishes registration order without map-ID ordering.
+dec $weakmap_entry_leaf(pstate, nat, nat) : bool
+def $weakmap_entry_leaf(S, n_map, n_key) = true
+  -- if $weakmap_at(S, n_map) /\ ~$instance_storage_freeing(S, n_map)
+  -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
+  -- if pweakmapentry.KEY = n_key /\ $weakmap_before_valid(S, pweakmapentry)
+  -- if pweakmapentry.VALUE = POBJECT n_value
+  -- if $(n_value < |S.OBJECTS|) /\ (HOBJECT n_value) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_value] = INSTANCE porigin
+  -- if ~$instance_storage_freeing(S, n_value) /\ $node_children(S, HOBJECT n_value) = eps
+def $weakmap_entry_leaf(S, n_map, n_key) = false -- otherwise
+
+def $weakmap_second_write_allowed(S, paccess) = true
+  -- if paccess.MODE = ACCESS_SET /\ ~paccess.LATCH /\ ~paccess.KEYHOLE
+  -- if paccess.BASE = BASE_VALUE poperand
+  -- if paccess.TASK = ASSIGN_ARRAY (BASE_DIM paccess.BASE paccess.INPUT paccess.KEYLINE) paccess.LINE false
+  -- if S.TODO = paccess.TASK :: ptask_tail*
+  -- if paccess.RHS = S.RESULT
+  -- if paccess.SELECTED = $rcontainer_selected(S, paccess.RHS)
+  -- if paccess.OBJECT = (n_map)
+  -- if $weakmap_at(S, n_map)
+  -- if ~$instance_storage_freeing(S, n_map)
+  -- if S_base = $quiet_operand(S, poperand)
+  -- if S_base.COMPLETION = NORMAL
+  -- if S_base.RESULT = KNOWN (POBJECT n_map)
+  -- if S_key = $quiet_operand(S, paccess.INPUT)
+  -- if S_key.COMPLETION = NORMAL
+  -- if S_key.RESULT = KNOWN paccess.OFFSET
+  -- if S_value = $quiet_operand(S, paccess.SELECTED)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN paccess.VALUE
+  -- if $access_valid(S, paccess[.PHASE = ACCESS_CALL $ptascii("offsetSet")])
+  -- if S.OBJECTS[n_map] = WEAKMAP eps
+  -- if paccess.OFFSET = POBJECT n_key
+  -- if $(n_key < |S.OBJECTS|) /\ (HOBJECT n_key) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_key] = STDINSTANCE /\ ~$instance_storage_freeing(S, n_key)
+  -- if $node_children(S, HOBJECT n_key) = eps
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_before]
+  -- if n_before =/= n_map
+  -- if $weakmap_entry_leaf(S, n_before, n_key)
+  -- if S.OBJECTS[n_before] = WEAKMAP (pweakmapentry_before)
+  -- if $weakref_find(S, S.ALLOCATIONS, n_key) = (n_wrapper)
+  -- if $weakref_at(S, n_wrapper) = (WEAKREFERENCE (n_key))
+  -- if pweakmapentry_before.BEFORE =/= (n_wrapper)
+  -- if paccess.VALUE = POBJECT n_value
+  -- if $(n_value < |S.OBJECTS|) /\ (HOBJECT n_value) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_value] = INSTANCE porigin
+  -- if ~$instance_storage_freeing(S, n_value)
+  -- if $node_children(S, HOBJECT n_value) = eps
+def $weakmap_second_write_allowed(S, paccess) = false -- otherwise
 def $weakmap_replace_allowed(S, paccess) = true
   -- if paccess.MODE = ACCESS_SET /\ ~paccess.LATCH /\ ~paccess.KEYHOLE
   -- if paccess.BASE = BASE_VALUE poperand
@@ -290,12 +343,44 @@ def $weakmap_notice_wrapper(S, pweakmapentry) = (n_wrapper)
   -- if pweakmapentry.BEFORE =/= (n_wrapper)
 def $weakmap_notice_wrapper(S, pweakmapentry) = eps -- otherwise
 
+dec $weakmap_before_pair(pstate, nat, nat, nat, nat) : bool
+def $weakmap_before_pair(S, n_before, n_after, n_key, n_wrapper) = true
+  -- if n_before =/= n_after
+  -- if $weakmap_entry_leaf(S, n_before, n_key) /\ $weakmap_entry_leaf(S, n_after, n_key)
+  -- if S.OBJECTS[n_before] = WEAKMAP (pweakmapentry_before)
+  -- if S.OBJECTS[n_after] = WEAKMAP (pweakmapentry_after)
+  -- if pweakmapentry_before.BEFORE =/= (n_wrapper)
+  -- if pweakmapentry_after.BEFORE = (n_wrapper)
+def $weakmap_before_pair(S, n_before, n_after, n_key, n_wrapper) = false -- otherwise
+dec $weakmap_interleaved_first(pstate, nat) : nat?
+def $weakmap_interleaved_first(S, n_key) = (n_left)
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_left, n_right]
+  -- if $weakref_find(S, S.ALLOCATIONS, n_key) = (n_wrapper)
+  -- if $weakref_at(S, n_wrapper) = (WEAKREFERENCE (n_key))
+  -- if $weakmap_before_pair(S, n_left, n_right, n_key, n_wrapper)
+def $weakmap_interleaved_first(S, n_key) = (n_right)
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_left, n_right]
+  -- if $weakref_find(S, S.ALLOCATIONS, n_key) = (n_wrapper)
+  -- if $weakref_at(S, n_wrapper) = (WEAKREFERENCE (n_key))
+  -- if $weakmap_before_pair(S, n_right, n_left, n_key, n_wrapper)
+def $weakmap_interleaved_first(S, n_key) = eps -- otherwise
+def $weakmap_key_waiting(S, n_key) = ($weakmap_key_maps(S, S.ALLOCATIONS, n_key) =/= eps)
+
 ;; Replace the map edge by one real VALUE job before executing the callback.
 def $weakmap_key_notice(S, n_key) = S -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = eps
 def $weakmap_key_notice(S, n_key) = $destructor_release_begin(S[.OBJECTS[n_map] = WEAKMAP eps][.TODO = (INSTANCE_STORAGE_STEP pinstancestorage[.NOTIFY = $weakmap_notice_wrapper(S, pweakmapentry)]) :: ptask_tail*], $destruction_values($value_nodes(pweakmapentry.VALUE)))
   -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map]
   -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
   -- if $weakmap_before_valid(S, pweakmapentry)
+  -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*
+  -- if pinstancestorage.OBJECT = n_key
+  -- if $instance_storage_valid(S, pinstancestorage)
+  -- if pinstancestorage.NEXT = 0 /\ pinstancestorage.SLOTS = eps /\ pinstancestorage.NOTIFY = eps
+  -- if S.OBJECTS[n_key] = STDINSTANCE
+  -- if $destructor_jobs_valid(S, $destruction_values($value_nodes(pweakmapentry.VALUE)))
+def $weakmap_key_notice(S, n_key) = $destructor_release_begin(S[.OBJECTS[n_map] = WEAKMAP eps][.TODO = (INSTANCE_STORAGE_STEP pinstancestorage[.NOTIFY = $weakmap_notice_wrapper(S, pweakmapentry)]) :: ptask_tail*], $destruction_values($value_nodes(pweakmapentry.VALUE)))
+  -- if $weakmap_interleaved_first(S, n_key) = (n_map)
+  -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
   -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*
   -- if pinstancestorage.OBJECT = n_key
   -- if $instance_storage_valid(S, pinstancestorage)
@@ -516,6 +601,15 @@ rule PhpStep/weakmap-key-notify: S ~> S[.TODO = (INSTANCE_STORAGE_STEP pinstance
   -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*
   -- if $instance_storage_valid(S, pinstancestorage)
   -- if pinstancestorage.NOTIFY =/= eps
+
+;; After callback cleanup and wrapper notification, visit the remaining entry
+;; before the same physical Key pin may finish. No second edge is detached early.
+rule PhpStep/weakmap-key-next: S ~> $weakmap_key_notice(S, pinstancestorage.OBJECT)
+  -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*
+  -- if $instance_storage_valid(S, pinstancestorage)
+  -- if S.OBJECTS[pinstancestorage.OBJECT] = STDINSTANCE
+  -- if pinstancestorage.NEXT = 0 /\ pinstancestorage.SLOTS = eps /\ pinstancestorage.NOTIFY = eps
+  -- if $weakmap_key_waiting(S, pinstancestorage.OBJECT)
 
 ;; A live own-free callback may reuse or recreate its weak wrapper. Only the
 ;; borrowed notification identity changes; the physical pin still owns the map.

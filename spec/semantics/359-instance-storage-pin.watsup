@@ -19,6 +19,7 @@ dec $instance_storage_image(ppropertyslot*, ppropertyslot*, nat*, nat) : bool
 dec $instance_storage_table_valid(pstate, pinstancestorage) : bool
 dec $weakmap_storage_notice_valid(pstate, pinstancestorage) : bool
 dec $weakmap_storage_create(pstate, nat) : bool
+dec $weakmap_key_waiting(pstate, nat) : bool
 dec $instance_storage_basic(pstate, pinstancestorage) : bool
 dec $instance_storage_basics(pstate, pinstancestorage*) : bool
 dec $instance_storage_ids(pinstancestorage*) : nat*
@@ -188,6 +189,7 @@ rule PhpStep/instance-storage-finish: S ~> $destructor_release_begin(S[.TODO = p
   -- if $object_table_at(S.OBJECTTABLES, pinstancestorage.OBJECT) = eps
   -- if pinstancestorage.NEXT = |pinstancestorage.SLOTS|
   -- if pinstancestorage.NOTIFY = eps
+  -- if ~$weakmap_key_waiting(S, pinstancestorage.OBJECT)
   -- if $heap_owners($heap_graph(S), HOBJECT pinstancestorage.OBJECT) = 1
 rule PhpStep/instance-storage-escaped: S ~> S[.COMPLETION = UNSUPPORTED "freeing instance escaped reacquisition"]
   -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask*
@@ -195,6 +197,7 @@ rule PhpStep/instance-storage-escaped: S ~> S[.COMPLETION = UNSUPPORTED "freeing
   -- if $object_table_at(S.OBJECTTABLES, pinstancestorage.OBJECT) = eps
   -- if pinstancestorage.NEXT = |pinstancestorage.SLOTS|
   -- if pinstancestorage.NOTIFY = eps
+  -- if ~$weakmap_key_waiting(S, pinstancestorage.OBJECT)
   -- if $($heap_owners($heap_graph(S), HOBJECT pinstancestorage.OBJECT) > 1)
 
 ;; The logical buffer/store retirement precedes physical storage retirement.
