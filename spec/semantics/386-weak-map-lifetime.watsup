@@ -412,7 +412,7 @@ def $weakmap_storage_create(S, n_map) = true
   -- if $instance_storage_basic(S, pinstancestorage)
   -- if $instance_storage_state_valid(S)
   -- if $instance_storage_select($instance_storage_tasks(S.TODO) ++ $instance_storage_frames(S.FRAMES), n_map) = (pinstancestorage)
-  -- if $weakref_find(S, S.ALLOCATIONS, n_map) = eps \/ $weakmap_storage_read(S, n_wrapper, n_map)
+  -- if $weakref_find(S, S.ALLOCATIONS, n_map) = eps \/ $weakref_find(S, S.ALLOCATIONS, n_map) = (n_wrapper)
 def $weakmap_storage_create(S, n_map) = false -- otherwise
 
 dec $weakmap_notify_task(ptask, nat, nat) : ptask
