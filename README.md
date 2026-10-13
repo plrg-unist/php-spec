@@ -1387,8 +1387,12 @@ slots before crossing to the caller, retaining the pending Throwable while
 destructors run. A normal-end destructor throw still releases remaining source
 slots in declaration order; replacement exceptions retain their Previous chain.
 [Throw review](coverage/semantics/source-static-throw-review.json) records the
-focused source and production-unwind checks. Graceful exit and hard-fatal
-shutdown roots remain required.
+focused source and production-unwind checks. Graceful exit now retires source
+tables before shutdown, preserving callee and nested-source release order.
+Destructor source reentry keeps the saved exit owner valid; escaped references
+retain their objects through shutdown. [Exit review](coverage/semantics/source-static-exit-review.json)
+records this separate cut. Hard-fatal shutdown roots and caught destructor
+exceptions' sticky exit status remain required.
 [Real closure instances](docs/semantics/SOURCE-CLOSURES.md) now retain explicit captures,
 selected callee owners and per-instance statics through invocation and cleanup.
 [Independent review](coverage/semantics/closures-review.json) binds source, object

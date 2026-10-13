@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Graceful exit now retires parser-backed static tables before shutdown through
+real callee restoration and source-frame steps. Nested eval/file order, saved
+destructor parser reentry and escaped references retain their owners. At private
+69dcc8d30 / 377, fourteen exact exit originals and one retained notice control
+agree at separate cuts. Six genuine fronts pass 950 public/ownership premises,
+with 24 raw PhpSteps separate from six production table drops and one callee
+restoration. Original parser/fixture failures retain zero failed-group credit.
+Hard-fatal shutdown roots, caught destructor exceptions' sticky exit status and
+wider lifecycle work remain required; full core stays partial.
+[Source-static exit ledger](coverage/semantics/source-static-exit-review.json).
+
 Module390 resumes direct defined untyped-CV pre/post inc/dec warnings. Bool/null
 restore captured values after returning or throwing handlers; strings restore
 only after normal handling. Borrowed old cells and callback-created wrappers keep
@@ -43,8 +54,8 @@ references retain their separate owners. At private 87864cc3c / 377, eight exact
 originals agree; four genuine groups pass 466 public/ownership premises, with
 12 raw PhpSteps and four production-drop continuations kept separate. Original
 recorder and broad-seek fixture failures retain zero failed-group credit.
-Graceful-exit retirement, hard-fatal shutdown roots and wider destructor/return
-interactions remain required; full core stays partial.
+Hard-fatal shutdown roots and wider destructor/return interactions remain
+required; the separate graceful-exit extension is recorded above.
 [Source-static throw ledger](coverage/semantics/source-static-throw-review.json).
 The 378 composition over acaee66fa passes one exact destructor-override source
 and 116 public/pending-root premises at 6d568f59c. Earlier source/state cuts
@@ -57,8 +68,8 @@ Caller captures, scope metadata and own statics remain intact; nested evals
 keep separate source tables. At private 93d2abdb1 / 377, one affected and five
 independent exact originals agree; three genuine groups pass 360 public/ownership
 premises and 16 explicit boundary PhpSteps. The original Closure/parser refusal
-remains zero credit. Graceful-exit, hard-fatal and wider destructor/return cleanup
-remain required.
+remains zero credit. Hard-fatal and wider destructor/return cleanup remain
+required; graceful-exit validation stays separate above.
 [Source-static identity ledger](coverage/semantics/source-static-identity-review.json).
 The 378 composition over e0668aabe passes one exact cache/reference source and
 118 public ownership premises at 3b9c3cd26. Earlier source/state cuts retain
@@ -85,8 +96,8 @@ second eval-response refusal is repaired without relaxing parser/public guards.
 At private 19b999682 / 377, four exact checked originals retain their source cuts;
 11 genuine frontiers pass 382 premises and 12 explicit boundary PhpSteps.
 Original parser, model and fixture failures retain zero failed-group credit.
-Graceful-exit retirement, hard-fatal shutdown roots and wider destructor/return
-interactions remain required; full core stays partial.
+Hard-fatal shutdown roots and wider destructor/return interactions remain
+required; the separate graceful-exit extension is recorded above.
 [Source-static ledger](coverage/semantics/source-static-retirement-review.json).
 The 378 composition over a6fdf13c passes one exact returned-object source and
 34 public copied-return premises at 32670dbed. Earlier source/state cuts retain

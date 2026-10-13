@@ -1,0 +1,179 @@
+{
+  "scope": "Graceful-exit retirement of parser-backed top-level static tables through real frame/restoration/destructor steps, preserving nested source order, saved parser reentry and escaped reference roots.",
+  "status": "independently_reviewed_private",
+  "published_revision": "69dcc8d30915d4fef425a5212001176a909d0f94",
+  "tested_base_revision": "5f10c2745aff77e610a3ac5686a2f18b3bd8084e",
+  "modules": 377,
+  "target": "PHP8.5.10 CLI NTS64",
+  "engine_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "compiler_pin": "da36ac3c434cd291940293a63da64544307730a3",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "other": "inherited"
+  },
+  "caps_seconds": {
+    "model": 60,
+    "wrapper": 90,
+    "state_sl": 90
+  },
+  "design": [
+    "148 captures the earliest authenticated eval/file end suffix before exit erases source-body work. Real callee restoration retires local owners before the source table;388 releases one initialized slot in compiler order before crossing each source frame.",
+    "Saved exit-barrier validation finds context by exact UNIT while actual release/cross remains head-owned. Owner, binding, phase, caller and exact tail checks remain; only authenticated destructor-operation prefixes may precede EXIT_UNWIND.",
+    "Existing270 supplies the real decrement, destructor callback and restoration. An escaped cell still has a release operation but no Box callback before shutdown. No schema,270,parser or CONFIG edit is made."
+  ],
+  "cut_binding": {
+    "initial_semantic_diff_sha256": "34d7c8af34e63d2f0671c55f25ae12d4f856d23d8091f2dcf5573a22885ef643",
+    "final_semantic_diff_sha256": "eeb0c89b68bf0e9974889145a8f1f8c1769f7aef13ef452db2cf00da6747ce55",
+    "changed_modules_sha256": {
+      "spec/semantics/148-core-intrinsics.watsup": "cfb217370f615137354038cc92f483ec8fa8084f3cacd17b1bb1e414d46955c5",
+      "spec/semantics/388-source-statics.watsup": "a3f10a7f90e28864b492f71232a220bd8438e15937f21afdfcbec5e87cc3eae5"
+    },
+    "maintained_protocol": {
+      "path": "tests/semantics/source_static_exit_protocol.py",
+      "sha256": "c5f8b1dc84bd79f02982d8241104742343dd5b47d9d8d4708b950a8585045230"
+    },
+    "note": "Initial12 agreements retain34d7. The final388 repair searches saved context by UNIT and adds explicit live-head release guards; affected reentry/public checks and symmetric file reentry bind the final bytes. Immutable reports retain complete inputs, commands/cwd, providers, original native bytes, streams and process exits. Accepted fixtures remain immutable; adding the reentry stage and correcting escaped-release expectations only change their affected generated fixtures. Retained groups keep their pinned helper versions."
+  },
+  "source": {
+    "unique_exit_static_agreements": 14,
+    "retained_notice_controls": 1,
+    "reports": [
+      {
+        "path": ".tools/dynamic-source-statics-exit-model-07/report.json",
+        "sha256": "18e5aefa7369351746b78eb56e31b1976aebb4031794cbb7d7e73d4e235f3c61",
+        "count": 1,
+        "cut": "34d7",
+        "selection": "Affected eval-main-exit-shutdown: B|D|S|."
+      },
+      {
+        "path": ".tools/dynamic-review-02/exit-model-v1/report.json",
+        "sha256": "96fc958ebb619ccdc60a5a510c005df195f6e67b679dec04eaa2ea3e4ea3b789",
+        "count": 11,
+        "cut": "34d7",
+        "selection": "Nine unrun v9 originals plus two mixed-source v10 originals: main/caller/callee/nested/escaped retirement."
+      },
+      {
+        "path": ".tools/dynamic-source-statics-exit-reentry-model-10/report.json",
+        "sha256": "e7b93c33528aec6a9d110e7bcd6f34d75845a4fd07e7c3a44d563fcfc865f619",
+        "count": 1,
+        "cut": "eeb0",
+        "selection": "Eval reentry twice under the saved destructor frame: B|D|4|4|E|S|."
+      },
+      {
+        "path": ".tools/dynamic-review-02/exit-file-reentry-model-v1/report.json",
+        "sha256": "a4bb2a424d2809360b4c56f2edb60add4008f499bf01207199f231fadde92e9b",
+        "count": 1,
+        "cut": "eeb0",
+        "selection": "Independent file reentry twice under the saved destructor frame: B|D|4|4|E|S|."
+      },
+      {
+        "path": ".tools/dynamic-source-statics-exit-notice-model-09/report.json",
+        "sha256": "a2cea31c1c38cecd450f291ab7f006c706e008189a8b51f0ca195e6c82f53220",
+        "count": 1,
+        "cut": "eeb0",
+        "selection": "Retained include-exit-repeated control: A|H:2|S|1| plus exact E128 source warning stderr."
+      }
+    ],
+    "observation": "All checked accepted/program explicit_exit7 tuples match native PHP exit7 stdout and stderr; CLI0 and stable inputs. Native originals/reports under static-native-v2/v9/v10/v11 and dynamic-file-notice-native-01 remain pinned by these reports."
+  },
+  "state": {
+    "frontiers": 6,
+    "accepted_premises": 950,
+    "raw_phpsteps": 24,
+    "direct_production_table_drops": 6,
+    "direct_production_callee_restorations": 1,
+    "reports": [
+      {
+        "path": ".tools/dynamic-source-statics-exit-state-02/check-report.json",
+        "sha256": "b5ea57e1e7a48265031cf0c8d47c2cad9362b83192bcfb4b74238e94106cc7f4",
+        "selection": {
+          "eval-source": 170
+        }
+      },
+      {
+        "path": ".tools/dynamic-source-statics-exit-state-02/check-2-report.json",
+        "sha256": "ff298d206c284c2fc26d4d1e5c463bf4cecee93e00eee930f576a72c83f784f9",
+        "selection": {
+          "file-source": 146,
+          "eval-callee": 193,
+          "mixed-source": 249
+        },
+        "aggregate_result": "fail",
+        "accepted_prefix_only": true
+      },
+      {
+        "path": ".tools/dynamic-source-statics-exit-state-04/check-3-report.json",
+        "sha256": "935a7b6a6fb5cd3fcca660d7440b173eda02e20255af1f0cbeab6d2ab34d0075",
+        "selection": {
+          "eval-escaped": 120
+        }
+      },
+      {
+        "path": ".tools/dynamic-source-statics-exit-state-03/check-3-report.json",
+        "sha256": "0832e98261c5cba1ac01f32a0e874c96c83d02df975162d1b9083132fb876462",
+        "selection": {
+          "eval-reentry": 72
+        }
+      }
+    ],
+    "observations": "Source invoke/barrier, real per-slot release and callee restoration, saved destructor public ownership, exact exit-operation roots, inner-before-outer order, escaped-cell release without callback, parser pauses2/3 and wrong UNIT/owner/tail/response controls. All accepted groups return true/empty stderr/runner0/stable through full377 SL; raw drops are projections, never production continuation starting points."
+  },
+  "diagnosis": [
+    {
+      "path": ".tools/dynamic-source-statics-exit-diagnosis-06/run-report.json",
+      "sha256": "8f9209386dd83610e7109b3c47d8d48966d515f845b56716211c88cf2181b260",
+      "credit": 0,
+      "result": "Real exit invoke loses source marker/context admission before the fix;13-vector retains original identity."
+    },
+    {
+      "path": ".tools/dynamic-source-statics-exit-reentry-diagnosis-09/run-report.json",
+      "sha256": "ce7a5d921b26630092771840ff2da96c8a74045d542b8007e1307b0a9caf868d",
+      "credit": 0,
+      "result": "Real pending2 saved source1 has valid owner/caller/null roots; head-only helper fails, selecting the same context makes exit validation true. Diagnostic projection never resumes runtime."
+    }
+  ],
+  "preserved_discrepancies": [
+    {
+      "path": ".tools/dynamic-source-statics-exit-baseline-05/report.json",
+      "sha256": "9d892d583b68b55512c13808bd32d1f54420fed349c2c2ee88d701e0a29e224e",
+      "credit": 0,
+      "result": "Checked explicit_exit7 mismatch: native B|D|S|, model B|S|D|."
+    },
+    {
+      "path": ".tools/dynamic-source-statics-exit-diagnosis-05/preparation-failure.json",
+      "sha256": "f5494a81fba674b543f46b88c42021295a0bd1bbd23f08211c5320f5bcfe396c",
+      "credit": 0,
+      "result": "Native report profile/target recorder-key mismatch before numeric execution."
+    },
+    {
+      "path": ".tools/dynamic-source-statics-exit-model-06/report.json",
+      "sha256": "0fe4ce93a19b1a4e4ab29a4f761bce7fca794c7f85bf634eb858fadf65e17f47",
+      "credit": 0,
+      "result": "SpecTec pre-runtime scalar/list recursive tail binding failure;07 changes only tail names."
+    },
+    {
+      "path": ".tools/dynamic-source-statics-exit-reentry-model-08/report.json",
+      "sha256": "b16c6a016044fa320175c771390d0e602f0c08ab505b78f9b37b5b3a9dc1487e",
+      "credit": 0,
+      "result": "Genuine checked Unsupported invalid eval parser response at B|D|; saved head-context mismatch localized by diagnostic09."
+    },
+    {
+      "path": ".tools/dynamic-source-statics-exit-state-02/check-2-report.json",
+      "sha256": "ff298d206c284c2fc26d4d1e5c463bf4cecee93e00eee930f576a72c83f784f9",
+      "selection": [
+        "eval-escaped"
+      ],
+      "credit": 0,
+      "result": "Original91 assumes no queued cell-release operation despite the escaped owner. Only the accepted three-row prefix counts; state04 corrects this fixture expectation."
+    }
+  ],
+  "remaining": [
+    "Hard-fatal shutdown root retention, including the native WeakReference-alive counterexample.",
+    "Caught destructor exceptions retain sticky process exit status; throwing-destructor/exit combinations remain a separate cut.",
+    "Wider static/callable identity, callback/return and request cleanup; no family or full-core closure."
+  ],
+  "recovery": "Raw reports, originals, native/model command/process/streams, checked worker/adapter fixtures and runner output remain in the cited ignored canonical .tools directories. Each report binds its tested revision/dirty bytes and complete input map. No engine divergence is claimed."
+}
