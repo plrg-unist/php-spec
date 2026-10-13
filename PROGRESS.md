@@ -20,6 +20,8 @@ failures remain preserved; unselected native repetitions receive no source credi
 Late typed sources, destructor ownership changes, exit, ordinary/nested/empty
 released-array reads and wider update locations remain required.
 [Restoration ledger](coverage/semantics/incdec-restoration-review.json).
+The 382-module join over 69ff passes strict SL (6.256s) and one exact both-throw
+destructor original at 3d1dcba90; earlier source/state cuts keep their revisions.
 
 Direct ordinary Stringable/string comparisons now call `__toString()` for seven
 loose operators and non-bool Switch cases. Captured CV/copy/reference-cell reads,
