@@ -2126,6 +2126,14 @@ f/worker returned REFERENCE, r/a writes, main E and budget from the worker alias
 state. These are separate reached executions. Original059ac elaboration0,
 6c05 syntax-only app0 and unrun6909 field correction0 stay distinct. No runtime
 patch, physical collection or broad returns completion is claimed.
+
+M45 validates suspended untyped by-reference `finally` cancellation at `cbc57fdb`/386.
+Source2 agrees with native2. Early92/two controls follows original x/O through the
+parked Fiber carrier to resumed active destruction with distinct y/override;
+phase and saved operation EXIT deletion both refuse publicly. Separate late107+107
+follows its own override carrier through worker returned REFERENCE, r/a writes,
+main E and budget from the worker alias state, with direct control. No runtime
+change, cross-fixture identity, physical collection or broad returns completion.
 [Cancellation and integrity evidence](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
 Deprecated assertion options preserve raw flags, old-value snapshots, callback

@@ -221,6 +221,15 @@ reference_suspended_cv_state.py and suspended_carrier_validation in the local-CV
 ledger; retain elaboration059ac0, syntax-only6c05app0 and unrun6909field0. Broader
 suspension/borrowed conversion/physical collection and returns remain OPEN.
 
+M45 is validation only at `cbc57fdb`/386: suspended untyped finally override/control
+source2, early92/two phase/EXIT refusals and separate late214 pass. Early source
+history owns the original x/O→parked carrier→resumed active destruction; late
+fixtures start their own actual y/unwind carrier and follow worker delivery,
+r/a mutation, main E and worker alias-state budget. Recover with
+reference_suspended_cancel_state.py and suspended_cancellation_validation in the
+local-CV ledger. Keep abstract old-cell retirement distinct from physical Zend
+collection; wider cancellation/suspension/typed lifetimes and returns stay OPEN.
+
 Typed-property reference constraints, finally rechecks, objects/methods, dynamic
 sources and dynamic callables, named/unpacked/variadic calls, generators/Fibers and lifecycle remain
 required later core work. Publish reviewed paired code, evidence and concise docs

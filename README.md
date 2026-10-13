@@ -2735,6 +2735,10 @@ A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;
 these are separate executions, with no runtime change or physical collection claim.
+Suspended untyped `finally` cancellation also validates at `cbc57fdb`: the old
+object carrier survives parking, then an override triggers its destructor before
+delivery of the new y cell to worker aliases. Source2, early92/two controls and
+separate late214 pass; abstract cell retirement is not physical Zend collection.
 [Weak Stringable parameters](coverage/semantics/weak-string-parameters-review.json)
 now convert supplied fixed parameters in receive order, preserving caller
 strictness, nominal/callable precedence and the entered formal cell. Existing

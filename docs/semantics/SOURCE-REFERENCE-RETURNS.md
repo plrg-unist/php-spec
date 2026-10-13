@@ -399,6 +399,15 @@ source/target, r/a aliases, writes, main E and budget from the worker alias stat
 Source2 agrees with native2. This is an owning temporary, with no released borrowed
 Stringable, physical collection or cross-fixture identity claim.
 
+M45 validation at `cbc57fdb`/386 combines suspension with untyped finally return-y
+cancellation. Source/native2 agrees. Early92/two controls authenticates original
+x/O to parked carrier, then resumed active O destruction while new y owns the
+queued return; phase and saved EXIT-only deletion are separately heap-valid and
+refused. Separate late107+107 executions follow their own source-qualified y to
+worker returned REFERENCE/r/a/write, main E and worker alias-state budget. Old
+HCELL allocation/root retirement leaves stale STORE while the active object stays
+rooted; this does not claim physical Zend collection or broader returns coverage.
+
 Caller demand comes from the original checked callsite's immediate source
 consumers. Expression statements and discarded for clauses have unused results;
 casts to void, ternary/coalesce expressions and value/reference consumers retain
