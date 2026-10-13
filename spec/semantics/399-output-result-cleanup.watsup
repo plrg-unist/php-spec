@@ -11,6 +11,7 @@ dec $ob_normal_commit(pstate, pobinvoke, pdestructionframe, poboutput) : pstate
 dec $ob_normal_api_commit(pstate, pobinvoke, poboutput, nat) : pstate
 dec $ob_normal_failed_write(pstate, nat) : pstate
 dec $ob_retired_read_task(ptask) : bool
+dec $ob_callee_cleanup_call(pstate, pdestructionframe, ptask*) : pconfigcall?
 
 ;; zend_call_function's TOP_FUNCTION borrows this from the cached FCC. Closure
 ;; instances retain their ordinary ownership and binding machinery.
@@ -107,6 +108,39 @@ def $ob_normal_certificate(S, pobinvoke, pdestructionframe) = true
   -- if $target_function($ob_user_history(S, poutputhandler), poutputhandler.ENTRY.TARGET) = (pfunction)
   -- if pdestructionframe.FUNCTION = pfunction.ORIGIN
 def $ob_normal_certificate(S, pobinvoke, pdestructionframe) = false -- otherwise
+
+;; The C API frame remains the caller while callee CVs are released. Authentic
+;; sealed-return or pending body-throw prefixes supply its site and trace suffix.
+def $ob_callee_cleanup_call(S, pdestructionframe, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*) = $ob_callee_cleanup_call(S, pdestructionframe, ptask_tail*)
+def $ob_callee_cleanup_call(S, pdestructionframe, (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*) = $ob_callee_cleanup_call(S, pdestructionframe, ptask_tail*)
+  -- if pdestructorcall.FRAME = (pdestructionframe) /\ pdestructorcall.OPERATION = eps
+  -- if pdestructorcall.CALLER = pdestructionframe.CALLER /\ pdestructorcall.ORIGIN = pdestructionframe.ORIGIN
+def $ob_callee_cleanup_call(S, pdestructionframe, (DESTRUCTOR_FRAME_EXIT pdestructionframe_exit) :: (OB_USER_NORMAL_RESULT pobinvoke pdestructionframe_success) :: ptask_native*) = (pconfigcall)
+  -- if pdestructionframe_exit = pdestructionframe
+  -- if pdestructionframe_success.PENDING = eps
+  -- if pdestructionframe = pdestructionframe_success[.PENDING = pdestructionframe.PENDING]
+  -- if $destructor_frame_valid(S, pdestructionframe)
+  -- if $ob_normal_certificate(S, pobinvoke, pdestructionframe_success) /\ $ob_user_fci_arguments(pobinvoke)
+  -- if $ob_call_api(pobinvoke.CALL) = (pconfigcall)
+def $ob_callee_cleanup_call(S, pdestructionframe, (DESTRUCTOR_FRAME_EXIT pdestructionframe_exit) :: (OB_USER_RESULT pobinvoke) :: ptask_native*) = (pconfigcall)
+  -- if pdestructionframe_exit = pdestructionframe
+  -- if pdestructionframe.VALUE = KNOWN PNULL
+  -- if pdestructionframe.PENDING = (n)
+  -- if $destructor_frame_valid(S, pdestructionframe) /\ $throwable_live(S, n)
+  -- if $ob_normal_certificate(S, pobinvoke, pdestructionframe) /\ $ob_user_fci_arguments(pobinvoke)
+  -- if $ob_call_api(pobinvoke.CALL) = (pconfigcall)
+def $ob_callee_cleanup_call(S, pdestructionframe, ptask*) = eps -- otherwise
+def $destructor_frame_internal_site(S) = true
+  -- if $destructor_operation_for(S) = eps
+  -- if $destructor_frame_for(S.CURRENT, S.DESTRUCTION.FRAMES) = (pdestructionframe)
+  -- if $ob_callee_cleanup_call(S, pdestructionframe, S.TODO) =/= eps
+def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S_caller, pconfigcall, eps)
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if pdestructorcall.OPERATION = eps
+  -- if pdestructorcall.FRAME = (pdestructionframe)
+  -- if $destructor_context_valid(S, pcallcontext)
+  -- if S_caller = $destructor_boundary_scope(S, pdestructorcall, S.FRAMES)
+  -- if $ob_callee_cleanup_call(S_caller, pdestructionframe, S_caller.TODO) = (pconfigcall)
 
 def $task_nodes(OB_USER_NORMAL_RESULT pobinvoke pdestructionframe) = $ob_user_nodes(pobinvoke) ++ $operand_nodes(pdestructionframe.VALUE)
 def $task_nodes(OB_USER_NORMAL_PENDING pobinvoke pdestructionframe) = $ob_user_nodes(pobinvoke) ++ $operand_nodes(pdestructionframe.VALUE) ++ $instance_roots(pdestructionframe.PENDING)
