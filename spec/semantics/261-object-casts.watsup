@@ -35,14 +35,25 @@ def $instance_table_nodes(S, n, ppropertyslot*) = [HARRAY n_table] ++ $object_ta
   -- if $object_table_at(S.OBJECTTABLES, n) = (n_table)
 def $instance_table_nodes(S, n, ppropertyslot*) = $property_release_nodes(ppropertyslot*)
   -- if $object_table_at(S.OBJECTTABLES, n) = eps
-def $object_table_item(S, INDIRECT n ptbytes) = pitem
+dec $object_table_indirect_live(pstate, nat, ptbytes) : bool
+def $object_table_indirect_live(S, n, ptbytes) = true
   -- if $(n < |S.OBJECTS|)
   -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_rows*)
   -- if $property_slot_at(ppropertyslot_rows*, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.DECL =/= eps
   -- if ppropertyslot.STATE = PROP_VALUE pitem
   -- if ~$indirect_item(pitem)
-def $object_table_item(S, INDIRECT n ptbytes) = UNINITIALIZED -- otherwise
+def $object_table_indirect_live(S, n, ptbytes) = false -- otherwise
+def $object_table_item(S, INDIRECT n ptbytes) = pitem
+  -- if $object_table_indirect_live(S, n, ptbytes)
+  -- if $(n < |S.OBJECTS|)
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_rows*)
+  -- if $property_slot_at(ppropertyslot_rows*, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.DECL =/= eps
+  -- if ppropertyslot.STATE = PROP_VALUE pitem
+  -- if ~$indirect_item(pitem)
+def $object_table_item(S, INDIRECT n ptbytes) = UNINITIALIZED
+  -- if ~$object_table_indirect_live(S, n, ptbytes)
 def $object_table_item(S, DIRECT pvalue) = DIRECT pvalue
 def $object_table_item(S, ALIAS n) = ALIAS n
 def $object_table_item(S, UNINITIALIZED) = UNINITIALIZED
