@@ -43,4 +43,8 @@ slots and successive casts. Identical tables win before the active-left guard;
 ARRAY aliases expose the same table recursion domain. The same TypeError reaches
 caller catch and then finally entry, with later properties/cases skipped. Six new
 exact sources and 576 reached premises/28 raw steps pass. Mixed membership, guarded
-projection, Fiber VM transfer, broader handlers and wider control remain required.
+projection, broader handlers and wider control remain required.
+[Fiber comparison transfers](../../coverage/semantics/fiber-aggregate-stringable-comparison-review.json)
+now retain the parked array guard through injected TypeError and caster finally
+entry, then remove it on pair unwind before caller catch/finally entry. Same-table
+equality precedes the guard; broader close/destructor lifetimes remain open.

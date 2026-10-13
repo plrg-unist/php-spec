@@ -113,12 +113,21 @@ passes six new exact sources, strict 3 and 576 reached premises/28 raw steps at
 buckets under COW; genuine foreach-produced declared tables use live slots and
 captured cells. Identical tables precede recursion checks, and throw/normal return
 remove the guard. Ordinary `(array)` views remain copied projections. Mixed
-membership, guarded projection, Fiber transfer and wider lifetimes remain required;
+membership, guarded projection and wider lifetimes remain required;
 full core stays partial. The disproved transition and original fixture/compiler
 failures retain zero credit.
 [Aggregate comparison ledger](coverage/semantics/aggregate-stringable-comparison-review.json).
 The preceding [direct comparison increment](coverage/semantics/stringable-comparison-review.json)
 retains its six sources and 487/26 state cut at aabff656 /381.
+
+[Fiber comparison transfers](coverage/semantics/fiber-aggregate-stringable-comparison-review.json)
+now retain aggregate recursion guards in source-authenticated waiting and suspended
+VMs without adding roots. Waiting-array COW, resumed declared live slots versus
+captured cells, and the identical injected TypeError through caster/caller finally
+entry pass at f536e6ea /385: three exact sources, strict 3 and 315 reached premises
+(292 setup/frontier, 23 pure controls, 23 raw PhpSteps). The original peer EL recorder
+label failure keeps zero runtime credit; its genuine closed elaboration is reused.
+Mixed tables, guarded projection and broader close/destructor lifetimes remain open.
 
 Hard bailout now records request EXITSTATUS255 before shutdown. Direct callback
 strings preserve it; integer/default exits replace it and skip later callbacks.

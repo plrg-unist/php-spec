@@ -145,8 +145,20 @@ concrete tables compare equal before recursion checks. Separate object/table gua
 kinds preserve cursor restart, alias-array recursion and TypeError caller catch
 followed by finally entry. Six exact sources and 576 reached premises/28 raw steps
 pass. Mixed declared/dynamic tables or declared-table detachment, guarded declared-object projection,
-Fiber VM transfer and broader receiver/destructor lifetimes remain explicit
+and broader receiver/destructor lifetimes remain explicit
 obligations; no END/shutdown coverage is claimed.
+
+[Fiber transfers during these comparisons](../../coverage/semantics/fiber-aggregate-stringable-comparison-review.json)
+now preserve active left guards in authentic waiting callers and allocated suspended
+VMs. Restored views check the exact source, activation, owner, receiver and immediate
+caster/consumer tail through local predicates; they add no GC roots. Waiting-array
+COW still reads the pinned old array; suspended declared slots stay live while a
+pre-unwrapped cell keeps its identity. Identical tables remain equal before recursion
+checks. The same injected TypeError keeps the guard through caster finally entry,
+then clears it on real pair unwind before caller catch and finally entry. Three
+exact sources and 315 reached premises/23 raw steps pass. Retained declared membership
+and projection restrictions also apply while parked. Broader close/destructor
+lifetimes remain required; no END/shutdown coverage is claimed.
 
 The installed [file operand bridge](../../coverage/semantics/file-operand-review.json)
 converts all four include/require forms before path lookup or once skipping.

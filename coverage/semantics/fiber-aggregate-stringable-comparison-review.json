@@ -1,0 +1,148 @@
+{
+  "scope": "Aggregate Stringable/string comparison across genuine Fiber start/suspend/resume/throw, preserving recursion guards and enclosing owners in actual waiting and allocated suspended VMs. Mixed cached tables remain a separate obligation.",
+  "status": "partial; independently reviewed private increment",
+  "tested_revision": "f536e6ea23d897e488055a1b469666f6abb6f718",
+  "baseline_revision": "a80ff9a87b8b503d50d0426a866fa860d8d841f3",
+  "module_count": 385,
+  "runtime": {
+    "php_source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_binary": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "numeric_runner": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "adapter": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "elaborator": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "profile": {
+      "path": "tests/semantics/profile.json",
+      "sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+    },
+    "modules": [
+      {
+        "path": "spec/semantics/281-fibers.watsup",
+        "sha256": "4d979aa58e5e8527e22d4eca934ddcd2f433a26d32237e0d51738ef825872fb0"
+      },
+      {
+        "path": "spec/semantics/394-aggregate-stringable-comparisons.watsup",
+        "sha256": "95c8ffbf6dbc0a8ff57e003dde684f6f5e0e0c26bd0016852614facbd0553186"
+      }
+    ],
+    "manifest": {
+      "path": "spec/semantics/modules.json",
+      "sha256": "bf7e8fc1f6e016f5dcb6553db1b1365d8385d2d1ec142f611f919946e5c9f414"
+    },
+    "build_claim": "Retained canonical project-local binaries copied into this fresh checkout; no fresh/offline rebuild claim.",
+    "engine_anchors": [
+      "Zend/zend_fibers.c:zend_fiber_capture_vm_state, zend_fiber_restore_vm_state and zend_fiber_switch_to (VM ownership and transfer)",
+      "Zend/zend_hash.c:zend_hash_compare (identity before active-left recursion)",
+      "Zend/zend_object_handlers.c:zend_std_compare_objects (parent pins and cached/direct paths)"
+    ]
+  },
+  "native": {
+    "report": {
+      "path": ".tools/fiber-aggregate-stringable-native-50/run-v1/report.json",
+      "sha256": "02204fdc3a2987598077b1cf9935642512f19cd3551de66c2d9c056483091a42"
+    },
+    "originals": 3,
+    "credit": "Native facts only. Catalogue binds original source/File/CWD, immutable START and actual tuples."
+  },
+  "baseline": {
+    "report": {
+      "path": ".tools/fiber-aggregate-stringable-baseline-50/run-v1/report.json",
+      "sha256": "33c349455e59292935cde231bbba448d62bea8940bc610bf635a4e3f78b6c2c1"
+    },
+    "checked_status": "accepted/program/Unsupported: Fiber VM transfer during aggregate comparison",
+    "actual_stdout": "cast|",
+    "native_agreements": 0
+  },
+  "strict": {
+    "report": {
+      "path": ".tools/fiber-aggregate-stringable-gate-50/run-v1/report.json",
+      "sha256": "c966f558002b1e3a8cd9f82203c2b7707fbe36c07e0356c4f224cea4643e4ac7"
+    },
+    "checks": 3,
+    "seconds": 6.614031122997403,
+    "passed": true
+  },
+  "sources": {
+    "report": {
+      "path": ".tools/fiber-aggregate-stringable-model-50/run-v1/report.json",
+      "sha256": "811fd002983991c0fabaa78463e53ff833cd8f033a711cd86b94eeccf13479c8"
+    },
+    "catalogue": {
+      "path": "tests/semantics/fiber_aggregate_stringable_comparison_cases.json",
+      "sha256": "09a763b0f7d591db59ff9fa49eb5cb0e3f4c09560975cac2dfa002302b93a34e"
+    },
+    "normal_native_agreements": 3
+  },
+  "syntax_only": {
+    "preparation": {
+      "path": ".tools/fiber-aggregate-stringable-state-50/prepared-v1/report.json",
+      "sha256": "c331670186c2264a0462445301ab21906c4b91ac5bc2fb2d54c9c9a878ce290d"
+    },
+    "programmes": 3,
+    "closed_workers": 6,
+    "author_el": {
+      "path": ".tools/fiber-aggregate-stringable-state-50/run-el-v1/report.json",
+      "sha256": "f48dffbd0ba100cda254c33653d7445553c9488a3bde2ad0c194bd4e9048e9bf"
+    },
+    "peer_original_el": {
+      "path": ".tools/fiber-aggregate-stringable-peer-state-50/run-el-v1/report.json",
+      "sha256": "c748db9a1cfc319afcac76e6b395abb844f566a093f9c2609c5627fd97a09a4b"
+    },
+    "runtime_credit": 0,
+    "peer_el_reuse": "Original recorder passed=false is preserved. Its genuine closed syntax/main elaboration is bound directly; only the reviewed printed-main label and one runner hash changed for unique SL-only continuation."
+  },
+  "reached_states": {
+    "author_report": {
+      "path": ".tools/fiber-aggregate-stringable-state-50/run-sl-v1/report.json",
+      "sha256": "09a4b9d1e8440ee87160a97b45d910fe465edc7f0066b1ce4737678a0bac8b93"
+    },
+    "peer_report": {
+      "path": ".tools/fiber-aggregate-stringable-peer-state-50/run-sl-label-retry1/report.json",
+      "sha256": "9490dd35fd6ab43907d8ef634148c2e6174fc9a697eeab210e11d305e3e33000"
+    },
+    "author_plan": {
+      "path": ".tools/fiber-aggregate-stringable-state-50/fixture-plan.json",
+      "sha256": "6a74e80dc8b406ed26087806161e8d1e8351e7fa2a73e7118d0c9bf6bb802ec8"
+    },
+    "peer_plan": {
+      "path": ".tools/fiber-aggregate-stringable-peer-state-50/fixture-plan.json",
+      "sha256": "b5cc1b60d232818cbab45a4554c380ae1e66e6b4c61078ac8a3976f86cdf8a35"
+    },
+    "premises": 315,
+    "setup_frontier_premises": 292,
+    "marked_pure_checks": 23,
+    "PhpSteps": 23,
+    "author_groups": [
+      {
+        "id": "waiting-array-cow",
+        "premises": 81,
+        "PhpSteps": 7,
+        "seconds": 18.17114137671888
+      },
+      {
+        "id": "suspended-declared-pointers",
+        "premises": 80,
+        "PhpSteps": 10,
+        "seconds": 46.68587462231517
+      }
+    ],
+    "peer_seconds": 32.21837039291859,
+    "scope": "Waiting-caller saved caster/old-array COW and resumed equality; suspended DECL live slot versus retained old CELL and true/false resume; main same-array identity then distinct-array recursion; identical Fiber::throw TypeError, caster finally with guard present, real pair unwind then caller catch/finally with guard gone. No END drive."
+  },
+  "original_zero_credit": [
+    {
+      "report": {
+        "path": ".tools/fiber-aggregate-stringable-peer-state-50/run-el-v1/report.json",
+        "sha256": "c748db9a1cfc319afcac76e6b395abb844f566a093f9c2609c5627fd97a09a4b"
+      },
+      "result": "Recorder expected def $main(), while actual typed IL prints def $main : bool =. Genuine EL closed normally; original passed=false remains. No EL replay; exact raw/START/closed and reviewed runner-only continuity admit affected SL."
+    }
+  ],
+  "ownership": "Queries restore only actual allocated suspended records and real waiting/closer owners, then authenticate local source/activation/owner/receiver/immediate caster-consumer tail. They never recurse through full fiber_vm_valid or descriptor validity. No new GC roots: existing task/frame/VM owners retain original operands, cursor parent pins and real STRINGIFY_RESULT receiver. Cursor/pointer images remain documentary and non-owning.",
+  "residuals": [
+    "Mixed declared/dynamic cached tables and declared-table detachment remain explicit Unsupported; retained membership mutation and guarded declared projection also refuse while parked.",
+    "Tested transfer sources cover arrays and initialized public DECL_HASH slots. Broader close/destructor/receiver lifetimes and STD_HASH transfer combinations require separate evidence; no END/shutdown or full-core completion claim.",
+    "Existing source/blocking/type/error priorities, strict identity and bool Switch paths remain unchanged. No intentional native divergence is claimed."
+  ],
+  "acceptance": "Closed native/source/strict/preparation/author/independent cuts independently raw-bound once with stable inputs, exact commands/CWD/profile, owned reaping and no unrun. Independent comp_review_21 cleared the exact seven-path publication; no accepted evidence replay.",
+  "recovery": "Original ignored source/programme/driver/START/raw/binary providers remain under .tools/fiber-aggregate-stringable-50/.tools/fiber-aggregate-stringable-{native,baseline,gate,model,state,peer-state,support}-50. Preserve original paths without copying/moving bulky evidence for retirement."
+}

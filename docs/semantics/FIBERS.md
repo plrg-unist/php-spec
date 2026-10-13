@@ -23,6 +23,18 @@ their receiver and original `start`/`resume`/`throw` arguments. A parked static
 The stored return value remains owned by the terminated Fiber; later array writes
 from `getReturn` use ordinary copy-on-write and reference rules.
 
+[Aggregate Stringable comparisons](../../coverage/semantics/fiber-aggregate-stringable-comparison-review.json)
+now transfer while the caster is active. Their left recursion guards remain visible
+in actual waiting callers and allocated suspended VMs, using restored local
+source/activation/owner/receiver/tail checks rather than recursive full VM validation.
+Existing VM task/frame owners retain the aggregate pins; the query adds no roots.
+Same-table identity still precedes recursion checks. Waiting COW, resumed declared
+live slots versus old cells, and identical injected TypeError through caster finally
+and caller catch/finally entry pass three exact sources and 315 reached premises/23
+raw steps. Restrictions on declared-table membership changes and guarded projection
+remain active while parked; ordinary slot writes and reference rebinds stay admitted.
+Broader force-close and destructor lifetimes require separate checks.
+
 Each activation by `start`, `resume` or `throw` consumes a fresh global stamp;
 `suspend` and terminal transfers back to the caller retain that activation stamp.
 Admission checks the active caller chain, each saved stack and exact
