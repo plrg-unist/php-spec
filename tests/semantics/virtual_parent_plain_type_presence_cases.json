@@ -1,0 +1,61 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hashes": {
+    "remove": "118f3ac0b8b15deb31509b29949e6a4c866c19f1f6bd51d6505bae78ec6f9200",
+    "add": "118f3ac0b8b15deb31509b29949e6a4c866c19f1f6bd51d6505bae78ec6f9200",
+    "scalar": "118f3ac0b8b15deb31509b29949e6a4c866c19f1f6bd51d6505bae78ec6f9200"
+  },
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "remove",
+      "source": "<?php\nclass PresencePlainRemove61Parent {\n    public int $value {\n        get {\n            echo \"GET:\", self::class, \"/\", static::class, \"|\";\n            return $this->answer();\n        }\n    }\n    private function answer() { return \"13\"; }\n    public function parentRead() { echo \"H|\"; return $this->value; }\n}\nclass PresencePlainRemove61Bridge extends PresencePlainRemove61Parent {}\nclass PresencePlainRemove61Child extends PresencePlainRemove61Bridge {\n    public $value = 200;\n    private function answer() { return 500; }\n}\nclass PresencePlainRemove61Grand extends PresencePlainRemove61Child {\n    private function answer() { return 900; }\n}\n$parent = new PresencePlainRemove61Parent;\n$child = new PresencePlainRemove61Child;\n$grand = new PresencePlainRemove61Grand;\n$raw = (array) $parent;\necho $raw === [] ? \"EMPTY|\" : ($raw === [\"value\" => null] ? \"NULL|\" : \"BAD|\");\n$raw = (array) $child;\necho $raw === [\"value\" => 200] ? \"C200|\" : \"BAD|\";\n$raw = (array) $grand;\necho $raw === [\"value\" => 200] ? \"G200|\" : \"BAD|\";\necho $parent->value, \"|\";\n$result = $child->value;\necho $result === \"13\" ? \"CS|\" : \"BAD|\";\necho $grand->parentRead(), \"|\";\n$raw = (array) $grand;\necho $raw === [\"value\" => 200] ? \"G200|\" : \"BAD|\";\n$grand->value = 300;\n$raw = (array) $grand;\necho $raw === [\"value\" => 300] ? \"G300|\" : \"BAD|\";\n$result = $grand->value;\necho $result === \"13\" ? \"GS|\" : \"BAD|\";\n",
+      "source_sha256": "53f8d29afb878350d593889816ba1d15149b0fdafdef672d53b6b2d4fb6c491d",
+      "stdout_base64": "",
+      "stderr_template": "Fatal error: Type of PresencePlainRemove61Child::$value must be subtype of int (as in class PresencePlainRemove61Parent) in {FILE} on line 13\nStack trace:\n#0 {main}\n",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFR5cGUgb2YgUHJlc2VuY2VQbGFpblJlbW92ZTYxQ2hpbGQ6OiR2YWx1ZSBtdXN0IGJlIHN1YnR5cGUgb2YgaW50IChhcyBpbiBjbGFzcyBQcmVzZW5jZVBsYWluUmVtb3ZlNjFQYXJlbnQpIGluIHtGSUxFfSBvbiBsaW5lIDEzClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "virtual-parent-plain-type-presence61-remove-native-f7f7efda",
+      "native_raw_sha256": "118f3ac0b8b15deb31509b29949e6a4c866c19f1f6bd51d6505bae78ec6f9200"
+    },
+    {
+      "id": "add",
+      "source": "<?php\nclass PresencePlainAdd61Parent {\n    public $value {\n        get {\n            echo \"GET:\", self::class, \"/\", static::class, \"|\";\n            return $this->answer();\n        }\n    }\n    private function answer() { return \"13\"; }\n    public function parentRead() { echo \"H|\"; return $this->value; }\n}\nclass PresencePlainAdd61Bridge extends PresencePlainAdd61Parent {}\nclass PresencePlainAdd61Child extends PresencePlainAdd61Bridge {\n    public int $value = 200;\n    private function answer() { return 500; }\n}\nclass PresencePlainAdd61Grand extends PresencePlainAdd61Child {\n    private function answer() { return 900; }\n}\n$parent = new PresencePlainAdd61Parent;\n$child = new PresencePlainAdd61Child;\n$grand = new PresencePlainAdd61Grand;\n$raw = (array) $parent;\necho $raw === [] ? \"EMPTY|\" : ($raw === [\"value\" => null] ? \"NULL|\" : \"BAD|\");\n$raw = (array) $child;\necho $raw === [\"value\" => 200] ? \"C200|\" : \"BAD|\";\n$raw = (array) $grand;\necho $raw === [\"value\" => 200] ? \"G200|\" : \"BAD|\";\necho $parent->value, \"|\";\n$result = $child->value;\necho $result === \"13\" ? \"CS|\" : \"BAD|\";\necho $grand->parentRead(), \"|\";\n$raw = (array) $grand;\necho $raw === [\"value\" => 200] ? \"G200|\" : \"BAD|\";\n$grand->value = 300;\n$raw = (array) $grand;\necho $raw === [\"value\" => 300] ? \"G300|\" : \"BAD|\";\n$result = $grand->value;\necho $result === \"13\" ? \"GS|\" : \"BAD|\";\n",
+      "source_sha256": "8f60b23ac11703d817afead0629d924c63dfd176682834aace384ad1b95e7a33",
+      "stdout_base64": "",
+      "stderr_template": "Fatal error: Type of PresencePlainAdd61Child::$value must be omitted to match the parent definition in class PresencePlainAdd61Parent in {FILE} on line 13\nStack trace:\n#0 {main}\n",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFR5cGUgb2YgUHJlc2VuY2VQbGFpbkFkZDYxQ2hpbGQ6OiR2YWx1ZSBtdXN0IGJlIG9taXR0ZWQgdG8gbWF0Y2ggdGhlIHBhcmVudCBkZWZpbml0aW9uIGluIGNsYXNzIFByZXNlbmNlUGxhaW5BZGQ2MVBhcmVudCBpbiB7RklMRX0gb24gbGluZSAxMwpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "virtual-parent-plain-type-presence61-add-native-f7f7efda",
+      "native_raw_sha256": "118f3ac0b8b15deb31509b29949e6a4c866c19f1f6bd51d6505bae78ec6f9200"
+    },
+    {
+      "id": "scalar",
+      "source": "<?php\nclass PresencePlain61Parent {\n    public $value {\n        get {\n            echo \"GET:\", self::class, \"/\", static::class, \"|\";\n            return $this->answer();\n        }\n    }\n    private function answer() { return \"13\"; }\n    public function parentRead() { echo \"H|\"; return $this->value; }\n}\nclass PresencePlain61Bridge extends PresencePlain61Parent {}\nclass PresencePlain61Child extends PresencePlain61Bridge {\n    public $value = 200;\n    private function answer() { return 500; }\n}\nclass PresencePlain61Grand extends PresencePlain61Child {\n    private function answer() { return 900; }\n}\n$parent = new PresencePlain61Parent;\n$child = new PresencePlain61Child;\n$grand = new PresencePlain61Grand;\n$raw = (array) $parent;\necho $raw === [] ? \"EMPTY|\" : ($raw === [\"value\" => null] ? \"NULL|\" : \"BAD|\");\n$raw = (array) $child;\necho $raw === [\"value\" => 200] ? \"C200|\" : \"BAD|\";\n$raw = (array) $grand;\necho $raw === [\"value\" => 200] ? \"G200|\" : \"BAD|\";\necho $parent->value, \"|\";\n$result = $child->value;\necho $result === \"13\" ? \"CS|\" : \"BAD|\";\necho $grand->parentRead(), \"|\";\n$raw = (array) $grand;\necho $raw === [\"value\" => 200] ? \"G200|\" : \"BAD|\";\n$grand->value = 300;\n$raw = (array) $grand;\necho $raw === [\"value\" => 300] ? \"G300|\" : \"BAD|\";\n$result = $grand->value;\necho $result === \"13\" ? \"GS|\" : \"BAD|\";\n",
+      "source_sha256": "1ce941969fbfa44070f65c515f4ffcddb7d3f06f254b0d632a963e757440c5b8",
+      "stdout_base64": "RU1QVFl8QzIwMHxHMjAwfEdFVDpQcmVzZW5jZVBsYWluNjFQYXJlbnQvUHJlc2VuY2VQbGFpbjYxUGFyZW50fDEzfEdFVDpQcmVzZW5jZVBsYWluNjFQYXJlbnQvUHJlc2VuY2VQbGFpbjYxQ2hpbGR8Q1N8SHxHRVQ6UHJlc2VuY2VQbGFpbjYxUGFyZW50L1ByZXNlbmNlUGxhaW42MUdyYW5kfDEzfEcyMDB8RzMwMHxHRVQ6UHJlc2VuY2VQbGFpbjYxUGFyZW50L1ByZXNlbmNlUGxhaW42MUdyYW5kfEdTfA==",
+      "stderr_template": "",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "virtual-parent-plain-type-presence61-scalar-native-f7f7efda",
+      "native_raw_sha256": "118f3ac0b8b15deb31509b29949e6a4c866c19f1f6bd51d6505bae78ec6f9200"
+    }
+  ]
+}
