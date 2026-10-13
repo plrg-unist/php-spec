@@ -1646,6 +1646,19 @@ agreement. Wider types/roots/flags/hook families remain required.
 Joined exact `fdf9903d`/386; one count-only current init check passes with no application.
 Private cuts remain retained through neutral output/compile-error state and disjoint destructor/WeakMap paths.
 
+Closed virtual public get-only Parent now admits an equal-TYPE plain public
+protected(set) Child. Parent owns no slot; Child/Grand start at 200, global denial
+leaves 200, and Child/Parent scopes store 300/400 while the inherited getter uses
+Parent's private method and returns 13 with receiver called scope and false bypass.
+A body-backed public-set Parent retains its narrowing rejection at class11.
+Strict386/source2 pass at `1f4fae54`; five separate states retain controls100 at
+`e69b3571` and corrected denied68/Child83/Parent83/backed25 at `a648488c`:
+316 reached plus 43 derived. Initial declaration and denied fixture failures remain
+zero; the diagnostic and native newline anticipation miss are retained separately.
+Existing TYPE/default/layout/store/permission/owner rules are unchanged; wider
+setter/flags/hook families remain required.
+[Protected setter review](coverage/semantics/virtual-parent-protected-set-plain-inherited-getter-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization

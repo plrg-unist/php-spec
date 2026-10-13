@@ -264,6 +264,17 @@ widening receives "must be subtype of int" at the child class, with no synthesiz
 child getter declaration or hook-line reattribution. Function/private/called scope
 and false active source bypass remain unchanged;
 [plain-child covariance review](../../coverage/semantics/virtual-parent-covariant-plain-inherited-getter-review.json).
+The equal-TYPE closed virtual get-only family also accepts a public protected(set)
+plain Child. Its own physical slot starts at 200; global stores are rejected, while
+Child and inherited Parent scopes store 300/400 through existing protected-family
+permissions. The inherited getter retains Parent's function, lexical and private
+scope; called scope follows the receiver. It returns 13 independently with false
+active backing bypass. A
+genuinely body-backed public-set Parent still rejects the same narrowing at the
+child class. The scoped prelink exception handles source-fast-equal linking; the
+linked edge additionally authenticates Child ancestry and normalized setter flags.
+TYPE/covariance, defaults, layouts, stores and permission rules are unchanged;
+[protected setter review](../../coverage/semantics/virtual-parent-protected-set-plain-inherited-getter-review.json).
 Other inherited getter roots/shapes and wider
 type-presence combinations remain required.
 Backed-parent inheritance retains invariant types; broader type equivalence and

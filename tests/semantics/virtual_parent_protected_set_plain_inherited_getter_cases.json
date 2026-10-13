@@ -1,0 +1,48 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hashes": {
+    "scalar": "62d7cf19cc1b87052b6f960cfd6c374b9de31dbf19a75cd65335037b87520d70",
+    "backed": "62d7cf19cc1b87052b6f960cfd6c374b9de31dbf19a75cd65335037b87520d70"
+  },
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "scalar",
+      "source": "<?php\nclass ProtectedSetPlainParent60 {\n    public int $value {\n        get {\n            echo \"GET:\", self::class, \"/\", static::class, \"|\";\n            return $this->answer();\n        }\n    }\n    private function answer() { return 13; }\n    public function parentRead() { echo \"H|\"; return $this->value; }\n    public function putParent($value) {\n        echo \"PWRITE:\", self::class, \"/\", static::class, \"|\";\n        $this->value = $value;\n    }\n}\nclass ProtectedSetPlainBridge60 extends ProtectedSetPlainParent60 {}\nclass ProtectedSetPlainChild60 extends ProtectedSetPlainBridge60 {\n    public protected(set) int $value = 200;\n    private function answer() { return 500; }\n    public function putChild($value) {\n        echo \"CWRITE:\", self::class, \"/\", static::class, \"|\";\n        $this->value = $value;\n    }\n}\nclass ProtectedSetPlainGrand60 extends ProtectedSetPlainChild60 {\n    private function answer() { return 900; }\n}\n$parent = new ProtectedSetPlainParent60;\n$child = new ProtectedSetPlainChild60;\n$grand = new ProtectedSetPlainGrand60;\n$raw = (array) $parent;\necho $raw === [] ? \"EMPTY|\" : ($raw === [\"value\" => null] ? \"NULL|\" : \"BAD|\");\n$raw = (array) $child;\necho $raw === [\"value\" => 200] ? \"C200|\" : \"BAD|\";\n$raw = (array) $grand;\necho $raw === [\"value\" => 200] ? \"G200|\" : \"BAD|\";\necho $parent->value, \"|\";\necho $child->value, \"|\";\necho $grand->parentRead(), \"|\";\ntry { $grand->value = 999; echo \"GBAD|\"; }\ncatch (Error $error) { echo \"GLOBAL:\", $error->getMessage(), \"|\"; }\n$raw = (array) $grand;\necho $raw === [\"value\" => 200] ? \"G200|\" : \"BAD|\";\n$grand->putChild(300);\n$raw = (array) $grand;\necho $raw === [\"value\" => 300] ? \"G300|\" : \"BAD|\";\necho $grand->value, \"|\";\ntry { $grand->putParent(400); }\ncatch (Error $error) { echo \"PARENT:\", $error->getMessage(), \"|\"; }\n$raw = (array) $grand;\necho $raw === [\"value\" => 400] ? \"G400|\" : \"BAD|\";\necho $grand->value, \"|\";\n",
+      "source_sha256": "6cf5c475c6eb229663b5bb9cb85145e9eaddcea3b70b3746084e4f352d89696b",
+      "stdout_base64": "RU1QVFl8QzIwMHxHMjAwfEdFVDpQcm90ZWN0ZWRTZXRQbGFpblBhcmVudDYwL1Byb3RlY3RlZFNldFBsYWluUGFyZW50NjB8MTN8R0VUOlByb3RlY3RlZFNldFBsYWluUGFyZW50NjAvUHJvdGVjdGVkU2V0UGxhaW5DaGlsZDYwfDEzfEh8R0VUOlByb3RlY3RlZFNldFBsYWluUGFyZW50NjAvUHJvdGVjdGVkU2V0UGxhaW5HcmFuZDYwfDEzfEdMT0JBTDpDYW5ub3QgbW9kaWZ5IHByb3RlY3RlZChzZXQpIHByb3BlcnR5IFByb3RlY3RlZFNldFBsYWluQ2hpbGQ2MDo6JHZhbHVlIGZyb20gZ2xvYmFsIHNjb3BlfEcyMDB8Q1dSSVRFOlByb3RlY3RlZFNldFBsYWluQ2hpbGQ2MC9Qcm90ZWN0ZWRTZXRQbGFpbkdyYW5kNjB8RzMwMHxHRVQ6UHJvdGVjdGVkU2V0UGxhaW5QYXJlbnQ2MC9Qcm90ZWN0ZWRTZXRQbGFpbkdyYW5kNjB8MTN8UFdSSVRFOlByb3RlY3RlZFNldFBsYWluUGFyZW50NjAvUHJvdGVjdGVkU2V0UGxhaW5HcmFuZDYwfEc0MDB8R0VUOlByb3RlY3RlZFNldFBsYWluUGFyZW50NjAvUHJvdGVjdGVkU2V0UGxhaW5HcmFuZDYwfDEzfA==",
+      "stderr_template": "",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "virtual-parent-protected-set-plain-inherited-getter60-scalar-native-6bb6c386",
+      "native_raw_sha256": "62d7cf19cc1b87052b6f960cfd6c374b9de31dbf19a75cd65335037b87520d70"
+    },
+    {
+      "id": "backed",
+      "source": "<?php\nclass ProtectedSetBackedParent60 {\n    public int $value = 100 {\n        get {\n            return $this->value + $this->answer();\n        }\n    }\n    private function answer() { return 13; }\n}\nclass ProtectedSetBackedBridge60 extends ProtectedSetBackedParent60 {}\nclass ProtectedSetBackedChild60 extends ProtectedSetBackedBridge60 {\n    public protected(set) int $value = 200;\n}\necho \"BAD|\";\n",
+      "source_sha256": "94901069c5b2bd5d759181df04b527bf5ec9a4a09296078fe6b2a8f6188b25b2",
+      "stdout_base64": "",
+      "stderr_template": "Fatal error: Set access level of ProtectedSetBackedChild60::$value must be omitted (as in class ProtectedSetBackedParent60) in {FILE} on line 11\nStack trace:\n#0 {main}\n",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFNldCBhY2Nlc3MgbGV2ZWwgb2YgUHJvdGVjdGVkU2V0QmFja2VkQ2hpbGQ2MDo6JHZhbHVlIG11c3QgYmUgb21pdHRlZCAoYXMgaW4gY2xhc3MgUHJvdGVjdGVkU2V0QmFja2VkUGFyZW50NjApIGluIHtGSUxFfSBvbiBsaW5lIDExClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "virtual-parent-protected-set-plain-inherited-getter60-backed-native-6bb6c386",
+      "native_raw_sha256": "62d7cf19cc1b87052b6f960cfd6c374b9de31dbf19a75cd65335037b87520d70"
+    }
+  ]
+}
