@@ -255,18 +255,23 @@ def $weakmap_presence_allowed(S, paccess) = false -- otherwise
 def $access_call(S, paccess, ptbytes) = $access_predicate(S, paccess, b)
   -- if ptbytes = $ptascii("offsetExists") /\ $weakmap_presence_allowed(S, paccess)
   -- if paccess.MODE = ACCESS_READ (KEY_TEST b)
-  -- if paccess.OBJECT = (n_map) /\ paccess.OFFSET = POBJECT n_key
+  -- if paccess.OBJECT = (n_map)
+  -- if paccess.OFFSET = POBJECT n_key
   -- if ~$weakmap_has_key(S, n_map, n_key)
 def $access_call(S, paccess, ptbytes) = $access_predicate(S, paccess, pweakmapentry.VALUE =/= PNULL)
   -- if ptbytes = $ptascii("offsetExists") /\ $weakmap_presence_allowed(S, paccess)
   -- if paccess.MODE = ACCESS_READ (KEY_TEST false)
-  -- if paccess.OBJECT = (n_map) /\ paccess.OFFSET = POBJECT n_key
-  -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry) /\ pweakmapentry.KEY = n_key
+  -- if paccess.OBJECT = (n_map)
+  -- if paccess.OFFSET = POBJECT n_key
+  -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
+  -- if pweakmapentry.KEY = n_key
 def $access_call(S, paccess, ptbytes) = $access_predicate(S, paccess, ~$truth(S, pweakmapentry.VALUE))
   -- if ptbytes = $ptascii("offsetExists") /\ $weakmap_presence_allowed(S, paccess)
   -- if paccess.MODE = ACCESS_READ (KEY_TEST true)
-  -- if paccess.OBJECT = (n_map) /\ paccess.OFFSET = POBJECT n_key
-  -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry) /\ pweakmapentry.KEY = n_key
+  -- if paccess.OBJECT = (n_map)
+  -- if paccess.OFFSET = POBJECT n_key
+  -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
+  -- if pweakmapentry.KEY = n_key
 ;; Explicit object-key entry removal leaves the key and map alive. The
 ;; ordinary eager edge comparison transfers the removed value owner.
 dec $weakmap_unset_allowed(pstate, paccess) : bool
