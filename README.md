@@ -1979,6 +1979,11 @@ that the type must be omitted. Both-untyped inheritance keeps Parent's string "1
 return and the child's physical slot 200→300. Three originals and three focused
 states are in the
 [plain-child type-presence review](coverage/semantics/virtual-parent-plain-type-presence-review.json).
+Repeated plain `protected(set) int` declarations inherit a virtual parent's getter.
+First owns 200; Second and Grand start at 300, then Grand's slot becomes 400. The
+getter remains 13; later `private(set)` narrowing fails against the immediate parent. Two
+originals and four focused states are in the
+[repeated protected-setter review](coverage/semantics/repeated-protected-plain-inherited-getter-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`

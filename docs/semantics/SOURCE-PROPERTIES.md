@@ -285,6 +285,17 @@ active source backing bypass stays false. This only extends authenticated
 diagnostic-family recognition; pure variance and linked compatible admission,
 getter/default/layout/store/owner rules remain unchanged;
 [plain-child type-presence review](../../coverage/semantics/virtual-parent-plain-type-presence-review.json).
+The getter also survives repeated equal-TYPE plain protected(set) redeclarations:
+virtual Parent -> First200 -> Bridge -> Second300 -> Grand. Each immediate edge
+keeps its actual source/own/link proof and the getter walk decreases fuel. A
+positive Second edge alone does not certify malformed First source or a missing
+ancestor getter. Latest Second storage changes 300 to 400 through its class-scope writer,
+while the inherited Parent function/private/lexical identity and receiver called
+scope stay distinct; source backing bypass remains false and the result stays 13.
+Later private(set) narrowing is rejected against immediate First at class17,
+without borrowing the distant virtual-parent exception. Existing permission,
+default/layout/store/owner rules are unchanged;
+[repeated protected-setter review](../../coverage/semantics/repeated-protected-plain-inherited-getter-review.json).
 Other inherited getter roots/shapes and wider
 type-presence combinations remain required.
 Backed-parent inheritance retains invariant types; broader type equivalence and

@@ -1680,6 +1680,18 @@ remain required.
 Joined exact `0df6172c`/387; one count-only current init check passes with no application.
 Private cuts remain retained through inactive output-handler/Stringable cleanup and empty output buffers.
 
+Repeated equal-TYPE protected(set) plain First -> Bridge -> Second now resolves
+the original virtual Parent getter. Parent owns no slot, First owns 200 and
+Second/Grand own 300; a real Second-scope write stores 400 while the inherited
+Parent private method still yields 13 with receiver called scope and false bypass.
+Later private(set) narrowing names immediate First at class17. Only two metadata
+edge guards changed; source/own/link/fuel closure and runtime permissions,
+defaults/layouts/stores/owners remain unchanged. Strict387/source2 pass at
+`87331b33`; four separate states at `64d31c3a` pass controls106 (54 reached,
+52 derived), Second73, writer93 and narrow23: 243 reached plus 52 derived.
+No failed actor; broader setter/type/root/hook families remain required.
+[Repeated protected-setter review](coverage/semantics/repeated-protected-plain-inherited-getter-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization
