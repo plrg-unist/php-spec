@@ -229,7 +229,13 @@ stay Child's, while the resolved getter/function, lexical/private scope and trac
 class stay Parent's; called scope follows the receiver. Child 200→300 and getter
 213→313 are covered by genuine entered Child/Grand and writer states;
 [inherited-getter review](../../coverage/semantics/plain-child-inherited-backed-get-hook-review.json).
-Further plain redeclarations, other inherited getter shapes and wider
+Repeated plain equal-TYPE redeclarations now resolve the same original getter
+through bounded ordinary-source edges. Each edge authenticates its actual own
+descriptors and immediate selected parent; decreasing fuel closes at a genuine
+local backed getter. Latest Second storage 300→400 stays separate from original
+Parent function/lexical/private/trace and receiver called scope, returning 313→413;
+[repeated inherited-getter review](../../coverage/semantics/repeated-plain-child-inherited-backed-get-hook-review.json).
+Other inherited getter roots/shapes and wider
 type-presence combinations remain required.
 Backed-parent inheritance retains invariant types; broader type equivalence and
 wider hook variance remain required.

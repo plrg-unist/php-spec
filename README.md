@@ -1842,6 +1842,11 @@ scope, private helper and trace class remain the parent's; called scope follows
 the receiver. One original and four focused states cover child/Grand entry and
 write 300/getter 313 in the
 [inherited-getter review](coverage/semantics/plain-child-inherited-backed-get-hook-review.json).
+Repeated plain redeclarations now retain that original getter through authenticated
+inheritance edges. The latest property supplies the slot and default; original
+parent function/private scope remains distinct from receiver called scope.
+One original and four focused states cover slot 300→400/getter 313→413 in the
+[repeated inherited-getter review](coverage/semantics/repeated-plain-child-inherited-backed-get-hook-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
