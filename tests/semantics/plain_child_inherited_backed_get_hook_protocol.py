@@ -456,10 +456,10 @@ DERIVED = ['~$property_hook_plain_over_backed(S,ppropertydesc_parent,ppropertyde
  '~$property_hook_plain_over_backed(S,ppropertydesc_parent,ppropertydesc_child[.SETVISIBILITY = '
  '(PROPERTY_PROTECTED)],|S.CLASSES|)',
  'S_child_link = S[.LINKEDPARENTS = '
- '$pih_link_replace(S.LINKEDPARENTS,porigin_child,INTERNAL_PARENT "broken")]',
+ '$pih_link_replace(S.LINKEDPARENTS,porigin_child,SOURCE_PARENT porigin_child)]',
  '~$property_hook_plain_over_backed(S_child_link,ppropertydesc_parent,ppropertydesc_child,|S.CLASSES|)',
  'S_bridge_link = S[.LINKEDPARENTS = '
- '$pih_link_replace(S.LINKEDPARENTS,porigin_bridge,INTERNAL_PARENT "broken")]',
+ '$pih_link_replace(S.LINKEDPARENTS,porigin_bridge,SOURCE_PARENT porigin_bridge)]',
  '~$property_hook_plain_over_backed(S_bridge_link,ppropertydesc_parent,ppropertydesc_child,|S.CLASSES|)',
  'S_child_own = S[.CLASSES = '
  '$pih_class_replace(S.CLASSES,porigin_child,pclassdesc_child[.PROPERTIES = eps])]',
