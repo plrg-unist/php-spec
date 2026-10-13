@@ -1,0 +1,48 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hashes": {
+    "scalar": "9dfc420bcbf9446f11bfad6df2dadcb2ce9e3129cc9b6dad4dd3cfcd27f85052",
+    "reverse": "5da5197c14b7f09841b950c8bdbc443e8939296c9e2078028bda07a2d0c0ec04"
+  },
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "scalar",
+      "source": "<?php\nclass CovariantPlainParent59 {\n    public mixed $value {\n        get {\n            echo \"GET:\", self::class, \"/\", static::class, \"|\";\n            return $this->answer();\n        }\n    }\n    private function answer() { return \"13\"; }\n    public function parentRead() { echo \"H|\"; return $this->value; }\n}\nclass CovariantPlainBridge59 extends CovariantPlainParent59 {}\nclass CovariantPlainChild59 extends CovariantPlainBridge59 {\n    public int $value = 200;\n    private function answer() { return 500; }\n}\nclass CovariantPlainGrand59 extends CovariantPlainChild59 {\n    private function answer() { return 900; }\n}\n$parent = new CovariantPlainParent59;\n$child = new CovariantPlainChild59;\n$grand = new CovariantPlainGrand59;\n$raw = (array) $parent;\necho $raw === [] ? \"EMPTY|\" : ($raw === [\"value\" => null] ? \"NULL|\" : \"BAD|\");\n$raw = (array) $child;\necho $raw === [\"value\" => 200] ? \"C200|\" : \"BAD|\";\n$raw = (array) $grand;\necho $raw === [\"value\" => 200] ? \"G200|\" : \"BAD|\";\necho $parent->value, \"|\";\n$result = $child->value;\necho $result === \"13\" ? \"CS|\" : \"BAD|\";\necho $grand->parentRead(), \"|\";\n$raw = (array) $grand;\necho $raw === [\"value\" => 200] ? \"G200|\" : \"BAD|\";\n$grand->value = 300;\n$raw = (array) $grand;\necho $raw === [\"value\" => 300] ? \"G300|\" : \"BAD|\";\n$result = $grand->value;\necho $result === \"13\" ? \"GS|\" : \"BAD|\";\n",
+      "source_sha256": "858c245f8552f450e538f52c9feec815f4f341ce4450a3b9d38e83c6d80c4c60",
+      "stdout_base64": "RU1QVFl8QzIwMHxHMjAwfEdFVDpDb3ZhcmlhbnRQbGFpblBhcmVudDU5L0NvdmFyaWFudFBsYWluUGFyZW50NTl8MTN8R0VUOkNvdmFyaWFudFBsYWluUGFyZW50NTkvQ292YXJpYW50UGxhaW5DaGlsZDU5fENTfEh8R0VUOkNvdmFyaWFudFBsYWluUGFyZW50NTkvQ292YXJpYW50UGxhaW5HcmFuZDU5fDEzfEcyMDB8RzMwMHxHRVQ6Q292YXJpYW50UGxhaW5QYXJlbnQ1OS9Db3ZhcmlhbnRQbGFpbkdyYW5kNTl8R1N8",
+      "stderr_template": "",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "virtual-parent-covariant-plain-inherited-getter59-scalar-native-a377bade",
+      "native_raw_sha256": "9dfc420bcbf9446f11bfad6df2dadcb2ce9e3129cc9b6dad4dd3cfcd27f85052"
+    },
+    {
+      "id": "reverse",
+      "source": "<?php\nclass CovariantPlainReverseParent59 {\n    public int $value {\n        get {\n            echo \"GET:\", self::class, \"/\", static::class, \"|\";\n            return $this->answer();\n        }\n    }\n    private function answer() { return \"13\"; }\n    public function parentRead() { echo \"H|\"; return $this->value; }\n}\nclass CovariantPlainReverseBridge59 extends CovariantPlainReverseParent59 {}\nclass CovariantPlainReverseChild59 extends CovariantPlainReverseBridge59 {\n    public mixed $value = 200;\n    private function answer() { return 500; }\n}\nclass CovariantPlainReverseGrand59 extends CovariantPlainReverseChild59 {\n    private function answer() { return 900; }\n}\n$parent = new CovariantPlainReverseParent59;\n$child = new CovariantPlainReverseChild59;\n$grand = new CovariantPlainReverseGrand59;\n$raw = (array) $parent;\necho $raw === [] ? \"EMPTY|\" : ($raw === [\"value\" => null] ? \"NULL|\" : \"BAD|\");\n$raw = (array) $child;\necho $raw === [\"value\" => 200] ? \"C200|\" : \"BAD|\";\n$raw = (array) $grand;\necho $raw === [\"value\" => 200] ? \"G200|\" : \"BAD|\";\necho $parent->value, \"|\";\n$result = $child->value;\necho $result === \"13\" ? \"CS|\" : \"BAD|\";\necho $grand->parentRead(), \"|\";\n$raw = (array) $grand;\necho $raw === [\"value\" => 200] ? \"G200|\" : \"BAD|\";\n$grand->value = 300;\n$raw = (array) $grand;\necho $raw === [\"value\" => 300] ? \"G300|\" : \"BAD|\";\n$result = $grand->value;\necho $result === \"13\" ? \"GS|\" : \"BAD|\";\n",
+      "source_sha256": "3db8e20f87f693c1ea0666fc0ef81dcf9855e27fa414124d3422c3b7049954df",
+      "stdout_base64": "",
+      "stderr_template": "Fatal error: Type of CovariantPlainReverseChild59::$value must be subtype of int (as in class CovariantPlainReverseParent59) in {FILE} on line 13\nStack trace:\n#0 {main}\n",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFR5cGUgb2YgQ292YXJpYW50UGxhaW5SZXZlcnNlQ2hpbGQ1OTo6JHZhbHVlIG11c3QgYmUgc3VidHlwZSBvZiBpbnQgKGFzIGluIGNsYXNzIENvdmFyaWFudFBsYWluUmV2ZXJzZVBhcmVudDU5KSBpbiB7RklMRX0gb24gbGluZSAxMwpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "virtual-parent-covariant-plain-inherited-getter59-reverse-native-a377bade",
+      "native_raw_sha256": "5da5197c14b7f09841b950c8bdbc443e8939296c9e2078028bda07a2d0c0ec04"
+    }
+  ]
+}
