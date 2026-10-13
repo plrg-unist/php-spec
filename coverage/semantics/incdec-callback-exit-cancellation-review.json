@@ -1,0 +1,90 @@
+{
+  "status": "independently_reviewed_private",
+  "scope": "Handler-local destructor Throwable cancellation of exit in ordinary invokable INSTANCE warning callbacks, with defined untyped scalar direct CV/live borrowed-cell targets and safe object-free restoring payloads. Bool/decrement-null restore after callback releases; strings skip the store.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "production_revision": "1fd8a97647f85d5f78671cf2eeca00158189a66a",
+  "semantic_sha256": {
+    "spec/semantics/390-incdec-warning-continuations.watsup": "e0f50fdfedf596e1cf388e27203e4787deb07840be8cfe9e86f5c7ee715a666b"
+  },
+  "engine_basis": [
+    "vendor/php-src/Zend/zend.c: zend_error_zstr_at finishes call receiver/parameter cleanup and its one saved-handler restore-or-destroy decision even with a pending callback-cleanup Throwable.",
+    "Zend/zend_operators.c: bool/decrement-null capture restoration follows warning-handler cleanup; nonnumeric/empty string helpers skip their store on abrupt completion.",
+    "Existing Zend exception/destructor handling preserves the replacement Throwable Previous chain, caller catch/finally and request exit status. The retained-registry native original also observes the saved handler stack owner after set_error_handler(null)."
+  ],
+  "contract": [
+    "A genuine handler-local THROW_SEARCH remains pending before each selected/raw release. Existing eager operations capture it once into PENDING and restore it once; normal and pending callback-phase heads are disjoint.",
+    "The one saved-handler registry decision remains unchanged. A live registry or real external/peer owner prevents forced callback destruction; historical cleanup metadata adds no receiver/raw callback owner.",
+    "After release, existing phase2/DONE resumes the real caller with one pending root, no interrupted result assignment and no request-status reset. Safe bool/decrement-null captures restore; strings preserve later writes.",
+    "A supplied callback-owner destructor secondary Throwable keeps the supplied first as Previous. Borrowed old-cell restoration remains independent of caller rebinding; a late peer survives direct-CV detachment."
+  ],
+  "accepted": {
+    "strict": {
+      "revision": "1fd8a97647f85d5f78671cf2eeca00158189a66a",
+      "modules": 387,
+      "mode": "SL main=true; zero PHP runtime credit",
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-09/strict-1fd8a9764/report.json"
+    },
+    "source": {
+      "new_ordinary": 5,
+      "distinct_ordinary": 5,
+      "cuts": [
+        {
+          "revision": "1fd8a97647f85d5f78671cf2eeca00158189a66a",
+          "ordinary": 1,
+          "reports": [
+            "/home/user/workspace/php-spec-evidence-archive/operators-09/smoke-1fd8a9764-bool-int23/report.json"
+          ]
+        },
+        {
+          "revision": "f35206ef374f6e6e3561d2dcd78178f36ba3078b",
+          "ordinary": 4,
+          "reports": [
+            "/home/user/workspace/php-spec-evidence-archive/operators-09/focus-f35206ef3-author/report.json",
+            "/home/user/workspace/php-spec-evidence-archive/operators-incdec-callback-exit-cancellation-review-09/focus-f35206ef3-two-two/report.json"
+          ]
+        }
+      ],
+      "result": "Exact checked normal stdout/stderr and PHP exit_status, including native23/model-process0/JSON23. All credited actors uninterrupted and reaped, with no group survivors."
+    },
+    "author_reached": {
+      "revision": "f35206ef374f6e6e3561d2dcd78178f36ba3078b",
+      "mode": "SL",
+      "fixtures": 3,
+      "conditions": 383,
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-09/focus-f35206ef3-author/report.json",
+      "result": "Genuine local throw, selected/raw operation PENDING and phase2/DONE/caller frontiers validate descriptors, single pending roots, secondary Previous, old-cell/caller split, bool restoration/string skip, source/phase/status negatives and public budget/native endings."
+    },
+    "independent_reached": {
+      "revision": "f35206ef374f6e6e3561d2dcd78178f36ba3078b",
+      "mode": "SL",
+      "fixtures": 2,
+      "conditions": 264,
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-incdec-callback-exit-cancellation-review-09/focus-f35206ef3-two-two/report.json",
+      "result": "Retained registry keeps the callback live without forced destruction; late peer loses only the detached caller edge while its write and replacement handler survive. Genuine selected/raw pending ownership, descriptors and source/phase/certificate negatives, plus public budget/native endings."
+    },
+    "total_reached_conditions": 647,
+    "compatibility": "The f352 helper-only commit preserves tested1fd executable/source bytes. Publication changes only metadata; OP08 and earlier campaigns retain their original identities."
+  },
+  "preserved_zero_credit": [
+    "/home/user/workspace/php-spec-evidence-archive/operators-09/baseline-0a0f3c896-bool-int23/report.json: unchanged checked Unsupported owning handler-local cleanup throw after model H:2;L:1;, before callback-owner D. Native completes catch/finally with exit23; baseline agreement0.",
+    "Author native3, independent native2 and frontend/AST/native state preparation retain original reports and zero model agreement credit."
+  ],
+  "required_follow_on": [
+    "Exit during callback-owner destruction remains required and distinct from this supplied-Throwable cancellation route.",
+    "Unsafe/expired/constrained/owned restoring targets, wider callable forms, owning caller/control forms and update locations remain required. All six inventory rows and full core remain partial."
+  ],
+  "recovery": {
+    "author_archive": "/home/user/workspace/php-spec-evidence-archive/operators-09",
+    "independent_archive": "/home/user/workspace/php-spec-evidence-archive/operators-incdec-callback-exit-cancellation-review-09",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "environment": "CPU2 affinity, LC_ALL=C, TZ=UTC, no PHP_SPEC_SCRIPT_ENCODING; native cap30/model cap90; explicit --sl cap120 and process-group reap guards.",
+    "commands": [
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 tests/semantics/incdec_callback_exit_cancellation.py --case CASE --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 tests/semantics/incdec_callback_exit_cancellation_review.py --case CASE --output NEW_EXTERNAL_DIRECTORY",
+      "/home/user/workspace/php-spec-evidence-archive/operators-09/focus-f35206ef3-author/run-focused.py: unrun author2 then frozen383; /home/user/workspace/php-spec-evidence-archive/operators-incdec-callback-exit-cancellation-review-09/focus-f35206ef3-two-two/run-focused.py: independent2 then frozen264."
+    ],
+    "record": "Raw records retain source/native/fixture bytes, exact tested revisions/selections, binary/profile hashes, effective environment, commands, structured completions, streams, exits/interruption/reap and frontend/adapter closure."
+  }
+}

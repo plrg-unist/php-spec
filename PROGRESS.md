@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Handler-local destructor Throwables now cancel exit from owning invokable warning
+callbacks. The supplied pending Throwable survives selected-receiver and raw-handler
+release before bool/decrement-null capture restoration; strings skip the store.
+The single registry decision, surviving owners, secondary Previous chain and real
+caller catch/finally are preserved, including request status 23 and late-peer detach.
+Five new originals agree at retained 1fd8/f352 cuts. Three author SL fixtures pass
+383 conditions and two independent fixtures pass 264 (647 total). The original
+Unsupported baseline and native/preparation runs retain zero credit.
+Exit during callback-owner destruction, unsafe targets and wider callbacks/control
+remain required; full core stays partial.
+[Callback-local cancellation ledger](coverage/semantics/incdec-callback-exit-cancellation-review.json).
+
 Deferred runtime function redeclaration now drains a retained file fatal with the
 current binding trace. Its receipt records the actual function site/call cause/index;
 historical bindings reconstruct the raw failure. Captured-prefix index replay and
@@ -30,7 +42,7 @@ cancels exit into caller catch/finally without changing request status 23.
 Seven new and one repaired source agree at 2bc9/34c8. Three author SL fixtures
 pass 299 conditions and three independent fixtures pass 269 (568 total).
 The original Unsupported baseline and pre-runtime compile failure retain zero credit.
-Owning handler-local throws, unsafe targets, wider callbacks/control and
+Unsafe targets, wider callbacks/control and
 exit during callback-owner destruction remain required; full core stays partial.
 [Callback-exit ledger](coverage/semantics/incdec-callback-exit-review.json).
 The 387-module join over 70f124b2 preserves current output/fatal/class state and

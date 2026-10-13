@@ -347,8 +347,13 @@ remain explicit dependencies.
 now release receiver and saved handler before bool/decrement-null restoration;
 strings skip the store. Registry replacement/clearing and surviving owners persist;
 callback-destructor throws resume caller catch/finally. Seven new and one repaired
-source agree, with 568 genuine SL conditions. Owning handler-local throws,
-exit during callback-owner destruction, unsafe targets and wider callback forms remain required.
+source agree, with 568 genuine SL conditions.
+[Owning handler-local cleanup cancellation](coverage/semantics/incdec-callback-exit-cancellation-review.json)
+now carries the supplied Throwable through both callback releases before safe
+bool/null restoration or string store skip, retaining caller catch/finally,
+registry/alias effects, secondary Previous and request status 23. Five new
+originals agree, with 647 genuine SL conditions. Exit during callback-owner
+destruction, unsafe targets and wider callback forms remain required.
 All twelve [compound assignments](docs/semantics/UPDATES.md) preserve captured
 targets, delayed reads and alias ownership; [independent evidence](coverage/semantics/compound-review.json)
 records 2,639 exact source comparisons and the corrected diagnostic phases.

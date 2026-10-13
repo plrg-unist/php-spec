@@ -323,6 +323,8 @@ dec $update_callback_exit_source_valid(pstate, pdestructioncleanup) : bool
 dec $update_callback_exit_valid(pstate, pdestructioncleanup, int, nat) : bool
 dec $update_callback_selected_release(pstate, pdestructioncleanup, int, ptask*) : pstate
 dec $update_callback_raw_release(pstate, pdestructioncleanup, int, ptask*) : pstate
+dec $update_callback_selected_pending(pstate, pdestructioncleanup, int, nat, ptask*) : pstate
+dec $update_callback_raw_pending(pstate, pdestructioncleanup, int, nat, ptask*) : pstate
 dec $update_exit_control_call(pstate) : (perrorcall, int, ptask*)?
 def $update_callback_exit_source_valid(S, pdestructioncleanup) = true
   -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
@@ -362,16 +364,25 @@ rule PhpStep/update-warning-exit-owning: S ~> S[.TODO = (UPDATE_WARNING_CALLBACK
   -- if $call_task_valid(S, UPDATE_WARNING_EXIT perrorcall z)
   -- if $update_warning_exit_owning(S, perrorcall)
   -- if pdestructioncleanup = $eager_cleanup_record(S, ERROR_HANDLER_RESULT perrorcall)
-rule PhpStep/update-warning-exit-owning-local-throw: S ~> S[.COMPLETION = UNSUPPORTED "increment/decrement warning exit owning handler-local cleanup throw"]
+rule PhpStep/update-warning-exit-owning-local-throw: S ~> S[.TODO = (THROW_SEARCH n) :: (UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z 0) :: ptask_tail*]
   -- if S.TODO = (THROW_SEARCH n) :: (UPDATE_WARNING_EXIT perrorcall z) :: ptask_tail*
   -- if $call_task_valid(S, UPDATE_WARNING_EXIT perrorcall z)
   -- if $update_warning_exit_owning(S, perrorcall) /\ $throwable_live(S, n)
+  -- if pdestructioncleanup = $eager_cleanup_record(S, ERROR_HANDLER_RESULT perrorcall)
 def $update_callback_selected_release(S, pdestructioncleanup, z, ptask_tail*) = $eager_operation_begin(S_next, S_next, ERROR_HANDLER_RESULT perrorcall, $error_selected_roots(perrorcall.TARGET))
   -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
   -- if S_next = S[.TODO = (UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z 1) :: ptask_tail*][.DESTRUCTION.CLEANUPS = pdestructioncleanup :: S.DESTRUCTION.CLEANUPS][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
 rule PhpStep/update-callback-exit-selected: S ~> $update_callback_selected_release(S, pdestructioncleanup, z, ptask_tail*)
   -- if S.TODO = (UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z 0) :: ptask_tail*
   -- if $update_callback_exit_valid(S, pdestructioncleanup, z, 0)
+;; Existing eager operations move the genuine search into PENDING, then return
+;; it ahead of the next phase. The callback certificate owns no Throwable.
+def $update_callback_selected_pending(S, pdestructioncleanup, z, n, ptask_tail*) = $eager_operation_begin(S_next, S_next, ERROR_HANDLER_RESULT perrorcall, $error_selected_roots(perrorcall.TARGET))
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if S_next = S[.TODO = (THROW_SEARCH n) :: (UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z 1) :: ptask_tail*][.DESTRUCTION.CLEANUPS = pdestructioncleanup :: S.DESTRUCTION.CLEANUPS][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/update-callback-exit-selected-pending: S ~> $update_callback_selected_pending(S, pdestructioncleanup, z, n, ptask_tail*)
+  -- if S.TODO = (THROW_SEARCH n) :: (UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z 0) :: ptask_tail*
+  -- if $update_callback_exit_valid(S, pdestructioncleanup, z, 0) /\ $throwable_live(S, n)
 def $update_callback_raw_release(S, pdestructioncleanup, z, ptask_tail*) = $eager_operation_begin(S_next, S_next, ERROR_HANDLER_CLEAN perrorcall, $value_nodes(perrorcall.CALLBACK))
   -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
   -- if S.DESTRUCTION.CLEANUPS = pdestructioncleanup :: pdestructioncleanup_tail*
@@ -380,6 +391,14 @@ def $update_callback_raw_release(S, pdestructioncleanup, z, ptask_tail*) = $eage
 rule PhpStep/update-callback-exit-raw: S ~> $update_callback_raw_release(S, pdestructioncleanup, z, ptask_tail*)
   -- if S.TODO = (UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z 1) :: ptask_tail*
   -- if $update_callback_exit_valid(S, pdestructioncleanup, z, 1)
+def $update_callback_raw_pending(S, pdestructioncleanup, z, n, ptask_tail*) = $eager_operation_begin(S_next, S_next, ERROR_HANDLER_CLEAN perrorcall, $value_nodes(perrorcall.CALLBACK))
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if S.DESTRUCTION.CLEANUPS = pdestructioncleanup :: pdestructioncleanup_tail*
+  -- if pdestructioncleanup_done = pdestructioncleanup[.RELEASED = true]
+  -- if S_next = $error_handler_restore(S[.TODO = (THROW_SEARCH n) :: (UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup_done z 2) :: ptask_tail*][.DESTRUCTION.CLEANUPS = pdestructioncleanup_done :: pdestructioncleanup_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], perrorcall.CALLBACK)
+rule PhpStep/update-callback-exit-raw-pending: S ~> $update_callback_raw_pending(S, pdestructioncleanup, z, n, ptask_tail*)
+  -- if S.TODO = (THROW_SEARCH n) :: (UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z 1) :: ptask_tail*
+  -- if $update_callback_exit_valid(S, pdestructioncleanup, z, 1) /\ $throwable_live(S, n)
 rule PhpStep/update-callback-exit-finish-string: S ~> $exit_start_unwind(S[.TODO = ptask_tail*], z)
   -- if S.TODO = (UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup z 2) :: ptask_tail*
   -- if $update_callback_exit_valid(S, pdestructioncleanup, z, 2)
