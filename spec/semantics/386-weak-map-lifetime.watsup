@@ -359,23 +359,49 @@ def $weakmap_nonempty_node(S, HOBJECT n) = true
   -- if S.OBJECTS[n] = WEAKMAP (pweakmapentry)
 def $weakmap_nonempty_node(S, pnode) = false -- otherwise
 ;; Singleton ephemeron tracing is separate from physical value ownership.
-;; The only owned value property is a key backedge, and no callback can run.
+;; The only owned value property is a key backedge.
+dec $weakmap_gc_strip(hedge*, nat, nat) : hedge*
 dec $weakmap_gc_objects(pstate, pnode*, nat, nat, nat) : bool
 def $weakmap_gc_objects(S, eps, n_map, n_key, n_value) = true
 def $weakmap_gc_objects(S, (HOBJECT n) :: pnode_tail*, n_map, n_key, n_value) = $weakmap_gc_objects(S, pnode_tail*, n_map, n_key, n_value)
   -- if $(n < |S.OBJECTS|)
   -- if n <- [n_map, n_key, n_value] \/ $weakref_object(S.OBJECTS[n])
+;; An independently rooted ordinary Std leaf cannot change pair reachability.
+def $weakmap_gc_objects(S, (HOBJECT n) :: pnode_tail*, n_map, n_key, n_value) = $weakmap_gc_objects(S, pnode_tail*, n_map, n_key, n_value)
+  -- if ~(n <- [n_map, n_key, n_value])
+  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = STDINSTANCE
+  -- if ~$instance_storage_freeing(S, n)
+  -- if $node_children(S, HOBJECT n) = eps
+  -- if H = $heap_graph(S)
+  -- if (HOBJECT n) <- $heap_reach(H.ROOTS, eps, $weakmap_gc_strip(H.EDGES, n_map, n_value))
 def $weakmap_gc_objects(S, (HCELL n) :: pnode_tail*, n_map, n_key, n_value) = $weakmap_gc_objects(S, pnode_tail*, n_map, n_key, n_value)
   -- if $(n < |S.STORE|)
 def $weakmap_gc_objects(S, (HARRAY n) :: pnode_tail*, n_map, n_key, n_value) = $weakmap_gc_objects(S, pnode_tail*, n_map, n_key, n_value)
   -- if $(n < |S.ARRAYS|)
 def $weakmap_gc_objects(S, pnode*, n_map, n_key, n_value) = false -- otherwise
 
-dec $weakmap_gc_strip(hedge*, nat, nat) : hedge*
 def $weakmap_gc_strip(eps, n_map, n_value) = eps
 def $weakmap_gc_strip((HEDGE (HOBJECT n_map) (HOBJECT n_value)) :: hedge_tail*, n_map, n_value) = $weakmap_gc_strip(hedge_tail*, n_map, n_value)
 def $weakmap_gc_strip(hedge :: hedge_tail*, n_map, n_value) = hedge :: $weakmap_gc_strip(hedge_tail*, n_map, n_value)
   -- if hedge =/= HEDGE (HOBJECT n_map) (HOBJECT n_value)
+
+;; Ordinary GC already protects destructor-reachable nodes before callbacks
+;; and retraces after return. Admit only this source-backed local destructor.
+dec $weakmap_gc_methods(pstate, nat, pclassdesc) : bool
+def $weakmap_gc_methods(S, n, pclassdesc) = true
+  -- if pclassdesc.METHODS = eps /\ $destructor_method(S, n) = eps
+def $weakmap_gc_methods(S, n, pclassdesc) = true
+  -- if pclassdesc.METHODS = [pmethoddesc]
+  -- if $destructor_method(S, n) = (pmethoddesc)
+  -- if pmethoddesc.OWNER = pclassdesc.ORIGIN
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if pmethoddesc.FUNCTION.SIGNATURE.PARAMETERS = eps
+  -- if pmethoddesc.FUNCTION.SIGNATURE.RETURNS = eps /\ ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
+  -- if ~$function_generator(S, pmethoddesc.FUNCTION)
+  -- if $declaration_history_valid(S)
+def $weakmap_gc_methods(S, n, pclassdesc) = false -- otherwise
 
 dec $weakmap_gc_shape(pstate, nat) : bool
 def $weakmap_gc_shape(S, n_map) = true
@@ -395,7 +421,7 @@ def $weakmap_gc_shape(S, n_map) = true
   -- if $node_children(S, HOBJECT n_value) = [HOBJECT n_key]
   -- if $class_at(S.CLASSES, porigin_value) = (pclassdesc)
   -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps
-  -- if pclassdesc.METHODS = eps /\ $destructor_method(S, n_value) = eps
+  -- if $weakmap_gc_methods(S, n_value, pclassdesc)
   -- if pclassdesc.PROPERTIES = [ppropertydesc]
   -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC
   -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.TYPE = eps
@@ -523,3 +549,11 @@ def $weakref_create(S, n_map) = $weakref_done(S[.OBJECTS = S.OBJECTS ++ [WEAKREF
   -- if $weakmap_storage_create(S, n_map)
   -- if $weakref_find(S, S.ALLOCATIONS, n_map) = eps
   -- if n_wrapper = |S.OBJECTS|
+
+;; A callback may leave the admitted singleton shape. Refuse its real retrace
+;; rather than silently restoring a strong map-value edge and a zero count.
+rule PhpStep/weak-map-gc-trace-shape-refused: S ~> S[.COMPLETION = UNSUPPORTED "WeakMap ephemeron collection"]
+  -- if S.TODO = (GC_TRACE pgccall) :: ptask_tail*
+  -- if $call_task_valid(S, GC_TRACE pgccall)
+  -- if $weakmap_nonempty(S, S.ALLOCATIONS)
+  -- if $weakmap_gc_map(S, S.ALLOCATIONS) = eps

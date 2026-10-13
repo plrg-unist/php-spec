@@ -1008,6 +1008,7 @@ def $gc_trace(S, pgccall) = S[.COMPLETION = UNSUPPORTED "residual destructor tag
 rule PhpStep/gc-trace: S ~> $gc_trace(S, pgccall)
   -- if S.TODO = (GC_TRACE pgccall) :: ptask*
   -- if $call_task_valid(S, GC_TRACE pgccall)
+  -- if ~$weakmap_nonempty(S, S.ALLOCATIONS) \/ $weakmap_gc_map(S, S.ALLOCATIONS) =/= eps
 rule PhpStep/gc-dtors-done: S ~> S[.TODO = (GC_FREE pgcplan) :: ptask*]
   -- if S.TODO = (GC_DTORS pgcplan) :: ptask*
   -- if $gc_plan_valid(S, pgcplan) /\ pgcplan.INDEX = |pgcplan.DTORS|
