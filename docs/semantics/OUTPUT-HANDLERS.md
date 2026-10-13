@@ -23,6 +23,17 @@ output retains PRODUCED without a failure-path deprecation. Interrupted print
 does not assign its normal result, and ordinary cleanup preserves replacement
 Throwables and their Previous links.
 
+Module398 handles reception failures and throws from explicit API callbacks. Flush
+forwards live bytes and restores the failed upper layer; clean discards those
+bytes. End/get operations pop before lower routing and release the sole `zoh`
+afterward. Frozen getter results remain owned during cleanup, while pending
+Throwables interrupt caller assignment. If a normal upper handler's lower
+cascade fails, the upper keeps its normal processed header. A destructor runs
+with the older exception saved and cleared, so its own output can invoke an
+enabled lower handler normally before a replacement exception gains Previous.
+Cleanup destructors keep an internal callsite and the original API trace frame;
+their user catch and visibility context remains intact.
+
 The handler receives a copied input string and the native START/CLEAN/FLUSH/FINAL
 phase flags. Get-clean/get-flush return a separate frozen copy. The active top
 buffer remains visible through callback getters, even when a lower handler is
@@ -58,7 +69,8 @@ producer tail until writing finishes, releasing it before print assignment or
 caller catch. Plain variable operands stay borrowed; wider owned Stringable
 forms remain an explicit dependency.
 
-Callback exit, explicit API callback failure, throwing reference-warning or
+Throws while releasing arguments after a normal result remain a required protocol.
+Callback exit, throwing reference-warning or
 produced-output warning handlers, automatic dispatch from other byte
 producers, request-end/fatal callback drains, non-scalar or
 reference-return conversion, typed variadic reception, mutating buffer APIs
@@ -72,7 +84,8 @@ existing Module391 boundary. Full core remains partial.
 
 Primary authority is `main/output.c` handler creation/op/stack-pop/destruction and
 `Zend/zend_API.c` callable names/selection and
-`Zend/zend_execute_API.c::zend_call_function` invocation. The source runners compare
+`Zend/zend_execute_API.c::zend_call_function` invocation. Destructor exception
+save/restore follows `Zend/zend_objects.c::zend_objects_destroy_object`. The source runners compare
 original bytes, both output channels and exits against the sole pinned runtime.
 Reached-state checks distinguish borrowed receiver retirement, sole raw callback
 ownership, post-route release, temporary disablement and valid forged getter

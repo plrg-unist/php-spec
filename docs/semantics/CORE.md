@@ -205,8 +205,12 @@ deprecation and borrowed FCC lifetime. Module396 adds normal positive-chunk
 callbacks from source echo/print/inline and explicit lower cascades, preserving
 VM strictness/traces, active-versus-running layers and detached flush getters.
 Module397 adds automatic receive/throw cleanup, pending raw-byte routing and
-direct named Stringable temporary release before assignment/catch. Callback exit,
-explicit API failure, warning-handler throws, other byte producers, request-end dispatch,
+direct named Stringable temporary release before assignment/catch. Module398 adds
+explicit API reception failures and callback throws: clean discards raw bytes, flush restores
+its upper layer, and pop releases the sole callback owner after lower routing.
+Pending replacements retain Previous; internal destructor traces retain the API.
+Callback exit, cleanup throws after normal results, warning-handler throws,
+other byte producers, request-end dispatch,
 wider returns/mutation/Fiber switching and buffered stdout diagnostic rendering
 remain dependencies; masking and handler-true cases preserve ordinary execution.
 Wider startup/SAPI output effects remain required.

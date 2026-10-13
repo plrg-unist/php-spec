@@ -7,25 +7,26 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Module397 implements automatic VM output-handler receive/throw cleanup. Arguments
-are released while running, then failed layers disable and forward live bytes with
-the actual pending Throwable. Lower thresholds skip callback entry; caller catch
-retains identity/Previous and interrupted print skips assignment. Direct named
-Stringable temporaries release after writing and before assignment/catch.
-Eight author and four independent originals agree at separate cuts. Three genuine
-state groups pass 166 premises (63+44 at 20d44,59 at 85fd); saved-frame pending
-validation and the producer phase fixture were corrected narrowly. Original
-source/state failures and bounded tuples keep zero credit. The private milestone
-is independently accepted. The 387-module composition over f7f7 passes pointwise
-review, both builds, full structuring and the inventory check. Parent warning-exit
-history, recorded-fatal receipts and virtual-property behavior are preserved; no
-new numeric source/state evidence is claimed.
+Module398 implements explicit output API reception failures and callback throws.
+Arguments release while running; clean discards live bytes, flush restores its
+upper, and end/get pop before lower routing and sole callback-owner release.
+Frozen getters stay owned while pending Throwables interrupt assignment. Actual
+replacement/Previous and saved/cleared destructor exceptions retain API traces.
+Eight author and three independent originals agree at separate cuts. Three
+reached state groups pass 202 premises (117 at6dc,85 at4f2a). Site-only trace
+classification and optional-caller replay matching were corrected narrowly;
+original failures and bounded diagnostics retain zero credit. The bounded private
+milestone is independently accepted; actual-parent integration is pending.
 [Contract](docs/semantics/OUTPUT-HANDLERS.md),
-[author evidence](coverage/semantics/output-abrupt-author.json),
-[independent review](coverage/semantics/output-abrupt-review.json).
-Callback exit, explicit API failure, warning-handler throws, other byte producers,
-request-end/fatal drains and wider conversion/callable/mutation/Fiber/stdout
-protocols remain required; full core stays partial.
+[author evidence](coverage/semantics/output-api-failure-author.json),
+[independent review](coverage/semantics/output-api-failure-review.json).
+Normal-result cleanup throws, callback exit, warning-handler throws, other
+producers/request-end/fatal drains and wider protocols remain required; full core
+stays partial.
+
+Module397 remains integrated at6f7e99f6/387; its eight author/four independent
+originals and three groups/166 retain their original cuts without replay.
+[Accepted ledger](coverage/semantics/output-abrupt-review.json).
 
 Fixed-name `trigger_error`/`user_error` with `E_USER_ERROR` now drains a retained
 file-compiler fatal before handler selection, delivering the cached message/location
