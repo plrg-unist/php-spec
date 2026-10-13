@@ -34,7 +34,7 @@ def $of_phase(S, 2) = true
   -- if pobwrite.INDEX = 1 /\ |pobwrite.IDS| = 2
 def $of_phase(S, 3) = true
   -- if S.TODO = (OUTPUT_FAIL_FINISH pobwrite n) :: ptask_tail*
-  -- if pobwrite.TAIL = (OUTPUT_STRING_RELEASE pobstringrelease) :: ptask_tail*
+  -- if pobwrite.TAIL = (OUTPUT_STRING_RELEASE pobstringrelease) :: ptask_native_tail*
 def $of_phase(S, 4) = true
   -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
   -- if pdestructionoperation.SOURCE = OUTPUT_STRING_RELEASE pobstringrelease
