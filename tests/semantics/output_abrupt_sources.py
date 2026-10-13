@@ -41,6 +41,7 @@ CASES = {'strict-receive': (b'<?php\ndeclare(strict_types=1);\nfunction h(int $b
                                 b'obal $e;$b=new C;throw $e;}ob_start("h",1);try{echo "A";}catch(Exception'
                                 b' $c){echo ($c===$e?"C":"N");}ob_end_clean();echo "Z";',
                                 b'AD1CZ')}
+CASES["owned-stringable-producer"] = (b'<?php $e=new Exception;$x=99;function h($b,$p){global $e;throw $e;}class C{function __toString(){return "A";}function __destruct(){echo "D".ob_get_level();}}ob_start("h",1);try{$x=print new C;}catch(Exception $c){echo ($c===$e?"C":"N");}ob_end_clean();echo ":".$x."Z";', b"AD1C:99Z")
 CONTROLS = {'callback-exit': b'<?php echo "P";function h($b,$p){exit("E");}ob_start("h",1);echo "A";ob_end_clean();',
  'explicit-api-throw': b'<?php echo "P";function h($b,$p){throw new Exception;}ob_start("h");echo "A";ob_end_'
                        b'clean();',
