@@ -14,6 +14,7 @@ dec $tick_control_body(pticksummary, pcodeexpr*, pcpath, statement*, metadata) :
 dec $tick_statement_body(pticksummary, pcodeexpr*, pcpath, statement, bool) : pticksummary
 dec $tick_expression(pticksummary, pcodeexpr*, pcpath, expression) : pticksummary
 dec $tick_expression_body(pticksummary, pcodeexpr*, pcpath, expression) : pticksummary
+dec $tick_new_named(phpType28) : bool
 dec $tick_nodes(pticksummary, pcodeexpr*, pcoccurrence*) : pticksummary
 dec $tick_node(pticksummary, pcodeexpr*, pcpath, pcnode) : pticksummary
 dec $tick_function(pticksummary, pcodeexpr*, pcpath, statement*) : pticksummary
@@ -153,6 +154,14 @@ def $tick_expression_body(T, pcodeexpr*, pcpath, NExprClosure phpType14 phpType4
 def $tick_expression_body(T, pcodeexpr*, pcpath, NExprArrowFunction phpType14 phpType4_1 phpType4_2 phpType16 phpType18 expression metadata) = T_body[.LAST = T.LAST]
   -- if $tick_inputs_clean(NExprArrowFunction phpType14 phpType4_1 phpType4_2 phpType16 phpType18 expression metadata, 5)
   -- if T_body = $tick_expression(T[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 5], expression)
+;; Named construction emits NEW before source-ordered arguments and a retained
+;; constructor call after them. Nested closure bodies still have their own LAST.
+def $tick_expression_body(T, pcodeexpr*, pcpath, NExprNew phpType28 phpType6 metadata) = $tick_nodes(T[.LAST = false], pcodeexpr*, $pcchildren(NExprNew phpType28 phpType6 metadata, pcpath))
+  -- if $tick_new_named(phpType28)
+def $tick_new_named(NName phpType33 metadata) = true
+def $tick_new_named(NNameFullyQualified phpType33 metadata) = true
+def $tick_new_named(NNameRelative phpType33 metadata) = true
+def $tick_new_named(phpType28) = false -- otherwise
 def $tick_expression_body(T, pcodeexpr*, pcpath, NExprClosure phpType14 phpType4_1 phpType4_2 phpType16 phpType21 phpType18 phpType23 metadata) = T[.DEPENDENCY = ("ticks in callable parameter/default/attribute compilation")]
   -- if ~$tick_inputs_clean(NExprClosure phpType14 phpType4_1 phpType4_2 phpType16 phpType21 phpType18 phpType23 metadata, 6)
 def $tick_expression_body(T, pcodeexpr*, pcpath, NExprArrowFunction phpType14 phpType4_1 phpType4_2 phpType16 phpType18 expression metadata) = T[.DEPENDENCY = ("ticks in callable parameter/default/attribute compilation")]
@@ -646,6 +655,7 @@ def $tick_function_nodes((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ($tick
 
 def $tick_expression_children_safe(NExprAssign (NExprVariable (BYTES text) metadata_var) expression metadata) = true
 def $tick_expression_children_safe(NExprFuncCall phpType19 phpType6 metadata) = true
+def $tick_expression_children_safe(NExprNew phpType28 phpType6 metadata) = false
 def $tick_expression_children_safe(expression) = ~$tick_functions(expression) -- otherwise
 
 ;; These constructors have a direct emitter or the ordinary compiler's exact
