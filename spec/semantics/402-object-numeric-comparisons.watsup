@@ -1,7 +1,8 @@
 ;; zend_std_compare_objects captures the numeric type, reports a failed cast,
 ;; then compares private 1/1.0 against the live opposing zval.
-syntax pnumberphase = NUMBER_PRIMARY | NUMBER_SECOND nat porigin
-syntax pnumbercompare = {SOURCE paggregatecompare, POINTER pcomparepointer?, ENV pbinding*, REFS nat*, CLASS porigin, TARGET pvalue, PHASE pnumberphase}
+syntax pnumberclass = porigin | NUMBER_STDCLASS
+syntax pnumberphase = NUMBER_PRIMARY | NUMBER_SECOND nat pnumberclass
+syntax pnumbercompare = {SOURCE paggregatecompare, POINTER pcomparepointer?, ENV pbinding*, REFS nat*, CLASS pnumberclass, TARGET pvalue, PHASE pnumberphase}
 
 dec $number_compare_class(pstate, porigin, nat) : bool
 def $number_compare_class(S, porigin, n) = true
@@ -21,17 +22,24 @@ def $number_compare_class(S, porigin, n) = $number_compare_class(S, porigin_pare
   -- if pclassdesc.KIND = "class"
   -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
 def $number_compare_class(S, porigin, n) = false -- otherwise
-dec $number_compare_receiver_image(pstate, nat, porigin) : bool
+dec $number_compare_receiver_image(pstate, nat, pnumberclass) : bool
 def $number_compare_receiver_image(S, n, porigin) = true
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $number_compare_class(S, porigin, |S.CLASSES|)
-def $number_compare_receiver_image(S, n, porigin) = false -- otherwise
-dec $number_compare_receiver(pstate, nat) : porigin?
+def $number_compare_receiver_image(S, n, NUMBER_STDCLASS) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = STDINSTANCE
+def $number_compare_receiver_image(S, n, pnumberclass) = false -- otherwise
+dec $number_compare_receiver(pstate, nat) : pnumberclass?
 def $number_compare_receiver(S, n) = (porigin)
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $number_compare_receiver_image(S, n, porigin)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, n)
+def $number_compare_receiver(S, n) = (NUMBER_STDCLASS)
+  -- if $number_compare_receiver_image(S, n, NUMBER_STDCLASS)
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if ~$instance_storage_freeing(S, n)
 def $number_compare_receiver(S, n) = eps -- otherwise
@@ -84,8 +92,8 @@ def $number_compare_pointer_image(pnumbercompare) = true
 def $number_compare_pointer_image(pnumbercompare) = false -- otherwise
 dec $number_compare_phase_image(pstate, pnumbercompare) : bool
 def $number_compare_phase_image(S, pnumbercompare) = true -- if pnumbercompare.PHASE = NUMBER_PRIMARY
-def $number_compare_phase_image(S, pnumbercompare) = $number_compare_receiver_image(S, n, porigin)
-  -- if pnumbercompare.PHASE = NUMBER_SECOND n porigin
+def $number_compare_phase_image(S, pnumbercompare) = $number_compare_receiver_image(S, n, pnumberclass)
+  -- if pnumbercompare.PHASE = NUMBER_SECOND n pnumberclass
 def $number_compare_phase_image(S, pnumbercompare) = false -- otherwise
 dec $number_compare_nodes(pnumbercompare) : pnode*
 def $number_compare_nodes(pnumbercompare) = $operand_nodes(pnumbercompare.SOURCE.LEFT) ++ $operand_nodes(pnumbercompare.SOURCE.RIGHT) ++ $base_nodes(pnumbercompare.SOURCE.INPUTBASE) ++ $aggregate_cursor_pins(pnumbercompare.SOURCE.CAST.STACK)
@@ -117,16 +125,19 @@ def $number_compare_suffix(ptask :: ptask_tail*, pnumbercompare) = $number_compa
 def $number_compare_suffix(eps, pnumbercompare) = false
 def $task_nodes(NUMBER_COMPARE_RESULT pnumbercompare) = $number_compare_nodes(pnumbercompare)
 def $call_task_valid(S, NUMBER_COMPARE_RESULT pnumbercompare) = ($number_compare_valid(S, pnumbercompare) /\ S.ORIGIN = (pnumbercompare.SOURCE.CASTSITE) /\ $number_compare_suffix(S.TODO, pnumbercompare))
-dec $number_compare_origin(pnumbercompare) : porigin
-def $number_compare_origin(pnumbercompare) = pnumbercompare.CLASS -- if pnumbercompare.PHASE = NUMBER_PRIMARY
-def $number_compare_origin(pnumbercompare) = porigin -- if pnumbercompare.PHASE = NUMBER_SECOND n porigin
+dec $number_compare_active_class(pnumbercompare) : pnumberclass
+def $number_compare_active_class(pnumbercompare) = pnumbercompare.CLASS -- if pnumbercompare.PHASE = NUMBER_PRIMARY
+def $number_compare_active_class(pnumbercompare) = pnumberclass -- if pnumbercompare.PHASE = NUMBER_SECOND n pnumberclass
+dec $number_compare_class_name(pstate, pnumberclass) : preqbytes
+def $number_compare_class_name(S, porigin) = $c_string(pclassdesc.NAME)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+def $number_compare_class_name(S, NUMBER_STDCLASS) = $ptascii("stdClass")
+def $number_compare_class_name(S, pnumberclass) = eps -- otherwise
 dec $number_compare_message(pstate, pnumbercompare) : preqbytes
-def $number_compare_message(S, pnumbercompare) = $ptascii("Object of class ") ++ $c_string(pclassdesc.NAME) ++ $ptascii(" could not be converted to int")
+def $number_compare_message(S, pnumbercompare) = $ptascii("Object of class ") ++ $number_compare_class_name(S, $number_compare_active_class(pnumbercompare)) ++ $ptascii(" could not be converted to int")
   -- if pnumbercompare.TARGET = PINT 1
-  -- if $class_at(S.CLASSES, $number_compare_origin(pnumbercompare)) = (pclassdesc)
-def $number_compare_message(S, pnumbercompare) = $ptascii("Object of class ") ++ $c_string(pclassdesc.NAME) ++ $ptascii(" could not be converted to float")
+def $number_compare_message(S, pnumbercompare) = $ptascii("Object of class ") ++ $number_compare_class_name(S, $number_compare_active_class(pnumbercompare)) ++ $ptascii(" could not be converted to float")
   -- if pnumbercompare.TARGET = PFLOAT 4607182418800017408
-  -- if $class_at(S.CLASSES, $number_compare_origin(pnumbercompare)) = (pclassdesc)
 def $number_compare_message(S, pnumbercompare) = eps -- otherwise
 def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.RESUME = NUMBER_COMPARE_RESULT pnumbercompare
@@ -145,8 +156,8 @@ def $number_compare_dispatch(S, pnumbercompare) = $error_dispatch(S_pending, 8, 
 def $number_compare_dispatch(S, pnumbercompare) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid numeric comparison Notice"] -- otherwise
 dec $number_compare_start(pstate, paggregatecompare, pvalue, pcomparepointer?, pbinding*, nat*) : pstate
 def $number_compare_start(S, paggregatecompare, pvalue_target, pcomparepointer?, pbinding*, nat*) = $number_compare_dispatch(S, pnumbercompare)
-  -- if $number_compare_receiver(S, paggregatecompare.CAST.RECEIVER) = (porigin)
-  -- if pnumbercompare = {SOURCE paggregatecompare, POINTER pcomparepointer?, ENV pbinding*, REFS nat*, CLASS porigin, TARGET pvalue_target, PHASE NUMBER_PRIMARY}
+  -- if $number_compare_receiver(S, paggregatecompare.CAST.RECEIVER) = (pnumberclass)
+  -- if pnumbercompare = {SOURCE paggregatecompare, POINTER pcomparepointer?, ENV pbinding*, REFS nat*, CLASS pnumberclass, TARGET pvalue_target, PHASE NUMBER_PRIMARY}
 def $number_compare_start(S, paggregatecompare, pvalue_target, pcomparepointer?, pbinding*, nat*) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "numeric comparison receiver"] -- otherwise
 dec $number_compare_initial_pointer(pstate, paggregatecompare) : pcomparepointer?
 def $number_compare_initial_pointer(S, paggregatecompare) = $number_compare_pointer(S.ENV, S.REFCELLS, $number_compare_other_operand(paggregatecompare))
@@ -193,8 +204,8 @@ def $number_compare_other(S, pnumbercompare) = $aggregate_pointer_value(S, paggr
   -- if pnumbercompare.SOURCE.CAST.STACK =/= eps
 def $number_compare_other(S, pnumbercompare) = eps -- otherwise
 dec $number_compare_return(pstate, pnumbercompare, pvalue) : pstate
-def $number_compare_return(S, pnumbercompare, POBJECT n) = $number_compare_dispatch(S, pnumbercompare[.PHASE = NUMBER_SECOND n porigin])
-  -- if $number_compare_receiver(S, n) = (porigin)
+def $number_compare_return(S, pnumbercompare, POBJECT n) = $number_compare_dispatch(S, pnumbercompare[.PHASE = NUMBER_SECOND n pnumberclass])
+  -- if $number_compare_receiver(S, n) = (pnumberclass)
 def $number_compare_return(S, pnumbercompare, pvalue) = $number_compare_leaf_done(S, pnumbercompare, pvalue)
   -- if $type_bytes(pvalue) =/= $ptascii("object")
 def $number_compare_return(S, pnumbercompare, pvalue) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "numeric comparison changed internal object"] -- otherwise
@@ -211,7 +222,7 @@ rule PhpStep/number-compare-expired: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORT
 rule PhpStep/number-compare-secondary: S ~> $number_compare_leaf_done(S, pnumbercompare, pnumbercompare.TARGET)
   -- if S.TODO = (NUMBER_COMPARE_RESULT pnumbercompare) :: ptask_tail*
   -- if $call_task_valid(S, NUMBER_COMPARE_RESULT pnumbercompare)
-  -- if pnumbercompare.PHASE = NUMBER_SECOND n porigin
+  -- if pnumbercompare.PHASE = NUMBER_SECOND n pnumberclass
 rule PhpStep/number-compare-invalid: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid numeric comparison continuation"]
   -- if S.TODO = (NUMBER_COMPARE_RESULT pnumbercompare) :: ptask_tail*
   -- if ~$call_task_valid(S, NUMBER_COMPARE_RESULT pnumbercompare)
@@ -224,7 +235,7 @@ def $number_compare_discard_other(S, pnumbercompare) = (pvalue)
   -- if $number_compare_other(S, pnumbercompare) = (pvalue)
   -- if $type_bytes(pvalue) =/= $ptascii("object")
 def $number_compare_discard_other(S, pnumbercompare) = (pnumbercompare.TARGET)
-  -- if pnumbercompare.PHASE = NUMBER_SECOND n porigin
+  -- if pnumbercompare.PHASE = NUMBER_SECOND n pnumberclass
 def $number_compare_discard_other(S, pnumbercompare) = eps -- otherwise
 dec $number_compare_discard_safe(pstate, pnumbercompare) : bool
 def $number_compare_discard_safe(S, pnumbercompare) = true
