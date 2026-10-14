@@ -2,7 +2,7 @@
 dec $property_set_name(ptbytes) : ptbytes
 def $property_set_name(ptbytes) = [36] ++ ptbytes ++ $ptascii("::set")
 dec $property_set_signature(ppropertydesc) : pssignature
-def $property_set_signature(ppropertydesc) = {PARAMETERS [{NAME $ptascii("value"), TYPE ppropertydesc.TYPE, BYREF false, VARIADIC false, REQUIRED true, DEFAULT PSNONE}], RETURNS [PTBRANCH [PTBUILTIN "void"]], BYREF false}
+def $property_set_signature(ppropertydesc) = {PARAMETERS ([{NAME $ptascii("value"), TYPE ppropertydesc.TYPE, BYREF false, VARIADIC false, REQUIRED true, DEFAULT PSNONE}]), RETURNS ([(PTBRANCH ([PTBUILTIN "void"]))]), BYREF false}
 
 def $pphook_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_name) (SEQUENCE eps) (SEQUENCE statement*) metadata, pchheader) = $pphook_finish_named(P, $ppgoto_finish($ppstatements(P_hook, pcpath ++ [PCFIELD 5], 0, statement*)), pcpath, ptbytes_name, pssignature, metadata)
   -- if $ptlc($base64(text_set)) = $ptascii("set")
