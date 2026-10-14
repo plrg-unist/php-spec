@@ -331,6 +331,37 @@ key/map owners retained beyond callback cleanup, wider entry/key/value protocols
 and ephemeron collection remain required. Countable
 is nominal-only; count execution remains excluded/Unsupported per CORE.
 
+## Scalar own teardown during eager cleanup
+
+A last-owner singleton Map with a supported null/bool/int/string value can now
+use the same physical teardown while its live stdClass leaf Key remains held.
+The object-value predicate is moved unchanged into a disjoint helper arm; current
+consumed-release, zero Map owners, BEFORE and held-Key authority remain required.
+Scalar `value_nodes` and Value jobs are empty. A real empty RELEASE task precedes
+the existing empty-map pin; notification, physical retirement and store-handle
+release use the unchanged protocol. Key and held Sentinel each retain one owner.
+
+The plain 40-byte original already agrees at `b88b45fc`: without destructor classes,
+Fiber or generator work, ordinary leaf pruning retires the Map. A separate held
+`ReleaseSentinel::__destruct` activates eager processing and exposes the genuine
+nonempty storage refusal. The active 42-byte original agrees at `f68c6f09`; its Sentinel
+runs only after Map/Key probes. The plain positive cut is retained without replay,
+and the key-first native 40-byte observation has zero model credit.
+
+Two genuine active-source cuts (160/100, total 260) pass for the consumed release,
+empty release/pin transfer and notice/physical retirement/actual handle release.
+Coherent supported scalar and request-string substitutions keep the same physical
+edges and release authority; malformed string, extra Map owner, stale release,
+wrong BEFORE and unheld Key controls refuse. Normalized replay binds the raw
+steps. Full originals supply later Key/Sentinel retirement and endings. The
+original active Unsupported remains zero; no prior active record is superseded.
+
+The engine basis remains `zend_weakmap_free_obj`, `zend_weakrefs_hash_clean_ex`
+and scalar zval cleanup before own std_dtor notification. No collector, root,
+producer, receiver or notification-body change is made. Wider maps/keys/values,
+scalar replacement, freeing mutation, escaped owners, callback/throw contexts
+and wider GC remain required. [Ledger](../../coverage/semantics/weak-map-review.json).
+
 ## Ordinary dimension reads
 
 Module386 admits authenticated object-key `KEY_R` reads from a live map. The
@@ -382,7 +413,7 @@ retain zero credit. No prior active record is superseded.
 The engine basis is `zend_weakmap_has_dimension`, `zend_weakmap_write_dimension`
 and `zend_weakmap_unset_dimension` in `Zend/zend_weakrefs.c`, plus
 `ZEND_ISSET_ISEMPTY_DIM_OBJ`. Explicit methods, wider quiet/reference reads,
-nonobject/freeing keys, float/array/reference values, scalar replacement/nonempty teardown and
+nonobject/freeing keys, float/array/reference values, scalar replacement/wider teardown and
 wider map/GC protocols remain required.
 [Ledger](../../coverage/semantics/weak-map-review.json).
 
@@ -414,7 +445,7 @@ of `zend_fetch_dimension_address_read` and its `ZVAL_COPY_DEREF` result, and
 `ZEND_FETCH_DIM_IS`. This raw result owns the Value before the later coalesce
 consumer assigns a CV. Explicit methods, `??=`, reference/compound results,
 nonobject/freeing keys, reentrant or wider nested quiet reads, scalar replacement
-and nonempty scalar teardown, iteration/general map order and wider GC remain
+and wider scalar teardown, iteration/general map order and wider GC remain
 required. [Ledger](../../coverage/semantics/weak-map-review.json).
 
 ## Reads during postponed Key notification

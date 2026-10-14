@@ -1203,6 +1203,13 @@ general multi-map order, wider wrapper creation or mutation during freeing,
 additional strong key/map owners retained beyond callback cleanup and wider
 entry/read/mutation protocols remain required.
 
+Scalar entries now also retire through eager cleanup while a live leaf key
+remains held. The plain 40-byte original already agrees at `b88b45fc`; a held
+unrelated destructor object exposes the active path. That 42-byte original and
+260 focused checks pass at `f68c6f09`, preserving the key and held object through
+map notification and physical retirement. Wider teardown and scalar replacement
+remain open.
+
 Two singleton maps can now register the same leaf key on either side of its weak
 wrapper. Entry snapshots determine notification order even when map allocation
 order is reversed: the first callback sees the key live, then notification clears
@@ -1221,7 +1228,7 @@ remain required.
 adding a value owner. `isset` distinguishes null from false/zero/empty strings.
 Bounded scalar first entries keep their exact string carriers. Two originals agree across
 `144597d2`/`b7c1624a`; 377 focused checks cover presence, ownership and literal
-source certificates. Scalar replacement/nonempty teardown and wider protocols remain open.
+source certificates. Scalar replacement and wider teardown protocols remain open.
 
 `$map[$key] ?? $fallback` now copies the stored value directly. Missing keys and
 null values select the lazy fallback; false, zero and empty strings are preserved

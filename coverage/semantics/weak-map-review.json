@@ -1833,5 +1833,109 @@
     ],
     "engine_basis": "Zend/zend_weakrefs.c zend_weakmap_read_dimension returns stored zval or NULL for missing BP_VAR_IS; Zend/zend_execute.c zend_fetch_dimension_address_read object branch ZVAL_COPY_DEREF owns the result before the later consumer, and zend_fetch_dimension_address_read_IS selects BP_VAR_IS. Zend/zend_vm_def.h ZEND_FETCH_DIM_IS supplies this read; null-only coalescing preserves every non-null falsy value.",
     "boundaries": "No explicit methods, ??=, reference/compound result, nonobject/freeing key, reentrant receiver/key or wider nested quiet protocol widening. Scalar first entries and explicit removal reuse EX68; scalar replacement and nonempty scalar key/map teardown, other values, iteration/general map order and wider GC remain open."
+  },
+  "scalar_teardown_70": {
+    "scope": "Last-owner nonempty WeakMap teardown with a supported scalar value and still-held live stdClass leaf Key, including active eager destructor machinery. No collector, producer, receiver, root or notification-body changes.",
+    "base_revision": "b88b45fcd5dde820e9d8f570a7ccb24c982a6c3c",
+    "tested_revision": "f68c6f0982a8fc0b44c2c57aa281437f5885c187",
+    "modules": 390,
+    "raw_root": ".tools/weak-map-scalar-teardown-70",
+    "representation": "weakmap_free_value_allowed preserves the six old object-value premises and adds the disjoint existing valid null/bool/int/string predicate. Current consumed release, zero Map owners, bounded BEFORE, unique Map and held leaf Key checks remain. Scalar value_nodes and Value jobs are eps; the actual empty RELEASE certificate/task precedes the unchanged Map storage pin.",
+    "sources": [
+      {
+        "id": "weak-map-scalar-map-first-70",
+        "tested_revision": "b88b45fcd5dde820e9d8f570a7ccb24c982a6c3c",
+        "source_sha256": "c91a4e5594f0e2346a3a78308e0654e9ebea1976ee3143fb5c2b0f57284233eb",
+        "stdout_bytes": 40,
+        "stdout_sha256": "cd526812c912ee00636176cccf98b158622bd35642b97d51c9378e620856c481",
+        "native_report": ".tools/weak-map-scalar-map-first-70-native-g25shqkk/report.json",
+        "source_report": ".tools/weak-map-scalar-map-first-70-source-b2z1zrpn/report.json",
+        "seconds": 10.217536211013794
+      },
+      {
+        "id": "weak-map-scalar-active-map-first-70",
+        "tested_revision": "f68c6f0982a8fc0b44c2c57aa281437f5885c187",
+        "source_sha256": "42d22712b628a11f9fb531bda37211d9e689f9bcf8c209a20c8f21771b018938",
+        "stdout_bytes": 42,
+        "stdout_sha256": "4e89105cb8b24c8f1b26040dbf7d09199255209463284ef1106620a12c5f7df5",
+        "native_report": ".tools/weak-map-scalar-active-map-first-70-native-n01kszr4/report.json",
+        "source_report": ".tools/weak-map-scalar-active-map-first-70-source-e9zjcs07/report.json",
+        "seconds": 11.915765762329102
+      }
+    ],
+    "plain_positive_bridge": "The plain 40-byte original already agrees at the base: destructor_operational is false (no destructor class, Fiber or generator work), so unchanged ordinary leaf pruning retires the scalar Map. The new free-value predicate is not reached. That accepted positive control is retained without replay; only active 42-byte is an affected source comparison.",
+    "native_only_control": {
+      "source_sha256": "640004c0045362c923d2416975694c067a0e7bffb3b86a40eb6c0c57e8d75bf7",
+      "report": ".tools/weak-map-scalar-key-first-70-native-xsttb3l8/report.json",
+      "stdout_bytes": 40,
+      "stdout_sha256": "273765399921e46263b120dfa69a53aa8c012cb6f2e6aff1e34989ba03961efb",
+      "model_credit": 0,
+      "scope": "Key-first native observation only; no maintained source-agreement or active-key-pin claim."
+    },
+    "state": {
+      "assertions": 260,
+      "candidate_sha256": "bac40749bac605f4f838daaced19543c4b10f227015dc250b07ee2891598f7c3",
+      "observer_sha256": "e8b019d2558e08a7f9efd1d2e279d05f7cf22984d98e274d47385d03f579c62d",
+      "cases": [
+        {
+          "id": "weak-map-scalar-release-transfer-70",
+          "assertions": 160,
+          "report": ".tools/weak-map-scalar-teardown-70-state-cq30leun/report.json",
+          "inner": ".tools/shutdown-state-review-vpro78sq/report.json",
+          "seconds": 11.69296383857727
+        },
+        {
+          "id": "weak-map-scalar-release-pin-70",
+          "assertions": 100,
+          "report": ".tools/weak-map-scalar-teardown-70-state-yhwk3zyg/report.json",
+          "inner": ".tools/shutdown-state-review-r73gohml/report.json",
+          "seconds": 10.240967988967896
+        }
+      ],
+      "authority": "Both cuts use the exact active535 source. Genuine pending Map VALUE release is consumed to owner0; scalar cleanup creates an empty release plus Map pin, no Value owner job, while Key and held Sentinel retain owner1. Supported scalar/request-string substitutions preserve physical edges and release authority; malformed carrier, actual extra owner/current release/BEFORE/unheld-Key controls refuse.",
+      "endpoint": "Transfer consumes the real empty release and stops at the Map pin. The pin cut executes notice clearing, physical retirement and the actual HANDLE job, leaving an empty handle release and the original outer continuation. Key/Sentinel remain live and uncalled; normalized resumed one-step binds each raw transition. Full originals supply later Key/Sentinel cleanup and endings."
+    },
+    "compiler_init": {
+      "observer_sha256": "025c269b2061c7d9a896f43325ff23811f94bbf1ee23f9fa6c62c0739d875521",
+      "compiler_report": ".tools/weak-map-scalar-teardown-70-compiler-lmb02flu/report.json",
+      "artifacts": [
+        {
+          "mode": "algo",
+          "bytes": 14407161,
+          "sha256": "c06bd9678c955577acf5bb4d9f85bb2a1a5777582fccf5ed126e85af06c19585",
+          "seconds": 5.794931173324585
+        },
+        {
+          "mode": "struct",
+          "bytes": 14507966,
+          "sha256": "432e156be260500ed9a713c6629a52d25534f407faf4a820ad701abeadaf6b93",
+          "seconds": 7.732832670211792
+        }
+      ],
+      "init_report": ".tools/weak-map-scalar-teardown-70-init-v4pwdzjj/report.json",
+      "init_sha256": "1ca0bd2d793dda2e1daa0c10e6be9a0b8747819812dd6f8fca1bfc9f27438454",
+      "init_premises": 8,
+      "init_seconds": 7.013058423995972
+    },
+    "preserved_zero_credit": [
+      {
+        "report": ".tools/weak-map-scalar-active-map-first-70-source-y8nyrdxz/report.json",
+        "reason": "Genuine unchanged checked/program Unsupported nonempty WeakMap storage destruction after map-first| in the held-Sentinel context; zero agreement."
+      }
+    ],
+    "maintained": {
+      "sources": 87,
+      "state_cases": 164,
+      "new_state_assertions": 260,
+      "state_sha256": "b12e48310f24a19eabb2cd382cc2787675430359b2755a70b75b6313a4edaf8b",
+      "preservation": "All prior 85 source rows and 162 evaluated cases/order, plus outside-CASES harness AST, remain exact. Add only the plain 40-byte/active 42-byte originals and tested160/100 records; no supersession."
+    },
+    "execution": "LC_ALL=C, TZ=UTC, script encoding removed, jobs1. Native/baseline/compiler/init/affected source on CPU1/SLOT1; state on CPU4/SLOT2. Native30/host120, source CLI60/recorder75/host180, compiler/init120, state120/outer200/host240. Accepted actors exited0 with stable inputs and no stderr/timeout/interruption/groups or inner users. TAKE/RELEASE preserves exact commands/providers/profile and current inputs.",
+    "reproduce": [
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC timeout 180 taskset -c 1 python3 .tools/run-weak-map-scalar-active-source-70.py --native-report .tools/weak-map-scalar-active-map-first-70-native-n01kszr4/report.json",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC timeout 240 taskset -c 4 python3 .tools/run-weak-map-scalar-teardown-state-70.py --case CASE_ID"
+    ],
+    "engine_basis": "Zend/zend_weakrefs.c zend_weakmap_free_obj and zend_weakrefs_hash_clean_ex unregister key entries before zval_ptr_dtor, then zend_object_std_dtor performs own weak notification. Scalar cleanup invokes no object value destructor. zend_objects_store_del retains the physical object until free_obj returns. No new notification protocol is introduced.",
+    "boundaries": "Live single leaf Key and supported scalar family only; object-value free premises are unchanged. Wider maps/keys/values, scalar replacement, retained/freeing receiver mutation, escaped Map owners, callback/throw contexts, iteration/general registration order and wider GC remain open."
   }
 }

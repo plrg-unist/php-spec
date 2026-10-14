@@ -3961,6 +3961,20 @@ endings. Wider maps, wrapper creation or mutation during freeing, additional key
 owners retained beyond callback cleanup and ephemeron collection remain required.
 Earlier failures retain zero credit.
 
+Supported scalar values now pass the existing nonempty Map free admission
+under real eager destructor machinery. The old object-value predicates and all
+current-release/zero-owner/BEFORE/held leaf Key checks remain unchanged. Scalars
+create no Value jobs; an authentic empty release precedes the ordinary Map pin,
+then notification, physical retirement and handle release preserve Key/Sentinel
+owners. Plain map-first already agrees (40 bytes) at `b88b45fc` through unchanged
+leaf pruning. A held unrelated destructor activates the previously refused path;
+its 42-byte original and 160/100 reached checks (260) pass at `f68c6f09`. Checks
+stop after actual handle release; full sources supply later Key/Sentinel cleanup.
+Key-first remains a separate native-only observation. The active-context
+Unsupported stays zero, with no old test supersession or collector/root change.
+Scalar replacement and wider lifetime protocols remain required.
+[Ledger](coverage/semantics/weak-map-review.json).
+
 Two singleton maps sharing one leaf Key now admit a wrapper between their entry
 registrations. BEFORE identities select the earlier entry independently of map
 allocation order, and only that value edge transfers during its callback. One
@@ -3996,7 +4010,7 @@ Value CV; current-source and literal-carrier forgeries refuse. Cuts stop at raw
 test results or insertion; originals supply explicit scalar removal and endings.
 The unchanged refusal, algorithmic binding diagnostic and first scalar refusal
 remain zero. Methods, wider quiet/reference reads, nonobject/freeing keys, other values,
-scalar replacement/nonempty teardown and wider map protocols remain required.
+scalar replacement and wider teardown/map protocols remain required.
 [Ledger](coverage/semantics/weak-map-review.json).
 
 WeakMap quiet `KEY_IS` reads now return the stored pvalue directly or null for
@@ -4008,7 +4022,7 @@ non-null falsy value. Both agree at `df2997be`; 135 copy, 76 genuine missing and
 CV+Map; coherent table controls retain the original CV. Checks end at raw reads
 or genuine RHS scheduling; originals supply full removal/destructor endings.
 The unchanged Unsupported remains zero. Explicit methods, `??=`, references,
-freeing/nonobject keys, wider quiet protocols and scalar nonempty teardown remain
+freeing/nonobject keys, wider quiet protocols and wider scalar teardown remain
 required. [Ledger](coverage/semantics/weak-map-review.json).
 
 Reads during postponed Key notification now require the unique active stdClass
