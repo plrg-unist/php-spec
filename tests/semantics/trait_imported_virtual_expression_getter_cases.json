@@ -1,0 +1,35 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hashes": {
+    "scalar": "623cf4c4a5856f244f9a7abc4ed01cca52010d8d79ab8c87f101cf9b6fda4dee"
+  },
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "scalar",
+      "source": "<?php\ntrait ImportedVirtualExpressionGetterTrait66 {\n    public int $value {\n        get => $this->answer(__METHOD__);\n    }\n}\nclass ImportedVirtualExpressionGetterConsumer66 {\n    use ImportedVirtualExpressionGetterTrait66;\n    private function answer(string $method): int {\n        echo 'ANSWER:', self::class, '/', static::class, '/', $method, '|';\n        return 13;\n    }\n}\nclass ImportedVirtualExpressionGetterGrand66 extends ImportedVirtualExpressionGetterConsumer66 {\n    private function answer(string $method): int { return 900; }\n}\n$consumer = new ImportedVirtualExpressionGetterConsumer66();\n$grand = new ImportedVirtualExpressionGetterGrand66();\n$raw = (array) $consumer;\necho $raw === [] ? 'CEMPTY|' : ($raw === ['value' => null] ? 'CNULL|' : 'CBAD|');\n$raw = (array) $grand;\necho $raw === [] ? 'GEMPTY|' : ($raw === ['value' => null] ? 'GNULL|' : 'GBAD|');\necho $consumer->value, '|';\necho $grand->value, '|';\ntry {\n    $grand->value = 300;\n    echo 'WRITE|';\n} catch (Error $error) {\n    echo 'ERR:', $error->getMessage(), '|';\n}\n$raw = (array) $grand;\necho $raw === [] ? 'GEMPTY|' : ($raw === ['value' => null] ? 'GNULL|' : 'GBAD|');\necho $grand->value, '|';\n",
+      "source_sha256": "f67bafb11594d94d5732ba1d951e9de7bef2d03d87eb602ba4cf58d48325866e",
+      "stdout_base64": "Q0VNUFRZfEdFTVBUWXxBTlNXRVI6SW1wb3J0ZWRWaXJ0dWFsRXhwcmVzc2lvbkdldHRlckNvbnN1bWVyNjYvSW1wb3J0ZWRWaXJ0dWFsRXhwcmVzc2lvbkdldHRlckNvbnN1bWVyNjYvSW1wb3J0ZWRWaXJ0dWFsRXhwcmVzc2lvbkdldHRlclRyYWl0NjY6OiR2YWx1ZTo6Z2V0fDEzfEFOU1dFUjpJbXBvcnRlZFZpcnR1YWxFeHByZXNzaW9uR2V0dGVyQ29uc3VtZXI2Ni9JbXBvcnRlZFZpcnR1YWxFeHByZXNzaW9uR2V0dGVyR3JhbmQ2Ni9JbXBvcnRlZFZpcnR1YWxFeHByZXNzaW9uR2V0dGVyVHJhaXQ2Njo6JHZhbHVlOjpnZXR8MTN8RVJSOlByb3BlcnR5IEltcG9ydGVkVmlydHVhbEV4cHJlc3Npb25HZXR0ZXJHcmFuZDY2OjokdmFsdWUgaXMgcmVhZC1vbmx5fEdFTVBUWXxBTlNXRVI6SW1wb3J0ZWRWaXJ0dWFsRXhwcmVzc2lvbkdldHRlckNvbnN1bWVyNjYvSW1wb3J0ZWRWaXJ0dWFsRXhwcmVzc2lvbkdldHRlckdyYW5kNjYvSW1wb3J0ZWRWaXJ0dWFsRXhwcmVzc2lvbkdldHRlclRyYWl0NjY6OiR2YWx1ZTo6Z2V0fDEzfA==",
+      "stderr_template": "",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "trait-imported-virtual-expression-getter66-scalar-native-a1c76bf2",
+      "native_raw_sha256": "623cf4c4a5856f244f9a7abc4ed01cca52010d8d79ab8c87f101cf9b6fda4dee"
+    }
+  ]
+}
