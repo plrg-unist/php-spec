@@ -102,12 +102,26 @@ safe bool/decrement-null capture restoration or string store skip. A later integ
 exit replaces body exit 23; string exit retains the request status. Registry clearing
 or replacement survives; weak-reference probes observe callback retirement before
 caller-temporary cleanup.
-Admission excludes a pending user Throwable, destructor local cells and owned
-pending operands. The authentic pending-Throwable control stops before caller cleanup;
-its Unsupported result has zero agreement credit. Four new originals and 240 author
+The first cut excludes a pending user Throwable, destructor local cells and owned
+pending operands. Its authentic pending-Throwable control stopped before caller cleanup;
+that Unsupported result retains zero agreement credit. Four new originals and 240 author
 plus 313 independent genuine SL conditions retain their actual cuts and original
-failures. Destructor exits with a pending Throwable, nested destructor exits, owning cleanup,
+failures. Nested destructor exits, owning cleanup,
 unsafe targets and wider callback/control forms remain required.
+
+[Pending-Throwable callback-destructor exits](../../coverage/semantics/incdec-callback-destructor-exit-pending-review.json)
+now retain a supplied Throwable owner through raw-handler release, helper completion
+and caller-temporary cleanup, then release that owner before shutdown. This models the
+internal exit's previous owner without creating a user-visible Exit or changing
+the supplied Throwable's Previous. Bool/decrement-null restore their safe capture
+before parent cleanup; strings skip the store. Last-owner destruction observes the
+restored value, and its later writes survive. Three new and one repaired original
+agree; 440 author and 170 independent genuine SL premises retain their exact cuts.
+The former refusal fixture delegates the accepted original without renewing old
+counts. Admission requires a MAIN caller and a direct destructor scope without local
+cells, held roots or owned pending operands, plus no retained source-end controls.
+Nested/outer contexts, parent/cause cleanup throws or exits,
+unsafe targets and wider routes remain required.
 
 String dimensions validate the key before rejecting increment/decrement; nested
 string dimensions retain the separate nested-array error. Generic dimension

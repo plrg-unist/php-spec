@@ -1,0 +1,119 @@
+{
+  "status": "independently_reviewed_private",
+  "scope": "Exit from a direct raw owning invokable warning-handler destructor with a live pending user Throwable and a MAIN caller. The direct destructor scope has no local cells, held roots or owned pending operands; no source-end controls are retained. Defined untyped direct-CV/live borrowed-cell targets admit safe bool/decrement-null restoration or string store skip.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "production_revision": "c54a266377055eb62dc903d3b78cd1e3d63c391b",
+  "semantic_sha256": {
+    "spec/semantics/30-storage.watsup": "4bed0f69aa735525c72921d3a77dea9b2246c507200639d5b9a735e18514ada4",
+    "spec/semantics/40-control.watsup": "abce1bc0084c259cc1e10c831700845ede31fad37a438fbbd1ce5462ac9aa61c",
+    "spec/semantics/390-incdec-warning-continuations.watsup": "69b11e5fa09b9d5bb9b0c32ed07a858425ffaf2b40e0064557d72c9e7ca60945"
+  },
+  "engine_basis": [
+    "Zend/zend_objects.c: zend_objects_destroy_object saves the old exception and links it as Previous of the new internal exit before releasing the callback object.",
+    "Zend/zend.c: zend_error_zstr_at completes selected/raw handler release and its single registry decision before the bool/null helper restores its capture; string helpers skip that store on abrupt completion.",
+    "Zend/zend_exceptions.c: zend_exception_error clears the internal exit and releases its Previous before shutdown. The last-owner native observes Parent with the pending object live, then Q with captured true, then shutdown with Q's write73."
+  ],
+  "contract": [
+    "Authenticate the actual raw-H destructor call, original pending operation, exact consumed-H release suffix and released cleanup certificate. Rebase actual TODO/CALLS/OPERATIONS and call.OPERATION atomically; the new carrier replaces the operation pending root once.",
+    "The original operation is borrowed source history. Carrier phases0/1 own only the supplied Throwable; phase2 owns no nodes and accepts the historical member after allocation retirement. No user-visible Exit object or user Previous change is synthesized.",
+    "Finish H release, then restore safe bool/decrement-null or skip the string store. Stay NORMAL while ordinary caller-temporary cleanup runs. A single ordinary eager release consumes the internal-exit previous owner afterward, before shutdown, preserving surviving global owners and last-owner destructor writes.",
+    "Only a MAIN caller and direct destructor scope without local cells, held roots or owned pending operands are admitted, with an empty retained source-end tail. Source-tagged early refusal protects the carrier on unsupported parent/cause throws or exits; nested/outer contexts remain excluded. The existing no-pending route stays disjoint."
+  ],
+  "accepted": {
+    "strict": {
+      "revision": "284d7814bc59ac5f2b2aee21ba939e9c02adf455",
+      "modules": 388,
+      "mode": "SL main=true before equivalent dispatch-pattern rewrite; zero PHP agreement credit",
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-11/strict-284d7814b/report.json"
+    },
+    "source": {
+      "new_ordinary": 3,
+      "repaired_ordinary": 1,
+      "distinct_ordinary": 4,
+      "cuts": [
+        {
+          "revision": "c54a266377055eb62dc903d3b78cd1e3d63c391b",
+          "ids": [
+            "review-callback-dexit-pending-last-owner"
+          ],
+          "report": "/home/user/workspace/php-spec-evidence-archive/operators-11/smoke-c54a26637-last-owner/report.json",
+          "report_sha256": "87fa8393e7fcca7269c7daa69bf5d5b976e2454916f3c86b8fd79a1c822bdcf2"
+        },
+        {
+          "revision": "885251c2ac1584d7081cf34f75abb18d093cf2ac",
+          "ids": [
+            "callback-dexit-pending-null-rebind",
+            "callback-dexit-pending-empty-string",
+            "callback-dexit-pending-original"
+          ],
+          "report": "/home/user/workspace/php-spec-evidence-archive/operators-11/focus-885251c2a-author/report.json",
+          "report_sha256": "d312edd5ccc896017bb814660a4337c601b49c7fd3f4e2d11e4e33ab7d656eb4"
+        }
+      ],
+      "result": "All four checked originals match raw native stdout/stderr and PHP status17 or23, with model-process0/JSON17 or23, no interruption or surviving process group. The repaired d4038f69 source is byte-identical to the former OP10 control."
+    },
+    "author_reached": {
+      "revision": "885251c2ac1584d7081cf34f75abb18d093cf2ac",
+      "mode": "SL",
+      "fixtures": 3,
+      "conditions": 440,
+      "counts": [
+        145,
+        145,
+        150
+      ],
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-11/focus-885251c2a-author/report.json",
+      "result": "Genuine raw exit/returned call, atomic operation rebase, supplied global+carrier owners2 to global1, sole cause-release job, caller target lineage, bool/null restoration versus empty-string skip, request status and public budget/native endings."
+    },
+    "independent_reached": {
+      "revision": "885251c2ac1584d7081cf34f75abb18d093cf2ac",
+      "prepared_revision": "38c8a0abca966ba949654857f14980cd02aee3d5",
+      "mode": "SL",
+      "fixtures": 1,
+      "conditions": 170,
+      "fixture_sha256": "57dff5b294e8161429903861502846d4c228f00014a1a0e12c7e99e73f21e8a5",
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-incdec-callback-destructor-exit-pending-review-11/state-885251c2a-one/report.json",
+      "report_sha256": "0b79e0808d9def9d7fc26099988769caf7225ed0f565c1b8238f22349141d9ce",
+      "result": "Last-owner n stays live through H and Parent, transfers to exactly one ordinary release, enters Q with receiver owners2, then retires to owner0/weakNULL before shutdown. Dead-n history, descriptors, source/phase/certificate negatives, Q write73 and budget/native endings pass."
+    },
+    "total_reached_conditions": 610,
+    "compatibility": "The helper-only8852 commit preserves executable bytes accepted atc54a. Earlier strict keeps its284d identity; current source and every reached fixture compile/structure all388 modules with the equivalent two-rule pattern rewrite. Old OP10 source bytes and positive null/clear condition bodies remain exact; only the repaired pending branch delegates the current145 assertions, with no renewed old count."
+  },
+  "compiler_workaround": {
+    "basis": "An independent full388 structured PhpStep dump showed a Cons TODO case containing phase0 ahead of a Fixed1 case containing phases1/2. The first Cons case also matches a singleton, so the later phase alternatives were not tried.",
+    "source": "vendor/p4-spectec/p4spec/lib/pass/structure/opt/overlap.ml classifies Cons versus nonempty Fixed as Disjoint; casify converts that classification to exclusive cases.",
+    "change": "Only release/done premises now match head::tail followed by tail=eps. This preserves the singleton condition, all semantic guards and RHS, and avoids the lost alternatives without a vendor change.",
+    "affected_check": {
+      "revision": "c54a266377055eb62dc903d3b78cd1e3d63c391b",
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-11/cause-transfer-c54a26637/report.json",
+      "report_sha256": "7852ef701183cde57afe84d9ea36cc4520bb72e0f79927a9174c7b88599cc594",
+      "result": "All40 transfer/source/cleanup/heap/descriptor flags true before the accepted source run; diagnostic agreement credit0."
+    }
+  },
+  "preserved_zero_credit": [
+    "/home/user/workspace/php-spec-evidence-archive/operators-11/baseline-72d2b5afd-last-owner/report.json: unchanged checked Unsupported after H:2;L:1;D:1;, versus native Parent then Q then shutdown. Baseline agreement0.",
+    "strict-e371c0f92, strict-942fc8fee and strict-2295cee1b: declaration/fresh structural binder pre-runtime failures; subsequent ordered bind premises preserve semantic conditions.",
+    "/home/user/workspace/php-spec-evidence-archive/operators-11/smoke-284d7814b-last-owner/report.json: original interpreter failure, not Unsupported or agreement.",
+    "phase-diagnostic-38c8a0abc and cause-diagnostic-38c8a0abc-syntax preserve original interpreter failures; the cause-diagnostic-38c8a0abc relation-spelling failure is pre-runtime0. The successful phase1 predecessor snapshot and all40 transfer diagnostic remain diagnostic0, outside610.",
+    "/home/user/workspace/php-spec-evidence-archive/operators-incdec-callback-destructor-exit-pending-review-11/list-pattern-reproducer/report.json: three pre-runtime record-list syntax failures. Corrected tiny fixtures were prepared but deliberately left unrun after actual production structuring identified the dispatch defect.",
+    "Author NEW2/independent NEW1 native observations, retained OP10 native authority and source/AST/native preparation remain zero model agreement credit."
+  ],
+  "required_follow_on": [
+    "Parent/cause cleanup throws or exits, destructor-local cells or owned held/operand cleanup, nested/descendant destructor exits, outer user caller/Fiber contexts and retained source-end controls remain required.",
+    "Expired/constrained/owned restoration targets, wider callable and update-location forms and full core remain partial; all six inventory rows retain partial status."
+  ],
+  "recovery": {
+    "author_archive": "/home/user/workspace/php-spec-evidence-archive/operators-11",
+    "independent_archive": "/home/user/workspace/php-spec-evidence-archive/operators-incdec-callback-destructor-exit-pending-review-11",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "environment": "CPU2 affinity; LC_ALL=C, TZ=UTC, no PHP_SPEC_SCRIPT_ENCODING; source native30/model90, explicit --sl120; owned process groups reaped with no survivors.",
+    "commands": [
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 tests/semantics/incdec_callback_destructor_exit_pending.py --case CASE --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 tests/semantics/incdec_callback_destructor_exit_pending_review.py --case CASE --output NEW_EXTERNAL_DIRECTORY",
+      "/home/user/workspace/php-spec-evidence-archive/operators-11/focus-885251c2a-author/run-focused.py: exact unrun source3 then frozen440; /home/user/workspace/php-spec-evidence-archive/operators-incdec-callback-destructor-exit-pending-review-11/state-885251c2a-one/run-state.py: retained170 without source/frontend/native renewal."
+    ],
+    "record": "External reports retain original PHP/AST/path/native, actual generated mains, revision/helper/source/fixture hashes, commands/environment and raw process exits/interruption/reap. Restore the matching Git revision and project-local tools; use fresh output directories."
+  }
+}

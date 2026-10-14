@@ -7,6 +7,21 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Direct MAIN warning-callback destructor exit now overrides a pending user
+Throwable while retaining its owner through helper completion and caller-temporary
+cleanup. Safe bool/decrement-null restore before parent cleanup; strings skip the
+store. The internal exit releases its retained Throwable owner before shutdown;
+last-owner destructor writes survive. Three new and one repaired original agree
+at c54a/8852; three author fixtures pass 440 premises and the independent last-owner fixture
+passes 170 (610 total). The original Unsupported baseline, compiler/interpreter
+failures, diagnostic/preparation runs and stopped tiny reproducer retain zero
+credit. Two equivalent list-prefix premises avoid a confirmed SpecTec structured
+dispatch overlap without a vendor change. Admission requires a MAIN caller and
+a direct destructor scope without local cells, held roots or owned pending operands.
+Nested/outer contexts, parent/cause cleanup throws or exits, unsafe targets and
+wider callbacks/control remain required.
+[Pending-Throwable destructor-exit ledger](coverage/semantics/incdec-callback-destructor-exit-pending-review.json).
+
 Module401 handles reference-warning throws before direct explicit output API
 callback entry. One authenticated task releases the prepared scalar prefix, then
 normalizes the original fci arguments and reuses undefined-result failure cleanup.
@@ -89,15 +104,15 @@ Exit from a raw invokable warning-handler destructor now returns through the rea
 release operation before helper completion. Safe bool/decrement-null captures
 restore before caller-temporary cleanup; strings skip the store. Integer exit 17
 replaces body exit 23, while string exit retains 23. Destructor registry changes and
-weak retirement survive. Admission requires no pending user Throwable, destructor
+weak retirement survive. That first cut requires no pending user Throwable, destructor
 local cells or owned pending operands. Four new originals agree at cdc375d6d,
 951ffe0e2 and a3f256992. Two author fixtures pass 240 conditions; independent
 positive fixtures pass 247 and the pending-boundary fixture passes 66 (553 total).
-The pending case remains Unsupported with zero agreement credit and stops before
+Its pending control was Unsupported with zero agreement credit and stopped before
 caller cleanup. Its driver handoff correction at 2cd6b6481 preserves the earlier
 positive cuts; the original baseline, preflight/compile and fixture/driver failures
 retain zero credit.
-Destructor exits with a pending Throwable, nested destructor exits, owning cleanup,
+Nested destructor exits, owning cleanup,
 unsafe targets and wider callbacks/control remain required; full core stays partial.
 [Callback-destructor exit ledger](coverage/semantics/incdec-callback-destructor-exit-review.json).
 The 388-module join over bbb9c5eab preserves current output, class and cleanup

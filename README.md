@@ -359,10 +359,16 @@ originals agree, with 647 genuine SL conditions.
 [Callback-owner destructor exits](coverage/semantics/incdec-callback-destructor-exit-review.json)
 now preserve caller operands until safe bool/decrement-null restoration or string
 store skip. Integer exit replaces the earlier status; string exit retains it.
-Four originals agree, with 553 genuine SL conditions. A pending user Throwable,
-nested destructor exits, owning destructor cleanup, unsafe targets and wider
-callback forms remain required; the focused pending control stops before caller
-cleanup with zero agreement credit.
+Four originals agree, with 553 genuine SL conditions. That first cut refused a
+pending user Throwable before caller cleanup with zero agreement credit.
+[Destructor exits with a pending Throwable](coverage/semantics/incdec-callback-destructor-exit-pending-review.json)
+now retain a suspended Throwable owner through helper completion and caller-temporary cleanup,
+then release the retained owner before shutdown. Bool/decrement-null restore
+before parent cleanup; strings skip the store, and later destructor writes survive.
+Three new and one repaired original agree, with 610 genuine SL conditions. Admission requires
+a MAIN caller and a direct destructor scope without local cells, held roots or
+owned pending operands. Nested/outer contexts, parent/cause cleanup throws or
+exits, unsafe targets and wider callbacks/control remain required.
 All twelve [compound assignments](docs/semantics/UPDATES.md) preserve captured
 targets, delayed reads and alias ownership; [independent evidence](coverage/semantics/compound-review.json)
 records 2,639 exact source comparisons and the corrected diagnostic phases.

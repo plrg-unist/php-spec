@@ -57,4 +57,3 @@ echo 'END;';
 }
 STATUS = 'explicit_exit'
 EXIT_CODES = {'review-callback-dexit-null-rebind': 17, 'review-callback-dexit-cleared-registry': 23, 'review-callback-dexit-pending-local-throw': 17}
-BOUNDARIES = {'review-callback-dexit-pending-local-throw': 'increment/decrement warning exit continuation'}

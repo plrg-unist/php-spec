@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Reached raw-destructor exit, borrowed restoration and pending exclusion."""
+"""Reached raw-destructor exit, borrowed restoration and pending continuation."""
 import argparse
 import base64
 import hashlib
@@ -9,13 +9,14 @@ import sys
 import tempfile
 
 import incdec_callback_destructor_exit_review_cases as cases
+import incdec_callback_destructor_exit_pending_protocol as pending_protocol
 import incdec_callback_exit_protocol as protocol
 import incdec_warning_protocol as update_protocol
 
 CASES = ('review-callback-dexit-null-rebind',
          'review-callback-dexit-cleared-registry',
          'review-callback-dexit-pending-local-throw')
-HELPERS = protocol.HELPERS + r'''
+HELPERS = pending_protocol.HELPERS + r'''
 dec $callback_dexit_review_frontier(pstate, nat) : bool
 def $callback_dexit_review_frontier(S, 0) = true
   -- if S.TODO = (EXIT_INVOKE pexitcall) :: ptask_current*
@@ -38,7 +39,10 @@ def $callback_dexit_review_seek(S, n_stage, n) = $callback_dexit_review_seek($dr
 
 
 def conditions(name, program, path, stdout):
-    pending = name == 'review-callback-dexit-pending-local-throw'
+    if name == 'review-callback-dexit-pending-local-throw':
+        original = pending_protocol.CASES[0]
+        assert cases.CASES[name] == pending_protocol.cases.CASES[original]
+        return pending_protocol.conditions(original, program, path, stdout)
     status = cases.EXIT_CODES[name]
     checks = [
         'S_initial = $php_run(' + program + ', 0, ' + json.dumps(base64.b64encode(bytes(path)).decode()) + ')',
@@ -87,28 +91,6 @@ def conditions(name, program, path, stdout):
         '$update_callback_destructor_exit_call(S_view) = (pdestructorcall)',
         '~$update_callback_destructor_exit_pending(S_requested[.CODE = eps])',
     ]
-    if pending:
-        return checks + [
-            'pdestructionoperation.PENDING = (n_second)',
-            'pdestructorcall.PENDING = (n_second)',
-            '$lookup(S_global.ENV, $ptascii("second")) = (n_second_cell)',
-            'S_requested.STORE[n_second_cell] = DEFINED (POBJECT n_second)',
-            '$throwable_live(S_requested, n_second)',
-            '$throwable_previous_id(S_requested, n_second) = eps',
-            '$heap_owners($heap_prune($heap_graph(S_requested)), HOBJECT n_second) = 2',
-            '~$update_callback_destructor_exit_return(S_view)',
-            '~$update_callback_destructor_exit_entered(S_requested)',
-            '~$update_warning_exit_unwind(S_requested)',
-            'S_guard = $exit_start_unwind(S_requested, ' + str(status) + ')',
-            'S_guard = S_requested[.COMPLETION = UNSUPPORTED "increment/decrement warning exit continuation"]',
-            '$call_descriptors_valid(S_guard)', '$heap_valid($heap_graph(S_guard))',
-            '$heap_owners($heap_prune($heap_graph(S_guard)), HOBJECT n_parent) = 1',
-            '$heap_owners($heap_prune($heap_graph(S_guard)), HOBJECT n_second) = 2',
-            '~(n_parent <- S_guard.DESTRUCTION.CALLED)',
-            '$update_warning_pointer_value($constant_frame_scope(S_guard, pframe, pframe_tail*), pupdatewarning.POINTER) = (DEFINED (PINT 99))',
-            '$integer_outputs(S_guard.EVENTS) = ($ptascii("H:2;L:1;D:1;"))',
-            '$drive_steps(S_requested, 2500) = S_guard',
-        ]
     checks += [
         'pdestructionoperation.PENDING = eps', 'pdestructorcall.PENDING = eps',
         '$update_callback_destructor_exit_return(S_view)',
@@ -204,13 +186,16 @@ def main():
         out = Path(tempfile.mkdtemp(prefix='callback-dexit-review-', dir=protocol.runner.ROOT / '.tools'))
         sys.argv += ['--output', str(out)]
     wrapper = Path(__file__)
-    before = hashlib.sha256(wrapper.read_bytes()).hexdigest()
+    watched = [wrapper, Path(pending_protocol.__file__), Path(pending_protocol.cases.__file__),
+               Path(pending_protocol.previous_protocol.__file__)]
+    digest = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
+    before = {str(path): digest(path) for path in watched}
     protocol.CASES, protocol.HELPERS = CASES, HELPERS
     protocol.conditions, protocol.cases = conditions, cases
     passed = protocol.main()
-    assert before == hashlib.sha256(wrapper.read_bytes()).hexdigest()
+    assert before == {str(path): digest(path) for path in watched}
     report = json.loads((out / 'report.json').read_bytes())
-    report['helper_inputs'][str(wrapper)] = before
+    report['helper_inputs'].update(before)
     (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
     return passed
 
