@@ -62,6 +62,13 @@ Base parentRead returns7 without entering a hook, while Grand’s public100→30
 write yields313 and preserves private7, marker700 and Consumer100. One original
 and three checks/277 premises are in the [private-overlap review](../../coverage/semantics/private-overlap-trait-getter-review.json).
 
+Selected one-level nested backed expression hooks now import through a real
+Outer trait row. Final Consumer origins stay flattened to raw Inner; Outer has
+no executable hook clone. Inner `__METHOD__`/`__TRAIT__` spelling and Consumer
+private scope survive Grand’s write300/get313. Identical plain100 in Outer still
+raises the existing hooked-composition CompileError at trait7. Two retained
+originals and two checks are in the [nested-trait review](../../coverage/semantics/nested-trait-getter-review.json).
+
 Imports retain two identities. The declaring owner and lexical `self` scope are
 the using class; the body, filename, line and `__TRAIT__`, `__METHOD__` and
 `__FUNCTION__` remain those of the original trait method. Aliases have their own

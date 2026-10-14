@@ -1,0 +1,48 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hashes": {
+    "scalar": "a112d37e107b4ec7ce03ee672304e2a4cba93d59b9f706e4dee7fc9fda28e3bc",
+    "collision": "a112d37e107b4ec7ce03ee672304e2a4cba93d59b9f706e4dee7fc9fda28e3bc"
+  },
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "scalar",
+      "source": "<?php\ntrait NestedGetterInner70 {\n    public int $value = 100 {\n        get => $this->value + $this->answer(__METHOD__, __TRAIT__);\n    }\n}\ntrait NestedGetterOuter70 {\n    use NestedGetterInner70;\n}\nclass NestedGetterConsumer70 {\n    use NestedGetterOuter70;\n    private function answer(string $method, string $trait): int {\n        echo 'ANSWER:', self::class, '/', static::class, '/', $method, '/', $trait, '|';\n        return 13;\n    }\n}\nclass NestedGetterGrand70 extends NestedGetterConsumer70 {\n    private function answer(string $method, string $trait): int { return 900; }\n}\n$consumer = new NestedGetterConsumer70();\n$grand = new NestedGetterGrand70();\n$raw = (array) $consumer;\necho 'C:', $raw['value'], '|';\n$raw = (array) $grand;\necho 'G:', $raw['value'], '|';\necho $consumer->value, '|';\necho $grand->value, '|';\n$grand->value = 300;\n$raw = (array) $grand;\necho 'G:', $raw['value'], '|';\necho $grand->value, '|';\n",
+      "source_sha256": "0477c4030557efcf45dabb387dc653b528a9ec109763bdc98167874efe2a19e6",
+      "stdout_base64": "QzoxMDB8RzoxMDB8QU5TV0VSOk5lc3RlZEdldHRlckNvbnN1bWVyNzAvTmVzdGVkR2V0dGVyQ29uc3VtZXI3MC9OZXN0ZWRHZXR0ZXJJbm5lcjcwOjokdmFsdWU6OmdldC9OZXN0ZWRHZXR0ZXJJbm5lcjcwfDExM3xBTlNXRVI6TmVzdGVkR2V0dGVyQ29uc3VtZXI3MC9OZXN0ZWRHZXR0ZXJHcmFuZDcwL05lc3RlZEdldHRlcklubmVyNzA6OiR2YWx1ZTo6Z2V0L05lc3RlZEdldHRlcklubmVyNzB8MTEzfEc6MzAwfEFOU1dFUjpOZXN0ZWRHZXR0ZXJDb25zdW1lcjcwL05lc3RlZEdldHRlckdyYW5kNzAvTmVzdGVkR2V0dGVySW5uZXI3MDo6JHZhbHVlOjpnZXQvTmVzdGVkR2V0dGVySW5uZXI3MHwzMTN8",
+      "stderr_template": "",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "nested-trait-getter70-scalar-native-111a5e2d",
+      "native_raw_sha256": "a112d37e107b4ec7ce03ee672304e2a4cba93d59b9f706e4dee7fc9fda28e3bc"
+    },
+    {
+      "id": "collision",
+      "source": "<?php\ntrait NestedConflictGetterInner70 {\n    public int $value = 100 {\n        get => $this->value + $this->answer(__METHOD__, __TRAIT__);\n    }\n}\ntrait NestedConflictGetterOuter70 {\n    use NestedConflictGetterInner70;\n    public int $value = 100;\n}\nclass NestedConflictGetterConsumer70 {\n    use NestedConflictGetterOuter70;\n    private function answer(string $method, string $trait): int {\n        echo 'ANSWER:', self::class, '/', static::class, '/', $method, '/', $trait, '|';\n        return 13;\n    }\n}\nclass NestedConflictGetterGrand70 extends NestedConflictGetterConsumer70 {\n    private function answer(string $method, string $trait): int { return 900; }\n}\n$consumer = new NestedConflictGetterConsumer70();\n$grand = new NestedConflictGetterGrand70();\n$raw = (array) $consumer;\necho 'C:', $raw['value'], '|';\n$raw = (array) $grand;\necho 'G:', $raw['value'], '|';\necho $consumer->value, '|';\necho $grand->value, '|';\n$grand->value = 300;\n$raw = (array) $grand;\necho 'G:', $raw['value'], '|';\necho $grand->value, '|';\n",
+      "source_sha256": "a7f89274a21cf964863c6199ae9b93f0ef678b66490aca9dc4678b529e359e9f",
+      "stdout_base64": "",
+      "stderr_template": "Fatal error: NestedConflictGetterOuter70 and NestedConflictGetterInner70 define the same hooked property ($value) in the composition of NestedConflictGetterOuter70. Conflict resolution between hooked properties is currently not supported. Class was composed in {FILE} on line 7\nStack trace:\n#0 {main}\n",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IE5lc3RlZENvbmZsaWN0R2V0dGVyT3V0ZXI3MCBhbmQgTmVzdGVkQ29uZmxpY3RHZXR0ZXJJbm5lcjcwIGRlZmluZSB0aGUgc2FtZSBob29rZWQgcHJvcGVydHkgKCR2YWx1ZSkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIE5lc3RlZENvbmZsaWN0R2V0dGVyT3V0ZXI3MC4gQ29uZmxpY3QgcmVzb2x1dGlvbiBiZXR3ZWVuIGhvb2tlZCBwcm9wZXJ0aWVzIGlzIGN1cnJlbnRseSBub3Qgc3VwcG9ydGVkLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgNwpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "nested-trait-getter70-collision-native-111a5e2d",
+      "native_raw_sha256": "a112d37e107b4ec7ce03ee672304e2a4cba93d59b9f706e4dee7fc9fda28e3bc"
+    }
+  ]
+}
