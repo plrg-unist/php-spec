@@ -2021,6 +2021,8 @@ at Base parentRead remains0. The one-premise read-selection correction passes
 source1 at `a5833e7b`; three states at `38ee1514` pass277 =242 reached +35 derived.
 Layout/storage/permission and expression task/return rules remain unchanged.
 [Private overlap review](coverage/semantics/private-overlap-trait-getter-review.json).
+Joined exact `21189749f`/391; retained initialization adds no source/state credit.
+Absent warning-destructor previous-owner tasks, Iterator unpack and define calls preserve the accepted private/public route.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
