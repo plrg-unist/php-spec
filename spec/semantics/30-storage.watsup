@@ -290,6 +290,7 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | OB_USER_FAIL_ARGS pobinvoke nat | OB_USER_FAIL_DONE pobinvoke | OB_USER_FAIL_COMMIT pobinvoke nat | OUTPUT_FAIL_WRITE pobwrite nat | OUTPUT_FAIL_FINISH pobwrite nat
   | OB_API_FAIL_RELEASE pobrelease pcallcontext? ptask* nat | OB_API_FAIL_DONE pobrelease pcallcontext? ptask*
   | OB_USER_NORMAL_RESULT pobinvoke pdestructionframe | OB_USER_NORMAL_PENDING pobinvoke pdestructionframe | OB_USER_NORMAL_COMMIT pobinvoke pdestructionframe poboutput
+  | OB_USER_REFERENCE_RELEASE pobinvoke nat nat
   | OUTPUT_STRING_RELEASE pobstringrelease
   | OB_USER_SEND pobinvoke nat | OB_USER_REFERENCE pobinvoke nat | OB_USER_ENTER pobinvoke | OB_USER_RESULT pobinvoke | OB_USER_DEPRECATED pobinvoke pvalue | OB_USER_COMMIT pobinvoke poboutput | OB_USER_RELEASE pobrelease
   | PROPERTY_HOOK_RESULT ppropertyhook | PROPERTY_HOOK_ISSET_RESULT ppropertyhook bool | PROPERTY_HOOK_ASSIGN_RESULT ppropertyhook pbase | PROPERTY_HOOK_COMPOUND_RESULT ppropertyhook pbase int int | PROPERTY_HOOK_COMPOUND_FINISH ppropertyhook pbase int int | INSTANCE_STORAGE_STEP pinstancestorage | FOREACH_BIND_RELEASE pforeachbind | FOREACH_BIND_COMMIT pforeachbind | FOREACH_SCALAR_END nat nat porigin pvalue int

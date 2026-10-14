@@ -90,7 +90,9 @@ def $ob_user_result_discard(S, pobinvoke) = S[.TODO = (OB_USER_FAIL_ARGS pobinvo
   -- if $throwable_live(S, n)
 ;; These warning callbacks have different pre-entry/deprecation cleanup. Keep
 ;; their real resume and owners visible until that protocol is authored.
-def $error_read_discard(S, OB_USER_REFERENCE pobinvoke n) = S[.TODO = (OB_USER_REFERENCE pobinvoke n) :: S.TODO][.COMPLETION = UNSUPPORTED "abrupt user output-handler callback cleanup"]
+dec $ob_user_reference_discard(pstate, pobinvoke, nat) : pstate
+def $error_read_discard(S, OB_USER_REFERENCE pobinvoke n) = $ob_user_reference_discard(S, pobinvoke, n)
+def $ob_user_reference_discard(S, pobinvoke, n) = S[.TODO = (OB_USER_REFERENCE pobinvoke n) :: S.TODO][.COMPLETION = UNSUPPORTED "abrupt user output-handler callback cleanup"] -- otherwise
 def $error_read_discard(S, OB_USER_DEPRECATED pobinvoke pvalue) = $return_discard(S, OB_USER_DEPRECATED pobinvoke pvalue)
 rule PhpStep/ob-user-fail-args: S ~> S[.TODO = (OB_USER_FAIL_DONE pobinvoke[.SENT = eps]) :: ptask_tail*][.COMPLETION = THROWING n][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (OB_USER_FAIL_ARGS pobinvoke n) :: ptask_tail*

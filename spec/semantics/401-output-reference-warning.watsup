@@ -1,0 +1,92 @@
+;; zend_call_function frees only the already prepared parameter prefix when a
+;; must-be-reference warning throws. The output callback has no defined retval.
+dec $ob_reference_shape(pstate, pobinvoke, poperand*, nat) : bool
+dec $ob_reference_prefix(pstate, pobinvoke, poperand*, nat) : bool
+dec $ob_reference_metadata(pstate, pobinvoke, nat) : bool
+dec $ob_reference_release_valid(pstate, pobinvoke, nat, nat) : bool
+dec $ob_reference_fci(pobinvoke) : pobinvoke
+dec $ob_reference_successor(ptask*, pdestructionoperation, pobinvoke, nat, ptask*) : bool
+dec $ob_reference_source_valid(pstate, pdestructionoperation, pobinvoke, nat, nat) : bool
+
+def $ob_reference_fci(pobinvoke) = pobinvoke[.SENT = [KNOWN pobinvoke.INPUT, KNOWN (PINT pobinvoke.PHASE)]]
+def $ob_reference_shape(S, pobinvoke, eps, n) = true
+def $ob_reference_shape(S, pobinvoke, (KNOWN pvalue) :: poperand*, n) = $ob_reference_shape(S, pobinvoke, poperand*, $(n + 1))
+  -- if $(n < 2)
+  -- if pvalue = $ob_user_argument(pobinvoke, n)
+  -- if pobinvoke.BUFFER.HANDLER = (poutputhandler)
+  -- if ~$call_parameter_reference(S, poutputhandler.ENTRY.TARGET, n)
+def $ob_reference_shape(S, pobinvoke, (REFERENCE n_cell) :: poperand*, n) = $ob_reference_shape(S, pobinvoke, poperand*, $(n + 1))
+  -- if $(n < 2)
+  -- if pobinvoke.BUFFER.HANDLER = (poutputhandler)
+  -- if $call_parameter_reference(S, poutputhandler.ENTRY.TARGET, n)
+def $ob_reference_shape(S, pobinvoke, poperand*, n) = false -- otherwise
+
+;; These fresh callee-only references have never been exposed to the callback.
+;; In particular, an arbitrary live object cell is not a prepared scalar arg.
+def $ob_reference_prefix(S, pobinvoke, eps, n) = true
+def $ob_reference_prefix(S, pobinvoke, (KNOWN pvalue) :: poperand*, n) = $ob_reference_prefix(S, pobinvoke, poperand*, $(n + 1))
+  -- if $(n < 2)
+  -- if pvalue = $ob_user_argument(pobinvoke, n)
+def $ob_reference_prefix(S, pobinvoke, (REFERENCE n_cell) :: poperand*, n) = $ob_reference_prefix(S, pobinvoke, poperand*, $(n + 1))
+  -- if $(n < 2)
+  -- if $call_reference_operand_valid(S, REFERENCE n_cell)
+  -- if S.STORE[n_cell] = DEFINED $ob_user_argument(pobinvoke, n)
+  -- if $heap_owners($heap_graph(S), HCELL n_cell) = 1
+def $ob_reference_prefix(S, pobinvoke, poperand*, n) = false -- otherwise
+
+;; Metadata remains checkable after prefix cells or a borrowed FCC retire.
+;; Captured caller/tail are witnesses; only the actual task owns SENT.
+def $ob_reference_metadata(S, pobinvoke, n) = true
+  -- if pobinvoke.CALL = OB_API_FAILED pconfigcall pcallcontext? ptask_native*
+  -- if S.CURRENT = pcallcontext? /\ S.ORIGIN = (pconfigcall.SITE)
+  -- if $ob_api_failure_context(S, pobinvoke.CALL)
+  -- if |pobinvoke.SENT| = n /\ $(n < 2)
+  -- if pobinvoke.BUFFER.HANDLER = (poutputhandler)
+  -- if S_original = S[.TODO = (OB_USER_REFERENCE $ob_api_original(pobinvoke) n) :: ptask_native*]
+  -- if $ob_user_live(S_original, $ob_api_original(pobinvoke))
+  -- if S_history = $ob_user_history(S_original, poutputhandler)
+  -- if $target_function(S_history, poutputhandler.ENTRY.TARGET) = (pfunction)
+  -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, n) = (psparam)
+  -- if psparam.BYREF /\ ~psparam.VARIADIC
+  -- if $ob_reference_shape(S_history, pobinvoke, pobinvoke.SENT, 0)
+def $ob_reference_metadata(S, pobinvoke, n) = false -- otherwise
+def $ob_reference_release_valid(S, pobinvoke, n_index, n_pending) = ($ob_reference_metadata(S, pobinvoke, n_index) /\ $ob_reference_prefix(S, pobinvoke, pobinvoke.SENT, 0) /\ $throwable_live(S, n_pending))
+
+def $ob_api_failure_task(OB_USER_REFERENCE_RELEASE pobinvoke n_index n_pending) = (pobinvoke.CALL)
+def $ob_user_active_task(OB_USER_REFERENCE_RELEASE pobinvoke n_index n_pending) = (pobinvoke.BUFFER.ID)
+def $output_task_write(OB_USER_REFERENCE_RELEASE pobinvoke n_index n_pending) = eps
+def $task_nodes(OB_USER_REFERENCE_RELEASE pobinvoke n_index n_pending) = $ob_user_nodes(pobinvoke) ++ [HOBJECT n_pending]
+def $call_task_valid(S, OB_USER_REFERENCE_RELEASE pobinvoke n_index n_pending) = $ob_reference_release_valid(S, pobinvoke, n_index, n_pending)
+
+def $ob_user_reference_discard(S, pobinvoke, n_index) = S_ready
+  -- if pobinvoke.CALL = OB_API pconfigcall
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n_pending) :: ptask_native*
+  -- if pobinvoke_failed = pobinvoke[.CALL = OB_API_FAILED pconfigcall S.CURRENT ptask_native*]
+  -- if S_ready = S[.TODO = (OB_USER_REFERENCE_RELEASE pobinvoke_failed n_index n_pending) :: ptask_native*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $ob_reference_release_valid(S_ready, pobinvoke_failed, n_index, n_pending)
+
+rule PhpStep/ob-user-reference-release: S ~> S[.TODO = (OB_USER_FAIL_ARGS $ob_reference_fci(pobinvoke) n_pending) :: ptask_native*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (OB_USER_REFERENCE_RELEASE pobinvoke n_index n_pending) :: ptask_native*
+  -- if $ob_reference_release_valid(S, pobinvoke, n_index, n_pending)
+
+;; Broader error-handler owner cleanup must not silently drop this continuation.
+def $return_discard(S, OB_USER_REFERENCE_RELEASE pobinvoke n_index n_pending) = S[.TODO = (OB_USER_REFERENCE_RELEASE pobinvoke n_index n_pending) :: S.TODO][.COMPLETION = UNSUPPORTED "abrupt user output-handler callback cleanup"]
+  -- if S.COMPLETION = NORMAL
+def $return_discard(S, OB_USER_REFERENCE_RELEASE pobinvoke n_index n_pending) = S[.TODO = (OB_USER_REFERENCE_RELEASE pobinvoke n_index n_pending) :: S.TODO]
+  -- if S.COMPLETION =/= NORMAL
+
+def $ob_reference_successor((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, pdestructionoperation, pobinvoke, n, ptask_native*) = $ob_reference_successor(ptask_tail*, pdestructionoperation, pobinvoke, n, ptask_native*)
+def $ob_reference_successor((DESTRUCTOR_OPERATION_EXIT pdestructionoperation_exit) :: (OB_USER_FAIL_ARGS pobinvoke_next n_next) :: ptask_tail*, pdestructionoperation, pobinvoke, n, ptask_native*) = (pdestructionoperation_exit = pdestructionoperation /\ pobinvoke_next = $ob_reference_fci(pobinvoke) /\ n_next = n /\ ptask_tail* = ptask_native*)
+def $ob_reference_successor(ptask*, pdestructionoperation, pobinvoke, n, ptask_native*) = false -- otherwise
+def $ob_reference_source_valid(S, pdestructionoperation, pobinvoke, n_index, n_pending) = true
+  -- if pobinvoke.CALL = OB_API_FAILED pconfigcall pcallcontext? ptask_native*
+  -- if $ob_reference_metadata(S, pobinvoke, n_index)
+  -- if pdestructionoperation.CALLER = pcallcontext? /\ pdestructionoperation.ORIGIN = (pconfigcall.SITE)
+  -- if pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = eps
+  -- if pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if pdestructionoperation.CLEANUP = eps /\ $throwable_live(S, n_pending)
+  -- if $ob_reference_successor(S.TODO, pdestructionoperation, pobinvoke, n_pending, ptask_native*)
+def $ob_reference_source_valid(S, pdestructionoperation, pobinvoke, n_index, n_pending) = false -- otherwise
+def $eager_operation_source_guard(S, pdestructionoperation) = $ob_reference_source_valid(S, pdestructionoperation, pobinvoke, n_index, n_pending)
+  -- if pdestructionoperation.SOURCE = OB_USER_REFERENCE_RELEASE pobinvoke n_index n_pending
