@@ -268,6 +268,8 @@ test-semantics: build
 	python3 tests/semantics/cycle_collection_state.py
 	python3 tests/semantics/cycle_collection_review.py --exclude-match collector-detached-pending-review-18 --exclude-match collector-detached-quiescent-throwing-fiber-prior-error-review-19 --exclude-match collector-active-interval-bound-core-throw-review-21 --exclude-match collector-active-public-cached-core-old-pending-new-throw-review-22 --exclude-match collector-active-public-cached-core-two-identities-compact-review-22 --exclude-match collector-public-postpass-core-old-pending-new-throw-review-23 --exclude-match collector-new-fiber-pass-keeps-parked-old-error-review-24 --exclude-match collector-internal-takeover-old-error-compact-preparation-24 --exclude-match collector-residual-dtor-next-internal-old-pending-review-preparation-26 --exclude-match collector-residual-dtor-main-old-pending-review-preparation-27 --exclude-match collector-residual-internal-suspension-separates-replacement-error-review-preparation-28 --exclude-match collector-residual-last-owner-failed-finally-prior-error-review-preparation-29 --exclude-match collector-public-internal-resuspension-separates-two-finally-errors-review-preparation-30 --exclude-match collector-cached-public-throw-during-different-main-pass-prior-identity-review-preparation-31
 	python3 tests/semantics/cycle_collection_state_review.py --sl
+	python3 tests/semantics/weak_map_scalar_replacement_state.py --case object-to-scalar
+	python3 tests/semantics/weak_map_scalar_replacement_state.py --case scalar-to-object
 	python3 tests/semantics/exception_handler_static_default.py
 	python3 tests/semantics/scoped_callables.py
 	python3 tests/semantics/scoped_callables_protocol.py

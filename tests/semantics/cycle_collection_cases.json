@@ -784,5 +784,23 @@
     "stderr": "",
     "status": "normal",
     "exit": 0
+  },
+  {
+    "id": "weak-map-object-to-scalar-replacement-71",
+    "source": "<?php\nclass OldValue {\n    public function __destruct() {\n        global $map, $key, $result, $rhs;\n        echo 'D-entry:', $map[$key], '|D-result:', $result, '|D-rhs:', $rhs, '|';\n        $rhs = 'changed';\n        echo 'D|';\n    }\n}\n$map = new WeakMap;\n$key = new stdClass;\n$old = new OldValue;\n$oldWeak = WeakReference::create($old);\n$map[$key] = $old;\nunset($old);\n$result = 'before';\n$rhs = 'captured';\necho 'replace|';\n$result = ($map[$key] = $rhs);\necho 'result:', $result, '|entry:', $map[$key], '|rhs:', $rhs, '|';\necho $oldWeak->get() === null ? 'old-null|' : 'old-live|';\nunset($map[$key]);\nunset($map, $key, $oldWeak, $result, $rhs);\necho 'END';\n",
+    "source_sha256": "29be08f17ebd83a42aac93a1a9e1464a4a2708d408fd7e8fea5e89ff3b13e895",
+    "stdout": "replace|D-entry:captured|D-result:before|D-rhs:captured|D|result:changed|entry:captured|rhs:changed|old-null|END",
+    "stderr": "",
+    "status": "normal",
+    "exit": 0
+  },
+  {
+    "id": "weak-map-scalar-to-object-replacement-71",
+    "source": "<?php\nclass NewValue {\n    public function __destruct() { echo 'D|'; }\n}\n$map = new WeakMap;\n$key = new stdClass;\n$new = new NewValue;\n$newWeak = WeakReference::create($new);\n$map[$key] = 'first';\necho 'scalar|';\n$falseResult = ($map[$key] = false);\necho $falseResult === false ? 'false-result|' : 'wrong-result|';\necho $map[$key] === false ? 'false-entry|' : 'wrong-entry|';\necho 'object|';\n$copy = ($map[$key] = $new);\necho $copy === $new ? 'same-result|' : 'wrong-result|';\nunset($map[$key], $new);\necho $newWeak->get() === $copy ? 'copy-live|' : 'copy-lost|';\nunset($copy);\necho $newWeak->get() === null ? 'new-null|' : 'new-live|';\nunset($map, $key, $newWeak, $falseResult);\necho 'END';\n",
+    "source_sha256": "18e4f471b7a673d98cf0c7b4759f54b3c9eb67aec6a904d516a57fbef7c90106",
+    "stdout": "scalar|false-result|false-entry|object|same-result|copy-live|D|new-null|END",
+    "stderr": "",
+    "status": "normal",
+    "exit": 0
   }
 ]
