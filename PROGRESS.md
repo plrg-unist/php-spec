@@ -1867,6 +1867,8 @@ at `74403ac7` pass284 =247 reached +37 derived. A separate updated M65 controls7
 passes; its old source/entry/write and ledger identities remain historical.
 Only the body-kind fence is removed; storage/permissions and expression tasks
 are unchanged. [Virtual expression trait review](coverage/semantics/trait-imported-virtual-expression-getter-review.json).
+Joined exact `f52c92f1`/389; count-only initialization adds no source/state credit.
+Hooked empty-slot casts keep their marked route; define/defined/Fiber and object-comparison protocols are absent.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
