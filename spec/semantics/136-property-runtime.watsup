@@ -463,12 +463,14 @@ def $property_instance_indirect_check(S, n, ptbytes, b_object, z) = S -- otherwi
 dec $property_unset_indirect_check(pstate, nat, ptbytes, int) : pstate
 def $property_unset_indirect_check(S, n, ptbytes, z) = S -- otherwise
 def $property_reference_check(S, n, ptbytes, z) = $property_instance_indirect_check(S, n, ptbytes, true, z)
+dec $property_set_needed(pstate, nat, ptbytes) : bool
 def $property_store_key(S, n, ptbytes, pvalue, z) = $property_set_check(S, n, ptbytes, $ptascii("modify"), z)
   -- if ~$instance_storage_freeing(S, n)
   -- if $property_set_denied(S, n, ptbytes)
 def $property_store_key(S, n, ptbytes, pvalue, z) = $object_table_sync($property_store_key_unshared($object_table_write_key(S, n, ptbytes), n, ptbytes, pvalue, z), n)
   -- if ~$instance_storage_freeing(S, n)
   -- if ~$property_set_denied(S, n, ptbytes)
+  -- if ~$property_set_needed(S, n, ptbytes)
 ;; Declared types convert before the live alias checks its other type sources.
 def $property_store_key_unshared(S, n, ptbytes, pvalue, z) = $write_cell_checked(S, n_cell, pvalue, z)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)

@@ -94,7 +94,12 @@ def $pphook_compile(P, pcpath, ppropertydesc, phpType38, pchheader) = $ppunsuppo
 
 def $pphook_finish(P_outer, P_body, pcpath, ppropertydesc, metadata, pchheader) = P_body
   -- if P_body.COMPLETION =/= PPCNORMAL
-def $pphook_finish(P_outer, P_body, pcpath, ppropertydesc, metadata, pchheader) = $ppfunction_add(P_restored, {DEFAULTS eps, ORIGIN PORIGIN P_outer.FOLD.SOURCE.ID pcpath, NAME (pchheader.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)), SIGNATURE {PARAMETERS eps, RETURNS ppropertydesc.TYPE, BYREF false}, CVS P_body.CVS, ENV P_outer.ENV, CODE $ppfunction_code(P_body), BODY (pcpath ++ [PCFIELD 5]), EARLY false, LINE $nabs($source_line(metadata)), ENDLINE $psendline(metadata)})
+dec $pphook_finish_named(ppstate, ppstate, pcpath, ptbytes, pssignature, metadata) : ppstate
+def $pphook_finish(P_outer, P_body, pcpath, ppropertydesc, metadata, pchheader) = $pphook_finish_named(P_outer, P_body, pcpath, pchheader.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME), {PARAMETERS eps, RETURNS ppropertydesc.TYPE, BYREF false}, metadata)
+  -- if P_body.COMPLETION = PPCNORMAL
+def $pphook_finish_named(P_outer, P_body, pcpath, ptbytes, pssignature, metadata) = P_body
+  -- if P_body.COMPLETION =/= PPCNORMAL
+def $pphook_finish_named(P_outer, P_body, pcpath, ptbytes, pssignature, metadata) = $ppfunction_add(P_restored, {DEFAULTS eps, ORIGIN PORIGIN P_outer.FOLD.SOURCE.ID pcpath, NAME ptbytes, SIGNATURE pssignature, CVS P_body.CVS, ENV P_outer.ENV, CODE $ppfunction_code(P_body), BODY (pcpath ++ [PCFIELD 5]), EARLY false, LINE $nabs($source_line(metadata)), ENDLINE $psendline(metadata)})
   -- if P_body.COMPLETION = PPCNORMAL
   -- if P_restored = P_body[.CLOSURE = P_outer.CLOSURE][.CLASSCONTEXT = P_outer.CLASSCONTEXT][.EVALCLASS = P_outer.EVALCLASS][.RETURNREF = P_outer.RETURNREF][.RETURNS = P_outer.RETURNS][.CVS = P_outer.CVS][.HEADERASSIGNED = P_outer.HEADERASSIGNED][.LOOPS = P_outer.LOOPS][.SWITCHES = P_outer.SWITCHES][.GOTOROOT = P_outer.GOTOROOT][.LABELS = P_outer.LABELS][.GOTOS = P_outer.GOTOS][.EARLY = P_outer.EARLY][.FOLD = P_body.FOLD[.FUNCTION = P_outer.FOLD.FUNCTION][.CLASSCONTEXT = P_outer.FOLD.CLASSCONTEXT][.CLOSURE = P_outer.FOLD.CLOSURE][.VALUE = eps]][.LOCATION = P_outer.LOCATION][.EXPRESSIONS = P_outer.EXPRESSIONS ++ P_body.EXPRESSIONS][.ACCESS = P_outer.ACCESS ++ P_body.ACCESS][.NAMES = P_outer.NAMES ++ P_body.NAMES][.REDIRECTS = P_outer.REDIRECTS ++ P_body.REDIRECTS][.WRITES = P_outer.WRITES ++ P_body.WRITES][.GLOBALS = P_outer.GLOBALS ++ P_body.GLOBALS]
 
@@ -367,9 +372,10 @@ def $property_hook_virtual_chain(S, ppropertydesc, n) = $property_hook_virtual_c
   -- if $property_desc_at($property_layout(S, porigin_parent, |S.CLASSES|), ppropertydesc.KEY) = (ppropertydesc_parent)
   -- if $property_hook_virtual_edge(S, ppropertydesc_parent, ppropertydesc)
 def $property_hook_virtual_chain(S, ppropertydesc, n) = false -- otherwise
+dec $property_set_origin(pstate, ppropertydesc) : porigin?
 dec $property_hook_properties(pstate, ppropertydesc*) : bool
 def $property_hook_properties(S, eps) = false
-def $property_hook_properties(S, ppropertydesc :: ppropertydesc_tail*) = ($property_hook_effective_origin(S, ppropertydesc) =/= eps \/ $property_hook_properties(S, ppropertydesc_tail*))
+def $property_hook_properties(S, ppropertydesc :: ppropertydesc_tail*) = ($property_hook_effective_origin(S, ppropertydesc) =/= eps \/ $property_set_origin(S, ppropertydesc) =/= eps \/ $property_hook_properties(S, ppropertydesc_tail*))
 def $property_hook_instance(S, n) = true
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = INSTANCE porigin_class
@@ -1256,8 +1262,8 @@ dec $property_hook_parent_overlap(pstate, ppropertydesc*, ppropertydesc*) : bool
 dec $property_hook_parent_match(pstate, ppropertydesc, ppropertydesc?) : bool
 def $property_hook_parent_overlap(S, eps, ppropertydesc_parent*) = false
 def $property_hook_parent_overlap(S, ppropertydesc :: ppropertydesc_tail*, ppropertydesc_parent*) = ($property_hook_parent_match(S, ppropertydesc, $property_desc_at(ppropertydesc_parent*, ppropertydesc.KEY)) \/ $property_hook_parent_overlap(S, ppropertydesc_tail*, ppropertydesc_parent*))
-def $property_hook_parent_match(S, ppropertydesc, eps) = ($property_hook_effective_origin(S, ppropertydesc) =/= eps /\ $property_hook_trait_origin(S, ppropertydesc) = eps)
-def $property_hook_parent_match(S, ppropertydesc, (ppropertydesc_inherited)) = (($property_hook_effective_origin(S, ppropertydesc_inherited) =/= eps \/ $property_hook_effective_origin(S, ppropertydesc) =/= eps) /\ ~$property_hook_override_pair(S, ppropertydesc_inherited, ppropertydesc))
+def $property_hook_parent_match(S, ppropertydesc, eps) = (($property_hook_effective_origin(S, ppropertydesc) =/= eps /\ $property_hook_trait_origin(S, ppropertydesc) = eps) \/ $property_set_origin(S, ppropertydesc) =/= eps)
+def $property_hook_parent_match(S, ppropertydesc, (ppropertydesc_inherited)) = (($property_hook_effective_origin(S, ppropertydesc_inherited) =/= eps \/ $property_hook_effective_origin(S, ppropertydesc) =/= eps \/ $property_set_origin(S, ppropertydesc_inherited) =/= eps \/ $property_set_origin(S, ppropertydesc) =/= eps) /\ ~$property_hook_override_pair(S, ppropertydesc_inherited, ppropertydesc))
 def $property_hook_link_finish(S, pclassdesc, S_linked) = $trait_restore(S, S_linked[.COMPLETION = UNSUPPORTED "inherited property hook override"])
   -- if S_linked.COMPLETION = NORMAL
   -- if $class_at(S_linked.CLASSES, pclassdesc.ORIGIN) = (pclassdesc_effective)
