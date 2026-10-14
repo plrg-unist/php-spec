@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Genuine automatic failure argv, pending lower-write and source operand fronts."""
+"""Genuine automatic pending lower-write and source operand fronts."""
 import argparse
 import json
 import os
@@ -8,8 +8,8 @@ import tempfile
 from recorded_worker import Worker
 import output_abrupt_sources as sources
 ROOT = sources.ROOT
+# The historical late-SENT argv frontier is replaced by output_result_cleanup_state.
 CASES = {
-    'argv-cleanup': sources.CASES['reference-argument-cleanup'],
     'pending-lower': sources.CASES['lower-pending'],
     'producer-finish': (b'<?php $e=new Exception;$x=99;function h($b,$p){global $e;throw $e;}class C{function __toString(){return "A";}function __destruct(){echo "D".ob_get_level();}}ob_start("h",1);try{$x=print new C;}catch(Exception $c){echo ($c===$e?"C":"N");}ob_end_clean();echo ":".$x."Z";', b'AD1C:99Z'),
 }
@@ -22,13 +22,6 @@ def $of_output(pevent :: pevent_tail*) = $of_output(pevent_tail*) -- if ~$of_is_
 def $of_is_output(OUTPUT n*) = true
 def $of_is_output(pevent) = false -- otherwise
 dec $of_phase(pstate, nat) : bool
-def $of_phase(S, 0) = true -- if S.TODO = (OB_USER_FAIL_ARGS pobinvoke n) :: ptask_tail*
-def $of_phase(S, 1) = true
-  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
-  -- if pdestructionoperation.SOURCE = OB_USER_FAIL_ARGS pobinvoke n
-  -- if S.CURRENT = (pcallcontext)
-  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
-  -- if pdestructorcall.OPERATION = (pdestructionoperation)
 def $of_phase(S, 2) = true
   -- if S.TODO = (OUTPUT_FAIL_WRITE pobwrite n) :: ptask_tail*
   -- if pobwrite.INDEX = 1 /\ |pobwrite.IDS| = 2
@@ -68,7 +61,7 @@ def fingerprint():
 
 
 def assertions(name, fixture, directory, path):
-    phase = {'argv-cleanup': 0, 'pending-lower': 2, 'producer-finish': 3}[name]
+    phase = {'pending-lower': 2, 'producer-finish': 3}[name]
     checks = ['S_initial = $php_file_run(' + fixture + ', 0, ' + bytes_expr(os.fsencode(path)) + ', ' + bytes_expr(os.fsencode(directory)) + ')',
               'S_initial.COMPLETION = BUDGET', *valid('S_initial'),
               'S_found = $of_seek(S_initial, ' + str(phase) + ', 512)',
@@ -76,46 +69,13 @@ def assertions(name, fixture, directory, path):
               'S_reached = S_found[.COMPLETION = NORMAL]', '$of_phase(S_reached, ' + str(phase) + ')', *valid('S_reached'),
               'S_budget = $drive_steps(S_reached, 0)', 'S_budget.COMPLETION = BUDGET',
               r'S_budget.TODO = S_reached.TODO /\ S_budget.OUTPUTBUFFERS = S_reached.OUTPUTBUFFERS', *valid('S_budget')]
-    if name == 'argv-cleanup':
-        checks += ['S_reached.TODO = (OB_USER_FAIL_ARGS pobinvoke n_pending) :: ptask_tail*',
-                   'pobinvoke.CALL = OB_WRITE pobwrite', 'pobwrite.TAIL = ptask_tail*',
-                   'pobinvoke.SENT = [REFERENCE n_argument, KNOWN (PINT 1)]',
-                   'S_reached.STORE[n_argument] = DEFINED (POBJECT n_argument_object)',
-                   '$throwable_live(S_reached, n_pending)', '$ob_user_running(S_reached)',
-                   '$output_selected(S_reached, pobinvoke) = (poutputbuffer)',
-                   r'poutputbuffer.FLAGS = 113 /\ poutputbuffer.BYTES = ([65])',
-                   '~$ob_user_failure_live(S_reached, pobinvoke[.CALL = OB_WRITE pobwrite[.TAIL = eps]])',
-                   '~$call_task_valid(S_reached, OB_USER_FAIL_ARGS pobinvoke n_argument_object)',
-                   '~$call_task_valid(S_reached, OB_USER_FAIL_ARGS pobinvoke[.SENT = eps] n_pending)',
-                   'S_child_found = $of_seek(S_reached, 1, 512)',
-                   r'S_child_found.COMPLETION = NORMAL \/ S_child_found.COMPLETION = BUDGET',
-                   'S_child = S_child_found[.COMPLETION = NORMAL]', '$of_phase(S_child, 1)', *valid('S_child'),
-                   'S_child.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*',
-                   'pdestructionoperation.SOURCE = OB_USER_FAIL_ARGS pobinvoke n_pending',
-                   r'pdestructionoperation.COMPLETION = THROWING n_pending /\ pdestructionoperation.PENDING = (n_pending)',
-                   '$eager_operation_source_guard(S_child, pdestructionoperation)', '$ob_user_running(S_child)',
-                   '$output_at(S_child.OUTPUTBUFFERS, pobinvoke.BUFFER.ID) = (poutputbuffer_child)',
-                   r'poutputbuffer_child.FLAGS = 113 /\ poutputbuffer_child.BYTES = ([65])',
-                   '~$call_task_valid(S_child, OB_USER_FAIL_ARGS pobinvoke n_pending)',
-                   '~$eager_operation_source_guard(S_child, pdestructionoperation[.COMPLETION = NORMAL])',
-                   'S_child.FRAMES = pframe :: pframe_tail*',
-                   'pframe.TODO = (DESTRUCTOR_RESULT pdestructorcall_replay) :: (DESTRUCTOR_RELEASE pdestructionrelease_replay) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (OB_USER_FAIL_DONE pobinvoke[.SENT = eps]) :: pobwrite.TAIL',
-                   'S_frame = $constant_frame_scope(S_child, pframe, pframe_tail*)',
-                   'S_tasks = $destructor_saved_frame_scope($api_saved_frame_scope($parameter_string_frame_scope(S_frame, pframe, pframe_tail*), pframe, pframe_tail*), pframe)',
-                   'S_replay = $call_after_origin($call_after_origin($call_after_origin(S_tasks, DESTRUCTOR_RESULT pdestructorcall_replay), DESTRUCTOR_RELEASE pdestructionrelease_replay), DESTRUCTOR_OPERATION_EXIT pdestructionoperation)',
-                   'S_replay.DESTRUCTION.OPERATIONS = eps',
-                   '$ob_user_failure_replay_pending(S_replay, S_replay.TODO, pobinvoke[.SENT = eps]) = (n_pending)',
-                   '$ob_user_failure_replay_pending(S_replay, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation[.ORIGIN = eps]) :: (OB_USER_FAIL_DONE pobinvoke[.SENT = eps]) :: pobwrite.TAIL, pobinvoke[.SENT = eps]) = eps',
-                   '$ob_user_failure_replay_pending(S_replay, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (OB_USER_FAIL_DONE pobinvoke[.SENT = eps]) :: eps, pobinvoke[.SENT = eps]) = eps',
-                   '$ob_user_failure_replay_pending(S_replay, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation[.COMPLETION = NORMAL]) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (OB_USER_FAIL_DONE pobinvoke[.SENT = eps]) :: pobwrite.TAIL, pobinvoke[.SENT = eps]) = eps']
-    else:
-        task = 'OUTPUT_FAIL_WRITE' if name == 'pending-lower' else 'OUTPUT_FAIL_FINISH'
-        checks += ['S_reached.TODO = (' + task + ' pobwrite n_pending) :: ptask_tail*',
-                   'pobwrite.TAIL = ptask_tail*', '$throwable_live(S_reached, n_pending)',
-                   '~$ob_user_running(S_reached)',
-                   '~$call_task_valid(S_reached, ' + task + ' pobwrite[.TAIL = eps] n_pending)',
-                   '~$call_task_valid(S_reached, ' + task + ' pobwrite[.IDS = ([999])] n_pending)',
-                   '~$call_task_valid(S_reached, ' + task + ' pobwrite[.CALLER = OUTPUT_VM (PORIGIN 999 eps) (EMIT 1) 1] n_pending)']
+    task = 'OUTPUT_FAIL_WRITE' if name == 'pending-lower' else 'OUTPUT_FAIL_FINISH'
+    checks += ['S_reached.TODO = (' + task + ' pobwrite n_pending) :: ptask_tail*',
+               'pobwrite.TAIL = ptask_tail*', '$throwable_live(S_reached, n_pending)',
+               '~$ob_user_running(S_reached)',
+               '~$call_task_valid(S_reached, ' + task + ' pobwrite[.TAIL = eps] n_pending)',
+               '~$call_task_valid(S_reached, ' + task + ' pobwrite[.IDS = ([999])] n_pending)',
+               '~$call_task_valid(S_reached, ' + task + ' pobwrite[.CALLER = OUTPUT_VM (PORIGIN 999 eps) (EMIT 1) 1] n_pending)']
     if name == 'pending-lower':
         checks += [r'pobwrite.IDS = ([1,0]) /\ pobwrite.INDEX = 1 /\ pobwrite.BYTES = ([65])',
                    'S_reached.OUTPUTBUFFERS = [poutputbuffer_upper,poutputbuffer_lower]',

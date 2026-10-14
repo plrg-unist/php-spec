@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Reached API argv cleanup, detached restoration and popped handler ownership."""
+"""Reached API detached restoration and popped handler ownership."""
 import argparse
 import json
 import os
@@ -9,8 +9,8 @@ from recorded_worker import Worker
 import output_api_failure_sources as sources
 import output_api_failure_review_sources as review
 ROOT = sources.ROOT
+# The historical late-SENT argv frontier is replaced by output_result_cleanup_state.
 CASES = {
-    'clean-argv': review.CASES['clean-argv-replacement-retains-lower'],
     'detached-restore': sources.CASES['normal-upper-lower-throw'],
     'get-clean-release': (b'<?php $e=new Exception("E");$f=new Exception("F");$x=99;$log="";function l($b,$p){global $log;$log.="L";return "L".$b;}class C{function __invoke($b,$p){global $e;throw $e;}function __destruct(){global $f;echo "D".ob_get_level();throw $f;}}ob_start("l",1);ob_start(new C);echo "A";try{$x=ob_get_clean();}catch(Exception $c){$s=ob_get_status();echo ($c===$f?"F":"N").($c->getPrevious()===$e?"P":"N").":".$s["flags"].":".$x;}ob_end_clean();echo "|".$log."Z";', b'LD1LFP:20593:99|LLLZ'),
 }
@@ -23,16 +23,6 @@ def $af_output(pevent :: pevent_tail*) = $af_output(pevent_tail*) -- if ~$af_is_
 def $af_is_output(OUTPUT n*) = true
 def $af_is_output(pevent) = false -- otherwise
 dec $af_phase(pstate, nat) : bool
-def $af_phase(S, 0) = true
-  -- if S.TODO = (OB_USER_FAIL_ARGS pobinvoke n) :: ptask_tail*
-  -- if pobinvoke.CALL = OB_API_FAILED pconfigcall pcallcontext? ptask_native*
-def $af_phase(S, 1) = true
-  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
-  -- if pdestructionoperation.SOURCE = OB_USER_FAIL_ARGS pobinvoke n
-  -- if pobinvoke.CALL = OB_API_FAILED pconfigcall pcallcontext? ptask_native*
-  -- if S.CURRENT = (pcallcontext_current)
-  -- if $destructor_context_call(pcallcontext_current, S.CURRENT, S.FRAMES) = (pdestructorcall)
-  -- if pdestructorcall.OPERATION = (pdestructionoperation)
 def $af_phase(S, 2) = true
   -- if S.TODO = (OUTPUT_FAIL_FINISH pobwrite n) :: ptask_tail*
   -- if pobwrite.FINISH = OUTPUT_USER_DONE pobinvoke poutputbuffer poboutput true
@@ -78,7 +68,7 @@ def fingerprint():
 
 
 def assertions(name, fixture, directory, path):
-    phase = {'clean-argv': 0, 'detached-restore': 2, 'get-clean-release': 3}[name]
+    phase = {'detached-restore': 2, 'get-clean-release': 3}[name]
     checks = ['S_initial = $php_file_run(' + fixture + ', 0, ' + bytes_expr(os.fsencode(path)) + ', ' + bytes_expr(os.fsencode(directory)) + ')',
               'S_initial.COMPLETION = BUDGET', *valid('S_initial'),
               'S_found = $af_seek(S_initial, ' + str(phase) + ', 512)',
@@ -86,29 +76,7 @@ def assertions(name, fixture, directory, path):
               'S_reached = S_found[.COMPLETION = NORMAL]', '$af_phase(S_reached, ' + str(phase) + ')', *valid('S_reached'),
               'S_budget = $drive_steps(S_reached, 0)', 'S_budget.COMPLETION = BUDGET',
               r'S_budget.TODO = S_reached.TODO /\ S_budget.OUTPUTBUFFERS = S_reached.OUTPUTBUFFERS', *valid('S_budget')]
-    if name == 'clean-argv':
-        checks += ['S_reached.TODO = (OB_USER_FAIL_ARGS pobinvoke n_pending) :: ptask_tail*',
-                   'pobinvoke.CALL = OB_API_FAILED pconfigcall pcallcontext? ptask_tail*',
-                   'pconfigcall.KIND = INTRINSIC_OB_CLEAN',
-                   'pobinvoke.SENT = [REFERENCE n_argument, KNOWN (PINT 3)]',
-                   'S_reached.STORE[n_argument] = DEFINED (POBJECT n_argument_object)',
-                   '$throwable_live(S_reached, n_pending)', '$ob_user_running(S_reached)',
-                   '$output_selected(S_reached, pobinvoke) = (poutputbuffer)',
-                   r'poutputbuffer.FLAGS = 113 /\ poutputbuffer.BYTES = ([65])',
-                   '~$ob_user_failure_live(S_reached, pobinvoke[.CALL = OB_API_FAILED pconfigcall pcallcontext? eps])',
-                   '~$call_task_valid(S_reached, OB_USER_FAIL_ARGS pobinvoke n_argument_object)',
-                   '~$call_task_valid(S_reached, OB_USER_FAIL_ARGS pobinvoke[.SENT = eps] n_pending)',
-                   'S_child_found = $af_seek(S_reached, 1, 512)',
-                   r'S_child_found.COMPLETION = NORMAL \/ S_child_found.COMPLETION = BUDGET',
-                   'S_child = S_child_found[.COMPLETION = NORMAL]', '$af_phase(S_child, 1)', *valid('S_child'),
-                   'S_child.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*',
-                   'pdestructionoperation.SOURCE = OB_USER_FAIL_ARGS pobinvoke n_pending',
-                   r'pdestructionoperation.COMPLETION = THROWING n_pending /\ pdestructionoperation.PENDING = (n_pending)',
-                   '$eager_operation_source_guard(S_child, pdestructionoperation)', '$ob_user_running(S_child)',
-                   '~$call_task_valid(S_child, OB_USER_FAIL_ARGS pobinvoke n_pending)',
-                   '~$eager_operation_source_guard(S_child, pdestructionoperation[.COMPLETION = NORMAL])',
-                   '~$eager_operation_source_guard(S_child, pdestructionoperation[.SOURCE = OB_USER_FAIL_ARGS pobinvoke[.CALL = OB_API_FAILED pconfigcall pcallcontext? eps] n_pending])']
-    elif name == 'detached-restore':
+    if name == 'detached-restore':
         checks += ['S_reached.TODO = (OUTPUT_FAIL_FINISH pobwrite n_pending) :: ptask_tail*',
                    'pobwrite.CALLER = OUTPUT_API pconfigcall',
                    'pobwrite.FINISH = OUTPUT_USER_DONE pobinvoke poutputbuffer poboutput true',

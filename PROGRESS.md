@@ -7,6 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Module399 preserves a defined scalar output-handler return when callee cleanup
+throws. Fixed by-reference wrappers belong only to the callee; entered methods
+borrow their cached receiver. Normal-return certificates remain distinct from
+body-throw null results, and API callee cleanup retains internal/API traces.
+Seven author originals agree at separate cuts; two boundaries retain zero
+agreement. Three independent originals agree at retained cuts. Four genuine
+state groups pass 317 premises (64 at38e9,253 atd983), covering pre-ENTER site
+validation, callee ownership, pending normal commit, unsealed body failure and
+retired receiver refusal. Missing-pending task fallthrough was corrected without
+changing generic validation. Original failures and bounded diagnostics remain
+zero credit. The bounded private milestone is independently accepted; integration
+is pending and full core remains partial.
+[Contract](docs/semantics/OUTPUT-HANDLERS.md),
+[author evidence](coverage/semantics/output-result-cleanup-author.json),
+[independent review](coverage/semantics/output-result-cleanup-review.json).
+
 Module398 implements explicit output API reception failures and callback throws.
 Arguments release while running; clean discards live bytes, flush restores its
 upper, and end/get pop before lower routing and sole callback-owner release.
@@ -23,9 +39,9 @@ source/state evidence is claimed.
 [Contract](docs/semantics/OUTPUT-HANDLERS.md),
 [author evidence](coverage/semantics/output-api-failure-author.json),
 [independent review](coverage/semantics/output-api-failure-review.json).
-Normal-result cleanup throws, callback exit, warning-handler throws, other
-producers/request-end/fatal drains and wider protocols remain required; full core
-stays partial.
+Callback exit, warning-handler throws, other producers/request-end/fatal drains
+and wider protocols remain required; full core stays partial. Module399 extends
+the bounded scalar normal-result cleanup path above.
 
 Handler-local destructor Throwables now cancel exit from owning invokable warning
 callbacks. The supplied pending Throwable survives selected-receiver and raw-handler

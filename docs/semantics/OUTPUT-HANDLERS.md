@@ -34,6 +34,16 @@ enabled lower handler normally before a replacement exception gains Previous.
 Cleanup destructors keep an internal callsite and the original API trace frame;
 their user catch and visibility context remains intact.
 
+Module399 preserves a defined scalar return when callee cleanup throws. Fixed
+by-reference parameters receive callee-only wrappers; the saved invocation owns
+the original copied input and phase. A normal-return certificate survives local
+cleanup, while a body throw's null result cannot create it. The normal return and
+processed header remain available as the pending Throwable interrupts caller
+assignment. A selected error handler is not entered with an exception pending;
+default deprecation reporting still follows its mask and display settings.
+API callee-cleanup destructors retain an internal site and the originating API
+trace frame for both normal-return and body-throw cleanup.
+
 The handler receives a copied input string and the native START/CLEAN/FLUSH/FINAL
 phase flags. Get-clean/get-flush return a separate frozen copy. The active top
 buffer remains visible through callback getters, even when a lower handler is
@@ -58,8 +68,10 @@ them, and the next nonempty write processes the whole buffer.
 
 The raw callback value (`zoh`) is the buffer's sole callback owner. Cached FCC
 selection and original snapshots are readonly witnesses. Reference-backed raw
-arrays can release a receiver when the callee returns, while ordinary raw arrays
-retain it until buffer removal. Arguments/retval finish cleanup before buffer
+arrays can release a receiver when their alias changes during the callback;
+ordinary raw arrays retain it until buffer removal. Entered method metadata borrows
+the receiver, while Closure instances retain their ordinary ownership.
+Arguments/retval finish cleanup before buffer
 reset and the running state ends. End operations write lower layers before
 releasing `zoh`; budget pauses retain every live owner and continuation.
 Saved VM operands transfer once to the write continuation. Source/context, live
@@ -69,18 +81,22 @@ producer tail until writing finishes, releasing it before print assignment or
 caller catch. Plain variable operands stay borrowed; wider owned Stringable
 forms remain an explicit dependency.
 
-Throws while releasing arguments after a normal result remain a required protocol.
 Callback exit, throwing reference-warning or
 produced-output warning handlers, automatic dispatch from other byte
 producers, request-end/fatal callback drains, non-scalar or
-reference-return conversion, typed variadic reception, mutating buffer APIs
+reference-return conversion, typed variadic reception and by-reference variadic
+extra arguments, mutating buffer APIs
 during a handler, capability
 failure notices for user handlers, and invalid/effectful callable creation stay
 explicit Unsupported dependencies. Output handlers permit Fiber switching in
 PHP; this milestone refuses switch entry until its suspension protocol is
 specified. A retired borrowed target can authenticate normal completion, but
 cannot be invoked again by this slice. Buffered stdout diagnostics keep the
-existing Module391 boundary. Full core remains partial.
+existing Module391 boundary. Access through a retired callback receiver,
+computed-name reads and nonstatic closure creation in that context are explicitly
+refused; its metadata does not revive the object.
+Non-scalar/reference returns are refused before callee cleanup can erase the
+defined value. Full core remains partial.
 
 Primary authority is `main/output.c` handler creation/op/stack-pop/destruction and
 `Zend/zend_API.c` callable names/selection and

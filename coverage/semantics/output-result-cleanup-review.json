@@ -1,0 +1,94 @@
+{
+  "milestone": "Defined output-handler results through callee cleanup (399)",
+  "status": "accepted bounded private milestone; actual-parent integration pending",
+  "reviewer": "core_breadth_review_01",
+  "base_revision": "04a9a2319fa086b29ed07026c5d8799347e4e6f4",
+  "implementation_revision": "d983458fb31f19f4b532bfab03ca9b032e73bde9",
+  "implementation_sha256": "5469c55614c7e09c229561d4b30781adfabe7d96cb369365b8aa51dd09280b89",
+  "scope": [
+    "The saved invocation retains original copied fci values; reference wrappers belong to callee parameters. Entered method contexts borrow the cached receiver, while raw callback values and Closure instances retain their ordinary ownership.",
+    "An authenticated normal-return certificate preserves a defined scalar through callee cleanup throws. Body-throw PNULL cannot create that certificate; nonscalar/reference returns are refused before cleanup.",
+    "The normal scalar/FALSE result still selects output and buffer headers before pending failure interrupts assignment. Pending exceptions skip selected error-handler entry while default deprecation reporting retains masks/display behavior.",
+    "Authentic API callee-cleanup frames retain internal destructor sites and the API trace suffix without changing USER, generic return rules, ownership or completion. ENTER/WARNING/RESULT prefixes require the same frame, caller and origin and no operation."
+  ],
+  "authority": [
+    "vendor/php-src/Zend/zend_execute_API.c:zend_call_function argument copying, must_wrap and TOP_FUNCTION entry",
+    "vendor/php-src/Zend/zend_vm_def.h:zend_leave_helper callee CV cleanup and borrowed receiver",
+    "vendor/php-src/main/output.c:php_output_handler_op defined retval, PRODUCED reporting and buffer commit"
+  ],
+  "author_evidence_reviewed": {
+    "ledger": "coverage/semantics/output-result-cleanup-author.json",
+    "source_agreements": 7,
+    "cuts": "One original at43a0ff619d30; six distinct NULL/body-throw/FALSE/VM/unset/default-reporting originals at42cc0dfa4259",
+    "unsupported_controls": 2,
+    "control_native_credit": 0
+  },
+  "independent_sources": {
+    "agreements": 3,
+    "runner": "tests/semantics/output_result_cleanup_review_sources.py",
+    "runner_sha256": "47570d91eecf7e1b3681d88fca1f425d1a4f56a5cc1e341ff523634c156b60cf",
+    "observations": "Original bytes, stdout, stderr, normal completion and exit status against pinned PHP8.5.10 CLI NTS64 and tests/semantics/profile.json; stable inputs and reaped actors",
+    "runs": [
+      {
+        "revision": "42cc0dfa4259a3827b1332703c9083853d52c84e",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-08/sources-01/sources/report.json",
+        "report_sha256": "5bc5ff5e7d4ae9c1eea7772777611a26951c33665ad6fd7c3dd7278e6d791f78",
+        "accepted_completed_record": "normal-wrapper-destructor-before-deprecation: X|A|D1:113:1;|WPZ",
+        "whole_campaign_passed": false
+      },
+      {
+        "revision": "e67d5647a7bf7060f82779e79e159cadcba9df6c",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-08/sources-02/sources/report.json",
+        "report_sha256": "558e650b7126b444d6df204b4b9df21e02a558f7bf1041fd28dcae82f0d4d3e6",
+        "accepted_completed_record": "normal-wrapper-before-alias-receiver-release: XC:99:0|R1D1Z",
+        "whole_campaign_passed": false
+      },
+      {
+        "revision": "59c9283ac09ebd20ebf2cef56e66c120dc804a6d",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-08/source-trace-04/sources/report.json",
+        "report_sha256": "1f60912e34edbb958a681898f39f054ff204f1703564b583c4238ffecdbb8819",
+        "accepted_record": "normal-wrapper-fresh-destructor-trace: X|__destruct:I:ob_get_flush:F:8:99Z",
+        "passed": true
+      }
+    ]
+  },
+  "state_review": {
+    "groups": 4,
+    "premises": 317,
+    "runs": [
+      {
+        "id": "callee-wrapper", "premises": 64, "revision": "38e9b3d942e7e1d88b57c5479c92d666451cdfe3",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-08/state-selected-01/callee-wrapper/report.json",
+        "report_sha256": "166408f940b48416b451e1a4d4887b5b0cfe853419ae3493430ebc98bc7b9032"
+      },
+      {
+        "id": "normal-return-cleanup", "premises": 103, "revision": "d983458fb31f19f4b532bfab03ca9b032e73bde9",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-08/state-selected-02/normal-return-cleanup/report.json",
+        "report_sha256": "5eabc3c22bc6386d5323e3b1680d917f8d56afba7b10c536184e21ab5f22f0c5"
+      },
+      {
+        "id": "body-throw-unsealed", "premises": 94, "revision": "d983458fb31f19f4b532bfab03ca9b032e73bde9",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-08/state-selected-02/body-throw-unsealed/report.json",
+        "report_sha256": "21da838a94d1ce89a065b8f4def982987ab6bd0a9aba66e991d1ed07b302a9ee"
+      },
+      {
+        "id": "borrowed-receiver", "premises": 56, "revision": "d983458fb31f19f4b532bfab03ca9b032e73bde9",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-08/state-selected-02/borrowed-receiver/report.json",
+        "report_sha256": "5fcda5897dc19290aab99bee166481d9135be6268b02075edf2c2f02d74f29db"
+      }
+    ],
+    "review": "Genuine source fronts distinguish sole callee wrapper owners, immutable normal success versus body-throw null, pre-ENTER/site validation, pending normal commit and borrowed receiver retirement. Public/heap/output checks, zero-budget preservation, source/caller/function/site/fci forgeries and missing-pending refusal passed. Retired-this helper controls preserve allocations/results and prior refusal reasons; they do not execute a dangling receiver.",
+    "execution": "Fresh serial selector processes, CPU4/SLOT2, AS1536MiB, numeric120s; true result, empty stderr, exit0, stable inputs and reaped actors",
+    "malformed_control_native_credit": 0
+  },
+  "compatibility": "Final d983 adds only disjoint task-specific missing-pending refusals; genuine transitions carry the actual Throwable. Source cuts and callee64 retain their original identities. Borrowed-target entry changes only METHOD/HANDLER targets; Closure ownership remains ordinary. No earlier397/398 campaign is replayed or renewed.",
+  "selector_retirement": "Only the obsolete397 argv-cleanup and398 clean-argv selectors that required saved callee references are retired. Their historical report commits remain evidence; current callee/body cleanup fronts replace that mechanism.",
+  "preserved_zero_credit": "The original unchanged baseline mismatch, whole failed peer campaigns (apart from explicitly listed completed records), source-trace-03 interpreter failure, diagnostic02 no-tuple failure, original normal102 failure, static/diagnostic failures and same-cap OOM observations retain zero. Bounded tuples and native-only body-fresh trace preparation are observations, not extra agreements; the author ledger records their external paths.",
+  "limits": [
+    "Typed variadic reception, by-reference variadic extra arguments and nonscalar/reference return conversion remain explicit dependencies.",
+    "Retired receiver metadata does not revive the object; access, computed-name reads or nonstatic capture in that context are refused.",
+    "Callback exit, warning-handler throws, other byte producers, request-end/fatal drains and wider callable/capability/mutation/Fiber/stdout protocols remain partial; full core is not complete."
+  ],
+  "recovery": "Use exact source selectors and output_result_cleanup_state.py --select GROUP in fresh processes. Complete runtime identities and failure/preparation recovery are in the author ledger; raw artifacts remain external.",
+  "integration": {"status": "pending actual-parent pointwise review"}
+}
