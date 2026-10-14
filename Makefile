@@ -834,6 +834,10 @@ test-semantics: build
 	python3 tests/semantics/inherited_overlap_trait_getter_protocol.py --revision "$$(git rev-parse HEAD)" --group entry
 	python3 tests/semantics/inherited_overlap_trait_getter_protocol.py --revision "$$(git rev-parse HEAD)" --group write
 	python3 tests/semantics/inherited_overlap_trait_getter_protocol.py --revision "$$(git rev-parse HEAD)" --group invalid
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/private_overlap_trait_getter_cases.json
+	python3 tests/semantics/private_overlap_trait_getter_protocol.py --revision "$$(git rev-parse HEAD)" --group controls
+	python3 tests/semantics/private_overlap_trait_getter_protocol.py --revision "$$(git rev-parse HEAD)" --group read
+	python3 tests/semantics/private_overlap_trait_getter_protocol.py --revision "$$(git rev-parse HEAD)" --group write
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_publication_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_composed_retry_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/assertion_cases.json
