@@ -1,0 +1,246 @@
+;; zend_std_compare_objects captures the numeric type, reports a failed cast,
+;; then compares private 1/1.0 against the live opposing zval.
+syntax pnumberphase = NUMBER_PRIMARY | NUMBER_SECOND nat porigin
+syntax pnumbercompare = {SOURCE paggregatecompare, POINTER pcomparepointer?, ENV pbinding*, REFS nat*, CLASS porigin, TARGET pvalue, PHASE pnumberphase}
+
+dec $number_compare_class(pstate, porigin, nat) : bool
+def $number_compare_class(S, porigin, n) = true
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if pclassdesc.PARENT = eps
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = eps
+def $number_compare_class(S, porigin, n) = true
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (STDCLASS_PARENT)
+def $number_compare_class(S, porigin, n) = $number_compare_class(S, porigin_parent, $nabs($(n - 1)))
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
+def $number_compare_class(S, porigin, n) = false -- otherwise
+dec $number_compare_receiver_image(pstate, nat, porigin) : bool
+def $number_compare_receiver_image(S, n, porigin) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $number_compare_class(S, porigin, |S.CLASSES|)
+def $number_compare_receiver_image(S, n, porigin) = false -- otherwise
+dec $number_compare_receiver(pstate, nat) : porigin?
+def $number_compare_receiver(S, n) = (porigin)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $number_compare_receiver_image(S, n, porigin)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, n)
+def $number_compare_receiver(S, n) = eps -- otherwise
+dec $number_compare_target(pvalue) : pvalue?
+def $number_compare_target(PINT i) = (PINT 1)
+def $number_compare_target(PFLOAT n) = (PFLOAT 4607182418800017408)
+def $number_compare_target(pvalue) = eps -- otherwise
+def $number_compare_selection(S, POBJECT n, pvalue) = ((n, true, pvalue_target))
+  -- if $error_handler_eligible(S, 8)
+  -- if $number_compare_receiver(S, n) =/= eps
+  -- if $number_compare_target(pvalue) = (pvalue_target)
+def $number_compare_selection(S, pvalue, POBJECT n) = ((n, false, pvalue_target))
+  -- if $error_handler_eligible(S, 8)
+  -- if $number_compare_receiver(S, n) =/= eps
+  -- if $number_compare_target(pvalue) = (pvalue_target)
+def $number_compare_selection(S, pvalue_left, pvalue_right) = eps -- otherwise
+
+dec $number_compare_image(paggregatecallback, pvalue) : bool
+def $number_compare_image(paggregatecallback, pvalue_target) = true
+  -- if paggregatecallback.OBJECTLEFT
+  -- if paggregatecallback.LEFT = POBJECT paggregatecallback.RECEIVER
+  -- if $number_compare_target(paggregatecallback.RIGHT) = (pvalue_target)
+def $number_compare_image(paggregatecallback, pvalue_target) = true
+  -- if ~paggregatecallback.OBJECTLEFT
+  -- if paggregatecallback.RIGHT = POBJECT paggregatecallback.RECEIVER
+  -- if $number_compare_target(paggregatecallback.LEFT) = (pvalue_target)
+def $number_compare_image(paggregatecallback, pvalue_target) = false -- otherwise
+dec $number_compare_pointer(pbinding*, nat*, poperand) : pcomparepointer?
+def $number_compare_pointer(pbinding*, nat*, KNOWN pvalue) = (COMPARE_COPY pvalue)
+def $number_compare_pointer(pbinding*, nat*, REFERENCE n) = (COMPARE_CELL n)
+def $number_compare_pointer(pbinding*, nat*, VARIABLE ptbytes z) = $string_compare_pointer(pbinding*, nat*, VARIABLE ptbytes z)
+def $number_compare_pointer(pbinding*, nat*, poperand) = eps -- otherwise
+dec $number_compare_other_operand(paggregatecompare) : poperand
+def $number_compare_other_operand(paggregatecompare) = $string_compare_opposing(paggregatecompare.CAST.OBJECTLEFT, paggregatecompare.RIGHT, paggregatecompare.LEFT)
+  -- if paggregatecompare.OP = GREATER \/ paggregatecompare.OP = GREATEREQUAL
+def $number_compare_other_operand(paggregatecompare) = $string_compare_opposing(paggregatecompare.CAST.OBJECTLEFT, paggregatecompare.LEFT, paggregatecompare.RIGHT)
+  -- if paggregatecompare.OP =/= GREATER /\ paggregatecompare.OP =/= GREATEREQUAL
+dec $number_compare_pointer_image(pnumbercompare) : bool
+def $number_compare_pointer_image(pnumbercompare) = true
+  -- if paggregatecompare_source = pnumbercompare.SOURCE
+  -- if paggregatecompare_source.CAST.STACK = eps
+  -- if paggregatecompare_source.CAST.POINTER = eps
+  -- if pnumbercompare.POINTER = (pcomparepointer)
+  -- if $number_compare_pointer(pnumbercompare.ENV, pnumbercompare.REFS, $number_compare_other_operand(paggregatecompare_source)) = (pcomparepointer)
+def $number_compare_pointer_image(pnumbercompare) = true
+  -- if paggregatecompare_source = pnumbercompare.SOURCE
+  -- if paggregatecompare_source.CAST.STACK = paggregatecursor :: paggregatecursor_tail*
+  -- if pnumbercompare.POINTER = eps
+  -- if paggregatecompare_source.CAST.POINTER = ($aggregate_pointer(paggregatecursor, paggregatecompare_source.CAST.OBJECTLEFT))
+def $number_compare_pointer_image(pnumbercompare) = false -- otherwise
+dec $number_compare_phase_image(pstate, pnumbercompare) : bool
+def $number_compare_phase_image(S, pnumbercompare) = true -- if pnumbercompare.PHASE = NUMBER_PRIMARY
+def $number_compare_phase_image(S, pnumbercompare) = $number_compare_receiver_image(S, n, porigin)
+  -- if pnumbercompare.PHASE = NUMBER_SECOND n porigin
+def $number_compare_phase_image(S, pnumbercompare) = false -- otherwise
+dec $number_compare_nodes(pnumbercompare) : pnode*
+def $number_compare_nodes(pnumbercompare) = $operand_nodes(pnumbercompare.SOURCE.LEFT) ++ $operand_nodes(pnumbercompare.SOURCE.RIGHT) ++ $base_nodes(pnumbercompare.SOURCE.INPUTBASE) ++ $aggregate_cursor_pins(pnumbercompare.SOURCE.CAST.STACK)
+dec $number_compare_valid(pstate, pnumbercompare) : bool
+def $number_compare_valid(S, pnumbercompare) = true
+  -- if paggregatecompare_source = pnumbercompare.SOURCE
+  -- if $aggregate_compare_source(S, paggregatecompare_source)
+  -- if S.CURRENT = paggregatecompare_source.CALLER
+  -- if |S.FRAMES| = paggregatecompare_source.OWNER
+  -- if $number_compare_image(paggregatecompare_source.CAST, pnumbercompare.TARGET)
+  -- if $number_compare_receiver_image(S, paggregatecompare_source.CAST.RECEIVER, pnumbercompare.CLASS)
+  -- if $number_compare_phase_image(S, pnumbercompare)
+  -- if $aggregate_stack_image(S, paggregatecompare_source.CAST.STACK, paggregatecompare_source.CAST.LEFT, paggregatecompare_source.CAST.RIGHT, paggregatecompare_source.ROOTLEFT, paggregatecompare_source.ROOTRIGHT)
+  -- if $aggregate_guards_unique($aggregate_cursor_lefts(paggregatecompare_source.CAST.STACK))
+  -- if $number_compare_pointer_image(pnumbercompare)
+  -- if $heap_subset($number_compare_nodes(pnumbercompare), S.ALLOCATIONS)
+def $number_compare_valid(S, pnumbercompare) = false -- otherwise
+dec $number_compare_task(ptask) : pnumbercompare?
+def $number_compare_task(NUMBER_COMPARE_RESULT pnumbercompare) = (pnumbercompare)
+def $number_compare_task(ERROR_HANDLER_INVOKE perrorcall) = $number_compare_task(perrorcall.RESUME)
+def $number_compare_task(ERROR_HANDLER_RESULT perrorcall) = $number_compare_task(perrorcall.RESUME)
+def $number_compare_task(ERROR_HANDLER_CLEAN perrorcall) = $number_compare_task(perrorcall.RESUME)
+def $number_compare_task(ptask) = eps -- otherwise
+dec $number_compare_suffix(ptask*, pnumbercompare) : bool
+def $number_compare_suffix(ptask :: ptask_tail*, pnumbercompare) = (ptask_tail* = pnumbercompare.SOURCE.TAIL)
+  -- if $number_compare_task(ptask) = (pnumbercompare)
+def $number_compare_suffix(ptask :: ptask_tail*, pnumbercompare) = $number_compare_suffix(ptask_tail*, pnumbercompare)
+  -- if $number_compare_task(ptask) =/= (pnumbercompare)
+def $number_compare_suffix(eps, pnumbercompare) = false
+def $task_nodes(NUMBER_COMPARE_RESULT pnumbercompare) = $number_compare_nodes(pnumbercompare)
+def $call_task_valid(S, NUMBER_COMPARE_RESULT pnumbercompare) = ($number_compare_valid(S, pnumbercompare) /\ S.ORIGIN = (pnumbercompare.SOURCE.CASTSITE) /\ $number_compare_suffix(S.TODO, pnumbercompare))
+dec $number_compare_origin(pnumbercompare) : porigin
+def $number_compare_origin(pnumbercompare) = pnumbercompare.CLASS -- if pnumbercompare.PHASE = NUMBER_PRIMARY
+def $number_compare_origin(pnumbercompare) = porigin -- if pnumbercompare.PHASE = NUMBER_SECOND n porigin
+dec $number_compare_message(pstate, pnumbercompare) : preqbytes
+def $number_compare_message(S, pnumbercompare) = $ptascii("Object of class ") ++ $c_string(pclassdesc.NAME) ++ $ptascii(" could not be converted to int")
+  -- if pnumbercompare.TARGET = PINT 1
+  -- if $class_at(S.CLASSES, $number_compare_origin(pnumbercompare)) = (pclassdesc)
+def $number_compare_message(S, pnumbercompare) = $ptascii("Object of class ") ++ $c_string(pclassdesc.NAME) ++ $ptascii(" could not be converted to float")
+  -- if pnumbercompare.TARGET = PFLOAT 4607182418800017408
+  -- if $class_at(S.CLASSES, $number_compare_origin(pnumbercompare)) = (pclassdesc)
+def $number_compare_message(S, pnumbercompare) = eps -- otherwise
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = NUMBER_COMPARE_RESULT pnumbercompare
+  -- if $call_task_valid(S, NUMBER_COMPARE_RESULT pnumbercompare)
+  -- if perrorcall.SITE = pnumbercompare.SOURCE.CASTSITE
+  -- if perrorcall.LEVEL = 8
+  -- if perrorcall.LINE = pnumbercompare.SOURCE.LINE
+  -- if perrorcall.MESSAGE = $number_compare_message(S, pnumbercompare)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Notice" perrorcall.MESSAGE perrorcall.LINE
+
+dec $number_compare_dispatch(pstate, pnumbercompare) : pstate
+def $number_compare_dispatch(S, pnumbercompare) = $error_dispatch(S_pending, 8, preqbytes, pnumbercompare.SOURCE.LINE, DIAGNOSTIC "Notice" preqbytes pnumbercompare.SOURCE.LINE, NUMBER_COMPARE_RESULT pnumbercompare)
+  -- if S_pending = S[.TODO = (NUMBER_COMPARE_RESULT pnumbercompare) :: pnumbercompare.SOURCE.TAIL][.ORIGIN = (pnumbercompare.SOURCE.CASTSITE)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $call_task_valid(S_pending, NUMBER_COMPARE_RESULT pnumbercompare)
+  -- if preqbytes = $number_compare_message(S_pending, pnumbercompare)
+def $number_compare_dispatch(S, pnumbercompare) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid numeric comparison Notice"] -- otherwise
+dec $number_compare_start(pstate, paggregatecompare, pvalue, pcomparepointer?, pbinding*, nat*) : pstate
+def $number_compare_start(S, paggregatecompare, pvalue_target, pcomparepointer?, pbinding*, nat*) = $number_compare_dispatch(S, pnumbercompare)
+  -- if $number_compare_receiver(S, paggregatecompare.CAST.RECEIVER) = (porigin)
+  -- if pnumbercompare = {SOURCE paggregatecompare, POINTER pcomparepointer?, ENV pbinding*, REFS nat*, CLASS porigin, TARGET pvalue_target, PHASE NUMBER_PRIMARY}
+def $number_compare_start(S, paggregatecompare, pvalue_target, pcomparepointer?, pbinding*, nat*) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "numeric comparison receiver"] -- otherwise
+dec $number_compare_initial_pointer(pstate, paggregatecompare) : pcomparepointer?
+def $number_compare_initial_pointer(S, paggregatecompare) = $number_compare_pointer(S.ENV, S.REFCELLS, $number_compare_other_operand(paggregatecompare))
+  -- if paggregatecompare.CAST.STACK = eps
+def $number_compare_initial_pointer(S, paggregatecompare) = eps -- otherwise
+dec $number_compare_capture(pstate, pstate, porigin, porigin, pbin, poperand, poperand, pvalue, pvalue, int, ptask, ptask*, paggregatecallback, pvalue) : pstate
+def $number_compare_capture(S_before, S, porigin, porigin_cast, pbin, poperand_left, poperand_right, pvalue_left, pvalue_right, z, ptask_consumer, ptask_tail*, paggregatecallback, pvalue_target) = $number_compare_start(S[.HELD = S_before.HELD], paggregatecompare, pvalue_target, $number_compare_initial_pointer(S_before, paggregatecompare), S_before.ENV, S_before.REFCELLS)
+  -- if n_owner = |S_before.FRAMES|
+  -- if paggregatecompare = {SITE porigin, CASTSITE porigin_cast, OP pbin, LINE z, LEFT poperand_left, RIGHT poperand_right, ROOTLEFT pvalue_left, ROOTRIGHT pvalue_right, INPUTBASE S_before.BASE, CALLER S_before.CURRENT, OWNER n_owner, CONSUMER ptask_consumer, TAIL ptask_tail*, CAST paggregatecallback}
+rule PhpStep/number-compare-binary: S ~> $number_compare_capture(S, S_next, porigin, porigin, pbin, poperand_left, S.RESULT, pvalue_rootleft, pvalue_rootright, z, BINARY_RIGHT pbin poperand_left z, ptask_tail*, paggregatecallback, pvalue_target)
+  -- if S.TODO = (BINARY_RIGHT pbin poperand_left z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $aggregate_compare_pending(S)
+  -- if $string_compare_values(S, poperand_left, S.RESULT, z) = ((S_read, pvalue_left, pvalue_right))
+  -- if (S_next, ORDERNOTICE paggregatecallback pvalue_target) = $aggregate_order(S_read, pbin, pvalue_left, pvalue_right, z)
+  -- if (pvalue_rootleft, pvalue_rootright) = $aggregate_order_values(pbin, pvalue_left, pvalue_right)
+rule PhpStep/number-compare-switch: S ~> $number_compare_capture(S, S_next, porigin, porigin_cast, EQUAL, poperand_left, S.RESULT, pvalue_left, pvalue_right, z, SWITCH_COMPARE statement porigin poperand_left n z, ptask_tail*, paggregatecallback, pvalue_target)
+  -- if S.TODO = (SWITCH_COMPARE statement porigin poperand_left n z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $aggregate_compare_pending(S)
+  -- if $origin_child((porigin), [PCFIELD 1, PCINDEX n, PCFIELD 0]) = (porigin_cast)
+  -- if $string_compare_values(S, poperand_left, S.RESULT, z) = ((S_read, pvalue_left, pvalue_right))
+  -- if (S_next, ORDERNOTICE paggregatecallback pvalue_target) = $aggregate_order(S_read, EQUAL, pvalue_left, pvalue_right, z)
+def $comparison_result(S, pbin, ORDERNOTICE paggregatecallback pvalue, z) = S[.COMPLETION = UNSUPPORTED "numeric comparison Notice source or consumer"]
+
+dec $number_compare_order_finish(pstate, paggregatecompare, porder) : pstate
+def $number_compare_order_finish(S, paggregatecompare, ORDERNOTICE paggregatecallback pvalue_target) = $number_compare_start(S, paggregatecompare[.CAST = paggregatecallback], pvalue_target, eps, S.ENV, S.REFCELLS)
+def $number_compare_order_finish(S, paggregatecompare, ORDERSTRING paggregatecallback) = $user_string_begin(S[.TODO = paggregatecompare.TAIL][.ORIGIN = (paggregatecompare.CASTSITE)], paggregatecallback.RECEIVER, paggregatecompare.CASTSITE, paggregatecompare.LINE, AGGREGATE_COMPARE_RESULT paggregatecompare[.CAST = paggregatecallback], paggregatecompare.TAIL)
+def $number_compare_order_finish(S, paggregatecompare, porder) = $aggregate_order_finish(S, paggregatecompare, porder)
+  -- if ~$aggregate_order_cast(porder)
+dec $number_compare_leaf_done(pstate, pnumbercompare, pvalue) : pstate
+def $number_compare_leaf_done(S, pnumbercompare, pvalue_other) = $number_compare_order_finish(S_next, pnumbercompare.SOURCE, porder)
+  -- if paggregatecompare_source = pnumbercompare.SOURCE
+  -- if (pvalue_left, pvalue_right) = $aggregate_leaf_values(paggregatecompare_source.CAST, pnumbercompare.TARGET, pvalue_other)
+  -- if S_clear = S[.TODO = paggregatecompare_source.TAIL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if (S_leaf, porder_leaf) = $value_order_effect(S_clear, pvalue_left, pvalue_right, $aggregate_cursor_lefts(paggregatecompare_source.CAST.STACK), paggregatecompare_source.LINE)
+  -- if (S_next, porder) = $aggregate_resume(S_leaf, porder_leaf, paggregatecompare_source.CAST.STACK, paggregatecompare_source.LINE)
+dec $number_compare_other(pstate, pnumbercompare) : pvalue?
+def $number_compare_other(S, pnumbercompare) = $string_compare_pointer_value(S, pcomparepointer)
+  -- if pnumbercompare.POINTER = (pcomparepointer)
+  -- if pnumbercompare.SOURCE.CAST.STACK = eps
+def $number_compare_other(S, pnumbercompare) = $aggregate_pointer_value(S, paggregatepointer)
+  -- if pnumbercompare.SOURCE.CAST.POINTER = (paggregatepointer)
+  -- if pnumbercompare.SOURCE.CAST.STACK =/= eps
+def $number_compare_other(S, pnumbercompare) = eps -- otherwise
+dec $number_compare_return(pstate, pnumbercompare, pvalue) : pstate
+def $number_compare_return(S, pnumbercompare, POBJECT n) = $number_compare_dispatch(S, pnumbercompare[.PHASE = NUMBER_SECOND n porigin])
+  -- if $number_compare_receiver(S, n) = (porigin)
+def $number_compare_return(S, pnumbercompare, pvalue) = $number_compare_leaf_done(S, pnumbercompare, pvalue)
+  -- if $type_bytes(pvalue) =/= $ptascii("object")
+def $number_compare_return(S, pnumbercompare, pvalue) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "numeric comparison changed internal object"] -- otherwise
+rule PhpStep/number-compare-primary: S ~> $number_compare_return(S, pnumbercompare, pvalue)
+  -- if S.TODO = (NUMBER_COMPARE_RESULT pnumbercompare) :: ptask_tail*
+  -- if $call_task_valid(S, NUMBER_COMPARE_RESULT pnumbercompare)
+  -- if pnumbercompare.PHASE = NUMBER_PRIMARY
+  -- if $number_compare_other(S, pnumbercompare) = (pvalue)
+rule PhpStep/number-compare-expired: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "numeric comparison expired operand"]
+  -- if S.TODO = (NUMBER_COMPARE_RESULT pnumbercompare) :: ptask_tail*
+  -- if $call_task_valid(S, NUMBER_COMPARE_RESULT pnumbercompare)
+  -- if pnumbercompare.PHASE = NUMBER_PRIMARY
+  -- if $number_compare_other(S, pnumbercompare) = eps
+rule PhpStep/number-compare-secondary: S ~> $number_compare_leaf_done(S, pnumbercompare, pnumbercompare.TARGET)
+  -- if S.TODO = (NUMBER_COMPARE_RESULT pnumbercompare) :: ptask_tail*
+  -- if $call_task_valid(S, NUMBER_COMPARE_RESULT pnumbercompare)
+  -- if pnumbercompare.PHASE = NUMBER_SECOND n porigin
+rule PhpStep/number-compare-invalid: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid numeric comparison continuation"]
+  -- if S.TODO = (NUMBER_COMPARE_RESULT pnumbercompare) :: ptask_tail*
+  -- if ~$call_task_valid(S, NUMBER_COMPARE_RESULT pnumbercompare)
+
+;; A preceding Stringable leaf may resume into a numeric Notice leaf.
+def $aggregate_compare_return(S, paggregatecompare, pvalue_text, pvalue_other) = $number_compare_start(S_next, paggregatecompare[.CAST = paggregatecallback_next], pvalue_target, eps, S_next.ENV, S_next.REFCELLS)
+  -- if $type_bytes(pvalue_other) =/= $ptascii("object") \/ $throwable_compare_receiver(S, pvalue_other) =/= eps
+  -- if paggregatecallback = paggregatecompare.CAST
+  -- if (pvalue_left, pvalue_right) = $aggregate_leaf_values(paggregatecallback, pvalue_text, pvalue_other)
+  -- if S_clear = S[.TODO = paggregatecompare.TAIL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if (S_leaf, porder_leaf) = $value_order_effect(S_clear, pvalue_left, pvalue_right, $aggregate_cursor_lefts(paggregatecallback.STACK), paggregatecompare.LINE)
+  -- if (S_next, ORDERNOTICE paggregatecallback_next pvalue_target) = $aggregate_resume(S_leaf, porder_leaf, paggregatecallback.STACK, paggregatecompare.LINE)
+
+;; Only an authenticated pending handler or its actual saved caller exposes
+;; these comparison guards. Documentary receiver/leaf images add no owners.
+def $aggregate_current_seen(S) = $aggregate_cursor_lefts(pnumbercompare.SOURCE.CAST.STACK)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $number_compare_task(ptask) = (pnumbercompare)
+  -- if $call_task_valid(S, ptask)
+def $aggregate_frame_seen(S, (pcallcontext), pframe, pframe_tail*) = $aggregate_cursor_lefts(pnumbercompare.SOURCE.CAST.STACK)
+  -- if pframe.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if perrorcall.RESUME = NUMBER_COMPARE_RESULT pnumbercompare
+  -- if ptask_tail* = pnumbercompare.SOURCE.TAIL
+  -- if pframe.ORIGIN = (perrorcall.SITE)
+  -- if perrorcall.TARGET = (pcallcontext.TARGET)
+  -- if pcallcontext.CALLSITE = (perrorcall.SITE)
+  -- if pcallcontext.LINE = $error_callback_line(S, perrorcall)
+  -- if S_scope = $api_saved_frame_scope($constant_frame_scope(S, pframe, pframe_tail*), pframe, pframe_tail*)
+  -- if $error_entered_call_valid(S_scope, perrorcall)
+  -- if $error_context_receiving_function(S, pcallcontext) =/= eps
+def $aggregate_tasks_declared(ptask :: ptask_tail*, n) = $aggregate_cursor_declared(pnumbercompare.SOURCE.CAST.STACK, n)
+  -- if $number_compare_task(ptask) = (pnumbercompare)

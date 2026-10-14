@@ -114,6 +114,7 @@ def $aggregate_std_stack([paggregatecursor], n_left, n_right, n_tableleft, n_tab
 def $aggregate_std_stack(paggregatecursor :: paggregatecursor_tail*, n_left, n_right, n_tableleft, n_tableright) = paggregatecursor :: $aggregate_std_stack(paggregatecursor_tail*, n_left, n_right, n_tableleft, n_tableright)
   -- if paggregatecursor_tail* =/= eps
 def $aggregate_std_order_result(ORDERSTRING paggregatecallback, n_left, n_right, n_tableleft, n_tableright) = ORDERSTRING paggregatecallback[.STACK = $aggregate_std_stack(paggregatecallback.STACK, n_left, n_right, n_tableleft, n_tableright)]
+def $aggregate_std_order_result(ORDERNOTICE paggregatecallback pvalue, n_left, n_right, n_tableleft, n_tableright) = ORDERNOTICE paggregatecallback[.STACK = $aggregate_std_stack(paggregatecallback.STACK, n_left, n_right, n_tableleft, n_tableright)] pvalue
 def $aggregate_std_order_result(porder, n_left, n_right, n_tableleft, n_tableright) = porder -- otherwise
 def $aggregate_std_effect(S, n_left, n_right, n_tableleft, n_tableright, n_index, n_width, pcompareguard_seen*, z) = (S_next, $aggregate_std_order_result(porder, n_left, n_right, n_tableleft, n_tableright))
   -- if (S_next, porder) = $aggregate_array_effect(S, n_tableleft, n_tableright, n_index, n_width, pcompareguard_seen*, z)
@@ -352,8 +353,13 @@ def $aggregate_push(ORDERSTRING paggregatecallback, paggregatecursor) = ORDERSTR
   -- if paggregatecallback.STACK = eps
 def $aggregate_push(ORDERSTRING paggregatecallback, paggregatecursor) = ORDERSTRING paggregatecallback[.STACK = paggregatecallback.STACK ++ [paggregatecursor]]
   -- if paggregatecallback.STACK =/= eps
+def $aggregate_push(ORDERNOTICE paggregatecallback pvalue, paggregatecursor) = ORDERNOTICE paggregatecallback[.POINTER = ($aggregate_pointer(paggregatecursor, paggregatecallback.OBJECTLEFT))][.STACK = [paggregatecursor]] pvalue
+  -- if paggregatecallback.STACK = eps
+def $aggregate_push(ORDERNOTICE paggregatecallback pvalue, paggregatecursor) = ORDERNOTICE paggregatecallback[.STACK = paggregatecallback.STACK ++ [paggregatecursor]] pvalue
+  -- if paggregatecallback.STACK =/= eps
 def $aggregate_push(porder, paggregatecursor) = porder -- otherwise
 def $aggregate_materialized_order(ORDERSTRING paggregatecallback) = ORDERUNSUPPORTED "materialized-property Stringable comparison continuation"
+def $aggregate_materialized_order(ORDERNOTICE paggregatecallback pvalue) = ORDERUNSUPPORTED "materialized-property numeric comparison continuation"
 def $aggregate_materialized_order(porder) = porder -- otherwise
 def $comparison_result(S, pbin, ORDERSTRING paggregatecallback, z) = S[.COMPLETION = UNSUPPORTED "nested Stringable comparison source or consumer"]
 
@@ -668,6 +674,7 @@ def $aggregate_order_values(pbin, pvalue_left, pvalue_right) = (pvalue_left, pva
 def $aggregate_leaf_values(paggregatecallback, pvalue_text, pvalue_other) = (pvalue_text, pvalue_other) -- if paggregatecallback.OBJECTLEFT
 def $aggregate_leaf_values(paggregatecallback, pvalue_text, pvalue_other) = (pvalue_other, pvalue_text) -- if ~paggregatecallback.OBJECTLEFT
 def $aggregate_order_cast(ORDERSTRING paggregatecallback) = true
+def $aggregate_order_cast(ORDERNOTICE paggregatecallback pvalue) = true
 def $aggregate_order_cast(porder) = false -- otherwise
 def $aggregate_order(S, pbin, pvalue_left, pvalue_right, z) = $value_order_effect(S, pvalue_first, pvalue_second, eps, z)
   -- if (pvalue_first, pvalue_second) = $aggregate_order_values(pbin, pvalue_left, pvalue_right)
@@ -689,6 +696,8 @@ def $aggregate_pending_order(S) = eps -- otherwise
 def $aggregate_compare_pending(S) = true
   -- if $aggregate_pending_order(S) = (ORDERSTRING paggregatecallback)
   -- if paggregatecallback.STACK =/= eps
+def $aggregate_compare_pending(S) = true
+  -- if $aggregate_pending_order(S) = (ORDERNOTICE paggregatecallback pvalue)
 def $aggregate_compare_pending(S) = false -- otherwise
 
 def $aggregate_compare_begin(S_before, S, porigin, porigin_cast, pbin, poperand_left, poperand_right, pvalue_rootleft, pvalue_rootright, z, ptask_consumer, ptask_tail*, paggregatecallback) = $user_string_begin(S[.HELD = S_before.HELD][.ORIGIN = (porigin_cast)], paggregatecallback.RECEIVER, porigin_cast, z, AGGREGATE_COMPARE_RESULT paggregatecompare, ptask_tail*)
@@ -747,6 +756,7 @@ def $aggregate_resume(S, ORDER 0, paggregatecursor :: paggregatecursor_tail*, z)
   -- if (S_next, porder) = $aggregate_decl_effect(S, n_left, n_right, ptbytes*, paggregatecursor.INDEX, pcompareguard_seen*, z)
 def $aggregate_resume(S, porder, paggregatecursor*, z) = (S, porder) -- otherwise
 def $aggregate_resume_join(S, ORDERSTRING paggregatecallback, paggregatecursor*, z) = (S, ORDERSTRING paggregatecallback[.STACK = paggregatecallback.STACK ++ paggregatecursor*])
+def $aggregate_resume_join(S, ORDERNOTICE paggregatecallback pvalue, paggregatecursor*, z) = (S, ORDERNOTICE paggregatecallback[.STACK = paggregatecallback.STACK ++ paggregatecursor*] pvalue)
 def $aggregate_resume_join(S, porder, paggregatecursor*, z) = $aggregate_resume(S, porder, paggregatecursor*, z) -- otherwise
 def $aggregate_compare_return(S, paggregatecompare, pvalue_text, pvalue_other) = $user_string_begin(S_next[.TODO = paggregatecompare.TAIL][.ORIGIN = (paggregatecompare.CASTSITE)], paggregatecallback_next.RECEIVER, paggregatecompare.CASTSITE, paggregatecompare.LINE, AGGREGATE_COMPARE_RESULT paggregatecompare[.CAST = paggregatecallback_next], paggregatecompare.TAIL)
   -- if $type_bytes(pvalue_other) =/= $ptascii("object") \/ $throwable_compare_receiver(S, pvalue_other) =/= eps

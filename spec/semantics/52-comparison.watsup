@@ -5,7 +5,7 @@ syntax paggregatepointer = AGGREGATE_ARRAY nat pkey | AGGREGATE_PROPERTY nat ptb
 syntax paggregatekind = AGGREGATE_PLAIN | AGGREGATE_STD_HASH nat nat | AGGREGATE_DECL_HASH ptbytes*
 syntax paggregatecursor = {KIND paggregatekind, LEFT pnode, RIGHT pnode, INDEX nat, WIDTH nat, KEY pkey, LEFTITEM pitem, RIGHTITEM pitem, LEFTVALUE pvalue, RIGHTVALUE pvalue}
 syntax paggregatecallback = {LEFT pvalue, RIGHT pvalue, RECEIVER nat, OBJECTLEFT bool, POINTER paggregatepointer?, STACK paggregatecursor*}
-syntax porder = ORDER int | ORDERRECURSIVE | ORDERUNSUPPORTED text | ORDERSTRING paggregatecallback
+syntax porder = ORDER int | ORDERRECURSIVE | ORDERUNSUPPORTED text | ORDERSTRING paggregatecallback | ORDERNOTICE paggregatecallback pvalue
 dec $aggregate_compare_seen(pstate) : pcompareguard*
 dec $aggregate_array_effect(pstate, nat, nat, nat, nat, pcompareguard*, int) : (pstate, porder)
 dec $aggregate_property_effect(pstate, nat, nat, nat, pcompareguard*, int) : (pstate, porder)
@@ -21,6 +21,7 @@ dec $string_compare_selection(pstate, pvalue, pvalue) : (nat, bool)?
 dec $throwable_compare_receiver(pstate, pvalue) : nat?
 dec $throwable_compare_selection(pstate, pvalue, pvalue) : (nat, bool)?
 dec $throwable_compare_order(pstate, pvalue, pvalue, pcompareguard*) : (pstate, porder)
+dec $number_compare_selection(pstate, pvalue, pvalue) : (nat, bool, pvalue)?
 
 ;; The scanner overflows after twenty significant integer-prefix digits, before
 ;; inspecting a decimal/exponent suffix. Rescaling does not erase this provenance.
@@ -409,6 +410,8 @@ def $value_order_effect(S, pvalue_left, pvalue_right, pcompareguard_seen*, z) = 
   -- if $string_compare_selection(S, pvalue_left, pvalue_right) = ((n, b))
 def $value_order_effect(S, pvalue_left, pvalue_right, pcompareguard_seen*, z) = $throwable_compare_order(S, pvalue_left, pvalue_right, pcompareguard_seen*)
   -- if $throwable_compare_selection(S, pvalue_left, pvalue_right) =/= eps
+def $value_order_effect(S, pvalue_left, pvalue_right, pcompareguard_seen*, z) = (S, ORDERNOTICE {LEFT pvalue_left, RIGHT pvalue_right, RECEIVER n, OBJECTLEFT b, POINTER eps, STACK eps} pvalue_target)
+  -- if $number_compare_selection(S, pvalue_left, pvalue_right) = ((n, b, pvalue_target))
 def $value_order_effect(S, pvalue_left, pvalue_right, pcompareguard_seen*, z) = ($object_comparison_notice(S, pvalue_left, pvalue_right, z), $value_order(S, pvalue_left, pvalue_right, pcompareguard_seen*)) -- otherwise
 
 dec $comparison_operator(pbin) : bool
