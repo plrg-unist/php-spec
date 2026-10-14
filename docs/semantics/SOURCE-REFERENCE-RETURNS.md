@@ -507,3 +507,17 @@ pass. The mutant can also fail REFCELLS membership, so it is not an isolated
 local-binding proof. No native identity, physical collection or wider-layout
 completeness is inferred; see `stringable_suspended_selected_reference_validation`
 in the local-CV ledger.
+
+M54 repairs one computed owning VALUE return canceled inside nested `finally`.
+An authenticated source-only cursor survives the old object's eager release;
+after the inner return-y fails its repeated `?object` check and is caught, replay
+returns detached NULL with one Notice at the original return line. A saved f
+cleanup-prefix guard admits the real paused destructor state while still checking
+the cursor's source and line. Source/native2 passes at `7d843e3b`; public80/one
+LINE refusal and a separate caller54+40 pair pass at `ff7768cb`/388 through the
+descriptor-only bridge. The treatment's split budget crosses the destructor
+pause, and its returned r/a cell stays separate from bad y;
+the control returns the live y object cell and writes through it. Modeled object
+retirement does not establish physical collection. Other computed VALUE forms,
+CONST/NULL, multiple active histories and broad returns remain open. See the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).

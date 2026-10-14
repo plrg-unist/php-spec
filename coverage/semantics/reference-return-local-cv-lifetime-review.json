@@ -1095,5 +1095,59 @@
     "runtime": {"mode": "SL", "cache": false, "det": true, "jobs": 1, "compiler_cap_seconds": 45, "public_cap_seconds": 60, "late_state_cap_seconds": 120, "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398", "compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d", "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0", "profile": "tests/semantics/profile.json"},
     "remaining": ["Suspension during old cast-receiver destruction after __toString, other selected-cell and callback layouts, physical collection, and broad returns/core verification."],
     "recovery": "Preserve original ignored source/raw/scripts/fixtures at the recorded current24/current49 paths and restore the tested ee915/388 tree and helper imports if its tracked checkout retires. Run the preserved make_conversion_late.py in its original current49 verifier directory; its script-relative raw path regenerates the two byte-exact late fixtures. The early producer/fixture/runner are make_conversion_public.py, conversion-public.watsup and run_conversion_public.py in the same namespace. Use tested ordered modules with ff24 sl cap45 before numeric_runner --sl cap120 late or cap60 early, serially. Metadata-only publication earns no renewed semantic credit."
+  },
+  "computed_object_consumed_recheck": {
+    "status": "independently_accepted_bounded_computed_object_cursor_and_caller",
+    "revision": "ff7768cbbbc4288ead1efa2cd6fe775abe1b366e",
+    "modules": 388,
+    "implementation": "spec/semantics/156-finally-runtime.watsup",
+    "scope": "A by-reference ?object return computes an owning old O, attempts a finally return of y, changes y to a nonobject in an inner finally, catches the recheck TypeError, and resumes the consumed old return as detached NULL with one original-line VALUE Notice. The control retains object-valued y and returns its shared cell.",
+    "engine_basis": "Zend return compilation makes the pending by-reference result before finally and repeats the return type check afterward; DISCARD_EXCEPTION clears an incomplete temporary return without resurrecting its old object.",
+    "native": {
+      "originals": 2,
+      "raw": ".tools/returns-chain-owner-catch-current-24/.tools/returns-verify54-owning-recheck-clean/native-owning-recheck-clean-vhoan094/report.json",
+      "report_sha256": "68f8362309c8c0bbaa55deef71a49d0e787e983e08bc70f09863837dff9b276e",
+      "result": "Treatment V;F;I;D;I;C;A;R:1;A:changed;Ybad:1;E; and one line-4 Notice; control V;F;I;D;R:0;A:changed;Ybad:0;E; and no Notice. Both exit0. Native output alone establishes no object or cell identity."
+    },
+    "source": {
+      "revision": "7d843e3bddcc7933e6dead22aa7c5e7f4440f47e",
+      "raw": ".tools/returns-owning-recheck-54/.tools/returns-owning-recheck54/model-owning-recheck-fixed-pq6s60pr/report.json",
+      "report_sha256": "76a5bab3c847688c3cdc87224952585ad1d02477a14106bce3a9e13636df6fe6",
+      "result": "Strict SL passed; both checked requests agree with complete native stdout, stderr and exit status. The computed-call cursor captures source only, owns no old payload and restores exactly one Notice after eager old-object retirement."
+    },
+    "public": {
+      "revision": "ff7768cbbbc4288ead1efa2cd6fe775abe1b366e",
+      "main_premises": 80,
+      "public_negative_controls": 1,
+      "raw": ".tools/returns-owning-recheck-54/.tools/returns-owning-recheck54/owning-recheck-public-preD-jcf10joq/report.json",
+      "report_sha256": "feaa608561ae03204ff0c6917222946cbf53c6c1461dd461c66aae0d148b3578",
+      "result": "Same-execution old owning O/Notice to saved nonowning cursor, original VALUE release, O retirement, active replay and consumed-null/Notice restoration. A saved pre-destructor cursor LINE-only mutation keeps the heap intact but fails descriptor and actual driver admission. Full fixture compilation and public run pass."
+    },
+    "caller": {
+      "revision": "ff7768cbbbc4288ead1efa2cd6fe775abe1b366e",
+      "fixtures": 2,
+      "main_premises": [54, 40],
+      "raw": ".tools/returns-owning-recheck-54/.tools/returns-owning-recheck54/owning-recheck-caller-1g6qg_rv/report.json",
+      "report_sha256": "a5c7a486026b50f2931f7a42bd8edb0756ce47eb48364bc217ca3a2ec772a7c3",
+      "result": "The treatment splits drive0, resume1 and resume10000 against drive10001 from its actual pre-destructor pause. At main pre-R, r=a share a detached NULL cell distinct from bad y; the control r=a=y retains the live stdClass cell. Both compile and run true with exact output, Notice-event counts, stores and drained completion."
+    },
+    "compatibility_bridge": "Source agreement at 7d843 and later public/caller states at ff7768 are separate. The only intervening change is a descriptor-only cleanup-prefix check for the authenticated saved computed cursor; runtime transitions and original cursor validity are unchanged.",
+    "preserved_zero_credit": [
+      "Clean pre-repair comparison 0d148eab: treatment Unsupported; control exact.",
+      "650cdca8 public fixture: false method-name presentation premise; public0.",
+      "4b6a4346 public fixture: genuine saved-cursor descriptor refusal before repair; public0.",
+      "8101688c descriptor candidate: forward declaration compiler failure; numeric unrun0.",
+      "05443ae6 frontier and cfad7d56 scope projection: diagnostics only."
+    ],
+    "recovery": "Preserve the original native sources and ignored raw scripts/fixtures/reports at their exact paths. At tested ff7768/388 with pinned ff24 compiler and b57 numeric runner, compile and run computed-object-public-preD.watsup, then regenerate the caller fixtures with make_caller.py and run run_caller.py. The scripts derive paths from their original location and need the tested tree/helpers restored if that provider retires.",
+    "actual_parent_compiler": {
+      "parent": "45a2d1640efb40b0091cb87ed9cedca53d5612b2",
+      "staged_tree": "8f95e3d90f024c8c85bf9892fd89a7a0550d4c61",
+      "modules": 391,
+      "raw": ".tools/returns-owning-recheck54-current/owning-recheck-current-compiler-bnsubqvf/report.json",
+      "report_sha256": "413193adbbbd18c9050078b2f2cf7eca917a84c053732aaacc8d5a14f0b6e86a",
+      "result": "ff24 SL45 completed five quiet stages, exit0, app0, reaped and stable. Source/native/public/caller remain at their separate private tested revisions."
+    },
+    "limits": "The old object and returned cells are modeled allocations, not physical Zend collection. This does not validate other computed VALUE calls, arbitrary CONST/NULL or multiple active returns, and broad returns verification remains open."
   }
 }

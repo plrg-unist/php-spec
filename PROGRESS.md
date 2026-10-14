@@ -2635,6 +2635,19 @@ split/full caller budget in each source. That mutant can also violate REFCELLS,
 so it does not isolate the local-binding guard. Native object identity, physical
 collection, other receiver layouts and broad returns verification remain OPEN.
 
+M54 repairs the computed owning-object return consumed by a caught inner-finally
+`?object` recheck. An authenticated nonowning cursor records the old call source
+before eager object release; replay restores detached NULL and exactly one
+original-line VALUE Notice. The saved destructor cleanup-prefix descriptor check
+admits the actual pause while rejecting a LINE-only cursor forgery. Clean native2
+and source2 agree at private `7d843e3b`; public80 and separate caller54+40 pass at
+`ff7768cb`/388. The treatment split/full budget agrees from the real destructor
+pause, and its r/a alias is detached from bad y; the control retains r=a=y and
+the live stdClass before the shared write. Initial Unsupported, a genuine public
+descriptor failure and fixture-only failures retain zero affected credit.
+Actual-parent 391-module composition passes strict SL45 at `413193ad` (app0);
+broad returns_verify stays OPEN. [Local CV lifetime review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
 Per-constant protection survives namespace publication and parked handlers.
