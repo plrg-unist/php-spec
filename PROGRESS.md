@@ -16,7 +16,8 @@ pass at 2cd61, covering saved handlers, trace/source guards, no-provider state a
 a genuine captured-conversion refusal. That refusal and the original baseline and
 two pre-runtime failures retain zero agreement. Captured conversion lifetime and
 broader source/service contexts remain open.
-Private validation is independently accepted; current-parent integration is pending.
+The 394-module composition over 238baa65 passes both builds, full SL initialization
+and inventory at 4afe5d10; private source/state cuts retain their original identities.
 [NUL-path evidence](coverage/semantics/source-nul-path-review.json).
 
 Module404 stages leading-numeric-string ADD warnings for two direct CVs with
