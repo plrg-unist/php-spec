@@ -1903,6 +1903,16 @@ are unchanged. [Virtual expression trait review](coverage/semantics/trait-import
 Joined exact `f52c92f1`/389; count-only initialization adds no source/state credit.
 Hooked empty-slot casts keep their marked route; define/defined/Fiber and object-comparison protocols are absent.
 
+A direct backed expression trait getter now imports into a named class with a
+real source parent and no same-name parent property. Prelink admission and
+published matching-link proof stay separate. Genuine Base parentRead→Consumer
+getter scope/private13/Trait magic and Grand100→300/get313 preserve marker700.
+Strict389 at `9b38e2a0` is retained; its later inherited-hook Unsupported remains0.
+Corrected source1 passes at `304ec0f6`; three states at `940d92d2` pass294 =266
+reached +28 derived. Only parent admission and the authenticated absent-name
+fallback change; layout/storage/permissions and expression/return rules remain.
+[Parented trait getter review](coverage/semantics/parented-trait-expression-getter-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization
