@@ -107,6 +107,7 @@ def $weakmap_write_allowed(S, paccess) = true
   -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = eps
   -- if $weakmap_write_value_allowed(S, paccess)
 def $weakmap_write_allowed(S, paccess) = false -- otherwise
+dec $weakmap_free_value_allowed(pstate, pvalue) : bool
 dec $weakmap_replace_allowed(pstate, paccess) : bool
 dec $weakmap_second_write_allowed(pstate, paccess) : bool
 def $access_call(S, paccess, ptbytes) = $access_done(S_read[.OBJECTS[n_map] = WEAKMAP ({KEY n_key, VALUE paccess.VALUE, BEFORE $weakref_find(S, S.ALLOCATIONS, n_key)})], paccess, pvalue_result)
@@ -445,16 +446,8 @@ def $weakmap_replace_allowed(S, paccess) = true
   -- if S.OBJECTS[n_key] = STDINSTANCE /\ ~$instance_storage_freeing(S, n_key)
   -- if $node_children(S, HOBJECT n_key) = eps
   -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map]
-  -- if pweakmapentry.VALUE = POBJECT n_old
-  -- if $(n_old < |S.OBJECTS|) /\ (HOBJECT n_old) <- S.ALLOCATIONS
-  -- if S.OBJECTS[n_old] = INSTANCE porigin_old
-  -- if ~$instance_storage_freeing(S, n_old)
-  -- if $node_children(S, HOBJECT n_old) = eps
-  -- if paccess.VALUE = POBJECT n_new
-  -- if $(n_new < |S.OBJECTS|) /\ (HOBJECT n_new) <- S.ALLOCATIONS
-  -- if S.OBJECTS[n_new] = INSTANCE porigin_new
-  -- if ~$instance_storage_freeing(S, n_new)
-  -- if $node_children(S, HOBJECT n_new) = eps
+  -- if $weakmap_free_value_allowed(S, pweakmapentry.VALUE)
+  -- if $weakmap_write_value_allowed(S, paccess)
 def $weakmap_replace_allowed(S, paccess) = false -- otherwise
 dec $weakmap_notice_wrapper(pstate, pweakmapentry) : nat?
 def $weakmap_notice_wrapper(S, pweakmapentry) = (n_wrapper)
@@ -510,7 +503,6 @@ def $weakmap_key_notice(S, n_key) = S[.COMPLETION = UNSUPPORTED "WeakMap key not
 
 ;; WeakMap free_obj unregisters the entry before value destruction, but its
 ;; own weak notification waits until the callback and cleanup have returned.
-dec $weakmap_free_value_allowed(pstate, pvalue) : bool
 def $weakmap_free_value_allowed(S, pvalue) = true
   -- if pvalue = POBJECT n_value
   -- if $(n_value < |S.OBJECTS|)
