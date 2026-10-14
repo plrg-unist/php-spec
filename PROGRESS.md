@@ -15,6 +15,9 @@ public fronts/288 premises pass with runtime diff 5d45 after a narrow carrier gu
 The baseline/native/preparation evidence retains 0. Deferred evaluation, keyword/internal/
 trait/interface/enum queries, coercions and wider owning forms remain Unsupported.
 [Qualified-defined ledger](coverage/semantics/class-qualified-defined-review.json).
+The 391-module composition over 0420409 passes independent pointwise review at
+64d0ab3e; accepted runtime/protocol and parent operational paths are preserved.
+No renewed actor/source/state evidence is claimed.
 
 Top-level empty `define` values now preserve their allocation class. Authenticated
 immutable empties retain their table; mutable emptied arrays become fresh canonical
