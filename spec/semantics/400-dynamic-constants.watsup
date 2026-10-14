@@ -84,6 +84,7 @@ dec $dynamic_define_known(pstate, porigin, nat) : pvalue?
 dec $dynamic_array_call_valid(pstate, pconfigcall) : bool
 dec $dynamic_array_value(pstate, pvalue, nat*, bool) : (pstate, pvalue, pvalueclass)?
 dec $dynamic_array_known_matches(pstate, pvalue, pvalue?) : bool
+dec $dynamic_defined_receive(pstate, pconfigcall) : pstate
 dec $dynamic_define_finish(pstate, pconfigcall) : pstate
 def $dynamic_define_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME $user_constant_key(preqbytes), ORIGIN pconfigcall.SITE, VALUE pvalue, CLASS pvalueclass, READS eps, RECEIVES eps}]][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pconfigcall.KIND = INTRINSIC_DEFINE
@@ -126,6 +127,11 @@ def $dynamic_constant_receive(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT =
 def $dynamic_constant_receive(S, pconfigcall) = $error_dispatch(S[.TODO = (DYNAMIC_CONSTANT_CASE_WARNING pconfigcall) :: ptask_tail*], 2, $dynamic_constant_case_message(), pconfigcall.LINE, DIAGNOSTIC "Warning" $dynamic_constant_case_message() pconfigcall.LINE, DYNAMIC_CONSTANT_CASE_WARNING pconfigcall)
   -- if $dynamic_constant_case_valid(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_constant_receive(S, pconfigcall) = $dynamic_defined_receive(S, pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_DEFINED
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_query)]
+  -- if $string_bytes(pvalue_query) = (preqbytes)
+  -- if $dynamic_constant_class_name($dynamic_constant_query(preqbytes))
 def $dynamic_constant_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "dynamic constant call domain"] -- otherwise
 
 rule PhpStep/dynamic-constant-invoke: S ~> $dynamic_constant_receive(S, pconfigcall)
@@ -321,3 +327,112 @@ def $user_constants_valid(S, puserconstant :: puserconstant_tail*) = true
   -- if $dynamic_array_known_matches(S, puserconstant.VALUE, $dynamic_define_known(S, puserconstant.ORIGIN, 1))
   -- if $user_constant_at(puserconstant_tail*, puserconstant.NAME) = eps
   -- if $user_constants_valid(S, puserconstant_tail*)
+
+;; Qualified existence queries do not fetch a value. This slice admits folded
+;; user-class constants only, with the caller's actual lexical visibility.
+dec $dynamic_defined_split(preqbytes, preqbytes) : (preqbytes, preqbytes)?
+dec $dynamic_defined_query(pconfigcall) : (preqbytes, preqbytes)?
+dec $dynamic_defined_valid(pstate, pconfigcall) : bool
+dec $dynamic_defined_finish(pstate, pconfigcall) : pstate
+dec $dynamic_defined_autoload_valid(pstate, pautoloadcall) : bool
+def $dynamic_defined_split(preqbytes_prefix, eps) = eps
+def $dynamic_defined_split(preqbytes_prefix, [n_byte]) = eps
+def $dynamic_defined_split(preqbytes_prefix, n_first :: n_second :: n_tail*) = ((preqbytes_prefix, n_tail*))
+  -- if n_first = 58 /\ n_second = 58
+def $dynamic_defined_split(preqbytes_prefix, n_first :: n_second :: n_tail*) = $dynamic_defined_split(preqbytes_prefix ++ [n_first], n_second :: n_tail*)
+  -- if n_first =/= 58 \/ n_second =/= 58
+def $dynamic_defined_query(pconfigcall) = $dynamic_defined_split(eps, $dynamic_constant_query(preqbytes))
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_query)]
+  -- if $string_bytes(pvalue_query) = (preqbytes)
+def $dynamic_defined_query(pconfigcall) = eps -- otherwise
+def $dynamic_defined_valid(S, pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_DEFINED
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
+  -- if $autoload_class_name(preqbytes_class)
+  -- if ~$class_internal(preqbytes_class)
+  -- if ~($ptlc(preqbytes_class) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")])
+  -- if preqbytes_member =/= eps /\ ~(0 <- preqbytes_member) /\ ~(58 <- preqbytes_member)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_query)]
+  -- if $string_plain(pvalue_query) = pvalue_query \/ $string_carrier_valid(S, pvalue_query)
+  -- if $dynamic_define_value_matches(pvalue_query, $dynamic_define_known(S, pconfigcall.SITE, 0))
+def $dynamic_defined_valid(S, pconfigcall) = false -- otherwise
+def $dynamic_defined_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $dynamic_defined_valid(S, pconfigcall)
+  -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes_class)) = eps
+  -- if S.TODO = ptask :: ptask_tail*
+def $dynamic_defined_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $dynamic_defined_valid(S, pconfigcall)
+  -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes_class)) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $class_constant_lookup(S, porigin_class, preqbytes_member, |S.CLASSES|) = eps
+  -- if S.TODO = ptask :: ptask_tail*
+def $dynamic_defined_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $dynamic_defined_valid(S, pconfigcall)
+  -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes_class)) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $class_constant_lookup(S, porigin_class, preqbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+  -- if ~$class_constant_visible(S, pclassconstantdesc)
+  -- if S.TODO = ptask :: ptask_tail*
+def $dynamic_defined_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $dynamic_defined_valid(S, pconfigcall)
+  -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes_class)) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $class_constant_lookup(S, porigin_class, preqbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+  -- if $class_constant_visible(S, pclassconstantdesc)
+  -- if pclassconstantdesc.FOLDED
+  -- if $compiled_read(S, pclassconstantdesc.INITIALIZER) = (pvalue)
+  -- if S.TODO = ptask :: ptask_tail*
+def $dynamic_defined_finish(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "class constant defined query"] -- otherwise
+def $dynamic_defined_receive(S, pconfigcall) = $autoload_begin(S[.TODO = ptask_tail*], pconfigcall.SITE, preqbytes_class, $ptlc(preqbytes_class), pconfigcall.LINE, AUTO_EXPLICIT pconfigcall, DYNAMIC_DEFINED_RESUME pconfigcall)
+  -- if $dynamic_defined_valid(S, pconfigcall)
+  -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
+  -- if $autoload_pending(S, preqbytes_class)
+  -- if S.TODO = ptask :: ptask_tail*
+def $dynamic_defined_receive(S, pconfigcall) = $dynamic_defined_finish(S, pconfigcall)
+  -- if $dynamic_defined_valid(S, pconfigcall)
+  -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
+  -- if ~$autoload_pending(S, preqbytes_class)
+def $dynamic_defined_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "class constant defined query"] -- otherwise
+def $task_nodes(DYNAMIC_DEFINED_RESUME pconfigcall) = $config_nodes(pconfigcall)
+def $selected_task_nonce(DYNAMIC_DEFINED_RESUME pconfigcall) = pconfigcall.SELECTION
+def $call_task_valid(S, DYNAMIC_DEFINED_RESUME pconfigcall) = $dynamic_defined_valid(S, pconfigcall)
+rule PhpStep/dynamic-defined-resume: S ~> $dynamic_defined_finish(S, pconfigcall)
+  -- if S.TODO = (DYNAMIC_DEFINED_RESUME pconfigcall) :: ptask_tail*
+  -- if $dynamic_defined_valid(S, pconfigcall)
+
+;; The API frame keeps the full captured query, while its loader receives only
+;; the class name. A completed lookup resumes once, even if no class was loaded.
+def $dynamic_defined_autoload_valid(S, pautoloadcall) = true
+  -- if pautoloadcall.MODE = AUTO_EXPLICIT pconfigcall
+  -- if pautoloadcall.RESUME = DYNAMIC_DEFINED_RESUME pconfigcall
+  -- if $dynamic_defined_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
+  -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
+  -- if pautoloadcall.SITE = pconfigcall.SITE /\ pautoloadcall.LINE = pconfigcall.LINE
+  -- if pautoloadcall.NAME = preqbytes_class /\ pautoloadcall.KEY = $ptlc(preqbytes_class)
+def $dynamic_defined_autoload_valid(S, pautoloadcall) = false -- otherwise
+def $autoload_resume_valid(S, pautoloadcall) = true
+  -- if $dynamic_defined_autoload_valid(S, pautoloadcall)
+def $autoload_declaration_resume(S, pautoloadcall) = true
+  -- if $dynamic_defined_autoload_valid(S, pautoloadcall)
+def $reference_call_frame_site(pcallcontext, pframe) = true
+  -- if pcallcontext.CALLSITE = eps /\ pcallcontext.LINE = $(-1)
+  -- if pframe.TODO = (AUTO_RESULT pautoloadcall pautoloadentry poperand) :: ptask_tail*
+  -- if pautoloadcall.MODE = AUTO_EXPLICIT pconfigcall
+  -- if pautoloadcall.RESUME = DYNAMIC_DEFINED_RESUME pconfigcall
+  -- if pframe.ORIGIN = (pconfigcall.SITE) /\ pautoloadcall.SITE = pconfigcall.SITE
+  -- if pconfigcall.KIND = INTRINSIC_DEFINED
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcallcontext.TARGET
+def $autoload_lookup_mode(AUTO_EXPLICIT pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_DEFINED
+def $autoload_trace_arguments(pconfigcall, ptbytes) = [pvalue_query]
+  -- if pconfigcall.KIND = INTRINSIC_DEFINED
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_query)]

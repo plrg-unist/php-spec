@@ -5,6 +5,8 @@ dec $autoload_class_char(nat) : bool
 dec $autoload_class_chars(preqbytes) : bool
 dec $autoload_explicit_nodes(pautoloadmode) : pnode*
 dec $autoload_explicit_nonce(pautoloadmode) : nat?
+dec $autoload_lookup_mode(pautoloadmode) : bool
+dec $autoload_trace_arguments(pconfigcall, preqbytes) : pvalue*
 dec $autoload_special(pstate, pvalue) : pautoloadtarget?
 dec $autoload_registration_valid(pstate, pconfigcall) : bool
 dec $autoload_entry(pstate, pconfigcall, pautoloadtarget) : pautoloadentry
@@ -554,10 +556,12 @@ def $autoload_class_chars(eps) = true
 def $autoload_class_chars(n :: n_tail*) = ($autoload_class_char(n) /\ $autoload_class_chars(n_tail*))
 def $autoload_lookup_name(n*) = n*
 
-def $autoload_active_task(AUTO_NEXT pautoloadcall, ptbytes) = (pautoloadcall.MODE = AUTO_LOOKUP /\ pautoloadcall.KEY = ptbytes)
-def $autoload_active_task(AUTO_REFERENCE pautoloadcall pautoloadentry, ptbytes) = (pautoloadcall.MODE = AUTO_LOOKUP /\ pautoloadcall.KEY = ptbytes)
-def $autoload_active_task(AUTO_ENTER pautoloadcall pautoloadentry poperand, ptbytes) = (pautoloadcall.MODE = AUTO_LOOKUP /\ pautoloadcall.KEY = ptbytes)
-def $autoload_active_task(AUTO_RESULT pautoloadcall pautoloadentry poperand, ptbytes) = (pautoloadcall.MODE = AUTO_LOOKUP /\ pautoloadcall.KEY = ptbytes)
+def $autoload_lookup_mode(AUTO_LOOKUP) = true
+def $autoload_lookup_mode(pautoloadmode) = false -- otherwise
+def $autoload_active_task(AUTO_NEXT pautoloadcall, ptbytes) = ($autoload_lookup_mode(pautoloadcall.MODE) /\ pautoloadcall.KEY = ptbytes)
+def $autoload_active_task(AUTO_REFERENCE pautoloadcall pautoloadentry, ptbytes) = ($autoload_lookup_mode(pautoloadcall.MODE) /\ pautoloadcall.KEY = ptbytes)
+def $autoload_active_task(AUTO_ENTER pautoloadcall pautoloadentry poperand, ptbytes) = ($autoload_lookup_mode(pautoloadcall.MODE) /\ pautoloadcall.KEY = ptbytes)
+def $autoload_active_task(AUTO_RESULT pautoloadcall pautoloadentry poperand, ptbytes) = ($autoload_lookup_mode(pautoloadcall.MODE) /\ pautoloadcall.KEY = ptbytes)
 def $autoload_active_task(ERROR_HANDLER_INVOKE perrorcall, ptbytes) = $autoload_active_task(perrorcall.RESUME, ptbytes)
 def $autoload_active_task(ERROR_HANDLER_RESULT perrorcall, ptbytes) = $autoload_active_task(perrorcall.RESUME, ptbytes)
 def $autoload_active_task(AT porigin ptask, ptbytes) = $autoload_active_task(ptask, ptbytes)
@@ -842,7 +846,8 @@ def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE $call_sourcefile(S.FIL
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if psparam* = $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)
   -- if pvalue* = $trace_parameters(S, pbinding*, (psparam.NAME)*, 1) ++ $trace_extra(S, pcallcontext.EXTRA)
-def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE $trace_context_type(S, pcallcontext), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}] ++ $config_trace_frames(S, pconfigcall, [PSTRING pautoloadcall.NAME])
+def $autoload_trace_arguments(pconfigcall, ptbytes) = [PSTRING ptbytes] -- otherwise
+def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE $trace_context_type(S, pcallcontext), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}] ++ $config_trace_frames(S, pconfigcall, $autoload_trace_arguments(pconfigcall, pautoloadcall.NAME))
   -- if $autoload_context_call(pcallcontext, S.CURRENT, S.FRAMES) = ((pautoloadcall, pautoloadentry, poperand))
   -- if pautoloadcall.MODE = AUTO_EXPLICIT pconfigcall
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
