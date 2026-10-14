@@ -1,0 +1,89 @@
+{
+  "status": "accepted bounded private milestone; current-parent publication remains separate",
+  "reviewer": "/root/iterator_review_01",
+  "scope": "First named-key Iterator unpack send selecting fixed untyped BYREF parameter0, with empty SENT, no earlier named phase and one direct statically named Iterator construction. CURRENT is the stable ALIAS cell of an Iterator-owned declared untyped nonstatic property containing an object or a bounded acyclic array with one destructible child and no embedded references.",
+  "engine": {
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "runtime": "PHP 8.5.10 CLI NTS 64-bit",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "source_route": "Zend/zend_vm_def.h SEND_UNPACK: zend_handle_named_arg resolves the fixed destination before the same ZVAL_DEREF, Z_TRY_ADDREF, by-reference warning and ZVAL_NEW_REF sequence used by positional sends. zend_user_it_get_current_data retains the original raw reference; move-forward and iterator destruction retire the cache and DATA separately."
+  },
+  "implementation": {
+    "parent": "fa7e91708214380aec241b543ee39ee1c5529af4",
+    "tested_semantics": "9131958528d4454d05c9d3b915b62dac41142cc4",
+    "module": "spec/semantics/385-call-iterator-unpack.watsup",
+    "module_sha256": "ebd26c82766a86d4537941fe4e9500f5fe7cd4e12f6024687752f9b168224835",
+    "change": "Remove only the integer-key restriction in iterator_unpack_reference_allowed. Fixed slot0, empty SENT, no prior named phase, untyped nonvariadic BYREF, exact construction site and live property/snapshot checks remain required.",
+    "contract": "The warning owns a detached payload HOLD and a nonowning SNAPSHOT. Successful send transfers that hold into a fresh private reference cell, preserving a separate source alias and ordinary array COW. NAMED becomes true. A later positional key fails before another warning or target entry; real error unwind retires raw HCELL, DATA, INPUT and the earlier private HCELL in that order."
+  },
+  "private_root": ".tools/iterator-named-reference-01",
+  "author": {
+    "native": {
+      "revision": "fa7e91708214380aec241b543ee39ee1c5529af4",
+      "report": ".tools/iterator-call-unpack-named-reference-native-skebeugi/report.json",
+      "originals": 10,
+      "model_agreements": 0
+    },
+    "baseline": {
+      "revision": "fa7e91708214380aec241b543ee39ee1c5529af4",
+      "report": ".tools/iterator-named-reference-baseline-3hlrnr59/report.json",
+      "result": "Sole named-object-normal source stops explicitly Unsupported: Iterator unpack by-reference raw payload, after W|V|C|K|.",
+      "model_agreements": 0
+    },
+    "strict": {
+      "report": ".tools/iterator-call-unpack-named-reference-sl-pb48t08o/report.json",
+      "modules": 390,
+      "passed": true
+    },
+    "source": {
+      "report": ".tools/iterator-call-unpack-named-reference-source-qazfk8g5/report.json",
+      "normal_agreements": 10,
+      "coverage": "Object and array normal, source alias, warning-handler throw, real Fiber parked resume and injected throw; unchanged native bytes/profile reused."
+    },
+    "state": {
+      "report": ".tools/fiber-state-review-opc1ki2z/report.json",
+      "groups": 5,
+      "driver_premises": 387,
+      "coverage": "Genuine named warning, object/array fresh-cell transfer, aliased array COW and parked reference/payload owners."
+    }
+  },
+  "independent": {
+    "source": {
+      "runner": "tests/semantics/iterator_call_unpack_named_reference_review_sources.py",
+      "report": ".tools/iterator-named-reference-review-source-1kx_owv9/report.json",
+      "normal_agreements": 3,
+      "coverage": "Named object with omitted second default and source alias; named array COW with source alias; first named reference followed by positional-key Error without another warning or target entry."
+    },
+    "state": {
+      "runner": "tests/semantics/iterator_call_unpack_named_reference_independent_state.py",
+      "reports": [
+        {"report": ".tools/fiber-state-review-5ibnybi7/report.json", "groups": 1, "driver_premises": 69},
+        {"report": ".tools/fiber-state-review-zsenrbjw/report.json", "groups": 1, "driver_premises": 58}
+      ],
+      "coverage": "Genuine first named warning and later positional send: detached/fresh-cell owners, NAMED transition, later/unknown/SENT/line refusals, zero-budget identity, real source-line20 Error, ordered cleanup and split-budget equality."
+    },
+    "retained_failure": {
+      "report": ".tools/fiber-state-review-0x71i37b/report.json",
+      "result": "First fixture failed to parse before runtime because inline SLOTS sequence lacked parentheses (exit1). The already-started successor was terminated (exit-15). Both retain zero credit. Only fixture parentheses changed; affected state groups were retried separately, with the second launched after the first passed.",
+      "model_agreements": 0
+    }
+  },
+  "validation": "Successful semantic checks use913195852, strict SL, disabled caches and encountered determinism checks, LC_ALL=C, TZ=UTC, worker1. Source reports record stable HEAD and all watched inputs; reached-state reports record unchanged runner/catalog and independent or author inputs. Source caps are60 seconds/model and75/process; state/strict caps120/process. Exact commands, identities, source bytes and process exits remain in raw reports.",
+  "artifacts": {
+    "archive": "../php-spec-evidence-archive/iterator-named-reference-01/evidence.tar.gz",
+    "archive_sha256": "a3cb8160e37228bc7e20b86db57651020ec70d9f2cd207550bdf469053fc06c7",
+    "bytes": 415401,
+    "manifest": "../php-spec-evidence-archive/iterator-named-reference-01/manifest.json",
+    "recovery": "Extract into an empty directory; workspace-relative member paths restore php-spec/.tools raw sources, observations, fixtures, reports and ad hoc drivers. Maintained implementation/tests come from Git. The manifest lists11 report hashes. Both independent native-only preparations are retained at zero model credit; no worktree or tool backup is included."
+  },
+  "private_inventory_preparation": "The cheap inventory check encounters existing root fixture paths absent or escaping in this worktree; new milestone paths are present. The reproduced metadata diagnostic is retained at ../php-spec-evidence-archive/iterator-named-reference-01/private-inventory-preparation.json, outside the unchanged evidence archive. Actual-parent inventory remains required at publication; no semantic agreement is assigned to this check.",
+  "prepublication_review": "Master4767ec3bd preserves base385. Changes since fa7e are30's output-only task constructor,397's output-reference dispatcher split,401/manifest391 and382's typed inherited-trait-property eligibility arm. Their guarded output continuations/typed property clause are disjoint from this untyped Iterator reference route. This is pointwise review without renewed runtime credit; the eventual actual-parent publication cut remains to be recorded.",
+  "remaining": [
+    "Later reference sends, named destinations beyond fixed parameter0, typed or variadic reference targets",
+    "Other reference sources, wider construction sites and live handler/main payload replacement",
+    "Broader arrays, embedded references, cycles and COW/lifetime interactions",
+    "Complete Iterator, foreach, callable and PHP core semantics"
+  ],
+  "retention": "Earlier positional object/array, Iterator and unrelated accepted cuts keep their original identities without replay. This milestone reports13 original normal agreements and7 genuine reached groups/514 driver premises; native preparations, the Unsupported baseline and failed/interrupted fixtures are separate zero-credit records."
+}

@@ -329,9 +329,22 @@ F. Abort consumes raw HCELL, DATA/INPUT, held container and then its child. Acti
 capture checks remain exact, while documentary SOURCE reads no retired STORE,
 property or array contents. Object-only query compatibility is retained.
 Other reference sources, live replacements, later/named/typed sends, wider sites
-and broader array/COW interactions remain required. The
+and broader array/COW interactions remained required at that array cut. The
 [reference array review](../../coverage/semantics/iterator-call-unpack-reference-array-review.json)
 records this slice separately from the object cut.
+
+The first key may now name the first fixed untyped by-reference parameter in the
+same direct Iterator construction with an empty sent buffer. Both stable object
+and bounded array property references use the existing detached payload hold,
+nonowning snapshot and fresh private callee cell. A source alias remains separate;
+array writes retain their ordinary copy-on-write behavior. The completed send
+records named-argument history, so a later positional key raises Error before
+another warning or target entry. This follows `SEND_UNPACK` and
+`zend_handle_named_arg`, then `ZVAL_DEREF`, `Z_TRY_ADDREF` and `ZVAL_NEW_REF` in
+the pinned engine. Later/typed/variadic reference sends, other sources and live
+payload replacement remain required. The
+[named reference review](../../coverage/semantics/iterator-call-unpack-named-reference-review.json)
+keeps this extension separate from the earlier positional cuts.
 
 Iterator valid NaN warnings keep the raw retval in CURRENT through handler invoke,
 result, cleanup and saved Fiber frames. The native `zend_user_it_valid` wrapper

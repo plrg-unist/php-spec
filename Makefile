@@ -256,6 +256,10 @@ test-semantics: build
 	python3 tests/semantics/iterator_call_unpack_reference_object_review.py
 	python3 tests/semantics/iterator_call_unpack_reference_array_sources.py
 	python3 tests/semantics/iterator_call_unpack_reference_array_review.py
+	python3 tests/semantics/iterator_call_unpack_named_reference_sources.py
+	python3 tests/semantics/iterator_call_unpack_named_reference_state.py
+	python3 tests/semantics/iterator_call_unpack_named_reference_review_sources.py
+	python3 tests/semantics/iterator_call_unpack_named_reference_independent_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py

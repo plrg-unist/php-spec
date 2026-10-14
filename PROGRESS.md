@@ -1247,6 +1247,18 @@ array/COW interactions remain required; earlier cuts retain their original input
 Exact `7925550a` composition retains the private cuts through unchanged Iterator/schema
 inputs; the disjoint parent changes require no current actor.
 
+Stable Iterator property-reference object/array sends now also accept a first
+named key selecting fixed untyped BYREF parameter0, with an empty sent buffer at
+the same direct construction. Detached holds transfer into fresh private cells;
+source aliases and array COW survive, while named history rejects a later
+positional key before another warning or target entry. Strict390, ten author and
+three independent originals, and seven genuine-source state groups/514 driver
+premises pass at `913195852`. The original Unsupported baseline, independent
+fixture grammar failure and terminated successor retain zero agreement. Later,
+typed or variadic reference sends, wider sources/live replacements and broader
+array/COW interactions remain required; full core stays partial.
+[Named reference review](coverage/semantics/iterator-call-unpack-named-reference-review.json).
+
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or
 reference. Borrowed CVs and owning cells retain their modes through initial

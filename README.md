@@ -640,6 +640,11 @@ output until that alias is unset. Without the alias, the child retires before
 later output. Warning and parked throws release Iterator before the held
 container and its child. See the
 [reference array review](coverage/semantics/iterator-call-unpack-reference-array-review.json).
+The same first send also accepts a key naming the first fixed untyped reference
+parameter. It retains the captured payload and fresh callee cell, including source
+aliases, array copying, handler throws and Fiber suspension. Named history still
+rejects a later positional key before another warning or target entry. See the
+[named reference review](coverage/semantics/iterator-call-unpack-named-reference-review.json).
 Valid NaN warnings retain the raw return through handler mutation, Fiber parking
 and throw. One numeric reread distinguishes copied NaN from a live reference;
 the raw return retires before current or iterator teardown.
