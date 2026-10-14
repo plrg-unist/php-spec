@@ -2118,6 +2118,15 @@ unchanged controls fixture passes after the cons-form validator correction.
 Joined exact `b128c9da`/393; count-corrected initialization adds no source/state credit.
 Absent numeric-comparison, defined/autoload, unpack and computed-ref-return protocols preserve the accepted setter route.
 
+Selected public typed statement pairs ordered get then set now compile two indexed
+functions and share active-property/receiver backing access. GET’s write6 does
+not enter SET; SET’s read10 does not enter GET. Physical10/get23 becomes
+assignment20/physical33/get46, with pre-body array rejection/caller26 unchanged.
+Strict393 passes at `545e6e20`; corrected source1 at `169aafa5` matches native.
+Two states at `1d7facd8` pass210 =181 reached +29 derived. Initial source failure
+remains0; one EPS premise disjoins the paired and setter-only classifiers.
+[Paired-hook review](coverage/semantics/paired-backed-get-set-hook-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization
