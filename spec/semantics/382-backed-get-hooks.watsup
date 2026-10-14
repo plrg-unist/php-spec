@@ -179,12 +179,14 @@ def $property_hook_trait_export(S, pclassdesc, ppropertydesc_source) = (ppropert
   -- if $property_declaring_class(S.CLASSES, PORIGIN n pcpath) = (porigin_trait)
   -- if $class_at(S.CLASSES, porigin_trait) = (pclassdesc_trait)
   -- if pclassdesc_trait.KIND = "trait" /\ $trait_plan(S, pclassdesc_trait).TRAITS = eps
-  -- if $trait_fetch(S, $trait_plan(S, pclassdesc).TRAITS, eps) = TRAITFETCHED [pclassdesc_outer]
+  -- if $trait_fetch(S, $trait_plan(S, pclassdesc).TRAITS, eps) = TRAITFETCHED pclassdesc_exporters*
+  -- if pclassdesc_exporters* = [pclassdesc_outer]
   -- if pclassdesc_outer.ORIGIN =/= porigin_trait
   -- if pclassdesc_outer.KIND = "trait" /\ pclassdesc_outer.PARENT = eps /\ ~pclassdesc_outer.READONLY
   -- if $origin_node(S.SOURCES, pclassdesc_outer.ORIGIN) = (NStmtTrait phpType14 phpType3 phpType23 metadata)
   -- if $trait_plan(S, pclassdesc_outer).PRECEDENCES = eps /\ $trait_plan(S, pclassdesc_outer).ALIASES = eps
-  -- if $trait_fetch(S, $trait_plan(S, pclassdesc_outer).TRAITS, eps) = TRAITFETCHED [pclassdesc_trait]
+  -- if $trait_fetch(S, $trait_plan(S, pclassdesc_outer).TRAITS, eps) = TRAITFETCHED pclassdesc_sources*
+  -- if pclassdesc_sources* = [pclassdesc_trait]
   -- if ppropertydesc_export = $trait_data_property(pclassdesc_outer, ppropertydesc_source)
   -- if $hook_property_at(pclassdesc_outer.PROPERTIES, TRAIT_MEMBER_ORIGIN pclassdesc_outer.ORIGIN (PORIGIN n pcpath)) = (ppropertydesc_export)
   -- if $property_hook_origin(S, ppropertydesc_source) = (porigin_hook)
