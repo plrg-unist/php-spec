@@ -1,0 +1,172 @@
+{
+  "scope": "Finite builtin/inherited Throwable-to-string comparison at reached ordinary or aggregate leaves, including a newly read opposing Throwable after a source cast. Root source overrides keep ordinary callback dispatch.",
+  "status": "partial; independently reviewed private increment",
+  "tested_revision": "42ae18dae930ebe8f90d4ae9e5a1f94d01895951",
+  "baseline_revision": "fa7e91708214380aec241b543ee39ee1c5529af4",
+  "module_count": 390,
+  "engine_anchors": [
+    "Zend/zend_object_handlers.c:zend_std_compare_objects",
+    "Zend/zend_object_handlers.c:zend_std_cast_object_tostring",
+    "Zend/zend_exceptions.c:Exception::__toString",
+    "Zend/zend_operators.c:zend_compare"
+  ],
+  "runtime": {
+    "php": {
+      "path": ".tools/php/bin/php",
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    "numeric_runner": {
+      "path": "tests/semantics/_build/default/numeric_runner.exe",
+      "sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    },
+    "elaborator": {
+      "path": ".tools/spectec/bin/p4spectec",
+      "sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "adapter": {
+      "path": "_build/default/adapter/main.exe",
+      "sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7"
+    },
+    "bridge": {
+      "path": ".tools/php-file.so",
+      "sha256": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f"
+    },
+    "profile": {
+      "path": "tests/semantics/profile.json",
+      "sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+    },
+    "manifest": {
+      "path": "spec/semantics/modules.json",
+      "sha256": "9527c83bddb7252466b375ee46f769b321d9b17f6c7092742c9def6ee3ff56d5"
+    }
+  },
+  "php_source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "build_claim": "Retained local binaries; no new build claim.",
+  "semantics": {
+    "dispatch": "Root builtin THROWABLE or genuine inherited internal handler is separate from source __toString. Previous nodes may have source overrides; the finite formatter ignores those overrides.",
+    "admission": "String message/file/cache values, integer line, authentic allocated trace graph, acyclic authentic previous links; no rendered HOBJECT in synchronous walker guards or authenticated current/parked comparison guards. HARRAY and DECLARED_TABLE remain separate guard domains.",
+    "effects": "Existing164 formatter changes only the root private string cache. Actual binary/Switch walkers thread its returned state; pure pending previews discard that hypothetical state. Strict/bool and count/key/earlier-value skips do not format.",
+    "resume": "Original392/394 consumers reuse saved first text, orientation and zero-only cursor resume. No second user task, arena-string allocation, heap root or documentary owner is added for the atomic internal formatter."
+  },
+  "native": {
+    "report": {
+      "path": ".tools/throwable-string-comparison-native-55/run-v1/report.json",
+      "sha256": "9012f79aac80b4beddbb6d1bd5f1ba4de8b57fc87235bf12661796dba48ff07d"
+    },
+    "originals": 3,
+    "cpu": 3,
+    "slot": 5,
+    "cap_seconds": 55,
+    "credit": "Observations only; hypotheses were informational and did not determine reliability."
+  },
+  "baseline": {
+    "report": {
+      "path": ".tools/throwable-string-comparison-baseline-55/run-v1/report.json",
+      "sha256": "146c6614382bd82389b5d68852fc8550938030506e14f93473b742032f2d1f02"
+    },
+    "outcome": "accepted/program/Unsupported: Throwable string comparison",
+    "stdout": "cold|strict|bool|still-cold|",
+    "source_agreements": 0
+  },
+  "initialization": {
+    "report": {
+      "path": ".tools/throwable-string-comparison-gate-55/run-initializer-retry1/report.json",
+      "sha256": "fa620a0e98c0c7aacc37b1ba36cff6305a782f038d7adb3cf50751c9410702d3"
+    },
+    "mode": "SL",
+    "semantic_assertions": 0,
+    "PHP_execution": 0,
+    "raw_steps": 0
+  },
+  "sources": {
+    "report": {
+      "path": ".tools/throwable-string-comparison-model-55/run-v1/report.json",
+      "sha256": "bdd469fb5d391eeb5c6e275ea7cab2729fa6ff78a5c556efc5295d95bd140a0e"
+    },
+    "catalogue": {
+      "path": "tests/semantics/throwable_string_comparison_cases.json",
+      "sha256": "097621d29a2a91e635831d6b536481fe4bae8765563296d9287c48df3646e7d1"
+    },
+    "agreements": 3,
+    "caps": "100000 steps; first120/130 semantic/host seconds, others90/100, jobs1. Original File/CWD/native tuple/START pins retained.",
+    "seconds": [
+      29.35572161152959,
+      21.81935358978808,
+      19.211728285998106
+    ]
+  },
+  "syntax_only": {
+    "report": {
+      "path": ".tools/throwable-string-comparison-prep-55/syntax-v1/report.json",
+      "sha256": "e4155927792cd338af569c8c05984c486d5c0dae5fe0d68890f2adff8099b857"
+    },
+    "requests": 6,
+    "runtime_credit": 0
+  },
+  "author": {
+    "plan": {
+      "path": ".tools/throwable-string-comparison-state-55/plan.json",
+      "sha256": "5bf93fc97022cdbad1afb9904b4e7b1e27265ea9d702f13033955971d07af032"
+    },
+    "EL": {
+      "path": ".tools/throwable-string-comparison-state-55/run-elab-v1/report.json",
+      "sha256": "0bac9b7b806dcb06fe88ffc09b45b00d2de4f2b746cd5e630aff7d1b083d37be"
+    },
+    "SL": {
+      "path": ".tools/throwable-string-comparison-state-55/run-sl-v1/report.json",
+      "sha256": "862bdd76f57e97254d2b8262e4072791e945f50f619acb12ff2640853b694763"
+    },
+    "premises": 165,
+    "setup_premises": 156,
+    "pure_assertions": 9,
+    "raw_steps": 6,
+    "observations": "Source-reached builtin/inherited cold-to-warm raw comparisons and source override exclusion; real primary capture to saved CV/old CELL finite return, unchanged STRINGDATA/owners, pinned old DIRECT tails and selected Switch body."
+  },
+  "peer": {
+    "plan": {
+      "path": ".tools/throwable-string-comparison-peer-state-55/plan.json",
+      "sha256": "c9deb5502e5f66d9b5ce2f3fee2c99290311888b5d40ddf0832ad3e55ab1a369"
+    },
+    "EL": {
+      "path": ".tools/throwable-string-comparison-peer-state-55/run-elab-v1/report.json",
+      "sha256": "34067a87999e5a4a37c56fbb18c0997e2ad0604d4d473630f035ee706ae5a676"
+    },
+    "SL": {
+      "path": ".tools/throwable-string-comparison-peer-state-55/run-sl-v1/report.json",
+      "sha256": "f559492034c8d7dfc3dfe84d3dc84bebe9545c60c9f8866a3e53c52c22ab9033"
+    },
+    "premises": 113,
+    "setup_premises": 98,
+    "pure_assertions": 15,
+    "raw_steps": 2,
+    "observations": "Actual count skip and compiled nested case step distinguish discarded cold preview from exact root-cache commit; previous override/cache stays untouched, real owners and lazy fallthrough persist, finite field/cycle/trace/guard counterfactuals refuse."
+  },
+  "totals": {
+    "premises": 278,
+    "setup_premises": 254,
+    "pure_assertions": 24,
+    "raw_steps": 8,
+    "source_agreements": 3,
+    "seek_or_driver_steps_credited": 0,
+    "END_or_shutdown_claim": false
+  },
+  "original_failures": {
+    "prelaunch_sparse_inputs": {
+      "path": ".tools/throwable-string-comparison-baseline-55/launch-input-failure-v1.json",
+      "sha256": "010068ceef0983412420db45d0631030f3f518d8fcfc366d8b8ebfcc9ec3fe97"
+    },
+    "prelaunch_actor_count": 0,
+    "initializer_syntax": {
+      "path": ".tools/throwable-string-comparison-gate-55/run-v1/report.json",
+      "sha256": "f7d08a2bb394c6ed67e2ba8a33a1d1ee5635e824d655bdd3f3a836e1b746d95f"
+    },
+    "runtime_credit": 0,
+    "corrections": "Restored exact skipped source references after parser sparse provisioning; split initializer dec/def. No production change or native/accepted-source renewal. State BUDGET-hit and relation spelling corrections were unrun preparation."
+  },
+  "residuals": [
+    "Callback-valued message/file fields, cyclic previous graphs and overlap with active HOBJECT comparison guards are explicit Unsupported for this finite route.",
+    "Other internal handlers, collector/clone/copied-declared-reference boundaries and wider receiver/destructor/Fiber lifetimes remain separate; full-core, END and shutdown completeness are not established."
+  ],
+  "acceptance": "Independent comp_review_21 cleared the semantic net, native/baseline and source/state packets, closed raw cuts and scoped publication; the independent peer packet and raw were separately accepted.",
+  "recovery": "Ignored originals, checked programmes, scripts, immutable START/closed/raw and copied local tools stay under .tools/throwable-string-comparison-55/.tools/throwable-string-comparison-{native,baseline,gate,model,prep,state,peer-state,support}-55. Preserve exact paths and branches; bulky artifacts are not tracked."
+}

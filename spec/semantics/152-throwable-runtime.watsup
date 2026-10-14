@@ -403,10 +403,6 @@ def $throwable_string_coercion(S, ptbranch*, POBJECT n, false) = true
 def $throwable_string_coercion(S, ptbranch*, pvalue, b) = false -- otherwise
 def $typed_conversion_at(S, ptbranch*, pvalue, b) = TYPEDEPENDENT "Throwable string conversion"
   -- if $throwable_string_coercion(S, ptbranch*, pvalue, b)
-def $value_order_effect(S, POBJECT n, PSTRING n_bytes*, pcompareguard_seen*, z) = (S[.COMPLETION = UNSUPPORTED "Throwable string comparison"], ORDER 0)
-  -- if $throwable_object(S, n)
-def $value_order_effect(S, PSTRING n_bytes*, POBJECT n, pcompareguard_seen*, z) = (S[.COMPLETION = UNSUPPORTED "Throwable string comparison"], ORDER 0)
-  -- if $throwable_object(S, n)
 def $foreach_start(S, statement, plocation, b, z) = S[.COMPLETION = UNSUPPORTED "Throwable property traversal"]
   -- if S.RESULT = KNOWN (POBJECT n)
   -- if $throwable_object(S, n)

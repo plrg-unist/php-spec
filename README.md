@@ -1698,6 +1698,11 @@ now invoke a second ordinary Stringable cast against the saved first string.
 Operand order, aggregate pins/guards and selected-case continuation survive the
 callback. Live CV/cell mutation, unequal early exit and identical TypeError cleanup
 have native-source and reached-state checks; wider object handlers remain open.
+[Finite Throwable comparisons](coverage/semantics/throwable-string-comparison-review.json)
+now format builtin and inherited internal handlers at reached string leaves, including
+a new opposing object after a source cast. Root cache updates, ignored previous
+overrides, skipped leaves and saved CV/cell completion pass three exact sources
+and 278 reached premises/8 raw steps. Wider formatter callbacks remain open.
 [Match expressions](docs/semantics/SOURCE-MATCH.md) preserve strict, lazy arm
 selection, delayed CV subjects, ordered compiler diagnostics and owned value
 results; their [review](coverage/semantics/match-review.json) binds source, compiler

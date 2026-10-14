@@ -38,6 +38,12 @@ caster's finally finishes before the second enters; a supplied TypeError preserv
 the aggregate guard through the second finally, then reaches caller catch/finally
 after actual pair unwind. Wider object handlers and lifetimes remain open.
 
+[Finite Throwable leaves](../../coverage/semantics/throwable-string-comparison-review.json)
+now format their internal handler atomically and persist the root cache only on
+the actual case comparison. Count/key/earlier-value skips remain cold; nested
+array equality resumes the selected body and fallthrough without later case
+evaluation. Root source overrides retain the ordinary callback route.
+
 [Recursive comparison through 394](../../coverage/semantics/aggregate-stringable-comparison-review.json)
 retains real enclosing array/property owners and the active left recursion guard
 while a reached Stringable/string leaf casts. Early count/key/value differences

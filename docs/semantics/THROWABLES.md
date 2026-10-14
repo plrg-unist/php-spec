@@ -143,7 +143,10 @@ static-method frame integration, remaining finally transfers,
 handlers, lifecycle callbacks, include errors, generator/Fiber closing and
 serialization. Direct `__toString`, `echo` and string casts work for finite
 builtin Throwables; weak typed string conversion, property access,
-property traversal and comparison remain explicit Unsupported where required.
+and property traversal remain explicit Unsupported where required.
+[Finite internal comparisons](../../coverage/semantics/throwable-string-comparison-review.json)
+now format reached object/string leaves and update only the root cache; source
+overrides retain ordinary dispatch.
 Callable rejection, boolean conversion, identity comparison, nominal ancestry
 and typed nominal consumers are also modeled.
 

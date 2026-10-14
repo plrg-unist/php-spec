@@ -109,8 +109,8 @@ calling `__toString`. [Ordinary interpolation](SOURCE-INTERPOLATION.md) now stag
 effective CAST/FAST_CONCAT/ROPE conversions through genuine callbacks, retaining
 temporary owners and borrowed variables separately. Broader interpolation
 producers and source contexts remain required. Internal
-Throwable `__toString` uses its own finite trace/property protocol; user
-subclass overrides remain a separate dependency.
+Throwable `__toString` uses its finite trace/property protocol; comparison
+dispatch distinguishes the inherited internal handler from ordinary source overrides.
 
 Direct ordinary Stringable/string pairs now invoke the initial cast for all
 seven loose comparison operators and non-bool Switch cases through 392. The opposing value
@@ -134,6 +134,17 @@ Four exact originals and 531 Boolean premises/32 raw steps cover those paths,
 second-receiver retirement and the same TypeError through finally/caller cleanup.
 Saved string metadata and documentary operand images add no heap owners. Wider
 object handlers and receiver/destructor lifetimes remain separate obligations.
+
+[Finite Throwable comparison](../../coverage/semantics/throwable-string-comparison-review.json)
+formats builtin and inherited internal handlers at reached object/string leaves,
+including a newly read opposing object after an ordinary cast. The saved first
+string and aggregate cursor remain authoritative. Only the root string cache
+changes; previous-node source overrides are ignored, while a root override keeps
+the ordinary callback route. Admission requires string message/file fields, an
+integer line, authentic trace arrays and acyclic previous links. Callback-valued
+fields and overlap with active HOBJECT comparison guards remain Unsupported.
+Three exact originals and 278 reached premises/8 raw steps cover cold previews
+versus actual cache commits, skipped leaves and saved CV/cell completion.
 
 Recursive arrays and ordinary declared-property objects now suspend only at a
 reached Stringable/string leaf through 394. Count, key and earlier-value differences

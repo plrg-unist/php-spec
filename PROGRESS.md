@@ -409,6 +409,15 @@ through finally/caller cleanup. Initialization, syntax preparation, diagnostic a
 original fixture failures add zero runtime credit. Wider object handlers and
 receiver/destructor lifetimes remain open.
 
+[Finite Throwable string comparisons](coverage/semantics/throwable-string-comparison-review.json)
+now update the root cache at reached builtin/inherited leaves and after a source
+cast changes an opposing CV/cell. Previous-node overrides are ignored; count/key/
+earlier-value skips stay cold. Three exact originals and 278 Boolean premises
+(254 setup, 24 pure controls, 8 raw steps) pass at 42ae18da /390. Initialization,
+syntax preparation and original preparation/fixture failures add zero runtime
+credit. Callback-valued fields, cyclic previous chains and active object-guard
+overlap remain explicit Unsupported. Wider handler and lifetime behavior remains open.
+
 Hard bailout now records request EXITSTATUS255 before shutdown. Direct callback
 strings preserve it; integer/default exits replace it and skip later callbacks.
 One-line257 and protocol20db1b23e /382 retain four exact source tuples and three

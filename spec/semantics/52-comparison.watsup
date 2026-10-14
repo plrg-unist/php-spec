@@ -18,6 +18,9 @@ dec $aggregate_decl_order(pstate, nat, nat, pcompareguard*, int) : (pstate, pord
 dec $aggregate_object_guard(pstate, nat, nat) : pcompareguard
 dec $aggregate_std_same_table(pstate, nat, nat) : bool
 dec $string_compare_selection(pstate, pvalue, pvalue) : (nat, bool)?
+dec $throwable_compare_receiver(pstate, pvalue) : nat?
+dec $throwable_compare_selection(pstate, pvalue, pvalue) : (nat, bool)?
+dec $throwable_compare_order(pstate, pvalue, pvalue, pcompareguard*) : (pstate, porder)
 
 ;; The scanner overflows after twenty significant integer-prefix digits, before
 ;; inspecting a decimal/exponent suffix. Rescaling does not erase this provenance.
@@ -404,6 +407,8 @@ def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*,
   -- if $aggregate_decl_pair(S, n_left, n_right)
 def $value_order_effect(S, pvalue_left, pvalue_right, pcompareguard_seen*, z) = (S, ORDERSTRING {LEFT pvalue_left, RIGHT pvalue_right, RECEIVER n, OBJECTLEFT b, POINTER eps, STACK eps})
   -- if $string_compare_selection(S, pvalue_left, pvalue_right) = ((n, b))
+def $value_order_effect(S, pvalue_left, pvalue_right, pcompareguard_seen*, z) = $throwable_compare_order(S, pvalue_left, pvalue_right, pcompareguard_seen*)
+  -- if $throwable_compare_selection(S, pvalue_left, pvalue_right) =/= eps
 def $value_order_effect(S, pvalue_left, pvalue_right, pcompareguard_seen*, z) = ($object_comparison_notice(S, pvalue_left, pvalue_right, z), $value_order(S, pvalue_left, pvalue_right, pcompareguard_seen*)) -- otherwise
 
 dec $comparison_operator(pbin) : bool

@@ -154,6 +154,65 @@ def $string_compare_text_valid(S, PSTRING n*) = $startup_bytes(n*)
 def $string_compare_text_valid(S, pvalue) = $string_carrier_valid(S, pvalue)
   -- if $string_plain(pvalue) =/= pvalue
 def $string_compare_text_valid(S, pvalue) = false -- otherwise
+
+;; The finite internal handler is atomic here. Source overrides retain the
+;; ordinary callback route; previous nodes are rendered from their fields.
+def $throwable_compare_receiver(S, POBJECT n) = (n)
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if $throwable_kind(pthrowable.KIND)
+def $throwable_compare_receiver(S, POBJECT n) = (n)
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if $throwable_inherited_string(S, n)
+def $throwable_compare_receiver(S, pvalue) = eps -- otherwise
+def $throwable_compare_selection(S, pvalue_left, pvalue_right) = ((n, true))
+  -- if $throwable_compare_receiver(S, pvalue_left) = (n)
+  -- if $string_bytes(pvalue_right) =/= eps
+def $throwable_compare_selection(S, pvalue_left, pvalue_right) = ((n, false))
+  -- if $throwable_compare_receiver(S, pvalue_right) = (n)
+  -- if $string_bytes(pvalue_left) =/= eps
+def $throwable_compare_selection(S, pvalue_left, pvalue_right) = eps -- otherwise
+dec $throwable_compare_fields(pstate, nat) : bool
+def $throwable_compare_fields(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if $throwable_member(S, n)
+  -- if $string_compare_text_valid(S, $throwable_field(S, n, "message"))
+  -- if $string_compare_text_valid(S, $throwable_field(S, n, "file"))
+  -- if $string_compare_text_valid(S, $throwable_field(S, n, "string"))
+  -- if $throwable_field(S, n, "line") = PINT z
+  -- if $throwable_field(S, n, "trace") = PARRAY n_trace
+  -- if $trace_graph_valid(S, n_trace)
+  -- if $throwable_field(S, n, "previous") = PNULL \/ $type_bytes($throwable_field(S, n, "previous")) = $ptascii("object")
+def $throwable_compare_fields(S, n) = false -- otherwise
+dec $throwable_compare_chain(pstate, nat, nat*, pcompareguard*) : bool
+def $throwable_compare_chain(S, n, nat_seen*, pcompareguard_seen*) = true
+  -- if ~(n <- nat_seen*)
+  -- if ~((HOBJECT n) <- pcompareguard_seen*)
+  -- if $throwable_compare_fields(S, n)
+  -- if $throwable_previous_id(S, n) = eps
+def $throwable_compare_chain(S, n, nat_seen*, pcompareguard_seen*) = $throwable_compare_chain(S, n_previous, n :: nat_seen*, pcompareguard_seen*)
+  -- if ~(n <- nat_seen*)
+  -- if ~((HOBJECT n) <- pcompareguard_seen*)
+  -- if $throwable_compare_fields(S, n)
+  -- if $throwable_previous_id(S, n) = (n_previous)
+def $throwable_compare_chain(S, n, nat_seen*, pcompareguard_seen*) = false -- otherwise
+def $throwable_compare_order(S, POBJECT n, pvalue_other, pcompareguard_seen*) = (S_text, ORDER $scalar_order(S_text, pvalue_text, pvalue_other))
+  -- if $throwable_compare_selection(S, POBJECT n, pvalue_other) = ((n, true))
+  -- if $string_compare_text_valid(S, pvalue_other)
+  -- if $throwable_compare_chain(S, n, eps, pcompareguard_seen* ++ $aggregate_compare_seen(S))
+  -- if S_text = $throwable_stringify(S, n)
+  -- if S_text.RESULT = KNOWN pvalue_text
+def $throwable_compare_order(S, pvalue_other, POBJECT n, pcompareguard_seen*) = (S_text, ORDER $scalar_order(S_text, pvalue_other, pvalue_text))
+  -- if $throwable_compare_selection(S, pvalue_other, POBJECT n) = ((n, false))
+  -- if $string_compare_text_valid(S, pvalue_other)
+  -- if $throwable_compare_chain(S, n, eps, pcompareguard_seen* ++ $aggregate_compare_seen(S))
+  -- if S_text = $throwable_stringify(S, n)
+  -- if S_text.RESULT = KNOWN pvalue_text
+def $throwable_compare_order(S, pvalue_left, pvalue_right, pcompareguard_seen*) = (S, ORDERUNSUPPORTED "finite Throwable comparison formatting") -- otherwise
+
 dec $string_compare_redispatch_valid(pstate, pstringcompare, nat, pvalue) : bool
 def $string_compare_redispatch_valid(S, pstringcompare, n, pvalue) = ($string_compare_valid(S, pstringcompare) /\ $(n < |S.OBJECTS|) /\ $string_compare_text_valid(S, pvalue))
 dec $string_compare_redispatch_suffix(ptask*, pstringcompare, nat, pvalue) : bool
@@ -239,10 +298,10 @@ def $string_compare_finish(S, pstringcompare, pvalue_left, pvalue_right) = $swit
 dec $string_compare_return(pstate, pstringcompare, pvalue, pvalue) : pstate
 def $string_compare_return(S, pstringcompare, pvalue_text, pvalue_other) = $string_compare_finish(S, pstringcompare, pvalue_text, pvalue_other)
   -- if pstringcompare.OBJECTLEFT
-  -- if $type_bytes(pvalue_other) =/= $ptascii("object")
+  -- if $type_bytes(pvalue_other) =/= $ptascii("object") \/ $throwable_compare_receiver(S, pvalue_other) =/= eps
 def $string_compare_return(S, pstringcompare, pvalue_text, pvalue_other) = $string_compare_finish(S, pstringcompare, pvalue_other, pvalue_text)
   -- if ~pstringcompare.OBJECTLEFT
-  -- if $type_bytes(pvalue_other) =/= $ptascii("object")
+  -- if $type_bytes(pvalue_other) =/= $ptascii("object") \/ $throwable_compare_receiver(S, pvalue_other) =/= eps
 def $string_compare_return(S, pstringcompare, pvalue_text, POBJECT n) = $user_string_begin(S[.TODO = pstringcompare.TAIL][.ORIGIN = (pstringcompare.CASTSITE)], n, pstringcompare.CASTSITE, pstringcompare.LINE, STRING_COMPARE_REDISPATCH_RESULT pstringcompare n pvalue_text, pstringcompare.TAIL)
   -- if $stringable_instance(S, n)
   -- if $string_compare_text_valid(S, pvalue_text)
