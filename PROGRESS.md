@@ -2170,6 +2170,8 @@ Strict393 passes at `545e6e20`; corrected source1 at `169aafa5` matches native.
 Two states at `1d7facd8` pass210 =181 reached +29 derived. Initial source failure
 remains0; one EPS premise disjoins the paired and setter-only classifiers.
 [Paired-hook review](coverage/semantics/paired-backed-get-set-hook-review.json).
+Joined exact `43cc7432`/394; CPU2-pinned initialization passes and the unpinned original is retained.
+Absent warning, include/NUL, computed-ref-return and Iterator-unpack protocols preserve the accepted pair route.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
