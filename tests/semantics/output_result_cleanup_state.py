@@ -67,6 +67,10 @@ def $rc_phase(S, 8) = true
   -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
   -- if pdestructorcall.FRAME = (pdestructionframe)
   -- if pdestructionframe.PENDING =/= eps
+def $rc_phase(S, 9) = true
+  -- if S.TODO = (DESTRUCTOR_ENTER pdestructorcall) :: ptask_tail*
+  -- if pdestructorcall.FRAME = (pdestructionframe)
+  -- if pdestructionframe.PENDING = eps
 def $rc_phase(S, n) = false -- otherwise
 dec $rc_seek(pstate, nat, nat) : pstate
 def $rc_seek(S, n_phase, n) = S -- if S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET
@@ -155,6 +159,11 @@ def assertions(name, fixture, directory, path):
                    '$ob_callee_cleanup_call(S_caller, pdestructionframe_success, S_caller.TODO) = (pconfigcall)',
                    '$ob_callee_cleanup_call(S_caller, pdestructionframe_success, eps) = eps',
                    '$ob_callee_cleanup_call(S_caller, pdestructionframe_success[.FUNCTION = pcallcontext_destructor.FUNCTION], S_caller.TODO) = eps',
+                   *seek('S_initial', 9, 'S_enter'),
+                   'S_enter.TODO = (DESTRUCTOR_ENTER pdestructorcall) :: ptask_enter_tail*',
+                   '$destructor_enter_valid(S_enter, pdestructorcall)',
+                   'pdestructorcall.SITE = eps',
+                   '$ob_callee_cleanup_call(S_enter, pdestructionframe_success, S_enter.TODO) = (pconfigcall)',
                    '~$destructor_context_valid(S_reached[.CURRENT = (pcallcontext_destructor[.CALLSITE = (pconfigcall.SITE)])], pcallcontext_destructor[.CALLSITE = (pconfigcall.SITE)])',
                    '$eval_exception_trace_raw(S_reached) = [ptraceframe_destructor, ptraceframe_api]',
                    r'ptraceframe_destructor.FILE = eps /\ ptraceframe_destructor.LINE = $(-1)',
