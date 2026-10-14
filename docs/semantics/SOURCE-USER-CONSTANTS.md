@@ -60,11 +60,40 @@ requires that completed identity; changing mutable fields does not change its
 authority. A throwing constructor may leave an incomplete object genuinely owned
 through GLOBALS or a CV, but cannot install it as a completed constant value.
 
-Public source-state checks bind table names and declaration tasks to actual `NConst` origins and compiler descriptors. They check unique names, valid task indexes, initializer/bind/observer ordering, declaration context, exact source-derived pooled class facts, and value/class tag and ordered array topology. Metadata adds no heap owners.
+For ordinary declarations, public source-state checks bind table names and declaration tasks to actual `NConst` origins and compiler descriptors. They check unique names, valid task indexes, initializer/bind/observer ordering, declaration context, exact source-derived pooled class facts, and value/class tag and ordered array topology. Metadata adds no heap owners.
 
 Initializer scratch facts retain a scalar operand or an array's non-owning class tree. Their origins must belong to the active initializer. Pooled origins agree with the fixed pool class. Conditional and coalesce facts must agree with the already recorded condition truth or left nullness, so an unexecuted opposite arm cannot determine the selected class. These checks inspect current values and continuation relationships; they do not replay expressions or reconstruct arbitrary runtime values from source. Positive tests change condition values and selected string bytes while preserving the source-consistent branch.
 
 The quiet-coalesce path captures the already computed left result before temporary-base disposal, only while an initializer context is active. It does not perform another read, evaluate a key twice, or add events. A missing string offset contributes null to this observation. Outside a constant initializer the added helper is the identity; independent ordinary quiet-source and resumption checks cover that shared boundary.
+
+## Dynamic global constants
+
+Module400 implements `define`/`defined` for global string names and primitive
+values, including authenticated interned and request strings. Existing CONFIG
+argument evaluation and retained dynamic-callee selection supply the actual
+completed arguments. Registration stores that value in `USERCONSTANTS`; later
+changes to the name or value CV do not change the row. The string class follows
+its actual carrier (`PVSTRING true` for interned, false for request strings).
+Identity-unknown legacy string values are explicitly Unsupported.
+
+Registration normalizes the namespace prefix without stripping a supplied leading
+separator; the final component stays case sensitive. `defined` removes a leading separator
+for lookup separately. Fixed global/explicit-global `define` and retained dynamic
+selection authenticate the call site; namespaced fallback is outside this slice.
+
+Public row checks require a genuine source/selection, canonical unique name,
+matching primitive/carrier class and empty read/receive metadata. Available immutable
+positional literal facts constrain names and values. Variable-derived payloads keep
+the existing structural value policy: the row is the runtime capture, not a full
+proof of past argument evaluation. Validators never reread mutable CVs.
+
+The matching engine routes are `ZEND_FUNCTION(define)`/`ZVAL_COPY`,
+`zend_register_constant`, and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`.
+Arrays/objects, name coercion, duplicate/special-name and case-insensitive warnings,
+class-constant queries, owning/FCC call forms and wider conversion/arity paths
+remain Unsupported. The [dynamic ledger](../../coverage/semantics/dynamic-constants-review.json)
+keeps the source and public-state cuts separate; it makes no native allocation-identity
+or full constant-family claim.
 
 ## Validation and remaining work
 
@@ -104,5 +133,5 @@ identities on same-text eval retry. The earlier cold fixture's three
 elaboration stops and one slice-length execution failure remain zero-credit;
 no runtime rules or prior source/state gates changed. Internal and
 Throwable NEW, autoload, wider object-producing initializers, remaining builtin
-constant values and `define`/`defined` remain open. Class/default and callable
+constant values and wider `define`/`defined` behavior remain open. Class/default and callable
 consumer families retain their separate inventory and evidence; no complete-core claim.

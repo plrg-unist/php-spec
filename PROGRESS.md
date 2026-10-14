@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Module400 now executes scalar global `define`/`defined` through real argument
+capture, namespace keys, retained dynamic selection and no-file dispatch. Actual
+string carriers determine the stored class; later name/value CV changes preserve
+the row. Four exact sources retain three at9356 and interned1 at8c27. Four public
+fronts pass262 premises at8c27, including literal/selection/key/class/carrier and
+metadata rejection. Variable-derived payloads keep the existing structural table
+policy; no full past-input provenance is claimed. The baseline, two pre-runtime
+failures, original recorder predicate and terminal-fixture failure retain0; direct
+source acceptance adjudicates the same raw run. Wider values, warning/conversion
+paths, namespace fallback and full constant/core behavior remain partial.
+[Dynamic-constant ledger](coverage/semantics/dynamic-constants-review.json).
+
 Exit from a raw invokable warning-handler destructor now returns through the real
 release operation before helper completion. Safe bool/decrement-null captures
 restore before caller-temporary cleanup; strings skip the store. Integer exit 17

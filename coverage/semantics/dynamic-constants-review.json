@@ -1,0 +1,145 @@
+{
+  "status": "private independently accepted",
+  "target": "PHP 8.5.10 CLI NTS64",
+  "base": "deb864a793753dc840019c9ed2003e86919a280c",
+  "implementation_revision": "a770d43b6d17278929b42ab0ae6747ca5d86b5d6",
+  "tested_cuts": {
+    "integer_and_request_string_sources": {
+      "module_count": 389,
+      "sources": 3,
+      "semantic_diff_sha256": "9356ac50d56ad40ef6dd314a1e8412554624469991eadf0bccbc4fb7252f31df",
+      "module400_sha256": "96573c050cec5ca26f9d7e4888351cf7e2ba12938d9a896349c20ce67993dbb6"
+    },
+    "interned_source_and_public": {
+      "module_count": 389,
+      "sources": 1,
+      "semantic_diff_sha256": "8c27dcf267b9cef93a8d14a2e670978eecfbcdb295f70d32b87734c6533abc9e",
+      "module400_sha256": "29ea1dbf04c81e183ca8f4d237cdf360063b9cb2c83d19906011149c1b6a08c6",
+      "tested_protocol_sha256": "9378f1abac443bb771ba71f46110e341c85a5382b4bcf7b74011c3ac54b4880c"
+    },
+    "compatibility": "The later class rule distinguishes actual INTERNED_STRING true from REQUEST_STRING false and refuses identity-unknown string values. Earlier integer and request-string branches retain their tested behavior; no source was repeated.",
+    "committed_files_sha256": {
+      "spec/semantics/30-storage.watsup": "b8b70ad709a5e24beeb49508e8d4dde0fa087bee9b694c2a1e754b070ad3c144",
+      "spec/semantics/172-file-context-intrinsics.watsup": "5b93f885f27d3edc36931636e36d7cf40fa33ad79529b11cfaebbf3d261035a7",
+      "spec/semantics/400-dynamic-constants.watsup": "29ea1dbf04c81e183ca8f4d237cdf360063b9cb2c83d19906011149c1b6a08c6",
+      "spec/semantics/modules.json": "502c30e20ca81f58cbcd03a7b8870f8d73015088b884606c13fc1b8c95fbadf4",
+      "tests/semantics/dynamic_constant_protocol.py": "2922fd45f8b664cbcff126cbfdf578f063264aef41eb5794f95056141c40511e"
+    },
+    "protocol_bridge": "The maintained protocol differs from tested9378 only by deleting its unused byte_expr lambda. Restoring that inert line reproduces the tested digest; generated fixtures/assertions are unchanged. No semantic rerun."
+  },
+  "behavior": [
+    "The real CONFIG send/invoke route executes global define/defined, including retained dynamic string selection and no-file mode. Registration captures evaluated name/value once into the existing USERCONSTANTS table.",
+    "Registration lowercases namespace prefixes, preserves terminal case and does not strip a supplied leading separator. defined separately removes a leading separator for lookup.",
+    "Primitive values and authenticated string carriers retain the actual value; interned/request identity determines PVSTRING true/false. Later mutations to both input CVs leave the captured row intact.",
+    "Public rows require real source/selection, canonical unique non-startup keys, coherent value/class/carrier and empty READS/RECEIVES. Available immutable positional compiler facts constrain literal inputs.",
+    "Variable-derived payload authority remains the existing structural primitive-table policy; this is not full provenance of past argument values. Validators never reread current CVs.",
+    "No request-schema field, ordinary const compiler, status, ownership or lifecycle rule changes."
+  ],
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_builtin_functions.c: ZEND_FUNCTION(define), ZVAL_COPY and ZEND_FUNCTION(defined)",
+    "vendor/php-src/Zend/zend_constants.c: zend_register_constant and zend_get_constant_ex"
+  ],
+  "accepted": {
+    "exact_cli_sources": 4,
+    "source_cases": [
+      "static-native-v39/direct-dynamic-constant",
+      "static-native-v39/namespace-dynamic-constant",
+      "static-native-v39-capture/string-capture",
+      "static-native-v39-interned/interned-value"
+    ],
+    "source_result": "All checked/program normal0 tuples match full native stdout/stderr with CLI0 and stable inputs. The direct case is accepted by read-only adjudication of its original raw run, not a rerun.",
+    "public_fronts": {
+      "literal": 65,
+      "selection": 61,
+      "capture": 68,
+      "interned": 68
+    },
+    "public_premises": 262,
+    "public_result": "Four full389 SL runners0/true/empty stderr/stable at8c27. Genuine CONFIG invoke and normal TODOeps final states pass whole public/declaration/heap checks.",
+    "counterexamples": "Literal name/value, source/retained selection, canonical key, startup collision, duplicate row, class/carrier/wrong interned bit and nonempty READS/RECEIVES reject. Selected-log removal stays internally valid and separately fails the row source predicate.",
+    "structural_limit": "A class-consistent primitive replacement of a variable-derived payload remains valid by design; the real source proves capture across actual CV changes.",
+    "isolated_raw_phpstep_projections": 0,
+    "pure_receiver_domain_projections": 2,
+    "production_continuations": 4,
+    "carrier_evidence": "Native cases observe bytes/existence. The authored carrier plus Zend copied-value route grounds allocation-class metadata; genuine public positives/wrong-bit negatives test that machine metadata."
+  },
+  "preserved_zero_credit": [
+    "The unchanged direct baseline stops Unsupported registered builtin call at its first define.",
+    "The first two changed runs fail before execution: duplicate otherwise, then recursive list-pattern otherwise algorithmic checking.",
+    "Original direct22 report fails a nonexistent JSON completion-field assertion. Its same raw normal0/full bytes are accepted only through the adjacent adjudication; original failure remains0.",
+    "The original public02 literal group stops at the mistaken SHUTDOWN_DONE assertion; whole65 remains0 and the other three fronts were unrun. Corrected03 changes only that assertion to real TODOeps.",
+    "Native observations, preparation/standalone parse-only checks and unlaunched capture-v1 preparation have no model agreement credit."
+  ],
+  "remaining": [
+    "Arrays/objects, name coercion, duplicate/special-name and case_insensitive warnings, owning/FCC forms, define unpack, direct namespace-fallback define and wider conversion/arity branches are explicitly Unsupported.",
+    "Class-constant queries, NUL/HALT-offset names and identity-unknown string values are outside this slice. Ordinary const, defaults and complete constant/core behavior remain partial.",
+    "No claim of arbitrary variable-input history authentication, native allocation identity, fresh build/portability or full-core completeness."
+  ],
+  "artifacts": {
+    "native_integer_pair": {
+      "path": ".tools/dynamic-review-02/static-native-v39/report.json",
+      "sha256": "d4383f2e8b7d7dc2e3cacf34a9df74aa1efea5babc9372fe8e30a495f519996b"
+    },
+    "native_request_string_capture": {
+      "path": ".tools/dynamic-review-02/static-native-v39-capture/report.json",
+      "sha256": "362ddf3056d464c543f8fe2aab2a5e4ed40f1eb439440f533c619eb3843161c0"
+    },
+    "native_interned_bytes": {
+      "path": ".tools/dynamic-review-02/static-native-v39-interned/report.json",
+      "sha256": "c068ee1ac5bf4ba0cb6696c77f5968655f5d9c293073dce4d40ce342ac37e5a1"
+    },
+    "unchanged_direct_baseline": {
+      "path": ".tools/dynamic-source-dynamic-constant-baseline-19/report.json",
+      "sha256": "da8651fbba2171dd14d98089896acd135c58d310d2585065ee1a640a096295fd"
+    },
+    "first_pre_runtime_failure": {
+      "path": ".tools/dynamic-source-dynamic-constant-model-20/report.json",
+      "sha256": "c177f12c0bbc753f2be0d59472c438bd6b44d7f031ba90c69649787ccf75c2e0"
+    },
+    "second_pre_runtime_failure": {
+      "path": ".tools/dynamic-source-dynamic-constant-model-21/report.json",
+      "sha256": "0845e01a6e3152ff225dd6106ba4e74168b8b3f0260fa626bf1be25671f77e18"
+    },
+    "original_direct_recorder_failure": {
+      "path": ".tools/dynamic-source-dynamic-constant-model-22/report.json",
+      "sha256": "1c9e4b19fc1d6a1aa4e20cbfd2c8624e12418c064ad3813d593d45db32cdf20c"
+    },
+    "same_direct_raw_adjudication": {
+      "path": ".tools/dynamic-source-dynamic-constant-model-22/adjudication.json",
+      "sha256": "c8d2cf43e5908f0131ecdb5f8b94372ccde5d4bb59ad6c37ef2da902fa175270"
+    },
+    "namespace_dynamic_source": {
+      "path": ".tools/dynamic-review-02/dynamic-constant-model-v1/report.json",
+      "sha256": "00e656735900e1fd463807f622356e26bc3842cf1a6654e69048077872b30842"
+    },
+    "request_string_nofile_source": {
+      "path": ".tools/dynamic-review-02/dynamic-constant-capture-model-v2/report.json",
+      "sha256": "89fb9cff7fc9f9789f37d6c96f6f8ace9b5f790d8dcb98a6fcf9867f8c919235"
+    },
+    "interned_nofile_source": {
+      "path": ".tools/dynamic-review-02/dynamic-constant-interned-model-v1/report.json",
+      "sha256": "abccb7ab4edecf90a0c1b2f07356f07b7e50046d84f4a7b98b1e430a4367be53"
+    },
+    "initial_public_preparation": {
+      "path": ".tools/dynamic-source-dynamic-constant-state-01/fixtures-report.json",
+      "sha256": "bf3940b2c02b2c3033691b5f48f050a25bd118de6306905f2b28d4dd8eed818a"
+    },
+    "carrier_public_preparation": {
+      "path": ".tools/dynamic-source-dynamic-constant-state-02/fixtures-report.json",
+      "sha256": "c048fbea5c345bee29b364f11e71b75006e58d9f2dc6bd19fd606a8104361951"
+    },
+    "original_public_terminal_failure": {
+      "path": ".tools/dynamic-source-dynamic-constant-state-02/check-report.json",
+      "sha256": "31368ba7a88ba0f3a47d82e79a4a3660a855f920f8dd9798b1a31aa937738244"
+    },
+    "corrected_public_preparation": {
+      "path": ".tools/dynamic-source-dynamic-constant-state-03/fixtures-report.json",
+      "sha256": "0f4af05d86adedaddc93cfdf7d578cc107570dd48b7fe425ce9f90e57894bf23"
+    },
+    "public_four_fronts": {
+      "path": ".tools/dynamic-source-dynamic-constant-state-03/check-report.json",
+      "sha256": "032eb9a8146674ba46af1676a287ba628ce294088b7066de12ccc04c93d948d8"
+    }
+  },
+  "recovery": "Canonical ignored originals/raw and private branch retain all inputs. dynamic_constant_protocol.py --phase fixtures/--sources/--output prepares selected fronts; --phase check runs full modules --sl with90s per front/serial stop-first. CLI comparisons use60s/process90; native process30. Sources/report inputs pin runtime/profile/pipeline. Metadata and inert helper cleanup require no semantic rerun."
+}

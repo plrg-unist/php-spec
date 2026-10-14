@@ -788,6 +788,11 @@ preserve alias cells, COW, diagnostic phases and checked continuation ownership.
 ordered activation, namespace/import lookup, initializer diagnostics and array
 ownership. [Their independent review](coverage/semantics/user-constant-review.json)
 binds source, allocation-class, state/resume and shared quiet/call checks.
+Module400 adds scalar global `define`/`defined`, including dynamic string callees,
+namespace-prefix normalization and captured request strings after CV mutation.
+Rows retain the actual value and string-carrier class. Available positional
+literal facts constrain inputs; variable payloads retain the existing structural table
+policy. Wider values, conversion/warning paths and namespace fallback remain open.
 [Untyped positional defaults](docs/semantics/SOURCE-POSITIONAL-DEFAULTS.md) now preserve
 omitted receives, declaration context, observable caches and fresh reference/array
 ownership. [Independent acceptance](coverage/semantics/default-parameter-review.json)
