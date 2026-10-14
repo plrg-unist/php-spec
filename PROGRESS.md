@@ -1258,6 +1258,8 @@ fixture grammar failure and terminated successor retain zero agreement. Later,
 typed or variadic reference sends, wider sources/live replacements and broader
 array/COW interactions remain required; full core stays partial.
 [Named reference review](coverage/semantics/iterator-call-unpack-named-reference-review.json).
+The composition of 391 modules over `11fdbc879` passes canonical inventory and strict SL at
+`b15c57efc`; private source/state cuts retain their original identities.
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or
