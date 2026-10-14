@@ -2904,6 +2904,13 @@ worker catch. The integer control delivers that cell to r/a and writes through
 to global x. Source2, early79/one replay-line refusal and separate late144+146
 pass, including live error/trace preservation, cleanup and caller-cut budget.
 The global cell remains owned; wider typed/suspended return layouts remain open.
+
+Suspension inside `__toString` during a selected by-reference string return
+also validates without a runtime change at `ee915d44`/388. Moving one external
+write across resume preserves the selected global cell and parked cast receiver;
+early64/one wrong-destination refusal and separate late54+54 worker alias,
+completion and budget checks pass. The negative may also fail REFCELLS validity;
+old-receiver destructor suspension and broader return layouts remain open.
 [Weak Stringable parameters](coverage/semantics/weak-string-parameters-review.json)
 now convert supplied fixed parameters in receive order, preserving caller
 strictness, nominal/callable precedence and the entered formal cell. Existing

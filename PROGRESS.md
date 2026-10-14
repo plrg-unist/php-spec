@@ -2495,6 +2495,18 @@ pass. Original parse5918/static e6ee remain0; static42f8 is app0 and query26e4 i
 diagnostic only. Validation publication changes no runtime or source catalogue.
 Native trace/identity, internal Stringable suspension and wider returns remain OPEN.
 
+M51 validates a selected by-reference string return while its `__toString`
+callback is suspended at `ee915d44`/388. Both write-order sources agree with
+native PHP without a runtime change. A same-execution diagnostic ties CELL7 and
+OBJECT0 to the parked stringify receiver, the external write, and delivered
+worker r/a; it has no proof credit by itself. Early64/one public refusal keeps
+the authentic destination and receiver through suspension and rejects a
+coordinated allocated wrong destination. Separate late54+54 checks the same
+delivered global cell, worker write, distinct final global values, cleanup and
+split/full caller budget in each source. That mutant can also violate REFCELLS,
+so it does not isolate the local-binding guard. Native object identity, physical
+collection, other receiver layouts and broad returns verification remain OPEN.
+
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
 Per-constant protection survives namespace publication and parked handlers.

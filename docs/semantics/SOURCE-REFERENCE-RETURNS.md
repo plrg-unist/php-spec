@@ -496,3 +496,14 @@ checks preserve the live error's f-declaration origin/line2/null Previous/pure
 trace and actual catch/alias-cut budget, then check normal cleanup separately.
 The selected global cell stays owned. No runtime edit, native trace equivalence,
 cross-fixture identity or broader typed/suspended return completeness is claimed.
+
+M51 at `ee915d44`/388 validates a by-reference `:string` return whose selected
+global cell contains a Stringable object. The cast receiver remains captured
+while `__toString` suspends; an external write before resume changes that same
+cell, then resume emits D and delivers the converted string through worker r/a.
+The moved-write control resumes before the external write. Two native-exact
+sources, early64/one allocated wrong-destination refusal and separate late54+54
+pass. The mutant can also fail REFCELLS membership, so it is not an isolated
+local-binding proof. No native identity, physical collection or wider-layout
+completeness is inferred; see `stringable_suspended_selected_reference_validation`
+in the local-CV ledger.

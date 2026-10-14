@@ -291,3 +291,14 @@ reference_suspended_recheck_state.py and typed_suspended_recheck_validation in
 the local-CV ledger. Preserve parse5918/static e6ee0, app0 static42f8 and query26e4
 separately. No runtime change or renewed master semantic credit is claimed;
 internal Stringable suspension, other typed/consumed owners and broad returns OPEN.
+
+M51 validates existing weak typed-reference Stringable suspension at `ee915d44`/388.
+The genuine parked VM keeps the selected global cell and original cast receiver;
+the external write has not emitted the destructor marker, while resumed delivery
+has. Whole-state early64/one allocated wrong-destination refusal and separate
+late54+54 worker r/a, final-global and split/full budget checks pass without a
+runtime edit. Recover late fixtures with the preserved
+`.tools/returns-verify51-stringable-suspend/make_conversion_late.py` at the tested
+current49 provider; its script-relative raw path requires that original location.
+The ledger records exact source/raw hashes and the early public recovery files.
+No cross-fixture object identity, physical collection or broad returns closure.
