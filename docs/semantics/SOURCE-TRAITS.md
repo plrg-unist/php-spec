@@ -55,6 +55,13 @@ Grand’s write300 yields313. Incompatible Base string fails at Consumer16 durin
 real deferred linking, with rollback. Two originals and four checks/349 premises
 are in the [overlap review](../../coverage/semantics/inherited-overlap-trait-getter-review.json); only the directly superseded earlier controls74 are renewed.
 
+Selected private ordinary same-name parents retain their declaring-owner mangled
+key beside the imported public property. Source-normalized visibility/key proof
+admits the import; lexical Base private lookup precedes public hook selection.
+Base parentRead returns7 without entering a hook, while Grand’s public100→300
+write yields313 and preserves private7, marker700 and Consumer100. One original
+and three checks/277 premises are in the [private-overlap review](../../coverage/semantics/private-overlap-trait-getter-review.json).
+
 Imports retain two identities. The declaring owner and lexical `self` scope are
 the using class; the body, filename, line and `__TRAIT__`, `__METHOD__` and
 `__FUNCTION__` remain those of the original trait method. Aliases have their own

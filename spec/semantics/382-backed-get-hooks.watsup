@@ -146,7 +146,7 @@ def $property_hook_trait_parent_shape(S, pclassdesc, ptbytes) = true
   -- if pclassdesc_parent.KIND = "class"
   -- if $ppproperty_desc_at($property_info_layout(S, porigin_parent, |S.CLASSES|), ptbytes) = (ppropertydesc_parent)
   -- if ppropertydesc_parent.TYPE =/= eps
-  -- if ppropertydesc_parent.VISIBILITY = PROPERTY_PUBLIC /\ ~ppropertydesc_parent.STATIC /\ ~ppropertydesc_parent.READONLY /\ ~ppropertydesc_parent.FINAL /\ ppropertydesc_parent.SETVISIBILITY = eps
+  -- if ~ppropertydesc_parent.STATIC /\ ~ppropertydesc_parent.READONLY /\ ~ppropertydesc_parent.FINAL /\ ppropertydesc_parent.SETVISIBILITY = eps
   -- if ppropertydesc_parent.ORIGIN = PORIGIN n_parent pcpath_parent
   -- if $property_declaring_class(S.CLASSES, ppropertydesc_parent.ORIGIN) = (porigin_declaring_parent)
   -- if $class_at(S.CLASSES, porigin_declaring_parent) = (pclassdesc_declaring_parent)
@@ -156,7 +156,7 @@ def $property_hook_trait_parent_shape(S, pclassdesc, ptbytes) = true
   -- if pcpath_group = pcpath_parent[0:$nabs($(|pcpath_parent| - 2))]
   -- if pcpath_parent = pcpath_group ++ [PCFIELD 3, PCINDEX 0]
   -- if $origin_node(S.SOURCES, PORIGIN n_parent pcpath_group) = (NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text_name) metadata_name) phpType5 metadata_item])) (SEQUENCE eps) metadata)
-  -- if flags <- [0,1] /\ ppropertydesc_parent.NAME = ptbytes /\ ptbytes = $base64(text_name) /\ ppropertydesc_parent.KEY = ptbytes
+  -- if flags <- [0,1,4] /\ ppropertydesc_parent.VISIBILITY = $ppproperty_visibility(flags) /\ ppropertydesc_parent.NAME = ptbytes /\ ptbytes = $base64(text_name) /\ ppropertydesc_parent.KEY = $ppproperty_key(flags, ptbytes, pclassdesc_declaring_parent.NAME)
 def $property_hook_trait_parent_shape(S, pclassdesc, ptbytes) = false -- otherwise
 dec $property_hook_trait_parent_linked(pstate, pclassdesc) : bool
 def $property_hook_trait_parent_linked(S, pclassdesc) = true
@@ -359,6 +359,7 @@ def $property_hook_backing(S, n, ppropertydesc) = true
 def $property_hook_backing(S, n, ppropertydesc) = false -- otherwise
 
 def $property_hook_read_needed(S, n, ptbytes) = true
+  -- if $property_lexical_private(S, n, ptbytes) = eps
   -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
   -- if $property_hook_effective_origin(S, ppropertydesc) =/= eps
   -- if ~$property_hook_backing(S, n, ppropertydesc)

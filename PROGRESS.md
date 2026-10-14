@@ -2013,6 +2013,15 @@ The initial setter-mutation elaboration stop remains0.
 Joined exact `5f6f84e7`/391; count-only initialization adds no source/state credit.
 Inactive comparison, define-warning, output-reference and WeakMap paths preserve the accepted class routes.
 
+Selected private ordinary same-name Base properties now admit a direct backed
+expression trait getter with distinct private/public keys. Lexical Base reads7
+without entering the public hook; Grand100→300/get313 preserves private7,
+marker700 and Consumer100. Strict391 at `cebf4954` is retained; its source refusal
+at Base parentRead remains0. The one-premise read-selection correction passes
+source1 at `a5833e7b`; three states at `38ee1514` pass277 =242 reached +35 derived.
+Layout/storage/permission and expression task/return rules remain unchanged.
+[Private overlap review](coverage/semantics/private-overlap-trait-getter-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization
