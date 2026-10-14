@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Module404 stages leading-numeric-string ADD warnings for two direct CVs with
+preexisting untyped reference cells. Both selected referents survive callback
+mutation; each numeric holder is captured before its warning. Returning handlers,
+a supplied throw with an unchanged result destination, and a second false-handler
+warning/default fallback agree in three originals at ec44/cb7. Two author fronts
+pass 128/119 premises and the independent RIGHT-warning front passes 74 (321 total)
+at 9dcb with cb7 runtime bytes. Whole public validation rejects coordinated
+snapshot/number forgeries and another live-cell pointer; genuine owners and budget
+resumption pass. The original Unsupported baseline, native observations and
+syntax/native preparations retain zero credit. Other slot classes, copies,
+right-only ingress, owning callbacks, unsafe/nonconvertible replacements and wider
+arithmetic/lifecycle routes remain required. OP12 stays paused.
+[ADD warning ledger](coverage/semantics/arithmetic-warning-review.json).
+
 Class-qualified `constant` now returns inherited folded primitives and authenticated
 literal strings with the actual lexical visibility. Missing/inaccessible lookup
 raises an API Error; named autoload retains its full query and selection across

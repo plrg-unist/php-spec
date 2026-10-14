@@ -512,6 +512,14 @@ preserve reference cells across rebinding; bitwise conversion follows Zend's
 compiler slot order. [Direct-CV](coverage/semantics/integer-operator-warning-review.json)
 and [copied-operand](coverage/semantics/integer-operator-copy-review.json) evidence
 retain separate cuts. Wider producers and object conversion remain open.
+Leading-numeric-string `+` now suspends through named warning handlers for two
+direct CVs with preexisting untyped reference cells. Both cells are selected before
+conversion; cached numbers survive handler writes, while the next conversion reads
+its selected referent. Three exact originals and 321 reached state premises cover
+return, supplied throw and a second warning with default fallback.
+[ADD warning evidence](coverage/semantics/arithmetic-warning-review.json) retains
+the original Unsupported baseline; other operand classes and wider arithmetic
+callback paths remain partial.
 [Destructuring and retained expression effects](docs/semantics/DESTRUCTURING.md)
 now execute current scalar/array list patterns and nonvariable-left coalescing.
 [Independent acceptance](coverage/semantics/destructuring-review.json) binds 263

@@ -1,0 +1,123 @@
+;; add_function_slow dereferences both operands before conversion. Its numeric
+;; holders are filled before zend_error; only the next selected referent is read
+;; after the callback. This first route admits two CV slots with live references.
+syntax parithmeticphase = ARITHMETIC_LEFT | ARITHMETIC_RIGHT pnumber
+
+dec $arithmetic_add_conversion(pvalue) : (pnumber, bool)?
+def $arithmetic_add_conversion(pvalue) = ((pnumber, b))
+  -- if ~$cast_object_value(pvalue)
+  -- if $coerce_number(pvalue) = COERCED pnumber b
+def $arithmetic_add_conversion(pvalue) = eps -- otherwise
+dec $arithmetic_add_named(pstate) : bool
+def $arithmetic_add_named(S) = true
+  -- if S.ERRORHANDLER.CALLBACK = (pvalue)
+  -- if $string_bytes(pvalue) = (ptbytes)
+def $arithmetic_add_named(S) = false -- otherwise
+dec $arithmetic_add_valid(pstate, pintegeroperation) : bool
+def $arithmetic_add_valid(S, pintegeroperation) = true
+  -- if S.ORIGIN = (pintegeroperation.SITE)
+  -- if pintegeroperation.OP = ADD
+  -- if ~pintegeroperation.SWAPPED
+  -- if $origin_node(S.SOURCES, pintegeroperation.SITE) = (NExprBinaryOpPlus expression_left expression_right metadata)
+  -- if pintegeroperation.LEFT = VARIABLE ptbytes_left z_left
+  -- if pintegeroperation.RIGHT = VARIABLE ptbytes_right z_right
+  -- if $integer_operand_source(S, pintegeroperation.SITE, [PCFIELD 0], pintegeroperation.LEFT)
+  -- if $integer_operand_source(S, pintegeroperation.SITE, [PCFIELD 1], pintegeroperation.RIGHT)
+  -- if $code_expression_at_source(S, pintegeroperation.SITE, [PCFIELD 1]) = (pintegeroperation.LINE)
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CELL n_left
+  -- if pintegeroperation.RIGHTPOINTER = INTEGER_CELL n_right
+  -- if $integer_pointer_source(S, pintegeroperation.LEFTPOINTER, pintegeroperation.LEFT)
+  -- if $integer_pointer_source(S, pintegeroperation.RIGHTPOINTER, pintegeroperation.RIGHT)
+  -- if n_left <- S.REFCELLS
+  -- if n_right <- S.REFCELLS
+def $arithmetic_add_valid(S, pintegeroperation) = false -- otherwise
+dec $arithmetic_add_selected(pstate, pintegeroperation) : bool
+def $arithmetic_add_selected(S, pintegeroperation) = ($integer_pointer_select(S, pintegeroperation.LEFT) = (pintegeroperation.LEFTPOINTER) /\ $integer_pointer_select(S, pintegeroperation.RIGHT) = (pintegeroperation.RIGHTPOINTER))
+
+def $arithmetic_add_plan(S) = (pintegeroperation)
+  -- if $error_handler_eligible(S, 2)
+  -- if $arithmetic_add_named(S)
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (BINARY_RIGHT ADD poperand_left z) :: ptask_tail*
+  -- if ~$gc_retired_binary(S, ADD, poperand_left)
+  -- if poperand_right = S.RESULT
+  -- if $integer_pointer_select(S, poperand_left) = (pintegerpointer_left)
+  -- if $integer_pointer_select(S, poperand_right) = (pintegerpointer_right)
+  -- if pintegerpointer_left = INTEGER_CELL n_left
+  -- if pintegerpointer_right = INTEGER_CELL n_right
+  -- if $propref_at(S.PROPREFS, n_left) = eps
+  -- if $propref_at(S.PROPREFS, n_right) = eps
+  -- if $integer_pointer_value(S, pintegerpointer_left) = (pvalue_left)
+  -- if $integer_pointer_value(S, pintegerpointer_right) = (pvalue_right)
+  -- if $arithmetic_add_conversion(pvalue_left) = ((pnumber_left, true))
+  -- if $arithmetic_add_conversion(pvalue_right) =/= eps
+  -- if pintegeroperation = {SITE porigin, OP ADD, LINE z, SWAPPED false, LEFT poperand_left, RIGHT poperand_right, LEFTPOINTER pintegerpointer_left, RIGHTPOINTER pintegerpointer_right}
+  -- if $arithmetic_add_valid(S, pintegeroperation)
+def $arithmetic_add_plan(S) = eps -- otherwise
+
+dec $arithmetic_add_phase_valid(parithmeticphase) : bool
+def $arithmetic_add_phase_valid(ARITHMETIC_LEFT) = true
+def $arithmetic_add_phase_valid(ARITHMETIC_RIGHT (NINT i)) = $(i >= -9223372036854775808 /\ i <= 9223372036854775807)
+def $arithmetic_add_phase_valid(ARITHMETIC_RIGHT (NFLOAT n)) = $(n < 18446744073709551616)
+dec $arithmetic_add_pointer(pintegeroperation, parithmeticphase) : pintegerpointer
+def $arithmetic_add_pointer(pintegeroperation, ARITHMETIC_LEFT) = pintegeroperation.LEFTPOINTER
+def $arithmetic_add_pointer(pintegeroperation, ARITHMETIC_RIGHT pnumber) = pintegeroperation.RIGHTPOINTER
+dec $arithmetic_add_converted(pstate, pintegeroperation, parithmeticphase, pnumber) : pstate
+def $arithmetic_add_converted(S, pintegeroperation, ARITHMETIC_LEFT, pnumber) = S[.TODO = (ARITHMETIC_ADD_CONVERT pintegeroperation (ARITHMETIC_RIGHT pnumber)) :: ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = ptask :: ptask_tail*
+def $arithmetic_add_converted(S, pintegeroperation, ARITHMETIC_RIGHT pnumber_left, pnumber_right) = $number_result(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL], NUM $num_add(pnumber_left, pnumber_right), pintegeroperation.LINE)
+  -- if S.TODO = ptask :: ptask_tail*
+dec $arithmetic_add_warning_valid(pstate, pintegeroperation, parithmeticphase, pvalue, pnumber, nat) : bool
+def $arithmetic_add_warning_valid(S, pintegeroperation, parithmeticphase, pvalue, pnumber, n) = ($arithmetic_add_valid(S, pintegeroperation) /\ $arithmetic_add_phase_valid(parithmeticphase) /\ $arithmetic_add_conversion(pvalue) = ((pnumber, true)) /\ $(n <= 1) /\ (n = 1 \/ parithmeticphase =/= ARITHMETIC_LEFT \/ $arithmetic_add_selected(S, pintegeroperation)) /\ (n = 1 \/ $integer_pointer_value(S, $arithmetic_add_pointer(pintegeroperation, parithmeticphase)) = (pvalue)))
+
+rule PhpStep/arithmetic-add-begin: S ~> S[.TODO = (ARITHMETIC_ADD_CONVERT pintegeroperation ARITHMETIC_LEFT) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $arithmetic_add_plan(S) = (pintegeroperation)
+rule PhpStep/arithmetic-add-convert: S ~> $arithmetic_add_converted(S, pintegeroperation, parithmeticphase, pnumber)
+  -- if S.TODO = (ARITHMETIC_ADD_CONVERT pintegeroperation parithmeticphase) :: ptask_tail*
+  -- if $call_task_valid(S, ARITHMETIC_ADD_CONVERT pintegeroperation parithmeticphase)
+  -- if $integer_pointer_value(S, $arithmetic_add_pointer(pintegeroperation, parithmeticphase)) = (pvalue)
+  -- if $arithmetic_add_conversion(pvalue) = ((pnumber, false))
+rule PhpStep/arithmetic-add-capture-warning: S ~> S[.TODO = (ARITHMETIC_ADD_WARNING pintegeroperation parithmeticphase pvalue pnumber 0) :: ptask_tail*]
+  -- if S.TODO = (ARITHMETIC_ADD_CONVERT pintegeroperation parithmeticphase) :: ptask_tail*
+  -- if $call_task_valid(S, ARITHMETIC_ADD_CONVERT pintegeroperation parithmeticphase)
+  -- if $integer_pointer_value(S, $arithmetic_add_pointer(pintegeroperation, parithmeticphase)) = (pvalue)
+  -- if $arithmetic_add_conversion(pvalue) = ((pnumber, true))
+rule PhpStep/arithmetic-add-expired: S ~> S[.COMPLETION = UNSUPPORTED "arithmetic addition selected cell expired"]
+  -- if S.TODO = (ARITHMETIC_ADD_CONVERT pintegeroperation parithmeticphase) :: ptask_tail*
+  -- if $call_task_valid(S, ARITHMETIC_ADD_CONVERT pintegeroperation parithmeticphase)
+  -- if $integer_pointer_value(S, $arithmetic_add_pointer(pintegeroperation, parithmeticphase)) = eps
+rule PhpStep/arithmetic-add-invalid-conversion: S ~> S[.COMPLETION = UNSUPPORTED "arithmetic addition selected operand conversion"]
+  -- if S.TODO = (ARITHMETIC_ADD_CONVERT pintegeroperation parithmeticphase) :: ptask_tail*
+  -- if $call_task_valid(S, ARITHMETIC_ADD_CONVERT pintegeroperation parithmeticphase)
+  -- if $integer_pointer_value(S, $arithmetic_add_pointer(pintegeroperation, parithmeticphase)) = (pvalue)
+  -- if $arithmetic_add_conversion(pvalue) = eps
+rule PhpStep/arithmetic-add-warning: S ~> $error_dispatch(S, 2, $ptascii("A non-numeric value encountered"), pintegeroperation.LINE, DIAGNOSTIC "Warning" ($ptascii("A non-numeric value encountered")) pintegeroperation.LINE, ARITHMETIC_ADD_WARNING pintegeroperation parithmeticphase pvalue pnumber 1)
+  -- if S.TODO = (ARITHMETIC_ADD_WARNING pintegeroperation parithmeticphase pvalue pnumber 0) :: ptask_tail*
+  -- if $arithmetic_add_warning_valid(S, pintegeroperation, parithmeticphase, pvalue, pnumber, 0)
+  -- if ~$error_handler_eligible(S, 2) \/ $arithmetic_add_named(S)
+rule PhpStep/arithmetic-add-owning-handler: S ~> S[.COMPLETION = UNSUPPORTED "arithmetic addition owning warning callback"]
+  -- if S.TODO = (ARITHMETIC_ADD_WARNING pintegeroperation parithmeticphase pvalue pnumber 0) :: ptask_tail*
+  -- if $arithmetic_add_warning_valid(S, pintegeroperation, parithmeticphase, pvalue, pnumber, 0)
+  -- if $error_handler_eligible(S, 2)
+  -- if ~$arithmetic_add_named(S)
+rule PhpStep/arithmetic-add-resume: S ~> $arithmetic_add_converted(S, pintegeroperation, parithmeticphase, pnumber)
+  -- if S.TODO = (ARITHMETIC_ADD_WARNING pintegeroperation parithmeticphase pvalue pnumber 1) :: ptask_tail*
+  -- if $arithmetic_add_warning_valid(S, pintegeroperation, parithmeticphase, pvalue, pnumber, 1)
+
+;; The source CVs retain the real cell owners. Neither selected pointers nor
+;; converted scalar holders create roots; a handler throw discards this task.
+def $task_nodes(ARITHMETIC_ADD_CONVERT pintegeroperation parithmeticphase) = eps
+def $task_nodes(ARITHMETIC_ADD_WARNING pintegeroperation parithmeticphase pvalue pnumber n) = eps
+def $call_task_valid(S, ARITHMETIC_ADD_CONVERT pintegeroperation parithmeticphase) = ($arithmetic_add_valid(S, pintegeroperation) /\ $arithmetic_add_phase_valid(parithmeticphase) /\ (parithmeticphase =/= ARITHMETIC_LEFT \/ $arithmetic_add_selected(S, pintegeroperation)))
+def $call_task_valid(S, ARITHMETIC_ADD_WARNING pintegeroperation parithmeticphase pvalue pnumber n) = $arithmetic_add_warning_valid(S, pintegeroperation, parithmeticphase, pvalue, pnumber, n)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = ARITHMETIC_ADD_WARNING pintegeroperation parithmeticphase pvalue pnumber 1
+  -- if $arithmetic_add_warning_valid(S, pintegeroperation, parithmeticphase, pvalue, pnumber, 1)
+  -- if perrorcall.TARGET =/= eps \/ parithmeticphase =/= ARITHMETIC_LEFT \/ $arithmetic_add_selected(S, pintegeroperation)
+  -- if perrorcall.TARGET =/= eps \/ $integer_pointer_value(S, $arithmetic_add_pointer(pintegeroperation, parithmeticphase)) = (pvalue)
+  -- if perrorcall.SITE = pintegeroperation.SITE
+  -- if perrorcall.LINE = pintegeroperation.LINE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $ptascii("A non-numeric value encountered")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" ($ptascii("A non-numeric value encountered")) pintegeroperation.LINE

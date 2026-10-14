@@ -1,0 +1,126 @@
+{
+  "version": 1,
+  "milestone": "OP13 leading-numeric ADD warning continuations",
+  "status": "privately accepted; awaiting actual-parent composition",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local pinned PHP and profile",
+  "scope": "ADD with a leading-numeric left operand, two defined direct CVs already selecting live initially untyped reference cells, initially numeric-convertible scalars and a named warning handler. Equal CV slot classes preserve physical left-first conversion.",
+  "runtime_revision": "cb7b327f307fb82882f3e5e7dd5ceeee40b9a0c5",
+  "tested_helper_revision": "9dcb3cef4f919c17c58b86a3bb55384392447e06",
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "15a653dcb3669844833e4b899a3f9843bcc049b7b8127592fe92f6c5db874606",
+    "spec/semantics/40-control.watsup": "4877c9dfb7e6526dbd4169163cf30185156311619964765d75ae38e21f2e06cd",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "b239d92ffb571d9a1c0670e3b49935e5f57e1808563c2633f8b9235e8a50682b"
+  },
+  "engine_basis": [
+    "Zend/zend_operators.c: add_function_slow dereferences both selected operands before left conversion; _zendi_try_convert_scalar_to_number fills its numeric holder before zend_error and stops when the handler leaves an exception.",
+    "Zend/zend_compile.c: ADD commutative slot selection can reorder unlike physical operand classes. This cut admits only CV/CV and does not generalize left-first conversion to copies or unlike classes."
+  ],
+  "contract": [
+    "Authenticate source occurrence, ADD operator, instruction line, actual initial selected cells and scalar capture before fresh callback entry. Post-callback holders retain historical input while the next conversion reads the same borrowed referent rather than resolving its name again.",
+    "Selected pointers and numeric holders add no roots. Existing source CV aliases retain the real cells. Cached left12 plus handler-written right5 yields17 while live left99 remains99; a later right warning caches5 before the handler changes right to7.",
+    "Use the existing named warning dispatcher, including false-handler default diagnostics. A supplied throw discards the unfinished addition once, preserves its exact object and Previous, and leaves the result destination unchanged."
+  ],
+  "accepted": {
+    "strict": {
+      "revision": "ec44c091b136d519dd1cbb1cc70e9fc0153da2b8",
+      "modules": 392,
+      "mode": "SL main=true; zero PHP agreement credit",
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-13/strict-ec44c091b/report.json",
+      "report_sha256": "2e6179d3388506e5d4dc834b6e4c41a19e42d04a856f2bb9bee4d74463add3d4"
+    },
+    "source": {
+      "distinct_new_originals": 3,
+      "source_sha256": {
+        "arithmetic-add-leading-selected-cells": "083fda118b16aa2e13169bf75a30e539110ca80fda7b35e4cd4e08d6f2ff67b0",
+        "arithmetic-add-leading-throw": "0c79f3dc71c0f2068b96aa8fbcbb12f16e125d074f1895580ba2908735bc1661",
+        "arithmetic-add-leading-right-warning-fallback": "ce9e227469408ef463fa32d7fa6ad34174391906d18b9d60766aeb74da2ee258"
+      },
+      "cuts": [
+        {
+          "revision": "ec44c091b136d519dd1cbb1cc70e9fc0153da2b8",
+          "ids": [
+            "arithmetic-add-leading-selected-cells"
+          ],
+          "report": "/home/user/workspace/php-spec-evidence-archive/operators-13/smoke-ec44c091b-selected-cells/report.json",
+          "report_sha256": "ccbe8f239bcf903b06f68e22dd288cb24fb729a40cd4bd6ebadbbe670ccd5b95"
+        },
+        {
+          "revision": "cb7b327f307fb82882f3e5e7dd5ceeee40b9a0c5",
+          "ids": [
+            "arithmetic-add-leading-throw"
+          ],
+          "report": "/home/user/workspace/php-spec-evidence-archive/operators-13/source-cb7b327f3-throw/report.json",
+          "report_sha256": "34eafb4732af73229b5651a9e993ec3704fde5ebb6739e4378d236419b07689a"
+        },
+        {
+          "revision": "cb7b327f307fb82882f3e5e7dd5ceeee40b9a0c5",
+          "ids": [
+            "arithmetic-add-leading-right-warning-fallback"
+          ],
+          "report": "/home/user/workspace/php-spec-evidence-archive/operators-13/review-model-cb7b327f3-right-warning/report.json",
+          "report_sha256": "8228541a3f019ba3d4c930f7db5058c77cf5ab6d40937ac421ee84a4a3319c04"
+        }
+      ],
+      "result": "All three checked programs are normal with native/model exit0 and exact stdout/stderr: returning result17 with live99/5, supplied-object throw with sentinel100, and two warnings with cached result17/live99/7 plus one default Warning. No interruption or surviving process group."
+    },
+    "author_reached": {
+      "revision": "9dcb3cef4f919c17c58b86a3bb55384392447e06",
+      "mode": "SL",
+      "counts": [
+        128,
+        119
+      ],
+      "conditions": 247,
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-13/state-9dcb3cef4-author-two/report.json",
+      "report_sha256": "bd4b74520ea4c08120f87b19e2921afde9e1f71fbf418d79178425df75f051cd",
+      "result": "Genuine production-budget frontiers, source/selection/phase guards, no added cell owners, coordinated capture/dispatch forgeries and another live selected-cell forgery rejected by whole public validation; cached conversion, supplied-throw ownership, sentinel and native endings pass."
+    },
+    "independent_reached": {
+      "revision": "9dcb3cef4f919c17c58b86a3bb55384392447e06",
+      "mode": "SL",
+      "conditions": 74,
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-13/state-9dcb3cef4-review-one/report.json",
+      "report_sha256": "80740b7ae5f20409267c2967e0c85c7b561389ed76ac956634ed663c98333084",
+      "result": "Genuine RIGHT capture/fresh dispatch/post-callback fronts distinguish cached5 from live7, reject coordinated INPUT+holder forgeries, preserve owners and produce exactly one default Warning and result17 with public budget/native endings."
+    },
+    "total_reached_conditions": 321,
+    "compatibility": "The cb7 change only strengthens fresh capture/dispatch INPUT equality. The earlier returning source retains its ec44 identity; supplied-throw and independent source retain cb7. Helper-only 9dcb preserves cb7 runtime bytes. Every reached fixture compiles and structures the full392-module current net; no earlier source count is renewed."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-13/baseline-d92170cba-selected-cells/report.json",
+      "report_sha256": "8dfa2a16e44a09d77dee7918cd698e965b002ccca7f9370ad45a633771216ee4",
+      "revision": "d92170cba97ee39ad97e04f396c2debc7df135c9",
+      "result": "Genuine checked/program Unsupported: error-handler ingress requires a producer continuation; no H output, model1 versus native result17. Agreement0."
+    },
+    "native_and_preparation": [
+      "/home/user/workspace/php-spec-evidence-archive/operators-13/native-d92170cba-two/report.json",
+      "/home/user/workspace/php-spec-evidence-archive/operators-13/review-native-cb7b327f3-one/report.json",
+      "/home/user/workspace/php-spec-evidence-archive/operators-13/state-prep-9dcb3cef4-author-two/report.json",
+      "/home/user/workspace/php-spec-evidence-archive/operators-13/state-prep-9dcb3cef4-review-one/report.json"
+    ],
+    "syntax": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-13/parse-preflight-9dcb3cef4-all-three/report.json",
+      "report_sha256": "e635731c305034752b9a60784bc59dbfb7b16a06da469fdc530e294010b3a60e",
+      "result": "All full fixture files parse before the expected standalone missing-pstate diagnostic. This is syntax-only, not elaboration or execution credit."
+    }
+  },
+  "required_follow_on": [
+    "Other arithmetic operators, plain CVs, copied/temporary/reference-result operands, unlike physical slot classes and right-only warning ingress remain required.",
+    "Owning callbacks, expired selected cells, object/nonconvertible replacements, their diagnostic types and wider exit/lifecycle paths remain required; this cut makes no unheld-pointer or general arithmetic claim.",
+    "All four linked inventory rows stay partial. Paused OP12 array-element update work is preserved and not resumed."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-13",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "environment": "LC_ALL=C, TZ=UTC, no PHP_SPEC_SCRIPT_ENCODING; source native30/model CLI60/process90. Immutable state thins use CPU2, explicit SL and cap120 per fixture; exact true newline, empty stderr and reaped groups required.",
+    "commands": [
+      "python3 tests/semantics/arithmetic_warnings.py --case CASE --output NEW_EXTERNAL_DIRECTORY",
+      "python3 tests/semantics/arithmetic_warning_review.py --case CASE --output NEW_EXTERNAL_DIRECTORY",
+      "/home/user/workspace/php-spec-evidence-archive/operators-13/state-9dcb3cef4-author-two/run-state.py and /home/user/workspace/php-spec-evidence-archive/operators-13/state-9dcb3cef4-review-one/run-state.py execute only frozen retained fixtures; no source/frontend/native renewal."
+    ],
+    "record": "External reports retain revision, compiler/runtime/profile, exact source/AST/path/native bytes, generated fixture hashes, commands and process exits/interruption/reap. Restore the matching Git cut and project-local tools, then use fresh output directories."
+  }
+}
