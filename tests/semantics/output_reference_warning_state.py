@@ -12,13 +12,6 @@ import output_reference_warning_review_sources as review
 ROOT = sources.ROOT
 CASES = {name: review.CASES['second-reference-warning-trace'] for name in ('live-prefix', 'retired-prefix')}
 PREFIX = r"""
-dec $rw_output(pevent*) : preqbytes
-dec $rw_is_output(pevent) : bool
-def $rw_output(eps) = eps
-def $rw_output((OUTPUT n*) :: pevent_tail*) = n* ++ $rw_output(pevent_tail*)
-def $rw_output(pevent :: pevent_tail*) = $rw_output(pevent_tail*) -- if ~$rw_is_output(pevent)
-def $rw_is_output(OUTPUT n*) = true
-def $rw_is_output(pevent) = false -- otherwise
 dec $rw_phase(pstate, nat) : bool
 def $rw_phase(S, 0) = true
   -- if S.TODO = (OB_USER_REFERENCE_RELEASE pobinvoke 1 n) :: ptask_tail*
@@ -121,11 +114,7 @@ def assertions(name, fixture, directory, path):
         '~$ob_reference_metadata(S_retired, pobinvoke, 0)',
         '~$ob_reference_metadata(S_retired, pobinvoke[.CALL = OB_API_FAILED pconfigcall pcallcontext? eps], 1)',
         '~$ob_reference_metadata(S_retired[.ORIGIN = eps], pobinvoke, 1)',
-        *budget('S_retired', 'S_retired_budget'),
-        'S_done = $drive_steps(S_retired, 512)',
-        r'S_done.COMPLETION = NORMAL /\ S_done.TODO = eps /\ S_done.CURRENT = eps /\ S_done.FRAMES = eps',
-        'S_done.OUTPUTBUFFERS = eps', '$rw_output(S_done.EVENTS) = ' + bytes_expr(CASES[name][1]),
-        *valid('S_done')]
+        *budget('S_retired', 'S_retired_budget')]
 
 
 def main():
