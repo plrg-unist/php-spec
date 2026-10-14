@@ -138,9 +138,23 @@ sources and two public fronts/288 premises bind these paths and malformed query,
 carrier, selection and resume rejection in the
 [qualified-defined ledger](../../coverage/semantics/class-qualified-defined-review.json).
 
+Class-qualified `constant` uses the same captured query and actual lexical access,
+but returns a folded primitive or authenticated literal string and raises an API
+`Error` for missing/inaccessible lookup. Direct string installation normalizes its
+raw pool allocation class through the existing interning rule; parser provenance
+still authenticates the returned carrier. The named loader receives only the class,
+while its API trace and one-shot resume keep the full query and selected callee,
+even when the loader changes both caller CVs. Loaded-member misses do not reload.
+Two exact sources and two public fronts/384 premises cover value types, current
+Error traces, actual CV mutation and malformed continuation authority in the
+[qualified-constant ledger](../../coverage/semantics/class-qualified-constant-review.json).
+Global `constant` queries, deferred evaluation and wider value forms remain open.
+
 The matching engine routes are `ZEND_FUNCTION(define)`/`ZVAL_COPY`,
 `validate_constant_array_argument`/`copy_constant_array`, `zend_register_constant`,
-and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`.
+and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`. `PHP_FUNCTION(constant)` uses
+exception-class lookup and `ZVAL_COPY_OR_DUP`; `zend_declare_typed_class_constant`
+interns direct string values before installation.
 Nested empty arrays, cycles, objects, array duplicate/third-argument paths,
 name/flag coercion, startup/special-name warnings,
 keyword/internal/trait/interface/enum class queries, deferred value initialization,
@@ -186,5 +200,5 @@ identities on same-text eval retry. The earlier cold fixture's three
 elaboration stops and one slice-length execution failure remain zero-credit;
 no runtime rules or prior source/state gates changed. Internal and
 Throwable NEW, autoload, wider object-producing initializers, remaining builtin
-constant values and wider `define`/`defined` behavior remain open. Class/default and callable
+constant values and wider `define`/`defined`/`constant` behavior remain open. Class/default and callable
 consumer families retain their separate inventory and evidence; no complete-core claim.

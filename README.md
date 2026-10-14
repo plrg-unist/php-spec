@@ -833,6 +833,11 @@ and quiet misses. Named autoload resumes the same captured query once.
 [Two exact sources and 288 public premises](coverage/semantics/class-qualified-defined-review.json)
 cover the full-query trace and retained selection; deferred evaluation and wider class
 query domains remain Unsupported.
+Class-qualified `constant` returns folded primitive/literal values with lexical
+visibility and API Errors. Named autoload retains the captured query across caller
+CV changes. [Two exact sources and 384 public premises](coverage/semantics/class-qualified-constant-review.json)
+cover value types, string provenance and one-shot resume; global queries, deferred
+evaluation and wider domains remain Unsupported.
 [Untyped positional defaults](docs/semantics/SOURCE-POSITIONAL-DEFAULTS.md) now preserve
 omitted receives, declaration context, observable caches and fresh reference/array
 ownership. [Independent acceptance](coverage/semantics/default-parameter-review.json)

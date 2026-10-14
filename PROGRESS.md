@@ -7,6 +7,16 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Class-qualified `constant` now returns inherited folded primitives and authenticated
+literal strings with the actual lexical visibility. Missing/inaccessible lookup
+raises an API Error; named autoload retains its full query and selection across
+real caller CV mutations, then resumes once. Two exact sources retain runtime
+diffs a26b/9960; two public fronts/384 premises pass with runtime diff 9960, including
+value types, raw-to-installed string class and Error trace authority. The original
+selected failure, baseline/native/preparation evidence retain 0. Global queries,
+deferred evaluation, wider values/class kinds/coercions and owning forms remain
+Unsupported. [Qualified-constant ledger](coverage/semantics/class-qualified-constant-review.json).
+
 Module 402 now resumes ordinary source-instance/int/float comparisons after the
 failed-cast Notice. Generic handler restoration preserves live CV/CELL versus
 COPY reads, saved 1/1.0 across a second Notice, and authentic aggregate guards,
