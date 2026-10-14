@@ -19874,7 +19874,8 @@
         "spec/semantics/396-output-chunks.watsup",
         "spec/semantics/397-output-handler-failures.watsup",
         "spec/semantics/398-output-api-failures.watsup",
-        "spec/semantics/399-output-result-cleanup.watsup"
+        "spec/semantics/399-output-result-cleanup.watsup",
+        "spec/semantics/401-output-reference-warning.watsup"
       ],
       "helper_tests": [
         "tests/semantics/output_buffer_state.py",
@@ -19882,7 +19883,8 @@
         "tests/semantics/output_chunk_state.py",
         "tests/semantics/output_abrupt_state.py",
         "tests/semantics/output_api_failure_state.py",
-        "tests/semantics/output_result_cleanup_state.py"
+        "tests/semantics/output_result_cleanup_state.py",
+        "tests/semantics/output_reference_warning_state.py"
       ],
       "source_tests": [
         "tests/semantics/output_buffer_sources.py",
@@ -19895,7 +19897,9 @@
         "tests/semantics/output_api_failure_sources.py",
         "tests/semantics/output_api_failure_review_sources.py",
         "tests/semantics/output_result_cleanup_sources.py",
-        "tests/semantics/output_result_cleanup_review_sources.py"
+        "tests/semantics/output_result_cleanup_review_sources.py",
+        "tests/semantics/output_reference_warning_sources.py",
+        "tests/semantics/output_reference_warning_review_sources.py"
       ],
       "evidence": [
         "vendor/php-src/main/output.c",
@@ -19914,9 +19918,11 @@
         "coverage/semantics/output-api-failure-author.json",
         "coverage/semantics/output-api-failure-review.json",
         "coverage/semantics/output-result-cleanup-author.json",
-        "coverage/semantics/output-result-cleanup-review.json"
+        "coverage/semantics/output-result-cleanup-review.json",
+        "coverage/semantics/output-reference-warning-author.json",
+        "coverage/semantics/output-reference-warning-review.json"
       ],
-      "review": "Modules391\u2013398 retain their accepted default, normal and failure cuts. Module399 preserves defined scalar returns through callee cleanup throws, with callee-only by-reference wrappers, a normal-return certificate distinct from body-throw null and borrowed method receivers. Seven author and three independent originals agree at retained cuts; four genuine groups pass 317 premises (64 at38e9,253 atd983). Internal API cleanup traces and missing-pending task refusals are checked. Original failures/diagnostics retain zero credit. Obsolete late-SENT argv selectors are retired in favor of the new actual callee fronts; remaining old selectors have no renewed runtime credit. Callback exit, warning-handler throws, other producers/request-end/fatal drains and wider conversion/callable/capability/mutation/Fiber/stdout protocols remain required; full obligation stays partial."
+      "review": "Modules391–399 retain their separately accepted output cuts, including defined scalar cleanup and borrowed receivers. Module401 releases the exact scalar prepared prefix when a direct explicit-API reference warning throws before callback entry, then reuses undefined-result failure cleanup. Three distinct originals agree at 35a9. Two genuine fronts pass 106 physical premises (61 at e13, 45 at 4f; 16 shared setup), checking sole reference ownership, exact contents, retired metadata versus live owners, malformed index/tail/value/ownership and overlong-prefix refusals, plus fuel0. Original baseline/fixture and same-cap memory failures retain 0. Full completion stays covered by the exact source; the bounded retired state claims no destructor-operation SOURCE. The obsolete Module398 warning-throw control is retired without renewing old campaigns. Automatic pre-entry warnings, produced-warning throws, owning warning-handler cleanup, exit, other producers/request-end/fatal drains and wider conversion/callable/capability/mutation/Fiber/stdout protocols remain required; the obligation stays partial."
     },
     {
       "id": "environment.request-inputs",

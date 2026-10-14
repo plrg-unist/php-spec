@@ -44,6 +44,15 @@ default deprecation reporting still follows its mask and display settings.
 API callee-cleanup destructors retain an internal site and the originating API
 trace frame for both normal-return and body-throw cleanup.
 
+Module401 handles throws from fixed by-reference argument warnings before an
+explicit API callback enters. Only the already prepared parameter prefix owns
+fresh wrappers; those wrappers still contain the original copied input or phase.
+After releasing that prefix, the undefined-result path retains the pending
+Throwable and performs the ordinary API failure cleanup. The output callback
+never enters, caller assignment is interrupted, and warning-handler output remains in
+the live buffer without a failure-path deprecation. Historical cleanup metadata
+does not retain or revive retired reference cells.
+
 The handler receives a copied input string and the native START/CLEAN/FLUSH/FINAL
 phase flags. Get-clean/get-flush return a separate frozen copy. The active top
 buffer remains visible through callback getters, even when a lower handler is
@@ -81,8 +90,9 @@ producer tail until writing finishes, releasing it before print assignment or
 caller catch. Plain variable operands stay borrowed; wider owned Stringable
 forms remain an explicit dependency.
 
-Callback exit, throwing reference-warning or
-produced-output warning handlers, automatic dispatch from other byte
+Callback exit, automatic pre-entry reference-warning throws,
+throwing produced-output warning handlers, owning warning-handler abrupt cleanup,
+automatic dispatch from other byte
 producers, request-end/fatal callback drains, non-scalar or
 reference-return conversion, typed variadic reception and by-reference variadic
 extra arguments, mutating buffer APIs

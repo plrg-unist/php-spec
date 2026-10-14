@@ -7,6 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Module401 handles reference-warning throws before direct explicit output API
+callback entry. One authenticated task releases the prepared scalar prefix, then
+normalizes the original fci arguments and reuses undefined-result failure cleanup.
+Three distinct originals agree at 35a9, including second-warning traces and warning
+output without deprecation. Two reached fronts pass 106 physical premises (61 at e13,
+45 at 4f; 16 shared setup), checking sole reference ownership, exact scalar contents,
+retirement, readonly metadata, malformed certificates and fuel0 preservation.
+The original Unsupported baseline, unreachable-phase fixture and same-cap memory
+failures retain 0. The bounded retired fixture stops after its new ownership front;
+full completion remains covered by the exact source. The superseded Module398 control is
+retired without renewing old campaigns. Wider warning/exit/lifecycle paths remain
+partial; independent private acceptance is complete, integration pending.
+[Contract](docs/semantics/OUTPUT-HANDLERS.md),
+[author evidence](coverage/semantics/output-reference-warning-author.json),
+[independent review](coverage/semantics/output-reference-warning-review.json).
+
 Boolean `case_insensitive=true` in primitive `define` now warns before registration
 and keeps case-sensitive lookup. The original captured arguments survive the
 handler. A handler may install the same name first; the outer call then emits the
@@ -117,7 +133,7 @@ source/state evidence is claimed.
 [Contract](docs/semantics/OUTPUT-HANDLERS.md),
 [author evidence](coverage/semantics/output-api-failure-author.json),
 [independent review](coverage/semantics/output-api-failure-review.json).
-Callback exit, warning-handler throws, other producers/request-end/fatal drains
+Callback exit, wider warning-handler throws, other producers/request-end/fatal drains
 and wider protocols remain required; full core stays partial. Module399 extends
 the bounded scalar normal-result cleanup path above.
 

@@ -57,11 +57,16 @@ inventory: build
 	python3 scripts/encoding-spellings.py
 
 test-semantics: build
+	./scripts/opam-exec.sh dune build --root tests/semantics -j 1 numeric_runner.exe
 	python3 tests/semantics/tick_sources.py
 	python3 tests/semantics/tick_review_sources.py
 	python3 tests/semantics/tick_state.py
 	python3 tests/semantics/output_buffer_sources.py
 	python3 tests/semantics/output_buffer_state.py
+	python3 tests/semantics/output_reference_warning_sources.py
+	python3 tests/semantics/output_reference_warning_review_sources.py
+	python3 tests/semantics/output_reference_warning_state.py --select live-prefix
+	python3 tests/semantics/output_reference_warning_state.py --select retired-prefix
 	python3 tests/semantics/request_provider.py
 	python3 tests/semantics/evidence.py
 	python3 tests/semantics/source_occurrences.py

@@ -212,7 +212,9 @@ Pending replacements retain Previous; internal destructor traces retain the API.
 Module399 preserves defined scalar returns through callee cleanup throws, with
 callee-only reference wrappers, a normal-return certificate and borrowed method
 receivers. Body throws retain the distinct failed-buffer protocol.
-Callback exit, warning-handler throws,
+Module401 releases the original prepared reference prefix when an explicit API's
+argument-warning handler throws before callback entry, then uses that protocol.
+Callback exit, wider warning-handler throws,
 other byte producers, request-end dispatch,
 wider returns/mutation/Fiber switching and buffered stdout diagnostic rendering
 remain dependencies; masking and handler-true cases preserve ordinary execution.

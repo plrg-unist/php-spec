@@ -1,0 +1,66 @@
+{
+  "milestone": "Explicit output API reference-warning throws before callback entry (401)",
+  "status": "bounded private milestone accepted; integration pending",
+  "reviewer": "core_breadth_review_01",
+  "base_revision": "1b69285bc2aa3e197b0e5b8dbd225e159aefd3bd",
+  "implementation_revision": "35a9f46d5497b0fc7c66ce4ee4c811992cf5e6b8",
+  "implementation_sha256": "e662c6d0ad588f15b804777c97fc181852e36483312913ff1188a4bdab2bf447",
+  "scope": [
+    "A fixed by-reference argument warning can throw before the output callback enters. Only the already prepared scalar prefix owns fresh wrappers; releasing it retains the actual Throwable once and restores the original copied fci values.",
+    "The undefined-result path uses existing API failure routing. Callback entry and caller assignment are skipped; warning-handler output joins live buffer bytes and retains PRODUCED without a failure-path deprecation.",
+    "Live guards authenticate argument mode, original scalar contents, sole wrapper ownership, index, caller and exact tail. Historical metadata does not require or revive retired reference cells. Generic error-handler, return and destructor rules are unchanged."
+  ],
+  "authority": [
+    "vendor/php-src/Zend/zend_execute_API.c::zend_call_function parameter loop and free_args",
+    "vendor/php-src/main/output.c::php_output_handler_op SUCCESS with undefined retval"
+  ],
+  "author_evidence": {
+    "ledger": "coverage/semantics/output-reference-warning-author.json",
+    "agreements": 1,
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-09/source-gate-01/sources/report.json",
+    "report_sha256": "617c0e8880382c1e8d5a775c1265e21a47a2b58b7b0d46411ba749329654c5b3",
+    "revision": "35a9f46d5497b0fc7c66ce4ee4c811992cf5e6b8",
+    "observation": "PA|C:99:0:1:12401:0Z; normal0 and empty stderr"
+  },
+  "independent_sources": {
+    "agreements": 2,
+    "runner": "tests/semantics/output_reference_warning_review_sources.py",
+    "runner_sha256": "5a9f87f66a0a837a0fab50902363ead9f999cfde281b91f0bd0fd85609673f47",
+    "revision": "35a9f46d5497b0fc7c66ce4ee4c811992cf5e6b8",
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-09/sources-01/sources/report.json",
+    "report_sha256": "1fb5c691167b48c1769e2e9d7f2bd70829c910013cb32c89b5c18fc7fe40ad6f",
+    "cases": {
+      "second-reference-warning-trace": "AC:2:0:99:0:e:I:ob_get_flush:F:7:-Z; fresh Throwable, first prepared wrapper, no output-callback frame, popped buffer and interrupted assignment",
+      "reference-warning-output-failure": "AH|C:99:0:45169:0|2;Z; live bytes include warning-handler output, PRODUCED remains set and no deprecation occurs"
+    },
+    "comparison": "Original bytes, exact stdout/stderr, normal completion and exit0 against pinned PHP8.5.10 CLI NTS64/profile.json; stable inputs and reaped serial CPU5 actors"
+  },
+  "state_review": {
+    "groups": 2,
+    "physical_premises": 106,
+    "shared_setup_premises": 16,
+    "runs": [
+      {
+        "id": "live-prefix", "premises": 61, "revision": "e13b6a40562e7a2f642e493b2591a0937fb96f5a",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-09/state-selected-01/live-prefix/state/report.json",
+        "report_sha256": "d37fe7f08d389471f3ef2288b0f0cf6983f69e7bef38ab787d32b0fe46d2a319"
+      },
+      {
+        "id": "retired-prefix", "premises": 45, "revision": "4f872e07cf6d9207f31bc8058a990f7b647809dc",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-09/state-selected-02/retired-prefix/state/report.json",
+        "report_sha256": "421177543e9b2d9dbe350bb2d7eb0407dc14881c4248d8ae3f66ac8f27058b9c"
+      }
+    ],
+    "review": "Genuine index1 RELEASE owns the original input wrapper once while the output callback remains unentered. One actual step yields normalized FAIL_ARGS, retires the cell and preserves the pending Throwable/caller/tail. Public/heap/output validity, fuel0 STORE/allocation preservation, original-value and owner forgeries, bad indices, overlong-prefix totality and readonly-versus-live metadata checks pass.",
+    "execution": "Fresh serial selectors at AS1536MiB/state120s; true, empty stderr, exit0, stable inputs and reaped actors",
+    "source_operation_coverage": "None claimed: this source has no destructor class/Fiber/generator and its scalar cell prunes directly. The historical SOURCE guard received static review.",
+    "control_native_credit": 0
+  },
+  "compatibility": "All accepted runs use the same35a9 runtime. Test-only revisions retain earlier cuts. The final retired45 removes only seven redundant full-request completion assertions already covered by the exact source run; live61 assertions are unchanged. No old output campaign is replayed or renewed.",
+  "preserved_zero_credit": "The unchanged390 Unsupported baseline, original state100 unreachable-operation fixture failure, combined97 OOM and retired52 OOM remain external with zero credit; the author ledger binds each original. No semantic conclusion is taken from an allocation failure or native-only preparation.",
+  "limits": [
+    "Automatic pre-entry reference-warning throws, produced-output warning throws, owning warning-handler abrupt cleanup and callback exit remain explicit boundaries.",
+    "Wider output producers, request-end/fatal drains, return conversions, callable/mutation/capability/Fiber/stdout protocols remain partial; full core is not complete."
+  ],
+  "integration": {"status": "pending"}
+}

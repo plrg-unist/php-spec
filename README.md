@@ -45,8 +45,9 @@ echo, print and inline output, with copied snapshots, source call contexts and
 PHP8.5 callback-output deprecation. Automatic and explicit API reception failures
 or callback throws preserve pending cleanup and stack operations before caller
 catch. Defined scalar returns survive callee cleanup throws, with callee-only
-reference wrappers and borrowed method receivers. Callback exit, warning-handler
-throws, other byte producers,
+reference wrappers and borrowed method receivers. Explicit API argument-warning
+throws release only the prepared prefix before failed-buffer cleanup.
+Callback exit, wider warning-handler throws, other byte producers,
 request-end dispatch and buffered stdout diagnostics remain dependencies.
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
