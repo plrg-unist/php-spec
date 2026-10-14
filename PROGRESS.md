@@ -18,6 +18,9 @@ failures, original recorder predicate and terminal-fixture failure retain0; dire
 source acceptance adjudicates the same raw run. Wider values, warning/conversion
 paths, namespace fallback and full constant/core behavior remain partial.
 [Dynamic-constant ledger](coverage/semantics/dynamic-constants-review.json).
+The 389-module composition over 99d2 passes independent pointwise review at 895b3ac9;
+accepted code and parent selectors/pipeline are preserved. No renewed actor, source
+or state evidence is claimed.
 
 Exit from a raw invokable warning-handler destructor now returns through the real
 release operation before helper completion. Safe bool/decrement-null captures
