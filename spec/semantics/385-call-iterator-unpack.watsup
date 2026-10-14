@@ -23,6 +23,7 @@ dec $iterator_unpack_hold_valid(piteratorunpack, text) : bool
 dec $iterator_unpack_hold_allowed(pstate, piteratorunpack, text) : bool
 dec $iterator_unpack_hold_live(pstate, piteratorunpack, text) : bool
 dec $iterator_unpack_reference_allowed(pstate, piteratorunpack) : bool
+dec $iterator_unpack_reference_type(ptbranch*) : bool
 dec $iterator_unpack_reference_object(pstate, piteratorunpack) : pvalue?
 dec $iterator_unpack_reference_payload(pstate, piteratorunpack) : pvalue?
 dec $iterator_unpack_reference_property(ppropertydesc*, ppropertyslot*, nat) : bool
@@ -368,6 +369,10 @@ def $named_variadic_private(S, pfunction, n, REFERENCE n_cell, pvalue) = true
   -- if S.STORE[n_cell] = DEFINED pvalue
   -- if n_cell <- S.REFCELLS
   -- if $heap_owners($heap_prune($heap_graph(S)), HCELL n_cell) = 1
+def $iterator_unpack_reference_type(eps) = true
+def $iterator_unpack_reference_type([(PTBRANCH ([(PTCLASS ptbytes)])), (PTBRANCH ([PTBUILTIN "null"]))]) = true
+def $iterator_unpack_reference_type([(PTBRANCH ([PTBUILTIN "array"])), (PTBRANCH ([PTBUILTIN "null"]))]) = true
+def $iterator_unpack_reference_type(ptbranch*) = false -- otherwise
 def $iterator_unpack_reference_allowed(S, piteratorunpack) = true
   -- if piteratorunpack.CURRENT = REFERENCE n_cell
   -- if piteratorunpack.CALL.SENT = {SLOTS eps, NAMED eps}
@@ -377,7 +382,7 @@ def $iterator_unpack_reference_allowed(S, piteratorunpack) = true
   -- if $target_function(S, piteratorunpack.CALL.FUNCTION) = (pfunction)
   -- if $iterator_unpack_named_target(S, piteratorunpack) = NAMED_POSITION n_target
   -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, n_target) = (psparam)
-  -- if ~psparam.VARIADIC /\ psparam.BYREF /\ psparam.TYPE = eps
+  -- if ~psparam.VARIADIC /\ psparam.BYREF /\ $iterator_unpack_reference_type(psparam.TYPE)
   -- if $named_can_store(piteratorunpack.CALL.SENT, NAMED_POSITION n_target)
   -- if $iterator_unpack_extra_site(S, piteratorunpack.CALL.CALLSITE)
 def $iterator_unpack_reference_allowed(S, piteratorunpack) = false -- otherwise

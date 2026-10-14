@@ -1,0 +1,102 @@
+[
+  {
+    "id": "iterator-call-unpack-typed-fixed-reference-object-normal",
+    "source": "<?php\nclass ReferencePayload34 { public function __destruct() { echo \"O|\"; } }\nclass ReferenceIterator34 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = new ReferencePayload34(); }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; return \"item\"; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ReferenceTarget34($prefix = 17, ?ReferencePayload34 &$item = null) { echo \"D\", $prefix, \"|\", func_num_args(), \"|\"; echo \"B|\"; $item = 17; echo \"F|\"; echo \"Q\", $item, \"|\"; }\n$failure = new Exception(\"stop\", 51);\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    return true;\n});\ntry { ReferenceTarget34(...new ReferenceIterator34()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\necho \"E\";\n",
+    "source_sha256": "e74b8123a14fbfa777524668af8003676a608f72ad8b4c089bb5fa76bd66c7e4",
+    "purpose": "Nullable-class fixed slot1 receive; incompatible scalar assignment after successful receive is allowed in the fresh cell, preserving source aliases. Warning-handler throw precedes receive checking.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 2 of ReferenceTarget34() by unpacking a Traversable, passing by-value instead|21|X|V|I|D17|2|B|O|F|Q17|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-typed-fixed-reference-object-separate-alias",
+    "source": "<?php\nclass ReferencePayload34 { public function __destruct() { echo \"O|\"; } }\nclass ReferenceIterator34 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = new ReferencePayload34(); }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; $GLOBALS[\"alias\"] =& $this->payload; return \"item\"; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ReferenceTarget34($prefix = 17, ?ReferencePayload34 &$item = null) { echo \"D\", $prefix, \"|\", func_num_args(), \"|\"; echo \"B|\"; $item = 17; echo \"F|\"; echo \"Q\", $item, \"|\"; }\n$failure = new Exception(\"stop\", 51);\n$alias = null;\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    return true;\n});\ntry { ReferenceTarget34(...new ReferenceIterator34()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\necho $alias === null ? \"NULL|\" : \"HELD|\";\nunset($alias);\necho \"E\";\n",
+    "source_sha256": "4d907521da594251851b0e66d60e1fc9eb9e7bf8b4f8de044b85ee15d4f53aae",
+    "purpose": "Nullable-class fixed slot1 receive; incompatible scalar assignment after successful receive is allowed in the fresh cell, preserving source aliases. Warning-handler throw precedes receive checking.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 2 of ReferenceTarget34() by unpacking a Traversable, passing by-value instead|22|X|V|I|D17|2|B|F|Q17|HELD|O|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-typed-fixed-reference-object-warning-throw",
+    "source": "<?php\nclass ReferencePayload34 { public function __destruct() { echo \"O|\"; } }\nclass ReferenceIterator34 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = new ReferencePayload34(); }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; return \"item\"; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ReferenceTarget34($prefix = 17, ?array &$item = null) { echo \"D\", $prefix, \"|\", func_num_args(), \"|\"; echo \"B|\"; $item = 17; echo \"F|\"; echo \"Q\", $item, \"|\"; }\n$failure = new Exception(\"stop\", 51);\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    throw $failure;\n});\ntry { ReferenceTarget34(...new ReferenceIterator34()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\necho \"E\";\n",
+    "source_sha256": "6e308525fffe64c6716b8f9eb81465e7a27e82de8b233a948eed0a194a228350",
+    "purpose": "Mismatched nullable-array fixed slot1 receive; incompatible scalar assignment after successful receive is allowed in the fresh cell, preserving source aliases. Warning-handler throw precedes receive checking.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 2 of ReferenceTarget34() by unpacking a Traversable, passing by-value instead|21|I|O|T|51|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-typed-fixed-reference-object-parked-resume",
+    "source": "<?php\nclass ReferencePayload34 { public function __destruct() { echo \"O|\"; } }\nclass ReferenceIterator34 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = new ReferencePayload34(); }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; return \"item\"; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ReferenceTarget34($prefix = 17, ?ReferencePayload34 &$item = null) { echo \"D\", $prefix, \"|\", func_num_args(), \"|\"; echo \"B|\"; $item = 17; echo \"F|\"; echo \"Q\", $item, \"|\"; }\n$failure = new Exception(\"stop\", 51);\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    Fiber::suspend(\"P\");\n    return true;\n});\n$marker = 0;\n$fiber = new Fiber(static function () {\n    try { ReferenceTarget34(...new ReferenceIterator34()); }\n    catch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n    echo \"FIB|\";\n});\necho \"S|\", $fiber->start(), \"|\";\n$marker = 17;\n$fiber->resume();\necho \"M|\", $marker, \"|\";\necho \"E\";\n",
+    "source_sha256": "f46938184fe4c647cb52beab701c2503841c9d7e2be297f301127db88a434c52",
+    "purpose": "Nullable-class fixed slot1 receive; incompatible scalar assignment after successful receive is allowed in the fresh cell, preserving source aliases. Warning-handler throw precedes receive checking.",
+    "expected_model": "normal",
+    "native_stdout": "S|W|V|C|K|H|2|Cannot pass by-reference argument 2 of ReferenceTarget34() by unpacking a Traversable, passing by-value instead|24|P|X|V|I|D17|2|B|O|F|Q17|FIB|M|17|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-typed-fixed-reference-object-parked-throw",
+    "source": "<?php\nclass ReferencePayload34 { public function __destruct() { echo \"O|\"; } }\nclass ReferenceIterator34 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = new ReferencePayload34(); }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; return \"item\"; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ReferenceTarget34($prefix = 17, ?ReferencePayload34 &$item = null) { echo \"D\", $prefix, \"|\", func_num_args(), \"|\"; echo \"B|\"; $item = 17; echo \"F|\"; echo \"Q\", $item, \"|\"; }\n$failure = new Exception(\"stop\", 51);\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    Fiber::suspend(\"P\");\n    return true;\n});\n$marker = 0;\n$fiber = new Fiber(static function () {\n    try { ReferenceTarget34(...new ReferenceIterator34()); }\n    catch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n    echo \"FIB|\";\n});\necho \"S|\", $fiber->start(), \"|\";\n$marker = 17;\n$fiber->throw($failure);\necho \"M|\", $marker, \"|\";\necho \"E\";\n",
+    "source_sha256": "684e8a6d8cf9a6c6e45198501970f7155e56e9b0933faf3810018d6f63aa0ab7",
+    "purpose": "Nullable-class fixed slot1 receive; incompatible scalar assignment after successful receive is allowed in the fresh cell, preserving source aliases. Warning-handler throw precedes receive checking.",
+    "expected_model": "normal",
+    "native_stdout": "S|W|V|C|K|H|2|Cannot pass by-reference argument 2 of ReferenceTarget34() by unpacking a Traversable, passing by-value instead|24|P|I|O|T|51|FIB|M|17|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-typed-fixed-reference-array-normal",
+    "source": "<?php\nclass ReferenceArrayChild35 { public function __destruct() { echo \"O|\"; } }\nclass ReferenceArrayIterator35 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = [new ReferenceArrayChild35()]; }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; return \"item\"; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ReferenceArrayTarget35($prefix = 17, ?array &$item = null) { echo \"D\", $prefix, \"|\", func_num_args(), \"|\"; echo \"B|\"; $item[0] = null; echo \"F|\"; $item = 17; echo \"Q\", $item, \"|\"; }\n$failure = new Exception(\"stop\", 51);\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    return true;\n});\ntry { ReferenceArrayTarget35(...new ReferenceArrayIterator35()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\necho \"E\";\n",
+    "source_sha256": "6384746dccfb9c76714624292ec687541ea56d2afc499259552749648e0a595a",
+    "purpose": "Nullable-array fixed slot1 receive; incompatible scalar assignment after successful receive is allowed in the fresh cell, preserving source aliases. Warning-handler throw precedes receive checking.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 2 of ReferenceArrayTarget35() by unpacking a Traversable, passing by-value instead|21|X|V|I|D17|2|B|O|F|Q17|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-typed-fixed-reference-array-separate-alias",
+    "source": "<?php\nclass ReferenceArrayChild35 { public function __destruct() { echo \"O|\"; } }\nclass ReferenceArrayIterator35 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = [new ReferenceArrayChild35()]; }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; $GLOBALS[\"alias\"] =& $this->payload; return \"item\"; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ReferenceArrayTarget35($prefix = 17, ?array &$item = null) { echo \"D\", $prefix, \"|\", func_num_args(), \"|\"; echo \"B|\"; $item[0] = null; echo \"F|\"; $item = 17; echo \"Q\", $item, \"|\"; }\n$failure = new Exception(\"stop\", 51);\n$alias = null;\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    return true;\n});\ntry { ReferenceArrayTarget35(...new ReferenceArrayIterator35()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\necho $alias[0] === null ? \"NULL|\" : \"HELD|\";\nunset($alias);\necho \"E\";\n",
+    "source_sha256": "a9d36ffaf3022c9eef3eee4d3afa880bf9f135b680942df1a94d1b732f53ff6a",
+    "purpose": "Nullable-array fixed slot1 receive; incompatible scalar assignment after successful receive is allowed in the fresh cell, preserving source aliases. Warning-handler throw precedes receive checking.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 2 of ReferenceArrayTarget35() by unpacking a Traversable, passing by-value instead|22|X|V|I|D17|2|B|F|Q17|HELD|O|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-typed-fixed-reference-object-wrong-class-receive",
+    "source": "<?php\nclass ReferencePayload34 { public function __destruct() { echo \"O|\"; } }\nclass ReferenceIterator34 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = new ReferencePayload34(); }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; return \"item\"; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ReferenceTarget34($prefix = 17, ?ReferenceIterator34 &$item = null) { echo \"D\", $prefix, \"|\", func_num_args(), \"|\"; echo \"B|\"; $item = null; echo \"F|\"; }\n$failure = new Exception(\"stop\", 51);\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    return true;\n});\ntry { ReferenceTarget34(...new ReferenceIterator34()); }\ncatch (TypeError $caught) { echo \"R|\", $caught->getLine(), \"|\"; }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\necho \"A|\";\nunset($caught);\necho \"E\";\n",
+    "source_sha256": "5f05880908213bb26c7e04453a798a098e52e5e5ceffdd774298930565b89042",
+    "purpose": "Receive rejects the supplied property-reference payload after Iterator retirement; no target body enters, and the caught TypeError trace retains the payload or array child until explicit exception release.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 2 of ReferenceTarget34() by unpacking a Traversable, passing by-value instead|21|X|V|I|R|14|A|O|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-typed-fixed-reference-array-class-receive",
+    "source": "<?php\nclass ReferenceArrayChild35 { public function __destruct() { echo \"O|\"; } }\nclass ReferenceArrayIterator35 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = [new ReferenceArrayChild35()]; }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; return \"item\"; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ReferenceArrayTarget35($prefix = 17, ?ReferenceArrayChild35 &$item = null) { echo \"D\", $prefix, \"|\", func_num_args(), \"|\"; echo \"B|\"; $item[0] = null; echo \"F|\"; }\n$failure = new Exception(\"stop\", 51);\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    return true;\n});\ntry { ReferenceArrayTarget35(...new ReferenceArrayIterator35()); }\ncatch (TypeError $caught) { echo \"R|\", $caught->getLine(), \"|\"; }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\necho \"A|\";\nunset($caught);\necho \"E\";\n",
+    "source_sha256": "8824ee9a010f9c7ca814131dd63920cb347c4ef00b21562270bb2d893791fc9f",
+    "purpose": "Receive rejects the supplied property-reference payload after Iterator retirement; no target body enters, and the caught TypeError trace retains the payload or array child until explicit exception release.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 2 of ReferenceArrayTarget35() by unpacking a Traversable, passing by-value instead|21|X|V|I|R|14|A|O|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-typed-fixed-reference-positional-class-normal",
+    "source": "<?php\nclass ReferencePayload34 { public function __destruct() { echo \"O|\"; } }\nclass ReferenceIterator34 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = new ReferencePayload34(); }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; return 0; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ReferenceTarget34(?ReferencePayload34 &$item = null) { echo \"D\", func_num_args(), \"|\"; echo \"B|\"; $item = 17; echo \"F|\"; echo \"Q\", $item, \"|\"; }\n$failure = new Exception(\"stop\", 51);\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    return true;\n});\ntry { ReferenceTarget34(...new ReferenceIterator34()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\necho \"E\";\n",
+    "source_sha256": "3131a261ae201305d0439d83cfaac4afd91525e42a56e986143de048c6a83f42",
+    "purpose": "First positional typed fixed slot0 enters TYPE_RECEIVE0 with no holes or default filling; accepted nullable class receive permits an incompatible scalar body write in the fresh private cell.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 1 of ReferenceTarget34() by unpacking a Traversable, passing by-value instead|21|X|V|I|D1|B|O|F|Q17|E",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
