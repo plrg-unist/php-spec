@@ -10,7 +10,7 @@ import output_reference_warning_sources as sources
 import output_reference_warning_review_sources as review
 
 ROOT = sources.ROOT
-CASES = {'prepared-prefix': review.CASES['second-reference-warning-trace']}
+CASES = {name: review.CASES['second-reference-warning-trace'] for name in ('live-prefix', 'retired-prefix')}
 PREFIX = r"""
 dec $rw_output(pevent*) : preqbytes
 dec $rw_is_output(pevent) : bool
@@ -58,18 +58,19 @@ def fingerprint():
     return inputs
 
 
-def assertions(fixture, directory, path):
-    return [
+def assertions(name, fixture, directory, path):
+    checks = [
         'S_initial = $php_file_run(' + fixture + ', 0, ' + bytes_expr(os.fsencode(path)) + ', ' + bytes_expr(os.fsencode(directory)) + ')',
         'S_initial.COMPLETION = BUDGET', *valid('S_initial'),
         'S_found = $rw_seek(S_initial, 0, 256)',
         r'S_found.COMPLETION = NORMAL \/ S_found.COMPLETION = BUDGET',
         'S_reached = S_found[.COMPLETION = NORMAL]', '$rw_phase(S_reached, 0)', *valid('S_reached'),
-        *budget('S_reached', 'S_budget'),
         'S_reached.TODO = (OB_USER_REFERENCE_RELEASE pobinvoke 1 n_pending) :: ptask_native*',
         'pobinvoke.CALL = OB_API_FAILED pconfigcall pcallcontext? ptask_native*',
         'pconfigcall.KIND = INTRINSIC_OB_GET_FLUSH',
-        'pobinvoke.SENT = [REFERENCE n_cell]',
+        'pobinvoke.SENT = [REFERENCE n_cell]']
+    if name == 'live-prefix':
+        return checks + budget('S_reached', 'S_budget') + [
         'S_reached.STORE[n_cell] = DEFINED pobinvoke.INPUT',
         '$string_bytes(pobinvoke.INPUT) = ([65])',
         '$heap_owners($heap_graph(S_reached), HCELL n_cell) = 1',
@@ -103,7 +104,8 @@ def assertions(fixture, directory, path):
         'S_forged_string = $string_request(S_reached, ([66]))',
         'S_forged_string.RESULT = KNOWN pvalue_forged',
         '$string_carrier_valid(S_forged_string, pvalue_forged)',
-        '~$call_task_valid(S_forged_string, OB_USER_REFERENCE_RELEASE pobinvoke[.INPUT = pvalue_forged] 1 n_pending)',
+        '~$call_task_valid(S_forged_string, OB_USER_REFERENCE_RELEASE pobinvoke[.INPUT = pvalue_forged] 1 n_pending)']
+    return checks + [
         'S_retired_found = $drive_steps(S_reached, 1)',
         r'S_retired_found.COMPLETION = NORMAL \/ S_retired_found.COMPLETION = BUDGET',
         'S_retired = S_retired_found[.COMPLETION = NORMAL]', *valid('S_retired'),
@@ -122,18 +124,18 @@ def assertions(fixture, directory, path):
         *budget('S_retired', 'S_retired_budget'),
         'S_done = $drive_steps(S_retired, 512)',
         r'S_done.COMPLETION = NORMAL /\ S_done.TODO = eps /\ S_done.CURRENT = eps /\ S_done.FRAMES = eps',
-        'S_done.OUTPUTBUFFERS = eps', '$rw_output(S_done.EVENTS) = ' + bytes_expr(CASES['prepared-prefix'][1]),
+        'S_done.OUTPUTBUFFERS = eps', '$rw_output(S_done.EVENTS) = ' + bytes_expr(CASES[name][1]),
         *valid('S_done')]
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--select', choices=list(CASES))
+    parser.add_argument('--select', choices=list(CASES), required=True)
     parser.add_argument('--output', type=Path)
     args = parser.parse_args()
     out = args.output or Path(tempfile.mkdtemp(prefix='output-reference-warning-state-', dir=ROOT / '.tools'))
     out.mkdir(parents=True, exist_ok=True)
-    name = args.select or 'prepared-prefix'
+    name = args.select
     report = {'revision': sources.subprocess.check_output(['git', '-C', str(ROOT), 'rev-parse', 'HEAD']).decode().strip(),
               'before': fingerprint(), 'profile': sources.common.PROFILE, 'selected': [name],
               'groups': [], 'passed': False, 'completed': False}
@@ -155,7 +157,7 @@ def main():
             checked = adapter.request({'op': 'check', 'ast': parsed['ast'], 'fixture': True})
         finally:
             adapter.close()
-        checks = assertions(checked['fixture'], directory, path)
+        checks = assertions(name, checked['fixture'], directory, path)
         fixture = out / 'state.watsup'
         fixture.write_text(PREFIX + '\ndec $main() : bool\ndef $main() = true\n' +
                            ''.join('  -- if ' + check + '\n' for check in checks))
