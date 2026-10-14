@@ -31,6 +31,10 @@ machine pauses. A finite version-2 provider supports checked CWD and
 convert before path lookup and once checks. Failed-open warnings resume handlers
 with live path sampling, saved owners and zero-argument file traces; fatal cleanup
 preserves frozen output before shutdown callbacks.
+Embedded-NUL paths [fail locally](coverage/semantics/source-nul-path-review.json)
+before provider or once lookup: include warns once and returns false, while require
+throws `Error`. Messages freeze the current path and redact credentials from the
+C-string display prefix. Stringable conversion tails remain explicitly Unsupported.
 
 [Backticks](docs/semantics/SHELL-DISPATCH.md) now construct commands through
 ordinary interpolation, retain compiler deprecations and `shell_exec` errors and

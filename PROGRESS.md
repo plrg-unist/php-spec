@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Embedded-NUL include/require paths now fail before file-provider or dynamic-parser
+requests, nonce allocation and once lookup. Include emits one frozen-path warning
+and returns false; require throws `Error`. The display uses the credential-stripped
+C-string prefix while retaining the full requested bytes. Eight NUL originals and
+two empty-path regression controls agree at c69ecf; five reached fronts/208 premises
+pass at 2cd61, covering saved handlers, trace/source guards, no-provider state and
+a genuine captured-conversion refusal. That refusal and the original baseline and
+two pre-runtime failures retain zero agreement. Captured conversion lifetime and
+broader source/service contexts remain open.
+Private validation is independently accepted; current-parent integration is pending.
+[NUL-path evidence](coverage/semantics/source-nul-path-review.json).
+
 Top-level empty `define` values now preserve their allocation class. Authenticated
 immutable empties retain their table; mutable emptied arrays become fresh canonical
 tables with rebuilt append history. Two exact sources and two public fronts/162
