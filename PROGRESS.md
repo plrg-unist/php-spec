@@ -1965,6 +1965,8 @@ and Grand300/get313 pass. Strict390/source2 at `48321a13` and four states at
 controls74 pass; its old ledger/source/entry/write identities remain historical.
 The initial setter-mutation elaboration stop remains0.
 [Inherited overlap review](coverage/semantics/inherited-overlap-trait-getter-review.json).
+Joined exact `5f6f84e7`/391; count-only initialization adds no source/state credit.
+Inactive comparison, define-warning, output-reference and WeakMap paths preserve the accepted class routes.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
