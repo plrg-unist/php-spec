@@ -1205,8 +1205,14 @@ General registration order and wider map shapes remain required.
 Ordinary object-key dimension reads now copy the stored value into a strong
 result, so a held copy survives key removal. A missing key throws Error using its
 actual object-store handle and preserves the existing entry. Two originals agree
-with PHP at `c4c097e`; 297 reached checks pass. Presence,
-reference and wider map protocols remain required.
+with PHP at `c4c097e`; 297 reached checks pass. Reference and wider map protocols
+remain required.
+
+`isset($map[$key])` and `empty($map[$key])` now test the stored value without
+adding a value owner. `isset` distinguishes null from false/zero/empty strings.
+Bounded scalar first entries keep their exact string carriers. Two originals agree across
+`144597d2`/`b7c1624a`; 377 focused checks cover presence, ownership and literal
+source certificates. Scalar replacement/nonempty teardown and wider protocols remain open.
 
 A callback can also read while a leaf key's unique active storage pin still has
 pending notification. The read copies the later entry's value; a missing entry

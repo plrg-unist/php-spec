@@ -350,9 +350,41 @@ stay at their tested revisions.
 
 The engine basis is `zend_weakmap_read_dimension` in `Zend/zend_weakrefs.c`: an
 ordinary `BP_VAR_R` read returns the stored zval; a missing object key reports the
-class and object-store handle. Presence/isset, reference/compound reads, other key
+class and object-store handle. Wider presence, reference/compound reads, other key
 types, methods/iteration, wider entry shapes, mutation during freeing and ephemeron collection remain required. Countable stays nominal-only; count execution remains
 excluded/Unsupported per CORE.
+
+## Presence and scalar first entries
+
+Module386 admits terminal `isset` and `empty` with a live map and nonfreeing
+`stdClass` leaf key. For `isset`, a matching null value and a missing key both
+return false; false, zero and empty strings return true. `empty` returns the
+negation of stored truth. The existing
+`KEY_TEST` carrier supplies the final boolean without calling `offsetGet` or
+creating a Value owner.
+
+Empty singleton storage also accepts null, bool, int and valid string first
+values. The original object-value predicate remains disjoint and unchanged.
+Current task/RHS/selected operands authenticate the new scalar lane. Module242
+recognizes an interned literal RHS only through its actual child, raw compiled
+string and source/precision-authenticated `compiled_string_value` producer;
+same-byte request carriers cannot impersonate it. Stored carriers are preserved.
+
+The object original (87 bytes) agrees at `144597d2`; its VARIABLE RHS excludes the
+later string-source arm. The scalar original (180 bytes) and four reached cuts
+(104/140/61/72, total 377) pass at `b7c1624a`. Object probes retain two Value
+owners; coherent null/truth substitutions retain the original CV owner. Current
+source/capture and wrong-carrier controls refuse. Cuts end at raw test results or
+insertion; originals supply explicit scalar unset, Value release and full endings.
+The unchanged Unsupported, original binding diagnostic and first scalar refusal
+retain zero credit. No prior active record is superseded.
+
+The engine basis is `zend_weakmap_has_dimension`, `zend_weakmap_write_dimension`
+and `zend_weakmap_unset_dimension` in `Zend/zend_weakrefs.c`, plus
+`ZEND_ISSET_ISEMPTY_DIM_OBJ`. Explicit methods, KEY_IS/coalesce, nonobject/freeing
+keys, float/array/reference values, scalar replacement/nonempty teardown and
+wider map/GC protocols remain required.
+[Ledger](../../coverage/semantics/weak-map-review.json).
 
 ## Reads during postponed Key notification
 

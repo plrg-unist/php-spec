@@ -3891,7 +3891,21 @@ entry. The 56-byte held-copy and 88-byte missing-key originals agree at `c4c097e
 missing-key Error pass, totaling 297. The Error cut stops after real materialization;
 originals supply catch and complete endings. The original 73-check owner forecast remains zero;
 its corrected control authenticates the two real destructor-entry task roots.
-Presence/reference/method and wider key/map protocols remain required.
+Wider presence/reference/method and key/map protocols remain required.
+
+Direct WeakMap `isset`/`empty` now uses stored null/truth with the existing
+terminal test carrier, adding no Value owner. Empty singleton maps also accept
+null/bool/int/valid string first values; source literals retain their exact
+carrier via the source/precision-authenticated producer in module242. The object
+87-byte original agrees at `144597d2`; the later literal arm is false for its
+VARIABLE RHS. The scalar 180-byte original and 104/140/61/72 focused checks
+(total 377) pass at `b7c1624a`. Coherent table substitutions retain the original
+Value CV; current-source and literal-carrier forgeries refuse. Cuts stop at raw
+test results or insertion; originals supply explicit scalar removal and endings.
+The unchanged refusal, algorithmic binding diagnostic and first scalar refusal
+remain zero. Methods, coalesce/reference, nonobject/freeing keys, other values,
+scalar replacement/nonempty teardown and wider map protocols remain required.
+[Ledger](coverage/semantics/weak-map-review.json).
 
 Reads during postponed Key notification now require the unique active stdClass
 pin, its live allocated wrapper and its actual store handle. A later-entry read
