@@ -16,6 +16,9 @@ entry, original true at both resumes, inner-definition origin and post-callback
 duplicate prefix. Baseline/native/preparation evidence retains0; wider domains and
 callbacks remain partial.
 [Ignored-flag ledger](coverage/semantics/dynamic-constant-flag-review.json).
+The 390 composition over b88b passes independent pointwise review at 79abff45;
+accepted runtime/protocol and parent hook/WeakMap paths are preserved.
+No renewed actor/source/state evidence is claimed.
 
 Primitive duplicate `define` now warns and returns false without replacing the
 old binding. Retained dynamic selection survives a named warning callback that
