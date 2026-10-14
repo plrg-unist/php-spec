@@ -128,8 +128,7 @@ COMMON = ['$class_named(S.CLASSNAMES,$ptlc($ptascii("ImportedExpressionGetterTra
  'phpType16_hook phpType39_hook metadata_hook)',
  '$hook_body_backed(phpType39_hook,ppropertydesc_source.NAME) /\\ $property_hook_source_declared(S,ppropertydesc_source) '
  '/\\ $property_hook_source_declared(S,ppropertydesc_consumer) /\\ '
- '$property_hook_trait_import_supported(S,pclassdesc_consumer,ppropertydesc_source) /\\ '
- '~$hook_statement_body(phpType39_hook)',
+ '$property_hook_trait_import_supported(S,pclassdesc_consumer,ppropertydesc_source)',
  '$origin_node(S.SOURCES,PORIGIN n_source (pcpath_hook ++ [PCFIELD 5,PCFIELD 1,PCFIELD 2,PCINDEX 0,PCFIELD 1])) = '
  '(NScalarMagicConstMethod metadata_magic)',
  '$method_named(pclassdesc_consumer.METHODS,$ptascii("answer")) = (pmethoddesc_answer)',
@@ -201,8 +200,7 @@ CONTROLS = ['$class_named(S.CLASSNAMES,$ptlc($ptascii("ImportedExpressionGetterT
  'phpType16_hook phpType39_hook metadata_hook)',
  '$hook_body_backed(phpType39_hook,ppropertydesc_source.NAME) /\\ $property_hook_source_declared(S,ppropertydesc_source) '
  '/\\ $property_hook_source_declared(S,ppropertydesc_consumer) /\\ '
- '$property_hook_trait_import_supported(S,pclassdesc_consumer,ppropertydesc_source) /\\ '
- '~$hook_statement_body(phpType39_hook)',
+ '$property_hook_trait_import_supported(S,pclassdesc_consumer,ppropertydesc_source)',
  '$origin_node(S.SOURCES,PORIGIN n_source (pcpath_hook ++ [PCFIELD 5,PCFIELD 1,PCFIELD 2,PCINDEX 0,PCFIELD 1])) = '
  '(NScalarMagicConstMethod metadata_magic)',
  '$method_named(pclassdesc_consumer.METHODS,$ptascii("answer")) = (pmethoddesc_answer)',
@@ -275,8 +273,7 @@ ENTRY = ['$class_named(S.CLASSNAMES,$ptlc($ptascii("ImportedExpressionGetterTrai
  'phpType16_hook phpType39_hook metadata_hook)',
  '$hook_body_backed(phpType39_hook,ppropertydesc_source.NAME) /\\ $property_hook_source_declared(S,ppropertydesc_source) '
  '/\\ $property_hook_source_declared(S,ppropertydesc_consumer) /\\ '
- '$property_hook_trait_import_supported(S,pclassdesc_consumer,ppropertydesc_source) /\\ '
- '~$hook_statement_body(phpType39_hook)',
+ '$property_hook_trait_import_supported(S,pclassdesc_consumer,ppropertydesc_source)',
  '$origin_node(S.SOURCES,PORIGIN n_source (pcpath_hook ++ [PCFIELD 5,PCFIELD 1,PCFIELD 2,PCINDEX 0,PCFIELD 1])) = '
  '(NScalarMagicConstMethod metadata_magic)',
  '$method_named(pclassdesc_consumer.METHODS,$ptascii("answer")) = (pmethoddesc_answer)',
@@ -401,8 +398,7 @@ WRITE = ['$class_named(S.CLASSNAMES,$ptlc($ptascii("ImportedExpressionGetterTrai
  'phpType16_hook phpType39_hook metadata_hook)',
  '$hook_body_backed(phpType39_hook,ppropertydesc_source.NAME) /\\ $property_hook_source_declared(S,ppropertydesc_source) '
  '/\\ $property_hook_source_declared(S,ppropertydesc_consumer) /\\ '
- '$property_hook_trait_import_supported(S,pclassdesc_consumer,ppropertydesc_source) /\\ '
- '~$hook_statement_body(phpType39_hook)',
+ '$property_hook_trait_import_supported(S,pclassdesc_consumer,ppropertydesc_source)',
  '$origin_node(S.SOURCES,PORIGIN n_source (pcpath_hook ++ [PCFIELD 5,PCFIELD 1,PCFIELD 2,PCINDEX 0,PCFIELD 1])) = '
  '(NScalarMagicConstMethod metadata_magic)',
  '$method_named(pclassdesc_consumer.METHODS,$ptascii("answer")) = (pmethoddesc_answer)',
@@ -487,8 +483,8 @@ WRITE = ['$class_named(S.CLASSNAMES,$ptlc($ptascii("ImportedExpressionGetterTrai
  'ppropertydesc_consumer.KEY, STATE PROP_VALUE (DIRECT (PINT 300)) }])',
  '$tie_guard(S_result)']
 
-DERIVED = ['$hook_body_backed(expression_hook,ppropertydesc_source.NAME) /\\ ~$hook_statement_body(expression_hook) /\\ '
- '~$hook_body_backed(expression_answer,ppropertydesc_source.NAME) /\\ ~$hook_statement_body(expression_answer)',
+DERIVED = ['$hook_body_backed(expression_hook,ppropertydesc_source.NAME) /\\ '
+ '~$hook_body_backed(expression_answer,ppropertydesc_source.NAME)',
  'porigin_property_source = PORIGIN n_source pcpath_property',
  'pcpath_property_group = pcpath_property[0:$nabs($(|pcpath_property| - 2))]',
  '$origin_node(S.SOURCES,PORIGIN n_source pcpath_property_group) = (NStmtProperty phpType14_property phpType24_property '
@@ -500,7 +496,7 @@ DERIVED = ['$hook_body_backed(expression_hook,ppropertydesc_source.NAME) /\\ ~$h
  'pclassdesc_trait.INTERFACES, BODY phpType23_trait}',
  '$pphook_owner_shape(pchheader_trait,phpType40_property,NPropertyHook phpType14_hook phpType24_hook phpType4_hook '
  'phpType11_hook phpType16_hook expression_hook metadata_hook,phpType5_property)',
- '~$pphook_owner_shape(pchheader_trait,phpType40_property,NPropertyHook phpType14_hook phpType24_hook phpType4_hook '
+ '$pphook_owner_shape(pchheader_trait,phpType40_property,NPropertyHook phpType14_hook phpType24_hook phpType4_hook '
  'phpType11_hook phpType16_hook expression_answer metadata_hook,ABSENT)',
  'S.SOURCES = pcunit :: pcunit_tail*',
  'pcunit.ID = n_source',
@@ -517,8 +513,8 @@ DERIVED = ['$hook_body_backed(expression_hook,ppropertydesc_source.NAME) /\\ ~$h
  '[ppropertydesc_consumer[.DEFAULT = PROP_UNINITIALIZED]]])]',
  '$property_hook_origin(S_virtual,ppropertydesc_source[.DEFAULT = PROP_UNINITIALIZED]) = (porigin_hook_source) /\\ '
  '$property_hook_virtual(S_virtual,ppropertydesc_source[.DEFAULT = PROP_UNINITIALIZED])',
- '~$property_hook_trait_import_supported(S_virtual,pclassdesc_consumer,ppropertydesc_source[.DEFAULT = PROP_UNINITIALIZED]) '
- '/\\ $property_hook_trait_origin(S_virtual,ppropertydesc_consumer[.DEFAULT = PROP_UNINITIALIZED]) = eps',
+ '$property_hook_trait_import_supported(S_virtual,pclassdesc_consumer,ppropertydesc_source[.DEFAULT = PROP_UNINITIALIZED]) '
+ '/\\ $property_hook_trait_origin(S_virtual,ppropertydesc_consumer[.DEFAULT = PROP_UNINITIALIZED]) = (porigin_hook)',
  '$property_hook_expression_return(S,porigin_hook,z_return) = (expression_hook)',
  '$property_hook_expression_return(S,TRAIT_ORIGIN porigin_grand porigin_hook_source '
  '($hook_name(ppropertydesc_consumer.NAME)),z_return) = eps',
