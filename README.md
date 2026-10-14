@@ -645,6 +645,11 @@ parameter. It retains the captured payload and fresh callee cell, including sour
 aliases, array copying, handler throws and Fiber suspension. Named history still
 rejects a later positional key before another warning or target entry. See the
 [named reference review](coverage/semantics/iterator-call-unpack-named-reference-review.json).
+Initial named reference sends can also select later fixed parameters. Earlier
+defaults bind before the body, warning numbers and argument count use the selected
+slot, and handler writes cannot retarget its captured key. Missing required earlier
+arguments raise the real error while its trace retains the supplied payload. See
+the [reference-hole review](coverage/semantics/iterator-call-unpack-reference-holes-review.json).
 Valid NaN warnings retain the raw return through handler mutation, Fiber parking
 and throw. One numeric reread distinguishes copied NaN from a live reference;
 the raw return retires before current or iterator teardown.

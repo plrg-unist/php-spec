@@ -1289,10 +1289,22 @@ three independent originals, and seven genuine-source state groups/514 driver
 premises pass at `913195852`. The original Unsupported baseline, independent
 fixture grammar failure and terminated successor retain zero agreement. Later,
 typed or variadic reference sends, wider sources/live replacements and broader
-array/COW interactions remain required; full core stays partial.
+array/COW interactions remained required at that cut; full core stays partial.
 [Named reference review](coverage/semantics/iterator-call-unpack-named-reference-review.json).
 The composition of 391 modules over `11fdbc879` passes canonical inventory and strict SL at
 `b15c57efc`; private source/state cuts retain their original identities.
+
+Initial named stable Iterator property-reference sends now resolve later fixed
+untyped BYREF parameters with an empty sent buffer. Earlier argument holes bind
+defaults before the body, while the selected slot determines warning number and
+argument count. Handler writes cannot retarget the captured key; missing required
+earlier arguments raise real `ArgumentCountError` with trace-owned payloads.
+Strict391 and eleven new originals pass at `b2d6e6e539`. Eight new genuine-source
+state groups/555 driver premises and only the affected prior group/69 pass there;
+other prior cuts retain their own identities. The unchanged Unsupported baseline
+retains zero agreement. Actual later sends, typed/variadic targets, wider
+sources/live replacements and broader array/COW interactions remain open.
+[Reference-hole review](coverage/semantics/iterator-call-unpack-reference-holes-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or

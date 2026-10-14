@@ -1,0 +1,32 @@
+[
+  {
+    "id": "iterator-reference-holes-review-third-slot-object-frozen-key",
+    "source": "<?php\nclass ReviewHolePayload02 { public function __destruct() { echo \"O|\"; } }\nclass ReviewHoleIterator02 implements Iterator {\n    public $payload;\n    public $name = \"item\";\n    private int $position = 0;\n    public function __construct() { $this->payload = new ReviewHolePayload02(); }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function &key(): mixed { echo \"K|\"; $GLOBALS[\"alias\"] =& $this->payload; $GLOBALS[\"keyAlias\"] =& $this->name; return $this->name; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction reviewHoleThird02($a = 17, $b = \"seed\", &$item = null) { echo \"B\", $a, \":\", $b, \":\", func_num_args(), \"|\"; $item = null; echo \"F|\"; }\n$alias = null;\n$keyAlias = null;\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $keyAlias;\n    echo \"H\", $severity, \":\", $message, \"|\";\n    $keyAlias = \"a\";\n    return true;\n});\nreviewHoleThird02(...new ReviewHoleIterator02());\necho $keyAlias, \"|\", $alias === null ? \"NULL|\" : \"HELD|\";\nunset($alias, $keyAlias);\necho \"E\";\n",
+    "source_sha256": "5ef1737bcf5d7d9f10dc6566867ca7fa211a3b27004bd24d57c0cc7e91691994",
+    "purpose": "The third named fixed reference keeps its chosen slot after key-reference mutation, fills two earlier defaults, and uses a private callee cell with independent source alias.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H2:Cannot pass by-reference argument 3 of reviewHoleThird02() by unpacking a Traversable, passing by-value instead|X|V|I|B17:seed:3|F|a|HELD|O|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-reference-holes-review-second-slot-array-default-cow",
+    "source": "<?php\nclass ReviewHolePayload02 { public function __destruct() { echo \"O|\"; } }\nclass ReviewHoleIterator02 implements Iterator {\n    public $payload;\n    public $name = \"item\";\n    private int $position = 0;\n    public function __construct() { $this->payload = [new ReviewHolePayload02()]; }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; $GLOBALS[\"alias\"] =& $this->payload; return \"item\"; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction reviewHoleArray02($prefix = [19], &$item = null) { echo \"B\", $prefix[0], \":\", func_num_args(), \"|\"; $item[0] = null; echo \"F|\"; }\n$alias = null;\n$keyAlias = null;\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $keyAlias;\n    echo \"H\", $severity, \":\", $message, \"|\";\n    \n    return true;\n});\nreviewHoleArray02(...new ReviewHoleIterator02());\necho $alias[0] === null ? \"NULL|\" : \"HELD|\";\nunset($alias);\necho \"E\";\n",
+    "source_sha256": "2fcddeee5bc1adde85204842311fc5ea31b210199b9289f002aa0a6be0c3328f",
+    "purpose": "A first named reference selects slot1, fills an earlier array default and separates its private array on nested write while the source alias keeps the original child.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H2:Cannot pass by-reference argument 2 of reviewHoleArray02() by unpacking a Traversable, passing by-value instead|X|V|I|B19:2|F|HELD|O|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-reference-holes-review-missing-required-hole",
+    "source": "<?php\nclass ReviewHolePayload02 { public function __destruct() { echo \"O|\"; } }\nclass ReviewHoleIterator02 implements Iterator {\n    public $payload;\n    public $name = \"item\";\n    private int $position = 0;\n    public function __construct() { $this->payload = new ReviewHolePayload02(); }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; return \"item\"; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction reviewHoleRequired02($required, &$item = null) { echo \"BAD|\"; }\n$alias = null;\n$keyAlias = null;\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $keyAlias;\n    echo \"H\", $severity, \":\", $message, \"|\";\n    \n    return true;\n});\ntry { reviewHoleRequired02(...new ReviewHoleIterator02()); }\ncatch (ArgumentCountError $caught) { echo \"T:\", $caught->getMessage(), \"|\"; }\nunset($caught);\necho \"E\";\n",
+    "source_sha256": "e12b479c07dc961a6d95c83f2bbe2622087bb4bac53197f9e16c67ed7b4c99f3",
+    "purpose": "The later named reference warning/Iterator teardown precedes a missing earlier required-argument Error; the target body is unentered and Throwable trace ownership determines final payload retirement.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H2:Cannot pass by-reference argument 2 of reviewHoleRequired02() by unpacking a Traversable, passing by-value instead|X|V|I|T:reviewHoleRequired02(): Argument #1 ($required) not passed|O|E",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]

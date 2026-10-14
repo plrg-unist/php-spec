@@ -341,10 +341,23 @@ array writes retain their ordinary copy-on-write behavior. The completed send
 records named-argument history, so a later positional key raises Error before
 another warning or target entry. This follows `SEND_UNPACK` and
 `zend_handle_named_arg`, then `ZVAL_DEREF`, `Z_TRY_ADDREF` and `ZVAL_NEW_REF` in
-the pinned engine. Later/typed/variadic reference sends, other sources and live
-payload replacement remain required. The
+the pinned engine. Later fixed destinations, typed/variadic reference sends,
+other sources and live payload replacement remained required at that cut. The
 [named reference review](../../coverage/semantics/iterator-call-unpack-named-reference-review.json)
 keeps this extension separate from the earlier positional cuts.
+
+An initial named reference send may now select any fixed untyped by-reference
+parameter at the same direct site, with no previous sent arguments or named phase.
+The selected slot creates genuine earlier argument holes; its warning number and
+argument count use the selected position. The captured key stays fixed when a
+handler changes a returned key reference. Defaults fill the holes before the
+body while the distinct private payload cell stays owned. A missing required
+earlier parameter raises `ArgumentCountError`; its real trace retains the supplied
+payload through caught-exception release. Object aliases, array COW and warning
+cleanup retain their existing rules. Actual later sends, typed/variadic targets,
+other sources and live payload replacement remain required. The
+[reference-hole review](../../coverage/semantics/iterator-call-unpack-reference-holes-review.json)
+preserves previous evidence and the affected earlier helper checks separately.
 
 Iterator valid NaN warnings keep the raw retval in CURRENT through handler invoke,
 result, cleanup and saved Fiber frames. The native `zend_user_it_valid` wrapper

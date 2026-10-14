@@ -1,0 +1,133 @@
+{
+  "status": "accepted private bounded milestone; actual-parent composition pending",
+  "reviewer": "/root/iterator_review_01",
+  "scope": "The initial named-key Iterator property-reference unpack send may select any fixed untyped nonvariadic BYREF parameter, including a later parameter with omitted earlier arguments. Empty SENT, no prior named phase, exact direct statically named Iterator construction, stable declared untyped nonstatic property payload, detached HOLD/SNAPSHOT and existing bounded object/array payload rules remain required.",
+  "engine": {
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "runtime": "PHP 8.5.10 CLI NTS 64-bit",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "source_route": "Zend/zend_vm_def.h SEND_UNPACK resolves a named target through zend_handle_named_arg before dereferencing the raw value, retaining its payload, warning and creating a private reference. Zend/zend_execute.c zend_handle_named_arg sets the selected argument count and initializes earlier missing slots as UNDEF. zend_handle_undef_args, reached through ZEND_CHECK_UNDEF_ARGS, fills defaults or constructs the real ArgumentCountError before body entry."
+  },
+  "implementation": {
+    "parent": "0420409bec101d7b3163958f3fd9efcb1298040f",
+    "tested_revision": "b2d6e6e539cee69770c2d61ba4a61318cbfe027f",
+    "module": "spec/semantics/385-call-iterator-unpack.watsup",
+    "module_sha256": "8925412f8c885d39694f41874a23bee7f1d5be09eaa83637778a57a1ac1ff84a",
+    "change": "Generalize three iterator_unpack_reference_allowed premises from literal fixed slot0 to the same resolved n_target; preserve every other guard. Existing named_store creates NAMED_HOLE slots and existing named preflight binds defaults or raises a missing-required error. Slot0 behavior specializes to the prior rule.",
+    "contract": "Warning numbering and ARGC use the captured selected slot. Mutation of the raw key cell during the warning does not retarget the send. The detached payload moves into a fresh private reference, preserving source aliases and array COW. Earlier defaults bind after Iterator retirement, while the supplied private reference remains alive. A missing required earlier parameter prevents body entry; the caught Throwable trace retains the supplied payload until the exception is released."
+  },
+  "private_root": ".tools/iterator-reference-later-fixed-02",
+  "author": {
+    "native": {
+      "revision": "0420409bec101d7b3163958f3fd9efcb1298040f",
+      "report": ".tools/iterator-call-unpack-later-fixed-reference-native-bwbuk1qm/report.json",
+      "originals": 8,
+      "model_agreements": 0
+    },
+    "baseline": {
+      "revision": "0420409bec101d7b3163958f3fd9efcb1298040f",
+      "report": ".tools/iterator-reference-later-fixed-baseline-ryeegdva/report.json",
+      "result": "Sole object-normal original is explicitly Unsupported: Iterator unpack by-reference raw payload, after W|V|C|K|, without diagnostic. Original source/native tuple is unchanged.",
+      "model_agreements": 0
+    },
+    "strict": {
+      "report": ".tools/iterator-reference-later-fixed-sl-611jxpqv/report.json",
+      "modules": 391,
+      "passed": true
+    },
+    "source": {
+      "runner": "tests/semantics/iterator_call_unpack_later_fixed_reference_sources.py",
+      "report": ".tools/iterator-call-unpack-later-fixed-reference-source-_vq_3afr/report.json",
+      "normal_agreements": 8,
+      "coverage": "First named slot1 with earlier default17 and ARGC2: object normal/alias/handler throw/Fiber parked resume/injected throw; array normal/alias/handler throw. Retained unchanged native originals are reused."
+    },
+    "state": {
+      "runner": "tests/semantics/iterator_call_unpack_later_fixed_reference_state.py",
+      "reports": [
+        {
+          "report": ".tools/fiber-state-review-qcqj_dsj/report.json",
+          "driver_premises": 61
+        },
+        {
+          "report": ".tools/fiber-state-review-wp9awtjl/report.json",
+          "driver_premises": 95
+        },
+        {
+          "report": ".tools/fiber-state-review-deg98dgg/report.json",
+          "driver_premises": 108
+        },
+        {
+          "report": ".tools/fiber-state-review-_cndy9zp/report.json",
+          "driver_premises": 54
+        },
+        {
+          "report": ".tools/fiber-state-review-dt38n1fs/report.json",
+          "driver_premises": 69
+        },
+        {
+          "report": ".tools/fiber-state-review-7cwbt5vl/report.json",
+          "driver_premises": 42
+        }
+      ],
+      "groups": 6,
+      "driver_premises": 429,
+      "coverage": "Genuine named-source warning hold, object/array private-cell transfer, aliased array COW and parked owners with sparse slot1; genuine NAMED_PREFLIGHT0->1 binds default17 with ARGC2, hole0, retired Iterator and unchanged private payload."
+    }
+  },
+  "independent": {
+    "native_preparation": {
+      "report": ".tools/iterator-reference-holes-review-native-kx658mh2/report.json",
+      "originals": 3,
+      "model_agreements": 0
+    },
+    "source": {
+      "runner": "tests/semantics/iterator_call_unpack_reference_holes_review_sources.py",
+      "report": ".tools/iterator-reference-holes-review-source-rx0dv4hu/report.json",
+      "normal_agreements": 3,
+      "coverage": "Third fixed slot with two earlier defaults and warning-handler mutation of the raw key reference; second fixed slot with an array default and source array COW alias; real missing-required-earlier ArgumentCountError with no body entry and Throwable-held payload lifetime."
+    },
+    "state": {
+      "runner": "tests/semantics/iterator_call_unpack_reference_holes_review_state.py",
+      "reports": [
+        {
+          "report": ".tools/fiber-state-review-n3z13ksj/report.json",
+          "driver_premises": 66
+        },
+        {
+          "report": ".tools/fiber-state-review-nabtawf4/report.json",
+          "driver_premises": 60
+        }
+      ],
+      "groups": 2,
+      "driver_premises": 126,
+      "coverage": "Genuine third-slot warning/send captures item despite raw key now a, stores two holes plus fresh private reference, and preserves alias/payload owners. Genuine default preflight fills17 then seed with ARGC3 and holes0/1, preserving source/private cells, captured key, public guards and split-budget equality."
+    },
+    "affected_prior": {
+      "runner": "tests/semantics/iterator_call_unpack_named_reference_independent_state.py",
+      "selection": "first-named-reference-keeps-fixed-slot-and-named-history",
+      "report": ".tools/fiber-state-review-ru4h5r94/report.json",
+      "groups": 1,
+      "driver_premises": 69,
+      "change": "Only two counterfactual helper checks for first named later selecting untyped fixed slot1 change from refusal to admission. Unknown key, nonempty SENT, earlier NAMED and wrong-line refusals remain. This directly affected prior group is rerun separately from new milestone counts."
+    }
+  },
+  "validation": "All semantic gates passed at b2d6e6e539, with strict SL, caches disabled, encountered determinism, LC_ALL=C, TZ=UTC and worker1. Source reports record stable HEAD and watched inputs; reached-state reports record stable author/independent inputs. Each reached group ran as a separate --case process, serial stop-first, cap120 seconds; source cap60 model/75 process. Native/baseline preparations stay at their recorded base revision. Exact selections, commands, identities, original bytes, fixtures and exits remain in raw reports.",
+  "retention": "This milestone adds11 original normal agreements and8 genuine reached groups/555 driver premises. The directly affected prior group69 is separate. Earlier13 originals, prior unaffected58 and all unrelated cuts retain their original identities without replay. Native preparations and the Unsupported baseline have zero model-agreement credit. No semantic discrepancy or actor failure occurred in this packet.",
+  "artifacts": {
+    "archive": "../php-spec-evidence-archive/iterator-reference-later-fixed-02/evidence.tar.gz",
+    "archive_sha256": "b45faa90d97f2a561944bffc8fb546b577b7240e2edc06e4b0b39718dc4bf20e",
+    "bytes": 524081,
+    "manifest": "../php-spec-evidence-archive/iterator-reference-later-fixed-02/manifest.json",
+    "recovery": "Extract into an empty directory. Manifest report members under private/ correspond to the listed private-root .tools directories; review-native-preparation/ restores the independent native-only preparation. Fifteen report hashes and roles bind author native8, baseline0, strict391, source8, six states, independent source3, new states66/60, affected prior69 and native preparation3. Ad hoc drivers, originals, raw observations and fixtures are included; maintained implementation/tests come from Git. No worktree or tool backup is included."
+  },
+  "remaining": [
+    "Noninitial property-reference sends and typed or variadic selected targets",
+    "Other reference sources, wider construction sites and live handler/main payload replacement",
+    "Broader arrays, embedded references, cycles and further COW/lifetime interactions",
+    "Complete Iterator, foreach, callable and PHP core semantics"
+  ],
+  "composition": {
+    "status": "Pending actual-parent pointwise review and canonical inventory/sole strict gate; private source/state evidence is not renewed for metadata."
+  }
+}
