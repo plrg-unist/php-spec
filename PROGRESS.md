@@ -20,6 +20,9 @@ syntax/native preparations retain zero credit. Other slot classes, copies,
 right-only ingress, owning callbacks, unsafe/nonconvertible replacements and wider
 arithmetic/lifecycle routes remain required. OP12 stays paused.
 [ADD warning ledger](coverage/semantics/arithmetic-warning-review.json).
+The 394-module join over d8bcbc01 passes current full SL initialization at 48d2.
+Independent pointwise review preserves parent comparisons, setters and constant
+lookup; private source/state cuts retain their identities without a source replay.
 
 Class-qualified `constant` now returns inherited folded primitives and authenticated
 literal strings with the actual lexical visibility. Missing/inaccessible lookup
