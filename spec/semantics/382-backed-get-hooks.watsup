@@ -130,11 +130,30 @@ def $property_hook_origin(S, ppropertydesc) = eps -- otherwise
 
 ;; Imported hooks retain their physical code and magic spelling. Only their
 ;; callable identity and lexical owner are rebound to the actual using class.
+dec $property_hook_trait_parent_shape(pstate, pclassdesc, ptbytes) : bool
+def $property_hook_trait_parent_shape(S, pclassdesc, ptbytes) = true
+  -- if pclassdesc.PARENT = eps
+def $property_hook_trait_parent_shape(S, pclassdesc, ptbytes) = true
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class"
+  -- if $ppproperty_desc_at($property_info_layout(S, porigin_parent, |S.CLASSES|), ptbytes) = eps
+def $property_hook_trait_parent_shape(S, pclassdesc, ptbytes) = false -- otherwise
+dec $property_hook_trait_parent_linked(pstate, pclassdesc) : bool
+def $property_hook_trait_parent_linked(S, pclassdesc) = true
+  -- if pclassdesc.PARENT = eps
+def $property_hook_trait_parent_linked(S, pclassdesc) = true
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
+  -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = (SOURCE_PARENT porigin_parent)
+def $property_hook_trait_parent_linked(S, pclassdesc) = false -- otherwise
 dec $property_hook_trait_origin(pstate, ppropertydesc) : porigin?
 def $property_hook_trait_origin(S, ppropertydesc) = (TRAIT_ORIGIN porigin_owner porigin_hook ($hook_name(ppropertydesc.NAME)))
   -- if ppropertydesc.ORIGIN = TRAIT_MEMBER_ORIGIN porigin_owner porigin_source
   -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
-  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ ~pclassdesc.READONLY
+  -- if pclassdesc.KIND = "class" /\ ~pclassdesc.READONLY
+  -- if $property_hook_trait_parent_shape(S, pclassdesc, ppropertydesc.NAME) /\ $property_hook_trait_parent_linked(S, pclassdesc)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_owner)
   -- if $hook_property_at(pclassdesc.PROPERTIES, TRAIT_MEMBER_ORIGIN porigin_owner porigin_source) = (ppropertydesc)
   -- if $trait_property_source_at(S.CLASSES, $origin_source(porigin_source)) = (ppropertydesc_source)
@@ -189,7 +208,8 @@ def $property_hook_source_declared(S, ppropertydesc) = false -- otherwise
 def $property_hook_trait_import_supported(S, pclassdesc, ppropertydesc) = true
   -- if ~$property_hook_source_declared(S, ppropertydesc)
 def $property_hook_trait_import_supported(S, pclassdesc, ppropertydesc) = true
-  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ ~pclassdesc.READONLY
+  -- if pclassdesc.KIND = "class" /\ ~pclassdesc.READONLY
+  -- if $property_hook_trait_parent_shape(S, pclassdesc, ppropertydesc.NAME)
   -- if ppropertydesc.ORIGIN = PORIGIN n pcpath
   -- if $property_hook_origin(S, ppropertydesc) = (porigin_hook)
   -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 phpType39 metadata)
