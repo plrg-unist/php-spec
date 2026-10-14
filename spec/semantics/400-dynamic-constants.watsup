@@ -67,6 +67,7 @@ def $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
   -- if $string_bytes(pvalue_name) = (preqbytes)
 def $dynamic_define_values(pconfigcall) = eps -- otherwise
 
+dec $dynamic_constant_duplicate_valid(pstate, pconfigcall, nat) : bool
 dec $dynamic_constant_receive(pstate, pconfigcall) : pstate
 def $dynamic_constant_receive(S, pconfigcall) = S[.TODO = ptask_tail*][.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME $user_constant_key(preqbytes), ORIGIN pconfigcall.SITE, VALUE pvalue, CLASS pvalueclass, READS eps, RECEIVES eps}]][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pconfigcall.KIND = INTRINSIC_DEFINE
@@ -86,12 +87,25 @@ def $dynamic_constant_receive(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT =
   -- if $string_bytes(pvalue_name) = (preqbytes)
   -- if $dynamic_constant_global_name($dynamic_constant_query(preqbytes))
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_constant_receive(S, pconfigcall) = $error_dispatch(S[.TODO = (DYNAMIC_CONSTANT_DUPLICATE pconfigcall n_constants) :: ptask_tail*], 2, ptbytes_message, pconfigcall.LINE, DIAGNOSTIC "Warning" ptbytes_message pconfigcall.LINE, DYNAMIC_CONSTANT_DUPLICATE pconfigcall n_constants)
+  -- if n_constants = |S.USERCONSTANTS|
+  -- if $dynamic_constant_duplicate_valid(S, pconfigcall, n_constants)
+  -- if $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
+  -- if ptbytes_message = $global_constant_duplicate_message(preqbytes)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
 def $dynamic_constant_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "dynamic constant call domain"] -- otherwise
 
 rule PhpStep/dynamic-constant-invoke: S ~> $dynamic_constant_receive(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $config_invoke_valid(S, pconfigcall)
   -- if $dynamic_constant_kind(pconfigcall.KIND)
+
+def $task_nodes(DYNAMIC_CONSTANT_DUPLICATE pconfigcall n_constants) = $config_nodes(pconfigcall)
+def $selected_task_nonce(DYNAMIC_CONSTANT_DUPLICATE pconfigcall n_constants) = pconfigcall.SELECTION
+def $call_task_valid(S, DYNAMIC_CONSTANT_DUPLICATE pconfigcall n_constants) = $dynamic_constant_duplicate_valid(S, pconfigcall, n_constants)
+rule PhpStep/dynamic-constant-duplicate: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (DYNAMIC_CONSTANT_DUPLICATE pconfigcall n_constants) :: ptask_tail*
+  -- if $dynamic_constant_duplicate_valid(S, pconfigcall, n_constants)
 
 ;; Only immutable compiler facts constrain literal payloads. A mutable variable
 ;; argument is captured by the runtime row and is never evaluated again here.
@@ -123,3 +137,31 @@ def $user_constants_valid(S, puserconstant :: puserconstant_tail*) = true
   -- if $dynamic_define_value_matches(puserconstant.VALUE, $dynamic_define_known(S, puserconstant.ORIGIN, 1))
   -- if $user_constant_at(puserconstant_tail*, puserconstant.NAME) = eps
   -- if $user_constants_valid(S, puserconstant_tail*)
+
+;; The warning may append other constants through its handler. The rejected
+;; candidate remains captured while the original key belongs to the old prefix.
+def $dynamic_constant_duplicate_valid(S, pconfigcall, n_constants) = true
+  -- if pconfigcall.KIND = INTRINSIC_DEFINE
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if $dynamic_define_source(S, pconfigcall.SITE)
+  -- if $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
+  -- if $dynamic_constant_global_name(preqbytes)
+  -- if ~$dynamic_constant_initial(preqbytes)
+  -- if $dynamic_constant_class(pvalue) = (pvalueclass)
+  -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
+  -- if $(n_constants <= |S.USERCONSTANTS|)
+  -- if $user_constant_at(S.USERCONSTANTS[0:n_constants], $user_constant_key(preqbytes)) =/= eps
+  -- if $dynamic_define_name_matches($user_constant_key(preqbytes), $dynamic_define_known(S, pconfigcall.SITE, 0))
+  -- if $dynamic_define_value_matches(pvalue, $dynamic_define_known(S, pconfigcall.SITE, 1))
+def $dynamic_constant_duplicate_valid(S, pconfigcall, n_constants) = false -- otherwise
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = DYNAMIC_CONSTANT_DUPLICATE pconfigcall n_constants
+  -- if $dynamic_constant_duplicate_valid(S, pconfigcall, n_constants)
+  -- if $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
+  -- if perrorcall.SITE = pconfigcall.SITE /\ perrorcall.LEVEL = 2 /\ perrorcall.LINE = pconfigcall.LINE
+  -- if perrorcall.MESSAGE = $global_constant_duplicate_message(preqbytes)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pconfigcall.LINE
+def $error_context_trigger(S, pcallcontext) = (pconfigcall)
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = DYNAMIC_CONSTANT_DUPLICATE pconfigcall n_constants
