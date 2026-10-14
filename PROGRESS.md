@@ -16,6 +16,9 @@ value types, raw-to-installed string class and Error trace authority. The origin
 selected failure, baseline/native/preparation evidence retain 0. Global queries,
 deferred evaluation, wider values/class kinds/coercions and owning forms remain
 Unsupported. [Qualified-constant ledger](coverage/semantics/class-qualified-constant-review.json).
+The 393-module composition over d3c27de8 passes independent pointwise review at
+b19ee1e7; accepted runtime deltas/protocol and incoming setter/comparison paths
+are preserved. No renewed actor/source/state evidence is claimed.
 
 Module 402 now resumes ordinary source-instance/int/float comparisons after the
 failed-cast Notice. Generic handler restoration preserves live CV/CELL versus
