@@ -174,8 +174,9 @@ def $property_set_context_valid(S, pcallcontext) = true
 def $property_set_context_valid(S, pcallcontext) = false -- otherwise
 
 def $call_selected_valid(S, PROPERTY_SET_TARGET ppropertyhook, (porigin)) = (porigin = ppropertyhook.SITE /\ ($property_set_pending_call(S, ppropertyhook) \/ $property_set_entered(S, S.CURRENT, S.FRAMES, ppropertyhook)))
-def $call_arguments_valid(S, (porigin), 1, eps, [KNOWN pvalue], 0) = true
-  -- if S.TODO = (CALL_ARGS (PROPERTY_SET_TARGET ppropertyhook) eps 1 ([KNOWN pvalue]) (porigin) z) :: ptask_tail*
+def $call_arguments_valid(S, (porigin), 1, eps, poperand :: eps, 0) = true
+  -- if poperand = KNOWN pvalue
+  -- if S.TODO = (CALL_ARGS (PROPERTY_SET_TARGET ppropertyhook) eps 1 (poperand :: eps) (porigin) z) :: ptask_tail*
   -- if $property_set_pending_call(S, ppropertyhook)
 def $call_arity_valid(S, pcallcontext) = $property_set_context_valid(S, pcallcontext)
   -- if pcallcontext.TARGET = PROPERTY_SET_TARGET ppropertyhook
