@@ -2080,6 +2080,10 @@ Selected virtual expression trait getters also import with no physical slot.
 Consumer private13 and Trait magic survive; a Grand write raises the read-only
 Error and the getter still returns13. The [virtual-expression review](coverage/semantics/trait-imported-virtual-expression-getter-review.json)
 records one original, three new states and the affected earlier controls.
+A backed expression trait getter can also import into a class with a real
+parent and no same-name parent property. The inherited marker700 survives
+Grand’s value100→300 write; Base caller scope and Consumer getter scope stay
+distinct. One original and three states are in the [parented-trait review](coverage/semantics/parented-trait-expression-getter-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`

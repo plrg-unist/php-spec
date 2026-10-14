@@ -15,7 +15,7 @@ scope; called scope follows Consumer or Grand. A real slot 100→300 produces
 113→313. Matching own type/default100 does not permit a property collision.
 Two originals and four separate checks/267 premises are recorded in the
 [trait-getter review](../../coverage/semantics/trait-imported-backed-getter-review.json).
-Nested/parented imports and other hook shapes remain required.
+Nested imports and wider parent/hook shapes remain required.
 
 Direct public virtual get-only `int` trait getters with no initializer also
 import into a parentless Consumer. Raw Trait and imported own metadata stay
@@ -39,6 +39,14 @@ raises its read-only Error and leaves no slot. Physical tasks and logical
 implicit13 use the existing expression path. One original, three new states/284
 premises and the directly superseded M65 controls75 are recorded separately in
 the [virtual-expression review](../../coverage/semantics/trait-imported-virtual-expression-getter-review.json).
+
+Selected backed expression trait getters also import into a named Consumer
+with a real source Base parent and no overlapping property name. Admission
+checks Base before a Consumer link exists; the published getter requires the
+matching SOURCE_PARENT. Inherited marker700 is retained, while Consumer/private13
+and Trait magic remain separate from Base parentRead’s lexical scope. A real
+Grand100→300 write yields313 without changing marker700. One original and three
+checks/294 premises are in the [parented-trait review](../../coverage/semantics/parented-trait-expression-getter-review.json).
 
 Imports retain two identities. The declaring owner and lexical `self` scope are
 the using class; the body, filename, line and `__TRAIT__`, `__METHOD__` and
