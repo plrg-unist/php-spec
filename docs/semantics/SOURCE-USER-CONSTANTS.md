@@ -97,9 +97,18 @@ authorize it. Two exact sources and two public fronts/207 premises cover default
 false-handler and handled delivery in the
 [duplicate ledger](../../coverage/semantics/dynamic-constant-duplicate-review.json).
 
+The boolean true `case_insensitive` flag emits its level2 ignored-flag Warning
+before registration and leaves name lookup case sensitive. Its authenticated
+resume retains the original true argument. Registration then uses the live table:
+a handler's inner definition can create the name first, causing the outer call's
+separate duplicate Warning and false result. Two exact sources and two public
+fronts/221 premises cover genuine callback entry, both argument-preserving resumes,
+the inner row origin and the later duplicate prefix in the
+[ignored-flag ledger](../../coverage/semantics/dynamic-constant-flag-review.json).
+
 The matching engine routes are `ZEND_FUNCTION(define)`/`ZVAL_COPY`,
 `zend_register_constant`, and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`.
-Arrays/objects, name coercion, startup/special-name and case-insensitive warnings,
+Arrays/objects, name/flag coercion, startup/special-name warnings,
 class-constant queries, owning/FCC call forms and wider conversion/arity paths
 remain Unsupported. The [dynamic ledger](../../coverage/semantics/dynamic-constants-review.json)
 keeps the source and public-state cuts separate; it makes no native allocation-identity

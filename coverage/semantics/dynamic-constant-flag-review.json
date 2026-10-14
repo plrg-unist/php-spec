@@ -1,0 +1,89 @@
+{
+  "status": "private-reviewed",
+  "target": "PHP 8.5.10 CLI NTS64",
+  "base": "2bb4e1b6b9a93d9102fee319155037c73562d3a6",
+  "implementation_revision": "516a65966b7f3065092b674abe3ed0136a3d0b4f",
+  "tested_cut": {
+    "module_count": 390,
+    "semantic_diff_sha256": "aacc277e67f98cb7d8609c8c27716d369dc1bc2baafbceea4a7c37a21f56818e",
+    "committed_files_sha256": {
+      "spec/semantics/30-storage.watsup": "88a8840590d4053a69129465fe74924946fd786dba74fd3271048638c395c148",
+      "spec/semantics/400-dynamic-constants.watsup": "70f2ddfc1852ac6541c39a803f290c8b4550786c269dcb32634cf4684003abef",
+      "tests/semantics/dynamic_constant_flag_protocol.py": "779f797d509546ae45500975c1ea9edfcf274c522319c1791e6a707114c3720c"
+    },
+    "scope": "One two-file runtime cut for both exact sources and both public fronts; maintained protocol matches the tested script."
+  },
+  "behavior": [
+    "Boolean case_insensitive=true in primitive global define emits the ordinary level2 ignored-flag Warning before registration. A successful definition remains case sensitive.",
+    "A source-authenticated warning resume retains the original CONFIG call, including SENT3true and selected nonce. It bypasses only the already-delivered ignored warning; no argument is rewritten to false.",
+    "After the handler returns, registration uses the live table. An inner definition can install the name first; the outer candidate then produces the separate duplicate Warning and false result, retaining the inner value.",
+    "The duplicate prefix is captured at that post-callback registration point. Exact site/line/level/message/event, call kind/source/true flag, primitive/carrier domain and available literal facts authenticate the new phase.",
+    "Existing2arg/false registration and duplicate rules are delegated through the shared finish. Structural variable-payload authority remains unchanged; request fields/status and lifetime policies are unchanged."
+  ],
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_builtin_functions.c: ZEND_FUNCTION(define), non_cs E_WARNING before candidate copy and zend_register_constant",
+    "vendor/php-src/Zend/zend_constants.c: zend_register_constant, live-table duplicate Warning and failed-registration false result",
+    "spec/semantics/207-error-handler-runtime.watsup callback/trace routing and271-global-constant-callables.watsup duplicate message are reused without fake source declarations"
+  ],
+  "accepted": {
+    "exact_cli_sources": 2,
+    "source_cases": [
+      "static-native-v41/plain-ignored",
+      "static-native-v41/selected-reentry"
+    ],
+    "source_result": "Both checked/program normal0 tuples match full native stdout/stderr with CLI0/stable inputs at aacc. Plain25stdout/242stderr; selected250stdout/empty stderr.",
+    "public_fronts": {
+      "plain": 67,
+      "selected": 154
+    },
+    "public_premises": 221,
+    "public_result": "Two full390 SL runners0/true/empty stderr/stable. Genuine dispatch, entered callback, case resume, live-table collision, duplicate callback and final result states pass whole public/declaration/heap checks.",
+    "counterexamples": "False/dropped flag, kind/source/site/line, literal name/value, retained selection and exact error metadata mutations reject. Actual seeded row belongs to the inner define, while original SENT3true survives both resumes. Pre-warning table is empty; duplicate prefix1 after the handler is valid and prefix0/out-of-range2 reject.",
+    "isolated_raw_phpstep_projections": 0,
+    "synthetic_or_proof_continuations": 0,
+    "production_continuations": 2,
+    "ignored_warning_dispatches": 2,
+    "post_callback_duplicate_dispatches": 1
+  },
+  "preserved_zero_credit": [
+    "The unchanged plain baseline stops Unsupported dynamic constant call domain at the true-flag call, B|/empty stderr/CLI1; it retains0.",
+    "Initial public preparation has211 premises and no actor. Strengthened preparation adds only the genuine entered-callback context/public positive and continues from that state, yielding221.",
+    "Native observations, fixture preparations and standalone syntax-only checks have no model agreement credit. No V41 pre-runtime or runtime validation failure occurred."
+  ],
+  "remaining": [
+    "The admitted call domain remains primitive values with boolean flag, no owning receiver and no argument packs. Name/flag coercion, arrays/objects, startup/special-name warnings, owning/FCC forms, unpack and wider conversion/arity paths remain Unsupported.",
+    "Wider callback release/throw/exit combinations, direct namespace-fallback define and full constant/core behavior remain partial.",
+    "No renewed V39/V40 source/public evidence, arbitrary variable-input history, fresh build/portability or full-core completeness claim."
+  ],
+  "artifacts": {
+    "native_pair": {
+      "path": ".tools/dynamic-review-02/static-native-v41/report.json",
+      "sha256": "ddc4d5de0c6d331ab8b88f5484275eb4dd04ca4e8b550e33322e6fee2fbd43e3"
+    },
+    "unchanged_plain_baseline": {
+      "path": ".tools/dynamic-source-dynamic-constant-flag-baseline-21/report.json",
+      "sha256": "ae24b4e3268ea3e2338663d6f10b80cf8a60f87be21f575b94b82e8ddb6051d1"
+    },
+    "affected_plain_source": {
+      "path": ".tools/dynamic-source-dynamic-constant-flag-model-22/report.json",
+      "sha256": "8cabd44342b975ab51acaf5b583ec88b97e7598a0238f9b37d2c4608fbeb263a"
+    },
+    "independent_selected_source": {
+      "path": ".tools/dynamic-review-02/dynamic-constant-flag-model-v1/report.json",
+      "sha256": "b68f93e2553608ae48d9265c00bda8c318ff02b286e2f658b3bc62e043aebb42"
+    },
+    "initial_public_preparation": {
+      "path": ".tools/dynamic-source-dynamic-constant-flag-state-01/fixtures-report.json",
+      "sha256": "bec43407a9a19394023898febc2592c5a1321c817b4884529f84dd01277e7b15"
+    },
+    "entered_callback_preparation": {
+      "path": ".tools/dynamic-source-dynamic-constant-flag-state-02/fixtures-report.json",
+      "sha256": "21854838b86065698d3cbead4c33fe6b16fe2f0dbdbad278b27ed2415836f676"
+    },
+    "public_two_fronts": {
+      "path": ".tools/dynamic-source-dynamic-constant-flag-state-02/check-report.json",
+      "sha256": "606ba923aafc92c218b6dfeea2e562309c9e8eb53df623e2bf53a7e945139c8e"
+    }
+  },
+  "recovery": "Canonical ignored originals/raw and the private branch retain inputs. dynamic_constant_flag_protocol.py --phase fixtures/--sources/--output prepares selected fronts; --phase check runs full modules --sl with90s per front, serial stop-first. CLI60/process90, native process30. Authoritative reports pin runtime/profile/source/pipeline before and after. Metadata changes require no semantic rerun."
+}

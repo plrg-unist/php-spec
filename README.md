@@ -798,6 +798,10 @@ Primitive duplicate `define` now warns and returns false while retaining the old
 binding, including named handlers and retained dynamic selection with callback
 appends. [Two exact sources and 207 public premises](coverage/semantics/dynamic-constant-duplicate-review.json)
 cover default, false-handler and handled delivery; wider candidates remain partial.
+Boolean `case_insensitive=true` now warns before registration while keeping case
+sensitivity. A handler-created binding wins the subsequent duplicate check;
+[two exact sources and 221 public premises](coverage/semantics/dynamic-constant-flag-review.json)
+cover the retained arguments, callback entry and live-table ordering.
 [Untyped positional defaults](docs/semantics/SOURCE-POSITIONAL-DEFAULTS.md) now preserve
 omitted receives, declaration context, observable caches and fresh reference/array
 ownership. [Independent acceptance](coverage/semantics/default-parameter-review.json)

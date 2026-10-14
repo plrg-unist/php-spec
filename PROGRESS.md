@@ -7,6 +7,16 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Boolean `case_insensitive=true` in primitive `define` now warns before registration
+and keeps case-sensitive lookup. The original captured arguments survive the
+handler. A handler may install the same name first; the outer call then emits the
+duplicate warning and returns false, retaining the handler's binding. Two exact
+sources and two public fronts/221 premises pass at aacc, including genuine handler
+entry, original true at both resumes, inner-definition origin and post-callback
+duplicate prefix. Baseline/native/preparation evidence retains0; wider domains and
+callbacks remain partial.
+[Ignored-flag ledger](coverage/semantics/dynamic-constant-flag-review.json).
+
 Primitive duplicate `define` now warns and returns false without replacing the
 old binding. Retained dynamic selection survives a named warning callback that
 appends another constant; false-handler fallback and handled delivery preserve
