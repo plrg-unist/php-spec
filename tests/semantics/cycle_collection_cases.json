@@ -1,5 +1,23 @@
 [
   {
+    "id": "weak-map-scalar-map-first-70",
+    "source": "<?php\n$map = new WeakMap;\n$key = new stdClass;\n$mapWeak = WeakReference::create($map);\n$keyWeak = WeakReference::create($key);\n$map[$key] = 'kept';\necho 'map-first|';\nunset($map);\necho $mapWeak->get() === null ? 'map-null|' : 'map-live|';\necho $keyWeak->get() === $key ? 'key-same|' : 'key-other|';\nunset($key);\necho $keyWeak->get() === null ? 'key-null|' : 'key-live|';\nunset($mapWeak, $keyWeak);\necho 'END';\n",
+    "source_sha256": "c91a4e5594f0e2346a3a78308e0654e9ebea1976ee3143fb5c2b0f57284233eb",
+    "stdout": "map-first|map-null|key-same|key-null|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "weak-map-scalar-active-map-first-70",
+    "source": "<?php\nclass ReleaseSentinel {\n    public function __destruct() { echo 'S|'; }\n}\n$sentinel = new ReleaseSentinel;\n$map = new WeakMap;\n$key = new stdClass;\n$mapWeak = WeakReference::create($map);\n$keyWeak = WeakReference::create($key);\n$map[$key] = 'kept';\necho 'map-first|';\nunset($map);\necho $mapWeak->get() === null ? 'map-null|' : 'map-live|';\necho $keyWeak->get() === $key ? 'key-same|' : 'key-other|';\nunset($key);\necho $keyWeak->get() === null ? 'key-null|' : 'key-live|';\nunset($mapWeak, $keyWeak);\nunset($sentinel);\necho 'END';\n",
+    "source_sha256": "42d22712b628a11f9fb531bda37211d9e689f9bcf8c209a20c8f21771b018938",
+    "stdout": "map-first|map-null|key-same|key-null|S|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
     "id": "weak-map-coalesce-object-69",
     "source": "<?php\nclass CoalesceValue {\n    public function __destruct() { echo 'D|'; }\n}\n$map = new WeakMap;\n$key = new stdClass;\n$missing = new stdClass;\n$value = new CoalesceValue;\n$valueWeak = WeakReference::create($value);\n$map[$key] = $value;\n$fallback = 0;\necho 'present|';\n$copy = $map[$key] ?? ($fallback = 1);\necho $fallback === 0 ? 'lazy|' : 'fallback|';\necho $valueWeak->get() === $copy ? 'same|' : 'other|';\nunset($value);\n$fallback = 0;\necho 'missing|';\n$absent = $map[$missing] ?? ($fallback = 1);\necho $fallback === 1 ? 'fallback|' : 'lazy|';\necho $absent === 1 ? 'same|' : 'other|';\nunset($map[$key]);\necho $valueWeak->get() === $copy ? 'held|' : 'other|';\nunset($copy);\necho $valueWeak->get() === null ? 'value-null|' : 'value-live|';\nunset($map, $key, $missing, $valueWeak, $fallback, $absent);\necho 'END';\n",
     "source_sha256": "ee4595ff0f0e36bc91f2fa7078b4fbbe1c3ad7968bfe3f4f58b2770e222e1f86",

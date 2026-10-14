@@ -16095,6 +16095,402 @@ CASES = {
                                                        'ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]',
                                                        'S_kept_string_zero.STORE[n_fallback_cell] = DEFINED '
                                                        '(PINT 0)']},
+    'weak-map-scalar-release-transfer-70': {'source': '<?php\n'
+                                                       'class ReleaseSentinel {\n'
+                                                       "    public function __destruct() { echo 'S|'; }\n"
+                                                       '}\n'
+                                                       '$sentinel = new ReleaseSentinel;\n'
+                                                       '$map = new WeakMap;\n'
+                                                       '$key = new stdClass;\n'
+                                                       '$mapWeak = WeakReference::create($map);\n'
+                                                       '$keyWeak = WeakReference::create($key);\n'
+                                                       "$map[$key] = 'kept';\n"
+                                                       "echo 'map-first|';\n"
+                                                       'unset($map);\n'
+                                                       "echo $mapWeak->get() === null ? 'map-null|' : "
+                                                       "'map-live|';\n"
+                                                       "echo $keyWeak->get() === $key ? 'key-same|' : "
+                                                       "'key-other|';\n"
+                                                       'unset($key);\n'
+                                                       "echo $keyWeak->get() === null ? 'key-null|' : "
+                                                       "'key-live|';\n"
+                                                       'unset($mapWeak, $keyWeak);\n'
+                                                       'unset($sentinel);\n'
+                                                       "echo 'END';\n",
+                                             'stage': 'S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_map) :: '
+                                                      'ptask_tail* -- if pdestructionrelease_map.JOBS = '
+                                                      '(DESTRUCTION_VALUE (HOBJECT n_map)) :: '
+                                                      'pdestructionjob_tail* -- if $weakmap_at(S, n_map) -- if '
+                                                      'S.OBJECTS[n_map] = WEAKMAP (pweakmapentry) -- if S.EVENTS '
+                                                      '= [OUTPUT $ptascii("map-first|")]',
+                                             'checks': ['S.CURRENT = eps',
+                                                        'S.FRAMES = eps',
+                                                        'S.CONSTCONTEXT = eps',
+                                                        'S.GC.ACTIVE = eps',
+                                                        'S.GC.PLAN = eps',
+                                                        'S.GC.WORKER = eps',
+                                                        '$lookup(S.ENV, $ptascii("map")) = eps',
+                                                        'S.DESTRUCTION.RELEASES = pdestructionrelease_map :: '
+                                                        'pdestructionrelease_tail*',
+                                                        '$destructor_operational(S)',
+                                                        '$call_task_valid(S, DESTRUCTOR_RELEASE '
+                                                        'pdestructionrelease_map)',
+                                                        'n_key = pweakmapentry.KEY',
+                                                        'pweakmapentry.BEFORE = (n_key_wrapper)',
+                                                        '$string_bytes(pweakmapentry.VALUE) = ($ptascii("kept"))',
+                                                        '$string_carrier_valid(S, pweakmapentry.VALUE)',
+                                                        '$weakmap_scalar_value(S, pweakmapentry.VALUE)',
+                                                        '$weakmap_free_value_allowed(S, pweakmapentry.VALUE)',
+                                                        '$value_nodes(pweakmapentry.VALUE) = eps',
+                                                        '$destruction_values($value_nodes(pweakmapentry.VALUE)) '
+                                                        '= eps',
+                                                        '$lookup(S.ENV, $ptascii("key")) = (n_key_cell)',
+                                                        'S.STORE[n_key_cell] = DEFINED (POBJECT n_key)',
+                                                        'S.OBJECTS[n_key] = STDINSTANCE',
+                                                        '(HOBJECT n_key) <- S.ALLOCATIONS',
+                                                        '~$instance_storage_freeing(S, n_key)',
+                                                        '$node_children(S, HOBJECT n_key) = eps',
+                                                        '$lookup(S.ENV, $ptascii("keyWeak")) = '
+                                                        '(n_key_wrapper_cell)',
+                                                        'S.STORE[n_key_wrapper_cell] = DEFINED (POBJECT '
+                                                        'n_key_wrapper)',
+                                                        '$weakref_at(S, n_key_wrapper) = (WEAKREFERENCE (n_key))',
+                                                        '$weakref_get(S, n_key_wrapper) = POBJECT n_key',
+                                                        '$lookup(S.ENV, $ptascii("mapWeak")) = '
+                                                        '(n_map_wrapper_cell)',
+                                                        'S.STORE[n_map_wrapper_cell] = DEFINED (POBJECT '
+                                                        'n_map_wrapper)',
+                                                        '$weakref_at(S, n_map_wrapper) = (WEAKREFERENCE (n_map))',
+                                                        '$lookup(S.ENV, $ptascii("sentinel")) = '
+                                                        '(n_sentinel_cell)',
+                                                        'S.STORE[n_sentinel_cell] = DEFINED (POBJECT n_sentinel)',
+                                                        'S.OBJECTS[n_sentinel] = INSTANCE porigin_sentinel',
+                                                        '$class_named(S.CLASSNAMES, $ptascii("releasesentinel")) '
+                                                        '= (porigin_sentinel)',
+                                                        '$destructor_method(S, n_sentinel) = (pmethoddesc)',
+                                                        '~(n_sentinel <- S.DESTRUCTION.CALLED)',
+                                                        '$node_children(S, HOBJECT n_sentinel) = eps',
+                                                        '$heap_owners($heap_graph(S), HOBJECT n_key) = 1',
+                                                        '$heap_owners($heap_graph(S), HOBJECT n_sentinel) = 1',
+                                                        '$call_descriptors_valid(S)',
+                                                        '$heap_valid($heap_graph(S))',
+                                                        '$weakref_state_valid(S)',
+                                                        '$gc_state_valid(S)',
+                                                        '$instance_storage_state_valid(S)',
+                                                        '$weakmap_before_valid(S, pweakmapentry)',
+                                                        '$weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map]',
+                                                        '$node_children(S, HOBJECT n_map) = eps',
+                                                        '$heap_owners($heap_graph(S), HOBJECT n_map) = 1',
+                                                        'pdestructionrelease_consumed = '
+                                                        'pdestructionrelease_map[.JOBS = pdestructionjob_tail*]',
+                                                        'S_consumed = $destructor_release_replace(S, '
+                                                        'pdestructionrelease_consumed)',
+                                                        '$destructor_release_valid(S_consumed, '
+                                                        'pdestructionrelease_consumed)',
+                                                        '$heap_owners($heap_graph(S_consumed), HOBJECT n_map) = '
+                                                        '0',
+                                                        '$heap_owners($heap_graph(S_consumed), HOBJECT n_key) = '
+                                                        '1',
+                                                        '$heap_valid($heap_graph(S_consumed))',
+                                                        '$weakmap_free_allowed(S_consumed, n_map, '
+                                                        'pdestructionrelease_consumed)',
+                                                        '~$weakmap_free_allowed(S, n_map, '
+                                                        'pdestructionrelease_map)',
+                                                        'PhpStep: S ~> S_transfer',
+                                                        'S_transfer.COMPLETION = NORMAL',
+                                                        'S_transfer.TODO = (DESTRUCTOR_RELEASE '
+                                                        'pdestructionrelease_empty) :: (INSTANCE_STORAGE_STEP '
+                                                        'pinstancestorage_map) :: (DESTRUCTOR_RELEASE '
+                                                        'pdestructionrelease_consumed) :: ptask_tail*',
+                                                        'pdestructionrelease_empty.JOBS = eps',
+                                                        'S_transfer.DESTRUCTION.RELEASES = '
+                                                        'pdestructionrelease_empty :: '
+                                                        'pdestructionrelease_consumed :: '
+                                                        'pdestructionrelease_tail*',
+                                                        '$destructor_release_valid(S_transfer, '
+                                                        'pdestructionrelease_empty)',
+                                                        '$task_nodes(DESTRUCTOR_RELEASE '
+                                                        'pdestructionrelease_empty) = eps',
+                                                        'S_empty = S[.OBJECTS[n_map] = WEAKMAP eps]',
+                                                        'S_transfer.OBJECTS = S_empty.OBJECTS',
+                                                        'S_transfer.STORE = S.STORE',
+                                                        'S_transfer.STRINGDATA = S.STRINGDATA',
+                                                        'S_transfer.ALLOCATIONS = S.ALLOCATIONS',
+                                                        'S_transfer.EVENTS = S.EVENTS',
+                                                        'pinstancestorage_map.OBJECT = n_map',
+                                                        'pinstancestorage_map.HANDLE = '
+                                                        'S.DESTRUCTION.HANDLES[n_map]',
+                                                        'pinstancestorage_map.SLOTS = eps',
+                                                        'pinstancestorage_map.NEXT = 0',
+                                                        'pinstancestorage_map.NOTIFY = (n_map_wrapper)',
+                                                        'pinstancestorage_map.CALLER = S.CURRENT',
+                                                        'pinstancestorage_map.ORIGIN = S.ORIGIN',
+                                                        'pinstancestorage_map.CONSTCONTEXT = S.CONSTCONTEXT',
+                                                        'pinstancestorage_map.USER',
+                                                        'n_map <- S_transfer.DESTRUCTION.CALLED',
+                                                        '~(n_key <- S_transfer.DESTRUCTION.CALLED)',
+                                                        '~(n_sentinel <- S_transfer.DESTRUCTION.CALLED)',
+                                                        '$instance_storage_basic(S_transfer, '
+                                                        'pinstancestorage_map)',
+                                                        '$instance_storage_state_valid(S_transfer)',
+                                                        '$weakmap_key_maps(S_transfer, S_transfer.ALLOCATIONS, '
+                                                        'n_key) = eps',
+                                                        '$weakmap_storage_read(S_transfer, n_map_wrapper, n_map)',
+                                                        '$weakref_get(S_transfer, n_map_wrapper) = POBJECT n_map',
+                                                        '$weakref_get(S_transfer, n_key_wrapper) = POBJECT n_key',
+                                                        '$heap_owners($heap_graph(S_transfer), HOBJECT n_map) = '
+                                                        '1',
+                                                        '$heap_owners($heap_graph(S_transfer), HOBJECT n_key) = '
+                                                        '1',
+                                                        '$heap_owners($heap_graph(S_transfer), HOBJECT '
+                                                        'n_sentinel) = 1',
+                                                        '$call_descriptors_valid(S_transfer)',
+                                                        '$heap_valid($heap_graph(S_transfer))',
+                                                        '$gc_state_valid(S_transfer)',
+                                                        'PhpStep: S_transfer ~> S_pin',
+                                                        'S_pin = S_transfer[.TODO = (INSTANCE_STORAGE_STEP '
+                                                        'pinstancestorage_map) :: (DESTRUCTOR_RELEASE '
+                                                        'pdestructionrelease_consumed) :: '
+                                                        'ptask_tail*][.DESTRUCTION.RELEASES = '
+                                                        'pdestructionrelease_consumed :: '
+                                                        'pdestructionrelease_tail*]',
+                                                        '$instance_storage_valid(S_pin, pinstancestorage_map)',
+                                                        '$call_descriptors_valid(S_pin)',
+                                                        'S_null = S_consumed[.OBJECTS[n_map] = WEAKMAP '
+                                                        '(pweakmapentry[.VALUE = PNULL])]',
+                                                        '$heap_graph(S_null) = $heap_graph(S_consumed)',
+                                                        '$call_descriptors_valid(S_null)',
+                                                        '$weakmap_free_value_allowed(S_null, PNULL)',
+                                                        '$weakmap_free_allowed(S_null, n_map, '
+                                                        'pdestructionrelease_consumed)',
+                                                        '$value_nodes(PNULL) = eps',
+                                                        'S_false = S_consumed[.OBJECTS[n_map] = WEAKMAP '
+                                                        '(pweakmapentry[.VALUE = PBOOL false])]',
+                                                        '$heap_graph(S_false) = $heap_graph(S_consumed)',
+                                                        '$call_descriptors_valid(S_false)',
+                                                        '$weakmap_free_value_allowed(S_false, PBOOL false)',
+                                                        '$weakmap_free_allowed(S_false, n_map, '
+                                                        'pdestructionrelease_consumed)',
+                                                        '$value_nodes(PBOOL false) = eps',
+                                                        'S_zero = S_consumed[.OBJECTS[n_map] = WEAKMAP '
+                                                        '(pweakmapentry[.VALUE = PINT 0])]',
+                                                        '$heap_graph(S_zero) = $heap_graph(S_consumed)',
+                                                        '$call_descriptors_valid(S_zero)',
+                                                        '$weakmap_free_value_allowed(S_zero, PINT 0)',
+                                                        '$weakmap_free_allowed(S_zero, n_map, '
+                                                        'pdestructionrelease_consumed)',
+                                                        '$value_nodes(PINT 0) = eps',
+                                                        'S_plain = S_consumed[.OBJECTS[n_map] = WEAKMAP '
+                                                        '(pweakmapentry[.VALUE = PSTRING $ptascii("owned")])]',
+                                                        '$heap_graph(S_plain) = $heap_graph(S_consumed)',
+                                                        '$call_descriptors_valid(S_plain)',
+                                                        '$weakmap_free_value_allowed(S_plain, PSTRING '
+                                                        '$ptascii("owned"))',
+                                                        '$weakmap_free_allowed(S_plain, n_map, '
+                                                        'pdestructionrelease_consumed)',
+                                                        '$value_nodes(PSTRING $ptascii("owned")) = eps',
+                                                        'S_interned = S_consumed[.OBJECTS[n_map] = WEAKMAP '
+                                                        '(pweakmapentry[.VALUE = PSTRING_CARRIER INTERNED_STRING '
+                                                        '$ptascii("owned")])]',
+                                                        '$heap_graph(S_interned) = $heap_graph(S_consumed)',
+                                                        '$call_descriptors_valid(S_interned)',
+                                                        '$weakmap_free_value_allowed(S_interned, PSTRING_CARRIER '
+                                                        'INTERNED_STRING $ptascii("owned"))',
+                                                        '$weakmap_free_allowed(S_interned, n_map, '
+                                                        'pdestructionrelease_consumed)',
+                                                        '$value_nodes(PSTRING_CARRIER INTERNED_STRING '
+                                                        '$ptascii("owned")) = eps',
+                                                        'n_string = |S_consumed.STRINGDATA|',
+                                                        'S_request = S_consumed[.STRINGDATA = '
+                                                        'S_consumed.STRINGDATA ++ '
+                                                        '[$ptascii("owned")]][.OBJECTS[n_map] = WEAKMAP '
+                                                        '(pweakmapentry[.VALUE = PSTRING_CARRIER (REQUEST_STRING '
+                                                        'n_string) $ptascii("owned")])]',
+                                                        '$string_carrier_valid(S_request, PSTRING_CARRIER '
+                                                        '(REQUEST_STRING n_string) $ptascii("owned"))',
+                                                        '$heap_graph(S_request) = $heap_graph(S_consumed)',
+                                                        '$call_descriptors_valid(S_request)',
+                                                        '$weakmap_free_allowed(S_request, n_map, '
+                                                        'pdestructionrelease_consumed)',
+                                                        'S_bad_string = S_consumed[.OBJECTS[n_map] = WEAKMAP '
+                                                        '(pweakmapentry[.VALUE = PSTRING_CARRIER (REQUEST_STRING '
+                                                        'n_string) $ptascii("owned")])]',
+                                                        '~$string_carrier_valid(S_bad_string, PSTRING_CARRIER '
+                                                        '(REQUEST_STRING n_string) $ptascii("owned"))',
+                                                        '~$weakmap_free_value_allowed(S_bad_string, '
+                                                        'PSTRING_CARRIER (REQUEST_STRING n_string) '
+                                                        '$ptascii("owned"))',
+                                                        '~$weakmap_free_allowed(S_bad_string, n_map, '
+                                                        'pdestructionrelease_consumed)',
+                                                        'S_string_denied = '
+                                                        '$destruction_storage_free(S_bad_string, HOBJECT n_map, '
+                                                        'pdestructionrelease_consumed)',
+                                                        'S_string_denied.COMPLETION = UNSUPPORTED "nonempty '
+                                                        'WeakMap storage destruction"',
+                                                        'S_string_denied.OBJECTS = S_bad_string.OBJECTS',
+                                                        'S_string_denied.TODO = S.TODO',
+                                                        'S_extra = S_consumed[.HELD = S_consumed.HELD ++ '
+                                                        '[HOBJECT n_map]]',
+                                                        '$heap_owners($heap_graph(S_extra), HOBJECT n_map) = 1',
+                                                        '$heap_valid($heap_graph(S_extra))',
+                                                        '~$weakmap_free_allowed(S_extra, n_map, '
+                                                        'pdestructionrelease_consumed)',
+                                                        '~$weakmap_free_allowed(S_consumed[.TODO = ptask_tail*], '
+                                                        'n_map, pdestructionrelease_consumed)',
+                                                        '~$weakmap_free_allowed(S_consumed, n_map, '
+                                                        'pdestructionrelease_consumed[.USER = false])',
+                                                        'S_bad_before = S_consumed[.OBJECTS[n_map] = WEAKMAP '
+                                                        '(pweakmapentry[.BEFORE = (n_map_wrapper)])]',
+                                                        '~$weakmap_before_valid(S_bad_before, '
+                                                        'pweakmapentry[.BEFORE = (n_map_wrapper)])',
+                                                        '~$weakmap_free_allowed(S_bad_before, n_map, '
+                                                        'pdestructionrelease_consumed)',
+                                                        'S_key_unheld = S_consumed[.STORE[n_key_cell] = DEFINED '
+                                                        'PNULL]',
+                                                        '$heap_owners($heap_graph(S_key_unheld), HOBJECT n_key) '
+                                                        '= 0',
+                                                        '~$weakmap_free_allowed(S_key_unheld, n_map, '
+                                                        'pdestructionrelease_consumed)',
+                                                        'S_paused = $drive_steps(S, 0)',
+                                                        'S_paused = S[.COMPLETION = BUDGET]',
+                                                        '$drive_steps(S_paused[.COMPLETION = NORMAL], '
+                                                        '1)[.COMPLETION = NORMAL] = S_transfer']},
+    'weak-map-scalar-release-pin-70': {'source': '<?php\n'
+                                                  'class ReleaseSentinel {\n'
+                                                  "    public function __destruct() { echo 'S|'; }\n"
+                                                  '}\n'
+                                                  '$sentinel = new ReleaseSentinel;\n'
+                                                  '$map = new WeakMap;\n'
+                                                  '$key = new stdClass;\n'
+                                                  '$mapWeak = WeakReference::create($map);\n'
+                                                  '$keyWeak = WeakReference::create($key);\n'
+                                                  "$map[$key] = 'kept';\n"
+                                                  "echo 'map-first|';\n"
+                                                  'unset($map);\n'
+                                                  "echo $mapWeak->get() === null ? 'map-null|' : 'map-live|';\n"
+                                                  "echo $keyWeak->get() === $key ? 'key-same|' : 'key-other|';\n"
+                                                  'unset($key);\n'
+                                                  "echo $keyWeak->get() === null ? 'key-null|' : 'key-live|';\n"
+                                                  'unset($mapWeak, $keyWeak);\n'
+                                                  'unset($sentinel);\n'
+                                                  "echo 'END';\n",
+                                        'stage': 'S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage_map) :: '
+                                                 'ptask_tail* -- if pinstancestorage_map.NOTIFY = '
+                                                 '(n_map_wrapper) -- if S.OBJECTS[pinstancestorage_map.OBJECT] = '
+                                                 'WEAKMAP eps -- if S.EVENTS = [OUTPUT $ptascii("map-first|")]',
+                                        'checks': ['n_map = pinstancestorage_map.OBJECT',
+                                                   'S.CURRENT = eps',
+                                                   'S.FRAMES = eps',
+                                                   'S.CONSTCONTEXT = eps',
+                                                   'S.DESTRUCTION.CALLS = eps',
+                                                   'S.GC.ACTIVE = eps',
+                                                   'S.GC.PLAN = eps',
+                                                   '$lookup(S.ENV, $ptascii("map")) = eps',
+                                                   '$lookup(S.ENV, $ptascii("key")) = (n_key_cell)',
+                                                   'S.STORE[n_key_cell] = DEFINED (POBJECT n_key)',
+                                                   'S.OBJECTS[n_key] = STDINSTANCE',
+                                                   '(HOBJECT n_key) <- S.ALLOCATIONS',
+                                                   '~$instance_storage_freeing(S, n_key)',
+                                                   '$node_children(S, HOBJECT n_key) = eps',
+                                                   '$lookup(S.ENV, $ptascii("keyWeak")) = (n_key_wrapper_cell)',
+                                                   'S.STORE[n_key_wrapper_cell] = DEFINED (POBJECT '
+                                                   'n_key_wrapper)',
+                                                   '$weakref_at(S, n_key_wrapper) = (WEAKREFERENCE (n_key))',
+                                                   '$weakref_get(S, n_key_wrapper) = POBJECT n_key',
+                                                   '$lookup(S.ENV, $ptascii("mapWeak")) = (n_map_wrapper_cell)',
+                                                   'S.STORE[n_map_wrapper_cell] = DEFINED (POBJECT '
+                                                   'n_map_wrapper)',
+                                                   '$weakref_at(S, n_map_wrapper) = (WEAKREFERENCE (n_map))',
+                                                   '$lookup(S.ENV, $ptascii("sentinel")) = (n_sentinel_cell)',
+                                                   'S.STORE[n_sentinel_cell] = DEFINED (POBJECT n_sentinel)',
+                                                   'S.OBJECTS[n_sentinel] = INSTANCE porigin_sentinel',
+                                                   '$class_named(S.CLASSNAMES, $ptascii("releasesentinel")) = '
+                                                   '(porigin_sentinel)',
+                                                   '$destructor_method(S, n_sentinel) = (pmethoddesc)',
+                                                   '~(n_sentinel <- S.DESTRUCTION.CALLED)',
+                                                   '$node_children(S, HOBJECT n_sentinel) = eps',
+                                                   '$heap_owners($heap_graph(S), HOBJECT n_key) = 1',
+                                                   '$heap_owners($heap_graph(S), HOBJECT n_sentinel) = 1',
+                                                   '$call_descriptors_valid(S)',
+                                                   '$heap_valid($heap_graph(S))',
+                                                   '$weakref_state_valid(S)',
+                                                   '$gc_state_valid(S)',
+                                                   '$instance_storage_state_valid(S)',
+                                                   'n_map <- S.DESTRUCTION.CALLED',
+                                                   '~(n_key <- S.DESTRUCTION.CALLED)',
+                                                   'pinstancestorage_map.SLOTS = eps',
+                                                   'pinstancestorage_map.NEXT = 0',
+                                                   'pinstancestorage_map.USER',
+                                                   'pinstancestorage_map.HANDLE = S.DESTRUCTION.HANDLES[n_map]',
+                                                   '$instance_storage_for(S, n_map) = (pinstancestorage_map)',
+                                                   '$instance_storage_valid(S, pinstancestorage_map)',
+                                                   '$call_task_valid(S, INSTANCE_STORAGE_STEP '
+                                                   'pinstancestorage_map)',
+                                                   'ptask_tail* = (DESTRUCTOR_RELEASE pdestructionrelease_outer) '
+                                                   ':: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: '
+                                                   'ptask_after*',
+                                                   'pdestructionrelease_outer.JOBS = eps',
+                                                   '$destructor_release_live(S, pdestructionrelease_outer)',
+                                                   '$destructor_operation_valid(S, pdestructionoperation)',
+                                                   'pdestructionoperation.PENDING = eps',
+                                                   '$weakmap_key_maps(S, S.ALLOCATIONS, n_key) = eps',
+                                                   '$node_children(S, HOBJECT n_map) = eps',
+                                                   '$heap_owners($heap_graph(S), HOBJECT n_map) = 1',
+                                                   '$weakmap_storage_read(S, n_map_wrapper, n_map)',
+                                                   '$weakref_get(S, n_map_wrapper) = POBJECT n_map',
+                                                   'PhpStep: S ~> S_notified',
+                                                   'S_notified = S[.TODO = (INSTANCE_STORAGE_STEP '
+                                                   'pinstancestorage_map[.NOTIFY = eps]) :: ptask_tail*]',
+                                                   '$heap_graph(S_notified) = $heap_graph(S)',
+                                                   '(HOBJECT n_map) <- S_notified.ALLOCATIONS',
+                                                   '$weakref_get(S_notified, n_map_wrapper) = PNULL',
+                                                   '$weakref_get(S_notified, n_key_wrapper) = POBJECT n_key',
+                                                   '$instance_storage_valid(S_notified, '
+                                                   'pinstancestorage_map[.NOTIFY = eps])',
+                                                   'PhpStep: S_notified ~> S_retired',
+                                                   'S_retired.COMPLETION = NORMAL',
+                                                   '~((HOBJECT n_map) <- S_retired.ALLOCATIONS)',
+                                                   '$instance_storage_for(S_retired, n_map) = eps',
+                                                   'S_retired.OBJECTS = S.OBJECTS',
+                                                   'S_retired.STORE = S.STORE',
+                                                   'S_retired.STRINGDATA = S.STRINGDATA',
+                                                   'S_retired.EVENTS = S.EVENTS',
+                                                   'S_retired.DESTRUCTION.CALLED = S.DESTRUCTION.CALLED',
+                                                   'S_retired.TODO = (DESTRUCTOR_RELEASE '
+                                                   'pdestructionrelease_handle) :: ptask_tail*',
+                                                   'pdestructionrelease_handle.JOBS = [DESTRUCTION_HANDLE n_map]',
+                                                   '$call_task_valid(S_retired, DESTRUCTOR_RELEASE '
+                                                   'pdestructionrelease_handle)',
+                                                   '$weakref_get(S_retired, n_map_wrapper) = PNULL',
+                                                   '$weakref_get(S_retired, n_key_wrapper) = POBJECT n_key',
+                                                   '$heap_owners($heap_graph(S_retired), HOBJECT n_key) = 1',
+                                                   '$heap_owners($heap_graph(S_retired), HOBJECT n_sentinel) = 1',
+                                                   '$call_descriptors_valid(S_retired)',
+                                                   '$heap_valid($heap_graph(S_retired))',
+                                                   'PhpStep: S_retired ~> S_handle',
+                                                   'S_handle.COMPLETION = NORMAL',
+                                                   'S_handle.DESTRUCTION.FREE = pinstancestorage_map.HANDLE :: '
+                                                   'S_retired.DESTRUCTION.FREE',
+                                                   'S_handle.TODO = (DESTRUCTOR_RELEASE '
+                                                   'pdestructionrelease_handle[.JOBS = eps]) :: ptask_tail*',
+                                                   'S_handle.ALLOCATIONS = S_retired.ALLOCATIONS',
+                                                   '$weakref_get(S_handle, n_key_wrapper) = POBJECT n_key',
+                                                   '~(n_sentinel <- S_handle.DESTRUCTION.CALLED)',
+                                                   '$call_descriptors_valid(S_handle)',
+                                                   '$gc_state_valid(S_handle)',
+                                                   'S_escaped = S_notified[.HELD = S_notified.HELD ++ [HOBJECT '
+                                                   'n_map]]',
+                                                   '$heap_owners($heap_graph(S_escaped), HOBJECT n_map) = 2',
+                                                   '$call_task_valid(S_escaped, INSTANCE_STORAGE_STEP '
+                                                   'pinstancestorage_map[.NOTIFY = eps])',
+                                                   'PhpStep: S_escaped ~> S_denied',
+                                                   'S_denied.COMPLETION = UNSUPPORTED "freeing instance escaped '
+                                                   'reacquisition"',
+                                                   'S_denied[.COMPLETION = S_escaped.COMPLETION] = S_escaped',
+                                                   'S_paused = $drive_steps(S, 0)',
+                                                   'S_paused = S[.COMPLETION = BUDGET]',
+                                                   '$drive_steps(S_paused[.COMPLETION = NORMAL], 1)[.COMPLETION '
+                                                   '= NORMAL] = S_notified']},
 }
 
 runner.CASES = CASES
