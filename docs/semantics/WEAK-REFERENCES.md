@@ -359,7 +359,7 @@ original active Unsupported remains zero; no prior active record is superseded.
 The engine basis remains `zend_weakmap_free_obj`, `zend_weakrefs_hash_clean_ex`
 and scalar zval cleanup before own std_dtor notification. No collector, root,
 producer, receiver or notification-body change is made. Wider maps/keys/values,
-scalar replacement, freeing mutation, escaped owners, callback/throw contexts
+wider scalar replacement, freeing mutation, escaped owners, callback/throw contexts
 and wider GC remain required. [Ledger](../../coverage/semantics/weak-map-review.json).
 
 ## Ordinary dimension reads
@@ -413,7 +413,7 @@ retain zero credit. No prior active record is superseded.
 The engine basis is `zend_weakmap_has_dimension`, `zend_weakmap_write_dimension`
 and `zend_weakmap_unset_dimension` in `Zend/zend_weakrefs.c`, plus
 `ZEND_ISSET_ISEMPTY_DIM_OBJ`. Explicit methods, wider quiet/reference reads,
-nonobject/freeing keys, float/array/reference values, scalar replacement/wider teardown and
+nonobject/freeing keys, float/array/reference values, wider scalar replacement/teardown and
 wider map/GC protocols remain required.
 [Ledger](../../coverage/semantics/weak-map-review.json).
 
@@ -444,7 +444,7 @@ The engine basis is `zend_weakmap_read_dimension` (`BP_VAR_IS`), the object bran
 of `zend_fetch_dimension_address_read` and its `ZVAL_COPY_DEREF` result, and
 `ZEND_FETCH_DIM_IS`. This raw result owns the Value before the later coalesce
 consumer assigns a CV. Explicit methods, `??=`, reference/compound results,
-nonobject/freeing keys, reentrant or wider nested quiet reads, scalar replacement
+nonobject/freeing keys, reentrant or wider nested quiet reads, wider scalar replacement
 and wider scalar teardown, iteration/general map order and wider GC remain
 required. [Ledger](../../coverage/semantics/weak-map-review.json).
 
@@ -527,3 +527,25 @@ re-registration; assignment result copying follows the handler. Other key/value
 shapes, wider entries, mutation during freeing, reference/method/iteration and
 ephemeron protocols remain required. Countable stays nominal-only, with count
 execution excluded/Unsupported per CORE.
+
+## Scalar occupied entry replacement
+
+The same-key lane also accepts the existing bounded null/bool/int/string family
+on either side of replacement. Old ordinary leaf object premises remain exact;
+scalar writes keep current RHS/selected/source and carrier authority. KEY/BEFORE,
+receiver roots, publication, release and result bodies are unchanged.
+
+Two originals agree at `5dd834c5`/391. An old destructor observes the captured new
+scalar entry and the unassigned result sentinel, then changes the actual RHS CV.
+After cleanup, the used result reads that changed CV while the map keeps its
+captured value. The companion replaces a scalar with false, then with an object;
+the result alone keeps that object alive after entry/CV removal.
+
+The 76/71 reached checks (147) bind real assignment publication, the sole old VALUE
+job, post-destructor readback, no scalar release job and new object owners 1→2→3.
+Current task/result/source and invalid value/carrier controls refuse. Normalized
+checkpoint views preserve the original failed seek as zero credit. Checks stop at
+readback, with originals supplying complete endings. The dedicated
+`weak_map_scalar_replacement_state.py` retains the tested helper predicates.
+Wider key/value shapes, mutation while freeing, references, methods, iteration
+and broader GC remain required. [Ledger](../../coverage/semantics/weak-map-review.json).

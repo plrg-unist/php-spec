@@ -4066,7 +4066,7 @@ its 42-byte original and 160/100 reached checks (260) pass at `f68c6f09`. Checks
 stop after actual handle release; full sources supply later Key/Sentinel cleanup.
 Key-first remains a separate native-only observation. The active-context
 Unsupported stays zero, with no old test supersession or collector/root change.
-Scalar replacement and wider lifetime protocols remain required.
+Wider scalar replacement and lifetime protocols remain required.
 [Ledger](coverage/semantics/weak-map-review.json).
 
 Two singleton maps sharing one leaf Key now admit a wrapper between their entry
@@ -4104,7 +4104,7 @@ Value CV; current-source and literal-carrier forgeries refuse. Cuts stop at raw
 test results or insertion; originals supply explicit scalar removal and endings.
 The unchanged refusal, algorithmic binding diagnostic and first scalar refusal
 remain zero. Methods, wider quiet/reference reads, nonobject/freeing keys, other values,
-scalar replacement and wider teardown/map protocols remain required.
+wider scalar replacement and teardown/map protocols remain required.
 [Ledger](coverage/semantics/weak-map-review.json).
 
 WeakMap quiet `KEY_IS` reads now return the stored pvalue directly or null for
@@ -4154,6 +4154,18 @@ same-value/shared release, reentrant result copies and pending-throw cleanup;
 originals supply complete endings. The original paused-state fixture failure and
 owned-key mismatch stay zero. Wider map/freeing/reference/iteration and ephemeron
 protocols remain required.
+
+Occupied replacement also accepts the existing bounded scalar family, reusing
+the old/new value predicates without changing publication or cleanup. At
+`5dd834c5`/391, two exact originals and 76/71 source-reached checks (147) pass.
+The old destructor observes the captured scalar entry and changes its actual
+RHS CV; the used result reads that changed CV afterward. Scalar-to-scalar
+replacement schedules no old value job, and scalar-to-object publication/result
+raises owners from 1 to 2 to 3. Checks stop at actual readback; originals supply
+copy-only survival and final destruction. The unchanged Unsupported and initial
+checkpoint seek failure stay zero. A dedicated maintained suite retains the
+tested helpers; wider keys/values, freeing mutation and reference/method/iteration
+protocols remain open. [Ledger](coverage/semantics/weak-map-review.json).
 
 WeakReference creation during live map teardown now authenticates the exact
 allocated wrapper found for a unique active empty-map pin. After ordinary old

@@ -1224,7 +1224,7 @@ Scalar entries now also retire through eager cleanup while a live leaf key
 remains held. The plain 40-byte original already agrees at `b88b45fc`; a held
 unrelated destructor object exposes the active path. That 42-byte original and
 260 focused checks pass at `f68c6f09`, preserving the key and held object through
-map notification and physical retirement. Wider teardown and scalar replacement
+map notification and physical retirement. Wider teardown and replacement contexts
 remain open.
 
 Two singleton maps can now register the same leaf key on either side of its weak
@@ -1245,7 +1245,7 @@ remain required.
 adding a value owner. `isset` distinguishes null from false/zero/empty strings.
 Bounded scalar first entries keep their exact string carriers. Two originals agree across
 `144597d2`/`b7c1624a`; 377 focused checks cover presence, ownership and literal
-source certificates. Scalar replacement and wider teardown protocols remain open.
+source certificates. Wider scalar replacement and teardown protocols remain open.
 
 `$map[$key] ?? $fallback` now copies the stored value directly. Missing keys and
 null values select the lazy fallback; false, zero and empty strings are preserved
@@ -1273,6 +1273,12 @@ through cleanup; unused results add no owner, and used results copy the selected
 RHS value afterward. Owned key temporaries release after the receiver.
 Six originals agree across `70bf0c4`/`302b5c9`; 642 reached checks pass with prior
 cuts retained.
+Supported scalar values now also replace an occupied entry. Replacement publishes
+the captured new entry before the old destructor runs; if it changes the RHS variable, the
+used assignment result reads that changed variable after cleanup. Two originals
+agree and 147 focused checks pass at `5dd834c5`, including scalar-only replacement
+without a value release and object result ownership. Wider replacement remains
+required.
 Wider entries, freeing mutation, reference/iteration and ephemeron protocols remain
 open.
 

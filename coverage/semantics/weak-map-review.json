@@ -1937,5 +1937,94 @@
     ],
     "engine_basis": "Zend/zend_weakrefs.c zend_weakmap_free_obj and zend_weakrefs_hash_clean_ex unregister key entries before zval_ptr_dtor, then zend_object_std_dtor performs own weak notification. Scalar cleanup invokes no object value destructor. zend_objects_store_del retains the physical object until free_obj returns. No new notification protocol is introduced.",
     "boundaries": "Live single leaf Key and supported scalar family only; object-value free premises are unchanged. Wider maps/keys/values, scalar replacement, retained/freeing receiver mutation, escaped Map owners, callback/throw contexts, iteration/general registration order and wider GC remain open."
+  },
+  "scalar_replacement_71": {
+    "scope": "Occupied same-key replacement in one live WeakMap with a nonfreeing stdClass leaf Key, extending old/new values to the existing bounded null/bool/int/string family. No effect-body, receiver, notification, root or collector changes.",
+    "base_revision": "5f6f84e7cc2d3477baaab3c6795a648a23a31d15",
+    "tested_revision": "5dd834c53fb5df5aa762f306b2d0f0e1a10cfe21",
+    "modules": 391,
+    "raw_root": ".tools/weak-map-scalar-replacement-71",
+    "representation": "Reuse weakmap_free_value_allowed and weakmap_write_value_allowed in the existing replace certificate. Old object premises are exact; scalar writes retain current TASK/RHS/SELECTED/source and carrier authority. Publication changes VALUE only, preserving KEY/BEFORE. The existing receiver continuation delays result readback until old cleanup completes.",
+    "sources": [
+      {
+        "id": "weak-map-object-to-scalar-replacement-71",
+        "source_sha256": "29be08f17ebd83a42aac93a1a9e1464a4a2708d408fd7e8fea5e89ff3b13e895",
+        "stdout_bytes": 112,
+        "stdout_sha256": "57781ce3fb81d55e5c21754fbd14b50432a329ab298e6093e02f11494761de6a",
+        "native_report": ".tools/weak-map-object-to-scalar-71-native-blvevvkm/report.json",
+        "source_report": ".tools/weak-map-object-to-scalar-71-source-656zwck1/report.json",
+        "seconds": 13.594927072525024
+      },
+      {
+        "id": "weak-map-scalar-to-object-replacement-71",
+        "source_sha256": "18e4f471b7a673d98cf0c7b4759f54b3c9eb67aec6a904d516a57fbef7c90106",
+        "stdout_bytes": 75,
+        "stdout_sha256": "9d7186726fa07601920b6a07d3276edf0d314ea4b029e6b044b1b9fd0bbb7d63",
+        "native_report": ".tools/weak-map-scalar-to-object-71-native-ui9hayut/report.json",
+        "source_report": ".tools/weak-map-scalar-to-object-71-source-1gmusolj/report.json",
+        "seconds": 12.949349164962769
+      }
+    ],
+    "state": {
+      "assertions": 147,
+      "candidate_sha256": "968aac790acd0c48241014d0770a35db6e0e39ca200100d3989e7d9315cd07c5",
+      "cases": [
+        {
+          "id": "object-to-scalar",
+          "assertions": 76,
+          "report": ".tools/shutdown-state-review-o87k0epo/report.json",
+          "report_sha256": "8326d03a28d44723339040849720a323980e043515c17841834c221b6a25cbfb",
+          "seconds": 13.250587463378906
+        },
+        {
+          "id": "scalar-to-object",
+          "assertions": 71,
+          "report": ".tools/shutdown-state-review-pexis71b/report.json",
+          "report_sha256": "0134141a11b4fa5bcd7a799cd9bf6a432be91e1c325296f902e6038ac597a738",
+          "seconds": 11.949349403381348
+        }
+      ],
+      "authority": "Genuine assignment/source/current operand fronts authenticate old VALUE transfer, captured map scalar versus destructor-mutated RHS CV, and actual post-destructor ACCESS_RESUME readback. Scalar replacement adds no old heap edge/release job. New object publication and result produce owners 1 to 2 to 3. Actual TODO/RESULT/CODE and cached source/value/carrier forgeries deny admission.",
+      "endpoint": "Raw assignment publication through real old destructor completion and used-result readback; companion ends at copied object result. Zero/one normalized driver steps agree. Source originals supply entry removal, copy-only survival and final destructor endings."
+    },
+    "compiler_init": {
+      "compiler_report": ".tools/weak-map-scalar-replacement-71-compiler-rqxbk9oz/report.json",
+      "compiler_report_sha256": "ec21b5e33eac44850a6c000b503ec6624fc88ac0c09793ead0246efddf887a6c",
+      "modes": [
+        "algo",
+        "struct"
+      ],
+      "actual_definition_witnesses": 7,
+      "init_report": ".tools/weak-map-scalar-replacement-71-init-g8foiheb/report.json",
+      "init_report_sha256": "0c4cf8583b592d3a3a41e61789e8b757ff4428ef087e26d59c943ba898158b9f",
+      "init_premises": 8
+    },
+    "preserved_zero_credit": [
+      {
+        "report": ".tools/weak-map-object-to-scalar-71-source-opeybche/report.json",
+        "reason": "Unchanged accepted checked/program Unsupported WeakMap dimension protocol outside first insertion after replace|."
+      },
+      {
+        "report": ".tools/shutdown-state-review-qot9vj7f/report.json",
+        "reason": "Initial state fixture seek exhausted before assertions: capture tested paused BUDGET as if NORMAL. Corrected only stage/found continuation views; original remains zero."
+      }
+    ],
+    "maintained": {
+      "source_rows": 89,
+      "prior_source_rows_preserved": 87,
+      "dedicated_state_suite": "tests/semantics/weak_map_scalar_replacement_state.py",
+      "suite_sha256": "1518174ab2b97edc2bf47fb579756955ee8fdb0737b9795bde35137b6b211c15",
+      "cases": 2,
+      "assertions": 147,
+      "preservation": "All old source rows and their order remain exact. The dedicated suite keeps tested HELPERS byte-for-byte and evaluated CASES exactly; only catalogue/ROOT/current-input boilerplate changes. Central cycle-state cases are untouched; Makefile adds two explicit selectors."
+    },
+    "execution": "C/UTC, script encoding removed, jobs1, CPU1/SLOT1. Native30/host120, source CLI60/recorder75/host180, compiler120/shared220/host240, separate strict init120, source-reached numeric SL120/host240. Accepted actors exit0 with exact streams, stable inputs, no stderr/timeout/interruption/groups and absent PIDs. State runs were independently executed and bound.",
+    "engine_basis": "Zend/zend_weakrefs.c zend_weakmap_write_dimension publishes the replacement before zval_ptr_dtor of the old entry and does not re-register KEY. Zend/zend_execute.c zend_assign_to_object_dim invokes that handler before copying the current value for a used assignment result; an ordinary RHS CV can therefore change during cleanup while the entry keeps its captured scalar.",
+    "reproduce": [
+      "python3 tests/semantics/cycle_collection_sources.py --match replacement-71",
+      "python3 tests/semantics/weak_map_scalar_replacement_state.py --case object-to-scalar",
+      "python3 tests/semantics/weak_map_scalar_replacement_state.py --case scalar-to-object"
+    ],
+    "boundaries": "One live singleton receiver, leaf nonfreeing stdClass Key and supported scalars or ordinary leaf objects only. Wider keys/values, references, methods/iteration, mutation while freeing, escaped receiver/key owners, broader reentrant scalar contexts and general ephemeron graphs remain open. Existing ordinary object replacement cuts and failures retain their separate evidence."
   }
 }
