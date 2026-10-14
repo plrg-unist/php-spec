@@ -92,6 +92,8 @@ dec $dynamic_array_value(pstate, pvalue, nat*, bool) : (pstate, pvalue, pvaluecl
 dec $dynamic_array_known_matches(pstate, pvalue, pvalue?) : bool
 dec $dynamic_defined_receive(pstate, pconfigcall) : pstate
 dec $dynamic_class_constant_receive(pstate, pconfigcall) : pstate
+dec $dynamic_global_constant_call(pconfigcall) : bool
+dec $dynamic_global_constant_finish(pstate, pconfigcall) : pstate
 dec $dynamic_define_finish(pstate, pconfigcall) : pstate
 def $dynamic_define_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME $user_constant_key(preqbytes), ORIGIN pconfigcall.SITE, VALUE pvalue, CLASS pvalueclass, READS eps, RECEIVES eps}]][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pconfigcall.KIND = INTRINSIC_DEFINE
@@ -141,6 +143,10 @@ def $dynamic_constant_receive(S, pconfigcall) = $dynamic_defined_receive(S, pcon
   -- if $dynamic_constant_class_name($dynamic_constant_query(preqbytes))
 def $dynamic_constant_receive(S, pconfigcall) = $dynamic_class_constant_receive(S, pconfigcall)
   -- if pconfigcall.KIND = INTRINSIC_CONSTANT
+  -- if ~$dynamic_global_constant_call(pconfigcall)
+def $dynamic_constant_receive(S, pconfigcall) = $dynamic_global_constant_finish(S, pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_CONSTANT
+  -- if $dynamic_global_constant_call(pconfigcall)
 def $dynamic_constant_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "dynamic constant call domain"] -- otherwise
 
 rule PhpStep/dynamic-constant-invoke: S ~> $dynamic_constant_receive(S, pconfigcall)
@@ -578,3 +584,60 @@ def $autoload_lookup_mode(AUTO_EXPLICIT pconfigcall) = true
 def $autoload_trace_arguments(pconfigcall, ptbytes) = [pvalue_query]
   -- if pconfigcall.KIND = INTRINSIC_CONSTANT
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_query)]
+
+;; Global queries use their captured spelling, independently of caller imports
+;; and namespaces. Only the supplied leading separator is removed for lookup.
+dec $dynamic_global_constant_known(pstate, porigin) : pvalue?
+dec $dynamic_global_constant_valid(pstate, pconfigcall) : bool
+dec $dynamic_global_constant_value(pstate, preqbytes) : pvalue?
+def $dynamic_global_constant_call(pconfigcall) = true
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_query)]
+  -- if $string_bytes(pvalue_query) = (preqbytes)
+  -- if $dynamic_constant_global_name($dynamic_constant_query(preqbytes))
+def $dynamic_global_constant_call(pconfigcall) = false -- otherwise
+def $dynamic_global_constant_known(S, porigin) = $compiled_read(S, porigin_argument)
+  -- if $intrinsic_argument(S, porigin, 0) = ((expression, false, preqbytes?, porigin_argument, z))
+def $dynamic_global_constant_known(S, porigin) = eps -- otherwise
+def $dynamic_global_constant_valid(S, pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_CONSTANT
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if $dynamic_global_constant_call(pconfigcall)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_query)]
+  -- if $string_plain(pvalue_query) = pvalue_query \/ $string_carrier_valid(S, pvalue_query)
+  -- if $dynamic_define_value_matches(pvalue_query, $dynamic_global_constant_known(S, pconfigcall.SITE))
+def $dynamic_global_constant_valid(S, pconfigcall) = false -- otherwise
+def $dynamic_global_constant_value(S, preqbytes) = (puserconstant.VALUE)
+  -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(preqbytes)) = (puserconstant)
+  -- if $dynamic_constant_class(puserconstant.VALUE) = (puserconstant.CLASS)
+  -- if $string_plain(puserconstant.VALUE) = puserconstant.VALUE \/ $string_carrier_valid(S, puserconstant.VALUE)
+def $dynamic_global_constant_value(S, preqbytes) = (pvalue)
+  -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(preqbytes)) = eps
+  -- if $special_constant(preqbytes) = (pvalue)
+def $dynamic_global_constant_value(S, preqbytes) = (pvalue)
+  -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(preqbytes)) = eps
+  -- if $special_constant(preqbytes) = eps
+  -- if $constant_lookup_bytes(preqbytes) = (VALUE pvalue)
+  -- if $constant_nonstring_scalar(pvalue)
+def $dynamic_global_constant_value(S, preqbytes) = eps -- otherwise
+def $dynamic_global_constant_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $dynamic_global_constant_valid(S, pconfigcall)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_query)]
+  -- if $string_bytes(pvalue_query) = (preqbytes)
+  -- if $dynamic_global_constant_value(S, $dynamic_constant_query(preqbytes)) = (pvalue)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_global_constant_finish(S, pconfigcall) = $config_error(S[.TODO = ptask_tail*], pconfigcall, "Error", $ptascii("Undefined constant \"") ++ preqbytes_query ++ $ptascii("\""))
+  -- if $dynamic_global_constant_valid(S, pconfigcall)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_query)]
+  -- if $string_bytes(pvalue_query) = (preqbytes)
+  -- if preqbytes_query = $dynamic_constant_query(preqbytes)
+  -- if $source_constant_lookup(S, preqbytes_query) = eps /\ $special_constant(preqbytes_query) = eps
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_global_constant_finish(S, pconfigcall) = S[.COMPLETION = pcompletion]
+  -- if $dynamic_global_constant_valid(S, pconfigcall)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_query)]
+  -- if $string_bytes(pvalue_query) = (preqbytes)
+  -- if preqbytes_query = $dynamic_constant_query(preqbytes)
+  -- if $special_constant(preqbytes_query) = eps
+  -- if $source_constant_lookup(S, preqbytes_query) = (ABRUPT pcompletion)
+def $dynamic_global_constant_finish(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "global constant value query"] -- otherwise
