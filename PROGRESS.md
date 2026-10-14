@@ -7,6 +7,19 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Module404 now stages leading-numeric-string DIV warnings for two direct CVs with
+preexisting untyped reference cells and named handlers. The next conversion reads
+its selected referent; captured numbers survive later handler writes. Two exact
+originals at a3a preserve handler-written and captured zero divisors, one default
+Warning, DivisionByZeroError at the operator line and an unchanged result destination.
+Author130 and independent94 genuine production fronts pass 224 SL premises at 862,
+including public snapshot/source/phase rejection, real Error ownership and budget
+resumption. The original Unsupported baseline and native/preparation/syntax-only
+records retain zero credit; the syntax recorder correction reuses the retained
+author output without a rerun. Other slot classes, copies, right-only ingress,
+owning callbacks and unsafe/nonconvertible replacements remain required. OP12 stays
+paused. [DIV warning ledger](coverage/semantics/division-warning-review.json).
+
 Builtin stdClass/int/float comparisons now use the numeric Notice continuation.
 Its local class image preserves the fixed builtin name and source-class origins
 across restored second Notices, without adding receiver owners. Three exact

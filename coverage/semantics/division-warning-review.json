@@ -1,0 +1,133 @@
+{
+  "version": 1,
+  "milestone": "OP14 leading-numeric DIV warning and caller Error continuations",
+  "status": "independently accepted; actual-parent composition pending",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local pinned PHP and profile",
+  "scope": "DIV with a leading-numeric left operand, two defined direct CVs already selecting live initially untyped reference cells, initially numeric-convertible scalars and a named warning handler.",
+  "runtime_revision": "a3a0986cc68cf157eb0afeae09c1558ffb42052a",
+  "tested_helper_revision": "86262f58ca770fe3b0ed0d6cab03291b7de61af8",
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "9814354473a5e23a0fa2d07b59558fcc43eeb13ae80c6bf05c211f1089ca8e33",
+    "spec/semantics/40-control.watsup": "df6e704fcacdaa83ea18af8bef28d6002fbe2a23316f66988e89b5cb89c95d5f",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "2f9613f0200e45aba02f87b6d4f6a0c2731a39ed92511464369aec2f306a9971"
+  },
+  "engine_basis": [
+    "Zend/zend_operators.c: div_function dereferences both selected operands before scalar conversion; _zendi_try_convert_scalar_to_number fills its numeric holder before zend_error and stops when a handler leaves an exception.",
+    "Zend/zend_operators.c: div_function_base tests the converted divisor for zero. Existing number_result and the ordinary throwable runtime deliver DivisionByZeroError at the operator line."
+  ],
+  "contract": [
+    "Authenticate the DIV source occurrence, operator, line and actual initial cells. Fresh capture/dispatch input equals the selected value; post-callback holders remain historical. Borrowed pointers and scalar holders add no roots.",
+    "Read the already-selected right cell after the left handler returns. A right warning caches zero before its handler writes live7; false-handler fallback emits one default Warning without replacing that zero.",
+    "Remove the DIV marker before number_result. The real caller tail receives a fresh DivisionByZeroError with null Previous and one throw-search owner; the assignment stays100 and ordinary catch/finally completes.",
+    "Accepted ADD rule bodies remain unchanged. Reuse pure scalar/phase/pointer helpers and the existing named dispatcher, without native arithmetic fallback or a new Throwable representation."
+  ],
+  "accepted": {
+    "strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-14/strict-a3a0986cc/report.json",
+      "report_sha256": "1ae65b4d7514a51542a9acc326dbda8f1437e2ae1ff3e25157fc904796f5a526",
+      "revision": "a3a0986cc68cf157eb0afeae09c1558ffb42052a",
+      "modules": 394,
+      "mode": "SL main=true; zero PHP agreement credit"
+    },
+    "source": {
+      "distinct_new_originals": 2,
+      "revision": "a3a0986cc68cf157eb0afeae09c1558ffb42052a",
+      "source_sha256": {
+        "division-leading-handler-zero": "0cf4cf2e75f760d17cfa1733d5d243be2b74636b2b5dc0c7ef123c33e1f7f115",
+        "division-leading-right-cached-zero-fallback": "9b471bb2ed28a56d4e35268351c73854c82018bae56a9d2c53ffde12823a67d4"
+      },
+      "cuts": [
+        {
+          "report": "/home/user/workspace/php-spec-evidence-archive/operators-14/smoke-a3a0986cc-handler-zero/report.json",
+          "report_sha256": "38995186e588603b701a0ad8815f981ca5b7c6568ee647f863b9585e13a61b10",
+          "ids": [
+            "division-leading-handler-zero"
+          ]
+        },
+        {
+          "report": "/home/user/workspace/php-spec-evidence-archive/operators-14/review-model-a3a0986cc-cached-zero/report.json",
+          "report_sha256": "ca507ead1f25b1e95140a7f5a6d3df4df9ec3a78f37501e8d0805d0fb53ef8e6",
+          "ids": [
+            "division-leading-right-cached-zero-fallback"
+          ]
+        }
+      ],
+      "result": "Both checked programs are normal/native0/model0 with exact streams: warning then live divisor0, and two warnings then cached0/live7 with one default Warning. Original-line DivisionByZeroError, sentinel100, live aliases and finally/end agree; no interruption or surviving group."
+    },
+    "author_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-14/state-86262f58c-author-one/report.json",
+      "report_sha256": "d43f9e1847b53e48e549c6d6ebc2a3e7951eb507126e2a2aef9f1e7f52a35ae3",
+      "revision": "86262f58ca770fe3b0ed0d6cab03291b7de61af8",
+      "mode": "SL",
+      "conditions": 130,
+      "fixture_sha256": "bc4c9f2c2d455630e8c5cae654e59e057c0a2ff0867287eba866c7b9f9a0d79a",
+      "result": "Genuine production-budget fronts validate source/selection/phase and no added cell owners. Whole public validation rejects another live selected-cell pointer, coordinated capture/dispatch snapshots and an invalid numeric phase. Real Error origin/line/message/null Previous/root1, sentinel and native/budget endings pass."
+    },
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-14/state-86262f58c-review-one/report.json",
+      "report_sha256": "032b0759e315925849b79622ba5122aae2a3acdd89de23b4fd482e38eedd9cb9",
+      "revision": "86262f58ca770fe3b0ed0d6cab03291b7de61af8",
+      "mode": "SL",
+      "conditions": 94,
+      "fixture_sha256": "3717f82664506218c23153ddbdd2da48d6e4d704ef57656272be116e0913bfde",
+      "result": "Genuine RIGHT capture/fresh dispatch/historical resume distinguishes cached0 from live7 and rejects coordinated snapshot forgeries. One default Warning, marker-free caller THROW_SEARCH, Error/root1, sentinel100, source owners2 and public budget/native endings pass."
+    },
+    "total_reached_conditions": 224,
+    "compatibility": "Helper-only 862 preserves tested a3a runtime/source bytes. Both immutable state gates compile and structure the full394-module net and execute only retained fixtures. Source2 and strict retain a3a identities; no source credit is renewed."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-14/baseline-975a8c04b-handler-zero/report.json",
+      "report_sha256": "067ac93f5861ccd2835c8876a85d580b56927a2883a64271c7c9ccfd502cb745",
+      "revision": "975a8c04b6354ab323104d42cf7e037d72172f9e",
+      "result": "Checked/program Unsupported: error-handler ingress requires a producer continuation; empty model streams/model1 versus native caught DivisionByZeroError/normal0. Agreement0."
+    },
+    "native_and_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-14/native-975a8c04b-one/report.json",
+        "report_sha256": "3fd83965b4977f450f8fc51cec265bd3cbea4bafdf2f4508f942a02a2c3c6435"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-14/review-native-5911fe311-one/report.json",
+        "report_sha256": "c1f4c9925108e4d19ab4a48b007286778342b3466d48652a42e798a056beed39"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-14/state-prep-86262f58c-author-one/report.json",
+        "report_sha256": "f96829f4a231288e1be8dda458342dd73ac05fcfbe48ccd7799c85b0f0687236"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-14/state-prep-86262f58c-review-one/report.json",
+        "report_sha256": "5b56fc456cd889590ca540746d6e4c35c0445423fbc4f3667b6c48772f4ab6a3"
+      }
+    ],
+    "syntax": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-14/parse-preflight-86262f58c-corrected/report.json",
+      "report_sha256": "91ed8ef44d767f1a2f4c2276cc61c57d989ebade512a2863e6a499a64eb8975a",
+      "result": "Both files parse before the expected standalone missing-pstate diagnostic. Corrected adjudication allows diagnostic backticks, reuses retained author output and runs only the previously-unrun peer parse. Syntax only, no semantic elaboration/execution credit."
+    },
+    "original_syntax_recorder": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-14/parse-preflight-86262f58c-both/report.json",
+      "report_sha256": "a0d800084a8c20ef6e8c12487c553402673ef65cc04435c44cf79f1ac977018f",
+      "credit": 0,
+      "result": "Original false recorder result retained unchanged; no fixture or runtime fault."
+    }
+  },
+  "required_follow_on": [
+    "Plain CVs, copied/temporary/reference-result operands, other slot classes and right-only warning ingress remain required.",
+    "Owning callbacks, expired selected cells, object/nonconvertible replacements and wider arithmetic/exit/lifecycle routes remain required; no unheld-pointer or full arithmetic claim.",
+    "All five inventory rows remain partial. OP12 array-element update work stays paused; accepted ADD and integer-operator cuts are unchanged."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-14",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "environment": "LC_ALL=C, TZ=UTC, no PHP_SPEC_SCRIPT_ENCODING; source native30/model CLI60/process90. State thins use CPU3, explicit SL and cap120; exact true newline, empty stderr, no interruption and reaped groups required.",
+    "commands": [
+      "python3 tests/semantics/division_warnings.py --case division-leading-handler-zero --output NEW_EXTERNAL_DIRECTORY",
+      "python3 tests/semantics/division_warning_review.py --case division-leading-right-cached-zero-fallback --output NEW_EXTERNAL_DIRECTORY",
+      "/home/user/workspace/php-spec-evidence-archive/operators-14/state-86262f58c-author-one/run-state.py and /home/user/workspace/php-spec-evidence-archive/operators-14/state-86262f58c-review-one/run-state.py run only frozen retained fixtures, without source/frontend/native stages."
+    ],
+    "record": "External reports retain revision, compiler/runtime/profile, original source/AST/path/native bytes, fixture hashes, commands and process exits/interruption/reap. Restore the matching Git cut/project-local tools and use fresh output directories."
+  }
+}

@@ -524,6 +524,14 @@ return, supplied throw and a second warning with default fallback.
 [ADD warning evidence](coverage/semantics/arithmetic-warning-review.json) retains
 the original Unsupported baseline; other operand classes and wider arithmetic
 callback paths remain partial.
+Leading-numeric-string `/` now retains selected reference cells and captured
+numbers through the same bounded named-handler route. A handler can make the
+next divisor zero; a second handler cannot replace an already-captured zero by
+writing `7`. Two exact originals and 224 genuine state premises check the default
+warning, original-line `DivisionByZeroError`, unchanged assignment destination and
+catch/finally continuation. [DIV evidence](coverage/semantics/division-warning-review.json)
+retains the original Unsupported baseline; wider operands and lifecycle paths
+remain partial.
 [Destructuring and retained expression effects](docs/semantics/DESTRUCTURING.md)
 now execute current scalar/array list patterns and nonvariable-left coalescing.
 [Independent acceptance](coverage/semantics/destructuring-review.json) binds 263

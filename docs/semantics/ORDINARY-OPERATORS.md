@@ -54,6 +54,19 @@ Plain CVs, unlike physical slot classes, copied operands, right-only warning
 ingress, owning callbacks, expired/nonconvertible replacements and wider
 arithmetic/exit paths remain required; existing integer-operator evidence is unchanged.
 
+The same bounded CV/reference-cell route now stages leading-numeric-string `/`.
+Zend's `div_function` dereferences both operands before conversion; each numeric
+holder is filled before its warning. The divisor is tested after conversion, so a
+handler-written zero raises DivisionByZeroError, while a second warning retains
+captured zero even if its handler writes live7 and returns false. The DIV marker is
+removed before ordinary numeric/error delivery: the real caller tail receives a
+fresh Error at the operator line and the assignment remains unchanged. Two exact
+originals and 130 author plus 94 independent genuine SL premises retain their cuts
+in the [DIV ledger](../../coverage/semantics/division-warning-review.json). Initial
+selection, fresh input snapshots, historical resume holders, sole Error ownership,
+default Warning and budget resumption are checked. Wider operands, callbacks and
+lifecycle paths remain required; the ADD bodies and evidence are unchanged.
+
 Concatenation has an additional compile/runtime distinction. The compiler visits
 both operands before converting known scalar operands and queuing conversion
 warnings. At execution, known array operands produce their conversion warnings

@@ -175,6 +175,7 @@ dec $gc_retired_binary(pstate, pbin, poperand) : bool
 def $gc_retired_binary(S, pbin, poperand) = false -- otherwise
 dec $integer_operator_plan(pstate) : pintegeroperation?
 dec $arithmetic_add_plan(pstate) : pintegeroperation?
+dec $arithmetic_div_plan(pstate) : pintegeroperation?
 dec $string_compare_pending(pstate) : bool
 dec $aggregate_compare_pending(pstate) : bool
 rule PhpStep/binary-right: S ~> S_out[.HELD = S.HELD]
@@ -182,6 +183,7 @@ rule PhpStep/binary-right: S ~> S_out[.HELD = S.HELD]
   -- if ~$gc_retired_binary(S, pbin, poperand)
   -- if $integer_operator_plan(S) = eps
   -- if $arithmetic_add_plan(S) = eps
+  -- if $arithmetic_div_plan(S) = eps
   -- if ~$string_compare_pending(S)
   -- if ~$aggregate_compare_pending(S)
   -- if S_left = $resolve_at($hold_task_inputs(S), poperand, z)
@@ -196,6 +198,7 @@ rule PhpStep/binary-left-abrupt: S ~> S_left[.TODO = eps][.HELD = S.HELD]
   -- if ~$gc_retired_binary(S, pbin, poperand)
   -- if $integer_operator_plan(S) = eps
   -- if $arithmetic_add_plan(S) = eps
+  -- if $arithmetic_div_plan(S) = eps
   -- if S_left = $resolve_at($hold_task_inputs(S), poperand, z)
   -- if S_left.COMPLETION =/= NORMAL
 rule PhpStep/binary-right-abrupt: S ~> S_right[.TODO = eps][.HELD = S.HELD]
@@ -203,6 +206,7 @@ rule PhpStep/binary-right-abrupt: S ~> S_right[.TODO = eps][.HELD = S.HELD]
   -- if ~$gc_retired_binary(S, pbin, poperand)
   -- if $integer_operator_plan(S) = eps
   -- if $arithmetic_add_plan(S) = eps
+  -- if $arithmetic_div_plan(S) = eps
   -- if S_left = $resolve_at($hold_task_inputs(S), poperand, z)
   -- if S_left.COMPLETION = NORMAL
   -- if S_right = $resolve_at(S_left, S.RESULT, z)
