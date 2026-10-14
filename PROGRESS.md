@@ -21,6 +21,9 @@ a direct destructor scope without local cells, held roots or owned pending opera
 Nested/outer contexts, parent/cause cleanup throws or exits, unsafe targets and
 wider callbacks/control remain required.
 [Pending-Throwable destructor-exit ledger](coverage/semantics/incdec-callback-destructor-exit-pending-review.json).
+The 391-module join over 4767ec3bd preserves current output, class and cleanup
+state. Current strict and the sole last-owner original pass at cc9e38c2f; private
+source/state cuts retain their identities.
 
 Module401 handles reference-warning throws before direct explicit output API
 callback entry. One authenticated task releases the prepared scalar prefix, then
