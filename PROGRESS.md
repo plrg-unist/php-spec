@@ -1305,6 +1305,8 @@ other prior cuts retain their own identities. The unchanged Unsupported baseline
 retains zero agreement. Actual later sends, typed/variadic targets, wider
 sources/live replacements and broader array/COW interactions remain open.
 [Reference-hole review](coverage/semantics/iterator-call-unpack-reference-holes-review.json).
+Canonical391 composition over `9b733e448` passes inventory and strict SL at
+`58bbbacc1`; private source/state evidence retains its original cuts.
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or

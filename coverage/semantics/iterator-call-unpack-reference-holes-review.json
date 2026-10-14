@@ -1,5 +1,5 @@
 {
-  "status": "accepted private bounded milestone; actual-parent composition pending",
+  "status": "accepted bounded milestone and actual-parent composition",
   "reviewer": "/root/iterator_review_01",
   "scope": "The initial named-key Iterator property-reference unpack send may select any fixed untyped nonvariadic BYREF parameter, including a later parameter with omitted earlier arguments. Empty SENT, no prior named phase, exact direct statically named Iterator construction, stable declared untyped nonstatic property payload, detached HOLD/SNAPSHOT and existing bounded object/array payload rules remain required.",
   "engine": {
@@ -128,6 +128,32 @@
     "Complete Iterator, foreach, callable and PHP core semantics"
   ],
   "composition": {
-    "status": "Pending actual-parent pointwise review and canonical inventory/sole strict gate; private source/state evidence is not renewed for metadata."
+    "status": "accepted; private source/state evidence retains its original cuts without replay",
+    "parent": "9b733e44859635ef468143e1ea3085a7a8cc900c",
+    "candidate": "58bbbacc104c39f336dc7ecccfc131c0acb0bc8f",
+    "review": "Only385 changes semantically from the actual parent, byte-identical to the reviewed three-premise relaxation. Parent30/277/400, manifest, native, adapter and frontend bytes are preserved. New defined-query/autoload contexts are disjoint from these named-send/default/error-trace states. The four partial inventory rows preserve all parent evidence and tests.",
+    "inventory": {
+      "report": ".tools/iterator-reference-later-fixed-join-inventory-u9knc4un/report.json",
+      "command": "python3 scripts/check-semantic-inventory.py",
+      "exit": 0,
+      "constructors": 169,
+      "runtime_obligations": 306,
+      "inputs_and_head_stable": true
+    },
+    "strict": {
+      "report": ".tools/iterator-reference-later-fixed-join-sl-ipjatv7p/report.json",
+      "command": "taskset -c 2 python3 .tools/iterator-reference-later-fixed-join-02.py",
+      "runner_sha256": "037835629744ac41131cfe5c352a43c0c8166fab30ab4779eaa2313927463e95",
+      "modules": 391,
+      "exit": 0,
+      "timeout": false,
+      "stdout": "true\n",
+      "stderr": "",
+      "inputs_and_head_stable": true
+    },
+    "archive": "../php-spec-evidence-archive/iterator-reference-later-fixed-02/join-evidence.tar.gz",
+    "archive_sha256": "0e28d21be527c7adde7149eac1f376e615d67d181ec79e9a4b41d0b6e9d82e19",
+    "bytes": 30328,
+    "manifest": "../php-spec-evidence-archive/iterator-reference-later-fixed-02/join-manifest.json"
   }
 }
