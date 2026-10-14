@@ -16,6 +16,9 @@ reference acquisition and canonical DIRECT-tree/history checks. The unchanged
 baseline, native observations and preparations retain 0. Empty/deferred/nonliteral
 arrays and wider value domains remain Unsupported.
 [Array-query ledger](coverage/semantics/class-qualified-constant-array-review.json).
+The 394-module composition over a5d519d7 passes independent pointwise review at
+700649de1; accepted array rules/protocol and all incoming paths are preserved.
+No renewed actor/source/state evidence is claimed.
 
 Embedded-NUL include/require paths now fail before file-provider or dynamic-parser
 requests, nonce allocation and once lookup. Include emits one frozen-path warning
