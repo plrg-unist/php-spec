@@ -437,6 +437,15 @@ def $key_write_rhs_source(S, pkeywriter) = true
   -- if ~$key_operand_cv_source(S, pkeywriter.SITE, [PCFIELD 1]) \/ $key_write_self(pkeywriter.TASK)
   -- if $origin_child((pkeywriter.SITE), [PCFIELD 1]) = (porigin_rhs)
   -- if $compiled_read(S, porigin_rhs) = (pvalue) \/ $compiled_read(S, porigin_rhs) = eps
+;; Literal execution authenticates its interned carrier against the raw
+;; compiled constant through the same source/precision-aware producer.
+def $key_write_rhs_source(S, pkeywriter) = true
+  -- if ~$key_write_no_rhs(pkeywriter.TASK)
+  -- if pkeywriter.RHS = KNOWN (PSTRING_CARRIER INTERNED_STRING n_bytes*)
+  -- if ~$key_operand_cv_source(S, pkeywriter.SITE, [PCFIELD 1]) \/ $key_write_self(pkeywriter.TASK)
+  -- if $origin_child((pkeywriter.SITE), [PCFIELD 1]) = (porigin_rhs)
+  -- if $compiled_read(S, porigin_rhs) = (PSTRING n_bytes*)
+  -- if $compiled_string_value(S, porigin_rhs, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
 def $key_write_rhs_source(S, pkeywriter) = true
   -- if ~$key_write_no_rhs(pkeywriter.TASK)
   -- if pkeywriter.RHS = REFERENCE n
