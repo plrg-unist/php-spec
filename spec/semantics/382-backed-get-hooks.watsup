@@ -139,6 +139,24 @@ def $property_hook_trait_parent_shape(S, pclassdesc, ptbytes) = true
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
   -- if pclassdesc_parent.KIND = "class"
   -- if $ppproperty_desc_at($property_info_layout(S, porigin_parent, |S.CLASSES|), ptbytes) = eps
+def $property_hook_trait_parent_shape(S, pclassdesc, ptbytes) = true
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class"
+  -- if $ppproperty_desc_at($property_info_layout(S, porigin_parent, |S.CLASSES|), ptbytes) = (ppropertydesc_parent)
+  -- if ppropertydesc_parent.TYPE =/= eps
+  -- if ppropertydesc_parent.VISIBILITY = PROPERTY_PUBLIC /\ ~ppropertydesc_parent.STATIC /\ ~ppropertydesc_parent.READONLY /\ ~ppropertydesc_parent.FINAL /\ ppropertydesc_parent.SETVISIBILITY = eps
+  -- if ppropertydesc_parent.ORIGIN = PORIGIN n_parent pcpath_parent
+  -- if $property_declaring_class(S.CLASSES, ppropertydesc_parent.ORIGIN) = (porigin_declaring_parent)
+  -- if $class_at(S.CLASSES, porigin_declaring_parent) = (pclassdesc_declaring_parent)
+  -- if pclassdesc_declaring_parent.KIND = "class"
+  -- if $hook_property_at(pclassdesc_declaring_parent.PROPERTIES, PORIGIN n_parent pcpath_parent) = (ppropertydesc_parent)
+  -- if $(|pcpath_parent| >= 2)
+  -- if pcpath_group = pcpath_parent[0:$nabs($(|pcpath_parent| - 2))]
+  -- if pcpath_parent = pcpath_group ++ [PCFIELD 3, PCINDEX 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n_parent pcpath_group) = (NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text_name) metadata_name) phpType5 metadata_item])) (SEQUENCE eps) metadata)
+  -- if flags <- [0,1] /\ ppropertydesc_parent.NAME = ptbytes /\ ptbytes = $base64(text_name) /\ ppropertydesc_parent.KEY = ptbytes
 def $property_hook_trait_parent_shape(S, pclassdesc, ptbytes) = false -- otherwise
 dec $property_hook_trait_parent_linked(pstate, pclassdesc) : bool
 def $property_hook_trait_parent_linked(S, pclassdesc) = true
