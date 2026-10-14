@@ -60,6 +60,34 @@ def $pphook_class_shape(pchheader, NVarLikeIdentifier (BYTES text) metadata_name
   -- if $hook_body_supported(phpType39)
 def $pphook_class_shape(pchheader, phpType40, phpType38) = false -- otherwise
 
+;; The selected pair has two physical source functions and one backing property.
+dec $hook_pair_headers(phpType38, phpType38, ptbytes) : bool
+def $hook_pair_headers(NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_get) (SEQUENCE eps) (SEQUENCE statement_get*) metadata_get_hook, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_set) (SEQUENCE eps) (SEQUENCE statement_set*) metadata_set_hook, ptbytes) = true
+  -- if $ptlc($base64(text_get)) = $ptascii("get") /\ $ptlc($base64(text_set)) = $ptascii("set")
+  -- if $hook_body_backed(SEQUENCE statement_get*, ptbytes) /\ $hook_body_backed(SEQUENCE statement_set*, ptbytes)
+def $hook_pair_headers(phpType38, phpType38_2, ptbytes) = false -- otherwise
+dec $pphook_pair_compile(ppstate, pcpath, ppropertydesc, phpType38, phpType38, pchheader) : ppstate
+def $pphook_pair_compile(P, pcpath, ppropertydesc, phpType38_get, phpType38_set, pchheader) = $pphook_compile(P_get, pcpath ++ [PCFIELD 4, PCINDEX 1], ppropertydesc, phpType38_set, pchheader)
+  -- if P_get = $pphook_compile(P, pcpath ++ [PCFIELD 4, PCINDEX 0], ppropertydesc, phpType38_get, pchheader)
+  -- if P_get.COMPLETION = PPCNORMAL
+def $pphook_pair_compile(P, pcpath, ppropertydesc, phpType38_get, phpType38_set, pchheader) = P_get
+  -- if P_get = $pphook_compile(P, pcpath ++ [PCFIELD 4, PCINDEX 0], ppropertydesc, phpType38_get, pchheader)
+  -- if P_get.COMPLETION =/= PPCNORMAL
+def $ppproperty_hook_group(P, pcpath, NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text) metadata_name) phpType5 metadata_item])) (SEQUENCE ([phpType38_get, phpType38_set])) metadata, ppropertydesc*, pchheader) = PPROPERTIES $pphook_pair_compile(P_next, pcpath, ppropertydesc_new, phpType38_get, phpType38_set, pchheader) ppropertydesc_next*
+  -- if flags <- [0,1] /\ pchheader.KIND = "class" /\ pchheader.PARENT = eps /\ ~pchheader.READONLY /\ ~$pptrait_body_uses(pchheader.BODY)
+  -- if $hook_pair_headers(phpType38_get, phpType38_set, $base64(text))
+  -- if $ppproperty_group_line_valid(P, metadata)
+  -- if PPROPERTIES P_next ppropertydesc_next* = $ppproperty_group($pplocate(P, pcpath, $source_line(metadata)), pcpath, flags, phpType18, [NPropertyItem (NVarLikeIdentifier (BYTES text) metadata_name) phpType5 metadata_item], ppropertydesc*, pchheader, $source_line(metadata))
+  -- if P_next.COMPLETION = PPCNORMAL /\ |ppropertydesc_next*| = $(|ppropertydesc*| + 1)
+  -- if ppropertydesc_new = ppropertydesc_next*[|ppropertydesc*|]
+  -- if ppropertydesc_new.TYPE =/= eps
+def $ppproperty_hook_group(P, pcpath, NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text) metadata_name) phpType5 metadata_item])) (SEQUENCE ([phpType38_get, phpType38_set])) metadata, ppropertydesc*, pchheader) = PPROPERTIES P_next ppropertydesc_next*
+  -- if flags <- [0,1] /\ pchheader.KIND = "class" /\ pchheader.PARENT = eps /\ ~pchheader.READONLY /\ ~$pptrait_body_uses(pchheader.BODY)
+  -- if $hook_pair_headers(phpType38_get, phpType38_set, $base64(text))
+  -- if $ppproperty_group_line_valid(P, metadata)
+  -- if PPROPERTIES P_next ppropertydesc_next* = $ppproperty_group($pplocate(P, pcpath, $source_line(metadata)), pcpath, flags, phpType18, [NPropertyItem (NVarLikeIdentifier (BYTES text) metadata_name) phpType5 metadata_item], ppropertydesc*, pchheader, $source_line(metadata))
+  -- if P_next.COMPLETION =/= PPCNORMAL
+
 def $ppproperty_hook_group(P, pcpath, NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text) metadata_name) phpType5 metadata_item])) (SEQUENCE ([phpType38])) metadata, ppropertydesc*, pchheader) = PPROPERTIES $pphook_compile(P_next, pcpath ++ [PCFIELD 4, PCINDEX 0], ppropertydesc_new, phpType38, pchheader) ppropertydesc_next*
   -- if flags <- [0,1] /\ ~pchheader.READONLY /\ $pphook_owner_shape(pchheader, NVarLikeIdentifier (BYTES text) metadata_name, phpType38, phpType5)
   -- if $pphook_class_shape(pchheader, NVarLikeIdentifier (BYTES text) metadata_name, phpType38) /\ ~$pptrait_body_uses(pchheader.BODY)
@@ -120,6 +148,27 @@ def $hook_property_at(ppropertydesc :: ppropertydesc_tail*, porigin) = $hook_pro
   -- if ppropertydesc.ORIGIN =/= porigin
 
 dec $property_hook_origin(pstate, ppropertydesc) : porigin?
+dec $property_hook_pair_origins(pstate, ppropertydesc) : porigin*
+def $property_hook_pair_origins(S, ppropertydesc) = [PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX 0]), PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX 1])]
+  -- if ppropertydesc.ORIGIN = PORIGIN n pcpath
+  -- if $property_declaring_class(S.CLASSES, PORIGIN n pcpath) = (porigin_owner)
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ ~pclassdesc.READONLY
+  -- if $hook_property_at(pclassdesc.PROPERTIES, PORIGIN n pcpath) = (ppropertydesc)
+  -- if $(|pcpath| >= 2)
+  -- if pcpath_group = pcpath[0:$nabs($( |pcpath| - 2))]
+  -- if pcpath = pcpath_group ++ [PCFIELD 3, PCINDEX 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_group) = (NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text_name) metadata_name) phpType5 metadata_item])) (SEQUENCE ([phpType38_get, phpType38_set])) metadata)
+  -- if flags <- [0,1] /\ ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = eps
+  -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ~ppropertydesc.FINAL
+  -- if phpType18 =/= ABSENT /\ ppropertydesc.TYPE =/= eps
+  -- if ppropertydesc.NAME = $base64(text_name) /\ ppropertydesc.KEY = ppropertydesc.NAME
+  -- if $hook_pair_headers(phpType38_get, phpType38_set, ppropertydesc.NAME)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX 0])) = (phpType38_get)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX 1])) = (phpType38_set)
+def $property_hook_pair_origins(S, ppropertydesc) = eps -- otherwise
+def $property_hook_origin(S, ppropertydesc) = (porigin_get)
+  -- if $property_hook_pair_origins(S, ppropertydesc) = porigin_get :: porigin_set :: eps
 def $property_hook_origin(S, ppropertydesc) = (PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX 0]))
   -- if ppropertydesc.ORIGIN = PORIGIN n pcpath
   -- if $(|pcpath| >= 2)
@@ -404,11 +453,13 @@ def $property_hook_backing(S, n, ppropertydesc) = true
   -- if $hook_body_backed(phpType39, ppropertydesc.NAME)
 def $property_hook_backing(S, n, ppropertydesc) = false -- otherwise
 
+dec $property_set_backing(pstate, nat, ppropertydesc) : bool
 def $property_hook_read_needed(S, n, ptbytes) = true
   -- if $property_lexical_private(S, n, ptbytes) = eps
   -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
   -- if $property_hook_effective_origin(S, ppropertydesc) =/= eps
   -- if ~$property_hook_backing(S, n, ppropertydesc)
+  -- if ~$property_set_backing(S, n, ppropertydesc)
 def $property_hook_read_needed(S, n, ptbytes) = false -- otherwise
 
 dec $property_hook_function(pstate, ppropertyhook) : pfunction?
@@ -1263,7 +1314,7 @@ dec $property_hook_parent_match(pstate, ppropertydesc, ppropertydesc?) : bool
 def $property_hook_parent_overlap(S, eps, ppropertydesc_parent*) = false
 def $property_hook_parent_overlap(S, ppropertydesc :: ppropertydesc_tail*, ppropertydesc_parent*) = ($property_hook_parent_match(S, ppropertydesc, $property_desc_at(ppropertydesc_parent*, ppropertydesc.KEY)) \/ $property_hook_parent_overlap(S, ppropertydesc_tail*, ppropertydesc_parent*))
 def $property_hook_parent_match(S, ppropertydesc, eps) = (($property_hook_effective_origin(S, ppropertydesc) =/= eps /\ $property_hook_trait_origin(S, ppropertydesc) = eps) \/ $property_set_origin(S, ppropertydesc) =/= eps)
-def $property_hook_parent_match(S, ppropertydesc, (ppropertydesc_inherited)) = (($property_hook_effective_origin(S, ppropertydesc_inherited) =/= eps \/ $property_hook_effective_origin(S, ppropertydesc) =/= eps \/ $property_set_origin(S, ppropertydesc_inherited) =/= eps \/ $property_set_origin(S, ppropertydesc) =/= eps) /\ ~$property_hook_override_pair(S, ppropertydesc_inherited, ppropertydesc))
+def $property_hook_parent_match(S, ppropertydesc, (ppropertydesc_inherited)) = ($property_set_origin(S, ppropertydesc_inherited) =/= eps \/ $property_set_origin(S, ppropertydesc) =/= eps \/ (($property_hook_effective_origin(S, ppropertydesc_inherited) =/= eps \/ $property_hook_effective_origin(S, ppropertydesc) =/= eps) /\ ~$property_hook_override_pair(S, ppropertydesc_inherited, ppropertydesc)))
 def $property_hook_link_finish(S, pclassdesc, S_linked) = $trait_restore(S, S_linked[.COMPLETION = UNSUPPORTED "inherited property hook override"])
   -- if S_linked.COMPLETION = NORMAL
   -- if $class_at(S_linked.CLASSES, pclassdesc.ORIGIN) = (pclassdesc_effective)

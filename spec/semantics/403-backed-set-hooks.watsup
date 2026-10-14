@@ -1,4 +1,4 @@
-;; A set-only backed class hook has one implicit parameter, not a checked NParam.
+;; A backed class setter has one implicit parameter, not a checked NParam.
 dec $property_set_name(ptbytes) : ptbytes
 def $property_set_name(ptbytes) = [36] ++ ptbytes ++ $ptascii("::set")
 dec $property_set_signature(ppropertydesc) : pssignature
@@ -14,7 +14,9 @@ def $pphook_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) (INTE
   -- if pssignature = $property_set_signature(ppropertydesc)
   -- if P_hook = $ppfunction_start($pplocate(P[.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $property_set_name(ppropertydesc.NAME), z))], pcpath, z), ptbytes_name, pssignature)[.RETURNREF = false][.RETURNS = pssignature.RETURNS][.GOTOROOT = pcpath][.FOLD = P.FOLD[.FUNCTION = ptbytes_name][.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $property_set_name(ppropertydesc.NAME), z))][.CLOSURE = false][.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
 
-;; The declaring row and sole source hook remain distinct from an inherited layout row.
+;; The declaring row and physical source hooks remain distinct from an inherited layout row.
+def $property_set_origin(S, ppropertydesc) = (porigin_set)
+  -- if $property_hook_pair_origins(S, ppropertydesc) = porigin_get :: porigin_set :: eps
 def $property_set_origin(S, ppropertydesc) = (PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX 0]))
   -- if ppropertydesc.ORIGIN = PORIGIN n pcpath
   -- if $property_declaring_class(S.CLASSES, PORIGIN n pcpath) = (porigin_owner)
@@ -66,7 +68,12 @@ def $property_set_valid(S, ppropertyhook) = true
 def $property_set_valid(S, ppropertyhook) = false -- otherwise
 
 dec $property_set_context_valid(pstate, pcallcontext) : bool
-dec $property_set_backing(pstate, nat, ppropertydesc) : bool
+def $property_set_backing(S, n, ppropertydesc) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = PROPERTY_HOOK_TARGET ppropertyhook
+  -- if $property_set_origin(S, ppropertydesc) =/= eps
+  -- if $property_hook_backing(S, n, ppropertydesc)
+  -- if $property_hook_context_valid(S, pcallcontext)
 def $property_set_backing(S, n, ppropertydesc) = true
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.TARGET = PROPERTY_SET_TARGET ppropertyhook
