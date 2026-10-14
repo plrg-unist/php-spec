@@ -1149,5 +1149,17 @@
       "result": "ff24 SL45 completed five quiet stages, exit0, app0, reaped and stable. Source/native/public/caller remain at their separate private tested revisions."
     },
     "limits": "The old object and returned cells are modeled allocations, not physical Zend collection. This does not validate other computed VALUE calls, arbitrary CONST/NULL or multiple active returns, and broad returns verification remains open."
+  },
+  "nested_two_owning_returns": {
+    "status": "independently_accepted_bounded_validation_only",
+    "revision": "0420409bec101d7b3163958f3fd9efcb1298040f",
+    "modules": 391,
+    "scope": "Two nested computed by-reference return candidates own distinct A and B objects. The treatment's deepest finally returns shared y; the control leaves that finally empty. Both factories run once, while retirement order and delivered aliases differ.",
+    "native": {"raw": ".tools/returns-chain-owner-catch-current-24/.tools/returns-verify55-two-owning/native-two-owning-b97xozuy/report.json", "report_sha256": "627630c3345ae15eeaf9954a87d32a6dbefc82e2b5e62db698e35d297b2ba27d", "result": "Two PHP20 observations at original e687: treatment V;W;I;B;A;R:1;A:1;Y:changed;E; without Notice; control V;W;I;A;R:0;B;A:1;Y:selected;E; with one by-reference Notice. Both exit0."},
+    "source": {"raw": ".tools/returns-two-owning-55/.tools/returns-verify55-two-owning/model-two-owning-b3b_pzic/report.json", "report_sha256": "a04a1ad9bc79c5475e330c8fa0708a09d85ab3d9991b6d93779312382ca4332e", "result": "Two serial checked sources agree exactly with native stdout, stderr and exit; NORMAL, quiet/reaped, stable clean 0420409/391."},
+    "state": {"raw": ".tools/returns-two-owning-55/.tools/returns-verify55-two-owning/two-owning-state-e32dqbvv/report.json", "report_sha256": "7479bad3c0afae5b242d9c5a8f8c0a2f2ca08f0c1d7013948b5a035ca528196f", "fixture_sha256": "90aff31ef93ba0c687f7bc15c0789c38848acbd423390fefbda2219fa1c0020a", "main_premises": 89, "result": "One source-linked treatment execution binds both allocated owning pending objects at deepest I, then the same B and A objects in their ordered destructor callbacks and original VALUE releases. Public admission passes at I, B, A and selected r=a=y before R; full fixture compilation is quiet with app0."},
+    "runtime": {"mode": "SL", "jobs": 1, "compiler_cap_seconds": 45, "state_cap_seconds": 60, "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398", "compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d", "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"},
+    "recovery": "Preserve the original ignored native, checked and state scripts, sources, fixtures and raw reports at the recorded paths. Restore tested 0420409/391 modules and helpers if the protected provider retires; run the preserved full-fixture compile then state runner. Metadata publication requires no semantic rerun.",
+    "limits": "The state fixture proves treatment owner identity and release order only in its reached execution. Control and final writes have separate exact source-comparison credit; physical collection, other nested return layouts, split-budget composition and broad returns verification remain open."
   }
 }

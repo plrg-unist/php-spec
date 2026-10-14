@@ -2660,6 +2660,15 @@ descriptor failure and fixture-only failures retain zero affected credit.
 Actual-parent 391-module composition passes strict SL45 at `413193ad` (app0);
 broad returns_verify stays OPEN. [Local CV lifetime review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
+M55 validates nested computed owning A/B by-reference returns without a runtime
+change at `0420409b`/391. Two native sources agree exactly with the checked
+model; one source-linked state fixture proves distinct pending owners, B then A
+destructor releases, public admission and the treatment's selected y alias.
+The control and final write are separate source-comparison observations. Physical
+collection, other nested layouts and broad returns verification remain OPEN;
+the [ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json)
+records the original reports and recovery path.
+
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
 Per-constant protection survives namespace publication and parked handlers.
