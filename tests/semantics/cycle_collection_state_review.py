@@ -15606,6 +15606,495 @@ CASES = {
                 '~$key_write_rhs_source(S, pkeywriter[.RHS = KNOWN (PSTRING_CARRIER INTERNED_STRING '
                 '$ptascii("x"))])',
                 '~$key_write_rhs_source(S, pkeywriter[.RHS = VARIABLE $ptascii("value") z])']},
+    'weak-map-coalesce-value-copy-69': {'source': '<?php\n'
+                                                   'class CoalesceValue {\n'
+                                                   "    public function __destruct() { echo 'D|'; }\n"
+                                                   '}\n'
+                                                   '$map = new WeakMap;\n'
+                                                   '$key = new stdClass;\n'
+                                                   '$missing = new stdClass;\n'
+                                                   '$value = new CoalesceValue;\n'
+                                                   '$valueWeak = WeakReference::create($value);\n'
+                                                   '$map[$key] = $value;\n'
+                                                   '$fallback = 0;\n'
+                                                   "echo 'present|';\n"
+                                                   '$copy = $map[$key] ?? ($fallback = 1);\n'
+                                                   "echo $fallback === 0 ? 'lazy|' : 'fallback|';\n"
+                                                   "echo $valueWeak->get() === $copy ? 'same|' : 'other|';\n"
+                                                   'unset($value);\n'
+                                                   '$fallback = 0;\n'
+                                                   "echo 'missing|';\n"
+                                                   '$absent = $map[$missing] ?? ($fallback = 1);\n'
+                                                   "echo $fallback === 1 ? 'fallback|' : 'lazy|';\n"
+                                                   "echo $absent === 1 ? 'same|' : 'other|';\n"
+                                                   'unset($map[$key]);\n'
+                                                   "echo $valueWeak->get() === $copy ? 'held|' : 'other|';\n"
+                                                   'unset($copy);\n'
+                                                   "echo $valueWeak->get() === null ? 'value-null|' : "
+                                                   "'value-live|';\n"
+                                                   'unset($map, $key, $missing, $valueWeak, $fallback, '
+                                                   '$absent);\n'
+                                                   "echo 'END';\n",
+                                         'stage': 'S.TODO = (KEY_READ_DIM poperand_key z KEY_IS) :: ptask_tail* '
+                                                  '-- if S_base = $quiet_operand(S, S.RESULT) -- if '
+                                                  'S_base.RESULT = KNOWN (POBJECT n_map) -- if $weakmap_at(S, '
+                                                  'n_map) -- if S.EVENTS = [OUTPUT $ptascii("present|")]',
+                                         'checks': ['S.COMPLETION = NORMAL',
+                                                    'S.CURRENT = eps',
+                                                    'S.FRAMES = eps',
+                                                    'S.ORIGIN = (porigin_read)',
+                                                    'S.BASE = BASE_VALUE (KNOWN PNULL)',
+                                                    '$lookup(S.ENV, $ptascii("map")) = (n_map_cell)',
+                                                    'S.STORE[n_map_cell] = DEFINED (POBJECT n_map)',
+                                                    'S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)',
+                                                    'n_key = pweakmapentry.KEY',
+                                                    'pweakmapentry.VALUE = POBJECT n_value',
+                                                    'pweakmapentry.BEFORE = eps',
+                                                    '$lookup(S.ENV, $ptascii("key")) = (n_key_cell)',
+                                                    'S.STORE[n_key_cell] = DEFINED (POBJECT n_key)',
+                                                    '$lookup(S.ENV, $ptascii("missing")) = (n_missing_cell)',
+                                                    'S.STORE[n_missing_cell] = DEFINED (POBJECT n_missing)',
+                                                    'n_key =/= n_missing',
+                                                    'S.OBJECTS[n_key] = STDINSTANCE',
+                                                    'S.OBJECTS[n_missing] = STDINSTANCE',
+                                                    'S.OBJECTS[n_value] = INSTANCE porigin_value',
+                                                    '$class_named(S.CLASSNAMES, $ptascii("coalescevalue")) = '
+                                                    '(porigin_value)',
+                                                    '$lookup(S.ENV, $ptascii("valueWeak")) = (n_wrapper_cell)',
+                                                    'S.STORE[n_wrapper_cell] = DEFINED (POBJECT n_wrapper)',
+                                                    '$weakref_get(S, n_wrapper) = POBJECT n_value',
+                                                    '$lookup(S.ENV, $ptascii("fallback")) = (n_fallback_cell)',
+                                                    'S.STORE[n_fallback_cell] = DEFINED (PINT 0)',
+                                                    '~(n_value <- S.DESTRUCTION.CALLED)',
+                                                    'S_key = $quiet_operand(S, poperand_key)',
+                                                    'S_key.COMPLETION = NORMAL',
+                                                    'S_key.RESULT = KNOWN (POBJECT n_read_key)',
+                                                    'n_read_key = n_key',
+                                                    'paccess = $access_record(S, porigin_read, z, ACCESS_READ '
+                                                    'KEY_IS, BASE_VALUE S.RESULT, poperand_key, KNOWN PNULL, '
+                                                    'KEY_READ_DIM poperand_key z KEY_IS, (n_map), true)',
+                                                    'paccess_live = paccess[.SELECTED = $rcontainer_selected(S, '
+                                                    'S.RESULT)][.OFFSET = POBJECT n_read_key][.PHASE = '
+                                                    'ACCESS_CALL $ptascii("offsetExists")]',
+                                                    '$access_valid(S, paccess_live)',
+                                                    '$access_dimension_pending(S)',
+                                                    '$weakmap_quiet_read_allowed(S, paccess_live)',
+                                                    '$call_task_valid(S, KEY_READ_DIM poperand_key z KEY_IS)',
+                                                    '$call_descriptors_valid(S)',
+                                                    '$heap_valid($heap_graph(S))',
+                                                    '$weakref_state_valid(S)',
+                                                    '$instance_storage_state_valid(S)',
+                                                    'H = $heap_graph(S)',
+                                                    '$heap_children(HOBJECT n_map, H.EDGES) = [HOBJECT n_value]',
+                                                    '~((HEDGE (HOBJECT n_map) (HOBJECT n_key)) <- H.EDGES)',
+                                                    '$heap_owners(H, HOBJECT n_value) = 2',
+                                                    '$heap_owners(H, HOBJECT n_map) = 1',
+                                                    '$heap_owners(H, HOBJECT n_read_key) = 1',
+                                                    '$lookup(S.ENV, $ptascii("value")) = (n_value_cell)',
+                                                    'S.STORE[n_value_cell] = DEFINED (POBJECT n_value)',
+                                                    '$weakmap_has_key(S, n_map, n_read_key)',
+                                                    'PhpStep: S ~> S_read',
+                                                    'S_read = $key_read_done(S, POBJECT n_value)',
+                                                    'S_read.COMPLETION = NORMAL',
+                                                    'S_read.TODO = ptask_tail*',
+                                                    'S_read.RESULT = KNOWN (POBJECT n_value)',
+                                                    'S_read.BASE = BASE_VALUE (KNOWN PNULL)',
+                                                    'S_read.OBJECTS = S.OBJECTS',
+                                                    'S_read.STORE = S.STORE',
+                                                    'S_read.ALLOCATIONS = S.ALLOCATIONS',
+                                                    'S_read.FRAMES = S.FRAMES',
+                                                    'S_read.DESTRUCTION = S.DESTRUCTION',
+                                                    'S_read.EVENTS = S.EVENTS',
+                                                    'S_read.STORE[n_fallback_cell] = DEFINED (PINT 0)',
+                                                    '$access_call(S, paccess_live, $ptascii("offsetExists")) = '
+                                                    'S_read',
+                                                    '$heap_owners($heap_graph(S_read), HOBJECT n_value) = 3',
+                                                    '$heap_owners($heap_graph(S_read), HOBJECT n_map) = 1',
+                                                    '$heap_owners($heap_graph(S_read), HOBJECT n_read_key) = 1',
+                                                    '$eager_slots(S, S_read) = eps',
+                                                    '$call_descriptors_valid(S_read)',
+                                                    '$heap_valid($heap_graph(S_read))',
+                                                    'S_paused = $drive_steps(S, 0)',
+                                                    'S_paused = S[.COMPLETION = BUDGET]',
+                                                    '$drive_steps(S_paused[.COMPLETION = NORMAL], 1)[.COMPLETION '
+                                                    '= NORMAL] = S_read',
+                                                    'S_table_null = S[.OBJECTS[n_map] = WEAKMAP '
+                                                    '(pweakmapentry[.VALUE = PNULL])]',
+                                                    '$call_descriptors_valid(S_table_null)',
+                                                    '$heap_valid($heap_graph(S_table_null))',
+                                                    '$heap_owners($heap_graph(S_table_null), HOBJECT n_value) = '
+                                                    '1',
+                                                    '$access_call(S_table_null, paccess_live, '
+                                                    '$ptascii("offsetExists")) = $key_read_done(S_table_null, '
+                                                    'PNULL)',
+                                                    'S_table_false = S[.OBJECTS[n_map] = WEAKMAP '
+                                                    '(pweakmapentry[.VALUE = PBOOL false])]',
+                                                    '$call_descriptors_valid(S_table_false)',
+                                                    '$heap_valid($heap_graph(S_table_false))',
+                                                    '$heap_owners($heap_graph(S_table_false), HOBJECT n_value) = '
+                                                    '1',
+                                                    '$access_call(S_table_false, paccess_live, '
+                                                    '$ptascii("offsetExists")) = $key_read_done(S_table_false, '
+                                                    'PBOOL false)',
+                                                    'S_table_zero = S[.OBJECTS[n_map] = WEAKMAP '
+                                                    '(pweakmapentry[.VALUE = PINT 0])]',
+                                                    '$call_descriptors_valid(S_table_zero)',
+                                                    '$heap_valid($heap_graph(S_table_zero))',
+                                                    '$heap_owners($heap_graph(S_table_zero), HOBJECT n_value) = '
+                                                    '1',
+                                                    '$access_call(S_table_zero, paccess_live, '
+                                                    '$ptascii("offsetExists")) = $key_read_done(S_table_zero, '
+                                                    'PINT 0)',
+                                                    'S_table_empty = S[.OBJECTS[n_map] = WEAKMAP '
+                                                    '(pweakmapentry[.VALUE = PSTRING_CARRIER INTERNED_STRING '
+                                                    'eps])]',
+                                                    '$call_descriptors_valid(S_table_empty)',
+                                                    '$heap_valid($heap_graph(S_table_empty))',
+                                                    '$heap_owners($heap_graph(S_table_empty), HOBJECT n_value) = '
+                                                    '1',
+                                                    '$access_call(S_table_empty, paccess_live, '
+                                                    '$ptascii("offsetExists")) = $key_read_done(S_table_empty, '
+                                                    'PSTRING_CARRIER INTERNED_STRING eps)',
+                                                    'S_table_string_zero = S[.OBJECTS[n_map] = WEAKMAP '
+                                                    '(pweakmapentry[.VALUE = PSTRING_CARRIER INTERNED_STRING '
+                                                    '$ptascii("0")])]',
+                                                    '$call_descriptors_valid(S_table_string_zero)',
+                                                    '$heap_valid($heap_graph(S_table_string_zero))',
+                                                    '$heap_owners($heap_graph(S_table_string_zero), HOBJECT '
+                                                    'n_value) = 1',
+                                                    '$access_call(S_table_string_zero, paccess_live, '
+                                                    '$ptascii("offsetExists")) = '
+                                                    '$key_read_done(S_table_string_zero, PSTRING_CARRIER '
+                                                    'INTERNED_STRING $ptascii("0"))',
+                                                    'S_table_string = S[.OBJECTS[n_map] = WEAKMAP '
+                                                    '(pweakmapentry[.VALUE = PSTRING_CARRIER INTERNED_STRING '
+                                                    '$ptascii("x")])]',
+                                                    '$call_descriptors_valid(S_table_string)',
+                                                    '$heap_valid($heap_graph(S_table_string))',
+                                                    '$heap_owners($heap_graph(S_table_string), HOBJECT n_value) '
+                                                    '= 1',
+                                                    '$access_call(S_table_string, paccess_live, '
+                                                    '$ptascii("offsetExists")) = $key_read_done(S_table_string, '
+                                                    'PSTRING_CARRIER INTERNED_STRING $ptascii("x"))',
+                                                    'S_table_true = S[.OBJECTS[n_map] = WEAKMAP '
+                                                    '(pweakmapentry[.VALUE = PBOOL true])]',
+                                                    '$call_descriptors_valid(S_table_true)',
+                                                    '$heap_valid($heap_graph(S_table_true))',
+                                                    '$heap_owners($heap_graph(S_table_true), HOBJECT n_value) = '
+                                                    '1',
+                                                    '$access_call(S_table_true, paccess_live, '
+                                                    '$ptascii("offsetExists")) = $key_read_done(S_table_true, '
+                                                    'PBOOL true)',
+                                                    'S_table_one = S[.OBJECTS[n_map] = WEAKMAP '
+                                                    '(pweakmapentry[.VALUE = PINT 1])]',
+                                                    '$call_descriptors_valid(S_table_one)',
+                                                    '$heap_valid($heap_graph(S_table_one))',
+                                                    '$heap_owners($heap_graph(S_table_one), HOBJECT n_value) = 1',
+                                                    '$access_call(S_table_one, paccess_live, '
+                                                    '$ptascii("offsetExists")) = $key_read_done(S_table_one, '
+                                                    'PINT 1)',
+                                                    'S_empty_map = S[.OBJECTS[n_map] = WEAKMAP eps]',
+                                                    '$call_descriptors_valid(S_empty_map)',
+                                                    '$heap_valid($heap_graph(S_empty_map))',
+                                                    '$access_call(S_empty_map, paccess_live, '
+                                                    '$ptascii("offsetExists")) = $key_read_done(S_empty_map, '
+                                                    'PNULL)',
+                                                    'S_no_head = S[.TODO = ptask_tail*]',
+                                                    '~$weakmap_quiet_read_allowed(S_no_head, paccess_live)',
+                                                    '~$weakmap_quiet_read_allowed(S[.RESULT = KNOWN (POBJECT '
+                                                    'n_map)], paccess_live)',
+                                                    '~$weakmap_quiet_read_allowed(S[.STORE[n_key_cell] = DEFINED '
+                                                    '(POBJECT n_missing)], paccess_live)',
+                                                    '~$weakmap_quiet_read_allowed(S, paccess_live[.OFFSET = '
+                                                    'POBJECT n_missing])',
+                                                    '~$weakmap_quiet_read_allowed(S, paccess_live[.LINE = '
+                                                    '$(paccess_live.LINE + 1)])',
+                                                    '~$weakmap_quiet_read_allowed(S, paccess_live[.MODE = '
+                                                    'ACCESS_READ KEY_R])',
+                                                    '~$weakmap_quiet_read_allowed(S, paccess_live[.MODE = '
+                                                    'ACCESS_READ (KEY_TEST false)])',
+                                                    '~$weakmap_quiet_read_allowed(S, paccess_live[.LATCH = '
+                                                    'true])',
+                                                    '~$weakmap_quiet_read_allowed(S, paccess_live[.KEYHOLE = '
+                                                    'true])',
+                                                    '~$weakmap_quiet_read_allowed(S, paccess_live[.OUTER = '
+                                                    'false])',
+                                                    '~$weakmap_quiet_read_allowed(S, paccess_live[.VALUE = PBOOL '
+                                                    'false])',
+                                                    '~$weakmap_quiet_read_allowed(S[.ORIGIN = eps], '
+                                                    'paccess_live)',
+                                                    'S_refused = $access_call(S_no_head, paccess_live, '
+                                                    '$ptascii("offsetExists"))',
+                                                    'S_refused.COMPLETION = UNSUPPORTED "WeakMap dimension '
+                                                    'protocol outside first insertion"',
+                                                    'S_refused[.COMPLETION = S.COMPLETION] = S_no_head']},
+    'weak-map-coalesce-missing-69': {'source': '<?php\n'
+                                                'class CoalesceValue {\n'
+                                                "    public function __destruct() { echo 'D|'; }\n"
+                                                '}\n'
+                                                '$map = new WeakMap;\n'
+                                                '$key = new stdClass;\n'
+                                                '$missing = new stdClass;\n'
+                                                '$value = new CoalesceValue;\n'
+                                                '$valueWeak = WeakReference::create($value);\n'
+                                                '$map[$key] = $value;\n'
+                                                '$fallback = 0;\n'
+                                                "echo 'present|';\n"
+                                                '$copy = $map[$key] ?? ($fallback = 1);\n'
+                                                "echo $fallback === 0 ? 'lazy|' : 'fallback|';\n"
+                                                "echo $valueWeak->get() === $copy ? 'same|' : 'other|';\n"
+                                                'unset($value);\n'
+                                                '$fallback = 0;\n'
+                                                "echo 'missing|';\n"
+                                                '$absent = $map[$missing] ?? ($fallback = 1);\n'
+                                                "echo $fallback === 1 ? 'fallback|' : 'lazy|';\n"
+                                                "echo $absent === 1 ? 'same|' : 'other|';\n"
+                                                'unset($map[$key]);\n'
+                                                "echo $valueWeak->get() === $copy ? 'held|' : 'other|';\n"
+                                                'unset($copy);\n'
+                                                "echo $valueWeak->get() === null ? 'value-null|' : "
+                                                "'value-live|';\n"
+                                                'unset($map, $key, $missing, $valueWeak, $fallback, $absent);\n'
+                                                "echo 'END';\n",
+                                      'stage': 'S.TODO = (KEY_READ_DIM poperand_key z KEY_IS) :: ptask_tail* -- '
+                                               'if S_base = $quiet_operand(S, S.RESULT) -- if S_base.RESULT = '
+                                               'KNOWN (POBJECT n_map) -- if $weakmap_at(S, n_map) -- if S.EVENTS '
+                                               '= [OUTPUT $ptascii("present|"), OUTPUT $ptascii("lazy|"), OUTPUT '
+                                               '$ptascii("same|"), OUTPUT $ptascii("missing|")]',
+                                      'checks': ['S.COMPLETION = NORMAL',
+                                                 'S.CURRENT = eps',
+                                                 'S.FRAMES = eps',
+                                                 'S.ORIGIN = (porigin_read)',
+                                                 'S.BASE = BASE_VALUE (KNOWN PNULL)',
+                                                 '$lookup(S.ENV, $ptascii("map")) = (n_map_cell)',
+                                                 'S.STORE[n_map_cell] = DEFINED (POBJECT n_map)',
+                                                 'S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)',
+                                                 'n_key = pweakmapentry.KEY',
+                                                 'pweakmapentry.VALUE = POBJECT n_value',
+                                                 'pweakmapentry.BEFORE = eps',
+                                                 '$lookup(S.ENV, $ptascii("key")) = (n_key_cell)',
+                                                 'S.STORE[n_key_cell] = DEFINED (POBJECT n_key)',
+                                                 '$lookup(S.ENV, $ptascii("missing")) = (n_missing_cell)',
+                                                 'S.STORE[n_missing_cell] = DEFINED (POBJECT n_missing)',
+                                                 'n_key =/= n_missing',
+                                                 'S.OBJECTS[n_key] = STDINSTANCE',
+                                                 'S.OBJECTS[n_missing] = STDINSTANCE',
+                                                 'S.OBJECTS[n_value] = INSTANCE porigin_value',
+                                                 '$class_named(S.CLASSNAMES, $ptascii("coalescevalue")) = '
+                                                 '(porigin_value)',
+                                                 '$lookup(S.ENV, $ptascii("valueWeak")) = (n_wrapper_cell)',
+                                                 'S.STORE[n_wrapper_cell] = DEFINED (POBJECT n_wrapper)',
+                                                 '$weakref_get(S, n_wrapper) = POBJECT n_value',
+                                                 '$lookup(S.ENV, $ptascii("fallback")) = (n_fallback_cell)',
+                                                 'S.STORE[n_fallback_cell] = DEFINED (PINT 0)',
+                                                 '~(n_value <- S.DESTRUCTION.CALLED)',
+                                                 'S_key = $quiet_operand(S, poperand_key)',
+                                                 'S_key.COMPLETION = NORMAL',
+                                                 'S_key.RESULT = KNOWN (POBJECT n_read_key)',
+                                                 'n_read_key = n_missing',
+                                                 'paccess = $access_record(S, porigin_read, z, ACCESS_READ '
+                                                 'KEY_IS, BASE_VALUE S.RESULT, poperand_key, KNOWN PNULL, '
+                                                 'KEY_READ_DIM poperand_key z KEY_IS, (n_map), true)',
+                                                 'paccess_live = paccess[.SELECTED = $rcontainer_selected(S, '
+                                                 'S.RESULT)][.OFFSET = POBJECT n_read_key][.PHASE = ACCESS_CALL '
+                                                 '$ptascii("offsetExists")]',
+                                                 '$access_valid(S, paccess_live)',
+                                                 '$access_dimension_pending(S)',
+                                                 '$weakmap_quiet_read_allowed(S, paccess_live)',
+                                                 '$call_task_valid(S, KEY_READ_DIM poperand_key z KEY_IS)',
+                                                 '$call_descriptors_valid(S)',
+                                                 '$heap_valid($heap_graph(S))',
+                                                 '$weakref_state_valid(S)',
+                                                 '$instance_storage_state_valid(S)',
+                                                 'H = $heap_graph(S)',
+                                                 '$heap_children(HOBJECT n_map, H.EDGES) = [HOBJECT n_value]',
+                                                 '~((HEDGE (HOBJECT n_map) (HOBJECT n_key)) <- H.EDGES)',
+                                                 '$heap_owners(H, HOBJECT n_value) = 2',
+                                                 '$heap_owners(H, HOBJECT n_map) = 1',
+                                                 '$heap_owners(H, HOBJECT n_read_key) = 1',
+                                                 '$lookup(S.ENV, $ptascii("value")) = eps',
+                                                 '$lookup(S.ENV, $ptascii("copy")) = (n_copy_cell)',
+                                                 'S.STORE[n_copy_cell] = DEFINED (POBJECT n_value)',
+                                                 '~$weakmap_has_key(S, n_map, n_read_key)',
+                                                 'PhpStep: S ~> S_read',
+                                                 'S_read = $key_read_done(S, PNULL)',
+                                                 'S_read.COMPLETION = NORMAL',
+                                                 'S_read.TODO = ptask_tail*',
+                                                 'S_read.RESULT = KNOWN (PNULL)',
+                                                 'S_read.BASE = BASE_VALUE (KNOWN PNULL)',
+                                                 'S_read.OBJECTS = S.OBJECTS',
+                                                 'S_read.STORE = S.STORE',
+                                                 'S_read.ALLOCATIONS = S.ALLOCATIONS',
+                                                 'S_read.FRAMES = S.FRAMES',
+                                                 'S_read.DESTRUCTION = S.DESTRUCTION',
+                                                 'S_read.EVENTS = S.EVENTS',
+                                                 'S_read.STORE[n_fallback_cell] = DEFINED (PINT 0)',
+                                                 '$access_call(S, paccess_live, $ptascii("offsetExists")) = '
+                                                 'S_read',
+                                                 '$heap_owners($heap_graph(S_read), HOBJECT n_value) = 2',
+                                                 '$heap_owners($heap_graph(S_read), HOBJECT n_map) = 1',
+                                                 '$heap_owners($heap_graph(S_read), HOBJECT n_read_key) = 1',
+                                                 '$eager_slots(S, S_read) = eps',
+                                                 '$call_descriptors_valid(S_read)',
+                                                 '$heap_valid($heap_graph(S_read))',
+                                                 'S_paused = $drive_steps(S, 0)',
+                                                 'S_paused = S[.COMPLETION = BUDGET]',
+                                                 '$drive_steps(S_paused[.COMPLETION = NORMAL], 1)[.COMPLETION = '
+                                                 'NORMAL] = S_read']},
+    'weak-map-coalesce-lazy-fallback-69': {'source': '<?php\n'
+                                                      '$map = new WeakMap;\n'
+                                                      '$key = new stdClass;\n'
+                                                      '$missing = new stdClass;\n'
+                                                      "echo 'null|';\n"
+                                                      '$map[$key] = null;\n'
+                                                      '$fallback = 0;\n'
+                                                      '$actual = $map[$key] ?? ($fallback = 1);\n'
+                                                      "echo $fallback === 0 ? 'lazy|' : 'fallback|';\n"
+                                                      "echo $actual === 1 ? 'same|' : 'other|';\n"
+                                                      'unset($map[$key]);\n'
+                                                      "echo 'false|';\n"
+                                                      '$map[$key] = false;\n'
+                                                      '$fallback = 0;\n'
+                                                      '$actual = $map[$key] ?? ($fallback = 1);\n'
+                                                      "echo $fallback === 0 ? 'lazy|' : 'fallback|';\n"
+                                                      "echo $actual === false ? 'same|' : 'other|';\n"
+                                                      'unset($map[$key]);\n'
+                                                      "echo 'zero|';\n"
+                                                      '$map[$key] = 0;\n'
+                                                      '$fallback = 0;\n'
+                                                      '$actual = $map[$key] ?? ($fallback = 1);\n'
+                                                      "echo $fallback === 0 ? 'lazy|' : 'fallback|';\n"
+                                                      "echo $actual === 0 ? 'same|' : 'other|';\n"
+                                                      'unset($map[$key]);\n'
+                                                      "echo 'empty-string|';\n"
+                                                      "$map[$key] = '';\n"
+                                                      '$fallback = 0;\n'
+                                                      '$actual = $map[$key] ?? ($fallback = 1);\n'
+                                                      "echo $fallback === 0 ? 'lazy|' : 'fallback|';\n"
+                                                      "echo $actual === '' ? 'same|' : 'other|';\n"
+                                                      'unset($map[$key]);\n'
+                                                      "echo 'string-zero|';\n"
+                                                      "$map[$key] = '0';\n"
+                                                      '$fallback = 0;\n'
+                                                      '$actual = $map[$key] ?? ($fallback = 1);\n'
+                                                      "echo $fallback === 0 ? 'lazy|' : 'fallback|';\n"
+                                                      "echo $actual === '0' ? 'same|' : 'other|';\n"
+                                                      'unset($map[$key]);\n'
+                                                      "echo 'string|';\n"
+                                                      "$map[$key] = 'x';\n"
+                                                      '$fallback = 0;\n'
+                                                      '$actual = $map[$key] ?? ($fallback = 1);\n'
+                                                      "echo $fallback === 0 ? 'lazy|' : 'fallback|';\n"
+                                                      "echo $actual === 'x' ? 'same|' : 'other|';\n"
+                                                      'unset($map[$key]);\n'
+                                                      "echo 'true|';\n"
+                                                      '$map[$key] = true;\n'
+                                                      '$fallback = 0;\n'
+                                                      '$actual = $map[$key] ?? ($fallback = 1);\n'
+                                                      "echo $fallback === 0 ? 'lazy|' : 'fallback|';\n"
+                                                      "echo $actual === true ? 'same|' : 'other|';\n"
+                                                      'unset($map[$key]);\n'
+                                                      "echo 'one|';\n"
+                                                      '$map[$key] = 1;\n'
+                                                      '$fallback = 0;\n'
+                                                      '$actual = $map[$key] ?? ($fallback = 1);\n'
+                                                      "echo $fallback === 0 ? 'lazy|' : 'fallback|';\n"
+                                                      "echo $actual === 1 ? 'same|' : 'other|';\n"
+                                                      'unset($map[$key]);\n'
+                                                      "echo 'missing|';\n"
+                                                      '$fallback = 0;\n'
+                                                      '$actual = $map[$missing] ?? ($fallback = 1);\n'
+                                                      "echo $fallback === 1 ? 'fallback|' : 'lazy|';\n"
+                                                      "echo $actual === 1 ? 'same|' : 'other|';\n"
+                                                      'unset($map, $key, $missing, $fallback, $actual);\n'
+                                                      "echo 'END';\n",
+                                            'stage': 'S.TODO = (KEY_READ_FINISH porigin (COALESCE_QUIET '
+                                                     'expression z_left z_right)) :: ptask_tail* -- if S.ORIGIN '
+                                                     '= (porigin) -- if S.EVENTS = [OUTPUT $ptascii("null|")]',
+                                            'checks': ['S.COMPLETION = NORMAL',
+                                                       'S.CURRENT = eps',
+                                                       'S.FRAMES = eps',
+                                                       'S.CONSTCONTEXT = eps',
+                                                       'S.RESULT = KNOWN PNULL',
+                                                       'S.BASE = BASE_VALUE (KNOWN PNULL)',
+                                                       '$lookup(S.ENV, $ptascii("map")) = (n_map_cell)',
+                                                       'S.STORE[n_map_cell] = DEFINED (POBJECT n_map)',
+                                                       'S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)',
+                                                       'pweakmapentry.VALUE = PNULL',
+                                                       'n_key = pweakmapentry.KEY',
+                                                       '$lookup(S.ENV, $ptascii("key")) = (n_key_cell)',
+                                                       'S.STORE[n_key_cell] = DEFINED (POBJECT n_key)',
+                                                       '$lookup(S.ENV, $ptascii("fallback")) = (n_fallback_cell)',
+                                                       'S.STORE[n_fallback_cell] = DEFINED (PINT 0)',
+                                                       '$key_reader(S, porigin, COALESCE_QUIET expression z_left '
+                                                       'z_right) = ((porigin_read, KEY_IS))',
+                                                       '$origin_child((porigin), [PCFIELD 1]) = (porigin_rhs)',
+                                                       '$call_task_valid(S, KEY_READ_FINISH porigin '
+                                                       '(COALESCE_QUIET expression z_left z_right))',
+                                                       '$call_descriptors_valid(S)',
+                                                       '$heap_valid($heap_graph(S))',
+                                                       '$weakref_state_valid(S)',
+                                                       '$instance_storage_state_valid(S)',
+                                                       'H = $heap_graph(S)',
+                                                       '$heap_owners(H, HOBJECT n_map) = 1',
+                                                       '$heap_owners(H, HOBJECT n_key) = 1',
+                                                       'PhpStep: S ~> S_rhs',
+                                                       'S_rhs.TODO = [$at_task((porigin_rhs), EVAL expression), '
+                                                       'VALUE_COPY z_right] ++ ptask_tail*',
+                                                       'S_rhs.RESULT = KNOWN PNULL',
+                                                       'S_rhs.COMPLETION = NORMAL',
+                                                       'S_rhs.STORE = S.STORE',
+                                                       'S_rhs.OBJECTS = S.OBJECTS',
+                                                       'S_rhs.EVENTS = S.EVENTS',
+                                                       'S_rhs.ALLOCATIONS = S.ALLOCATIONS',
+                                                       'S_rhs.STORE[n_fallback_cell] = DEFINED (PINT 0)',
+                                                       '$heap_owners($heap_graph(S_rhs), HOBJECT n_key) = 1',
+                                                       '$heap_owners($heap_graph(S_rhs), HOBJECT n_map) = 1',
+                                                       '$call_descriptors_valid(S_rhs)',
+                                                       '$heap_valid($heap_graph(S_rhs))',
+                                                       'S_paused = $drive_steps(S, 0)',
+                                                       'S_paused = S[.COMPLETION = BUDGET]',
+                                                       '$drive_steps(S_paused[.COMPLETION = NORMAL], '
+                                                       '1)[.COMPLETION = NORMAL] = S_rhs',
+                                                       'S_keep_false = S[.OBJECTS[n_map] = WEAKMAP '
+                                                       '(pweakmapentry[.VALUE = PBOOL false])][.RESULT = KNOWN '
+                                                       '(PBOOL false)]',
+                                                       '$call_descriptors_valid(S_keep_false)',
+                                                       '$heap_valid($heap_graph(S_keep_false))',
+                                                       'PhpStep: S_keep_false ~> S_kept_false',
+                                                       'S_kept_false = S_keep_false[.TODO = ptask_tail*][.BASE = '
+                                                       'BASE_VALUE (KNOWN PNULL)]',
+                                                       'S_kept_false.STORE[n_fallback_cell] = DEFINED (PINT 0)',
+                                                       'S_keep_zero = S[.OBJECTS[n_map] = WEAKMAP '
+                                                       '(pweakmapentry[.VALUE = PINT 0])][.RESULT = KNOWN (PINT '
+                                                       '0)]',
+                                                       '$call_descriptors_valid(S_keep_zero)',
+                                                       '$heap_valid($heap_graph(S_keep_zero))',
+                                                       'PhpStep: S_keep_zero ~> S_kept_zero',
+                                                       'S_kept_zero = S_keep_zero[.TODO = ptask_tail*][.BASE = '
+                                                       'BASE_VALUE (KNOWN PNULL)]',
+                                                       'S_kept_zero.STORE[n_fallback_cell] = DEFINED (PINT 0)',
+                                                       'S_keep_empty = S[.OBJECTS[n_map] = WEAKMAP '
+                                                       '(pweakmapentry[.VALUE = PSTRING_CARRIER INTERNED_STRING '
+                                                       'eps])][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING '
+                                                       'eps)]',
+                                                       '$call_descriptors_valid(S_keep_empty)',
+                                                       '$heap_valid($heap_graph(S_keep_empty))',
+                                                       'PhpStep: S_keep_empty ~> S_kept_empty',
+                                                       'S_kept_empty = S_keep_empty[.TODO = ptask_tail*][.BASE = '
+                                                       'BASE_VALUE (KNOWN PNULL)]',
+                                                       'S_kept_empty.STORE[n_fallback_cell] = DEFINED (PINT 0)',
+                                                       'S_keep_string_zero = S[.OBJECTS[n_map] = WEAKMAP '
+                                                       '(pweakmapentry[.VALUE = PSTRING_CARRIER INTERNED_STRING '
+                                                       '$ptascii("0")])][.RESULT = KNOWN (PSTRING_CARRIER '
+                                                       'INTERNED_STRING $ptascii("0"))]',
+                                                       '$call_descriptors_valid(S_keep_string_zero)',
+                                                       '$heap_valid($heap_graph(S_keep_string_zero))',
+                                                       'PhpStep: S_keep_string_zero ~> S_kept_string_zero',
+                                                       'S_kept_string_zero = S_keep_string_zero[.TODO = '
+                                                       'ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]',
+                                                       'S_kept_string_zero.STORE[n_fallback_cell] = DEFINED '
+                                                       '(PINT 0)']},
 }
 
 runner.CASES = CASES
