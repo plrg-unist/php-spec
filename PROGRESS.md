@@ -3959,9 +3959,21 @@ VARIABLE RHS. The scalar 180-byte original and 104/140/61/72 focused checks
 Value CV; current-source and literal-carrier forgeries refuse. Cuts stop at raw
 test results or insertion; originals supply explicit scalar removal and endings.
 The unchanged refusal, algorithmic binding diagnostic and first scalar refusal
-remain zero. Methods, coalesce/reference, nonobject/freeing keys, other values,
+remain zero. Methods, wider quiet/reference reads, nonobject/freeing keys, other values,
 scalar replacement/nonempty teardown and wider map protocols remain required.
 [Ledger](coverage/semantics/weak-map-review.json).
+
+WeakMap quiet `KEY_IS` reads now return the stored pvalue directly or null for
+missing keys, preserving the existing coalesce continuation. The object original
+(61 bytes) proves a strong copied result, lazy RHS and copy-only survival after
+entry removal; the scalar original (166 bytes) distinguishes null from every
+non-null falsy value. Both agree at `df2997be`; 135 copy, 76 genuine missing and
+68 fallback checks pass (279). The raw object read adds a third owner beside
+CV+Map; coherent table controls retain the original CV. Checks end at raw reads
+or genuine RHS scheduling; originals supply full removal/destructor endings.
+The unchanged Unsupported remains zero. Explicit methods, `??=`, references,
+freeing/nonobject keys, wider quiet protocols and scalar nonempty teardown remain
+required. [Ledger](coverage/semantics/weak-map-review.json).
 
 Reads during postponed Key notification now require the unique active stdClass
 pin, its live allocated wrapper and its actual store handle. A later-entry read

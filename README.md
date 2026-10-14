@@ -1219,6 +1219,13 @@ Bounded scalar first entries keep their exact string carriers. Two originals agr
 `144597d2`/`b7c1624a`; 377 focused checks cover presence, ownership and literal
 source certificates. Scalar replacement/nonempty teardown and wider protocols remain open.
 
+`$map[$key] ?? $fallback` now copies the stored value directly. Missing keys and
+null values select the lazy fallback; false, zero and empty strings are preserved
+and skip it. A copied object survives entry removal until that copy is dropped.
+Two originals agree at `df2997be`; 279 focused checks pass for copy ownership,
+missing keys and fallback routing. Freeing keys, references and wider protocols
+remain open.
+
 A callback can also read while a leaf key's unique active storage pin still has
 pending notification. The read copies the later entry's value; a missing entry
 throws Error with the pin's actual object-store handle. Clearing notification

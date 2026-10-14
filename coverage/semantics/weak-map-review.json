@@ -1733,5 +1733,105 @@
     "engine_basis": "Zend/zend_weakrefs.c zend_weakmap_has_dimension reads null/truth without zval copy; write_dimension owns the stored value and unset_dimension removes it. zend_vm_def.h ZEND_ISSET_ISEMPTY_DIM_OBJ supplies terminal test behavior. The formal source bridge reuses module33 compiled_string_value and raw module32 pools.",
     "boundaries": "Explicit methods, KEY_IS/coalesce, nonobject/freeing keys, floats/arrays/references, scalar replacement/nonempty scalar teardown, wider map mutation/order/iteration and GC remain outside this slice. Full core remains partial; Countable is nominal-only.",
     "recovery": "Private publication/current Git refs retain code and exact literals; ignored original sources, observers, raw reports and artifacts stay at unchanged paths under raw_root."
+  },
+  "quiet_coalesce_69": {
+    "scope": "Ordinary dimension KEY_IS/coalesce on a live singleton WeakMap and allocated nonfreeing stdClass leaf key. Stored values are copied directly; missing keys return null without Error.",
+    "base_revision": "67022a7dc0d5fa1ff368c9033f9d95def99681d1",
+    "tested_revision": "df2997bea05231eb78431cc3ef757abbf4a85d9c",
+    "modules": 389,
+    "raw_root": ".tools/weak-map-coalesce-69",
+    "representation": "The existing offsetExists selector routes KEY_IS straight to key_read_done with the stored pvalue or PNULL; it performs no boolean presence/Get round trip. Current task/base/selected/key and retained language-consumer source certificates remain required. KEY_R and KEY_TEST bodies are unchanged and disjoint.",
+    "sources": [
+      {
+        "id": "weak-map-coalesce-object-69",
+        "source_sha256": "ee4595ff0f0e36bc91f2fa7078b4fbbe1c3ad7968bfe3f4f58b2770e222e1f86",
+        "native_report": ".tools/weak-map-coalesce-object-69-native-8nqts6sr/report.json",
+        "source_report": ".tools/weak-map-coalesce-object-69-source-o5j93adf/report.json",
+        "stdout_bytes": 61,
+        "stdout_sha256": "b161d7a2a77d4f7c5d99009f04206901b44171365415fd6a1285cd84693596bb",
+        "seconds": 15.999345779418945
+      },
+      {
+        "id": "weak-map-coalesce-scalars-69",
+        "source_sha256": "e5a85c40ced58012d1017e37bf28b496ed2b36d512831bbb3041e896c46dd0c9",
+        "native_report": ".tools/weak-map-coalesce-scalars-69-native-2jbu0ufx/report.json",
+        "source_report": ".tools/weak-map-coalesce-scalars-69-source-ljmqluul/report.json",
+        "stdout_bytes": 166,
+        "stdout_sha256": "5032904d3f087210df38e2fba5b0ae1a3e8b59488d28701ae51379456f076169",
+        "seconds": 36.50298810005188
+      }
+    ],
+    "state": {
+      "assertions": 279,
+      "candidate_sha256": "4ef673381cd4e7910eb7af69ed7944b691655a5f82ee708760bf1e39c769c724",
+      "observer_sha256": "104130b5fe890d3166269d60a99e668c30a109564ee5b2f73092c11fc4642b5d",
+      "cases": [
+        {
+          "id": "weak-map-coalesce-value-copy-69",
+          "assertions": 135,
+          "report": ".tools/weak-map-coalesce-69-state-s2b52_y1/report.json",
+          "inner": ".tools/shutdown-state-review-w_qohaoa/report.json",
+          "seconds": 14.344447612762451
+        },
+        {
+          "id": "weak-map-coalesce-missing-69",
+          "assertions": 76,
+          "report": ".tools/weak-map-coalesce-69-state-bce3_7as/report.json",
+          "inner": ".tools/shutdown-state-review-6f4431u9/report.json",
+          "seconds": 13.5475914478302
+        },
+        {
+          "id": "weak-map-coalesce-lazy-fallback-69",
+          "assertions": 68,
+          "report": ".tools/weak-map-coalesce-69-state-1lvemrbi/report.json",
+          "inner": ".tools/shutdown-state-review-2029wrh1/report.json",
+          "seconds": 40.794915199279785
+        }
+      ],
+      "authority": "Genuine KEY_IS object read has two Value owners (CV and map), then three with the raw copied result. The genuine different-key read preserves the existing entry and its two owners, returning PNULL. Coherent scalar/empty substitutions keep the original Value CV; malformed current task/base/key/source/capture controls deny admission.",
+      "endpoint": "Raw read or genuine null KEY_READ_FINISH/COALESCE_QUIET scheduling. The null step schedules the actual RHS before the sentinel changes; coherent false/zero/empty-string/string-zero finish states preserve the exact pvalue and skip RHS. Zero/one budget replay is normalized. Full originals supply fallback execution, explicit entry removal, copy-only survival, destructor and endings."
+    },
+    "compiler_init": {
+      "observer_sha256": "1281fa001a16f6ec6bb187b1d555808a68308da04f32e5357311e9d1d8299079",
+      "compiler_report": ".tools/weak-map-coalesce-69-compiler-kc9ngnfi/report.json",
+      "artifacts": [
+        {
+          "mode": "algo",
+          "bytes": 14363707,
+          "sha256": "c49042f6d6e63fdfbb023cc1af956805ce4e6d6a34f09a13bcf93e7cf621b6fa",
+          "seconds": 5.8153395652771
+        },
+        {
+          "mode": "struct",
+          "bytes": 14463873,
+          "sha256": "f6fd8f386a866c67560c1c4b742ca24ae547142f77f2ba7cdb2e6b881995ca2d",
+          "seconds": 7.583268404006958
+        }
+      ],
+      "init_report": ".tools/weak-map-coalesce-69-init-cj_45cvt/report.json",
+      "init_sha256": "1ca0bd2d793dda2e1daa0c10e6be9a0b8747819812dd6f8fca1bfc9f27438454",
+      "init_premises": 8,
+      "init_seconds": 7.061445236206055
+    },
+    "preserved_zero_credit": [
+      {
+        "report": ".tools/weak-map-coalesce-object-69-source-h4fsjtq5/report.json",
+        "reason": "Unchanged checked/program Unsupported WeakMap dimension protocol outside first insertion after present|; zero agreement."
+      }
+    ],
+    "maintained": {
+      "sources": 85,
+      "state_cases": 162,
+      "new_state_assertions": 279,
+      "state_sha256": "4459bbb033d7fd1384a43fb86b799045dd043e569f7532279d08e66d62b3478b",
+      "preservation": "All prior 83 source rows and 159 evaluated cases/order, plus the outside-CASES harness AST, remain exact. Only the two native-bound originals and three tested state records are added; no supersession."
+    },
+    "execution": "LC_ALL=C, TZ=UTC, script encoding removed, jobs1. Native/source/compiler/init on CPU5/SLOT3; states on CPU4/SLOT2. Native30/host120, source CLI60/recorder75/host180, compiler/init120, state120/outer200/host240. Accepted actors exited0 with stable inputs and no stderr/timeout/interruption/groups or inner users. TAKE/RELEASE records retain exact argv, provider/profile identities and inputs.",
+    "reproduce": [
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC timeout 180 taskset -c 5 python3 .tools/run-weak-map-coalesce-source-69.py --native-report ORIGINAL_NATIVE_REPORT",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC timeout 240 taskset -c 4 python3 .tools/run-weak-map-coalesce-state-69.py --case CASE_ID"
+    ],
+    "engine_basis": "Zend/zend_weakrefs.c zend_weakmap_read_dimension returns stored zval or NULL for missing BP_VAR_IS; Zend/zend_execute.c zend_fetch_dimension_address_read object branch ZVAL_COPY_DEREF owns the result before the later consumer, and zend_fetch_dimension_address_read_IS selects BP_VAR_IS. Zend/zend_vm_def.h ZEND_FETCH_DIM_IS supplies this read; null-only coalescing preserves every non-null falsy value.",
+    "boundaries": "No explicit methods, ??=, reference/compound result, nonobject/freeing key, reentrant receiver/key or wider nested quiet protocol widening. Scalar first entries and explicit removal reuse EX68; scalar replacement and nonempty scalar key/map teardown, other values, iteration/general map order and wider GC remain open."
   }
 }

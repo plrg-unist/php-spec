@@ -381,10 +381,41 @@ retain zero credit. No prior active record is superseded.
 
 The engine basis is `zend_weakmap_has_dimension`, `zend_weakmap_write_dimension`
 and `zend_weakmap_unset_dimension` in `Zend/zend_weakrefs.c`, plus
-`ZEND_ISSET_ISEMPTY_DIM_OBJ`. Explicit methods, KEY_IS/coalesce, nonobject/freeing
-keys, float/array/reference values, scalar replacement/nonempty teardown and
+`ZEND_ISSET_ISEMPTY_DIM_OBJ`. Explicit methods, wider quiet/reference reads,
+nonobject/freeing keys, float/array/reference values, scalar replacement/nonempty teardown and
 wider map/GC protocols remain required.
 [Ledger](../../coverage/semantics/weak-map-review.json).
+
+## Quiet reads and coalesce
+
+With a live singleton WeakMap and nonfreeing `stdClass` leaf key, `KEY_IS` returns
+an ordinary copy of the stored pvalue. Missing keys return null without Error.
+Only null selects the `??` RHS; false, zero, `''` and `'0'` remain exact results.
+The internal selector returns directly through `key_read_done`, using the actual
+current task/base/selected/key and retained source consumer. It does not use the
+generic boolean presence then Get sequence. Ordinary read and terminal test
+rules remain unchanged.
+
+Two originals (61/166 bytes) agree at `df2997be`: present values skip a scalar
+fallback assignment, missing/null reads take it, and a saved object copy survives
+entry removal until that copy is dropped. Three reached cuts (135/76/68, total 279)
+pass. The raw object read changes Value owners from two (CV and Map) to three
+(result, CV and Map);
+the genuine missing-key read leaves the original entry and its owners intact.
+Coherent table substitutions retain the original Value CV. The actual null
+coalesce-finish step schedules the RHS before changing the sentinel; coherent
+non-null falsy finish controls skip it. Current-source/capture forgeries refuse,
+and zero/one budget replay preserves the same states. Checks stop at raw reads
+or RHS scheduling; originals supply complete endings. The original Unsupported
+remains zero, and no active old record is superseded.
+
+The engine basis is `zend_weakmap_read_dimension` (`BP_VAR_IS`), the object branch
+of `zend_fetch_dimension_address_read` and its `ZVAL_COPY_DEREF` result, and
+`ZEND_FETCH_DIM_IS`. This raw result owns the Value before the later coalesce
+consumer assigns a CV. Explicit methods, `??=`, reference/compound results,
+nonobject/freeing keys, reentrant or wider nested quiet reads, scalar replacement
+and nonempty scalar teardown, iteration/general map order and wider GC remain
+required. [Ledger](../../coverage/semantics/weak-map-review.json).
 
 ## Reads during postponed Key notification
 
