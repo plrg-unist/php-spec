@@ -246,6 +246,17 @@ dec $dynamic_array_finish(pstate, nat, parray, (pkey, pvalueclass)*, bool) : (ps
 def $dynamic_array_value(S, pvalue, n_seen*, b_copy) = ((S, pvalue, pvalueclass))
   -- if $dynamic_constant_class(pvalue) = (pvalueclass)
   -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
+;; Empty roots retain their actual non-refcounted provenance. Empty descendants
+;; remain outside this slice; a mutable root is rebuilt even when it has no keys.
+def $dynamic_array_value(S, PARRAY n_array, eps, b_copy) = ((S, PARRAY n_array, PVARRAY true eps))
+  -- if $(n_array < |S.ARRAYS|)
+  -- if HARRAY n_array <- S.ALLOCATIONS
+  -- if $array_immutable(S, n_array)
+def $dynamic_array_value(S, PARRAY n_array, eps, b_copy) = $dynamic_array_finish(S, n_array, $array_empty(), eps, b_copy)
+  -- if $(n_array < |S.ARRAYS|)
+  -- if HARRAY n_array <- S.ALLOCATIONS
+  -- if S.ARRAYS[n_array].ITEMS = eps
+  -- if ~$array_immutable(S, n_array)
 def $dynamic_array_value(S, PARRAY n_array, n_seen*, b_copy) = $dynamic_array_finish(S_items, n_array, parray, (pkey_items, pvalueclass_items)*, b_copy)
   -- if $(n_array < |S.ARRAYS|)
   -- if HARRAY n_array <- S.ALLOCATIONS
@@ -267,15 +278,16 @@ def $dynamic_array_finish(S, n_array, parray, (pkey_items, pvalueclass_items)*, 
   -- if S.ARRAYS[n_array] = parray
 def $dynamic_array_finish(S, n_array, parray, (pkey_items, pvalueclass_items)*, b_copy) = eps -- otherwise
 
-;; Literal array facts constrain contents, not internal array IDs. Variable
-;; arguments keep the same structural table policy as primitive dynamic values.
+;; Literal facts constrain contents and empty-array provenance, not internal IDs.
+;; Variables keep the same structural table policy as primitive dynamic values.
 dec $dynamic_array_same(pstate, pvalue, pvalue) : bool
 dec $dynamic_array_same_entries(pstate, pentry*, pentry*) : bool
 def $dynamic_array_same(S, PARRAY n_left, PARRAY n_right) = $dynamic_array_same_entries(S, S.ARRAYS[n_left].ITEMS, S.ARRAYS[n_right].ITEMS)
   -- if $(n_left < |S.ARRAYS| /\ n_right < |S.ARRAYS|)
   -- if HARRAY n_left <- S.ALLOCATIONS /\ HARRAY n_right <- S.ALLOCATIONS
+  -- if $array_immutable(S, n_left) = $array_immutable(S, n_right)
 def $dynamic_array_same(S, PARRAY n_left, PARRAY n_right) = false
-  -- if $(n_left >= |S.ARRAYS| \/ n_right >= |S.ARRAYS|) \/ ~(HARRAY n_left <- S.ALLOCATIONS) \/ ~(HARRAY n_right <- S.ALLOCATIONS)
+  -- if $(n_left >= |S.ARRAYS| \/ n_right >= |S.ARRAYS|) \/ ~(HARRAY n_left <- S.ALLOCATIONS) \/ ~(HARRAY n_right <- S.ALLOCATIONS) \/ $array_immutable(S, n_left) =/= $array_immutable(S, n_right)
 def $dynamic_array_same(S, pvalue_left, pvalue_right) = ($string_plain(pvalue_left) = $string_plain(pvalue_right)) -- otherwise
 def $dynamic_array_same_entries(S, eps, eps) = true
 def $dynamic_array_same_entries(S, (ENTRY pkey (DIRECT pvalue)) :: pentry_left*, (ENTRY pkey pitem) :: pentry_right*) = ($dynamic_array_same(S, pvalue, pvalue_known) /\ $dynamic_array_same_entries(S, pentry_left*, pentry_right*))
