@@ -1912,6 +1912,8 @@ Corrected source1 passes at `304ec0f6`; three states at `940d92d2` pass294 =266
 reached +28 derived. Only parent admission and the authenticated absent-name
 fallback change; layout/storage/permissions and expression/return rules remain.
 [Parented trait getter review](coverage/semantics/parented-trait-expression-getter-review.json).
+Joined exact `2bb4e1b6`/390; count-only initialization adds no source/state credit.
+Empty-buffer output, ordinary Base/getter targets and absent define/defined callbacks preserve the accepted route.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
