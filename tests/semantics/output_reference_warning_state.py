@@ -22,9 +22,6 @@ def $rw_is_output(pevent) = false -- otherwise
 dec $rw_phase(pstate, nat) : bool
 def $rw_phase(S, 0) = true
   -- if S.TODO = (OB_USER_REFERENCE_RELEASE pobinvoke 1 n) :: ptask_tail*
-def $rw_phase(S, 1) = true
-  -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail*
-  -- if pdestructionoperation.SOURCE = OB_USER_REFERENCE_RELEASE pobinvoke 1 n
 def $rw_phase(S, n) = false -- otherwise
 dec $rw_seek(pstate, nat, nat) : pstate
 def $rw_seek(S, n_phase, n) = S -- if S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET
@@ -107,23 +104,21 @@ def assertions(fixture, directory, path):
         'S_forged_string.RESULT = KNOWN pvalue_forged',
         '$string_carrier_valid(S_forged_string, pvalue_forged)',
         '~$call_task_valid(S_forged_string, OB_USER_REFERENCE_RELEASE pobinvoke[.INPUT = pvalue_forged] 1 n_pending)',
-        'S_retired_found = $rw_seek($drive_steps(S_reached, 1), 1, 256)',
+        'S_retired_found = $drive_steps(S_reached, 1)',
         r'S_retired_found.COMPLETION = NORMAL \/ S_retired_found.COMPLETION = BUDGET',
-        'S_retired = S_retired_found[.COMPLETION = NORMAL]', '$rw_phase(S_retired, 1)', *valid('S_retired'),
-        'S_retired.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (OB_USER_FAIL_ARGS pobinvoke_fci n_pending) :: ptask_native*',
-        'pdestructionoperation.SOURCE = OB_USER_REFERENCE_RELEASE pobinvoke 1 n_pending',
+        'S_retired = S_retired_found[.COMPLETION = NORMAL]', *valid('S_retired'),
+        'S_retired.TODO = (OB_USER_FAIL_ARGS pobinvoke_fci n_pending) :: ptask_native*',
         'pobinvoke_fci = $ob_reference_fci(pobinvoke)', '$ob_user_fci_arguments(pobinvoke_fci)',
-        r'pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.CLEANUP = eps',
-        '$eager_operation_source_guard(S_retired, pdestructionoperation)',
+        'S_retired.DESTRUCTION.OPERATIONS = S_reached.DESTRUCTION.OPERATIONS',
+        '$ob_reference_metadata(S_retired, pobinvoke, 1)',
         '~((HCELL n_cell) <- S_retired.ALLOCATIONS)',
         '$heap_owners($heap_graph(S_retired), HCELL n_cell) = 0',
         '$ob_user_running(S_retired)',
+        '$throwable_live(S_retired, n_pending)',
         '~$call_task_valid(S_retired, OB_USER_REFERENCE_RELEASE pobinvoke 1 n_pending)',
-        '~$eager_operation_source_guard(S_retired, pdestructionoperation[.SOURCE = OB_USER_REFERENCE_RELEASE pobinvoke 0 n_pending])',
-        '~$eager_operation_source_guard(S_retired, pdestructionoperation[.SOURCE = OB_USER_REFERENCE_RELEASE pobinvoke[.CALL = OB_API_FAILED pconfigcall pcallcontext? eps] 1 n_pending])',
-        '~$eager_operation_source_guard(S_retired, pdestructionoperation[.ORIGIN = eps])',
-        '~$eager_operation_source_guard(S_retired, pdestructionoperation[.PENDING = (n_pending)])',
-        '~$eager_operation_source_guard(S_retired[.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_native*], pdestructionoperation)',
+        '~$ob_reference_metadata(S_retired, pobinvoke, 0)',
+        '~$ob_reference_metadata(S_retired, pobinvoke[.CALL = OB_API_FAILED pconfigcall pcallcontext? eps], 1)',
+        '~$ob_reference_metadata(S_retired[.ORIGIN = eps], pobinvoke, 1)',
         *budget('S_retired', 'S_retired_budget'),
         'S_done = $drive_steps(S_retired, 512)',
         r'S_done.COMPLETION = NORMAL /\ S_done.TODO = eps /\ S_done.CURRENT = eps /\ S_done.FRAMES = eps',
