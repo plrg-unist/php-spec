@@ -19,6 +19,25 @@ OS/stream-open facts supplied by the snapshot; the parser and model do not
 derive them from Zend execution. An already included resolved path skips before
 those failure facts produce a warning.
 
+An embedded NUL in the converted path fails locally before file-provider or
+dynamic-parser requests, nonce allocation or once lookup. Include and include_once
+emit one final warning and return false; require and require_once throw `Error`
+directly. The message uses the C-string prefix with URL credentials stripped and
+captures the effective include_path before handler entry. Handler path writes
+persist without changing that message. Even an already included main-prefix path
+does not skip this failure; a leading NUL differs from an actually empty ordinary
+include/require operand, which raises `ValueError`.
+
+The local descriptor retains the full requested bytes and authenticates its
+source, kind, line, caller scope and task suffix without adding a heap owner.
+It does not reconstruct arbitrary evaluated bytes from syntax. File contexts,
+source units and included identities remain unchanged. Captured/conversion
+`SOURCE_OPERAND_RELEASE` tails and an unavailable include_path are explicitly
+Unsupported here. Eight NUL originals, two empty regression controls and five
+reached fronts/208 premises retain separate cuts in the
+[NUL-path evidence](../../coverage/semantics/source-nul-path-review.json), including
+a throwing handler's real keyword frame and a genuine temporary-owner refusal.
+
 [Recorded compiler diagnostics](../../coverage/semantics/file-compile-notice-review.json)
 precede opened-path registration for ordinary `include` and `require`. The once
 forms register before compilation. A warning-handler reentry through the same

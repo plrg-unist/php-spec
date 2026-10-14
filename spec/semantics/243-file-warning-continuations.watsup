@@ -145,3 +145,104 @@ def $file_trace_frame(S, pfilecontext) = {FILE pfilecontext.CALLER, LINE $file_s
 def $source_trace_merge_before(S, pevalcontext :: pevalcontext_tail*, pfilecontext :: pfilecontext_tail*, preqbytes?) = [ptraceframe] ++ $source_trace_merge_before(S, pevalcontext :: pevalcontext_tail*, pfilecontext_tail*, $source_trace_file([ptraceframe], preqbytes?))
   -- if $file_warning_phase(pfilecontext.PHASE)
   -- if ptraceframe = $file_trace_frame_before(S, pfilecontext, preqbytes?)
+
+;; NUL paths fail inside zend_include_or_eval before any open/provider request.
+;; Keep the complete operand for source authentication; only display is a C string.
+dec $file_url_scheme(preqbytes) : bool
+def $file_url_scheme(58 :: 47 :: 47 :: n_tail*) = true
+def $file_url_scheme(preqbytes) = false -- otherwise
+dec $file_url_dots(nat) : preqbytes
+def $file_url_dots(0) = eps
+def $file_url_dots(1) = [46]
+def $file_url_dots(2) = [46,46]
+def $file_url_dots(n) = [46,46,46] -- if $(n >= 3)
+dec $file_url_user(preqbytes, nat) : preqbytes?
+def $file_url_user(eps, n) = eps
+def $file_url_user(64 :: n_tail*, n) = ($file_url_dots(n) ++ (64 :: n_tail*))
+def $file_url_user(n_byte :: n_tail*, n) = $file_url_user(n_tail*, $(n + 1))
+  -- if n_byte =/= 64
+dec $file_url_after_scheme(preqbytes) : preqbytes
+def $file_url_after_scheme(n_bytes*) = n_display*
+  -- if $file_url_user(n_bytes*, 0) = (n_display*)
+def $file_url_after_scheme(n_bytes*) = n_bytes*
+  -- if $file_url_user(n_bytes*, 0) = eps
+dec $file_strip_url(preqbytes) : preqbytes
+def $file_strip_url(eps) = eps
+def $file_strip_url(58 :: 47 :: 47 :: n_tail*) = [58,47,47] ++ $file_url_after_scheme(n_tail*)
+def $file_strip_url(n_byte :: n_tail*) = n_byte :: $file_strip_url(n_tail*)
+  -- if ~$file_url_scheme(n_byte :: n_tail*)
+dec $file_nul_display(preqbytes) : preqbytes
+def $file_nul_display(n_requested*) = $file_strip_url($c_string(n_requested*))
+
+dec $file_nul_owned_tail(ptask*) : bool
+def $file_nul_owned_tail((SOURCE_OPERAND_RELEASE psourceoperand) :: ptask_tail*) = true
+def $file_nul_owned_tail(ptask*) = false -- otherwise
+dec $file_nul_marker(ptask) : pfilenul?
+def $file_nul_marker(FILE_NUL_RESULT pfilenul) = (pfilenul)
+def $file_nul_marker(ERROR_HANDLER_INVOKE perrorcall) = $file_nul_marker(perrorcall.RESUME)
+def $file_nul_marker(ERROR_HANDLER_RESULT perrorcall) = $file_nul_marker(perrorcall.RESUME)
+def $file_nul_marker(ptask) = eps -- otherwise
+dec $file_nul_suffix(ptask*, pfilenul) : bool
+def $file_nul_suffix(eps, pfilenul) = false
+def $file_nul_suffix(ptask :: ptask_tail*, pfilenul) = (ptask_tail* = pfilenul.TAIL)
+  -- if $file_nul_marker(ptask) = (pfilenul)
+def $file_nul_suffix(ptask :: ptask_tail*, pfilenul) = $file_nul_suffix(ptask_tail*, pfilenul)
+  -- if $file_nul_marker(ptask) =/= (pfilenul)
+dec $file_nul_payload(pstate, pfilenul) : bool
+def $file_nul_payload(S, pfilenul) = ($file_site_valid(S, pfilenul.SITE, pfilenul.LINE, pfilenul.KIND) /\ (pfilenul.KIND = 1 \/ pfilenul.KIND = 2) /\ $startup_bytes(pfilenul.REQUESTED) /\ 0 <- pfilenul.REQUESTED /\ $startup_bytes(pfilenul.INCLUDEPATH) /\ $c_string(pfilenul.INCLUDEPATH) = pfilenul.INCLUDEPATH)
+  -- if pfilenul.TAIL = (ORIGIN_RETURN (pfilenul.SITE)) :: ptask_tail*
+def $file_nul_payload(S, pfilenul) = false -- otherwise
+dec $file_nul_valid(pstate, pfilenul) : bool
+def $file_nul_valid(S, pfilenul) = ($file_nul_payload(S, pfilenul) /\ pfilenul.OWNER = |S.FRAMES| /\ S.ORIGIN = (pfilenul.SITE) /\ $file_nul_suffix(S.TODO, pfilenul))
+dec $file_nul_line(pstate, pfilenul) : int
+def $file_nul_line(S, pfilenul) = $class_constant_error_line(S, pfilenul.LINE)
+dec $file_nul_message(pfilenul) : preqbytes
+def $file_nul_message(pfilenul) = $file_keyword(pfilenul.KIND) ++ $ptascii("(): Failed opening '") ++ $file_nul_display(pfilenul.REQUESTED) ++ $ptascii("' for inclusion (include_path='") ++ pfilenul.INCLUDEPATH ++ $ptascii("')")
+
+def $file_nul_start(S, porigin, z, n_kind, ptask_tail*) = $error_dispatch(S_local, 2, n_message*, z_warning, DIAGNOSTIC "Warning" n_message* z_warning, FILE_NUL_RESULT pfilenul)
+  -- if ~$file_nul_owned_tail(ptask_tail*)
+  -- if n_kind = 1 \/ n_kind = 2
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (n_requested*)
+  -- if $file_include_path(S.FILEINCLUDEPATH) = (n_path*)
+  -- if n_owner = |S.FRAMES|
+  -- if pfilenul = {SITE porigin, LINE z, KIND n_kind, REQUESTED n_requested*, INCLUDEPATH n_path*, OWNER n_owner, TAIL ptask_tail*}
+  -- if S_local = S[.ORIGIN = (porigin)][.TODO = (FILE_NUL_RESULT pfilenul) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $file_nul_valid(S_local, pfilenul)
+  -- if z_warning = $file_nul_line(S_local, pfilenul)
+  -- if n_message* = $file_nul_message(pfilenul)
+def $file_nul_start(S, porigin, z, n_kind, ptask_tail*) = $throw_scalar(S, "Error", $ptascii("Failed opening required '") ++ $file_nul_display(n_requested*) ++ $ptascii("' (include_path='") ++ n_path* ++ $ptascii("')"), $class_constant_error_line(S, z))
+  -- if ~$file_nul_owned_tail(ptask_tail*)
+  -- if n_kind = 3 \/ n_kind = 4
+  -- if $file_site_valid(S, porigin, z, n_kind)
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (n_requested*)
+  -- if 0 <- n_requested*
+  -- if $file_include_path(S.FILEINCLUDEPATH) = (n_path*)
+def $file_nul_start(S, porigin, z, n_kind, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "NUL file path with captured operand or unavailable include_path"]
+  -- if $file_nul_owned_tail(ptask_tail*) \/ S.FILEINCLUDEPATH = eps
+
+def $call_task_valid(S, FILE_NUL_RESULT pfilenul) = $file_nul_valid(S, pfilenul)
+rule PhpStep/file-nul-result: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (FILE_NUL_RESULT pfilenul) :: ptask_tail*
+  -- if $file_nul_valid(S, pfilenul)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = FILE_NUL_RESULT pfilenul
+  -- if $file_nul_valid(S, pfilenul)
+  -- if perrorcall.SITE = pfilenul.SITE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = $file_nul_line(S, pfilenul)
+  -- if perrorcall.MESSAGE = $file_nul_message(pfilenul)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
+
+;; The local failure still contributes the ordinary keyword frame when a
+;; warning handler throws, without inventing a provider or source-unit context.
+def $eval_trace_preparser(S, (pcallcontext), pframe) = [{FILE $call_sourcefile(S.FILES, pfilenul.SITE), LINE pfilenul.LINE, FUNCTION $file_keyword(pfilenul.KIND), CLASS eps, TYPE eps, ARGS eps, HASARGS false}]
+  -- if pframe.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if perrorcall.RESUME = FILE_NUL_RESULT pfilenul
+  -- if perrorcall.TARGET = (pcallcontext.TARGET)
+  -- if pcallcontext.CALLSITE = (perrorcall.SITE)
+  -- if $error_context_anchor(S, pcallcontext, S.CURRENT, S.FRAMES)
+  -- if S_scope = S[.ORIGIN = pframe.ORIGIN][.TODO = pframe.TODO]
+  -- if $file_nul_payload(S_scope, pfilenul)
+  -- if pfilenul.TAIL = ptask_tail*

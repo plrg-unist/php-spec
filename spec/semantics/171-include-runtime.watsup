@@ -36,6 +36,13 @@ dec $file_include_path(preqbytes?) : preqbytes?
 def $file_include_path(eps) = eps
 def $file_include_path((preqbytes)) = ($c_string(preqbytes))
 dec $file_request_start(pstate, porigin, int, int, ptask*) : pstate
+dec $file_nul_start(pstate, porigin, int, int, ptask*) : pstate
+dec $file_nul_operand(pstate) : bool
+def $file_nul_operand(S) = true
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (n_requested*)
+  -- if 0 <- n_requested*
+def $file_nul_operand(S) = false -- otherwise
 dec $file_empty_operand(pstate, int) : bool
 def $file_empty_operand(S, n_kind) = true
   -- if S.RESULT = KNOWN pvalue_string
@@ -45,9 +52,13 @@ def $file_empty_operand(S, int) = false -- otherwise
 def $file_request_start(S, porigin, z, n_kind, ptask_tail*) = $throw_scalar(S, "ValueError", $ptascii("Path must not be empty"), z)
   -- if $file_site_valid(S, porigin, z, n_kind)
   -- if $file_empty_operand(S, n_kind)
+def $file_request_start(S, porigin, z, n_kind, ptask_tail*) = $file_nul_start(S, porigin, z, n_kind, ptask_tail*)
+  -- if $file_site_valid(S, porigin, z, n_kind)
+  -- if $file_nul_operand(S)
 def $file_request_start(S, porigin, z, n_kind, ptask_tail*) = S[.FILESEQ = $(n_nonce + 1)][.FILECONTEXTS = pfilecontext :: S.FILECONTEXTS][.TODO = (FILE_RESOLVE_AWAIT n_nonce) :: ptask_tail*][.ORIGIN = (porigin)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = SOURCE_PENDING]
   -- if $file_site_valid(S, porigin, z, n_kind)
   -- if ~$file_empty_operand(S, n_kind)
+  -- if ~$file_nul_operand(S)
   -- if S.FILECWD = (preqbytes_cwd)
   -- if $file_include_path(S.FILEINCLUDEPATH) = (preqbytes_include_path)
   -- if S.RESULT = KNOWN pvalue_string
@@ -59,6 +70,7 @@ def $file_request_start(S, porigin, z, n_kind, ptask_tail*) = S[.FILESEQ = $(n_n
 def $file_request_start(S, porigin, z, n_kind, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "file provider requires fixed cwd"]
   -- if S.FILECWD = eps \/ S.FILEINCLUDEPATH = eps
   -- if ~$file_empty_operand(S, n_kind)
+  -- if ~$file_nul_operand(S)
 rule PhpStep/file-request-object: S ~> $source_string_begin(S_read, S.RESULT, n, porigin_parent, z, n_kind, ptask_tail*)
   -- if S.TODO = (FILE_REQUEST porigin_parent z n_kind) :: ptask_tail*
   -- if S.ORIGIN = (porigin_child)

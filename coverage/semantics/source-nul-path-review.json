@@ -1,0 +1,108 @@
+{
+  "scope": "Converted embedded-NUL include/require/once paths with a known include_path and no SOURCE_OPERAND_RELEASE tail. Partial core.",
+  "status": "independently_accepted_private",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "base_revision": "0420409bec101d7b3163958f3fd9efcb1298040f",
+  "semantic_revision": "c69ecf62e7fd28cc70178e16fe47c95a67a907d0",
+  "state_revision": "2cd61ef6bbeeaa2cfe7916768af821dde686232f",
+  "modules": 391,
+  "identities": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "profile": "tests/semantics/profile.json with include_path=.:; LC_ALL=C, TZ=UTC, PHP_SPEC_SCRIPT_ENCODING absent; serial CPU4, address space 3 GiB.",
+  "behavior": [
+    "NUL is checked before file-provider/dynamic-parser requests, nonce allocation or once lookup; file contexts, source units and included identities stay unchanged.",
+    "Include warns once and returns false; require throws Error directly. Messages freeze include_path and use php_strip_url_passwd over the C-string display prefix; full requested bytes are retained.",
+    "Current/saved source, keyword kind, line, caller scope and exact task suffix are validated with no added heap owner. Arbitrary evaluated bytes are not reconstructed from syntax.",
+    "Captured/conversion tails remain explicitly Unsupported with their real owner preserved at the reached direct-step boundary."
+  ],
+  "artifact_root": "/home/user/workspace/php-spec/.tools/source-nul-path-01",
+  "evidence": {
+    "native9_and_unchanged2": {
+      "path": ".tools/source-nul01/baseline-packet/report.json",
+      "sha256": "50539566c6fd95959ff27333b49834a3424907a486f687ec80452869e1bb837b",
+      "agreement_credit": 0
+    },
+    "independent_throw_native": {
+      "path": ".tools/source-nul-review-01/native-01/report.json",
+      "sha256": "d8bfeb0fcd546dfa00022fa336566513dcecf2c92f74cd3c4e580fe08c723305",
+      "agreement_credit": 0
+    },
+    "strict_and_source10": {
+      "path": ".tools/source-nul01/changed-jqss1rv0/report.json",
+      "sha256": "555ea2418a9362282f516e2750776da272aab0c374c672a48584970c9620afe1",
+      "nul_agreements": 8,
+      "empty_regression_agreements": 2,
+      "strict": "SL Result-returning init/cache=false/det=true, exit0/true/empty stderr; no application evaluation"
+    },
+    "owned_conversion_control": {
+      "path": ".tools/source-nul01/owned-boundary-h7_edb69/report.json",
+      "sha256": "3059c1f8bbea23760eea0e7ead33dbdc06c90deb1099ec01f95c454b83aa6991",
+      "agreement_credit": 0,
+      "outcome": "Genuine include new N conversion reaches the explicit captured-operand Unsupported; syntax-only AST check succeeds."
+    },
+    "state5": {
+      "path": ".tools/source-nul01/state-run-l9our9l5/report.json",
+      "sha256": "ad2a1f8db0c5e23a919ac75df497da5ffbf604ec341f0b48c31dc3c589e5ed0d",
+      "manifest_sha256": "bbbcac910f9071820a0866492a567421cc1864e35b12f8b6b0ec777b3c08025a",
+      "premises": [
+        72,
+        34,
+        32,
+        36,
+        34
+      ],
+      "result": "Five fresh SL processes: true/empty stderr/exit0/no timeout/group empty, 45s each; all inputs/head/status stable."
+    }
+  },
+  "state_fronts": [
+    "Current/saved warning and frozen message through handler path writes, false result and malformed descriptor refusal.",
+    "Already included main-prefix once path still fails locally.",
+    "Leading-NUL required Error materializes without warning or provider effects.",
+    "Throwing warning handler retains x=99, mutated path and authentic zero-argument include trace at line9.",
+    "Actual READY temporary owner survives the explicit conversion refusal; zero-budget and resumed one-step checks."
+  ],
+  "preserved_failures": [
+    {
+      "path": ".tools/source-nul01/changed-bjhiabvz/report.json",
+      "sha256": "1b3982a25cde1f799e3cc4d77f1a0f8c7a8157f11c87ccc4a12d683b3270d87a",
+      "credit": 0,
+      "reason": "Strict parse: record owner expression needed a preceding binder; all models unrun."
+    },
+    {
+      "path": ".tools/source-nul01/changed-dek3mbo6/report.json",
+      "sha256": "2aef453efd9c48d99531d0f9019bde544ee6c8970f890cdf6bf92c4661aeb5cd",
+      "credit": 0,
+      "reason": "Strict elaboration: nonpure otherwise replaced by explicit captured-tail/path refusal; all models unrun."
+    }
+  ],
+  "recovery": [
+    "python3 tests/semantics/source_nul_sources.py --output .tools/nul-source-recovery",
+    "python3 tests/semantics/source_nul_review_sources.py --output .tools/nul-review-recovery",
+    "python3 tests/semantics/source_nul_state.py --output .tools/nul-state-recovery",
+    "Evaluate each emitted fixture in a fresh tests/semantics/_build/default/numeric_runner.exe --sl process with spec/semantics/modules.json order and a 45s cap. The default producer prepares current checked syntax only; it does not execute the application."
+  ],
+  "primary_symbols": [
+    "Zend/zend_execute.c::zend_include_or_eval",
+    "main/main.c::php_message_handler_for_zend",
+    "main/fopen_wrappers.c::php_strip_url_passwd",
+    "Zend/zend_builtin_functions.c::zend_fetch_debug_backtrace"
+  ],
+  "limits": [
+    "Captured conversion lifetime, unavailable include_path and broader source/service/lifecycle contexts remain open.",
+    "Descriptor checks do not disprove coherent rewriting of all source/history fields.",
+    "No new rebuild, portable audit, full-core completion or renewed historical source/state credit is claimed."
+  ],
+  "independent_review": {
+    "reviewer": "/root/core_breadth_review_01",
+    "verdict": "accepted_private",
+    "scope": "Pointwise review of 30/171/243, native-first source packets and all five reached-state fronts; conversion-tail refusal remains explicit.",
+    "validation": "Independently bound the reports above: eight NUL agreements, two empty-path controls and 208 state premises. Baseline, refusal and pre-runtime failures retain zero agreement.",
+    "publication": "Only the three intended partial inventory rows append evidence and tests; previous statuses and review prefixes remain unchanged.",
+    "integration": "Pending an exact-parent composition; no private source or state renewal is required."
+  },
+  "actual_parent_integration": null
+}
