@@ -2138,6 +2138,10 @@ A selected private Base value retains its mangled key beside the imported public
 slot: Base reads7 while the Consumer getter returns113; Grand’s public write300
 yields313 and preserves private7 and marker700. One original and three states
 are in the [private-overlap review](coverage/semantics/private-overlap-trait-getter-review.json).
+A selected backed expression getter can also pass through one outer trait.
+Both real use edges and the intermediate imported property are authenticated;
+Inner magic spelling survives Consumer scope rebasing and Grand100→300/get313.
+The intermediate hooked collision remains fatal. [Nested-trait review](coverage/semantics/nested-trait-getter-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`

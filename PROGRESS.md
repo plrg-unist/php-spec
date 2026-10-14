@@ -2024,6 +2024,15 @@ Layout/storage/permission and expression task/return rules remain unchanged.
 Joined exact `21189749f`/391; retained initialization adds no source/state credit.
 Absent warning-destructor previous-owner tasks, Iterator unpack and define calls preserve the accepted private/public route.
 
+Selected one-level nested backed expression trait getters now authenticate both
+real use edges and the intermediate Outer own row. Final Consumer keeps raw
+Inner code/magic and its own lexical/private scope; Grand100→300 yields313.
+The original Outer collision already agrees at `111a5e2d`; legal scalar1 and
+strict391 pass at `18164dde`. Two states at `713efd41` pass 223 premises
+(184 reached + 39 derived). Initial strict constructor elaboration remains0; no
+collision or earlier trait actor is renewed.
+[Nested trait getter review](coverage/semantics/nested-trait-getter-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization
