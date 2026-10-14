@@ -56,6 +56,12 @@ A thrown handler unwinds through the generic restore only for a quiet terminal
 comparison remainder; future callbacks/default reporting or other comparison
 effects remain Unsupported. Wider handler and lifetime behavior remains open.
 
+[Builtin stdClass comparison Notices](../../coverage/semantics/stdclass-numeric-comparison-review.json)
+retain the fixed class name, severity and original file/line through PRIMARY
+and restored SECOND dispatch. A second float Notice keeps private 1.0 despite
+the handler writing 9.0 to its old cell; throw/finally uses the same quiet
+remainder cancellation and handler restoration. No receiver owner is added.
+
 Private-final compiler diagnostics retain E_COMPILE_WARNING (128) severity
 and bypass callbacks in both direct reporting and dynamic compile queues.
 The reporting mask still controls display. E_WARNING (2) and E_DEPRECATED (8192)

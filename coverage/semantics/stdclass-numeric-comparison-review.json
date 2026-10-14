@@ -1,0 +1,201 @@
+{
+  "version": 1,
+  "milestone": "COMP57",
+  "status": "independently reviewed and accepted within the stated comparison domain",
+  "behavior": "Builtin stdClass int/float comparison Notices resume through the existing numeric continuation, including a newly read stdClass or source instance after the first handler.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "tested_revision": "264d30d3f857e3cad7a764f8761452582a556093",
+  "ordered_modules": 392,
+  "manifest_sha256": "18fd44f71d5dbd1b0cd0ff1b0b5ec872f5064fbd0471e86ae3bd869e48a95080",
+  "implementation": {
+    "path": "spec/semantics/402-object-numeric-comparisons.watsup",
+    "sha256": "50feba8a72f02aae18e3a56737301d50904d4607d16dcf6d867c7156841ec216",
+    "contract": [
+      "pnumberclass preserves bare source origins and adds NUMBER_STDCLASS; it does not fabricate a source class descriptor.",
+      "Admission requires the live allocated nonfreeing receiver. Post-message documentary images require bounds and the matching INSTANCE origin or STDINSTANCE kind.",
+      "Messages use fixed stdClass or the existing source C-string class name. PRIMARY and SECOND share the old source, pointers, immutable target, roots, cursor guards and generic handler restoration.",
+      "No property/getter/table producer, owning failed receiver, new task or machine-state field is introduced."
+    ]
+  },
+  "native": {
+    "revision": "b128c9da28dd18635b7d4d8e96aa4257d079a1ce",
+    "observations": 3,
+    "model_agreements": 0,
+    "result": "Normal exits, empty stderr and the actual recorded tuples; hypotheses remain separate from capture reliability."
+  },
+  "unchanged_frontier": {
+    "revision": "b128c9da28dd18635b7d4d8e96aa4257d079a1ce",
+    "reason": "error-handler ingress requires a producer continuation",
+    "stdout_prefix": "quiet|N|Y|N|0|live|",
+    "seconds": 21.77017422951758,
+    "model_agreements": 0
+  },
+  "validation": {
+    "initializer": {
+      "passed": true,
+      "semantic_assertions": 0,
+      "php_steps": 0,
+      "mode": "SL"
+    },
+    "original_sources": {
+      "passed": true,
+      "agreements": 3,
+      "catalogue": "tests/semantics/stdclass_numeric_comparison_cases.json",
+      "catalogue_sha256": "3d17da055f5fbe2da04763e072160e419f5ca7262f61647fd07328d533a10357",
+      "caps_seconds": [
+        [
+          240,
+          250
+        ],
+        [
+          180,
+          190
+        ],
+        [
+          180,
+          190
+        ]
+      ],
+      "result": "Actual raw stdout/stderr/exit tuples match the frozen native observations, preserving original bytes, File and CWD."
+    },
+    "syntax_preparation": {
+      "requests": 6,
+      "runtime_credit": 0,
+      "php_steps": 0,
+      "result": "Fresh parse/check workers agree on AST and emit fixed checked programme terms."
+    },
+    "author": {
+      "groups": 2,
+      "premises": 197,
+      "setup": 189,
+      "pure": 8,
+      "raw_php_steps": 9,
+      "result": "Actual stdClass float PRIMARY/SECOND with live 9 ignored, both source/stdClass second receiver images/messages and final true results; real PLAIN property old CELL survives rebind to 9 while future tails become new."
+    },
+    "independent": {
+      "groups": 1,
+      "premises": 150,
+      "setup": 141,
+      "pure": 9,
+      "raw_php_steps": 10,
+      "result": "Actual float SECOND, receiver owners 2 to 1 without a descriptor edge, old right table versus current COW, recursive Error and identical supplied TypeError through handler finally, generic frame restoration/quiet cancellation/catch/finally and unchanged-left fresh false comparison."
+    },
+    "total": {
+      "groups": 3,
+      "premises": 347,
+      "setup": 330,
+      "pure": 17,
+      "raw_php_steps": 19,
+      "source_agreements": 3,
+      "boundary": "Raw relations alone count as steps; seeks, driver progress, helpers and counterfactual controls add no PHP-step or source-agreement credit."
+    },
+    "preserved_failures": [
+      {
+        "reference": "peer_binding_failure",
+        "credit": 0,
+        "cause": "Fresh n_first was bound inside a non-invertible conjunction; one clause split adds a setup premise, preserving the original typed EL and raw failure."
+      },
+      {
+        "reference": "peer_index_failure",
+        "credit": 0,
+        "cause": "The fixture expected selected index 0, but the existing cursor stores next index 1; the sole observer correction leaves production and step counts unchanged."
+      }
+    ]
+  },
+  "limitations": [
+    "Other internal/custom numeric comparison handlers remain outside this increment; properties, getters and table materialization are unchanged.",
+    "Existing pending-exception cancellation admits only a quiet terminal comparison remainder. Effectful future callbacks, default diagnostics, materialization, cache updates or recursion remain Unsupported.",
+    "Legacy materialized-table callback routes without an authenticated retained cursor remain Unsupported; broader callback and receiver lifetime behavior is unclaimed.",
+    "Constructed image/allocation/line/phase controls do not establish arbitrary historical provenance, full core comparison coverage or END/shutdown behavior."
+  ],
+  "reproduction": {
+    "root": "/home/user/workspace/php-spec/.tools/stdclass-numeric-comparison-57",
+    "source": "Entry points .tools/stdclass-numeric-comparison-model-57/initialize.py then run.py take --cpu CPU --slot SLOT. Preserve the fixed original File/CWD paths and caps. Each ignored report contains actual argv, tool hashes, environment digest, raw streams, exits and owned process cleanup.",
+    "states": "Author entry point .tools/stdclass-numeric-comparison-state-57/run.py uses separate --mode el then --mode sl. Peer accepted entry point .tools/stdclass-numeric-comparison-peer-state-57/run-index-retry1.py --mode sl binds its original EL/failure bridges. Output paths are immutable; fresh reruns require fresh reviewed output paths.",
+    "artifacts": "Ignored original sources, checked terms, fixture builders/plans, raw records and both failed peer input sets stay at their recorded paths; no bulky artifacts are tracked."
+  },
+  "references": {
+    "native": {
+      "path": ".tools/stdclass-numeric-comparison-native-57/run-v1/report.json",
+      "sha256": "f88d8f5f2f8a64d4e7ed806bc72165ec5adee3376584ccd60d9ce4402fbc53ac"
+    },
+    "unchanged_baseline": {
+      "path": ".tools/stdclass-numeric-comparison-baseline-57/run-v1/report.json",
+      "sha256": "da9795d1a57198e567868276d53f4f9a6c4c009ae83737c65e010962680a9e8d"
+    },
+    "initializer": {
+      "path": ".tools/stdclass-numeric-comparison-model-57/gate-v1/report.json",
+      "sha256": "9087ec8d1e7ee85e9f6155bb5ccd1d8196771b77231115a54bab7c976abe5ac9"
+    },
+    "source3": {
+      "path": ".tools/stdclass-numeric-comparison-model-57/run-v1/report.json",
+      "sha256": "b8fda70a0263f23ce187be55aa77e63ffe0ead59dea5e8448fec151c73440e6b"
+    },
+    "syntax6": {
+      "path": ".tools/stdclass-numeric-comparison-model-57/syntax-v1/report.json",
+      "sha256": "ac0f82e472e5498929247d8ba490448d6dc0f16f7be887a128f181308e51062b"
+    },
+    "author_builder": {
+      "path": ".tools/stdclass-numeric-comparison-state-57/build.py",
+      "sha256": "eb3b38a9bd37bf9c3da56bd345d4ca0a5b1e5fa135af09494e020f413c4456af"
+    },
+    "author_helpers": {
+      "path": ".tools/stdclass-numeric-comparison-state-57/helpers.watsup",
+      "sha256": "4f2bd076c1018cc128dfbaccfe7a21ec5b9dca041aa21a615ecde4a0340afbb8"
+    },
+    "author_plan": {
+      "path": ".tools/stdclass-numeric-comparison-state-57/plan.json",
+      "sha256": "e2ba910baf24da58baf338458ef61f638a603a625d524eeb0375058bfe4d43af"
+    },
+    "author_runner": {
+      "path": ".tools/stdclass-numeric-comparison-state-57/run.py",
+      "sha256": "d34fb2e5dae85f2480ef99117de5e6a9c23a90d89eb4c66e4e89e188da4bb03e"
+    },
+    "author_el": {
+      "path": ".tools/stdclass-numeric-comparison-state-57/run-el-v1/report.json",
+      "sha256": "7eaf7c7f6657212664cee885ad69da3f54290dc5ee0cfe1ca747952acae03cdc"
+    },
+    "author_sl": {
+      "path": ".tools/stdclass-numeric-comparison-state-57/run-sl-v1/report.json",
+      "sha256": "3facae94e4e28ae8326e0c37aaff52728b94b8ebb1d6a3f969d22b9f87ef9657"
+    },
+    "peer_builder": {
+      "path": ".tools/stdclass-numeric-comparison-peer-state-57/build.py",
+      "sha256": "c6a55eadf43dc56c3bb9c92c72622ae65b3cb4c7104e1e6bc3e2d9cdc41468a8"
+    },
+    "peer_plan": {
+      "path": ".tools/stdclass-numeric-comparison-peer-state-57/plan.json",
+      "sha256": "8b6b9e81210a7ffe3d1ecbfb3baf4ea077f9736fc21610ae7188a8bf5e55e131"
+    },
+    "peer_sl_runner": {
+      "path": ".tools/stdclass-numeric-comparison-peer-state-57/run-index-retry1.py",
+      "sha256": "97254b014b3f6cff69607676d78e848622a17ffb46448fc0259cdd0dfd375430"
+    },
+    "peer_el": {
+      "path": ".tools/stdclass-numeric-comparison-peer-state-57/run-el-v1/report.json",
+      "sha256": "1270cf4b7923e61282d27f2d612dd2e1470b0a28718027797887bdeb262e6e0b"
+    },
+    "peer_binding_failure": {
+      "path": ".tools/stdclass-numeric-comparison-peer-state-57/run-sl-v1/report.json",
+      "sha256": "97131fb351cdbc3c55873801f4e39a146ad2410e0d9ea76621acc45a496e374a"
+    },
+    "peer_index_failure": {
+      "path": ".tools/stdclass-numeric-comparison-peer-state-57/run-sl-binding-retry1/report.json",
+      "sha256": "996dd57dc4f4e5d9b1f11f18f9652fead160146ae0bddca707e3065597d49581"
+    },
+    "peer_sl": {
+      "path": ".tools/stdclass-numeric-comparison-peer-state-57/run-sl-index-retry1/report.json",
+      "sha256": "19c376b2e79a87bdff338d8b3ade7a1b0f4299b6cff9fea4db8c39aa7c7a5fb3"
+    }
+  },
+  "independent_review": {
+    "reviewer": "comp_review_21",
+    "semantic_and_test_verdict": "CLEAR at the tested revision",
+    "publication_verdict": "CLEAR"
+  }
+}

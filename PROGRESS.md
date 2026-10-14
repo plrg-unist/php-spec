@@ -7,6 +7,15 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Builtin stdClass/int/float comparisons now use the numeric Notice continuation.
+Its local class image preserves the fixed builtin name and source-class origins
+across restored second Notices, without adding receiver owners. Three exact
+sources and author/independent tests pass 347 premises (330 setup +17 pure) and
+19 raw steps at 264d/392, including saved float 1.0 versus a late 9, property
+old-cell rebinding, real array COW and same-TypeError/finally cleanup. The two
+fixture failures retain zero credit; the quiet pending-exception restriction
+and wider handler/lifetime limits remain. [stdClass Notice ledger](coverage/semantics/stdclass-numeric-comparison-review.json).
+
 Class-qualified `constant` now returns source-pooled nonempty literal array trees.
 Queries preserve the pooled root and nested tables; ordinary writes and reference
 acquisition use the existing COW machinery without changing the constant or peer.

@@ -1756,6 +1756,11 @@ Live CV/cell reads remain distinct from copies; a second Notice uses saved 1/1.0
 and aggregate guards and cursors survive callback mutation and throw. Four exact
 sources and 482 reached premises/26 raw steps pass. Pending exceptions admit only
 a quiet terminal comparison remainder; wider handlers and lifetimes remain open.
+[Builtin stdClass numeric Notices](coverage/semantics/stdclass-numeric-comparison-review.json)
+use the same continuation with a fixed builtin class image. Restored second
+Notices retain saved 1/1.0 across stdClass/source-instance changes and late live
+writes. Three exact sources and 347 reached premises/19 raw steps pass;
+property, getter and other internal-handler coverage is unchanged.
 [Match expressions](docs/semantics/SOURCE-MATCH.md) preserve strict, lazy arm
 selection, delayed CV subjects, ordered compiler diagnostics and owned value
 results; their [review](coverage/semantics/match-review.json) binds source, compiler

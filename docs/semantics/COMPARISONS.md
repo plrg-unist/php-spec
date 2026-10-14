@@ -44,7 +44,12 @@ previewing the remaining comparison yields a terminal order with no state change
 A future callback, observable default diagnostic, materialization, cache update or recursion
 instead remains Unsupported. Documentary receiver/leaf images add no owner;
 actual operands, cursor pins and callback selection retain their existing roots.
-Internal/custom comparison handlers, legacy materialized callbacks without a
+[Builtin stdClass leaves](../../coverage/semantics/stdclass-numeric-comparison-review.json)
+now use the same int/float Notice route. A local class image distinguishes their
+fixed name from real source origins in both phases; allocation is checked at
+admission, while documentary post-message images require bounds and kind.
+Second Notices compare private 1/1.0 without rereading a late live value.
+Other internal/custom comparison handlers, legacy materialized callbacks without a
 retained cursor and wider handler/lifetime behavior remain open.
 
 Evidence derives from `vendor/php-src/Zend/zend_operators.c` (`zend_compare`,

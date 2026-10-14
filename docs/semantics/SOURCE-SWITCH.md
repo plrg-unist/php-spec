@@ -52,6 +52,11 @@ nonzero skips later casts. Notice→Stringable→Notice handoffs preserve the or
 consumer. Quiet thrown-handler remainders unwind before caller catch/finally;
 future effectful comparisons under that exception remain Unsupported.
 
+[Builtin stdClass numeric leaves](../../coverage/semantics/stdclass-numeric-comparison-review.json)
+also retain the original case, array/property cursor and guards through both
+Notices. Restored SECOND float dispatch uses saved 1.0 rather than a changed
+cell, including same-TypeError/finally cleanup and unchanged-left fresh comparison.
+
 [Recursive comparison through 394](../../coverage/semantics/aggregate-stringable-comparison-review.json)
 retains real enclosing array/property owners and the active left recursion guard
 while a reached Stringable/string leaf casts. Early count/key/value differences
