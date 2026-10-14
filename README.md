@@ -2200,9 +2200,14 @@ and void return from the property declaration. Assignment20 returns20 while the
 Parent body stores33; a bad array fails before the body and preserves33.
 Ordinary reads keep using the slot. One original and three states/234 checks are
 in the [set-only hook review](coverage/semantics/backed-set-only-hook-review.json).
-Hooked iteration, defaulted virtual hooks, paired or unbacked setters, trait or
-explicit-parameter setters, references, other inherited/trait and wider receiver,
-quiet or indirect-access families and `__unset` consumers remain required.
+A selected public typed statement pair ordered get then set now keeps two real source
+functions. A write inside GET and read inside SET use backing storage without
+calling the other hook. Assignment20 returns20, stores33 and later reads46.
+One original and two states/210 checks are in the
+[paired-hook review](coverage/semantics/paired-backed-get-set-hook-review.json).
+Hooked iteration, defaulted virtual hooks, other paired hooks, unbacked or trait
+setters, explicit setter parameters, references, other inherited/trait and wider
+receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
 and `implements` declarations, enforce method prototypes and abstract
 obligations, and add finite `Stringable`/`Throwable` nominal ancestry. The installed

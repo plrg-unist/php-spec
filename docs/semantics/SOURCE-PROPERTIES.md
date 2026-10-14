@@ -45,6 +45,17 @@ original and three states/234 premises (208 reached,26 derived) are in the
 [set-only review](../../coverage/semantics/backed-set-only-hook-review.json). Other
 set shapes, references, indirect writes and wider override/lifetime families remain required.
 
+A selected public typed statement pair ordered get then set now compiles both indexed
+source functions and retains one backing descriptor. Its declaring class is
+parentless and inheritance keeps the same descriptor. An active matching GET
+can write backing without invoking SET; an active matching SET can read backing
+without invoking GET. The source distinguishes physical10/get23, assignment20
+return20/physical33/get46, and pre-body bad-array rejection with caller26. Two
+real cuts pass210 premises (181 reached,29 derived), including both crossed
+accesses and original-input restoration. Setter overlap remains Unsupported;
+other order/body, trait, reference and wider override families remain required.
+[Paired-hook review](../../coverage/semantics/paired-backed-get-set-hook-review.json).
+
 Effective virtual getters without defaults retain the same declaration, function
 and return type while omitting the physical slot. The receiver owns no returned-value edge;
 result copies survive receiver cleanup and release independently. Ordinary writes
