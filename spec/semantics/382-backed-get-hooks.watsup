@@ -166,6 +166,31 @@ def $property_hook_trait_parent_linked(S, pclassdesc) = true
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
   -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = (SOURCE_PARENT porigin_parent)
 def $property_hook_trait_parent_linked(S, pclassdesc) = false -- otherwise
+dec $property_hook_trait_export(pstate, pclassdesc, ppropertydesc) : ppropertydesc?
+def $property_hook_trait_export(S, pclassdesc, ppropertydesc_source) = (ppropertydesc_source)
+  -- if ppropertydesc_source.ORIGIN = PORIGIN n pcpath
+  -- if $property_declaring_class(S.CLASSES, PORIGIN n pcpath) = (porigin_trait)
+  -- if $class_at(S.CLASSES, porigin_trait) = (pclassdesc_trait)
+  -- if $trait_fetch(S, $trait_plan(S, pclassdesc).TRAITS, eps) = TRAITFETCHED pclassdesc_traits*
+  -- if pclassdesc_trait <- pclassdesc_traits*
+  -- if $trait_plan(S, pclassdesc_trait).TRAITS = eps
+def $property_hook_trait_export(S, pclassdesc, ppropertydesc_source) = (ppropertydesc_export)
+  -- if ppropertydesc_source.ORIGIN = PORIGIN n pcpath
+  -- if $property_declaring_class(S.CLASSES, PORIGIN n pcpath) = (porigin_trait)
+  -- if $class_at(S.CLASSES, porigin_trait) = (pclassdesc_trait)
+  -- if pclassdesc_trait.KIND = "trait" /\ $trait_plan(S, pclassdesc_trait).TRAITS = eps
+  -- if $trait_fetch(S, $trait_plan(S, pclassdesc).TRAITS, eps) = TRAITFETCHED [pclassdesc_outer]
+  -- if pclassdesc_outer.ORIGIN =/= porigin_trait
+  -- if pclassdesc_outer.KIND = "trait" /\ pclassdesc_outer.PARENT = eps /\ ~pclassdesc_outer.READONLY
+  -- if $origin_node(S.SOURCES, pclassdesc_outer.ORIGIN) = (NStmtTrait phpType14 phpType3 phpType23 metadata)
+  -- if $trait_plan(S, pclassdesc_outer).PRECEDENCES = eps /\ $trait_plan(S, pclassdesc_outer).ALIASES = eps
+  -- if $trait_fetch(S, $trait_plan(S, pclassdesc_outer).TRAITS, eps) = TRAITFETCHED [pclassdesc_trait]
+  -- if ppropertydesc_export = $trait_data_property(pclassdesc_outer, ppropertydesc_source)
+  -- if $hook_property_at(pclassdesc_outer.PROPERTIES, TRAIT_MEMBER_ORIGIN pclassdesc_outer.ORIGIN (PORIGIN n pcpath)) = (ppropertydesc_export)
+  -- if $property_hook_origin(S, ppropertydesc_source) = (porigin_hook)
+  -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook phpType14_hook phpType24 phpType4 phpType11 phpType16 phpType39 metadata_hook)
+  -- if $hook_body_backed(phpType39, ppropertydesc_source.NAME)
+def $property_hook_trait_export(S, pclassdesc, ppropertydesc_source) = eps -- otherwise
 dec $property_hook_trait_origin(pstate, ppropertydesc) : porigin?
 def $property_hook_trait_origin(S, ppropertydesc) = (TRAIT_ORIGIN porigin_owner porigin_hook ($hook_name(ppropertydesc.NAME)))
   -- if ppropertydesc.ORIGIN = TRAIT_MEMBER_ORIGIN porigin_owner porigin_source
@@ -179,9 +204,7 @@ def $property_hook_trait_origin(S, ppropertydesc) = (TRAIT_ORIGIN porigin_owner 
   -- if $property_declaring_class(S.CLASSES, ppropertydesc_source.ORIGIN) = (porigin_trait)
   -- if $class_at(S.CLASSES, porigin_trait) = (pclassdesc_trait)
   -- if pclassdesc_trait.KIND = "trait"
-  -- if $trait_fetch(S, $trait_plan(S, pclassdesc).TRAITS, eps) = TRAITFETCHED pclassdesc_traits*
-  -- if pclassdesc_trait <- pclassdesc_traits*
-  -- if $trait_plan(S, pclassdesc_trait).TRAITS = eps
+  -- if $property_hook_trait_export(S, pclassdesc, ppropertydesc_source) =/= eps
   -- if ppropertydesc = $trait_data_property(pclassdesc, ppropertydesc_source)
   -- if $property_hook_origin(S, ppropertydesc_source) = (porigin_hook)
   -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 phpType39 metadata)
@@ -232,6 +255,21 @@ def $property_hook_trait_import_supported(S, pclassdesc, ppropertydesc) = true
   -- if $property_hook_origin(S, ppropertydesc) = (porigin_hook)
   -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 phpType39 metadata)
   -- if $hook_body_backed(phpType39, ppropertydesc.NAME) \/ $property_hook_virtual(S, ppropertydesc)
+def $property_hook_trait_import_supported(S, pclassdesc, ppropertydesc) = true
+  -- if pclassdesc.KIND = "trait" /\ pclassdesc.PARENT = eps /\ ~pclassdesc.READONLY
+  -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (NStmtTrait phpType14 phpType3 phpType23 metadata)
+  -- if ppropertydesc.ORIGIN = PORIGIN n pcpath
+  -- if $property_hook_trait_export(S, pclassdesc, ppropertydesc) = (ppropertydesc)
+  -- if $property_hook_origin(S, ppropertydesc) = (porigin_hook)
+  -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook phpType14_hook phpType24 phpType4 phpType11 phpType16 phpType39 metadata_hook)
+  -- if $hook_body_backed(phpType39, ppropertydesc.NAME)
+def $property_hook_trait_import_supported(S, pclassdesc, ppropertydesc) = true
+  -- if pclassdesc.KIND = "class" /\ ~pclassdesc.READONLY
+  -- if $property_hook_trait_parent_shape(S, pclassdesc, ppropertydesc.NAME)
+  -- if ppropertydesc.ORIGIN = TRAIT_MEMBER_ORIGIN porigin_outer (PORIGIN n pcpath)
+  -- if $trait_property_source_at(S.CLASSES, PORIGIN n pcpath) = (ppropertydesc_source)
+  -- if ppropertydesc_source.ORIGIN = PORIGIN n pcpath
+  -- if $property_hook_trait_export(S, pclassdesc, ppropertydesc_source) = (ppropertydesc)
 def $property_hook_trait_import_supported(S, pclassdesc, ppropertydesc) = false -- otherwise
 def $trait_data_property_one(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*) = S[.COMPLETION = UNSUPPORTED "nested, parented or readonly trait property hook import"]
   -- if $ppproperty_desc_at(pclassdesc.PROPERTIES, ppropertydesc.NAME) = eps
