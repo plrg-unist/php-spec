@@ -1,0 +1,209 @@
+;; A set-only backed class hook has one implicit parameter, not a checked NParam.
+dec $property_set_name(ptbytes) : ptbytes
+def $property_set_name(ptbytes) = [36] ++ ptbytes ++ $ptascii("::set")
+dec $property_set_signature(ppropertydesc) : pssignature
+def $property_set_signature(ppropertydesc) = {PARAMETERS ([{NAME $ptascii("value"), TYPE ppropertydesc.TYPE, BYREF false, VARIADIC false, REQUIRED true, DEFAULT PSNONE}]), RETURNS ([(PTBRANCH ([PTBUILTIN "void"]))]), BYREF false}
+
+def $pphook_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_name) (SEQUENCE eps) (SEQUENCE statement*) metadata, pchheader) = $pphook_finish_named(P, $ppgoto_finish($ppstatements(P_hook, pcpath ++ [PCFIELD 5], 0, statement*)), pcpath, ptbytes_name, pssignature, metadata)
+  -- if $ptlc($base64(text_set)) = $ptascii("set")
+  -- if pchheader.KIND = "class" /\ pchheader.PARENT = eps
+  -- if ppropertydesc.TYPE =/= eps /\ $hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME)
+  -- if z = $source_line(metadata)
+  -- if $(z > 0 /\ z <= $source_end_line(metadata))
+  -- if ptbytes_name = pchheader.NAME ++ $ptascii("::") ++ $property_set_name(ppropertydesc.NAME)
+  -- if pssignature = $property_set_signature(ppropertydesc)
+  -- if P_hook = $ppfunction_start($pplocate(P[.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $property_set_name(ppropertydesc.NAME), z))], pcpath, z), ptbytes_name, pssignature)[.RETURNREF = false][.RETURNS = pssignature.RETURNS][.GOTOROOT = pcpath][.FOLD = P.FOLD[.FUNCTION = ptbytes_name][.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $property_set_name(ppropertydesc.NAME), z))][.CLOSURE = false][.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
+
+;; The declaring row and sole source hook remain distinct from an inherited layout row.
+def $property_set_origin(S, ppropertydesc) = (PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX 0]))
+  -- if ppropertydesc.ORIGIN = PORIGIN n pcpath
+  -- if $property_declaring_class(S.CLASSES, PORIGIN n pcpath) = (porigin_owner)
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ ~pclassdesc.READONLY
+  -- if $hook_property_at(pclassdesc.PROPERTIES, PORIGIN n pcpath) = (ppropertydesc)
+  -- if $(|pcpath| >= 2)
+  -- if pcpath_group = pcpath[0:$nabs($( |pcpath| - 2))]
+  -- if pcpath = pcpath_group ++ [PCFIELD 3, PCINDEX 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_group) = (NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text_name) metadata_name) phpType5 metadata_item])) (SEQUENCE ([NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_set) (SEQUENCE eps) (SEQUENCE statement*) metadata_hook])) metadata)
+  -- if flags <- [0,1] /\ ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = eps
+  -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ~ppropertydesc.FINAL
+  -- if ppropertydesc.TYPE =/= eps /\ ppropertydesc.NAME = $base64(text_name) /\ ppropertydesc.KEY = ppropertydesc.NAME
+  -- if $ptlc($base64(text_set)) = $ptascii("set")
+  -- if $hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME)
+def $property_set_origin(S, ppropertydesc) = eps -- otherwise
+
+dec $property_set_function(pstate, ppropertyhook) : pfunction?
+def $property_set_function(S, ppropertyhook) = (pfunction)
+  -- if $(ppropertyhook.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[ppropertyhook.OBJECT] = INSTANCE porigin_class
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_class)
+  -- if $hook_property_at($property_layout(S, porigin_class, |S.CLASSES|), ppropertyhook.PROPERTY) = (ppropertydesc)
+  -- if $property_set_origin(S, ppropertydesc) = (ppropertyhook.HOOK)
+  -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (porigin_owner)
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc_owner)
+  -- if $function_at(S.FUNCTIONS, ppropertyhook.HOOK) = (pfunction)
+  -- if pfunction.NAME = pclassdesc_owner.NAME ++ $ptascii("::") ++ $property_set_name(ppropertydesc.NAME)
+  -- if pfunction.SIGNATURE = $property_set_signature(ppropertydesc)
+  -- if pfunction.DEFAULTS = eps /\ ~pfunction.EARLY
+  -- if pfunction.ORIGIN = PORIGIN n pcpath_hook
+  -- if pfunction.BODY = pcpath_hook ++ [PCFIELD 5]
+  -- if ~$function_generator(S, pfunction)
+def $property_set_function(S, ppropertyhook) = eps -- otherwise
+
+dec $property_set_valid(pstate, ppropertyhook) : bool
+def $property_set_valid(S, ppropertyhook) = true
+  -- if $property_set_function(S, ppropertyhook) = (pfunction)
+  -- if (HOBJECT ppropertyhook.OBJECT) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, ppropertyhook.OBJECT)
+  -- if ppropertyhook.SITE = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, ppropertyhook.SITE) = (NExprAssign (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata_property) expression_rhs metadata)
+  -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0, PCFIELD 0], NExprVariable (BYTES text_receiver) metadata_receiver) \/ $source_emission_this_fetch(S, n, pcpath ++ [PCFIELD 0, PCFIELD 0], NExprVariable (BYTES text_receiver) metadata_receiver)
+  -- if $property_effective_desc(S, ppropertyhook.OBJECT, $base64(text_name)) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertyhook.PROPERTY
+  -- if $property_assign_task(S[.ORIGIN = (ppropertyhook.SITE)], NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata_property, expression_rhs)
+  -- if $call_line_valid(S, (ppropertyhook.SITE), ppropertyhook.LINE)
+def $property_set_valid(S, ppropertyhook) = false -- otherwise
+
+dec $property_set_context_valid(pstate, pcallcontext) : bool
+dec $property_set_backing(pstate, nat, ppropertydesc) : bool
+def $property_set_backing(S, n, ppropertydesc) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = PROPERTY_SET_TARGET ppropertyhook
+  -- if ppropertyhook.OBJECT = n /\ ppropertyhook.PROPERTY = ppropertydesc.ORIGIN
+  -- if pcallcontext.RECEIVER = (n) /\ pcallcontext.FUNCTION = ppropertyhook.HOOK
+  -- if $property_set_origin(S, ppropertydesc) = (ppropertyhook.HOOK)
+  -- if $property_set_context_valid(S, pcallcontext)
+def $property_set_backing(S, n, ppropertydesc) = false -- otherwise
+def $property_set_needed(S, n, ptbytes) = true
+  -- if $property_lexical_private(S, n, ptbytes) = eps
+  -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
+  -- if $property_set_origin(S, ppropertydesc) =/= eps
+  -- if ~$property_set_backing(S, n, ppropertydesc)
+def $property_set_needed(S, n, ptbytes) = false -- otherwise
+
+;; Pending receiver/name resolution precedes RHS dereference, as in ordinary assignment.
+dec $property_set_plan(pstate) : ppropertyhook?
+def $property_set_plan(S) = (ppropertyhook)
+  -- if S.TODO = (ASSIGN_ARRAY (BASE_PROPERTY_PENDING pbase poperand z_receiver) z false) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_site)
+  -- if $property_pending_assign_valid(S, BASE_PROPERTY_PENDING pbase poperand z_receiver, z, false)
+  -- if S_target = $property_pending_resolve(S, pbase, poperand, PPW, z_receiver, z)
+  -- if S_target.COMPLETION = NORMAL
+  -- if S_target.BASE = BASE_PROPERTY (POBJECT n) ptbytes
+  -- if $property_set_needed(S, n, ptbytes)
+  -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes
+  -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
+  -- if $property_set_origin(S, ppropertydesc) = (porigin_hook)
+  -- if porigin_property = ppropertydesc.ORIGIN
+  -- if ppropertyhook = {SITE porigin_site, OBJECT n, PROPERTY porigin_property, HOOK porigin_hook, LINE z}
+  -- if $property_set_valid(S, ppropertyhook)
+def $property_set_plan(S) = eps -- otherwise
+def $property_set_pending(S) = true
+  -- if S.TODO = (ASSIGN_ARRAY (BASE_PROPERTY_PENDING pbase poperand z_receiver) z b) :: ptask_tail*
+  -- if S_target = $property_pending_resolve(S, pbase, poperand, PPW, z_receiver, z)
+  -- if S_target.COMPLETION = NORMAL
+  -- if S_target.BASE = BASE_PROPERTY (POBJECT n) ptbytes
+  -- if $property_set_needed(S, n, ptbytes)
+def $property_set_pending(S) = false -- otherwise
+
+rule PhpStep/property-set-call: S ~> S_rhs[.TODO = [(CALL_ARGS (PROPERTY_SET_TARGET ppropertyhook) eps 1 ([KNOWN pvalue]) (ppropertyhook.SITE) ppropertyhook.LINE), PROPERTY_SET_RESULT ppropertyhook pvalue] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ASSIGN_ARRAY (BASE_PROPERTY_PENDING pbase poperand z_receiver) z false) :: ptask_tail*
+  -- if $property_set_plan(S) = (ppropertyhook)
+  -- if S_target = $property_pending_resolve(S, pbase, poperand, PPW, z_receiver, z)
+  -- if S_rhs = $resolve_at(S_target, S.RESULT, z)
+  -- if S_rhs.COMPLETION = NORMAL
+  -- if S_rhs.RESULT = KNOWN pvalue
+rule PhpStep/property-set-rhs-abrupt: S ~> S_rhs[.TODO = eps]
+  -- if S.TODO = (ASSIGN_ARRAY (BASE_PROPERTY_PENDING pbase poperand z_receiver) z false) :: ptask_tail*
+  -- if $property_set_plan(S) = (ppropertyhook)
+  -- if S_target = $property_pending_resolve(S, pbase, poperand, PPW, z_receiver, z)
+  -- if S_rhs = $resolve_at(S_target, S.RESULT, z)
+  -- if S_rhs.COMPLETION =/= NORMAL
+rule PhpStep/property-set-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "set hook assignment source or function"]
+  -- if $property_set_pending(S)
+  -- if $property_set_plan(S) = eps
+rule PhpStep/property-set-result: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROPERTY_SET_RESULT ppropertyhook pvalue) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL /\ S.RESULT = KNOWN PNULL
+  -- if S.ORIGIN = (ppropertyhook.SITE)
+  -- if $property_set_valid(S, ppropertyhook)
+
+;; The saved result owns the receiver across entry and frame restoration.
+def $target_nodes(PROPERTY_SET_TARGET ppropertyhook) = eps
+def $call_receiver_roots(pcallcontext) = eps
+  -- if pcallcontext.TARGET = PROPERTY_SET_TARGET ppropertyhook
+def $target_instance(PROPERTY_SET_TARGET ppropertyhook) = eps
+def $target_receiver(S, PROPERTY_SET_TARGET ppropertyhook) = (ppropertyhook.OBJECT)
+def $target_lexical_class(S, PROPERTY_SET_TARGET ppropertyhook) = $property_declaring_class(S.CLASSES, ppropertyhook.PROPERTY)
+def $target_called_class(S, PROPERTY_SET_TARGET ppropertyhook) = (porigin)
+  -- if S.OBJECTS[ppropertyhook.OBJECT] = INSTANCE porigin
+def $target_function(S, PROPERTY_SET_TARGET ppropertyhook) = $property_set_function(S, ppropertyhook)
+  -- if $property_set_valid(S, ppropertyhook)
+def $task_nodes(PROPERTY_SET_RESULT ppropertyhook pvalue) = [HOBJECT ppropertyhook.OBJECT] ++ $value_nodes(pvalue)
+
+dec $property_set_tail(pstate, ppropertyhook, ptask*) : bool
+def $property_set_tail(S, ppropertyhook, (PROPERTY_SET_RESULT ppropertyhook pvalue) :: ptask_tail*) = $property_set_valid(S, ppropertyhook)
+def $property_set_tail(S, ppropertyhook, ptask*) = false -- otherwise
+dec $property_set_pending_call(pstate, ppropertyhook) : bool
+def $property_set_pending_call(S, ppropertyhook) = true
+  -- if S.TODO = (CALL_ARGS (PROPERTY_SET_TARGET ppropertyhook) eps 1 ([KNOWN pvalue]) (ppropertyhook.SITE) ppropertyhook.LINE) :: (PROPERTY_SET_RESULT ppropertyhook pvalue) :: ptask_tail*
+  -- if S.ORIGIN = (ppropertyhook.SITE)
+  -- if $property_set_valid(S, ppropertyhook)
+def $property_set_pending_call(S, ppropertyhook) = false -- otherwise
+dec $property_set_frame(pstate, pcallcontext, pframe, ppropertyhook) : bool
+def $property_set_frame(S, pcallcontext, pframe, ppropertyhook) = true
+  -- if pcallcontext.TARGET = PROPERTY_SET_TARGET ppropertyhook
+  -- if pcallcontext.CALLSITE = (ppropertyhook.SITE) /\ pcallcontext.LINE = ppropertyhook.LINE
+  -- if pcallcontext.ARGC = 1 /\ pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.WRAPPER = eps /\ pcallcontext.HOLES = eps
+  -- if pframe.ORIGIN = (ppropertyhook.SITE)
+  -- if $property_set_tail(S[.CURRENT = pframe.CONTEXT], ppropertyhook, pframe.TODO)
+def $property_set_frame(S, pcallcontext, pframe, ppropertyhook) = false -- otherwise
+dec $property_set_entered(pstate, pcallcontext?, pframe*, ppropertyhook) : bool
+def $property_set_entered(S, (pcallcontext), pframe :: pframe_tail*, ppropertyhook) = $property_set_frame(S, pcallcontext, pframe, ppropertyhook)
+  -- if pcallcontext.TARGET = PROPERTY_SET_TARGET ppropertyhook
+def $property_set_entered(S, (pcallcontext), pframe :: pframe_tail*, ppropertyhook) = $property_set_entered(S, pframe.CONTEXT, pframe_tail*, ppropertyhook)
+  -- if pcallcontext.TARGET =/= PROPERTY_SET_TARGET ppropertyhook
+def $property_set_entered(S, eps, pframe :: pframe_tail*, ppropertyhook) = $property_set_entered(S, pframe.CONTEXT, pframe_tail*, ppropertyhook)
+def $property_set_entered(S, pcallcontext?, eps, ppropertyhook) = false
+def $property_set_context_valid(S, pcallcontext) = true
+  -- if pcallcontext.TARGET = PROPERTY_SET_TARGET ppropertyhook
+  -- if pcallcontext.CALLSITE = (ppropertyhook.SITE) /\ pcallcontext.LINE = ppropertyhook.LINE
+  -- if pcallcontext.ARGC = 1 /\ pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.WRAPPER = eps /\ pcallcontext.HOLES = eps
+  -- if $property_set_entered(S, S.CURRENT, S.FRAMES, ppropertyhook)
+def $property_set_context_valid(S, pcallcontext) = false -- otherwise
+
+def $call_selected_valid(S, PROPERTY_SET_TARGET ppropertyhook, (porigin)) = (porigin = ppropertyhook.SITE /\ ($property_set_pending_call(S, ppropertyhook) \/ $property_set_entered(S, S.CURRENT, S.FRAMES, ppropertyhook)))
+def $call_arguments_valid(S, (porigin), 1, eps, poperand :: eps, 0) = true
+  -- if poperand = KNOWN pvalue
+  -- if S.TODO = (CALL_ARGS (PROPERTY_SET_TARGET ppropertyhook) eps 1 (poperand :: eps) (porigin) z) :: ptask_tail*
+  -- if $property_set_pending_call(S, ppropertyhook)
+def $call_arity_valid(S, pcallcontext) = $property_set_context_valid(S, pcallcontext)
+  -- if pcallcontext.TARGET = PROPERTY_SET_TARGET ppropertyhook
+def $call_extent_valid(S, pcallcontext) = $property_set_context_valid(S, pcallcontext)
+  -- if pcallcontext.TARGET = PROPERTY_SET_TARGET ppropertyhook
+def $named_context_valid(S, pcallcontext) = $property_set_context_valid(S, pcallcontext)
+  -- if pcallcontext.TARGET = PROPERTY_SET_TARGET ppropertyhook
+def $named_receives_ready(S, pfunction) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if $property_set_context_valid(S, pcallcontext)
+def $call_task_valid(S, PROPERTY_SET_RESULT ppropertyhook pvalue) = ($property_set_pending_call(S, ppropertyhook) \/ $property_set_tail(S, ppropertyhook, S.TODO))
+def $default_parameter_line(S, porigin, 0) = $source_line(metadata)
+  -- if $origin_node(S.SOURCES, porigin) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_name) (SEQUENCE eps) (SEQUENCE statement*) metadata)
+  -- if $ptlc($base64(text_set)) = $ptascii("set")
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = PROPERTY_SET_TARGET ppropertyhook
+  -- if ppropertyhook.HOOK = porigin
+  -- if $property_set_function(S, ppropertyhook) =/= eps
+
+;; Unselected write families cannot silently bypass a setter through ordinary storage.
+def $property_store_key(S, n, ptbytes, pvalue, z) = S[.COMPLETION = UNSUPPORTED "set hook write operation"]
+  -- if ~$instance_storage_freeing(S, n)
+  -- if ~$property_set_denied(S, n, ptbytes)
+  -- if $property_set_needed(S, n, ptbytes)
+def $property_instance_indirect_check(S, n, ptbytes, b_object, z) = S[.COMPLETION = UNSUPPORTED "set hook indirect access"]
+  -- if $property_set_needed(S, n, ptbytes)
+def $property_hook_declared(S, n, ptbytes) = true
+  -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
+  -- if $property_set_origin(S, ppropertydesc) =/= eps

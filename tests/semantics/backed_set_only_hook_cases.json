@@ -1,0 +1,35 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hashes": [
+    "b6495963158e134cfe5c58931acff4f0642626caf71448cb259a30acb1823bd9"
+  ],
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "scalar",
+      "source": "<?php\nclass BackedSetParent71 {\n    public int $value = 10 {\n        set {\n            echo 'SET:', self::class, '/', static::class, '/', __METHOD__, '/', $value, '|';\n            $this->value = $value + $this->offset();\n        }\n    }\n    private function offset(): int { return 13; }\n}\nclass BackedSetChild71 extends BackedSetParent71 {\n    private function offset(): int { return 900; }\n}\n$child = new BackedSetChild71();\n$raw = (array) $child;\necho 'I:', $raw['value'], '/', $child->value, '|';\n$result = ($child->value = 20);\n$raw = (array) $child;\necho 'R:', $result, '/', $raw['value'], '/', $child->value, '|';\ntry {\n    $child->value = [1];\n} catch (TypeError $error) {\n    echo 'TYPE:', $error->getMessage(), '|';\n}\n$raw = (array) $child;\necho 'F:', $raw['value'], '/', $child->value, '|';\n",
+      "source_sha256": "0c972362a091a577333194981d6a30aa22d11d54660ee9a2ebd734d1816b134c",
+      "stdout_base64": "SToxMC8xMHxTRVQ6QmFja2VkU2V0UGFyZW50NzEvQmFja2VkU2V0Q2hpbGQ3MS9CYWNrZWRTZXRQYXJlbnQ3MTo6JHZhbHVlOjpzZXQvMjB8UjoyMC8zMy8zM3xUWVBFOkJhY2tlZFNldFBhcmVudDcxOjokdmFsdWU6OnNldCgpOiBBcmd1bWVudCAjMSAoJHZhbHVlKSBtdXN0IGJlIG9mIHR5cGUgaW50LCBhcnJheSBnaXZlbiwgY2FsbGVkIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jb2FsZXNjZS1nZXQtaG9va3MtcHJpdmF0ZS0zMi8udG9vbHMvYmFja2VkLXNldC1vbmx5LWhvb2stcHJvYmVzLTcxL3NjYWxhci5waHAgb24gbGluZSAyMXxGOjMzLzMzfA==",
+      "stdout_template_base64": "SToxMC8xMHxTRVQ6QmFja2VkU2V0UGFyZW50NzEvQmFja2VkU2V0Q2hpbGQ3MS9CYWNrZWRTZXRQYXJlbnQ3MTo6JHZhbHVlOjpzZXQvMjB8UjoyMC8zMy8zM3xUWVBFOkJhY2tlZFNldFBhcmVudDcxOjokdmFsdWU6OnNldCgpOiBBcmd1bWVudCAjMSAoJHZhbHVlKSBtdXN0IGJlIG9mIHR5cGUgaW50LCBhcnJheSBnaXZlbiwgY2FsbGVkIGluIHtGSUxFfSBvbiBsaW5lIDIxfEY6MzMvMzN8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "backed-set-only-hook71-scalar-native-45a2d164",
+      "native_raw_sha256": "b6495963158e134cfe5c58931acff4f0642626caf71448cb259a30acb1823bd9"
+    }
+  ]
+}

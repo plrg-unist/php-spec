@@ -2094,6 +2094,15 @@ collision or earlier trait actor is renewed.
 Joined exact `beb13e29`/391 by pointwise review; no current actor or renewed source/state credit.
 Absent Throwable/Stringable comparisons, WeakMap replacement and define calls preserve the accepted export route.
 
+Selected backed set-only class hooks now authenticate an implicit property-typed
+value parameter, void return, actual call/frame and active backing write. Input20
+returns20 while Parent private13 transforms storage to33; bad-array receipt fails
+before the body with caller21 and keeps33. Ordinary reads stay physical.
+Strict392/source1 retain `be58adae`; three states at `76e562ef` pass234 =208 reached
++26 derived. Initial parse and transient-validator failure/diagnostic remain0; the
+unchanged controls fixture passes after the cons-form validator correction.
+[Set-only hook review](coverage/semantics/backed-set-only-hook-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization

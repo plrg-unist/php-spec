@@ -2173,8 +2173,14 @@ A selected backed expression getter can also pass through one outer trait.
 Both real use edges and the intermediate imported property are authenticated;
 Inner magic spelling survives Consumer scope rebasing and Grand100→300/get313.
 The intermediate hooked collision remains fatal. [Nested-trait review](coverage/semantics/nested-trait-getter-review.json).
-Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
-receiver, quiet or indirect-access families and `__unset` consumers remain required.
+Selected backed set-only class hooks now derive their implicit typed `$value`
+and void return from the property declaration. Assignment20 returns20 while the
+Parent body stores33; a bad array fails before the body and preserves33.
+Ordinary reads keep using the slot. One original and three states/234 checks are
+in the [set-only hook review](coverage/semantics/backed-set-only-hook-review.json).
+Hooked iteration, defaulted virtual hooks, paired or unbacked setters, trait or
+explicit-parameter setters, references, other inherited/trait and wider receiver,
+quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
 and `implements` declarations, enforce method prototypes and abstract
 obligations, and add finite `Stringable`/`Throwable` nominal ancestry. The installed
