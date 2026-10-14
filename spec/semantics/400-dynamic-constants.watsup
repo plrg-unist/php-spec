@@ -65,11 +65,23 @@ def $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
 def $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_name), NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN (PBOOL false))]
   -- if $string_bytes(pvalue_name) = (preqbytes)
+def $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_name), NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN (PBOOL true))]
+  -- if $string_bytes(pvalue_name) = (preqbytes)
 def $dynamic_define_values(pconfigcall) = eps -- otherwise
 
+dec $dynamic_constant_case_flag(pconfigcall) : bool
+def $dynamic_constant_case_flag(pconfigcall) = true
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_name), NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN (PBOOL true))]
+def $dynamic_constant_case_flag(pconfigcall) = false -- otherwise
+dec $dynamic_constant_case_message() : ptbytes
+def $dynamic_constant_case_message() = $ptascii("define(): Argument #3 ($case_insensitive) is ignored since declaration of case-insensitive constants is no longer supported")
+dec $dynamic_constant_case_valid(pstate, pconfigcall) : bool
 dec $dynamic_constant_duplicate_valid(pstate, pconfigcall, nat) : bool
-dec $dynamic_constant_receive(pstate, pconfigcall) : pstate
-def $dynamic_constant_receive(S, pconfigcall) = S[.TODO = ptask_tail*][.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME $user_constant_key(preqbytes), ORIGIN pconfigcall.SITE, VALUE pvalue, CLASS pvalueclass, READS eps, RECEIVES eps}]][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
+;; Registration occurs after the ignored-flag warning, so a callback may have
+;; installed the same key. Keep the original captured arguments in either path.
+dec $dynamic_define_finish(pstate, pconfigcall) : pstate
+def $dynamic_define_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME $user_constant_key(preqbytes), ORIGIN pconfigcall.SITE, VALUE pvalue, CLASS pvalueclass, READS eps, RECEIVES eps}]][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pconfigcall.KIND = INTRINSIC_DEFINE
   -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps
   -- if $dynamic_define_source(S, pconfigcall.SITE)
@@ -79,6 +91,19 @@ def $dynamic_constant_receive(S, pconfigcall) = S[.TODO = ptask_tail*][.USERCONS
   -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
   -- if ~$dynamic_constant_initial(preqbytes)
   -- if $source_constant_lookup(S, preqbytes) = eps
+  -- if S.TODO = ptask :: ptask_tail*
+def $dynamic_define_finish(S, pconfigcall) = $error_dispatch(S[.TODO = (DYNAMIC_CONSTANT_DUPLICATE pconfigcall n_constants) :: ptask_tail*], 2, ptbytes_message, pconfigcall.LINE, DIAGNOSTIC "Warning" ptbytes_message pconfigcall.LINE, DYNAMIC_CONSTANT_DUPLICATE pconfigcall n_constants)
+  -- if n_constants = |S.USERCONSTANTS|
+  -- if $dynamic_constant_duplicate_valid(S, pconfigcall, n_constants)
+  -- if $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
+  -- if ptbytes_message = $global_constant_duplicate_message(preqbytes)
+  -- if S.TODO = ptask :: ptask_tail*
+def $dynamic_define_finish(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "dynamic constant call domain"] -- otherwise
+
+dec $dynamic_constant_receive(pstate, pconfigcall) : pstate
+def $dynamic_constant_receive(S, pconfigcall) = $dynamic_define_finish(S, pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_DEFINE
+  -- if ~$dynamic_constant_case_flag(pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
 def $dynamic_constant_receive(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL $dynamic_constant_exists(S, preqbytes))][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pconfigcall.KIND = INTRINSIC_DEFINED
@@ -87,11 +112,8 @@ def $dynamic_constant_receive(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT =
   -- if $string_bytes(pvalue_name) = (preqbytes)
   -- if $dynamic_constant_global_name($dynamic_constant_query(preqbytes))
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
-def $dynamic_constant_receive(S, pconfigcall) = $error_dispatch(S[.TODO = (DYNAMIC_CONSTANT_DUPLICATE pconfigcall n_constants) :: ptask_tail*], 2, ptbytes_message, pconfigcall.LINE, DIAGNOSTIC "Warning" ptbytes_message pconfigcall.LINE, DYNAMIC_CONSTANT_DUPLICATE pconfigcall n_constants)
-  -- if n_constants = |S.USERCONSTANTS|
-  -- if $dynamic_constant_duplicate_valid(S, pconfigcall, n_constants)
-  -- if $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
-  -- if ptbytes_message = $global_constant_duplicate_message(preqbytes)
+def $dynamic_constant_receive(S, pconfigcall) = $error_dispatch(S[.TODO = (DYNAMIC_CONSTANT_CASE_WARNING pconfigcall) :: ptask_tail*], 2, $dynamic_constant_case_message(), pconfigcall.LINE, DIAGNOSTIC "Warning" $dynamic_constant_case_message() pconfigcall.LINE, DYNAMIC_CONSTANT_CASE_WARNING pconfigcall)
+  -- if $dynamic_constant_case_valid(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
 def $dynamic_constant_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "dynamic constant call domain"] -- otherwise
 
@@ -99,6 +121,13 @@ rule PhpStep/dynamic-constant-invoke: S ~> $dynamic_constant_receive(S, pconfigc
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $config_invoke_valid(S, pconfigcall)
   -- if $dynamic_constant_kind(pconfigcall.KIND)
+
+def $task_nodes(DYNAMIC_CONSTANT_CASE_WARNING pconfigcall) = $config_nodes(pconfigcall)
+def $selected_task_nonce(DYNAMIC_CONSTANT_CASE_WARNING pconfigcall) = pconfigcall.SELECTION
+def $call_task_valid(S, DYNAMIC_CONSTANT_CASE_WARNING pconfigcall) = $dynamic_constant_case_valid(S, pconfigcall)
+rule PhpStep/dynamic-constant-case-warning: S ~> $dynamic_define_finish(S, pconfigcall)
+  -- if S.TODO = (DYNAMIC_CONSTANT_CASE_WARNING pconfigcall) :: ptask_tail*
+  -- if $dynamic_constant_case_valid(S, pconfigcall)
 
 def $task_nodes(DYNAMIC_CONSTANT_DUPLICATE pconfigcall n_constants) = $config_nodes(pconfigcall)
 def $selected_task_nonce(DYNAMIC_CONSTANT_DUPLICATE pconfigcall n_constants) = pconfigcall.SELECTION
@@ -165,3 +194,28 @@ def $error_call_valid(S, perrorcall) = true
 def $error_context_trigger(S, pcallcontext) = (pconfigcall)
   -- if $error_context_call(S, pcallcontext) = (perrorcall)
   -- if perrorcall.RESUME = DYNAMIC_CONSTANT_DUPLICATE pconfigcall n_constants
+
+;; This phase bypasses only the warning already delivered; SENT stays true.
+def $dynamic_constant_case_valid(S, pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_DEFINE
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if $dynamic_define_source(S, pconfigcall.SITE)
+  -- if $dynamic_constant_case_flag(pconfigcall)
+  -- if $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
+  -- if $dynamic_constant_global_name(preqbytes)
+  -- if ~$dynamic_constant_initial(preqbytes)
+  -- if $dynamic_constant_class(pvalue) = (pvalueclass)
+  -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
+  -- if $dynamic_define_name_matches($user_constant_key(preqbytes), $dynamic_define_known(S, pconfigcall.SITE, 0))
+  -- if $dynamic_define_value_matches(pvalue, $dynamic_define_known(S, pconfigcall.SITE, 1))
+def $dynamic_constant_case_valid(S, pconfigcall) = false -- otherwise
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = DYNAMIC_CONSTANT_CASE_WARNING pconfigcall
+  -- if $dynamic_constant_case_valid(S, pconfigcall)
+  -- if perrorcall.SITE = pconfigcall.SITE /\ perrorcall.LEVEL = 2 /\ perrorcall.LINE = pconfigcall.LINE
+  -- if perrorcall.MESSAGE = $dynamic_constant_case_message()
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pconfigcall.LINE
+def $error_context_trigger(S, pcallcontext) = (pconfigcall)
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = DYNAMIC_CONSTANT_CASE_WARNING pconfigcall
