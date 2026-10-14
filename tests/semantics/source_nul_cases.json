@@ -1,0 +1,65 @@
+[
+  {
+    "id": "include-nul-suffix",
+    "source": "<?php\nfunction nul_notice($level,$message){echo \"H:\",$level,\":\",$message,\";\";ini_set(\"include_path\",\"changed\");return true;}\nset_error_handler(\"nul_notice\");\necho \"A;\";\n$v=include \"prefix\\0tail\";echo \"R:\",(int)$v,\";\";\necho \"P:\",get_include_path(),\";Z;\";\n",
+    "stdout": "A;H:2:include(): Failed opening 'prefix' for inclusion (include_path='.:');R:0;P:changed;Z;",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "id": "include-nul-leading",
+    "source": "<?php\nfunction nul_notice($level,$message){echo \"H:\",$level,\":\",$message,\";\";ini_set(\"include_path\",\"changed\");return true;}\nset_error_handler(\"nul_notice\");\necho \"A;\";\n$v=include \"\\0tail\";echo \"R:\",(int)$v,\";\";\necho \"P:\",get_include_path(),\";Z;\";\n",
+    "stdout": "A;H:2:include(): Failed opening '' for inclusion (include_path='.:');R:0;P:changed;Z;",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "id": "include-nul-credential-prefix",
+    "source": "<?php\nfunction nul_notice($level,$message){echo \"H:\",$level,\":\",$message,\";\";ini_set(\"include_path\",\"changed\");return true;}\nset_error_handler(\"nul_notice\");\necho \"A;\";\n$v=include \"proto://user:pw@host\\0tail\";echo \"R:\",(int)$v,\";\";\necho \"P:\",get_include_path(),\";Z;\";\n",
+    "stdout": "A;H:2:include(): Failed opening 'proto://...@host' for inclusion (include_path='.:');R:0;P:changed;Z;",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "id": "require-nul-suffix",
+    "source": "<?php\nfunction nul_notice($level,$message){echo \"H:\",$level,\":\",$message,\";\";ini_set(\"include_path\",\"changed\");return true;}\nset_error_handler(\"nul_notice\");\necho \"A;\";\ntry{$v=require \"prefix\\0tail\";echo \"R:\",(int)$v,\";\";}catch(ValueError $e){echo \"V:\",$e->getMessage(),\";\";}catch(Error $e){echo \"C:\",$e->getMessage(),\";\";}\necho \"P:\",get_include_path(),\";Z;\";\n",
+    "stdout": "A;C:Failed opening required 'prefix' (include_path='.:');P:.:;Z;",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "id": "require-nul-leading",
+    "source": "<?php\nfunction nul_notice($level,$message){echo \"H:\",$level,\":\",$message,\";\";ini_set(\"include_path\",\"changed\");return true;}\nset_error_handler(\"nul_notice\");\necho \"A;\";\ntry{$v=require \"\\0tail\";echo \"R:\",(int)$v,\";\";}catch(ValueError $e){echo \"V:\",$e->getMessage(),\";\";}catch(Error $e){echo \"C:\",$e->getMessage(),\";\";}\necho \"P:\",get_include_path(),\";Z;\";\n",
+    "stdout": "A;C:Failed opening required '' (include_path='.:');P:.:;Z;",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "id": "include_once-nul-included-main",
+    "source": "<?php\nfunction nul_notice($level,$message){echo \"H:\",$level,\":\",$message,\";\";ini_set(\"include_path\",\"changed\");return true;}\nset_error_handler(\"nul_notice\");\necho \"A;\";\ntry{$v=include_once (__FILE__.\"\\0tail\");echo \"R:\",(int)$v,\";\";}catch(ValueError $e){echo \"V:\",$e->getMessage(),\";\";}catch(Error $e){echo \"C:\",$e->getMessage(),\";\";}\necho \"P:\",get_include_path(),\";Z;\";\n",
+    "stdout": "A;H:2:include_once(): Failed opening '{file}' for inclusion (include_path='.:');R:0;P:changed;Z;",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "id": "require_once-nul-included-main",
+    "source": "<?php\nfunction nul_notice($level,$message){echo \"H:\",$level,\":\",$message,\";\";ini_set(\"include_path\",\"changed\");return true;}\nset_error_handler(\"nul_notice\");\necho \"A;\";\ntry{$v=require_once (__FILE__.\"\\0tail\");echo \"R:\",(int)$v,\";\";}catch(ValueError $e){echo \"V:\",$e->getMessage(),\";\";}catch(Error $e){echo \"C:\",$e->getMessage(),\";\";}\necho \"P:\",get_include_path(),\";Z;\";\n",
+    "stdout": "A;C:Failed opening required '{file}' (include_path='.:');P:.:;Z;",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "id": "include-empty-control",
+    "source": "<?php\nfunction nul_notice($level,$message){echo \"H:\",$level,\":\",$message,\";\";ini_set(\"include_path\",\"changed\");return true;}\nset_error_handler(\"nul_notice\");\necho \"A;\";\ntry{$v=include \"\";echo \"R:\",(int)$v,\";\";}catch(ValueError $e){echo \"V:\",$e->getMessage(),\";\";}\necho \"P:\",get_include_path(),\";Z;\";\n",
+    "stdout": "A;V:Path must not be empty;P:.:;Z;",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "id": "require-empty-control",
+    "source": "<?php\nfunction nul_notice($level,$message){echo \"H:\",$level,\":\",$message,\";\";ini_set(\"include_path\",\"changed\");return true;}\nset_error_handler(\"nul_notice\");\necho \"A;\";\ntry{$v=require \"\";echo \"R:\",(int)$v,\";\";}catch(ValueError $e){echo \"V:\",$e->getMessage(),\";\";}\necho \"P:\",get_include_path(),\";Z;\";\n",
+    "stdout": "A;V:Path must not be empty;P:.:;Z;",
+    "stderr": "",
+    "exit": 0
+  }
+]

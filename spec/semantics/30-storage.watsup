@@ -276,6 +276,7 @@ syntax pstaticdefaultcontext = { DECL porigin, ROOT porigin, PREVIOUS pconstantc
 syntax pinterpolation = { SITE porigin, INDEX nat, MODE nat, LINE int, TEXT nat*, STRING pvalue, VALUES poperand* }
 syntax psourceoperand = { SITE porigin, LINE int, KIND int, INPUT poperand, OWNER nat, TAIL ptask* }
 syntax psourcehelper = HELPER_EMPTY_EVAL | HELPER_ONCE_SKIP pfilecontext preqbytes | HELPER_FAILED_INCLUDE pfilecontext
+syntax pfilenul = { SITE porigin, LINE int, KIND int, REQUESTED preqbytes, INCLUDEPATH preqbytes, OWNER nat, TAIL ptask* }
 syntax pfiberapi = { SITE porigin, OBJECT nat, KIND pintrinsic?, START pnamedargs?, SENT pvalue?, LINE int, SEQUENCE nat, PACKS pfiberpack* }
 syntax pgcpublic = {API pfiberapi, SOURCE pgccall, INDEX nat, END nat, PENDING nat?, RESIDUAL bool}
 syntax pfiberstart = { SITE porigin, OBJECT nat, INDEX nat, SENT pnamedargs, LINE int, PACKS pfiberpack* }
@@ -353,6 +354,7 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | GLOBAL_CONSTANT_DUPLICATE porigin pvalue pvalueclass nat pconstantfact* int
   | DYNAMIC_CONSTANT_DUPLICATE pconfigcall nat
   | DYNAMIC_CONSTANT_CASE_WARNING pconfigcall
+  | FILE_NUL_RESULT pfilenul
   | YIELD_FROM_AGGREGATE pyieldfromaggregate text
   | YIELD_FROM_ITERATOR_NEXT nat pyieldfromreceipt
   | YIELD_FROM_ITERATOR_RESULT nat pyieldfromreceipt nat
