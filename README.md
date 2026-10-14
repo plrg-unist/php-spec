@@ -823,6 +823,11 @@ fresh mutable copy. [Two exact sources and 162 public premises](coverage/semanti
 distinguish allocation classes and rebuilt append history, rejecting a mutable
 clone of a fixed literal. Nested empties, array warning/flag paths, objects and
 cycles remain Unsupported.
+Class-qualified `defined` now checks inherited user constants with lexical visibility
+and quiet misses. Named autoload resumes the same captured query once.
+[Two exact sources and 288 public premises](coverage/semantics/class-qualified-defined-review.json)
+cover the full-query trace and retained selection; deferred evaluation and wider class
+query domains remain Unsupported.
 [Untyped positional defaults](docs/semantics/SOURCE-POSITIONAL-DEFAULTS.md) now preserve
 omitted receives, declaration context, observable caches and fresh reference/array
 ownership. [Independent acceptance](coverage/semantics/default-parameter-review.json)

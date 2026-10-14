@@ -7,6 +7,15 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Class-qualified `defined` now checks inherited user constants with actual lexical
+visibility and quiet missing/inaccessible results. Named autoload retains the full
+query and dynamic selection, then resumes once; a missing member on a loaded class
+never reloads it. Two exact source comparisons pass with runtime diff e355; two
+public fronts/288 premises pass with runtime diff 5d45 after a narrow carrier guard.
+The baseline/native/preparation evidence retains 0. Deferred evaluation, keyword/internal/
+trait/interface/enum queries, coercions and wider owning forms remain Unsupported.
+[Qualified-defined ledger](coverage/semantics/class-qualified-defined-review.json).
+
 Top-level empty `define` values now preserve their allocation class. Authenticated
 immutable empties retain their table; mutable emptied arrays become fresh canonical
 tables with rebuilt append history. Two exact sources and two public fronts/162

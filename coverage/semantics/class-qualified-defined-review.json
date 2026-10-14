@@ -1,0 +1,93 @@
+{
+  "status": "private_passed",
+  "target": "PHP 8.5.10 CLI NTS64",
+  "base": "beb13e29efa476e8cb2755c49a0a6d1755d24b4a",
+  "implementation_revision": "c6a68feaab950bbfaafe3c3022008c225cedb61a",
+  "module_count": 391,
+  "tested_cuts": {
+    "source": {
+      "runtime_diff_sha256": "e3553c2425843d60b5005715fcea18e366d5d3c4026a1e091933f6302b97d73b",
+      "files_sha256": {
+        "spec/semantics/30-storage.watsup": "f71078c6e8e50b45f26509774e67bc522390ca7cccdac4b9e5be5a82dfc03937",
+        "spec/semantics/277-autoload.watsup": "d9a49c24377f9b451a322f6a9c7e0b5abea9302c200facf796689e3be0a738c9",
+        "spec/semantics/400-dynamic-constants.watsup": "371b9e0129506648c3465cf84530be2d579c81036e8a41bef0693ea336e242ba"
+      }
+    },
+    "public": {
+      "runtime_diff_sha256": "5d45f5f935b83d6e844c1d7ae1c75e685e2db10cddd0432ee2fbf05371cd7bad",
+      "committed_files_sha256": {
+        "spec/semantics/30-storage.watsup": "f71078c6e8e50b45f26509774e67bc522390ca7cccdac4b9e5be5a82dfc03937",
+        "spec/semantics/277-autoload.watsup": "d9a49c24377f9b451a322f6a9c7e0b5abea9302c200facf796689e3be0a738c9",
+        "spec/semantics/400-dynamic-constants.watsup": "1f15491e944360a1dd91aeb208d2ad2996cfaa8f01ed807157eda0676a4db7f7",
+        "tests/semantics/class_defined_protocol.py": "87a28171d5daefb7b7fb1771698f558b508a7fb6223021c1676527f20d64cb66"
+      }
+    },
+    "bridge": "After the two source comparisons, static review localized a dangling REQUEST_STRING identity admitted by scalar CONFIG validation. One premise in the new family guard now requires a plain legacy string or valid carrier; dispatch/lookup/resume/trace bodies are unchanged. Current full genuine public chains preserve both native endings and reject the malformed identity through family, autoload and whole-public guards. The old source cut is retained, not replayed."
+  },
+  "behavior": [
+    "Qualified defined uses the captured complete string, class-name case normalization and case-sensitive member lookup. Loaded source-class constants use existing inherited lookup and the actual caller lexical visibility; missing/inaccessible returns false. A visible positive requires a folded descriptor, not deferred evaluation.",
+    "Absent classes can enter the existing named autoload registry. The same full CONFIG query/selection survives class-only callback arguments and one-shot finish, including unknown-class false; a loaded missing member never reloads.",
+    "AUTO_EXPLICIT retains the API frame with the full captured query/carrier; its defined mode also counts as implicit class lookup for same-class recursion suppression. Existing spl_autoload_call mode behavior stays unchanged.",
+    "Class activation, value/cache evaluation helpers, request fields/status and ownership policies are unchanged. The only storage addition is the resume task constructor."
+  ],
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_func_defined refuses colon/backslash strings, so qualified literals use the actual builtin",
+    "vendor/php-src/Zend/zend_builtin_functions.c: ZEND_FUNCTION(defined) uses zend_get_executed_scope and ZEND_FETCH_CLASS_SILENT",
+    "vendor/php-src/Zend/zend_constants.c: zend_get_constant_ex and zend_get_class_constant_ex resolve the class, access and target value; deferred AST update remains outside this slice",
+    "vendor/php-src/Zend/zend_execute_API.c: zend_fetch_class/zend_lookup_class_ex perform implicit autoload and active-class suppression; existing modules 184 and 277 are reused"
+  ],
+  "accepted": {
+    "exact_cli_sources": 2,
+    "source_cases": [
+      "static-native-v44/loaded-inherited-visibility",
+      "static-native-v44/selected-named-autoload"
+    ],
+    "source_result": "Both accepted checked-program normal0/full native stdout/empty stderr/CLI0 tuples are stable at source runtime diff e355. Native observations retain model credit 0.",
+    "public_fronts": {
+      "loaded": 115,
+      "autoload": 173
+    },
+    "public_premises": 288,
+    "public_result": "Full 391-module SL runners each exit0/exact trueLF/empty stderr/stable at runtime diff 5d45. Both sequential original-derived final chains pass public/declaration/heap checks and retain the native outputs.",
+    "counterexamples": "Real inherited lookup contrasts global inaccessible with declaring-Base visibility despite called Child. Entered loader checks full-query API trace/carrier, class-only argument, selected nonce, active same-key suppression and declaration authority. Site/line/query/carrier/nonce and NAME/KEY/RESUME forgeries reject; loaded member miss and post-loader unknown miss finish without another load.",
+    "production_continuations": 2,
+    "isolated_raw_phpstep_projections": 0,
+    "synthetic_or_proof_continuations_driven": 0
+  },
+  "preserved_zero_credit": [
+    "The unchanged loaded-class baseline stops Unsupported dynamic constant call domain after B|, CLI1/empty stderr; baseline credit 0 and native disagreement remain retained.",
+    "Native observations, fixture preparation and standalone full-file syntax checks retain zero credit. The carrier correction was found statically before any public actor; no affected-source or public numeric actor failed. No earlier constant/source campaign was replayed."
+  ],
+  "remaining": [
+    "Visible deferred initialization and its throws, keyword self/parent/static queries, internal/trait/interface/enum targets, wider query spellings/coercions, owning/FCC query forms and arity/pack paths remain Unsupported. Broader callback validation remains required.",
+    "Positive values are folded source-class descriptors. The generic runtime value/selection policy is not a full proof of arbitrary historical argument evaluation. Full defined, constant and core coverage remain partial.",
+    "Native outputs observe lookup/visibility and loader ordering; full-query internal trace/carrier authority is a source-grounded model check. No fresh build or portability claim."
+  ],
+  "artifacts": {
+    "native_pair": {
+      "path": ".tools/dynamic-review-02/static-native-v44/report.json",
+      "sha256": "71b62b44c39d7a27244a00ba0e8b377791a7c0d9bca7ef4f710371463ad1506a"
+    },
+    "unchanged_loaded_baseline": {
+      "path": ".tools/dynamic-source-class-defined-baseline-24/report.json",
+      "sha256": "33ac51ef7e13e6032e3559948dbac31db108fe2ea9d53727b9508d6f4181aecf"
+    },
+    "affected_loaded_source": {
+      "path": ".tools/dynamic-source-class-defined-model-25/report.json",
+      "sha256": "99b9278ff4138d1c3cfdb9a38a11692885b5b0f345ceb92c062da3c7ed5664b6"
+    },
+    "selected_autoload_source": {
+      "path": ".tools/dynamic-review-02/class-defined-autoload-model-v1/report.json",
+      "sha256": "7bc9daba89a3f74b0882eecd6b308d3847cc4e16935cd1752bfe557bbb22063c"
+    },
+    "public_preparation": {
+      "path": ".tools/dynamic-source-class-defined-state-01/fixtures-report.json",
+      "sha256": "ab11ed2913b8a7e508ffcc756e3cd55e0582055138917f42a843763de7cf8880"
+    },
+    "public_two_fronts": {
+      "path": ".tools/dynamic-source-class-defined-state-01/check-report.json",
+      "sha256": "4a79dc866317d327256721b5a548c67f60ae2c062f4d5b7237170f99030a772c"
+    }
+  },
+  "recovery": "Canonical ignored originals/raw preserve the two PHP inputs and fixed PHP/profile/pipeline identities. class_defined_protocol.py --phase fixtures --sources/--output prepares both source-derived fronts; --phase check runs full modules --sl with 90s each, serial stop-first under an outer 240s cap. CLI 60s/process 90s, native process 30s; before/after hashes and process/streams/commands are retained. Standalone parse-only outputs are in state01/parse-preflight. Metadata needs no semantic rerun."
+}

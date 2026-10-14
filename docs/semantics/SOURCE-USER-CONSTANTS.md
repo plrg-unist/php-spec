@@ -128,13 +128,23 @@ retain structural authority. Two exact sources and two public fronts/162 premise
 check these distinctions and later copies in the
 [empty ledger](../../coverage/semantics/dynamic-constant-empty-review.json).
 
+Class-qualified `defined` queries reuse inherited lookup and the actual caller's
+lexical visibility. Missing or inaccessible members return false; a visible positive
+requires a folded user-class descriptor, without deferred value evaluation. An absent
+class can enter the named autoload queue and resume the same captured query once.
+The loader receives the class name while the API trace retains the full query/carrier
+and dynamic selection. A loaded class's missing member never reloads it. Two exact
+sources and two public fronts/288 premises bind these paths and malformed query,
+carrier, selection and resume rejection in the
+[qualified-defined ledger](../../coverage/semantics/class-qualified-defined-review.json).
+
 The matching engine routes are `ZEND_FUNCTION(define)`/`ZVAL_COPY`,
 `validate_constant_array_argument`/`copy_constant_array`, `zend_register_constant`,
 and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`.
 Nested empty arrays, cycles, objects, array duplicate/third-argument paths,
 name/flag coercion, startup/special-name warnings,
-class-constant queries, owning/FCC call forms and wider conversion/arity paths
-remain Unsupported. The [dynamic ledger](../../coverage/semantics/dynamic-constants-review.json)
+keyword/internal/trait/interface/enum class queries, deferred value initialization,
+owning/FCC call forms and wider conversion/arity paths remain Unsupported. The [dynamic ledger](../../coverage/semantics/dynamic-constants-review.json)
 keeps the source and public-state cuts separate; it makes no native allocation-identity
 or full constant-family claim.
 
