@@ -17,6 +17,8 @@ from exception_handler_review import recorded
 CASES = Path(__file__).with_name('fiber_static_api_cases.json')
 PREFIX = 'fiber-static-api-source-'
 IMPLEMENTATION = Path(__file__)
+MODEL_SECONDS = 60
+PROCESS_SECONDS = 75
 
 
 def main():
@@ -87,7 +89,7 @@ def main():
                   and nout == row['native_stdout'].encode() and nerr == expected_stderr)
         record = {'id': row['id'], 'source_sha256': row['source_sha256'], 'native': native, 'passed': False}
         if passed:
-            model = recorded([str(ROOT / 'bin/php-semantics'), str(source), '--steps', '100000', '--timeout', '60'], directory, 'model', env, 75)
+            model = recorded([str(ROOT / 'bin/php-semantics'), str(source), '--steps', '100000', '--timeout', str(MODEL_SECONDS)], directory, 'model', env, PROCESS_SECONDS)
             try:
                 outcome = json.loads((directory / 'model.stdout').read_bytes())
             except ValueError:
@@ -122,7 +124,7 @@ def main():
               'runtime': runtime, 'profile': profile, 'environment': {'LC_ALL': 'C', 'TZ': 'UTC', 'jobs': 1},
               'compiler': {'mode': 'SL', 'cache': False, 'determinism_checks': True,
                            'spectec_commit': 'da36ac3c434cd291940293a63da64544307730a3', 'ocaml': '5.1.0'},
-              'budgets': {'steps': 100000, 'model_seconds': 60, 'process_seconds': 75},
+              'budgets': {'steps': 100000, 'model_seconds': MODEL_SECONDS, 'process_seconds': PROCESS_SECONDS},
               'passed': stable and len(records) == len(cases) and all(row['passed'] for row in records)}
     report['passed'] = report['passed'] and report['head_stable']
     (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')

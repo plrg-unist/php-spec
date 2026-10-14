@@ -7,6 +7,8 @@ source.CASES = Path(__file__).with_name('iterator_call_unpack_noninitial_fixed_r
 source.PREFIX = 'iterator-call-unpack-noninitial-fixed-reference-source-'
 source.IMPLEMENTATION = Path(__file__)
 source.__doc__ = __doc__
+source.MODEL_SECONDS = 100
+source.PROCESS_SECONDS = 120
 
 if __name__ == '__main__':
     raise SystemExit(0 if source.main() else 1)
