@@ -1,0 +1,35 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hashes": {
+    "scalar": "ccd979eb8027b7353dd13d15aa101dc1f21a8f31690511c22367a60961617f7d"
+  },
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "scalar",
+      "source": "<?php\ntrait ParentedTraitExpressionGetterTrait67 {\n    public int $value = 100 {\n        get => $this->value + $this->answer(__METHOD__);\n    }\n}\nclass ParentedTraitExpressionGetterBase67 {\n    public int $marker = 700;\n    private function answer(string $method): int { return 7; }\n    public function parentRead(): int {\n        echo 'PARENT:', self::class, '/', static::class, '|';\n        return $this->value;\n    }\n}\nclass ParentedTraitExpressionGetterConsumer67 extends ParentedTraitExpressionGetterBase67 {\n    use ParentedTraitExpressionGetterTrait67;\n    private function answer(string $method): int {\n        echo 'ANSWER:', self::class, '/', static::class, '/', $method, '|';\n        return 13;\n    }\n}\nclass ParentedTraitExpressionGetterGrand67 extends ParentedTraitExpressionGetterConsumer67 {\n    private function answer(string $method): int { return 900; }\n}\n$consumer = new ParentedTraitExpressionGetterConsumer67();\n$grand = new ParentedTraitExpressionGetterGrand67();\n$raw = (array) $consumer;\necho $raw === ['marker' => 700, 'value' => 100] ? 'C100/700|' : 'CBAD|';\n$raw = (array) $grand;\necho $raw === ['marker' => 700, 'value' => 100] ? 'G100/700|' : 'GBAD|';\necho $consumer->value, '|';\necho $grand->value, '|';\necho $consumer->parentRead(), '|';\necho $grand->parentRead(), '|';\n$grand->value = 300;\n$raw = (array) $grand;\necho $raw === ['marker' => 700, 'value' => 300] ? 'G300/700|' : 'GBAD|';\necho $grand->value, '|';\necho $grand->parentRead(), '|';\n",
+      "source_sha256": "708363bfbc98258031ccadcd8428ed8a7971cdf545a3cd0ffbfc6a5535b2ad28",
+      "stdout_base64": "QzEwMC83MDB8RzEwMC83MDB8QU5TV0VSOlBhcmVudGVkVHJhaXRFeHByZXNzaW9uR2V0dGVyQ29uc3VtZXI2Ny9QYXJlbnRlZFRyYWl0RXhwcmVzc2lvbkdldHRlckNvbnN1bWVyNjcvUGFyZW50ZWRUcmFpdEV4cHJlc3Npb25HZXR0ZXJUcmFpdDY3OjokdmFsdWU6OmdldHwxMTN8QU5TV0VSOlBhcmVudGVkVHJhaXRFeHByZXNzaW9uR2V0dGVyQ29uc3VtZXI2Ny9QYXJlbnRlZFRyYWl0RXhwcmVzc2lvbkdldHRlckdyYW5kNjcvUGFyZW50ZWRUcmFpdEV4cHJlc3Npb25HZXR0ZXJUcmFpdDY3OjokdmFsdWU6OmdldHwxMTN8UEFSRU5UOlBhcmVudGVkVHJhaXRFeHByZXNzaW9uR2V0dGVyQmFzZTY3L1BhcmVudGVkVHJhaXRFeHByZXNzaW9uR2V0dGVyQ29uc3VtZXI2N3xBTlNXRVI6UGFyZW50ZWRUcmFpdEV4cHJlc3Npb25HZXR0ZXJDb25zdW1lcjY3L1BhcmVudGVkVHJhaXRFeHByZXNzaW9uR2V0dGVyQ29uc3VtZXI2Ny9QYXJlbnRlZFRyYWl0RXhwcmVzc2lvbkdldHRlclRyYWl0Njc6OiR2YWx1ZTo6Z2V0fDExM3xQQVJFTlQ6UGFyZW50ZWRUcmFpdEV4cHJlc3Npb25HZXR0ZXJCYXNlNjcvUGFyZW50ZWRUcmFpdEV4cHJlc3Npb25HZXR0ZXJHcmFuZDY3fEFOU1dFUjpQYXJlbnRlZFRyYWl0RXhwcmVzc2lvbkdldHRlckNvbnN1bWVyNjcvUGFyZW50ZWRUcmFpdEV4cHJlc3Npb25HZXR0ZXJHcmFuZDY3L1BhcmVudGVkVHJhaXRFeHByZXNzaW9uR2V0dGVyVHJhaXQ2Nzo6JHZhbHVlOjpnZXR8MTEzfEczMDAvNzAwfEFOU1dFUjpQYXJlbnRlZFRyYWl0RXhwcmVzc2lvbkdldHRlckNvbnN1bWVyNjcvUGFyZW50ZWRUcmFpdEV4cHJlc3Npb25HZXR0ZXJHcmFuZDY3L1BhcmVudGVkVHJhaXRFeHByZXNzaW9uR2V0dGVyVHJhaXQ2Nzo6JHZhbHVlOjpnZXR8MzEzfFBBUkVOVDpQYXJlbnRlZFRyYWl0RXhwcmVzc2lvbkdldHRlckJhc2U2Ny9QYXJlbnRlZFRyYWl0RXhwcmVzc2lvbkdldHRlckdyYW5kNjd8QU5TV0VSOlBhcmVudGVkVHJhaXRFeHByZXNzaW9uR2V0dGVyQ29uc3VtZXI2Ny9QYXJlbnRlZFRyYWl0RXhwcmVzc2lvbkdldHRlckdyYW5kNjcvUGFyZW50ZWRUcmFpdEV4cHJlc3Npb25HZXR0ZXJUcmFpdDY3OjokdmFsdWU6OmdldHwzMTN8",
+      "stderr_template": "",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "parented-trait-expression-getter67-scalar-native-67022a7d",
+      "native_raw_sha256": "ccd979eb8027b7353dd13d15aa101dc1f21a8f31690511c22367a60961617f7d"
+    }
+  ]
+}
