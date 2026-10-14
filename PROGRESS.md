@@ -1956,6 +1956,16 @@ fallback change; layout/storage/permissions and expression/return rules remain.
 Joined exact `2bb4e1b6`/390; count-only initialization adds no source/state credit.
 Empty-buffer output, ordinary Base/getter targets and absent define/defined callbacks preserve the accepted route.
 
+Selected ordinary public same-name Base properties now admit a direct backed
+expression trait getter. Existing inheritance checking accepts int10→imported
+int100 and rejects Base string at Consumer16; only parent-shape admission changes.
+A single physical value slot, marker700, Base caller versus Consumer/private13
+and Grand300/get313 pass. Strict390/source2 at `48321a13` and four states at
+`154e2cb9` pass349 =319 reached +30 derived. Separately, only the superseded M67
+controls74 pass; its old ledger/source/entry/write identities remain historical.
+The initial setter-mutation elaboration stop remains0.
+[Inherited overlap review](coverage/semantics/inherited-overlap-trait-getter-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization

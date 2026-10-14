@@ -584,8 +584,8 @@ DERIVED = ['$property_hook_trait_parent_shape(S,pclassdesc_consumer[.PARENT = ep
  '0],NVarLikeIdentifier (BYTES "dmFsdWU=") metadata_marker_item)] :: pcunit_tail*]',
  'S_overlap = S_overlap_source[.CLASSES = $ptie_class_replace(S.CLASSES,porigin_base,pclassdesc_base[.PROPERTIES = '
  '[ppropertydesc_marker[.NAME = ppropertydesc_source.NAME][.KEY = ppropertydesc_source.NAME]]])]',
- '~$property_hook_trait_parent_shape(S_overlap,pclassdesc_consumer,ppropertydesc_source.NAME) /\\ '
- '~$property_hook_trait_import_supported(S_overlap,pclassdesc_consumer,ppropertydesc_source)',
+ '$property_hook_trait_parent_shape(S_overlap,pclassdesc_consumer,ppropertydesc_source.NAME) /\\ '
+ '$property_hook_trait_import_supported(S_overlap,pclassdesc_consumer,ppropertydesc_source)',
  'S_private_overlap = S_overlap[.CLASSES = $ptie_class_replace(S_overlap.CLASSES,porigin_base,pclassdesc_base[.PROPERTIES = '
  '[ppropertydesc_marker[.NAME = ppropertydesc_source.NAME][.KEY = $ptascii("private-key")][.VISIBILITY = '
  'PROPERTY_PRIVATE]]])]',

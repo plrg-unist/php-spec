@@ -48,6 +48,13 @@ and Trait magic remain separate from Base parentRead’s lexical scope. A real
 Grand100→300 write yields313 without changing marker700. One original and three
 checks/294 premises are in the [parented-trait review](../../coverage/semantics/parented-trait-expression-getter-review.json).
 
+Selected public ordinary same-name parent properties now pass import admission
+without bypassing inheritance TYPE checks. Base int10 and imported int100 retain
+distinct descriptors but select one imported physical value slot plus marker700;
+Grand’s write300 yields313. Incompatible Base string fails at Consumer16 during
+real deferred linking, with rollback. Two originals and four checks/349 premises
+are in the [overlap review](../../coverage/semantics/inherited-overlap-trait-getter-review.json); only the directly superseded earlier controls74 are renewed.
+
 Imports retain two identities. The declaring owner and lexical `self` scope are
 the using class; the body, filename, line and `__TRAIT__`, `__METHOD__` and
 `__FUNCTION__` remain those of the original trait method. Aliases have their own
