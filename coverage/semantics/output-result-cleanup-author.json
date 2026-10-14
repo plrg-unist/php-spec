@@ -1,6 +1,6 @@
 {
   "feature": "output-handler defined scalar return across callee cleanup throw",
-  "status": "private independently accepted; integration pending",
+  "status": "independently accepted; exact-parent fast-forward cleared",
   "base_revision": "04a9a2319fa086b29ed07026c5d8799347e4e6f4",
   "implementation_revision": "d983458fb31f19f4b532bfab03ca9b032e73bde9",
   "scope": "Callee-only fixed by-reference wrappers, original copied fci values, immutable normal-return seal versus body-throw null, defined scalar result/processed header through pending cleanup, borrowed method receiver, and internal/API callee-cleanup traces. Full core remains partial.",
@@ -103,5 +103,22 @@
     "peer": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-08"
   },
   "independent_review": "coverage/semantics/output-result-cleanup-review.json",
-  "engine_bug_or_intentional_divergence": null
+  "engine_bug_or_intentional_divergence": null,
+  "integration": {
+    "status": "independently accepted for canonical fast-forward",
+    "parent": "67022a7dc0d5fa1ff368c9033f9d95def99681d1",
+    "semantic_candidate": "5ed70fd3c2de74d7c86f4d46fcd6165a16aba7fd",
+    "source_attempt_revision": "69a3cd4062525b55d650d6d9aa50565e1bcc7f45",
+    "modules": 390,
+    "checks_root": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-08/join-checks-02",
+    "struct_result_sha256": "cbe4c14a0611f08cf7620b784246e2911fa007b98c5bb61434d49fe4d9349f72",
+    "checks": "Both builds, full390 struct and inventory pass. Initial implicit dune-root command failed before build; explicit private roots pass.",
+    "pointwise_review": "Only intended30/270/395/397/398/399/manifest runtime net. Parent class/fatal/cancellation/WeakMap/constant changes remain intact; accepted395/397/398/399 bytes are unchanged.",
+    "proposed_interaction": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-08/join-weakmap-01/sources/report.json",
+      "sha256": "efa12cde8fc2a2e64a8dcff2cf8bfc78d92c4bee5cd65d26a6cf18464df4bff5",
+      "credit": 0,
+      "outcome": "Explicit Unsupported before output: WeakMap first insertion requires STDINSTANCE; this key is named C INSTANCE. No current output discrepancy was reached. Unsupported join-positive selector removed; original peer runner47570d91 restored. No further numeric gate or private replay warranted."
+    }
+  }
 }

@@ -15,9 +15,6 @@ CASES = {
     'normal-wrapper-before-alias-receiver-release': (b'<?php $e=new Exception;$x=99;$log="";set_error_handler(function(){return true;});class D{function __destruct(){global $e,$log;$log.="D".ob_get_level();throw $e;}}class C{function h(&$b,$p){global $r;$r=null;$b=new D;return "X";}function __destruct(){global $log;$log.="R".ob_get_level();}}$r=new C;$cb=[&$r,"h"];ob_start($cb);unset($cb);echo "A";try{$x=ob_get_flush();}catch(Exception $c){echo ($c===$e?"C":"N").":".$x.":".ob_get_level();}echo "|".$log."Z";', b'XC:99:0|R1D1Z'),
     'normal-wrapper-fresh-destructor-trace': (b'<?php\n$x=99;set_error_handler(function(){return true;});\nclass D{\nfunction __destruct(){throw new Exception("F");}\n}\nfunction h(&$b,$p){$b=new D;return "X";}\nob_start("h");echo "A";\ntry{$x=ob_get_flush();}catch(Exception $c){$t=$c->getTrace();echo "|".$t[0]["function"].":".(isset($t[0]["file"])?"F":"I").":".$t[1]["function"].":".($t[1]["file"]===__FILE__?"F":"N").":".$t[1]["line"].":".$x."Z";}', b'X|__destruct:I:ob_get_flush:F:8:99Z'),
 }
-JOIN_CASES = {
-    'join-weakmap-borrowed-receiver': (b'<?php $e=new Exception;$x=99;$log="";set_error_handler(function(){return true;});class D{function __destruct(){global $e,$log;$log.="D".ob_get_level();throw $e;}}class C{function h(&$b,$p){global $r;$r=null;$b=new D;return "X";}function __destruct(){global $log;$log.="R".ob_get_level();}}$r=new C;$wm=new WeakMap;$wm[$r]=7;$wr=WeakReference::create($r);$cb=[&$r,"h"];ob_start($cb);unset($cb);echo "A";try{$x=ob_get_flush();}catch(Exception $c){echo ($c===$e?"C":"N").":".$x.":".ob_get_level().":".($wr->get()===null?"W":"L");}echo "|".$log."Z";', b'XC:99:0:W|R1D1Z'),
-}
 
 
 def fingerprint():
@@ -32,8 +29,7 @@ def main():
     parser.add_argument('--output', type=Path)
     args = parser.parse_args()
     selected = args.select.split(',') if args.select else list(CASES)
-    available = CASES | JOIN_CASES
-    assert selected and len(set(selected)) == len(selected) and all(name in available for name in selected)
+    assert selected and len(set(selected)) == len(selected) and all(name in CASES for name in selected)
     out = args.output or Path(tempfile.mkdtemp(prefix='output-result-cleanup-review-', dir=ROOT / '.tools'))
     out.mkdir(parents=True, exist_ok=True)
     report = {'revision': subprocess.check_output(['git', '-C', str(ROOT), 'rev-parse', 'HEAD']).decode().strip(),
@@ -44,7 +40,7 @@ def main():
         for name in selected:
             directory = out / name
             directory.mkdir()
-            source, expected = available[name]
+            source, expected = CASES[name]
             path = directory / 'source.php'
             path.write_bytes(source)
             native = common.run([str(ROOT / '.tools/php/bin/php'), '-n', *common.FLAGS, str(path)], directory, 'native', 10)

@@ -17,11 +17,15 @@ state groups pass 317 premises (64 at38e9,253 atd983), covering pre-ENTER site
 validation, callee ownership, pending normal commit, unsealed body failure and
 retired receiver refusal. Missing-pending task fallthrough was corrected without
 changing generic validation. Original failures and bounded diagnostics remain
-zero credit. The bounded private milestone is independently accepted; integration
-is pending and full core remains partial.
+zero credit. The bounded milestone is independently accepted; full core remains
+partial.
 [Contract](docs/semantics/OUTPUT-HANDLERS.md),
 [author evidence](coverage/semantics/output-result-cleanup-author.json),
 [independent review](coverage/semantics/output-result-cleanup-review.json).
+The 390-module composition over67022a7d passes pointwise review, both builds,
+full structuring and inventory. Parent class/fatal/cancellation/WeakMap/constants
+are preserved. The proposed WeakMap check stopped before output at its existing
+named-key boundary with zero agreement; private source/state cuts were not replayed.
 
 Module400 now executes scalar global `define`/`defined` through real argument
 capture, namespace keys, retained dynamic selection and no-file dispatch. Actual
