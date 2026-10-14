@@ -15,7 +15,7 @@ scope; called scope follows Consumer or Grand. A real slot 100→300 produces
 113→313. Matching own type/default100 does not permit a property collision.
 Two originals and four separate checks/267 premises are recorded in the
 [trait-getter review](../../coverage/semantics/trait-imported-backed-getter-review.json).
-Nested imports and wider parent/hook shapes remain required.
+Other nested hook imports and wider parent/hook shapes remain required.
 
 Direct public virtual get-only `int` trait getters with no initializer also
 import into a parentless Consumer. Raw Trait and imported own metadata stay

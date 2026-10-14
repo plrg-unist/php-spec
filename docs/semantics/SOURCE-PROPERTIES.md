@@ -33,6 +33,18 @@ return compilation at the authentic expression child, preserving its emitted lin
 and the Hook source across string callbacks. Seven additional originals and 137
 derived/reached checks are recorded in the
 [expression review](../../coverage/semantics/expression-get-hooks-review.json).
+
+Module403 adds selected public typed backed set-only statement hooks with implicit
+`$value` and void return. The declaring class is parentless; unchanged inheritance
+keeps its original private scope and the receiver’s called class. Actual parameter
+receipt precedes the body. Only the active matching property/receiver bypasses
+the setter for backing storage; the saved continuation returns original input20
+after the body stores33. Ordinary reads return33. Bad array input raises the
+hook argument TypeError with caller line21 before body entry and keeps33. One
+original and three states/234 premises (208 reached,26 derived) are in the
+[set-only review](../../coverage/semantics/backed-set-only-hook-review.json). Other
+set shapes, references, indirect writes and wider override/lifetime families remain required.
+
 Effective virtual getters without defaults retain the same declaration, function
 and return type while omitting the physical slot. The receiver owns no returned-value edge;
 result copies survive receiver cleanup and release independently. Ordinary writes
