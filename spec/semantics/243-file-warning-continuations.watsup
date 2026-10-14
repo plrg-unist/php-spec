@@ -205,7 +205,8 @@ def $file_nul_start(S, porigin, z, n_kind, ptask_tail*) = $error_dispatch(S_loca
   -- if S.RESULT = KNOWN pvalue_string
   -- if $string_bytes(pvalue_string) = (n_requested*)
   -- if $file_include_path(S.FILEINCLUDEPATH) = (n_path*)
-  -- if pfilenul = {SITE porigin, LINE z, KIND n_kind, REQUESTED n_requested*, INCLUDEPATH n_path*, OWNER |S.FRAMES|, TAIL ptask_tail*}
+  -- if n_owner = |S.FRAMES|
+  -- if pfilenul = {SITE porigin, LINE z, KIND n_kind, REQUESTED n_requested*, INCLUDEPATH n_path*, OWNER n_owner, TAIL ptask_tail*}
   -- if S_local = S[.ORIGIN = (porigin)][.TODO = (FILE_NUL_RESULT pfilenul) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $file_nul_valid(S_local, pfilenul)
   -- if z_warning = $file_nul_line(S_local, pfilenul)
