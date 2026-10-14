@@ -2060,6 +2060,10 @@ and magic name while executing in Consumer scope. A real backing write 100→300
 changes its result 113→313. Physical task lowering and logical imported return
 checks are covered by one original and three states in the
 [expression-trait review](coverage/semantics/trait-imported-expression-getter-review.json).
+Selected virtual expression trait getters also import with no physical slot.
+Consumer private13 and Trait magic survive; a Grand write raises the read-only
+Error and the getter still returns13. The [virtual-expression review](coverage/semantics/trait-imported-virtual-expression-getter-review.json)
+records one original, three new states and the affected earlier controls.
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`

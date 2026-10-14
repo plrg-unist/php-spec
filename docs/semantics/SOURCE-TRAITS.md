@@ -28,9 +28,17 @@ and three separate checks/242 premises are in the
 Selected body-backed expression trait getters also import. Their expression
 tasks use the physical source origin; the actual callable, context and return
 retain logical Consumer identity. Consumer private13 receives the Trait hook
-magic name; Grand’s backing100→300 yields113→313. Virtual expression imports
-remain refused. One source and three separate checks/263 premises are in the
+magic name; Grand’s backing100→300 yields113→313. One source and three
+separate checks/263 premises are in the
 [expression-trait review](../../coverage/semantics/trait-imported-expression-getter-review.json).
+
+Selected no-initializer virtual expression getters also import. Their default
+helper is INITIAL while actual Consumer/Grand slots are empty. Consumer private13
+receives Trait magic bytes through the logical imported getter; Grand’s write
+raises its read-only Error and leaves no slot. Physical tasks and logical
+implicit13 use the existing expression path. One original, three new states/284
+premises and the directly superseded M65 controls75 are recorded separately in
+the [virtual-expression review](../../coverage/semantics/trait-imported-virtual-expression-getter-review.json).
 
 Imports retain two identities. The declaring owner and lexical `self` scope are
 the using class; the body, filename, line and `__TRAIT__`, `__METHOD__` and
