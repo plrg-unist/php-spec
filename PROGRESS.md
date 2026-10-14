@@ -2459,6 +2459,17 @@ Physical collection, other layouts and broad returns_verify remain OPEN.
 Actual `a1c76bf2`/388 composition preserves current class/output/callback rules;
 one quiet ff24 SL45 compiler gate passes (app0), without private evidence renewal.
 
+M50 validates existing typed by-reference Fiber rechecks at `ee915d44`/388.
+Source/native2 agrees without a runtime change. Early79/one heap-valid replay-line
+refusal follows the selected global cell through an external bad write and a
+second parked finally with pending TypeError. Separate late144+146 executions
+preserve that error/line2/null Previous/pure trace through the worker catch, or
+deliver the integer reference to r/a and write3 through to global x. Both complete
+normally and retain the global cell; caller-cut split/full budgets and cleanup
+pass. Original parse5918/static e6ee remain0; static42f8 is app0 and query26e4 is
+diagnostic only. Validation publication changes no runtime or source catalogue.
+Native trace/identity, internal Stringable suspension and wider returns remain OPEN.
+
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
 Per-constant protection survives namespace publication and parked handlers.

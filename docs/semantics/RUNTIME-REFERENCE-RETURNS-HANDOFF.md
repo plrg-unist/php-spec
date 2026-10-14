@@ -279,3 +279,15 @@ Recover byte-exact late fixtures with reference_cycle_throw_state.py and the
 pending_carrier_cycle_throw ledger object. Preserve original6490 raw-transient
 fixture failure, real budget7337/projection0869 and compiler338a0 separately.
 Other source/store/handler layouts, physical collection and broad returns stay OPEN.
+
+M50 is validation-only at `ee915d44`/388: a typed by-reference return resolves
+the live selected global cell after Fiber suspension. Bad contents enter the
+existing REF_REPLAY finally path and park with an ordinary TypeError; the next
+resume reaches the worker catch. Integer contents deliver REFERENCE to worker
+r/a and preserve write-through. Source2, independent79/one paired replay-line
+driver refusal and separate late290 pass; catch/alias-cut budgets and normal
+completion retain the global cell. Recover the byte-exact late pair with
+reference_suspended_recheck_state.py and typed_suspended_recheck_validation in
+the local-CV ledger. Preserve parse5918/static e6ee0, app0 static42f8 and query26e4
+separately. No runtime change or renewed master semantic credit is claimed;
+internal Stringable suspension, other typed/consumed owners and broad returns OPEN.

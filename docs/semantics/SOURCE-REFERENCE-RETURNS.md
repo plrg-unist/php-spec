@@ -485,3 +485,14 @@ is an internal transient; public resumption is checked after driver postprocessi
 Split/full budget equality, exact fatal stderr/255 and normal null continuation
 pass. See pending_carrier_cycle_throw in the local-CV ledger. Broader layouts,
 physical collection and complete returns remain OPEN.
+
+M50 at `ee915d44`/388 validates the existing typed by-reference Fiber recheck.
+An external bad write changes the same selected global cell before resume;
+the recheck raises TypeError and re-enters finally, parking a second time before
+the worker catches that same error. An integer control instead returns the same
+reference to worker r/a, whose write updates global x. Source/native2, early79
+with one coordinated replay-line refusal and separate late144+146 pass. Late
+checks preserve the live error's f-declaration origin/line2/null Previous/pure
+trace and actual catch/alias-cut budget, then check normal cleanup separately.
+The selected global cell stays owned. No runtime edit, native trace equivalence,
+cross-fixture identity or broader typed/suspended return completeness is claimed.

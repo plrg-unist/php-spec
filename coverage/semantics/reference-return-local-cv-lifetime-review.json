@@ -936,5 +936,112 @@
       "elapsed_seconds": 7.266147136688232,
       "result": "Five quiet ff24 stages/ex0/reaped/all stability. Pointwise join preserves parent270 callback/class-fatal changes,382 trait getters,398/output state and all unowned parent bytes. No private source/state renewal."
     }
+  },
+  "typed_suspended_recheck_validation": {
+    "status": "independently_accepted_bounded_validation_only_typed_suspended_reference_recheck",
+    "revision": "ee915d448d1b148735c841401c7d6ead940ab7c0",
+    "modules": 388,
+    "runtime_change": false,
+    "scope": "A global int reference selected by a typed by-reference f survives Fiber suspension. An external bad write is rechecked, replays finally and parks a second time with TypeError; the next resume catches that same error. An integer control delivers the same selected cell to worker r/a and writes through. Early and late proofs are separate source executions; the global cell remains owned.",
+    "authority": [
+      "vendor/php-src/Zend/zend_compile.c:zend_compile_return (MAKE_REF before finally; repeated reference type check)",
+      "vendor/php-src/Zend/zend_vm_def.h:ZEND_VERIFY_RETURN_TYPE, ZEND_HANDLE_EXCEPTION, ZEND_RETURN_BY_REF"
+    ],
+    "native": {
+      "originals": 2,
+      "raw": ".tools/returns-chain-owner-catch-current-24/.tools/returns-verify50-suspended-recheck-followup/native-suspended-recheck-followup-bpid2eu1/report.json",
+      "report_sha256": "51d14bdfdd19c4dab2689085a6febcde37589dd9e78cf4862fc5b32835f07019",
+      "source_sha256": [
+        "5ae948e2f7f3cc0b89d934fedbddf645368c066013c5a61a4db01198f3781f47",
+        "ad01b861077ec7c5874eb153c0f9de0fcd81c96af6eaef3199fcd3187cd4be9c"
+      ],
+      "observations": [
+        "B:1;S:1;T:0;T:f(): Return value must be of type int, string returned;S2:0;T2:1;X:bad;E;",
+        "B:1;R:2;A:3;S:0;T:1;S2:0;T2:1;X:3;E;"
+      ],
+      "limit": "Message/status/output observations only, without native cell/error identity or trace agreement."
+    },
+    "source": {
+      "exact_agreements": 2,
+      "raw": ".tools/returns-cycle-throw-current-49/.tools/returns-verify50-suspended-recheck/model-suspended-recheck-sk_0z70j/report.json",
+      "report_sha256": "4e32c88a1e26b8f6581620724d790b76e9bc0f4b576151fbbf6e1ec23c51c0d5",
+      "result": "Unchanged two NORMAL native-exact tuples; complete/passed, dual quiet close0/no trailing and stable pins/modules/head."
+    },
+    "diagnostic": {
+      "raw": ".tools/returns-cycle-throw-current-49/.tools/returns-verify50-suspended-recheck/suspended-recheck-query-ketfrfdj/report.json",
+      "report_sha256": "26e492938b94a3b6ad59f9ddf47bb27b5156e200251da7d00bdd9e413ded8702",
+      "credit": "Source-linked selected cell/global write/second parked VM tuple only; no source/public credit."
+    },
+    "independent_state": {
+      "groups": 1,
+      "main_premises": 79,
+      "public_refusals": 1,
+      "raw": ".tools/returns-cycle-throw-current-49/.tools/returns-verify50-suspended-recheck/suspended-recheck-public-pgmcpo4e/report.json",
+      "report_sha256": "c9f3771651306f78d78d13f50b78f1b6b8e9ba5d9f22c171f9c8e04b06ec3f03",
+      "producer_sha256": "4d00d0afadec7cdc1c1de37a8150bfae8b075adcd5e55bf29f8bbc759405f7cb",
+      "fixture_sha256": "5ee483be0c1696cadae489075651531193f04dd5ba573489d33bfffe60276130",
+      "runner_sha256": "dcb0612b3f72fd3fda51823d28a2b26b1282767717a5b0b83257bd6a187f870c",
+      "elapsed_seconds": 28.042353868484497,
+      "behavior": "Within one execution the selected global x cell7 survives first parking and the bad write, then second parked VM FINALLY_RESUME carries ordinary TypeError with f-declaration origin and authenticated REF_REPLAY source/line. Whole VM/heap/public drive0 admits. A coordinated line2-to3 change in both replay markers leaves heap/owners unchanged and is refused by actual drive0."
+    },
+    "state": {
+      "fixtures": 2,
+      "assertions": 290,
+      "public_refusals": 0,
+      "fixture_compilations": 2,
+      "compiler_application_evaluations": 0,
+      "raw": ".tools/returns-cycle-throw-current-49/.tools/returns-suspended-recheck50/suspended-reference-recheck-late-3h8lr29o/report.json",
+      "report_sha256": "8449d8367d570d1cd5ff278fb883c3ef060b3a8e1b47497e61f2287983565a41",
+      "producer": "tests/semantics/reference_suspended_recheck_state.py",
+      "producer_sha256": "ef9aef5c13fdaa0e2276b8ce3748fae5f471c36bc84b2d1acd213acb89904413",
+      "fixture_sha256": [
+        "010327754debdae5eb9abaeae535fe1eb6cf908ef802f80c929ab9ea44c687a2",
+        "0228fd78140703a4224a8252703e97dd6cd21026d7b00d2d659223da5555284d"
+      ],
+      "elapsed_seconds": [
+        45.063857316970825,
+        43.34323740005493
+      ],
+      "behavior": "Separate bad/int executions authenticate their own f/worker source and selected global cell. Bad preserves the same pending TypeError/f-declaration origin/line2/null Previous and every captured pure trace-array payload at worker catch, with r/a absent. Int delivers the same returned REFERENCE to worker r/a; write3 is visible through a and global x. Both terminate normally/returned/not failed, drain Fiber/destructor controls and retain global x. Zero/one-step split/full budget equality starts at the actual worker catch or alias cut; final error/trace retirement is checked separately."
+    },
+    "static_only": {
+      "raw": ".tools/returns-cycle-throw-current-49/.tools/returns-verify50-suspended-recheck/suspended-recheck-public-compile-gprxfug4/report.json",
+      "report_sha256": "42f8e5d5872a21f22e69bd9e9a0205e1a3be2a448ee2d4767775a20944ca6e58",
+      "application_evaluations": 0,
+      "elapsed_seconds": 7.220841884613037,
+      "behavior": "Corrected independent public fixture passes full ff24 SL parse/elaborate/analysis/structure/init before evaluation."
+    },
+    "preserved_failures": [
+      {
+        "raw": ".tools/returns-cycle-throw-current-49/.tools/returns-verify50-suspended-recheck/suspended-recheck-public-p3362hav/report.json",
+        "report_sha256": "5918952243cb15d76670e60a3a59bdfb1e89c42ce7d84c98e7d1fc4e73834a0f",
+        "credit": 0,
+        "cause": "First independent public fixture parse-only ungrouped signed replay-line literal; no semantic evaluation."
+      },
+      {
+        "raw": ".tools/returns-cycle-throw-current-49/.tools/returns-verify50-suspended-recheck/suspended-recheck-public-compile-3_6_dslg/report.json",
+        "report_sha256": "e6ee74df9881aecf283d8fc66560a9c17ac8217bd197a4ba1f17ec3ae4e49f23",
+        "credit": 0,
+        "cause": "Affected compile-only fixture had a non-invertible TODO-prefix binder; deterministic helper replacement preserves the source/public contract."
+      }
+    ],
+    "runtime": {
+      "mode": "SL",
+      "cache": false,
+      "det": true,
+      "jobs": 1,
+      "compiler_cap_seconds": 45,
+      "public_cap_seconds": 60,
+      "late_state_cap_seconds": 120,
+      "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+      "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      "profile": "tests/semantics/profile.json"
+    },
+    "remaining": [
+      "Internal Stringable suspension, other typed/consumed owner and replay layouts, and complete returns/core verification.",
+      "Native trace/identity and physical cell collection; this selected global cell remains owned."
+    ],
+    "recovery": "Preserve original ignored source/raw/scripts/fixtures and branches at recorded paths. Run tests/semantics/reference_suspended_recheck_state.py --raw .tools/returns-cycle-throw-current-49/.tools/returns-verify50-suspended-recheck/model-suspended-recheck-sk_0z70j --output DIR for byte-exact late fixtures. Independent recovery uses preserved make_recheck_public.py/recheck-public.watsup and run_recheck_public_compile.py/run_recheck_public.py in the same verifier namespace. Use tested ee915/388 ordered modules, ff24 sl cap45 before numeric_runner --sl cap120 late or cap60 early, serially. Metadata-only publication earns no renewed semantic credit."
   }
 }

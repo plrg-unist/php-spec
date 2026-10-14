@@ -2882,6 +2882,13 @@ ordered private-control release remains valid when execution pauses before the
 fatal cleanup. Source2/early139 at `0ec20831` and separate late262/paused123 at
 `d16a062b` cover fatal output, normal null control, cleanup and budget resumption;
 the latter revision adds only storage admission. Wider layouts remain open.
+Typed by-reference Fiber returns also validate without a runtime change at
+`ee915d44`/388. An external bad write reaches the same selected global cell;
+the first resume parks again with a TypeError, and the second delivers it to the
+worker catch. The integer control delivers that cell to r/a and writes through
+to global x. Source2, early79/one replay-line refusal and separate late144+146
+pass, including live error/trace preservation, cleanup and caller-cut budget.
+The global cell remains owned; wider typed/suspended return layouts remain open.
 [Weak Stringable parameters](coverage/semantics/weak-string-parameters-review.json)
 now convert supplied fixed parameters in receive order, preserving caller
 strictness, nominal/callable precedence and the entered formal cell. Existing
