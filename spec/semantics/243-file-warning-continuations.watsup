@@ -219,7 +219,8 @@ def $file_nul_start(S, porigin, z, n_kind, ptask_tail*) = $throw_scalar(S, "Erro
   -- if $string_bytes(pvalue_string) = (n_requested*)
   -- if 0 <- n_requested*
   -- if $file_include_path(S.FILEINCLUDEPATH) = (n_path*)
-def $file_nul_start(S, porigin, z, n_kind, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "NUL file path with captured operand or unavailable include_path"] -- otherwise
+def $file_nul_start(S, porigin, z, n_kind, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "NUL file path with captured operand or unavailable include_path"]
+  -- if $file_nul_owned_tail(ptask_tail*) \/ S.FILEINCLUDEPATH = eps
 
 def $call_task_valid(S, FILE_NUL_RESULT pfilenul) = $file_nul_valid(S, pfilenul)
 rule PhpStep/file-nul-result: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
