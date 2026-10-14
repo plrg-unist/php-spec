@@ -1374,6 +1374,8 @@ cuts without replay. Both unchanged named and positional Unsupported frontiers r
 zero agreement. Reversed/nonnullable/other type shapes, variadic targets, actual
 later sends and wider sources/live replacements remain required.
 [Typed reference review](coverage/semantics/iterator-call-unpack-typed-reference-review.json).
+Canonical394 composition over `bf7fd3bba` passes inventory and strict SL at
+`c04ac28e9`; private source/state evidence retains its original cuts.
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or

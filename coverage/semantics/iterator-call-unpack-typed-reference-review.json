@@ -1,5 +1,5 @@
 {
-  "status": "accepted private bounded milestone; actual-parent composition pending",
+  "status": "accepted bounded milestone and actual-parent composition",
   "reviewer": "/root/iterator_review_01",
   "scope": "Initial stable Iterator property-reference unpack sends admit exact normalized [single class,null] or [array,null] fixed BYREF targets, in addition to the previously accepted untyped targets. Positional slot0 and later named fixed slots are covered. Empty SENT, no previous named phase, nonvariadic selected parameter, exact direct statically named Iterator construction, declared untyped nonstatic source property and bounded stable object/array HOLD/SNAPSHOT rules remain required.",
   "engine": {
@@ -139,6 +139,32 @@
     "Complete Iterator, foreach, callable and PHP core semantics"
   ],
   "composition": {
-    "status": "Pending actual-parent pointwise review and canonical inventory/sole strict gate; private source/state evidence is not renewed for metadata."
+    "status": "accepted; private source/state evidence retains its original cuts without replay",
+    "parent": "bf7fd3bba956c3327ba2f5b5c86643eeff3857f4",
+    "candidate": "c04ac28e9bf8c66e7e6cab2c08ec1929fb4787ef",
+    "review": "Only385 changes semantically from the actual parent, byte-identical to the reviewed finite type predicate. All other parent semantic paths, manifest, frontend, native and adapter bytes are preserved; four partial inventory rows append evidence/tests without removing parent entries. Hook-setter, ADD/named-handler, object-number, include-NUL/constant and computed-reference-return extensions do not match these source/private-cell states.",
+    "inventory": {
+      "report": ".tools/iterator-reference-typed-fixed-join-inventory-uojto7cj/report.json",
+      "command": "python3 scripts/check-semantic-inventory.py",
+      "exit": 0,
+      "constructors": 169,
+      "runtime_obligations": 306,
+      "inputs_and_head_stable": true
+    },
+    "strict": {
+      "report": ".tools/iterator-reference-typed-fixed-join-sl-h2d7a3gp/report.json",
+      "command": "taskset -c 2 python3 .tools/iterator-reference-typed-fixed-join-03.py",
+      "runner_sha256": "1d4d8583a1a7a541e8571e627251dbedff3f2d31c6388581aa7dfa7e97f57dc5",
+      "modules": 394,
+      "exit": 0,
+      "timeout": false,
+      "stdout": "true\n",
+      "stderr": "",
+      "inputs_and_head_stable": true
+    },
+    "archive": "../php-spec-evidence-archive/iterator-reference-typed-fixed-03/join-evidence.tar.gz",
+    "archive_sha256": "c35d3704fb6c849a01af6c11a49dd01169b70a2f8ee5c64d1479a94a4f84eea9",
+    "bytes": 30533,
+    "manifest": "../php-spec-evidence-archive/iterator-reference-typed-fixed-03/join-manifest.json"
   }
 }
