@@ -145,6 +145,7 @@ def $iterator_unpack_hold_allowed(S, piteratorunpack, "byref") = true
   -- if piteratorunpack.SNAPSHOT = (pvalue)
   -- if piteratorunpack.HOLD = KNOWN pvalue
   -- if $iterator_unpack_known_hold(piteratorunpack.HOLD)
+  -- if piteratorunpack.CALL.SENT = {SLOTS eps, NAMED eps} \/ $typed_tag(pvalue) = "object"
   -- if $iterator_unpack_reference_allowed(S, piteratorunpack)
 def $iterator_unpack_hold_allowed(S, piteratorunpack, text) = true
   -- if piteratorunpack.HOLD = KNOWN PNULL
@@ -385,6 +386,20 @@ def $iterator_unpack_reference_allowed(S, piteratorunpack) = true
   -- if ~psparam.VARIADIC /\ psparam.BYREF /\ $iterator_unpack_reference_type(psparam.TYPE)
   -- if $named_can_store(piteratorunpack.CALL.SENT, NAMED_POSITION n_target)
   -- if $iterator_unpack_extra_site(S, piteratorunpack.CALL.CALLSITE)
+def $iterator_unpack_reference_allowed(S, piteratorunpack) = true
+  -- if piteratorunpack.CURRENT = REFERENCE n_cell
+  -- if $(0 < $unpack_sent_count(piteratorunpack.CALL.SENT.SLOTS))
+  -- if piteratorunpack.CALL.SENT.NAMED = eps
+  -- if piteratorunpack.KEY = KNOWN pvalue_key
+  -- if $fiber_traversal_key(pvalue_key) = (pkey)
+  -- if $unpack_key_named(pkey) \/ ~piteratorunpack.NAMED
+  -- if $target_function(S, piteratorunpack.CALL.FUNCTION) = (pfunction)
+  -- if $(|piteratorunpack.CALL.SENT.SLOTS| <= |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if $iterator_unpack_named_target(S, piteratorunpack) = NAMED_POSITION n_target
+  -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, n_target) = (psparam)
+  -- if ~psparam.VARIADIC /\ psparam.BYREF /\ psparam.TYPE = eps
+  -- if $named_can_store(piteratorunpack.CALL.SENT, NAMED_POSITION n_target)
+  -- if $iterator_unpack_extra_site(S, piteratorunpack.CALL.CALLSITE)
 def $iterator_unpack_reference_allowed(S, piteratorunpack) = false -- otherwise
 def $iterator_unpack_reference_slot(ppropertydesc_layout*, ppropertyslot, n_cell) = true
   -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell)
@@ -414,6 +429,7 @@ def $iterator_unpack_warning_hold(S, piteratorunpack) = (KNOWN pvalue)
   -- if piteratorunpack.CURRENT = REFERENCE n_cell
   -- if $iterator_unpack_reference_allowed(S, piteratorunpack)
   -- if $iterator_unpack_reference_payload(S, piteratorunpack) = (pvalue)
+  -- if piteratorunpack.CALL.SENT = {SLOTS eps, NAMED eps} \/ $typed_tag(pvalue) = "object"
 def $iterator_unpack_warning_hold(S, piteratorunpack) = (piteratorunpack.CURRENT)
   -- if piteratorunpack.CURRENT = KNOWN (POBJECT n)
   -- if piteratorunpack.KEY = KNOWN pvalue_key
