@@ -2102,6 +2102,8 @@ Strict392/source1 retain `be58adae`; three states at `76e562ef` pass234 =208 rea
 +26 derived. Initial parse and transient-validator failure/diagnostic remain0; the
 unchanged controls fixture passes after the cons-form validator correction.
 [Set-only hook review](coverage/semantics/backed-set-only-hook-review.json).
+Joined exact `b128c9da`/393; count-corrected initialization adds no source/state credit.
+Absent numeric-comparison, defined/autoload, unpack and computed-ref-return protocols preserve the accepted setter route.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
