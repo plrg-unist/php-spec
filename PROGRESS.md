@@ -18,7 +18,8 @@ The original Unsupported baseline, unreachable-phase fixture and same-cap memory
 failures retain 0. The bounded retired fixture stops after its new ownership front;
 full completion remains covered by the exact source. The superseded Module398 control is
 retired without renewing old campaigns. Wider warning/exit/lifecycle paths remain
-partial; independent private acceptance is complete, integration pending.
+partial. The 391-module composition over fa7e9170 passes both builds, full
+structuring and inventory. Private source/state cuts retain their original identities.
 [Contract](docs/semantics/OUTPUT-HANDLERS.md),
 [author evidence](coverage/semantics/output-reference-warning-author.json),
 [independent review](coverage/semantics/output-reference-warning-review.json).
