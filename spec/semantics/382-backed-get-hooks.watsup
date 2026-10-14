@@ -359,6 +359,7 @@ def $property_hook_backing(S, n, ppropertydesc) = true
 def $property_hook_backing(S, n, ppropertydesc) = false -- otherwise
 
 def $property_hook_read_needed(S, n, ptbytes) = true
+  -- if $property_lexical_private(S, n, ptbytes) = eps
   -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
   -- if $property_hook_effective_origin(S, ppropertydesc) =/= eps
   -- if ~$property_hook_backing(S, n, ppropertydesc)
