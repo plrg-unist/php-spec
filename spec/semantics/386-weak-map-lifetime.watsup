@@ -510,6 +510,16 @@ def $weakmap_key_notice(S, n_key) = S[.COMPLETION = UNSUPPORTED "WeakMap key not
 
 ;; WeakMap free_obj unregisters the entry before value destruction, but its
 ;; own weak notification waits until the callback and cleanup have returned.
+dec $weakmap_free_value_allowed(pstate, pvalue) : bool
+def $weakmap_free_value_allowed(S, pvalue) = true
+  -- if pvalue = POBJECT n_value
+  -- if $(n_value < |S.OBJECTS|)
+  -- if (HOBJECT n_value) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_value] = INSTANCE porigin
+  -- if ~$instance_storage_freeing(S, n_value)
+  -- if $node_children(S, HOBJECT n_value) = eps
+def $weakmap_free_value_allowed(S, pvalue) = true -- if $weakmap_scalar_value(S, pvalue)
+def $weakmap_free_value_allowed(S, pvalue) = false -- otherwise
 dec $weakmap_free_allowed(pstate, nat, pdestructionrelease) : bool
 def $weakmap_free_allowed(S, n_map, pdestructionrelease) = true
   -- if $weakmap_at(S, n_map)
@@ -526,12 +536,7 @@ def $weakmap_free_allowed(S, n_map, pdestructionrelease) = true
   -- if $node_children(S, HOBJECT pweakmapentry.KEY) = eps
   -- if $($heap_owners($heap_graph(S), HOBJECT pweakmapentry.KEY) > 0)
   -- if $weakmap_key_maps(S, S.ALLOCATIONS, pweakmapentry.KEY) = [n_map]
-  -- if pweakmapentry.VALUE = POBJECT n_value
-  -- if $(n_value < |S.OBJECTS|)
-  -- if (HOBJECT n_value) <- S.ALLOCATIONS
-  -- if S.OBJECTS[n_value] = INSTANCE porigin
-  -- if ~$instance_storage_freeing(S, n_value)
-  -- if $node_children(S, HOBJECT n_value) = eps
+  -- if $weakmap_free_value_allowed(S, pweakmapentry.VALUE)
   -- if $destructor_jobs_valid(S, $destruction_values($value_nodes(pweakmapentry.VALUE)))
 def $weakmap_free_allowed(S, n_map, pdestructionrelease) = false -- otherwise
 
