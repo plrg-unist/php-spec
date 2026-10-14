@@ -1197,7 +1197,7 @@ dec $property_hook_parent_overlap(pstate, ppropertydesc*, ppropertydesc*) : bool
 dec $property_hook_parent_match(pstate, ppropertydesc, ppropertydesc?) : bool
 def $property_hook_parent_overlap(S, eps, ppropertydesc_parent*) = false
 def $property_hook_parent_overlap(S, ppropertydesc :: ppropertydesc_tail*, ppropertydesc_parent*) = ($property_hook_parent_match(S, ppropertydesc, $property_desc_at(ppropertydesc_parent*, ppropertydesc.KEY)) \/ $property_hook_parent_overlap(S, ppropertydesc_tail*, ppropertydesc_parent*))
-def $property_hook_parent_match(S, ppropertydesc, eps) = ($property_hook_effective_origin(S, ppropertydesc) =/= eps)
+def $property_hook_parent_match(S, ppropertydesc, eps) = ($property_hook_effective_origin(S, ppropertydesc) =/= eps /\ $property_hook_trait_origin(S, ppropertydesc) = eps)
 def $property_hook_parent_match(S, ppropertydesc, (ppropertydesc_inherited)) = (($property_hook_effective_origin(S, ppropertydesc_inherited) =/= eps \/ $property_hook_effective_origin(S, ppropertydesc) =/= eps) /\ ~$property_hook_override_pair(S, ppropertydesc_inherited, ppropertydesc))
 def $property_hook_link_finish(S, pclassdesc, S_linked) = $trait_restore(S, S_linked[.COMPLETION = UNSUPPORTED "inherited property hook override"])
   -- if S_linked.COMPLETION = NORMAL
