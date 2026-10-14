@@ -189,6 +189,7 @@ def assertions(name, fixture, directory, path):
                    'S_commit.TODO = (OB_USER_NORMAL_COMMIT pobinvoke_commit pdestructionframe_pending poboutput) :: ptask_native*',
                    'pobinvoke_commit = pobinvoke[.SENT = eps]',
                    'poboutput.VALUE = pvalue_return', 'poboutput.BYTES = ([88])',
+                   '~$call_task_valid(S_commit, OB_USER_NORMAL_COMMIT pobinvoke_commit pdestructionframe_pending[.PENDING = eps] poboutput)',
                    '$output_selected(S_commit, pobinvoke_commit) = (poutputbuffer_commit)',
                    r'poutputbuffer_commit.FLAGS = 113 /\ poutputbuffer_commit.BYTES = ([65,68,49])',
                    '$ob_user_running(S_commit)']

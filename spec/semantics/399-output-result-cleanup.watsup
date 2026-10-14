@@ -160,8 +160,12 @@ def $output_task_write(OB_USER_NORMAL_COMMIT pobinvoke pdestructionframe poboutp
 def $call_task_valid(S, OB_USER_NORMAL_RESULT pobinvoke pdestructionframe) = ($ob_normal_certificate(S, pobinvoke, pdestructionframe) /\ $ob_user_fci_arguments(pobinvoke) /\ pdestructionframe.PENDING = eps)
 def $call_task_valid(S, OB_USER_NORMAL_PENDING pobinvoke pdestructionframe) = ($ob_normal_certificate(S, pobinvoke, pdestructionframe) /\ $ob_user_fci_arguments(pobinvoke) /\ $throwable_live(S, n))
   -- if pdestructionframe.PENDING = (n)
+def $call_task_valid(S, OB_USER_NORMAL_PENDING pobinvoke pdestructionframe) = false
+  -- if pdestructionframe.PENDING = eps
 def $call_task_valid(S, OB_USER_NORMAL_COMMIT pobinvoke pdestructionframe poboutput) = ($ob_normal_certificate(S, pobinvoke, pdestructionframe) /\ pobinvoke.SENT = eps /\ $throwable_live(S, n) /\ $ob_user_output_valid(S, poboutput) /\ pdestructionframe.VALUE = KNOWN poboutput.VALUE)
   -- if pdestructionframe.PENDING = (n)
+def $call_task_valid(S, OB_USER_NORMAL_COMMIT pobinvoke pdestructionframe poboutput) = false
+  -- if pdestructionframe.PENDING = eps
 rule PhpStep/ob-user-normal-result: S ~> S[.TODO = (OB_USER_RESULT pobinvoke) :: ptask_tail*][.RESULT = pdestructionframe.VALUE][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (OB_USER_NORMAL_RESULT pobinvoke pdestructionframe) :: ptask_tail*
   -- if $call_task_valid(S, OB_USER_NORMAL_RESULT pobinvoke pdestructionframe)
