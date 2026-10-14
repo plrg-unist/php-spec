@@ -264,6 +264,10 @@ test-semantics: build
 	python3 tests/semantics/iterator_call_unpack_later_fixed_reference_state.py
 	python3 tests/semantics/iterator_call_unpack_reference_holes_review_sources.py
 	python3 tests/semantics/iterator_call_unpack_reference_holes_review_state.py
+	python3 tests/semantics/iterator_call_unpack_typed_fixed_reference_sources.py
+	python3 tests/semantics/iterator_call_unpack_typed_fixed_reference_state.py
+	python3 tests/semantics/iterator_call_unpack_typed_reference_review_sources.py
+	python3 tests/semantics/iterator_call_unpack_typed_reference_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py

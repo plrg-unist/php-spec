@@ -662,6 +662,11 @@ defaults bind before the body, warning numbers and argument count use the select
 slot, and handler writes cannot retarget its captured key. Missing required earlier
 arguments raise the real error while its trace retains the supplied payload. See
 the [reference-hole review](coverage/semantics/iterator-call-unpack-reference-holes-review.json).
+Initial property-reference sends also admit the exact nullable class and array
+type shapes at fixed by-reference targets. Types are checked at receive; a later
+integer write through the fresh callee cell is allowed and leaves source aliases
+intact. Receive failures retain payloads in real TypeError traces until release.
+See the [typed reference review](coverage/semantics/iterator-call-unpack-typed-reference-review.json).
 Valid NaN warnings retain the raw return through handler mutation, Fiber parking
 and throw. One numeric reread distinguishes copied NaN from a live reference;
 the raw return retires before current or iterator teardown.

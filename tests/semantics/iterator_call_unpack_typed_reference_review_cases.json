@@ -1,0 +1,32 @@
+[
+  {
+    "id": "iterator-typed-reference-review-class-alias-incompatible-body-write",
+    "source": "<?php\nclass ReviewTypedPayload03 { public function __destruct() { echo \"O|\"; } }\nclass ReviewTypedIterator03 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = new ReviewTypedPayload03(); }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; $GLOBALS[\"alias\"] =& $this->payload; return \"item\"; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction reviewTypedClass03($prefix = 17, ?ReviewTypedPayload03 &$item = null) { echo \"B\", $prefix, \":\", func_num_args(), \"|\"; $item = 19; echo \"F\", $item, \"|\"; }\n$alias = null;\nset_error_handler(static function ($severity, $message, $file, $line) {\n    echo \"H\", $severity, \":\", $message, \"|\";\n    return true;\n});\ntry { reviewTypedClass03(...new ReviewTypedIterator03()); }\ncatch (TypeError $caught) { echo \"BAD|\"; }\necho $alias === null ? \"NULL|\" : \"HELD|\";\nunset($alias);\necho \"E\";\n",
+    "source_sha256": "057a98ca21b280f8d6896dc3930f8cb0735339c23d9734d4adba6b04f3099cca",
+    "purpose": "The source-free private reference passes nullable class receive, then accepts an incompatible scalar write without a persistent parameter type constraint. Source alias retains the original object.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H2:Cannot pass by-reference argument 2 of reviewTypedClass03() by unpacking a Traversable, passing by-value instead|X|V|I|B17:2|F19|HELD|O|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-typed-reference-review-array-cow-incompatible-body-write",
+    "source": "<?php\nclass ReviewTypedPayload03 { public function __destruct() { echo \"O|\"; } }\nclass ReviewTypedIterator03 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = [new ReviewTypedPayload03()]; }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; $GLOBALS[\"alias\"] =& $this->payload; return \"item\"; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction reviewTypedArray03($prefix = 17, ?array &$item = null) { echo \"B\", $prefix, \":\", func_num_args(), \"|\"; $item[0] = null; $item = 23; echo \"F\", $item, \"|\"; }\n$alias = null;\nset_error_handler(static function ($severity, $message, $file, $line) {\n    echo \"H\", $severity, \":\", $message, \"|\";\n    return true;\n});\ntry { reviewTypedArray03(...new ReviewTypedIterator03()); }\ncatch (TypeError $caught) { echo \"BAD|\"; }\necho $alias[0] === null ? \"NULL|\" : \"HELD|\";\nunset($alias);\necho \"E\";\n",
+    "source_sha256": "87c0bc27aca18253310bd322ac0b9b95d3311b6be4d99f16df269f02845f2a47",
+    "purpose": "Nullable array receive permits nested private COW and an incompatible scalar overwrite while the source alias retains the original array child.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H2:Cannot pass by-reference argument 2 of reviewTypedArray03() by unpacking a Traversable, passing by-value instead|X|V|I|B17:2|F23|HELD|O|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-typed-reference-review-object-rejected-by-array-trace",
+    "source": "<?php\nclass ReviewTypedPayload03 { public function __destruct() { echo \"O|\"; } }\nclass ReviewTypedIterator03 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = new ReviewTypedPayload03(); }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; return \"item\"; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction reviewTypedMismatch03($prefix = 17, ?array &$item = null) { echo \"BAD|\"; }\n\nset_error_handler(static function ($severity, $message, $file, $line) {\n    echo \"H\", $severity, \":\", $message, \"|\";\n    return true;\n});\ntry { reviewTypedMismatch03(...new ReviewTypedIterator03()); }\ncatch (TypeError $caught) { echo \"T|\"; }\nunset($caught);\necho \"E\";\n",
+    "source_sha256": "09e9db49786e84212ae40ebb839f23c1b4636e96efc2af07dbe19615c561bb12",
+    "purpose": "An object must still warn and transfer before nullable-array receive rejects it; no body entry, and the TypeError trace retains the payload until explicit caught-exception release.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H2:Cannot pass by-reference argument 2 of reviewTypedMismatch03() by unpacking a Traversable, passing by-value instead|X|V|I|T|O|E",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]

@@ -355,9 +355,26 @@ body while the distinct private payload cell stays owned. A missing required
 earlier parameter raises `ArgumentCountError`; its real trace retains the supplied
 payload through caught-exception release. Object aliases, array COW and warning
 cleanup retain their existing rules. Actual later sends, typed/variadic targets,
-other sources and live payload replacement remain required. The
+other sources and live payload replacement remained required at that cut. The
 [reference-hole review](../../coverage/semantics/iterator-call-unpack-reference-holes-review.json)
 preserves previous evidence and the affected earlier helper checks separately.
+
+Initial stable property-reference sends also admit the exact normalized
+`[class, null]` and `[array, null]` shapes at fixed by-reference parameters.
+The empty sent buffer, direct construction, untyped source property and stable
+capture bounds remain. Positional slot0 reaches its type receive without holes;
+named later slots fill earlier defaults first. Receive checks the dereferenced
+private cell after Iterator retirement. It adds no persistent parameter constraint,
+so a subsequent integer write succeeds while source aliases keep the original
+payload; nested array writes still use COW. A mismatch creates the real TypeError
+with owning DIRECT trace arguments, retaining the payload after callee retirement
+until caught-exception release. A warning-handler throw precedes this receive.
+This follows `SEND_UNPACK`, `ZVAL_NEW_REF`, `RECV`/`RECV_INIT` and
+`zend_verify_recv_arg_type`. Reversed union order, nonnullable/other type shapes,
+variadic targets, actual later sends and wider source/live replacement behavior
+remain required. The
+[typed reference review](../../coverage/semantics/iterator-call-unpack-typed-reference-review.json)
+keeps the new source/state cuts separate from prior evidence.
 
 Iterator valid NaN warnings keep the raw retval in CURRENT through handler invoke,
 result, cleanup and saved Fiber frames. The native `zend_user_it_valid` wrapper

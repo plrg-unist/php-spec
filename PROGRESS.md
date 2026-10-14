@@ -1358,10 +1358,22 @@ Strict391 and eleven new originals pass at `b2d6e6e539`. Eight new genuine-sourc
 state groups/555 driver premises and only the affected prior group/69 pass there;
 other prior cuts retain their own identities. The unchanged Unsupported baseline
 retains zero agreement. Actual later sends, typed/variadic targets, wider
-sources/live replacements and broader array/COW interactions remain open.
+sources/live replacements and broader array/COW interactions remained open at that cut.
 [Reference-hole review](coverage/semantics/iterator-call-unpack-reference-holes-review.json).
 Canonical391 composition over `9b733e448` passes inventory and strict SL at
 `58bbbacc1`; private source/state evidence retains its original cuts.
+
+Initial stable Iterator property-reference sends now admit exact normalized
+nullable class/array shapes at fixed BYREF targets. Types are checked at receive;
+later incompatible scalar writes through source-free private cells succeed while
+source aliases retain the original payload and array COW. Real receive TypeErrors
+own dereferenced trace arguments until caught-exception release; warning throws
+precede receive. Strict391, thirteen new originals and nine genuine-source state
+groups/629 driver premises pass at `c9f29a120`. Earlier evidence retains its own
+cuts without replay. Both unchanged named and positional Unsupported frontiers retain
+zero agreement. Reversed/nonnullable/other type shapes, variadic targets, actual
+later sends and wider sources/live replacements remain required.
+[Typed reference review](coverage/semantics/iterator-call-unpack-typed-reference-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or

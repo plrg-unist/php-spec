@@ -1,0 +1,144 @@
+{
+  "status": "accepted private bounded milestone; actual-parent composition pending",
+  "reviewer": "/root/iterator_review_01",
+  "scope": "Initial stable Iterator property-reference unpack sends admit exact normalized [single class,null] or [array,null] fixed BYREF targets, in addition to the previously accepted untyped targets. Positional slot0 and later named fixed slots are covered. Empty SENT, no previous named phase, nonvariadic selected parameter, exact direct statically named Iterator construction, declared untyped nonstatic source property and bounded stable object/array HOLD/SNAPSHOT rules remain required.",
+  "engine": {
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "runtime": "PHP 8.5.10 CLI NTS 64-bit",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "source_route": "Zend/zend_vm_def.h SEND_UNPACK dereferences and retains the raw payload before warning, then ZVAL_NEW_REF creates a fresh private reference. Iterator teardown precedes callee RECV/RECV_INIT. Zend/zend_execute.c zend_verify_recv_arg_type calls zend_check_type and zend_verify_arg_error; it does not register a persistent type source on the private reference. A warning-handler throw prevents receive. Named holes/defaults use the existing zend_handle_named_arg/zend_handle_undef_args route."
+  },
+  "implementation": {
+    "parent": "6ceffa391397b8267cbe5008d367dd9c2f7872c0",
+    "tested_revision": "c9f29a1208c1aeb62d508b870f38b6d456519c18",
+    "module": "spec/semantics/385-call-iterator-unpack.watsup",
+    "module_sha256": "05d6378ccfa6b224bce8e081047ef49429720b65e01bc037ef06daf24e17cab9",
+    "change": "Add finite iterator_unpack_reference_type true arms for eps, [PTCLASS name,null] and [array,null], otherwise false. Replace only the selected parameter TYPE=eps premise with this predicate. All existing key/slot/site/history, nonvariadic/BYREF and stable property capture guards remain.",
+    "contract": "Existing receive checks dereference the fresh private cell after Iterator retirement. Accepted class/array values may subsequently be overwritten by an incompatible integer; parameter types impose no persistent property-style constraint. Separate source aliases retain original objects/array children and ordinary COW. A mismatch creates a real TypeError before body entry with owning DIRECT trace argument snapshots; caught-exception release retires the retained payload. The old eps arm specializes to the unchanged untyped behavior."
+  },
+  "private_root": ".tools/iterator-reference-typed-fixed-03",
+  "preparation": {
+    "revision": "6ceffa391397b8267cbe5008d367dd9c2f7872c0",
+    "native": [
+      {
+        "report": ".tools/iterator-typed-fixed-reference-native-hf3ilpqg/report.json",
+        "originals": 9
+      },
+      {
+        "report": ".tools/iterator-typed-reference-review-native-esfyegvj/report.json",
+        "originals": 3
+      },
+      {
+        "report": ".tools/iterator-typed-fixed-reference-positional-native-3o23cl5u/report.json",
+        "originals": 1
+      }
+    ],
+    "baselines": [
+      {
+        "report": ".tools/iterator-reference-typed-fixed-baseline-mcchb_ld/report.json",
+        "selection": "iterator-call-unpack-typed-fixed-reference-object-normal",
+        "source_sha256": "e74b8123a14fbfa777524668af8003676a608f72ad8b4c089bb5fa76bd66c7e4"
+      },
+      {
+        "report": ".tools/iterator-reference-typed-fixed-positional-baseline-1le02r26/report.json",
+        "selection": "iterator-call-unpack-typed-fixed-reference-positional-class-normal",
+        "source_sha256": "3131a261ae201305d0439d83cfaac4afd91525e42a56e986143de048c6a83f42"
+      }
+    ],
+    "result": "All thirteen native originals pass. Both unchanged semantic controls stop explicitly Unsupported: Iterator unpack by-reference raw payload, after exact W|V|C|K| with no diagnostic. Original native tuples are retained for later model comparisons; adding the positional case does not replay the earlier twelve.",
+    "model_agreements": 0
+  },
+  "author": {
+    "strict": {
+      "report": ".tools/iterator-reference-typed-fixed-sl-rlukndcc/report.json",
+      "modules": 391,
+      "passed": true
+    },
+    "source": {
+      "runner": "tests/semantics/iterator_call_unpack_typed_fixed_reference_sources.py",
+      "report": ".tools/iterator-call-unpack-typed-fixed-reference-source-zmttp8d3/report.json",
+      "normal_agreements": 10,
+      "coverage": "Named slot1 matching class/array normal and source aliases with incompatible scalar body writes; array COW; wrong class and array-to-class receive rejection/trace release; mismatched array-target warning-handler throw; class Fiber parked resume/injected throw; positional class slot0 with ARGC1/no holes. Native9 and sole positional1 originals are reused."
+    },
+    "state": {
+      "runner": "tests/semantics/iterator_call_unpack_typed_fixed_reference_state.py",
+      "reports": [
+        {
+          "report": ".tools/fiber-state-review-y0lyk7uz/report.json",
+          "driver_premises": 76
+        },
+        {
+          "report": ".tools/fiber-state-review-cqosck80/report.json",
+          "driver_premises": 95
+        },
+        {
+          "report": ".tools/fiber-state-review-8f74xtjr/report.json",
+          "driver_premises": 108
+        },
+        {
+          "report": ".tools/fiber-state-review-f7435z36/report.json",
+          "driver_premises": 54
+        },
+        {
+          "report": ".tools/fiber-state-review-z0no8og2/report.json",
+          "driver_premises": 69
+        },
+        {
+          "report": ".tools/fiber-state-review-6zkf239g/report.json",
+          "driver_premises": 41
+        },
+        {
+          "report": ".tools/fiber-state-review-qu2j8nt1/report.json",
+          "driver_premises": 58
+        }
+      ],
+      "groups": 7,
+      "driver_premises": 501,
+      "coverage": "Genuine typed warning hold, object/array fresh-cell transfer, source alias COW and parked owners; positional TYPE_RECEIVE0 with a source-free private cell; named TYPE_RECEIVE1 wrong-class error, declaration line14, DIRECT [17,payload] trace and release. Three selected-function counterfactual refusals for reversed/nonnullable/variadic shapes are embedded in the first genuine group; there are no standalone pure-query groups."
+    }
+  },
+  "independent": {
+    "source": {
+      "runner": "tests/semantics/iterator_call_unpack_typed_reference_review_sources.py",
+      "report": ".tools/iterator-typed-reference-review-source-hepsc8v_/report.json",
+      "normal_agreements": 3,
+      "coverage": "Nullable-class private int19 write retaining a source object alias; nullable-array nested COW then int23 overwrite retaining the original child; object-to-nullable-array rejection with no body entry and explicit TypeError trace release. Unchanged independent native3 originals are reused."
+    },
+    "state": {
+      "runner": "tests/semantics/iterator_call_unpack_typed_reference_review_state.py",
+      "reports": [
+        {
+          "report": ".tools/fiber-state-review-slwqcmi_/report.json",
+          "driver_premises": 60
+        },
+        {
+          "report": ".tools/fiber-state-review-gllwpd7v/report.json",
+          "driver_premises": 68
+        }
+      ],
+      "groups": 2,
+      "driver_premises": 128,
+      "coverage": "At the real class body, the private REF holds incompatible int19 and has no typed property source; rechecking would reject, while public call/heap guards hold and only the source alias owns the original object. At the real object-to-array TYPE_RECEIVE1, one step creates TypeError with exact declaration14/call20 message, DIRECT [17,payload] snapshots and separate private/trace owners; caught release retires both. Zero-budget identity, one-step public guards and split-budget equality pass."
+    }
+  },
+  "validation": "Successful semantic gates use c9f29a1208, strict SL, caches disabled, encountered determinism, LC_ALL=C, TZ=UTC and worker1. Source reports bind stable HEAD and watched inputs; reached groups bind stable author/independent inputs. Source process caps75 seconds/model60; state/strict caps120. Each state group ran as its own --case process, serial stop-first. Preparatory native/baseline cuts remain6ceffa. Exact commands, selections, identities, originals, observations, fixtures and exits remain in raw reports.",
+  "retention": "This milestone adds13 normal original-source agreements and9 genuine reached groups/629 driver premises. Thirteen native-only preparations and two Unsupported baselines have zero model-agreement credit. No actor failure or semantic discrepancy occurred. Integrated later-slot, named-slot0, positional reference and all unrelated accepted evidence retain their original identities without replay.",
+  "artifacts": {
+    "archive": "../php-spec-evidence-archive/iterator-reference-typed-fixed-03/evidence.tar.gz",
+    "archive_sha256": "a2ee240bb9b82a22049caf894c1468b182ebf162a6cc85badda43802351e0acf",
+    "bytes": 550861,
+    "manifest": "../php-spec-evidence-archive/iterator-reference-typed-fixed-03/manifest.json",
+    "recovery": "Extract into an empty directory. Manifest report members under private/ correspond to the listed private-root .tools directories and restore originals, observations, fixtures and reports. Seventeen report hashes/roles bind thirteen native originals, two Unsupported baselines, strict391, source10+3 and states501+128. Ad hoc drivers and the historical native9 catalog snapshot are included; maintained implementation/tests come from Git. No worktree or old-cut backup is included."
+  },
+  "remaining": [
+    "Reversed branch order, nonnullable and other union/intersection/type shapes",
+    "Noninitial property-reference sends and variadic selected targets",
+    "Typed/hooked or other reference sources, wider construction/call sites and live payload replacement",
+    "Broader arrays, embedded references, cycles and further COW/lifetime interactions",
+    "Complete Iterator, foreach, callable and PHP core semantics"
+  ],
+  "composition": {
+    "status": "Pending actual-parent pointwise review and canonical inventory/sole strict gate; private source/state evidence is not renewed for metadata."
+  }
+}
