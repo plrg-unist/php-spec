@@ -1150,6 +1150,41 @@
     },
     "limits": "The old object and returned cells are modeled allocations, not physical Zend collection. This does not validate other computed VALUE calls, arbitrary CONST/NULL or multiple active returns, and broad returns verification remains open."
   },
+  "computed_array_consumed_recheck": {
+    "status": "independently_accepted_bounded_computed_array_cursor",
+    "revision": "ec9c395a213156b83cef8a53e208e03572d7d026",
+    "modules": 391,
+    "implementation": "spec/semantics/156-finally-runtime.watsup",
+    "scope": "A by-reference ?array return computes an owning [new O], attempts a finally return of y, changes y to a string in an inner finally, catches the recheck TypeError and resumes the consumed old return as detached NULL with one original-line VALUE Notice. The control leaves y array-valued.",
+    "native": {
+      "raw": ".tools/returns-chain-owner-catch-current-24/.tools/returns-verify56-array-owning/native-owning-array-recheck-86i3hv3z/report.json",
+      "report_sha256": "cd6bf1efbc0dc66c83a8c1e2f864bfb4eccd48bfa1e921e1117fe04ec00db466",
+      "result": "Two exit0 PHP observations: treatment V;F;I;D;I;C;A;R:1;A:0;Ybad:1;E; and one line-4 Notice; control V;F;I;D;R:0;A:1;Ybad:0;E; without Notice. Output alone establishes no table, child-object or returned-cell identity."
+    },
+    "source": {
+      "raw": ".tools/returns-owning-array-56/.tools/returns-owning-array56/model-owning-array-fixed-fnv8mrnh/report.json",
+      "report_sha256": "d79166757007b78d687ce7f08b83701d5ac82b014309e2c0786d23f5249a1122",
+      "strict_report_sha256": "54989273a17ab7f874166e3d77088e3e97c031d1441a1811fce398e12a7e0e66",
+      "result": "Full-module strict SL compilation passed with app0. Both checked requests are NORMAL and match native stdout, stderr and exit exactly, with dual quiet worker closure. The four-line extension admits source-only capture of a live computed-call PARRAY operand while ordinary table and child release remain unchanged."
+    },
+    "public": {
+      "raw": ".tools/returns-owning-array-56/.tools/returns-owning-array56/owning-array-public-6jfsenaa/report.json",
+      "report_sha256": "59457c700532355b2a08dbc4a4dec8cb47d5dd9b04ac600f51e113c84d638de7",
+      "producer_sha256": "17b68cb91e899eea30886a2caac67fe0ce12bd4f89f676b0128d8199970355f9",
+      "fixture_sha256": "3e8cd27ccc41cb5ab4d8e84d105753349751d3aca5a321cd441335aa5baae4e0",
+      "runner_sha256": "2198b1519a319f411bb07ecc398d59bb05a0fdc991e677c926dc8b34602e4d44",
+      "main_premises": 95,
+      "public_negative_controls": 1,
+      "result": "One source-linked execution authenticates pre-F pending HARRAY with a DIRECT old O child and heap edge; the table retires before the child VALUE destructor callback, with a saved source-only cursor. Both are unallocated before active replay and consumed-null/one Notice. Whole-state admission passes at the reached cuts, pre-destructor 1+10000 budget equals 10001, and a heap-identical LINE-only saved-cursor change fails scoped validity and actual driver admission. Full fixture compilation and public run passed."
+    },
+    "preserved_zero_credit": [
+      "Pre-repair comparison ad84fab8: treatment Unsupported after V;F;I;D;, control native-exact.",
+      "Diagnostic b77b8e52: authentic pre-F array/child and post-D replay tuple, output only.",
+      "Earlier diagnostic 5995bc23: missing list grouping, parse-only failure; no state credit."
+    ],
+    "recovery": "Preserve the original ignored native sources and all raw reports/scripts/fixtures at their recorded paths. Restore the tested ec9c395/391 tree, six pinned binaries and imported helpers if the private tracked worktree retires. In its original .tools/returns-owning-array56 directory, make_public.py regenerates computed-array-public.watsup byte-exact; run_public.py performs full SL45 compilation then numeric SL60, jobs1. Native/source/public are separate executions. Metadata publication requires no semantic rerun.",
+    "limits": "The table and object are modeled allocations; physical Zend collection and other array entries, references, aggregate return layouts, CONST/NULL histories and broad returns verification remain open."
+  },
   "nested_two_owning_returns": {
     "status": "independently_accepted_bounded_validation_only",
     "revision": "0420409bec101d7b3163958f3fd9efcb1298040f",

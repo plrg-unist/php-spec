@@ -2683,6 +2683,17 @@ collection, other nested layouts and broad returns verification remain OPEN;
 the [ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json)
 records the original reports and recovery path.
 
+M56 admits one computed owning array `[new O]` through the caught `?array`
+return recheck. A source-only cursor survives eager table and child-object
+retirement; replay restores detached NULL and one original-line VALUE Notice.
+Native2 and affected source2 agree at private `ec9c395a`/391. Public95 follows
+the same array-to-object edge through the destructor, verifies pre-destructor
+split/full budget and rejects a LINE-only saved-cursor forgery through the
+actual driver. The pre-repair treatment Unsupported and a parse-only query
+failure retain zero repair credit. This bounded array layout does not establish
+physical collection, other aggregate layouts or broad returns completion;
+see the [ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
 Per-constant protection survives namespace publication and parked handlers.

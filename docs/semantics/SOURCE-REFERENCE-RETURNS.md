@@ -521,3 +521,15 @@ the control returns the live y object cell and writes through it. Modeled object
 retirement does not establish physical collection. Other computed VALUE forms,
 CONST/NULL, multiple active histories and broad returns remain open. See the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M56 extends that authenticated computed-call cursor to one owning array
+`[new O]` selected by a by-reference `?array` return. The cursor owns no old
+value: ordinary release retires the table, then invokes its child destructor;
+caught recheck resumes a detached NULL and one Notice at the original return.
+Native2/source2 agree at private `ec9c395a`/391. Public95 proves the same
+HARRAY-to-HOBJECT edge and release order, real pre-destructor budget
+composition, and whole-state refusal of a saved cursor with only its source
+LINE changed. The original treatment Unsupported and a parse-only diagnostic
+remain separate. This covers one direct array entry and modeled retirement,
+not physical collection or other aggregate layouts; see the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
