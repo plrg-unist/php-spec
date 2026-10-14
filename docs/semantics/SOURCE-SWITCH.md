@@ -44,6 +44,14 @@ the actual case comparison. Count/key/earlier-value skips remain cold; nested
 array equality resumes the selected body and fallthrough without later case
 evaluation. Root source overrides retain the ordinary callback route.
 
+[Numeric Notice leaves402](../../coverage/semantics/object-numeric-comparison-review.json)
+now retain the actual case source and cursor while a failed object-to-int/float
+cast invokes the error handler. Live slot/cell mutation and pinned old array
+rows stay distinct; zero resumes later entries and body-only fallthrough, while
+nonzero skips later casts. Notice→Stringable→Notice handoffs preserve the original
+consumer. Quiet thrown-handler remainders unwind before caller catch/finally;
+future effectful comparisons under that exception remain Unsupported.
+
 [Recursive comparison through 394](../../coverage/semantics/aggregate-stringable-comparison-review.json)
 retains real enclosing array/property owners and the active left recursion guard
 while a reached Stringable/string leaf casts. Early count/key/value differences

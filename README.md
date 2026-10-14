@@ -1723,6 +1723,12 @@ now format builtin and inherited internal handlers at reached string leaves, inc
 a new opposing object after a source cast. Root cache updates, ignored previous
 overrides, skipped leaves and saved CV/cell completion pass three exact sources
 and 278 reached premises/8 raw steps. Wider formatter callbacks remain open.
+[Numeric object comparison Notices](coverage/semantics/object-numeric-comparison-review.json)
+now pause ordinary source-instance/int/float leaves through real error handlers.
+Live CV/cell reads remain distinct from copies; a second Notice uses saved 1/1.0,
+and aggregate guards and cursors survive callback mutation and throw. Four exact
+sources and 482 reached premises/26 raw steps pass. Pending exceptions admit only
+a quiet terminal comparison remainder; wider handlers and lifetimes remain open.
 [Match expressions](docs/semantics/SOURCE-MATCH.md) preserve strict, lazy arm
 selection, delayed CV subjects, ordered compiler diagnostics and owned value
 results; their [review](coverage/semantics/match-review.json) binds source, compiler

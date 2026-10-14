@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Module 402 now resumes ordinary source-instance/int/float comparisons after the
+failed-cast Notice. Generic handler restoration preserves live CV/CELL versus
+COPY reads, saved 1/1.0 across a second Notice, and authentic aggregate guards,
+pins and zero-only cursor continuation. Four exact sources agree at a1ec/392;
+author and independent tests pass 482 premises (285 +197; 464 setup +18 pure)
+and 26 raw steps, including Notice↔Stringable handoffs, same-TypeError/finally cleanup and
+quiet exception cancellation. Future effectful comparison remainders under a
+pending exception are explicit Unsupported. The original unchanged baseline,
+initializer, syntax preparation and helper-binding failure retain zero runtime
+credit. Internal/custom handlers, legacy materialized routes and wider lifetimes
+remain open. [Numeric Notice ledger](coverage/semantics/object-numeric-comparison-review.json).
+
 Class-qualified `defined` now checks inherited user constants with actual lexical
 visibility and quiet missing/inaccessible results. Named autoload retains the full
 query and dynamic selection, then resumes once; a missing member on a loaded class

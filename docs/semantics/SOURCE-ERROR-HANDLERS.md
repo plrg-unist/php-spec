@@ -45,6 +45,17 @@ the old raw handler only if no replacement remains; it preserves the live mask.
 Only exact `false` requests default reporting, using the mask after the callback.
 Callback `finally` runs before restoration; caller catch/finally runs afterward.
 
+[Object/numeric comparison Notices402](../../coverage/semantics/object-numeric-comparison-review.json)
+now provide the producer continuation for ordinary source instances against
+int/float. The original severity/message/file/line reaches the handler before
+comparison resumes with private 1/1.0 and a live CV/cell or copied opposing value.
+Restoration permits a second Notice after the first callback; the same handler
+stays disabled during its own nested numeric comparison. Captured aggregate
+owners and recursion guards persist through the actual handler frame/finally.
+A thrown handler unwinds through the generic restore only for a quiet terminal
+comparison remainder; future callbacks/default reporting or other comparison
+effects remain Unsupported. Wider handler and lifetime behavior remains open.
+
 Private-final compiler diagnostics retain E_COMPILE_WARNING (128) severity
 and bypass callbacks in both direct reporting and dynamic compile queues.
 The reporting mask still controls display. E_WARNING (2) and E_DEPRECATED (8192)

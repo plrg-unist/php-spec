@@ -27,11 +27,31 @@ Values behind references are dereferenced. A revisited left array raises
 `Error: Nesting level too deep - recursive dependency?`; input roots survive
 comparison and budget resumption. Strict identity remains a separate operation.
 
+[Numeric object Notices](../../coverage/semantics/object-numeric-comparison-review.json)
+now suspend ordinary source instances compared with int/float through module402
+and the existing error-handler machinery. The failed cast captures the numeric
+type; after handling, private 1/1.0 is compared with the captured opposing CV,
+pre-unwrapped cell, property/array location or copied value. A newly read ordinary
+object emits a second Notice against that saved number, without rereading the
+original pointer afterward. Numeric conversion does not invoke `__toString`.
+Aggregate cursors retain their original arrays/declared slots and guards across
+the callback; only zero resumes later entries. Notice↔Stringable handoffs preserve
+the same source consumer and selected-case continuation.
+
+The raw handler is disabled during its own body and restored before subsequent
+Notice dispatch. A handler throw can cancel the numeric continuation only when
+previewing the remaining comparison yields a terminal order with no state change.
+A future callback, observable default diagnostic, materialization, cache update or recursion
+instead remains Unsupported. Documentary receiver/leaf images add no owner;
+actual operands, cursor pins and callback selection retain their existing roots.
+Internal/custom comparison handlers, legacy materialized callbacks without a
+retained cursor and wider handler/lifetime behavior remain open.
+
 Evidence derives from `vendor/php-src/Zend/zend_operators.c` (`zend_compare`,
 `zendi_smart_strcmp`, `_is_numeric_string_ex`) and `zend_hash.c`
 (`zend_hash_compare_impl`); `zend_compile_greater` establishes evaluation order.
 `tests/semantics/comparison.py` covers original source, compiler folding,
 scanner boundaries, array identity/cycles, delayed operands and resumed states.
 The full source campaign also includes retained phase/line originals and errors.
-Objects, resources, callback-driven comparisons and engine stack exhaustion
-remain pending; this module does not close the complete operator family.
+Full object/resource handler coverage and engine stack exhaustion remain pending;
+these bounded increments do not close the complete operator family.

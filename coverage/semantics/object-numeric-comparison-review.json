@@ -1,0 +1,154 @@
+{
+  "scope": "Ordinary source-instance/int/float comparison Notice continuations, including saved numeric redispatch and retained array/direct declared-property cursors.",
+  "status": "partial; independently reviewed private increment",
+  "tested_revision": "a1ec1a0e8e28ec8d4ddf4cf0479bf66e8be748de",
+  "baseline_revision": "821977042b02de15884b51495c3878f2ee7230a3",
+  "module_count": 392,
+  "engine_anchors": [
+    "Zend/zend_object_handlers.c:zend_std_compare_objects",
+    "Zend/zend_operators.c:zend_compare",
+    "Zend/zend_hash.c:zend_hash_compare_impl",
+    "Zend/zend.c:zend_error_zstr_at",
+    "Zend/zend_execute_API.c:zend_call_function"
+  ],
+  "runtime": {
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "spec/semantics/modules.json": "18fd44f71d5dbd1b0cd0ff1b0b5ec872f5064fbd0471e86ae3bd869e48a95080"
+  },
+  "php_source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "build_claim": "Retained local binaries; no new build claim.",
+  "semantics": {
+    "dispatch": "Ordinary source classes use generic207 error dispatch/restore with the authentic E_NOTICE message/source. Numeric conversion never selects __toString. Original class spelling uses C-string truncation.",
+    "read": "Capture numeric type before Notice; then compare private1/1.0 with COPY, live CV or pre-unwrapped CELL/property/array pointer. SECOND keeps that immutable target and ignores later original-pointer mutations.",
+    "aggregate": "Retain source/caller/operator/consumer, cursor images, actual object/table pins and left guards through pending wrappers, real entered error-handler frames and existing parked views. Only zero resumes future rows; Notice and Stringable leaves can hand off.",
+    "ownership": "Documentary failed-cast receiver/class/leaf images add no owner. Original operands/base, real cursor pins and callback selection own nodes; begin selection needs a live standard receiver while post-Notice image validation permits retirement.",
+    "exception_bound": "At genuine THROW_SEARCH after generic handler restoration, marker-independent numeric validation permits cancellation only for a readable nonobject PRIMARY or immutable SECOND and a terminal ORDER whose hypothetical value_order_effect+aggregate_resume leaves the state unchanged. Other pending-exception remainders are explicit Unsupported."
+  },
+  "native": {
+    "reports": [
+      {
+        "path": ".tools/object-numeric-comparison-native-56/run-v1/report.json",
+        "sha256": "a1634b58bf7183db3426253bf769120ca4414d700634f96dea10a2cebce66082"
+      },
+      {
+        "path": ".tools/object-numeric-comparison-native-extra-56/run-v1/report.json",
+        "sha256": "54416851c776c7b9518b9576341043eb15e922645c093bc6238dec9b73cccc15"
+      }
+    ],
+    "originals": 4,
+    "caps": "55 seconds, serial jobs1. Original3 at821977/391 CPU3-SLOT5; supplemental1 at4d0c/392 CPU5-SLOT3.",
+    "credit": "Observations only; hypotheses did not determine reliability."
+  },
+  "baseline": {
+    "report": {
+      "path": ".tools/object-numeric-comparison-baseline-56/run-v1/report.json",
+      "sha256": "80295879975477c84becf9a19cfc86bee1db638798980c785ed522e567ea09cd"
+    },
+    "outcome": "accepted/program/Unsupported: error-handler ingress requires a producer continuation",
+    "stdout": "count|N|key|N|early|N|0|slot|",
+    "source_agreements": 0
+  },
+  "initialization": {
+    "report": {
+      "path": ".tools/object-numeric-comparison-gate-56/run-v1/report.json",
+      "sha256": "daff052cd9e6c007cb136dc3f2a336c9241d05e9ebf714766a1b3c0e95f3eaf4"
+    },
+    "mode": "SL",
+    "semantic_assertions": 0,
+    "PHP_execution": 0,
+    "raw_steps": 0
+  },
+  "sources": {
+    "report": {
+      "path": ".tools/object-numeric-comparison-model-56/run-v1/report.json",
+      "sha256": "c7d8efc70b326d1058cdda37d6e8a1608fbcfe6ca28a7d7413e8838be49635de"
+    },
+    "catalogue": {
+      "path": "tests/semantics/object_numeric_comparison_cases.json",
+      "sha256": "fbd2da7575c979d400d5bc7b9c42c05de6d046c8ea16908269339b9ba2d51781"
+    },
+    "agreements": 4,
+    "caps": "100000 steps; ordinary300/310 semantic/host seconds, others180/190; jobs1 CPU5-SLOT3. Exact original File/CWD/native tuple/START pins.",
+    "seconds": [
+      71.55000722035766,
+      70.69009352847934,
+      14.505758196115494,
+      15.222737710922956
+    ]
+  },
+  "syntax_only": {
+    "report": {
+      "path": ".tools/object-numeric-comparison-support-56/syntax-v1/report.json",
+      "sha256": "c87998e63aff2d3f33a960153bb66ba9d3f88ad01b46d41de56d128d05701194"
+    },
+    "requests": 8,
+    "runtime_credit": 0
+  },
+  "author": {
+    "plan": {
+      "path": ".tools/object-numeric-comparison-state-56/plan.json",
+      "sha256": "e6c9d66778d711a36ad373b6a3317f80751a1e211a5a0f305db093c730cfa3e6"
+    },
+    "EL": {
+      "path": ".tools/object-numeric-comparison-state-56/run-elab-rows-retry1/report.json",
+      "sha256": "05aae84d9fe3738cc04453ddfe52f38c6e19d1eccdf87a24ab56461e65e66a23"
+    },
+    "SL": {
+      "path": ".tools/object-numeric-comparison-state-56/run-sl-v1/report.json",
+      "sha256": "0edb52fa640db9540c0bd0f8671eae80e6df8e4522b2add66a02035274bd35d3"
+    },
+    "premises": 285,
+    "setup_premises": 280,
+    "pure_assertions": 5,
+    "raw_steps": 15,
+    "observations": "Actual primary capture, live CV versus COPY/old CELL, normalized > and float target, SECOND saved1 despite live9, real object/property and old-array COW cursors, nonzero tail skip, and Notice\u2192Stringable\u2192float Notice with actual source line22."
+  },
+  "peer": {
+    "plan": {
+      "path": ".tools/object-numeric-comparison-peer-state-56/plan.json",
+      "sha256": "9269191e836c94a085086a7ce8f819cbe62a6c0702eb6141d7aa26088791add7"
+    },
+    "EL": {
+      "path": ".tools/object-numeric-comparison-peer-state-56/run-elab-v1/report.json",
+      "sha256": "b93b07b0e7ebe74cf1cf23524852213f22504172799054fb1d9df991948f2611"
+    },
+    "SL": {
+      "path": ".tools/object-numeric-comparison-peer-state-56/run-sl-v1/report.json",
+      "sha256": "19202fc6aba2d79de40d7037d3a5b55f05ab667483c063689ae8409cf35cd10e"
+    },
+    "premises": 197,
+    "setup_premises": 184,
+    "pure_assertions": 13,
+    "raw_steps": 11,
+    "observations": "Authentic Switch/handler frame guards, recursive Error, old right COW, identical TypeError through handler finally/typed-tail discard/frame restore, quiet cancellation and caller catch/finally, then unchanged-left fresh false comparison. Helper-only future eligible Notice and masked default-report remainder controls refuse."
+  },
+  "totals": {
+    "premises": 482,
+    "setup_premises": 464,
+    "pure_assertions": 18,
+    "raw_steps": 26,
+    "source_agreements": 4,
+    "seek_or_driver_steps_credited": 0,
+    "END_or_shutdown_claim": false
+  },
+  "original_failure": {
+    "report": {
+      "path": ".tools/object-numeric-comparison-state-56/run-elab-v1/report.json",
+      "sha256": "57ef802b46571d8c6f7faa4f749a656acf3b14c9ff1eb75f2044a11d4efb4ed7"
+    },
+    "runtime_credit": 0,
+    "correction": "Rename only the property helper list/scalar binders; original six small inputs and diagnostic remain in helper-list-binder-failure-v1. All source/native/initializer cuts remain unchanged."
+  },
+  "residuals": [
+    "Pending-exception PRIMARY object/expired reads and nonterminal or state-changing comparison remainders are outside the quiet cancellation bound.",
+    "Internal/custom handlers, legacy materialized callbacks without an authenticated cursor and wider handler/destructor/Fiber lifetimes remain open. Float normal reread and integer SECOND are measured; float-to-second-object is not separately source-tested.",
+    "Source execution establishes actual phase and capture history; no whole-history authenticity theorem for arbitrary self-consistent forged descriptors or full-core/END/shutdown completeness is claimed."
+  ],
+  "acceptance": "Independent comp_review_21 cleared semantic code, packets, raw source4 and author285; the separately authored peer197 was independently checked and raw-bound. The scoped publication is independently accepted.",
+  "recovery": "Ignored originals/programmes/scripts/START/closed/raw and copied local tools remain at exact .tools/object-numeric-comparison-56/.tools/object-numeric-comparison-{native,native-extra,baseline,gate,model,state,peer-state,support}-56 paths. Keep original File/CWD and branch codex/object-numeric-comparison-56; bulky artifacts are not tracked."
+}
