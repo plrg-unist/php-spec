@@ -16,6 +16,9 @@ keys, source/nonce and error-metadata forgeries. The unchanged baseline and nati
 fixture preparations retain0; no raw projections or synthetic continuations are
 credited. Wider values, owning calls and warning branches remain partial.
 [Duplicate-define ledger](coverage/semantics/dynamic-constant-duplicate-review.json).
+The 390 composition over 1b692 passes independent pointwise review at c8e6d7f39;
+accepted runtime/protocol deltas and parent output paths are preserved.
+No renewed actor/source/state evidence is claimed.
 
 Module399 preserves a defined scalar output-handler return when callee cleanup
 throws. Fixed by-reference wrappers belong only to the callee; entered methods
