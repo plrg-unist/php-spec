@@ -1,0 +1,82 @@
+[
+  {
+    "id": "iterator-call-unpack-later-fixed-reference-object-normal",
+    "source": "<?php\nclass ReferencePayload34 { public function __destruct() { echo \"O|\"; } }\nclass ReferenceIterator34 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = new ReferencePayload34(); }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; return \"item\"; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ReferenceTarget34($prefix = 17, &$item = null) { echo \"D\", $prefix, \"|\", func_num_args(), \"|\"; echo \"B|\"; $item = null; echo \"F|\"; }\n$failure = new Exception(\"stop\", 51);\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    return true;\n});\ntry { ReferenceTarget34(...new ReferenceIterator34()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\necho \"E\";\n",
+    "source_sha256": "b1254ebec5f06cb8bdc6fb460f91739fae3b515bd012d140ce1548b67c347997",
+    "purpose": "First named reference payload selects fixed slot1 while omitted prefix defaults to17; Named key item selects the first fixed by-reference parameter. Iterator-owned reference payload gains a detached object owner before the warning; fresh argument clearing destroys it after Iterator teardown and before F.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 2 of ReferenceTarget34() by unpacking a Traversable, passing by-value instead|21|X|V|I|D17|2|B|O|F|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-later-fixed-reference-object-separate-alias",
+    "source": "<?php\nclass ReferencePayload34 { public function __destruct() { echo \"O|\"; } }\nclass ReferenceIterator34 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = new ReferencePayload34(); }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; $GLOBALS[\"alias\"] =& $this->payload; return \"item\"; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ReferenceTarget34($prefix = 17, &$item = null) { echo \"D\", $prefix, \"|\", func_num_args(), \"|\"; echo \"B|\"; $item = null; echo \"F|\"; }\n$failure = new Exception(\"stop\", 51);\n$alias = null;\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    return true;\n});\ntry { ReferenceTarget34(...new ReferenceIterator34()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\necho $alias === null ? \"NULL|\" : \"HELD|\";\nunset($alias);\necho \"E\";\n",
+    "source_sha256": "abe74452de936ed83f1bf8a4f68db7f967b3b0b8448d662d112e152e519370cb",
+    "purpose": "First named reference payload selects fixed slot1 while omitted prefix defaults to17; Named key item selects the first fixed by-reference parameter. A global symbol-table alias created by key() stays nonnull after the fresh callee cell is cleared; alias removal occurs only after F.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 2 of ReferenceTarget34() by unpacking a Traversable, passing by-value instead|22|X|V|I|D17|2|B|F|HELD|O|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-later-fixed-reference-object-warning-throw",
+    "source": "<?php\nclass ReferencePayload34 { public function __destruct() { echo \"O|\"; } }\nclass ReferenceIterator34 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = new ReferencePayload34(); }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; return \"item\"; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ReferenceTarget34($prefix = 17, &$item = null) { echo \"D\", $prefix, \"|\", func_num_args(), \"|\"; echo \"B|\"; $item = null; echo \"F|\"; }\n$failure = new Exception(\"stop\", 51);\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    throw $failure;\n});\ntry { ReferenceTarget34(...new ReferenceIterator34()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\necho \"E\";\n",
+    "source_sha256": "e64b1fab5fd60a1f1859df6783204da6bd532c7cd9f7bff732a59c8c1821307e",
+    "purpose": "First named reference payload selects fixed slot1 while omitted prefix defaults to17; Named key item selects the first fixed by-reference parameter. Original shared Exception51 survives warning abort while raw source cell and Iterator retire before detached payload.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 2 of ReferenceTarget34() by unpacking a Traversable, passing by-value instead|21|I|O|T|51|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-later-fixed-reference-object-parked-resume",
+    "source": "<?php\nclass ReferencePayload34 { public function __destruct() { echo \"O|\"; } }\nclass ReferenceIterator34 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = new ReferencePayload34(); }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; return \"item\"; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ReferenceTarget34($prefix = 17, &$item = null) { echo \"D\", $prefix, \"|\", func_num_args(), \"|\"; echo \"B|\"; $item = null; echo \"F|\"; }\n$failure = new Exception(\"stop\", 51);\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    Fiber::suspend(\"P\");\n    return true;\n});\n$marker = 0;\n$fiber = new Fiber(static function () {\n    try { ReferenceTarget34(...new ReferenceIterator34()); }\n    catch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n    echo \"FIB|\";\n});\necho \"S|\", $fiber->start(), \"|\";\n$marker = 17;\n$fiber->resume();\necho \"M|\", $marker, \"|\";\necho \"E\";\n",
+    "source_sha256": "9bcc9f3a03de4f62a4950f755c2d600f343133ac241a4c6af289cddeaec095fb",
+    "purpose": "First named reference payload selects fixed slot1 while omitted prefix defaults to17; Named key item selects the first fixed by-reference parameter. A real parked warning retains distinct source reference-cell and detached object owners; main mutates only an unrelated scalar marker.",
+    "expected_model": "normal",
+    "native_stdout": "S|W|V|C|K|H|2|Cannot pass by-reference argument 2 of ReferenceTarget34() by unpacking a Traversable, passing by-value instead|24|P|X|V|I|D17|2|B|O|F|FIB|M|17|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-later-fixed-reference-object-parked-throw",
+    "source": "<?php\nclass ReferencePayload34 { public function __destruct() { echo \"O|\"; } }\nclass ReferenceIterator34 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = new ReferencePayload34(); }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; return \"item\"; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ReferenceTarget34($prefix = 17, &$item = null) { echo \"D\", $prefix, \"|\", func_num_args(), \"|\"; echo \"B|\"; $item = null; echo \"F|\"; }\n$failure = new Exception(\"stop\", 51);\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    Fiber::suspend(\"P\");\n    return true;\n});\n$marker = 0;\n$fiber = new Fiber(static function () {\n    try { ReferenceTarget34(...new ReferenceIterator34()); }\n    catch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n    echo \"FIB|\";\n});\necho \"S|\", $fiber->start(), \"|\";\n$marker = 17;\n$fiber->throw($failure);\necho \"M|\", $marker, \"|\";\necho \"E\";\n",
+    "source_sha256": "5e34be088336aa1b677f75fb1c78c27e64eb510e10852bfb7f704c0e8c9c1e49",
+    "purpose": "First named reference payload selects fixed slot1 while omitted prefix defaults to17; Named key item selects the first fixed by-reference parameter. A real parked warning retains distinct source reference-cell and detached object owners; main mutates only an unrelated scalar marker.",
+    "expected_model": "normal",
+    "native_stdout": "S|W|V|C|K|H|2|Cannot pass by-reference argument 2 of ReferenceTarget34() by unpacking a Traversable, passing by-value instead|24|P|I|O|T|51|FIB|M|17|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-later-fixed-reference-array-normal",
+    "source": "<?php\nclass ReferenceArrayChild35 { public function __destruct() { echo \"O|\"; } }\nclass ReferenceArrayIterator35 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = [new ReferenceArrayChild35()]; }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; return \"item\"; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ReferenceArrayTarget35($prefix = 17, &$item = null) { echo \"D\", $prefix, \"|\", func_num_args(), \"|\"; echo \"B|\"; $item[0] = null; echo \"F|\"; }\n$failure = new Exception(\"stop\", 51);\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    return true;\n});\ntry { ReferenceArrayTarget35(...new ReferenceArrayIterator35()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\necho \"E\";\n",
+    "source_sha256": "53dbd0c4ae804ea9a085befd94f500b883ad207d1e23521fbaa6ab32f8267c25",
+    "purpose": "First named reference payload selects fixed slot1 while omitted prefix defaults to17; Named key item selects the first fixed by-reference parameter. Iterator-property reference array gains a detached container owner before the warning; unaliased fresh-cell nested write releases its child after Iterator teardown and before F.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 2 of ReferenceArrayTarget35() by unpacking a Traversable, passing by-value instead|21|X|V|I|D17|2|B|O|F|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-later-fixed-reference-array-separate-alias",
+    "source": "<?php\nclass ReferenceArrayChild35 { public function __destruct() { echo \"O|\"; } }\nclass ReferenceArrayIterator35 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = [new ReferenceArrayChild35()]; }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; $GLOBALS[\"alias\"] =& $this->payload; return \"item\"; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ReferenceArrayTarget35($prefix = 17, &$item = null) { echo \"D\", $prefix, \"|\", func_num_args(), \"|\"; echo \"B|\"; $item[0] = null; echo \"F|\"; }\n$failure = new Exception(\"stop\", 51);\n$alias = null;\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    return true;\n});\ntry { ReferenceArrayTarget35(...new ReferenceArrayIterator35()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\necho $alias[0] === null ? \"NULL|\" : \"HELD|\";\nunset($alias);\necho \"E\";\n",
+    "source_sha256": "dd3c1081b02ee322be5c12d886ca983ec6c768af8c18088a169c2d025763e41e",
+    "purpose": "First named reference payload selects fixed slot1 while omitted prefix defaults to17; Named key item selects the first fixed by-reference parameter. Direct GLOBALS alias retains the original array and child after the fresh callee cell performs nested COW; original alias[0] is observed after F, then its final owner is dropped.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 2 of ReferenceArrayTarget35() by unpacking a Traversable, passing by-value instead|22|X|V|I|D17|2|B|F|HELD|O|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-later-fixed-reference-array-warning-throw",
+    "source": "<?php\nclass ReferenceArrayChild35 { public function __destruct() { echo \"O|\"; } }\nclass ReferenceArrayIterator35 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = [new ReferenceArrayChild35()]; }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; return \"item\"; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ReferenceArrayTarget35($prefix = 17, &$item = null) { echo \"D\", $prefix, \"|\", func_num_args(), \"|\"; echo \"B|\"; $item[0] = null; echo \"F|\"; }\n$failure = new Exception(\"stop\", 51);\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    throw $failure;\n});\ntry { ReferenceArrayTarget35(...new ReferenceArrayIterator35()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\necho \"E\";\n",
+    "source_sha256": "d4d81197fdb3999772f7af9bb70592cfb6731d5e493419162700a4320379b576",
+    "purpose": "First named reference payload selects fixed slot1 while omitted prefix defaults to17; Named key item selects the first fixed by-reference parameter. Original shared Exception51 survives warning abort while raw cell and Iterator retire before detached array and its child.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 2 of ReferenceArrayTarget35() by unpacking a Traversable, passing by-value instead|21|I|O|T|51|E",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
