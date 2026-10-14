@@ -1,0 +1,231 @@
+;; zend_call_function copies fci arguments and wraps only callee parameters.
+;; A defined user retval survives compiled-variable cleanup exceptions. Seal a
+;; normal return before that cleanup; body THROW_SEARCH never receives the seal.
+dec $ob_normal_reference_rest(psparam*) : bool
+dec $ob_normal_prefix(ptask*, pdestructionframe, pobinvoke, ptask*) : bool
+dec $ob_normal_seal(ptask*, pdestructionframe, pobinvoke, ptask*) : ptask*
+dec $ob_normal_certificate(pstate, pobinvoke, pdestructionframe) : bool
+dec $ob_normal_deprecation(pstate, pobinvoke, pdestructionframe) : pstate
+dec $ob_normal_report(pstate, pobinvoke) : pstate
+dec $ob_normal_commit(pstate, pobinvoke, pdestructionframe, poboutput) : pstate
+dec $ob_normal_api_commit(pstate, pobinvoke, poboutput, nat) : pstate
+dec $ob_normal_failed_write(pstate, nat) : pstate
+dec $ob_retired_read_task(ptask) : bool
+dec $ob_callee_cleanup_call(pstate, pdestructionframe, ptask*) : pconfigcall?
+
+;; zend_call_function's TOP_FUNCTION borrows this from the cached FCC. Closure
+;; instances retain their ordinary ownership and binding machinery.
+def $ob_user_target(METHOD_TARGET n porigin) = OUTPUT_BORROWED_TARGET (METHOD_TARGET n porigin)
+def $ob_user_target(HANDLER_METHOD_TARGET b porigin ptbytes pcalltarget) = OUTPUT_BORROWED_TARGET (HANDLER_METHOD_TARGET b porigin ptbytes pcalltarget)
+def $target_nodes(OUTPUT_BORROWED_TARGET pcalltarget) = eps
+def $target_instance(OUTPUT_BORROWED_TARGET pcalltarget) = eps
+def $call_receiver_roots(pcallcontext) = eps -- if pcallcontext.TARGET = OUTPUT_BORROWED_TARGET pcalltarget
+def $target_receiver(S, OUTPUT_BORROWED_TARGET pcalltarget) = $target_receiver(S, pcalltarget)
+def $target_lexical_class(S, OUTPUT_BORROWED_TARGET pcalltarget) = $target_lexical_class(S, pcalltarget)
+def $target_called_class(S, OUTPUT_BORROWED_TARGET pcalltarget) = $target_called_class(S, pcalltarget)
+;; Only metadata receives this readonly historical allocation view. Real reads
+;; and pre-entry selection still use the actual live allocation set.
+def $target_function(S, OUTPUT_BORROWED_TARGET pcalltarget) = $target_function(S[.ALLOCATIONS = S.ALLOCATIONS ++ $target_nodes(pcalltarget)], pcalltarget)
+  -- if $ob_user_target(pcalltarget) = OUTPUT_BORROWED_TARGET pcalltarget
+def $ob_retired_read_task(EVAL (NExprVariable phpType32 metadata)) = $direct_this(phpType32)
+def $ob_retired_read_task(DIM_PREP (NExprVariable phpType32 metadata)) = $direct_this(phpType32)
+def $ob_retired_read_task(FOREACH_PREP (NStmtForeach (NExprVariable phpType32 metadata_var) phpType5 phpType4_ref expression_value phpType23 phpType4_unpack metadata) z) = $direct_this(phpType32)
+def $ob_retired_read_task(NAME_READ z) = true
+def $ob_retired_read_task(EVAL (NExprClosure phpType14 (BOOLEAN false) phpType4_ref phpType16 phpType21 phpType18 phpType23 metadata)) = true
+def $ob_retired_read_task(EVAL (NExprArrowFunction phpType14 (BOOLEAN false) phpType4_ref phpType16 phpType18 expression metadata)) = true
+def $ob_retired_read_task(ptask) = false -- otherwise
+def $ob_user_access_pending(S) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = OUTPUT_BORROWED_TARGET pcalltarget
+  -- if pcallcontext.RECEIVER = (n)
+  -- if ~((HOBJECT n) <- S.ALLOCATIONS)
+  -- if $ob_user_context_valid(S, pcallcontext)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $ob_retired_read_task(ptask)
+def $ob_user_boundary_reason(S) = "access through a retired output-handler receiver"
+  -- if $ob_user_access_pending(S)
+
+def $ob_normal_reference_rest(eps) = false
+def $ob_normal_reference_rest(psparam :: psparam_tail*) = psparam.BYREF -- if psparam.VARIADIC
+def $ob_normal_reference_rest(psparam :: psparam_tail*) = $ob_normal_reference_rest(psparam_tail*) -- if ~psparam.VARIADIC
+def $ob_user_entry_supported(S, pobinvoke) = false
+  -- if pobinvoke.BUFFER.HANDLER = (poutputhandler)
+  -- if $target_function(S, poutputhandler.ENTRY.TARGET) = (pfunction)
+  -- if $ob_normal_reference_rest(pfunction.SIGNATURE.PARAMETERS)
+  -- if $(|$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)| < 2)
+rule PhpStep/ob-user-reference-rest: S ~> S[.COMPLETION = UNSUPPORTED "by-reference variadic output-handler argument ownership"]
+  -- if S.TODO = (OB_USER_ENTER pobinvoke) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_ENTER pobinvoke)
+  -- if ~$ob_user_entry_supported(S, pobinvoke)
+
+def $ob_normal_prefix((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_rest*, pdestructionframe, pobinvoke, ptask_native*) = $ob_normal_prefix(ptask_rest*, pdestructionframe, pobinvoke, ptask_native*)
+def $ob_normal_prefix((DESTRUCTOR_FRAME_EXIT pdestructionframe_actual) :: ptask_rest*, pdestructionframe, pobinvoke, ptask_native*) = (pdestructionframe_actual = pdestructionframe /\ ptask_rest* = (OB_USER_RESULT pobinvoke) :: ptask_native*)
+def $ob_normal_prefix(ptask*, pdestructionframe, pobinvoke, ptask_native*) = false -- otherwise
+def $ob_normal_seal((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_rest*, pdestructionframe, pobinvoke, ptask_native*) = (DESTRUCTOR_RELEASE pdestructionrelease) :: $ob_normal_seal(ptask_rest*, pdestructionframe, pobinvoke, ptask_native*)
+def $ob_normal_seal((DESTRUCTOR_FRAME_EXIT pdestructionframe_actual) :: ptask_rest*, pdestructionframe, pobinvoke, ptask_native*) = (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: (OB_USER_NORMAL_RESULT pobinvoke pdestructionframe) :: ptask_native*
+  -- if pdestructionframe_actual = pdestructionframe
+  -- if ptask_rest* = (OB_USER_RESULT pobinvoke) :: ptask_native*
+def $generator_frame_release(S_before, S_after) = S_after[.TODO = $ob_normal_seal(S_after.TODO, pdestructionframe, pobinvoke, ptask_native*)]
+  -- if S_before.COMPLETION = NORMAL /\ S_before.TODO = eps
+  -- if S_before.RESULT = KNOWN pvalue
+  -- if $ob_user_scalar(pvalue)
+  -- if S_before.CURRENT = (pcallcontext)
+  -- if $ob_user_context_valid(S_before, pcallcontext)
+  -- if S_before.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (OB_USER_RESULT pobinvoke) :: ptask_native*
+  -- if S_after.DESTRUCTION.FRAMES = pdestructionframe :: pdestructionframe_tail*
+  -- if pdestructionframe.PENDING = eps /\ pdestructionframe.VALUE = KNOWN pvalue
+  -- if pdestructionframe.FUNCTION = pcallcontext.FUNCTION
+  -- if pdestructionframe.CALLER = pframe.CONTEXT /\ pdestructionframe.ORIGIN = pframe.ORIGIN /\ pdestructionframe.CONSTCONTEXT = pframe.CONSTCONTEXT
+  -- if S_after.CURRENT = pframe.CONTEXT /\ S_after.ORIGIN = pframe.ORIGIN
+  -- if $ob_normal_prefix(S_after.TODO, pdestructionframe, pobinvoke, ptask_native*)
+def $generator_frame_release(S_before, S_after) = S_after[.COMPLETION = UNSUPPORTED "non-scalar user output-handler return conversion"]
+  -- if S_before.COMPLETION = NORMAL /\ S_before.TODO = eps
+  -- if S_before.RESULT = KNOWN pvalue
+  -- if ~$ob_user_scalar(pvalue)
+  -- if S_before.CURRENT = (pcallcontext)
+  -- if $ob_user_context_valid(S_before, pcallcontext)
+  -- if S_before.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (OB_USER_RESULT pobinvoke) :: ptask_native*
+  -- if S_after.CURRENT = pframe.CONTEXT /\ S_after.ORIGIN = pframe.ORIGIN
+def $generator_frame_release(S_before, S_after) = S_after[.COMPLETION = UNSUPPORTED "reference user output-handler return conversion"]
+  -- if S_before.COMPLETION = NORMAL /\ S_before.TODO = eps
+  -- if S_before.RESULT = REFERENCE n
+  -- if S_before.CURRENT = (pcallcontext)
+  -- if $ob_user_context_valid(S_before, pcallcontext)
+  -- if S_before.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (OB_USER_RESULT pobinvoke) :: ptask_native*
+  -- if S_after.CURRENT = pframe.CONTEXT /\ S_after.ORIGIN = pframe.ORIGIN
+
+def $ob_normal_certificate(S, pobinvoke, pdestructionframe) = true
+  -- if $ob_user_live(S, pobinvoke)
+  -- if pdestructionframe.VALUE = KNOWN pvalue
+  -- if $ob_user_scalar(pvalue) /\ $config_slots_valid(S, [NAMED_SENT (KNOWN pvalue)])
+  -- if pdestructionframe.CALLER = S.CURRENT /\ pdestructionframe.ORIGIN = S.ORIGIN /\ pdestructionframe.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if S.ORIGIN = ($ob_call_site(pobinvoke.CALL))
+  -- if pobinvoke.BUFFER.HANDLER = (poutputhandler)
+  -- if $target_function($ob_user_history(S, poutputhandler), poutputhandler.ENTRY.TARGET) = (pfunction)
+  -- if pdestructionframe.FUNCTION = pfunction.ORIGIN
+def $ob_normal_certificate(S, pobinvoke, pdestructionframe) = false -- otherwise
+
+;; The C API frame remains the caller while callee CVs are released. Authentic
+;; sealed-return or pending body-throw prefixes supply its site and trace suffix.
+def $ob_callee_cleanup_call(S, pdestructionframe, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*) = $ob_callee_cleanup_call(S, pdestructionframe, ptask_tail*)
+def $ob_callee_cleanup_call(S, pdestructionframe, (DESTRUCTOR_ENTER pdestructorcall) :: ptask_tail*) = $ob_callee_cleanup_call(S, pdestructionframe, ptask_tail*)
+  -- if pdestructorcall.FRAME = (pdestructionframe) /\ pdestructorcall.OPERATION = eps
+  -- if pdestructorcall.CALLER = pdestructionframe.CALLER /\ pdestructorcall.ORIGIN = pdestructionframe.ORIGIN
+def $ob_callee_cleanup_call(S, pdestructionframe, (DESTRUCTOR_WARNING pdestructorcall) :: ptask_tail*) = $ob_callee_cleanup_call(S, pdestructionframe, ptask_tail*)
+  -- if pdestructorcall.FRAME = (pdestructionframe) /\ pdestructorcall.OPERATION = eps
+  -- if pdestructorcall.CALLER = pdestructionframe.CALLER /\ pdestructorcall.ORIGIN = pdestructionframe.ORIGIN
+def $ob_callee_cleanup_call(S, pdestructionframe, (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*) = $ob_callee_cleanup_call(S, pdestructionframe, ptask_tail*)
+  -- if pdestructorcall.FRAME = (pdestructionframe) /\ pdestructorcall.OPERATION = eps
+  -- if pdestructorcall.CALLER = pdestructionframe.CALLER /\ pdestructorcall.ORIGIN = pdestructionframe.ORIGIN
+def $ob_callee_cleanup_call(S, pdestructionframe, (DESTRUCTOR_FRAME_EXIT pdestructionframe_exit) :: (OB_USER_NORMAL_RESULT pobinvoke pdestructionframe_success) :: ptask_native*) = (pconfigcall)
+  -- if pdestructionframe_exit = pdestructionframe
+  -- if pdestructionframe_success.PENDING = eps
+  -- if pdestructionframe = pdestructionframe_success[.PENDING = pdestructionframe.PENDING]
+  -- if $destructor_frame_valid(S, pdestructionframe)
+  -- if $ob_normal_certificate(S, pobinvoke, pdestructionframe_success) /\ $ob_user_fci_arguments(pobinvoke)
+  -- if $ob_call_api(pobinvoke.CALL) = (pconfigcall)
+def $ob_callee_cleanup_call(S, pdestructionframe, (DESTRUCTOR_FRAME_EXIT pdestructionframe_exit) :: (OB_USER_RESULT pobinvoke) :: ptask_native*) = (pconfigcall)
+  -- if pdestructionframe_exit = pdestructionframe
+  -- if pdestructionframe.VALUE = KNOWN PNULL
+  -- if pdestructionframe.PENDING = (n)
+  -- if $destructor_frame_valid(S, pdestructionframe) /\ $throwable_live(S, n)
+  -- if $ob_normal_certificate(S, pobinvoke, pdestructionframe) /\ $ob_user_fci_arguments(pobinvoke)
+  -- if $ob_call_api(pobinvoke.CALL) = (pconfigcall)
+def $ob_callee_cleanup_call(S, pdestructionframe, ptask*) = eps -- otherwise
+def $destructor_frame_internal_site(S) = true
+  -- if $destructor_operation_for(S) = eps
+  -- if $destructor_frame_for(S.CURRENT, S.DESTRUCTION.FRAMES) = (pdestructionframe)
+  -- if $ob_callee_cleanup_call(S, pdestructionframe, S.TODO) =/= eps
+def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S_caller, pconfigcall, eps)
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if pdestructorcall.OPERATION = eps
+  -- if pdestructorcall.FRAME = (pdestructionframe)
+  -- if $destructor_context_valid(S, pcallcontext)
+  -- if S_caller = $destructor_boundary_scope(S, pdestructorcall, S.FRAMES)
+  -- if $ob_callee_cleanup_call(S_caller, pdestructionframe, S_caller.TODO) = (pconfigcall)
+
+def $task_nodes(OB_USER_NORMAL_RESULT pobinvoke pdestructionframe) = $ob_user_nodes(pobinvoke) ++ $operand_nodes(pdestructionframe.VALUE)
+def $task_nodes(OB_USER_NORMAL_PENDING pobinvoke pdestructionframe) = $ob_user_nodes(pobinvoke) ++ $operand_nodes(pdestructionframe.VALUE) ++ $instance_roots(pdestructionframe.PENDING)
+def $task_nodes(OB_USER_NORMAL_COMMIT pobinvoke pdestructionframe poboutput) = $ob_user_nodes(pobinvoke) ++ $operand_nodes(pdestructionframe.VALUE) ++ $instance_roots(pdestructionframe.PENDING)
+def $ob_user_active_task(OB_USER_NORMAL_RESULT pobinvoke pdestructionframe) = (pobinvoke.BUFFER.ID)
+def $ob_user_active_task(OB_USER_NORMAL_PENDING pobinvoke pdestructionframe) = (pobinvoke.BUFFER.ID)
+def $ob_user_active_task(OB_USER_NORMAL_COMMIT pobinvoke pdestructionframe poboutput) = (pobinvoke.BUFFER.ID)
+def $output_task_write(OB_USER_NORMAL_RESULT pobinvoke pdestructionframe) = $output_call_write(pobinvoke.CALL)
+def $output_task_write(OB_USER_NORMAL_PENDING pobinvoke pdestructionframe) = $output_call_write(pobinvoke.CALL)
+def $output_task_write(OB_USER_NORMAL_COMMIT pobinvoke pdestructionframe poboutput) = $output_call_write(pobinvoke.CALL)
+def $call_task_valid(S, OB_USER_NORMAL_RESULT pobinvoke pdestructionframe) = ($ob_normal_certificate(S, pobinvoke, pdestructionframe) /\ $ob_user_fci_arguments(pobinvoke) /\ pdestructionframe.PENDING = eps)
+def $call_task_valid(S, OB_USER_NORMAL_PENDING pobinvoke pdestructionframe) = ($ob_normal_certificate(S, pobinvoke, pdestructionframe) /\ $ob_user_fci_arguments(pobinvoke) /\ $throwable_live(S, n))
+  -- if pdestructionframe.PENDING = (n)
+def $call_task_valid(S, OB_USER_NORMAL_PENDING pobinvoke pdestructionframe) = false
+  -- if pdestructionframe.PENDING = eps
+def $call_task_valid(S, OB_USER_NORMAL_COMMIT pobinvoke pdestructionframe poboutput) = ($ob_normal_certificate(S, pobinvoke, pdestructionframe) /\ pobinvoke.SENT = eps /\ $throwable_live(S, n) /\ $ob_user_output_valid(S, poboutput) /\ pdestructionframe.VALUE = KNOWN poboutput.VALUE)
+  -- if pdestructionframe.PENDING = (n)
+def $call_task_valid(S, OB_USER_NORMAL_COMMIT pobinvoke pdestructionframe poboutput) = false
+  -- if pdestructionframe.PENDING = eps
+rule PhpStep/ob-user-normal-result: S ~> S[.TODO = (OB_USER_RESULT pobinvoke) :: ptask_tail*][.RESULT = pdestructionframe.VALUE][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (OB_USER_NORMAL_RESULT pobinvoke pdestructionframe) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_NORMAL_RESULT pobinvoke pdestructionframe)
+def $destructor_frame_throw_finish(S, pdestructionframe, n, (OB_USER_NORMAL_RESULT pobinvoke pdestructionframe_success) :: ptask_native*) = S[.TODO = (OB_USER_NORMAL_PENDING pobinvoke pdestructionframe) :: ptask_native*][.DESTRUCTION.FRAMES = pdestructionframe_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
+  -- if S.DESTRUCTION.FRAMES = pdestructionframe :: pdestructionframe_tail*
+  -- if pdestructionframe_success.PENDING = eps
+  -- if pdestructionframe = pdestructionframe_success[.PENDING = (n)]
+  -- if $call_task_valid(S, OB_USER_NORMAL_RESULT pobinvoke pdestructionframe_success)
+
+;; Pending E prevents zend_call_function from entering a selected error handler.
+;; A default diagnostic still follows reporting/display rules; recording wins.
+def $ob_normal_report(S, pobinvoke) = S[.ERRORFATALTRACE = eps]
+  -- if $eval_compile_recorded_error(S, 8192) \/ $error_handler_eligible(S, 8192)
+def $ob_normal_report(S, pobinvoke) = $error_default(S[.ERRORFATALTRACE = eps], DIAGNOSTIC "Deprecated" $ob_user_deprecation(pobinvoke) $ob_call_line(pobinvoke.CALL), 8192)
+  -- if ~$eval_compile_recorded_error(S, 8192) /\ ~$error_handler_eligible(S, 8192)
+def $ob_normal_deprecation(S, pobinvoke, pdestructionframe) = S_out[.OUTPUTBUFFERS = $output_set(S_out.OUTPUTBUFFERS, poutputbuffer.ID, poutputbuffer_out[.FLAGS = $long_and(poutputbuffer_out.FLAGS, $(-8193))])]
+  -- if $output_selected(S, pobinvoke) = (poutputbuffer)
+  -- if S_out = $ob_normal_report(S[.OUTPUTBUFFERS = $output_set(S.OUTPUTBUFFERS, poutputbuffer.ID, poutputbuffer[.FLAGS = $long_or($long_and(poutputbuffer.FLAGS, $(-32769)), 8192)])], pobinvoke)
+  -- if S_out.COMPLETION = NORMAL
+  -- if $output_selected(S_out, pobinvoke) = (poutputbuffer_out)
+def $ob_normal_deprecation(S, pobinvoke, pdestructionframe) = S_out
+  -- if $output_selected(S, pobinvoke) = (poutputbuffer)
+  -- if S_out = $ob_normal_report(S[.OUTPUTBUFFERS = $output_set(S.OUTPUTBUFFERS, poutputbuffer.ID, poutputbuffer[.FLAGS = $long_or($long_and(poutputbuffer.FLAGS, $(-32769)), 8192)])], pobinvoke)
+  -- if S_out.COMPLETION =/= NORMAL
+rule PhpStep/ob-user-normal-pending-produced: S ~> $ob_normal_deprecation(S[.TODO = (OB_USER_NORMAL_COMMIT pobinvoke[.SENT = eps] pdestructionframe $ob_user_output(S, pvalue)) :: ptask_tail*], pobinvoke, pdestructionframe)
+  -- if S.TODO = (OB_USER_NORMAL_PENDING pobinvoke pdestructionframe) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_NORMAL_PENDING pobinvoke pdestructionframe)
+  -- if pdestructionframe.VALUE = KNOWN pvalue
+  -- if $output_selected(S, pobinvoke) = (poutputbuffer)
+  -- if $long_and(poutputbuffer.FLAGS, 32768) =/= 0
+rule PhpStep/ob-user-normal-pending: S ~> S[.TODO = (OB_USER_NORMAL_COMMIT pobinvoke[.SENT = eps] pdestructionframe $ob_user_output(S, pvalue)) :: ptask_tail*]
+  -- if S.TODO = (OB_USER_NORMAL_PENDING pobinvoke pdestructionframe) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_NORMAL_PENDING pobinvoke pdestructionframe)
+  -- if pdestructionframe.VALUE = KNOWN pvalue
+  -- if $output_selected(S, pobinvoke) = (poutputbuffer)
+  -- if $long_and(poutputbuffer.FLAGS, 32768) = 0
+
+rule PhpStep/ob-user-normal-commit: S ~> $ob_normal_commit(S, pobinvoke, pdestructionframe, poboutput)
+  -- if S.TODO = (OB_USER_NORMAL_COMMIT pobinvoke pdestructionframe poboutput) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_NORMAL_COMMIT pobinvoke pdestructionframe poboutput)
+def $ob_normal_commit(S, pobinvoke, pdestructionframe, poboutput) = $ob_normal_api_commit(S, pobinvoke, poboutput, n)
+  -- if pobinvoke.CALL = OB_API pconfigcall
+  -- if pdestructionframe.PENDING = (n)
+def $ob_normal_commit(S, pobinvoke, pdestructionframe, poboutput) = $output_failure_next(S[.OUTPUTBUFFERS = $output_set(S.OUTPUTBUFFERS, poutputbuffer.ID, $ob_user_committed(poutputbuffer, poboutput))], pobwrite, n, $ob_user_routed_bytes(poutputbuffer, poboutput))
+  -- if pobinvoke.CALL = OB_WRITE pobwrite
+  -- if pdestructionframe.PENDING = (n)
+  -- if $output_selected(S, pobinvoke) = (poutputbuffer)
+def $ob_normal_api_commit(S, pobinvoke, poboutput, n) = $ob_api_failure_return(S[.OUTPUTBUFFERS = ($ob_user_committed(poutputbuffer, poboutput)) :: poutputbuffer_lower*], n, ptask_native*)
+  -- if S.TODO = ptask :: ptask_native*
+  -- if pobinvoke.CALL = OB_API pconfigcall
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_lower*
+  -- if pconfigcall.KIND = INTRINSIC_OB_CLEAN
+def $ob_normal_api_commit(S, pobinvoke, poboutput, n) = $ob_api_failure_release(S[.OUTPUTBUFFERS = poutputbuffer_lower*], {CALL pconfigcall, BUFFER pobinvoke.BUFFER, VALUE pobinvoke.VALUE}, S.CURRENT, ptask_native*, n)
+  -- if S.TODO = ptask :: ptask_native*
+  -- if pobinvoke.CALL = OB_API pconfigcall
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_lower*
+  -- if $ob_pop_kind(pconfigcall.KIND) /\ $ob_clean_kind(pconfigcall.KIND)
+def $ob_normal_api_commit(S, pobinvoke, poboutput, n) = $ob_normal_failed_write($output_api_begin(S[.OUTPUTBUFFERS = poutputbuffer_lower*], pconfigcall, $ob_user_routed_bytes(poutputbuffer, poboutput), OUTPUT_USER_DONE pobinvoke poutputbuffer poboutput (pconfigcall.KIND = INTRINSIC_OB_FLUSH)), n)
+  -- if pobinvoke.CALL = OB_API pconfigcall
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_lower*
+  -- if pconfigcall.KIND = INTRINSIC_OB_FLUSH \/ $ob_pop_kind(pconfigcall.KIND) /\ ~$ob_clean_kind(pconfigcall.KIND)
+def $ob_normal_failed_write(S, n) = S[.TODO = (OUTPUT_FAIL_WRITE pobwrite n) :: ptask_native*]
+  -- if S.TODO = (OUTPUT_WRITE pobwrite) :: ptask_native*

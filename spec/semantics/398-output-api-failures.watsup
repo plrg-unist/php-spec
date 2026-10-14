@@ -74,7 +74,7 @@ def $return_discard(S, OB_USER_FAIL_DONE pobinvoke) = S[.TODO = (OB_USER_FAIL_CO
   -- if $ob_api_failed(pobinvoke) /\ pobinvoke.SENT = eps
   -- if S_proof = S[.TODO = (THROW_SEARCH n) :: (OB_USER_FAIL_DONE pobinvoke) :: ptask_tail*]
   -- if $call_task_valid(S_proof, OB_USER_FAIL_DONE pobinvoke) /\ $throwable_live(S, n)
-def $eager_operation_source_guard(S, pdestructionoperation) = ($ob_user_failure_live(S, pobinvoke) /\ pdestructionoperation.ORIGIN = (pconfigcall.SITE) /\ pdestructionoperation.CALLER = pcallcontext? /\ pdestructionoperation.COMPLETION = THROWING n /\ pdestructionoperation.PENDING =/= eps /\ $throwable_live(S, n) /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL))
+def $eager_operation_source_guard(S, pdestructionoperation) = ($ob_user_failure_live(S, pobinvoke) /\ $ob_user_fci_arguments(pobinvoke) /\ pdestructionoperation.ORIGIN = (pconfigcall.SITE) /\ pdestructionoperation.CALLER = pcallcontext? /\ pdestructionoperation.COMPLETION = THROWING n /\ pdestructionoperation.PENDING =/= eps /\ $throwable_live(S, n) /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL))
   -- if pdestructionoperation.SOURCE = OB_USER_FAIL_ARGS pobinvoke n
   -- if pobinvoke.CALL = OB_API_FAILED pconfigcall pcallcontext? ptask*
 def $ob_user_failure_replay_pending(S, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (OB_USER_FAIL_DONE pobinvoke) :: ptask_tail*, pobinvoke) = (n)
