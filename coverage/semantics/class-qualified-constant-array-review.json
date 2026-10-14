@@ -1,0 +1,79 @@
+{
+  "status": "private accepted; awaiting actual-parent composition",
+  "target": "PHP 8.5.10 CLI NTS64",
+  "base": "d8bcbc01e04cfd3b40c5b7ce21929ddca4a429bf",
+  "implementation_revision": "41b48e3f1ba1d4080d9cfb5429e6169b642bf77b",
+  "module_count": 393,
+  "tested_cut": {
+    "runtime_diff_sha256": "580b2e554eee70e1b8c7a0e1a0681cad056040c28e9a8fbe6ec48f6d23588c9c",
+    "committed_files_sha256": {
+      "spec/semantics/400-dynamic-constants.watsup": "873915294ce133f4d957b77cbe58c7accab0716947fa01a2287fd2b5978c2f87",
+      "tests/semantics/class_constant_array_call_protocol.py": "4e91472e3d0be0988ba1c0374322ccb777fae82c36fa3f285a86ba5aa0449a70"
+    }
+  },
+  "behavior": [
+    "A separate module400 success arm admits visible folded user-class values whose actual initializer is NExprArray, compiled_read is the existing pooled PARRAY, and pool_class is a nonempty PVARRAY false primitive tree. Existing scalar/string/Error/autoload arms remain unchanged.",
+    "The pure tree guard requires allocated in-bounds nonempty arrays, ordered DIRECT entries and exact canonical records rebuilt from surviving keys. Raw pooled string leaves retain their supplied class; no recursive interning, snapshot copying, allocation or state mutation occurs at lookup.",
+    "The returned pooled identity uses existing shallow COW and reference ownership. Root writes detach the root while a child remains shared; a later nested write detaches that child. Real reference acquisition separates mutable root/child tables and aliases a new cell, leaving the constant and by-value peer unchanged.",
+    "Only module400 and the maintained protocol change. Class/compiler/autoload helpers, module30 and the manifest, request fields/status and ownership policy remain unchanged."
+  ],
+  "engine_routes": [
+    "vendor/php-src/ext/standard/basic_functions.c: PHP_FUNCTION(constant) uses executed scope, zend_get_constant_ex with ZEND_FETCH_CLASS_EXCEPTION, and ZVAL_COPY_OR_DUP",
+    "vendor/php-src/Zend/zend_types.h: ZVAL_COPY_OR_DUP retains ordinary nonpersistent refcounted payloads; it is not an unconditional array duplicate. Persistent refcounted values use the separate copy constructor branch.",
+    "vendor/php-src/Zend/zend_vm_def.h and Zend/zend_execute.c: writable array fetch and reference acquisition separate shared arrays through the ordinary COW routes; the model reuses modules39/68 unchanged."
+  ],
+  "accepted": {
+    "exact_cli_sources": 2,
+    "source_cases": [
+      "static-native-v46/loaded-inherited-array",
+      "static-native-v46/selected-autoload-array"
+    ],
+    "source_result": "Both accepted checked-program normal0/CLI0/full native stdout/empty stderr tuples are stable at runtime diff 580b. The native pair retains model credit 0.",
+    "public_fronts": {
+      "loaded": 151,
+      "autoload": 175
+    },
+    "public_premises": 326,
+    "public_result": "Both full 393-module SL runners exit0/exact trueLF/empty stderr/stable at the same runtime cut. Two original-derived chains pass public/declaration/heap checks and retain the exact native endings.",
+    "counterexamples": "Same pooled query results leave arrays/allocation/store/pools unchanged. Loaded source lines 9 and 10 distinguish root-only and child detachment; selected lines 15 and 16 distinguish real ALIAS 17 then 31 from the original DIRECT 17. Pure NEXT/SERIAL/POSITIONS, class/bounds/empty and same-valued live-cell ALIAS controls reject the new guard without driving forged states. The generic value-class helper accepts the alias projection, distinguishing the stricter DIRECT array-tree shape.",
+    "production_continuations": 2,
+    "isolated_raw_phpstep_projections": 0,
+    "synthetic_or_proof_continuations_driven": 0
+  },
+  "preserved_zero_credit": [
+    "The unchanged loaded baseline stops Unsupported class constant value query after B|, CLI1/empty stderr/clean empty diff; agreement credit 0 is retained.",
+    "Native observations, fixture preparation and standalone full-file syntax checks retain 0. No affected source or public numeric actor failed, and no V45 or older source/state campaign was replayed."
+  ],
+  "remaining": [
+    "Empty arrays at any depth, nonliteral/nonfolded/deferred array values, objects, installed aliases and identity-unknown or wider carriers remain outside this array-value guard. Global queries, wider class kinds/spellings/coercions and owning/FCC/arity/pack paths remain partial.",
+    "Tree checks validate source-pool structure and metadata; they do not reconstruct arbitrary historical values or add a new history field. Native bytes establish values and ordering, not pointer identity. Sharing, raw class and no-allocation claims are source-grounded model checks.",
+    "Existing primitive/string and class initializer/cache evidence keeps its original identities. No full constant/core coverage, fresh build or portability claim."
+  ],
+  "artifacts": {
+    "native_pair": {
+      "path": ".tools/dynamic-review-02/static-native-v46/report.json",
+      "sha256": "562e41bf781ebea0dc9c9c4104c1b6c0abdaa9eb1fb2f9387c383b7170a5fa72"
+    },
+    "unchanged_loaded_baseline": {
+      "path": ".tools/dynamic-source-class-constant-array-baseline-26/report.json",
+      "sha256": "0428865c14b599b4f5fa9bfc13e0a35c509cfc932ab1c380e16e9db7ebaf0215"
+    },
+    "affected_loaded_source": {
+      "path": ".tools/dynamic-source-class-constant-array-model-27/report.json",
+      "sha256": "27727625f9f16f58ca9ca08465c48018a01cc4f4e464caa781fcca911d2e8290"
+    },
+    "independent_selected_source": {
+      "path": ".tools/dynamic-review-02/class-constant-array-autoload-model-v1/report.json",
+      "sha256": "00cdb49f77f76f0cce5315791185867cd1c2fd991d34adb4cecf7182823ceb22"
+    },
+    "public_preparation": {
+      "path": ".tools/dynamic-source-class-constant-array-state-01/fixtures-report.json",
+      "sha256": "4c35490a30de42fa45deebbf5871a5c10ff4d304412ac1f9119cf824237479b1"
+    },
+    "public_two_fronts": {
+      "path": ".tools/dynamic-source-class-constant-array-state-01/check-report.json",
+      "sha256": "b18bdb9df074323bc30dd30b73c272227e6133ec1123c678e44a8feea957277d"
+    }
+  },
+  "recovery": "Canonical ignored originals/raw retain PHP/profile/pipeline identities. class_constant_array_call_protocol.py --phase fixtures --sources/--output prepares the two original-derived fronts; --phase check runs full modules --sl with 90s each, serial stop-first under a 240s host cap. Source CLI 60s/process 90s, native process 30s; before/after pins and raw commands/streams/exits retained. Whole-file parse-only outputs are state01/parse-preflight. Metadata needs no semantic rerun."
+}

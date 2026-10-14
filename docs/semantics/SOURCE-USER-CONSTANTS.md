@@ -148,7 +148,16 @@ even when the loader changes both caller CVs. Loaded-member misses do not reload
 Two exact sources and two public fronts/384 premises cover value types, current
 Error traces, actual CV mutation and malformed continuation authority in the
 [qualified-constant ledger](../../coverage/semantics/class-qualified-constant-review.json).
-Global `constant` queries, deferred evaluation and wider value forms remain open.
+Folded nonempty literal-array queries return the existing pooled root, preserving
+nested sharing and raw leaf-string allocation classes. Ordinary COW writes detach
+only the written tables; acquiring a reference separates the mutable root/child
+while the constant and by-value peer retain their original leaves. The source
+initializer and pool class authenticate a DIRECT primitive tree with canonical
+ordered keys and table history. No define-style recursive snapshot is taken.
+Two exact sources and two public fronts/326 premises cover same-root/no-allocation
+returns, root/nested detachment, actual reference acquisition and tree/history
+refusal in the [array-query ledger](../../coverage/semantics/class-qualified-constant-array-review.json).
+Global `constant` queries, empty/deferred/nonliteral arrays and wider values remain open.
 
 The matching engine routes are `ZEND_FUNCTION(define)`/`ZVAL_COPY`,
 `validate_constant_array_argument`/`copy_constant_array`, `zend_register_constant`,

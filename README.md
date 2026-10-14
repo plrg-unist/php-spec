@@ -855,6 +855,11 @@ visibility and API Errors. Named autoload retains the captured query across call
 CV changes. [Two exact sources and 384 public premises](coverage/semantics/class-qualified-constant-review.json)
 cover value types, string provenance and one-shot resume; global queries, deferred
 evaluation and wider domains remain Unsupported.
+[Array-valued qualified `constant` queries](coverage/semantics/class-qualified-constant-array-review.json)
+now share source-pooled nonempty literal trees until ordinary COW writes or reference
+acquisition separate them. Two exact sources and 326 public premises cover pooled
+identity, root/nested separation, reference cells and table history; empty/deferred
+arrays and wider values remain Unsupported.
 [Untyped positional defaults](docs/semantics/SOURCE-POSITIONAL-DEFAULTS.md) now preserve
 omitted receives, declaration context, observable caches and fresh reference/array
 ownership. [Independent acceptance](coverage/semantics/default-parameter-review.json)

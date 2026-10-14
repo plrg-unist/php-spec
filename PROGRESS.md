@@ -7,6 +7,16 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Class-qualified `constant` now returns source-pooled nonempty literal array trees.
+Queries preserve the pooled root and nested tables; ordinary writes and reference
+acquisition use the existing COW machinery without changing the constant or peer.
+Two exact sources and two public fronts/326 premises pass with runtime diff 580b,
+including same-root/no-allocation results, shallow then nested detachment, real
+reference acquisition and canonical DIRECT-tree/history checks. The unchanged
+baseline, native observations and preparations retain 0. Empty/deferred/nonliteral
+arrays and wider value domains remain Unsupported.
+[Array-query ledger](coverage/semantics/class-qualified-constant-array-review.json).
+
 Embedded-NUL include/require paths now fail before file-provider or dynamic-parser
 requests, nonce allocation and once lookup. Include emits one frozen-path warning
 and returns false; require throws `Error`. The display uses the credential-stripped
