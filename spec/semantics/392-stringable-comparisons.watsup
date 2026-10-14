@@ -147,6 +147,27 @@ def $string_compare_image(pstringcompare) = true
   -- if $string_bytes(pstringcompare.LEFTVALUE) =/= eps
 def $string_compare_image(pstringcompare) = false -- otherwise
 
+;; A redispatched cast compares against the private first-cast string, never
+;; against the original live operand again. String identity has no heap edges.
+dec $string_compare_text_valid(pstate, pvalue) : bool
+def $string_compare_text_valid(S, PSTRING n*) = $startup_bytes(n*)
+def $string_compare_text_valid(S, pvalue) = $string_carrier_valid(S, pvalue)
+  -- if $string_plain(pvalue) =/= pvalue
+def $string_compare_text_valid(S, pvalue) = false -- otherwise
+dec $string_compare_redispatch_valid(pstate, pstringcompare, nat, pvalue) : bool
+def $string_compare_redispatch_valid(S, pstringcompare, n, pvalue) = ($string_compare_valid(S, pstringcompare) /\ $(n < |S.OBJECTS|) /\ $string_compare_text_valid(S, pvalue))
+dec $string_compare_redispatch_suffix(ptask*, pstringcompare, nat, pvalue) : bool
+def $string_compare_redispatch_suffix((STRING_COMPARE_REDISPATCH_RESULT pstringcompare n pvalue) :: ptask_tail*, pstringcompare, n, pvalue) = (ptask_tail* = pstringcompare.TAIL)
+def $string_compare_redispatch_suffix(ptask :: ptask_tail*, pstringcompare, n, pvalue) = $string_compare_redispatch_suffix(ptask_tail*, pstringcompare, n, pvalue)
+  -- if ptask =/= STRING_COMPARE_REDISPATCH_RESULT pstringcompare n pvalue
+def $string_compare_redispatch_suffix(eps, pstringcompare, n, pvalue) = false
+def $task_nodes(STRING_COMPARE_REDISPATCH_RESULT pstringcompare n pvalue) = $task_nodes(STRING_COMPARE_RESULT pstringcompare)
+def $call_task_valid(S, STRING_COMPARE_REDISPATCH_RESULT pstringcompare n pvalue) = ($string_compare_redispatch_valid(S, pstringcompare, n, pvalue) /\ S.ORIGIN = (pstringcompare.CASTSITE) /\ $string_compare_redispatch_suffix(S.TODO, pstringcompare, n, pvalue))
+def $stringify_source(S, porigin, z, STRING_COMPARE_REDISPATCH_RESULT pstringcompare n pvalue) = ($string_compare_redispatch_valid(S, pstringcompare, n, pvalue) /\ porigin = pstringcompare.CASTSITE /\ z = pstringcompare.LINE)
+def $stringify_source_consumer(STRING_COMPARE_REDISPATCH_RESULT pstringcompare n pvalue) = true
+def $stringify_consumer_tail_valid(S, porigin, z, STRING_COMPARE_REDISPATCH_RESULT pstringcompare n pvalue, ptask_tail*) = ($stringify_source(S, porigin, z, STRING_COMPARE_REDISPATCH_RESULT pstringcompare n pvalue) /\ ptask_tail* = pstringcompare.TAIL)
+def $stringify_consumer_receiver_valid(S, n, STRING_COMPARE_REDISPATCH_RESULT pstringcompare n_second pvalue) = (n = n_second)
+
 dec $string_compare_suffix(ptask*, pstringcompare) : bool
 def $string_compare_suffix((STRING_COMPARE_RESULT pstringcompare) :: ptask_tail*, pstringcompare) = (ptask_tail* = pstringcompare.TAIL)
 def $string_compare_suffix(ptask :: ptask_tail*, pstringcompare) = $string_compare_suffix(ptask_tail*, pstringcompare)
@@ -162,6 +183,7 @@ def $stringify_consumer_receiver_valid(S, n, STRING_COMPARE_RESULT pstringcompar
 
 dec $string_compare_frame(ptask*) : bool
 def $string_compare_frame((STRINGIFY_RESULT n porigin z) :: (STRING_COMPARE_RESULT pstringcompare) :: ptask_tail*) = (n = pstringcompare.RECEIVER /\ porigin = pstringcompare.CASTSITE /\ z = pstringcompare.LINE /\ ptask_tail* = pstringcompare.TAIL)
+def $string_compare_frame((STRINGIFY_RESULT n porigin z) :: (STRING_COMPARE_REDISPATCH_RESULT pstringcompare n_second pvalue) :: ptask_tail*) = (n = n_second /\ porigin = pstringcompare.CASTSITE /\ z = pstringcompare.LINE /\ ptask_tail* = pstringcompare.TAIL)
 def $string_compare_frame(ptask*) = false -- otherwise
 def $parameter_string_frame_scope(S, pframe, pframe_tail*) = $constant_frame_scope(S, pframe, pframe_tail*)
   -- if $string_compare_frame(pframe.TODO)
@@ -221,6 +243,9 @@ def $string_compare_return(S, pstringcompare, pvalue_text, pvalue_other) = $stri
 def $string_compare_return(S, pstringcompare, pvalue_text, pvalue_other) = $string_compare_finish(S, pstringcompare, pvalue_other, pvalue_text)
   -- if ~pstringcompare.OBJECTLEFT
   -- if $type_bytes(pvalue_other) =/= $ptascii("object")
+def $string_compare_return(S, pstringcompare, pvalue_text, POBJECT n) = $user_string_begin(S[.TODO = pstringcompare.TAIL][.ORIGIN = (pstringcompare.CASTSITE)], n, pstringcompare.CASTSITE, pstringcompare.LINE, STRING_COMPARE_REDISPATCH_RESULT pstringcompare n pvalue_text, pstringcompare.TAIL)
+  -- if $stringable_instance(S, n)
+  -- if $string_compare_text_valid(S, pvalue_text)
 def $string_compare_return(S, pstringcompare, pvalue_text, pvalue_other) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "Stringable comparison changed object operand"] -- otherwise
 rule PhpStep/string-compare-return: S ~> $string_compare_return(S, pstringcompare, pvalue_text, pvalue_other)
   -- if S.TODO = (STRING_COMPARE_RESULT pstringcompare) :: ptask_tail*
@@ -235,3 +260,12 @@ rule PhpStep/string-compare-pointer-expired: S ~> S[.TODO = eps][.COMPLETION = U
 rule PhpStep/string-compare-invalid: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid Stringable comparison continuation"]
   -- if S.TODO = (STRING_COMPARE_RESULT pstringcompare) :: ptask_tail*
   -- if ~$call_task_valid(S, STRING_COMPARE_RESULT pstringcompare)
+
+rule PhpStep/string-compare-redispatch-return: S ~> $string_compare_return(S, pstringcompare, pvalue_saved, pvalue_text)
+  -- if S.TODO = (STRING_COMPARE_REDISPATCH_RESULT pstringcompare n pvalue_saved) :: ptask_tail*
+  -- if $call_task_valid(S, STRING_COMPARE_REDISPATCH_RESULT pstringcompare n pvalue_saved)
+  -- if S.RESULT = KNOWN pvalue_text
+  -- if $string_bytes(pvalue_text) =/= eps
+rule PhpStep/string-compare-redispatch-invalid: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid Stringable comparison redispatch"]
+  -- if S.TODO = (STRING_COMPARE_REDISPATCH_RESULT pstringcompare n pvalue_saved) :: ptask_tail*
+  -- if ~$call_task_valid(S, STRING_COMPARE_REDISPATCH_RESULT pstringcompare n pvalue_saved)

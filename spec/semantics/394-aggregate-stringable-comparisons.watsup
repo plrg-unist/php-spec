@@ -266,6 +266,9 @@ def $aggregate_cursor_declared(paggregatecursor :: paggregatecursor_tail*, n) = 
 def $aggregate_tasks_declared((CALL_ARGS pcalltarget phpType7* n_index poperand* porigin? z) :: (STRINGIFY_RESULT n_receiver porigin_site z_line) :: (AGGREGATE_COMPARE_RESULT paggregatecompare) :: ptask_tail*, n) = $aggregate_cursor_declared(paggregatecompare.CAST.STACK, n)
 def $aggregate_tasks_declared((STRINGIFY_RESULT n_receiver porigin_site z_line) :: (AGGREGATE_COMPARE_RESULT paggregatecompare) :: ptask_tail*, n) = $aggregate_cursor_declared(paggregatecompare.CAST.STACK, n)
 def $aggregate_tasks_declared((AGGREGATE_COMPARE_RESULT paggregatecompare) :: ptask_tail*, n) = $aggregate_cursor_declared(paggregatecompare.CAST.STACK, n)
+def $aggregate_tasks_declared((CALL_ARGS pcalltarget phpType7* n_index poperand* porigin? z) :: (STRINGIFY_RESULT n_receiver porigin_site z_line) :: (AGGREGATE_COMPARE_REDISPATCH_RESULT paggregatecompare n_second pvalue) :: ptask_tail*, n) = $aggregate_cursor_declared(paggregatecompare.CAST.STACK, n)
+def $aggregate_tasks_declared((STRINGIFY_RESULT n_receiver porigin_site z_line) :: (AGGREGATE_COMPARE_REDISPATCH_RESULT paggregatecompare n_second pvalue) :: ptask_tail*, n) = $aggregate_cursor_declared(paggregatecompare.CAST.STACK, n)
+def $aggregate_tasks_declared((AGGREGATE_COMPARE_REDISPATCH_RESULT paggregatecompare n_second pvalue) :: ptask_tail*, n) = $aggregate_cursor_declared(paggregatecompare.CAST.STACK, n)
 def $aggregate_tasks_declared(ptask*, n) = false -- otherwise
 def $aggregate_frames_declared(S, pcallcontext?, eps, n) = false
 def $aggregate_frames_declared(S, pcallcontext?, pframe :: pframe_tail*, n) = (($aggregate_frame_seen(S, pcallcontext?, pframe, pframe_tail*) =/= eps /\ $aggregate_tasks_declared(pframe.TODO, n)) \/ $aggregate_frames_declared(S, pframe.CONTEXT, pframe_tail*, n))
@@ -541,7 +544,21 @@ def $stringify_source(S, porigin, z, AGGREGATE_COMPARE_RESULT paggregatecompare)
 def $stringify_source_consumer(AGGREGATE_COMPARE_RESULT paggregatecompare) = true
 def $stringify_consumer_tail_valid(S, porigin, z, AGGREGATE_COMPARE_RESULT paggregatecompare, ptask_tail*) = ($stringify_source(S, porigin, z, AGGREGATE_COMPARE_RESULT paggregatecompare) /\ ptask_tail* = paggregatecompare.TAIL)
 def $stringify_consumer_receiver_valid(S, n, AGGREGATE_COMPARE_RESULT paggregatecompare) = (n = paggregatecompare.CAST.RECEIVER)
+dec $aggregate_compare_redispatch_valid(pstate, paggregatecompare, nat, pvalue) : bool
+def $aggregate_compare_redispatch_valid(S, paggregatecompare, n, pvalue) = ($aggregate_compare_valid(S, paggregatecompare) /\ $(n < |S.OBJECTS|) /\ $string_compare_text_valid(S, pvalue))
+dec $aggregate_compare_redispatch_suffix(ptask*, paggregatecompare, nat, pvalue) : bool
+def $aggregate_compare_redispatch_suffix((AGGREGATE_COMPARE_REDISPATCH_RESULT paggregatecompare n pvalue) :: ptask_tail*, paggregatecompare, n, pvalue) = (ptask_tail* = paggregatecompare.TAIL)
+def $aggregate_compare_redispatch_suffix(ptask :: ptask_tail*, paggregatecompare, n, pvalue) = $aggregate_compare_redispatch_suffix(ptask_tail*, paggregatecompare, n, pvalue)
+  -- if ptask =/= AGGREGATE_COMPARE_REDISPATCH_RESULT paggregatecompare n pvalue
+def $aggregate_compare_redispatch_suffix(eps, paggregatecompare, n, pvalue) = false
+def $task_nodes(AGGREGATE_COMPARE_REDISPATCH_RESULT paggregatecompare n pvalue) = $task_nodes(AGGREGATE_COMPARE_RESULT paggregatecompare)
+def $call_task_valid(S, AGGREGATE_COMPARE_REDISPATCH_RESULT paggregatecompare n pvalue) = ($aggregate_compare_redispatch_valid(S, paggregatecompare, n, pvalue) /\ S.ORIGIN = (paggregatecompare.CASTSITE) /\ $aggregate_compare_redispatch_suffix(S.TODO, paggregatecompare, n, pvalue))
+def $stringify_source(S, porigin, z, AGGREGATE_COMPARE_REDISPATCH_RESULT paggregatecompare n pvalue) = ($aggregate_compare_redispatch_valid(S, paggregatecompare, n, pvalue) /\ porigin = paggregatecompare.CASTSITE /\ z = paggregatecompare.LINE)
+def $stringify_source_consumer(AGGREGATE_COMPARE_REDISPATCH_RESULT paggregatecompare n pvalue) = true
+def $stringify_consumer_tail_valid(S, porigin, z, AGGREGATE_COMPARE_REDISPATCH_RESULT paggregatecompare n pvalue, ptask_tail*) = ($stringify_source(S, porigin, z, AGGREGATE_COMPARE_REDISPATCH_RESULT paggregatecompare n pvalue) /\ ptask_tail* = paggregatecompare.TAIL)
+def $stringify_consumer_receiver_valid(S, n, AGGREGATE_COMPARE_REDISPATCH_RESULT paggregatecompare n_second pvalue) = (n = n_second)
 def $aggregate_frame_pair((STRINGIFY_RESULT n porigin z) :: (AGGREGATE_COMPARE_RESULT paggregatecompare) :: ptask_tail*) = (n = paggregatecompare.CAST.RECEIVER /\ porigin = paggregatecompare.CASTSITE /\ z = paggregatecompare.LINE /\ ptask_tail* = paggregatecompare.TAIL)
+def $aggregate_frame_pair((STRINGIFY_RESULT n porigin z) :: (AGGREGATE_COMPARE_REDISPATCH_RESULT paggregatecompare n_second pvalue) :: ptask_tail*) = (n = n_second /\ porigin = paggregatecompare.CASTSITE /\ z = paggregatecompare.LINE /\ ptask_tail* = paggregatecompare.TAIL)
 def $aggregate_frame_pair(ptask*) = false -- otherwise
 def $parameter_string_frame_scope(S, pframe, pframe_tail*) = $constant_frame_scope(S, pframe, pframe_tail*)
   -- if $aggregate_frame_pair(pframe.TODO)
@@ -561,6 +578,19 @@ def $aggregate_current_seen(S) = $aggregate_cursor_lefts(paggregatecompare.CAST.
 def $aggregate_current_seen(S) = $aggregate_cursor_lefts(paggregatecompare.CAST.STACK)
   -- if S.TODO = (AGGREGATE_COMPARE_RESULT paggregatecompare) :: ptask_tail*
   -- if $call_task_valid(S, AGGREGATE_COMPARE_RESULT paggregatecompare)
+def $aggregate_current_seen(S) = $aggregate_cursor_lefts(paggregatecompare.CAST.STACK)
+  -- if S.TODO = (CALL_ARGS (METHOD_TARGET n porigin_method) eps 0 eps (porigin_site) z) :: (STRINGIFY_RESULT n porigin_site z) :: (AGGREGATE_COMPARE_REDISPATCH_RESULT paggregatecompare n pvalue) :: ptask_tail*
+  -- if $aggregate_frame_pair((STRINGIFY_RESULT n porigin_site z) :: (AGGREGATE_COMPARE_REDISPATCH_RESULT paggregatecompare n pvalue) :: ptask_tail*)
+  -- if $call_task_valid(S, AGGREGATE_COMPARE_REDISPATCH_RESULT paggregatecompare n pvalue)
+  -- if $stringify_method_selected(S, n, porigin_method, porigin_site)
+def $aggregate_current_seen(S) = $aggregate_cursor_lefts(paggregatecompare.CAST.STACK)
+  -- if S.TODO = (STRINGIFY_RESULT n porigin_site z) :: (AGGREGATE_COMPARE_REDISPATCH_RESULT paggregatecompare n pvalue) :: ptask_tail*
+  -- if $aggregate_frame_pair(S.TODO)
+  -- if $call_task_valid(S, AGGREGATE_COMPARE_REDISPATCH_RESULT paggregatecompare n pvalue)
+  -- if $stringify_result_valid(S, n, porigin_site, z)
+def $aggregate_current_seen(S) = $aggregate_cursor_lefts(paggregatecompare.CAST.STACK)
+  -- if S.TODO = (AGGREGATE_COMPARE_REDISPATCH_RESULT paggregatecompare n pvalue) :: ptask_tail*
+  -- if $call_task_valid(S, AGGREGATE_COMPARE_REDISPATCH_RESULT paggregatecompare n pvalue)
 def $aggregate_current_seen(S) = eps -- otherwise
 def $aggregate_frame_seen(S, (pcallcontext), pframe, pframe_tail*) = $aggregate_cursor_lefts(paggregatecompare.CAST.STACK)
   -- if pframe.TODO = (STRINGIFY_RESULT n porigin_site z) :: (AGGREGATE_COMPARE_RESULT paggregatecompare) :: ptask_tail*
@@ -572,6 +602,17 @@ def $aggregate_frame_seen(S, (pcallcontext), pframe, pframe_tail*) = $aggregate_
   -- if $stringify_method_selected(S, n, porigin_method, porigin_site)
   -- if S_scope = $constant_frame_scope(S, pframe, pframe_tail*)
   -- if $call_task_valid(S_scope, AGGREGATE_COMPARE_RESULT paggregatecompare)
+  -- if $stringify_context_frame_valid(S_scope, pcallcontext, pframe)
+def $aggregate_frame_seen(S, (pcallcontext), pframe, pframe_tail*) = $aggregate_cursor_lefts(paggregatecompare.CAST.STACK)
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin_site z) :: (AGGREGATE_COMPARE_REDISPATCH_RESULT paggregatecompare n pvalue) :: ptask_tail*
+  -- if $aggregate_frame_pair(pframe.TODO)
+  -- if $context_target(pcallcontext) = METHOD_TARGET n porigin_method
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if pcallcontext.LINE = z
+  -- if pframe.ORIGIN = (porigin_site)
+  -- if $stringify_method_selected(S, n, porigin_method, porigin_site)
+  -- if S_scope = $constant_frame_scope(S, pframe, pframe_tail*)
+  -- if $call_task_valid(S_scope, AGGREGATE_COMPARE_REDISPATCH_RESULT paggregatecompare n pvalue)
   -- if $stringify_context_frame_valid(S_scope, pcallcontext, pframe)
 def $aggregate_frame_seen(S, pcallcontext?, pframe, pframe_tail*) = eps -- otherwise
 def $aggregate_frames_seen(S, pcallcontext?, eps) = eps
@@ -722,6 +763,9 @@ def $aggregate_compare_return(S, paggregatecompare, pvalue_text, pvalue_other) =
   -- if (S_leaf, porder_leaf) = $value_order_effect(S_clear, pvalue_left, pvalue_right, $aggregate_cursor_lefts(paggregatecallback.STACK), paggregatecompare.LINE)
   -- if (S_next, porder) = $aggregate_resume(S_leaf, porder_leaf, paggregatecallback.STACK, paggregatecompare.LINE)
   -- if ~$aggregate_order_cast(porder)
+def $aggregate_compare_return(S, paggregatecompare, pvalue_text, POBJECT n) = $user_string_begin(S[.TODO = paggregatecompare.TAIL][.ORIGIN = (paggregatecompare.CASTSITE)], n, paggregatecompare.CASTSITE, paggregatecompare.LINE, AGGREGATE_COMPARE_REDISPATCH_RESULT paggregatecompare n pvalue_text, paggregatecompare.TAIL)
+  -- if $stringable_instance(S, n)
+  -- if $string_compare_text_valid(S, pvalue_text)
 def $aggregate_compare_return(S, paggregatecompare, pvalue_text, pvalue_other) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "nested Stringable comparison changed object operand"] -- otherwise
 rule PhpStep/aggregate-compare-return: S ~> $aggregate_compare_return(S, paggregatecompare, pvalue_text, pvalue_other)
   -- if S.TODO = (AGGREGATE_COMPARE_RESULT paggregatecompare) :: ptask_tail*
@@ -738,3 +782,12 @@ rule PhpStep/aggregate-compare-expired: S ~> S[.TODO = eps][.COMPLETION = UNSUPP
 rule PhpStep/aggregate-compare-invalid: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid nested Stringable comparison continuation"]
   -- if S.TODO = (AGGREGATE_COMPARE_RESULT paggregatecompare) :: ptask_tail*
   -- if ~$call_task_valid(S, AGGREGATE_COMPARE_RESULT paggregatecompare)
+
+rule PhpStep/aggregate-compare-redispatch-return: S ~> $aggregate_compare_return(S, paggregatecompare, pvalue_saved, pvalue_text)
+  -- if S.TODO = (AGGREGATE_COMPARE_REDISPATCH_RESULT paggregatecompare n pvalue_saved) :: ptask_tail*
+  -- if $call_task_valid(S, AGGREGATE_COMPARE_REDISPATCH_RESULT paggregatecompare n pvalue_saved)
+  -- if S.RESULT = KNOWN pvalue_text
+  -- if $string_bytes(pvalue_text) =/= eps
+rule PhpStep/aggregate-compare-redispatch-invalid: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid nested Stringable comparison redispatch"]
+  -- if S.TODO = (AGGREGATE_COMPARE_REDISPATCH_RESULT paggregatecompare n pvalue_saved) :: ptask_tail*
+  -- if ~$call_task_valid(S, AGGREGATE_COMPARE_REDISPATCH_RESULT paggregatecompare n pvalue_saved)
