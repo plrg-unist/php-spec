@@ -794,6 +794,10 @@ namespace-prefix normalization and captured request strings after CV mutation.
 Rows retain the actual value and string-carrier class. Available positional
 literal facts constrain inputs; variable payloads retain the existing structural table
 policy. Wider values, conversion/warning paths and namespace fallback remain open.
+Primitive duplicate `define` now warns and returns false while retaining the old
+binding, including named handlers and retained dynamic selection with callback
+appends. [Two exact sources and 207 public premises](coverage/semantics/dynamic-constant-duplicate-review.json)
+cover default, false-handler and handled delivery; wider candidates remain partial.
 [Untyped positional defaults](docs/semantics/SOURCE-POSITIONAL-DEFAULTS.md) now preserve
 omitted receives, declaration context, observable caches and fresh reference/array
 ownership. [Independent acceptance](coverage/semantics/default-parameter-review.json)

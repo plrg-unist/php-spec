@@ -87,9 +87,19 @@ positional literal facts constrain names and values. Variable-derived payloads k
 the existing structural value policy: the row is the runtime capture, not a full
 proof of past argument evaluation. Validators never reread mutable CVs.
 
+Primitive duplicate `define` of an existing user constant emits the ordinary
+level2 Warning and returns false without publishing its candidate. A named handler
+may suppress default delivery or append another constant; the original binding
+survives both. The retained CONFIG
+resume keeps actual arguments, selection and the pre-warning table prefix. Public
+checks require the duplicate key within that prefix, so later-only keys cannot
+authorize it. Two exact sources and two public fronts/207 premises cover default,
+false-handler and handled delivery in the
+[duplicate ledger](../../coverage/semantics/dynamic-constant-duplicate-review.json).
+
 The matching engine routes are `ZEND_FUNCTION(define)`/`ZVAL_COPY`,
 `zend_register_constant`, and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`.
-Arrays/objects, name coercion, duplicate/special-name and case-insensitive warnings,
+Arrays/objects, name coercion, startup/special-name and case-insensitive warnings,
 class-constant queries, owning/FCC call forms and wider conversion/arity paths
 remain Unsupported. The [dynamic ledger](../../coverage/semantics/dynamic-constants-review.json)
 keeps the source and public-state cuts separate; it makes no native allocation-identity

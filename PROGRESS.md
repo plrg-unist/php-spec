@@ -7,6 +7,16 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Primitive duplicate `define` now warns and returns false without replacing the
+old binding. Retained dynamic selection survives a named warning callback that
+appends another constant; false-handler fallback and handled delivery preserve
+the table. Two exact sources and two public fronts/207 premises pass at a3c3.
+The pre-warning prefix admits genuine appends but rejects later-only duplicate
+keys, source/nonce and error-metadata forgeries. The unchanged baseline and native/
+fixture preparations retain0; no raw projections or synthetic continuations are
+credited. Wider values, owning calls and warning branches remain partial.
+[Duplicate-define ledger](coverage/semantics/dynamic-constant-duplicate-review.json).
+
 Module399 preserves a defined scalar output-handler return when callee cleanup
 throws. Fixed by-reference wrappers belong only to the callee; entered methods
 borrow their cached receiver. Normal-return certificates remain distinct from

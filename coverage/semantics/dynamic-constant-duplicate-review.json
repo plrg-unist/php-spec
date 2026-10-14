@@ -1,0 +1,93 @@
+{
+  "status": "private-reviewed",
+  "target": "PHP 8.5.10 CLI NTS64",
+  "base": "f52c92f12a5f0f4e859b1988e11f4adc80bc1bbc",
+  "implementation_revision": "ed7c6eca82ae3fb7f2c2ff99eb5e6611a741e6f5",
+  "tested_cut": {
+    "module_count": 389,
+    "semantic_diff_sha256": "a3c3ef6a97644186a76abd493b9e209b62d37af6c6b1f3d6bd3045f400fd7ac9",
+    "committed_files_sha256": {
+      "spec/semantics/30-storage.watsup": "52d1f19677844d95f52ff1b12bf850df0631799bb348e831f84e0a4c499e79dc",
+      "spec/semantics/400-dynamic-constants.watsup": "a2fe06ca6eb67d85fec768fe8ba61ba4b8708a6583fcf2b16649777ec4fadc4b",
+      "tests/semantics/dynamic_constant_duplicate_protocol.py": "26f73cf5552d19b7b1b7714a6c8dd7eb4be4fdc055aa0192216de155a7ec13fe"
+    },
+    "scope": "One unchanged two-file runtime cut for both exact sources and both public fronts; the maintained protocol matches the tested script."
+  },
+  "behavior": [
+    "Primitive duplicate define uses the real CONFIG call and ordinary level2 Warning dispatch, then returns false without replacing the old constant or publishing the candidate.",
+    "The resume retains actual SENT arguments, source/selection and the pre-warning table prefix. The duplicate key must already occur in that prefix; legitimate handler appends remain valid.",
+    "Named false handlers permit default delivery; true handlers suppress it while the API still returns false. Retained dynamic selection and callback-added constants survive both returns.",
+    "Error authority checks exact source site, line, level, message and DIAGNOSTIC event. Existing generic error-call and selected-task mechanisms supply callback control and roots.",
+    "The existing structural variable-payload policy remains; this is not full authentication of arbitrary past argument values. Successful registration, request fields/status and lifetime policies are unchanged."
+  ],
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_builtin_functions.c: ZEND_FUNCTION(define), copied candidate and false on failed registration",
+    "vendor/php-src/Zend/zend_constants.c: zend_register_constant, normalized duplicate key and E_WARNING before rejected candidate release",
+    "spec/semantics/271-global-constant-callables.watsup duplicate message; ordinary207 error dispatch reused without fake NConst authority"
+  ],
+  "accepted": {
+    "exact_cli_sources": 2,
+    "source_cases": [
+      "static-native-v40/plain-duplicate",
+      "static-native-v40-selected/selected-append"
+    ],
+    "source_result": "Both checked/program normal0 tuples match full native stdout/stderr with CLI0 and stable inputs at a3c3. Plain stderr185 bytes; selected stderr195 bytes.",
+    "public_fronts": {
+      "plain": 59,
+      "selected": 148
+    },
+    "public_premises": 207,
+    "public_result": "Two full389 SL runners0/true/empty stderr/stable. Genuine CONFIG dispatch/resume, false-handler append and true-handler returns preserve whole public/table/heap validity and the old binding.",
+    "counterexamples": "Wrong prefix0/out-of-range, key only after the prefix, removed key, kind/source/site/line, retained selection, literal name/value and error level/message/event controls reject. The later-key test retains KEEP after SIDE, rather than merely deleting it.",
+    "isolated_raw_phpstep_projections": 0,
+    "synthetic_or_proof_continuations": 0,
+    "production_continuations": 2,
+    "duplicate_operations_in_production": 3
+  },
+  "preserved_zero_credit": [
+    "The unchanged plain baseline stops Unsupported dynamic constant call domain at the second define, after B|made|; it retains0.",
+    "The original fixed-handler native case remains native-only0; the selected-and-append original is the sole independent model control.",
+    "Initial public preparation has59+146 assertions and no actor. Strengthened preparation adds only the two later-key exclusions, retaining all old premises.",
+    "Native observations, fixture preparations and standalone parse-only checks have no model agreement credit. There are no V40 pre-runtime or runtime validation failures."
+  ],
+  "remaining": [
+    "The admitted call domain remains primitive values, no owning receiver and no argument packs. Arrays/objects, wider release/throw/exit callbacks, startup/special-name duplicates and case_insensitive warnings remain required.",
+    "Name coercion, direct namespace-fallback define, owning/FCC forms, unpack and wider conversion/arity branches remain Unsupported; full constant/core behavior is partial.",
+    "No renewed V39 source/public evidence, arbitrary variable-input history, fresh build/portability or full-core completeness claim."
+  ],
+  "artifacts": {
+    "native_pair": {
+      "path": ".tools/dynamic-review-02/static-native-v40/report.json",
+      "sha256": "7534b87a5355325f95e94798aca35d0ef6786c27bb7d7f9ca420dee63ebfe2f5"
+    },
+    "native_selected_append": {
+      "path": ".tools/dynamic-review-02/static-native-v40-selected/report.json",
+      "sha256": "e77d3e7cca5d9b0617b724b0503a98a67ec1bcfb4e5fde030120026133a9b425"
+    },
+    "unchanged_plain_baseline": {
+      "path": ".tools/dynamic-source-dynamic-constant-duplicate-baseline-20/report.json",
+      "sha256": "63f845a948eb7a0fc9a400a7929b44e2e1a99b81e5c8dde97c72a3bf1409b4da"
+    },
+    "affected_plain_source": {
+      "path": ".tools/dynamic-source-dynamic-constant-duplicate-model-21/report.json",
+      "sha256": "8b0278e74042351fb90bc288dd4ae20c241f1b6abd27d9eeebd308bdd5ebcb60"
+    },
+    "independent_selected_append_source": {
+      "path": ".tools/dynamic-review-02/dynamic-constant-duplicate-model-v1/report.json",
+      "sha256": "9aebbd7ab81b828092adee5dc80b73f6fb916bce7ca6ec21d93594003e6ea608"
+    },
+    "initial_public_preparation": {
+      "path": ".tools/dynamic-source-dynamic-constant-duplicate-state-01/fixtures-report.json",
+      "sha256": "80c0661b0adaa81ff16057daf05a56c253daec0c611be405ca1c8fdeeebb7fc8"
+    },
+    "strengthened_public_preparation": {
+      "path": ".tools/dynamic-source-dynamic-constant-duplicate-state-02/fixtures-report.json",
+      "sha256": "503ee4d26590a0641291cc40cd4b47befe02acae984be8b3506ba922406c0761"
+    },
+    "public_two_fronts": {
+      "path": ".tools/dynamic-source-dynamic-constant-duplicate-state-02/check-report.json",
+      "sha256": "dedfeff335da63c33001320e7eac046a38c451ac4fc6a4394062a8c96030f966"
+    }
+  },
+  "recovery": "Canonical ignored originals/raw and the private branch retain inputs. dynamic_constant_duplicate_protocol.py --phase fixtures/--sources/--output prepares the two fronts; --phase check runs full modules --sl with90s per front, serial stop-first. CLI comparisons use60s/process90; native process30. All authoritative reports pin runtime/profile/source/pipeline before and after. Metadata changes require no semantic rerun."
+}
