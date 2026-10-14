@@ -16,6 +16,9 @@ table history. Pure cycle/DAG checks remain separate; the baseline and preparati
 retain0. Empty arrays at any depth, array warning/flag paths and objects remain
 Unsupported; variable payloads retain structural authority.
 [Array-define ledger](coverage/semantics/dynamic-constant-array-review.json).
+The 391-module composition over 0599 passes independent review at 9ce759fd;
+accepted rules/protocol and parent operational paths are preserved.
+No renewed actor/source/state evidence is claimed.
 
 Direct MAIN warning-callback destructor exit now overrides a pending user
 Throwable while retaining its owner through helper completion and caller-temporary
