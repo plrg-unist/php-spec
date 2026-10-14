@@ -1669,6 +1669,11 @@ now copy ordinary declared properties without creating cached tables or replacin
 the object guard. Singleton references copy their values; shared references stay
 live. Independent projected-array guards and identical TypeError cleanup pass
 three exact sources and 503 reached premises/35 raw steps.
+[Changed comparison operands](coverage/semantics/stringable-redispatch-comparison-review.json)
+now invoke a second ordinary Stringable cast against the saved first string.
+Operand order, aggregate pins/guards and selected-case continuation survive the
+callback. Live CV/cell mutation, unequal early exit and identical TypeError cleanup
+have native-source and reached-state checks; wider object handlers remain open.
 [Match expressions](docs/semantics/SOURCE-MATCH.md) preserve strict, lazy arm
 selection, delayed CV subjects, ordered compiler diagnostics and owned value
 results; their [review](coverage/semantics/match-review.json) binds source, compiler

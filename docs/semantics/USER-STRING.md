@@ -112,7 +112,7 @@ producers and source contexts remain required. Internal
 Throwable `__toString` uses its own finite trace/property protocol; user
 subclass overrides remain a separate dependency.
 
-Direct ordinary Stringable/string pairs now convert the instance once for all
+Direct ordinary Stringable/string pairs now invoke the initial cast for all
 seven loose comparison operators and non-bool Switch cases through 392. The opposing value
 keeps its pre-cast COPY/CV/reference-cell identity: copied text stays fixed, a CV
 follows rebinding, and a pre-unwrapped reference reads its captured cell. Original
@@ -120,8 +120,20 @@ operands/BASE and the caster retain their own owners; documentary pointer images
 add none. [Six originals and 487 reached checks](../../coverage/semantics/stringable-comparison-review.json)
 cover mutation, saved caster frames, lazy fallthrough and a nested scalar Switch
 whose TypeError is caught after caster restoration, followed by finally entry. Expired pointers and
-post-cast object operands remain Unsupported; wider internal handlers and lifetimes
+newly read non-Stringable or unsupported internal objects remain Unsupported; wider internal handlers and lifetimes
 remain required. Strict identity and compiled bool Switch do not invoke the cast.
+
+[Changed opposing operands](../../coverage/semantics/stringable-redispatch-comparison-review.json)
+now redispatch to a second ordinary Stringable instance. After the first cast, the comparison rereads its
+captured CV/cell/property location; the saved first string remains the opposing
+value throughout the second callback. Its returned string compares in the original
+operand order, so later writes cannot redirect the comparison to a third caster.
+Aggregate cursors keep their parent pins and recursion guards; a zero leaf order
+resumes future entries or the selected case, while nonzero order skips later casts.
+Four exact originals and 531 Boolean premises/32 raw steps cover those paths,
+second-receiver retirement and the same TypeError through finally/caller cleanup.
+Saved string metadata and documentary operand images add no heap owners. Wider
+object handlers and receiver/destructor lifetimes remain separate obligations.
 
 Recursive arrays and ordinary declared-property objects now suspend only at a
 reached Stringable/string leaf through 394. Count, key and earlier-value differences

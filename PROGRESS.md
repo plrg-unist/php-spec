@@ -350,6 +350,17 @@ reference owners, independent array recursion and identical TypeError through bo
 caster finally blocks and caller catch/finally. Strict initialization and syntax-only
 preparation add no semantic credit; the original grouping fixture failure remains zero.
 
+[Stringable comparison redispatch](coverage/semantics/stringable-redispatch-comparison-review.json)
+now handles an opposing live CV/cell/property becoming another ordinary Stringable.
+The second cast compares against the saved first string in original order; aggregate
+parents/guards persist until leaf completion or unwind. Four exact originals agree
+at 7431f462 /388. Author and independent states pass 531 Boolean premises
+(509 setup, 22 pure controls, 32 raw steps), covering saved text after receiver
+retirement, unequal short-circuit, old-cell/case resumption and identical TypeError
+through finally/caller cleanup. Initialization, syntax preparation, diagnostic and
+original fixture failures add zero runtime credit. Wider object handlers and
+receiver/destructor lifetimes remain open.
+
 Hard bailout now records request EXITSTATUS255 before shutdown. Direct callback
 strings preserve it; integer/default exits replace it and skip later callbacks.
 One-line257 and protocol20db1b23e /382 retain four exact source tuples and three

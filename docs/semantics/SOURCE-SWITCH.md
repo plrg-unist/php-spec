@@ -30,6 +30,14 @@ checks delayed default, body-only fallthrough without later case evaluation, and
 the same TypeError caught after caster restoration, followed by finally entry.
 The caster first reenters a nested scalar Switch.
 
+[Changed opposing operands](../../coverage/semantics/stringable-redispatch-comparison-review.json)
+can now invoke a second ordinary Stringable cast against the saved first string.
+Captured old cells remain distinct from rebound property slots, and successful
+leaf equality resumes future entries and the selected body/fallthrough. The first
+caster's finally finishes before the second enters; a supplied TypeError preserves
+the aggregate guard through the second finally, then reaches caller catch/finally
+after actual pair unwind. Wider object handlers and lifetimes remain open.
+
 [Recursive comparison through 394](../../coverage/semantics/aggregate-stringable-comparison-review.json)
 retains real enclosing array/property owners and the active left recursion guard
 while a reached Stringable/string leaf casts. Early count/key/value differences

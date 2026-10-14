@@ -1,0 +1,207 @@
+{
+  "scope": "An opposing live CV, captured CELL or aggregate leaf changed to an ordinary Stringable invokes a second authentic cast against the saved first string; original orientation, cursor/pins and recursion guards persist.",
+  "status": "partial; independently reviewed private increment",
+  "tested_revision": "7431f4628c1064347377f9eb4df0837b79f87fd3",
+  "baseline_revision": "99d2edc186e4db0ad0c4ea20c98aef4e5c826545",
+  "module_count": 388,
+  "engine_anchors": [
+    "Zend/zend_object_handlers.c:zend_std_compare_objects",
+    "Zend/zend_operators.c:zend_compare"
+  ],
+  "runtime": {
+    "php": {
+      "path": ".tools/php/bin/php",
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    "numeric_runner": {
+      "path": "tests/semantics/_build/default/numeric_runner.exe",
+      "sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    },
+    "elaborator": {
+      "path": ".tools/spectec/bin/p4spectec",
+      "sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "adapter": {
+      "path": "_build/default/adapter/main.exe",
+      "sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7"
+    },
+    "profile": {
+      "path": "tests/semantics/profile.json",
+      "sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+    },
+    "manifest": {
+      "path": "spec/semantics/modules.json",
+      "sha256": "3f4f92a1f8040e290968f02f3fb1983809b4f2d7476e51522d87f25129e85aa7"
+    },
+    "php_source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "build_claim": "Retained local binaries; no new build claim."
+  },
+  "baseline": {
+    "report": {
+      "path": ".tools/stringable-redispatch-baseline-54/run-v1/report.json",
+      "sha256": "93b1fa8698842f64a2609c618f68d7834f4b7b2abcb57e2b9d94b0c137ee24d5"
+    },
+    "outcome": "accepted/program/Unsupported: nested Stringable comparison changed object operand",
+    "stdout": "slot|first|",
+    "native_agreements": 0
+  },
+  "native": {
+    "original_three": {
+      "path": ".tools/stringable-redispatch-native-54/run-v1/report.json",
+      "sha256": "bd218ede5438f7e4ffdbe1a6f24f18392960ba52390c58c127631e20012ef977"
+    },
+    "supplemental_unequal": {
+      "path": ".tools/stringable-redispatch-unequal-native-54/run-v1/report.json",
+      "sha256": "721a2f1eb237d5e7a878a0ff46d7e3acdd90526eaafcdf9494e097009b92ff90"
+    },
+    "originals": 4,
+    "observations": "All seven loose operators and both orientations, live CV/old CELL versus COPY, immutable first-cast text despite later operand replacement, aggregate future-tail/case resumption, unequal -1/+1 and nonzero early exit, first-finally before second entry and identical supplied TypeError with unchanged-left guard cleanup.",
+    "limits": "Original files/CWD and pinned profile, serial55 seconds; informational hypotheses are separate from reliable observed tuples."
+  },
+  "strict_initialization": {
+    "report": {
+      "path": ".tools/stringable-redispatch-gate-54/run-v1/report.json",
+      "sha256": "2d3188072b416e1f89a4d4a25c8ecc12f3b0a5ded569de65743507a48bb20611"
+    },
+    "semantic_assertions": 0,
+    "PHP_Steps": 0
+  },
+  "sources": {
+    "report": {
+      "path": ".tools/stringable-redispatch-model-54/run-v1/report.json",
+      "sha256": "04d79a65c7d2b466f93aa05d2c563058a27b8dc62df4e41260fa735bd0fc5277"
+    },
+    "catalogue": {
+      "path": "tests/semantics/stringable_redispatch_comparison_cases.json",
+      "sha256": "0015eb1fdbef827cb340233bf8522cf463d5ffdb09216fec5f8307254075f303"
+    },
+    "normal_native_agreements": 4,
+    "seconds": [
+      208.68301143683493,
+      22.155207183212042,
+      12.588124247267842,
+      15.04350365139544
+    ],
+    "limits": "First original300 semantic/310 host seconds for its33 callbacks; remaining originals90/100,100000 steps,jobs1,stop-first."
+  },
+  "syntax_only": {
+    "report": {
+      "path": ".tools/stringable-redispatch-prepare-54/syntax-v1/report.json",
+      "sha256": "fc37863a200fa256671b1b9810d37de2116a9ad0aca4fd00823980fda0b22766"
+    },
+    "programmes": 4,
+    "closed_workers": 8,
+    "runtime_credit": 0,
+    "author_el": {
+      "path": ".tools/stringable-redispatch-state-54/run-elab-grouping-retry1/report.json",
+      "sha256": "e11db44ffba9c58af77e6ced56249236a1b74af4009e1a9a9c4aa19a49c675ba"
+    },
+    "peer_el": {
+      "path": ".tools/stringable-redispatch-peer-state-54/run-elab-v1/report.json",
+      "sha256": "19143dc298b12f498edc635d5d5380fe68a15208460503a30efdc1da3311410d"
+    },
+    "continuity": "Reviewed fixture grouping/binding/selector changes reuse their closed typed EL through exact input bridges; final explicit SL compiles the corrected fixtures."
+  },
+  "reached_states": {
+    "author": {
+      "path": ".tools/stringable-redispatch-state-54/run-sl-binding-retry1/report.json",
+      "sha256": "21994661d8c56cee0fe7f445fa391d56b33335d27e54eac8f7bf63d4668aa9bf"
+    },
+    "peer": {
+      "path": ".tools/stringable-redispatch-peer-state-54/run-sl-unwind-retry1/report.json",
+      "sha256": "1b6b6308b4d5fa98af425a6fb11095b2d927d008a41a9536dcb49a47b827dde8"
+    },
+    "author_plan": {
+      "path": ".tools/stringable-redispatch-state-54/plan.json",
+      "sha256": "ad10cc42107d90c131581c12fee58f0570a7f9836cf608b34e91c9f135e035b5"
+    },
+    "peer_plan": {
+      "path": ".tools/stringable-redispatch-peer-state-54/plan.json",
+      "sha256": "e4eedbdfa0836440fcf61596fd158e7399063ec33e1d57d9c3dd19dca6365764"
+    },
+    "premises": 531,
+    "setup_frontier_premises": 509,
+    "marked_pure_checks": 22,
+    "PhpSteps": 32,
+    "groups": [
+      {
+        "id": "live-opposite",
+        "premises": 66,
+        "pure": 7,
+        "PhpSteps": 3
+      },
+      {
+        "id": "unequal-order",
+        "premises": 150,
+        "pure": 0,
+        "PhpSteps": 9
+      },
+      {
+        "id": "aggregate-opposite",
+        "premises": 145,
+        "pure": 4,
+        "PhpSteps": 6
+      },
+      {
+        "id": "peer-cell-throw",
+        "premises": 170,
+        "pure": 11,
+        "PhpSteps": 14
+      }
+    ],
+    "limits": "EL30 separately from explicit SL120; bounded original php_file_run seeks, no END/shutdown drive. Driver progress and counterfactual helper controls add no raw Step credit."
+  },
+  "ownership_and_authentication": "Original operands/BASE and aggregate cursor pins retain their real owners. The saved first pvalue/carrier has no pnode edges; secondary consumers reuse original descriptor roots and hold no documentary receiver edge. Actual CALL_ARGS/STRINGIFY_RESULT and entered immediate caster pairs authenticate the new receiver/source/caller/depth/tail. At the returned secondary frontier its receiver may already be retired; authentication still checks the original descriptor and saved text, with an index-bounds check for that documentary receiver. Current/saved/parked aggregate scans recognize the new pair without adding roots. Source execution establishes captured images; validators do not prove arbitrary forged histories.",
+  "original_zero_credit": [
+    {
+      "report": {
+        "path": ".tools/stringable-redispatch-state-54/run-elab-v1/report.json",
+        "sha256": "02eff94e0b796ae856f934710e7964db7c728b26660d84001a31f5a710f54a96"
+      },
+      "result": "Author first EL rejected two unparenthesized invalid-byte PSTRING payload controls. Later EL/SL were unrun; constructor grouping alone repaired the controls."
+    },
+    {
+      "report": {
+        "path": ".tools/stringable-redispatch-state-54/run-sl-grouping-retry1/report.json",
+        "sha256": "478aa8d30327fa3a0b88ca8f86c9f7d6c7d2847dc240f2a05d8bdbc0a159df98"
+      },
+      "result": "Author SL stopped pre-main on a descriptor.TAIL projection inside its capture pattern. Six free suffix binders plus later equalities preserve accepted EL and original18 raw Steps."
+    },
+    {
+      "report": {
+        "path": ".tools/stringable-redispatch-peer-state-54/run-sl-v1/report.json",
+        "sha256": "b53addfad09d8376a53b515a9aaec943c1076271116c46f8277d7154ce795281"
+      },
+      "result": "Peer SL stopped pre-main on source/line projections before descriptor binding; free capture binders repaired only the fixture."
+    },
+    {
+      "report": {
+        "path": ".tools/stringable-redispatch-peer-state-54/run-sl-binding-retry1/report.json",
+        "sha256": "e6ddae18863aa46c008ab3c8cc0243b4140cc0caf983932dedd7136e8c5418d1"
+      },
+      "result": "Peer finally/frame selector failed after reached secondary/recursion/throw/finally assertions. Continuation now follows genuine predecessor driver steps after raw throw observations."
+    },
+    {
+      "report": {
+        "path": ".tools/stringable-redispatch-peer-state-54/run-sl-finally-retry1/report.json",
+        "sha256": "5c9ae10a8dc9dd290442fb37cc4ff6cb8336176238e92aed3b7dc4c0cbb4889c"
+      },
+      "result": "Peer still required a standalone lone-search driver frontier. The observed boundary retained TYPE_FALLTHROUGH; the accepted fixture derives its actual raw discard and frame unwind explicitly."
+    }
+  ],
+  "diagnostic": {
+    "report": {
+      "path": ".tools/stringable-redispatch-peer-state-54/run-sl-finally-diagnostic1/report.json",
+      "sha256": "0f23fc944857d4def36698eea64c95baa8ebcccd1974f5d777eeff6f83a19c1e"
+    },
+    "observation": "After real finally resumption: BUDGET, THROW_SEARCH plus the selected method TYPE_FALLTHROUGH, insideSecond=true. The earlier seek ran past that boundary.",
+    "runtime_credit": 0,
+    "PhpSteps": 0
+  },
+  "residuals": [
+    "New opposing non-Stringable ordinary objects and unsupported internal cast handlers remain explicit Unsupported.",
+    "Existing cached-table clone/collector/copied-declared reference-iteration limits remain unchanged. Wider receiver/destructor/Fiber lifetimes and full-core/END/shutdown coverage are not established."
+  ],
+  "acceptance": "Independent comp_review_21 cleared the semantics, source/state packets, closed raw cuts and final scoped publication; the independent peer packet and raw were separately accepted.",
+  "recovery": "Ignored originals, checked programmes, recorders, START/closed/raw and retained binaries remain under .tools/stringable-redispatch-comparison-54/.tools/stringable-redispatch-{native,unequal-native,baseline,gate,model,prepare,state,peer-state,support}-54. Preserve exact paths and Git branches; no bulky artifacts are tracked."
+}
