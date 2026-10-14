@@ -119,10 +119,19 @@ and two public fronts/219 premises cover request strings, gap appends, nested
 reference freezing and a later literal registration in the
 [array ledger](../../coverage/semantics/dynamic-constant-array-review.json).
 
+Top-level empty values use the existing source-pool or retained immutable flag.
+An authenticated immutable empty keeps its table and `PVARRAY true eps`; a mutable
+emptied input becomes a fresh canonical table with `PVARRAY false eps`, rebuilding
+its append index. Literal validation checks this class as well as contents, so a
+same-content mutable clone cannot replace a fixed empty literal. Variable payloads
+retain structural authority. Two exact sources and two public fronts/162 premises
+check these distinctions and later copies in the
+[empty ledger](../../coverage/semantics/dynamic-constant-empty-review.json).
+
 The matching engine routes are `ZEND_FUNCTION(define)`/`ZVAL_COPY`,
 `validate_constant_array_argument`/`copy_constant_array`, `zend_register_constant`,
 and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`.
-Empty arrays at any depth, cycles, objects, array duplicate/third-argument paths,
+Nested empty arrays, cycles, objects, array duplicate/third-argument paths,
 name/flag coercion, startup/special-name warnings,
 class-constant queries, owning/FCC call forms and wider conversion/arity paths
 remain Unsupported. The [dynamic ledger](../../coverage/semantics/dynamic-constants-review.json)

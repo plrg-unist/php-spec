@@ -818,7 +818,11 @@ Fresh two-argument `define` also copies nonempty acyclic scalar-array trees,
 dereferencing source cells and rebuilding append history. Request-string leaves,
 nested reference snapshots and literal constraints pass
 [two exact sources and 219 public premises](coverage/semantics/dynamic-constant-array-review.json).
-Empty arrays, array warning/flag paths, objects and cycles remain Unsupported.
+Top-level empty definitions retain an authenticated immutable table or create a
+fresh mutable copy. [Two exact sources and 162 public premises](coverage/semantics/dynamic-constant-empty-review.json)
+distinguish allocation classes and rebuilt append history, rejecting a mutable
+clone of a fixed literal. Nested empties, array warning/flag paths, objects and
+cycles remain Unsupported.
 [Untyped positional defaults](docs/semantics/SOURCE-POSITIONAL-DEFAULTS.md) now preserve
 omitted receives, declaration context, observable caches and fresh reference/array
 ownership. [Independent acceptance](coverage/semantics/default-parameter-review.json)

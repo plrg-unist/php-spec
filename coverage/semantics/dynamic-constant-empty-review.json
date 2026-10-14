@@ -1,0 +1,89 @@
+{
+  "status": "private_passed",
+  "target": "PHP 8.5.10 CLI NTS64",
+  "base": "21189749ff9d9f4e19d21aa85396ba42e477821f",
+  "implementation_revision": "8352710b0a4144e61d026d1313f13f5b8a539d27",
+  "tested_cut": {
+    "module_count": 391,
+    "semantic_diff_sha256": "9e6a01263fa702f249f107f947279097a63c46d02c4f6d6d96c3c83e891860a8",
+    "committed_files_sha256": {
+      "spec/semantics/400-dynamic-constants.watsup": "a66e7573987a9550baa20ce6dfbc1d9d414f9cc6d09f69b83c08e1281bb29c0b",
+      "tests/semantics/dynamic_constant_empty_protocol.py": "4b0eb28858fb93b761373a4bc526cd7c667ab7b21480c54e05462a45b7a75998",
+      "tests/semantics/dynamic_constant_array_protocol.py": "db75af74ee4a3adb0e1ea7c84a4a2533783fd6c5ff4a8f1fb040c046125fc71a"
+    },
+    "scope": "One400-only runtime cut for both exact source comparisons and both public fronts. The unchanged array protocol supplies only imported PREFIX/public helpers; its earlier219 campaign is not renewed."
+  },
+  "behavior": [
+    "Fresh two-argument define accepts top-level empty arrays. An actual array_immutable fact retains the same logical table and PVARRAY true eps; topology alone does not establish this class.",
+    "A mutable emptied array is rebuilt through existing dynamic_array_finish into a fresh canonical empty table with PVARRAY false eps. Its append history is reset while the original source array keeps its history.",
+    "Literal array matching checks actual/known immutability class as well as contents. A canonical mutable clone with matching empty contents and consistent false class cannot impersonate a fixed empty literal.",
+    "Both empty arms require eps ancestry, valid bounds and allocation. Mutable check mode allocates nothing and requires the exact canonical table; nested empty values remain Unsupported.",
+    "Variable payloads retain the existing structural table policy. Nonempty recursion stays unchanged and its literal classes compare false/false. Request fields/status, shared array/GC helpers and lifetime policies are unchanged."
+  ],
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_builtin_functions.c: ZEND_FUNCTION(define), Z_REFCOUNTED_P decides copy_constant_array versus ZVAL_COPY; fresh keyed insertion rebuilds the mutable table",
+    "vendor/php-src/Zend/zend_hash.h: ZVAL_EMPTY_ARRAY uses non-refcounted IS_ARRAY; zend_types.h ZVAL_ARR uses IS_ARRAY_EX for allocated arrays",
+    "spec/semantics/301-cycle-collection.watsup: array_immutable/gc_immutable_array require canonical empty plus actual retained flag or pooled empty-literal authority;36-arrays.watsup allocation and400's existing dynamic_array_finish are reused"
+  ],
+  "accepted": {
+    "exact_cli_sources": 2,
+    "source_cases": [
+      "static-native-v43/literal-empty",
+      "static-native-v43/emptied-array"
+    ],
+    "source_result": "Both checked/program normal0 tuples match full native stdout/empty stderr with CLI0/stable inputs with runtime diff 9e6a. The mutable source appends at key1 while its constant copy appends at key0; both constants remain empty.",
+    "public_fronts": {
+      "literal": 79,
+      "mutable": 83
+    },
+    "public_premises": 162,
+    "public_result": "Two full391 SL runners exit0/exact trueLF/empty stderr/stable. Genuine CONFIG publication and final states pass whole public/declaration/heap checks, including same-table/no-allocation literal and fresh canonical mutable copy.",
+    "counterexamples": "Wrong class bit, source/name, duplicate row and dangling allocation reject. The fixed literal rejects a same-content mutable clone with matching false class even though its heap and canonical mutable check are valid. Mutable NEXT/SERIAL changes remain heap-plausible but fail snapshot authority.",
+    "isolated_raw_phpstep_projections": 0,
+    "synthetic_or_proof_continuations": 0,
+    "production_continuations": 2,
+    "successful_array_registrations": 2,
+    "isolated_scope_projection": "One allocated parent containing the genuine empty snapshot refuses in both copy and check modes; no projected state is driven."
+  },
+  "preserved_zero_credit": [
+    "The unchanged literal baseline stops Unsupported dynamic constant call domain after B| with CLI1/empty stderr; native disagreement and baseline0 remain retained.",
+    "Initial preparation has the same162 clauses with no actor. The sole recorder change requires exact trueLF rather than whitespace-stripped true; fresh02 fixtures are byte-identical to parse-checked01.",
+    "Native observations, preparations and standalone syntax checks retain0. No affected-source or public numeric actor failed; no V42 source/state was replayed."
+  ],
+  "remaining": [
+    "Nested empty values, cycles, objects, array duplicate/third-argument warning paths, coercions, owning/FCC forms, packs and wider callbacks remain Unsupported in this bounded array slice.",
+    "Direct namespace-fallback define, full variable-input history and complete constant/core behavior remain partial.",
+    "Native output observes keys, contents and COW; allocation-class/identity distinctions are source-grounded machine checks, not native physical-allocation observations. No fresh build or portability claim."
+  ],
+  "artifacts": {
+    "native_pair": {
+      "path": ".tools/dynamic-review-02/static-native-v43/report.json",
+      "sha256": "ae09d997fb66286bbd6b94f9569b7520341caa720e80ccb7c78ce8b068058e72"
+    },
+    "unchanged_literal_baseline": {
+      "path": ".tools/dynamic-source-dynamic-constant-empty-baseline-23/report.json",
+      "sha256": "628990e3193ed311267b29c3b1f04a36f6db5d6210260f2ff5e16fd1a9d0babd"
+    },
+    "affected_literal_source": {
+      "path": ".tools/dynamic-source-dynamic-constant-empty-model-24/report.json",
+      "sha256": "697e2a0c577ec8bdf93fa55a20674991927c3d36198da464af3ee2f9503b546a"
+    },
+    "reviewed_mutable_source": {
+      "path": ".tools/dynamic-review-02/dynamic-constant-empty-model-v1/report.json",
+      "sha256": "c6413c9bc1a5a486826567c5ba4935a560ebea4492b504467afa78e5e2b80254"
+    },
+    "initial_public_preparation": {
+      "path": ".tools/dynamic-source-dynamic-constant-empty-state-01/fixtures-report.json",
+      "sha256": "481d9e7c1d69c48938d823d277ed098b0a7b354945f62824b6d6aadf0d5a88e6"
+    },
+    "exact_result_preparation": {
+      "path": ".tools/dynamic-source-dynamic-constant-empty-state-02/fixtures-report.json",
+      "sha256": "528e9710bd84dba7488bc2feb9552e59ae61201b698d14fdea3ace26d5518f7c"
+    },
+    "public_two_fronts": {
+      "path": ".tools/dynamic-source-dynamic-constant-empty-state-02/check-report.json",
+      "sha256": "665f21df65db999333837acf2c24e8b0600130b2cd2f6cb99180febf917725a5"
+    }
+  },
+  "recovery": "Canonical ignored originals/raw and the private branch retain inputs. dynamic_constant_empty_protocol.py --phase fixtures/--sources/--output prepares the two source-derived fronts; --phase check runs full modules --sl with90s per front, serial stop-first. CLI60/process90 and native process30; source/runtime/profile/pipeline inputs are pinned before/after. Metadata needs no semantic rerun."
+}

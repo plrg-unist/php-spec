@@ -7,14 +7,23 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Top-level empty `define` values now preserve their allocation class. Authenticated
+immutable empties retain their table; mutable emptied arrays become fresh canonical
+tables with rebuilt append history. Two exact sources and two public fronts/162
+premises pass with runtime diff 9e6a, including same-table versus fresh-copy roots, wrong-class and
+history rejection, and a mutable clone that cannot impersonate a fixed literal.
+The baseline/native/preparations retain 0; nested-empty refusal is a pure projection.
+Nested empties, array warning/flag paths and wider domains remain Unsupported.
+[Empty-define ledger](coverage/semantics/dynamic-constant-empty-review.json).
+
 Fresh two-argument `define` now snapshots nonempty acyclic scalar-array trees.
 It dereferences source cells and rebuilds ordered tables, so later source writes
 preserve the constant and append indexes follow surviving keys. Two exact sources
 and two public fronts/219 premises pass at ada3, including request-string classes,
 nested references, literal-array facts and rejection of installed aliases or forged
 table history. Pure cycle/DAG checks remain separate; the baseline and preparations
-retain0. Empty arrays at any depth, array warning/flag paths and objects remain
-Unsupported; variable payloads retain structural authority.
+retain0. At that cut, empty arrays at any depth, array warning/flag paths and objects
+remain Unsupported; variable payloads retain structural authority.
 [Array-define ledger](coverage/semantics/dynamic-constant-array-review.json).
 The 391-module composition over 0599 passes independent review at 9ce759fd;
 accepted rules/protocol and parent operational paths are preserved.
