@@ -80,6 +80,10 @@ dec $dynamic_constant_case_valid(pstate, pconfigcall) : bool
 dec $dynamic_constant_duplicate_valid(pstate, pconfigcall, nat) : bool
 ;; Registration occurs after the ignored-flag warning, so a callback may have
 ;; installed the same key. Keep the original captured arguments in either path.
+dec $dynamic_define_known(pstate, porigin, nat) : pvalue?
+dec $dynamic_array_call_valid(pstate, pconfigcall) : bool
+dec $dynamic_array_value(pstate, pvalue, nat*, bool) : (pstate, pvalue, pvalueclass)?
+dec $dynamic_array_known_matches(pstate, pvalue, pvalue?) : bool
 dec $dynamic_define_finish(pstate, pconfigcall) : pstate
 def $dynamic_define_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME $user_constant_key(preqbytes), ORIGIN pconfigcall.SITE, VALUE pvalue, CLASS pvalueclass, READS eps, RECEIVES eps}]][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pconfigcall.KIND = INTRINSIC_DEFINE
@@ -97,6 +101,13 @@ def $dynamic_define_finish(S, pconfigcall) = $error_dispatch(S[.TODO = (DYNAMIC_
   -- if $dynamic_constant_duplicate_valid(S, pconfigcall, n_constants)
   -- if $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
   -- if ptbytes_message = $global_constant_duplicate_message(preqbytes)
+  -- if S.TODO = ptask :: ptask_tail*
+def $dynamic_define_finish(S, pconfigcall) = S_copy[.TODO = ptask_tail*][.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME $user_constant_key(preqbytes), ORIGIN pconfigcall.SITE, VALUE pvalue, CLASS pvalueclass, READS eps, RECEIVES eps}]][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $dynamic_array_call_valid(S, pconfigcall)
+  -- if $dynamic_define_values(pconfigcall) = ((preqbytes, PARRAY n_array))
+  -- if $source_constant_lookup(S, preqbytes) = eps
+  -- if $dynamic_array_value(S, PARRAY n_array, eps, true) = ((S_copy, pvalue, pvalueclass))
+  -- if $dynamic_array_known_matches(S_copy, pvalue, $dynamic_define_known(S_copy, pconfigcall.SITE, 1))
   -- if S.TODO = ptask :: ptask_tail*
 def $dynamic_define_finish(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "dynamic constant call domain"] -- otherwise
 
@@ -138,7 +149,6 @@ rule PhpStep/dynamic-constant-duplicate: S ~> S[.TODO = ptask_tail*][.RESULT = K
 
 ;; Only immutable compiler facts constrain literal payloads. A mutable variable
 ;; argument is captured by the runtime row and is never evaluated again here.
-dec $dynamic_define_known(pstate, porigin, nat) : pvalue?
 def $dynamic_define_known(S, porigin, 0) = $compiled_read(S, porigin_argument)
   -- if $intrinsic_argument(S, porigin, 0) = ((expression, false, eps, porigin_argument, z))
 def $dynamic_define_known(S, porigin, 1) = $compiled_read(S, porigin_argument)
@@ -219,3 +229,83 @@ def $error_call_valid(S, perrorcall) = true
 def $error_context_trigger(S, pcallcontext) = (pconfigcall)
   -- if $error_context_call(S, pcallcontext) = (perrorcall)
   -- if perrorcall.RESUME = DYNAMIC_CONSTANT_CASE_WARNING pconfigcall
+
+;; Dynamic array constants copy scalar trees, rather than retaining source
+;; reference cells or their append history. Check mode allocates nothing and
+;; requires the exact DIRECT table that the copying fold would have rebuilt.
+dec $dynamic_array_item(pstate, pitem, bool) : pvalue?
+def $dynamic_array_item(S, DIRECT pvalue, b_copy) = (pvalue)
+def $dynamic_array_item(S, ALIAS n_cell, true) = (pvalue)
+  -- if $(n_cell < |S.STORE|)
+  -- if HCELL n_cell <- S.ALLOCATIONS
+  -- if S.STORE[n_cell] = DEFINED pvalue
+def $dynamic_array_item(S, pitem, b_copy) = eps -- otherwise
+
+dec $dynamic_array_entries(pstate, pentry*, nat*, parray, (pkey, pvalueclass)*, bool) : (pstate, parray, (pkey, pvalueclass)*)?
+dec $dynamic_array_finish(pstate, nat, parray, (pkey, pvalueclass)*, bool) : (pstate, pvalue, pvalueclass)?
+def $dynamic_array_value(S, pvalue, n_seen*, b_copy) = ((S, pvalue, pvalueclass))
+  -- if $dynamic_constant_class(pvalue) = (pvalueclass)
+  -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
+def $dynamic_array_value(S, PARRAY n_array, n_seen*, b_copy) = $dynamic_array_finish(S_items, n_array, parray, (pkey_items, pvalueclass_items)*, b_copy)
+  -- if $(n_array < |S.ARRAYS|)
+  -- if HARRAY n_array <- S.ALLOCATIONS
+  -- if ~(n_array <- n_seen*)
+  -- if S.ARRAYS[n_array].ITEMS =/= eps
+  -- if $dynamic_array_entries(S, S.ARRAYS[n_array].ITEMS, n_seen* ++ [n_array], $array_empty(), eps, b_copy) = ((S_items, parray, (pkey_items, pvalueclass_items)*))
+def $dynamic_array_value(S, pvalue, n_seen*, b_copy) = eps -- otherwise
+
+def $dynamic_array_entries(S, eps, n_seen*, parray, (pkey_prior, pvalueclass_prior)*, b_copy) = ((S, parray, (pkey_prior, pvalueclass_prior)*))
+def $dynamic_array_entries(S, (ENTRY pkey pitem) :: pentry_tail*, n_seen*, parray, (pkey_prior, pvalueclass_prior)*, b_copy) = $dynamic_array_entries(S_item, pentry_tail*, n_seen*, $array_insert(parray, pkey, DIRECT pvalue_copy), (pkey_prior, pvalueclass_prior)* ++ [(pkey, pvalueclass_copy)], b_copy)
+  -- if $dynamic_array_item(S, pitem, b_copy) = (pvalue)
+  -- if $dynamic_array_value(S, pvalue, n_seen*, b_copy) = ((S_item, pvalue_copy, pvalueclass_copy))
+def $dynamic_array_entries(S, pentry*, n_seen*, parray, (pkey_prior, pvalueclass_prior)*, b_copy) = eps -- otherwise
+
+def $dynamic_array_finish(S, n_array, parray, (pkey_items, pvalueclass_items)*, true) = ((S_copy, pvalue, PVARRAY false (pkey_items, pvalueclass_items)*))
+  -- if S_copy = $allocate_array(S, parray)
+  -- if S_copy.RESULT = KNOWN pvalue
+def $dynamic_array_finish(S, n_array, parray, (pkey_items, pvalueclass_items)*, false) = ((S, PARRAY n_array, PVARRAY false (pkey_items, pvalueclass_items)*))
+  -- if S.ARRAYS[n_array] = parray
+def $dynamic_array_finish(S, n_array, parray, (pkey_items, pvalueclass_items)*, b_copy) = eps -- otherwise
+
+;; Literal array facts constrain contents, not internal array IDs. Variable
+;; arguments keep the same structural table policy as primitive dynamic values.
+dec $dynamic_array_same(pstate, pvalue, pvalue) : bool
+dec $dynamic_array_same_entries(pstate, pentry*, pentry*) : bool
+def $dynamic_array_same(S, PARRAY n_left, PARRAY n_right) = $dynamic_array_same_entries(S, S.ARRAYS[n_left].ITEMS, S.ARRAYS[n_right].ITEMS)
+  -- if $(n_left < |S.ARRAYS| /\ n_right < |S.ARRAYS|)
+  -- if HARRAY n_left <- S.ALLOCATIONS /\ HARRAY n_right <- S.ALLOCATIONS
+def $dynamic_array_same(S, PARRAY n_left, PARRAY n_right) = false
+  -- if $(n_left >= |S.ARRAYS| \/ n_right >= |S.ARRAYS|) \/ ~(HARRAY n_left <- S.ALLOCATIONS) \/ ~(HARRAY n_right <- S.ALLOCATIONS)
+def $dynamic_array_same(S, pvalue_left, pvalue_right) = ($string_plain(pvalue_left) = $string_plain(pvalue_right)) -- otherwise
+def $dynamic_array_same_entries(S, eps, eps) = true
+def $dynamic_array_same_entries(S, (ENTRY pkey (DIRECT pvalue)) :: pentry_left*, (ENTRY pkey pitem) :: pentry_right*) = ($dynamic_array_same(S, pvalue, pvalue_known) /\ $dynamic_array_same_entries(S, pentry_left*, pentry_right*))
+  -- if $dynamic_array_item(S, pitem, true) = (pvalue_known)
+def $dynamic_array_same_entries(S, pentry_left*, pentry_right*) = false -- otherwise
+def $dynamic_array_known_matches(S, pvalue, eps) = true
+def $dynamic_array_known_matches(S, pvalue, (pvalue_known)) = $dynamic_array_same(S, pvalue, pvalue_known)
+
+dec $dynamic_array_source(pstate, porigin) : bool
+def $dynamic_array_source(S, porigin) = ($dynamic_define_source(S, porigin) /\ $intrinsic_count(S, porigin) = (2))
+def $dynamic_array_call_valid(S, pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_DEFINE
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if $dynamic_array_source(S, pconfigcall.SITE)
+  -- if $dynamic_define_values(pconfigcall) = ((preqbytes, PARRAY n_array))
+  -- if $dynamic_constant_global_name(preqbytes)
+  -- if ~$dynamic_constant_initial(preqbytes)
+  -- if $dynamic_define_name_matches($user_constant_key(preqbytes), $dynamic_define_known(S, pconfigcall.SITE, 0))
+def $dynamic_array_call_valid(S, pconfigcall) = false -- otherwise
+
+def $user_constants_valid(S, puserconstant :: puserconstant_tail*) = true
+  -- if $dynamic_array_source(S, puserconstant.ORIGIN)
+  -- if $dynamic_constant_global_name(puserconstant.NAME)
+  -- if puserconstant.NAME = $user_constant_key(puserconstant.NAME)
+  -- if ~$dynamic_constant_initial(puserconstant.NAME)
+  -- if puserconstant.VALUE = PARRAY n_array
+  -- if $dynamic_array_value(S, PARRAY n_array, eps, false) = ((S, PARRAY n_array, puserconstant.CLASS))
+  -- if puserconstant.READS = eps /\ puserconstant.RECEIVES = eps
+  -- if $dynamic_define_name_matches(puserconstant.NAME, $dynamic_define_known(S, puserconstant.ORIGIN, 0))
+  -- if $dynamic_array_known_matches(S, puserconstant.VALUE, $dynamic_define_known(S, puserconstant.ORIGIN, 1))
+  -- if $user_constant_at(puserconstant_tail*, puserconstant.NAME) = eps
+  -- if $user_constants_valid(S, puserconstant_tail*)
