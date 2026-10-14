@@ -15,6 +15,9 @@ history rejection, and a mutable clone that cannot impersonate a fixed literal.
 The baseline/native/preparations retain 0; nested-empty refusal is a pure projection.
 Nested empties, array warning/flag paths and wider domains remain Unsupported.
 [Empty-define ledger](coverage/semantics/dynamic-constant-empty-review.json).
+The 391-module composition over a2b660c passes independent pointwise review at
+0ea017fb9; accepted rules/helpers and parent operational paths are preserved.
+No renewed actor/source/state evidence is claimed.
 
 Fresh two-argument `define` now snapshots nonempty acyclic scalar-array trees.
 It dereferences source cells and rebuilds ordered tables, so later source writes
