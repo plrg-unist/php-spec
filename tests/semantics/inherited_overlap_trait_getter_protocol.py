@@ -707,7 +707,7 @@ DERIVED = ['$property_hook_trait_parent_shape(S,pclassdesc_consumer[.PARENT = ep
  '~$property_hook_trait_parent_shape(S_final,pclassdesc_consumer,ppropertydesc_source.NAME) /\\ '
  '~$property_hook_trait_import_supported(S_final,pclassdesc_consumer,ppropertydesc_source)',
  'S_setter = S[.CLASSES = $iotg_class_replace(S.CLASSES,porigin_base,pclassdesc_base[.PROPERTIES = '
- '[ppropertydesc_parent[.SETVISIBILITY = (SETVISPROTECTED)],ppropertydesc_marker]])]',
+ '[ppropertydesc_parent[.SETVISIBILITY = (PROPERTY_PROTECTED)],ppropertydesc_marker]])]',
  '~$property_hook_trait_parent_shape(S_setter,pclassdesc_consumer,ppropertydesc_source.NAME) /\\ '
  '~$property_hook_trait_import_supported(S_setter,pclassdesc_consumer,ppropertydesc_source)',
  'S_untyped = S[.CLASSES = $iotg_class_replace(S.CLASSES,porigin_base,pclassdesc_base[.PROPERTIES = '
