@@ -1,0 +1,104 @@
+{
+  "status": "private_passed",
+  "target": "PHP 8.5.10 CLI NTS64",
+  "base": "f225bbd09b4403bf185513bba26131fc387a06b1",
+  "implementation_revision": "901afeffd2c8581ec3520ea43c589c31525a8b00",
+  "tested_cut": {
+    "module_count": 390,
+    "semantic_diff_sha256": "ada3a66133986dcb8b3dbd180865644aa8652f3808817989ef4e30b8098fbe4d",
+    "committed_files_sha256": {
+      "spec/semantics/400-dynamic-constants.watsup": "d74d46e2a2e2af7d6ed88a987184cb8b0ca1898cf51266ac76f8f48d0a0bc599",
+      "tests/semantics/dynamic_constant_array_protocol.py": "db75af74ee4a3adb0e1ea7c84a4a2533783fd6c5ff4a8f1fb040c046125fc71a"
+    },
+    "scope": "One400-only runtime cut for both exact sources and both public fronts; maintained protocol matches the tested script."
+  },
+  "behavior": [
+    "Fresh two-argument global define copies nonempty acyclic array trees with primitive/authenticated string-carrier leaves. Source reference cells are dereferenced into DIRECT entries; nested containers are fresh, and later source/COW writes preserve the constant.",
+    "Surviving keys are reinserted in order through array_insert, rebuilding NEXT, POSITIONS and SERIAL instead of copying source append history. Actual leaf carriers determine the keyed PVARRAY false class tree.",
+    "Path-local ancestry rejects cycles while allowing repeated noncyclic children to copy independently. Check mode allocates nothing and requires exact canonical DIRECT tables and classes.",
+    "Real CONFIG/source/retained dynamic selection, canonical unique key, empty read/receive metadata and available positional literal facts authenticate publication and stored rows. Literal arrays compare ordered keys and leaf bytes/bits, without requiring internal array ID equality.",
+    "Variable array payloads retain the existing structural table policy, not full past-input provenance. Primitive registration/warning routes, shared array/COW helpers, request schema/status and lifetime policies are unchanged."
+  ],
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_builtin_functions.c: ZEND_FUNCTION(define), validate_constant_array_argument and copy_constant_array; recursive ZVAL_DEREF and fresh keyed insertion",
+    "spec/semantics/36-arrays.watsup: array_empty/array_insert/allocate_array;89-user-constants.watsup and39-ownership.watsup retain constant roots and ordinary COW ownership unchanged"
+  ],
+  "accepted": {
+    "exact_cli_sources": 2,
+    "source_cases": [
+      "static-native-v42/append-copy",
+      "static-native-v42-literal/nested-reference-literal"
+    ],
+    "source_result": "Checked/program normal0, CLI0 and exact full native stdout/empty stderr at ada3. Append55stdout; selected nested/literal43stdout. No accepted source was replayed.",
+    "public_fronts": {
+      "append": 90,
+      "nested_and_literal": 129
+    },
+    "public_premises": 219,
+    "public_result": "Two full390 SL runners exit0/true/empty stderr/stable. Actual CONFIG publication and final states pass whole public/declaration/heap checks; the nested front also reaches the real later literal CONFIG and registration.",
+    "counterexamples": "Installed same-value live ALIAS, wrong root/child carrier class, dangling carrier, source/selection/name/read/receive/uniqueness and heap-plausible gap NEXT/positions/serial mutations reject. Literal leaf18 keeps canonical topology and scalar class but fails the actual Some literal constraint. Source aliases remain genuine before the later31 writes.",
+    "isolated_raw_phpstep_projections": 0,
+    "synthetic_or_proof_continuations": 0,
+    "production_continuations": 2,
+    "successful_array_registrations": 3,
+    "isolated_helper_scenarios": [
+      "Cycle refusal",
+      "Repeated noncyclic child copied independently"
+    ],
+    "structural_policy_control": "A class-consistent variable-array leaf replacement remains admissible; this does not claim arbitrary past-value authentication."
+  },
+  "preserved_zero_credit": [
+    "The unchanged append baseline stops Unsupported dynamic constant call domain at the first define, B|/empty stderr/CLI1; baseline0.",
+    "The initial native nested-reference original and prepared model-v1 remain native-only/preparation0. The single new nested+literal original replaces only the independent model source; it is not a third model source or public front.",
+    "Preparation01 encoded both fixtures but standalone append parsing found one missing closing bracket. Preparation02 corrects only that bracket; preparation03 strengthens only wrong-root-bit variants to retain keyed child classes. Neither earlier preparation launched a numeric actor.",
+    "Native observations, preparations and standalone syntax-only checks have no model agreement credit. No affected-source or public numeric actor failed."
+  ],
+  "remaining": [
+    "Empty arrays at every depth, cycles, objects, array duplicate/third-argument warning paths, owning/FCC forms and argument packs remain Unsupported in this array slice.",
+    "Wider coercions, direct namespace-fallback define, callbacks/value-release combinations and full constant/core behavior remain partial.",
+    "No old scalar/warning source or state renewal, general input-history proof, native allocation-identity observation, fresh build or portability claim."
+  ],
+  "artifacts": {
+    "native_pair": {
+      "path": ".tools/dynamic-review-02/static-native-v42/report.json",
+      "sha256": "7b014f23dfbc1969201e0bcc2ef72fa6526552efb32081ef7789b35a5ef46eb9"
+    },
+    "native_literal_supplement": {
+      "path": ".tools/dynamic-review-02/static-native-v42-literal/report.json",
+      "sha256": "faa527b2dd2b1c84321653778122525037f8e4f07c1c4f7dc018fd2c82f7506e"
+    },
+    "unchanged_append_baseline": {
+      "path": ".tools/dynamic-source-dynamic-constant-array-baseline-22/report.json",
+      "sha256": "dcdae6bc32ed2d162b6b9c6573deafbe5bebb2087bd38d3925bae61fece6853d"
+    },
+    "affected_append_source": {
+      "path": ".tools/dynamic-source-dynamic-constant-array-model-23/report.json",
+      "sha256": "dd58de0a98a68e8c77986157b756466e050b798489c3553cbea46f1f6bee5e00"
+    },
+    "independent_nested_literal_source": {
+      "path": ".tools/dynamic-review-02/dynamic-constant-array-model-v2/report.json",
+      "sha256": "8f5ce73e85ac3514319b168072aeedb9e51f6e514e45ead2a43d43675a646d8c"
+    },
+    "initial_preparation": {
+      "path": ".tools/dynamic-source-dynamic-constant-array-state-01/fixtures-report.json",
+      "sha256": "21e22bea7dab904c68f1fd4a4385c3372179a85bcfb3100259fbb6ab5e10240b"
+    },
+    "initial_parse_failure": {
+      "path": ".tools/dynamic-source-dynamic-constant-array-state-01/parse-preflight/append.stdout",
+      "sha256": "159206e1fbd97a66783472bfa547bddbb5d4542dde7555407f0bbcf1234caa3a"
+    },
+    "bracket_corrected_preparation": {
+      "path": ".tools/dynamic-source-dynamic-constant-array-state-02/fixtures-report.json",
+      "sha256": "28d34daa10148246a79a9982562b263d6ba4a75e38f9124c810c2ccd5c164a56"
+    },
+    "wrong_bit_strengthened_preparation": {
+      "path": ".tools/dynamic-source-dynamic-constant-array-state-03/fixtures-report.json",
+      "sha256": "126f1a66a312bed50093c4582c607f313332f9057fc12d45fc3177085f5c2246"
+    },
+    "public_two_fronts": {
+      "path": ".tools/dynamic-source-dynamic-constant-array-state-03/check-report.json",
+      "sha256": "ffb5c46d62dc23dabaf8cd884fac0b5c36821100b0cff09d307fe0d69dfecc5f"
+    }
+  },
+  "recovery": "Canonical ignored originals/raw and the private branch retain inputs. dynamic_constant_array_protocol.py --phase fixtures/--sources/--output prepares the two real source fronts; --phase check runs full modules --sl with90s per front, serial stop-first. CLI60/process90, native process30. Reports pin source/runtime/profile/pipeline before and after; metadata requires no semantic rerun."
+}

@@ -7,6 +7,16 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Fresh two-argument `define` now snapshots nonempty acyclic scalar-array trees.
+It dereferences source cells and rebuilds ordered tables, so later source writes
+preserve the constant and append indexes follow surviving keys. Two exact sources
+and two public fronts/219 premises pass at ada3, including request-string classes,
+nested references, literal-array facts and rejection of installed aliases or forged
+table history. Pure cycle/DAG checks remain separate; the baseline and preparations
+retain0. Empty arrays at any depth, array warning/flag paths and objects remain
+Unsupported; variable payloads retain structural authority.
+[Array-define ledger](coverage/semantics/dynamic-constant-array-review.json).
+
 Direct MAIN warning-callback destructor exit now overrides a pending user
 Throwable while retaining its owner through helper completion and caller-temporary
 cleanup. Safe bool/decrement-null restore before parent cleanup; strings skip the

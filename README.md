@@ -809,6 +809,11 @@ Boolean `case_insensitive=true` now warns before registration while keeping case
 sensitivity. A handler-created binding wins the subsequent duplicate check;
 [two exact sources and 221 public premises](coverage/semantics/dynamic-constant-flag-review.json)
 cover the retained arguments, callback entry and live-table ordering.
+Fresh two-argument `define` also copies nonempty acyclic scalar-array trees,
+dereferencing source cells and rebuilding append history. Request-string leaves,
+nested reference snapshots and literal constraints pass
+[two exact sources and 219 public premises](coverage/semantics/dynamic-constant-array-review.json).
+Empty arrays, array warning/flag paths, objects and cycles remain Unsupported.
 [Untyped positional defaults](docs/semantics/SOURCE-POSITIONAL-DEFAULTS.md) now preserve
 omitted receives, declaration context, observable caches and fresh reference/array
 ownership. [Independent acceptance](coverage/semantics/default-parameter-review.json)

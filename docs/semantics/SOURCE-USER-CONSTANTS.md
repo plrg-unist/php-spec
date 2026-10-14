@@ -68,10 +68,11 @@ The quiet-coalesce path captures the already computed left result before tempora
 
 ## Dynamic global constants
 
-Module400 implements `define`/`defined` for global string names and primitive
-values, including authenticated interned and request strings. Existing CONFIG
+Module400 implements `define`/`defined` for global string names, primitive
+values and bounded array snapshots, including authenticated interned and request strings. Existing CONFIG
 argument evaluation and retained dynamic-callee selection supply the actual
-completed arguments. Registration stores that value in `USERCONSTANTS`; later
+completed arguments. Registration stores the primitive value or copied array
+snapshot in `USERCONSTANTS`; later
 changes to the name or value CV do not change the row. The string class follows
 its actual carrier (`PVSTRING true` for interned, false for request strings).
 Identity-unknown legacy string values are explicitly Unsupported.
@@ -106,9 +107,23 @@ fronts/221 premises cover genuine callback entry, both argument-preserving resum
 the inner row origin and the later duplicate prefix in the
 [ignored-flag ledger](../../coverage/semantics/dynamic-constant-flag-review.json).
 
+Fresh two-argument array definitions recursively dereference source cells into
+new DIRECT entries. Reinserting surviving keys rebuilds NEXT, positions and serial
+metadata; ordinary copies and later source/reference writes preserve the constant.
+Nonempty acyclic trees contain primitive/carrier leaves, whose actual string
+classes are retained. Repeated noncyclic children may copy independently.
+Public checks require a canonical DIRECT tree and available literal-array facts,
+comparing ordered keys and leaf values rather than internal array IDs. Variable
+payloads keep structural authority without replaying past CVs. Two exact sources
+and two public fronts/219 premises cover request strings, gap appends, nested
+reference freezing and a later literal registration in the
+[array ledger](../../coverage/semantics/dynamic-constant-array-review.json).
+
 The matching engine routes are `ZEND_FUNCTION(define)`/`ZVAL_COPY`,
-`zend_register_constant`, and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`.
-Arrays/objects, name/flag coercion, startup/special-name warnings,
+`validate_constant_array_argument`/`copy_constant_array`, `zend_register_constant`,
+and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`.
+Empty arrays at any depth, cycles, objects, array duplicate/third-argument paths,
+name/flag coercion, startup/special-name warnings,
 class-constant queries, owning/FCC call forms and wider conversion/arity paths
 remain Unsupported. The [dynamic ledger](../../coverage/semantics/dynamic-constants-review.json)
 keeps the source and public-state cuts separate; it makes no native allocation-identity
