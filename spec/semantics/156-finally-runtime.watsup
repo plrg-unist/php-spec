@@ -189,6 +189,10 @@ def $ref_return_cursor_old_operand(S, prefreturncursor, KNOWN (PARRAY n)) = true
   -- if HARRAY n <- S.ALLOCATIONS
   -- if S.ARRAYS[n] = parray
 def $ref_return_cursor_old_operand(S, prefreturncursor, KNOWN pvalue) = true
+  -- if $ref_return_cursor_computed_call(S, prefreturncursor)
+  -- if $typed_string_value(pvalue)
+  -- if $operand_nodes(KNOWN pvalue) = eps
+def $ref_return_cursor_old_operand(S, prefreturncursor, KNOWN pvalue) = true
   -- if $ref_return_cursor_literal(S, prefreturncursor) = (pvalue)
 def $ref_return_cursor_old_operand(S, prefreturncursor, KNOWN pvalue) = true
   -- if $ref_return_cursor_concat(S, prefreturncursor)

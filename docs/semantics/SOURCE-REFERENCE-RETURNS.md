@@ -533,3 +533,14 @@ LINE changed. The original treatment Unsupported and a parse-only diagnostic
 remain separate. This covers one direct array entry and modeled retirement,
 not physical collection or other aggregate layouts; see the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M57 adds a computed-call string to the same source-only cursor rule. Although
+`old_value()` returns an interned `"old"` payload, its computed return slot is
+consumed during replacement; the caught `?string` recheck then restores NULL.
+A literal `"old"` source instead restores that immutable value. Native2/source2
+agree at private `dfa3632d`/391.
+Paired public88 follows both sources to null versus old restoration with one
+Notice each, rejects a heap-identical cursor LINE forgery through the driver,
+and checks split budget at active replay. This adds no heap-owner rule and does
+not cover other computed scalars or general CONST sources; see the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).

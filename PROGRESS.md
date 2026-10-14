@@ -2760,6 +2760,16 @@ failure retain zero repair credit. This bounded array layout does not establish
 physical collection, other aggregate layouts or broad returns completion;
 see the [ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
+M57 distinguishes a computed-call return slot from an immutable string literal
+in a caught by-reference `?string` recheck. Both pending values contain `"old"`;
+the computed source resumes with detached NULL after the inner TypeError, while the
+literal restores `"old"`. Each emits one original-line by-reference Notice.
+Native2/source2 agree at private `dfa3632d`/391. Paired public88 authenticates
+the source-only cursor, null versus literal restoration, a LINE-only driver
+refusal and active-replay split budget. The interned payload carries no heap
+owner; other computed scalars, CONST forms and broad returns remain open in the
+[ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
 Per-constant protection survives namespace publication and parked handlers.
