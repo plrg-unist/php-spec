@@ -216,6 +216,33 @@ rule PhpStep/number-compare-invalid: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORT
   -- if S.TODO = (NUMBER_COMPARE_RESULT pnumbercompare) :: ptask_tail*
   -- if ~$call_task_valid(S, NUMBER_COMPARE_RESULT pnumbercompare)
 
+;; Zend continues its C comparison while an exception is pending. Generic
+;; handler unwind is sound here only when that continuation has no effects.
+dec $number_compare_discard_other(pstate, pnumbercompare) : pvalue?
+def $number_compare_discard_other(S, pnumbercompare) = (pvalue)
+  -- if pnumbercompare.PHASE = NUMBER_PRIMARY
+  -- if $number_compare_other(S, pnumbercompare) = (pvalue)
+  -- if $type_bytes(pvalue) =/= $ptascii("object")
+def $number_compare_discard_other(S, pnumbercompare) = (pnumbercompare.TARGET)
+  -- if pnumbercompare.PHASE = NUMBER_SECOND n porigin
+def $number_compare_discard_other(S, pnumbercompare) = eps -- otherwise
+dec $number_compare_discard_safe(pstate, pnumbercompare) : bool
+def $number_compare_discard_safe(S, pnumbercompare) = true
+  -- if $number_compare_valid(S, pnumbercompare)
+  -- if $number_compare_discard_other(S, pnumbercompare) = (pvalue_other)
+  -- if paggregatecompare_source = pnumbercompare.SOURCE
+  -- if S_probe = S[.COMPLETION = NORMAL]
+  -- if (pvalue_left, pvalue_right) = $aggregate_leaf_values(paggregatecompare_source.CAST, pnumbercompare.TARGET, pvalue_other)
+  -- if (S_leaf, porder_leaf) = $value_order_effect(S_probe, pvalue_left, pvalue_right, $aggregate_cursor_lefts(paggregatecompare_source.CAST.STACK), paggregatecompare_source.LINE)
+  -- if (S_probe, ORDER i) = $aggregate_resume(S_leaf, porder_leaf, paggregatecompare_source.CAST.STACK, paggregatecompare_source.LINE)
+def $number_compare_discard_safe(S, pnumbercompare) = false -- otherwise
+def $error_read_discard(S, NUMBER_COMPARE_RESULT pnumbercompare) = S
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $number_compare_discard_safe(S, pnumbercompare)
+def $error_read_discard(S, NUMBER_COMPARE_RESULT pnumbercompare) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "numeric comparison pending-exception continuation"]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if ~$number_compare_discard_safe(S, pnumbercompare)
+
 ;; A preceding Stringable leaf may resume into a numeric Notice leaf.
 def $aggregate_compare_return(S, paggregatecompare, pvalue_text, pvalue_other) = $number_compare_start(S_next, paggregatecompare[.CAST = paggregatecallback_next], pvalue_target, eps, S_next.ENV, S_next.REFCELLS)
   -- if $type_bytes(pvalue_other) =/= $ptascii("object") \/ $throwable_compare_receiver(S, pvalue_other) =/= eps
