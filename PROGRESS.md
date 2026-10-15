@@ -19,6 +19,10 @@ Pure refusal projections do not establish wider array/operand execution.
 Empty/immutable/nested/owning arrays, wider operands/callbacks and lifecycle
 paths remain partial; OP12 stays paused.
 [Array-cast ledger](coverage/semantics/array-string-cast-warning-review.json).
+The 395-module composition over 94402a17 preserves incoming Generator unpack,
+constant and return paths. Independent pointwise review warrants no joined actor;
+source3 and state326 retain their private cuts without replay.
+
 `define` now receives int/bool/float names with primitive values and an
 omitted/already-false flag. Weak registration uses call-time precision; historical
 immutable-name checks allow a possible conversion after later precision changes.
