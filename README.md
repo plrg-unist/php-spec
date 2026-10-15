@@ -2528,7 +2528,11 @@ of a direct CV/literal private property. Initialized public and typed-uninitiali
 slots bypass it; actual true/false results preserve short circuiting and storage.
 One original and one state/215 checks cover typed name reception, lexical scope
 and receiver cleanup; [magic isset review](coverage/semantics/magic-isset-review.json).
-Other signatures, receivers and `empty`/coalesce magic combinations remain unsupported.
+Terminal `empty` now chains that inherited `__isset` with an untyped by-value
+`__get`: false skips the getter, while true tests its integer result. One original
+and state208 cover sequencing, saved receiver ownership and cleanup;
+[magic empty review](coverage/semantics/magic-empty-review.json). Other signatures,
+receivers, result families and coalesce magic combinations remain unsupported.
 Hooked iteration, defaulted virtual hooks, other paired or virtual setters, wider trait
 setters, other explicit setter parameter forms, references, other inherited/trait
 and wider receiver, quiet or indirect-access families and wider `__unset` consumers remain required.

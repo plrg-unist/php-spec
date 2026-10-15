@@ -7,12 +7,23 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Terminal `empty` now composes inherited `__isset(string): bool` and untyped
+by-value `__get` for selected CV/literal private properties. False skips the getter;
+true inverts its integer result. Public initialized and typed-INITIAL slots bypass
+both, and Parent lexical scope stays distinct from Child called scope. One normal
+original agrees at d9df16379; state208 =138 reached +70 derived passes at e8703a594,
+including captured receiver ownership, private bypass, noninteger refusal, both
+derived throw cleanups and budget resume. Two pre-app fixture failures and one
+incorrect derived expectation retain zero passing credit. Wider result/signature,
+recursive and quiet combinations remain partial.
+[Magic empty review](coverage/semantics/magic-empty-review.json).
+
 Selected inherited `__isset(string): bool` now handles terminal CV/literal private
 property tests, while initialized public and typed-INITIAL slots bypass it. Actual
 true/false callback results preserve multi-property short circuiting and unchanged
 storage. Source1 passes at 5a6f91be; one state215 =164 reached +51 derived passes
-at 5551514f, including normal/abrupt receiver release. Empty/coalesce combinations
-and wider magic forms remain unsupported. Historical `__unset` retains an exact
+at 5551514f, including normal/abrupt receiver release. Wider coalesce combinations
+and magic forms remain unsupported. Historical `__unset` retains an exact
 source-proof compatibility bridge without replay.
 [Review](coverage/semantics/magic-isset-review.json).
 The 397-module composition over 214dbc9b passes retained SL initialization at e484862a;

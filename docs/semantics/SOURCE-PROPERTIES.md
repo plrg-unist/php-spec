@@ -436,9 +436,24 @@ unchanged. A saved RESULT retains one receiver owner through return or abrupt
 frame discard. One original and state215 =164 reached +51 derived cover the
 selected behavior; abrupt cleanup is a task-local derived check. Other signatures,
 traits/owners, property families, receivers/names and recursive magic remain
-unsupported. `empty`, coalesce and `__get` combinations stop explicitly rather
-than silently use quiet NULL.
+unsupported. Coalesce and wider magic combinations stop explicitly rather than
+silently use quiet NULL.
 [Magic isset review](../../coverage/semantics/magic-isset-review.json).
+
+Terminal `empty` of that external CV/literal private property now composes the
+inherited bool `__isset` with a public nonstatic nonref `__get($name)` having no
+parameter or return type, declared on the same parentless ordinary owner. False
+skips the getter; true calls it with the original name and captured receiver. One
+saved RESULT owns the receiver across both borrowed calls. Integer getter results
+are inverted by zero/nonzero truth; other result families stop explicitly. Parent
+lexical scope and Child called scope remain distinct, and initialized public or
+typed-INITIAL slots bypass both callbacks. An active getter can still read its own
+initialized private slot ordinarily. One normal original and state208 =138 reached
++70 derived cover those seams, name/source/task/frame refusals, rebound caller CV,
+budget resume and normal receiver release. Both abrupt receiver releases are
+derived state checks, not throwing-source agreements. Recursive magic, other
+signatures/results and wider quiet receivers/names remain partial.
+[Magic empty review](../../coverage/semantics/magic-empty-review.json).
 
 Constructor promotion declares a property from its original parameter flags and
 source occurrence. A parameter default does not initialize the property, and
