@@ -2061,14 +2061,14 @@ pass three exact sources and 423 Boolean premises/12 raw steps.
 now admit real/named Closures and Generator/Fiber targets after the first source
 cast. The quiet failed second implicit cast preserves signed order, retained cells,
 cursor pins and captured children without invoking a callable or resuming a VM.
-Three exact sources and 352 Boolean premises/13 raw steps pass; custom object-pair
-comparisons, numeric Notice routes and wider lifetime limits are unchanged.
+Three exact sources and 352 Boolean premises/13 raw steps pass; other object-pair
+handlers and wider lifetime limits remain partial.
 [Weak internal changed operands](coverage/semantics/weak-nonstringable-redispatch-review.json)
 also admit WeakMap and WeakReference after the first source cast, including a live
 wrapper whose referent has expired. The second implicit cast fails quietly without
 reading private entries or referents. Three exact sources and 318 Boolean premises/
 12 raw steps preserve signed order, COPY/cell distinctions, COW and throw cleanup;
-pair, explicit-cast and existing producer/lifetime domains are unchanged.
+explicit-cast and existing producer/lifetime domains are unchanged.
 [Finite Throwable comparisons](coverage/semantics/throwable-string-comparison-review.json)
 now format builtin and inherited internal handlers at reached string leaves, including
 a new opposing object after a source cast. Root cache updates, ignored previous
@@ -2084,8 +2084,15 @@ limits remain separate.
 Mixed comparisons with live stdClass, source instances and WeakReference now
 return uncomparable +1 in both directions before properties or private entries.
 Seven-operator rows include expired referents; aggregate mismatches skip later
-Stringable leaves. Other internal/custom counterparts and wider numeric routes remain partial.
+Stringable leaves. Wider producer/lifetime forms remain partial.
 [Mixed comparison review](coverage/semantics/weakmap-mixed-comparison-review.json).
+Mixed WeakMap comparisons also admit normalized real/named Closures, actual
+Generator/Fiber tags and finite builtin Throwable kinds. Left-handler fallback and
+class mismatch skip captures, VMs, formatter/cache fields and later aggregate casts.
+Three exact originals and 468 Boolean premises/16 actual steps preserve owner1 and
+complete step states; the old non-map Throwable refusal stays distinct.
+Other Closure bodies/internal/custom counterparts and wider lifetimes remain partial.
+[Internal counterpart review](coverage/semantics/weakmap-internal-comparison-review.json).
 
 [Numeric object comparison Notices](coverage/semantics/object-numeric-comparison-review.json)
 now pause ordinary source-instance/int/float leaves through real error handlers.

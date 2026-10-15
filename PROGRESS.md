@@ -7,6 +7,23 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+WeakMap now compares with normalized real/named Closure, actual Generator/Fiber
+and finite builtin Throwable objects as uncomparable +1 in both directions.
+Class mismatch precedes private entries, captures, VMs and formatter/cache fields;
+nonzero aggregate leaves skip later real casts. The old Throwable effect refusal
+and admitted route are explicitly disjoint. Three exact originals and 468 Boolean
+premises (438 setup + 30 pure)/16 actual steps pass at the retained be386/2f97 cuts,
+covering all seven operators, VM phases, warm caches, private owner1 and budgets.
+The oversized originals' three timeouts, initial reserved-constructor fixture,
+older effect refusal and pre-main fixture failures retain zero credit; two smaller
+complete author originals preserve the intended coverage. Other Closure bodies,
+internal/custom counterparts and wider weak producers/lifetimes remain partial.
+[Internal WeakMap review](coverage/semantics/weakmap-internal-comparison-review.json).
+
+Composed over e50d681b7/399 after pointwise review of shared tasks, typed returns,
+Generator/delegation, constants, assignments and property/list dispatch. Source3
+and state468 retain their private cuts; no joined actor or renewed credit.
+
 With a quiet integer LEFT, plain-CV numeric `&=`/`|=`/`^=` now retain both longs
 through fractional-RHS deprecation. Captured12/5 from5.5 stores4/13/9 despite
 callback99/10 and detaches a late alias; supplied throw preserves callback writes,
