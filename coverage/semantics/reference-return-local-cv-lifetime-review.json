@@ -1305,5 +1305,47 @@
     "runtime": {"mode": "SL", "jobs": 1, "compiler_cap_seconds": 45, "public_cap_seconds": 120, "compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d", "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"},
     "recovery": "Preserve original ignored PHP sources and all native, baseline, diagnostic, affected-source and public scripts, fixtures and raw reports at their recorded paths. Restore the tested 646a9e5b/394 tree, six pinned tools and imported helpers if this private tracked worktree retires. In its original .tools/returns-switch-consumed59 directory, make_public.py regenerates switch-consumed-public.watsup byte-exact and run_public.py performs full SL45 compilation then numeric SL120, jobs1. Native, source and public are separate executions; metadata publication requires no semantic rerun.",
     "limits": "The no-read replay and modeled table/child retirement are established for one sole-owned mutable array with a direct O entry. This does not prove physical collection, borrowed-table or other aggregate layouts, or complete returns_verify."
+  },
+  "literal_array_const_caught_recheck": {
+    "status": "independently_accepted_bounded_literal_array_const_recovery",
+    "revision": "46af5bbc4926194a4370d1c85660cc3415707420",
+    "modules": 394,
+    "implementation": "spec/semantics/156-finally-runtime.watsup",
+    "scope": "A compiled literal ['old'] and a pure no-argument computed call yielding the same array cross a caught by-reference ?array finalizer recheck. The literal CONST source retains its pooled table and restores it with one original-line Notice; the computed return slot is consumed and resumes with NULL. The caller appends q through the literal result reference while y stays bad.",
+    "native": {
+      "raw": ".tools/returns-chain-owner-catch-current-24/.tools/returns-verify61-literal-array/native-literal-array-recheck-4ge126t8/report.json",
+      "report_sha256": "1ce735c9e94ec4e03ddbe2915b88264d289aefa5f3e3f7a8784994d45a5ed13e",
+      "result": "Two PHP20 exit0 observations. Computed Rn1/Ro0/A0 and literal Rn0/Ro1/A1, both Y1; each emits one own-path line3 by-reference Notice. Output alone does not establish CONST-pool retention or copy-on-write identity."
+    },
+    "source": {
+      "raw": ".tools/returns-literal-array-61/.tools/returns-literal-array61/model-literal-array-repaired-gb8fl6fa/report.json",
+      "report_sha256": "192ecc4e52c8e688abd5d46b0f5912c10a2d0e5ea9f30a00d6a9330bdf5d060c",
+      "strict_report_sha256": "fdea01d2b500e86a6c5c53cdde237cd45271f9aafaf11cae1392f2a15aec5afc",
+      "result": "Full 394-module SL strict passes with app0. Both checked requests are NORMAL and match native stdout, stderr and exit exactly, including original-line Notices; dual workers close quietly, and private 46af inputs stay stable."
+    },
+    "public": {
+      "raw": ".tools/returns-literal-array-61/.tools/returns-literal-array61/literal-array-public-cn8pdtb7/report.json",
+      "report_sha256": "f90dea6f3cf20baf6e0bb2a4778acb2cfa5a4496dc0538e27c1de9f7afcbf71f",
+      "producer_sha256": "6e846aa8888f80fa92df97e62b7e9a3f8458e5e1cb15dc24fba7024e700091e9",
+      "fixture_sha256": "25fa9e1b315af256da5eb28783561700dd330f1449a506b40becad21c8a1f687",
+      "runner_sha256": "5ed87c15f28600f44e246f5ea5a2a4e185a2bfd6e0a2b8ece9067b6d717e7ab1",
+      "main_premises": 104,
+      "public_negative_controls": 1,
+      "result": "One source-linked literal execution binds compiled_read and the pool-owned array before F, then the source-only cursor and one-owner active replay. A raw consumed PhpStep restores the same PARRAY and one Notice marker. At the actual caller append, r=a is detached from bad y; the final result is a distinct [old,q] table while the pooled [old] table stays unchanged. A LINE-only cursor mutation preserves the heap but fails descriptor and actual-driver admission. Active replay satisfies 0, 1+10000 and 10001 budget equality. Full fixture compilation and true-newline state pass."
+    },
+    "preserved_zero_credit": [
+      "Baseline 6b062ffc: computed call native-exact but literal Unsupported at V;F;I;.",
+      "Diagnostic 786e8b06 printed pending compiled_read/pool_value PARRAY8, retained pool owner and bare replay; output-only, no agreement or public credit."
+    ],
+    "runtime": {
+      "mode": "SL",
+      "jobs": 1,
+      "compiler_cap_seconds": 45,
+      "public_cap_seconds": 120,
+      "compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+      "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    },
+    "recovery": "Preserve the original ignored PHP sources and all native, baseline, diagnostic, affected-source and public scripts, fixtures and raw reports at recorded paths. Restore the tested 46af5bbc/394 tree, six pinned tools and imported helpers if this private tracked worktree retires. In its original .tools/returns-literal-array61 directory, make_public.py regenerates literal-array-public.watsup byte-exact and run_public.py performs full SL45 compilation then numeric SL120, jobs1. Native, source and public are separate executions; metadata publication does not renew semantic credit.",
+    "limits": "The pooled table and modeled copy-on-write are established for this one nonempty compiled literal and reached caller append. GC.IMMUTABLE is empty and array_immutable is false here; this does not prove physical collection, other literal layouts or complete returns_verify."
   }
 }

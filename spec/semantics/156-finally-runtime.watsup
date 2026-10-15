@@ -156,8 +156,8 @@ def $ref_return_cursor_site(S, prefreturncursor) = true
   -- if pfunction.SIGNATURE.RETURNS =/= eps
   -- if $finally_outer_origin_valid(S, prefreturncursor.OWNER, prefreturncursor.OUTER)
 def $ref_return_cursor_site(S, prefreturncursor) = false -- otherwise
-;; A literal CONST survives DISCARD_EXCEPTION. Its immutable string or
-;; explicit null source can recover this value without expression effects.
+;; A literal CONST survives DISCARD_EXCEPTION. Its string, explicit null,
+;; or compiler-pooled array source can recover the value without expression effects.
 def $ref_return_cursor_literal(S, prefreturncursor) = (pvalue_literal)
   -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NScalarString phpType33 metadata_string) metadata)
   -- if $evaluate(NScalarString phpType33 metadata_string) = VALUE pvalue
@@ -166,6 +166,12 @@ def $ref_return_cursor_literal(S, prefreturncursor) = (pvalue_literal)
 def $ref_return_cursor_literal(S, prefreturncursor) = (PNULL)
   -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprConstFetch (NName (BYTES text) metadata_name) metadata_const) metadata)
   -- if $special_constant($base64(text)) = (PNULL)
+def $ref_return_cursor_literal(S, prefreturncursor) = (PARRAY n_array)
+  -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprArray (SEQUENCE phpType13*) metadata_array) metadata_return)
+  -- if $origin_child((prefreturncursor.SOURCE), [PCFIELD 0]) = (porigin_array)
+  -- if $compiled_read(S, porigin_array) = (PARRAY n_array)
+  -- if HARRAY n_array <- S.ALLOCATIONS
+  -- if S.ARRAYS[n_array] = parray
 def $ref_return_cursor_literal(S, prefreturncursor) = eps -- otherwise
 ;; A call operand prevents constant folding; concat emits a freeable TMP.
 def $ref_return_cursor_concat(S, prefreturncursor) = true

@@ -2997,6 +2997,18 @@ credit. This proves one direct-object array layout and modeled retirement, not
 physical collection or general switch subjects; broad returns verification
 remains open in the [ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
+M61 restores a compiled literal array `['old']` after a caught by-reference
+`?array` finalizer recheck. The compiled CONST source retains its pooled table;
+the otherwise equal computed-call return resumes with NULL. Native2/source2
+agree at private `46af5bbc`/394, including one original-line Notice each.
+Public104 follows the literal's source-only cursor and restoration, rejects a
+heap-identical cursor LINE forgery, and checks split/full budget. The caller's
+append creates a distinct result table while the pooled table stays unchanged.
+The baseline Unsupported and output-only pool query retain zero repair credit.
+This covers the reached nonempty literal and modeled copy-on-write, not general
+CONST arrays or broad returns verification; see the
+[ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
 Per-constant protection survives namespace publication and parked handlers.

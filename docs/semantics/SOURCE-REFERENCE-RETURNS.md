@@ -568,3 +568,15 @@ checks split budget and final row removal. The compiled constant-array control
 does not need this history. This covers one sole-owned direct-object table,
 not borrowed tables, other array layouts or physical collection; see the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M61 admits a nonempty compiled literal-array source in the caught by-reference
+`?array` finalizer replay. Its source-only cursor restores the pooled `['old']`
+table and one original-line Notice; an otherwise equal computed call clears
+its return slot and resumes with NULL. Native2/source2 agree at private
+`46af5bbc`/394. Public104 binds the compiled read, live pooled table and
+one-owner replay, verifies a heap-identical cursor LINE refusal through the
+driver, and checks split budget. The returned r/a reference is detached from
+bad y; appending `"q"` creates a distinct table with `['old','q']` while the
+pooled table remains `['old']`. This is modeled copy-on-write for the reached
+literal, not a claim about GC immutability or general CONST arrays; see the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
