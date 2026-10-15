@@ -7,21 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Terminal inherited `empty` now accepts null/bool/int and byte-string getter results
-within the existing CV/literal private-property slice; identity carriers are
-authenticated. Empty bytes and sole ASCII `0` are empty strings; NUL and `0` plus NUL are not. One further
-201-byte original agrees at ebec20005; state155 =132 reached +23 derived passes at
-6ea911050, checking actual literal INTERNED payloads, pure conversion, receiver
-release and late budget resume. REQUEST metadata authentication/refusals are
-derived controls with no new producer claim. The initial changed Unsupported, two
-pre-app fixture failures and expired no-actor observer retain zero passing credit.
-Float/NaN, owning results and wider signatures/receivers/recursive/quiet forms
-remain partial. [Primitive result review](coverage/semantics/magic-empty-scalars-review.json).
-The prior integer/call/receiver slice retains original d9df16379/state208 e8703a594
-and its 4206eef78 composition without replay; both abrupt cleanups remain derived.
-[Magic empty review](coverage/semantics/magic-empty-review.json).
-Pointwise composition over 03a29bd22 preserves the incoming399-module parent.
-Source1/state155 retain their private cuts; seam review warrants no joined actor or renewed credit.
+Terminal inherited `empty` now accepts valid non-NaN float getter results within
+the existing CV/literal private-property slice. Both signed zeros are empty;
+other finite/subnormal values and infinities are not. One 235-byte original agrees
+at1abb46624; state145 =132 reached +13 derived passes at1b54b5d6e, checking nine
+actual binary64 payloads, pure conversion, saved receiver owner release and late
+budget resume. Constructed NaN/invalid-bit refusals cover both older active
+refusal controls without replay. The unchanged Unsupported baseline retains zero
+agreement credit; no runtime actor failed. NaN warning continuations, owning RV
+disposal and wider signature/receiver/recursive/quiet combinations remain partial.
+[Float result review](coverage/semantics/magic-empty-floats-review.json).
+Earlier integer/call state208 and null/bool/byte-string state155 retain their tested
+cuts, original source identities and historical failures without renewal:
+[magic empty review](coverage/semantics/magic-empty-review.json),
+[primitive result review](coverage/semantics/magic-empty-scalars-review.json).
 
 Non-NUL `define` names containing `::` now receive int/string/non-NaN float
 third flags with primitive values. Weak calls raise the name ValueError before any

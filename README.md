@@ -2609,13 +2609,16 @@ slots bypass it; actual true/false results preserve short circuiting and storage
 One original and one state/215 checks cover typed name reception, lexical scope
 and receiver cleanup; [magic isset review](coverage/semantics/magic-isset-review.json).
 Terminal `empty` now chains that inherited `__isset` with an untyped by-value
-`__get`: false skips the getter, while true tests its null/bool/int/byte-string
-result. Only empty bytes or exactly ASCII `0` make a string empty; NUL and `0` plus
-NUL do not. The original integer/call state208 remains historical; one further
+`__get`: false skips the getter, while true tests its null, bool, int, non-NaN
+float or byte-string result. Only empty bytes or exactly ASCII `0` make a string
+empty; NUL and `0` plus NUL do not. The original integer/call state208 remains historical; one further
 original and state155 cover primitive results and authenticated string metadata.
 [Magic empty review](coverage/semantics/magic-empty-review.json),
 [primitive result review](coverage/semantics/magic-empty-scalars-review.json).
-Other signatures, receivers, float/owning results and coalesce magic combinations
+Both signed float zeros are empty; other finite/subnormal values and infinities
+are not. One further original and state145 check the actual float bits and bounds;
+[float result review](coverage/semantics/magic-empty-floats-review.json).
+Other signatures, receivers, NaN/owning results and coalesce magic combinations
 remain unsupported.
 Hooked iteration, defaulted virtual hooks, other paired or virtual setters, wider trait
 setters, other explicit setter parameter forms, references, other inherited/trait

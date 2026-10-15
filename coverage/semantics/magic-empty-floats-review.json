@@ -1,0 +1,127 @@
+{
+  "scope": "Terminal inherited empty of the existing external CV/literal declared-private property now accepts all valid non-NaN binary64 getter RVs. Same public nonstatic nonref bool isset/untyped get, same parentless declaring owner and saved receiver protocol.",
+  "implementation": {
+    "base": "e90b3a74697771ffb9a86d189b86e3580057ec25",
+    "revision": "1abb46624463525e2cd335b3def7af29a1d119f1",
+    "modules": 399,
+    "file": "spec/semantics/408-magic-property-empty.watsup",
+    "change": "Three-line PFLOAT clause checks n<2^64 before existing number_bool(NFLOAT n)=(b,false), then returns ~b. Both signed zeros yield empty true; all other finite/subnormal/INF patterns false. NaN/invalid bits refuse. No producer, call, frame, receiver, guard, ownership or disposal change.",
+    "affected_maintenance": "Active83/84 PFLOAT0 refusal controls become qNaN; new145 actual refusal covers them. Historical208/155 ledgers and source cuts are unchanged and unrenewed."
+  },
+  "engine": {
+    "target": "PHP8.5.10 CLI NTS64",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "vendor/php-src/Zend/zend_object_handlers.c:2490-2520 Get RV truth, guard and receiver sequence",
+      "vendor/php-src/Zend/zend_operators.h:409 i_zend_is_true double branch: signedzero false; NaN warns"
+    ],
+    "intentional_divergences": []
+  },
+  "source": {
+    "path": "/home/user/workspace/php-spec/.tools/magic-empty-floats-private-85/.tools/magic-empty-floats-probes-85/scalar.php",
+    "sha256": "ab424b94db5ac4f4a7a809e9e4d68efbc438f0f7abeaaa2bb3dd805b34c507ee",
+    "maintained": "tests/semantics/magic-empty-floats.php",
+    "byte_identical": true,
+    "values": [
+      "+0",
+      "-0",
+      "1.5",
+      "-2.5",
+      "minsubnormal",
+      "negative minsubnormal",
+      "maxfinite",
+      "INF",
+      "-INF"
+    ],
+    "native_raw_tuple_sha256": "f837f212a5deea881da443640586e55aee4b14f734afeb489d590cc0a5661c9d"
+  },
+  "validation": {
+    "native": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-floats-private-85/.tools/magic-empty-floats-probes-85/native-first/report.json",
+      "sha256": "d178f6ab60517788dac0ba4a6459c69407a10f957f78582f15dd34d4dbdb7086",
+      "revision": "e90b3a74697771ffb9a86d189b86e3580057ec25",
+      "stdout_bytes": 235,
+      "stderr_bytes": 0,
+      "exit": 0,
+      "source_agreements": 0
+    },
+    "unchanged_baseline": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-floats-private-85/.tools/magic-empty-floats-probes-85/accepted-current-baseline/report.json",
+      "sha256": "b2cf7ae9081048b2ccce7a8a02509e6d74228c971a9e0cef8810313c972f2a99",
+      "revision": "e90b3a74697771ffb9a86d189b86e3580057ec25",
+      "status": "unsupported",
+      "reason": "magic empty getter result type",
+      "prefix": "A:I:pluszero|G:pluszero|",
+      "exit": 1,
+      "source_agreements": 0
+    },
+    "changed_source": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-floats-private-85/.tools/magic-empty-floats-probes-85/changed-model-1pv0p5o5/report.json",
+      "sha256": "82a8caf8f3bdc0ff145b29ac2fa472aae48640a86f347fd2618c4302c4cda8d8",
+      "revision": "1abb46624463525e2cd335b3def7af29a1d119f1",
+      "status": "normal",
+      "exact_native_235_0_0": true,
+      "source_agreements": 1
+    },
+    "focused": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-floats-private-85/.tools/magic-empty-float-protocol-xyuu1yha/report.json",
+      "sha256": "1466ec597b008ea42acd6a61acf0ecb52766e16fbd775f4dc5f4df2dca8fcbdd",
+      "revision": "1b54b5d6e9d119e1e3e91f89b16f69b7133d5fc2",
+      "driver": "tests/semantics/magic_empty_float_protocol.py",
+      "driver_sha256": "13d1073a1c2fa1a7d7543a3ab1cf26932cfda48c729014f203755698b7b59aa2",
+      "fixture_sha256": "134d4e3e06dc346dfbd9ebae065e9e48a16482179e110c96b91eae51286faa01",
+      "mode": "SL",
+      "cache": false,
+      "det": true,
+      "passed": true,
+      "reached": 132,
+      "derived": 13,
+      "application_evaluations": 1,
+      "source_agreements": 0,
+      "AL_seconds": 6.7231810092926025,
+      "SL_seconds": 52.880892753601074
+    }
+  },
+  "focused_scope": "Nine real PFLOAT bit patterns before the actual result step, pure/noevent/nostore conversion, saved receiver-owner release at +0/-INF, final native output/private storage and late budget equality. Constructed actual qNaN/2^64 refusals plus negativeqNaN/signalingNaN/2^64+1 helper controls are boundary evidence, not warning/producer source agreements.",
+  "execution": {
+    "environment": "LC_ALL=C TZ=UTC PHP_SPEC_SCRIPT_ENCODING absent; jobs1; native/baselineCPU1, changed/stateCPU5; pinned tests/semantics/profile.json INI copied in raw reports.",
+    "caps": "native45; model60/outer75/steps100000; focused AL90 then SL90 failclosed.",
+    "commands": [
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/magic-empty-floats-probes-85/run.py native --revision e90b3a74697771ffb9a86d189b86e3580057ec25",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/magic-empty-floats-probes-85/run.py baseline --revision e90b3a74697771ffb9a86d189b86e3580057ec25",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 5 python3 -u .tools/magic-empty-floats-probes-85/run.py changed --revision 1abb46624463525e2cd335b3def7af29a1d119f1",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 5 python3 -u tests/semantics/magic_empty_float_protocol.py --revision 1b54b5d6e9d119e1e3e91f89b16f69b7133d5fc2"
+    ],
+    "affinity": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-floats-private-85/.tools/magic-empty-floats-probes-85/affinity-native-first.json",
+        "sha256": "1fb844fb59a889fa42343367c06770c48ae6fec682fc52032d9c62358eb24653"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-floats-private-85/.tools/magic-empty-floats-probes-85/affinity-accepted-current-baseline.json",
+        "sha256": "d9a4fd999a4335b6b4bc8544604b4aa2d1047ed8d9a24bc4a797a9e863c845e8"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-floats-private-85/.tools/magic-empty-floats-probes-85/affinity-changed-source-85.json",
+        "sha256": "b4c486436ef0f4c8fbef8e7075f89115692883c27a7a404ab41826c76c6d22ea"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-floats-private-85/.tools/magic-empty-floats-probes-85/affinity-state-85.json",
+        "sha256": "0eac64c4f991857ab458870241755f839445f3f6777b462fbed5490b0665ed6c"
+      }
+    ],
+    "observation": "Native CPU1 mask captured; argv sampling raced child exit and is empty. Pinned exact argv is in native process record. Baseline/changed/two state workers have full live mask/argv captures. All accepted input/head/status checks stable, state fixture stable, empty groups and actors/observers reaped.",
+    "cwd": "/home/user/workspace/php-spec/.tools/magic-empty-floats-private-85"
+  },
+  "tools": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "limits": "NaN needs a distinct warning/guard continuation; arrays/objects need genuine RV disposal. No quiet NaN, owning-result or wider source/callback/receiver claim. Existing earlier scalar/carrier branches remain pointwise identical. Public changed-source CLI loads SL399; no extra initialization actor or earlier replay.",
+  "artifacts": "Original ignored .tools reports, streams, process records and run.py stay in place; maintained source/focused harness recover from tested commits. No large raw artifacts or backup worktrees are tracked.",
+  "review": {
+    "independent": "class_review_84",
+    "accepted": "Native/baseline/source1/production/focused145 and concise publication independently accepted; metadata requires no semantic rerun."
+  }
+}
