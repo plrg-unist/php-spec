@@ -364,6 +364,9 @@ unchanged Unsupported and initial peer elaboration binding failure retain0; only
 the affected peer fixture is renewed. Alias/whole-array coalescing, arguments,
 defaults and wider producers remain partial.
 [Coalescing review](coverage/semantics/global-constant-stdclass-coalesce-review.json).
+Pointwise composition over c53bf2a3d preserves incoming399 modules, define,
+shift, typed-return, magic-empty and nested-list selectors. Source3/state817
+retain their private cuts; no joined actor or renewed credit.
 
 Selected inherited `__unset(string): void` now dispatches direct CV/literal-name
 access to a declared private property. Accessible public unset skips magic;
