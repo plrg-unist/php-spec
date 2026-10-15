@@ -641,3 +641,132 @@ def $dynamic_global_constant_finish(S, pconfigcall) = S[.COMPLETION = pcompletio
   -- if $special_constant(preqbytes_query) = eps
   -- if $source_constant_lookup(S, preqbytes_query) = (ABRUPT pcompletion)
 def $dynamic_global_constant_finish(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "global constant value query"] -- otherwise
+
+;; Only the requested simple global-name initializer is entered. The pending
+;; API resume retains the captured query; the selection is its nonowning copy.
+dec $dynamic_class_constant_global(pstate, pclassconstantdesc) : preqbytes?
+dec $dynamic_class_constant_initializer(pstate, pclassconstantdesc) : bool
+dec $dynamic_class_constant_carrier(pstate, pclassconstantdesc, pvalue, pvalueclass) : bool
+dec $dynamic_class_constant_deferred(pstate, pconfigcall) : pclassconstantdesc?
+dec $dynamic_class_constant_resume_present(ptask*, porigin, pconfigcall) : bool
+dec $dynamic_class_constant_context(pstate) : pconfigcall?
+dec $dynamic_class_constant_selected(pstate, porigin, pselectedcall*) : bool
+dec $dynamic_class_constant_site(pstate, porigin) : bool
+dec $dynamic_class_constant_history_query(pstate, porigin, pvalue?) : bool
+def $dynamic_class_constant_global(S, pclassconstantdesc) = (preqbytes)
+  -- if ~pclassconstantdesc.FOLDED /\ pclassconstantdesc.TYPE = eps
+  -- if pclassconstantdesc.INITIALIZER = PORIGIN n_unit pcpath
+  -- if $origin_node(S.SOURCES, pclassconstantdesc.INITIALIZER) = (NExprConstFetch name metadata)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+  -- if $dynamic_constant_global_name(preqbytes)
+def $dynamic_class_constant_global(S, pclassconstantdesc) = eps -- otherwise
+def $dynamic_class_constant_initializer(S, pclassconstantdesc) = true
+  -- if $dynamic_class_constant_global(S, pclassconstantdesc) = (preqbytes)
+  -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(preqbytes)) = (puserconstant)
+  -- if $dynamic_constant_class(puserconstant.VALUE) = (puserconstant.CLASS)
+  -- if $string_plain(puserconstant.VALUE) = puserconstant.VALUE \/ $string_carrier_valid(S, puserconstant.VALUE)
+def $dynamic_class_constant_initializer(S, pclassconstantdesc) = true
+  -- if $dynamic_class_constant_global(S, pclassconstantdesc) = (preqbytes)
+  -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(preqbytes)) = eps
+  -- if $constant_lookup_bytes(preqbytes) = eps
+  -- if preqbytes =/= $ptascii("E_STRICT")
+def $dynamic_class_constant_initializer(S, pclassconstantdesc) = false -- otherwise
+def $dynamic_class_constant_carrier(S, pclassconstantdesc, PSTRING_CARRIER pstringidentity n_bytes*, PVSTRING b) = true
+  -- if $dynamic_class_constant_global(S, pclassconstantdesc) = (preqbytes)
+  -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(preqbytes)) = (puserconstant)
+  -- if puserconstant.VALUE = PSTRING_CARRIER pstringidentity n_bytes* /\ puserconstant.CLASS = PVSTRING b
+  -- if $string_carrier_valid(S, puserconstant.VALUE)
+  -- if $dynamic_constant_class(puserconstant.VALUE) = (puserconstant.CLASS)
+def $dynamic_class_constant_carrier(S, pclassconstantdesc, pvalue, pvalueclass) = false -- otherwise
+def $dynamic_class_constant_deferred(S, pconfigcall) = (pclassconstantdesc)
+  -- if $dynamic_class_constant_valid(S, pconfigcall)
+  -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes_class)) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $class_constant_lookup(S, porigin_class, preqbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+  -- if $class_constant_visible(S, pclassconstantdesc)
+  -- if $dynamic_class_constant_global(S, pclassconstantdesc) = (preqbytes)
+def $dynamic_class_constant_deferred(S, pconfigcall) = eps -- otherwise
+
+def $dynamic_class_constant_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT = KNOWN pdefaultcache.VALUE][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $dynamic_class_constant_deferred(S, pconfigcall) = (pclassconstantdesc)
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = (pdefaultcache)
+  -- if $class_constant_cache_value_valid(S, pdefaultcache)
+  -- if $dynamic_constant_class(pdefaultcache.VALUE) = (pdefaultcache.CLASS)
+  -- if S.TODO = ptask :: ptask_tail*
+def $dynamic_class_constant_finish(S, pconfigcall) = $class_constant_begin(S[.TODO = (DYNAMIC_CLASS_CONSTANT_RESUME pconfigcall) :: ptask_tail*], pclassconstantdesc, CLASS_CONST_CALL pconfigcall, preqbytes_class, pconfigcall.LINE)
+  -- if $dynamic_class_constant_deferred(S, pconfigcall) = (pclassconstantdesc)
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = eps
+  -- if $dynamic_class_constant_initializer(S, pclassconstantdesc)
+  -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
+  -- if S.TODO = ptask :: ptask_tail*
+
+def $dynamic_class_constant_resume_present(eps, porigin, pconfigcall) = false
+def $dynamic_class_constant_resume_present([ptask], porigin, pconfigcall) = false
+def $dynamic_class_constant_resume_present(ptask :: ptask_next :: ptask_tail*, porigin, pconfigcall) = ((ptask = CLASS_CONST_BIND porigin /\ ptask_next = DYNAMIC_CLASS_CONSTANT_RESUME pconfigcall) \/ $dynamic_class_constant_resume_present(ptask_next :: ptask_tail*, porigin, pconfigcall))
+def $class_constant_protected(CLASS_CONST_CALL pconfigcall, pconstantcontext?) = true
+def $class_constant_selection_valid(S, pclassconstantcontext) = true
+  -- if pclassconstantcontext.SELECTION = CLASS_CONST_CALL pconfigcall
+  -- if pclassconstantcontext.ORIGIN = (pconfigcall.SITE) /\ pclassconstantcontext.LINE = pconfigcall.LINE
+  -- if S.ORIGIN = (pconfigcall.SITE)
+  -- if $dynamic_class_constant_deferred(S, pconfigcall) = (pclassconstantdesc)
+  -- if pclassconstantcontext.DECL = pclassconstantdesc.ORIGIN
+  -- if $dynamic_class_constant_resume_present(S.TODO, pclassconstantcontext.DECL, pconfigcall)
+def $class_constant_context_site(S, pclassconstantcontext) = true
+  -- if pclassconstantcontext.SELECTION = CLASS_CONST_CALL pconfigcall
+  -- if $class_constant_selection_valid(S, pclassconstantcontext)
+def $dynamic_class_constant_context(S) = (pconfigcall)
+  -- if $class_constant_active(S)
+  -- if S.CLASSCONSTANTINIT = pclassconstantcontext :: pclassconstantcontext_tail*
+  -- if pclassconstantcontext.SELECTION = CLASS_CONST_CALL pconfigcall
+  -- if S_prev = $class_constant_restore(S, pclassconstantcontext, pclassconstantcontext_tail*)
+  -- if $class_constant_selection_valid(S_prev, pclassconstantcontext)
+def $dynamic_class_constant_context(S) = eps -- otherwise
+def $class_constant_trace(S) = $config_trace_frames(S, pconfigcall, $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT)))
+  -- if $dynamic_class_constant_context(S) = (pconfigcall)
+def $class_constant_error_line(S, z) = pconfigcall.LINE
+  -- if $dynamic_class_constant_context(S) = (pconfigcall)
+
+;; These state-aware extensions are confined to class caches and class facts.
+;; Ordinary global declarations retain their existing validation boundaries.
+def $class_constant_cache_value_valid(S, pdefaultcache) = $dynamic_class_constant_carrier(S, pclassconstantdesc, pdefaultcache.VALUE, pdefaultcache.CLASS)
+  -- if $class_constant_origin(S.CLASSES, pdefaultcache.ORIGIN) = (pclassconstantdesc)
+  -- if $dynamic_class_constant_global(S, pclassconstantdesc) = (preqbytes)
+  -- if pdefaultcache.VALUE = PSTRING_CARRIER pstringidentity n_bytes*
+def $class_constant_facts_valid(S, porigin, [pconstantfact]) = (pconstantfact.ORIGIN = pclassconstantdesc.INITIALIZER /\ pconstantfact.LOOKUP = eps /\ $dynamic_class_constant_carrier(S, pclassconstantdesc, pvalue, pconstantfact.CLASS) /\ $constant_fact_pool_valid(S, pconstantfact))
+  -- if $class_constant_origin(S.CLASSES, porigin) = (pclassconstantdesc)
+  -- if $dynamic_class_constant_global(S, pclassconstantdesc) = (preqbytes)
+  -- if pconstantfact.VALUE = (pvalue)
+  -- if pvalue = PSTRING_CARRIER pstringidentity n_bytes*
+
+def $dynamic_class_constant_selected(S, porigin, eps) = false
+def $dynamic_class_constant_selected(S, porigin, pselectedcall :: pselectedcall_tail*) = true
+  -- if pselectedcall.SITE = porigin /\ pselectedcall.KIND = INTRINSIC_CONSTANT
+  -- if $selected_entry_source_valid(S, pselectedcall)
+def $dynamic_class_constant_selected(S, porigin, pselectedcall :: pselectedcall_tail*) = $dynamic_class_constant_selected(S, porigin, pselectedcall_tail*)
+  -- if pselectedcall.SITE =/= porigin \/ pselectedcall.KIND =/= INTRINSIC_CONSTANT \/ ~$selected_entry_source_valid(S, pselectedcall)
+def $dynamic_class_constant_site(S, porigin) = true
+  -- if $exit_fixed(S, porigin) = ((preqbytes, preqbytes_fallback?))
+  -- if $intrinsic_named(preqbytes) = (INTRINSIC_CONSTANT)
+  -- if $intrinsic_count(S, porigin) = (1)
+def $dynamic_class_constant_site(S, porigin) = true
+  -- if $exit_fixed(S, porigin) = eps
+  -- if $dynamic_class_constant_selected(S, porigin, S.SELECTEDCALLS)
+  -- if $intrinsic_count(S, porigin) = (1)
+def $dynamic_class_constant_site(S, porigin) = false -- otherwise
+def $dynamic_class_constant_history_query(S, porigin, eps) = true
+def $dynamic_class_constant_history_query(S, porigin, (pvalue)) = true
+  -- if $string_bytes(pvalue) = (preqbytes)
+  -- if $dynamic_defined_split(eps, $dynamic_constant_query(preqbytes)) = ((preqbytes_class, preqbytes_member))
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes_class)) = (porigin_class)
+  -- if $class_constant_lookup(S, porigin_class, preqbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+  -- if pclassconstantdesc.ORIGIN = porigin
+def $dynamic_class_constant_history_query(S, porigin, pvalue?) = false -- otherwise
+def $class_constant_cache_trigger(S, porigin, PORIGIN n_unit pcpath, n_prefix) = true
+  -- if $class_constant_origin(S.CLASSES, porigin) = (pclassconstantdesc)
+  -- if $dynamic_class_constant_global(S, pclassconstantdesc) = (preqbytes)
+  -- if $dynamic_class_constant_site(S, PORIGIN n_unit pcpath)
+  -- if $dynamic_class_constant_history_query(S, porigin, $dynamic_define_known(S, PORIGIN n_unit pcpath, 0))
+  -- if $class_constant_history_exited(S.DECLARATIONS, n_prefix, n_unit)

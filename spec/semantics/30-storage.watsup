@@ -440,7 +440,7 @@ syntax prequest = { ENV (preqbytes, preqbytes)*, ARGV preqbytes*, FILE preqbytes
 syntax pstartup = { REPORTING preqbytes?, INCLUDEPATH preqbytes }
 var Q : prequest
 syntax psymboltable = { ENV pbinding*, CVS preqbytes*, SYMBOLS preqbytes* }
-syntax pclassconstantselection = CLASS_CONST_FETCH poperand ptbytes | CLASS_CONST_UPDATE_SELECT porigin
+syntax pclassconstantselection = CLASS_CONST_FETCH poperand ptbytes | CLASS_CONST_UPDATE_SELECT porigin | CLASS_CONST_CALL pconfigcall
 syntax pclassconstantcontext = { DECL porigin, SELECTION pclassconstantselection, PREVIOUS pconstantcontext?, ORIGIN porigin?, LINE int }
 syntax pconstantclosure = { OBJECT nat, SITE porigin, DECL porigin, PREFIX nat }
 syntax pparameterreceive = PARAMETER_SCOPE pclosureevidence | PARAMETER_SOURCE nat

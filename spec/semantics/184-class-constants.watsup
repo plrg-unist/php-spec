@@ -12,6 +12,9 @@ dec $class_constant_update_blocks(pstate, ptask*, porigin*) : bool
 dec $class_constant_update_marker(ptask) : bool
 dec $static_default_update_marker(ptask) : bool
 dec $class_constant_selection_valid(pstate, pclassconstantcontext) : bool
+dec $class_constant_cache_value_valid(pstate, pdefaultcache) : bool
+dec $class_constant_facts_valid(pstate, porigin, pconstantfact*) : bool
+dec $class_constant_cache_trigger(pstate, porigin, porigin, nat) : bool
 dec $class_constant_binding_head(ptask*, porigin) : bool
 dec $class_constant_table_done(pstate, porigin) : bool
 dec $class_constant_table_tasks(pstate, porigin, int, nat) : ptask*
@@ -494,6 +497,8 @@ def $class_constant_error_line(S, z) = z -- otherwise
 
 def $class_constant_runtime_type(S, ptbranch*, pvalue) = ($class_constant_value_type(ptbranch*, pvalue) \/ $typed_object_exact(S, ptbranch*, pvalue))
 
+def $class_constant_cache_value_valid(S, pdefaultcache) = $constant_value_class_valid(S, pdefaultcache.VALUE, pdefaultcache.CLASS) -- otherwise
+def $class_constant_facts_valid(S, porigin, pconstantfact*) = $constant_facts_valid(S, porigin, pconstantfact*) -- otherwise
 def $class_constant_caches_valid(S, eps) = true
 def $class_constant_caches_valid(S, pdefaultcache :: pdefaultcache_tail*) = true
   -- if $class_constant_origin(S.CLASSES, pdefaultcache.ORIGIN) = (pclassconstantdesc)
@@ -501,7 +506,7 @@ def $class_constant_caches_valid(S, pdefaultcache :: pdefaultcache_tail*) = true
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassconstantdesc.OWNERNAME)) = (pclassconstantdesc.OWNER)
   -- if $default_cache_at(pdefaultcache_tail*, pdefaultcache.ORIGIN) = eps
   -- if $heap_subset($value_nodes(pdefaultcache.VALUE), S.ALLOCATIONS)
-  -- if $constant_value_class_valid(S, pdefaultcache.VALUE, pdefaultcache.CLASS)
+  -- if $class_constant_cache_value_valid(S, pdefaultcache)
   -- if $class_constant_runtime_type(S, pclassconstantdesc.TYPE, pdefaultcache.VALUE)
   -- if $constant_callable_cache_prefix(S.CLASSCONSTANTHISTORY, pclassconstantdesc.ORIGIN) = (n_prefix)
   -- if $constant_callable_cache_valid(S, pclassconstantdesc, pdefaultcache.CLASS, n_prefix)
@@ -581,7 +586,7 @@ def $class_constant_previous_valid(S) = true
   -- if S.CONSTCONTEXT = (pconstantcontext)
   -- if pconstantcontext.ORIGIN = pclassconstantcontext.DECL
   -- if pconstantcontext.LINE = pclassconstantcontext.LINE
-  -- if $constant_facts_valid(S, pconstantcontext.ORIGIN, pconstantcontext.FACTS)
+  -- if $class_constant_facts_valid(S, pconstantcontext.ORIGIN, pconstantcontext.FACTS)
 def $class_constant_previous_valid(S) = true
   -- if S.CLASSCONSTANTINIT =/= eps
   -- if S.CONSTCONTEXT = eps
@@ -594,7 +599,7 @@ def $class_constant_context_valid(S, pconstantcontext) = true
   -- if pconstantcontext.ORIGIN = pclassconstantcontext.DECL
   -- if pconstantcontext.LINE = pclassconstantcontext.LINE
   -- if $class_constant_bindings(S.TODO) = $class_constant_contexts($class_constant_scope_stack(S))
-  -- if $constant_facts_valid(S, pconstantcontext.ORIGIN, pconstantcontext.FACTS)
+  -- if $class_constant_facts_valid(S, pconstantcontext.ORIGIN, pconstantcontext.FACTS)
   -- if $constant_branches_valid(S)
 def $class_constant_context_valid(S, pconstantcontext) = false -- otherwise
 
@@ -1087,6 +1092,7 @@ def $class_constant_history_trigger(S, PORIGIN n_unit pcpath, n_prefix) = true
   -- if $class_constant_trigger(expression)
   -- if $class_constant_history_exited(S.DECLARATIONS, n_prefix, n_unit)
 def $class_constant_history_trigger(S, porigin, n_prefix) = false -- otherwise
+def $class_constant_cache_trigger(S, porigin_decl, porigin_trigger, n_prefix) = $class_constant_history_trigger(S, porigin_trigger, n_prefix) -- otherwise
 dec $class_constant_parent_done(pstate, porigin, (porigin, bool)*) : bool
 def $class_constant_parent_done(S, porigin, (porigin_flag, b_flag)*) = ($class_constant_flag((porigin_flag, b_flag)*, porigin_parent) = (true))
   -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
@@ -1110,7 +1116,7 @@ def $class_constant_history_fills(S, (CCCACHE porigin porigin_trigger n) :: pcla
   -- if ~pclassconstantdesc.FOLDED
   -- if $class_constant_flag((porigin_flag, b_flag)*, pclassconstantdesc.OWNER) = (b_owner)
   -- if $default_cache_at(S.CLASSCONSTANTCACHE, porigin) = (pdefaultcache)
-  -- if $class_constant_history_trigger(S, porigin_trigger, n)
+  -- if $class_constant_cache_trigger(S, porigin, porigin_trigger, n)
 def $class_constant_history_fills(S, (CCSTATIC porigin porigin_trigger n) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_previous) = $class_constant_history_fills(S, pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled* ++ [porigin], n)
   -- if $(n_previous <= n /\ n <= |S.DECLARATIONS|)
   -- if $static_default_history_fill(S, porigin, porigin_trigger, n, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*)
