@@ -14,6 +14,8 @@ private slot and sets `seen=13`. Source1 passes at 37ff84dd; current state
 212 =165 reached +47 derived passes at ed8cccb4, including actual abrupt frame cleanup
 and one saved receiver-owner release. Wider names/receivers and recursive magic
 remain unsupported. [Review](coverage/semantics/magic-unset-review.json).
+The 396-module composition over 60e77d86 passes retained SL initialization at 53ff2364;
+private source/state cuts retain their recorded revisions without replay.
 
 Boolean-true `define` now registers a fresh captured primitive even when its
 ignored-flag warning handler throws. The old warning marker retains the pending
