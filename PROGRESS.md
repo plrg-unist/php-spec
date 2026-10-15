@@ -9,12 +9,13 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 Ordinary string-valued `const` declarations now accept authentic interned and
 request carriers without changing their identity or source allocation classes.
-Five exact sources retain10475/3342 cuts; two genuine publication fronts pass279 SL
-premises at3342, including raw source-class versus receiving interning, invalid
+Five exact sources retain their 10475/3342 cuts; two publication fronts pass 279 SL
+premises at 3342, including raw source-class versus receiving interning, invalid
 identity/fact/table refusal, unchanged storage and budget resumption. The unchanged
 baseline, first-BIND decision and two fixture failures retain zero agreement.
-Independent request-array COW and actual default reads agree. Private acceptance
-is complete; current-parent integration remains pending. The constant family stays partial.
+Independent request-array COW and actual default reads agree. The 394-module
+composition over 8e7f74f1 passes one V48 deferred-string comparison at 37c0, preserving
+incoming rules and the private cuts. The constant family stays partial.
 [String-publication ledger](coverage/semantics/const-string-review.json).
 
 Class-qualified `constant` now evaluates a requested untyped class initializer
