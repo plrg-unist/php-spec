@@ -366,7 +366,7 @@ ERRORS = ['$psh_stage(S,1)',
  'S_target = $property_pending_resolve(S,pbase_receiver,poperand_name,PPW,z_receiver,24)',
  'S_rhs = $resolve_at(S_target,S.RESULT,24)',
  'S_rhs.COMPLETION = NORMAL /\\ S_rhs.RESULT = KNOWN (PARRAY n_array_denied)',
- '$typed_parameter_conversion(S,pfunction_hook.SIGNATURE.PARAMETERS[0],PARRAY n_array_denied) = TYPEREJECT',
+ '$typed_parameter_conversion_at(S,pfunction_hook.SIGNATURE.PARAMETERS[0].TYPE,PARRAY n_array_denied,false) = TYPEREJECT',
  'ptbytes_denied = $ptascii("Cannot modify protected(set) property ProtectedSetterParent79::$value from global '
  'scope")',
  'PhpStep: S ~> S_denied_raw',
