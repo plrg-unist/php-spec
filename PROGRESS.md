@@ -15,6 +15,8 @@ and strict395 pass at eb5f7e79; two genuine cuts305 =252 reached +53 derived pas
 at a89dfc88. Existing normalization, permissions and final linker are reused;
 wider asymmetric hook forms remain partial.
 [Review](coverage/semantics/private-set-backed-hook-review.json).
+The 395-module composition over b909b1a9 passes retained SL initialization at 9c1faa78;
+private source/state cuts retain their recorded revisions without replay.
 
 Null `define` names now dispatch the weak-call deprecation before conversion
 or registration. A returning callback can create the empty-name binding first,
