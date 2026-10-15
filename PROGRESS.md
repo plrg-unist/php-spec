@@ -15,8 +15,11 @@ and 564 public premises at 58d4993a pass, covering
 nested COW, shared properties/statics, readonly storage and forged leaf rejection.
 The unchanged first-source refusal and native/preparation retain zero credit.
 Stored ALIAS/cyclic array trees, generic objects and wider query forms remain outside
-this slice. Private validation is accepted; current-parent integration is pending.
+this slice.
 [Object-leaf review](coverage/semantics/global-constant-object-array-review.json).
+The 394-module composition over 0818945b passes full SL initialization at 3743963b.
+Independent pointwise review preserves the incoming parent; source3/public564
+retain their private cuts without a replay.
 
 Numeric comparisons now finish a bounded C remainder after a Notice handler
 throws. Later registered callbacks and source string casts are skipped; an
