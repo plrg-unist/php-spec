@@ -15,6 +15,7 @@ dec $generator_unpack_send(pstate, pgeneratorunpack, ptask*) : pstate
 dec $generator_unpack_nodes(pgeneratorunpack, text) : pnode*
 dec $generator_unpack_finish(pstate, pgeneratorunpack, ptask*) : pstate
 dec $generator_unpack_discard(pstate, pgeneratorunpack, text) : pstate
+dec $generator_unpack_array_delegate(pstate, nat) : bool
 dec $generator_unpack_delegated_blocked(pstate) : bool
 
 def $generator_unpack_input(S, pgeneratorunpack) = $iterator_unpack_input(S, pgeneratorunpack.CALL, pgeneratorunpack.INPUT)
@@ -49,6 +50,16 @@ def $generator_unpack_task_count(GENERATOR_UNPACK pgeneratorunpack text) = 1
 def $generator_unpack_task_count(ptask) = 0 -- otherwise
 def $generator_unpack_count(eps) = 0
 def $generator_unpack_count(ptask :: ptask_tail*) = $($generator_unpack_task_count(ptask) + $generator_unpack_count(ptask_tail*))
+def $generator_unpack_array_delegate(S, n) = true
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_DELEGATING
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.INPUT = (PARRAY n_array)
+  -- if pgeneratorfrom.ACQUISITION = eps
+  -- if pgeneratorfrom.CURRENT =/= eps
+  -- if $(pgeneratorfrom.POSITION > 0)
+  -- if $generator_from_record_valid(S, n, pgenerator)
+def $generator_unpack_array_delegate(S, n) = false -- otherwise
 def $generator_unpack_valid(S, pgeneratorunpack, text) = true
   -- if $generator_unpack_shape(pgeneratorunpack, text)
   -- if $unpack_origin(S, pgeneratorunpack.CALL) = (porigin)
@@ -62,7 +73,7 @@ def $generator_unpack_valid(S, pgeneratorunpack, text) = true
   -- if $(pgeneratorunpack.COUNT <= $unpack_sent_count(pgeneratorunpack.CALL.SENT.SLOTS) + |pgeneratorunpack.CALL.SENT.NAMED|)
   -- if pgeneratorunpack.COUNT =/= 0 \/ $unpack_before_valid(S[.ORIGIN = pgeneratorunpack.CALL.CALLSITE], pgeneratorunpack.CALL, 1)
   -- if S.OBJECTS[pgeneratorunpack.OBJECT] = GENERATOR pgenerator
-  -- if text =/= "ready" \/ (pgenerator.PHASE <- [GENERATOR_PAUSED, GENERATOR_CLOSED])
+  -- if text =/= "ready" \/ (pgenerator.PHASE <- [GENERATOR_PAUSED, GENERATOR_CLOSED]) \/ $generator_unpack_array_delegate(S, pgeneratorunpack.OBJECT)
   -- if text =/= "next" \/ pgenerator.PHASE =/= GENERATOR_FRESH
   -- if $generator_unpack_count(S.TODO) = 1
 def $generator_unpack_valid(S, pgeneratorunpack, text) = false -- otherwise
@@ -103,7 +114,7 @@ def $fiber_traversal_complete(S, pgeneratorop) = S[.TODO = (GENERATOR_UNPACK pge
   -- if $generator_unpack_header(S, pgeneratorop, pgeneratorunpack, text)
   -- if $generator_unpack_valid(S, pgeneratorunpack, text)
   -- if S.OBJECTS[pgeneratorunpack.OBJECT] = GENERATOR pgenerator
-  -- if pgenerator.PHASE <- [GENERATOR_PAUSED, GENERATOR_CLOSED]
+  -- if (pgenerator.PHASE <- [GENERATOR_PAUSED, GENERATOR_CLOSED]) \/ $generator_unpack_array_delegate(S, pgeneratorunpack.OBJECT)
 def $fiber_traversal_complete(S, pgeneratorop) = S[.COMPLETION = UNSUPPORTED "Generator unpack delegated producer"]
   -- if pgeneratorop.STARTPACK /\ pgeneratorop.BORROWED
   -- if S.TODO = (GENERATOR_UNPACK pgeneratorunpack text) :: ptask*
@@ -111,6 +122,7 @@ def $fiber_traversal_complete(S, pgeneratorop) = S[.COMPLETION = UNSUPPORTED "Ge
   -- if $generator_unpack_valid(S, pgeneratorunpack, text)
   -- if S.OBJECTS[pgeneratorunpack.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_DELEGATING
+  -- if ~$generator_unpack_array_delegate(S, pgeneratorunpack.OBJECT)
 ;; An explicit limitation retains its authenticated owners instead of invoking
 ;; terminal frame/Generator cleanup for behavior beyond this protocol.
 def $generator_unpack_delegated_blocked(S) = true
@@ -121,6 +133,7 @@ def $generator_unpack_delegated_blocked(S) = true
   -- if $generator_unpack_valid(S, pgeneratorunpack, text)
   -- if S.OBJECTS[pgeneratorunpack.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_DELEGATING
+  -- if ~$generator_unpack_array_delegate(S, pgeneratorunpack.OBJECT)
 def $generator_unpack_delegated_blocked(S) = false -- otherwise
 def $generator_close_terminal_pending(S) = true -- if $generator_unpack_delegated_blocked(S)
 def $drive_steps(S, n) = S -- if $generator_unpack_delegated_blocked(S)

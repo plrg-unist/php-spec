@@ -752,7 +752,11 @@ parameters. Reference yields become snapshots before resume; named keys use the
 ordinary binder. Native iteration adds no method trace frames, and temporary
 versus retained Generators preserve their distinct finally/cache lifetimes.
 See the [Generator unpack review](coverage/semantics/generator-call-unpack-review.json).
-Aggregate ordinary-call unpack, active yield-from producers, Generator by-reference
+Array `yield from` producers also unpack through their authentic delegated table
+and current cache. By-value sends preserve reference snapshots and repeated-row
+COW; temporary and retained Generators keep distinct abort/finally cleanup.
+See the [delegated-array review](coverage/semantics/generator-call-unpack-array-delegation-review.json).
+Aggregate ordinary-call unpack, non-array yield-from producers, Generator by-reference
 call targets and callback methods, nonnumeric raw valid changes, request/plain
 reference strings and handler replacements with
 those strings, other typed array warnings, broader array/COW interactions,

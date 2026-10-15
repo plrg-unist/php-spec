@@ -1,0 +1,103 @@
+[
+  {
+    "id": "generator-array-unpack-nested-caller-finishes-delegation-and-direct-tail",
+    "source": "<?php\nfunction generatorArrayProducer10() { echo \"G|\"; yield from [7, 11]; echo \"N|\"; yield 13; echo \"F|\"; return 23; }\nfunction generatorArrayTarget10($first, $second, $third) { echo \"D|\", $first, \"|\", $second, \"|\", $third, \"|\"; }\nfunction generatorArrayCaller10() { echo \"P|\"; $generator = generatorArrayProducer10(); generatorArrayTarget10(...$generator); echo \"R|\", $generator->getReturn(), \"|\"; }\ngeneratorArrayCaller10();\necho \"E\";\n",
+    "source_sha256": "6443e1406d537b178af014f96d4f637af0c3399185db9ec3bae125641ed15a38",
+    "purpose": "A nested ordinary caller consumes two delegated array entries and a later direct yield; producer completion precedes the target and its return remains readable.",
+    "expected_model": "normal",
+    "native_stdout": "P|G|N|F|D|7|11|13|R|23|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-array-unpack-named-keys-fill-omitted-earlier-default",
+    "source": "<?php\nfunction generatorArrayNamed10() { echo \"G|\"; yield from []; yield from [\"third\" => 9, \"second\" => 7]; echo \"F|\"; }\nfunction generatorArrayNamedTarget10($first = 17, $second = 23, $third = 29) { echo \"D|\", $first, \"|\", $second, \"|\", $third, \"|\"; }\necho \"P|\";\ngeneratorArrayNamedTarget10(...generatorArrayNamed10());\necho \"E\";\n",
+    "source_sha256": "a4e4bcea3a15b820064fc6c3bdce561cebf1f4c162cad640ea87ad32503b7a12",
+    "purpose": "Empty array delegation continues to named array entries; sparse fixed slots receive the genuine omitted default after generator completion.",
+    "expected_model": "normal",
+    "native_stdout": "P|G|F|D|17|7|9|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-array-unpack-temporary-key-error-closes-before-sent-release",
+    "source": "<?php\nclass GeneratorArrayFirst10 { function __destruct() { echo \"A|\"; } }\nclass GeneratorArraySecond10 { function __destruct() { echo \"B|\"; } }\nfunction generatorArrayOrder10() { try { echo \"G|\"; yield from [\"alpha\" => new GeneratorArrayFirst10, 0 => new GeneratorArraySecond10]; echo \"BAD|\"; } finally { echo \"F|\"; } }\nfunction generatorArrayOrderTarget10($alpha = 17) { echo \"BAD|\"; }\necho \"P|\";\ntry { generatorArrayOrderTarget10(...generatorArrayOrder10()); } catch (Error $caught) { echo \"T|\", $caught->getLine(), \"|\", $caught->getTrace() === [] ? \"NOFRAME|\" : \"FRAME|\"; }\necho \"E\";\n",
+    "source_sha256": "ba5930b1a0f9e7e23a899130514a3ed36cdf2cecd3c107f23f69d0d4e23f04f1",
+    "purpose": "A positional key after a named key aborts while the delegated table, current cache and sent argument own distinct children; a temporary closes before cache and sent retirement.",
+    "expected_model": "normal",
+    "native_stdout": "P|G|F|B|A|T|7|NOFRAME|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-array-unpack-receive-trace-owns-child-after-table-and-cache",
+    "source": "<?php\nclass GeneratorArrayReceiveChild10 { function __destruct() { echo \"A|\"; } }\nfunction generatorArrayReceive10() { try { echo \"G|\"; yield from [[new GeneratorArrayReceiveChild10]]; } finally { echo \"F|\"; } }\nfunction generatorArrayReceiveTarget10(?GeneratorArrayReceiveChild10 $value) { echo \"BAD|\"; }\necho \"P|\";\ntry { generatorArrayReceiveTarget10(...generatorArrayReceive10()); } catch (TypeError $caught) { echo \"T|\", $caught->getLine(), \"|HELD|\"; unset($caught); echo \"U|\"; }\necho \"E\";\n",
+    "source_sha256": "8b01b53aa37427b3aa5450b63b28833a82d4d1a929a31a2e5e04e38c3d8e7bec",
+    "purpose": "A real target receive TypeError keeps the yielded nested array through its DIRECT trace after delegated table and generator cache retirement.",
+    "expected_model": "normal",
+    "native_stdout": "P|G|F|T|4|HELD|A|U|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-array-unpack-producer-throw-after-delegation-keeps-real-trace",
+    "source": "<?php\nclass GeneratorArrayThrowChild10 { function __destruct() { echo \"A|\"; } }\nfunction generatorArrayThrow10() { try { echo \"G|\"; yield from [new GeneratorArrayThrowChild10]; echo \"N|\"; throw new Exception(\"stop\", 51); } finally { echo \"F|\"; } }\nfunction generatorArrayThrowTarget10($first, $second) { echo \"BAD|\"; }\necho \"P|\";\ntry { generatorArrayThrowTarget10(...generatorArrayThrow10()); } catch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; foreach ($caught->getTrace() as $entry) { echo $entry[\"function\"], \"|\"; } }\necho \"E\";\n",
+    "source_sha256": "0cef0484207a08554d23b4481b7e4b932efaac6b92ab50942425de45ffc0d16c",
+    "purpose": "A throw after delegated-array exhaustion keeps the actual producer frame, runs finally and retires the earlier argument before catch without invented iterator method frames.",
+    "expected_model": "normal",
+    "native_stdout": "P|G|N|F|A|T|51|generatorArrayThrow10|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-array-unpack-generator-delegate-required-control",
+    "source": "<?php\nfunction generatorArrayInnerControl10() { echo \"C|\"; yield 7; echo \"N|\"; }\nfunction generatorArrayOuterControl10() { echo \"G|\"; yield from generatorArrayInnerControl10(); echo \"F|\"; }\nfunction generatorArrayControlTarget10($value) { echo \"D|\", $value, \"|\"; }\nfunction generatorArrayControlCaller10() { echo \"P|\"; generatorArrayControlTarget10(...generatorArrayOuterControl10()); echo \"R|\"; }\ngeneratorArrayControlCaller10();\necho \"E\";\n",
+    "source_sha256": "e0e4ba1c8ceba86f4a1cd8c8997fbdd714c3302e0974fd68e8802f98c406da4d",
+    "purpose": "A non-array Generator delegate remains outside this milestone and must stop with its authenticated owners before READY; native normal behavior earns no model agreement.",
+    "expected_model": "unsupported",
+    "native_stdout": "P|G|C|N|F|D|7|R|E",
+    "native_stderr": "",
+    "native_exit": 0,
+    "unsupported_reason": "Generator unpack delegated producer",
+    "unsupported_stdout": "P|G|C|",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "80",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "71",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "67",
+            "124"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "generator-array-unpack-delegated-child-throw-preserves-queued-finally",
+    "source": "<?php\nclass GeneratorArrayReleaseA10 { function __destruct() { echo \"A|\"; throw new Exception(\"release\", 51); } }\nclass GeneratorArrayReleaseB10 { function __destruct() { echo \"B|\"; } }\nfunction generatorArrayRelease10() { try { echo \"G|\"; yield from [\"alpha\" => new GeneratorArrayReleaseA10, 0 => new GeneratorArrayReleaseB10]; echo \"BAD|\"; } finally { echo \"F|\"; } }\nfunction generatorArrayReleaseTarget10($alpha = 17) { echo \"BAD|\"; }\n$generator = generatorArrayRelease10();\ntry { generatorArrayReleaseTarget10(...$generator); } catch (Error $caught) { echo \"T|\"; }\necho \"M|\";\ntry { unset($generator); } catch (Exception $released) { echo \"X|\", $released->getCode(), \"|\"; }\necho \"E\";\n",
+    "source_sha256": "70be0384553c92826de80275923d47035d8a8021804dbe583c1734acf6881a03",
+    "purpose": "A child destructor throws while last-owner Generator release drops its delegated table; forced finally and cached-child release precede the outer catch of that same exception.",
+    "expected_model": "normal",
+    "native_stdout": "G|T|M|A|F|B|X|51|E",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]

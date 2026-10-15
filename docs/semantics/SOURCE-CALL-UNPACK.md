@@ -498,8 +498,28 @@ check syntax and input mode without rereading retired payload storage. This foll
 `zend_generator_close`. Last-owner storage keeps the existing quiet release
 carrier when ordinary destructor execution is inactive, following
 `zend_generator_free_storage` and `zend_objects_store_del`.
-Active yield-from producers stop at the authenticated `Unsupported` boundary.
+At that cut active yield-from producers stopped at the authenticated `Unsupported` boundary.
 By-reference targets, wider call targets and broader
 Generator/delegation/Fiber lifecycle interactions remain required. The
 [Generator unpack review](../../coverage/semantics/generator-call-unpack-review.json)
 keeps the new source/state evidence separate from prior Iterator campaigns.
+
+
+## Delegated array producers
+
+Ordinary Generator call unpack also admits active array delegation with an
+existing source-authenticated record, positive position and present current
+cache. The delegated table and CURRENT operand keep their real owners; SEND
+copies/dereferences the cached value into a by-value slot before the next resume.
+This preserves reference-cell snapshots and COW between repeated nested rows.
+Existing named/default/receive checks and ordered abort release apply unchanged.
+A retained CV keeps the delegated table after a key error; last-owner unset
+releases that table before forced finally, then the independent current cache.
+A temporary closes before its sent arguments retire. The queued close preserves
+the real caller release receipt and any child-destructor exception through finally
+and cache cleanup. This follows
+`zend_generator_get_next_delegated_value`, `zend_generator_dtor_storage` and the
+native Generator iterator callbacks used by `SEND_UNPACK`.
+Non-array delegates and by-reference targets remain explicitly `Unsupported`.
+The [delegated-array review](../../coverage/semantics/generator-call-unpack-array-delegation-review.json)
+keeps new evidence and the promoted prior control separate from the direct-yield cut.

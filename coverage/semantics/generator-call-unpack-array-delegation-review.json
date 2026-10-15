@@ -1,0 +1,85 @@
+{
+  "milestone": "Generator argument unpack through active array delegation",
+  "status": "independently accepted; actual-parent composition pending",
+  "independent_reviewer": "iterator_review_01, paired with iterator_dev_01",
+  "base": "94402a17b208f11966137746e61be1cab6dd8e1e",
+  "final_private_code": "871fc198151fe59cc82529af341c148221278246",
+  "modules": 395,
+  "scope": "Ordinary source-function Generator unpack into by-value parameters while yield-from consumes an array. Numeric/named binding, omitted defaults, reference-cache snapshots, nested-array COW, producer/receive errors and temporary versus retained-CV cleanup are covered. Non-array delegates, by-reference targets and Aggregate acquisition remain required.",
+  "semantics": {
+    "admission": "405 admits DELEGATING only with a source-authenticated array input, no acquisition receipt, present CURRENT and positive position. The same predicate partitions READY/completion from the retained non-array Unsupported stop. Existing PAUSED/CLOSED, key binding, send, trace and documentary-abort paths stay intact.",
+    "ownership": "289 keeps separate physical owners for the delegated table and copied raw current cache. SEND dereferences/copies into its own value slot before resume. Embedded references and repeated nested rows therefore retain their existing alias/COW behavior.",
+    "cleanup": "A retained CV keeps the table after argument abort; unset drops it before forced finally and the independently cached value. 303 now traverses only a valid queued close entry with compatible pending metadata to reach the real caller cleanup receipt. Matching operation/frame pending propagation preserves a child-destructor exception through finally and cache release.",
+    "module_sha256": {
+      "405": "3c6ad6eac5c22a568a6b145d7e5c9a4997335e8bd71ea1254e4da24be55e3f5f",
+      "303": "85b6ff9c5206eda9ec4e782eeb3cc6480bf993f9be550fc4209ab42ef434caea"
+    }
+  },
+  "source_authority": [
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_SEND_UNPACK",
+    "vendor/php-src/Zend/zend_generators.c::zend_generator_get_next_delegated_value and native Generator iterator callbacks",
+    "vendor/php-src/Zend/zend_generators.c::zend_generator_dtor_storage, zend_generator_close and zend_generator_free_storage"
+  ],
+  "validation_identity": {
+    "php": "8.5.10 CLI NTS 64-bit; source34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml5.1.0; SL, caches off, encountered determinism checks",
+    "environment": "tests/semantics/profile.json; PHP -n; LC_ALL=C; TZ=UTC; PHP_SPEC_SCRIPT_ENCODING unset; worker1",
+    "commands": "Reports retain exact selections, commands and exits. Native cap8s; strict/state120s; author source model100/process120s; reviewer/baseline model60/process75s. Leased actors ran serially, stop-first, and were fully reaped."
+  },
+  "raw_root": ".tools/generator-call-unpack-array-delegation-10/.tools/",
+  "native_and_baseline": {
+    "new_native10": ["generator-array-unpack-native-_teywiif/report.json", "generator-array-unpack-review-native-j_94hpdd/report.json", "generator-array-unpack-child-throw-native-tjwh5rbo/report.json"],
+    "cuts": "Initial nine observations use unchanged944; the sole new destructor-throw original uses f480 before the303 fix. Native-only reports earn zero model agreement.",
+    "unchanged_baseline": "generator-array-unpack-baseline-h7tolma0/report.json: exact original6443e140 at944, Unsupported Generator unpack delegated producer after P|G| and two OUTPUT events; zero agreement"
+  },
+  "normal_sources": {
+    "new_distinct_originals": 9,
+    "cuts": [
+      ["87fabcdc5", "generator-array-unpack-source-_xeschhp/report.json", 5, "five normal originals; sixth required control is separate"],
+      ["f480dce9e", "generator-call-unpack-array-delegation-review-source-f5nr70sk/report.json", 2, "only the first two passing originals; third failed row earns zero"],
+      ["871fc1981", "generator-array-unpack-source-8az0l1_0/report.json", 1, "child-destructor throw51 survives A then finally F then cached B to outer catch"],
+      ["871fc1981", "generator-call-unpack-array-delegation-review-source-3_krf3e5/report.json", 1, "affected retained-CV source now completes with A before F before B"]
+    ],
+    "observations": "Exact original-byte stdout/stderr/exit agreement with stable HEAD and inputs; refcell mutation follows SEND snapshot, repeated rows split on writes, TEMP/CV aborts retain their distinct owner order, and real receive/producer traces remain intact."
+  },
+  "new_reached_states": {
+    "groups": 5,
+    "driver_premises": 435,
+    "author_cuts": [
+      ["f480dce9e", "fiber-state-review-is9pb2mo/report.json", 98],
+      ["f480dce9e", "fiber-state-review-vrwsj6z6/report.json", 87],
+      ["f480dce9e", "fiber-state-review-tkp3er6h/report.json", 66]
+    ],
+    "independent_cuts": [
+      ["871fc1981", "fiber-state-review-8t5s_x8p/report.json", 90],
+      ["871fc1981", "fiber-state-review-fu2urxby/report.json", 94]
+    ],
+    "checks": "Real ready/send/resume, key-error release, typed receive, reference-cache and queued-child-release frontiers. Tests check physical roots, the permanent scalar-array pool root, malformed cache/source/pending controls, real transitions, budget splits, public call/heap admission and exact once-only remaining output."
+  },
+  "affected_prior_source": {
+    "case": "generator-call-unpack-delegated-producer-required-control, unchanged source086b8cee",
+    "cut": "f480dce9e",
+    "selected_source": "generator-call-unpack-source-lbp1d9m3/report.json",
+    "normal_agreements": 1,
+    "native_reuse": "legacy-generator-array-control-native-10 contains original native09 reporta1ebaf62 and derived4f8b8f39. Only raw path and explicit relocation metadata changed; original source, answers, process and commands are preserved. No native or other09 campaign was replayed."
+  },
+  "required_control": "The non-array Generator delegate in generator-array-unpack-source-_xeschhp/report.json returns the exact Generator unpack delegated producer Unsupported with P|G|C|, no diagnostic/timeout and zero normal agreement.",
+  "final_strict": "generator-array-unpack-author-sl-ghlu1gs6/report.json at871fc1981: all395 modules, true stdout, empty stderr, exit0, no timeout and stable HEAD/inputs. Earlier strict4qf3nzl7 remains a distinct87fab cut.",
+  "compatibility": "The303 repair changes only traversal across a queued entry before an ordinary child destructor. Accepted normal ref/COW and scalar sources finish without that release; the earlier TEMP frontier retains both children through table retirement, and its later cache cleanup uses existing finished-DONE traversal. Existing author251, first two peer originals and the promoted old control retain their cuts. Earlier direct-yield/Iterator campaigns are not renewed.",
+  "preserved_zero_credit": "Original t1t0_rji accessor elaboration failure, e1w8qagc omitted-pool-owner fixture failure and the third f5nr70sk source row's Unsupported cleanup failure remain archived. The mixed source report grants only its two passing rows. Native, baseline, strict and required-control assertions are not normal PHP agreements.",
+  "evidence_recovery": {
+    "archive": "../php-spec-evidence-archive/generator-call-unpack-array-delegation-10/private.tar.gz",
+    "bytes": 449693,
+    "sha256": "f082cd60e3eb86908ab8305bedc151072178bee0d671d78925ba6999fc44bdc1",
+    "manifest": "Sibling manifest.json maps19 report roles, revisions, exact commands and seven ignored preparation inputs.",
+    "restore": "Restore archived .tools subpaths at the recorded private root; author catalog/fixtures recover from the retained iterator/generator-call-unpack-array-delegation-10 branch at each report revision. Original native6 catalog is at87fab before its later append. Reviewer catalog/source/state recover from the publication containing this ledger, matching independent_inputs. The archive preserves original failures and the old native tuple's explicit relocation; it is not a build dependency."
+  },
+  "remaining": [
+    "Non-array Generator/Iterator delegates and Generator unpack into by-reference targets.",
+    "Ordinary-call IteratorAggregate acquisition and wider callable targets.",
+    "Broader reentrant, delegation, Fiber and terminal Generator lifecycle interactions; no full-family closure claim."
+  ]
+}
