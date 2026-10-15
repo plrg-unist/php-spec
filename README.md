@@ -1718,9 +1718,12 @@ runtime diagnostics skip handler/default delivery without interrupting the opera
 records three exact sources and two genuine public fronts. A fixed-name
 `trigger_error`/`user_error` with `E_USER_ERROR` now drains a retained file fatal
 before handler selection, delivering its cached message/location with the current
-call trace. Eval-first delivery remains ordinary; dynamic call selection is
-explicitly Unsupported. [Runtime-drain review](coverage/semantics/source-recorded-runtime-fatal-review.json)
-records this bounded route. Deferred runtime function redeclaration now drains the
+call trace. Eval-first delivery remains ordinary. [Runtime-drain review](coverage/semantics/source-recorded-runtime-fatal-review.json)
+records that fixed-name cut. Selected nonowning calls now preserve their captured
+CONFIG/nonce in a separate receipt; prefix replay rejects omitted or retargeted
+fatal snapshots. One retained original and 182 public premises pass.
+[Selected-drain review](coverage/semantics/source-recorded-dynamic-fatal-review.json)
+records the positional string/int slice. Deferred runtime function redeclaration now drains the
 same retained fatal using the actual binding trace. Its receipt records the
 function site and consumed index; the raw failure is reconstructed from historical
 bindings. Captured-prefix replay rejects omitted-entry records while keeping

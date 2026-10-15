@@ -7,6 +7,15 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Selected nonowning `trigger_error` calls now drain a retained file-compiler
+fatal with the current callback trace. An exact CONFIG/nonce receipt preserves
+captured arguments and authenticates each abandoned record. One retained v33
+original now agrees; 182 public premises cover prefix replay, malformed/omitted
+receipts and budget resumption at runtime diff fb33. The failed trace-identity
+expectation remains 0; only its fixture was corrected. Owning, named, unpacked
+and coercing forms remain outside this slice.
+[Selected-drain ledger](coverage/semantics/source-recorded-dynamic-fatal-review.json).
+
 Direct sole backed implicit trait SET now imports into a parentless Consumer.
 An authenticated raw Trait source yields a Consumer callable without mutating
 FUNCTIONS; Trait magic, Consumer private13 and Grand called scope stay distinct.
