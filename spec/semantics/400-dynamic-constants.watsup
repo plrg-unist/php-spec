@@ -607,6 +607,34 @@ def $dynamic_global_constant_valid(S, pconfigcall) = true
   -- if $string_plain(pvalue_query) = pvalue_query \/ $string_carrier_valid(S, pvalue_query)
   -- if $dynamic_define_value_matches(pvalue_query, $dynamic_global_constant_known(S, pconfigcall.SITE))
 def $dynamic_global_constant_valid(S, pconfigcall) = false -- otherwise
+
+;; User arrays are request-local values. Querying retains their root and child
+;; identities; ordinary writes perform COW. This validates, never copies, a tree.
+dec $dynamic_global_constant_array_tree(pstate, pvalue, pvalueclass) : bool
+dec $dynamic_global_constant_array_items(pstate, pentry*, (pkey, pvalueclass)*, parray) : parray?
+def $dynamic_global_constant_array_tree(S, pvalue, PVSCALAR) = $constant_nonstring_scalar(pvalue)
+def $dynamic_global_constant_array_tree(S, PSTRING n_bytes*, PVSTRING b) = true
+def $dynamic_global_constant_array_tree(S, PSTRING_CARRIER pstringidentity n_bytes*, PVSTRING b) = $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n_bytes*)
+def $dynamic_global_constant_array_tree(S, PARRAY n_array, PVARRAY true eps) = true
+  -- if (HARRAY n_array) <- S.ALLOCATIONS
+  -- if $(n_array < |S.ARRAYS|)
+  -- if $array_immutable(S, n_array)
+def $dynamic_global_constant_array_tree(S, PARRAY n_array, PVARRAY false (pkey, pvalueclass)*) = true
+  -- if (HARRAY n_array) <- S.ALLOCATIONS
+  -- if $(n_array < |S.ARRAYS|)
+  -- if S.ARRAYS[n_array].ITEMS =/= eps \/ ~$array_immutable(S, n_array)
+  -- if $dynamic_global_constant_array_items(S, S.ARRAYS[n_array].ITEMS, (pkey, pvalueclass)*, $array_empty()) = (parray)
+  -- if S.ARRAYS[n_array] = parray
+def $dynamic_global_constant_array_tree(S, pvalue, pvalueclass) = false -- otherwise
+def $dynamic_global_constant_array_items(S, eps, eps, parray) = (parray)
+def $dynamic_global_constant_array_items(S, (ENTRY pkey (DIRECT pvalue)) :: pentry_tail*, (pkey, pvalueclass) :: (pkey_tail, pvalueclass_tail)*, parray) = $dynamic_global_constant_array_items(S, pentry_tail*, (pkey_tail, pvalueclass_tail)*, $array_insert(parray, pkey, DIRECT pvalue))
+  -- if $dynamic_global_constant_array_tree(S, pvalue, pvalueclass)
+def $dynamic_global_constant_array_items(S, pentry*, (pkey, pvalueclass)*, parray) = eps -- otherwise
+
+def $dynamic_global_constant_value(S, preqbytes) = (PARRAY n_array)
+  -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(preqbytes)) = (puserconstant)
+  -- if puserconstant.VALUE = PARRAY n_array
+  -- if $dynamic_global_constant_array_tree(S, PARRAY n_array, puserconstant.CLASS)
 def $dynamic_global_constant_value(S, preqbytes) = (puserconstant.VALUE)
   -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(preqbytes)) = (puserconstant)
   -- if $dynamic_constant_class(puserconstant.VALUE) = (puserconstant.CLASS)
