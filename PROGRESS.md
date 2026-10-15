@@ -3687,6 +3687,22 @@ Other argument forms, dynamic method names, nullsafe or reference-returning
 methods and broader returns verification remain open in the
 [ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
+M72 admits an evaluated REFERENCE from an ordinary no-argument, literal-name
+instance method as the old source of a used `&f():?object` return. The method
+returns Factory's slot; after `unset($factory->slot)`, its pending old cell
+still carries O until ordinary replacement cleanup invokes O's destructor.
+The saved f frame then carries only a source cursor, and the caught `$y`
+recheck resumes the old return as NULL with one method-source VALUE
+Notice marker. Source2 at private `e1cff5d3`/395 matches retained native2 in
+both reference and value-method cases, including the exact callee line4
+Notice. The reference-only public proof binds the live old cell, unset slot,
+original VALUE-O release and retired cell/object, then raw NULL/Notice marker,
+detached caller alias and one delivered diagnostic. A heap-identical saved
+cursor LINE mutation fails the actual driver; the callback budget law passes.
+The prior Unsupported baseline and output-only diagnostic have zero repair
+credit. Wider method forms and broader returns verification remain open in the
+[ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
 Per-constant protection survives namespace publication and parked handlers.

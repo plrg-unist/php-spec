@@ -224,6 +224,8 @@ def $ref_return_cursor_old_operand(S, prefreturncursor, REFERENCE n) = $finally_
   -- if $ref_return_cursor_dim_source(S, prefreturncursor)
 def $ref_return_cursor_old_operand(S, prefreturncursor, REFERENCE n) = $finally_return_operand_valid(S, REFERENCE n)
   -- if $ref_return_cursor_property_source(S, prefreturncursor)
+def $ref_return_cursor_old_operand(S, prefreturncursor, REFERENCE n) = $finally_return_operand_valid(S, REFERENCE n)
+  -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprMethodCall (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE eps) metadata_call) metadata_return)
 def $ref_return_cursor_old_operand(S, prefreturncursor, KNOWN (POBJECT n)) = true
   -- if $ref_return_cursor_computed_call(S, prefreturncursor)
   -- if HOBJECT n <- S.ALLOCATIONS

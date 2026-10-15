@@ -724,3 +724,23 @@ the public proof. This covers the reached single ordinary positional
 argument, not named/unpacked/by-reference arguments, dynamic method names,
 nullsafe or reference-returning methods, or complete returns verification;
 see the [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M72 admits the evaluated REFERENCE carrier of an ordinary no-argument,
+literal-name instance method on a variable receiver as an old return source.
+The source test uses a by-reference `?object` method returning Factory's slot;
+the outer finally unsets that slot before a caught `$y` recheck. The original
+old cell is live at capture and retires during ordinary replacement cleanup,
+which invokes O's destructor. The saved f frame holds a nonowning source
+cursor, so it neither rereads the unset property nor retains the dead cell.
+Raw resumption installs NULL and one method-source VALUE Notice marker; the
+caller receives a detached r/b NULL alias. Source2 at private `e1cff5d3`/395
+matches retained native2 in both reference and value-method cases, including
+exact stdout, stderr and the callee line4 Notice. The reference-only public
+proof binds the old cell, unset slot, original VALUE-O release, retired cell
+and O, one delivered diagnostic, heap-equal cursor LINE refusal and callback
+budget law. The initial state fixture's compile failure and the first public
+fixture's unrun binder version contribute no state credit. This covers the
+reached used nullable simple-variable/no-argument/literal-name method source,
+not argument or dynamic-name or nullsafe method forms, unused or nonnullable outer returns, or complete
+returns verification; see the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
