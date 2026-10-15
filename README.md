@@ -388,6 +388,14 @@ history, default Warning, throw cleanup and refusal checks in the
 [compound ADD warning ledger](coverage/semantics/addassign-warning-review.json).
 This direct-CV route requires a quiet numeric RHS at commit; typed/owning/expired
 targets, wider operands and callbacks remain partial.
+Initially plain CV `+=` destinations now retain their selection through a named
+warning handler that creates a late alias. Successful replacement detaches that
+alias and writes a new non-reference CV cell; a supplied throw preserves the
+alias and callback writes. Three exact originals and 387 focused SL premises
+cover capture, default Warning, commit/cancellation and public guards in the
+[plain-CV compound ledger](coverage/semantics/addassign-cv-warning-review.json).
+The RHS remains defined, plain and quietly numeric; owning/constrained targets,
+wider producers and lifecycle paths remain partial.
 [Stringable compound concatenation352](coverage/semantics/compound-string-live-rhs-review.json)
 reads a defined RHS CV after the left conversion, preserves the non-reference
 self-CV fast path, and retains evaluated temporary/reference operands through

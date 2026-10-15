@@ -79,6 +79,22 @@ Lookup-only negative projections check PROPREF presence, ownership and expiry;
 they do not establish typed-source or owning-target execution. Newly warning or
 invalid RHS values, constrained/owning/expired targets, wider operands/callbacks
 and lifecycle paths remain explicit boundaries.
+Initially plain CV `+=` destinations now keep their original CV-slot selection
+across the leading-left warning. A reference created by the named handler can
+retain the callback's replacement through an alias. Successful arithmetic detaches
+that wrapper from the destination and writes a new non-reference cell, with
+LOCATION naming the actual returned CELL. A supplied throw performs neither
+detachment nor store, so subsequent writes still reach both aliases. The old
+initially referenced destination route keeps its selected-cell behavior.
+Three exact originals and 272 author plus 115 independent focused SL premises
+are recorded in the [plain-CV ledger](../../coverage/semantics/addassign-cv-warning-review.json).
+Fresh selection/snapshot authority, real saved TARGET frames, historical values,
+old-alias owners two to one, default Warning and budget continuation are checked.
+Missing-name, PROPREF, owning and newly referenced RHS projections are pure refusal
+queries, not authenticated typed/lifetime behavior. The selected RHS must remain
+plain, defined and quietly numeric; wider operands, owning/constrained targets,
+callbacks and lifecycle paths remain required.
+
 The same bounded CV/reference-cell route now stages leading-numeric-string `/`.
 Zend's `div_function` dereferences both operands before conversion; each numeric
 holder is filled before its warning. The divisor is tested after conversion, so a

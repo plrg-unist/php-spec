@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+
+Initially plain CV numeric `+=` now keeps its original destination classification
+through named warning handlers. Successful replacement detaches a callback-created
+reference and writes a new non-reference CV cell; a supplied throw retains the
+late alias and callback mutations. Three exact originals at ab36f1604 cover
+return, throw and live nonnumeric alias/default Warning at the operand line.
+Author 272 and independent 115 focused SL premises pass 387 at ed0f44a2a,
+including saved TARGET frames, new CELL/LOCATION, old alias owners two to one,
+public snapshot/selection/flavor rejection and budget continuation. Pure missing-name,
+PROPREF, owning and RHS projections remain refusal checks only. Newly wrapped,
+missing/warning/invalid RHS, owning/constrained/missing targets, other producers,
+callbacks and lifecycle paths stay partial; OP12 remains paused.
+[Plain-CV compound ledger](coverage/semantics/addassign-cv-warning-review.json).
+
 Active same-object alias writes inside a sole virtual class SET now raise the
 receiver’s Must-not-write Error after reading a defined CV RHS. No second setter
 call/conversion occurs; the task tail, outer result7 and stored10/no slot survive.

@@ -1,0 +1,128 @@
+{
+  "version": 1,
+  "milestone": "OP19 plain-CV compound ADD and late-alias detachment",
+  "status": "private semantic/test acceptance; actual-parent composition pending",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local pinned PHP and profile",
+  "scope": "Leading-numeric LEFT in += with two initially defined non-reference CVs, a named handler and a currently plain, defined, quietly numeric RHS at commit.",
+  "runtime_revision": "ab36f1604a38c20cd33e685c394e291995326913",
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "e3222efbfca60cb523b6f1c7bbdb7fbb9b02e85fad2372ee97e05fd411c58593",
+    "spec/semantics/55-compound-assignment.watsup": "c5a47f26c2315db65314299c9a54e37a1bc8306125bdd2b02979e79bc38407ca",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "96703529cf27a606e8a07c1633579c45e73322ec27f75f378d5fcf0dc5f2adc7"
+  },
+  "engine_basis": [
+    "Zend/zend_vm_def.h: ZEND_ASSIGN_OP selects RHS and the destination before calling zend_binary_op(var_ptr,var_ptr,value); an initially unwrapped CV remains the result slot.",
+    "Zend/zend_operators.c: add_function_slow fills numeric copies before warnings; only successful conversion destroys result==op1 before replacing it. A handler-created reference wrapper therefore detaches on success, and remains on throw.",
+    "Module352 compound_live_write provides a separately validated concat analogue. This route reuses only unset_name/write_name policy, with its own source certificate and actual resulting CELL/LOCATION."
+  ],
+  "contract": [
+    "The CV-specific marker authenticates distinct AssignOpPlus child CVs, source instruction line, numeric capture and actual initial plain selection. Fresh capture and TARGETeps handler dispatch equal current selected input. Saved frames and resumed holders retain history while LEFT may become an untyped reference.",
+    "Commit requires a defined nonowning unconstrained destination and a still-plain, defined, quiet numeric RHS. Pop the marker, detach a late LEFT wrapper with unset_name, then write_name and bind LOCATION to returned CELL. The new CV is non-reference; surviving old aliases keep their value and owner. The descriptor adds no roots.",
+    "A supplied handler throw performs no detach/store, preserves identity/null Previous/sentinel100 and callback mutations, and leaves the late alias live for later writes. False fallback emits the original operand-line Warning before commit.",
+    "All continued fixtures use genuine production states. Whole public source/snapshot/selection/flavor negatives are never driven. Pure missing-name, PROPREF-presence, owning and RHS projections are refusal queries only; the missing-name lookup fails before an isolated owner-zero condition could be tested.",
+    "Old OP18 selected-reference-cell producer bodies remain byte-exact; wider producers stay explicit boundaries."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-19/source-ab36f1604-late-alias-write/report.json",
+        "sha256": "4e841627f1af9172f88712c685214a443818afa2b06c9cd17249bd60711d7fd0",
+        "case": "addassign-cv-leading-late-alias-write",
+        "revision": "ab36f1604a38c20cd33e685c394e291995326913",
+        "agreements": 1,
+        "result": "normal0; saved12+live5 gives17, LEFT17/late alias99 then later73/99"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-19/review-model-ab36f1604-late-alias-default/report.json",
+        "sha256": "6aba58ccb8d94128290c1fa2b0d2f0eb7db89a53a62695c5bad08e4603e8c81b",
+        "case": "addassign-cv-leading-late-alias-default",
+        "revision": "ab36f1604a38c20cd33e685c394e291995326913",
+        "agreements": 1,
+        "result": "normal0; saved12 survives live nonnumeric LEFT, newCV17/oldalias notnumeric then alias88; one default Warning on operand line13"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-19/source-ab36f1604-late-alias-throw/report.json",
+        "sha256": "38ee179997bf4cb4c8fc49f8d6a8ab77c2e036f52f3c74add4dec6da783b12ac",
+        "case": "addassign-cv-leading-late-alias-throw",
+        "revision": "ab36f1604a38c20cd33e685c394e291995326913",
+        "agreements": 1,
+        "result": "normal0; supplied identity/nullPrevious/v100/LEFT+alias99 then later73/73, no detach/commit"
+      }
+    ],
+    "author_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-19/state-ed0f44a2a-author-two/report.json",
+      "sha256": "9d02020e289e63ebfa28bd2fb6221e95e8d117cb36f56eff0b2dc20b1f31a725",
+      "revision": "ed0f44a2a1336ee2f7adeeb76e0462dc3b766e65",
+      "conditions": [
+        147,
+        125
+      ],
+      "total": 272
+    },
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-19/state-ed0f44a2a-review-one/report.json",
+      "sha256": "6260f26263283e75fb9672e0cb1fa722611e4a47edadf1d8a20a39e0e7720f3f",
+      "revision": "ed0f44a2a1336ee2f7adeeb76e0462dc3b766e65",
+      "conditions": [
+        115
+      ],
+      "total": 115
+    },
+    "total_source_agreements": 3,
+    "total_focused_state_conditions": 387,
+    "compatibility": "Only two reviewed helper files were added at ed0 after source3 passed at ab36. Both immutable state thins reuse unchanged prepared AST/path/native/fixtures and execute full394 SL only; no PHP/frontend/source stage. No private initialization actor was needed."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-19/baseline-4e10b0314-late-alias/report.json",
+      "sha256": "61094275e6556d855eea83dd6c221d441d743f518d1a2eda8d80da36e346e852",
+      "result": "accepted checked program Unsupported: error-handler ingress requires a producer continuation; empty model streams before H versus native detachment"
+    },
+    "native_and_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-19/native-4e10b0314-two/report.json",
+        "sha256": "9a1f190313ad4068dffd2c2365417f8cde8fdbb6ca2e3e2d047f43b2403b4a80",
+        "purpose": "author native2 raw observations"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-19/native-d897e5f5c-review-one/report.json",
+        "sha256": "453db9f207423a4374b4967178ffb3d5c11a9c545877b5de73f70ddacf316190",
+        "purpose": "independent false/default native1 raw observation"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-19/state-prep-ed0f44a2a-author-two/report.json",
+        "sha256": "7ff32fe45c4ab85164c0ee44264391dfd31ae0240cc7a057dc43c1383923230e",
+        "purpose": "author2 PHP/frontend/checked-AST preparation only"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-19/state-prep-ed0f44a2a-review-one/report.json",
+        "sha256": "29b20b89efa49a917fb7dd0ac36684cf1d1bdce3d24963aa19142276cd8884eb",
+        "purpose": "independent1 PHP/frontend/checked-AST preparation only"
+      }
+    ],
+    "standalone_syntax": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-19/syntax-ed0f44a2a-three/report.json",
+      "sha256": "9f2a7a1da9a589e8f953e129c57cbfedc94fdb514abeb83d5be1f9e80a1aa7a5",
+      "result": "all147/125/115 full files parse before expected standalone undefined-pstate environment diagnostic; no semantic elaboration credit"
+    }
+  },
+  "required_follow_on": [
+    "Newly wrapped, missing, newly warning or invalid RHS; owning/constrained/missing destination; copied/container/property producers, other callbacks and exit/lifecycle routes remain required.",
+    "Five affected inventory rows remain partial. OP18 and other arithmetic evidence retain separate original cuts; OP12 remains paused."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-19",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "environment": "LC_ALL=C, TZ=UTC, no PHP_SPEC_SCRIPT_ENCODING. Source native30/model CLI60-process90; immutable CPU1 state thins full394 SL/cap120 per group/exact true newline/empty stderr/no interruption/reaped groups and absent PIDs.",
+    "commands": [
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 tests/semantics/addassign_cv_warnings.py --case CASE_ID --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 tests/semantics/addassign_cv_warning_review.py --case addassign-cv-leading-late-alias-default --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-19/state-ed0f44a2a-author-two/run-state.py",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-19/state-ed0f44a2a-review-one/run-state.py"
+    ],
+    "record": "Restore matching Git cuts/project-local tools and fresh output paths. External records retain original PHP/checked AST/path/native/fixtures/input identities/commands/exits/reaping. Large raw remains outside Git."
+  },
+  "composition": null
+}
