@@ -1,0 +1,31 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "scalar",
+      "source": "<?php\nclass MagicEmptyParent83 {\n    private int $skip = 11;\n    private int $zero = 22;\n    private int $full = 33;\n    public int $ready = 0;\n    public int $pending;\n    public function __isset(string $name): bool {\n        echo 'I:', $name, '/', self::class, '/', static::class, '/', __METHOD__, '|';\n        return $name !== 'skip' && isset($this->zero);\n    }\n    public function __get($name) {\n        echo 'G:', $name, '/', self::class, '/', static::class, '/', __METHOD__, '|';\n        return $name === 'zero' ? 0 : $this->answer();\n    }\n    private function answer(): int { return 13; }\n}\nclass MagicEmptyChild83 extends MagicEmptyParent83 {\n    private function answer(): int { return 900; }\n}\n$child = new MagicEmptyChild83();\necho 'P:', empty($child->ready) ? 'T' : 'F', '/', empty($child->pending) ? 'T' : 'F', '|';\necho 'S:', empty($child->skip) ? 'T' : 'F', '|';\necho 'Z:', empty($child->zero) ? 'T' : 'F', '|';\necho 'F:', empty($child->full) ? 'T' : 'F', '|';\n$raw = (array) $child;\necho 'R:', $raw === [\"\\0MagicEmptyParent83\\0skip\" => 11, \"\\0MagicEmptyParent83\\0zero\" => 22, \"\\0MagicEmptyParent83\\0full\" => 33, 'ready' => 0] ? 'ONLY' : 'BAD', '|';\n",
+      "source_sha256": "de924bd059dd7aae2b47e8d0d9a09b2f8d9721ad795e1e474497870557095d0f",
+      "stdout_base64": "UDpUL1R8UzpJOnNraXAvTWFnaWNFbXB0eVBhcmVudDgzL01hZ2ljRW1wdHlDaGlsZDgzL01hZ2ljRW1wdHlQYXJlbnQ4Mzo6X19pc3NldHxUfFo6STp6ZXJvL01hZ2ljRW1wdHlQYXJlbnQ4My9NYWdpY0VtcHR5Q2hpbGQ4My9NYWdpY0VtcHR5UGFyZW50ODM6Ol9faXNzZXR8Rzp6ZXJvL01hZ2ljRW1wdHlQYXJlbnQ4My9NYWdpY0VtcHR5Q2hpbGQ4My9NYWdpY0VtcHR5UGFyZW50ODM6Ol9fZ2V0fFR8RjpJOmZ1bGwvTWFnaWNFbXB0eVBhcmVudDgzL01hZ2ljRW1wdHlDaGlsZDgzL01hZ2ljRW1wdHlQYXJlbnQ4Mzo6X19pc3NldHxHOmZ1bGwvTWFnaWNFbXB0eVBhcmVudDgzL01hZ2ljRW1wdHlDaGlsZDgzL01hZ2ljRW1wdHlQYXJlbnQ4Mzo6X19nZXR8RnxSOk9OTFl8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "original_source": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-empty-probes-83/scalar.php",
+      "native_report_sha256": "fed0878ab72a6fd02c05413f2ee7e6bfd6a4b992c4705dd124737578b58c7024"
+    }
+  ]
+}
