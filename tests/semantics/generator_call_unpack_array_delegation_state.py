@@ -49,7 +49,8 @@ CASES = {
          '$generator_cached_value(S, n_data, true) = PINT 0',
          '$node_children(S, HOBJECT n_data) = [HARRAY n_table]',
          '$heap_owners($heap_graph(S), HOBJECT n_data) = 2',
-         '$heap_owners($heap_graph(S), HARRAY n_table) = 1',
+         '(HARRAY n_table) <- $pools_nodes(S.POOLS)',
+         '$heap_owners($heap_graph(S), HARRAY n_table) = 2',
          '$task_nodes(GENERATOR_UNPACK pgeneratorunpack "ready") = [HOBJECT n_data]',
          'S.EVENTS = [OUTPUT $ptascii("P|"), OUTPUT $ptascii("G|")]',
          'S_missing = $generator_set(S, n_data, pgenerator[.DELEGATE = (pgeneratorfrom[.CURRENT = eps])])',
@@ -75,7 +76,7 @@ CASES = {
          'S_one.ARRAYS = S.ARRAYS',
          'S_one.OBJECTS = S.OBJECTS',
          'S_one.EVENTS = S.EVENTS',
-         '$heap_owners($heap_graph(S_one), HARRAY n_table) = 1',
+         '$heap_owners($heap_graph(S_one), HARRAY n_table) = 2',
          '$call_descriptors_valid(S_one)',
          '$heap_valid($heap_graph(S_one))',
          'S_two_budget = $drive_steps(S_one, 1)',
@@ -110,7 +111,8 @@ CASES = {
          '$ptascii("F|"), OUTPUT $ptascii("D|"), OUTPUT $ptascii("7"), OUTPUT $ptascii("|"), OUTPUT '
          '$ptascii("11"), OUTPUT $ptascii("|"), OUTPUT $ptascii("13"), OUTPUT $ptascii("|"), OUTPUT '
          '$ptascii("R|"), OUTPUT $ptascii("23"), OUTPUT $ptascii("|"), OUTPUT $ptascii("E")]',
-         '$heap_owners($heap_graph(S_done), HARRAY n_table) = 0',
+         '(HARRAY n_table) <- $pools_nodes(S_done.POOLS)',
+         '$heap_owners($heap_graph(S_done), HARRAY n_table) = 1',
          '$heap_owners($heap_graph(S_done), HOBJECT n_data) = 0'],
     },
     'temporary-error-retires-array-before-finally-cache-and-sent': {
