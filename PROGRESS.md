@@ -104,30 +104,28 @@ The pointwise 399-module composition over 6f3488104 preserves incoming list,
 property, arithmetic, constants and return paths. Source2/state355 retain their
 private cut; independent seam review warrants no joined actor or renewed credit.
 
-Missing-key Warning now continues one nested by-value destructuring layer from
-a direct CV, retaining the current inner array and the outer continuation separately.
-Outer missing keys supply null to child reads without another warning; inner missing
-fetches still supply null after callback insertion/rebinding. Later items/results use
-the captured tables, including shared embedded references. Child entry and the next
-outer item use their inherited compiler locations. During throw cleanup, discarding
-the inner warning task can leave the outer task owning parent/child/reference cells;
-later unwind retires all otherwise unowned nodes while preserving prior stores and
-the supplied Throwable.
-Five A4 exact originals agree at a5628799f; five SL fronts pass637 premises
-(623 Boolean +14 raw steps) at 31f2b999c, checking source/shape/depth/ref/line refusals,
-real frames, both owners, keyed/shared reads, null descent, staged cleanup and budgets.
-The [nested review](coverage/semantics/list-nested-missing-warning-review.json) retains
-the unchanged Unsupported baseline with zero agreement credit.
+Missing-key Warning now continues finite recursive by-value destructuring from
+a direct CV, with each pending pattern retaining its captured table and inherited
+compiler location. Callback replacement of the RHS or a shared row cell cannot
+redirect pending inner reads; the returned root still observes the row cell's new
+value. Missing ancestors supply null silently through further children. Throw
+cleanup retires each pending task in order, preserving prior stores, callback
+writes and the supplied Throwable until all otherwise unowned nodes retire.
+Five A5 exact originals agree at f47365332; five SL fronts pass738 premises
+(721 Boolean +17 raw steps) at 1e5e02b46. Depth3/4 cases check keyed/shared reads,
+recursive source paths, actual frames, ancestor owners, null descent, staged
+cleanup and budgets. Two inherited pure depth-refusal expectations become positive;
+equivalent depth+1 controls execute on new A5 fronts without replaying old actors.
+The [recursive review](coverage/semantics/list-recursive-missing-warning-review.json)
+retains the unchanged Unsupported baseline with zero agreement credit.
 Earlier [CV source6/state468](coverage/semantics/list-missing-warning-review.json),
-[literal source6/state417](coverage/semantics/list-literal-missing-warning-review.json)
-and [mixed source5/state591](coverage/semantics/list-reference-missing-warning-review.json)
-retain their original cuts without replay. Flat literals retain array snapshots;
-flat mixed patterns retain the source cell through value replacement or CV rebind.
-Quiet compiled/implicit keys and CV leaves bound these slices; deeper/reference
-nesting, wider RHS/targets, scalar diagnostic callbacks and lifecycle remain partial.
-The pointwise399-module composition overdc3c1fb9e preserves incoming shift,
-return, constant/define and property-empty paths. Source5/state637 retain their
-private cuts; seam review warrants no joined actor or renewed agreement credit.
+[literal source6/state417](coverage/semantics/list-literal-missing-warning-review.json),
+[mixed source5/state591](coverage/semantics/list-reference-missing-warning-review.json)
+and [one-layer source5/state637](coverage/semantics/list-nested-missing-warning-review.json)
+retain their original cuts. Flat literals retain table snapshots; flat mixed patterns
+retain the source cell through value replacement or CV rebind. Quiet compiled/implicit
+keys and CV leaves bound these slices; reference nesting, nested literal/call/wider
+RHS or targets, scalar diagnostic callbacks and lifecycle remain partial.
 
 Plain-CV `%=` now keeps both converted longs through a fractional-RHS deprecation.
 Captured12/5 stores2 despite callback99/7 and detaches a late target alias; supplied

@@ -134,9 +134,11 @@ Mixed direct-CV patterns retain the source cell: value replacement affects later
 fetches, while CV unsetting/rebinding leaves its saved old cell authoritative.
 The interrupted fetch supplies null before later reference acquisition/COW;
 callback null replacement can autovivify an array at that later fetch.
-One by-value nested layer also retains inner/outer tables and compiler locations.
+Recursive by-value nesting also retains captured tables and compiler locations.
 Outer missing reads feed silent nulls into the child; inner warning-task discard
 can leave the outer continuation owning both tables until later unwind cleanup.
+Saved row tasks retain their old arrays after callback replacement of a shared row
+cell, while the returned root can expose that cell's new value.
 
 Weak-null `ini_get` and `ini_restore` are admitted internal producers. Their
 authenticated unary continuation resumes once after normal handling or false

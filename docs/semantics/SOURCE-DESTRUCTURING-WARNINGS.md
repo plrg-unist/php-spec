@@ -2,11 +2,11 @@
 
 Module409 supplies the E_WARNING continuation for missing by-value fetches into
 direct CV leaves. Flat by-value patterns admit direct CV or literal RHS arrays;
-one nested by-value layer and flat mixed value/reference patterns require a direct
+recursive by-value patterns and flat mixed value/reference patterns require a direct
 CV RHS. Implicit integer keys
 and warning-free compiled constant keys are admitted. Literal strings retain their
 authenticated interned-string carrier before key conversion. Undefined key CVs,
-null/lossy-float key diagnostics, deeper patterns, nested reference leaves, wider RHS producers
+null/lossy-float key diagnostics, nested reference leaves, wider RHS producers
 and target forms remain separate dependencies.
 
 The by-value RHS is captured before the first item; a direct CV uses Zend's `QM_ASSIGN`.
@@ -18,13 +18,16 @@ reference cells preserve their different behavior. Assignment-result delivery
 returns the captured RHS value. A throwing handler cancels the pending target
 store and later items, preserving callback writes and the supplied Throwable.
 
-For one nested layer, the child task retains its array while the outer continuation
-retains the parent. An outer missing fetch supplies null to the child, whose reads
-silently deliver null. An inner missing fetch retains both tables after callback
+At each nested layer, the child task retains its array while outer continuations
+retain their arrays. An outer missing fetch supplies null to the child, whose reads
+silently deliver null. An inner missing fetch retains captured tables after callback
 source rebinding. The first child fetch inherits the outer fetch's compiler line;
 the next outer item inherits the child's final compiler location. During throw
-cleanup the outer continuation can keep the child alive
-after the inner warning task is discarded; both retire after all owners disappear.
+cleanup outer continuations can keep child arrays alive after the inner warning
+task is discarded; the tables retire after all owners disappear.
+Shape recursion follows checked child subtrees, and context recursion removes one
+item path. Replacing a shared row cell can change the returned root's row while
+already captured row/child tasks continue to use the old tables.
 
 Mixed patterns instead use `MAKE_REF` and retain the source cell. Callback value
 assignment changes the value used by later fetches; unsetting/rebinding the CV
@@ -61,22 +64,12 @@ The pinned PHP8.5.10 source routes are `zend_compile_assign` and
 `Zend/zend_execute.c`. The VM checks a callback exception before executing the
 following target store.
 
-`list_missing_warnings.py` runs native-first checked original sources.
-`list_missing_warning_protocol.py` reuses those exact native source paths and
-streams for source-reached SL state checks; it never reruns the oracle.
-`list_missing_warning_review_sources.py` and
-`list_missing_warning_state_review.py` retain independent sources and assertions.
-The [review ledger](../../coverage/semantics/list-missing-warning-review.json)
-records distinct validation cuts and preserved failures. No complete array,
-diagnostics or lifecycle-family claim follows from this slice.
-The literal-RHS extension has separate source/state cuts in the
-[literal review](../../coverage/semantics/list-literal-missing-warning-review.json),
-using `list_literal_missing_warnings.py` and
-`list_literal_missing_warning_protocol.py` plus independent counterparts. Its
-original native paths/streams are reused without an oracle replay.
-The [mixed-reference review](../../coverage/semantics/list-reference-missing-warning-review.json)
-records separate source/state cuts from `list_reference_missing_warnings.py`,
-`list_reference_missing_warning_protocol.py` and independent counterparts.
-The [nested review](../../coverage/semantics/list-nested-missing-warning-review.json)
-records its own source/state cuts from `list_nested_missing_warnings.py`,
-`list_nested_missing_warning_protocol.py` and independent counterparts.
+Native-first checked source wrappers and source-reached protocol/state scripts
+are listed in the feature inventory. State checks reuse exact original native
+paths/streams without an oracle replay. Separate ledgers retain the
+[CV](../../coverage/semantics/list-missing-warning-review.json),
+[literal](../../coverage/semantics/list-literal-missing-warning-review.json),
+[mixed](../../coverage/semantics/list-reference-missing-warning-review.json),
+[one-layer](../../coverage/semantics/list-nested-missing-warning-review.json) and
+[recursive](../../coverage/semantics/list-recursive-missing-warning-review.json)
+cuts and failures. No complete array, diagnostics or lifecycle-family claim follows.
