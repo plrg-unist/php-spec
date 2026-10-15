@@ -363,6 +363,7 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | POWER_WARNING pintegeroperation pnumber pnumber nat
   | POWER_ASSIGN_WARNING pintegeroperation nat pnumber pnumber nat nat?
   | MOD_ASSIGN_WARNING pintegeroperation nat nat nat int nat
+  | MOD_ASSIGN_RIGHT_WARNING pintegeroperation nat nat int nat int nat
   | UPDATE_WARNING_NOTICE pupdatewarning | UPDATE_WARNING_RESTORE pupdatewarning | UPDATE_WARNING_DONE pupdatewarning
   | UPDATE_WARNING_RELEASE pupdaterestore | UPDATE_WARNING_COMMIT pupdaterestore
   | UPDATE_WARNING_EXIT perrorcall int
