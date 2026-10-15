@@ -1,0 +1,34 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hashes": [
+    "6036bc5a1620dfd363c95520bc1cf399919f934b961b3ab3a102c4e023d53c36"
+  ],
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "scalar",
+      "source": "<?php\nclass ProtectedSetterParent79 {\n    public protected(set) int $value = 10 {\n        set {\n            echo 'SET:', self::class, '/', static::class, '/', __METHOD__, '/', $value, '|';\n            $this->value = $value + $this->offset();\n        }\n    }\n    private function offset(): int { return 13; }\n}\nclass ProtectedSetterChild79 extends ProtectedSetterParent79 {\n    private function offset(): int { return 900; }\n    public function write($input) {\n        return $this->value = $input;\n    }\n}\n$child = new ProtectedSetterChild79();\n$raw = (array) $child;\necho 'I:', $raw['value'], '/', $child->value, '|';\n$result = $child->write(20);\n$raw = (array) $child;\necho 'R:', $result, '/', $raw['value'], '/', $child->value, '|';\ntry {\n    $child->value = [1];\n} catch (Error $error) {\n    echo 'DENY:', $error->getMessage(), '|';\n}\ntry {\n    $child->write([1]);\n} catch (TypeError $error) {\n    echo 'TYPE:', $error->getMessage(), '|';\n}\n$raw = (array) $child;\necho 'F:', $raw['value'], '/', $child->value, '|';\n",
+      "source_sha256": "d658bea0fb461f0224233d0173483d586f60ece1dc05eb8c8dd2eb6017c75495",
+      "stdout_template_base64": "SToxMC8xMHxTRVQ6UHJvdGVjdGVkU2V0dGVyUGFyZW50NzkvUHJvdGVjdGVkU2V0dGVyQ2hpbGQ3OS9Qcm90ZWN0ZWRTZXR0ZXJQYXJlbnQ3OTo6JHZhbHVlOjpzZXQvMjB8UjoyMC8zMy8zM3xERU5ZOkNhbm5vdCBtb2RpZnkgcHJvdGVjdGVkKHNldCkgcHJvcGVydHkgUHJvdGVjdGVkU2V0dGVyUGFyZW50Nzk6OiR2YWx1ZSBmcm9tIGdsb2JhbCBzY29wZXxUWVBFOlByb3RlY3RlZFNldHRlclBhcmVudDc5OjokdmFsdWU6OnNldCgpOiBBcmd1bWVudCAjMSAoJHZhbHVlKSBtdXN0IGJlIG9mIHR5cGUgaW50LCBhcnJheSBnaXZlbiwgY2FsbGVkIGluIHtGSUxFfSBvbiBsaW5lIDE0fEY6MzMvMzN8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "protected-set-backed-hook79-scalar-native-b1688787",
+      "native_raw_sha256": "6036bc5a1620dfd363c95520bc1cf399919f934b961b3ab3a102c4e023d53c36"
+    }
+  ]
+}
