@@ -48,7 +48,7 @@ def conditions(name, program, path, stdout):
         '$reference_origin_parent(porigin_root, 1) = ((porigin_assign, [PCFIELD 0]))',
         '$origin_node(S.SOURCES, porigin_assign) = (NExprAssign expression_root expression_rhs metadata_assign)',
         'porigin_assign = PORIGIN n_unit pcpath_assign', 'S.SOURCES[n_unit] = pcunit',
-        'S_wide = S[.SOURCES[n_unit] = pcunit[.OCCURRENCES = (PCOCCURRENCE pcpath_assign (NExprAssign expression_root (NExprArray (SEQUENCE eps) eps) metadata_assign)) :: pcunit.OCCURRENCES]]',
+        'S_wide = S[.SOURCES[n_unit] = pcunit[.OCCURRENCES = (PCOCCURRENCE pcpath_assign (NExprAssign expression_root (NScalarInt (INTEGER 1) eps) metadata_assign)) :: pcunit.OCCURRENCES]]',
         '$list_missing_nested_context(S_wide, porigin) = eps', '~$list_missing_source(S_wide, ' + args + ')',
         '$lookup(S.ENV, $ptascii("x")) = (n_x)', f'S.STORE[n_x] = DEFINED (PINT {x})',
         '$lookup(S.ENV, $ptascii("y")) = (n_y)', f'S.STORE[n_y] = DEFINED (PINT {y})',
