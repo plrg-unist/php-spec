@@ -1,0 +1,139 @@
+[
+  {
+    "id": "generator-chain-unpack-nested-caller-receives-child-return-and-outer-tail",
+    "source": "<?php\nfunction generatorChainLeaf11() { echo \"C|\"; yield 7; yield 11; echo \"N|\"; return 23; }\nfunction generatorChainOuter11() { echo \"G|\"; $result = yield from generatorChainLeaf11(); echo \"R|\", $result, \"|\"; yield 13; echo \"F|\"; return 29; }\nfunction generatorChainTarget11($first, $second, $third) { echo \"D|\", $first, \"|\", $second, \"|\", $third, \"|\"; }\nfunction generatorChainCaller11() { echo \"P|\"; $generator = generatorChainOuter11(); generatorChainTarget11(...$generator); echo \"Q|\", $generator->getReturn(), \"|\"; }\ngeneratorChainCaller11();\necho \"E\";\n",
+    "source_sha256": "e649cf714822fdf991364805cde70e9ac8d94e9cdaa48e0ce2f3cba8be0655f7",
+    "purpose": "A real nested caller consumes a shared child cache before its return resumes the outer tail; both return values remain observable after target entry.",
+    "expected_model": "normal",
+    "native_stdout": "P|G|C|N|R|23|F|D|7|11|13|Q|29|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-chain-unpack-array-leaf-named-keys-fill-earlier-default",
+    "source": "<?php\nfunction generatorChainArrayLeaf11() { echo \"C|\"; yield from [\"third\" => 9, \"second\" => 7]; echo \"L|\"; }\nfunction generatorChainArrayOuter11() { echo \"G|\"; yield from generatorChainArrayLeaf11(); echo \"F|\"; }\nfunction generatorChainArrayTarget11($first = 17, $second = 23, $third = 29) { echo \"D|\", $first, \"|\", $second, \"|\", $third, \"|\"; }\necho \"P|\";\ngeneratorChainArrayTarget11(...generatorChainArrayOuter11());\necho \"E\";\n",
+    "source_sha256": "3829418af8437c9bf306b7242c18fd0dedccf93519c6a8bb83294ecd78c0e172",
+    "purpose": "A shared Generator link ending in a real array delegate forwards named keys and fills a genuine omitted earlier default only after both producers finish.",
+    "expected_model": "normal",
+    "native_stdout": "P|G|C|L|F|D|17|7|9|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-chain-unpack-temporary-key-error-closes-child-before-parent",
+    "source": "<?php\nclass GeneratorChainTempFirst11 { function __destruct() { echo \"A|\"; } }\nclass GeneratorChainTempSecond11 { function __destruct() { echo \"B|\"; } }\nfunction generatorChainTempLeaf11() { try { echo \"C|\"; yield \"alpha\" => new GeneratorChainTempFirst11; yield 0 => new GeneratorChainTempSecond11; echo \"BAD|\"; } finally { echo \"L|\"; } }\nfunction generatorChainTempOuter11() { try { echo \"G|\"; yield from generatorChainTempLeaf11(); echo \"BAD|\"; } finally { echo \"F|\"; } }\nfunction generatorChainTempTarget11($alpha = 17) { echo \"BAD|\"; }\necho \"P|\";\ntry { generatorChainTempTarget11(...generatorChainTempOuter11()); } catch (Error $caught) { echo \"T|\", $caught->getLine(), \"|\", $caught->getTrace() === [] ? \"NOFRAME|\" : \"FRAME|\"; }\necho \"E\";\n",
+    "source_sha256": "8be7d5d9c00cf24216b467ab22f18749891eca0f720b8257b078ec4a4c695a64",
+    "purpose": "A temporary outer Generator drops its sole child link before parent finally; cached child B and sent A have distinct release positions and no synthetic API trace.",
+    "expected_model": "normal",
+    "native_stdout": "P|G|C|L|B|F|A|T|8|NOFRAME|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-chain-unpack-leaf-throw-keeps-real-leaf-and-parent-trace",
+    "source": "<?php\nclass GeneratorChainThrowChild11 { function __destruct() { echo \"A|\"; } }\nfunction generatorChainThrowLeaf11() { try { echo \"C|\"; yield new GeneratorChainThrowChild11; echo \"N|\"; throw new Exception(\"stop\", 51); } finally { echo \"L|\"; } }\nfunction generatorChainThrowOuter11() { try { echo \"G|\"; yield from generatorChainThrowLeaf11(); echo \"BAD|\"; } finally { echo \"F|\"; } }\nfunction generatorChainThrowTarget11($first, $second) { echo \"BAD|\"; }\necho \"P|\";\ntry { generatorChainThrowTarget11(...generatorChainThrowOuter11()); } catch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; foreach ($caught->getTrace() as $entry) { echo $entry[\"function\"], \"|\"; } }\necho \"E\";\n",
+    "source_sha256": "7a70c9aae61acc08b9abe4bb29a6dfc80f7aadb15cf4d23a3016ff86f7e6516d",
+    "purpose": "A leaf throw after one shared send runs both real finally blocks, retires the sent object and reports actual leaf/outer source frames without Generator method frames.",
+    "expected_model": "normal",
+    "native_stdout": "P|G|C|N|L|F|A|T|51|generatorChainThrowLeaf11|generatorChainThrowOuter11|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-chain-unpack-receive-trace-keeps-value-after-both-frames",
+    "source": "<?php\nclass GeneratorChainReceiveChild11 { function __destruct() { echo \"A|\"; } }\nfunction generatorChainReceiveLeaf11() { try { echo \"C|\"; yield [new GeneratorChainReceiveChild11]; } finally { echo \"L|\"; } }\nfunction generatorChainReceiveOuter11() { try { echo \"G|\"; yield from generatorChainReceiveLeaf11(); } finally { echo \"F|\"; } }\nfunction generatorChainReceiveTarget11(?GeneratorChainReceiveChild11 $value) { echo \"BAD|\"; }\necho \"P|\";\ntry { generatorChainReceiveTarget11(...generatorChainReceiveOuter11()); } catch (TypeError $caught) { echo \"T|\", $caught->getLine(), \"|HELD|\"; unset($caught); echo \"U|\"; }\necho \"E\";\n",
+    "source_sha256": "8af287045813901f3384ed6b65c5211ab94254ee4d1f74175a5d2e34d9ecd34a",
+    "purpose": "Receive happens after the complete Generator chain; its owning DIRECT trace retains the yielded array child until the caught TypeError is released.",
+    "expected_model": "normal",
+    "native_stdout": "P|G|C|L|F|T|5|HELD|A|U|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-chain-unpack-retained-parent-keeps-only-child-cache-after-error",
+    "source": "<?php\nclass GeneratorChainCVFirst11 { function __destruct() { echo \"A|\"; } }\nclass GeneratorChainCVSecond11 { function __destruct() { echo \"B|\"; } }\nfunction generatorChainCVLeaf11() { try { echo \"C|\"; yield \"alpha\" => new GeneratorChainCVFirst11; yield 0 => new GeneratorChainCVSecond11; echo \"BAD|\"; } finally { echo \"L|\"; } }\nfunction generatorChainCVOuter11() { try { echo \"G|\"; yield from generatorChainCVLeaf11(); echo \"BAD|\"; } finally { echo \"F|\"; } }\nfunction generatorChainCVTarget11($alpha = 17) { echo \"BAD|\"; }\n$generator = generatorChainCVOuter11();\necho \"P|\";\ntry { generatorChainCVTarget11(...$generator); } catch (Error $caught) { echo \"T|\", $caught->getLine(), \"|\", $caught->getTrace() === [] ? \"NOFRAME|\" : \"FRAME|\"; }\necho \"M|\";\nunset($generator);\necho \"E\";\n",
+    "source_sha256": "bde829a700f039289dcb40c6d4f5ca17dd2248fcbeae17a3ed53b807f6eb518f",
+    "purpose": "A retained outer CV keeps the shared child/cache after a key error while the sent first object retires; explicit unset then closes child before outer finally.",
+    "expected_model": "normal",
+    "native_stdout": "P|G|C|A|T|9|NOFRAME|M|L|B|F|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-chain-unpack-iterator-leaf-required-control",
+    "source": "<?php\nclass GeneratorChainIterator11 implements Iterator { public $index = 0; function rewind(): void { echo \"R|\"; $this->index = 0; } function valid(): bool { echo \"V|\"; return $this->index === 0; } function current(): mixed { echo \"C|\"; return 7; } function key(): mixed { echo \"K|\"; return 0; } function next(): void { echo \"N|\"; $this->index++; } }\nfunction generatorChainIteratorLeaf11() { echo \"I|\"; yield from new GeneratorChainIterator11; echo \"L|\"; }\nfunction generatorChainIteratorOuter11() { echo \"G|\"; yield from generatorChainIteratorLeaf11(); echo \"F|\"; }\nfunction generatorChainIteratorTarget11($value) { echo \"D|\", $value, \"|\"; }\necho \"P|\";\ngeneratorChainIteratorTarget11(...generatorChainIteratorOuter11());\necho \"E\";\n",
+    "source_sha256": "e09fcdc7114fcdae5bcf95a5182da7654d71789492f853840df2e300bdb7ed0f",
+    "purpose": "An active shared chain ending in a user Iterator retains the authenticated Unsupported boundary; its native behavior is observed without normal model credit.",
+    "expected_model": "unsupported",
+    "native_stdout": "P|G|I|R|V|C|K|N|V|L|F|D|7|E",
+    "native_stderr": "",
+    "native_exit": 0,
+    "unsupported_reason": "Generator unpack delegated producer",
+    "unsupported_stdout": "P|G|I|R|V|C|K|",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "80",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "71",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "73",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "82",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "86",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "67",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "75",
+            "124"
+          ]
+        ]
+      }
+    ]
+  }
+]

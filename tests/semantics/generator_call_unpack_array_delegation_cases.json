@@ -53,42 +53,11 @@
     "id": "generator-array-unpack-generator-delegate-required-control",
     "source": "<?php\nfunction generatorArrayInnerControl10() { echo \"C|\"; yield 7; echo \"N|\"; }\nfunction generatorArrayOuterControl10() { echo \"G|\"; yield from generatorArrayInnerControl10(); echo \"F|\"; }\nfunction generatorArrayControlTarget10($value) { echo \"D|\", $value, \"|\"; }\nfunction generatorArrayControlCaller10() { echo \"P|\"; generatorArrayControlTarget10(...generatorArrayOuterControl10()); echo \"R|\"; }\ngeneratorArrayControlCaller10();\necho \"E\";\n",
     "source_sha256": "e0e4ba1c8ceba86f4a1cd8c8997fbdd714c3302e0974fd68e8802f98c406da4d",
-    "purpose": "A non-array Generator delegate remains outside this milestone and must stop with its authenticated owners before READY; native normal behavior earns no model agreement.",
-    "expected_model": "unsupported",
+    "purpose": "A shared Generator delegate forwards its child cache, completes both producers and returns to the genuine nested caller.",
+    "expected_model": "normal",
     "native_stdout": "P|G|C|N|F|D|7|R|E",
     "native_stderr": "",
-    "native_exit": 0,
-    "unsupported_reason": "Generator unpack delegated producer",
-    "unsupported_stdout": "P|G|C|",
-    "unsupported_events": [
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "80",
-            "124"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "71",
-            "124"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "67",
-            "124"
-          ]
-        ]
-      }
-    ]
+    "native_exit": 0
   },
   {
     "id": "generator-array-unpack-delegated-child-throw-preserves-queued-finally",
