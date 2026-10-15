@@ -288,6 +288,10 @@ test-semantics: build
 	python3 tests/semantics/iterator_call_unpack_reference_typed_positional_variadic_state.py
 	python3 tests/semantics/iterator_call_unpack_reference_typed_positional_variadic_review_sources.py
 	python3 tests/semantics/iterator_call_unpack_reference_typed_positional_variadic_review_state.py
+	python3 tests/semantics/generator_call_unpack_sources.py
+	python3 tests/semantics/generator_call_unpack_state.py
+	python3 tests/semantics/generator_call_unpack_review_sources.py
+	python3 tests/semantics/generator_call_unpack_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py

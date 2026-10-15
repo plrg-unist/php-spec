@@ -725,8 +725,14 @@ See the [typed variadic reference review](coverage/semantics/iterator-call-unpac
 Valid NaN warnings retain the raw return through handler mutation, Fiber parking
 and throw. One numeric reread distinguishes copied NaN from a live reference;
 the raw return retires before current or iterator teardown.
-Generator/Aggregate ordinary-call unpack, Generator callback methods, nonnumeric
-raw valid changes, request/plain reference strings and handler replacements with
+Plain source-function calls also unpack Generator operands into by-value
+parameters. Reference yields become snapshots before resume; named keys use the
+ordinary binder. Native iteration adds no method trace frames, and temporary
+versus retained Generators preserve their distinct finally/cache lifetimes.
+See the [Generator unpack review](coverage/semantics/generator-call-unpack-review.json).
+Aggregate ordinary-call unpack, active yield-from producers, Generator by-reference
+call targets and callback methods, nonnumeric raw valid changes, request/plain
+reference strings and handler replacements with
 those strings, other typed array warnings, broader array/COW interactions,
 other reference sources, named variadic reference sends and live
 payload replacements,

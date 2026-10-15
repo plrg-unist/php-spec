@@ -243,14 +243,11 @@
     "id": "iterator-call-unpack-generator-required-control",
     "source": "<?php\nfunction callUnpackGeneratorData20() {\n    echo 'Y|'; try { yield 7; } finally { echo 'F|'; }\n}\nfunction callUnpackGeneratorTarget20($x) { echo 'B', $x, '|'; return 23; }\n$r = callUnpackGeneratorTarget20(...callUnpackGeneratorData20());\necho 'R', $r, '|E';\n",
     "source_sha256": "6addcbf0619ae7c46f6452bc8cba870865b26b5da2fdae615bd6abf9b9c03906",
-    "purpose": "Direct Generator ordinary-call unpack remains an explicit Unsupported follow-on; native normal behavior receives zero agreement.",
-    "expected_model": "unsupported",
+    "purpose": "Direct Generator ordinary-call unpack completes before target entry, and the returned scalar survives argument cleanup.",
+    "expected_model": "normal",
     "native_stdout": "Y|F|B7|R23|E",
     "native_stderr": "",
-    "native_exit": 0,
-    "unsupported_reason": "call argument Generator unpacking",
-    "unsupported_stdout": "",
-    "unsupported_events": []
+    "native_exit": 0
   },
   {
     "id": "iterator-call-unpack-invalid-key-destructor-throws",

@@ -122,8 +122,8 @@ is needed. The raw source cell retires before next(), independently of the new
 callee cell. Handler throw retires raw cell, DATA and temporary INPUT in order.
 REQUEST_STRING and plain reference strings, including handler replacements,
 remain Unsupported pending their separate pre-warning payload-hold contract.
-Direct Generator/Aggregate unpack, other call targets and Generator callbacks
-remain explicit follow-ons. The
+At that cut direct Generator/Aggregate unpack, other call targets and Generator
+callbacks remained explicit follow-ons. The
 [string review](../../coverage/semantics/iterator-call-unpack-string-review.json)
 records the bounded source and independent state cuts.
 The [interned reference review](../../coverage/semantics/iterator-call-unpack-interned-reference-review.json)
@@ -475,3 +475,31 @@ warnings keep earlier sent owners and named phase; handler throw preserves order
 abort cleanup. Nonnumeric raw-tag changes stay explicit Unsupported.
 The [NaN review](../../coverage/semantics/iterator-call-unpack-nan-review.json)
 keeps this increment separate from the original unpack source/state cuts.
+
+
+## Direct Generator operands
+
+Module405 expands Generator operands into plain source-function calls using the
+native iterator protocol. Acquisition checks CLOSED before adding a DATA owner.
+The unpack marker owns the original operand, acquired DATA and sent arguments;
+resume borrows DATA through an authenticated source-argument site and real saved
+resumer. Cached values are dereferenced and copied into by-value slots before
+next resume, including reference-yielding producers. No extra CURRENT owner or
+synthetic `Generator::rewind`/`next` trace frame is introduced. Integer/string key
+checks and named-slot errors precede the remaining by-reference-target refusal.
+
+Normal completion and finally precede target defaults and typed receive. A body
+throw retains its actual Generator function trace. Abort cleanup releases DATA,
+INPUT and sent arguments in order: a temporary Generator closes/frees its cache,
+while an independent CV delays that close until unset. Receive TypeError traces
+own their copied arguments after the Generator retires. Abort source receipts
+check syntax and input mode without rereading retired payload storage. This follows
+`SEND_UNPACK`, `zend_generator_get_iterator`, its iterator callbacks, and
+`zend_generator_close`. Last-owner storage keeps the existing quiet release
+carrier when ordinary destructor execution is inactive, following
+`zend_generator_free_storage` and `zend_objects_store_del`.
+Active yield-from producers stop at the authenticated `Unsupported` boundary.
+By-reference targets, wider call targets and broader
+Generator/delegation/Fiber lifecycle interactions remain required. The
+[Generator unpack review](../../coverage/semantics/generator-call-unpack-review.json)
+keeps the new source/state evidence separate from prior Iterator campaigns.

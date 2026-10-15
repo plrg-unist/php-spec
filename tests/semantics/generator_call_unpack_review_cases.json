@@ -1,0 +1,32 @@
+[
+  {
+    "id": "generator-call-unpack-review-array-snapshot-before-resume-cow",
+    "source": "<?php\nclass ReviewGeneratorChild09 { function __destruct() { echo \"A|\"; } }\nfunction reviewGeneratorValues09() { $items = [new ReviewGeneratorChild09]; try { echo \"G|\"; yield $items; echo \"N|\"; $items[0] = null; yield 17; } finally { echo \"F|\"; } }\nfunction reviewGeneratorCopy09($first, $second) { echo \"D|\", $first[0] === null ? \"BAD|\" : \"HELD|\"; $first[0] = null; echo \"M|\", $second, \"|\"; }\nreviewGeneratorCopy09(...reviewGeneratorValues09());\necho \"E\";\n",
+    "source_sha256": "6dc7b87713a8eb85e51b77dd1ea5d167d257318b0807ba1ae7c3e8290441a7fa",
+    "purpose": "The first yielded array is captured before resume mutates its local container; Generator completion/finally precedes callee entry and the child survives in the argument snapshot until the callee write.",
+    "expected_model": "normal",
+    "native_stdout": "G|N|F|D|HELD|A|M|17|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-call-unpack-review-temporary-bad-order-closes-before-sent-release",
+    "source": "<?php\nclass ReviewGeneratorFirst09 { function __destruct() { echo \"A|\"; } }\nclass ReviewGeneratorCurrent09 { function __destruct() { echo \"B|\"; } }\nfunction reviewGeneratorOrder09() { try { echo \"G|\"; yield \"alpha\" => new ReviewGeneratorFirst09; echo \"N|\"; yield 0 => new ReviewGeneratorCurrent09; echo \"BAD|\"; } finally { echo \"F|\"; } }\nfunction reviewGeneratorTarget09($alpha, $later = 0) { echo \"BAD|\"; }\ntry { reviewGeneratorTarget09(...reviewGeneratorOrder09()); } catch (Error $e) { echo \"T|\", $e->getLine(), \"|\", $e->getTrace() === [] ? \"NOFRAME|\" : \"FRAME|\"; }\necho \"E\";\n",
+    "source_sha256": "cb7d3e32b89dcd1130cc7d9136bab56d0c4f9ce4a934db7897342212388838c0",
+    "purpose": "A temporary Generator yields a named fixed argument then a numeric key; key-order Error closes the suspended Generator/finally and current value before the earlier sent argument, without an invented Generator method trace.",
+    "expected_model": "normal",
+    "native_stdout": "G|N|F|B|A|T|6|NOFRAME|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-call-unpack-review-cv-bad-order-keeps-generator-until-unset",
+    "source": "<?php\nclass ReviewGeneratorFirst09 { function __destruct() { echo \"A|\"; } }\nclass ReviewGeneratorCurrent09 { function __destruct() { echo \"B|\"; } }\nfunction reviewGeneratorOrder09() { try { echo \"G|\"; yield \"alpha\" => new ReviewGeneratorFirst09; echo \"N|\"; yield 0 => new ReviewGeneratorCurrent09; echo \"BAD|\"; } finally { echo \"F|\"; } }\nfunction reviewGeneratorTarget09($alpha, $later = 0) { echo \"BAD|\"; }\n$generator = reviewGeneratorOrder09();\ntry { reviewGeneratorTarget09(...$generator); } catch (Error $e) { echo \"T|\", $e->getLine(), \"|\", $e->getTrace() === [] ? \"NOFRAME|\" : \"FRAME|\"; }\necho \"M|\"; unset($generator); echo \"E\";\n",
+    "source_sha256": "bd393e5fca55283b3dd154abe2c771695a0ca5bb2a0311431b40c7bfa8187a15",
+    "purpose": "The same key-order Error releases the earlier sent object while an independently kept CV retains the paused Generator/current value; finally and current retirement wait for explicit unset.",
+    "expected_model": "normal",
+    "native_stdout": "G|N|A|T|7|NOFRAME|M|F|B|E",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]

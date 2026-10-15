@@ -1715,6 +1715,20 @@ Named tails, other type shapes, wider sources and live replacement remain open.
 Canonical394 composition over `b2c8b1ce1` passes inventory and strict SL at
 `6c04f7455`; private source/state evidence retains its original cut.
 
+Plain source-function calls now unpack direct Generators into by-value parameters.
+Native iterator resumes snapshot reference yields without invented method traces;
+completion/finally precede defaults and receive checks. Temporary versus retained
+operands preserve cache/argument cleanup and owning TypeError traces. Last-owner
+storage retains its quiet release carrier when ordinary destructors are inactive.
+Ten new exact originals and one promoted prior control agree; nine state groups
+from genuine source frontiers pass 642 premises. Source/state evidence retains
+its 5c9/151f/2ea/e8d cuts. Final strict initialization of 395 modules and the
+nested yield-from Unsupported control pass at 18f9. Native observations, the
+unchanged baseline, Unsupported controls and preserved failures/diagnostics earn
+zero agreement. By-reference targets, active
+yield-from producers, wider calls and broader lifecycle interactions remain open.
+[Generator unpack review](coverage/semantics/generator-call-unpack-review.json).
+
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or
 reference. Borrowed CVs and owning cells retain their modes through initial
