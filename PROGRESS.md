@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Bitwise NOT now stages finite in-range fractional-float deprecations from a
+defined non-reference CV through named handlers. It captures the converted long
+before dispatch; handler writes cannot replace it. Three exact originals at 895e
+cover saved 2 becoming -3 with live 99, supplied throw with unchanged destination,
+and saved -1 becoming 0 with one default Deprecated on the operand line.
+Author 227 and independent 97 genuine SL premises pass 324 at 3d3f, including
+saved TARGET frames, public snapshot/diagnostic rejection, ownership and budget
+resumption. Native, unchanged Unsupported baseline, preparation and syntax-only
+records retain zero agreement credit. Range/NaN, other operands, callbacks and
+lifecycle forms remain partial; OP12 stays paused.
+[BITNOT warning ledger](coverage/semantics/bitnot-warning-review.json).
+
 
 Same-class Generator and Fiber pairs now compare with order zero through the
 standard zero-property shortcut. Comparison preserves VM/capture storage and

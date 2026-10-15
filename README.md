@@ -538,6 +538,11 @@ premises check callback writes, supplied throws with unchanged destinations,
 negative boundary float delivery and a false-handler warning on the operand line.
 [Unary evidence](coverage/semantics/unary-warning-review.json) preserves the
 original failures; wider operand, callback and lifecycle forms remain partial.
+Bitwise NOT now retains the converted long through named deprecation handlers
+for finite in-range fractional floats in defined non-reference CVs. Three exact originals
+and 324 genuine state premises check live writes, supplied throws, false fallback,
+operand lines and public continuation guards. [BITNOT evidence](coverage/semantics/bitnot-warning-review.json)
+retains the unchanged Unsupported baseline; wider domains remain partial.
 [Destructuring and retained expression effects](docs/semantics/DESTRUCTURING.md)
 now execute current scalar/array list patterns and nonvariable-left coalescing.
 [Independent acceptance](coverage/semantics/destructuring-review.json) binds 263

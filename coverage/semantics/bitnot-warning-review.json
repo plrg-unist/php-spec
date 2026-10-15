@@ -1,0 +1,139 @@
+{
+  "version": 1,
+  "milestone": "OP16 finite float bitwise NOT deprecation continuation",
+  "status": "private-reviewed; current-parent composition pending",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local pinned PHP and profile",
+  "scope": "Bitwise NOT on a finite in-range fractional float read from a defined non-reference CV, with a named deprecation handler.",
+  "runtime_revision": "895e19aa26f8fc22876e43b9b63318a295d298d3",
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "7d9c82fa988b72c9694195b4e69b511b7c89e7053215786c949c224edf8e8e91",
+    "spec/semantics/58-ordinary-expressions.watsup": "8724f433f26118855510799dde4f9a2eb8954124d56cb1fcd4137cc7c68871af",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "b6924e8ec1668ac4c614facf06da8430980b43a859955b16156f557c8b658e7f"
+  },
+  "engine_basis": [
+    "Zend/zend_operators.h: zend_dval_to_lval_safe saves the converted long before reporting precision loss.",
+    "Zend/zend_operators.c: bitwise_not_function checks EG(exception) after conversion, then complements the saved long; zend_incompatible_double_to_long_error emits E_DEPRECATED from the original float.",
+    "Zend/zend_compile.c / zend_vm_def.h: unary operand instruction line governs BW_NOT, including a split prefix/operand line."
+  ],
+  "contract": [
+    "Authenticate NExprBitwiseNot, its child CV and instruction line. Capture only float_long(bits,true)=(integer,[PRECISIONLOSS]) with valid binary64 bits. Fresh capture and fresh handler dispatch equal the current non-reference CV; entered frames and returned holders remain historical.",
+    "The scalar descriptor owns no heap nodes. Remove its marker before complement delivery. A supplied throw discards the unfinished continuation, preserving object identity, null Previous and the unchanged result destination.",
+    "Reuse existing numeric conversion, complement and diagnostic formatting; prior integer/ADD/DIV/unary bodies remain unchanged. Wider inputs and callback/lifecycle forms retain their boundaries."
+  ],
+  "accepted": {
+    "strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-16/strict-895e19aa2/report.json",
+      "report_sha256": "14538cefc50df611d5a592a926fd710b03681a059e661ed6aae5335afb465ac8",
+      "revision": "895e19aa26f8fc22876e43b9b63318a295d298d3",
+      "modules": 394,
+      "mode": "SL main=true; zero PHP agreement credit"
+    },
+    "source": {
+      "distinct_new_originals": 3,
+      "revision": "895e19aa26f8fc22876e43b9b63318a295d298d3",
+      "source_sha256": {
+        "bitnot-float-handler-write": "fac0c5d084b77165781927d5afbd44c60df94c2beccf3d6f75d0053dba57c786",
+        "bitnot-float-handler-throw": "b22afd6d3a59ec515c5cc022d876c7c97cf00dd6b5e96cddde622a82d4bf5087",
+        "bitnot-lossy-negative-default": "45d2eef88775bab219c7019dc8b5e0e3c84a8ef32d3a719a9e3d2ffd997b134d"
+      },
+      "cuts": [
+        {
+          "report": "/home/user/workspace/php-spec-evidence-archive/operators-16/smoke-895e19aa2-handler-write/report.json",
+          "report_sha256": "cfe14172d532c3a945a1b356b98619d2ff67abb3020c64128f403309459081fa",
+          "ids": [
+            "bitnot-float-handler-write"
+          ]
+        },
+        {
+          "report": "/home/user/workspace/php-spec-evidence-archive/operators-16/source-895e19aa2-handler-throw/report.json",
+          "report_sha256": "ca35da5f0f44d819df34c990163115ecf67dca5834ea203a8ccd2b5efd86bde7",
+          "ids": [
+            "bitnot-float-handler-throw"
+          ]
+        },
+        {
+          "report": "/home/user/workspace/php-spec-evidence-archive/operators-16/review-model-895e19aa2-negative-default/report.json",
+          "report_sha256": "9c18ccebd1addf90dc68620bf0311553645da006b9e536099a4894cac1c63ed2",
+          "ids": [
+            "bitnot-lossy-negative-default"
+          ]
+        }
+      ],
+      "result": "All checked programs are normal/native0/model0 with exact streams: saved 2 complements to -3 despite live 99, supplied-object throw preserves sentinel 100/Previous-null/finally, and saved -1 complements to 0 with one default Deprecated on operand line 11 despite prefix line 10."
+    },
+    "author_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-16/state-3d3fefcd1-author-two/report.json",
+      "report_sha256": "c7bd2c8ab5b4ce4d4c3fb1fba6e6fb85cf2a4baac24f9e2a875517e030fb5432",
+      "revision": "3d3fefcd1bdde422ae6a1ba3d12326347a3c9a0e",
+      "mode": "SL",
+      "conditions": [
+        116,
+        111
+      ],
+      "fixture_sha256": [
+        "5ab26cd99118c55deec15b993ced8122426d955dc8e0bf2589c4bb4236440939",
+        "34436a2b530c73782ba788dfc2c4c3c090649992f1976a82dca6a95677dc5e34"
+      ],
+      "result": "Genuine capture, fresh dispatch, saved TARGET frame, historical return and marker-free supplied throw. Public bit/integer/message/event forgeries reject; source/phase guards, cell owner 1, Throwable owner 2, sentinel and native/budget endings pass."
+    },
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-16/state-3d3fefcd1-review-one/report.json",
+      "report_sha256": "bdef8691ed130540036106ecd5af7a2d06082dff27404178fef571ae46b06f40",
+      "revision": "3d3fefcd1bdde422ae6a1ba3d12326347a3c9a0e",
+      "mode": "SL",
+      "conditions": 97,
+      "fixture_sha256": "16106fe3926a4cb0060c9fdf1e6d99bd0df0f054bbe3c44f3a3caaa10a2700e6",
+      "result": "Negative float capture, false-handler default Deprecated and PINT0 delivery retain live 99, original operand line 11, owner 1 and sentinel 100. Coordinated BITS/VALUE/MESSAGE/EVENT fresh forgery rejects; native/budget endings pass."
+    },
+    "total_reached_conditions": 324,
+    "compatibility": "Helper-only 3d3f preserves tested 895e runtime and source bytes. Immutable state thins reuse retained checked AST/path/native fixtures; no accepted source or strict run is renewed."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-16/baseline-e97242722-handler-write/report.json",
+      "report_sha256": "6118e36878df29589c18f4c4a91bd8ca6b49ab755967f99bfa1a44f57979c3de",
+      "result": "Checked/program Unsupported: error-handler ingress requires a producer continuation; no handler/model output versus native saved 2/-3/live 99. Agreement0."
+    },
+    "native_and_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-16/native-e97242722-two/report.json",
+        "report_sha256": "da4a296ffd8d367dc6d0c6dabc56ed607cf340d8c493e1976942e7df78624857"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-16/native-0d54c55f5-review-one/report.json",
+        "report_sha256": "5d3cf939150d5ce8810075654e2bd5d9dbdebffbd9e30f0bebbc4b86e8d74053"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-16/state-prep-3d3fefcd1-author-two/report.json",
+        "report_sha256": "6d92abad0d04f7e61182a3979c081d00686a246783ddb17f404c052e92ff58e9"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-16/state-prep-3d3fefcd1-review-one/report.json",
+        "report_sha256": "475c847b28f79b4a66b1fa962098a7f89dd988c26b765a711317dc5d5f9d9dd5"
+      }
+    ],
+    "standalone_syntax": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-16/syntax-3d3fefcd1-three/report.json",
+      "report_sha256": "e8445601ea32f78d28e98c911e578a6fc49e1620a3f41457b41829dc9c705bbc",
+      "result": "All three full files parse before expected standalone type pstate undefined diagnostics. Parse-only, no semantic credit."
+    }
+  },
+  "required_follow_on": [
+    "Range, NaN/infinite, reference/copied/owning operands, other callback forms and wider exit/lifecycle routes remain required; no full BITNOT or arithmetic claim.",
+    "Five affected inventory rows remain partial. OP12 remains paused; previous integer/ADD/DIV/unary cuts are unchanged."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-16",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "environment": "LC_ALL=C, TZ=UTC, no PHP_SPEC_SCRIPT_ENCODING. Source native30/model CLI60-process90. Immutable state thins use CPU1, explicit full SL/cap120/exact true newline/empty stderr/no interruption and reaped groups.",
+    "commands": [
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 tests/semantics/bitnot_warnings.py --case CASE_ID --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 tests/semantics/bitnot_warning_review.py --case bitnot-lossy-negative-default --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-16/state-3d3fefcd1-author-two/run-state.py",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-16/state-3d3fefcd1-review-one/run-state.py"
+    ],
+    "record": "Restore matching Git cuts/project-local tools and fresh output paths; external records retain source/checked AST/path/native bytes, fixtures, input/compiler/runtime/profile hashes, commands, exits and reaping. State thins do not rerun PHP/frontend/source stages."
+  }
+}

@@ -134,6 +134,7 @@ syntax pintegerphase
 syntax pintegerconversion
 syntax parithmeticphase
 syntax punarywarning
+syntax pbitnotwarning
 syntax pstringcompare
 syntax paggregatecompare
 syntax pnumbercompare
@@ -348,6 +349,7 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | ARITHMETIC_ADD_CONVERT pintegeroperation parithmeticphase | ARITHMETIC_ADD_WARNING pintegeroperation parithmeticphase pvalue pnumber nat
   | ARITHMETIC_DIV_CONVERT pintegeroperation parithmeticphase | ARITHMETIC_DIV_WARNING pintegeroperation parithmeticphase pvalue pnumber nat
   | ARITHMETIC_UNARY_WARNING punarywarning nat
+  | BITNOT_WARNING pbitnotwarning nat
   | UPDATE_WARNING_NOTICE pupdatewarning | UPDATE_WARNING_RESTORE pupdatewarning | UPDATE_WARNING_DONE pupdatewarning
   | UPDATE_WARNING_RELEASE pupdaterestore | UPDATE_WARNING_COMMIT pupdaterestore
   | UPDATE_WARNING_EXIT perrorcall int

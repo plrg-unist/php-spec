@@ -81,6 +81,17 @@ rejection, ownership and budget resumption in the
 [unary ledger](../../coverage/semantics/unary-warning-review.json). Other producers,
 references/owning operands, callbacks and lifecycle forms remain required.
 
+Bitwise NOT now retains a finite in-range fractional float's converted long before its
+precision-loss deprecation. The bounded producer accepts a defined non-reference
+CV and named handler. Fresh capture/dispatch equals the CV; saved callback frames
+and resumed integer holders stay historical, without adding roots. Complement
+follows callback return; a supplied throw discards the marker and preserves the
+unchanged destination. Three exact originals and 227 author plus 97 independent
+SL premises check live 99, negative truncation, false fallback on the operand line,
+public snapshot/diagnostic rejection and budget resumption in the
+[BITNOT ledger](../../coverage/semantics/bitnot-warning-review.json).
+Range/NaN, other operands, callbacks and lifecycle forms remain required.
+
 Concatenation has an additional compile/runtime distinction. The compiler visits
 both operands before converting known scalar operands and queuing conversion
 warnings. At execution, known array operands produce their conversion warnings

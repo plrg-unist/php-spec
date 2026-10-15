@@ -293,3 +293,69 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 2
   -- if perrorcall.MESSAGE = $ptascii("A non-numeric value encountered")
   -- if perrorcall.EVENT = DIAGNOSTIC "Warning" ($ptascii("A non-numeric value encountered")) punarywarning.LINE
+
+;; bitwise_not_function captures the converted long before E_DEPRECATED and
+;; checks the callback's exception before complementing that saved integer.
+syntax pbitnotwarning = { SITE porigin, LINE int, INPUT poperand, BITS nat, VALUE int }
+
+dec $bitnot_source_valid(pstate, pbitnotwarning) : bool
+def $bitnot_source_valid(S, pbitnotwarning) = true
+  -- if S.ORIGIN = (pbitnotwarning.SITE)
+  -- if $origin_node(S.SOURCES, pbitnotwarning.SITE) = (NExprBitwiseNot expression metadata)
+  -- if pbitnotwarning.INPUT = VARIABLE ptbytes z
+  -- if $integer_operand_source(S, pbitnotwarning.SITE, [PCFIELD 0], pbitnotwarning.INPUT)
+  -- if $code_expression_at_source(S, pbitnotwarning.SITE, [PCFIELD 0]) = (pbitnotwarning.LINE)
+  -- if $(pbitnotwarning.BITS < 18446744073709551616)
+  -- if $float_long(pbitnotwarning.BITS, true) = (pbitnotwarning.VALUE, [PRECISIONLOSS])
+def $bitnot_source_valid(S, pbitnotwarning) = false -- otherwise
+dec $bitnot_snapshot(pstate, pbitnotwarning) : bool
+def $bitnot_snapshot(S, pbitnotwarning) = true
+  -- if $integer_pointer_select(S, pbitnotwarning.INPUT) = (INTEGER_CV ptbytes)
+  -- if $integer_pointer_value(S, INTEGER_CV ptbytes) = (PFLOAT pbitnotwarning.BITS)
+def $bitnot_snapshot(S, pbitnotwarning) = false -- otherwise
+
+def $bitnot_warning_plan(S) = (pbitnotwarning)
+  -- if $error_handler_eligible(S, 8192)
+  -- if $arithmetic_add_named(S)
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (BITNOT_RESULT z) :: ptask_tail*
+  -- if S.RESULT = VARIABLE ptbytes z_input
+  -- if $integer_pointer_select(S, S.RESULT) = (INTEGER_CV ptbytes)
+  -- if $integer_pointer_value(S, INTEGER_CV ptbytes) = (PFLOAT n_bits)
+  -- if $(n_bits < 18446744073709551616)
+  -- if $float_long(n_bits, true) = (i, [PRECISIONLOSS])
+  -- if pbitnotwarning = {SITE porigin, LINE z, INPUT S.RESULT, BITS n_bits, VALUE i}
+  -- if $bitnot_source_valid(S, pbitnotwarning)
+def $bitnot_warning_plan(S) = eps -- otherwise
+
+dec $bitnot_warning_valid(pstate, pbitnotwarning, nat) : bool
+def $bitnot_warning_valid(S, pbitnotwarning, n) = ($bitnot_source_valid(S, pbitnotwarning) /\ $(n <= 1) /\ (n = 1 \/ $bitnot_snapshot(S, pbitnotwarning)))
+
+rule PhpStep/bitnot-warning-begin: S ~> S[.TODO = (BITNOT_WARNING pbitnotwarning 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $bitnot_warning_plan(S) = (pbitnotwarning)
+rule PhpStep/bitnot-warning-dispatch: S ~> $error_dispatch(S, 8192, n_message*, pbitnotwarning.LINE, DIAGNOSTIC "Deprecated" n_message* pbitnotwarning.LINE, BITNOT_WARNING pbitnotwarning 1)
+  -- if S.TODO = (BITNOT_WARNING pbitnotwarning 0) :: ptask_tail*
+  -- if $bitnot_warning_valid(S, pbitnotwarning, 0)
+  -- if $integer_float_notices([PRECISIONLOSS], pbitnotwarning.BITS) = [(8192, n_message*)]
+  -- if ~$error_handler_eligible(S, 8192) \/ $arithmetic_add_named(S)
+rule PhpStep/bitnot-warning-owning-handler: S ~> S[.COMPLETION = UNSUPPORTED "bitwise NOT owning deprecation callback"]
+  -- if S.TODO = (BITNOT_WARNING pbitnotwarning 0) :: ptask_tail*
+  -- if $bitnot_warning_valid(S, pbitnotwarning, 0)
+  -- if $error_handler_eligible(S, 8192)
+  -- if ~$arithmetic_add_named(S)
+rule PhpStep/bitnot-warning-resume: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PINT $long_not(pbitnotwarning.VALUE))]
+  -- if S.TODO = (BITNOT_WARNING pbitnotwarning 1) :: ptask_tail*
+  -- if $bitnot_warning_valid(S, pbitnotwarning, 1)
+
+def $task_nodes(BITNOT_WARNING pbitnotwarning n) = eps
+def $call_task_valid(S, BITNOT_WARNING pbitnotwarning n) = $bitnot_warning_valid(S, pbitnotwarning, n)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = BITNOT_WARNING pbitnotwarning 1
+  -- if $bitnot_warning_valid(S, pbitnotwarning, 1)
+  -- if perrorcall.TARGET =/= eps \/ $bitnot_snapshot(S, pbitnotwarning)
+  -- if perrorcall.SITE = pbitnotwarning.SITE
+  -- if perrorcall.LINE = pbitnotwarning.LINE
+  -- if perrorcall.LEVEL = 8192
+  -- if $integer_float_notices([PRECISIONLOSS], pbitnotwarning.BITS) = [(8192, perrorcall.MESSAGE)]
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE pbitnotwarning.LINE
