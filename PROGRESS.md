@@ -7,6 +7,21 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+A NaN third `define` flag now emits its bool-conversion Warning before the
+ignored-flag Warning while retaining raw NaN in API arguments. A throwing first
+handler cancels outer registration; a later ignored-warning throw still completes
+its registration tail. Returning callbacks read the live constant table, and
+strict calls reject after all argument effects without either warning.
+Four exact originals agree at adce3cd8. Author 177+136+51 and independent 108
+public premises pass 472 across four genuine fronts, checking literal publication,
+duplicate ordering, captured raw bits, real first/second throw discard equality,
+source/carrier/phase refusals and budgets. The unchanged Unsupported baseline
+retains zero credit. Old quiet/scalar eligibility is unchanged; wider names,
+values and owning/packed forms remain partial. Pointwise composition over
+8d148d6b preserves the 398-module incoming parent. Source4/state472 retain their
+private cuts; independent review warrants no joined actor or renewed execution.
+[NaN-flag review](coverage/semantics/define-nan-flag-review.json).
+
 Live WeakMap comparisons with stdClass, supported source instances and
 WeakReference now return uncomparable +1 in either direction before property or
 private-entry traversal. All seven operators cover both orientations and live/expired
@@ -63,7 +78,8 @@ pass 206 at 7d069659, covering actual discard steps, complete state preservation
 source/carrier refusals, a source-backed seeded trace, quiet reporting and budgets.
 The unchanged Unsupported baseline retains zero credit. The sole runtime change
 is a 22-line module400 append using the existing boolean/scalar-flag guards;
-wider values, NaN/coerced-name flags and owning/packed paths remain separate.
+wider values, coerced-name flags and owning/packed paths remain separate.
+The NaN follow-up is recorded above.
 Pointwise composition over 52357c36 preserves the 397-module incoming parent.
 Source3/state206 retain their private cuts; independent review warrants no joined
 actor or renewed execution claim.

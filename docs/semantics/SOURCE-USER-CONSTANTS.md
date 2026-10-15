@@ -128,8 +128,8 @@ still registers the captured value before propagating that exception. The narrow
 pending tail changes only the constant table and preserves the original Throwable,
 caller destination and callback mutations. The pending duplicate case is
 covered below. The [scalar-flag review](../../coverage/semantics/define-scalar-flag-review.json)
-binds four source agreements and 462 public premises; NaN flags, wider values
-and coerced flags with scalar/null names remain separate.
+binds four source agreements and 462 public premises. NaN reception is covered
+below; wider values and coerced flags with scalar/null names remain separate.
 
 Boolean true uses its original warning marker for the fresh registration tail
 after a handler throws. The step appends the captured primitive after any unrelated
@@ -164,6 +164,21 @@ string-name row-history validation is unchanged. The
 [NULL-flag review](../../coverage/semantics/define-null-flag-review.json) binds four
 source agreements and 349 public premises. Primitive values, ordinary string
 names and nonowning three-argument calls bound this slice.
+
+A NaN third flag has a separate bool-reception Warning before the C body. Normal
+return proceeds with true to the ignored-flag Warning while CONFIG and API traces
+retain the captured NaN bits. The two phases have distinct authenticated markers;
+old quiet/scalar markers still reject NaN. A conversion-handler throw cancels the
+outer definition and preserves completed callback mutations, including an inner
+binding. A later ignored-warning throw instead reaches the existing fresh or
+pending-duplicate registration tail. Strict calls keep raw arguments and raise
+TypeError after all argument effects without warning. Immutable source arguments
+compare structural bits, independently of PHP's false NaN self-identity test.
+The [NaN-flag review](../../coverage/semantics/define-nan-flag-review.json) binds
+four exact originals and 472 public premises across four genuine source fronts,
+including actual first/second throw discard steps and budget resumption. Ordinary
+string names, primitive values and nonowning three-argument calls bound this slice;
+wider names, values, producers and owning/packed forms remain partial.
 
 Fresh two-argument array definitions recursively dereference source cells into
 new DIRECT entries. Reinserting surviving keys rebuilds NEXT, positions and serial

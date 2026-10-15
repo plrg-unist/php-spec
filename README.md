@@ -1039,9 +1039,9 @@ calls raise `TypeError` after all argument effects. A throwing ignored-warning
 handler still permits fresh registration of the captured value before its
 exception escapes. [Four source agreements and 462 state premises](coverage/semantics/define-scalar-flag-review.json)
 cover both warning phases, this pending registration tail and source/budget guards.
-NaN flags remain separate. When a binding exists after that first throw, the
-pending duplicate skips an eligible PHP handler without fallback. An excluded
-Warning level uses default reporting; both paths preserve the original exception,
+When a binding exists after that first throw, the pending duplicate skips an
+eligible PHP handler without fallback. An excluded Warning level uses default
+reporting; both paths preserve the original exception,
 binding and caller destination.
 [Three source agreements and 206 state premises](coverage/semantics/define-pending-duplicate-review.json)
 cover live handler masks, raw captures, fatal-trace clearing and quiet reporting.
@@ -1050,6 +1050,12 @@ uses false and checks the live table; a first-handler throw cancels registration
 Both warning traces keep raw NULL, and strict calls reject after argument effects.
 [Four source agreements and 349 state premises](coverage/semantics/define-null-flag-review.json)
 cover default diagnostics, callback-created duplicates, cancellation and raw traces.
+A NaN third flag raises its bool-conversion Warning before the ignored-flag
+Warning, preserving raw NaN in API traces. A throwing conversion handler cancels
+registration; a later ignored-warning throw still reaches the registration tail.
+Strict calls reject after argument effects without warnings.
+[Four source agreements and 472 state premises](coverage/semantics/define-nan-flag-review.json)
+cover these phases, live-table duplicates, captured arguments and budget resumption.
 Fresh two-argument `define` also copies nonempty acyclic scalar-array trees,
 dereferencing source cells and rebuilding append history. Request-string leaves,
 nested reference snapshots and literal constraints pass
