@@ -199,6 +199,16 @@ def $throwable_compare_chain(S, n, nat_seen*, pcompareguard_seen*) = $throwable_
   -- if $throwable_compare_fields(S, n)
   -- if $throwable_previous_id(S, n) = (n_previous)
 def $throwable_compare_chain(S, n, nat_seen*, pcompareguard_seen*) = false -- otherwise
+;; With EG(exception), even the internal __toString call is skipped. The
+;; failed cast returns signed nonzero before touching cache or chain fields.
+def $throwable_compare_order(S, POBJECT n, pvalue_other, pcompareguard_seen*) = (S, ORDER 1)
+  -- if $number_compare_exception_pending(S)
+  -- if $throwable_compare_selection(S, POBJECT n, pvalue_other) = ((n, true))
+  -- if $string_compare_text_valid(S, pvalue_other)
+def $throwable_compare_order(S, pvalue_other, POBJECT n, pcompareguard_seen*) = (S, ORDER $(-1))
+  -- if $number_compare_exception_pending(S)
+  -- if $throwable_compare_selection(S, pvalue_other, POBJECT n) = ((n, false))
+  -- if $string_compare_text_valid(S, pvalue_other)
 def $throwable_compare_order(S, POBJECT n, pvalue_other, pcompareguard_seen*) = (S_text, ORDER $scalar_order(S_text, pvalue_text, pvalue_other))
   -- if ~$number_compare_exception_pending(S)
   -- if $throwable_compare_selection(S, POBJECT n, pvalue_other) = ((n, true))
