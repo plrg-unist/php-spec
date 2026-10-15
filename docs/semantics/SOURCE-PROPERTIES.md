@@ -121,9 +121,20 @@ raises the access Error before any call/receive; the same array through Child re
 TypeError at hook4/caller14 and leaves33. Two genuine cuts pass266 premises
 (224 reached,42 derived), including forged metadata-valid global calls that fail
 permission and disjoint indirect denial. Existing permission/layout/receive rules
-are reused. Private(set), explicit/trait/paired/virtual asymmetric hooks and wider
-write/reference/receiver forms remain partial.
+are reused. Other private(set), explicit/trait/paired/virtual asymmetric hooks and
+wider write/reference/receiver forms remain partial.
 [Protected setter review](../../coverage/semantics/protected-set-backed-hook-review.json).
+
+The same bounded class family accepts genuine private(set) flags512/513, retaining
+its public key and implicit FINAL equality. Only the declaring Parent lexical
+scope may write on Child; called scope alone grants no permission. Parent input20
+stores33 and the assignment returns20. Child/global arrays raise access Errors
+before reception; the permitted Parent array raises TypeError4/caller11. A plain
+Child redeclaration fails through the unchanged final linker at class14. Two
+originals and two cuts305 (252 reached,53 derived) cover these paths plus source,
+FINAL, key and lexical/called counterexamples. Arbitrary explicit-final and wider
+asymmetric hook shapes remain unsupported.
+[Private setter review](../../coverage/semantics/private-set-backed-hook-review.json).
 
 Effective virtual getters without defaults retain the same declaration, function
 and return type while omitting the physical slot. The receiver owns no returned-value edge;

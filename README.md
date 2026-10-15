@@ -2431,6 +2431,12 @@ writer while denying a global write before parameter reception. Assignment of20 
 after storage becomes33; an array reaches TypeError only through the permitted
 Child call. One original and two states/266 checks are in the
 [protected setter review](coverage/semantics/protected-set-backed-hook-review.json).
+A selected public `private(set)` backed implicit setter permits the declaring
+Parent writer on a Child receiver. Child/global writes fail access before reception;
+a permitted Parent array call reaches TypeError. Assignment20 returns20 after
+storage33, and a plain Child redeclaration fails against the implicitly final property.
+Two originals and two states/305 checks are in the
+[private setter review](coverage/semantics/private-set-backed-hook-review.json).
 Hooked iteration, defaulted virtual hooks, other paired or virtual setters, wider trait
 setters, other explicit setter parameter forms, references, other inherited/trait
 and wider receiver, quiet or indirect-access families and `__unset` consumers remain required.
