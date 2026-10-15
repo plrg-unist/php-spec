@@ -179,6 +179,59 @@ CASES = {
             '$heap_owners($heap_graph(S_done), HOBJECT n_data) = 0',
         ],
     },
+    'quiet-last-owner-storage-releases-through-generator-carrier': {
+        'source': SOURCES['advanced-cv-generator-rewind-error-preserves-current'],
+        'stage': ('S.TODO = (GENERATOR_STORAGE_STEP pgenstorage) :: ptask_tail* '
+                  '-- if pgenstorage.NEXT = 0'),
+        'checks': [
+            'n_data = pgenstorage.OBJECT', 'S.CURRENT = eps', 'S.FRAMES = eps',
+            '~$destructor_operational(S)', 'pgenstorage.USER',
+            'S_bad = $destructor_release_begin(S, eps)',
+            '~$call_descriptors_valid(S_bad)',
+            'S.DESTRUCTION.RELEASES = eps', 'S.DESTRUCTION.OPERATIONS = eps',
+            'S.OBJECTS[n_data] = GENERATOR pgenerator',
+            'pgenerator.PHASE = GENERATOR_CLOSED', 'pgenerator.FRAME = eps',
+            'pgenerator.VALUE = (PINT 2)', 'pgenerator.KEY = (PINT 1)',
+            'pgenerator.REFCELL = eps', 'pgenerator.RETURN = eps',
+            '$generator_storage_slot(pgenerator, 0) = eps',
+            '$generator_storage_valid(S, pgenstorage)',
+            'ptask_tail* = (GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask_after*',
+            'pgenrelease.JOBS = eps', 'pgenrelease.PENDING = eps',
+            '$heap_owners($heap_graph(S), HOBJECT n_data) = 1',
+            '$lookup(S.ENV, $ptascii("generator")) = eps',
+            '~$generator_storage_valid(S, pgenstorage[.NEXT = 5])',
+            '~$generator_storage_valid(S, pgenstorage[.ORIGIN = eps])',
+            'S.EVENTS = [OUTPUT $ptascii("G|"), OUTPUT $ptascii("N|"), '
+            'OUTPUT $ptascii("P|"), OUTPUT $ptascii("T|"), '
+            'OUTPUT $ptascii("Cannot rewind a generator that was already run"), '
+            'OUTPUT $ptascii("|"), OUTPUT $ptascii("7"), OUTPUT $ptascii("|"), '
+            'OUTPUT $ptascii("NOFRAME|"), OUTPUT $ptascii("K|"), '
+            'OUTPUT $ptascii("2"), OUTPUT $ptascii("|M|"), OUTPUT $ptascii("F|")]',
+            *ADMISSION, *ZERO, *ONE,
+            'S_one.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease_field) :: '
+            '(GENERATOR_STORAGE_STEP pgenstorage[.NEXT = 1]) :: ptask_tail*',
+            'pgenrelease_field.JOBS = eps', 'pgenrelease_field.PENDING = eps',
+            '$generator_close_release_valid(S_one, pgenrelease_field)',
+            'S_one.DESTRUCTION.RELEASES = eps',
+            'S_one.DESTRUCTION.OPERATIONS = eps',
+            'S_one.OBJECTS = S.OBJECTS', 'S_one.ALLOCATIONS = S.ALLOCATIONS',
+            'S_one.EVENTS = S.EVENTS',
+            '$heap_owners($heap_graph(S_one), HOBJECT n_data) = 1', *POST,
+            'S_two_budget = $drive_steps(S_one, 1)',
+            'S_two_budget.COMPLETION = BUDGET',
+            'S_two = S_two_budget[.COMPLETION = NORMAL]',
+            'S_two.TODO = (GENERATOR_STORAGE_STEP pgenstorage[.NEXT = 1]) :: ptask_tail*',
+            '$drive(S, 2) = S_two_budget',
+            '$drive_steps(S_zero[.COMPLETION = NORMAL], 2) = S_two_budget',
+            '$call_descriptors_valid(S_two)', '$heap_valid($heap_graph(S_two))',
+            'S_done = $drive(S_two, 4000)', *DONE,
+            'S_done.EVENTS = S.EVENTS ++ [OUTPUT $ptascii("E")]',
+            '~((HOBJECT n_data) <- S_done.ALLOCATIONS)',
+            '$heap_owners($heap_graph(S_done), HOBJECT n_data) = 0',
+            'pgenstorage.HANDLE <- S_done.DESTRUCTION.FREE',
+            'S_done.DESTRUCTION.RELEASES = eps',
+        ],
+    },
     'body-throw-drops-borrowed-resumer-before-owning-unpack-marker': {
         'source': SOURCES['body-throw-retires-sent-payload-without-method-trace'],
         'stage': ('S.TODO = (THROW_SEARCH n_error) :: (GENERATOR_RESUME pgeneratorop) :: '
@@ -234,6 +287,8 @@ CASES = {
         'stage': ('S.TODO = (GENERATOR_UNPACK pgeneratorunpack "ready") :: ptask_tail* '
                   '-- if pgeneratorunpack.COUNT = 1'),
         'checks': [
+            '$destructor_operational(S)',
+            '$generator_storage_release(S, eps) = $destructor_release_begin(S, eps)',
             *TEMP, 'pgeneratorunpack.NAMED', 'pgenerator.KEY = (PINT 0)',
             'pgenerator.VALUE = (POBJECT n_current)',
             'pgeneratorunpack.CALL.SENT.SLOTS = [NAMED_SENT (KNOWN (POBJECT n_sent))]',

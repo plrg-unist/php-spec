@@ -20,6 +20,7 @@ dec $generator_storage_valid(pstate, pgenstorage) : bool
 dec $generator_storage_node(pstate, nat) : bool
 dec $generator_storage_called(pstate, nat) : pstate
 dec $generator_storage_begin(pstate, nat) : pstate
+dec $generator_storage_release(pstate, pdestructionjob*) : pstate
 
 def $generator_storage_slot(pgenerator, 0) = $generator_closed_closure(pgenerator)
 def $generator_storage_slot(pgenerator, 1) = $generator_optional_operand_nodes($generator_close_current(pgenerator.DELEGATE)) ++ $generator_values_nodes(pgenerator.VALUE) ++ $generator_reference_nodes(pgenerator.REFCELL)
@@ -114,6 +115,8 @@ def $generator_storage_node(S, n) = false -- otherwise
 def $generator_storage_called(S, n) = S -- if n <- S.DESTRUCTION.CALLED
 def $generator_storage_called(S, n) = S[.DESTRUCTION.CALLED = S.DESTRUCTION.CALLED ++ [n]] -- if ~(n <- S.DESTRUCTION.CALLED)
 def $generator_storage_begin(S, n) = $generator_storage_called(S[.TODO = (GENERATOR_STORAGE_STEP {OBJECT n, HANDLE S.DESTRUCTION.HANDLES[n], NEXT 0, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, USER $destructor_user_source(S)}) :: S.TODO], n)
+def $generator_storage_release(S, pdestructionjob*) = $destructor_release_begin(S, pdestructionjob*) -- if $destructor_operational(S)
+def $generator_storage_release(S, pdestructionjob*) = $generator_close_begin(S, pdestructionjob*) -- if ~$destructor_operational(S)
 def $destruction_storage_free(S, HOBJECT n, pdestructionrelease) = $generator_storage_begin(S, n) -- if $generator_storage_node(S, n)
 def $generator_close_storage_free(S, HOBJECT n, pgenrelease, ptask*) = $generator_storage_begin(S[.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*], n)
   -- if $generator_storage_node(S, n)
@@ -121,12 +124,12 @@ def $call_task_valid(S, GENERATOR_STORAGE_STEP pgenstorage) = $generator_storage
 def $task_nodes(GENERATOR_STORAGE_STEP pgenstorage) = [HOBJECT pgenstorage.OBJECT]
 def $eager_explicit_task(GENERATOR_STORAGE_STEP pgenstorage) = true
 def $generator_internal_task(GENERATOR_STORAGE_STEP pgenstorage) = true
-rule PhpStep/generator-storage-field: S ~> $destructor_release_begin(S[.TODO = (GENERATOR_STORAGE_STEP pgenstorage[.NEXT = $(pgenstorage.NEXT + 1)]) :: ptask*], $destruction_values($generator_storage_slot(pgenerator, pgenstorage.NEXT)))
+rule PhpStep/generator-storage-field: S ~> $generator_storage_release(S[.TODO = (GENERATOR_STORAGE_STEP pgenstorage[.NEXT = $(pgenstorage.NEXT + 1)]) :: ptask*], $destruction_values($generator_storage_slot(pgenerator, pgenstorage.NEXT)))
   -- if S.TODO = (GENERATOR_STORAGE_STEP pgenstorage) :: ptask*
   -- if $generator_storage_valid(S, pgenstorage)
   -- if $(pgenstorage.NEXT < 4)
   -- if S.OBJECTS[pgenstorage.OBJECT] = GENERATOR pgenerator
-rule PhpStep/generator-storage-finish: S ~> $destructor_release_begin($gc_store_retire(S[.TODO = ptask*][.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS, HOBJECT pgenstorage.OBJECT)], HOBJECT pgenstorage.OBJECT), [DESTRUCTION_HANDLE pgenstorage.OBJECT])
+rule PhpStep/generator-storage-finish: S ~> $generator_storage_release($gc_store_retire(S[.TODO = ptask*][.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS, HOBJECT pgenstorage.OBJECT)], HOBJECT pgenstorage.OBJECT), [DESTRUCTION_HANDLE pgenstorage.OBJECT])
   -- if S.TODO = (GENERATOR_STORAGE_STEP pgenstorage) :: ptask*
   -- if $generator_storage_valid(S, pgenstorage)
   -- if pgenstorage.NEXT = 4
