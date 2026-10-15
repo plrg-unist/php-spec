@@ -15,6 +15,8 @@ at 5551514f, including normal/abrupt receiver release. Empty/coalesce combinatio
 and wider magic forms remain unsupported. Historical `__unset` retains an exact
 source-proof compatibility bridge without replay.
 [Review](coverage/semantics/magic-isset-review.json).
+The 397-module composition over 214dbc9b passes retained SL initialization at e484862a;
+private source/state cuts keep their recorded revisions without replay.
 
 Primitive plain-CV `**=` now commits captured power even when the deprecation
 handler throws. The same pending Exception resumes after the store and detachment
