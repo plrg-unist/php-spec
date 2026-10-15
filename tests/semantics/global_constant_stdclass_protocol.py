@@ -134,7 +134,7 @@ def root_checks(initial, stdout):
         '$constant_value_class_valid(S_complete,POBJECT n_object,PVSTDCLASS n_object porigin_site)',
         '~$constant_value_class_valid(S_complete,POBJECT n_object,PVINSTANCE n_object porigin_site)',
         '~$constant_value_class_valid(S_complete,POBJECT n_object,PVSTDCLASS $(n_object + 1) porigin_site)',
-        '~$constant_class_tree_valid(PVSTDCLASS n_object porigin_site)',
+        '$constant_class_tree_valid(PVSTDCLASS n_object porigin_site)',
         '~$default_cacheable(PVSTDCLASS n_object porigin_site)',
         '~$constant_callable_foldable(PVSTDCLASS n_object porigin_site)',
         '~$global_std_header(S_complete,pconstantstdobject[.SITE = porigin_decl])',
@@ -154,7 +154,7 @@ def root_checks(initial, stdout):
         'S_released.CONSTANTSTDOBJECTS = S_complete.CONSTANTSTDOBJECTS',
         '$heap_owners($heap_graph(S_released),HOBJECT n_object) = 1',
         '$constant_value_class_valid(S_released,puserconstant.VALUE,puserconstant.CLASS)',
-        '$dynamic_global_constant_value(S_released,$ptascii("V57_ROOT")) = eps',
+        '$dynamic_global_constant_value(S_released,$ptascii("V57_ROOT")) = (POBJECT n_object)',
     ]
     checks += property_value('S_released', 'n_object', 29, 'released')
     return checks + final_checks('S_released', stdout)
@@ -224,7 +224,7 @@ def duplicate_checks(initial, response_second, code, stdout):
         '$global_std_records_valid(S_discarded,S_discarded.CONSTANTSTDOBJECTS)',
         '~$constant_value_class_valid(S_discarded,POBJECT n_candidate,PVSTDCLASS n_candidate porigin_site)',
         '$constant_value_class_valid(S_discarded,puserconstant.VALUE,puserconstant.CLASS)',
-        '$dynamic_global_constant_value(S_discarded,$ptascii("V57_EVAL")) = eps',
+        '$dynamic_global_constant_value(S_discarded,$ptascii("V57_EVAL")) = (POBJECT n_original)',
     ]
     checks += property_value('S_discarded', 'n_original', 31, 'discarded')
     return checks + final_checks('S_discarded', stdout)

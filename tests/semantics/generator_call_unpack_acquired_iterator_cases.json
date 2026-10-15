@@ -1,0 +1,32 @@
+[
+  {
+    "id": "generator-acquired-iterator-unpack-nested-acquisition-retires-before-rewind",
+    "source": "<?php\nclass AcquiredItem14 { function __destruct() { echo \"A|\"; } }\nclass AcquiredIterator14 implements Iterator {\n public $index = 0;\n function rewind(): void { echo \"R|\"; $this->index = 0; }\n function valid(): bool { echo \"V|\"; return $this->index === 0; }\n function current(): mixed { echo \"C|\"; return new AcquiredItem14; }\n function key(): mixed { echo \"K|\"; return \"item\"; }\n function next(): void { echo \"N|\"; $this->index++; }\n function __destruct() { echo \"I|\"; }\n}\nclass AcquiredInner14 implements IteratorAggregate { function getIterator(): Traversable { echo \"GET2|\"; return new AcquiredIterator14; } function __destruct() { echo \"B|\"; } }\nclass AcquiredOuter14 implements IteratorAggregate { function getIterator(): Traversable { echo \"GET1|\"; return new AcquiredInner14; } function __destruct() { echo \"O|\"; } }\nfunction acquiredNestedProducer14() { try { echo \"G|\"; yield from new AcquiredOuter14; echo \"L|\"; } finally { echo \"F|\"; } }\nfunction acquiredNestedTarget14($head = 17, $item = null) { echo \"D|\", $head, \"|\"; $item = null; echo \"X|\"; return 23; }\necho \"P|\";\n$result = acquiredNestedTarget14(...acquiredNestedProducer14());\necho \"Q|\", $result, \"|E\";\n",
+    "source_sha256": "aa24963a3136d0073a179ab333378963430bfc2689f138c605c7d7884dad8db7",
+    "purpose": "Nested Aggregate acquisition retires the intermediate then original receiver before Iterator rewind; named snapshot/default receipt follows full exhaustion.",
+    "expected_model": "normal",
+    "native_stdout": "P|G|GET1|GET2|B|O|R|V|C|K|N|V|I|L|F|D|17|A|X|Q|23|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-acquired-iterator-unpack-temporary-key-error-orders-data-cache-sent",
+    "source": "<?php\nclass AcquiredAbortItem14 { public $name; function __construct($name) { $this->name = $name; } function __destruct() { echo $this->name, \"|\"; } }\nclass AcquiredAbortIterator14 implements Iterator {\n public $index = 0;\n function rewind(): void { echo \"R|\"; $this->index = 0; }\n function valid(): bool { echo \"V|\"; return $this->index < 2; }\n function current(): mixed { echo \"C|\"; return new AcquiredAbortItem14($this->index === 0 ? \"A\" : \"B\"); }\n function key(): mixed { echo \"K|\"; return $this->index === 0 ? \"item\" : 0; }\n function next(): void { echo \"N|\"; $this->index++; }\n function __destruct() { echo \"I|\"; }\n}\nclass AcquiredAbortAggregate14 implements IteratorAggregate { function getIterator(): Traversable { echo \"GET|\"; return new AcquiredAbortIterator14; } function __destruct() { echo \"O|\"; } }\nfunction acquiredAbortProducer14() { try { echo \"G|\"; yield from new AcquiredAbortAggregate14; echo \"BAD|\"; } finally { echo \"F|\"; } }\nfunction acquiredAbortTarget14($item) { echo \"BAD|\"; }\necho \"P|\";\ntry { acquiredAbortTarget14(...acquiredAbortProducer14()); } catch (Error $failure) { echo \"T|\", $failure->getLine(), \"|\"; echo $failure->getTrace() === [] ? \"NOFRAME|\" : \"BAD|\"; }\necho \"E\";\n",
+    "source_sha256": "d9e4633ddc316d1e2cd4365a2821d7415d4614f2e0ba265477cbbbea7f1415f4",
+    "purpose": "Temporary Generator key-order abort follows acquired Iterator retirement, producer finally, current cache and earlier SENT destruction with no invented API frame.",
+    "expected_model": "normal",
+    "native_stdout": "P|G|GET|O|R|V|C|K|N|V|C|K|I|F|B|A|T|16|NOFRAME|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-acquired-iterator-unpack-generator-data-required-control",
+    "source": "<?php\nclass AcquiredGeneratorAggregate14 implements IteratorAggregate { function getIterator(): Traversable { echo \"GET|\"; yield 7; echo \"TAIL|\"; } }\nfunction acquiredGeneratorProducer14() { try { echo \"G|\"; yield from new AcquiredGeneratorAggregate14; echo \"L|\"; } finally { echo \"F|\"; } }\nfunction acquiredGeneratorTarget14($item) { echo \"D|\", $item, \"|\"; }\necho \"P|\";\nacquiredGeneratorTarget14(...acquiredGeneratorProducer14());\necho \"E\";\n",
+    "source_sha256": "85d5ac21e112440b1c7074036db75bcdb66cfbd148319f4f8a155f719af0066a",
+    "purpose": "Promoted acquired Generator boundary: the generic iterator retains its own cache and finishes before by-value target entry.",
+    "expected_model": "normal",
+    "native_stdout": "P|G|GET|TAIL|L|F|D|7|E",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]

@@ -759,3 +759,53 @@ budget. The prior Unsupported baseline and output-only guard query retain
 zero repair credit. This covers one discarded nonnullable mixed source layout,
 not other unused histories or complete returns verification; see the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M74 distinguishes an evaluated integer call result from a compiler-folded
+integer expression as the old source of a used `&f():?int` return. Both original
+sources carry node-free `KNOWN PINT 41` into F, but `old_value()` has no compiled
+read at the old expression, while `40 + 1` has an authenticated compiled `41`.
+After the selected `$y` recheck fails and is caught, the genuine active cursor
+resumes the computed source as NULL and the folded source as `41`. One raw
+consumed step installs the corresponding return operand and one old-source
+VALUE Notice marker; the diagnostic is delivered before the caller's r/b
+observation. Source2 at private `04a21f96`/396 matches retained native2 for
+both opposite caller values and exact callee line-3 Notice text and stderr.
+Paired public checks bind the original carrier, active cursor, raw restoration,
+caller alias and final write. A folded cursor LINE-only mutation preserves the
+heap but fails descriptor and actual-driver admission; both active-cut budget
+compositions pass. The proof does not claim a direct capture step or general
+scalar/CONST recovery. The unchanged Unsupported baseline and output-only
+category query retain zero repair credit. Other scalar expressions and return
+layouts remain open; see the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M75 admits a used `&f():?int` old return of `($x = old_value())` while one
+finalizer is active. The named call runs once and leaves a root-free integer 41;
+the finalizer observes `$x === 41` before writing 99. After a selected `$y`
+return fails and its error is caught, replay restores NULL with one old-line
+VALUE Notice. It does not repeat the assignment or undo `$x = 99`. The direct
+`return old_value()` control observes `$x === 0` at the same finalizer and
+retains its existing result. Both original sources match exact stdout, stderr
+and exit at private `8afe016f`/397. One source-reached fixture binds the old
+carrier, active cursor, raw NULL/Notice marker, detached caller alias, bad
+cursor-line refusal and split-budget equality. The initial rule-name parse
+failure has zero semantic credit. This covers only the reached nullable,
+simple-variable assignment of a named no-argument integer call; other return
+signatures, layouts and complete returns verification remain open in the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M76 admits the same used nullable return when its named call has one ordinary
+positional argument, `($x = old_value($x = 17))`. The callee receives 17 once;
+its return then stores 41 in `$x`, which the finalizer observes before writing
+99. The selected `$y` return consumes the old carrier and cancels its initial
+Notice. After its reference recheck fails and is caught, a surviving nonowning
+source cursor restores detached NULL with one
+new old-line VALUE Notice, without repeating either assignment. The matching
+no-finalizer control returns 41 and keeps `$x === 41` after the caller writes
+through its detached alias. Both originals agree exactly with PHP at private
+`8beef331`/397. One reached fixture starts in the callee with `n=17` and
+global `x=17`, then binds the old 41, cursor, raw restoration, caller aliases,
+bad cursor-line refusal and budget resumption across that early call state.
+This admits only one same-variable nested integer assignment argument, not
+other argument or return layouts; see the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).

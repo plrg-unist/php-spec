@@ -99,6 +99,8 @@ dec $arithmetic_addassign_plan(pstate) : (pintegeroperation, pvalue, pnumber)?
 dec $arithmetic_addassign_cv_plan(pstate) : (pintegeroperation, pvalue, pnumber)?
 dec $concatassign_array_plan(pstate) : ptask?
 dec $powerassign_warning_plan(pstate) : ptask?
+dec $modassign_warning_plan(pstate) : ptask?
+dec $modassign_right_warning_plan(pstate) : ptask?
 rule PhpStep/compound-apply: S ~> S_updated[.HELD = S.HELD]
   -- if S.TODO = (COMPOUND_APPLY pbin pbase false z) :: ptask_tail*
   -- if ~$key_write_pending(S)
@@ -108,6 +110,8 @@ rule PhpStep/compound-apply: S ~> S_updated[.HELD = S.HELD]
   -- if $arithmetic_addassign_cv_plan(S) = eps
   -- if $concatassign_array_plan(S) = eps
   -- if $powerassign_warning_plan(S) = eps
+  -- if $modassign_warning_plan(S) = eps
+  -- if $modassign_right_warning_plan(S) = eps
   -- if S_updated = $compound_target($hold_task_inputs(S), pbin, pbase, S.RESULT, z)
 rule PhpStep/compound-self: S ~> S_updated[.HELD = S.HELD]
   -- if S.TODO = (COMPOUND_APPLY pbin pbase true z) :: ptask_tail*

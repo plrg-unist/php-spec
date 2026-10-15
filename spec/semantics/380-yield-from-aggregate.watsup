@@ -449,6 +449,18 @@ def $task_nodes(YIELD_FROM_ITERATOR_NEXT n pyieldfromreceipt) = eps
 def $task_nodes(YIELD_FROM_ITERATOR_RESULT n pyieldfromreceipt n_child) = eps
 def $call_task_valid(S, YIELD_FROM_ITERATOR_NEXT n pyieldfromreceipt) = $yield_from_iterator_valid(S, n, pyieldfromreceipt)
 def $call_task_valid(S, YIELD_FROM_ITERATOR_RESULT n pyieldfromreceipt n_child) = $yield_from_iterator_result_valid(S, n, pyieldfromreceipt, n_child)
+;; The detached input's borrowed claim is documentary during queued close.
+def $generator_close_drop_claim(S, (YIELD_FROM_ITERATOR_NEXT n pyieldfromreceipt) :: ptask*, n, porigin) = ptask*
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_CLOSING
+  -- if pgenerator.FUNCTION = pyieldfromreceipt.FUNCTION
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.INPUT = eps
+  -- if pgeneratorfrom.SITE = porigin
+  -- if pyieldfromreceipt.SITE = porigin
+  -- if pgeneratorfrom.ACQUISITION = (pyieldfromreceipt)
+  -- if $yield_from_receipt_valid(S, pyieldfromreceipt)
 def $return_discard(S, YIELD_FROM_ITERATOR_NEXT n pyieldfromreceipt) = $generator_from_drop(S[.ORIGIN = (pyieldfromreceipt.SITE)], n)
 def $return_discard(S, YIELD_FROM_ITERATOR_RESULT n pyieldfromreceipt n_child) = $generator_from_drop(S[.ORIGIN = (pyieldfromreceipt.SITE)], n)
 def $generator_internal_task(YIELD_FROM_ITERATOR_NEXT n pyieldfromreceipt) = true

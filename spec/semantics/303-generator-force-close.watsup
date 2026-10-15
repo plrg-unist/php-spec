@@ -42,7 +42,7 @@ dec $generator_close_enter_valid(pstate, pgenclose) : bool
 dec $generator_close_done_valid(pstate, pgenclose) : bool
 dec $generator_close_done_site(pstate, pgenerator, pgenclose) : bool
 dec $generator_close_frame_valid(pstate, pgenerator, pframe) : bool
-dec $generator_close_drop_claim(ptask*, nat, porigin) : ptask*
+dec $generator_close_drop_claim(pstate, ptask*, nat, porigin) : ptask*
 dec $generator_close_claim(ptask) : nat*
 dec $generator_close_claims(ptask*) : nat*
 dec $generator_close_frame_claims(pframe*) : nat*
@@ -679,9 +679,9 @@ def $generator_close_jobs_valid(S, pdestructionjob*) = false -- otherwise
 def $generator_close_pending_valid(S, eps) = true
 def $generator_close_pending_valid(S, (n)) = $throwable_live(S, n)
 def $generator_close_release_valid(S, pgenrelease) = ($generator_close_jobs_valid(S, pgenrelease.JOBS) /\ $call_reference_operand_valid(S, pgenrelease.VALUE) /\ $generator_close_captures_valid(S, $base_nodes(pgenrelease.BASE)) /\ $generator_close_pending_valid(S, pgenrelease.PENDING) /\ pgenrelease.COMPLETION = NORMAL)
-def $generator_close_drop_claim((GENERATOR_FROM_NEXT n porigin) :: ptask*, n, porigin) = ptask*
-def $generator_close_drop_claim((GENERATOR_FROM_COMPLETE n porigin n_child pvalue) :: ptask*, n, porigin) = ptask*
-def $generator_close_drop_claim(ptask*, n, porigin) = ptask* -- otherwise
+def $generator_close_drop_claim(S, (GENERATOR_FROM_NEXT n porigin) :: ptask*, n, porigin) = ptask*
+def $generator_close_drop_claim(S, (GENERATOR_FROM_COMPLETE n porigin n_child pvalue) :: ptask*, n, porigin) = ptask*
+def $generator_close_drop_claim(S, ptask*, n, porigin) = ptask* -- otherwise
 def $generator_close_frame_valid(S, pgenerator, pframe) = true
   -- if pframe.LOCALS = (psymboltable)
   -- if pframe.CONTEXT = (pcallcontext)
@@ -712,7 +712,7 @@ def $generator_close_enter_valid(S, pgenclose) = true
   -- if S_scope = $generator_frame_scope(S, pframe)[.FRAMES = $save_frame(S).FRAMES]
   -- if $generator_close_plan_valid(S_scope, pgenclose.SITE, pframe.TODO, pgenclose.NEXT)
   -- if $generator_close_original_tasks_valid(S_scope, pgenclose.SITE, pframe.TODO)
-  -- if $call_tasks_valid(S_scope, $generator_close_drop_claim(pframe.TODO, pgenclose.OBJECT, pgenclose.SITE))
+  -- if $call_tasks_valid(S_scope, $generator_close_drop_claim(S_scope, pframe.TODO, pgenclose.OBJECT, pgenclose.SITE))
 def $generator_close_enter_valid(S, pgenclose) = false -- otherwise
 def $generator_close_owner_valid(S, pgenclose) = (pgenclose.STORE = eps /\ $heap_owners($heap_graph(S)[.ROOTS = $destruction_node_delete($machine_roots(S), HOBJECT pgenclose.OBJECT)], HOBJECT pgenclose.OBJECT) = 0)
   -- if pgenclose.STORE = eps

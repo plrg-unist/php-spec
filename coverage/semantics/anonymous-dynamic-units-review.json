@@ -1,0 +1,65 @@
+{
+  "status": "independently reviewed implementation and focused validation",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pinned PHP/profile, original bytes, filenames, full raw streams and process commands retained in reports",
+  "base": "68ed7c825c47ddecac6e65b67d29b1ac3a55d443",
+  "implementation_revision": "c34303bf580fa6ed38c5eccbfae1d3c0e0756d0e",
+  "module_count": 396,
+  "tested_cut": {
+    "runtime_diff_sha256": "4182f25e955c3d1e8dca04af5e1e771c79b5ca3b0c43762649e8397e6c2f1079",
+    "files": {
+      "spec/semantics/383-anonymous-classes.watsup": "c60e0c32faaed68188ff432564e0811c90150e6f4255865f7f584dd4c7fcbb13",
+      "tests/semantics/anonymous_dynamic_unit_protocol.py": "f6b33de7cd706a0760f32fa15c57e4b9ff252dc6b8a814457171cd23d32aca9d"
+    }
+  },
+  "behavior": [
+    "Closed later include/eval units compile direct CV-assignment anonymous class sites with their actual unit origins, source files and request-wide name suffix. A chronological successful-compilation prefix starting at unit0 supplies the seed; fresh canonical AST occurrences count admitted class sites, never runtime visits or source-unit numbers.",
+    "Repeated execution of one compiled site allocates distinct objects of the same class with independent property storage and the same lexical class identity. Recompiling identical include/eval bytes creates the next class name, retaining its raw NUL, actual filename/start line and hexadecimal suffix. include_once skips preserve source, journal, class, code and file images.",
+    "Runtime admission checks the installed source descriptor and historical seed for the actual unit; older compiled classes remain valid after later compilations. Existing unit0/factory rules remain literal. No parser, response schema, task or machine-field change is introduced."
+  ],
+  "engine_routes": [
+    "Zend/zend_compile.c::zend_generate_anon_class_name uses CG(rtd_key_counter)++; zend_compile_class_decl retries names already present. zend_build_runtime_definition_key also consumes class RTD keys for deferred named declarations.",
+    "Zend/zend_vm_def.h::ZEND_DECLARE_ANON_CLASS caches the compiled site class, separating repeated runtime allocation from fresh compilation identity.",
+    "Zend/zend_compile.c::zend_compile_short_circuiting can omit a constant-dead expression RHS. The new source certificate therefore requires an actual assignment statement to a literal CV, excluding skipped-expression sites. Statement-body compilation remains distinct from runtime reachability.",
+    "Existing module383 unit0/factory compilation and runtime allocation are reused. Named function, Closure and arrow source shapes are conservatively excluded from this dynamic-history slice; they are not claimed to consume this class-name counter."
+  ],
+  "accepted": {
+    "source_agreements": 2,
+    "public_premises": 254,
+    "eval_premises": 121,
+    "include_premises": 133,
+    "production_chains": 2,
+    "budget_resumptions": 1,
+    "raw_steps": 0,
+    "driven_forged_states": 0
+  },
+  "authority": "The two source comparisons and current public254 share base68ed7c82/runtime diff4182f25e with exact two-file identities. Six genuine frontend/adapter request-response pairs ground the main and both accepted dynamic units in each public chain. Rejected missing/reentrant history, omitted occurrences, skipped-expression and wrong-name projections are pure and undriven; they do not constitute source campaigns. Native/raw names are observations, not generated expectations.",
+  "preserved_outcomes": "The unchanged checked eval baseline genuinely stops Unsupported anonymous class RTD, body, or compiler publication context after the unit0 seed output, with CLI1 and zero credit. The short-circuit source restriction was refined before any affected actor. Both affected source and public actors pass on their first execution; no V58 actor or fixture failures occurred. Native/preparation/standalone syntax and the public reporter agreement_credit0 remain zero differential credit; independent premise acceptance is recorded separately. No rebuild or portability claim.",
+  "remaining": "Only closed successful no-reentry prior compilations and direct literal-CV assignment anonymous sites are admitted. Other class-like producers, named-function/Closure/arrow source shapes, nested or nonclosed anonymous sites, competing RTD ordering, pre-name diagnostics, unfinished/failed/ambiguous histories, dynamic factories, inheritance/attributes/constructor arguments and wider members/lifecycle remain partial. Existing unit0/factory coverage stays at its historical cuts; this does not close anonymous classes or core.",
+  "artifacts": {
+    "native_pair": {
+      "path": ".tools/dynamic-review-02/static-native-v58/report.json",
+      "sha256": "7895b8cef80e5e28020e9f415f6cb4b017207a1068d99f9f07fbc705a0e61dea"
+    },
+    "unchanged_eval_baseline": {
+      "path": ".tools/dynamic-source-anonymous-units-baseline-38/report.json",
+      "sha256": "7bf786abb0ae2a1093b7dd0fa5d58aeb6b4b23098813bc6593886dff31099564"
+    },
+    "affected_eval_source": {
+      "path": ".tools/dynamic-source-anonymous-units-model-39/report.json",
+      "sha256": "cf92a8bbb4a1cd277f7a8e31e6b6703e985f414982d4c2232f57f797f0a438b7"
+    },
+    "affected_include_source": {
+      "path": ".tools/dynamic-source-anonymous-units-include-model-38/report.json",
+      "sha256": "d6b44f9bd2c8970332512c86e4b5d865cc5d994282e610e9c7a53999c250ca12"
+    },
+    "fixture_preparation": {
+      "path": ".tools/dynamic-source-anonymous-units-state-01/fixtures-report.json",
+      "sha256": "7c448aaad24a108bff87f1ea33b71ad35ded1fe5b2e0368c163efa3b9c741458"
+    },
+    "public_states": {
+      "path": ".tools/dynamic-source-anonymous-units-state-01/check-report.json",
+      "sha256": "4dfbb20f0b993ad2e853b22a9ac94136f6e06dd25dd01accbebc9f7a986f9c6a"
+    }
+  },
+  "recovery": "Canonical ignored native originals preserve raw NUL-bearing names and exact source/file/CWD tuples. anonymous_dynamic_unit_protocol.py --phase fixtures --sources/--output records checked main and unit1/unit2 frontend/adapter packets; --phase check runs ordered396 --sl serial eval121 then conditional include133, each process90/exact trueLF/empty under host240, stopping on first failure. Source CLI60/process90/host120; native PHP30. Include uses the retained finite-v2 snapshot. Whole generated DSL parse-only records under state01/parse-only retain zero semantic credit. Metadata edits require no semantic replay."
+}

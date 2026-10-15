@@ -1,0 +1,22 @@
+[
+  {
+    "id": "generator-call-unpack-acquired-iterator-review-shared-chain-reference-snapshot-and-retained-data",
+    "purpose": "A temporary Aggregate retires before callbacks while an independent Iterator CV and active Generator chain preserve raw-reference key mutation, the argument snapshot and later Iterator retirement.",
+    "source": "<?php\nclass ReviewAcquiredFirst14 { function __destruct() { echo \"A|\"; } }\nclass ReviewAcquiredSecond14 { function __destruct() { echo \"B|\"; } }\nclass ReviewAcquiredReferenceIterator14 implements Iterator {\n    public $item; public bool $more = true;\n    function __construct() { $this->item = new ReviewAcquiredFirst14(); }\n    function rewind(): void { echo \"W|\"; }\n    function valid(): bool { echo \"V|\"; return $this->more; }\n    function &current(): mixed { echo \"C|\"; return $this->item; }\n    function key(): mixed { echo \"K|\"; $this->item = new ReviewAcquiredSecond14(); return \"item\"; }\n    function next(): void { echo \"N|\"; $this->item = null; $this->more = false; }\n    function __destruct() { echo \"I|\"; }\n}\nclass ReviewAcquiredReferenceAggregate14 implements IteratorAggregate {\n    function getIterator(): Traversable { global $iterator; echo \"GET|\"; return $iterator; }\n    function __destruct() { echo \"Q|\"; }\n}\nfunction reviewAcquiredReferenceLeaf14() { try { echo \"G|\"; yield from new ReviewAcquiredReferenceAggregate14(); echo \"L|\"; } finally { echo \"F|\"; } }\nfunction reviewAcquiredReferenceOuter14() { try { echo \"O|\"; yield from reviewAcquiredReferenceLeaf14(); echo \"OL|\"; } finally { echo \"OF|\"; } }\nfunction reviewAcquiredReferenceTarget14($item) { echo \"D|\", $item instanceof ReviewAcquiredSecond14 ? \"HELD|\" : \"BAD|\"; $item = null; echo \"X|\"; }\n$iterator = new ReviewAcquiredReferenceIterator14();\necho \"P|\"; reviewAcquiredReferenceTarget14(...reviewAcquiredReferenceOuter14()); echo \"M|\"; unset($iterator); echo \"E\";\n",
+    "native_stdout": "P|O|G|GET|Q|W|V|C|K|A|N|V|L|F|OL|OF|D|HELD|B|X|M|I|E",
+    "expected_model": "normal",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "01f165c33e9c7934005add8144d1b11fcd802f7877b745e88b1809c47ac139ad"
+  },
+  {
+    "id": "generator-call-unpack-acquired-iterator-review-next-throw-retains-independent-iterator-and-cow-row",
+    "purpose": "The acquired Iterator has a separate CV owner. A real next() throw retires Generator/cache/SENT while its replacement property row remains until explicit Iterator unset; the trace has real next/producer frames.",
+    "source": "<?php\nclass ReviewAcquiredRowFirst14 { function __destruct() { echo \"A|\"; } }\nclass ReviewAcquiredRowSecond14 { function __destruct() { echo \"B|\"; } }\nclass ReviewAcquiredRowIterator14 implements Iterator {\n    public $row;\n    function __construct() { $this->row = [new ReviewAcquiredRowFirst14()]; }\n    function rewind(): void { echo \"W|\"; }\n    function valid(): bool { echo \"V|\"; return true; }\n    function current(): mixed { echo \"C|\"; return $this->row; }\n    function key(): mixed { echo \"K|\"; $this->row[0] = null; return 0; }\n    function next(): void { echo \"N|\"; $this->row = [new ReviewAcquiredRowSecond14()]; throw new Exception(\"next\", 71); }\n    function __destruct() { echo \"I|\"; }\n}\nclass ReviewAcquiredRowAggregate14 implements IteratorAggregate {\n    function getIterator(): Traversable { global $iterator; echo \"GET|\"; return $iterator; }\n    function __destruct() { echo \"Q|\"; }\n}\nfunction reviewAcquiredRowGenerator14() { try { echo \"G|\"; yield from new ReviewAcquiredRowAggregate14(); echo \"BAD|\"; } finally { echo \"F|\"; } }\nfunction reviewAcquiredRowTarget14($items) { echo \"BAD|\"; }\n$iterator = new ReviewAcquiredRowIterator14();\necho \"P|\";\ntry { reviewAcquiredRowTarget14(...reviewAcquiredRowGenerator14()); }\ncatch (Exception $failure) { echo \"T|\", $failure->getCode(), \"|\"; $trace = $failure->getTrace(); echo $trace[0][\"function\"], \"|\", $trace[1][\"function\"], \"|\"; }\nunset($trace, $failure); echo \"M|\"; unset($iterator); echo \"E\";\n",
+    "native_stdout": "P|G|GET|Q|W|V|C|K|N|F|A|T|71|next|reviewAcquiredRowGenerator14|M|I|B|E",
+    "expected_model": "normal",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "d7dd206b4d8b20289727c2b7adcba6218dc260890c72292b6caa1ec7c2d4624a"
+  }
+]

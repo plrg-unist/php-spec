@@ -1,0 +1,111 @@
+{
+  "milestone": "Generator argument unpack through Aggregate-acquired Generator data",
+  "status": "independently accepted and pointwise composed on the actual canonical parent",
+  "independent_reviewer": "iterator_review_15, paired with iterator_dev_15",
+  "base": "2a810611d64015804e1ba9d37275322e932b7704",
+  "tested_private_code": "80ad118bf4d47ca81df31a4e3b2afcdc0a8108fc",
+  "modules": 397,
+  "scope": "Ordinary Generator by-value argument unpack consumes Aggregate-acquired Generator data directly or below finite active shared links. The acquired parent owns its copied raw CURRENT and child; shared outer links borrow that cache. Ordinary Aggregate call operands remain required.",
+  "semantics": {
+    "admission": "405 adds only an acquired-Generator leaf predicate and one chain clause: allocated DELEGATING parent and allocated Generator INPUT, present CURRENT, position1, acquisition receipt and existing source-valid record. ACQUISITION=eps continues to classify ordinary shared child graphs; existing289/380 protocols are unchanged.",
+    "ownership": "Acquired child cache, parent CURRENT and by-value SENT are physical owners. SEND dereferences a raw reference before advancement. A copied getIterator Generator frame retains This once; the receipt adds no owner. Independent child CVs retain their own cached arrays across COW replacement and a genuine body throw.",
+    "completion": "Generic iterator mode supplies null to the parent and discards an unused owning child return before the parent tail. This does not admit owning copied detached-child return receipts, which remain open. Temporary key errors close the child before parent finally and copied cache/SENT release. Existing303/380 close claims and real source traces are reused without new runtime changes.",
+    "runtime_delta": "Only405 changes; eighteen added logical lines, no machine fields, dispatch, ownership or cleanup changes.",
+    "module_sha256": {
+      "405": "66ad1af34e875bf1366be79dda26027e73f95e1883ff87ced793a2844718d182"
+    }
+  },
+  "source_authority": [
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_SEND_UNPACK and ZEND_YIELD_FROM",
+    "vendor/php-src/Zend/zend_interfaces.c::zend_user_it_get_new_iterator",
+    "vendor/php-src/Zend/zend_generators.c::zend_generator_get_next_delegated_value, native iterator hooks, zend_generator_cleanup_unfinished_execution and zend_generator_dtor_storage"
+  ],
+  "validation_identity": {
+    "php": "8.5.10 CLI NTS64; source34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml5.1.0; SL, caches off and encountered determinism checks",
+    "environment": "tests/semantics/profile.json; PHP -n; LC_ALL=C; TZ=UTC; PHP_SPEC_SCRIPT_ENCODING unset; CPU3 worker1",
+    "commands": "Raw reports retain exact commands, selections and exits. Serial stop-first packets fully reaped. Native-only8s; strict/state120s; author source model100/process120s; independent source model60/process75s. Each state group ran separately."
+  },
+  "raw_root": ".tools/generator-call-unpack-acquired-generator-15/.tools/",
+  "native_and_baseline": {
+    "cut": "Untouched2a810611d/397 and4057f728104; five distinct native originals earn zero model agreement.",
+    "reports": [
+      "generator-acquired-generator-unpack-native-03__e07_/report.json",
+      "generator-acquired-generator-unpack-review-native-1yi4ci1i/report.json"
+    ],
+    "unchanged_baseline": "generator-acquired-generator-unpack-baseline-tqflghqp/report.json uses exact049383d8 original: authenticated Generator unpack delegated producer Unsupported after P|G|GET| and before SEND, exit1/no timeout, zero agreement.",
+    "preservation": "Original native3/peer2 and baseline files remain exact. Author source validation used the wrapper default and reobserved native3, plus the promoted prior source1; this adds no distinct-source or agreement credit. Independent source2 reuses the retained native tuple and exact original paths."
+  },
+  "normal_sources": {
+    "new_distinct_originals": 5,
+    "reports": [
+      [
+        "generator-acquired-generator-unpack-source-yjlk8wlc/report.json",
+        3
+      ],
+      [
+        "generator-call-unpack-acquired-generator-review-source-cis9zzpy/report.json",
+        2
+      ]
+    ],
+    "observations": "Exact original-byte stdout/stderr/exit agreement at80ad with stable HEAD/inputs: named/default method acquisition and owning unused return; temporary key-error close order; genuine child/producer throw traces; raw-reference SEND through active shared outer links; separately retained child COW row lifetime."
+  },
+  "promoted_prior_source": {
+    "report": "generator-acquired-iterator-unpack-source-5a397tez/report.json",
+    "result": "Only prior14 85d5ac21 source is promoted and freshly modeled at80ad, one normal agreement separate from the five new originals. Original bytes and native answer are unchanged; only current expected classification/purpose and obsolete Unsupported metadata change."
+  },
+  "new_reached_states": {
+    "groups": 4,
+    "driver_premises": 436,
+    "author_premises": 195,
+    "independent_premises": 241,
+    "cut": "80ad118bf",
+    "author_reports": [
+      [
+        "fiber-state-review-ng3xhnlk/report.json",
+        116
+      ],
+      [
+        "fiber-state-review-sj399olo/report.json",
+        79
+      ]
+    ],
+    "independent_reports": [
+      [
+        "fiber-state-review-47qp1qal/report.json",
+        114
+      ],
+      [
+        "fiber-state-review-etvvrbzz/report.json",
+        127
+      ]
+    ],
+    "checks": "Genuine ready/SEND, queued child-close and child-throw fronts check copied caches, single This owner, raw HCELL versus by-value object owners, shared outer parent authority, documentary retired Aggregate, same-heap forged receipt/mode and missing-current/source refusals, real borrowed resume markers, pending Error16, exact child/parent trace, independent child CV+COW, public call/heap validity and zero/split budgets through exact remaining destruction. All true/empty stderr/exit0/no timeout, stable inputs and HEAD."
+  },
+  "strict": "generator-acquired-generator-unpack-author-sl-vha5loez/report.json passes all397 modules at80ad: true/empty stderr/exit0/no timeout, stable HEAD/inputs. Initialization supplies no application/runtime agreement.",
+  "evidence_recovery": {
+    "archive": "../php-spec-evidence-archive/generator-call-unpack-acquired-generator-15/private.tar.gz",
+    "bytes": 293936,
+    "sha256": "8e987ce023f2ba347a8db927a45b4797ad688d321b168b53cf65deb48cb8625c",
+    "manifest": "Sibling manifest.json maps eleven raw reports, hashes and ignored driver inputs.",
+    "restore": "Restore .tools members at the recorded private root. Runtime/author inputs recover from80ad118bf; unchanged runtime uses2a810611d. Reviewer inputs recover from the publication containing the ledger; reports retain exact input hashes. Referenced binaries are identities, not archived build prerequisites."
+  },
+  "remaining": [
+    "Ordinary-call Aggregate operands and valid-key Generator by-reference targets remain required.",
+    "Owning copied detached returns, active chains ending in detached roots and wider callback/reentrant/Fiber interactions remain open.",
+    "No full Generator, argument-unpack or PHP-core closure is claimed."
+  ],
+  "composition": {
+    "actual_parent": "bb312fcd2a255c3de4afd7378cdfb84c5ebd09ac",
+    "private_publication": "13054d2f03b4f96919823706ec5ead243c87b48d",
+    "modules": 397,
+    "preservation": "Only405 differs from the actual parent runtime and matches tested80ad bytes exactly. All other runtime modules, manifest and pipeline are unchanged. All five inventory rows preserve actual-parent prefixes and unrelated fields, and every other row is unchanged.",
+    "independent_seam_review": "Incoming weak392 implicit object casts, Source34/V59 constant query/define, OP25 modulo assignment and sole156 M75 typed ordinary reference-return replay have disjoint selectors absent from the acquired-Generator source/state packets.405/289/380/303 and the pipeline are unchanged by the incoming increments. Independent pointwise review finds no concrete runtime interaction requiring renewal.",
+    "current_static_inventory": "python3 scripts/check-semantic-inventory.py: exit0,169 constructors/306 runtime obligations.",
+    "evidence_limit": "No joined runtime actor, strict/source/state replay or fresh execution credit. All397 private strict and source6/state436 observations retain80ad inputs and counts; actual-parent byte preservation and disjoint-selector review supply the compatibility bridge."
+  }
+}

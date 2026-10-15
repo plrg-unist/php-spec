@@ -40,12 +40,31 @@ Their second implicit string cast fails quietly without executing the callable o
 VM. Live admission checks allocation; existing saved text, signed order, retained
 cells and cursors finish without a new receiver root. Other internal handlers remain open.
 
+[Weak internal changed operands](../../coverage/semantics/weak-nonstringable-redispatch-review.json)
+also admit live WeakMap and WeakReference objects, including wrappers with expired
+referents. Their second implicit string cast fails quietly without reading private
+entries or referents. Saved text, operand direction, copied values and retained
+cells remain authoritative; nonzero array/property leaves skip later casts.
+Existing pair, numeric, explicit-cast and producer/lifetime domains are unchanged.
+
 [Live WeakMap pairs](../../coverage/semantics/weakmap-comparison-review.json)
 also return order zero before recursion protection or any private-entry traversal.
 Empty versus populated and different-key/value maps compare equally; strict identity
 stays separate. Existing array and declared-property cursors continue to later
-values or real casts without adding map-value roots. Mixed-object/numeric routes
-and the existing map producer/lifetime limits are unchanged.
+values or real casts without adding map-value roots. Existing map producers and
+lifetime forms remain partial.
+
+[Mixed standard WeakMap comparisons](../../coverage/semantics/weakmap-mixed-comparison-review.json)
+return uncomparable +1 against live stdClass, source INSTANCE and WeakReference
+objects in either direction, before property, private-entry or recursion traversal.
+Both operands must be allocated and nonfreeing. Reachable source instances use
+standard handlers under the existing source/stdClass/finite Throwable parent-link
+contract; other internal parents remain unsupported. Neither an effective
+`__toString` nor an expired weak referent changes the class mismatch. The seven
+operators retain the existing greater-operand reversal, so `<=>` returns +1 both
+ways while `>` and `>=` stay false both ways. The mismatch adds no roots or guards;
+array and declared-property scans stop before later leaves. Other counterpart tags,
+numeric protocols and wider producers/lifetimes remain partial.
 
 [Generator/Generator and Fiber/Fiber pairs](../../coverage/semantics/generator-fiber-comparison-review.json)
 return order zero through the standard zero-default-property shortcut. The pair

@@ -171,6 +171,23 @@ use the pinned numeric/string conversions, overflow, precision warnings and
 operator-specific errors. Power evaluation uses the existing pure binary64/libm
 specification helpers.
 
+For distinct initially plain CVs, `%=` saves a fractional-float left conversion
+before its deprecation and reads the live quiet integer RHS after callback return.
+Only a successful remainder replaces the original target; a supplied throw or
+live zero preserves callback writes and any late alias. The latter produces the
+ordinary original-line `DivisionByZeroError` before any detachment.
+[Modulo-assignment evidence](../../coverage/semantics/modassign-warning-review.json)
+retains three source agreements and 362 focused SL premises; wider operands,
+targets and lifecycle forms remain partial.
+
+With a quiet integer LEFT and fractional-float RHS, `%=` instead keeps both
+converted longs across the RHS deprecation. Success detaches a late target alias;
+supplied throw or a captured zero divisor preserves callback writes and aliases.
+The live RHS is never reread after capture.
+[RHS modulo evidence](../../coverage/semantics/modassign-right-warning-review.json)
+retains three source agreements and 404 focused SL premises; both-fractional
+operands, initial references/copies and unsafe targets remain partial.
+
 Stringable `.=` converts the left value before dereferencing the selected RHS
 slot. A defined direct RHS CV is borrowed and follows callback rebinding; an
 initially undefined read keeps its warned null value, while a later unset is a

@@ -16,6 +16,10 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
+[Missing-key destructuring warnings](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md)
+now retain captured direct-CV arrays and shared embedded references through
+handlers, with null delivery and ordered normal/throw cleanup.
+
 The [checked eval parser service](docs/semantics/DYNAMIC-SOURCE-SERVICE.md)
 accepts raw eval-source bytes, uses a native parse-only scanner for rejection
 facts including catchable parse-time `CompileError` provenance, and validates
@@ -581,6 +585,19 @@ outer assignment stays unchanged. Three exact originals and 407 focused SL
 premises cover signed infinity, target storage and pending ownership in the
 [power-assignment ledger](coverage/semantics/powerassign-warning-review.json).
 Wider operands, targets, callbacks and lifecycle paths remain partial.
+Plain-CV `%=` now keeps the first converted long through a fractional-float
+deprecation, then reads the live quiet integer RHS. Normal return stores the
+remainder; a supplied throw or live zero leaves the target and late alias intact.
+Three exact originals and 362 focused SL premises check capture, cancellation,
+default Deprecated, original-line `DivisionByZeroError` and budgets in the
+[modulo-assignment ledger](coverage/semantics/modassign-warning-review.json).
+Wider operands, targets, callbacks and lifecycle paths remain partial.
+With a quiet integer left operand, a fractional RHS now keeps both converted
+longs through its deprecation.
+Normal `%=` detaches a late target alias; supplied throw or a captured zero divisor
+preserves callback writes and aliases even after the live RHS changes.
+Three exact originals and 404 focused SL premises pass in the
+[RHS modulo ledger](coverage/semantics/modassign-right-warning-review.json).
 Explicit array-to-string casts now suspend through named warning handlers for
 a bounded plain-CV array input. The borrowed array adds no saved owner: replacing
 or removing its CV still yields fixed `Array`, while a supplied throw preserves
@@ -793,7 +810,16 @@ Source Iterator `yield from` leaves also unpack through active Generator chains.
 The real raw cache is captured after key callbacks; snapshots preserve reference
 mutation, row COW and cache lifetime across next-callback errors.
 See the [Iterator-leaf review](coverage/semantics/generator-call-unpack-iterator-delegation-review.json).
-Aggregate ordinary-call unpack and acquired Iterator leaves, owning copied returns
+Aggregate-acquired Iterator leaves also use the authenticated acquisition receipt.
+Acquisition/input owners release before rewind; the saved receipt owns nothing.
+Independent Aggregate or Iterator aliases retain their own cleanup lifetimes.
+See the [acquired-Iterator review](coverage/semantics/generator-call-unpack-acquired-iterator-review.json).
+Aggregate-acquired Generator leaves also unpack through active Generator links.
+Their copied raw cache and child owners stay distinct; generic iterator mode
+discards child returns, preserves method receivers and orders child close before
+parent finally and cached values.
+See the [acquired-Generator review](coverage/semantics/generator-call-unpack-acquired-generator-review.json).
+Aggregate ordinary-call unpack, owning copied returns
 and active chains ending in detached roots, Generator by-reference
 call targets and callback methods, nonnumeric raw valid changes, request/plain
 reference strings and handler replacements with
@@ -1019,12 +1045,23 @@ calls raise `TypeError` after all argument effects. A throwing ignored-warning
 handler still permits fresh registration of the captured value before its
 exception escapes. [Four source agreements and 462 state premises](coverage/semantics/define-scalar-flag-review.json)
 cover both warning phases, this pending registration tail and source/budget guards.
-NaN flags and a duplicate after that first throw remain separate.
+When a binding exists after that first throw, the pending duplicate skips an
+eligible PHP handler without fallback. An excluded Warning level uses default
+reporting; both paths preserve the original exception,
+binding and caller destination.
+[Three source agreements and 206 state premises](coverage/semantics/define-pending-duplicate-review.json)
+cover live handler masks, raw captures, fatal-trace clearing and quiet reporting.
 A NULL third flag instead emits its deprecation before the C body. Normal return
 uses false and checks the live table; a first-handler throw cancels registration.
 Both warning traces keep raw NULL, and strict calls reject after argument effects.
 [Four source agreements and 349 state premises](coverage/semantics/define-null-flag-review.json)
 cover default diagnostics, callback-created duplicates, cancellation and raw traces.
+A NaN third flag raises its bool-conversion Warning before the ignored-flag
+Warning, preserving raw NaN in API traces. A throwing conversion handler cancels
+registration; a later ignored-warning throw still reaches the registration tail.
+Strict calls reject after argument effects without warnings.
+[Four source agreements and 472 state premises](coverage/semantics/define-nan-flag-review.json)
+cover these phases, live-table duplicates, captured arguments and budget resumption.
 Fresh two-argument `define` also copies nonempty acyclic scalar-array trees,
 dereferencing source cells and rebuilding append history. Request-string leaves,
 nested reference snapshots and literal constraints pass
@@ -1976,6 +2013,12 @@ cast. The quiet failed second implicit cast preserves signed order, retained cel
 cursor pins and captured children without invoking a callable or resuming a VM.
 Three exact sources and 352 Boolean premises/13 raw steps pass; custom object-pair
 comparisons, numeric Notice routes and wider lifetime limits are unchanged.
+[Weak internal changed operands](coverage/semantics/weak-nonstringable-redispatch-review.json)
+also admit WeakMap and WeakReference after the first source cast, including a live
+wrapper whose referent has expired. The second implicit cast fails quietly without
+reading private entries or referents. Three exact sources and 318 Boolean premises/
+12 raw steps preserve signed order, COPY/cell distinctions, COW and throw cleanup;
+pair, numeric, explicit-cast and existing producer/lifetime domains are unchanged.
 [Finite Throwable comparisons](coverage/semantics/throwable-string-comparison-review.json)
 now format builtin and inherited internal handlers at reached string leaves, including
 a new opposing object after a source cast. Root cache updates, ignored previous
@@ -1986,8 +2029,13 @@ Distinct live WeakMap pairs now compare with order zero without reading private
 entries or invoking their values. Array and declared-property comparisons continue
 to later real casters; COW, private-value ownership and normal/throw cleanup pass
 three exact sources and 246 Boolean premises/9 raw steps. Existing entry/lifetime
-limits and mixed/numeric protocols remain separate.
+limits remain separate.
 [WeakMap comparison review](coverage/semantics/weakmap-comparison-review.json).
+Mixed comparisons with live stdClass, source instances and WeakReference now
+return uncomparable +1 in both directions before properties or private entries.
+Seven-operator rows include expired referents; aggregate mismatches skip later
+Stringable leaves. Other internal/custom counterparts and numeric routes remain partial.
+[Mixed comparison review](coverage/semantics/weakmap-mixed-comparison-review.json).
 
 [Numeric object comparison Notices](coverage/semantics/object-numeric-comparison-review.json)
 now pause ordinary source-instance/int/float leaves through real error handlers.
@@ -2075,6 +2123,13 @@ distinct objects of one class; separate same-line sites have distinct class
 identities and methods retain lexical scope. Raw exception traces keep
 the full NUL-bearing name; display uses its C-string prefix. Three originals agree
 at separate cuts in the [anonymous class review](coverage/semantics/anonymous-classes-review.json).
+Dynamic include/eval also preserve the request-wide compiler name sequence:
+repeated visits reuse one class with distinct objects, and a fresh compilation
+gets the next suffix. A skipped include_once preserves that history. Two exact
+originals and 254 SL premises cover direct CV-assignment sites with closed,
+completed compilation history and no pre-name diagnostics; wider dynamic source
+shapes and failure/reentry contexts remain partial.
+[Dynamic-unit review](coverage/semantics/anonymous-dynamic-units-review.json).
 Simple global function and static Closure factories also publish their class before
 the first call while saving only the restored unit image; two fresh originals
 check pre-call lookup, compile-order names and repeated instances. Public noarg
@@ -2646,8 +2701,17 @@ now preserves ordinary-read identity and property sharing. Duplicate registratio
 holds the fresh candidate through its Warning handler and discards it afterward,
 retaining the original object and callback mutation. Two exact sources and 225 SL
 premises cover birth/completion, live/dead authority, alias release and budget
-resume. Other internal/Throwable producers, arguments, embedded/default values
-and dynamic `constant()` value return remain partial.
+resume. Certified global `constant()` queries now return that same live stdClass
+through literal and retained selected calls, preserving shared writes and adding
+only the ordinary result owner. [The query review](coverage/semantics/global-constant-stdclass-query-review.json)
+keeps two source comparisons and 384 SL premises separate from producer evidence.
+Other internal/Throwable producers, arguments, direct embedded NEW/default values
+and wider query forms remain partial.
+Certified stdClass aliases now also pass through global constant array trees,
+including eval declarations and whole-tree donation. Array queries share the
+stored containers until ordinary COW, while embedded object identity and property
+writes remain shared. Three exact originals and 648 SL premises retain their
+[reviewed cut](coverage/semantics/global-constant-stdclass-array-review.json).
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is

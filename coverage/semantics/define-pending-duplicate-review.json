@@ -1,0 +1,59 @@
+{
+  "scope": "Duplicate registration reporting after an ignored case_insensitive Warning handler throws in already-admitted nonowning define(string, primitive, true-or-quiet-truthy-scalar). A callback-created or preexisting binding remains unchanged. Partial core.",
+  "status": "independently_accepted_actual_parent",
+  "reviewer": "/root/core_breadth_review_01",
+  "parent": "2566b81089270759fc93b3cee19cebd6491f5441",
+  "semantic_revision": "fc4e235ae632bb522f722533e2b804af73b60ce5",
+  "semantic_files": {
+    "spec/semantics/400-dynamic-constants.watsup": "20e0e53da5e6e308c5bba0ad5416952122fb17e5970363171cbd96fe44682f06"
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "tools": {
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "primary": "Pinned Zend/zend_builtin_functions.c::ZEND_FUNCTION(define), Zend/zend_constants.c::zend_register_constant, Zend/zend.c::zend_error_zstr_at and Zend/zend_execute_API.c::zend_call_function. With EG(exception), zend_call_function returns SUCCESS with retval UNDEF; an eligible handler is not called and produces no fallback. An excluded handler uses default reporting. The existing module 402 pending-report pattern follows the same engine route.",
+  "semantics": "Only 22 appended module 400 lines: two current-key heads reuse existing boolean/scalar pending guards, including actual THROW_SEARCH/live Throwable and BOOL NAME-carrier authentication. The shared level-2 report clears ERRORFATALTRACE, skips an eligible handler or invokes the existing default reporter. No new task, rewritten cfg, row mutation, Throwable replacement, saved result or shared error-policy/schema change. Fresh registration and invalid fallbacks remain exact.",
+  "accepted": [
+    "Two author sources at fc4e235a in report 37b32a15 match native c281351a: weak literal true retains callback-installed 269 with no second callback/default; strict selected true/request candidate retains callback-installed 279 while a level 8192 handler replacement causes one plain default duplicate Warning at source line 32. Both preserve original Exception identity/Previous NULL, raw N/V/T trace and caller 99.",
+    "Independent scalar/preexisting-row source at 7d069659 in report d3c54aca matches native ea3ad34a: captured request-string flag \"false\" remains raw in the API trace; its nonempty bytes convert to boolean true, old 283 survives, caller/callee mutations persist, eligible second callback/default is skipped, and original Exception identity/Previous NULL/caller 99 remain intact.",
+    "Public 206 at 7d069659 comprises author 83 report 5f385298 and independent strict 123 report 944c4a58, true LF/0/empty stderr. Genuine pre-discard fronts and actual full steps preserve the restored state/table/Throwable; immutable name/value, selection, malformed NAME carrier and dead-Throwable refusals remain explicit. A nonempty source-backed trace seeded from genuine captured CONFIG/args clears on an actual step; it is a derived control, not a source-observed fatal event. Matching reporting-zero fields suppress the default diagnostic, with whole state and budget equality."
+  ],
+  "zero_credit": "Native and syntax preparation are observations only. The sole unchanged first-source baseline ebf4acb8 at c19e070a is accepted/checked program Unsupported, boolean define flag pending-exception registration after B|H|2|, CLI 1/null PHP exit/empty stderr. It retains zero agreement; no original failure was overwritten or accepted private check replayed.",
+  "execution": "All phases LC_ALL=C/TZ=UTC, AS 3GiB, INT timeout+kill5. Author native2/baseline use CPU 5; author model2 uses CPU 2; independent native/model and both public prepare/check wrappers use CPU 1. Native children 15s, source CLI 45s/host 60s, public fresh full SL 90s children, serial stop-first/reap. Inputs/HEAD remain stable, no timeout or surviving group. Only the strict author source deliberately has PHP stderr (one duplicate Warning); worker stderr is empty.",
+  "raw_root": ".tools/define-pending-duplicate-evidence-34",
+  "report_sha256": {
+    "author/public/check-report.json": "5f38529887077b3cc2d5284882ca97a7bae9428e7165b5aa1ef80d586be7d47b",
+    "author/public/prepare-report.json": "5a9d1ace3b4beeb8de916d1c5013df6569072f2bf8b8da1659308a7b352a3aec",
+    "author/review/model-report.json": "d3c54aca718828da38762590c2bbcd7027c49ee608037b4fe28e82523afe4056",
+    "author/review/native-report.json": "ea3ad34af4f8eb976ef9e6a90002459a2d676744e962c3bd20f16233f6e0cecb",
+    "author/review-public/check-report.json": "944c4a58c74c9b407b05d6d7a35b14b76692caa609d29067dde1c4b5ea556804",
+    "author/review-public/prepare-report.json": "37e8e1c893ff01c03e4ec72c0893486a08bdec31aa8f2a3cfd0ac7446977de37",
+    "author/sources/baseline-report.json": "ebf4acb8b8aec3040865eafb6b22f8430963492af8cfa97d0ead73d262632ded",
+    "author/sources/model-report.json": "37b32a152ec8da4f26b5dff3e06bec58c04dffdfed29862a8cc0c0932bab91f6",
+    "author/sources/native-report.json": "c281351ae8a6867dfbf9155d8286bbf52bc2afa82779b208d4428f259395dd9f"
+  },
+  "commands": [
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_pending_duplicate_sources.py --phase native --output .tools/define-pending-duplicate-native-34",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_pending_duplicate_sources.py --phase baseline --case literal-true-pending-duplicate-eligible-handler --output .tools/define-pending-duplicate-native-34",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 180s prlimit --as=3221225472 -- taskset -c 2 python3 tests/semantics/define_pending_duplicate_sources.py --phase model --output .tools/define-pending-duplicate-native-34",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/define_pending_duplicate_review_sources.py --phase native --output .tools/define-pending-duplicate-review-34",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/define_pending_duplicate_review_sources.py --phase model --output .tools/define-pending-duplicate-review-34",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/define_pending_duplicate_protocol.py --phase prepare --sources .tools/define-pending-duplicate-native-34 --output .tools/define-pending-duplicate-public-34",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 120s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/define_pending_duplicate_protocol.py --phase check --sources .tools/define-pending-duplicate-native-34 --output .tools/define-pending-duplicate-public-34",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/define_pending_duplicate_review_protocol.py --phase prepare --sources .tools/define-pending-duplicate-native-34 --output .tools/define-pending-duplicate-review-public-34",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 120s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/define_pending_duplicate_review_protocol.py --phase check --sources .tools/define-pending-duplicate-native-34 --output .tools/define-pending-duplicate-review-public-34"
+  ],
+  "recovery": "Four owned raw directories moved once without copies after reviewer STOP and focused cwd/cmdline/fd users[]. Nine report hashes are unchanged. Restore author/sources,review,public,review-public respectively as .tools/define-pending-duplicate-{native,review,public,review-public}-34 inside .tools/source-define-pending-duplicate-34 at the recorded revisions. Branch refs retain exact cuts; raw source/command/cwd records retain original identities.",
+  "remaining": "Wider values, NaN flags, scalar/null names with coerced flags, owning/packed/FCC/arity paths and full define-family closure remain partial. No engine bug or intentional divergence.",
+  "composition": {
+    "parent": "52357c36db09c8f6dbd701bc1457d3d524bf6cfa",
+    "private_publication": "49e91596f",
+    "reviewer": "/root/source_review_35",
+    "modules": 397,
+    "gate": "The private-exact 22-line module400 append preserves every current-parent runtime path and ordered manifest. Module400 and the shared handler helpers are unchanged from private base2566b810; incoming weak-object cast, anonymous-class, reference-return, power-assignment, magic-property and acquired-Iterator changes do not select this pending define route. Independent pointwise review warrants no joined actor. Source3/public206 retain their private cuts, with no renewed execution claim."
+  }
+}

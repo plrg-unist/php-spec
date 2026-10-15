@@ -1,0 +1,109 @@
+{
+  "status": "independently reviewed implementation and focused validation",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; sole project-local PHP/profile, original bytes/filenames and full raw process tuples",
+  "base": "bb312fcd2a255c3de4afd7378cdfb84c5ebd09ac",
+  "implementation_revision": "2a51210f3",
+  "module_count": 397,
+  "tested_cut": {
+    "runtime_diff_sha256": "d5026ab1a32c19559d57fa48bb1f795278dd64723c983f7c86db1515898aebc4",
+    "files": {
+      "spec/semantics/283-global-constant-objects.watsup": "8e4a9045dbdd3782122eb06f7c9595b65668f62852edcb28ca5bded48e6381ee",
+      "spec/semantics/400-dynamic-constants.watsup": "432678e44a42be8e4c3c9a2df7389a38f8cb4ce45f2289a41ad1dbf37db5dde8",
+      "tests/semantics/global_constant_stdclass_array_sources.py": "f830f45c1f1d2bc934afde5cec224cd6b76bb4623b1e2c5caacaea12aeb3f8df",
+      "tests/semantics/global_constant_stdclass_array_protocol.py": "27851e980f057488c0fc7ecf629772f13b9f13f4894c2274e630518a1b6312e7",
+      "tests/semantics/global_constant_stdclass_array_review_sources.py": "6520c566486b8d3345a84e4d7cacbcbbe08dbe95d78c6bbfa01f62fe4dc4692f",
+      "tests/semantics/global_constant_stdclass_protocol.py": "d3c37ea198e3a3c9295339fd8dfe92863199092fcd536d327611180a5c3d8a38",
+      "tests/semantics/global_constant_stdclass_array_review_protocol.py": "85654b51291bb25d5f9562be50e13f7bf1cd7a6e7a62cf98d1f2dbbd232844a3"
+    }
+  },
+  "behavior": [
+    "PVSTDCLASS becomes a valid nonowning leaf shape in constant array facts. Existing recursive live-value/birth checks and actual per-read donor PREFIX/receipt authority still authenticate each object and whole-tree donation. Direct nested NEW keeps the root-only producer boundary.",
+    "One module400 array-tree head delegates the existing completed-birth/live-allocation guard. Query returns the stored root/children, adds one root owner, and allocates no arrays/objects or extra object edge. Canonical DIRECT entries, key history and immutable-empty checks stay unchanged.",
+    "Literal/eval aliases preserve genuine donor origins and shared property writes. Actual nested COW creates a second physical child-to-object edge; replacing a caller bucket through a real reference preserves the installed original DIRECT tree and object identity after caller release."
+  ],
+  "engine_routes": [
+    "Zend/zend_ast.c::zend_ast_evaluate_ex ZEND_AST_CONSTANT uses ZVAL_COPY_OR_DUP and ZEND_AST_ARRAY evaluates actual elements before insertion; aliases retain the same existing object identity.",
+    "ext/standard/basic_functions.c::PHP_FUNCTION(constant) and Zend/zend_types.h::ZVAL_COPY_OR_DUP return a request-array reference without cloning its object leaves.",
+    "Existing Zend array COW/reference writes and the previously validated model storage machinery determine new physical containers/edges; provenance metadata adds no owners."
+  ],
+  "accepted": {
+    "source_agreements": 3,
+    "author_sources": 2,
+    "independent_sources": 1,
+    "author_public_premises": 392,
+    "author_literal_premises": 193,
+    "author_eval_premises": 199,
+    "driven_forged_states": 0,
+    "independent_public_premises": 256,
+    "total_public_premises": 648,
+    "independent_query_steps": 4,
+    "production_chains": 3,
+    "author_zero_budget_restoration_checks": 2
+  },
+  "review": {
+    "reviewer": "/root/dynamic_review_59",
+    "decision": "accepted",
+    "scope": "Certified stdClass aliases and whole-tree donation, actual source/read PREFIX authority, literal/eval array-query identity and owners, real nested COW/reference bucket replacement and release, canonical DIRECT tree and pure birth/tag/prefix/ALIAS refusals; existing nested-NEW/default/fold boundaries preserved."
+  },
+  "authority": "Author source2 at uncommitted d5026ab1 over source-prep db78fb0fd, author state392 at implementation2a51210f3 and independent whole-tree-alias source1 at2a51210f3 bind identical ordered397 module hashes. State positives start from checked original php_run, with one actual SOURCE_ACCEPT for the eval unit, then reach real CONSTANT_BIND and CONFIG fronts. Pure bad birth/dead/generic-leaf controls are never driven. The sole V57 shape expectation changes intentionally; its earlier producer225 evidence is neither replayed nor renewed. Independent256 reaches the actual whole-tree ALIAS bind whose array-valued captured lookup fact requires the new tree-shape admission, then performs four genuine query returns and follows real copied ALIAS cell replacement/retirement; no forged state is driven. The two author budget controls check zero-step pause/restoration identity S_resume=S_first and reuse the already-tested delivery; they are not separate driven resumption paths.",
+  "preserved_outcomes": "The unchanged baseline genuinely returns Unsupported global constant value query after B| with CLI1/empty stderr. The initial source wrapper guessed an earlier invalid-publication reason, so its final assertion fails; that raw report remains passed=false/zero credit and the measured outcome is retained without replay. Only the wrapper expectation for future runs is corrected. Native/preparation/syntax and Unsupported observations retain zero differential credit. Changed source/state actors passed on their first attempts. No rebuild or portability claim.",
+  "remaining": "Only certified stdClass donation into literal global constant array trees is added. Direct nested stdClass NEW, other internal/Throwable producers, default caching, callable folding, generic PVOBJECT query leaves, stored ALIAS/cyclic trees and wider owning/coercing calls remain partial. No define-snapshot or NaN-flag widening; full core remains open.",
+  "artifacts": {
+    "author_native": {
+      "path": ".tools/dynamic-stdclass-array-native-60/native-report.json",
+      "sha256": "08ad5e443b5432c871317254823283c7f100f01e3d102c09f51998eb183789c4"
+    },
+    "unchanged_baseline_and_wrong_expected_reason": {
+      "path": ".tools/dynamic-stdclass-array-native-60/baseline-report.json",
+      "sha256": "27a19f00623fed0a873b5b4941ce5d396d3d99caf084b953f88750da8acc0939"
+    },
+    "author_source": {
+      "path": ".tools/dynamic-stdclass-array-native-60/model-report.json",
+      "sha256": "f408efe3c4d764f0c4e8a1937211809d5d3c8e6e92c41ed6e44675b2b2c2b789"
+    },
+    "author_preparation": {
+      "path": ".tools/dynamic-stdclass-array-state-60/fixtures-report.json",
+      "sha256": "21957c26e7ed97bfa99e52dccb01695e6482abf0ec3e7b2ebe6aa1feb837c25e"
+    },
+    "author_state": {
+      "path": ".tools/dynamic-stdclass-array-state-60/check-report.json",
+      "sha256": "47cd36cb8912be4ab34220dc774c8199248f6e9cc53ee7c506bae889919df7db"
+    },
+    "independent_native": {
+      "path": ".tools/dynamic-stdclass-array-peer-60/native-report.json",
+      "sha256": "b9821290d81b2c4e032133a7e27bc4de228d1f8d98bc961e9f60dad5b35e1d83"
+    },
+    "independent_source": {
+      "path": ".tools/dynamic-stdclass-array-peer-60/model-report.json",
+      "sha256": "885524707ce6d3ba91386ef8c17a7e96b510d3a7baafc61ca1d8d5b12368125a"
+    },
+    "independent_preparation": {
+      "path": ".tools/dynamic-stdclass-array-peer-state-60/fixtures-report.json",
+      "sha256": "27b972ca35b29333fad60b6b67d616648f15517354c4cdad812d753e3452eaae"
+    },
+    "independent_state": {
+      "path": ".tools/dynamic-stdclass-array-peer-state-60/check-report.json",
+      "sha256": "457b44b03e1c0c406b3bf3f99c94f9de081e7e1a76ebec2d30a2f8a26fa283dc"
+    }
+  },
+  "recovery": "global_constant_stdclass_array_sources.py uses the existing native-first family CLI; native2/baseline1 retain clean db78fb0fd and model2 retains d5026ab1. global_constant_stdclass_array_protocol.py --phase fixtures/check --sources ORIGINALS --output OUT prepares literal/eval state fronts and runs serial ordered397 SL90 under host240 (fixtureshost120). Native process15 and source CLI45/process60 retain raw original tuples. Independent source wrapper supplies one original and its own native/model reports. Metadata edits add no execution credit. The independent protocol wrapper reuses the checked phase/recording harness with independently authored whole-tree/ref-COW assertions: fixtureshost120, checkhost150/perSL90. Raw peer-state-60 retains exact lowercase true plus LF/empty-stderr proof response and 256 premises.",
+  "integration": {
+    "parent": "84d03da885f4ba47cd0f4da0454c69240591796a",
+    "module_count": 398,
+    "runtime_delta": "Only the reviewed283 tree-class Boolean change and400 stdClass array-leaf head. Reversing exactly those edits reproduces both parent files byte-for-byte.",
+    "parent_400_sha256": "c127e9156c7e55ec886f3ca5b75c51f2eea5cbb6439d8ed974a9fa197651f7df",
+    "composed_400_sha256": "30aa0d76cf4287da63e46b01ba79c182c4451c3567225d3aca7c11e96fdb8704",
+    "incoming_files_preserved": {
+      "spec/semantics/30-storage.watsup": "d0a5f0d3c575bcebad23e29327d93259243069bc1ab3643528707aea29e91061",
+      "spec/semantics/63-list-control.watsup": "3f1bcaeeda989834f220aaf5b915633cbbd87955a0b2ccc4d8e74d932854827c",
+      "spec/semantics/156-finally-runtime.watsup": "8f717c14b310812708136b71d6119f9da0e9c05e44ccf31e0a845037ee934fd6",
+      "spec/semantics/386-weak-map-lifetime.watsup": "cf74097bd0db846863c3e79c106e4f9e4c813065c7a398d4d22f0dc5f75a4c72",
+      "spec/semantics/405-call-generator-unpack.watsup": "66ad1af34e875bf1366be79dda26027e73f95e1883ff87ced793a2844718d182",
+      "spec/semantics/409-list-missing-warnings.watsup": "fb6299e55009adccf9bb220ca7b1c56b2c75800371a2fddac269f79050044fea",
+      "spec/semantics/modules.json": "28ddbaccce11446f2adc60416dfbf1cb6fa955fe77d598240c1bfed5f4ef695c"
+    },
+    "reviewer": "/root/dynamic_review_59",
+    "method": "Independent pointwise seam review: acquired-Generator405, list409/63 and WeakMap386 selectors require Generator acquisition, LIST_FETCH/missing warnings or WeakMap operands absent from V60. Source35 shared400 NaN reception requires DEFINE/three slots; each V60 CONSTANT call has one slot, and NAN is ordinary array data. M76 sole156 extension requires a typed user RETURN assignment/call with same-variable positional assignment; V60 has no user function/return/finally path. The class/query leaf helpers are disjoint from those predicates and every incoming byte is preserved.",
+    "evidence_credit": "Source3/state648 retain their original d5026ab1/397 cuts and exact file equivalence at implementation2a51210f3. Composition adds no joined actor, accepted source/state replay, V57 renewal, rebuild or agreement credit."
+  }
+}

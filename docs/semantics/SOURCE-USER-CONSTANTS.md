@@ -126,11 +126,10 @@ string carriers constrain all three captured inputs; row-history rules are uncha
 If the first ignored-warning handler throws while the name remains fresh, Zend
 still registers the captured value before propagating that exception. The narrow
 pending tail changes only the constant table and preserves the original Throwable,
-caller destination and callback mutations. A key already present at that point is
-explicitly Unsupported because its pending duplicate Warning needs a separate
-protocol. The [scalar-flag review](../../coverage/semantics/define-scalar-flag-review.json)
-binds four source agreements and 462 public premises; NaN flags, wider values
-and coerced flags with scalar/null names remain separate.
+caller destination and callback mutations. The pending duplicate case is
+covered below. The [scalar-flag review](../../coverage/semantics/define-scalar-flag-review.json)
+binds four source agreements and 462 public premises. NaN reception is covered
+below; wider values and coerced flags with scalar/null names remain separate.
 
 Boolean true uses its original warning marker for the fresh registration tail
 after a handler throws. The step appends the captured primitive after any unrelated
@@ -139,8 +138,20 @@ Throwable and caller destination. Strict selected calls retain true and the exac
 request-string candidate despite later argument and callback mutations. The
 [boolean-tail review](../../coverage/semantics/define-bool-flag-pending-review.json)
 binds two source agreements and 196 public premises; its unchanged normal-but-wrong
-baseline remains zero credit. A key already present after the throw still requires
-the separate pending duplicate-warning protocol.
+baseline remains zero credit. A key already present after the throw
+uses the pending duplicate continuation below.
+
+When the name is already bound after the first ignored-warning throw, registration
+still reaches its duplicate report. A currently eligible PHP handler is skipped
+because the original Exception is pending; its undefined result causes no fallback.
+An excluded Warning level instead uses the default reporter and current reporting
+mask. Neither branch replaces the old row, changes captured arguments or chains a
+new exception. The ordinary fatal-trace snapshot is cleared. The
+[pending-duplicate review](../../coverage/semantics/define-pending-duplicate-review.json)
+binds three source agreements and 206 state premises, including callback-created
+and preexisting rows, strict named capture, actual discard steps, a source-backed
+seeded trace and reporting-zero controls. The existing nonowning primitive-value
+and string-name boolean/scalar-flag gates bound this continuation.
 
 A NULL third flag has a separate pre-body reception path. Weak calls emit the
 parameter-3 deprecation, then use false after normal callback return without
@@ -153,6 +164,21 @@ string-name row-history validation is unchanged. The
 [NULL-flag review](../../coverage/semantics/define-null-flag-review.json) binds four
 source agreements and 349 public premises. Primitive values, ordinary string
 names and nonowning three-argument calls bound this slice.
+
+A NaN third flag has a separate bool-reception Warning before the C body. Normal
+return proceeds with true to the ignored-flag Warning while CONFIG and API traces
+retain the captured NaN bits. The two phases have distinct authenticated markers;
+old quiet/scalar markers still reject NaN. A conversion-handler throw cancels the
+outer definition and preserves completed callback mutations, including an inner
+binding. A later ignored-warning throw instead reaches the existing fresh or
+pending-duplicate registration tail. Strict calls keep raw arguments and raise
+TypeError after all argument effects without warning. Immutable source arguments
+compare structural bits, independently of PHP's false NaN self-identity test.
+The [NaN-flag review](../../coverage/semantics/define-nan-flag-review.json) binds
+four exact originals and 472 public premises across four genuine source fronts,
+including actual first/second throw discard steps and budget resumption. Ordinary
+string names, primitive values and nonowning three-argument calls bound this slice;
+wider names, values, producers and owning/packed forms remain partial.
 
 Fresh two-argument array definitions recursively dereference source cells into
 new DIRECT entries. Reinserting surviving keys rebuilds NEXT, positions and serial
@@ -310,7 +336,7 @@ fixture and unchanged baseline retain zero agreement credit.
 
 User-array queries retain the stored root and child identities. The admitted
 tree contains nonstring scalars, raw strings, authenticated string carriers,
-certified `PVINSTANCE`/`PVCLOSURE` leaves and arrays with matching key/class trees
+certified `PVINSTANCE`/`PVCLOSURE`/`PVSTDCLASS` leaves and arrays with matching key/class trees
 and canonical table history. Immutable empty
 arrays require their actual provenance; mutable empty copies remain distinct.
 Lookup does not clone, allocate or intern values. Existing COW handles writes and
@@ -433,8 +459,33 @@ then discards it without replacing the original binding or its callback writes.
 Two exact originals and 225 SL premises (110 root, 115 duplicate) at 369ebde3 cover
 alias owners3→1, candidate1→0, source/tag authority and budget resume. The original
 invalid duplicate observer remains zero credit; only its corrected local-alias
-version supplies that source comparison. The separate tag keeps dynamic `constant()` value return, embedded trees, default
-caching and callable folding outside this slice; existing `defined()` presence
+version supplies that source comparison. The producer milestone keeps embedded trees, default
+caching and callable folding outside its slice; existing `defined()` presence
 lookup remains unchanged. Other
 internal/Throwable NEW, argument and wider lifecycle forms remain partial.
 [stdClass producer ledger](../../coverage/semantics/global-constant-stdclass-review.json).
+
+Global `constant()` also returns certified `PVSTDCLASS` rows. The sole module400
+value arm delegates to the existing exact completed-birth and live-allocation
+checks, then reuses ordinary CONFIG completion. Literal and retained selected
+calls share the stored pointer and property writes; RESULT adds one owner without
+allocating or changing the constant table, birth history or object storage.
+Repeated visits to one selected call site use their own captured query and nonce,
+so changing the next query from one constant to another selects the second object.
+The [query ledger](../../coverage/semantics/global-constant-stdclass-query-review.json)
+records two exact originals, reached state fronts, budget resumption and undriven
+certificate refusals. The unchanged Unsupported baseline remains zero credit;
+direct embedded stdClass NEW, generic objects and wider owning/coercing query forms
+remain partial.
+
+Certified stdClass aliases may now be leaves in literal global constant array
+trees. Shape admission permits their nonowning class facts; existing captured
+lookup prefixes and recursive live-value checks still authenticate each donated
+leaf. Whole-tree aliases retain those receipts. The query leaf rule delegates
+to the same completed-birth/live-allocation check as a direct stdClass query.
+Lookup shares the root and child arrays and adds only a root owner. Real nested
+COW creates another physical array-to-object edge; properties stay shared, while
+replacing a caller bucket leaves the installed DIRECT tree intact. Eval donor
+sources retain their own unit origins. Direct nested stdClass NEW, default
+caching and callable folding keep their separate producer/consumer boundaries.
+[stdClass array-alias review](../../coverage/semantics/global-constant-stdclass-array-review.json).

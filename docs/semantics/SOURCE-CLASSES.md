@@ -59,6 +59,17 @@ runtime visit count. Namespace scope does not prefix the name, and distinct site
 on one physical line remain distinct. Each visit allocates a fresh object from
 the same class, with independent property storage and the real lexical scope.
 
+Later include/eval units also derive their starting suffix from authentic completed
+compilations, beginning with unit0 and preserving chronological source history.
+Fresh checked ASTs count the admitted anonymous sites; runtime visits do not
+advance the counter. Recompilation of the same file or eval occurrence gets a new
+name, while repeated execution shares its compiled class and include_once skips
+preserve the image. This slice requires direct CV-assignment statements, closed
+prior units and no pre-name diagnostics. Other class-like forms, named-function
+and Closure/arrow source shapes, skipped-expression sites and ambiguous/failed
+compilation histories remain Unsupported. Two exact originals and 254 SL premises
+are recorded in the [dynamic-unit review](../../coverage/semantics/anonymous-dynamic-units-review.json).
+
 Module383 admits authentic unit0 contexts with plain empty named classes globally
 or in valid named namespace sections (bracketed or unbracketed), including an
 unnamed bracketed global namespace body.
@@ -210,7 +221,7 @@ the image after restoring the containing unit scope. This publishes the class
 before any call and preserves compilation order independently of call order.
 Ordinary function/Closure declarations do not consume the RTD counter. Wider
 factory contexts and incomplete containing-scope images remain Unsupported;
-include/eval units, inheritance, attributes, wider members/defaults
+wider include/eval contexts, inheritance, attributes, wider members/defaults
 and wider RTD ordering remain required. The
 [mixed-class review](../../coverage/semantics/anonymous-mixed-rtd-review.json)
 separates early/deferred name consumption from runtime publication and factory call order.
