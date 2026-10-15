@@ -7,6 +7,15 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Dynamic include/eval now compile closed anonymous-class sites with request-wide
+name history. Repeated visits allocate distinct instances of one compiled class;
+recompilation gets the next suffix, while include_once skips preserve history.
+Two exact originals and 254 SL premises (121 eval, 133 include) pass at runtime
+diff 4182f25e, including old-class authority and one budget resume. Direct CV
+assignment sites, completed prior compilations and no pre-name diagnostics bound
+this slice; wider source shapes and ambiguous/failure histories remain partial.
+[Dynamic anonymous review](coverage/semantics/anonymous-dynamic-units-review.json).
+
 Selected inherited `__isset(string): bool` now handles terminal CV/literal private
 property tests, while initialized public and typed-INITIAL slots bypass it. Actual
 true/false callback results preserve multi-property short circuiting and unchanged

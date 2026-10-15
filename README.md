@@ -2075,6 +2075,13 @@ distinct objects of one class; separate same-line sites have distinct class
 identities and methods retain lexical scope. Raw exception traces keep
 the full NUL-bearing name; display uses its C-string prefix. Three originals agree
 at separate cuts in the [anonymous class review](coverage/semantics/anonymous-classes-review.json).
+Dynamic include/eval also preserve the request-wide compiler name sequence:
+repeated visits reuse one class with distinct objects, and a fresh compilation
+gets the next suffix. A skipped include_once preserves that history. Two exact
+originals and 254 SL premises cover direct CV-assignment sites with closed,
+completed compilation history and no pre-name diagnostics; wider dynamic source
+shapes and failure/reentry contexts remain partial.
+[Dynamic-unit review](coverage/semantics/anonymous-dynamic-units-review.json).
 Simple global function and static Closure factories also publish their class before
 the first call while saving only the restored unit image; two fresh originals
 check pre-call lookup, compile-order names and repeated instances. Public noarg
