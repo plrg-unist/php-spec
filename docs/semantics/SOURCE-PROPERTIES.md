@@ -94,6 +94,16 @@ raw-row callable and crossed-frame controls. Parented/nested/adapted pairs,
 explicit parameters and other body/order forms remain required.
 [Paired trait-hook review](../../coverage/semantics/trait-imported-paired-hooks-review.json).
 
+Selected sole implicit virtual SET hooks also compile on a parentless class,
+with unchanged inheritance. Actual source ABSENT and descriptor PROP_UNINITIALIZED
+are distinct from the default helper’s PROP_INITIAL: allocation keeps no value slot.
+The body writes a different stored property10→33 and restores assignment20. A real
+read raises the receiver-class write-only Error; an array fails at hook5/caller28
+before body entry. Two cuts pass252 premises (209 reached,43 derived). The active
+same-object alias counterexample retains pending demand but refuses a recursive
+plan; its engine Error and other virtual setter forms remain required.
+[Virtual setter review](../../coverage/semantics/virtual-set-only-hook-review.json).
+
 Effective virtual getters without defaults retain the same declaration, function
 and return type while omitting the physical slot. The receiver owns no returned-value edge;
 result copies survive receiver cleanup and release independently. Ordinary writes

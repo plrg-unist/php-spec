@@ -1,0 +1,286 @@
+{
+  "scope": "Sole public typed implicit virtual SET statement hook in a parentless named class; a child inherits its unchanged descriptor. No value backing slot; the body writes a distinct ordinary stored property. Assignment preserves its original input, reads raise receiver-class write-only Error, and bad arrays fail before the body.",
+  "implementation": {
+    "base": "982d7d91276975723af785bfcd145dd736d7f2c3",
+    "revision": "896960a8b56b00c799e2ec9836a86e9703740ed4",
+    "test_revision": "6aff577916e7cf8e1bc6d229d4ad721569d1ed46",
+    "modules": 394,
+    "files": [
+      "spec/semantics/136-property-runtime.watsup",
+      "spec/semantics/382-backed-get-hooks.watsup",
+      "spec/semantics/403-backed-set-hooks.watsup"
+    ],
+    "change": "Add closed class/implicit/ABSENT-initializer unbacked-body admission and virtual proof. Reuse virtual slot omission, dispatch absent-slot reads to write-only Error instead of Warning, and require backed source for active backing bypass. An authenticated active virtual same-object setter keeps pending demand but refuses recursive call planning; wider alias writes remain Unsupported.",
+    "preserved": "Existing backed getter/setter and trait/pair paths retain their selected behavior. No new module, machine field, task, target/result continuation, receive or generic return rule; descriptor defaults remain PROP_UNINITIALIZED and the helper yields PROP_INITIAL while allocation omits the virtual slot."
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor34308a6666b2d489c509541ea9befea9e2b42348",
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "absent",
+    "jobs": 1
+  },
+  "binaries": {
+    "php": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/php/bin/php",
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    "strict_compiler": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/cprefix-compiler/compiler",
+      "sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d"
+    },
+    "algorithmic": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/spectec/bin/p4spectec",
+      "sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "strict_application": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/tests/semantics/_build/default/numeric_runner.exe",
+      "sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    }
+  },
+  "engine_basis": [
+    "vendor/php-src/Zend/zend_compile.c: zend_property_is_virtual uses own-property backing access; zend_compile_property_hooks derives the implicit typed value and void return.",
+    "vendor/php-src/Zend/zend_object_handlers.c: zend_std_read_property rejects a missing GET on a virtual property with receiver-class write-only Error; zend_std_write_property invokes SET and returns the original assignment input.",
+    "vendor/php-src/Zend/zend_object_handlers.c: zend_is_in_hook/should_call_hook and zend_throw_no_prop_backing_value_access prevent reentrant same-object virtual backing writes. This slice explicitly refuses that unmodeled alias-write plan instead of recursively invoking SET."
+  ],
+  "recorders": {
+    "run.py": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/virtual-set-only-hook-probes-77/run.py",
+      "sha256": "0b10e1ef152cc12aaa3239659f1314f22074d89dccb06ff909512e37164cf1ed"
+    },
+    "run-compiler.py": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/virtual-set-only-hook-probes-77/run-compiler.py",
+      "sha256": "46506fea838c1c97cad5e2be4ac66d3f1788928a2d1892b374946e3785a6a9e4"
+    }
+  },
+  "native": {
+    "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/virtual-set-only-hook-probes-77/native-first/report.json",
+    "sha256": "04164c2c2712779fa40a7c1f75a5394cef92322b0140c3d99374dc716fba9420",
+    "revision": "982d7d91276975723af785bfcd145dd736d7f2c3",
+    "completed": true,
+    "model_credit": 0,
+    "observed_exit": 0,
+    "stdout_bytes": 423,
+    "stderr_bytes": 0,
+    "process": {
+      "pid": 1750109,
+      "exit": 0,
+      "elapsed": 0.004751443862915039,
+      "cap_seconds": 45,
+      "timeout": false,
+      "group_after": []
+    },
+    "affinity": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/virtual-set-only-hook-probes-77/affinity-native-first.json",
+      "sha256": "0ceea16fbb24f0d68136f4caff3ad8fd5ce6085ac32b41b18aa393b1725e7da4"
+    },
+    "observation": "Actual423-byte normal0 tuple: ONLY stored10 then stored33, value ABSENT throughout, one Parent-private13 SET on called Child, original assignment20, receiver Child write-only read22 and pre-body hook TypeError/caller28/final33.",
+    "launch": "taskset -c 1 python3 .tools/virtual-set-only-hook-probes-77/run.py native --revision 982d7d91276975723af785bfcd145dd736d7f2c3"
+  },
+  "unchanged_baseline": {
+    "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/virtual-set-only-hook-probes-77/accepted-current-baseline/report.json",
+    "sha256": "aa3f7ddcc657ded1fded77de9091e0f8c72456c8c425ba883b660e11f8ac9dce",
+    "revision": "982d7d91276975723af785bfcd145dd736d7f2c3",
+    "completed": true,
+    "source_agreements": 0,
+    "records": [
+      {
+        "id": "scalar",
+        "frontend_accepted": true,
+        "adapter_checked": true,
+        "source_agreement": false,
+        "process": {
+          "pid": 1750345,
+          "exit": 1,
+          "elapsed": 7.595511198043823,
+          "cap_seconds": 75,
+          "timeout": false,
+          "group_after": []
+        },
+        "status": "unsupported",
+        "reason": "set, by-reference, attributed or defaulted virtual property hook",
+        "diagnostic": null,
+        "logical_exit": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      }
+    ],
+    "affinity": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/virtual-set-only-hook-probes-77/affinity-accepted-current-baseline.json",
+      "sha256": "3c172581f582222b037456ea6579133ba06974132d32fe2792f9dcc07ac56bab"
+    },
+    "launch": "taskset -c 1 python3 .tools/virtual-set-only-hook-probes-77/run.py baseline --revision 982d7d91276975723af785bfcd145dd736d7f2c3"
+  },
+  "source_validation": {
+    "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/virtual-set-only-hook-probes-77/changed-model-93__25cq/report.json",
+    "sha256": "76dacef59b3a61a0467dabf62f819eff160cc03d40316c948eb4fff216ce3acd",
+    "revision": "896960a8b56b00c799e2ec9836a86e9703740ed4",
+    "completed": true,
+    "source_agreements": 1,
+    "records": [
+      {
+        "id": "scalar",
+        "frontend_accepted": true,
+        "adapter_checked": true,
+        "source_agreement": true,
+        "process": {
+          "pid": 1755921,
+          "exit": 0,
+          "elapsed": 14.809998512268066,
+          "cap_seconds": 75,
+          "timeout": false,
+          "group_after": []
+        },
+        "status": "normal",
+        "reason": null,
+        "diagnostic": null,
+        "logical_exit": 0,
+        "stdout_bytes": 423,
+        "stderr_bytes": 0
+      }
+    ],
+    "affinity": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/virtual-set-only-hook-probes-77/affinity-changed-8969.json",
+      "sha256": "9463a358492351e369287060c5de84bf82c725f4fdae8830353b259f7ac45b8c"
+    },
+    "comparison": "Genuine checked normal0 and complete original423-byte stdout/empty-stderr/logical0 tuple agreement.",
+    "launch": "taskset -c 3 python3 .tools/virtual-set-only-hook-probes-77/run.py changed --revision 896960a8b56b00c799e2ec9836a86e9703740ed4"
+  },
+  "strict": {
+    "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/virtual-set-only-hook-probes-77/virtual-set-only-hook-compiler-6q3_47z3/report.json",
+    "sha256": "182f51a4333cdfe857212991389fd085b802f20f30d9ec21aeacba3a51a83343",
+    "revision": "896960a8b56b00c799e2ec9836a86e9703740ed4",
+    "modules": 394,
+    "passed": true,
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "process": {
+      "pid": 1755469,
+      "exit": 0,
+      "elapsed": 7.179515361785889,
+      "cap_seconds": 60,
+      "timeout": false,
+      "group_after": []
+    },
+    "launch": "taskset -c 3 python3 .tools/virtual-set-only-hook-probes-77/run-compiler.py 982d7d91276975723af785bfcd145dd736d7f2c3 896960a8b56b00c799e2ec9836a86e9703740ed4",
+    "affinity": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/virtual-set-only-hook-probes-77/affinity-strict-8969.json",
+      "sha256": "02b38aa2bd2c52b251c512c8756d2b93c4a5d306a79bc824a068da528a556e1a"
+    }
+  },
+  "state_validation": {
+    "revision": "6aff577916e7cf8e1bc6d229d4ad721569d1ed46",
+    "modules": 394,
+    "states": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/virtual-set-only-hook-protocol-jmnfkhs0/report.json",
+        "sha256": "c3a676bca6d6312bd0886723429424ae1fa28a52228961e2f70726cc380e634c",
+        "group": "set",
+        "revision": "6aff577916e7cf8e1bc6d229d4ad721569d1ed46",
+        "fixture_sha256": "2ed63ed3c4741e25476cbff360233e1dffc1383b93198ed79945ce83a2d762de",
+        "premises": 146,
+        "reached_premises": 107,
+        "derived_premises": 39,
+        "application_invocations": 1,
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "preparation": {
+          "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/virtual-set-only-hook-protocol-2mbd1ot6/PREPARED.json",
+          "sha256": "ce5710e36b37faa7e1ac09a5cb5fa5dd22d71d522d2e1e9cc0fda710c73d0686",
+          "accepted_credit": 0
+        },
+        "processes": [
+          {
+            "pid": 1760221,
+            "exit": 0,
+            "elapsed": 6.051192760467529,
+            "cap_seconds": 90,
+            "timeout": false,
+            "group_after": []
+          },
+          {
+            "pid": 1760222,
+            "exit": 0,
+            "elapsed": 19.721515893936157,
+            "cap_seconds": 90,
+            "timeout": false,
+            "group_after": []
+          }
+        ]
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/virtual-set-only-hook-protocol-4mp8qoed/report.json",
+        "sha256": "3666fb61cf9999ac292934c02c8cf169054622b0b94a85df364633d458e9ca40",
+        "group": "errors",
+        "revision": "6aff577916e7cf8e1bc6d229d4ad721569d1ed46",
+        "fixture_sha256": "00bc0dfc10facc6561e7aa6aea487a3f9f150dc3f338863307203d7cede10ef7",
+        "premises": 106,
+        "reached_premises": 102,
+        "derived_premises": 4,
+        "application_invocations": 1,
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "preparation": {
+          "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/virtual-set-only-hook-protocol-ncodddf6/PREPARED.json",
+          "sha256": "7b683693ca1f3bc1b4ae5beb50cb35b55c0e28954c70c21511b82354ab4745d0",
+          "accepted_credit": 0
+        },
+        "processes": [
+          {
+            "pid": 1760369,
+            "exit": 0,
+            "elapsed": 6.0560221672058105,
+            "cap_seconds": 90,
+            "timeout": false,
+            "group_after": []
+          },
+          {
+            "pid": 1760374,
+            "exit": 0,
+            "elapsed": 21.928978443145752,
+            "cap_seconds": 90,
+            "timeout": false,
+            "group_after": []
+          }
+        ]
+      }
+    ],
+    "premises": 252,
+    "reached_premises": 209,
+    "derived_premises": 43,
+    "application_evaluations": 2,
+    "source_agreements": 0,
+    "affinity": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/virtual-set-only-hook-probes-77/affinity-state.json",
+      "sha256": "a44860e53d7810c59a57dbe25dfa69b93ec824892c491d95174aae709b2fa291"
+    },
+    "meaning": "SET genuinely receives20, executes ordinary distinct stored7 write33, restores void and returns original20 with no virtual slot. ERRORS genuinely reads22 into raw/materialized receiver write-only Error, catches it, then rejects array input at hook5/caller28 before body entry and reaches final stored33/no slot. Derived source/header/default/function/slot/frame controls include an active hybrid whose other plan authorities are all positive; clearing only current/frame restores the plan."
+  },
+  "zero_credit_records": [],
+  "permanent_tests": {
+    "tests/semantics/virtual-set-only-hook.php": "a39e004a776ff2d064f298468395e0bd59274210bc248f1f5cef56ddbd475786",
+    "tests/semantics/virtual_set_only_hook_cases.json": "9fd8525b8e5d63032c924ec70c12d395e90be605b72dab2f9cec1a0a2e089269",
+    "tests/semantics/virtual_set_only_hook_protocol.py": "ef2a5e407f3c86c555ee323215442223b5533963e1b24be2a8d2cb979da9ce27"
+  },
+  "remaining": [
+    "Virtual trait or explicit-parameter setters, get/set virtual pairs, initializers and wider declaration/override shapes.",
+    "The engine error for same-object reentrant virtual alias writes remains unmodeled; authenticated active demand explicitly refuses its call plan.",
+    "Quiet, reference, indirect and wider receiver/lifetime interactions remain partial; no old class source/state agreement is renewed."
+  ],
+  "recovery": "Original reports, streams, process records, fixtures and live affinity captures remain under ignored private32 .tools/virtual-set-only-hook-probes-77 and the two named protocol directories. Reconstruct through the pinned recorder and permanent source/catalogue/protocol at their recorded revisions; generated preparations have zero accepted credit."
+}
