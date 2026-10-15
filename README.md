@@ -2017,8 +2017,13 @@ Distinct live WeakMap pairs now compare with order zero without reading private
 entries or invoking their values. Array and declared-property comparisons continue
 to later real casters; COW, private-value ownership and normal/throw cleanup pass
 three exact sources and 246 Boolean premises/9 raw steps. Existing entry/lifetime
-limits and mixed/numeric protocols remain separate.
+limits remain separate.
 [WeakMap comparison review](coverage/semantics/weakmap-comparison-review.json).
+Mixed comparisons with live stdClass, source instances and WeakReference now
+return uncomparable +1 in both directions before properties or private entries.
+Seven-operator rows include expired referents; aggregate mismatches skip later
+Stringable leaves. Other internal/custom counterparts and numeric routes remain partial.
+[Mixed comparison review](coverage/semantics/weakmap-mixed-comparison-review.json).
 
 [Numeric object comparison Notices](coverage/semantics/object-numeric-comparison-review.json)
 now pause ordinary source-instance/int/float leaves through real error handlers.

@@ -7,6 +7,19 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Live WeakMap comparisons with stdClass, supported source instances and
+WeakReference now return uncomparable +1 in either direction before property or
+private-entry traversal. All seven operators cover both orientations and live/expired
+wrappers; aggregate nonzero leaves skip later casts. Three exact sources and
+398 Boolean premises (367 setup + 31 pure)/12 actual steps pass at 30ae1f26e/397,
+including real function frames, source self-cycles, private owner1, weak nonownership
+and budget splits. Original recorder/binding failures remain zero-credit; numeric,
+other internal/custom counterparts and wider producer/lifetime forms remain partial.
+[Mixed WeakMap review](coverage/semantics/weakmap-mixed-comparison-review.json).
+The pointwise 398-module composition over f8882d5c preserves incoming
+LIST_MISSING_RESULT and every parent helper. Source3/state398 retain their private
+cuts; independent seam review warrants no joined actor or renewed agreement credit.
+
 By-value direct-CV destructuring now retains its captured array through missing-key
 Warning handlers. Callback insertion/rebinding still supplies null; later items
 observe the captured table and shared reference cells in order. Throws cancel the
