@@ -19,6 +19,9 @@ The original fixture syntax failure remains zero credit; only its cardinality
 parentheses changed. Typed/owning/expired targets, newly warning or invalid RHS,
 wider operands/callbacks and lifecycle paths remain partial. OP12 stays paused.
 [Compound ADD warning ledger](coverage/semantics/addassign-warning-review.json).
+The 394-module composition over 0c7eec9f preserves OP17's separate ADD failure
+route. Independent pointwise review finds no joined gate necessary; source3 and
+the 360 state conditions retain their private cuts without replay.
 
 
 Class-query `self`/`parent` now use the actual lexical scope and `static` uses the
