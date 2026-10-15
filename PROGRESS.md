@@ -7,6 +7,15 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Direct sole backed implicit trait SET now imports into a parentless Consumer.
+An authenticated raw Trait source yields a Consumer callable without mutating
+FUNCTIONS; Trait magic, Consumer private13 and Grand called scope stay distinct.
+Assignment20 restores20 after backing33; bad-array caller24 remains pre-body.
+Source1/strict394 pass at c352; the later class-owner guard is covered by two
+current-code states at d586, passing231 =179 reached +52 derived. The measured
+fixture false, syntax failure and diagnostic retain0; no old class cut is renewed.
+[Review](coverage/semantics/trait-imported-backed-set-hook-review.json).
+
 Global `constant` now returns primitive user/startup values and authenticated
 string carriers after argument effects, preserving namespace/case rules and
 missing-name API Errors. Four exact sources retain their 516c/5b83/5e33 cuts; three

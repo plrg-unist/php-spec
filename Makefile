@@ -870,6 +870,9 @@ test-semantics: build
 	python3 tests/semantics/explicit_setter_parameter_protocol.py --revision "$$(git rev-parse HEAD)" --group receive
 	python3 tests/semantics/explicit_setter_parameter_protocol.py --revision "$$(git rev-parse HEAD)" --group error
 	python3 tests/semantics/explicit_setter_parameter_protocol.py --revision "$$(git rev-parse HEAD)" --group narrow
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_imported_backed_set_hook_cases.json
+	python3 tests/semantics/trait_imported_backed_set_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group controls
+	python3 tests/semantics/trait_imported_backed_set_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group set
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_publication_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_composed_retry_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/assertion_cases.json

@@ -1,6 +1,6 @@
 # Source trait composition
 
-Modules 228, 238, 254, 259, 266, 274, 290, 297, 299, 307, 347 and 382 compile, link and access source
+Modules 228, 238, 254, 259, 266, 274, 290, 297, 299, 307, 347, 382 and 403 compile, link and access source
 traits under pinned PHP 8.5.10.
 A using class overrides trait methods; trait methods override inherited methods.
 Nested uses, duplicate imports, `insteadof`, aliases, visibility changes and final
@@ -68,6 +68,13 @@ no executable hook clone. Inner `__METHOD__`/`__TRAIT__` spelling and Consumer
 private scope survive Grand’s write300/get313. Identical plain100 in Outer still
 raises the existing hooked-composition CompileError at trait7. Two retained
 originals and two checks are in the [nested-trait review](../../coverage/semantics/nested-trait-getter-review.json).
+
+Selected sole public typed backed implicit statement SET hooks import directly
+into a parentless Consumer. The physical Trait function stays unchanged; the
+published Consumer clone keeps Trait magic, Consumer private13 and Grand called
+scope. Assignment20 returns20 after backing33. One original and two real cuts/231
+premises are in the [trait-setter review](../../coverage/semantics/trait-imported-backed-set-hook-review.json).
+Other setter imports and wider declaration shapes remain required.
 
 Imports retain two identities. The declaring owner and lexical `self` scope are
 the using class; the body, filename, line and `__TRAIT__`, `__METHOD__` and
