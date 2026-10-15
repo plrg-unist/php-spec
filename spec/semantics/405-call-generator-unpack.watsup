@@ -16,6 +16,7 @@ dec $generator_unpack_nodes(pgeneratorunpack, text) : pnode*
 dec $generator_unpack_finish(pstate, pgeneratorunpack, ptask*) : pstate
 dec $generator_unpack_discard(pstate, pgeneratorunpack, text) : pstate
 dec $generator_unpack_array_delegate(pstate, nat) : bool
+dec $generator_unpack_detached(pstate, nat) : bool
 dec $generator_unpack_delegate(pstate, nat) : bool
 dec $generator_unpack_chain(pstate, nat, nat) : bool
 dec $generator_unpack_delegated_blocked(pstate) : bool
@@ -62,8 +63,25 @@ def $generator_unpack_array_delegate(S, n) = true
   -- if $(pgeneratorfrom.POSITION > 0)
   -- if $generator_from_record_valid(S, n, pgenerator)
 def $generator_unpack_array_delegate(S, n) = false -- otherwise
+;; A detached root owns its copied cache and an authenticated return receipt.
+;; Owning return temporaries and detached leaves below active links stay open.
+def $generator_unpack_detached(S, n) = true
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_DELEGATING
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.INPUT = eps
+  -- if pgeneratorfrom.ACQUISITION = eps
+  -- if pgeneratorfrom.CURRENT =/= eps
+  -- if pgeneratorfrom.POSITION = 1
+  -- if $generator_from_record_valid(S, n, pgenerator)
+  -- if pgenerator.FRAME = (pframe)
+  -- if pframe.TODO = (GENERATOR_FROM_COMPLETE n pgeneratorfrom.SITE n_child pvalue) :: ptask*
+  -- if $generator_from_complete_valid(S, n, pgeneratorfrom.SITE, n_child, pvalue)
+  -- if $value_nodes(pvalue) = eps
+def $generator_unpack_detached(S, n) = false -- otherwise
 ;; A shared Generator link borrows the leaf cache; it has no CURRENT copy.
-def $generator_unpack_delegate(S, n) = $generator_unpack_chain(S, n, $(|S.OBJECTS| + 1))
+def $generator_unpack_delegate(S, n) = ($generator_unpack_chain(S, n, $(|S.OBJECTS| + 1)) \/ $generator_unpack_detached(S, n))
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_DELEGATING
 def $generator_unpack_delegate(S, n) = false -- otherwise

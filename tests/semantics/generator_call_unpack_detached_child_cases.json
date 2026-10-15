@@ -1,0 +1,268 @@
+[
+  {
+    "id": "generator-detached-unpack-null-key-error-then-real-return-and-tail",
+    "source": "<?php\nfunction generatorDetachedLeaf12() { echo \"C|\"; yield 7; echo \"L|\"; return 23; }\nfunction generatorDetachedParent12() { try { echo \"G|\"; $result = yield from $GLOBALS[\"child\"]; echo \"R|\", $result, \"|\"; yield 13; return 29; } finally { echo \"F|\"; } }\nfunction generatorDetachedTarget12($value) { echo \"BAD|\"; }\n$child = generatorDetachedLeaf12(); $parent = generatorDetachedParent12();\necho \"P|\"; $parent->rewind(); $child->next();\necho \"V|\", $parent->current(), \"|K|\", $parent->key() === null ? 1 : 0, \"|\";\ntry { generatorDetachedTarget12(...$parent); } catch (Error $caught) { echo \"T|\", $caught->getLine(), \"|\", $caught->getTrace() === [] ? \"NOFRAME|\" : \"FRAME|\"; }\necho \"N|\"; $parent->next(); echo \"D|\", $parent->current(), \"|K|\", $parent->key(), \"|\";\n$parent->next(); echo \"Q|\", $parent->getReturn(), \"|\";\nunset($parent, $child); echo \"E\";\n",
+    "source_sha256": "a751658c4301d6f2ac436b28cecb46b92d9951830340c688eea3ed1ecdc72e92",
+    "purpose": "Independent normal child completion copies its last value and return into the parent without key or tail execution; unpack raises a real key Error, then explicit next consumes the genuine return continuation.",
+    "expected_model": "normal",
+    "native_stdout": "P|G|C|L|V|7|K|1|T|8|NOFRAME|N|R|23|D|13|K|0|F|Q|29|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-detached-unpack-owning-return-required-control",
+    "source": "<?php\nclass GeneratorDetachedCache12 { function __destruct() { echo \"A|\"; } }\nclass GeneratorDetachedReturn12 { function __destruct() { echo \"R|\"; } }\nfunction generatorDetachedObjectsLeaf12() { echo \"C|\"; yield new GeneratorDetachedCache12; echo \"L|\"; return new GeneratorDetachedReturn12; }\nfunction generatorDetachedObjectsParent12() { try { echo \"G|\"; $result = yield from $GLOBALS[\"child\"]; echo \"BAD|\"; } finally { echo \"F|\"; } }\nfunction generatorDetachedObjectsTarget12($value) { echo \"BAD|\"; }\n$child = generatorDetachedObjectsLeaf12(); $parent = generatorDetachedObjectsParent12(); echo \"P|\"; $parent->rewind(); $child->next();\necho \"V|\", $parent->current() instanceof GeneratorDetachedCache12 ? \"HELD|\" : \"BAD|\", \"K|\", $parent->key() === null ? 1 : 0, \"|\";\nunset($child); echo \"M|\";\ntry { generatorDetachedObjectsTarget12(...$parent); } catch (Error $caught) { echo \"T|\", $caught->getLine(), \"|\", $caught->getTrace() === [] ? \"NOFRAME|\" : \"FRAME|\"; }\nunset($parent); echo \"E\";\n",
+    "source_sha256": "fa821ebdd043f44e0411f42b19eacd1d69284ac951bb42794dff9a14d057b07d",
+    "purpose": "An owning copied yield-from result survives forced parent close until request shutdown in the pinned engine; this unfinished result lifetime stays explicitly Unsupported before unpack cleanup.",
+    "expected_model": "unsupported",
+    "native_stdout": "P|G|C|L|V|HELD|K|1|M|T|10|NOFRAME|F|A|ER|",
+    "native_stderr": "",
+    "native_exit": 0,
+    "unsupported_reason": "Generator unpack delegated producer",
+    "unsupported_stdout": "P|G|C|L|V|HELD|K|1|M|",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "80",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "71",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "67",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "76",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "86",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "72",
+            "69",
+            "76",
+            "68",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "75",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "49"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "77",
+            "124"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "generator-detached-unpack-retained-child-keeps-original-cache-after-tail",
+    "source": "<?php\nclass GeneratorDetachedHeldCache12 { function __destruct() { echo \"A|\"; } }\nfunction generatorDetachedHeldLeaf12() { echo \"C|\"; yield new GeneratorDetachedHeldCache12; echo \"L|\"; return 23; }\nfunction generatorDetachedHeldParent12() { try { echo \"G|\"; $result = yield from $GLOBALS[\"child\"]; echo \"B|\", $result === 23 ? \"HELD|\" : \"BAD|\"; unset($result); echo \"U|\"; yield 13; } finally { echo \"F|\"; } }\nfunction generatorDetachedHeldTarget12($value) { echo \"BAD|\"; }\n$child = generatorDetachedHeldLeaf12(); $parent = generatorDetachedHeldParent12(); echo \"P|\"; $parent->rewind(); $child->next();\ntry { generatorDetachedHeldTarget12(...$parent); } catch (Error $caught) { echo \"T|\", $caught->getLine(), \"|\", $caught->getTrace() === [] ? \"NOFRAME|\" : \"FRAME|\"; }\necho \"N|\"; $parent->next(); echo \"D|\", $parent->current(), \"|\";\nunset($parent); echo \"M|\";\nunset($child); echo \"E\";\n",
+    "source_sha256": "a56605b71d43432658062f3174d2aebfb4e815addad01f6c4f9130ef0285ba25",
+    "purpose": "After a real detached key Error, next consumes the copied scalar return and resumes the parent tail; an independent child CV alone keeps the original object cache until its later unset.",
+    "expected_model": "normal",
+    "native_stdout": "P|G|C|L|T|7|NOFRAME|N|B|HELD|U|D|13|F|M|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-detached-unpack-active-parent-above-detached-required-control",
+    "source": "<?php\nclass GeneratorDetachedMiddleCache12 { function __destruct() { echo \"A|\"; } }\nfunction generatorDetachedMiddleLeaf12() { echo \"C|\"; yield new GeneratorDetachedMiddleCache12; echo \"L|\"; return 23; }\nfunction generatorDetachedMiddle12() { try { echo \"H|\"; yield from $GLOBALS[\"child\"]; echo \"BAD|\"; } finally { echo \"J|\"; } }\nfunction generatorDetachedOuter12() { try { echo \"G|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD|\"; } finally { echo \"F|\"; } }\nfunction generatorDetachedOuterTarget12($value) { echo \"BAD|\"; }\n$child = generatorDetachedMiddleLeaf12(); $middle = generatorDetachedMiddle12(); $outer = generatorDetachedOuter12(); echo \"P|\"; $outer->rewind(); $child->next(); echo \"V|\", $middle->current() instanceof GeneratorDetachedMiddleCache12 ? \"HELD|\" : \"BAD|\";\nunset($child, $middle); echo \"M|\";\ntry { generatorDetachedOuterTarget12(...$outer); } catch (Error $caught) { echo \"T|\", $caught->getLine(), \"|\", $caught->getTrace() === [] ? \"NOFRAME|\" : \"FRAME|\"; }\nunset($outer); echo \"E\";\n",
+    "source_sha256": "1ed41ca41f96d727cd0b820d9ba1a8107493fb16379d35ef0dfa723039d8320e",
+    "purpose": "An active parent above a separately detached middle has a distinct pinned close lifecycle (no middle finally); this nested-detached chain stays explicitly Unsupported before unpack cleanup.",
+    "expected_model": "unsupported",
+    "native_stdout": "P|G|H|C|L|V|HELD|M|T|9|NOFRAME|A|F|E",
+    "native_stderr": "",
+    "native_exit": 0,
+    "unsupported_reason": "Generator unpack delegated producer",
+    "unsupported_stdout": "P|G|H|C|L|V|HELD|M|",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "80",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "71",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "72",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "67",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "76",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "86",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "72",
+            "69",
+            "76",
+            "68",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "77",
+            "124"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "generator-detached-unpack-present-null-key-error-precedes-byref-target",
+    "source": "<?php\nfunction generatorDetachedNullLeaf12() { echo \"C|\"; yield null; echo \"L|\"; return 23; }\nfunction generatorDetachedNullParent12() { try { echo \"G|\"; yield from $GLOBALS[\"child\"]; echo \"BAD|\"; } finally { echo \"F|\"; } }\nfunction generatorDetachedNullTarget12(&$value) { echo \"BAD|\"; }\n$child = generatorDetachedNullLeaf12(); $parent = generatorDetachedNullParent12(); echo \"P|\"; $parent->rewind(); $child->next();\ntry { generatorDetachedNullTarget12(...$parent); } catch (Error $caught) { echo \"T|\", $caught->getLine(), \"|\", $caught->getTrace() === [] ? \"NOFRAME|\" : \"FRAME|\"; }\nunset($parent, $child); echo \"E\";\n",
+    "source_sha256": "32f73d55a0c9f08f31c8896f1c283e7e53ef4bdbfbaa53ba297978101e493c7e",
+    "purpose": "A copied null is a present cache; implicit unpack rewind refreshes the child and key rejection precedes the separate by-reference-target boundary or warning.",
+    "expected_model": "normal",
+    "native_stdout": "P|G|C|L|T|6|NOFRAME|F|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-detached-unpack-valid-key-byref-target-required-control",
+    "source": "<?php\nset_error_handler(function($level, $message) { echo \"W|\"; return true; });\nfunction generatorDetachedReferenceControl12() { echo \"G|\"; yield 7; echo \"L|\"; }\nfunction generatorDetachedReferenceTarget12(&$value) { echo \"D|\", $value, \"|\"; }\necho \"P|\";\ngeneratorDetachedReferenceTarget12(...generatorDetachedReferenceControl12());\necho \"E\";\n",
+    "source_sha256": "1db9caf635584faf98244e690079a84b675f3aa2501b42c763011364482daa03",
+    "purpose": "A valid key still reaches the explicit Generator by-reference-target limit; native warning/private-cell behavior is observed without model normal credit.",
+    "expected_model": "unsupported",
+    "native_stdout": "P|G|W|L|D|7|E",
+    "native_stderr": "",
+    "native_exit": 0,
+    "unsupported_reason": "Generator unpack by-reference target",
+    "unsupported_stdout": "P|G|",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "80",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "71",
+            "124"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "generator-detached-unpack-retired-child-object-cache-and-scalar-return",
+    "source": "<?php\nclass GeneratorDetachedCache12 { function __destruct() { echo \"A|\"; } }\nfunction generatorDetachedObjectsLeaf12() { echo \"C|\"; yield new GeneratorDetachedCache12; echo \"L|\"; return 23; }\nfunction generatorDetachedObjectsParent12() { try { echo \"G|\"; $result = yield from $GLOBALS[\"child\"]; echo \"BAD|\"; } finally { echo \"F|\"; } }\nfunction generatorDetachedObjectsTarget12($value) { echo \"BAD|\"; }\n$child = generatorDetachedObjectsLeaf12(); $parent = generatorDetachedObjectsParent12(); echo \"P|\"; $parent->rewind(); $child->next();\necho \"V|\", $parent->current() instanceof GeneratorDetachedCache12 ? \"HELD|\" : \"BAD|\", \"K|\", $parent->key() === null ? 1 : 0, \"|\";\nunset($child); echo \"M|\";\ntry { generatorDetachedObjectsTarget12(...$parent); } catch (Error $caught) { echo \"T|\", $caught->getLine(), \"|\", $caught->getTrace() === [] ? \"NOFRAME|\" : \"FRAME|\"; }\nunset($parent); echo \"E\";\n",
+    "source_sha256": "ffe6b22ad684287c267cb87e620e26b45f03554fa140e29a6e19000b3f869f1b",
+    "purpose": "A detached parent keeps its copied object cache after the original child storage retires; a node-free return receipt permits real key Error and then finally-before-cache destruction.",
+    "expected_model": "normal",
+    "native_stdout": "P|G|C|L|V|HELD|K|1|M|T|9|NOFRAME|F|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
