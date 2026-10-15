@@ -157,8 +157,10 @@ def main():
                     (target / 'protocol.watsup').write_text(common.PREFIX + '\ndec $main() : bool\ndef $main() = true\n' +
                         ''.join('  -- if ' + assertion + '\n' for assertion in assertions))
             finally:
-                if adapter: adapter.close()
-                frontend.close()
+                try:
+                    if adapter: adapter.close()
+                finally:
+                    frontend.close()
         else:
             modules = [str(ROOT / name) for name in json.loads((ROOT / 'spec/semantics/modules.json').read_bytes())]
             for name in names:
