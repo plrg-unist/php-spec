@@ -955,6 +955,11 @@ inaccessible members avoid evaluation; actual initializer Errors retain the
 `defined` API frame and can be retried. Two exact sources and 415 public premises
 cover boolean results, request-string caches and context/resume authority; wider
 initializers, class/autoload interactions and fixed namespace fallback remain open.
+[Keyword class queries](coverage/semantics/class-keyword-query-review.json) now resolve
+`self`/`parent` from lexical scope and `static` from the called class, including eval.
+Two exact sources and 368 public premises cover six eval queries, scope Errors and
+captured query traces. Keyword `constant` values remain folded primitives/literal
+strings; wider initializers, values and internal/bound-Closure scopes remain open.
 [Untyped positional defaults](docs/semantics/SOURCE-POSITIONAL-DEFAULTS.md) now preserve
 omitted receives, declaration context, observable caches and fresh reference/array
 ownership. [Independent acceptance](coverage/semantics/default-parameter-review.json)

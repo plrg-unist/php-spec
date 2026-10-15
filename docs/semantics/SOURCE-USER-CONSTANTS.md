@@ -196,6 +196,17 @@ two public fronts/415 premises cover quiet rejection, failed context restoration
 retry, boolean results and request-string cache identity in the
 [deferred-defined ledger](../../coverage/semantics/class-qualified-defined-deferred-review.json).
 
+Keyword queries retain the captured raw query while resolving `self` from lexical
+scope, `parent` from that scope's source parent and `static` from the called class.
+Inherited-method eval preserves its immutable lexical binding separately from the
+called class. Both APIs raise scope Errors before quiet member lookup; ordinary
+unscoped calls do not borrow an outer frame's scope. Folded keyword `defined`
+returns a boolean; keyword `constant` returns only the authenticated folded
+primitive/literal-string domain. Two exact sources and two public fronts/368
+premises cover six eval queries, two actual Error traces and budget resumption in
+the [keyword-query ledger](../../coverage/semantics/class-keyword-query-review.json).
+Internal/bound-Closure scopes and other keyword initializer/value domains remain open.
+
 Mutable-empty/deferred/nonliteral class-array query values and wider domains remain open.
 
 Global `constant` queries now read primitive user values, authenticated interned or
@@ -262,7 +273,8 @@ exception-class lookup and `ZVAL_COPY_OR_DUP`; `zend_declare_typed_class_constan
 interns direct string values before installation.
 Nested empty values in `define`, cycles, objects, array duplicate/third-argument paths,
 name/flag coercion, startup/special-name warnings,
-keyword/internal/trait/interface/enum class queries, other deferred initializers,
+internal/trait/interface/enum class queries, deferred keyword initializers and
+keyword `constant` array values, other deferred initializers,
 owning/FCC call forms and wider conversion/arity paths remain Unsupported. The [dynamic ledger](../../coverage/semantics/dynamic-constants-review.json)
 keeps the source and public-state cuts separate; it makes no native allocation-identity
 or full constant-family claim.

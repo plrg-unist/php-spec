@@ -7,6 +7,15 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Class-query `self`/`parent` now use the actual lexical scope and `static` uses the
+called class, including inherited-method eval. Both APIs raise scope Errors before
+quiet member lookup; the original query spelling and trace argument remain intact.
+Two exact sources and two public fronts/368 premises pass at runtime diff 5e4b4199,
+covering six eval queries, two representative Error states and budget resumption.
+Keyword `constant` values remain folded primitives/literal strings; wider values,
+initializers and internal/bound-Closure scopes remain partial.
+[Keyword-query ledger](coverage/semantics/class-keyword-query-review.json).
+
 Global `constant` array queries now admit certified `PVINSTANCE` and `PVCLOSURE`
 leaves through their existing live/source certificates. Queries preserve the stored
 root and embedded-object owners; actual COW adds a distinct physical array-to-object edge.
