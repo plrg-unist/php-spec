@@ -62,6 +62,12 @@ and restored SECOND dispatch. A second float Notice keeps private 1.0 despite
 the handler writing 9.0 to its old cell; throw/finally uses the same quiet
 remainder cancellation and handler restoration. No receiver owner is added.
 
+[Throwable numeric comparison Notices](../../coverage/semantics/throwable-numeric-comparison-review.json)
+preserve finite builtin and real source-subclass names through both phases.
+Numeric failure invokes no `__toString`, even a source override. A second
+handler can throw the original compared Exception while preserving its
+previous link, cold cache, caller catch/finally and existing quiet cancellation.
+
 Private-final compiler diagnostics retain E_COMPILE_WARNING (128) severity
 and bypass callbacks in both direct reporting and dynamic compile queues.
 The reporting mask still controls display. E_WARNING (2) and E_DEPRECATED (8192)

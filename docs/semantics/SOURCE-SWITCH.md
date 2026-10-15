@@ -57,6 +57,12 @@ also retain the original case, array/property cursor and guards through both
 Notices. Restored SECOND float dispatch uses saved 1.0 rather than a changed
 cell, including same-TypeError/finally cleanup and unchanged-left fresh comparison.
 
+[Throwable numeric leaves](../../coverage/semantics/throwable-numeric-comparison-review.json)
+retain builtin/source class images and saved float targets across restored
+second Notices. Throwing the original compared Exception preserves its
+previous link and cold cache through handler finally and caller catch/finally;
+the unchanged left array then compares false against the changed right. Wider limits remain.
+
 [Recursive comparison through 394](../../coverage/semantics/aggregate-stringable-comparison-review.json)
 retains real enclosing array/property owners and the active left recursion guard
 while a reached Stringable/string leaf casts. Early count/key/value differences
