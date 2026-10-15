@@ -1,6 +1,6 @@
 # Ordinary source user constants
 
-Ordinary `const` declarations and reads use the checked source compiler and runtime for the pinned PHP 8.5.10 CLI profile. Scalar/array, certified Closure/FCC and bounded user-instance NEW values are supported; the constant family and full core remain partial.
+Ordinary `const` declarations and reads use the checked source compiler and runtime for the pinned PHP 8.5.10 CLI profile. Scalar/array, certified Closure/FCC, bounded user-instance NEW and direct-root zero-argument stdClass values are supported; the constant family and full core remain partial.
 
 ## Declaration and lookup
 
@@ -14,7 +14,7 @@ The request-local table normalizes namespace prefixes to lowercase and preserves
 
 `USERCONSTANTS` entries own their ordinary runtime values. Constant reads, array copies, nested value calls, reference sends, and temporary foreach references use the existing heap and copy-on-write machinery. The table's roots are included across active and saved frames and abrupt cleanup. A failing initializer clears pending initializer work and scratch facts while retaining existing table and request roots.
 
-Allocation provenance is a separate non-owning tree: `PVSCALAR`, `PVSTRING bool`, `PVCLOSURE` with its exact object identity, nonfoldable `PVINSTANCE` with object identity and NEW source, or `PVARRAY bool` with ordered keyed child classes. The flag records the source-backed non-refcounted case needed by subsequent default-receive semantics. It is not inferred from final bytes or length. Both string flags can accompany empty bytes; an allocated array can be empty. The shared empty-array class requires empty topology. Generic `PVOBJECT` is not admitted as certified global NEW.
+Allocation provenance is a separate non-owning tree: `PVSCALAR`, `PVSTRING bool`, `PVCLOSURE` with its exact object identity, nonfoldable `PVINSTANCE` or distinct `PVSTDCLASS` with object identity and NEW source, or `PVARRAY bool` with ordered keyed child classes. The flag records the source-backed non-refcounted case needed by subsequent default-receive semantics. It is not inferred from final bytes or length. Both string flags can accompany empty bytes; an allocated array can be empty. The shared empty-array class requires empty topology. Generic `PVOBJECT` is not admitted as certified global NEW.
 
 Shared compiler facts export `PCCLASS` beside existing `PCONSTANT` values. The compiler records classes while folding actual child facts. Runtime `CONSTANT_OBSERVE` records the result of actual evaluation and propagates classes through the same selected children and operations. A fully stored initializer applies direct-root string interning at declaration installation; strings inside its arrays retain their own classes. Deferred initializers preserve operation and imported-value provenance. The allocation-class contract records the pinned scanner, literal-installation, cast, concatenation, bitwise, and array distinctions.
 
@@ -405,8 +405,24 @@ runtime diff f3cd41fa in the [autoload ledger](../../coverage/semantics/global-c
 The immediate THROW_SEARCH checkpoint checks its real cleared context and pending
 binder; full public validation follows actual unwind. Pure malformed certificates
 are never driven. The unchanged baseline's premature missing-class Error and the
-binder/two fixture failures remain zero credit. Internal and Throwable NEW,
+binder/two fixture failures remain zero credit. Other internal and Throwable NEW,
 nested autoload, earlier initializer facts, named/unpacked autoload arguments,
 wider object-producing/lifecycle forms and remaining builtin/query behavior remain
 open. Class/default and callable consumers keep their separate evidence; no
 complete-core claim.
+
+Direct-root zero-argument `new stdClass()` now uses the real `STDINSTANCE` heap
+allocation and separate `CONSTANTSTDOBJECTS`/`PVSTDCLASS` certificates, without a
+fabricated user class origin. A pending no-constructor phase owns the new object;
+completion permits installation and ordinary reads. Historical certificates may
+survive object death, while value admission still requires the exact live object.
+Duplicate registration holds its candidate through the genuine Warning callback,
+then discards it without replacing the original binding or its callback writes.
+Two exact originals and 225 SL premises (110 root, 115 duplicate) at 369ebde3 cover
+alias owners3→1, candidate1→0, source/tag authority and budget resume. The original
+invalid duplicate observer remains zero credit; only its corrected local-alias
+version supplies that source comparison. The separate tag keeps dynamic `constant()` value return, embedded trees, default
+caching and callable folding outside this slice; existing `defined()` presence
+lookup remains unchanged. Other
+internal/Throwable NEW, argument and wider lifecycle forms remain partial.
+[stdClass producer ledger](../../coverage/semantics/global-constant-stdclass-review.json).

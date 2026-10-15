@@ -1,0 +1,72 @@
+{
+  "status": "independently reviewed implementation and focused validation",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; exact pinned PHP/profile, streams, environment and process commands retained in raw reports",
+  "base": "91a58a8bdfa50f028744e5da4a9eb9f3fe7648fa",
+  "implementation_revision": "99b1c7a1f5ee13842f78f2852e6082397d0b7dc9",
+  "module_count": 395,
+  "tested_cut": {
+    "runtime_diff_sha256": "369ebde344bbefd38add5291fdb45472a90a06b9b3776bda9b1a4c25d8a009a3",
+    "files": {
+      "spec/semantics/30-storage.watsup": "69ee585a55666af7e7956d699cde5a8d234c6f01b306b4b385a1bd6488d9de7d",
+      "spec/semantics/40-control.watsup": "e14d9ff5a568c269a1fb9cd48d16b3b7221097c92914ddc69c4b0c7e46b4c021",
+      "spec/semantics/84-call-integrity.watsup": "2d4d04f14a9d4c69911c7d3beb6746440d2d82b3ff9184e457abe8402687d580",
+      "spec/semantics/283-global-constant-objects.watsup": "bc53a192fda857ff06f8213e5035d91a98f5f5e2137180b9ab8ad96b50985c52",
+      "tests/semantics/global_constant_stdclass_protocol.py": "11b3ad60446eb9a1a7d28dc1f0537d2883ccfb79b5fb2a0bc56cfd17583d5461"
+    }
+  },
+  "behavior": [
+    "Exact direct-root resolved stdClass NEW with zero arguments and no earlier initializer facts creates a real STDINSTANCE through the prepared no-constructor phase. A separate birth certificate records actual append identity, source, declaration and source prefix; no user class origin is invented.",
+    "PVSTDCLASS preserves ordinary constant-read identity and shared property writes. Pending work and installed values use existing heap ownership. Completed nonowning history survives object death, while current value validation requires the exact live HOBJECT and matching complete source certificate.",
+    "Duplicate registration retains the fresh candidate through the Warning callback, preserving the original USERCONSTANT row and callback mutation. Actual duplicate discard frees the candidate; its historical certificate remains valid but cannot authenticate a dead value.",
+    "The separate value tag leaves existing user-instance, Closure, global query, embedded array-tree, default-cache and callable-folding rules unchanged. Dynamic constant() value return remains unadmitted; existing defined() presence lookup can see an installed stdClass row."
+  ],
+  "engine_routes": [
+    "Zend/zend_ast.c::zend_ast_evaluate_ex, ZEND_AST_NEW: class fetch and object_init_ex produce an actual stdClass even with no constructor or arguments.",
+    "Zend/zend_constants.c::zend_register_constant emits the duplicate Warning before destroying the candidate value.",
+    "Existing 130 STDINSTANCE identity/property storage, 227 prepared no-constructor ownership and 271 duplicate continuation are reused; only source-certified global stdClass admission and separate history/value validation are added."
+  ],
+  "accepted": {
+    "source_agreements": 2,
+    "public_premises": 225,
+    "root_premises": 110,
+    "duplicate_premises": 115,
+    "production_chains": 2,
+    "budget_resumptions": 1,
+    "raw_steps": 0,
+    "driven_forged_states": 0
+  },
+  "authority": "The original native report remains failed_probe: only its stable exit0 root row/full tuple is accepted. The corrected duplicate-only report supplies the second original. Source comparisons and public checks share runtime diff369e/base91a58; current protocol11b3 and all five tested file hashes are exact. Malformed source/tag/prefix controls are undriven; local source helpers rely on whole compiler-image authority rather than recompiling edited SOURCES.",
+  "preserved_outcomes": "The original duplicate observer is a pre-B compile fatal caused by writing through a constant expression; it remains zero credit. Its sole correction writes through a local alias. The unchanged root baseline genuinely stops Unsupported internal-or-Throwable initializer after B| with CLI1. No V57 model/public actor failures or fixture corrections occurred. Native/preparation/standalone syntax and inherited public agreement_credit0 fields retain zero differential credit; premise acceptance is recorded separately. No rebuild or portability claim.",
+  "remaining": "Only direct-root zero-argument exact stdClass with empty prior facts is admitted. Other internal/Throwable producers, constructor arguments, nested/embedded values, default caching, dynamic constant() value return and wider lifecycle/failure domains remain partial; this does not close stdClass, constants or core.",
+  "artifacts": {
+    "original_native_root_and_failed_observer": {
+      "path": ".tools/dynamic-review-02/static-native-v57/report.json",
+      "sha256": "9347119a63bf20c72e11345baf4ffc020bac60de7e2457187c8bd35f2c0b0ca9"
+    },
+    "corrected_duplicate_native": {
+      "path": ".tools/dynamic-review-02/static-native-v57-duplicate-v2/report.json",
+      "sha256": "ebc2c631306c37409bd4562093dd140fbd7a30ee967e2b9653c754b4240e41d0"
+    },
+    "unchanged_root_baseline": {
+      "path": ".tools/dynamic-source-global-stdclass-baseline-37/report.json",
+      "sha256": "0a28e969795ae388715d6d74b8759bbc5c6ca08277942f006cd50d71012bbcf7"
+    },
+    "affected_root_source": {
+      "path": ".tools/dynamic-source-global-stdclass-model-38/report.json",
+      "sha256": "ebd2fc301d426031e1cb85e90563a88a966c8db08c54ea52603191b43cd7a49c"
+    },
+    "affected_duplicate_source": {
+      "path": ".tools/dynamic-source-global-stdclass-duplicate-model-37/report.json",
+      "sha256": "c3304556f34b23dadde0a4c305690311ffc81d16c9c23a52dfa70c5821d4fbca"
+    },
+    "fixture_preparation": {
+      "path": ".tools/dynamic-source-global-stdclass-state-01/fixtures-report.json",
+      "sha256": "90c42d773aea31f44e98f0a281e3995d14452cf73451f1ab2298a2862a875f78"
+    },
+    "public_state": {
+      "path": ".tools/dynamic-source-global-stdclass-state-01/check-report.json",
+      "sha256": "ecd5335d0874922a9dfba9c02d10b08bc835b8b6403c709ab8aeb9caf8766128"
+    }
+  },
+  "recovery": "Canonical ignored native originals retain exact PHP source/filename and raw tuples. global_constant_stdclass_protocol.py --phase fixtures --sources/--output records checked main/eval frontend and adapter packets; --phase check runs full ordered395 --sl, process90/exact trueLF/empty, serial root110 then conditional duplicate115 under host240. Source CLI60/process90/host120; native PHP30. Whole DSL parse-only records under state01/parse-only retain zero semantic credit. Metadata-only edits require no semantic replay."
+}

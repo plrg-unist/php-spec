@@ -2608,6 +2608,13 @@ scope and escaped failure/retry. Three new source agreements and 274 AL premises
 retain separate cuts. Two further cold no-constructor sources and 80/81 AL premises
 check table completion before allocation/arguments and fresh retry after failure.
 Eager destructor cleanup and wider object producers remain required.
+[Zero-argument global `new stdClass()`](coverage/semantics/global-constant-stdclass-review.json)
+now preserves ordinary-read identity and property sharing. Duplicate registration
+holds the fresh candidate through its Warning handler and discards it afterward,
+retaining the original object and callback mutation. Two exact sources and 225 SL
+premises cover birth/completion, live/dead authority, alias release and budget
+resume. Other internal/Throwable producers, arguments, embedded/default values
+and dynamic `constant()` value return remain partial.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is

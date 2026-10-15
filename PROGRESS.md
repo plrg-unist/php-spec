@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Direct-root zero-argument global `new stdClass()` now installs a genuine internal
+object with a separate nonowning birth certificate. Ordinary reads share identity
+and property writes; duplicate registration retains its fresh candidate through
+the Warning handler, then frees it while preserving the original binding/mutation.
+Two exact source comparisons and 225 SL premises (110 root, 115 duplicate) pass at
+runtime diff 369ebde3, including live/dead value authority, owners and budget resume.
+The original duplicate observer compile failure retains zero credit; the accepted
+root native row remains separately scoped. Other internal/Throwable producers,
+arguments, embedded/default values and dynamic `constant()` value return remain partial.
+[stdClass producer review](coverage/semantics/global-constant-stdclass-review.json).
+
 Selected inherited `__unset(string): void` now dispatches direct CV/literal-name
 access to a declared private property. Accessible public unset skips magic;
 the callback retains Parent lexical scope and Child called scope, removes the
