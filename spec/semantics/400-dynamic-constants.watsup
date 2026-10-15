@@ -15,6 +15,7 @@ def $dynamic_constant_kind(INTRINSIC_CONSTANT) = true
 dec $dynamic_scalar_constant_call(pconfigcall) : bool
 dec $dynamic_null_constant_call(pconfigcall) : bool
 dec $dynamic_null_define_call(pconfigcall) : bool
+dec $dynamic_scalar_define_flag_call(pconfigcall) : bool
 def $config_parameter(INTRINSIC_DEFINE, preqbytes) = (0) -- if preqbytes = $ptascii("constant_name")
 def $config_parameter(INTRINSIC_DEFINE, preqbytes) = (1) -- if preqbytes = $ptascii("value")
 def $config_parameter(INTRINSIC_DEFINE, preqbytes) = (2) -- if preqbytes = $ptascii("case_insensitive")
@@ -167,6 +168,7 @@ rule PhpStep/dynamic-constant-invoke: S ~> $dynamic_constant_receive(S, pconfigc
   -- if ~$dynamic_scalar_define_call(pconfigcall)
   -- if ~$dynamic_null_constant_call(pconfigcall)
   -- if ~$dynamic_null_define_call(pconfigcall)
+  -- if ~$dynamic_scalar_define_flag_call(pconfigcall)
 
 def $task_nodes(DYNAMIC_CONSTANT_CASE_WARNING pconfigcall) = $config_nodes(pconfigcall)
 def $selected_task_nonce(DYNAMIC_CONSTANT_CASE_WARNING pconfigcall) = pconfigcall.SELECTION
@@ -1426,3 +1428,131 @@ def $error_handler_trace_values(S, pcallcontext, pconfigcall_api) = $trace_extra
   -- if $error_context_call(S, pcallcontext) = (perrorcall)
   -- if perrorcall.RESUME = DYNAMIC_NULL_DEFINE_DUPLICATE pconfigcall n_constants
   -- if pconfigcall_api = pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT, 0, KNOWN (PSTRING_CARRIER INTERNED_STRING eps))]
+
+;; BOOL parsing computes a C bool without replacing the captured API argument.
+;; NaN has a separate conversion Warning; only quiet scalar flags enter here.
+dec $dynamic_define_quiet_flag(pvalue) : bool
+def $dynamic_define_quiet_flag(PINT i) = true
+def $dynamic_define_quiet_flag(PFLOAT n) = true -- if (b, false) = $number_bool(NFLOAT n)
+def $dynamic_define_quiet_flag(pvalue) = $method_string(pvalue) -- otherwise
+dec $dynamic_scalar_define_flag_values(pconfigcall) : (preqbytes, pvalue, pvalue)?
+def $dynamic_scalar_define_flag_values(pconfigcall) = ((preqbytes, pvalue, pvalue_flag))
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_name), NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN pvalue_flag)]
+  -- if $string_bytes(pvalue_name) = (preqbytes)
+  -- if $dynamic_define_quiet_flag(pvalue_flag)
+def $dynamic_scalar_define_flag_values(pconfigcall) = eps -- otherwise
+def $dynamic_scalar_define_flag_call(pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_DEFINE
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps
+  -- if $dynamic_scalar_define_flag_values(pconfigcall) = ((preqbytes, pvalue, pvalue_flag))
+def $dynamic_scalar_define_flag_call(pconfigcall) = false -- otherwise
+dec $dynamic_scalar_define_flag_valid(pstate, pconfigcall) : bool
+def $dynamic_scalar_define_flag_valid(S, pconfigcall) = true
+  -- if $dynamic_scalar_define_flag_call(pconfigcall) /\ $config_invoke_valid(S, pconfigcall)
+  -- if $dynamic_define_source(S, pconfigcall.SITE)
+  -- if $dynamic_scalar_define_flag_values(pconfigcall) = ((preqbytes, pvalue, pvalue_flag))
+  -- if $dynamic_constant_global_name(preqbytes) /\ ~$dynamic_constant_initial(preqbytes)
+  -- if $dynamic_scalar_define_arguments(S, pconfigcall, 0)
+  -- if $named_slot_at(pconfigcall.SENT, 0) = NAMED_SENT (KNOWN pvalue_name)
+  -- if $dynamic_constant_class(pvalue) = (pvalueclass)
+  -- if $string_plain(pvalue_name) = pvalue_name \/ $string_carrier_valid(S, pvalue_name)
+  -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
+  -- if $string_plain(pvalue_flag) = pvalue_flag \/ $string_carrier_valid(S, pvalue_flag)
+def $dynamic_scalar_define_flag_valid(S, pconfigcall) = false -- otherwise
+dec $dynamic_scalar_define_flag_case_valid(pstate, pconfigcall) : bool
+def $dynamic_scalar_define_flag_case_valid(S, pconfigcall) = true
+  -- if $dynamic_scalar_define_flag_valid(S, pconfigcall) /\ ~$config_strict(S, pconfigcall)
+  -- if $dynamic_scalar_define_flag_values(pconfigcall) = ((preqbytes, pvalue, pvalue_flag))
+  -- if $truth(S, pvalue_flag)
+def $dynamic_scalar_define_flag_case_valid(S, pconfigcall) = false -- otherwise
+dec $dynamic_scalar_define_flag_duplicate_valid(pstate, pconfigcall, nat) : bool
+def $dynamic_scalar_define_flag_duplicate_valid(S, pconfigcall, n_constants) = true
+  -- if $dynamic_scalar_define_flag_valid(S, pconfigcall) /\ ~$config_strict(S, pconfigcall)
+  -- if $dynamic_scalar_define_flag_values(pconfigcall) = ((preqbytes, pvalue, pvalue_flag))
+  -- if $(n_constants <= |S.USERCONSTANTS|)
+  -- if $user_constant_at(S.USERCONSTANTS[0:n_constants], $user_constant_key(preqbytes)) =/= eps
+def $dynamic_scalar_define_flag_duplicate_valid(S, pconfigcall, n_constants) = false -- otherwise
+dec $dynamic_scalar_define_flag_finish(pstate, pconfigcall) : pstate
+def $dynamic_scalar_define_flag_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME $user_constant_key(preqbytes), ORIGIN pconfigcall.SITE, VALUE pvalue, CLASS pvalueclass, READS eps, RECEIVES eps}]][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $dynamic_scalar_define_flag_valid(S, pconfigcall) /\ ~$config_strict(S, pconfigcall)
+  -- if $dynamic_scalar_define_flag_values(pconfigcall) = ((preqbytes, pvalue, pvalue_flag))
+  -- if $dynamic_constant_class(pvalue) = (pvalueclass)
+  -- if $source_constant_lookup(S, preqbytes) = eps
+  -- if S.TODO = ptask :: ptask_tail*
+def $dynamic_scalar_define_flag_finish(S, pconfigcall) = $error_dispatch(S[.TODO = (DYNAMIC_SCALAR_DEFINE_FLAG_DUPLICATE pconfigcall n_constants) :: ptask_tail*], 2, ptbytes_message, pconfigcall.LINE, DIAGNOSTIC "Warning" ptbytes_message pconfigcall.LINE, DYNAMIC_SCALAR_DEFINE_FLAG_DUPLICATE pconfigcall n_constants)
+  -- if n_constants = |S.USERCONSTANTS|
+  -- if $dynamic_scalar_define_flag_duplicate_valid(S, pconfigcall, n_constants)
+  -- if $dynamic_scalar_define_flag_values(pconfigcall) = ((preqbytes, pvalue, pvalue_flag))
+  -- if ptbytes_message = $global_constant_duplicate_message(preqbytes)
+  -- if S.TODO = ptask :: ptask_tail*
+def $dynamic_scalar_define_flag_finish(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "scalar define flag publication"] -- otherwise
+dec $dynamic_scalar_define_flag_receive(pstate, pconfigcall) : pstate
+def $dynamic_scalar_define_flag_receive(S, pconfigcall) = $config_error(S[.TODO = ptask_tail*], pconfigcall, "TypeError", $ptascii("define(): Argument #3 ($case_insensitive) must be of type bool, ") ++ $typed_given(S, pvalue_flag) ++ $ptascii(" given"))
+  -- if $dynamic_scalar_define_flag_valid(S, pconfigcall) /\ $config_strict(S, pconfigcall)
+  -- if $dynamic_scalar_define_flag_values(pconfigcall) = ((preqbytes, pvalue, pvalue_flag))
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_scalar_define_flag_receive(S, pconfigcall) = $dynamic_scalar_define_flag_finish(S, pconfigcall)
+  -- if $dynamic_scalar_define_flag_valid(S, pconfigcall) /\ ~$config_strict(S, pconfigcall)
+  -- if $dynamic_scalar_define_flag_values(pconfigcall) = ((preqbytes, pvalue, pvalue_flag))
+  -- if ~$truth(S, pvalue_flag)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_scalar_define_flag_receive(S, pconfigcall) = $error_dispatch(S[.TODO = (DYNAMIC_SCALAR_DEFINE_FLAG_RESULT pconfigcall) :: ptask_tail*], 2, $dynamic_constant_case_message(), pconfigcall.LINE, DIAGNOSTIC "Warning" $dynamic_constant_case_message() pconfigcall.LINE, DYNAMIC_SCALAR_DEFINE_FLAG_RESULT pconfigcall)
+  -- if $dynamic_scalar_define_flag_case_valid(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_scalar_define_flag_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "scalar define flag reception"] -- otherwise
+rule PhpStep/dynamic-scalar-define-flag-invoke: S ~> $dynamic_scalar_define_flag_receive(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $config_invoke_valid(S, pconfigcall) /\ $dynamic_scalar_define_flag_call(pconfigcall)
+def $task_nodes(DYNAMIC_SCALAR_DEFINE_FLAG_RESULT pconfigcall) = $config_nodes(pconfigcall)
+def $selected_task_nonce(DYNAMIC_SCALAR_DEFINE_FLAG_RESULT pconfigcall) = pconfigcall.SELECTION
+def $call_task_valid(S, DYNAMIC_SCALAR_DEFINE_FLAG_RESULT pconfigcall) = $dynamic_scalar_define_flag_case_valid(S, pconfigcall)
+rule PhpStep/dynamic-scalar-define-flag-result: S ~> $dynamic_scalar_define_flag_finish(S, pconfigcall)
+  -- if S.TODO = (DYNAMIC_SCALAR_DEFINE_FLAG_RESULT pconfigcall) :: ptask_tail*
+  -- if $dynamic_scalar_define_flag_case_valid(S, pconfigcall)
+def $task_nodes(DYNAMIC_SCALAR_DEFINE_FLAG_DUPLICATE pconfigcall n_constants) = $config_nodes(pconfigcall)
+def $selected_task_nonce(DYNAMIC_SCALAR_DEFINE_FLAG_DUPLICATE pconfigcall n_constants) = pconfigcall.SELECTION
+def $call_task_valid(S, DYNAMIC_SCALAR_DEFINE_FLAG_DUPLICATE pconfigcall n_constants) = $dynamic_scalar_define_flag_duplicate_valid(S, pconfigcall, n_constants)
+rule PhpStep/dynamic-scalar-define-flag-duplicate: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (DYNAMIC_SCALAR_DEFINE_FLAG_DUPLICATE pconfigcall n_constants) :: ptask_tail*
+  -- if $dynamic_scalar_define_flag_duplicate_valid(S, pconfigcall, n_constants)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = DYNAMIC_SCALAR_DEFINE_FLAG_RESULT pconfigcall
+  -- if $dynamic_scalar_define_flag_case_valid(S, pconfigcall)
+  -- if perrorcall.SITE = pconfigcall.SITE /\ perrorcall.LEVEL = 2 /\ perrorcall.LINE = pconfigcall.LINE
+  -- if perrorcall.MESSAGE = $dynamic_constant_case_message()
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pconfigcall.LINE
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = DYNAMIC_SCALAR_DEFINE_FLAG_DUPLICATE pconfigcall n_constants
+  -- if $dynamic_scalar_define_flag_duplicate_valid(S, pconfigcall, n_constants)
+  -- if $dynamic_scalar_define_flag_values(pconfigcall) = ((preqbytes, pvalue, pvalue_flag))
+  -- if perrorcall.SITE = pconfigcall.SITE /\ perrorcall.LEVEL = 2 /\ perrorcall.LINE = pconfigcall.LINE
+  -- if perrorcall.MESSAGE = $global_constant_duplicate_message(preqbytes)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pconfigcall.LINE
+def $error_context_trigger(S, pcallcontext) = (pconfigcall)
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = DYNAMIC_SCALAR_DEFINE_FLAG_RESULT pconfigcall
+def $error_context_trigger(S, pcallcontext) = (pconfigcall)
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = DYNAMIC_SCALAR_DEFINE_FLAG_DUPLICATE pconfigcall n_constants
+def $error_handler_trace_values(S, pcallcontext, pconfigcall_api) = $trace_extra(S, $getclass_trace_operands(pconfigcall_api.SENT))
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = DYNAMIC_SCALAR_DEFINE_FLAG_RESULT pconfigcall
+  -- if pconfigcall_api = pconfigcall
+def $error_handler_trace_values(S, pcallcontext, pconfigcall_api) = $trace_extra(S, $getclass_trace_operands(pconfigcall_api.SENT))
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = DYNAMIC_SCALAR_DEFINE_FLAG_DUPLICATE pconfigcall n_constants
+  -- if pconfigcall_api = pconfigcall
+
+;; Unlike ZPP failure, an ignored-flag handler throw does not stop the C body.
+;; A fresh primitive binding is installed before the original exception escapes.
+dec $dynamic_scalar_define_flag_pending(pstate, pconfigcall) : pstate
+def $dynamic_scalar_define_flag_pending(S, pconfigcall) = S[.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME $user_constant_key(preqbytes), ORIGIN pconfigcall.SITE, VALUE pvalue, CLASS pvalueclass, READS eps, RECEIVES eps}]]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $throwable_live(S, n)
+  -- if $dynamic_scalar_define_flag_case_valid(S, pconfigcall)
+  -- if $dynamic_scalar_define_flag_values(pconfigcall) = ((preqbytes, pvalue, pvalue_flag))
+  -- if $dynamic_constant_class(pvalue) = (pvalueclass)
+  -- if $source_constant_lookup(S, preqbytes) = eps
+def $dynamic_scalar_define_flag_pending(S, pconfigcall) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "scalar define flag pending-exception registration"] -- otherwise
+def $error_read_discard(S, DYNAMIC_SCALAR_DEFINE_FLAG_RESULT pconfigcall) = $dynamic_scalar_define_flag_pending(S, pconfigcall)
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*

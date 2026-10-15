@@ -7,6 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+String-name `define` now receives int/string/non-NaN float flags with primitive
+values. Weak boolean parsing leaves the raw API argument intact through ignored
+and duplicate warnings; strict calls evaluate all arguments before raw `TypeError`.
+Returning callbacks use the live table. If the first ignored-warning handler
+throws and the name is still fresh, registration installs the captured value
+before the original exception continues, leaving the caller destination intact.
+Three author sources and one independent throwing-handler source agree at cd955233.
+Public462 retains author188/126/51 at 8643b193 plus independent97 at 4fb4eb6d,
+covering named capture, raw traces, authentic string carriers, exact row-only
+pending effects, refusals and budget resume. The original peer binder collision
+remains zero credit; only its two captured-name premises changed.
+NULL/NaN flags, scalar/null names with coerced flags, and pending duplicate warnings
+remain separate; the corresponding boolean-true abrupt registration tail remains open.
+Private acceptance is complete; actual-parent integration is pending.
+[Scalar-flag review](coverage/semantics/define-scalar-flag-review.json).
+
 Plain-CV `.=` now retains the first string across a right-array warning.
 Normal return commits cached concatenation over callback writes and detaches a
 late alias; supplied throw cancels the store and preserves that alias. RHS removal

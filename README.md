@@ -988,6 +988,13 @@ Boolean `case_insensitive=true` now warns before registration while keeping case
 sensitivity. A handler-created binding wins the subsequent duplicate check;
 [two exact sources and 221 public premises](coverage/semantics/dynamic-constant-flag-review.json)
 cover the retained arguments, callback entry and live-table ordering.
+String-name `define` also receives integer, string and non-NaN float flags with
+primitive values. Weak calls preserve the raw flag in warning traces; strict
+calls raise `TypeError` after all argument effects. A throwing ignored-warning
+handler still permits fresh registration of the captured value before its
+exception escapes. [Four source agreements and 462 state premises](coverage/semantics/define-scalar-flag-review.json)
+cover both warning phases, this pending registration tail and source/budget guards.
+NULL/NaN flags and a duplicate after that first throw remain separate.
 Fresh two-argument `define` also copies nonempty acyclic scalar-array trees,
 dereferencing source cells and rebuilding append history. Request-string leaves,
 nested reference snapshots and literal constraints pass

@@ -115,6 +115,24 @@ fronts/221 premises cover genuine callback entry, both argument-preserving resum
 the inner row origin and the later duplicate prefix in the
 [ignored-flag ledger](../../coverage/semantics/dynamic-constant-flag-review.json).
 
+String-name calls with primitive values also receive int, string and non-NaN float
+flags. Weak boolean parsing distinguishes `"0"` from `"false"` without replacing
+the raw flag in CONFIG or API traces. Normal ignored-warning callbacks resume
+against the current table, so an inner definition can cause the later duplicate
+Warning. Strict calls retain raw arguments and raise the third-parameter bool
+`TypeError` after every argument effect. Normalized source sends and authentic
+string carriers constrain all three captured inputs; row-history rules are unchanged.
+
+If the first ignored-warning handler throws while the name remains fresh, Zend
+still registers the captured value before propagating that exception. The narrow
+pending tail changes only the constant table and preserves the original Throwable,
+caller destination and callback mutations. A key already present at that point is
+explicitly Unsupported because its pending duplicate Warning needs a separate
+protocol. The corresponding boolean-true abrupt registration tail remains open. The
+[scalar-flag review](../../coverage/semantics/define-scalar-flag-review.json)
+binds four source agreements and462 public premises; NULL/NaN flags, wider values
+and coerced flags with scalar/null names remain separate.
+
 Fresh two-argument array definitions recursively dereference source cells into
 new DIRECT entries. Reinserting surviving keys rebuilds NEXT, positions and serial
 metadata; ordinary copies and later source/reference writes preserve the constant.
