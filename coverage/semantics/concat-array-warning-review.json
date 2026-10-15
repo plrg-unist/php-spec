@@ -1,7 +1,7 @@
 {
   "version": 1,
   "milestone": "OP21 ordinary concatenation array-warning continuation",
-  "status": "independently reviewed private semantics and tests; awaiting actual-parent composition",
+  "status": "accepted exact-parent composition; private semantic/test cuts preserved",
   "target": "PHP 8.5.10 CLI NTS 64-bit; project-local pinned PHP and profile",
   "scope": "Ordinary binary concat of two distinct initially defined plain CVs: one nonempty mutable flat array of DIRECT defined nonowning scalars and one quiet string, with a named warning handler.",
   "runtime_revision": "a23b774de6ef3dc7aefd70c4ad3cb4b7af48d74b",
@@ -137,5 +137,18 @@
       "taskset -c 1 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-21/state-39aa24b2f-review-one/run-state.py"
     ],
     "record": "Restore matching Git cuts/project-local tools. For new state outputs copy the immutable thin and its frozen fixtures together to a fresh external directory; retain old PREP paths and exact helper bridge. Raw records preserve source/AST/native/fixtures/inputs/commands/exits/reaping outside Git."
+  },
+  "composition": {
+    "parent": "208088965c8e319f911f7a8512b4cae7814a26c2",
+    "reviewed_join": "afc01ced589274d32ac9c5663843904e5f18418f",
+    "modules": 395,
+    "pointwise": "All14 owned paths replay exactly: whole parent30 plus the two concat markers; private59/404, six tests and ledger; current-parent prose and five partial inventory suffixes. All34 other incoming paths and the395 manifest are preserved.",
+    "current_runtime_sha256": {
+      "spec/semantics/30-storage.watsup": "01241bd518d3a71eb3268346ae7b70df4c4e934a157ad77f0c49b96184354f1f",
+      "spec/semantics/59-concat-expressions.watsup": "eeb48fce3ad30994129712fcd9bcbd5e7776d3a3b4c7f1102e88f522fa6bb4a6",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "43175f94eaedf0989f3998dc5906856b1d97e6fd999a648c0de941132173e7c3"
+    },
+    "joined_gate": "None warranted: called concat/string/storage/error/ownership/control helpers are base-exact. Parent NULL-constant, Generator close/unpack, by-reference method-return, pending Throwable comparison and property-hook selectors are absent from these originals. No joined source/state/init actor or scaffold was run.",
+    "renewed_source_or_state_credit": 0
   }
 }

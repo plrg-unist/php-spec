@@ -20,6 +20,9 @@ projections are refusal checks only. Original source-elaboration and helper-stru
 remain zero credit; wider arrays/operands and RHS changes after a left-array
 warning remain partial and OP12 paused.
 [Concat-array ledger](coverage/semantics/concat-array-warning-review.json).
+The 395-module composition over 20808896 preserves incoming paths and the
+accepted concat rules. Independent pointwise review warrants no joined actor;
+source3 and state405 retain their private cuts without replay.
 
 Public protected(set) backed implicit class setters now use lexical access before
 call/receive. Child writer20 stores33 and returns20; the same array gives a global
