@@ -45,7 +45,7 @@ also admit live WeakMap and WeakReference objects, including wrappers with expir
 referents. Their second implicit string cast fails quietly without reading private
 entries or referents. Saved text, operand direction, copied values and retained
 cells remain authoritative; nonzero array/property leaves skip later casts.
-Existing pair, numeric, explicit-cast and producer/lifetime domains are unchanged.
+Existing pair, explicit-cast and producer/lifetime domains are unchanged.
 
 [Live WeakMap pairs](../../coverage/semantics/weakmap-comparison-review.json)
 also return order zero before recursion protection or any private-entry traversal.
@@ -121,6 +121,15 @@ check bounds and tags without adding owners. Private second-Notice targets and
 existing aggregate pointers/guards survive handlers. The numeric cast itself
 does not invoke a callable or resume a VM.
 Other Closure bodies remain outside this admitted callback route.
+[WeakMap and WeakReference numeric leaves](../../coverage/semantics/weak-numeric-comparison-review.json)
+also authenticate fixed builtin Notice names through exact outer tags. Live admission
+requires allocation and nonfreeing storage; documentary post-message images use only
+bounds and tags, without reading private entries or weak referents. Expired referents
+remain valid. Captured 1/1.0 and existing CV/COPY/retained-cell selection govern both
+callbacks, even after live9 writes. The authenticated pending remainder skips later
+eligible weak Notice handlers and string casts while preserving the same Throwable.
+Real ALIAS/COW cursors, private-value ownership and fresh guard cleanup retain the
+existing mechanisms. Wider producer, handler and lifetime forms remain partial.
 Other internal/custom comparison handlers, legacy materialized callbacks without a
 retained cursor and wider handler/lifetime behavior remain open.
 

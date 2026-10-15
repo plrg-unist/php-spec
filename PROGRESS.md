@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+WeakMap and WeakReference numeric comparisons now dispatch real Notice callbacks
+with fixed class names, including wrappers whose referents have expired. Private
+1/1.0, CV/COPY/retained-cell selection and SECOND callbacks survive live writes.
+Two exact originals and 355 Boolean premises (331 setup + 24 pure)/14 actual steps
+pass at 1337908c3/398, covering private owner1, weak nonownership, real ALIAS/COW,
+registered-handler restoration, pending late weak Notice/caster skips and the same
+TypeError/finally with fresh guard cleanup. No actor failed; native/baseline,
+preparation and typed elaboration add no agreement credit. Wider handlers, other
+internal/custom classes and weak producer/lifetime protocols remain partial.
+[Weak numeric review](coverage/semantics/weak-numeric-comparison-review.json).
+The pointwise 399-module composition over 6f3488104 preserves incoming list,
+property, arithmetic, constants and return paths. Source2/state355 retain their
+private cut; independent seam review warrants no joined actor or renewed credit.
+
 By-value destructuring now retains CV/literal RHS arrays through missing-key Warning
 handlers. The missing fetch still supplies null; later items observe captured
 scalar entries or shared reference cells. Throws cancel pending stores, later items

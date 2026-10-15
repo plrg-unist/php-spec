@@ -2018,7 +2018,7 @@ also admit WeakMap and WeakReference after the first source cast, including a li
 wrapper whose referent has expired. The second implicit cast fails quietly without
 reading private entries or referents. Three exact sources and 318 Boolean premises/
 12 raw steps preserve signed order, COPY/cell distinctions, COW and throw cleanup;
-pair, numeric, explicit-cast and existing producer/lifetime domains are unchanged.
+pair, explicit-cast and existing producer/lifetime domains are unchanged.
 [Finite Throwable comparisons](coverage/semantics/throwable-string-comparison-review.json)
 now format builtin and inherited internal handlers at reached string leaves, including
 a new opposing object after a source cast. Root cache updates, ignored previous
@@ -2034,7 +2034,7 @@ limits remain separate.
 Mixed comparisons with live stdClass, source instances and WeakReference now
 return uncomparable +1 in both directions before properties or private entries.
 Seven-operator rows include expired referents; aggregate mismatches skip later
-Stringable leaves. Other internal/custom counterparts and numeric routes remain partial.
+Stringable leaves. Other internal/custom counterparts and wider numeric routes remain partial.
 [Mixed comparison review](coverage/semantics/weakmap-mixed-comparison-review.json).
 
 [Numeric object comparison Notices](coverage/semantics/object-numeric-comparison-review.json)
@@ -2062,6 +2062,11 @@ now retain fixed class images for real/named Closures, Generators and Fibers.
 Three exact sources and 317 reached premises/13 raw steps preserve saved second
 numbers, captured children and aggregate cleanup, with no callable invocation or VM
 resumption by the numeric cast.
+[Weak numeric Notices](coverage/semantics/weak-numeric-comparison-review.json)
+now include WeakMap and WeakReference with fixed names and opaque private data,
+even after referent expiry. Saved 1/1.0, copied/retained operands, real COW and
+pending-Throwable cleanup pass two exact originals and 355 premises/14 raw steps.
+Other handler and weak-lifetime forms remain partial.
 [Pending comparison remainders](coverage/semantics/pending-exception-comparison-review.json)
 now skip later registered callbacks and source string casts while preserving
 default numeric Notices and the original thrown object. Three exact sources and
