@@ -8469,7 +8469,8 @@ failures and interrupted evidence.
   Immutable string-literal, explicit-NULL and bounded computed string VALUE consumed
   continuations are also integrated. M75-M77 add bounded nullable integer assignment
   VALUE returns across a caught finalizer, including one effectful positional argument
-  and one folded integer RHS.
+  and one folded integer RHS. M78 adds a flat owning-array assignment return with
+  a witnessed x-table copy and detached NULL restoration.
   Other VALUE signatures/layouts, general CONST/other
   NULL and multiple-active histories, genuinely released
   CV targets, destructor throw/reentry, real suspension and wider typed consumers
@@ -8505,6 +8506,17 @@ absence, raw NULL/new Notice, alias, LINE refusal and budget. Historical native
 and Unsupported baseline retain their private `7465dc88`/397 identities. The
 [local CV ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json)
 retains M75's failed syntax gate and M76-M77's Unsupported baselines with zero repair credit.
+M78's assigned `($x = old_value())` with `old_value()` returning `[41]`
+separates `$x` to `[41,99]` after the finalizer append, while its direct-call
+control ends with `[99]`; both callers receive detached NULL and one old-line
+Notice. Native2, unchanged baseline (direct exact/assigned Unsupported), strict,
+and source2 are pinned at private `0ca75133` then `90e931fe`/399. One assigned
+108-premise reached fixture binds pending old HARRAY and x sharing, distinct
+COW x table, root-free consumed marker, raw NULL/new Notice, caller alias,
+LINE refusal and budget. The old literal can remain pool-owned, so this does
+not isolate pending-root COW causality or prove collection. Its first fixture
+compiler binding failure has zero state credit; only the affected fixture was
+rerun. [M78 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, destructor throw/reentry, real suspension and wider typed
