@@ -1907,5 +1907,40 @@
     ],
     "limits": "Only the reached used nullable simple-variable assignment of a named no-argument integer call is covered. Untyped, nonnullable and other type signatures, assignment layouts/values, owning results, further active histories and complete returns_verify remain open.",
     "recovery": "Preserve the ignored original source/native, baseline/frontier, failed strict, repaired source/strict and public packets. On the tested 8afe016f/397 tree, run_strict.py then run_source.py and run_public.py in the recorded SLOT3 order; only the affected strict/source/public gates were renewed. Publication adds no execution credit."
+  },
+  "assigned_integer_positional_argument_caught_recheck": {
+    "status": "reviewed_bounded_assignment_argument",
+    "revision": "8beef33150ae4e719fb0ee170a1f33fdb7f6557f",
+    "parent": "bb312fcd2a255c3de4afd7378cdfb84c5ebd09ac",
+    "modules": 397,
+    "scope": "A used &f():?int return evaluates ($x = old_value($x = 17)) with one ordinary positional argument. old_value receives n17 once, then the outer assignment stores x41 before the finalizer observes it and writes x99. The selected-y return consumes the old KNOWN PINT41 carrier and cancels its initial VALUE Notice. After the selected reference's recheck fails and is caught, the nonowning source cursor resumes as detached NULL with one newly installed old-line VALUE Notice. The paired no-finalizer control returns 41 and leaves x41 after a caller write, isolating the consumed-recovery behavior.",
+    "engine": "PHP 8.5.10 CLI NTS64 at 34308a6666b2d489c509541ea9befea9e2b42348; Zend zend_compile_return assignment TMP and ordinary named-call argument evaluation, zend_vm_def.h DISCARD_EXCEPTION/RETURN_BY_REF, pinned original native observations.",
+    "native": {
+      "raw": ".tools/returns-assignment-value-75/.tools/returns-verify76-assignment-arg/native-assigned-argument-fdfgt23r/report.json",
+      "report_sha256": "b7bb3e8d80c0b0baa05e19191d9cb33e201d0056392f31bbd1f74f4432eeeed8",
+      "result": "Two original sources exit 0 with one V:17 and one original-line Notice each. No finalizer: caller41/x41 after its alias write; caught finalizer: F:1, callerNULL/x99."
+    },
+    "baseline": {
+      "raw": ".tools/returns-assignment-value-75/.tools/returns-verify76-assignment-arg/model-assigned-argument-baseline-b66y0m0b/report.json",
+      "report_sha256": "b78f3cfdad375f97e6e1e8eef22a3564cbe40302a45a56c4ac7da1925e1d22e3",
+      "result": "The no-finalizer control is NORMAL and exact; the finalizer source is Unsupported after V:17;F:1;I;, with no Notice. It has zero repair credit."
+    },
+    "source": {
+      "strict_raw": ".tools/returns-assignment-value-75/.tools/returns-verify76-assignment-arg/assigned-argument-strict-lc0t10cd/report.json",
+      "strict_sha256": "0305edcf52f231692ea708fcd71df2d82b62ff44d720fb8e8fe0510cce5f95d9",
+      "raw": ".tools/returns-assignment-value-75/.tools/returns-verify76-assignment-arg/model-assigned-argument-repaired-uspzv7jy/report.json",
+      "report_sha256": "af9e78744b16b2997c623783a4b6b7eab48469422c90886e90839655bd1107bc",
+      "result": "Strict SL parse/elaborate/algorithmic/structure/init passes with zero application evaluations. Both original checked sources match native stdout, stderr and exit exactly; frontend and adapter close quietly with stable inputs."
+    },
+    "public": {
+      "raw": ".tools/returns-assignment-value-75/.tools/returns-verify76-assignment-arg/assigned-argument-public-170g9ugg/report.json",
+      "report_sha256": "e5ed2777fef12893bf40b7a8e205b2d7e5ddf4bb0bfd3f1739d72074ca23ca20",
+      "fixture_sha256": "28a18e42e62f6e01779748944a136e6dd074a0d9da689b2923ea5e5f9d792430",
+      "producer_sha256": "4fdc023c0fc70dfcb56936a62b9fe99cf43c1783f9060fa64a4c4d358670920c",
+      "runner_sha256": "f4b1b58cc8c827f37565f21285b1999fb568fba58828fbb6eec20396901b44f1",
+      "result": "One source-reached treatment fixture passes 109 Boolean premises and one raw PhpStep. The early old_value frame has parameter n17 and distinct global x17; continuation binds x41/old KNOWN PINT41, active x99, consumed cursor, raw NULL plus one pending Notice, one delivered Notice, detached caller r=b and final42/x99. A heap-equal cursor LINE change fails descriptor and actual-driver admission; early-call split 1+10000 and whole10001 runs agree."
+    },
+    "limits": "Only the reached nullable by-reference simple-variable return assignment of a named call with one ordinary positional same-variable nested integer assignment argument is covered. No generic argument, direct-call, owning-result, other signature or wider callback admission is claimed. Broad returns_verify remains open.",
+    "recovery": "Keep the ignored native, baseline, strict, source, generator, fixture and state raw packets at their recorded paths. On tested 8beef331/397, run_strict.py then run_source.py and run_public.py with SLOT3; the packets retain exact revision, command, pins, exits and closure. No earlier accepted milestone was rerun."
   }
 }

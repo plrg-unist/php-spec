@@ -8355,8 +8355,9 @@ failures and interrupted evidence.
   Notice dispatch. Bounded single-active-finalizer CV replay and aliased-CV Stringable
   reference conversion 186 and bounded sole-local-CV lifetime 381 are integrated.
   Immutable string-literal, explicit-NULL and bounded computed string VALUE consumed
-  continuations are also integrated. M75 adds the bounded nullable integer assignment
-  VALUE return across a caught finalizer. Other VALUE signatures/layouts, general CONST/other
+  continuations are also integrated. M75-M76 add bounded nullable integer assignment
+  VALUE returns across a caught finalizer, including one effectful positional argument.
+  Other VALUE signatures/layouts, general CONST/other
   NULL and multiple-active histories, genuinely released
   CV targets, destructor throw/reentry, real suspension and wider typed consumers
   remain open. [String contract](docs/semantics/USER-STRING.md),
@@ -8380,9 +8381,13 @@ bounded physical-array owner recovery. Bounded single-active-finalizer CV replay
 integrated, as are bounded aliased-CV Stringable reference conversion 186 and sole-local-CV
 lifetime 381, immutable string-literal, explicit-NULL and bounded computed string VALUE
 consumed continuations. M75's assigned integer call has two exact original-source
-agreements and one reached 96-premise proof at private `8afe016f`/397; the
+agreements and one reached 96-premise proof at private `8afe016f`/397. M76's
+same-variable nested integer argument has two further exact originals and one
+110-premise reached proof at private `8beef331`/397: callee n17/global x17,
+pre-finalizer x41, then restored caller NULL/x99 with one old-line Notice. The
 [local CV ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json)
-retains its failed syntax gate with zero credit. Wider owner domains, other VALUE signatures/layouts, general
+retains M75's failed syntax gate and M76's Unsupported baseline with zero repair credit.
+Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, destructor throw/reentry, real suspension and wider typed
 consumers remain required.

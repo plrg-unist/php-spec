@@ -793,3 +793,19 @@ failure has zero semantic credit. This covers only the reached nullable,
 simple-variable assignment of a named no-argument integer call; other return
 signatures, layouts and complete returns verification remain open in the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M76 admits the same used nullable return when its named call has one ordinary
+positional argument, `($x = old_value($x = 17))`. The callee receives 17 once;
+its return then stores 41 in `$x`, which the finalizer observes before writing
+99. The selected `$y` return consumes the old carrier and cancels its initial
+Notice. After its reference recheck fails and is caught, a surviving nonowning
+source cursor restores detached NULL with one
+new old-line VALUE Notice, without repeating either assignment. The matching
+no-finalizer control returns 41 and keeps `$x === 41` after the caller writes
+through its detached alias. Both originals agree exactly with PHP at private
+`8beef331`/397. One reached fixture starts in the callee with `n=17` and
+global `x=17`, then binds the old 41, cursor, raw restoration, caller aliases,
+bad cursor-line refusal and budget resumption across that early call state.
+This admits only one same-variable nested integer assignment argument, not
+other argument or return layouts; see the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
