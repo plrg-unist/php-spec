@@ -46,6 +46,14 @@ def $property_unset_source(S, ppropertyunset) = true
   -- if $compiled_effects(S, ppropertyunset.SITE) = eps
 def $property_unset_source(S, ppropertyunset) = false -- otherwise
 
+;; Source occurrences contain statement roots, not a body sequence node.
+dec $property_unset_body_source(pcunit*, nat, pcpath, statement*, nat) : bool
+def $property_unset_body_source(pcunit*, n, pcpath, eps, n_index) = ($origin_node(pcunit*, PORIGIN n (pcpath ++ [PCINDEX n_index])) = eps)
+def $property_unset_body_source(pcunit*, n, pcpath, statement :: statement_tail*, n_index) = true
+  -- if $origin_node(pcunit*, PORIGIN n (pcpath ++ [PCINDEX n_index])) = (statement)
+  -- if $property_unset_body_source(pcunit*, n, pcpath, statement_tail*, $(n_index + 1))
+def $property_unset_body_source(pcunit*, n, pcpath, statement*, n_index) = false -- otherwise
+
 dec $property_unset_function(pstate, ppropertyunset) : pfunction?
 def $property_unset_function(S, ppropertyunset) = (pfunction)
   -- if $property_unset_method(S, ppropertyunset.OBJECT) = (pmethoddesc)
@@ -73,7 +81,7 @@ def $property_unset_function(S, ppropertyunset) = (pfunction)
   -- if psparam.NAME = $base64(text_parameter) /\ $ppmethod_unset_signature(pfunction.SIGNATURE)
   -- if pfunction.NAME = pclassdesc_owner.NAME ++ $ptascii("::") ++ pmethoddesc.NAME
   -- if pfunction.BODY = pcpath ++ [PCFIELD 6] /\ pfunction.DEFAULTS = eps
-  -- if $origin_node(S.SOURCES, PORIGIN n pfunction.BODY) = (SEQUENCE statement*)
+  -- if $property_unset_body_source(S.SOURCES, n, pfunction.BODY, statement*, 0)
   -- if pfunction.LINE = $ppmethod_line(metadata) /\ pfunction.ENDLINE = $psendline(metadata)
   -- if ~$generator_statements(statement*)
   -- if $target_function(S, METHOD_TARGET ppropertyunset.OBJECT ppropertyunset.METHOD) = (pfunction)
