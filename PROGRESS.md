@@ -17,6 +17,9 @@ The first binder and two fixture failures retain zero credit. Admission is bound
 to direct initializer roots with no earlier facts and supported positional arguments;
 nested autoload and wider callback/lifecycle forms remain partial.
 [Global NEW autoload review](coverage/semantics/global-constant-new-autoload-review.json).
+The 394-module composition over b1688787 preserves the parent and accepted rules
+at b9f0981e. Both source comparisons and 326 premises retain their private cuts;
+no joined numeric evidence is claimed.
 
 
 Initially plain CV numeric `+=` now keeps its original destination classification
