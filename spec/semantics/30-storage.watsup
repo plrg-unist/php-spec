@@ -3,7 +3,7 @@ syntax pslot = UNDEFINED | DEFINED pvalue | GC_RETIRED_OBJECT nat
 syntax pbinding = BIND nat* nat
 syntax porigin = PORIGIN nat pcpath | TRAIT_ORIGIN porigin porigin ptbytes | TRAIT_MEMBER_ORIGIN porigin porigin
 ;; Retired array identity is non-owning, local to one active or saved call.
-syntax pretiredkind = RET_SWITCH_VAR_ARRAY | RET_FOREACH_VALUE_ARRAY
+syntax pretiredkind = RET_SWITCH_VAR_ARRAY | RET_SWITCH_CONSUMED_ARRAY | RET_FOREACH_VALUE_ARRAY
 syntax pretiredowner = { OWNER porigin, FIRSTRETURN porigin, FIRSTLINE int, LASTRETURN porigin, LASTLINE int, KIND pretiredkind, ARRAY nat, POSITION nat? }
 syntax ppropertyid = porigin | INTERNAL_PROPERTY text ptbytes
 syntax pstaticcompound = { CLASS porigin, DECL ppropertyid, CELL nat?, VERIFY bool, ENTRY nat }

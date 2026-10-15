@@ -555,3 +555,16 @@ source-linked public123 pass at private `86109c30`/394, including a saved inner
 cursor LINE refusal and B-callback split budget. This proves modeled retirement
 for the reached pair, not physical collection or other nested layouts; see the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M59 records a node-free retired switch-subject history before a computed
+`[new O]` table is discarded by a by-reference return from the selected case.
+Ordinary cleanup retires the table and invokes O's destructor; the saved caller
+keeps the source and line needed to resume the switch after both allocations
+are gone. The distinct history reconstructs the remaining case without reading
+the retired array and is removed by normal switch exit. Native2/source2 agree
+at private `646a9e5b`/394. Public102 admits the real destructor pause and
+replay, rejects a FIRSTLINE-only saved-row forgery through the driver, and
+checks split budget and final row removal. The compiled constant-array control
+does not need this history. This covers one sole-owned direct-object table,
+not borrowed tables, other array layouts or physical collection; see the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).

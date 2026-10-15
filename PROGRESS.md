@@ -2920,6 +2920,19 @@ bad y. The first private guard failure and output-only query retain zero repair
 credit. Physical collection, other payloads and broad returns verification
 remain open in the [ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
+M59 repairs a computed owning switch subject `[new O]` discarded during a
+by-reference string return. A node-free historical row is recorded before
+ordinary table and child-object cleanup so the destructor's saved caller can
+later resume the selected switch case without reading the retired array.
+Native2/source2 agree at private `646a9e5b`/394; public102 follows the live
+array-to-object edge, saved callback row, dead-table replay and final row
+removal. It rejects a heap-identical FIRSTLINE forgery and checks split/full
+budget from the destructor pause. The constant-array control remains native-
+exact. The pre-repair Unsupported and output-only diagnostic retain zero repair
+credit. This proves one direct-object array layout and modeled retirement, not
+physical collection or general switch subjects; broad returns verification
+remains open in the [ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
 Per-constant protection survives namespace publication and parked handlers.
