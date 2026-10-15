@@ -15,6 +15,9 @@ receipts and budget resumption at runtime diff fb33. The failed trace-identity
 expectation remains 0; only its fixture was corrected. Owning, named, unpacked
 and coercing forms remain outside this slice.
 [Selected-drain ledger](coverage/semantics/source-recorded-dynamic-fatal-review.json).
+The 394-module composition over 211048a5 preserves the accepted rules at
+52637d06 and incoming parent paths. Shared30 retains parent unary additions;
+no new actor/source/state evidence is claimed.
 
 Direct sole backed implicit trait SET now imports into a parentless Consumer.
 An authenticated raw Trait source yields a Consumer callable without mutating
