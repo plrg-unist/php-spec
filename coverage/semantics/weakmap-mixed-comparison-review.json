@@ -1,0 +1,185 @@
+{
+  "version": 1,
+  "milestone": "COMP67",
+  "status": "independently reviewed and accepted within the stated standard-class mismatch domain",
+  "behavior": "Live WeakMap versus stdClass, supported source INSTANCE or WeakReference returns uncomparable +1 in either direction before property or private-entry traversal. All seven operators preserve Zend reversal for greater comparisons, and aggregate nonzero leaves skip later Stringable callbacks.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "native_identity": ".tools/mixed67-support/run-native-v1/{version,extensions,ini}"
+  },
+  "tested_revision": "30ae1f26eb5f7120e56766d1314bab8ee7c53eb6",
+  "ordered_modules": 397,
+  "manifest_sha256": "944fcbb751d02d15a6547196a756fdcca2b28c795f63787ec1f77939195594df",
+  "implementation": {
+    "path": "spec/semantics/386-weak-map-lifetime.watsup",
+    "sha256": "cf74097bd0db846863c3e79c106e4f9e4c813065c7a398d4d22f0dc5f75a4c72"
+  },
+  "source_catalogues": {
+    "tests/semantics/weakmap_mixed_comparison_cases.json": "2807525f8d9baf6cdc270c3aee728a96ec36677738d057dbf2cec9bddad0aae0",
+    "tests/semantics/weakmap_mixed_comparison_review_cases.json": "e8c6f09da50129b1236ed2e7d48ed4995a722439bf4cb4ebaee6179e5e2b98ed"
+  },
+  "engine_basis": [
+    "Zend/zend_operators.c zend_compare selects the left object comparison handler when both operands are objects.",
+    "Zend/zend_object_handlers.c zend_std_compare_objects returns ZEND_UNCOMPARABLE (1) for distinct classes before property/recursion traversal.",
+    "Zend/zend_weakrefs.c zend_register_weakref_ce copies standard handlers for both classes without a compare override. Reachable INSTANCE producers admit source/stdClass/finite Throwable parent chains; other internal parents remain unsupported."
+  ],
+  "contract": [
+    "Admission tests bounds, allocation and nonfreeing storage for both operands, then exact STDINSTANCE, INSTANCE or WEAKREFERENCE opposite tags. It never reads properties, map entries, weak referents, callback bodies or the seen set.",
+    "The new ORDER1 rule and existing mixed Unsupported rule are disjoint. Same-object identity and same-class WeakMap zero remain on their existing routes. No new state, roots, owners or callbacks are introduced.",
+    "Spaceship returns +1 in both orientations. Equality, inequality and four relational operators match the eight native rows 0100001. Existing array/declared-slot scans stop at the nonzero mismatch."
+  ],
+  "fresh_native": {
+    "revision": "52357c36db09c8f6dbd701bc1457d3d524bf6cfa",
+    "observations": 2,
+    "source_agreements": 0,
+    "seven_operator_rows": 8,
+    "seconds": [
+      0.004221782088279724,
+      0.00406312569975853
+    ]
+  },
+  "unchanged_frontier": {
+    "revision": "52357c36db09c8f6dbd701bc1457d3d524bf6cfa",
+    "status": "unsupported",
+    "reason": "WeakMap comparison protocol",
+    "stdout_prefix": "std|",
+    "seconds": 22.125981090590358,
+    "source_agreements": 0
+  },
+  "validation": {
+    "initializer": {
+      "mode": "SL",
+      "passed": true,
+      "seconds": 7.718089938163757,
+      "runtime_credit": 0
+    },
+    "original_sources": {
+      "author": 2,
+      "independent": 1,
+      "normal_agreements": 3,
+      "author_seconds": [
+        68.63146922364831,
+        25.52684574201703
+      ],
+      "independent_seconds": 22.364205699414015,
+      "caps_seconds": [
+        240,
+        250
+      ]
+    },
+    "syntax_preparation": {
+      "requests": 6,
+      "submitted_executions": 0,
+      "runtime_credit": 0
+    },
+    "author": {
+      "premises": 161,
+      "setup": 145,
+      "pure": 16,
+      "raw_php_steps": 8,
+      "seconds": 65.60482589155436,
+      "result": "Eight real function-frame EQUAL fronts preserve whole storage/events/current/callers, both signed orders, inherited __toString silence, map-private owner1, weak nonownership and expired targets; one budget cut agrees."
+    },
+    "independent": {
+      "premises": 237,
+      "setup": 222,
+      "pure": 15,
+      "raw_php_steps": 4,
+      "seconds": 19.294307332485914,
+      "result": "Real function frames perform direct and zero-prefix array spaceship comparisons both ways. A stdClass descendant self-cycle, expired wrapper, private owner1, quiet later tail and no guard residue survive unchanged binary steps and budget splits. Closure residual and bounds/dead allocation controls are pure helper checks."
+    },
+    "total": {
+      "premises": 398,
+      "setup": 367,
+      "pure": 31,
+      "raw_php_steps": 12
+    },
+    "typed_elaboration_runtime_credit": 0,
+    "inventory": {
+      "command": "python3 scripts/check-semantic-inventory.py",
+      "exit_code": 0,
+      "constructors": 169,
+      "runtime_obligations": 306,
+      "runtime_credit": 0
+    }
+  },
+  "preserved_failures": [
+    {
+      "path": ".tools/mixed67-support/baseline-recorder-key-failure-v1",
+      "classification": "Pre-launch baseline recorder KeyError omitted the other native source from its watched set; corrected only the watch union and retained self-script hash binding.",
+      "runtime_credit": 0
+    },
+    {
+      "path": ".tools/mixed67-state/run-sl-v1/report.json",
+      "classification": "Pre-main algorithmic binding rejection: a newly bound variable occurred inside a conjunction. Original five inputs remain under mixed67-state/binding-failure-v1; only sequential premise splitting and output labels changed.",
+      "runtime_credit": 0
+    },
+    {
+      "path": ".tools/mixed67-peer/state-v1/report.json",
+      "classification": "Pre-main binding rejection for new variables inside conjunctions. Original five inputs remain under state-v1/failure-inputs; only top-level sequential premises changed.",
+      "runtime_credit": 0
+    }
+  ],
+  "limits": [
+    "Only exact live standard counterpart tags are admitted. Other internal/custom counterparts, numeric protocols and wider map producers/lifetimes remain partial.",
+    "State cuts end at actual binary results, with no END claim. Complete originals supply private reads, fresh same-prefix TypeError/finally and final endings.",
+    "The aggregate original observes copied array storage without a mutation; no COW-mutation claim is made. Bounds/dead/Closure helper controls do not establish malformed-state or custom-handler execution support."
+  ],
+  "raw_recovery": {
+    "root": "/home/user/workspace/php-spec/.tools/weakmap-mixed-comparison-67",
+    "branch": "codex/weakmap-mixed-comparison-67",
+    "note": "Ignored originals, raw actor records and preserved failing fixture inputs remain in place. Each report retains commands, environment, process completion and before/after inputs. Author two-case and independent one-case catalogues retain distinct cuts."
+  },
+  "artifacts": {
+    ".tools/mixed67-support/gates.py": "d62282033f83911618020acf76e7fa8af09c0d8e709fea5657080edf8f4cf617",
+    ".tools/mixed67-support/actor.py": "444b1cc889bc078c429afadb8ab8b0ecbcbb0ffd17d67f02ce2d28ce768e2dc1",
+    ".tools/mixed67-support/inputs.py": "f92aa935473274f35b02dc0e2cf6d04118e9181bed55f7db647677745ec3c461",
+    ".tools/mixed67-support/initializer.watsup": "7dfe8bbabac236e82d623ddb8b02769a4f1067d26fad6643ffa83eddc9ed65fc",
+    ".tools/mixed67-native/direct.php": "2bf931160045471662865276ba2ad4d3ba79c78beee09c53ebd8fbb4855d0b76",
+    ".tools/mixed67-native/aggregate.php": "241d30865cdcc5f11f7695232a7dc084773a426764cfbf6189984ba7905f1a60",
+    ".tools/mixed67-support/run-native-v1/report.json": "1c1c8e14af597f9a5a9519860d0e34a034ad282604221dc2034d6e19c59164b1",
+    ".tools/mixed67-support/run-baseline-v1/report.json": "279ddb7edca5ef19ead60776b281a5a9af1670a770f56c5b43f84da8dc455578",
+    ".tools/mixed67-support/run-baseline-v1/gates-tested.py": "afb8e58e115f35c27c6eb5a137f0f417b13d89331ed6c01b9130098f8f29f200",
+    ".tools/mixed67-support/baseline-recorder-key-failure-v1/gates.py": "36b1e79006faf0fb5552946974fd3cd423fa96ce13c0f43802396a56fbfad2e6",
+    ".tools/mixed67-support/baseline-recorder-key-failure-v1/failure.json": "8b47aee46837adc47de24615f0ae2ca1f3e78bc27228787369b746622bc04617",
+    ".tools/mixed67-support/run-init-v1/report.json": "92c895d13265ea14d40381900cd132c048c1232657d81fa2e5d11c0e8b536c42",
+    ".tools/mixed67-support/run-sources-v1/report.json": "47a2b4de4698bf5ada0e5e433aac052a13574530f9b9000947c485434875e7ec",
+    ".tools/mixed67-support/run-prepare-v1/report.json": "f172960f14c7f68006a31a36d8b2d5735a504b153658d122a0c9b35a8bf8b7bd",
+    ".tools/mixed67-state/build.py": "064d926db19dcfe439cf837f1c84e41a388ab8feb392f905479c71ea56f88fb8",
+    ".tools/mixed67-state/helpers.watsup": "9b6aae273c0f80e6dc6b314516b4374a1030edfff08ff882a404db233d68ca93",
+    ".tools/mixed67-state/run.py": "edeb4d3d1958010ef8f71227494d58cbc4793b574672816ee48734b33e069d80",
+    ".tools/mixed67-state/plan.json": "1732849f4929f5576c4b35efbff31134eb08d3b65ac9436f4e3f9f391dc1cf28",
+    ".tools/mixed67-state/run-el-v1/report.json": "2d2383b02e63112d0b535c2fe7774a9aa74c71f3cd3d5b0d56ad4537adf9e5d0",
+    ".tools/mixed67-state/run-sl-v1/report.json": "6241c83eb34037af6469d77428be2b6c1b8a3f82bab37b8ce461797d34433274",
+    ".tools/mixed67-state/run-el-binding-retry1/report.json": "84844d39e4ccd42dd71eae01f6e1fdb8435a4d6428ba89a290554abbbbe3c4d2",
+    ".tools/mixed67-state/run-sl-binding-retry1/report.json": "c252d56b8558e683c099623b48cab66c80b3e6ab3baefec24aabc14c6833a203",
+    ".tools/mixed67-peer/peer.php": "b931060b0d90c06805ff652c3444816804e0626915b74e059a61807f609361ad",
+    ".tools/mixed67-peer/run.py": "a56b1b4c77ed2316908c2ac48008a0d443488b249273a3a37f3765800fa73c2d",
+    ".tools/mixed67-peer/build.py": "59a0153d623fff5f91c735d7c6089a25243f6261daf7044bd922fd8651149280",
+    ".tools/mixed67-peer/helpers.watsup": "a4c66e5561fe9f800e5cd113d8066e9dd0ef98b81b02a3e0a6034649798b8e1c",
+    ".tools/mixed67-peer/native-v1/report.json": "ab721f1468ed022fdf356be5346e33938585c9343656f286a70a1b7cd0107065",
+    ".tools/mixed67-peer/source-v1/report.json": "27eb263fdd4ac29d894141022bdc94483bad358db2ac6ecd1536ced557211a38",
+    ".tools/mixed67-peer/prepare-v1/report.json": "086daaa888f269da74c16acc8be3bd1fb60a5d10c80c862aff85a4f1227f13c7",
+    ".tools/mixed67-peer/state-v1/report.json": "e4963086f2887bb00ec657889cafdb2eb021062c824aad2dc1752af3a9135b6c",
+    ".tools/mixed67-peer/state-v2/report.json": "482d4c11c959e42f05fb7c272ce4d8ecaf50815cc182797e3a068ca703728a63",
+    ".tools/mixed67-peer/review.json": "01dd02896131169ff147c7164cb1455c2e8c3a364320dfee6d8125669493f1da"
+  },
+  "independent_review": {
+    "reviewer": "/root/comp_review_67",
+    "semantic_verdict": "CLEAR",
+    "source_and_state_verdict": "CLEAR",
+    "publication_verdict": "CLEAR"
+  },
+  "composition": {
+    "parent": "f8882d5c90c166c134910184bdeee8c034ed8d70",
+    "ordered_modules": 398,
+    "manifest_sha256": "28ddbaccce11446f2adc60416dfbf1cb6fa955fe77d598240c1bfed5f4ef695c",
+    "behavioral_delta": "Only the reviewed seventeen module386 lines are added; every incoming semantic declaration and helper, including module409 and shared30 LIST_MISSING_RESULT, is preserved.",
+    "pointwise_basis": "Module409 and module63 additions dispatch only LIST_FETCH/LIST_MISSING_RESULT; shared30 adds only that task constructor, with no pobject or pstate field change. Earlier modulo, constants, return and Generator-unpack additions do not cross this object/object comparison seam. Comparator, source-instance producer and weak-wrapper dependencies are unchanged from the tested base.",
+    "joined_actor": "not warranted by the independently reviewed syntax/dispatch-order seam",
+    "source_state_credit": "retains private30ae1f26e/397; no new execution or agreement credit"
+  }
+}

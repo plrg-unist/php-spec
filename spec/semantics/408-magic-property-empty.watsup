@@ -1,0 +1,251 @@
+;; False selects __isset; true selects __get. One saved RESULT owns the receiver
+;; through both calls. Only integer getter results enter the pure truth step.
+dec $property_empty_method(pstate, nat, bool) : pmethoddesc?
+def $property_empty_method(S, n, false) = $property_isset_method(S, n)
+def $property_empty_method(S, n, true) = $property_get_method(S, n)
+dec $property_empty_method_origin(ppropertyempty, bool) : porigin
+def $property_empty_method_origin(ppropertyempty, false) = ppropertyempty.ISSET
+def $property_empty_method_origin(ppropertyempty, true) = ppropertyempty.GET
+
+dec $property_empty_source(pstate, porigin, ptbytes, int) : bool
+def $property_empty_source(S, porigin, ptbytes, z) = true
+  -- if porigin = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if expression = NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata
+  -- if $base64(text_receiver) =/= $ptascii("this") /\ ptbytes = $base64(text_name)
+  -- if $(|pcpath| > 0)
+  -- if pcpath_empty = pcpath[0:$nabs($(|pcpath| - 1))]
+  -- if pcpath = pcpath_empty ++ [PCFIELD 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_empty) = (NExprEmpty expression metadata_empty)
+  -- if $property_source_task(S[.ORIGIN = (porigin)], expression)
+  -- if z = $runtime_line(S[.ORIGIN = (porigin)], eps, expression)
+  -- if $compiled_effects(S, porigin) = eps
+def $property_empty_source(S, porigin, ptbytes, z) = false -- otherwise
+
+;; Only authenticated empty preparation defers the ordinary getter interception.
+def $property_empty_prepare(S) = true
+  -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: (ORIGIN_RETURN (porigin)) :: (ISSET_RESULT true z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $property_empty_source(S, porigin, $base64(text_name), z)
+  -- if S_read = $quiet_operand(S, S.RESULT)
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $property_isset_needed(S, n, $base64(text_name))
+
+;; The selected getter keeps the existing untyped name/return compiler family.
+dec $property_empty_get_source(pstate, pmethoddesc) : bool
+def $property_empty_get_source(S, pmethoddesc) = true
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if pfunction = pmethoddesc.FUNCTION
+  -- if pmethoddesc.OWNER = PORIGIN n pcpath_owner
+  -- if pfunction.ORIGIN = PORIGIN n pcpath
+  -- if $(|pcpath| > 0)
+  -- if PCINDEX n_method = pcpath[$nabs($(|pcpath| - 1))]
+  -- if pcpath = pcpath_owner ++ [PCFIELD 5, PCINDEX n_method]
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc_owner)
+  -- if pclassdesc_owner.KIND = "class" /\ pclassdesc_owner.PARENT = eps /\ ~pclassdesc_owner.READONLY
+  -- if $method_origin(pclassdesc_owner.METHODS, pfunction.ORIGIN) = (pmethoddesc)
+  -- if $origin_node(S.SOURCES, pclassdesc_owner.ORIGIN) = (NStmtClass phpType14_owner phpType24_owner phpType3_owner ABSENT phpType42_owner (SEQUENCE statement_owner*) metadata_owner)
+  -- if $(n_method < |statement_owner*|)
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (statement_method)
+  -- if statement_method = NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE ([NParam (SEQUENCE eps) (INTEGER 0) ABSENT (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES text_parameter) metadata_parameter_name) ABSENT (SEQUENCE eps) metadata_parameter])) ABSENT (SEQUENCE statement*) metadata
+  -- if statement_owner*[n_method] = statement_method
+  -- if flags <- [0,1] /\ $ptlc($base64(text_method)) = $ptascii("__get") /\ pmethoddesc.NAME = $base64(text_method)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 4, PCINDEX 0])) = (NParam (SEQUENCE eps) (INTEGER 0) ABSENT (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES text_parameter) metadata_parameter_name) ABSENT (SEQUENCE eps) metadata_parameter)
+  -- if pfunction.SIGNATURE.PARAMETERS = [psparam]
+  -- if psparam.NAME = $base64(text_parameter) /\ $ppmethod_get_signature(pfunction.SIGNATURE) /\ ~pfunction.SIGNATURE.BYREF
+  -- if pfunction.NAME = pclassdesc_owner.NAME ++ $ptascii("::") ++ pmethoddesc.NAME
+  -- if pfunction.BODY = pcpath ++ [PCFIELD 6] /\ pfunction.DEFAULTS = eps
+  -- if $property_unset_body_source(S.SOURCES, n, pfunction.BODY, statement*, 0)
+  -- if pfunction.LINE = $ppmethod_line(metadata) /\ pfunction.ENDLINE = $psendline(metadata)
+  -- if ~$generator_statements(statement*)
+def $property_empty_get_source(S, pmethoddesc) = false -- otherwise
+
+dec $property_empty_method_source(pstate, pmethoddesc, bool) : bool
+def $property_empty_method_source(S, pmethoddesc, false) = $property_magic_method_source(S, pmethoddesc, "__isset")
+def $property_empty_method_source(S, pmethoddesc, true) = $property_empty_get_source(S, pmethoddesc)
+dec $property_empty_function(pstate, ppropertyempty, bool) : pfunction?
+def $property_empty_function(S, ppropertyempty, b_get) = (pfunction)
+  -- if $property_empty_method(S, ppropertyempty.OBJECT, b_get) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = $property_empty_method_origin(ppropertyempty, b_get)
+  -- if pfunction = pmethoddesc.FUNCTION
+  -- if $property_empty_method_source(S, pmethoddesc, b_get)
+  -- if $target_function(S, METHOD_TARGET ppropertyempty.OBJECT pfunction.ORIGIN) = (pfunction)
+def $property_empty_function(S, ppropertyempty, b_get) = eps -- otherwise
+
+dec $property_empty_valid(pstate, ppropertyempty) : bool
+def $property_empty_valid(S, ppropertyempty) = true
+  -- if $property_empty_source(S, ppropertyempty.SITE, ppropertyempty.NAME, ppropertyempty.LINE)
+  -- if $(ppropertyempty.OBJECT < |S.OBJECTS|)
+  -- if (HOBJECT ppropertyempty.OBJECT) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, ppropertyempty.OBJECT)
+  -- if S.OBJECTS[ppropertyempty.OBJECT] = INSTANCE ppropertyempty.CLASS
+  -- if $property_empty_function(S, ppropertyempty, false) =/= eps /\ $property_empty_function(S, ppropertyempty, true) =/= eps
+  -- if $property_empty_method(S, ppropertyempty.OBJECT, false) = (pmethoddesc_isset)
+  -- if $property_empty_method(S, ppropertyempty.OBJECT, true) = (pmethoddesc_get)
+  -- if pmethoddesc_get.OWNER = pmethoddesc_isset.OWNER
+  -- if $property_effective_desc(S, ppropertyempty.OBJECT, ppropertyempty.NAME) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertyempty.PROPERTY /\ ppropertydesc.NAME = ppropertyempty.NAME
+  -- if $property_declaring_class(S.CLASSES, ppropertyempty.PROPERTY) = (pmethoddesc_isset.OWNER)
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE /\ ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.SETVISIBILITY = eps
+  -- if $property_unset_access_valid(S, ppropertyempty.OBJECT, ppropertyempty.NAME, ppropertydesc, $property_resolve_scope(S, ppropertyempty.OBJECT, ppropertyempty.NAME, $closure_source_class(S, ppropertyempty.SITE)))
+  -- if ~$property_hook_declared(S, ppropertyempty.OBJECT, ppropertyempty.NAME)
+def $property_empty_valid(S, ppropertyempty) = false -- otherwise
+
+dec $property_empty_capture(pstate, ppropertyempty) : bool
+def $property_empty_capture(S, ppropertyempty) = true
+  -- if $property_empty_valid(S, ppropertyempty)
+  -- if $origin_node(S.SOURCES, ppropertyempty.SITE) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) phpType20 metadata)
+  -- if S_read = $quiet_operand(S, VARIABLE $base64(text_receiver) $variable_line(BYTES text_receiver, metadata_receiver))
+  -- if S_read.RESULT = KNOWN (POBJECT ppropertyempty.OBJECT)
+  -- if $property_lookup_scope(S) = $closure_source_class(S, ppropertyempty.SITE)
+def $property_empty_capture(S, ppropertyempty) = false -- otherwise
+
+dec $property_empty_tail(pstate, ppropertyempty, bool, ptask*) : bool
+def $property_empty_tail(S, ppropertyempty, b_get, (PROPERTY_EMPTY_RESULT ppropertyempty b_get) :: ptask_tail*) = $property_empty_valid(S, ppropertyempty)
+def $property_empty_tail(S, ppropertyempty, b_get, ptask*) = false -- otherwise
+dec $property_empty_pending_call(pstate, ppropertyempty, bool) : bool
+def $property_empty_pending_call(S, ppropertyempty, b_get) = true
+  -- if S.TODO = (CALL_ARGS (PROPERTY_EMPTY_TARGET ppropertyempty b_get) eps 1 ([KNOWN (PSTRING ppropertyempty.NAME)]) (ppropertyempty.SITE) ppropertyempty.LINE) :: (PROPERTY_EMPTY_RESULT ppropertyempty b_get) :: ptask_tail*
+  -- if S.ORIGIN = (ppropertyempty.SITE)
+  -- if $property_empty_valid(S, ppropertyempty)
+  -- if b_get \/ $property_empty_capture(S, ppropertyempty)
+def $property_empty_pending_call(S, ppropertyempty, b_get) = false -- otherwise
+
+dec $property_empty_frame(pstate, pcallcontext, pframe, ppropertyempty, bool) : bool
+def $property_empty_frame(S, pcallcontext, pframe, ppropertyempty, b_get) = true
+  -- if pcallcontext.TARGET = PROPERTY_EMPTY_TARGET ppropertyempty b_get
+  -- if pcallcontext.FUNCTION = $property_empty_method_origin(ppropertyempty, b_get) /\ pcallcontext.RECEIVER = (ppropertyempty.OBJECT) /\ pcallcontext.CALLED_CLASS = (ppropertyempty.CLASS)
+  -- if pcallcontext.LEXICAL_CLASS = $target_lexical_class(S, METHOD_TARGET ppropertyempty.OBJECT pcallcontext.FUNCTION)
+  -- if pcallcontext.CALLSITE = (ppropertyempty.SITE) /\ pcallcontext.LINE = ppropertyempty.LINE
+  -- if pcallcontext.ARGC = 1 /\ pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.WRAPPER = eps /\ pcallcontext.HOLES = eps
+  -- if pframe.ORIGIN = (ppropertyempty.SITE)
+  -- if $property_empty_tail(S[.CURRENT = pframe.CONTEXT], ppropertyempty, b_get, pframe.TODO)
+def $property_empty_frame(S, pcallcontext, pframe, ppropertyempty, b_get) = false -- otherwise
+dec $property_empty_entered(pstate, pcallcontext?, pframe*, ppropertyempty, bool) : bool
+def $property_empty_entered(S, (pcallcontext), pframe :: pframe_tail*, ppropertyempty, b_get) = $property_empty_frame(S, pcallcontext, pframe, ppropertyempty, b_get)
+  -- if pcallcontext.TARGET = PROPERTY_EMPTY_TARGET ppropertyempty b_get
+def $property_empty_entered(S, (pcallcontext), pframe :: pframe_tail*, ppropertyempty, b_get) = $property_empty_entered(S, pframe.CONTEXT, pframe_tail*, ppropertyempty, b_get)
+  -- if pcallcontext.TARGET =/= PROPERTY_EMPTY_TARGET ppropertyempty b_get
+def $property_empty_entered(S, eps, pframe :: pframe_tail*, ppropertyempty, b_get) = $property_empty_entered(S, pframe.CONTEXT, pframe_tail*, ppropertyempty, b_get)
+def $property_empty_entered(S, pcallcontext?, eps, ppropertyempty, b_get) = false
+
+dec $property_empty_active_frame(pstate, pcallcontext, pframe, nat, ptbytes, bool) : bool
+def $property_empty_active_frame(S, pcallcontext, pframe, n, ptbytes, b_get) = true
+  -- if pcallcontext.TARGET = PROPERTY_EMPTY_TARGET ppropertyempty b_get
+  -- if ppropertyempty.OBJECT = n /\ ppropertyempty.NAME = ptbytes
+  -- if $property_empty_frame(S, pcallcontext, pframe, ppropertyempty, b_get)
+def $property_empty_active_frame(S, pcallcontext, pframe, n, ptbytes, b_get) = false -- otherwise
+dec $property_empty_active(pstate, pcallcontext?, pframe*, nat, ptbytes, bool) : bool
+def $property_empty_active(S, (pcallcontext), pframe :: pframe_tail*, n, ptbytes, b_get) = ($property_empty_active_frame(S, pcallcontext, pframe, n, ptbytes, b_get) \/ $property_empty_active(S, pframe.CONTEXT, pframe_tail*, n, ptbytes, b_get))
+def $property_empty_active(S, eps, pframe :: pframe_tail*, n, ptbytes, b_get) = $property_empty_active(S, pframe.CONTEXT, pframe_tail*, n, ptbytes, b_get)
+def $property_empty_active(S, pcallcontext?, eps, n, ptbytes, b_get) = false
+def $property_empty_get_active(S, n, ptbytes) = true
+  -- if $property_empty_active(S, S.CURRENT, S.FRAMES, n, ptbytes, true)
+
+dec $property_empty_guard(pstate, nat, ptbytes) : bool
+def $property_empty_guard(S, n, ptbytes) = true
+  -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty b_get) :: ptask_tail*
+  -- if ppropertyempty.OBJECT = n /\ ppropertyempty.NAME = ptbytes
+  -- if S.ORIGIN = (ppropertyempty.SITE)
+  -- if $property_empty_valid(S, ppropertyempty)
+def $property_empty_guard(S, n, ptbytes) = true
+  -- if S.TODO = (CALL_ARGS (PROPERTY_EMPTY_TARGET ppropertyempty b_get) eps 1 poperand* porigin? z) :: ptask_tail*
+  -- if ppropertyempty.OBJECT = n /\ ppropertyempty.NAME = ptbytes
+  -- if $property_empty_pending_call(S, ppropertyempty, b_get)
+def $property_empty_guard(S, n, ptbytes) = ($property_empty_active(S, S.CURRENT, S.FRAMES, n, ptbytes, false) \/ $property_empty_active(S, S.CURRENT, S.FRAMES, n, ptbytes, true)) -- otherwise
+
+def $property_empty_pending(S) = true
+  -- if S.TODO = (ISSET_RESULT true z) :: ptask_tail*
+  -- if S.BASE = BASE_PROPERTY (POBJECT n) ptbytes
+  -- if $property_isset_needed(S, n, ptbytes)
+dec $property_empty_plan(pstate) : ppropertyempty?
+def $property_empty_plan(S) = (ppropertyempty)
+  -- if S.TODO = (ISSET_RESULT true z) :: ptask_tail*
+  -- if S.BASE = BASE_PROPERTY (POBJECT n) ptbytes
+  -- if S.RESULT = KNOWN PNULL
+  -- if S.ORIGIN = (porigin)
+  -- if $property_isset_needed(S, n, ptbytes)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $property_empty_method(S, n, false) = (pmethoddesc_isset)
+  -- if $property_empty_method(S, n, true) = (pmethoddesc_get)
+  -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
+  -- if porigin_property = ppropertydesc.ORIGIN
+  -- if ppropertyempty = {SITE porigin, NAME ptbytes, LINE z, OBJECT n, CLASS porigin_class, ISSET pmethoddesc_isset.FUNCTION.ORIGIN, GET pmethoddesc_get.FUNCTION.ORIGIN, PROPERTY porigin_property}
+  -- if $property_empty_capture(S, ppropertyempty)
+  -- if ~$property_empty_guard(S, n, ptbytes)
+def $property_empty_plan(S) = eps -- otherwise
+
+rule PhpStep/property-empty-call: S ~> S_inputs[.TODO = [(CALL_ARGS (PROPERTY_EMPTY_TARGET ppropertyempty false) eps 1 ([KNOWN (PSTRING ppropertyempty.NAME)]) (ppropertyempty.SITE) ppropertyempty.LINE), PROPERTY_EMPTY_RESULT ppropertyempty false] ++ S_inputs.TODO][.HELD = S.HELD]
+  -- if $property_empty_plan(S) = (ppropertyempty)
+  -- if S_inputs = $hold_task_inputs(S)
+rule PhpStep/property-empty-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "magic empty source, methods, or recursive access"]
+  -- if $property_empty_pending(S)
+  -- if $property_empty_plan(S) = eps
+rule PhpStep/property-empty-false: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty false) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (PBOOL false)
+  -- if S.ORIGIN = (ppropertyempty.SITE)
+  -- if $property_empty_valid(S, ppropertyempty)
+rule PhpStep/property-empty-get: S ~> S[.TODO = [(CALL_ARGS (PROPERTY_EMPTY_TARGET ppropertyempty true) eps 1 ([KNOWN (PSTRING ppropertyempty.NAME)]) (ppropertyempty.SITE) ppropertyempty.LINE), PROPERTY_EMPTY_RESULT ppropertyempty true] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty false) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (PBOOL true)
+  -- if S.ORIGIN = (ppropertyempty.SITE)
+  -- if $property_empty_valid(S, ppropertyempty)
+rule PhpStep/property-empty-integer: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL (i = 0))][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty true) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (PINT i)
+  -- if S.ORIGIN = (ppropertyempty.SITE)
+  -- if $property_empty_valid(S, ppropertyempty)
+rule PhpStep/property-empty-result-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "magic empty getter result outside integer family"]
+  -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty true) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN pvalue
+  -- if $type_bytes(pvalue) =/= $ptascii("int")
+  -- if S.ORIGIN = (ppropertyempty.SITE)
+  -- if $property_empty_valid(S, ppropertyempty)
+
+dec $property_empty_throw_tail(pstate, ppropertyempty, bool) : bool
+def $property_empty_throw_tail(S, ppropertyempty, b_get) = true
+  -- if S.TODO = (THROW_SEARCH n) :: (PROPERTY_EMPTY_RESULT ppropertyempty b_get) :: ptask_tail*
+  -- if $throwable_live(S, n)
+  -- if S.ORIGIN = (ppropertyempty.SITE)
+  -- if $property_empty_tail(S, ppropertyempty, b_get, (PROPERTY_EMPTY_RESULT ppropertyempty b_get) :: ptask_tail*)
+def $property_empty_throw_tail(S, ppropertyempty, b_get) = false -- otherwise
+def $task_nodes(PROPERTY_EMPTY_RESULT ppropertyempty b_get) = [HOBJECT ppropertyempty.OBJECT]
+def $target_nodes(PROPERTY_EMPTY_TARGET ppropertyempty b_get) = eps
+def $target_instance(PROPERTY_EMPTY_TARGET ppropertyempty b_get) = eps
+def $target_receiver(S, PROPERTY_EMPTY_TARGET ppropertyempty b_get) = (ppropertyempty.OBJECT)
+def $target_lexical_class(S, PROPERTY_EMPTY_TARGET ppropertyempty b_get) = $target_lexical_class(S, METHOD_TARGET ppropertyempty.OBJECT $property_empty_method_origin(ppropertyempty, b_get))
+def $target_called_class(S, PROPERTY_EMPTY_TARGET ppropertyempty b_get) = (ppropertyempty.CLASS)
+def $target_function(S, PROPERTY_EMPTY_TARGET ppropertyempty b_get) = $property_empty_function(S, ppropertyempty, b_get)
+  -- if $property_empty_valid(S, ppropertyempty)
+def $call_receiver_roots(pcallcontext) = eps
+  -- if pcallcontext.TARGET = PROPERTY_EMPTY_TARGET ppropertyempty b_get
+def $call_selected_valid(S, PROPERTY_EMPTY_TARGET ppropertyempty b_get, (porigin)) = (porigin = ppropertyempty.SITE /\ ($property_empty_pending_call(S, ppropertyempty, b_get) \/ $property_empty_entered(S, S.CURRENT, S.FRAMES, ppropertyempty, b_get)))
+def $call_arguments_valid(S, (porigin), 1, eps, poperand :: eps, 0) = true
+  -- if S.TODO = (CALL_ARGS (PROPERTY_EMPTY_TARGET ppropertyempty b_get) eps 1 (poperand :: eps) (porigin) z) :: ptask_tail*
+  -- if poperand = KNOWN (PSTRING ppropertyempty.NAME)
+  -- if $property_empty_pending_call(S, ppropertyempty, b_get)
+dec $property_empty_context(pstate, pcallcontext) : bool
+def $property_empty_context(S, pcallcontext) = true
+  -- if pcallcontext.TARGET = PROPERTY_EMPTY_TARGET ppropertyempty b_get
+  -- if pcallcontext.FUNCTION = $property_empty_method_origin(ppropertyempty, b_get) /\ pcallcontext.RECEIVER = (ppropertyempty.OBJECT) /\ pcallcontext.CALLED_CLASS = (ppropertyempty.CLASS)
+  -- if pcallcontext.LEXICAL_CLASS = $target_lexical_class(S, METHOD_TARGET ppropertyempty.OBJECT pcallcontext.FUNCTION)
+  -- if pcallcontext.CALLSITE = (ppropertyempty.SITE) /\ pcallcontext.LINE = ppropertyempty.LINE
+  -- if pcallcontext.ARGC = 1 /\ pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.WRAPPER = eps /\ pcallcontext.HOLES = eps
+  -- if $property_empty_entered(S, S.CURRENT, S.FRAMES, ppropertyempty, b_get)
+def $property_empty_context(S, pcallcontext) = false -- otherwise
+def $call_arity_valid(S, pcallcontext) = $property_empty_context(S, pcallcontext)
+  -- if pcallcontext.TARGET = PROPERTY_EMPTY_TARGET ppropertyempty b_get
+def $call_extent_valid(S, pcallcontext) = $property_empty_context(S, pcallcontext)
+  -- if pcallcontext.TARGET = PROPERTY_EMPTY_TARGET ppropertyempty b_get
+def $named_context_valid(S, pcallcontext) = $property_empty_context(S, pcallcontext)
+  -- if pcallcontext.TARGET = PROPERTY_EMPTY_TARGET ppropertyempty b_get
+def $named_receives_ready(S, pfunction) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if $property_empty_context(S, pcallcontext)
+def $call_task_valid(S, PROPERTY_EMPTY_RESULT ppropertyempty b_get) = ($property_empty_pending_call(S, ppropertyempty, b_get) \/ $property_empty_tail(S, ppropertyempty, b_get, S.TODO) \/ $property_empty_throw_tail(S, ppropertyempty, b_get))

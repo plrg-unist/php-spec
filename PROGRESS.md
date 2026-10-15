@@ -21,6 +21,67 @@ known-result effects, actual frame ownership, cancellation and budget resumption
 The unchanged Unsupported baseline retains zero credit. Flat CV targets and quiet
 compiled/implicit keys bound both slices; wider producers and diagnostics remain partial.
 [Literal-RHS review](coverage/semantics/list-literal-missing-warning-review.json).
+The pointwise 399-module composition over 0ca751335 preserves CLASS83 property
+protocols, M77 return replay and every other incoming runtime byte. Source6/state417
+retain their private cuts; independent seam review warrants no joined actor or
+renewed agreement credit.
+
+Terminal `empty` now composes inherited `__isset(string): bool` and untyped
+by-value `__get` for selected CV/literal private properties. False skips the getter;
+true inverts its integer result. Public initialized and typed-INITIAL slots bypass
+both, and Parent lexical scope stays distinct from Child called scope. One normal
+original agrees at d9df16379; state208 =138 reached +70 derived passes at e8703a594,
+including captured receiver ownership, private bypass, noninteger refusal, both
+derived throw cleanups and budget resume. Two pre-app fixture failures and one
+incorrect derived expectation retain zero passing credit. Wider result/signature,
+recursive and quiet combinations remain partial.
+[Magic empty review](coverage/semantics/magic-empty-review.json).
+Pointwise composition over 4206eef78 preserves the incoming398 modules and all
+owned rules; private source/state cuts retain their identities without replay.
+
+Plain-CV `%=` now keeps both converted longs through a fractional-RHS deprecation.
+Captured12/5 stores2 despite callback99/7 and detaches a late target alias; supplied
+throw cancels the store. Captured0 from0.5 still raises the original-line modulo
+`DivisionByZeroError` after a live RHS5, preserving target/alias99 and destination100.
+Three exact originals pass at 2c04fc25e; 141/126 author plus137 independent SL premises
+pass404 at c54aa0f05/397, covering public fresh guards, actual CELL/LOCATION and
+alias/error owners, default Deprecated and budgets. Checked prep reused accepted
+source/native bytes without application replay; prep/syntax and the original bb9
+binding failure retain0. Pure target refusals establish no wider execution.
+Both-fractional operands, initial references/copies, unsafe targets and wider
+callbacks/lifecycle remain partial; OP12 stays paused.
+[RHS modulo ledger](coverage/semantics/modassign-right-warning-review.json).
+The pointwise 398-module composition over ca70c7aaf preserves Source35/M76/V60
+and incoming list/comparison/Generator paths. Source3/state404 retain their private
+cuts; independent seam review warrants no joined actor or renewed agreement.
+
+A NaN third `define` flag now emits its bool-conversion Warning before the
+ignored-flag Warning while retaining raw NaN in API arguments. A throwing first
+handler cancels outer registration; a later ignored-warning throw still completes
+its registration tail. Returning callbacks read the live constant table, and
+strict calls reject after all argument effects without either warning.
+Four exact originals agree at adce3cd8. Author 177+136+51 and independent 108
+public premises pass 472 across four genuine fronts, checking literal publication,
+duplicate ordering, captured raw bits, real first/second throw discard equality,
+source/carrier/phase refusals and budgets. The unchanged Unsupported baseline
+retains zero credit. Old quiet/scalar eligibility is unchanged; wider names,
+values and owning/packed forms remain partial. Pointwise composition over
+8d148d6b preserves the 398-module incoming parent. Source4/state472 retain their
+private cuts; independent review warrants no joined actor or renewed execution.
+[NaN-flag review](coverage/semantics/define-nan-flag-review.json).
+
+Live WeakMap comparisons with stdClass, supported source instances and
+WeakReference now return uncomparable +1 in either direction before property or
+private-entry traversal. All seven operators cover both orientations and live/expired
+wrappers; aggregate nonzero leaves skip later casts. Three exact sources and
+398 Boolean premises (367 setup + 31 pure)/12 actual steps pass at 30ae1f26e/397,
+including real function frames, source self-cycles, private owner1, weak nonownership
+and budget splits. Original recorder/binding failures remain zero-credit; numeric,
+other internal/custom counterparts and wider producer/lifetime forms remain partial.
+[Mixed WeakMap review](coverage/semantics/weakmap-mixed-comparison-review.json).
+The pointwise 398-module composition over f8882d5c preserves incoming
+LIST_MISSING_RESULT and every parent helper. Source3/state398 retain their private
+cuts; independent seam review warrants no joined actor or renewed agreement credit.
 
 Plain-CV `%=` now keeps its fractional-float left conversion through deprecation
 handlers, then reads the live quiet integer RHS. Captured12/live5 stores2; a supplied
@@ -49,7 +110,8 @@ pass 206 at 7d069659, covering actual discard steps, complete state preservation
 source/carrier refusals, a source-backed seeded trace, quiet reporting and budgets.
 The unchanged Unsupported baseline retains zero credit. The sole runtime change
 is a 22-line module400 append using the existing boolean/scalar-flag guards;
-wider values, NaN/coerced-name flags and owning/packed paths remain separate.
+wider values, coerced-name flags and owning/packed paths remain separate.
+The NaN follow-up is recorded above.
 Pointwise composition over 52357c36 preserves the 397-module incoming parent.
 Source3/state206 retain their private cuts; independent review warrants no joined
 actor or renewed execution claim.
@@ -78,8 +140,8 @@ Selected inherited `__isset(string): bool` now handles terminal CV/literal priva
 property tests, while initialized public and typed-INITIAL slots bypass it. Actual
 true/false callback results preserve multi-property short circuiting and unchanged
 storage. Source1 passes at 5a6f91be; one state215 =164 reached +51 derived passes
-at 5551514f, including normal/abrupt receiver release. Empty/coalesce combinations
-and wider magic forms remain unsupported. Historical `__unset` retains an exact
+at 5551514f, including normal/abrupt receiver release. Wider coalesce combinations
+and magic forms remain unsupported. Historical `__unset` retains an exact
 source-proof compatibility bridge without replay.
 [Review](coverage/semantics/magic-isset-review.json).
 The 397-module composition over 214dbc9b passes retained SL initialization at e484862a;
@@ -149,6 +211,19 @@ undriven certificate controls keep zero agreement credit. Wider query/value form
 The 397-module composition over 1e732d1ca preserves incoming comparison, pending
 define and modulo rules pointwise; source2/state384 retain their private cuts
 without replay.
+
+Certified stdClass aliases now pass through global constant array trees and
+`constant()` queries, including eval declarations and whole-tree donation.
+Querying adds one array root owner without copying or adding an object edge;
+nested COW adds a real shared-object edge, while caller bucket replacement
+preserves the original DIRECT tree. Three exact originals and author392 plus
+independent256 SL premises pass648 at runtime d5026ab1/397. The baseline remains genuinely Unsupported;
+its wrong expected-reason assertion is retained separately. Direct nested NEW,
+defaults, generic objects and wider query forms remain partial.
+[stdClass array review](coverage/semantics/global-constant-stdclass-array-review.json).
+The 398-module composition over 84d03da88 preserves incoming Generator, list,
+WeakMap, NaN-define and return selectors pointwise. Source3/state648 retain their
+private397 cuts without replay.
 
 Selected inherited `__unset(string): void` now dispatches direct CV/literal-name
 access to a declared private property. Accessible public unset skips magic;
@@ -8325,8 +8400,10 @@ failures and interrupted evidence.
   Notice dispatch. Bounded single-active-finalizer CV replay and aliased-CV Stringable
   reference conversion 186 and bounded sole-local-CV lifetime 381 are integrated.
   Immutable string-literal, explicit-NULL and bounded computed string VALUE consumed
-  continuations are also integrated. M75 adds the bounded nullable integer assignment
-  VALUE return across a caught finalizer. Other VALUE signatures/layouts, general CONST/other
+  continuations are also integrated. M75-M77 add bounded nullable integer assignment
+  VALUE returns across a caught finalizer, including one effectful positional argument
+  and one folded integer RHS.
+  Other VALUE signatures/layouts, general CONST/other
   NULL and multiple-active histories, genuinely released
   CV targets, destructor throw/reentry, real suspension and wider typed consumers
   remain open. [String contract](docs/semantics/USER-STRING.md),
@@ -8350,9 +8427,18 @@ bounded physical-array owner recovery. Bounded single-active-finalizer CV replay
 integrated, as are bounded aliased-CV Stringable reference conversion 186 and sole-local-CV
 lifetime 381, immutable string-literal, explicit-NULL and bounded computed string VALUE
 consumed continuations. M75's assigned integer call has two exact original-source
-agreements and one reached 96-premise proof at private `8afe016f`/397; the
+agreements and one reached 96-premise proof at private `8afe016f`/397. M76's
+same-variable nested integer argument has two further exact originals and one
+110-premise reached proof at private `8beef331`/397: callee n17/global x17,
+pre-finalizer x41, then restored caller NULL/x99 with one old-line Notice. M77
+separates direct folded `40 + 1` (caller41) from the same folded RHS wrapped in
+an assignment (callerNULL): source2 and an assigned 102-premise reached proof
+pass at private `86a52f19`/398, binding RHS compiled41 versus outer compiled-read
+absence, raw NULL/new Notice, alias, LINE refusal and budget. Historical native
+and Unsupported baseline retain their private `7465dc88`/397 identities. The
 [local CV ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json)
-retains its failed syntax gate with zero credit. Wider owner domains, other VALUE signatures/layouts, general
+retains M75's failed syntax gate and M76-M77's Unsupported baselines with zero repair credit.
+Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, destructor throw/reentry, real suspension and wider typed
 consumers remain required.

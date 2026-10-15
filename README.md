@@ -592,6 +592,12 @@ Three exact originals and 362 focused SL premises check capture, cancellation,
 default Deprecated, original-line `DivisionByZeroError` and budgets in the
 [modulo-assignment ledger](coverage/semantics/modassign-warning-review.json).
 Wider operands, targets, callbacks and lifecycle paths remain partial.
+With a quiet integer left operand, a fractional RHS now keeps both converted
+longs through its deprecation.
+Normal `%=` detaches a late target alias; supplied throw or a captured zero divisor
+preserves callback writes and aliases even after the live RHS changes.
+Three exact originals and 404 focused SL premises pass in the
+[RHS modulo ledger](coverage/semantics/modassign-right-warning-review.json).
 Explicit array-to-string casts now suspend through named warning handlers for
 a bounded plain-CV array input. The borrowed array adds no saved owner: replacing
 or removing its CV still yields fixed `Array`, while a supplied throw preserves
@@ -1039,9 +1045,9 @@ calls raise `TypeError` after all argument effects. A throwing ignored-warning
 handler still permits fresh registration of the captured value before its
 exception escapes. [Four source agreements and 462 state premises](coverage/semantics/define-scalar-flag-review.json)
 cover both warning phases, this pending registration tail and source/budget guards.
-NaN flags remain separate. When a binding exists after that first throw, the
-pending duplicate skips an eligible PHP handler without fallback. An excluded
-Warning level uses default reporting; both paths preserve the original exception,
+When a binding exists after that first throw, the pending duplicate skips an
+eligible PHP handler without fallback. An excluded Warning level uses default
+reporting; both paths preserve the original exception,
 binding and caller destination.
 [Three source agreements and 206 state premises](coverage/semantics/define-pending-duplicate-review.json)
 cover live handler masks, raw captures, fatal-trace clearing and quiet reporting.
@@ -1050,6 +1056,12 @@ uses false and checks the live table; a first-handler throw cancels registration
 Both warning traces keep raw NULL, and strict calls reject after argument effects.
 [Four source agreements and 349 state premises](coverage/semantics/define-null-flag-review.json)
 cover default diagnostics, callback-created duplicates, cancellation and raw traces.
+A NaN third flag raises its bool-conversion Warning before the ignored-flag
+Warning, preserving raw NaN in API traces. A throwing conversion handler cancels
+registration; a later ignored-warning throw still reaches the registration tail.
+Strict calls reject after argument effects without warnings.
+[Four source agreements and 472 state premises](coverage/semantics/define-nan-flag-review.json)
+cover these phases, live-table duplicates, captured arguments and budget resumption.
 Fresh two-argument `define` also copies nonempty acyclic scalar-array trees,
 dereferencing source cells and rebuilding append history. Request-string leaves,
 nested reference snapshots and literal constraints pass
@@ -2017,8 +2029,13 @@ Distinct live WeakMap pairs now compare with order zero without reading private
 entries or invoking their values. Array and declared-property comparisons continue
 to later real casters; COW, private-value ownership and normal/throw cleanup pass
 three exact sources and 246 Boolean premises/9 raw steps. Existing entry/lifetime
-limits and mixed/numeric protocols remain separate.
+limits remain separate.
 [WeakMap comparison review](coverage/semantics/weakmap-comparison-review.json).
+Mixed comparisons with live stdClass, source instances and WeakReference now
+return uncomparable +1 in both directions before properties or private entries.
+Seven-operator rows include expired referents; aggregate mismatches skip later
+Stringable leaves. Other internal/custom counterparts and numeric routes remain partial.
+[Mixed comparison review](coverage/semantics/weakmap-mixed-comparison-review.json).
 
 [Numeric object comparison Notices](coverage/semantics/object-numeric-comparison-review.json)
 now pause ordinary source-instance/int/float leaves through real error handlers.
@@ -2566,7 +2583,11 @@ of a direct CV/literal private property. Initialized public and typed-uninitiali
 slots bypass it; actual true/false results preserve short circuiting and storage.
 One original and one state/215 checks cover typed name reception, lexical scope
 and receiver cleanup; [magic isset review](coverage/semantics/magic-isset-review.json).
-Other signatures, receivers and `empty`/coalesce magic combinations remain unsupported.
+Terminal `empty` now chains that inherited `__isset` with an untyped by-value
+`__get`: false skips the getter, while true tests its integer result. One original
+and state208 cover sequencing, saved receiver ownership and cleanup;
+[magic empty review](coverage/semantics/magic-empty-review.json). Other signatures,
+receivers, result families and coalesce magic combinations remain unsupported.
 Hooked iteration, defaulted virtual hooks, other paired or virtual setters, wider trait
 setters, other explicit setter parameter forms, references, other inherited/trait
 and wider receiver, quiet or indirect-access families and wider `__unset` consumers remain required.
@@ -2684,8 +2705,13 @@ resume. Certified global `constant()` queries now return that same live stdClass
 through literal and retained selected calls, preserving shared writes and adding
 only the ordinary result owner. [The query review](coverage/semantics/global-constant-stdclass-query-review.json)
 keeps two source comparisons and 384 SL premises separate from producer evidence.
-Other internal/Throwable producers, arguments, embedded/default values
+Other internal/Throwable producers, arguments, direct embedded NEW/default values
 and wider query forms remain partial.
+Certified stdClass aliases now also pass through global constant array trees,
+including eval declarations and whole-tree donation. Array queries share the
+stored containers until ordinary COW, while embedded object identity and property
+writes remain shared. Three exact originals and 648 SL premises retain their
+[reviewed cut](coverage/semantics/global-constant-stdclass-array-review.json).
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is

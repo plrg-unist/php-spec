@@ -128,8 +128,8 @@ still registers the captured value before propagating that exception. The narrow
 pending tail changes only the constant table and preserves the original Throwable,
 caller destination and callback mutations. The pending duplicate case is
 covered below. The [scalar-flag review](../../coverage/semantics/define-scalar-flag-review.json)
-binds four source agreements and 462 public premises; NaN flags, wider values
-and coerced flags with scalar/null names remain separate.
+binds four source agreements and 462 public premises. NaN reception is covered
+below; wider values and coerced flags with scalar/null names remain separate.
 
 Boolean true uses its original warning marker for the fresh registration tail
 after a handler throws. The step appends the captured primitive after any unrelated
@@ -164,6 +164,21 @@ string-name row-history validation is unchanged. The
 [NULL-flag review](../../coverage/semantics/define-null-flag-review.json) binds four
 source agreements and 349 public premises. Primitive values, ordinary string
 names and nonowning three-argument calls bound this slice.
+
+A NaN third flag has a separate bool-reception Warning before the C body. Normal
+return proceeds with true to the ignored-flag Warning while CONFIG and API traces
+retain the captured NaN bits. The two phases have distinct authenticated markers;
+old quiet/scalar markers still reject NaN. A conversion-handler throw cancels the
+outer definition and preserves completed callback mutations, including an inner
+binding. A later ignored-warning throw instead reaches the existing fresh or
+pending-duplicate registration tail. Strict calls keep raw arguments and raise
+TypeError after all argument effects without warning. Immutable source arguments
+compare structural bits, independently of PHP's false NaN self-identity test.
+The [NaN-flag review](../../coverage/semantics/define-nan-flag-review.json) binds
+four exact originals and 472 public premises across four genuine source fronts,
+including actual first/second throw discard steps and budget resumption. Ordinary
+string names, primitive values and nonowning three-argument calls bound this slice;
+wider names, values, producers and owning/packed forms remain partial.
 
 Fresh two-argument array definitions recursively dereference source cells into
 new DIRECT entries. Reinserting surviving keys rebuilds NEXT, positions and serial
@@ -321,7 +336,7 @@ fixture and unchanged baseline retain zero agreement credit.
 
 User-array queries retain the stored root and child identities. The admitted
 tree contains nonstring scalars, raw strings, authenticated string carriers,
-certified `PVINSTANCE`/`PVCLOSURE` leaves and arrays with matching key/class trees
+certified `PVINSTANCE`/`PVCLOSURE`/`PVSTDCLASS` leaves and arrays with matching key/class trees
 and canonical table history. Immutable empty
 arrays require their actual provenance; mutable empty copies remain distinct.
 Lookup does not clone, allocate or intern values. Existing COW handles writes and
@@ -460,5 +475,17 @@ so changing the next query from one constant to another selects the second objec
 The [query ledger](../../coverage/semantics/global-constant-stdclass-query-review.json)
 records two exact originals, reached state fronts, budget resumption and undriven
 certificate refusals. The unchanged Unsupported baseline remains zero credit;
-embedded stdClass trees, generic objects and wider owning/coercing query forms
+direct embedded stdClass NEW, generic objects and wider owning/coercing query forms
 remain partial.
+
+Certified stdClass aliases may now be leaves in literal global constant array
+trees. Shape admission permits their nonowning class facts; existing captured
+lookup prefixes and recursive live-value checks still authenticate each donated
+leaf. Whole-tree aliases retain those receipts. The query leaf rule delegates
+to the same completed-birth/live-allocation check as a direct stdClass query.
+Lookup shares the root and child arrays and adds only a root owner. Real nested
+COW creates another physical array-to-object edge; properties stay shared, while
+replacing a caller bucket leaves the installed DIRECT tree intact. Eval donor
+sources retain their own unit origins. Direct nested stdClass NEW, default
+caching and callable folding keep their separate producer/consumer boundaries.
+[stdClass array-alias review](../../coverage/semantics/global-constant-stdclass-array-review.json).

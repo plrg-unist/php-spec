@@ -1,0 +1,65 @@
+{
+  "scope": "Nonowning define(string, primitive, NaN) reception, ignored-flag and duplicate reporting under the existing ordinary-name/source/capture guards. Partial core.",
+  "status": "independently_accepted_actual_parent",
+  "reviewer": "/root/source_review_35",
+  "parent": "04c3c8c2f33a43360ea8e6aaaf2eef5286e85158",
+  "semantic_revision": "28bf786a3",
+  "tested_revision": "adce3cd8641ced438911f9299c052c3f6180a3fd",
+  "semantic_files": {
+    "spec/semantics/30-storage.watsup": "e9ff997d56689dd5cd448ced2b7d84063dd32c3f238cd64a8eb4688b4bcccb90",
+    "spec/semantics/400-dynamic-constants.watsup": "ceee2f601674ee055cc91dc97619584f6b8b8852c2760d3c858d0d26839a25f5"
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "tools": {
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7"
+  },
+  "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+  "primary": "Pinned Zend/zend_builtin_functions.c::ZEND_FUNCTION(define), Zend/zend_API.c::zend_parse_arg_bool_weak/slow and Zend/zend_operators.h::i_zend_is_true. NaN truth conversion warns before the C body; ZPP checks EG(exception) after conversion. Normal reception retains the original raw argument and proceeds to the ignored Warning; strict parsing rejects before conversion. Registration and pending duplicate behavior use the previously reviewed Source34 route.",
+  "semantics": "Three separate task tags authenticate NaN reception, ignored-flag continuation and duplicate reporting. The existing quiet/scalar flag selectors and validators are exact. Source sends retain structural bit equality and string-carrier authentication. Only an ignored-phase throw invokes the fresh/pending-duplicate tail; first-reception discard preserves the restored state exactly. No schema field, rewritten argument, native evaluation or shared error-policy change.",
+  "accepted": [
+    "Author three originals at adce3cd8 match retained native at 45aeb7c: literal normal/duplicate emits conversion then ignored then duplicate Warning; selected named argument effects and conversion-handler mutations preserve raw NaN/candidate across a later ignored-warning throw and pending duplicate; strict NaN raises raw float TypeError after all argument effects without handler entry.",
+    "Independent first-reception-throw original at adce3cd8 preserves inner value 307, request-string candidate, live caller mutations, original Exception/Previous NULL and caller99. Exactly one callback runs; the outer C body is canceled.",
+    "Author 177+136+51=364 and independent 108 public premises pass 472 at adce3cd8, true LF/0/empty stderr across four genuine source fronts. Actual steps cover both warning phases, exact literal publication/duplicate false, strict raw trace, first-discard full-state equality and later pending-duplicate full-state equality. Immutable alternate-NaN-bit, source/selection/carrier/phase/metadata refusals and budget equality remain explicit."
+  ],
+  "zero_credit": "The sole unchanged first-source baseline 5404f77c at 45aeb7c is accepted/checked Unsupported dynamic constant call domain after B|, CLI 1/null PHP exit/empty stderr, with zero agreement. Native, syntax preparation and standalone projections add no application agreement. The seeker was corrected in review before execution; there was no failed execution or retry.",
+  "execution": "All phases LC_ALL=C/TZ=UTC on CPU 4, AS 3 GiB, INT timeout+kill5, serial stop-first/reap. Native children 15s; source CLI 45s/host 60s; public fresh full SL children 90s. Inputs/HEAD stayed stable and every process group reaped. Author literal has five PHP stderr warnings and captured source has one default NaN Warning; all model worker stderr is empty.",
+  "raw_root": ".tools/define-nan-flag-evidence-35",
+  "report_sha256": {
+    "author/sources/baseline-report.json": "5404f77ca68d33e9429151a31f5580b8b8365a743e732304481427aeefc52ad5",
+    "author/sources/model-report.json": "c66b91897a4de4bdcbfa597d8932c63647d8e36d6693f976d426c46e6684c5e3",
+    "author/sources/native-report.json": "d4961a745166385ec805f6203db334134cbe755a7cf97f3facd1af55a7d7b861",
+    "author/review/model-report.json": "a033639f655f3517c14c4c6fc7ff6a64eb7c73dc4ae09a09a9647f539e28497a",
+    "author/review/native-report.json": "b62adcdce42b3944f845cd9e7af335c72ca93174311cfae086d25636367a8ea3",
+    "author/public/check-report.json": "ba9db8753952bbe9dd02a7e6799236eb5d9a43c5b6518e21c8bbe297297f2572",
+    "author/public/prepare-report.json": "c2558be03cc093b091756d4165f01103bfa118aa73b5e564e732d017ee97ae69",
+    "author/review-public/check-report.json": "a39c0383088fbb7f6a299f828c6443a19449de037b8ef064d63fc6e301386fdf",
+    "author/review-public/prepare-report.json": "cb9051001dea90884378a2ed7b07182c73e2876a8157449cf87f77e64a3d5439"
+  },
+  "commands": [
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 4 python3 tests/semantics/define_nan_flag_sources.py --phase native --output .tools/define-nan-flag-native-35",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 4 python3 tests/semantics/define_nan_flag_sources.py --phase baseline --case literal-nan-flag-publication-and-duplicate --output .tools/define-nan-flag-native-35",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 4 python3 tests/semantics/define_nan_flag_review_sources.py --phase native --output .tools/define-nan-flag-review-35",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 240s prlimit --as=3221225472 -- taskset -c 4 python3 tests/semantics/define_nan_flag_sources.py --phase model --output .tools/define-nan-flag-native-35",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 4 python3 tests/semantics/define_nan_flag_review_sources.py --phase model --output .tools/define-nan-flag-review-35",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 4 python3 tests/semantics/define_nan_flag_protocol.py --phase prepare --sources .tools/define-nan-flag-native-35 --output .tools/define-nan-flag-public-35",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 360s prlimit --as=3221225472 -- taskset -c 4 python3 tests/semantics/define_nan_flag_protocol.py --phase check --sources .tools/define-nan-flag-native-35 --output .tools/define-nan-flag-public-35",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 4 python3 tests/semantics/define_nan_flag_review_protocol.py --phase prepare --sources .tools/define-nan-flag-review-35 --output .tools/define-nan-flag-review-public-35",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 120s prlimit --as=3221225472 -- taskset -c 4 python3 tests/semantics/define_nan_flag_review_protocol.py --phase check --sources .tools/define-nan-flag-review-35 --output .tools/define-nan-flag-review-public-35"
+  ],
+  "recovery": "Four owned raw directories moved once into the canonical raw root after reviewer STOP and focused cwd/cmdline/fd users[]. All nine report hashes are unchanged. To replay recorded revisions, restore author/sources, author/review, author/public and author/review-public respectively as .tools/define-nan-flag-{native,review,public,review-public}-35 in a worktree at the recorded cuts. Raw source/command/cwd identities retain their original paths.",
+  "remaining": "Wider/coerced/class-qualified names, wider values/producers, owning/packed/FCC/arity forms and full define-family closure remain partial. Other NaN payload producers are not newly validated. No engine bug or intentional divergence.",
+  "composition": {
+    "parent": "8d148d6b947ae522456a9382dc2133ca5bb814ba",
+    "private_publication": "1f51c72c0820b59e3fb33589a5f67d8fb488f0a9",
+    "reviewer": "/root/source_review_35",
+    "modules": 398,
+    "runtime_files": {
+      "spec/semantics/30-storage.watsup": "d0a5f0d3c575bcebad23e29327d93259243069bc1ab3643528707aea29e91061",
+      "spec/semantics/400-dynamic-constants.watsup": "c127e9156c7e55ec886f3ca5b75c51f2eea5cbb6439d8ed974a9fa197651f7df"
+    },
+    "gate": "Pointwise union adds only the private NaN declaration/selector exclusion, three task tags and appended phase helpers/rules. Every other incoming runtime path and the 398-module manifest are exact. V59 stdClass query and Source34 pending-report helpers remain intact; WeakMap386 and list-warning409 select different operand/task constructors. MOD/LIST tags are preserved. No joined actor is warranted; source4/public472 retain their private cuts, with no renewed execution claim."
+  }
+}

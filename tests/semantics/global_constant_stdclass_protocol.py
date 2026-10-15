@@ -134,7 +134,7 @@ def root_checks(initial, stdout):
         '$constant_value_class_valid(S_complete,POBJECT n_object,PVSTDCLASS n_object porigin_site)',
         '~$constant_value_class_valid(S_complete,POBJECT n_object,PVINSTANCE n_object porigin_site)',
         '~$constant_value_class_valid(S_complete,POBJECT n_object,PVSTDCLASS $(n_object + 1) porigin_site)',
-        '~$constant_class_tree_valid(PVSTDCLASS n_object porigin_site)',
+        '$constant_class_tree_valid(PVSTDCLASS n_object porigin_site)',
         '~$default_cacheable(PVSTDCLASS n_object porigin_site)',
         '~$constant_callable_foldable(PVSTDCLASS n_object porigin_site)',
         '~$global_std_header(S_complete,pconstantstdobject[.SITE = porigin_decl])',

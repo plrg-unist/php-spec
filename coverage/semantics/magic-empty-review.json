@@ -1,0 +1,216 @@
+{
+  "scope": "Terminal empty of a literal declared-private property through an external ordinary CV. Public nonstatic nonref __isset(string):bool and untyped nonref __get($name) are inherited unchanged from the same parentless ordinary class; only integer getter results are admitted.",
+  "implementation": {
+    "base": "86df2d9d9f6d8e7d2bb08e401708c1e86eb5cbea",
+    "revision": "d9df16379f5a8b2f14191fd3425b7e54c41967ef",
+    "modules": 398,
+    "files": [
+      "spec/semantics/30-storage.watsup",
+      "spec/semantics/380-magic-property-get.watsup",
+      "spec/semantics/407-magic-property-isset.watsup",
+      "spec/semantics/408-magic-property-empty.watsup",
+      "spec/semantics/modules.json"
+    ],
+    "behavior": "Authenticate the actual empty site, selected physical methods and private declaration. False isset returns true without Get; true reuses one saved receiver owner across a borrowed Get and inverts an integer result. Public initialized and typed-INITIAL slots bypass magic. Generic getter interception defers only at authenticated empty preparation; getter recursion guards apply only in the Get phase. Source/call/result/frame provenance remains explicit."
+  },
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "vendor/php-src/Zend/zend_object_handlers.c: zend_std_has_property, IN_ISSET/IN_GET, ZEND_PROPERTY_NOT_EMPTY, initialized typed-slot bypass and one receiver hold",
+      "vendor/php-src/Zend/zend_object_handlers.c: zend_std_call_issetter and zend_std_call_getter pass the raw property string through ordinary calls"
+    ],
+    "observation": "False isset skips Get; true selects Get only without an exception/active Get guard, then truth and receiver release finish before the caller continues."
+  },
+  "original_source": {
+    "source": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-empty-probes-83/scalar.php",
+      "sha256": "de924bd059dd7aae2b47e8d0d9a09b2f8d9721ad795e1e474497870557095d0f"
+    },
+    "maintained_source": "tests/semantics/magic-empty.php",
+    "byte_identical": true,
+    "native": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-empty-probes-83/native-first/report.json",
+      "sha256": "fed0878ab72a6fd02c05413f2ee7e6bfd6a4b992c4705dd124737578b58c7024",
+      "revision": "86df2d9d9f6d8e7d2bb08e401708c1e86eb5cbea",
+      "inputs_stable": true,
+      "head_stable": true,
+      "status_stable": true,
+      "completed": true,
+      "stdout": {
+        "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-empty-probes-83/native-first/scalar/native.stdout",
+        "sha256": "a40134173fb494cf5d3e4ccfc7f893883588bcb9ea6f8e9c4005694c7b3448b4",
+        "bytes": 381
+      },
+      "stderr": {
+        "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-empty-probes-83/native-first/scalar/native.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "exit_status": 0,
+      "source_agreements": 0
+    },
+    "unchanged_baseline": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-empty-probes-83/accepted-current-baseline/report.json",
+      "sha256": "090ec9944986d2a477c3c130fd4a0494c69ca2f67c9c4eceb74b2bea108f713e",
+      "revision": "86df2d9d9f6d8e7d2bb08e401708c1e86eb5cbea",
+      "inputs_stable": true,
+      "head_stable": true,
+      "status_stable": true,
+      "outcome": "unsupported",
+      "exit": 1,
+      "source_agreements": 0
+    },
+    "changed": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-empty-probes-83/changed-model-loyyt2z6/report.json",
+      "sha256": "9fce8385caf37ad725e0c9162676e89bbce8e035b0c6f1a30251f130d4d112d3",
+      "revision": "d9df16379f5a8b2f14191fd3425b7e54c41967ef",
+      "inputs_stable": true,
+      "head_stable": true,
+      "status_stable": true,
+      "completed": true,
+      "outcome": "normal",
+      "source_agreements": 1,
+      "exact_raw_stdout_stderr_exit": true,
+      "cap_seconds": 60,
+      "outer_seconds": 75,
+      "steps": 100000
+    }
+  },
+  "strict_initialization": {
+    "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-empty-probes-83/magic-empty-compiler-cgf4iuzi/report.json",
+    "sha256": "02c9cd2efb775c8d83097392c2dd04c795d4aceec4facd2b37285cf516604a56",
+    "revision": "d9df16379f5a8b2f14191fd3425b7e54c41967ef",
+    "inputs_stable": true,
+    "head_stable": true,
+    "status_stable": true,
+    "passed": true,
+    "modules": 398,
+    "mode": "SL",
+    "cache": false,
+    "det": true,
+    "markers": 5,
+    "cap_seconds": 60,
+    "application_evaluations": 0,
+    "source_agreements": 0
+  },
+  "focused_state": {
+    "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-empty-protocol-v3b9xqy1/report.json",
+    "sha256": "e7d651693e3db6684c97d81325eedfcec512b78ddca50f9c7a4ac78ae495d3f7",
+    "revision": "e8703a59493c1f90a16448b928442c950d975dcd",
+    "inputs_stable": true,
+    "head_stable": true,
+    "status_stable": true,
+    "test_revision": "e8703a59493c1f90a16448b928442c950d975dcd",
+    "driver": "tests/semantics/magic_empty_protocol.py",
+    "driver_sha256": "0d5aee6467c8d0ae449e7ff14187c0502cbf3dcaec9e214a33bb1aaf1541c0fd",
+    "fixture_sha256": "260dfa4778397b65449a7ca186e84741b323c799b2bf56019143e617640dbe64",
+    "mode": "SL",
+    "cache": false,
+    "det": true,
+    "passed": true,
+    "application_evaluations": 1,
+    "source_agreements": 0,
+    "reached_premises": 138,
+    "derived_premises": 70,
+    "premises": 208,
+    "caps_seconds": 90,
+    "processes": [
+      {
+        "id": "algorithmic-compilation",
+        "exit": 0,
+        "elapsed": 6.7780961990356445,
+        "timeout": false,
+        "group_after": []
+      },
+      {
+        "id": "strict-SL-application",
+        "exit": 0,
+        "elapsed": 39.21223568916321,
+        "timeout": false,
+        "group_after": []
+      }
+    ],
+    "checks": "Actual public/INITIAL bypass, authenticated preparation deferral, false skip, true Get entry, zero/nonzero inversion, borrowed receiver roots and normal saved-owner release. Derived source/name/task/frame refusals, Get-only active guard distinction, active-getter lexical-private bypass, noninteger Unsupported, captured receiver after CV rebinding, actual isset/get throw-frame restoration and saved-owner discard, and budget0 resume to the exact final state."
+  },
+  "affinity": [
+    {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-empty-probes-83/affinity-native-first.json",
+      "sha256": "76c050cd931db78edd9dd72a5d2df128de91818525a4a4c65a8c11d1fa1d8673"
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-empty-probes-83/affinity-accepted-current-baseline.json",
+      "sha256": "dc23e89def90226cc27e2e7729f9122d91f8e0ab2d60e09fa382edb81e772227"
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-empty-probes-83/affinity-candidate-compiler-84.json",
+      "sha256": "22e9ba44367e8e20c665307c61b1c5b71a7212aededb6ed3ecc085fd0a115aa1"
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-empty-probes-83/affinity-candidate-source-84.json",
+      "sha256": "066178651231bf39d79e93eddc8ccdbda93cd5b869ecf46ca1898724b77b3951"
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-empty-probes-83/affinity-state-87.json",
+      "sha256": "716b5dda4122c9b7f88c016425883dbb871c3910891a5b4a897a46fd5167601a"
+    }
+  ],
+  "preserved_failures": [
+    {
+      "kind": "pre-frontend revision guard",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-empty-probes-83/preparation-revision-guard-84.json",
+        "sha256": "0b32b2b1cdc20cb0c21fcb724305f0e3a33185a25fd5f8d1ebb8d8ca0f65bbaa"
+      },
+      "application_evaluations": 0,
+      "passing_credit": 0
+    },
+    {
+      "kind": "inline origin projection in fixture record update; replaced by simple origin binders",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-empty-protocol-1jdv5f5w/report.json",
+        "sha256": "2ffe8014d362439bda98851729d13a0f2c434b0e0b873bc7fb4c8a1096146c62"
+      },
+      "application_evaluations": 0,
+      "passing_credit": 0
+    },
+    {
+      "kind": "fresh tail binding inside fixture conjunction; split into executable equality premises",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-empty-protocol-kobs9jw2/report.json",
+        "sha256": "2db4956d8d66678dfa69bc8e0233f6befafabf76520acec069d71b825ad1e643"
+      },
+      "application_evaluations": 0,
+      "passing_credit": 0
+    },
+    {
+      "kind": "incorrect derived recursive-demand expectation; active Parent getter actually has ordinary initialized-private access",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-empty-protocol-ivuz_3ms/report.json",
+        "sha256": "45e805b0701407584c111a8cb87734eadd8c42d4c2d96e3652e931d4dc04620a"
+      },
+      "application_evaluations": 1,
+      "passing_credit": 0
+    }
+  ],
+  "review": "Independent reviewer /root/class_review_84 accepted production rules, exact original native/source tuple, retained strict initialization, corrected208 state result and completed live affinities. No additional native/source/old-isset actor was requested.",
+  "publication_compatibility": "Production blobs and state driver are unchanged from their accepted cuts. Catalogue additions native_group/native_raw_sha256 are recorder metadata only; native_raw_sha256 hashes compact sorted JSON of stdout_base64/stderr_base64/exit_status. Source/profile fields consumed by the state driver remain identical. Makefile only registers future maintained selections; documentation/inventory add no execution credit.",
+  "remaining": [
+    "Other method signatures, typed/reference getter families, other declaring-owner/trait shapes and protected/absent/unset property families remain partial.",
+    "Other receiver/name/source forms, coalescing, recursive magic and wider callback/lifetime protocols remain partial.",
+    "Known noninteger getter results explicitly return Unsupported; no broader truth-conversion agreement is claimed.",
+    "Throw cleanup is derived state evidence; the sole original source agreement is normal."
+  ],
+  "artifacts": "Original report directories and raw streams remain in ignored .tools at the recorded paths; docs/ARTIFACTS.md describes external evidence policy. Preserved failures and preparation have zero passing credit.",
+  "composition": {
+    "parent": "4206eef7845f76c77cfda6295a405386e22b67eb",
+    "owned_publication": "88a0bdb81921844f709437358460de60655c193a",
+    "modules": 399,
+    "manifest": "Exact parent398 order followed by module408; existing409 stays in place.",
+    "preservation": "Every incoming source/test/schema path is retained. Shared30 is the incoming parent plus exactly the EMPTY record/target/result declarations;380/407/new408 and the state driver are publication-exact. Inventory retains every parent row and adds only the six reviewed appends; documentation and Makefile form the exact independent union.",
+    "seams": "Incoming modulo/NaN-define/list tasks are disjoint. The original has no define, list, numeric compound, Generator, dynamic anonymous, WeakMap/object-order or assigned-return source shape. The changed156 return paths require assignment/reference/finally histories absent from literal return13; ordinary bool/int return and Throwable frame restoration remain selected unchanged.",
+    "validation_basis": "Independent actual-parent seam review and exact pointwise preservation; no concrete syntax/order/selected-path interaction requires a joined load. Accepted native/source/strict/state cuts retain their original identities.",
+    "new_application_evaluations": 0,
+    "new_source_agreements": 0
+  }
+}
