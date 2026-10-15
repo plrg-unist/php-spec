@@ -3766,6 +3766,19 @@ The prior Unsupported baseline and output-only diagnostic have zero repair
 credit. Wider method forms and broader returns verification remain open in the
 [ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
+M73 checks the mixed owning-object/global-CV history when the caller discards
+`f()`'s result. A nullable `?object` return completes normally; an `object`
+return must still check the cleared middle NULL after the first caught `$y`
+error. That check creates a distinct TypeError at the middle return's line,
+reenters its finalizer and reaches the caller catch without a Notice. Source2
+at private `7806bdc2`/395 matches retained native2 in both signatures.
+Public125 binds the genuine node-free pair, raw NULL clearing without a new
+allocation, prior and new errors through caller delivery, a heap-equal cursor
+LINE refusal and split budget. The old Unsupported baseline and output-only
+guard query have zero repair credit. Other unused layouts and broader returns
+verification remain open in the
+[ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
 Per-constant protection survives namespace publication and parked handlers.

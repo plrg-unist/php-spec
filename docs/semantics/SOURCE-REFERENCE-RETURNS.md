@@ -744,3 +744,18 @@ reached used nullable simple-variable/no-argument/literal-name method source,
 not argument or dynamic-name or nullsafe method forms, unused or nonnullable outer returns, or complete
 returns verification; see the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M73 admits the discarded-result `object` form of the mixed old computed-O
+and global-CV return history. The caller uses a plain `f();`; after the first
+caught `$y` recheck, the genuine pair resumes as a node-free cleared NULL
+without allocating a returned reference at that step. Its type check creates
+a distinct line-9 TypeError with no Previous exception, then the middle
+finalizer runs again and the same error reaches the caller catch. The shared
+`?object` control completes normally. Source2 at private `7806bdc2`/395
+matches retained native2 in both cases, including exact PHP output and quiet
+stderr. Public125 binds the old and new errors, unchanged allocations at raw
+clearing, zero Notice, one heap-identical cursor LINE driver refusal and split
+budget. The prior Unsupported baseline and output-only guard query retain
+zero repair credit. This covers one discarded nonnullable mixed source layout,
+not other unused histories or complete returns verification; see the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
