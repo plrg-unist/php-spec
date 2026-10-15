@@ -204,6 +204,14 @@ A captured count of `64` keeps the original right-shift sign despite live writes
 retains five exact originals and 674 focused SL premises. Both-fractional operands,
 initial references/copies, unsafe targets and wider lifecycle remain partial.
 
+Distinct initially plain CV numeric `&=`, `|=` and `^=` keep their fractional LEFT
+conversion through deprecation handlers, then read the live quiet integer RHS.
+Success detaches a late alias; supplied throw preserves callback writes, the same
+Exception and alias write-through. Signed XOR/default Deprecated is independently
+covered. [Bitwise-assignment evidence](../../coverage/semantics/bitassign-warning-review.json)
+retains five exact originals and 692 focused SL premises. Initial references/copies,
+warning or noninteger RHS, unsafe targets and wider lifecycle remain partial.
+
 Stringable `.=` converts the left value before dereferencing the selected RHS
 slot. A defined direct RHS CV is borrowed and follows callback rebinding; an
 initially undefined read keeps its warned null value, while a later unset is a

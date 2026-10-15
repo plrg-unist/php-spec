@@ -262,6 +262,20 @@ default Deprecated and budgets are covered. Pure projections establish refusals
 only. Both-fractional operands, initial references/copies, unsafe targets and wider
 lifecycle remain partial; earlier modulo/LEFT-shift contracts stay unchanged.
 
+For distinct initially plain CVs, numeric `&=`, `|=` and `^=` keep a fractional
+LEFT conversion before deprecation and read the live quiet integer RHS afterward.
+Captured12/live5 stores4/13/9 despite callback target99 and initial RHS3, detaching
+a late alias. A supplied handler Exception cancels storage, preserving callback
+writes, the same Throwable and alias write-through. Independent signed XOR keeps
+captured(-12)/live5 and stores(-15), with exactly one RHS-line16 default Deprecated.
+Five exact originals and 575 author plus 117 independent SL premises pass in the
+[bitwise-assignment ledger](../../coverage/semantics/bitassign-warning-review.json).
+All three AST/operation pairs have separate source authority from modulo/shifts.
+Fresh cache/source/op/line guards, actual cells/owners and budgets are covered;
+pure projections establish refusals only. Initial references/copies, warning or
+noninteger RHS, unsafe targets and wider lifecycle remain partial. Initial float
+LEFT/quiet integer RHS bypasses Zend's separate two-string specialization.
+
 Arithmetic and bitwise conversion use the existing pure SpecTec numeric and byte
 helpers, including signed 64-bit boundaries, binary64 values, string operands,
 pinned power behavior and conversion diagnostics. Explicit casts keep their

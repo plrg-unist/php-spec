@@ -7,6 +7,24 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Plain-CV numeric `&=`/`|=`/`^=` now retain their fractional LEFT conversion
+through deprecation handlers, then read the live quiet integer RHS. Captured12/live5
+stores4/13/9 despite callback99 and detaches a late alias; supplied throw cancels
+storage, preserves the same Exception and leaves later alias writes connected.
+Independent signed XOR stores-15 with original-line default Deprecated.
+Four exact originals pass at2a1acc7f2; corrected peer1 passes at9feef8126.
+Author148/148/148/131 plus independent117 SL premises pass692 atcc0cd7bef/399,
+covering all3 AST/OP guards, fresh cache/source/line refusals, actual cells/owners
+and budgets. Retained checked prep/native/baseline/syntax and original unsupported
+is_int observer failure keep0; only its strict-equality correction was rerun.
+Initial references/copies, noninteger or warning RHS, unsafe targets and wider
+callbacks/lifecycle remain partial; pure projections establish refusals only.
+[Bitwise-assignment ledger](coverage/semantics/bitassign-warning-review.json). OP12 stays paused.
+
+Composed over edd7296de/399 after pointwise review of typed assigned returns,
+Generator, stdClass/define, property-empty/list and weak comparison seams. Source5
+and state692 retain their private cuts; no joined actor, replay or renewed credit.
+
 For non-NUL `define` names containing `::`, a NULL third flag now emits its
 bool-reception deprecation before the name ValueError. Returning handlers preserve
 raw captures despite live argument/callee writes; a throwing handler cancels the
