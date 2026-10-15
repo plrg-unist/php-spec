@@ -217,7 +217,7 @@ $property_empty_guard(S_private_active,n_child,$ptascii("zero")) /\ $property_re
 PhpStep: S_private_active ~> S_private_raw
 S_private_done = $me_after(S_private_active,S_private_raw)
 S_private_done.RESULT = KNOWN (PBOOL false) /\ S_private_done.TODO = eps /\ S_private_done.EVENTS = S_private_active.EVENTS
-S_nonint = S_zero_result[.RESULT = KNOWN (PFLOAT 0)]
+S_nonint = S_zero_result[.RESULT = KNOWN (PFLOAT 9221120237041090560)]
 PhpStep: S_nonint ~> S_nonint_done
 S_nonint_done.COMPLETION = UNSUPPORTED "magic empty getter result type" /\ S_nonint_done.TODO = S_nonint.TODO /\ S_nonint_done.EVENTS = S_nonint.EVENTS
 S_rebound_raw = S_true[.STORE[n_child_cell] = DEFINED PNULL]
