@@ -50,12 +50,12 @@ def conditions(name, program, path, stdout):
         ]
     else:
         checks += [
-            'S_entry.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING [51])',
+            'S_entry.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ($ptascii("3")))',
             '$origin_child(S_entry.ORIGIN, [PCFIELD 0, PCINDEX 1, PCFIELD 0]) = (porigin_key)',
-            '$compiled_read(S_entry, porigin_key) = (PSTRING [51])',
-            '$compiled_string_value(S_entry, porigin_key, PSTRING [51]) = PSTRING_CARRIER INTERNED_STRING [51]',
-            '$list_missing_plan(S_entry[.RESULT = KNOWN (PSTRING [51])]) = eps',
-            '$list_missing_plan(S_entry[.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING [52])]) = eps',
+            '$compiled_read(S_entry, porigin_key) = (PSTRING ($ptascii("3")))',
+            '$compiled_string_value(S_entry, porigin_key, PSTRING ($ptascii("3"))) = PSTRING_CARRIER INTERNED_STRING ($ptascii("3"))',
+            '$list_missing_plan(S_entry[.RESULT = KNOWN (PSTRING ($ptascii("3")))]) = eps',
+            '$list_missing_plan(S_entry[.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ($ptascii("4")))]) = eps',
             '$lookup(S_entry.ENV, $ptascii("dest")) = (n_dest)',
             'S_entry.STORE[n_x] = DEFINED (PINT 1)',
             'S_entry.STORE[n_dest] = DEFINED (PINT 100)',
