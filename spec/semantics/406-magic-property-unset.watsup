@@ -23,6 +23,37 @@ def $property_unset_needed(S, n, ptbytes) = true
   -- if ppropertyslot.STATE = PROP_UNSET
 def $property_unset_needed(S, n, ptbytes) = false -- otherwise
 
+;; Demand observes only quiet CV receivers; source/call admission stays separate.
+dec $property_unset_pending_receiver(pstate, pbase) : nat?
+def $property_unset_pending_receiver(S, BASE_VALUE (VARIABLE ptbytes z)) = (n)
+  -- if S_read = $quiet_operand(S, VARIABLE ptbytes z)
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+def $property_unset_pending_receiver(S, BASE_GLOBAL (KNOWN (PSTRING ptbytes)) z) = $property_unset_pending_receiver(S, BASE_VALUE (VARIABLE ptbytes z))
+def $property_unset_pending_receiver(S, BASE_VALUE (KNOWN (POBJECT n))) = (n)
+def $property_unset_pending_receiver(S, pbase) = eps -- otherwise
+
+dec $property_unset_present(pclassdesc*) : bool
+def $property_unset_present(eps) = false
+def $property_unset_present(pclassdesc :: pclassdesc_tail*) = true
+  -- if $method_named(pclassdesc.METHODS, $ptascii("__unset")) =/= eps
+def $property_unset_present(pclassdesc :: pclassdesc_tail*) = $property_unset_present(pclassdesc_tail*)
+  -- if $method_named(pclassdesc.METHODS, $ptascii("__unset")) = eps
+
+dec $property_unset_known_name(poperand) : bool
+def $property_unset_known_name(KNOWN (PSTRING ptbytes)) = true
+def $property_unset_known_name(poperand) = false -- otherwise
+
+;; Wider receivers in newly admitted magic programs stop before ordinary unset.
+def $property_unset_pending(S) = true
+  -- if S.TODO = UNSET_ARRAY :: ptask_tail*
+  -- if S.BASE = BASE_PROPERTY_PENDING pbase poperand z_receiver
+  -- if $property_unset_pending_receiver(S, pbase) = eps \/ ~$property_unset_known_name(poperand)
+  -- if $property_unset_present(S.CLASSES)
+def $property_unset_pending(S) = true
+  -- if S.TODO = UNSET_ARRAY :: ptask_tail*
+  -- if S.BASE = BASE_PROPERTY_PENDING pbase (KNOWN (PSTRING ptbytes)) z_receiver
+  -- if $property_unset_pending_receiver(S, pbase) = (n)
+  -- if $property_unset_needed(S, n, ptbytes)
 def $property_unset_pending(S) = true
   -- if S.TODO = UNSET_ARRAY :: ptask_tail*
   -- if S.BASE = BASE_PROPERTY (POBJECT n) ptbytes
@@ -87,6 +118,15 @@ def $property_unset_function(S, ppropertyunset) = (pfunction)
   -- if $target_function(S, METHOD_TARGET ppropertyunset.OBJECT ppropertyunset.METHOD) = (pfunction)
 def $property_unset_function(S, ppropertyunset) = eps -- otherwise
 
+dec $property_unset_access_valid(pstate, nat, ptbytes, ppropertydesc, ppropertyaccess) : bool
+def $property_unset_access_valid(S, n, ptbytes, ppropertydesc, PROPERTY_DENIED ppropertydesc) = true
+def $property_unset_access_valid(S, n, ptbytes, ppropertydesc, PROPERTY_ACCESS ptbytes) = true
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE /\ ~ppropertydesc.STATIC
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (porigin_declaring)
+  -- if porigin_declaring =/= porigin
+def $property_unset_access_valid(S, n, ptbytes, ppropertydesc, ppropertyaccess) = false -- otherwise
+
 dec $property_unset_valid(pstate, ppropertyunset) : bool
 def $property_unset_valid(S, ppropertyunset) = true
   -- if $property_unset_source(S, ppropertyunset)
@@ -95,9 +135,10 @@ def $property_unset_valid(S, ppropertyunset) = true
   -- if ~$instance_storage_freeing(S, ppropertyunset.OBJECT)
   -- if S.OBJECTS[ppropertyunset.OBJECT] = INSTANCE ppropertyunset.CLASS
   -- if $property_unset_function(S, ppropertyunset) =/= eps
-  -- if $property_resolve_scope(S, ppropertyunset.OBJECT, ppropertyunset.NAME, $closure_source_class(S, ppropertyunset.SITE)) = PROPERTY_DENIED ppropertydesc
+  -- if $property_effective_desc(S, ppropertyunset.OBJECT, ppropertyunset.NAME) = (ppropertydesc)
   -- if ppropertydesc.ORIGIN = ppropertyunset.PROPERTY /\ ppropertydesc.NAME = ppropertyunset.NAME
   -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE /\ ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.SETVISIBILITY = eps
+  -- if $property_unset_access_valid(S, ppropertyunset.OBJECT, ppropertyunset.NAME, ppropertydesc, $property_resolve_scope(S, ppropertyunset.OBJECT, ppropertyunset.NAME, $closure_source_class(S, ppropertyunset.SITE)))
   -- if ~$property_hook_declared(S, ppropertyunset.OBJECT, ppropertyunset.NAME)
 def $property_unset_valid(S, ppropertyunset) = false -- otherwise
 
@@ -157,23 +198,34 @@ def $property_unset_guard(S, pcallcontext?, eps, n, ptbytes) = false
 dec $property_unset_plan(pstate) : ppropertyunset?
 def $property_unset_plan(S) = (ppropertyunset)
   -- if S.TODO = UNSET_ARRAY :: ptask_tail*
-  -- if S.BASE = BASE_PROPERTY (POBJECT n) ptbytes
-  -- if S.RESULT = KNOWN PNULL /\ S.LOCATION = NOWHERE
+  -- if S.BASE = BASE_PROPERTY_PENDING pbase (KNOWN (PSTRING ptbytes)) z_receiver
+  -- if $property_unset_pending_receiver(S, pbase) = (n)
+  -- if S.RESULT = KNOWN PNULL
   -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if expression = NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata
+  -- if $property_pending_source_base(S, S.BASE, expression)
+  -- if S_target = $property_pending_resolve(S, pbase, KNOWN (PSTRING ptbytes), PPUNSET, z_receiver, $property_current_line(S))
+  -- if S_target.COMPLETION = NORMAL
+  -- if S_target.BASE = BASE_PROPERTY (POBJECT n) ptbytes
   -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
   -- if $property_unset_needed(S, n, ptbytes)
   -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if $property_unset_method(S, n) = (pmethoddesc)
-  -- if $property_resolve(S, n, ptbytes) = PROPERTY_DENIED ppropertydesc
+  -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
   -- if porigin_property = ppropertydesc.ORIGIN
   -- if ppropertyunset = {SITE porigin, NAME ptbytes, LINE $property_current_line(S), OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, PROPERTY porigin_property}
   -- if $property_unset_capture(S, ppropertyunset)
   -- if ~$property_unset_guard(S, S.CURRENT, S.FRAMES, n, ptbytes)
 def $property_unset_plan(S) = eps -- otherwise
 
-rule PhpStep/property-unset-call: S ~> S_inputs[.TODO = [(CALL_ARGS (PROPERTY_UNSET_TARGET ppropertyunset) eps 1 ([KNOWN (PSTRING ppropertyunset.NAME)]) (ppropertyunset.SITE) ppropertyunset.LINE), PROPERTY_UNSET_RESULT ppropertyunset] ++ S_inputs.TODO][.HELD = S.HELD]
+rule PhpStep/property-unset-call: S ~> S_target[.TODO = [(CALL_ARGS (PROPERTY_UNSET_TARGET ppropertyunset) eps 1 ([KNOWN (PSTRING ppropertyunset.NAME)]) (ppropertyunset.SITE) ppropertyunset.LINE), PROPERTY_UNSET_RESULT ppropertyunset] ++ S_inputs.TODO][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = S.HELD]
   -- if $property_unset_plan(S) = (ppropertyunset)
+  -- if S.BASE = BASE_PROPERTY_PENDING pbase poperand z_receiver
   -- if S_inputs = $hold_task_inputs(S)
+  -- if S_target = $property_pending_resolve(S_inputs, pbase, poperand, PPUNSET, z_receiver, ppropertyunset.LINE)
+  -- if S_target.COMPLETION = NORMAL
+  -- if S_target.BASE = BASE_PROPERTY (POBJECT ppropertyunset.OBJECT) ppropertyunset.NAME
 rule PhpStep/property-unset-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "magic unset source, function, or recursive access"]
   -- if $property_unset_pending(S)
   -- if $property_unset_plan(S) = eps
