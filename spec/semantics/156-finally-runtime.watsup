@@ -20,6 +20,7 @@ dec $ref_return_cursor_literal(pstate, prefreturncursor) : pvalue?
 dec $ref_return_cursor_concat(pstate, prefreturncursor) : bool
 dec $ref_return_cursor_computed_call(pstate, prefreturncursor) : bool
 dec $ref_return_cursor_assigned_int_call(pstate, prefreturncursor) : bool
+dec $ref_return_cursor_assigned_noarg_object(pstate, prefreturncursor) : bool
 dec $ref_return_cursor_assigned_folded_int(pstate, prefreturncursor) : bool
 dec $ref_return_cursor_dim_source(pstate, prefreturncursor) : bool
 dec $ref_return_cursor_property_source(pstate, prefreturncursor) : bool
@@ -246,6 +247,12 @@ def $ref_return_cursor_assigned_int_call(S, prefreturncursor) = true
   -- if pfunction.SIGNATURE.RETURNS =/= eps
   -- if $typed_exact(pfunction.SIGNATURE.RETURNS, PNULL)
 def $ref_return_cursor_assigned_int_call(S, prefreturncursor) = false -- otherwise
+def $ref_return_cursor_assigned_noarg_object(S, prefreturncursor) = true
+  -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprAssign (NExprVariable (BYTES text_variable) metadata_variable) (NExprFuncCall (NName (BYTES text_function) metadata_name) (SEQUENCE eps) metadata_call) metadata_assign) metadata_return)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if pfunction.SIGNATURE.RETURNS = [(PTBRANCH ([PTCLASS ptbytes_class])), (PTBRANCH ([PTBUILTIN "null"]))]
+def $ref_return_cursor_assigned_noarg_object(S, prefreturncursor) = false -- otherwise
 def $ref_return_cursor_assigned_folded_int(S, prefreturncursor) = true
   -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprAssign (NExprVariable (BYTES text_variable) metadata_variable) (NExprBinaryOpPlus (NScalarInt (INTEGER z_left) metadata_left) (NScalarInt (INTEGER z_right) metadata_right) metadata_plus) metadata_assign) metadata_return)
   -- if $origin_child((prefreturncursor.SOURCE), [PCFIELD 0, PCFIELD 1]) = (porigin_rhs)
@@ -279,6 +286,13 @@ def $ref_return_cursor_old_operand(S, prefreturncursor, KNOWN (POBJECT n)) = tru
   -- if $ref_return_cursor_computed_call(S, prefreturncursor)
   -- if HOBJECT n <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = pobject
+def $ref_return_cursor_old_operand(S, prefreturncursor, KNOWN (POBJECT n)) = true
+  -- if $ref_return_cursor_assigned_noarg_object(S, prefreturncursor)
+  -- if HOBJECT n <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if $typed_object_exact(S, pfunction.SIGNATURE.RETURNS, POBJECT n)
 def $ref_return_cursor_old_operand(S, prefreturncursor, KNOWN (PARRAY n)) = true
   -- if $ref_return_cursor_computed_call(S, prefreturncursor)
   -- if HARRAY n <- S.ALLOCATIONS
@@ -748,7 +762,7 @@ def $ref_return_cursor_saved_descriptor_valid(S, prefreturncursor, porigin_sourc
   -- if pdestructionrelease_original.JOBS = pdestructionjob_head :: pdestructionjob_tail*
   -- if pdestructionrelease_original[.JOBS = pdestructionjob_tail*] = pdestructionrelease
   -- if pdestructionjob_head = DESTRUCTION_VALUE (HOBJECT pdestructorcall.OBJECT)
-  -- if $ref_return_cursor_computed_call(S, prefreturncursor) \/ $ref_return_cursor_dim_source(S, prefreturncursor) \/ $ref_return_cursor_property_source(S, prefreturncursor)
+  -- if $ref_return_cursor_computed_call(S, prefreturncursor) \/ $ref_return_cursor_dim_source(S, prefreturncursor) \/ $ref_return_cursor_property_source(S, prefreturncursor) \/ $ref_return_cursor_assigned_noarg_object(S, prefreturncursor)
 def $ref_return_cursor_saved_descriptor_valid(S, prefreturncursor, porigin_source, z) = false -- otherwise
 def $call_task_valid(S, REF_RETURN_CURSOR prefreturncursor porigin_source z) = ($ref_return_cursor_valid(S, prefreturncursor, porigin_source, z) \/ $ref_return_cursor_saved_descriptor_valid(S, prefreturncursor, porigin_source, z))
 def $task_nodes(REF_RETURN_CURSOR prefreturncursor porigin_source z) = eps
