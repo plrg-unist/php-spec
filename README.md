@@ -1861,6 +1861,12 @@ now invoke a second ordinary Stringable cast against the saved first string.
 Operand order, aggregate pins/guards and selected-case continuation survive the
 callback. Live CV/cell mutation, unequal early exit and identical TypeError cleanup
 have native-source and reached-state checks; wider object handlers remain open.
+[Changed non-Stringable comparison operands](coverage/semantics/nonstringable-redispatch-review.json)
+now finish when the comparison's second implicit cast meets a live stdClass or
+ordinary source object with no effective `__toString`. That failed cast is quiet;
+the object orders after the saved first string and nonzero leaves skip later casts.
+CV rebinding, copied text, retained cells, array COW and first-caster throw cleanup
+pass three exact sources and 423 Boolean premises/12 raw steps.
 [Finite Throwable comparisons](coverage/semantics/throwable-string-comparison-review.json)
 now format builtin and inherited internal handlers at reached string leaves, including
 a new opposing object after a source cast. Root cache updates, ignored previous

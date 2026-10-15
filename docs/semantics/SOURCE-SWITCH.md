@@ -38,6 +38,13 @@ caster's finally finishes before the second enters; a supplied TypeError preserv
 the aggregate guard through the second finally, then reaches caller catch/finally
 after actual pair unwind. Wider object handlers and lifetimes remain open.
 
+[Changed non-Stringable leaves](../../coverage/semantics/nonstringable-redispatch-review.json)
+now finish when the second implicit comparison cast meets a live stdClass or
+standard source object with no effective method. Signed nonzero order skips later
+casters and resumes the original case scan. Array pins, retained property cells
+and current writes stay distinct; first-caster supplied-error/finally and a fresh
+comparison prove guard cleanup on both normal and throw paths.
+
 [Finite Throwable leaves](../../coverage/semantics/throwable-string-comparison-review.json)
 now format their internal handler atomically and persist the root cache only on
 the actual case comparison. Count/key/earlier-value skips remain cold; nested

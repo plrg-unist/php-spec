@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+After an ordinary `__toString` returns, a newly read live stdClass or standard
+source object with no effective method now fails the comparison's second implicit
+string cast quietly. Signed order finishes the original operator or skips later
+aggregate leaves. CV/COPY/retained-cell differences, pinned arrays, declared slots,
+first-caster throw/finally and fresh guard cleanup pass three exact sources and
+423 Boolean premises (403 setup + 20 pure) and 12 raw steps at 209cb21d/394.
+The unchanged refusal, initialization, syntax preparation and typed elaboration
+keep zero agreement credit. Other internal handlers, unsupported method forms and
+wider lifetimes remain partial.
+[Failed second-cast review](coverage/semantics/nonstringable-redispatch-review.json).
+
 Global `constant`/`defined` now receive int/bool/float names after argument
 effects. Weak calls use the existing string conversion; strict calls raise the
 native `TypeError`. Captured originals retain exact immutable input and callee

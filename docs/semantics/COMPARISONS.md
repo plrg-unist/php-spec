@@ -27,6 +27,13 @@ Values behind references are dereferenced. A revisited left array raises
 `Error: Nesting level too deep - recursive dependency?`; input roots survive
 comparison and budget resumption. Strict identity remains a separate operation.
 
+[Changed non-Stringable operands](../../coverage/semantics/nonstringable-redispatch-review.json)
+after an ordinary `__toString` now finish against the saved first string. A live
+stdClass or standard source instance with no effective method fails this second
+implicit cast quietly and orders after the string. The original operand order,
+CV/COPY/retained-cell identity and aggregate consumer remain intact; nonzero
+leaves skip later casts. Explicit casts and other internal handlers are separate.
+
 [Generator/Generator and Fiber/Fiber pairs](../../coverage/semantics/generator-fiber-comparison-review.json)
 return order zero through the standard zero-default-property shortcut. The pair
 predicate tests arena bounds and exact runtime tags, independently of saved VM

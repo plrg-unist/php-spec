@@ -1,0 +1,140 @@
+{
+  "milestone": "COMP62",
+  "status": "independently reviewed and accepted",
+  "behavior": "After an ordinary __toString changes the opposing captured operand to a live stdClass or standard source instance with no effective __toString, the comparison's second implicit string cast fails quietly. The object orders after the saved first string; nonzero aggregate leaves skip later casts.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+  },
+  "implementation": {
+    "spec/semantics/392-stringable-comparisons.watsup": "7a6361befe7ce8380ccecd6293f21bda11405494713bef43cccea5b478b8f112",
+    "spec/semantics/394-aggregate-stringable-comparisons.watsup": "24914e54a8c37934e915d93364a3fa6eb535983491dc9a12508b2fa17ef57b42"
+  },
+  "source_catalogue": {
+    "path": "tests/semantics/nonstringable_redispatch_cases.json",
+    "sha256": "394be3a637dbda34ffa01aa9cbc40580c54d5549000ed2897b616b5f9ef85448"
+  },
+  "tested_revision": "209cb21d39749cfbbb860268782eadaa8a4fdfa4",
+  "ordered_modules": 394,
+  "manifest_sha256": "16b07a5d2e6754f502c05eb8dfb19d5d4c56d076cc50fbbc91ed82a4cca5a9a4",
+  "contract": [
+    "Only exact stdClass or source ancestry through parentless/stdClass/SOURCE_PARENT classes is admitted. Source instances require effective-method absence, rather than merely failing the Stringable predicate. Receiver bounds, allocation and nonfreeing checks apply at the attempted second cast.",
+    "The original descriptor, saved first text and COPY/CV/pre-unwrapped CELL or property cursor stay authoritative. Existing scalar order and aggregate finish preserve orientation and stop a nonzero leaf without a second call or new receiver root.",
+    "Existing ordinary Stringable, finite Throwable, numeric Notice and pending-exception routes are unchanged. Explicit string casts keep their separate error behavior."
+  ],
+  "validation": {
+    "native": {
+      "revision": "0818945b3b7025ebdaaa1ad1f37affd556f4e560",
+      "observations": 3,
+      "normal": 3,
+      "model_agreements": 0
+    },
+    "unchanged_baseline": {
+      "revision": "0818945b3b7025ebdaaa1ad1f37affd556f4e560",
+      "status": "checked Unsupported",
+      "reason": "Stringable comparison changed object operand",
+      "stdout_prefix": "left|",
+      "elapsed_seconds": 19.610609591,
+      "agreement": 0
+    },
+    "initialization": {
+      "explicit_sl": true,
+      "assertions": 0,
+      "raw_steps": 0,
+      "source_agreements": 0
+    },
+    "sources": {
+      "agreements": 3,
+      "normal": 3,
+      "exact_stdout_and_stderr": true,
+      "seconds": [
+        51.42290158383548,
+        26.889963833615184,
+        26.06554943881929
+      ]
+    },
+    "syntax_only": {
+      "requests": 6,
+      "runtime_credit": 0,
+      "raw_steps": 0
+    },
+    "author": {
+      "boolean_premises": 307,
+      "setup": 296,
+      "pure": 11,
+      "raw_steps": 9,
+      "seconds": [
+        51.83947495184839,
+        26.112811846658587
+      ]
+    },
+    "independent": {
+      "boolean_premises": 116,
+      "setup": 107,
+      "pure": 9,
+      "raw_steps": 3,
+      "seconds": [
+        25.29084188863635
+      ]
+    },
+    "total": {
+      "boolean_premises": 423,
+      "setup": 403,
+      "pure": 20,
+      "raw_steps": 12
+    },
+    "state_fixture_failures": []
+  },
+  "review": {
+    "reviewer": "comp_review_21",
+    "semantic": "CLEAR within the stated domain",
+    "source_and_state": "Original raw commands, streams and owned closure independently bound; no accepted private reruns.",
+    "publication_verdict": "CLEAR"
+  },
+  "limits": [
+    "Other internal/custom handlers, unsupported effective method forms and expired opposing pointers are not admitted by this increment.",
+    "No new property traversal, formatter behavior, error-handler continuation, tasks, receiver roots or lifetime machinery is introduced. Wider destructor/GC/clone and phase-history behavior remains unclaimed.",
+    "The source corpus and focused states establish this bounded increment, not complete comparison or complete PHP coverage."
+  ],
+  "zend_sources": [
+    "Zend/zend_object_handlers.c:zend_std_compare_objects/zend_std_cast_object_tostring",
+    "Zend/zend_operators.c:zend_compare",
+    "Zend/zend_hash.c:zend_hash_compare_impl"
+  ],
+  "engine_bugs": [],
+  "intentional_divergences": [],
+  "artifacts": {
+    ".tools/nonstringable-redispatch-native-62/cases.json": "24cd48444100dc36d62a94a2438bcad8cadda4b07fb849fddd8b174e7b0cafad",
+    ".tools/nonstringable-redispatch-native-62/run.py": "6daef16a6e2e4bbd3d2070a62977c75fc8994725ee7263f7327a8ce35b2c6523",
+    ".tools/nonstringable-redispatch-native-62/run-native-v1/report.json": "99dd14abfa77ea938335db94a1dea747befa5c705577bbab3907a911d43d0c24",
+    ".tools/nonstringable-redispatch-support-62/actor.py": "7c1404b475564b0909cc0967bc65f61b1d2d1217b34c43df48fecbc937e3d892",
+    ".tools/nonstringable-redispatch-support-62/inputs.py": "c7b0e5222b4a24adeb211ca6f12b506f90c845db40d042e0d5080d48dadaf0fe",
+    ".tools/nonstringable-redispatch-support-62/baseline-case.json": "2d5df448af4eb1c67e9c54d5a96db936b24e8f0449e6bb8fbcac827ea3cc3902",
+    ".tools/nonstringable-redispatch-support-62/baseline.py": "be178c30640237fa28dd07313d93e114673abf1b10101b372f88886d0fdc1f36",
+    ".tools/nonstringable-redispatch-support-62/run-baseline-v1/report.json": "7cb4a56b89e605aba4c46e71bef570326d7c30fcf144869d458ffa532b729ab9",
+    ".tools/nonstringable-redispatch-support-62/affected.py": "2e7b2ac2bd8dfc0d5ad6efb5e5437feaab7d82e16e558c10b22c3d37e99dcc12",
+    ".tools/nonstringable-redispatch-support-62/initialize.py": "2bb0952efbfe9f3dbcc520bdcc369570aa3605ed374b7834f831352490b49583",
+    ".tools/nonstringable-redispatch-support-62/initializer.watsup": "7dfe8bbabac236e82d623ddb8b02769a4f1067d26fad6643ffa83eddc9ed65fc",
+    ".tools/nonstringable-redispatch-support-62/run-initialize-v1/report.json": "16849594934360dd5b7fa74f89eaf08e108314ce805a8afcd1e5db6fa535e661",
+    ".tools/nonstringable-redispatch-support-62/model.py": "9364da4f3ce2120e2afa7e2dde9684afa6ff34fc4506ccee325453dd72a43a31",
+    ".tools/nonstringable-redispatch-support-62/run-model-v1/report.json": "dbdc2ef8c0bd9d8f60dfe5786f76db012435f9ea4f68c954626a127cfe63dff1",
+    ".tools/nonstringable-redispatch-support-62/prepare.py": "9d2c2ebe5a70eade42cc4e20408fa85fa19c7194f8e8b475068f14aa846961d8",
+    ".tools/nonstringable-redispatch-support-62/syntax-v1/report.json": "33f5ba4a481d3d1d67aa6a3a2f92b988e32220bc716c0450c86d605967753fe5",
+    ".tools/nonstringable-redispatch-state-62/build.py": "a5f9e6a7a4590c1e1dc2940a79c3a44e2dd0b28822cd739521738cbab0831774",
+    ".tools/nonstringable-redispatch-state-62/helpers.watsup": "447668418df3e9ced80bd167ab031e72e05856d895d8e09543c28df33f6a5307",
+    ".tools/nonstringable-redispatch-state-62/plan.json": "4380ed226ee4cc2c3e69cce833a6fbc270346edd7565dd94d374f6b32c57a22f",
+    ".tools/nonstringable-redispatch-state-62/run.py": "ac1e8356e3adf9befb7e04833c61bde45fafeed2a10971590a298cd9c9c9bb59",
+    ".tools/nonstringable-redispatch-state-62/run-el-v1/report.json": "fa0807cd4920d9ed58afe1ba6d20483f781893a4d2b1480ecf7d0d4c0d05888c",
+    ".tools/nonstringable-redispatch-state-62/run-sl-v1/report.json": "849e599b24e618dc22dcb77dc55b47d11bbef66eca218ba1e08f4b3b1d9a8a62",
+    ".tools/nonstringable-redispatch-peer-state-62/build.py": "c7a0ba0debffae2e1443b1eb7c47850c13ce46154bac443596ae53cf1772fe8a",
+    ".tools/nonstringable-redispatch-peer-state-62/helpers.watsup": "3c402ea7fdf2b061691f0f61b18d6d3b7b9c4a55cc5dd1ccd1b3ae885136742d",
+    ".tools/nonstringable-redispatch-peer-state-62/plan.json": "6a68c33acd4008d4483a0a9d9ab1df328deb595c9db0634e83ab943b375cd573",
+    ".tools/nonstringable-redispatch-peer-state-62/run.py": "50870dc8cae3bf25e5fee4247a6557a3fa067b7d8a1c9fca0f1ae5fa4f78bee3",
+    ".tools/nonstringable-redispatch-peer-state-62/run-el-v1/report.json": "63d7127a5a1481e838de1faf028366384ebca286231c6b707dd5ea6341289d8b",
+    ".tools/nonstringable-redispatch-peer-state-62/run-sl-v1/report.json": "0065aa0b5d056c51c803013a72e0e6c77c32fde89c44aeea336b144ecfd37710"
+  },
+  "reproduction": "Retain ignored originals at their recorded File/CWD paths. The source catalogue pins actual native tuples and START identities; fresh62 scripts and state plans bind checked terms, helpers, exact commands, raw streams and owned closure. Initialization, syntax, typed elaboration, native observation and Unsupported retain zero source agreement. Raw artifacts stay outside Git."
+}

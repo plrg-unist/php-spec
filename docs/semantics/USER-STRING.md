@@ -120,8 +120,8 @@ operands/BASE and the caster retain their own owners; documentary pointer images
 add none. [Six originals and 487 reached checks](../../coverage/semantics/stringable-comparison-review.json)
 cover mutation, saved caster frames, lazy fallthrough and a nested scalar Switch
 whose TypeError is caught after caster restoration, followed by finally entry. Expired pointers and
-newly read non-Stringable or unsupported internal objects remain Unsupported; wider internal handlers and lifetimes
-remain required. Strict identity and compiled bool Switch do not invoke the cast.
+unsupported internal comparison handlers remain Unsupported; wider handlers and
+lifetimes remain required. Strict identity and compiled bool Switch do not invoke the cast.
 
 [Changed opposing operands](../../coverage/semantics/stringable-redispatch-comparison-review.json)
 now redispatch to a second ordinary Stringable instance. After the first cast, the comparison rereads its
@@ -134,6 +134,16 @@ Four exact originals and 531 Boolean premises/32 raw steps cover those paths,
 second-receiver retirement and the same TypeError through finally/caller cleanup.
 Saved string metadata and documentary operand images add no heap owners. Wider
 object handlers and receiver/destructor lifetimes remain separate obligations.
+
+[Changed non-Stringable operands](../../coverage/semantics/nonstringable-redispatch-review.json)
+now admit a live stdClass or standard source instance with no effective
+`__toString`. The comparison's second implicit string cast fails quietly, giving
+object-after-string order against the saved first text. This does not change
+explicit `(string)` casts. Original CV/COPY/cell identities, aggregate cursors and
+owners remain authoritative; a nonzero result skips later casts and drops the
+comparison guard. Three exact originals and 423 Boolean premises/12 raw steps
+cover those returns and first-caster throw/finally cleanup. Unsupported method
+forms and other internal handlers remain separate obligations.
 
 [Finite Throwable comparison](../../coverage/semantics/throwable-string-comparison-review.json)
 formats builtin and inherited internal handlers at reached object/string leaves,
