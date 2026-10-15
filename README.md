@@ -824,8 +824,13 @@ Their copied raw cache and child owners stay distinct; generic iterator mode
 discards child returns, preserves method receivers and orders child close before
 parent finally and cached values.
 See the [acquired-Generator review](coverage/semantics/generator-call-unpack-acquired-generator-review.json).
-Aggregate ordinary-call unpack, owning copied returns
-and active chains ending in detached roots, Generator by-reference
+Active shared chains may also end in detached roots whose copied return owns no
+heap nodes. Their null key raises the real unpack error before argument sending;
+retained caches, later next/return/tail execution and cleanup preserve initialization
+history. A direct middle next can consume pending initialization without advancing.
+See the [nested-detached review](coverage/semantics/generator-call-unpack-nested-detached-review.json).
+Aggregate ordinary-call unpack, owning copied returns, pending-initialization
+send/throw, Generator by-reference
 call targets and callback methods, nonnumeric raw valid changes, request/plain
 reference strings and handler replacements with
 those strings, other typed array warnings, broader array/COW interactions,

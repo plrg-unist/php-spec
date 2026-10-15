@@ -2438,11 +2438,32 @@ agree at `80ad118bf`; strict397 and four reached groups/436 premises pass there
 (author195, independent241). See the
 [acquired-Generator ledger](coverage/semantics/generator-call-unpack-acquired-generator-review.json).
 Native-only observations and the unchanged Unsupported baseline earn zero model
-agreement. Ordinary Aggregate call operands, valid-key by-reference targets,
-owning copied returns and active chains ending in detached roots remain required.
+agreement. At that cut ordinary Aggregate call operands, valid-key by-reference
+targets, owning copied returns and active chains ending in detached roots remained required.
 The397-module composition over `bb312fcd2` preserves the tested405 bytes and
 every incoming runtime selector. Independent pointwise review warrants no joined
 actor; private strict/source/state evidence retains its `80ad118bf` cut.
+
+Generator call unpack now follows finite active shared links to a detached middle
+whose copied child return owns no heap nodes. Its null key raises the real Error
+before SEND; copied current rows, retained cache owners and later return/tail
+execution remain intact. A nonowning pending-initialization bit models Zend's
+root-resume history: an inherited middle with its own cache can skip finally on
+forced close, while direct initialization or a real next that consumes the bit
+without advancing restores finally execution. The earlier omitted-middle-finally
+native answer is preserved; the assigned-yield-from probe refutes a result-demand
+explanation. Six new exact originals and one promoted prior control agree;
+strict397 and four reached groups/341 premises pass (author159, independent182).
+Runtime/source evidence retains `10c4c10bf`; fixture-only corrections and independent
+checks retain their `c150ad30a`/`5ee387433` cuts. Native-only observations, the
+unchanged baseline and original observer failures earn zero model agreement. See the
+[nested-detached ledger](coverage/semantics/generator-call-unpack-nested-detached-review.json).
+Owning copied returns, pending-initialization send/throw, ordinary Aggregate call
+operands, valid-key by-reference targets and wider callback/Fiber interactions
+remain required.
+The399-module composition over `ee0b6af27` preserves the tested Generator rules
+and the parent's disjoint storage tasks/manifest. Independent pointwise review
+and inventory pass; no joined runtime actor adds execution credit.
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or

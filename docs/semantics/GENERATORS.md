@@ -30,6 +30,15 @@ then returns its by-value completion or throws without advancing a suspended
 yield. Positional excess arguments run before the argument-count error and appear
 in its trace.
 
+Shared Generator delegation records pending initialization separately from the
+first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
+an actual API or iterator root resume clears its own bit. Cache-only getter
+refreshes preserve it. An actual `next()` with pending initialization and a live
+current consumes the bit without advancing, including after child detachment.
+Pending-initialization `send`/`throw` remain an explicit Unsupported boundary.
+This history also determines the [forced-close exception](GENERATOR-FORCE-CLOSE.md)
+for an inherited middle that owns a copied current.
+
 Literal `send` and `throw` validate and capture their single argument before
 initialization. Fresh calls first reach the initial yield, then deliver the
 value or Throwable at that suspension. `send` supplies the result of a used

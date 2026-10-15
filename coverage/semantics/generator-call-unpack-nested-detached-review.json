@@ -1,0 +1,141 @@
+{
+  "milestone": "Generator call unpack through active links ending in a detached middle",
+  "status": "independently accepted and pointwise composed on the actual canonical parent",
+  "independent_reviewer": "iterator_review_15, paired with iterator_dev_15",
+  "base": "79da8331ec78da3773f01ce41949cbea79f5735a",
+  "tested_private_code": "10c4c10bf37e1aa94b4052714d9fde9cfad90d7d",
+  "final_private_fixture": "5ee387433937379d75ab5373bfa9f623fdeacce6",
+  "modules": 397,
+  "scope": "Ordinary Generator by-value call unpack follows finite active shared links to a source-authenticated detached leaf with a copied return owning no heap nodes. Its null key raises the real Error before SEND/callee entry. Existing current() row snapshots, retained object/cache owners, later explicit next/return/tails and forced cleanup are covered.",
+  "semantics": {
+    "admission": "405 adds the existing detached predicate as a recursive leaf, retaining allocated parent/source-valid FROM_COMPLETE receipt, present CURRENT, finite depth and nonowning copied-return guards. Owning copied returns remain Unsupported.",
+    "initialization": "30 adds nonowning PENDING_INIT, initially false.289 sets it when starting a native shared-Generator link.280 clears only an actual API/iterator root on resume completion; synthetic shared-child operations preserve it, while acquired Generator iterator operations remain actual roots. Cache-only getters preserve it. Direct next with pending initialization and a live current clears the bit without advancing. Pending send/throw are explicitly Unsupported.",
+    "close": "303 tests pending initialization after input unlink against physical own VALUE/REFCELL/borrowed value/CURRENT, including present null. A borrowed shared leaf alone does not qualify. The selected skip clears the bit and closes without executing finally, using existing real frame-release jobs and pending Throwable ownership; caches remain until storage release. Directly initialized or directly next-cleared middles execute finally normally.",
+    "native_cause": "zend_generator_yield_from sets ZEND_GENERATOR_DO_INIT. zend_generator_resume tests and clears only orig_generator; an internally entered middle can retain the bit after detachment. Its destructor selects finally then the resume guard returns before it. Assigned versus bare yield-from has the same omitted-finally result; a direct middle next consumes initialization and restores later finally without advancing.",
+    "runtime_delta": "Only30/280/289/303/405 change; no owner field, new continuation, manifest or pipeline change.",
+    "module_sha256": {
+      "30": "662263766c2bfbbefbd737e6e764038b0eb2601b4af03aa9458eff0eab40ad55",
+      "280": "eb5b17611339404ace21298b436c4325f90abeef2bcc7db547e9581a9847a084",
+      "289": "139450a2a713564c0fcbb9a7fcda8905f66ea68bd03cc6ed677919523e6c0b19",
+      "303": "dac40ba7dd4adb8cf160fbe748b8d0d5addd59da74df88414f1548d8c9bb8aa0",
+      "405": "485b36e09935609f06a6431480c88463cb91dac643fecc7119ebecacf95c8a81"
+    }
+  },
+  "source_authority": [
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_SEND_UNPACK and ZEND_YIELD_FROM",
+    "vendor/php-src/Zend/zend_generators.h::ZEND_GENERATOR_DO_INIT and zend_generator_get_current",
+    "vendor/php-src/Zend/zend_generators.c::zend_generator_yield_from, zend_generator_update_current, zend_generator_resume, zend_generator_dtor_storage and zend_generator_cleanup_unfinished_execution"
+  ],
+  "validation_identity": {
+    "php": "8.5.10 CLI NTS64; source34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml5.1.0; SL, caches off and encountered determinism checks",
+    "environment": "tests/semantics/profile.json; PHP -n; LC_ALL=C; TZ=UTC; PHP_SPEC_SCRIPT_ENCODING unset; worker1. Native initial CPU3; assigned probe CPU2; exact final packet serial CPU4, fully reaped/released.",
+    "commands": "Raw reports retain exact command vectors, selections, identities, input hashes and exits. Native8s; strict/state120s; author source model100/process120s; independent source model60/process75s. State groups run separately."
+  },
+  "raw_root": ".tools/generator-call-unpack-nested-detached-16/.tools/",
+  "native_and_baseline": {
+    "new_distinct_native_originals": 6,
+    "reports": [
+      [
+        "generator-nested-detached-unpack-native-0in62pvd/report.json",
+        2
+      ],
+      [
+        "generator-nested-detached-unpack-review-native-bxtpo4xb/report.json",
+        2
+      ],
+      [
+        "generator-nested-detached-unpack-init-probe-plpn0qnk/report.json",
+        1
+      ],
+      [
+        "generator-nested-detached-unpack-next-native-991ddzqz/report.json",
+        1
+      ]
+    ],
+    "cuts": "Initial author2/peer2, unchanged baseline and assigned-result discriminator use untouched79da/397; direct-next discriminator uses10c4. Native recorders snapshot immutable catalogs, make no stdout preassertion, and capture complete raw bytes under normal exit/empty stderr. All native-only observations earn zero model agreement.",
+    "unchanged_baseline": "generator-nested-detached-unpack-baseline-yqnsvm90/report.json reuses exact641e6180 original/native: Unsupported Generator unpack delegated producer after P|G|H|C|L|V|HELD|, exit1/no timeout/no diagnostic; zero agreement."
+  },
+  "normal_sources": {
+    "new_distinct_originals": 6,
+    "reports": [
+      [
+        "generator-nested-detached-unpack-source-zymiulja/report.json",
+        4,
+        "10c4c10bf"
+      ],
+      [
+        "generator-call-unpack-nested-detached-review-source-w6kxu16_/report.json",
+        2,
+        "5ee387433"
+      ]
+    ],
+    "result": "Exact original stdout/stderr/exit agreement; all native tuples reused without replay. Covers retained object and row-COW middles, real scalar return23/tail13/outer return29, inherited-init temporary close with omitted middle finally, directly initialized temporary close with middle finally, assigned-result discrimination and direct next without advancement. Source hashes and exact native stdout remain in the maintained catalogs."
+  },
+  "promoted_prior_source": {
+    "report": "generator-detached-unpack-source-j0mgxo32/report.json",
+    "source_sha256": "1ed41ca41f96d727cd0b820d9ba1a8107493fb16379d35ef0dfa723039d8320e",
+    "result": "One separate normal agreement at10c4 for prior12 active-parent-above-detached control. Source/native bytes unchanged; only current expected classification/purpose and obsolete Unsupported metadata change. Native omitted-J answer remains authoritative.",
+    "native_recovery": "retained-nested-detached-native-16 preserves the exact selected tuple/source from prior12 generator-detached-unpack-native-followup2-p1f8x8z7, plus original-report.json. Its selected report relocates raw path/selection only; original commands remain. Empty stderr, no filename output and empty unpack Error trace make the path bridge observationally inert; no fresh native credit."
+  },
+  "new_reached_states": {
+    "groups": 4,
+    "driver_premises": 341,
+    "author_premises": 159,
+    "independent_premises": 182,
+    "reports": [
+      [
+        "fiber-state-review-gvei4jgo/report.json",
+        81,
+        "c150ad30a"
+      ],
+      [
+        "fiber-state-review-_n0dr70i/report.json",
+        78,
+        "5ee387433"
+      ],
+      [
+        "fiber-state-review-x83ea9zw/report.json",
+        105,
+        "5ee387433"
+      ],
+      [
+        "fiber-state-review-ptdypsqn/report.json",
+        77,
+        "5ee387433"
+      ]
+    ],
+    "checks": "Real queued CLOSING inherited middle skips finally through actual frame/cache jobs; actual direct-next GEN_ARGS clears only initialization with unchanged frame/store/arrays and authenticated receiver RELEASE/OP_EXIT retirement; independent ready outerfalse/middletrue row cache checks COW/retired-child RETURN23/null-key-before-SEND then real next/tails; independent directly initialized queued middlefalse runs J before A before outerF. Genuine source/claim/cache/owner/public and zero/split budget checks pass. Helper-only pending send/throw refusals add no source/native agreement.",
+    "compatibility": "Runtime and source inputs are identical across10c4/c150/5ee. Later commits correct only author observer fixtures. All accepted processes exit0/empty stderr/no timeout with stable HEAD/inputs."
+  },
+  "strict": "generator-nested-detached-unpack-author-sl-u5lvimkf/report.json passes397 modules at10c4: true/empty stderr/exit0/no timeout, stable HEAD/inputs. Initialization adds no runtime agreement.",
+  "preserved_zero_credit": [
+    "fiber-state-review-wg7rdzke at10c4 attempted77 premises but wrongly requested live complete_valid on CLOSING. c150 corrects only the observer to negative live validation plus genuine close-drop claim and closed-child RETURN23; runtime unchanged.",
+    "fiber-state-review-0z2azjfq atc150 attempted71 premises but expected old TODO tail immediately after next. Existing receiver-owner retirement legitimately prepends RELEASE and OP_EXIT. One generator-nested-detached-next-observer-egig80zh diagnostic exposes the real carrier, earning no runtime/source agreement.5ee corrects only that carrier observer and preserves strict no-advance frame/store/array assertions.",
+    "Prior12 original wrong-J native expectation failure remains in generator-call-unpack-detached-child-review.json and its external archive; no earlier failure is reclassified as agreement.",
+    "Prior11 selector scan finds no intermediate own-yield then forced close selecting the new skip: its outer tail is an actual root and clears initialization. No unrelated prior campaign was replayed."
+  ],
+  "evidence_recovery": {
+    "archive": "../php-spec-evidence-archive/generator-call-unpack-nested-detached-16/private.tar.gz",
+    "bytes": 417962,
+    "sha256": "8f86a1f03ad7e2081cff0c8dbf365a8793072d4803e9ed2c07ece0d4f0883c4f",
+    "manifest": "Sibling manifest.json maps17 raw report roles, the retained original prior report and12 ignored driver/catalog inputs.",
+    "restore": "Extract .tools members at the recorded private root. Runtime/author sources recover from10c4; author corrected fixtures fromc150/5ee; peer fixtures from the publication containing this ledger. Native catalogs preserve immutable observation inputs. Prior selected tuple and original report remain exact. Referenced binaries are identities, not archived build prerequisites."
+  },
+  "remaining": [
+    "Owning copied detached returns and pending-initialization send/throw remain Unsupported.",
+    "Ordinary-call Aggregate operands, valid-key Generator by-reference targets and broader callback/reentrant/Fiber/lifecycle interactions remain required.",
+    "No complete Generator, argument-unpack or PHP-core closure, engine bug or intentional semantic divergence is claimed."
+  ],
+  "composition": {
+    "actual_parent": "ee0b6af2786d1d99780fac9b9a765ff3a59997e9",
+    "private_publication": "0c24d2157",
+    "modules": 399,
+    "preservation": "Only30/280/289/303/405 differ from the actual parent runtime.280/289/303/405 match tested10c4 bytes exactly;30 applies the exact tested pgenerator-field hunk while preserving all incoming task variants. Every other runtime, the399-module manifest and pipeline remain actual-parent bytes. Seven partial inventory rows preserve parent array/review prefixes and unrelated fields; all other rows/fields are unchanged.",
+    "independent_seam_review": "Incoming156 typed ordinary reference-return replay cannot select Generator scalar returns.283/400 constant/NaN/class-qualified DEFINE,386/402 WeakMap/WeakReference comparison,380/407/408 magic-empty,63/409 list fetch and404/55 modulo/shift-warning heads are absent from the Generator packets. Source36 adds only class-qualified CONFIG_INVOKE DEFINE guards; OP27 adds guarded shift-assignment tasks and validation, including a disjoint30 task variant. No incoming280/289/303/405 changes or concrete interaction warrant a joined actor.",
+    "current_static_inventory": "python3 scripts/check-semantic-inventory.py: exit0,169 constructors/306 runtime obligations; git diff --check clean.",
+    "evidence_limit": "No joined strict/source/state actor or new execution credit. Private strict397/source6+prior1/state341 retain their exact10c4/c150/5ee cuts. Pointwise byte/hunk preservation and independent selector review supply the compatibility bridge."
+  }
+}

@@ -1,7 +1,7 @@
 # Generator force close
 
-Module303 runs pending finally bodies when an ordinary last-owner release closes
-a started Generator. Unstarted bodies remain silent. This extends the reviewed
+Module303 normally runs pending finally bodies when an ordinary last-owner release
+closes a started Generator. Unstarted bodies remain silent. This extends the reviewed
 Module289 delegation baseline without using held IteratorAggregate work or
 unaccepted ordinary-return changes.
 
@@ -12,6 +12,17 @@ after the finally bodies. Thus a temporary delegated child closes before its par
 (`1IOZ`), while a parameter-owned child closes afterwards (`1OIZ`). A started
 child held only through an array's reference cache also closes afterwards
 (`OIZ`). Separately rooted children and waiting siblings remain live.
+
+The pinned engine has an initialization-history exception. A middle first entered
+only through shared outer resumption can retain pending initialization. After
+input unlink, its own defined current makes forced resume clear that bit and
+return before finally. A detached copied CURRENT qualifies; a cache borrowed only
+through a shared leaf does not. The model releases the real frame and pending
+exception through the existing jobs, retaining caches until storage release.
+Direct initialization clears the bit, as does a later direct `next()` that consumes
+it without advancing; those middles execute finally on close. The
+[nested-detached review](../../coverage/semantics/generator-call-unpack-nested-detached-review.json)
+preserves both native close orders and the earlier omitted-finally observation.
 
 The release walk preserves physical owner order, including compiled local-slot
 order and key-before-value cleanup after a forbidden keyed yield. It can close
@@ -59,7 +70,7 @@ full public admission.
 
 Module 340 continues normal source exhaustion through the real shutdown,
 reverse-global and ascending object-store passes, including pure Generators.
-Direct-global last-owner release runs pending finally and frees the cache.
+Direct-global last-owner release follows these close rules and frees the cache.
 Store close also closes externally owned suspended frames; it marks the real
 handle called and transfers one native dtor pin, without replacing other owners.
 An escaping exception reaches a registered normal handler after frame close

@@ -91,7 +91,7 @@ def $generator_unpack_acquired_generator_delegate(S, n) = true
   -- if $generator_from_record_valid(S, n, pgenerator)
 def $generator_unpack_acquired_generator_delegate(S, n) = false -- otherwise
 ;; A detached root owns its copied cache and an authenticated return receipt.
-;; Owning return temporaries and detached leaves below active links stay open.
+;; Owning copied returns remain outside this admission.
 def $generator_unpack_detached(S, n) = true
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = GENERATOR pgenerator
@@ -130,6 +130,9 @@ def $generator_unpack_chain(S, n, n_depth) = true
 def $generator_unpack_chain(S, n, n_depth) = true
   -- if $(n_depth > 0)
   -- if $generator_unpack_acquired_generator_delegate(S, n)
+def $generator_unpack_chain(S, n, n_depth) = true
+  -- if $(n_depth > 0)
+  -- if $generator_unpack_detached(S, n)
 def $generator_unpack_chain(S, n, n_depth) = $generator_unpack_chain(S, n_child, $nabs($(n_depth - 1)))
   -- if $(n_depth > 0)
   -- if (HOBJECT n) <- S.ALLOCATIONS

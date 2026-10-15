@@ -34,8 +34,7 @@ close the child before parent finally and cache/SENT release. Independent child
 CVs preserve their own cached rows through real body throws and COW replacement.
 The [acquired-Generator ledger](../../coverage/semantics/generator-call-unpack-acquired-generator-review.json)
 records the focused source and reached-state evidence. Ordinary Aggregate call
-operands, valid-key by-reference targets and active chains ending in detached
-roots remain separate boundaries.
+operands and valid-key by-reference targets remain separate boundaries.
 
 When layer or original-operand cleanup throws after constructing the iterator,
 the pinned early exception branch retains its data until request cleanup.
@@ -90,6 +89,17 @@ null. A detached COMPLETE continuation owns its copied return value and adds no
 child root. Its child index checks a closed tombstone with a matching return;
 it does not certify unique historical child identity. Natural cleanup retires
 the input, cache and return owners through their actual source continuations.
+
+Module405 also admits detached leaves below finite active shared links when the
+copied return owns no heap nodes. The null key raises the real unpack Error before
+SEND or callee entry; a prior `current()` snapshot can already have copied a row.
+Retained middles later consume the real return and continue their source tails.
+Initialization history controls whether forced middle close executes finally:
+shared internal resumption preserves pending initialization, while an actual
+root resume clears it. A direct middle `next()` can clear it without advancing.
+The [nested-detached ledger](../../coverage/semantics/generator-call-unpack-nested-detached-review.json)
+records the paired retained/temporary cases and their physical cache owners.
+Owning copied returns and pending-initialization `send`/`throw` remain Unsupported.
 
 Callback admission binds the actual owner, source unit/path, stage, target, line
 and saved lexical/called scopes. Only the immediate authenticated implicit call

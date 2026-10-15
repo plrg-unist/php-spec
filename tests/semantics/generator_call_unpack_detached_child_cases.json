@@ -128,90 +128,11 @@
     "id": "generator-detached-unpack-active-parent-above-detached-required-control",
     "source": "<?php\nclass GeneratorDetachedMiddleCache12 { function __destruct() { echo \"A|\"; } }\nfunction generatorDetachedMiddleLeaf12() { echo \"C|\"; yield new GeneratorDetachedMiddleCache12; echo \"L|\"; return 23; }\nfunction generatorDetachedMiddle12() { try { echo \"H|\"; yield from $GLOBALS[\"child\"]; echo \"BAD|\"; } finally { echo \"J|\"; } }\nfunction generatorDetachedOuter12() { try { echo \"G|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD|\"; } finally { echo \"F|\"; } }\nfunction generatorDetachedOuterTarget12($value) { echo \"BAD|\"; }\n$child = generatorDetachedMiddleLeaf12(); $middle = generatorDetachedMiddle12(); $outer = generatorDetachedOuter12(); echo \"P|\"; $outer->rewind(); $child->next(); echo \"V|\", $middle->current() instanceof GeneratorDetachedMiddleCache12 ? \"HELD|\" : \"BAD|\";\nunset($child, $middle); echo \"M|\";\ntry { generatorDetachedOuterTarget12(...$outer); } catch (Error $caught) { echo \"T|\", $caught->getLine(), \"|\", $caught->getTrace() === [] ? \"NOFRAME|\" : \"FRAME|\"; }\nunset($outer); echo \"E\";\n",
     "source_sha256": "1ed41ca41f96d727cd0b820d9ba1a8107493fb16379d35ef0dfa723039d8320e",
-    "purpose": "An active parent above a separately detached middle has a distinct pinned close lifecycle (no middle finally); this nested-detached chain stays explicitly Unsupported before unpack cleanup.",
-    "expected_model": "unsupported",
+    "purpose": "Promoted nested detached-root boundary: a shared outer raises its real null-key Error, and inherited initialization preserves omitted-middle-finally cleanup.",
+    "expected_model": "normal",
     "native_stdout": "P|G|H|C|L|V|HELD|M|T|9|NOFRAME|A|F|E",
     "native_stderr": "",
-    "native_exit": 0,
-    "unsupported_reason": "Generator unpack delegated producer",
-    "unsupported_stdout": "P|G|H|C|L|V|HELD|M|",
-    "unsupported_events": [
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "80",
-            "124"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "71",
-            "124"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "72",
-            "124"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "67",
-            "124"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "76",
-            "124"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "86",
-            "124"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "72",
-            "69",
-            "76",
-            "68",
-            "124"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "77",
-            "124"
-          ]
-        ]
-      }
-    ]
+    "native_exit": 0
   },
   {
     "id": "generator-detached-unpack-present-null-key-error-precedes-byref-target",
