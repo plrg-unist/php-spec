@@ -1,0 +1,227 @@
+{
+  "scope": "Active same-object alias write to a sole implicit virtual class SET, with actual defined ordinary-CV RHS. A child inherits the unchanged setter. Resolve that operand, then raise the receiver-class no-backing Error before setter parameter conversion or another call; preserve the remaining task tail for ordinary throw/catch and leave the outer assignment uncommitted.",
+  "implementation": {
+    "base": "62f9f5d1f176ba06d6a8601475310cd6f65bd093",
+    "revision": "292bd55dffb87b1226e845d99c3f2d7729cba698",
+    "test_revision": "15982e104aa9ade0598b4cf9c987b4a76446ef64",
+    "modules": 394,
+    "files": [
+      "spec/semantics/403-backed-set-hooks.watsup"
+    ],
+    "change": "Add one authenticated pending/source/receiver/visibility/current-hook/frame and defined-CV selector. Normal RHS resolution raises Error at the inner write line; abrupt resolution propagates. Both steps pop ASSIGN while preserving its tail, and generic Unsupported is disjoint.",
+    "preserved": "No compiler/header/origin/admission, storage/layout, target/result/receive or generic return rule changes. Existing nonrecursive set_plan remains EPS for active virtual writes; no second CALL_ARGS/TYPE_RECEIVE/result restoration is created.",
+    "prior_77_bridge": "The old CLASS77 literal-RHS hybrid keeps its original pending/plan-EPS controls and remains outside the new defined-CV family. Its source/state ledgers and raw identities are unchanged; no old actor is renewed."
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor34308a6666b2d489c509541ea9befea9e2b42348",
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "absent",
+    "jobs": 1
+  },
+  "binaries": {
+    "php": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/php/bin/php",
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    "strict_compiler": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/cprefix-compiler/compiler",
+      "sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d"
+    },
+    "algorithmic": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/spectec/bin/p4spectec",
+      "sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "strict_application": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/tests/semantics/_build/default/numeric_runner.exe",
+      "sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    }
+  },
+  "engine_basis": [
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_ASSIGN_OBJ obtains GET_OP_DATA_ZVAL_PTR(BP_VAR_R) before write_property.",
+    "vendor/php-src/Zend/zend_object_handlers.c: zend_should_call_hook recognizes the current hook and same receiver; zend_std_write_property invokes zend_throw_no_prop_backing_value_access with the receiver class before a repeated setter call or parameter conversion.",
+    "vendor/php-src/Zend/zend_compile.c: zend_property_is_virtual follows literal this-property backing accesses, so the actual alias CV write leaves this property virtual."
+  ],
+  "recorders": {
+    "run.py": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/active-virtual-set-alias-probes-78/run.py",
+      "sha256": "a6165b5d762f1509a42c788fd38f488d89bde98aad31c0bc1b0cfb950daa22b8"
+    },
+    "run-compiler.py": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/active-virtual-set-alias-probes-78/run-compiler.py",
+      "sha256": "8245875a9d62ec772c50c30b0f5ff1c3f108beaed7cfb6e113f5072d6716dd55"
+    }
+  },
+  "native": {
+    "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/active-virtual-set-alias-probes-78/native-first/report.json",
+    "sha256": "60b9c9fd3032ef9de3ac831ec9a6e9032da35a64141a616aaef05475f71a3f41",
+    "revision": "62f9f5d1f176ba06d6a8601475310cd6f65bd093",
+    "completed": true,
+    "model_credit": 0,
+    "observed_exit": 0,
+    "stdout_bytes": 187,
+    "stderr_bytes": 0,
+    "process": {
+      "pid": 1773574,
+      "exit": 0,
+      "elapsed": 0.004674434661865234,
+      "cap_seconds": 45,
+      "timeout": false,
+      "group_after": []
+    },
+    "affinity": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/active-virtual-set-alias-probes-78/affinity-native-first.json",
+      "sha256": "3727a7e3954749c8a92e90c88bf28dee39882402dc33b8584d638befcd239c47"
+    },
+    "launch": "taskset -c 1 python3 .tools/active-virtual-set-alias-probes-78/run.py native --revision 62f9f5d1f176ba06d6a8601475310cd6f65bd093",
+    "observation": "One SET marker, no AFTER/RESULT marker, receiver Child Must-not-write Error, exact stored10-only cast/no value slot, outer result7 unchanged. Native output is187 bytes/normal0/empty stderr."
+  },
+  "unchanged_baseline": {
+    "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/active-virtual-set-alias-probes-78/accepted-current-baseline/report.json",
+    "sha256": "7a1f3b430390c0320190209900d6690e116d8f17a5769b6171954943f4ed05c4",
+    "revision": "62f9f5d1f176ba06d6a8601475310cd6f65bd093",
+    "completed": true,
+    "source_agreements": 0,
+    "frontend_accepted": true,
+    "adapter_checked": true,
+    "status": "unsupported",
+    "reason": "set hook assignment source or function",
+    "logical_exit": null,
+    "stdout_bytes": 99,
+    "stderr_bytes": 0,
+    "source_agreement": false,
+    "process": {
+      "pid": 1773648,
+      "exit": 1,
+      "elapsed": 10.995999097824097,
+      "cap_seconds": 75,
+      "timeout": false,
+      "group_after": []
+    },
+    "affinity": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/active-virtual-set-alias-probes-78/affinity-accepted-current-baseline.json",
+      "sha256": "034d8d3738e05e386d60edb003ef0603d7bbe5237e61af68b2f0f1a85c001061"
+    },
+    "launch": "taskset -c 1 python3 .tools/active-virtual-set-alias-probes-78/run.py baseline --revision 62f9f5d1f176ba06d6a8601475310cd6f65bd093",
+    "observation": "Genuine checked Unsupported with partial I+SET stdout; this is no semantic agreement."
+  },
+  "strict": {
+    "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/active-virtual-set-alias-probes-78/active-virtual-set-alias-compiler-urqiv08s/report.json",
+    "sha256": "a08ea92d1e57149550fe8a384ecc5bb1f94213550088ef47918d673f67bf3e4a",
+    "revision": "292bd55dffb87b1226e845d99c3f2d7729cba698",
+    "modules": 394,
+    "passed": true,
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "process": {
+      "pid": 1778029,
+      "exit": 0,
+      "elapsed": 7.400753021240234,
+      "cap_seconds": 60,
+      "timeout": false,
+      "group_after": []
+    },
+    "affinity": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/active-virtual-set-alias-probes-78/affinity-strict-292b.json",
+      "sha256": "4064ac064315dbaef6d6a16a337cc801d86d2773be5972b9735650b36aa234b2"
+    },
+    "launch": "taskset -c 5 python3 .tools/active-virtual-set-alias-probes-78/run-compiler.py 62f9f5d1f176ba06d6a8601475310cd6f65bd093 292bd55dffb87b1226e845d99c3f2d7729cba698"
+  },
+  "source_validation": {
+    "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/active-virtual-set-alias-probes-78/changed-model-rl672ob5/report.json",
+    "sha256": "f45e517c2145c7a396f165626bc7d0ddca12db52b94c8c84a877dfa3937d1020",
+    "revision": "292bd55dffb87b1226e845d99c3f2d7729cba698",
+    "completed": true,
+    "source_agreements": 1,
+    "frontend_accepted": true,
+    "adapter_checked": true,
+    "status": "normal",
+    "reason": null,
+    "logical_exit": 0,
+    "stdout_bytes": 187,
+    "stderr_bytes": 0,
+    "source_agreement": true,
+    "process": {
+      "pid": 1778161,
+      "exit": 0,
+      "elapsed": 12.247888088226318,
+      "cap_seconds": 75,
+      "timeout": false,
+      "group_after": []
+    },
+    "affinity": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/active-virtual-set-alias-probes-78/affinity-changed-292b.json",
+      "sha256": "1795e99a50c1edf69cae015cd26659df427e9ab4d9a738ad7b3f89134351dbca"
+    },
+    "launch": "taskset -c 5 python3 .tools/active-virtual-set-alias-probes-78/run.py changed --revision 292bd55dffb87b1226e845d99c3f2d7729cba698",
+    "comparison": "Complete original187-byte native stdout/empty stderr/logical0 tuple, genuine checked normal agreement."
+  },
+  "state_validation": {
+    "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/active-virtual-set-alias-protocol-wxt445oq/report.json",
+    "sha256": "15a207afab1d1a63bbd89bd6a3e3e97a93dcc212c88340313002a46f0013864c",
+    "revision": "15982e104aa9ade0598b4cf9c987b4a76446ef64",
+    "modules": 394,
+    "fixture_sha256": "ea9e268a55fadd961286fc9f52222913f71147cd76e24df54c6c3b335ca2f574",
+    "premises": 116,
+    "reached_premises": 92,
+    "derived_premises": 24,
+    "application_invocations": 1,
+    "application_evaluations": 1,
+    "source_agreements": 0,
+    "preparation": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/active-virtual-set-alias-protocol-o4s51sd_/PREPARED.json",
+      "sha256": "6af3409257c68bcf273fdc305b2624f45368d9edff2dce9ffe2c680b119e8176",
+      "accepted_credit": 0
+    },
+    "processes": [
+      {
+        "pid": 1780932,
+        "exit": 0,
+        "elapsed": 6.18757176399231,
+        "cap_seconds": 90,
+        "timeout": false,
+        "group_after": []
+      },
+      {
+        "pid": 1781199,
+        "exit": 0,
+        "elapsed": 16.483840703964233,
+        "cap_seconds": 90,
+        "timeout": false,
+        "group_after": []
+      }
+    ],
+    "affinity": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/active-virtual-set-alias-probes-78/affinity-state.json",
+      "sha256": "0b1549774c2fbff354881884f78bebbc913b52bb4052db3f5bbed0296ba0e1c4"
+    },
+    "meaning": "One genuine boot/seek reaches inner alias write8 inside outer setter call20. Defined RHS resolves20, raw Error preserves exact remaining tail, materializes/catches, and final ordinary read/cast leave storage10/no slot/result7/full187 output. Derived retained-array RHS rejects parameter conversion but selects the same raw Error without a new call/receive; source-leaf/operand/undefined/frame/function controls are task-local, not additional source agreement.",
+    "launch": "taskset -c 5 python3 tests/semantics/active_virtual_set_alias_protocol.py --revision 15982e104aa9ade0598b4cf9c987b4a76446ef64 --group error"
+  },
+  "zero_credit_records": [],
+  "permanent_tests": {
+    "tests/semantics/active-virtual-set-alias.php": "c9745f73db7abd1ef209c073fe8b795c3f5cec4c096e412fcf1f05e16b62b9f6",
+    "tests/semantics/active_virtual_set_alias_cases.json": "8e89e960c9718b59e9246344cd0094a9832d7c57e8f8feb11629b28af9b68baf",
+    "tests/semantics/active_virtual_set_alias_protocol.py": "2dad1abd45edae55e7c20e706f839e42713fcbc80ea1d68853e9d1df8f0331c3"
+  },
+  "remaining": [
+    "Literal/computed/reference or missing/undefined RHS and warning/callback input paths are outside this defined ordinary-CV slice.",
+    "Other virtual setter declarations, trait/explicit/pair forms, receivers, indirect/ref operations and wider lifetime/catch interactions remain partial."
+  ],
+  "recovery": "Original sources/streams/processes/affinity and strict/source records remain under ignored private32 .tools/active-virtual-set-alias-probes-78; state and checked preparation are in the two named protocol directories. Reconstruct with the pinned recorders/permanent tests at their original revisions. No prior CLASS77 evidence is replayed or relabeled."
+}

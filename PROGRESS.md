@@ -7,12 +7,19 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Active same-object alias writes inside a sole virtual class SET now raise the
+receiver’s Must-not-write Error after reading a defined CV RHS. No second setter
+call/conversion occurs; the task tail, outer result7 and stored10/no slot survive.
+Source1/strict394 pass at292bd; one real state passes116 =92 reached +24 derived
+at15982, including retained-array RHS priority. Other RHS/warning and virtual setter
+forms remain partial. [Review](coverage/semantics/active-virtual-set-alias-review.json).
+
 A selected sole implicit virtual class SET now omits its value slot while its
 body writes separate stored10→33. Assignment20 returns20; reads raise the receiver’s
 write-only Error, and array input fails before the body. Active same-object virtual
 setter writes retain demand and explicitly refuse a recursive plan. Source1 and
 strict394 pass at8969; two real state cuts pass252 =209 reached +43 derived at6aff.
-Wider virtual setter forms and the reentrant alias-write Error remain partial.
+Other virtual setter forms and active alias-write RHS families remain partial.
 [Review](coverage/semantics/virtual-set-only-hook-review.json).
 The 394-module composition over6bad passes retained SL initialization at37931863;
 private source/state cuts keep their recorded identities without replay.

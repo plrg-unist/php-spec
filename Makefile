@@ -898,6 +898,8 @@ test-semantics: build
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/virtual_set_only_hook_cases.json
 	python3 tests/semantics/virtual_set_only_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group set
 	python3 tests/semantics/virtual_set_only_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group errors
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/active_virtual_set_alias_cases.json
+	python3 tests/semantics/active_virtual_set_alias_protocol.py --revision "$$(git rev-parse HEAD)" --group error
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_publication_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_composed_retry_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/assertion_cases.json

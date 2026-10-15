@@ -99,10 +99,19 @@ with unchanged inheritance. Actual source ABSENT and descriptor PROP_UNINITIALIZ
 are distinct from the default helper’s PROP_INITIAL: allocation keeps no value slot.
 The body writes a different stored property10→33 and restores assignment20. A real
 read raises the receiver-class write-only Error; an array fails at hook5/caller28
-before body entry. Two cuts pass252 premises (209 reached,43 derived). The active
-same-object alias counterexample retains pending demand but refuses a recursive
-plan; its engine Error and other virtual setter forms remain required.
+before body entry. Two cuts pass252 premises (209 reached,43 derived). Active
+same-object writes still refuse recursive SET plans; the defined-CV Error path is
+described below. Other virtual setter forms remain required.
 [Virtual setter review](../../coverage/semantics/virtual-set-only-hook-review.json).
+
+A real same-object alias write inside that virtual SET now resolves its defined
+ordinary CV input, then raises the receiver-class Must-not-write Error at write8.
+It preserves the remaining task tail for throw/catch, skips setter conversion/call,
+and leaves outer result7 plus stored10/no value slot unchanged. One genuine cut
+passes116 premises (92 reached,24 derived), including array-input Error priority
+and RHS-leaf/operand/frame refusals. Other RHS, missing-variable warnings and wider
+receiver/catch/lifetime forms remain partial.
+[Alias-write review](../../coverage/semantics/active-virtual-set-alias-review.json).
 
 Effective virtual getters without defaults retain the same declaration, function
 and return type while omitting the physical slot. The receiver owns no returned-value edge;

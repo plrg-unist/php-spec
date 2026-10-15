@@ -2369,6 +2369,10 @@ while its body changes a separate stored10 to33. Assignment20 still returns20;
 reads raise the receiver’s write-only Error and bad arrays fail before the body.
 One original and two states/252 checks are in the
 [virtual setter review](coverage/semantics/virtual-set-only-hook-review.json).
+An active virtual SET writing through a same-object alias now raises the receiver’s
+Must-not-write Error for input from a defined local variable. No second SET runs;
+stored10 and the outer result7 remain unchanged. One original and one state/116
+checks are in the [alias-write review](coverage/semantics/active-virtual-set-alias-review.json).
 Hooked iteration, defaulted virtual hooks, other paired or virtual setters, wider trait
 setters, other explicit setter parameter forms, references, other inherited/trait
 and wider receiver, quiet or indirect-access families and `__unset` consumers remain required.
