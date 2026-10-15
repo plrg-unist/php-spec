@@ -274,6 +274,22 @@ The 398-module composition over 84d03da88 preserves incoming Generator, list,
 WeakMap, NaN-define and return selectors pointwise. Source3/state648 retain their
 private397 cuts without replay.
 
+Nested global constant arrays now create zero-argument stdClass leaves after
+authentic earlier facts. Full and shorthand ternaries transfer the selected
+newborn through immediate source arms to its exact completed birth receipt.
+Fresh eval duplicate candidates remain distinct from installed leaves and retire
+after the real Warning handler; shared property writes and ordinary COW persist.
+Four exact sources and author596 plus independent511 SL premises pass1107.
+Literal244 retains its original cut; corrected eval352 and peer307/204 retain
+their affected398-module cuts. The
+[nested-birth review](coverage/semantics/global-constant-stdclass-new-review.json)
+records exact source paths, birth/flow guards, query owners and cleanup.
+The unchanged Unsupported, first peer transfer failure and original cross-unit
+empty-array fixture failure retain zero passing credit. A relocated-path pass
+also retains zero credit; the accepted peer retry uses its native filename/cwd.
+Defaults, arguments, whole-array conditional transfer/coalescing and wider
+producers remain partial.
+
 Selected inherited `__unset(string): void` now dispatches direct CV/literal-name
 access to a declared private property. Accessible public unset skips magic;
 the callback retains Parent lexical scope and Child called scope, removes the
