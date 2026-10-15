@@ -137,8 +137,8 @@ check these distinctions and later copies in the
 [empty ledger](../../coverage/semantics/dynamic-constant-empty-review.json).
 
 Class-qualified `defined` queries reuse inherited lookup and the actual caller's
-lexical visibility. Missing or inaccessible members return false; a visible positive
-requires a folded user-class descriptor, without deferred value evaluation. An absent
+lexical visibility. Missing or inaccessible members return false. The initial
+folded-value slice did not evaluate deferred descriptors. An absent
 class can enter the named autoload queue and resume the same captured query once.
 The loader receives the class name while the API trace retains the full query/carrier
 and dynamic selection. A loaded class's missing member never reloads it. Two exact
@@ -185,6 +185,16 @@ fact/cache guards compare that carrier with its immutable global row; generic gl
 publication rules are unchanged. Existing structural variable-input policy remains.
 Two exact sources and two public fronts/314 premises cover those distinctions in the
 [deferred-query ledger](../../coverage/semantics/class-qualified-constant-deferred-review.json).
+Qualified `defined` also runs this bounded requested initializer, then returns
+true rather than its cached value. Visibility is checked first, so an inaccessible
+member does not initialize or cache even if its global is missing. A visible
+failure preserves the captured `defined` API frame and permits a genuine retry.
+The exact declaration binder must precede the same `DYNAMIC_DEFINED_RESUME`;
+fixed global/explicit-global and retained selected sites authenticate entry.
+Fixed namespace fallback stays outside this deferred path. Two exact sources and
+two public fronts/415 premises cover quiet rejection, failed context restoration,
+retry, boolean results and request-string cache identity in the
+[deferred-defined ledger](../../coverage/semantics/class-qualified-defined-deferred-review.json).
 
 Mutable-empty/deferred/nonliteral class-array query values and wider domains remain open.
 

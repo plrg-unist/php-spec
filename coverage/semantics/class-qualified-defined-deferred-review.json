@@ -1,0 +1,79 @@
+{
+  "status": "private independently accepted; actual-parent composition pending",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; canonical PHP/profile identities and full raw streams in the six reports",
+  "base": "c8161a0e2f647d3d7b89ce1b648c8f05d6b4d6ad",
+  "implementation_revision": "d2c8061a87efe9966759e1076ee15f1c72ebe9fc",
+  "module_count": 394,
+  "tested_cuts": {
+    "sources": {
+      "runtime_diff_sha256": "0714379054d208fef78763e2bcd1c5fca37eaa9cfd68507ea60076676ec0c4c6",
+      "module400_sha256": "62c3f8a67092743e6f5601934e82f1a365ffa209bab7799f0d4cdf4697338ef7",
+      "source_agreements": 2
+    },
+    "public": {
+      "runtime_diff_sha256": "f79db9f32a372de5b588ae615a581a92182ce39b675b4dc6947a4c4dce596f5b",
+      "fronts": 2,
+      "premises": [
+        241,
+        174
+      ],
+      "files": {
+        "spec/semantics/400-dynamic-constants.watsup": "798bd9bd83966114bdf8f1d56b4583307af20d5daf6a1a9b449d9693fc64b13c",
+        "tests/semantics/class_defined_deferred_call_protocol.py": "c6a411aebb161420b51be43a9b4914d53fbf7bf7810320acc16fcd63c51841bf"
+      }
+    },
+    "bridge": "The sole later runtime change requires the existing source/retained-selection site predicate before defined starts deferred evaluation. It refuses unsupported fixed namespace fallback before effects and leaves constant() unchanged. Both original-derived full public chains validate this narrowing; source comparisons retain 07143790 without replay."
+  },
+  "behavior": [
+    "SILENT class lookup still evaluates a visible requested untyped plain-global-name initializer before returning true. Missing/inaccessible members stay false before initializer effects; an unrelated bad sibling is not evaluated and the class table is not marked updated.",
+    "A missing global raises Error at the captured defined API line/full-query frame, restores initializer context and leaves no failed cache. Defining that global permits retry; only successful requested values enter existing CCCACHE history.",
+    "The common CLASS_CONST_CALL certificate and exact declaration binder must match the adjacent DYNAMIC_DEFINED_RESUME with the same captured CONFIG. Current KIND/resume remain distinct from constant(), while historical cache site validation recognizes either real API.",
+    "A runtime REQUEST_STRING and PVSTRING false survive defined-produced facts/cache, later constant() readback and real caller CV writes. Existing class-specific value/fact guards and generic global rules are unchanged.",
+    "Variable arguments keep structural capture authority; arbitrary coordinated historical payload provenance is not claimed. Request fields/status, ownership and old constant/HALT/global dispatch semantics are unchanged."
+  ],
+  "engine_routes": [
+    "Zend/zend_builtin_functions.c::ZEND_FUNCTION(defined) calls zend_get_constant_ex with executed scope and ZEND_FETCH_CLASS_SILENT, then tests its result; initializer exceptions still propagate.",
+    "Zend/zend_constants.c::zend_get_class_constant_ex checks access before requested AST evaluation via zend_update_class_constant(c,name,c->ce); it does not update unrelated class members.",
+    "Zend/zend_API.c::zend_update_class_constant and Zend/zend_execute_API.c::zval_update_constant_with_ctx preserve the failed AST for retry and copy the actual global value without direct-literal string interning."
+  ],
+  "accepted": {
+    "source_agreements": 2,
+    "public_fronts": 2,
+    "public_premises": 415,
+    "successful_requested_cache_insertions": 3,
+    "production_chains": 2,
+    "budget_resumptions": 2,
+    "raw_steps": 0,
+    "driven_forged_states": 0,
+    "checks": "Genuine bool-versus-cache values; inaccessible HIDDEN and unrelated BAD remain uncached; defined Error/line/query and catch restoration; retry31 with retained GOOD17; request-string facts/cache/readbacks; exact binder/resume/source/KIND/nonce and malformed carrier controls. Pure malformed states are never driven."
+  },
+  "preserved_zero_credit": "Native2, the intentionally Unsupported unchanged baseline, frontend/adapter preparation and standalone full-file parse-only records retain zero agreement credit. No affected source or public numeric actor failed. Earlier V48/V50 source/state cuts are unchanged; no new build or portability claim.",
+  "remaining": "Other deferred initializer syntax, typed members, special/nonprimitive globals, deferred arrays/objects, fixed namespace fallback, keyword/internal/trait/interface/enum targets, coercions, owning/FCC calls and wider class/autoload validation remain required. The family and complete core remain partial.",
+  "artifacts": {
+    "native_pair": {
+      "path": ".tools/dynamic-review-02/static-native-v51/report.json",
+      "sha256": "f63a82f3c5811ac76eba48ddb724401d9c900a6099f48d97d55ba738fedcf19c"
+    },
+    "unchanged_requested_baseline": {
+      "path": ".tools/dynamic-source-class-defined-deferred-baseline-31/report.json",
+      "sha256": "945f20e91d363ff0aa04c14233be21637dddaa5bc0e538673cd62510c63b31d8"
+    },
+    "affected_requested_source": {
+      "path": ".tools/dynamic-source-class-defined-deferred-model-32/report.json",
+      "sha256": "599a040d5c19ffdd903ecf22449ade1a3f84590798da26794befece4be45bfa7"
+    },
+    "selected_string_source": {
+      "path": ".tools/dynamic-source-class-defined-deferred-selected-model-31/report.json",
+      "sha256": "aef4e39c37d3729509cf1c24859b447a81e74e5e368ff94e087224ee58d6940a"
+    },
+    "public_preparation": {
+      "path": ".tools/dynamic-source-class-defined-deferred-state-01/fixtures-report.json",
+      "sha256": "9533aefc94b33e942e2c7b8b83c0ad09c70c5c8fc917cec31f8d5d58c5a34a0d"
+    },
+    "public_two_fronts": {
+      "path": ".tools/dynamic-source-class-defined-deferred-state-01/check-report.json",
+      "sha256": "10be32df53f2f3931a613ad6f6f5e736a81eaa78e1792734ab32a0fcc42f77a0"
+    }
+  },
+  "recovery": "Canonical ignored originals/raw preserve exact paths, PHP/profile/pipeline identities, commands/streams/exits and caps. class_defined_deferred_call_protocol.py --phase fixtures --sources/--output prepares both original-derived fronts; --phase check runs the full module list with --sl, timeout90 each, retry then conditional string, stop-first under host240. Source CLI60/process90/host120; native PHP30/host120. Standalone parse-only records are state01/{retry,string}/parse-only. Metadata changes require no semantic rerun."
+}

@@ -915,7 +915,7 @@ cycles remain Unsupported.
 Class-qualified `defined` now checks inherited user constants with lexical visibility
 and quiet misses. Named autoload resumes the same captured query once.
 [Two exact sources and 288 public premises](coverage/semantics/class-qualified-defined-review.json)
-cover the full-query trace and retained selection; deferred evaluation and wider class
+cover the full-query trace and retained selection; at that cut, deferred evaluation and wider class
 query domains remain Unsupported.
 Class-qualified `constant` returns folded primitive/literal values with lexical
 visibility and API Errors. Named autoload retains the captured query across caller
@@ -937,6 +937,12 @@ now initialize only the requested untyped plain-global-name member. Missing valu
 leave no cache and can be retried; request-string identity survives later CV writes.
 Two exact sources and 314 public premises cover API traces, context restoration,
 cache custody and carrier checks. Other deferred initializer/value domains remain open.
+[Deferred qualified `defined`](coverage/semantics/class-qualified-defined-deferred-review.json)
+now evaluates the same bounded visible initializer before returning true. Quiet
+inaccessible members avoid evaluation; actual initializer Errors retain the
+`defined` API frame and can be retried. Two exact sources and 415 public premises
+cover boolean results, request-string caches and context/resume authority; wider
+initializers, class/autoload interactions and fixed namespace fallback remain open.
 [Untyped positional defaults](docs/semantics/SOURCE-POSITIONAL-DEFAULTS.md) now preserve
 omitted receives, declaration context, observable caches and fresh reference/array
 ownership. [Independent acceptance](coverage/semantics/default-parameter-review.json)

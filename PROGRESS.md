@@ -7,6 +7,16 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Class-qualified `defined` now initializes a requested untyped plain-global-name
+member before returning true. Inaccessible members stay false without evaluation;
+a missing global raises the actual `defined` Error and permits retry after
+definition. Two exact sources and two public fronts/415 premises pass, preserving
+request-string cache identity and exact binder/resume authority. Source comparisons
+retain runtime diff 07143790; current public chains cover the narrow source-site
+guard at f79db9. Other initializers, fixed namespace fallback and wider class,
+autoload and owning forms remain open.
+[Deferred-defined ledger](coverage/semantics/class-qualified-defined-deferred-review.json).
+
 Selected-cell ADD now raises TypeError from live raw scalar operand types when
 RIGHT conversion fails after a leading-numeric warning. Completed RIGHT warnings
 still deliver their cached number despite later invalid writes. Two exact originals
@@ -294,7 +304,7 @@ visibility and quiet missing/inaccessible results. Named autoload retains the fu
 query and dynamic selection, then resumes once; a missing member on a loaded class
 never reloads it. Two exact source comparisons pass with runtime diff e355; two
 public fronts/288 premises pass with runtime diff 5d45 after a narrow carrier guard.
-The baseline/native/preparation evidence retains 0. Deferred evaluation, keyword/internal/
+The baseline/native/preparation evidence retains 0. At that cut, deferred evaluation, keyword/internal/
 trait/interface/enum queries, coercions and wider owning forms remain Unsupported.
 [Qualified-defined ledger](coverage/semantics/class-qualified-defined-review.json).
 The 391-module composition over 0420409 passes independent pointwise review at
