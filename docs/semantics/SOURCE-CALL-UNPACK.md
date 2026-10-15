@@ -372,9 +372,25 @@ until caught-exception release. A warning-handler throw precedes this receive.
 This follows `SEND_UNPACK`, `ZVAL_NEW_REF`, `RECV`/`RECV_INIT` and
 `zend_verify_recv_arg_type`. Reversed union order, nonnullable/other type shapes,
 variadic targets, actual later sends and wider source/live replacement behavior
-remain required. The
+remained required at that cut. The
 [typed reference review](../../coverage/semantics/iterator-call-unpack-typed-reference-review.json)
 keeps the new source/state cuts separate from prior evidence.
+
+Noninitial stable object property-reference sends now accept a free fixed untyped
+by-reference slot after at least one earlier fixed slot is filled, with no named
+extras or positional extras. The same direct construction and stable untyped
+source-property bounds remain. Earlier sends may own either a copied object or a
+private cell; the current raw HCELL and detached HOLD stay separate. Returning one
+raw property twice still produces two distinct private cells. Named selection can
+fill earlier holes; positional keys still require no previous named phase.
+`SEND_UNPACK` and `zend_handle_named_arg` check invalid or occupied keys before
+capture and warning. Aborts retire Iterator data before failed arguments in fixed
+parameter order, including reversed named sends. Retired SOURCE authentication
+uses the frozen object shape without reading dead source storage. The filled-slot
+bound does not assert replay of prior value history. Later arrays, typed targets,
+variadic reference sends and wider sources/live replacements remain required.
+The [noninitial reference review](../../coverage/semantics/iterator-call-unpack-noninitial-reference-review.json)
+records this extension separately from initial-send evidence.
 
 Iterator valid NaN warnings keep the raw retval in CURRENT through handler invoke,
 result, cleanup and saved Fiber frames. The native `zend_user_it_valid` wrapper

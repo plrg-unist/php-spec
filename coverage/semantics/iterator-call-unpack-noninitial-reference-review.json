@@ -1,0 +1,168 @@
+{
+  "milestone": "Noninitial fixed Iterator object property-reference sends",
+  "status": "accepted private implementation and focused validation; actual-parent composition pending",
+  "reviewer": "/root/iterator_review_01, independent of /root/iterator_dev_01",
+  "scope": "At one direct statically named Iterator construction, a stable declared untyped nonstatic property-reference object may enter a vacant fixed untyped BYREF slot after at least one fixed slot is filled. No extra named or positional buffers; named selection and per-unpack named history still govern order. Initial nullable-class/array and untyped reference-send rules are preserved.",
+  "semantic_cut": "40cbbedc96ef60419671ae43e0d662d62e810878",
+  "latest_test_only_cut": "20a1d34e9a89cebf3a07babe8d4541352de2d629",
+  "module": {
+    "path": "spec/semantics/385-call-iterator-unpack.watsup",
+    "sha256": "6ef904b68028e989e52c30b993b4979bf6da04a746d263e811efb8b6c60dfa2f",
+    "change": "One noninitial structural arm plus object-only capture/held-shape guards. Structural and retired receipt checks read no live source storage; live capture identity remains separately checked."
+  },
+  "target": {
+    "php": "8.5.10 CLI NTS, 64-bit",
+    "php_source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle": ".tools/php/bin/php",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "spectec": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "mode": "SL, caches off, encountered determinism checks; existing binaries reused"
+  },
+  "engine_authority": [
+    "Zend/zend_vm_def.h SEND_UNPACK: named/positional error checks precede dereference/addref; warnings precede fresh ZVAL_NEW_REF, including an exception left by the handler.",
+    "Zend/zend_execute.c zend_handle_named_arg maps fixed slots and detects duplicates; zend_cleanup_unfinished_execution -> cleanup_unfinished_calls -> Zend/zend_execute.h zend_vm_stack_free_args retires arguments in increasing parameter order.",
+    "Zend/zend_interfaces.c zend_user_it_get_current_data retains the raw return; zend_user_it_move_forward and zend_user_it_dtor invalidate it before data retirement."
+  ],
+  "review_findings": [
+    "Earlier KNOWN object roots/private cells, the raw source HCELL and detached current HOLD have separate ownership. Returning one raw property twice creates two distinct private cells sharing its object; clearing one does not clear the other.",
+    "Warning abort maps the failed hold to its fixed parameter slot after Iterator retirement, so reversed named sends retire current before earlier. Duplicate and positional-after-named errors occur before a second warning or target entry.",
+    "Retired SOURCE authentication survives erasing the dead raw STORE entry without changing the heap graph. Live handler replacement remains explicitly unsupported.",
+    "A key-created source alias survives a write through the current private cell; exact output and zero-owner checks distinguish earlier and current payload retirement. Filled-slot admission does not replay earlier value/history provenance."
+  ],
+  "validation": {
+    "native_only": {
+      "originals": 11,
+      "model_agreements": 0,
+      "reports": [
+        ".tools/iterator-noninitial-fixed-reference-native-m_bt977n/report.json",
+        ".tools/iterator-noninitial-reference-review-native-la7p2ozk/report.json",
+        ".tools/iterator-noninitial-fixed-reference-known-native-jemq26dj/report.json"
+      ],
+      "cut": "43cc7432c694b6d3f67ba6cb8a88f011ba6e3333",
+      "note": "Original7+independent3 use unchanged38505d6378. Sole added BYVALUE original runs at the same HEAD with uncommitted reviewed3856ef bytes; it is native-only, not a baseline or model cut. The historical native7 catalog snapshot is retained."
+    },
+    "unchanged_baseline": {
+      "revision": "43cc7432c694b6d3f67ba6cb8a88f011ba6e3333",
+      "report": ".tools/iterator-reference-noninitial-fixed-baseline-07864qn3/report.json",
+      "source_sha256": "51a6e33b9b298f89475d322b730b79ee9f84420f256e776b11002affc1bd453c",
+      "result": "Expected Unsupported Iterator unpack by-reference raw payload at the genuine second send, after17 exact OUTPUT events including only the first warning; no diagnostic. Zero agreement."
+    },
+    "strict": {
+      "revision": "40cbbedc96ef60419671ae43e0d662d62e810878",
+      "report": ".tools/iterator-reference-noninitial-fixed-sl-gp47499x/report.json",
+      "modules": 394,
+      "result": "PASS, true stdout, empty stderr, exit0/no timeout; HEAD and semantic/binary inputs stable"
+    },
+    "source_normal_agreements": 11,
+    "source_cuts": [
+      {
+        "revision": "40cbbedc96ef60419671ae43e0d662d62e810878",
+        "report": ".tools/iterator-call-unpack-noninitial-fixed-reference-source-kn3k1oyc/report.json",
+        "agreements": 5,
+        "note": "Only first five records accepted. Overall report failed on following parked-resume CLI timeout60s; that row retains zero credit."
+      },
+      {
+        "revision": "33b049805809193f0acab0840d9d2c31526d5b41",
+        "report": ".tools/iterator-call-unpack-noninitial-fixed-reference-source-8ldqdxrm/report.json",
+        "agreements": 3,
+        "note": "Only affected parked-resume, then unrun parked-throw and BYVALUE originals; unchanged retained native bytes, model100/process120 seconds."
+      },
+      {
+        "revision": "20a1d34e9a89cebf3a07babe8d4541352de2d629",
+        "report": ".tools/iterator-noninitial-reference-review-source-ux3_9c68/report.json",
+        "agreements": 3,
+        "note": "Reversed current alias, duplicate named key and same raw property twice; retained native3, model60/process75 seconds."
+      }
+    ],
+    "source_controls": "Two of the eleven originals catch real key-order/duplicate Errors, with one warning and no target entry. All eleven compare exact original stdout/stderr/exit and normal completion; no native rerun or observation normalization.",
+    "state_groups": 7,
+    "state_driver_premises": 524,
+    "author_premises": 371,
+    "independent_premises": 153,
+    "state_cuts": [
+      {
+        "role": "author-capture79",
+        "revision": "33b049805809193f0acab0840d9d2c31526d5b41",
+        "report": ".tools/fiber-state-review-jz1yd9qo/report.json",
+        "driver_premises": 79,
+        "process_seconds": 120
+      },
+      {
+        "role": "author-transfer90",
+        "revision": "1a53fbac9e291257f7b8ee320e01613890f97621",
+        "report": ".tools/fiber-state-review-etm1t_c2/report.json",
+        "driver_premises": 90,
+        "process_seconds": 120
+      },
+      {
+        "role": "author-retired60",
+        "revision": "1a53fbac9e291257f7b8ee320e01613890f97621",
+        "report": ".tools/fiber-state-review-zvq9f37d/report.json",
+        "driver_premises": 60,
+        "process_seconds": 120
+      },
+      {
+        "role": "author-parked75-at180",
+        "revision": "20a1d34e9a89cebf3a07babe8d4541352de2d629",
+        "report": ".tools/fiber-state-review-1rrg2i_e/report.json",
+        "driver_premises": 75,
+        "process_seconds": 180
+      },
+      {
+        "role": "author-error67",
+        "revision": "20a1d34e9a89cebf3a07babe8d4541352de2d629",
+        "report": ".tools/fiber-state-review-_9ybedm9/report.json",
+        "driver_premises": 67,
+        "process_seconds": 120
+      },
+      {
+        "role": "independent-same-raw89",
+        "revision": "20a1d34e9a89cebf3a07babe8d4541352de2d629",
+        "report": ".tools/fiber-state-review-0kqp93re/report.json",
+        "driver_premises": 89,
+        "process_seconds": 120
+      },
+      {
+        "role": "independent-reversed-alias64",
+        "revision": "20a1d34e9a89cebf3a07babe8d4541352de2d629",
+        "report": ".tools/fiber-state-review-yvz782sg/report.json",
+        "driver_premises": 64,
+        "process_seconds": 120
+      }
+    ],
+    "state_contract": "Genuine source-reached warning/send, retired abort, parked Fiber, error and body frontiers; public descriptor/heap guards, fresh-cell/owner checks, zero/one/split budgets and exact remaining output. Driver totals include five setup premises/group and embedded counterfactual checks; no standalone pure-query groups.",
+    "original_failures_zero_credit": [
+      {
+        "report": ".tools/iterator-call-unpack-noninitial-fixed-reference-source-kn3k1oyc/report.json",
+        "selection": "positional-parked-resume only",
+        "cause": "CLI timeout60s, exit1; not an external timeout or semantic result. Exact original passes with model100/process120, no semantic edit."
+      },
+      {
+        "report": ".tools/fiber-state-review-cda75vs5/report.json",
+        "cause": "Fixture final whole CALLED equality failed after full transfer/output checks.257 destructor-store-skip also records objects without __destruct. Corrected membership plus retained exact output/ownership checks pass; no semantic edit."
+      },
+      {
+        "report": ".tools/fiber-state-review-jjt_qzrl/report.json",
+        "cause": "Outer120s timeout/-9, empty output. Same source/stage/checks pass under author-only parked180s recorder cap; all other state groups remain120."
+      }
+    ],
+    "compatibility": "Runtime module bytes remain6ef throughout40cb/33b/1a53/20a.33b only exposes existing source-helper60/75 defaults and selects100/120 in this author wrapper; other wrappers/native deadlines stay unchanged.1a53 corrects only final fixture registries and adds parked exact output;20a only records/selects the parked180 cap. Accepted prior prefixes/capture are not replayed.",
+    "environment": "LC_ALL=C, TZ=UTC, PHP_SPEC_SCRIPT_ENCODING unset, one worker, root-leased CPU1/CPU4 serial stop-first; every process fully reaped. CLI100000 steps; state seek/finish4000; source/state originals and relevant inputs stable."
+  },
+  "prior_evidence": "Earlier named/later-slot/typed cuts retain their own identities without replay; their initial semantic arm is unchanged. No full-core, global determinism or equivalence claim.",
+  "remaining": [
+    "Noninitial reference arrays or typed targets; variadic property-reference sends.",
+    "Other reference sources, live payload replacement, wider sites and broader lifecycle/COW interactions."
+  ],
+  "discrepancies": "No native/model semantic mismatch or intentional engine divergence in accepted selections; the three original failed attempts remain zero credit.",
+  "artifacts": {
+    "archive": "../php-spec-evidence-archive/iterator-reference-noninitial-fixed-04/evidence.tar.gz",
+    "bytes": 578887,
+    "sha256": "a9481612ac124f938bef8577b84cdcbe8698aeab299471413f3f95b0b6a6f962",
+    "manifest": "../php-spec-evidence-archive/iterator-reference-noninitial-fixed-04/manifest.json",
+    "report_count": 17,
+    "recovery": "Extract outside Git: raw/<report directory>/ preserves original sources, fixtures, observations and reports; drivers/ preserves ad hoc commands and native7 catalog snapshot. Recover historical author helpers at their report revisions. The three independent maintained review files were untracked at tested20a: recover published copies from the Git commit containing this ledger, matching independent_inputs hashes. External archives are evidence only, never operational dependencies."
+  }
+}

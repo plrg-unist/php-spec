@@ -675,13 +675,19 @@ type shapes at fixed by-reference targets. Types are checked at receive; a later
 integer write through the fresh callee cell is allowed and leaves source aliases
 intact. Receive failures retain payloads in real TypeError traces until release.
 See the [typed reference review](coverage/semantics/iterator-call-unpack-typed-reference-review.json).
+Later object property-reference sends now accept free fixed untyped reference
+parameters after earlier fixed arguments. Prior private cells and the current
+detached payload stay separate, including repeated returns of one raw property.
+Reversed named sends release failed arguments in parameter order; duplicate or
+positional-after-named keys fail before another warning. See the
+[noninitial reference review](coverage/semantics/iterator-call-unpack-noninitial-reference-review.json).
 Valid NaN warnings retain the raw return through handler mutation, Fiber parking
 and throw. One numeric reread distinguishes copied NaN from a live reference;
 the raw return retires before current or iterator teardown.
 Generator/Aggregate ordinary-call unpack, Generator callback methods, nonnumeric
 raw valid changes, request/plain reference strings and handler replacements with
 those strings, other typed array warnings, broader array/COW interactions,
-other reference-array/object sources, later/named/typed reference sends and live
+other reference sources, later array/typed or variadic reference sends and live
 payload replacements,
 general shared named buffers and
 other type shapes and wider-site variadic object warnings remain

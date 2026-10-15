@@ -1,0 +1,32 @@
+[
+  {
+    "id": "iterator-noninitial-reference-review-reversed-current-alias",
+    "source": "<?php\nclass ReviewNoninitialA04 { public function __destruct() { echo \"A|\"; } }\nclass ReviewNoninitialB04 { public function __destruct() { echo \"B|\"; } }\nclass ReviewNoninitialIterator04 implements Iterator {\n    public $earlier;\n    public $current;\n    private int $position = 0;\n    public function __construct() { $this->earlier = new ReviewNoninitialA04(); $this->current = new ReviewNoninitialB04(); }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 2; }\n    public function &current(): mixed { echo \"C|\"; if ($this->position === 0) { return $this->earlier; } return $this->current; }\n    public function key(): mixed { echo \"K|\"; if ($this->position === 0) { return \"second\"; } $GLOBALS[\"alias\"] =& $this->current; return \"first\"; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction reviewNoninitial04(&$first, &$second) { echo \"BODY|\"; $first = null; echo \"F|\"; $second = null; echo \"G|\"; }\n$alias = null;\nset_error_handler(static function ($severity, $message, $file, $line) { echo \"H\", $severity, \":\", $message, \"|\"; return true; });\ntry { reviewNoninitial04(...new ReviewNoninitialIterator04()); }\ncatch (Error $caught) { echo \"T:\", $caught->getMessage(), \"|\"; }\necho $alias === null ? \"NULL|\" : \"HELD|\";\nunset($alias);\necho \"E\";\n",
+    "source_sha256": "34fd5d46af84d84d0e73cafc563909a47ba4330d2b126c45a721980ff0887c6e",
+    "purpose": "A second fixed named raw-property send reverses parameter order; clearing the fresh current cell leaves its source alias intact while the earlier payload retires separately.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H2:Cannot pass by-reference argument 2 of reviewNoninitial04() by unpacking a Traversable, passing by-value instead|X|V|C|K|H2:Cannot pass by-reference argument 1 of reviewNoninitial04() by unpacking a Traversable, passing by-value instead|X|V|I|BODY|F|A|G|HELD|B|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-noninitial-reference-review-duplicate-key-before-second-warning",
+    "source": "<?php\nclass ReviewNoninitialA04 { public function __destruct() { echo \"A|\"; } }\nclass ReviewNoninitialB04 { public function __destruct() { echo \"B|\"; } }\nclass ReviewNoninitialIterator04 implements Iterator {\n    public $earlier;\n    public $current;\n    private int $position = 0;\n    public function __construct() { $this->earlier = new ReviewNoninitialA04(); $this->current = new ReviewNoninitialB04(); }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 2; }\n    public function &current(): mixed { echo \"C|\"; if ($this->position === 0) { return $this->earlier; } return $this->current; }\n    public function key(): mixed { echo \"K|\"; if ($this->position === 0) { return \"second\"; } return \"second\"; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction reviewNoninitial04(&$first, &$second) { echo \"BODY|\"; $first = null; echo \"F|\"; $second = null; echo \"G|\"; }\n$alias = null;\nset_error_handler(static function ($severity, $message, $file, $line) { echo \"H\", $severity, \":\", $message, \"|\"; return true; });\ntry { reviewNoninitial04(...new ReviewNoninitialIterator04()); }\ncatch (Error $caught) { echo \"T:\", $caught->getMessage(), \"|\"; }\necho \"E\";\n",
+    "source_sha256": "9b3da0e5a64a41559b16aafbd60b46ddccb1be1ac419b78c63ed57512794a02c",
+    "purpose": "A duplicate fixed key raises Error before dereference holding, a second warning or target entry; earlier private payload and current raw source retire independently.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H2:Cannot pass by-reference argument 2 of reviewNoninitial04() by unpacking a Traversable, passing by-value instead|X|V|C|K|I|B|A|T:Named parameter $second overwrites previous argument|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-noninitial-reference-review-same-source-two-private-cells",
+    "source": "<?php\nclass ReviewNoninitialShared04 { public function __destruct() { echo \"O|\"; } }\nclass ReviewNoninitialRepeat04 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = new ReviewNoninitialShared04(); }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 2; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; return $this->position; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction reviewNoninitialShared04(&$first, &$second) { echo \"BODY|\"; $first = null; echo \"ONE|\", $second === null ? \"BAD|\" : \"HELD|\"; $second = null; echo \"TWO|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) { echo \"H\", $severity, \":\", $message, \"|\"; return true; });\nreviewNoninitialShared04(...new ReviewNoninitialRepeat04());\necho \"E\";\n",
+    "source_sha256": "a06e6b08f13a4a28faf9cea559fb5a04a36635d86ef8c6a29dbc0b55ef1c210a",
+    "purpose": "Returning the identical property reference twice creates two distinct private fixed parameter cells sharing one object; clearing the first leaves the second live and the destructor runs once after the second clear.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H2:Cannot pass by-reference argument 1 of reviewNoninitialShared04() by unpacking a Traversable, passing by-value instead|X|V|C|K|H2:Cannot pass by-reference argument 2 of reviewNoninitialShared04() by unpacking a Traversable, passing by-value instead|X|V|I|BODY|ONE|HELD|O|TWO|E",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]

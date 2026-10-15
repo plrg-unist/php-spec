@@ -1435,10 +1435,26 @@ precede receive. Strict391, thirteen new originals and nine genuine-source state
 groups/629 driver premises pass at `c9f29a120`. Earlier evidence retains its own
 cuts without replay. Both unchanged named and positional Unsupported frontiers retain
 zero agreement. Reversed/nonnullable/other type shapes, variadic targets, actual
-later sends and wider sources/live replacements remain required.
+later sends and wider sources/live replacements remained required at that cut.
 [Typed reference review](coverage/semantics/iterator-call-unpack-typed-reference-review.json).
 Canonical394 composition over `bf7fd3bba` passes inventory and strict SL at
 `c04ac28e9`; private source/state evidence retains its original cuts.
+
+Noninitial stable object property-reference sends now accept vacant fixed untyped
+BYREF slots after an earlier fixed slot is filled, without extra argument buffers
+at the same direct construction. Earlier copied roots/private cells, raw source
+cells and detached holds stay separate; repeated raw properties create distinct
+private callee cells. Reversed named aborts release by parameter order after
+Iterator retirement; duplicate or positional-after-named keys fail before another
+warning. Retired receipts read no dead source storage. Strict394 passes at `40cbbedc9`; eleven new originals
+compose first five there with remaining author three and independent three at
+later test-only cuts. Seven genuine-source groups/524 driver premises compose
+retained capture79, author292 and independent153. The unchanged Unsupported
+baseline, original source/parked-state timeouts and transfer fixture failure keep
+zero credit; corrections touch test bounds/registry assertions only. Earlier cuts
+are retained without replay. Later arrays, typed/variadic targets and wider
+sources/live replacements remain required.
+[Noninitial reference review](coverage/semantics/iterator-call-unpack-noninitial-reference-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or
