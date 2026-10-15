@@ -98,6 +98,36 @@ def $recorded_runtime_site(S, porigin) = true
   -- if $intrinsic_lookup(preqbytes, preqbytes_fallback?) = (pintrinsic)
   -- if pintrinsic = INTRINSIC_TRIGGER_ERROR \/ pintrinsic = INTRINSIC_USER_ERROR
 def $recorded_runtime_site(S, porigin) = false -- otherwise
+;; Selected calls retain their exact nonowning capture, independently of later
+;; same-site selections. Immutable compiler facts constrain literal arguments.
+dec $recorded_call_value_matches(pvalue, pvalue?) : bool
+def $recorded_call_value_matches(pvalue, eps) = true
+def $recorded_call_value_matches(pvalue, (pvalue_expected)) = ($string_plain(pvalue) = $string_plain(pvalue_expected))
+dec $recorded_call_argument_valid(pstate, pconfigcall, nat, pvalue) : bool
+def $recorded_call_argument_valid(S, pconfigcall, n, pvalue) = true
+  -- if $intrinsic_argument(S, pconfigcall.SITE, n) = ((expression, false, eps, porigin_argument, z))
+  -- if $recorded_call_value_matches(pvalue, $compiled_read(S, porigin_argument))
+def $recorded_call_argument_valid(S, pconfigcall, n, pvalue) = false -- otherwise
+dec $recorded_runtime_call_valid(pstate, pconfigcall) : bool
+def $recorded_runtime_call_valid(S, pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_TRIGGER_ERROR \/ pconfigcall.KIND = INTRINSIC_USER_ERROR
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps /\ ~pconfigcall.NAMED
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_message), NAMED_SENT (KNOWN (PINT 256))]
+  -- if $config_nodes(pconfigcall) = eps
+  -- if $string_bytes(pvalue_message) = (n_message*)
+  -- if $string_plain(pvalue_message) = pvalue_message \/ $string_carrier_valid(S, pvalue_message)
+  -- if pconfigcall.SELECTION = (n_nonce)
+  -- if $(n_nonce < |S.SELECTEDCALLS| /\ n_nonce < S.SELECTSEQ)
+  -- if S.SELECTEDCALLS[n_nonce] = pselectedcall
+  -- if pselectedcall.NONCE = n_nonce /\ pselectedcall.SITE = pconfigcall.SITE
+  -- if pselectedcall.KIND = pconfigcall.KIND /\ pselectedcall.LINE = pconfigcall.LINE
+  -- if $selected_entry_source_valid(S, pselectedcall)
+  -- if $origin_node(S.SOURCES, pconfigcall.SITE) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
+  -- if $config_sent_shape(S, pconfigcall)
+  -- if $intrinsic_count(S, pconfigcall.SITE) = (pconfigcall.INDEX)
+  -- if $recorded_call_argument_valid(S, pconfigcall, 0, pvalue_message)
+  -- if $recorded_call_argument_valid(S, pconfigcall, 1, PINT 256)
+def $recorded_runtime_call_valid(S, pconfigcall) = false -- otherwise
 dec $recorded_function_site(pstate, porigin) : bool
 def $recorded_function_site(S, porigin) = true
   -- if $origin_node(S.SOURCES, porigin) = (NStmtFunction phpType14 (BOOLEAN b) phpType11 phpType16 phpType18 phpType23 metadata)
@@ -118,11 +148,17 @@ def $recorded_class_site(S, porigin) = true
   -- if $recorded_compile_fatal(S_bound.COMPLETION)
 def $recorded_class_site(S, porigin) = false -- otherwise
 dec $recorded_runtime_append(pstate, porigin, nat) : pstate
+dec $recorded_runtime_call_append(pstate, pconfigcall, nat) : pstate
 dec $recorded_runtime_cutoff(pdeclaration*) : (porigin, pdeclcause, nat)?
 def $recorded_runtime_cutoff([PDRECORDEDFATAL porigin pdeclcause n]) = ((porigin, pdeclcause, n))
 def $recorded_runtime_cutoff(pdeclaration :: pdeclaration_tail*) = $recorded_runtime_cutoff(pdeclaration_tail*)
   -- if pdeclaration_tail* =/= eps
 def $recorded_runtime_cutoff(pdeclaration*) = eps -- otherwise
+dec $recorded_runtime_call_cutoff(pdeclaration*) : (pconfigcall, pdeclcause, nat)?
+def $recorded_runtime_call_cutoff([PDRECORDEDCALLFATAL pconfigcall pdeclcause n]) = ((pconfigcall, pdeclcause, n))
+def $recorded_runtime_call_cutoff(pdeclaration :: pdeclaration_tail*) = $recorded_runtime_call_cutoff(pdeclaration_tail*)
+  -- if pdeclaration_tail* =/= eps
+def $recorded_runtime_call_cutoff(pdeclaration*) = eps -- otherwise
 
 ;; Historical lookup follows authenticated receipts, independently of the live index.
 dec $recorded_history_index_step(pstate, pdeclaration, nat, nat?) : nat?
@@ -130,6 +166,7 @@ def $recorded_history_index_step(S, PDCOMPILERFATAL n_unit (FATAL ptbytes z) por
 def $recorded_history_index_step(S, PDCOMPILERFATAL n_unit (FATAL ptbytes z) porigin_raw? pcompletion porigin?, n, eps) = (n)
   -- if $file_binding_at(S.FILEBINDINGS, n_unit) =/= eps /\ $eval_binding_at(S.EVALBINDINGS, n_unit) = eps
 def $recorded_history_index_step(S, PDRECORDEDFATAL porigin pdeclcause n_record, n, n_active?) = eps
+def $recorded_history_index_step(S, PDRECORDEDCALLFATAL pconfigcall pdeclcause n_record, n, n_active?) = eps
 def $recorded_history_index_step(S, pdeclaration, n, n_active?) = n_active? -- otherwise
 dec $recorded_history_index_from(pstate, pdeclaration*, nat, nat?) : nat?
 def $recorded_history_index_from(S, eps, n, n_active?) = n_active?
@@ -191,6 +228,7 @@ def $declaration_frames(S, pframe :: pframe_tail*) = $declaration_context(S, pfr
 def $declaration_cause(S) = { UNIT $pmmax($declaration_eval_unit(S.EVALCONTEXTS, |S.FRAMES|), $declaration_file_unit(S.FILECONTEXTS, |S.FRAMES|)), CALLS ($declaration_context(S, S.CURRENT) ++ $declaration_frames(S, S.FRAMES)), AUTOLOAD $declaration_autoload(S) }
 
 def $recorded_runtime_append(S, porigin, n) = S[.RECORDEDCOMPILEERROR = eps][.DECLARATIONS = S.DECLARATIONS ++ [PDRECORDEDFATAL porigin $declaration_cause(S) n]]
+def $recorded_runtime_call_append(S, pconfigcall, n) = S[.RECORDEDCOMPILEERROR = eps][.DECLARATIONS = S.DECLARATIONS ++ [PDRECORDEDCALLFATAL pconfigcall $declaration_cause(S) n]]
 
 dec $declaration_success(pstate, pstate, porigin, ppubkind) : pstate
 def $declaration_success(S, S_published, PORIGIN n pcpath, PPCLASS) = S_published[.DECLARATIONS = S.DECLARATIONS ++ [PDECLASS n (PORIGIN n pcpath)]]

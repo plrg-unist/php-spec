@@ -119,6 +119,14 @@ def $recorded_runtime_fatal(S, pconfigcall) = S_clear[.TODO = eps][.COMPLETION =
   -- if $recorded_compile_at(S.DECLARATIONS, (n_record)) = ((pcompletion, porigin?))
   -- if S_trace = $error_trace_capture(S, 256, ERROR_TRIGGER_PHASE pconfigcall 1)
   -- if S_clear = $recorded_runtime_append(S_trace, pconfigcall.SITE, n_record)
+def $recorded_runtime_fatal(S, pconfigcall) = S_clear[.TODO = eps][.COMPLETION = pcompletion][.ERRORORIGIN = porigin?][.TRACE = S_trace.ERRORFATALTRACE][.ERRORFATALTRACE = eps]
+  -- if $recorded_runtime_pending(S, 256)
+  -- if S.TODO = (ERROR_TRIGGER_PHASE pconfigcall 1) :: ptask_tail*
+  -- if $recorded_runtime_call_valid(S, pconfigcall)
+  -- if S.RECORDEDCOMPILEERROR = (n_record)
+  -- if $recorded_compile_at(S.DECLARATIONS, (n_record)) = ((pcompletion, porigin?))
+  -- if S_trace = $error_trace_capture(S, 256, ERROR_TRIGGER_PHASE pconfigcall 1)
+  -- if S_clear = $recorded_runtime_call_append(S_trace, pconfigcall, n_record)
 def $recorded_runtime_fatal(S, pconfigcall) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "recorded fatal call selection"] -- otherwise
 dec $recorded_function_pending(pstate, pfunction) : bool
 def $recorded_function_pending(S, pfunction) = true
