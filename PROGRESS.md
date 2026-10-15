@@ -7,6 +7,15 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Direct sole backed trait SET now preserves an actual builtin explicit parameter.
+Raw Trait Param/type/variance proof authenticates the Consumer callable signature
+and physical body. Trait magic, Consumer private13 and Grand called scope remain
+distinct; assignment returns original STRING20 after backing33. A narrow parameter
+fails at physical Trait hook ENDLINE7 before import. Two originals/strict394 pass
+at fddc, and two states pass281 =233 reached +48 derived at fd604. No earlier
+class cut is renewed; wider trait/parameter forms remain partial.
+[Review](coverage/semantics/trait-imported-explicit-set-hook-review.json).
+
 Bitwise NOT now stages finite in-range fractional-float deprecations from a
 defined non-reference CV through named handlers. It captures the converted long
 before dispatch; handler writes cannot replace it. Three exact originals at 895e

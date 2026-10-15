@@ -1,0 +1,47 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hashes": [
+    "38b076638d97fd468d79bf56aa636e50ea5eb96ad750c8031ba3865abfc88f57"
+  ],
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "scalar",
+      "source": "<?php\ntrait ImportedExplicitSetTrait75 {\n    public int $value = 10 {\n        set(int|string $incoming) {\n            echo 'SET:', self::class, '/', static::class, '/', __METHOD__, '/', __TRAIT__, '/', $incoming, '|';\n            $this->value = (int) $incoming + $this->offset();\n        }\n    }\n}\nclass ImportedExplicitSetConsumer75 {\n    use ImportedExplicitSetTrait75;\n    private function offset(): int { return 13; }\n}\nclass ImportedExplicitSetGrand75 extends ImportedExplicitSetConsumer75 {\n    private function offset(): int { return 900; }\n}\n$grand = new ImportedExplicitSetGrand75();\n$raw = (array) $grand;\necho 'I:', $raw['value'], '/', $grand->value, '|';\n$result = ($grand->value = '20');\n$raw = (array) $grand;\necho 'R:', ($result === '20' ? 'STRING' : 'OTHER'), '/', $result, '/', $raw['value'], '/', $grand->value, '|';\ntry {\n    $grand->value = [1];\n} catch (TypeError $error) {\n    echo 'TYPE:', $error->getMessage(), '|';\n}\n$raw = (array) $grand;\necho 'F:', $raw['value'], '/', $grand->value, '|';\n",
+      "source_sha256": "62ad8b7425c07c8a47312a26da2610a799d4a1fda08753a89bec56229627f863",
+      "stdout_base64": "SToxMC8xMHxTRVQ6SW1wb3J0ZWRFeHBsaWNpdFNldENvbnN1bWVyNzUvSW1wb3J0ZWRFeHBsaWNpdFNldEdyYW5kNzUvSW1wb3J0ZWRFeHBsaWNpdFNldFRyYWl0NzU6OiR2YWx1ZTo6c2V0L0ltcG9ydGVkRXhwbGljaXRTZXRUcmFpdDc1LzIwfFI6U1RSSU5HLzIwLzMzLzMzfFRZUEU6SW1wb3J0ZWRFeHBsaWNpdFNldENvbnN1bWVyNzU6OiR2YWx1ZTo6c2V0KCk6IEFyZ3VtZW50ICMxICgkaW5jb21pbmcpIG11c3QgYmUgb2YgdHlwZSBzdHJpbmd8aW50LCBhcnJheSBnaXZlbiwgY2FsbGVkIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jb2FsZXNjZS1nZXQtaG9va3MtcHJpdmF0ZS0zMi8udG9vbHMvdHJhaXQtaW1wb3J0ZWQtZXhwbGljaXQtc2V0LWhvb2stcHJvYmVzLTc1L3NjYWxhci5waHAgb24gbGluZSAyNHxGOjMzLzMzfA==",
+      "stdout_template_base64": "SToxMC8xMHxTRVQ6SW1wb3J0ZWRFeHBsaWNpdFNldENvbnN1bWVyNzUvSW1wb3J0ZWRFeHBsaWNpdFNldEdyYW5kNzUvSW1wb3J0ZWRFeHBsaWNpdFNldFRyYWl0NzU6OiR2YWx1ZTo6c2V0L0ltcG9ydGVkRXhwbGljaXRTZXRUcmFpdDc1LzIwfFI6U1RSSU5HLzIwLzMzLzMzfFRZUEU6SW1wb3J0ZWRFeHBsaWNpdFNldENvbnN1bWVyNzU6OiR2YWx1ZTo6c2V0KCk6IEFyZ3VtZW50ICMxICgkaW5jb21pbmcpIG11c3QgYmUgb2YgdHlwZSBzdHJpbmd8aW50LCBhcnJheSBnaXZlbiwgY2FsbGVkIGluIHtGSUxFfSBvbiBsaW5lIDI0fEY6MzMvMzN8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "trait-imported-explicit-set-hook75-scalar-native-211048a5",
+      "native_raw_sha256": "38b076638d97fd468d79bf56aa636e50ea5eb96ad750c8031ba3865abfc88f57"
+    },
+    {
+      "id": "narrow",
+      "source": "<?php\ntrait ImportedExplicitNarrowSetTrait75 {\n    public int $value = 10 {\n        set(string $incoming) {\n            echo 'SET:', self::class, '/', static::class, '/', __METHOD__, '/', __TRAIT__, '/', $incoming, '|';\n            $this->value = (int) $incoming + $this->offset();\n        }\n    }\n}\nclass ImportedExplicitNarrowSetConsumer75 {\n    use ImportedExplicitNarrowSetTrait75;\n    private function offset(): int { return 13; }\n}\nclass ImportedExplicitNarrowSetGrand75 extends ImportedExplicitNarrowSetConsumer75 {\n    private function offset(): int { return 900; }\n}\n$grand = new ImportedExplicitNarrowSetGrand75();\n$raw = (array) $grand;\necho 'I:', $raw['value'], '/', $grand->value, '|';\n$result = ($grand->value = '20');\n$raw = (array) $grand;\necho 'R:', ($result === '20' ? 'STRING' : 'OTHER'), '/', $result, '/', $raw['value'], '/', $grand->value, '|';\ntry {\n    $grand->value = [1];\n} catch (TypeError $error) {\n    echo 'TYPE:', $error->getMessage(), '|';\n}\n$raw = (array) $grand;\necho 'F:', $raw['value'], '/', $grand->value, '|';\n",
+      "source_sha256": "f2e1b58ca63591620eca3f5fedfe0e9cf37407bfb9c22276830d60415fcb00fa",
+      "stdout_base64": "",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFR5cGUgb2YgcGFyYW1ldGVyICRpbmNvbWluZyBvZiBob29rIEltcG9ydGVkRXhwbGljaXROYXJyb3dTZXRUcmFpdDc1OjokdmFsdWU6OnNldCBtdXN0IGJlIGNvbXBhdGlibGUgd2l0aCBwcm9wZXJ0eSB0eXBlIGluIHtGSUxFfSBvbiBsaW5lIDcKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "trait-imported-explicit-set-hook75-narrow-native-211048a5",
+      "native_raw_sha256": "38b076638d97fd468d79bf56aa636e50ea5eb96ad750c8031ba3865abfc88f57"
+    }
+  ]
+}
