@@ -1,5 +1,5 @@
 ;; SEND_UNPACK uses the native Generator iterator, without PHP method frames.
-;; Its marker owns DATA and the original operand; the resume operation borrows DATA.
+;; Its marker owns the input and acquired DATA; the resume operation borrows DATA.
 dec $generator_unpack_input(pstate, pgeneratorunpack) : bool
 dec $generator_unpack_abort_input(pstate, pgeneratorunpack) : bool
 dec $generator_unpack_shape(pgeneratorunpack, text) : bool
@@ -11,7 +11,7 @@ dec $generator_unpack_operation_frames(pstate, pgeneratorop, pframe*) : bool
 dec $generator_unpack_operation_valid(pstate, pgeneratorop) : bool
 dec $generator_unpack_run(pstate, pgeneratorunpack, text, ptask*) : pstate
 dec $generator_unpack_send(pstate, pgeneratorunpack, ptask*) : pstate
-dec $generator_unpack_nodes(pgeneratorunpack) : pnode*
+dec $generator_unpack_nodes(pgeneratorunpack, text) : pnode*
 dec $generator_unpack_finish(pstate, pgeneratorunpack, ptask*) : pstate
 dec $generator_unpack_discard(pstate, pgeneratorunpack, text) : pstate
 
@@ -26,7 +26,7 @@ def $generator_unpack_input(S, pgeneratorunpack) = true
   -- if $unpack_class(S, pgeneratorunpack.CALL) =/= eps
 def $generator_unpack_input(S, pgeneratorunpack) = false -- otherwise
 
-def $unpack_prepared(S, S_prepared, punpackcall, ptask_tail*) = S_prepared[.ORIGIN = $unpack_origin(S, punpackcall)][.TODO = (GENERATOR_UNPACK pgeneratorunpack "rewind") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = S.HELD]
+def $unpack_prepared(S, S_prepared, punpackcall, ptask_tail*) = S_prepared[.ORIGIN = $unpack_origin(S, punpackcall)][.TODO = (GENERATOR_UNPACK pgeneratorunpack "acquire") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = S.HELD]
   -- if S_prepared.RESULT = KNOWN (POBJECT n)
   -- if $generator_object(S_prepared, n)
   -- if pgeneratorunpack = {CALL punpackcall, OBJECT n, INPUT S.RESULT, COUNT 0, NAMED false}
@@ -38,6 +38,7 @@ def $unpack_prepared(S, S_prepared, punpackcall, ptask_tail*) = S_prepared[.COMP
   -- if pgeneratorunpack = {CALL punpackcall, OBJECT n, INPUT S.RESULT, COUNT 0, NAMED false}
   -- if ~($iterator_unpack_plain(S, punpackcall) /\ $generator_unpack_input(S_prepared, pgeneratorunpack))
 
+def $generator_unpack_shape(pgeneratorunpack, "acquire") = (pgeneratorunpack.COUNT = 0 /\ ~pgeneratorunpack.NAMED)
 def $generator_unpack_shape(pgeneratorunpack, "rewind") = (pgeneratorunpack.COUNT = 0 /\ ~pgeneratorunpack.NAMED)
 def $generator_unpack_shape(pgeneratorunpack, "next") = $(pgeneratorunpack.COUNT > 0)
 def $generator_unpack_shape(pgeneratorunpack, "ready") = (pgeneratorunpack.COUNT =/= 0 \/ ~pgeneratorunpack.NAMED)
@@ -103,9 +104,13 @@ def $generator_unpack_run(S, pgeneratorunpack, text, ptask*) = $generator_operat
   -- if $unpack_origin(S, pgeneratorunpack.CALL) = (porigin)
 
 rule PhpStep/generator-unpack-closed: S ~> $throw_scalar(S, "Exception", $ptascii("Cannot traverse an already closed generator"), $unpack_line(S, pgeneratorunpack.CALL))
-  -- if S.TODO = (GENERATOR_UNPACK pgeneratorunpack "rewind") :: ptask*
+  -- if S.TODO = (GENERATOR_UNPACK pgeneratorunpack "acquire") :: ptask*
   -- if S.OBJECTS[pgeneratorunpack.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_CLOSED
+rule PhpStep/generator-unpack-acquire: S ~> S[.TODO = (GENERATOR_UNPACK pgeneratorunpack "rewind") :: ptask*]
+  -- if S.TODO = (GENERATOR_UNPACK pgeneratorunpack "acquire") :: ptask*
+  -- if S.OBJECTS[pgeneratorunpack.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE =/= GENERATOR_CLOSED
 rule PhpStep/generator-unpack-rewind: S ~> $generator_unpack_run(S, pgeneratorunpack, "rewind", ptask*)
   -- if S.TODO = (GENERATOR_UNPACK pgeneratorunpack "rewind") :: ptask*
   -- if S.OBJECTS[pgeneratorunpack.OBJECT] = GENERATOR pgenerator
@@ -142,14 +147,15 @@ rule PhpStep/generator-unpack-item: S ~> $generator_unpack_send(S, pgeneratorunp
   -- if S.TODO = (GENERATOR_UNPACK pgeneratorunpack "ready") :: ptask*
   -- if S.OBJECTS[pgeneratorunpack.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.PHASE =/= GENERATOR_CLOSED
-def $generator_unpack_nodes(pgeneratorunpack) = [HOBJECT pgeneratorunpack.OBJECT] ++ $operand_nodes(pgeneratorunpack.INPUT)
-def $generator_unpack_finish(S, pgeneratorunpack, ptask*) = $fiber_start_unpack_release(S[.ORIGIN = pgeneratorunpack.CALL.CALLSITE][.TODO = (UNPACK_ARGS $unpack_advance(pgeneratorunpack.CALL, pgeneratorunpack.CALL.SENT)) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $generator_unpack_nodes(pgeneratorunpack))
+def $generator_unpack_nodes(pgeneratorunpack, "acquire") = $operand_nodes(pgeneratorunpack.INPUT)
+def $generator_unpack_nodes(pgeneratorunpack, text) = [HOBJECT pgeneratorunpack.OBJECT] ++ $operand_nodes(pgeneratorunpack.INPUT) -- otherwise
+def $generator_unpack_finish(S, pgeneratorunpack, ptask*) = $fiber_start_unpack_release(S[.ORIGIN = pgeneratorunpack.CALL.CALLSITE][.TODO = (UNPACK_ARGS $unpack_advance(pgeneratorunpack.CALL, pgeneratorunpack.CALL.SENT)) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $generator_unpack_nodes(pgeneratorunpack, "ready"))
 rule PhpStep/generator-unpack-finish: S ~> $generator_unpack_finish(S, pgeneratorunpack, ptask*)
   -- if S.TODO = (GENERATOR_UNPACK pgeneratorunpack "ready") :: ptask*
   -- if S.OBJECTS[pgeneratorunpack.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_CLOSED
 
-def $task_nodes(GENERATOR_UNPACK pgeneratorunpack text) = $generator_unpack_nodes(pgeneratorunpack) ++ $unpack_call_roots(pgeneratorunpack.CALL)
+def $task_nodes(GENERATOR_UNPACK pgeneratorunpack text) = $generator_unpack_nodes(pgeneratorunpack, text) ++ $unpack_call_roots(pgeneratorunpack.CALL)
 def $call_task_valid(S, GENERATOR_UNPACK pgeneratorunpack text) = $generator_unpack_valid(S, pgeneratorunpack, text)
 def $generator_internal_task(GENERATOR_UNPACK pgeneratorunpack text) = true
 def $eager_explicit_task(GENERATOR_UNPACK pgeneratorunpack text) = true
@@ -197,11 +203,11 @@ def $eager_operation_source_valid(S, pdestructionoperation) = true
   -- if $generator_unpack_abort_input(S_scope, pgeneratorunpack)
   -- if $(pgeneratorunpack.OBJECT < |S.OBJECTS|)
   -- if S.OBJECTS[pgeneratorunpack.OBJECT] = GENERATOR pgenerator
-def $generator_unpack_discard(S, pgeneratorunpack, text) = $eager_operation_begin(S_clean, S, GENERATOR_UNPACK pgeneratorunpack text, $generator_unpack_nodes(pgeneratorunpack) ++ $unpack_call_roots(pgeneratorunpack.CALL))
+def $generator_unpack_discard(S, pgeneratorunpack, text) = $eager_operation_begin(S_clean, S, GENERATOR_UNPACK pgeneratorunpack text, $generator_unpack_nodes(pgeneratorunpack, text) ++ $unpack_call_roots(pgeneratorunpack.CALL))
   -- if $destructor_operational(S)
   -- if $eager_operation_pending(S) =/= eps
   -- if S_clean = S[.ORIGIN = pgeneratorunpack.CALL.CALLSITE][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-def $generator_unpack_discard(S, pgeneratorunpack, text) = $fiber_start_unpack_release(S[.ORIGIN = pgeneratorunpack.CALL.CALLSITE][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $generator_unpack_nodes(pgeneratorunpack) ++ $unpack_call_roots(pgeneratorunpack.CALL))
+def $generator_unpack_discard(S, pgeneratorunpack, text) = $fiber_start_unpack_release(S[.ORIGIN = pgeneratorunpack.CALL.CALLSITE][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $generator_unpack_nodes(pgeneratorunpack, text) ++ $unpack_call_roots(pgeneratorunpack.CALL))
   -- if ~$destructor_operational(S) \/ $eager_operation_pending(S) = eps
 def $return_discard(S, GENERATOR_UNPACK pgeneratorunpack text) = $generator_unpack_discard(S, pgeneratorunpack, text)
   -- if S.TODO = (THROW_SEARCH n) :: ptask*

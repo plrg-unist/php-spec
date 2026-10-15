@@ -138,6 +138,47 @@ CASES = {
             *POST, 'S_two_budget = $drive_steps(S_one, 1)', '$drive(S, 2) = S_two_budget',
         ],
     },
+    'closed-cv-acquisition-errors-before-data-owner-exists': {
+        'source': SOURCES['closed-cv-generator-rejects-traversal'],
+        'stage': 'S.TODO = (GENERATOR_UNPACK pgeneratorunpack "acquire") :: ptask_tail*',
+        'checks': [
+            'n_data = pgeneratorunpack.OBJECT',
+            'pgeneratorunpack.INPUT = VARIABLE ($ptascii("generator")) 7',
+            'pgeneratorunpack.COUNT = 0', '~pgeneratorunpack.NAMED',
+            'pgeneratorunpack.CALL.SENT = {SLOTS eps, NAMED eps}',
+            'S.OBJECTS[n_data] = GENERATOR pgenerator',
+            'pgenerator.PHASE = GENERATOR_CLOSED', 'pgenerator.FRAME = eps',
+            '$lookup(S.ENV, $ptascii("generator")) = (n_cell)',
+            'S.STORE[n_cell] = DEFINED (POBJECT n_data)',
+            '$generator_unpack_nodes(pgeneratorunpack, "acquire") = eps',
+            '$task_nodes(GENERATOR_UNPACK pgeneratorunpack "acquire") = eps',
+            '$generator_unpack_nodes(pgeneratorunpack, "rewind") = [HOBJECT n_data]',
+            '$heap_owners($heap_graph(S), HCELL n_cell) = 1',
+            '$heap_owners($heap_graph(S), HOBJECT n_data) = 1',
+            '$generator_unpack_valid(S, pgeneratorunpack, "acquire")',
+            '~$generator_unpack_valid(S, pgeneratorunpack[.INPUT = KNOWN (POBJECT n_data)], "acquire")',
+            'S.EVENTS = [OUTPUT $ptascii("G|"), OUTPUT $ptascii("F|"), OUTPUT $ptascii("P|")]',
+            *ADMISSION, *ZERO, *ONE,
+            'S_one.TODO = (THROW_SEARCH n_error) :: '
+            '(GENERATOR_UNPACK pgeneratorunpack "acquire") :: ptask_tail*',
+            'S_one.OBJECTS[n_error] = THROWABLE pthrowable', 'pthrowable.KIND = "Exception"',
+            '$throwable_field(S_one, n_error, "line") = PINT 7',
+            '$string_bytes($throwable_field(S_one, n_error, "message")) = '
+            '($ptascii("Cannot traverse an already closed generator"))',
+            '$throwable_field(S_one, n_error, "trace") = PARRAY n_trace',
+            'S_one.ARRAYS[n_trace].ITEMS = eps',
+            'S_one.OBJECTS[n_data] = S.OBJECTS[n_data]',
+            'S_one.STORE = S.STORE', 'S_one.EVENTS = S.EVENTS',
+            '$heap_owners($heap_graph(S_one), HOBJECT n_data) = 1', *POST,
+            'S_two_budget = $drive_steps(S_one, 1)', '$drive(S, 2) = S_two_budget',
+            'S_done = $drive(S_one, 4000)', *DONE,
+            'S_done.EVENTS = S.EVENTS ++ [OUTPUT $ptascii("T|"), '
+            'OUTPUT $ptascii("Cannot traverse an already closed generator"), OUTPUT $ptascii("|"), '
+            'OUTPUT $ptascii("7"), OUTPUT $ptascii("|"), OUTPUT $ptascii("NOFRAME|"), '
+            'OUTPUT $ptascii("E")]',
+            '$heap_owners($heap_graph(S_done), HOBJECT n_data) = 0',
+        ],
+    },
     'body-throw-drops-borrowed-resumer-before-owning-unpack-marker': {
         'source': SOURCES['body-throw-retires-sent-payload-without-method-trace'],
         'stage': ('S.TODO = (THROW_SEARCH n_error) :: (GENERATOR_RESUME pgeneratorop) :: '
