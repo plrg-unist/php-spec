@@ -19,6 +19,9 @@ records retain zero credit; the syntax recorder correction reuses the retained
 author output without a rerun. Other slot classes, copies, right-only ingress,
 owning callbacks and unsafe/nonconvertible replacements remain required. OP12 stays
 paused. [DIV warning ledger](coverage/semantics/division-warning-review.json).
+The 394-module join over ba76 passes full SL initialization at 68e2. Independent
+pointwise review preserves the parent's unrelated runtime changes; the two source
+agreements and 224 state premises keep their private cuts without a replay.
 
 Builtin stdClass/int/float comparisons now use the numeric Notice continuation.
 Its local class image preserves the fixed builtin name and source-class origins
