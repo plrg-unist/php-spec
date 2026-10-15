@@ -1,6 +1,6 @@
 {
   "milestone": "Generator argument unpack through source Iterator delegates",
-  "status": "independently accepted privately; actual-parent composition pending",
+  "status": "independently accepted and composed on the actual canonical parent",
   "independent_reviewer": "iterator_review_01, paired with iterator_dev_01",
   "base": "cf4869268104aa2056c443e71131cc69e27f3b68",
   "tested_private_code": "4a67329a1c36cfb3101ea6211763f135ed2e0f35",
@@ -63,5 +63,14 @@
     "Aggregate-acquired delegates and ordinary-call Aggregate acquisition require their own acquisition lifetime rules.",
     "Valid-key Generator by-reference targets, owning copied returns, active chains ending in detached roots and wider callback/reentrant/Fiber interactions remain open.",
     "No full Generator, argument-unpack or PHP-core closure is claimed."
-  ]
+  ],
+  "composition": {
+    "actual_parent": "40468e2409257619f6307d64d2f86334585f45ca",
+    "tested_join": "a14595aee6b58f3c9d6df9236bcce64c50deacdf",
+    "modules": 396,
+    "preservation": "Only405 differs from the parent and matches tested095d. All other parent modules, manifest and pipeline remain byte-preserved; five inventory rows retain the actual-parent prefixes. Late unset, constant, power, comparison and paired-return guards are disjoint, so no source/state renewal is warranted.",
+    "inventory": {"report": ".tools/generator-iterator-unpack-join-inventory-bhoc9nad/report.json", "sha256": "38f848fabadb931808abdc8703ac8180a75797baf1be735c8ff6cb8e51853b97", "result": "169 constructors/306 obligations; exit0/no timeout/HEAD+inputs stable"},
+    "strict": {"report": ".tools/generator-iterator-unpack-join-sl-vwc4qezl/report.json", "sha256": "8845bfb070b45dec303aedbbddf257995c838c24a08f2ec9ef604393d0ea4745", "result": "All396 modules, SL true/empty stderr/exit0/no timeout/HEAD+inputs stable; cap120/worker1"},
+    "evidence": {"archive": "../php-spec-evidence-archive/generator-call-unpack-iterator-delegation-13/joined.tar.gz", "bytes": 31407, "sha256": "15d50b3433c837af5adb754ff49cd167cd83ac2c0ebb73af92c5835517b86db7", "manifest": "Sibling joined-manifest.json preserves the two raw reports and driver recovery."}
+  }
 }
