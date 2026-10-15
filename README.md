@@ -2426,6 +2426,11 @@ An active virtual SET writing through a same-object alias now raises the receive
 Must-not-write Error for input from a defined local variable. No second SET runs;
 stored10 and the outer result7 remain unchanged. One original and one state/116
 checks are in the [alias-write review](coverage/semantics/active-virtual-set-alias-review.json).
+A public `protected(set)` backed implicit setter now permits an inherited Child
+writer while denying a global write before parameter reception. Assignment of20 returns20
+after storage becomes33; an array reaches TypeError only through the permitted
+Child call. One original and two states/266 checks are in the
+[protected setter review](coverage/semantics/protected-set-backed-hook-review.json).
 Hooked iteration, defaulted virtual hooks, other paired or virtual setters, wider trait
 setters, other explicit setter parameter forms, references, other inherited/trait
 and wider receiver, quiet or indirect-access families and `__unset` consumers remain required.

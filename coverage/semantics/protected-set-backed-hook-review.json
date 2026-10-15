@@ -1,0 +1,301 @@
+{
+  "scope": "Public protected(set), typed, sole implicit backed class SET on a parentless declaring class, inherited unchanged by Child. Child lexical scope may call the setter; global scope is denied before parameter reception. The public storage key and original assignment input are preserved.",
+  "implementation": {
+    "base": "b168878778ab421068023a8c85575ad041f3919d",
+    "revision": "6e018af9d14e65e2921332d1443e9bf24b3e4a36",
+    "test_revision": "321b6fbfacaccc38e3443b4311ce1f84dcae3b4f",
+    "corrected_fixture_revision": "7dd75f28d4f5654dbac480ae1b8d46032a89d78b",
+    "modules": 394,
+    "files": [
+      "spec/semantics/403-backed-set-hooks.watsup"
+    ],
+    "change": "Authenticate source flags257/public key/protected setter visibility. Separate hook metadata validity from executable lexical permission; require allowed access in plan, target, pending call and saved result tail. A denied pending assignment resolves RHS then uses the existing access Error while preserving its remaining task tail. Disjoin indirect-hook Unsupported from existing access denial.",
+    "preserved": "Existing201/288 permission/prototype/message helpers, storage/layout, implicit signature, typed receive, backing write and void/original-input continuation are reused. No machine/task/schema/manifest or generic-return change; prior setter families retain their accepted cuts."
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor34308a6666b2d489c509541ea9befea9e2b42348",
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "absent",
+    "jobs": 1
+  },
+  "binaries": {
+    "php": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/php/bin/php",
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    "strict_compiler": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/cprefix-compiler/compiler",
+      "sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d"
+    },
+    "algorithmic": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/spectec/bin/p4spectec",
+      "sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "strict_application": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/tests/semantics/_build/default/numeric_runner.exe",
+      "sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    }
+  },
+  "engine_basis": [
+    "vendor/php-src/Zend/zend_object_handlers.c: zend_std_write_property checks asymmetric setter access before zend_call_known_instance_method_with_1_params; zend_asymmetric_property_has_set_access uses lexical scope.",
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_ASSIGN_OBJ resolves GET_OP_DATA_ZVAL_PTR(BP_VAR_R) before write_property.",
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_property_hooks supplies implicit value/type and void; the active same-property hook writes backing storage."
+  ],
+  "recorders": {
+    "run.py": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/protected-set-backed-hook-probes-79/run.py",
+      "sha256": "f1a11d7a81d9c1bcd1848f3131e06a61901149a66dfeffacaa0fb0896cdd7eee"
+    },
+    "run-compiler.py": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/protected-set-backed-hook-probes-79/run-compiler.py",
+      "sha256": "923d4f39e04981ab85744325d3d3658f7f238b6323cbfd13641c7e059631db00"
+    }
+  },
+  "native": {
+    "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/protected-set-backed-hook-probes-79/native-first/report.json",
+    "sha256": "6036bc5a1620dfd363c95520bc1cf399919f934b961b3ab3a102c4e023d53c36",
+    "revision": "b168878778ab421068023a8c85575ad041f3919d",
+    "completed": true,
+    "model_credit": 0,
+    "observed_exit": 0,
+    "stdout_bytes": 453,
+    "stderr_bytes": 0,
+    "process": {
+      "pid": 1795977,
+      "exit": 0,
+      "elapsed": 0.0050733089447021484,
+      "cap_seconds": 45,
+      "timeout": false,
+      "group_after": []
+    },
+    "affinity": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/protected-set-backed-hook-probes-79/affinity-native-first.json",
+      "sha256": "1de3f56ef44bf7a9a0a564e8b698b90bf665b83d8493ece1994c492d454d9c62"
+    },
+    "launch": "taskset -c 4 python3 .tools/protected-set-backed-hook-probes-79/run.py native --revision b168878778ab421068023a8c85575ad041f3919d",
+    "observation": "One Parent SET/private13 with called Child: input/result20 and physical/ordinary33. External array raises global protected(set) Error without SET entry; the same array through Child raises TypeError at hook4/caller14, final33. Anticipated stdout was informational and missed the actual stream."
+  },
+  "unchanged_baseline": {
+    "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/protected-set-backed-hook-probes-79/accepted-current-baseline/report.json",
+    "sha256": "a26e4b349098057c0604a47927934ce569fc376623b4060ce2d9ee59ba9ffd5b",
+    "revision": "b168878778ab421068023a8c85575ad041f3919d",
+    "completed": true,
+    "source_agreements": 0,
+    "frontend_accepted": true,
+    "adapter_checked": true,
+    "status": "unsupported",
+    "reason": "property hook visibility, inheritance, attributes or shape",
+    "logical_exit": null,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0,
+    "process": {
+      "pid": 1796204,
+      "exit": 1,
+      "elapsed": 7.618601083755493,
+      "cap_seconds": 75,
+      "timeout": false,
+      "group_after": []
+    },
+    "affinity": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/protected-set-backed-hook-probes-79/affinity-accepted-current-baseline.json",
+      "sha256": "277b881e6dc872b6e5a7c0e3552e1d4e16a8f8abd4734f94c0b990240796dff3"
+    },
+    "launch": "taskset -c 4 python3 .tools/protected-set-backed-hook-probes-79/run.py baseline --revision b168878778ab421068023a8c85575ad041f3919d"
+  },
+  "strict": {
+    "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/protected-set-backed-hook-probes-79/protected-set-backed-hook-compiler-u_37_ahd/report.json",
+    "sha256": "365fd5ca7282aae163a09a74b13aef16ac772e71ea8c5a7b90d5afd682b2aeec",
+    "revision": "6e018af9d14e65e2921332d1443e9bf24b3e4a36",
+    "modules": 394,
+    "passed": true,
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "process": {
+      "pid": 1799573,
+      "exit": 0,
+      "elapsed": 7.371386528015137,
+      "cap_seconds": 60,
+      "timeout": false,
+      "group_after": []
+    },
+    "affinity": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/protected-set-backed-hook-probes-79/affinity-strict-6e01.json",
+      "sha256": "12ccf2c29ba1f4e225d67d2fefebe80241b55abbd2f0d432614644c9e3ab28eb"
+    },
+    "launch": "taskset -c 4 python3 .tools/protected-set-backed-hook-probes-79/run-compiler.py b168878778ab421068023a8c85575ad041f3919d 6e018af9d14e65e2921332d1443e9bf24b3e4a36"
+  },
+  "source_validation": {
+    "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/protected-set-backed-hook-probes-79/changed-model-lgfzowwc/report.json",
+    "sha256": "809da4b262a08eaaff373e6553a4cc9922aa4eb09d80f68600d6a350fd5f5d3b",
+    "revision": "6e018af9d14e65e2921332d1443e9bf24b3e4a36",
+    "completed": true,
+    "source_agreements": 1,
+    "frontend_accepted": true,
+    "adapter_checked": true,
+    "status": "normal",
+    "reason": null,
+    "logical_exit": 0,
+    "stdout_bytes": 453,
+    "stderr_bytes": 0,
+    "process": {
+      "pid": 1799652,
+      "exit": 0,
+      "elapsed": 15.092244386672974,
+      "cap_seconds": 75,
+      "timeout": false,
+      "group_after": []
+    },
+    "affinity": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/protected-set-backed-hook-probes-79/affinity-changed-6e01.json",
+      "sha256": "cb53bdd33fa36ed34351121034c244ab6ff3443d0df5da35f0df9821a5462725"
+    },
+    "launch": "taskset -c 4 python3 .tools/protected-set-backed-hook-probes-79/run.py changed --revision 6e018af9d14e65e2921332d1443e9bf24b3e4a36",
+    "comparison": "Full original453-byte native stdout/empty stderr/logical0 tuple, genuinely checked normal agreement."
+  },
+  "state_validation": {
+    "modules": 394,
+    "premises": 266,
+    "reached_premises": 224,
+    "derived_premises": 42,
+    "source_agreements": 0,
+    "groups": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/protected-set-backed-hook-protocol-6axc35s6/report.json",
+        "sha256": "b369d0b0d079cb9cfa20f1a3b58c24616023e2584f05720409345709a1dcb0e7",
+        "group": "receive",
+        "revision": "321b6fbfacaccc38e3443b4311ce1f84dcae3b4f",
+        "fixture_sha256": "f38ed54e1cf5ac5f90ae5f141a0c8b4a40b80f735979a6c63c35ebc08d90329d",
+        "premises": 149,
+        "reached_premises": 115,
+        "derived_premises": 34,
+        "application_invocations": 1,
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "preparation": {
+          "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/protected-set-backed-hook-protocol-3lnts1bd/PREPARED.json",
+          "sha256": "e70a3eb5d5b7f8e7cb43c42d53920c366ef3f81efdfb11b4a809d509c5b95ca1",
+          "accepted_credit": 0
+        },
+        "processes": [
+          {
+            "pid": 1803153,
+            "exit": 0,
+            "elapsed": 6.156849384307861,
+            "cap_seconds": 90,
+            "timeout": false,
+            "group_after": []
+          },
+          {
+            "pid": 1803178,
+            "exit": 0,
+            "elapsed": 18.103065967559814,
+            "cap_seconds": 90,
+            "timeout": false,
+            "group_after": []
+          }
+        ],
+        "affinity": {
+          "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/protected-set-backed-hook-probes-79/affinity-state.json",
+          "sha256": "23911aec357132ac7b74bb79e03b5521ab3199a95d1208298b993b2d3aed40f7"
+        },
+        "meaning": "Genuine Child writer14 receives20 at hook4, executes Parent private13/backing6 into public slot33, restores Child caller and returns original assignment20 after setter void. Source flags/key/owner, lexical-versus-called permission, call/frame/result and permitted indirect refusal controls are task-local.",
+        "launch": "taskset -c 4 python3 tests/semantics/protected_set_backed_hook_protocol.py --revision 321b6fbfacaccc38e3443b4311ce1f84dcae3b4f --group receive"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/protected-set-backed-hook-protocol-w6h_88xr/report.json",
+        "sha256": "1d7d625f489390139c45c613e0257c4571dc30dff2487a72d240a96d73ea4cdf",
+        "group": "errors",
+        "revision": "7dd75f28d4f5654dbac480ae1b8d46032a89d78b",
+        "fixture_sha256": "355159b29a6dc7a9444b6f53f057eca5809048ea6ce71a5362d8ebdd18f633a8",
+        "premises": 117,
+        "reached_premises": 109,
+        "derived_premises": 8,
+        "application_invocations": 1,
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "preparation": {
+          "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/protected-set-backed-hook-protocol-htgipdv7/PREPARED.json",
+          "sha256": "4007b97127e04289a4dcfab6e15a3dda20042b090b73719652ac30c225c5c010",
+          "accepted_credit": 0
+        },
+        "processes": [
+          {
+            "pid": 1823797,
+            "exit": 0,
+            "elapsed": 6.178023338317871,
+            "cap_seconds": 90,
+            "timeout": false,
+            "group_after": []
+          },
+          {
+            "pid": 1823798,
+            "exit": 0,
+            "elapsed": 18.58370304107666,
+            "cap_seconds": 90,
+            "timeout": false,
+            "group_after": []
+          }
+        ],
+        "affinity": {
+          "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/protected-set-backed-hook-probes-79/affinity-errors-r1.json",
+          "sha256": "a5c3f72af64c78105f04e50b032cedf997fc2e4913ade46a33ffe8ef8783e3c3"
+        },
+        "meaning": "Genuine external array24 resolves RHS then raises raw/materialized access Error before CALL_ARGS or TYPE_RECEIVE. The later real Child-array call enters TYPE_RECEIVE, raises TypeError4/caller14, catches and finishes with slot33/full453 output. Forged global calls remain metadata-valid but fail executable permission, pending/call/tail checks; indirect denial is disjoint.",
+        "launch": "taskset -c 4 python3 tests/semantics/protected_set_backed_hook_protocol.py --revision 7dd75f28d4f5654dbac480ae1b8d46032a89d78b --group errors"
+      }
+    ],
+    "fixture_correction": "Only ERRORS59 changed at7dd75: typed_parameter_conversion requires a receiving call context and was partial in global S.CURRENT=eps. Use typed_parameter_conversion_at with explicit weak mode for this pure int-versus-array classification. Actual denial/type-receive tails and all production rules are unchanged. Receive149 remains the original321b cut; only errors117 reran."
+  },
+  "zero_credit_records": [
+    {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/protected-set-backed-hook-protocol-yno48igw/report.json",
+      "sha256": "d02d0ead47932ef5acb8ba2d979a3fc327ecfa5c9fe0291c97d397f26caed177",
+      "accepted_credit": 0,
+      "result": "Original errors117 false at321b; context-dependent pure classification was partial before the raw tail."
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/protected-set-backed-hook-probes-79/errors-diagnostic-f26shg43/report.json",
+      "sha256": "a02b9a784450559e43333128307f238bca68ee04ae4d9ade13fdcabd14120f5d",
+      "accepted_credit": 0,
+      "result": "One original setup/seek; phase1/empty vector, raw Error/TypeError tails not reached."
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/protected-set-backed-hook-probes-79/errors-metadata-lfueah6y/report.json",
+      "sha256": "c2d1970d0b6c7e39ce24ba5fd3c9c90f170dbbbc98d26000b9337578eaa3db34",
+      "accepted_credit": 0,
+      "result": "Exact stage1/global24, known array input and pending child/value target; no raw PhpStep."
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/protected-set-backed-hook-probes-79/errors-bindings-0d5r48r_/report.json",
+      "sha256": "551fed371f58ab70dec9e148ed2def6424aaa7eb79a4ddb1480e7daa01440bdb",
+      "accepted_credit": 0,
+      "result": "All32 original metadata prefixes true, actual child cell DEFINED POBJECT0; isolates partial returned predicate evaluation. No raw PhpStep."
+    }
+  ],
+  "permanent_tests": {
+    "tests/semantics/protected-set-backed-hook.php": "d658bea0fb461f0224233d0173483d586f60ece1dc05eb8c8dd2eb6017c75495",
+    "tests/semantics/protected_set_backed_hook_cases.json": "ad4ded1e4e2f9219e0320f6f8de10d458d972419c2908da9b4d5492f9fcd552c",
+    "tests/semantics/protected_set_backed_hook_protocol.py": "a3d2a46d2dff920bef6640eefc291874ed08f84ed051ca66c770428d6da5ab82"
+  },
+  "remaining": [
+    "Private(set), explicit/trait/paired/virtual asymmetric hooks and wider declaration/override forms remain partial.",
+    "Allowed indirect/reference operations, wider RHS/callback/coercion/lifetime and receiver contexts remain outside this selected assignment family."
+  ],
+  "recovery": "Original streams, recorders, strict/source and all diagnostics remain in ignored private32 .tools/protected-set-backed-hook-probes-79; each state/preparation is named above. Keep original revisions, runtime hashes, FILE-only catalogue substitution and actual live affinity captures. No older setter source/state actor was renewed."
+}

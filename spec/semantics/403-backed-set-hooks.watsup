@@ -9,6 +9,24 @@ def $pphook_owner_shape(pchheader, NVarLikeIdentifier (BYTES text) metadata_name
   -- if $ptlc($base64(text_set)) = $ptascii("set")
   -- if $hook_body_backed(SEQUENCE statement*, $base64(text))
 
+;; The protected setter slice keeps a public backing key and one implicit hook.
+def $ppproperty_hook_group(P, pcpath, NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text) metadata_name) phpType5 metadata_item])) (SEQUENCE ([NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_set) (SEQUENCE eps) (SEQUENCE statement*) metadata_hook])) metadata, ppropertydesc*, pchheader) = PPROPERTIES $pphook_compile(P_next, pcpath ++ [PCFIELD 4, PCINDEX 0], ppropertydesc_new, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_set) (SEQUENCE eps) (SEQUENCE statement*) metadata_hook, pchheader) ppropertydesc_next*
+  -- if flags <- [256,257] /\ phpType18 =/= ABSENT
+  -- if pchheader.KIND = "class" /\ pchheader.PARENT = eps /\ ~pchheader.READONLY /\ ~$pptrait_body_uses(pchheader.BODY)
+  -- if $ptlc($base64(text_set)) = $ptascii("set") /\ $hook_body_backed(SEQUENCE statement*, $base64(text))
+  -- if $ppproperty_group_line_valid(P, metadata)
+  -- if PPROPERTIES P_next ppropertydesc_next* = $ppproperty_group($pplocate(P, pcpath, $source_line(metadata)), pcpath, flags, phpType18, [NPropertyItem (NVarLikeIdentifier (BYTES text) metadata_name) phpType5 metadata_item], ppropertydesc*, pchheader, $source_line(metadata))
+  -- if P_next.COMPLETION = PPCNORMAL
+  -- if |ppropertydesc_next*| = $(|ppropertydesc*| + 1)
+  -- if ppropertydesc_new = ppropertydesc_next*[|ppropertydesc*|]
+def $ppproperty_hook_group(P, pcpath, NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text) metadata_name) phpType5 metadata_item])) (SEQUENCE ([NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_set) (SEQUENCE eps) (SEQUENCE statement*) metadata_hook])) metadata, ppropertydesc*, pchheader) = PPROPERTIES P_next ppropertydesc_next*
+  -- if flags <- [256,257] /\ phpType18 =/= ABSENT
+  -- if pchheader.KIND = "class" /\ pchheader.PARENT = eps /\ ~pchheader.READONLY /\ ~$pptrait_body_uses(pchheader.BODY)
+  -- if $ptlc($base64(text_set)) = $ptascii("set") /\ $hook_body_backed(SEQUENCE statement*, $base64(text))
+  -- if $ppproperty_group_line_valid(P, metadata)
+  -- if PPROPERTIES P_next ppropertydesc_next* = $ppproperty_group($pplocate(P, pcpath, $source_line(metadata)), pcpath, flags, phpType18, [NPropertyItem (NVarLikeIdentifier (BYTES text) metadata_name) phpType5 metadata_item], ppropertydesc*, pchheader, $source_line(metadata))
+  -- if P_next.COMPLETION =/= PPCNORMAL
+
 dec $property_set_parameters(phpType16) : bool
 def $property_set_parameters(SEQUENCE eps) = true
 def $property_set_parameters(SEQUENCE ([NParam (SEQUENCE eps) (INTEGER 0) phpType18 (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES text) metadata_var) ABSENT (SEQUENCE eps) metadata])) = true
@@ -114,12 +132,13 @@ def $property_set_origin(S, ppropertydesc) = (PORIGIN n (pcpath_group ++ [PCFIEL
   -- if $property_set_owner(S, pclassdesc, phpType16)
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX 0])) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_set) phpType16 (SEQUENCE statement*) metadata_hook)
   -- if $property_set_parameter_source(S, pclassdesc, PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX 0]), phpType16)
-  -- if flags <- [0,1] /\ ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = eps
+  -- if flags <- [0,1,256,257] /\ ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = $ppproperty_set_visibility(flags)
   -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ~ppropertydesc.FINAL
   -- if ppropertydesc.TYPE =/= eps /\ ppropertydesc.NAME = $base64(text_name) /\ ppropertydesc.KEY = ppropertydesc.NAME
   -- if $ptlc($base64(text_set)) = $ptascii("set")
   -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (statement_owner)
   -- if $pchlower(statement_owner) = PCHRAW pchraw_owner
+  -- if flags <- [0,1] \/ (pclassdesc.KIND = "class" /\ pchraw_owner.KIND = "class" /\ pchraw_owner.PARENT = ABSENT /\ phpType16 = SEQUENCE eps /\ $hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME))
   -- if $hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME) \/ (pclassdesc.KIND = "class" /\ pchraw_owner.KIND = "class" /\ pchraw_owner.PARENT = ABSENT /\ phpType16 = SEQUENCE eps /\ phpType5 = ABSENT /\ ppropertydesc.DEFAULT = PROP_UNINITIALIZED /\ $hook_body_supported(SEQUENCE statement*))
 def $property_set_origin(S, ppropertydesc) = eps -- otherwise
 
@@ -364,6 +383,14 @@ def $property_read_key(S, POBJECT n, ptbytes, z) = $throw_scalar(S, "Error", $pt
   -- if ~$property_get_needed(S, n, ptbytes)
   -- if $property_set_write_only(S, n, ptbytes)
 
+;; Call authority is checked in the original caller and again through its frame.
+dec $property_set_access_allowed(pstate, ppropertyhook) : bool
+def $property_set_access_allowed(S, ppropertyhook) = true
+  -- if S.OBJECTS[ppropertyhook.OBJECT] = INSTANCE porigin_class
+  -- if $hook_property_at($property_layout(S, porigin_class, |S.CLASSES|), ppropertyhook.PROPERTY) = (ppropertydesc)
+  -- if ~$property_set_denied(S, ppropertyhook.OBJECT, ppropertydesc.KEY)
+def $property_set_access_allowed(S, ppropertyhook) = false -- otherwise
+
 ;; Pending receiver/name resolution precedes RHS dereference, as in ordinary assignment.
 dec $property_set_plan(pstate) : ppropertyhook?
 def $property_set_plan(S) = (ppropertyhook)
@@ -381,7 +408,27 @@ def $property_set_plan(S) = (ppropertyhook)
   -- if porigin_property = ppropertydesc.ORIGIN
   -- if ppropertyhook = {SITE porigin_site, OBJECT n, PROPERTY porigin_property, HOOK porigin_hook, LINE z}
   -- if $property_set_valid(S, ppropertyhook)
+  -- if $property_set_access_allowed(S, ppropertyhook)
 def $property_set_plan(S) = eps -- otherwise
+
+;; Denial follows operand resolution, but precedes setter argument reception.
+dec $property_set_denied_plan(pstate) : ppropertyhook?
+def $property_set_denied_plan(S) = (ppropertyhook)
+  -- if S.TODO = (ASSIGN_ARRAY (BASE_PROPERTY_PENDING pbase poperand z_receiver) z false) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_site)
+  -- if $property_pending_assign_valid(S, BASE_PROPERTY_PENDING pbase poperand z_receiver, z, false)
+  -- if S_target = $property_pending_resolve(S, pbase, poperand, PPW, z_receiver, z)
+  -- if S_target.COMPLETION = NORMAL
+  -- if S_target.BASE = BASE_PROPERTY (POBJECT n) ptbytes
+  -- if $property_set_needed(S, n, ptbytes)
+  -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes
+  -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
+  -- if $property_set_denied(S, n, ptbytes)
+  -- if $property_set_origin(S, ppropertydesc) = (porigin_hook)
+  -- if porigin_property = ppropertydesc.ORIGIN
+  -- if ppropertyhook = {SITE porigin_site, OBJECT n, PROPERTY porigin_property, HOOK porigin_hook, LINE z}
+  -- if $property_set_valid(S, ppropertyhook)
+def $property_set_denied_plan(S) = eps -- otherwise
 
 ;; Active virtual SET has no backing store, even through a same-object alias.
 ;; This slice resolves an actual defined CV input before the handler Error.
@@ -428,6 +475,19 @@ rule PhpStep/property-set-rhs-abrupt: S ~> S_rhs[.TODO = eps]
   -- if S_target = $property_pending_resolve(S, pbase, poperand, PPW, z_receiver, z)
   -- if S_rhs = $resolve_at(S_target, S.RESULT, z)
   -- if S_rhs.COMPLETION =/= NORMAL
+rule PhpStep/property-set-denied: S ~> $property_set_check(S_rhs[.TODO = ptask_tail*], ppropertyhook.OBJECT, ptbytes, $ptascii("modify"), z)
+  -- if S.TODO = (ASSIGN_ARRAY (BASE_PROPERTY_PENDING pbase poperand z_receiver) z false) :: ptask_tail*
+  -- if $property_set_denied_plan(S) = (ppropertyhook)
+  -- if S_target = $property_pending_resolve(S, pbase, poperand, PPW, z_receiver, z)
+  -- if S_target.BASE = BASE_PROPERTY (POBJECT ppropertyhook.OBJECT) ptbytes
+  -- if S_rhs = $resolve_at(S_target, S.RESULT, z)
+  -- if S_rhs.COMPLETION = NORMAL
+rule PhpStep/property-set-denied-rhs-abrupt: S ~> S_rhs[.TODO = ptask_tail*]
+  -- if S.TODO = (ASSIGN_ARRAY (BASE_PROPERTY_PENDING pbase poperand z_receiver) z false) :: ptask_tail*
+  -- if $property_set_denied_plan(S) = (ppropertyhook)
+  -- if S_target = $property_pending_resolve(S, pbase, poperand, PPW, z_receiver, z)
+  -- if S_rhs = $resolve_at(S_target, S.RESULT, z)
+  -- if S_rhs.COMPLETION =/= NORMAL
 rule PhpStep/property-set-virtual-write-error: S ~> $throw_scalar(S_rhs[.TODO = ptask_tail*], "Error", $ptascii("Must not write to virtual property ") ++ $object_name(S_rhs, ppropertyhook.OBJECT) ++ $ptascii("::$") ++ $c_string(ptbytes), z)
   -- if S.TODO = (ASSIGN_ARRAY (BASE_PROPERTY_PENDING pbase poperand z_receiver) z false) :: ptask_tail*
   -- if $property_set_virtual_write_error(S) = (ppropertyhook)
@@ -445,11 +505,13 @@ rule PhpStep/property-set-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "set hoo
   -- if $property_set_pending(S)
   -- if $property_set_plan(S) = eps
   -- if $property_set_virtual_write_error(S) = eps
+  -- if $property_set_denied_plan(S) = eps
 rule PhpStep/property-set-result: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (PROPERTY_SET_RESULT ppropertyhook pvalue) :: ptask_tail*
   -- if S.COMPLETION = NORMAL /\ S.RESULT = KNOWN PNULL
   -- if S.ORIGIN = (ppropertyhook.SITE)
   -- if $property_set_valid(S, ppropertyhook)
+  -- if $property_set_access_allowed(S, ppropertyhook)
 
 ;; The saved result owns the receiver across entry and frame restoration.
 def $target_nodes(PROPERTY_SET_TARGET ppropertyhook) = eps
@@ -462,16 +524,18 @@ def $target_called_class(S, PROPERTY_SET_TARGET ppropertyhook) = (porigin)
   -- if S.OBJECTS[ppropertyhook.OBJECT] = INSTANCE porigin
 def $target_function(S, PROPERTY_SET_TARGET ppropertyhook) = $property_set_function(S, ppropertyhook)
   -- if $property_set_valid(S, ppropertyhook)
+  -- if $property_set_access_allowed(S, ppropertyhook)
 def $task_nodes(PROPERTY_SET_RESULT ppropertyhook pvalue) = [HOBJECT ppropertyhook.OBJECT] ++ $value_nodes(pvalue)
 
 dec $property_set_tail(pstate, ppropertyhook, ptask*) : bool
-def $property_set_tail(S, ppropertyhook, (PROPERTY_SET_RESULT ppropertyhook pvalue) :: ptask_tail*) = $property_set_valid(S, ppropertyhook)
+def $property_set_tail(S, ppropertyhook, (PROPERTY_SET_RESULT ppropertyhook pvalue) :: ptask_tail*) = ($property_set_valid(S, ppropertyhook) /\ $property_set_access_allowed(S, ppropertyhook))
 def $property_set_tail(S, ppropertyhook, ptask*) = false -- otherwise
 dec $property_set_pending_call(pstate, ppropertyhook) : bool
 def $property_set_pending_call(S, ppropertyhook) = true
   -- if S.TODO = (CALL_ARGS (PROPERTY_SET_TARGET ppropertyhook) eps 1 ([KNOWN pvalue]) (ppropertyhook.SITE) ppropertyhook.LINE) :: (PROPERTY_SET_RESULT ppropertyhook pvalue) :: ptask_tail*
   -- if S.ORIGIN = (ppropertyhook.SITE)
   -- if $property_set_valid(S, ppropertyhook)
+  -- if $property_set_access_allowed(S, ppropertyhook)
 def $property_set_pending_call(S, ppropertyhook) = false -- otherwise
 dec $property_set_frame(pstate, pcallcontext, pframe, ppropertyhook) : bool
 def $property_set_frame(S, pcallcontext, pframe, ppropertyhook) = true
@@ -537,6 +601,7 @@ def $property_store_key(S, n, ptbytes, pvalue, z) = S[.COMPLETION = UNSUPPORTED 
   -- if ~$property_set_denied(S, n, ptbytes)
   -- if $property_set_needed(S, n, ptbytes)
 def $property_instance_indirect_check(S, n, ptbytes, b_object, z) = S[.COMPLETION = UNSUPPORTED "set hook indirect access"]
+  -- if ~$property_set_denied(S, n, ptbytes)
   -- if $property_set_needed(S, n, ptbytes)
 def $property_hook_declared(S, n, ptbytes) = true
   -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)

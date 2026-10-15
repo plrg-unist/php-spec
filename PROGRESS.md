@@ -7,6 +7,14 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Public protected(set) backed implicit class setters now use lexical access before
+call/receive. Child writer20 stores33 and returns20; the same array gives a global
+access Error versus Child TypeError4/caller14, leaving33. Source1/strict394 at6e018
+and two cuts266 =224 reached +42 derived pass: receive149 at321b and corrected
+errors117 at7dd75. The one partial fixture query and three diagnostics retain zero
+credit. Wider asymmetric setter forms remain partial.
+[Review](coverage/semantics/protected-set-backed-hook-review.json).
+
 Null names in `constant`/`defined` now dispatch the weak-call deprecation before
 conversion or lookup. A returning handler can publish the empty-name binding;
 caller mutations preserve the captured null and selected API. Throwing handlers
