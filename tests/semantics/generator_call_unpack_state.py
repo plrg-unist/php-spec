@@ -105,7 +105,7 @@ CASES = {
             *TEMP, 'pgeneratorunpack.NAMED',
             'pgeneratorunpack.CALL.SENT = {SLOTS ([NAMED_HOLE, '
             'NAMED_SENT (KNOWN (PINT 7))]), NAMED eps}',
-            'pgenerator.KEY = (PSTRING $ptascii("first"))',
+            'pgenerator.KEY = (PSTRING_CARRIER INTERNED_STRING $ptascii("first"))',
             'pgenerator.VALUE = (PINT 5)',
             '$target_function(S, pgeneratorunpack.CALL.FUNCTION) = (pfunction)',
             'pfunction.SIGNATURE.PARAMETERS = [psparam_first, psparam_second]',
