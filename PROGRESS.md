@@ -1455,6 +1455,8 @@ zero credit; corrections touch test bounds/registry assertions only. Earlier cut
 are retained without replay. Later arrays, typed/variadic targets and wider
 sources/live replacements remain required.
 [Noninitial reference review](coverage/semantics/iterator-call-unpack-noninitial-reference-review.json).
+Canonical394 composition over `122f54805` passes inventory and strict SL at
+`415d9afa1`; private source/state evidence retains its original cuts.
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or
