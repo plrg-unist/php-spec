@@ -3834,6 +3834,19 @@ guard query have zero repair credit. Other unused layouts and broader returns
 verification remain open in the
 [ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
+M74 admits two node-free integer old returns in a used `&f():?int` finalizer
+history. An evaluated `old_value()` result is cleared to NULL when the caught
+`$y` recheck interrupts it; a compiler-folded `40 + 1` restores its authenticated
+compiled `41`. Each raw resumption installs one old-source VALUE Notice marker
+before delivery. Source2 at private `04a21f96`/396 matches retained native2,
+including the opposite caller values and exact callee Notice. Paired public
+checks bind both genuine active cursors, raw NULL/41 restoration, caller r/b
+alias and final write; a heap-equal folded cursor LINE mutation fails the
+actual driver, and both split budgets agree. The old Unsupported baseline and
+output-only category query have zero repair credit. Other scalar expressions,
+CONST forms and broader returns verification remain open in the
+[ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
 Per-constant protection survives namespace publication and parked handlers.

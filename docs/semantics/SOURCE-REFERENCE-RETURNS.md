@@ -759,3 +759,22 @@ budget. The prior Unsupported baseline and output-only guard query retain
 zero repair credit. This covers one discarded nonnullable mixed source layout,
 not other unused histories or complete returns verification; see the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M74 distinguishes an evaluated integer call result from a compiler-folded
+integer expression as the old source of a used `&f():?int` return. Both original
+sources carry node-free `KNOWN PINT 41` into F, but `old_value()` has no compiled
+read at the old expression, while `40 + 1` has an authenticated compiled `41`.
+After the selected `$y` recheck fails and is caught, the genuine active cursor
+resumes the computed source as NULL and the folded source as `41`. One raw
+consumed step installs the corresponding return operand and one old-source
+VALUE Notice marker; the diagnostic is delivered before the caller's r/b
+observation. Source2 at private `04a21f96`/396 matches retained native2 for
+both opposite caller values and exact callee line-3 Notice text and stderr.
+Paired public checks bind the original carrier, active cursor, raw restoration,
+caller alias and final write. A folded cursor LINE-only mutation preserves the
+heap but fails descriptor and actual-driver admission; both active-cut budget
+compositions pass. The proof does not claim a direct capture step or general
+scalar/CONST recovery. The unchanged Unsupported baseline and output-only
+category query retain zero repair credit. Other scalar expressions and return
+layouts remain open; see the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
