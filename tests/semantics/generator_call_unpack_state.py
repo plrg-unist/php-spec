@@ -176,7 +176,9 @@ CASES = {
             'OUTPUT $ptascii("Cannot traverse an already closed generator"), OUTPUT $ptascii("|"), '
             'OUTPUT $ptascii("7"), OUTPUT $ptascii("|"), OUTPUT $ptascii("NOFRAME|"), '
             'OUTPUT $ptascii("E")]',
-            '$heap_owners($heap_graph(S_done), HOBJECT n_data) = 0',
+            '$lookup(S_done.ENV, $ptascii("generator")) = (n_cell)',
+            'S_done.STORE[n_cell] = DEFINED (POBJECT n_data)',
+            '$heap_owners($heap_graph(S_done), HOBJECT n_data) = 1',
         ],
     },
     'quiet-last-owner-storage-releases-through-generator-carrier': {
