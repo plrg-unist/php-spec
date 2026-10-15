@@ -1,0 +1,106 @@
+{
+  "milestone": "Positional BYREF variadic Iterator property-reference sends",
+  "status": "accepted private implementation and independent focused validation; canonical composition pending",
+  "reviewer": "/root/iterator_review_01, independent of /root/iterator_dev_01",
+  "scope": "Stable declared untyped nonstatic property-reference object/array payloads now enter untyped positional BYREF variadic tails at one direct statically named Iterator construction. Positional keys, no prior named phase, no extra-named buffer and vacant selected positions remain required. Initial/later fixed and typed admission arms are unchanged; named variadic collection is separate.",
+  "semantic_cut": "05e880bea44ae85c007a95203ff8ca723c93a855",
+  "corrected_fixture_cut": "444909b507a8c96cfc0f5a9744c2f1d2636ebedb",
+  "module": {
+    "path": "spec/semantics/385-call-iterator-unpack.watsup",
+    "sha256": "114f6ba746a8df0bd972dc941d864f9f4603b8ce18619f2ef5e48e07214b6436",
+    "change": "Add only a structural untyped positional variadic reference_allowed arm. Fixed admission, stable source-property capture, HOLD/SNAPSHOT and fresh-cell transfer are preserved; existing103 packed ALIAS receive and EXTRA roots are reused. The arm does not reconstruct prior sent-value history."
+  },
+  "target": {
+    "php": "8.5.10 CLI NTS, 64-bit",
+    "php_source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle": ".tools/php/bin/php",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "spectec": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "mode": "SL, caches off, encountered determinism checks; existing binaries reused"
+  },
+  "engine_authority": [
+    "Zend/zend_vm_def.h SEND_UNPACK dereferences/addrefs each Iterator item, emits the BYREF warning and creates a distinct ZVAL_NEW_REF. Positional warning numbers follow argument positions, not the single variadic declaration index.",
+    "Zend/zend_vm_def.h RECV_VARIADIC addrefs original positional extra arguments into a packed array, preserving reference-cell identity and original stack owners. UNSET_CV clears the local value and decrements that container; it does not clear the separate extra arguments.",
+    "Zend/zend_execute.c zend_fetch_dimension_address and Zend/zend_types.h SEPARATE_ARRAY preserve COW for repeated tables and source aliases without duplicating an existing table's child edge.",
+    "Zend/zend_interfaces.c current-data invalidation/Iterator destruction and Zend/zend_execute.h zend_vm_stack_free_args determine cache/data/input then argument retirement. The specification represents decrements through explicit release jobs."
+  ],
+  "review_findings": [
+    "Each supported raw property payload is retained before the warning and transferred to a fresh private cell. Repeated returns of the same raw object or array create distinct cells; packed rest entries alias those cells while CURRENT.EXTRA remains a separate owner.",
+    "The actual second packed receive adds an ALIAS to the second private cell. Two private cells may share one array table while its object child has one edge; nested writes separate repeated-source and source-aliased containers.",
+    "Unsetting the rest name queues its cell, table and alias-owner releases. The one-step state still owns the table; three further releases leave only the original EXTRA cell owner. The prior BYVALUE array survives independently, then retires before HEAD while the current object survives until frame cleanup.",
+    "Second-warning aborts and real parked injection preserve earlier/current payload owners and Iterator-before-argument cleanup. Retired documentary SOURCE remains valid when dead raw/private cells and array rows are erased; live snapshot replacement is refused.",
+    "Genuine capture controls refuse prior named phase, extra-named buffers, named keys, typed variadic signatures and non-BYREF targets. Short split budgets cover capture/transfer, packed receive, the four-step unset release and real Fiber restoration."
+  ],
+  "validation": {
+    "native_only": {
+      "revision": "a202bd692e3cd1083a0bf102f9fb5f74af860d59",
+      "originals": 9,
+      "model_agreements": 0,
+      "reports": [
+        ".tools/iterator-reference-positional-variadic-native-t52q7as4/report.json",
+        ".tools/iterator-reference-positional-variadic-review-native-f52ayv6o/report.json"
+      ],
+      "result": "All expected tuples pass at unchanged base/module5b3; 8 seconds per original, serial stop-first."
+    },
+    "unchanged_baseline": {
+      "revision": "a202bd692e3cd1083a0bf102f9fb5f74af860d59",
+      "report": ".tools/iterator-reference-positional-variadic-baseline-kad2100q/report.json",
+      "source_sha256": "1e3d7ac626b958ea711c3679e62249859a58c3f55d01a3201853a920c00ee225",
+      "result": "Genuine initial variadic send Unsupported Iterator unpack by-reference raw payload after four exact OUTPUT events W|V|C|K|, before any warning. Exit1, no diagnostic/timeout; zero agreement."
+    },
+    "strict": {
+      "revision": "05e880bea44ae85c007a95203ff8ca723c93a855",
+      "report": ".tools/iterator-reference-positional-variadic-sl-6r34ydvf/report.json",
+      "modules": 394,
+      "result": "PASS true stdout, empty stderr, exit0/no timeout, HEAD and watched inputs stable."
+    },
+    "source_normal_agreements": 9,
+    "source_runs": [
+      {"originals": 6, "revision": "05e880bea44ae85c007a95203ff8ca723c93a855", "report": ".tools/iterator-call-unpack-reference-positional-variadic-source-ar0o_k_u/report.json", "bounds": "model100/process120 seconds", "selection": "Object rest write/unset; array source-alias COW; fixed BYREF prefix and array tail; object/array second-warning throws; real parked mixed injection."},
+      {"originals": 3, "revision": "444909b507a8c96cfc0f5a9744c2f1d2636ebedb", "report": ".tools/iterator-reference-positional-variadic-review-source-7zw9w6j6/report.json", "bounds": "model60/process75 seconds", "selection": "Repeated raw object cells, repeated-array nested COW, earlier BYVALUE array and EXTRA object after rest unset."}
+    ],
+    "source_result": "All nine compare original bytes with retained native stdout/stderr/exit and normal completion. Warning exceptions are caught by the original sources. No native replay or observation normalization.",
+    "new_state_groups": 6,
+    "new_state_driver_premises": 488,
+    "author_premises": 321,
+    "independent_premises": 167,
+    "new_state_runs": [
+      {"premises": 58, "report": ".tools/fiber-state-review-ddaxs2q3/report.json", "frontier": "Initial raw object capture before the first variadic warning."},
+      {"premises": 100, "report": ".tools/fiber-state-review-l8nsujiq/report.json", "frontier": "Array tail transfer after a fixed private object prefix."},
+      {"premises": 65, "report": ".tools/fiber-state-review-_6ateka5/report.json", "frontier": "Tail abort release after prior retirement and dead SOURCE erasure."},
+      {"premises": 98, "report": ".tools/fiber-state-review-i0hqvvgq/report.json", "frontier": "Real parked mixed second-warning Throwable injection."},
+      {"premises": 68, "report": ".tools/fiber-state-review-c7elq_pw/report.json", "frontier": "Second packed receive, distinct private cells sharing one raw array."},
+      {"premises": 99, "report": ".tools/fiber-state-review-tn3yzruq/report.json", "frontier": "Actual rest UNSET, queued cell/table/alias releases and retained EXTRA owner."}
+    ],
+    "affected_prior": {
+      "groups": 1,
+      "premises": 80,
+      "report": ".tools/fiber-state-review-ns205koa/report.json",
+      "result": "Only the prior untyped positional second-parameter variadic admission expectation changes from false to true. Typed variadic controls remain false; no unrelated prior group is replayed."
+    },
+    "state_result": "All accepted states pass at4449 with module114f. Counts include five setup premises per genuine group and embedded counterfactuals, with no standalone eligibility groups. Process120 seconds except parked98 at180, one worker, seek/finish4000; actual caps recorded.",
+    "fixture_bridge": "Author05e-to444 changes only six undeclared pslot identifiers to ppropertyslot; predicates/count321 are unchanged. Independent68 retains original6e42 inputs. Only the second recipe changes from premature one-step expectations to pending-release and four-step checks in8d2; its source/stage and the first68 recipe are unchanged. Retained68 is not renewed.",
+    "input_identity": "Strict/source inputs and HEAD are stable. State harness asserts semantic inputs unchanged; wrappers verify catalog/helper/HEAD stability. Final review matched four current executable fingerprints to all seven accepted state snapshots.",
+    "zero_credit_failures": [
+      {"report": ".tools/fiber-state-review-n2rtx682/report.json", "revision": "05e880bea44ae85c007a95203ff8ca723c93a855", "result": "Initial58 fixture elaboration stopped on undeclared pslot before runtime; zero semantic checks credited. Only affected/unrun states ran after identifier correction."},
+      {"report": ".tools/fiber-state-review-a6warg3p/report.json", "revision": "444909b507a8c96cfc0f5a9744c2f1d2636ebedb", "result": "Independent76 expected EXTRA owner1 immediately after UNSET while container release was still queued. Original failure remains zero; only corrected99 ran after timing review."}
+    ]
+  },
+  "commands": {
+    "environment": "LC_ALL=C TZ=UTC; PHP_SPEC_SCRIPT_ENCODING unset; pinned PHP -n and ordinary profile; one worker on separately root-leased CPU3/SLOT5, serial stop-first.",
+    "author": "taskset -c 3 python3 .tools/strict.py; source wrapper with --native-report .tools/iterator-reference-positional-variadic-native-t52q7as4/report.json; separate corrected state --case commands in declared order; sole affected prior capture --case. Strict/source are retained after fixture correction.",
+    "independent": "taskset -c 3 python3 tests/semantics/iterator_call_unpack_reference_positional_variadic_review_sources.py --native-report .tools/iterator-reference-positional-variadic-review-native-f52ayv6o/report.json; separate state --case second-rest-receive-shares-array-through-distinct-private-cells then unset-rest-retires-container-but-preserves-original-extra-cell. After failed76, only that second case reran with corrected99.",
+    "exact_commands": "External manifest binds fifteen full outer commands, revisions and report hashes; raw directories retain original sources, checked ASTs, fixtures, streams and exits."
+  },
+  "limits": "Untyped positional variadic property-reference object/array payloads only. One-child acyclic arrays without embedded references establish this new array evidence; admission adds no child-shape restriction. Typed/named tails, wider sources/sites, live replacements and broader array/reference interactions remain required. This is not Iterator or core closure; no engine bug or intentional divergence identified.",
+  "artifacts": {
+    "archive": "../php-spec-evidence-archive/iterator-reference-positional-variadic-07/evidence.tar.gz",
+    "bytes": 538898,
+    "sha256": "c4347d8f936e4dc901928ad2a2c205778022774acd0cef95919912a49e9288aa",
+    "manifest": "../php-spec-evidence-archive/iterator-reference-positional-variadic-07/manifest.json",
+    "reports": 15,
+    "recovery": "Extract raw directories/drivers at the recorded private root or equivalent source relationships. Recover author helpers at recorded05e/444 revisions; reviewer files were untracked and come from the publication containing this ledger. Restore archived drivers/review-state-before-unset-timing-correction.py to the maintained review_state.py path for original6e42 retained68/failed76; publication8d2 supplies corrected99. Hash-match independent_inputs. Use local pinned dependencies/profile/binaries; evidence archives are not operational inputs."
+  }
+}

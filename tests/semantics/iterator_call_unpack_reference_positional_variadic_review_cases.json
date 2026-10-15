@@ -1,0 +1,32 @@
+[
+  {
+    "id": "iterator-reference-positional-variadic-review-same-raw-object-independent-cells",
+    "source": "<?php\nclass ReviewRestObject07 { function __destruct() { echo \"O|\"; } }\nclass ReviewRestObjectIterator07 implements Iterator {\n    public $payload; public $position = 0;\n    function __construct() { $this->payload = new ReviewRestObject07; }\n    function __destruct() { echo \"I|\"; }\n    function rewind(): void { echo \"W|\"; }\n    function valid(): bool { echo \"V|\"; return $this->position < 2; }\n    function &current(): mixed { echo \"C|\"; return $this->payload; }\n    function key(): mixed { echo \"K|\"; return $this->position; }\n    function next(): void { echo \"X|\"; $this->position++; }\n}\nfunction reviewRestObjects07(&...$items) { echo \"D|\"; $items[0] = null; echo \"ONE|\"; $items[1] = null; echo \"TWO|\"; }\nset_error_handler(function($l, $m, $f, $line) { echo \"H\", $l, \":\", $m, \"@\", $line, \"|\"; return true; });\nreviewRestObjects07(...new ReviewRestObjectIterator07);\necho \"E\";\n",
+    "source_sha256": "b97d81ee91560e17e6ac6446effb10af874044f1c0b472ad9248708cd321ad07",
+    "purpose": "Two positional sends from one raw property must create distinct private cells; first rest write preserves the object until the second write, independently of dead source storage.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H2:Cannot pass by-reference argument 1 of reviewRestObjects07() by unpacking a Traversable, passing by-value instead@15|X|V|C|K|H2:Cannot pass by-reference argument 2 of reviewRestObjects07() by unpacking a Traversable, passing by-value instead@15|X|V|I|D|ONE|O|TWO|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-reference-positional-variadic-review-same-raw-array-nested-cow",
+    "source": "<?php\nclass ReviewRestChild07 { function __destruct() { echo \"O|\"; } }\nclass ReviewRestArrayIterator07 implements Iterator {\n    public $payload; public $position = 0;\n    function __construct() { $this->payload = [new ReviewRestChild07]; }\n    function __destruct() { echo \"I|\"; }\n    function rewind(): void { echo \"W|\"; }\n    function valid(): bool { echo \"V|\"; return $this->position < 2; }\n    function &current(): mixed { echo \"C|\"; return $this->payload; }\n    function key(): mixed { echo \"K|\"; return $this->position; }\n    function next(): void { echo \"X|\"; $this->position++; }\n}\nfunction reviewRestArrays07(&...$items) { echo \"D|\"; $items[0][0] = null; echo \"ONE|\"; $items[1][0] = null; echo \"TWO|\"; }\nset_error_handler(function($l, $m, $f, $line) { echo \"H\", $l, \":\", $m, \"@\", $line, \"|\"; return true; });\nreviewRestArrays07(...new ReviewRestArrayIterator07);\necho \"E\";\n",
+    "source_sha256": "e521b1c59fe3ff7d77c636e510971d61bd90bbbfff1353273d8a583eea344b87",
+    "purpose": "Two positional rest cells share one raw array until the first nested write separates it; the child survives ONE and retires on the second nested write.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H2:Cannot pass by-reference argument 1 of reviewRestArrays07() by unpacking a Traversable, passing by-value instead@15|X|V|C|K|H2:Cannot pass by-reference argument 2 of reviewRestArrays07() by unpacking a Traversable, passing by-value instead@15|X|V|I|D|ONE|O|TWO|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-reference-positional-variadic-review-byvalue-array-unset-rest-keeps-extra-owner",
+    "source": "<?php\nclass ReviewRestEarlier07 { function __destruct() { echo \"A|\"; } }\nclass ReviewRestCurrent07 { function __destruct() { echo \"B|\"; } }\nclass ReviewRestMixedIterator07 implements Iterator {\n    public $earlier; public $current; public $position = 0;\n    function __construct() { $this->earlier = [new ReviewRestEarlier07]; $this->current = new ReviewRestCurrent07; }\n    function __destruct() { echo \"I|\"; }\n    function rewind(): void { echo \"W|\"; }\n    function valid(): bool { echo \"V|\"; return $this->position < 2; }\n    function &current(): mixed { echo \"C|\"; if ($this->position === 0) { return $this->earlier; } return $this->current; }\n    function key(): mixed { echo \"K|\"; return $this->position; }\n    function next(): void { echo \"X|\"; $this->position++; }\n}\nfunction reviewRestUnset07($head, &...$items) { echo \"D|\"; unset($items); echo \"REST|\"; unset($head); echo \"HEAD|\"; }\nset_error_handler(function($l, $m, $f, $line) { echo \"H\", $l, \":\", $m, \"@\", $line, \"|\"; return true; });\nreviewRestUnset07(...new ReviewRestMixedIterator07);\necho \"E\";\n",
+    "source_sha256": "d9f4601c222ef45716f14c70cc9b72ce4415e989c098125b8a0580404b26d3a5",
+    "purpose": "An earlier BYVALUE array and later variadic object retain separate owners: unset(rest) leaves the original EXTRA private cell alive; unset(head) retires A before HEAD, and B survives until frame cleanup.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|X|V|C|K|H2:Cannot pass by-reference argument 2 of reviewRestUnset07() by unpacking a Traversable, passing by-value instead@16|X|V|I|D|REST|A|HEAD|B|E",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]

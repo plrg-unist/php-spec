@@ -1623,10 +1623,25 @@ state groups/528 driver premises pass at `7158abb01`; the sole affected prior
 group/80 passes separately. Native10 and the unchanged second-send Unsupported
 baseline retain zero model agreement; earlier cuts stay frozen. Other type shapes,
 variadic targets, wider sources/live replacements and broader array/reference
-interactions remain required.
+interactions remained required at that cut.
 [Noninitial typed reference review](coverage/semantics/iterator-call-unpack-noninitial-typed-reference-review.json).
 Canonical394 composition over `f742468b0` passes inventory and strict SL at
 `9fcd6760e`; private source/state evidence retains its original cut.
+
+Untyped positional BYREF variadic tails now accept stable Iterator property-reference
+object/array payloads at the same direct construction. Distinct private cells feed
+packed ALIAS rest entries; original EXTRA owners survive rest unset, and repeated
+arrays/source aliases retain nested COW. Warning aborts and real parked injection
+preserve Iterator-before-argument cleanup; retired receipts read no dead storage.
+Nine new originals compose six at `05e880bea` with three at `444909b50`;
+strict394 remains at the former cut. Six genuine-source state groups/488 premises
+pass through retained fixture cuts at `444909b50`, with affected prior80 separate.
+Native9 and the unchanged Unsupported baseline earn zero model agreement. The
+identifier-elaboration and premature-unset fixture failures retain zero credit;
+only test identifiers and cleanup-phase expectations changed. Earlier cuts remain
+frozen. Typed or named variadic reference targets, wider sources/live replacements
+and broader array/reference interactions remain required.
+[Positional variadic reference review](coverage/semantics/iterator-call-unpack-reference-positional-variadic-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or

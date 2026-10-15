@@ -424,9 +424,24 @@ objects or array children. Reversed named failures retain parameter order in the
 trace, including an earlier by-value array. Warning-handler throws and real Fiber
 injection precede receive rejection. Reversed union order, nonnullable/other type
 shapes, variadic targets, wider sources/sites, live replacements and broader array/
-reference interactions remain required. The
+reference interactions remained required at that cut. The
 [noninitial typed reference review](../../coverage/semantics/iterator-call-unpack-noninitial-typed-reference-review.json)
 keeps these new cuts and the affected prior type-admission check separate.
+
+Stable property-reference object/array payloads now also enter untyped positional
+BYREF variadic tails, before or after earlier fixed/rest sends at the same direct
+site. Numeric keys require no prior named phase or extra-named buffer. Existing
+capture, HOLD and SNAPSHOT checks stay in force; `SEND_UNPACK` gives each item a
+fresh private cell before `RECV_VARIADIC` collects packed ALIAS entries. Repeated
+raw properties still produce distinct cells, and nested array writes preserve
+other entries/source aliases through COW. Original EXTRA owners survive removal
+of the local rest array until frame cleanup. Second-warning throws and Fiber
+injection retire Iterator data before the earlier/current payloads; documentary
+SOURCE checks read no retired cells or array tables. Typed or named variadic
+reference sends, wider sources/sites, live replacements and broader array/reference
+interactions remain required. The
+[positional variadic reference review](../../coverage/semantics/iterator-call-unpack-reference-positional-variadic-review.json)
+keeps these new cuts and the affected prior admission check separate.
 
 Iterator valid NaN warnings keep the raw retval in CURRENT through handler invoke,
 result, cleanup and saved Fiber frames. The native `zend_user_it_valid` wrapper
