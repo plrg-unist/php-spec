@@ -1,0 +1,35 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hashes": [
+    "f6800ad1f30a76a0f2316580e643498a68921e575c58f7ef8cedb8a3aaff24b1"
+  ],
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "scalar",
+      "source": "<?php\ntrait ImportedPairedHookTrait76 {\n    public int $value = 10 {\n        get {\n            echo 'GET:', self::class, '/', static::class, '/', __METHOD__, '/', __TRAIT__, '|';\n            $this->value = $this->value;\n            return $this->value + $this->offset();\n        }\n        set {\n            echo 'SET:', self::class, '/', static::class, '/', __METHOD__, '/', __TRAIT__, '/', $value, '/', $this->value, '|';\n            $this->value = $value + $this->offset();\n        }\n    }\n}\nclass ImportedPairedHookConsumer76 {\n    use ImportedPairedHookTrait76;\n    private function offset(): int { return 13; }\n}\nclass ImportedPairedHookGrand76 extends ImportedPairedHookConsumer76 {\n    private function offset(): int { return 900; }\n}\n$grand = new ImportedPairedHookGrand76();\n$raw = (array) $grand;\necho 'I:', $raw['value'], '/', $grand->value, '|';\n$result = ($grand->value = 20);\n$raw = (array) $grand;\necho 'R:', $result, '/', $raw['value'], '/', $grand->value, '|';\ntry {\n    $grand->value = [1];\n} catch (TypeError $error) {\n    echo 'TYPE:', $error->getMessage(), '|';\n}\n$raw = (array) $grand;\necho 'F:', $raw['value'], '/', $grand->value, '|';\n",
+      "source_sha256": "36837e83269be90580c9c9ec3151463226b7de48dc3e5044dcc1d7769adcb1c5",
+      "stdout_base64": "SToxMC9HRVQ6SW1wb3J0ZWRQYWlyZWRIb29rQ29uc3VtZXI3Ni9JbXBvcnRlZFBhaXJlZEhvb2tHcmFuZDc2L0ltcG9ydGVkUGFpcmVkSG9va1RyYWl0NzY6OiR2YWx1ZTo6Z2V0L0ltcG9ydGVkUGFpcmVkSG9va1RyYWl0NzZ8MjN8U0VUOkltcG9ydGVkUGFpcmVkSG9va0NvbnN1bWVyNzYvSW1wb3J0ZWRQYWlyZWRIb29rR3JhbmQ3Ni9JbXBvcnRlZFBhaXJlZEhvb2tUcmFpdDc2OjokdmFsdWU6OnNldC9JbXBvcnRlZFBhaXJlZEhvb2tUcmFpdDc2LzIwLzEwfFI6MjAvMzMvR0VUOkltcG9ydGVkUGFpcmVkSG9va0NvbnN1bWVyNzYvSW1wb3J0ZWRQYWlyZWRIb29rR3JhbmQ3Ni9JbXBvcnRlZFBhaXJlZEhvb2tUcmFpdDc2OjokdmFsdWU6OmdldC9JbXBvcnRlZFBhaXJlZEhvb2tUcmFpdDc2fDQ2fFRZUEU6SW1wb3J0ZWRQYWlyZWRIb29rQ29uc3VtZXI3Njo6JHZhbHVlOjpzZXQoKTogQXJndW1lbnQgIzEgKCR2YWx1ZSkgbXVzdCBiZSBvZiB0eXBlIGludCwgYXJyYXkgZ2l2ZW4sIGNhbGxlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvY29hbGVzY2UtZ2V0LWhvb2tzLXByaXZhdGUtMzIvLnRvb2xzL3RyYWl0LWltcG9ydGVkLXBhaXJlZC1ob29rcy1wcm9iZXMtNzYvc2NhbGFyLnBocCBvbiBsaW5lIDI5fEY6MzMvR0VUOkltcG9ydGVkUGFpcmVkSG9va0NvbnN1bWVyNzYvSW1wb3J0ZWRQYWlyZWRIb29rR3JhbmQ3Ni9JbXBvcnRlZFBhaXJlZEhvb2tUcmFpdDc2OjokdmFsdWU6OmdldC9JbXBvcnRlZFBhaXJlZEhvb2tUcmFpdDc2fDQ2fA==",
+      "stdout_template_base64": "SToxMC9HRVQ6SW1wb3J0ZWRQYWlyZWRIb29rQ29uc3VtZXI3Ni9JbXBvcnRlZFBhaXJlZEhvb2tHcmFuZDc2L0ltcG9ydGVkUGFpcmVkSG9va1RyYWl0NzY6OiR2YWx1ZTo6Z2V0L0ltcG9ydGVkUGFpcmVkSG9va1RyYWl0NzZ8MjN8U0VUOkltcG9ydGVkUGFpcmVkSG9va0NvbnN1bWVyNzYvSW1wb3J0ZWRQYWlyZWRIb29rR3JhbmQ3Ni9JbXBvcnRlZFBhaXJlZEhvb2tUcmFpdDc2OjokdmFsdWU6OnNldC9JbXBvcnRlZFBhaXJlZEhvb2tUcmFpdDc2LzIwLzEwfFI6MjAvMzMvR0VUOkltcG9ydGVkUGFpcmVkSG9va0NvbnN1bWVyNzYvSW1wb3J0ZWRQYWlyZWRIb29rR3JhbmQ3Ni9JbXBvcnRlZFBhaXJlZEhvb2tUcmFpdDc2OjokdmFsdWU6OmdldC9JbXBvcnRlZFBhaXJlZEhvb2tUcmFpdDc2fDQ2fFRZUEU6SW1wb3J0ZWRQYWlyZWRIb29rQ29uc3VtZXI3Njo6JHZhbHVlOjpzZXQoKTogQXJndW1lbnQgIzEgKCR2YWx1ZSkgbXVzdCBiZSBvZiB0eXBlIGludCwgYXJyYXkgZ2l2ZW4sIGNhbGxlZCBpbiB7RklMRX0gb24gbGluZSAyOXxGOjMzL0dFVDpJbXBvcnRlZFBhaXJlZEhvb2tDb25zdW1lcjc2L0ltcG9ydGVkUGFpcmVkSG9va0dyYW5kNzYvSW1wb3J0ZWRQYWlyZWRIb29rVHJhaXQ3Njo6JHZhbHVlOjpnZXQvSW1wb3J0ZWRQYWlyZWRIb29rVHJhaXQ3Nnw0Nnw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "trait-imported-paired-hooks76-scalar-native-5dba9ba1",
+      "native_raw_sha256": "f6800ad1f30a76a0f2316580e643498a68921e575c58f7ef8cedb8a3aaff24b1"
+    }
+  ]
+}
