@@ -1952,6 +1952,8 @@ Ten native observations, the unchanged Unsupported baseline, the non-array requi
 control and original failures earn zero agreement. Non-array delegates, by-reference
 targets and broader call/lifecycle interactions remain open.
 [Delegated-array review](coverage/semantics/generator-call-unpack-array-delegation-review.json).
+Canonical395 composition over `52dccd723` passes inventory and strict SL at
+`957703ff4`; private source/state evidence retains its original cuts.
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or

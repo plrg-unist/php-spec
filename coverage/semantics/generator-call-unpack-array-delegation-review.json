@@ -1,6 +1,6 @@
 {
   "milestone": "Generator argument unpack through active array delegation",
-  "status": "independently accepted; actual-parent composition pending",
+  "status": "independently accepted and composed on the recorded current parent",
   "independent_reviewer": "iterator_review_01, paired with iterator_dev_01",
   "base": "94402a17b208f11966137746e61be1cab6dd8e1e",
   "final_private_code": "871fc198151fe59cc82529af341c148221278246",
@@ -81,5 +81,18 @@
     "Non-array Generator/Iterator delegates and Generator unpack into by-reference targets.",
     "Ordinary-call IteratorAggregate acquisition and wider callable targets.",
     "Broader reentrant, delegation, Fiber and terminal Generator lifecycle interactions; no full-family closure claim."
-  ]
+  ],
+  "composition": {
+    "parent": "52dccd72306c1d4d6142bc63e4ef9772a0425267",
+    "tested_candidate": "957703ff44565fa86a9c220ecab528d6202b1bac",
+    "modules": 395,
+    "review": "iterator_review_01 accepted exact parent preservation, five-row inventory union and disjoint CLI/compiler/late guards; no private source/state renewal warranted.",
+    "inventory": [".tools/generator-array-unpack-join-inventory-7v9oktqt/report.json", "237b1233c1c1c0a3a1d30b8d50058611a15f2c5853bab7d67ee5446552f37af8"],
+    "strict": [".tools/generator-array-unpack-join-sl-4ggz0er1/report.json", "1a95171ae4dc800140f87c07331bd533e858ef07ac899b2d1c2f3845f66bf82d"],
+    "result": "Inventory169/306 and sole full395 strict SL passed, exit0/no timeout/HEAD+inputs stable; strict true stdout and empty stderr. Private evidence retains its original cuts.",
+    "joined_archive": "../php-spec-evidence-archive/generator-call-unpack-array-delegation-10/joined.tar.gz",
+    "archive_bytes": 31163,
+    "archive_sha256": "cacad1c7204c99c9bf9a339485cf71fc987f5129dd066fe80b4c561a755a456d",
+    "recovery": "Sibling joined-manifest.json binds exact report/driver hashes and recovery."
+  }
 }
