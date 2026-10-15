@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Primitive plain-CV `**=` now commits captured power even when the deprecation
+handler throws. The same pending Exception resumes after the store and detachment
+of a late alias; the outer assignment stays at 100 and later target writes leave the
+old alias unchanged. Three exact originals pass at 28b22bd35; 135/161 author plus
+111 independent SL premises pass 407 at 7221327bc. They check signed infinity,
+normal same-cell storage, pending-owner transfer, exact new-CELL/LOCATION and
+alias owners, fresh source/number/target/metadata guards, default RHS-line Deprecated
+and budgets. Pure ready projections establish refusals only. Wider operands,
+targets, callbacks and lifecycle remain partial; OP12 stays paused.
+[Power-assignment ledger](coverage/semantics/powerassign-warning-review.json).
+Pointwise composition over 2566b810 preserves the 396-module parent and all
+incoming declarations and helpers. Source3/state407 retain their private cuts;
+no joined actor or renewed agreement credit was needed.
+
 String-name `define` now receives a NULL third flag with primitive values.
 Weak calls emit the parameter-3 deprecation before registration; normal return
 uses false without replacing the raw NULL API argument. A callback-created

@@ -1,0 +1,135 @@
+{
+  "version": 1,
+  "milestone": "OP24 primitive plain-CV power assignment pending-exception store",
+  "status": "independently reviewed milestone composed over canonical parent",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local pinned PHP and profile",
+  "scope": "Ordinary **= with two distinct initially defined plain CVs containing quiet bounded PINT/PFLOAT numbers, zero base and negative exponent, and a named eligible deprecation handler. Commit requires the original target binding to remain live, allocated, unreleased, nonowning and unconstrained; a late reference at that slot is admitted.",
+  "runtime_revision": "28b22bd35c468af106809af80fd526c23be2abc8",
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "4fc13bb991694d7add30a728660945a80c3424763ad62925a37e8b96c524b34d",
+    "spec/semantics/55-compound-assignment.watsup": "89cfb7f54c607b02c872ac5babb7f8ae1ea5513ee3c8d92795c0bc05d97156ad",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "3c871d991df03536d6ee534a4d288302a71f5b47e42581d5d7b0463f2dfd289c"
+  },
+  "engine_basis": [
+    "Zend/zend_operators.c safe_pow receives both C doubles before E_DEPRECATED. pow_function_base unconditionally stores its result even if zend_error left EG(exception) set.",
+    "Zend/zend_vm_def.h ZEND_ASSIGN_OP selects the RHS and target, dereferences an initial reference once, calls zend_binary_op(var_ptr,var_ptr,value), copies the operation result, and checks exception afterward. The outer assignment does not run on throw.",
+    "The existing pure num_pow/number_value, source-independent power_warning_snapshot and generic-body arithmetic_addassign_cv_write are reused. The latter detaches a late reference and returns LOCATION=ROOT of the actual written CELL; no numeric algorithm changed."
+  ],
+  "contract": [
+    "Only authentic COMPOUND_APPLY POWER false with an AssignOpPow source, distinct CVs, no operand swap and the compiled RHS line enters. Fresh capture and TARGETeps dispatch authenticate both current numbers, actual plain selections and the original target cell. Entered and returned stages retain historical numbers without operand rereads.",
+    "Normal return commits the cached signed result over handler writes. A supplied throw also commits and detaches a late target reference before the same Exception resumes. The pending marker replaces its THROW_SEARCH owner exactly once, then commit restores that THROW_SEARCH with NULL result; the outer destination remains100 and aliases retain the callback value.",
+    "Ready checks the same original target binding and current target safety. The descriptor adds no cell or number owner. Normal same-cell storage adds no allocation; late-reference detachment appends a new nonreference CELL and updates LOCATION, leaving the old alias cell owned once. False fallback emits one default Deprecated on the RHS instruction line.",
+    "Every driven continuation comes from production drive_steps. Fresh target/number/source/line, historical out-of-range number, coordinated EHI metadata and illegal stage0 pending-Exception counterfeits are whole-public validator negatives only and are never driven. Allocation-only, missing-name, wrong-slot and owning ready projections are pure refusal checks, without executed or heap-validity claims."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-24/source-28b22bd35-handler-write/report.json",
+        "sha256": "9b9bb1220bab2c687189bc038d373d717c0c07c69738b4864920b0868418cf41",
+        "case": "powerassign-zero-negative-handler-write",
+        "revision": "28b22bd35c468af106809af80fd526c23be2abc8",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-24/review-model-28b22bd35-negative-zero/report.json",
+        "sha256": "5964d8a7711c3b32863742968f1ae4db406669206174b1804b2d76194bce9e37",
+        "case": "powerassign-negative-zero-default",
+        "revision": "28b22bd35c468af106809af80fd526c23be2abc8",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-24/source-28b22bd35-handler-throw/report.json",
+        "sha256": "ad1a33b676bdf763bd01ec8209a1f76383dffa8bc1b5e758c6d900853bee0765",
+        "case": "powerassign-zero-negative-handler-throw",
+        "revision": "28b22bd35c468af106809af80fd526c23be2abc8",
+        "agreements": 1
+      }
+    ],
+    "author_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-24/state-7221327bc-author-two/report.json",
+      "sha256": "5e4605a30a6ced31b29add68c83ca2fd34758a795a705324c27213a446d1bb87",
+      "revision": "7221327bc916902505527af2e7745d8bf09d8b65",
+      "conditions": [
+        135,
+        161
+      ],
+      "total": 296
+    },
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-24/state-7221327bc-review-one/report.json",
+      "sha256": "5c7221628de36e85a6ccf1dd08659e774132475fd98acf3d333d10954e75aaad",
+      "revision": "7221327bc916902505527af2e7745d8bf09d8b65",
+      "conditions": [
+        111
+      ],
+      "total": 111
+    },
+    "total_source_agreements": 3,
+    "total_focused_state_conditions": 407,
+    "compatibility": "Only two reviewed helpers were added at 7221 after source3 passed at 28b2. Complete135/161/111 fixtures were independently reconstructed from their retained checked AST/path/native bytes; immutable full395 SL state thins contain no PHP/frontend/source stage. No private initialization actor or source replay was needed."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-24/baseline-14ebd04f8-handler-write/report.json",
+      "sha256": "01a1d1e71d971c1b9212fc917505ed9f0fd918b173d99e01d52727361f89fdb2",
+      "result": "accepted checked program Unsupported: error-handler ingress requires a producer continuation; empty model streams before H versus native stored INF"
+    },
+    "native_and_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-24/native-14ebd04f8-two/report.json",
+        "sha256": "718069b7c6da764353d1df51221bc39b9c30051ebca9ca574105dedfd8d6e1b1",
+        "purpose": "author native2 raw normal/pending-throw observations"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-24/native-c2d78599a-review-one/report.json",
+        "sha256": "a6a3966ce71b3aee82931e3290fa758edce1a4129076148308c231dcd057c3df",
+        "purpose": "independent signed-zero/default native1 observation"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-24/state-prep-7221327bc-author-two/report.json",
+        "sha256": "a47f82ce30e78e6960cb778bf9d9df6442f004b5f09eada753457576cc9575c2",
+        "purpose": "author2 PHP/frontend/checked-AST preparation only"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-24/state-prep-7221327bc-review-one/report.json",
+        "sha256": "68234cbd82da68f2ea30f88bbdbe0301b49061e58cb5bc1ecaf2039e38d0ed58",
+        "purpose": "independent1 PHP/frontend/checked-AST preparation only"
+      }
+    ],
+    "standalone_syntax": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-24/syntax-7221327bc-three/report.json",
+      "sha256": "d6c8218807dccfb5583aec6cdd61a682febc0e2852ff8f6ee469dcf1d21e31a0",
+      "result": "All135/161/111 full files parse before the expected standalone undefined-pstate environment diagnostic; zero semantic credit"
+    }
+  },
+  "required_follow_on": [
+    "Initial reference/COPY/TMP or container/property targets, numeric-string conversion warnings, rebound/missing/expired/owning/constrained commit targets and wider callbacks/exit/lifecycle paths remain partial.",
+    "All six affected inventory rows remain partial. Ordinary ** retains its own source3/state366 cut and supplied-throw cancellation behavior; OP12 remains paused."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-24",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "environment": "LC_ALL=C, TZ=UTC, no PHP_SPEC_SCRIPT_ENCODING. Native3/baseline and helper preparation/syntax used CPU1; source3 used CPU4; author296 state used CPU2 and peer111 CPU1. Native30/model CLI60-process90; immutable full395 SL groups cap120 each/exact true newline/empty stderr/no interruption/reaped groups and absent PIDs.",
+    "commands": [
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 tests/semantics/powerassign_warnings.py --case CASE_ID --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 tests/semantics/powerassign_warning_review.py --case powerassign-negative-zero-default --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-24/state-7221327bc-author-two/run-state.py",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-24/state-7221327bc-review-one/run-state.py"
+    ],
+    "record": "Restore matching Git cuts/project-local tools and fresh outputs. External records retain original source/checked AST/path/native/fixtures/commands/exits/reaping; raw stays outside Git."
+  },
+  "composition": {
+    "parent": "2566b81089270759fc93b3cee19cebd6491f5441",
+    "private_publication": "07c02113f49f631e9db36d5c9fc6809a779034a2",
+    "modules": 396,
+    "runtime_sha256": {
+      "spec/semantics/30-storage.watsup": "fb7ceff8a5b591e396c8568f1931f78142deea928ead7e26527a4a61205e90e2",
+      "spec/semantics/55-compound-assignment.watsup": "89cfb7f54c607b02c872ac5babb7f8ae1ea5513ee3c8d92795c0bc05d97156ad",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "3c871d991df03536d6ee534a4d288302a71f5b47e42581d5d7b0463f2dfd289c"
+    },
+    "other_incoming_paths_preserved": 45,
+    "gate": "No joined actor: pointwise union preserves the current parent; new NULL-define, stdClass/property-unset, Generator and by-reference-return selectors are absent from these power-assignment paths. Source3/state407 retain their private cuts with zero renewed credit."
+  }
+}

@@ -574,7 +574,13 @@ deprecation handlers. Callback writes cannot change the captured infinity or its
 sign; a supplied throw preserves the pending destination. Three exact originals
 and 366 focused SL premises pass in the
 [power-warning ledger](coverage/semantics/power-warning-review.json).
-Numeric-string warnings, wider operands/callbacks and `**=` remain partial.
+Numeric-string warnings, wider operands/callbacks and wider `**=` forms remain partial.
+Primitive plain-CV `**=` now commits its captured result even when the deprecation
+handler throws. A late alias detaches before the same exception continues; the
+outer assignment stays unchanged. Three exact originals and 407 focused SL
+premises cover signed infinity, target storage and pending ownership in the
+[power-assignment ledger](coverage/semantics/powerassign-warning-review.json).
+Wider operands, targets, callbacks and lifecycle paths remain partial.
 Explicit array-to-string casts now suspend through named warning handlers for
 a bounded plain-CV array input. The borrowed array adds no saved owner: replacing
 or removing its CV still yields fixed `Array`, while a supplied throw preserves

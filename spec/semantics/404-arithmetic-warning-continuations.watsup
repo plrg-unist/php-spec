@@ -944,3 +944,114 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 8192
   -- if perrorcall.MESSAGE = $ptascii("Power of base 0 and negative exponent is deprecated")
   -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE pintegeroperation.LINE
+
+;; ASSIGN_OP passes its selected target as result. safe_pow stores even when
+;; zend_error left a pending exception; only the outer assignment is cancelled.
+dec $powerassign_warning_source(pstate, pintegeroperation) : bool
+def $powerassign_warning_source(S, pintegeroperation) = true
+  -- if S.ORIGIN = (pintegeroperation.SITE)
+  -- if pintegeroperation.OP = POWER /\ ~pintegeroperation.SWAPPED
+  -- if $origin_node(S.SOURCES, pintegeroperation.SITE) = (NExprAssignOpPow expression_left expression_right metadata)
+  -- if pintegeroperation.LEFT = VARIABLE ptbytes_left z_left
+  -- if pintegeroperation.RIGHT = VARIABLE ptbytes_right z_right
+  -- if ptbytes_left =/= ptbytes_right
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CV ptbytes_left
+  -- if pintegeroperation.RIGHTPOINTER = INTEGER_CV ptbytes_right
+  -- if $integer_operand_source(S, pintegeroperation.SITE, [PCFIELD 0], pintegeroperation.LEFT)
+  -- if $integer_operand_source(S, pintegeroperation.SITE, [PCFIELD 1], pintegeroperation.RIGHT)
+  -- if $code_expression_at_source(S, pintegeroperation.SITE, [PCFIELD 1]) = (pintegeroperation.LINE)
+def $powerassign_warning_source(S, pintegeroperation) = false -- otherwise
+
+dec $powerassign_warning_snapshot(pstate, pintegeroperation, nat, pnumber, pnumber) : bool
+def $powerassign_warning_snapshot(S, pintegeroperation, n_target, pnumber_left, pnumber_right) = true
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CV ptbytes_left
+  -- if $lookup(S.ENV, ptbytes_left) = (n_target)
+  -- if $power_warning_snapshot(S, pintegeroperation, pnumber_left, pnumber_right)
+def $powerassign_warning_snapshot(S, pintegeroperation, n_target, pnumber_left, pnumber_right) = false -- otherwise
+
+dec $powerassign_warning_valid(pstate, pintegeroperation, nat, pnumber, pnumber, nat, nat?) : bool
+def $powerassign_warning_valid(S, pintegeroperation, n_target, pnumber_left, pnumber_right, n_stage, n_pending?) = true
+  -- if $powerassign_warning_source(S, pintegeroperation)
+  -- if $(n_target < |S.STORE| /\ n_stage <= 1)
+  -- if $power_warning_number($number_value(pnumber_left)) = (pnumber_left)
+  -- if $power_warning_number($number_value(pnumber_right)) = (pnumber_right)
+  -- if (pnumber_result, true) = $num_pow(pnumber_left, pnumber_right)
+  -- if $destructor_pending_valid(S, n_pending?)
+  -- if n_pending? = eps \/ n_stage = 1
+  -- if n_stage = 1 \/ $powerassign_warning_snapshot(S, pintegeroperation, n_target, pnumber_left, pnumber_right)
+def $powerassign_warning_valid(S, pintegeroperation, n_target, pnumber_left, pnumber_right, n_stage, n_pending?) = false -- otherwise
+
+def $powerassign_warning_plan(S) = (POWER_ASSIGN_WARNING pintegeroperation n_target pnumber_left pnumber_right 0 eps)
+  -- if S.TODO = (COMPOUND_APPLY POWER (BASE_VALUE poperand_left) false z) :: ptask_tail*
+  -- if $error_handler_eligible(S, 8192) /\ $arithmetic_add_named(S)
+  -- if S.ORIGIN = (porigin)
+  -- if poperand_right = S.RESULT
+  -- if poperand_left = VARIABLE ptbytes_left z_left
+  -- if poperand_right = VARIABLE ptbytes_right z_right
+  -- if $lookup(S.ENV, ptbytes_left) = (n_target)
+  -- if $integer_pointer_value(S, INTEGER_CV ptbytes_left) = (pvalue_left)
+  -- if $integer_pointer_value(S, INTEGER_CV ptbytes_right) = (pvalue_right)
+  -- if $power_warning_number(pvalue_left) = (pnumber_left)
+  -- if $power_warning_number(pvalue_right) = (pnumber_right)
+  -- if pintegeroperation = {SITE porigin, OP POWER, LINE z, SWAPPED false, LEFT poperand_left, RIGHT poperand_right, LEFTPOINTER INTEGER_CV ptbytes_left, RIGHTPOINTER INTEGER_CV ptbytes_right}
+  -- if $powerassign_warning_valid(S, pintegeroperation, n_target, pnumber_left, pnumber_right, 0, eps)
+def $powerassign_warning_plan(S) = eps -- otherwise
+
+dec $powerassign_warning_ready(pstate, pintegeroperation, nat) : bool
+def $powerassign_warning_ready(S, pintegeroperation, n_target) = true
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CV ptbytes_left
+  -- if $lookup(S.ENV, ptbytes_left) = (n_target)
+  -- if (HCELL n_target) <- S.ALLOCATIONS
+  -- if ~$environment_blocked(S, ptbytes_left) /\ ~$foreach_released_name(S, ptbytes_left)
+  -- if $integer_pointer_value(S, pintegeroperation.LEFTPOINTER) = (pvalue)
+  -- if pvalue =/= PUNDEFINED /\ $value_nodes(pvalue) = eps
+  -- if $propref_at(S.PROPREFS, n_target) = eps
+def $powerassign_warning_ready(S, pintegeroperation, n_target) = false -- otherwise
+
+rule PhpStep/powerassign-warning-begin: S ~> S[.TODO = ptask :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.LOCATION = ROOT n_target]
+  -- if S.TODO = ptask_old :: ptask_tail*
+  -- if $powerassign_warning_plan(S) = (ptask)
+  -- if ptask = POWER_ASSIGN_WARNING pintegeroperation n_target pnumber_left pnumber_right 0 eps
+rule PhpStep/powerassign-warning-dispatch: S ~> $error_dispatch(S, 8192, $ptascii("Power of base 0 and negative exponent is deprecated"), pintegeroperation.LINE, DIAGNOSTIC "Deprecated" $ptascii("Power of base 0 and negative exponent is deprecated") pintegeroperation.LINE, POWER_ASSIGN_WARNING pintegeroperation n_target pnumber_left pnumber_right 1 eps)
+  -- if S.TODO = (POWER_ASSIGN_WARNING pintegeroperation n_target pnumber_left pnumber_right 0 eps) :: ptask_tail*
+  -- if $powerassign_warning_valid(S, pintegeroperation, n_target, pnumber_left, pnumber_right, 0, eps)
+  -- if ~$error_handler_eligible(S, 8192) \/ $arithmetic_add_named(S)
+rule PhpStep/powerassign-warning-owning-handler: S ~> S[.COMPLETION = UNSUPPORTED "power assignment owning deprecation callback"]
+  -- if S.TODO = (POWER_ASSIGN_WARNING pintegeroperation n_target pnumber_left pnumber_right 0 eps) :: ptask_tail*
+  -- if $powerassign_warning_valid(S, pintegeroperation, n_target, pnumber_left, pnumber_right, 0, eps)
+  -- if $error_handler_eligible(S, 8192) /\ ~$arithmetic_add_named(S)
+rule PhpStep/powerassign-warning-commit: S ~> $arithmetic_addassign_cv_write(S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue_result], ptbytes_left, pvalue_result)
+  -- if S.TODO = (POWER_ASSIGN_WARNING pintegeroperation n_target pnumber_left pnumber_right 1 eps) :: ptask_tail*
+  -- if $powerassign_warning_valid(S, pintegeroperation, n_target, pnumber_left, pnumber_right, 1, eps)
+  -- if $powerassign_warning_ready(S, pintegeroperation, n_target)
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CV ptbytes_left
+  -- if (pnumber_result, true) = $num_pow(pnumber_left, pnumber_right)
+  -- if pvalue_result = $number_value(pnumber_result)
+rule PhpStep/powerassign-warning-commit-throw: S ~> S_written[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (POWER_ASSIGN_WARNING pintegeroperation n_target pnumber_left pnumber_right 1 (n_exception)) :: ptask_tail*
+  -- if $powerassign_warning_valid(S, pintegeroperation, n_target, pnumber_left, pnumber_right, 1, (n_exception))
+  -- if $powerassign_warning_ready(S, pintegeroperation, n_target)
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CV ptbytes_left
+  -- if (pnumber_result, true) = $num_pow(pnumber_left, pnumber_right)
+  -- if S_written = $arithmetic_addassign_cv_write(S[.TODO = (THROW_SEARCH n_exception) :: ptask_tail*], ptbytes_left, $number_value(pnumber_result))
+rule PhpStep/powerassign-warning-boundary: S ~> S[.COMPLETION = UNSUPPORTED "power assignment expired, rebound, owning or constrained target"]
+  -- if S.TODO = (POWER_ASSIGN_WARNING pintegeroperation n_target pnumber_left pnumber_right 1 n_pending?) :: ptask_tail*
+  -- if $powerassign_warning_valid(S, pintegeroperation, n_target, pnumber_left, pnumber_right, 1, n_pending?)
+  -- if ~$powerassign_warning_ready(S, pintegeroperation, n_target)
+
+;; The pending Throwable replaces its THROW_SEARCH owner during the store;
+;; captured primitive numbers and the selected CV never add roots.
+def $error_read_discard(S, POWER_ASSIGN_WARNING pintegeroperation n_target pnumber_left pnumber_right 1 eps) = S[.TODO = (POWER_ASSIGN_WARNING pintegeroperation n_target pnumber_left pnumber_right 1 (n_exception)) :: ptask_tail*]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n_exception) :: ptask_tail*
+  -- if $powerassign_warning_valid(S, pintegeroperation, n_target, pnumber_left, pnumber_right, 1, eps)
+def $task_nodes(POWER_ASSIGN_WARNING pintegeroperation n_target pnumber_left pnumber_right n_stage n_pending?) = $instance_roots(n_pending?)
+def $call_task_valid(S, POWER_ASSIGN_WARNING pintegeroperation n_target pnumber_left pnumber_right n_stage n_pending?) = $powerassign_warning_valid(S, pintegeroperation, n_target, pnumber_left, pnumber_right, n_stage, n_pending?)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = POWER_ASSIGN_WARNING pintegeroperation n_target pnumber_left pnumber_right 1 eps
+  -- if $powerassign_warning_valid(S, pintegeroperation, n_target, pnumber_left, pnumber_right, 1, eps)
+  -- if perrorcall.TARGET =/= eps \/ $powerassign_warning_valid(S, pintegeroperation, n_target, pnumber_left, pnumber_right, 0, eps)
+  -- if perrorcall.SITE = pintegeroperation.SITE /\ perrorcall.LINE = pintegeroperation.LINE
+  -- if perrorcall.LEVEL = 8192
+  -- if perrorcall.MESSAGE = $ptascii("Power of base 0 and negative exponent is deprecated")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" $ptascii("Power of base 0 and negative exponent is deprecated") pintegeroperation.LINE

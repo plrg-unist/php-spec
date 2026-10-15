@@ -191,8 +191,21 @@ cancels delivery and preserves the destination. Three exact originals plus
 265 author and 101 independent SL premises pass in the
 [power-warning ledger](../../coverage/semantics/power-warning-review.json).
 Counterfeit source/cache/range/metadata states are validator negatives only.
-Numeric-string conversion warnings, references/copies, `**=` and wider callbacks
+Numeric-string conversion warnings, references/copies, wider `**=` forms and callbacks
 or lifecycle forms remain partial.
+
+Primitive plain-CV `**=` now retains both numbers and the original target binding
+through zero-base/negative-exponent deprecation. Normal return stores the captured
+signed result. A throwing handler also commits and detaches a late target alias
+before the same pending Exception resumes; the enclosing assignment stays unchanged.
+The pending marker replaces exactly one Throwable owner. Commit records the actual
+written CELL/LOCATION, while the old alias retains its callback value and sole owner.
+Three exact originals plus 296 author and 111 independent SL premises check these
+paths, default operand-line Deprecated, fresh guards and budgets in the
+[power-assignment ledger](../../coverage/semantics/powerassign-warning-review.json).
+Ready requires the same live, allocated, nonowning, unconstrained target; pure
+pruned/missing/wrong-slot/owning projections establish refusals only. Initial
+references/copies, wider operands/targets, callbacks and lifecycle remain partial.
 
 Arithmetic and bitwise conversion use the existing pure SpecTec numeric and byte
 helpers, including signed 64-bit boundaries, binary64 values, string operands,
