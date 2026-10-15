@@ -1558,10 +1558,23 @@ groups/546 driver premises pass at `31e9d1262`. The sole affected prior document
 group/80 passes separately; native9 and the unchanged second-send Unsupported
 baseline earn zero model agreement. Earlier cuts remain frozen. Later typed or
 variadic reference targets, wider sources/live replacements and broader array/
-reference/COW interactions remain required.
+reference/COW interactions remained required at that cut.
 [Noninitial array reference review](coverage/semantics/iterator-call-unpack-noninitial-array-reference-review.json).
 Canonical394 composition over `4a0d4f705` passes inventory and strict SL at
 `ba187beeb`; private source/state evidence retains its original cut.
+
+Noninitial stable property-reference sends now admit the existing exact normalized
+nullable class/array shapes at fixed BYREF targets. Receive-time types do not
+constrain later writes through fresh private cells. Repeated array sends preserve
+COW; rejected receives retain earlier/current values in owning DIRECT traces,
+including by-value arrays and source aliases. Warning throws and real parked
+injections precede receive errors. Strict394, ten new originals and seven genuine
+state groups/528 driver premises pass at `7158abb01`; the sole affected prior
+group/80 passes separately. Native10 and the unchanged second-send Unsupported
+baseline retain zero model agreement; earlier cuts stay frozen. Other type shapes,
+variadic targets, wider sources/live replacements and broader array/reference
+interactions remain required.
+[Noninitial typed reference review](coverage/semantics/iterator-call-unpack-noninitial-typed-reference-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or

@@ -407,9 +407,26 @@ retirement without reading dead storage. One-child arrays without embedded
 references provide the new differential/state evidence; admission uses the
 existing array graph rather than a new child-shape restriction. Later typed or
 variadic reference targets, wider sources, live replacements and broader
-array/reference/COW interactions remain required. The
+array/reference/COW interactions remained required at that cut. The
 [noninitial array reference review](../../coverage/semantics/iterator-call-unpack-noninitial-array-reference-review.json)
 keeps these originals and the sole affected prior documentary check separate.
+
+Noninitial stable property-reference sends now admit the same exact normalized
+nullable single-class and nullable-array shapes at fixed BYREF targets. Existing
+filled-slot, vacancy, named-history, source-property and direct-site bounds stay
+in force. `SEND_UNPACK` warns and creates each source-free private cell before
+`RECV`/`RECV_INIT` and `zend_verify_recv_arg_type` check types in parameter order.
+Those checks add no persistent parameter type source: incompatible body writes
+still succeed, while repeated raw arrays and source aliases retain ordinary COW.
+A rejected later receive materializes owning DIRECT trace arguments for earlier
+and current payloads; private argument retirement does not destroy trace-owned
+objects or array children. Reversed named failures retain parameter order in the
+trace, including an earlier by-value array. Warning-handler throws and real Fiber
+injection precede receive rejection. Reversed union order, nonnullable/other type
+shapes, variadic targets, wider sources/sites, live replacements and broader array/
+reference interactions remain required. The
+[noninitial typed reference review](../../coverage/semantics/iterator-call-unpack-noninitial-typed-reference-review.json)
+keeps these new cuts and the affected prior type-admission check separate.
 
 Iterator valid NaN warnings keep the raw retval in CURRENT through handler invoke,
 result, cleanup and saved Fiber frames. The native `zend_user_it_valid` wrapper

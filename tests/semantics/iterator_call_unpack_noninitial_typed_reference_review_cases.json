@@ -1,0 +1,32 @@
+[
+  {
+    "id": "iterator-noninitial-typed-review-same-raw-array-two-typed-private-cells",
+    "source": "<?php\nclass ReviewTypedShared06 { public function __destruct() { echo \"O|\"; } }\nclass ReviewTypedRepeat06 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = [new ReviewTypedShared06()]; }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 2; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; return $this->position; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction reviewTypedRepeated06(?array &$first, ?array &$second) { echo \"BODY|\"; $first[0] = null; $first = 17; echo \"ONE|\", $first, \"|\", $second[0] === null ? \"BAD|\" : \"HELD|\"; $second[0] = null; $second = 23; echo \"TWO|\", $second, \"|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) { echo \"H\", $severity, \":\", $message, \"|\"; return true; });\nreviewTypedRepeated06(...new ReviewTypedRepeat06());\necho \"E\";\n",
+    "source_sha256": "c0ca52b8e74a4ab87e7385b554380c0b3705190af244b43b1f2fc86bf4840427",
+    "purpose": "Two nullable-array receives from one raw property create independent source-free private cells; first nested COW and int17 preserve the second child, then second nested write retires it before int23.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H2:Cannot pass by-reference argument 1 of reviewTypedRepeated06() by unpacking a Traversable, passing by-value instead|X|V|C|K|H2:Cannot pass by-reference argument 2 of reviewTypedRepeated06() by unpacking a Traversable, passing by-value instead|X|V|I|BODY|ONE|17|HELD|O|TWO|23|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-noninitial-typed-review-byvalue-array-and-current-alias-rejected-by-array",
+    "source": "<?php\nclass ReviewTypedEarlier06 { public function __destruct() { echo \"A|\"; } }\nclass ReviewTypedCurrent06 { public function __destruct() { echo \"B|\"; } }\nclass ReviewTypedIterator06 implements Iterator {\n    public $earlier;\n    public $current;\n    private int $position = 0;\n    public function __construct() { $this->earlier = [new ReviewTypedEarlier06()]; $this->current = new ReviewTypedCurrent06(); }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 2; }\n    public function &current(): mixed { echo \"C|\"; if ($this->position === 0) { return $this->earlier; } return $this->current; }\n    public function key(): mixed { echo \"K|\"; if ($this->position === 0) { return 0; } $GLOBALS[\"alias\"] =& $this->current; return \"second\"; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction reviewTypedAliasFailure06($first, ?array &$second) { echo \"BADBODY|\"; }\n$alias = null;\nset_error_handler(static function ($severity, $message, $file, $line) { echo \"H\", $severity, \":\", $message, \"|\"; return true; });\ntry { reviewTypedAliasFailure06(...new ReviewTypedIterator06()); }\ncatch (TypeError $caught) { echo \"T|\", $caught->getLine(), \"|\"; }\necho \"P|\";\nunset($caught);\necho $alias === null ? \"BAD|\" : \"HELD|\";\nunset($alias);\necho \"E\";\n",
+    "source_sha256": "e8505c5c2889e9c22d215b0af612a9e02f4b76ef19ed1cf891e6752fdf1d5b00",
+    "purpose": "An earlier BYVALUE array and later object produce owning DIRECT TypeError arguments; releasing the caught error destroys the earlier child while the current source alias alone retains its object.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|X|V|C|K|H2:Cannot pass by-reference argument 2 of reviewTypedAliasFailure06() by unpacking a Traversable, passing by-value instead|X|V|I|T|16|P|A|HELD|B|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-noninitial-typed-review-reversed-two-array-trace-releases-by-parameter-order",
+    "source": "<?php\nclass ReviewTypedEarlier06 { public function __destruct() { echo \"A|\"; } }\nclass ReviewTypedCurrent06 { public function __destruct() { echo \"B|\"; } }\nclass ReviewTypedIterator06 implements Iterator {\n    public $earlier;\n    public $current;\n    private int $position = 0;\n    public function __construct() { $this->earlier = [new ReviewTypedEarlier06()]; $this->current = [new ReviewTypedCurrent06()]; }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 2; }\n    public function &current(): mixed { echo \"C|\"; if ($this->position === 0) { return $this->earlier; } return $this->current; }\n    public function key(): mixed { echo \"K|\"; if ($this->position === 0) { return \"second\"; } return \"first\"; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction reviewTypedReversedFailure06(?ReviewTypedEarlier06 &$first, $second) { echo \"BADBODY|\"; }\n$alias = null;\nset_error_handler(static function ($severity, $message, $file, $line) { echo \"H\", $severity, \":\", $message, \"|\"; return true; });\ntry { reviewTypedReversedFailure06(...new ReviewTypedIterator06()); }\ncatch (TypeError $caught) { echo \"T|\", $caught->getLine(), \"|\"; }\necho \"P|\";\nunset($caught);\n\necho \"E\";\n",
+    "source_sha256": "fc89c47dbb88876078e0d96a9b9c79af18457f723004a67574ba002668aa3914",
+    "purpose": "A later nullable-class BYREF slot0 rejects its raw array before receiving the earlier BYVALUE slot1; the real TypeError owns both arrays and releases current B before earlier A when unset.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|X|V|C|K|H2:Cannot pass by-reference argument 1 of reviewTypedReversedFailure06() by unpacking a Traversable, passing by-value instead|X|V|I|T|16|P|B|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]

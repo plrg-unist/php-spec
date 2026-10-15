@@ -692,13 +692,18 @@ detached container becomes a fresh private cell; repeated source arrays stay
 independent under nested writes, and source aliases retain their children.
 Warning throws and Fiber injection preserve Iterator-before-argument cleanup.
 See the [noninitial array reference review](coverage/semantics/iterator-call-unpack-noninitial-array-reference-review.json).
+Later fixed reference targets also admit the existing exact nullable class/array
+shapes. Types are checked at entry; incompatible later writes use private cells.
+Receive errors retain earlier and current payloads in ordinary trace arguments,
+while warning throws and Fiber injection precede receive verification. See the
+[noninitial typed reference review](coverage/semantics/iterator-call-unpack-noninitial-typed-reference-review.json).
 Valid NaN warnings retain the raw return through handler mutation, Fiber parking
 and throw. One numeric reread distinguishes copied NaN from a live reference;
 the raw return retires before current or iterator teardown.
 Generator/Aggregate ordinary-call unpack, Generator callback methods, nonnumeric
 raw valid changes, request/plain reference strings and handler replacements with
 those strings, other typed array warnings, broader array/COW interactions,
-other reference sources, later typed or variadic reference sends and live
+other reference sources, other typed or variadic reference sends and live
 payload replacements,
 general shared named buffers and
 other type shapes and wider-site variadic object warnings remain

@@ -1,0 +1,112 @@
+{
+  "milestone": "Noninitial fixed typed Iterator property-reference sends",
+  "status": "accepted private implementation and independent focused validation; canonical composition pending",
+  "reviewer": "/root/iterator_review_01, independent of /root/iterator_dev_01",
+  "scope": "Stable declared untyped nonstatic property-reference object/array payloads now use exact normalized nullable single-class or nullable-array fixed BYREF targets after at least one fixed slot is filled. Fixed vacancy, no named/positional extras, named-history and direct statically named Iterator construction bounds remain. Initial typed/untyped and noninitial untyped cuts remain frozen.",
+  "semantic_cut": "7158abb013cdaa7775bcdbc6c9fddfd834451092",
+  "module": {
+    "path": "spec/semantics/385-call-iterator-unpack.watsup",
+    "sha256": "5b3c42b948dae7d920b46b32f3e979bc2714bf8d0849c0a338b4c3179ca82715",
+    "change": "Replace only the noninitial TYPE=eps premise with the existing finite iterator_unpack_reference_type predicate. Initial admission, capture/HOLD/SNAPSHOT, source-property, key/history/site and fresh-cell machinery are unchanged."
+  },
+  "target": {
+    "php": "8.5.10 CLI NTS, 64-bit",
+    "php_source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle": ".tools/php/bin/php",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "spectec": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "mode": "SL, caches off, encountered determinism checks; existing binaries reused"
+  },
+  "engine_authority": [
+    "Zend/zend_vm_def.h SEND_UNPACK: each Iterator item is dereferenced and addrefed, then a BYREF warning precedes ZVAL_NEW_REF. Fixed named mapping and key errors occur before this capture. Sending later items does not verify parameter types.",
+    "Zend/zend_vm_def.h ZEND_RECV/RECV_INIT and zend_verify_recv_arg_type_helper -> Zend/zend_execute.c zend_verify_recv_arg_type check supplied values in parameter order. These checks do not attach a persistent parameter type source to the fresh private reference.",
+    "Zend/zend_exceptions.c zend_default_exception_new calls zend_fetch_debug_backtrace; Zend/zend_builtin_functions.c debug_backtrace_get_args dereferences and retains argument values in parameter order. The trace owns values rather than caller reference cells.",
+    "Zend/zend_execute.c zend_fetch_dimension_address and Zend/zend_types.h SEPARATE_ARRAY preserve ordinary array COW; shared object children retain identity."
+  ],
+  "review_findings": [
+    "The structural extension permits supported-shape mismatches to reach receive-time rejection. Genuine second-warning capture and saved Fiber ownership remain valid even when pure conversion of the held object to the selected nullable array type rejects.",
+    "Matching typed private cells have no PROPREFS or parameter backing. Incompatible later integer writes succeed; repeated raw array sends create distinct cells sharing one table until nested writes separate it. Source aliases retain the original payload independently.",
+    "A failed later receive adds owning DIRECT trace arguments for both earlier and current payloads before callee cleanup. Shared array ownership adds no duplicate child edge. Caught-error release retires trace-only payloads while a global raw-source alias keeps the current object alive.",
+    "An earlier BYVALUE array and reversed named typed target produce trace arguments in parameter order. The rejected trace-ALIAS counterexample remains heap-valid but fails trace authority, distinguishing value snapshots from live reference aliases.",
+    "Warning-handler throws and a real parked injected Throwable precede receive rejection. Genuine groups also refuse reversed union order, nonnullable and variadic signature counterfactuals, and malformed saved HOLD receipts."
+  ],
+  "validation": {
+    "native_only": {
+      "revision": "a8431ad2f7c28bc7ada9d74718e61ae3a3dafc8a",
+      "originals": 10,
+      "model_agreements": 0,
+      "reports": [
+        ".tools/iterator-noninitial-typed-reference-native-as_0r_yp/report.json",
+        ".tools/iterator-noninitial-typed-reference-review-native-j2c3gx16/report.json"
+      ],
+      "result": "All expected tuples pass at the unchanged base/module477; 8 seconds per original, serial stop-first."
+    },
+    "unchanged_baseline": {
+      "revision": "a8431ad2f7c28bc7ada9d74718e61ae3a3dafc8a",
+      "report": ".tools/iterator-reference-noninitial-typed-fixed-baseline-v6_qruk8/report.json",
+      "source_sha256": "a8f618a13fd678f4015b4447e32c8a8fa2492d9a1b85d78f91072cbc084266e9",
+      "result": "Genuine second-send Unsupported Iterator unpack by-reference raw payload after17 exact OUTPUT events, including only the first warning. Exit1, no diagnostic/timeout; zero agreement."
+    },
+    "strict": {
+      "report": ".tools/iterator-reference-noninitial-typed-fixed-sl-5ljv3q7d/report.json",
+      "modules": 394,
+      "result": "PASS true stdout, empty stderr, exit0/no timeout, HEAD and watched inputs stable."
+    },
+    "source_normal_agreements": 10,
+    "source_runs": [
+      {
+        "originals": 7,
+        "report": ".tools/iterator-call-unpack-noninitial-typed-reference-source-bxyhnrwm/report.json",
+        "bounds": "model100/process120 seconds",
+        "selection": "Matching class/array private writes and source alias; wrong class and array-kind receive errors; wrong-type synchronous warning throw and parked injection."
+      },
+      {
+        "originals": 3,
+        "report": ".tools/iterator-noninitial-typed-reference-review-source-2a1lsa0i/report.json",
+        "bounds": "model60/process75 seconds",
+        "selection": "Two typed cells from one raw array; earlier BYVALUE array plus rejected current-source alias; reversed named receive error and parameter-order trace release."
+      }
+    ],
+    "source_result": "All ten compare original bytes with retained native stdout/stderr/exit and normal completion; receive errors are caught by the original PHP sources. No new native execution or observation normalization.",
+    "new_state_groups": 7,
+    "new_state_driver_premises": 528,
+    "author_premises": 388,
+    "independent_premises": 140,
+    "new_state_runs": [
+      {"premises": 75, "report": ".tools/fiber-state-review-5r18dbma/report.json", "frontier": "Second typed capture before warning/receive, with selected-function refusal controls."},
+      {"premises": 48, "report": ".tools/fiber-state-review-8saj2a5t/report.json", "frontier": "Actual class-typed body after incompatible private-cell overwrite."},
+      {"premises": 82, "report": ".tools/fiber-state-review-ug876c0i/report.json", "frontier": "Second class receive rejects and materializes both object arguments."},
+      {"premises": 87, "report": ".tools/fiber-state-review-3mx6e5p4/report.json", "frontier": "Second class receive rejects an array and retains its child through the trace."},
+      {"premises": 96, "report": ".tools/fiber-state-review-_ap59zen/report.json", "frontier": "Real parked second warning, pure type rejection and original Throwable injection."},
+      {"premises": 66, "report": ".tools/fiber-state-review-qtzsq1gd/report.json", "frontier": "Second nullable-array receive with distinct source-free cells sharing one table."},
+      {"premises": 74, "report": ".tools/fiber-state-review-9nowodtp/report.json", "frontier": "Caught TypeError after callee retirement, by-value trace array and independent current-source alias."}
+    ],
+    "affected_prior": {
+      "groups": 1,
+      "premises": 80,
+      "report": ".tools/fiber-state-review-cq9zqh43/report.json",
+      "result": "Only the prior noninitial capture group's nullable-class target admission expectation changes from false to true. All other checks and prior cuts remain unchanged; no unrelated group is replayed."
+    },
+    "state_result": "All pass true stdout, empty stderr, exit0/no timeout at7158. Counts include five setup premises per genuine source group and embedded counterfactuals; no standalone eligibility groups. Zero/one/two-step checks test resumption; source comparisons validate complete continuations.",
+    "state_bounds": "One worker, seek/finish4000; process120 seconds except the real parked author group180. Actual per-case caps are recorded.",
+    "input_identity": "Source/strict reports fingerprint inputs before/after; state harness asserts watched semantic inputs unchanged, wrappers verify helper/catalog and HEAD stability. Final review matched all four current executable fingerprints to all eight state identity snapshots.",
+    "failures": "No source/state validation failure in this milestone. Native-only and unchanged Unsupported records retain zero model agreement; prior milestone failures remain at their historical cuts."
+  },
+  "commands": {
+    "environment": "LC_ALL=C TZ=UTC; PHP_SPEC_SCRIPT_ENCODING unset; pinned PHP -n and ordinary profile; one worker on separately root-leased CPU3/SLOT5, serial stop-first.",
+    "author": "taskset -c 3 python3 .tools/strict.py; source wrapper with --native-report .tools/iterator-noninitial-typed-reference-native-as_0r_yp/report.json; five separate state --case commands in declared order; sole affected prior capture --case.",
+    "independent": "taskset -c 3 python3 tests/semantics/iterator_call_unpack_noninitial_typed_reference_review_sources.py --native-report .tools/iterator-noninitial-typed-reference-review-native-j2c3gx16/report.json; then state.py --case repeated-raw-array-second-type-receive-keeps-source-free-private-cells; then --case caught-array-type-error-keeps-byvalue-array-and-current-source-alias.",
+    "exact_commands": "External manifest lists all fourteen full outer commands; fixture sources, checked ASTs, commands, streams and exits remain in raw report directories."
+  },
+  "limits": "Exact normalized nullable single-class and nullable-array targets only. One-child acyclic arrays without embedded references establish this array evidence; existing graph admission adds no child-shape restriction. Reversed union order, nonnullable/other types, variadic targets, wider sources/sites, live replacements and broader array/reference interactions remain required. This is not Iterator or core closure; no engine bug or intentional divergence identified.",
+  "artifacts": {
+    "archive": "../php-spec-evidence-archive/iterator-reference-noninitial-typed-fixed-06/evidence.tar.gz",
+    "bytes": 507891,
+    "sha256": "4e1692ec2edf4a91ce1447b2752523f7a28d20b14fd714fdea0497eb4fb8fd77",
+    "manifest": "../php-spec-evidence-archive/iterator-reference-noninitial-typed-fixed-06/manifest.json",
+    "reports": 14,
+    "recovery": "Extract raw report directories and ad hoc drivers at the recorded private root or equivalent source path relationships. Recover maintained author/affected helpers from7158; reviewer files were untracked there and come from the Git publication containing this ledger, matching independent_inputs hashes. Manifest binds report hashes, revisions and exact outer commands. Rebuild/use project-local pinned dependencies; archives are evidence, not build/runtime inputs."
+  }
+}
