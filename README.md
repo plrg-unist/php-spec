@@ -927,6 +927,11 @@ strings, while strict calls raise `TypeError` with the original argument.
 Captured originals still authenticate the call; weak missing-name Error traces
 contain the converted string. The [scalar-name review](coverage/semantics/global-constant-scalar-name-review.json)
 records source and resumption checks.
+Null query names raise the weak-call deprecation before conversion or lookup.
+A returning handler can publish the empty-name constant; a throwing handler keeps
+the raw null API argument. Strict calls raise `TypeError` without that warning.
+The [null-name review](coverage/semantics/global-constant-null-name-review.json)
+records callback order, trace views and resumption checks.
 Array queries retain the stored root and children; existing COW preserves nested
 writes, reference acquisition and append history. Immutable and mutable empty
 roots retain their provenance. The [array-query review](coverage/semantics/global-constant-array-review.json)

@@ -1,0 +1,57 @@
+{
+  "scope": "Null names in nonowning constant/defined calls without argument unpacking. Partial core; define-null reception is separate.",
+  "status": "independently_accepted_private",
+  "reviewer": "/root/core_breadth_review_01",
+  "parent": "94402a17b208f11966137746e61be1cab6dd8e1e",
+  "semantic_revision": "dae1196f03076c90d8990bd7b58534932e8ea066",
+  "semantic_files": {
+    "spec/semantics/30-storage.watsup": "744cda17e6fc565995c741123675cd624e57932e67a19ee1df2e844136333bf2",
+    "spec/semantics/400-dynamic-constants.watsup": "93cb4c87c2a4b53c31679900e2032237c4664c8384573fdaedfe49549bf23046"
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "tools": {
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "primary": "Zend/zend_API.c::zend_null_arg_deprecated and zend_parse_arg_str_weak/slow; ext/standard/basic_functions.c::PHP_FUNCTION(constant), Zend/zend_builtin_functions.c::ZEND_FUNCTION(defined); pinned vendored engine.",
+  "semantics": "Raw CONFIG/SENT and selected KIND remain source authority. A new nonowning null-query task authenticates immutable input facts, retains selection and dispatches 8192 before conversion. Normal return derives the empty string and looks up the current table through the existing result helper. A throwing callback keeps raw null in the API trace and cancels lookup; a later missing-name Error shows the converted string. Strict calls retain raw null TypeErrors. Existing scalar/string/global/class/HALT/define helpers and ownership protocols are unchanged.",
+  "accepted": [
+    "Three author sources at dae1196f match native streams and exit0 in report8e23eb39: handler publishes previously absent empty key129 before lookup despite name/callee mutation; returningfalse reports default Deprecatedstderr then quietfalse/converted-empty Error; strictnull raw TypeErrors/no callback/sentinel99.",
+    "Independent peer source at0c933990 matches native streams and exit0 in6db055a0:8192 callback mutates name/callee then throws; captured constant/rawnull API frame, caller99, absentemptykey and finally restoration remain exact.",
+    "Public400 trueLF/0/emptyerr at0c933990 in1b6b4248:140/169/91 genuine source-derived premises for raw warning/handler/resume authority, late table129, defaultfalse, converted Error versus raw strict TypeError, immutable source refusal and whole budget equality."
+  ],
+  "zero_credit": [
+    "Native and syntax preparation are observations, not semantic agreements. Sole unchanged first-source baselinec1bdafb6 atc9e187: accepted checked program Unsupported/class constant value query afterB|,CLI1/nullPHPexit/emptyerr.",
+    "Initial public399 c4c883f7 at18d3 fails the derived inner-handler terminal Unsupported assertion, with later groups unrun. Existing drive_steps starts ERROR_UNWIND at remaining0, so only that assertion changed to BUDGET plus the exact saved Unsupported task. Original raw/fixtures retained; corrected140 plus unrun169/91 use a fresh output directory. Runtime/source evidence was not rerun."
+  ],
+  "execution": "All phases LC_ALL=C/TZ=UTC,CPU5,AS3GiB,INT timeout+kill5; native children15s, source CLI45/host60, public fresh fullSL90 children serial stop-first/reap. All accepted records have stable inputs/HEAD, no timeout or surviving groups; workerstderr is empty. PHPstderr equals the original native bytes, including the two deliberate default deprecations. Reused Source27 public transport and the new producer are pinned.",
+  "raw_root": ".tools/global-null-name-query-evidence-29",
+  "report_sha256": {
+    "author/public/check-report.json": "1b6b424873ef080ca02a989d923fb331b835d5fe40594327603bcbc3435d5bd3",
+    "author/public/prepare-report.json": "a4423a2b2247c7087a268f3dc8693b681707bbd09ac1b79c1d7eaeda3fe91603",
+    "author/public-initial/check-report.json": "c4c883f79892766b95a0f9b93b98a0ea1693c71339c99be07d656bdf3d0d680d",
+    "author/public-initial/prepare-report.json": "f22e2d1123d582e78875876bcd864f9fb7cb21c844c8f69a319adcfa67728ed4",
+    "author/review/model-report.json": "6db055a0753fdb6adccd4fb69928105e720b4c6204f86ddbec8b49b9408938e8",
+    "author/review/native-report.json": "f82b45c3ed56cc49820501f4d88943c0242bc6b283bc4b1a871b263cc6fad674",
+    "author/sources/baseline-report.json": "c1bdafb696b9cdf024f73526c729b79fe8fecc031b09f6ddfb884c37534d4cfa",
+    "author/sources/model-report.json": "8e23eb39806e331f6a915785b9cd145548a3d84cd9f798949a44f5d74fd01d04",
+    "author/sources/native-report.json": "742075e435843a59b9e62568f9a7b7ed00f0719f9b7fe28def3a41a19471d5bb"
+  },
+  "commands": [
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/global_constant_null_name_sources.py --phase native --output .tools/global-null-name-query-native-29",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/global_constant_null_name_sources.py --phase baseline --case callback-publication-before-empty-name-lookup --output .tools/global-null-name-query-native-29",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 240s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/global_constant_null_name_sources.py --phase model --output .tools/global-null-name-query-native-29",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/global_constant_null_name_review_sources.py --phase native --output .tools/global-null-name-query-review-29",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/global_constant_null_name_review_sources.py --phase model --output .tools/global-null-name-query-review-29",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/global_constant_null_name_protocol.py --phase prepare --sources .tools/global-null-name-query-native-29 --output .tools/global-null-name-query-public-29",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 330s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/global_constant_null_name_protocol.py --phase check --sources .tools/global-null-name-query-native-29 --output .tools/global-null-name-query-public-29",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/global_constant_null_name_protocol.py --phase prepare --sources .tools/global-null-name-query-native-29 --output .tools/global-null-name-query-public-fixed-29",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 330s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/global_constant_null_name_protocol.py --phase check --sources .tools/global-null-name-query-native-29 --output .tools/global-null-name-query-public-fixed-29"
+  ],
+  "recovery": "Four owned ignored trees moved once without copies after reviewer STOP and focused cwd/cmdline/fd no-use scan; report hashes unchanged. Restore author/sources,public-initial,public,review respectively as .tools/global-null-name-query-{native,public,public-fixed,review}-29 inside .tools/source-global-null-name-query-29 at the recorded revisions. Branch refs retain exact historical source and fixture cuts.",
+  "remaining": "Null define names, Stringable/array reception, packed/owning/FCC forms, wider arity and callback/lifecycle domains remain separate. Core remains partial; no engine bug or intentional divergence.",
+  "actual_parent_integration": null
+}

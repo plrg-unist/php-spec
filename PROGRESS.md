@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Null names in `constant`/`defined` now dispatch the weak-call deprecation before
+conversion or lookup. A returning handler can publish the empty-name binding;
+caller mutations preserve the captured null and selected API. Throwing handlers
+keep raw null in the API trace, while a later missing-name Error uses the converted
+empty string. Strict null calls raise `TypeError` without a deprecation.
+Author3 at dae1196f and an independent throwing-handler source at 0c933990 agree;
+400 public premises at 0c933990 cover real warning/resume fronts, late lookup,
+default reporting, immutable source refusal, raw/converted traces and budgets.
+The initial inner-handler terminal-phase assertion remains zero credit; its
+correction checks the same refusal inside budgeted error unwind. Null `define`
+names, Stringable/array reception and packed/owning forms remain separate.
+Private acceptance is complete; actual-parent integration is pending.
+[Null-query review](coverage/semantics/global-constant-null-name-review.json).
+
 The authenticated numeric comparison remainder now skips builtin and inherited
 Throwable string handlers after a Notice handler throws. Signed nonzero order
 stops before later Notices; cold/warm caches and previous links remain untouched.

@@ -226,9 +226,20 @@ call keeps its original value and selected callee. Available immutable argument
 facts must match that exact value. Conversion changes only the API slot: a weak
 missing-name Error shows the received string in its trace, while strict TypeErrors
 retain the original argument and actual parameter name. Caller CVs stay unchanged.
-Null deprecation, Stringable/array reception and packed/owning forms remain separate.
+Stringable/array reception and packed/owning forms remain separate.
 The [scalar-name review](../../coverage/semantics/global-constant-scalar-name-review.json)
 records source-backed reception, trace values, source rejection and budgets.
+
+Null query names keep the original call through the weak-call deprecation.
+While the handler runs, the API trace keeps the raw null argument. Normal return
+converts it to the empty string and only then queries the current table.
+A handler can therefore publish the requested empty-name binding. Caller mutations
+do not replace the captured value or selected callee. A missing-name Error after normal return shows
+the converted string; a throwing handler keeps null in the API trace and cancels
+the lookup. Strict null calls raise `TypeError` without dispatching a deprecation.
+The [null-name review](../../coverage/semantics/global-constant-null-name-review.json)
+records genuine warning/resume fronts, source refusals and budget continuation.
+Null `define` names remain separate.
 
 `define` also receives int/bool/float names with nonowning primitive values and
 an omitted/already-false flag. Each source send maps to its normalized captured
@@ -286,7 +297,7 @@ records actual query fronts, shared counters, alias roots and certificate refusa
 
 Absent names raise `Error` with the stripped lookup spelling and the full received
 string argument in the API trace. Unknown startup values retain their prior Unsupported
-result. Generic `PVOBJECT`, stored ALIAS/cyclic array trees, null/Stringable/array name
+result. Generic `PVOBJECT`, stored ALIAS/cyclic array trees, Stringable/array name
 reception and packed/owning calls remain outside this slice. The original ordinary `const` string producer refusal retains
 its historical cut; the string-publication follow-up above admits that producer
 domain without renewing the older lookup campaign. The [global-query ledger](../../coverage/semantics/global-constant-review.json)
@@ -298,7 +309,7 @@ and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`. `PHP_FUNCTION(constant)` us
 exception-class lookup and `ZVAL_COPY_OR_DUP`; `zend_declare_typed_class_constant`
 interns direct string values before installation.
 Nested empty values in `define`, cycles, objects, array duplicate/third-argument paths,
-null/Stringable/array names, array/object values with scalar names, true/coerced
+null `define` names, Stringable/array names, array/object values with scalar names, true/coerced
 flags with scalar names, startup/special-name warnings,
 internal/trait/interface/enum class queries, deferred keyword initializers and
 keyword `constant` array values, other deferred initializers,

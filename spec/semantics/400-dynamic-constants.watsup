@@ -13,6 +13,7 @@ def $dynamic_constant_kind(INTRINSIC_DEFINE) = true
 def $dynamic_constant_kind(INTRINSIC_DEFINED) = true
 def $dynamic_constant_kind(INTRINSIC_CONSTANT) = true
 dec $dynamic_scalar_constant_call(pconfigcall) : bool
+dec $dynamic_null_constant_call(pconfigcall) : bool
 def $config_parameter(INTRINSIC_DEFINE, preqbytes) = (0) -- if preqbytes = $ptascii("constant_name")
 def $config_parameter(INTRINSIC_DEFINE, preqbytes) = (1) -- if preqbytes = $ptascii("value")
 def $config_parameter(INTRINSIC_DEFINE, preqbytes) = (2) -- if preqbytes = $ptascii("case_insensitive")
@@ -163,6 +164,7 @@ rule PhpStep/dynamic-constant-invoke: S ~> $dynamic_constant_receive(S, pconfigc
   -- if $dynamic_constant_kind(pconfigcall.KIND)
   -- if ~$dynamic_scalar_constant_call(pconfigcall)
   -- if ~$dynamic_scalar_define_call(pconfigcall)
+  -- if ~$dynamic_null_constant_call(pconfigcall)
 
 def $task_nodes(DYNAMIC_CONSTANT_CASE_WARNING pconfigcall) = $config_nodes(pconfigcall)
 def $selected_task_nonce(DYNAMIC_CONSTANT_CASE_WARNING pconfigcall) = pconfigcall.SELECTION
@@ -1275,3 +1277,52 @@ def $error_handler_trace_values(S, pcallcontext, pconfigcall_api) = $trace_extra
   -- if $error_context_call(S, pcallcontext) = (perrorcall)
   -- if perrorcall.RESUME = DYNAMIC_SCALAR_DEFINE_DUPLICATE pconfigcall pvalue_name z_precision n_constants
   -- if pconfigcall_api = pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT, 0, KNOWN pvalue_name)]
+
+;; ZPP warns with the raw null argument, then converts only after normal return.
+def $dynamic_null_constant_call(pconfigcall) = true
+  -- if pconfigcall.KIND <- [INTRINSIC_CONSTANT, INTRINSIC_DEFINED]
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL)]
+def $dynamic_null_constant_call(pconfigcall) = false -- otherwise
+dec $dynamic_null_constant_valid(pstate, pconfigcall) : bool
+def $dynamic_null_constant_valid(S, pconfigcall) = true
+  -- if $dynamic_null_constant_call(pconfigcall)
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression, false, preqbytes?, porigin_argument, z))
+  -- if pvalue_known? = $compiled_read(S, porigin_argument)
+  -- if pvalue_known? = eps \/ pvalue_known? = (PNULL)
+def $dynamic_null_constant_valid(S, pconfigcall) = false -- otherwise
+dec $dynamic_null_constant_message(pconfigcall) : preqbytes
+def $dynamic_null_constant_message(pconfigcall) = $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Passing null to parameter #1 ($") ++ $config_parameter_name(pconfigcall.KIND, 0) ++ $ptascii(") of type string is deprecated")
+dec $dynamic_null_constant_receive(pstate, pconfigcall) : pstate
+def $dynamic_null_constant_receive(S, pconfigcall) = $config_error(S[.TODO = ptask_tail*], pconfigcall, "TypeError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Argument #1 ($") ++ $config_parameter_name(pconfigcall.KIND, 0) ++ $ptascii(") must be of type string, null given"))
+  -- if $dynamic_null_constant_valid(S, pconfigcall)
+  -- if $config_strict(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_null_constant_receive(S, pconfigcall) = $error_dispatch(S, 8192, $dynamic_null_constant_message(pconfigcall), pconfigcall.LINE, DIAGNOSTIC "Deprecated" $dynamic_null_constant_message(pconfigcall) pconfigcall.LINE, DYNAMIC_NULL_CONSTANT_RESULT pconfigcall)
+  -- if $dynamic_null_constant_valid(S, pconfigcall)
+  -- if ~$config_strict(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_null_constant_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "null constant name reception"] -- otherwise
+rule PhpStep/dynamic-null-constant-invoke: S ~> $dynamic_null_constant_receive(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $config_invoke_valid(S, pconfigcall) /\ $dynamic_null_constant_call(pconfigcall)
+def $task_nodes(DYNAMIC_NULL_CONSTANT_RESULT pconfigcall) = $config_nodes(pconfigcall)
+def $selected_task_nonce(DYNAMIC_NULL_CONSTANT_RESULT pconfigcall) = pconfigcall.SELECTION
+def $call_task_valid(S, DYNAMIC_NULL_CONSTANT_RESULT pconfigcall) = ($dynamic_null_constant_valid(S, pconfigcall) /\ ~$config_strict(S, pconfigcall))
+rule PhpStep/dynamic-null-constant-result: S ~> $dynamic_scalar_constant_finish($typed_apply(S[.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*], TYPESTRING PNULL, pconfigcall.LINE), pconfigcall)
+  -- if S.TODO = (DYNAMIC_NULL_CONSTANT_RESULT pconfigcall) :: ptask_tail*
+  -- if $call_task_valid(S, DYNAMIC_NULL_CONSTANT_RESULT pconfigcall)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = DYNAMIC_NULL_CONSTANT_RESULT pconfigcall
+  -- if $call_task_valid(S, perrorcall.RESUME)
+  -- if perrorcall.SITE = pconfigcall.SITE /\ perrorcall.LEVEL = 8192 /\ perrorcall.LINE = pconfigcall.LINE
+  -- if perrorcall.MESSAGE = $dynamic_null_constant_message(pconfigcall)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE pconfigcall.LINE
+def $error_context_trigger(S, pcallcontext) = (pconfigcall)
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = DYNAMIC_NULL_CONSTANT_RESULT pconfigcall
+def $error_handler_trace_values(S, pcallcontext, pconfigcall_api) = [PNULL]
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = DYNAMIC_NULL_CONSTANT_RESULT pconfigcall
+  -- if pconfigcall_api = pconfigcall
