@@ -1,0 +1,47 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hashes": [
+    "40a36244fb6a85eb0231dde5907c70a18bc409108a4c601d2067af96870bad64"
+  ],
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "scalar",
+      "source": "<?php\nclass PrivateSetterParent80 {\n    public private(set) int $value = 10 {\n        set {\n            echo 'SET:', self::class, '/', static::class, '/', __METHOD__, '/', $value, '|';\n            $this->value = $value + $this->offset();\n        }\n    }\n    private function offset(): int { return 13; }\n    public function write($input) {\n        return $this->value = $input;\n    }\n}\nclass PrivateSetterChild80 extends PrivateSetterParent80 {\n    private function offset(): int { return 900; }\n    public function denied($input) {\n        return $this->value = $input;\n    }\n}\n$child = new PrivateSetterChild80();\n$raw = (array) $child;\necho 'I:', $raw['value'], '/', $child->value, '|';\n$result = $child->write(20);\n$raw = (array) $child;\necho 'R:', $result, '/', $raw['value'], '/', $child->value, '|';\ntry {\n    $child->denied([1]);\n} catch (Error $error) {\n    echo 'CHILD:', $error->getMessage(), '|';\n}\ntry {\n    $child->value = [1];\n} catch (Error $error) {\n    echo 'GLOBAL:', $error->getMessage(), '|';\n}\ntry {\n    $child->write([1]);\n} catch (TypeError $error) {\n    echo 'TYPE:', $error->getMessage(), '|';\n}\n$raw = (array) $child;\necho 'F:', $raw['value'], '/', $child->value, '|';\n",
+      "source_sha256": "b19d2a2dc438a842b803d8c95093682c1e9d939fc955e68b233bbccfe3d27334",
+      "stdout_base64": "SToxMC8xMHxTRVQ6UHJpdmF0ZVNldHRlclBhcmVudDgwL1ByaXZhdGVTZXR0ZXJDaGlsZDgwL1ByaXZhdGVTZXR0ZXJQYXJlbnQ4MDo6JHZhbHVlOjpzZXQvMjB8UjoyMC8zMy8zM3xDSElMRDpDYW5ub3QgbW9kaWZ5IHByaXZhdGUoc2V0KSBwcm9wZXJ0eSBQcml2YXRlU2V0dGVyUGFyZW50ODA6OiR2YWx1ZSBmcm9tIHNjb3BlIFByaXZhdGVTZXR0ZXJDaGlsZDgwfEdMT0JBTDpDYW5ub3QgbW9kaWZ5IHByaXZhdGUoc2V0KSBwcm9wZXJ0eSBQcml2YXRlU2V0dGVyUGFyZW50ODA6OiR2YWx1ZSBmcm9tIGdsb2JhbCBzY29wZXxUWVBFOlByaXZhdGVTZXR0ZXJQYXJlbnQ4MDo6JHZhbHVlOjpzZXQoKTogQXJndW1lbnQgIzEgKCR2YWx1ZSkgbXVzdCBiZSBvZiB0eXBlIGludCwgYXJyYXkgZ2l2ZW4sIGNhbGxlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvY29hbGVzY2UtZ2V0LWhvb2tzLXByaXZhdGUtMzIvLnRvb2xzL3ByaXZhdGUtc2V0LWJhY2tlZC1ob29rLXByb2Jlcy04MC9zY2FsYXIucGhwIG9uIGxpbmUgMTF8RjozMy8zM3w=",
+      "stdout_template_base64": "SToxMC8xMHxTRVQ6UHJpdmF0ZVNldHRlclBhcmVudDgwL1ByaXZhdGVTZXR0ZXJDaGlsZDgwL1ByaXZhdGVTZXR0ZXJQYXJlbnQ4MDo6JHZhbHVlOjpzZXQvMjB8UjoyMC8zMy8zM3xDSElMRDpDYW5ub3QgbW9kaWZ5IHByaXZhdGUoc2V0KSBwcm9wZXJ0eSBQcml2YXRlU2V0dGVyUGFyZW50ODA6OiR2YWx1ZSBmcm9tIHNjb3BlIFByaXZhdGVTZXR0ZXJDaGlsZDgwfEdMT0JBTDpDYW5ub3QgbW9kaWZ5IHByaXZhdGUoc2V0KSBwcm9wZXJ0eSBQcml2YXRlU2V0dGVyUGFyZW50ODA6OiR2YWx1ZSBmcm9tIGdsb2JhbCBzY29wZXxUWVBFOlByaXZhdGVTZXR0ZXJQYXJlbnQ4MDo6JHZhbHVlOjpzZXQoKTogQXJndW1lbnQgIzEgKCR2YWx1ZSkgbXVzdCBiZSBvZiB0eXBlIGludCwgYXJyYXkgZ2l2ZW4sIGNhbGxlZCBpbiB7RklMRX0gb24gbGluZSAxMXxGOjMzLzMzfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "private-set-backed-hook80-scalar-native-52dccd72",
+      "native_raw_sha256": "40a36244fb6a85eb0231dde5907c70a18bc409108a4c601d2067af96870bad64"
+    },
+    {
+      "id": "final",
+      "source": "<?php\nclass PrivateSetterFinalParent80 {\n    public private(set) int $value = 10 {\n        set {\n            echo 'SET:', self::class, '/', static::class, '/', __METHOD__, '/', $value, '|';\n            $this->value = $value + $this->offset();\n        }\n    }\n    private function offset(): int { return 13; }\n    public function write($input) {\n        return $this->value = $input;\n    }\n}\nclass PrivateSetterFinalChild80 extends PrivateSetterFinalParent80 {\n    public int $value = 99;\n}\necho 'UNREACHED';\n",
+      "source_sha256": "2cd8ad325f3604615703c711681ea699ffdb6afb3d927dc3b6818953f9ee0fee",
+      "stdout_base64": "",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCBvdmVycmlkZSBmaW5hbCBwcm9wZXJ0eSBQcml2YXRlU2V0dGVyRmluYWxQYXJlbnQ4MDo6JHZhbHVlIGluIHtGSUxFfSBvbiBsaW5lIDE0ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "private-set-backed-hook80-final-native-52dccd72",
+      "native_raw_sha256": "40a36244fb6a85eb0231dde5907c70a18bc409108a4c601d2067af96870bad64"
+    }
+  ]
+}

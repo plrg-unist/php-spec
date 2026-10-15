@@ -7,6 +7,15 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Public private(set) backed implicit class setters now retain their public slot key
+and implicit finality. An inherited Parent writer on Child stores33 and returns
+original20; Child/global array writes fail access, while Parent array reception
+raises TypeError4/caller11. Plain Child redeclaration fails at class14. Source2
+and strict395 pass at eb5f7e79; two genuine cuts305 =252 reached +53 derived pass
+at a89dfc88. Existing normalization, permissions and final linker are reused;
+wider asymmetric hook forms remain partial.
+[Review](coverage/semantics/private-set-backed-hook-review.json).
+
 Null `define` names now dispatch the weak-call deprecation before conversion
 or registration. A returning callback can create the empty-name binding first,
 causing a separate duplicate Warning with the converted string in its API trace.

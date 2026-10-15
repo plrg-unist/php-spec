@@ -1,0 +1,418 @@
+{
+  "scope": "Public private(set), typed, sole implicit backed class SET on a parentless declaring class, inherited unchanged by Child. Only the declaring lexical Parent may write; Child/global denial precedes setter reception. The public key and implicit finality remain genuine source facts.",
+  "implementation": {
+    "base": "52dccd72306c1d4d6142bc63e4ef9772a0425267",
+    "revision": "eb5f7e7954f404ab95a6bce2fd24a727dd6f93a0",
+    "test_revision": "a89dfc88ae9453f15d362fd08fe106bd55f20313",
+    "modules": 395,
+    "files": [
+      "spec/semantics/403-backed-set-hooks.watsup"
+    ],
+    "change": "Extend only the existing closed asymmetric class flags to512/513. Require descriptor.FINAL=$ppproperty_final(flags), preserving source flags, SETVISPRIVATE and public KEY equality. Arbitrary explicit-final and wider hook forms remain refused.",
+    "preserved": "Existing200 normalization/final inheritance,201/288 lexical permission and diagnostic helpers, layout, call/receive, backing storage and void/original-input continuation remain unchanged. No task, schema, manifest or generic-return change."
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor34308a6666b2d489c509541ea9befea9e2b42348",
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "absent",
+    "jobs": 1
+  },
+  "binaries": {
+    "php": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/php/bin/php",
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    "strict_compiler": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/cprefix-compiler/compiler",
+      "sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d"
+    },
+    "algorithmic": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/spectec/bin/p4spectec",
+      "sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "strict_application": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/tests/semantics/_build/default/numeric_runner.exe",
+      "sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    }
+  },
+  "engine_basis": [
+    "vendor/php-src/Zend/zend_API.c: zend_declare_typed_property normalizes asymmetric visibility and makes genuine private(set) final (4533\u20134542).",
+    "vendor/php-src/Zend/zend_object_handlers.c: zend_asymmetric_property_has_set_access requires declaring lexical scope for private(set) (590\u2013598); zend_std_write_property checks access before setter call/type receive (1214\u20131223).",
+    "vendor/php-src/Zend/zend_inheritance.c: final property inheritance refusal precedes other property compatibility checks (1459\u20131461).",
+    "Existing200/238/134/179 final-property route emits STATICBYTES at childclass.LINE14;192 stops at PCSLINK and bin/php-semantics retains static_rejection. Native255 alone did not select the model phase."
+  ],
+  "recorders": {
+    "run.py": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/private-set-backed-hook-probes-80/run.py",
+      "sha256": "03df34601110c7e90b4af644ec671fe9d21a60a403e5a3fcd42c6c8d9d411cd5"
+    },
+    "run-changed.py": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/private-set-backed-hook-probes-80/run-changed.py",
+      "sha256": "8bf4183be0000e5a00ad9f3ebe057ccaad25276a309067f25847757cc1b9f46f"
+    },
+    "run-compiler.py": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/private-set-backed-hook-probes-80/run-compiler.py",
+      "sha256": "f3190122bb8bbc972e73e2d675f1e7321ee6b3c6d82b89627fb870f6718de125"
+    },
+    "watch-affinity.py": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/private-set-backed-hook-probes-80/watch-affinity.py",
+      "sha256": "d77a6e30bddeaa1128cad1ef485754b9c996495271608fac51fe7a2669e33e42"
+    },
+    "capture-candidate-affinity.py": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/private-set-backed-hook-probes-80/capture-candidate-affinity.py",
+      "sha256": "83ba1e10930305ff701a101d413c251da1d996b2fa41c85fbdde70d29ece27fa"
+    },
+    "observe-state-affinity.py": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/private-set-backed-hook-probes-80/observe-state-affinity.py",
+      "sha256": "5e3dbd5bd3cea8d77a3453ea3f0399a816958eaadf34cee04d92e309df4329f1"
+    }
+  },
+  "native": {
+    "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/private-set-backed-hook-probes-80/native-first/report.json",
+    "sha256": "40a36244fb6a85eb0231dde5907c70a18bc409108a4c601d2067af96870bad64",
+    "revision": "52dccd72306c1d4d6142bc63e4ef9772a0425267",
+    "completed": true,
+    "source_agreements": 0,
+    "stable_inputs": true,
+    "records": [
+      {
+        "id": "scalar",
+        "source_sha256": "b19d2a2dc438a842b803d8c95093682c1e9d939fc955e68b233bbccfe3d27334",
+        "process": {
+          "pid": 1831263,
+          "exit": 0,
+          "elapsed": 0.004749298095703125,
+          "cap_seconds": 45,
+          "timeout": false,
+          "interruption": null,
+          "group_after": []
+        },
+        "observed_exit": 0,
+        "observed_kind": "normal",
+        "stdout_bytes": 545,
+        "stderr_bytes": 0
+      },
+      {
+        "id": "final",
+        "source_sha256": "2cd8ad325f3604615703c711681ea699ffdb6afb3d927dc3b6818953f9ee0fee",
+        "process": {
+          "pid": 1831264,
+          "exit": 255,
+          "elapsed": 0.002572774887084961,
+          "cap_seconds": 45,
+          "timeout": false,
+          "interruption": null,
+          "group_after": []
+        },
+        "observed_exit": 255,
+        "observed_kind": "fatal_255",
+        "stdout_bytes": 0,
+        "stderr_bytes": 234
+      }
+    ],
+    "affinity": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/private-set-backed-hook-probes-80/affinity-native-first.json",
+      "sha256": "6cad7ff6d01d4a10dfffb0621d2aaded9c6d333941817ecfeb663a32e3a198bc"
+    },
+    "launch": "taskset -c 4 python3 .tools/private-set-backed-hook-probes-80/run.py native --revision 52dccd72306c1d4d6142bc63e4ef9772a0425267",
+    "affinity_observation": "The native observer completed=false and was reaped with exit1 after its bounded window. Only scalar PID1831263 has captured live affinity4/argv/interval; final PID1831264 has literal taskset-c4 launch provenance only. No live final-affinity claim or replay.",
+    "observation": "Exactly one SET on Child uses Parent lexical/private13; assignment20 returns20 while public storage becomes33. Child/global arrays are denied before reception. Parent-array call reaches hook TypeError4/caller11. Plain Child redeclaration fails at class14. Preparatory stream/line hypotheses were informational."
+  },
+  "unchanged_baseline": {
+    "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/private-set-backed-hook-probes-80/accepted-current-baseline/report.json",
+    "sha256": "ca7afb2c714aeded337dad7a45d64a4120d4108900a790da67c7c679a1abcd52",
+    "revision": "52dccd72306c1d4d6142bc63e4ef9772a0425267",
+    "completed": true,
+    "source_agreements": 0,
+    "stable_inputs": true,
+    "records": [
+      {
+        "id": "scalar",
+        "source_sha256": "b19d2a2dc438a842b803d8c95093682c1e9d939fc955e68b233bbccfe3d27334",
+        "process": {
+          "pid": 1832013,
+          "exit": 1,
+          "elapsed": 7.978217363357544,
+          "cap_seconds": 75,
+          "timeout": false,
+          "interruption": null,
+          "group_after": []
+        },
+        "frontend_accepted": true,
+        "adapter_checked": true,
+        "status": "unsupported",
+        "reason": "property hook visibility, inheritance, attributes or shape",
+        "logical_exit": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0,
+        "diagnostic": null,
+        "source_agreement": false
+      },
+      {
+        "id": "final",
+        "source_sha256": "2cd8ad325f3604615703c711681ea699ffdb6afb3d927dc3b6818953f9ee0fee",
+        "process": {
+          "pid": 1832143,
+          "exit": 1,
+          "elapsed": 7.924943923950195,
+          "cap_seconds": 75,
+          "timeout": false,
+          "interruption": null,
+          "group_after": []
+        },
+        "frontend_accepted": true,
+        "adapter_checked": true,
+        "status": "unsupported",
+        "reason": "property hook visibility, inheritance, attributes or shape",
+        "logical_exit": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0,
+        "diagnostic": null,
+        "source_agreement": false
+      }
+    ],
+    "affinity": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/private-set-backed-hook-probes-80/affinity-accepted-current-baseline.json",
+      "sha256": "4b4a5ce2ba14cd751aa239b12557eceec82297c71be3b4138e2503c9a854432e"
+    },
+    "launch": "taskset -c 4 python3 .tools/private-set-backed-hook-probes-80/run.py baseline --revision 52dccd72306c1d4d6142bc63e4ef9772a0425267"
+  },
+  "strict": {
+    "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/private-set-backed-hook-probes-80/private-set-backed-hook-compiler-z8jao6bv/report.json",
+    "sha256": "5d4e5fe128f894e7aa70de825fcf6e4831e9a44faf9c17b2d379f92761ffc56a",
+    "revision": "eb5f7e7954f404ab95a6bce2fd24a727dd6f93a0",
+    "modules": 395,
+    "passed": true,
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "process": {
+      "pid": 1834408,
+      "exit": 0,
+      "elapsed": 7.419997215270996,
+      "cap_seconds": 60,
+      "timeout": false,
+      "interruption": null,
+      "group_after": []
+    },
+    "affinity": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/private-set-backed-hook-probes-80/affinity-strict-eb5f.json",
+      "sha256": "61943525e2988b8a3868bdca06c69329d83564f7d2dd65bf53a2da37b6d3020d"
+    },
+    "launch": "taskset -c 4 python3 .tools/private-set-backed-hook-probes-80/run-compiler.py 52dccd72306c1d4d6142bc63e4ef9772a0425267 eb5f7e7954f404ab95a6bce2fd24a727dd6f93a0"
+  },
+  "source_validation": {
+    "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/private-set-backed-hook-probes-80/changed-model-7nj77doi/report.json",
+    "sha256": "89aec222af7c943c3eb7df77a7fc13cd3cc8abcf37a09e0b52294dbf4149a3d5",
+    "revision": "eb5f7e7954f404ab95a6bce2fd24a727dd6f93a0",
+    "completed": true,
+    "source_agreements": 2,
+    "stable_inputs": true,
+    "records": [
+      {
+        "id": "scalar",
+        "source_sha256": "b19d2a2dc438a842b803d8c95093682c1e9d939fc955e68b233bbccfe3d27334",
+        "process": {
+          "pid": 1834640,
+          "exit": 0,
+          "elapsed": 16.32183861732483,
+          "cap_seconds": 75,
+          "timeout": false,
+          "interruption": null,
+          "group_after": []
+        },
+        "frontend_accepted": true,
+        "adapter_checked": true,
+        "status": "normal",
+        "reason": null,
+        "logical_exit": 0,
+        "stdout_bytes": 545,
+        "stderr_bytes": 0,
+        "diagnostic": null,
+        "source_agreement": true
+      },
+      {
+        "id": "final",
+        "source_sha256": "2cd8ad325f3604615703c711681ea699ffdb6afb3d927dc3b6818953f9ee0fee",
+        "process": {
+          "pid": 1834787,
+          "exit": 0,
+          "elapsed": 7.988879919052124,
+          "cap_seconds": 75,
+          "timeout": false,
+          "interruption": null,
+          "group_after": []
+        },
+        "frontend_accepted": true,
+        "adapter_checked": true,
+        "status": "static_rejection",
+        "reason": null,
+        "logical_exit": 255,
+        "stdout_bytes": 0,
+        "stderr_bytes": 234,
+        "diagnostic": {
+          "class": "CompileError",
+          "message": "Q2Fubm90IG92ZXJyaWRlIGZpbmFsIHByb3BlcnR5IFByaXZhdGVTZXR0ZXJGaW5hbFBhcmVudDgwOjokdmFsdWU=",
+          "line": 14
+        },
+        "source_agreement": true
+      }
+    ],
+    "affinity": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/private-set-backed-hook-probes-80/affinity-changed-eb5f.json",
+      "sha256": "04b09d7657489b016a54085cecd496a515a21797d18128c50095513575e1d98e"
+    },
+    "launch": "taskset -c 4 python3 .tools/private-set-backed-hook-probes-80/run-changed.py changed --revision eb5f7e7954f404ab95a6bce2fd24a727dd6f93a0"
+  },
+  "state_validation": {
+    "modules": 395,
+    "premises": 305,
+    "reached_premises": 252,
+    "derived_premises": 53,
+    "source_agreements": 0,
+    "groups": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/private-set-backed-hook-protocol-8yoh67y1/report.json",
+        "sha256": "0321be86a3d203dc9cd162670229b34c7e38c918f1514955e7ef20e72a43a9e1",
+        "group": "receive",
+        "revision": "a89dfc88ae9453f15d362fd08fe106bd55f20313",
+        "fixture": {
+          "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/private-set-backed-hook-protocol-8yoh67y1/hook.watsup",
+          "sha256": "7dffe2413be0b078076387fc1255eea9ae29160e32d04117bc594eae8e724e23"
+        },
+        "preparation": {
+          "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/private-set-backed-hook-protocol-diqip0pd/PREPARED.json",
+          "sha256": "394b8e8645a54ecf04d976fa2361ff02083d18f0dfc7fadecdf12ce1249652bb"
+        },
+        "premises": 159,
+        "reached_premises": 115,
+        "derived_premises": 44,
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "stable_inputs": true,
+        "records": [
+          {
+            "id": "algorithmic-compilation",
+            "passed": true,
+            "process": {
+              "pid": 1841889,
+              "exit": 0,
+              "elapsed": 6.286233186721802,
+              "cap_seconds": 90,
+              "timeout": false,
+              "interruption": null,
+              "group_after": []
+            }
+          },
+          {
+            "id": "strict-SL-application",
+            "passed": true,
+            "process": {
+              "pid": 1841928,
+              "exit": 0,
+              "elapsed": 20.299067735671997,
+              "cap_seconds": 90,
+              "timeout": false,
+              "interruption": null,
+              "group_after": []
+            }
+          }
+        ],
+        "launch": "taskset -c 4 python3 tests/semantics/private_set_backed_hook_protocol.py --revision a89dfc88ae9453f15d362fd08fe106bd55f20313 --group receive"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/private-set-backed-hook-protocol-azp6et75/report.json",
+        "sha256": "cb81c7e9f487034a81dcf0bc8dbde8c60d8f7229dedc690c5566509973a4d250",
+        "group": "errors",
+        "revision": "a89dfc88ae9453f15d362fd08fe106bd55f20313",
+        "fixture": {
+          "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/private-set-backed-hook-protocol-azp6et75/hook.watsup",
+          "sha256": "c53da85bed96aea4971a175e9d9c65e6f57798cae086bfe4bc5e855481632722"
+        },
+        "preparation": {
+          "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/private-set-backed-hook-protocol-f4jrgeb_/PREPARED.json",
+          "sha256": "e8da62840e17c83ede9b9ff68c5908d1610a46e316c59f645a7cd9e1ff771fe0"
+        },
+        "premises": 146,
+        "reached_premises": 137,
+        "derived_premises": 9,
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "stable_inputs": true,
+        "records": [
+          {
+            "id": "algorithmic-compilation",
+            "passed": true,
+            "process": {
+              "pid": 1842250,
+              "exit": 0,
+              "elapsed": 6.255170822143555,
+              "cap_seconds": 90,
+              "timeout": false,
+              "interruption": null,
+              "group_after": []
+            }
+          },
+          {
+            "id": "strict-SL-application",
+            "passed": true,
+            "process": {
+              "pid": 1842322,
+              "exit": 0,
+              "elapsed": 22.298750400543213,
+              "cap_seconds": 90,
+              "timeout": false,
+              "interruption": null,
+              "group_after": []
+            }
+          }
+        ],
+        "launch": "taskset -c 4 python3 tests/semantics/private_set_backed_hook_protocol.py --revision a89dfc88ae9453f15d362fd08fe106bd55f20313 --group errors"
+      }
+    ],
+    "affinity": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/private-set-backed-hook-probes-80/affinity-state.json",
+      "sha256": "dbe93b25bf3f181322bd2e27b8ab9edba7cff0ac6678d4f92dea47f1a5a5deb0"
+    },
+    "observation": "Real Parent writer11 receive/backing6/void restoration returns original20 with public33. Child writer17 and global32 raise raw/materialized access Errors before CALL_ARGS; permitted Parent array receive raises TypeError4/caller11, then final read42 observes33. Derived false-FINAL, explicit-final545, protected mismatch, source/key and lexical-versus-called controls authenticate the new family."
+  },
+  "preparation_credit": "Both preparations have records[], application_evaluations0 and source_agreements0. No failed CLASS80 semantic actor; the incomplete native-affinity observer is provenance only.",
+  "maintained_catalogue_correction": {
+    "revision": "6a14e845143fe9ab1f35596dbabf04fa125e3577",
+    "file": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/tests/semantics/protected_set_backed_hook_cases.json",
+      "sha256": "2ab061a9953bfe80793c20dca810d9093083c3c028050afb1a4f4028ec5cde61"
+    },
+    "change": "Add only the method_runtime-required stdout_base64 fallback from immutable original79 native453 bytes. Existing FILE template/source/profile/status are retained; its effective templated output is unchanged. No CLASS79 replay or historical ledger amendment.",
+    "original_native": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/protected-set-backed-hook-probes-79/native-first/report.json",
+      "sha256": "6036bc5a1620dfd363c95520bc1cf399919f934b961b3ab3a102c4e023d53c36"
+    }
+  },
+  "permanent_tests": {
+    "tests/semantics/private-set-backed-hook.php": "b19d2a2dc438a842b803d8c95093682c1e9d939fc955e68b233bbccfe3d27334",
+    "tests/semantics/private-set-backed-hook-final.php": "2cd8ad325f3604615703c711681ea699ffdb6afb3d927dc3b6818953f9ee0fee",
+    "tests/semantics/private_set_backed_hook_cases.json": "559f07618e90bccc6df6ee19ae9afc22ecb94832192f117721041aa64b3b7cdc",
+    "tests/semantics/private_set_backed_hook_protocol.py": "b93d4b385859b85ce8a096fab05422f5fe22e6f588b737891aaa61e2143bbcad"
+  },
+  "remaining": [
+    "Wider private(set) explicit/trait/paired/virtual hooks, parented declaring owners and override combinations remain partial.",
+    "No new indirect/reference, quiet, alias/lifetime or broader RHS protocol is claimed; existing denial/Unsupported boundaries remain."
+  ],
+  "recovery": "Original raw reports/process/stdout/stderr/fixtures and affinity captures remain under ignored .tools paths above. Keep their revisions and binary/profile identities; permanent source comparison uses only FILE substitutions. Source2 and state305 are separate evidence. Metadata-only publication does not renew numeric evidence."
+}

@@ -9,9 +9,9 @@ def $pphook_owner_shape(pchheader, NVarLikeIdentifier (BYTES text) metadata_name
   -- if $ptlc($base64(text_set)) = $ptascii("set")
   -- if $hook_body_backed(SEQUENCE statement*, $base64(text))
 
-;; The protected setter slice keeps a public backing key and one implicit hook.
+;; The asymmetric setter slice keeps a public backing key and one implicit hook.
 def $ppproperty_hook_group(P, pcpath, NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text) metadata_name) phpType5 metadata_item])) (SEQUENCE ([NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_set) (SEQUENCE eps) (SEQUENCE statement*) metadata_hook])) metadata, ppropertydesc*, pchheader) = PPROPERTIES $pphook_compile(P_next, pcpath ++ [PCFIELD 4, PCINDEX 0], ppropertydesc_new, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_set) (SEQUENCE eps) (SEQUENCE statement*) metadata_hook, pchheader) ppropertydesc_next*
-  -- if flags <- [256,257] /\ phpType18 =/= ABSENT
+  -- if flags <- [256,257,512,513] /\ phpType18 =/= ABSENT
   -- if pchheader.KIND = "class" /\ pchheader.PARENT = eps /\ ~pchheader.READONLY /\ ~$pptrait_body_uses(pchheader.BODY)
   -- if $ptlc($base64(text_set)) = $ptascii("set") /\ $hook_body_backed(SEQUENCE statement*, $base64(text))
   -- if $ppproperty_group_line_valid(P, metadata)
@@ -20,7 +20,7 @@ def $ppproperty_hook_group(P, pcpath, NStmtProperty (SEQUENCE eps) (INTEGER flag
   -- if |ppropertydesc_next*| = $(|ppropertydesc*| + 1)
   -- if ppropertydesc_new = ppropertydesc_next*[|ppropertydesc*|]
 def $ppproperty_hook_group(P, pcpath, NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text) metadata_name) phpType5 metadata_item])) (SEQUENCE ([NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_set) (SEQUENCE eps) (SEQUENCE statement*) metadata_hook])) metadata, ppropertydesc*, pchheader) = PPROPERTIES P_next ppropertydesc_next*
-  -- if flags <- [256,257] /\ phpType18 =/= ABSENT
+  -- if flags <- [256,257,512,513] /\ phpType18 =/= ABSENT
   -- if pchheader.KIND = "class" /\ pchheader.PARENT = eps /\ ~pchheader.READONLY /\ ~$pptrait_body_uses(pchheader.BODY)
   -- if $ptlc($base64(text_set)) = $ptascii("set") /\ $hook_body_backed(SEQUENCE statement*, $base64(text))
   -- if $ppproperty_group_line_valid(P, metadata)
@@ -132,8 +132,8 @@ def $property_set_origin(S, ppropertydesc) = (PORIGIN n (pcpath_group ++ [PCFIEL
   -- if $property_set_owner(S, pclassdesc, phpType16)
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX 0])) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_set) phpType16 (SEQUENCE statement*) metadata_hook)
   -- if $property_set_parameter_source(S, pclassdesc, PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX 0]), phpType16)
-  -- if flags <- [0,1,256,257] /\ ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = $ppproperty_set_visibility(flags)
-  -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ~ppropertydesc.FINAL
+  -- if flags <- [0,1,256,257,512,513] /\ ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = $ppproperty_set_visibility(flags)
+  -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.FINAL = $ppproperty_final(flags)
   -- if ppropertydesc.TYPE =/= eps /\ ppropertydesc.NAME = $base64(text_name) /\ ppropertydesc.KEY = ppropertydesc.NAME
   -- if $ptlc($base64(text_set)) = $ptascii("set")
   -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (statement_owner)
