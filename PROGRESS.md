@@ -89,6 +89,16 @@ Independent pointwise review preserves the parent; source4/public400 retain thei
 private cuts without a replay.
 [Null-query review](coverage/semantics/global-constant-null-name-review.json).
 
+After an ordinary `__toString`, newly read real/named Closures, Generators and
+Fibers now fail the comparison's second implicit string cast quietly. Signed order
+uses the saved first string and stops nonzero aggregate leaves without invoking a
+callable or resuming a VM. Three exact sources and 352 Boolean premises
+(338 setup + 14 pure) and 13 raw steps pass at 474902f9/395, including CV/COPY/retained
+cells, array COW, declared slots, captured children and normal/throw guard cleanup.
+The unchanged refusal, initialization, syntax preparation and typed elaboration
+keep zero agreement credit. Other internal handlers and wider lifetimes remain partial.
+[Internal failed-cast review](coverage/semantics/internal-nonstringable-redispatch-review.json).
+
 The authenticated numeric comparison remainder now skips builtin and inherited
 Throwable string handlers after a Notice handler throws. Signed nonzero order
 stops before later Notices; cold/warm caches and previous links remain untouched.

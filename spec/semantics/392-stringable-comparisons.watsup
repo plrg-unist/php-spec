@@ -327,6 +327,17 @@ def $string_compare_standard_class(S, porigin, n) = $string_compare_standard_cla
   -- if pclassdesc.KIND = "class"
   -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
 def $string_compare_standard_class(S, porigin, n) = false -- otherwise
+;; These internal classes have no __toString method. Classifying the failed cast
+;; does not validate or execute their callable/capture/VM contents.
+dec $string_compare_failed_internal(pobject) : bool
+def $string_compare_failed_internal(GENERATOR pgenerator) = true
+def $string_compare_failed_internal(FIBER pfiber) = true
+def $string_compare_failed_internal(pobject) = true
+  -- if $object_body(pobject) = REALCLOSURE porigin pitem* pstaticcell*
+def $string_compare_failed_internal(pobject) = true
+  -- if $object_body(pobject) = NAMEDCLOSURE porigin
+def $string_compare_failed_internal(pobject) = false -- otherwise
+
 dec $string_compare_failed_object(pstate, pvalue) : bool
 def $string_compare_failed_object(S, POBJECT n) = true
   -- if $(n < |S.OBJECTS|)
@@ -340,6 +351,11 @@ def $string_compare_failed_object(S, POBJECT n) = true
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $string_compare_standard_class(S, porigin, |S.CLASSES|)
   -- if $effective_method(S, porigin, $ptascii("__toString"), |S.CLASSES|) = eps
+def $string_compare_failed_object(S, POBJECT n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, n)
+  -- if $string_compare_failed_internal(S.OBJECTS[n])
 def $string_compare_failed_object(S, pvalue) = false -- otherwise
 
 dec $string_compare_return(pstate, pstringcompare, pvalue, pvalue) : pstate

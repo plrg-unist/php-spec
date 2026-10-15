@@ -1927,6 +1927,12 @@ ordinary source object with no effective `__toString`. That failed cast is quiet
 the object orders after the saved first string and nonzero leaves skip later casts.
 CV rebinding, copied text, retained cells, array COW and first-caster throw cleanup
 pass three exact sources and 423 Boolean premises/12 raw steps.
+[Finite internal changed operands](coverage/semantics/internal-nonstringable-redispatch-review.json)
+now admit real/named Closures and Generator/Fiber targets after the first source
+cast. The quiet failed second implicit cast preserves signed order, retained cells,
+cursor pins and captured children without invoking a callable or resuming a VM.
+Three exact sources and 352 Boolean premises/13 raw steps pass; custom object-pair
+comparisons, numeric Notice routes and wider lifetime limits are unchanged.
 [Finite Throwable comparisons](coverage/semantics/throwable-string-comparison-review.json)
 now format builtin and inherited internal handlers at reached string leaves, including
 a new opposing object after a source cast. Root cache updates, ignored previous

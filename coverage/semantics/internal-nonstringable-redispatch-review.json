@@ -1,0 +1,155 @@
+{
+  "milestone": "COMP64",
+  "status": "independently reviewed and accepted",
+  "behavior": "After an ordinary __toString changes the opposing captured operand to an admitted Closure, Generator or Fiber, the comparison's second implicit string cast fails quietly. The object orders after the saved first string; nonzero aggregate leaves skip later casts without invoking a callable or resuming a VM.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+  },
+  "implementation": {
+    "spec/semantics/392-stringable-comparisons.watsup": "2698670acdd3a6efee9a3d9e3725c9a8018fad987f9ca9b0372794b7508662b0"
+  },
+  "source_catalogue": {
+    "path": "tests/semantics/internal_nonstringable_redispatch_cases.json",
+    "sha256": "3f2ca31746b3218edbbb1bc46696a99349c9c37ef4f6f1eea6b97c353f5dc414"
+  },
+  "tested_revision": "474902f9a494643326e109565f72ac777dde7f89",
+  "ordered_modules": 395,
+  "manifest_sha256": "2f211b2689095c7c333cf0fe4b37d5696ef14a0231292875f65e26e76a9478ef",
+  "contract": [
+    "The finite body predicate admits object_body-normalized REALCLOSURE/NAMEDCLOSURE and actual outer GENERATOR/FIBER tags. Live admission keeps bounds, allocation and nonfreeing checks. Callable, capture and VM contents do not determine the failed cast.",
+    "The original descriptor, saved first text and COPY/CV/pre-unwrapped CELL or aggregate cursor remain authoritative. Existing signed order and finish rules stop a nonzero leaf, with no second call or new receiver root; real capture and operand roots retain children.",
+    "Standard-source/stdClass admission, custom Closure pair comparison, same-class Generator/Fiber comparison, numeric Notice images and authenticated pending-exception behavior remain unchanged. Explicit string casts keep their separate error behavior."
+  ],
+  "validation": {
+    "native": {
+      "revision": "a7b6bf8b554c075fbc6cc2c2204b378d29aa9295",
+      "observations": 3,
+      "normal": 3,
+      "model_agreements": 0
+    },
+    "unchanged_baseline": {
+      "revision": "a7b6bf8b554c075fbc6cc2c2204b378d29aa9295",
+      "status": "checked Unsupported",
+      "reason": "Stringable comparison changed object operand",
+      "stdout_prefix": "closure|",
+      "elapsed_seconds": 57.67284019291401,
+      "agreement": 0
+    },
+    "initialization": {
+      "explicit_sl": true,
+      "assertions": 0,
+      "raw_steps": 0,
+      "source_agreements": 0
+    },
+    "sources": {
+      "agreements": 3,
+      "normal": 3,
+      "exact_stdout_and_stderr": true,
+      "seconds": [
+        178.88310186751187,
+        123.43772003613412,
+        165.09503829851747
+      ]
+    },
+    "syntax_only": {
+      "requests": 6,
+      "runtime_credit": 0,
+      "raw_steps": 0
+    },
+    "author": {
+      "boolean_premises": 241,
+      "setup": 230,
+      "pure": 11,
+      "raw_steps": 10,
+      "seconds": [
+        138.24210190214217,
+        128.47042059339583
+      ]
+    },
+    "independent": {
+      "boolean_premises": 111,
+      "setup": 108,
+      "pure": 3,
+      "raw_steps": 3,
+      "seconds": [
+        161.57273362204432
+      ]
+    },
+    "total": {
+      "boolean_premises": 352,
+      "setup": 338,
+      "pure": 14,
+      "raw_steps": 13
+    },
+    "state_fixture_failures": [
+      {
+        "packet": "independent",
+        "stage": "typed elaboration before main",
+        "reason": "Fixture used nonexistent S_normal.OWNER; the sole correction reads paggregatecompare_normal.OWNER.",
+        "report_sha256": "a11d4489c24c9445e9345f4cc771b1ddd48ca5e55c35d004a60231e612aa7554",
+        "runtime_credit": 0,
+        "raw_steps": 0,
+        "retained_inputs": ".tools/internal-nonstringable-redispatch-peer-state-64/owner-field-failure-v1",
+        "affected_retry": "EL30 then original-unrun SL300; source, semantics and author checks unchanged."
+      }
+    ]
+  },
+  "review": {
+    "reviewer": "comp_review_21",
+    "semantic": "CLEAR within the stated domain",
+    "source_and_state": "Original raw commands, streams and owned closure independently bound; no accepted private reruns.",
+    "publication_verdict": "CLEAR"
+  },
+  "limits": [
+    "Other Closure representations and internal/custom handlers remain outside this finite failed-second-cast admission.",
+    "No new property traversal, formatter behavior, error-handler continuation, task, receiver root or VM/lifetime machinery is introduced. Wider destructor/GC/clone and phase-history behavior remains unclaimed.",
+    "The source corpus and focused states establish this bounded increment, not complete comparison or complete PHP coverage."
+  ],
+  "zend_sources": [
+    "Zend/zend_object_handlers.c:zend_std_compare_objects/zend_std_cast_object_tostring",
+    "Zend/zend_object_handlers.h:ZEND_COMPARE_OBJECTS_FALLBACK",
+    "Zend/zend_closures.c:zend_closure_compare/handler initialization",
+    "Zend/zend_generators.c:handler initialization",
+    "Zend/zend_fibers.c:handler initialization"
+  ],
+  "engine_bugs": [],
+  "intentional_divergences": [],
+  "artifacts": {
+    ".tools/internal-nonstringable-redispatch-native-64/cases.json": "acabe46f9280ff016b437008eccca6ce657552a49f82f4747c9dcb4e7ae5d2d7",
+    ".tools/internal-nonstringable-redispatch-native-64/run.py": "5a062c228fa90cf7567daccaf8d2d1d0795bb725240e1ed286130b6fe27dcf22",
+    ".tools/internal-nonstringable-redispatch-native-64/run-native-v1/report.json": "f897b151a07e5c12b0c424eb02253a6ae4909a449f7191b8ae397a430e72a463",
+    ".tools/internal-nonstringable-redispatch-support-64/actor.py": "9e06bc8e4d226af7474a36dc47d5d0d4621d2fb872bedf40964996a4558e6988",
+    ".tools/internal-nonstringable-redispatch-support-64/inputs.py": "f1e410b720ea20196e10a8a6c96def4382ddb7f9dd2104e917e7c2f0d778d587",
+    ".tools/internal-nonstringable-redispatch-support-64/baseline-case.json": "a87f5353fd9c20b867751e6f8f2da591a9c1e3fb67a8b6d9e8229cbdd1eba9c2",
+    ".tools/internal-nonstringable-redispatch-support-64/baseline.py": "cc9284f97b9772c2f161ed624da80428bbcf0b2bc4d864c93e56a33864a790fd",
+    ".tools/internal-nonstringable-redispatch-support-64/run-baseline-v1/report.json": "f597585bfa71c5546b832a579a5c664fc8785f37ddc1cf1b53ffe8a5debfa52d",
+    ".tools/internal-nonstringable-redispatch-support-64/affected.py": "69cb68b958e071499f2f8e43f54ac50f186a4976f68510c4a5685c63af3165dc",
+    ".tools/internal-nonstringable-redispatch-support-64/initialize.py": "d5f8013b73b5ebb14a706e124dcad8a2f69b697b88c61c33db26d4eb5d3bae55",
+    ".tools/internal-nonstringable-redispatch-support-64/initializer.watsup": "7dfe8bbabac236e82d623ddb8b02769a4f1067d26fad6643ffa83eddc9ed65fc",
+    ".tools/internal-nonstringable-redispatch-support-64/run-initialize-v1/report.json": "e2171e00db03bf146a58acf3a4cab26c2f544a8b741a538878e7c877c8f61cd6",
+    ".tools/internal-nonstringable-redispatch-support-64/model.py": "a036612023154582855f81eca762c20d1344bc602f85b1563f1f085e76a851ae",
+    ".tools/internal-nonstringable-redispatch-support-64/run-model-v1/report.json": "ea1b9925bf5d82b66a88b39f02f92698df2f52e4dc365db5fc14636d1bbd37a3",
+    ".tools/internal-nonstringable-redispatch-support-64/prepare.py": "5439651fecaeb72de20c84ae4277440a47dfdf26e59331476ae7dcdce3b70daf",
+    ".tools/internal-nonstringable-redispatch-support-64/syntax-v1/report.json": "01f4f42d1706874c949cd34bdc8901faccb026884ef10dc61314ff84fe3d1e77",
+    ".tools/internal-nonstringable-redispatch-state-64/build.py": "a2220fb6e9d11baebc9716f11d2cbf1a6c149c4a5d99ca60ffc59becae52aaf8",
+    ".tools/internal-nonstringable-redispatch-state-64/helpers.watsup": "f7f27b7e7862116edf17b25e210d29b59c83a6ce5110b9b250d12213d84ea182",
+    ".tools/internal-nonstringable-redispatch-state-64/plan.json": "f65787985ffc6076ef18455751b5edbe2e93c58c8bc5d5f095d319c7a762e47a",
+    ".tools/internal-nonstringable-redispatch-state-64/run.py": "2e9ebedafeab457a60df8851c2714367f70f221484048e02cc97aa31fcd8fdd8",
+    ".tools/internal-nonstringable-redispatch-state-64/run-el-v1/report.json": "1bc0cb6f67fe072d5668fd1acbd63cbab1c27407f3e4260ab89a44a39b746834",
+    ".tools/internal-nonstringable-redispatch-state-64/run-sl-v1/report.json": "fa5136436f8fd9cfb4da93614b921711a73b1935966ba0f442d58081dc138352",
+    ".tools/internal-nonstringable-redispatch-peer-state-64/build.py": "7eca607de533ef017a134498bf60e66b002ab1a4d7526df7634283bad230e46c",
+    ".tools/internal-nonstringable-redispatch-peer-state-64/body.py": "dbc77719e5d53cec40f1764d9c90287ff8e55a4e75717a81adb7614de437fd56",
+    ".tools/internal-nonstringable-redispatch-peer-state-64/helpers.watsup": "dbef2b02fc6f06f39a85ab0c5a018acd61531fdf4a9fecc3c523ff0a59056b10",
+    ".tools/internal-nonstringable-redispatch-peer-state-64/plan.json": "924afa219f3838373a5e250b8987fa739f6aa118bd5c912e956d81c88e835edd",
+    ".tools/internal-nonstringable-redispatch-peer-state-64/run.py": "1f93977b5bcbf992aba97770f1e01b7b043f436022e7b402d8ea9e167ee1ade8",
+    ".tools/internal-nonstringable-redispatch-peer-state-64/run-el-v1/report.json": "a11d4489c24c9445e9345f4cc771b1ddd48ca5e55c35d004a60231e612aa7554",
+    ".tools/internal-nonstringable-redispatch-peer-state-64/run-owner-retry1.py": "f4bc23035a71e471ec14b49695f71f4e6441f274f23974b6a2ef5767ffbcd4b5",
+    ".tools/internal-nonstringable-redispatch-peer-state-64/run-el-owner-retry1/report.json": "1ccafa61016b01227ac26e8c86637616f26fdf16a5108242411621809db37226",
+    ".tools/internal-nonstringable-redispatch-peer-state-64/run-sl-owner-retry1/report.json": "5dfa049f13e445f1600d81f815444c1eebeea48adbf4740b6dbc22b0b8a88c43"
+  },
+  "reproduction": "Retain ignored originals at their recorded File/CWD paths. The maintained catalogue pins actual native tuples and START identities; fresh64 scripts and state plans bind checked terms, helpers, exact commands, raw streams and owned closure. Initialization, syntax, typed elaboration, native observation and Unsupported retain zero source agreement. Raw artifacts stay outside Git."
+}

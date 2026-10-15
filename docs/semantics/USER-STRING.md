@@ -145,6 +145,13 @@ comparison guard. Three exact originals and 423 Boolean premises/12 raw steps
 cover those returns and first-caster throw/finally cleanup. Unsupported method
 forms and other internal handlers remain separate obligations.
 
+[Internal failed second casts](../../coverage/semantics/internal-nonstringable-redispatch-review.json)
+now include normalized real/named Closures and actual Generator/Fiber targets.
+The implicit comparison cast does not invoke the callable or resume a VM; real
+captures and operand roots retain children. Copied text, live CVs and old cells
+remain distinct, and a nonzero leaf skips later casts. Custom pair comparisons,
+numeric conversion and explicit string casts retain their existing behavior.
+
 [Finite Throwable comparison](../../coverage/semantics/throwable-string-comparison-review.json)
 formats builtin and inherited internal handlers at reached object/string leaves,
 including a newly read opposing object after an ordinary cast. The saved first
