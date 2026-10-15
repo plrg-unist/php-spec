@@ -1,6 +1,6 @@
 {
   "scope": "Nonowning define(NULL, primitive[, false]) calls without argument unpacking, including retained selected calls and named arguments. Partial core; wider values and flags are separate.",
-  "status": "independently_accepted_private",
+  "status": "independently_accepted_actual_parent",
   "reviewer": "/root/core_breadth_review_01",
   "parent": "e116b6282499229bb8c7bc519dddb80fa4682b1f",
   "semantic_revision": "2eaf296c2929a2c3404886da2dcd9883d875e05b",
@@ -38,7 +38,8 @@
     "author/review/native-report.json": "5fc4422ab5ceac2c4af5232e0406a9c030e6f6572cfbe8a9987b3ab57540b54a",
     "author/sources/baseline-report.json": "fd6e3ce6978b5f16b53774aa49e648b0177b4015a8d22edbe792a7390a8479d8",
     "author/sources/model-report.json": "5201414c689825c677cd293360a504b408734e6a1c94563e100dd3dbc0ea1728",
-    "author/sources/native-report.json": "5e2a1a57e078f4d4c57f180d8322ce36f08a5ef073cd9bf609a3ebff74e0442c"
+    "author/sources/native-report.json": "5e2a1a57e078f4d4c57f180d8322ce36f08a5ef073cd9bf609a3ebff74e0442c",
+    "join/report.json": "ed13d8f37b729b04b3d0c9dbaeb3bd3976855f6099496dcc9eb623e1ffc248b7"
   },
   "commands": [
     "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_null_name_sources.py --phase native --output .tools/define-null-name-native-30",
@@ -51,7 +52,13 @@
     "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_null_name_protocol.py --phase prepare --case captured-null-name-and-callback-created-duplicate --case strict-null-define-after-all-argument-effects --sources .tools/define-null-name-native-30 --output .tools/define-null-name-public-fixed-30",
     "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 240s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_null_name_protocol.py --phase check --case captured-null-name-and-callback-created-duplicate --case strict-null-define-after-all-argument-effects --sources .tools/define-null-name-native-30 --output .tools/define-null-name-public-fixed-30"
   ],
-  "recovery": "Four owned ignored trees moved once without copies after reviewer STOP and focused cwd/cmdline/fd no-use scan; report hashes unchanged. Restore author/sources,public-initial,public,review respectively as .tools/define-null-name-{native,public,public-fixed,review}-30 inside .tools/source-define-null-name-30 at the recorded revisions. Protected branch refs retain exact source and fixture cuts; original file/cwd identities remain in raw reports.",
+  "recovery": "Four owned ignored trees moved once without copies after reviewer STOP and focused cwd/cmdline/fd no-use scan; report hashes unchanged. Restore author/sources,public-initial,public,review respectively as .tools/define-null-name-{native,public,public-fixed,review}-30 inside .tools/source-define-null-name-30 at the recorded revisions. Protected branch refs retain exact source and fixture cuts; original file/cwd identities remain in raw reports. Restore join to .tools/source-define-null-name-join-30/.tools/define-null-name-current-parent-30 at the tested candidate for its historical loader; this owned raw tree was moved once without copies after STOP/no-use.",
   "remaining": "Stringable/array names, array/object values or true/coerced flags with null names, packed/owning/FCC and wider arity/callback/lifecycle forms remain separate. Core remains partial; no engine bug or intentional divergence.",
-  "actual_parent_integration": null
+  "actual_parent_integration": {
+    "parent": "aaa4d2142c7856e56cfb20bfe3259aa3221b1203",
+    "candidate": "b1d2e0c012468eb52b8318598a757f506d7fe70f",
+    "report": "join/report.json",
+    "command": "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 120s prlimit --as=3221225472 -- taskset -c 5 python3 .tools/define-null-name-current-parent-30/run.py",
+    "result": "Full395 SL loading/initialization trueLF/0/emptyerr,7.647s, stable inputs/HEAD, no timeout, reaped/groups[]. Exact private30+2/400+100 preserves V55 AUTO_INTERFACE/127/277 and every other incoming runtime/manifest byte. Incoming class/interface autoload, byref return, Generator, property-setter and array-concat selectors are absent from these sources. No application/source/state agreement added; source4/public396 keep their private cuts."
+  }
 }

@@ -18,8 +18,9 @@ covering exact empty-key history, captured named arguments, both warning phases,
 raw/converted traces, source refusals and budget resumption. The original optional
 field fixture failure remains zero credit; only its binder changed.
 Primitive values and an omitted/already-false flag bound this slice; wider values,
-flags and owning/packed forms remain separate. Private acceptance is complete;
-current-parent integration is pending.
+flags and owning/packed forms remain separate. The 395-module composition over
+aaa4d214 passes full SL initialization at b1d2e0c. Independent pointwise review
+preserves V55 and the incoming parent; source4/public396 retain their private cuts.
 [Null-define review](coverage/semantics/define-null-name-review.json).
 
 Class and interface declarations now autoload a missing sole interface dependency
