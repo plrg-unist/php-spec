@@ -238,3 +238,79 @@ def $return_discard(S, DEFAULT_NEW_ARGS pdefaultnew) = S
   -- if $global_new_argument_owned(S, pdefaultnew)
 def $return_discard(S, DEFAULT_NEW_SEND pdefaultnew) = S
   -- if $global_new_argument_owned(S, pdefaultnew)
+
+;; Direct global AST NEW fetches/autoloads before allocation or argument demand.
+;; The saved context is a nonowning source certificate; earlier/nested facts are
+;; outside this slice and never fall back to ordinary runtime NEW authority.
+dec $global_autoload_arguments(phpType7*) : bool
+def $global_autoload_arguments(eps) = true
+def $global_autoload_arguments((NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*) = $global_autoload_arguments(phpType7*)
+def $global_autoload_arguments(phpType7*) = false -- otherwise
+dec $global_autoload_source(pstate, porigin, preqbytes, phpType7*, pconstantcontext) : bool
+def $global_autoload_source(S, porigin_site, ptbytes, phpType7*, pconstantcontext) = true
+  -- if pconstantcontext.FACTS = eps
+  -- if pconstantcontext.ORIGIN = PORIGIN n_unit pcpath_decl
+  -- if porigin_site = PORIGIN n_unit (pcpath_decl ++ [PCFIELD 1])
+  -- if $global_constant_declaration_source(S.SOURCES, pconstantcontext.ORIGIN)
+  -- if $constant_declaration(S, pconstantcontext.ORIGIN) = ((preqbytes, pconstantcontext.LINE))
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $global_autoload_arguments(phpType7*)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath_decl ++ [PCFIELD 1]) = ((ptbytes, eps))
+  -- if $global_constant_scope(S, n_unit) = (true, porigin_scope?)
+  -- if $global_constant_class_name(S, porigin_site, porigin_scope?, name) = (ptbytes)
+  -- if $autoload_class_name(ptbytes)
+def $global_autoload_source(S, porigin, preqbytes, phpType7*, pconstantcontext) = false -- otherwise
+dec $global_autoload_ready(pstate, preqbytes, phpType7*, pconstantcontext) : bool
+def $global_autoload_ready(S, ptbytes, phpType7*, pconstantcontext) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $global_autoload_source(S, porigin_site, ptbytes, phpType7*, pconstantcontext)
+  -- if $global_new_context(S, porigin_site) = ((pconstantcontext.ORIGIN, porigin_scope?))
+  -- if $constant_context_valid(S)
+  -- if $parameter_default_new_ready(S, ptbytes, phpType7*, pconstantcontext.LINE)
+def $global_autoload_ready(S, preqbytes, phpType7*, pconstantcontext) = false -- otherwise
+
+def $global_new_autoload_pending(S, ptbytes) = ($global_new_current(S) /\ $autoload_pending(S, ptbytes))
+def $default_new_start(S, ptbytes, phpType7*, z) = $autoload_begin(S, porigin_site, $autoload_lookup_name(ptbytes), $ptlc($autoload_lookup_name(ptbytes)), z, AUTO_LOOKUP, AUTO_GLOBAL_NEW ptbytes phpType7* pconstantcontext)
+  -- if $global_new_autoload_pending(S, ptbytes)
+  -- if S.ORIGIN = (porigin_site)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pconstantcontext.LINE = z
+  -- if $global_autoload_ready(S, ptbytes, phpType7*, pconstantcontext)
+def $default_new_start(S, ptbytes, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "global constant autoload initializer shape"]
+  -- if $global_new_autoload_pending(S, ptbytes)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pconstantcontext.LINE =/= z \/ ~$global_autoload_ready(S, ptbytes, phpType7*, pconstantcontext)
+
+;; Class descriptors compiled inside a loader do not publish its target name.
+rule PhpStep/autoload-global-new-resume: S ~> $default_new_start(S[.TODO = ptask_tail*], ptbytes, phpType7*, pconstantcontext.LINE)
+  -- if S.TODO = (AUTO_GLOBAL_NEW ptbytes phpType7* pconstantcontext) :: ptask_tail*
+  -- if $global_autoload_ready(S, ptbytes, phpType7*, pconstantcontext)
+  -- if $dynamic_new_known(S, ptbytes)
+rule PhpStep/autoload-global-new-missing: S ~> $throw_scalar(S[.TODO = ptask_tail*], "Error", $ptascii("Class \"") ++ $c_string(ptbytes) ++ $ptascii("\" not found"), pconstantcontext.LINE)
+  -- if S.TODO = (AUTO_GLOBAL_NEW ptbytes phpType7* pconstantcontext) :: ptask_tail*
+  -- if $global_autoload_ready(S, ptbytes, phpType7*, pconstantcontext)
+  -- if ~$dynamic_new_known(S, ptbytes)
+
+def $autoload_resume_valid(S, pautoloadcall) = true
+  -- if pautoloadcall.MODE = AUTO_LOOKUP
+  -- if pautoloadcall.RESUME = AUTO_GLOBAL_NEW ptbytes phpType7* pconstantcontext
+  -- if S.ORIGIN = (pautoloadcall.SITE)
+  -- if $global_autoload_ready(S, ptbytes, phpType7*, pconstantcontext)
+  -- if pautoloadcall.NAME = $autoload_lookup_name(ptbytes)
+  -- if pautoloadcall.KEY = $ptlc(pautoloadcall.NAME) /\ pautoloadcall.LINE = pconstantcontext.LINE
+def $autoload_declaration_resume(S, pautoloadcall) = true
+  -- if pautoloadcall.MODE = AUTO_LOOKUP
+  -- if pautoloadcall.RESUME = AUTO_GLOBAL_NEW ptbytes phpType7* pconstantcontext
+  -- if $global_autoload_source(S, pautoloadcall.SITE, ptbytes, phpType7*, pconstantcontext)
+  -- if pautoloadcall.NAME = $autoload_lookup_name(ptbytes)
+  -- if pautoloadcall.KEY = $ptlc(pautoloadcall.NAME) /\ pautoloadcall.LINE = pconstantcontext.LINE
+
+def $autoload_ordinary_new_source(S, PORIGIN n_unit pcpath) = false
+  -- if $source_unit(S.SOURCES, n_unit) = (pcunit)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $global_constant_initializer_root(pcunit, pcpath) =/= eps
+
+def $call_task_valid(S, AUTO_GLOBAL_NEW ptbytes phpType7* pconstantcontext) = $global_autoload_ready(S, ptbytes, phpType7*, pconstantcontext)
+def $task_nodes(AUTO_GLOBAL_NEW preqbytes phpType7* pconstantcontext) = eps
