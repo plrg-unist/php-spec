@@ -68,6 +68,7 @@ echo 'B|'; constant('GlobalArray21'); echo 'after';
 }
 UNSUPPORTED = {'captured-query-and-strings': ('global constant object transfer', b''),
     'array-result-boundary': ('global constant value query', b'B|')}
+BASELINE = ('class constant value query', b'B|')
 
 
 def fingerprint():
@@ -142,7 +143,8 @@ def main():
                 assert outcome['frontend'] == 'accepted' and outcome['checked'] == 'program'
                 if args.phase == 'baseline':
                     assert row['process']['exit'] == 1 and outcome['status'] == 'unsupported'
-                    assert outcome['reason'] == 'class constant value query' and outcome['stdout'] == b64(b'B|')
+                    reason, prefix = BASELINE
+                    assert outcome['reason'] == reason and outcome['stdout'] == b64(prefix)
                 elif name in UNSUPPORTED:
                     assert row['process']['exit'] == 1 and outcome['status'] == 'unsupported'
                     reason, prefix = UNSUPPORTED[name]
