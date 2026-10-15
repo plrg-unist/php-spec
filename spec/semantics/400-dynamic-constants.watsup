@@ -14,6 +14,7 @@ def $dynamic_constant_kind(INTRINSIC_DEFINED) = true
 def $dynamic_constant_kind(INTRINSIC_CONSTANT) = true
 dec $dynamic_scalar_constant_call(pconfigcall) : bool
 dec $dynamic_null_constant_call(pconfigcall) : bool
+dec $dynamic_null_define_call(pconfigcall) : bool
 def $config_parameter(INTRINSIC_DEFINE, preqbytes) = (0) -- if preqbytes = $ptascii("constant_name")
 def $config_parameter(INTRINSIC_DEFINE, preqbytes) = (1) -- if preqbytes = $ptascii("value")
 def $config_parameter(INTRINSIC_DEFINE, preqbytes) = (2) -- if preqbytes = $ptascii("case_insensitive")
@@ -165,6 +166,7 @@ rule PhpStep/dynamic-constant-invoke: S ~> $dynamic_constant_receive(S, pconfigc
   -- if ~$dynamic_scalar_constant_call(pconfigcall)
   -- if ~$dynamic_scalar_define_call(pconfigcall)
   -- if ~$dynamic_null_constant_call(pconfigcall)
+  -- if ~$dynamic_null_define_call(pconfigcall)
 
 def $task_nodes(DYNAMIC_CONSTANT_CASE_WARNING pconfigcall) = $config_nodes(pconfigcall)
 def $selected_task_nonce(DYNAMIC_CONSTANT_CASE_WARNING pconfigcall) = pconfigcall.SELECTION
@@ -1326,3 +1328,101 @@ def $error_handler_trace_values(S, pcallcontext, pconfigcall_api) = [PNULL]
   -- if $error_context_call(S, pcallcontext) = (perrorcall)
   -- if perrorcall.RESUME = DYNAMIC_NULL_CONSTANT_RESULT pconfigcall
   -- if pconfigcall_api = pconfigcall
+
+;; NULL names have one possible received key; the original call stays raw.
+def $dynamic_null_define_call(pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_DEFINE
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps
+  -- if $dynamic_scalar_define_values(pconfigcall) = ((PNULL, pvalue))
+def $dynamic_null_define_call(pconfigcall) = false -- otherwise
+dec $dynamic_null_define_valid(pstate, pconfigcall) : bool
+def $dynamic_null_define_valid(S, pconfigcall) = true
+  -- if $dynamic_null_define_call(pconfigcall) /\ $config_invoke_valid(S, pconfigcall)
+  -- if $dynamic_define_source(S, pconfigcall.SITE)
+  -- if $dynamic_scalar_define_values(pconfigcall) = ((PNULL, pvalue))
+  -- if $dynamic_scalar_define_arguments(S, pconfigcall, 0)
+  -- if $dynamic_constant_class(pvalue) = (pvalueclass)
+  -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
+def $dynamic_null_define_valid(S, pconfigcall) = false -- otherwise
+def $user_constants_valid(S, puserconstant :: puserconstant_tail*) = true
+  -- if $dynamic_define_source(S, puserconstant.ORIGIN)
+  -- if ~$exit_strict(S, puserconstant.ORIGIN)
+  -- if $dynamic_define_known(S, puserconstant.ORIGIN, 0) = (PNULL)
+  -- if puserconstant.NAME = eps
+  -- if $dynamic_constant_class(puserconstant.VALUE) = (puserconstant.CLASS)
+  -- if $string_plain(puserconstant.VALUE) = puserconstant.VALUE \/ $string_carrier_valid(S, puserconstant.VALUE)
+  -- if puserconstant.READS = eps /\ puserconstant.RECEIVES = eps
+  -- if $dynamic_define_value_matches(puserconstant.VALUE, $dynamic_define_known(S, puserconstant.ORIGIN, 1))
+  -- if $user_constant_at(puserconstant_tail*, eps) = eps
+  -- if $user_constants_valid(S, puserconstant_tail*)
+dec $dynamic_null_define_duplicate_valid(pstate, pconfigcall, nat) : bool
+def $dynamic_null_define_duplicate_valid(S, pconfigcall, n_constants) = true
+  -- if $dynamic_null_define_valid(S, pconfigcall) /\ ~$config_strict(S, pconfigcall)
+  -- if $(n_constants <= |S.USERCONSTANTS|)
+  -- if $user_constant_at(S.USERCONSTANTS[0:n_constants], eps) =/= eps
+def $dynamic_null_define_duplicate_valid(S, pconfigcall, n_constants) = false -- otherwise
+dec $dynamic_null_define_finish(pstate, pconfigcall) : pstate
+def $dynamic_null_define_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME eps, ORIGIN pconfigcall.SITE, VALUE pvalue, CLASS pvalueclass, READS eps, RECEIVES eps}]][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $dynamic_null_define_valid(S, pconfigcall) /\ ~$config_strict(S, pconfigcall)
+  -- if S.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING eps)
+  -- if $source_constant_lookup(S, eps) = eps
+  -- if $dynamic_scalar_define_values(pconfigcall) = ((PNULL, pvalue))
+  -- if $dynamic_constant_class(pvalue) = (pvalueclass)
+  -- if S.TODO = (DYNAMIC_NULL_DEFINE_RESULT pconfigcall) :: ptask_tail*
+def $dynamic_null_define_finish(S, pconfigcall) = $error_dispatch(S[.TODO = ptask_duplicate :: ptask_tail*], 2, ptbytes_message, pconfigcall.LINE, DIAGNOSTIC "Warning" ptbytes_message pconfigcall.LINE, ptask_duplicate)
+  -- if n_constants = |S.USERCONSTANTS|
+  -- if $dynamic_null_define_duplicate_valid(S, pconfigcall, n_constants)
+  -- if S.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING eps)
+  -- if ptbytes_message = $global_constant_duplicate_message(eps)
+  -- if ptask_duplicate = DYNAMIC_NULL_DEFINE_DUPLICATE pconfigcall n_constants
+  -- if S.TODO = (DYNAMIC_NULL_DEFINE_RESULT pconfigcall) :: ptask_tail*
+def $dynamic_null_define_finish(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "null define publication"] -- otherwise
+dec $dynamic_null_define_receive(pstate, pconfigcall) : pstate
+def $dynamic_null_define_receive(S, pconfigcall) = $config_error(S[.TODO = ptask_tail*], pconfigcall, "TypeError", $ptascii("define(): Argument #1 ($constant_name) must be of type string, null given"))
+  -- if $dynamic_null_define_valid(S, pconfigcall) /\ $config_strict(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_null_define_receive(S, pconfigcall) = $error_dispatch(S, 8192, $dynamic_null_constant_message(pconfigcall), pconfigcall.LINE, DIAGNOSTIC "Deprecated" $dynamic_null_constant_message(pconfigcall) pconfigcall.LINE, DYNAMIC_NULL_DEFINE_RESULT pconfigcall)
+  -- if $dynamic_null_define_valid(S, pconfigcall) /\ ~$config_strict(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_null_define_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "null define name reception"] -- otherwise
+rule PhpStep/dynamic-null-define-invoke: S ~> $dynamic_null_define_receive(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $config_invoke_valid(S, pconfigcall) /\ $dynamic_null_define_call(pconfigcall)
+def $task_nodes(DYNAMIC_NULL_DEFINE_RESULT pconfigcall) = $config_nodes(pconfigcall)
+def $selected_task_nonce(DYNAMIC_NULL_DEFINE_RESULT pconfigcall) = pconfigcall.SELECTION
+def $call_task_valid(S, DYNAMIC_NULL_DEFINE_RESULT pconfigcall) = ($dynamic_null_define_valid(S, pconfigcall) /\ ~$config_strict(S, pconfigcall))
+rule PhpStep/dynamic-null-define-result: S ~> $dynamic_null_define_finish($typed_apply(S, TYPESTRING PNULL, pconfigcall.LINE), pconfigcall)
+  -- if S.TODO = (DYNAMIC_NULL_DEFINE_RESULT pconfigcall) :: ptask_tail*
+  -- if $call_task_valid(S, DYNAMIC_NULL_DEFINE_RESULT pconfigcall)
+def $task_nodes(DYNAMIC_NULL_DEFINE_DUPLICATE pconfigcall n_constants) = $config_nodes(pconfigcall)
+def $selected_task_nonce(DYNAMIC_NULL_DEFINE_DUPLICATE pconfigcall n_constants) = pconfigcall.SELECTION
+def $call_task_valid(S, DYNAMIC_NULL_DEFINE_DUPLICATE pconfigcall n_constants) = $dynamic_null_define_duplicate_valid(S, pconfigcall, n_constants)
+rule PhpStep/dynamic-null-define-duplicate: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (DYNAMIC_NULL_DEFINE_DUPLICATE pconfigcall n_constants) :: ptask_tail*
+  -- if $dynamic_null_define_duplicate_valid(S, pconfigcall, n_constants)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = DYNAMIC_NULL_DEFINE_RESULT pconfigcall
+  -- if $call_task_valid(S, perrorcall.RESUME)
+  -- if perrorcall.SITE = pconfigcall.SITE /\ perrorcall.LEVEL = 8192 /\ perrorcall.LINE = pconfigcall.LINE
+  -- if perrorcall.MESSAGE = $dynamic_null_constant_message(pconfigcall)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE pconfigcall.LINE
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = DYNAMIC_NULL_DEFINE_DUPLICATE pconfigcall n_constants
+  -- if $dynamic_null_define_duplicate_valid(S, pconfigcall, n_constants)
+  -- if perrorcall.SITE = pconfigcall.SITE /\ perrorcall.LEVEL = 2 /\ perrorcall.LINE = pconfigcall.LINE
+  -- if perrorcall.MESSAGE = $global_constant_duplicate_message(eps)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pconfigcall.LINE
+def $error_context_trigger(S, pcallcontext) = (pconfigcall)
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = DYNAMIC_NULL_DEFINE_RESULT pconfigcall
+def $error_context_trigger(S, pcallcontext) = (pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT, 0, KNOWN (PSTRING_CARRIER INTERNED_STRING eps))])
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = DYNAMIC_NULL_DEFINE_DUPLICATE pconfigcall n_constants
+def $error_handler_trace_values(S, pcallcontext, pconfigcall_api) = $trace_extra(S, $getclass_trace_operands(pconfigcall_api.SENT))
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = DYNAMIC_NULL_DEFINE_RESULT pconfigcall
+  -- if pconfigcall_api = pconfigcall
+def $error_handler_trace_values(S, pcallcontext, pconfigcall_api) = $trace_extra(S, $getclass_trace_operands(pconfigcall_api.SENT))
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = DYNAMIC_NULL_DEFINE_DUPLICATE pconfigcall n_constants
+  -- if pconfigcall_api = pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT, 0, KNOWN (PSTRING_CARRIER INTERNED_STRING eps))]

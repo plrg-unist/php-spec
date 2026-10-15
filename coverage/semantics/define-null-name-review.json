@@ -1,0 +1,57 @@
+{
+  "scope": "Nonowning define(NULL, primitive[, false]) calls without argument unpacking, including retained selected calls and named arguments. Partial core; wider values and flags are separate.",
+  "status": "independently_accepted_private",
+  "reviewer": "/root/core_breadth_review_01",
+  "parent": "e116b6282499229bb8c7bc519dddb80fa4682b1f",
+  "semantic_revision": "2eaf296c2929a2c3404886da2dcd9883d875e05b",
+  "semantic_files": {
+    "spec/semantics/30-storage.watsup": "434bb048b1f523437ee5bf058d7a007d42aa661e0104d47406057d9dbba791cb",
+    "spec/semantics/400-dynamic-constants.watsup": "7f99a294679b85095e991a2312a3fafe25f890fc70c4be0f95df6edcb9fce899"
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "tools": {
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "primary": "Pinned Zend/zend_API.c::zend_null_arg_deprecated and zend_parse_arg_str_weak/slow; Zend/zend_builtin_functions.c::ZEND_FUNCTION(define), Zend/zend_constants.c::zend_register_constant.",
+  "semantics": "Separate30 tasks and400 null-only heads preserve raw CONFIG/SENT, normalized immutable source-send proof and selected KIND. Weak8192 dispatches before conversion; normal return derives the interned empty name and checks the current table. A separate knownNULL row guard authenticates only the empty key and matching primitive class/value. A later duplicate captures the then-current table prefix and exposes only a derived empty-name trace view. First-handler throws keep rawNULL and cancel registration; strict calls raise raw TypeError after all argument effects. Old string/scalar/array/flag/query helpers and ownership protocols remain unchanged.",
+  "accepted": [
+    "Author3 at2eaf296c match native streams/exit0 in5201414c: literalNULL fresh130 and returning/default duplicatefalse/old130; captured named DEFINE with callback-created230 followed by duplicate Warning/converted S,V,F trace; strict value-before-name effects/rawNULL TypeError/sentinel99/no row.",
+    "Independent peer1 at303b70c1 matches native streams/exit0 in3486aae2: reordered value,flag,name sends;8192 handler mutates caller name/value/callee then throws. API trace keeps captured DEFINE and rawNULL,139,false, result99 survives, neither key is published and finally restores the handler.",
+    "Public396 retains first209 at5cb61a189 ind0058b38 plus selected137/50 at303b70c1 in7eeaf6fd, all trueLF/0/emptyerr: exact knownNULL row/history/class/value/uniqueness, source refusals, raw and converted warning contexts, callback-created prefix, strict3args and whole budget equality."
+  ],
+  "zero_credit": [
+    "Native and syntax preparation are observations, not semantic agreements. Sole unchanged first-source baselinefd6e3ce6 atb488b919: accepted checkedprogram Unsupported/dynamic constant call domain afterB|,CLI1/nullPHPexit/emptyerr.",
+    "Initial public395 d0058b38 retains its first209 passing prefix but fails the callback optional-field tuple typing premise before that feature check; strict50 was unrun. Only that named-field binder was split into an optional variable plus the exact value comparison, adding one premise. Fresh selected137/50 preserves the original failure and avoids replaying first209 or source/native evidence."
+  ],
+  "execution": "All phases LC_ALL=C/TZ=UTC,CPU5,AS3GiB,INT timeout+kill5. Native children15s; sourceCLI45/host60; public fresh fullSL90 children serial stop-first/reap. Accepted records have stable inputs/HEAD, no timeout or surviving groups. Worker stderr is empty; modeled PHP stderr equals native bytes, including default deprecations at8/10 and duplicate Warning at10 in the first source. Reused Source27 public transport and the new producer are pinned.",
+  "raw_root": ".tools/define-null-name-evidence-30",
+  "report_sha256": {
+    "author/public/check-report.json": "7eeaf6fd7d16f914b62c9212e578fdc30113d812396f766761da941a60f10a4a",
+    "author/public/prepare-report.json": "5954ea23d146e7d7cf5e713fe8e24e1f6d0240c30de9c565158e45f6bc05cd0a",
+    "author/public-initial/check-report.json": "d0058b388ba9ded6d637583c2cff2a35598ae5f38dbfc885e70ed9482f473567",
+    "author/public-initial/prepare-report.json": "c1cbb4d090541d8d53e84b99bc59b6ae0bcb79180d426d243f6736fbf3c57e4a",
+    "author/review/model-report.json": "3486aae2f7fc9dcb663a55197af6d96f2cdba14db89987c16dbd659b41e096ff",
+    "author/review/native-report.json": "5fc4422ab5ceac2c4af5232e0406a9c030e6f6572cfbe8a9987b3ab57540b54a",
+    "author/sources/baseline-report.json": "fd6e3ce6978b5f16b53774aa49e648b0177b4015a8d22edbe792a7390a8479d8",
+    "author/sources/model-report.json": "5201414c689825c677cd293360a504b408734e6a1c94563e100dd3dbc0ea1728",
+    "author/sources/native-report.json": "5e2a1a57e078f4d4c57f180d8322ce36f08a5ef073cd9bf609a3ebff74e0442c"
+  },
+  "commands": [
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_null_name_sources.py --phase native --output .tools/define-null-name-native-30",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_null_name_sources.py --phase baseline --case literal-null-publication-and-returning-duplicate --output .tools/define-null-name-native-30",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 240s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_null_name_sources.py --phase model --output .tools/define-null-name-native-30",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_null_name_review_sources.py --phase native --output .tools/define-null-name-review-30",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_null_name_review_sources.py --phase model --output .tools/define-null-name-review-30",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_null_name_protocol.py --phase prepare --sources .tools/define-null-name-native-30 --output .tools/define-null-name-public-30",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 330s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_null_name_protocol.py --phase check --sources .tools/define-null-name-native-30 --output .tools/define-null-name-public-30",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_null_name_protocol.py --phase prepare --case captured-null-name-and-callback-created-duplicate --case strict-null-define-after-all-argument-effects --sources .tools/define-null-name-native-30 --output .tools/define-null-name-public-fixed-30",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 240s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_null_name_protocol.py --phase check --case captured-null-name-and-callback-created-duplicate --case strict-null-define-after-all-argument-effects --sources .tools/define-null-name-native-30 --output .tools/define-null-name-public-fixed-30"
+  ],
+  "recovery": "Four owned ignored trees moved once without copies after reviewer STOP and focused cwd/cmdline/fd no-use scan; report hashes unchanged. Restore author/sources,public-initial,public,review respectively as .tools/define-null-name-{native,public,public-fixed,review}-30 inside .tools/source-define-null-name-30 at the recorded revisions. Protected branch refs retain exact source and fixture cuts; original file/cwd identities remain in raw reports.",
+  "remaining": "Stringable/array names, array/object values or true/coerced flags with null names, packed/owning/FCC and wider arity/callback/lifecycle forms remain separate. Core remains partial; no engine bug or intentional divergence.",
+  "actual_parent_integration": null
+}

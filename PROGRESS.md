@@ -7,6 +7,21 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Null `define` names now dispatch the weak-call deprecation before conversion
+or registration. A returning callback can create the empty-name binding first,
+causing a separate duplicate Warning with the converted string in its API trace.
+A throwing first handler retains raw null and cancels registration; strict calls
+evaluate all arguments before raising `TypeError` with raw arguments.
+Author3 at 2eaf296c and an independent throwing-handler source at 303b70c1 agree.
+Public396 retains first209 at 5cb61a189 plus selected137/50 at 303b70c1,
+covering exact empty-key history, captured named arguments, both warning phases,
+raw/converted traces, source refusals and budget resumption. The original optional
+field fixture failure remains zero credit; only its binder changed.
+Primitive values and an omitted/already-false flag bound this slice; wider values,
+flags and owning/packed forms remain separate. Private acceptance is complete;
+current-parent integration is pending.
+[Null-define review](coverage/semantics/define-null-name-review.json).
+
 Class and interface declarations now autoload a missing sole interface dependency
 before linking or publishing the target. The resumed link retains the declaring
 prototype and nominal ancestry. Two exact originals and 324 SL premises at runtime
@@ -55,8 +70,8 @@ Author3 at dae1196f and an independent throwing-handler source at 0c933990 agree
 400 public premises at 0c933990 cover real warning/resume fronts, late lookup,
 default reporting, immutable source refusal, raw/converted traces and budgets.
 The initial inner-handler terminal-phase assertion remains zero credit; its
-correction checks the same refusal inside budgeted error unwind. Null `define`
-names, Stringable/array reception and packed/owning forms remain separate.
+correction checks the same refusal inside budgeted error unwind.
+Stringable/array reception and packed/owning forms remain separate.
 The 395-module composition over a7b6bf8b passes full SL initialization at 58697e27.
 Independent pointwise review preserves the parent; source4/public400 retain their
 private cuts without a replay.

@@ -928,6 +928,13 @@ precision changes and duplicate handlers; strict errors retain raw arguments.
 Named sends match their normalized slots without changing captured call authority.
 [Four source agreements and 351 state premises](coverage/semantics/define-scalar-name-review.json)
 cover registration, returning/throwing warnings and source/budget controls.
+Weak null `define` names dispatch the deprecation before conversion and registration.
+A returning handler can create the empty-name binding first, causing a separate
+duplicate warning with the converted string in its API trace. A throwing first
+handler retains raw null and cancels registration; strict calls retain raw
+arguments after all argument effects.
+[Four source agreements and 396 state premises](coverage/semantics/define-null-name-review.json)
+cover source-backed empty-key rows, both warning continuations and budget pauses.
 Global `constant` queries return primitive values, authenticated string carriers,
 validated user array trees, certified completed user instances and certified
 Closures. They use the captured query, remove one leading separator and preserve

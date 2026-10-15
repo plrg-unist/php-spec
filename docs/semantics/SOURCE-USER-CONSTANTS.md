@@ -239,7 +239,6 @@ the converted string; a throwing handler keeps null in the API trace and cancels
 the lookup. Strict null calls raise `TypeError` without dispatching a deprecation.
 The [null-name review](../../coverage/semantics/global-constant-null-name-review.json)
 records genuine warning/resume fronts, source refusals and budget continuation.
-Null `define` names remain separate.
 
 `define` also receives int/bool/float names with nonowning primitive values and
 an omitted/already-false flag. Each source send maps to its normalized captured
@@ -255,6 +254,20 @@ old value and return false; a handler that changes precision and throws still sh
 the received name in the API trace. The caller's scalar and assignment destination
 stay intact. The [scalar-define review](../../coverage/semantics/define-scalar-name-review.json)
 binds four sources and351 public premises, with failed initial checks kept separate.
+
+Null `define` names use a separate weak-call deprecation before conversion and
+registration, with the same primitive-value and omitted/already-false flag boundary.
+The first callback sees the raw null API argument. Normal return converts it to
+the interned empty string and checks the current table; a callback-created binding
+therefore causes a separate duplicate Warning. That warning retains the raw call
+authority but exposes the converted name in its API trace. Returning handlers keep
+the old binding and return false; a throw cancels the remaining registration.
+Strict calls evaluate every argument before raising `TypeError` with raw arguments.
+Available immutable null/name and value facts constrain the installed empty-key
+row without rereading caller CVs or storing a conversion receipt.
+The [null-define review](../../coverage/semantics/define-null-name-review.json)
+binds four source agreements and396 public premises; the failed optional-field
+fixture and unchanged baseline retain zero agreement credit.
 
 User-array queries retain the stored root and child identities. The admitted
 tree contains nonstring scalars, raw strings, authenticated string carriers,
@@ -309,8 +322,8 @@ and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`. `PHP_FUNCTION(constant)` us
 exception-class lookup and `ZVAL_COPY_OR_DUP`; `zend_declare_typed_class_constant`
 interns direct string values before installation.
 Nested empty values in `define`, cycles, objects, array duplicate/third-argument paths,
-null `define` names, Stringable/array names, array/object values with scalar names, true/coerced
-flags with scalar names, startup/special-name warnings,
+Stringable/array names, array/object values with scalar or null names, true/coerced
+flags with scalar or null names, startup/special-name warnings,
 internal/trait/interface/enum class queries, deferred keyword initializers and
 keyword `constant` array values, other deferred initializers,
 owning/FCC call forms and wider conversion/arity paths remain Unsupported. The [dynamic ledger](../../coverage/semantics/dynamic-constants-review.json)
