@@ -68,5 +68,37 @@
     "native_stdout": "P|G|F|T|4|HELD|A|U|E",
     "native_stderr": "",
     "native_exit": 0
+  },
+  {
+    "id": "generator-call-unpack-delegated-producer-required-control",
+    "source": "<?php\nfunction generatorDelegatedControl09() { echo \"G|\"; yield from [7]; echo \"F|\"; }\nfunction generatorDelegatedTarget09($value) { echo \"D|\", $value, \"|\"; }\nfunction generatorDelegatedCaller09() { echo \"P|\"; generatorDelegatedTarget09(...generatorDelegatedControl09()); echo \"R|\"; }\ngeneratorDelegatedCaller09();\necho \"E\";\n",
+    "source_sha256": "086b8ceeb2813169670f6d725b2c8b1cdbb345aaa93e2d76e7ba1622a1b1c11b",
+    "purpose": "A nested ordinary caller reaches the delegated Generator-unpack limitation without entering generic terminal frame unwinding; native normal behavior has zero agreement.",
+    "expected_model": "unsupported",
+    "native_stdout": "P|G|F|D|7|R|E",
+    "native_stderr": "",
+    "native_exit": 0,
+    "unsupported_reason": "Generator unpack delegated producer",
+    "unsupported_stdout": "P|G|",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "80",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "71",
+            "124"
+          ]
+        ]
+      }
+    ]
   }
 ]

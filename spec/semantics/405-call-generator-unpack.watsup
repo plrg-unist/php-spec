@@ -15,6 +15,7 @@ dec $generator_unpack_send(pstate, pgeneratorunpack, ptask*) : pstate
 dec $generator_unpack_nodes(pgeneratorunpack, text) : pnode*
 dec $generator_unpack_finish(pstate, pgeneratorunpack, ptask*) : pstate
 dec $generator_unpack_discard(pstate, pgeneratorunpack, text) : pstate
+dec $generator_unpack_delegated_blocked(pstate) : bool
 
 def $generator_unpack_input(S, pgeneratorunpack) = $iterator_unpack_input(S, pgeneratorunpack.CALL, pgeneratorunpack.INPUT)
   -- if pgeneratorunpack.INPUT = VARIABLE ptbytes z
@@ -101,6 +102,28 @@ def $fiber_traversal_complete(S, pgeneratorop) = S[.TODO = (GENERATOR_UNPACK pge
   -- if S.TODO = (GENERATOR_UNPACK pgeneratorunpack text) :: ptask*
   -- if $generator_unpack_header(S, pgeneratorop, pgeneratorunpack, text)
   -- if $generator_unpack_valid(S, pgeneratorunpack, text)
+  -- if S.OBJECTS[pgeneratorunpack.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE <- [GENERATOR_PAUSED, GENERATOR_CLOSED]
+def $fiber_traversal_complete(S, pgeneratorop) = S[.COMPLETION = UNSUPPORTED "Generator unpack delegated producer"]
+  -- if pgeneratorop.STARTPACK /\ pgeneratorop.BORROWED
+  -- if S.TODO = (GENERATOR_UNPACK pgeneratorunpack text) :: ptask*
+  -- if $generator_unpack_header(S, pgeneratorop, pgeneratorunpack, text)
+  -- if $generator_unpack_valid(S, pgeneratorunpack, text)
+  -- if S.OBJECTS[pgeneratorunpack.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_DELEGATING
+;; An explicit limitation retains its authenticated owners instead of invoking
+;; terminal frame/Generator cleanup for behavior beyond this protocol.
+def $generator_unpack_delegated_blocked(S) = true
+  -- if S.COMPLETION = UNSUPPORTED "Generator unpack delegated producer"
+  -- if ~S.COMPILESTOP
+  -- if S.TODO = (GENERATOR_UNPACK pgeneratorunpack text) :: ptask*
+  -- if text <- ["rewind", "next"]
+  -- if $generator_unpack_valid(S, pgeneratorunpack, text)
+  -- if S.OBJECTS[pgeneratorunpack.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_DELEGATING
+def $generator_unpack_delegated_blocked(S) = false -- otherwise
+def $generator_close_terminal_pending(S) = true -- if $generator_unpack_delegated_blocked(S)
+def $drive_steps(S, n) = S -- if $generator_unpack_delegated_blocked(S)
 def $generator_unpack_run(S, pgeneratorunpack, text, ptask*) = $generator_operate(S[.TODO = (GENERATOR_UNPACK pgeneratorunpack text) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], {OBJECT pgeneratorunpack.OBJECT, NAME text, SITE porigin, LINE $unpack_line(S, pgeneratorunpack.CALL), LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK true, BORROWED true})
   -- if $generator_unpack_valid(S, pgeneratorunpack, text)
   -- if $unpack_origin(S, pgeneratorunpack.CALL) = (porigin)
