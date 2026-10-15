@@ -83,7 +83,7 @@ CASES = {
             '$iterator_unpack_reference_allowed(S[.FUNCTIONS = [pfunction_typed]], piteratorunpack)',
             'pfunction_variadic = pfunction[.SIGNATURE = pfunction.SIGNATURE[.PARAMETERS = '
             '[psparam_left, psparam_right[.VARIADIC = true]]]]',
-            '~$iterator_unpack_reference_allowed(S[.FUNCTIONS = [pfunction_variadic]], piteratorunpack)',
+            '$iterator_unpack_reference_allowed(S[.FUNCTIONS = [pfunction_variadic]], piteratorunpack)',
             *ZERO, *ONE,
             'S_one.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*',
             'perrorcall.RESUME = ITERATOR_UNPACK piteratorunpack_held "byref"',
