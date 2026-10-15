@@ -1,0 +1,34 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hashes": [
+    "f9ae24eb12e6b13fcd2a92b2fed4859b4f42bbad3a329c44031fe9ade73611a6"
+  ],
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "scalar",
+      "source": "<?php\nclass MagicUnsetParent81 {\n    private int $hidden = 10;\n    public int $seen = 0;\n    public function __unset(string $name): void {\n        echo 'U:', $name, '/', self::class, '/', static::class, '/', __METHOD__, '|';\n        unset($this->hidden);\n        $this->seen = $this->offset();\n    }\n    private function offset(): int { return 13; }\n}\nclass MagicUnsetChild81 extends MagicUnsetParent81 {\n    private function offset(): int { return 900; }\n}\n$child = new MagicUnsetChild81();\n$raw = (array) $child;\necho 'I:', $raw[\"\\0MagicUnsetParent81\\0hidden\"], '/', $raw['seen'], '|';\nunset($child->seen);\n$raw = (array) $child;\necho 'P:', $raw === [\"\\0MagicUnsetParent81\\0hidden\" => 10] ? 'ONLY' : 'BAD', '|';\nunset($child->hidden);\n$raw = (array) $child;\necho 'F:', $raw === ['seen' => 13] ? 'ONLY' : 'BAD', '/', $child->seen, '|';\n",
+      "source_sha256": "b5fc9bc735aa6077171e502f0487be97234b807ead071d540026c23932d36a4a",
+      "stdout_base64": "SToxMC8wfFA6T05MWXxVOmhpZGRlbi9NYWdpY1Vuc2V0UGFyZW50ODEvTWFnaWNVbnNldENoaWxkODEvTWFnaWNVbnNldFBhcmVudDgxOjpfX3Vuc2V0fEY6T05MWS8xM3w=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "magic-unset81-scalar-native-8a121da8",
+      "native_raw_sha256": "f9ae24eb12e6b13fcd2a92b2fed4859b4f42bbad3a329c44031fe9ade73611a6"
+    }
+  ]
+}
