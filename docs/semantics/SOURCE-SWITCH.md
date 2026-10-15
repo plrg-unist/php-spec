@@ -63,6 +63,12 @@ Notices may still display. The original error reaches caller catch/finally with
 case bodies unentered; fresh comparison of the unchanged left observes the changed
 right after unwind. Throwable formatting and wider effects remain bounded.
 
+[Pending Throwable leaves](../../coverage/semantics/pending-throwable-comparison-review.json)
+now skip the builtin or inherited internal string handler in that authenticated
+numeric remainder. Signed nonzero order stops the original case comparison before
+later default Notices. Cold/warm caches, previous links and the original thrown
+identity survive; real post-catch formatting and fresh comparison prove cleanup.
+
 [Builtin stdClass numeric leaves](../../coverage/semantics/stdclass-numeric-comparison-review.json)
 also retain the original case, array/property cursor and guards through both
 Notices. Restored SECOND float dispatch uses saved 1.0 rather than a changed

@@ -60,6 +60,13 @@ Null registration inside the handler still permits automatic raw restoration;
 a real replacement with a Notice-excluding mask produces the default Notice.
 Throwable formatting and wider storage/lifetime effects remain outside this adapter.
 
+[Pending Throwable comparisons](../../coverage/semantics/pending-throwable-comparison-review.json)
+now skip builtin and inherited internal string handlers within the authenticated
+numeric C remainder. Their failed cast stops before later masked default Notices,
+without reading formatter fields or changing caches and previous links. The same
+thrown object reaches catch/finally; source-finally calls and normal post-catch
+formatting retain their existing behavior.
+
 [Builtin stdClass comparison Notices](../../coverage/semantics/stdclass-numeric-comparison-review.json)
 retain the fixed class name, severity and original file/line through PRIMARY
 and restored SECOND dispatch. A second float Notice keeps private 1.0 despite

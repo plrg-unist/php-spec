@@ -150,11 +150,19 @@ formats builtin and inherited internal handlers at reached object/string leaves,
 including a newly read opposing object after an ordinary cast. The saved first
 string and aggregate cursor remain authoritative. Only the root string cache
 changes; previous-node source overrides are ignored, while a root override keeps
-the ordinary callback route. Admission requires string message/file fields, an
-integer line, authentic trace arrays and acyclic previous links. Callback-valued
-fields and overlap with active HOBJECT comparison guards remain Unsupported.
+the ordinary callback route. Normal formatting admission requires string
+message/file fields, an integer line, authentic trace arrays and acyclic previous
+links. Callback-valued fields and overlap with active HOBJECT comparison guards
+remain Unsupported.
 Three exact originals and 278 reached premises/8 raw steps cover cold previews
 versus actual cache commits, skipped leaves and saved CV/cell completion.
+
+[Pending Throwable comparison casts](../../coverage/semantics/pending-throwable-comparison-review.json)
+instead skip the builtin or inherited internal handler in the authenticated
+numeric C remainder after a handler throws. They return signed nonzero order
+without inspecting fields, previous links or active object guards, leaving even
+warm caches untouched. This does not change normal, source-finally or post-catch
+formatting, and does not extend its finite admission domain.
 
 Recursive arrays and ordinary declared-property objects now suspend only at a
 reached Stringable/string leaf through 394. Count, key and earlier-value differences

@@ -1,0 +1,140 @@
+{
+  "milestone": "COMP63",
+  "status": "independently reviewed and accepted",
+  "behavior": "In the authenticated numeric comparison C remainder after a Notice handler throws, builtin and inherited internal Throwable string casts are skipped. Failed cast order is +1 for object/string and -1 for string/object, stopping aggregate scans before later Notices without reading formatter fields or changing caches and previous links.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+  },
+  "implementation": {
+    "spec/semantics/392-stringable-comparisons.watsup": "66bca8e6cdac08ae48d721b8e91f1cf80679b7dbdf6eee0715d7534bee0aa4b3"
+  },
+  "source_catalogue": {
+    "tests/semantics/pending_throwable_comparison_cases.json": "271ce7fb7913c03ab53ae2a5f28e84f666bb4d3a6baf9ecc0c591d3612bb1556"
+  },
+  "tested_revision": "fb3350b63891fc4de2474ddd896d46f3f7eca673",
+  "ordered_modules": 394,
+  "manifest_sha256": "16b07a5d2e6754f502c05eb8dfb19d5d4c56d076cc50fbbc91ed82a4cca5a9a4",
+  "contract": [
+    "Reuse the existing matching THROW_SEARCH/THROWING identity, discarded valid NUMBER_COMPARE_RESULT and original source tail. This is an unscheduled authenticated local view, not a general rule for calls made during source finally.",
+    "Two disjoint pending arms return the exact input state and signed nonzero order after existing builtin/inherited receiver selection and opposing-string validation. No formatter, field, trace, previous-chain or active-seen inspection is performed.",
+    "Keep normal Throwable formatting, the original quiet-terminal cancellation arm, pending numeric/source-cast handling, changed non-Stringable completion, tasks, schemas and owners unchanged.",
+    "Genuine wrappers preserve the original thrown object, completion, TODO, storage and cursor pins. Entered handler recursion guards, old/new array COW and fresh post-catch comparisons test cleanup; documentary receiver images add no owner."
+  ],
+  "validation": {
+    "native": {
+      "revision": "9dbf3b3085a8a58d3004bcbfff426460f5462b73",
+      "observations": 3,
+      "normal": 3,
+      "model_agreements": 0,
+      "observed": "Cold/warm builtin and inherited handlers in both orientations leave caches/previous unchanged; the compared root itself can be thrown through COW/recursion/finally, and post-catch formatting really runs."
+    },
+    "unchanged_baseline": {
+      "revision": "9dbf3b3085a8a58d3004bcbfff426460f5462b73",
+      "status": "checked Unsupported",
+      "reason": "numeric comparison pending-exception continuation",
+      "stdout_prefix": "cold-left|handler|handler-finally|",
+      "elapsed_seconds": 30.8681162745,
+      "agreement": 0
+    },
+    "initialization": {
+      "explicit_sl": true,
+      "assertions": 0,
+      "raw_steps": 0,
+      "source_agreements": 0
+    },
+    "sources": {
+      "agreements": 3,
+      "normal": 3,
+      "exact_stdout_and_stderr": true,
+      "seconds": [
+        173.1636319886893,
+        224.28078583069146,
+        69.62826278991997
+      ]
+    },
+    "syntax_only": {
+      "requests": 6,
+      "runtime_credit": 0,
+      "raw_steps": 0
+    },
+    "author": {
+      "boolean_premises": 374,
+      "setup": 362,
+      "pure": 12,
+      "raw_steps": 8,
+      "seconds": [
+        172.26341420412064,
+        230.95645904913545
+      ]
+    },
+    "independent": {
+      "boolean_premises": 135,
+      "setup": 123,
+      "pure": 12,
+      "raw_steps": 3,
+      "seconds": [
+        67.85758101195097
+      ]
+    },
+    "total": {
+      "boolean_premises": 509,
+      "setup": 485,
+      "pure": 24,
+      "raw_steps": 11
+    },
+    "state_fixture_failures": []
+  },
+  "review": {
+    "reviewer": "comp_review_21",
+    "semantic": "CLEAR within the stated domain",
+    "source_and_state": "Original raw commands, streams and owned closure independently bound once; accepted private cuts retained without replay.",
+    "publication_verdict": "CLEAR"
+  },
+  "limits": [
+    "The skip applies only inside the authenticated discarded numeric comparison remainder. Source finally calls, normal comparison formatting and post-catch formatting retain their existing behavior and finite admission domain.",
+    "No widening of formatter callbacks, materialized callbacks without a retained cursor, pending storage/lifetime effects or other internal handlers. Complete core and comparison-family coverage remain partial."
+  ],
+  "zend_sources": [
+    "vendor/php-src/Zend/zend_object_handlers.c: zend_std_cast_object_tostring and zend_std_compare_objects",
+    "vendor/php-src/Zend/zend_execute_API.c: zend_call_known_function and zend_call_function early EG(exception) return",
+    "vendor/php-src/Zend/zend_operators.c and Zend/zend_hash.c: ordered aggregate comparison stops on nonzero"
+  ],
+  "engine_bugs": [],
+  "intentional_divergences": [],
+  "artifacts": {
+    ".tools/pending-throwable-comparison-native-63/cases.json": "f5b635034735fe6cd7c57a83deb2079bc4ab20ac3bc3a67b3aca051539d2ae43",
+    ".tools/pending-throwable-comparison-native-63/run.py": "ff53ff35c4b112bd73ff755c8aa50d6886d7566c90df0410409eec63faa10104",
+    ".tools/pending-throwable-comparison-native-63/run-native-v1/report.json": "b16cbe2ce414a4e3324a721ffa3b3af1bc2f1c8962bbabc3965862c449d51001",
+    ".tools/pending-throwable-comparison-support-63/actor.py": "04eeb0f60f0072d6d0ea7bb81dbde842f9c7afb844b0ce2f6b4b28bf986efa08",
+    ".tools/pending-throwable-comparison-support-63/inputs.py": "4854c1134b281ed12c9aba2ae9f6ec63f3990575379fc8e89e31828c4dcb1b20",
+    ".tools/pending-throwable-comparison-support-63/baseline-case.json": "ec901aac3d35f70939fd38483bcffde26faeb504bc5069b42f98043bce1d8c0d",
+    ".tools/pending-throwable-comparison-support-63/baseline.py": "f053aada22cf652bc47ca97f771b4a32fbbd8cd2d112cd036a13193f42a348fc",
+    ".tools/pending-throwable-comparison-support-63/run-baseline-v1/report.json": "278ea30a699a5ff68d5b928aaf20baf6bd3c38908c510657cfc3630dec94ada5",
+    ".tools/pending-throwable-comparison-support-63/affected.py": "25082c5c6ea7bdd9dc86bcba090a2bbe428a81bdba6fc846f3f9331a0e861dd7",
+    ".tools/pending-throwable-comparison-support-63/initialize.py": "d90f8a4a9f7dcefc9dbaee8b8f168f0dbda9b4719b902cf26420d2ef7e11701f",
+    ".tools/pending-throwable-comparison-support-63/initializer.watsup": "7dfe8bbabac236e82d623ddb8b02769a4f1067d26fad6643ffa83eddc9ed65fc",
+    ".tools/pending-throwable-comparison-support-63/run-initialize-v1/report.json": "0acdd27bcbe50943c8622a92c7a55912d894b7ff83354f5dc6a9f7e2a02bfbe6",
+    ".tools/pending-throwable-comparison-support-63/model.py": "5abee1a9502534dc228b1f711e312d6e766df0ff2aee645e4c07a6ebe63df3a6",
+    ".tools/pending-throwable-comparison-support-63/run-model-v1/report.json": "c9302b9317f2a9201b14f88a7b7e6a542c57aa05cfab4ec0854318062e8cf5a2",
+    ".tools/pending-throwable-comparison-support-63/prepare.py": "588908be225925992fbb1dd30c107e4b2a11247d411ee333e0b0854db9cfeb6f",
+    ".tools/pending-throwable-comparison-support-63/syntax-v1/report.json": "a4db2f258aff42477be013f291170e16d7a98bd063a2c9b590e00ffd035c2d77",
+    ".tools/pending-throwable-comparison-state-63/build.py": "a165b01b22257b0042cc8cb8b008905122473ecfbafba700d723bf712f1e7821",
+    ".tools/pending-throwable-comparison-state-63/helpers.watsup": "329b172104ada7efe3e26e6dead1b3ae8a67a5930a0c0ef91e0475c453413dc1",
+    ".tools/pending-throwable-comparison-state-63/plan.json": "2e7afee2660589ab0a279b59b4c3764cbe636b44339e66ef766c92322a1d0296",
+    ".tools/pending-throwable-comparison-state-63/run.py": "664416ae96e2bfce4fed9b638cfa60fd0a4c4050c2c1514bce1c9f0da958657e",
+    ".tools/pending-throwable-comparison-state-63/run-el-v1/report.json": "d364c87c23275879ef09a86f7dbd5145f97e85df8f7a6ef64db82087a224425d",
+    ".tools/pending-throwable-comparison-state-63/run-sl-v1/report.json": "ef0f8b6a8acb96aed4d7d97c549f6152e3aab0852cead7974524d81ed0d9a324",
+    ".tools/pending-throwable-comparison-peer-state-63/build.py": "b2bb4c6a31e0cbeb877e0e53ddc09ecdfa398e957cdbfd40c330c0165093a5ea",
+    ".tools/pending-throwable-comparison-peer-state-63/body.py": "9d334c9e1ba1513fb01dc43a1f2f5dd279d1c16970a4191deabe2347448292c7",
+    ".tools/pending-throwable-comparison-peer-state-63/helpers.watsup": "591272ccf576259cf68fa35774167ec55c7da1da50a0cfbc351d98c6ea3d0aa0",
+    ".tools/pending-throwable-comparison-peer-state-63/plan.json": "4735fe57b27c3087cf72dc5f34da83e0ad57f2b59ee27874d1114824963dedd2",
+    ".tools/pending-throwable-comparison-peer-state-63/run.py": "0f0ee0ea2492c8322229f5fc11d25914bf8821c2463420a7b087d8c9baf3dee6",
+    ".tools/pending-throwable-comparison-peer-state-63/run-el-v1/report.json": "ff4233fc98a1b4ef71588080849725077526265b76baad2a02a53ccd2e3cbc09",
+    ".tools/pending-throwable-comparison-peer-state-63/run-sl-v1/report.json": "d0da977a0f993ada9a255c6a8ae78428f0c190231933fa6c1c88ef329697b512"
+  },
+  "reproduction": "Retain ignored originals at their recorded File/CWD paths. The maintained catalogue pins actual native tuples and START identities; fresh63 scripts and plans bind checked programmes, helpers, exact commands, ENV/profile identities, raw streams and owned closure. Native observation, checked Unsupported, initialization, syntax preparation and typed elaboration have zero source agreement credit. Raw artifacts stay outside Git."
+}

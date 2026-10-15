@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+The authenticated numeric comparison remainder now skips builtin and inherited
+Throwable string handlers after a Notice handler throws. Signed nonzero order
+stops before later Notices; cold/warm caches and previous links remain untouched.
+Three exact sources pass; author and independent state tests pass 509 Boolean
+premises (485 setup + 24 pure) and 11 raw steps at fb3350b6/394, including both orientations,
+array/property cursors, compared-error identity, COW and fresh guard cleanup.
+The unchanged refusal, initialization, syntax preparation and typed elaboration
+keep zero agreement credit. Normal, finally and post-catch formatting are unchanged;
+wider pending effects and lifetimes remain partial.
+[Pending Throwable review](coverage/semantics/pending-throwable-comparison-review.json).
+
 With Zend multibyte disabled, closed single-line literal `declare(encoding=...);`
 now emits its parser Warning before compiler diagnostics and bypasses user handlers.
 The declaration then executes as a source-authenticated no-op. Two exact originals

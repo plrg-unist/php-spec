@@ -1934,6 +1934,11 @@ now skip later registered callbacks and source string casts while preserving
 default numeric Notices and the original thrown object. Three exact sources and
 319 premises/10 raw steps cover retained/replaced handlers, array/property scans
 and fresh comparison after cleanup. Wider effects remain explicitly bounded.
+[Pending Throwable comparison casts](coverage/semantics/pending-throwable-comparison-review.json)
+now skip builtin and inherited internal handlers in that authenticated numeric
+remainder. Signed nonzero order stops before later Notices without reading fields
+or changing cold/warm caches and previous links. Three exact sources and 509
+Boolean premises/11 raw steps pass; normal and finally formatting are unchanged.
 [Match expressions](docs/semantics/SOURCE-MATCH.md) preserve strict, lazy arm
 selection, delayed CV subjects, ordered compiler diagnostics and owned value
 results; their [review](coverage/semantics/match-review.json) binds source, compiler

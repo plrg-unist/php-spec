@@ -63,6 +63,13 @@ only events and the fatal snapshot may change. Builtin Throwable/string formatti
 materialization, cache updates, recursion and wider lifetime effects remain outside
 this adapter. Documentary receiver/leaf images add no owner;
 actual operands, cursor pins and callback selection retain their existing roots.
+[Builtin and inherited Throwable string casts](../../coverage/semantics/pending-throwable-comparison-review.json)
+also skip their internal handler in this authenticated pending remainder. The
+failed cast gives object-after-string order without reading formatter fields,
+previous links or caches; its nonzero result stops before later numeric Notices.
+Cold/warm caches, both orientations, array/property scans and same-error cleanup
+pass three exact sources and 509 Boolean premises/11 raw steps. Normal formatting
+and calls executed by source finally remain on their existing routes.
 [Builtin stdClass leaves](../../coverage/semantics/stdclass-numeric-comparison-review.json)
 now use the same int/float Notice route. A local class image distinguishes their
 fixed name from real source origins in both phases; allocation is checked at
