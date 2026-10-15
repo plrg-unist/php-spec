@@ -759,14 +759,14 @@ def $aggregate_resume_join(S, ORDERSTRING paggregatecallback, paggregatecursor*,
 def $aggregate_resume_join(S, ORDERNOTICE paggregatecallback pvalue, paggregatecursor*, z) = (S, ORDERNOTICE paggregatecallback[.STACK = paggregatecallback.STACK ++ paggregatecursor*] pvalue)
 def $aggregate_resume_join(S, porder, paggregatecursor*, z) = $aggregate_resume(S, porder, paggregatecursor*, z) -- otherwise
 def $aggregate_compare_return(S, paggregatecompare, pvalue_text, pvalue_other) = $user_string_begin(S_next[.TODO = paggregatecompare.TAIL][.ORIGIN = (paggregatecompare.CASTSITE)], paggregatecallback_next.RECEIVER, paggregatecompare.CASTSITE, paggregatecompare.LINE, AGGREGATE_COMPARE_RESULT paggregatecompare[.CAST = paggregatecallback_next], paggregatecompare.TAIL)
-  -- if $type_bytes(pvalue_other) =/= $ptascii("object") \/ $throwable_compare_receiver(S, pvalue_other) =/= eps
+  -- if $type_bytes(pvalue_other) =/= $ptascii("object") \/ $throwable_compare_receiver(S, pvalue_other) =/= eps \/ $string_compare_failed_object(S, pvalue_other)
   -- if paggregatecallback = paggregatecompare.CAST
   -- if (pvalue_left, pvalue_right) = $aggregate_leaf_values(paggregatecallback, pvalue_text, pvalue_other)
   -- if S_clear = S[.TODO = paggregatecompare.TAIL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if (S_leaf, porder_leaf) = $value_order_effect(S_clear, pvalue_left, pvalue_right, $aggregate_cursor_lefts(paggregatecallback.STACK), paggregatecompare.LINE)
   -- if (S_next, ORDERSTRING paggregatecallback_next) = $aggregate_resume(S_leaf, porder_leaf, paggregatecallback.STACK, paggregatecompare.LINE)
 def $aggregate_compare_return(S, paggregatecompare, pvalue_text, pvalue_other) = $aggregate_order_finish(S_next, paggregatecompare, porder)
-  -- if $type_bytes(pvalue_other) =/= $ptascii("object") \/ $throwable_compare_receiver(S, pvalue_other) =/= eps
+  -- if $type_bytes(pvalue_other) =/= $ptascii("object") \/ $throwable_compare_receiver(S, pvalue_other) =/= eps \/ $string_compare_failed_object(S, pvalue_other)
   -- if paggregatecallback = paggregatecompare.CAST
   -- if (pvalue_left, pvalue_right) = $aggregate_leaf_values(paggregatecallback, pvalue_text, pvalue_other)
   -- if S_clear = S[.TODO = paggregatecompare.TAIL][.BASE = BASE_VALUE (KNOWN PNULL)]

@@ -297,13 +297,48 @@ def $string_compare_finish(S, pstringcompare, pvalue_left, pvalue_right) = $bina
 def $string_compare_finish(S, pstringcompare, pvalue_left, pvalue_right) = $switch_compare_result(S, S[.TODO = pstringcompare.TAIL][.ORIGIN = (pstringcompare.SITE)][.BASE = BASE_VALUE (KNOWN PNULL)], statement, pstringcompare.SITE, pstringcompare.LEFT, n, pstringcompare.LINE, pvalue_left, pvalue_right)
   -- if pstringcompare.CONSUMER = SWITCH_COMPARE statement pstringcompare.SITE pstringcompare.LEFT n pstringcompare.LINE
 
+;; A newly read standard object without __toString fails its string cast
+;; quietly. It is a live operand, distinct from the first receiver image.
+dec $string_compare_standard_class(pstate, porigin, nat) : bool
+def $string_compare_standard_class(S, porigin, n) = true
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if pclassdesc.PARENT = eps
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = eps
+def $string_compare_standard_class(S, porigin, n) = true
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (STDCLASS_PARENT)
+def $string_compare_standard_class(S, porigin, n) = $string_compare_standard_class(S, porigin_parent, $nabs($(n - 1)))
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
+def $string_compare_standard_class(S, porigin, n) = false -- otherwise
+dec $string_compare_failed_object(pstate, pvalue) : bool
+def $string_compare_failed_object(S, POBJECT n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, n)
+  -- if S.OBJECTS[n] = STDINSTANCE
+def $string_compare_failed_object(S, POBJECT n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, n)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $string_compare_standard_class(S, porigin, |S.CLASSES|)
+  -- if $effective_method(S, porigin, $ptascii("__toString"), |S.CLASSES|) = eps
+def $string_compare_failed_object(S, pvalue) = false -- otherwise
+
 dec $string_compare_return(pstate, pstringcompare, pvalue, pvalue) : pstate
 def $string_compare_return(S, pstringcompare, pvalue_text, pvalue_other) = $string_compare_finish(S, pstringcompare, pvalue_text, pvalue_other)
   -- if pstringcompare.OBJECTLEFT
-  -- if $type_bytes(pvalue_other) =/= $ptascii("object") \/ $throwable_compare_receiver(S, pvalue_other) =/= eps
+  -- if $type_bytes(pvalue_other) =/= $ptascii("object") \/ $throwable_compare_receiver(S, pvalue_other) =/= eps \/ $string_compare_failed_object(S, pvalue_other)
 def $string_compare_return(S, pstringcompare, pvalue_text, pvalue_other) = $string_compare_finish(S, pstringcompare, pvalue_other, pvalue_text)
   -- if ~pstringcompare.OBJECTLEFT
-  -- if $type_bytes(pvalue_other) =/= $ptascii("object") \/ $throwable_compare_receiver(S, pvalue_other) =/= eps
+  -- if $type_bytes(pvalue_other) =/= $ptascii("object") \/ $throwable_compare_receiver(S, pvalue_other) =/= eps \/ $string_compare_failed_object(S, pvalue_other)
 def $string_compare_return(S, pstringcompare, pvalue_text, POBJECT n) = $user_string_begin(S[.TODO = pstringcompare.TAIL][.ORIGIN = (pstringcompare.CASTSITE)], n, pstringcompare.CASTSITE, pstringcompare.LINE, STRING_COMPARE_REDISPATCH_RESULT pstringcompare n pvalue_text, pstringcompare.TAIL)
   -- if $stringable_instance(S, n)
   -- if $string_compare_text_valid(S, pvalue_text)
