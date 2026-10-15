@@ -18,8 +18,10 @@ source at 587a95bd. Three public fronts pass 349 premises at 33871767, checking
 literal publication/history, raw handler traces, captured selection, source/carrier
 refusals and budget resumption. The unchanged Unsupported baseline retains zero
 credit. Primitive values and ordinary string names bound this slice; NaN flags,
-wider values and owning/packed calls remain separate. Private acceptance is
-complete; actual-parent integration is pending.
+wider values and owning/packed calls remain separate. The 396-module composition
+over 0533d397 passes full SL load/elaboration at be690134; its true fixture makes
+no PHP application or initial-state assertion. Independent pointwise review
+preserves the incoming parent; source4/public349 keep their private cuts.
 [NULL-flag review](coverage/semantics/define-null-flag-review.json).
 
 Live WeakMap pairs now return order zero through the standard zero-property
