@@ -360,9 +360,18 @@ CONTROL_DERIVED = ['$property_set_trait_origin(S_linked,ppropertydesc_source) = 
  'phpType3_consumer phpType44_consumer phpType42_consumer phpType23_consumer metadata_consumer)]])]',
  '$property_set_origin(S_wrong_owner,ppropertydesc_source) = eps /\\ '
  '$property_set_trait_origin(S_wrong_owner,ppropertydesc_consumer) = eps',
+ 'phpType23_trait = SEQUENCE statement_trait_body*',
+ 'phpType23_consumer = SEQUENCE (statement_use :: statement_consumer_body*)',
+ '$code_at(S_linked.CODE,n_source) = (pcode_source)',
+ 'S_linked.CODE = [pcode_source]',
+ 'pcpath_use = pcpath_trait ++ [PCFIELD 2,PCINDEX |statement_trait_body*|]',
+ '$code_name(pcode_source.NAMES,pcpath_use ++ [PCFIELD 0,PCINDEX 0]) = eps',
  'S_nested = S_linked[.SOURCES = ([pcunit_source[.OCCURRENCES = '
- '$tis_replace(pcunit_source.OCCURRENCES,pcpath_trait,NStmtTrait phpType14_trait phpType3_trait phpType23_consumer '
- 'metadata_trait)]])]',
+ '$tis_replace($tis_replace(pcunit_source.OCCURRENCES,pcpath_trait,NStmtTrait phpType14_trait phpType3_trait (SEQUENCE '
+ '(statement_trait_body* ++ [statement_use])) metadata_trait),pcpath_use,statement_use)]])][.CODE = '
+ '([pcode_source[.NAMES = pcode_source.NAMES ++ [(CODENAME (pcpath_use ++ [PCFIELD 0,PCINDEX 0]) pclassdesc_trait.NAME '
+ 'eps)]]])]',
+ '$trait_plan(S_nested,pclassdesc_trait).TRAITS = [pclassdesc_trait.NAME]',
  '$property_set_origin(S_nested,ppropertydesc_source) = eps /\\ '
  '$property_set_trait_origin(S_nested,ppropertydesc_consumer) = eps',
  'pcpath_group = pcpath_hook[0:$nabs($(|pcpath_hook| - 2))]',
