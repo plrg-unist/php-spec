@@ -53,27 +53,27 @@ The pointwise 399-module composition over 6f3488104 preserves incoming list,
 property, arithmetic, constants and return paths. Source2/state355 retain their
 private cut; independent seam review warrants no joined actor or renewed credit.
 
-Missing-key Warning now continues flat CV destructuring from saved arrays or
-mixed-pattern source cells. By-value CV/literal RHS snapshots retain shared embedded
-references. Mixed value/reference patterns capture a direct-CV source cell: callback
-value replacement affects later reference fetches, while CV unsetting/rebinding leaves
-the old cell authoritative. The interrupted fetch still supplies null before its store;
-a later reference leaf applies COW or creates an array after callback null replacement.
-Prior reference leaves preserve the fetch line. Throws cancel pending stores/items and
-result delivery, preserving callback effects and the supplied Throwable.
-Five A3 exact originals agree at 88494f937; five reached SL fronts pass591 premises
-(576 Boolean +15 raw steps) at 1b2ab113f, checking marked-cell/source/line refusals,
-real frames, same-cell replacement, saved-cell COW, null creation, retirement and budgets.
-The [mixed-reference review](coverage/semantics/list-reference-missing-warning-review.json)
-retains its native/unchanged Unsupported baseline with zero agreement credit.
-The earlier [CV slice](coverage/semantics/list-missing-warning-review.json) source6/state468
-and [literal slice](coverage/semantics/list-literal-missing-warning-review.json) source6/state417
-retain their original cuts without replay. Quiet compiled/implicit keys and flat CV
-targets bound these slices; nested/wider RHS, scalar diagnostic callbacks and lifecycle
-remain partial.
-The pointwise399-module composition over08c650fd3 preserves incoming Generator,
-shift, return, define and weak-object numeric paths. Source5/state591 retain their
-private cuts; seam review warrants no joined actor or renewed agreement credit.
+Missing-key Warning now continues one nested by-value destructuring layer from
+a direct CV, retaining the current inner array and the outer continuation separately.
+Outer missing keys supply null to child reads without another warning; inner missing
+fetches still supply null after callback insertion/rebinding. Later items/results use
+the captured tables, including shared embedded references. Child entry and the next
+outer item use their inherited compiler locations. During throw cleanup, discarding
+the inner warning task can leave the outer task owning parent/child/reference cells;
+later unwind retires all otherwise unowned nodes while preserving prior stores and
+the supplied Throwable.
+Five A4 exact originals agree at a5628799f; five SL fronts pass637 premises
+(623 Boolean +14 raw steps) at 31f2b999c, checking source/shape/depth/ref/line refusals,
+real frames, both owners, keyed/shared reads, null descent, staged cleanup and budgets.
+The [nested review](coverage/semantics/list-nested-missing-warning-review.json) retains
+the unchanged Unsupported baseline with zero agreement credit.
+Earlier [CV source6/state468](coverage/semantics/list-missing-warning-review.json),
+[literal source6/state417](coverage/semantics/list-literal-missing-warning-review.json)
+and [mixed source5/state591](coverage/semantics/list-reference-missing-warning-review.json)
+retain their original cuts without replay. Flat literals retain array snapshots;
+flat mixed patterns retain the source cell through value replacement or CV rebind.
+Quiet compiled/implicit keys and CV leaves bound these slices; deeper/reference
+nesting, wider RHS/targets, scalar diagnostic callbacks and lifecycle remain partial.
 
 Terminal `empty` now composes inherited `__isset(string): bool` and untyped
 by-value `__get` for selected CV/literal private properties. False skips the getter;
