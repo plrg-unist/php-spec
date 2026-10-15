@@ -642,6 +642,11 @@ def $dynamic_global_constant_value(S, preqbytes) = (POBJECT n_object)
   -- if puserconstant.VALUE = POBJECT n_object
   -- if puserconstant.CLASS = PVINSTANCE n_object porigin_site
   -- if $constant_value_class_valid(S, puserconstant.VALUE, puserconstant.CLASS)
+def $dynamic_global_constant_value(S, preqbytes) = (POBJECT n_object)
+  -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(preqbytes)) = (puserconstant)
+  -- if puserconstant.VALUE = POBJECT n_object
+  -- if puserconstant.CLASS = PVCLOSURE n_object porigin_site
+  -- if $constant_value_class_valid(S, puserconstant.VALUE, puserconstant.CLASS)
 def $dynamic_global_constant_value(S, preqbytes) = (PARRAY n_array)
   -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(preqbytes)) = (puserconstant)
   -- if puserconstant.VALUE = PARRAY n_array
