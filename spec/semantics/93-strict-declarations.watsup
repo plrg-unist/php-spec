@@ -35,3 +35,18 @@ rule PhpStep/unknown-declare: S ~> S[.TODO = ptask_tail*]
 rule PhpStep/unknown-declare-body: S ~> S[.TODO = $statement_tasks(statement*, $origin_child(S.ORIGIN, [PCFIELD 1]), 0) ++ ptask_tail*]
   -- if S.TODO = (STMT (NStmtDeclare (SEQUENCE phpType49*) (SEQUENCE statement*) metadata)) :: ptask_tail*
   -- if $unknown_declare_valid(S, NStmtDeclare (SEQUENCE phpType49*) (SEQUENCE statement*) metadata)
+
+;; A successful compiler already emitted the parser warning. Execution is a
+;; no-op only for that same closed, source-authenticated root declaration.
+dec $encoding_declare_valid(pstate, statement) : bool
+def $encoding_declare_valid(S, statement) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $origin_accepts(S.SOURCES, PORIGIN n pcpath, STMT statement)
+  -- if $encoding_declare_line(statement) = (z)
+  -- if $encoding_declare_site(pcunit.AST, pcpath) = (z)
+  -- if $encoding_declare_first($pcprogram(pcunit.AST), pcpath)
+def $encoding_declare_valid(S, statement) = false -- otherwise
+rule PhpStep/encoding-declare: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (STMT statement) :: ptask_tail*
+  -- if $encoding_declare_valid(S, statement)

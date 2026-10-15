@@ -4,6 +4,8 @@ import argparse
 import base64
 import json
 import os
+import re
+import tempfile
 from pathlib import Path
 import select
 import math
@@ -21,18 +23,79 @@ def b64(data):
     return base64.b64encode(data).decode('ascii')
 
 
-def request(command, value, timeout):
+def request(command, value, timeout, with_stderr=False):
     environment = os.environ.copy()
     environment.pop('PHP_SPEC_SCRIPT_ENCODING', None)
     environment.update(LC_ALL='C', TZ='UTC')
-    result = subprocess.run(command, input=wire.dumps(value) + '\n', text=True,
+    result = subprocess.run(command, input=(wire.dumps(value) + '\n').encode(),
                             capture_output=True, timeout=timeout, env=environment)
     if result.returncode:
         raise RuntimeError(f'worker exit {result.returncode}: {result.stderr}')
     lines = result.stdout.splitlines()
     if len(lines) != 1:
-        raise RuntimeError('worker did not return exactly one response: ' + result.stdout)
-    return wire.loads(lines[0])
+        raise RuntimeError('worker did not return exactly one response: ' + repr(result.stdout))
+    response = wire.loads(lines[0].decode())
+    return (response, result.stderr) if with_stderr else response
+
+
+def encoding_warning_lines(ast):
+    """Closed raw-profile declarations whose parser lines the AST authenticates."""
+    def encoding(item):
+        return (item.get('node') == 'DeclareItem'
+                and item['fields'][0].get('node') == 'Identifier'
+                and base64.b64decode(item['fields'][0]['fields'][0]['bytes']).lower() == b'encoding')
+
+    lines, admitted = [], set()
+    for statement in ast['program']:
+        if statement['node'] != 'Stmt_Declare':
+            continue
+        items, body = statement['fields']
+        if len(items) != 1 or body is not None or not encoding(items[0]):
+            continue
+        item = items[0]
+        name, value = item['fields']
+        if value['node'] != 'Scalar_String':
+            continue
+        line = int(statement['meta']['startLine']['int'])
+        if line > 0 and all(int(node['meta'][key]['int']) == line
+                            for node in (statement, item, name, value)
+                            for key in ('startLine', 'endLine')):
+            lines.append(line)
+            admitted.add(id(item))
+    pending = [ast]
+    while pending:
+        value = pending.pop()
+        if isinstance(value, dict):
+            if encoding(value) and id(value) not in admitted:
+                return None
+            pending.extend(value.values())
+        elif isinstance(value, list):
+            pending.extend(value)
+    return lines
+
+
+def dynamic_parser_stderr(parsed, mode, stderr):
+    # A rejected source has no checked AST from which to authenticate warnings.
+    if not parsed.get('accepted'):
+        return not stderr
+    lines = encoding_warning_lines(parsed['ast'])
+    if lines is None:
+        return False
+    records = stderr.splitlines(keepends=True)
+    if len(records) != len(lines):
+        return False
+    message = (b'Warning: declare(encoding=...) ignored because Zend multibyte '
+               b'feature is turned off by settings in ')
+    filename = (re.escape(b"eval()'d code") if mode == 'eval' else
+                re.escape(os.fsencode(tempfile.gettempdir())) + rb'/php[A-Za-z0-9]+')
+    previous = None
+    for record, line in zip(records, lines):
+        match = re.fullmatch(re.escape(message) + b'(' + filename + b') on line '
+                             + str(line).encode() + rb'\n', record)
+        if match is None or (previous is not None and match[1] != previous):
+            return False
+        previous = match[1]
+    return True
 
 
 class AdapterSession:
@@ -461,9 +524,11 @@ def main():
             if mode not in {'eval', 'file'}:
                 return {'status': 'runner_failure', 'reason': 'unknown source service mode'}
             operation = 'parse-eval' if mode == 'eval' else 'parse-file'
-            parsed_dynamic = request([php, '-n', *flags, '-d', 'extension=' + str(ROOT / '.tools/php-file.so'),
+            parsed_dynamic, parser_stderr = request([php, '-n', *flags, '-d', 'extension=' + str(ROOT / '.tools/php-file.so'),
                                       str(ROOT / 'frontend/worker.php')],
-                                     {'op': operation, **pending}, args.timeout)
+                                     {'op': operation, **pending}, args.timeout, with_stderr=True)
+            if not dynamic_parser_stderr(parsed_dynamic, mode, parser_stderr):
+                return {'status': 'unsupported', 'reason': mode + ' parser service stderr outside supported encoding declarations'}
             if not parsed_dynamic.get('ok'):
                 if parsed_dynamic.get('category') == 'helper_unsupported':
                     return {'status': 'unsupported', 'reason': mode + ' source service: ' + parsed_dynamic.get('message', '')}

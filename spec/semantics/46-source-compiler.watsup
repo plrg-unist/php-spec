@@ -90,6 +90,7 @@ def $ppterminator(metadata) = $ppterminator_range($ppterminator_token(metadata),
 
 dec $ppstart(nat, program, ptbytes) : ppstate
 dec $ppgoto_finish(ppstate) : ppstate
+dec $ppparser_begin(ppstate) : ppstate
 dec $pplexical(ppstate, plresult) : ppstate
 dec $ppresume(ppstate, plstate, pcpath, statement, plenv) : ppstate
 dec $pplocate(ppstate, pcpath, int) : ppstate
@@ -143,7 +144,7 @@ def $ppstart_eval_state(S, n, program, ptbytes, ptbytes_cwd?, ptbytes_evalclass?
 def $ppstart_eval_external(n, program, ptbytes, ptbytes_cwd?, ptbytes_evalclass?, pstate_external?) = $ppstart_precision_external(n, program, ptbytes, ptbytes_cwd?, ptbytes_evalclass?, pstate_external?, 14)
 def $ppstart_precision_external(n, program, ptbytes, ptbytes_cwd?, ptbytes_evalclass?, pstate_external?, z_precision) = $ppstart_precision_epochs(n, program, ptbytes, ptbytes_cwd?, ptbytes_evalclass?, pstate_external?, z_precision, eps)
 def $ppstart_precision_epochs(n, program, ptbytes, ptbytes_cwd?, ptbytes_evalclass?, pstate_external?, z_precision, epochs) = $ppstart_assertions_epochs(n, program, ptbytes, ptbytes_cwd?, ptbytes_evalclass?, pstate_external?, z_precision, epochs, 1)
-def $ppstart_assertions_epochs(n, program, ptbytes, ptbytes_cwd?, ptbytes_evalclass?, pstate_external?, z_precision, epochs, z_assertions) = $pplexical({ CLASSES eps, CLASSCONSTANTS eps, CLOSURETEMPLATES eps, CLOSURE false, CLASSCONTEXT eps, EVALCLASS ptbytes_evalclass?, RETURNREF false, RETURNS eps, FUNCTIONS eps, GLOBALS eps, EARLY eps, PUBLICATIONS eps, INSTALLED $ppimage_empty(n), LOOPS 0, SWITCHES eps, GOTOROOT eps, LABELS eps, GOTOS eps, HEADERASSIGNED false, CVS eps, AUTOGLOBALS eps, FOLD ($pfbegin(n, program)[.PARSEPRECISION = z_precision][.COMPILEPRECISIONS = (epochs)][.FILE = (ptbytes)][.CWD = ptbytes_cwd?][.EXTERNAL = pstate_external?][.MEMORY = $precision_memory($assertion_memory($initial_state(NORMAL), z_assertions), z_precision)]), ENV $plempty(false), LOCATION { UNIT n, PATH eps, FILE ptbytes, LINE 1 }, COMPLETION PPCNORMAL, DIAGNOSTICS eps, WORK eps, WRITES eps, EXPRESSIONS eps, ACCESS eps, NAMES eps, REDIRECTS eps }, $plstart(n, program, ptbytes))
+def $ppstart_assertions_epochs(n, program, ptbytes, ptbytes_cwd?, ptbytes_evalclass?, pstate_external?, z_precision, epochs, z_assertions) = $pplexical($ppparser_begin({ CLASSES eps, CLASSCONSTANTS eps, CLOSURETEMPLATES eps, CLOSURE false, CLASSCONTEXT eps, EVALCLASS ptbytes_evalclass?, RETURNREF false, RETURNS eps, FUNCTIONS eps, GLOBALS eps, EARLY eps, PUBLICATIONS eps, INSTALLED $ppimage_empty(n), LOOPS 0, SWITCHES eps, GOTOROOT eps, LABELS eps, GOTOS eps, HEADERASSIGNED false, CVS eps, AUTOGLOBALS eps, FOLD ($pfbegin(n, program)[.PARSEPRECISION = z_precision][.COMPILEPRECISIONS = (epochs)][.FILE = (ptbytes)][.CWD = ptbytes_cwd?][.EXTERNAL = pstate_external?][.MEMORY = $precision_memory($assertion_memory($initial_state(NORMAL), z_assertions), z_precision)]), ENV $plempty(false), LOCATION { UNIT n, PATH eps, FILE ptbytes, LINE 1 }, COMPLETION PPCNORMAL, DIAGNOSTICS eps, WORK eps, WRITES eps, EXPRESSIONS eps, ACCESS eps, NAMES eps, REDIRECTS eps }), $plstart(n, program, ptbytes))
 def $pplexical(P, plresult) = P
   -- if P.COMPLETION =/= PPCNORMAL
 dec $pptick_complete(ppstate) : ppstate
