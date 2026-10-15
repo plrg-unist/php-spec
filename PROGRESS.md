@@ -15,6 +15,9 @@ covering six eval queries, two representative Error states and budget resumption
 Keyword `constant` values remain folded primitives/literal strings; wider values,
 initializers and internal/bound-Closure scopes remain partial.
 [Keyword-query ledger](coverage/semantics/class-keyword-query-review.json).
+The 394-module composition over 0ef18e1a preserves Source26's global-array leaf
+rules and the accepted keyword block at 89729506. Private source2/public368 keep
+their tested cut; no joined numeric evidence is claimed.
 
 Global `constant` array queries now admit certified `PVINSTANCE` and `PVCLOSURE`
 leaves through their existing live/source certificates. Queries preserve the stored
