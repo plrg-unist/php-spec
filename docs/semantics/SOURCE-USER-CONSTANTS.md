@@ -129,7 +129,7 @@ pending tail changes only the constant table and preserves the original Throwabl
 caller destination and callback mutations. A key already present at that point is
 explicitly Unsupported because its pending duplicate Warning needs a separate
 protocol. The [scalar-flag review](../../coverage/semantics/define-scalar-flag-review.json)
-binds four source agreements and 462 public premises; NULL/NaN flags, wider values
+binds four source agreements and 462 public premises; NaN flags, wider values
 and coerced flags with scalar/null names remain separate.
 
 Boolean true uses its original warning marker for the fresh registration tail
@@ -141,6 +141,18 @@ request-string candidate despite later argument and callback mutations. The
 binds two source agreements and 196 public premises; its unchanged normal-but-wrong
 baseline remains zero credit. A key already present after the throw still requires
 the separate pending duplicate-warning protocol.
+
+A NULL third flag has a separate pre-body reception path. Weak calls emit the
+parameter-3 deprecation, then use false after normal callback return without
+rewriting the raw flag. Publication reads the current table, so a callback may
+create a binding that causes a second duplicate Warning. Both API trace views
+retain NULL. A throwing first handler cancels registration and preserves completed
+sibling definitions and caller mutations; strict calls retain raw arguments and
+raise TypeError after all argument effects, without the deprecation. Existing
+string-name row-history validation is unchanged. The
+[NULL-flag review](../../coverage/semantics/define-null-flag-review.json) binds four
+source agreements and 349 public premises. Primitive values, ordinary string
+names and nonowning three-argument calls bound this slice.
 
 Fresh two-argument array definitions recursively dereference source cells into
 new DIRECT entries. Reinserting surviving keys rebuilds NEXT, positions and serial

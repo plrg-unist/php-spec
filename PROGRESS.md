@@ -7,6 +7,21 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+String-name `define` now receives a NULL third flag with primitive values.
+Weak calls emit the parameter-3 deprecation before registration; normal return
+uses false without replacing the raw NULL API argument. A callback-created
+binding causes the separate duplicate Warning against the live table. A throwing
+first deprecation cancels registration while preserving completed callback effects;
+strict calls evaluate every argument before raw TypeError without deprecation.
+Three author sources agree at e1692447 and one independent first-deprecation-throw
+source at 587a95bd. Three public fronts pass 349 premises at 33871767, checking
+literal publication/history, raw handler traces, captured selection, source/carrier
+refusals and budget resumption. The unchanged Unsupported baseline retains zero
+credit. Primitive values and ordinary string names bound this slice; NaN flags,
+wider values and owning/packed calls remain separate. Private acceptance is
+complete; actual-parent integration is pending.
+[NULL-flag review](coverage/semantics/define-null-flag-review.json).
+
 Live WeakMap pairs now return order zero through the standard zero-property
 shortcut, without reading their private entries. Enclosing array and declared-slot
 walks reach later casters; keys stay weak and map-owned values retain their owners.
@@ -49,8 +64,8 @@ Two original sources agree at cd8121ee; author 76 and independent strict 120 pub
 premises pass 196 at ba8d720c, checking exact row-only actual steps, immutable facts,
 carrier/source/throw refusals and whole budget resumption. A key present after the
 first throw still needs a pending duplicate-warning protocol; wider values and
-NULL/NaN flag reception remain separate. The 395-module composition over af5b5255
-passes full SL load/elaboration at 8044e425; its true fixture makes no PHP application
+NaN flag reception and flags with scalar/null names remain separate. The 395-module
+composition over af5b5255 passes full SL load/elaboration at 8044e425; its true fixture makes no PHP application
 or initial-state assertion. Independent pointwise review preserves the incoming parent;
 source2/public196 retain their private revisions without replay.
 [Boolean-tail review](coverage/semantics/define-bool-flag-pending-review.json).
@@ -66,7 +81,7 @@ Public462 retains author188/126/51 at 8643b193 plus independent97 at 4fb4eb6d,
 covering named capture, raw traces, authentic string carriers, exact row-only
 pending effects, refusals and budget resume. The original peer binder collision
 remains zero credit; only its two captured-name premises changed.
-NULL/NaN flags, scalar/null names with coerced flags, and pending duplicate warnings
+NaN flags, scalar/null names with coerced flags, and pending duplicate warnings
 remain separate; the boolean-true follow-up is recorded above.
 The 395-module composition over 91a58a8b passes full SL initialization at 7260f84c.
 Independent pointwise review preserves V56 and every incoming runtime selector;

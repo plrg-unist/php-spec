@@ -1,0 +1,49 @@
+{
+  "scope": "NULL third case_insensitive flag in nonowning ordinary string-name/primitive-value define calls. Partial core; exactly three nonpacked arguments with authenticated captured sources and string carriers.",
+  "status": "independently_accepted_private_integration_pending",
+  "reviewer": "/root/core_breadth_review_01",
+  "parent": "60e77d868b6fc75d6454aed91adea4921e91da7c",
+  "semantic_revision": "e1692447c3840adc075fddaf7a60651b0a2a8e2f",
+  "semantic_files": {
+    "spec/semantics/30-storage.watsup": "461cd9a911a56cf01d2472fb5b8426ec3e106ea9a0bd79be84fb91c737061730",
+    "spec/semantics/400-dynamic-constants.watsup": "a359e681ccae4c58b87910daeb894d1e461aa8a364e673d1c573d6d8d051d507"
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "tools": {
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "primary": "Pinned Zend/zend_API.c::zend_parse_arg_bool_weak and zend_null_arg_deprecated, plus Zend/zend_builtin_functions.c::ZEND_FUNCTION(define). NULL deprecation returns failure on an exception; normal bool parsing writes only the C bool false, leaving the raw zval unchanged.",
+  "semantics": "Two task tags in module 30 and 101 added lines in module 400: a disjoint raw NULL flag gate authenticates normalized sends and name/value carriers. Weak level 8192 dispatch resumes with the original cfg and publishes or checks duplication against the current table. Both diagnostic trace views retain raw NULL. Generic abrupt discard cancels the pre-C-body call; Source32\u2019s old boolean-warning marker remains distinct. Strict reception emits the raw parameter 3 TypeError. No rewritten SENT, row-history, shared typing, scalar-name/flag or older bool-tail changes.",
+  "accepted": [
+    "Three author sources agree at e1692447 in report e220865b: literal NULL default diagnostics and fresh 173/duplicate false/history, selected named capture before value/name mutations with callback-created 281 and duplicate throw/raw NULL trace, strict all-argument effects/raw TypeError/no registration.",
+    "The independent first-deprecation-throw source agrees at 587a95bd in report a091e4f3 against native 36a278ab: raw NULL/request-string candidate/captured DEFINE/caller 99 survive, original and changed targets remain absent, completed sibling 293 and callback mutations persist through finally.",
+    "Public 349 at 33871767 in report d5173353 is 145/153/51 true LF/0/empty worker stderr: exact default receive/result/duplicate steps and row-only publication/history, immutable value refusal, entered raw NULL contexts/live prefix, selected callee/caller mutation, forged source/selection/name and value carriers, strict raw trace/no event/row and whole budget equality."
+  ],
+  "zero_credit": "Native observations and syntax preparation have no semantic agreement credit. The sole unchanged first-source baseline 388cb54d at 98abfb8e is accepted/checked program Unsupported/dynamic constant call domain after B|, CLI 1/null PHP exit/empty stderr; it remains zero. No original failure was overwritten or private accepted check replayed.",
+  "execution": "All phases LC_ALL=C/TZ=UTC, AS 3GiB, INT timeout+kill5. Native/source/baseline/peer use CPU 2; syntax prepare uses CPU 4 and numeric public CPU 1. Native children 15s; source CLI 45s/host 60s; public fresh full SL 90s children serial stop-first/reap. Records have stable inputs/HEAD and no timeout/surviving groups. The first author source deliberately has PHP stderr containing two level 8192 deprecations and one duplicate Warning 2; worker stderr is empty.",
+  "raw_root": ".tools/define-null-flag-evidence-33",
+  "report_sha256": {
+    "author/public/check-report.json": "d51733533a9a3b161e1a0c6eb525db88246781ee9772076d55e6de6b745d8630",
+    "author/public/prepare-report.json": "3c41a83ae25782e7842e7500c2ed6a049c11872c6ad01e0b8f8f758899c8c21a",
+    "author/review/model-report.json": "a091e4f38382cd20f2c9938dc25054514f464d6df0d21b0345d73f032acd5398",
+    "author/review/native-report.json": "36a278ab8c8f90119718768dfa491b8f626fcc78932e843d0dd3fabb34718226",
+    "author/sources/baseline-report.json": "388cb54d5f3b234d56446813dfa75524ce5045282bb3a726f1dcfe29186df09b",
+    "author/sources/model-report.json": "e220865b04fbc6a456c0b3cc1899a70742c126133608d2823e7cdd20b5385500",
+    "author/sources/native-report.json": "aaf93b1c345dde7e095b7416946f19a7ef457bdb7bbbc384ac1123aeda9f3f1b"
+  },
+  "commands": [
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 2 python3 tests/semantics/define_null_flag_sources.py --phase native --output .tools/define-null-flag-native-33",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 2 python3 tests/semantics/define_null_flag_sources.py --phase baseline --case literal-null-flag-publication-and-duplicate --output .tools/define-null-flag-native-33",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 240s prlimit --as=3221225472 -- taskset -c 2 python3 tests/semantics/define_null_flag_sources.py --phase model --output .tools/define-null-flag-native-33",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 2 python3 tests/semantics/define_null_flag_review_sources.py --phase native --output .tools/define-null-flag-review-33",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 2 python3 tests/semantics/define_null_flag_review_sources.py --phase model --output .tools/define-null-flag-review-33",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 4 python3 tests/semantics/define_null_flag_protocol.py --phase prepare --sources .tools/define-null-flag-native-33 --output .tools/define-null-flag-public-33",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 330s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/define_null_flag_protocol.py --phase check --sources .tools/define-null-flag-native-33 --output .tools/define-null-flag-public-33"
+  ],
+  "recovery": "Three owned raw trees moved once without copies after reviewer STOP and focused cwd/cmdline/fd no-use scan; seven report hashes are unchanged. Restore author/sources,public,review respectively as .tools/define-null-flag-{native,public,review}-33 inside .tools/source-define-null-flag-33 at the recorded source/public revisions. Branch refs retain exact cuts; raw command/source/cwd records preserve the original identities.",
+  "remaining": "NaN/other unadmitted flags, wider values, coerced flags with scalar/null names, owning/packed/FCC/arity paths and general define-family closure remain separate. The older ignored-warning current-key pending duplicate protocol remains open. No engine bug or intentional divergence."
+}

@@ -1013,7 +1013,12 @@ calls raise `TypeError` after all argument effects. A throwing ignored-warning
 handler still permits fresh registration of the captured value before its
 exception escapes. [Four source agreements and 462 state premises](coverage/semantics/define-scalar-flag-review.json)
 cover both warning phases, this pending registration tail and source/budget guards.
-NULL/NaN flags and a duplicate after that first throw remain separate.
+NaN flags and a duplicate after that first throw remain separate.
+A NULL third flag instead emits its deprecation before the C body. Normal return
+uses false and checks the live table; a first-handler throw cancels registration.
+Both warning traces keep raw NULL, and strict calls reject after argument effects.
+[Four source agreements and 349 state premises](coverage/semantics/define-null-flag-review.json)
+cover default diagnostics, callback-created duplicates, cancellation and raw traces.
 Fresh two-argument `define` also copies nonempty acyclic scalar-array trees,
 dereferencing source cells and rebuilding append history. Request-string leaves,
 nested reference snapshots and literal constraints pass
