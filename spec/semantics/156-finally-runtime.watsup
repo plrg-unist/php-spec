@@ -20,6 +20,7 @@ dec $ref_return_cursor_literal(pstate, prefreturncursor) : pvalue?
 dec $ref_return_cursor_concat(pstate, prefreturncursor) : bool
 dec $ref_return_cursor_computed_call(pstate, prefreturncursor) : bool
 dec $ref_return_cursor_assigned_int_call(pstate, prefreturncursor) : bool
+dec $ref_return_cursor_assigned_folded_int(pstate, prefreturncursor) : bool
 dec $ref_return_cursor_dim_source(pstate, prefreturncursor) : bool
 dec $ref_return_cursor_property_source(pstate, prefreturncursor) : bool
 dec $ref_return_cursor_slot_null_materialize(pstate, prefreturncursor) : bool
@@ -190,6 +191,10 @@ def $ref_return_cursor_site(S, prefreturncursor) = true
   -- if $finally_ref_source_valid(S, prefreturncursor.OWNER, prefreturncursor.SOURCE, prefreturncursor.LINE)
   -- if $ref_return_cursor_assigned_int_call(S, prefreturncursor)
   -- if $finally_outer_origin_valid(S, prefreturncursor.OWNER, prefreturncursor.OUTER)
+def $ref_return_cursor_site(S, prefreturncursor) = true
+  -- if $finally_ref_source_valid(S, prefreturncursor.OWNER, prefreturncursor.SOURCE, prefreturncursor.LINE)
+  -- if $ref_return_cursor_assigned_folded_int(S, prefreturncursor)
+  -- if $finally_outer_origin_valid(S, prefreturncursor.OWNER, prefreturncursor.OUTER)
 def $ref_return_cursor_site(S, prefreturncursor) = false -- otherwise
 ;; A literal CONST survives DISCARD_EXCEPTION. Its string, explicit null,
 ;; compiler-pooled array, or folded integer source recovers without expression effects.
@@ -241,6 +246,15 @@ def $ref_return_cursor_assigned_int_call(S, prefreturncursor) = true
   -- if pfunction.SIGNATURE.RETURNS =/= eps
   -- if $typed_exact(pfunction.SIGNATURE.RETURNS, PNULL)
 def $ref_return_cursor_assigned_int_call(S, prefreturncursor) = false -- otherwise
+def $ref_return_cursor_assigned_folded_int(S, prefreturncursor) = true
+  -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprAssign (NExprVariable (BYTES text_variable) metadata_variable) (NExprBinaryOpPlus (NScalarInt (INTEGER z_left) metadata_left) (NScalarInt (INTEGER z_right) metadata_right) metadata_plus) metadata_assign) metadata_return)
+  -- if $origin_child((prefreturncursor.SOURCE), [PCFIELD 0, PCFIELD 1]) = (porigin_rhs)
+  -- if $compiled_read(S, porigin_rhs) = (PINT z_folded)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if pfunction.SIGNATURE.RETURNS =/= eps
+  -- if $typed_exact(pfunction.SIGNATURE.RETURNS, PNULL)
+def $ref_return_cursor_assigned_folded_int(S, prefreturncursor) = false -- otherwise
 def $ref_return_cursor_old_operand(S, prefreturncursor, REFERENCE n) = $finally_return_operand_valid(S, REFERENCE n)
   -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprVariable (BYTES text) metadata_variable) metadata)
 def $ref_return_cursor_old_operand(S, prefreturncursor, REFERENCE n) = $finally_return_operand_valid(S, REFERENCE n)
@@ -251,6 +265,13 @@ def $ref_return_cursor_old_operand(S, prefreturncursor, REFERENCE n) = $finally_
   -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprMethodCall (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE eps) metadata_call) metadata_return)
 def $ref_return_cursor_old_operand(S, prefreturncursor, KNOWN (PINT z_scalar)) = true
   -- if $ref_return_cursor_assigned_int_call(S, prefreturncursor)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if $typed_exact(pfunction.SIGNATURE.RETURNS, PINT z_scalar)
+def $ref_return_cursor_old_operand(S, prefreturncursor, KNOWN (PINT z_scalar)) = true
+  -- if $ref_return_cursor_assigned_folded_int(S, prefreturncursor)
+  -- if $origin_child((prefreturncursor.SOURCE), [PCFIELD 0, PCFIELD 1]) = (porigin_rhs)
+  -- if $compiled_read(S, porigin_rhs) = (PINT z_scalar)
   -- if S.CURRENT = (pcallcontext)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if $typed_exact(pfunction.SIGNATURE.RETURNS, PINT z_scalar)
@@ -1524,6 +1545,7 @@ rule PhpStep/finally-resume-consumed-ref: S ~> $finally_leave_ref_return(S, pref
   -- if ~$ref_return_cursor_concat(S, prefreturncursor)
   -- if ~$ref_return_cursor_computed_call(S, prefreturncursor)
   -- if ~$ref_return_cursor_assigned_int_call(S, prefreturncursor)
+  -- if ~$ref_return_cursor_assigned_folded_int(S, prefreturncursor)
   -- if ~$ref_return_cursor_slot_null_materialize(S, prefreturncursor)
 ;; Both consumed markers are non-owning. Leave their exact restoration slots
 ;; atomically before the middle source's cleared operand is checked again.
@@ -1591,6 +1613,11 @@ rule PhpStep/finally-resume-consumed-computed-call: S ~> S_left[.TODO = [RETURN_
 rule PhpStep/finally-resume-consumed-assigned-integer-call: S ~> S_left[.TODO = [RETURN_REF_UNWIND (KNOWN PNULL) prefreturncursor.LINE true prefreturncursor.SOURCE, REF_RETURN_NOTICE prefreturncursor.SOURCE prefreturncursor.LINE REF_NOTICE_VALUE, REF_RECHECK prefreturncursor.SOURCE prefreturncursor.OWNER (KNOWN PNULL) prefreturncursor.LINE]]
   -- if S.TODO = (FINALLY_REF_CONSUMED prefreturncursor) :: ptask_tail*
   -- if $ref_return_cursor_assigned_int_call(S, prefreturncursor)
+  -- if S_left = $finally_leave_ref_return(S, prefreturncursor.OWNER, prefreturncursor.SOURCE, KNOWN PNULL, prefreturncursor.LINE, true, ptask_tail*)
+  -- if S_left.TODO = (RETURN_REF_UNWIND (KNOWN PNULL) prefreturncursor.LINE true prefreturncursor.SOURCE) :: (REF_RECHECK prefreturncursor.SOURCE prefreturncursor.OWNER (KNOWN PNULL) prefreturncursor.LINE) :: eps
+rule PhpStep/finally-resume-consumed-assigned-folded-integer: S ~> S_left[.TODO = [RETURN_REF_UNWIND (KNOWN PNULL) prefreturncursor.LINE true prefreturncursor.SOURCE, REF_RETURN_NOTICE prefreturncursor.SOURCE prefreturncursor.LINE REF_NOTICE_VALUE, REF_RECHECK prefreturncursor.SOURCE prefreturncursor.OWNER (KNOWN PNULL) prefreturncursor.LINE]]
+  -- if S.TODO = (FINALLY_REF_CONSUMED prefreturncursor) :: ptask_tail*
+  -- if $ref_return_cursor_assigned_folded_int(S, prefreturncursor)
   -- if S_left = $finally_leave_ref_return(S, prefreturncursor.OWNER, prefreturncursor.SOURCE, KNOWN PNULL, prefreturncursor.LINE, true, ptask_tail*)
   -- if S_left.TODO = (RETURN_REF_UNWIND (KNOWN PNULL) prefreturncursor.LINE true prefreturncursor.SOURCE) :: (REF_RECHECK prefreturncursor.SOURCE prefreturncursor.OWNER (KNOWN PNULL) prefreturncursor.LINE) :: eps
 rule PhpStep/finally-resume-consumed-literal: S ~> S_left[.TODO = [RETURN_REF_UNWIND (KNOWN pvalue) prefreturncursor.LINE true prefreturncursor.SOURCE, REF_RETURN_NOTICE prefreturncursor.SOURCE prefreturncursor.LINE REF_NOTICE_VALUE, REF_RECHECK prefreturncursor.SOURCE prefreturncursor.OWNER (KNOWN pvalue) prefreturncursor.LINE]]
