@@ -364,7 +364,8 @@ CONTROL_DERIVED = ['$property_set_trait_origin(S_linked,ppropertydesc_source) = 
  'phpType23_consumer = SEQUENCE (statement_use :: statement_consumer_body*)',
  '$code_at(S_linked.CODE,n_source) = (pcode_source)',
  'S_linked.CODE = [pcode_source]',
- 'pcpath_use = pcpath_trait ++ [PCFIELD 2,PCINDEX |statement_trait_body*|]',
+ 'n_use = |statement_trait_body*|',
+ 'pcpath_use = pcpath_trait ++ [PCFIELD 2,PCINDEX n_use]',
  '$code_name(pcode_source.NAMES,pcpath_use ++ [PCFIELD 0,PCINDEX 0]) = eps',
  'S_nested = S_linked[.SOURCES = ([pcunit_source[.OCCURRENCES = '
  '$tis_replace($tis_replace(pcunit_source.OCCURRENCES,pcpath_trait,NStmtTrait phpType14_trait phpType3_trait (SEQUENCE '
