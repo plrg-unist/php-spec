@@ -621,6 +621,8 @@ dec $dynamic_global_constant_array_items(pstate, pentry*, (pkey, pvalueclass)*, 
 def $dynamic_global_constant_array_tree(S, pvalue, PVSCALAR) = $constant_nonstring_scalar(pvalue)
 def $dynamic_global_constant_array_tree(S, PSTRING n_bytes*, PVSTRING b) = true
 def $dynamic_global_constant_array_tree(S, PSTRING_CARRIER pstringidentity n_bytes*, PVSTRING b) = $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n_bytes*)
+def $dynamic_global_constant_array_tree(S, POBJECT n_object, PVINSTANCE n_original porigin_site) = $constant_value_class_valid(S, POBJECT n_object, PVINSTANCE n_original porigin_site)
+def $dynamic_global_constant_array_tree(S, POBJECT n_object, PVCLOSURE n_original porigin_site) = $constant_value_class_valid(S, POBJECT n_object, PVCLOSURE n_original porigin_site)
 def $dynamic_global_constant_array_tree(S, PARRAY n_array, PVARRAY true eps) = true
   -- if (HARRAY n_array) <- S.ALLOCATIONS
   -- if $(n_array < |S.ARRAYS|)
