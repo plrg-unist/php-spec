@@ -18,6 +18,9 @@ resumption. Native, unchanged Unsupported baseline, preparation and syntax-only
 records retain zero agreement credit. Range/NaN, other operands, callbacks and
 lifecycle forms remain partial; OP12 stays paused.
 [BITNOT warning ledger](coverage/semantics/bitnot-warning-review.json).
+The 394-module join over a202 passes full SL initialization at 739d.
+Independent pointwise review preserves the incoming parent; source3 and the
+324 state premises retain their private cuts without a replay.
 
 
 Same-class Generator and Fiber pairs now compare with order zero through the

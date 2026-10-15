@@ -1,7 +1,7 @@
 {
   "version": 1,
   "milestone": "OP16 finite float bitwise NOT deprecation continuation",
-  "status": "private-reviewed; current-parent composition pending",
+  "status": "reviewed actual-parent composition; bounded scope remains partial",
   "target": "PHP 8.5.10 CLI NTS 64-bit; project-local pinned PHP and profile",
   "scope": "Bitwise NOT on a finite in-range fractional float read from a defined non-reference CV, with a named deprecation handler.",
   "runtime_revision": "895e19aa26f8fc22876e43b9b63318a295d298d3",
@@ -135,5 +135,22 @@
       "taskset -c 1 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-16/state-3d3fefcd1-review-one/run-state.py"
     ],
     "record": "Restore matching Git cuts/project-local tools and fresh output paths; external records retain source/checked AST/path/native bytes, fixtures, input/compiler/runtime/profile hashes, commands, exits and reaping. State thins do not rerun PHP/frontend/source stages."
+  },
+  "composition": {
+    "parent": "a202bd692e3cd1083a0bf102f9fb5f74af860d59",
+    "tested_join": "739da2d75069ed4f970a40481d4a7afa88af1f6a",
+    "modules": 394,
+    "strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-16/composition-strict-739da2d75/report.json",
+      "report_sha256": "dea84a675eca37a9a8060faf3b75227adcff3eb0adfcf2de7bee92ec58a02d44",
+      "result": "SL main=true, exact true newline/exit0/empty stderr; no interruption or surviving group, child absent."
+    },
+    "current_runtime_sha256": {
+      "spec/semantics/30-storage.watsup": "70c15581fc83cf263ff25317aa27ed1f174a6a0da94d262facbc1d6d0795229d",
+      "spec/semantics/58-ordinary-expressions.watsup": "8724f433f26118855510799dde4f9a2eb8954124d56cb1fcd4137cc7c68871af",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "b6924e8ec1668ac4c614facf06da8430980b43a859955b16156f557c8b658e7f"
+    },
+    "pointwise": "Preserve the whole current parent plus the two owned30 declarations, private-exact58/404 and six tests, whole-parent prose and five append-only inventory deltas. New parent fatal/return/iterator/constant/hook/comparison selectors are disjoint from the admitted BITNOT route.",
+    "renewed_source_or_state_credit": 0
   }
 }
