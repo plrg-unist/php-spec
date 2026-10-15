@@ -638,3 +638,17 @@ driver, and checks split budget from the callback. This covers one mixed
 computed-object/global-CV layout, not unused or nonnullable returns, other
 payloads, physical collection or complete returns verification; see the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M67 admits the same mixed computed-object/global-CV pair when `&f(): object`
+has a used nonnullable return. The first caught `$y` recheck error leaves a
+consumed source-only pair; resuming the middle `$z` return checks NULL and raises
+a new TypeError at its own source line, with Previous NULL. Its error survives
+reentry through the inner finalizer and reaches the caller catch. The ordinary
+old-object cleanup and live global `$z` are unchanged, and this route creates
+no fresh returned cell or by-reference Notice. Source2 at private `836b7845`/394
+matches retained native2. Public120 binds the distinct old and new errors, node-free
+cleared marker, reentered finally owner and caller catch, rejects a heap-equal
+inner cursor LINE mutation through the driver, and checks split budget from the
+cleared cut. This covers the reached used nonnullable source shape, not unused
+returns, other mixed layouts or complete returns verification; see the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).

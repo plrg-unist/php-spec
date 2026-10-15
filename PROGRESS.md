@@ -3313,6 +3313,18 @@ credit. Other mixed histories, unused or nonnullable returns and broad
 returns verification remain open in the
 [ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
+M67 extends that mixed source history to a used nonnullable `object` return.
+After the first caught `$y` recheck error, the middle `$z` return resumes as a
+node-free cleared NULL. Its recheck creates a distinct TypeError at the middle
+return's line with no Previous exception; the inner finalizer runs again and
+the same error reaches the caller catch. Source2 at private `836b7845`/394
+matches retained native2, including no Notice and the retained-y control. Public120
+binds the prior and new errors, cleared replay, reentry and caller identity,
+rejects a heap-identical cursor LINE forgery through the driver, and checks
+split budget. The prior Unsupported baseline and output-only frontier have
+zero repair credit. Unused and other mixed histories remain open in the
+[ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
 Per-constant protection survives namespace publication and parked handlers.
