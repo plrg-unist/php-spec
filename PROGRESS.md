@@ -14,6 +14,8 @@ and two cuts266 =224 reached +42 derived pass: receive149 at321b and corrected
 errors117 at7dd75. The one partial fixture query and three diagnostics retain zero
 credit. Wider asymmetric setter forms remain partial.
 [Review](coverage/semantics/protected-set-backed-hook-review.json).
+The 395-module composition over e116b628 passes retained SL initialization at b67d0b19;
+private source/state cuts retain their recorded revisions without replay.
 
 Null names in `constant`/`defined` now dispatch the weak-call deprecation before
 conversion or lookup. A returning handler can publish the empty-name binding;
