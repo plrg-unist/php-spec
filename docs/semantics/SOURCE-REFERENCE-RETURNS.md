@@ -596,3 +596,18 @@ budget from the callback. This covers the reached local-variable/literal-int
 DIM source and modeled retirement, not other DIM shapes, unused or nonnullable
 returns, or physical collection; see the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M63 admits a source-qualified simple typed-property return `$box->slot` as
+an old by-reference operand during a caught `?object` finalizer recheck.
+Treatment unsets the sole local Box before the replacing return; control
+retains it. Ordinary cleanup removes the old property cell and typed source,
+and invokes O's destructor at different points in the two cases. The saved
+source-only cursor owns no property or old object. For a used nullable result,
+the consumed step creates a fresh detached NULL reference without an old
+PROPREFS constraint or by-reference Notice. Native2/source2 agree at private
+`39e5223b`/394. Public216 follows the typed slot and both owner states,
+admits the saved callback cursor, checks the fresh reference, rejects a
+heap-identical cursor LINE forgery through the driver, and checks split budget.
+This covers a variable base and literal property name, not effectful or dynamic
+property expressions, unused or nonnullable returns, or physical collection;
+see the [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).

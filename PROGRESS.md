@@ -3136,6 +3136,21 @@ mismatch retain zero repair credit. Other DIM forms, nonnullable returns and
 broad returns verification remain open in the
 [ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
+M63 admits a simple typed-property return `$box->slot` through a caught
+by-reference `?object` finalizer recheck. Unsetting the sole local Box before
+replacement lets ordinary cleanup retire its property cell and invoke O's
+destructor; retaining Box delays that callback. The saved cursor records the
+old source without retaining the property or its type constraint. A used
+nullable result gets a fresh detached NULL reference with no by-reference
+Notice. Native2/source2 agree at private `39e5223b`/394 with both destructor
+orders. Public216 checks the typed source, both owner states and the fresh
+reference without PROPREFS; it rejects a heap-identical cursor LINE forgery
+through the driver and checks split/full callback budget. The prior Unsupported
+baseline and output-only owner query have zero repair credit. Wider property
+expressions, unused or nonnullable returns and broad returns verification
+remain open in the
+[ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
 Per-constant protection survives namespace publication and parked handlers.
