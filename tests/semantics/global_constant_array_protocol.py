@@ -79,9 +79,9 @@ def checks(program, path, name):
     request = name == 'defined-request-tree'
     query = 'DefinedTree23' if request else 'GlobalTree23'
     values += receive('S', 'S_initial', query, 'puserconstant', 0, request)
-    empty_class = ', (KSTRING ' + text('empty') + ',PVARRAY true eps)' if not request else ''
+    empty_class = ', (KSTRING (' + text('empty') + '),PVARRAY true eps)' if not request else ''
     leaf_class = 'PVSTRING false' if request else 'PVSCALAR'
-    values += ['puserconstant.CLASS = PVARRAY false [(KSTRING ' + text('n') + ',PVSCALAR), (KSTRING ' + text('child') + ',PVARRAY false [(KINT 0,' + leaf_class + ')])' + empty_class + ']',
+    values += ['puserconstant.CLASS = PVARRAY false ([(KSTRING (' + text('n') + '),PVSCALAR), (KSTRING (' + text('child') + '),PVARRAY false ([(KINT 0,' + leaf_class + ')]))' + empty_class + '])',
         'S.ARRAYS[n_array_S].ITEMS = (ENTRY (KSTRING ' + text('n') + ') (DIRECT (PFLOAT 9221120237041090560))) :: (ENTRY (KSTRING ' + text('child') + ') (DIRECT (PARRAY n_child))) :: pentry_tail*',
         'S.ARRAYS[n_child].ITEMS = [ENTRY (KINT 0) (DIRECT pvalue_leaf)]',
         'S.ARRAYS[n_child].NEXT = 1',
