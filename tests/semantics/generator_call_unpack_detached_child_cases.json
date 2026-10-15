@@ -227,12 +227,12 @@
     "id": "generator-detached-unpack-valid-key-byref-target-required-control",
     "source": "<?php\nset_error_handler(function($level, $message) { echo \"W|\"; return true; });\nfunction generatorDetachedReferenceControl12() { echo \"G|\"; yield 7; echo \"L|\"; }\nfunction generatorDetachedReferenceTarget12(&$value) { echo \"D|\", $value, \"|\"; }\necho \"P|\";\ngeneratorDetachedReferenceTarget12(...generatorDetachedReferenceControl12());\necho \"E\";\n",
     "source_sha256": "1db9caf635584faf98244e690079a84b675f3aa2501b42c763011364482daa03",
-    "purpose": "A valid key still reaches the explicit Generator by-reference-target limit; native warning/private-cell behavior is observed without model normal credit.",
+    "purpose": "Valid-key Generator by-reference targets remain unimplemented; their existing terminal last-owner cleanup reports Unsupported with the unchanged pre-warning prefix and no normal agreement.",
     "expected_model": "unsupported",
     "native_stdout": "P|G|W|L|D|7|E",
     "native_stderr": "",
     "native_exit": 0,
-    "unsupported_reason": "Generator unpack by-reference target",
+    "unsupported_reason": "Generator last-owner release during terminal cleanup",
     "unsupported_stdout": "P|G|",
     "unsupported_events": [
       {
