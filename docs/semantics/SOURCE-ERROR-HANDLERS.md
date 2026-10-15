@@ -52,9 +52,13 @@ comparison resumes with private 1/1.0 and a live CV/cell or copied opposing valu
 Restoration permits a second Notice after the first callback; the same handler
 stays disabled during its own nested numeric comparison. Captured aggregate
 owners and recursion guards persist through the actual handler frame/finally.
-A thrown handler unwinds through the generic restore only for a quiet terminal
-comparison remainder; future callbacks/default reporting or other comparison
-effects remain Unsupported. Wider handler and lifetime behavior remains open.
+A thrown handler retains the original quiet-terminal path. The
+[bounded remaining comparison](../../coverage/semantics/pending-exception-comparison-review.json)
+now skips later PHP callbacks while preserving excluded numeric Notices through
+default reporting and the original thrown identity through catch/finally.
+Null registration inside the handler still permits automatic raw restoration;
+a real replacement with a Notice-excluding mask produces the default Notice.
+Throwable formatting and wider storage/lifetime effects remain outside this adapter.
 
 [Builtin stdClass comparison Notices](../../coverage/semantics/stdclass-numeric-comparison-review.json)
 retain the fixed class name, severity and original file/line through PRIMARY
@@ -72,8 +76,8 @@ previous link, cold cache, caller catch/finally and existing quiet cancellation.
 reuse restoration and saved 1/1.0 through both phases for admitted runtime tags.
 A captured real Closure can become the second receiver and throw the supplied
 TypeError while retaining genuine child edges, recursion guards and finally cleanup.
-The numeric cast itself does not invoke a callable or resume a VM; quiet
-pending-exception limits are unchanged.
+The numeric cast itself does not invoke a callable or resume a VM; those sources
+retain their original quiet pending-exception validation cut.
 
 Private-final compiler diagnostics retain E_COMPILE_WARNING (128) severity
 and bypass callbacks in both direct reporting and dynamic compile queues.

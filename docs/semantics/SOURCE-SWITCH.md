@@ -49,8 +49,12 @@ now retain the actual case source and cursor while a failed object-to-int/float
 cast invokes the error handler. Live slot/cell mutation and pinned old array
 rows stay distinct; zero resumes later entries and body-only fallthrough, while
 nonzero skips later casts. Notice→Stringable→Notice handoffs preserve the original
-consumer. Quiet thrown-handler remainders unwind before caller catch/finally;
-future effectful comparisons under that exception remain Unsupported.
+consumer. Thrown handlers now finish a
+[bounded C remainder](../../coverage/semantics/pending-exception-comparison-review.json):
+later registered callbacks and source casts are skipped, while excluded numeric
+Notices may still display. The original error reaches caller catch/finally with
+case bodies unentered; fresh comparison of the unchanged left observes the changed
+right after unwind. Throwable formatting and wider effects remain bounded.
 
 [Builtin stdClass numeric leaves](../../coverage/semantics/stdclass-numeric-comparison-review.json)
 also retain the original case, array/property cursor and guards through both

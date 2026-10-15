@@ -47,10 +47,14 @@ the callback; only zero resumes later entries. Notice↔Stringable handoffs pres
 the same source consumer and selected-case continuation.
 
 The raw handler is disabled during its own body and restored before subsequent
-Notice dispatch. A handler throw can cancel the numeric continuation only when
-previewing the remaining comparison yields a terminal order with no state change.
-A future callback, observable default diagnostic, materialization, cache update or recursion
-instead remains Unsupported. Documentary receiver/leaf images add no owner;
+Notice dispatch. The original quiet-terminal cancellation remains available.
+A [bounded pending-exception remainder](../../coverage/semantics/pending-exception-comparison-review.json)
+also skips later registered Notice callbacks and source `__toString` calls,
+while Notices excluded by the live handler mask retain default reporting.
+The original thrown object reaches catch/finally after the C comparison finishes;
+only events and the fatal snapshot may change. Builtin Throwable/string formatting,
+materialization, cache updates, recursion and wider lifetime effects remain outside
+this adapter. Documentary receiver/leaf images add no owner;
 actual operands, cursor pins and callback selection retain their existing roots.
 [Builtin stdClass leaves](../../coverage/semantics/stdclass-numeric-comparison-review.json)
 now use the same int/float Notice route. A local class image distinguishes their

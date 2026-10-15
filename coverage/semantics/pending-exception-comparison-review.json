@@ -1,0 +1,142 @@
+{
+  "milestone": "COMP61",
+  "status": "independently reviewed and accepted",
+  "behavior": "After a numeric Notice handler throws, a bounded remaining C comparison preserves that thrown object. Later registered Notice callbacks and source __toString calls are skipped; Notices excluded by the current handler mask still use default reporting. Zero alone resumes array/direct-property entries.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+  },
+  "implementation": {
+    "spec/semantics/52-comparison.watsup": "788a57699ac5e02e1a916324f8a82e9cbf1acaacc08708f2b7ddf4b8e3bcc0e9",
+    "spec/semantics/392-stringable-comparisons.watsup": "0e692eeb12fa66c97ceab77eaa44a3ddf9b14607d1d82c0c949c9922ac2a61eb",
+    "spec/semantics/402-object-numeric-comparisons.watsup": "1d904cc08f85c994a95b1a7407f38b30f6e9532719d11908daea44323f5bff9e"
+  },
+  "source_catalogue": {
+    "path": "tests/semantics/pending_exception_comparison_cases.json",
+    "sha256": "ce688d4cf1b238de516ccbe92f391f66eae1b33da882b914b3bc36a434d7888b"
+  },
+  "tested_revision": "dca8ccfccb19102ca8af26484fcafc9944448165",
+  "ordered_modules": 394,
+  "manifest_sha256": "16b07a5d2e6754f502c05eb8dfb19d5d4c56d076cc50fbbc91ed82a4cca5a9a4",
+  "contract": [
+    "The original quiet-terminal discard arm is unchanged. An authenticated local view retains the actual discarded NUMBER descriptor after the same THROW_SEARCH identity; it is never scheduled as a PHP task.",
+    "PRIMARY reads the captured opposing location once; SECOND retains private1/1.0. Pending Notice boundaries validate the existing finite receiver image, then skip an eligible handler or apply default reporting with the live mask and original comparison file/line.",
+    "Source Stringable call failure is nonzero and stops the remaining scan. Both builtin Throwable/string orientations refuse before the atomic formatter, including warm caches.",
+    "Successful projection restores the actual TODO/completion and preserves every field except EVENTS and ERRORFATALTRACE. Existing source, callback restoration, operand/cursor owners and guard extraction are unchanged."
+  ],
+  "validation": {
+    "native": {
+      "revision": "727e1687739bfa4cc2ec655bf2df7c50a6c0989b",
+      "observations": 3,
+      "normal": 3,
+      "model_agreements": 0
+    },
+    "unchanged_baseline": {
+      "revision": "727e1687739bfa4cc2ec655bf2df7c50a6c0989b",
+      "status": "checked Unsupported",
+      "reason": "numeric comparison pending-exception continuation",
+      "elapsed_seconds": 21.055565744638443,
+      "agreement": 0
+    },
+    "initial_production_type_failure": {
+      "revision": "6a7a10514bf614146c82b0963319993caf7fc965",
+      "reason": "pvalue callback fields passed to a poperand helper; corrected by a typed two-case value helper",
+      "before_main": true,
+      "runtime_credit": 0,
+      "source_cases_unrun": 3
+    },
+    "initialization": {
+      "explicit_sl": true,
+      "assertions": 0,
+      "raw_steps": 0,
+      "source_agreements": 0
+    },
+    "sources": {
+      "agreements": 3,
+      "normal": 3,
+      "exact_stdout_and_stderr": true,
+      "seconds": [
+        67.39828554727137,
+        49.419744750484824,
+        25.168083870783448
+      ]
+    },
+    "syntax_only": {
+      "requests": 6,
+      "runtime_credit": 0,
+      "raw_steps": 0
+    },
+    "author": {
+      "boolean_premises": 199,
+      "setup": 186,
+      "pure": 13,
+      "raw_steps": 6
+    },
+    "independent": {
+      "boolean_premises": 120,
+      "setup": 106,
+      "pure": 14,
+      "raw_steps": 4
+    },
+    "total": {
+      "boolean_premises": 319,
+      "setup": 292,
+      "pure": 27,
+      "raw_steps": 10
+    },
+    "state_fixture_failures": []
+  },
+  "review": {
+    "reviewer": "comp_review_21",
+    "semantic": "CLEAR within the stated domain",
+    "source_and_state": "Independently bound original raw commands, streams and owned closure; no accepted private reruns.",
+    "publication_verdict": "CLEAR"
+  },
+  "limits": [
+    "Builtin Throwable/string formatting, unknown numeric receivers and comparison results with recursion/unsupported operations remain outside the pending adapter; legacy materialized callbacks without a retained cursor remain residual.",
+    "New materialization/cache/storage effects and output-buffer diagnostic callbacks are rejected by the final state restriction. Wider destructor/GC/clone, lifetime and phase-history behavior remains unclaimed.",
+    "The pinned source corpus and focused states establish this bounded increment, not complete comparison or complete PHP coverage."
+  ],
+  "zend_sources": [
+    "Zend/zend_object_handlers.c:zend_std_compare_objects/zend_std_cast_object_tostring",
+    "Zend/zend_execute_API.c:zend_call_function/zend_call_known_function",
+    "Zend/zend.c:zend_error_zstr_at",
+    "Zend/zend_hash.c:zend_hash_compare_impl"
+  ],
+  "engine_bugs": [],
+  "intentional_divergences": [],
+  "artifacts": {
+    ".tools/pending-exception-comparison-native-61/cases.json": "1f2aa076d6f17109a99695ab13f4a158fc1b870e507d6464a31ef6ae58763500",
+    ".tools/pending-exception-comparison-native-61/run.py": "1c782053c0284ea935047230bf702629509cd26ec83a5494aa1b471615afd901",
+    ".tools/pending-exception-comparison-native-61/run-native-v1/report.json": "9694799ca8d34edeeaff0702d72a94b39c602a4266d6b53fcb0d7842c6ff41af",
+    ".tools/pending-exception-comparison-support-61/actor.py": "f02b90bce360a0c3aff8ffb863b73dfef2544b1bf9d63503adb3e5f4a5c3dd4a",
+    ".tools/pending-exception-comparison-support-61/inputs.py": "8111059c6be416770dc379046ca26cd12d11cb969c09d4bb4e799926609cc786",
+    ".tools/pending-exception-comparison-support-61/baseline-case.json": "2688122f045645be053a4ddd707a558a1f3cf8a04f2fbfc9737e174df58e7630",
+    ".tools/pending-exception-comparison-support-61/baseline.py": "f8d99e05efa3ee384022ecf05cad662aa6d5b7d7ff4a078d0c18f9b92e89e62b",
+    ".tools/pending-exception-comparison-support-61/run-baseline-v1/report.json": "83461b23f4483a0d4d0151e2a75b65473ce5caf01040a42e78cf3611f3775736",
+    ".tools/pending-exception-comparison-support-61/run-initialize-v1/report.json": "df4021e6d9498aa19717f3c15b95db582e6bf9c2eb35f3352a548fc3242ec243",
+    ".tools/pending-exception-comparison-support-61/affected.py": "f5c3eae73042a97feecab50a5b13bd79fee27ed5ff1e5806819d95bf9915b827",
+    ".tools/pending-exception-comparison-support-61/initialize.py": "ebf951259a2fb0cb5ead9b5920844ceaaaf10a61ecce2d3adbc52a898a39d38c",
+    ".tools/pending-exception-comparison-support-61/run-initialize-value-retry1/report.json": "efa9e6085de16898a84791fccbea1f928ceb557c0bbe2b4eff2c3cc73c81de26",
+    ".tools/pending-exception-comparison-support-61/model.py": "e8dff14738fc59b3929b8908e3dfd2453c02c193c2179a87e3e4ca5ed5f73da2",
+    ".tools/pending-exception-comparison-support-61/run-model-v1/report.json": "6dc32be16601899fd86fcd14a542653d4042056ee0d7cbdecc7087a1c08ea4f2",
+    ".tools/pending-exception-comparison-support-61/prepare.py": "433202d4321e798efd911d1cb3021f108f21f70cb799749d075acd8cba9ae046",
+    ".tools/pending-exception-comparison-support-61/syntax-v1/report.json": "a179b24cd0b6dab37340545e4fe1368d40d94284af673dce3674843a1de97e1e",
+    ".tools/pending-exception-comparison-state-61/build.py": "fd1fa5bdd28e512f3c2f1f34a18a4b0d0758aa5c31bd9a4986fc148e0ed352b3",
+    ".tools/pending-exception-comparison-state-61/helpers.watsup": "933039d661c372904b7006c3c5cb9269be100dda746b1129b7f70e8a072361ee",
+    ".tools/pending-exception-comparison-state-61/plan.json": "8b616cd54f346db7ff00a2232d0451cc30c549dbc757ef23c5701a831ccc49a6",
+    ".tools/pending-exception-comparison-state-61/run.py": "5a3a68e8881e0d03a7f72c94f595e16627b2da831655160e65fd8da1081d9dc9",
+    ".tools/pending-exception-comparison-state-61/run-el-v1/report.json": "b9edc6ef19929ab7da95e4d44b191b9d2883946cb8b374e95cfca454398c7dfe",
+    ".tools/pending-exception-comparison-state-61/run-sl-v1/report.json": "05108110ffeac3dd971b79ff41be2970f9f97373bf35b579c9eea4011741319e",
+    ".tools/pending-exception-comparison-peer-state-61/build.py": "f5ed1f4880f5587625409281f203372db47932c250d24844ad9810ee7df75799",
+    ".tools/pending-exception-comparison-peer-state-61/helpers.watsup": "8766158579c1670416a625811888f3892b1d02fe044cd9702b535fba74083962",
+    ".tools/pending-exception-comparison-peer-state-61/plan.json": "dfebd86755d728176ed33414ae4ac7561a5e78deb676d810510e05729c246a70",
+    ".tools/pending-exception-comparison-peer-state-61/run.py": "8b810d35074a50d44a2b0c04c199c1fc545ff9375e8d2d2c50e8b5f2ebfeff3e",
+    ".tools/pending-exception-comparison-peer-state-61/run-el-v1/report.json": "e5f7fdaf38cc33f986a2ac7fa0e4569a2dd6bd2b34de097653c212d1422c0f33",
+    ".tools/pending-exception-comparison-peer-state-61/run-sl-v1/report.json": "ea091c2cd8712d1adc358913a343d3d3a7bb570f1cf58a6e7ff93f86a2633d43"
+  },
+  "reproduction": "Retain ignored originals at the recorded File/CWD paths. The source catalogue pins actual native tuples and START identities; fresh61 scripts and both state plans pin checked terms, helpers, exact commands, raw exits and owned closure. Earlier initialization failure remains at its original path/revision. Do not count initialization, syntax, EL, native observation or Unsupported as source agreement."
+}

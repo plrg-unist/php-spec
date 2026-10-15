@@ -7,6 +7,16 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Numeric comparisons now finish a bounded C remainder after a Notice handler
+throws. Later registered callbacks and source string casts are skipped; an
+excluded numeric Notice still uses default reporting before the original error
+reaches catch/finally. Three exact sources and author and independent tests pass
+319 premises (292 setup + 27 pure) and 10 raw steps at dca8ccfc/394, including
+retained/replaced/null registrations, array/property scans, COW and fresh cleanup.
+The unchanged refusal, initial type-check failure and syntax/initialization keep
+zero agreement. Throwable formatting and wider storage/lifetime effects remain open.
+[Pending comparison ledger](coverage/semantics/pending-exception-comparison-review.json).
+
 A selected direct backed Trait GET/implicit-SET pair now imports both Consumer
 clones atomically, retaining raw Trait code and magic. Missing raw partners keep
 interception required while refusing a call plan. Real GET self-write and SET
@@ -52,7 +62,7 @@ premises (286 setup + 31 pure) and 13 raw steps at 0187401a/394, including live
 versus copied operands, saved float across a second Notice, real captured children,
 COW and same-TypeError/finally cleanup with cold bodies. The unchanged refusal,
 initialization and syntax preparation retain zero agreement. Other Closure bodies
-and wider handlers/lifetimes remain open; pending exceptions still require a quiet remainder.
+and wider handlers/lifetimes remain open; pending remainders have a separate bounded extension.
 [Internal numeric Notice ledger](coverage/semantics/internal-numeric-comparison-review.json).
 Selected HALT-offset queries now retain the first registration for the API
 call site's compiled filename, while fixed raw literal `defined` keeps its

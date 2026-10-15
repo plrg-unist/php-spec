@@ -200,12 +200,14 @@ def $throwable_compare_chain(S, n, nat_seen*, pcompareguard_seen*) = $throwable_
   -- if $throwable_previous_id(S, n) = (n_previous)
 def $throwable_compare_chain(S, n, nat_seen*, pcompareguard_seen*) = false -- otherwise
 def $throwable_compare_order(S, POBJECT n, pvalue_other, pcompareguard_seen*) = (S_text, ORDER $scalar_order(S_text, pvalue_text, pvalue_other))
+  -- if ~$number_compare_exception_pending(S)
   -- if $throwable_compare_selection(S, POBJECT n, pvalue_other) = ((n, true))
   -- if $string_compare_text_valid(S, pvalue_other)
   -- if $throwable_compare_chain(S, n, eps, pcompareguard_seen* ++ $aggregate_compare_seen(S))
   -- if S_text = $throwable_stringify(S, n)
   -- if S_text.RESULT = KNOWN pvalue_text
 def $throwable_compare_order(S, pvalue_other, POBJECT n, pcompareguard_seen*) = (S_text, ORDER $scalar_order(S_text, pvalue_other, pvalue_text))
+  -- if ~$number_compare_exception_pending(S)
   -- if $throwable_compare_selection(S, pvalue_other, POBJECT n) = ((n, false))
   -- if $string_compare_text_valid(S, pvalue_other)
   -- if $throwable_compare_chain(S, n, eps, pcompareguard_seen* ++ $aggregate_compare_seen(S))

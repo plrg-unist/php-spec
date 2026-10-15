@@ -1848,8 +1848,8 @@ and 278 reached premises/8 raw steps. Wider formatter callbacks remain open.
 now pause ordinary source-instance/int/float leaves through real error handlers.
 Live CV/cell reads remain distinct from copies; a second Notice uses saved 1/1.0,
 and aggregate guards and cursors survive callback mutation and throw. Four exact
-sources and 482 reached premises/26 raw steps pass. Pending exceptions admit only
-a quiet terminal comparison remainder; wider handlers and lifetimes remain open.
+sources and 482 reached premises/26 raw steps pass. That cut admits a quiet
+terminal remainder; wider handlers and lifetimes remain open.
 [Builtin stdClass numeric Notices](coverage/semantics/stdclass-numeric-comparison-review.json)
 use the same continuation with a fixed builtin class image. Restored second
 Notices retain saved 1/1.0 across stdClass/source-instance changes and late live
@@ -1869,6 +1869,11 @@ now retain fixed class images for real/named Closures, Generators and Fibers.
 Three exact sources and 317 reached premises/13 raw steps preserve saved second
 numbers, captured children and aggregate cleanup, with no callable invocation or VM
 resumption by the numeric cast.
+[Pending comparison remainders](coverage/semantics/pending-exception-comparison-review.json)
+now skip later registered callbacks and source string casts while preserving
+default numeric Notices and the original thrown object. Three exact sources and
+319 premises/10 raw steps cover retained/replaced handlers, array/property scans
+and fresh comparison after cleanup. Wider effects remain explicitly bounded.
 [Match expressions](docs/semantics/SOURCE-MATCH.md) preserve strict, lazy arm
 selection, delayed CV subjects, ordered compiler diagnostics and owned value
 results; their [review](coverage/semantics/match-review.json) binds source, compiler

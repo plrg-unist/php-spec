@@ -89,12 +89,10 @@ def $number_compare_target(PINT i) = (PINT 1)
 def $number_compare_target(PFLOAT n) = (PFLOAT 4607182418800017408)
 def $number_compare_target(pvalue) = eps -- otherwise
 def $number_compare_selection(S, POBJECT n, pvalue) = ((n, true, pvalue_target))
-  -- if $error_handler_eligible(S, 8)
-  -- if $number_compare_receiver(S, n) =/= eps
+  -- if ($error_handler_eligible(S, 8) /\ $number_compare_receiver(S, n) =/= eps) \/ $number_compare_exception_pending(S)
   -- if $number_compare_target(pvalue) = (pvalue_target)
 def $number_compare_selection(S, pvalue, POBJECT n) = ((n, false, pvalue_target))
-  -- if $error_handler_eligible(S, 8)
-  -- if $number_compare_receiver(S, n) =/= eps
+  -- if ($error_handler_eligible(S, 8) /\ $number_compare_receiver(S, n) =/= eps) \/ $number_compare_exception_pending(S)
   -- if $number_compare_target(pvalue) = (pvalue_target)
 def $number_compare_selection(S, pvalue_left, pvalue_right) = eps -- otherwise
 
@@ -166,6 +164,13 @@ def $number_compare_suffix(ptask :: ptask_tail*, pnumbercompare) = $number_compa
 def $number_compare_suffix(eps, pnumbercompare) = false
 def $task_nodes(NUMBER_COMPARE_RESULT pnumbercompare) = $number_compare_nodes(pnumbercompare)
 def $call_task_valid(S, NUMBER_COMPARE_RESULT pnumbercompare) = ($number_compare_valid(S, pnumbercompare) /\ S.ORIGIN = (pnumbercompare.SOURCE.CASTSITE) /\ $number_compare_suffix(S.TODO, pnumbercompare))
+;; This view exists only inside the synchronous C remainder below. It keeps
+;; the discarded comparison's real cursor roots, never a new callback frame.
+def $number_compare_exception_pending(S) = true
+  -- if S.COMPLETION = THROWING n
+  -- if S.TODO = (THROW_SEARCH n) :: (NUMBER_COMPARE_RESULT pnumbercompare) :: ptask_tail*
+  -- if $call_task_valid(S, NUMBER_COMPARE_RESULT pnumbercompare)
+def $number_compare_exception_pending(S) = false -- otherwise
 dec $number_compare_active_class(pnumbercompare) : pnumberclass
 def $number_compare_active_class(pnumbercompare) = pnumbercompare.CLASS -- if pnumbercompare.PHASE = NUMBER_PRIMARY
 def $number_compare_active_class(pnumbercompare) = pnumberclass -- if pnumbercompare.PHASE = NUMBER_SECOND n pnumberclass
@@ -178,12 +183,12 @@ def $number_compare_class_name(S, NUMBER_CLOSURE) = $ptascii("Closure")
 def $number_compare_class_name(S, NUMBER_GENERATOR) = $ptascii("Generator")
 def $number_compare_class_name(S, NUMBER_FIBER) = $ptascii("Fiber")
 def $number_compare_class_name(S, pnumberclass) = eps -- otherwise
+dec $number_compare_cast_message(pstate, pnumberclass, pvalue) : preqbytes
+def $number_compare_cast_message(S, pnumberclass, PINT 1) = $ptascii("Object of class ") ++ $number_compare_class_name(S, pnumberclass) ++ $ptascii(" could not be converted to int")
+def $number_compare_cast_message(S, pnumberclass, PFLOAT 4607182418800017408) = $ptascii("Object of class ") ++ $number_compare_class_name(S, pnumberclass) ++ $ptascii(" could not be converted to float")
+def $number_compare_cast_message(S, pnumberclass, pvalue) = eps -- otherwise
 dec $number_compare_message(pstate, pnumbercompare) : preqbytes
-def $number_compare_message(S, pnumbercompare) = $ptascii("Object of class ") ++ $number_compare_class_name(S, $number_compare_active_class(pnumbercompare)) ++ $ptascii(" could not be converted to int")
-  -- if pnumbercompare.TARGET = PINT 1
-def $number_compare_message(S, pnumbercompare) = $ptascii("Object of class ") ++ $number_compare_class_name(S, $number_compare_active_class(pnumbercompare)) ++ $ptascii(" could not be converted to float")
-  -- if pnumbercompare.TARGET = PFLOAT 4607182418800017408
-def $number_compare_message(S, pnumbercompare) = eps -- otherwise
+def $number_compare_message(S, pnumbercompare) = $number_compare_cast_message(S, $number_compare_active_class(pnumbercompare), pnumbercompare.TARGET)
 def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.RESUME = NUMBER_COMPARE_RESULT pnumbercompare
   -- if $call_task_valid(S, NUMBER_COMPARE_RESULT pnumbercompare)
@@ -292,10 +297,54 @@ def $number_compare_discard_safe(S, pnumbercompare) = true
   -- if (S_leaf, porder_leaf) = $value_order_effect(S_probe, pvalue_left, pvalue_right, $aggregate_cursor_lefts(paggregatecompare_source.CAST.STACK), paggregatecompare_source.LINE)
   -- if (S_probe, ORDER i) = $aggregate_resume(S_leaf, porder_leaf, paggregatecompare_source.CAST.STACK, paggregatecompare_source.LINE)
 def $number_compare_discard_safe(S, pnumbercompare) = false -- otherwise
+
+;; zend_call_function skips calls with EG(exception) set. A skipped string
+;; cast fails with nonzero order; a skipped Notice handler has an UNDEF result
+;; and no fallback. An excluded Notice still takes the ordinary default path.
+dec $number_compare_pending_report(pstate, preqbytes, int) : pstate
+def $number_compare_pending_report(S, preqbytes, z) = S[.ERRORFATALTRACE = eps]
+  -- if $error_handler_eligible(S, 8)
+def $number_compare_pending_report(S, preqbytes, z) = $error_default(S[.ERRORFATALTRACE = eps], DIAGNOSTIC "Notice" preqbytes z, 8)
+  -- if ~$error_handler_eligible(S, 8)
+dec $number_compare_pending_other(pstate, pnumbercompare) : pvalue?
+def $number_compare_pending_other(S, pnumbercompare) = $number_compare_other(S, pnumbercompare)
+  -- if pnumbercompare.PHASE = NUMBER_PRIMARY
+def $number_compare_pending_other(S, pnumbercompare) = (pnumbercompare.TARGET)
+  -- if pnumbercompare.PHASE = NUMBER_SECOND n pnumberclass
+dec $number_compare_pending_value(paggregatecallback) : pvalue
+def $number_compare_pending_value(paggregatecallback) = paggregatecallback.RIGHT -- if paggregatecallback.OBJECTLEFT
+def $number_compare_pending_value(paggregatecallback) = paggregatecallback.LEFT -- if ~paggregatecallback.OBJECTLEFT
+dec $number_compare_pending_order(pstate, porder, int) : pstate?
+def $number_compare_pending_order(S, ORDER i, z) = (S)
+def $number_compare_pending_order(S, ORDERSTRING paggregatecallback, z) = (S)
+def $number_compare_pending_order(S, ORDERNOTICE paggregatecallback pvalue_target, z) = $number_compare_pending_order(S_next, porder, z)
+  -- if $number_compare_image(paggregatecallback, pvalue_target)
+  -- if $number_compare_receiver(S, paggregatecallback.RECEIVER) = (pnumberclass)
+  -- if preqbytes = $number_compare_cast_message(S, pnumberclass, pvalue_target)
+  -- if S_report = $number_compare_pending_report(S, preqbytes, z)
+  -- if S_report.COMPLETION = S.COMPLETION
+  -- if pvalue_other = $number_compare_pending_value(paggregatecallback)
+  -- if (pvalue_left, pvalue_right) = $aggregate_leaf_values(paggregatecallback, pvalue_target, pvalue_other)
+  -- if (S_leaf, porder_leaf) = $value_order_effect(S_report, pvalue_left, pvalue_right, $aggregate_cursor_lefts(paggregatecallback.STACK), z)
+  -- if (S_next, porder) = $aggregate_resume_join(S_leaf, porder_leaf, paggregatecallback.STACK, z)
+def $number_compare_pending_order(S, porder, z) = eps -- otherwise
+dec $number_compare_pending_discard(pstate, pnumbercompare) : pstate
+def $number_compare_pending_discard(S, pnumbercompare) = S_done[.TODO = S.TODO][.COMPLETION = S.COMPLETION]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if S_probe = S[.COMPLETION = THROWING n][.TODO = (THROW_SEARCH n) :: (NUMBER_COMPARE_RESULT pnumbercompare) :: ptask_tail*]
+  -- if $number_compare_exception_pending(S_probe)
+  -- if $number_compare_pending_other(S_probe, pnumbercompare) = (pvalue_other)
+  -- if paggregatecompare_source = pnumbercompare.SOURCE
+  -- if (pvalue_left, pvalue_right) = $aggregate_leaf_values(paggregatecompare_source.CAST, pnumbercompare.TARGET, pvalue_other)
+  -- if (S_leaf, porder_leaf) = $value_order_effect(S_probe, pvalue_left, pvalue_right, $aggregate_cursor_lefts(paggregatecompare_source.CAST.STACK), paggregatecompare_source.LINE)
+  -- if (S_next, porder) = $aggregate_resume_join(S_leaf, porder_leaf, paggregatecompare_source.CAST.STACK, paggregatecompare_source.LINE)
+  -- if $number_compare_pending_order(S_next, porder, paggregatecompare_source.LINE) = (S_done)
+  -- if S_done = S_probe[.EVENTS = S_done.EVENTS][.ERRORFATALTRACE = S_done.ERRORFATALTRACE]
+def $number_compare_pending_discard(S, pnumbercompare) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "numeric comparison pending-exception continuation"] -- otherwise
 def $error_read_discard(S, NUMBER_COMPARE_RESULT pnumbercompare) = S
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if $number_compare_discard_safe(S, pnumbercompare)
-def $error_read_discard(S, NUMBER_COMPARE_RESULT pnumbercompare) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "numeric comparison pending-exception continuation"]
+def $error_read_discard(S, NUMBER_COMPARE_RESULT pnumbercompare) = $number_compare_pending_discard(S, pnumbercompare)
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if ~$number_compare_discard_safe(S, pnumbercompare)
 
