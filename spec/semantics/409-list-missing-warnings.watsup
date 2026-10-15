@@ -75,8 +75,8 @@ def $list_missing_array(S, REFERENCE n_source) = $list_missing_array(S, KNOWN (P
   -- if S.STORE[n_source] = DEFINED (PARRAY n_array)
 def $list_missing_array(S, poperand) = eps -- otherwise
 
-;; One child layer is by value throughout. Its first fetch inherits the outer
-;; fetch line; the next outer item inherits the compiled nested-target line.
+;; Shape recursion consumes checked child subtrees; context recursion removes
+;; one item path while preserving the inherited compiler location.
 dec $list_missing_nested_items(phpType13*) : bool
 def $list_missing_nested_items(eps) = true
 def $list_missing_nested_items(ABSENT :: phpType13*) = $list_missing_nested_items(phpType13*)
@@ -84,7 +84,7 @@ def $list_missing_nested_items((NArrayItem phpType5 (NExprVariable phpType32 met
   -- if $cv_name(phpType32) = (n_name*)
 def $list_missing_nested_items((NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13*) = $list_missing_nested_items(phpType13*)
   -- if $list_pattern(expression) = (phpType13_child*)
-  -- if $list_missing_flat(phpType13_child*) /\ ~$list_references(phpType13_child*)
+  -- if $list_missing_nested_items(phpType13_child*)
 def $list_missing_nested_items(phpType13*) = false -- otherwise
 
 dec $list_missing_nested_context(pstate, porigin) : int?
@@ -99,7 +99,7 @@ def $list_missing_nested_context(S, porigin) = (z_initial)
 def $list_missing_nested_context(S, porigin) = (z_child)
   -- if $origin_node(S.SOURCES, porigin) = (expression_pattern)
   -- if $list_pattern(expression_pattern) = (phpType13_child*)
-  -- if $list_missing_flat(phpType13_child*)
+  -- if $list_missing_nested_items(phpType13_child*)
   -- if $reference_origin_parent(porigin, 3) = ((porigin_outer, [PCFIELD 0, PCINDEX n_outer, PCFIELD 1]))
   -- if $list_missing_nested_context(S, porigin_outer) = (z_initial)
   -- if $origin_node(S.SOURCES, porigin_outer) = (expression_outer)

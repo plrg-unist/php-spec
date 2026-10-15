@@ -35,7 +35,7 @@ def conditions(name, program, path, stdout):
         '$origin_node(S.SOURCES, porigin_outer) = (expression_outer)',
         '$list_pattern(expression_outer) = (phpType13_outer*)',
         '~$list_missing_flat(phpType13_outer*)', '$list_missing_nested_items(phpType13_outer*)',
-        '~$list_missing_nested_items([NArrayItem ABSENT expression_outer (BOOLEAN false) (BOOLEAN false) eps])',
+        '$list_missing_nested_items([NArrayItem ABSENT expression_outer (BOOLEAN false) (BOOLEAN false) eps])',
         '~$list_missing_nested_items([NArrayItem ABSENT expression (BOOLEAN true) (BOOLEAN false) eps])',
         '$list_missing_nested_context(S, porigin) = (z_initial)',
         '$reference_origin_parent(porigin_outer, 1) = ((porigin_assign, [PCFIELD 0]))',
