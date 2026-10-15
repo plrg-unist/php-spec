@@ -49,6 +49,12 @@ now use the same int/float Notice route. A local class image distinguishes their
 fixed name from real source origins in both phases; allocation is checked at
 admission, while documentary post-message images require bounds and kind.
 Second Notices compare private 1/1.0 without rereading a late live value.
+[Throwable numeric leaves](../../coverage/semantics/throwable-numeric-comparison-review.json)
+add finite builtin kinds and source descendants with authenticated internal
+parents. Names come from the kind or source class, never allocation origins.
+Numeric conversion does not call `__toString` or read formatter fields;
+caches and previous links stay intact. A direct static read is a copied value,
+distinct from an aggregate pre-unwrapped cell retained across rebinding.
 Other internal/custom comparison handlers, legacy materialized callbacks without a
 retained cursor and wider handler/lifetime behavior remain open.
 

@@ -1,0 +1,180 @@
+{
+  "version": 1,
+  "milestone": "COMP58",
+  "status": "independently reviewed and accepted within the stated comparison domain",
+  "behavior": "Builtin Throwable and admitted source-subclass int/float Notice callbacks preserve nominal names, saved numeric targets, captured operands and existing aggregate cleanup without stringification.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "tested_revision": "f75719aa29a1e5c01c4bfd7b9227ed5a79e8fee7",
+  "ordered_modules": 394,
+  "manifest_sha256": "16b07a5d2e6754f502c05eb8dfb19d5d4c56d076cc50fbbc91ed82a4cca5a9a4",
+  "implementation": {
+    "path": "spec/semantics/402-object-numeric-comparisons.watsup",
+    "sha256": "c4726154e63b7221a942f134b30df1c21a9e0edaab5ed717cedb9ac5ef10cecf",
+    "contract": [
+      "NUMBER_THROWABLE carries an existing finite KIND, never allocation ORIGIN/FILEORIGIN. Source INSTANCE descendants retain their source origin and authenticated internal-parent link.",
+      "Begin requires a live allocated nonfreeing receiver; post-message images check bounds and matching kind/origin. The class tag adds no receiver owner.",
+      "No message/file/trace/previous/cache formatter predicate is introduced. Numeric conversion does not invoke __toString, including a source override.",
+      "PRIMARY/SECOND pointers, immutable 1/1.0, generic handler restoration, cursor pins/guards and quiet pending-exception cancellation are unchanged."
+    ]
+  },
+  "native": {
+    "revision": "ba76d3d160122d68868050a55554054a88b41abf",
+    "observations": 3,
+    "model_agreements": 0,
+    "result": "All normal exits and empty stderr. Direct static-property rebinding yields N from the BP_VAR_R copied 0.0; the original Y hypothesis remains informational and false, while an aggregate selected old CELL yields Y."
+  },
+  "unchanged_frontier": {
+    "revision": "ba76d3d160122d68868050a55554054a88b41abf",
+    "reason": "error-handler ingress requires a producer continuation",
+    "stdout_prefix": "quiet|N|Y|cold|live|",
+    "seconds": 36.7081125639379,
+    "model_agreements": 0
+  },
+  "validation": {
+    "initializer": {
+      "mode": "SL",
+      "passed": true,
+      "semantic_assertions": 0,
+      "php_steps": 0
+    },
+    "original_sources": {
+      "passed": true,
+      "agreements": 3,
+      "catalogue": "tests/semantics/throwable_numeric_comparison_cases.json",
+      "caps_seconds": [
+        [
+          240,
+          250
+        ],
+        [
+          180,
+          190
+        ],
+        [
+          180,
+          190
+        ]
+      ],
+      "result": "Actual raw stdout/stderr/exits match native observations at the same original File/CWD."
+    },
+    "syntax_preparation": {
+      "requests": 6,
+      "runtime_credit": 0,
+      "php_steps": 0
+    },
+    "author": {
+      "groups": 2,
+      "premises": 190,
+      "setup": 179,
+      "pure": 11,
+      "raw_php_steps": 11,
+      "result": "Real builtin/source images, live CV and static COPY, finite-kind/bounds/source/allocation controls; normal TypeError SECOND uses saved float 1.0 despite late 9. Property old CELL survives rebind, future slots remain live, and original Exception/trace child owners stay 1."
+    },
+    "independent": {
+      "groups": 1,
+      "premises": 150,
+      "setup": 139,
+      "pure": 11,
+      "raw_php_steps": 6,
+      "result": "Builtin Exception to source Error SECOND, receiver owners 2 to 1 without documentary roots, old right/current COW, real recursive Error and original compared Exception through handler finally, restored quiet cancellation/catch/finally and unchanged-left fresh false; caches and previous identity remain unchanged."
+    },
+    "total": {
+      "groups": 3,
+      "premises": 340,
+      "setup": 318,
+      "pure": 22,
+      "raw_php_steps": 17,
+      "source_agreements": 3,
+      "boundary": "Only tagged raw relations count as steps. Seeks, driver progress and helper-only counterfactuals add no PHP-step or source-agreement credit."
+    },
+    "preserved_failures": []
+  },
+  "limitations": [
+    "Only existing finite builtin Throwable kinds and already admitted source ancestry gain numeric handler admission. Other internal/custom handlers and property/getter/construction domains are unchanged.",
+    "Pending-exception PRIMARY object/expired reads and effectful comparison remainders remain Unsupported; SECOND uses its immutable target. Cancellation still requires a quiet terminal remainder.",
+    "Legacy materialized-table callbacks without an authenticated retained cursor remain Unsupported. Broader handler/lifetime and END/shutdown behavior is unclaimed.",
+    "Helper-only image controls do not admit arbitrary malformed Throwable states or establish arbitrary historical phase provenance or full comparison coverage."
+  ],
+  "reproduction": {
+    "root": "/home/user/workspace/php-spec/.tools/throwable-numeric-comparison-58",
+    "source": "Support initialize.py then model.py take --cpu CPU --slot SLOT. Original File/CWD paths and fixed caps must be preserved. Reports retain argv, environment digest, tool/input hashes, raw streams, exits and owned cleanup.",
+    "states": "Author and peer run.py use separate --mode el then --mode sl with CPU/SLOT arguments. Output paths are immutable; a fresh rerun requires a fresh reviewed output path.",
+    "artifacts": "Ignored original sources, checked terms, fixture builders/plans and raw records remain at their recorded paths; no bulky archive is tracked."
+  },
+  "references": {
+    "implementation": {
+      "path": "spec/semantics/402-object-numeric-comparisons.watsup",
+      "sha256": "c4726154e63b7221a942f134b30df1c21a9e0edaab5ed717cedb9ac5ef10cecf"
+    },
+    "catalogue": {
+      "path": "tests/semantics/throwable_numeric_comparison_cases.json",
+      "sha256": "d6ae37ebf43e42018b6e5b6e939ada787368c51708386d9e30c6c0532a9ac0a7"
+    },
+    "native_cases": {
+      "path": ".tools/throwable-numeric-comparison-native-58/cases.json",
+      "sha256": "1cbc41f5d08b5e5f70b20ef5dc58890ac654c5aa717c1077a032b188e956e957"
+    },
+    "native": {
+      "path": ".tools/throwable-numeric-comparison-native-58/run-v1/report.json",
+      "sha256": "aa1c6d7fa4924ffa88ac07c3cde4fafbf3d454324e9d478904991ab4cbf4586d"
+    },
+    "baseline": {
+      "path": ".tools/throwable-numeric-comparison-support-58/baseline-v1/report.json",
+      "sha256": "462a98882876a5d4ec34bf24fea49c6762fc3b999be3c75c924768a83c8f411c"
+    },
+    "initializer": {
+      "path": ".tools/throwable-numeric-comparison-support-58/initialize-v1/report.json",
+      "sha256": "bfa1523a3c5ce7a5cd884433fd6c4f183d28dd033932bbd5e8f64b274775d076"
+    },
+    "sources": {
+      "path": ".tools/throwable-numeric-comparison-support-58/model-v1/report.json",
+      "sha256": "dc04cce829b93efa72889e2a3c6ae97aa43c073f56ac1e61fa56eb6d1d3995dd"
+    },
+    "syntax": {
+      "path": ".tools/throwable-numeric-comparison-support-58/syntax-v1/report.json",
+      "sha256": "048463512cd654ed239746ba31846121d7a22a87f95fa6ab13c2efc11d253c6e"
+    },
+    "author_builder": {
+      "path": ".tools/throwable-numeric-comparison-state-58/build.py",
+      "sha256": "36b324fb2b726150c3dff23db5dc74a99f31dd5dd1c0e7464d62ebda72757247"
+    },
+    "author_plan": {
+      "path": ".tools/throwable-numeric-comparison-state-58/plan.json",
+      "sha256": "6ebbb0170dc74756386e611e8a9526741263e9d1a19e7fccab75238cc79ae9f3"
+    },
+    "author_el": {
+      "path": ".tools/throwable-numeric-comparison-state-58/run-el-v1/report.json",
+      "sha256": "d9caa4007a1afbe90e5ca39b4987654940a3bb31bac8670a9ffa7cf83774707d"
+    },
+    "author_sl": {
+      "path": ".tools/throwable-numeric-comparison-state-58/run-sl-v1/report.json",
+      "sha256": "916e1c5acea12db4b24e7f2209e175d078f919a666ba45e8d2acc9d475f7892e"
+    },
+    "peer_builder": {
+      "path": ".tools/throwable-numeric-comparison-peer-state-58/build.py",
+      "sha256": "3761b1111875e5161ce228e8daeefd19b158acd87146bb10940b42b433af2205"
+    },
+    "peer_plan": {
+      "path": ".tools/throwable-numeric-comparison-peer-state-58/plan.json",
+      "sha256": "e8c5e2215cef6d7af7ab43305f6f0c1d80aa3c320cad995c4a2a95c392d0c70a"
+    },
+    "peer_el": {
+      "path": ".tools/throwable-numeric-comparison-peer-state-58/run-el-v1/report.json",
+      "sha256": "ec13f073046819b7826fddea8dea9ab15f2558072a3c0fe9f6269c5942fb5cc9"
+    },
+    "peer_sl": {
+      "path": ".tools/throwable-numeric-comparison-peer-state-58/run-sl-v1/report.json",
+      "sha256": "f72ab10509120c31b72f9771d32772096869185fb7ac8f13662e500a5dfbbfdf"
+    }
+  },
+  "independent_review": {
+    "reviewer": "comp_review_21",
+    "semantic_and_test_verdict": "CLEAR at the tested revision",
+    "publication_verdict": "CLEAR"
+  }
+}

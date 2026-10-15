@@ -1785,6 +1785,11 @@ use the same continuation with a fixed builtin class image. Restored second
 Notices retain saved 1/1.0 across stdClass/source-instance changes and late live
 writes. Three exact sources and 347 reached premises/19 raw steps pass;
 property, getter and other internal-handler coverage is unchanged.
+[Throwable numeric Notices](coverage/semantics/throwable-numeric-comparison-review.json)
+now use builtin nominal kinds and source-subclass names without stringification.
+Saved second-Notice targets, copied values, retained cells and original-Exception
+throw cleanup pass three exact sources and 340 reached premises/17 raw steps;
+string caches and previous links remain intact. Wider limits are unchanged.
 [Match expressions](docs/semantics/SOURCE-MATCH.md) preserve strict, lazy arm
 selection, delayed CV subjects, ordered compiler diagnostics and owned value
 results; their [review](coverage/semantics/match-review.json) binds source, compiler

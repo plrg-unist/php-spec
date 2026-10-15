@@ -1,6 +1,6 @@
 ;; zend_std_compare_objects captures the numeric type, reports a failed cast,
 ;; then compares private 1/1.0 against the live opposing zval.
-syntax pnumberclass = porigin | NUMBER_STDCLASS
+syntax pnumberclass = porigin | NUMBER_STDCLASS | NUMBER_THROWABLE text
 syntax pnumberphase = NUMBER_PRIMARY | NUMBER_SECOND nat pnumberclass
 syntax pnumbercompare = {SOURCE paggregatecompare, POINTER pcomparepointer?, ENV pbinding*, REFS nat*, CLASS pnumberclass, TARGET pvalue, PHASE pnumberphase}
 
@@ -16,6 +16,12 @@ def $number_compare_class(S, porigin, n) = true
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if pclassdesc.KIND = "class"
   -- if $class_link_at(S.LINKEDPARENTS, porigin) = (STDCLASS_PARENT)
+def $number_compare_class(S, porigin, n) = true
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (INTERNAL_THROWABLE_PARENT text_kind)
+  -- if $throwable_kind(text_kind)
 def $number_compare_class(S, porigin, n) = $number_compare_class(S, porigin_parent, $nabs($(n - 1)))
   -- if $(n > 0)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
@@ -30,6 +36,11 @@ def $number_compare_receiver_image(S, n, porigin) = true
 def $number_compare_receiver_image(S, n, NUMBER_STDCLASS) = true
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = STDINSTANCE
+def $number_compare_receiver_image(S, n, NUMBER_THROWABLE text_kind) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if pthrowable.KIND = text_kind
+  -- if $throwable_kind(text_kind)
 def $number_compare_receiver_image(S, n, pnumberclass) = false -- otherwise
 dec $number_compare_receiver(pstate, nat) : pnumberclass?
 def $number_compare_receiver(S, n) = (porigin)
@@ -40,6 +51,12 @@ def $number_compare_receiver(S, n) = (porigin)
   -- if ~$instance_storage_freeing(S, n)
 def $number_compare_receiver(S, n) = (NUMBER_STDCLASS)
   -- if $number_compare_receiver_image(S, n, NUMBER_STDCLASS)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, n)
+def $number_compare_receiver(S, n) = (NUMBER_THROWABLE pthrowable.KIND)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if $number_compare_receiver_image(S, n, NUMBER_THROWABLE pthrowable.KIND)
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if ~$instance_storage_freeing(S, n)
 def $number_compare_receiver(S, n) = eps -- otherwise
@@ -132,6 +149,7 @@ dec $number_compare_class_name(pstate, pnumberclass) : preqbytes
 def $number_compare_class_name(S, porigin) = $c_string(pclassdesc.NAME)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
 def $number_compare_class_name(S, NUMBER_STDCLASS) = $ptascii("stdClass")
+def $number_compare_class_name(S, NUMBER_THROWABLE text_kind) = $ptascii(text_kind)
 def $number_compare_class_name(S, pnumberclass) = eps -- otherwise
 dec $number_compare_message(pstate, pnumbercompare) : preqbytes
 def $number_compare_message(S, pnumbercompare) = $ptascii("Object of class ") ++ $number_compare_class_name(S, $number_compare_active_class(pnumbercompare)) ++ $ptascii(" could not be converted to int")
