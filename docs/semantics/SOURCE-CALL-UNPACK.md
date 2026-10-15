@@ -520,6 +520,24 @@ the real caller release receipt and any child-destructor exception through final
 and cache cleanup. This follows
 `zend_generator_get_next_delegated_value`, `zend_generator_dtor_storage` and the
 native Generator iterator callbacks used by `SEND_UNPACK`.
-Non-array delegates and by-reference targets remain explicitly `Unsupported`.
+At that cut non-array delegates and by-reference targets remained explicitly `Unsupported`.
 The [delegated-array review](../../coverage/semantics/generator-call-unpack-array-delegation-review.json)
 keeps new evidence and the promoted prior control separate from the direct-yield cut.
+
+## Shared Generator producers
+
+Call unpack also admits finite acyclic Generator links ending in a paused value
+yield or the authenticated array-delegation cache above. Every active link retains
+its real source record, position one, no acquisition receipt and no copied CURRENT.
+Only the leaf owns the yielded cache; SEND dereferences/copies it before resume.
+Reference yields and repeated nested rows therefore preserve snapshots and COW.
+Child completion returns to the parent tail, and producer errors keep real source
+frames without invented Generator API frames. Dropping a temporary parent releases
+its child link before parent finally; a separately retained child postpones its
+own finally/cache cleanup until its last owner disappears. This follows
+`zend_generator_get_current`, `zend_generator_update_current`,
+`zend_generator_dtor_storage` and the native iterator callbacks for `SEND_UNPACK`.
+Iterator/Aggregate leaves, detached independently completed-child states,
+by-reference targets and wider lifecycle interactions remain required.
+The [Generator-chain review](../../coverage/semantics/generator-call-unpack-generator-delegation-review.json)
+keeps new evidence and the promoted prior control separate from earlier cuts.

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "generator-call-unpack-generator-delegation-review-two-link-row-cow",
+    "source": "<?php\nclass ReviewGeneratorChainChild11 { function __destruct() { echo \"A|\"; } }\nfunction reviewGeneratorChainLeaf11() { $row = [new ReviewGeneratorChainChild11()]; try { echo \"L|\"; yield $row; yield $row; echo \"N|\"; $row[0] = null; } finally { echo \"C|\"; } }\nfunction reviewGeneratorChainMiddle11() { try { echo \"H|\"; yield from reviewGeneratorChainLeaf11(); echo \"I|\"; } finally { echo \"J|\"; } }\nfunction reviewGeneratorChainOuter11() { try { echo \"G|\"; yield from reviewGeneratorChainMiddle11(); } finally { echo \"O|\"; } }\nfunction reviewGeneratorChainTarget11($first, $second) { echo \"D|\", $first[0] instanceof ReviewGeneratorChainChild11 && $second[0] instanceof ReviewGeneratorChainChild11 ? \"HELD|\" : \"BAD|\"; $first[0] = null; echo \"X|\"; $second[0] = null; echo \"M|\"; }\nreviewGeneratorChainTarget11(...reviewGeneratorChainOuter11());\necho \"E\";\n",
+    "source_sha256": "72edc6a6c9aab3c008633e40d20ef38a9de1055c5d55a915f26b53d584b9f748",
+    "purpose": "Two active Generator links expose the real leaf cache; two by-value row snapshots survive the leaf write and split between callee parameters without duplicated outer caches.",
+    "expected_model": "normal",
+    "native_stdout": "G|H|L|N|C|I|J|O|D|HELD|X|A|M|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-call-unpack-generator-delegation-review-retained-child-after-temporary-outer-error",
+    "source": "<?php\nclass ReviewGeneratorRetainedFirst11 { function __destruct() { echo \"A|\"; } }\nclass ReviewGeneratorRetainedCurrent11 { function __destruct() { echo \"B|\"; } }\nfunction reviewGeneratorRetainedChild11() { try { echo \"L|\"; yield \"first\" => new ReviewGeneratorRetainedFirst11(); echo \"N|\"; yield 0 => new ReviewGeneratorRetainedCurrent11(); echo \"BAD|\"; } finally { echo \"C|\"; } }\nfunction reviewGeneratorRetainedOuter11() { global $child; try { echo \"G|\"; yield from $child; echo \"BAD|\"; } finally { echo \"O|\"; } }\nfunction reviewGeneratorRetainedTarget11($first, $second = 0) { echo \"BAD|\"; }\n$child = reviewGeneratorRetainedChild11();\ntry { reviewGeneratorRetainedTarget11(...reviewGeneratorRetainedOuter11()); } catch (Error $caught) { echo \"T|\", $caught->getLine(), \"|\", $caught->getTrace() === [] ? \"NOFRAME|\" : \"FRAME|\"; }\necho \"M|\"; unset($child); echo \"E\";\n",
+    "source_sha256": "52b2c4277337da70f6adb2d22f8c436c85ef51f47e460a5f8bb7535eee1a385c",
+    "purpose": "A temporary outer closes on key-order failure while an independent child CV retains the real current cache; child finally/cache cleanup waits for explicit unset.",
+    "expected_model": "normal",
+    "native_stdout": "G|L|N|O|A|T|8|NOFRAME|M|C|B|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-call-unpack-generator-delegation-review-reference-yield-snapshot",
+    "source": "<?php\nclass ReviewGeneratorReferenceChild11 { function __destruct() { echo \"A|\"; } }\nfunction &reviewGeneratorReferenceLeaf11() { $value = new ReviewGeneratorReferenceChild11(); try { echo \"L|\"; yield $value; echo \"N|\"; $value = null; } finally { echo \"C|\"; } }\nfunction reviewGeneratorReferenceOuter11() { try { echo \"G|\"; yield from reviewGeneratorReferenceLeaf11(); } finally { echo \"O|\"; } }\nfunction reviewGeneratorReferenceTarget11($first) { echo \"D|\", $first instanceof ReviewGeneratorReferenceChild11 ? \"HELD|\" : \"BAD|\"; $first = null; echo \"M|\"; }\nreviewGeneratorReferenceTarget11(...reviewGeneratorReferenceOuter11());\necho \"E\";\n",
+    "source_sha256": "88e1565c7cee9ae1f0da011bf16839d5ca4973a36a7998ea186c14ff4bc6011f",
+    "purpose": "A by-reference leaf reached through a shared Generator link is dereferenced at SEND, before leaf-cell mutation, while the outer owns no duplicated current payload.",
+    "expected_model": "normal",
+    "native_stdout": "G|L|N|C|O|D|HELD|A|M|E",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]

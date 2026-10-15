@@ -763,7 +763,12 @@ Array `yield from` producers also unpack through their authentic delegated table
 and current cache. By-value sends preserve reference snapshots and repeated-row
 COW; temporary and retained Generators keep distinct abort/finally cleanup.
 See the [delegated-array review](coverage/semantics/generator-call-unpack-array-delegation-review.json).
-Aggregate ordinary-call unpack, non-array yield-from producers, Generator by-reference
+Shared Generator chains also unpack through the real leaf cache, ending in a
+paused value yield or active array delegation. Child returns resume parent tails;
+snapshots, real traces and parent/child cleanup retain their existing owners.
+See the [Generator-chain review](coverage/semantics/generator-call-unpack-generator-delegation-review.json).
+Aggregate ordinary-call unpack, Iterator yield-from leaves, detached completed-child
+lifecycle, Generator by-reference
 call targets and callback methods, nonnumeric raw valid changes, request/plain
 reference strings and handler replacements with
 those strings, other typed array warnings, broader array/COW interactions,

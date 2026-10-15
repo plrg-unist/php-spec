@@ -1,0 +1,73 @@
+{
+  "milestone": "Generator argument unpack through active Generator delegation chains",
+  "status": "independently accepted; actual-parent composition pending",
+  "independent_reviewer": "iterator_review_01, paired with iterator_dev_01",
+  "base": "5e5ea978299e3424a15a844fda7b00659a5d5b91",
+  "tested_private_code": "f0d153efd169922473e7d9520f859f25814804c2",
+  "modules": 395,
+  "scope": "Ordinary source-function Generator unpack into by-value parameters through finite active Generator links ending at a paused value yield or an authenticated array delegate. Numeric/named binding, defaults, child returns, reference-yield snapshots, nested-row COW, real error traces and separate parent/child lifetimes are covered. This is not full Generator or call-unpack closure.",
+  "semantics": {
+    "admission": "405 follows allocated Generator links with real source-valid delegation records, position1, no acquisition receipt and no copied CURRENT. Object-count fuel bounds the walk; only an allocated cache-present PAUSED leaf or the unchanged array-delegation predicate terminates successfully. PNULL is a present value. The same helper partitions READY/completion from the authenticated Unsupported stop.",
+    "ownership": "Active parents retain the child Generator, while the real leaf owns its value/reference cache. SEND dereferences/copies that leaf value into a separate argument owner before producer mutation. Two-link nested rows preserve physical child edges and COW without copied outer caches.",
+    "cleanup": "Existing resume and close protocols preserve child-return continuation and real source frames. A temporary parent drops its child link before its own finally; an unowned child closes first, whereas an independently held child remains paused until its last owner is removed. No cleanup or Generator-resume rule changed in this milestone.",
+    "module_sha256": {"405": "ebff36aa6da124ea645e807fb95f29c6d966fe6f958c10be50298e251de634ae"}
+  },
+  "source_authority": [
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_SEND_UNPACK",
+    "vendor/php-src/Zend/zend_generators.h::zend_generator_get_current and Zend/zend_generators.c::zend_generator_update_current",
+    "vendor/php-src/Zend/zend_generators.c::zend_generator_iterator_get_data, zend_generator_iterator_get_key and zend_generator_iterator_move_forward",
+    "vendor/php-src/Zend/zend_generators.c::zend_generator_dtor_storage, zend_generator_close and zend_generator_free_storage"
+  ],
+  "validation_identity": {
+    "php": "8.5.10 CLI NTS 64-bit; source34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml5.1.0; SL, caches off, encountered determinism checks",
+    "environment": "tests/semantics/profile.json; PHP -n; LC_ALL=C; TZ=UTC; PHP_SPEC_SCRIPT_ENCODING unset; worker1",
+    "commands": "Reports retain exact commands, selections and exits. Native cap8s; strict/state120s; author source model100/process120s; reviewer/baseline model60/process75s. Fresh leased packets ran serially, stop-first, and were fully reaped."
+  },
+  "raw_root": ".tools/generator-call-unpack-generator-delegation-11/.tools/",
+  "native_and_baseline": {
+    "new_native10": ["generator-chain-unpack-native-9pp0xqw5/report.json", "generator-chain-unpack-review-native-u6fbpmb6/report.json"],
+    "cut": "Unchanged5e5ea978/4053c6ad6; all ten native observations pass and earn zero model agreement.",
+    "unchanged_baseline": "generator-chain-unpack-baseline-m6shqfby/report.json: exact originale649cf714 at5e5ea978, Unsupported Generator unpack delegated producer after P|G|C| and three OUTPUT events; zero agreement"
+  },
+  "normal_sources": {
+    "new_distinct_originals": 9,
+    "cut": "f0d153efd",
+    "reports": [["generator-chain-unpack-source-d_wbdfoy/report.json", 6], ["generator-call-unpack-generator-delegation-review-source-z80ioupo/report.json", 3]],
+    "observations": "Exact original-byte stdout/stderr/exit agreement, stable HEAD and inputs. Tests discriminate child returns and parent tails, array-leaf named defaults, reference snapshots, repeated-row COW, leaf/parent trace rows, owning receive traces and temporary versus independently retained parent/child cleanup."
+  },
+  "new_reached_states": {
+    "groups": 5,
+    "driver_premises": 460,
+    "cut": "f0d153efd",
+    "author_reports": [["fiber-state-review-_s92u174/report.json", 113], ["fiber-state-review-kqj6o450/report.json", 94], ["fiber-state-review-ewc_fq02/report.json", 72]],
+    "independent_reports": [["fiber-state-review-g9bo7yp_/report.json", 113], ["fiber-state-review-hp_9c8nm/report.json", 68]],
+    "checks": "Real ready/send/borrowed-resume, key-error release, typed receive and caught retained-child fronts. Physical roots, two shared links with no outer cache copies, leaf local/cache/SENT owners, source/cycle/cache/depth refusals, present-null control, owning DIRECT traces, zero/split budgets, public call/heap admission and exact once-only remaining output are checked."
+  },
+  "affected_prior_source": {
+    "case": "generator-array-unpack-generator-delegate-required-control, unchanged sourcee0e4ba1c",
+    "cut": "f0d153efd",
+    "selected_source": "generator-array-unpack-source-5pp3ttjc/report.json",
+    "normal_agreements": 1,
+    "native_reuse": "legacy-generator-chain-control-native-11 preserves original-reportac48e9dd and derived256898da. Only raw path and explicit relocation metadata changed; source bytes, native answers, processes and commands are unchanged. No native or other10 campaign was replayed."
+  },
+  "required_control": "The Iterator leaf in generator-chain-unpack-source-d_wbdfoy/report.json returns exact Generator unpack delegated producer Unsupported after P|G|I|R|V|C|K|, without a diagnostic or timeout, and earns zero normal agreement.",
+  "strict": "generator-chain-unpack-author-sl-_r9hclku/report.json atf0d153efd: all395 modules, true stdout, empty stderr, exit0, no timeout and stable HEAD/inputs.",
+  "preserved_zero_credit": "fiber-state-review-kblwjtmn preserves the original saved-frame ENV accessor elaboration failure before runtime. The fixture-only correction binds the frame's LOCALS symbol table before looking up its ENV; both corrected groups pass with unchanged source and runtime semantics. Native, baseline, strict and required-control assertions are not normal PHP agreements.",
+  "compatibility": "Only405 changes: two bounded admission helpers and four matching predicate substitutions. Its existing array predicate and PAUSED/CLOSED/send/key/trace/abort routes remain intact;289 delegation,303 close and355 storage-release rules are unchanged. The sole affected old Generator control is promoted separately; no other prior campaign is renewed.",
+  "evidence_recovery": {
+    "archive": "../php-spec-evidence-archive/generator-call-unpack-generator-delegation-11/private.tar.gz",
+    "bytes": 358210,
+    "sha256": "4cc4b343635fbc5839e4f514605be69997c52dc8725b7ce167acdbde4826e5f1",
+    "manifest": "Sibling manifest.json maps14 report roles, six ignored inputs, revisions, exact commands and recovery.",
+    "restore": "Restore archived .tools subpaths at the recorded private root. Author inputs recover from the retained iterator/generator-call-unpack-generator-delegation-11 branch at report revisions. Reviewer catalog/source/state recover from the publication containing this ledger, matching independent_inputs. For the original failure restore archived review-state-original.py at its maintained test path before selecting the case; its catalog lookup is relative to __file__. Original and relocated old10 native tuples remain distinct. Evidence is not an operational build dependency."
+  },
+  "remaining": [
+    "Iterator/Aggregate delegate leaves, ordinary-call Aggregate acquisition and wider callable targets.",
+    "Detached independently completed-child states and broader reentrant, Fiber and terminal Generator lifecycle interactions.",
+    "Generator unpack into by-reference targets; no full-family closure claim."
+  ]
+}

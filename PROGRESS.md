@@ -2005,11 +2005,24 @@ prior control agree. Five genuine reached groups pass 435 premises: author 251 a
 `f480dce9` and independent 184 at `871fc198`. Final strict initialization of 395
 modules passes at `871fc198`; earlier source cuts retain `87fabcdc`/`f480dce9`.
 Ten native observations, the unchanged Unsupported baseline, the non-array required
-control and original failures earn zero agreement. Non-array delegates, by-reference
-targets and broader call/lifecycle interactions remain open.
+control and original failures earn zero agreement. At that cut, non-array delegates,
+by-reference targets and broader call/lifecycle interactions remained open.
 [Delegated-array review](coverage/semantics/generator-call-unpack-array-delegation-review.json).
 Canonical395 composition over `52dccd723` passes inventory and strict SL at
 `957703ff4`; private source/state evidence retains its original cuts.
+
+Ordinary Generator call unpack now follows finite active Generator chains to a
+paused value or authenticated array delegate. Parents borrow the real leaf cache;
+reference snapshots, nested-row COW, child returns and source traces stay intact.
+Temporary versus retained parent/child owners preserve distinct finally/cache
+cleanup. Nine new exact originals and one promoted prior control agree; five
+source-reached groups pass 460 premises at `f0d153efd`. Full strict initialization
+of 395 modules passes at that cut. Ten native observations, the unchanged baseline
+and the Iterator-leaf Unsupported control earn zero agreement. The saved-locals
+fixture elaboration failure also retains zero credit. Iterator/Aggregate
+leaves, detached independently completed-child states, by-reference targets and
+wider lifecycle interactions remain open.
+[Generator-chain review](coverage/semantics/generator-call-unpack-generator-delegation-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or
