@@ -7,6 +7,15 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Selected HALT-offset queries now retain the first registration for the API
+call site's compiled filename, while fixed raw literal `defined` keeps its
+separate false result. Repeated eval returns runtime offset 111 alongside
+current direct offset 137. Two exact sources and two public fronts/375 premises pass at runtime
+diff 8b355616, including parser-reject absence and budget resumption. Ambiguous
+HALT compilation returns Unsupported; other direct calls, absent value lookup
+Errors and wider source forms remain partial. Preparatory syntax failures retain zero credit.
+[HALT lookup ledger](coverage/semantics/halt-lookup-review.json).
+
 Direct sole backed trait SET now preserves an actual builtin explicit parameter.
 Raw Trait Param/type/variance proof authenticates the Consumer callable signature
 and physical body. Trait magic, Consumer private13 and Grand called scope remain

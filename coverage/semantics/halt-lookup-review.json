@@ -1,0 +1,76 @@
+{
+  "scope": "Selected nonowning positional exact HALT-offset queries for successful canonical root HALT units; fixed builtin raw literal-defined quick-check split. Partial core/dynamic-source behavior.",
+  "status": "independently_reviewed_private",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "base_revision": "fafd61b8b4f319116a181dda214f3ba28d4af435",
+  "code_commit": "25910fa5675d7e78a576523d05bd1300928d1f1e",
+  "tested_cut": {
+    "runtime_diff_sha256": "8b35561604588d6ac1252374c525716590e81713f52e3863441556762ab19dcd",
+    "module_count": 394,
+    "files": {
+      "spec/semantics/400-dynamic-constants.watsup": "55df87b4b7f5ff1fdd4cf4b0f6d5f6fd30575f8bb4717293b7d1d7789f241b79",
+      "tests/semantics/halt_lookup_protocol.py": "9e53fe5b3eb042a1b060cca03328b4149529a151cbf7960a90284d85dc2c2dba"
+    }
+  },
+  "engine_routes": [
+    "Zend/zend_compile.c::zend_compile_halt_compiler registers the filename-mangled offset during compilation, before the body, and leaves an existing registration unchanged.",
+    "Zend/zend_constants.c::zend_get_halt_offset_constant uses the executed filename. zend_register_constant rejects an ordinary exact special-name publication.",
+    "Zend/zend_compile.c::zend_compile_func_defined emits ZEND_DEFINED for one raw unqualified string literal. Zend/zend_vm_def.h ZEND_DEFINED and zend_execute.c::zend_quick_check_constant inspect the ordinary table without HALT fallback."
+  ],
+  "implementation": [
+    "Reuse canonical source/FILES and chronological PDENTER[/PRECISION]/PDEXIT records, without a new state/history field. A matching HALT candidate supplies its offset only after PCSCOMPLETE with no intervening compiler entry; first registration wins.",
+    "Earlier incomplete/failed/reentrant or noncanonical HALT candidates yield UNKNOWN/Unsupported. Only genuinely HALT-free or parser-rejected units skip; completion is sufficient evidence here, not the actual registration point.",
+    "Read captured CONFIG strings and the compiled call-site filename, never live CWD/FILECONTEXT or newest source ID. Existing global/name/define/class helpers stay unchanged; prior CONSTANT class fallback explicitly excludes this special query.",
+    "Completed nonowning positional CONFIG/selection/source/carrier guards retain the structural past-variable-input policy. Only raw fixed literal-defined without namespace fallback gets optimizer false."
+  ],
+  "source_comparisons": {
+    "native_originals": 2,
+    "agreements": 2,
+    "result": "normal0/full native stdout/empty stderr/CLI0 at runtime diff 8b355616",
+    "include": "B|I:present|207:207|L:missing|M:missing|A|",
+    "eval": "B|P|absent|E:present|111:111|E:present|111:137|A|",
+    "baseline": "Stable clean base: accepted/program Unsupported dynamic constant call domain after B|I:/CLI1; agreement0."
+  },
+  "state_checks": {
+    "fronts": {
+      "include": 186,
+      "eval": 189
+    },
+    "total": 375,
+    "result": "Both full394 SL processes exit0/exact trueLF/empty stderr; stable runtime/helper.",
+    "method": "Two original-derived production chains, nine genuine query transitions and one budget0 pause/resume. Real file open/parse and four eval parser responses preserve native endings and public/declaration/heap validity.",
+    "pure_controls": "Pending/failed/reentrant/nonterminal HALT gives UNKNOWN; later candidate cannot replace known first. Reordered source/journal projections distinguish chronology from IDs. Query/nonce/site/line/shape/carrier copies are undriven and earn no source/front credit.",
+    "fixtures": {
+      "include": "00ad70f52f1df8af4cc48fadd86b41dddebd669f4ed671b83fddf37dd56a9a62",
+      "eval": "ca893d8549086e7307d92485dcf69233999f131e98e7103d7bf1da96dcf84116"
+    }
+  },
+  "zero_credit": "Native/baseline/preparations/standalone parses have no source-agreement credit. State01/02 nonterminal PROGRAM/list grouping failed standalone syntax parsing before numeric activation; fixtures/diagnostics remain retained. State03 changes only grouping. No affected-source or public numeric actor failed.",
+  "execution": {
+    "native_process_seconds": 30,
+    "source_cli_seconds": 60,
+    "source_process_seconds": 90,
+    "source_steps": 100000,
+    "public_SL_seconds_per_front": 90,
+    "public_host_seconds": 240,
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC"
+    },
+    "profile": "tests/semantics/profile.json",
+    "providers": "Retained pinned local PHP/adapter/numeric binaries; no rebuild/portability claim."
+  },
+  "remaining": "Other direct forms, leading-separator/coercing/named/unpacked/owning queries, absent constant lookup Errors, encoded profiles, noncanonical/failed/reentrant registration chronology and wider constant/default/class consumers remain required. No complete HALT/core claim.",
+  "independent_review": "operators_review_02 reviewed primary routes, source/capture/chronology/dispatch, exact original comparisons/generated fixtures and raw375; final private semantic/code/test acceptance.",
+  "reports": {
+    ".tools/dynamic-review-02/static-native-v50/report.json": "c83d378357260c195c5be6ff6579449ebab4b3c8cdfbf7653f55bf9ad7d9874c",
+    ".tools/dynamic-source-halt-lookup-baseline-30/report.json": "20f422c3c32898e592c887b41d5a3799500bc2abd572aeca6ac8101b10a12f94",
+    ".tools/dynamic-source-halt-lookup-model-31/report.json": "cdb52183e8b3f999b8c8291161e6c3cc8a3cc5930ecd7d54491fa2695ba7b524",
+    ".tools/dynamic-source-halt-lookup-eval-model-30/report.json": "39b410fd561fde78f0cf762026ca0e522c0c62bd2911ce4a5aab5b4d18ce5597",
+    ".tools/dynamic-source-halt-lookup-state-01/fixtures-report.json": "ca3ce5f1a7f3234570e53edf26c9df6aa6470454349a11486f4943f3deb88343",
+    ".tools/dynamic-source-halt-lookup-state-02/fixtures-report.json": "85eff8164ece5650e9195315cb8835afbb5e6bd6091aeb4fd9b3b8d3b031f64b",
+    ".tools/dynamic-source-halt-lookup-state-03/fixtures-report.json": "2ab44d3b28411e961cdae6060b3f2222a2de27a3adde8e81a18f8fce34a7deab",
+    ".tools/dynamic-source-halt-lookup-state-03/check-report.json": "09dc5478077243bf08f591c1b5f664f2e14a9d395782f65b3c36e02234996c83"
+  },
+  "recovery": "Canonical ignored reports retain commands, input/profile/provider hashes, raw streams/exits and parser/adapter packets; branches preserve code. Maintained halt_lookup_protocol.py --phase fixtures/check --sources .tools/dynamic-review-02 --output FRESH runs only when changed behavior warrants it under root resource lease."
+}

@@ -266,8 +266,12 @@ Ordinary `__COMPILER_HALT_OFFSET__` reads fold the original file's byte offset,
 including plain/global reads inside a namespace; namespace-relative local constants
 keep ordinary lookup. Two fresh originals and 104 source-frontier checks plus 20 pure
 queries pass at c78beb627. [HALT review](coverage/semantics/halt-compiler-review.json)
-records the partial scope; encoded profiles, wider constant/default/class consumers
-and include/eval registration remain required. The [catalogue](tests/semantics/halt_compiler_cases.json)
+records that cut. Selected `defined`/`constant` calls now use the first HALT
+registration for their compiled filename across include/eval; fixed literal
+`defined` retains PHP's separate false result. Two sources and 375 state premises
+pass in the [lookup increment](coverage/semantics/halt-lookup-review.json).
+Ambiguous compilation, other direct calls, absent value lookup and wider source
+profiles/consumers remain required. The [catalogue](tests/semantics/halt_compiler_cases.json)
 uses the existing `method_runtime.py --catalogue tests/semantics/halt_compiler_cases.json`.
 
 [Ordinary string interpolation](docs/semantics/SOURCE-INTERPOLATION.md) follows

@@ -114,6 +114,11 @@ including argument binding, visibility, callbacks and abrupt completion.
 | `set_include_path`, `get_include_path`, `ini_set`, `ini_get`, `ini_restore`, `chdir` | Explicit include/CWD environment and callback effects; finite `include_path` behavior, with wider directives/OS services partial. `ext/standard/basic_functions.c`, `Zend/zend_ini.c`; [include contract](INCLUDE-SOURCES.md) | `dynamic.include*`, `dynamic.require*`, `environment.config` |
 | Core constants | Literal `true`/`false`/`null`, integer/float limits, PHP version/platform, `E_*`, and constants of admitted classes/APIs; explicit target/configuration values from `Zend/zend_constants.c` and the stubs | `declarations.constants`, `environment.config` |
 
+Selected `defined`/`constant` HALT-offset queries additionally use the compiled
+filename's first bounded registration; fixed raw literal `defined` retains its
+ordinary-table false result. Other forms remain partial in the
+[dynamic-source contract](DYNAMIC-SOURCE.md).
+
 Assertions require explicit compile/runtime configuration. A known direct `assert`
 call omits argument evaluation when `zend.assertions` is zero or negative; a
 dynamic call still evaluates arguments before the intrinsic returns early. The

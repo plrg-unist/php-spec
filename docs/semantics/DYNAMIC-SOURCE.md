@@ -28,3 +28,24 @@ The separate [reached eval increment](DYNAMIC-EVAL.md) builds on this
 compiler/registry foundation. Include/require and once identity still require
 separate source-provider increments; this foundation alone does not execute a
 dynamic source.
+
+Selected nonowning positional `defined`/`constant` queries for the exact
+`__COMPILER_HALT_OFFSET__` name use the API call site's compiled filename.
+The first completed root-terminal HALT unit with no compilation reentry supplies
+its offset; later units with that filename cannot replace it. Direct constant
+reads still fold the current AST's offset, so repeated eval can return different
+runtime and direct values. A fixed builtin `defined` with one raw string literal
+and no namespace fallback follows Zend's ordinary-table quick check and returns
+false, even in a HALT file.
+
+The existing authenticated declaration journal supplies chronology. Accepted
+HALT occurrences outside the canonical root shape, or earlier incomplete/failed
+or reentrant HALT compilations, yield `Unsupported`; completion is sufficient
+evidence here, not a claim that registration always waits for compilation to end.
+Genuine parser rejection contributes no registration. Captured query strings and
+selected-call receipts retain the existing structural variable-input policy.
+Other direct forms, absent `constant` lookup Errors, owning/named/unpacked calls
+and broader compiler-failure/reentry behavior remain open. The
+[lookup ledger](../../coverage/semantics/halt-lookup-review.json) binds two original
+sources and their reached state checks, keeping counterfactual history/source
+projections separate from execution.
