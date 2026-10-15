@@ -1,0 +1,70 @@
+{
+  "scope": "Global constant() array queries with already-certified PVINSTANCE/PVCLOSURE leaves. Partial core.",
+  "status": "independently_accepted_private",
+  "reviewer": "/root/core_breadth_review_01",
+  "parent": "24b84e08af482a3b04c0afd6f0315cbae69f74dd",
+  "semantic_revision": "7941e9f6d661258d84b3c4a688b357d29b6dedea",
+  "semantic_sha256": {
+    "spec/semantics/400-dynamic-constants.watsup": "9f8f3e195c650cc64465614dbeaa96c006f837b6c37f0bc8efc54d61d98dc7cc"
+  },
+  "module_count": 394,
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+  "behavior": "Two global tree heads delegate existing instance/Closure live and creation certificates, preserving the stored root and object identities. Lookup adds an ARRAY root owner without another embedded-object edge; real COW adds a physical array-to-object edge while properties/static cells remain shared. DIRECT entries, canonical table/history and empty provenance guards stay unchanged. No new ownership or creation protocol.",
+  "source_routes": [
+    "vendor/php-src/ext/standard/basic_functions.c PHP_FUNCTION(constant), zend_get_constant_ex and ZVAL_COPY_OR_DUP",
+    "vendor/php-src/Zend/zend_types.h ZVAL_COPY_OR_DUP retains request arrays and embedded object identities",
+    "spec/semantics/89-constant-classes.watsup constant_value_class_valid delegates existing212/271 callable and283 completed-NEW guards; initializer paths descend literal array children"
+  ],
+  "sources": [
+    {
+      "revision": "7941e9f6d661258d84b3c4a688b357d29b6dedea",
+      "report": "author/sources/model-report.json",
+      "agreements": 2,
+      "checks": "NaN root identity, nested COW and direct/repeated reads; shared instance property9 and Closure counter1/2/3/4 survive caller release."
+    },
+    {
+      "revision": "58d4993a53476c3e011714694b463a7d1c242de9",
+      "report": "author/review/model-report.json",
+      "agreements": 1,
+      "checks": "Independent caller bucket reference detaches array storage, shares original object property7, then replaces only caller bucket with fresh object11; direct/repeated constant queries retain original object after release."
+    }
+  ],
+  "public": {
+    "revision": "58d4993a53476c3e011714694b463a7d1c242de9",
+    "report": "author/public/check-report.json",
+    "premises": 564,
+    "groups": {
+      "instance-leaf-and-nested-cow": 284,
+      "closure-leaf-static-sharing-and-cow": 280
+    },
+    "checks": "Actual first/during-COW/post-release CONFIG fronts; exact root return/owner+1 with unchanged embedded-object owners and graph, two physical child edges during COW, properties/static cell2 and readonly storage. Wrong leaf id/site/tag/kind/creation/live refusals; genuine ALIAS payload stays class-valid but query rejects it. Whole budget0/one-step equality."
+  },
+  "zero_credit": "Native observations and syntax preparation retain zero agreement. Sole unchanged instance-source baseline at692958bf: checked Unsupported/global constant value query after B|, CLI1/null PHP exit/emptyerr. No runtime/fixture failure or baseline renewal.",
+  "execution": "Coordinated CPU5/SLOT3, LC_ALL=C TZ=UTC, AS3GiB, serial stop-first/reap. Native children15s; model CLI45/host60; public fullSL90 each. All3 source models checked normal0/reasonNone/native-exact/emptyerr; both public children trueLF/0/emptyerr. Inputs/HEAD stable, no timeout, reaped/groups[]. Reports preserve exact inner argv/raw exits/streams/tool pins.",
+  "raw_root": ".tools/global-object-array-query-evidence-26",
+  "reports": {
+    "author/public/check-report.json": "04ac98987d8cabf1667aa1e6592a37cdd922c019d71b91fdb8449efbbcf4a274",
+    "author/public/prepare-report.json": "49c17ed1c772e398749600620143a93d31e6a06fa527d6e74cf77a6d4f342c63",
+    "author/review/model-report.json": "1220b49122570c1eaf11483b7ed991e5fe60c31ccfa052334e1f9ea29f660fb5",
+    "author/review/native-report.json": "6e72eab85d0f11219f4631403909edee7c70a1339ebd229f615fd0951a3f24de",
+    "author/sources/baseline-report.json": "e92e53d3adf87a7079205a273f40d56c9557f4fec574e70d02b3f691d5da74ac",
+    "author/sources/model-report.json": "8495a92a7194dc2e2f0ec9a35ee009fc2d4bd0a3e5794e3c8d2f3e88726f00a7",
+    "author/sources/native-report.json": "c11bb724fe4c3b6dab47aeeab42dd6619d308632e47e0c4db52e586321dfea12"
+  },
+  "recovery": "Three owned ignored trees moved once without copies after reviewer STOP and focused process/cwd/fd no-use checks; hashes unchanged. Restore author/{sources,public,review} as .tools/global-object-array-query-{native,public,review}-26 within .tools/source-global-object-array-query-26 at the recorded revisions for historical cwd/source identities. Maintained scripts can create fresh packets; branches preserve original cuts.",
+  "remaining": "Generic PVOBJECT, stored ALIAS/cyclic array trees, wider producers, coercions and packed/owning query forms remain outside this slice. No define-snapshot widening. Core remains partial; no engine bug or intentional divergence.",
+  "actual_parent_integration": null,
+  "commands": [
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/global_constant_object_array_sources.py --phase native --output .tools/global-object-array-query-native-26",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/global_constant_object_array_sources.py --phase baseline --case instance-leaf-and-nested-cow --output .tools/global-object-array-query-native-26",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 180s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/global_constant_object_array_sources.py --phase model --output .tools/global-object-array-query-native-26",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/global_constant_object_array_protocol.py --phase prepare --sources .tools/global-object-array-query-native-26 --output .tools/global-object-array-query-public-26",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 240s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/global_constant_object_array_protocol.py --phase check --sources .tools/global-object-array-query-native-26 --output .tools/global-object-array-query-public-26",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/global_constant_object_array_review_sources.py --phase native --output .tools/global-object-array-query-review-26",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/global_constant_object_array_review_sources.py --phase model --output .tools/global-object-array-query-review-26"
+  ]
+}

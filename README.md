@@ -892,6 +892,10 @@ Array queries retain the stored root and children; existing COW preserves nested
 writes, reference acquisition and append history. Immutable and mutable empty
 roots retain their provenance. The [array-query review](coverage/semantics/global-constant-array-review.json)
 records the focused source and state checks.
+Array leaves may also hold certified user instances or Closures: COW separates
+containers while object identity, mutable properties and static cells remain shared.
+The [object-leaf review](coverage/semantics/global-constant-object-array-review.json)
+records physical array-to-object edges and reference-to-bucket replacement checks.
 Instance results retain mutable properties; Closure results retain static cells
 and callable scope. Both preserve identity and add an ordinary RESULT owner to
 the table's owners. The [instance-query review](coverage/semantics/global-constant-instance-review.json)

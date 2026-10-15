@@ -209,14 +209,24 @@ immutable compiler facts, while mutable arguments retain the existing capture
 policy.
 
 User-array queries retain the stored root and child identities. The admitted
-tree contains nonstring scalars, raw strings, authenticated string carriers and
-arrays with matching key/class trees and canonical table history. Immutable empty
+tree contains nonstring scalars, raw strings, authenticated string carriers,
+certified `PVINSTANCE`/`PVCLOSURE` leaves and arrays with matching key/class trees
+and canonical table history. Immutable empty
 arrays require their actual provenance; mutable empty copies remain distinct.
 Lookup does not clone, allocate or intern values. Existing COW handles writes and
 reference acquisition without changing the constant or other results. The
 [array-query review](../../coverage/semantics/global-constant-array-review.json)
 records repeated NaN-root identity, nested writes, empty roots, request leaves and
 source-derived malformed-state/budget checks.
+
+Object leaves retain the same completed-NEW or callable creation certificate as
+top-level query results. Returning the stored array adds an array root owner;
+it does not add an embedded-object edge. A later COW write creates another
+physical array-to-object edge while keeping the object identity, property storage and
+Closure static cells shared. References acquired in a caller copy can replace
+its bucket without changing the stored tree. The
+[object-leaf review](../../coverage/semantics/global-constant-object-array-review.json)
+records genuine first/during-COW/post-release fronts and malformed certificates.
 
 Queries also return installed `PVINSTANCE` user instances. The existing NEW
 certificate authenticates the exact object identity, original initializer site,
@@ -239,7 +249,7 @@ records actual query fronts, shared counters, alias roots and certificate refusa
 
 Absent names raise `Error` with the stripped lookup spelling and the full captured
 argument in the API trace. Unknown startup values retain their prior Unsupported
-result. Generic `PVOBJECT`, object-bearing array trees, coercions and packed/owning
+result. Generic `PVOBJECT`, stored ALIAS/cyclic array trees, coercions and packed/owning
 calls remain outside this slice. The original ordinary `const` string producer refusal retains
 its historical cut; the string-publication follow-up above admits that producer
 domain without renewing the older lookup campaign. The [global-query ledger](../../coverage/semantics/global-constant-review.json)

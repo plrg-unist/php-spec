@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Global `constant` array queries now admit certified `PVINSTANCE` and `PVCLOSURE`
+leaves through their existing live/source certificates. Queries preserve the stored
+root and embedded-object owners; actual COW adds a distinct physical array-to-object edge.
+Two exact sources at 7941e9f6, an independent bucket-reference source at 58d4993a
+and 564 public premises at 58d4993a pass, covering
+nested COW, shared properties/statics, readonly storage and forged leaf rejection.
+The unchanged first-source refusal and native/preparation retain zero credit.
+Stored ALIAS/cyclic array trees, generic objects and wider query forms remain outside
+this slice. Private validation is accepted; current-parent integration is pending.
+[Object-leaf review](coverage/semantics/global-constant-object-array-review.json).
+
 Numeric comparisons now finish a bounded C remainder after a Notice handler
 throws. Later registered callbacks and source string casts are skipped; an
 excluded numeric Notice still uses default reporting before the original error
