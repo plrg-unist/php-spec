@@ -289,6 +289,9 @@ empty-array fixture failure retain zero passing credit. A relocated-path pass
 also retains zero credit; the accepted peer retry uses its native filename/cwd.
 Defaults, arguments, whole-array conditional transfer/coalescing and wider
 producers remain partial.
+Pointwise composition over c9fc1c864 preserves the incoming399-module parent,
+including define, arithmetic, Generator, return and mixed-list selectors.
+Source4/state1107 retain their private398 cuts; no joined actor or renewed credit.
 
 Selected inherited `__unset(string): void` now dispatches direct CV/literal-name
 access to a declared private property. Accessible public unset skips magic;
