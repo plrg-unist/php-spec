@@ -782,13 +782,13 @@ def $class_constant_facts_valid(S, porigin, [pconstantfact]) = (pconstantfact.OR
 
 def $dynamic_class_constant_selected(S, porigin, eps) = false
 def $dynamic_class_constant_selected(S, porigin, pselectedcall :: pselectedcall_tail*) = true
-  -- if pselectedcall.SITE = porigin /\ pselectedcall.KIND = INTRINSIC_CONSTANT
+  -- if pselectedcall.SITE = porigin /\ (pselectedcall.KIND = INTRINSIC_CONSTANT \/ pselectedcall.KIND = INTRINSIC_DEFINED)
   -- if $selected_entry_source_valid(S, pselectedcall)
 def $dynamic_class_constant_selected(S, porigin, pselectedcall :: pselectedcall_tail*) = $dynamic_class_constant_selected(S, porigin, pselectedcall_tail*)
-  -- if pselectedcall.SITE =/= porigin \/ pselectedcall.KIND =/= INTRINSIC_CONSTANT \/ ~$selected_entry_source_valid(S, pselectedcall)
+  -- if pselectedcall.SITE =/= porigin \/ (pselectedcall.KIND =/= INTRINSIC_CONSTANT /\ pselectedcall.KIND =/= INTRINSIC_DEFINED) \/ ~$selected_entry_source_valid(S, pselectedcall)
 def $dynamic_class_constant_site(S, porigin) = true
   -- if $exit_fixed(S, porigin) = ((preqbytes, preqbytes_fallback?))
-  -- if $intrinsic_named(preqbytes) = (INTRINSIC_CONSTANT)
+  -- if $intrinsic_named(preqbytes) = (INTRINSIC_CONSTANT) \/ $intrinsic_named(preqbytes) = (INTRINSIC_DEFINED)
   -- if $intrinsic_count(S, porigin) = (1)
 def $dynamic_class_constant_site(S, porigin) = true
   -- if $exit_fixed(S, porigin) = eps
@@ -912,3 +912,42 @@ def $dynamic_halt_receive(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT = KNO
   -- if $dynamic_halt_lookup(S, $call_sourcefile(S.FILES, pconfigcall.SITE), S.DECLARATIONS) = HALT_OFFSET z
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
 def $dynamic_halt_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "halt offset constant query"] -- otherwise
+
+
+;; SILENT lookup skips inaccessible members, but still initializes a visible
+;; requested AST. Share the existing per-value binder and captured API frame.
+dec $dynamic_defined_deferred(pstate, pconfigcall) : pclassconstantdesc?
+def $dynamic_defined_deferred(S, pconfigcall) = (pclassconstantdesc)
+  -- if $dynamic_defined_valid(S, pconfigcall)
+  -- if $dynamic_class_constant_site(S, pconfigcall.SITE)
+  -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes_class)) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $class_constant_lookup(S, porigin_class, preqbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+  -- if $class_constant_visible(S, pclassconstantdesc)
+  -- if $dynamic_class_constant_global(S, pclassconstantdesc) = (preqbytes)
+def $dynamic_defined_deferred(S, pconfigcall) = eps -- otherwise
+def $dynamic_defined_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $dynamic_defined_deferred(S, pconfigcall) = (pclassconstantdesc)
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = (pdefaultcache)
+  -- if $class_constant_cache_value_valid(S, pdefaultcache)
+  -- if $dynamic_constant_class(pdefaultcache.VALUE) = (pdefaultcache.CLASS)
+  -- if S.TODO = ptask :: ptask_tail*
+def $dynamic_defined_finish(S, pconfigcall) = $class_constant_begin(S[.TODO = (DYNAMIC_DEFINED_RESUME pconfigcall) :: ptask_tail*], pclassconstantdesc, CLASS_CONST_CALL pconfigcall, preqbytes_class, pconfigcall.LINE)
+  -- if $dynamic_defined_deferred(S, pconfigcall) = (pclassconstantdesc)
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = eps
+  -- if $dynamic_class_constant_initializer(S, pclassconstantdesc)
+  -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
+  -- if S.TODO = ptask :: ptask_tail*
+dec $dynamic_defined_resume_present(ptask*, porigin, pconfigcall) : bool
+def $dynamic_defined_resume_present(eps, porigin, pconfigcall) = false
+def $dynamic_defined_resume_present([ptask], porigin, pconfigcall) = false
+def $dynamic_defined_resume_present(ptask :: ptask_next :: ptask_tail*, porigin, pconfigcall) = ((ptask = CLASS_CONST_BIND porigin /\ ptask_next = DYNAMIC_DEFINED_RESUME pconfigcall) \/ $dynamic_defined_resume_present(ptask_next :: ptask_tail*, porigin, pconfigcall))
+def $class_constant_selection_valid(S, pclassconstantcontext) = true
+  -- if pclassconstantcontext.SELECTION = CLASS_CONST_CALL pconfigcall
+  -- if pclassconstantcontext.ORIGIN = (pconfigcall.SITE) /\ pclassconstantcontext.LINE = pconfigcall.LINE
+  -- if S.ORIGIN = (pconfigcall.SITE)
+  -- if $dynamic_defined_deferred(S, pconfigcall) = (pclassconstantdesc)
+  -- if pclassconstantcontext.DECL = pclassconstantdesc.ORIGIN
+  -- if $dynamic_defined_resume_present(S.TODO, pclassconstantcontext.DECL, pconfigcall)
