@@ -441,6 +441,22 @@ Pointwise composition over c53bf2a3d preserves incoming399 modules, define,
 shift, typed-return, magic-empty and nested-list selectors. Source3/state817
 retain their private cuts; no joined actor or renewed credit.
 
+Global stdClass constant-AST NEW now evaluates ordinary positional and uniquely
+named ignored arguments through227. Exact source/value-table guards retain
+argument owners; saved incomplete birth and pending binding survive context
+clearing and avoid constructor-failed marking at the immediate discard. Source3
+and author376/independent320 premises pass696, checking donor/array retirement,
+argument Error, distinct fresh-eval retry and real value destructors. Normal
+storage retirement later uses its ordinary CALLED marker and physical pin.
+The first peer fixture assumed late marker absence; its corrected pin check
+renews only that failed packet, with original failure0 preserved.
+The original source with duplicate argument names exposes a real lifetime
+mismatch and retains0: native keeps the rejected current value until shutdown.
+The source guard requires unique names; duplicate argument names require a
+later lifetime milestone.
+References, unpacking, defaults and wider lifecycle forms remain partial.
+[Argument review](coverage/semantics/global-constant-stdclass-arguments-review.json).
+
 Selected inherited `__unset(string): void` now dispatches direct CV/literal-name
 access to a declared private property. Accessible public unset skips magic;
 the callback retains Parent lexical scope and Child called scope, removes the

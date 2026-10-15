@@ -1,6 +1,6 @@
 # Ordinary source user constants
 
-Ordinary `const` declarations and reads use the checked source compiler and runtime for the pinned PHP 8.5.10 CLI profile. Scalar/array, certified Closure/FCC, bounded user-instance NEW and zero-argument stdClass values, including nested arrays and selected newborn ternary/coalescing leaves, are supported; the constant family and full core remain partial.
+Ordinary `const` declarations and reads use the checked source compiler and runtime for the pinned PHP 8.5.10 CLI profile. Scalar/array, certified Closure/FCC, bounded user-instance NEW and bounded stdClass values, including uniquely named ignored arguments, nested arrays and selected newborn ternary/coalescing leaves, are supported; the constant family and full core remain partial.
 
 ## Declaration and lookup
 
@@ -518,7 +518,7 @@ invalid duplicate observer remains zero credit; only its corrected local-alias
 version supplies that source comparison. The producer milestone keeps embedded trees, default
 caching and callable folding outside its slice; existing `defined()` presence
 lookup remains unchanged. Other
-internal/Throwable NEW, argument and wider lifecycle forms remain partial.
+internal/Throwable NEW, duplicate argument names and wider lifecycle forms remain partial.
 [stdClass producer ledger](../../coverage/semantics/global-constant-stdclass-review.json).
 
 Global `constant()` also returns certified `PVSTDCLASS` rows. The sole module400
@@ -552,7 +552,7 @@ transfer follows the newborn's SITE to its completed receipt, while value guards
 separately require the live allocation. Eval duplicate candidates create distinct
 leaves, then retire while nonowning birth history remains. Four exact sources and
 1,107 SL premises retain their [nested-birth cuts](../../coverage/semantics/global-constant-stdclass-new-review.json).
-Conditional aliases/whole-array transfer, arguments and defaults remain partial.
+Conditional aliases/whole-array transfer, duplicate argument names and defaults remain partial.
 
 Newborn stdClass coalescing leaves retain a nonnull left value or select the right
 after a captured NULL, including nested chains and eval units. Two module283 flow
@@ -562,3 +562,13 @@ and quiet capture compose with ternary selection, then retire their temporary
 array while preserving the chosen object. The
 [coalescing review](../../coverage/semantics/global-constant-stdclass-coalesce-review.json)
 records source, handoff and ownership checks. Alias/whole-array coalescing remains partial.
+
+Global stdClass constant-AST NEW evaluates ordinary positional and uniquely named
+arguments before dropping their values, even for unknown names. Earlier values
+retire on an argument Error; the target keeps an incomplete birth receipt and
+the constant stays absent, while fresh eval can retry with a distinct birth.
+Donated object identity survives ignored root/array owners and real user-value destructors run
+before continuation. [The argument review](../../coverage/semantics/global-constant-stdclass-arguments-review.json)
+retains the duplicate-name counterexample: the rejected current value survives
+until native shutdown, so that source shape remains Unsupported. References,
+unpacking, default caching and broader lifecycle consumers remain partial.

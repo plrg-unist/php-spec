@@ -2793,7 +2793,13 @@ chains, eval units and quiet literal-array dimension reads. A nonnull left keeps
 its identity and skips the right; a NULL constant selects a fresh fallback leaf.
 The [coalescing review](coverage/semantics/global-constant-stdclass-coalesce-review.json)
 records the focused source and state cuts. Conditional aliases, whole-array
-coalescing, arguments and defaults remain partial.
+coalescing and defaults remain partial.
+Global stdClass constant-AST NEW now evaluates and drops ordinary positional and
+uniquely named arguments, preserving donated identities, real value destructors
+and fresh eval retry after an argument Error. The
+[argument review](coverage/semantics/global-constant-stdclass-arguments-review.json)
+keeps duplicate argument names Unsupported after a genuine lifetime counterexample;
+references, unpacking and wider lifecycle forms remain partial.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is

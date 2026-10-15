@@ -1,0 +1,94 @@
+{
+  "status": "independently reviewed bounded implementation and focused validation",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; sole project-local PHP/profile; exact original bytes, file paths/cwd and full399 SL modules",
+  "base": "32b0615d4ae52038a8a3c70b843b6a083ac5bc4d",
+  "implementation_revision": "259281fc04a50e8d89b4117ced583897ac7eb23c",
+  "runtime": {
+    "file": "spec/semantics/283-global-constant-objects.watsup",
+    "sha256": "20ef02211d9091387648babebaff94163d489b7283695272a01ebcae7c28a0e2",
+    "delta": "Only283 changes: exact ordinary argument ASTs with full-name uniqueness, pending source ARGUMENTS/index/value-count and an incomplete live std receipt plus pending CONSTANT_BIND authenticate argument discard after context clearing. Existing227 evaluates values and completes the no-constructor target; no generic constructor, destructor, flow, query or default-cache rule changes."
+  },
+  "engine_route": "vendor/php-src/Zend/zend_ast.c::zend_ast_evaluate_ex ZEND_AST_NEW allocates before evaluating ordered values, obtains the constructor after the table and drops ignored values when absent. Named values use the AST hash-table path, so arbitrary unique names are ignored. Evaluation failure destroys earlier values and the target before returning; duplicate insertion instead retains the current rejected value until shutdown in the observed target.",
+  "accepted": {
+    "source_agreements": 3,
+    "author_sources": 2,
+    "independent_sources": 1,
+    "author_literal_premises": 136,
+    "author_eval_premises": 240,
+    "independent_premises": 320,
+    "total_premises": 696,
+    "driven_forged_states": 0,
+    "author_zero_budget_restoration_checks": 1
+  },
+  "behavior": [
+    "Author main evaluates four ignored positional/named values. The table holds two direct donor roots and two physical array edges: donor owners5 becomes1 after completion and argument containers retire. The new empty target is distinct, then ordinary aliases/query writes stay shared.",
+    "Author eval reaches an actual missing-constant Error with two prior values. CONSTCONTEXT is cleared before DEFAULT_NEW_SEND discard; exact receipt and singleton pending binding retain authority, so the unfinished target is released without constructor-failed CALLED marking. Its incomplete nonowning history remains, no constant is installed and donor31 survives. The same eval bytes in source unit2 create a distinct completed target and row.",
+    "Independent unique names evaluate fresh user-class values with real echo destructors. Ignored GOOD values retire before continuation; a BAD argument Error releases the prior value and skips the late NEW while GOOD identity/value41 remain. The immediate context-cleared discard avoids constructor-failed marking; actual normal359 storage retirement later holds the unfinished std target with one physical owner and legitimately marks CALLED, then retires it before the restored query.",
+    "Malformed source argument vectors, indexes/counts, missing or prematurely complete receipts and missing pending binding are pure refusals, never driven. Public call validation resumes at restored catch/query states; abandoned throw phases are checked through their actual marker/context/discard/heap transitions rather than a default-context validator."
+  ],
+  "source_cuts": {
+    "native_and_unchanged_baseline": "8041240a7e0f0b5a4c06189717d99898d4ed0af1/399",
+    "initial_author_source2": "39048bbafe7d96576a99a50b1fd2c2ce9ca15e24/399",
+    "final_eval_and_independent_source": "259281fc04a50e8d89b4117ced583897ac7eb23c/399",
+    "authority": "Main source acceptance stays at39048: its positional/spare/extra vector satisfies the added uniqueness guard and it has no abrupt discard. Only the affected eval model was renewed at its original native path/cwd after record-first unwind authority changed; it is the same program, counted once. Author376, independent320 and unique independent source1 use final259281 runtime bytes. Peer proof inputs pin its then-untracked script, now included byte-for-byte. No author native/main or V61/V62 replay."
+  },
+  "preserved_outcomes": {
+    "unchanged_baseline": "Genuine Unsupported global constant internal or Throwable initializer after B|, CLI1/empty stderr, stable pre-edit8041240; passing assertion adds0 agreement.",
+    "duplicate_named_counterexample": "At39048, native/model both finish normal/exit0/empty but differ: native releases prior First before the caught duplicate-name Error and retains rejected current Second until after A| at shutdown; model releases both before catch. Original bytes/reports remain immutable and count0. Final source guard requires default_new_unique(full args), and the retained source wrapper records its explicit Unsupported boundary without replay or agreement claim.",
+    "other": "Author and new unique independent source checks pass on first attempt. Native/preparation add0 agreement. The zero-budget check proves pause/restoration identity and reuses the ordinary driven birth; it is not separate resume-path credit. No accepted engine divergence, rebuild or portability claim.",
+    "independent_first_state": "Its overstrong late CALLED exclusion fails after otherwise reached source/receipt/destructor checks; the packet counts0. Immediate context-cleared discard correctly avoids constructor-failed marking, but existing359 normal free_obj retirement legitimately marks the STDINSTANCE while physically pinning it. The affected peer retry adds that actual empty-storage/pin-owner1 frontier and changes only the late-negative to a positive normal-retirement mark. Runtime, sources/native and author376 are unchanged."
+  },
+  "remaining": "Duplicate-name retained-current-value lifetime is an explicit subsequent milestone. References/unpacking, defaults/caching, owning/generic producer authority, throwing/reentrant value destructors and wider lifecycle/core behavior remain partial.",
+  "artifacts": {
+    "author_sources": {
+      "root": ".tools/dynamic-stdclass-arguments-native-63",
+      "sha256": {
+        "baseline-report.json": "5495c072198dd13b8c5901e104b0ae7d8ac9d4a69c3255fb1012d1aaaa6d53c7",
+        "model-eval-argument-error-and-fresh-retry-report.json": "c061dd34a8c62a44345f101eb1f3410328b846d1bbda75f2e1e908700b09a18e",
+        "model-report.json": "761b132414449ff38e40634f251aca85180a046a132aec6ec527fd5a22f20fdb",
+        "native-report.json": "49c0b95b30477ea7d44d9b364fcc31acd5ba1f0327a838f51bda4b999d8aa908"
+      }
+    },
+    "author_state": {
+      "root": ".tools/dynamic-stdclass-arguments-state-63",
+      "sha256": {
+        "check-report.json": "44d7f0ab943a7b7cbd3ca42146ef8a98a82ee2934526548628c2aa6f846c75e8",
+        "fixtures-report.json": "245322187c50e155a6db295d09d139ee7b5992b6dcccfff0f9f8724e5d8cdc4a"
+      }
+    },
+    "duplicate_counterexample_zero": {
+      "root": ".tools/dynamic-stdclass-arguments-peer-63",
+      "sha256": {
+        "model-report.json": "c21e93dd4ac3d8401b993a117ba0de432fd79769c03cd5f2e33a19e19e4a9dfd",
+        "native-report.json": "768b68660110bdb6555ad14605dff01278a3974c0c3f8459261880b9ded2ec90"
+      }
+    },
+    "independent_sources": {
+      "root": ".tools/dynamic-stdclass-arguments-unique-peer-63",
+      "sha256": {
+        "model-named-value-destructors-and-argument-error-cutoff-report.json": "61aaf960f4b180f0d74a8c8b48f4e658e96536ff68b0b5fc83e007c3757a2037",
+        "native-report.json": "c55fbdf4de25183bf5f02c288cbd530aebea5632a3a1b7ad9c04e2836fb72cb3"
+      }
+    },
+    "independent_first_state_zero": {
+      "root": ".tools/dynamic-stdclass-arguments-peer-state-63",
+      "sha256": {
+        "check-report.json": "90b5eba6ae3c6739b72d50224104040ea8e9175a97443630b7d93fca0803181a",
+        "fixtures-report.json": "71093d90066f9332c26560c9f5a53327404265597e570e1b20bf76bfe323c8d1"
+      }
+    },
+    "independent_state": {
+      "root": ".tools/dynamic-stdclass-arguments-peer-state-63-v2",
+      "sha256": {
+        "check-report.json": "1943bb0ef168f9168fdd27974cee077172172dca718ebfb85d29ba46dbaad45d",
+        "fixtures-report.json": "87cc2dfb89d08bd56f688e5f6df682c9180d4fec9a6ab5efb38b8bc6056571ee"
+      }
+    }
+  },
+  "recovery": "Source wrappers use native host45/process15, model CLI45/process60 (author2 host150, affected eval1 and peer1 host90) and unchanged baseline1 host90. Original native argv/cwd/file identities must be preserved. Author protocol reuses the V60 phase recorder and existing checked worker/runner, fixtureshost120 then serial2 checkhost240/perSL90. Raw assertions/fixtures/results are ignored outside Git; accepted proof output is lowercase true plus LF with empty stderr. After cleanup, recover the tracked scripts from the publication commit adding this ledger and peer protocol; actorHEAD259281 alone lacks the then-untracked peer script. Recreate the original WT path and provision pinned executables/references, retaining the recorded259281 runtime SHA and exact native paths/cwd. Independent protocol uses the same recorder with native original unique-peer path: fixtureshost120/checkhost150/perSL90, fresh v2 root only after its one corrected fixture premise. All accepted actor groups are reaped.",
+  "review": {
+    "reviewer": "/root/dynamic_review_59",
+    "decision": "cleared",
+    "scope": "Unique-name AST versus ordinary NEW argument behavior, exact birth/table ownership, cleared-context discard, real destructors, Error/fresh-unit retry and the preserved duplicate lifetime counterexample."
+  }
+}
