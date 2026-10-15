@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "milestone": "A4 one-level by-value nested destructuring missing-key handlers",
+  "status": "independently reviewed private milestone; actual-parent composition pending",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle and tests/semantics/profile.json",
+  "base": "c9fc1c86474f3a9b13b84f1ee4798c993f161791",
+  "scope": "One nested by-value pattern layer from a direct-CV RHS, with direct-CV leaves and quiet implicit/compiled constant keys; outer and inner missing fetches are admitted.",
+  "runtime_commit": "a5628799f202bb79026b617dd677cf2ba87b5ede",
+  "runtime_sha256": {
+    "spec/semantics/409-list-missing-warnings.watsup": "3f2e036e72c681cdcc3af4f4d87f1e556fab9075e8d6ef3a657cbd4837b8168c"
+  },
+  "private_modules": 399,
+  "engine_basis": [
+    "Vendored PHP8.5.10 commit34308a6666b2d489c509541ea9befea9e2b42348: zend_compile_list_assign emits FETCH_LIST_R before recursively compiling the child target, then resumes the outer items. zend_ast_get_lineno and the current compiler location determine fetch/store lines, rather than closing delimiters.",
+    "ZEND_FETCH_LIST_R returns uninitialized/null after the missing-key callback without repeating the lookup. A NULL child source silently supplies NULL at each by-value fetch. Captured inner and outer arrays have separate task owners; shared embedded reference cells retain their identity.",
+    "The VM checks a handler exception before the pending target store. Existing throw search discards nested scaffolding in order: removing the inner warning task can leave the child owned through the outer continuation until that continuation is discarded."
+  ],
+  "reviewed_behavior": [
+    "The root context requires a direct-CV assignment with one by-value child layer. A child context authenticates its exact parent3 path and selected outer item; its initial line comes from that outer fetch. Prior nested targets contribute their final compiler location. Deeper/reference/literal-root nesting stays outside this admission.",
+    "An outer missing fetch still passes NULL to the child after callback insertion/rebinding, overwriting callback writes to child targets in order without extra warnings. An inner missing fetch preserves both captured tables, shared-cell reads, later outer items and the captured RHS assignment result.",
+    "Source/key/index/tail/line and live array checks authenticate the saved task. Captured child identity is a source-compatible runtime fact; the guard does not reread the current RHS CV or reconstruct an old parent lookup. Real callback frames own the inner task and outer continuation separately.",
+    "A supplied handler throw preserves its identity/Previous, earlier target stores, callback effects and the caller destination. After the inner emitter disappears the outer task still owns outer1→inner1→cell1; later caller TRY_END has retired all otherwise unowned nodes.",
+    "The existing flat source/plan clauses are unchanged; the new preceding-nested traversal is unreachable in their accepted flat shapes. No A1–A3 check was replayed or renewed, and no task, module, ownership projection or generic read/write/compiler helper changed."
+  ],
+  "accepted": {
+    "source": {
+      "report": ".tools/list-nested-source-04/report.json",
+      "sha256": "1a72fd5264634db91f141e45aa45d61fd259ba23abfbadea688540e031b9b575",
+      "revision": "a5628799f202bb79026b617dd677cf2ba87b5ede",
+      "agreements": 5,
+      "cases": [
+        "list-nested-missing-inner-snapshot", "list-nested-missing-inner-keyed", "list-nested-missing-inner-throw",
+        "list-nested-review-outer-null-child", "list-nested-review-earlier-child-line"
+      ],
+      "native_reuse": "Fresh A4 originals retain native argv/source paths/streams from baseline/native preparations; model-only comparisons use the same original paths, with no oracle replay."
+    },
+    "states": [
+      {
+        "report": ".tools/list-nested-author-state-04/report.json",
+        "sha256": "1d9b2fece2604b4c58e2c8b7759b586a0c776614a96f3eaf497874724f3eb9cc",
+        "revision": "31f2b999c5b613d22b7a2a9eb42ba6371ffafbe4",
+        "fronts": 3, "conditions": [126, 124, 120], "raw_steps": [3, 3, 1], "boolean_premises": 363
+      },
+      {
+        "report": ".tools/list-nested-review-state-04/report.json",
+        "sha256": "e49716ae02178a3eeafc98a29b286420776b0f55dabef6a3954cd423d9506062",
+        "revision": "31f2b999c5b613d22b7a2a9eb42ba6371ffafbe4",
+        "fronts": 2, "conditions": [133, 134], "raw_steps": [4, 3], "boolean_premises": 260
+      }
+    ],
+    "source_agreements": 5, "state_fronts": 5, "total_conditions": 637, "boolean_premises": 623, "raw_steps": 14,
+    "credit_note": "Conditions include setup and pure refusal premises, not separate PHP programs. Every recorded group_after is empty. Source/state checks retain their private cuts; later documentation/composition adds no agreement credit. No A4 fixture failed."
+  },
+  "preserved_zero_credit": [
+    {
+      "report": ".tools/list-nested-baseline-04/report.json",
+      "sha256": "a557f3a670b0ea7f5130671e59f7feb8ad7db582762b70d0dcd4ec9106c6f575",
+      "revision": "c9fc1c86474f3a9b13b84f1ee4798c993f161791",
+      "result": "Unchanged A3 explicitly Unsupported at handler ingress for list-nested-missing-inner-snapshot; its original native path/bytes are reused for the accepted model comparison."
+    },
+    {
+      "report": ".tools/list-nested-native-rest-04/report.json",
+      "sha256": "fe0a5ba8dbfecbb3dcbed24ab00624a648cdc9bd349fc779cc05851aa87f4a66",
+      "revision": "c9fc1c86474f3a9b13b84f1ee4798c993f161791",
+      "result": "Fresh author keyed-child fallback and supplied-throw native2 preparation only."
+    },
+    {
+      "report": ".tools/list-nested-review-native-04/report.json",
+      "sha256": "b61d6faa5237c595303484e5fd99a2ee95ea932ab8662d1fe45d60b8b2a98024",
+      "revision": "c9fc1c86474f3a9b13b84f1ee4798c993f161791",
+      "result": "Fresh independent outer-NULL descent and completed-child compiler-line/result native2 preparation only."
+    }
+  ],
+  "raw_evidence": {
+    "archive": "/home/user/workspace/php-spec/.tools/list-nested-missing-warning-04-raw.tar.gz",
+    "bytes": 291701, "members": 152,
+    "sha256": "0ed8c1fd5d0d37a55681afee05e50c557ed9b3777967302bd261af980ed4621f",
+    "recovery": "Archive retains six original relative .tools report/fixture/process/source directories and list-nested-reuse-sources-04.py. Extract beneath a checkout of the recorded cut; absolute argv/cwd are historical provenance. No archive is a build dependency."
+  },
+  "actual_parent_review": {
+    "reviewed_parent": "dc3c1fb9ee7c85d022d9858810a6b52829d937e5",
+    "seams": "Incoming30/55/404 add fractional-count shift-assignment warning tasks/handlers,156 assigned nullable-object return/destructor replay,283 nested stdClass constant birth paths,400 class-name scalar-flag errors and408 primitive magic-empty truth. These disjoint guards do not change409,33,39,62,63,64 or301 and do not admit nested list targets into any incoming producer.",
+    "joined_actor": "No concrete semantic interaction found; actual-parent pointwise composition and exact FF review remain pending and add no replay credit."
+  },
+  "remaining": [
+    "Deeper or reference nesting, nested literal/call/wider RHS producers and non-CV target leaves.",
+    "Undefined-CV/null/lossy-float key warning producers and scalar/object destructuring diagnostic callbacks.",
+    "Wider callbacks, suspension and lifecycle; full array/diagnostic/core closure and final offline portability."
+  ]
+}
