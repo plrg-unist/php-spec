@@ -7,6 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Plain-CV `%=` now keeps both converted longs through a fractional-RHS deprecation.
+Captured12/5 stores2 despite callback99/7 and detaches a late target alias; supplied
+throw cancels the store. Captured0 from0.5 still raises the original-line modulo
+`DivisionByZeroError` after a live RHS5, preserving target/alias99 and destination100.
+Three exact originals pass at 2c04fc25e; 141/126 author plus137 independent SL premises
+pass404 at c54aa0f05/397, covering public fresh guards, actual CELL/LOCATION and
+alias/error owners, default Deprecated and budgets. Checked prep reused accepted
+source/native bytes without application replay; prep/syntax and the original bb9
+binding failure retain0. Pure target refusals establish no wider execution.
+Both-fractional operands, initial references/copies, unsafe targets and wider
+callbacks/lifecycle remain partial; OP12 stays paused.
+[RHS modulo ledger](coverage/semantics/modassign-right-warning-review.json).
+The pointwise 398-module composition over ca70c7aaf preserves Source35/M76/V60
+and incoming list/comparison/Generator paths. Source3/state404 retain their private
+cuts; independent seam review warrants no joined actor or renewed agreement.
+
 A NaN third `define` flag now emits its bool-conversion Warning before the
 ignored-flag Warning while retaining raw NaN in API arguments. A throwing first
 handler cancels outer registration; a later ignored-warning throw still completes

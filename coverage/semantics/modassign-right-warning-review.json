@@ -1,0 +1,127 @@
+{
+  "version": 1,
+  "milestone": "OP26 plain-CV modulo assignment captured fractional RHS",
+  "status": "independently reviewed milestone composed over canonical parent",
+  "target": "PHP8.5.10 CLI NTS64-bit; project-local pinned PHP and profile",
+  "scope": "Ordinary %= with distinct initially defined plain CVs, a quiet signed-64-bit integer LEFT and finite in-range fractional-float RIGHT, and a named eligible deprecation handler. Resumption requires the original target live, allocated, unreleased, nonowning and unconstrained; a late target reference is admitted. Both converted longs are historical after capture; RHS values are never reread.",
+  "runtime_revision": "2c04fc25e46a2f93d24aa3cf6dc95171a28ff977",
+  "helper_revision": "c54aa0f05243ef5fa76ea80bf608c73cc44ba036",
+  "private_modules": 397,
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "053d304b90d7f46faaba1819cce9c6870492c79b16a63d4d39ae2f1bd828c639",
+    "spec/semantics/55-compound-assignment.watsup": "5cdf03f40b79ca7c77131f38dbe7f8cfc52f0b3848ce3d089e564c84b0e8fc7d",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "8a4e9dceeb112acb44b1fefc04d871eafbb9f23e93e91112bae50be5691f63ec"
+  },
+  "engine_basis": [
+    "Zend/zend_operators.c convert_op1_op2_long saves the LEFT long before converting RIGHT. zendi_try_get_long saves the RIGHT dval and long across zend_dval_to_lval_safe deprecation, then tests EG(exception); a supplied throw returns FAILURE before modulo or storage.",
+    "mod_function checks its converted divisor for zero before destroying result==op1 or storing. A captured zero raises DivisionByZeroError(\"Modulo by zero\") even after callback RHS writes; successful modulo uses both captured longs.",
+    "Zend/zend_vm_def.h ZEND_ASSIGN_OP selects RHS and target before the binary call. A newly created target reference is detached only when successful mod_function destroys/replaces the original CV slot. Existing pure float_long/long_mod, target-only powerassign_warning_ready and arithmetic_addassign_cv_write are reused unchanged."
+  ],
+  "contract": [
+    "Authentic COMPOUND_APPLY MODULO false, AssignOpMod source, distinct plain selections and compiled RHS line bind the original cells/current integer and float at stage0 and fresh TARGETeps dispatch. Both longs and the original diagnostic spelling become historical after entry; source and range validation persists without any RHS reread.",
+    "Normal captured12/5 produces2 despite callback target99/RHS7, distinguishing wrong left4, wrong right5 and both-live1. Successful replacement creates the actual new nonreference CELL/LOCATION; the old alias keeps99 and sole ownership, and a later target7 leaves that alias99.",
+    "A supplied handler Exception cancels the marker and store, keeps callback target/alias99 and RHS7, and resumes the same Exception with no Previous. The outer destination stays100 and a later target7 reaches the alias7.",
+    "Captured RHS0 from0.5 creates one ordinary caller DivisionByZeroError at RHSline16 despite live RHS5. Store/environment/reference aliases/events stay unchanged at that step, the new THROW_SEARCH owns the Error once, and exactly one default Deprecated precedes it. The catch/finally path preserves destination100 and later alias write-through.",
+    "All driven states arise from production drive_steps; reached heaps/call descriptors and actual cell/alias/error owners validate across full/budget resumes. Fresh line/target/cache/diagnostic/range counterfeits are whole-public validator negatives only, never driven. Initial-reference and pruned/missing/wrong/constrained/owning target projections are pure refusals, without wider execution or valid-heap claims."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-26/source-2c04fc25e-handler-write/report.json",
+        "sha256": "4614e3ab06f492db5b33da240bf78d972546d30f9d1ce40ab41edfa16e42563c",
+        "case": "modassign-right-handler-write",
+        "revision": "2c04fc25e46a2f93d24aa3cf6dc95171a28ff977",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-26/source-2c04fc25e-handler-throw/report.json",
+        "sha256": "f31cc73455f50e5320eda15fcaa8a5a8f2d01b287f7d72e51179358ff1b3c82e",
+        "case": "modassign-right-handler-throw",
+        "revision": "2c04fc25e46a2f93d24aa3cf6dc95171a28ff977",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-26/review-model-2c04fc25e-cached-zero-default/report.json",
+        "sha256": "b8a4b6c38c86104199109fcfaa1ea9def81b4d23159911bbf6cc90d3771596d4",
+        "case": "modassign-right-cached-zero-default",
+        "revision": "2c04fc25e46a2f93d24aa3cf6dc95171a28ff977",
+        "agreements": 1
+      }
+    ],
+    "state": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-26/state-c54aa0f05-three/report.json",
+      "sha256": "046f4f3e44436ff0ebbadf5ef2c9521f236e051506e3cca6a41a6dc49f60fe50",
+      "revision": "c54aa0f05243ef5fa76ea80bf608c73cc44ba036",
+      "modules": 397,
+      "author_conditions": [
+        141,
+        126
+      ],
+      "independent_conditions": [
+        137
+      ],
+      "total": 404
+    },
+    "total_source_agreements": 3,
+    "total_focused_state_conditions": 404,
+    "compatibility": "Only two helper scripts changed2c04fc25e..c54aa0f05; runtime bytes stayed identical. Checked frontend/adapter preparation reused accepted original source paths/native bytes without native/application replay. Full141/126/137 fixtures use maintained conditions/HELPERS; immutable full397 SL thins execute no PHP/frontend stage. Counts include setup/refusal premises, not404 separate programs or renewed source agreement."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-26/baseline-37dba72af-handler-write/report.json",
+      "sha256": "3aa869b0225594436a12d5c8c7dc87663d1defcad59b61b554f3944c4476164f",
+      "result": "Accepted checked program Unsupported: error-handler ingress requires a producer continuation; native stores2 with detached alias99, model streams empty."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-26/native-37dba72af-author-two/report.json",
+        "sha256": "bc842d393d2b5955165236dd21d5fd271d63bc3698dfda88723870172570002b"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-26/native-37dba72af-review-one/report.json",
+        "sha256": "a41171664b1784c2f5d27a94c8750289e824da830624376402c6410479d4e157"
+      }
+    ],
+    "original_binding_failure": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-26/source-bb9f75992-handler-write/report.json",
+      "sha256": "326eb34724ff69346d15cef03fb8761efe24f414b209c06381d691779550320d",
+      "result": "Pre-execution SpecTec binding failure404:1201: combined lookup comparisons cannot bind fresh cells. Splitting the two premises is the sole correction; remaining sources were unrun on this cut."
+    },
+    "checked_preparation": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-26/state-prep-c54aa0f05-three/report.json",
+      "sha256": "1fb4d4437c1818e9e87d78a8f573b7e5d4d5f37473a89a157ef99bbde191462e",
+      "result": "Only checked frontend parse/adapter check with retained source/native bytes; no application or numeric actor."
+    },
+    "standalone_syntax": "The three syntax rows in the accepted state report parse full files before the expected undefined-pstate standalone environment diagnostic. They carry zero semantic credit."
+  },
+  "required_follow_on": [
+    "Both-fractional/conversion-warning operands, initial references/COPY/TMP, container/property targets, missing/rebound/expired/owning/constrained targets and wider callback/exit/lifecycle forms remain partial.",
+    "All seven affected inventory rows remain partial. OP25 LEFT-warning/live-RHS source3/state362 retain their separate cuts: their existing bodies are unchanged and new entry requires PINT LEFT rather than PFLOAT LEFT. OP12 remains paused."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-26",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "environment": "LC_ALL=C, TZ=UTC, no PHP_SPEC_SCRIPT_ENCODING. Initial native3/baseline used CPU5; source3 and checked-prep/syntax/SL404 used CPU3. Native30/modelCLI60-process90; checked workers30; syntax30 and separate full397 SL groups120, true newline/empty stderr, no interruption and reaped PIDs/groups.",
+    "commands": [
+      "taskset -c3 env LC_ALL=C TZ=UTC python3 tests/semantics/modassign_right_warnings.py --case CASE_ID --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c3 env LC_ALL=C TZ=UTC python3 tests/semantics/modassign_right_warning_review.py --case modassign-right-cached-zero-default --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c3 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-26/state-prep-c54aa0f05-three/run-prepare.py",
+      "taskset -c3 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-26/state-c54aa0f05-three/run-state.py"
+    ],
+    "record": "Restore matching Git cuts/project-local tools and choose fresh outputs. External records retain original source/native/checked-worker packets, immutable fixtures, commands/exits/reaping. No evidence archive is a runtime dependency."
+  },
+  "composition": {
+    "parent": "ca70c7aafd8c181ff23b55f10394e102d251a51b",
+    "private_publication": "a457d78fe9830d21cc14f668c67e7f9e3c7be29a",
+    "modules": 398,
+    "runtime_sha256": {
+      "spec/semantics/30-storage.watsup": "cdcdd0c312f1eb2bf582dbc89a89ec1ae0f77c2ad9e9b0b00b617d36df521a04",
+      "spec/semantics/55-compound-assignment.watsup": "5cdf03f40b79ca7c77131f38dbe7f8cfc52f0b3848ce3d089e564c84b0e8fc7d",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "8a4e9dceeb112acb44b1fefc04d871eafbb9f23e93e91112bae50be5691f63ec"
+    },
+    "other_incoming_paths_preserved": 49,
+    "gate": "No joined actor:55/404 retain exact private bodies;30 is the parent plus only MOD_ASSIGN_RIGHT_WARNING. Source35 define, typed/byref return cursors, list-warning, WeakMap, Generator and stdClass-constant selectors are absent from OP26 source3. Core error-handler/cell/float/long interfaces remain unchanged. Independent pointwise review preserves every parent path; source3/state404 retain private397 cuts without replay or renewed credit."
+  }
+}

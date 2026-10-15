@@ -221,6 +221,19 @@ and budget resumption are covered. Pure ready projections establish refusals onl
 Initial references/copies, warning or noninteger RHS values, unsafe targets,
 wider callbacks and lifecycle paths remain partial.
 
+For a quiet integer LEFT and fractional-float RIGHT, `%=` keeps both converted
+longs through the RHS deprecation. Captured `12 % 5` stores `2` despite callback
+writes of `99` and `7`; a late target alias detaches and retains `99`. Supplied
+throw cancels storage and preserves the alias. Captured `0.5` becomes a zero
+divisor even after a callback writes `5`, producing the ordinary RHS-line
+`DivisionByZeroError` without storage or detachment. Ready checks only the original
+safe target; it never rereads the RHS. Three exact originals and 267 author plus
+137 independent SL premises pass in the
+[RHS modulo ledger](../../coverage/semantics/modassign-right-warning-review.json).
+Fresh cache/source/line/range guards, actual cells/owners, default Deprecated and
+budgets are covered; pure refusals establish no wider execution. Both-fractional
+operands, initial references/copies, unsafe targets and wider lifecycle remain partial.
+
 Arithmetic and bitwise conversion use the existing pure SpecTec numeric and byte
 helpers, including signed 64-bit boundaries, binary64 values, string operands,
 pinned power behavior and conversion diagnostics. Explicit casts keep their

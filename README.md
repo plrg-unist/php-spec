@@ -592,6 +592,12 @@ Three exact originals and 362 focused SL premises check capture, cancellation,
 default Deprecated, original-line `DivisionByZeroError` and budgets in the
 [modulo-assignment ledger](coverage/semantics/modassign-warning-review.json).
 Wider operands, targets, callbacks and lifecycle paths remain partial.
+With a quiet integer left operand, a fractional RHS now keeps both converted
+longs through its deprecation.
+Normal `%=` detaches a late target alias; supplied throw or a captured zero divisor
+preserves callback writes and aliases even after the live RHS changes.
+Three exact originals and 404 focused SL premises pass in the
+[RHS modulo ledger](coverage/semantics/modassign-right-warning-review.json).
 Explicit array-to-string casts now suspend through named warning handlers for
 a bounded plain-CV array input. The borrowed array adds no saved owner: replacing
 or removing its CV still yields fixed `Array`, while a supplied throw preserves
