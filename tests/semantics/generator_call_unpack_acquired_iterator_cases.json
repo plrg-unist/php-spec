@@ -23,43 +23,10 @@
     "id": "generator-acquired-iterator-unpack-generator-data-required-control",
     "source": "<?php\nclass AcquiredGeneratorAggregate14 implements IteratorAggregate { function getIterator(): Traversable { echo \"GET|\"; yield 7; echo \"TAIL|\"; } }\nfunction acquiredGeneratorProducer14() { try { echo \"G|\"; yield from new AcquiredGeneratorAggregate14; echo \"L|\"; } finally { echo \"F|\"; } }\nfunction acquiredGeneratorTarget14($item) { echo \"D|\", $item, \"|\"; }\necho \"P|\";\nacquiredGeneratorTarget14(...acquiredGeneratorProducer14());\necho \"E\";\n",
     "source_sha256": "85d5ac21e112440b1c7074036db75bcdb66cfbd148319f4f8a155f719af0066a",
-    "purpose": "An Aggregate-returned Generator uses iterator data rather than the shared native-child graph and remains a separate authenticated boundary.",
-    "expected_model": "unsupported",
+    "purpose": "Promoted acquired Generator boundary: the generic iterator retains its own cache and finishes before by-value target entry.",
+    "expected_model": "normal",
     "native_stdout": "P|G|GET|TAIL|L|F|D|7|E",
     "native_stderr": "",
-    "native_exit": 0,
-    "unsupported_reason": "Generator unpack delegated producer",
-    "unsupported_stdout": "P|G|GET|",
-    "unsupported_events": [
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "80",
-            "124"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "71",
-            "124"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "71",
-            "69",
-            "84",
-            "124"
-          ]
-        ]
-      }
-    ]
+    "native_exit": 0
   }
 ]

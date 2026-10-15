@@ -804,7 +804,12 @@ Aggregate-acquired Iterator leaves also use the authenticated acquisition receip
 Acquisition/input owners release before rewind; the saved receipt owns nothing.
 Independent Aggregate or Iterator aliases retain their own cleanup lifetimes.
 See the [acquired-Iterator review](coverage/semantics/generator-call-unpack-acquired-iterator-review.json).
-Aggregate ordinary-call unpack and acquired Generator leaves, owning copied returns
+Aggregate-acquired Generator leaves also unpack through active Generator links.
+Their copied raw cache and child owners stay distinct; generic iterator mode
+discards child returns, preserves method receivers and orders child close before
+parent finally and cached values.
+See the [acquired-Generator review](coverage/semantics/generator-call-unpack-acquired-generator-review.json).
+Aggregate ordinary-call unpack, owning copied returns
 and active chains ending in detached roots, Generator by-reference
 call targets and callback methods, nonnumeric raw valid changes, request/plain
 reference strings and handler replacements with

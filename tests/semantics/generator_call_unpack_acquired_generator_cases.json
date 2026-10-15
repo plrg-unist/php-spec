@@ -1,0 +1,32 @@
+[
+  {
+    "id": "generator-acquired-generator-unpack-method-keeps-receiver-and-discards-owning-return",
+    "purpose": "Generator method acquisition retains its receiver until completion; generic iterator mode discards an owning return before the parent tail and sends a named snapshot with defaults.",
+    "source": "<?php\nclass AcquiredMethodA15 { function __destruct() { echo \"A|\"; } }\nclass AcquiredMethodR15 { function __destruct() { echo \"R|\"; } }\nclass AcquiredMethodAggregate15 implements IteratorAggregate {\n    function getIterator(): Traversable {\n        echo \"GET|\";\n        try { yield \"item\" => new AcquiredMethodA15(); echo \"N|\"; return new AcquiredMethodR15(); }\n        finally { echo \"L|\"; }\n    }\n    function __destruct() { echo \"Q|\"; }\n}\nfunction acquiredMethodGenerator15() {\n    echo \"G|\";\n    try { $result = yield from new AcquiredMethodAggregate15(); echo \"AFTER|\", $result === null ? \"NULL|\" : \"BAD|\"; }\n    finally { echo \"F|\"; }\n}\nfunction acquiredMethodTarget15($head = 17, $item = null) { echo \"D|\", $head, \"|\"; $item = null; echo \"X|\"; }\necho \"P|\";\nacquiredMethodTarget15(...acquiredMethodGenerator15());\necho \"E\";\n",
+    "source_sha256": "049383d8d3542b75c0b527079d8c8c8fe76a336c89e87235a74ef39c6fa81021",
+    "expected_model": "normal",
+    "native_stdout": "P|G|GET|N|L|Q|R|AFTER|NULL|F|D|17|A|X|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-acquired-generator-unpack-temporary-key-error-orders-child-and-cache",
+    "purpose": "Temporary acquired child finalization precedes parent finally; the copied current and sent value retire in their distinct order, with no invented Generator API trace.",
+    "source": "<?php\nclass AcquiredKeyA15 { function __destruct() { echo \"A|\"; } }\nclass AcquiredKeyB15 { function __destruct() { echo \"B|\"; } }\nfunction acquiredKeyChild15() {\n    echo \"C|\";\n    try { yield \"item\" => new AcquiredKeyA15(); yield 0 => new AcquiredKeyB15(); }\n    finally { echo \"L|\"; }\n}\nclass AcquiredKeyAggregate15 implements IteratorAggregate {\n    function getIterator(): Traversable { echo \"GET|\"; return acquiredKeyChild15(); }\n    function __destruct() { echo \"Q|\"; }\n}\nfunction acquiredKeyGenerator15() { echo \"G|\"; try { yield from new AcquiredKeyAggregate15(); } finally { echo \"F|\"; } }\nfunction acquiredKeyTarget15($head = 17, $item = null) { echo \"BAD|\"; }\necho \"P|\";\ntry { acquiredKeyTarget15(...acquiredKeyGenerator15()); }\ncatch (Error $error) { echo \"T|\", $error->getLine(), \"|\", $error->getTrace() === [] ? \"NOFRAME|\" : \"BADTRACE|\"; }\necho \"E\";\n",
+    "source_sha256": "2f09abb3e18b13ed5ea778e806120648885cfd6e699618ed64049cdb822470ef",
+    "expected_model": "normal",
+    "native_stdout": "P|G|GET|Q|C|L|F|B|A|T|16|NOFRAME|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-acquired-generator-unpack-next-throw-preserves-real-producer-trace",
+    "purpose": "A native acquired child resume throws after one send; the real child and producer trace survive while copied cache and sent owners unwind once.",
+    "source": "<?php\nclass AcquiredThrowA15 { function __destruct() { echo \"A|\"; } }\nfunction acquiredThrowChild15() {\n    echo \"C|\";\n    try { yield new AcquiredThrowA15(); echo \"N|\"; throw new Exception(\"stop\", 71); }\n    finally { echo \"L|\"; }\n}\nclass AcquiredThrowAggregate15 implements IteratorAggregate {\n    function getIterator(): Traversable { echo \"GET|\"; return acquiredThrowChild15(); }\n    function __destruct() { echo \"Q|\"; }\n}\nfunction acquiredThrowGenerator15() { echo \"G|\"; try { yield from new AcquiredThrowAggregate15(); } finally { echo \"F|\"; } }\nfunction acquiredThrowTarget15($item) { echo \"BAD|\"; }\necho \"P|\";\ntry { acquiredThrowTarget15(...acquiredThrowGenerator15()); }\ncatch (Exception $error) { $trace = $error->getTrace(); echo \"T|\", $error->getCode(), \"|\", $trace[0][\"function\"], \"|\", $trace[1][\"function\"], \"|\"; }\necho \"E\";\n",
+    "source_sha256": "86def736eff4b58fcd33a88b676bc83a1af4988b2e6ad9483348511ac94a3c84",
+    "expected_model": "normal",
+    "native_stdout": "P|G|GET|Q|C|N|L|F|A|T|71|acquiredThrowChild15|acquiredThrowGenerator15|E",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]

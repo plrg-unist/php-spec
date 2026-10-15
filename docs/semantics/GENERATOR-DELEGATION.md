@@ -24,6 +24,19 @@ Internal rewind/next operations borrow data already owned by the outer iterator.
 A Generator getter's stored frame owns its receiver once; genuine parked getters
 retain their parent resumer and source authority in the Fiber VM.
 
+Module405 also consumes these acquired Generator leaves during ordinary by-value
+Generator call unpack, directly or below finite active shared links. Admission
+requires allocated parent/data objects, a present copied CURRENT, position1 and
+the existing source-valid acquisition receipt. Child cache, parent cache and
+sent arguments retain separate owners; generic iterator completion returns null
+and retires unused child returns before the parent tail. Temporary key errors
+close the child before parent finally and cache/SENT release. Independent child
+CVs preserve their own cached rows through real body throws and COW replacement.
+The [acquired-Generator ledger](../../coverage/semantics/generator-call-unpack-acquired-generator-review.json)
+records the focused source and reached-state evidence. Ordinary Aggregate call
+operands, valid-key by-reference targets and active chains ending in detached
+roots remain separate boundaries.
+
 When layer or original-operand cleanup throws after constructing the iterator,
 the pinned early exception branch retains its data until request cleanup.
 The model keeps that single data owner in a source-authenticated request record.

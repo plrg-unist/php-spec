@@ -1,0 +1,22 @@
+[
+  {
+    "id": "generator-call-unpack-acquired-generator-review-reference-snapshot-through-active-parent",
+    "purpose": "An acquired reference-yield Generator has an independent CV. Its next replaces the shared payload while an active outer Generator and the by-value sent argument preserve the earlier object snapshot.",
+    "source": "<?php\nclass ReviewAcquiredReferenceFirst15 { function __destruct() { echo \"A|\"; } }\nclass ReviewAcquiredReferenceSecond15 { function __destruct() { echo \"B|\"; } }\nfunction &reviewAcquiredReferenceChild15() { global $payload; try { echo \"C|\"; yield \"item\" => $payload; echo \"N|\"; $payload = new ReviewAcquiredReferenceSecond15(); } finally { echo \"H|\"; } }\nclass ReviewAcquiredReferenceAggregate15 implements IteratorAggregate {\n    function getIterator(): Traversable { global $child; echo \"GET|\"; return $child; }\n    function __destruct() { echo \"Q|\"; }\n}\nfunction reviewAcquiredReferenceParent15() { try { echo \"G|\"; yield from new ReviewAcquiredReferenceAggregate15(); echo \"L|\"; } finally { echo \"F|\"; } }\nfunction reviewAcquiredReferenceOuter15() { try { echo \"O|\"; yield from reviewAcquiredReferenceParent15(); echo \"OL|\"; } finally { echo \"OF|\"; } }\nfunction reviewAcquiredReferenceTarget15($item) { global $payload; echo \"D|\", $item instanceof ReviewAcquiredReferenceFirst15 ? \"HELD|\" : \"BAD|\", $payload instanceof ReviewAcquiredReferenceSecond15 ? \"LIVE|\" : \"BAD|\"; $item = null; echo \"X|\"; }\n$payload = new ReviewAcquiredReferenceFirst15();\n$child = reviewAcquiredReferenceChild15();\necho \"P|\"; reviewAcquiredReferenceTarget15(...reviewAcquiredReferenceOuter15()); echo \"M|\"; unset($child, $payload); echo \"E\";\n",
+    "native_stdout": "P|O|G|GET|Q|C|N|H|L|F|OL|OF|D|HELD|LIVE|A|X|M|B|E",
+    "expected_model": "normal",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "4ba56d7df6dfc6674e1e21dfa9f0499141822a03ef218beb6e45a9ff96634ede"
+  },
+  {
+    "id": "generator-call-unpack-acquired-generator-review-child-throw-retains-independent-cache-and-cow-row",
+    "purpose": "A retained acquired Generator COW-replaces its local row before a real body throw. Local replacement cleanup and parent finally precede catch, while the old cached row survives until the independent child CV is unset.",
+    "source": "<?php\nclass ReviewAcquiredRowFirst15 { function __destruct() { echo \"A|\"; } }\nclass ReviewAcquiredRowSecond15 { function __destruct() { echo \"B|\"; } }\nfunction reviewAcquiredRowChild15() {\n    try { echo \"C|\";\n        $row = [new ReviewAcquiredRowFirst15()];\n        yield 0 => $row;\n        echo \"N|\"; $row[0] = new ReviewAcquiredRowSecond15();\n        throw new Exception(\"child\", 71);\n    } finally { echo \"H|\"; }\n}\nclass ReviewAcquiredRowAggregate15 implements IteratorAggregate {\n    function getIterator(): Traversable { global $child; echo \"GET|\"; return $child; }\n    function __destruct() { echo \"Q|\"; }\n}\nfunction reviewAcquiredRowParent15() { try { echo \"G|\"; yield from new ReviewAcquiredRowAggregate15(); echo \"BAD|\"; } finally { echo \"F|\"; } }\nfunction reviewAcquiredRowTarget15($items) { echo \"BAD|\"; }\n$child = reviewAcquiredRowChild15();\necho \"P|\";\ntry { reviewAcquiredRowTarget15(...reviewAcquiredRowParent15()); }\ncatch (Exception $failure) { echo \"T|\", $failure->getCode(), \"|\"; $trace = $failure->getTrace(); echo $trace[0][\"function\"], \"|\", $trace[1][\"function\"], \"|\"; }\nunset($trace, $failure); echo \"M|\"; unset($child); echo \"E\";\n",
+    "native_stdout": "P|G|GET|Q|C|N|H|B|F|T|71|reviewAcquiredRowChild15|reviewAcquiredRowParent15|M|A|E",
+    "expected_model": "normal",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "0870a98be4f0578d417526227b4fc91497d637d12b688cb1bbde08270fa058e8"
+  }
+]

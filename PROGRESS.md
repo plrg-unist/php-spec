@@ -2284,11 +2284,29 @@ carrier. Four new normal originals and one promoted prior control agree across
 `ab7018438`/`1a0b15cdb`; strict396 and three reached groups/303 premises pass at
 the latter cut. Native5, the unchanged baseline, acquired-Generator control and
 original temporary-cleanup Unsupported failure retain zero agreement.
-Acquired Generator data, ordinary Aggregate call operands, valid-key by-reference
-targets, owning copied returns and nested detached roots remain required.
+At that cut acquired Generator data, ordinary Aggregate call operands, valid-key
+by-reference targets, owning copied returns and nested detached roots remained required.
 [Acquired-Iterator review](coverage/semantics/generator-call-unpack-acquired-iterator-review.json).
 Canonical397 composition over `dbd756ab7` passes inventory and strict SL at
 `74f63b964`; private source/state cuts and the original failure retain their identities.
+
+Generator call unpack now consumes Aggregate-acquired Generator data directly or
+below active shared links. The acquired parent owns its raw CURRENT copy and
+child; by-value SEND snapshots references before native iterator resumes, without
+invented API frames.
+Method receivers survive acquisition, unused owning child returns retire before
+the null-result parent tail, and temporary key errors close child before parent
+finally/cache/SENT release. Independent child CVs retain their own COW cache and
+real body-throw trace. Five new exact originals and one promoted prior control
+agree at `80ad118bf`; strict397 and four reached groups/436 premises pass there
+(author195, independent241). See the
+[acquired-Generator ledger](coverage/semantics/generator-call-unpack-acquired-generator-review.json).
+Native-only observations and the unchanged Unsupported baseline earn zero model
+agreement. Ordinary Aggregate call operands, valid-key by-reference targets,
+owning copied returns and active chains ending in detached roots remain required.
+The397-module composition over `bb312fcd2` preserves the tested405 bytes and
+every incoming runtime selector. Independent pointwise review warrants no joined
+actor; private strict/source/state evidence retains its `80ad118bf` cut.
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or
