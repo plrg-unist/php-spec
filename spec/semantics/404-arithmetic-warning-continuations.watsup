@@ -1404,3 +1404,87 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 8192
   -- if $integer_float_notices([PRECISIONLOSS], n_bits) = [(8192, perrorcall.MESSAGE)]
   -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE pintegeroperation.LINE
+
+;; Numeric compound bitwise operations capture LEFT before its deprecation
+;; and read the selected quiet integer RHS afterward.
+dec $bitassign_warning_operator(expression) : pbin?
+def $bitassign_warning_operator(NExprAssignOpBitwiseAnd expression_left expression_right metadata) = (BITAND)
+def $bitassign_warning_operator(NExprAssignOpBitwiseOr expression_left expression_right metadata) = (BITOR)
+def $bitassign_warning_operator(NExprAssignOpBitwiseXor expression_left expression_right metadata) = (BITXOR)
+def $bitassign_warning_operator(expression) = eps -- otherwise
+
+dec $bitassign_warning_source(pstate, pintegeroperation) : bool
+def $bitassign_warning_source(S, pintegeroperation) = true
+  -- if S.ORIGIN = (pintegeroperation.SITE)
+  -- if ~pintegeroperation.SWAPPED
+  -- if $origin_node(S.SOURCES, pintegeroperation.SITE) = (expression)
+  -- if $bitassign_warning_operator(expression) = (pintegeroperation.OP)
+  -- if pintegeroperation.LEFT = VARIABLE ptbytes_left z_left
+  -- if pintegeroperation.RIGHT = VARIABLE ptbytes_right z_right
+  -- if ptbytes_left =/= ptbytes_right
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CV ptbytes_left
+  -- if pintegeroperation.RIGHTPOINTER = INTEGER_CV ptbytes_right
+  -- if $integer_operand_source(S, pintegeroperation.SITE, [PCFIELD 0], pintegeroperation.LEFT)
+  -- if $integer_operand_source(S, pintegeroperation.SITE, [PCFIELD 1], pintegeroperation.RIGHT)
+  -- if $code_expression_at_source(S, pintegeroperation.SITE, [PCFIELD 1]) = (pintegeroperation.LINE)
+def $bitassign_warning_source(S, pintegeroperation) = false -- otherwise
+
+dec $bitassign_warning_valid(pstate, pintegeroperation, nat, nat, nat, int, nat) : bool
+def $bitassign_warning_valid(S, pintegeroperation, n_target, n_right, n_bits, i_left, n_stage) = true
+  -- if $bitassign_warning_source(S, pintegeroperation)
+  -- if $(n_target < |S.STORE| /\ n_right < |S.STORE| /\ n_target =/= n_right /\ n_bits < 18446744073709551616 /\ n_stage <= 1)
+  -- if $float_long(n_bits, true) = (i_left, [PRECISIONLOSS])
+  -- if n_stage = 1 \/ $modassign_warning_snapshot(S, pintegeroperation, n_target, n_right, n_bits)
+def $bitassign_warning_valid(S, pintegeroperation, n_target, n_right, n_bits, i_left, n_stage) = false -- otherwise
+
+def $bitassign_warning_plan(S) = (BIT_ASSIGN_WARNING pintegeroperation n_target n_right n_bits i_left 0)
+  -- if S.TODO = (COMPOUND_APPLY pbin (BASE_VALUE poperand_left) false z) :: ptask_tail*
+  -- if pbin = BITAND \/ pbin = BITOR \/ pbin = BITXOR
+  -- if $error_handler_eligible(S, 8192) /\ $arithmetic_add_named(S)
+  -- if S.ORIGIN = (porigin)
+  -- if poperand_right = S.RESULT
+  -- if poperand_left = VARIABLE ptbytes_left z_left
+  -- if poperand_right = VARIABLE ptbytes_right z_right
+  -- if $lookup(S.ENV, ptbytes_left) = (n_target)
+  -- if $lookup(S.ENV, ptbytes_right) = (n_right)
+  -- if $integer_pointer_value(S, INTEGER_CV ptbytes_left) = (PFLOAT n_bits)
+  -- if $(n_bits < 18446744073709551616)
+  -- if $float_long(n_bits, true) = (i_left, [PRECISIONLOSS])
+  -- if pintegeroperation = {SITE porigin, OP pbin, LINE z, SWAPPED false, LEFT poperand_left, RIGHT poperand_right, LEFTPOINTER INTEGER_CV ptbytes_left, RIGHTPOINTER INTEGER_CV ptbytes_right}
+  -- if $bitassign_warning_valid(S, pintegeroperation, n_target, n_right, n_bits, i_left, 0)
+def $bitassign_warning_plan(S) = eps -- otherwise
+
+rule PhpStep/bitassign-warning-begin: S ~> S[.TODO = ptask :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.LOCATION = ROOT n_target]
+  -- if S.TODO = ptask_old :: ptask_tail*
+  -- if $bitassign_warning_plan(S) = (ptask)
+  -- if ptask = BIT_ASSIGN_WARNING pintegeroperation n_target n_right n_bits i_left 0
+rule PhpStep/bitassign-warning-dispatch: S ~> $error_dispatch(S, 8192, n_message*, pintegeroperation.LINE, DIAGNOSTIC "Deprecated" n_message* pintegeroperation.LINE, BIT_ASSIGN_WARNING pintegeroperation n_target n_right n_bits i_left 1)
+  -- if S.TODO = (BIT_ASSIGN_WARNING pintegeroperation n_target n_right n_bits i_left 0) :: ptask_tail*
+  -- if $bitassign_warning_valid(S, pintegeroperation, n_target, n_right, n_bits, i_left, 0)
+  -- if $integer_float_notices([PRECISIONLOSS], n_bits) = [(8192, n_message*)]
+  -- if ~$error_handler_eligible(S, 8192) \/ $arithmetic_add_named(S)
+rule PhpStep/bitassign-warning-owning-handler: S ~> S[.COMPLETION = UNSUPPORTED "bitwise assignment owning deprecation callback"]
+  -- if S.TODO = (BIT_ASSIGN_WARNING pintegeroperation n_target n_right n_bits i_left 0) :: ptask_tail*
+  -- if $bitassign_warning_valid(S, pintegeroperation, n_target, n_right, n_bits, i_left, 0)
+  -- if $error_handler_eligible(S, 8192) /\ ~$arithmetic_add_named(S)
+rule PhpStep/bitassign-warning-commit: S ~> $arithmetic_addassign_cv_write(S[.TODO = ptask_tail*][.RESULT = KNOWN (PINT i_result)], ptbytes_left, PINT i_result)
+  -- if S.TODO = (BIT_ASSIGN_WARNING pintegeroperation n_target n_right n_bits i_left 1) :: ptask_tail*
+  -- if $bitassign_warning_valid(S, pintegeroperation, n_target, n_right, n_bits, i_left, 1)
+  -- if $modassign_warning_ready(S, pintegeroperation, n_target, n_right) = (i_right)
+  -- if $integer_binary(pintegeroperation.OP, i_left, i_right) = IRESULT i_result
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CV ptbytes_left
+rule PhpStep/bitassign-warning-boundary: S ~> S[.COMPLETION = UNSUPPORTED "bitwise assignment live RHS or expired, rebound, owning or constrained target"]
+  -- if S.TODO = (BIT_ASSIGN_WARNING pintegeroperation n_target n_right n_bits i_left 1) :: ptask_tail*
+  -- if $bitassign_warning_valid(S, pintegeroperation, n_target, n_right, n_bits, i_left, 1)
+  -- if $modassign_warning_ready(S, pintegeroperation, n_target, n_right) = eps
+
+def $task_nodes(BIT_ASSIGN_WARNING pintegeroperation n_target n_right n_bits i_left n_stage) = eps
+def $call_task_valid(S, BIT_ASSIGN_WARNING pintegeroperation n_target n_right n_bits i_left n_stage) = $bitassign_warning_valid(S, pintegeroperation, n_target, n_right, n_bits, i_left, n_stage)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = BIT_ASSIGN_WARNING pintegeroperation n_target n_right n_bits i_left 1
+  -- if $bitassign_warning_valid(S, pintegeroperation, n_target, n_right, n_bits, i_left, 1)
+  -- if perrorcall.TARGET =/= eps \/ $bitassign_warning_valid(S, pintegeroperation, n_target, n_right, n_bits, i_left, 0)
+  -- if perrorcall.SITE = pintegeroperation.SITE /\ perrorcall.LINE = pintegeroperation.LINE
+  -- if perrorcall.LEVEL = 8192
+  -- if $integer_float_notices([PRECISIONLOSS], n_bits) = [(8192, perrorcall.MESSAGE)]
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE pintegeroperation.LINE
