@@ -12,6 +12,7 @@ dec $constant_dimension_class(pvalueclass, pvalue?) : pvalueclass
 dec $constant_nonstring_scalar(pvalue) : bool
 dec $constant_entries_class_valid(pstate, pentry*, (pkey, pvalueclass)*) : bool
 dec $constant_fact_value_valid(pconstantfact) : bool
+dec $constant_fact_carrier_valid(pstate, pconstantfact) : bool
 dec $constant_class_tree_valid(pvalueclass) : bool
 dec $constant_class_entries_valid((pkey, pvalueclass)*) : bool
 dec $constant_expression_below(pstate, porigin, porigin) : bool
@@ -160,6 +161,7 @@ def $constant_nonstring_scalar(pvalue) = (pvalue = PNULL)
 ;; Validation checks value tags and live array topology, never allocation history.
 def $constant_value_class_valid(S, pvalue, PVSCALAR) = $constant_nonstring_scalar(pvalue)
 def $constant_value_class_valid(S, PSTRING n*, PVSTRING b) = true
+def $constant_value_class_valid(S, PSTRING_CARRIER pstringidentity n*, PVSTRING b) = $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n*)
 def $constant_value_class_valid(S, PARRAY n, PVARRAY b (pkey, pvalueclass)*) = $constant_entries_class_valid(S, S.ARRAYS[n].ITEMS, (pkey, pvalueclass)*)
   -- if ~b \/ (pkey, pvalueclass)* = eps
   -- if HARRAY n <- S.ALLOCATIONS
@@ -177,6 +179,9 @@ def $constant_fact_value_valid(pconstantfact) = $constant_nonstring_scalar(pvalu
 def $constant_fact_value_valid(pconstantfact) = true
   -- if pconstantfact.VALUE = (PSTRING n*)
   -- if pconstantfact.CLASS = PVSTRING b
+def $constant_fact_value_valid(pconstantfact) = true
+  -- if pconstantfact.VALUE = (PSTRING_CARRIER pstringidentity n*)
+  -- if pconstantfact.CLASS = PVSTRING b
 def $constant_fact_value_valid(pconstantfact) = $constant_class_tree_valid(PVARRAY b (pkey, pvalueclass)*)
   -- if pconstantfact.VALUE = eps
   -- if pconstantfact.CLASS = PVARRAY b (pkey, pvalueclass)*
@@ -184,6 +189,10 @@ def $constant_fact_value_valid(pconstantfact) = true
   -- if pconstantfact.VALUE = eps
   -- if pconstantfact.CLASS = PVCLOSURE n porigin
 def $constant_fact_value_valid(pconstantfact) = false -- otherwise
+
+def $constant_fact_carrier_valid(S, pconstantfact) = $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n*)
+  -- if pconstantfact.VALUE = (PSTRING_CARRIER pstringidentity n*)
+def $constant_fact_carrier_valid(S, pconstantfact) = true -- otherwise
 
 def $constant_class_tree_valid(PVCLOSURE n porigin) = true
 def $constant_class_tree_valid(PVSCALAR) = true
@@ -208,7 +217,7 @@ def $constant_expression_below(S, porigin_root, PORIGIN n pcpath) = true
 def $constant_expression_below(S, porigin_decl, porigin) = false -- otherwise
 
 def $constant_facts_valid(S, porigin, eps) = true
-def $constant_facts_valid(S, porigin, pconstantfact :: pconstantfact_tail*) = ($constant_expression_below(S, porigin, pconstantfact.ORIGIN) /\ $constant_fact_value_valid(pconstantfact) /\ $constant_fact_pool_valid(S, pconstantfact) /\ $global_constant_fact_lookup_valid(S, porigin, pconstantfact) /\ $constant_fact_at(pconstantfact_tail*, pconstantfact.ORIGIN) = eps /\ $constant_facts_valid(S, porigin, pconstantfact_tail*))
+def $constant_facts_valid(S, porigin, pconstantfact :: pconstantfact_tail*) = ($constant_expression_below(S, porigin, pconstantfact.ORIGIN) /\ $constant_fact_value_valid(pconstantfact) /\ $constant_fact_carrier_valid(S, pconstantfact) /\ $constant_fact_pool_valid(S, pconstantfact) /\ $global_constant_fact_lookup_valid(S, porigin, pconstantfact) /\ $constant_fact_at(pconstantfact_tail*, pconstantfact.ORIGIN) = eps /\ $constant_facts_valid(S, porigin, pconstantfact_tail*))
 
 def $constant_observer_valid(S, porigin) = $constant_expression_below(S, pconstantcontext.ORIGIN, porigin)
   -- if S.CONSTCONTEXT = (pconstantcontext)
