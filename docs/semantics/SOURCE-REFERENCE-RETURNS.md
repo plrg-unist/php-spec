@@ -580,3 +580,19 @@ bad y; appending `"q"` creates a distinct table with `['old','q']` while the
 pooled table remains `['old']`. This is modeled copy-on-write for the reached
 literal, not a claim about GC immutability or general CONST arrays; see the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M62 admits a source-qualified simple local-array DIM return `$a[0]` as an old
+by-reference operand during a caught `?object` finalizer recheck. Treatment
+unsets the sole local array before a replacement return; control retains it.
+Ordinary cleanup retires the treatment's table and selected bucket and invokes
+the old object's destructor, while a node-free cursor keeps only the source
+needed for replay. The saved destructor frame passes its exact cleanup-prefix
+check. For a used nullable result, the consumed step installs a fresh detached
+NULL reference before delivery; neither case emits a by-reference Notice.
+Native2/source2 agree at private `3ea78c33`/394 with their distinct destructor
+order. Public172 follows both owner states, the saved cursor and caller alias,
+rejects a heap-equal cursor LINE forgery through the driver, and checks split
+budget from the callback. This covers the reached local-variable/literal-int
+DIM source and modeled retirement, not other DIM shapes, unused or nonnullable
+returns, or physical collection; see the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).

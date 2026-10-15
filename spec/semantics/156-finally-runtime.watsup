@@ -19,6 +19,8 @@ dec $ref_return_cursor_site(pstate, prefreturncursor) : bool
 dec $ref_return_cursor_literal(pstate, prefreturncursor) : pvalue?
 dec $ref_return_cursor_concat(pstate, prefreturncursor) : bool
 dec $ref_return_cursor_computed_call(pstate, prefreturncursor) : bool
+dec $ref_return_cursor_dim_source(pstate, prefreturncursor) : bool
+dec $ref_return_cursor_dim_null_materialize(pstate, prefreturncursor) : bool
 dec $ref_return_cursor_old_operand(pstate, prefreturncursor, poperand) : bool
 dec $ref_return_cursor_inside(porigin, porigin) : bool
 dec $ref_return_cursor_valid(pstate, prefreturncursor, porigin, int) : bool
@@ -129,9 +131,26 @@ def $finally_leave_ref_return(S, porigin, porigin_source, poperand, z, b_finaliz
 
 ;; DISCARD_EXCEPTION clears the old freeable return operand but retains the
 ;; FAST_CALL address. This bounded certificate owns no value or reference cell.
+def $ref_return_cursor_dim_source(S, prefreturncursor) = true
+  -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprArrayDimFetch (NExprVariable (BYTES text_array) metadata_array) (NScalarInt (INTEGER z_key) metadata_key) metadata_dim) metadata)
+def $ref_return_cursor_dim_source(S, prefreturncursor) = false -- otherwise
+def $ref_return_cursor_dim_null_materialize(S, prefreturncursor) = true
+  -- if $ref_return_cursor_dim_source(S, prefreturncursor)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if $typed_exact(pfunction.SIGNATURE.RETURNS, PNULL)
+  -- if $reference_return_used(S)
+def $ref_return_cursor_dim_null_materialize(S, prefreturncursor) = false -- otherwise
 def $ref_return_cursor_site(S, prefreturncursor) = true
   -- if $finally_ref_source_valid(S, prefreturncursor.OWNER, prefreturncursor.SOURCE, prefreturncursor.LINE)
   -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprVariable (BYTES text) metadata_variable) metadata)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if pfunction.SIGNATURE.RETURNS =/= eps
+  -- if $finally_outer_origin_valid(S, prefreturncursor.OWNER, prefreturncursor.OUTER)
+def $ref_return_cursor_site(S, prefreturncursor) = true
+  -- if $finally_ref_source_valid(S, prefreturncursor.OWNER, prefreturncursor.SOURCE, prefreturncursor.LINE)
+  -- if $ref_return_cursor_dim_source(S, prefreturncursor)
   -- if S.CURRENT = (pcallcontext)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if pfunction.SIGNATURE.RETURNS =/= eps
@@ -186,6 +205,8 @@ def $ref_return_cursor_computed_call(S, prefreturncursor) = true
 def $ref_return_cursor_computed_call(S, prefreturncursor) = false -- otherwise
 def $ref_return_cursor_old_operand(S, prefreturncursor, REFERENCE n) = $finally_return_operand_valid(S, REFERENCE n)
   -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprVariable (BYTES text) metadata_variable) metadata)
+def $ref_return_cursor_old_operand(S, prefreturncursor, REFERENCE n) = $finally_return_operand_valid(S, REFERENCE n)
+  -- if $ref_return_cursor_dim_source(S, prefreturncursor)
 def $ref_return_cursor_old_operand(S, prefreturncursor, KNOWN (POBJECT n)) = true
   -- if $ref_return_cursor_computed_call(S, prefreturncursor)
   -- if HOBJECT n <- S.ALLOCATIONS
@@ -525,7 +546,7 @@ def $ref_return_cursor_valid(S, prefreturncursor, porigin_source, z) = ($ref_ret
 def $ref_return_cursor_valid(S, prefreturncursor, porigin_source, z) = false -- otherwise
 ;; The saved frame still carries its authenticated destructor-cleanup prefix
 ;; while call_tasks_valid has already walked that prefix and retired its registry.
-;; Only the computed-call cursor uses the queued return suffix for validation.
+;; Computed and simple DIM cursors use the queued return suffix for validation.
 dec $ref_return_cursor_saved_descriptor_valid(pstate, prefreturncursor, porigin, int) : bool
 def $ref_return_cursor_saved_descriptor_valid(S, prefreturncursor, porigin_source, z) = $ref_return_cursor_valid(S[.TODO = (RETURN_REF_UNWIND (REFERENCE n) z true porigin_source) :: ptask_tail*], prefreturncursor, porigin_source, z)
   -- if S.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (RETURN_REF_UNWIND (REFERENCE n) z true porigin_source) :: ptask_tail*
@@ -538,7 +559,7 @@ def $ref_return_cursor_saved_descriptor_valid(S, prefreturncursor, porigin_sourc
   -- if pdestructionrelease_original.JOBS = pdestructionjob_head :: pdestructionjob_tail*
   -- if pdestructionrelease_original[.JOBS = pdestructionjob_tail*] = pdestructionrelease
   -- if pdestructionjob_head = DESTRUCTION_VALUE (HOBJECT pdestructorcall.OBJECT)
-  -- if $ref_return_cursor_computed_call(S, prefreturncursor)
+  -- if $ref_return_cursor_computed_call(S, prefreturncursor) \/ $ref_return_cursor_dim_source(S, prefreturncursor)
 def $ref_return_cursor_saved_descriptor_valid(S, prefreturncursor, porigin_source, z) = false -- otherwise
 def $call_task_valid(S, REF_RETURN_CURSOR prefreturncursor porigin_source z) = ($ref_return_cursor_valid(S, prefreturncursor, porigin_source, z) \/ $ref_return_cursor_saved_descriptor_valid(S, prefreturncursor, porigin_source, z))
 def $task_nodes(REF_RETURN_CURSOR prefreturncursor porigin_source z) = eps
@@ -1331,11 +1352,19 @@ rule PhpStep/finally-resume-return: S ~> $finally_leave_return(S, porigin, porig
   -- if S.TODO = (FINALLY_RETURN porigin porigin_source poperand) :: ptask_tail*
 rule PhpStep/finally-resume-ref-return: S ~> $finally_leave_ref_return(S, porigin, porigin_source, poperand, z, true, ptask_tail*)
   -- if S.TODO = (FINALLY_REF_RETURN porigin porigin_source poperand z) :: ptask_tail*
+rule PhpStep/finally-resume-consumed-dim: S ~> S_fresh[.TODO = [RETURN_REF_UNWIND (REFERENCE n) prefreturncursor.LINE true prefreturncursor.SOURCE, REF_RECHECK prefreturncursor.SOURCE prefreturncursor.OWNER (REFERENCE n) prefreturncursor.LINE]]
+  -- if S.TODO = (FINALLY_REF_CONSUMED prefreturncursor) :: ptask_tail*
+  -- if $ref_return_cursor_dim_null_materialize(S, prefreturncursor)
+  -- if S_left = $finally_leave_ref_return(S, prefreturncursor.OWNER, prefreturncursor.SOURCE, KNOWN PNULL, prefreturncursor.LINE, true, ptask_tail*)
+  -- if S_left.TODO = (RETURN_REF_UNWIND (KNOWN PNULL) prefreturncursor.LINE true prefreturncursor.SOURCE) :: (REF_RECHECK prefreturncursor.SOURCE prefreturncursor.OWNER (KNOWN PNULL) prefreturncursor.LINE) :: eps
+  -- if S_fresh = $call_fresh_reference(S_left, PNULL)
+  -- if S_fresh.RESULT = REFERENCE n
 rule PhpStep/finally-resume-consumed-ref: S ~> $finally_leave_ref_return(S, prefreturncursor.OWNER, prefreturncursor.SOURCE, KNOWN PNULL, prefreturncursor.LINE, true, ptask_tail*)
   -- if S.TODO = (FINALLY_REF_CONSUMED prefreturncursor) :: ptask_tail*
   -- if $ref_return_cursor_literal(S, prefreturncursor) = eps
   -- if ~$ref_return_cursor_concat(S, prefreturncursor)
   -- if ~$ref_return_cursor_computed_call(S, prefreturncursor)
+  -- if ~$ref_return_cursor_dim_null_materialize(S, prefreturncursor)
 ;; Both consumed markers are non-owning. Leave their exact restoration slots
 ;; atomically before the middle source's cleared operand is checked again.
 dec $finally_resume_consumed_pair(pstate, prefreturncursor, prefreturncursor, ptask*) : pstate

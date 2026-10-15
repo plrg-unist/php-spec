@@ -3082,6 +3082,21 @@ This covers the reached nonempty literal and modeled copy-on-write, not general
 CONST arrays or broad returns verification; see the
 [ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
+M62 repairs a selected local array bucket `$a[0]` in a by-reference `?object`
+return after a caught finalizer recheck. After the sole local array is unset,
+replacement cleanup invokes the old object's destructor before replay;
+retaining the array delays that callback.
+The authenticated DIM cursor keeps the original source without retaining the
+old bucket, and a used nullable result resumes through a fresh detached NULL
+reference without a Notice. Native2/source2 agree at private `3ea78c33`/394,
+including the distinct destructor order. Public172 admits both reached owner
+states, the saved callback cursor and fresh caller cell, rejects a heap-equal
+cursor LINE forgery, and checks split/full budget from the callback. The
+pre-repair Unsupported, output-only owner queries and first repaired stderr
+mismatch retain zero repair credit. Other DIM forms, nonnullable returns and
+broad returns verification remain open in the
+[ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
 Per-constant protection survives namespace publication and parked handlers.
