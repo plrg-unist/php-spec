@@ -3286,6 +3286,19 @@ frontier retain zero repair credit. Implicit fallthrough and other NULL historie
 remain open in the
 [ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
+M66 admits a mixed old return history: an owning computed `O` value outside a
+global `$z` reference, followed by a selected `$y` return whose `?object`
+recheck fails and is caught. Two source-only cursors survive ordinary O
+destruction; `$z` stays live. The used nullable result resumes through a fresh
+detached NULL reference without a Notice, while the retained-y control delivers
+its alias. Native2/source2 agree at private `17fa485a`/394. Public157 follows
+the owning value, saved destructor pair, TypeError replay and caller; it rejects
+a heap-identical saved cursor LINE forgery and checks callback split budget.
+The unchanged Unsupported baseline and output-only frontier have zero repair
+credit. Other mixed histories, unused or nonnullable returns and broad
+returns verification remain open in the
+[ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
 Per-constant protection survives namespace publication and parked handlers.

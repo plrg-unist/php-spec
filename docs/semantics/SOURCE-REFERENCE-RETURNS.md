@@ -623,3 +623,18 @@ admits both pending states, rejects a heap-identical NULL-to-VALUE marker
 forgery through the driver, and checks caller alias and split budget. This
 does not cover implicit fallthrough or other NULL-return histories; see the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M66 covers a caught `?object` recheck after an outer computed owning object
+return and an inner global-CV reference return are both pending. The actual
+replacement records two nonowning source cursors; ordinary cleanup invokes the
+old object's destructor while external `$z` remains live. Pair resumption leaves
+the two nonowning restoration slots and, for the reached used nullable result,
+creates a fresh detached NULL reference without a by-reference Notice. The
+retained-y control delivers its alias. Native2/source2 agree at private
+`17fa485a`/394. Public157
+admits the saved destructor pair, binds the TypeError replay and fresh caller
+cell, rejects a heap-identical saved inner cursor LINE forgery through the
+driver, and checks split budget from the callback. This covers one mixed
+computed-object/global-CV layout, not unused or nonnullable returns, other
+payloads, physical collection or complete returns verification; see the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).

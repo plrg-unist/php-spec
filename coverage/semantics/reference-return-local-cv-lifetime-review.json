@@ -1473,5 +1473,47 @@
     },
     "recovery": "Preserve original ignored PHP sources and all native, unchanged-baseline, frontier, affected-source and public scripts, fixtures and raw reports at recorded paths. Restore tested 797abaa7/394 tree with pinned tools; in its original .tools/returns-bare-null65/m65 directory, make_public.py regenerates both fixtures byte-exact and run_public.py compiles and runs them serially. Native, source and public are separate executions; metadata adds no execution credit.",
     "limits": "One explicit bare return in an untyped by-reference function and one caught inner-finalizer throw are covered. Implicit fallthrough, other NULL-return histories and complete returns_verify remain open."
+  },
+  "mixed_computed_object_external_cv_caught_recheck": {
+    "status": "independently_accepted_bounded_mixed_object_cv_recheck",
+    "revision": "17fa485a4c2b938405e02682ce657916431ae7fd",
+    "modules": 394,
+    "implementation": "spec/semantics/156-finally-runtime.watsup",
+    "scope": "An outer computed return holds an owning O object while an inner return holds a reference to global z. A deepest selected return of y fails a delayed by-reference ?object recheck after y becomes bad; the TypeError is caught. Record source-only mixed pair history, keep ordinary O cleanup and external z ownership, and deliver a fresh detached NULL reference for the reached used nullable result without a Notice. The retained-y control delivers its alias.",
+    "native": {
+      "raw": ".tools/returns-chain-owner-catch-current-24/.tools/returns-verify66-mixed-owner-cv/native-mixed-owner-cv-9uj7snpu/report.json",
+      "report_sha256": "2f21a525b2189de14e1e60e5a94ecf64a7df91dadb7e889773d6a382032b9a3a",
+      "result": "Two PHP20 exit0 observations: treatment emits V;I;J;D;J;C;K; then a detached NULL result; control emits V;I;J;D; then the y alias. Both stderr streams are empty. Output alone does not establish the pending carrier and owner identities."
+    },
+    "source": {
+      "raw": ".tools/returns-mixed-owner-recheck-66/.tools/returns-mixed-owner-recheck66/model-mixed-owner-cv-repaired-y332fwn8/report.json",
+      "report_sha256": "d6abe0c7a74d90b5b38d2516ba091aa393e4ac413fe46e0176c6a0c964617805",
+      "strict_report_sha256": "35517c6ec63e52e5542b36ce394d4829c2834cbcf8041bb6b7672a2a7c2a655d",
+      "result": "Full 394-module SL strict passes with app0. Both unchanged checked source/request pairs are NORMAL and exactly match native stdout, stderr and exit, including no Notice and the distinct treatment/control aliases; dual workers close quietly on stable clean 17fa485a inputs."
+    },
+    "public": {
+      "raw": ".tools/returns-mixed-owner-recheck-66/.tools/returns-mixed-owner-recheck66/mixed-owner-public-wz22_lma/report.json",
+      "report_sha256": "b5c28c32853903a8959e8aa2cadf04119f5f2907e31af1da6894fb22a7a1b226",
+      "producer_sha256": "347809522e26753c857be6bfbd4da936c4576af09ed022cf844e1ea4200b2935",
+      "fixture_sha256": "67e2421638c49e7e2a0d784e78a6e56d3657b329500f7b1d72a3afce9feef785",
+      "runner_sha256": "366a9efafa6d26278dfbb9975bbb1554f21a1a179ac3e7391cd8a14e8e134638",
+      "main_premises": 157,
+      "public_negative_controls": 1,
+      "result": "One source-linked treatment execution binds the old owning O value and external z reference, exact replacement queue, completed source-only pair in the saved O destructor frame, original VALUE release, and TypeError replay after O retirement with z still live. The raw pair step creates a fresh NULL reference distinct from z and y, with no Notice marker or diagnostic event; the caller aliases that fresh cell before its write. A heap-identical saved inner cursor LINE mutation fails source validity and real-driver admission. Callback drive0 admits the state; resuming 1 then 10000 equals a single 10001 run, and the final cleanup lists are drained. Full fixture compilation and numeric state pass."
+    },
+    "preserved_zero_credit": [
+      "Unchanged baseline 3d9f75bf: treatment Unsupported finalizer replay after V;I;J;D;, retained-y control native-exact.",
+      "Output-only frontier ec2b7113 printed actual old O and z carriers, nine-task replacement guards and the bare replay; it has no agreement or public credit."
+    ],
+    "runtime": {
+      "mode": "SL",
+      "jobs": 1,
+      "compiler_cap_seconds": 45,
+      "public_cap_seconds": 120,
+      "compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+      "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    },
+    "recovery": "Preserve original ignored PHP sources and native, baseline, frontier, affected-source and public scripts, fixtures and raw reports at recorded paths. Restore tested 17fa485a/394 tree with pinned tools if its private tracked worktree retires. In its original .tools/returns-mixed-owner-recheck66 directory, make_public.py regenerates mixed-owner-public.watsup byte-exact and run_public.py compiles then runs the one SL120 state fixture, jobs1. Native, source and public are separate executions; metadata publication adds no semantic credit.",
+    "limits": "The reached used nullable mixed computed-object/global-CV history and modeled O retirement are covered, not unused or nonnullable returns, other payloads or nesting, physical collection or complete returns_verify."
   }
 }
