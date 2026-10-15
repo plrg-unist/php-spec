@@ -3439,6 +3439,20 @@ Unsupported baseline and output-only frontier have zero repair credit. Unused,
 nonnullable and other mixed layouts remain open in the
 [ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
+M69 covers a used `?array` return with an outer global `$z` reference and an
+inner array return from either a no-argument computed call or a compiled
+`["old"]` literal. When the deepest `$y` recheck is caught, the computed
+return slot resumes as NULL while the literal restores its pooled array.
+Source2 at private `952bc3db`/394 matches retained native2 in both cases,
+including the distinct caller append results and one callee line4 Notice each.
+Paired public checks bind the real pending pair, source-only capture, old pool
+retention, raw source-specific restoration and caller copy-on-write. One
+heap-identical literal cursor LINE forgery fails the actual driver; both
+pair-cut budget laws pass. The old Unsupported baseline and output-only
+frontier have zero repair credit. Unused, nonnullable and other mixed array
+layouts remain open in the
+[ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
 Per-constant protection survives namespace publication and parked handlers.

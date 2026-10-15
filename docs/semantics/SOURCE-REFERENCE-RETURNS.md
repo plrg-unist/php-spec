@@ -668,3 +668,20 @@ composition also passes. This covers one reversed used nullable mixed layout,
 not unused or nonnullable returns, other layouts or complete returns
 verification; see the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M69 admits a used `?array` pair with an outer global `$z` reference and an
+inner array source that is either a no-argument computed call or an authenticated
+compiled `["old"]` literal. The pending array carrier is consumed during
+replacement; the pair records only source cursors. Both old tables remain
+allocated through their pools, so allocation survival does not choose the
+restored value: the computed call yields NULL and the literal rereads its exact
+compiled PARRAY. Each raw resumption installs one inner-source VALUE Notice
+marker. Source2 at private `952bc3db`/394 matches retained native2, including
+the emitted callee Notice and different post-append arrays. Paired public
+checks bind the real capture and pool owner drop, caller detachment and new
+append table while the old table stays unchanged. A heap-equal literal cursor
+LINE mutation fails descriptor and actual-driver admission; both pair-cut
+budget compositions pass. This covers the reached used nullable source pair,
+not other array layouts, unused or nonnullable returns, or complete returns
+verification; see the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
