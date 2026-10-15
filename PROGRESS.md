@@ -14,6 +14,8 @@ setter writes retain demand and explicitly refuse a recursive plan. Source1 and
 strict394 pass at8969; two real state cuts pass252 =209 reached +43 derived at6aff.
 Wider virtual setter forms and the reentrant alias-write Error remain partial.
 [Review](coverage/semantics/virtual-set-only-hook-review.json).
+The 394-module composition over6bad passes retained SL initialization at37931863;
+private source/state cuts keep their recorded identities without replay.
 
 Numeric `+=` now saves the leading-numeric left conversion before a named
 warning handler and commits into the originally selected untyped reference cell.
