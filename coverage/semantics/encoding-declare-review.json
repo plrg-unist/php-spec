@@ -1,0 +1,78 @@
+{
+  "status": "private independently reviewed; awaiting actual-parent integration",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pinned raw lexer profile with Zend multibyte disabled",
+  "base": "32234352d35d446cca3001c886495f4432280f12",
+  "implementation_revision": "ff1ef943f1933158c7b87dc3c09d3fe61fcfc2d7",
+  "module_count": 394,
+  "tested_cut": {
+    "runtime_diff_sha256": "376d6a2714e49ad7a8702db7cbbc4bf606b38e8d80c9e60dccd394f3555588d4",
+    "files": {
+      "bin/php-semantics": "ad5dfd7b2bb012beebca4fbfb084abacab37b40b6b5ea4327a8aabf76aef8cee",
+      "spec/semantics/33-runtime-compiler.watsup": "0ee66e5572e38b52d2105d735b0cc8362138a4514b26947e906b5d910dfc0f6d",
+      "spec/semantics/46-source-compiler.watsup": "fac85f90773ee695d77cf9ccf20ac08ae82d7eb0e2fe6a3c464c5bfca35af7b7",
+      "spec/semantics/92-strict-compiler.watsup": "9921183fff21f7fdef450b5b81dbf07b8a71778cb7a41c20f6e1b93f5aa66e1e",
+      "spec/semantics/93-strict-declarations.watsup": "489599c26c77d9883bc856cbe5a0c9ac8456a23d8a4c52844f0346a5c4c224a4",
+      "tests/semantics/encoding_declare_protocol.py": "98fd6633f4762377289f8da88b7eb065ce602f036a85c168b220e1582152e1ac"
+    },
+    "source_agreements": 2,
+    "public_premises": [
+      81,
+      96
+    ]
+  },
+  "behavior": [
+    "The pure source compiler derives a complete parser-warning prefix from fresh AST occurrences before ordinary compiler diagnostics/publications. Each admitted root declaration has one string-literal encoding item, ABSENT body and one authenticated physical line. Unsupported later/nested shapes cannot disappear by editing a stored occurrence list.",
+    "The new encoding-disabled tag is disjoint from the old default warning-level guard and uses E_COMPILE_WARNING (128). It bypasses registered user handlers. Runtime consumes only the same source-authenticated no-op; preceding declarations are allowed, preceding NOPs are not. Bad placement remains Unsupported rather than claiming a new compile Error.",
+    "Dynamic parser admission byte-captures helper stderr and validates the entire accepted-AST encoding-warning stream, including line/count and common parser filename. Eval uses the fixed parser filename; file parsing uses a temporary parser filename, while execution diagnostics derive the actual source filename independently. Unexpected stderr and rejected-with-warning results refuse before adapter resumption; no parser response/schema or shared Worker contract changes.",
+    "The native-exact eval original reports encoding line2 before an earlier unknown-declare compiler Warning at1. The include original parses/body-runs once, skips the second include_once without a new unit/diagnostic, then ordinary include reparses/body-runs and reports the second warning."
+  ],
+  "engine_routes": [
+    "Zend/zend_compile.c::zend_handle_encoding_declaration runs in the parser and emits E_COMPILE_WARNING (128) when CG(multibyte)==0; zend_compile_declare subsequently checks first statement with allow_nop=false and otherwise leaves encoding as a no-op.",
+    "Zend/zend.c error-handler policy excludes compile warnings. Existing source/declaration notice protocols preserve diagnostic order, source filenames and once completion.",
+    "native/php_file.c parser-only entrypoints and frontend/FileLexer.php::withPhpSourceFile retain syntax authority only; no Zend application evaluation is added."
+  ],
+  "accepted": {
+    "source_agreements": 2,
+    "public_premises": 177,
+    "production_chains": 2,
+    "checked_dynamic_acceptances": 3,
+    "once_skips": 1,
+    "runtime_noops": 3,
+    "budget_resumptions": 1,
+    "raw_steps": 0,
+    "driven_forged_states": 0
+  },
+  "preserved_outcomes": "The unchanged baseline is accepted-program Unsupported other-declare after B| with only the unknown-declare warning; it has zero agreement credit. Initial affected model35 stopped before runtime at a SpecTec singleton-list syntax error. Whole-file parse-only then found one record PATH grouping issue; both syntax corrections preserve semantic admission and all original failed/parse-only records remain zero. The corrected two sources and current public177 pass at the same five-file runtime/CLI cut; native/preparation/parse-only/refusal observations remain zero credit.",
+  "transport_scope": "The maintained protocol validates and retains 520 parser stderr bytes across accepted eval/two file responses and one parser-only rejected-with-warning control. Missing/extra/wrong-line/unexpected streams are pure refusal controls; the rejected response is never sent to the adapter. Shared recorded_worker.py remains byte-exact. No new syntax acceptance/configuration, native build or portability claim.",
+  "remaining": "Multibyte-enabled transcoding, other declaration values/shapes and placement Errors, parser failures with preceding warnings and wider compiler-failure/reentry/diagnostic interactions remain partial. This does not close encoding, declare or dynamic source core.",
+  "artifacts": {
+    "native_pair": {
+      "path": ".tools/dynamic-review-02/static-native-v54/report.json",
+      "sha256": "fa52b231ff8af2b541199bb845f2e9bd83e9ab0bcdb5d070c1ffecb22b741bc0"
+    },
+    "unchanged_eval_baseline": {
+      "path": ".tools/dynamic-source-encoding-declare-baseline-34/report.json",
+      "sha256": "8e8d82962dd6e63303bef023085ed24497da7a28cbfc7bfbdad8ddc2689c1f5e"
+    },
+    "initial_syntax_failure": {
+      "path": ".tools/dynamic-source-encoding-declare-model-35/report.json",
+      "sha256": "21b2fe0327115941304733afd5a32e4d004b32420687a4eb45b7d0fa92953aaf"
+    },
+    "affected_eval": {
+      "path": ".tools/dynamic-source-encoding-declare-model-v2-35/report.json",
+      "sha256": "d9dbe387a0bd9584c15aa92d4d10b2d7bc9fb4babb05db760eb3c36ed6d94fb7"
+    },
+    "affected_include": {
+      "path": ".tools/dynamic-source-encoding-declare-include-model-34/report.json",
+      "sha256": "e9d2c8162c9fb50f864f5e359f451890c20a2c3e7aa39e1323677000327825ef"
+    },
+    "public_preparation": {
+      "path": ".tools/dynamic-source-encoding-declare-state-01/fixtures-report.json",
+      "sha256": "0a02a5dfebb26b6736386897fc8e91380ed038caaba2b0cb33ebbd8af0fb1235"
+    },
+    "public_177": {
+      "path": ".tools/dynamic-source-encoding-declare-state-01/check-report.json",
+      "sha256": "5b934120f2cf4ea6f2cb1d26681fa6a7eabb403541d5c68f5d11d8eb3a89cdb9"
+    }
+  }
+}

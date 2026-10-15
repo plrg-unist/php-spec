@@ -7,6 +7,14 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+With Zend multibyte disabled, closed single-line literal `declare(encoding=...);`
+now emits its parser Warning before compiler diagnostics and bypasses user handlers.
+The declaration then executes as a source-authenticated no-op. Two exact originals
+and 177 SL premises pass at runtime diff 376d6a27, including eval ordering, once
+skip versus ordinary reparse, helper stderr custody and budget resume. Bad placement,
+wider declaration shapes and rejected parser inputs with warnings remain Unsupported;
+the initial syntax failure retains zero credit. [Encoding review](coverage/semantics/encoding-declare-review.json).
+
 
 Explicit array-to-string casts now suspend for named warning handlers on a
 defined plain CV with a nonempty mutable flat scalar array. The borrowed array

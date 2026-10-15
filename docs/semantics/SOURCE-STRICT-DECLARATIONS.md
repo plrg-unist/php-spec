@@ -1,7 +1,7 @@
 # Source strict_types declarations
 
 This prerequisite admits checked `declare(strict_types=0|1);` declarations without a body and records lexical strictness in unit and function CODE. It preserves existing untyped calls, defaults, references and ownership. Builtin scalar/container typed admission is now covered by the subsequent
-[typed contract](SOURCE-TYPED-FUNCTIONS.md); ticks/encoding and registered builtin bodies remain explicit later core dependencies.
+[typed contract](SOURCE-TYPED-FUNCTIONS.md); at that prerequisite cut, ticks/encoding and registered builtin bodies remained later core dependencies.
 
 Compiler92 uses the existing parser-literal and lexical environment machinery. Source placement is checked against the original top-level statement list. Earlier Nop or Declare statements are allowed; nested strict declarations and block form fail. Declaration names are case-insensitive, values must be integer zero or one, and setting one is sticky across subsequent zero declarations. Diagnostics use the first declaration item's compiler line, including later-item failures. The compiler retains the original declaration in executable work.
 
@@ -13,8 +13,8 @@ and the first item's line, then compile their optional body as nested statements
 Runtime authenticates the actual Declare occurrence and schedules its PCFIELD1
 children; no new state, receipt or owning root is introduced. Two exact eval
 originals and 228 source-frontier/guard checks plus six pure exclusions pass at
-713be74f4 /373. Ticks/encoding, wider literal values and body/publication contexts
-remain required; the [declare ledger](../../coverage/semantics/compiler-declare-review.json)
+713be74f4 /373. At that cut, ticks/encoding, wider literal values and body/publication
+contexts remained required; the [declare ledger](../../coverage/semantics/compiler-declare-review.json)
 keeps the original Unsupported and earlier strict evidence separate.
 
 The public source guard requires the unit CODE flag to equal the existing compiler projection. A source declaration forces that projection even in a program without functions or calls. The no-declaration fast path requires a false unit flag. Existing function descriptor reconstruction checks each function's own CODE flag. No global same-file function-flag equality is imposed: future supported declare blocks can affect function compilation contexts separately.
@@ -41,3 +41,18 @@ parameter/value-return verification; cached defaults must
 retain successful evaluation before type checking, caller strictness governs
 arguments and callee strictness governs returns. Full callable integration and
 final all-source, full-syntax and fresh offline gates remain required.
+
+With the pinned multibyte-disabled profile, a root single-line encoding declaration
+containing one string literal and no body now contributes E_COMPILE_WARNING (128)
+before every compiler diagnostic/publication, then executes as an authenticated
+no-op. Fresh AST occurrences derive the complete warning prefix; preceding NOPs
+are disallowed, and bad placement remains Unsupported. Two native-exact originals
+and 177 SL premises distinguish parser-before-compiler order, handler bypass,
+include_once skip from ordinary reparse and budget resume.
+
+Dynamic parser admission checks the entire helper stderr stream against the
+accepted declaration shape/lines/profile. Tests retain that raw stream under a
+local warning-aware close; the shared worker contract stays strict. Unexpected
+stderr, rejected-with-warning inputs, non-root/multiline/multiple-item/block forms
+and other encoding profiles remain explicit limits. No Zend evaluator supplies
+execution diagnostics. [Reviewed cuts](../../coverage/semantics/encoding-declare-review.json).

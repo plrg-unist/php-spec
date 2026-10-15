@@ -1020,8 +1020,14 @@ execute with source-checked unit/function flags; [independent review](coverage/s
 binds917 source, protocol, cache/resume and complete weak-state bridges.
 Unknown literal `declare` names now emit ordered E_COMPILE_WARNING (128), bypass
 registered handlers and continue into the real body. Two fresh originals and
-focused notice/body/shared-throw checks pass; wider ticks, encoding and directive
-values remain required. [Declare review](coverage/semantics/compiler-declare-review.json).
+focused notice/body/shared-throw checks pass. At that cut, wider ticks, encoding
+and directive values remained required. [Declare review](coverage/semantics/compiler-declare-review.json).
+Disabled-multibyte encoding declarations now emit source-derived parser warnings
+before compiler warnings, bypass handlers and execute as no-ops. Two originals and
+177 SL premises cover eval, once skip/reparse, raw helper stderr and budget resume.
+Admission is bounded to root single-line declarations with one string literal, no
+body and valid placement; wider shapes/rejected-with-warning inputs remain explicit boundaries.
+[Encoding review](coverage/semantics/encoding-declare-review.json).
 [Typed positional parameters and value returns](docs/semantics/SOURCE-TYPED-FUNCTIONS.md)
 now execute builtin scalar/container checks, sequential receives and uncoerced
 default caching while preserving aliases and cleanup. [Independent acceptance](coverage/semantics/typed-function-review.json)
