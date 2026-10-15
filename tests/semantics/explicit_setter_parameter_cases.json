@@ -1,0 +1,47 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hashes": [
+    "98cc4e7023dfd6b8d51c96f458ef73376c27953cd47a65f80771a7de5a2ae87b"
+  ],
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "scalar",
+      "source": "<?php\nclass ExplicitSetParent73 {\n    public int $value = 10 {\n        set(int|string $incoming) {\n            echo 'SET:', self::class, '/', static::class, '/', __METHOD__, '/', $incoming, '|';\n            $this->value = (int) $incoming + $this->offset();\n        }\n    }\n    private function offset(): int { return 13; }\n}\nclass ExplicitSetChild73 extends ExplicitSetParent73 {\n    private function offset(): int { return 900; }\n}\n$child = new ExplicitSetChild73();\n$raw = (array) $child;\necho 'I:', $raw['value'], '/', $child->value, '|';\n$result = ($child->value = '20');\n$raw = (array) $child;\necho 'R:', ($result === '20' ? 'STRING' : 'OTHER'), '/', $result, '/', $raw['value'], '/', $child->value, '|';\ntry {\n    $child->value = [1];\n} catch (TypeError $error) {\n    echo 'TYPE:', $error->getMessage(), '|';\n}\n$raw = (array) $child;\necho 'F:', $raw['value'], '/', $child->value, '|';\n",
+      "source_sha256": "acbdf381afeff0efc0d603e7159a4c69c66260bd3348de1cf866f6f298cc9c0f",
+      "stdout_base64": "SToxMC8xMHxTRVQ6RXhwbGljaXRTZXRQYXJlbnQ3My9FeHBsaWNpdFNldENoaWxkNzMvRXhwbGljaXRTZXRQYXJlbnQ3Mzo6JHZhbHVlOjpzZXQvMjB8UjpTVFJJTkcvMjAvMzMvMzN8VFlQRTpFeHBsaWNpdFNldFBhcmVudDczOjokdmFsdWU6OnNldCgpOiBBcmd1bWVudCAjMSAoJGluY29taW5nKSBtdXN0IGJlIG9mIHR5cGUgc3RyaW5nfGludCwgYXJyYXkgZ2l2ZW4sIGNhbGxlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvY29hbGVzY2UtZ2V0LWhvb2tzLXByaXZhdGUtMzIvLnRvb2xzL2V4cGxpY2l0LXNldHRlci1wYXJhbWV0ZXItcHJvYmVzLTczL3NjYWxhci5waHAgb24gbGluZSAyMXxGOjMzLzMzfA==",
+      "stdout_template_base64": "SToxMC8xMHxTRVQ6RXhwbGljaXRTZXRQYXJlbnQ3My9FeHBsaWNpdFNldENoaWxkNzMvRXhwbGljaXRTZXRQYXJlbnQ3Mzo6JHZhbHVlOjpzZXQvMjB8UjpTVFJJTkcvMjAvMzMvMzN8VFlQRTpFeHBsaWNpdFNldFBhcmVudDczOjokdmFsdWU6OnNldCgpOiBBcmd1bWVudCAjMSAoJGluY29taW5nKSBtdXN0IGJlIG9mIHR5cGUgc3RyaW5nfGludCwgYXJyYXkgZ2l2ZW4sIGNhbGxlZCBpbiB7RklMRX0gb24gbGluZSAyMXxGOjMzLzMzfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "explicit-setter-parameter73-scalar-native-bd3a28b4",
+      "native_raw_sha256": "98cc4e7023dfd6b8d51c96f458ef73376c27953cd47a65f80771a7de5a2ae87b"
+    },
+    {
+      "id": "narrow",
+      "source": "<?php\nclass NarrowSetParent73 {\n    public int $value = 10 {\n        set(string $incoming) {\n            echo 'SET:', self::class, '/', static::class, '/', __METHOD__, '/', $incoming, '|';\n            $this->value = (int) $incoming + $this->offset();\n        }\n    }\n    private function offset(): int { return 13; }\n}\nclass NarrowSetChild73 extends NarrowSetParent73 {\n    private function offset(): int { return 900; }\n}\n$child = new NarrowSetChild73();\n$raw = (array) $child;\necho 'I:', $raw['value'], '/', $child->value, '|';\n$result = ($child->value = '20');\n$raw = (array) $child;\necho 'R:', ($result === '20' ? 'STRING' : 'OTHER'), '/', $result, '/', $raw['value'], '/', $child->value, '|';\ntry {\n    $child->value = [1];\n} catch (TypeError $error) {\n    echo 'TYPE:', $error->getMessage(), '|';\n}\n$raw = (array) $child;\necho 'F:', $raw['value'], '/', $child->value, '|';\n",
+      "source_sha256": "1074a2d1f871de66e01c00a2c32590a29019e97f62f01f3c95847f5f28f07b21",
+      "stdout_base64": "",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFR5cGUgb2YgcGFyYW1ldGVyICRpbmNvbWluZyBvZiBob29rIE5hcnJvd1NldFBhcmVudDczOjokdmFsdWU6OnNldCBtdXN0IGJlIGNvbXBhdGlibGUgd2l0aCBwcm9wZXJ0eSB0eXBlIGluIHtGSUxFfSBvbiBsaW5lIDcKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "explicit-setter-parameter73-narrow-native-bd3a28b4",
+      "native_raw_sha256": "98cc4e7023dfd6b8d51c96f458ef73376c27953cd47a65f80771a7de5a2ae87b"
+    }
+  ]
+}

@@ -45,6 +45,18 @@ original and three states/234 premises (208 reached,26 derived) are in the
 [set-only review](../../coverage/semantics/backed-set-only-hook-review.json). Other
 set shapes, references, indirect writes and wider override/lifetime families remain required.
 
+Selected public typed sole backed SET hooks on a parentless class also compile
+one real typed, defaultless by-value parameter, retaining its name, normalized
+type and source occurrence. The property
+type must fit the parameter type. Body compilation precedes that compatibility
+check; incompatible `int` property/string-only parameter fails at hook ENDLINE7.
+An `int|string $incoming` parameter receives `"20"` unchanged, while the body
+casts and stores `33`; assignment still returns the original string. Bad-array input
+fails at actual Param line4 with caller21 before body entry. Three states pass270
+premises (238 reached,32 derived), including source-type/Param-leaf forgeries and
+genuine compiler rejection. The existing target/result, storage and generic typed
+receive rules are reused. [Explicit-parameter review](../../coverage/semantics/explicit-setter-parameter-review.json).
+
 A selected public typed statement pair ordered get then set now compiles both indexed
 source functions and retains one backing descriptor. Its declaring class is
 parentless and inheritance keeps the same descriptor. An active matching GET
