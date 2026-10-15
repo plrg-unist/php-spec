@@ -95,11 +95,13 @@ rule PhpStep/compound-prepare: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, 
   -- if ~$trait_property_write_task(S)
 dec $property_hook_compound_pending(pstate) : bool
 def $property_hook_compound_pending(S) = false -- otherwise
+dec $arithmetic_addassign_plan(pstate) : (pintegeroperation, pvalue, pnumber)?
 rule PhpStep/compound-apply: S ~> S_updated[.HELD = S.HELD]
   -- if S.TODO = (COMPOUND_APPLY pbin pbase false z) :: ptask_tail*
   -- if ~$key_write_pending(S)
   -- if ~$access_compound_pending(S)
   -- if ~$property_hook_compound_pending(S)
+  -- if $arithmetic_addassign_plan(S) = eps
   -- if S_updated = $compound_target($hold_task_inputs(S), pbin, pbase, S.RESULT, z)
 rule PhpStep/compound-self: S ~> S_updated[.HELD = S.HELD]
   -- if S.TODO = (COMPOUND_APPLY pbin pbase true z) :: ptask_tail*

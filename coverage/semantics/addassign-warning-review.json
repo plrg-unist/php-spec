@@ -1,0 +1,139 @@
+{
+  "version": 1,
+  "milestone": "OP18 numeric compound ADD warning and selected-cell commit",
+  "status": "private semantic/test acceptance; actual-parent composition pending",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local pinned PHP and profile",
+  "scope": "Leading-numeric LEFT in direct-CV += with preexisting untyped reference cells, a named warning handler and quiet numeric selected RHS at commit.",
+  "runtime_revision": "cd6eff51081a13a1c4034e3138656b4e07090dff",
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "c1514975929b8f1224de660f0143fb465bdf87ae43c9e5b681da4c73db30b7e4",
+    "spec/semantics/55-compound-assignment.watsup": "17a0afe94a3e8b5d2c7228da234d11d0dbb0fce7a6a53387dc11d9035cd65c9d",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "733eecf138a500ebf3d5cdd05831602bcd483acf5458af8928474e713987e9c6"
+  },
+  "engine_basis": [
+    "Zend/zend_vm_def.h: ZEND_ASSIGN_OP selects RHS and target, dereferences the reference target, and calls zend_binary_op(var_ptr,var_ptr,value).",
+    "Zend/zend_operators.c: add_function_slow dereferences selected operands and fills numeric holders before warnings; result==op1 is replaced only after successful conversion."
+  ],
+  "contract": [
+    "Authenticate AssignOpPlus source children, instruction line, both initial selected CELL pointers and captured leading-left conversion. Fresh capture and fresh handler dispatch equal current selected input; saved callback frames and returned holders retain historical addresses and numbers.",
+    "After return, require live positive-owner selected cells, defined nonowning untyped target and quietly convertible selected RHS. Pop the marker before writing the computed scalar to the captured ROOT cell; do not reselect the current variable name. The task adds no roots.",
+    "A supplied handler throw discards the unfinished marker and store, preserving its identity/null Previous, callback mutations and assignment sentinel. A false handler retains one default Warning at the operand instruction line.",
+    "Focused fixtures continue only genuine production states. PROPREF-presence, owning, undefined, out-of-range and unrooted-target ready projections are lookup-only refusal checks, never driven; synthetic PROPREF presence does not authenticate a real typed source."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-18/source-cd6eff510-handler-write/report.json",
+        "sha256": "2e510e85fbee0394d365a0f198c5d5e38df28109afcdd887ba8bbd5a67c0dc4d",
+        "case": "addassign-leading-handler-write",
+        "revision": "cd6eff510",
+        "agreements": 1,
+        "result": "normal0; saved12 + live5 stores17 through both LEFT aliases"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-18/review-model-cd6eff510-rebound-target/report.json",
+        "sha256": "389b5b9c11fa674e99d255c0e2e2a04c2993c15104f1271c9d7831d0e986f003",
+        "case": "addassign-leading-rebound-target-default",
+        "revision": "cd6eff510",
+        "agreements": 1,
+        "result": "normal0; old LEFT alias17/current name99/RHS5; one default Warning at operand line13"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-18/source-cd6eff510-handler-throw/report.json",
+        "sha256": "df62b31308664afec9252c396cced27fcc89c791104cc111206e73d8a1772b21",
+        "case": "addassign-leading-handler-throw",
+        "revision": "cd6eff510",
+        "agreements": 1,
+        "result": "normal0; supplied identity/null Previous/sentinel100/callback99+5/finally"
+      }
+    ],
+    "author_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-18/state-472dc8d4d-author-two/report.json",
+      "sha256": "1d54749671edfbca8b0c0fa9915feaa1cf1e952c1db090fc7c4fd1219aee851f",
+      "revision": "472dc8d4df11802bc5ba1fae7f7c9fa74f29db97",
+      "prepared_revision": "23c470d06c5d1c660d3101e8d1c7e4af4349c0b6",
+      "groups": 2,
+      "conditions": [
+        142,
+        131
+      ],
+      "total": 273
+    },
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-18/state-472dc8d4d-review-one/report.json",
+      "sha256": "47791f700b0edf5651af07d206c8ad48ff592f8d9241e03f71d7863f6ce16a57",
+      "revision": "472dc8d4df11802bc5ba1fae7f7c9fa74f29db97",
+      "prepared_revision": "23c470d06c5d1c660d3101e8d1c7e4af4349c0b6",
+      "groups": 1,
+      "conditions": [
+        87
+      ],
+      "total": 87
+    },
+    "total_source_agreements": 3,
+    "total_focused_state_conditions": 360,
+    "compatibility": "Runtime/source bytes are unchanged from cd6eff510. Current author helper differs from PREP23c only by INTEGER_CELL |S_return.STORE| -> INTEGER_CELL (|S_return.STORE|). The affected142 fixture alone was regenerated from retained checked AST/path/native; unchanged131 and peer87 fixtures were retained. Both immutable thins explicitly bridge the one author-helper hash in input maps. No PHP/frontend/source preparation repeated for that correction."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-18/baseline-8d6062499-handler-write/report.json",
+      "sha256": "4de39046b50aa999814382dad0eabee3386f52e3247d0de1e1014e8fdc891799",
+      "result": "accepted checked program Unsupported: error-handler ingress requires a producer continuation; empty model streams before handler; native normal0"
+    },
+    "native_and_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-18/native-8d6062499-two/report.json",
+        "sha256": "686aa0796f360aa4b080f862aa3ede6367b4b56bfc97852843f8db356fc251f3",
+        "purpose": "author native2"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-18/native-5c6678dbd-review-one/report.json",
+        "sha256": "838a852eb35f2a69da34ceb1e4e55ab7aad9c861cdc1d3ff0196efa72390ad12",
+        "purpose": "independent selected-target native1"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-18/state-prep-23c470d06-author-two/report.json",
+        "sha256": "4e557753cd4d1fb9facc06f3e3a4faf22f5ec927bdd18f8a1a0ca5641460035d",
+        "purpose": "author2 PHP/frontend/checked-AST preparation only"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-18/state-prep-23c470d06-review-one/report.json",
+        "sha256": "04d6e0d8d2d4db4bd4a02c9f3b954572662f5025021c0721993914749fc21ffb",
+        "purpose": "independent1 PHP/frontend/checked-AST preparation only"
+      }
+    ],
+    "standalone_syntax": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-18/syntax-23c470d06-three/report.json",
+        "sha256": "51b4d68b0e712578a456658e53e09964e962190684cd4b334d2c2a2ef5808491",
+        "result": "first author142 parser failure at unparenthesized constructor cardinality; other two parse calls unrun"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-18/syntax-472dc8d4d-three/report.json",
+        "sha256": "a3036650cc4001c3add998e5fa5b79802d3109d54136100df43d3242a8ebec1e",
+        "result": "corrected142 and previously unrun131/87 fully parse before expected standalone missing-pstate environment diagnostic; no semantic elaboration credit"
+      }
+    ],
+    "unrun_original_numeric_thin": "state-23c470d06-author-two/run-state.py (5022bae9); original fixture retained, never activated",
+    "private_initialization": "No separate main=true actor; affected source loaded the full production SL path."
+  },
+  "required_follow_on": [
+    "Newly warning or invalid selected RHS, constrained/owning/expired target, plain non-reference/copied/container/property operands, wider callbacks and exit/lifecycle routes remain required.",
+    "Five affected inventory rows remain partial. Prior ADD/DIV/unary/BITNOT and compound evidence retains its own cuts. OP12 remains paused."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-18",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "environment": "LC_ALL=C, TZ=UTC, no PHP_SPEC_SCRIPT_ENCODING. Source native30/model CLI60-process90; immutable state thins CPU1/full394 SL/cap120 per group/exact true newline/empty stderr/no interruption/reaped groups and absent PIDs.",
+    "commands": [
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 tests/semantics/addassign_warnings.py --case CASE_ID --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 tests/semantics/addassign_warning_review.py --case addassign-leading-rebound-target-default --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-18/state-472dc8d4d-author-two/run-state.py",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-18/state-472dc8d4d-review-one/run-state.py"
+    ],
+    "record": "Restore matching Git cuts/project-local tools and fresh output paths. External records retain original PHP/checked AST/source paths/native streams/fixtures/input identities/commands/exits/reaping. State thins do not run PHP/frontend/source stages."
+  },
+  "composition": null
+}

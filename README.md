@@ -380,6 +380,14 @@ exits, unsafe targets and wider callbacks/control remain required.
 All twelve [compound assignments](docs/semantics/UPDATES.md) preserve captured
 targets, delayed reads and alias ownership; [independent evidence](coverage/semantics/compound-review.json)
 records 2,639 exact source comparisons and the corrected diagnostic phases.
+Numeric `+=` now retains a captured leading-numeric left operand through named
+warning handlers and stores into the selected untyped reference cell. Rebinding
+the current variable name does not redirect that store; a supplied throw cancels
+it. Three exact originals and 360 focused SL premises cover commit, selected-cell
+history, default Warning, throw cleanup and refusal checks in the
+[compound ADD warning ledger](coverage/semantics/addassign-warning-review.json).
+This direct-CV route requires a quiet numeric RHS at commit; typed/owning/expired
+targets, wider operands and callbacks remain partial.
 [Stringable compound concatenation352](coverage/semantics/compound-string-live-rhs-review.json)
 reads a defined RHS CV after the left conversion, preserves the non-reference
 self-CV fast path, and retains evaluated temporary/reference operands through

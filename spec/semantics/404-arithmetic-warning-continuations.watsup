@@ -376,3 +376,95 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 8192
   -- if $integer_float_notices([PRECISIONLOSS], pbitnotwarning.BITS) = [(8192, perrorcall.MESSAGE)]
   -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE pbitnotwarning.LINE
+
+;; ASSIGN_OP uses the selected left cell as both input and result. This route
+;; saves its number before one leading warning, then reads a quiet numeric RHS.
+dec $arithmetic_addassign_source(pstate, pintegeroperation) : bool
+def $arithmetic_addassign_source(S, pintegeroperation) = true
+  -- if S.ORIGIN = (pintegeroperation.SITE)
+  -- if pintegeroperation.OP = ADD
+  -- if ~pintegeroperation.SWAPPED
+  -- if $origin_node(S.SOURCES, pintegeroperation.SITE) = (NExprAssignOpPlus expression_left expression_right metadata)
+  -- if pintegeroperation.LEFT = VARIABLE ptbytes_left z_left
+  -- if pintegeroperation.RIGHT = VARIABLE ptbytes_right z_right
+  -- if $integer_operand_source(S, pintegeroperation.SITE, [PCFIELD 0], pintegeroperation.LEFT)
+  -- if $integer_operand_source(S, pintegeroperation.SITE, [PCFIELD 1], pintegeroperation.RIGHT)
+  -- if $code_expression_at_source(S, pintegeroperation.SITE, [PCFIELD 1]) = (pintegeroperation.LINE)
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CELL n_left
+  -- if pintegeroperation.RIGHTPOINTER = INTEGER_CELL n_right
+  -- if $integer_pointer_source(S, pintegeroperation.LEFTPOINTER, pintegeroperation.LEFT)
+  -- if $integer_pointer_source(S, pintegeroperation.RIGHTPOINTER, pintegeroperation.RIGHT)
+def $arithmetic_addassign_source(S, pintegeroperation) = false -- otherwise
+
+def $arithmetic_addassign_plan(S) = ((pintegeroperation, pvalue_left, pnumber_left))
+  -- if $error_handler_eligible(S, 2)
+  -- if $arithmetic_add_named(S)
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (COMPOUND_APPLY ADD (BASE_VALUE poperand_left) false z) :: ptask_tail*
+  -- if poperand_right = S.RESULT
+  -- if $integer_pointer_select(S, poperand_right) = (pintegerpointer_right)
+  -- if $integer_pointer_select(S, poperand_left) = (pintegerpointer_left)
+  -- if pintegerpointer_left = INTEGER_CELL n_left
+  -- if pintegerpointer_right = INTEGER_CELL n_right
+  -- if $propref_at(S.PROPREFS, n_left) = eps
+  -- if $propref_at(S.PROPREFS, n_right) = eps
+  -- if $integer_pointer_value(S, pintegerpointer_left) = (pvalue_left)
+  -- if $integer_pointer_value(S, pintegerpointer_right) = (pvalue_right)
+  -- if $arithmetic_add_conversion(pvalue_left) = ((pnumber_left, true))
+  -- if $arithmetic_add_conversion(pvalue_right) = ((pnumber_right, false))
+  -- if pintegeroperation = {SITE porigin, OP ADD, LINE z, SWAPPED false, LEFT poperand_left, RIGHT poperand_right, LEFTPOINTER pintegerpointer_left, RIGHTPOINTER pintegerpointer_right}
+  -- if $arithmetic_addassign_source(S, pintegeroperation)
+def $arithmetic_addassign_plan(S) = eps -- otherwise
+
+dec $arithmetic_addassign_warning_valid(pstate, pintegeroperation, pvalue, pnumber, nat) : bool
+def $arithmetic_addassign_warning_valid(S, pintegeroperation, pvalue, pnumber, n) = ($arithmetic_addassign_source(S, pintegeroperation) /\ $arithmetic_add_phase_valid(ARITHMETIC_RIGHT pnumber) /\ $arithmetic_add_conversion(pvalue) = ((pnumber, true)) /\ $(n <= 1) /\ (n = 1 \/ ($arithmetic_add_selected(S, pintegeroperation) /\ $integer_pointer_value(S, pintegeroperation.LEFTPOINTER) = (pvalue))))
+
+;; Borrowed source metadata remains valid after name rebinding. Only a live,
+;; untyped, nonowning destination and quiet selected RHS may reach the store.
+dec $arithmetic_addassign_ready(pstate, pintegeroperation) : pnumber?
+def $arithmetic_addassign_ready(S, pintegeroperation) = (pnumber)
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CELL n_left
+  -- if $integer_pointer_value(S, pintegeroperation.LEFTPOINTER) = (pvalue_left)
+  -- if $value_nodes(pvalue_left) = eps
+  -- if pvalue_left =/= PUNDEFINED
+  -- if $propref_at(S.PROPREFS, n_left) = eps
+  -- if $integer_pointer_value(S, pintegeroperation.RIGHTPOINTER) = (pvalue_right)
+  -- if $arithmetic_add_conversion(pvalue_right) = ((pnumber, false))
+  -- if $arithmetic_add_phase_valid(ARITHMETIC_RIGHT pnumber)
+def $arithmetic_addassign_ready(S, pintegeroperation) = eps -- otherwise
+
+rule PhpStep/arithmetic-addassign-begin: S ~> S[.TODO = (ARITHMETIC_ADDASSIGN_WARNING pintegeroperation pvalue pnumber 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.LOCATION = ROOT n_left]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $arithmetic_addassign_plan(S) = ((pintegeroperation, pvalue, pnumber))
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CELL n_left
+rule PhpStep/arithmetic-addassign-warning: S ~> $error_dispatch(S, 2, $ptascii("A non-numeric value encountered"), pintegeroperation.LINE, DIAGNOSTIC "Warning" ($ptascii("A non-numeric value encountered")) pintegeroperation.LINE, ARITHMETIC_ADDASSIGN_WARNING pintegeroperation pvalue pnumber 1)
+  -- if S.TODO = (ARITHMETIC_ADDASSIGN_WARNING pintegeroperation pvalue pnumber 0) :: ptask_tail*
+  -- if $arithmetic_addassign_warning_valid(S, pintegeroperation, pvalue, pnumber, 0)
+  -- if ~$error_handler_eligible(S, 2) \/ $arithmetic_add_named(S)
+rule PhpStep/arithmetic-addassign-owning-handler: S ~> S[.COMPLETION = UNSUPPORTED "compound addition owning warning callback"]
+  -- if S.TODO = (ARITHMETIC_ADDASSIGN_WARNING pintegeroperation pvalue pnumber 0) :: ptask_tail*
+  -- if $arithmetic_addassign_warning_valid(S, pintegeroperation, pvalue, pnumber, 0)
+  -- if $error_handler_eligible(S, 2)
+  -- if ~$arithmetic_add_named(S)
+rule PhpStep/arithmetic-addassign-commit: S ~> $write_cell_checked(S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue_result][.LOCATION = ROOT n_left], n_left, pvalue_result, pintegeroperation.LINE)
+  -- if S.TODO = (ARITHMETIC_ADDASSIGN_WARNING pintegeroperation pvalue pnumber_left 1) :: ptask_tail*
+  -- if $arithmetic_addassign_warning_valid(S, pintegeroperation, pvalue, pnumber_left, 1)
+  -- if $arithmetic_addassign_ready(S, pintegeroperation) = (pnumber_right)
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CELL n_left
+  -- if pvalue_result = $number_value($num_add(pnumber_left, pnumber_right))
+rule PhpStep/arithmetic-addassign-boundary: S ~> S[.COMPLETION = UNSUPPORTED "compound addition live operands or target"]
+  -- if S.TODO = (ARITHMETIC_ADDASSIGN_WARNING pintegeroperation pvalue pnumber 1) :: ptask_tail*
+  -- if $arithmetic_addassign_warning_valid(S, pintegeroperation, pvalue, pnumber, 1)
+  -- if $arithmetic_addassign_ready(S, pintegeroperation) = eps
+
+def $task_nodes(ARITHMETIC_ADDASSIGN_WARNING pintegeroperation pvalue pnumber n) = eps
+def $call_task_valid(S, ARITHMETIC_ADDASSIGN_WARNING pintegeroperation pvalue pnumber n) = $arithmetic_addassign_warning_valid(S, pintegeroperation, pvalue, pnumber, n)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = ARITHMETIC_ADDASSIGN_WARNING pintegeroperation pvalue pnumber 1
+  -- if $arithmetic_addassign_warning_valid(S, pintegeroperation, pvalue, pnumber, 1)
+  -- if perrorcall.TARGET =/= eps \/ $arithmetic_addassign_warning_valid(S, pintegeroperation, pvalue, pnumber, 0)
+  -- if perrorcall.SITE = pintegeroperation.SITE
+  -- if perrorcall.LINE = pintegeroperation.LINE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $ptascii("A non-numeric value encountered")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" ($ptascii("A non-numeric value encountered")) pintegeroperation.LINE

@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Numeric `+=` now saves the leading-numeric left conversion before a named
+warning handler and commits into the originally selected untyped reference cell.
+Three exact originals at cd6eff510 cover callback writes, supplied-object throw
+cancellation and old-cell commit after name rebinding with default Warning.
+Author 273 and independent 87 focused SL premises pass 360 at 472dc8d4d using
+retained PREP23c inputs. Genuine production fronts cover captured holders,
+selected owners, commit/cancellation, public descriptor rejection and budget resume;
+PROPREF and unrooted-target projections are pure refusal queries only.
+The original fixture syntax failure remains zero credit; only its cardinality
+parentheses changed. Typed/owning/expired targets, newly warning or invalid RHS,
+wider operands/callbacks and lifecycle paths remain partial. OP12 stays paused.
+[Compound ADD warning ledger](coverage/semantics/addassign-warning-review.json).
+
+
 Class-query `self`/`parent` now use the actual lexical scope and `static` uses the
 called class, including inherited-method eval. Both APIs raise scope Errors before
 quiet member lookup; the original query spelling and trace argument remain intact.

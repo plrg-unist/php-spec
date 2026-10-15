@@ -63,6 +63,22 @@ author plus 77 independent genuine SL premises check these distinct routes,
 source/phase/expiry guards, sole Error ownership and budget resumption in the
 [ADD failure ledger](../../coverage/semantics/arithmetic-failure-review.json).
 
+
+Numeric compound `+=` now stages the same leading-left warning for direct CVs
+with preexisting untyped reference cells and a quiet numeric RHS. The saved left
+number and both selected addresses survive a named handler. On return, the live
+selected RHS is converted quietly and the result replaces the selected old left
+cell, even if the current variable name was rebound. A supplied throw cancels the
+store and preserves callback mutations. The descriptor adds no owners; the
+rebind original retains the old cell through its surviving alias, with owners
+falling from two to one. Fresh input/selection authority is checked before entry;
+entered and returned holders remain historical. Three exact originals and
+273 author plus 87 independent focused SL premises are recorded in the
+[compound ADD ledger](../../coverage/semantics/addassign-warning-review.json).
+Lookup-only negative projections check PROPREF presence, ownership and expiry;
+they do not establish typed-source or owning-target execution. Newly warning or
+invalid RHS values, constrained/owning/expired targets, wider operands/callbacks
+and lifecycle paths remain explicit boundaries.
 The same bounded CV/reference-cell route now stages leading-numeric-string `/`.
 Zend's `div_function` dereferences both operands before conversion; each numeric
 holder is filled before its warning. The divisor is tested after conversion, so a
