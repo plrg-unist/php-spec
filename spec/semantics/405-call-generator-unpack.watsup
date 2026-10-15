@@ -45,7 +45,7 @@ def $generator_unpack_shape(pgeneratorunpack, "ready") = (pgeneratorunpack.COUNT
 def $generator_unpack_shape(pgeneratorunpack, text) = false -- otherwise
 def $generator_unpack_count(eps) = 0
 def $generator_unpack_count((GENERATOR_UNPACK pgeneratorunpack text) :: ptask*) = $(1 + $generator_unpack_count(ptask*))
-def $generator_unpack_count(ptask :: ptask*) = $generator_unpack_count(ptask*) -- otherwise
+def $generator_unpack_count(ptask :: ptask_tail*) = $generator_unpack_count(ptask_tail*) -- otherwise
 def $generator_unpack_valid(S, pgeneratorunpack, text) = true
   -- if $generator_unpack_shape(pgeneratorunpack, text)
   -- if $unpack_origin(S, pgeneratorunpack.CALL) = (porigin)
