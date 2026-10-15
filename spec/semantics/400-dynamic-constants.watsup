@@ -93,6 +93,8 @@ dec $dynamic_array_known_matches(pstate, pvalue, pvalue?) : bool
 dec $dynamic_defined_receive(pstate, pconfigcall) : pstate
 dec $dynamic_class_constant_receive(pstate, pconfigcall) : pstate
 dec $dynamic_global_constant_call(pconfigcall) : bool
+dec $dynamic_halt_call(pconfigcall) : bool
+dec $dynamic_halt_receive(pstate, pconfigcall) : pstate
 dec $dynamic_global_constant_finish(pstate, pconfigcall) : pstate
 dec $dynamic_define_finish(pstate, pconfigcall) : pstate
 def $dynamic_define_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME $user_constant_key(preqbytes), ORIGIN pconfigcall.SITE, VALUE pvalue, CLASS pvalueclass, READS eps, RECEIVES eps}]][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -144,6 +146,10 @@ def $dynamic_constant_receive(S, pconfigcall) = $dynamic_defined_receive(S, pcon
 def $dynamic_constant_receive(S, pconfigcall) = $dynamic_class_constant_receive(S, pconfigcall)
   -- if pconfigcall.KIND = INTRINSIC_CONSTANT
   -- if ~$dynamic_global_constant_call(pconfigcall)
+  -- if ~$dynamic_halt_call(pconfigcall)
+def $dynamic_constant_receive(S, pconfigcall) = $dynamic_halt_receive(S, pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_DEFINED \/ pconfigcall.KIND = INTRINSIC_CONSTANT
+  -- if $dynamic_halt_call(pconfigcall)
 def $dynamic_constant_receive(S, pconfigcall) = $dynamic_global_constant_finish(S, pconfigcall)
   -- if pconfigcall.KIND = INTRINSIC_CONSTANT
   -- if $dynamic_global_constant_call(pconfigcall)
@@ -798,3 +804,106 @@ def $class_constant_cache_trigger(S, porigin, PORIGIN n_unit pcpath, n_prefix) =
   -- if $dynamic_class_constant_site(S, PORIGIN n_unit pcpath)
   -- if $dynamic_class_constant_history_query(S, porigin, $dynamic_define_known(S, PORIGIN n_unit pcpath, 0))
   -- if $class_constant_history_exited(S.DECLARATIONS, n_prefix, n_unit)
+
+
+;; HALT registers the first offset for the compiled filename, before its body.
+;; A completed unit with no compilation reentry is sufficient evidence. Earlier
+;; incomplete/reentrant HALT candidates remain unknown, never silently absent.
+syntax phaltoffset = HALT_ABSENT | HALT_OFFSET int | HALT_UNKNOWN
+dec $dynamic_halt_enter(pdeclaration) : nat?
+def $dynamic_halt_enter(PDENTER n porigin? z) = (n)
+def $dynamic_halt_enter(PDENTERPRECISION n porigin? z z_precision) = (n)
+def $dynamic_halt_enter(pdeclaration) = eps -- otherwise
+dec $dynamic_halt_occurrence(pcoccurrence) : bool
+def $dynamic_halt_occurrence(PCOCCURRENCE pcpath (NStmtHaltCompiler phpType33 metadata)) = true
+def $dynamic_halt_occurrence(pcoccurrence) = false -- otherwise
+dec $dynamic_halt_occurrences(pcoccurrence*) : bool
+def $dynamic_halt_occurrences(eps) = false
+def $dynamic_halt_occurrences(pcoccurrence :: pcoccurrence_tail*) = ($dynamic_halt_occurrence(pcoccurrence) \/ $dynamic_halt_occurrences(pcoccurrence_tail*))
+dec $dynamic_halt_source(pcunit) : phaltoffset
+def $dynamic_halt_source(pcunit) = HALT_OFFSET z
+  -- if pcunit = $pcsource(pcunit.ID, pcunit.AST)
+  -- if $pphalt_offset(pcunit.AST) = (z)
+def $dynamic_halt_source(pcunit) = HALT_UNKNOWN -- otherwise
+dec $dynamic_halt_candidate(pstate, preqbytes, pdeclaration) : (nat, phaltoffset)?
+def $dynamic_halt_candidate(S, preqbytes_file, pdeclaration) = ((n_unit, $dynamic_halt_source(pcunit)))
+  -- if $dynamic_halt_enter(pdeclaration) = (n_unit)
+  -- if $source_unit(S.SOURCES, n_unit) = (pcunit)
+  -- if $call_sourcefile(S.FILES, PORIGIN n_unit eps) = preqbytes_file
+  -- if $dynamic_halt_occurrences($pcsource(n_unit, pcunit.AST).OCCURRENCES)
+def $dynamic_halt_candidate(S, preqbytes_file, pdeclaration) = eps -- otherwise
+dec $dynamic_halt_segment_item(pdeclaration, nat) : bool?
+def $dynamic_halt_segment_item(PDEXIT n PCSCOMPLETE, n) = (true)
+def $dynamic_halt_segment_item(PDEXIT n pcompilestop, n) = (false)
+  -- if pcompilestop =/= PCSCOMPLETE
+def $dynamic_halt_segment_item(PDENTER n porigin? z, n_unit) = (false)
+def $dynamic_halt_segment_item(PDENTERPRECISION n porigin? z z_precision, n_unit) = (false)
+def $dynamic_halt_segment_item(pdeclaration, n) = eps -- otherwise
+dec $dynamic_halt_segment(pdeclaration*, nat) : bool
+def $dynamic_halt_segment(eps, n) = false
+def $dynamic_halt_segment(pdeclaration :: pdeclaration_tail*, n) = b
+  -- if $dynamic_halt_segment_item(pdeclaration, n) = (b)
+def $dynamic_halt_segment(pdeclaration :: pdeclaration_tail*, n) = $dynamic_halt_segment(pdeclaration_tail*, n)
+  -- if $dynamic_halt_segment_item(pdeclaration, n) = eps
+dec $dynamic_halt_lookup(pstate, preqbytes, pdeclaration*) : phaltoffset
+def $dynamic_halt_lookup(S, preqbytes_file, eps) = HALT_ABSENT
+def $dynamic_halt_lookup(S, preqbytes_file, pdeclaration :: pdeclaration_tail*) = HALT_OFFSET z
+  -- if $dynamic_halt_candidate(S, preqbytes_file, pdeclaration) = ((n_unit, HALT_OFFSET z))
+  -- if $dynamic_halt_segment(pdeclaration_tail*, n_unit)
+def $dynamic_halt_lookup(S, preqbytes_file, pdeclaration :: pdeclaration_tail*) = HALT_UNKNOWN
+  -- if $dynamic_halt_candidate(S, preqbytes_file, pdeclaration) = ((n_unit, HALT_OFFSET z))
+  -- if ~$dynamic_halt_segment(pdeclaration_tail*, n_unit)
+def $dynamic_halt_lookup(S, preqbytes_file, pdeclaration :: pdeclaration_tail*) = HALT_UNKNOWN
+  -- if $dynamic_halt_candidate(S, preqbytes_file, pdeclaration) = ((n_unit, HALT_UNKNOWN))
+def $dynamic_halt_lookup(S, preqbytes_file, pdeclaration :: pdeclaration_tail*) = $dynamic_halt_lookup(S, preqbytes_file, pdeclaration_tail*)
+  -- if $dynamic_halt_candidate(S, preqbytes_file, pdeclaration) = eps
+
+;; Literal fixed defined emits ZEND_DEFINED, whose ordinary-table quick check
+;; does not consult HALT's filename-mangled entry. Selected calls use the API.
+def $dynamic_halt_call(pconfigcall) = true
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_query)]
+  -- if $string_bytes(pvalue_query) = (preqbytes)
+  -- if $dynamic_constant_query(preqbytes) = $ptascii("__COMPILER_HALT_OFFSET__")
+def $dynamic_halt_call(pconfigcall) = false -- otherwise
+dec $dynamic_halt_literal_defined(pstate, pconfigcall) : bool
+def $dynamic_halt_literal_defined(S, pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_DEFINED
+  -- if pconfigcall.SELECTION = eps
+  -- if $exit_fixed(S, pconfigcall.SITE) = ((preqbytes, eps))
+  -- if $ptlc(preqbytes) = $ptascii("defined")
+  -- if $intrinsic_count(S, pconfigcall.SITE) = (1)
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((NScalarString (BYTES text) metadata, false, eps, porigin_argument, z))
+  -- if $base64(text) = $ptascii("__COMPILER_HALT_OFFSET__")
+def $dynamic_halt_literal_defined(S, pconfigcall) = false -- otherwise
+dec $dynamic_halt_valid(pstate, pconfigcall) : bool
+def $dynamic_halt_valid(S, pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_DEFINED \/ pconfigcall.KIND = INTRINSIC_CONSTANT
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps /\ ~pconfigcall.NAMED
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_query)]
+  -- if $string_bytes(pvalue_query) = ($ptascii("__COMPILER_HALT_OFFSET__"))
+  -- if $string_plain(pvalue_query) = pvalue_query \/ $string_carrier_valid(S, pvalue_query)
+  -- if $dynamic_define_value_matches(pvalue_query, $dynamic_global_constant_known(S, pconfigcall.SITE))
+  -- if pconfigcall.SELECTION =/= eps \/ $dynamic_halt_literal_defined(S, pconfigcall)
+  -- if $call_sourcefile(S.FILES, pconfigcall.SITE) =/= eps
+def $dynamic_halt_valid(S, pconfigcall) = false -- otherwise
+def $dynamic_halt_receive(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $dynamic_halt_valid(S, pconfigcall)
+  -- if $dynamic_halt_literal_defined(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_halt_receive(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $dynamic_halt_valid(S, pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_DEFINED /\ pconfigcall.SELECTION =/= eps
+  -- if $dynamic_halt_lookup(S, $call_sourcefile(S.FILES, pconfigcall.SITE), S.DECLARATIONS) = HALT_ABSENT
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_halt_receive(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $dynamic_halt_valid(S, pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_DEFINED /\ pconfigcall.SELECTION =/= eps
+  -- if $dynamic_halt_lookup(S, $call_sourcefile(S.FILES, pconfigcall.SITE), S.DECLARATIONS) = HALT_OFFSET z
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_halt_receive(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PINT z)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $dynamic_halt_valid(S, pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_CONSTANT /\ pconfigcall.SELECTION =/= eps
+  -- if $dynamic_halt_lookup(S, $call_sourcefile(S.FILES, pconfigcall.SITE), S.DECLARATIONS) = HALT_OFFSET z
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_halt_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "halt offset constant query"] -- otherwise
