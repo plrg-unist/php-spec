@@ -1,0 +1,165 @@
+{
+  "version": 1,
+  "milestone": "OP15 unary numeric-string warning continuations",
+  "status": "independently accepted private milestone; integration pending",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local pinned PHP and profile",
+  "scope": "Unary + and - on a leading-numeric string read from a defined non-reference CV, with a named warning handler.",
+  "runtime_revision": "0575a4fd967fe642bdfbc4ead9f8a6e49385c512",
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "2b903ab009e2d5898ef3c00c3af8c42593811abb9398f1358e0e18b8543927e7",
+    "spec/semantics/40-control.watsup": "a94ba7e24c8d706e5cc0b6a5e63cffa06243a492dad882a74bb10baaf39ceb30",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "5235515850c4c41a368d0112c3d9f87be9e434dfc010d4e3d3f6e04726df0231"
+  },
+  "engine_basis": [
+    "Zend/zend_compile.c: zend_compile_unary_pm lowers to MUL by fixed +1/-1; the operand instruction line governs the diagnostic.",
+    "Zend/zend_operators.c: mul_function_slow and _zendi_try_convert_scalar_to_number capture the converted number before the warning; an existing exception aborts result delivery.",
+    "Zend/zend_operators.c: _is_numeric_string_ex compares the full C suffix with long_min_digits. The negative boundary string with trailing tail is a float, as already modeled by 02-numeric-text.watsup."
+  ],
+  "contract": [
+    "Authenticate unary source/operator, child-CV input and instruction line. Initial capture and fresh handler dispatch equal the current CV; entered callback frames and resumed holders retain their historical scalar and number.",
+    "Scalar captures add no heap roots. Callback writes do not replace the number; remove the marker before ordinary sign/result delivery. A supplied throw discards the unfinished continuation and preserves its object, null Previous and unchanged result destination.",
+    "Missing-CV/read-warning and other unary routes remain disjoint. Existing ADD/DIV bodies and pure arithmetic remain unchanged; no native arithmetic fallback is added."
+  ],
+  "accepted": {
+    "strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-15/strict-0575a4fd9/report.json",
+      "report_sha256": "8c6072877e535e9b1b175277e572927b706dc919b7b900f57eea49f5ce40b1b1",
+      "revision": "0575a4fd967fe642bdfbc4ead9f8a6e49385c512",
+      "modules": 394,
+      "mode": "SL main=true; zero PHP agreement credit"
+    },
+    "source": {
+      "distinct_new_originals": 3,
+      "revision": "0575a4fd967fe642bdfbc4ead9f8a6e49385c512",
+      "source_sha256": {
+        "unary-plus-leading-handler-write": "c4660dc7df39d15d2576cbc94ea5c96a950111faf0004a302acd3edc682b46a4",
+        "unary-minus-leading-handler-throw": "1260f02ceae48aeef610200fa0eadae1770ce2d90226015f24270d56a3d0c20c",
+        "unary-minus-leading-min-default": "882c815dc160cf8f69bf681c3d15491387cec1c8ba8355d9a6b29b8bc5f966de"
+      },
+      "cuts": [
+        {
+          "report": "/home/user/workspace/php-spec-evidence-archive/operators-15/smoke-0575a4fd9-plus-write/report.json",
+          "report_sha256": "b2af070b8f04783c8d735d791d5e9ed6cbaccb2355be8c4b9a38daf90d4baed4",
+          "ids": [
+            "unary-plus-leading-handler-write"
+          ]
+        },
+        {
+          "report": "/home/user/workspace/php-spec-evidence-archive/operators-15/source-0575a4fd9-minus-throw/report.json",
+          "report_sha256": "0260e3d9004473d10e2c3fe3a5876ffb13cc84507018c1db969244985570f698",
+          "ids": [
+            "unary-minus-leading-handler-throw"
+          ]
+        },
+        {
+          "report": "/home/user/workspace/php-spec-evidence-archive/operators-15/review-model-0575a4fd9-min-default/report.json",
+          "report_sha256": "cf225cd008eab5a43e4cad17fc6d933ae5a0d9087e40933a7c45bb3390c55464",
+          "ids": [
+            "unary-minus-leading-min-default"
+          ]
+        }
+      ],
+      "result": "All checked programs are normal/native0/model0 with exact streams: saved plus12/live99, supplied-object minus cancellation with sentinel100, and boundary-float minus/default Warning on operand line11 despite prefix line10. Finally/end agree; no interruption or surviving process group."
+    },
+    "author_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-15/state-44ae5523b-author-two/report.json",
+      "report_sha256": "3cd603464d999e5c31bd976902598d2c98a0740d7707ca2c32fc08a2b8ffd337",
+      "revision": "44ae5523bb5eb1020f4375875cdf809102608df5",
+      "mode": "SL",
+      "conditions": [
+        116,
+        111
+      ],
+      "fixture_sha256": [
+        "cd59622ad000b25c1bfedb628d9c179fe7a73f03481a5b198ceda857afad6f0e",
+        "31a49d0030d5d7ea6d61ab07f2814b12815a6fde3e89503f3d47fc0d50aa6dae"
+      ],
+      "result": "Genuine capture, fresh dispatch, saved TARGET frame, historical return and marker-free supplied throw. Whole public validation rejects coordinated scalar/number and message/event forgeries; source/phase checks, cell owner1, pending Throwable owner2, sentinel and native/budget endings pass."
+    },
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-15/state-19bff93b8-review-one/report.json",
+      "report_sha256": "b82ad68e9e027a396a5c9d8000af05d793bb16702006c73acc1f47d2fd34d201",
+      "revision": "19bff93b84e7f22df941549cefe7e1ee16d49246",
+      "prepared_revision": "44ae5523bb5eb1020f4375875cdf809102608df5",
+      "mode": "SL",
+      "conditions": 96,
+      "fixture_sha256": "f6eadf20c5d275f988e18895608cf6b25d4e3e3e0d62fe2e5920350de223c74f",
+      "result": "Genuine negative boundary-float capture, fresh dispatch, false-handler/default Warning and positive2^63 float delivery. Live99, instruction line11, no extra cell roots, public snapshot forgeries, unchanged destination and budget/native endings pass."
+    },
+    "total_reached_conditions": 323,
+    "compatibility": "Helper-only author44ae and peer19bf preserve tested0575 runtime/source bytes. The peer expectation correction reuses retained44ae AST/path/native and changes only one generated NUMBER assertion. Subsequent wrapper8657-to-e45b changes only the inert label float promotion to float sign delivery. No accepted source/author/strict evidence is renewed."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-15/baseline-d0e4b9b26-plus-write/report.json",
+      "report_sha256": "c9cc7b364c95f065fd431492a372b6cfdb74c4e843d461cf3d921e651f457434",
+      "result": "Checked/program Unsupported: error-handler ingress requires a producer continuation; no handler/model output versus native saved12/live99. Agreement0."
+    },
+    "first_compile_failure": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-15/strict-0958640a1/report.json",
+      "report_sha256": "8ca4b7cd9419c2655db65c06a09295eae078bbaf2b2795ca2a8711401187ca65",
+      "result": "Pre-runtime undefined punarywarning type; sole forward declaration corrected it. Conditional source was unrun."
+    },
+    "first_peer_fixture_failure": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-15/state-44ae5523b-review-one/report.json",
+      "report_sha256": "9d49829848b964ef62c16bfd7c8f91de3c777036c0643637e0241795ec87d85c",
+      "result": "Expected NINT(-2^63) was wrong for the suffixed string; whole96 remains0. Engine and existing pure parser require NFLOAT(-2^63). Only the affected peer fixture was corrected and rerun."
+    },
+    "native_and_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-15/native-d0e4b9b26-two/report.json",
+        "report_sha256": "22a020285a4140d91518d33ed1b5b5c0cbf2f41b09c366aa217834ae07346c66"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-15/review-native-7f846e199-one/report.json",
+        "report_sha256": "45986f981372ee6ec5626ee48227c2f63eceebed7f99aad57d4b820a7f249778"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-15/state-prep-44ae5523b-author-two/report.json",
+        "report_sha256": "543e972a5b6b4f9899a26ab69e5802bbcb880a0fcb8a12348b8480828cfee52b"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-15/state-prep-44ae5523b-review-one/report.json",
+        "report_sha256": "675ce51ca6e165d70a8b8a3a46cef7cce256feda114c279bad2d7916fea0d3e5"
+      }
+    ],
+    "standalone_syntax": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-15/syntax-44ae5523b-three-v2/checked-report.json",
+      "report_sha256": "7dc5f254731dfa436096d9690b8bac0d401fdb998a09551871d3dbb19b52b6d3",
+      "result": "All three full files parse before expected standalone missing-pstate diagnostics. Original setup/channel records are retained; adjudication reuses first raw and runs only two unrun parses. Syntax only, no semantic credit."
+    },
+    "original_syntax_records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-15/syntax-44ae5523b-three/setup.json",
+        "report_sha256": "b8c8425ce1abc0d7ccdd36754dff193ebe59d24a821d4580296fea7bcda132b1"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-15/syntax-44ae5523b-three-v2/report.json",
+        "report_sha256": "f73f56cf33060baea7fbd25fda3f3f9a1c5e3b1c4412275f44d370a868d547c8"
+      }
+    ],
+    "unrun_observer_preflight": {
+      "script": "/home/user/workspace/php-spec-evidence-archive/operators-15/native-dcecfce2f-two/run-native.py",
+      "script_sha256": "8dcbcd14a33c236ef9d4b36731cf061695a590fa9ff5ba3250511bc45cf7c075",
+      "result": "Excluded gettype observer caught before any actor; replaced only by a core strict predicate. Original packet stays unrun0."
+    }
+  },
+  "required_follow_on": [
+    "Reference/owning/copied operands, other producer/value classes, owning callbacks and wider exit/lifecycle routes remain required; no full unary or arithmetic claim.",
+    "Five inventory rows remain partial. OP12 array-element update work remains paused; prior integer/ADD/DIV cuts are unchanged."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-15",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "environment": "LC_ALL=C, TZ=UTC, no PHP_SPEC_SCRIPT_ENCODING. Source native30/model CLI60/process90; immutable state thins use CPU3, explicit SL/cap120/exact true newline/empty stderr/no interruption and reaped groups.",
+    "commands": [
+      "python3 tests/semantics/unary_warnings.py --case CASE_ID --output NEW_EXTERNAL_DIRECTORY",
+      "python3 tests/semantics/unary_warning_review.py --case unary-minus-leading-min-default --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-15/state-44ae5523b-author-two/run-state.py",
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-15/state-19bff93b8-review-one/run-state.py"
+    ],
+    "record": "External records retain original source/checked AST/path/native bytes, fixture and input hashes, compiler/runtime/profile, commands, exits and process reaping. Restore matching Git cuts/project-local tools and fresh output paths; state thins do not rerun PHP/frontend/source stages."
+  }
+}

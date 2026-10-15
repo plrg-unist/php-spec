@@ -67,6 +67,20 @@ selection, fresh input snapshots, historical resume holders, sole Error ownershi
 default Warning and budget resumption are checked. Wider operands, callbacks and
 lifecycle paths remain required; the ADD bodies and evidence are unchanged.
 
+Unary `+`/`-` now suspend leading-numeric warnings from defined non-reference
+CVs through named handlers. Zend's `zend_compile_unary_pm` lowers to multiplication
+by fixed `+1`/`-1`; the operand instruction line governs the warning. The converted
+number is captured before dispatch, so handler writes cannot replace it.
+Fresh capture/dispatch snapshots are authenticated; entered caller frames and
+resumed holders stay historical and add no roots. A supplied throw discards the
+unfinished marker. Its Throwable keeps its identity and null Previous; no result
+reaches the destination.
+Three exact originals and 227 author plus 96 independent genuine SL premises
+check negative boundary float delivery, false fallback, public snapshot/message
+rejection, ownership and budget resumption in the
+[unary ledger](../../coverage/semantics/unary-warning-review.json). Other producers,
+references/owning operands, callbacks and lifecycle forms remain required.
+
 Concatenation has an additional compile/runtime distinction. The compiler visits
 both operands before converting known scalar operands and queuing conversion
 warnings. At execution, known array operands produce their conversion warnings

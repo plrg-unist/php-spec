@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Module404 now stages unary `+`/`-` leading-numeric warnings from a defined
+non-reference CV through named handlers. Fresh capture/dispatch matches the CV;
+entered callbacks and resumed numbers remain historical despite live writes.
+Three exact originals at 0575 cover saved 12 with live CV 99, a supplied throw
+with unchanged destination, and negative boundary float capture/default Warning
+at the operand line. Author 227 at 44ae and independent 96 at 19bf pass 323 SL premises,
+including saved TARGET frames, public snapshot/message rejection, owner counts,
+sign delivery and budget resumption. The original baseline, forward-declaration
+failure and incorrect integer-capture fixture retain zero credit. Wider operand,
+value, callback and lifecycle forms remain partial. OP12 stays paused.
+[Unary warning ledger](coverage/semantics/unary-warning-review.json).
+
 Ordinary string-valued `const` declarations now accept authentic interned and
 request carriers without changing their identity or source allocation classes.
 Five exact sources retain their 10475/3342 cuts; two publication fronts pass 279 SL

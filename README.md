@@ -532,6 +532,12 @@ warning, original-line `DivisionByZeroError`, unchanged assignment destination a
 catch/finally continuation. [DIV evidence](coverage/semantics/division-warning-review.json)
 retains the original Unsupported baseline; wider operands and lifecycle paths
 remain partial.
+Unary `+` and `-` now capture leading-numeric strings from defined non-reference
+CVs before named warning handlers. Three exact originals and 323 genuine state
+premises check callback writes, supplied throws with unchanged destinations,
+negative boundary float delivery and a false-handler warning on the operand line.
+[Unary evidence](coverage/semantics/unary-warning-review.json) preserves the
+original failures; wider operand, callback and lifecycle forms remain partial.
 [Destructuring and retained expression effects](docs/semantics/DESTRUCTURING.md)
 now execute current scalar/array list patterns and nonvariable-left coalescing.
 [Independent acceptance](coverage/semantics/destructuring-review.json) binds 263

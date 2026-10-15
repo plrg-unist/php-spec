@@ -222,3 +222,74 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 2
   -- if perrorcall.MESSAGE = $ptascii("A non-numeric value encountered")
   -- if perrorcall.EVENT = DIAGNOSTIC "Warning" ($ptascii("A non-numeric value encountered")) pintegeroperation.LINE
+
+;; zend_compile_unary_pm lowers to MUL by a fixed +/-1. The numeric input
+;; is captured before its warning; the callback cannot change that holder.
+syntax punarywarning = { SITE porigin, OP punary, LINE int, INPUT poperand, VALUE pvalue, NUMBER pnumber }
+
+dec $arithmetic_unary_kind(pcnode) : punary?
+def $arithmetic_unary_kind(NExprUnaryPlus expression metadata) = (POSITIVE)
+def $arithmetic_unary_kind(NExprUnaryMinus expression metadata) = (NEGATIVE)
+def $arithmetic_unary_kind(pcnode) = eps -- otherwise
+dec $arithmetic_unary_valid(pstate, punarywarning) : bool
+def $arithmetic_unary_valid(S, punarywarning) = true
+  -- if S.ORIGIN = (punarywarning.SITE)
+  -- if $origin_node(S.SOURCES, punarywarning.SITE) = (pcnode)
+  -- if $arithmetic_unary_kind(pcnode) = (punarywarning.OP)
+  -- if punarywarning.INPUT = VARIABLE ptbytes z
+  -- if $integer_operand_source(S, punarywarning.SITE, [PCFIELD 0], punarywarning.INPUT)
+  -- if $code_expression_at_source(S, punarywarning.SITE, [PCFIELD 0]) = (punarywarning.LINE)
+  -- if $arithmetic_add_conversion(punarywarning.VALUE) = ((punarywarning.NUMBER, true))
+def $arithmetic_unary_valid(S, punarywarning) = false -- otherwise
+dec $arithmetic_unary_snapshot(pstate, punarywarning) : bool
+def $arithmetic_unary_snapshot(S, punarywarning) = true
+  -- if $integer_pointer_select(S, punarywarning.INPUT) = (INTEGER_CV ptbytes)
+  -- if $integer_pointer_value(S, INTEGER_CV ptbytes) = (punarywarning.VALUE)
+def $arithmetic_unary_snapshot(S, punarywarning) = false -- otherwise
+
+def $arithmetic_unary_plan(S) = (punarywarning)
+  -- if $error_handler_eligible(S, 2)
+  -- if $arithmetic_add_named(S)
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (UNARY punary z) :: ptask_tail*
+  -- if S.RESULT = VARIABLE ptbytes z_input
+  -- if $integer_pointer_select(S, S.RESULT) = (INTEGER_CV ptbytes)
+  -- if $integer_pointer_value(S, INTEGER_CV ptbytes) = (pvalue)
+  -- if $arithmetic_add_conversion(pvalue) = ((pnumber, true))
+  -- if punarywarning = {SITE porigin, OP punary, LINE z, INPUT S.RESULT, VALUE pvalue, NUMBER pnumber}
+  -- if $arithmetic_unary_valid(S, punarywarning)
+def $arithmetic_unary_plan(S) = eps -- otherwise
+
+dec $arithmetic_unary_number(punary, pnumber) : pnumber
+def $arithmetic_unary_number(POSITIVE, pnumber) = pnumber
+def $arithmetic_unary_number(NEGATIVE, pnumber) = $num_mul(pnumber, NINT $(-1))
+dec $arithmetic_unary_warning_valid(pstate, punarywarning, nat) : bool
+def $arithmetic_unary_warning_valid(S, punarywarning, n) = ($arithmetic_unary_valid(S, punarywarning) /\ $(n <= 1) /\ (n = 1 \/ $arithmetic_unary_snapshot(S, punarywarning)))
+
+rule PhpStep/arithmetic-unary-begin: S ~> S[.TODO = (ARITHMETIC_UNARY_WARNING punarywarning 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $arithmetic_unary_plan(S) = (punarywarning)
+rule PhpStep/arithmetic-unary-warning: S ~> $error_dispatch(S, 2, $ptascii("A non-numeric value encountered"), punarywarning.LINE, DIAGNOSTIC "Warning" ($ptascii("A non-numeric value encountered")) punarywarning.LINE, ARITHMETIC_UNARY_WARNING punarywarning 1)
+  -- if S.TODO = (ARITHMETIC_UNARY_WARNING punarywarning 0) :: ptask_tail*
+  -- if $arithmetic_unary_warning_valid(S, punarywarning, 0)
+  -- if ~$error_handler_eligible(S, 2) \/ $arithmetic_add_named(S)
+rule PhpStep/arithmetic-unary-owning-handler: S ~> S[.COMPLETION = UNSUPPORTED "unary arithmetic owning warning callback"]
+  -- if S.TODO = (ARITHMETIC_UNARY_WARNING punarywarning 0) :: ptask_tail*
+  -- if $arithmetic_unary_warning_valid(S, punarywarning, 0)
+  -- if $error_handler_eligible(S, 2)
+  -- if ~$arithmetic_add_named(S)
+rule PhpStep/arithmetic-unary-resume: S ~> $number_result(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL], NUM $arithmetic_unary_number(punarywarning.OP, punarywarning.NUMBER), punarywarning.LINE)
+  -- if S.TODO = (ARITHMETIC_UNARY_WARNING punarywarning 1) :: ptask_tail*
+  -- if $arithmetic_unary_warning_valid(S, punarywarning, 1)
+
+def $task_nodes(ARITHMETIC_UNARY_WARNING punarywarning n) = eps
+def $call_task_valid(S, ARITHMETIC_UNARY_WARNING punarywarning n) = $arithmetic_unary_warning_valid(S, punarywarning, n)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = ARITHMETIC_UNARY_WARNING punarywarning 1
+  -- if $arithmetic_unary_warning_valid(S, punarywarning, 1)
+  -- if perrorcall.TARGET =/= eps \/ $arithmetic_unary_snapshot(S, punarywarning)
+  -- if perrorcall.SITE = punarywarning.SITE
+  -- if perrorcall.LINE = punarywarning.LINE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $ptascii("A non-numeric value encountered")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" ($ptascii("A non-numeric value encountered")) punarywarning.LINE
