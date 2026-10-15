@@ -1,0 +1,389 @@
+{
+  "scope": "Selected public typed backed sole statement SET on a parentless declaring class, inherited unchanged by Child. One actual typed/defaultless/nonreference/nonvariadic/attribute-free parameter retains its source name/type and must accept the property type. The source distinguishes STRING20 assignment result from cast/private-offset storage33, pre-body union-argument failure, and incompatible string-only setter priority.",
+  "implementation": {
+    "base": "bd3a28b41459abb73015e4e6af3588ac29fc996c",
+    "revision": "b5e897157c74d569fc8064f98ed7b4fedba18438",
+    "test_revision": "7f54c43d6d504a3872939aba5e189c0fc1bf19da",
+    "modules": 394,
+    "files": [
+      "spec/semantics/403-backed-set-hooks.watsup",
+      "spec/semantics/91-default-parameters.watsup"
+    ],
+    "change": "Compile the real closed NParam with pscompile and force only SET void. Compile the body before checking propertyTYPE <: parameterTYPE; incompatible types use the hook ENDLINE. Runtime proof authenticates the own source property type, matching actual Param occurrence and compatible signature. A disjoint explicit SET arm lowers the physical statement body. The actual FIELD4/INDEX0 parameter source and compiler line drive receive errors.",
+    "preserved": "Existing implicit and paired hooks, getter rules, storage/layout/permissions, target/result continuation, generic95 argument conversion and global return rules are unchanged. No module, state field or task is added."
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor 34308a6666b2d489c509541ea9befea9e2b42348",
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "absent",
+    "jobs": 1
+  },
+  "engine_basis": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_property_hooks preserves one explicit source parameter and forces SET void, compiling body before zend_verify_property_hook_variance",
+    "vendor/php-src/Zend/zend_inheritance.c: zend_verify_property_hook_variance checks property type covariance into the setter parameter and reports incompatible-with-property at hook ENDLINE",
+    "vendor/php-src/Zend/zend_execute.c: supplied parameter validation precedes SET body entry",
+    "vendor/php-src/Zend/zend_object_handlers.c: zend_std_write_property returns the original assignment input after the setter"
+  ],
+  "binaries": {
+    "php": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/php/bin/php",
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    "strict_compiler": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/cprefix-compiler/compiler",
+      "sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d"
+    },
+    "algorithmic": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/spectec/bin/p4spectec",
+      "sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "strict_application": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/tests/semantics/_build/default/numeric_runner.exe",
+      "sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    }
+  },
+  "recorders": {
+    "run.py": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/explicit-setter-parameter-probes-73/run.py",
+      "sha256": "25db590814a63c245db60ee41a90cbd643c50c253946a2adfc1bc2fe8f6634de"
+    },
+    "run-compiler.py": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/explicit-setter-parameter-probes-73/run-compiler.py",
+      "sha256": "f677710852491c6d2ebb162af1b6a3c76b858e3ec298332aa59f82872ce193e4"
+    }
+  },
+  "native": {
+    "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/explicit-setter-parameter-probes-73/native-first/report.json",
+    "sha256": "98cc4e7023dfd6b8d51c96f458ef73376c27953cd47a65f80771a7de5a2ae87b",
+    "revision": "bd3a28b41459abb73015e4e6af3588ac29fc996c",
+    "model_credit": 0,
+    "completed": true,
+    "records": [
+      {
+        "id": "scalar",
+        "source_sha256": "acbdf381afeff0efc0d603e7159a4c69c66260bd3348de1cf866f6f298cc9c0f",
+        "process": {
+          "exit": 0,
+          "elapsed": 0.005088090896606445,
+          "cap_seconds": 45,
+          "timeout": false,
+          "group_after": []
+        },
+        "stdout_bytes": 361,
+        "stderr_bytes": 0,
+        "anticipation_stdout_match": true,
+        "anticipation_stderr_match": true
+      },
+      {
+        "id": "narrow",
+        "source_sha256": "1074a2d1f871de66e01c00a2c32590a29019e97f62f01f3c95847f5f28f07b21",
+        "process": {
+          "exit": 255,
+          "elapsed": 0.004147052764892578,
+          "cap_seconds": 45,
+          "timeout": false,
+          "group_after": []
+        },
+        "stdout_bytes": 0,
+        "stderr_bytes": 275,
+        "anticipation_stdout_match": true,
+        "anticipation_stderr_match": false
+      }
+    ],
+    "observation": "Exactly one SET marker; original STRING20 versus slot33/ordinary33. Bad array retains actual incoming name/type string|int and caller21. Narrow setter has full fatal+main stack at7; the informational anticipation of4/no stack was wrong. Actual raw tuples are authoritative; permanent templates replace only FILE.",
+    "affinity": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/explicit-setter-parameter-probes-73/affinity-native-first.json",
+      "sha256": "99edcf4f17d446e5bbb0e0a18a862e57f74887b5d5044adc6fd0aad3720c7562"
+    }
+  },
+  "unchanged_baseline": {
+    "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/explicit-setter-parameter-probes-73/accepted-current-baseline/report.json",
+    "sha256": "ef55637b1a1cbdaaa2ad8ec578b81c7663c5bea81e1d507608015aa329e1f666",
+    "revision": "bd3a28b41459abb73015e4e6af3588ac29fc996c",
+    "source_agreements": 0,
+    "records": [
+      {
+        "id": "scalar",
+        "frontend_accepted": true,
+        "adapter_checked": true,
+        "status": "unsupported",
+        "reason": "set, by-reference, attributed or defaulted virtual property hook",
+        "process": {
+          "exit": 1,
+          "elapsed": 7.460650205612183,
+          "cap_seconds": 75,
+          "timeout": false,
+          "group_after": []
+        },
+        "source_agreements": 0
+      },
+      {
+        "id": "narrow",
+        "frontend_accepted": true,
+        "adapter_checked": true,
+        "status": "unsupported",
+        "reason": "set, by-reference, attributed or defaulted virtual property hook",
+        "process": {
+          "exit": 1,
+          "elapsed": 7.404953479766846,
+          "cap_seconds": 75,
+          "timeout": false,
+          "group_after": []
+        },
+        "source_agreements": 0
+      }
+    ],
+    "affinity": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/explicit-setter-parameter-probes-73/affinity-accepted-current-baseline.json",
+      "sha256": "f2cccdaf6e7863d1a2deac6a2e69e9c6443e13a375dd10fbb058718ba646e8ef"
+    }
+  },
+  "strict": {
+    "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/explicit-setter-parameter-probes-73/explicit-setter-parameter-hook-compiler-yvlo95_p/report.json",
+    "sha256": "9876dc3218f01b8853d8e880422e7afeaeecb6a9b8db69f9ffddf18a03dae976",
+    "revision": "b5e897157c74d569fc8064f98ed7b4fedba18438",
+    "modules": 394,
+    "passed": true,
+    "process": {
+      "exit": 0,
+      "elapsed": 7.33082389831543,
+      "cap_seconds": 60,
+      "timeout": false,
+      "group_after": []
+    },
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "launch": "taskset -c 1 python3 .tools/explicit-setter-parameter-probes-73/run-compiler.py bd3a28b41459abb73015e4e6af3588ac29fc996c b5e897157c74d569fc8064f98ed7b4fedba18438",
+    "live_affinity_capture": false,
+    "affinity_note": "The late sampler exited after compiler closure; preserve exact taskset-c1 launch provenance without an uncaptured live-affinity claim. No rerun."
+  },
+  "source_validation": {
+    "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/explicit-setter-parameter-probes-73/changed-model-u9th678c/report.json",
+    "sha256": "7a896dec6f014c75c1d6583b8111f6d15271afdb2fcbe86f1a57eab9a6ad6511",
+    "revision": "b5e897157c74d569fc8064f98ed7b4fedba18438",
+    "source_agreements": 2,
+    "records": [
+      {
+        "id": "scalar",
+        "frontend_accepted": true,
+        "adapter_checked": true,
+        "status": "normal",
+        "logical_exit": 0,
+        "diagnostic": null,
+        "process": {
+          "exit": 0,
+          "elapsed": 12.697962760925293,
+          "cap_seconds": 75,
+          "timeout": false,
+          "group_after": []
+        },
+        "source_agreement": true
+      },
+      {
+        "id": "narrow",
+        "frontend_accepted": true,
+        "adapter_checked": true,
+        "status": "static_rejection",
+        "logical_exit": 255,
+        "diagnostic": {
+          "class": "CompileError",
+          "message": "VHlwZSBvZiBwYXJhbWV0ZXIgJGluY29taW5nIG9mIGhvb2sgTmFycm93U2V0UGFyZW50NzM6OiR2YWx1ZTo6c2V0IG11c3QgYmUgY29tcGF0aWJsZSB3aXRoIHByb3BlcnR5IHR5cGU=",
+          "line": 7
+        },
+        "process": {
+          "exit": 0,
+          "elapsed": 7.53454065322876,
+          "cap_seconds": 75,
+          "timeout": false,
+          "group_after": []
+        },
+        "source_agreement": true
+      }
+    ],
+    "launch": "taskset -c 1 python3 .tools/explicit-setter-parameter-probes-73/run.py changed --revision b5e897157c74d569fc8064f98ed7b4fedba18438",
+    "affinity": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/explicit-setter-parameter-probes-73/affinity-candidate-source.json",
+      "sha256": "0997e1e9134ecd82e7f7d23d574ff3fb4093ba7da40f657112fa42275bb22710"
+    }
+  },
+  "state_validation": {
+    "revision": "7f54c43d6d504a3872939aba5e189c0fc1bf19da",
+    "modules": 394,
+    "states": [
+      {
+        "group": "receive",
+        "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/explicit-setter-parameter-protocol-dnuqj63d/report.json",
+        "sha256": "6721877026a03e42f0b09805e95e3ca25776e1306473976d90fd130e4ec47c4d",
+        "revision": "7f54c43d6d504a3872939aba5e189c0fc1bf19da",
+        "fixture_sha256": "b35c9892e6ca49d783c5fdba267eb2202327260c3b38bc85e3a3f548f2dfc95d",
+        "premises": 150,
+        "reached_premises": 118,
+        "derived_premises": 32,
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "preparation": {
+          "group": "receive",
+          "report": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/explicit-setter-parameter-protocol-eocc5ss_/PREPARED.json",
+          "sha256": "e423aaeeb4f7adb72f1b14047a07152413223c5e15349705b900772a8c781efe",
+          "fixture": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/explicit-setter-parameter-protocol-eocc5ss_/hook.watsup",
+          "fixture_sha256": "b35c9892e6ca49d783c5fdba267eb2202327260c3b38bc85e3a3f548f2dfc95d",
+          "premises": 150,
+          "reached": 118,
+          "derived": 32
+        },
+        "processes": [
+          {
+            "pid": 1661650,
+            "exit": 0,
+            "elapsed": 6.231214761734009,
+            "cap_seconds": 90,
+            "timeout": false,
+            "group_after": []
+          },
+          {
+            "pid": 1661849,
+            "exit": 0,
+            "elapsed": 15.784506559371948,
+            "cap_seconds": 90,
+            "timeout": false,
+            "group_after": []
+          }
+        ]
+      },
+      {
+        "group": "error",
+        "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/explicit-setter-parameter-protocol-pyy312yw/report.json",
+        "sha256": "72e2a72f767fdb3055ce6f416a75fe389d9a2fd7323739a53d17589282afa60e",
+        "revision": "7f54c43d6d504a3872939aba5e189c0fc1bf19da",
+        "fixture_sha256": "a65221c5dab6105316ea97210fed3249d22135669ef1fb83826098be339f7e7e",
+        "premises": 91,
+        "reached_premises": 91,
+        "derived_premises": 0,
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "preparation": {
+          "group": "error",
+          "report": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/explicit-setter-parameter-protocol-3zm5zeon/PREPARED.json",
+          "sha256": "abe41975abf1020eae87d44be6aa979a77cab20dfedb53d5b10f28ee2ae69a8a",
+          "fixture": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/explicit-setter-parameter-protocol-3zm5zeon/hook.watsup",
+          "fixture_sha256": "a65221c5dab6105316ea97210fed3249d22135669ef1fb83826098be339f7e7e",
+          "premises": 91,
+          "reached": 91,
+          "derived": 0
+        },
+        "processes": [
+          {
+            "pid": 1662039,
+            "exit": 0,
+            "elapsed": 6.202654600143433,
+            "cap_seconds": 90,
+            "timeout": false,
+            "group_after": []
+          },
+          {
+            "pid": 1662120,
+            "exit": 0,
+            "elapsed": 16.09764575958252,
+            "cap_seconds": 90,
+            "timeout": false,
+            "group_after": []
+          }
+        ]
+      },
+      {
+        "group": "narrow",
+        "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/explicit-setter-parameter-protocol-_nc805js/report.json",
+        "sha256": "1026627d7273b8393a0c0090f589d8cccdc25ee509d9ab2e13ce1b993d17b0c0",
+        "revision": "7f54c43d6d504a3872939aba5e189c0fc1bf19da",
+        "fixture_sha256": "0b7d86aa592f17d484fd43f894a6da4b7e994b60477c5e2fd64c3a8d998d7103",
+        "premises": 29,
+        "reached_premises": 29,
+        "derived_premises": 0,
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "preparation": {
+          "group": "narrow",
+          "report": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/explicit-setter-parameter-protocol-65lc7x0j/PREPARED.json",
+          "sha256": "47398845ae1f2d3b56860ee0535efaa5fcb663f329f2d054f7ff0f561cb7f75a",
+          "fixture": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/explicit-setter-parameter-protocol-65lc7x0j/hook.watsup",
+          "fixture_sha256": "0b7d86aa592f17d484fd43f894a6da4b7e994b60477c5e2fd64c3a8d998d7103",
+          "premises": 29,
+          "reached": 29,
+          "derived": 0
+        },
+        "processes": [
+          {
+            "pid": 1662380,
+            "exit": 0,
+            "elapsed": 6.189345121383667,
+            "cap_seconds": 90,
+            "timeout": false,
+            "group_after": []
+          },
+          {
+            "pid": 1662422,
+            "exit": 0,
+            "elapsed": 7.646079778671265,
+            "cap_seconds": 90,
+            "timeout": false,
+            "group_after": []
+          }
+        ]
+      }
+    ],
+    "premises": 270,
+    "reached_premises": 238,
+    "derived_premises": 32,
+    "application_invocations": 3,
+    "source_agreements": 0,
+    "mode": "AL90 compilation then SL90/cache=false/det=true; jobs1; stop-first and reap",
+    "launch": "taskset -c 1 python3 tests/semantics/explicit_setter_parameter_protocol.py --revision 7f54c43d6d504a3872939aba5e189c0fc1bf19da --group <receive,error,narrow>",
+    "affinity": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/explicit-setter-parameter-probes-73/affinity-state.json",
+      "sha256": "e0cc887cd00977a551081354bd1a78962b141ec07f0ca9e7b6f15a350e8bd121"
+    },
+    "meaning": "Real string17 call/Param receive lowers statement body, writes backing33, returns void and restores original STRING20. Real array receive rejects at Param4/caller21 before body, then actual catch and ordinary read retain33. Actual boot0 rejects incompatible SET at7 with PCSCOMPILER and unpublished classes. Source/descriptor/Param-leaf/type/variance/frame forgeries are32 task-local derived controls."
+  },
+  "permanent_tests": {
+    "catalogue": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/tests/semantics/explicit_setter_parameter_cases.json",
+      "sha256": "9c9f3646341d513c4bd47cc74145d1548493beb747321a51a4c7c95c2fdb4fed"
+    },
+    "protocol": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/tests/semantics/explicit_setter_parameter_protocol.py",
+      "sha256": "50e4099ca899581a0a27fa219dc059b776178c5dda5504894ed1c457e0936b4f"
+    },
+    "sources": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/tests/semantics/explicit-setter-parameter.php",
+        "sha256": "acbdf381afeff0efc0d603e7159a4c69c66260bd3348de1cf866f6f298cc9c0f"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/tests/semantics/explicit-setter-parameter-narrow.php",
+        "sha256": "1074a2d1f871de66e01c00a2c32590a29019e97f62f01f3c95847f5f28f07b21"
+      }
+    ],
+    "native_file_contract": "Only the exact original source path is replaced by {FILE} in the existing stdout/stderr template contract."
+  },
+  "remaining": [
+    "Only the selected sole backed statement SET and closed typed/defaultless/by-value parameter family is added; untyped/defaulted/attributed/reference/variadic parameters, explicit paired/trait setters and wider overrides remain open.",
+    "No new storage, conversion, permission, receiver-lifetime or generic return rules are introduced. Other hooked operations and full core remain partial."
+  ],
+  "recovery": "Original raw/native/baseline/strict/source/state and affinity reports remain at their ignored absolute paths. The private branch contains codeb5e and tests7f54; recover those commits in a clean checkout with the pinned local toolchain and run the listed original commands. Preparation reports carry zero application/source credit."
+}

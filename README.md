@@ -2210,9 +2210,14 @@ functions. A write inside GET and read inside SET use backing storage without
 calling the other hook. Assignment20 returns20, stores33 and later reads46.
 One original and two states/210 checks are in the
 [paired-hook review](coverage/semantics/paired-backed-get-set-hook-review.json).
+Selected sole backed setters now retain a real explicit typed parameter. An
+`int|string $incoming` setter receives `"20"` and stores `33`; the assignment
+returns the original string. A string-only setter fails at hook line7. Two originals and three states/270
+checks cover source identity, receive errors and result restoration in the
+[explicit-parameter review](coverage/semantics/explicit-setter-parameter-review.json).
 Hooked iteration, defaulted virtual hooks, other paired hooks, unbacked or trait
-setters, explicit setter parameters, references, other inherited/trait and wider
-receiver, quiet or indirect-access families and `__unset` consumers remain required.
+setters, other explicit setter parameter forms, references, other inherited/trait
+and wider receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
 and `implements` declarations, enforce method prototypes and abstract
 obligations, and add finite `Stringable`/`Throwable` nominal ancestry. The installed

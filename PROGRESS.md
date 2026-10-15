@@ -2186,6 +2186,16 @@ remains0; one EPS premise disjoins the paired and setter-only classifiers.
 Joined exact `43cc7432`/394; CPU2-pinned initialization passes and the unpinned original is retained.
 Absent warning, include/NUL, computed-ref-return and Iterator-unpack protocols preserve the accepted pair route.
 
+Selected sole backed SET hooks now compile an actual explicit typed/defaultless
+parameter, retaining its source name/type and property-to-parameter compatibility.
+The string `"20"` is received unchanged, the body stores `33`, and assignment returns
+the original string; bad array input retains Param4/caller21. Incompatible string-only
+SET rejects at hook ENDLINE7 after body compilation. Strict394/source2 pass at
+`b5e89715`; three states at `7f54c43d` pass270 =238 reached +32 derived, including
+actual receive/result restoration and genuine compiler rejection. The original
+Unsupported baseline/native/preparations retain0; no old hook actors were renewed.
+[Explicit-parameter review](coverage/semantics/explicit-setter-parameter-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization
