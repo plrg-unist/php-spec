@@ -1,0 +1,99 @@
+{
+  "milestone": "Ordinary Generator argument unpack into by-value parameters",
+  "status": "independently accepted private; actual-parent composition pending",
+  "independent_reviewer": "iterator_review_01, paired with iterator_dev_01",
+  "base": "0af01a848b63a2209548cb8ef16f5be721c84af1",
+  "final_private_code": "18f9f3a38f2e2770ffc226f879ec90cefe351fda",
+  "modules": 395,
+  "scope": "Plain source-function call targets with ordinary Generator operands, integer/string key binding, reference-yield value snapshots, defaults/receive errors and temporary versus retained-input cleanup. By-reference targets, active yield-from producers and Aggregate acquisition remain required.",
+  "semantics": {
+    "protocol": "405 authenticates the real unpack argument and saved resumer. Acquisition checks CLOSED before DATA ownership; later stages own DATA plus INPUT and SENT. The native resume borrows DATA and introduces neither a CURRENT copy nor a synthetic Generator method trace.",
+    "binding": "Cached values are dereferenced/copied before next resume. Existing key/named-slot checks precede the by-reference-target refusal; ordinary defaults and typed receive follow exhaustion.",
+    "cleanup": "Abort retires DATA, INPUT and SENT in order. Temporary close/finally/cache release differs from a surviving CV; TypeError DIRECT traces retain copied arguments. 355 keeps its pin, field order and handle retirement while selecting the valid ordinary or quiet release carrier.",
+    "delegation_limit": "A DELEGATING completion returns explicit Unsupported before READY. Only the exact reason plus a real valid rewind/next marker and DELEGATING object freezes that state. The existing terminal-pending hook also excludes nested-frame error unwinding; no ordinary PHP error/exit or PAUSED/CLOSED completion changes.",
+    "module_sha256": {
+      "355": "6ad25ac46f5a54196e822aeab0ecf063d6698891a299821ef182c5e498bf05fb",
+      "40": "735e312bd2ca06abbe27ad454e44ff255dc448b24ffc7e5e8b80aee7dfa0f615",
+      "405": "1a60d8892718425779e29e22b474906ab3b6d1758150fa674c8dbf12e82e436d"
+    }
+  },
+  "source_authority": [
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_SEND_UNPACK",
+    "vendor/php-src/Zend/zend_generators.c::zend_generator_get_iterator and zend_generator_iterator_{rewind,valid,get_data,get_key,move_forward,dtor}",
+    "vendor/php-src/Zend/zend_generators.c::zend_generator_close and zend_generator_free_storage",
+    "vendor/php-src/Zend/zend_objects_API.c::zend_objects_store_del"
+  ],
+  "validation_identity": {
+    "php": "8.5.10 CLI NTS 64-bit, source 34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3, OCaml 5.1.0, SL, caches off, encountered determinism checks",
+    "environment": "tests/semantics/profile.json; PHP -n; LC_ALL=C; TZ=UTC; PHP_SPEC_SCRIPT_ENCODING unset; one worker",
+    "commands": "Reports preserve exact argument arrays and exits. Native probes use 8s; strict/state 120s; author source model 100/process 120s; reviewer and affected-old source model 60/process 75s. Actors ran serially on leased CPUs and were fully reaped."
+  },
+  "raw_root": ".tools/generator-call-unpack-09/.tools/",
+  "native_and_baseline": {
+    "new_native10_at_base": ["generator-call-unpack-native-5easqtv2/report.json", "generator-call-unpack-review-native-9m3nu9zq/report.json"],
+    "unchanged_baseline": "generator-call-unpack-baseline-2401s13q/report.json: source0f6e22a9, exact P| before deferred body, Unsupported call argument Generator unpacking; zero agreement",
+    "delegated_preparations": "Top-level1xwzd70j and nested7htrddei native reports at e8d retain distinct originals. Only nested086b8cee is maintained as the required control. Both are zero model credit.",
+    "credit": "Native-only observations and the unchanged Unsupported baseline grant no semantic agreement."
+  },
+  "normal_sources": {
+    "new_distinct_originals": 10,
+    "cuts": [
+      ["5c9b307c0", "generator-call-unpack-source-j9jsblgg/report.json", 3, "only its first three passing rows; failed fourth row earns zero"],
+      ["151f4015c", "generator-call-unpack-source-fizrnl8s/report.json", 4, "affected advanced CV plus three previously unrun originals"],
+      ["e8d0eca85", "generator-call-unpack-review-source-pbsxbs03/report.json", 3, "independent array COW snapshot and temporary/CV key-order errors"]
+    ],
+    "observations": "Exact normal stdout/stderr/exit agreement, checked original bytes, stable HEAD and executed inputs. Closed/advanced errors preserve empty native method traces; body throw and receive error retain their real owning traces."
+  },
+  "new_reached_states": {
+    "groups": 9,
+    "driver_premises": 642,
+    "author_cuts": [
+      ["151f4015c", "fiber-state-review-d2r0ts91/report.json", 89],
+      ["2ea6f5cae", "fiber-state-review-glncnrlc/report.json", 52],
+      ["e8d0eca85", "fiber-state-review-uv277td2/report.json", 58],
+      ["e8d0eca85", "fiber-state-review-gi66upj3/report.json", 72],
+      ["e8d0eca85", "fiber-state-review-ftl4l10c/report.json", 67],
+      ["e8d0eca85", "fiber-state-review-p76uycs5/report.json", 76],
+      ["e8d0eca85", "fiber-state-review-wxlyn15a/report.json", 65]
+    ],
+    "independent_cuts": [
+      ["e8d0eca85", "fiber-state-review-divcc4u5/report.json", 94],
+      ["e8d0eca85", "fiber-state-review-3zovm5r_/report.json", 69]
+    ],
+    "checks": "Genuine source frontiers, full call/heap admission, malformed source/marker controls, physical roots and caches, both355 release domains, actual steps, budget splits and exact once-only remaining output. All accepted groups passed with stable fixtures and inputs."
+  },
+  "affected_prior_source": {
+    "case": "iterator-call-unpack-generator-required-control, unchanged source6addcbf0",
+    "cut": "e8d0eca85",
+    "fresh_native": "generator-call-unpack-affected-native-pvtqhjqi/report.json",
+    "selected_source": "iterator-call-unpack-source-gy1cz_7h/report.json",
+    "normal_agreements": 1,
+    "scope": "Only the promoted prior control ran; historical native tuples were unavailable, and no other old campaign was replayed."
+  },
+  "final_gate": {
+    "cut": "18f9f3a38",
+    "strict395": "generator-call-unpack-author-sl-j8ha9ejt/report.json",
+    "strict_report_sha256": "70751a986543bea0699b0f1dcd0c7784f7113135009ade2cf1185deb1aae98f6",
+    "nested_required_control": "generator-call-unpack-source-nx_vye70/report.json",
+    "control_report_sha256": "975562f628252242a4e718bf8986cd5a064c11b7ffa591f321f0955d6e865285",
+    "result": "Strict true/exit0/empty stderr; nested control model exit1, exact Generator unpack delegated producer reason and P|G| prefix, no diagnostic/timeout. HEAD and inputs stable; control earns zero normal agreement."
+  },
+  "compatibility": "Initial first-three source cuts never select quiet forced-storage355; its operational arm remains the old helper. Fixture fixes change only the named literal carrier and final retained global-CV owner, leaving other selected recipes unchanged. Final delegation fence is disjoint from accepted PAUSED/CLOSED/throw paths;40's old pending arm was EXITED-only and already excluded from error unwinding. Earlier Iterator/typed/reference campaigns retain their own inputs without renewal.",
+  "preserved_zero_credit": "Two initial strict grammar failures, the original advanced-CV interpreter failure, two author fixture failures and all diagnostic runs/projections remain archived with zero agreement. The mixed failed source report grants only its three exact passing rows. No compiler/control/diagnostic success is counted as normal PHP agreement.",
+  "evidence_recovery": {
+    "archive": "../php-spec-evidence-archive/generator-call-unpack-09/private.tar.gz",
+    "bytes": 879675,
+    "sha256": "a5abe9532fbf5d11922e37cc764a02c986cdb7bced2ea7ab107268b1ae0ecd7b",
+    "manifest": "Sibling manifest.json maps 33 report roles, exact commands, revisions and 16 driver hashes.",
+    "restore": "Use the retained iterator/generator-call-unpack-09 branch for each historical author revision; restore reviewer catalog/source/state from the publication containing this ledger and match independent_inputs hashes. Preserve archived source filenames and .tools paths. The manifest distinguishes partial source prefixes, original diagnostics and the top-level/nested native preparations. Evidence is external and is not a build dependency."
+  },
+  "remaining": [
+    "Generator unpack into by-reference targets and active yield-from producers.",
+    "Ordinary-call IteratorAggregate acquisition and wider callable targets.",
+    "Broader reentrant, delegation, Fiber and terminal Generator lifecycle interactions; no full-family closure claim."
+  ]
+}

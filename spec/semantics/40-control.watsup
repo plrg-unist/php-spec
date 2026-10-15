@@ -424,6 +424,7 @@ def $drive_steps(S, n) = $output_finalize($prune_allocations($release_temporarie
   -- if ~$generator_close_terminal_pending(S)
 def $drive_steps(S, n) = $drive_steps($start_error_unwind(S), n)
   -- if ~$update_callback_previous_blocked(S)
+  -- if ~$generator_close_terminal_pending(S)
   -- if (S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET /\ S.COMPLETION =/= SOURCE_PENDING)
   -- if ~S.COMPILESTOP
   -- if ~$throwable_pending(S.COMPLETION)

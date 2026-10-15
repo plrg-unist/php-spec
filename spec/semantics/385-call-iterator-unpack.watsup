@@ -45,7 +45,7 @@ def $unpack_prepare(S, punpackcall) = S_read
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $useriter_instance(S_read, n)
-def $unpack_prepare(S, punpackcall) = S_read[.COMPLETION = UNSUPPORTED "call argument Generator unpacking"]
+def $unpack_prepare(S, punpackcall) = S_read
   -- if S_read = $resolve_at($hold_task_inputs(S), S.RESULT, $unpack_line(S, punpackcall))
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n)
