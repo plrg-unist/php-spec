@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "milestone": "Array missing-key destructuring warning continuation409",
+  "status": "independently reviewed private milestone; pointwise composition pending",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle and tests/semantics/profile.json",
+  "scope": "By-value direct-CV array RHS, flat direct-CV targets and warning-free implicit/compiled constant keys.",
+  "runtime_commit": "1442347ed09b03e547549685e3253143e84a9a57",
+  "private_modules": 398,
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "e9994f6f75b3d638a656c66bd52ca6dd07496708e194a9bb68a4e39e35bdac57",
+    "spec/semantics/63-list-control.watsup": "3f1bcaeeda989834f220aaf5b915633cbbd87955a0b2ccc4d8e74d932854827c",
+    "spec/semantics/409-list-missing-warnings.watsup": "fb6299e55009adccf9bb220ca7b1c56b2c75800371a2fddac269f79050044fea",
+    "spec/semantics/modules.json": "28ddbaccce11446f2adc60416dfbf1cb6fa955fe77d598240c1bfed5f4ef695c"
+  },
+  "engine_basis": [
+    "Vendored PHP8.5.10 commit34308a6666b2d489c509541ea9befea9e2b42348: zend_compile_assign uses QM_ASSIGN to capture a direct-CV by-value list RHS before lowering targets.",
+    "zend_compile_list_assign fetches then stores each target in order, preserving holes and effective compiler lines.",
+    "ZEND_FETCH_LIST_R calls zend_fetch_dimension_address_LIST_r/read and zend_fetch_dimension_address_inner; an absent key emits E_WARNING then supplies uninitialized/null, without repeating the lookup. The VM checks a handler exception before the following target store."
+  ],
+  "reviewed_behavior": [
+    "The saved result task retains the captured HARRAY through the ordinary handler frame. Rebind/insertion does not replace its NULL fetch result; later items read captured scalar entries and current shared reference cells.",
+    "Handler throw cancels the pending target and later stores, preserves earlier target/callback writes and the caller destination, and retires the snapshot through ordinary unwinding.",
+    "Holes preserve original indices and compiler lines. Masked reporting still invokes the eligible handler; exact false fallback obeys the reporting mask. A present NULL produces no missing-key warning.",
+    "Source shape, index, tail, key, compiler line and live captured allocation authenticate the continuation. They establish source compatibility/liveness, not historical table identity from a live CV.",
+    "The independent literal-string witness caught raw pool PSTRING versus runtime INTERNED_STRING mismatch. The existing compiled_string_value route fixes admission while retaining exact carrier checks."
+  ],
+  "accepted": {
+    "author_source": {
+      "report": ".tools/list-missing-author-source-02/report.json",
+      "sha256": "51801dee362889dc48fc4dc544104f9815a492c1fdd06cf8970cf9b581076a8d",
+      "revision": "52357c36db09c8f6dbd701bc1457d3d524bf6cfa",
+      "runtime_commit": "32a50ff57",
+      "agreements": 3,
+      "note": "Recorded before commit, with exact runtime hashes; these unkeyed originals do not require the later compiled-string correction."
+    },
+    "independent_source": [
+      {
+        "report": ".tools/list-missing-review-source-02/report.json",
+        "sha256": "be24f7a6d2db0f7293d92ddc7e7245427eee611cfbe70d64429ed5d75d6f8a97",
+        "revision": "32a50ff57d0a423d333ab543ef5e6dc3e1d15da7",
+        "case": "list-missing-review-holes-reporting-fallback",
+        "agreements": 1,
+        "runtime_commit": "32a50ff57"
+      },
+      {
+        "report": ".tools/list-missing-review-key-retry-02/report.json",
+        "sha256": "449c4b1f2d596fa238d641c3567cac08e9e42c1eaabe853a1499a194034178fb",
+        "revision": "1442347ed09b03e547549685e3253143e84a9a57",
+        "case": "list-missing-review-earlier-target-throw",
+        "agreements": 1,
+        "runtime_commit": "1442347ed",
+        "note": "Affected model-only retry against unchanged original native source2 bytes; the original failing model row remains zero credit."
+      },
+      {
+        "report": ".tools/list-missing-review-retire-source-02/report.json",
+        "sha256": "745248ddd4760ff827968127fd8b8668771d80029943d5a509c5ad1c9d9152eb",
+        "revision": "1442347ed09b03e547549685e3253143e84a9a57",
+        "case": "list-missing-review-shared-owner-retirement",
+        "agreements": 1,
+        "runtime_commit": "1442347ed"
+      }
+    ],
+    "states": [
+      {
+        "report": ".tools/list-missing-author-state-03/report.json",
+        "sha256": "542d93463922dbbc3d84033f3971a8b79726852bde0d5077a48cf41e43ab48df",
+        "revision": "1a35de425ee6b922d12f2d19b8b94aacbff61a71",
+        "fronts": 3,
+        "conditions": [
+          113,
+          120,
+          103
+        ],
+        "raw_steps": [
+          2,
+          2,
+          1
+        ],
+        "boolean_premises": 331
+      },
+      {
+        "report": ".tools/list-missing-review-state-03/report.json",
+        "sha256": "e04075684cfed4324578fd596fd137ad68fe26b79686f9036e1c6ee5b95352d6",
+        "revision": "345274fb59410185a1dd4a2bce338f81d94b5f6c",
+        "fronts": 2,
+        "conditions": [
+          48,
+          84
+        ],
+        "raw_steps": [
+          1,
+          2
+        ],
+        "boolean_premises": 129
+      }
+    ],
+    "total_source_agreements": 6,
+    "state_fronts": 5,
+    "total_conditions": 468,
+    "boolean_premises": 460,
+    "raw_steps": 8,
+    "credit_note": "Counts include setup and pure refusals, not separate PHP programs. Each cut retains its own revision/profile; metadata changes and later composition add no replay credit."
+  },
+  "preserved_zero_credit": [
+    {
+      "report": "/home/user/workspace/php-spec/.tools/array-review-01-native/baseline-snapshot.json",
+      "result": "Unchanged52357c36d: explicit Unsupported error-handler ingress; prior native-only witnesses remain in that canonical directory without replay."
+    },
+    {
+      "report": ".tools/list-missing-review-source-02/report.json",
+      "case": "list-missing-review-earlier-target-throw",
+      "result": "Initial numeric-string key admission Unsupported; third source not run by fail-fast. Accepted first hole row is separately scoped."
+    },
+    {
+      "report": ".tools/list-missing-author-state-02/report.json",
+      "result": "Fixture output-helper fallback elaboration failed before runtime; remaining fronts not executed."
+    },
+    {
+      "report": ".tools/list-missing-review-state-02/report.json",
+      "result": "Fixture string payload parsed as indexing, failing elaboration before runtime; owner front not executed."
+    }
+  ],
+  "raw_evidence": {
+    "archive": "/home/user/workspace/php-spec/.tools/list-missing-warning-02-raw.tar.gz",
+    "bytes": 377376,
+    "sha256": "8d2f7ed7b55d9c33cd4c3e030812cbb6844579dd49423fc6f00e49d767bede3c",
+    "members": 198,
+    "report_sha256": {
+      ".tools/list-missing-author-source-02/report.json": "51801dee362889dc48fc4dc544104f9815a492c1fdd06cf8970cf9b581076a8d",
+      ".tools/list-missing-author-state-02/report.json": "56c8bf8b3f3f9b52d95c475ffb7349ff4c55e07fbad5720a859d14f622fb13fd",
+      ".tools/list-missing-author-state-03/report.json": "542d93463922dbbc3d84033f3971a8b79726852bde0d5077a48cf41e43ab48df",
+      ".tools/list-missing-review-source-02/report.json": "be24f7a6d2db0f7293d92ddc7e7245427eee611cfbe70d64429ed5d75d6f8a97",
+      ".tools/list-missing-review-key-retry-02/report.json": "449c4b1f2d596fa238d641c3567cac08e9e42c1eaabe853a1499a194034178fb",
+      ".tools/list-missing-review-retire-source-02/report.json": "745248ddd4760ff827968127fd8b8668771d80029943d5a509c5ad1c9d9152eb",
+      ".tools/list-missing-review-state-02/report.json": "465769dce429a9c4b7f22b77dc430effb3783d6c4bf61332afd9998583aaa616",
+      ".tools/list-missing-review-state-03/report.json": "e04075684cfed4324578fd596fd137ad68fe26b79686f9036e1c6ee5b95352d6"
+    },
+    "recovery": "Archive members retain original relative .tools paths beneath the private project root. Extract into a checkout of the recorded commit to recover raw fixtures, process records and originals; absolute argv/cwd remain historical provenance."
+  },
+  "actual_parent_review": {
+    "parent": "79da8331e",
+    "seams": "Source34/V59 extend constant400 only; OP25 adds a disjoint MOD_ASSIGN_WARNING constructor/55/404 clauses; M75 adds source-shaped return156 replay; Iterator15 extends Generator405 admission. None changes LIST_FETCH, shared39 roots, key carriers, source lines or handler207. The409 extensions match only their new task constructor and exact list source plan.",
+    "joined_actor": "No concrete semantic interaction found; pointwise composition/FF review adds no replay credit."
+  },
+  "remaining": [
+    "Nested/reference patterns, non-CV RHS and wider target forms.",
+    "Undefined-CV/null/lossy-float key diagnostic producers and scalar/object destructuring callbacks.",
+    "Wider callback, suspension and lifecycle behavior; array/diagnostic/full-core closure and final offline portability."
+  ]
+}
