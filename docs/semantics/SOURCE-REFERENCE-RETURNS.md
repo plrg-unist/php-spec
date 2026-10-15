@@ -611,3 +611,15 @@ heap-identical cursor LINE forgery through the driver, and checks split budget.
 This covers a variable base and literal property name, not effectful or dynamic
 property expressions, unused or nonnullable returns, or physical collection;
 see the [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M65 restores `REF_NOTICE_NULL` when a caught inner-finalizer throw exposes an
+older bare `return;` in a by-reference function. The same source and line
+remain pending after the catch; only its Notice marker had been lost. The
+restoration checks the actual bare-return source and NULL operand, and uses
+the existing tail placement. The explicit `return null;` control retains its
+separate `REF_NOTICE_VALUE` route. Native2/source2 agree at private
+`797abaa7`/394, including the original return-line Notice. Paired public74+68
+admits both pending states, rejects a heap-identical NULL-to-VALUE marker
+forgery through the driver, and checks caller alias and split budget. This
+does not cover implicit fallthrough or other NULL-return histories; see the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).

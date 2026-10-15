@@ -3199,6 +3199,18 @@ expressions, unused or nonnullable returns and broad returns verification
 remain open in the
 [ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
+M65 restores a pending bare `return;` Notice after an inner finalizer throws
+and is caught. The old by-reference NULL return remains live, so its Notice
+belongs to the source return, as with the explicit `return null;` control.
+Native2/source2 agree at private `797abaa7`/394, including the exact source
+line and no caller assignment Notice. Paired public74+68 proves the bare NULL
+marker is restored and the explicit-NULL VALUE marker remains, rejects a
+heap-identical wrong-kind marker through the driver, and checks detached caller
+alias and split budget. The unchanged misplaced-Notice baseline and output-only
+frontier retain zero repair credit. Implicit fallthrough and other NULL histories
+remain open in the
+[ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
 Per-constant protection survives namespace publication and parked handlers.
