@@ -2023,6 +2023,8 @@ fixture elaboration failure also retains zero credit. Iterator/Aggregate
 leaves, detached independently completed-child states, by-reference targets and
 wider lifecycle interactions remain open.
 [Generator-chain review](coverage/semantics/generator-call-unpack-generator-delegation-review.json).
+Canonical395 composition over `8a121da8c` passes inventory and strict SL at
+`d85413ebc`; private source/state evidence retains its f0d cut and fixture hashes.
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or
