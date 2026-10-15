@@ -15,6 +15,8 @@ fails at physical Trait hook ENDLINE7 before import. Two originals/strict394 pas
 at fddc, and two states pass281 =233 reached +48 derived at fd604. No earlier
 class cut is renewed; wider trait/parameter forms remain partial.
 [Review](coverage/semantics/trait-imported-explicit-set-hook-review.json).
+The 394-module composition over b0ee passes retained SL initialization at b17f;
+private source/state cuts retain their original identities without replay.
 
 Bitwise NOT now stages finite in-range fractional-float deprecations from a
 defined non-reference CV through named handlers. It captures the converted long
