@@ -337,6 +337,7 @@ def $global_std_source(S, porigin_site, porigin_decl, n_prefix) = true
   -- if $constant_callable_path(S, porigin_site, $constant_child(porigin_decl, [PCFIELD 1]))
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprNew name (SEQUENCE phpType7*) metadata)
   -- if $parameter_new_prefix(phpType7*)
+  -- if $default_new_unique(phpType7*)
   -- if $global_constant_class_name(S, porigin_site, porigin_scope?, name) = (ptbytes)
   -- if $ptlc(ptbytes) = $ptascii("stdclass")
 def $global_std_source(S, porigin_site, porigin_decl, n_prefix) = false -- otherwise
@@ -402,9 +403,10 @@ def $global_std_pending(S, pdefaultnew) = true
   -- if (HOBJECT pdefaultnew.OBJECT) <- S.ALLOCATIONS
 def $global_std_pending(S, pdefaultnew) = false -- otherwise
 def $global_new_argument_owned(S, pdefaultnew) = true
-  -- if $global_new_context(S, pdefaultnew.SITE) = ((porigin_decl, porigin_scope?))
   -- if $global_std_record(S.CONSTANTSTDOBJECTS, pdefaultnew.OBJECT) = (pconstantstdobject)
-  -- if pconstantstdobject.SITE = pdefaultnew.SITE /\ pconstantstdobject.DECL = porigin_decl
+  -- if pconstantstdobject.SITE = pdefaultnew.SITE
+  -- if porigin_decl = pconstantstdobject.DECL
+  -- if $constant_bindings(S, S.TODO) = [porigin_decl]
   -- if ~pconstantstdobject.COMPLETE
   -- if $global_std_header(S, pconstantstdobject)
   -- if $constant_declaration(S, porigin_decl) = ((preqbytes, pdefaultnew.LINE))

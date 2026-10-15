@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Independent named stdClass argument value release and duplicate cutoff."""
+"""Independent named stdClass value release, errors and duplicate boundary."""
 from pathlib import Path
 
 import global_constant_sources as family
@@ -32,7 +32,15 @@ $last = constant('V63_REVIEW_GOOD');
 echo $last->value, '|A|';
 ''',
 }
-family.UNSUPPORTED = {}
+family.CASES['named-value-destructors-and-argument-error-cutoff'] = family.CASES[
+    'named-value-destructors-and-duplicate-cutoff'].replace(
+        b'keep: new V63ReviewFirst(), keep: new V63ReviewSecond(), late: new V63ReviewFirst()',
+        b'keep: new V63ReviewFirst(), fail: V63_REVIEW_MISSING, late: new V63ReviewSecond()')
+family.UNSUPPORTED = {
+    'named-value-destructors-and-duplicate-cutoff': (
+        'global constant internal or Throwable initializer',
+        b'B|first|second|ready|41|'),
+}
 family_fingerprint = family.fingerprint
 
 
