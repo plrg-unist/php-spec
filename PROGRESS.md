@@ -1642,6 +1642,8 @@ only test identifiers and cleanup-phase expectations changed. Earlier cuts remai
 frozen. Typed or named variadic reference targets, wider sources/live replacements
 and broader array/reference interactions remain required.
 [Positional variadic reference review](coverage/semantics/iterator-call-unpack-reference-positional-variadic-review.json).
+Canonical394 composition over `a3d23c935` passes inventory and strict SL at
+`a7ff8b83a`; private source/state evidence retains its original cuts.
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or
