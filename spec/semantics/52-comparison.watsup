@@ -23,6 +23,7 @@ dec $throwable_compare_selection(pstate, pvalue, pvalue) : (nat, bool)?
 dec $throwable_compare_order(pstate, pvalue, pvalue, pcompareguard*) : (pstate, porder)
 dec $number_compare_selection(pstate, pvalue, pvalue) : (nat, bool, pvalue)?
 dec $number_compare_exception_pending(pstate) : bool
+dec $weakmap_standard_mismatch(pstate, nat, nat) : bool
 
 ;; The scanner overflows after twenty significant integer-prefix digits, before
 ;; inspecting a decimal/exponent suffix. Rescaling does not erase this provenance.

@@ -343,6 +343,7 @@ def $property_store_value(S, n, ptbytes, pvalue, z) = S[.COMPLETION = UNSUPPORTE
 def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = (S[.COMPLETION = UNSUPPORTED "Throwable property comparison"], ORDER 0)
   -- if n_left =/= n_right
   -- if $throwable_object(S, n_left) \/ $throwable_object(S, n_right)
+  -- if ~$weakmap_standard_mismatch(S, n_left, n_right)
 
 def $property_live_complete(S, (HOBJECT n) :: pnode_tail*) = $property_live_complete(S, pnode_tail*)
   -- if $(n < |S.OBJECTS|)

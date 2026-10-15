@@ -720,7 +720,6 @@ def $weakmap_standard_other(pobject) = true
 def $weakmap_standard_other(pobject) = true
   -- if $object_body(pobject) = NAMEDCLOSURE porigin
 def $weakmap_standard_other(pobject) = false -- otherwise
-dec $weakmap_standard_mismatch(pstate, nat, nat) : bool
 def $weakmap_standard_mismatch(S, n_left, n_right) = true
   -- if $(n_left < |S.OBJECTS|) /\ $(n_right < |S.OBJECTS|)
   -- if (HOBJECT n_left) <- S.ALLOCATIONS /\ (HOBJECT n_right) <- S.ALLOCATIONS
@@ -728,6 +727,8 @@ def $weakmap_standard_mismatch(S, n_left, n_right) = true
   -- if ($weakmap_at(S, n_left) /\ $weakmap_standard_other(S.OBJECTS[n_right])) \/ ($weakmap_at(S, n_right) /\ $weakmap_standard_other(S.OBJECTS[n_left]))
 def $weakmap_standard_mismatch(S, n_left, n_right) = false -- otherwise
 def $value_order(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*) = ORDER 1
+  -- if $weakmap_standard_mismatch(S, n_left, n_right)
+def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = (S, ORDER 1)
   -- if $weakmap_standard_mismatch(S, n_left, n_right)
 def $value_order(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*) = ORDERUNSUPPORTED "WeakMap comparison protocol"
   -- if n_left =/= n_right
