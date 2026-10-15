@@ -99,7 +99,8 @@ CASES = {
             'S_one.STORE = S.STORE', 'S_one.EVENTS = S.EVENTS', *POST,
             'piteratorunpack_array = piteratorunpack_held[.HOLD = KNOWN (PARRAY 0)]'
             '[.SNAPSHOT = (PARRAY 0)]',
-            '~$iterator_unpack_hold_allowed(S_one, piteratorunpack_array, "byref")',
+            '$iterator_unpack_hold_allowed(S_one, piteratorunpack_array, "byref")',
+            '~$iterator_unpack_hold_live(S_one, piteratorunpack_array, "byref")',
         ],
     },
     'second-positional-send-keeps-earlier-private-cell': {

@@ -145,7 +145,6 @@ def $iterator_unpack_hold_allowed(S, piteratorunpack, "byref") = true
   -- if piteratorunpack.SNAPSHOT = (pvalue)
   -- if piteratorunpack.HOLD = KNOWN pvalue
   -- if $iterator_unpack_known_hold(piteratorunpack.HOLD)
-  -- if piteratorunpack.CALL.SENT = {SLOTS eps, NAMED eps} \/ $typed_tag(pvalue) = "object"
   -- if $iterator_unpack_reference_allowed(S, piteratorunpack)
 def $iterator_unpack_hold_allowed(S, piteratorunpack, text) = true
   -- if piteratorunpack.HOLD = KNOWN PNULL
@@ -429,7 +428,6 @@ def $iterator_unpack_warning_hold(S, piteratorunpack) = (KNOWN pvalue)
   -- if piteratorunpack.CURRENT = REFERENCE n_cell
   -- if $iterator_unpack_reference_allowed(S, piteratorunpack)
   -- if $iterator_unpack_reference_payload(S, piteratorunpack) = (pvalue)
-  -- if piteratorunpack.CALL.SENT = {SLOTS eps, NAMED eps} \/ $typed_tag(pvalue) = "object"
 def $iterator_unpack_warning_hold(S, piteratorunpack) = (piteratorunpack.CURRENT)
   -- if piteratorunpack.CURRENT = KNOWN (POBJECT n)
   -- if piteratorunpack.KEY = KNOWN pvalue_key
