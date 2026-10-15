@@ -21,6 +21,62 @@ Earlier integer/call state208 and null/bool/byte-string state155 retain their te
 cuts, original source identities and historical failures without renewal:
 [magic empty review](coverage/semantics/magic-empty-review.json),
 [primitive result review](coverage/semantics/magic-empty-scalars-review.json).
+Pointwise composition over f63866b36 preserves the incoming399-module parent.
+Source1/state145 retain their private cuts; seam review warrants no joined actor or renewed credit.
+
+Plain-CV numeric `&=`/`|=`/`^=` now retain their fractional LEFT conversion
+through deprecation handlers, then read the live quiet integer RHS. Captured12/live5
+stores4/13/9 despite callback99 and detaches a late alias; supplied throw cancels
+storage, preserves the same Exception and leaves later alias writes connected.
+Independent signed XOR stores-15 with original-line default Deprecated.
+Four exact originals pass at2a1acc7f2; corrected peer1 passes at9feef8126.
+Author148/148/148/131 plus independent117 SL premises pass692 atcc0cd7bef/399,
+covering all3 AST/OP guards, fresh cache/source/line refusals, actual cells/owners
+and budgets. Retained checked prep/native/baseline/syntax and original unsupported
+is_int observer failure keep0; only its strict-equality correction was rerun.
+Initial references/copies, noninteger or warning RHS, unsafe targets and wider
+callbacks/lifecycle remain partial; pure projections establish refusals only.
+[Bitwise-assignment ledger](coverage/semantics/bitassign-warning-review.json). OP12 stays paused.
+
+Composed over edd7296de/399 after pointwise review of typed assigned returns,
+Generator, stdClass/define, property-empty/list and weak comparison seams. Source5
+and state692 retain their private cuts; no joined actor, replay or renewed credit.
+
+For non-NUL `define` names containing `::`, a NULL third flag now emits its
+bool-reception deprecation before the name ValueError. Returning handlers preserve
+raw captures despite live argument/callee writes; a throwing handler cancels the
+body and keeps its original Exception and inner binding. Strict calls reject raw
+NULL with parameter-3 TypeError after argument effects, without deprecation.
+Four exact originals agree at 12e06acc, including the default Deprecated PHP-stderr
+line. All 429 public premises pass: author 92+145+72 and independent 120 across four
+groups, checking actual default/entered-handler/result/throw-discard steps, raw API
+and caller traces, retained callback effects, source/carrier refusals and budgets.
+The unchanged Unsupported baseline retains zero credit. Runtime adds one task tag
+and 51 module400 lines; existing flag-marker guards stay exact. NaN flags for
+these names, NUL/coerced names and wider/owning values remain partial.
+[NULL class-name review](coverage/semantics/define-class-null-flag-review.json).
+
+Pointwise composition over 7638815f preserves the incoming 399-module parent.
+Source4/state429 retain their private cuts; independent seam review warrants no
+joined actor or renewed execution claim.
+
+With a quiet integer left operand, plain-CV `<<=`/`>>=` now keep both converted
+longs through a fractional-count deprecation. Captured `-12`/`2` from `2.5` stores
+`-48`/`-3` despite callback `99`/`1`, detaching a late alias. Supplied throw cancels
+storage; cached negative count still raises original-line `ArithmeticError` after
+a live positive rewrite, while cached `64` keeps the original right-shift sign.
+Five exact originals pass at ebefecafe; 151/151/136 author plus 122/114 independent
+SL premises pass 674 at 6312d9683/399, covering fresh both-cache/source/op/line
+refusals, actual cells/owners, default Deprecated and budgets. Checked prep reuses
+retained source/native bytes. Native/baseline/prep/syntax and the pre-PHP taskset
+launcher failure retain0; pure ready projections establish refusals only.
+Both-fractional operands, initial references/copies, unsafe targets and wider
+callbacks/lifecycle remain partial; OP12 stays paused.
+[RHS shift-assignment ledger](coverage/semantics/shiftassign-right-warning-review.json).
+
+Composed over e90b3a746/399 after pointwise review of Generator, stdClass/define,
+property-empty/list and typed assigned-return seams. Source5/state674 retain their
+private cuts; no joined actor, replay or renewed credit.
 
 Non-NUL `define` names containing `::` now receive int/string/non-NaN float
 third flags with primitive values. Weak calls raise the name ValueError before any
@@ -85,26 +141,29 @@ The pointwise 399-module composition over 6f3488104 preserves incoming list,
 property, arithmetic, constants and return paths. Source2/state355 retain their
 private cut; independent seam review warrants no joined actor or renewed credit.
 
-Missing-key Warning now continues flat CV destructuring from saved arrays or
-mixed-pattern source cells. By-value CV/literal RHS snapshots retain shared embedded
-references. Mixed value/reference patterns capture a direct-CV source cell: callback
-value replacement affects later reference fetches, while CV unsetting/rebinding leaves
-the old cell authoritative. The interrupted fetch still supplies null before its store;
-a later reference leaf applies COW or creates an array after callback null replacement.
-Prior reference leaves preserve the fetch line. Throws cancel pending stores/items and
-result delivery, preserving callback effects and the supplied Throwable.
-Five A3 exact originals agree at 88494f937; five reached SL fronts pass591 premises
-(576 Boolean +15 raw steps) at 1b2ab113f, checking marked-cell/source/line refusals,
-real frames, same-cell replacement, saved-cell COW, null creation, retirement and budgets.
-The [mixed-reference review](coverage/semantics/list-reference-missing-warning-review.json)
-retains its native/unchanged Unsupported baseline with zero agreement credit.
-The earlier [CV slice](coverage/semantics/list-missing-warning-review.json) source6/state468
-and [literal slice](coverage/semantics/list-literal-missing-warning-review.json) source6/state417
-retain their original cuts without replay. Quiet compiled/implicit keys and flat CV
-targets bound these slices; nested/wider RHS, scalar diagnostic callbacks and lifecycle
-remain partial.
-The pointwise399-module composition over08c650fd3 preserves incoming Generator,
-shift, return, define and weak-object numeric paths. Source5/state591 retain their
+Missing-key Warning now continues one nested by-value destructuring layer from
+a direct CV, retaining the current inner array and the outer continuation separately.
+Outer missing keys supply null to child reads without another warning; inner missing
+fetches still supply null after callback insertion/rebinding. Later items/results use
+the captured tables, including shared embedded references. Child entry and the next
+outer item use their inherited compiler locations. During throw cleanup, discarding
+the inner warning task can leave the outer task owning parent/child/reference cells;
+later unwind retires all otherwise unowned nodes while preserving prior stores and
+the supplied Throwable.
+Five A4 exact originals agree at a5628799f; five SL fronts pass637 premises
+(623 Boolean +14 raw steps) at 31f2b999c, checking source/shape/depth/ref/line refusals,
+real frames, both owners, keyed/shared reads, null descent, staged cleanup and budgets.
+The [nested review](coverage/semantics/list-nested-missing-warning-review.json) retains
+the unchanged Unsupported baseline with zero agreement credit.
+Earlier [CV source6/state468](coverage/semantics/list-missing-warning-review.json),
+[literal source6/state417](coverage/semantics/list-literal-missing-warning-review.json)
+and [mixed source5/state591](coverage/semantics/list-reference-missing-warning-review.json)
+retain their original cuts without replay. Flat literals retain array snapshots;
+flat mixed patterns retain the source cell through value replacement or CV rebind.
+Quiet compiled/implicit keys and CV leaves bound these slices; deeper/reference
+nesting, wider RHS/targets, scalar diagnostic callbacks and lifecycle remain partial.
+The pointwise399-module composition overdc3c1fb9e preserves incoming shift,
+return, constant/define and property-empty paths. Source5/state637 retain their
 private cuts; seam review warrants no joined actor or renewed agreement credit.
 
 Plain-CV `%=` now keeps both converted longs through a fractional-RHS deprecation.
@@ -311,6 +370,22 @@ producers remain partial.
 Pointwise composition over c9fc1c864 preserves the incoming399-module parent,
 including define, arithmetic, Generator, return and mixed-list selectors.
 Source4/state1107 retain their private398 cuts; no joined actor or renewed credit.
+
+Newborn stdClass `??` leaves now keep a nonnull left value or select a fresh
+fallback after a captured NULL, including nested chains and eval units. Only two
+module283 flow heads are added; source/completion and separate live-value guards
+remain. Three exact sources agree at their retained399-module cuts. Author282/316
+plus independent219 SL premises pass817 at aee1b2cae, covering ordinary
+COALESCE_RESULT handoff, quiet literal-DIM capture with V61 ternaries, two births
+from five sites, temporary retirement
+and real query/COW owners. Pure malformed histories are never driven. The
+unchanged Unsupported and initial peer elaboration binding failure retain0; only
+the affected peer fixture is renewed. Alias/whole-array coalescing, arguments,
+defaults and wider producers remain partial.
+[Coalescing review](coverage/semantics/global-constant-stdclass-coalesce-review.json).
+Pointwise composition over c53bf2a3d preserves incoming399 modules, define,
+shift, typed-return, magic-empty and nested-list selectors. Source3/state817
+retain their private cuts; no joined actor or renewed credit.
 
 Selected inherited `__unset(string): void` now dispatches direct CV/literal-name
 access to a declared private property. Accessible public unset skips magic;

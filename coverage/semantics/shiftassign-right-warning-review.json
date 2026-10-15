@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "milestone": "OP28 plain-CV shift assignments after fractional-RHS deprecation",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; project-local pinned PHP and profile",
+  "scope": "Ordinary <<= and >>= with distinct initially defined plain CVs, a quiet signed-64-bit integer LEFT and a finite in-range fractional-float count, and a named eligible deprecation handler. Both converted longs are historical after dispatch; resumption checks only the original target binding remains live, allocated, nonowning and unconstrained. A late target reference is admitted.",
+  "runtime_revision": "ebefecafe13ec0beab634a0b33d182c308761271",
+  "helper_revision": "6312d96833e60ec03450d93520ec5b4c8f36970d",
+  "private_modules": 399,
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "4aa271c0d89d3f10a3cc2db9ce35c7731623960cae631aa222df34fa0e8a6268",
+    "spec/semantics/55-compound-assignment.watsup": "5485fff41f0a8262e7e4d53fbebc6cdfb544f60f1b6eca3a5007599b8857041a",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "8cedb5f8a87a9c1c8bd3158f81c7fe86ba09747aa3a7bdf1d4f07bafcba389f5"
+  },
+  "engine_basis": [
+    "Zend/zend_operators.c shift_left_function/shift_right_function use convert_op1_op2_long: a quiet LEFT integer is copied before zendi_try_get_long converts the fractional count. Its local long is saved before the precision-loss diagnostic and survives callback changes to either CV. A supplied handler Exception makes conversion fail before storage.",
+    "Both shift functions reject a captured negative count before destroying result==op1, raising ArithmeticError(\"Bit shift by negative number\"). A count at least64 returns0 for left shift or the original LEFT sign (-1/0) for right shift. Existing pure integer_binary/long_shl/long_shr supply these unchanged answers.",
+    "Zend/zend_vm_def.h ZEND_ASSIGN_OP selects the target before the binary call. Successful replacement destroys a callback-created reference wrapper at that plain slot; failure preserves it. Generic modassign_right_warning_snapshot, powerassign_warning_ready and arithmetic_addassign_cv_write are reused unchanged; old modulo and fractional-LEFT shift source contracts/validators/bodies stay unchanged."
+  ],
+  "contract": [
+    "Authentic COMPOUND_APPLY SHIFTLEFT/SHIFTRIGHT false, matching AssignOpShiftLeft/ShiftRight source, distinct plain selections and compiled RHS line bind both original cells and converted longs at stage0 and fresh TARGETeps dispatch. Entered/returned stages retain both longs; neither current numeric operand is reread for the result.",
+    "Normal captured(-12)/count2 from2.5 stores(-48) or(-3) despite callback target99/count1. Successful replacement creates the actual new nonreference CELL/LOCATION; the old alias keeps99 and sole ownership, and a later target7 leaves alias99.",
+    "A supplied handler Exception cancels the marker/store, keeps callback target/alias99 and count1, and resumes the same Exception with no Previous. The outer destination stays100; later target7 reaches alias7.",
+    "A captured negative count(-1) from-1.5 still creates one ordinary caller ArithmeticError at RHSline16 after a live count2. Target/store/environment/reference aliases/events stay unchanged at that step; the new THROW_SEARCH owns the Error once, with no Previous. A captured64 from64.5 with original LEFT(-12) stores(-1), detaching the late alias despite live99/count2. Each independent source emits exactly one default Deprecated before its error or store.",
+    "Production drive_steps supplies every driven state; actual heap/call descriptors, target/cell/alias/error owners and full/budget resumes validate. Fresh source/op/line/target/both-cache/diagnostic/range counterfeits and old MOD_ASSIGN_RIGHT_WARNING/LEFT SHIFT_ASSIGN_WARNING stage0 markers are public-validator negatives only, never driven. Initial-reference and pruned/missing/wrong/constrained/owning target projections are pure refusals, not wider execution or valid-heap claims."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-28/source-ebefecafe-author-three/report.json",
+        "sha256": "f313aedae8391957b5550f44b43cfd4066748830510c25d21e31d993da8ec0c9",
+        "cases": [
+          "shiftassign-right-left-handler-write",
+          "shiftassign-right-right-handler-write",
+          "shiftassign-right-left-handler-throw"
+        ],
+        "revision": "ebefecafe13ec0beab634a0b33d182c308761271",
+        "agreements": 3
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-28/review-model-ebefecafe-two/report.json",
+        "sha256": "47a37a9c1271cde10967f3a51439fae5eed4711b74c674ffc8e562d2cdc56892",
+        "cases": [
+          "shiftassign-right-cached-negative-default",
+          "shiftassign-right-cached-wide-default"
+        ],
+        "revision": "ebefecafe13ec0beab634a0b33d182c308761271",
+        "agreements": 2
+      }
+    ],
+    "state": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-28/state-6312d9683-five/report.json",
+      "sha256": "03f888518afd0214a64c3b3f2ddf890df2584fe60100cb143cc6bec6de1da704",
+      "revision": "6312d96833e60ec03450d93520ec5b4c8f36970d",
+      "modules": 399,
+      "author_conditions": [
+        151,
+        151,
+        136
+      ],
+      "independent_conditions": [
+        122,
+        114
+      ],
+      "total": 674
+    },
+    "total_source_agreements": 5,
+    "total_focused_state_conditions": 674,
+    "compatibility": "Only two helper scripts changed ebefecafe..6312d9683; runtime bytes stayed identical. Checked frontend/adapter preparation reused accepted original paths/native bytes without native/application replay. Complete151/151/136/122/114 fixtures use maintained conditions/HELPERS with grouped negative constructor payloads; immutable full399 SL thins execute no PHP/frontend stage. Counts include setup/refusal premises, not674 separate programs or renewed source agreement."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-28/baseline-c7f437b7b-handler-write/report.json",
+      "sha256": "1d63a9cffeda39653dc74d6c0f529cb09d998d03527e55eaea34ac2a1444fc3a",
+      "result": "Accepted checked program Unsupported: error-handler ingress requires a producer continuation; native stores(-48) with detached alias99, model streams empty."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-28/native-c7f437b7b-author-three/report.json",
+        "sha256": "2fd85ce8ee414b81831203f12fcff7a3ca1ffbf4f8e8c295ea89b2fb6cfc8ea4"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-28/native-c7f437b7b-review-two/report.json",
+        "sha256": "81812304b5d8a2b99ddb2b75d751b4d910832d7e90e2e42b163f55028063f988"
+      }
+    ],
+    "checked_preparation": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-28/state-prep-6312d9683-five/report.json",
+      "sha256": "167e6bcff6fd19cbcad3bce19fc921f4543675c86a91548bedfa4b9d4aa11d12",
+      "result": "Only checked frontend parse/adapter check with retained original source/native bytes; no application or numeric actor."
+    },
+    "standalone_syntax": "The five syntax rows in the accepted state report parse full files before the expected undefined-pstate standalone environment diagnostic; zero semantic credit.",
+    "launcher_failure": {
+      "record": "/home/user/workspace/php-spec-evidence-archive/operators-28/launcher-c7f437b7b-taskset.json",
+      "sha256": "889c7a19cca724c48dca5e1b06989b85ea2cb4eaf0cf43c8fb99168a3f05d987",
+      "result": "Concatenated taskset -c1 rejected before PHP/model launch; no application/worker/report. Spaced taskset -c 1 correction left all frozen inputs unchanged."
+    }
+  },
+  "required_follow_on": [
+    "Both-fractional operands, initial references/COPY/TMP, container/property targets, missing/rebound/expired/owning/constrained targets and wider callback/exit/lifecycle forms remain partial.",
+    "All eight affected inventory rows remain partial. OP25/26 modulo and OP27 fractional-LEFT shift source authority/validators/bodies are unchanged; their earlier cuts retain zero renewed credit. OP12 remains paused."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-28",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "environment": "LC_ALL=C, TZ=UTC, no PHP_SPEC_SCRIPT_ENCODING. Native5/baseline used CPU1; source5 used CPU3; checked-prep/syntax/SL674 used CPU5. Native30/modelCLI60-process90; checked workers30; syntax30 and separate full399 SL groups120, true newline/empty stderr, no interruption and reaped PIDs/groups.",
+    "commands": [
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 tests/semantics/shiftassign_right_warnings.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 tests/semantics/shiftassign_right_warning_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-28/state-prep-6312d9683-five/run-prepare.py",
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-28/state-6312d9683-five/run-state.py"
+    ],
+    "record": "Restore matching Git cuts/project-local tools and fresh outputs. External records retain original source/native/checked-worker packets, full immutable fixtures, commands/exits/reaping; no evidence archive is a runtime dependency."
+  },
+  "composition": {
+    "parent": "e90b3a74697771ffb9a86d189b86e3580057ec25",
+    "private_publication": "1d12d610f52fff46eb8b310a232e02fbc3d158b5",
+    "modules": 399,
+    "runtime_sha256": {
+      "spec/semantics/30-storage.watsup": "cedec0649540075bbc01d5dc10fb9ba1368eef544ddde6105827bc9c8bf7b776",
+      "spec/semantics/55-compound-assignment.watsup": "5485fff41f0a8262e7e4d53fbebc6cdfb544f60f1b6eca3a5007599b8857041a",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "8cedb5f8a87a9c1c8bd3158f81c7fe86ba09747aa3a7bdf1d4f07bafcba389f5"
+    },
+    "other_incoming_paths_preserved": 53,
+    "gate": "No joined actor:55/404 retain exact private bodies;30 is the parent plus only SHIFT_ASSIGN_RIGHT_WARNING. Generator initialization/delegation/unpack/close, stdClass global-constant births, define, property-empty/list and typed assigned-return cursor selectors are absent from OP28 source5. Common handler/CV-write/heap/integer/source-line interfaces remain unchanged. Independent pointwise review preserves every parent path; source5/state674 retain private399 cuts without replay or renewed credit. Only OP26/27 recovery command spacing changes their prior ledgers."
+  }
+}

@@ -196,6 +196,22 @@ callback writes and aliases, with the latter raising the original-line `Arithmet
 retains four source agreements and 526 focused SL premises. Initial references/copies,
 warning or noninteger counts, unsafe targets and wider lifecycle remain partial.
 
+With a quiet integer LEFT, distinct initially plain CV `<<=`/`>>=` retain both
+longs through a fractional-count deprecation. Success detaches a late alias;
+supplied throw or a cached negative count preserves callback writes/aliases.
+A captured count of `64` keeps the original right-shift sign despite live writes.
+[RHS shift evidence](../../coverage/semantics/shiftassign-right-warning-review.json)
+retains five exact originals and 674 focused SL premises. Both-fractional operands,
+initial references/copies, unsafe targets and wider lifecycle remain partial.
+
+Distinct initially plain CV numeric `&=`, `|=` and `^=` keep their fractional LEFT
+conversion through deprecation handlers, then read the live quiet integer RHS.
+Success detaches a late alias; supplied throw preserves callback writes, the same
+Exception and alias write-through. Signed XOR/default Deprecated is independently
+covered. [Bitwise-assignment evidence](../../coverage/semantics/bitassign-warning-review.json)
+retains five exact originals and 692 focused SL premises. Initial references/copies,
+warning or noninteger RHS, unsafe targets and wider lifecycle remain partial.
+
 Stringable `.=` converts the left value before dereferencing the selected RHS
 slot. A defined direct RHS CV is borrowed and follows callback rebinding; an
 initially undefined read keeps its warned null value, while a later unset is a

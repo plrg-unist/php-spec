@@ -17,8 +17,8 @@ The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
 [Missing-key destructuring warnings](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md)
-now retain captured arrays or mixed-pattern source reference cells through
-handlers, with null delivery and ordered normal/throw cleanup.
+now retain captured arrays or source reference cells through handlers, including
+one nested by-value layer, with null delivery and ordered normal/throw cleanup.
 
 The [checked eval parser service](docs/semantics/DYNAMIC-SOURCE-SERVICE.md)
 accepts raw eval-source bytes, uses a native parse-only scanner for rejection
@@ -603,6 +603,16 @@ conversion through deprecation handlers, then read the live quiet integer count.
 Success detaches a late target alias; supplied throw or a negative count preserves
 callback writes and aliases. Four exact originals and 526 focused SL premises pass
 in the [shift-assignment ledger](coverage/semantics/shiftassign-warning-review.json).
+With a quiet integer left value, `<<=`/`>>=` also retain both converted longs
+through a fractional-count deprecation. Success detaches a late alias; supplied
+throw or a captured negative count preserves it. A captured count of `64` keeps
+the original signed-right-shift result. Five exact originals and 674 focused SL
+premises pass in the [RHS shift ledger](coverage/semantics/shiftassign-right-warning-review.json).
+For initially plain variables, numeric `&=`, `|=` and `^=` now keep their fractional
+left conversion through deprecation handlers, then read the live quiet integer RHS.
+Success detaches late aliases; supplied throw preserves callback writes and the
+same Exception. Five exact originals and 692 focused SL premises pass in the
+[bitwise-assignment ledger](coverage/semantics/bitassign-warning-review.json).
 Explicit array-to-string casts now suspend through named warning handlers for
 a bounded plain-CV array input. The borrowed array adds no saved owner: replacing
 or removing its CV still yields fixed `Array`, while a supplied throw preserves
@@ -1081,7 +1091,13 @@ For the same non-NUL `::` names, weak int/string/non-NaN float flags reach that
 ValueError, while strict calls reject the raw flag first with parameter-3 TypeError.
 [Four source agreements and 620 state premises](coverage/semantics/define-class-scalar-flag-review.json)
 cover both priorities, raw negative-zero/request-string traces and unchanged state.
-NULL/NaN flags for these names and wider values remain partial.
+A NULL flag for these non-NUL `::` names emits its deprecation before the name
+ValueError; a throwing handler cancels that body check. Strict calls reject raw
+NULL first after argument effects.
+[Four source agreements and 429 state premises](coverage/semantics/define-class-null-flag-review.json)
+cover default reporting, callback return/throw, raw traces, preserved caller result
+and callback effects.
+NaN flags for these names and wider values remain partial.
 Fresh two-argument `define` also copies nonempty acyclic scalar-array trees,
 dereferencing source cells and rebuilding append history. Request-string leaves,
 nested reference snapshots and literal constraints pass
@@ -2750,7 +2766,13 @@ Earlier facts retain their source guards; birth receipts preserve distinct leaf
 identities, shared property writes and duplicate-candidate cleanup.
 The [nested-birth review](coverage/semantics/global-constant-stdclass-new-review.json)
 records four source agreements and 1,107 reached-state premises. Whole-array conditional
-transfer, coalescing and wider object producers remain partial.
+transfer and wider object producers remain partial.
+Newborn stdClass leaves also transfer through `??`, including nested operand
+chains, eval units and quiet literal-array dimension reads. A nonnull left keeps
+its identity and skips the right; a NULL constant selects a fresh fallback leaf.
+The [coalescing review](coverage/semantics/global-constant-stdclass-coalesce-review.json)
+records the focused source and state cuts. Conditional aliases, whole-array
+coalescing, arguments and defaults remain partial.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is
