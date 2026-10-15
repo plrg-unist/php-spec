@@ -2,7 +2,6 @@
 """Original-derived global constant() fronts, captured values and API Error trace."""
 import argparse
 import base64
-import hashlib
 import json
 import os
 from pathlib import Path

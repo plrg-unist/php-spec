@@ -15,7 +15,9 @@ facts, captured dynamic selection, row classes, Error arguments and budget resum
 The baseline, original pre-call `const` string publication failure and reached
 array-result refusal retain zero agreement. Wider values, coercions and owning
 forms remain required; full core stays partial.
-Private acceptance is complete; current-parent integration remains pending.
+The 394-module composition over c011d175 passes full SL initialization and one
+exact qualified-empty source at 54ac3199, preserving V47 and incoming rules.
+Private source/state cuts retain their identities without replay.
 [Global-query ledger](coverage/semantics/global-constant-review.json).
 
 Class-qualified `constant` now admits source-authenticated immutable empty array
