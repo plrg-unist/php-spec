@@ -457,6 +457,10 @@ dec $dynamic_class_constant_array_items(pstate, pentry*, (pkey, pvalueclass)*, p
 ;; only a pure validation record; never copy values or intern nested strings.
 def $dynamic_class_constant_array_tree(S, pvalue, PVSCALAR) = $constant_nonstring_scalar(pvalue)
 def $dynamic_class_constant_array_tree(S, PSTRING n_bytes*, PVSTRING b) = true
+def $dynamic_class_constant_array_tree(S, PARRAY n_array, PVARRAY true eps) = true
+  -- if (HARRAY n_array) <- S.ALLOCATIONS
+  -- if $(n_array < |S.ARRAYS|)
+  -- if $array_immutable(S, n_array)
 def $dynamic_class_constant_array_tree(S, PARRAY n_array, PVARRAY false (pkey, pvalueclass)*) = true
   -- if (HARRAY n_array) <- S.ALLOCATIONS
   -- if $(n_array < |S.ARRAYS|)
@@ -528,8 +532,8 @@ def $dynamic_class_constant_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.RES
   -- if pclassconstantdesc.FOLDED
   -- if $origin_node(S.SOURCES, pclassconstantdesc.INITIALIZER) = (NExprArray (SEQUENCE phpType13*) metadata)
   -- if $compiled_read(S, pclassconstantdesc.INITIALIZER) = (PARRAY n_array)
-  -- if $pool_class(S.POOLS, pclassconstantdesc.INITIALIZER) = (PVARRAY false (pkey, pvalueclass)*)
-  -- if $dynamic_class_constant_array_tree(S, PARRAY n_array, PVARRAY false (pkey, pvalueclass)*)
+  -- if $pool_class(S.POOLS, pclassconstantdesc.INITIALIZER) = (PVARRAY b (pkey, pvalueclass)*)
+  -- if $dynamic_class_constant_array_tree(S, PARRAY n_array, PVARRAY b (pkey, pvalueclass)*)
   -- if S.TODO = ptask :: ptask_tail*
 def $dynamic_class_constant_finish(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "class constant value query"] -- otherwise
 def $dynamic_class_constant_receive(S, pconfigcall) = $autoload_begin(S[.TODO = ptask_tail*], pconfigcall.SITE, preqbytes_class, $ptlc(preqbytes_class), pconfigcall.LINE, AUTO_EXPLICIT pconfigcall, DYNAMIC_CLASS_CONSTANT_RESUME pconfigcall)
