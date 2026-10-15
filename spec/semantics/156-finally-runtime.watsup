@@ -233,6 +233,13 @@ def $ref_return_cursor_assigned_int_call(S, prefreturncursor) = true
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if pfunction.SIGNATURE.RETURNS =/= eps
   -- if $typed_exact(pfunction.SIGNATURE.RETURNS, PNULL)
+def $ref_return_cursor_assigned_int_call(S, prefreturncursor) = true
+  -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprAssign (NExprVariable (BYTES text_variable) metadata_variable) (NExprFuncCall (NName (BYTES text_function) metadata_name) (SEQUENCE ([NArg ABSENT (NExprAssign (NExprVariable (BYTES text_argument_variable) metadata_argument_variable) (NScalarInt (INTEGER z_literal) metadata_literal) metadata_argument_assign) (BOOLEAN false) (BOOLEAN false) metadata_arg])) metadata_call) metadata_assign) metadata_return)
+  -- if text_argument_variable = text_variable
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if pfunction.SIGNATURE.RETURNS =/= eps
+  -- if $typed_exact(pfunction.SIGNATURE.RETURNS, PNULL)
 def $ref_return_cursor_assigned_int_call(S, prefreturncursor) = false -- otherwise
 def $ref_return_cursor_old_operand(S, prefreturncursor, REFERENCE n) = $finally_return_operand_valid(S, REFERENCE n)
   -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprVariable (BYTES text) metadata_variable) metadata)
