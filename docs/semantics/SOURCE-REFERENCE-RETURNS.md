@@ -705,3 +705,22 @@ not claimed by the public proof. This covers the reached no-argument,
 literal-name method result, not arguments, dynamic names, nullsafe calls,
 reference-returning methods or complete returns verification; see the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M71 extends that computed source to an ordinary literal-name method call with
+one positional argument. The Factory receiver remains globally live in both
+cases. A temporary Arg runs its destructor before F; assigning the Arg to a
+global slot retains it through the caller cut. Existing argument cleanup
+determines this timing; the return cursor records only the old method source
+and line. Ordinary replacement cleanup invokes the returned O destructor,
+and the saved f frame carries the nonowning cursor. After the caught `$y`
+recheck, raw cursor resumption installs NULL and one method-source VALUE
+Notice marker. Source2 at private `031881ee`/395 matches retained native2,
+including the exact callee line5 Notice and both destructor orders. Paired
+public checks authenticate the old one-argument source, saved O release,
+retained Arg global root, detached caller alias, one delivered diagnostic,
+heap-identical cursor LINE refusal and both callback budget laws. The
+temporary Arg node identity is printed by the diagnostic, not asserted by
+the public proof. This covers the reached single ordinary positional
+argument, not named/unpacked/by-reference arguments, dynamic method names,
+nullsafe or reference-returning methods, or complete returns verification;
+see the [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).

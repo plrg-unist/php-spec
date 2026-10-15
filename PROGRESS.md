@@ -3602,6 +3602,23 @@ Method arguments, dynamic names, nullsafe calls, reference-returning methods
 and broader returns verification remain open in the
 [ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
+M71 admits an ordinary literal-name instance-method result with one positional
+argument as the old computed source in a used `&f():?object` return. The
+globally retained Factory is unchanged; a temporary Arg is cleaned before F,
+while an Arg assigned to a global slot remains live through the caller cut.
+Ordinary replacement cleanup invokes the returned O destructor. The saved
+nonowning cursor resumes the old method return as detached NULL with one
+method-source VALUE Notice marker after the caught `$y` recheck. Source2 at
+private `031881ee`/395 matches retained native2, including Arg/O destructor
+order and the exact callee line5 Notice. Paired public checks bind the genuine
+saved cursor and original VALUE-O release, raw NULL/Notice marker, detached
+caller alias and retained Arg root. One heap-identical cursor LINE forgery
+fails the actual driver; both callback budget laws pass. The unchanged
+Unsupported baseline and output-only frontier have zero repair credit.
+Other argument forms, dynamic method names, nullsafe or reference-returning
+methods and broader returns verification remain open in the
+[ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
 Per-constant protection survives namespace publication and parked handlers.
