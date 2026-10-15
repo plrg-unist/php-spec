@@ -2232,6 +2232,8 @@ original temporary-cleanup Unsupported failure retain zero agreement.
 Acquired Generator data, ordinary Aggregate call operands, valid-key by-reference
 targets, owning copied returns and nested detached roots remain required.
 [Acquired-Iterator review](coverage/semantics/generator-call-unpack-acquired-iterator-review.json).
+Canonical397 composition over `dbd756ab7` passes inventory and strict SL at
+`74f63b964`; private source/state cuts and the original failure retain their identities.
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or

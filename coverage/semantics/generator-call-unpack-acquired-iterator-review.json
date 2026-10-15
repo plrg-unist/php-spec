@@ -1,6 +1,6 @@
 {
   "milestone": "Generator argument unpack through Aggregate-acquired Iterator leaves",
-  "status": "independently accepted privately; actual-parent composition pending",
+  "status": "independently accepted and composed on the actual canonical parent",
   "independent_reviewer": "iterator_review_01, paired with iterator_dev_01",
   "base": "0533d3972edaa91882f841d85581b8dced4ddc30",
   "initial_private_code": "ab70184381a5d05b26afe5d4142b8631e40d33fc",
@@ -65,5 +65,14 @@
     "Aggregate-returned Generator iterator data and ordinary-call Aggregate operands remain required.",
     "Valid-key Generator by-reference targets, owning copied returns, active chains ending in detached roots and wider callback/reentrant/Fiber interactions remain open.",
     "No full Generator, argument-unpack or PHP-core closure is claimed."
-  ]
+  ],
+  "composition": {
+    "actual_parent": "dbd756ab733ad0ffbf13c587dde6965edd716e77",
+    "tested_join": "74f63b96493d53a0b89c9d58879235a2e54d9bb9",
+    "modules": 397,
+    "preservation": "Only303/380/405 differ from the parent and match tested private bytes. All other parent modules, manifest and pipeline remain byte-preserved; five inventory rows retain actual-parent prefixes, including380 attribution. Late magic isset/unset, constant, power, computed reference-return and dynamic anonymous-class guards are disjoint, so no private source/state renewal is warranted.",
+    "inventory": {"report": ".tools/generator-acquired-iterator-unpack-join-inventory-yd4totxx/report.json", "sha256": "5d3156a687fa8072cb07b1c0ef757a5bee0dfc5e63adefef766747e6fe2d3c7f", "result": "169 constructors/306 obligations; exit0/no timeout/HEAD+inputs stable"},
+    "strict": {"report": ".tools/generator-acquired-iterator-unpack-join-sl-y49_8cy0/report.json", "sha256": "0fb4c3a4d86cc5683b4173e05c7ba3b88a3b9ace65534f107904c228ae106b39", "result": "All397 modules, SL true/empty stderr/exit0/no timeout/HEAD+inputs stable; cap120/worker1"},
+    "evidence": {"archive": "../php-spec-evidence-archive/generator-call-unpack-acquired-iterator-14/joined.tar.gz", "bytes": 31468, "sha256": "a130d894fa705c78c39f6748a46085cb5aa179b56c2d6bcdf311ceffd5e741d3", "manifest": "Sibling joined-manifest.json preserves both raw reports and driver recovery."}
+  }
 }
