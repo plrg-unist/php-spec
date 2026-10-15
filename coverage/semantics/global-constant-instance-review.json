@@ -1,6 +1,6 @@
 {
   "scope": "Global constant() returns of already-certified PVINSTANCE user objects. Partial core.",
-  "status": "independently_accepted_private",
+  "status": "independently_accepted_actual_parent",
   "reviewer": "/root/core_breadth_review_01",
   "parent": "a202bd692e3cd1083a0bf102f9fb5f74af860d59",
   "semantic_revision": "885066859433b974019e630ace27d54f6d16e1b1",
@@ -63,9 +63,16 @@
     "author/public/prepare-report.json": "f77505ccf64b223c0546fa6093528a2d85cf72c439bfafececee55dbc46da0d8",
     "author/public/check-report.json": "1a23688e930f7cf0aa8f55482e381f276902db973279ba3db76270df0544ff55",
     "author/review/native-report.json": "2dd60a5ad29418504f03ffd3658b0db1fcc4453d3f62bb067c56096534926f82",
-    "author/review/model-report.json": "d63054c7cf494142e7e259acce64ac483f1ef46475ccf97970afe3808b5fbe7b"
+    "author/review/model-report.json": "d63054c7cf494142e7e259acce64ac483f1ef46475ccf97970afe3808b5fbe7b",
+    "join/report.json": "11df584a162a76425079623ea52fc5d3fe9b28c2cefba4bfc3139a2664de7cd7"
   },
-  "recovery": "Three owned ignored raw trees moved without copies after reviewer STOP/process no-use checks; hashes unchanged. Recreate .tools/source-global-instance-query-24 at the recorded revisions and restore author/{sources,public,review} as its .tools/global-instance-query-{native,public,review}-24. Original absolute cwd/source identities and Git cuts remain preserved; maintained scripts can create fresh packets.",
+  "recovery": "Three owned ignored raw trees moved without copies after reviewer STOP/process no-use checks; hashes unchanged. Recreate .tools/source-global-instance-query-24 at the recorded revisions and restore author/{sources,public,review} as its .tools/global-instance-query-{native,public,review}-24. Original absolute cwd/source identities and Git cuts remain preserved; maintained scripts can create fresh packets. Restore join to .tools/source-global-instance-query-join-24/.tools/global-instance-query-current-parent-24 at the recorded candidate for its historical loader.",
   "remaining": "Generic PVOBJECT, Closures, instance-bearing array leaves, wider coercions and packed/owning calls remain outside this slice. Core remains partial. No engine bug or intentional divergence.",
-  "actual_parent_integration": null
+  "actual_parent_integration": {
+    "parent": "c8161a0e2f647d3d7b89ce1b648c8f05d6b4d6ad",
+    "candidate": "3857d5f8bd54228c773461285516c6dc610036c6",
+    "report": "join/report.json",
+    "command": "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 120s prlimit --as=3221225472 -- taskset -c 2 python3 .tools/global-instance-query-current-parent-24/run.py",
+    "result": "Full394 SL loading/initialization trueLF/0/emptyerr, inputs/HEAD stable, reaped/groups[]. Exact private +5 arm preserves all V50 HALT and M62 parent rules. Private source3/public375 cuts unchanged; no new application/source/state agreement."
+  }
 }

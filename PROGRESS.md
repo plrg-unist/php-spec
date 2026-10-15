@@ -154,9 +154,10 @@ and live-allocation guards remain authoritative; ordinary RESULT adds one owner.
 Two author sources agree at `8850668`, an independent alias/property-reference
 source agrees at `3893fe5`, and two source-derived state groups pass 375 premises
 at `3893fe5`, including table-only ownership after unset and malformed certificates.
-The unchanged query baseline retains zero credit. Private acceptance is complete;
-actual-parent integration is pending. Generic `PVOBJECT`, Closures and instance
-array leaves remain outside this slice.
+The unchanged query baseline retains zero credit. Composition over `c8161a0e`
+passes full 394-module SL initialization at `3857d5f8`, preserving V50 HALT and
+M62 rules; private source/state cuts remain unchanged. Generic `PVOBJECT`,
+Closures and instance array leaves remain outside this slice.
 [Instance-query review](coverage/semantics/global-constant-instance-review.json).
 
 Class-qualified `constant` now admits source-authenticated immutable empty array
