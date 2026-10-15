@@ -102,7 +102,7 @@ def root_checks(initial, stdout):
         '~$global_std_source(S_before,porigin_site,porigin_decl,0)',
         '~$global_std_ready(S_before,$ptascii("Exception"))',
         '$global_new_unsupported_target(S_before,$ptascii("Exception"))',
-        'S_dirty = S_before[.CONSTCONTEXT = (pconstantcontext[.FACTS = [{ORIGIN porigin_site, VALUE (PNULL), CLASS PVSCALAR, LOOKUP eps}]])]',
+        'S_dirty = S_before[.CONSTCONTEXT = (pconstantcontext[.FACTS = [{ORIGIN porigin_decl, VALUE (PNULL), CLASS PVSCALAR, LOOKUP eps}]])]',
         '~$global_std_ready(S_dirty,$ptascii("stdClass"))',
         '$global_new_unsupported_target(S_dirty,$ptascii("stdClass"))',
     ]
