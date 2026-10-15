@@ -105,9 +105,8 @@ def checks(program, path, name):
             'S_bad_value = S[.TODO = (CONFIG_INVOKE pconfigcall_bad_value) :: ptask_S*]',
             'S_bad_value_after = $drive_steps(S_bad_value,1)',
             'S_bad_value_after.COMPLETION = UNSUPPORTED "scalar constant name reception"']
-        for label, change in (
-            ('site', '.SITE = PORIGIN 0 eps'), ('line', '.LINE = $(pconfigcall_S.LINE + 1)'),
-            ('nonce', '.SELECTION = (0)'), ('kind', '.KIND = INTRINSIC_DEFINED')):
+        for change in ('.SITE = PORIGIN 0 eps', '.LINE = $(pconfigcall_S.LINE + 1)',
+                '.SELECTION = (0)', '.KIND = INTRINSIC_DEFINED'):
             values += ['~$dynamic_scalar_constant_valid(S,pconfigcall_S[' + change + '])']
         for value in ('PNULL', 'PSTRING ' + text('37'), 'PARRAY 0', 'POBJECT 0'):
             values += ['~$dynamic_scalar_constant_call(pconfigcall_S[.SENT = [NAMED_SENT (KNOWN (' + value + '))]])']

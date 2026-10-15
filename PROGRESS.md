@@ -15,9 +15,11 @@ string. Three exact sources at 5b6d1079, an independent false-CV source at a8945
 and 320 public premises at a8945805 pass, covering selection mutation, raw/converted
 traces, unchanged stores, source forgery refusal and budget resumption. Null
 deprecation, Stringable/array reception, arity, packed/owning calls and define
-name/flag coercions remain separate. Private validation
-is accepted; current-parent integration is pending.
+name/flag coercions remain separate.
 [Scalar-name review](coverage/semantics/global-constant-scalar-name-review.json).
+The 394-module composition over ad37d550 passes full SL initialization at 8112dfc8.
+Independent pointwise review preserves the parent; source4/public320 keep their
+private cuts without a replay.
 
 A selected sole implicit virtual class SET now omits its value slot while its
 body writes separate stored10→33. Assignment20 returns20; reads raise the receiver’s
