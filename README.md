@@ -3335,8 +3335,14 @@ compaction groups use the existing strict SL runner at the unchanged120s cap.
 now loads a sole missing user interface before a parentless class or interface is
 linked and published. Two exact originals and 324 SL premises distinguish cached
 descriptors from live names, retained prototypes and genuine loader continuations,
-including eval and budget resume. Traits, parented targets, wider missing lists and
-callback/failure interactions remain partial.
+including eval and budget resume. Trait-bearing and parented targets, wider missing
+lists and callback/failure interactions remain partial.
+[Trait-dependency autoload](coverage/semantics/trait-dependency-autoload-review.json)
+also loads a sole missing user trait before a parentless class or trait imports
+methods. Raw Trait code and magic remain distinct from logical Consumer ownership
+through a nested import. Two exact originals and 380 SL premises cover publication,
+source/history guards, parent/trait/interface priority and budget resume. Wider
+dependency lists, parents, adaptations and loading/failure interactions remain partial.
 [Parameter-default NEW autoload](coverage/semantics/default-new-autoload-review.json)
 now completes lookup before allocation and nested arguments, then reselects the
 loaded constructor under the receiving declaration scope. Nine private sources

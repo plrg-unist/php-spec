@@ -7,6 +7,15 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Class and trait declarations now autoload a sole missing user trait before method
+import and publication. Parent availability precedes trait lookup, which precedes
+interface lookup. Two exact originals and 380 SL premises at runtime diff b37690d7
+cover eval/direct use, nested import, raw Trait versus logical Consumer identity,
+source/history refusal and one budget resume. Raw headers authenticate the bounded
+source independently of derived implicit interfaces; the latter control is pure.
+Wider dependency lists, parents, adaptations and loading/failure interactions remain
+partial. [Trait autoload review](coverage/semantics/trait-dependency-autoload-review.json).
+
 Public private(set) backed implicit class setters now retain their public slot key
 and implicit finality. An inherited Parent writer on Child stores33 and returns
 original20; Child/global array writes fail access, while Parent array reception

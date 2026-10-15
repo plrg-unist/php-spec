@@ -8,6 +8,19 @@ adaptations preserve Zend's method selection and diagnostics. Abstract trait
 requirements are checked against the selected implementation after parent
 inheritance and before interface contracts.
 
+Modules 127/277 now autoload a sole missing user trait before a parentless ordinary
+class or trait imports methods. The nonowning `AUTO_TRAIT` resume stores target
+origin and dependency name; its surrounding autoload call retains site, name, key
+and declaration line. Current and historical guards authenticate the raw source
+header rather than requiring a derived interface cache to remain empty. Existing
+composition preserves physical Trait code and logical Consumer method ownership,
+including flattened nested imports. Two originals and 380 SL premises cover actual
+publication/import, source guards, parent availability and budget resume in the
+[trait autoload review](../../coverage/semantics/trait-dependency-autoload-review.json).
+Admission requires one use without adaptations and no explicit parent/interfaces;
+wider loading and failure interactions remain partial. The implicit-interface
+projection is an undriven source-authority control, not a Stringable source campaign.
+
 Selected direct-trait public by-value statement-body-backed `int` getters import
 into a parentless named class. The imported property owns its physical slot, while
 a derived callable keeps Trait code/`__METHOD__` and uses Consumer lexical/private

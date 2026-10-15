@@ -1,0 +1,84 @@
+{
+  "status": "accepted private implementation and independently reviewed publication; integration pending",
+  "milestone": "V56 declaration-trait dependency autoload",
+  "scope": "Ordinary parentless user class/trait declarations with one direct trait use, no adaptations and no explicit interfaces, reusing registered callback dispatch before method import/publication.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "base": "b909b1a9478dcca1b458e7d10a25198257bcc011",
+  "implementation_revision": "44c38b7d3ad0827f17913ec77125d9011a4906aa",
+  "module_count": 395,
+  "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC"
+  },
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "caps_seconds": {
+    "native": 30,
+    "model_cli": 60,
+    "model_process": 90,
+    "public_process": 90,
+    "public_outer": 240
+  },
+  "tested_cut": {
+    "runtime_diff_sha256": "b37690d75c902b7e07fb7ad90ac894583739ed4cb92d78fcc6b3b936aa878f35",
+    "files": {
+      "spec/semantics/30-storage.watsup": "17b0f81b9ff051ccd8a0be87ae271676bb2aab09a04de6ae12fff1e2cb69ae52",
+      "spec/semantics/127-class-runtime.watsup": "7e1a3466cece124fc7611cbb57f4a2e93c6b0aa703d48aa60b48de365f2a8235",
+      "spec/semantics/277-autoload.watsup": "a5f633e0c7c6a3eac0fb860f3b1b6ee4d1c0f47cc294875c57bad9fc82b28cdd",
+      "tests/semantics/trait_dependency_autoload_protocol.py": "f23596acad03970e8068e502cd4f89ef97b6492a6b02e7a54c08a88749bd7f56"
+    },
+    "source_agreements": 2,
+    "public_premises": [
+      205,
+      175
+    ]
+  },
+  "behavior": [
+    "Pending lookup is independent of the bounded source certificate. Parent lookup and actual parent availability precede trait lookup, which precedes interface lookup. The existing ordered trait_fetch preserves wrong-kind priority. Pending out-of-domain trait sources are Unsupported before the old missing-trait Error; module228 composition remains unchanged.",
+    "The surrounding autoload call retains the actual target site, dependency name, key and declaration line. Its nonowning AUTO_TRAIT resume stores target origin and name. Current guards authenticate the live origin; declaration history validates the same immutable source after dependency/target publication.",
+    "The closed raw header authenticates absence of explicit parents/interfaces. Derived interface caches may change during existing composition, including implicit Stringable ancestry. The helper does not recompile mutable descriptor fields; whole compiler-image/history validation remains required. The copied implicit-interface projection is undriven and is not a Stringable source campaign.",
+    "Dependency descriptors already exist before lookup, but CLASSNAMES remains absent. Real loader publication precedes target import/publication. Imported methods keep their raw Trait body and origin while logical ownership/name become the using class/trait; nested imports flatten to the physical Inner trait. Both full original endings observe integer methods and Trait-versus-Consumer magic.",
+    "Pure site/name/key/line/resume, source-role, coordinated descriptor/capture and parent/trait/interface controls challenge local guards and whole public admission separately. A distinct active parent key isolates actual parent availability. No copied state is driven. One genuine zero-budget pause resumes the same actual lookup state."
+  ],
+  "engine_routes": [
+    "Zend/zend_inheritance.c::zend_do_link_class fetches the parent, traits and interfaces using zend_fetch_class_by_name without NO_AUTOLOAD; trait fetching precedes member composition and interface binding.",
+    "Existing module277 registered callback dispatch owns the invocation and restores the target origin. Module228 fetches published trait names and reuses its source-authenticated import/composition path only after the dependency returns."
+  ],
+  "accepted": {
+    "source_agreements": 2,
+    "public_premises": 380,
+    "production_chains": 2,
+    "budget_resumptions": 1,
+    "raw_steps": 0,
+    "driven_forged_states": 0
+  },
+  "preserved_outcomes": "The unchanged accepted-program baseline throws Trait V56Trait not found before the loader and disagrees with PHP. Native, baseline, preparation, standalone syntax and refusal checks retain zero agreement credit. Both affected sources and the first public packet pass at the same runtime cut; there were no V56 actor failures or fixture corrections.",
+  "remaining": "Wider missing dependency lists, parented/explicit-interface targets, adaptations, internal/reserved targets, loader miss/throw/reentrancy campaigns and complete declaration/core behavior remain partial. Existing loaded-list/composition support is unchanged; this slice does not close trait/autoload families.",
+  "artifacts": {
+    "native_pair": {
+      "path": ".tools/dynamic-review-02/static-native-v56/report.json",
+      "sha256": "942489346e55e41c783a13c7cc9da3c6863f7183cdbe3a1fa17f106974f337ca"
+    },
+    "unchanged_class_baseline": {
+      "path": ".tools/dynamic-source-trait-autoload-baseline-36/report.json",
+      "sha256": "2fe25176a70a2e1f56c4c7b09007608a0f2df9f77f1112c5dff03b32d53ab73d"
+    },
+    "affected_class": {
+      "path": ".tools/dynamic-source-trait-autoload-model-37/report.json",
+      "sha256": "7e46b837938c21decd4838eed8f6f8d5e36404331767d628e593286c9e11d203"
+    },
+    "affected_composed_trait": {
+      "path": ".tools/dynamic-source-trait-autoload-composed-model-36/report.json",
+      "sha256": "d7dce2ccab4e605065332048fe6482b28d2f31b95c8e37fb862cd46030aa8751"
+    },
+    "public_preparation": {
+      "path": ".tools/dynamic-source-trait-autoload-state-01/fixtures-report.json",
+      "sha256": "0b4fdd817ce5151a618c5961b2002b55862c9404550d701a5b44dce6af00864d"
+    },
+    "public_380": {
+      "path": ".tools/dynamic-source-trait-autoload-state-01/check-report.json",
+      "sha256": "bcb7dbc99e97d9db0287681ed701e45af8c33d4dba89f1b6bbf690eaa0083d19"
+    }
+  },
+  "recovery": "Use the maintained fixtures/check phases with canonical dynamic-review-02/static-native-v56 originals and retained native report. Raw worker packets, full syntax-only records, exact commands and process streams remain outside Git. No native evaluation fallback or tool rebuild is added."
+}
