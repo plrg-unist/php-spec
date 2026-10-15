@@ -1,0 +1,203 @@
+;; Terminal isset retains the receiver while its one-name callback runs.
+dec $property_isset_method(pstate, nat) : pmethoddesc?
+def $property_isset_method(S, n) = $effective_method(S, porigin, $ptascii("__isset"), |S.CLASSES|)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $class_throwable_kind(S, porigin, |S.CLASSES|) = eps
+def $property_isset_method(S, n) = eps -- otherwise
+
+;; INITIAL typed slots bypass __isset; absent and previously UNSET do not.
+def $property_isset_needed(S, n, ptbytes) = true
+  -- if $property_isset_method(S, n) =/= eps
+  -- if $property_resolve(S, n, ptbytes) = PROPERTY_BADNAME
+def $property_isset_needed(S, n, ptbytes) = true
+  -- if $property_isset_method(S, n) =/= eps
+  -- if $property_resolve(S, n, ptbytes) = PROPERTY_DENIED ppropertydesc
+def $property_isset_needed(S, n, ptbytes) = true
+  -- if $property_isset_method(S, n) =/= eps
+  -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes_key
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_all*)
+  -- if $property_slot_at(ppropertyslot_all*, ptbytes_key) = eps
+def $property_isset_needed(S, n, ptbytes) = true
+  -- if $property_isset_method(S, n) =/= eps
+  -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes_key
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_all*)
+  -- if $property_slot_at(ppropertyslot_all*, ptbytes_key) = (ppropertyslot)
+  -- if ppropertyslot.STATE = PROP_UNSET
+def $property_isset_needed(S, n, ptbytes) = false -- otherwise
+
+def $property_isset_pending(S) = true
+  -- if S.TODO = (ISSET_RESULT b z) :: ptask_tail*
+  -- if S.BASE = BASE_PROPERTY (POBJECT n) ptbytes
+  -- if $property_isset_needed(S, n, ptbytes)
+
+dec $property_isset_source(pstate, ppropertyisset) : bool
+def $property_isset_source(S, ppropertyisset) = true
+  -- if ppropertyisset.SITE = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, ppropertyisset.SITE) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata)
+  -- if $base64(text_receiver) =/= $ptascii("this")
+  -- if ppropertyisset.NAME = $base64(text_name)
+  -- if $(|pcpath| >= 2)
+  -- if pcpath_isset = pcpath[0:$nabs($(|pcpath| - 2))]
+  -- if PCINDEX n_index = pcpath[$nabs($(|pcpath| - 1))]
+  -- if pcpath = pcpath_isset ++ [PCFIELD 0, PCINDEX n_index]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_isset) = (NExprIsset (SEQUENCE expression*) metadata_isset)
+  -- if $(n_index < |expression*|)
+  -- if expression*[n_index] = NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata
+  -- if $property_source_task(S[.ORIGIN = (ppropertyisset.SITE)], expression*[n_index])
+  -- if ppropertyisset.LINE = $runtime_line(S[.ORIGIN = (ppropertyisset.SITE)], eps, expression*[n_index])
+  -- if $compiled_effects(S, ppropertyisset.SITE) = eps
+def $property_isset_source(S, ppropertyisset) = false -- otherwise
+
+dec $property_isset_function(pstate, ppropertyisset) : pfunction?
+def $property_isset_function(S, ppropertyisset) = (pfunction)
+  -- if $property_isset_method(S, ppropertyisset.OBJECT) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = ppropertyisset.METHOD
+  -- if pfunction = pmethoddesc.FUNCTION
+  -- if $property_magic_method_source(S, pmethoddesc, "__isset")
+  -- if $target_function(S, METHOD_TARGET ppropertyisset.OBJECT ppropertyisset.METHOD) = (pfunction)
+def $property_isset_function(S, ppropertyisset) = eps -- otherwise
+
+dec $property_isset_valid(pstate, ppropertyisset) : bool
+def $property_isset_valid(S, ppropertyisset) = true
+  -- if $property_isset_source(S, ppropertyisset)
+  -- if $(ppropertyisset.OBJECT < |S.OBJECTS|)
+  -- if (HOBJECT ppropertyisset.OBJECT) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, ppropertyisset.OBJECT)
+  -- if S.OBJECTS[ppropertyisset.OBJECT] = INSTANCE ppropertyisset.CLASS
+  -- if $property_isset_function(S, ppropertyisset) =/= eps
+  -- if $property_effective_desc(S, ppropertyisset.OBJECT, ppropertyisset.NAME) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertyisset.PROPERTY /\ ppropertydesc.NAME = ppropertyisset.NAME
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE /\ ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.SETVISIBILITY = eps
+  -- if $property_unset_access_valid(S, ppropertyisset.OBJECT, ppropertyisset.NAME, ppropertydesc, $property_resolve_scope(S, ppropertyisset.OBJECT, ppropertyisset.NAME, $closure_source_class(S, ppropertyisset.SITE)))
+  -- if ~$property_hook_declared(S, ppropertyisset.OBJECT, ppropertyisset.NAME)
+  -- if $property_get_method(S, ppropertyisset.OBJECT) = eps
+def $property_isset_valid(S, ppropertyisset) = false -- otherwise
+
+;; Only pending entry reads the CV; the entered callback retains its selection.
+dec $property_isset_capture(pstate, ppropertyisset) : bool
+def $property_isset_capture(S, ppropertyisset) = true
+  -- if $property_isset_valid(S, ppropertyisset)
+  -- if $origin_node(S.SOURCES, ppropertyisset.SITE) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) phpType20 metadata)
+  -- if S_read = $quiet_operand(S, VARIABLE $base64(text_receiver) $variable_line(BYTES text_receiver, metadata_receiver))
+  -- if S_read.RESULT = KNOWN (POBJECT ppropertyisset.OBJECT)
+  -- if $property_lookup_scope(S) = $closure_source_class(S, ppropertyisset.SITE)
+def $property_isset_capture(S, ppropertyisset) = false -- otherwise
+
+dec $property_isset_tail(pstate, ppropertyisset, ptask*) : bool
+def $property_isset_tail(S, ppropertyisset, (PROPERTY_ISSET_RESULT ppropertyisset) :: ptask_tail*) = $property_isset_valid(S, ppropertyisset)
+def $property_isset_tail(S, ppropertyisset, ptask*) = false -- otherwise
+dec $property_isset_throw_tail(pstate, ppropertyisset) : bool
+def $property_isset_throw_tail(S, ppropertyisset) = true
+  -- if S.TODO = (THROW_SEARCH n) :: (PROPERTY_ISSET_RESULT ppropertyisset) :: ptask_tail*
+  -- if $throwable_live(S, n)
+  -- if S.ORIGIN = (ppropertyisset.SITE)
+  -- if $property_isset_tail(S, ppropertyisset, (PROPERTY_ISSET_RESULT ppropertyisset) :: ptask_tail*)
+def $property_isset_throw_tail(S, ppropertyisset) = false -- otherwise
+
+dec $property_isset_pending_call(pstate, ppropertyisset) : bool
+def $property_isset_pending_call(S, ppropertyisset) = true
+  -- if poperand = KNOWN (PSTRING ppropertyisset.NAME)
+  -- if S.TODO = (CALL_ARGS (PROPERTY_ISSET_TARGET ppropertyisset) eps 1 (poperand :: eps) (ppropertyisset.SITE) ppropertyisset.LINE) :: (PROPERTY_ISSET_RESULT ppropertyisset) :: ptask_tail*
+  -- if S.ORIGIN = (ppropertyisset.SITE)
+  -- if $property_isset_capture(S, ppropertyisset)
+def $property_isset_pending_call(S, ppropertyisset) = false -- otherwise
+
+dec $property_isset_frame(pstate, pcallcontext, pframe, ppropertyisset) : bool
+def $property_isset_frame(S, pcallcontext, pframe, ppropertyisset) = true
+  -- if pcallcontext.TARGET = PROPERTY_ISSET_TARGET ppropertyisset
+  -- if pcallcontext.FUNCTION = ppropertyisset.METHOD /\ pcallcontext.RECEIVER = (ppropertyisset.OBJECT) /\ pcallcontext.CALLED_CLASS = (ppropertyisset.CLASS)
+  -- if pcallcontext.LEXICAL_CLASS = $target_lexical_class(S, METHOD_TARGET ppropertyisset.OBJECT ppropertyisset.METHOD)
+  -- if pcallcontext.CALLSITE = (ppropertyisset.SITE) /\ pcallcontext.LINE = ppropertyisset.LINE
+  -- if pcallcontext.ARGC = 1 /\ pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.WRAPPER = eps /\ pcallcontext.HOLES = eps
+  -- if pframe.ORIGIN = (ppropertyisset.SITE)
+  -- if $property_isset_tail(S[.CURRENT = pframe.CONTEXT], ppropertyisset, pframe.TODO)
+def $property_isset_frame(S, pcallcontext, pframe, ppropertyisset) = false -- otherwise
+
+dec $property_isset_entered(pstate, pcallcontext?, pframe*, ppropertyisset) : bool
+def $property_isset_entered(S, (pcallcontext), pframe :: pframe_tail*, ppropertyisset) = $property_isset_frame(S, pcallcontext, pframe, ppropertyisset)
+  -- if pcallcontext.TARGET = PROPERTY_ISSET_TARGET ppropertyisset
+def $property_isset_entered(S, (pcallcontext), pframe :: pframe_tail*, ppropertyisset) = $property_isset_entered(S, pframe.CONTEXT, pframe_tail*, ppropertyisset)
+  -- if pcallcontext.TARGET =/= PROPERTY_ISSET_TARGET ppropertyisset
+def $property_isset_entered(S, eps, pframe :: pframe_tail*, ppropertyisset) = $property_isset_entered(S, pframe.CONTEXT, pframe_tail*, ppropertyisset)
+def $property_isset_entered(S, pcallcontext?, eps, ppropertyisset) = false
+
+dec $property_isset_guard_frame(pstate, pcallcontext, pframe, nat, ptbytes) : bool
+def $property_isset_guard_frame(S, pcallcontext, pframe, n, ptbytes) = true
+  -- if pcallcontext.TARGET = PROPERTY_ISSET_TARGET ppropertyisset
+  -- if ppropertyisset.OBJECT = n /\ ppropertyisset.NAME = ptbytes
+  -- if $property_isset_frame(S, pcallcontext, pframe, ppropertyisset)
+def $property_isset_guard_frame(S, pcallcontext, pframe, n, ptbytes) = false -- otherwise
+dec $property_isset_guard(pstate, pcallcontext?, pframe*, nat, ptbytes) : bool
+def $property_isset_guard(S, (pcallcontext), pframe :: pframe_tail*, n, ptbytes) = ($property_isset_guard_frame(S, pcallcontext, pframe, n, ptbytes) \/ $property_isset_guard(S, pframe.CONTEXT, pframe_tail*, n, ptbytes))
+def $property_isset_guard(S, eps, pframe :: pframe_tail*, n, ptbytes) = $property_isset_guard(S, pframe.CONTEXT, pframe_tail*, n, ptbytes)
+def $property_isset_guard(S, pcallcontext?, eps, n, ptbytes) = false
+
+dec $property_isset_plan(pstate) : ppropertyisset?
+def $property_isset_plan(S) = (ppropertyisset)
+  -- if S.TODO = (ISSET_RESULT false z) :: ptask_tail*
+  -- if S.BASE = BASE_PROPERTY (POBJECT n) ptbytes
+  -- if S.RESULT = KNOWN PNULL
+  -- if S.ORIGIN = (porigin)
+  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if $property_isset_needed(S, n, ptbytes)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $property_isset_method(S, n) = (pmethoddesc)
+  -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
+  -- if porigin_property = ppropertydesc.ORIGIN
+  -- if ppropertyisset = {SITE porigin, NAME ptbytes, LINE z, OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, PROPERTY porigin_property}
+  -- if $property_isset_capture(S, ppropertyisset)
+  -- if ~$property_isset_guard(S, S.CURRENT, S.FRAMES, n, ptbytes)
+def $property_isset_plan(S) = eps -- otherwise
+
+rule PhpStep/property-isset-call: S ~> S_inputs[.TODO = [(CALL_ARGS (PROPERTY_ISSET_TARGET ppropertyisset) eps 1 ([KNOWN (PSTRING ppropertyisset.NAME)]) (ppropertyisset.SITE) ppropertyisset.LINE), PROPERTY_ISSET_RESULT ppropertyisset] ++ S_inputs.TODO][.HELD = S.HELD]
+  -- if $property_isset_plan(S) = (ppropertyisset)
+  -- if S_inputs = $hold_task_inputs(S)
+rule PhpStep/property-isset-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "magic isset source, function, or recursive access"]
+  -- if $property_isset_pending(S)
+  -- if $property_isset_plan(S) = eps
+rule PhpStep/property-isset-result: S ~> S[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROPERTY_ISSET_RESULT ppropertyisset) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (PBOOL b)
+  -- if S.ORIGIN = (ppropertyisset.SITE)
+  -- if $property_isset_valid(S, ppropertyisset)
+
+;; RESULT owns the receiver; normal completion or abrupt discard drops it once.
+def $task_nodes(PROPERTY_ISSET_RESULT ppropertyisset) = [HOBJECT ppropertyisset.OBJECT]
+def $target_nodes(PROPERTY_ISSET_TARGET ppropertyisset) = eps
+def $target_instance(PROPERTY_ISSET_TARGET ppropertyisset) = eps
+def $target_receiver(S, PROPERTY_ISSET_TARGET ppropertyisset) = (ppropertyisset.OBJECT)
+def $target_lexical_class(S, PROPERTY_ISSET_TARGET ppropertyisset) = $target_lexical_class(S, METHOD_TARGET ppropertyisset.OBJECT ppropertyisset.METHOD)
+def $target_called_class(S, PROPERTY_ISSET_TARGET ppropertyisset) = (ppropertyisset.CLASS)
+def $target_function(S, PROPERTY_ISSET_TARGET ppropertyisset) = $property_isset_function(S, ppropertyisset)
+  -- if $property_isset_valid(S, ppropertyisset)
+def $call_receiver_roots(pcallcontext) = eps
+  -- if pcallcontext.TARGET = PROPERTY_ISSET_TARGET ppropertyisset
+
+def $call_selected_valid(S, PROPERTY_ISSET_TARGET ppropertyisset, (porigin)) = (porigin = ppropertyisset.SITE /\ ($property_isset_pending_call(S, ppropertyisset) \/ $property_isset_entered(S, S.CURRENT, S.FRAMES, ppropertyisset)))
+def $call_arguments_valid(S, (porigin), 1, eps, poperand :: eps, 0) = true
+  -- if S.TODO = (CALL_ARGS (PROPERTY_ISSET_TARGET ppropertyisset) eps 1 (poperand :: eps) (porigin) z) :: ptask_tail*
+  -- if poperand = KNOWN (PSTRING ppropertyisset.NAME)
+  -- if $property_isset_pending_call(S, ppropertyisset)
+
+dec $property_isset_context(pstate, pcallcontext) : bool
+def $property_isset_context(S, pcallcontext) = true
+  -- if pcallcontext.TARGET = PROPERTY_ISSET_TARGET ppropertyisset
+  -- if pcallcontext.FUNCTION = ppropertyisset.METHOD /\ pcallcontext.RECEIVER = (ppropertyisset.OBJECT) /\ pcallcontext.CALLED_CLASS = (ppropertyisset.CLASS)
+  -- if pcallcontext.LEXICAL_CLASS = $target_lexical_class(S, METHOD_TARGET ppropertyisset.OBJECT ppropertyisset.METHOD)
+  -- if pcallcontext.CALLSITE = (ppropertyisset.SITE) /\ pcallcontext.LINE = ppropertyisset.LINE
+  -- if pcallcontext.ARGC = 1 /\ pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.WRAPPER = eps /\ pcallcontext.HOLES = eps
+  -- if $property_isset_entered(S, S.CURRENT, S.FRAMES, ppropertyisset)
+def $property_isset_context(S, pcallcontext) = false -- otherwise
+def $call_arity_valid(S, pcallcontext) = $property_isset_context(S, pcallcontext)
+  -- if pcallcontext.TARGET = PROPERTY_ISSET_TARGET ppropertyisset
+def $call_extent_valid(S, pcallcontext) = $property_isset_context(S, pcallcontext)
+  -- if pcallcontext.TARGET = PROPERTY_ISSET_TARGET ppropertyisset
+def $named_context_valid(S, pcallcontext) = $property_isset_context(S, pcallcontext)
+  -- if pcallcontext.TARGET = PROPERTY_ISSET_TARGET ppropertyisset
+def $named_receives_ready(S, pfunction) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if $property_isset_context(S, pcallcontext)
+def $call_task_valid(S, PROPERTY_ISSET_RESULT ppropertyisset) = ($property_isset_pending_call(S, ppropertyisset) \/ $property_isset_tail(S, ppropertyisset, S.TODO) \/ $property_isset_throw_tail(S, ppropertyisset))
