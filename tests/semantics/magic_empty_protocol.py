@@ -147,7 +147,8 @@ S_true_found = $me_seek(S_zero,ME_RESULT ($ptascii("zero")) false,1000)
 S_true_found.COMPLETION = NORMAL \/ S_true_found.COMPLETION = BUDGET
 S_true = S_true_found[.COMPLETION = NORMAL]
 $me_stage(S_true,ME_RESULT ($ptascii("zero")) false)
-S_true.RESULT = KNOWN (PBOOL true) /\ S_true.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty_zero false) :: ptask_zero_tail*
+S_true.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty_zero false) :: ptask_zero_tail*
+S_true.RESULT = KNOWN (PBOOL true)
 $property_empty_valid(S_true,ppropertyempty_zero) /\ $me_guard(S_true)
 PhpStep: S_true ~> S_get_call_raw
 S_get_call = $me_after(S_true,S_get_call_raw)
@@ -175,7 +176,8 @@ S_full_found = $me_seek(S_zero_done,ME_RESULT ($ptascii("full")) true,1000)
 S_full_found.COMPLETION = NORMAL \/ S_full_found.COMPLETION = BUDGET
 S_full = S_full_found[.COMPLETION = NORMAL]
 $me_stage(S_full,ME_RESULT ($ptascii("full")) true)
-S_full.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty_full true) :: ptask_full_tail* /\ S_full.RESULT = KNOWN (PINT 13)
+S_full.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty_full true) :: ptask_full_tail*
+S_full.RESULT = KNOWN (PINT 13)
 PhpStep: S_full ~> S_full_raw
 S_full_done = $me_after(S_full,S_full_raw)
 S_full_done.RESULT = KNOWN (PBOOL false) /\ S_full_done.TODO = ptask_full_tail* /\ S_full_done.EVENTS = S_full.EVENTS
@@ -238,7 +240,8 @@ for label, state, record, getter in [('isset', 'S_isset_entered', 'ppropertyempt
         f'S_throw_found_{label}.COMPLETION = NORMAL \\/ S_throw_found_{label}.COMPLETION = BUDGET',
         f'S_throw_{label} = S_throw_found_{label}[.COMPLETION = NORMAL]',
         f'$me_stage(S_throw_{label},ME_THROW {getter})',
-        f'S_throw_{label}.TODO = (THROW_SEARCH n_throw_{label}) :: (PROPERTY_EMPTY_RESULT {record} {getter}) :: ptask_throw_{label}* /\\ S_throw_{label}.CURRENT = eps /\\ S_throw_{label}.FRAMES = eps',
+        f'S_throw_{label}.TODO = (THROW_SEARCH n_throw_{label}) :: (PROPERTY_EMPTY_RESULT {record} {getter}) :: ptask_throw_{label}*',
+        f'S_throw_{label}.CURRENT = eps /\\ S_throw_{label}.FRAMES = eps',
         f'$property_empty_throw_tail(S_throw_{label},{record},{getter}) /\\ $call_task_valid(S_throw_{label},PROPERTY_EMPTY_RESULT {record} {getter}) /\\ $me_guard(S_throw_{label})',
         f'n_throw_owners_{label} = $heap_owners($heap_graph(S_throw_{label}),HOBJECT n_child)',
         f'PhpStep: S_throw_{label} ~> S_discard_raw_{label}',
