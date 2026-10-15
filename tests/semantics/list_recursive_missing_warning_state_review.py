@@ -88,7 +88,7 @@ def conditions(name, program, path, stdout):
         '~$list_missing_nested_items([NArrayItem ABSENT expression_root (BOOLEAN true) (BOOLEAN false) metadata_assign])',
         '~$list_missing_nested_items([NArrayItem ABSENT expression_rhs (BOOLEAN false) (BOOLEAN true) metadata_assign])',
         'porigin_assign = PORIGIN n_unit pcpath_assign', 'S_entry.SOURCES[n_unit] = pcunit',
-        'S_wide = S_entry[.SOURCES[n_unit] = pcunit[.OCCURRENCES = (PCOCCURRENCE pcpath_assign (NExprAssign expression_root (NExprArray (SEQUENCE eps) eps) metadata_assign)) :: pcunit.OCCURRENCES]]',
+        'S_wide = S_entry[.SOURCES[n_unit] = pcunit[.OCCURRENCES = (PCOCCURRENCE pcpath_assign (NExprAssign expression_root (NScalarInt (INTEGER 1) eps) metadata_assign)) :: pcunit.OCCURRENCES]]',
         '$list_missing_nested_context(S_wide, porigin) = eps', '~$list_missing_source(S_wide, ' + args + ')',
         'PhpStep: S_entry ~> S_dispatch',
         'S_dispatch.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*', 'perrorcall.RESUME = ' + marker,
