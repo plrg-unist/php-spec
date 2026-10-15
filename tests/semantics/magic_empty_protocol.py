@@ -101,6 +101,8 @@ ppropertyempty_skip.SITE = porigin_skip /\ ppropertyempty_skip.NAME = $ptascii("
 $property_empty_function(S_skip,ppropertyempty_skip,false) = (pfunction_isset)
 $property_empty_function(S_skip,ppropertyempty_skip,true) = (pfunction_get)
 ppropertyempty_skip.ISSET = pfunction_isset.ORIGIN /\ ppropertyempty_skip.GET = pfunction_get.ORIGIN
+porigin_isset = pfunction_isset.ORIGIN
+porigin_get = pfunction_get.ORIGIN
 $property_empty_method(S_skip,n_child,false) = (pmethoddesc_isset)
 $property_empty_method(S_skip,n_child,true) = (pmethoddesc_get)
 pmethoddesc_isset.OWNER = porigin_parent /\ pmethoddesc_get.OWNER = porigin_parent
@@ -192,8 +194,9 @@ S_wrong_prep = S_prep[.TODO = (PROPERTY_PREP phpType20_prep 23) :: ptask_skip_ta
 S_wrong_mode = S_prep[.TODO = (PROPERTY_PREP phpType20_prep 23) :: (ORIGIN_RETURN (porigin_skip)) :: (ISSET_RESULT false 23) :: ptask_skip_tail*]
 ~$property_empty_prepare(S_wrong_mode) /\ $property_get_pending(S_wrong_mode)
 ~$property_empty_source(S_skip,porigin_skip,$ptascii("zero"),23) /\ ~$property_empty_source(S_skip,porigin_skip,$ptascii("skip"),24)
-~$property_empty_valid(S_skip,ppropertyempty_skip[.PROPERTY = ppropertydesc_ready.ORIGIN])
-~$property_empty_valid(S_skip,ppropertyempty_skip[.GET = pfunction_isset.ORIGIN])
+porigin_ready = ppropertydesc_ready.ORIGIN
+~$property_empty_valid(S_skip,ppropertyempty_skip[.PROPERTY = porigin_ready])
+~$property_empty_valid(S_skip,ppropertyempty_skip[.GET = porigin_isset])
 S_source_missing = S_skip[.SOURCES = ([pcunit_source[.OCCURRENCES = $me_replace(pcunit_source.OCCURRENCES,pcpath_get,NStmtNop metadata_get)]])]
 ~$property_empty_get_source(S_source_missing,pmethoddesc_get) /\ $property_empty_function(S_source_missing,ppropertyempty_skip,true) = eps
 $property_empty_pending(S_source_missing) /\ $property_empty_plan(S_source_missing) = eps
@@ -203,7 +206,7 @@ S_no_result = S_get_call[.TODO = (CALL_ARGS (PROPERTY_EMPTY_TARGET ppropertyempt
 ~$property_empty_pending_call(S_no_result,ppropertyempty_zero,true)
 S_wrong_arg = S_get_call[.TODO = (CALL_ARGS (PROPERTY_EMPTY_TARGET ppropertyempty_zero true) eps 1 ([KNOWN (PSTRING ($ptascii("full")))]) (ppropertyempty_zero.SITE) 24) :: (PROPERTY_EMPTY_RESULT ppropertyempty_zero true) :: ptask_zero_tail*]
 ~$property_empty_pending_call(S_wrong_arg,ppropertyempty_zero,true)
-S_direct = S_get_entered[.CURRENT = (pcallcontext_get[.TARGET = METHOD_TARGET n_child pfunction_get.ORIGIN])]
+S_direct = S_get_entered[.CURRENT = (pcallcontext_get[.TARGET = METHOD_TARGET n_child porigin_get])]
 ~$property_empty_guard(S_direct,n_child,$ptascii("zero")) /\ ~$property_empty_get_active(S_direct,n_child,$ptascii("zero"))
 ~$property_empty_active(S_get_entered,S_get_entered.CURRENT,eps,n_child,$ptascii("zero"),true)
 S_recursive = S_get_entered[.TODO = [(ISSET_RESULT true 24)]][.ORIGIN = (ppropertyempty_zero.SITE)][.BASE = BASE_PROPERTY (POBJECT n_child) ($ptascii("zero"))][.RESULT = KNOWN PNULL]
