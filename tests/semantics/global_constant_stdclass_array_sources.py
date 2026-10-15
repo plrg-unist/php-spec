@@ -46,7 +46,7 @@ $held = $again[1][0];
 echo '|', $held === $leaf ? 'same' : 'BAD', '|', $held->value, '|A|';
 ''',
 }
-family.BASELINE = ('invalid declaration publication history', b'B|')
+family.BASELINE = ('global constant value query', b'B|')
 family.UNSUPPORTED = {}
 family_fingerprint = family.fingerprint
 
