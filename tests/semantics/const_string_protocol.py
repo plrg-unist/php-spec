@@ -95,7 +95,7 @@ def checks(program, path, name):
             '$global_constant_transfer_valid(' + state + ',' + origin + ',PVSTRING ' + flag + ',' + state + '.USERCONSTANTS)',
             '$constant_fact_at(' + context + '.FACTS,$constant_child(' + origin + ',[PCFIELD 1])) = (' + fact + ')',
             fact + '.VALUE = (' + result + ')',
-            fact + '.CLASS = PVSTRING ' + ('false' if key.endswith('\\Folded') else flag),
+            fact + '.CLASS = PVSTRING ' + ('false' if key.endswith(('\\Literal', '\\Folded')) else flag),
             '$constant_facts_valid(' + state + ',' + origin + ',' + context + '.FACTS)', *public(state)]
         if interned:
             values += [result + ' = PSTRING_CARRIER INTERNED_STRING ' + text]
