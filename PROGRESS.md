@@ -148,6 +148,17 @@ at `8dc83f69`; private source/state cuts remain unchanged.
 The unchanged query baseline and initial fixture parse failure retain zero credit.
 [Array-query review](coverage/semantics/global-constant-array-review.json).
 
+Global `constant` queries now return already-certified `PVINSTANCE` user objects
+with the same identity and current mutable properties. Existing completed-NEW
+and live-allocation guards remain authoritative; ordinary RESULT adds one owner.
+Two author sources agree at `8850668`, an independent alias/property-reference
+source agrees at `3893fe5`, and two source-derived state groups pass 375 premises
+at `3893fe5`, including table-only ownership after unset and malformed certificates.
+The unchanged query baseline retains zero credit. Private acceptance is complete;
+actual-parent integration is pending. Generic `PVOBJECT`, Closures and instance
+array leaves remain outside this slice.
+[Instance-query review](coverage/semantics/global-constant-instance-review.json).
+
 Class-qualified `constant` now admits source-authenticated immutable empty array
 roots and children. Queries retain pooled identity; a reference bucket initially
 holds the shared empty child, then append detaches it. Two exact sources and two

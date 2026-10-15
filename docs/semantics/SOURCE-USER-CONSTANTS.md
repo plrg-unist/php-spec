@@ -208,9 +208,19 @@ reference acquisition without changing the constant or other results. The
 records repeated NaN-root identity, nested writes, empty roots, request leaves and
 source-derived malformed-state/budget checks.
 
+Queries also return installed `PVINSTANCE` user instances. The existing NEW
+certificate authenticates the exact object identity, original initializer site,
+completed construction and live allocation. Constant aliases retain that original
+certificate. Returned objects keep their current mutable properties; the ordinary
+RESULT owner supplements the table's owner. Lookup performs no construction,
+cloning or property reset. The [instance-query review](../../coverage/semantics/global-constant-instance-review.json)
+records plain/completed-constructor queries, shared aliases/property references,
+actual owner increments, malformed certificates and budget resumption.
+
 Absent names raise `Error` with the stripped lookup spelling and the full captured
 argument in the API trace. Unknown startup values retain their prior Unsupported
-result. Other owning values, coercions and packed/owning calls remain
+result. Closures, generic `PVOBJECT`, instance-bearing array trees, coercions and
+packed/owning calls remain
 outside this slice. The original ordinary `const` string producer refusal retains
 its historical cut; the string-publication follow-up above admits that producer
 domain without renewing the older lookup campaign. The [global-query ledger](../../coverage/semantics/global-constant-review.json)

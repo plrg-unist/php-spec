@@ -867,14 +867,18 @@ namespace-prefix normalization and captured request strings after CV mutation.
 Rows retain the actual value and string-carrier class. Available positional
 literal facts constrain inputs; variable payloads retain the existing structural table
 policy. Wider values, conversion/warning paths and namespace fallback remain open.
-Global `constant` queries return primitive values, authenticated string carriers
-and validated user array trees using the captured query, one leading-separator
-removal and case-sensitive final
-names. Missing names raise an API `Error`; argument effects precede lookup.
+Global `constant` queries return primitive values, authenticated string carriers,
+validated user array trees and certified completed user instances. They use the
+captured query, remove one leading separator and preserve terminal-name case.
+Missing names raise an API `Error`; argument effects precede lookup.
 Array queries retain the stored root and children; existing COW preserves nested
 writes, reference acquisition and append history. Immutable and mutable empty
 roots retain their provenance. The [array-query review](coverage/semantics/global-constant-array-review.json)
 records the focused source and state checks.
+Instance results retain object identity and mutable properties; their ordinary
+RESULT owner supplements the constant table's owner. Three exact sources and
+375 state premises cover direct/dynamic queries, aliases, retained property
+references and completion/identity guards in the [instance-query review](coverage/semantics/global-constant-instance-review.json).
 The [global-query ledger](coverage/semantics/global-constant-review.json) preserves
 its earlier source/state cuts and historical producer/array refusals.
 Ordinary string-valued `const` declarations now authenticate interned and request

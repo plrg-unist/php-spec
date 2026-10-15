@@ -1,0 +1,71 @@
+{
+  "scope": "Global constant() returns of already-certified PVINSTANCE user objects. Partial core.",
+  "status": "independently_accepted_private",
+  "reviewer": "/root/core_breadth_review_01",
+  "parent": "a202bd692e3cd1083a0bf102f9fb5f74af860d59",
+  "semantic_revision": "885066859433b974019e630ace27d54f6d16e1b1",
+  "semantic_sha256": {
+    "spec/semantics/400-dynamic-constants.watsup": "97b161b1596c041262a7042b7d616a8c56530d660f84cb62cb557e9c31470616"
+  },
+  "module_count": 394,
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+  "behavior": "The five-line global value arm requires matching POBJECT/PVINSTANCE identity and the existing completed-NEW/site/live-HOBJECT certificate. It returns that object with its current mutable properties. Existing RESULT ownership supplements the constant table roots; no cloning, constructor replay, property reset or new ownership protocol.",
+  "source_routes": [
+    "vendor/php-src/ext/standard/basic_functions.c PHP_FUNCTION(constant), zend_get_constant_ex and ZVAL_COPY_OR_DUP",
+    "vendor/php-src/Zend/zend_types.h ZVAL_COPY_OR_DUP: request objects retain identity",
+    "spec/semantics/283-global-constant-objects.watsup constant_value_class_valid and global_new_completed authenticate the existing certificate"
+  ],
+  "sources": [
+    {
+      "revision": "885066859433b974019e630ace27d54f6d16e1b1",
+      "report": "author/sources/model-report.json",
+      "agreements": 2,
+      "checks": "Plain and completed-constructor instances; named direct/dynamic queries, repeated/direct identity, mutation through peers, caller unset and later query."
+    },
+    {
+      "revision": "3893fe5078091b9a968f45a68a6b5c113cd27081",
+      "report": "author/review/model-report.json",
+      "agreements": 1,
+      "checks": "Independent const alias, retained untyped property reference, writes across released caller copies, exact shared identity and later query."
+    }
+  ],
+  "public": {
+    "revision": "3893fe5078091b9a968f45a68a6b5c113cd27081",
+    "report": "author/public/check-report.json",
+    "premises": 375,
+    "groups": {
+      "plain-instance-identity-and-mutation": 218,
+      "completed-constructor-and-named-dynamic-query": 157
+    },
+    "checks": "Genuine first/repeat/post-mutation CONFIG fronts; exact identity/properties; table-only owner1 before first and post-unset return, genuine RESULT owner increment; wrong id/site/COMPLETE/live allocation and generic PVOBJECT refusal; readonly state, full budget0 and one-step equality."
+  },
+  "zero_credit": "Native observations and syntax preparation retain zero agreement. Sole unchanged plain-source baseline at1edba12e: checked Unsupported/global constant value query after B|, CLI1/null PHP exit/emptyerr. No baseline renewal or fixture/runtime failure.",
+  "command_prefix": "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s CAPs prlimit --as=3221225472 -- taskset -c 2 python3",
+  "commands_after_prefix": [
+    "CAP=90 tests/semantics/global_constant_instance_sources.py --phase native --output .tools/global-instance-query-native-24",
+    "CAP=90 tests/semantics/global_constant_instance_sources.py --phase baseline --case plain-instance-identity-and-mutation --output .tools/global-instance-query-native-24",
+    "CAP=180 tests/semantics/global_constant_instance_sources.py --phase model --output .tools/global-instance-query-native-24",
+    "CAP=90 tests/semantics/global_constant_instance_protocol.py --phase prepare --sources .tools/global-instance-query-native-24 --output .tools/global-instance-query-public-24",
+    "CAP=240 tests/semantics/global_constant_instance_protocol.py --phase check --sources .tools/global-instance-query-native-24 --output .tools/global-instance-query-public-24",
+    "CAP=90 tests/semantics/global_constant_instance_review_sources.py --phase native --output .tools/global-instance-query-review-24",
+    "CAP=90 tests/semantics/global_constant_instance_review_sources.py --phase model --output .tools/global-instance-query-review-24"
+  ],
+  "execution": "Coordinated CPU2/SLOT4, AS3GiB, serial stop-first/reap. Native children15s, model CLI45/host60, public fullSL90 each. All three source models checked normal0/reasonNone/native-exact/emptyerr; both public children trueLF/0/emptyerr. Inputs/HEAD stable, no timeout, reaped/groups[]. Reports retain exact inner argv, raw exits/streams and tool/input pins.",
+  "raw_root": ".tools/global-instance-query-evidence-24",
+  "reports": {
+    "author/sources/native-report.json": "38b5166d729dc976d473b914edc430f3fa5af67e01348604d207b43edc81a0ec",
+    "author/sources/baseline-report.json": "462b593d3fc0e893b3d18e1337270be8b7c999097f3e3b5fe6df5c57bd83e816",
+    "author/sources/model-report.json": "2291bec147e0675ad6e5ea1b05727e91414f28d4c3c1ed82ff11ea256e3b6317",
+    "author/public/prepare-report.json": "f77505ccf64b223c0546fa6093528a2d85cf72c439bfafececee55dbc46da0d8",
+    "author/public/check-report.json": "1a23688e930f7cf0aa8f55482e381f276902db973279ba3db76270df0544ff55",
+    "author/review/native-report.json": "2dd60a5ad29418504f03ffd3658b0db1fcc4453d3f62bb067c56096534926f82",
+    "author/review/model-report.json": "d63054c7cf494142e7e259acce64ac483f1ef46475ccf97970afe3808b5fbe7b"
+  },
+  "recovery": "Three owned ignored raw trees moved without copies after reviewer STOP/process no-use checks; hashes unchanged. Recreate .tools/source-global-instance-query-24 at the recorded revisions and restore author/{sources,public,review} as its .tools/global-instance-query-{native,public,review}-24. Original absolute cwd/source identities and Git cuts remain preserved; maintained scripts can create fresh packets.",
+  "remaining": "Generic PVOBJECT, Closures, instance-bearing array leaves, wider coercions and packed/owning calls remain outside this slice. Core remains partial. No engine bug or intentional divergence.",
+  "actual_parent_integration": null
+}
