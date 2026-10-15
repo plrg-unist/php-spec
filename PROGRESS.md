@@ -120,8 +120,20 @@ Two exact source comparisons and 225 SL premises (110 root, 115 duplicate) pass 
 runtime diff 369ebde3, including live/dead value authority, owners and budget resume.
 The original duplicate observer compile failure retains zero credit; the accepted
 root native row remains separately scoped. Other internal/Throwable producers,
-arguments, embedded/default values and dynamic `constant()` value return remain partial.
+arguments and embedded/default values remain partial.
 [stdClass producer review](coverage/semantics/global-constant-stdclass-review.json).
+
+Global `constant()` now returns already-certified stdClass rows through literal
+and retained selected calls. Lookup shares the exact live object, adds one RESULT
+owner and allocates nothing; source aliases retain property writes after a query
+result is released. Two exact originals and author239/independent145 SL premises
+pass384 at runtime191ddd25/397, including same-site left→right selection and one
+budget resume. The baseline Unsupported, first independent control failure and
+undriven certificate controls keep zero agreement credit. Wider query/value forms remain partial.
+[stdClass query review](coverage/semantics/global-constant-stdclass-query-review.json).
+The 397-module composition over 1e732d1ca preserves incoming comparison, pending
+define and modulo rules pointwise; source2/state384 retain their private cuts
+without replay.
 
 Selected inherited `__unset(string): void` now dispatches direct CV/literal-name
 access to a declared private property. Accessible public unset skips magic;

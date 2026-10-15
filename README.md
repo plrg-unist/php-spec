@@ -2671,8 +2671,12 @@ now preserves ordinary-read identity and property sharing. Duplicate registratio
 holds the fresh candidate through its Warning handler and discards it afterward,
 retaining the original object and callback mutation. Two exact sources and 225 SL
 premises cover birth/completion, live/dead authority, alias release and budget
-resume. Other internal/Throwable producers, arguments, embedded/default values
-and dynamic `constant()` value return remain partial.
+resume. Certified global `constant()` queries now return that same live stdClass
+through literal and retained selected calls, preserving shared writes and adding
+only the ordinary result owner. [The query review](coverage/semantics/global-constant-stdclass-query-review.json)
+keeps two source comparisons and 384 SL premises separate from producer evidence.
+Other internal/Throwable producers, arguments, embedded/default values
+and wider query forms remain partial.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is

@@ -444,8 +444,21 @@ then discards it without replacing the original binding or its callback writes.
 Two exact originals and 225 SL premises (110 root, 115 duplicate) at 369ebde3 cover
 alias owners3→1, candidate1→0, source/tag authority and budget resume. The original
 invalid duplicate observer remains zero credit; only its corrected local-alias
-version supplies that source comparison. The separate tag keeps dynamic `constant()` value return, embedded trees, default
-caching and callable folding outside this slice; existing `defined()` presence
+version supplies that source comparison. The producer milestone keeps embedded trees, default
+caching and callable folding outside its slice; existing `defined()` presence
 lookup remains unchanged. Other
 internal/Throwable NEW, argument and wider lifecycle forms remain partial.
 [stdClass producer ledger](../../coverage/semantics/global-constant-stdclass-review.json).
+
+Global `constant()` also returns certified `PVSTDCLASS` rows. The sole module400
+value arm delegates to the existing exact completed-birth and live-allocation
+checks, then reuses ordinary CONFIG completion. Literal and retained selected
+calls share the stored pointer and property writes; RESULT adds one owner without
+allocating or changing the constant table, birth history or object storage.
+Repeated visits to one selected call site use their own captured query and nonce,
+so changing the next query from one constant to another selects the second object.
+The [query ledger](../../coverage/semantics/global-constant-stdclass-query-review.json)
+records two exact originals, reached state fronts, budget resumption and undriven
+certificate refusals. The unchanged Unsupported baseline remains zero credit;
+embedded stdClass trees, generic objects and wider owning/coercing query forms
+remain partial.
