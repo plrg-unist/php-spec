@@ -2091,6 +2091,8 @@ Three Unsupported controls, the unchanged baseline and five original failures
 keep zero agreement. Owning copied returns, active chains ending in detached
 roots, Iterator/Aggregate leaves and valid-key by-reference targets remain required.
 [Detached-child review](coverage/semantics/generator-call-unpack-detached-child-review.json).
+Canonical395 composition over `53d2924e7` passes inventory and strict SL at
+`e7d1b874e`; private source/state cuts and original failures retain their identities.
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or

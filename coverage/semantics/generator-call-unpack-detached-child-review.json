@@ -1,6 +1,6 @@
 {
   "milestone": "Generator argument unpack after independent child completion",
-  "status": "independently accepted privately; actual-parent composition pending",
+  "status": "independently accepted and integrated through actual-parent composition",
   "independent_reviewer": "iterator_review_01, paired with iterator_dev_01",
   "base": "86b5a2ee0c36ef3ed6fee83666b592be35debb82",
   "tested_private_code": "d39565f9597b6be31bf361d8ce54cc3ec27479b5",
@@ -66,5 +66,20 @@
     "Owning copied return temporaries and active Generator chains ending in independently detached roots require separate lifetime rules.",
     "Iterator/Aggregate delegate leaves, ordinary-call Aggregate acquisition, valid-key Generator by-reference targets and wider callback/reentrant/Fiber lifecycle interactions remain open.",
     "No full Generator, call-unpack or PHP-core closure is claimed."
-  ]
+  ],
+  "composition": {
+    "parent": "53d2924e762638c3c8543816e1d1cb75100a983b",
+    "tested_composition": "e7d1b874ee6c13155cc6c41087d913769562f64a",
+    "modules": 395,
+    "seam": "Only405 changes from the actual parent, matching the tested private150e bytes. All other parent runtime/pipeline paths and manifest remain unchanged; the five partial inventory rows retain parent prefixes plus private additions. Reviewed late parent task/source guards are disjoint, so no source/state replay is warranted.",
+    "inventory_report": ".tools/generator-detached-unpack-join-inventory-xr39wup3/report.json",
+    "inventory_sha256": "e09f106dd60149a53f4867c4776fbb48e43722eedc0c88cac2c0d9bf92f3f7f3",
+    "strict_report": ".tools/generator-detached-unpack-join-sl-3wr61yqw/report.json",
+    "strict_sha256": "797de63beb14ad147ff1ca1ca743632a0dfc8de2193dfdb0b8e17481f8b67ec3",
+    "gates": "Inventory169/306 and strict395 SL pass at the exact composition, exit0/no timeout, empty stderr and stable HEAD/inputs; all processes reaped.",
+    "joined_archive": "../php-spec-evidence-archive/generator-call-unpack-detached-child-12/joined.tar.gz",
+    "joined_bytes": 31166,
+    "joined_sha256": "5ae25e22e3b2d04bc6c8f1773dcfaeea7f464c3d25145afb74333c1bdaeac187",
+    "recovery": "Sibling joined-manifest.json binds both raw reports and their drivers. Private source/state cuts, all five original failures and private archive remain unchanged."
+  }
 }
