@@ -335,11 +335,20 @@ def $ref_return_pair_mixed_sites(S, prefreturncursor_inner, prefreturncursor_out
   -- if S.CURRENT = (pcallcontext)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if pfunction.SIGNATURE.BYREF
-  -- if pfunction.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN "object"])), (PTBRANCH ([PTBUILTIN "null"]))]
+  -- if pfunction.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN "object"])), (PTBRANCH ([PTBUILTIN "null"]))] \/ pfunction.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN "object"]))]
   -- if prefreturncursor_outer.OUTER = (pfunction.ORIGIN)
 def $ref_return_pair_mixed_sites(S, prefreturncursor_inner, prefreturncursor_outer) = false -- otherwise
+dec $ref_return_pair_mixed_nonnullable_cleared_site(pstate, prefreturncursor, prefreturncursor) : bool
+def $ref_return_pair_mixed_nonnullable_cleared_site(S, prefreturncursor_inner, prefreturncursor_outer) = true
+  -- if $ref_return_pair_mixed_sites(S, prefreturncursor_inner, prefreturncursor_outer)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if pfunction.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN "object"]))]
+  -- if $reference_return_used(S)
+  -- if $ref_replay_owners(S, prefreturncursor_inner.SOURCE) = prefreturncursor_inner.OWNER :: eps
+def $ref_return_pair_mixed_nonnullable_cleared_site(S, prefreturncursor_inner, prefreturncursor_outer) = false -- otherwise
 dec $ref_return_pair_cleared_site(pstate, prefreturncursor, prefreturncursor) : bool
-def $ref_return_pair_cleared_site(S, prefreturncursor_inner, prefreturncursor_outer) = ($ref_return_pair_sites(S, prefreturncursor_inner, prefreturncursor_outer) /\ $ref_replay_owners(S, prefreturncursor_inner.SOURCE) = prefreturncursor_inner.OWNER :: eps /\ ~$destructor_operational(S))
+def $ref_return_pair_cleared_site(S, prefreturncursor_inner, prefreturncursor_outer) = (($ref_return_pair_sites(S, prefreturncursor_inner, prefreturncursor_outer) /\ $ref_replay_owners(S, prefreturncursor_inner.SOURCE) = prefreturncursor_inner.OWNER :: eps /\ ~$destructor_operational(S)) \/ $ref_return_pair_mixed_nonnullable_cleared_site(S, prefreturncursor_inner, prefreturncursor_outer))
 dec $ref_return_pair_paths(pcpath*, pcpath, pcpath, pcpath) : bool
 def $ref_return_pair_paths(eps, pcpath_inner, pcpath_outer, pcpath_source) = true
 def $ref_return_pair_paths(pcpath :: pcpath_tail*, pcpath_inner, pcpath_outer, pcpath_source) = ((~$effect_below(pcpath ++ [PCFIELD 2], pcpath_source) \/ pcpath = pcpath_inner \/ pcpath = pcpath_outer) /\ $ref_return_pair_paths(pcpath_tail*, pcpath_inner, pcpath_outer, pcpath_source))
@@ -1443,6 +1452,9 @@ def $finally_resume_consumed_pair(S, prefreturncursor_inner, prefreturncursor_ou
 def $finally_resume_consumed_pair(S, prefreturncursor_inner, prefreturncursor_outer, ptask_tail*) = S_outer[.TODO = [RETURN_REF_UNWIND (KNOWN PNULL) prefreturncursor_inner.LINE true prefreturncursor_inner.SOURCE, REF_RECHECK prefreturncursor_inner.SOURCE prefreturncursor_inner.OWNER (KNOWN PNULL) prefreturncursor_inner.LINE]]
   -- if $ref_return_pair_mixed_sites(S, prefreturncursor_inner, prefreturncursor_outer)
   -- if $call_task_valid(S, FINALLY_REF_PAIR prefreturncursor_inner prefreturncursor_outer)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if $typed_exact(pfunction.SIGNATURE.RETURNS, PNULL)
   -- if ~$reference_return_used(S)
   -- if S_inner = $finally_leave_ref_return(S, prefreturncursor_inner.OWNER, prefreturncursor_inner.SOURCE, KNOWN PNULL, prefreturncursor_inner.LINE, true, ptask_tail*)
   -- if S_inner.TODO = (RETURN_REF_UNWIND (KNOWN PNULL) prefreturncursor_inner.LINE true prefreturncursor_inner.SOURCE) :: (FINALLY_REF_CONSUMED prefreturncursor_outer) :: (FINALLY_PHASE prefreturncursor_outer.OWNER 3) :: (ORIGIN_RETURN prefreturncursor_outer.OUTER) :: (REF_RECHECK prefreturncursor_inner.SOURCE prefreturncursor_inner.OWNER (KNOWN PNULL) prefreturncursor_inner.LINE) :: eps
