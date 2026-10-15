@@ -15,6 +15,9 @@ writes. Two exact sources and two public fronts/314 premises pass; native,
 unchanged baseline and preparations retain 0. Other deferred initializers and
 wider value/class domains remain open.
 [Deferred-query ledger](coverage/semantics/class-qualified-constant-deferred-review.json).
+The 394-module composition over 0fbe7684 preserves the parent and accepted class
+rules at 89655060. The sole selected-string interaction comparison passes; private
+source/state cuts and counts remain unchanged.
 
 Builtin Throwable and admitted source-subclass int/float comparisons now
 enter numeric Notice handlers with the correct nominal kind or source name.
