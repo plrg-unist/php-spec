@@ -128,10 +128,19 @@ still registers the captured value before propagating that exception. The narrow
 pending tail changes only the constant table and preserves the original Throwable,
 caller destination and callback mutations. A key already present at that point is
 explicitly Unsupported because its pending duplicate Warning needs a separate
-protocol. The corresponding boolean-true abrupt registration tail remains open. The
-[scalar-flag review](../../coverage/semantics/define-scalar-flag-review.json)
-binds four source agreements and462 public premises; NULL/NaN flags, wider values
+protocol. The [scalar-flag review](../../coverage/semantics/define-scalar-flag-review.json)
+binds four source agreements and 462 public premises; NULL/NaN flags, wider values
 and coerced flags with scalar/null names remain separate.
+
+Boolean true uses its original warning marker for the fresh registration tail
+after a handler throws. The step appends the captured primitive after any unrelated
+callback definitions and changes only the constant table, preserving the original
+Throwable and caller destination. Strict selected calls retain true and the exact
+request-string candidate despite later argument and callback mutations. The
+[boolean-tail review](../../coverage/semantics/define-bool-flag-pending-review.json)
+binds two source agreements and 196 public premises; its unchanged normal-but-wrong
+baseline remains zero credit. A key already present after the throw still requires
+the separate pending duplicate-warning protocol.
 
 Fresh two-argument array definitions recursively dereference source cells into
 new DIRECT entries. Reinserting surviving keys rebuilds NEXT, positions and serial

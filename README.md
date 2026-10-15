@@ -998,6 +998,11 @@ Boolean `case_insensitive=true` now warns before registration while keeping case
 sensitivity. A handler-created binding wins the subsequent duplicate check;
 [two exact sources and 221 public premises](coverage/semantics/dynamic-constant-flag-review.json)
 cover the retained arguments, callback entry and live-table ordering.
+If that boolean-true warning handler throws while the name stays fresh, `define`
+still registers the captured primitive before propagating the exception. Strict
+calls retain true and request-string candidates across argument and callback effects.
+[Two source agreements and 196 state premises](coverage/semantics/define-bool-flag-pending-review.json)
+cover this corrected registration tail and the unchanged caller destination.
 String-name `define` also receives integer, string and non-NaN float flags with
 primitive values. Weak calls preserve the raw flag in warning traces; strict
 calls raise `TypeError` after all argument effects. A throwing ignored-warning

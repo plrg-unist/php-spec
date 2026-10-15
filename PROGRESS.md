@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Boolean-true `define` now registers a fresh captured primitive even when its
+ignored-flag warning handler throws. The old warning marker retains the pending
+Throwable, caller destination and callback effects; strict calls preserve true
+and a captured request-string value after named argument effects and a sibling
+definition. The unchanged model had returned normally with the binding absent;
+that measured disagreement remains zero credit.
+Two original sources agree at cd8121ee; author 76 and independent strict 120 public
+premises pass 196 at ba8d720c, checking exact row-only actual steps, immutable facts,
+carrier/source/throw refusals and whole budget resumption. A key present after the
+first throw still needs a pending duplicate-warning protocol; wider values and
+NULL/NaN flag reception remain separate. Private acceptance is complete;
+actual-parent integration is pending.
+[Boolean-tail review](coverage/semantics/define-bool-flag-pending-review.json).
+
 String-name `define` now receives int/string/non-NaN float flags with primitive
 values. Weak boolean parsing leaves the raw API argument intact through ignored
 and duplicate warnings; strict calls evaluate all arguments before raw `TypeError`.
@@ -19,7 +33,7 @@ covering named capture, raw traces, authentic string carriers, exact row-only
 pending effects, refusals and budget resume. The original peer binder collision
 remains zero credit; only its two captured-name premises changed.
 NULL/NaN flags, scalar/null names with coerced flags, and pending duplicate warnings
-remain separate; the corresponding boolean-true abrupt registration tail remains open.
+remain separate; the boolean-true follow-up is recorded above.
 The 395-module composition over 91a58a8b passes full SL initialization at 7260f84c.
 Independent pointwise review preserves V56 and every incoming runtime selector;
 source4/public462 retain their private cuts without replay.

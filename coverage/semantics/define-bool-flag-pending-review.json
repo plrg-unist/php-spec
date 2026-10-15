@@ -1,0 +1,50 @@
+{
+  "scope": "The fresh primitive registration remainder after a throwing ignored-case-insensitive Warning handler in already-admitted nonowning define(string, primitive, true), including strict selected/named calls. Partial core; a key present after the throw is a separate pending-warning domain.",
+  "status": "independently_accepted_private_integration_pending",
+  "reviewer": "/root/core_breadth_review_01",
+  "parent": "53d2924e762638c3c8543816e1d1cb75100a983b",
+  "semantic_revision": "cd8121ee5d57622309890a1ef345bf5c1a86826c",
+  "semantic_files": {
+    "spec/semantics/400-dynamic-constants.watsup": "7997108e07e3973430604f992a9498c861a3432db4e9696a961113f1543f47cf"
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "tools": {
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "primary": "Pinned Zend/zend_builtin_functions.c::ZEND_FUNCTION(define), Zend/zend_constants.c::zend_register_constant, and the ordinary error-handler throw/discard route. The C body does not test EG(exception) between its ignored-flag Warning and fresh registration.",
+  "semantics": "Only 16 appended lines in module 400: the old DYNAMIC_CONSTANT_CASE_WARNING marker extends error_read_discard for actual THROW_SEARCH with a live Throwable. Existing case/source/value validation is retained without a strict restriction; explicit NAME-carrier authentication guards the new positive. Fresh success appends the captured exact value/class and changes no other state. A current key or invalid certificate is explicit Unsupported. Nonthrow discard, normal warning/duplicate dispatch, scalar/null-name and scalar-flag paths, state schema, ownership and historical row validators are unchanged.",
+  "accepted": [
+    "Two original source comparisons at cd8121ee in report 182856bd match native streams/normal0: weak fixed literal true publishes161 after the first Warning handler throws, keeps effectafter/caller99/raw N,V,T trace and case sensitivity; strict selected/named true precedes value/name effects, preserves the request candidate after sibling232 and caller mutations, then publishes capture-value before propagating the original exception.",
+    "Public 196 at ba8d720c retains author 76 in report f444b151 and independent strict 120 in report db1f3258, both trueLF/0/emptyerr. Genuine old-tag pre-discard fronts, exact restored full-state/actual-step equality, immutable name/value facts, sibling prefix, request identity/class, live pending Throwable, source/selection/carrier/false-flag/current-key refusals, nonthrow generic behavior and whole budget equality are checked."
+  ],
+  "zero_credit": [
+    "Native and syntax preparation are observations, not semantic agreements. The sole unchanged first-case comparison 6cecf9d3 at 1ab7f792 is an actual accepted/checked normal CLI 0/PHP 0/reason None tuple with F|absent versus native T|161. Its wrapper equality assertion exits 1 and the report/source-agreement count remains 0; it is not Unsupported.",
+    "The selected baseline report is unchanged. After independent binding, its first-case model.stdout/stderr/exit.json/process.json were renamed in place to baseline-model.* so the affected model2 could record fresh raw files without overwriting the original normal disagreement."
+  ],
+  "execution": "All phases LC_ALL=C/TZ=UTC,AS3GiB,INT timeout+kill5. Native 2, unchanged comparison and affected source 2 use CPU1; public prepare/check use CPU3. Native children 15s; source CLI 45s/host 60s; public fresh full SL 90s children serial stop-first/reap. Accepted records have stable inputs/HEAD, no timeout or surviving groups and empty PHP/worker stderr. Source27 public transport and both new producer wrappers are pinned.",
+  "raw_root": ".tools/define-bool-flag-pending-evidence-32",
+  "report_sha256": {
+    "author/public/check-report.json": "f444b151128b04ca2a4c53cc1c02b03e567194ce4e0b7f7618c4ce7c14b53eaa",
+    "author/public/prepare-report.json": "fc1ba7de6f7f04a70ce8f4367e0888f7b5918bb374d318a5b0b27140fd07b47e",
+    "author/review-public/check-report.json": "db1f3258a27a72a919d6599ad3891a087388de81a56545799871bae4427e965e",
+    "author/review-public/prepare-report.json": "9b5e007b022b0fad61ca0156a15f1655b1c26789bc9c5ae0d373bd871dc68cc3",
+    "author/sources/model-literal-true-pending-registration-report.json": "6cecf9d3618f9f6c121697f3395719b2ed3f91833252ec7b2b4004c0208a4d1f",
+    "author/sources/model-report.json": "182856bdf6e04c844498bb0958b557dc37144f6d95c50e129d5f96a4e55b4886",
+    "author/sources/native-report.json": "d9cc1661a724c052701b7d911f1564305ffb0dade6488a94d469c889409dce6b"
+  },
+  "commands": [
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/define_bool_flag_pending_sources.py --phase native --output .tools/define-bool-flag-pending-native-32",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/define_bool_flag_pending_sources.py --phase model --case literal-true-pending-registration --output .tools/define-bool-flag-pending-native-32",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 180s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/define_bool_flag_pending_sources.py --phase model --output .tools/define-bool-flag-pending-native-32",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/define_bool_flag_pending_protocol.py --phase prepare --sources .tools/define-bool-flag-pending-native-32 --output .tools/define-bool-flag-pending-public-32",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 120s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/define_bool_flag_pending_protocol.py --phase check --sources .tools/define-bool-flag-pending-native-32 --output .tools/define-bool-flag-pending-public-32",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/define_bool_flag_pending_review_protocol.py --phase prepare --sources .tools/define-bool-flag-pending-native-32 --output .tools/define-bool-flag-pending-review-public-32",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 120s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/define_bool_flag_pending_review_protocol.py --phase check --sources .tools/define-bool-flag-pending-native-32 --output .tools/define-bool-flag-pending-review-public-32"
+  ],
+  "recovery": "Three owned ignored raw trees moved once without copies after reviewer STOP and focused cwd/cmdline/fd no-use scan; seven report hashes unchanged. Restore author/sources,public,review-public respectively as .tools/define-bool-flag-pending-{native,public,review-public}-32 inside .tools/source-define-bool-flag-pending-32 at the recorded revisions. Protected branch refs retain exact cuts; original source/cwd identities are in raw records. The preserved first-case baseline-model.* files were originally named model.* for the unchanged selected comparison.",
+  "remaining": "A key present after a first ignored-warning throw requires a pending duplicate-warning protocol and is explicit Unsupported here. Wider values/owning/packed/FCC/arity and NULL/NaN flag reception remain separate. Core remains partial; this corrects a model defect without an engine bug or intentional divergence."
+}
