@@ -165,7 +165,8 @@ def $property_unset_plan(S) = (ppropertyunset)
   -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if $property_unset_method(S, n) = (pmethoddesc)
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_DENIED ppropertydesc
-  -- if ppropertyunset = {SITE porigin, NAME ptbytes, LINE $property_current_line(S), OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, PROPERTY ppropertydesc.ORIGIN}
+  -- if porigin_property = ppropertydesc.ORIGIN
+  -- if ppropertyunset = {SITE porigin, NAME ptbytes, LINE $property_current_line(S), OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, PROPERTY porigin_property}
   -- if $property_unset_capture(S, ppropertyunset)
   -- if ~$property_unset_guard(S, S.CURRENT, S.FRAMES, n, ptbytes)
 def $property_unset_plan(S) = eps -- otherwise
