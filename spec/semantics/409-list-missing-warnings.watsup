@@ -1,0 +1,90 @@
+;; FETCH_LIST_R keeps QM_ASSIGN's array snapshot and returns uninitialized/null
+;; after a missing-key warning. The handler cannot turn this fetch into a lookup.
+dec $list_missing_flat(phpType13*) : bool
+def $list_missing_flat(eps) = true
+def $list_missing_flat(ABSENT :: phpType13*) = $list_missing_flat(phpType13*)
+def $list_missing_flat((NArrayItem phpType5 (NExprVariable phpType32 metadata_target) (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13*) = $list_missing_flat(phpType13*)
+  -- if $cv_name(phpType32) = (n_name*)
+def $list_missing_flat(phpType13*) = false -- otherwise
+
+;; Only warning-free constant keys enter this continuation. Undefined CV keys,
+;; null and lossy float conversions retain their separate diagnostic boundary.
+dec $list_missing_quiet_key(pvalue) : pkey?
+def $list_missing_quiet_key(PINT i) = (KINT i)
+def $list_missing_quiet_key(PBOOL false) = (KINT 0)
+def $list_missing_quiet_key(PBOOL true) = (KINT 1)
+def $list_missing_quiet_key(PSTRING n*) = $key_selected_key(PSTRING n*)
+def $list_missing_quiet_key(PSTRING_CARRIER pstringidentity n*) = $key_selected_key(PSTRING n*)
+def $list_missing_quiet_key(PFLOAT n_bits) = (KINT i)
+  -- if $float_long(n_bits, true) = (i, eps)
+def $list_missing_quiet_key(pvalue) = eps -- otherwise
+
+dec $list_missing_item(pstate, porigin, phpType13*, nat, nat, int) : (expression, phpType13*, int, pvalue, pkey)?
+def $list_missing_item(S, porigin, ABSENT :: phpType13*, n, n_selected, z) = $list_missing_item(S, porigin, phpType13*, $(n + 1), n_selected, z)
+  -- if $(n < n_selected)
+def $list_missing_item(S, porigin, (NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13*, n, n_selected, z) = $list_missing_item(S, porigin, phpType13*, $(n + 1), n_selected, $source_line(metadata_target))
+  -- if $(n < n_selected)
+  -- if expression = NExprVariable phpType32 metadata_target
+def $list_missing_item(S, porigin, (NArrayItem ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13*, n, n, z) = ((expression, phpType13*, z, PINT n, KINT n))
+def $list_missing_item(S, porigin, (NArrayItem expression_key expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13*, n, n, z) = ((expression, phpType13*, z_key, pvalue, pkey))
+  -- if $origin_child((porigin), [PCFIELD 0, PCINDEX n, PCFIELD 0]) = (porigin_key)
+  -- if $compiled_read(S, porigin_key) = (pvalue)
+  -- if $list_missing_quiet_key(pvalue) = (pkey)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 0, PCINDEX n, PCFIELD 0]) = (z_key)
+def $list_missing_item(S, porigin, phpType13*, n, n_selected, z) = eps -- otherwise
+
+;; Source shape and compiler lines authenticate both the initial callback and
+;; its saved continuation. The captured table is a runtime fact, not a reread CV.
+dec $list_missing_source(pstate, poperand, nat, expression, phpType13*, int, pkey) : bool
+def $list_missing_source(S, KNOWN (PARRAY n_array), n, expression, phpType13*, z, pkey) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (expression_pattern)
+  -- if $list_pattern(expression_pattern) = (phpType13_all*)
+  -- if $list_missing_flat(phpType13_all*)
+  -- if $reference_origin_parent(porigin, 1) = ((porigin_assign, [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin_assign) = (NExprAssign expression_pattern expression_rhs metadata)
+  -- if $list_value_cv(expression_rhs) = (n_name*)
+  -- if $code_expression_at_source(S, porigin_assign, [PCFIELD 1]) = (z_initial)
+  -- if $list_missing_item(S, porigin, phpType13_all*, 0, n, z_initial) = ((expression, phpType13*, z, pvalue, pkey))
+  -- if $(z > 0 /\ n_array < |S.ARRAYS|)
+  -- if (HARRAY n_array) <- S.ALLOCATIONS
+def $list_missing_source(S, poperand, n, expression, phpType13*, z, pkey) = false -- otherwise
+
+dec $list_missing_plan(pstate) : (poperand, nat, expression, phpType13*, int, pkey)?
+def $list_missing_plan(S) = ((KNOWN (PARRAY n_array), n, expression, phpType13*, z, pkey))
+  -- if S.TODO = (LIST_FETCH (KNOWN (PARRAY n_array)) n expression false phpType13* z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (expression_pattern)
+  -- if $list_pattern(expression_pattern) = (phpType13_all*)
+  -- if $reference_origin_parent(porigin, 1) = ((porigin_assign, [PCFIELD 0]))
+  -- if $code_expression_at_source(S, porigin_assign, [PCFIELD 1]) = (z_initial)
+  -- if $list_missing_item(S, porigin, phpType13_all*, 0, n, z_initial) = ((expression, phpType13*, z, pvalue, pkey))
+  -- if S.RESULT = KNOWN pvalue
+  -- if $list_missing_source(S, KNOWN (PARRAY n_array), n, expression, phpType13*, z, pkey)
+  -- if $entry_lookup(S.ARRAYS[n_array].ITEMS, pkey) = eps
+def $list_missing_plan(S) = eps -- otherwise
+def $list_missing_pending(S) = true
+  -- if $error_handler_eligible(S, 2)
+  -- if $list_missing_plan(S) =/= eps
+def $list_missing_pending(S) = false -- otherwise
+
+dec $list_missing_message(pkey) : nat*
+def $list_missing_message(pkey) = $ptascii("Undefined array key ") ++ $missing_key_bytes(pkey)
+
+rule PhpStep/list-missing-warning: S ~> $error_dispatch(S, 2, $list_missing_message(pkey), z, DIAGNOSTIC "Warning" $list_missing_message(pkey) z, LIST_MISSING_RESULT poperand n expression phpType13* z pkey)
+  -- if $list_missing_pending(S)
+  -- if $list_missing_plan(S) = ((poperand, n, expression, phpType13*, z, pkey))
+rule PhpStep/list-missing-result: S ~> S[.TODO = $list_fetched_tasks(S[.RESULT = KNOWN PNULL], poperand, n, expression, false, phpType13*, z) ++ ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (LIST_MISSING_RESULT poperand n expression phpType13* z pkey) :: ptask_tail*
+  -- if $list_missing_source(S, poperand, n, expression, phpType13*, z, pkey)
+
+def $call_task_valid(S, LIST_MISSING_RESULT poperand n expression phpType13* z pkey) = $list_missing_source(S, poperand, n, expression, phpType13*, z, pkey)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = LIST_MISSING_RESULT poperand n expression phpType13* z pkey
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if $list_missing_source(S, poperand, n, expression, phpType13*, z, pkey)
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = z
+  -- if perrorcall.MESSAGE = $list_missing_message(pkey)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" $list_missing_message(pkey) z
+def $task_nodes(LIST_MISSING_RESULT poperand n expression phpType13* z pkey) = $operand_nodes(poperand)
