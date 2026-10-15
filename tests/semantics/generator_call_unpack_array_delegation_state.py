@@ -21,7 +21,7 @@ CASES = {
          'pcallcontext.NAME = $ptascii("generatorArrayCaller10")',
          'pgeneratorunpack.INPUT = VARIABLE ptbytes z',
          'ptbytes = $ptascii("generator")',
-         '$lookup($active_table(S), ptbytes) = (n_cell)',
+         '$lookup(S.ENV, ptbytes) = (n_cell)',
          'S.STORE[n_cell] = DEFINED (POBJECT n_data)',
          'pgeneratorunpack.COUNT = 0',
          '~pgeneratorunpack.NAMED',
