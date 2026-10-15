@@ -1502,6 +1502,8 @@ baseline earn zero model agreement. Earlier cuts remain frozen. Later typed or
 variadic reference targets, wider sources/live replacements and broader array/
 reference/COW interactions remain required.
 [Noninitial array reference review](coverage/semantics/iterator-call-unpack-noninitial-array-reference-review.json).
+Canonical394 composition over `4a0d4f705` passes inventory and strict SL at
+`ba187beeb`; private source/state evidence retains its original cut.
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or
