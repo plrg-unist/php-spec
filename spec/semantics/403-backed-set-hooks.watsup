@@ -139,7 +139,7 @@ def $property_hook_pair_raw_functions(S, ppropertydesc) = [pfunction_get, pfunct
   -- if pfunction_get.BODY = pcpath_get ++ [PCFIELD 5] /\ pfunction_set.BODY = pcpath_set ++ [PCFIELD 5]
   -- if pcpath_group = pcpath_get[0:$nabs($( |pcpath_get| - 2))]
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath_group) = (NStmtProperty phpType14 phpType24 phpType18 phpType56 phpType37 metadata)
-  -- if ptcontext = {NAMESPACE pfunction_get.ENV.NAMESPACE, IMPORTS pfunction_get.ENV.CLASSES, SCOPE PTKNOWN pclassdesc_trait.NAME eps, POSITION PTPROPERTY, OWNER pclassdesc_trait.NAME, MEMBER ppropertydesc.NAME, FILE $call_sourcefile(S.FILES, porigin_get), LINE $source_line(metadata)}
+  -- if ptcontext = {NAMESPACE pfunction_get.ENV.NAMESPACE, IMPORTS pfunction_get.ENV.CLASSES, SCOPE PTKNOWN pclassdesc_trait.NAME eps, POSITION PTPROPERTY, OWNER pclassdesc_trait.NAME, MEMBER ppropertydesc.NAME, FILE $call_sourcefile(S.FILES, porigin_get), LINE $psline(metadata)}
   -- if $ptype_normalize(phpType18, ptcontext) = PTOK ptbranch* eps
   -- if ptbranch* = ppropertydesc.TYPE
   -- if $property_set_builtin_types(ppropertydesc.TYPE)
