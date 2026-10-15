@@ -293,10 +293,14 @@ def run(selected):
     review.CASES = CASES
     original = review.recorded
     raw = None
+    process_caps = {}
 
     def recorded(command, directory, stem, environment, cap):
         nonlocal raw
         raw = directory.parent
+        if directory.name == 'parked-second-warning-keeps-prior-private-and-current-detached-owners':
+            cap = 180
+        process_caps[directory.name] = cap
         return original(command, directory, stem, environment, cap)
 
     review.recorded = recorded
@@ -309,8 +313,10 @@ def run(selected):
                                                      cwd=review.ROOT, text=True).strip()
     path = raw / 'report.json'
     report = json.loads(path.read_bytes())
+    report['budgets']['process_seconds'] = max(process_caps.values())
     report.update(author_inputs=before, author_inputs_stable=stable,
-                  head_stable=head_stable, passed=passed and stable and head_stable)
+                  case_process_seconds=process_caps, head_stable=head_stable,
+                  passed=passed and stable and head_stable)
     path.write_text(json.dumps(report, indent=2) + '\n')
     return passed and stable and head_stable
 
