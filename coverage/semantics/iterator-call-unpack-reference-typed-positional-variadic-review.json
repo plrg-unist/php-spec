@@ -1,0 +1,98 @@
+{
+  "milestone": "Typed positional BYREF variadic Iterator property-reference sends",
+  "status": "accepted private validation; actual-parent composition pending",
+  "reviewer": "/root/iterator_review_01, independent of /root/iterator_dev_01",
+  "base": "d8f5c328fcdbbbb4521220c136dfc02149060c54",
+  "tested_revision": "5df4c63a0def7bb559f934ac22f0062cc1b2995f",
+  "scope": "Stable declared untyped nonstatic property-reference object/array payloads at the existing direct Iterator construction now enter positional BYREF variadics with exact normalized [class,null] or [array,null] types. Numeric keys, no named phase or extra-named buffer, and existing source/site/vacancy bounds remain required.",
+  "module": {
+    "path": "spec/semantics/385-call-iterator-unpack.watsup",
+    "sha256": "a07c1a6a2cf845b50a142f1202a7fc0ac25391b172730e3ba72521d647c70460",
+    "change": "Only the positional variadic TYPEeps premise becomes the existing finite reference_type predicate. Fixed admission, capture HOLD/SNAPSHOT and fresh-cell transfer are unchanged; existing103/218 receive and trace/cleanup rules are reused."
+  },
+  "target": {
+    "php": "8.5.10 CLI NTS64, source34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle": ".tools/php/bin/php",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json, PHP -n",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3, OCaml5.1.0, SL, caches off, encountered determinism checks; existing binaries reused",
+    "environment": "LC_ALL=C TZ=UTC; PHP_SPEC_SCRIPT_ENCODING unset; one worker, separately leased CPU3/SLOT5"
+  },
+  "engine_authority": [
+    "Zend/zend_vm_def.h SEND_UNPACK dereferences/addrefs Iterator items, warns before creating each distinct ZVAL_NEW_REF, and completes argument sends before RECV_VARIADIC.",
+    "RECV_VARIADIC checks tail values in argument order before adding each reference to the packed rest array. Zend/zend_execute.c zend_verify_variadic_arg_type and zend_check_type dereference existing cells without adding a persistent parameter type source.",
+    "Zend/zend_builtin_functions.c debug_backtrace_get_args copies dereferenced fixed arguments followed by original positional extras, adding owners. Accepted partial rest ALIAS entries are separate from these DIRECT snapshots.",
+    "Zend array COW and argument/frame cleanup preserve shared table child edges and source aliases. Existing explicit release rules represent retirement rather than reconstructing prior value history."
+  ],
+  "review_findings": [
+    "Warnings retain detached owners before receive-time checks. Fresh private cells remain source-free: later incompatible integer writes are legal even though applying the variadic conversion again would reject them. Repeated raw arrays retain separate private cells and nested COW.",
+    "Actual VARIADIC_RECEIVE2 after one fixed BYVALUE array and one accepted class tail retains a partial ALIAS rest. Rejected argument3 creates a TypeError at declaration15, with call17 and DIRECT [head array, accepted object, rejected array] trace values; no parameter-name suffix is invented for a variadic error.",
+    "After callee retirement, caught traces own all three supplied values independently of the raw array alias. Releasing the caught Throwable destroys A then B; the alias keeps C until its own unset. A heap-valid ALIAS substitution in trace args is rejected by trace_graph_valid.",
+    "A scalar-null predecessor composes with later typed object capture and source alias. Sync second-warning throws and real parked injections precede an earlier wrong-type receive; saved owners and split budgets remain valid.",
+    "Genuine capture counterfactuals retain named-key/prior-named, non-BYREF, reversed-union and nonnullable exclusions. The two superseded old typed-variadic admission refusals are checked separately."
+  ],
+  "validation": {
+    "native_only": {
+      "revision": "d8f5c328fcdbbbb4521220c136dfc02149060c54",
+      "originals": 9,
+      "model_agreements": 0,
+      "reports": [
+        ".tools/iterator-reference-typed-positional-variadic-native-h33u9pkh/report.json",
+        ".tools/iterator-reference-typed-positional-variadic-review-native-xa5bkojy/report.json",
+        ".tools/iterator-reference-typed-positional-variadic-review-native-followup-qho_uepm/report.json"
+      ],
+      "result": "Author6 plus unchanged first passing peer row and corrected peer2/3; the failed second original is not credited. Eight seconds per original, serial stop-first, unchanged module114f."
+    },
+    "unchanged_baseline": {
+      "report": ".tools/iterator-reference-typed-positional-variadic-baseline-8u0ta342/report.json",
+      "source_sha256": "f29699182582c1026cf330b3a479bcf65c4a285f15ee60f3f53ca88e2630c9eb",
+      "result": "Untouched base/module114f stops at genuine initial raw-reference typed variadic send: Unsupported Iterator unpack by-reference raw payload after exact four OUTPUT events W|V|C|K|, before warning. Exit1, no diagnostic/timeout; zero agreement."
+    },
+    "strict": {"modules": 394, "report": ".tools/iterator-reference-typed-positional-variadic-strict-sl-a3h4b0az/report.json", "result": "True stdout, empty stderr, exit0/no timeout, stable tested revision and inputs."},
+    "source_normal_agreements": 9,
+    "source_runs": [
+      {"originals": 6, "report": ".tools/iterator-call-unpack-reference-typed-positional-variadic-source-g_i3zp7c/report.json", "selection": "Matching class/array body writes; partial class/array rejection traces; sync warning throw and real Fiber injection before first receive rejection.", "caps": "model100/process120 seconds"},
+      {"originals": 3, "report": ".tools/iterator-reference-typed-positional-variadic-review-source-8gvklbm8/report.json", "selection": "Repeated typed-array nested COW/private writes; BYVALUE array plus partial class rest/rejected-array alias; scalar-null prefix plus class alias/private write.", "caps": "model60/process75 seconds"}
+    ],
+    "source_result": "All original bytes agree exactly with retained native stdout/stderr/exit and normal completion at tested5df4; caught errors remain source behavior, with no normalization or native replay.",
+    "new_state_groups": 7,
+    "new_state_driver_premises": 562,
+    "author_premises": 376,
+    "independent_premises": 186,
+    "new_state_runs": [
+      {"premises": 57, "report": ".tools/fiber-state-review-do735l2b/report.json", "frontier": "Initial typed tail capture before warning."},
+      {"premises": 67, "report": ".tools/fiber-state-review-ykh4adqu/report.json", "frontier": "Typed-array body int writes with independent raw source alias."},
+      {"premises": 81, "report": ".tools/fiber-state-review-k76g32k5/report.json", "frontier": "Partial array rest rejection and owning DIRECT trace."},
+      {"premises": 71, "report": ".tools/fiber-state-review-d2m7pv2o/report.json", "frontier": "Second warning before first wrong-type receive."},
+      {"premises": 100, "report": ".tools/fiber-state-review-dbtrh5y7/report.json", "frontier": "Actual parked second-warning Throwable injection."},
+      {"premises": 105, "report": ".tools/fiber-state-review-vsj8nfr8/report.json", "frontier": "Fixed BYVALUE prefix, accepted ALIAS tail, rejected argument3 and three DIRECT trace values."},
+      {"premises": 81, "report": ".tools/fiber-state-review-0350ul2p/report.json", "frontier": "Caught trace after partial-rest/callee retirement, separate array alias and exact final release order."}
+    ],
+    "affected_prior": [
+      {"premises": 58, "report": ".tools/fiber-state-review-sq4addi5/report.json", "selection": "Prior07 initial-raw-object-variadic-warning-detaches-private-payload: typed admission becomes true."},
+      {"premises": 75, "report": ".tools/fiber-state-review-c6cg313n/report.json", "selection": "Prior06 later-nullable-class-warning-captures-before-receive: positional variadic admission becomes true."}
+    ],
+    "state_result": "New7/562 and affected2/133 all true/exit0/no timeout at5df4. Counts include five setup premises per genuine group and embedded counterfactuals; no standalone eligibility groups. Seek/finish4000, process120 except parked100 at180. No prior unaffected group is replayed.",
+    "stability": "Strict/source HEAD and inputs stable. State harness asserts semantic inputs unchanged; wrappers bind catalog/helper/HEAD stability. Final review matched four current executable fingerprints to all nine accepted state snapshots."
+  },
+  "zero_credit_failure": {
+    "report": ".tools/iterator-reference-typed-positional-variadic-review-native-xa5bkojy/report.json",
+    "source_sha256": "5ffa51480fb16f3f7471acfb5e9950a5ba737079aa494a99bbcf2af361694253",
+    "result": "Original peer2 used global $alias then reference-rebound its local CV, so the intended global owner was absent and C died before HELD. Only peer2/3 sources changed to direct GLOBALS reference assignment. Retained first native row and all author natives were not replayed; failed original earns zero model credit."
+  },
+  "commands": {
+    "native": "Under taskset CPU3: native6, review-native prefix, then only review-native-followup corrected2 and unrun retained-native baseline1; native8s/baseline60+75, worker1 stop-first.",
+    "author": "Strict.py; author sources with retained h33u9pkh native report; five separate state --case commands in declared order; only prior07capture58 and prior06capture75. All at fixed5df4, serial stop-first.",
+    "independent": "Review sources with both --native-report xa5bkojy/report.json and followup-qho_uepm/report.json; separate state --case partial-typed-rest-rejection-keeps-alias-entry-and-owning-trace-values then caught-partial-rest-error-keeps-direct-trace-and-independent-array-alias, fixed5df4, taskset CPU3/worker1/stop-first.",
+    "exact": "Adjacent external manifest binds sixteen full outer commands, report hashes and revisions; raw directories retain original sources, checked fixtures, streams and exits."
+  },
+  "limits": "Exact normalized nullable single-class/array positional tails at the existing stable-property/direct site only. One-child acyclic arrays without embedded references establish this evidence domain; admission adds no child-shape restriction. Named tails, other type shapes, wider sources/sites, live replacements and broader array/reference interactions remain required. No family/core closure, engine bug or intentional divergence claimed.",
+  "artifacts": {
+    "archive": "../php-spec-evidence-archive/iterator-reference-typed-positional-variadic-08/evidence.tar.gz",
+    "bytes": 562720,
+    "sha256": "7ed0931fd459769f3529bbed858c49893074edc95c3c1c4d14f1470e69124091",
+    "manifest": "../php-spec-evidence-archive/iterator-reference-typed-positional-variadic-08/manifest.json",
+    "reports": 16,
+    "recovery": "Author/affected inputs are at tested5df4. Reviewer3 files were untracked and come from the publication containing this ledger, hash-matching independent_inputs. Restore archived oldcad74fe2 catalog to its maintained review catalog path only for the original native capture; corrected sources use the final catalog. Extract raw directories/drivers at the recorded private root or equivalent source relationships, with the local pinned dependencies/profile/binaries. Archives are not operational inputs."
+  }
+}

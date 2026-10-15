@@ -1,0 +1,32 @@
+[
+  {
+    "id": "iterator-reference-typed-positional-variadic-review-repeated-array-private-types",
+    "source": "<?php\nclass ReviewTypedRestChild08 { function __destruct() { echo \"O|\"; } }\nclass ReviewTypedRestRepeat08 implements Iterator {\n    public $payload; public $position = 0;\n    function __construct() { $this->payload = [new ReviewTypedRestChild08]; }\n    function __destruct() { echo \"I|\"; }\n    function rewind(): void { echo \"W|\"; }\n    function valid(): bool { echo \"V|\"; return $this->position < 2; }\n    function &current(): mixed { echo \"C|\"; return $this->payload; }\n    function key(): mixed { echo \"K|\"; return $this->position; }\n    function next(): void { echo \"X|\"; $this->position++; }\n}\nfunction reviewTypedRestRepeat08(?array &...$items) { echo \"D|\"; $items[0][0] = null; echo \"ONE|\"; $items[0] = 17; echo $items[0], \"|\"; $items[1][0] = null; echo \"TWO|\"; $items[1] = 23; echo $items[1], \"|\"; }\nset_error_handler(function($l, $m, $f, $line) { echo \"H\", $l, \":\", $m, \"@\", $line, \"|\"; return true; });\nreviewTypedRestRepeat08(...new ReviewTypedRestRepeat08);\necho \"E\";\n",
+    "source_sha256": "4c22708fc90cc76acfc644351a8a8b2ebfe30fbddc02ea179c9b120ab2230e80",
+    "purpose": "Repeated raw array arguments become distinct source-free private references; nullable variadic receive preserves nested COW and permits later incompatible scalar writes.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H2:Cannot pass by-reference argument 1 of reviewTypedRestRepeat08() by unpacking a Traversable, passing by-value instead@15|X|V|C|K|H2:Cannot pass by-reference argument 2 of reviewTypedRestRepeat08() by unpacking a Traversable, passing by-value instead@15|X|V|I|D|ONE|17|O|TWO|23|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-reference-typed-positional-variadic-review-partial-rest-direct-trace-source-alias",
+    "source": "<?php\nclass ReviewTypedRestHead08 { function __destruct() { echo \"A|\"; } }\nclass ReviewTypedRestGood08 { function __destruct() { echo \"B|\"; } }\nclass ReviewTypedRestRejected08 { function __destruct() { echo \"C|\"; } }\nclass ReviewTypedRestTrace08 implements Iterator {\n    public $head; public $accepted; public $rejected; public $position = 0;\n    function __construct() { $this->head = [new ReviewTypedRestHead08]; $this->accepted = new ReviewTypedRestGood08; $this->rejected = [new ReviewTypedRestRejected08]; }\n    function __destruct() { echo \"I|\"; }\n    function rewind(): void { echo \"W|\"; }\n    function valid(): bool { echo \"V|\"; return $this->position < 3; }\n    function &current(): mixed { echo \"C|\"; if ($this->position === 0) { return $this->head; } if ($this->position === 1) { return $this->accepted; } $GLOBALS[\"alias\"] =& $this->rejected; return $this->rejected; }\n    function key(): mixed { echo \"K|\"; return $this->position; }\n    function next(): void { echo \"X|\"; $this->position++; }\n}\nfunction reviewTypedRestTrace08($head, ?ReviewTypedRestGood08 &...$items) { echo \"BAD|\"; }\nset_error_handler(function($l, $m, $f, $line) { echo \"H\", $l, \":\", $m, \"@\", $line, \"|\"; return true; });\ntry { reviewTypedRestTrace08(...new ReviewTypedRestTrace08); } catch (TypeError $e) { echo \"T|\", $e->getLine(), \"|\"; $caught = $e; }\nunset($e); echo \"P|\"; unset($caught); echo \"HELD|\"; unset($alias); echo \"E\";\n",
+    "source_sha256": "82eca1044b94edda01c0aa2a83835bf561ddf64c77f65076b8cdf26065a456ee",
+    "purpose": "An earlier by-value array and one accepted class tail precede rejected array argument 3; partial ALIAS rest retires while three owning DIRECT trace values and an independent current-source alias survive.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|X|V|C|K|H2:Cannot pass by-reference argument 2 of reviewTypedRestTrace08() by unpacking a Traversable, passing by-value instead@17|X|V|C|K|H2:Cannot pass by-reference argument 3 of reviewTypedRestTrace08() by unpacking a Traversable, passing by-value instead@17|X|V|I|T|15|P|A|B|HELD|C|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-reference-typed-positional-variadic-review-scalar-null-prefix-object-source-alias",
+    "source": "<?php\nclass ReviewTypedRestNullPayload08 { function __destruct() { echo \"B|\"; } }\nclass ReviewTypedRestNull08 implements Iterator {\n    public $empty = null; public $payload; public $position = 0;\n    function __construct() { $this->payload = new ReviewTypedRestNullPayload08; }\n    function __destruct() { echo \"I|\"; }\n    function rewind(): void { echo \"W|\"; }\n    function valid(): bool { echo \"V|\"; return $this->position < 2; }\n    function &current(): mixed { echo \"C|\"; if ($this->position === 0) { return $this->empty; } $GLOBALS[\"alias\"] =& $this->payload; return $this->payload; }\n    function key(): mixed { echo \"K|\"; return $this->position; }\n    function next(): void { echo \"X|\"; $this->position++; }\n}\nfunction reviewTypedRestNull08(?ReviewTypedRestNullPayload08 &...$items) { echo \"D|\"; $items[0] = 17; echo $items[0], \"|\"; $items[1] = 23; echo $items[1], \"|\"; }\nset_error_handler(function($l, $m, $f, $line) { echo \"H\", $l, \":\", $m, \"@\", $line, \"|\"; return true; });\nreviewTypedRestNull08(...new ReviewTypedRestNull08);\necho \"M|\"; unset($alias); echo \"E\";\n",
+    "source_sha256": "a8d25ccb8a619c854e4c2a62429db09c26fb49808c17d8559469b371cd4b09e1",
+    "purpose": "Existing scalar-null by-reference unpack combines with later new typed object capture; neither fresh reference acquires a persistent type source and overwriting the later private cell preserves its independent raw alias.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H2:Cannot pass by-reference argument 1 of reviewTypedRestNull08() by unpacking a Traversable, passing by-value instead@15|X|V|C|K|H2:Cannot pass by-reference argument 2 of reviewTypedRestNull08() by unpacking a Traversable, passing by-value instead@15|X|V|I|D|17|23|M|B|E",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]

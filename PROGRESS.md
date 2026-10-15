@@ -1698,10 +1698,20 @@ Native9 and the unchanged Unsupported baseline earn zero model agreement. The
 identifier-elaboration and premature-unset fixture failures retain zero credit;
 only test identifiers and cleanup-phase expectations changed. Earlier cuts remain
 frozen. Typed or named variadic reference targets, wider sources/live replacements
-and broader array/reference interactions remain required.
+and broader array/reference interactions remained required at that cut.
 [Positional variadic reference review](coverage/semantics/iterator-call-unpack-reference-positional-variadic-review.json).
 Canonical394 composition over `a3d23c935` passes inventory and strict SL at
 `a7ff8b83a`; private source/state evidence retains its original cuts.
+
+Positional property-reference variadics now admit the existing exact nullable
+single-class/array shapes. Receive-only checks permit later scalar writes;
+partial rest failures retain owning DIRECT traces after callee retirement, with
+source aliases independent. Later warning throws and real Fiber injection
+precede even an earlier receive mismatch. Nine exact originals and seven reached
+groups pass 562 premises at 5df4; two affected prior guards pass 133 separately.
+Native/baseline cuts and the original alias-fixture failure retain zero agreement.
+Named tails, other type shapes, wider sources and live replacement remain open.
+[Typed variadic reference review](coverage/semantics/iterator-call-unpack-reference-typed-positional-variadic-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or

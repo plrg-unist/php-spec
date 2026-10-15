@@ -716,13 +716,19 @@ Untyped positional variadics also accept stable property-reference object/array
 payloads. Packed rest entries alias distinct private cells; original extra-argument
 owners survive `unset($rest)`, and source aliases retain ordinary array COW. See the
 [positional variadic reference review](coverage/semantics/iterator-call-unpack-reference-positional-variadic-review.json).
+Typed positional reference variadics now admit the exact nullable class/array
+shapes. Types are checked on receipt; later incompatible private-cell writes
+remain legal. Partial receive errors keep all supplied values in owning trace
+arguments. A later warning throw or Fiber injection precedes even an earlier
+receive mismatch.
+See the [typed variadic reference review](coverage/semantics/iterator-call-unpack-reference-typed-positional-variadic-review.json).
 Valid NaN warnings retain the raw return through handler mutation, Fiber parking
 and throw. One numeric reread distinguishes copied NaN from a live reference;
 the raw return retires before current or iterator teardown.
 Generator/Aggregate ordinary-call unpack, Generator callback methods, nonnumeric
 raw valid changes, request/plain reference strings and handler replacements with
 those strings, other typed array warnings, broader array/COW interactions,
-other reference sources, typed or named variadic reference sends and live
+other reference sources, named variadic reference sends and live
 payload replacements,
 general shared named buffers and
 other type shapes and wider-site variadic object warnings remain

@@ -439,9 +439,29 @@ of the local rest array until frame cleanup. Second-warning throws and Fiber
 injection retire Iterator data before the earlier/current payloads; documentary
 SOURCE checks read no retired cells or array tables. Typed or named variadic
 reference sends, wider sources/sites, live replacements and broader array/reference
-interactions remain required. The
+interactions remained required at that cut. The
 [positional variadic reference review](../../coverage/semantics/iterator-call-unpack-reference-positional-variadic-review.json)
 keeps these new cuts and the affected prior admission check separate.
+
+Positional property-reference variadic sends also admit the existing exact
+normalized `[class, null]` and `[array, null]` shapes. Numeric-key, no-named-phase,
+stable untyped source-property and direct-site bounds remain unchanged. Each
+`SEND_UNPACK` warning precedes its fresh private cell; `RECV_VARIADIC` checks
+types while collecting packed ALIAS entries, with original EXTRA owners retained.
+A later mismatch leaves earlier accepted entries intact and creates a TypeError
+whose DIRECT trace owns every supplied argument, including by-value prefixes
+and rejected arrays. The trace outlives callee retirement; source aliases keep
+their separate roots after caught-error release. Successful receive adds no
+persistent parameter type source, so later integer writes succeed and nested
+array writes retain ordinary COW. A second warning throw or real parked Fiber
+injection precedes even an earlier argument's first receive rejection. This
+follows `SEND_UNPACK`, `ZVAL_NEW_REF`, `RECV_VARIADIC` and
+`zend_verify_variadic_arg_type`. Reversed union order, nonnullable/other type
+shapes, named reference tails, wider sources/sites and live replacement remain
+required. One-child acyclic arrays establish the new evidence domain without
+adding a child-shape admission restriction. The
+[typed variadic reference review](../../coverage/semantics/iterator-call-unpack-reference-typed-positional-variadic-review.json)
+keeps these cuts and two affected prior guard checks separate.
 
 Iterator valid NaN warnings keep the raw retval in CURRENT through handler invoke,
 result, cleanup and saved Fiber frames. The native `zend_user_it_valid` wrapper
