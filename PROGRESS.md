@@ -15,6 +15,9 @@ diff 8b355616, including parser-reject absence and budget resumption. Ambiguous
 HALT compilation returns Unsupported; other direct calls, absent value lookup
 Errors and wider source forms remain partial. Preparatory syntax failures retain zero credit.
 [HALT lookup ledger](coverage/semantics/halt-lookup-review.json).
+The 394-module composition over 5dba9ba1 retains the parent global-array lookup
+and accepted HALT rules at 248d9c9f. Private source/state cuts are unchanged;
+no new numeric evidence is claimed.
 
 Direct sole backed trait SET now preserves an actual builtin explicit parameter.
 Raw Trait Param/type/variance proof authenticates the Consumer callable signature
