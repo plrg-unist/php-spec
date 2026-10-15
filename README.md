@@ -582,6 +582,12 @@ Borrowed arrays gain no saved owner, and supplied throws cancel destination
 assignment. Three exact originals and 405 focused SL premises pass in the
 [concat-array ledger](coverage/semantics/concat-array-warning-review.json).
 Wider arrays/operands and RHS rebinding after a left-array warning remain partial.
+Concatenation assignment now stages a right-array warning for two bounded plain CVs.
+The first string survives handler writes and RHS removal; normal commit overwrites
+the target and detaches a late alias, while a supplied throw preserves it.
+Three exact originals and 395 focused SL premises pass in the
+[concat-assignment ledger](coverage/semantics/concatassign-array-warning-review.json).
+Left-array warnings, wider operands/targets/callbacks and lifecycle paths remain partial.
 [Destructuring and retained expression effects](docs/semantics/DESTRUCTURING.md)
 now execute current scalar/array list patterns and nonvariable-left coalescing.
 [Independent acceptance](coverage/semantics/destructuring-review.json) binds 263

@@ -777,3 +777,78 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 2
   -- if perrorcall.MESSAGE = $ptascii("Array to string conversion")
   -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE z
+
+;; ASSIGN_OP caches its first string before the borrowed array warns. Success
+;; replaces the selected plain CV; a supplied throw leaves callback writes intact.
+dec $concatassign_array_source(pstate, porigin, poperand, poperand, int) : bool
+def $concatassign_array_source(S, porigin, poperand_left, poperand_right, z) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssignOpConcat expression_left expression_right metadata)
+  -- if poperand_left = VARIABLE ptbytes_left z_left
+  -- if poperand_right = VARIABLE ptbytes_right z_right
+  -- if ptbytes_left =/= ptbytes_right
+  -- if $integer_operand_source(S, porigin, [PCFIELD 0], poperand_left)
+  -- if $integer_operand_source(S, porigin, [PCFIELD 1], poperand_right)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 1]) = (z)
+def $concatassign_array_source(S, porigin, poperand_left, poperand_right, z) = false -- otherwise
+
+def $concatassign_array_plan(S) = (CONCATASSIGN_ARRAY_WARNING porigin poperand_left poperand_right pvalue z 0)
+  -- if S.TODO = (COMPOUND_APPLY CONCAT (BASE_VALUE poperand_left) false z) :: ptask_tail*
+  -- if $error_handler_eligible(S, 2) /\ $arithmetic_add_named(S)
+  -- if S.ORIGIN = (porigin)
+  -- if poperand_right = S.RESULT
+  -- if $concatassign_array_source(S, porigin, poperand_left, poperand_right, z)
+  -- if $concat_array_string(S, poperand_left) = (n, pvalue)
+  -- if $array_string_cast_snapshot(S, poperand_right)
+def $concatassign_array_plan(S) = eps -- otherwise
+
+dec $concatassign_array_valid(pstate, porigin, poperand, poperand, pvalue, int, nat) : bool
+def $concatassign_array_valid(S, porigin, poperand_left, poperand_right, pvalue, z, n) = ($concatassign_array_source(S, porigin, poperand_left, poperand_right, z) /\ $string_bytes(pvalue) =/= eps /\ $(n <= 1) /\ (n = 1 \/ $concat_array_right_fresh(S, poperand_left, poperand_right, pvalue)))
+
+dec $concatassign_array_ready(pstate, poperand) : bool
+def $concatassign_array_ready(S, VARIABLE ptbytes z) = true
+  -- if $integer_pointer_value(S, INTEGER_CV ptbytes) = (pvalue)
+  -- if pvalue =/= PUNDEFINED
+  -- if $value_nodes(pvalue) = eps
+  -- if $lookup(S.ENV, ptbytes) = (n)
+  -- if (HCELL n) <- S.ALLOCATIONS
+  -- if $propref_at(S.PROPREFS, n) = eps
+  -- if ~$foreach_released_name(S, ptbytes)
+def $concatassign_array_ready(S, poperand) = false -- otherwise
+
+rule PhpStep/concatassign-array-begin: S ~> S[.TODO = ptask_warning :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.LOCATION = ROOT n]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $concatassign_array_plan(S) = (ptask_warning)
+  -- if ptask_warning = CONCATASSIGN_ARRAY_WARNING porigin (VARIABLE ptbytes z_left) poperand_right pvalue z 0
+  -- if $lookup(S.ENV, ptbytes) = (n)
+rule PhpStep/concatassign-array-warning: S ~> $error_dispatch(S, 2, $ptascii("Array to string conversion"), z, DIAGNOSTIC "Warning" $ptascii("Array to string conversion") z, CONCATASSIGN_ARRAY_WARNING porigin poperand_left poperand_right pvalue z 1)
+  -- if S.TODO = (CONCATASSIGN_ARRAY_WARNING porigin poperand_left poperand_right pvalue z 0) :: ptask_tail*
+  -- if $concatassign_array_valid(S, porigin, poperand_left, poperand_right, pvalue, z, 0)
+  -- if ~$error_handler_eligible(S, 2) \/ $arithmetic_add_named(S)
+rule PhpStep/concatassign-array-owning-handler: S ~> S[.COMPLETION = UNSUPPORTED "concatenation assignment owning warning callback"]
+  -- if S.TODO = (CONCATASSIGN_ARRAY_WARNING porigin poperand_left poperand_right pvalue z 0) :: ptask_tail*
+  -- if $concatassign_array_valid(S, porigin, poperand_left, poperand_right, pvalue, z, 0)
+  -- if $error_handler_eligible(S, 2) /\ ~$arithmetic_add_named(S)
+rule PhpStep/concatassign-array-commit: S ~> $arithmetic_addassign_cv_write(S_concat, ptbytes, pvalue_result)
+  -- if S.TODO = (CONCATASSIGN_ARRAY_WARNING porigin poperand_left poperand_right pvalue z 1) :: ptask_tail*
+  -- if $concatassign_array_valid(S, porigin, poperand_left, poperand_right, pvalue, z, 1)
+  -- if $concatassign_array_ready(S, poperand_left)
+  -- if poperand_left = VARIABLE ptbytes z_left
+  -- if S_concat = $string_concat(S[.TODO = ptask_tail*], pvalue, PSTRING_CARRIER INTERNED_STRING $ptascii("Array"), false, false)
+  -- if S_concat.RESULT = KNOWN pvalue_result
+rule PhpStep/concatassign-array-boundary: S ~> S[.COMPLETION = UNSUPPORTED "concatenation assignment live target"]
+  -- if S.TODO = (CONCATASSIGN_ARRAY_WARNING porigin poperand_left poperand_right pvalue z 1) :: ptask_tail*
+  -- if $concatassign_array_valid(S, porigin, poperand_left, poperand_right, pvalue, z, 1)
+  -- if ~$concatassign_array_ready(S, poperand_left)
+
+def $task_nodes(CONCATASSIGN_ARRAY_WARNING porigin poperand_left poperand_right pvalue z n) = eps
+def $call_task_valid(S, CONCATASSIGN_ARRAY_WARNING porigin poperand_left poperand_right pvalue z n) = $concatassign_array_valid(S, porigin, poperand_left, poperand_right, pvalue, z, n)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = CONCATASSIGN_ARRAY_WARNING porigin poperand_left poperand_right pvalue z 1
+  -- if $concatassign_array_valid(S, porigin, poperand_left, poperand_right, pvalue, z, 1)
+  -- if perrorcall.TARGET =/= eps \/ $concatassign_array_valid(S, porigin, poperand_left, poperand_right, pvalue, z, 0)
+  -- if perrorcall.SITE = porigin
+  -- if perrorcall.LINE = z
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $ptascii("Array to string conversion")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE z

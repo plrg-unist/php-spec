@@ -1,0 +1,123 @@
+{
+  "version": 1,
+  "milestone": "OP22 plain-CV concatenation assignment array warning",
+  "status": "independently reviewed private semantic and test milestone",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local pinned PHP and profile",
+  "scope": "Two distinct initially defined plain CVs: a quiet first string and a nonempty mutable flat DIRECT defined nonowning scalar array RHS, with a named eligible warning handler.",
+  "runtime_revision": "f1653b443a63c6c9912de11acc05ddd8d4b1f869",
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "f1ed4f9c09847130233fe9a139518bbf0ac2c8e26d3ad62d9e9d72c917a6bbca",
+    "spec/semantics/55-compound-assignment.watsup": "af26930bf03690c28bc98f64a2aba5cdfde2c479fd3ca7a7f5909aea25fd3c1d",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "35a96e1a1d6f0f38267765cb2aafdcf1e8ed83d96ff30b01dbfad5f210c2119a"
+  },
+  "engine_basis": [
+    "Zend/zend_vm_def.h ZEND_ASSIGN_OP selects RHS and destination then calls zend_binary_op(var_ptr,var_ptr,value).",
+    "Zend/zend_operators.c concat_function pins the first string before converting the array RHS. Failed try conversion preserves result==orig_op1; successful replacement destroys the current result wrapper and stores concatenation.",
+    "The existing generic-body arithmetic_addassign_cv_write reuses unset_name/write_name for a callback-created reference and returns LOCATION=ROOT of the actual written CELL; no ADD-specific condition is reused."
+  ],
+  "contract": [
+    "Only authentic COMPOUND_APPLY CONCAT false with distinct source CVs enters. Source/instruction line, actual plain selections and exact cached string carrier are checked at capture and fresh TARGETeps dispatch. Entered frames and returned stages retain historical capture while either CV may have changed.",
+    "The descriptor saves only the first string and source operands, with no PARRAY or task roots. RHS removal releases the borrowed array. After normal return, pop the marker, concatenate cached first string with fixed interned Array, then replace a defined allocated nonowning unconstrained target. A late reference detaches; surviving aliases retain their value and owner. LOCATION names the actual new CELL.",
+    "A supplied throw performs neither commit nor detachment: identity/null Previous/sentinel100, callback writes and late alias remain. False fallback emits exactly one default Warning on the operand line before commit.",
+    "Every continued fixture state is reached by production drive_steps. Fresh cache bytes/carrier/source/line/stage and coordinated EHI metadata counterfeits are public-validator negatives only. Missing-name, allocation-only, PROPREF and owning ready projections are pure refusals, never driven and not claims of executed typed or expired target support."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-22/source-f1653b443-handler-write/report.json",
+        "sha256": "fa14581f84a8dde8be9202200a7a12ff0e0b00bcbe87fe90cf7546c52a2b0050",
+        "case": "concatassign-array-right-handler-write",
+        "revision": "f1653b443a63c6c9912de11acc05ddd8d4b1f869",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-22/review-model-f1653b443-late-alias-default/report.json",
+        "sha256": "b5041972e8633c09735957bdf1ef2ba35378f0d7cfe5ec7b64a7a6108a63585e",
+        "case": "concatassign-array-right-late-alias-default",
+        "revision": "f1653b443a63c6c9912de11acc05ddd8d4b1f869",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-22/source-f1653b443-handler-throw/report.json",
+        "sha256": "1fba8a65a97c1979ef4e2abe68fadc15b780e41c6a8cbed30a7318035ebd6fe9",
+        "case": "concatassign-array-right-handler-throw",
+        "revision": "f1653b443a63c6c9912de11acc05ddd8d4b1f869",
+        "agreements": 1
+      }
+    ],
+    "author_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-22/state-884c8fbb1-author-two/report.json",
+      "sha256": "77abf9df07e6efd0c5c859158661075656fe26cc7a701e69874a62d0d86ab9e6",
+      "revision": "884c8fbb1aee3e66a9b99416c9d75c3c8dcb1f4b",
+      "conditions": [
+        147,
+        138
+      ],
+      "total": 285
+    },
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-22/state-884c8fbb1-review-one/report.json",
+      "sha256": "0e8fa278c8c66ce69d61cde83431d8a9afe948788b491aa3dfe8ab70bbdc440f",
+      "revision": "884c8fbb1aee3e66a9b99416c9d75c3c8dcb1f4b",
+      "conditions": [
+        110
+      ],
+      "total": 110
+    },
+    "total_source_agreements": 3,
+    "total_focused_state_conditions": 395,
+    "compatibility": "Only two reviewed helpers were added at 884c after source3 passed at f165. Both immutable state thins consume retained checked AST/path/native/fixtures in full395 SL, without PHP/frontend/source stages. No private initialization actor was required."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-22/baseline-f5918007a-handler-write/report.json",
+      "sha256": "5b7feaca7422962a0e61f2a5b47598a5a126e373c8414d194b70cc974ed5fd7c",
+      "result": "accepted checked program Unsupported: error-handler ingress requires a producer continuation; empty model streams before H versus native cached-string commit"
+    },
+    "native_and_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-22/native-f5918007a-two/report.json",
+        "sha256": "b7be2c1de3aa515b8d693beb7afea052d7f1c0253700ef3ea9d66e2b74c5939f",
+        "purpose": "author native2 raw observations"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-22/native-3df97913a-review-one/report.json",
+        "sha256": "b135154345c736812add2c71a7b9fa9636c804b6ff34b66e6bea4d46df31c0fe",
+        "purpose": "independent late-alias/default native1 raw observation"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-22/state-prep-884c8fbb1-author-two/report.json",
+        "sha256": "a3da8b6e0339ae5065af00f3961ef5c08e702aad4fb3dc68aa8581672c117a3a",
+        "purpose": "author2 PHP/frontend/checked-AST preparation only"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-22/state-prep-884c8fbb1-review-one/report.json",
+        "sha256": "3bf3c157acca178e7dc230cbd8c3f0ec21199f220e9b861682b428c3a4c9efe9",
+        "purpose": "independent1 PHP/frontend/checked-AST preparation only"
+      }
+    ],
+    "standalone_syntax": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-22/syntax-884c8fbb1-three/report.json",
+      "sha256": "a960081e9c8f705adfb1c76127e5c4e285c7b0bc1dfefab2e9dede26280aaa9c",
+      "result": "All147/138/110 full files parse before the expected standalone undefined-pstate environment diagnostic; zero semantic elaboration credit"
+    }
+  },
+  "required_follow_on": [
+    "LEFT-array warnings; preexisting reference, copied/TMP, property/container targets; wider array forms and callbacks; owning/constrained/missing/released targets and lifecycle paths remain partial.",
+    "All six affected inventory rows remain partial. Prior operator evidence retains its separate cuts; OP12 stays paused."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-22",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "environment": "LC_ALL=C, TZ=UTC, no PHP_SPEC_SCRIPT_ENCODING. Source native30/model CLI60-process90; CPU1 immutable full395 SL state groups cap120 each/exact true newline/empty stderr/no interruption/reaped groups and absent PIDs.",
+    "commands": [
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 tests/semantics/concatassign_array_warnings.py --case CASE_ID --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 tests/semantics/concatassign_array_warning_review.py --case concatassign-array-right-late-alias-default --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-22/state-884c8fbb1-author-two/run-state.py",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-22/state-884c8fbb1-review-one/run-state.py"
+    ],
+    "record": "Restore matching Git cuts/project-local tools and fresh output paths. External records retain original source/checked AST/path/native/fixtures/commands/exits/reaping. Large raw stays outside Git."
+  }
+}

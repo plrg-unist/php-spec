@@ -162,6 +162,18 @@ Pruned/missing-name and RHS projections are pure refusals, never driven.
 After a left-array warning, missing/rebound/new-reference/non-string later RHS
 remain partial, along with wider arrays/operands, callbacks and lifecycle forms.
 
+Plain-CV `.=` now handles a quiet first string and a supported array RHS.
+Its source-authenticated warning marker caches the exact first string carrier;
+fresh capture/dispatch proves initial plain selections, while historical return
+allows the RHS to disappear and a late destination reference to appear. No array
+owner is saved. Normal commit joins cached string with fixed `Array`, detaches a
+late wrapper and records the actual written CELL/LOCATION. A supplied throw cancels
+the store and preserves callback mutations and aliases. Three exact originals and
+285 author plus 110 independent SL premises pass in the
+[concat-assignment ledger](../../coverage/semantics/concatassign-array-warning-review.json).
+Pure missing/allocation/PROPREF/owning projections are refusal checks only.
+Left-array warnings, wider operands/targets/callbacks and lifecycle forms remain partial.
+
 Concatenation has an additional compile/runtime distinction. The compiler visits
 both operands before converting known scalar operands and queuing conversion
 warnings. At execution, known array operands produce their conversion warnings

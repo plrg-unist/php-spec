@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Plain-CV `.=` now retains the first string across a right-array warning.
+Normal return commits cached concatenation over callback writes and detaches a
+late alias; supplied throw cancels the store and preserves that alias. RHS removal
+releases the borrowed array without a saved PARRAY. Three exact originals pass at
+f1653b443; 147/138 author and 110 independent SL premises pass 395 at 884c8fbb1,
+including actual CELL/LOCATION, owners, saved TARGET, fresh carrier/source/metadata
+guards, default operand-line Warning, cancellation and budgets. Pure ready
+projections establish refusals only. Baseline/native/preparation/syntax retain zero
+agreement credit. Left-array warnings and wider operands/targets/callbacks/lifecycle
+remain partial; OP12 stays paused.
+[Concat-assignment ledger](coverage/semantics/concatassign-array-warning-review.json).
+
 Class and trait declarations now autoload a sole missing user trait before method
 import and publication. Parent availability precedes trait lookup, which precedes
 interface lookup. Two exact originals and 380 SL premises at runtime diff b37690d7
