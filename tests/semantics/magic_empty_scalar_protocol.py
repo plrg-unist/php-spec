@@ -71,7 +71,7 @@ DERIVED = r'''
 $property_empty_truth(S,PINT 0) = (true) /\ $property_empty_truth(S,PINT 13) = (false)
 $property_empty_truth(S,PSTRING eps) = (true) /\ $property_empty_truth(S,PSTRING ([48])) = (true)
 $property_empty_truth(S,PSTRING ([48,48])) = (false) /\ $property_empty_truth(S,PSTRING ([0])) = (false) /\ $property_empty_truth(S,PSTRING ([48,0])) = (false)
-S_float = S_nullish[.RESULT = KNOWN (PFLOAT 9221120237041090560)]
+S_float = S_nullish[.RESULT = KNOWN (PFLOAT 18446744073709551617)]
 PhpStep: S_float ~> S_float_done
 S_float_done.COMPLETION = UNSUPPORTED "magic empty getter result type"
 S_float_done.TODO = S_float.TODO /\ S_float_done.EVENTS = S_float.EVENTS /\ S_float_done.STORE = S_float.STORE

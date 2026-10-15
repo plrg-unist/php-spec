@@ -1,5 +1,5 @@
 ;; False selects __isset; true selects __get. One saved RESULT owns the receiver
-;; through both calls. Non-NaN primitive results use pure truth; carriers authenticate.
+;; through both calls and NaN warnings. Other primitive truth is pure; carriers authenticate.
 dec $property_empty_method(pstate, nat, bool) : pmethoddesc?
 def $property_empty_method(S, n, false) = $property_isset_method(S, n)
 def $property_empty_method(S, n, true) = $property_get_method(S, n)
@@ -143,6 +143,7 @@ def $property_empty_get_active(S, n, ptbytes) = true
   -- if $property_empty_active(S, S.CURRENT, S.FRAMES, n, ptbytes, true)
 
 dec $property_empty_guard(pstate, nat, ptbytes) : bool
+dec $property_empty_nan_guard(pstate, nat, ptbytes) : bool
 def $property_empty_guard(S, n, ptbytes) = true
   -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty b_get) :: ptask_tail*
   -- if ppropertyempty.OBJECT = n /\ ppropertyempty.NAME = ptbytes
@@ -152,7 +153,7 @@ def $property_empty_guard(S, n, ptbytes) = true
   -- if S.TODO = (CALL_ARGS (PROPERTY_EMPTY_TARGET ppropertyempty b_get) eps 1 poperand* porigin? z) :: ptask_tail*
   -- if ppropertyempty.OBJECT = n /\ ppropertyempty.NAME = ptbytes
   -- if $property_empty_pending_call(S, ppropertyempty, b_get)
-def $property_empty_guard(S, n, ptbytes) = ($property_empty_active(S, S.CURRENT, S.FRAMES, n, ptbytes, false) \/ $property_empty_active(S, S.CURRENT, S.FRAMES, n, ptbytes, true)) -- otherwise
+def $property_empty_guard(S, n, ptbytes) = ($property_empty_active(S, S.CURRENT, S.FRAMES, n, ptbytes, false) \/ $property_empty_active(S, S.CURRENT, S.FRAMES, n, ptbytes, true) \/ $property_empty_nan_guard(S, n, ptbytes)) -- otherwise
 
 def $property_empty_pending(S) = true
   -- if S.TODO = (ISSET_RESULT true z) :: ptask_tail*
@@ -205,6 +206,79 @@ def $property_empty_truth(S, PSTRING_CARRIER pstringidentity ptbytes) = (ptbytes
   -- if $string_carrier_valid(S, PSTRING_CARRIER pstringidentity ptbytes)
 def $property_empty_truth(S, pvalue) = eps -- otherwise
 
+;; i_zend_is_true warns after IN_GET is cleared, retaining IN_ISSET and the
+;; receiver. The saved BYVAL double is independent of callback retval/CV writes.
+dec $property_empty_nan_ready(pstate, ppropertyempty) : bool
+def $property_empty_nan_ready(S, ppropertyempty) = true
+  -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
+  -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty true) :: ptask_tail*
+  -- if S.ORIGIN = (ppropertyempty.SITE) /\ S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if $property_empty_valid(S, ppropertyempty)
+  -- if S.RESULT = KNOWN (PFLOAT n_float)
+  -- if $(n_float < 18446744073709551616)
+  -- if $float_decode(n_float) = NOTNUMBER n_float
+def $property_empty_nan_ready(S, ppropertyempty) = false -- otherwise
+dec $property_empty_nan_valid(pstate, ppropertyemptynan) : bool
+def $property_empty_nan_valid(S, ppropertyemptynan) = true
+  -- if S.ORIGIN = (ppropertyemptynan.EMPTY.SITE)
+  -- if $property_empty_valid(S, ppropertyemptynan.EMPTY)
+  -- if ppropertyemptynan.OWNER = |S.FRAMES| /\ ppropertyemptynan.CALLER = S.CURRENT
+  -- if $source_operand_suffix(S.TODO, PROPERTY_EMPTY_NAN ppropertyemptynan, ppropertyemptynan.TAIL)
+  -- if $(ppropertyemptynan.FLOAT < 18446744073709551616)
+  -- if $float_decode(ppropertyemptynan.FLOAT) = NOTNUMBER ppropertyemptynan.FLOAT
+def $property_empty_nan_valid(S, ppropertyemptynan) = false -- otherwise
+
+rule PhpStep/property-empty-nan-warning: S ~> $error_dispatch(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 2, $ptascii("unexpected NAN value was coerced to bool"), ppropertyempty.LINE, DIAGNOSTIC "Warning" ($ptascii("unexpected NAN value was coerced to bool")) ppropertyempty.LINE, PROPERTY_EMPTY_NAN ppropertyemptynan)
+  -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty true) :: ptask_tail*
+  -- if $property_empty_nan_ready(S, ppropertyempty)
+  -- if S.RESULT = KNOWN (PFLOAT n_float)
+  -- if ppropertyemptynan = {EMPTY ppropertyempty, FLOAT n_float, OWNER (|S.FRAMES|), CALLER S.CURRENT, TAIL ptask_tail*}
+rule PhpStep/property-empty-nan-result: S ~> S[.TODO = ppropertyemptynan.TAIL][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROPERTY_EMPTY_NAN ppropertyemptynan) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if $property_empty_nan_valid(S, ppropertyemptynan)
+rule PhpStep/property-empty-nan-invalid: S ~> S[.COMPLETION = UNSUPPORTED "magic empty NaN warning continuation"]
+  -- if S.TODO = (PROPERTY_EMPTY_NAN ppropertyemptynan) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if ~$property_empty_nan_valid(S, ppropertyemptynan)
+
+def $task_nodes(PROPERTY_EMPTY_NAN ppropertyemptynan) = [HOBJECT ppropertyemptynan.EMPTY.OBJECT]
+def $call_task_valid(S, PROPERTY_EMPTY_NAN ppropertyemptynan) = $property_empty_nan_valid(S, ppropertyemptynan)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = PROPERTY_EMPTY_NAN ppropertyemptynan
+  -- if $property_empty_nan_valid(S, ppropertyemptynan)
+  -- if perrorcall.SITE = ppropertyemptynan.EMPTY.SITE /\ perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = ppropertyemptynan.EMPTY.LINE
+  -- if perrorcall.MESSAGE = $ptascii("unexpected NAN value was coerced to bool")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
+
+;; Inspect the pending emitter in its actual or saved caller scope. No caller
+;; variable is recaptured, and no heap-owner query participates in guard lookup.
+dec $property_empty_nan_task(pstate, ptask, nat, ptbytes) : bool
+def $property_empty_nan_task(S, ptask, n, ptbytes) = true
+  -- if $source_operand_marker(ptask) = PROPERTY_EMPTY_NAN ppropertyemptynan
+  -- if ppropertyemptynan.EMPTY.OBJECT = n /\ ppropertyemptynan.EMPTY.NAME = ptbytes
+  -- if $property_empty_nan_valid(S, ppropertyemptynan)
+def $property_empty_nan_task(S, ptask, n, ptbytes) = false -- otherwise
+dec $property_empty_nan_tasks(pstate, ptask*, nat, ptbytes) : bool
+def $property_empty_nan_tasks(S, eps, n, ptbytes) = false
+def $property_empty_nan_tasks(S, ptask :: ptask_tail*, n, ptbytes) = ($property_empty_nan_task(S, ptask, n, ptbytes) \/ $property_empty_nan_tasks(S, ptask_tail*, n, ptbytes))
+dec $property_empty_nan_frames(pstate, pframe*, nat, ptbytes) : bool
+def $property_empty_nan_frames(S, eps, n, ptbytes) = false
+def $property_empty_nan_frames(S, pframe :: pframe_tail*, n, ptbytes) = ($property_empty_nan_tasks($constant_frame_view(S, pframe, pframe_tail*), pframe.TODO, n, ptbytes) \/ $property_empty_nan_frames(S, pframe_tail*, n, ptbytes))
+def $property_empty_nan_guard(S, n, ptbytes) = ($property_empty_nan_tasks(S, S.TODO, n, ptbytes) \/ $property_empty_nan_frames(S, S.FRAMES, n, ptbytes))
+
+;; A handler throw cancels truth delivery and drops the saved receiver before
+;; outer catch search. The ordinary destruction transition observes that release.
+dec $property_empty_nan_discard(pstate, ppropertyemptynan) : pstate
+def $property_empty_nan_discard(S, ppropertyemptynan) = S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (THROW_SEARCH n_error) :: ppropertyemptynan.TAIL
+  -- if $throwable_live(S, n_error)
+  -- if $property_empty_nan_valid(S[.TODO = (PROPERTY_EMPTY_NAN ppropertyemptynan) :: ppropertyemptynan.TAIL], ppropertyemptynan)
+def $property_empty_nan_discard(S, ppropertyemptynan) = S[.COMPLETION = UNSUPPORTED "magic empty NaN warning cleanup"] -- otherwise
+def $error_read_discard(S, PROPERTY_EMPTY_NAN ppropertyemptynan) = $property_empty_nan_discard(S, ppropertyemptynan)
+def $return_discard(S, PROPERTY_EMPTY_NAN ppropertyemptynan) = $property_empty_nan_discard(S, ppropertyemptynan)
+
 rule PhpStep/property-empty-value: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL b)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty true) :: ptask_tail*
   -- if S.COMPLETION = NORMAL
@@ -217,6 +291,7 @@ rule PhpStep/property-empty-result-unsupported: S ~> S[.COMPLETION = UNSUPPORTED
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN pvalue
   -- if $property_empty_truth(S, pvalue) = eps
+  -- if ~$property_empty_nan_ready(S, ppropertyempty)
   -- if S.ORIGIN = (ppropertyempty.SITE)
   -- if $property_empty_valid(S, ppropertyempty)
 

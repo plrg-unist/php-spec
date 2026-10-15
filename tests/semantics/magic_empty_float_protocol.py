@@ -68,14 +68,15 @@ BODY += [
     '$drive_steps(S_budget[.COMPLETION = NORMAL],10000) = S_final',
 ]
 
-# Constructed NaN/invalid-bit refusals do not claim warning execution or new producers.
+# Constructed helper NaN/actual invalid-bit refusals claim no new producers.
 DERIVED = r'''
 pvalue_nan = PFLOAT 9221120237041090560
 S_nan = S_pluszero[.RESULT = KNOWN pvalue_nan]
 $property_empty_truth(S_nan,pvalue_nan) = eps
-PhpStep: S_nan ~> S_nan_done
-S_nan_done.COMPLETION = UNSUPPORTED "magic empty getter result type"
-S_nan_done.TODO = S_nan.TODO /\ S_nan_done.EVENTS = S_nan.EVENTS /\ S_nan_done.STORE = S_nan.STORE
+S_invalid_next = S_pluszero[.RESULT = KNOWN (PFLOAT 18446744073709551617)]
+PhpStep: S_invalid_next ~> S_invalid_next_done
+S_invalid_next_done.COMPLETION = UNSUPPORTED "magic empty getter result type"
+S_invalid_next_done.TODO = S_invalid_next.TODO /\ S_invalid_next_done.EVENTS = S_invalid_next.EVENTS /\ S_invalid_next_done.STORE = S_invalid_next.STORE
 $property_empty_truth(S,PFLOAT 18444492273895866368) = eps /\ $property_empty_truth(S,PFLOAT 9218868437227405313) = eps
 S_invalid = S_pluszero[.RESULT = KNOWN (PFLOAT 18446744073709551616)]
 $property_empty_truth(S_invalid,PFLOAT 18446744073709551616) = eps

@@ -210,6 +210,7 @@ syntax pfilecontext
 syntax pdeclaration
 syntax ptraceframe
 syntax ppropertygetstring = { GET ppropertyget, INPUT poperand, OBJECT nat, SOURCES pproptypesource*, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
+syntax ppropertyemptynan = { EMPTY ppropertyempty, FLOAT nat, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
 syntax pdestructionjob = DESTRUCTION_VALUE pnode | DESTRUCTION_TEMP pnode | DESTRUCTION_HANDLE nat | DESTRUCTION_PROP_SOURCE pproptypesource nat
 syntax pdestructionrelease = {JOBS pdestructionjob*, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, USER bool}
 syntax pdestructionframe = {PENDING nat?, VALUE poperand, CALLER pcallcontext?, FUNCTION porigin, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?}
@@ -302,7 +303,7 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | OB_USER_REFERENCE_RELEASE pobinvoke nat nat
   | OUTPUT_STRING_RELEASE pobstringrelease
   | OB_USER_SEND pobinvoke nat | OB_USER_REFERENCE pobinvoke nat | OB_USER_ENTER pobinvoke | OB_USER_RESULT pobinvoke | OB_USER_DEPRECATED pobinvoke pvalue | OB_USER_COMMIT pobinvoke poboutput | OB_USER_RELEASE pobrelease
-  | PROPERTY_EMPTY_RESULT ppropertyempty bool | PROPERTY_ISSET_RESULT ppropertyisset | PROPERTY_UNSET_RESULT ppropertyunset | PROPERTY_SET_RESULT ppropertyhook pvalue | PROPERTY_HOOK_RESULT ppropertyhook | PROPERTY_HOOK_ISSET_RESULT ppropertyhook bool | PROPERTY_HOOK_ASSIGN_RESULT ppropertyhook pbase | PROPERTY_HOOK_COMPOUND_RESULT ppropertyhook pbase int int | PROPERTY_HOOK_COMPOUND_FINISH ppropertyhook pbase int int | INSTANCE_STORAGE_STEP pinstancestorage | FOREACH_BIND_RELEASE pforeachbind | FOREACH_BIND_COMMIT pforeachbind | FOREACH_SCALAR_END nat nat porigin pvalue int
+  | PROPERTY_EMPTY_NAN ppropertyemptynan | PROPERTY_EMPTY_RESULT ppropertyempty bool | PROPERTY_ISSET_RESULT ppropertyisset | PROPERTY_UNSET_RESULT ppropertyunset | PROPERTY_SET_RESULT ppropertyhook pvalue | PROPERTY_HOOK_RESULT ppropertyhook | PROPERTY_HOOK_ISSET_RESULT ppropertyhook bool | PROPERTY_HOOK_ASSIGN_RESULT ppropertyhook pbase | PROPERTY_HOOK_COMPOUND_RESULT ppropertyhook pbase int int | PROPERTY_HOOK_COMPOUND_FINISH ppropertyhook pbase int int | INSTANCE_STORAGE_STEP pinstancestorage | FOREACH_BIND_RELEASE pforeachbind | FOREACH_BIND_COMMIT pforeachbind | FOREACH_SCALAR_END nat nat porigin pvalue int
   | PROMOTE_PARAMETER porigin nat
   | GC_MAIN_SCAN pgcplan pgcscan | GC_MAIN_RETURN pgcplan pgcscan nat
   | GC_WORKER_PHYSICAL_REPLACE pgcplan pgcscan
