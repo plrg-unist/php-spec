@@ -1097,7 +1097,12 @@ NULL first after argument effects.
 [Four source agreements and 429 state premises](coverage/semantics/define-class-null-flag-review.json)
 cover default reporting, callback return/throw, raw traces, preserved caller result
 and callback effects.
-NaN flags for these names and wider values remain partial.
+NaN flags for these non-NUL `::` names emit only the bool-conversion Warning before
+the name ValueError. First-handler throws cancel the body; strict calls reject raw
+float after argument effects without warnings.
+[Four source agreements and 441 state premises](coverage/semantics/define-class-nan-flag-review.json)
+cover raw captures, false-handler reporting, callback effects and throw cancellation.
+NUL/coerced names, owning/wider values and wider NaN producers remain partial.
 Fresh two-argument `define` also copies nonempty acyclic scalar-array trees,
 dereferencing source cells and rebuilding append history. Request-string leaves,
 nested reference snapshots and literal constraints pass

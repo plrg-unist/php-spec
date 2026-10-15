@@ -21,6 +21,7 @@ dec $dynamic_nan_define_flag_call(pconfigcall) : bool
 dec $dynamic_class_define_call(pconfigcall) : bool
 dec $dynamic_class_define_scalar_call(pconfigcall) : bool
 dec $dynamic_class_define_null_call(pconfigcall) : bool
+dec $dynamic_class_define_nan_call(pconfigcall) : bool
 def $config_parameter(INTRINSIC_DEFINE, preqbytes) = (0) -- if preqbytes = $ptascii("constant_name")
 def $config_parameter(INTRINSIC_DEFINE, preqbytes) = (1) -- if preqbytes = $ptascii("value")
 def $config_parameter(INTRINSIC_DEFINE, preqbytes) = (2) -- if preqbytes = $ptascii("case_insensitive")
@@ -1757,6 +1758,7 @@ def $dynamic_nan_define_flag_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORT
 rule PhpStep/dynamic-nan-define-flag-invoke: S ~> $dynamic_nan_define_flag_receive(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $config_invoke_valid(S, pconfigcall) /\ $dynamic_nan_define_flag_call(pconfigcall)
+  -- if ~$dynamic_class_define_nan_call(pconfigcall)
 def $task_nodes(DYNAMIC_NAN_DEFINE_FLAG_RESULT pconfigcall) = $config_nodes(pconfigcall)
 def $selected_task_nonce(DYNAMIC_NAN_DEFINE_FLAG_RESULT pconfigcall) = pconfigcall.SELECTION
 def $call_task_valid(S, DYNAMIC_NAN_DEFINE_FLAG_RESULT pconfigcall) = $dynamic_nan_define_flag_case_valid(S, pconfigcall)
@@ -1956,4 +1958,53 @@ def $error_context_trigger(S, pcallcontext) = (pconfigcall)
 def $error_handler_trace_values(S, pcallcontext, pconfigcall_api) = $trace_extra(S, $getclass_trace_operands(pconfigcall_api.SENT))
   -- if $error_context_call(S, pcallcontext) = (perrorcall)
   -- if perrorcall.RESUME = DYNAMIC_CLASS_DEFINE_NULL_RESULT pconfigcall
+  -- if pconfigcall_api = pconfigcall
+
+;; NaN bool reception warns before the :: body check; a throw cancels that body.
+;; The raw NaN capture and this conversion-only marker never enter registration.
+def $dynamic_class_define_nan_call(pconfigcall) = true
+  -- if $dynamic_nan_define_flag_call(pconfigcall)
+  -- if $dynamic_nan_define_flag_values(pconfigcall) = ((preqbytes, pvalue))
+  -- if $dynamic_constant_class_name(preqbytes) /\ ~(0 <- preqbytes)
+def $dynamic_class_define_nan_call(pconfigcall) = false -- otherwise
+dec $dynamic_class_define_nan_valid(pstate, pconfigcall) : bool
+def $dynamic_class_define_nan_valid(S, pconfigcall) = true
+  -- if $dynamic_class_define_nan_call(pconfigcall) /\ $config_invoke_valid(S, pconfigcall)
+  -- if $dynamic_define_source(S, pconfigcall.SITE)
+  -- if $dynamic_scalar_define_arguments(S, pconfigcall, 0)
+  -- if $dynamic_nan_define_flag_values(pconfigcall) = ((preqbytes, pvalue))
+  -- if $named_slot_at(pconfigcall.SENT, 0) = NAMED_SENT (KNOWN pvalue_name)
+  -- if $dynamic_constant_class(pvalue) = (pvalueclass)
+  -- if $string_plain(pvalue_name) = pvalue_name \/ $string_carrier_valid(S, pvalue_name)
+  -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
+def $dynamic_class_define_nan_valid(S, pconfigcall) = false -- otherwise
+dec $dynamic_class_define_nan_receive(pstate, pconfigcall) : pstate
+def $dynamic_class_define_nan_receive(S, pconfigcall) = $config_error(S[.TODO = ptask_tail*], pconfigcall, "TypeError", $ptascii("define(): Argument #3 ($case_insensitive) must be of type bool, float given"))
+  -- if $dynamic_class_define_nan_valid(S, pconfigcall) /\ $config_strict(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_class_define_nan_receive(S, pconfigcall) = $error_dispatch(S, 2, $dynamic_nan_define_flag_message(), pconfigcall.LINE, DIAGNOSTIC "Warning" $dynamic_nan_define_flag_message() pconfigcall.LINE, DYNAMIC_CLASS_DEFINE_NAN_RESULT pconfigcall)
+  -- if $dynamic_class_define_nan_valid(S, pconfigcall) /\ ~$config_strict(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_class_define_nan_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "class-qualified NaN define flag capture"] -- otherwise
+rule PhpStep/dynamic-class-define-nan-invoke: S ~> $dynamic_class_define_nan_receive(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $config_invoke_valid(S, pconfigcall) /\ $dynamic_class_define_nan_call(pconfigcall)
+def $task_nodes(DYNAMIC_CLASS_DEFINE_NAN_RESULT pconfigcall) = $config_nodes(pconfigcall)
+def $selected_task_nonce(DYNAMIC_CLASS_DEFINE_NAN_RESULT pconfigcall) = pconfigcall.SELECTION
+def $call_task_valid(S, DYNAMIC_CLASS_DEFINE_NAN_RESULT pconfigcall) = ($dynamic_class_define_nan_valid(S, pconfigcall) /\ ~$config_strict(S, pconfigcall))
+rule PhpStep/dynamic-class-define-nan-result: S ~> $config_error(S[.TODO = ptask_tail*], pconfigcall, "ValueError", $ptascii("define(): Argument #1 ($constant_name) cannot be a class constant"))
+  -- if S.TODO = (DYNAMIC_CLASS_DEFINE_NAN_RESULT pconfigcall) :: ptask_tail*
+  -- if $call_task_valid(S, DYNAMIC_CLASS_DEFINE_NAN_RESULT pconfigcall)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = DYNAMIC_CLASS_DEFINE_NAN_RESULT pconfigcall
+  -- if $call_task_valid(S, perrorcall.RESUME)
+  -- if perrorcall.SITE = pconfigcall.SITE /\ perrorcall.LEVEL = 2 /\ perrorcall.LINE = pconfigcall.LINE
+  -- if perrorcall.MESSAGE = $dynamic_nan_define_flag_message()
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pconfigcall.LINE
+def $error_context_trigger(S, pcallcontext) = (pconfigcall)
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = DYNAMIC_CLASS_DEFINE_NAN_RESULT pconfigcall
+def $error_handler_trace_values(S, pcallcontext, pconfigcall_api) = $trace_extra(S, $getclass_trace_operands(pconfigcall_api.SENT))
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = DYNAMIC_CLASS_DEFINE_NAN_RESULT pconfigcall
   -- if pconfigcall_api = pconfigcall

@@ -218,8 +218,23 @@ returning handler, strict rejection and throwing-handler groups. Actual transiti
 cover raw API/caller traces, source file/line, Previous NULL, preserved stores/table,
 complete restored-state discard equality, forged captures/markers and budgets.
 Default PHP stderr retains its one Deprecated line; the other originals are quiet.
-Old flag routes are unchanged; NaN flags for these names, NUL/coerced names,
-wider values and owning/packed forms remain partial.
+Old flag routes are unchanged; NaN flags follow below. NUL/coerced names, wider
+values and owning/packed forms remain partial.
+
+A NaN third flag with a non-NUL `::` name first emits its bool-conversion Warning.
+Normal return reaches the captured-name ValueError before the ignored-true Warning;
+a false handler also retains the conversion diagnostic. A throwing handler cancels
+the body and keeps the same Exception, callback effects, inner binding and caller
+result. Strict calls reject the raw float after all argument effects without warning.
+The [NaN class-name review](../../coverage/semantics/define-class-nan-flag-review.json)
+binds four exact originals and 441 public premises across default/false-return,
+strict and throwing-handler groups. Actual transitions check raw API/caller traces,
+immutable canonical-NaN refusal, genuine runtime INF-minus-INF captures, complete
+restored-state discard equality and budgets. Native self-inequality observes NaN;
+negative-NaN bit assertions are SL source-state facts. Default and false-return PHP
+stderr each contain one conversion Warning; strict/peer are quiet. Previous marker
+domains are unchanged; NUL/coerced names, owning/wider values, wider NaN producers
+and full family closure remain partial.
 
 Fresh two-argument array definitions recursively dereference source cells into
 new DIRECT entries. Reinserting surviving keys rebuilds NEXT, positions and serial

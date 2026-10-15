@@ -7,6 +7,25 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+NaN third flags with non-NUL `::` define names now emit their conversion Warning
+before the name ValueError, skipping the ignored-true Warning. Returning handlers
+retain raw captures and callback effects; first-handler throws cancel the body
+while preserving the original Exception and inner binding. Strict calls reject the
+raw float after argument effects without either Warning.
+Four exact originals agree at 0dd57949; default and false-return cases each retain
+one expected PHP-stderr Warning. All 441 public premises pass: author 96+147+72 and
+independent 126 across four groups, covering actual dispatch/handler/resume/discard,
+raw API/caller traces, canonical-literal versus runtime NaN captures, source/carrier
+refusals and budgets. The unchanged Unsupported baseline retains zero credit;
+copied rule labels were fixed before execution. Runtime adds one tag and 51
+module400 lines; existing marker guards stay exact. NUL/coerced names, owning/wider
+values and wider NaN producers/payloads remain partial. Native bit identity is not
+claimed. [NaN class-name review](coverage/semantics/define-class-nan-flag-review.json).
+
+Pointwise composition over e70950fc preserves the incoming 399-module parent.
+Source4/state441 retain their private cuts; independent seam review warrants no
+joined actor or renewed execution claim.
+
 Terminal inherited `empty` now accepts valid non-NaN float getter results within
 the existing CV/literal private-property slice. Both signed zeros are empty;
 other finite/subnormal values and infinities are not. One 235-byte original agrees
