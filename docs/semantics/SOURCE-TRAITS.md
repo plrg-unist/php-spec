@@ -74,6 +74,15 @@ into a parentless Consumer. The physical Trait function stays unchanged; the
 published Consumer clone keeps Trait magic, Consumer private13 and Grand called
 scope. Assignment20 returns20 after backing33. One original and two real cuts/231
 premises are in the [trait-setter review](../../coverage/semantics/trait-imported-backed-set-hook-review.json).
+
+Selected sole backed statement SET imports also retain one actual explicit
+builtin parameter. `int|string $incoming` receives `"20"` unchanged; Consumer
+private13 stores33 while the assignment returns the original string. Raw Trait
+Param/type/variance proof authenticates the projected signature and physical
+body; Trait magic remains distinct from Consumer lexical and Grand called scope.
+A string-only parameter fails at physical Trait hook ENDLINE7 before import.
+Two originals and two cuts/281 premises are in the
+[explicit trait-setter review](../../coverage/semantics/trait-imported-explicit-set-hook-review.json).
 Other setter imports and wider declaration shapes remain required.
 
 Imports retain two identities. The declaring owner and lexical `self` scope are

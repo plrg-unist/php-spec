@@ -64,6 +64,15 @@ premises (238 reached,32 derived), including source-type/Param-leaf forgeries an
 genuine compiler rejection. The existing target/result, storage and generic typed
 receive rules are reused. [Explicit-parameter review](../../coverage/semantics/explicit-setter-parameter-review.json).
 
+Selected direct trait SET imports also preserve that real builtin parameter
+signature. Raw Trait property type, Param leaf and variance authenticate the
+Consumer clone; physical body/magic and logical private/called scope stay distinct.
+The original string input survives receipt and void restoration after backing33.
+A narrow parameter fails at the Trait hook ENDLINE7 before import. Two originals
+and two states pass281 premises (233 reached,48 derived), including synchronized
+narrowing and raw-function/Param/type/callable forgeries.
+[Explicit trait-setter review](../../coverage/semantics/trait-imported-explicit-set-hook-review.json).
+
 A selected public typed statement pair ordered get then set now compiles both indexed
 source functions and retains one backing descriptor. Its declaring class is
 parentless and inheritance keeps the same descriptor. An active matching GET

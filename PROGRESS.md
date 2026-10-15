@@ -7,16 +7,14 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Direct sole backed implicit trait SET now imports into a parentless Consumer.
-An authenticated raw Trait source yields a Consumer callable without mutating
-FUNCTIONS; Trait magic, Consumer private13 and Grand called scope stay distinct.
-Assignment20 restores20 after backing33; bad-array caller24 remains pre-body.
-Source1/strict394 pass at c352; the later class-owner guard is covered by two
-current-code states at d586, passing231 =179 reached +52 derived. The measured
-fixture false, syntax failure and diagnostic retain0; no old class cut is renewed.
-[Review](coverage/semantics/trait-imported-backed-set-hook-review.json).
-The 394-module composition over 8c7938fc passes retained SL initialization at ae95;
-private source/state cuts retain their original identities without replay.
+Direct sole backed trait SET now preserves an actual builtin explicit parameter.
+Raw Trait Param/type/variance proof authenticates the Consumer callable signature
+and physical body. Trait magic, Consumer private13 and Grand called scope remain
+distinct; assignment returns original STRING20 after backing33. A narrow parameter
+fails at physical Trait hook ENDLINE7 before import. Two originals/strict394 pass
+at fddc, and two states pass281 =233 reached +48 derived at fd604. No earlier
+class cut is renewed; wider trait/parameter forms remain partial.
+[Review](coverage/semantics/trait-imported-explicit-set-hook-review.json).
 
 Module404 now stages unary `+`/`-` leading-numeric warnings from a defined
 non-reference CV through named handlers. Fresh capture/dispatch matches the CV;

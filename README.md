@@ -2273,6 +2273,11 @@ A selected sole backed implicit SET also imports directly from a trait. Consumer
 private13 and Grand called scope coexist with Trait magic; assignment20 returns20
 while storage becomes33. One original and two states/231 checks are in the
 [trait-setter review](coverage/semantics/trait-imported-backed-set-hook-review.json).
+Selected direct trait setters also retain an actual `int|string $incoming`
+parameter. The assignment returns its original `"20"` string after storage33;
+Trait magic, Consumer private13 and Grand called scope remain distinct. A
+string-only parameter fails at the physical Trait hook line7. Two originals and
+two states/281 checks are in the [explicit trait-setter review](coverage/semantics/trait-imported-explicit-set-hook-review.json).
 Hooked iteration, defaulted virtual hooks, other paired hooks, unbacked or other trait
 setters, other explicit setter parameter forms, references, other inherited/trait
 and wider receiver, quiet or indirect-access families and `__unset` consumers remain required.
