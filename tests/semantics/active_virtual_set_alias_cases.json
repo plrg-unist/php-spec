@@ -1,0 +1,34 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hashes": [
+    "60b9c9fd3032ef9de3ac831ec9a6e9032da35a64141a616aaef05475f71a3f41"
+  ],
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "scalar",
+      "source": "<?php\nclass VirtualAliasParent78 {\n    public int $stored = 10;\n    public int $value {\n        set {\n            echo 'SET:', self::class, '/', static::class, '/', __METHOD__, '/', $value, '|';\n            $alias = $this;\n            $alias->value = $value;\n            $this->stored = $value + 13;\n            echo 'AFTER|';\n        }\n    }\n}\nclass VirtualAliasChild78 extends VirtualAliasParent78 {}\n$child = new VirtualAliasChild78();\n$raw = (array) $child;\necho 'I:', ($raw === ['stored' => 10] ? 'ONLY' : 'OTHER'), '/', $raw['value'] ?? 'ABSENT', '/', $child->stored, '|';\n$result = 7;\ntry {\n    $result = ($child->value = 20);\n    echo 'RESULT:', $result, '|';\n} catch (Error $error) {\n    echo 'ERROR:', $error->getMessage(), '|';\n}\n$raw = (array) $child;\necho 'F:', ($raw === ['stored' => 10] ? 'ONLY' : 'OTHER'), '/', $raw['value'] ?? 'ABSENT', '/', $child->stored, '/', $result, '|';\n",
+      "source_sha256": "c9745f73db7abd1ef209c073fe8b795c3f5cec4c096e412fcf1f05e16b62b9f6",
+      "stdout_base64": "STpPTkxZL0FCU0VOVC8xMHxTRVQ6VmlydHVhbEFsaWFzUGFyZW50NzgvVmlydHVhbEFsaWFzQ2hpbGQ3OC9WaXJ0dWFsQWxpYXNQYXJlbnQ3ODo6JHZhbHVlOjpzZXQvMjB8RVJST1I6TXVzdCBub3Qgd3JpdGUgdG8gdmlydHVhbCBwcm9wZXJ0eSBWaXJ0dWFsQWxpYXNDaGlsZDc4OjokdmFsdWV8RjpPTkxZL0FCU0VOVC8xMC83fA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "active-virtual-set-alias78-scalar-native-62f9f5d1",
+      "native_raw_sha256": "60b9c9fd3032ef9de3ac831ec9a6e9032da35a64141a616aaef05475f71a3f41"
+    }
+  ]
+}

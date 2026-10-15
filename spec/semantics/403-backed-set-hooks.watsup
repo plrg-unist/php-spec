@@ -382,6 +382,31 @@ def $property_set_plan(S) = (ppropertyhook)
   -- if ppropertyhook = {SITE porigin_site, OBJECT n, PROPERTY porigin_property, HOOK porigin_hook, LINE z}
   -- if $property_set_valid(S, ppropertyhook)
 def $property_set_plan(S) = eps -- otherwise
+
+;; Active virtual SET has no backing store, even through a same-object alias.
+;; This slice resolves an actual defined CV input before the handler Error.
+dec $property_set_virtual_write_error(pstate) : ppropertyhook?
+def $property_set_virtual_write_error(S) = (ppropertyhook)
+  -- if S.TODO = (ASSIGN_ARRAY (BASE_PROPERTY_PENDING pbase poperand z_receiver) z false) :: ptask_tail*
+  -- if S.ORIGIN = (PORIGIN n_site pcpath_site)
+  -- if $property_pending_assign_valid(S, BASE_PROPERTY_PENDING pbase poperand z_receiver, z, false)
+  -- if S_target = $property_pending_resolve(S, pbase, poperand, PPW, z_receiver, z)
+  -- if S_target.COMPLETION = NORMAL
+  -- if S_target.BASE = BASE_PROPERTY (POBJECT n) ptbytes
+  -- if $property_set_needed(S, n, ptbytes)
+  -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes
+  -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
+  -- if $property_set_virtual_active(S, n, ppropertydesc)
+  -- if $property_set_origin(S, ppropertydesc) = (porigin_hook)
+  -- if porigin_property = ppropertydesc.ORIGIN
+  -- if ppropertyhook = {SITE (PORIGIN n_site pcpath_site), OBJECT n, PROPERTY porigin_property, HOOK porigin_hook, LINE z}
+  -- if $property_set_valid(S, ppropertyhook)
+  -- if $origin_node(S.SOURCES, PORIGIN n_site pcpath_site) = (NExprAssign expression_target (NExprVariable (BYTES text_input) metadata_input) metadata)
+  -- if $source_emission_cv(S, n_site, pcpath_site ++ [PCFIELD 1], NExprVariable (BYTES text_input) metadata_input)
+  -- if S.RESULT = VARIABLE ($base64(text_input)) z_input
+  -- if $lookup(S.ENV, $base64(text_input)) = (n_input)
+  -- if S.STORE[n_input] = DEFINED pvalue_input
+def $property_set_virtual_write_error(S) = eps -- otherwise
 def $property_set_pending(S) = true
   -- if S.TODO = (ASSIGN_ARRAY (BASE_PROPERTY_PENDING pbase poperand z_receiver) z b) :: ptask_tail*
   -- if S_target = $property_pending_resolve(S, pbase, poperand, PPW, z_receiver, z)
@@ -403,9 +428,23 @@ rule PhpStep/property-set-rhs-abrupt: S ~> S_rhs[.TODO = eps]
   -- if S_target = $property_pending_resolve(S, pbase, poperand, PPW, z_receiver, z)
   -- if S_rhs = $resolve_at(S_target, S.RESULT, z)
   -- if S_rhs.COMPLETION =/= NORMAL
+rule PhpStep/property-set-virtual-write-error: S ~> $throw_scalar(S_rhs[.TODO = ptask_tail*], "Error", $ptascii("Must not write to virtual property ") ++ $object_name(S_rhs, ppropertyhook.OBJECT) ++ $ptascii("::$") ++ $c_string(ptbytes), z)
+  -- if S.TODO = (ASSIGN_ARRAY (BASE_PROPERTY_PENDING pbase poperand z_receiver) z false) :: ptask_tail*
+  -- if $property_set_virtual_write_error(S) = (ppropertyhook)
+  -- if S_target = $property_pending_resolve(S, pbase, poperand, PPW, z_receiver, z)
+  -- if S_target.BASE = BASE_PROPERTY (POBJECT ppropertyhook.OBJECT) ptbytes
+  -- if S_rhs = $resolve_at(S_target, S.RESULT, z)
+  -- if S_rhs.COMPLETION = NORMAL
+rule PhpStep/property-set-virtual-write-rhs-abrupt: S ~> S_rhs[.TODO = ptask_tail*]
+  -- if S.TODO = (ASSIGN_ARRAY (BASE_PROPERTY_PENDING pbase poperand z_receiver) z false) :: ptask_tail*
+  -- if $property_set_virtual_write_error(S) = (ppropertyhook)
+  -- if S_target = $property_pending_resolve(S, pbase, poperand, PPW, z_receiver, z)
+  -- if S_rhs = $resolve_at(S_target, S.RESULT, z)
+  -- if S_rhs.COMPLETION =/= NORMAL
 rule PhpStep/property-set-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "set hook assignment source or function"]
   -- if $property_set_pending(S)
   -- if $property_set_plan(S) = eps
+  -- if $property_set_virtual_write_error(S) = eps
 rule PhpStep/property-set-result: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (PROPERTY_SET_RESULT ppropertyhook pvalue) :: ptask_tail*
   -- if S.COMPLETION = NORMAL /\ S.RESULT = KNOWN PNULL
