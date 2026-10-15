@@ -1,0 +1,222 @@
+{
+  "scope": "Extend the existing terminal inherited empty CV/literal private-property slice from integers to null, bool and byte strings. Signatures, same parentless declaring owner, saved receiver, guards and source authority stay unchanged.",
+  "implementation": {
+    "base": "0ca751335b2ee14f99847782a75b477fd9e836d6",
+    "revision": "ebec200058eb6f8d321a9a3d519be1616cfb0fb3",
+    "modules": 399,
+    "file": "spec/semantics/408-magic-property-empty.watsup",
+    "truth": "NULL/false/int0/empty bytes/sole ASCII0 yield empty true; true/nonzero int/other bytes yield false. PSTRING_CARRIER requires existing identity authentication. Optional false is successful, not refusal.",
+    "ownership": "INTERNED/REQUEST identity tokens are immutable node-free metadata under the established carrier contract; no producer or ownership module changes.",
+    "affected_maintenance": "Active CLASS83 noninteger refusal control changes PBOOL true to PFLOAT0 and the new refusal text; original208 report/ledger retain their integer-era cut without replay."
+  },
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "vendor/php-src/Zend/zend_object_handlers.c:2490-2520 zend_std_has_property/Get RV truth and receiver release",
+      "vendor/php-src/Zend/zend_operators.h:409 i_zend_is_true null/bool/int/exact-byte truth; NaN emits a warning"
+    ],
+    "intentional_divergences": []
+  },
+  "original_source": {
+    "path": "/home/user/workspace/php-spec/.tools/magic-empty-scalars-private-84/.tools/magic-empty-scalars-probes-84/scalar.php",
+    "sha256": "72f61f0f273e638de102da8fb7cc34fc4b5f278596bbee5d0f9553bde68f6fb5",
+    "maintained": "tests/semantics/magic-empty-scalars.php",
+    "byte_identical": true,
+    "results": [
+      "null",
+      "false",
+      "true",
+      "empty bytes",
+      "ASCII0",
+      "ASCII00",
+      "go",
+      "NUL",
+      "ASCII0+NUL"
+    ],
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "validation": {
+    "native": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-scalars-private-84/.tools/magic-empty-scalars-probes-84/native-first/report.json",
+      "sha256": "4be59010a0b4c2d4ecd7acb7b72beb7169d9f7cee67d872cff99413d37d0692c",
+      "revision": "0ca751335b2ee14f99847782a75b477fd9e836d6",
+      "inputs_stable": true,
+      "head_stable": true,
+      "status_stable": true,
+      "stdout_bytes": 201,
+      "stderr_bytes": 0,
+      "exit": 0,
+      "source_agreements": 0,
+      "raw_tuple_sha256": "65343771cdc9153ff3ea0b2a31f8131827be88d38c0d1f9789d9697e93a258c8",
+      "raw_hash_recipe": "stdout + NUL + stderr + NUL + ASCII exit"
+    },
+    "unchanged_baseline": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-scalars-private-84/.tools/magic-empty-scalars-probes-84/accepted-current-baseline/report.json",
+      "sha256": "881d490c8c8048a827b844356d097ea3b78fa34348a76b96eea703d9c30451ed",
+      "revision": "0ca751335b2ee14f99847782a75b477fd9e836d6",
+      "inputs_stable": true,
+      "head_stable": true,
+      "status_stable": true,
+      "status": "unsupported",
+      "reason": "magic empty getter result outside integer family",
+      "exit": 1,
+      "source_agreements": 0
+    },
+    "changed_source": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-scalars-private-84/.tools/magic-empty-scalars-probes-84/changed-model-__gvcq9n/report.json",
+      "sha256": "13436d194f73f1cb62a3c8743423fc60eea02b83c4a141e2c150563e11376476",
+      "revision": "ebec200058eb6f8d321a9a3d519be1616cfb0fb3",
+      "inputs_stable": true,
+      "head_stable": true,
+      "status_stable": true,
+      "status": "normal",
+      "stdout_bytes": 201,
+      "stderr_bytes": 0,
+      "exit": 0,
+      "source_agreements": 1,
+      "exact_native_tuple": true
+    },
+    "focused_state": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-scalars-private-84/.tools/magic-empty-scalar-protocol-2yc9i_8i/report.json",
+      "sha256": "632ad64365b16bdee76a697dc022ca49ec9e7d4de8a3693d864186c6d4e39006",
+      "revision": "6ea911050423737a0b91d6e22df2e67ef3716862",
+      "inputs_stable": true,
+      "head_stable": true,
+      "status_stable": true,
+      "driver": "tests/semantics/magic_empty_scalar_protocol.py",
+      "driver_sha256": "ec325ac1064877c521aae5df95809cb105f520d7573329e2c4b7ec8aeb2fb7c3",
+      "fixture_sha256": "c44303a5482d15512769165d8c8399f32ad83f7b6053bd43edee454297c15663",
+      "passed": true,
+      "mode": "SL",
+      "cache": false,
+      "det": true,
+      "premises": 155,
+      "reached": 132,
+      "derived": 23,
+      "application_evaluations": 1,
+      "source_agreements": 0,
+      "processes": [
+        {
+          "id": "algorithmic-compilation",
+          "exit": 0,
+          "elapsed": 6.914960861206055,
+          "timeout": false,
+          "group_after": []
+        },
+        {
+          "id": "strict-SL-application",
+          "exit": 0,
+          "elapsed": 57.326560497283936,
+          "timeout": false,
+          "group_after": []
+        }
+      ]
+    }
+  },
+  "focused_scope": {
+    "reached": "Nine actual result deliveries assert exact literal INTERNED payload bytes, pure no-event/no-store conversion, saved RESULT receiver-owner release for null and NUL, final exact output/property storage and late budget resume equality.",
+    "derived": "Legacy PSTRING/int controls; actual PFLOAT0 result-state refusal; authenticated REQUEST payload step with no value nodes plus stale index, mismatched bytes and invalid INTERNED byte refusals. REQUEST checks are constructed controls, with no computed-producer source claim.",
+    "unchanged": "CLASS83 site/method/capture/frame/call/throw/receiver protocol remains pointwise unchanged; historical208 is not replayed or renewed. Public changed-source CLI provides actual SL loading; no extra initialization actor."
+  },
+  "zero_credit": [
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-scalars-private-84/.tools/magic-empty-scalars-probes-84/changed-model-tgbxnm5s/report.json",
+      "sha256": "620a1b8e88a9ad305d327869e6e37eb23cbecc8dc99bab830a23cde95961b724",
+      "revision": "c383e4d47b60bd1cf625da6ac3b0efdd559a1d78",
+      "inputs_stable": true,
+      "head_stable": true,
+      "status_stable": true,
+      "reason": "Initial helper admitted raw PSTRING only; actual blank literal RV is an INTERNED carrier. Checked Unsupported after earlier null/bool results; source agreement 0.",
+      "passing_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-scalars-private-84/.tools/magic-empty-scalar-protocol-2eml16ro/report.json",
+      "sha256": "ddba62ab861416b456a50d710c56eb80d2a2515ba864e5ff932743f69bcc9c38",
+      "revision": "f786d87eac10fa09e982eb361a6e39517c011553",
+      "inputs_stable": true,
+      "head_stable": true,
+      "status_stable": true,
+      "reason": "Pre-app parser diagnostic: ungrouped multi-byte constructor argument.",
+      "application_evaluations": 0,
+      "source_agreements": 0,
+      "passing_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-scalars-private-84/.tools/magic-empty-scalar-protocol-6q2p0fmi/report.json",
+      "sha256": "7fc6348bdaeeec4dd37715aa9d864a7086101540dbb54954c0af9997e19b885a",
+      "revision": "66c394cab7bd4caafd32fe0e4e4545900057a615",
+      "inputs_stable": true,
+      "head_stable": true,
+      "status_stable": true,
+      "reason": "Pre-app elaboration diagnostic: single-byte constructor argument parsed as indexing.",
+      "application_evaluations": 0,
+      "source_agreements": 0,
+      "passing_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-scalars-private-84/.tools/magic-empty-scalars-probes-84/affinity-changed-source-84-repair1.json",
+      "sha256": "b1ca6d8adbe540a55e2cda0eb6cad4f6ab43576cca12d21a3e8a3f96bd829551",
+      "reason": "Observer expired across compaction before any actor launch; zero captures and no application.",
+      "passing_credit": 0
+    }
+  ],
+  "execution": {
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": "absent",
+      "jobs": 1
+    },
+    "source_caps": {
+      "native": 45,
+      "model": 60,
+      "outer": 75,
+      "steps": 100000
+    },
+    "focused_caps_seconds": 90,
+    "commands": [
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/magic-empty-scalars-probes-84/run.py native --revision 0ca751335b2ee14f99847782a75b477fd9e836d6",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/magic-empty-scalars-probes-84/run.py baseline --revision 0ca751335b2ee14f99847782a75b477fd9e836d6",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/magic-empty-scalars-probes-84/run.py changed --revision ebec200058eb6f8d321a9a3d519be1616cfb0fb3",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 2 python3 -u tests/semantics/magic_empty_scalar_protocol.py --revision 6ea911050423737a0b91d6e22df2e67ef3716862"
+    ],
+    "affinity": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-scalars-private-84/.tools/magic-empty-scalars-probes-84/affinity-native-first.json",
+        "sha256": "8bf4b6714a307bac78e6a4ecad039291cebf089f895e663e474b25d29324d5ee"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-scalars-private-84/.tools/magic-empty-scalars-probes-84/affinity-accepted-current-baseline.json",
+        "sha256": "2828b9240dfdd91e406914988622823975f3e870162fc013145bd54d8678fcaf"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-scalars-private-84/.tools/magic-empty-scalars-probes-84/affinity-changed-source-84-repair2.json",
+        "sha256": "76732ce392461e44de8f93115b55cedbe1d451e6cc80b45b41d87072d7efe5d4"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-scalars-private-84/.tools/magic-empty-scalars-probes-84/affinity-state-84-repair2.json",
+        "sha256": "261f542eb992bf599c2f765fae3669096856584682694869c01504466aa98bc8"
+      }
+    ],
+    "workers": "All accepted actor groups empty and PIDs reaped; both focused workers observed live on CPU2."
+  },
+  "tools": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "boundaries": "Float truth remains deferred; NaN needs a warning-aware continuation. Arrays/objects need real RV disposal. Other signatures, owners, receivers, names, references, recursive and coalesce combinations remain partial. No quiet NaN or owning-NUL claim.",
+  "artifacts": "Ignored raw reports, streams, process records and private source run.py remain at their original absolute .tools paths; maintained source and focused harness are recoverable from the tested commits. No bulky raw artifacts are tracked.",
+  "review": {
+    "independent_reviewer": "class_review_84",
+    "accepted": [
+      "native and genuine unchanged Unsupported baseline",
+      "repaired exact original source1",
+      "production carrier/ownership contract",
+      "focused155 and preserved zero-credit failures"
+    ],
+    "publication": "accepted after saved-receiver and artifact-recovery wording clarifications; metadata changes require no semantic rerun"
+  }
+}

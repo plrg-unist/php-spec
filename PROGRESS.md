@@ -7,18 +7,19 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Terminal `empty` now composes inherited `__isset(string): bool` and untyped
-by-value `__get` for selected CV/literal private properties. False skips the getter;
-true inverts its integer result. Public initialized and typed-INITIAL slots bypass
-both, and Parent lexical scope stays distinct from Child called scope. One normal
-original agrees at d9df16379; state208 =138 reached +70 derived passes at e8703a594,
-including captured receiver ownership, private bypass, noninteger refusal, both
-derived throw cleanups and budget resume. Two pre-app fixture failures and one
-incorrect derived expectation retain zero passing credit. Wider result/signature,
-recursive and quiet combinations remain partial.
+Terminal inherited `empty` now accepts null/bool/int and byte-string getter results
+within the existing CV/literal private-property slice; identity carriers are authenticated. Empty bytes
+and sole ASCII `0` are empty strings; NUL and `0` plus NUL are not. One further
+201-byte original agrees at ebec20005; state155 =132 reached +23 derived passes at
+6ea911050, checking actual literal INTERNED payloads, pure conversion, receiver
+release and late budget resume. REQUEST metadata authentication/refusals are
+derived controls with no new producer claim. The initial changed Unsupported, two
+pre-app fixture failures and expired no-actor observer retain zero passing credit.
+Float/NaN, owning results and wider signatures/receivers/recursive/quiet forms
+remain partial. [Primitive result review](coverage/semantics/magic-empty-scalars-review.json).
+The prior integer/call/receiver slice retains original d9df16379/state208 e8703a594
+and its 4206eef78 composition without replay; both abrupt cleanups remain derived.
 [Magic empty review](coverage/semantics/magic-empty-review.json).
-Pointwise composition over 4206eef78 preserves the incoming398 modules and all
-owned rules; private source/state cuts retain their identities without replay.
 
 Plain-CV `%=` now keeps both converted longs through a fractional-RHS deprecation.
 Captured12/5 stores2 despite callback99/7 and detaches a late target alias; supplied
