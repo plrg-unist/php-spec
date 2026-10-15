@@ -1,6 +1,6 @@
 # Ordinary source user constants
 
-Ordinary `const` declarations and reads use the checked source compiler and runtime for the pinned PHP 8.5.10 CLI profile. Scalar/array, certified Closure/FCC, bounded user-instance NEW and direct-root zero-argument stdClass values are supported; the constant family and full core remain partial.
+Ordinary `const` declarations and reads use the checked source compiler and runtime for the pinned PHP 8.5.10 CLI profile. Scalar/array, certified Closure/FCC, bounded user-instance NEW and zero-argument stdClass values, including nested arrays and selected newborn ternary leaves, are supported; the constant family and full core remain partial.
 
 ## Declaration and lookup
 
@@ -487,8 +487,7 @@ so changing the next query from one constant to another selects the second objec
 The [query ledger](../../coverage/semantics/global-constant-stdclass-query-review.json)
 records two exact originals, reached state fronts, budget resumption and undriven
 certificate refusals. The unchanged Unsupported baseline remains zero credit;
-direct embedded stdClass NEW, generic objects and wider owning/coercing query forms
-remain partial.
+generic objects and wider owning/coercing query forms remain partial.
 
 Certified stdClass aliases may now be leaves in literal global constant array
 trees. Shape admission permits their nonowning class facts; existing captured
@@ -498,6 +497,15 @@ to the same completed-birth/live-allocation check as a direct stdClass query.
 Lookup shares the root and child arrays and adds only a root owner. Real nested
 COW creates another physical array-to-object edge; properties stay shared, while
 replacing a caller bucket leaves the installed DIRECT tree intact. Eval donor
-sources retain their own unit origins. Direct nested stdClass NEW, default
-caching and callable folding keep their separate producer/consumer boundaries.
+sources retain their own unit origins. Default caching and callable folding keep
+their separate consumer boundaries.
 [stdClass array-alias review](../../coverage/semantics/global-constant-stdclass-array-review.json).
+
+Zero-argument stdClass NEW also executes at nested array sites and selected full
+or shorthand ternary leaves. The initializer path stops at closure bodies;
+full context validity retains earlier facts and branch consistency. Immediate-arm
+transfer follows the newborn's SITE to its completed receipt, while value guards
+separately require the live allocation. Eval duplicate candidates create distinct
+leaves, then retire while nonowning birth history remains. Four exact sources and
+1,107 SL premises retain their [nested-birth cuts](../../coverage/semantics/global-constant-stdclass-new-review.json).
+Conditional aliases/whole-array transfer, coalescing, arguments and defaults remain partial.
