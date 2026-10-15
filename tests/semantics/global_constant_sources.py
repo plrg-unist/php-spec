@@ -39,6 +39,14 @@ $call = 'constant';
 function changeGlobalCallee21() { global $call; $call = 'defined'; return 'GlobalRequest21'; }
 echo 'B|', $call(name: changeGlobalCallee21()), '|', $call, '|', constant('GlobalLiteral21');
 ''',
+    'captured-define-query-and-strings': br'''<?php
+define('GlobalLiteral21', 'literal');
+$prefix = 'request';
+define('GlobalRequest21', $prefix . '-value');
+$call = 'constant';
+function changeGlobalCallee21() { global $call; $call = 'defined'; return 'GlobalRequest21'; }
+echo 'B|', $call(name: changeGlobalCallee21()), '|', $call, '|', constant('GlobalLiteral21');
+''',
     'missing-api-error': br'''<?php
 function missingGlobal21() {
     $result = 91;
@@ -58,6 +66,8 @@ const GlobalArray21 = [1];
 echo 'B|'; constant('GlobalArray21'); echo 'after';
 ''',
 }
+UNSUPPORTED = {'captured-query-and-strings': ('global constant object transfer', b''),
+    'array-result-boundary': ('global constant value query', b'B|')}
 
 
 def fingerprint():
@@ -86,7 +96,8 @@ def main():
             'sources': {name: hashlib.sha256(CASES[name]).hexdigest() for name in selected}}, indent=2))
         return
     out = args.output.resolve(); out.mkdir(parents=True, exist_ok=True)
-    report_path = out / (args.phase + '-report.json')
+    suffix = '-' + '-'.join(args.case) if args.phase == 'model' and args.case else ''
+    report_path = out / (args.phase + suffix + '-report.json')
     assert not report_path.exists()
     profile = json.loads((ROOT / 'tests/semantics/profile.json').read_bytes())
     flags = [piece for key, value in profile.items() for piece in ('-d', key + '=' + value)]
@@ -132,9 +143,10 @@ def main():
                 if args.phase == 'baseline':
                     assert row['process']['exit'] == 1 and outcome['status'] == 'unsupported'
                     assert outcome['reason'] == 'class constant value query' and outcome['stdout'] == b64(b'B|')
-                elif name == 'array-result-boundary':
+                elif name in UNSUPPORTED:
                     assert row['process']['exit'] == 1 and outcome['status'] == 'unsupported'
-                    assert outcome['reason'] == 'global constant value query' and outcome['stdout'] == b64(b'B|')
+                    reason, prefix = UNSUPPORTED[name]
+                    assert outcome['reason'] == reason and outcome['stdout'] == b64(prefix)
                 else:
                     assert row['process']['exit'] == 0 and outcome['status'] == 'normal' and outcome['reason'] is None
                     assert outcome['exit_status'] == original['process']['exit']

@@ -38,7 +38,7 @@ def checks(program, path, identity, stdout):
     values = ['S_initial = $php_run(' + program + ',0,' + json.dumps(b64(os.fsencode(path))) + ')',
         'S_initial.COMPLETION = BUDGET']
     query = {'names-and-scalars': 'OutsideGlobal21',
-        'captured-query-and-strings': 'GlobalRequest21',
+        'captured-define-query-and-strings': 'GlobalRequest21',
         'missing-api-error': '\\MissingGlobal21'}[identity]
     values += front('S', 'S_initial', query)
     values += ['pconfigcall_S.OWNER = eps', 'pconfigcall_S.PACKS = eps',
@@ -72,7 +72,7 @@ def checks(program, path, identity, stdout):
         values += front('S_special', 'S_null_value', 'TrUe')
         values += common.step('S_special_value', 'S_special', 'PBOOL true') + unchanged('S_special', 'S_special_value')
         finish = 'S_special_value'
-    elif identity == 'captured-query-and-strings':
+    elif identity == 'captured-define-query-and-strings':
         values += ['pconfigcall_S.SELECTION = (n_selection)',
             '$(n_selection < |S.SELECTEDCALLS|)', 'S.SELECTEDCALLS[n_selection].KIND = INTRINSIC_CONSTANT',
             '$lookup(S.ENV,' + text('call') + ') = (n_callee)',
@@ -118,17 +118,21 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--phase', choices=['prepare', 'check'], required=True)
     parser.add_argument('--sources', type=Path, required=True)
+    parser.add_argument('--adjacent-sources', type=Path)
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     out, originals = args.output.resolve(), args.sources.resolve()
     out.mkdir(parents=True, exist_ok=True)
     report_path = out / (args.phase + '-report.json'); assert not report_path.exists()
-    native = json.loads((originals / 'native-report.json').read_bytes())
-    assert native['passed'] and native['inputs_stable'] and native['head_stable']
-    names = [name for name in sources.CASES if name != 'array-result-boundary']
+    names = ['names-and-scalars', 'captured-define-query-and-strings', 'missing-api-error']
+    packets = {name: (args.adjacent_sources.resolve() if args.adjacent_sources is not None
+        and name == 'captured-define-query-and-strings' else originals) for name in names}
+    natives = {name: json.loads((packets[name] / 'native-report.json').read_bytes()) for name in names}
+    assert all(native['passed'] and native['inputs_stable'] and native['head_stable'] for native in natives.values())
     extra = [Path(__file__), Path(common.__file__), ROOT / 'tests/semantics/recorded_worker.py',
-        ROOT / 'tests/semantics/_build/default/numeric_runner.exe', originals / 'native-report.json']
-    extra += [originals / name / 'main.php' for name in names]
+        ROOT / 'tests/semantics/_build/default/numeric_runner.exe']
+    extra += list({packets[name] / 'native-report.json' for name in names})
+    extra += [packets[name] / name / 'main.php' for name in names]
     if args.phase == 'check':
         extra += [out / name / item for name in names for item in ('protocol.watsup', 'assertions.json')]
     pins = lambda: dict(sources.fingerprint(), **{str(p): sources.sha(p) for p in extra})
@@ -142,8 +146,8 @@ def main():
             try:
                 adapter = Worker([str(ROOT / '_build/default/adapter/main.exe'), str(ROOT)], out / 'adapter')
                 for name in names:
-                    path = originals / name / 'main.php'; assert path.read_bytes() == sources.CASES[name]
-                    row, = [r for r in native['records'] if r['id'] == name]
+                    path = packets[name] / name / 'main.php'; assert path.read_bytes() == sources.CASES[name]
+                    row, = [r for r in natives[name]['records'] if r['id'] == name]
                     assert sources.sha(path) == row['source_sha256']
                     parsed = frontend.request({'op': 'parse', 'source': b64(path.read_bytes())}); assert parsed['accepted']
                     program = adapter.request({'op': 'check', 'ast': parsed['ast'], 'fixture': True})['fixture']
