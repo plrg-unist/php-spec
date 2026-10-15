@@ -2263,6 +2263,8 @@ SET rejects at hook ENDLINE7 after body compilation. Strict394/source2 pass at
 actual receive/result restoration and genuine compiler rejection. The original
 Unsupported baseline/native/preparations retain0; no old hook actors were renewed.
 [Explicit-parameter review](coverage/semantics/explicit-setter-parameter-review.json).
+Joined exact `b8b92ac0`/394; retained initialization passes on CPU2 without source/state renewal.
+Absent divide-warning, Iterator-unpack, computed-ref-return and constant/object-comparison routes preserve the accepted setter path.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
