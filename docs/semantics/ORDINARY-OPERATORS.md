@@ -148,6 +148,20 @@ Empty/immutable/nested/reference-element/owning arrays, copied/reference operand
 wider callbacks and lifecycle forms remain partial. Pure refusal projections
 are not executed typed or owning array cases.
 
+Ordinary `.` also stages array warnings for two distinct defined plain CVs,
+with one nonempty mutable flat DIRECT scalar array and one quiet string. Both
+branches start at authentic `CONCAT_PREP`: a left-array warning yields fixed
+interned `Array` before reading the same live RHS CV cell, while a right-array
+warning keeps the first converted string in the existing legacy continuation.
+Fresh capture/dispatch verifies source, RHS line, snapshots and adjacent consumer;
+historical return permits removal of the borrowed array without retaining it.
+A supplied throw cancels the assignment and removes both warning/legacy markers.
+Three exact originals and 270 author plus 135 independent SL premises pass in the
+[concat-array ledger](../../coverage/semantics/concat-array-warning-review.json).
+Pruned/missing-name and RHS projections are pure refusals, never driven.
+After a left-array warning, missing/rebound/new-reference/non-string later RHS
+remain partial, along with wider arrays/operands, callbacks and lifecycle forms.
+
 Concatenation has an additional compile/runtime distinction. The compiler visits
 both operands before converting known scalar operands and queuing conversion
 warnings. At execution, known array operands produce their conversion warnings

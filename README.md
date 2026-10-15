@@ -575,6 +575,13 @@ or removing its CV still yields fixed `Array`, while a supplied throw preserves
 the destination. Three exact originals and 326 focused SL premises check these
 paths in the [array-cast ledger](coverage/semantics/array-string-cast-warning-review.json).
 Empty/immutable/nested or owning arrays, wider operands and handlers remain partial.
+Ordinary concatenation now stages array warnings for bounded plain-CV inputs.
+A left-array warning keeps fixed `Array` before reading the live quiet RHS;
+a right-array warning preserves the first converted string across callback writes.
+Borrowed arrays gain no saved owner, and supplied throws cancel destination
+assignment. Three exact originals and 405 focused SL premises pass in the
+[concat-array ledger](coverage/semantics/concat-array-warning-review.json).
+Wider arrays/operands and RHS rebinding after a left-array warning remain partial.
 [Destructuring and retained expression effects](docs/semantics/DESTRUCTURING.md)
 now execute current scalar/array list patterns and nonvariable-left coalescing.
 [Independent acceptance](coverage/semantics/destructuring-review.json) binds 263

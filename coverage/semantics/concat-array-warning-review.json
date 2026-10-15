@@ -1,0 +1,141 @@
+{
+  "version": 1,
+  "milestone": "OP21 ordinary concatenation array-warning continuation",
+  "status": "independently reviewed private semantics and tests; awaiting actual-parent composition",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local pinned PHP and profile",
+  "scope": "Ordinary binary concat of two distinct initially defined plain CVs: one nonempty mutable flat array of DIRECT defined nonowning scalars and one quiet string, with a named warning handler.",
+  "runtime_revision": "a23b774de6ef3dc7aefd70c4ad3cb4b7af48d74b",
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "d665e483b37d3105df252976e06c4bdbb90b54fc9d05623f9118e1e64c280e05",
+    "spec/semantics/59-concat-expressions.watsup": "eeb48fce3ad30994129712fcd9bcbd5e7776d3a3b4c7f1102e88f522fa6bb4a6",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "43175f94eaedf0989f3998dc5906856b1d97e6fd999a648c0de941132173e7c3"
+  },
+  "engine_basis": [
+    "Zend/zend_vm_def.h: ZEND_CONCAT selects both raw operands before concat_function; noncommutative CV/CV operands retain their physical order.",
+    "Zend/zend_operators.c: concat_function first calls try string conversion on LEFT, then inspects RIGHT. Before a non-string RIGHT conversion it pins the first string. The array arm warns and returns fixed interned Array unless a supplied exception makes the try conversion fail.",
+    "Existing59 scalar conversion is atomic;168 handles Stringable objects and404 explicit casts have another consumer. Both new branches enter authentic CONCAT_PREP and do not admit a late Stringable history."
+  ],
+  "contract": [
+    "Plan/capture/fresh TARGETeps authenticate actual Concat source, distinct plain CV operands, false constant flags, compiled RHS line, child ORIGIN and adjacent legacy consumer. No PARRAY is stored and both new markers add zero heap roots.",
+    "LEFT-array conversion retains the original quiet RHS CV cell. After a returning handler removes LEFT and writes RIGHT, the marker yields fixed Array and the legacy continuation reads that same live plain string cell. Missing, rebound, newly referenced or non-string RIGHT takes explicit Unsupported.",
+    "RIGHT-array conversion captures the first string at PREP in existing CONCAT_AFTER_RIGHT. Fresh capture/dispatch binds its exact bytes and carrier to the current initial CV; entered/resumed history preserves that value when LEFT changes and RIGHT disappears. The fixed Array then joins the cached first string.",
+    "A supplied handler throw removes warning and legacy concat markers before the assignment, preserves supplied identity/null Previous/destination100/callback mutations and reaches the real caller THROW_SEARCH. Continued tests use genuine production states only.",
+    "Whole-public source, stage, selected-cell, adjacent-consumer, cached-string/carrier and diagnostic counterfeits are lookup/validation controls, never driven. ALLOCATIONS-eps and missing-name/rebound/RHS projections are pure refusals without heap-validity or execution claims. Wider arrays, operands, callbacks and lifecycle paths remain partial; OP12 stays paused."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-21/source-a23b774de-handler-write/report.json",
+        "sha256": "055bb8955d58877917975d5078e4206ea7d500ae7a44377b0456bdea86cd9766",
+        "case": "concat-array-left-handler-write",
+        "revision": "a23b774de6ef3dc7aefd70c4ad3cb4b7af48d74b",
+        "agreements": 1,
+        "result": "normal0; LEFT removed, delayed quiet RIGHT after, result Arrayafter"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-21/review-model-a23b774de-right-default/report.json",
+        "sha256": "622ae81ddbda1a9473049f7314185e99dbe41011b1cf85f0026f76247519abf7",
+        "case": "concat-array-right-default-cached-left",
+        "revision": "a23b774de6ef3dc7aefd70c4ad3cb4b7af48d74b",
+        "agreements": 1,
+        "result": "normal0; cached first request string before, live LEFT after, RIGHT absent, result beforeArray and one default Warning14"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-21/source-a23b774de-handler-throw/report.json",
+        "sha256": "f8e545400e63d36a5afab2b7f9436407b717f89a9db96d3529960d82196b87a5",
+        "case": "concat-array-left-handler-throw",
+        "revision": "a23b774de6ef3dc7aefd70c4ad3cb4b7af48d74b",
+        "agreements": 1,
+        "result": "normal0; supplied identity/null Previous/destination100/LEFT absent/RIGHT after/finally"
+      }
+    ],
+    "author_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-21/state-39aa24b2f-author-two/report.json",
+      "sha256": "e2702b509e9deb3e7db9149fc30b5b2db994444a2169539822d4c7628f16f843",
+      "revision": "39aa24b2f39da7da5e981e769743b8d406d299ab",
+      "prepared_revision": "d1a9c335249eb2aaf6379b3d72b7168ab60fbced",
+      "conditions": [
+        147,
+        123
+      ],
+      "total": 270
+    },
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-21/state-39aa24b2f-review-one/report.json",
+      "sha256": "88322f78f91976015e01fddf01df6e77d8bc4c3363782c0b4b4f46686ff2b4af",
+      "revision": "39aa24b2f39da7da5e981e769743b8d406d299ab",
+      "prepared_revision": "d1a9c335249eb2aaf6379b3d72b7168ab60fbced",
+      "conditions": [
+        135
+      ],
+      "total": 135
+    },
+    "total_source_agreements": 3,
+    "total_focused_state_conditions": 405,
+    "compatibility": "Source3 retains a23b. Helpers were added at d1a9, then only legacy-list test traversal was corrected at39aa. Immutable state thins retain PREPd1a9 original PHP/checked AST/path/native and replace exactly that helper block in all three fixtures, with exact current-helper bridges. No PHP/frontend/source stage or private initialization actor runs in the numeric thins."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-21/baseline-40a5cb2b8-handler-write/report.json",
+      "sha256": "d7843edf27cf16073edb9a493f52201a917e3bcfedf196ec3e3907944ce6b1f0",
+      "result": "accepted checked program Unsupported: error-handler ingress requires a producer continuation; empty model streams before H versus native Arrayafter"
+    },
+    "native_and_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-21/native-40a5cb2b8-two/report.json",
+        "sha256": "f3e3be3fbffe030f2b6be9cb8464f7e84dd59a607429b3998b81f253f705be3c",
+        "purpose": "author native2 raw observations"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-21/native-c58d0d8ae-review-one/report.json",
+        "sha256": "4952f26e5070f900194f404aa46b9733c6559d91055002ae18981de9c386bd90",
+        "purpose": "independent cached-left/default native1 raw observation"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-21/state-prep-d1a9c3352-author-two/report.json",
+        "sha256": "028b8a3a20f27eda3b08a8dc83bfe0229a23724681dc073d56c9299cb7576698",
+        "purpose": "author2 PHP/frontend/checked-AST preparation only"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-21/state-prep-d1a9c3352-review-one/report.json",
+        "sha256": "c52e04e31910fdeceeb9e9a1a8f093967f7a3f179238564a76b80306e9e292db",
+        "purpose": "independent1 PHP/frontend/checked-AST preparation only"
+      }
+    ],
+    "standalone_syntax": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-21/syntax-d1a9c3352-three/report.json",
+      "sha256": "1e98517b6f5addec05f4585d3243db4f26c45fa94c7f7c2e4897eae38b115ddf",
+      "result": "all147/123/135 complete original files parse before expected standalone undefined-pstate; zero semantic credit. The later helper correction uses existing accepted task-classification/list-recursion syntax."
+    },
+    "pre_runtime_failures": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-21/source-d20eadf4a-handler-write/report.json",
+        "sha256": "63b91cf325b5f976b358eb8af9aa83e4d536fa2bdf4707e9fbbfa9eaeb8b3e8a",
+        "result": "runner_failure: empty iteration at404 consumer fallback. Only list/scalar binder separation changed before the affected source retry; no PHP behavior was modeled."
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-21/state-d1a9c3352-author-two/report.json",
+        "sha256": "d728b7f6804c04f7ac52ce0c560159cc787b482779c34419099c7720004d69b4",
+        "result": "first147 SL structuring failure: recursive test helper RHS alongside otherwise. No assertion evaluated; conditional123 and old peer135 remained unrun. Only helper traversal changed before the affected state packet."
+      }
+    ]
+  },
+  "required_follow_on": [
+    "Empty/immutable/nested/reference-element/owning arrays; copied/reference/TMP operands, wider string consumers, callbacks and lifecycle forms remain required.",
+    "LEFT-warning RHS removal/rebind/new reference/non-string conversion remain explicit boundaries, separate from the measured quiet same-cell update. Five inventory rows remain partial; OP12 stays paused."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-21",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "environment": "LC_ALL=C, TZ=UTC, no PHP_SPEC_SCRIPT_ENCODING. Source native30/model CLI60-process90; immutable CPU1 state thins full395 SL/cap120 per group/exact true newline/empty stderr/no interruption/reaped groups and absent PIDs.",
+    "commands": [
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 tests/semantics/concat_array_warnings.py --case CASE_ID --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 tests/semantics/concat_array_warning_review.py --case concat-array-right-default-cached-left --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-21/state-39aa24b2f-author-two/run-state.py",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-21/state-39aa24b2f-review-one/run-state.py"
+    ],
+    "record": "Restore matching Git cuts/project-local tools. For new state outputs copy the immutable thin and its frozen fixtures together to a fresh external directory; retain old PREP paths and exact helper bridge. Raw records preserve source/AST/native/fixtures/inputs/commands/exits/reaping outside Git."
+  }
+}

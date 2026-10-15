@@ -641,3 +641,139 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 2
   -- if perrorcall.MESSAGE = $ptascii("Array to string conversion")
   -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE z
+
+;; ZEND_CONCAT converts one borrowed array to the fixed string, preserving the
+;; other operand's conversion order. No array value or heap owner is retained.
+dec $concat_array_source(pstate, porigin, poperand, poperand, int) : bool
+def $concat_array_source(S, porigin, poperand_left, poperand_right, z) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpConcat expression_left expression_right metadata)
+  -- if poperand_left = VARIABLE ptbytes_left z_left
+  -- if poperand_right = VARIABLE ptbytes_right z_right
+  -- if ptbytes_left =/= ptbytes_right
+  -- if $integer_operand_source(S, porigin, [PCFIELD 0], poperand_left)
+  -- if $integer_operand_source(S, porigin, [PCFIELD 1], poperand_right)
+  -- if $concat_site_valid(S, porigin, z, false, false)
+def $concat_array_source(S, porigin, poperand_left, poperand_right, z) = false -- otherwise
+
+dec $concat_array_string(pstate, poperand) : (nat, pvalue)?
+def $concat_array_string(S, VARIABLE ptbytes z) = (n, pvalue)
+  -- if ~$foreach_released_name(S, ptbytes)
+  -- if $integer_pointer_select(S, VARIABLE ptbytes z) = (INTEGER_CV ptbytes)
+  -- if $lookup(S.ENV, ptbytes) = (n)
+  -- if (HCELL n) <- S.ALLOCATIONS
+  -- if $integer_pointer_value(S, INTEGER_CV ptbytes) = (pvalue)
+  -- if $string_bytes(pvalue) =/= eps
+def $concat_array_string(S, poperand) = eps -- otherwise
+
+dec $concat_array_right_cell(pstate, poperand, nat) : bool
+def $concat_array_right_cell(S, poperand, n) = true -- if $concat_array_string(S, poperand) = (n, pvalue)
+def $concat_array_right_cell(S, poperand, n) = false -- otherwise
+
+dec $concat_array_left_fresh(pstate, poperand, poperand, nat) : bool
+def $concat_array_left_fresh(S, poperand_left, poperand_right, n) = ($array_string_cast_snapshot(S, poperand_left) /\ $concat_array_right_cell(S, poperand_right, n))
+
+dec $concat_array_right_fresh(pstate, poperand, poperand, pvalue) : bool
+def $concat_array_right_fresh(S, poperand_left, poperand_right, pvalue) = true
+  -- if $concat_array_string(S, poperand_left) = (n, pvalue)
+  -- if $array_string_cast_snapshot(S, poperand_right)
+def $concat_array_right_fresh(S, poperand_left, poperand_right, pvalue) = false -- otherwise
+
+dec $concat_array_consumer(ptask*, ptask) : ptask?
+def $concat_array_consumer(ptask :: ptask_next :: ptask_tail*, ptask) = (ptask_next)
+def $concat_array_consumer((ERROR_HANDLER_INVOKE perrorcall) :: ptask_next :: ptask_tail*, ptask) = (ptask_next) -- if perrorcall.RESUME = ptask
+def $concat_array_consumer((ERROR_HANDLER_RESULT perrorcall) :: ptask_next :: ptask_tail*, ptask) = (ptask_next) -- if perrorcall.RESUME = ptask
+def $concat_array_consumer((ERROR_HANDLER_CLEAN perrorcall) :: ptask_next :: ptask_tail*, ptask) = (ptask_next) -- if perrorcall.RESUME = ptask
+def $concat_array_consumer(ptask_all*, ptask) = eps -- otherwise
+
+def $concat_array_plan(S) = (porigin_left, CONCAT_ARRAY_LEFT_WARNING porigin poperand_left poperand_right n z 0, CONCAT_AFTER_LEFT porigin poperand_right false z)
+  -- if S.TODO = (CONCAT_PREP poperand_left poperand_right false false z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $concat_array_source(S, porigin, poperand_left, poperand_right, z)
+  -- if $error_handler_eligible(S, 2) /\ $arithmetic_add_named(S)
+  -- if $concat_array_string(S, poperand_right) = (n, pvalue)
+  -- if $array_string_cast_snapshot(S, poperand_left)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+def $concat_array_plan(S) = (porigin_right, CONCAT_ARRAY_RIGHT_WARNING porigin poperand_left poperand_right z 0, CONCAT_AFTER_RIGHT porigin pvalue_left z)
+  -- if S.TODO = (CONCAT_PREP poperand_left poperand_right false false z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $concat_array_source(S, porigin, poperand_left, poperand_right, z)
+  -- if $error_handler_eligible(S, 2) /\ $arithmetic_add_named(S)
+  -- if $concat_array_string(S, poperand_left) = (n, pvalue_left)
+  -- if $array_string_cast_snapshot(S, poperand_right)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+def $concat_array_plan(S) = eps -- otherwise
+
+dec $concat_array_left_valid(pstate, porigin, poperand, poperand, nat, int, nat) : bool
+def $concat_array_left_valid(S, porigin, poperand_left, poperand_right, n_cell, z, n) = true
+  -- if $concat_array_source(S, porigin, poperand_left, poperand_right, z)
+  -- if $origin_child((porigin), [PCFIELD 0]) = S.ORIGIN
+  -- if $(n <= 1)
+  -- if $(n_cell < |S.STORE|)
+  -- if $concat_array_consumer(S.TODO, CONCAT_ARRAY_LEFT_WARNING porigin poperand_left poperand_right n_cell z n) = (CONCAT_AFTER_LEFT porigin poperand_right false z)
+  -- if n = 1 \/ $concat_array_left_fresh(S, poperand_left, poperand_right, n_cell)
+def $concat_array_left_valid(S, porigin, poperand_left, poperand_right, n_cell, z, n) = false -- otherwise
+
+dec $concat_array_right_valid(pstate, porigin, poperand, poperand, int, nat) : bool
+def $concat_array_right_valid(S, porigin, poperand_left, poperand_right, z, n) = true
+  -- if $concat_array_source(S, porigin, poperand_left, poperand_right, z)
+  -- if $origin_child((porigin), [PCFIELD 1]) = S.ORIGIN
+  -- if $(n <= 1)
+  -- if $concat_array_consumer(S.TODO, CONCAT_ARRAY_RIGHT_WARNING porigin poperand_left poperand_right z n) = (CONCAT_AFTER_RIGHT porigin pvalue_left z)
+  -- if $string_bytes(pvalue_left) =/= eps
+  -- if n = 1 \/ $concat_array_right_fresh(S, poperand_left, poperand_right, pvalue_left)
+def $concat_array_right_valid(S, porigin, poperand_left, poperand_right, z, n) = false -- otherwise
+
+rule PhpStep/concat-array-begin: S ~> S[.ORIGIN = (porigin)][.TODO = ptask_warning :: ptask_consumer :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $concat_array_plan(S) = (porigin, ptask_warning, ptask_consumer)
+rule PhpStep/concat-array-left-dispatch: S ~> $error_dispatch(S, 2, $ptascii("Array to string conversion"), z, DIAGNOSTIC "Warning" $ptascii("Array to string conversion") z, CONCAT_ARRAY_LEFT_WARNING porigin poperand_left poperand_right n z 1)
+  -- if S.TODO = (CONCAT_ARRAY_LEFT_WARNING porigin poperand_left poperand_right n z 0) :: ptask_tail*
+  -- if $concat_array_left_valid(S, porigin, poperand_left, poperand_right, n, z, 0)
+  -- if ~$error_handler_eligible(S, 2) \/ $arithmetic_add_named(S)
+rule PhpStep/concat-array-right-dispatch: S ~> $error_dispatch(S, 2, $ptascii("Array to string conversion"), z, DIAGNOSTIC "Warning" $ptascii("Array to string conversion") z, CONCAT_ARRAY_RIGHT_WARNING porigin poperand_left poperand_right z 1)
+  -- if S.TODO = (CONCAT_ARRAY_RIGHT_WARNING porigin poperand_left poperand_right z 0) :: ptask_tail*
+  -- if $concat_array_right_valid(S, porigin, poperand_left, poperand_right, z, 0)
+  -- if ~$error_handler_eligible(S, 2) \/ $arithmetic_add_named(S)
+rule PhpStep/concat-array-left-owning-handler: S ~> S[.COMPLETION = UNSUPPORTED "concatenation owning warning callback"]
+  -- if S.TODO = (CONCAT_ARRAY_LEFT_WARNING porigin poperand_left poperand_right n z 0) :: ptask_tail*
+  -- if $concat_array_left_valid(S, porigin, poperand_left, poperand_right, n, z, 0)
+  -- if $error_handler_eligible(S, 2) /\ ~$arithmetic_add_named(S)
+rule PhpStep/concat-array-right-owning-handler: S ~> S[.COMPLETION = UNSUPPORTED "concatenation owning warning callback"]
+  -- if S.TODO = (CONCAT_ARRAY_RIGHT_WARNING porigin poperand_left poperand_right z 0) :: ptask_tail*
+  -- if $concat_array_right_valid(S, porigin, poperand_left, poperand_right, z, 0)
+  -- if $error_handler_eligible(S, 2) /\ ~$arithmetic_add_named(S)
+rule PhpStep/concat-array-left-resume: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING $ptascii("Array"))][.BASE = BASE_VALUE (KNOWN (PSTRING_CARRIER INTERNED_STRING $ptascii("Array")))]
+  -- if S.TODO = (CONCAT_ARRAY_LEFT_WARNING porigin poperand_left poperand_right n z 1) :: ptask_tail*
+  -- if $concat_array_left_valid(S, porigin, poperand_left, poperand_right, n, z, 1)
+  -- if $concat_array_right_cell(S, poperand_right, n)
+rule PhpStep/concat-array-left-boundary: S ~> S[.COMPLETION = UNSUPPORTED "concatenation selected right operand"]
+  -- if S.TODO = (CONCAT_ARRAY_LEFT_WARNING porigin poperand_left poperand_right n z 1) :: ptask_tail*
+  -- if $concat_array_left_valid(S, porigin, poperand_left, poperand_right, n, z, 1)
+  -- if ~$concat_array_right_cell(S, poperand_right, n)
+rule PhpStep/concat-array-right-resume: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING $ptascii("Array"))][.BASE = BASE_VALUE (KNOWN (PSTRING_CARRIER INTERNED_STRING $ptascii("Array")))]
+  -- if S.TODO = (CONCAT_ARRAY_RIGHT_WARNING porigin poperand_left poperand_right z 1) :: ptask_tail*
+  -- if $concat_array_right_valid(S, porigin, poperand_left, poperand_right, z, 1)
+
+def $task_nodes(CONCAT_ARRAY_LEFT_WARNING porigin poperand_left poperand_right n_cell z n) = eps
+def $task_nodes(CONCAT_ARRAY_RIGHT_WARNING porigin poperand_left poperand_right z n) = eps
+def $call_task_valid(S, CONCAT_ARRAY_LEFT_WARNING porigin poperand_left poperand_right n_cell z n) = $concat_array_left_valid(S, porigin, poperand_left, poperand_right, n_cell, z, n)
+def $call_task_valid(S, CONCAT_ARRAY_RIGHT_WARNING porigin poperand_left poperand_right z n) = $concat_array_right_valid(S, porigin, poperand_left, poperand_right, z, n)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = CONCAT_ARRAY_LEFT_WARNING porigin poperand_left poperand_right n z 1
+  -- if $concat_array_left_valid(S, porigin, poperand_left, poperand_right, n, z, 1)
+  -- if perrorcall.TARGET =/= eps \/ $concat_array_left_fresh(S, poperand_left, poperand_right, n)
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if perrorcall.LINE = z
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $ptascii("Array to string conversion")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE z
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = CONCAT_ARRAY_RIGHT_WARNING porigin poperand_left poperand_right z 1
+  -- if $concat_array_right_valid(S, porigin, poperand_left, poperand_right, z, 1)
+  -- if $concat_array_consumer(S.TODO, perrorcall.RESUME) = (CONCAT_AFTER_RIGHT porigin pvalue_left z)
+  -- if perrorcall.TARGET =/= eps \/ $concat_array_right_fresh(S, poperand_left, poperand_right, pvalue_left)
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if perrorcall.LINE = z
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $ptascii("Array to string conversion")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE z

@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Ordinary `.` now suspends for named array-warning handlers on two distinct
+plain CVs with one nonempty mutable flat scalar array and one quiet string.
+The left-array path yields fixed `Array` then reads its original live RHS cell;
+the right-array path preserves the first converted string after callback mutation.
+Borrowed array owners fall one to zero without a saved PARRAY. Supplied throws
+preserve the destination and callback mutations. Three exact originals pass at
+a23b774de; 270 author and 135 independent SL premises pass 405 at 39aa24b2f,
+using retained PREP d1a9, including saved TARGET, marker-free throw, consumer/cache
+public guards, default RHS-line Warning and budgets. Pure pruned/missing-name
+projections are refusal checks only. Original source-elaboration and helper-structuring failures
+remain zero credit; wider arrays/operands and RHS changes after a left-array
+warning remain partial and OP12 paused.
+[Concat-array ledger](coverage/semantics/concat-array-warning-review.json).
+
 Public protected(set) backed implicit class setters now use lexical access before
 call/receive. Child writer20 stores33 and returns20; the same array gives a global
 access Error versus Child TypeError4/caller14, leaving33. Source1/strict394 at6e018
