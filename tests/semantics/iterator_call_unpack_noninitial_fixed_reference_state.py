@@ -80,7 +80,7 @@ CASES = {
             'pfunction_typed = pfunction[.SIGNATURE = pfunction.SIGNATURE[.PARAMETERS = '
             '[psparam_left, psparam_right[.TYPE = [(PTBRANCH ([PTCLASS $ptascii("NoninitialB40")])), '
             '(PTBRANCH ([PTBUILTIN "null"]))]]]]]',
-            '~$iterator_unpack_reference_allowed(S[.FUNCTIONS = [pfunction_typed]], piteratorunpack)',
+            '$iterator_unpack_reference_allowed(S[.FUNCTIONS = [pfunction_typed]], piteratorunpack)',
             'pfunction_variadic = pfunction[.SIGNATURE = pfunction.SIGNATURE[.PARAMETERS = '
             '[psparam_left, psparam_right[.VARIADIC = true]]]]',
             '~$iterator_unpack_reference_allowed(S[.FUNCTIONS = [pfunction_variadic]], piteratorunpack)',

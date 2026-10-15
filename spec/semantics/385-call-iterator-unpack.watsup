@@ -396,7 +396,7 @@ def $iterator_unpack_reference_allowed(S, piteratorunpack) = true
   -- if $(|piteratorunpack.CALL.SENT.SLOTS| <= |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
   -- if $iterator_unpack_named_target(S, piteratorunpack) = NAMED_POSITION n_target
   -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, n_target) = (psparam)
-  -- if ~psparam.VARIADIC /\ psparam.BYREF /\ psparam.TYPE = eps
+  -- if ~psparam.VARIADIC /\ psparam.BYREF /\ $iterator_unpack_reference_type(psparam.TYPE)
   -- if $named_can_store(piteratorunpack.CALL.SENT, NAMED_POSITION n_target)
   -- if $iterator_unpack_extra_site(S, piteratorunpack.CALL.CALLSITE)
 def $iterator_unpack_reference_allowed(S, piteratorunpack) = false -- otherwise
