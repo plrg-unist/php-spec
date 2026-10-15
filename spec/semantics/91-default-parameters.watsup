@@ -12,10 +12,12 @@ def $default_at(eps, n) = eps
 def $default_at(pdefault :: pdefault_tail*, n) = (pdefault) -- if pdefault.INDEX = n
 def $default_at(pdefault :: pdefault_tail*, n) = $default_at(pdefault_tail*, n) -- if pdefault.INDEX =/= n
 dec $default_parameter_origin(pstate, porigin, nat) : porigin
+dec $property_set_explicit_origin(pstate, porigin) : bool
 def $default_parameter_origin(S, PORIGIN n_unit pcpath, n) = PORIGIN n_unit (pcpath ++ [PCFIELD 4, PCINDEX n])
   -- if $class_method_origin(S.CLASSES, PORIGIN n_unit pcpath) = (pmethoddesc)
 def $default_parameter_origin(S, PORIGIN n_unit pcpath, n) = PORIGIN n_unit (pcpath ++ [PCFIELD 3, PCINDEX n])
   -- if $class_method_origin(S.CLASSES, PORIGIN n_unit pcpath) = eps
+  -- if ~$property_set_explicit_origin(S, PORIGIN n_unit pcpath)
 dec $default_parameter_line(pstate, porigin, nat) : int
 def $default_parameter_line(S, porigin, n) = z
   -- if $default_parameter_origin(S, porigin, n) = PORIGIN n_unit pcpath
