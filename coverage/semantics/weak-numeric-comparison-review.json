@@ -1,0 +1,156 @@
+{
+  "version": 1,
+  "milestone": "COMP68",
+  "status": "independently reviewed and accepted within the stated weak numeric comparison domain",
+  "behavior": "WeakMap and WeakReference numeric comparisons dispatch real Notice callbacks with fixed class names. Captured private 1/1.0, live/COPY/retained-cell selection, SECOND callbacks and authenticated pending-exception remainders reuse the existing continuations.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "native_identity": ".tools/weak68-support/run-native-v1/{version,extensions,ini}"
+  },
+  "tested_revision": "1337908c3b3bbe3702ee760040ec053bc73476c3",
+  "ordered_modules": 398,
+  "manifest_sha256": "28ddbaccce11446f2adc60416dfbf1cb6fa955fe77d598240c1bfed5f4ef695c",
+  "implementation": {
+    "path": "spec/semantics/402-object-numeric-comparisons.watsup",
+    "sha256": "270fb955acb84ec640e244a9b9667d26fe49700348c5e8cccdda9fa7a1388292"
+  },
+  "source_catalogues": {
+    "tests/semantics/weak_numeric_comparison_cases.json": "030ba6315cc4240c8c78e1208a63186d618572321cad41b6d483b95993a912e3",
+    "tests/semantics/weak_numeric_comparison_review_cases.json": "9ad478b0bd516f512939575b2c800b81d77c758c2919c23cd6c6e1a201e1f05b"
+  },
+  "engine_basis": [
+    "Zend/zend_weakrefs.c zend_register_weakref_ce copies standard handlers for WeakMap and WeakReference without cast/compare overrides.",
+    "Zend/zend_object_handlers.c zend_std_compare_objects captures the numeric target type, emits the failed-cast Notice, then compares private 1/1.0 with the live opposing zval; a newly read object produces a second numeric Notice."
+  ],
+  "contract": [
+    "Two fixed pnumberclass variants authenticate exact outer WEAKMAP/WEAKREFERENCE tags and builtin names. Documentary images require bounds/tag only; live receiver admission additionally requires allocation and nonfreeing storage. Weak referent lifetime and private entry contents are not read.",
+    "Existing TARGET, SOURCE, POINTER, primary/SECOND dispatch, generic handlers, numeric finish, pending-remainder and ownership functions are unchanged. No documentary receiver root or target edge is added.",
+    "The new images also authenticate weak leaves in the existing pending-exception remainder: an eligible later handler is skipped without fallback, while the same supplied Throwable reaches caller catch/finally. Existing producer/lifetime and remainder limits remain."
+  ],
+  "fresh_native": {
+    "revision": "8d148d6b947ae522456a9382dc2133ca5bb814ba",
+    "observations": 1,
+    "source_agreements": 0,
+    "seconds": 0.004272213205695152,
+    "result": "Map int, live/expired wrapper float, CV/COPY, both signs and both SECOND class directions observed; private Stringable remains quiet."
+  },
+  "unchanged_frontier": {
+    "revision": "8d148d6b947ae522456a9382dc2133ca5bb814ba",
+    "status": "unsupported",
+    "reason": "error-handler ingress requires a producer continuation",
+    "stdout_prefix": "quiet|N|Y|N|map-int|",
+    "seconds": 21.707635698840022,
+    "source_agreements": 0
+  },
+  "validation": {
+    "initializer": {
+      "mode": "SL",
+      "passed": true,
+      "seconds": 8.061250526458025,
+      "runtime_credit": 0
+    },
+    "original_sources": {
+      "author": 1,
+      "independent": 1,
+      "normal_agreements": 2,
+      "author_seconds": 57.5408135689795,
+      "independent_seconds": 77.76563518494368,
+      "caps_seconds": [
+        240,
+        250
+      ]
+    },
+    "syntax_preparation": {
+      "requests": 4,
+      "submitted_executions": 0,
+      "runtime_credit": 0
+    },
+    "author": {
+      "premises": 164,
+      "setup": 144,
+      "pure": 20,
+      "raw_php_steps": 7,
+      "seconds": 56.496405160054564,
+      "result": "Actual primary Map, copied operand, expired-wrapper float and both SECOND directions preserve 1/1.0 despite live9. Map value owner1, weak key/nonreferent edges and quiet private methods hold. Bounds/wrong-kind/nonlive documentary controls are pure helper tests."
+    },
+    "independent": {
+      "premises": 191,
+      "setup": 187,
+      "pure": 4,
+      "raw_php_steps": 7,
+      "seconds": 80.6622992362827,
+      "result": "Array zero prefix reaches Map primary, expired-wrapper SECOND and later wrapper primary. Retained ALIAS plus real COW keeps the old tail and true result. SECOND throw skips the later eligible Notice callback and caster, preserves the supplied TypeError, then a fresh comparison reaches the changed tail and false with no guard residue. The saved-frame pending remainder projection is explicitly pure."
+    },
+    "total": {
+      "premises": 355,
+      "setup": 331,
+      "pure": 24,
+      "raw_php_steps": 14
+    },
+    "typed_elaboration_runtime_credit": 0,
+    "inventory": {
+      "command": "python3 scripts/check-semantic-inventory.py",
+      "exit_code": 0,
+      "constructors": 169,
+      "runtime_obligations": 306,
+      "runtime_credit": 0
+    }
+  },
+  "preserved_failures": [],
+  "limits": [
+    "Only weak numeric receiver/image admission is extended. Pair comparison, explicit casts, other internal/custom classes and wider weak producers/lifetimes retain their existing limits.",
+    "State cuts stop at checked dispatch/return/throw/catch fronts, with no END claim. Exact originals supply complete endings, private reads and explicit private-method observability.",
+    "Bounds/nonlive/wrong-kind image controls and the derived pending frame are helper observations; they do not establish arbitrary malformed-state or wider handler/lifetime execution."
+  ],
+  "raw_recovery": {
+    "root": "/home/user/workspace/php-spec/.tools/weak-numeric-comparison-68",
+    "branch": "codex/weak-numeric-comparison-68",
+    "note": "Ignored original sources, checked programmes and owned actor records remain in place. Reports retain commands, environments, exact raw streams, process completion and before/after closures. Author and independent one-case catalogues retain distinct cuts."
+  },
+  "artifacts": {
+    ".tools/weak68-support/actor.py": "dd579dff042e58b86676fb938b58487fc639e1607f2062c835c77822f5e734de",
+    ".tools/weak68-support/inputs.py": "e91de3047b9f2ea5248e1939784a7e34ef119993f964d8b1743d82a501029ddf",
+    ".tools/weak68-support/gates.py": "66418244a92d7d4a693ab7373a5d711df805f0b8d717ed65d8ad7ea8c8134f24",
+    ".tools/weak68-support/initializer.watsup": "7dfe8bbabac236e82d623ddb8b02769a4f1067d26fad6643ffa83eddc9ed65fc",
+    ".tools/weak68-support/run-native-v1/report.json": "b072ce24d25cac0fbff40c98f240fe8a1764004fd073bfee98c6ff6cc4e11de1",
+    ".tools/weak68-support/run-baseline-v1/report.json": "3456a17ac36bd4e5f3898f3b78e0de08f2f74e0830cd947bb5fffe824b80447f",
+    ".tools/weak68-support/run-init-v1/report.json": "c16a5373828f54e054f5bc96bf7f8941472ec122468e078d94a9ed1005ea97cb",
+    ".tools/weak68-support/run-sources-v1/report.json": "6680fc7bd63142fad36b79d1ca9bf9ae1d4e28e88ecb6aef757082877ac9b302",
+    ".tools/weak68-support/run-prepare-v1/report.json": "0f26952ad1dae34752a024f8dba2de3ad2cd47f8ad186bd757d9961d8e7bec65",
+    ".tools/weak68-native/direct.php": "2880e39cc83b6a281db100df100dec3859adcf6c6654cf6c800cfe36fe5f4667",
+    ".tools/weak68-state/build.py": "850f33ad313d33ea8c29bb5a66e83dd3ca7a629d825b4fbc9ec788ead6fe4aef",
+    ".tools/weak68-state/helpers.watsup": "77841ef342983e8498a6587d08b94763b010a0e565bdae6c732c750ad82855cc",
+    ".tools/weak68-state/run.py": "adb9eea60075b3015feb3631b2ec32ccb1f1cbb4e1a2b93e03a207e2fae43f89",
+    ".tools/weak68-state/plan.json": "d50597793e7bcdd3e5688a623dfaa2c1f446c418d2992e32d680502e7d1c932f",
+    ".tools/weak68-state/run-el-v1/report.json": "f67a2e6ffab312a2d8418ae81e3f3551ec573b9e015e508dbe602c0aadd5a530",
+    ".tools/weak68-state/run-sl-v1/report.json": "3b03fcf9c9166e87b4f28024386a57e9eaf820a73ef5de1bdfa036610d0c7218",
+    ".tools/weak68-peer/peer.php": "4cfffba5cfce63c9651a2a6ca38cdf882a1ac721143c8a152ff88fcc2ab6b97d",
+    ".tools/weak68-peer/run.py": "db8a612189097cecd96af597e628b90575d4fcdcd0864d91050ff32bc490a945",
+    ".tools/weak68-peer/build.py": "72b057be2057b68bdb0793c962175b75c9b751be2f357f101f0304dd4eb706c5",
+    ".tools/weak68-peer/helpers.watsup": "190e92bc12bc82b9b44d1a775a884e67a35250d2ad998cd5f9818516d42cec2c",
+    ".tools/weak68-peer/plan.json": "979e94d092f3fc943a768ce2292f50e638744d04b4bd4b5305f3c81adcd3c4f2",
+    ".tools/weak68-peer/native-v1/report.json": "6513322750f3bcd4caf15f8c55a480b0fd04714a30d847bb8b760ec085adde53",
+    ".tools/weak68-peer/source-v1/report.json": "e2a09b50dcb9437964b3c559c5f2971ef169933bc78ca8ca749b3109ccafa14a",
+    ".tools/weak68-peer/prepare-v1/report.json": "2d61a6d7cf716d9b0c91820fc657c7952621ec1e87cf1d50ef10ded8e8d846cd",
+    ".tools/weak68-peer/state-v1/report.json": "e1650eeb60a7adce0c4a69576ba66d39257e474744fcb26cd5c2128393fda194",
+    ".tools/weak68-peer/review.json": "41ce574d5e93f3ea97a3056e0146446f2379b23d4f6f21a94499a55a821c79e4"
+  },
+  "independent_review": {
+    "reviewer": "/root/comp_review_67",
+    "semantic_verdict": "CLEAR",
+    "source_and_state_verdict": "CLEAR",
+    "publication_verdict": "CLEAR"
+  },
+  "composition": {
+    "parent": "6f348810435907a22f7d8009485fd31815bd6777",
+    "ordered_modules": 399,
+    "manifest_sha256": "2e38df4b97a41f654a8c3f01ffb0c078c337ed17d1ce8816ff7429a23b031761",
+    "behavioral_delta": "Only the reviewed module402 weak-class syntax/image/admission/name clauses are added. Every incoming runtime file and the manifest are preserved; resulting module402 is byte-identical to tested1337908c3.",
+    "pointwise_basis": "Incoming module409 literal-RHS selection is called only for authenticated list-pattern missing-key warnings, absent from both weak numeric originals. Shared30 task additions and module408 property-empty selectors do not match numeric comparison fronts. Return replay requires integer/assignment returns; these callbacks return bool and casters string. Modulo/define/constant additions require operations absent here. No comparator, weak producer, or numeric continuation dependency changes.",
+    "joined_actor": "not warranted by the independently reviewed syntax/dispatch-order seam",
+    "source_state_credit": "retains private1337908c3/398; no new execution or agreement credit"
+  }
+}

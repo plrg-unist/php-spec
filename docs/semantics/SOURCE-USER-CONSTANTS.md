@@ -180,6 +180,18 @@ including actual first/second throw discard steps and budget resumption. Ordinar
 string names, primitive values and nonowning three-argument calls bound this slice;
 wider names, values, producers and owning/packed forms remain partial.
 
+For omitted/bool flags, a non-NUL string name containing `::` raises parameter-1
+ValueError before the ignored-true Warning. The test is a byte search, including
+malformed spellings such as `::` and `A:::B`; no class is resolved and no constant
+table is read or changed. Normalized source arguments and authentic name/value
+carriers retain the original API trace despite later argument effects. Strict
+bool calls have the same priority. The
+[class-name review](../../coverage/semantics/define-class-name-review.json) binds
+four exact originals and 450 public premises across seven genuine CONFIG fronts,
+including raw two/three-argument traces, real caller frames, state preservation,
+immutable/source/carrier refusals and budgets. Coerced/NULL/NaN flags, NUL-containing
+names, wider values and owning/packed forms remain separate.
+
 Fresh two-argument array definitions recursively dereference source cells into
 new DIRECT entries. Reinserting surviving keys rebuilds NEXT, positions and serial
 metadata; ordinary copies and later source/reference writes preserve the constant.

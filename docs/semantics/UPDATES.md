@@ -188,6 +188,14 @@ The live RHS is never reread after capture.
 retains three source agreements and 404 focused SL premises; both-fractional
 operands, initial references/copies and unsafe targets remain partial.
 
+For distinct initially plain CVs, `<<=` and `>>=` keep the converted fractional
+left value through deprecation handlers, then read the live quiet integer count.
+Success detaches a late target alias; supplied throw or a negative count preserves
+callback writes and aliases, with the latter raising the original-line `ArithmeticError`.
+[Shift-assignment evidence](../../coverage/semantics/shiftassign-warning-review.json)
+retains four source agreements and 526 focused SL premises. Initial references/copies,
+warning or noninteger counts, unsafe targets and wider lifecycle remain partial.
+
 Stringable `.=` converts the left value before dereferencing the selected RHS
 slot. A defined direct RHS CV is borrowed and follows callback rebinding; an
 initially undefined read keeps its warned null value, while a later unset is a

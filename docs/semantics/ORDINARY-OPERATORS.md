@@ -234,6 +234,20 @@ Fresh cache/source/line/range guards, actual cells/owners, default Deprecated an
 budgets are covered; pure refusals establish no wider execution. Both-fractional
 operands, initial references/copies, unsafe targets and wider lifecycle remain partial.
 
+For distinct initially plain CVs, `<<=` and `>>=` keep a fractional-float left
+conversion before their deprecation and read the live quiet integer count afterward.
+Captured `-12` with live count `2` stores `-48` or `-3` despite callback target `99`;
+successful replacement detaches a late alias, which retains `99`. Supplied throw
+cancels storage. A negative live count raises the ordinary RHS-line `ArithmeticError`
+before storage or detachment. Four exact originals and 406 author plus 120 independent
+SL premises pass in the
+[shift-assignment ledger](../../coverage/semantics/shiftassign-warning-review.json).
+Both AST directions have their own source authority; old modulo validators stay
+unchanged. Fresh cache/source/op/line guards, actual cells/owners, default Deprecated
+and budgets are covered. Pure ready projections establish refusals only. Initial
+references/copies, warning or noninteger counts, unsafe targets and wider lifecycle
+remain partial.
+
 Arithmetic and bitwise conversion use the existing pure SpecTec numeric and byte
 helpers, including signed 64-bit boundaries, binary64 values, string operands,
 pinned power behavior and conversion diagnostics. Explicit casts keep their
