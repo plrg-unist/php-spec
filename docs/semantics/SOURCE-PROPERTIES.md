@@ -113,6 +113,18 @@ and RHS-leaf/operand/frame refusals. Other RHS, missing-variable warnings and wi
 receiver/catch/lifetime forms remain partial.
 [Alias-write review](../../coverage/semantics/active-virtual-set-alias-review.json).
 
+A selected public protected(set), typed, sole implicit backed class SET keeps its
+public key and authentic source flags. Child lexical permission survives the setter
+call and saved result restoration; Parent private13 differs from Child private900.
+Assignment20 returns20 after storage33. A global array write resolves its RHS then
+raises the access Error before any call/receive; the same array through Child reaches
+TypeError at hook4/caller14 and leaves33. Two genuine cuts pass266 premises
+(224 reached,42 derived), including forged metadata-valid global calls that fail
+permission and disjoint indirect denial. Existing permission/layout/receive rules
+are reused. Private(set), explicit/trait/paired/virtual asymmetric hooks and wider
+write/reference/receiver forms remain partial.
+[Protected setter review](../../coverage/semantics/protected-set-backed-hook-review.json).
+
 Effective virtual getters without defaults retain the same declaration, function
 and return type while omitting the physical slot. The receiver owns no returned-value edge;
 result copies survive receiver cleanup and release independently. Ordinary writes
