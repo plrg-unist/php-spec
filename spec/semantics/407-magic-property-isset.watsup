@@ -1,4 +1,6 @@
 ;; Terminal isset retains the receiver while its one-name callback runs.
+dec $property_empty_pending(pstate) : bool
+def $property_empty_pending(S) = false -- otherwise
 dec $property_isset_method(pstate, nat) : pmethoddesc?
 def $property_isset_method(S, n) = $effective_method(S, porigin, $ptascii("__isset"), |S.CLASSES|)
   -- if $(n < |S.OBJECTS|)
@@ -155,6 +157,7 @@ rule PhpStep/property-isset-call: S ~> S_inputs[.TODO = [(CALL_ARGS (PROPERTY_IS
   -- if S_inputs = $hold_task_inputs(S)
 rule PhpStep/property-isset-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "magic isset source, function, or recursive access"]
   -- if $property_isset_pending(S)
+  -- if ~$property_empty_pending(S)
   -- if $property_isset_plan(S) = eps
 rule PhpStep/property-isset-result: S ~> S[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (PROPERTY_ISSET_RESULT ppropertyisset) :: ptask_tail*

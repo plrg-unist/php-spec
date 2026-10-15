@@ -1,5 +1,9 @@
 ;; zend_std_read_property holds the receiver once. The known-instance __get
 ;; frame borrows that hold; its RV is dereferenced only after OBJ_RELEASE.
+dec $property_empty_prepare(pstate) : bool
+def $property_empty_prepare(S) = false -- otherwise
+dec $property_empty_get_active(pstate, nat, ptbytes) : bool
+def $property_empty_get_active(S, n, ptbytes) = false -- otherwise
 dec $property_get_string_capture(pstate, ppropertyget) : ppropertygetstring?
 dec $property_get_string_record(ptask) : ppropertygetstring?
 dec $property_get_string_scope(pstate, ppropertygetstring) : bool
@@ -241,6 +245,7 @@ def $property_get_guard_frames(pframe :: pframe_tail*, n, ptbytes) = ($property_
 
 def $property_get_pending(S) = true
   -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text) metadata_name) z) :: ptask_tail*
+  -- if ~$property_empty_prepare(S)
   -- if S_read = $quiet_operand(S, S.RESULT)
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $property_get_needed(S, n, $base64(text))
@@ -266,6 +271,7 @@ def $property_get_plan(S) = (ppropertyget)
   -- if $property_get_base_count(S.TODO, n, porigin) = 0
   -- if ~$property_get_guard_tasks(S.TODO, n, ppropertyget.NAME)
   -- if ~$property_get_guard_frames(S.FRAMES, n, ppropertyget.NAME)
+  -- if ~$property_empty_get_active(S, n, ppropertyget.NAME)
 def $property_get_plan(S) = (ppropertyget)
   -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: (DIM_FETCH z) :: ptask_tail*
   -- if S.BASE = BASE_VALUE (KNOWN PNULL)
@@ -283,6 +289,7 @@ def $property_get_plan(S) = (ppropertyget)
   -- if $property_get_base_count(S.TODO, n, porigin) = 0
   -- if ~$property_get_guard_tasks(S.TODO, n, ppropertyget.NAME)
   -- if ~$property_get_guard_frames(S.FRAMES, n, ppropertyget.NAME)
+  -- if ~$property_empty_get_active(S, n, ppropertyget.NAME)
 def $property_get_plan(S) = eps -- otherwise
 
 def $property_get_begin(S, ppropertyget) = S[.TODO = [(CALL_ARGS (PROPERTY_GET_TARGET ppropertyget.OBJECT ppropertyget.METHOD) eps 1 ([KNOWN (PSTRING ppropertyget.NAME)]) (ppropertyget.SITE) ppropertyget.LINE), PROPERTY_GET_RESULT ppropertyget] ++ $property_get_base_tasks(S, ppropertyget) ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
