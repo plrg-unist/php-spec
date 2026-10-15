@@ -1,0 +1,128 @@
+{
+  "version": 1,
+  "milestone": "A2 literal-array RHS missing-key destructuring handlers",
+  "status": "independently reviewed private milestone; pointwise composition pending",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle and tests/semantics/profile.json",
+  "base": "f8882d5c90c166c134910184bdeee8c034ed8d70",
+  "scope": "By-value literal-array RHS into flat direct-CV list/[] targets, with warning-free implicit/compiled constant keys; existing construction and handler boundaries remain explicit.",
+  "runtime_commit": "b04d6491913e8ffc92c466e7677284dea919fb74",
+  "runtime_sha256": {
+    "spec/semantics/409-list-missing-warnings.watsup": "afba6d120536fbf4e12c628f818e7ef9c14446c002cf40135b43cdba53bbb7e1"
+  },
+  "private_modules": 398,
+  "engine_basis": [
+    "Vendored PHP8.5.10 commit34308a6666b2d489c509541ea9befea9e2b42348: zend_compile_assign compiles a literal RHS as its own expression, then zend_compile_list_assign fetches/stores each target in order and returns that RHS value.",
+    "ZEND_FETCH_LIST_R and zend_fetch_dimension_address_LIST_r/read supply uninitialized/null after a missing-key warning, without repeating its lookup; handler exception is checked before the next target store.",
+    "The existing pplist_result/compiled-effect protocol preserves a known literal result while executing its destructuring effects. Ordinary throw search discards obsolete COMPILED_RESULT tasks; pooled arrays retain their permanent roots."
+  ],
+  "reviewed_behavior": [
+    "Compiled literal admission binds the captured HARRAY to the exact RHS pool occurrence. Runtime literal admission requires CODEEXPR(false), a mutable live table and the existing source/line/index/tail checks; removing a constant pool cannot forge runtime admission.",
+    "Runtime literal arrays have a sole task owner before result delivery. Shared embedded reference cells retain their captured identity after GLOBALS variable rebinding; future fetches read the old cell, while the new global aliases share their separate cell.",
+    "Returning callbacks deliver NULL for the interrupted missing key, retain target order and the captured RHS result, and preserve later shared-cell reads. False masked fallback, holes, present NULL and compiler lines are source-tested.",
+    "Throwing callbacks preserve supplied Throwable identity/Previous and callback writes, cancel pending target and known-result delivery, and retain the caller destination. Pool owners survive; otherwise unowned runtime arrays/cells retire.",
+    "The direct-CV RHS clause is unchanged semantically. Key conversion, fetch/result dispatch and root projection are reused byte-for-byte; A1 source/state evidence is not replayed or renewed."
+  ],
+  "accepted": {
+    "source": {
+      "report": ".tools/list-literal-source-02/report.json",
+      "sha256": "ad701f4335f75f8b2670deae0d9740227969b1e3cc453c7a8ab9cea2b190a48b",
+      "revision": "b04d6491913e8ffc92c466e7677284dea919fb74",
+      "agreements": 6,
+      "cases": [
+        "list-literal-missing-pooled-result",
+        "list-literal-missing-reference-retire",
+        "list-literal-missing-reference-throw",
+        "list-literal-review-pooled-holes-fallback",
+        "list-literal-review-reference-rebind",
+        "list-literal-review-pooled-throw"
+      ],
+      "native_reuse": "Original native argv, source paths and streams retained from fresh A2 baseline/native preparations; model-only comparisons, no oracle replay."
+    },
+    "states": [
+      {
+        "report": ".tools/list-literal-author-state-02/report.json",
+        "sha256": "93100c3a6c2bf50bd450842d4eb952498be1c06d8a3e436824f6da580c83b3a0",
+        "revision": "de7c79d3f01dbdb3ab740835eb3b18328711958b",
+        "fronts": 3,
+        "conditions": [
+          77,
+          79,
+          73
+        ],
+        "raw_steps": [
+          2,
+          2,
+          1
+        ],
+        "boolean_premises": 224
+      },
+      {
+        "report": ".tools/list-literal-review-state-02/report.json",
+        "sha256": "6a15eaabad4bb70a97881870c8ce1d5ef24eab351d246d6c88bed1a8eaf4f4f6",
+        "revision": "de7c79d3f01dbdb3ab740835eb3b18328711958b",
+        "fronts": 2,
+        "conditions": [
+          81,
+          107
+        ],
+        "raw_steps": [
+          1,
+          3
+        ],
+        "boolean_premises": 184
+      }
+    ],
+    "source_agreements": 6,
+    "state_fronts": 5,
+    "total_conditions": 417,
+    "boolean_premises": 408,
+    "raw_steps": 9,
+    "credit_note": "State conditions include setup and pure refusal premises, not separate PHP programs. Source/state checks retain their exact private revisions; later documentation/composition adds no agreement credit."
+  },
+  "preserved_zero_credit": [
+    {
+      "report": ".tools/list-literal-baseline-02/report.json",
+      "sha256": "fec8dde05cce12de16b22c4d8ad7aefa7c681e2e74911b6deb693bb28c624fac",
+      "revision": "f8882d5c90c166c134910184bdeee8c034ed8d70",
+      "case": "list-literal-missing-pooled-result",
+      "result": "Unchanged A1 f888: checked program explicitly Unsupported at handler ingress. Its native path/bytes are reused for the accepted model comparison."
+    },
+    {
+      "report": ".tools/list-literal-native-rest-02/report.json",
+      "sha256": "591c318389f2aef32d68dcc12437ccad73d5ec861c3e66face7144665da85c61",
+      "revision": "f8882d5c90c166c134910184bdeee8c034ed8d70",
+      "result": "Fresh author runtime-reference normal/throw native2 preparation only."
+    },
+    {
+      "report": ".tools/list-literal-review-native-02/report.json",
+      "sha256": "967ea36f5f35dd5c0e63820ddf211e65b9a37bcac85ac5acd1b056061a8d6305",
+      "revision": "f8882d5c90c166c134910184bdeee8c034ed8d70",
+      "result": "Fresh independent holes/reference-rebind/pooled-throw native3 preparation only."
+    }
+  ],
+  "raw_evidence": {
+    "archive": "/home/user/workspace/php-spec/.tools/list-literal-missing-warning-02-raw.tar.gz",
+    "bytes": 254824,
+    "sha256": "fc326fab3a3d51d5cf939251ccfcf85b2f739058fbfcda3dd2af17aedeab8105",
+    "members": 166,
+    "report_sha256": {
+      ".tools/list-literal-baseline-02/report.json": "fec8dde05cce12de16b22c4d8ad7aefa7c681e2e74911b6deb693bb28c624fac",
+      ".tools/list-literal-native-rest-02/report.json": "591c318389f2aef32d68dcc12437ccad73d5ec861c3e66face7144665da85c61",
+      ".tools/list-literal-review-native-02/report.json": "967ea36f5f35dd5c0e63820ddf211e65b9a37bcac85ac5acd1b056061a8d6305",
+      ".tools/list-literal-source-02/report.json": "ad701f4335f75f8b2670deae0d9740227969b1e3cc453c7a8ab9cea2b190a48b",
+      ".tools/list-literal-author-state-02/report.json": "93100c3a6c2bf50bd450842d4eb952498be1c06d8a3e436824f6da580c83b3a0",
+      ".tools/list-literal-review-state-02/report.json": "6a15eaabad4bb70a97881870c8ce1d5ef24eab351d246d6c88bed1a8eaf4f4f6"
+    },
+    "recovery": "Archive members retain original relative .tools paths, including the native-reuse script. Extract beneath a checkout of the recorded revision to recover fixtures/process records/originals. Absolute argv/cwd remain historical provenance; no archive is a build dependency."
+  },
+  "actual_parent_review": {
+    "parent": "0ca751335",
+    "seams": "CLASS83 module408 adds property-empty call/task tags and property-only380/407 guards; M76/M77 module156 recognizes assigned-call/folded-int return sources. Source35/V60/OP26/COMP67 extend other disjoint constant/operator/comparison paths. None changes409,33,39,63 or301, and the literal RHS helper does not admit property targets, reference leaves or call RHS.",
+    "joined_actor": "No concrete semantic interaction found; pointwise composition and exact FF review add no replay credit."
+  },
+  "remaining": [
+    "Nested/reference patterns, mixed-reference direct-CV sources, function/call and other nonliteral RHS, and wider target forms.",
+    "Undefined-CV/null/lossy-float key warning producers and scalar/object destructuring diagnostics.",
+    "Wider callbacks, suspension and lifecycle; array/diagnostic/full-core closure and final offline portability."
+  ]
+}
