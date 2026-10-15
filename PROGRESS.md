@@ -15,6 +15,8 @@ Source1/strict394 pass at c352; the later class-owner guard is covered by two
 current-code states at d586, passing231 =179 reached +52 derived. The measured
 fixture false, syntax failure and diagnostic retain0; no old class cut is renewed.
 [Review](coverage/semantics/trait-imported-backed-set-hook-review.json).
+The 394-module composition over 8c7938fc passes retained SL initialization at ae95;
+private source/state cuts retain their original identities without replay.
 
 Module404 now stages unary `+`/`-` leading-numeric warnings from a defined
 non-reference CV through named handlers. Fresh capture/dispatch matches the CV;
