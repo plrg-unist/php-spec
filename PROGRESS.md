@@ -14,6 +14,9 @@ and 177 SL premises pass at runtime diff 376d6a27, including eval ordering, once
 skip versus ordinary reparse, helper stderr custody and budget resume. Bad placement,
 wider declaration shapes and rejected parser inputs with warnings remain Unsupported;
 the initial syntax failure retains zero credit. [Encoding review](coverage/semantics/encoding-declare-review.json).
+The 395-module composition over 41b294b8 preserves the accepted compiler/CLI/test
+blobs at b5b628fab and every incoming path. Incoming Generator, scalar DEFINE,
+reference-return and array-cast selectors are absent; no joined numeric credit is claimed.
 
 
 Explicit array-to-string casts now suspend for named warning handlers on a
