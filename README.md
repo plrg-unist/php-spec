@@ -17,7 +17,7 @@ The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
 [Missing-key destructuring warnings](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md)
-now retain captured CV/literal arrays and shared embedded references through
+now retain captured arrays or mixed-pattern source reference cells through
 handlers, with null delivery and ordered normal/throw cleanup.
 
 The [checked eval parser service](docs/semantics/DYNAMIC-SOURCE-SERVICE.md)

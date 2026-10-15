@@ -1,13 +1,14 @@
 # Missing-key destructuring warnings
 
-Module409 supplies the E_WARNING continuation for by-value destructuring from
-a direct CV or array literal into flat direct CV targets. Implicit integer keys
+Module409 supplies the E_WARNING continuation for missing by-value fetches into
+flat direct CV targets. By-value patterns admit direct CV or literal RHS arrays;
+mixed value/reference patterns admit a direct CV RHS. Implicit integer keys
 and warning-free compiled constant keys are admitted. Literal strings retain their
 authenticated interned-string carrier before key conversion. Undefined key CVs,
-null/lossy-float key diagnostics, nested patterns, reference leaves, wider RHS
-producers and target forms remain separate dependencies.
+null/lossy-float key diagnostics, nested patterns, wider reference/RHS producers
+and target forms remain separate dependencies.
 
-The RHS is captured before the first item; a direct CV uses Zend's `QM_ASSIGN`.
+The by-value RHS is captured before the first item; a direct CV uses Zend's `QM_ASSIGN`.
 The saved task owns that array through handler selection, the ordinary callback
 frame and normal/throw cleanup. Callback insertion or replacement does not restart the
 missing fetch: it still supplies null. Following items read the captured table
@@ -16,10 +17,21 @@ reference cells preserve their different behavior. Assignment-result delivery
 returns the captured RHS value. A throwing handler cancels the pending target
 store and later items, preserving callback writes and the supplied Throwable.
 
+Mixed patterns instead use `MAKE_REF` and retain the source cell. Callback value
+assignment changes the value used by later fetches; unsetting/rebinding the CV
+name leaves the saved old cell authoritative. The interrupted fetch still gives
+null before the next reference leaf reads or makes writable that cell's live value.
+Replacing it with null therefore permits later array creation. Reference fetches
+perform ordinary COW separation, and earlier reference targets remain visible to
+the callback. Assignment-result delivery resolves the same saved cell after the
+targets. Once tasks and other owners disappear, the old cell/table retire.
+
 Source occurrence, admitted RHS shape, remaining items, selected index,
-constant/implicit key, compiler line and captured-array allocation authenticate
+constant/implicit key, compiler line and captured array/cell allocation authenticate
 the producer and saved resume. These checks establish source compatibility and
-liveness; they do not reconstruct historical table identity from a live CV.
+liveness; they do not reconstruct historical identity from a live CV. A mixed
+resume does not require the cell to retain its original array. Prior reference
+leaves retain the fetch line; prior by-value CV stores select the target line.
 The generic error-handler machinery supplies mask eligibility, temporary handler
 disabling, exact-false default reporting and restoration. A present null entry
 does not enter the missing-key continuation.
@@ -35,7 +47,7 @@ delivering its constant result. A handler throw cancels that later delivery.
 
 The pinned PHP8.5.10 source routes are `zend_compile_assign` and
 `zend_compile_list_assign` in `vendor/php-src/Zend/zend_compile.c`,
-`ZEND_FETCH_LIST_R` in `Zend/zend_vm_def.h`, and
+`ZEND_MAKE_REF`, `ZEND_FETCH_LIST_R` / `ZEND_FETCH_LIST_W` in `Zend/zend_vm_def.h`, and
 `zend_fetch_dimension_address_LIST_r` / `zend_fetch_dimension_address_read` in
 `Zend/zend_execute.c`. The VM checks a callback exception before executing the
 following target store.
@@ -53,3 +65,6 @@ The literal-RHS extension has separate source/state cuts in the
 using `list_literal_missing_warnings.py` and
 `list_literal_missing_warning_protocol.py` plus independent counterparts. Its
 original native paths/streams are reused without an oracle replay.
+The [mixed-reference review](../../coverage/semantics/list-reference-missing-warning-review.json)
+records separate source/state cuts from `list_reference_missing_warnings.py`,
+`list_reference_missing_warning_protocol.py` and independent counterparts.

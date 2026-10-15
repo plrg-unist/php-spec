@@ -130,6 +130,10 @@ keys bound this producer; wider destructuring diagnostics remain required.
 Literal sources retain pool owners or the sole runtime temporary, preserve old
 embedded reference cells after CV rebinding, and cancel known-result delivery
 when a handler throws.
+Mixed direct-CV patterns retain the source cell: value replacement affects later
+fetches, while CV unsetting/rebinding leaves its saved old cell authoritative.
+The interrupted fetch supplies null before later reference acquisition/COW;
+callback null replacement can autovivify an array at that later fetch.
 
 Weak-null `ini_get` and `ini_restore` are admitted internal producers. Their
 authenticated unary continuation resumes once after normal handling or false

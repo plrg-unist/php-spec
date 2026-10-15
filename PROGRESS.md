@@ -7,24 +7,24 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-By-value destructuring now retains CV/literal RHS arrays through missing-key Warning
-handlers. The missing fetch still supplies null; later items observe captured
-scalar entries or shared reference cells. Throws cancel pending stores, later items
-and known-result delivery while preserving callback effects and the Throwable.
-The [CV slice](coverage/semantics/list-missing-warning-review.json) retains source6
-and state468 at its original cuts. Literal RHS sources bind compiled tables to
-their pool occurrence and runtime tables to a nonconstant descriptor. Old reference
-cells survive callback CV rebinding; temporary owners retire while pool roots stay.
-Six new exact originals agree at b04d64919; five SL fronts pass417 premises
-(408 Boolean +9 raw steps) at de7c79d3f, checking source/pool/line refusals,
-known-result effects, actual frame ownership, cancellation and budget resumption.
-The unchanged Unsupported baseline retains zero credit. Flat CV targets and quiet
-compiled/implicit keys bound both slices; wider producers and diagnostics remain partial.
-[Literal-RHS review](coverage/semantics/list-literal-missing-warning-review.json).
-The pointwise 399-module composition over 0ca751335 preserves CLASS83 property
-protocols, M77 return replay and every other incoming runtime byte. Source6/state417
-retain their private cuts; independent seam review warrants no joined actor or
-renewed agreement credit.
+Missing-key Warning now continues flat CV destructuring from saved arrays or
+mixed-pattern source cells. By-value CV/literal RHS snapshots retain shared embedded
+references. Mixed value/reference patterns capture a direct-CV source cell: callback
+value replacement affects later reference fetches, while CV unsetting/rebinding leaves
+the old cell authoritative. The interrupted fetch still supplies null before its store;
+a later reference leaf applies COW or creates an array after callback null replacement.
+Prior reference leaves preserve the fetch line. Throws cancel pending stores/items and
+result delivery, preserving callback effects and the supplied Throwable.
+Five A3 exact originals agree at 88494f937; five reached SL fronts pass591 premises
+(576 Boolean +15 raw steps) at 1b2ab113f, checking marked-cell/source/line refusals,
+real frames, same-cell replacement, saved-cell COW, null creation, retirement and budgets.
+The [mixed-reference review](coverage/semantics/list-reference-missing-warning-review.json)
+retains its native/unchanged Unsupported baseline with zero agreement credit.
+The earlier [CV slice](coverage/semantics/list-missing-warning-review.json) source6/state468
+and [literal slice](coverage/semantics/list-literal-missing-warning-review.json) source6/state417
+retain their original cuts without replay. Quiet compiled/implicit keys and flat CV
+targets bound these slices; nested/wider RHS, scalar diagnostic callbacks and lifecycle
+remain partial.
 
 Terminal `empty` now composes inherited `__isset(string): bool` and untyped
 by-value `__get` for selected CV/literal private properties. False skips the getter;
