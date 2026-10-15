@@ -652,3 +652,19 @@ inner cursor LINE mutation through the driver, and checks split budget from the
 cleared cut. This covers the reached used nonnullable source shape, not unused
 returns, other mixed layouts or complete returns verification; see the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M68 reverses the old sources for a used `?object` return: the outer return
+holds global `$z`'s reference and the inner return holds a computed owning
+object. An authenticated pair of nonowning source cursors survives ordinary
+object cleanup and the destructor callback; it does not restore the old object
+or reread `$z`. After the caught `$y` recheck, the reached pair resumption
+produces NULL and one inner computed-source VALUE Notice marker. Source2 at
+private `d49392a2`/394 matches retained native2, including the emitted Notice
+and the retained-y control alias. Public155 authenticates the saved pending
+pair and original VALUE release, the old object's retirement with `$z` live,
+then detached caller delivery. A saved inner cursor LINE mutation keeps the
+heap equal but fails descriptor and actual-driver admission; callback budget
+composition also passes. This covers one reversed used nullable mixed layout,
+not unused or nonnullable returns, other layouts or complete returns
+verification; see the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).

@@ -3376,6 +3376,20 @@ split budget. The prior Unsupported baseline and output-only frontier have
 zero repair credit. Unused and other mixed histories remain open in the
 [ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
+M68 covers the reversed used `?object` history: an outer global `$z` reference
+and an inner computed owning `O` value are pending when `$y` is selected.
+Replacement cleanup runs the old object's destructor while `$z` stays live;
+the delayed `$y` recheck then fails and is caught. Source2 at private
+`d49392a2`/394 matches retained native2:
+the treatment delivers a detached NULL and one inner-call by-reference Notice;
+the retained-y control delivers its alias. Public155 follows the real saved
+pending pair, old VALUE release, retirement, two-owner replay and NULL/Notice
+marker through caller delivery. It rejects a heap-identical saved cursor LINE
+forgery through the actual driver and checks callback split budget. The old
+Unsupported baseline and output-only frontier have zero repair credit. Unused,
+nonnullable and other mixed layouts remain open in the
+[ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
 Per-constant protection survives namespace publication and parked handlers.
