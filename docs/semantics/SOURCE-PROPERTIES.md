@@ -45,6 +45,13 @@ original and three states/234 premises (208 reached,26 derived) are in the
 [set-only review](../../coverage/semantics/backed-set-only-hook-review.json). Other
 set shapes, references, indirect writes and wider override/lifetime families remain required.
 
+Selected sole public typed backed implicit SET hooks also import directly into a
+parentless Consumer. The raw Trait function remains a source authority; only the
+published Consumer clone is callable on Grand. It retains Trait body/magic while
+using Consumer private scope, receives20, stores33 and restores assignment20.
+Two real cuts pass231 premises (179 reached,52 derived), including the forbidden
+raw-Trait callable forgery. [Trait-setter review](../../coverage/semantics/trait-imported-backed-set-hook-review.json).
+
 Selected public typed sole backed SET hooks on a parentless class also compile
 one real typed, defaultless by-value parameter, retaining its name, normalized
 type and source occurrence. The property

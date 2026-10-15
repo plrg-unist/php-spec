@@ -2269,7 +2269,11 @@ Selected sole backed setters now retain a real explicit typed parameter. An
 returns the original string. A string-only setter fails at hook line7. Two originals and three states/270
 checks cover source identity, receive errors and result restoration in the
 [explicit-parameter review](coverage/semantics/explicit-setter-parameter-review.json).
-Hooked iteration, defaulted virtual hooks, other paired hooks, unbacked or trait
+A selected sole backed implicit SET also imports directly from a trait. Consumer
+private13 and Grand called scope coexist with Trait magic; assignment20 returns20
+while storage becomes33. One original and two states/231 checks are in the
+[trait-setter review](coverage/semantics/trait-imported-backed-set-hook-review.json).
+Hooked iteration, defaulted virtual hooks, other paired hooks, unbacked or other trait
 setters, other explicit setter parameter forms, references, other inherited/trait
 and wider receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
