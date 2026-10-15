@@ -18,6 +18,9 @@ sign delivery and budget resumption. The original baseline, forward-declaration
 failure and incorrect integer-capture fixture retain zero credit. Wider operand,
 value, callback and lifecycle forms remain partial. OP12 stays paused.
 [Unary warning ledger](coverage/semantics/unary-warning-review.json).
+The 394-module join over a843 passes full SL initialization at 1177.
+Independent pointwise review preserves all incoming changes; the three sources
+and 323 state premises retain their private cuts without a replay.
 
 Ordinary string-valued `const` declarations now accept authentic interned and
 request carriers without changing their identity or source allocation classes.
