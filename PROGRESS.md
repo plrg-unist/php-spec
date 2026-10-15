@@ -1870,11 +1870,24 @@ from genuine source frontiers pass 642 premises. Source/state evidence retains
 its 5c9/151f/2ea/e8d cuts. Final strict initialization of 395 modules and the
 nested yield-from Unsupported control pass at 18f9. Native observations, the
 unchanged baseline, Unsupported controls and preserved failures/diagnostics earn
-zero agreement. By-reference targets, active
-yield-from producers, wider calls and broader lifecycle interactions remain open.
+zero agreement. At that cut, by-reference targets, active
+yield-from producers, wider calls and broader lifecycle interactions remained open.
 [Generator unpack review](coverage/semantics/generator-call-unpack-review.json).
 Canonical395 composition over `470e9adce` passes inventory and strict SL at
 `648402fb6`; private source/state evidence retains its original cuts.
+
+Ordinary Generator call unpack now consumes array `yield from` through a present,
+source-authenticated cache. Sent values preserve reference snapshots and repeated-row
+COW; real table/cache owners distinguish temporary and retained-CV cleanup.
+Queued close follows the caller's destructor receipt and carries child-destructor
+exceptions through finally/cache release. Nine new exact originals and one promoted
+prior control agree. Five genuine reached groups pass 435 premises: author 251 at
+`f480dce9` and independent 184 at `871fc198`. Final strict initialization of 395
+modules passes at `871fc198`; earlier source cuts retain `87fabcdc`/`f480dce9`.
+Ten native observations, the unchanged Unsupported baseline, the non-array required
+control and original failures earn zero agreement. Non-array delegates, by-reference
+targets and broader call/lifecycle interactions remain open.
+[Delegated-array review](coverage/semantics/generator-call-unpack-array-delegation-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or

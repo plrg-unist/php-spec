@@ -1,0 +1,32 @@
+[
+  {
+    "id": "generator-call-unpack-array-delegation-review-reference-cell-snapshot",
+    "source": "<?php\nclass ReviewDelegatedReferenceChild10 { function __destruct() { echo \"A|\"; } }\n$value = new ReviewDelegatedReferenceChild10();\n$items = [&$value];\nfunction reviewDelegatedReference10() { global $items, $value; try { echo \"G|\"; yield from $items; echo \"N|\"; $value = null; } finally { echo \"F|\"; } }\nfunction reviewDelegatedReferenceTarget10($first) { echo \"D|\", $first instanceof ReviewDelegatedReferenceChild10 ? \"HELD|\" : \"BAD|\"; $first = null; echo \"M|\"; }\nreviewDelegatedReferenceTarget10(...reviewDelegatedReference10());\necho \"E\";\n",
+    "source_sha256": "5f9199e73731c21e43ec4445365ff2b2fea18409a77a5adb439ff8ee298c34c1",
+    "purpose": "A copied delegated reference cache remains a refcell owner, while by-value SEND snapshots its object before producer mutation of that cell.",
+    "expected_model": "normal",
+    "native_stdout": "G|N|F|D|HELD|A|M|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-call-unpack-array-delegation-review-repeated-row-cow",
+    "source": "<?php\nclass ReviewDelegatedCowChild10 { function __destruct() { echo \"A|\"; } }\nfunction reviewDelegatedRows10() { $row = [new ReviewDelegatedCowChild10()]; $items = [$row, $row]; try { echo \"G|\"; yield from $items; echo \"N|\"; $row[0] = null; } finally { echo \"F|\"; } }\nfunction reviewDelegatedRowsTarget10($first, $second) { echo \"D|\"; $first[0] = null; echo \"X|\"; $second[0] = null; echo \"M|\"; }\nreviewDelegatedRowsTarget10(...reviewDelegatedRows10());\necho \"E\";\n",
+    "source_sha256": "5a51bb37a8cf8695660c49ee9beab70dd3273c72bc67335cc5a23f91e04ffde1",
+    "purpose": "Two delegated occurrences of one nested row become independent by-value parameters; producer and first-parameter writes must preserve the second row and its child.",
+    "expected_model": "normal",
+    "native_stdout": "G|N|F|D|X|A|M|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-call-unpack-array-delegation-review-cv-order-error-table-before-finally",
+    "source": "<?php\nclass ReviewDelegatedCvA10 { function __destruct() { echo \"A|\"; } }\nclass ReviewDelegatedCvB10 { function __destruct() { echo \"B|\"; } }\nfunction reviewDelegatedCv10() { try { echo \"G|\"; yield from [\"alpha\" => new ReviewDelegatedCvA10(), 0 => new ReviewDelegatedCvB10()]; echo \"BAD|\"; } finally { echo \"F|\"; } }\nfunction reviewDelegatedCvTarget10($alpha, $later = 0) { echo \"BAD|\"; }\n$generator = reviewDelegatedCv10();\ntry { reviewDelegatedCvTarget10(...$generator); } catch (Error $caught) { echo \"T|\", $caught->getLine(), \"|\", $caught->getTrace() === [] ? \"NOFRAME|\" : \"FRAME|\"; }\necho \"M|\"; unset($generator); echo \"E\";\n",
+    "source_sha256": "d5e8dd85075ce59b98f8bc4dc4033dc4bb12401f39a105ccc2e4599f9f911408",
+    "purpose": "A surviving CV retains the delegated table after SENT abort; unset releases its first object before forced finally, then frees the independently cached second object.",
+    "expected_model": "normal",
+    "native_stdout": "G|T|7|NOFRAME|M|A|F|B|E",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
