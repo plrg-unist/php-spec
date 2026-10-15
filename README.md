@@ -581,6 +581,13 @@ outer assignment stays unchanged. Three exact originals and 407 focused SL
 premises cover signed infinity, target storage and pending ownership in the
 [power-assignment ledger](coverage/semantics/powerassign-warning-review.json).
 Wider operands, targets, callbacks and lifecycle paths remain partial.
+Plain-CV `%=` now keeps the first converted long through a fractional-float
+deprecation, then reads the live quiet integer RHS. Normal return stores the
+remainder; a supplied throw or live zero leaves the target and late alias intact.
+Three exact originals and 362 focused SL premises check capture, cancellation,
+default Deprecated, original-line `DivisionByZeroError` and budgets in the
+[modulo-assignment ledger](coverage/semantics/modassign-warning-review.json).
+Wider operands, targets, callbacks and lifecycle paths remain partial.
 Explicit array-to-string casts now suspend through named warning handlers for
 a bounded plain-CV array input. The borrowed array adds no saved owner: replacing
 or removing its CV still yields fixed `Array`, while a supplied throw preserves

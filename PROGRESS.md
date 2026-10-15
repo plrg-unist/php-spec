@@ -7,6 +7,21 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Plain-CV `%=` now keeps its fractional-float left conversion through deprecation
+handlers, then reads the live quiet integer RHS. Captured12/live5 stores2; a supplied
+throw preserves callback writes and its late alias, while live zero creates the
+original-line `DivisionByZeroError` without store or detachment. Three exact
+originals pass at 9ed645105; 126/116 author plus 120 independent SL premises pass
+362 at 4e11c3dae/396. They cover fresh source/selection/cache/line guards, actual
+CELL/LOCATION, error/alias owners, false-handler default Deprecated and budgets.
+Pure ready projections establish refusals only; baseline/native/preparation/syntax
+retain zero agreement credit. Initial references/copies, warning or noninteger RHS,
+unsafe targets and wider callbacks/lifecycle remain partial; OP12 stays paused.
+[Modulo-assignment ledger](coverage/semantics/modassign-warning-review.json).
+The pointwise 397-module composition over 04c3c8c2f preserves incoming Source34
+and every parent declaration/helper. Source3/state362 retain their private cuts;
+independent seam review warrants no joined actor or renewed agreement credit.
+
 Primitive `define` now completes duplicate reporting while an ignored-flag
 warning exception is pending. An eligible handler is skipped without fallback;
 a live handler that excludes Warning level uses default reporting instead. The
