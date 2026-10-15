@@ -326,7 +326,20 @@ source1/81 AL premises at97dab9f8b check Error before target allocation/receipt/
 registration, the retained pending template and fresh full declaration/NEW
 identities on same-text eval retry. The earlier cold fixture's three
 elaboration stops and one slice-length execution failure remain zero-credit;
-no runtime rules or prior source/state gates changed. Internal and
-Throwable NEW, autoload, wider object-producing initializers, remaining builtin
-constant values and wider `define`/`defined`/`constant` behavior remain open. Class/default and callable
-consumer families retain their separate inventory and evidence; no complete-core claim.
+no runtime rules or prior source/state gates changed.
+
+Global initializer autoload now suspends a direct root NEW with empty prior facts,
+retaining the exact declaration, source, line and live binder as a nonowning
+certificate. Lookup precedes allocation and argument reads; only actual class-name
+publication permits constructor selection. A miss creates Error before a target
+receipt or constant row; unwind restores context before a fresh eval declaration.
+Two exact sources and 326 SL premises (141 success and 185 retry premises) retain
+runtime diff f3cd41fa in the [autoload ledger](../../coverage/semantics/global-constant-new-autoload-review.json).
+The immediate THROW_SEARCH checkpoint checks its real cleared context and pending
+binder; full public validation follows actual unwind. Pure malformed certificates
+are never driven. The unchanged baseline's premature missing-class Error and the
+binder/two fixture failures remain zero credit. Internal and Throwable NEW,
+nested autoload, earlier initializer facts, named/unpacked autoload arguments,
+wider object-producing/lifecycle forms and remaining builtin/query behavior remain
+open. Class/default and callable consumers keep their separate evidence; no
+complete-core claim.

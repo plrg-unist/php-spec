@@ -3261,9 +3261,14 @@ compaction groups use the existing strict SL runner at the unchanged120s cap.
 now completes lookup before allocation and nested arguments, then reselects the
 loaded constructor under the receiving declaration scope. Nine private sources
 and 174 reached premises pass at separate cuts; one actual generator interaction
-preserves eager default creation before suspension. Global-constant AST NEW
-autoload and wider class-link consumers remain required. Default `spl_autoload`
-filesystem search stays excluded.
+preserves eager default creation before suspension. A bounded
+[global-constant AST NEW follow-up](coverage/semantics/global-constant-new-autoload-review.json)
+now runs lookup before allocation/arguments and restores declaration context for
+same-text eval retry. Two exact sources and 326 SL premises retain the successful
+141-premise front and 185 retry premises; earlier binder/fixture failures remain
+zero credit. Direct roots with no earlier facts and supported positional arguments
+are covered; nested autoload and wider consumers remain required. Default
+`spl_autoload` filesystem search stays excluded.
 [Private parameter callable defaults286](docs/semantics/SOURCE-POSITIONAL-DEFAULTS.md)
 create fresh static Closures/FCCs using the authentic receive scope and cached
 physical FCC target. Nonowning receipts survive maker retirement and ordinary

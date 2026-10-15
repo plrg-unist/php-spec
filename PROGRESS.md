@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Global constant AST `new` now runs autoload before target allocation or argument
+reads, then resumes with its authentic declaration context and loaded constructor.
+A missed load raises the real Error without publishing the constant; a fresh
+same-text eval declaration can retry successfully. Two exact sources and 326 SL
+premises (141 retained success premises + 185 corrected retry premises) pass at runtime diff f3cd41fa,
+covering incomplete/completed receipts, mutable object identity and budget resume.
+The first binder and two fixture failures retain zero credit. Admission is bounded
+to direct initializer roots with no earlier facts and supported positional arguments;
+nested autoload and wider callback/lifecycle forms remain partial.
+[Global NEW autoload review](coverage/semantics/global-constant-new-autoload-review.json).
+
 
 Initially plain CV numeric `+=` now keeps its original destination classification
 through named warning handlers. Successful replacement detaches a callback-created

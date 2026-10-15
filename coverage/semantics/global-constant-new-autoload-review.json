@@ -1,0 +1,86 @@
+{
+  "status": "independently accepted private implementation and focused validation; integration pending",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; exact PHP/profile/pipeline/commands/streams and process exits retained in raw reports",
+  "base": "6bad864696c01c100a205a106bc97e7295fc5f7f",
+  "implementation_revision": "5a83ce29901479a46c7fe4b906abc6f8a68c8e89",
+  "module_count": 394,
+  "tested_cut": {
+    "runtime_diff_sha256": "f3cd41fa0caad47a476029a728b79bcb0c01ef13406d6a456ebfece16667e052",
+    "files": {
+      "spec/semantics/30-storage.watsup": "1706114fcf4c036b58ab64da3d5242a986f1dea36980924a90c78b1767dd93ca",
+      "spec/semantics/227-default-constructors.watsup": "04d50c6a7bbf6fa762eb2ee0be2f5b9d3f1d67914a3b3fe5117ed1550667c36d",
+      "spec/semantics/283-global-constant-objects.watsup": "c792771d5b935007336e843667a6b6a29478b5a127bf0dbbeda0e194758ff2df",
+      "tests/semantics/global_constant_new_autoload_protocol.py": "53d94ffca0bef4171dd30bda50c90ee6c97c493fb0d8e4ee3cae4a4eac52b50b"
+    },
+    "source_agreements": 2,
+    "public_premises": [
+      141,
+      185
+    ]
+  },
+  "behavior": [
+    "Global constant AST NEW performs actual autoload lookup before target allocation, receipt creation or argument demand. A descriptor compiled inside a loader does not substitute for CLASSNAMES publication; successful lookup reselects the loaded constructor through existing prepared phases.",
+    "AUTO_GLOBAL_NEW retains the exact declaration/root/source/name/line/arguments with empty prior FACTS. Live context and unique binder authenticate resumption; immutable source authenticates historical declaration replay. The saved certificate has no task-node owners. All syntactic global initializer NEW sites are excluded from ordinary AUTO_NEW independently of readiness.",
+    "A missed load raises the native Error without a target receipt or constant publication. Both eval compilations succeed; the first initializer fails, catch restores context, and the second same-text eval has a fresh source/declaration identity before successful construction.",
+    "The installed constant preserves the genuine instance identity through later property writes and ordinary aliases. Existing loaded283, ordinary277/default285 behavior, global query reception and generic value guards remain unchanged."
+  ],
+  "engine_routes": [
+    "Zend/zend_ast.c::zend_ast_evaluate_ex, ZEND_AST_NEW: zend_ast_fetch_class/zend_fetch_class_with_scope precede object_init_ex and argument AST evaluation, then constructor execution.",
+    "Zend/zend_execute_API.c::zend_lookup_class_ex and ext/spl/php_spl.c autoload dispatch use actual class-name publication, not the presence of compiled class descriptors.",
+    "Existing 227 prepared constructors and 283 global constant receipts preserve the loaded target, saved declaration scope and incomplete-to-complete publication; 152 Throwable unwind discards the constant binder before restored caller validation."
+  ],
+  "accepted": {
+    "source_agreements": 2,
+    "public_fronts": 2,
+    "public_premises": 326,
+    "retained_success_premises": 141,
+    "affected_retry_premises": 185,
+    "checked_eval_acceptances": 2,
+    "production_chains": 2,
+    "budget_resumptions": 1,
+    "raw_steps": 0,
+    "driven_forged_states": 0
+  },
+  "compatibility_bridge": "The retained state01 success 141 fixture/assertions are byte-identical to current state03 and use the same three runtime file hashes. Only retry variable typing, check-only case selection and the immediate transient Error checkpoint changed. Current retry 185 checks actual CONSTCONTEXT eps plus the surviving binder/live Error/heap; full descriptor/public validation remains at the genuine restored next-eval state and final continuation. Neither success nor source/native evidence was renewed.",
+  "preserved_outcomes": "The unchanged baseline is an accepted modeled php_error255 before any loader, not Unsupported, and disagrees with native. Initial affected source a268 stopped before runtime on a SpecTec binder error; state01 retry 184 failed elaboration on variable suffixes; state02 retry 184 failed an overstrong immediate-unwind descriptor assertion. All remain zero credit. State01 overall result is fail while its success 141 record passes. Source report result=source_agreement/native_agreement=true and exact tuple establish both independently accepted comparisons; inherited agreement_credit=0 fields remain unchanged. Native, preparation and standalone parse-only records retain zero agreement credit; no new build or portability claim.",
+  "remaining": "Nested autoload NEW, earlier initializer facts, named/unpacked autoload argument forms, internal/Throwable targets and wider object-producing/lifecycle forms remain partial; broader callback and class-link validation remains required. This does not close autoload or complete core.",
+  "artifacts": {
+    "native_pair": {
+      "path": ".tools/dynamic-review-02/static-native-v53/report.json",
+      "sha256": "a8aad6c566362dd14847d02d07e28c637ab4659e3a048718381e574ca759a13d"
+    },
+    "unchanged_success_baseline": {
+      "path": ".tools/dynamic-source-global-new-autoload-baseline-33/report.json",
+      "sha256": "a7f06357b73c07a9a9d0a51f27d1b6c912b2f8d30cbe6c29fcf4dead88a84b32"
+    },
+    "initial_binder_failure": {
+      "path": ".tools/dynamic-source-global-new-autoload-model-34/report.json",
+      "sha256": "a26835eb3d177cd165e8d10b931aaf7af9f63c21caa99438faae817e8b3e3815"
+    },
+    "affected_success_source": {
+      "path": ".tools/dynamic-source-global-new-autoload-model-v2-34/report.json",
+      "sha256": "1a4d4e72cf4fa43a4b5f10626159b23ce0b74b48f072f07315c3f01c3a8bd4d2"
+    },
+    "affected_retry_source": {
+      "path": ".tools/dynamic-source-global-new-autoload-retry-model-33/report.json",
+      "sha256": "478d638c4a78c2e3cae23250274815df48e17a9d186be00b12499f19557662a0"
+    },
+    "retained_success_and_initial_retry_fixture_failure": {
+      "path": ".tools/dynamic-source-global-new-autoload-state-01/check-report.json",
+      "sha256": "e5b403ded3c00dd40eb95b723962f26eacccef00e5031616b2089fd3d06047eb"
+    },
+    "transient_unwind_fixture_failure": {
+      "path": ".tools/dynamic-source-global-new-autoload-state-02/check-report.json",
+      "sha256": "2b7fe46cc3607d9ba1e6ab89af4f82a7c30e8d3ea99d746ece4f8fdbd0092dde"
+    },
+    "current_fixture_preparation": {
+      "path": ".tools/dynamic-source-global-new-autoload-state-03/fixtures-report.json",
+      "sha256": "2a6f556a2ad97eb20a0bdfaccd7839412358ce1a7996bc218468fbb0124e692d"
+    },
+    "affected_retry_public": {
+      "path": ".tools/dynamic-source-global-new-autoload-state-03/check-report.json",
+      "sha256": "4e969802dd201fcbdffc44985e83fa53ce509849cc38419a5a8e6b0857a17694"
+    }
+  },
+  "recovery": "Canonical ignored static-native-v53 originals retain source bytes and full oracle tuples. global_constant_new_autoload_protocol.py --phase fixtures --sources/--output uses checked frontend/adapter packets; --phase check runs full ordered394 --sl, process90/exact trueLF/empty, serial success then conditional retry under host240, or check-only --case retry under host120. Source CLI60/process90/host120; native PHP30/host120. state02/generator.py preserves the prior transient-check script; state03 retry/parse-only retains the full-file parse record, zero semantic credit. Metadata-only edits need no semantic rerun."
+}
