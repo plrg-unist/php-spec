@@ -1,0 +1,72 @@
+[
+  {
+    "id": "generator-call-unpack-reference-yield-snapshots-enter-byvalue-cells",
+    "source": "<?php\n$shared = 11;\nfunction &generatorReference09() { global $shared; echo \"G|\"; yield $shared; echo \"N|\"; $shared = 22; yield $shared; echo \"F|\"; }\nfunction generatorReferenceTarget09($first, $second) { global $shared; echo \"D|\", $first, \"|\", $second, \"|\"; $first = 17; $second = 23; echo \"M|\", $shared, \"|\"; }\necho \"P|\";\ngeneratorReferenceTarget09(...generatorReference09());\necho \"E\";\n",
+    "source_sha256": "0f6e22a9c0900543c179a2ca8181a04bab83372acac42b6d862f58e6f93c8fd2",
+    "purpose": "A reference-yielding Generator is unpacked into by-value parameters: the first scalar is frozen before resume writes the global, and callee writes cannot change that global.",
+    "expected_model": "normal",
+    "native_stdout": "P|G|N|F|D|11|22|M|22|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-call-unpack-empty-generator-body-precedes-default-receive",
+    "source": "<?php\nfunction generatorEmpty09() { echo \"G|\"; if (false) { yield 1; } echo \"F|\"; }\nfunction generatorEmptyTarget09($value = 17) { echo \"D|\", $value, \"|\"; }\necho \"P|\";\ngeneratorEmptyTarget09(...generatorEmpty09());\necho \"E\";\n",
+    "source_sha256": "9299ff1558def8dd6ddb773be085443dc203fb0885f2a8bb0559cf23a1e8edf8",
+    "purpose": "An empty fresh Generator still executes to completion before the target receives its omitted default.",
+    "expected_model": "normal",
+    "native_stdout": "P|G|F|D|17|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-call-unpack-closed-cv-generator-rejects-traversal",
+    "source": "<?php\nfunction generatorClosed09() { echo \"G|\"; yield 1; echo \"F|\"; }\nfunction generatorClosedTarget09($value = 17) { echo \"BAD|\"; }\n$generator = generatorClosed09();\n$generator->next();\necho \"P|\";\ntry { generatorClosedTarget09(...$generator); } catch (Exception $caught) { echo \"T|\", $caught->getMessage(), \"|\", $caught->getLine(), \"|\", $caught->getTrace() === [] ? \"NOFRAME|\" : \"FRAME|\"; }\necho \"E\";\n",
+    "source_sha256": "54ee95df27e0fc5a28748b106d5d8329a836fece514dbcd4fb8a0b95b59cc512",
+    "purpose": "A previously exhausted CV Generator fails at unpack acquisition, without target entry or an invented Generator method frame.",
+    "expected_model": "normal",
+    "native_stdout": "G|F|P|T|Cannot traverse an already closed generator|7|NOFRAME|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-call-unpack-advanced-cv-generator-rewind-error-preserves-current",
+    "source": "<?php\nfunction generatorAdvanced09() { try { echo \"G|\"; yield 1; echo \"N|\"; yield 2; echo \"BAD|\"; } finally { echo \"F|\"; } }\nfunction generatorAdvancedTarget09($value = 17) { echo \"BAD|\"; }\n$generator = generatorAdvanced09();\n$generator->next();\necho \"P|\";\ntry { generatorAdvancedTarget09(...$generator); } catch (Exception $caught) { echo \"T|\", $caught->getMessage(), \"|\", $caught->getLine(), \"|\", $caught->getTrace() === [] ? \"NOFRAME|\" : \"FRAME|\"; }\necho \"K|\", $generator->current(), \"|M|\";\nunset($generator); echo \"E\";\n",
+    "source_sha256": "37e85b55b13eefbb5993a34415a483b555610df42dd51b56d62b772a7067201a",
+    "purpose": "An already advanced paused Generator refuses rewind, keeps its current value, and delays finally until the independent CV is unset.",
+    "expected_model": "normal",
+    "native_stdout": "G|N|P|T|Cannot rewind a generator that was already run|7|NOFRAME|K|2|M|F|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-call-unpack-body-throw-retires-sent-payload-without-method-trace",
+    "source": "<?php\nclass GeneratorThrowChild09 { function __destruct() { echo \"A|\"; } }\nfunction generatorThrow09() { try { echo \"G|\"; yield new GeneratorThrowChild09; echo \"N|\"; throw new Exception(\"stop\", 51); } finally { echo \"F|\"; } }\nfunction generatorThrowTarget09($first, $second) { echo \"BAD|\"; }\necho \"P|\";\ntry { generatorThrowTarget09(...generatorThrow09()); } catch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; foreach ($caught->getTrace() as $entry) { echo $entry[\"function\"], \"|\"; } }\necho \"E\";\n",
+    "source_sha256": "76033e6534bb3315ca33867991cac3d9154c4e17fdfd0361c91ba4f73e1b676d",
+    "purpose": "Generator-body failure while fetching the next argument retains the actual Generator function trace, runs finally and retires the earlier argument before catch, with no Generator::next frame.",
+    "expected_model": "normal",
+    "native_stdout": "P|G|N|F|A|T|51|generatorThrow09|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-call-unpack-named-fixed-slots-complete-before-target-body",
+    "source": "<?php\nfunction generatorNamed09() { try { echo \"G|\"; yield \"second\" => 7; yield \"first\" => 5; } finally { echo \"F|\"; } }\nfunction generatorNamedTarget09($first = 17, $second = 23) { echo \"D|\", $first, \"|\", $second, \"|\"; }\necho \"P|\";\ngeneratorNamedTarget09(...generatorNamed09());\necho \"E\";\n",
+    "source_sha256": "b44793cf43070e2789f318ca39f8509e3ba7f1b7f52547db4c1e46115b862928",
+    "purpose": "Named Generator keys select fixed parameter slots, fill the earlier hole, and finish the Generator before entering the reordered target.",
+    "expected_model": "normal",
+    "native_stdout": "P|G|F|D|5|7|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-call-unpack-receive-error-trace-outlives-generator-retirement",
+    "source": "<?php\nclass GeneratorTypedChild09 { function __destruct() { echo \"A|\"; } }\nfunction generatorTyped09() { try { echo \"G|\"; yield [new GeneratorTypedChild09]; } finally { echo \"F|\"; } }\nfunction generatorTypedTarget09(?GeneratorTypedChild09 $value) { echo \"BAD|\"; }\necho \"P|\";\ntry { generatorTypedTarget09(...generatorTyped09()); } catch (TypeError $caught) { echo \"T|\", $caught->getLine(), \"|HELD|\"; unset($caught); echo \"U|\"; }\necho \"E\";\n",
+    "source_sha256": "505dd467c2a7c920383ef7fe049ac350c4e520c17b0f6e63f9e9dd58cea83821",
+    "purpose": "Target receive verification follows Generator completion/finally; its real TypeError trace keeps the yielded array child until caught-error release.",
+    "expected_model": "normal",
+    "native_stdout": "P|G|F|T|4|HELD|A|U|E",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
