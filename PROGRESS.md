@@ -7,6 +7,23 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Non-NUL `define` names containing `::` now receive int/string/non-NaN float
+third flags with primitive values. Weak calls raise the name ValueError before any
+ignored-flag Warning; strict calls instead raise parameter-3 TypeError after all
+argument effects. Both retain raw flags, including negative zero and request `"0"`,
+without warning callback, class lookup or constant-table mutation.
+Four exact originals agree at f09a31dc. All 620 public premises pass: author
+189+84+184 and independent 163 across four groups/nine genuine CONFIG error fronts,
+checking raw API/caller traces, captured arguments despite live mutations, unchanged
+state, source/carrier refusals and budgets. The unchanged Unsupported baseline retains
+zero credit. Only 35 module400 insertions change runtime; the omitted/bool route
+stays exact. NULL/NaN flags for these names, NUL names and wider/owning values remain
+partial. [Scalar class-name review](coverage/semantics/define-class-scalar-flag-review.json).
+
+Pointwise composition over 91ff8844 preserves the incoming 399-module parent.
+Source4/state620 retain their private cuts; independent seam review warrants no
+joined actor or renewed execution claim.
+
 Plain-CV `<<=`/`>>=` now keep their fractional left conversion through deprecation
 handlers, then read the live quiet integer count. Captured `-12` and count `2` store
 `-48` or `-3` despite callback `99` and detach a late target alias. Supplied throw cancels storage;

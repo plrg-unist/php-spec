@@ -189,8 +189,21 @@ bool calls have the same priority. The
 [class-name review](../../coverage/semantics/define-class-name-review.json) binds
 four exact originals and 450 public premises across seven genuine CONFIG fronts,
 including raw two/three-argument traces, real caller frames, state preservation,
-immutable/source/carrier refusals and budgets. Coerced/NULL/NaN flags, NUL-containing
-names, wider values and owning/packed forms remain separate.
+immutable/source/carrier refusals and budgets. Quiet scalar flags follow below;
+NULL/NaN flags, NUL-containing names, wider values and owning/packed forms remain separate.
+
+For these non-NUL `::` names, int/string/non-NaN float third flags use a separate
+reception route. Weak boolean parsing is quiet and leaves the raw argument intact;
+the body then raises the same name ValueError before any ignored-flag Warning.
+Strict calls reject the raw flag with parameter-3 TypeError before that body check,
+after all argument effects. Neither route resolves a class or accesses the table.
+The [scalar class-name review](../../coverage/semantics/define-class-scalar-flag-review.json)
+binds four exact originals and 620 public premises across nine genuine CONFIG
+fronts, including truthy int/string/float flags, raw negative zero and authenticated
+request `"0"`, selected named captures despite live mutations, actual API/caller
+traces, preserved stores/events/table/handler registry, refusals and budgets.
+The omitted/bool route is unchanged; NULL/NaN flags for these names, NUL names,
+coerced names, wider values and owning/packed forms remain partial.
 
 Fresh two-argument array definitions recursively dereference source cells into
 new DIRECT entries. Reinserting surviving keys rebuilds NEXT, positions and serial

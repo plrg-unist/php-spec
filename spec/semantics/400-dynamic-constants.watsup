@@ -19,6 +19,7 @@ dec $dynamic_scalar_define_flag_call(pconfigcall) : bool
 dec $dynamic_null_define_flag_call(pconfigcall) : bool
 dec $dynamic_nan_define_flag_call(pconfigcall) : bool
 dec $dynamic_class_define_call(pconfigcall) : bool
+dec $dynamic_class_define_scalar_call(pconfigcall) : bool
 def $config_parameter(INTRINSIC_DEFINE, preqbytes) = (0) -- if preqbytes = $ptascii("constant_name")
 def $config_parameter(INTRINSIC_DEFINE, preqbytes) = (1) -- if preqbytes = $ptascii("value")
 def $config_parameter(INTRINSIC_DEFINE, preqbytes) = (2) -- if preqbytes = $ptascii("case_insensitive")
@@ -1515,6 +1516,7 @@ def $dynamic_scalar_define_flag_receive(S, pconfigcall) = S[.COMPLETION = UNSUPP
 rule PhpStep/dynamic-scalar-define-flag-invoke: S ~> $dynamic_scalar_define_flag_receive(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $config_invoke_valid(S, pconfigcall) /\ $dynamic_scalar_define_flag_call(pconfigcall)
+  -- if ~$dynamic_class_define_scalar_call(pconfigcall)
 def $task_nodes(DYNAMIC_SCALAR_DEFINE_FLAG_RESULT pconfigcall) = $config_nodes(pconfigcall)
 def $selected_task_nonce(DYNAMIC_SCALAR_DEFINE_FLAG_RESULT pconfigcall) = pconfigcall.SELECTION
 def $call_task_valid(S, DYNAMIC_SCALAR_DEFINE_FLAG_RESULT pconfigcall) = $dynamic_scalar_define_flag_case_valid(S, pconfigcall)
@@ -1871,3 +1873,36 @@ def $dynamic_class_define_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED 
 rule PhpStep/dynamic-class-define-invoke: S ~> $dynamic_class_define_receive(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $config_invoke_valid(S, pconfigcall) /\ $dynamic_class_define_call(pconfigcall)
+
+;; Quiet scalar flags are parsed before the class-name body rejection.
+;; Strict calls reject raw flags first; neither path reaches ignored-flag Warning.
+def $dynamic_class_define_scalar_call(pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_DEFINE
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps
+  -- if $dynamic_scalar_define_flag_values(pconfigcall) = ((preqbytes, pvalue, pvalue_flag))
+  -- if $dynamic_constant_class_name(preqbytes) /\ ~(0 <- preqbytes)
+def $dynamic_class_define_scalar_call(pconfigcall) = false -- otherwise
+dec $dynamic_class_define_scalar_valid(pstate, pconfigcall) : bool
+def $dynamic_class_define_scalar_valid(S, pconfigcall) = true
+  -- if $dynamic_class_define_scalar_call(pconfigcall) /\ $config_invoke_valid(S, pconfigcall)
+  -- if $dynamic_define_source(S, pconfigcall.SITE)
+  -- if $dynamic_scalar_define_arguments(S, pconfigcall, 0)
+  -- if $dynamic_scalar_define_flag_values(pconfigcall) = ((preqbytes, pvalue, pvalue_flag))
+  -- if $named_slot_at(pconfigcall.SENT, 0) = NAMED_SENT (KNOWN pvalue_name)
+  -- if $dynamic_constant_class(pvalue) = (pvalueclass)
+  -- if $string_plain(pvalue_name) = pvalue_name \/ $string_carrier_valid(S, pvalue_name)
+  -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
+  -- if $string_plain(pvalue_flag) = pvalue_flag \/ $string_carrier_valid(S, pvalue_flag)
+def $dynamic_class_define_scalar_valid(S, pconfigcall) = false -- otherwise
+dec $dynamic_class_define_scalar_receive(pstate, pconfigcall) : pstate
+def $dynamic_class_define_scalar_receive(S, pconfigcall) = $config_error(S[.TODO = ptask_tail*], pconfigcall, "TypeError", $ptascii("define(): Argument #3 ($case_insensitive) must be of type bool, ") ++ $typed_given(S, pvalue_flag) ++ $ptascii(" given"))
+  -- if $dynamic_class_define_scalar_valid(S, pconfigcall) /\ $config_strict(S, pconfigcall)
+  -- if $dynamic_scalar_define_flag_values(pconfigcall) = ((preqbytes, pvalue, pvalue_flag))
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_class_define_scalar_receive(S, pconfigcall) = $config_error(S[.TODO = ptask_tail*], pconfigcall, "ValueError", $ptascii("define(): Argument #1 ($constant_name) cannot be a class constant"))
+  -- if $dynamic_class_define_scalar_valid(S, pconfigcall) /\ ~$config_strict(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_class_define_scalar_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "class-qualified scalar define flag capture"] -- otherwise
+rule PhpStep/dynamic-class-define-scalar-invoke: S ~> $dynamic_class_define_scalar_receive(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $config_invoke_valid(S, pconfigcall) /\ $dynamic_class_define_scalar_call(pconfigcall)

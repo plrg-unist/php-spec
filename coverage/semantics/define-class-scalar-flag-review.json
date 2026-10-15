@@ -1,0 +1,64 @@
+{
+  "scope": "Nonowning define(non-NUL string containing ::, primitive, int/string/non-NaN float flag): weak name ValueError versus strict third-parameter TypeError priority. Partial core.",
+  "status": "independently_accepted_actual_parent",
+  "reviewer": "/root/source_review_35",
+  "parent": "0408687966338af4c5796510c9d52b7828fa2f15",
+  "semantic_revision": "76b7a8839b8503df732b7733a37815d7df19e429",
+  "tested_revision": "f09a31dc38019645d8b12c2eb1161c9eb0bb5a67",
+  "semantic_files": {
+    "spec/semantics/400-dynamic-constants.watsup": "e0a202b3983658c067936422f5c198e6d3bb328787b57f696b20fafb22b4ff86"
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "tools": {
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7"
+  },
+  "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+  "primary": "Pinned Zend/zend_builtin_functions.c::ZEND_FUNCTION(define) parses bool parameter 3 before zend_memnstr(name,\"::\",length) and its parameter-1 ValueError, which itself precedes the ignored-flag Warning. Zend/zend_API.c::zend_parse_arg_bool_weak reads the const raw zval without replacement; zend_parse_arg_bool_slow rejects strict nonbool inputs before the body.",
+  "semantics": "Only 35 module400 insertions: separate class-name scalar selector/valid/receive, forward declaration and specific exclusion in the old scalar-flag invoke. Existing source-send/primitive/string-carrier guards authenticate the captured call. Strict config_error keeps raw flag TypeError; weak config_error raises name ValueError. No new task/schema, argument rewrite, table lookup/mutation, warning callback, native evaluation or shared error-policy change. The previous omitted/bool path is exact; NULL/NaN and NUL stay outside.",
+  "accepted": [
+    "Three author originals at f09a31dc match native at f569c06e: truthy int/string/float weak flags raise raw name ValueError without handler entry; selected named request-string \"false\" remains captured despite later V|N/name/flag/callee effects; strict int/string/float flags raise raw parameter-3 TypeError after all effects before body checking. Caller 99 remains, all PHP exits are 0 and stderr empty.",
+    "Independent original at f09a31dc matches native raw negative-zero and authenticated runtime-string \"0\" flags, request-string candidate/name, Previous NULL, caller 99/101 and zero handler count. The core bitwise producer uses different input lengths to allocate its request string; no ordinary-library helper or class-resolution observer is used.",
+    "Author 189+84+184=457 plus independent 163 public premises pass 620 at f09a31dc, true LF/0/empty worker stderr, across four groups/nine genuine CONFIG fronts. Actual transitions verify ValueError versus TypeError, raw three-argument API and real caller frames, source file/line, Previous NULL and preserved stores/events/table/handler registry. Immutable/source/selection/carrier/domain refusals and whole budget equality remain explicit."
+  ],
+  "zero_credit": "The sole unchanged first-source baseline 6b888ed5 at f569c06e is accepted/checked Unsupported scalar define flag reception after B|, CLI 1/null PHP exit/empty stderr, with zero agreement. Native and syntax preparation add no application agreement. No failed execution, fixture correction or retry occurred.",
+  "execution": "LC_ALL=C/TZ=UTC, AS 3 GiB, CPU 4, INT timeout+kill5, serial stop-first/reap. Native children 15s, source CLI 45s/host 60s, public fresh full SL children 90s. Author native3/baseline at f569c06e; independent native1, model4 and public prepare/check4 at f09a31dc. Inputs/HEAD stayed stable, all worker/PHP stderr empty and every process group reaped.",
+  "raw_root": ".tools/define-class-scalar-flag-evidence-37",
+  "report_sha256": {
+    "author/sources/baseline-report.json": "6b888ed515bb612fe04532dc9c77a022097df780dbaf29350f2f131b9dc88a0d",
+    "author/sources/model-report.json": "f0cfd6e40336eddd93381bfe46d19c13ef9c2836c2d16dda84728d76725acfd8",
+    "author/sources/native-report.json": "1a10e1c1ab8da2db3d09a13d414dd00ae35ef01b1a5bc2fa3b38d6318617f15d",
+    "author/review/model-report.json": "cdc74a7975c6bdfa532ba1b2ec9f08c06f6aab145e45b5fc09a424d5081d21ea",
+    "author/review/native-report.json": "1e2629ea63156e1d9c0ee9f2c0d5a0813552ee7349af176e182810f0f193e465",
+    "author/public/check-report.json": "4b9bac7fe05586fc44c34386ad0b1971339010e3c0b38358052e213308c47d30",
+    "author/public/prepare-report.json": "1b1bd088641da53c5c93294bcbbb67ceb6e58cbb80f932dee34bf07594d8fec8",
+    "author/review-public/check-report.json": "74808374927ad46ef35953536b95dc81a5b78cd57f88ba25760a50947e45af7a",
+    "author/review-public/prepare-report.json": "a1b4492225962e1b73df4d6df746940f9e2fd5bafd1d0383867c50794f6ef5ee"
+  },
+  "commands": [
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 4 python3 tests/semantics/define_class_scalar_flag_sources.py --phase native --output .tools/define-class-scalar-flag-native-37",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 4 python3 tests/semantics/define_class_scalar_flag_sources.py --phase baseline --output .tools/define-class-scalar-flag-native-37 --case literal-class-names-with-quiet-scalar-flags",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 4 python3 tests/semantics/define_class_scalar_flag_review_sources.py --phase native --output .tools/define-class-scalar-flag-review-37",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 240s prlimit --as=3221225472 -- taskset -c 4 python3 tests/semantics/define_class_scalar_flag_sources.py --phase model --output .tools/define-class-scalar-flag-native-37",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 4 python3 tests/semantics/define_class_scalar_flag_review_sources.py --phase model --output .tools/define-class-scalar-flag-review-37",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 4 python3 tests/semantics/define_class_scalar_flag_protocol.py --phase prepare --sources .tools/define-class-scalar-flag-native-37 --output .tools/define-class-scalar-flag-public-37",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 360s prlimit --as=3221225472 -- taskset -c 4 python3 tests/semantics/define_class_scalar_flag_protocol.py --phase check --sources .tools/define-class-scalar-flag-native-37 --output .tools/define-class-scalar-flag-public-37",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 4 python3 tests/semantics/define_class_scalar_flag_review_protocol.py --phase prepare --sources .tools/define-class-scalar-flag-review-37 --output .tools/define-class-scalar-flag-review-public-37",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 120s prlimit --as=3221225472 -- taskset -c 4 python3 tests/semantics/define_class_scalar_flag_review_protocol.py --phase check --sources .tools/define-class-scalar-flag-review-37 --output .tools/define-class-scalar-flag-review-public-37"
+  ],
+  "recovery": "Four owned raw directories moved once into the canonical raw root after reviewer STOP and focused cwd/cmdline/fd users[]. All nine report hashes are unchanged. Restore author/sources, author/review, author/public and author/review-public respectively as .tools/define-class-scalar-flag-{native,review,public,review-public}-37 in a worktree at the recorded cuts to recover original source/command/cwd identities.",
+  "remaining": "NULL/NaN flags for these names, NUL/coerced names, wider/owning values, packed/FCC/arity forms and full define-family closure remain partial. No engine bug or intentional divergence.",
+  "composition": {
+    "parent": "91ff88448892ba2228dfea437a0564c4024a32c8",
+    "private_publication": "a516d167a7f81c2474f569a8776543259dd03978",
+    "reviewer": "/root/source_review_35",
+    "modules": 399,
+    "runtime_files": {
+      "spec/semantics/400-dynamic-constants.watsup": "e0a202b3983658c067936422f5c198e6d3bb328787b57f696b20fafb22b4ff86"
+    },
+    "gate": "Pointwise union adds only the exact private 35-line module400 declaration/exclusion/receive net, with zero incoming runtime deletion. Module400 was exact privatebase; every other parent runtime path and the ordered 399-module manifest is preserved. V61 only widens authentic stdClass tree NEW/ternary capture in 283; incoming shift, assigned-array return, Generator and LIST_FETCH/reference paths have disjoint selectors. Source/config/error/numeric-bool/string/bitwise helpers are unchanged. No joined actor is warranted; source4/public620 retain their private cuts with no renewed execution claim."
+  }
+}

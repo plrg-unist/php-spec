@@ -1077,6 +1077,11 @@ ignored-true Warning. Omitted/bool flags and strict calls retain raw arguments
 after their effects.
 [Four source agreements and 450 state premises](coverage/semantics/define-class-name-review.json)
 cover exact errors, caller traces and preserved state; wider flags/values remain partial.
+For the same non-NUL `::` names, weak int/string/non-NaN float flags reach that
+ValueError, while strict calls reject the raw flag first with parameter-3 TypeError.
+[Four source agreements and 620 state premises](coverage/semantics/define-class-scalar-flag-review.json)
+cover both priorities, raw negative-zero/request-string traces and unchanged state.
+NULL/NaN flags for these names and wider values remain partial.
 Fresh two-argument `define` also copies nonempty acyclic scalar-array trees,
 dereferencing source cells and rebuilding append history. Request-string leaves,
 nested reference snapshots and literal constraints pass
