@@ -1,6 +1,6 @@
 {
   "milestone": "Ordinary Generator argument unpack into by-value parameters",
-  "status": "independently accepted private; actual-parent composition pending",
+  "status": "independently accepted and composed on the recorded current parent",
   "independent_reviewer": "iterator_review_01, paired with iterator_dev_01",
   "base": "0af01a848b63a2209548cb8ef16f5be721c84af1",
   "final_private_code": "18f9f3a38f2e2770ffc226f879ec90cefe351fda",
@@ -95,5 +95,18 @@
     "Generator unpack into by-reference targets and active yield-from producers.",
     "Ordinary-call IteratorAggregate acquisition and wider callable targets.",
     "Broader reentrant, delegation, Fiber and terminal Generator lifecycle interactions; no full-family closure claim."
-  ]
+  ],
+  "composition": {
+    "parent": "470e9adcea5af7fa5c604980e7ff5cda202ea694",
+    "tested_candidate": "648402fb65c80505bb72a7bc9b537d85e1b58810",
+    "modules": 395,
+    "review": "iterator_review_01 accepted exact parent preservation, five-row inventory union and disjoint late overloads; no source/state renewal warranted.",
+    "inventory": [".tools/generator-call-unpack-join-inventory-asagkawa/report.json", "8ab57e1e9a72e494ccfb75267d4ea722e3579d5e2fa72741bbdecf9abd72eb03"],
+    "strict": [".tools/generator-call-unpack-join-sl-bxovtuq5/report.json", "eced86ee6f209caa230a539db130bd72ed198598b3b1879cb9c5a9b97be92bef"],
+    "result": "Inventory169/306 and sole strict SL395 passed with stable HEAD/inputs, exit0 and no timeout; strict stdout true and stderr empty. Private evidence retains its original cuts.",
+    "joined_archive": "../php-spec-evidence-archive/generator-call-unpack-09/joined.tar.gz",
+    "archive_bytes": 31191,
+    "archive_sha256": "5706bc8ed531bacc0583f634019d856e326b92fccc9a16d176c57d5b2f572aef",
+    "recovery": "Sibling joined-manifest.json contains report/driver hashes and recovery."
+  }
 }

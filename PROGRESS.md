@@ -1873,6 +1873,8 @@ unchanged baseline, Unsupported controls and preserved failures/diagnostics earn
 zero agreement. By-reference targets, active
 yield-from producers, wider calls and broader lifecycle interactions remain open.
 [Generator unpack review](coverage/semantics/generator-call-unpack-review.json).
+Canonical395 composition over `470e9adce` passes inventory and strict SL at
+`648402fb6`; private source/state evidence retains its original cuts.
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or
