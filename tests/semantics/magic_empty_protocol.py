@@ -211,10 +211,12 @@ S_wrong_arg = S_get_call[.TODO = (CALL_ARGS (PROPERTY_EMPTY_TARGET ppropertyempt
 S_direct = S_get_entered[.CURRENT = (pcallcontext_get[.TARGET = METHOD_TARGET n_child porigin_get])]
 ~$property_empty_guard(S_direct,n_child,$ptascii("zero")) /\ ~$property_empty_get_active(S_direct,n_child,$ptascii("zero"))
 ~$property_empty_active(S_get_entered,S_get_entered.CURRENT,eps,n_child,$ptascii("zero"),true)
-S_recursive = S_get_entered[.TODO = [(ISSET_RESULT true 24)]][.ORIGIN = (ppropertyempty_zero.SITE)][.BASE = BASE_PROPERTY (POBJECT n_child) ($ptascii("zero"))][.RESULT = KNOWN PNULL]
-$property_empty_guard(S_recursive,n_child,$ptascii("zero")) /\ $property_empty_pending(S_recursive) /\ $property_empty_plan(S_recursive) = eps
-PhpStep: S_recursive ~> S_recursive_done
-S_recursive_done.COMPLETION = UNSUPPORTED "magic empty source, methods, or recursive access"
+S_private_active = S_get_entered[.TODO = [(ISSET_RESULT true 24)]][.ORIGIN = (ppropertyempty_zero.SITE)][.BASE = BASE_PROPERTY (POBJECT n_child) ($ptascii("zero"))][.RESULT = KNOWN PNULL]
+$property_empty_guard(S_private_active,n_child,$ptascii("zero")) /\ $property_resolve(S_private_active,n_child,$ptascii("zero")) = PROPERTY_ACCESS ppropertydesc_zero.KEY
+~$property_isset_needed(S_private_active,n_child,$ptascii("zero")) /\ ~$property_empty_pending(S_private_active) /\ $property_empty_plan(S_private_active) = eps
+PhpStep: S_private_active ~> S_private_raw
+S_private_done = $me_after(S_private_active,S_private_raw)
+S_private_done.RESULT = KNOWN (PBOOL false) /\ S_private_done.TODO = eps /\ S_private_done.EVENTS = S_private_active.EVENTS
 S_nonint = S_zero_result[.RESULT = KNOWN (PBOOL true)]
 PhpStep: S_nonint ~> S_nonint_done
 S_nonint_done.COMPLETION = UNSUPPORTED "magic empty getter result outside integer family" /\ S_nonint_done.TODO = S_nonint.TODO /\ S_nonint_done.EVENTS = S_nonint.EVENTS
