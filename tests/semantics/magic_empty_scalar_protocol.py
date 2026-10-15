@@ -37,10 +37,10 @@ def $ms_output((OUTPUT ptbytes) :: pevent*) = ptbytes ++ $ms_output(pevent*)
 ROWS = [
     ('nullish', 'PNULL', 'true'), ('falsey', 'PBOOL false', 'true'),
     ('truthy', 'PBOOL true', 'false'), ('blank', 'PSTRING_CARRIER INTERNED_STRING eps', 'true'),
-    ('zero', 'PSTRING_CARRIER INTERNED_STRING [48]', 'true'),
+    ('zero', 'PSTRING_CARRIER INTERNED_STRING ([48])', 'true'),
     ('doublezero', 'PSTRING_CARRIER INTERNED_STRING ([48,48])', 'false'),
     ('text', 'PSTRING_CARRIER INTERNED_STRING ([103,111])', 'false'),
-    ('nul', 'PSTRING_CARRIER INTERNED_STRING [0]', 'false'),
+    ('nul', 'PSTRING_CARRIER INTERNED_STRING ([0])', 'false'),
     ('zeronul', 'PSTRING_CARRIER INTERNED_STRING ([48,0])', 'false'),
 ]
 
@@ -69,8 +69,8 @@ BODY += [
 # Constructed REQUEST controls authenticate existing identity metadata; no producer claim.
 DERIVED = r'''
 $property_empty_truth(S,PINT 0) = (true) /\ $property_empty_truth(S,PINT 13) = (false)
-$property_empty_truth(S,PSTRING eps) = (true) /\ $property_empty_truth(S,PSTRING [48]) = (true)
-$property_empty_truth(S,PSTRING ([48,48])) = (false) /\ $property_empty_truth(S,PSTRING [0]) = (false) /\ $property_empty_truth(S,PSTRING ([48,0])) = (false)
+$property_empty_truth(S,PSTRING eps) = (true) /\ $property_empty_truth(S,PSTRING ([48])) = (true)
+$property_empty_truth(S,PSTRING ([48,48])) = (false) /\ $property_empty_truth(S,PSTRING ([0])) = (false) /\ $property_empty_truth(S,PSTRING ([48,0])) = (false)
 S_float = S_nullish[.RESULT = KNOWN (PFLOAT 0)]
 PhpStep: S_float ~> S_float_done
 S_float_done.COMPLETION = UNSUPPORTED "magic empty getter result type"
@@ -89,8 +89,8 @@ S_auth_done.COMPLETION = NORMAL /\ S_auth_done.RESULT = KNOWN (PBOOL false) /\ S
 S_auth_done.STRINGDATA = S_auth.STRINGDATA /\ S_auth_done.EVENTS = S_auth.EVENTS /\ S_auth_done.OBJECTPROPS = S_auth.OBJECTPROPS /\ $ms_guard(S_auth_done)
 n_stale = $(n_string + 1)
 $property_empty_truth(S_auth,PSTRING_CARRIER (REQUEST_STRING n_stale) ptbytes_payload) = eps
-$property_empty_truth(S_auth,PSTRING_CARRIER (REQUEST_STRING n_string) [48]) = eps
-$property_empty_truth(S_auth,PSTRING_CARRIER INTERNED_STRING [256]) = eps
+$property_empty_truth(S_auth,PSTRING_CARRIER (REQUEST_STRING n_string) ([48])) = eps
+$property_empty_truth(S_auth,PSTRING_CARRIER INTERNED_STRING ([256])) = eps
 '''.strip().splitlines()
 
 
