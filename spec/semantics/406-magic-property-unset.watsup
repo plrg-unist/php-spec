@@ -13,13 +13,13 @@ def $property_unset_needed(S, n, ptbytes) = true
 def $property_unset_needed(S, n, ptbytes) = true
   -- if $property_unset_method(S, n) =/= eps
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes_key
-  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
-  -- if $property_slot_at(ppropertyslot*, ptbytes_key) = eps
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_all*)
+  -- if $property_slot_at(ppropertyslot_all*, ptbytes_key) = eps
 def $property_unset_needed(S, n, ptbytes) = true
   -- if $property_unset_method(S, n) =/= eps
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes_key
-  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
-  -- if $property_slot_at(ppropertyslot*, ptbytes_key) = (ppropertyslot)
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_all*)
+  -- if $property_slot_at(ppropertyslot_all*, ptbytes_key) = (ppropertyslot)
   -- if ppropertyslot.STATE = PROP_UNSET
 def $property_unset_needed(S, n, ptbytes) = false -- otherwise
 
