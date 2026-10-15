@@ -28,7 +28,8 @@ def $list_missing_item(S, porigin, (NArrayItem phpType5 expression (BOOLEAN fals
 def $list_missing_item(S, porigin, (NArrayItem ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13*, n, n, z) = ((expression, phpType13*, z, PINT n, KINT n))
 def $list_missing_item(S, porigin, (NArrayItem expression_key expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13*, n, n, z) = ((expression, phpType13*, z_key, pvalue, pkey))
   -- if $origin_child((porigin), [PCFIELD 0, PCINDEX n, PCFIELD 0]) = (porigin_key)
-  -- if $compiled_read(S, porigin_key) = (pvalue)
+  -- if $compiled_read(S, porigin_key) = (pvalue_compiled)
+  -- if pvalue = $compiled_string_value(S, porigin_key, pvalue_compiled)
   -- if $list_missing_quiet_key(pvalue) = (pkey)
   -- if $code_expression_at_source(S, porigin, [PCFIELD 0, PCINDEX n, PCFIELD 0]) = (z_key)
 def $list_missing_item(S, porigin, phpType13*, n, n_selected, z) = eps -- otherwise
