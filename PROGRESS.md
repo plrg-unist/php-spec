@@ -7,6 +7,16 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Ordinary string-valued `const` declarations now accept authentic interned and
+request carriers without changing their identity or source allocation classes.
+Five exact sources retain10475/3342 cuts; two genuine publication fronts pass279 SL
+premises at3342, including raw source-class versus receiving interning, invalid
+identity/fact/table refusal, unchanged storage and budget resumption. The unchanged
+baseline, first-BIND decision and two fixture failures retain zero agreement.
+Independent request-array COW and actual default reads agree. Private acceptance
+is complete; current-parent integration remains pending. The constant family stays partial.
+[String-publication ledger](coverage/semantics/const-string-review.json).
+
 Class-qualified `constant` now evaluates a requested untyped class initializer
 that reads a plain global constant, without updating unrelated members. Failure
 restores the class context without caching; defining the missing global permits
@@ -33,7 +43,7 @@ string carriers after argument effects, preserving namespace/case rules and
 missing-name API Errors. Four exact sources retain their 516c/5b83/5e33 cuts; three
 public fronts pass 323 physical premises at fdcb, including named immutable-query
 facts, captured dynamic selection, row classes, Error arguments and budget resume.
-The baseline, original pre-call `const` string publication failure and reached
+The baseline, historical pre-call `const` string publication failure and reached
 array-result refusal retain zero agreement. Wider values, coercions and owning
 forms remain required; full core stays partial.
 The 394-module composition over c011d175 passes full SL initialization and one

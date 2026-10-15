@@ -66,8 +66,7 @@ const GlobalArray21 = [1];
 echo 'B|'; constant('GlobalArray21'); echo 'after';
 ''',
 }
-UNSUPPORTED = {'captured-query-and-strings': ('global constant object transfer', b''),
-    'array-result-boundary': ('global constant value query', b'B|')}
+UNSUPPORTED = {'array-result-boundary': ('global constant value query', b'B|')}
 BASELINE = ('class constant value query', b'B|')
 
 

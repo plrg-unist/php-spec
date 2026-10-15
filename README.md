@@ -847,6 +847,10 @@ using the captured query, one leading-separator removal and case-sensitive final
 names. Missing names raise an API `Error`; argument effects precede lookup.
 The [global-query ledger](coverage/semantics/global-constant-review.json) preserves
 source agreements, public state checks and explicit producer/array boundaries.
+Ordinary string-valued `const` declarations now authenticate interned and request
+carriers while preserving their identity and source allocation classes. The
+[string-publication review](coverage/semantics/const-string-review.json) covers
+literal, folded and aliased values, recursive array validation and shared defaults.
 Primitive duplicate `define` now warns and returns false while retaining the old
 binding, including named handlers and retained dynamic selection with callback
 appends. [Two exact sources and 207 public premises](coverage/semantics/dynamic-constant-duplicate-review.json)

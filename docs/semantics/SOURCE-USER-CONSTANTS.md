@@ -18,6 +18,14 @@ Allocation provenance is a separate non-owning tree: `PVSCALAR`, `PVSTRING bool`
 
 Shared compiler facts export `PCCLASS` beside existing `PCONSTANT` values. The compiler records classes while folding actual child facts. Runtime `CONSTANT_OBSERVE` records the result of actual evaluation and propagates classes through the same selected children and operations. A fully stored initializer applies direct-root string interning at declaration installation; strings inside its arrays retain their own classes. Deferred initializers preserve operation and imported-value provenance. The allocation-class contract records the pinned scanner, literal-installation, cast, concatenation, bitwise, and array distinctions.
 
+String values and scratch facts admit authentic `PSTRING_CARRIER` identities.
+Request identities must match `STRINGDATA`; fact validation retains the actual
+carrier alongside existing source, pool and lookup checks. A scanner class can be
+`PVSTRING false` even when direct declaration installation interns the received
+value. The legacy allocation-class policy is unchanged; validation does not infer
+the class from a carrier tag. The [string-publication review](../../coverage/semantics/const-string-review.json)
+records source-backed publication, array/default consumers and public resume checks.
+
 ## Resumption invariants
 
 Static/no-use REAL Closure and named/static-method FCC initializers retain an
@@ -193,9 +201,9 @@ policy.
 Absent names raise `Error` with the stripped lookup spelling and the full captured
 argument in the API trace. Unknown startup values retain their prior Unsupported
 result. Arrays, other owning values, coercions and packed/owning calls remain
-outside this slice. The original ordinary `const` string producer still stops
-before lookup; its failure is retained separately from the supported `define`
-string source. The [global-query ledger](../../coverage/semantics/global-constant-review.json)
+outside this slice. The original ordinary `const` string producer refusal retains
+its historical cut; the string-publication follow-up above admits that producer
+domain without renewing the older lookup campaign. The [global-query ledger](../../coverage/semantics/global-constant-review.json)
 binds the source and public-state cuts without closing the constant family.
 
 The matching engine routes are `ZEND_FUNCTION(define)`/`ZVAL_COPY`,

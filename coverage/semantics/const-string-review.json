@@ -1,0 +1,95 @@
+{
+  "scope": "Ordinary string constant publication: authentic interned/request carriers in values and scratch facts; existing recursive array validation and shared consumers. Partial core.",
+  "status": "independently_accepted_private",
+  "reviewer": "/root/core_breadth_review_01",
+  "parent": "122f54805c041fbd804381502011ff24920c21ef",
+  "semantic_revision": "2e76e9220e0adbdcb07368f9007c871d58928d50",
+  "semantic_sha256": {
+    "spec/semantics/89-constant-classes.watsup": "a65c812a87c36ecbdc7fb9eb0a3cf25fd6fb1e2a0a12458059704a8ddac3f809"
+  },
+  "module_count": 394,
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+  "contract": [
+    "Carrier values and scratch facts retain actual identity; request identities must match STRINGDATA. Existing source/pool/lookup/uniqueness and transfer guards remain intact.",
+    "Source allocation classes and receiving interning remain distinct: the actual multi-byte literal fact is PVSTRING false while the received class is true. The legacy bool policy is unchanged.",
+    "No new owners, string allocations, heap edges, compiler rules or schema. V48 class-specific false guards remain separate; pvclass_operand is unchanged."
+  ],
+  "source_routes": [
+    "vendor/php-src/Zend/zend_compile.c zend_compile_const_decl, zend_const_expr_to_zval, zend_insert_literal/zval_make_interned_string",
+    "vendor/php-src/Zend/zend_vm_def.h ZEND_DECLARE_CONST: copied value before registration",
+    "vendor/php-src/Zend/zend_constants.c zend_register_constant: namespace-only folding and case-sensitive publication"
+  ],
+  "sources": [
+    {
+      "revision": "10475f1f6482fdf7591f32e1cab193178f124983",
+      "report": "author/native/model-literal-folded-and-alias-request-string-alias-array-string-probe-report.json",
+      "agreements": 3,
+      "ids": [
+        "literal-folded-and-alias",
+        "request-string-alias",
+        "array-string-probe"
+      ],
+      "note": "Literal-array probe is a positive control, not a newly demonstrated baseline gap."
+    },
+    {
+      "revision": "3342b291c7099b397ec4ec9541e1df6d1eacd58f",
+      "report": "author/review/model-report.json",
+      "agreements": 2,
+      "ids": [
+        "request-string-array-copy",
+        "shared-default-string"
+      ],
+      "note": "Independent request-backed constant array/COW plus actual function-default consumer."
+    }
+  ],
+  "public": {
+    "revision": "3342b291c7099b397ec4ec9541e1df6d1eacd58f",
+    "report": "author/public/check-states-report.json",
+    "premises": 279,
+    "groups": {
+      "literal-folded-and-alias": 208,
+      "request-string-alias": 71
+    },
+    "checks": "Actual BIND values/facts/classes and immutable pools; invalid/mismatched request identities, wrong fact/source/table rejection through public drive; no publication allocation; zero-budget and one-step equality."
+  },
+  "zero_credit": [
+    "Unchanged checked baseline at ac9c0159: Unsupported global constant object transfer after B|; CLI1/null PHP exit.",
+    "First-BIND decision at75ca: interned literal/receivedtrue, valueguardfalse/transfertrue/descriptorsfalse/factsfalse; observational only.",
+    "58b3b829: pre-execution non-invertible appended-row binder. 0080153d: fixture expected raw literal class true instead of false. Both preserved; corrected279 pass, no runtime change.",
+    "Native observations and syntax preparations establish no semantic agreement; older global-query const producer refusal retains its original zero-credit cut."
+  ],
+  "commands": [
+    "python3 tests/semantics/const_string_sources.py --phase native --output .tools/const-string-native-22",
+    "python3 tests/semantics/const_string_sources.py --phase baseline --case literal-folded-and-alias --output .tools/const-string-native-22",
+    "python3 tests/semantics/const_string_sources.py --phase model --case literal-folded-and-alias --case request-string-alias --case array-string-probe --output .tools/const-string-native-22",
+    "python3 tests/semantics/const_string_protocol.py --phase prepare-states --sources .tools/const-string-native-22 --output .tools/const-string-public-sourceclass-22",
+    "python3 tests/semantics/const_string_protocol.py --phase check-states --sources .tools/const-string-native-22 --output .tools/const-string-public-sourceclass-22",
+    "python3 tests/semantics/const_string_review_sources.py --phase native --output .tools/const-string-review-22",
+    "python3 tests/semantics/const_string_review_sources.py --phase model --output .tools/const-string-review-22"
+  ],
+  "execution": "Serial CPU5/SLOT3, AS3GiB, LC_ALL=C/TZ=UTC. Native children15s; model CLI45/host60; state children full SL90. Outer90 native/baseline/prepare,240 author source/state,180 peer model/decision. All five source and279 state agreement children0/emptyerr/stable/reaped/groups[]. Raw reports retain exact argv, streams and full input pins.",
+  "compatibility": "Only the maintained old producer Unsupported expectation is removed after acceptance; the same class bridge, new producer sources and prior global-query controls justify it without renewing the historical case or changing any accepted counts.",
+  "raw_root": ".tools/const-string-evidence-22",
+  "reports": {
+    "author/decision/decision-report.json": "8dd425479b77de6b33faaa20cd1fe02ff53f52c553146a5ee8e2726543638225",
+    "author/decision/prepare-report.json": "3537534349df5e9ab1a2e1f829cea4f14792f3be231e3021cdfc099e1ef8a0a7",
+    "author/native/baseline-report.json": "6f555f14a7fcfe94171b2770cd5342cce4f7396ed78738a643c8096e0966b60b",
+    "author/native/model-literal-folded-and-alias-request-string-alias-array-string-probe-report.json": "2e44e5427248ed456e169b719665d86fe2ce7c442e07aa662ab41ef389982c42",
+    "author/native/native-report.json": "e3baef098bdacf92b49dbca2e678efb08603039a164cdc4990b7f95e7f3acf79",
+    "author/public/check-states-report.json": "6eef8773fc9c005d8917cb0cd5aaf450eff595ac1d57f48cf8113e959a68c272",
+    "author/public/prepare-states-report.json": "85f5fdb20a72d8e6865f25caff9d692867499c30c080284829105e6f73a0a270",
+    "author/public-binder/check-states-report.json": "0080153d75f38dee7dbbec48f0e08ab9853d4806746c3cac8968fccf35310cd3",
+    "author/public-binder/prepare-states-report.json": "6df6ae65709e70eb697ada71ee3b56c5c1fa5292c05477ed121c12e91010c04e",
+    "author/public-initial/check-states-report.json": "58b3b829dac720b60542d8b4b83cbd0eee4bddb642cf113f72021ea4ae37be89",
+    "author/public-initial/prepare-states-report.json": "c2428c56d94e1f5ce9982a15eac0879562dec4352197984b24d75c29a370db60",
+    "author/review/model-report.json": "7f45c0d7ceecd9f1bb50250600a9746b5dd05c119cbc9c50e2d0b305d27417d4",
+    "author/review/native-report.json": "e67519d480a2bd5919e61aada3de20a48f6d6701f04211f0a690280610cb0efe"
+  },
+  "recovery": "Raw trees were moved without copies after no-use checks. Recreate .tools/source-const-string-22 at each recorded revision and restore author/native,decision,public-initial,public-binder,public,review as its .tools/const-string-native-22,const-string-state-22,const-string-public-22,const-string-public-fixed-22,const-string-public-sourceclass-22,const-string-review-22. Reports preserve original absolute source/cwd identities; branches retain cuts. Maintained scripts can prepare fresh packets.",
+  "remaining": "Wider constants, global array queries, coercion, owning/lifecycle forms and complete PHP core remain open. No engine bug or intentional divergence.",
+  "actual_parent_integration": null
+}
