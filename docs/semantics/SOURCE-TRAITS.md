@@ -83,6 +83,14 @@ body; Trait magic remains distinct from Consumer lexical and Grand called scope.
 A string-only parameter fails at physical Trait hook ENDLINE7 before import.
 Two originals and two cuts/281 premises are in the
 [explicit trait-setter review](../../coverage/semantics/trait-imported-explicit-set-hook-review.json).
+A fixed backed statement pair ordered GET then implicit SET also imports
+directly into a parentless Consumer. The raw Trait functions remain separate from
+two Consumer callable clones; both project together. Missing a raw partner keeps
+the pair origins and interception demand, with no call plan or sole-hook fallback.
+Crossed GET write/SET read bypass both hooks while Consumer private13 and Grand
+called scope coexist with physical Trait magic. Source1 and two states/333 checks
+are in the [paired trait-hook review](../../coverage/semantics/trait-imported-paired-hooks-review.json).
+Parented/nested/adapted pairs, explicit parameters and other body/order forms remain open.
 Other setter imports and wider declaration shapes remain required.
 
 Imports retain two identities. The declaring owner and lexical `self` scope are

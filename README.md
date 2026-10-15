@@ -2300,6 +2300,11 @@ parameter. The assignment returns its original `"20"` string after storage33;
 Trait magic, Consumer private13 and Grand called scope remain distinct. A
 string-only parameter fails at the physical Trait hook line7. Two originals and
 two states/281 checks are in the [explicit trait-setter review](coverage/semantics/trait-imported-explicit-set-hook-review.json).
+A selected direct Trait GET/implicit-SET statement pair imports both hooks
+together. Trait code/magic and Consumer private scope remain distinct; crossed
+accesses skip both hooks, and assignment20 returns20 after storage33/get46.
+One original and two states/333 checks are in the
+[paired trait-hook review](coverage/semantics/trait-imported-paired-hooks-review.json).
 Hooked iteration, defaulted virtual hooks, other paired hooks, unbacked or other trait
 setters, other explicit setter parameter forms, references, other inherited/trait
 and wider receiver, quiet or indirect-access families and `__unset` consumers remain required.
