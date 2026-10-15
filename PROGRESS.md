@@ -7,6 +7,23 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+With a quiet integer LEFT, plain-CV numeric `&=`/`|=`/`^=` now retain both longs
+through fractional-RHS deprecation. Captured12/5 from5.5 stores4/13/9 despite
+callback99/10 and detaches a late alias; supplied throw preserves callback writes,
+the same Exception and alias write-through. Independent negative RHS(-1) from-1.5
+still stores XOR-13, with original-line default Deprecated and detached alias99.
+Five exact originals pass at9bcb1a3c9; author155/155/155/140 plus independent119
+SL premises pass724 at3f53cfce6/399. Fresh both-cache/source/op/line/range guards,
+actual cells/owners and budgets are covered; only the safe target is rechecked
+after conversion. Native/baseline/retained checked prep/syntax retain0; pure ready
+projections establish refusals only. Both-fractional operands, initial references/
+copies, unsafe targets and wider callbacks/lifecycle remain partial; OP12 stays paused.
+[RHS bitwise-assignment ledger](coverage/semantics/bitassign-right-warning-review.json).
+
+Composed over 67c660172/399 after pointwise review of typed returns, Generator,
+stdClass/define, property-empty/list and weak comparison seams. Source5/state724
+retain their private cuts; no joined actor, replay or renewed credit.
+
 NaN third flags with non-NUL `::` define names now emit their conversion Warning
 before the name ValueError, skipping the ignored-true Warning. Returning handlers
 retain raw captures and callback effects; first-handler throws cancel the body

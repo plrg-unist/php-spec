@@ -613,6 +613,11 @@ left conversion through deprecation handlers, then read the live quiet integer R
 Success detaches late aliases; supplied throw preserves callback writes and the
 same Exception. Five exact originals and 692 focused SL premises pass in the
 [bitwise-assignment ledger](coverage/semantics/bitassign-warning-review.json).
+With a quiet integer left value, numeric `&=`, `|=` and `^=` also keep both converted
+longs through fractional-RHS deprecation. Success detaches late aliases; supplied
+throw preserves callback writes and the same Exception. Negative RHS values remain
+ordinary signed masks. Five exact originals and 724 focused SL premises pass in the
+[RHS bitwise ledger](coverage/semantics/bitassign-right-warning-review.json).
 Explicit array-to-string casts now suspend through named warning handlers for
 a bounded plain-CV array input. The borrowed array adds no saved owner: replacing
 or removing its CV still yields fixed `Array`, while a supplied throw preserves

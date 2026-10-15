@@ -212,6 +212,14 @@ covered. [Bitwise-assignment evidence](../../coverage/semantics/bitassign-warnin
 retains five exact originals and 692 focused SL premises. Initial references/copies,
 warning or noninteger RHS, unsafe targets and wider lifecycle remain partial.
 
+With a quiet integer LEFT, distinct initially plain CV numeric `&=`, `|=` and `^=`
+keep both converted longs through fractional-RHS deprecation. Success detaches a
+late alias; supplied throw preserves callback writes, the same Exception and alias
+write-through. Negative RHS masks still store signed integers after the callback.
+[RHS bitwise evidence](../../coverage/semantics/bitassign-right-warning-review.json)
+retains five exact originals and 724 focused SL premises. Both-fractional operands,
+initial references/copies, unsafe targets and wider lifecycle remain partial.
+
 Stringable `.=` converts the left value before dereferencing the selected RHS
 slot. A defined direct RHS CV is borrowed and follows callback rebinding; an
 initially undefined read keeps its warned null value, while a later unset is a

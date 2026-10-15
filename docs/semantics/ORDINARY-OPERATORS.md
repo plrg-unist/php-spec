@@ -276,6 +276,20 @@ pure projections establish refusals only. Initial references/copies, warning or
 noninteger RHS, unsafe targets and wider lifecycle remain partial. Initial float
 LEFT/quiet integer RHS bypasses Zend's separate two-string specialization.
 
+With a quiet signed-64-bit integer LEFT, distinct initially plain CV numeric
+`&=`, `|=` and `^=` keep both converted longs through fractional-RHS deprecation.
+Captured12/5 from5.5 stores4/13/9 despite callback99/10 and detaches a late alias;
+a supplied handler Exception cancels storage and preserves callback writes, the
+same Throwable and alias write-through. A negative converted RHS remains an
+ordinary bit mask: captured12/(-1) stores XOR(-13), with default Deprecated at
+RHSline16. Only the safe original target is rechecked; the numeric RHS is not reread.
+Five exact originals and 605 author plus 119 independent SL premises pass in the
+[RHS bitwise ledger](../../coverage/semantics/bitassign-right-warning-review.json).
+All three source/OP pairs, fresh both-cache/source/line/range guards, actual cells/
+owners and budgets are covered; pure projections establish refusals only.
+Both-fractional operands, initial references/copies, unsafe targets and wider
+lifecycle remain partial. Earlier modulo/shift/LEFT-bitwise contracts stay unchanged.
+
 Arithmetic and bitwise conversion use the existing pure SpecTec numeric and byte
 helpers, including signed 64-bit boundaries, binary64 values, string operands,
 pinned power behavior and conversion diagnostics. Explicit casts keep their
