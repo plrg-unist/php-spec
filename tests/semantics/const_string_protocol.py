@@ -110,6 +110,8 @@ def checks(program, path, name):
             state + '_one = $drive_steps(' + state + '_zero[.COMPLETION = NORMAL],1)',
             state + r'_one.COMPLETION = NORMAL \/ ' + state + '_one.COMPLETION = BUDGET',
             after + ' = ' + state + '_one[.COMPLETION = NORMAL]',
+            '$(|' + after + '.USERCONSTANTS| = |' + state + '.USERCONSTANTS| + 1)',
+            row + ' = ' + after + '.USERCONSTANTS[|' + state + '.USERCONSTANTS|]',
             after + '.USERCONSTANTS = ' + state + '.USERCONSTANTS ++ [' + row + ']',
             row + '.NAME = $user_constant_key(' + name_text + ')', row + '.ORIGIN = ' + origin,
             row + '.VALUE = ' + result, row + '.CLASS = PVSTRING ' + flag,
