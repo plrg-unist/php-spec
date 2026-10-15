@@ -38,10 +38,10 @@ ROWS = [
     ('nullish', 'PNULL', 'true'), ('falsey', 'PBOOL false', 'true'),
     ('truthy', 'PBOOL true', 'false'), ('blank', 'PSTRING_CARRIER INTERNED_STRING eps', 'true'),
     ('zero', 'PSTRING_CARRIER INTERNED_STRING [48]', 'true'),
-    ('doublezero', 'PSTRING_CARRIER INTERNED_STRING [48,48]', 'false'),
-    ('text', 'PSTRING_CARRIER INTERNED_STRING [103,111]', 'false'),
+    ('doublezero', 'PSTRING_CARRIER INTERNED_STRING ([48,48])', 'false'),
+    ('text', 'PSTRING_CARRIER INTERNED_STRING ([103,111])', 'false'),
     ('nul', 'PSTRING_CARRIER INTERNED_STRING [0]', 'false'),
-    ('zeronul', 'PSTRING_CARRIER INTERNED_STRING [48,0]', 'false'),
+    ('zeronul', 'PSTRING_CARRIER INTERNED_STRING ([48,0])', 'false'),
 ]
 
 BODY = ['S_nullish = S']
@@ -70,7 +70,7 @@ BODY += [
 DERIVED = r'''
 $property_empty_truth(S,PINT 0) = (true) /\ $property_empty_truth(S,PINT 13) = (false)
 $property_empty_truth(S,PSTRING eps) = (true) /\ $property_empty_truth(S,PSTRING [48]) = (true)
-$property_empty_truth(S,PSTRING [48,48]) = (false) /\ $property_empty_truth(S,PSTRING [0]) = (false) /\ $property_empty_truth(S,PSTRING [48,0]) = (false)
+$property_empty_truth(S,PSTRING ([48,48])) = (false) /\ $property_empty_truth(S,PSTRING [0]) = (false) /\ $property_empty_truth(S,PSTRING ([48,0])) = (false)
 S_float = S_nullish[.RESULT = KNOWN (PFLOAT 0)]
 PhpStep: S_float ~> S_float_done
 S_float_done.COMPLETION = UNSUPPORTED "magic empty getter result type"
