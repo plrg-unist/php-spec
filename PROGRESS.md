@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Global `constant` now returns primitive user/startup values and authenticated
+string carriers after argument effects, preserving namespace/case rules and
+missing-name API Errors. Four exact sources retain their 516c/5b83/5e33 cuts; three
+public fronts pass 323 physical premises at fdcb, including named immutable-query
+facts, captured dynamic selection, row classes, Error arguments and budget resume.
+The baseline, original pre-call `const` string publication failure and reached
+array-result refusal retain zero agreement. Wider values, coercions and owning
+forms remain required; full core stays partial.
+Private acceptance is complete; current-parent integration remains pending.
+[Global-query ledger](coverage/semantics/global-constant-review.json).
+
 Class-qualified `constant` now admits source-authenticated immutable empty array
 roots and children. Queries retain pooled identity; a reference bucket initially
 holds the shared empty child, then append detaches it. Two exact sources and two

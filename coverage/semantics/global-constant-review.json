@@ -1,0 +1,151 @@
+{
+  "scope": "Bounded unowned global constant(string): primitive user/startup values, authenticated string carriers, special constants and missing-name API Error. Partial core.",
+  "status": "independently_accepted_private",
+  "reviewer": "/root/core_breadth_review_01",
+  "parent": "bd3a28b41",
+  "semantic_revision": "516c05cc1eae5e33e77224d4f7e1bb26acfa7e13",
+  "semantic_sha256": {
+    "spec/semantics/400-dynamic-constants.watsup": "94c6b1d07f75302232ec507e5cc86cec9f7476751f71be2db544fa145e9bd4f1"
+  },
+  "module_count": 394,
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "contract": [
+    "The completed CONFIG string is captured before lookup. Remove one supplied leading separator; lowercase namespace components, preserve final-name case, and do not apply caller namespaces/imports.",
+    "User primitive/string results match their stored allocation class and valid carrier. Special true/false/null and modeled primitive startup values retain their types; no result string is reallocated or interned.",
+    "Missing lookup allocates Error through the existing API machinery, retaining the full original trace argument and stripped message query. The destination stays unchanged through catch/finally.",
+    "Immutable query facts constrain positional and named literal arguments. Mutable arguments keep the existing capture policy; their CVs are never reread.",
+    "Positive global-name dispatch excludes all double-colon forms. The existing class-qualified implementation is textually preserved."
+  ],
+  "source_routes": [
+    "vendor/php-src/ext/standard/basic_functions.c PHP_FUNCTION(constant): Z_PARAM_STR, zend_get_constant_ex, ZVAL_COPY_OR_DUP",
+    "vendor/php-src/Zend/zend_constants.c zend_get_constant_ex: leading separator, namespace-only folding, special lookup and Error; zend_get_constant_str_impl/zend_get_constant_ptr",
+    "vendor/php-src/ext/standard/basic_functions.stub.php constant(string $name): mixed"
+  ],
+  "accepted": {
+    "source_agreements": 4,
+    "sources": [
+      {
+        "id": "names-and-scalars",
+        "revision": "516c05cc1",
+        "report": "first-source-and-producer-boundary",
+        "note": "Only this passed row is accepted; the aggregate attempt stops at the following existing producer refusal."
+      },
+      {
+        "id": "captured-define-query-and-strings",
+        "revision": "5b8301fe1",
+        "report": "adjacent-source"
+      },
+      {
+        "id": "missing-api-error",
+        "revision": "5b8301fe1",
+        "report": "missing-source-and-array-boundary"
+      },
+      {
+        "id": "late-publication-and-startup",
+        "revision": "5e3393131",
+        "report": "independent-source"
+      }
+    ],
+    "public_fronts": {
+      "revision": "fdcbad769",
+      "groups": 3,
+      "physical_premises": [
+        182,
+        86,
+        55
+      ],
+      "total": 323,
+      "checks": "Genuine CONFIG fronts and steps, typed results, literal query/selection/owner guards, row class refusal, captured callee mutation, Error arguments and zero-budget/one-step equality; complete endings match original native output."
+    },
+    "compiler": "The three fresh --sl fixtures pass full elaboration/algorithmic/structuring and encountered determinism checks with caches disabled."
+  },
+  "preserved_zero_credit": [
+    "The original unchanged baseline at b05ae5f27 is checked Unsupported class constant value query after B|, CLI1/null PHP exit/empty stderr.",
+    "Original captured-query-and-strings stops before B| at ordinary const-string publication: Unsupported global constant object transfer. It remains a failed source attempt and required core work; the define-backed source is distinct.",
+    "The array-result source reaches B| then explicitly refuses global constant value query. Native completion B|after is not model agreement.",
+    "Native observations, syntax preparation and metadata preflight are not source agreements."
+  ],
+  "limits": {
+    "ordinary_profile": "tests/semantics/profile.json; LC_ALL=C, TZ=UTC; fresh serial processes",
+    "source": "10000 semantic steps, CLI45s/host60s; native15s; affected actors AS3GiB on CPU5",
+    "public": "--sl, three90s children, AS3GiB/outer300s; stop-first with owned-group cleanup",
+    "initial_wrapper": "The initial native4 and baseline used taskset5 without outer/AS bounds; native children were15s and the baseline CLI45/host60. The later resource note arrived after launch. The baseline completed9.04s with empty group; no metadata-only rerun."
+  },
+  "compatibility": "The semantic delta stays byte-identical from516 through5b/fdcb/5e. Later changes only distinguish source packets, classify boundaries, close syntax workers and add the independent wrapper. Original source1 keeps its own cut; no accepted source/state campaign was renewed.",
+  "reports": [
+    {
+      "id": "native-originals",
+      "path": ".tools/source-global-constant-21/.tools/global-constant-native-21/native-report.json",
+      "sha256": "7eca7ded7225626d4a5cb9c7fc0b8d3f80c9071f4c66876e02f40a487c9c4ae6",
+      "revision": "b05ae5f270f369602adee207593d37ca51446df9"
+    },
+    {
+      "id": "baseline",
+      "path": ".tools/source-global-constant-21/.tools/global-constant-native-21/baseline-report.json",
+      "sha256": "60277f483eed7dc7b5b6619b0ff394218c6f0e21202f05110e165a93ced43c09",
+      "revision": "b05ae5f270f369602adee207593d37ca51446df9"
+    },
+    {
+      "id": "first-source-and-producer-boundary",
+      "path": ".tools/source-global-constant-21/.tools/global-constant-native-21/model-report.json",
+      "sha256": "194fde0d3852006b7e07250f3ff8f0cb50cb17cc6ba0d11abbecdfbf9aa2e411",
+      "revision": "516c05cc1eae5e33e77224d4f7e1bb26acfa7e13"
+    },
+    {
+      "id": "adjacent-native",
+      "path": ".tools/source-global-constant-21/.tools/global-constant-define-21/native-report.json",
+      "sha256": "5a931a72f47bec5a713dcebca55829d408f198953a3e0bec4f169f393c459173",
+      "revision": "5b8301fe130187b29962b76821ec6f1984c72dd5"
+    },
+    {
+      "id": "adjacent-source",
+      "path": ".tools/source-global-constant-21/.tools/global-constant-define-21/model-captured-define-query-and-strings-report.json",
+      "sha256": "68e18d86987c7e0ab77c65a696abd98e221536f277432a25c3287ce3bc96efc7",
+      "revision": "5b8301fe130187b29962b76821ec6f1984c72dd5"
+    },
+    {
+      "id": "missing-source-and-array-boundary",
+      "path": ".tools/source-global-constant-21/.tools/global-constant-native-21/model-missing-api-error-array-result-boundary-report.json",
+      "sha256": "eec54781a88b254805c97758a752c4305a015111fc45e3e6dbb8ee80ccdb8d07",
+      "revision": "5b8301fe130187b29962b76821ec6f1984c72dd5"
+    },
+    {
+      "id": "syntax-preparation",
+      "path": ".tools/source-global-constant-21/.tools/global-constant-state-21/prepare-report.json",
+      "sha256": "06c970d8aa1896fb9f93cafc135f3081d307e32021306a1761e17158d8a3adcd",
+      "revision": "fdcbad76957ae06d0651c5e03391df65c01c96da"
+    },
+    {
+      "id": "public-fronts",
+      "path": ".tools/source-global-constant-21/.tools/global-constant-state-21/check-report.json",
+      "sha256": "bde7404525c1bad6a1b82578c931ce50eeea51fc9a50107ef3e241d7c9007e5a",
+      "revision": "fdcbad76957ae06d0651c5e03391df65c01c96da"
+    },
+    {
+      "id": "independent-native",
+      "path": ".tools/source-global-constant-21/.tools/global-constant-review-21/native-report.json",
+      "sha256": "d6f8630175c81dcd393f8c16eafb9c13f41e63dc0c9c75d4dc63c8b54c834627",
+      "revision": "5e3393131a3566025ed596c267c84895e2ce0d32"
+    },
+    {
+      "id": "independent-source",
+      "path": ".tools/source-global-constant-21/.tools/global-constant-review-21/model-report.json",
+      "sha256": "19eeb6bbd9b572d9f21f7297e671639ea94f8e01537b0b69043539554724355d",
+      "revision": "5e3393131a3566025ed596c267c84895e2ce0d32"
+    }
+  ],
+  "reproduction": [
+    "tests/semantics/global_constant_sources.py --phase native/model --output DIR runs a fresh family packet; --case selects a distinct subset and prevents old report overwrite.",
+    "global_constant_protocol.py --phase prepare/check --sources ORIGINALS --adjacent-sources ADJACENT --output DIR reconstructs three exact original-derived fixtures and runs full modules --sl.",
+    "global_constant_review_sources.py supplies the independent late-publication/startup source using the same pinned recorder."
+  ],
+  "remaining": "Ordinary const-string publication, arrays/other owning values, coercions, packed/owning/FCC calls, halt-offset queries, unmodeled startup values and wider constant/core behavior remain open. No divergence, fresh build or portability claim.",
+  "independent_review": {
+    "reviewer": "/root/core_breadth_review_01",
+    "decision": "Accepted private semantic net, four source agreements at their separate cuts and three public fronts/323 premises; original producer, array and baseline records remain zero credit.",
+    "integration": "Pending exact-parent composition; preserve V47 class-array rules and check the shared qualified-query dispatch without renewing private campaigns."
+  },
+  "actual_parent_integration": null
+}

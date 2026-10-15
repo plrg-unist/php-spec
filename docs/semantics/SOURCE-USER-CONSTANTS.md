@@ -165,8 +165,25 @@ Acquiring a reference to an empty bucket separates its parent while the referenc
 cell still holds the shared immutable child; append separates that child later.
 Two exact sources and two public fronts/244 premises cover these distinctions in
 the [empty-query ledger](../../coverage/semantics/class-qualified-constant-empty-review.json).
-Global `constant` queries, mutable-empty/deferred/nonliteral array query values and
-wider domains remain open.
+Mutable-empty/deferred/nonliteral class-array query values and wider domains remain open.
+
+Global `constant` queries now read primitive user values, authenticated interned or
+request strings, special `true`/`false`/`null`, and the modeled primitive startup
+constants. The captured string supplies the full query: remove one leading
+separator, lowercase only namespace components, and preserve terminal-name case.
+Caller namespaces and imports do not prefix the string. Lookup occurs after
+argument effects. Stored string carriers retain their allocation class; the API
+does not intern or rebuild a result. Named and positional literal arguments use
+immutable compiler facts, while mutable arguments retain the existing capture
+policy.
+
+Absent names raise `Error` with the stripped lookup spelling and the full captured
+argument in the API trace. Unknown startup values retain their prior Unsupported
+result. Arrays, other owning values, coercions and packed/owning calls remain
+outside this slice. The original ordinary `const` string producer still stops
+before lookup; its failure is retained separately from the supported `define`
+string source. The [global-query ledger](../../coverage/semantics/global-constant-review.json)
+binds the source and public-state cuts without closing the constant family.
 
 The matching engine routes are `ZEND_FUNCTION(define)`/`ZVAL_COPY`,
 `validate_constant_array_argument`/`copy_constant_array`, `zend_register_constant`,

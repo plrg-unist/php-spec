@@ -836,6 +836,11 @@ namespace-prefix normalization and captured request strings after CV mutation.
 Rows retain the actual value and string-carrier class. Available positional
 literal facts constrain inputs; variable payloads retain the existing structural table
 policy. Wider values, conversion/warning paths and namespace fallback remain open.
+Global `constant` queries return primitive values and authenticated string carriers
+using the captured query, one leading-separator removal and case-sensitive final
+names. Missing names raise an API `Error`; argument effects precede lookup.
+The [global-query ledger](coverage/semantics/global-constant-review.json) preserves
+source agreements, public state checks and explicit producer/array boundaries.
 Primitive duplicate `define` now warns and returns false while retaining the old
 binding, including named handlers and retained dynamic selection with callback
 appends. [Two exact sources and 207 public premises](coverage/semantics/dynamic-constant-duplicate-review.json)
@@ -861,7 +866,7 @@ query domains remain Unsupported.
 Class-qualified `constant` returns folded primitive/literal values with lexical
 visibility and API Errors. Named autoload retains the captured query across caller
 CV changes. [Two exact sources and 384 public premises](coverage/semantics/class-qualified-constant-review.json)
-cover value types, string provenance and one-shot resume; global queries, deferred
+cover value types, string provenance and one-shot resume; deferred
 evaluation and wider domains remain Unsupported.
 [Array-valued qualified `constant` queries](coverage/semantics/class-qualified-constant-array-review.json)
 now share source-pooled nonempty literal trees until ordinary COW writes or reference
