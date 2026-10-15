@@ -7,21 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-By-value direct-CV destructuring now retains its captured array through missing-key
-Warning handlers. Callback insertion/rebinding still supplies null; later items
-observe the captured table and shared reference cells in order. Throws cancel the
-pending store and later items while preserving callback writes and the Throwable.
-Six exact sources agree at their retained cuts; five SL fronts pass 468 premises
-(460 Boolean +8 raw steps) at 1a35de425/345274fb5. Source/carrier/line/liveness
-refusals and physical owner2→1→0 cleanup are checked. The initial string-carrier
-rejection and two fixture elaboration failures retain zero credit. Flat CV targets
-and warning-free compiled/implicit keys bound this slice; wider destructuring
-producers and diagnostics remain partial.
-[Destructuring-warning review](coverage/semantics/list-missing-warning-review.json).
-The pointwise 398-module composition over 79da8331 preserves every incoming
-runtime declaration/helper, including modulo assignment, constant queries, return
-replay and Generator unpack. Source6/state468 retain their private cuts; independent
-seam review warrants no joined actor or renewed agreement credit.
+By-value destructuring now retains CV/literal RHS arrays through missing-key Warning
+handlers. The missing fetch still supplies null; later items observe captured
+scalar entries or shared reference cells. Throws cancel pending stores, later items
+and known-result delivery while preserving callback effects and the Throwable.
+The [CV slice](coverage/semantics/list-missing-warning-review.json) retains source6
+and state468 at its original cuts. Literal RHS sources bind compiled tables to
+their pool occurrence and runtime tables to a nonconstant descriptor. Old reference
+cells survive callback CV rebinding; temporary owners retire while pool roots stay.
+Six new exact originals agree at b04d64919; five SL fronts pass417 premises
+(408 Boolean +9 raw steps) at de7c79d3f, checking source/pool/line refusals,
+known-result effects, actual frame ownership, cancellation and budget resumption.
+The unchanged Unsupported baseline retains zero credit. Flat CV targets and quiet
+compiled/implicit keys bound both slices; wider producers and diagnostics remain partial.
+[Literal-RHS review](coverage/semantics/list-literal-missing-warning-review.json).
 
 Plain-CV `%=` now keeps its fractional-float left conversion through deprecation
 handlers, then reads the live quiet integer RHS. Captured12/live5 stores2; a supplied
