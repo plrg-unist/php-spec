@@ -2758,7 +2758,13 @@ Earlier facts retain their source guards; birth receipts preserve distinct leaf
 identities, shared property writes and duplicate-candidate cleanup.
 The [nested-birth review](coverage/semantics/global-constant-stdclass-new-review.json)
 records four source agreements and 1,107 reached-state premises. Whole-array conditional
-transfer, coalescing and wider object producers remain partial.
+transfer and wider object producers remain partial.
+Newborn stdClass leaves also transfer through `??`, including nested operand
+chains, eval units and quiet literal-array dimension reads. A nonnull left keeps
+its identity and skips the right; a NULL constant selects a fresh fallback leaf.
+The [coalescing review](coverage/semantics/global-constant-stdclass-coalesce-review.json)
+records the focused source and state cuts. Conditional aliases, whole-array
+coalescing, arguments and defaults remain partial.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is

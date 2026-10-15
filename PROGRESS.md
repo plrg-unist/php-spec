@@ -352,6 +352,19 @@ Pointwise composition over c9fc1c864 preserves the incoming399-module parent,
 including define, arithmetic, Generator, return and mixed-list selectors.
 Source4/state1107 retain their private398 cuts; no joined actor or renewed credit.
 
+Newborn stdClass `??` leaves now keep a nonnull left value or select a fresh
+fallback after a captured NULL, including nested chains and eval units. Only two
+module283 flow heads are added; source/completion and separate live-value guards
+remain. Three exact sources agree at their retained399-module cuts. Author282/316
+plus independent219 SL premises pass817 at aee1b2cae, covering ordinary
+COALESCE_RESULT handoff, quiet literal-DIM capture with V61 ternaries, two births
+from five sites, temporary retirement
+and real query/COW owners. Pure malformed histories are never driven. The
+unchanged Unsupported and initial peer elaboration binding failure retain0; only
+the affected peer fixture is renewed. Alias/whole-array coalescing, arguments,
+defaults and wider producers remain partial.
+[Coalescing review](coverage/semantics/global-constant-stdclass-coalesce-review.json).
+
 Selected inherited `__unset(string): void` now dispatches direct CV/literal-name
 access to a declared private property. Accessible public unset skips magic;
 the callback retains Parent lexical scope and Child called scope, removes the

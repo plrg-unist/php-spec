@@ -1,6 +1,6 @@
 # Ordinary source user constants
 
-Ordinary `const` declarations and reads use the checked source compiler and runtime for the pinned PHP 8.5.10 CLI profile. Scalar/array, certified Closure/FCC, bounded user-instance NEW and zero-argument stdClass values, including nested arrays and selected newborn ternary leaves, are supported; the constant family and full core remain partial.
+Ordinary `const` declarations and reads use the checked source compiler and runtime for the pinned PHP 8.5.10 CLI profile. Scalar/array, certified Closure/FCC, bounded user-instance NEW and zero-argument stdClass values, including nested arrays and selected newborn ternary/coalescing leaves, are supported; the constant family and full core remain partial.
 
 ## Declaration and lookup
 
@@ -537,4 +537,13 @@ transfer follows the newborn's SITE to its completed receipt, while value guards
 separately require the live allocation. Eval duplicate candidates create distinct
 leaves, then retire while nonowning birth history remains. Four exact sources and
 1,107 SL premises retain their [nested-birth cuts](../../coverage/semantics/global-constant-stdclass-new-review.json).
-Conditional aliases/whole-array transfer, coalescing, arguments and defaults remain partial.
+Conditional aliases/whole-array transfer, arguments and defaults remain partial.
+
+Newborn stdClass coalescing leaves retain a nonnull left value or select the right
+after a captured NULL, including nested chains and eval units. Two module283 flow
+heads follow immediate source operands to the same completed receipt; separate
+value checks still require a live allocation. Existing literal DIM projection
+and quiet capture compose with ternary selection, then retire their temporary
+array while preserving the chosen object. The
+[coalescing review](../../coverage/semantics/global-constant-stdclass-coalesce-review.json)
+records source, handoff and ownership checks. Alias/whole-array coalescing remains partial.
