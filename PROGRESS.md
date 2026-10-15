@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Selected-cell ADD now raises TypeError from live raw scalar operand types when
+RIGHT conversion fails after a leading-numeric warning. Completed RIGHT warnings
+still deliver their cached number despite later invalid writes. Two exact originals
+at 1c858 agree; 82 author and 77 independent genuine SL premises pass 159 at 99217,
+including marker-free caller THROW_SEARCH, sole Error ownership, unchanged
+assignment, public source/phase rejection, default Warning and budget resumption.
+The native observations, unchanged Unsupported baseline, preparation and syntax
+recorder/adjudication retain zero agreement credit. Wider operands, owning/expired
+values and callback/lifecycle forms remain partial; OP12 stays paused.
+[ADD failure ledger](coverage/semantics/arithmetic-failure-review.json).
+
 
 Real/named Closure, Generator and Fiber numeric comparisons now enter Notice
 callbacks through finite class images. Existing pair comparisons and VM storage

@@ -51,8 +51,17 @@ delivering a result. Initial selection and pre-callback input snapshots are chec
 post-callback holders remain historical. Three exact originals and 321 genuine SL
 premises retain their cuts in the [ADD ledger](../../coverage/semantics/arithmetic-warning-review.json).
 Plain CVs, unlike physical slot classes, copied operands, right-only warning
-ingress, owning callbacks, expired/nonconvertible replacements and wider
+ingress, owning/expired replacements, failed LEFT conversion and wider
 arithmetic/exit paths remain required; existing integer-operator evidence is unchanged.
+
+Failed RIGHT conversion on this selected-cell route now raises TypeError using
+both live raw scalar types, rather than earlier numeric holders. The unfinished
+marker is removed before ordinary caller Throwable search; the assignment stays
+unchanged. Conversely, a completed RIGHT warning still delivers its cached number
+even when the live pair would now fail conversion. Two exact originals and 82
+author plus 77 independent genuine SL premises check these distinct routes,
+source/phase/expiry guards, sole Error ownership and budget resumption in the
+[ADD failure ledger](../../coverage/semantics/arithmetic-failure-review.json).
 
 The same bounded CV/reference-cell route now stages leading-numeric-string `/`.
 Zend's `div_function` dereferences both operands before conversion; each numeric

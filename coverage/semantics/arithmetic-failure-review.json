@@ -1,0 +1,116 @@
+{
+  "version": 1,
+  "milestone": "OP17 ADD selected-operand conversion failure",
+  "status": "independently reviewed bounded private milestone; integration pending",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local pinned PHP and profile",
+  "scope": "Leading-numeric ADD on two direct CVs with preexisting untyped reference cells; failed RIGHT conversion when both live selected values are defined nonowning scalars.",
+  "runtime_revision": "1c858316dab7e795366e11801a42768f7ee9c407",
+  "runtime_sha256": {
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "2851b6e0b212318e421e3154e8d916833f54d22f8ee9b3200dc88963dbb94307"
+  },
+  "engine_basis": [
+    "Zend/zend_operators.c: add_function_slow dereferences both operand pointers before scalar conversion; the left number is saved before its leading-numeric warning.",
+    "Zend/zend_operators.c: _zendi_try_convert_scalar_to_number saves a numeric holder before warning dispatch. Failed RIGHT conversion invokes zend_binop_error, which preserves an existing exception and formats the current raw selected operand types."
+  ],
+  "contract": [
+    "Only an authentic ARITHMETIC_ADD_CONVERT RIGHT task may use the new failure rule. Source/line/phase/live-cell guards remain authoritative; undefined, expired or owning values keep explicit boundaries.",
+    "Read both live selected scalar values for the TypeError diagnostic, pop the unfinished marker and clear RESULT before ordinary same-frame Throwable creation. No result reaches the pending assignment.",
+    "A completed ARITHMETIC_ADD_WARNING retains its historical numeric holder even when the live operand pair becomes invalid. The pure failure lookup may find those live values, but the actual PhpStep constructor prevents taking the conversion-failure rule.",
+    "Reuse existing type_failure, Throwable search and numeric/ownership rules. No new task, schema, driver or primitive; earlier ADD/DIV/unary/BITNOT bodies and evidence stay at their cuts."
+  ],
+  "accepted": {
+    "source": {
+      "distinct_new_originals": 2,
+      "revision": "1c858316dab7e795366e11801a42768f7ee9c407",
+      "source_sha256": {
+        "arithmetic-add-handler-invalid-right": "6ed94d829625c0f6052f8339541ae32234fcd7d0d03af36f8af026681bbb7636",
+        "arithmetic-add-cached-right-invalid-live": "8b58dd4ee7967ba5d5cdebeaffca1e4a72394ac7f3d26e6c029153d4c254300e"
+      },
+      "cuts": [
+        {
+          "report": "/home/user/workspace/php-spec-evidence-archive/operators-17/source-1c858316d-invalid-right/report.json",
+          "report_sha256": "57cafdb9fab38f3636d628e17f769c243a856b30edf8aafa6854838ba46ac75b"
+        },
+        {
+          "report": "/home/user/workspace/php-spec-evidence-archive/operators-17/review-model-1c858316d-cached-right/report.json",
+          "report_sha256": "5b3aa57c3e66488f49ea8213d8b4f3b5023806375dbb6ad38da8d808841fe105"
+        }
+      ],
+      "result": "Exact checked normal0/native0/model0 streams: live bool + string TypeError at line11 with unchanged destination100/Previous-null/aliases/finally; historical RIGHT5 still delivers17 despite live bool/non-numeric string, with one default Warning on operand line18."
+    },
+    "author_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-17/state-99217e0bd-author-one/report.json",
+      "report_sha256": "c58ea375a2b035ad10402ad88244f3e7257221711568cef4c36b2be1247bd823",
+      "revision": "99217e0bddd24e3569a424dbcccf22a037094760",
+      "mode": "SL",
+      "conditions": 82,
+      "fixture_sha256": "2cedc2a2307f944e4f0490a7ec6b3e0710e80a63de72e2efcf8dd0d6e4a83879",
+      "result": "Real RIGHT-CONVERT to marker-free caller THROW_SEARCH: live diagnostic types, exact source/line/Previous-null, sole Error owner1, cell owners2 and pending sentinel. Source/phase/expiry and heap-plausible whole-public negatives reject; native/budget continuation passes."
+    },
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-17/state-99217e0bd-review-one/report.json",
+      "report_sha256": "9c6a7f5974a4517a78b746a6fc827203262f908c521be2df758bb26335b16fdf",
+      "revision": "99217e0bddd24e3569a424dbcccf22a037094760",
+      "mode": "SL",
+      "conditions": 77,
+      "fixture_sha256": "ff6097cd7efa8b9e4202908c7f9604ee110812b16bdbaf864c83cbc6affb42c6",
+      "result": "Genuine RIGHT capture/dispatch/historical return: invalid live values are visible to the failure lookup, while the actual warning task delivers cached17 with no new object or store mutation. One default Warning, cell owners2 and native/budget continuation pass."
+    },
+    "total_reached_conditions": 159,
+    "compatibility": "Helper-only99217 preserves tested1c858 runtime/source bytes. Immutable state thins reuse retained checked AST/path/native fixtures without PHP/frontend/source replay. The changed source itself exercises full production SL elaboration/check/structuring; no separate private initialization actor was needed."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-17/baseline-ca1f7bd9a-invalid-right/report.json",
+      "report_sha256": "f1516b242705309df5c3058d71af2e52f5ad86fe79cc7cf4a9059e94a7aa9efe",
+      "result": "Checked/program Unsupported: arithmetic addition selected operand conversion after H:2:1:11; versus the native caught bool + string TypeError. Agreement0."
+    },
+    "native_and_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-17/native-ca1f7bd9a-one/report.json",
+        "report_sha256": "c4463617cfe84f390979fe0eca037d699720540addadd33b4f4f7825def9030d"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-17/native-7a6f22f93-review-one/report.json",
+        "report_sha256": "88f7e829baf2a2626125b2820679a067ce402b190a5a8bf2f4f8fc93f7052cfb"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-17/state-prep-99217e0bd-author-one/report.json",
+        "report_sha256": "80365bdf822269b2593e2af2560dc2184e5e1e42daaff5c01e5d09e00c774eb3"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-17/state-prep-99217e0bd-review-one/report.json",
+        "report_sha256": "fff9efc5902974ec9092df8907cd72336360b72d4588e4973b767002dda33966"
+      }
+    ],
+    "standalone_syntax": {
+      "original_recorder": {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-17/syntax-99217e0bd-two/report.json",
+        "report_sha256": "cc8a9a1877bc60ab0fbbc15740885647af509dcfa738d9317aba4dd011aec022"
+      },
+      "adjudication": {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-17/syntax-99217e0bd-two/adjudication.json",
+        "report_sha256": "8e1b5f9505590eb00919a87671042547ea81c69c1a1d5e401f4f6ab9522ef561"
+      },
+      "result": "Both full files parse before expected type pstate undefined environment diagnostics. Original recorder expected different diagnostic wording and remains0; adjudication reuses its first raw output and runs only the unrun second file. Parse-only, zero semantic credit."
+    }
+  },
+  "required_follow_on": [
+    "Plain CVs, unlike physical slot classes, copied/right-only producers, failed LEFT conversion, owning/expired replacements and wider callback/exit/lifecycle forms remain required; no full ADD or coercion claim.",
+    "Four affected inventory rows remain partial. OP12 stays paused; all earlier operator evidence retains its original cuts."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-17",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "environment": "LC_ALL=C, TZ=UTC, no PHP_SPEC_SCRIPT_ENCODING. Source native30/model CLI60-process90. State-only CPU1/full394 SL/cap120/exact true newline/empty stderr, no interruption and fully reaped groups.",
+    "commands": [
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 tests/semantics/arithmetic_failures.py --case arithmetic-add-handler-invalid-right --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 tests/semantics/arithmetic_failure_review.py --case arithmetic-add-cached-right-invalid-live --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-17/state-99217e0bd-author-one/run-state.py",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-17/state-99217e0bd-review-one/run-state.py"
+    ],
+    "record": "Restore the matching Git cuts/project-local tools and choose fresh output paths. External records retain original source/checked AST/path/native bytes, fixtures, input/compiler/runtime/profile hashes, commands, exits and reaping."
+  }
+}

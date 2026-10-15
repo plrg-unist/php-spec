@@ -528,6 +528,12 @@ return, supplied throw and a second warning with default fallback.
 [ADD warning evidence](coverage/semantics/arithmetic-warning-review.json) retains
 the original Unsupported baseline; other operand classes and wider arithmetic
 callback paths remain partial.
+ADD now reports the live selected scalar types when a warning handler makes
+the next RHS conversion fail. A completed RHS warning still delivers its cached
+number despite later invalid writes. Two exact originals and 159 genuine state
+premises check the ordinary TypeError, unchanged destination and warning priority.
+[ADD failure evidence](coverage/semantics/arithmetic-failure-review.json) retains
+the original Unsupported baseline; wider operand and lifecycle forms remain partial.
 Leading-numeric-string `/` now retains selected reference cells and captured
 numbers through the same bounded named-handler route. A handler can make the
 next divisor zero; a second handler cannot replace an already-captured zero by

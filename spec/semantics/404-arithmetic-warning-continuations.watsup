@@ -87,11 +87,28 @@ rule PhpStep/arithmetic-add-expired: S ~> S[.COMPLETION = UNSUPPORTED "arithmeti
   -- if S.TODO = (ARITHMETIC_ADD_CONVERT pintegeroperation parithmeticphase) :: ptask_tail*
   -- if $call_task_valid(S, ARITHMETIC_ADD_CONVERT pintegeroperation parithmeticphase)
   -- if $integer_pointer_value(S, $arithmetic_add_pointer(pintegeroperation, parithmeticphase)) = eps
+;; Failure uses the live selected operand types, not the earlier numeric
+;; holders. This bounded route adds no owners and retires the marker first.
+dec $arithmetic_add_failure_operands(pstate, pintegeroperation, parithmeticphase) : (pvalue, pvalue)?
+def $arithmetic_add_failure_operands(S, pintegeroperation, ARITHMETIC_RIGHT pnumber) = ((pvalue_left, pvalue_right))
+  -- if $call_task_valid(S, ARITHMETIC_ADD_CONVERT pintegeroperation (ARITHMETIC_RIGHT pnumber))
+  -- if $integer_pointer_value(S, pintegeroperation.LEFTPOINTER) = (pvalue_left)
+  -- if $integer_pointer_value(S, pintegeroperation.RIGHTPOINTER) = (pvalue_right)
+  -- if $value_nodes(pvalue_left) = eps /\ $value_nodes(pvalue_right) = eps
+  -- if pvalue_left =/= PUNDEFINED /\ pvalue_right =/= PUNDEFINED
+  -- if $arithmetic_add_conversion(pvalue_right) = eps
+def $arithmetic_add_failure_operands(S, pintegeroperation, parithmeticphase) = eps -- otherwise
+
+rule PhpStep/arithmetic-add-type-failure: S ~> $type_failure(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL], ADD, pvalue_left, pvalue_right, pintegeroperation.LINE)
+  -- if S.TODO = (ARITHMETIC_ADD_CONVERT pintegeroperation parithmeticphase) :: ptask_tail*
+  -- if $arithmetic_add_failure_operands(S, pintegeroperation, parithmeticphase) = ((pvalue_left, pvalue_right))
+
 rule PhpStep/arithmetic-add-invalid-conversion: S ~> S[.COMPLETION = UNSUPPORTED "arithmetic addition selected operand conversion"]
   -- if S.TODO = (ARITHMETIC_ADD_CONVERT pintegeroperation parithmeticphase) :: ptask_tail*
   -- if $call_task_valid(S, ARITHMETIC_ADD_CONVERT pintegeroperation parithmeticphase)
   -- if $integer_pointer_value(S, $arithmetic_add_pointer(pintegeroperation, parithmeticphase)) = (pvalue)
   -- if $arithmetic_add_conversion(pvalue) = eps
+  -- if $arithmetic_add_failure_operands(S, pintegeroperation, parithmeticphase) = eps
 rule PhpStep/arithmetic-add-warning: S ~> $error_dispatch(S, 2, $ptascii("A non-numeric value encountered"), pintegeroperation.LINE, DIAGNOSTIC "Warning" ($ptascii("A non-numeric value encountered")) pintegeroperation.LINE, ARITHMETIC_ADD_WARNING pintegeroperation parithmeticphase pvalue pnumber 1)
   -- if S.TODO = (ARITHMETIC_ADD_WARNING pintegeroperation parithmeticphase pvalue pnumber 0) :: ptask_tail*
   -- if $arithmetic_add_warning_valid(S, pintegeroperation, parithmeticphase, pvalue, pnumber, 0)
