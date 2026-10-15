@@ -773,8 +773,12 @@ Shared Generator chains also unpack through the real leaf cache, ending in a
 paused value yield or active array delegation. Child returns resume parent tails;
 snapshots, real traces and parent/child cleanup retain their existing owners.
 See the [Generator-chain review](coverage/semantics/generator-call-unpack-generator-delegation-review.json).
-Aggregate ordinary-call unpack, Iterator yield-from leaves, detached completed-child
-lifecycle, Generator by-reference
+Direct detached roots also unpack when the copied child return owns no heap
+nodes. Their object, array and reference caches survive child retirement; key
+errors preserve the real return continuation for a later explicit next.
+See the [detached-child review](coverage/semantics/generator-call-unpack-detached-child-review.json).
+Aggregate ordinary-call unpack, Iterator yield-from leaves, owning copied returns
+and active chains ending in detached roots, Generator by-reference
 call targets and callback methods, nonnumeric raw valid changes, request/plain
 reference strings and handler replacements with
 those strings, other typed array warnings, broader array/COW interactions,

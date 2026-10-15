@@ -537,7 +537,29 @@ its child link before parent finally; a separately retained child postpones its
 own finally/cache cleanup until its last owner disappears. This follows
 `zend_generator_get_current`, `zend_generator_update_current`,
 `zend_generator_dtor_storage` and the native iterator callbacks for `SEND_UNPACK`.
-Iterator/Aggregate leaves, detached independently completed-child states,
-by-reference targets and wider lifecycle interactions remain required.
+At that cut Iterator/Aggregate leaves, detached independently completed-child states,
+by-reference targets and wider lifecycle interactions remained required.
 The [Generator-chain review](../../coverage/semantics/generator-call-unpack-generator-delegation-review.json)
 keeps new evidence and the promoted prior control separate from earlier cuts.
+
+
+## Detached child caches
+
+A direct Generator root also unpacks after an independently completed child has
+copied its last raw cache and return receipt into the parent. The authenticated
+`GENERATOR_FROM_COMPLETE` continuation must hold a return value with no heap
+nodes. Child storage may already have retired; its historical return metadata is
+documentary, while the parent owns the copied object, array or reference cache.
+The child's key is not copied and the parent tail has not run. Existing key
+validation therefore raises the real Error for an absent parent key before any
+by-reference-target decision, with no invented Generator API trace. A later
+explicit next consumes the actual return receipt and resumes the parent tail.
+Last-owner close runs parent finally before cache retirement, including a cached
+destructor exception returning to the real unset caller. This follows
+`zend_generator_update_current`, `zend_generator_get_current` and
+`zend_generator_dtor_storage` at the pinned engine.
+Owning copied return temporaries and active chains ending in detached roots stay
+`Unsupported`; their observed close behavior needs separate lifecycle rules.
+Iterator/Aggregate leaves and valid-key by-reference call targets remain open.
+The [detached-child review](../../coverage/semantics/generator-call-unpack-detached-child-review.json)
+preserves both original native mismatches and the narrowed evidence cuts.

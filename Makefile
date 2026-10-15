@@ -300,6 +300,10 @@ test-semantics: build
 	python3 tests/semantics/generator_call_unpack_generator_delegation_state.py
 	python3 tests/semantics/generator_call_unpack_generator_delegation_review_sources.py
 	python3 tests/semantics/generator_call_unpack_generator_delegation_review_state.py
+	python3 tests/semantics/generator_call_unpack_detached_child_sources.py
+	python3 tests/semantics/generator_call_unpack_detached_child_state.py
+	python3 tests/semantics/generator_call_unpack_detached_child_review_sources.py
+	python3 tests/semantics/generator_call_unpack_detached_child_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py

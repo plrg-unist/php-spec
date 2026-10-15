@@ -1,0 +1,32 @@
+[
+  {
+    "id": "generator-call-unpack-detached-child-review-row-cache-current-cow",
+    "source": "<?php\nclass ReviewDetachedRowChild12 { function __destruct() { echo \"A|\"; } }\nfunction reviewDetachedRowLeaf12() { $row = [new ReviewDetachedRowChild12()]; try { echo \"L|\"; yield \"row\" => $row; echo \"N|\"; return 17; } finally { echo \"C|\"; } }\nfunction reviewDetachedRowFactory12() { $GLOBALS[\"child\"] = reviewDetachedRowLeaf12(); return $GLOBALS[\"child\"]; }\nfunction reviewDetachedRowParent12() { try { echo \"G|\"; $result = yield from reviewDetachedRowFactory12(); echo \"BAD|\"; yield 13; } finally { echo \"F|\"; } }\nfunction reviewDetachedRowTarget12($value) { echo \"BAD|\"; }\n$parent = reviewDetachedRowParent12(); $parent->rewind(); $child->next();\n$snapshot = $parent->current(); echo \"K|\", $parent->key() === null ? \"NULL|\" : \"BAD|\"; unset($child);\n$snapshot[0] = null; echo \"X|\";\ntry { reviewDetachedRowTarget12(...$parent); } catch (Error $caught) { echo \"T|\", $caught->getLine(), \"|\", $caught->getTrace() === [] ? \"NOFRAME|\" : \"FRAME|\"; }\necho \"M|\"; unset($snapshot, $parent); echo \"E\";\n",
+    "source_sha256": "4e72e079d8ad7ca22158635125b377ddb41059b813048dbe3b42ed8670f35dc5",
+    "purpose": "A detached parent keeps the child row but no copied key; current() COW does not mutate its cache, and invalid-key cleanup waits for the parent last owner.",
+    "expected_model": "normal",
+    "native_stdout": "G|L|N|C|K|NULL|X|T|10|NOFRAME|M|F|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-call-unpack-detached-child-review-reference-cache-after-cell-mutation",
+    "source": "<?php\nclass ReviewDetachedReferenceFirst12 { function __destruct() { echo \"A|\"; } }\nclass ReviewDetachedReferenceCurrent12 { function __destruct() { echo \"B|\"; } }\nfunction &reviewDetachedReferenceLeaf12() { $value = new ReviewDetachedReferenceFirst12(); try { echo \"L|\"; yield \"missing\" => $value; echo \"N|\"; $value = new ReviewDetachedReferenceCurrent12(); return 23; } finally { echo \"C|\"; } }\nfunction reviewDetachedReferenceFactory12() { $GLOBALS[\"child\"] = reviewDetachedReferenceLeaf12(); return $GLOBALS[\"child\"]; }\nfunction reviewDetachedReferenceParent12() { try { echo \"G|\"; $result = yield from reviewDetachedReferenceFactory12(); echo \"BAD|\"; yield 13; } finally { echo \"F|\"; } }\nfunction reviewDetachedReferenceTarget12($value) { echo \"BAD|\"; }\n$parent = reviewDetachedReferenceParent12(); $parent->rewind(); $child->next();\n$snapshot = $parent->current(); echo \"V|\", $snapshot instanceof ReviewDetachedReferenceCurrent12 ? \"B|\" : \"BAD|\", \"K|\", $parent->key() === null ? \"NULL|\" : \"BAD|\";\nunset($child); $snapshot = null; echo \"X|\";\ntry { reviewDetachedReferenceTarget12(...$parent); } catch (Error $caught) { echo \"T|\", $caught->getLine(), \"|\", $caught->getTrace() === [] ? \"NOFRAME|\" : \"FRAME|\"; }\necho \"M|\"; unset($parent); echo \"E\";\n",
+    "source_sha256": "057897cf773298a3ecd4dbf27b6550bbb4d8ac340d7aa57bb4b7c0b61b0cc7cb",
+    "purpose": "A completed reference-yield child mutates its actual cell before detachment; copied raw cache keeps the new referent after child storage retires, while absent parent key wins over the old string key.",
+    "expected_model": "normal",
+    "native_stdout": "G|L|N|A|C|V|B|K|NULL|X|T|11|NOFRAME|M|F|B|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-call-unpack-detached-child-review-cached-destructor-throw-after-finally",
+    "source": "<?php\nclass ReviewDetachedCacheThrow12 { function __destruct() { echo \"A|\"; throw new Exception(\"cache\", 51); } }\nfunction reviewDetachedCacheThrowLeaf12() { try { echo \"L|\"; yield new ReviewDetachedCacheThrow12(); echo \"N|\"; return 23; } finally { echo \"C|\"; } }\nfunction reviewDetachedCacheThrowFactory12() { $GLOBALS[\"child\"] = reviewDetachedCacheThrowLeaf12(); return $GLOBALS[\"child\"]; }\nfunction reviewDetachedCacheThrowParent12() { try { echo \"G|\"; $result = yield from reviewDetachedCacheThrowFactory12(); echo \"BAD|\"; yield 13; } finally { echo \"F|\"; } }\nfunction reviewDetachedCacheThrowTarget12($value) { echo \"BAD|\"; }\n$parent = reviewDetachedCacheThrowParent12(); $parent->rewind(); $child->next();\n$parent->current(); echo \"K|\", $parent->key() === null ? \"NULL|\" : \"BAD|\"; unset($child); echo \"X|\";\ntry { reviewDetachedCacheThrowTarget12(...$parent); } catch (Error $caught) { echo \"T|\", $caught->getLine(), \"|\", $caught->getTrace() === [] ? \"NOFRAME|\" : \"FRAME|\"; }\necho \"M|\"; try { unset($parent); } catch (Exception $failure) { echo \"U|\", $failure->getCode(), \"|\"; } echo \"E\";\n",
+    "source_sha256": "db921673eca74ccc11ba8992c72f80f30bc85180337d1971bd8731fdc8181bb9",
+    "purpose": "After child retirement and real key Error, the parent finally precedes destruction of its independently cached object; its destructor exception returns through storage retirement to the genuine unset caller.",
+    "expected_model": "normal",
+    "native_stdout": "G|L|N|C|K|NULL|X|T|9|NOFRAME|M|F|A|U|51|E",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]

@@ -1,0 +1,70 @@
+{
+  "milestone": "Generator argument unpack after independent child completion",
+  "status": "independently accepted privately; actual-parent composition pending",
+  "independent_reviewer": "iterator_review_01, paired with iterator_dev_01",
+  "base": "86b5a2ee0c36ef3ed6fee83666b592be35debb82",
+  "tested_private_code": "d39565f9597b6be31bf361d8ce54cc3ec27479b5",
+  "final_private_cut": "9a5c60ddae5ec3c88285e878f0c698089ff346d6",
+  "modules": 395,
+  "scope": "Ordinary Generator argument unpack through a direct detached root whose independently completed child has supplied a raw cache and node-free return receipt. Existing key validation, explicit next/tail continuation, cache COW/reference ownership and parent-finally/cache cleanup are covered. Owning return temporaries and detached leaves below active links remain Unsupported.",
+  "semantics": {
+    "admission": "405 adds one direct-root predicate: allocated DELEGATING Generator, source-valid delegation record with INPUT/ACQUISITION absent, present CURRENT, position1, saved FRAME headed by the same-site GENERATOR_FROM_COMPLETE receipt, existing complete_valid and value_nodes(return)=eps. The prior recursive chain remains byte-identical; detached roots are not recursive leaves.",
+    "ownership": "The parent owns the copied raw object/array/reference cache after the child's storage can retire. Historical child RETURN metadata authenticates the existing receipt without adding a child allocation/owner requirement. Reference caches retain the actual mutated cell; current() snapshots preserve array COW. No CURRENT or key copy is added by unpack.",
+    "continuation": "The child's key is not copied. Existing key validation raises the real invalid-key Error before any by-reference-target decision when the parent key is absent. That Error leaves the actual return receipt intact for a later explicit next. Last-owner close runs parent finally before releasing the cache; an actual cached destructor throw crosses the Generator storage pin back to the unset caller.",
+    "module_sha256": {"405": "150e67b7328434e4af5ca6025367e66308dc90623641218028ce578b2d62bcaf"}
+  },
+  "source_authority": [
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_SEND_UNPACK and ZEND_YIELD_FROM",
+    "vendor/php-src/Zend/zend_generators.h::zend_generator_get_current and Zend/zend_generators.c::zend_generator_update_current",
+    "vendor/php-src/Zend/zend_generators.c::zend_generator_iterator_get_data, zend_generator_iterator_get_key and zend_generator_iterator_move_forward",
+    "vendor/php-src/Zend/zend_generators.c::zend_generator_cleanup_unfinished_execution, zend_generator_dtor_storage and zend_generator_free_storage"
+  ],
+  "validation_identity": {
+    "php": "8.5.10 CLI NTS64; source34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml5.1.0; SL, caches off and encountered determinism checks",
+    "environment": "tests/semantics/profile.json; PHP -n; LC_ALL=C; TZ=UTC; PHP_SPEC_SCRIPT_ENCODING unset; worker1",
+    "commands": "Raw reports retain exact commands/selections/exits. Native cap8s; strict/state120s; author sources model100/process120s; reviewer sources and baseline model60/process75s. Fresh CPU3 packets ran serially, stop-first, and were fully reaped."
+  },
+  "raw_root": ".tools/generator-call-unpack-detached-child-12/.tools/",
+  "native_and_baseline": {
+    "cut": "Unchanged86b5a2ee/405ebff36aa. Ten distinct original native tuples are retained across affected-only followups; all native observations earn zero model agreement.",
+    "reports": ["generator-detached-unpack-native-4bz1cyvq/report.json", "generator-detached-unpack-native-followup-ngn6oifr/report.json", "generator-detached-unpack-native-followup2-p1f8x8z7/report.json", "generator-detached-child-unpack-review-native-7ot2d405/report.json"],
+    "unchanged_baseline": "generator-detached-unpack-baseline-5a6h_2eq/report.json uses the passed a751658c original from4bz: exact Generator unpack delegated producer Unsupported after P|G|C|L|V|7|K|1| and nine OUTPUT events, zero agreement."
+  },
+  "normal_sources": {
+    "new_distinct_originals": 7,
+    "reports": [["generator-detached-unpack-source-nt6mrch9/report.json", 3, "d39565f95 passed prefix"], ["generator-detached-unpack-source-92052qy2/report.json", 1, "9a5c60dda"], ["generator-call-unpack-detached-child-review-source-76sn5zag/report.json", 3, "9a5c60dda"]],
+    "observations": "Exact original-byte stdout/stderr/exit agreement with stable HEAD/inputs: absent parent key versus present-null cache, child return/tail, retained and retired child lifetimes, nested row COW, mutated raw reference and cached destructor exception."
+  },
+  "new_reached_states": {
+    "groups": 5,
+    "driver_premises": 460,
+    "cut": "9a5c60dda; runtime405 unchanged fromd395",
+    "author_reports": [["fiber-state-review-npya9tbc/report.json", 94], ["fiber-state-review-2ob948_v/report.json", 94], ["fiber-state-review-hi2sk52g/report.json", 83]],
+    "independent_reports": [["fiber-state-review-ge03mbw7/report.json", 106, "e6d6c8a5 fixture"], ["fiber-state-review-k_rz2si6/report.json", 83, "46814fda fixture"]],
+    "checks": "Genuine ready/key-error and cached-destructor THROW_SEARCH fronts check the real saved return receipt, child retirement metadata, raw cell/cache roots, owning-return refusal, source/position/continuation refusals, real empty Error trace, key-before-BYREF precedence, Generator storage NEXT2/pin/handle/receiver roots, pending Throwable51, zero/split budgets, public call/heap admission and exact once-only remaining output."
+  },
+  "required_controls": "Three controls earn zero normal agreement. Owning copied return and active outer above a detached middle retain authenticated Generator unpack delegated producer stops in nt6's passed prefix. The valid-key BYREF control in920 retains its P|G| prefix and existing Generator last-owner release during terminal cleanup Unsupported, without a diagnostic or timeout.",
+  "strict": "generator-detached-unpack-author-sl-43no04xr/report.json atd395: all395 modules, true stdout, empty stderr, exit0/no timeout, stable HEAD/inputs.",
+  "preserved_zero_credit": {
+    "native": "4bz preserves the original wrong owning-return destructor-order expectation; observed F|A|ER| request-end retention remains an owning-return control. ngn preserves the original nested-detached J-finally expectation; pinned native omits J, so that wider lifecycle remains an explicit control. These observations are not declared engine bugs or modeled normal agreements.",
+    "source": "nt6 preserves the BYREF required-control reason mismatch. Only that expected reason/purpose changed in9a5; original bytes, native tuple, events and all other rows were unchanged. Retain first five passed rows and retry only affected control6/unrun normal7.",
+    "state": "dtv714rx preserves the failed INSTANCE stage; ordinary methods use RECEIVER. 2kqe0wkh preserves the bare context NAME expectation; compiled methods use Class::method. The final fixture uses the real RECEIVER and existing consumer_destructor_target helper. Only the affected83 group was retried; its other checks stayed unchanged. The accepted106 recipe is byte-identical across both corrections."
+  },
+  "compatibility": "Only405 changes semantically: one new direct detached-root predicate and OR admission at the existing delegate helper. The old recursive chain, array predicate, key/binder, resume, trace, abort,289 delegation,303 close and355 storage rules are unchanged. No prior campaign is replayed or renewed.",
+  "evidence_recovery": {
+    "archive": "../php-spec-evidence-archive/generator-call-unpack-detached-child-12/private.tar.gz",
+    "bytes": 433122,
+    "sha256": "32f9741102070e5a10a7661e6afcdb2da4007d51d6a8e7ed0f58f7fb45e4f0c8",
+    "manifest": "Sibling manifest.json maps16 reports,11 ignored inputs, exact commands/revisions and recovery.",
+    "restore": "Restore raw .tools subpaths at the recorded private root. Author inputs recover from retained branch iterator/generator-call-unpack-detached-child-12 atd395/9a5; native catalog snapshots preserve the two failed preparations. Reviewer files recover from the publication containing this ledger, hash-matched to independent_inputs. For accepted106 and original dtv restore review-state-before-receiver-fix.py at the maintained state path; for2kqe restore review-state-before-destructor-target-fix.py there. Their relative catalog lookup requires that location. Final passed83 uses maintained46814fda. Raw evidence is not an operational build dependency."
+  },
+  "remaining": [
+    "Owning copied return temporaries and active Generator chains ending in independently detached roots require separate lifetime rules.",
+    "Iterator/Aggregate delegate leaves, ordinary-call Aggregate acquisition, valid-key Generator by-reference targets and wider callback/reentrant/Fiber lifecycle interactions remain open.",
+    "No full Generator, call-unpack or PHP-core closure is claimed."
+  ]
+}

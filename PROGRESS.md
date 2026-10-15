@@ -2074,12 +2074,23 @@ cleanup. Nine new exact originals and one promoted prior control agree; five
 source-reached groups pass 460 premises at `f0d153efd`. Full strict initialization
 of 395 modules passes at that cut. Ten native observations, the unchanged baseline
 and the Iterator-leaf Unsupported control earn zero agreement. The saved-locals
-fixture elaboration failure also retains zero credit. Iterator/Aggregate
+fixture elaboration failure also retains zero credit. At that cut Iterator/Aggregate
 leaves, detached independently completed-child states, by-reference targets and
-wider lifecycle interactions remain open.
+wider lifecycle interactions remained open.
 [Generator-chain review](coverage/semantics/generator-call-unpack-generator-delegation-review.json).
 Canonical395 composition over `8a121da8c` passes inventory and strict SL at
 `d85413ebc`; private source/state evidence retains its f0d cut and fixture hashes.
+
+Direct detached Generator roots now unpack copied raw caches under a source-valid
+FROM_COMPLETE receipt whose return owns no heap nodes. Child storage may retire
+without consuming the parent cache; key errors leave the real return/tail for a
+later next, and parent finally precedes cached destructors, including caught
+throws. Strict395, seven new normal originals and five genuine-source groups/460
+driver premises pass across the `d39565f95`/`9a5c60dda` cuts using retained native10.
+Three Unsupported controls, the unchanged baseline and five original failures
+keep zero agreement. Owning copied returns, active chains ending in detached
+roots, Iterator/Aggregate leaves and valid-key by-reference targets remain required.
+[Detached-child review](coverage/semantics/generator-call-unpack-detached-child-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or
