@@ -1,7 +1,10 @@
+dec $property_unset_pending(pstate) : bool
+def $property_unset_pending(S) = false -- otherwise
 rule PhpStep/array-unset: S ~> S[.TODO = [DIM_PREP (NExprArrayDimFetch expression phpType5 metadata), UNSET_ARRAY] ++ ptask_tail*]
   -- if S.TODO = (UNSET (NExprArrayDimFetch expression phpType5 metadata)) :: ptask_tail*
 rule PhpStep/array-unset-location: S ~> S_unset[.HELD = S.HELD][.RESULT = KNOWN PNULL]
   -- if S.TODO = UNSET_ARRAY :: ptask_tail*
   -- if ~$key_unset_pending(S)
   -- if ~$access_unset_pending(S)
+  -- if ~$property_unset_pending(S)
   -- if S_unset = $unset_array($hold_task_inputs(S), S.BASE)
