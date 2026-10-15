@@ -187,7 +187,7 @@ def $ref_return_cursor_site(S, prefreturncursor) = true
   -- if $finally_outer_origin_valid(S, prefreturncursor.OWNER, prefreturncursor.OUTER)
 def $ref_return_cursor_site(S, prefreturncursor) = false -- otherwise
 ;; A literal CONST survives DISCARD_EXCEPTION. Its string, explicit null,
-;; or compiler-pooled array source can recover the value without expression effects.
+;; compiler-pooled array, or folded integer source recovers without expression effects.
 def $ref_return_cursor_literal(S, prefreturncursor) = (pvalue_literal)
   -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NScalarString phpType33 metadata_string) metadata)
   -- if $evaluate(NScalarString phpType33 metadata_string) = VALUE pvalue
@@ -202,6 +202,10 @@ def $ref_return_cursor_literal(S, prefreturncursor) = (PARRAY n_array)
   -- if $compiled_read(S, porigin_array) = (PARRAY n_array)
   -- if HARRAY n_array <- S.ALLOCATIONS
   -- if S.ARRAYS[n_array] = parray
+def $ref_return_cursor_literal(S, prefreturncursor) = (PINT z_scalar)
+  -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprBinaryOpPlus (NScalarInt (INTEGER z_left) metadata_left) (NScalarInt (INTEGER z_right) metadata_right) metadata_plus) metadata_return)
+  -- if $origin_child((prefreturncursor.SOURCE), [PCFIELD 0]) = (porigin_scalar)
+  -- if $compiled_read(S, porigin_scalar) = (PINT z_scalar)
 def $ref_return_cursor_literal(S, prefreturncursor) = eps -- otherwise
 ;; A call operand prevents constant folding; concat emits a freeable TMP.
 def $ref_return_cursor_concat(S, prefreturncursor) = true
@@ -238,6 +242,11 @@ def $ref_return_cursor_old_operand(S, prefreturncursor, KNOWN pvalue) = true
   -- if $ref_return_cursor_computed_call(S, prefreturncursor)
   -- if $typed_string_value(pvalue)
   -- if $operand_nodes(KNOWN pvalue) = eps
+def $ref_return_cursor_old_operand(S, prefreturncursor, KNOWN (PINT z_scalar)) = true
+  -- if $ref_return_cursor_computed_call(S, prefreturncursor)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if $typed_exact(pfunction.SIGNATURE.RETURNS, PINT z_scalar)
 def $ref_return_cursor_old_operand(S, prefreturncursor, KNOWN pvalue) = true
   -- if $ref_return_cursor_literal(S, prefreturncursor) = (pvalue)
 def $ref_return_cursor_old_operand(S, prefreturncursor, KNOWN pvalue) = true
