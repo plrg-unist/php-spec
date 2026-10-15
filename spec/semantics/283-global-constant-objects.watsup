@@ -1,6 +1,7 @@
 ;; Global constant AST NEW retains allocation identity independently of mutable
 ;; instance fields. These receipts own no object; ordinary phases and installed
 ;; USERCONSTANTS retain the actual values.
+dec $global_std_ready(pstate, ptbytes) : bool
 def $global_new_site(S, PORIGIN n_unit pcpath) = true
   -- if $source_unit(S.SOURCES, n_unit) = (pcunit)
   -- if $global_constant_initializer_root(pcunit, pcpath) =/= eps
@@ -54,6 +55,7 @@ def $default_new_scope(S) = porigin_scope?
 def $default_new_scope(S) = $method_current_scope(S) -- if ~$global_new_current(S)
 def $global_new_unsupported_target(S, ptbytes) = true
   -- if $global_new_current(S) /\ $class_internal(ptbytes)
+  -- if ~$global_std_ready(S, ptbytes)
 def $global_new_unsupported_target(S, ptbytes) = true
   -- if $global_new_current(S) /\ ~$class_internal(ptbytes)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = (porigin_class)
@@ -314,3 +316,122 @@ def $autoload_ordinary_new_source(S, PORIGIN n_unit pcpath) = false
 
 def $call_task_valid(S, AUTO_GLOBAL_NEW ptbytes phpType7* pconstantcontext) = $global_autoload_ready(S, ptbytes, phpType7*, pconstantcontext)
 def $task_nodes(AUTO_GLOBAL_NEW preqbytes phpType7* pconstantcontext) = eps
+
+;; Internal stdClass has no declaring class origin. Its separate, nonowning
+;; birth history authenticates only a direct zero-argument global initializer.
+dec $global_std_source(pstate, porigin, porigin, nat) : bool
+dec $global_std_record(pconstantstdobject*, nat) : pconstantstdobject?
+dec $global_std_record_put(pconstantstdobject*, pconstantstdobject) : pconstantstdobject*
+dec $global_std_header(pstate, pconstantstdobject) : bool
+dec $global_std_completed(pstate, pconstantstdobject) : bool
+dec $global_std_pending(pstate, pdefaultnew) : bool
+
+def $global_std_source(S, porigin_site, porigin_decl, n_prefix) = true
+  -- if $(n_prefix <= |S.DECLARATIONS|)
+  -- if porigin_decl = PORIGIN n_unit pcpath_decl
+  -- if $global_constant_declaration_source(S.SOURCES, porigin_decl)
+  -- if $constant_declaration(S, porigin_decl) = ((preqbytes, z))
+  -- if $declaration_entered(S.DECLARATIONS[0:n_prefix], n_unit)
+  -- if $global_constant_scope(S, n_unit) = (true, porigin_scope?)
+  -- if $global_constant_scope_published(S.DECLARATIONS[0:n_prefix], porigin_scope?)
+  -- if porigin_site = $constant_child(porigin_decl, [PCFIELD 1])
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprNew name (SEQUENCE eps) metadata)
+  -- if $global_constant_class_name(S, porigin_site, porigin_scope?, name) = (ptbytes)
+  -- if $ptlc(ptbytes) = $ptascii("stdclass")
+def $global_std_source(S, porigin_site, porigin_decl, n_prefix) = false -- otherwise
+
+def $global_std_ready(S, ptbytes) = true
+  -- if $ptlc(ptbytes) = $ptascii("stdclass")
+  -- if S.ORIGIN = (porigin_site)
+  -- if $global_new_context(S, porigin_site) = ((porigin_decl, porigin_scope?))
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pconstantcontext.FACTS = eps
+  -- if $new_source_name(S, porigin_site) = (ptbytes)
+  -- if $global_std_source(S, porigin_site, porigin_decl, |S.DECLARATIONS|)
+def $global_std_ready(S, ptbytes) = false -- otherwise
+
+def $global_std_record(eps, n_object) = eps
+def $global_std_record(pconstantstdobject :: pconstantstdobject_tail*, n_object) = (pconstantstdobject)
+  -- if pconstantstdobject.OBJECT = n_object
+def $global_std_record(pconstantstdobject :: pconstantstdobject_tail*, n_object) = $global_std_record(pconstantstdobject_tail*, n_object)
+  -- if pconstantstdobject.OBJECT =/= n_object
+def $global_std_record_put(eps, pconstantstdobject_new) = [pconstantstdobject_new]
+def $global_std_record_put(pconstantstdobject :: pconstantstdobject_tail*, pconstantstdobject_new) = pconstantstdobject_new :: pconstantstdobject_tail*
+  -- if pconstantstdobject.OBJECT = pconstantstdobject_new.OBJECT
+def $global_std_record_put(pconstantstdobject :: pconstantstdobject_tail*, pconstantstdobject_new) = pconstantstdobject :: $global_std_record_put(pconstantstdobject_tail*, pconstantstdobject_new)
+  -- if pconstantstdobject.OBJECT =/= pconstantstdobject_new.OBJECT
+
+def $global_std_header(S, pconstantstdobject) = true
+  -- if $(pconstantstdobject.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pconstantstdobject.OBJECT] = STDINSTANCE
+  -- if $global_std_source(S, pconstantstdobject.SITE, pconstantstdobject.DECL, pconstantstdobject.PREFIX)
+def $global_std_header(S, pconstantstdobject) = false -- otherwise
+def $global_std_completed(S, pconstantstdobject) = true
+  -- if pconstantstdobject.COMPLETE
+  -- if $global_std_header(S, pconstantstdobject)
+  -- if ~$global_new_tasks_busy(S.TODO, pconstantstdobject.OBJECT)
+  -- if ~$global_new_frames_busy(S.FRAMES, pconstantstdobject.OBJECT)
+def $global_std_completed(S, pconstantstdobject) = false -- otherwise
+def $global_std_records_valid(S, eps) = true
+def $global_std_records_valid(S, pconstantstdobject :: pconstantstdobject_tail*) = ($global_std_header(S, pconstantstdobject) /\ $global_std_record(pconstantstdobject_tail*, pconstantstdobject.OBJECT) = eps /\ (~pconstantstdobject.COMPLETE \/ $global_std_completed(S, pconstantstdobject)) /\ $global_std_records_valid(S, pconstantstdobject_tail*))
+
+def $global_new_birth(S, S_new, ptbytes, n_object) = S_new[.CONSTANTSTDOBJECTS = S.CONSTANTSTDOBJECTS ++ [{OBJECT n_object, SITE porigin_site, DECL porigin_decl, PREFIX n_prefix, COMPLETE false}]]
+  -- if $global_std_ready(S, ptbytes)
+  -- if S.ORIGIN = (porigin_site)
+  -- if $global_new_context(S, porigin_site) = ((porigin_decl, porigin_scope?))
+  -- if n_object = |S.OBJECTS|
+  -- if S_new.OBJECTS = S.OBJECTS ++ [STDINSTANCE]
+  -- if S_new.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n_object]
+  -- if S_new.RESULT = KNOWN (POBJECT n_object) /\ S_new.COMPLETION = NORMAL
+  -- if S_new.CONSTCONTEXT = S.CONSTCONTEXT /\ S_new.CONSTANTSTDOBJECTS = S.CONSTANTSTDOBJECTS
+  -- if $global_std_record(S.CONSTANTSTDOBJECTS, n_object) = eps
+  -- if n_prefix = |S.DECLARATIONS|
+  -- if $global_std_header(S_new, {OBJECT n_object, SITE porigin_site, DECL porigin_decl, PREFIX n_prefix, COMPLETE false})
+def $global_std_pending(S, pdefaultnew) = true
+  -- if $global_std_ready(S, pdefaultnew.CLASS)
+  -- if $global_new_context(S, pdefaultnew.SITE) = ((porigin_decl, porigin_scope?))
+  -- if pdefaultnew.ARGUMENTS = eps /\ pdefaultnew.INDEX = 0 /\ pdefaultnew.VALUES = eps
+  -- if $global_std_record(S.CONSTANTSTDOBJECTS, pdefaultnew.OBJECT) = (pconstantstdobject)
+  -- if pconstantstdobject.SITE = pdefaultnew.SITE /\ pconstantstdobject.DECL = porigin_decl
+  -- if ~pconstantstdobject.COMPLETE
+  -- if $global_std_header(S, pconstantstdobject)
+  -- if (HOBJECT pdefaultnew.OBJECT) <- S.ALLOCATIONS
+def $global_std_pending(S, pdefaultnew) = false -- otherwise
+def $global_new_pending(S, pdefaultnew) = true
+  -- if $global_std_pending(S, pdefaultnew)
+def $default_new_object_valid(S, pdefaultnew) = true
+  -- if $global_std_pending(S, pdefaultnew)
+def $global_new_complete(S, S_done, pdefaultnew) = S_done[.CONSTANTSTDOBJECTS = $global_std_record_put(S.CONSTANTSTDOBJECTS, pconstantstdobject[.COMPLETE = true])]
+  -- if S.COMPLETION = NORMAL
+  -- if $global_std_pending(S, pdefaultnew)
+  -- if $global_new_complete_phase(S, pdefaultnew)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S_done = S[.TODO = ptask_tail*][.RESULT = KNOWN (POBJECT pdefaultnew.OBJECT)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $global_std_record(S.CONSTANTSTDOBJECTS, pdefaultnew.OBJECT) = (pconstantstdobject)
+
+def $global_new_value_class(S, porigin_site) = PVSTDCLASS n_object porigin_site
+  -- if S.RESULT = KNOWN (POBJECT n_object)
+  -- if $global_std_record(S.CONSTANTSTDOBJECTS, n_object) = (pconstantstdobject)
+  -- if pconstantstdobject.SITE = porigin_site
+  -- if $global_std_completed(S, pconstantstdobject)
+  -- if (HOBJECT n_object) <- S.ALLOCATIONS
+def $constant_callable_foldable(PVSTDCLASS n_object porigin_site) = false
+def $default_cacheable(PVSTDCLASS n_object porigin_site) = false
+def $constant_class_tree_valid(PVSTDCLASS n_object porigin_site) = false
+def $constant_value_class_valid(S, POBJECT n_object, PVSTDCLASS n_original porigin_site) = true
+  -- if n_object = n_original
+  -- if $global_std_record(S.CONSTANTSTDOBJECTS, n_object) = (pconstantstdobject)
+  -- if pconstantstdobject.SITE = porigin_site
+  -- if $global_std_completed(S, pconstantstdobject)
+  -- if (HOBJECT n_object) <- S.ALLOCATIONS
+def $constant_fact_value_valid(pconstantfact) = true
+  -- if pconstantfact.VALUE = eps
+  -- if pconstantfact.CLASS = PVSTDCLASS n_object porigin_site
+def $constant_fact_truth(pconstantfact) = (true)
+  -- if pconstantfact.VALUE = eps
+  -- if pconstantfact.CLASS = PVSTDCLASS n_object porigin_site
+def $global_constant_flow_at(S, porigin_site, porigin_decl, porigin_scope?, PVSTDCLASS n_object porigin_site, puserconstant_prior*, pconstantfact_read*, porigin_seen*) = true
+  -- if $compiled_redirect(S, porigin_site) = eps
+  -- if $global_std_record(S.CONSTANTSTDOBJECTS, n_object) = (pconstantstdobject)
+  -- if pconstantstdobject.SITE = porigin_site /\ pconstantstdobject.DECL = porigin_decl
+  -- if $global_std_completed(S, pconstantstdobject)
