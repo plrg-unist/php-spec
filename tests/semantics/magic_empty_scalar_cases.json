@@ -1,0 +1,34 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "scalar",
+      "source": "<?php\nclass MagicScalarParent84 {\n    private int $nullish = 1;\n    private int $falsey = 2;\n    private int $truthy = 3;\n    private int $blank = 4;\n    private int $zero = 5;\n    private int $doublezero = 6;\n    private int $text = 7;\n    private int $nul = 8;\n    private int $zeronul = 9;\n    public function __isset(string $name): bool {\n        echo 'I:', $name, '|';\n        return true;\n    }\n    public function __get($name) {\n        echo 'G:', $name, '|';\n        return match ($name) {\n            'nullish' => null, 'falsey' => false, 'truthy' => true,\n            'blank' => '', 'zero' => '0', 'doublezero' => '00',\n            'text' => 'go', 'nul' => \"\\0\", 'zeronul' => \"0\\0\"\n        };\n    }\n}\nclass MagicScalarChild84 extends MagicScalarParent84 {}\n$child = new MagicScalarChild84();\necho 'N:', empty($child->nullish) ? 'T' : 'F', '|';\necho 'B:', empty($child->falsey) ? 'T' : 'F', '|';\necho 'T:', empty($child->truthy) ? 'T' : 'F', '|';\necho 'E:', empty($child->blank) ? 'T' : 'F', '|';\necho 'Z:', empty($child->zero) ? 'T' : 'F', '|';\necho 'D:', empty($child->doublezero) ? 'T' : 'F', '|';\necho 'S:', empty($child->text) ? 'T' : 'F', '|';\necho 'U:', empty($child->nul) ? 'T' : 'F', '|';\necho 'Q:', empty($child->zeronul) ? 'T' : 'F', '|';\n$raw = (array) $child;\necho 'R:', $raw === [\"\\0MagicScalarParent84\\0nullish\" => 1, \"\\0MagicScalarParent84\\0falsey\" => 2, \"\\0MagicScalarParent84\\0truthy\" => 3, \"\\0MagicScalarParent84\\0blank\" => 4, \"\\0MagicScalarParent84\\0zero\" => 5, \"\\0MagicScalarParent84\\0doublezero\" => 6, \"\\0MagicScalarParent84\\0text\" => 7, \"\\0MagicScalarParent84\\0nul\" => 8, \"\\0MagicScalarParent84\\0zeronul\" => 9] ? 'ONLY' : 'BAD', '|';\n",
+      "source_sha256": "72f61f0f273e638de102da8fb7cc34fc4b5f278596bbee5d0f9553bde68f6fb5",
+      "stdout_base64": "TjpJOm51bGxpc2h8RzpudWxsaXNofFR8QjpJOmZhbHNleXxHOmZhbHNleXxUfFQ6STp0cnV0aHl8Rzp0cnV0aHl8RnxFOkk6Ymxhbmt8RzpibGFua3xUfFo6STp6ZXJvfEc6emVyb3xUfEQ6STpkb3VibGV6ZXJvfEc6ZG91YmxlemVyb3xGfFM6STp0ZXh0fEc6dGV4dHxGfFU6STpudWx8RzpudWx8RnxROkk6emVyb251bHxHOnplcm9udWx8RnxSOk9OTFl8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-empty-scalars-private-84/.tools/magic-empty-scalars-probes-84/scalar.php",
+      "native_report_sha256": "4be59010a0b4c2d4ecd7acb7b72beb7169d9f7cee67d872cff99413d37d0692c",
+      "native_group": "magic-empty84-primitives-native-0ca75133",
+      "native_raw_sha256": "65343771cdc9153ff3ea0b2a31f8131827be88d38c0d1f9789d9697e93a258c8",
+      "native_raw_hash_recipe": "stdout + NUL + stderr + NUL + ASCII exit"
+    }
+  ]
+}
