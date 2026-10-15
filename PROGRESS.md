@@ -7,6 +7,14 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+A selected sole implicit virtual class SET now omits its value slot while its
+body writes separate stored10→33. Assignment20 returns20; reads raise the receiver’s
+write-only Error, and array input fails before the body. Active same-object virtual
+setter writes retain demand and explicitly refuse a recursive plan. Source1 and
+strict394 pass at8969; two real state cuts pass252 =209 reached +43 derived at6aff.
+Wider virtual setter forms and the reentrant alias-write Error remain partial.
+[Review](coverage/semantics/virtual-set-only-hook-review.json).
+
 Numeric `+=` now saves the leading-numeric left conversion before a named
 warning handler and commits into the originally selected untyped reference cell.
 Three exact originals at cd6eff510 cover callback writes, supplied-object throw

@@ -2364,7 +2364,12 @@ together. Trait code/magic and Consumer private scope remain distinct; crossed
 accesses skip both hooks, and assignment20 returns20 after storage33/get46.
 One original and two states/333 checks are in the
 [paired trait-hook review](coverage/semantics/trait-imported-paired-hooks-review.json).
-Hooked iteration, defaulted virtual hooks, other paired hooks, unbacked or other trait
+A selected sole implicit class setter can also be virtual: `$value` has no slot,
+while its body changes a separate stored10 to33. Assignment20 still returns20;
+reads raise the receiver’s write-only Error and bad arrays fail before the body.
+One original and two states/252 checks are in the
+[virtual setter review](coverage/semantics/virtual-set-only-hook-review.json).
+Hooked iteration, defaulted virtual hooks, other paired or virtual setters, wider trait
 setters, other explicit setter parameter forms, references, other inherited/trait
 and wider receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`

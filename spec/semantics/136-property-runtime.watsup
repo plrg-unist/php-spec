@@ -393,6 +393,7 @@ dec $property_get_needed(pstate, nat, ptbytes) : bool
 def $property_get_needed(S, n, ptbytes) = false -- otherwise
 dec $property_get_pending(pstate) : bool
 def $property_get_pending(S) = false -- otherwise
+dec $property_set_write_only(pstate, nat, ptbytes) : bool
 dec $property_read_key(pstate, pvalue, ptbytes, int) : pstate
 def $property_read_key(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "property hook read mode or receiver"]
   -- if $property_hook_read_needed(S, n, ptbytes)
@@ -420,6 +421,7 @@ def $property_read_key(S, POBJECT n, ptbytes, z) = $diagnostic(S, "Warning", $pt
   -- if ~$property_get_needed(S, n, ptbytes)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = eps
+  -- if ~$property_set_write_only(S, n, ptbytes)
 def $property_read_key(S, POBJECT n, ptbytes, z) = $diagnostic(S, "Warning", $ptascii("Undefined property: ") ++ $object_name(S, n) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)), z)[.RESULT = KNOWN PNULL]
   -- if ~$instance_storage_freeing(S, n)
   -- if ~$property_hook_read_needed(S, n, ptbytes)

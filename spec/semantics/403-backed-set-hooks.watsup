@@ -68,7 +68,8 @@ def $function_body_tasks(S, pfunction) = $statement_tasks(statement*, (PORIGIN n
 def $pphook_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_name) (SEQUENCE eps) (SEQUENCE statement*) metadata, pchheader) = $pphook_finish_named(P, $ppgoto_finish($ppstatements(P_hook, pcpath ++ [PCFIELD 5], 0, statement*)), pcpath, ptbytes_name, pssignature, metadata)
   -- if $ptlc($base64(text_set)) = $ptascii("set")
   -- if pchheader.KIND <- ["class","trait"] /\ pchheader.PARENT = eps
-  -- if ppropertydesc.TYPE =/= eps /\ $hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME)
+  -- if ppropertydesc.TYPE =/= eps
+  -- if $hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME) \/ (pchheader.KIND = "class" /\ ppropertydesc.DEFAULT = PROP_UNINITIALIZED /\ $hook_body_supported(SEQUENCE statement*))
   -- if z = $source_line(metadata)
   -- if $(z > 0 /\ z <= $source_end_line(metadata))
   -- if ptbytes_name = pchheader.NAME ++ $ptascii("::") ++ $property_set_name(ppropertydesc.NAME)
@@ -117,8 +118,18 @@ def $property_set_origin(S, ppropertydesc) = (PORIGIN n (pcpath_group ++ [PCFIEL
   -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ~ppropertydesc.FINAL
   -- if ppropertydesc.TYPE =/= eps /\ ppropertydesc.NAME = $base64(text_name) /\ ppropertydesc.KEY = ppropertydesc.NAME
   -- if $ptlc($base64(text_set)) = $ptascii("set")
-  -- if $hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME)
+  -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (statement_owner)
+  -- if $pchlower(statement_owner) = PCHRAW pchraw_owner
+  -- if $hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME) \/ (pclassdesc.KIND = "class" /\ pchraw_owner.KIND = "class" /\ pchraw_owner.PARENT = ABSENT /\ phpType16 = SEQUENCE eps /\ phpType5 = ABSENT /\ ppropertydesc.DEFAULT = PROP_UNINITIALIZED /\ $hook_body_supported(SEQUENCE statement*))
 def $property_set_origin(S, ppropertydesc) = eps -- otherwise
+
+;; A sole virtual SET has no backing slot and no callable GET.
+def $property_hook_virtual(S, ppropertydesc) = true
+  -- if $property_set_origin(S, ppropertydesc) = (porigin_hook)
+  -- if ppropertydesc.TYPE =/= eps /\ ppropertydesc.DEFAULT = PROP_UNINITIALIZED
+  -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_name) (SEQUENCE eps) (SEQUENCE statement*) metadata)
+  -- if $ptlc($base64(text_set)) = $ptascii("set")
+  -- if ~$hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME)
 
 def $property_hook_pair_raw_functions(S, ppropertydesc) = [pfunction_get, pfunction_set]
   -- if $property_hook_pair_origins(S, ppropertydesc) = porigin_get :: porigin_set :: eps
@@ -317,13 +328,41 @@ def $property_set_backing(S, n, ppropertydesc) = true
   -- if pcallcontext.RECEIVER = (n) /\ pcallcontext.FUNCTION = ppropertyhook.HOOK
   -- if $property_set_origin(S, ppropertydesc) = (ppropertyhook.HOOK)
   -- if $property_set_context_valid(S, pcallcontext)
+  -- if $origin_node(S.SOURCES, ppropertyhook.HOOK) = (NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 phpType39 metadata)
+  -- if $hook_body_backed(phpType39, ppropertydesc.NAME)
 def $property_set_backing(S, n, ppropertydesc) = false -- otherwise
+dec $property_set_virtual_active(pstate, nat, ppropertydesc) : bool
+def $property_set_virtual_active(S, n, ppropertydesc) = true
+  -- if $property_hook_virtual(S, ppropertydesc)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = PROPERTY_SET_TARGET ppropertyhook
+  -- if ppropertyhook.OBJECT = n /\ ppropertyhook.PROPERTY = ppropertydesc.ORIGIN
+  -- if pcallcontext.RECEIVER = (n) /\ pcallcontext.FUNCTION = ppropertyhook.HOOK
+  -- if $property_set_origin(S, ppropertydesc) = (ppropertyhook.HOOK)
+  -- if $property_set_context_valid(S, pcallcontext)
+def $property_set_virtual_active(S, n, ppropertydesc) = false -- otherwise
+
 def $property_set_needed(S, n, ptbytes) = true
   -- if $property_lexical_private(S, n, ptbytes) = eps
   -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
   -- if $property_set_origin(S, ppropertydesc) =/= eps
   -- if ~$property_set_backing(S, n, ppropertydesc)
 def $property_set_needed(S, n, ptbytes) = false -- otherwise
+
+def $property_set_write_only(S, n, ptbytes) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ptbytes) = (ppropertydesc)
+  -- if $property_hook_virtual(S, ppropertydesc) /\ $property_set_origin(S, ppropertydesc) =/= eps
+  -- if $property_hook_effective_origin(S, ppropertydesc) = eps
+  -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
+  -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = eps
+def $property_set_write_only(S, n, ptbytes) = false -- otherwise
+def $property_read_key(S, POBJECT n, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Property ") ++ $object_name(S, n) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)) ++ $ptascii(" is write-only"), z)
+  -- if ~$instance_storage_freeing(S, n)
+  -- if ~$property_hook_read_needed(S, n, ptbytes)
+  -- if ~$property_get_needed(S, n, ptbytes)
+  -- if $property_set_write_only(S, n, ptbytes)
 
 ;; Pending receiver/name resolution precedes RHS dereference, as in ordinary assignment.
 dec $property_set_plan(pstate) : ppropertyhook?
@@ -337,6 +376,7 @@ def $property_set_plan(S) = (ppropertyhook)
   -- if $property_set_needed(S, n, ptbytes)
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes
   -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
+  -- if ~$property_set_virtual_active(S, n, ppropertydesc)
   -- if $property_set_origin(S, ppropertydesc) = (porigin_hook)
   -- if porigin_property = ppropertydesc.ORIGIN
   -- if ppropertyhook = {SITE porigin_site, OBJECT n, PROPERTY porigin_property, HOOK porigin_hook, LINE z}

@@ -1,0 +1,35 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hashes": [
+    "04164c2c2712779fa40a7c1f75a5394cef92322b0140c3d99374dc716fba9420"
+  ],
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "scalar",
+      "source": "<?php\nclass VirtualSetParent77 {\n    public int $stored = 10;\n    public int $value {\n        set {\n            echo 'SET:', self::class, '/', static::class, '/', __METHOD__, '/', $value, '|';\n            $this->stored = $value + $this->offset();\n        }\n    }\n    private function offset(): int { return 13; }\n}\nclass VirtualSetChild77 extends VirtualSetParent77 {\n    private function offset(): int { return 900; }\n}\n$child = new VirtualSetChild77();\n$raw = (array) $child;\necho 'I:', ($raw === ['stored' => 10] ? 'ONLY' : 'OTHER'), '/', $raw['value'] ?? 'ABSENT', '/', $raw['stored'], '|';\n$result = ($child->value = 20);\n$raw = (array) $child;\necho 'R:', $result, '/', ($raw === ['stored' => 33] ? 'ONLY' : 'OTHER'), '/', $raw['value'] ?? 'ABSENT', '/', $raw['stored'], '/', $child->stored, '|';\ntry {\n    $read = $child->value;\n    echo 'VALUE:', $read, '|';\n} catch (Error $error) {\n    echo 'READ:', $error->getMessage(), '|';\n}\ntry {\n    $child->value = [1];\n} catch (TypeError $error) {\n    echo 'TYPE:', $error->getMessage(), '|';\n}\n$raw = (array) $child;\necho 'F:', ($raw === ['stored' => 33] ? 'ONLY' : 'OTHER'), '/', $raw['value'] ?? 'ABSENT', '/', $raw['stored'], '/', $child->stored, '|';\n",
+      "source_sha256": "a39e004a776ff2d064f298468395e0bd59274210bc248f1f5cef56ddbd475786",
+      "stdout_base64": "STpPTkxZL0FCU0VOVC8xMHxTRVQ6VmlydHVhbFNldFBhcmVudDc3L1ZpcnR1YWxTZXRDaGlsZDc3L1ZpcnR1YWxTZXRQYXJlbnQ3Nzo6JHZhbHVlOjpzZXQvMjB8UjoyMC9PTkxZL0FCU0VOVC8zMy8zM3xSRUFEOlByb3BlcnR5IFZpcnR1YWxTZXRDaGlsZDc3OjokdmFsdWUgaXMgd3JpdGUtb25seXxUWVBFOlZpcnR1YWxTZXRQYXJlbnQ3Nzo6JHZhbHVlOjpzZXQoKTogQXJndW1lbnQgIzEgKCR2YWx1ZSkgbXVzdCBiZSBvZiB0eXBlIGludCwgYXJyYXkgZ2l2ZW4sIGNhbGxlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvY29hbGVzY2UtZ2V0LWhvb2tzLXByaXZhdGUtMzIvLnRvb2xzL3ZpcnR1YWwtc2V0LW9ubHktaG9vay1wcm9iZXMtNzcvc2NhbGFyLnBocCBvbiBsaW5lIDI4fEY6T05MWS9BQlNFTlQvMzMvMzN8",
+      "stdout_template_base64": "STpPTkxZL0FCU0VOVC8xMHxTRVQ6VmlydHVhbFNldFBhcmVudDc3L1ZpcnR1YWxTZXRDaGlsZDc3L1ZpcnR1YWxTZXRQYXJlbnQ3Nzo6JHZhbHVlOjpzZXQvMjB8UjoyMC9PTkxZL0FCU0VOVC8zMy8zM3xSRUFEOlByb3BlcnR5IFZpcnR1YWxTZXRDaGlsZDc3OjokdmFsdWUgaXMgd3JpdGUtb25seXxUWVBFOlZpcnR1YWxTZXRQYXJlbnQ3Nzo6JHZhbHVlOjpzZXQoKTogQXJndW1lbnQgIzEgKCR2YWx1ZSkgbXVzdCBiZSBvZiB0eXBlIGludCwgYXJyYXkgZ2l2ZW4sIGNhbGxlZCBpbiB7RklMRX0gb24gbGluZSAyOHxGOk9OTFkvQUJTRU5ULzMzLzMzfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "virtual-set-only-hook77-scalar-native-982d7d91",
+      "native_raw_sha256": "04164c2c2712779fa40a7c1f75a5394cef92322b0140c3d99374dc716fba9420"
+    }
+  ]
+}
