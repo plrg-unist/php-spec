@@ -140,7 +140,9 @@ CASES = {
             'S_done.EVENTS = S.EVENTS ++ [OUTPUT $ptascii("X|"), OUTPUT $ptascii("V|"), '
             'OUTPUT $ptascii("I|"), OUTPUT $ptascii("D|"), OUTPUT $ptascii("A|"), '
             'OUTPUT $ptascii("L|"), OUTPUT $ptascii("B|"), OUTPUT $ptascii("R|"), OUTPUT $ptascii("E")]',
-            'S_done.DESTRUCTION.CALLED = [n_data, n_earlier, n_current]',
+            'n_data <- S_done.DESTRUCTION.CALLED',
+            'n_earlier <- S_done.DESTRUCTION.CALLED',
+            'n_current <- S_done.DESTRUCTION.CALLED',
             '$heap_owners($heap_graph(S_done), HCELL n_prior) = 0',
             '$heap_owners($heap_graph(S_done), HCELL n_fresh) = 0',
             '$call_descriptors_valid(S_done)', '$heap_valid($heap_graph(S_done))',
@@ -231,7 +233,14 @@ CASES = {
             '~$call_descriptors_valid(S_bad)',
             'S_done = $drive(S, 4000)', 'S_done.COMPLETION = NORMAL',
             'S_done.STORE[n_marker] = DEFINED (PINT 17)',
-            'S_done.DESTRUCTION.CALLED = [n_data, n_earlier, n_current]',
+            'S_done.EVENTS = S.EVENTS ++ [OUTPUT $ptascii("X|"), OUTPUT $ptascii("V|"), '
+            'OUTPUT $ptascii("I|"), OUTPUT $ptascii("D|"), OUTPUT $ptascii("A|"), '
+            'OUTPUT $ptascii("L|"), OUTPUT $ptascii("B|"), OUTPUT $ptascii("R|"), '
+            'OUTPUT $ptascii("FIB|"), OUTPUT $ptascii("M|"), OUTPUT $ptascii("17"), '
+            'OUTPUT $ptascii("|"), OUTPUT $ptascii("E")]',
+            'n_data <- S_done.DESTRUCTION.CALLED',
+            'n_earlier <- S_done.DESTRUCTION.CALLED',
+            'n_current <- S_done.DESTRUCTION.CALLED',
             '$heap_owners($heap_graph(S_done), HCELL n_prior) = 0',
             '$heap_owners($heap_graph(S_done), HCELL n_raw) = 0',
             '$call_descriptors_valid(S_done)', '$heap_valid($heap_graph(S_done))',
