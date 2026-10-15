@@ -1,0 +1,91 @@
+{
+  "status": "private code, source and state validation independently accepted; integration pending",
+  "milestone": "V55 declaration-interface dependency autoload",
+  "scope": "Ordinary parentless user class/interface declarations with one direct interface and no traits, reusing existing registered callback dispatch before linking/publication.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "base": "a7b6bf8b554c075fbc6cc2c2204b378d29aa9295",
+  "implementation_revision": "3564654c7f368a0077789043a63a8b79b339a79e",
+  "module_count": 395,
+  "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC"
+  },
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "caps_seconds": {
+    "native": 30,
+    "model_cli": 60,
+    "model_process": 90,
+    "public_process": 90,
+    "public_outer": 240
+  },
+  "tested_cut": {
+    "runtime_diff_sha256": "0a1b58556fbc0be9807580da5b8236fba258cda954960da89dbc33f211a62cc7",
+    "files": {
+      "spec/semantics/30-storage.watsup": "7615927be6b8d1f43fad9b435b57c07f24521d532e9ad054698c1d036c0c6eee",
+      "spec/semantics/127-class-runtime.watsup": "78b2ffe1c8663a444c5bef57c0a5c81367a37964d8bdc065368c7e1a016f86ae",
+      "spec/semantics/277-autoload.watsup": "d548c20bc5607023ec29961586fb5c83ecc9d99418754b602868dad416d5293b",
+      "tests/semantics/interface_dependency_autoload_protocol.py": "146f2dbaa15749bf319e76479d1236f64184fba34054dcef9ddd91f575be658b"
+    },
+    "source_agreements": 2,
+    "public_premises": [
+      169,
+      155
+    ]
+  },
+  "behavior": [
+    "Pending lookup is independent of the bounded source certificate. A registered missing-interface lookup outside that domain is Unsupported before the old missing-interface Error; parent autoload retains priority. The old pure interface fetch/link functions and ordinary/default/parent autoload bodies remain unchanged.",
+    "The autoload call retains actual target origin, dependency name, lookup key and declaration line; its nonowning AUTO_INTERFACE resume stores only origin and name. Current guards authenticate the live origin; declaration history can validate the same source after dependency/target publication. Local source guards rely on whole compiler-image/history validation for descriptor fields.",
+    "Both dependency descriptors already exist before lookup, but CLASSNAMES remains absent. Actual loader publication precedes the resumed target link, LINKEDINTERFACES retains the dependency origin, and inherited prototypes retain their declaring owner. The two complete original continuations observe integer methods and interface membership.",
+    "Pure wrong site/name/key/line/resume and coordinated descriptor/capture copies challenge local guards and whole public admission separately. Broad-list, reserved-name and parent-priority projections are never driven. One genuine zero-budget pause resumes the same actual lookup state."
+  ],
+  "engine_routes": [
+    "Zend/zend_inheritance.c::zend_do_link_class fetches the parent, traits and interfaces using zend_fetch_class_by_name without NO_AUTOLOAD before member/interface binding.",
+    "Existing module277 registered callback dispatch owns the real invocation and restores its origin. Modules178/179 fetch published names, validate interface contracts and publish nominal links/prototypes only after the dependency returns."
+  ],
+  "accepted": {
+    "source_agreements": 2,
+    "public_premises": 324,
+    "production_chains": 2,
+    "budget_resumptions": 1,
+    "raw_steps": 0,
+    "driven_forged_states": 0
+  },
+  "preserved_outcomes": "The unchanged accepted-program baseline throws Interface V55Contract not found before the loader and disagrees with PHP; baseline/native/preparation/refusal credit remains zero. State01 stopped before execution on the filename argument type. State02 supplied raw text where php_run expects base64 text. Both failures retain zero credit; only the fixture filename representation changed before state03 passes both fronts on the same runtime. Earlier prepared packets and raw outcomes remain intact.",
+  "remaining": "Wider missing dependency lists, parented/trait/internal source targets and loading interactions, loader miss/throw/reentrancy campaigns, delayed variance autoload and complete declaration/core behavior remain partial. Existing loaded-list support is unchanged; this slice does not close interface/autoload families.",
+  "artifacts": {
+    "native_pair": {
+      "path": ".tools/dynamic-review-02/static-native-v55/report.json",
+      "sha256": "bd521ce4d450f190d80dbe30205ecd6785dfc57ffc26325346feee3590af6bf1"
+    },
+    "unchanged_class_baseline": {
+      "path": ".tools/dynamic-source-interface-autoload-baseline-35/report.json",
+      "sha256": "4918502b39eeaa03a6f4a543faa1ee9eed5286c83963c6fe4ca1a68b378ad16d"
+    },
+    "affected_class": {
+      "path": ".tools/dynamic-source-interface-autoload-model-36/report.json",
+      "sha256": "0ca03bca4eeb9c64da957f3a4dde75b5c7fe0207b8110dd7ab50f7ee9613c623"
+    },
+    "affected_interface": {
+      "path": ".tools/dynamic-source-interface-autoload-extends-model-35/report.json",
+      "sha256": "01164f189ed514b1798a0efd44c00bf3c67c7b742806a33f986a4a106651e859"
+    },
+    "initial_filename_type_failure": {
+      "path": ".tools/dynamic-source-interface-autoload-state-01/check-report.json",
+      "sha256": "53272947ce2945a7792cca57776aced20393cba2676f171fad40102ae993a778"
+    },
+    "raw_filename_decode_failure": {
+      "path": ".tools/dynamic-source-interface-autoload-state-02/check-report.json",
+      "sha256": "38fb70cca370ff1b0b12fbcc09b42684bf36246ff49b67d33ef56238e8a48fb2"
+    },
+    "public_preparation": {
+      "path": ".tools/dynamic-source-interface-autoload-state-03/fixtures-report.json",
+      "sha256": "7bd04a438bb52357043a31071e7221efbbfb1ecb7ef7144d32eadb855816971d"
+    },
+    "public_324": {
+      "path": ".tools/dynamic-source-interface-autoload-state-03/check-report.json",
+      "sha256": "2e7267125fdc29a196c2e87fcb369b1619b3cd09f54886b1591eac5ef03a70b4"
+    }
+  },
+  "recovery": "Use the maintained protocol fixtures/check phases with canonical dynamic-review-02/static-native-v55 originals and retained native report. Raw worker packets, parse-only records, exact commands and process streams remain outside Git; no native evaluation fallback or tool rebuild is added."
+}

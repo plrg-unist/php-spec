@@ -7,6 +7,15 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Class and interface declarations now autoload a missing sole interface dependency
+before linking or publishing the target. The resumed link retains the declaring
+prototype and nominal ancestry. Two exact originals and 324 SL premises at runtime
+diff 0a1b5855 cover eval/class implements, interface extends, dependency-versus-target
+publication, source/history guards and budget resume. Two filename fixture failures
+retain zero credit. Admission requires a parentless ordinary user target without
+traits; wider dependency lists, parent/trait loading and callback/failure interactions
+remain partial. [Interface autoload review](coverage/semantics/interface-dependency-autoload-review.json).
+
 Ordinary `.` now suspends for named array-warning handlers on two distinct
 plain CVs with one nonempty mutable flat scalar array and one quiet string.
 The left-array path yields fixed `Array` then reads its original live RHS cell;

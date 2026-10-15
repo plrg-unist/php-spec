@@ -3307,6 +3307,12 @@ Thirty-six private source agreements and one current global-constant loader
 interaction retain separate cuts. The 263 original finite premises pass with
 seven typing bindings and eight repeated compaction setup premises; the split
 compaction groups use the existing strict SL runner at the unchanged120s cap.
+[Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)
+now loads a sole missing user interface before a parentless class or interface is
+linked and published. Two exact originals and 324 SL premises distinguish cached
+descriptors from live names, retained prototypes and genuine loader continuations,
+including eval and budget resume. Traits, parented targets, wider missing lists and
+callback/failure interactions remain partial.
 [Parameter-default NEW autoload](coverage/semantics/default-new-autoload-review.json)
 now completes lookup before allocation and nested arguments, then reselects the
 loaded constructor under the receiving declaration scope. Nine private sources

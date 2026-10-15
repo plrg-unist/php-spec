@@ -9,6 +9,20 @@ publication. The compiler rejects illegal interface method modifiers, bodies,
 and ordinary properties at the source line. Hooked interface properties remain
 outside this increment.
 
+[Declaration-interface autoload](../../coverage/semantics/interface-dependency-autoload-review.json)
+adds lookup before linking for an ordinary parentless user class or interface with
+one direct interface and no traits. An already compiled dependency descriptor does
+not make its name available: only actual loader publication permits the resumed
+link. The autoload call retains origin, name, key and declaration line; its
+nonowning `AUTO_INTERFACE` resume stores only origin and name. Current guards bind
+the live origin; historical guards retain immutable
+source authority after publication, under whole compiler-image/history validation.
+Parent lookup keeps priority, and pending wider source shapes refuse before a false
+missing-interface Error. Two original comparisons and 324 SL premises distinguish
+entered/returned loader state from target publication, declaring prototypes and final
+nominal membership. Wider dependency loading and failure/callback interactions remain
+partial; the original interface linker and parent autoload paths are unchanged.
+
 An unresolved source parent fails first. Otherwise the linker fetches every
 direct interface before checking parent compatibility, then scans direct
 references for kind and duplicate errors. It applies
