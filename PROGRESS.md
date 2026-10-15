@@ -8588,7 +8588,10 @@ failures and interrupted evidence.
   and one folded integer RHS. M78 adds a flat owning-array assignment return with
   a witnessed x-table copy and detached NULL restoration. M79 adds a bounded
   ordinary-object assignment return through destructor release and caught
-  selected-reference recheck.
+  selected-reference recheck. M80 adds the exact nonnullable builtin-int
+  no-argument assignment source: a restored NULL fails return verification,
+  cancels its pending Notice and re-enters the outer finalizer before the
+  original TypeError reaches the caller.
   Other VALUE signatures/layouts, general CONST/other
   NULL and multiple-active histories, genuinely released
   CV targets, destructor throw/reentry, real suspension and wider typed consumers
@@ -8650,6 +8653,20 @@ has zero state credit; only its active-state timing predicate was corrected
 and rerun. This proves neither physical Zend collection nor throwing or
 reentrant destructors; no prior return fixture was replayed.
 [M79 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M80's used `&f():int` assigned no-argument integer call initially gives
+`x41/F:1`, then selected-y array rejection is caught. The nonowning cursor
+restores NULL and one pending old-line VALUE Notice, but int verification
+throws a distinct TypeError and cancels the Notice before delivery. The
+original NULL error survives a second outer-finalizer pass and reaches the
+caller with `r7/x99/yarray`; direct `return old_value()` is separately exact
+with first `F:0`, while both sources call the helper once and deliver no
+Notice. Native2 and unchanged baseline at `e90b3a74`/399 show direct exact
+and assigned Unsupported; strict/source2 pass at `8b7c539a`/399. One assigned
+128-premise reached fixture binds both error identities, the pending versus
+delivered Notice, second `F:0`, caller error/r7, LINE refusal and budget.
+No prior return fixture was replayed. Only the exact builtin-int
+no-argument assigned source is newly admitted.
+[M80 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, destructor throw/reentry, real suspension and wider typed
