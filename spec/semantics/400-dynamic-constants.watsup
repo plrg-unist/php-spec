@@ -958,3 +958,110 @@ def $class_constant_selection_valid(S, pclassconstantcontext) = true
   -- if $dynamic_defined_deferred(S, pconfigcall) = (pclassconstantdesc)
   -- if pclassconstantcontext.DECL = pclassconstantdesc.ORIGIN
   -- if $dynamic_defined_resume_present(S.TODO, pclassconstantcontext.DECL, pconfigcall)
+
+;; Keyword API strings resolve against the authenticated current call, including
+;; its unchanged lexical/called split during eval. They never start autoload.
+dec $dynamic_keyword_scope_valid(pstate, porigin?) : bool
+def $dynamic_keyword_scope_valid(S, eps) = true
+def $dynamic_keyword_scope_valid(S, (porigin)) = true
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin)
+def $dynamic_keyword_scope_valid(S, porigin?) = false -- otherwise
+dec $dynamic_keyword_valid(pstate, pconfigcall) : bool
+def $dynamic_keyword_valid(S, pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_CONSTANT \/ pconfigcall.KIND = INTRINSIC_DEFINED
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps
+  -- if $config_invoke_valid(S, pconfigcall) /\ $call_current_valid(S)
+  -- if $bound_fake_internal_scope(S) = eps /\ $bound_fake_internal_called(S) = eps
+  -- if $dynamic_keyword_scope_valid(S, $method_current_scope(S)) /\ $dynamic_keyword_scope_valid(S, $method_called_scope(S))
+  -- if $dynamic_class_constant_site(S, pconfigcall.SITE)
+  -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
+  -- if $ptlc(preqbytes_class) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
+  -- if preqbytes_member =/= eps /\ ~(0 <- preqbytes_member) /\ ~(58 <- preqbytes_member)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_query)]
+  -- if $string_plain(pvalue_query) = pvalue_query \/ $string_carrier_valid(S, pvalue_query)
+  -- if $dynamic_define_value_matches(pvalue_query, $dynamic_define_known(S, pconfigcall.SITE, 0))
+def $dynamic_keyword_valid(S, pconfigcall) = false -- otherwise
+dec $dynamic_keyword_target(pstate, preqbytes) : porigin?
+def $dynamic_keyword_target(S, preqbytes) = $method_current_scope(S)
+  -- if $ptlc(preqbytes) = $ptascii("self")
+def $dynamic_keyword_target(S, preqbytes) = (porigin_parent)
+  -- if $ptlc(preqbytes) = $ptascii("parent")
+  -- if $method_current_scope(S) = (porigin)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
+def $dynamic_keyword_target(S, preqbytes) = $method_called_scope(S)
+  -- if $ptlc(preqbytes) = $ptascii("static")
+def $dynamic_keyword_target(S, preqbytes) = eps -- otherwise
+dec $dynamic_keyword_error(pstate, preqbytes) : preqbytes?
+def $dynamic_keyword_error(S, preqbytes) = ($ptascii("Cannot access \"") ++ $ptlc(preqbytes) ++ $ptascii("\" when no class scope is active"))
+  -- if $ptlc(preqbytes) <- [$ptascii("self"), $ptascii("parent")]
+  -- if $method_current_scope(S) = eps
+def $dynamic_keyword_error(S, preqbytes) = ($ptascii("Cannot access \"static\" when no class scope is active"))
+  -- if $ptlc(preqbytes) = $ptascii("static")
+  -- if $method_called_scope(S) = eps
+def $dynamic_keyword_error(S, preqbytes) = ($ptascii("Cannot access \"parent\" when current class scope has no parent"))
+  -- if $ptlc(preqbytes) = $ptascii("parent")
+  -- if $method_current_scope(S) = (porigin)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.PARENT = eps
+def $dynamic_keyword_error(S, preqbytes) = eps -- otherwise
+dec $dynamic_keyword_finish(pstate, pconfigcall, porigin, preqbytes) : pstate
+def $dynamic_keyword_finish(S, pconfigcall, porigin, preqbytes_member) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pconfigcall.KIND = INTRINSIC_DEFINED
+  -- if $class_constant_lookup(S, porigin, preqbytes_member, |S.CLASSES|) = eps
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_keyword_finish(S, pconfigcall, porigin, preqbytes_member) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pconfigcall.KIND = INTRINSIC_DEFINED
+  -- if $class_constant_lookup(S, porigin, preqbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+  -- if ~$class_constant_visible(S, pclassconstantdesc)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_keyword_finish(S, pconfigcall, porigin, preqbytes_member) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pconfigcall.KIND = INTRINSIC_DEFINED
+  -- if $class_constant_lookup(S, porigin, preqbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+  -- if $class_constant_visible(S, pclassconstantdesc)
+  -- if pclassconstantdesc.FOLDED
+  -- if $compiled_read(S, pclassconstantdesc.INITIALIZER) = (pvalue)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_keyword_finish(S, pconfigcall, porigin, preqbytes_member) = $config_error(S[.TODO = ptask_tail*], pconfigcall, "Error", $ptascii("Undefined constant ") ++ preqbytes_class ++ $ptascii("::") ++ preqbytes_member)
+  -- if pconfigcall.KIND = INTRINSIC_CONSTANT
+  -- if $class_constant_lookup(S, porigin, preqbytes_member, |S.CLASSES|) = eps
+  -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_keyword_finish(S, pconfigcall, porigin, preqbytes_member) = $config_error(S[.TODO = ptask_tail*], pconfigcall, "Error", $ptascii("Cannot access ") ++ $property_visibility_name(pclassconstantdesc.VISIBILITY) ++ $ptascii(" constant ") ++ preqbytes_class ++ $ptascii("::") ++ preqbytes_member)
+  -- if pconfigcall.KIND = INTRINSIC_CONSTANT
+  -- if $class_constant_lookup(S, porigin, preqbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+  -- if ~$class_constant_visible(S, pclassconstantdesc)
+  -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_keyword_finish(S, pconfigcall, porigin, preqbytes_member) = S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue_result][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pconfigcall.KIND = INTRINSIC_CONSTANT
+  -- if $class_constant_lookup(S, porigin, preqbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+  -- if $class_constant_visible(S, pclassconstantdesc)
+  -- if pclassconstantdesc.FOLDED
+  -- if $compiled_read(S, pclassconstantdesc.INITIALIZER) = (pvalue)
+  -- if $pool_class(S.POOLS, pclassconstantdesc.INITIALIZER) = (pvalueclass)
+  -- if pvalue_result = $compiled_string_value(S, pclassconstantdesc.INITIALIZER, pvalue)
+  -- if $dynamic_constant_class(pvalue_result) = ($pvclass_intern(pvalueclass))
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_keyword_finish(S, pconfigcall, porigin, preqbytes_member) = S[.COMPLETION = UNSUPPORTED "keyword class constant value"] -- otherwise
+dec $dynamic_keyword_receive(pstate, pconfigcall) : pstate
+def $dynamic_keyword_receive(S, pconfigcall) = $config_error(S[.TODO = ptask_tail*], pconfigcall, "Error", preqbytes_error)
+  -- if $dynamic_keyword_valid(S, pconfigcall)
+  -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
+  -- if $dynamic_keyword_error(S, preqbytes_class) = (preqbytes_error)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_keyword_receive(S, pconfigcall) = $dynamic_keyword_finish(S, pconfigcall, porigin, preqbytes_member)
+  -- if $dynamic_keyword_valid(S, pconfigcall)
+  -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
+  -- if $dynamic_keyword_error(S, preqbytes_class) = eps
+  -- if $dynamic_keyword_target(S, preqbytes_class) = (porigin)
+  -- if $dynamic_keyword_scope_valid(S, (porigin))
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_keyword_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "keyword class constant query"] -- otherwise
+def $dynamic_defined_receive(S, pconfigcall) = $dynamic_keyword_receive(S, pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_DEFINED
+  -- if $dynamic_keyword_valid(S, pconfigcall)
+def $dynamic_class_constant_receive(S, pconfigcall) = $dynamic_keyword_receive(S, pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_CONSTANT
+  -- if $dynamic_keyword_valid(S, pconfigcall)
