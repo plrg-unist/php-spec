@@ -2151,11 +2151,22 @@ later next, and parent finally precedes cached destructors, including caught
 throws. Strict395, seven new normal originals and five genuine-source groups/460
 driver premises pass across the `d39565f95`/`9a5c60dda` cuts using retained native10.
 Three Unsupported controls, the unchanged baseline and five original failures
-keep zero agreement. Owning copied returns, active chains ending in detached
-roots, Iterator/Aggregate leaves and valid-key by-reference targets remain required.
+keep zero agreement. At that cut owning copied returns, active chains ending in detached
+roots, Iterator/Aggregate leaves and valid-key by-reference targets remained required.
 [Detached-child review](coverage/semantics/generator-call-unpack-detached-child-review.json).
 Canonical395 composition over `53d2924e7` passes inventory and strict SL at
 `e7d1b874e`; private source/state cuts and original failures retain their identities.
+
+Generator call unpack now consumes source Iterator yield-from leaves, including
+finite active shared links. Key callbacks precede by-value capture; reference
+mutation, row COW, next-callback throws and temporary/retained cleanup preserve
+real producer frames and existing owners. Strict395, six new normal originals
+and four source-reached groups/360 premises pass at `4a67329a1`; the promoted
+prior Iterator-leaf source agrees separately. Seven native observations, the
+Aggregate-acquisition control and unchanged baseline earn zero agreement.
+Acquired leaves, valid-key by-reference targets, owning copied returns and
+active chains ending in detached roots remain required.
+[Iterator-leaf review](coverage/semantics/generator-call-unpack-iterator-delegation-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or

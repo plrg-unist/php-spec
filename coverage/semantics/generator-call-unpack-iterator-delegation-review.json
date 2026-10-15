@@ -1,0 +1,67 @@
+{
+  "milestone": "Generator argument unpack through source Iterator delegates",
+  "status": "independently accepted privately; actual-parent composition pending",
+  "independent_reviewer": "iterator_review_01, paired with iterator_dev_01",
+  "base": "cf4869268104aa2056c443e71131cc69e27f3b68",
+  "tested_private_code": "4a67329a1c36cfb3101ea6211763f135ed2e0f35",
+  "modules": 395,
+  "scope": "Ordinary Generator by-value argument unpack through a source Iterator yield-from leaf, directly or below finite active Generator links. Key callbacks precede capture; reference mutation, named defaults, row COW, callback exceptions and temporary/retained cleanup preserve real producer frames and observable lifetimes. Aggregate-acquired leaves remain Unsupported.",
+  "semantics": {
+    "admission": "405 adds a terminal chain predicate requiring an allocated DELEGATING Generator, INPUT naming a user Iterator, absent ACQUISITION, present CURRENT, position1 and the existing source-valid delegation record. Positive recursion fuel remains required. The prior array, paused-leaf, Generator-link and direct detached-root rules are unchanged.",
+    "ownership": "Existing289 raw CURRENT and INPUT own the delegated cache and Iterator. Unpack adds only its ordinary SENT value snapshot and borrowed resumer; it adds no outer shared-link cache or fake Generator API frame. CURRENT is the existing ownership abstraction, not a literal count of Zend's iterator and Generator cache zvals.",
+    "errors": "Existing key/binder precedence and callback unwinding are reused. Temporary key errors retire Iterator, producer finally, current cache and earlier SENT owners; retained CV errors keep the actual Generator/cache until unset. A real next() throw retains the COW snapshot, method receiver and producer frame until normal unwind.",
+    "module_sha256": {"405": "095d66bd255ac536e0d018404da602ebbe8c74ff14ee2c5bb4ea933389d48dc2"}
+  },
+  "source_authority": [
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_SEND_UNPACK and ZEND_YIELD_FROM",
+    "vendor/php-src/Zend/zend_interfaces.c::zend_user_it_get_current_data, zend_user_it_move_forward and zend_user_it_invalidate_current",
+    "vendor/php-src/Zend/zend_generators.c::zend_generator_get_next_delegated_value, zend_generator_update_current and zend_generator_dtor_storage"
+  ],
+  "validation_identity": {
+    "php": "8.5.10 CLI NTS64; source34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml5.1.0; SL, caches off and encountered determinism checks",
+    "environment": "tests/semantics/profile.json; PHP -n; LC_ALL=C; TZ=UTC; PHP_SPEC_SCRIPT_ENCODING unset; worker1",
+    "commands": "Exact commands/selections/exits are retained in reports. Fresh CPU3 packets ran serially, stop-first, and fully reaped. Native8s; strict/state120s; author sources model100/process120s; reviewer sources and baseline model60/process75s. Each state group ran separately."
+  },
+  "raw_root": ".tools/generator-call-unpack-iterator-delegation-13/.tools/",
+  "native_and_baseline": {
+    "cut": "Unchanged cf4869268 with prior405150e67b7. Seven distinct native originals earn zero model agreement.",
+    "reports": ["generator-iterator-unpack-native-qwz3e6mq/report.json", "generator-iterator-unpack-review-native-cpijnkl7/report.json"],
+    "unchanged_baseline": "generator-iterator-unpack-baseline-hbz18bg9/report.json uses the same75524328 original: exact Generator unpack delegated producer Unsupported after P|G|R|V|C|K| and six OUTPUT events, zero agreement."
+  },
+  "normal_sources": {
+    "new_distinct_originals": 6,
+    "reports": [["generator-iterator-unpack-source-2f6zfrpp/report.json", 4], ["generator-call-unpack-iterator-delegation-review-source-u1sn9ku1/report.json", 2]],
+    "observations": "Exact original-byte stdout/stderr/exit agreement at4a673 with stable HEAD/inputs: named defaults, value snapshots after key mutation, COW, temporary and retained key errors, real next/producer traces and once-only destruction."
+  },
+  "new_reached_states": {
+    "groups": 4,
+    "driver_premises": 360,
+    "author_reports": [["fiber-state-review-m5dy9psq/report.json", 98], ["fiber-state-review-vqnbbcxj/report.json", 79]],
+    "independent_reports": [["fiber-state-review-twk77y8p/report.json", 91], ["fiber-state-review-f0wq68pk/report.json", 92]],
+    "checks": "Real ready, key-error and next-Throwable fronts check authenticated Iterator/current/source ownership, missing-current/position refusals, named holes/defaults, reference-cell versus payload edges, known-value SEND, borrowed resumer, genuine method receiver and producer/unpack frames, old/new COW tables, zero/split budgets, public call/heap validity and exact remaining cleanup output. All are true/exit0/no timeout at4a673 with stable inputs."
+  },
+  "affected_prior_source": {
+    "report": "generator-chain-unpack-source-caj45hvk/report.json",
+    "result": "Only prior11 e09fcdc7 Iterator-leaf control is promoted and freshly modeled: one normal agreement at4a673, separate from the six new originals. Source bytes and native answer are unchanged; no older suite or native campaign is replayed.",
+    "retained_native": "legacy-iterator-leaf-native-13/report.json SHA1b8ac1ad148250fa7178625fee46d2730cd2d55a2ece993743fb023ad1330e8f relocates raw paths only, with explicit metadata; original-report.json SHAd69c39d241af584a8776176b57c6efc3546ec4416f68412e643ec90194940b56 is preserved alongside selected raw files."
+  },
+  "required_control": "The Aggregate-acquired Iterator source in2f6zfrpp passes its exact authenticated Unsupported prefix P|G|GET|R|V|C|K|, without a diagnostic or timeout, and earns zero normal agreement.",
+  "strict": "generator-iterator-unpack-author-sl-ktprx8z2/report.json at4a673: all395 modules, true stdout, empty stderr, exit0/no timeout and stable HEAD/inputs.",
+  "compatibility": "Only405 changes semantically, adding17 lines. Existing289 delegation,303 close,355 storage, key binding, resume/trace/abort and detached-root rules remain unchanged. No failed probe or fixture correction occurred in this milestone.",
+  "evidence_recovery": {
+    "archive": "../php-spec-evidence-archive/generator-call-unpack-iterator-delegation-13/private.tar.gz",
+    "bytes": 313355,
+    "sha256": "49aff931bda4c7ada20c485e8c6b0c724238f9882d7d479b965ce037a1b98f72",
+    "manifest": "Sibling manifest.json maps11 exact report roles, five ignored inputs and legacy original/derived native recovery.",
+    "restore": "Restore raw .tools subpaths at the recorded private root. Author implementation/tests recover from4a673 on iterator/generator-call-unpack-iterator-delegation-13; reviewer files recover from the publication containing this ledger, hash-matched to independent_inputs. Native/base inputs use cf486; model inputs use4a673. The retained legacy tuple preserves its historical cut and explicit relocation. Raw evidence is not a build/runtime dependency."
+  },
+  "remaining": [
+    "Aggregate-acquired delegates and ordinary-call Aggregate acquisition require their own acquisition lifetime rules.",
+    "Valid-key Generator by-reference targets, owning copied returns, active chains ending in detached roots and wider callback/reentrant/Fiber interactions remain open.",
+    "No full Generator, argument-unpack or PHP-core closure is claimed."
+  ]
+}

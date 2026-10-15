@@ -783,7 +783,11 @@ Direct detached roots also unpack when the copied child return owns no heap
 nodes. Their object, array and reference caches survive child retirement; key
 errors preserve the real return continuation for a later explicit next.
 See the [detached-child review](coverage/semantics/generator-call-unpack-detached-child-review.json).
-Aggregate ordinary-call unpack, Iterator yield-from leaves, owning copied returns
+Source Iterator `yield from` leaves also unpack through active Generator chains.
+The real raw cache is captured after key callbacks; snapshots preserve reference
+mutation, row COW and cache lifetime across next-callback errors.
+See the [Iterator-leaf review](coverage/semantics/generator-call-unpack-iterator-delegation-review.json).
+Aggregate ordinary-call unpack and acquired Iterator leaves, owning copied returns
 and active chains ending in detached roots, Generator by-reference
 call targets and callback methods, nonnumeric raw valid changes, request/plain
 reference strings and handler replacements with

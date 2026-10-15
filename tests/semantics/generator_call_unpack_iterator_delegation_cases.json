@@ -1,0 +1,121 @@
+[
+  {
+    "id": "generator-iterator-unpack-named-default-snapshot-before-callee",
+    "source": "<?php\nclass GeneratorIteratorValue13 { function __destruct() { echo \"A|\"; } }\nclass GeneratorIteratorSource13 implements Iterator {\n public $index = 0;\n function rewind(): void { echo \"R|\"; $this->index = 0; }\n function valid(): bool { echo \"V|\"; return $this->index === 0; }\n function current(): mixed { echo \"C|\"; return new GeneratorIteratorValue13; }\n function key(): mixed { echo \"K|\"; return \"item\"; }\n function next(): void { echo \"N|\"; $this->index++; }\n function __destruct() { echo \"I|\"; }\n}\nfunction generatorIteratorProducer13() { try { echo \"G|\"; yield from new GeneratorIteratorSource13; echo \"L|\"; } finally { echo \"F|\"; } }\nfunction generatorIteratorTarget13($head = 17, $item = null) { echo \"D|\", $head, \"|\"; $item = null; echo \"U|\"; return 23; }\necho \"P|\"; $result = generatorIteratorTarget13(...generatorIteratorProducer13()); echo \"Q|\", $result, \"|E\";\n",
+    "source_sha256": "75524328f46ff1617458cd0ca68b81d219f0d06b8bfbc3c5f52c04e81d7e4925",
+    "purpose": "A source Iterator cache supplies a later named by-value slot after a genuine default; Iterator retirement precedes the producer tail/finally and callee snapshot release.",
+    "expected_model": "normal",
+    "native_stdout": "P|G|R|V|C|K|N|V|I|L|F|D|17|A|U|Q|23|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-iterator-unpack-temporary-key-error-releases-cache-before-sent",
+    "source": "<?php\nclass GeneratorIteratorBadValue13 { public $name; function __construct($name) { $this->name = $name; } function __destruct() { echo $this->name, \"|\"; } }\nclass GeneratorIteratorBadSource13 implements Iterator {\n public $index = 0;\n function rewind(): void { echo \"R|\"; $this->index = 0; }\n function valid(): bool { echo \"V|\"; return $this->index < 2; }\n function current(): mixed { echo \"C|\"; return new GeneratorIteratorBadValue13($this->index === 0 ? \"A\" : \"B\"); }\n function key(): mixed { echo \"K|\"; return $this->index === 0 ? \"item\" : 0; }\n function next(): void { echo \"N|\"; $this->index++; }\n function __destruct() { echo \"I|\"; }\n}\nfunction generatorIteratorBadProducer13() { try { echo \"G|\"; yield from new GeneratorIteratorBadSource13; echo \"BAD|\"; } finally { echo \"F|\"; } }\nfunction generatorIteratorBadTarget13($item) { echo \"BAD|\"; }\necho \"P|\";\ntry { generatorIteratorBadTarget13(...generatorIteratorBadProducer13()); } catch (Error $caught) { echo \"T|\", $caught->getLine(), \"|\", $caught->getTrace() === [] ? \"NOFRAME|\" : \"FRAME|\"; }\necho \"E\";\n",
+    "source_sha256": "7a91e8a1dd758be35a9bc6015fb81efb04e507e7ec277ed9efd4da76cf8df42d",
+    "purpose": "Temporary Generator abort detaches Iterator data before parent finally, then the current B cache and previously sent A; the native iterator adds no API trace frame.",
+    "expected_model": "normal",
+    "native_stdout": "P|G|R|V|C|K|N|V|C|K|I|F|B|A|T|15|NOFRAME|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-iterator-unpack-retained-key-error-keeps-data-and-cache",
+    "source": "<?php\nclass GeneratorIteratorBadValue13 { public $name; function __construct($name) { $this->name = $name; } function __destruct() { echo $this->name, \"|\"; } }\nclass GeneratorIteratorBadSource13 implements Iterator {\n public $index = 0;\n function rewind(): void { echo \"R|\"; $this->index = 0; }\n function valid(): bool { echo \"V|\"; return $this->index < 2; }\n function current(): mixed { echo \"C|\"; return new GeneratorIteratorBadValue13($this->index === 0 ? \"A\" : \"B\"); }\n function key(): mixed { echo \"K|\"; return $this->index === 0 ? \"item\" : 0; }\n function next(): void { echo \"N|\"; $this->index++; }\n function __destruct() { echo \"I|\"; }\n}\nfunction generatorIteratorBadProducer13() { try { echo \"G|\"; yield from new GeneratorIteratorBadSource13; echo \"BAD|\"; } finally { echo \"F|\"; } }\nfunction generatorIteratorBadTarget13($item) { echo \"BAD|\"; }\n$generator = generatorIteratorBadProducer13(); echo \"P|\";\ntry { generatorIteratorBadTarget13(...$generator); } catch (Error $caught) { echo \"T|\", $caught->getLine(), \"|\", $caught->getTrace() === [] ? \"NOFRAME|\" : \"FRAME|\"; }\necho \"M|\"; unset($generator); echo \"E\";\n",
+    "source_sha256": "ca63e3e00a1bff471b83a492bb55a60eb303583f129a3775922c84d5878179b2",
+    "purpose": "A retained Generator releases sent A on key Error but keeps Iterator and current B until its later explicit unset.",
+    "expected_model": "normal",
+    "native_stdout": "P|G|R|V|C|K|N|V|C|K|A|T|15|NOFRAME|M|I|F|B|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-iterator-unpack-next-throw-keeps-old-cache-and-real-trace",
+    "source": "<?php\nclass GeneratorIteratorThrowValue13 { function __destruct() { echo \"A|\"; } }\nclass GeneratorIteratorThrowSource13 implements Iterator {\n public $index = 0;\n function rewind(): void { echo \"R|\"; $this->index = 0; }\n function valid(): bool { echo \"V|\"; return $this->index === 0; }\n function current(): mixed { echo \"C|\"; return new GeneratorIteratorThrowValue13; }\n function key(): mixed { echo \"K|\"; return 0; }\n function next(): void { echo \"N|\"; throw new Exception(\"next\", 51); }\n function __destruct() { echo \"I|\"; }\n}\nfunction generatorIteratorThrowProducer13() { try { echo \"G|\"; yield from new GeneratorIteratorThrowSource13; echo \"BAD|\"; } finally { echo \"F|\"; } }\nfunction generatorIteratorThrowTarget13($item) { echo \"BAD|\"; }\necho \"P|\";\ntry { generatorIteratorThrowTarget13(...generatorIteratorThrowProducer13()); } catch (Exception $failure) { $trace = $failure->getTrace(); echo \"T|\", $failure->getCode(), \"|\", $trace[0][\"class\"], \"::\", $trace[0][\"function\"], \"|\", $trace[1][\"function\"], \"|\"; }\necho \"E\";\n",
+    "source_sha256": "8a6aaa17b842207463f6f8cdea66126c19f48d270b8b0fa982b7c088cc6efead",
+    "purpose": "The old Generator cache and sent value survive next() throwing; cleanup releases Iterator before finally and the payload before catch, with only real Iterator and producer trace frames.",
+    "expected_model": "normal",
+    "native_stdout": "P|G|R|V|C|K|N|I|F|A|T|51|GeneratorIteratorThrowSource13::next|generatorIteratorThrowProducer13|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "generator-iterator-unpack-aggregate-acquisition-required-control",
+    "source": "<?php\nclass GeneratorIteratorValue13 { function __destruct() { echo \"A|\"; } }\nclass GeneratorIteratorSource13 implements Iterator {\n public $index = 0;\n function rewind(): void { echo \"R|\"; $this->index = 0; }\n function valid(): bool { echo \"V|\"; return $this->index === 0; }\n function current(): mixed { echo \"C|\"; return new GeneratorIteratorValue13; }\n function key(): mixed { echo \"K|\"; return \"item\"; }\n function next(): void { echo \"N|\"; $this->index++; }\n function __destruct() { echo \"I|\"; }\n}\nclass GeneratorIteratorAggregate13 implements IteratorAggregate { function getIterator(): Traversable { echo \"GET|\"; return new GeneratorIteratorSource13; } }\nfunction generatorIteratorProducer13() { try { echo \"G|\"; yield from new GeneratorIteratorAggregate13; echo \"L|\"; } finally { echo \"F|\"; } }\nfunction generatorIteratorTarget13($head = 17, $item = null) { echo \"D|\", $head, \"|\"; $item = null; echo \"U|\"; return 23; }\necho \"P|\"; $result = generatorIteratorTarget13(...generatorIteratorProducer13()); echo \"Q|\", $result, \"|E\";\n",
+    "source_sha256": "7a29f9d3005885663cd5cca00d0938832012222971fdbb20fbc315f11bdbba14",
+    "purpose": "An Aggregate-acquired Iterator has a distinct authenticated acquisition receipt; its native behavior is observed but remains Unsupported in this direct-Iterator leaf milestone.",
+    "expected_model": "unsupported",
+    "native_stdout": "P|G|GET|R|V|C|K|N|V|I|L|F|D|17|A|U|Q|23|E",
+    "native_stderr": "",
+    "native_exit": 0,
+    "unsupported_reason": "Generator unpack delegated producer",
+    "unsupported_stdout": "P|G|GET|R|V|C|K|",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "80",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "71",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "71",
+            "69",
+            "84",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "82",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "86",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "67",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "75",
+            "124"
+          ]
+        ]
+      }
+    ]
+  }
+]

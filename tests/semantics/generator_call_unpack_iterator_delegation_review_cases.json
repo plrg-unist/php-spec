@@ -1,0 +1,22 @@
+[
+  {
+    "id": "generator-call-unpack-iterator-delegation-review-reference-key-mutation-and-send-snapshot",
+    "source": "<?php\nclass ReviewGeneratorIteratorFirst13 { function __destruct() { echo \"A|\"; } }\nclass ReviewGeneratorIteratorSecond13 { function __destruct() { echo \"B|\"; } }\nclass ReviewGeneratorIteratorReference13 implements Iterator {\n    public $item; public $more = true;\n    function __construct() { $this->item = new ReviewGeneratorIteratorFirst13(); }\n    function rewind(): void { echo \"W|\"; }\n    function valid(): bool { echo \"V|\"; return $this->more; }\n    function &current(): mixed { echo \"C|\"; return $this->item; }\n    function key(): mixed { echo \"K|\"; $this->item = new ReviewGeneratorIteratorSecond13(); return \"item\"; }\n    function next(): void { echo \"N|\"; $this->item = null; $this->more = false; }\n    function __destruct() { echo \"I|\"; }\n}\nfunction reviewGeneratorIteratorReference13() { try { echo \"G|\"; yield from new ReviewGeneratorIteratorReference13(); echo \"L|\"; } finally { echo \"F|\"; } }\nfunction reviewGeneratorIteratorReferenceTarget13($item) { echo \"D|\", $item instanceof ReviewGeneratorIteratorSecond13 ? \"HELD|\" : \"BAD|\"; $item = null; echo \"X|\"; }\necho \"P|\"; reviewGeneratorIteratorReferenceTarget13(...reviewGeneratorIteratorReference13()); echo \"E\";\n",
+    "purpose": "The real property-reference current cache observes key-side A-to-B mutation; SEND captures B before next clears the raw cell, and Iterator/Generator retirement does not destroy that callee snapshot.",
+    "expected_model": "normal",
+    "native_stdout": "P|G|W|V|C|K|A|N|V|I|L|F|D|HELD|B|X|E",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "109c1ee2cca7b6316a5cd08ea10279b40777fa9ba5f99eeb200094fc8ce2d45f"
+  },
+  {
+    "id": "generator-call-unpack-iterator-delegation-review-row-cow-and-next-throw-owners",
+    "source": "<?php\nclass ReviewGeneratorIteratorRowFirst13 { function __destruct() { echo \"A|\"; } }\nclass ReviewGeneratorIteratorRowSecond13 { function __destruct() { echo \"B|\"; } }\nclass ReviewGeneratorIteratorRow13 implements Iterator {\n    public $row;\n    function __construct() { $this->row = [new ReviewGeneratorIteratorRowFirst13()]; }\n    function rewind(): void { echo \"W|\"; }\n    function valid(): bool { echo \"V|\"; return true; }\n    function current(): mixed { echo \"C|\"; return $this->row; }\n    function key(): mixed { echo \"K|\"; $this->row[0] = null; return 0; }\n    function next(): void { echo \"N|\"; $this->row = [new ReviewGeneratorIteratorRowSecond13()]; throw new Exception(\"next\", 71); }\n    function __destruct() { echo \"I|\"; }\n}\nfunction reviewGeneratorIteratorRow13() { try { echo \"G|\"; yield from new ReviewGeneratorIteratorRow13(); echo \"BAD|\"; } finally { echo \"F|\"; } }\nfunction reviewGeneratorIteratorRowTarget13($items) { echo \"BAD|\"; }\necho \"P|\";\ntry { reviewGeneratorIteratorRowTarget13(...reviewGeneratorIteratorRow13()); }\ncatch (Exception $failure) { echo \"T|\", $failure->getCode(), \"|\"; $trace = $failure->getTrace(); echo $trace[0][\"function\"], \"|\", $trace[1][\"function\"], \"|\"; }\nunset($trace, $failure); echo \"E\";\n",
+    "purpose": "A by-value current row survives key-side property COW. A different property child retires with the Iterator on next throw, before Generator finally and cached/SENT child cleanup; the Throwable contains the real Iterator and producer frames.",
+    "expected_model": "normal",
+    "native_stdout": "P|G|W|V|C|K|N|I|B|F|A|T|71|next|reviewGeneratorIteratorRow13|E",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "d4ad67c28dea6506bf731979c36bdab5a538be7deb2c2c951c622d14fe7eea0d"
+  }
+]

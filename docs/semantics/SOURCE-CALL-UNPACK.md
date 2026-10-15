@@ -560,6 +560,25 @@ destructor exception returning to the real unset caller. This follows
 `zend_generator_dtor_storage` at the pinned engine.
 Owning copied return temporaries and active chains ending in detached roots stay
 `Unsupported`; their observed close behavior needs separate lifecycle rules.
-Iterator/Aggregate leaves and valid-key by-reference call targets remain open.
+At that cut Iterator/Aggregate leaves and valid-key by-reference call targets remained open.
 The [detached-child review](../../coverage/semantics/generator-call-unpack-detached-child-review.json)
 preserves both original native mismatches and the narrowed evidence cuts.
+
+
+## Source Iterator delegation leaves
+
+Generator call unpack also follows active shared links to a source Iterator leaf.
+The allocated DELEGATING record must retain its real Iterator INPUT, present raw
+CURRENT, position one and source-valid yield-from receipt, with no acquisition
+receipt. Existing Iterator callbacks run in their real producer frames. SEND
+captures the raw value after key callbacks, preserving reference mutation and
+by-value row COW; resume keeps the cache alive across next-callback errors.
+Temporary versus retained Generators preserve Iterator-before-finally and
+cache-before-sent cleanup, without invented Generator API trace frames. This
+follows `zend_generator_get_next_delegated_value`, `zend_user_it_get_current_data`
+and `zend_user_it_move_forward` at the pinned engine. The existing CURRENT is an
+ownership abstraction, not a literal copy of Zend's internal cache refcounts.
+Aggregate-acquired leaves, by-reference call targets, owning copied returns and
+active chains ending in detached roots remain required. The
+[Iterator-leaf review](../../coverage/semantics/generator-call-unpack-iterator-delegation-review.json)
+keeps the promoted prior Iterator control separate from the new evidence.
