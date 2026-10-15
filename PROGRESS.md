@@ -20,6 +20,9 @@ PROPREF, owning and RHS projections remain refusal checks only. Newly wrapped,
 missing/warning/invalid RHS, owning/constrained/missing targets, other producers,
 callbacks and lifecycle paths stay partial; OP12 remains paused.
 [Plain-CV compound ledger](coverage/semantics/addassign-cv-warning-review.json).
+The 394-module composition over ac8fc88f preserves all three private runtime
+modules and incoming parent paths. Independent pointwise review warrants no
+joined actor; source3 and state387 retain their recorded cuts without replay.
 
 Active same-object alias writes inside a sole virtual class SET now raise the
 receiver’s Must-not-write Error after reading a defined CV RHS. No second setter
