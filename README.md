@@ -603,6 +603,11 @@ conversion through deprecation handlers, then read the live quiet integer count.
 Success detaches a late target alias; supplied throw or a negative count preserves
 callback writes and aliases. Four exact originals and 526 focused SL premises pass
 in the [shift-assignment ledger](coverage/semantics/shiftassign-warning-review.json).
+With a quiet integer left value, `<<=`/`>>=` also retain both converted longs
+through a fractional-count deprecation. Success detaches a late alias; supplied
+throw or a captured negative count preserves it. A captured count of `64` keeps
+the original signed-right-shift result. Five exact originals and 674 focused SL
+premises pass in the [RHS shift ledger](coverage/semantics/shiftassign-right-warning-review.json).
 Explicit array-to-string casts now suspend through named warning handlers for
 a bounded plain-CV array input. The borrowed array adds no saved owner: replacing
 or removing its CV still yields fixed `Array`, while a supplied throw preserves
@@ -1077,6 +1082,11 @@ ignored-true Warning. Omitted/bool flags and strict calls retain raw arguments
 after their effects.
 [Four source agreements and 450 state premises](coverage/semantics/define-class-name-review.json)
 cover exact errors, caller traces and preserved state; wider flags/values remain partial.
+For the same non-NUL `::` names, weak int/string/non-NaN float flags reach that
+ValueError, while strict calls reject the raw flag first with parameter-3 TypeError.
+[Four source agreements and 620 state premises](coverage/semantics/define-class-scalar-flag-review.json)
+cover both priorities, raw negative-zero/request-string traces and unchanged state.
+NULL/NaN flags for these names and wider values remain partial.
 Fresh two-argument `define` also copies nonempty acyclic scalar-array trees,
 dereferencing source cells and rebuilding append history. Request-string leaves,
 nested reference snapshots and literal constraints pass
@@ -2604,10 +2614,14 @@ slots bypass it; actual true/false results preserve short circuiting and storage
 One original and one state/215 checks cover typed name reception, lexical scope
 and receiver cleanup; [magic isset review](coverage/semantics/magic-isset-review.json).
 Terminal `empty` now chains that inherited `__isset` with an untyped by-value
-`__get`: false skips the getter, while true tests its integer result. One original
-and state208 cover sequencing, saved receiver ownership and cleanup;
-[magic empty review](coverage/semantics/magic-empty-review.json). Other signatures,
-receivers, result families and coalesce magic combinations remain unsupported.
+`__get`: false skips the getter, while true tests its null/bool/int/byte-string
+result. Only empty bytes or exactly ASCII `0` make a string empty; NUL and `0` plus
+NUL do not. The original integer/call state208 remains historical; one further
+original and state155 cover primitive results and authenticated string metadata.
+[Magic empty review](coverage/semantics/magic-empty-review.json),
+[primitive result review](coverage/semantics/magic-empty-scalars-review.json).
+Other signatures, receivers, float/owning results and coalesce magic combinations
+remain unsupported.
 Hooked iteration, defaulted virtual hooks, other paired or virtual setters, wider trait
 setters, other explicit setter parameter forms, references, other inherited/trait
 and wider receiver, quiet or indirect-access families and wider `__unset` consumers remain required.
@@ -2725,13 +2739,20 @@ resume. Certified global `constant()` queries now return that same live stdClass
 through literal and retained selected calls, preserving shared writes and adding
 only the ordinary result owner. [The query review](coverage/semantics/global-constant-stdclass-query-review.json)
 keeps two source comparisons and 384 SL premises separate from producer evidence.
-Other internal/Throwable producers, arguments, direct embedded NEW/default values
-and wider query forms remain partial.
+Other internal/Throwable producers, arguments, defaults and wider query forms
+remain partial.
 Certified stdClass aliases now also pass through global constant array trees,
 including eval declarations and whole-tree donation. Array queries share the
 stored containers until ordinary COW, while embedded object identity and property
 writes remain shared. Three exact originals and 648 SL premises retain their
 [reviewed cut](coverage/semantics/global-constant-stdclass-array-review.json).
+Zero-argument stdClass NEW can now appear directly in nested global constant
+arrays, including selected full/shorthand ternary leaves and eval declarations.
+Earlier facts retain their source guards; birth receipts preserve distinct leaf
+identities, shared property writes and duplicate-candidate cleanup.
+The [nested-birth review](coverage/semantics/global-constant-stdclass-new-review.json)
+records four source agreements and 1,107 reached-state premises. Whole-array conditional
+transfer, coalescing and wider object producers remain partial.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is

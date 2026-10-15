@@ -1,6 +1,6 @@
 # Ordinary source user constants
 
-Ordinary `const` declarations and reads use the checked source compiler and runtime for the pinned PHP 8.5.10 CLI profile. Scalar/array, certified Closure/FCC, bounded user-instance NEW and direct-root zero-argument stdClass values are supported; the constant family and full core remain partial.
+Ordinary `const` declarations and reads use the checked source compiler and runtime for the pinned PHP 8.5.10 CLI profile. Scalar/array, certified Closure/FCC, bounded user-instance NEW and zero-argument stdClass values, including nested arrays and selected newborn ternary leaves, are supported; the constant family and full core remain partial.
 
 ## Declaration and lookup
 
@@ -189,8 +189,21 @@ bool calls have the same priority. The
 [class-name review](../../coverage/semantics/define-class-name-review.json) binds
 four exact originals and 450 public premises across seven genuine CONFIG fronts,
 including raw two/three-argument traces, real caller frames, state preservation,
-immutable/source/carrier refusals and budgets. Coerced/NULL/NaN flags, NUL-containing
-names, wider values and owning/packed forms remain separate.
+immutable/source/carrier refusals and budgets. Quiet scalar flags follow below;
+NULL/NaN flags, NUL-containing names, wider values and owning/packed forms remain separate.
+
+For these non-NUL `::` names, int/string/non-NaN float third flags use a separate
+reception route. Weak boolean parsing is quiet and leaves the raw argument intact;
+the body then raises the same name ValueError before any ignored-flag Warning.
+Strict calls reject the raw flag with parameter-3 TypeError before that body check,
+after all argument effects. Neither route resolves a class or accesses the table.
+The [scalar class-name review](../../coverage/semantics/define-class-scalar-flag-review.json)
+binds four exact originals and 620 public premises across nine genuine CONFIG
+fronts, including truthy int/string/float flags, raw negative zero and authenticated
+request `"0"`, selected named captures despite live mutations, actual API/caller
+traces, preserved stores/events/table/handler registry, refusals and budgets.
+The omitted/bool route is unchanged; NULL/NaN flags for these names, NUL names,
+coerced names, wider values and owning/packed forms remain partial.
 
 Fresh two-argument array definitions recursively dereference source cells into
 new DIRECT entries. Reinserting surviving keys rebuilds NEXT, positions and serial
@@ -487,8 +500,7 @@ so changing the next query from one constant to another selects the second objec
 The [query ledger](../../coverage/semantics/global-constant-stdclass-query-review.json)
 records two exact originals, reached state fronts, budget resumption and undriven
 certificate refusals. The unchanged Unsupported baseline remains zero credit;
-direct embedded stdClass NEW, generic objects and wider owning/coercing query forms
-remain partial.
+generic objects and wider owning/coercing query forms remain partial.
 
 Certified stdClass aliases may now be leaves in literal global constant array
 trees. Shape admission permits their nonowning class facts; existing captured
@@ -498,6 +510,15 @@ to the same completed-birth/live-allocation check as a direct stdClass query.
 Lookup shares the root and child arrays and adds only a root owner. Real nested
 COW creates another physical array-to-object edge; properties stay shared, while
 replacing a caller bucket leaves the installed DIRECT tree intact. Eval donor
-sources retain their own unit origins. Direct nested stdClass NEW, default
-caching and callable folding keep their separate producer/consumer boundaries.
+sources retain their own unit origins. Default caching and callable folding keep
+their separate consumer boundaries.
 [stdClass array-alias review](../../coverage/semantics/global-constant-stdclass-array-review.json).
+
+Zero-argument stdClass NEW also executes at nested array sites and selected full
+or shorthand ternary leaves. The initializer path stops at closure bodies;
+full context validity retains earlier facts and branch consistency. Immediate-arm
+transfer follows the newborn's SITE to its completed receipt, while value guards
+separately require the live allocation. Eval duplicate candidates create distinct
+leaves, then retire while nonowning birth history remains. Four exact sources and
+1,107 SL premises retain their [nested-birth cuts](../../coverage/semantics/global-constant-stdclass-new-review.json).
+Conditional aliases/whole-array transfer, coalescing, arguments and defaults remain partial.

@@ -318,7 +318,7 @@ def $call_task_valid(S, AUTO_GLOBAL_NEW ptbytes phpType7* pconstantcontext) = $g
 def $task_nodes(AUTO_GLOBAL_NEW preqbytes phpType7* pconstantcontext) = eps
 
 ;; Internal stdClass has no declaring class origin. Its separate, nonowning
-;; birth history authenticates only a direct zero-argument global initializer.
+;; birth history authenticates zero-argument global initializer sites.
 dec $global_std_source(pstate, porigin, porigin, nat) : bool
 dec $global_std_record(pconstantstdobject*, nat) : pconstantstdobject?
 dec $global_std_record_put(pconstantstdobject*, pconstantstdobject) : pconstantstdobject*
@@ -334,7 +334,7 @@ def $global_std_source(S, porigin_site, porigin_decl, n_prefix) = true
   -- if $declaration_entered(S.DECLARATIONS[0:n_prefix], n_unit)
   -- if $global_constant_scope(S, n_unit) = (true, porigin_scope?)
   -- if $global_constant_scope_published(S.DECLARATIONS[0:n_prefix], porigin_scope?)
-  -- if porigin_site = $constant_child(porigin_decl, [PCFIELD 1])
+  -- if $constant_callable_path(S, porigin_site, $constant_child(porigin_decl, [PCFIELD 1]))
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprNew name (SEQUENCE eps) metadata)
   -- if $global_constant_class_name(S, porigin_site, porigin_scope?, name) = (ptbytes)
   -- if $ptlc(ptbytes) = $ptascii("stdclass")
@@ -345,7 +345,7 @@ def $global_std_ready(S, ptbytes) = true
   -- if S.ORIGIN = (porigin_site)
   -- if $global_new_context(S, porigin_site) = ((porigin_decl, porigin_scope?))
   -- if S.CONSTCONTEXT = (pconstantcontext)
-  -- if pconstantcontext.FACTS = eps
+  -- if $constant_context_valid(S)
   -- if $new_source_name(S, porigin_site) = (ptbytes)
   -- if $global_std_source(S, porigin_site, porigin_decl, |S.DECLARATIONS|)
 def $global_std_ready(S, ptbytes) = false -- otherwise
@@ -435,3 +435,22 @@ def $global_constant_flow_at(S, porigin_site, porigin_decl, porigin_scope?, PVST
   -- if $global_std_record(S.CONSTANTSTDOBJECTS, n_object) = (pconstantstdobject)
   -- if pconstantstdobject.SITE = porigin_site /\ pconstantstdobject.DECL = porigin_decl
   -- if $global_std_completed(S, pconstantstdobject)
+
+;; A newborn leaf carries its actual birth site through each immediate ternary
+;; arm. Recursion retains the exact NEW receipt check rather than skipping nodes.
+def $global_constant_flow_at(S, porigin_site, porigin_decl, porigin_scope?, PVSTDCLASS n_object porigin_birth, puserconstant_prior*, pconstantfact_read*, porigin_seen*) = $global_constant_flow(S, porigin_target, porigin_decl, porigin_scope?, PVSTDCLASS n_object porigin_birth, puserconstant_prior*, pconstantfact_read*, porigin_seen*)
+  -- if $compiled_redirect(S, porigin_site) = eps
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprTernary expression_cond phpType5 expression_false metadata)
+  -- if phpType5 =/= ABSENT
+  -- if porigin_target = $constant_child(porigin_site, [PCFIELD 1])
+  -- if $constant_callable_path(S, porigin_birth, porigin_target)
+def $global_constant_flow_at(S, porigin_site, porigin_decl, porigin_scope?, PVSTDCLASS n_object porigin_birth, puserconstant_prior*, pconstantfact_read*, porigin_seen*) = $global_constant_flow(S, porigin_target, porigin_decl, porigin_scope?, PVSTDCLASS n_object porigin_birth, puserconstant_prior*, pconstantfact_read*, porigin_seen*)
+  -- if $compiled_redirect(S, porigin_site) = eps
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprTernary expression_cond phpType5 expression_false metadata)
+  -- if porigin_target = $constant_child(porigin_site, [PCFIELD 2])
+  -- if $constant_callable_path(S, porigin_birth, porigin_target)
+def $global_constant_flow_at(S, porigin_site, porigin_decl, porigin_scope?, PVSTDCLASS n_object porigin_birth, puserconstant_prior*, pconstantfact_read*, porigin_seen*) = $global_constant_flow(S, porigin_target, porigin_decl, porigin_scope?, PVSTDCLASS n_object porigin_birth, puserconstant_prior*, pconstantfact_read*, porigin_seen*)
+  -- if $compiled_redirect(S, porigin_site) = eps
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprTernary expression_cond ABSENT expression_false metadata)
+  -- if porigin_target = $constant_child(porigin_site, [PCFIELD 0])
+  -- if $constant_callable_path(S, porigin_birth, porigin_target)

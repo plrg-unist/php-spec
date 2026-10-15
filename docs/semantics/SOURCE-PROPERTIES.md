@@ -444,16 +444,23 @@ Terminal `empty` of that external CV/literal private property now composes the
 inherited bool `__isset` with a public nonstatic nonref `__get($name)` having no
 parameter or return type, declared on the same parentless ordinary owner. False
 skips the getter; true calls it with the original name and captured receiver. One
-saved RESULT owns the receiver across both borrowed calls. Integer getter results
-are inverted by zero/nonzero truth; other result families stop explicitly. Parent
+saved RESULT owns the receiver across both borrowed calls. Null/bool/int and byte
+strings use PHP truth; only empty bytes or exactly ASCII `0` make a string empty.
+Float/NaN and owning result families stop explicitly. Parent
 lexical scope and Child called scope remain distinct, and initialized public or
 typed-INITIAL slots bypass both callbacks. An active getter can still read its own
-initialized private slot ordinarily. One normal original and state208 =138 reached
+initialized private slot ordinarily. The original integer slice and state208 =138 reached
 +70 derived cover those seams, name/source/task/frame refusals, rebound caller CV,
 budget resume and normal receiver release. Both abrupt receiver releases are
 derived state checks, not throwing-source agreements. Recursive magic, other
 signatures/results and wider quiet receivers/names remain partial.
 [Magic empty review](../../coverage/semantics/magic-empty-review.json).
+One further original covers nine null/bool/literal-string returns, including NUL
+and `0` plus NUL. State155 =132 reached +23 derived checks the actual INTERNED
+payloads, saved receiver owner release, pure conversion and late budget resume. REQUEST
+carrier authentication and stale/mismatched/invalid-byte refusals are constructed
+controls; they add no computed-producer source claim or heap ownership machinery.
+[Primitive result review](../../coverage/semantics/magic-empty-scalars-review.json).
 
 Constructor promotion declares a property from its original parameter flags and
 source occurrence. A parameter default does not initialize the property, and

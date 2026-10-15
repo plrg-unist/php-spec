@@ -17,6 +17,14 @@ fresh empty `stdClass`; casting an existing object to object preserves it.
 The paused ownership check validates the live object graph without requiring
 creation history for this intrinsic object.
 
+Global constant initializers additionally retain nonowning birth receipts for
+zero-argument stdClass NEW, including nested array and selected ternary leaves.
+Actual source paths and earlier facts guard births; query results share the live
+objects, while rejected duplicate candidates retire and their nonowning birth
+history remains.
+The [nested-birth review](../../coverage/semantics/global-constant-stdclass-new-review.json)
+keeps this bounded producer contract separate from ordinary stdClass creation.
+
 Nonempty array and scalar casts now populate genuine property storage, with
 shared-table COW, clone, array round trips and callback-sensitive NaN operands.
 [The cast contract](OBJECT-CASTS.md) records the raw undefined and key-notice

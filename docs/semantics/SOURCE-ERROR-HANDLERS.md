@@ -125,7 +125,7 @@ explicitly `Unsupported`, rather than running a callback after a consumer.
 [Missing-key destructuring409](SOURCE-DESTRUCTURING-WARNINGS.md) retains a
 CV/literal array snapshot through real handlers, supplies null after insertion,
 then fetches later items with shared embedded references intact. Throws cancel
-the pending store and later items. Flat CV targets and warning-free compiled
+the pending store and later items. CV leaves and warning-free compiled
 keys bound this producer; wider destructuring diagnostics remain required.
 Literal sources retain pool owners or the sole runtime temporary, preserve old
 embedded reference cells after CV rebinding, and cancel known-result delivery

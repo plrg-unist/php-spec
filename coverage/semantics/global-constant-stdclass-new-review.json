@@ -1,0 +1,159 @@
+{
+  "status": "independently reviewed bounded implementation and focused validation",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; sole project-local PHP/profile, checked originals and ordered full398 SL modules",
+  "base": "ca70c7aafd8c181ff23b55f10394e102d251a51b",
+  "implementation_revision": "e715712e63ed8691174b5a737ab3c82c8bc9092d",
+  "module_count": 398,
+  "runtime": {
+    "file": "spec/semantics/283-global-constant-objects.watsup",
+    "sha256": "35a5001927486e2055c026c42fcb7d65e8bbfabcd64af320e1384f3884a5af00",
+    "delta": "Use existing closure-body-stopping initializer path in stdClass source guard; use full constant_context_valid instead of empty facts; append three PVSTDCLASS-only immediate ternary-arm flow heads. Generic271, value/query400, allocation, completion, prefix/scope and zero-argument/class selectors are unchanged."
+  },
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_ast.c::zend_ast_evaluate_ex ZEND_AST_NEW and ZEND_AST_ARRAY create distinct reached objects and insert the actual values; ZEND_AST_CONDITIONAL selects child1/2 or transfers child0 for truthy shorthand.",
+    "vendor/php-src/Zend/zend_constants.c::zend_register_constant warns on a duplicate before destroying the candidate value. Existing array COW and physical object edges preserve shared leaf identity."
+  ],
+  "accepted": {
+    "source_agreements": 4,
+    "author_sources": 2,
+    "peer_full_sources": 1,
+    "peer_shorthand_sources": 1,
+    "author_literal_premises": 244,
+    "author_eval_premises": 352,
+    "independent_full_premises": 307,
+    "independent_shorthand_premises": 204,
+    "total_public_premises": 1107,
+    "driven_forged_states": 0,
+    "author_zero_budget_restoration_checks": 1
+  },
+  "cuts": {
+    "author_source2": {
+      "revision": "66e19b4dca9366da651bfd037124d8498b66b6e4",
+      "runtime_diff_sha256": "ceece428dda8bb15ab5d1fba3b8045f1410555f0d20e2cc5655c3c4d3e2a5f3b",
+      "module283_sha256": "3ec4f143e88e2ef62045629c75a263683a0e688bbfd8779e65dd4a34bc2371b0"
+    },
+    "author_literal244": {
+      "revision": "95d1549b535ce8b0d72067bea3c2317bdddadc28",
+      "generated_protocol_sha256": "4a1b3eafe3e29a5d6c7b84065df846bc56ba7d0d3948fcda07de99d3d9e63b8b"
+    },
+    "author_eval352": {
+      "revision": "95d1549b535ce8b0d72067bea3c2317bdddadc28",
+      "runtime_diff_sha256": "7b9cc0ffa994f6eb9581fdb2033bd115563b7dbe4645e86623a2c507e88f16aa"
+    },
+    "independent": "e715712e63ed8691174b5a737ab3c82c8bc9092d"
+  },
+  "behavior": [
+    "Nested literal and eval initializer sites create distinct stdClass leaves after authentic NAN/earlier-object facts. Real birth/completion transitions append exact unit/SITE/DECL/PREFIX receipts without adding owners; both original and duplicate-candidate units are observed.",
+    "Full true/false and shorthand condition/fallback paths transfer only newborn PVSTDCLASS leaves by recursively following immediate source arms to their exact completed birth receipt. Flow authenticates source/completion; separate value/tree guards require the same live allocation. Header validity alone does not reconstruct historical branch execution.",
+    "Actual selected births establish only the reached certificates (two births from four full-ternary sites). Pure unselected-arm facts can satisfy facts_valid yet fail branch/context/readiness; incomplete/wrong-SITE flows refuse. No projected malformed state is driven.",
+    "Genuine CONFIG deliveries retain the installed root, add one root owner and preserve object edges/allocation. Real nested COW shares mutable leaves; caller release retires copied containers. Eval duplicate Warning observes/mutates installed leaves and retires the new candidate arrays/objects while nonowning birth history remains."
+  ],
+  "compatibility": "Author source2 and literal244 precede the added ternary heads. Only283 differs from source2 runtime inputs; their initializer dataflow has no ternary origin, so those heads cannot apply. Current literal assertion generation reproduces the original244 assertions/protocol bytes exactly. The only V57 expectation change makes its pure dirty-fact control genuinely outside the initializer; no V57 campaign is replayed or renewed. The budget control proves zero-step pause/restoration identity followed by the ordinary tested birth, not a separate resume execution.",
+  "preserved_outcomes": {
+    "unchanged_baseline": "Genuine Unsupported global constant internal or Throwable initializer after B|, CLI1/empty stderr; its assertion passes with zero agreement.",
+    "initial_peer": "Native full-ternary tuple passes, but original two-guard model genuinely stops at Unsupported global constant object transfer after B|. It remains0; the three narrow flow heads correct this counterexample.",
+    "initial_state": "Original check packet is overall fail: literal row passes244, eval row fails0 by equating separately compiled unit1/unit2 interned empty arrays. Retry changes only candidate-empty binding/emptiness/immutability and runs eval alone.",
+    "relocated_retry": "Fresh native-seeded model PASS uses a copied filename, so retains0. Exact-path recorder then uses original native main.php and original cwd, checks unchanged bytes/profile and raw tuple, and supplies the accepted peer source1. No native or state replay.",
+    "other": "Native/preparation/syntax add no agreement; no engine divergence, rebuild or portability claim."
+  },
+  "remaining": "Zero-argument global stdClass newborn leaves in literal arrays and full/shorthand ternary leaf paths only. Arguments, defaults/cacheability/folding, conditional aliases or whole-array transfer, coalescing, wider internal/Throwable producers, generic object query authority and owning/packed forms remain partial; full core remains open.",
+  "artifacts": {
+    "author": {
+      "root": ".tools/dynamic-stdclass-new-native-61",
+      "sha256": {
+        "native-report.json": "0de44f7323663dd240882babe4cefde754a72e67044448000ab45c8612c68cc6",
+        "baseline-report.json": "41b4e53f5615ea06f29aca0c22ab519d42c642970cbe426494acdabc71c5554e",
+        "model-report.json": "9b567b9900995322b76d6b87c45f5c8e58a6372c6e290450ca8639b69ec85380"
+      }
+    },
+    "author_original_state": {
+      "root": ".tools/dynamic-stdclass-new-state-61",
+      "sha256": {
+        "fixtures-report.json": "b785e6cf10c0506ddb86427f09ef8d9efcf8e30ff91614ff4ea16390c6a35431",
+        "check-report.json": "e2ac447cb63ceaf7d14c4132ee12cb1df768f16a23886c9a978423525c454810"
+      }
+    },
+    "author_eval_retry": {
+      "root": ".tools/dynamic-stdclass-new-eval-state-62",
+      "sha256": {
+        "fixtures-report.json": "95979a36b25a0af77830ad732a0fa68a21c4823e969e29cc5cc2220916a3b9a4",
+        "check-report.json": "18e961948f4baffc71179d4363d2a534ae0b6384b271a35079372040685a6137"
+      }
+    },
+    "peer_original": {
+      "root": ".tools/dynamic-stdclass-new-peer-61",
+      "sha256": {
+        "native-report.json": "129fed667dd5e62b5f447bb5005ba62f6c4374b7f3d3d91004ab52836a93a8b9",
+        "model-report.json": "0476c47505aa652a120f1213fee7b65526fde00ff40ef5930268d7fe307fe7d7"
+      }
+    },
+    "relocated_peer_zero_credit": {
+      "root": ".tools/dynamic-stdclass-new-peer-renew-61",
+      "sha256": {
+        "native-seed.json": "def37eb5f9314ff45459452d5d7c72ded93ce87c49806d454f48aee97eea2b94",
+        "model-selected-branches-after-prior-facts-report.json": "1c7056a4ba3cb2d4ff97f8cebd50a8a23ecddbb91ca88c2a526cb51f7e5ba794"
+      }
+    },
+    "peer_exact_path": {
+      "root": ".tools/dynamic-stdclass-new-peer-exact-61",
+      "sha256": {
+        "exact-model.py": "ed1e10722ae314cfbdee84b6d00579b346d14657624af1b2daf187804cdd958d",
+        "model-report.json": "07b2381d2f40499c16b97fea9bd5d99f097e6c146feb8ba26ed58d9dd757f2d3"
+      }
+    },
+    "peer_full_state": {
+      "root": ".tools/dynamic-stdclass-new-peer-state-61",
+      "sha256": {
+        "fixtures-report.json": "64f56ea03d5067caca829d14c80a8d01f0d3d1a3134e612d6eb9fa58d29c2de3",
+        "check-report.json": "6b14b62bf2a841b415b7e37747d52dfd93ff5ce280279f117e1502d5ddcd38f9"
+      }
+    },
+    "peer_shorthand": {
+      "root": ".tools/dynamic-stdclass-new-shorthand-peer-61",
+      "sha256": {
+        "native-report.json": "7cb8ff9171621c855f16c8502e866b450b4b9371e28f9b18f81051544f7b527f",
+        "model-report.json": "9cf4db09394f0558b4373e5fc48492704924e08ad7f32146fe807af5106db3cf"
+      }
+    },
+    "peer_shorthand_state": {
+      "root": ".tools/dynamic-stdclass-new-shorthand-peer-state-61",
+      "sha256": {
+        "fixtures-report.json": "3f3b25ce6b36b9041ceb483b4163f0526da8bf82b1358c8433bf1b7c09911a68",
+        "check-report.json": "877e7547c4bec9ed7d9b56b7a5f7104704599ec68d847adf3197d2a5d1558698"
+      }
+    }
+  },
+  "recovery": "Source wrappers reuse global_constant_sources.py native/model CLI (native process15; model CLI45/process60). Reports retain exact argv/cwd, binary/profile and source hashes. The exact peer model-only recorder is retained under peer_exact_path and must run from the original private worktree path. Author state uses global_constant_stdclass_new_protocol.py --case eval-duplicate-nested-births --phase fixtures/check --sources ORIGINALS --output freshOUT for the affected retry; original literal244 is retained without replay. Peer protocol requires --case selected-branches-after-prior-facts or shorthand-condition-and-fallback-births with that case native root. Fixtureshost120; focused checks host150/perSL90 (original author2 host240). All accepted proof responses are lowercase true plus LF/empty stderr; all actor groups reaped. After cleanup, recreate the original private worktree path at the recorded revision and provision its pinned executables before replay; raw evidence remains outside it.",
+  "review": {
+    "reviewer": "/root/dynamic_review_59",
+    "decision": "cleared",
+    "scope": "Birth/source/context authority, selected newborn ternary dataflow, independent native counterexample and correction, precise liveness separation, actual ownership/COW/duplicate release and preserved failures."
+  },
+  "integration": {
+    "parent": "c9fc1c86474f3a9b13b84f1ee4798c993f161791",
+    "module_count": 399,
+    "runtime_delta": "Only the reviewed283 initializer path/full-context guard changes and three PVSTDCLASS ternary heads. Parent283 equals the original base bytes; current283 equals tested2205 exactly, so reversing this sole delta reproduces the parent file byte-for-byte.",
+    "parent283_sha256": "8e4a9045dbdd3782122eb06f7c9595b65668f62852edcb28ca5bded48e6381ee",
+    "composed283_sha256": "35a5001927486e2055c026c42fcb7d65e8bbfabcd64af320e1384f3884a5af00",
+    "incoming_files_preserved": {
+      "spec/semantics/156-finally-runtime.watsup": "ae07ec59a12ac61af24d1064ce1edd739f674cc0ba7abf268b4982c21ed3676e",
+      "spec/semantics/280-generators.watsup": "eb5b17611339404ace21298b436c4325f90abeef2bcc7db547e9581a9847a084",
+      "spec/semantics/289-generator-delegation.watsup": "139450a2a713564c0fcbb9a7fcda8905f66ea68bd03cc6ed677919523e6c0b19",
+      "spec/semantics/30-storage.watsup": "0f78d5ed203781ceabb5a6691df4dcc892a5162144f08b73c74ffe43eca53501",
+      "spec/semantics/303-generator-force-close.watsup": "dac40ba7dd4adb8cf160fbe748b8d0d5addd59da74df88414f1548d8c9bb8aa0",
+      "spec/semantics/380-magic-property-get.watsup": "78e20f96a795500ba9e79cbe92d8394df48dbe649153628d2f05b0cc077fc31d",
+      "spec/semantics/400-dynamic-constants.watsup": "dc29cb47103f45019359d356564421beb823810823924390ecaed20c3795df18",
+      "spec/semantics/402-object-numeric-comparisons.watsup": "270fb955acb84ec640e244a9b9667d26fe49700348c5e8cccdda9fa7a1388292",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "6e5d6b7840d158faeef2fecf3f602823bfc270f7dd4ccd56e95bba9630d759c6",
+      "spec/semantics/405-call-generator-unpack.watsup": "485b36e09935609f06a6431480c88463cb91dac643fecc7119ebecacf95c8a81",
+      "spec/semantics/407-magic-property-isset.watsup": "95416cd29a90178c04b51e05ef5d22fda7b76b2e2276611d79f0475d866d11b1",
+      "spec/semantics/408-magic-property-empty.watsup": "3699d75e7b08eb4d40401b0b6958266fef77df0773373486b79ef2ccba3c68a6",
+      "spec/semantics/409-list-missing-warnings.watsup": "b1a6418fedcefe030fe4913089ec8572cb5a7520dfc03d55f1d9d36436857617",
+      "spec/semantics/55-compound-assignment.watsup": "e0f10d247c89219c21692fe4ce22bb9a561cc0be67ba3a30d47ee825d2aa3406",
+      "spec/semantics/modules.json": "2e38df4b97a41f654a8c3f01ffb0c078c337ed17d1ce8816ff7429a23b031761"
+    },
+    "reviewer": "/root/dynamic_review_59",
+    "method": "Independent actual-parent selector review: Source36 shared400 requires DEFINE/class-qualified names; V61 uses CONSTANT queries. OP26/27 require MOD/SHIFT COMPOUND_APPLY; Iterator16 requires GENERATOR state; M77/78 requires typed assigned return/ref cursors. V61 has none, including its untyped true-return Warning handler. Incoming magic-empty INSTANCE/private/empty, weak numeric object kinds and list409 LIST_FETCH selectors are absent from STDINSTANCE property writes, ordinary DIM/COW and arrayisset. A3 mixed list reference capture remains LIST_FETCH gated. Incoming283 is unchanged and every incoming runtime byte/module entry is preserved.",
+    "evidence_credit": "Source4/state1107 retain their exact private398-module cuts and recorded failures/relocated observation0. Composition adds no joined actor, accepted source/state/native replay, V57 renewal, rebuild or agreement credit. Tested branch semantics/dynamic-stdclass-nested-new-61 retains2205 and its original tested ancestors; this current branch composes pointwise."
+  }
+}

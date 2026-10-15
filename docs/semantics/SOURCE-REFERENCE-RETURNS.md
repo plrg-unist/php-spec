@@ -838,3 +838,21 @@ collection or independent pending-root COW causality is claimed. The first
 fixture's compiler binding error has zero state credit. This covers only a
 live, single direct-integer array at key 0 from the no-argument assignment
 shape; see the [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M79 admits an ordinary object from a named no-argument call in a used
+`&f():?C` assigned return. The pending old C instance and global `$x`
+initially share the object; the finalizer sets `$x` to NULL. The selected
+`$y` return then consumes the old carrier and cancels its first Notice,
+running C's `__destruct` once between the two `I` markers. After the
+selected reference's recheck fails and is caught, the nonowning cursor
+restores detached NULL and one new old-line VALUE Notice. The direct-call
+control observes `F:0`, while the assignment observes `F:1`; both exact
+original sources agree with PHP at private `02ffe678`/399. One assigned
+source-reached fixture validates the saved `f` frame's destructor-result,
+release, operation and cursor prefix inside `D`, then proves modeled old
+object retirement after release, raw restoration, detached caller aliases,
+saved-cursor line refusal and budget resumption. Its first stage-search
+failure has zero state credit. This covers one normal destructor and the
+nullable, no-argument assignment shape; it does not establish physical
+Zend collection or throwing/reentrant destructor behavior. See the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).

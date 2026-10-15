@@ -1,7 +1,7 @@
 {
   "version": 1,
   "milestone": "A4 one-level by-value nested destructuring missing-key handlers",
-  "status": "independently reviewed private milestone; actual-parent composition pending",
+  "status": "independently reviewed milestone; pointwise399-module composition overdc3c1fb9e",
   "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle and tests/semantics/profile.json",
   "base": "c9fc1c86474f3a9b13b84f1ee4798c993f161791",
   "scope": "One nested by-value pattern layer from a direct-CV RHS, with direct-CV leaves and quiet implicit/compiled constant keys; outer and inner missing fetches are admitted.",
@@ -19,8 +19,8 @@
     "The root context requires a direct-CV assignment with one by-value child layer. A child context authenticates its exact parent3 path and selected outer item; its initial line comes from that outer fetch. Prior nested targets contribute their final compiler location. Deeper/reference/literal-root nesting stays outside this admission.",
     "An outer missing fetch still passes NULL to the child after callback insertion/rebinding, overwriting callback writes to child targets in order without extra warnings. An inner missing fetch preserves both captured tables, shared-cell reads, later outer items and the captured RHS assignment result.",
     "Source/key/index/tail/line and live array checks authenticate the saved task. Captured child identity is a source-compatible runtime fact; the guard does not reread the current RHS CV or reconstruct an old parent lookup. Real callback frames own the inner task and outer continuation separately.",
-    "A supplied handler throw preserves its identity/Previous, earlier target stores, callback effects and the caller destination. After the inner emitter disappears the outer task still owns outer1→inner1→cell1; later caller TRY_END has retired all otherwise unowned nodes.",
-    "The existing flat source/plan clauses are unchanged; the new preceding-nested traversal is unreachable in their accepted flat shapes. No A1–A3 check was replayed or renewed, and no task, module, ownership projection or generic read/write/compiler helper changed."
+    "A supplied handler throw preserves its identity/Previous, earlier target stores, callback effects and the caller destination. After the inner emitter disappears the outer task still owns outer1\u2192inner1\u2192cell1; later caller TRY_END has retired all otherwise unowned nodes.",
+    "The existing flat source/plan clauses are unchanged; the new preceding-nested traversal is unreachable in their accepted flat shapes. No A1\u2013A3 check was replayed or renewed, and no task, module, ownership projection or generic read/write/compiler helper changed."
   ],
   "accepted": {
     "source": {
@@ -29,8 +29,11 @@
       "revision": "a5628799f202bb79026b617dd677cf2ba87b5ede",
       "agreements": 5,
       "cases": [
-        "list-nested-missing-inner-snapshot", "list-nested-missing-inner-keyed", "list-nested-missing-inner-throw",
-        "list-nested-review-outer-null-child", "list-nested-review-earlier-child-line"
+        "list-nested-missing-inner-snapshot",
+        "list-nested-missing-inner-keyed",
+        "list-nested-missing-inner-throw",
+        "list-nested-review-outer-null-child",
+        "list-nested-review-earlier-child-line"
       ],
       "native_reuse": "Fresh A4 originals retain native argv/source paths/streams from baseline/native preparations; model-only comparisons use the same original paths, with no oracle replay."
     },
@@ -39,16 +42,40 @@
         "report": ".tools/list-nested-author-state-04/report.json",
         "sha256": "1d9b2fece2604b4c58e2c8b7759b586a0c776614a96f3eaf497874724f3eb9cc",
         "revision": "31f2b999c5b613d22b7a2a9eb42ba6371ffafbe4",
-        "fronts": 3, "conditions": [126, 124, 120], "raw_steps": [3, 3, 1], "boolean_premises": 363
+        "fronts": 3,
+        "conditions": [
+          126,
+          124,
+          120
+        ],
+        "raw_steps": [
+          3,
+          3,
+          1
+        ],
+        "boolean_premises": 363
       },
       {
         "report": ".tools/list-nested-review-state-04/report.json",
         "sha256": "e49716ae02178a3eeafc98a29b286420776b0f55dabef6a3954cd423d9506062",
         "revision": "31f2b999c5b613d22b7a2a9eb42ba6371ffafbe4",
-        "fronts": 2, "conditions": [133, 134], "raw_steps": [4, 3], "boolean_premises": 260
+        "fronts": 2,
+        "conditions": [
+          133,
+          134
+        ],
+        "raw_steps": [
+          4,
+          3
+        ],
+        "boolean_premises": 260
       }
     ],
-    "source_agreements": 5, "state_fronts": 5, "total_conditions": 637, "boolean_premises": 623, "raw_steps": 14,
+    "source_agreements": 5,
+    "state_fronts": 5,
+    "total_conditions": 637,
+    "boolean_premises": 623,
+    "raw_steps": 14,
     "credit_note": "Conditions include setup and pure refusal premises, not separate PHP programs. Every recorded group_after is empty. Source/state checks retain their private cuts; later documentation/composition adds no agreement credit. No A4 fixture failed."
   },
   "preserved_zero_credit": [
@@ -73,14 +100,23 @@
   ],
   "raw_evidence": {
     "archive": "/home/user/workspace/php-spec/.tools/list-nested-missing-warning-04-raw.tar.gz",
-    "bytes": 291701, "members": 152,
+    "bytes": 291701,
+    "members": 152,
     "sha256": "0ed8c1fd5d0d37a55681afee05e50c557ed9b3777967302bd261af980ed4621f",
     "recovery": "Archive retains six original relative .tools report/fixture/process/source directories and list-nested-reuse-sources-04.py. Extract beneath a checkout of the recorded cut; absolute argv/cwd are historical provenance. No archive is a build dependency."
   },
   "actual_parent_review": {
-    "reviewed_parent": "dc3c1fb9ee7c85d022d9858810a6b52829d937e5",
     "seams": "Incoming30/55/404 add fractional-count shift-assignment warning tasks/handlers,156 assigned nullable-object return/destructor replay,283 nested stdClass constant birth paths,400 class-name scalar-flag errors and408 primitive magic-empty truth. These disjoint guards do not change409,33,39,62,63,64 or301 and do not admit nested list targets into any incoming producer.",
-    "joined_actor": "No concrete semantic interaction found; actual-parent pointwise composition and exact FF review remain pending and add no replay credit."
+    "joined_actor": "No concrete semantic interaction found; pointwise composition and exact FF review add no replay credit.",
+    "parent": "dc3c1fb9ee7c85d022d9858810a6b52829d937e5",
+    "composed_modules": 399,
+    "pointwise_checks": [
+      "Only409 differs from actual parent; its bytes and all6 new nested test files preserve the accepted private leaf.",
+      "Every other incoming runtime file and the399-entry module list remain byte-identical, including shift, return, constant/define and property-empty changes.",
+      "Only4 partial inventory rows append nested tests/evidence/review; implementation lists and every other row remain unchanged.",
+      "Source5/state637 retain their original cuts; no joined actor or renewed agreement credit."
+    ],
+    "runtime_diff_sha256": "47922fb70fb066e16a706befa907098dc2a58fe778976162f74c638d415dc747"
   },
   "remaining": [
     "Deeper or reference nesting, nested literal/call/wider RHS producers and non-CV target leaves.",
