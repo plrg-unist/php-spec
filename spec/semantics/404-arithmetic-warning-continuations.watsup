@@ -852,3 +852,95 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 2
   -- if perrorcall.MESSAGE = $ptascii("Array to string conversion")
   -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE z
+
+;; safe_pow receives both C numbers before the deprecation can invoke user code.
+dec $power_warning_number(pvalue) : pnumber?
+def $power_warning_number(PINT i) = (NINT i)
+  -- if $(i >= -9223372036854775808 /\ i <= 9223372036854775807)
+def $power_warning_number(PFLOAT n) = (NFLOAT n) -- if $(n < 18446744073709551616)
+def $power_warning_number(pvalue) = eps -- otherwise
+
+dec $power_warning_source(pstate, pintegeroperation) : bool
+def $power_warning_source(S, pintegeroperation) = true
+  -- if S.ORIGIN = (pintegeroperation.SITE)
+  -- if pintegeroperation.OP = POWER
+  -- if ~pintegeroperation.SWAPPED
+  -- if $origin_node(S.SOURCES, pintegeroperation.SITE) = (NExprBinaryOpPow expression_left expression_right metadata)
+  -- if pintegeroperation.LEFT = VARIABLE ptbytes_left z_left
+  -- if pintegeroperation.RIGHT = VARIABLE ptbytes_right z_right
+  -- if ptbytes_left =/= ptbytes_right
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CV ptbytes_left
+  -- if pintegeroperation.RIGHTPOINTER = INTEGER_CV ptbytes_right
+  -- if $integer_operand_source(S, pintegeroperation.SITE, [PCFIELD 0], pintegeroperation.LEFT)
+  -- if $integer_operand_source(S, pintegeroperation.SITE, [PCFIELD 1], pintegeroperation.RIGHT)
+  -- if $code_expression_at_source(S, pintegeroperation.SITE, [PCFIELD 1]) = (pintegeroperation.LINE)
+def $power_warning_source(S, pintegeroperation) = false -- otherwise
+
+dec $power_warning_snapshot(pstate, pintegeroperation, pnumber, pnumber) : bool
+def $power_warning_snapshot(S, pintegeroperation, pnumber_left, pnumber_right) = true
+  -- if $arithmetic_add_selected(S, pintegeroperation)
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CV ptbytes_left
+  -- if pintegeroperation.RIGHTPOINTER = INTEGER_CV ptbytes_right
+  -- if ~$foreach_released_name(S, ptbytes_left) /\ ~$foreach_released_name(S, ptbytes_right)
+  -- if $lookup(S.ENV, ptbytes_left) = (n_left)
+  -- if $lookup(S.ENV, ptbytes_right) = (n_right)
+  -- if (HCELL n_left) <- S.ALLOCATIONS /\ (HCELL n_right) <- S.ALLOCATIONS
+  -- if $integer_pointer_value(S, pintegeroperation.LEFTPOINTER) = (pvalue_left)
+  -- if $integer_pointer_value(S, pintegeroperation.RIGHTPOINTER) = (pvalue_right)
+  -- if $power_warning_number(pvalue_left) = (pnumber_left)
+  -- if $power_warning_number(pvalue_right) = (pnumber_right)
+def $power_warning_snapshot(S, pintegeroperation, pnumber_left, pnumber_right) = false -- otherwise
+
+dec $power_warning_valid(pstate, pintegeroperation, pnumber, pnumber, nat) : bool
+def $power_warning_valid(S, pintegeroperation, pnumber_left, pnumber_right, n) = true
+  -- if $power_warning_source(S, pintegeroperation)
+  -- if $power_warning_number($number_value(pnumber_left)) = (pnumber_left)
+  -- if $power_warning_number($number_value(pnumber_right)) = (pnumber_right)
+  -- if (pnumber_result, true) = $num_pow(pnumber_left, pnumber_right)
+  -- if $(n <= 1)
+  -- if n = 1 \/ $power_warning_snapshot(S, pintegeroperation, pnumber_left, pnumber_right)
+def $power_warning_valid(S, pintegeroperation, pnumber_left, pnumber_right, n) = false -- otherwise
+
+def $power_warning_plan(S) = ((pintegeroperation, pnumber_left, pnumber_right))
+  -- if S.TODO = (BINARY_RIGHT POWER poperand_left z) :: ptask_tail*
+  -- if $error_handler_eligible(S, 8192) /\ $arithmetic_add_named(S)
+  -- if ~$gc_retired_binary(S, POWER, poperand_left)
+  -- if S.ORIGIN = (porigin)
+  -- if poperand_right = S.RESULT
+  -- if poperand_left = VARIABLE ptbytes_left z_left
+  -- if poperand_right = VARIABLE ptbytes_right z_right
+  -- if $integer_pointer_value(S, INTEGER_CV ptbytes_left) = (pvalue_left)
+  -- if $integer_pointer_value(S, INTEGER_CV ptbytes_right) = (pvalue_right)
+  -- if $power_warning_number(pvalue_left) = (pnumber_left)
+  -- if $power_warning_number(pvalue_right) = (pnumber_right)
+  -- if pintegeroperation = {SITE porigin, OP POWER, LINE z, SWAPPED false, LEFT poperand_left, RIGHT poperand_right, LEFTPOINTER INTEGER_CV ptbytes_left, RIGHTPOINTER INTEGER_CV ptbytes_right}
+  -- if $power_warning_valid(S, pintegeroperation, pnumber_left, pnumber_right, 0)
+def $power_warning_plan(S) = eps -- otherwise
+
+rule PhpStep/power-warning-begin: S ~> S[.TODO = (POWER_WARNING pintegeroperation pnumber_left pnumber_right 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $power_warning_plan(S) = ((pintegeroperation, pnumber_left, pnumber_right))
+rule PhpStep/power-warning-dispatch: S ~> $error_dispatch(S, 8192, $ptascii("Power of base 0 and negative exponent is deprecated"), pintegeroperation.LINE, DIAGNOSTIC "Deprecated" $ptascii("Power of base 0 and negative exponent is deprecated") pintegeroperation.LINE, POWER_WARNING pintegeroperation pnumber_left pnumber_right 1)
+  -- if S.TODO = (POWER_WARNING pintegeroperation pnumber_left pnumber_right 0) :: ptask_tail*
+  -- if $power_warning_valid(S, pintegeroperation, pnumber_left, pnumber_right, 0)
+  -- if ~$error_handler_eligible(S, 8192) \/ $arithmetic_add_named(S)
+rule PhpStep/power-warning-owning-handler: S ~> S[.COMPLETION = UNSUPPORTED "power owning deprecation callback"]
+  -- if S.TODO = (POWER_WARNING pintegeroperation pnumber_left pnumber_right 0) :: ptask_tail*
+  -- if $power_warning_valid(S, pintegeroperation, pnumber_left, pnumber_right, 0)
+  -- if $error_handler_eligible(S, 8192) /\ ~$arithmetic_add_named(S)
+rule PhpStep/power-warning-resume: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN $number_value(pnumber_result)]
+  -- if S.TODO = (POWER_WARNING pintegeroperation pnumber_left pnumber_right 1) :: ptask_tail*
+  -- if $power_warning_valid(S, pintegeroperation, pnumber_left, pnumber_right, 1)
+  -- if (pnumber_result, true) = $num_pow(pnumber_left, pnumber_right)
+
+def $task_nodes(POWER_WARNING pintegeroperation pnumber_left pnumber_right n) = eps
+def $call_task_valid(S, POWER_WARNING pintegeroperation pnumber_left pnumber_right n) = $power_warning_valid(S, pintegeroperation, pnumber_left, pnumber_right, n)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = POWER_WARNING pintegeroperation pnumber_left pnumber_right 1
+  -- if $power_warning_valid(S, pintegeroperation, pnumber_left, pnumber_right, 1)
+  -- if perrorcall.TARGET =/= eps \/ $power_warning_valid(S, pintegeroperation, pnumber_left, pnumber_right, 0)
+  -- if perrorcall.SITE = pintegeroperation.SITE
+  -- if perrorcall.LINE = pintegeroperation.LINE
+  -- if perrorcall.LEVEL = 8192
+  -- if perrorcall.MESSAGE = $ptascii("Power of base 0 and negative exponent is deprecated")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE pintegeroperation.LINE

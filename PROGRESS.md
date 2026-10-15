@@ -25,6 +25,18 @@ Independent pointwise review preserves V56 and every incoming runtime selector;
 source4/public462 retain their private cuts without replay.
 [Scalar-flag review](coverage/semantics/define-scalar-flag-review.json).
 
+Ordinary `**` now captures both primitive numbers before zero-base/negative-
+exponent deprecation handlers. Normal return preserves signed infinity despite
+callback writes; supplied throw cancels delivery and leaves the destination intact.
+Three exact originals pass at 380f627cd; 135/130 author plus 101 independent SL
+premises pass 366 at 6edf6aff8 using retained 23a7865a5 preparation. They cover
+signed zero, fresh/public source/cache/range/metadata guards, saved TARGET,
+unchanged store, supplied-object cancellation, default operand-line Deprecated and
+budgets. The original fixture parse failure and old unrun numeric thin retain zero
+credit; the correction groups negative constructor payloads without changed values.
+Wider operands, conversion warnings, callbacks/lifecycle and `**=` remain partial;
+OP12 stays paused. [Power ledger](coverage/semantics/power-warning-review.json).
+
 Plain-CV `.=` now retains the first string across a right-array warning.
 Normal return commits cached concatenation over callback writes and detaches a
 late alias; supplied throw cancels the store and preserves that alias. RHS removal

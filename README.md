@@ -569,6 +569,12 @@ for finite in-range fractional floats in defined non-reference CVs. Three exact 
 and 324 genuine state premises check live writes, supplied throws, false fallback,
 operand lines and public continuation guards. [BITNOT evidence](coverage/semantics/bitnot-warning-review.json)
 retains the unchanged Unsupported baseline; wider domains remain partial.
+Ordinary `**` now retains both primitive numbers through zero-base/negative-exponent
+deprecation handlers. Callback writes cannot change the captured infinity or its
+sign; a supplied throw preserves the pending destination. Three exact originals
+and 366 focused SL premises pass in the
+[power-warning ledger](coverage/semantics/power-warning-review.json).
+Numeric-string warnings, wider operands/callbacks and `**=` remain partial.
 Explicit array-to-string casts now suspend through named warning handlers for
 a bounded plain-CV array input. The borrowed array adds no saved owner: replacing
 or removing its CV still yields fixed `Array`, while a supplied throw preserves

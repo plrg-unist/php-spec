@@ -181,6 +181,19 @@ before delayed variable reads at the final operator. Captured operand roots stay
 live throughout conversion and evaluation. This preserves warning order under
 rebinding, singleton references, COW and cycles.
 
+Ordinary `**` now suspends zero-base/negative-exponent deprecation for two
+bounded primitive numbers in distinct plain CVs. Source, selection, current values
+and RHS instruction line authenticate fresh dispatch; entered and returned stages
+retain both historical numbers. The zero-root marker resumes through existing pure
+power rules without repeating the diagnostic. Signed negative zero to an odd
+negative exponent still yields `-INF` after live operand writes. A supplied throw
+cancels delivery and preserves the destination. Three exact originals plus
+265 author and 101 independent SL premises pass in the
+[power-warning ledger](../../coverage/semantics/power-warning-review.json).
+Counterfeit source/cache/range/metadata states are validator negatives only.
+Numeric-string conversion warnings, references/copies, `**=` and wider callbacks
+or lifecycle forms remain partial.
+
 Arithmetic and bitwise conversion use the existing pure SpecTec numeric and byte
 helpers, including signed 64-bit boundaries, binary64 values, string operands,
 pinned power behavior and conversion diagnostics. Explicit casts keep their

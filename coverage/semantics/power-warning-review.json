@@ -1,0 +1,135 @@
+{
+  "version": 1,
+  "milestone": "OP23 ordinary power zero-base negative-exponent deprecation",
+  "status": "independently reviewed private semantic and test milestone",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local pinned PHP and profile",
+  "scope": "Ordinary ** with two distinct defined plain CVs containing quiet bounded PINT/PFLOAT operands, zero base and negative exponent, and a named eligible deprecation handler.",
+  "runtime_revision": "380f627cd67883b8a057ca3881707a490a7f0006",
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "2c74bd45a8cfd17aaba1cb4b9cc39102f38bef97c86b344eb2a721a3c8060d7f",
+    "spec/semantics/40-control.watsup": "d4604bb117c024d3578008ecc20c6a6f033a324ae6345d42cee324471f42447a",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "9881349eee68938ba409f7e02d36872235ace01e2e6fc8741e8341330da9e6bc"
+  },
+  "engine_basis": [
+    "Zend/zend_vm_def.h ZEND_POW selects operands, calls pow_function into the temporary result, then checks exception before destination assignment.",
+    "Zend/zend_operators.c pow_function_base calls safe_pow; safe_pow receives both C doubles before zend_error(E_DEPRECATED) for base zero and negative exponent, then calls pow on those captured doubles.",
+    "Existing pure power_prepare/num_pow and number_value retain signed zero/infinity and the deprecation flag. No numeric kernel or host-oracle path changed."
+  ],
+  "contract": [
+    "Only authentic BINARY_RIGHT POWER with distinct source CVs, no operand swap, matching actual plain selections and compiled RHS instruction line enters. Fresh stage0 and TARGETeps dispatch authenticate both current values; entered frames and stage1 retain historical numbers after callback writes.",
+    "POWER_WARNING has zero task roots. Bounded number guards precede num_pow. Normal return pops the marker then delivers the cached-number result without another diagnostic or store; -0.0 to odd negative exponent preserves negative infinity. False fallback emits one default Deprecated on the operand line.",
+    "A supplied handler throw drops the unfinished marker and preserves object identity, null Previous, the pending destination sentinel and callback writes. It performs no numeric delivery or destination assignment.",
+    "All continued states come from production drive_steps. Source/line/operation, cache/sign/stage, coordinated EHI metadata and historical out-of-range number counterfeits are validator or pure lookup negatives only and are never driven. Heap shape acceptance does not establish executed support for their altered fields."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-23/source-380f627cd-handler-write/report.json",
+        "sha256": "df3a3e93770b404a33de96c9a13b83bbaeb761c8f04fa026e61744bff288f9b5",
+        "case": "power-zero-negative-handler-write",
+        "revision": "380f627cd67883b8a057ca3881707a490a7f0006",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-23/review-model-380f627cd-negative-zero/report.json",
+        "sha256": "4562f7a82e7533585c273dfa8342c1741b4f6ea5dc0a3bcfec9265697c67cf2d",
+        "case": "power-negative-zero-default",
+        "revision": "380f627cd67883b8a057ca3881707a490a7f0006",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-23/source-380f627cd-handler-throw/report.json",
+        "sha256": "245bf84003079dbfa360afe8990f860caab3a15fab8dc4c720f0e409a884e195",
+        "case": "power-zero-negative-handler-throw",
+        "revision": "380f627cd67883b8a057ca3881707a490a7f0006",
+        "agreements": 1
+      }
+    ],
+    "author_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-23/state-6edf6aff8-author-two/report.json",
+      "sha256": "327423efaae2f3780bd4aafaee9038b1d42606738610f7c25d5a8cd017bf33a6",
+      "revision": "6edf6aff83cab2bb2a47d62486c496c71feb4f95",
+      "prepared_revision": "23a7865a59e9b93468d6fc89830fbb823a644b0f",
+      "conditions": [
+        135,
+        130
+      ],
+      "total": 265
+    },
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-23/state-6edf6aff8-review-one/report.json",
+      "sha256": "8dc8f97f68bb476dfec752f9e5b09755d8b9de9e887c1aea241e6576d12e585b",
+      "revision": "6edf6aff83cab2bb2a47d62486c496c71feb4f95",
+      "prepared_revision": "23a7865a59e9b93468d6fc89830fbb823a644b0f",
+      "conditions": [
+        101
+      ],
+      "total": 101
+    },
+    "total_source_agreements": 3,
+    "total_focused_state_conditions": 366,
+    "compatibility": "Runtime/source3 stay at 380f. Helpers initially prepared at 23a were corrected only by grouping negative NINT/PINT payloads: 13 author and 2 independent occurrences, unchanged 135/130/101 clauses and values. All three corrected recipes were rebuilt from retained checked AST/path/native and equal the original fixtures under that exact transformation. Immutable state thins bind old PREP and current helpers/fixtures explicitly; no PHP/frontend/preparation/source replay or private main=true actor."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-23/baseline-0fa3d914c-handler-write/report.json",
+      "sha256": "ba395ff53d10bc11130e8bcdbd9e9c20ea8b480d2dac36c2ae4d27ba3a9618bb",
+      "result": "accepted checked program Unsupported: error-handler ingress requires a producer continuation; empty model streams before H versus native INF"
+    },
+    "native_and_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-23/native-0fa3d914c-two/report.json",
+        "sha256": "81d83c51d2dc390948f7a3a18585e4604f030e77f336478f9cd4fdac34bbbdb6",
+        "purpose": "author native2 raw return/throw observations"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-23/native-a086ce1bb-review-one/report.json",
+        "sha256": "b3282daf595ebfc04f75f698adaaec10cae3ba5e7813d572d7440fabea47697d",
+        "purpose": "independent signed-zero/default native1 observation"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-23/state-prep-23a7865a5-author-two/report.json",
+        "sha256": "8ede28e8c05d39e21c403a98645153721c9c2e06ea9235f52e6409d8d142e70a",
+        "purpose": "author2 PHP/frontend/checked-AST preparation only"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-23/state-prep-23a7865a5-review-one/report.json",
+        "sha256": "82c104f3b92900035780481a49b52df6905a0bc715ee3be52615ae2945ce8cc0",
+        "purpose": "independent1 PHP/frontend/checked-AST preparation only"
+      }
+    ],
+    "original_syntax_failure": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-23/syntax-23a7865a5-three/report.json",
+      "sha256": "8b9fcc5bb98d1e5cd574d1361ebfa925b44551d93bcaea6465c6732bf1f5340a",
+      "result": "First135 fixture rejected bare negative constructor payload before runtime; remaining130/101 parses unrun. Preserved without overwrite."
+    },
+    "corrected_standalone_syntax": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-23/syntax-6edf6aff8-three/report.json",
+      "sha256": "25f923f897481b64ac67d2488e34ae11cd0f56693a3807a976dc27b4b5d8f470",
+      "result": "All corrected135/130/101 full files parse before the expected standalone undefined-pstate environment diagnostic; zero semantic credit"
+    },
+    "original_numeric_thin": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-23/state-23a7865a5-author-two/run-state.py",
+      "sha256": "6af5444ad80832384a5b905f8179c004b214b32793bcfa560081896477c4107d",
+      "result": "Wholly unrun after syntax failure; zero credit"
+    }
+  },
+  "required_follow_on": [
+    "Numeric-string conversion warnings, reference/COPY/TMP/owning operands, same-name sources, **= and wider callback/lifecycle paths remain partial.",
+    "All five affected inventory rows remain partial; prior operator evidence retains its separate cuts and OP12 stays paused."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-23",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "environment": "LC_ALL=C, TZ=UTC, no PHP_SPEC_SCRIPT_ENCODING. Author native2/baseline and independent native1 used CPU1; affected source3 and corrected state groups used CPU2. Native30/model CLI60-process90; immutable full395 SL state cap120 each/exact true newline/empty stderr/no interruption/reaped groups and absent PIDs.",
+    "commands": [
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 tests/semantics/power_warnings.py --case CASE_ID --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 tests/semantics/power_warning_review.py --case power-negative-zero-default --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-23/state-6edf6aff8-author-two/run-state.py",
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-23/state-6edf6aff8-review-one/run-state.py"
+    ],
+    "record": "Restore matching Git cuts/project-local tools and fresh output paths. External records retain original source/AST/path/native/fixtures/commands/exits/reaping, including the failed parser record and exact grouping bridge; raw stays outside Git."
+  }
+}
