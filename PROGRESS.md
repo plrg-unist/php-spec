@@ -18,6 +18,43 @@ rejection and two fixture elaboration failures retain zero credit. Flat CV targe
 and warning-free compiled/implicit keys bound this slice; wider destructuring
 producers and diagnostics remain partial.
 [Destructuring-warning review](coverage/semantics/list-missing-warning-review.json).
+The pointwise 398-module composition over 79da8331 preserves every incoming
+runtime declaration/helper, including modulo assignment, constant queries, return
+replay and Generator unpack. Source6/state468 retain their private cuts; independent
+seam review warrants no joined actor or renewed agreement credit.
+
+Plain-CV `%=` now keeps its fractional-float left conversion through deprecation
+handlers, then reads the live quiet integer RHS. Captured12/live5 stores2; a supplied
+throw preserves callback writes and its late alias, while live zero creates the
+original-line `DivisionByZeroError` without store or detachment. Three exact
+originals pass at 9ed645105; 126/116 author plus 120 independent SL premises pass
+362 at 4e11c3dae/396. They cover fresh source/selection/cache/line guards, actual
+CELL/LOCATION, error/alias owners, false-handler default Deprecated and budgets.
+Pure ready projections establish refusals only; baseline/native/preparation/syntax
+retain zero agreement credit. Initial references/copies, warning or noninteger RHS,
+unsafe targets and wider callbacks/lifecycle remain partial; OP12 stays paused.
+[Modulo-assignment ledger](coverage/semantics/modassign-warning-review.json).
+The pointwise 397-module composition over 04c3c8c2f preserves incoming Source34
+and every parent declaration/helper. Source3/state362 retain their private cuts;
+independent seam review warrants no joined actor or renewed agreement credit.
+
+Primitive `define` now completes duplicate reporting while an ignored-flag
+warning exception is pending. An eligible handler is skipped without fallback;
+a live handler that excludes Warning level uses default reporting instead. The
+original binding, Throwable identity/Previous, captured arguments, callback effects
+and caller destination survive. The duplicate report clears the stale fatal-trace
+snapshot and respects the current reporting mask.
+Two author originals agree at fc4e235a; an independent preexisting-row/scalar-flag
+original agrees at 7d069659. Author 83 and independent strict 123 state premises
+pass 206 at 7d069659, covering actual discard steps, complete state preservation,
+source/carrier refusals, a source-backed seeded trace, quiet reporting and budgets.
+The unchanged Unsupported baseline retains zero credit. The sole runtime change
+is a 22-line module400 append using the existing boolean/scalar-flag guards;
+wider values, NaN/coerced-name flags and owning/packed paths remain separate.
+Pointwise composition over 52357c36 preserves the 397-module incoming parent.
+Source3/state206 retain their private cuts; independent review warrants no joined
+actor or renewed execution claim.
+[Pending-duplicate review](coverage/semantics/define-pending-duplicate-review.json).
 
 A comparison's second implicit string cast now fails quietly when its opposing
 live operand becomes a WeakMap or WeakReference, even after referent expiry.
@@ -99,8 +136,20 @@ Two exact source comparisons and 225 SL premises (110 root, 115 duplicate) pass 
 runtime diff 369ebde3, including live/dead value authority, owners and budget resume.
 The original duplicate observer compile failure retains zero credit; the accepted
 root native row remains separately scoped. Other internal/Throwable producers,
-arguments, embedded/default values and dynamic `constant()` value return remain partial.
+arguments and embedded/default values remain partial.
 [stdClass producer review](coverage/semantics/global-constant-stdclass-review.json).
+
+Global `constant()` now returns already-certified stdClass rows through literal
+and retained selected calls. Lookup shares the exact live object, adds one RESULT
+owner and allocates nothing; source aliases retain property writes after a query
+result is released. Two exact originals and author239/independent145 SL premises
+pass384 at runtime191ddd25/397, including same-site left→right selection and one
+budget resume. The baseline Unsupported, first independent control failure and
+undriven certificate controls keep zero agreement credit. Wider query/value forms remain partial.
+[stdClass query review](coverage/semantics/global-constant-stdclass-query-review.json).
+The 397-module composition over 1e732d1ca preserves incoming comparison, pending
+define and modulo rules pointwise; source2/state384 retain their private cuts
+without replay.
 
 Selected inherited `__unset(string): void` now dispatches direct CV/literal-name
 access to a declared private property. Accessible public unset skips magic;
@@ -120,9 +169,9 @@ definition. The unchanged model had returned normally with the binding absent;
 that measured disagreement remains zero credit.
 Two original sources agree at cd8121ee; author 76 and independent strict 120 public
 premises pass 196 at ba8d720c, checking exact row-only actual steps, immutable facts,
-carrier/source/throw refusals and whole budget resumption. A key present after the
-first throw still needs a pending duplicate-warning protocol; wider values and
-NaN flag reception and flags with scalar/null names remain separate. The 395-module
+carrier/source/throw refusals and whole budget resumption. The pending duplicate
+follow-up is recorded above. Wider values, NaN flags and coerced flags with
+scalar/null names remain separate. The 395-module
 composition over af5b5255 passes full SL load/elaboration at 8044e425; its true fixture makes no PHP application
 or initial-state assertion. Independent pointwise review preserves the incoming parent;
 source2/public196 retain their private revisions without replay.
@@ -139,8 +188,8 @@ Public462 retains author188/126/51 at 8643b193 plus independent97 at 4fb4eb6d,
 covering named capture, raw traces, authentic string carriers, exact row-only
 pending effects, refusals and budget resume. The original peer binder collision
 remains zero credit; only its two captured-name premises changed.
-NaN flags, scalar/null names with coerced flags, and pending duplicate warnings
-remain separate; the boolean-true follow-up is recorded above.
+NaN flags and scalar/null names with coerced flags remain separate; the
+boolean-true and pending-duplicate follow-ups are recorded above.
 The 395-module composition over 91a58a8b passes full SL initialization at 7260f84c.
 Independent pointwise review preserves V56 and every incoming runtime selector;
 source4/public462 retain their private cuts without replay.
@@ -2251,11 +2300,29 @@ carrier. Four new normal originals and one promoted prior control agree across
 `ab7018438`/`1a0b15cdb`; strict396 and three reached groups/303 premises pass at
 the latter cut. Native5, the unchanged baseline, acquired-Generator control and
 original temporary-cleanup Unsupported failure retain zero agreement.
-Acquired Generator data, ordinary Aggregate call operands, valid-key by-reference
-targets, owning copied returns and nested detached roots remain required.
+At that cut acquired Generator data, ordinary Aggregate call operands, valid-key
+by-reference targets, owning copied returns and nested detached roots remained required.
 [Acquired-Iterator review](coverage/semantics/generator-call-unpack-acquired-iterator-review.json).
 Canonical397 composition over `dbd756ab7` passes inventory and strict SL at
 `74f63b964`; private source/state cuts and the original failure retain their identities.
+
+Generator call unpack now consumes Aggregate-acquired Generator data directly or
+below active shared links. The acquired parent owns its raw CURRENT copy and
+child; by-value SEND snapshots references before native iterator resumes, without
+invented API frames.
+Method receivers survive acquisition, unused owning child returns retire before
+the null-result parent tail, and temporary key errors close child before parent
+finally/cache/SENT release. Independent child CVs retain their own COW cache and
+real body-throw trace. Five new exact originals and one promoted prior control
+agree at `80ad118bf`; strict397 and four reached groups/436 premises pass there
+(author195, independent241). See the
+[acquired-Generator ledger](coverage/semantics/generator-call-unpack-acquired-generator-review.json).
+Native-only observations and the unchanged Unsupported baseline earn zero model
+agreement. Ordinary Aggregate call operands, valid-key by-reference targets,
+owning copied returns and active chains ending in detached roots remain required.
+The397-module composition over `bb312fcd2` preserves the tested405 bytes and
+every incoming runtime selector. Independent pointwise review warrants no joined
+actor; private strict/source/state evidence retains its `80ad118bf` cut.
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or
@@ -8259,7 +8326,8 @@ failures and interrupted evidence.
   Notice dispatch. Bounded single-active-finalizer CV replay and aliased-CV Stringable
   reference conversion 186 and bounded sole-local-CV lifetime 381 are integrated.
   Immutable string-literal, explicit-NULL and bounded computed string VALUE consumed
-  continuations are also integrated. Other VALUE signatures/layouts, general CONST/other
+  continuations are also integrated. M75 adds the bounded nullable integer assignment
+  VALUE return across a caught finalizer. Other VALUE signatures/layouts, general CONST/other
   NULL and multiple-active histories, genuinely released
   CV targets, destructor throw/reentry, real suspension and wider typed consumers
   remain open. [String contract](docs/semantics/USER-STRING.md),
@@ -8282,7 +8350,10 @@ Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is
 bounded physical-array owner recovery. Bounded single-active-finalizer CV replay and deferred VALUE/NULL Notice dispatch are
 integrated, as are bounded aliased-CV Stringable reference conversion 186 and sole-local-CV
 lifetime 381, immutable string-literal, explicit-NULL and bounded computed string VALUE
-consumed continuations. Wider owner domains, other VALUE signatures/layouts, general
+consumed continuations. M75's assigned integer call has two exact original-source
+agreements and one reached 96-premise proof at private `8afe016f`/397; the
+[local CV ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json)
+retains its failed syntax gate with zero credit. Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, destructor throw/reentry, real suspension and wider typed
 consumers remain required.

@@ -585,6 +585,13 @@ outer assignment stays unchanged. Three exact originals and 407 focused SL
 premises cover signed infinity, target storage and pending ownership in the
 [power-assignment ledger](coverage/semantics/powerassign-warning-review.json).
 Wider operands, targets, callbacks and lifecycle paths remain partial.
+Plain-CV `%=` now keeps the first converted long through a fractional-float
+deprecation, then reads the live quiet integer RHS. Normal return stores the
+remainder; a supplied throw or live zero leaves the target and late alias intact.
+Three exact originals and 362 focused SL premises check capture, cancellation,
+default Deprecated, original-line `DivisionByZeroError` and budgets in the
+[modulo-assignment ledger](coverage/semantics/modassign-warning-review.json).
+Wider operands, targets, callbacks and lifecycle paths remain partial.
 Explicit array-to-string casts now suspend through named warning handlers for
 a bounded plain-CV array input. The borrowed array adds no saved owner: replacing
 or removing its CV still yields fixed `Array`, while a supplied throw preserves
@@ -801,7 +808,12 @@ Aggregate-acquired Iterator leaves also use the authenticated acquisition receip
 Acquisition/input owners release before rewind; the saved receipt owns nothing.
 Independent Aggregate or Iterator aliases retain their own cleanup lifetimes.
 See the [acquired-Iterator review](coverage/semantics/generator-call-unpack-acquired-iterator-review.json).
-Aggregate ordinary-call unpack and acquired Generator leaves, owning copied returns
+Aggregate-acquired Generator leaves also unpack through active Generator links.
+Their copied raw cache and child owners stay distinct; generic iterator mode
+discards child returns, preserves method receivers and orders child close before
+parent finally and cached values.
+See the [acquired-Generator review](coverage/semantics/generator-call-unpack-acquired-generator-review.json).
+Aggregate ordinary-call unpack, owning copied returns
 and active chains ending in detached roots, Generator by-reference
 call targets and callback methods, nonnumeric raw valid changes, request/plain
 reference strings and handler replacements with
@@ -1027,7 +1039,12 @@ calls raise `TypeError` after all argument effects. A throwing ignored-warning
 handler still permits fresh registration of the captured value before its
 exception escapes. [Four source agreements and 462 state premises](coverage/semantics/define-scalar-flag-review.json)
 cover both warning phases, this pending registration tail and source/budget guards.
-NaN flags and a duplicate after that first throw remain separate.
+NaN flags remain separate. When a binding exists after that first throw, the
+pending duplicate skips an eligible PHP handler without fallback. An excluded
+Warning level uses default reporting; both paths preserve the original exception,
+binding and caller destination.
+[Three source agreements and 206 state premises](coverage/semantics/define-pending-duplicate-review.json)
+cover live handler masks, raw captures, fatal-trace clearing and quiet reporting.
 A NULL third flag instead emits its deprecation before the C body. Normal return
 uses false and checks the live table; a first-handler throw cancels registration.
 Both warning traces keep raw NULL, and strict calls reject after argument effects.
@@ -2663,8 +2680,12 @@ now preserves ordinary-read identity and property sharing. Duplicate registratio
 holds the fresh candidate through its Warning handler and discards it afterward,
 retaining the original object and callback mutation. Two exact sources and 225 SL
 premises cover birth/completion, live/dead authority, alias release and budget
-resume. Other internal/Throwable producers, arguments, embedded/default values
-and dynamic `constant()` value return remain partial.
+resume. Certified global `constant()` queries now return that same live stdClass
+through literal and retained selected calls, preserving shared writes and adding
+only the ordinary result owner. [The query review](coverage/semantics/global-constant-stdclass-query-review.json)
+keeps two source comparisons and 384 SL premises separate from producer evidence.
+Other internal/Throwable producers, arguments, embedded/default values
+and wider query forms remain partial.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is

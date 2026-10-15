@@ -17,6 +17,7 @@ dec $generator_unpack_finish(pstate, pgeneratorunpack, ptask*) : pstate
 dec $generator_unpack_discard(pstate, pgeneratorunpack, text) : pstate
 dec $generator_unpack_array_delegate(pstate, nat) : bool
 dec $generator_unpack_iterator_delegate(pstate, nat) : bool
+dec $generator_unpack_acquired_generator_delegate(pstate, nat) : bool
 dec $generator_unpack_detached(pstate, nat) : bool
 dec $generator_unpack_delegate(pstate, nat) : bool
 dec $generator_unpack_chain(pstate, nat, nat) : bool
@@ -75,6 +76,20 @@ def $generator_unpack_iterator_delegate(S, n) = true
   -- if pgeneratorfrom.POSITION = 1
   -- if $generator_from_record_valid(S, n, pgenerator)
 def $generator_unpack_iterator_delegate(S, n) = false -- otherwise
+;; Acquired Generator data uses iterator mode and owns a CURRENT copy.
+def $generator_unpack_acquired_generator_delegate(S, n) = true
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_DELEGATING
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.INPUT = (POBJECT n_child)
+  -- if (HOBJECT n_child) <- S.ALLOCATIONS
+  -- if $generator_object(S, n_child)
+  -- if pgeneratorfrom.ACQUISITION = (pyieldfromreceipt)
+  -- if pgeneratorfrom.CURRENT =/= eps
+  -- if pgeneratorfrom.POSITION = 1
+  -- if $generator_from_record_valid(S, n, pgenerator)
+def $generator_unpack_acquired_generator_delegate(S, n) = false -- otherwise
 ;; A detached root owns its copied cache and an authenticated return receipt.
 ;; Owning return temporaries and detached leaves below active links stay open.
 def $generator_unpack_detached(S, n) = true
@@ -112,6 +127,9 @@ def $generator_unpack_chain(S, n, n_depth) = true
   -- if $(n_depth > 0)
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if $generator_unpack_iterator_delegate(S, n)
+def $generator_unpack_chain(S, n, n_depth) = true
+  -- if $(n_depth > 0)
+  -- if $generator_unpack_acquired_generator_delegate(S, n)
 def $generator_unpack_chain(S, n, n_depth) = $generator_unpack_chain(S, n_child, $nabs($(n_depth - 1)))
   -- if $(n_depth > 0)
   -- if (HOBJECT n) <- S.ALLOCATIONS

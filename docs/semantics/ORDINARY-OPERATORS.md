@@ -207,6 +207,20 @@ Ready requires the same live, allocated, nonowning, unconstrained target; pure
 pruned/missing/wrong-slot/owning projections establish refusals only. Initial
 references/copies, wider operands/targets, callbacks and lifecycle remain partial.
 
+Plain-CV `%=` now captures a fractional-float left conversion before its
+deprecation, then reads the live quiet integer RHS after a named handler returns.
+Captured `12` and live `5` produce `2` despite the callback's target write.
+A supplied throw cancels storage and preserves its Exception identity; a live
+zero creates the ordinary caller `DivisionByZeroError` without writing or
+detaching a late target alias. False return emits one default Deprecated on the
+compiled RHS line. Three exact originals and 242 author plus 120 independent SL
+premises pass in the
+[modulo-assignment ledger](../../coverage/semantics/modassign-warning-review.json).
+Fresh source/selection/cache/line guards, actual CELL/LOCATION, alias/error owners
+and budget resumption are covered. Pure ready projections establish refusals only.
+Initial references/copies, warning or noninteger RHS values, unsafe targets,
+wider callbacks and lifecycle paths remain partial.
+
 Arithmetic and bitwise conversion use the existing pure SpecTec numeric and byte
 helpers, including signed 64-bit boundaries, binary64 values, string operands,
 pinned power behavior and conversion diagnostics. Explicit casts keep their

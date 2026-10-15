@@ -1,0 +1,99 @@
+{
+  "status": "independently reviewed implementation and focused validation",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; exact project-local PHP/profile, original bytes, filenames, streams and process commands retained in raw reports",
+  "base": "2a810611d64015804e1ba9d37275322e932b7704",
+  "module_count": 397,
+  "tested_cut": {
+    "runtime_diff_sha256": "191ddd2555776625873a9422618894d6ba0e526b0e6c0005341d1a62d9d87084",
+    "files": {
+      "spec/semantics/400-dynamic-constants.watsup": "68e9ad5e3e8b23204b8baf793d0d8d992ca9549719c7e72c2c7abe9081bac1eb",
+      "spec/semantics/283-global-constant-objects.watsup": "bc53a192fda857ff06f8213e5035d91a98f5f5e2137180b9ab8ad96b50985c52",
+      "tests/semantics/global_constant_stdclass_query_protocol.py": "ffec69076ed4a473e27a651bd2dd1e54ca2fdcab086315f8c458a9fcad1e90a8",
+      "tests/semantics/global_constant_stdclass_protocol.py": "746d9648d3c938fdfea53ec1a55fbdc3c72485a6a3589a144bd4ba910f9b152d",
+      "tests/semantics/global_constant_stdclass_query_review.py": "6cc32e55c15e90958ad174e72191b7b6723a43bb090ff13f09113aec8b71f77b"
+    }
+  },
+  "behavior": [
+    "A five-line module400 value arm admits only a stored POBJECT with matching PVSTDCLASS. Existing constant_value_class_valid authenticates the same completed stdClass birth, exact source and live HOBJECT; generic PVOBJECT and embedded stdClass array leaves gain no query admission.",
+    "Ordinary CONFIG_INVOKE completion returns the stored pointer and adds exactly one RESULT owner. No object, property table, heap allocation, constant row, birth record or store changes during the return. Aliases share writes after a query result is released.",
+    "Two visits to the same retained selected call site carry distinct nonces and captured left/right query strings, selecting distinct stored objects. Lookup neither rereads a previous query nor caches the first selected row."
+  ],
+  "engine_routes": [
+    "ext/standard/basic_functions.c::PHP_FUNCTION(constant) receives the string, calls zend_get_constant_ex and uses ZVAL_COPY_OR_DUP on the stored value.",
+    "Zend/zend_constants.c::zend_get_constant_ex performs global lookup with one leading separator removed and namespace-only case folding; existing query/name reception rules are reused.",
+    "Zend/zend_types.h::ZVAL_COPY_OR_DUP copies object identity and increments the existing object reference count; it does not construct or clone a stdClass."
+  ],
+  "accepted": {
+    "source_agreements": 2,
+    "author_public_premises": 239,
+    "author_literal_premises": 119,
+    "author_selected_premises": 120,
+    "author_undriven_certificate_controls": 3,
+    "author_budget_resumptions": 1,
+    "driven_forged_states": 0,
+    "independent_public_premises": 145,
+    "total_public_premises": 384,
+    "independent_actual_steps": 2,
+    "production_chains": 3
+  },
+  "review": {
+    "reviewer": "/root/dynamic_review_59",
+    "decision": "accepted",
+    "scope": "Sole PVSTDCLASS global query admission, stored identity/property sharing, RESULT owners, no allocation, captured selected-site queries/nonces, source/birth/live-allocation and call refusals; the five-line arm matches adjacent certified user-instance/Closure policy."
+  },
+  "authority": "Positive state fronts start from checked php_run of the two exact originals. Real one-step CONFIG returns establish pointer, owner and unchanged-state claims; each source completes normally with the exact native stdout/stderr/exit tuple. Missing, incomplete and dead certificate projections test helper refusal only and are never driven. The two V57 helper expectations change from refusal to the exact existing object; earlier producer225 evidence is not replayed or renewed. The independent145 selected fixture establishes both actual returns and rejects mismatched object/source/class, missing/incomplete/dead/malformed birth, stale/absent selection, bad site/line and forged carrier through pure controls; no malformed state is driven.",
+  "preserved_outcomes": "The unchanged literal baseline genuinely stops Unsupported global constant value query after B| with CLI1. Native/preparation/parse observations and Unsupported retain zero agreement credit. The first independent fixture wrongly required shared constant_value_class_valid(PVOBJECT) to reject a live object, although existing218 intentionally accepts that generic class for other consumers; that failed pure assertion remains zero credit. The corrected independent fixture targets query-row refusal and four held left owners (constant, $left, $first and $value); runtime code and author state stay unchanged. No rebuild or portability claim.",
+  "remaining": "Only already-certified direct-root zero-argument global stdClass rows gain value-query admission. Other internal/Throwable producers, constructor arguments, embedded/default stdClass values, generic objects and wider owning/coercing call forms remain partial; constants, stdClass and full core remain open.",
+  "artifacts": {
+    "native_originals": {
+      "path": ".tools/dynamic-review-02/static-native-v59/report.json",
+      "sha256": "3df34d7a3ec2bf20429a411d49e5a9f79bdf8f02b728c1e56590aa4bf6824ed3"
+    },
+    "unchanged_baseline": {
+      "path": ".tools/dynamic-source-global-stdclass-query-baseline-39/report.json",
+      "sha256": "d04ecf04973355fa97e9978aa22ba3af32b8745214b84abe9924abff3d98fb4c"
+    },
+    "literal_source": {
+      "path": ".tools/dynamic-source-global-stdclass-query-model-40/report.json",
+      "sha256": "2453aec990de61afd39b8ee8e2ceccd3972933a15c169a2504af9cf71e5f140b"
+    },
+    "selected_source": {
+      "path": ".tools/dynamic-source-global-stdclass-query-selected-model-39/report.json",
+      "sha256": "4b213dc98781bb9bc1d722a9e3aff32280ae5a847920fe2c2cfdf711bec48eb7"
+    },
+    "author_preparation": {
+      "path": ".tools/dynamic-source-global-stdclass-query-state-01/fixtures-report.json",
+      "sha256": "27b4694046aa8d4309905b60f6d87b4cf1db6461cdea2678904839733c4752ad"
+    },
+    "author_state": {
+      "path": ".tools/dynamic-source-global-stdclass-query-state-01/check-report.json",
+      "sha256": "14e710963696140c837e64dc23cca266d4c008048845b8abdf5b029b914b7ad6"
+    },
+    "independent_failed_control": {
+      "path": ".tools/dynamic-source-global-stdclass-query-review-01/report.json",
+      "sha256": "8fb3255b34fdb8ba10c11b305734253b6092bd1196991f3b3607e6e9edcddad8"
+    },
+    "independent_state": {
+      "path": ".tools/dynamic-source-global-stdclass-query-review-02/report.json",
+      "sha256": "13519d0191ae49a9d41fe794857542132db9cf7005b35e1f84c675ebe97b8f8f"
+    }
+  },
+  "recovery": "Ignored native originals and raw reports retain exact source paths/bytes and process tuples. global_constant_stdclass_query_protocol.py --phase fixtures --sources .tools/dynamic-review-02 --output OUT prepares checked fronts; --phase check runs ordered397 --sl, process90/exact trueLF/empty, serial literal119 then selected120, under host240. Source CLI60/process90/host120 and native PHP30 retain their separate original cuts. Metadata and pointwise composition add no execution or differential credit. global_constant_stdclass_query_review.py --sources .tools/dynamic-review-02 --output OUT runs the compact independent selected fixture, process90/host150; accepted review02 preserves failed review01 separately.",
+  "integration": {
+    "parent": "1e732d1ca36021d7561d03975372ce5411f4c375",
+    "module_count": 397,
+    "runtime_delta": "Only the same five-line module400 PVSTDCLASS value arm; deleting that exact arm reproduces the parent400 byte-for-byte.",
+    "parent_400_sha256": "20e0e53da5e6e308c5bba0ad5416952122fb17e5970363171cbd96fe44682f06",
+    "composed_400_sha256": "a7215a0aaa9e956b230bf0cfd63efe618b71e9676dcd4771923a02cd05587952",
+    "incoming_files_preserved": {
+      "spec/semantics/30-storage.watsup": "7e6304722f1a860d554d73622e1898975247621324459fad03bd021b9963ce59",
+      "spec/semantics/55-compound-assignment.watsup": "dcd0405412c6675b627448fd1fb8e934bef3e26c73f24c1ff8ce055243a08a72",
+      "spec/semantics/392-stringable-comparisons.watsup": "37cadbfffb7461b7e2e8adcb2e108e0f63c97f40f1ff85b5ca6c60561b3c39a3",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "0d3a4f8d7d494bb364d31ddb0a4da4bc75250f1ba703aa0436b2663587bc3469",
+      "spec/semantics/modules.json": "944fcbb751d02d15a6547196a756fdcca2b28c795f63787ec1f77939195594df"
+    },
+    "reviewer": "/root/dynamic_review_59",
+    "method": "Independent pointwise review: COMP66 adds only392 implicit-string compatibility heads; Source34 appends define-flag pending THROW_SEARCH duplicate helpers in400; OP25 adds MOD-specific tasks/helpers/selectors in30/55/404. V59 changes only the certified global query value helper and its originals contain neither USER casts/weak internals, define/pending throw nor modulo/compound operations. The rule heads/selectors and called helper families are disjoint; all incoming declarations and parent400 bytes are preserved.",
+    "evidence_credit": "Source2 and state384 retain their original2a810611d/runtime191ddd25/397 cuts. No joined actor, source/baseline replay, V57 renewal, rebuild or added agreement credit."
+  }
+}

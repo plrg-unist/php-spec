@@ -312,6 +312,10 @@ test-semantics: build
 	python3 tests/semantics/generator_call_unpack_acquired_iterator_state.py
 	python3 tests/semantics/generator_call_unpack_acquired_iterator_review_sources.py
 	python3 tests/semantics/generator_call_unpack_acquired_iterator_review_state.py
+	python3 tests/semantics/generator_call_unpack_acquired_generator_sources.py
+	python3 tests/semantics/generator_call_unpack_acquired_generator_state.py
+	python3 tests/semantics/generator_call_unpack_acquired_generator_review_sources.py
+	python3 tests/semantics/generator_call_unpack_acquired_generator_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py

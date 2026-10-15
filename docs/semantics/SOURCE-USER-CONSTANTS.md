@@ -126,9 +126,8 @@ string carriers constrain all three captured inputs; row-history rules are uncha
 If the first ignored-warning handler throws while the name remains fresh, Zend
 still registers the captured value before propagating that exception. The narrow
 pending tail changes only the constant table and preserves the original Throwable,
-caller destination and callback mutations. A key already present at that point is
-explicitly Unsupported because its pending duplicate Warning needs a separate
-protocol. The [scalar-flag review](../../coverage/semantics/define-scalar-flag-review.json)
+caller destination and callback mutations. The pending duplicate case is
+covered below. The [scalar-flag review](../../coverage/semantics/define-scalar-flag-review.json)
 binds four source agreements and 462 public premises; NaN flags, wider values
 and coerced flags with scalar/null names remain separate.
 
@@ -139,8 +138,20 @@ Throwable and caller destination. Strict selected calls retain true and the exac
 request-string candidate despite later argument and callback mutations. The
 [boolean-tail review](../../coverage/semantics/define-bool-flag-pending-review.json)
 binds two source agreements and 196 public premises; its unchanged normal-but-wrong
-baseline remains zero credit. A key already present after the throw still requires
-the separate pending duplicate-warning protocol.
+baseline remains zero credit. A key already present after the throw
+uses the pending duplicate continuation below.
+
+When the name is already bound after the first ignored-warning throw, registration
+still reaches its duplicate report. A currently eligible PHP handler is skipped
+because the original Exception is pending; its undefined result causes no fallback.
+An excluded Warning level instead uses the default reporter and current reporting
+mask. Neither branch replaces the old row, changes captured arguments or chains a
+new exception. The ordinary fatal-trace snapshot is cleared. The
+[pending-duplicate review](../../coverage/semantics/define-pending-duplicate-review.json)
+binds three source agreements and 206 state premises, including callback-created
+and preexisting rows, strict named capture, actual discard steps, a source-backed
+seeded trace and reporting-zero controls. The existing nonowning primitive-value
+and string-name boolean/scalar-flag gates bound this continuation.
 
 A NULL third flag has a separate pre-body reception path. Weak calls emit the
 parameter-3 deprecation, then use false after normal callback return without
@@ -433,8 +444,21 @@ then discards it without replacing the original binding or its callback writes.
 Two exact originals and 225 SL premises (110 root, 115 duplicate) at 369ebde3 cover
 alias owners3→1, candidate1→0, source/tag authority and budget resume. The original
 invalid duplicate observer remains zero credit; only its corrected local-alias
-version supplies that source comparison. The separate tag keeps dynamic `constant()` value return, embedded trees, default
-caching and callable folding outside this slice; existing `defined()` presence
+version supplies that source comparison. The producer milestone keeps embedded trees, default
+caching and callable folding outside its slice; existing `defined()` presence
 lookup remains unchanged. Other
 internal/Throwable NEW, argument and wider lifecycle forms remain partial.
 [stdClass producer ledger](../../coverage/semantics/global-constant-stdclass-review.json).
+
+Global `constant()` also returns certified `PVSTDCLASS` rows. The sole module400
+value arm delegates to the existing exact completed-birth and live-allocation
+checks, then reuses ordinary CONFIG completion. Literal and retained selected
+calls share the stored pointer and property writes; RESULT adds one owner without
+allocating or changing the constant table, birth history or object storage.
+Repeated visits to one selected call site use their own captured query and nonce,
+so changing the next query from one constant to another selects the second object.
+The [query ledger](../../coverage/semantics/global-constant-stdclass-query-review.json)
+records two exact originals, reached state fronts, budget resumption and undriven
+certificate refusals. The unchanged Unsupported baseline remains zero credit;
+embedded stdClass trees, generic objects and wider owning/coercing query forms
+remain partial.
