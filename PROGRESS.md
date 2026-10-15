@@ -8397,8 +8397,9 @@ failures and interrupted evidence.
   Notice dispatch. Bounded single-active-finalizer CV replay and aliased-CV Stringable
   reference conversion 186 and bounded sole-local-CV lifetime 381 are integrated.
   Immutable string-literal, explicit-NULL and bounded computed string VALUE consumed
-  continuations are also integrated. M75-M76 add bounded nullable integer assignment
-  VALUE returns across a caught finalizer, including one effectful positional argument.
+  continuations are also integrated. M75-M77 add bounded nullable integer assignment
+  VALUE returns across a caught finalizer, including one effectful positional argument
+  and one folded integer RHS.
   Other VALUE signatures/layouts, general CONST/other
   NULL and multiple-active histories, genuinely released
   CV targets, destructor throw/reentry, real suspension and wider typed consumers
@@ -8426,9 +8427,14 @@ consumed continuations. M75's assigned integer call has two exact original-sourc
 agreements and one reached 96-premise proof at private `8afe016f`/397. M76's
 same-variable nested integer argument has two further exact originals and one
 110-premise reached proof at private `8beef331`/397: callee n17/global x17,
-pre-finalizer x41, then restored caller NULL/x99 with one old-line Notice. The
+pre-finalizer x41, then restored caller NULL/x99 with one old-line Notice. M77
+separates direct folded `40 + 1` (caller41) from the same folded RHS wrapped in
+an assignment (callerNULL): source2 and an assigned 102-premise reached proof
+pass at private `86a52f19`/398, binding RHS compiled41 versus outer compiled-read
+absence, raw NULL/new Notice, alias, LINE refusal and budget. Historical native
+and Unsupported baseline retain their private `7465dc88`/397 identities. The
 [local CV ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json)
-retains M75's failed syntax gate and M76's Unsupported baseline with zero repair credit.
+retains M75's failed syntax gate and M76-M77's Unsupported baselines with zero repair credit.
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, destructor throw/reentry, real suspension and wider typed

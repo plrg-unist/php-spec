@@ -809,3 +809,17 @@ bad cursor-line refusal and budget resumption across that early call state.
 This admits only one same-variable nested integer assignment argument, not
 other argument or return layouts; see the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M77 distinguishes a compiled integer RHS from the outer assignment result.
+With the same x-observing, caught-`$y` finalizer, direct `return 40 + 1`
+restores `41`, while `return ($x = 40 + 1)` observes `$x === 41` in the
+finalizer but restores detached NULL. The RHS retains compiled `41`; the
+assignment itself has no compiled read, and its cleared temporary cannot use
+the RHS constant to recover. Both original sources match PHP exactly at
+private `86a52f19`/398, including one old-line Notice each. One assigned
+source-reached fixture proves the compiled-read distinction, old carrier,
+consumed cursor, raw NULL/new Notice, detached caller, cursor-line refusal
+and budget resumption. The direct source agrees independently; M74 examined
+the direct-folded source category in a separate state fixture, which was not rerun.
+Two-literal integer addition and this nullable used-return layout bound the
+new rule; see the [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
