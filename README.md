@@ -603,6 +603,11 @@ conversion through deprecation handlers, then read the live quiet integer count.
 Success detaches a late target alias; supplied throw or a negative count preserves
 callback writes and aliases. Four exact originals and 526 focused SL premises pass
 in the [shift-assignment ledger](coverage/semantics/shiftassign-warning-review.json).
+With a quiet integer left value, `<<=`/`>>=` also retain both converted longs
+through a fractional-count deprecation. Success detaches a late alias; supplied
+throw or a captured negative count preserves it. A captured count of `64` keeps
+the original signed-right-shift result. Five exact originals and 674 focused SL
+premises pass in the [RHS shift ledger](coverage/semantics/shiftassign-right-warning-review.json).
 Explicit array-to-string casts now suspend through named warning handlers for
 a bounded plain-CV array input. The borrowed array adds no saved owner: replacing
 or removing its CV still yields fixed `Array`, while a supplied throw preserves

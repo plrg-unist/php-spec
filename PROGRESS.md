@@ -7,6 +7,24 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+With a quiet integer left operand, plain-CV `<<=`/`>>=` now keep both converted
+longs through a fractional-count deprecation. Captured `-12`/`2` from `2.5` stores
+`-48`/`-3` despite callback `99`/`1`, detaching a late alias. Supplied throw cancels
+storage; cached negative count still raises original-line `ArithmeticError` after
+a live positive rewrite, while cached `64` keeps the original right-shift sign.
+Five exact originals pass at ebefecafe; 151/151/136 author plus 122/114 independent
+SL premises pass 674 at 6312d9683/399, covering fresh both-cache/source/op/line
+refusals, actual cells/owners, default Deprecated and budgets. Checked prep reuses
+retained source/native bytes. Native/baseline/prep/syntax and the pre-PHP taskset
+launcher failure retain0; pure ready projections establish refusals only.
+Both-fractional operands, initial references/copies, unsafe targets and wider
+callbacks/lifecycle remain partial; OP12 stays paused.
+[RHS shift-assignment ledger](coverage/semantics/shiftassign-right-warning-review.json).
+
+Composed over e90b3a746/399 after pointwise review of Generator, stdClass/define,
+property-empty/list and typed assigned-return seams. Source5/state674 retain their
+private cuts; no joined actor, replay or renewed credit.
+
 Terminal inherited `empty` now accepts null/bool/int and byte-string getter results
 within the existing CV/literal private-property slice; identity carriers are
 authenticated. Empty bytes and sole ASCII `0` are empty strings; NUL and `0` plus NUL are not. One further

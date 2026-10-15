@@ -248,6 +248,20 @@ and budgets are covered. Pure ready projections establish refusals only. Initial
 references/copies, warning or noninteger counts, unsafe targets and wider lifecycle
 remain partial.
 
+With a quiet signed-64-bit integer LEFT, distinct initially plain CV `<<=`/`>>=`
+cache both longs before a fractional-RHS deprecation. Captured `-12`/`2` from `2.5`
+stores `-48`/`-3` despite callback `99`/`1`, detaching a late alias. Supplied throw
+cancels storage. A cached negative count still raises RHS-line `ArithmeticError`
+after the live count becomes positive; a captured `64` uses the original LEFT
+sign for right shift. Resumption checks the safe original target without rereading
+either numeric operand. Five exact originals and 438 author plus 236 independent
+SL premises pass in the
+[RHS shift ledger](../../coverage/semantics/shiftassign-right-warning-review.json).
+Both source directions, fresh cache/source/op/line guards, actual cells/owners,
+default Deprecated and budgets are covered. Pure projections establish refusals
+only. Both-fractional operands, initial references/copies, unsafe targets and wider
+lifecycle remain partial; earlier modulo/LEFT-shift contracts stay unchanged.
+
 Arithmetic and bitwise conversion use the existing pure SpecTec numeric and byte
 helpers, including signed 64-bit boundaries, binary64 values, string operands,
 pinned power behavior and conversion diagnostics. Explicit casts keep their
