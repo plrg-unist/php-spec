@@ -105,7 +105,8 @@ including authenticated request-string leaves and immutable and mutable empty ro
 Existing COW handles nested writes and references without modifying the constant
 or another query result. Three author sources agree at `82cd`, an independent
 reference/append-history source agrees at `fa767`, and 327 public premises pass
-at `fa767`. Private acceptance is complete; actual-parent integration is pending.
+at `fa767`. Composition over `3eddc5f9` passes full 394-module SL initialization
+at `8dc83f69`; private source/state cuts remain unchanged.
 The unchanged query baseline and initial fixture parse failure retain zero credit.
 [Array-query review](coverage/semantics/global-constant-array-review.json).
 
