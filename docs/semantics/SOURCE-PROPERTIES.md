@@ -81,8 +81,18 @@ without invoking GET. The source distinguishes physical10/get23, assignment20
 return20/physical33/get46, and pre-body bad-array rejection with caller26. Two
 real cuts pass210 premises (181 reached,29 derived), including both crossed
 accesses and original-input restoration. Setter overlap remains Unsupported;
-other order/body, trait, reference and wider override families remain required.
+other order/body, unadmitted trait, reference and wider override families remain required.
 [Paired-hook review](../../coverage/semantics/paired-backed-get-set-hook-review.json).
+
+The same fixed statement GET/implicit-SET pair now imports directly from one
+nonnested Trait into a parentless Consumer. Both raw functions authenticate an
+atomic two-clone projection; incomplete partners keep read/write interception
+required while refusing a plan. Genuine GET24/cross-write6 and SET25/cross-read10
+prove Trait magic, Consumer scope, return23 and original20/store33/get46. Two cuts
+pass333 premises (280 reached,53 derived), including partner/source/type,
+raw-row callable and crossed-frame controls. Parented/nested/adapted pairs,
+explicit parameters and other body/order forms remain required.
+[Paired trait-hook review](../../coverage/semantics/trait-imported-paired-hooks-review.json).
 
 Effective virtual getters without defaults retain the same declaration, function
 and return type while omitting the physical slot. The receiver owns no returned-value edge;

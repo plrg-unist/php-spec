@@ -7,6 +7,16 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+A selected direct backed Trait GET/implicit-SET pair now imports both Consumer
+clones atomically, retaining raw Trait code and magic. Missing raw partners keep
+interception required while refusing a call plan. Real GET self-write and SET
+self-read bypass both hooks; assignment20 returns20 after storage33/get46.
+The original source and strict 394-module initialization pass at 8d33; two
+state checks pass333 premises (280 reached,53 derived) at03ba.
+Other pair order/body/import forms remain partial. [Review](coverage/semantics/trait-imported-paired-hooks-review.json).
+The 394-module composition over24b84e08 adds no current actor; actual incoming
+paths are disjoint and private results retain their recorded revisions.
+
 Class-qualified `defined` now initializes a requested untyped plain-global-name
 member before returning true. Inaccessible members stay false without evaluation;
 a missing global raises the actual `defined` Error and permits retry after
