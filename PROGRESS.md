@@ -8512,7 +8512,9 @@ failures and interrupted evidence.
   continuations are also integrated. M75-M77 add bounded nullable integer assignment
   VALUE returns across a caught finalizer, including one effectful positional argument
   and one folded integer RHS. M78 adds a flat owning-array assignment return with
-  a witnessed x-table copy and detached NULL restoration.
+  a witnessed x-table copy and detached NULL restoration. M79 adds a bounded
+  ordinary-object assignment return through destructor release and caught
+  selected-reference recheck.
   Other VALUE signatures/layouts, general CONST/other
   NULL and multiple-active histories, genuinely released
   CV targets, destructor throw/reentry, real suspension and wider typed consumers
@@ -8559,6 +8561,21 @@ LINE refusal and budget. The old literal can remain pool-owned, so this does
 not isolate pending-root COW causality or prove collection. Its first fixture
 compiler binding failure has zero state credit; only the affected fixture was
 rerun. [M78 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M79's assigned `($x = old_value())` with one runtime-created C instance
+retains old object ownership through finalizer `$x = null`; selected-y
+replacement releases it and runs `D` between the two `I` markers.
+The direct no-argument control has `F:0`; assignment has `F:1`.
+Both exact originals end in detached caller NULL, `r=b42`, `xNULL/y0`,
+and one old-line Notice. Native2 and unchanged baseline at private
+`6512137c`/399 show direct exact/assigned Unsupported; strict/source2
+pass at `02ffe678`/399. One assigned 131-premise reached fixture validates
+the saved f destructor prefix while D runs, old modeled HOBJECT retirement
+after release, root-free consumed marker, raw NULL/new Notice, caller aliases,
+saved-LINE refusal and D-cut budget. The first fixture's failed stage search
+has zero state credit; only its active-state timing predicate was corrected
+and rerun. This proves neither physical Zend collection nor throwing or
+reentrant destructors; no prior return fixture was replayed.
+[M79 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, destructor throw/reentry, real suspension and wider typed
