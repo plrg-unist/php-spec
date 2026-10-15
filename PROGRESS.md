@@ -7,6 +7,14 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Selected inherited `__unset(string): void` now dispatches direct CV/literal-name
+access to a declared private property. Accessible public unset skips magic;
+the callback retains Parent lexical scope and Child called scope, removes the
+private slot and sets `seen=13`. Source1 passes at 37ff84dd; current state
+212 =165 reached +47 derived passes at ed8cccb4, including actual abrupt frame cleanup
+and one saved receiver-owner release. Wider names/receivers and recursive magic
+remain unsupported. [Review](coverage/semantics/magic-unset-review.json).
+
 Public private(set) backed implicit class setters now retain their public slot key
 and implicit finality. An inherited Parent writer on Child stores33 and returns
 original20; Child/global array writes fail access, while Parent array reception

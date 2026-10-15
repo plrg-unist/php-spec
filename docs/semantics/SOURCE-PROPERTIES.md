@@ -407,7 +407,24 @@ Hooked object iteration is explicit Unsupported rather than a raw storage view;
 array casts retain ordinary storage only. Defaulted virtual/set/byref hooks,
 other inheritance/traits, temporary/computed receivers, other compound operators/RHS
 forms, wider coalescing assignment and
-quiet/reference/indirect access and `__unset` declarations/consumers remain boundaries.
+quiet/reference/indirect access and wider `__unset` consumers remain boundaries.
+
+A parentless class may declare a public nonstatic `__unset(string $name): void`
+with one required by-value parameter, inherited unchanged by Child. For a direct
+CV receiver and literal declared private name, pending unset resolves receiver/name
+before the internal call. An accessible initialized public slot still uses ordinary
+unset. The selected inherited-private raw-name lookup invokes Parent's method with
+Child called scope; its ordinary lexical unset removes the real private slot.
+The saved RESULT retains one receiver owner through normal return or abrupt frame
+unwind. Guard authority requires that internal call and its adjacent saved frame;
+an ordinary direct call to the same method gains no implicit guard.
+One native/source original and a genuine state cut212 =165 reached +47 derived
+cover public bypass, typed name reception, private deletion, `seen=13` and restoration;
+abrupt cleanup is a task-local derived check. Other signatures, absent/public-unset
+or protected callback selection, wider receivers/names and recursive magic remain
+unsupported. `__isset` is still required. Unrecognized pending receivers or names conservatively stop
+when a declared `__unset` exists, without evaluating a receiver in demand detection.
+[Magic unset review](../../coverage/semantics/magic-unset-review.json).
 
 Constructor promotion declares a property from its original parameter flags and
 source occurrence. A parameter default does not initialize the property, and

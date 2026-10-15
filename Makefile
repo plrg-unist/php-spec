@@ -914,6 +914,8 @@ test-semantics: build
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/private_set_backed_hook_cases.json
 	python3 tests/semantics/private_set_backed_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group receive
 	python3 tests/semantics/private_set_backed_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group errors
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_unset_cases.json
+	python3 tests/semantics/magic_unset_protocol.py --revision "$$(git rev-parse HEAD)" --group magic
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_publication_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_composed_retry_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/assertion_cases.json
