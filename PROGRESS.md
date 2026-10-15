@@ -7,6 +7,15 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Class-qualified `constant` now evaluates a requested untyped class initializer
+that reads a plain global constant, without updating unrelated members. Failure
+restores the class context without caching; defining the missing global permits
+retry. Actual request-string carriers survive initialization and later caller CV
+writes. Two exact sources and two public fronts/314 premises pass; native,
+unchanged baseline and preparations retain 0. Other deferred initializers and
+wider value/class domains remain open.
+[Deferred-query ledger](coverage/semantics/class-qualified-constant-deferred-review.json).
+
 Builtin Throwable and admitted source-subclass int/float comparisons now
 enter numeric Notice handlers with the correct nominal kind or source name.
 The receiver image does not consult formatter fields. Three original sources
@@ -115,9 +124,9 @@ raises an API Error; named autoload retains its full query and selection across
 real caller CV mutations, then resumes once. Two exact sources retain runtime
 diffs a26b/9960; two public fronts/384 premises pass with runtime diff 9960, including
 value types, raw-to-installed string class and Error trace authority. The original
-selected failure, baseline/native/preparation evidence retain 0. Global queries,
-deferred evaluation, wider values/class kinds/coercions and owning forms remain
-Unsupported. [Qualified-constant ledger](coverage/semantics/class-qualified-constant-review.json).
+selected failure, baseline/native/preparation evidence retain 0. At that cut, global
+queries, deferred evaluation, wider values/class kinds/coercions and owning forms
+remain Unsupported. [Qualified-constant ledger](coverage/semantics/class-qualified-constant-review.json).
 The 393-module composition over d3c27de8 passes independent pointwise review at
 b19ee1e7; accepted runtime deltas/protocol and incoming setter/comparison paths
 are preserved. No renewed actor/source/state evidence is claimed.

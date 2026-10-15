@@ -872,7 +872,7 @@ query domains remain Unsupported.
 Class-qualified `constant` returns folded primitive/literal values with lexical
 visibility and API Errors. Named autoload retains the captured query across caller
 CV changes. [Two exact sources and 384 public premises](coverage/semantics/class-qualified-constant-review.json)
-cover value types, string provenance and one-shot resume; deferred
+cover value types, string provenance and one-shot resume; at that cut, deferred
 evaluation and wider domains remain Unsupported.
 [Array-valued qualified `constant` queries](coverage/semantics/class-qualified-constant-array-review.json)
 now share source-pooled nonempty literal trees until ordinary COW writes or reference
@@ -884,6 +884,11 @@ now preserve pooled root/child identity. Emptied copies retain append history,
 and a reference to an empty bucket separates its child only on write. Two exact
 sources and 244 public premises cover provenance and delayed COW; mutable-empty
 query values and deferred/nonliteral arrays remain Unsupported.
+[Deferred qualified values](coverage/semantics/class-qualified-constant-deferred-review.json)
+now initialize only the requested untyped plain-global-name member. Missing values
+leave no cache and can be retried; request-string identity survives later CV writes.
+Two exact sources and 314 public premises cover API traces, context restoration,
+cache custody and carrier checks. Other deferred initializer/value domains remain open.
 [Untyped positional defaults](docs/semantics/SOURCE-POSITIONAL-DEFAULTS.md) now preserve
 omitted receives, declaration context, observable caches and fresh reference/array
 ownership. [Independent acceptance](coverage/semantics/default-parameter-review.json)

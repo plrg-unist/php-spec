@@ -165,6 +165,19 @@ Acquiring a reference to an empty bucket separates its parent while the referenc
 cell still holds the shared immutable child; append separates that child later.
 Two exact sources and two public fronts/244 premises cover these distinctions in
 the [empty-query ledger](../../coverage/semantics/class-qualified-constant-empty-review.json).
+Deferred untyped class members with a plain global-name initializer use the
+existing per-value evaluator/cache. The captured API query stays in its real resume;
+a nonowning selection must match the adjacent declaration binder and that exact
+resume. An unrelated bad sibling is not evaluated, and these queries never mark the
+whole class table updated. Missing globals raise `Error` with the API line and full
+query trace; failed evaluation restores context without a cache entry, so later
+definition permits retry. Successful runtime string values retain their authenticated
+carrier and allocation class, without the direct-literal interning step. Class-only
+fact/cache guards compare that carrier with its immutable global row; generic global
+publication rules are unchanged. Existing structural variable-input policy remains.
+Two exact sources and two public fronts/314 premises cover those distinctions in the
+[deferred-query ledger](../../coverage/semantics/class-qualified-constant-deferred-review.json).
+
 Mutable-empty/deferred/nonliteral class-array query values and wider domains remain open.
 
 Global `constant` queries now read primitive user values, authenticated interned or
@@ -192,7 +205,7 @@ exception-class lookup and `ZVAL_COPY_OR_DUP`; `zend_declare_typed_class_constan
 interns direct string values before installation.
 Nested empty values in `define`, cycles, objects, array duplicate/third-argument paths,
 name/flag coercion, startup/special-name warnings,
-keyword/internal/trait/interface/enum class queries, deferred value initialization,
+keyword/internal/trait/interface/enum class queries, other deferred initializers,
 owning/FCC call forms and wider conversion/arity paths remain Unsupported. The [dynamic ledger](../../coverage/semantics/dynamic-constants-review.json)
 keeps the source and public-state cuts separate; it makes no native allocation-identity
 or full constant-family claim.
