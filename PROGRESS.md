@@ -1712,6 +1712,8 @@ groups pass 562 premises at 5df4; two affected prior guards pass 133 separately.
 Native/baseline cuts and the original alias-fixture failure retain zero agreement.
 Named tails, other type shapes, wider sources and live replacement remain open.
 [Typed variadic reference review](coverage/semantics/iterator-call-unpack-reference-typed-positional-variadic-review.json).
+Canonical394 composition over `b2c8b1ce1` passes inventory and strict SL at
+`6c04f7455`; private source/state evidence retains its original cut.
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or
