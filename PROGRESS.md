@@ -17,8 +17,10 @@ Two original sources agree at cd8121ee; author 76 and independent strict 120 pub
 premises pass 196 at ba8d720c, checking exact row-only actual steps, immutable facts,
 carrier/source/throw refusals and whole budget resumption. A key present after the
 first throw still needs a pending duplicate-warning protocol; wider values and
-NULL/NaN flag reception remain separate. Private acceptance is complete;
-actual-parent integration is pending.
+NULL/NaN flag reception remain separate. The 395-module composition over af5b5255
+passes full SL load/elaboration at 8044e425; its true fixture makes no PHP application
+or initial-state assertion. Independent pointwise review preserves the incoming parent;
+source2/public196 retain their private revisions without replay.
 [Boolean-tail review](coverage/semantics/define-bool-flag-pending-review.json).
 
 String-name `define` now receives int/string/non-NaN float flags with primitive
