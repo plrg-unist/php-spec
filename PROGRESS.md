@@ -203,8 +203,9 @@ shared identity, static cells and callable scope. Two author sources agree at
 two genuine query groups pass 475 SL premises at `8e5c038d`. Checks distinguish
 one versus two table owners, alias declaration from original receipt, mutable
 counter cells and RESULT ownership. The unchanged query baseline retains zero
-credit. Private acceptance is complete; actual-parent integration is pending.
-Generic objects, object-bearing arrays and wider argument conversion remain open.
+credit. Composition over `91e8184a` passes full 394-module SL initialization at
+`8b6e3f5e`, preserving V51 and all incoming rules; private source/state cuts remain
+unchanged. Generic objects, object-bearing arrays and wider conversion remain open.
 [Closure-query review](coverage/semantics/global-constant-closure-review.json).
 
 Class-qualified `constant` now admits source-authenticated immutable empty array

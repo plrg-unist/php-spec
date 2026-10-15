@@ -1,6 +1,6 @@
 {
   "scope": "Global constant() returns of already-certified PVCLOSURE values. Partial core.",
-  "status": "independently_accepted_private",
+  "status": "independently_accepted_actual_parent",
   "reviewer": "/root/core_breadth_review_01",
   "parent": "a3d23c9352c8b85630e20626632356645fe2b17b",
   "semantic_revision": "d7aa877c9207339fc433ffa88adbe586614ad8be",
@@ -53,11 +53,18 @@
     "author/review/native-report.json": "0e7051338ef37fcde5ac5aa966b21ba34fd6d42e1e3ae8205b9e22b664f843d3",
     "author/sources/baseline-report.json": "ab13149e40a7cc8f3f5243e3e75690e155461d9f2777e09c7384114912c50fe6",
     "author/sources/model-report.json": "feee769e428aaa0e5331d6dab35d56046d63d99ef605c6202a5f025c51e1dd51",
-    "author/sources/native-report.json": "0610cae8c3f34400d10bdb838dea1f14ad03b96cbd39366659efbbbf6c7f1551"
+    "author/sources/native-report.json": "0610cae8c3f34400d10bdb838dea1f14ad03b96cbd39366659efbbbf6c7f1551",
+    "join/report.json": "5a8cc12ab3f6823cb281d2fd4d899b3db7b2e4814108291f8e1faaddeff2df2f"
   },
-  "recovery": "Three owned ignored raw trees moved without copies after reviewer STOP/process no-use checks; hashes unchanged. Recreate .tools/source-global-closure-query-25 at the recorded revisions and restore author/{sources,public,review} as its .tools/global-closure-query-{native,public,review}-25. Original absolute cwd/source identities and Git cuts remain preserved; maintained scripts can create fresh packets.",
+  "recovery": "Three owned ignored raw trees moved without copies after reviewer STOP/process no-use checks; hashes unchanged. Recreate .tools/source-global-closure-query-25 at the recorded revisions and restore author/{sources,public,review} as its .tools/global-closure-query-{native,public,review}-25. Original absolute cwd/source identities and Git cuts remain preserved; maintained scripts can create fresh packets. Restore join to .tools/source-global-closure-query-join-25/.tools/global-closure-query-current-parent-25 at the recorded candidate for its historical loader.",
   "remaining": "Generic PVOBJECT, object-bearing array leaves, wider coercions and packed/owning calls remain outside this slice. Core remains partial. No engine bug or intentional divergence.",
-  "actual_parent_integration": null,
+  "actual_parent_integration": {
+    "parent": "91e8184ab4c4e0c722c3d9b3a0154ca773793192",
+    "candidate": "8b6e3f5e13e877598db648cf6752991a3bd43781",
+    "report": "join/report.json",
+    "command": "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 120s prlimit --as=3221225472 -- taskset -c 2 python3 .tools/global-closure-query-current-parent-25/run.py",
+    "result": "Full394 SL loading/initialization trueLF/0/emptyerr,7.429s, inputs/HEAD stable, reaped/groups[]. Exact private +5 arm preserves V51 class-defined, PVINSTANCE/HALT and all other parent runtime/manifest bytes. Private source3/public475 cuts unchanged; no new application/source/state agreement."
+  },
   "commands": [
     "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 2 python3 tests/semantics/global_constant_closure_sources.py --phase native --output .tools/global-closure-query-native-25",
     "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 2 python3 tests/semantics/global_constant_closure_sources.py --phase baseline --case closure-identity-and-shared-statics --output .tools/global-closure-query-native-25",
