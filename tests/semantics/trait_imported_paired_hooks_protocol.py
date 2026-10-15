@@ -107,8 +107,8 @@ COMMON = ['$class_named(S.CLASSNAMES,$ptlc($ptascii("ImportedPairedHookTrait76")
  'PROPERTY_PUBLIC /\\ ppropertydesc_source.SETVISIBILITY = eps',
  '$property_default_state(S,ppropertydesc_source) = (PROP_VALUE (DIRECT (PINT 10))) /\\ '
  '~ppropertydesc_source.STATIC /\\ ~ppropertydesc_source.READONLY /\\ ~ppropertydesc_source.FINAL',
- '$property_hook_pair_declared(S,ppropertydesc_source) /\\ $property_hook_pair_origins(S,ppropertydesc_source) = '
- 'porigin_get_source :: porigin_set_source :: eps',
+ '$property_hook_pair_declared(S,ppropertydesc_source)',
+ '$property_hook_pair_origins(S,ppropertydesc_source) = porigin_get_source :: porigin_set_source :: eps',
  '$property_hook_origin(S,ppropertydesc_source) = (porigin_get_source) /\\ '
  '$property_set_origin(S,ppropertydesc_source) = (porigin_set_source) /\\ '
  '~$property_hook_virtual(S,ppropertydesc_source)',
@@ -165,8 +165,8 @@ COMMON = ['$class_named(S.CLASSNAMES,$ptlc($ptascii("ImportedPairedHookTrait76")
  '$property_hook_pair_declared(S,ppropertydesc) /\\ $property_hook_pair_origins(S,ppropertydesc) = eps',
  '$property_set_trait_source(S,pclassdesc_consumer,ppropertydesc_source) = (porigin_set_source) /\\ '
  '$property_hook_trait_import_supported(S,pclassdesc_consumer,ppropertydesc_source)',
- '$property_hook_trait_origin(S,ppropertydesc) = (porigin_get) /\\ $property_set_trait_origin(S,ppropertydesc) = '
- '(porigin_set)',
+ '$property_hook_trait_origin(S,ppropertydesc) = (porigin_get)',
+ '$property_set_trait_origin(S,ppropertydesc) = (porigin_set)',
  'porigin_get = TRAIT_ORIGIN porigin_consumer porigin_get_source ($hook_name(ppropertydesc.NAME))',
  'porigin_set = TRAIT_ORIGIN porigin_consumer porigin_set_source ($property_set_name(ppropertydesc.NAME))',
  '$property_hook_effective_origin(S,ppropertydesc) = (porigin_get) /\\ $property_set_origin(S,ppropertydesc) = '
@@ -218,8 +218,8 @@ GET = ['$tpp_stage(S,0)',
  'PROPERTY_PUBLIC /\\ ppropertydesc_source.SETVISIBILITY = eps',
  '$property_default_state(S,ppropertydesc_source) = (PROP_VALUE (DIRECT (PINT 10))) /\\ '
  '~ppropertydesc_source.STATIC /\\ ~ppropertydesc_source.READONLY /\\ ~ppropertydesc_source.FINAL',
- '$property_hook_pair_declared(S,ppropertydesc_source) /\\ $property_hook_pair_origins(S,ppropertydesc_source) = '
- 'porigin_get_source :: porigin_set_source :: eps',
+ '$property_hook_pair_declared(S,ppropertydesc_source)',
+ '$property_hook_pair_origins(S,ppropertydesc_source) = porigin_get_source :: porigin_set_source :: eps',
  '$property_hook_origin(S,ppropertydesc_source) = (porigin_get_source) /\\ '
  '$property_set_origin(S,ppropertydesc_source) = (porigin_set_source) /\\ '
  '~$property_hook_virtual(S,ppropertydesc_source)',
@@ -276,8 +276,8 @@ GET = ['$tpp_stage(S,0)',
  '$property_hook_pair_declared(S,ppropertydesc) /\\ $property_hook_pair_origins(S,ppropertydesc) = eps',
  '$property_set_trait_source(S,pclassdesc_consumer,ppropertydesc_source) = (porigin_set_source) /\\ '
  '$property_hook_trait_import_supported(S,pclassdesc_consumer,ppropertydesc_source)',
- '$property_hook_trait_origin(S,ppropertydesc) = (porigin_get) /\\ $property_set_trait_origin(S,ppropertydesc) = '
- '(porigin_set)',
+ '$property_hook_trait_origin(S,ppropertydesc) = (porigin_get)',
+ '$property_set_trait_origin(S,ppropertydesc) = (porigin_set)',
  'porigin_get = TRAIT_ORIGIN porigin_consumer porigin_get_source ($hook_name(ppropertydesc.NAME))',
  'porigin_set = TRAIT_ORIGIN porigin_consumer porigin_set_source ($property_set_name(ppropertydesc.NAME))',
  '$property_hook_effective_origin(S,ppropertydesc) = (porigin_get) /\\ $property_set_origin(S,ppropertydesc) = '
@@ -388,8 +388,8 @@ SET = ['$tpp_stage(S,7)',
  'PROPERTY_PUBLIC /\\ ppropertydesc_source.SETVISIBILITY = eps',
  '$property_default_state(S,ppropertydesc_source) = (PROP_VALUE (DIRECT (PINT 10))) /\\ '
  '~ppropertydesc_source.STATIC /\\ ~ppropertydesc_source.READONLY /\\ ~ppropertydesc_source.FINAL',
- '$property_hook_pair_declared(S,ppropertydesc_source) /\\ $property_hook_pair_origins(S,ppropertydesc_source) = '
- 'porigin_get_source :: porigin_set_source :: eps',
+ '$property_hook_pair_declared(S,ppropertydesc_source)',
+ '$property_hook_pair_origins(S,ppropertydesc_source) = porigin_get_source :: porigin_set_source :: eps',
  '$property_hook_origin(S,ppropertydesc_source) = (porigin_get_source) /\\ '
  '$property_set_origin(S,ppropertydesc_source) = (porigin_set_source) /\\ '
  '~$property_hook_virtual(S,ppropertydesc_source)',
@@ -446,8 +446,8 @@ SET = ['$tpp_stage(S,7)',
  '$property_hook_pair_declared(S,ppropertydesc) /\\ $property_hook_pair_origins(S,ppropertydesc) = eps',
  '$property_set_trait_source(S,pclassdesc_consumer,ppropertydesc_source) = (porigin_set_source) /\\ '
  '$property_hook_trait_import_supported(S,pclassdesc_consumer,ppropertydesc_source)',
- '$property_hook_trait_origin(S,ppropertydesc) = (porigin_get) /\\ $property_set_trait_origin(S,ppropertydesc) = '
- '(porigin_set)',
+ '$property_hook_trait_origin(S,ppropertydesc) = (porigin_get)',
+ '$property_set_trait_origin(S,ppropertydesc) = (porigin_set)',
  'porigin_get = TRAIT_ORIGIN porigin_consumer porigin_get_source ($hook_name(ppropertydesc.NAME))',
  'porigin_set = TRAIT_ORIGIN porigin_consumer porigin_set_source ($property_set_name(ppropertydesc.NAME))',
  '$property_hook_effective_origin(S,ppropertydesc) = (porigin_get) /\\ $property_set_origin(S,ppropertydesc) = '
