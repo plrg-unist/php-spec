@@ -1,6 +1,6 @@
 {
   "scope": "Int/bool/float define names with nonowning primitive values and an omitted/already-false flag. Partial core.",
-  "status": "independently_accepted_private",
+  "status": "independently_accepted_actual_parent",
   "reviewer": "/root/core_breadth_review_01",
   "parent": "00bb9d0b89c10fabd8f554a6aac31386dd867396",
   "semantic_revision": "425a55432a1c811481293d7517ee95e0466e2db9",
@@ -42,7 +42,8 @@
     "author/sources/baseline-report.json": "99905b08e3feb570bffcff564682298c99417d0473b52a4db65e26092615340f",
     "author/sources/model-initial-report.json": "a1d2b2b53485902995b7e2d90d90e27290c0c41b1e683c92cecb37b5404d9bae",
     "author/sources/model-report.json": "77592d9a115dd439049069db391cabd9cc3f7c9497da0ea42882162ba366afe1",
-    "author/sources/native-report.json": "a64148a7a0af532d38c1e981a1e6c506d1185ddb5e9bd3fb4713d3f841e97934"
+    "author/sources/native-report.json": "a64148a7a0af532d38c1e981a1e6c506d1185ddb5e9bd3fb4713d3f841e97934",
+    "join/report.json": "fe2b2d33960089bc5b427b53e974d2ced57c44fade36004fd3a5d667eea59dd9"
   },
   "commands": [
     "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_scalar_name_sources.py --phase native --output .tools/define-scalar-name-native-28",
@@ -55,7 +56,13 @@
     "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_scalar_name_protocol.py --phase prepare --case captured-name-value-and-duplicate-warning --case strict-name-errors-after-all-argument-effects --sources .tools/define-scalar-name-native-28 --output .tools/define-scalar-name-public-fixed-28",
     "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 240s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_scalar_name_protocol.py --phase check --case captured-name-value-and-duplicate-warning --case strict-name-errors-after-all-argument-effects --sources .tools/define-scalar-name-native-28 --output .tools/define-scalar-name-public-fixed-28"
   ],
-  "recovery": "Four owned ignored trees moved once without copies after reviewer STOP and focused cwd/cmdline/fd no-use scan; report hashes unchanged. Restore author/sources,public-initial,public,review as .tools/define-scalar-name-{native,public,public-fixed,review}-28 in .tools/source-define-scalar-name-28 at recorded revisions. Failed source/peer model outputs are preserved under model-initial names; refs retain exact historical cuts.",
+  "recovery": "Four owned ignored trees moved once without copies after reviewer STOP and focused cwd/cmdline/fd no-use scan; report hashes unchanged. Restore author/sources,public-initial,public,review as .tools/define-scalar-name-{native,public,public-fixed,review}-28 in .tools/source-define-scalar-name-28 at recorded revisions. Failed source/peer model outputs are preserved under model-initial names; refs retain exact historical cuts. Restore join to .tools/source-define-scalar-name-join-28/.tools/define-scalar-name-current-parent-28 at the tested candidate for its historical loader.",
   "remaining": "Initial-constant names, null/Stringable/array name reception, array/object values with scalar names, true/coerced flags, packed/owning/FCC calls and wider arity remain separate. Core remains partial; no engine bug or intentional divergence.",
-  "actual_parent_integration": null
+  "actual_parent_integration": {
+    "parent": "32234352d35d446cca3001c886495f4432280f12",
+    "candidate": "aef78180c2556124c51ca63cfe355920d16f472f",
+    "report": "join/report.json",
+    "command": "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 120s prlimit --as=3221225472 -- taskset -c 5 python3 .tools/define-scalar-name-current-parent-28/run.py",
+    "result": "Full394 SL loading/initialization trueLF/0/emptyerr,7.465s, stable inputs/HEAD, no timeout, reaped/groups[]. Exact private30+1/400+138 preserves all other parent runtime/manifest bytes. Incoming byref-finally, global-constant NEW/autoload, object comparison, virtual SET and ADD_ASSIGN selectors are absent from these sources; peer Exception construction is ordinary. No application/source/state agreement added; source4/public351 keep their private cuts."
+  }
 }

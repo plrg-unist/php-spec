@@ -18,9 +18,11 @@ Author3 at 3e61a3a9 and an independent reordered-named source at 425a5543 agree;
 handler resume, source/identity refusals, strict TypeError and budget equality.
 Original elaboration, mapping and fixture failures remain zero credit. Null,
 Stringable/array names, array/object values with scalar names, true/coerced flags,
-packed/owning calls and wider arity remain separate. Private validation is accepted;
-current-parent integration is pending.
+packed/owning calls and wider arity remain separate.
 [Scalar-define review](coverage/semantics/define-scalar-name-review.json).
+The 394-module composition over32234352 passes full SL initialization at aef78180.
+Independent pointwise review preserves the parent; source4/public351 retain their
+private cuts without a replay.
 
 Global constant AST `new` now runs autoload before target allocation or argument
 reads, then resumes with its authentic declaration context and loaded constructor.
