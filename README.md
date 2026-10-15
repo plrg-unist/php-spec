@@ -1844,6 +1844,11 @@ string caches and previous links remain intact. Wider limits are unchanged.
 now compare with order zero within the same runtime class, preserving their VM
 and capture state. Three exact sources and 409 reached premises/14 raw steps
 cover created, suspended and completed values, later aggregate casts and throw cleanup.
+[Closure and resumable numeric Notices](coverage/semantics/internal-numeric-comparison-review.json)
+now retain fixed class images for real/named Closures, Generators and Fibers.
+Three exact sources and 317 reached premises/13 raw steps preserve saved second
+numbers, captured children and aggregate cleanup, with no callable invocation or VM
+resumption by the numeric cast.
 [Match expressions](docs/semantics/SOURCE-MATCH.md) preserve strict, lazy arm
 selection, delayed CV subjects, ordered compiler diagnostics and owned value
 results; their [review](coverage/semantics/match-review.json) binds source, compiler

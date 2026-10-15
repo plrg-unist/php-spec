@@ -68,6 +68,13 @@ Numeric failure invokes no `__toString`, even a source override. A second
 handler can throw the original compared Exception while preserving its
 previous link, cold cache, caller catch/finally and existing quiet cancellation.
 
+[Closure, Generator and Fiber comparison Notices](../../coverage/semantics/internal-numeric-comparison-review.json)
+reuse restoration and saved 1/1.0 through both phases for admitted runtime tags.
+A captured real Closure can become the second receiver and throw the supplied
+TypeError while retaining genuine child edges, recursion guards and finally cleanup.
+The numeric cast itself does not invoke a callable or resume a VM; quiet
+pending-exception limits are unchanged.
+
 Private-final compiler diagnostics retain E_COMPILE_WARNING (128) severity
 and bypass callbacks in both direct reporting and dynamic compile queues.
 The reporting mask still controls display. E_WARNING (2) and E_DEPRECATED (8192)

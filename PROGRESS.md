@@ -7,6 +7,16 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+
+Real/named Closure, Generator and Fiber numeric comparisons now enter Notice
+callbacks through finite class images. Existing pair comparisons and VM storage
+stay unchanged. Three exact sources and author and independent tests pass 317
+premises (286 setup + 31 pure) and 13 raw steps at 0187401a/394, including live
+versus copied operands, saved float across a second Notice, real captured children,
+COW and same-TypeError/finally cleanup with cold bodies. The unchanged refusal,
+initialization and syntax preparation retain zero agreement. Other Closure bodies
+and wider handlers/lifetimes remain open; pending exceptions still require a quiet remainder.
+[Internal numeric Notice ledger](coverage/semantics/internal-numeric-comparison-review.json).
 Selected HALT-offset queries now retain the first registration for the API
 call site's compiled filename, while fixed raw literal `defined` keeps its
 separate false result. Repeated eval returns runtime offset 111 alongside

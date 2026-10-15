@@ -63,6 +63,14 @@ parents. Names come from the kind or source class, never allocation origins.
 Numeric conversion does not call `__toString` or read formatter fields;
 caches and previous links stay intact. A direct static read is a copied value,
 distinct from an aggregate pre-unwrapped cell retained across rebinding.
+[Finite Closure/resumable numeric leaves](../../coverage/semantics/internal-numeric-comparison-review.json)
+now admit normalized real/named Closure bodies and actual Generator/Fiber tags.
+Their fixed names authenticate Notice messages without consulting callable, capture
+or VM contents. Live admission checks allocation; documentary post-message images
+check bounds and tags without adding owners. Private second-Notice targets and
+existing aggregate pointers/guards survive handlers. The numeric cast itself
+does not invoke a callable or resume a VM.
+Other Closure bodies remain outside this admitted callback route.
 Other internal/custom comparison handlers, legacy materialized callbacks without a
 retained cursor and wider handler/lifetime behavior remain open.
 

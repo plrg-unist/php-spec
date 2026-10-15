@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "milestone": "COMP60",
+  "status": "independently reviewed and accepted within the stated numeric-comparison domain",
+  "behavior": "Finite real/named Closure, Generator and Fiber images enter numeric Notice callbacks; the numeric cast itself invokes no callable and resumes no VM. Existing saved-target and aggregate continuations are reused.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "tested_revision": "0187401a5b02cd3c0bf0347854390c0939bceece",
+  "ordered_modules": 394,
+  "manifest_sha256": "16b07a5d2e6754f502c05eb8dfb19d5d4c56d076cc50fbbc91ed82a4cca5a9a4",
+  "implementation": {
+    "path": "spec/semantics/402-object-numeric-comparisons.watsup",
+    "sha256": "46e7286ed8ef1ade81416e492140546c0ddb6e97afeac97f11f16bc78fd9c359",
+    "contract": [
+      "NUMBER_CLOSURE recognizes only object_body-normalized REALCLOSURE/NAMEDCLOSURE; Generator/Fiber images require the actual outer tags. Names are fixed builtin spellings.",
+      "Begin admission requires a live allocation and nonfreeing receiver; documentary post-message images require bounds/tag only. No source origin, callable/VM/capture test or receiver owner is invented.",
+      "SOURCE, pointers, generic207 handlers, saved SECOND target, guard/owner scans, quiet cancellation and 52 pair comparisons are unchanged."
+    ]
+  },
+  "engine_basis": [
+    "Zend/zend_closures.c: zend_closure_compare/ZEND_COMPARE_OBJECTS_FALLBACK for mixed scalar operands",
+    "Zend/zend_generators.c and zend_fibers.c: standard handler copies",
+    "Zend/zend_object_handlers.c: zend_std_compare_objects failed numeric cast and private 1/1.0; zend_std_cast_object_tostring rejects numeric targets"
+  ],
+  "native": {
+    "revision": "3eddc5f960149fdf311a550a5b4fe28f513ca3d1",
+    "observations": 3,
+    "model_agreements": 0
+  },
+  "unchanged_frontier": {
+    "revision": "3eddc5f960149fdf311a550a5b4fe28f513ca3d1",
+    "status": "unsupported",
+    "reason": "error-handler ingress requires a producer continuation",
+    "seconds": 43.76552254334092,
+    "source_agreements": 0
+  },
+  "validation": {
+    "initializer": {
+      "mode": "SL",
+      "passed": true,
+      "semantic_assertions": 0,
+      "php_steps": 0
+    },
+    "original_sources": {
+      "catalogue": "tests/semantics/internal_numeric_comparison_cases.json",
+      "sha256": "a631317b83c670fc2de01002d870bf58b98fbbf7a1391eac6a33a149976b53de",
+      "agreements": 3,
+      "seconds": [
+        115.24741966836154,
+        75.50104240700603,
+        90.86844856664538
+      ]
+    },
+    "syntax_preparation": {
+      "requests": 6,
+      "runtime_credit": 0,
+      "php_steps": 0
+    },
+    "author": {
+      "premises": 178,
+      "setup": 156,
+      "pure": 22,
+      "raw_php_steps": 7
+    },
+    "independent": {
+      "premises": 139,
+      "setup": 130,
+      "pure": 9,
+      "raw_php_steps": 6
+    },
+    "total": {
+      "premises": 317,
+      "setup": 286,
+      "pure": 31,
+      "raw_php_steps": 13,
+      "source_agreements": 3
+    },
+    "fixture_failures": []
+  },
+  "reached_state_results": [
+    "Real deferred Generator parameter and Closure/Fiber captures retain actual children; no documentary receiver edge is added. Tag/bounds/nonlive/wrapped-tag/excluded-body controls are helper-only.",
+    "Live CV versus COPY and source/internal SECOND directions preserve private float 1.0 despite live 9. Array COW keeps old pinned tails; property rebinding retains the old selected cell and reads future live slots.",
+    "Fiber-pair zero reaches a Generator Notice then Closure SECOND. Its entered handler preserves the left guard, raises the expected recursive Error and throws the same supplied TypeError through both finally paths; a fresh unchanged-left comparison returns false."
+  ],
+  "limits": [
+    "Closure bodies beyond normalized real/named are outside the admitted Notice-callback route. Other internal/custom handlers, legacy materialized callbacks without a retained cursor and wider lifetimes remain open.",
+    "Pending exceptions retain the existing quiet terminal remainder restriction. GC, clone, storage and arbitrary historical-state coverage are not broadened; helper/seek progress and typed/preparation checks add no raw-Step or source-agreement credit."
+  ],
+  "artifact_refs": {
+    ".tools/internal-numeric-comparison-native-60/cases.json": "0d63733f1ea27a79cfc8c064eaa22219eb947b7fd7727fd54feece12a2a3c166",
+    ".tools/internal-numeric-comparison-native-60/run.py": "ccaa9c6a038351f510f406169efb0157c978a245e9b4a1c365b28caaf2121856",
+    ".tools/internal-numeric-comparison-native-60/run-native-v1/report.json": "0b1977e8c512ec77740914b3bdb9821c1a10d1e6070f892e96b6ca330577069c",
+    ".tools/internal-numeric-comparison-support-60/actor.py": "1f58ae5f52458afa94c36066c1adeb50da7aca1b6b3e0b239fbe059ec80e3645",
+    ".tools/internal-numeric-comparison-support-60/inputs.py": "e97a3cd24ee0aae4ba39e09f342ec85b46ab69a1db53b1cbef8dcea7225ff377",
+    ".tools/internal-numeric-comparison-support-60/baseline.py": "1d55696e90e5f17e4dfd39920acd7fe4de4c9ea7f229f2ec4911899c90f99733",
+    ".tools/internal-numeric-comparison-support-60/baseline-case.json": "438a82b2e09fbb78a9e5fadeb7d9f0ada131dcdcc27d712fc9ea2166921410ef",
+    ".tools/internal-numeric-comparison-support-60/run-baseline-v1/report.json": "b5b5eb41349022877f2b87221ee0c4e95502736506d37837132bbdaa8d72d1fc",
+    ".tools/internal-numeric-comparison-support-60/affected.py": "dbd635357b875ae620fc744653efd1854ccd9f8003e366111316ae256737274c",
+    ".tools/internal-numeric-comparison-support-60/initialize.py": "13fb5842e6f9d465c1bc2a0b262e464445ea41283f35c8333ef827c8f9349452",
+    ".tools/internal-numeric-comparison-support-60/run-initialize-v1/report.json": "506b725f29da9a99ef33448f5ce9640d52dae6cf45111ebe2884e64c369bfa7b",
+    ".tools/internal-numeric-comparison-support-60/model.py": "4766fbb8bda31ef5d3ce4e6cd2b9b6c9af93a9e6094ecdf86ab4fd55f2a70aaf",
+    ".tools/internal-numeric-comparison-support-60/run-model-v1/report.json": "38f309efea834a3b0211d51558a764d522417f9148a9996a12b405d8d62e7a5f",
+    ".tools/internal-numeric-comparison-support-60/prepare.py": "e7914ce8e8e71ec5bb229c4a090e157555835b5005bc92d3b3bcfb139062c793",
+    ".tools/internal-numeric-comparison-support-60/syntax-v1/report.json": "63a664ecd2bf8d82ed720d062801e7eb8b8cfed4beea4ccefa1d8282651d606d",
+    ".tools/internal-numeric-comparison-state-60/build.py": "dd0142f7d5f1ff2730bf49452780eabaf29c278e49132ab56f9d58993b8964ba",
+    ".tools/internal-numeric-comparison-state-60/helpers.watsup": "a98861b133ed136ec50a4fe1a7849e02a1a3200fbdae3f8b7011f5bdf9b3a90b",
+    ".tools/internal-numeric-comparison-state-60/plan.json": "8e3f1f425be7b44f893b6f3db8788adf9280568049c1587835b6e3fa60864bd9",
+    ".tools/internal-numeric-comparison-state-60/run.py": "f79e676a21b1be80ef0baa7fc9a334dd902ac9dd5a595fa83c4cebdf8d9eaa8c",
+    ".tools/internal-numeric-comparison-state-60/run-el-v1/report.json": "551f681fb8074cd67af3ed4ac80e56d0ff05a0b36cde0048cc29f195ecbf42a8",
+    ".tools/internal-numeric-comparison-state-60/run-sl-v1/report.json": "2b0f63ba17b71fe7be0f371558204716a14568182cf6b892e9dbd45519447551",
+    ".tools/internal-numeric-comparison-peer-state-60/build.py": "20c948b952d474d5458eb39655cbaeb04fd38b04c58cc2f6cf726a743c066358",
+    ".tools/internal-numeric-comparison-peer-state-60/helpers.watsup": "3e7e9030b97248ef38f1a1a6505bff0a1bb14d442f2106d294a171c362f26d2c",
+    ".tools/internal-numeric-comparison-peer-state-60/plan.json": "eec7bfcbc1e9a4adaf26ab0f0d32709d8d52fc9228094b2f3bdec9737d7eaad4",
+    ".tools/internal-numeric-comparison-peer-state-60/run.py": "47161bf2d25d9c1a558f3b230d825475cc443e72e4882ac1c6c003e5e0bb5860",
+    ".tools/internal-numeric-comparison-peer-state-60/run-el-v1/report.json": "913c06ddb452959253122c61d184f31a9a8666f549790d751baf4f2f1a998a3c",
+    ".tools/internal-numeric-comparison-peer-state-60/run-sl-v1/report.json": "28e8f6cd65608d18eab0f8dbad3b42d3b8f48ddfc930e2f9d1d031f4676e1059"
+  },
+  "tool_sha256": {
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "reproduction": {
+    "root": "/home/user/workspace/php-spec/.tools/internal-numeric-comparison-60",
+    "commands": "Native/baseline/initialize/model/prepare take --cpu CPU --slot SLOT; state run.py uses separate --mode el and --mode sl. Retain original File/CWD, profile and immutable stdin/START/raw/closed records. Numeric execution is explicit --sl.",
+    "publication_verdict": "CLEAR: concise publication and scoped partial inventory updates independently reviewed"
+  },
+  "engine_bug_or_intentional_divergence": false
+}
