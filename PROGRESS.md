@@ -7,7 +7,6 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-
 Builtin Throwable and admitted source-subclass int/float comparisons now
 enter numeric Notice handlers with the correct nominal kind or source name.
 The receiver image does not consult formatter fields. Three original sources
@@ -16,6 +15,7 @@ agree with PHP; author and independent tests pass 340 premises (318 setup +22 pu
 cells, saved float across a second Notice, original-Exception/previous identity and cold caches.
 The quiet pending-exception and wider handler/lifetime limits remain.
 [Throwable Notice ledger](coverage/semantics/throwable-numeric-comparison-review.json).
+
 Global `constant` now returns primitive user/startup values and authenticated
 string carriers after argument effects, preserving namespace/case rules and
 missing-name API Errors. Four exact sources retain their 516c/5b83/5e33 cuts; three
