@@ -569,6 +569,12 @@ for finite in-range fractional floats in defined non-reference CVs. Three exact 
 and 324 genuine state premises check live writes, supplied throws, false fallback,
 operand lines and public continuation guards. [BITNOT evidence](coverage/semantics/bitnot-warning-review.json)
 retains the unchanged Unsupported baseline; wider domains remain partial.
+Explicit array-to-string casts now suspend through named warning handlers for
+a bounded plain-CV array input. The borrowed array adds no saved owner: replacing
+or removing its CV still yields fixed `Array`, while a supplied throw preserves
+the destination. Three exact originals and 326 focused SL premises check these
+paths in the [array-cast ledger](coverage/semantics/array-string-cast-warning-review.json).
+Empty/immutable/nested or owning arrays, wider operands and handlers remain partial.
 [Destructuring and retained expression effects](docs/semantics/DESTRUCTURING.md)
 now execute current scalar/array list patterns and nonvariable-left coalescing.
 [Independent acceptance](coverage/semantics/destructuring-review.json) binds 263

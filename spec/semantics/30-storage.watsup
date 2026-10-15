@@ -354,6 +354,7 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | ARITHMETIC_DIV_CONVERT pintegeroperation parithmeticphase | ARITHMETIC_DIV_WARNING pintegeroperation parithmeticphase pvalue pnumber nat
   | ARITHMETIC_UNARY_WARNING punarywarning nat
   | BITNOT_WARNING pbitnotwarning nat
+  | ARRAY_STRING_CAST_WARNING porigin poperand int nat
   | UPDATE_WARNING_NOTICE pupdatewarning | UPDATE_WARNING_RESTORE pupdatewarning | UPDATE_WARNING_DONE pupdatewarning
   | UPDATE_WARNING_RELEASE pupdaterestore | UPDATE_WARNING_COMMIT pupdaterestore
   | UPDATE_WARNING_EXIT perrorcall int

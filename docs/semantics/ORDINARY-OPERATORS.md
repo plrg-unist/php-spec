@@ -133,6 +133,21 @@ public snapshot/diagnostic rejection and budget resumption in the
 [BITNOT ledger](../../coverage/semantics/bitnot-warning-review.json).
 Range/NaN, other operands, callbacks and lifecycle forms remain required.
 
+Explicit `(string)` casts now stage an array warning for a defined non-reference
+CV holding a nonempty mutable flat array of direct, defined nonowning scalars.
+Source and compiled operand-line authority accompany the CV identity. Fresh
+capture/dispatch checks the array; saved handler frames and resumed stages keep
+history when the CV is replaced or removed. No PARRAY is saved and no task owner
+keeps that borrowed array alive. Normal return delivers fixed interned `Array`
+without changing storage; a supplied throw discards the marker before assignment.
+Three exact originals and 213 author plus 113 independent SL premises check
+owner one to zero, real saved TARGET/caller-throw fronts, default Warning at the
+operand line, public guard rejection and budget continuation in the
+[array-cast ledger](../../coverage/semantics/array-string-cast-warning-review.json).
+Empty/immutable/nested/reference-element/owning arrays, copied/reference operands,
+wider callbacks and lifecycle forms remain partial. Pure refusal projections
+are not executed typed or owning array cases.
+
 Concatenation has an additional compile/runtime distinction. The compiler visits
 both operands before converting known scalar operands and queuing conversion
 warnings. At execution, known array operands produce their conversion warnings

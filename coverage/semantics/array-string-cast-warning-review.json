@@ -1,0 +1,128 @@
+{
+  "version": 1,
+  "milestone": "OP20 explicit array-to-string cast warning continuation",
+  "status": "private semantic/test acceptance; actual-parent composition pending",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local pinned PHP and profile",
+  "scope": "Explicit (string) cast of an initially defined non-reference CV holding a nonempty mutable flat array of DIRECT defined nonowning scalar values, with a named warning handler.",
+  "runtime_revision": "39c5e76cb21b6f188997d25e1008f111e54152dc",
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "d50ef3b2ee60e37421d455fff651c294c38c8c32d9d45cf4ec816b431a008a4e",
+    "spec/semantics/58-ordinary-expressions.watsup": "36a1a29a69c1b0a9107f7f020b619041a89be8e27775c0f2819404c04099bfa6",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "2b0682af58b87cec233602fbada1de9a7e377d3119c6fb65862e5fe5cb7b1454"
+  },
+  "engine_basis": [
+    "Zend/zend_vm_def.h: ZEND_CAST calls zval_get_string(expr) and checks exceptions before the following assignment. A CV operand is borrowed.",
+    "Zend/zend_operators.c: non-try __zval_get_string_func warns for an array, then returns the fixed interned Array string. Handler replacement/removal cannot become a new cast input; a supplied exception prevents destination assignment.",
+    "Existing interpolation251 and eval/file287 array warnings use different source consumers. The new producer authenticates actual CastString child CV and compiled operand line without changing stringify primitives or those routes."
+  ],
+  "contract": [
+    "The marker stores only source, CV identity, line and stage; it stores no PARRAY and adds no roots. RESULT and BASE are cleared before dispatch, so the old array has its real source owner only.",
+    "Plan/capture/fresh TARGETeps verify the actual plain CV and nonempty mutable flat scalar array. Saved callback frames and resumed stage1 authenticate source/line while permitting replacement or missing CV; they do not reread or retain the array.",
+    "Normal resumption pops the marker and delivers fixed PSTRING_CARRIER INTERNED_STRING Array without changing STORE/ARRAYS/ALLOCATIONS. A supplied throw discards the marker through generic cleanup, retains identity/null Previous/callback writes and leaves the assignment destination100.",
+    "All continued tests use genuine production states, including saved TARGET frames and marker-free caller THROW_SEARCH. Whole public source/stage/flavor/snapshot/message counterfeits are never driven. Empty/immutable/alias/nested-item projections are pure refusal queries; the owning-leaf clone uses the actual supplied Exception and validates only.",
+    "Array owner one to zero and zero retained input-cell owners after unset are genuine reached observations. Wider operand/array/callback and lifecycle domains remain partial; OP12 stays paused."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-20/source-39c5e76cb-handler-write/report.json",
+        "sha256": "5c76c3ef010af038d68f05b84da15d05ca912af899a4eba2c45273fe940eba98",
+        "case": "array-string-cast-handler-write",
+        "revision": "39c5e76cb21b6f188997d25e1008f111e54152dc",
+        "agreements": 1,
+        "result": "normal0; fixed interned Array after callback writes input99"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-20/review-model-39c5e76cb-unset-default/report.json",
+        "sha256": "a422d9057c659a0433e0321720e0f1ca0ee50e3206a8cac07fbc4c435ec8c687",
+        "case": "array-string-cast-unset-cv-default",
+        "revision": "39c5e76cb21b6f188997d25e1008f111e54152dc",
+        "agreements": 1,
+        "result": "normal0; fixed Array after CV removal, later inputafter and one default Warning on operand line11"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-20/source-39c5e76cb-handler-throw/report.json",
+        "sha256": "cbfb8dac10e50adbb4fd8b8b5058f79d7405051b0d1ecbc2d02ee2498397e560",
+        "case": "array-string-cast-handler-throw",
+        "revision": "39c5e76cb21b6f188997d25e1008f111e54152dc",
+        "agreements": 1,
+        "result": "normal0; supplied identity/nullPrevious/v100/input99/finally, no destination assignment"
+      }
+    ],
+    "author_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-20/state-3a3f0a674-author-two/report.json",
+      "sha256": "7991e3f015566e44223f593f2781d3a6a75a82ee72845007726a7a276932ac64",
+      "revision": "3a3f0a674c4d6b9ac9de20a16fd649759dbd03b4",
+      "conditions": [
+        108,
+        105
+      ],
+      "total": 213
+    },
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-20/state-3a3f0a674-review-one/report.json",
+      "sha256": "bc7b7f0372cf2af2005956dd90bb5134d43dd038f5270b79ad0bfa70dbdd0285",
+      "revision": "3a3f0a674c4d6b9ac9de20a16fd649759dbd03b4",
+      "conditions": [
+        113
+      ],
+      "total": 113
+    },
+    "total_source_agreements": 3,
+    "total_focused_state_conditions": 326,
+    "compatibility": "Only two reviewed helper files were added at3a3f after source3 passed at39c5. Immutable state thins reuse prepared original PHP/checked AST/path/native/fixtures and execute full394 SL only, with no PHP/frontend/source stage. No private initialization actor was needed."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-20/baseline-2ef9b3d74-handler-write/report.json",
+      "sha256": "8666af799f6e0ec5be157a05362384ff48a3d75517a058f36e8a10da390052af",
+      "result": "accepted checked program Unsupported: error-handler ingress requires a producer continuation; empty model streams before H versus native fixed Array/input99"
+    },
+    "native_and_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-20/native-2ef9b3d74-two/report.json",
+        "sha256": "cdbae23d9b17fd8c364f632e1d09f12c71e1bac5abea6a558172ac097d87c5ab",
+        "purpose": "author native2 raw observations"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-20/native-73a097cf8-review-one/report.json",
+        "sha256": "5d30b1431cca6b8732deb8467e5b026b6ddb218d6c58f6b14270438b0d8f1d67",
+        "purpose": "independent unset/default native1 raw observation"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-20/state-prep-3a3f0a674-author-two/report.json",
+        "sha256": "b5f68e6e8bd8484c654d42a857695538d9d6ef835123bdc0a6cf7518ee044805",
+        "purpose": "author2 PHP/frontend/checked-AST preparation only"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-20/state-prep-3a3f0a674-review-one/report.json",
+        "sha256": "28a70b362a8f75e288e5945a0d53c593a6f693578d77ea1198d03162ac1bee01",
+        "purpose": "independent1 PHP/frontend/checked-AST preparation only"
+      }
+    ],
+    "standalone_syntax": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-20/syntax-3a3f0a674-three/report.json",
+      "sha256": "90f471ccab77fc297665ca27bff407c9a21a0d56e6a5d634fc870954a4dccc65",
+      "result": "all108/105/113 full files parse before expected standalone undefined-pstate environment diagnostic; no semantic elaboration credit"
+    }
+  },
+  "required_follow_on": [
+    "Empty/immutable/nested/reference-element/owning-leaf arrays; referenced/copied/TMP operands; wider callbacks and lifecycle consumers remain required for continuation coverage.",
+    "Five affected inventory rows remain partial. Other arithmetic, interpolation and dynamic-source evidence retain their separate original cuts; OP12 remains paused."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-20",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "environment": "LC_ALL=C, TZ=UTC, no PHP_SPEC_SCRIPT_ENCODING. Source native30/model CLI60-process90; immutable CPU1 state thins full394 SL/cap120 per group/exact true newline/empty stderr/no interruption/reaped groups and absent PIDs.",
+    "commands": [
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 tests/semantics/array_string_casts.py --case CASE_ID --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 tests/semantics/array_string_cast_review.py --case array-string-cast-unset-cv-default --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-20/state-3a3f0a674-author-two/run-state.py",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-20/state-3a3f0a674-review-one/run-state.py"
+    ],
+    "record": "Restore matching Git cuts/project-local tools and fresh output paths. External records retain original PHP/checked AST/path/native/fixtures/input identities/commands/exits/reaping. Large raw stays outside Git."
+  },
+  "composition": null
+}

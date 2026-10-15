@@ -572,3 +572,72 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 2
   -- if perrorcall.MESSAGE = $ptascii("A non-numeric value encountered")
   -- if perrorcall.EVENT = DIAGNOSTIC "Warning" ($ptascii("A non-numeric value encountered")) pintegeroperation.LINE
+
+;; ZEND_CAST calls non-try zval_get_string: an array warning selects the fixed
+;; interned result before callback return. A borrowed CV adds no saved array root.
+dec $array_string_cast_items(pentry*) : bool
+def $array_string_cast_items(eps) = true
+def $array_string_cast_items((ENTRY pkey (DIRECT pvalue)) :: pentry_tail*) = (pvalue =/= PUNDEFINED /\ $value_nodes(pvalue) = eps /\ $array_string_cast_items(pentry_tail*))
+def $array_string_cast_items(pentry*) = false -- otherwise
+
+dec $array_string_cast_source(pstate, porigin, poperand, int) : bool
+def $array_string_cast_source(S, porigin, poperand, z) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprCastString expression metadata)
+  -- if poperand = VARIABLE ptbytes z_input
+  -- if $integer_operand_source(S, porigin, [PCFIELD 0], poperand)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 0]) = (z)
+def $array_string_cast_source(S, porigin, poperand, z) = false -- otherwise
+
+dec $array_string_cast_snapshot(pstate, poperand) : bool
+def $array_string_cast_snapshot(S, VARIABLE ptbytes z) = true
+  -- if ~$foreach_released_name(S, ptbytes)
+  -- if $integer_pointer_select(S, VARIABLE ptbytes z) = (INTEGER_CV ptbytes)
+  -- if $integer_pointer_value(S, INTEGER_CV ptbytes) = (PARRAY n)
+  -- if $(n < |S.ARRAYS|)
+  -- if (HARRAY n) <- S.ALLOCATIONS
+  -- if ~(n <- S.GC.IMMUTABLE)
+  -- if S.ARRAYS[n].ITEMS =/= eps
+  -- if $array_string_cast_items(S.ARRAYS[n].ITEMS)
+def $array_string_cast_snapshot(S, poperand) = false -- otherwise
+
+def $array_string_cast_plan(S) = (porigin, poperand, z)
+  -- if S.TODO = (CAST_RESULT CASTSTRING z) :: ptask_tail*
+  -- if $error_handler_eligible(S, 2)
+  -- if $arithmetic_add_named(S)
+  -- if S.ORIGIN = (porigin)
+  -- if poperand = S.RESULT
+  -- if $array_string_cast_source(S, porigin, poperand, z)
+  -- if $array_string_cast_snapshot(S, poperand)
+def $array_string_cast_plan(S) = eps -- otherwise
+
+dec $array_string_cast_warning_valid(pstate, porigin, poperand, int, nat) : bool
+def $array_string_cast_warning_valid(S, porigin, poperand, z, n) = ($array_string_cast_source(S, porigin, poperand, z) /\ $(n <= 1) /\ (n = 1 \/ $array_string_cast_snapshot(S, poperand)))
+
+rule PhpStep/array-string-cast-begin: S ~> S[.TODO = (ARRAY_STRING_CAST_WARNING porigin poperand z 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $array_string_cast_plan(S) = (porigin, poperand, z)
+rule PhpStep/array-string-cast-dispatch: S ~> $error_dispatch(S, 2, $ptascii("Array to string conversion"), z, DIAGNOSTIC "Warning" $ptascii("Array to string conversion") z, ARRAY_STRING_CAST_WARNING porigin poperand z 1)
+  -- if S.TODO = (ARRAY_STRING_CAST_WARNING porigin poperand z 0) :: ptask_tail*
+  -- if $array_string_cast_warning_valid(S, porigin, poperand, z, 0)
+  -- if ~$error_handler_eligible(S, 2) \/ $arithmetic_add_named(S)
+rule PhpStep/array-string-cast-owning-handler: S ~> S[.COMPLETION = UNSUPPORTED "array string cast owning warning callback"]
+  -- if S.TODO = (ARRAY_STRING_CAST_WARNING porigin poperand z 0) :: ptask_tail*
+  -- if $array_string_cast_warning_valid(S, porigin, poperand, z, 0)
+  -- if $error_handler_eligible(S, 2)
+  -- if ~$arithmetic_add_named(S)
+rule PhpStep/array-string-cast-resume: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING $ptascii("Array"))][.BASE = BASE_VALUE (KNOWN (PSTRING_CARRIER INTERNED_STRING $ptascii("Array")))]
+  -- if S.TODO = (ARRAY_STRING_CAST_WARNING porigin poperand z 1) :: ptask_tail*
+  -- if $array_string_cast_warning_valid(S, porigin, poperand, z, 1)
+
+def $task_nodes(ARRAY_STRING_CAST_WARNING porigin poperand z n) = eps
+def $call_task_valid(S, ARRAY_STRING_CAST_WARNING porigin poperand z n) = $array_string_cast_warning_valid(S, porigin, poperand, z, n)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = ARRAY_STRING_CAST_WARNING porigin poperand z 1
+  -- if $array_string_cast_warning_valid(S, porigin, poperand, z, 1)
+  -- if perrorcall.TARGET =/= eps \/ $array_string_cast_snapshot(S, poperand)
+  -- if perrorcall.SITE = porigin
+  -- if perrorcall.LINE = z
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $ptascii("Array to string conversion")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE z

@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+
+Explicit array-to-string casts now suspend for named warning handlers on a
+defined plain CV with a nonempty mutable flat scalar array. The borrowed array
+has no saved owner: replacement or removal of its CV still returns interned
+`Array`; a supplied throw preserves the destination and callback mutations.
+Three exact originals pass at 39c5e76cb; 213 author and 113 independent genuine
+SL premises pass 326 at 3a3f0a674, including owner one to zero, saved TARGET,
+marker-free throw, default operand-line Warning, public guards and budgets.
+Pure refusal projections do not establish wider array/operand execution.
+Empty/immutable/nested/owning arrays, wider operands/callbacks and lifecycle
+paths remain partial; OP12 stays paused.
+[Array-cast ledger](coverage/semantics/array-string-cast-warning-review.json).
 `define` now receives int/bool/float names with primitive values and an
 omitted/already-false flag. Weak registration uses call-time precision; historical
 immutable-name checks allow a possible conversion after later precision changes.

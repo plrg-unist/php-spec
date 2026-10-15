@@ -1,4 +1,5 @@
 dec $bitnot_warning_plan(pstate) : pbitnotwarning?
+dec $array_string_cast_plan(pstate) : (porigin, poperand, int)?
 
 rule PhpStep/ordinary-mod: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_1), BINARY_LEFT MODULO expression_2 $runtime_line(S, [PCFIELD 1], expression_2)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprBinaryOpMod expression_1 expression_2 metadata)) :: ptask_tail*
@@ -30,6 +31,7 @@ rule PhpStep/ordinary-void: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PC
   -- if S.TODO = (EVAL (NExprCastVoid expression metadata)) :: ptask_tail*
 rule PhpStep/ordinary-cast_result-value: S ~> S_out[.TODO = ptask_tail*]
   -- if S.TODO = (CAST_RESULT pcast z) :: ptask_tail*
+  -- if $array_string_cast_plan(S) = eps
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
