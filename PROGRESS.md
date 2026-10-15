@@ -3516,6 +3516,21 @@ frontier have zero repair credit. Unused, nonnullable and other mixed array
 layouts remain open in the
 [ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
+M70 admits an ordinary no-argument instance-method result as the old computed
+source in a used `&f():?object` return. The same Factory is temporary or
+published to a global slot; its ordinary lifetime differs, while replacement
+cleanup invokes the returned O object's destructor. A source-only cursor
+resumes as detached NULL with one method-source by-reference Notice after the
+caught `$y` recheck. Source2 at private `6e4e1115`/395 matches native2 in both
+cases, including Factory destructor order and exact callee line4 Notice.
+Paired public checks bind the saved cursor and original VALUE-O release, raw
+NULL/Notice marker, caller alias and retained Factory root. One heap-identical
+cursor LINE forgery fails the actual driver; both callback budget laws pass.
+The old Unsupported baseline and output-only frontier have zero repair credit.
+Method arguments, dynamic names, nullsafe calls, reference-returning methods
+and broader returns verification remain open in the
+[ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
 Per-constant protection survives namespace publication and parked handlers.

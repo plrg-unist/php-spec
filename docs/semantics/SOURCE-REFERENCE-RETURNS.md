@@ -685,3 +685,23 @@ budget compositions pass. This covers the reached used nullable source pair,
 not other array layouts, unused or nonnullable returns, or complete returns
 verification; see the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M70 admits an ordinary no-argument instance-method call with a literal method
+name as an old computed return source for used `&f():?object`. The receiver is
+evaluated and cleaned up by the existing call machinery; the source cursor
+does not retain or reconstruct it. A temporary Factory emits its destructor
+marker before the selected finally return; publishing the same Factory to a
+global slot retains it through the caller cut. In both cases, ordinary cleanup
+releases the old O method result and enters its destructor before replay. The
+saved f frame carries a nonowning source cursor, and the caught `$y` recheck
+resumes the old method return as NULL with one VALUE Notice marker. Source2 at
+private `6e4e1115`/395 matches native2, including the exact callee Notice and
+receiver destructor ordering. Paired public checks bind the authentic saved
+cursor and original VALUE release, raw NULL/Notice marker, caller detachment
+and retained Factory root; a heap-equal cursor LINE mutation fails descriptor
+and actual-driver admission, and both callback budget compositions pass.
+Temporary Factory node identity is only printed by the output-only frontier,
+not claimed by the public proof. This covers the reached no-argument,
+literal-name method result, not arguments, dynamic names, nullsafe calls,
+reference-returning methods or complete returns verification; see the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
