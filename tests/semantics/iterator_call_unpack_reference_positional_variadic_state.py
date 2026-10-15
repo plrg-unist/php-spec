@@ -85,7 +85,7 @@ CASES = {
             '(PTBRANCH ([PTBUILTIN "null"]))]]',
             'pfunction_typed = pfunction[.SIGNATURE = pfunction.SIGNATURE'
             '[.PARAMETERS = [psparam_typed]]]',
-            '~$iterator_unpack_reference_allowed(S[.FUNCTIONS = [pfunction_typed]], piteratorunpack)',
+            '$iterator_unpack_reference_allowed(S[.FUNCTIONS = [pfunction_typed]], piteratorunpack)',
             'pfunction_value = pfunction[.SIGNATURE = pfunction.SIGNATURE'
             '[.PARAMETERS = [psparam[.BYREF = false]]]]',
             '~$iterator_unpack_reference_allowed(S[.FUNCTIONS = [pfunction_value]], piteratorunpack)',
