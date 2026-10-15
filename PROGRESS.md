@@ -36,6 +36,9 @@ budgets. The original fixture parse failure and old unrun numeric thin retain ze
 credit; the correction groups negative constructor payloads without changed values.
 Wider operands, conversion warnings, callbacks/lifecycle and `**=` remain partial;
 OP12 stays paused. [Power ledger](coverage/semantics/power-warning-review.json).
+The 395-module union over 675f40a2 preserves incoming scalar-define, return and
+Generator paths. Independent pointwise review warrants no joined actor; source3
+and state366 retain their private cuts without replay.
 
 Plain-CV `.=` now retains the first string across a right-array warning.
 Normal return commits cached concatenation over callback writes and detaches a
