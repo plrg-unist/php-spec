@@ -7,6 +7,23 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Plain-CV `<<=`/`>>=` now keep their fractional left conversion through deprecation
+handlers, then read the live quiet integer count. Captured `-12` and count `2` store
+`-48` or `-3` despite callback `99` and detach a late target alias. Supplied throw cancels storage;
+negative live count raises the original-line `ArithmeticError` without detachment,
+preserving callback writes/aliases and destination `100`. Four exact originals pass at
+4a919d8f0; 141/141/124 author plus 120 independent SL premises pass 526 at 92a8ad2e0/398.
+They cover both source/op guards, unchanged modulo refusals, actual CELL/LOCATION
+and alias/error owners, default Deprecated and budgets. Checked prep reuses retained
+source/native bytes; native/baseline/prep/syntax retain0. Pure ready projections
+establish refusals only. Initial references/copies, warning or noninteger counts,
+unsafe targets and wider callbacks/lifecycle remain partial; OP12 stays paused.
+[Shift-assignment ledger](coverage/semantics/shiftassign-warning-review.json).
+
+Composed over 040868796/399 after pointwise review of define, typed/byref return,
+property-empty/list and weak numeric-comparison seams. Source4/state526 retain their
+private cuts; no joined actor, replay or renewed credit.
+
 Non-NUL string `define` names containing `::` now raise parameter-1 ValueError
 before any ignored-true Warning. Omitted/bool flags preserve raw API arguments;
 strict bool calls keep the same priority after all argument effects. No class

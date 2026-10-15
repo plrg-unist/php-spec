@@ -598,6 +598,11 @@ Normal `%=` detaches a late target alias; supplied throw or a captured zero divi
 preserves callback writes and aliases even after the live RHS changes.
 Three exact originals and 404 focused SL premises pass in the
 [RHS modulo ledger](coverage/semantics/modassign-right-warning-review.json).
+For initially plain variables, `<<=` and `>>=` now retain a fractional left
+conversion through deprecation handlers, then read the live quiet integer count.
+Success detaches a late target alias; supplied throw or a negative count preserves
+callback writes and aliases. Four exact originals and 526 focused SL premises pass
+in the [shift-assignment ledger](coverage/semantics/shiftassign-warning-review.json).
 Explicit array-to-string casts now suspend through named warning handlers for
 a bounded plain-CV array input. The borrowed array adds no saved owner: replacing
 or removing its CV still yields fixed `Array`, while a supplied throw preserves
