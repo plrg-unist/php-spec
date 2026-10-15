@@ -2494,9 +2494,15 @@ a permitted Parent array call reaches TypeError. Assignment20 returns20 after
 storage33, and a plain Child redeclaration fails against the implicitly final property.
 Two originals and two states/305 checks are in the
 [private setter review](coverage/semantics/private-set-backed-hook-review.json).
+A selected inherited public `__unset(string $name): void` now handles a direct
+external unset of a declared private property. Accessible initialized public unset
+skips the callback; the callback retains Parent lexical scope and Child called
+scope, removes Parent's private slot and sets `seen=13`.
+One original and one state/212 checks cover selection, reception and receiver
+cleanup; [magic unset review](coverage/semantics/magic-unset-review.json).
 Hooked iteration, defaulted virtual hooks, other paired or virtual setters, wider trait
 setters, other explicit setter parameter forms, references, other inherited/trait
-and wider receiver, quiet or indirect-access families and `__unset` consumers remain required.
+and wider receiver, quiet or indirect-access families and wider `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
 and `implements` declarations, enforce method prototypes and abstract
 obligations, and add finite `Stringable`/`Throwable` nominal ancestry. The installed

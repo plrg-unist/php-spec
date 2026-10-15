@@ -1,0 +1,360 @@
+{
+  "scope": "Public nonstatic nonref __unset(string $name): void on a parentless ordinary class, inherited unchanged by Child. Direct ordinary CV/literal-name unset selects an existing declared private property. Accessible initialized public unset remains ordinary.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor34308a6666b2d489c509541ea9befea9e2b42348",
+  "implementation": {
+    "base": "8a121da8c3e51c900a0c5ad62083777a58333594",
+    "entry_revision": "37ff84dd460f2c3ae06f7c7f2d6df9d9f90d6258",
+    "cleanup_revision": "ae90e55fbb4f7066f2e9f7db6aa2390b94d0d49f",
+    "test_revision": "ed8cccb4865db30f655a25a0eb09d987faca473e",
+    "modules": 396,
+    "files": [
+      "spec/semantics/141-method-compiler.watsup",
+      "spec/semantics/30-storage.watsup",
+      "spec/semantics/43-array-unset-control.watsup",
+      "spec/semantics/406-magic-property-unset.watsup",
+      "spec/semantics/modules.json"
+    ],
+    "change": "Authenticate original unset source, actual class member/Param/body roots, normalized method signature and selected receiver/private descriptor. Resolve the genuine pending receiver/name in PPUNSET order; transfer its owner to one adjacent RESULT task. Internal call/frame provenance guards same receiver/name. Normal discard and existing throwable frame unwind release that owner once. Wider unknown receivers or non-known-string pending names conservatively refuse when class tables contain __unset.",
+    "preserved": "Existing154 lexical/private lookup,201/288 pending resolution,43 ordinary unset,95 typed reception and generic return/throw/frame cleanup are reused. No schema, adapter, permission, property-layout or generic-return change."
+  },
+  "engine_basis": [
+    "vendor/php-src/Zend/zend_object_handlers.c: zend_std_unset_property (1556-1667) removes initialized accessible slots directly; denied/absent names select inherited __unset with the raw string name, IN_UNSET guard and retained receiver.",
+    "vendor/php-src/Zend/zend_object_handlers.c: zend_std_call_unsetter invokes the known instance method with one string argument. Existing declaration/method machinery supplies lexical and called class identities."
+  ],
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "absent",
+    "jobs": 1
+  },
+  "binaries": {
+    "php": {
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    "strict_compiler": {
+      "sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d"
+    },
+    "algorithmic": {
+      "sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "strict_application": {
+      "sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    }
+  },
+  "recorders": {
+    "run.py": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-unset-probes-81/run.py",
+      "sha256": "e23d1078399c8fc432de071d088297c001f89f8891cfcbff9195d6234d4feb10"
+    },
+    "run-compiler.py": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-unset-probes-81/run-compiler.py",
+      "sha256": "137e3c5a3143aa0656b574c425f7c903a58466e964ab2e8aee63dc29839d2a00"
+    },
+    "capture-candidate-affinity.py": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-unset-probes-81/capture-candidate-affinity.py",
+      "sha256": "83ba1e10930305ff701a101d413c251da1d996b2fa41c85fbdde70d29ece27fa"
+    },
+    "observe-state-affinity.py": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-unset-probes-81/observe-state-affinity.py",
+      "sha256": "f1f645cfe475989d271567f264685983536447729e3fb74ee1890da45ae2c0bb"
+    }
+  },
+  "native": {
+    "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-unset-probes-81/native-first/report.json",
+    "sha256": "f9ae24eb12e6b13fcd2a92b2fed4859b4f42bbad3a329c44031fe9ade73611a6",
+    "revision": "8a121da8c3e51c900a0c5ad62083777a58333594",
+    "completed": true,
+    "source_agreements": 0,
+    "stable_inputs": true,
+    "records": [
+      {
+        "id": "scalar",
+        "source_sha256": "b5fc9bc735aa6077171e502f0487be97234b807ead071d540026c23932d36a4a",
+        "completed": true,
+        "process": {
+          "pid": 1851221,
+          "exit": 0,
+          "elapsed": 0.0035314559936523438,
+          "cap_seconds": 45,
+          "timeout": false,
+          "interruption": null,
+          "group_after": []
+        }
+      }
+    ],
+    "stdout_bytes": 98,
+    "stderr_bytes": 0,
+    "observed_exit": 0,
+    "model_credit": 0
+  },
+  "unchanged_baseline": {
+    "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-unset-probes-81/accepted-current-baseline/report.json",
+    "sha256": "d07ec3c871a3701a0895aec6788d89f9c3b8f0fba0e184e7d3bdd79dfc741c28",
+    "revision": "8a121da8c3e51c900a0c5ad62083777a58333594",
+    "completed": true,
+    "source_agreements": 0,
+    "stable_inputs": true,
+    "records": [
+      {
+        "id": "scalar",
+        "source_sha256": "b5fc9bc735aa6077171e502f0487be97234b807ead071d540026c23932d36a4a",
+        "completed": true,
+        "source_agreement": false,
+        "process": {
+          "pid": 1851505,
+          "exit": 1,
+          "elapsed": 7.810980558395386,
+          "cap_seconds": 75,
+          "timeout": false,
+          "interruption": null,
+          "group_after": []
+        },
+        "status": "unsupported",
+        "logical_exit": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      }
+    ],
+    "credit": "Genuine checked Unsupported at method visibility, static, or magic consumer; not a source agreement."
+  },
+  "strict": {
+    "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-unset-probes-81/magic-unset-compiler-88jnusda/report.json",
+    "sha256": "6e08c91a58d407bacfc633b70b9c53f21b8e65fd0f8cc05dc4d01d0ad248da72",
+    "revision": "71b551b232ff2dc5a08e62b4db735d3e5bf3b05e",
+    "source_agreements": 0,
+    "passed": true,
+    "application_evaluations": 0,
+    "modules": 396,
+    "stable_inputs": true,
+    "process": {
+      "pid": 1864043,
+      "exit": 0,
+      "elapsed": 7.480129241943359,
+      "cap_seconds": 60,
+      "timeout": false,
+      "interruption": null,
+      "group_after": []
+    },
+    "current_code_bridge": "Standalone SL initialization remains historical at71b5. The corrected source loader compiles37ff; current AL/SL state212 compiles the complete module ated8ccc. No renewed standalone strict actor is claimed."
+  },
+  "source_validation": {
+    "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-unset-probes-81/changed-model-xqvixhth/report.json",
+    "sha256": "269cd21b73c5fe806b9abe43b109a27cc911b490d5b6ded05e9c93ee2e577475",
+    "revision": "37ff84dd460f2c3ae06f7c7f2d6df9d9f90d6258",
+    "completed": true,
+    "source_agreements": 1,
+    "stable_inputs": true,
+    "records": [
+      {
+        "id": "scalar",
+        "source_sha256": "b5fc9bc735aa6077171e502f0487be97234b807ead071d540026c23932d36a4a",
+        "completed": true,
+        "source_agreement": true,
+        "process": {
+          "pid": 1872932,
+          "exit": 0,
+          "elapsed": 11.26961874961853,
+          "cap_seconds": 75,
+          "timeout": false,
+          "interruption": null,
+          "group_after": []
+        },
+        "status": "normal",
+        "logical_exit": 0,
+        "stdout_bytes": 98,
+        "stderr_bytes": 0
+      }
+    ],
+    "current_code_bridge": "The later ae90e55f change only admits an authenticated live THROW_SEARCH immediately before saved RESULT during abrupt frame cleanup. The normal callback/source path is unchanged; current state212 proves that normal path and the added abrupt cleanup."
+  },
+  "state_validation": {
+    "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-unset-protocol-7hpmnqy0/report.json",
+    "sha256": "6f40aa24458dfc8faedda0de8a5d28aaf87db2a308d0abcc887357203db73ff4",
+    "revision": "ed8cccb4865db30f655a25a0eb09d987faca473e",
+    "source_agreements": 0,
+    "passed": true,
+    "application_evaluations": 1,
+    "application_invocations": 1,
+    "module_count": 396,
+    "reached_premises": 165,
+    "derived_premises": 47,
+    "premises": 212,
+    "stable_inputs": true,
+    "records": [
+      {
+        "id": "algorithmic-compilation",
+        "passed": true,
+        "process": {
+          "pid": 1878497,
+          "exit": 0,
+          "elapsed": 6.355769395828247,
+          "cap_seconds": 90,
+          "timeout": false,
+          "interruption": null,
+          "group_after": []
+        }
+      },
+      {
+        "id": "strict-SL-application",
+        "passed": true,
+        "process": {
+          "pid": 1878571,
+          "exit": 0,
+          "elapsed": 17.330811262130737,
+          "cap_seconds": 90,
+          "timeout": false,
+          "interruption": null,
+          "group_after": []
+        }
+      }
+    ],
+    "fixture": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-unset-protocol-7hpmnqy0/hook.watsup",
+      "sha256": "2619fa23a808e61668c26b7113cedcb39e329df1f203ae847848a9add2cdaf7f"
+    },
+    "focus": "Genuine public18 bypass then private21 call/string receive/inner7 unset/private helper13/public store/void/result/full98 output. Derived source/Param/body/owner/adjacency/direct-call/unknown-base/name/rebound-CV controls and actual throwable frame restoration/discard verify one saved owner drop."
+  },
+  "preparation": {
+    "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-unset-protocol-2flsvkdr/PREPARED.json",
+    "sha256": "eb52e227ffa2326db755232a86fecff1130213c288549aed02f09d0c68a1a570"
+  },
+  "affinity": {
+    "native": {
+      "launch": "taskset -c 4 python3 .tools/magic-unset-probes-81/run.py native --revision 8a121da8c3e51c900a0c5ad62083777a58333594",
+      "live_capture": false,
+      "observer_interruption": {
+        "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-unset-probes-81/native-affinity-observer-interruption.json",
+        "sha256": "2278bc08d4cde924feacef04aa8f603a28b8876eda906f4985893a56dfd0ccb6"
+      },
+      "note": "Native completed normally before a persistent live capture. Observer exited130 after interruption; launch provenance only, no replay or live-affinity claim."
+    },
+    "baseline": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-unset-probes-81/affinity-accepted-current-baseline.json",
+      "sha256": "b584c569c06c8816c646bf5a2348c1bbfdb26fd04bf237b32dd732dfa55e6274"
+    },
+    "strict": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-unset-probes-81/affinity-strict-71b5.json",
+      "sha256": "8b84170821c3d790bf5ecedb506e907cec6aa25a52423896ddda2102c9adff19"
+    },
+    "source": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-unset-probes-81/affinity-changed-selector-37ff.json",
+      "sha256": "c56c883f020ec8320406b2a423b84fc19cf9068d26ec0d885d153521c0b7eedc"
+    },
+    "state": {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-unset-probes-81/affinity-state.json",
+      "sha256": "5104fc40fde87025cc78998521fa68784a62b8f4d284aa6d7d4c3bcfce265c42"
+    }
+  },
+  "zero_credit": [
+    {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-unset-probes-81/magic-unset-compiler-xb74ebxb/report.json",
+      "sha256": "0f1df66e19eeb3718f568bf8c65150dea5e86f358c18c4ebf8fa297909511bfa",
+      "revision": "56a2bdf58d388dd631f76ff48ae76d96e8ddd874",
+      "cause": "NStmtClass implements placeholder used phpType8 instead of42.",
+      "kind": "pre-runtime elaboration failure",
+      "accepted_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-unset-probes-81/magic-unset-compiler-1u77iubm/report.json",
+      "sha256": "47d601a2506fbae0f417f14562cbc212040ce4f1260bd2541d5e265e1d3207a9",
+      "revision": "d1f7288512128941c37f892751d39276cad6c9f8",
+      "cause": "BODY sequence container was not a representable pcnode.",
+      "kind": "pre-runtime elaboration failure",
+      "accepted_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-unset-probes-81/magic-unset-compiler-xtw9fzw4/report.json",
+      "sha256": "9408009febd2bcc785c0d09c9fe404c40285677b6265c3aa14d885e738936fda",
+      "revision": "467797ba74356da556a4227dec3a20ed7208c436",
+      "cause": "Property identity union needed an explicit typed porigin binder.",
+      "kind": "pre-runtime elaboration failure",
+      "accepted_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-unset-probes-81/magic-unset-compiler-_5megez8/report.json",
+      "sha256": "a1991975ba28d13f62d27490e89b2f82fa228c19c1c721b558f4df5d21a757f1",
+      "revision": "5daecdccc9606fa3dde6a5b63edf96f844e13f6b",
+      "cause": "Scalar/sequence iteration base collision required a fresh sequence name.",
+      "kind": "pre-runtime elaboration failure",
+      "accepted_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/coalesce-get-hooks-private-32/.tools/magic-unset-probes-81/changed-model-7q6a8fxw/report.json",
+      "sha256": "c74f6d70dc175272916f3bd935cc2a7a6831fc3c8cf6e5a9b1aa6ce9a0317d38",
+      "revision": "71b551b232ff2dc5a08e62b4db735d3e5bf3b05e",
+      "completed": true,
+      "source_agreements": 0,
+      "stable_inputs": true,
+      "records": [
+        {
+          "id": "scalar",
+          "source_sha256": "b5fc9bc735aa6077171e502f0487be97234b807ead071d540026c23932d36a4a",
+          "completed": true,
+          "source_agreement": false,
+          "process": {
+            "pid": 1864453,
+            "exit": 0,
+            "elapsed": 9.843562602996826,
+            "cap_seconds": 75,
+            "timeout": false,
+            "interruption": null,
+            "group_after": []
+          },
+          "status": "php_error",
+          "logical_exit": 255,
+          "stdout_bytes": 20,
+          "stderr_bytes": 379
+        }
+      ],
+      "kind": "first genuine modeled source mismatch",
+      "accepted_credit": 0,
+      "cause": "Selector missed the actual BASE_PROPERTY_PENDING and inherited-private PROPERTY_ACCESS raw-name lookup. Callback was skipped, ending in uninitialized seen Error23. Corrected locally at37ff; original retained."
+    }
+  ],
+  "commands": {
+    "native_and_baseline": "taskset -c 4 python3 .tools/magic-unset-probes-81/run.py native --revision 8a121da8c3e51c900a0c5ad62083777a58333594; completed-native-only same command baseline",
+    "strict": "taskset -c 4 python3 .tools/magic-unset-probes-81/run-compiler.py 8a121da8c3e51c900a0c5ad62083777a58333594 71b551b232ff2dc5a08e62b4db735d3e5bf3b05e",
+    "source": "taskset -c 1 python3 .tools/magic-unset-probes-81/run.py changed --revision 37ff84dd460f2c3ae06f7c7f2d6df9d9f90d6258",
+    "state": "taskset -c 1 python3 tests/semantics/magic_unset_protocol.py --revision ed8cccb4865db30f655a25a0eb09d987faca473e --group magic"
+  },
+  "bounds": {
+    "caps_seconds": {
+      "native": 45,
+      "model": 60,
+      "outer_model": 75,
+      "strict": 60,
+      "state_AL_then_SL": [
+        90,
+        90
+      ]
+    },
+    "steps": 100000,
+    "cache": false,
+    "det": true,
+    "source_agreements": 1,
+    "state_premises": 212,
+    "reached_premises": 165,
+    "derived_premises": 47
+  },
+  "remaining": [
+    "__isset; other __unset signatures/owners and property forms; absent-name/protected or previously unset public callback selection.",
+    "Temporary/computed/nested receivers and wider names, recursive magic and source-backed throwing/lifetime interactions remain separate. The abrupt cleanup check is derived, not a new native throwing agreement.",
+    "Full core, general semantic equivalence and BOLA freedom are not established."
+  ],
+  "recovery": "Original raw reports/fixtures/process records remain in ignored private32 .tools paths above. Permanent original source/catalogue and protocol are in Git; recover historical tested revisions explicitly rather than attributing them to a later tree."
+}
