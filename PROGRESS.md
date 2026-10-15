@@ -100,6 +100,15 @@ exact qualified-empty source at 54ac3199, preserving V47 and incoming rules.
 Private source/state cuts retain their identities without replay.
 [Global-query ledger](coverage/semantics/global-constant-review.json).
 
+Global array `constant` queries now retain their stored root and nested identities,
+including authenticated request-string leaves and immutable and mutable empty roots.
+Existing COW handles nested writes and references without modifying the constant
+or another query result. Three author sources agree at `82cd`, an independent
+reference/append-history source agrees at `fa767`, and 327 public premises pass
+at `fa767`. Private acceptance is complete; actual-parent integration is pending.
+The unchanged query baseline and initial fixture parse failure retain zero credit.
+[Array-query review](coverage/semantics/global-constant-array-review.json).
+
 Class-qualified `constant` now admits source-authenticated immutable empty array
 roots and children. Queries retain pooled identity; a reference bucket initially
 holds the shared empty child, then append detaches it. Two exact sources and two

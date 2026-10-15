@@ -198,9 +198,19 @@ does not intern or rebuild a result. Named and positional literal arguments use
 immutable compiler facts, while mutable arguments retain the existing capture
 policy.
 
+User-array queries retain the stored root and child identities. The admitted
+tree contains nonstring scalars, raw strings, authenticated string carriers and
+arrays with matching key/class trees and canonical table history. Immutable empty
+arrays require their actual provenance; mutable empty copies remain distinct.
+Lookup does not clone, allocate or intern values. Existing COW handles writes and
+reference acquisition without changing the constant or other results. The
+[array-query review](../../coverage/semantics/global-constant-array-review.json)
+records repeated NaN-root identity, nested writes, empty roots, request leaves and
+source-derived malformed-state/budget checks.
+
 Absent names raise `Error` with the stripped lookup spelling and the full captured
 argument in the API trace. Unknown startup values retain their prior Unsupported
-result. Arrays, other owning values, coercions and packed/owning calls remain
+result. Other owning values, coercions and packed/owning calls remain
 outside this slice. The original ordinary `const` string producer refusal retains
 its historical cut; the string-publication follow-up above admits that producer
 domain without renewing the older lookup campaign. The [global-query ledger](../../coverage/semantics/global-constant-review.json)

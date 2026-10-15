@@ -1,0 +1,82 @@
+{
+  "scope": "Global constant() returns of admitted user scalar/string/array trees, retaining stored identities through ordinary COW. Partial core.",
+  "status": "independently_accepted_private",
+  "reviewer": "/root/core_breadth_review_01",
+  "parent": "a8431ad2f7c28bc7ada9d74718e61ae3a3dafc8a",
+  "semantic_revision": "53600ee7867a066bf6e5a8097362764ea4608bef",
+  "semantic_sha256": {
+    "spec/semantics/400-dynamic-constants.watsup": "516505a21c475339e55362fccd4a80ea18bfa323d68c020b92809be78af10832"
+  },
+  "module_count": 394,
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+  "behavior": [
+    "Readonly validation returns the exact stored root and children, authenticates string carriers, DIRECT entries, class/key trees, canonical append/position history and actual immutable versus mutable empty provenance.",
+    "Lookup does not allocate, clone or intern. Existing COW/reference operations preserve peers and the constant through nested writes, empty-child reference append and unset/append history.",
+    "Only new global tree/items helpers and an array value arm are added. Existing define, class, global dispatch/finish, schema and ownership rules remain unchanged."
+  ],
+  "source_routes": [
+    "vendor/php-src/ext/standard/basic_functions.c PHP_FUNCTION(constant), zend_get_constant_ex and ZVAL_COPY_OR_DUP",
+    "vendor/php-src/Zend/zend_types.h ZVAL_COPY_OR_DUP: request values are shared; only refcounted persistent values duplicate",
+    "vendor/php-src/Zend/zend_vm_def.h ZEND_DECLARE_CONST: nonpersistent user constant registration"
+  ],
+  "sources": [
+    {
+      "revision": "82cd93931f954ee229eaf207fcaf04d8820b49a9",
+      "report": "author/sources/model-report.json",
+      "agreements": 3,
+      "checks": "Repeated NaN-root identity; nested/empty COW; define-backed request leaves and named dynamic selection; immutable and mutable empty roots."
+    },
+    {
+      "revision": "fa767a472e1c47a19c7282204a4572cc64fe929a",
+      "report": "author/review/model-report.json",
+      "agreements": 1,
+      "checks": "Independent empty-child reference acquisition/append, nested unset then append at1, release and repeated/direct constant preservation."
+    }
+  ],
+  "public": {
+    "revision": "fa767a472e1c47a19c7282204a4572cc64fe929a",
+    "report": "author/public/check-report.json",
+    "premises": 327,
+    "groups": {
+      "literal-tree-sharing": 110,
+      "defined-request-tree": 116,
+      "immutable-and-mutable-empty-roots": 101
+    },
+    "checks": "Reached CONFIG fronts, exact first/repeat roots, unchanged arrays/allocations/stringdata/tables/pools, class/history/key/alias/carrier refusals, authentic empty bits, full budget0 and one-step equality."
+  },
+  "zero_credit": [
+    "Sole unchanged first-source baseline at82533ec1: checked Unsupported/global constant value query after B|, CLI1/null PHP exit. No baseline renewal.",
+    "Initial public88adb90d stopped during fixture parsing at91.55 before execution. Two grouping-only generator lines fixed; original raw preserved, affected327 passed.",
+    "Native observations, syntax preparations and old Source21 array-result refusal retain zero agreement."
+  ],
+  "commands": [
+    "timeout --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/global_constant_array_sources.py --phase native --output .tools/global-array-query-native-23",
+    "timeout --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/global_constant_array_sources.py --phase baseline --case literal-tree-sharing --output .tools/global-array-query-native-23",
+    "timeout --kill-after=5s 240s prlimit --as=3221225472 -- taskset -c 2 python3 tests/semantics/global_constant_array_sources.py --phase model --output .tools/global-array-query-native-23",
+    "timeout --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 2 python3 tests/semantics/global_constant_array_protocol.py --phase prepare --sources .tools/global-array-query-native-23 --output .tools/global-array-query-public-fixed-23",
+    "timeout --kill-after=5s 330s prlimit --as=3221225472 -- taskset -c 2 python3 tests/semantics/global_constant_array_protocol.py --phase check --sources .tools/global-array-query-native-23 --output .tools/global-array-query-public-fixed-23",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 2 python3 tests/semantics/global_constant_array_review_sources.py --phase native --output .tools/global-array-query-review-23",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 2 python3 tests/semantics/global_constant_array_review_sources.py --phase model --output .tools/global-array-query-review-23"
+  ],
+  "execution": "Serial coordinated CPU5/SLOT3 native/baseline and CPU2/SLOT4 model/state/peer, AS3GiB. Recorded children use LC_ALL=C/TZ=UTC; native15s, model CLI45/host60, public full SL90 each. All 4 source and 327 state children0/emptyerr, inputs/head stable, reaped/groups[]. Reports preserve exact inner argv/exits/streams and full pins.",
+  "compatibility": "Remove only the obsolete maintained array-result-boundary Unsupported expectation in global_constant_sources.py. The new wrapper already overrides it, so accepted execution paths are unchanged; new source/state evidence justifies normal lookup without replaying or crediting the historical original.",
+  "raw_root": ".tools/global-array-query-evidence-23",
+  "reports": {
+    "author/public/check-report.json": "b62897a206f9205e36a887e1669d3a9f0085008c7f229e842d484b93227cc534",
+    "author/public/prepare-report.json": "1a5640529658f2a06b525193e060c4090c1bf97bd957152398bafe7ff77135d7",
+    "author/public-initial/check-report.json": "88adb90d10d73e71205f6424613833f6d1f4f8ca675b428580c500a19e46c20d",
+    "author/public-initial/prepare-report.json": "60e7d597fb0a5362853dc4579efa413de41a6af9d1d5feb29984f9f6fa2e6342",
+    "author/review/model-report.json": "9f6fcd6f5137470ace3b7b0d5060141cc71970bf9c71a83fecae69ef9e48a431",
+    "author/review/native-report.json": "376bfe2f3746460b30adb2b6ad45907c62555e8204ba6960d3bce95b386fbba9",
+    "author/sources/baseline-report.json": "736d277daa0bc5bd958480f627d9758241b9461f2ce8e1db458440cd05a4bebf",
+    "author/sources/model-report.json": "d28970fc4303dac32c9e7d5b591dd51125b7315789dfaa6aeeea9872ba60837c",
+    "author/sources/native-report.json": "f14d26870b0c30c84ad3e119601fe722302c7ccb84542aa9368e8362e879f5fc"
+  },
+  "recovery": "Four owned raw trees moved without copies after reviewer STOP/process no-use checks; hashes unchanged. Recreate .tools/source-global-array-query-23 at each recorded revision and restore author/{sources,public-initial,public,review} as its .tools/global-array-query-{native,public,public-fixed,review}-23. Raw absolute cwd/source identities and branch cuts remain intact; maintained scripts can create fresh packets.",
+  "remaining": "Other owning values, coercions, packed/owning calls, wider array producers and full core remain open. No engine bug or intentional divergence.",
+  "actual_parent_integration": null
+}
