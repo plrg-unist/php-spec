@@ -152,6 +152,15 @@ captures and operand roots retain children. Copied text, live CVs and old cells
 remain distinct, and a nonzero leaf skips later casts. Custom pair comparisons,
 numeric conversion and explicit string casts retain their existing behavior.
 
+[Weak internal failed second casts](../../coverage/semantics/weak-nonstringable-redispatch-review.json)
+also cover live WeakMap and WeakReference targets after the first ordinary cast.
+Referent expiry does not retire the wrapper. The comparison fails this implicit
+cast quietly, without reading map entries or weak referents. Existing operand
+roots keep map-owned values alive; weak wrappers add no referent owner. Signed
+CV/COPY/cell returns, real PLAIN frames, retained array cells/COW and first-caster
+throw/finally cleanup pass three exact sources and 318 Boolean premises/12 steps.
+Pair comparisons, numeric conversion, explicit casts and lifetime admission are unchanged.
+
 [Finite Throwable comparison](../../coverage/semantics/throwable-string-comparison-review.json)
 formats builtin and inherited internal handlers at reached object/string leaves,
 including a newly read opposing object after an ordinary cast. The saved first

@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+
+A comparison's second implicit string cast now fails quietly when its opposing
+live operand becomes a WeakMap or WeakReference, even after referent expiry.
+Private entries and referents stay unread; copied strings, live CVs and retained
+cells keep distinct outcomes. Three exact sources agree; author/independent state
+tests pass 318 Boolean premises (315 setup + 3 pure) and 12 raw steps at efea0df4/396,
+covering signed returns, real PLAIN caller frames, array COW, private child ownership
+and identical-TypeError/finally cleanup. The original fixture parse failure retains
+zero credit; initialization, syntax preparation and typed elaboration add no runtime
+credit. Pair/numeric/explicit casts and existing producer/lifetime limits are unchanged.
+[Weak internal redispatch ledger](coverage/semantics/weak-nonstringable-redispatch-review.json).
 Dynamic include/eval now compile closed anonymous-class sites with request-wide
 name history. Repeated visits allocate distinct instances of one compiled class;
 recompilation gets the next suffix, while include_once skips preserve history.

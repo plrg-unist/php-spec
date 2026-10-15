@@ -332,6 +332,8 @@ def $string_compare_standard_class(S, porigin, n) = false -- otherwise
 dec $string_compare_failed_internal(pobject) : bool
 def $string_compare_failed_internal(GENERATOR pgenerator) = true
 def $string_compare_failed_internal(FIBER pfiber) = true
+def $string_compare_failed_internal(WEAKMAP pweakmapentry?) = true
+def $string_compare_failed_internal(WEAKREFERENCE n_target?) = true
 def $string_compare_failed_internal(pobject) = true
   -- if $object_body(pobject) = REALCLOSURE porigin pitem* pstaticcell*
 def $string_compare_failed_internal(pobject) = true

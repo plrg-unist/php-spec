@@ -1980,6 +1980,12 @@ cast. The quiet failed second implicit cast preserves signed order, retained cel
 cursor pins and captured children without invoking a callable or resuming a VM.
 Three exact sources and 352 Boolean premises/13 raw steps pass; custom object-pair
 comparisons, numeric Notice routes and wider lifetime limits are unchanged.
+[Weak internal changed operands](coverage/semantics/weak-nonstringable-redispatch-review.json)
+also admit WeakMap and WeakReference after the first source cast, including a live
+wrapper whose referent has expired. The second implicit cast fails quietly without
+reading private entries or referents. Three exact sources and 318 Boolean premises/
+12 raw steps preserve signed order, COPY/cell distinctions, COW and throw cleanup;
+pair, numeric, explicit-cast and existing producer/lifetime domains are unchanged.
 [Finite Throwable comparisons](coverage/semantics/throwable-string-comparison-review.json)
 now format builtin and inherited internal handlers at reached string leaves, including
 a new opposing object after a source cast. Root cache updates, ignored previous

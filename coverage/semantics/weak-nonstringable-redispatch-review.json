@@ -1,0 +1,251 @@
+{
+  "version": 1,
+  "milestone": "COMP66",
+  "status": "independently reviewed and accepted within the stated failed-cast domain",
+  "behavior": "After an ordinary __toString changes the opposing live operand to a WeakMap or WeakReference, the comparison's second implicit string cast fails quietly with object-after-string order. A live wrapper remains admitted when its referent has expired; aggregate nonzero leaves skip later casts.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "tested_revision": "efea0df4f79f340e245b5a3efe19024f3e20ac2e",
+  "ordered_modules": 396,
+  "manifest_sha256": "6459185c1c01b697c485bc7b04db0bdf9f9b38c3c3e4953ae2f8b832b89d8f2f",
+  "implementation": {
+    "path": "spec/semantics/392-stringable-comparisons.watsup",
+    "sha256": "37cadbfffb7461b7e2e8adcb2e108e0f63c97f40f1ff85b5ca6c60561b3c39a3"
+  },
+  "source_catalogue": {
+    "path": "tests/semantics/weak_nonstringable_redispatch_cases.json",
+    "sha256": "c08aa952294c63ddd05e10176f5ba236fca85b519f5a143e35e3daf0913076d0"
+  },
+  "engine_basis": [
+    "Zend/zend_weakrefs.c: WeakMap and WeakReference copy standard handlers without a cast override; neither class supplies __toString.",
+    "Zend/zend_object_handlers.c zend_std_compare_objects: after the first string cast, a failed opposing string cast returns the original-orientation signed nonzero result without a numeric Notice."
+  ],
+  "contract": [
+    "Two exact outer-tag arms extend the existing failed-internal predicate. Existing bounds, allocation and nonfreeing checks still admit the live opposing wrapper; neither map entries nor weak referents are inspected.",
+    "The saved first text, original direction, CV/COPY/pre-unwrapped CELL and aggregate cursor remain authoritative. Existing scalar and aggregate finishes deliver the signed result and stop nonzero leaves without another callback or documentary receiver root.",
+    "Whole-state raw transitions preserve private child ownership and weak nonownership. WeakMap/WeakReference pair comparisons, numeric images, pending-exception handling, explicit string casts and construction/lifetime admission are unchanged."
+  ],
+  "native": {
+    "revision": "68ed7c825c47ddecac6e65b67d29b1ac3a55d443",
+    "observations": 3,
+    "source_agreements": 0,
+    "result": "Both signs, copied text, live/expired wrappers and retained old cells observed; PLAIN and ARRAY nonzero skips, COW, identical TypeError/finally and later explicit private-value call distinguish the continuation."
+  },
+  "unchanged_frontier": {
+    "revision": "68ed7c825c47ddecac6e65b67d29b1ac3a55d443",
+    "status": "unsupported",
+    "reason": "Stringable comparison changed object operand",
+    "stdout_prefix": "map-left|cast|",
+    "seconds": 28.707797246053815,
+    "source_agreements": 0
+  },
+  "validation": {
+    "initializer": {
+      "mode": "SL",
+      "passed": true,
+      "semantic_assertions": 0,
+      "raw_php_steps": 0
+    },
+    "original_sources": {
+      "agreements": 3,
+      "normal": 3,
+      "caps_seconds": [
+        [
+          360,
+          370
+        ],
+        [
+          240,
+          250
+        ],
+        [
+          240,
+          250
+        ]
+      ],
+      "seconds": [
+        63.67816378735006,
+        64.54908556863666,
+        112.6548326946795
+      ]
+    },
+    "syntax_preparation": {
+      "requests": 6,
+      "submitted_executions": 0,
+      "raw_php_steps": 0
+    },
+    "author": {
+      "groups": 2,
+      "premises": 199,
+      "setup": 198,
+      "pure": 1,
+      "raw_php_steps": 8,
+      "seconds": [
+        59.881737587973475,
+        66.36916619725525
+      ],
+      "result": "Five genuine direct returns cover live Map, copied text, reversed WeakReference, expired wrapper and retained old CELL. PLAIN Map/Ref returns retain real caller/frame depth; a fresh Tail return finishes false and drops the guard."
+    },
+    "independent": {
+      "groups": 1,
+      "premises": 119,
+      "setup": 117,
+      "pure": 2,
+      "raw_php_steps": 4,
+      "seconds": [
+        112.4095794763416
+      ],
+      "result": "Actual ARRAY Map/Ref zero prefixes reach the first caster, then retained old CELL targets stop before Tail despite a reinserted current bucket. Private value owner1, no weak referent edge, same supplied throw/finally and fresh Tail/false cleanup hold."
+    },
+    "total": {
+      "premises": 318,
+      "setup": 315,
+      "pure": 3,
+      "raw_php_steps": 12
+    },
+    "typed_elaboration_runtime_credit": 0
+  },
+  "preserved_failures": [
+    {
+      "artifact": ".tools/weak-nonstringable-state-66/run-el-v1/report.json",
+      "sha256": "854d745ddef43bdcd5a7ef5b78298a678615952c921ec69c61f18cc0a7464c8e",
+      "classification": "pre-main parse failure: arena length used as an ungrouped POBJECT constructor payload",
+      "correction": "Only constructor parentheses in builder/direct fixture changed; six original small inputs remain in constructor-grouping-failure-v1. Property EL and both SL groups were originally unrun.",
+      "accepted_premises": 0,
+      "source_agreements": 0
+    }
+  ],
+  "limits": [
+    "Only normal opposing-object redispatch after an ordinary first __toString is extended. Explicit string casts, numeric conversion, pending-exception paths and custom/same-class pair comparisons retain their existing behavior.",
+    "Existing WeakMap empty/single-entry producers and WeakReference creation/expiration remain bounded. No new dimension access, projection, iteration, GC, destructor or wider weak-lifetime admission is claimed.",
+    "State cuts end at checked comparison results, with no END claim. Complete original-source observations supply the final weak GETs, explicit private-value call and source endings."
+  ],
+  "raw_recovery": {
+    "root": "/home/user/workspace/php-spec/.tools/weak-nonstringable-redispatch-66",
+    "branch": "codex/weak-nonstringable-redispatch-66",
+    "note": "Ignored originals, original failure inputs and owned raw records remain at these paths. Reports bind actual commands, environment, tool identities, raw streams and closures; accepted cuts retain their tested revision."
+  },
+  "artifacts": [
+    {
+      "path": ".tools/weak-nonstringable-native-66/run.py",
+      "sha256": "8e840bf5b75f0146c81e52da1d9416a86035de2f5c1548561a87d40e64af25a3"
+    },
+    {
+      "path": ".tools/weak-nonstringable-native-66/cases.json",
+      "sha256": "e986aa10292fc4abf31c329fc6ece36a64243fc583c408e08d31f2eccdadf123"
+    },
+    {
+      "path": ".tools/weak-nonstringable-native-66/run-native-v1/report.json",
+      "sha256": "cd21342f07c6dcc22f83e3c2090c0d9c961fffe8abe8e0e226667dd862579fa9"
+    },
+    {
+      "path": ".tools/weak-nonstringable-support-66/actor.py",
+      "sha256": "4eb3c6f7896f7486165e1b55778811cf04d9ab6cfa18b93ec24edcb82e801ef8"
+    },
+    {
+      "path": ".tools/weak-nonstringable-support-66/inputs.py",
+      "sha256": "1727be9adba9b3a5ff62fcb7e3ef990ac4536f0d86a5e3c86c5b5d6c0327caf5"
+    },
+    {
+      "path": ".tools/weak-nonstringable-support-66/baseline.py",
+      "sha256": "410589e2d1c616ab31458d38d9bb43dcdb5e6898e166421cd42ae57ef88e40a1"
+    },
+    {
+      "path": ".tools/weak-nonstringable-support-66/baseline-case.json",
+      "sha256": "cded9349bb27dd35be02f9ee06ed3174677cc9f61394230e7d707055fe435ce5"
+    },
+    {
+      "path": ".tools/weak-nonstringable-support-66/run-baseline-v1/report.json",
+      "sha256": "9b8a25f7dc97f0db675dcc1212701261258135d2e095edb132a7ad43a583ee56"
+    },
+    {
+      "path": ".tools/weak-nonstringable-support-66/validate.py",
+      "sha256": "768159d00572d44f2938ed8110be727cba220fc07ef254702f39c259ecf2daf1"
+    },
+    {
+      "path": ".tools/weak-nonstringable-support-66/run-init-v1/report.json",
+      "sha256": "8c986a729d9b3561be073079a568e373ab5b203e0c449947f45a17227fbb0eec"
+    },
+    {
+      "path": ".tools/weak-nonstringable-support-66/run-sources-v1/report.json",
+      "sha256": "08e9b933af2c0a8890c58b437be8baab97b57eaf6f6d5d513a7380a9f8d0e110"
+    },
+    {
+      "path": ".tools/weak-nonstringable-support-66/prepare.py",
+      "sha256": "cfa917ee2f9b9ae5a047a49420044daed0b012915d83de80470e35457474ff39"
+    },
+    {
+      "path": ".tools/weak-nonstringable-support-66/syntax-v1/report.json",
+      "sha256": "15743d49fe0c009f9703e143fe7f11d4a8b951c1f23ad42c6cf90e81919c08db"
+    },
+    {
+      "path": ".tools/weak-nonstringable-state-66/build.py",
+      "sha256": "2c029ae6c1140da7bc11348e8136e3106790396bedb92033c87359d065bf36b0"
+    },
+    {
+      "path": ".tools/weak-nonstringable-state-66/helpers.watsup",
+      "sha256": "1919b19148fb5e4c47184123999ce01318790d98a645ff5cb2d02b817a0bcc8b"
+    },
+    {
+      "path": ".tools/weak-nonstringable-state-66/plan.json",
+      "sha256": "75e11307c86acd2e0fe4af1460bf071b029035bdd6084957e1480e6f8db5b825"
+    },
+    {
+      "path": ".tools/weak-nonstringable-state-66/run.py",
+      "sha256": "2a2bc008f724885c90e18720a09b90cf47c3f633597bd141b5f77872f3b09757"
+    },
+    {
+      "path": ".tools/weak-nonstringable-state-66/run-grouping-retry1.py",
+      "sha256": "a1b158799cac3795b3da0d8e4c0a09bb93a16f9312f1a7cafc3e411d04567729"
+    },
+    {
+      "path": ".tools/weak-nonstringable-state-66/run-el-v1/report.json",
+      "sha256": "854d745ddef43bdcd5a7ef5b78298a678615952c921ec69c61f18cc0a7464c8e"
+    },
+    {
+      "path": ".tools/weak-nonstringable-state-66/run-el-grouping-retry1/report.json",
+      "sha256": "7eb5c279168eaf3013a4328cb79e2d5f61813632a210c4bbc1d42ab55be47fad"
+    },
+    {
+      "path": ".tools/weak-nonstringable-state-66/run-sl-grouping-retry1/report.json",
+      "sha256": "a8872c8eea9713b03c6ebdf4202f6771efee4db581ed39a375962110b7d61510"
+    },
+    {
+      "path": ".tools/weak-nonstringable-peer-state-66/build.py",
+      "sha256": "e700b02e645e85d41a27c6bd8fe30513d1d12fe54d8276445c3d0789459901fb"
+    },
+    {
+      "path": ".tools/weak-nonstringable-peer-state-66/body.py",
+      "sha256": "27802251710f9c71b806d36aa4bd83e934291f28b72a296c8a015d05ab5a3adf"
+    },
+    {
+      "path": ".tools/weak-nonstringable-peer-state-66/helpers.watsup",
+      "sha256": "22db46a411dc717e507615fdbaa39a958a7c8a16f1ef870c8139e386859d79fa"
+    },
+    {
+      "path": ".tools/weak-nonstringable-peer-state-66/plan.json",
+      "sha256": "e1379340290eaca1b7f85ec8513dbea264b85d2125543e888dbf8df381af2632"
+    },
+    {
+      "path": ".tools/weak-nonstringable-peer-state-66/run.py",
+      "sha256": "0a162f6e6102fee49b9584ad19f7355a8c8cf4251020283b39ab7db9bf7be895"
+    },
+    {
+      "path": ".tools/weak-nonstringable-peer-state-66/run-el-v1/report.json",
+      "sha256": "e7fbb68d43a673198fc2a78c478f5fc89de1a49e063b62786ce6e24bba994566"
+    },
+    {
+      "path": ".tools/weak-nonstringable-peer-state-66/run-sl-v1/report.json",
+      "sha256": "2eee33e43e4c43b2e8b290d4541be4c063a1f2077d6ebaf0d5ab5b5f374eb25b"
+    }
+  ],
+  "independent_review": {
+    "semantic_verdict": "CLEAR",
+    "source_and_state_verdict": "CLEAR",
+    "publication_verdict": "CLEAR"
+  }
+}

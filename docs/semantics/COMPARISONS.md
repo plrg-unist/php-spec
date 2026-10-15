@@ -40,6 +40,13 @@ Their second implicit string cast fails quietly without executing the callable o
 VM. Live admission checks allocation; existing saved text, signed order, retained
 cells and cursors finish without a new receiver root. Other internal handlers remain open.
 
+[Weak internal changed operands](../../coverage/semantics/weak-nonstringable-redispatch-review.json)
+also admit live WeakMap and WeakReference objects, including wrappers with expired
+referents. Their second implicit string cast fails quietly without reading private
+entries or referents. Saved text, operand direction, copied values and retained
+cells remain authoritative; nonzero array/property leaves skip later casts.
+Existing pair, numeric, explicit-cast and producer/lifetime domains are unchanged.
+
 [Live WeakMap pairs](../../coverage/semantics/weakmap-comparison-review.json)
 also return order zero before recursion protection or any private-entry traversal.
 Empty versus populated and different-key/value maps compare equally; strict identity
