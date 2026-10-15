@@ -193,9 +193,19 @@ source agrees at `3893fe5`, and two source-derived state groups pass 375 premise
 at `3893fe5`, including table-only ownership after unset and malformed certificates.
 The unchanged query baseline retains zero credit. Composition over `c8161a0e`
 passes full 394-module SL initialization at `3857d5f8`, preserving V50 HALT and
-M62 rules; private source/state cuts remain unchanged. Generic `PVOBJECT`,
-Closures and instance array leaves remain outside this slice.
+M62 rules; private source/state cuts remain unchanged. Generic `PVOBJECT` and
+instance array leaves remain outside this slice.
 [Instance-query review](coverage/semantics/global-constant-instance-review.json).
+
+Global `constant` queries now return already-certified `PVCLOSURE` values with
+shared identity, static cells and callable scope. Two author sources agree at
+`d7aa877c`, an independent inherited-method FCC source agrees at `8e5c038d`, and
+two genuine query groups pass 475 SL premises at `8e5c038d`. Checks distinguish
+one versus two table owners, alias declaration from original receipt, mutable
+counter cells and RESULT ownership. The unchanged query baseline retains zero
+credit. Private acceptance is complete; actual-parent integration is pending.
+Generic objects, object-bearing arrays and wider argument conversion remain open.
+[Closure-query review](coverage/semantics/global-constant-closure-review.json).
 
 Class-qualified `constant` now admits source-authenticated immutable empty array
 roots and children. Queries retain pooled identity; a reference bucket initially

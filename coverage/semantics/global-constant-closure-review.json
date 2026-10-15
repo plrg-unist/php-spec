@@ -1,0 +1,70 @@
+{
+  "scope": "Global constant() returns of already-certified PVCLOSURE values. Partial core.",
+  "status": "independently_accepted_private",
+  "reviewer": "/root/core_breadth_review_01",
+  "parent": "a3d23c9352c8b85630e20626632356645fe2b17b",
+  "semantic_revision": "d7aa877c9207339fc433ffa88adbe586614ad8be",
+  "semantic_sha256": {
+    "spec/semantics/400-dynamic-constants.watsup": "1398c4d3998dae2f7d65af60aef66fa09a232ef59d1bdf35c37ea3ea09c3dfb3"
+  },
+  "module_count": 394,
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+  "behavior": "The five-line global value arm requires matching POBJECT/PVCLOSURE identity and the existing live/source/wrapper certificate. It retains literal Closure static cells and named/inherited-method FCC target scope. Alias rows keep the original creation receipt. Ordinary RESULT adds one owner to the installed table roots; no cloning, creation replay or new ownership protocol.",
+  "source_routes": [
+    "vendor/php-src/ext/standard/basic_functions.c PHP_FUNCTION(constant), zend_get_constant_ex and ZVAL_COPY_OR_DUP",
+    "vendor/php-src/Zend/zend_types.h ZVAL_COPY_OR_DUP: request Closures retain identity",
+    "spec/semantics/89-constant-classes.watsup constant_value_class_valid delegates the live identity/source guards in212-constant-callables and271-global-constant-callables"
+  ],
+  "sources": [
+    {
+      "revision": "d7aa877c9207339fc433ffa88adbe586614ad8be",
+      "report": "author/sources/model-report.json",
+      "agreements": 2,
+      "checks": "Literal shared static counter1/2/3 across query/direct copies then4 after release/requery; named-function FCC alias and named dynamic query retain identity."
+    },
+    {
+      "revision": "8e5c038db3bdb0a1d26a3ec98b2550eb75dccaf5",
+      "report": "author/review/model-report.json",
+      "agreements": 1,
+      "checks": "Independent inherited-method FCC: base lexical class and child called class survive query/direct copies, unset and repeated query."
+    }
+  ],
+  "public": {
+    "revision": "8e5c038db3bdb0a1d26a3ec98b2550eb75dccaf5",
+    "report": "author/public/check-report.json",
+    "premises": 475,
+    "groups": {
+      "closure-identity-and-shared-statics": 238,
+      "function-callable-alias-and-named-dynamic-query": 237
+    },
+    "checks": "Genuine first/peer/post-unset CONFIG fronts; table-only owners1 versus2, original donor receipt versus alias declaration, RESULT owner+1, static cell3 and readonly query storage/scope. Wrong id/site/receipt/wrapper/instance class/generic/live refusals; full budget0 and one-step equality."
+  },
+  "zero_credit": "Native observations and syntax preparation retain zero agreement. Sole unchanged literal-source baseline at7bfca0d1: checked Unsupported/global constant value query after B|, CLI1/null PHP exit/emptyerr. No baseline renewal or fixture/runtime failure.",
+  "execution": "Coordinated CPU2/SLOT4 native/baseline/author-model/syntax and CPU5/SLOT3 public/peer, AS3GiB, serial stop-first/reap. Native children15s, model CLI45/host60, public fullSL90 each. All three source models checked normal0/reasonNone/native-exact/emptyerr; both public children trueLF/0/emptyerr. Inputs/HEAD stable, no timeout, reaped/groups[]. Reports retain exact inner argv, raw exits/streams and tool/input pins.",
+  "raw_root": ".tools/global-closure-query-evidence-25",
+  "reports": {
+    "author/public/check-report.json": "61f032fc241d898f319eb708568eceb7b0cbb30942b9a08ffe15f050bd4032f1",
+    "author/public/prepare-report.json": "7e2152a6a5dcb734d9438878318cb6aca9e4a389a26e97be018a957d672244ac",
+    "author/review/model-report.json": "905189db072ff2a9e19a7771e8885b51ec8a846e77401f1e419d03388868261b",
+    "author/review/native-report.json": "0e7051338ef37fcde5ac5aa966b21ba34fd6d42e1e3ae8205b9e22b664f843d3",
+    "author/sources/baseline-report.json": "ab13149e40a7cc8f3f5243e3e75690e155461d9f2777e09c7384114912c50fe6",
+    "author/sources/model-report.json": "feee769e428aaa0e5331d6dab35d56046d63d99ef605c6202a5f025c51e1dd51",
+    "author/sources/native-report.json": "0610cae8c3f34400d10bdb838dea1f14ad03b96cbd39366659efbbbf6c7f1551"
+  },
+  "recovery": "Three owned ignored raw trees moved without copies after reviewer STOP/process no-use checks; hashes unchanged. Recreate .tools/source-global-closure-query-25 at the recorded revisions and restore author/{sources,public,review} as its .tools/global-closure-query-{native,public,review}-25. Original absolute cwd/source identities and Git cuts remain preserved; maintained scripts can create fresh packets.",
+  "remaining": "Generic PVOBJECT, object-bearing array leaves, wider coercions and packed/owning calls remain outside this slice. Core remains partial. No engine bug or intentional divergence.",
+  "actual_parent_integration": null,
+  "commands": [
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 2 python3 tests/semantics/global_constant_closure_sources.py --phase native --output .tools/global-closure-query-native-25",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 2 python3 tests/semantics/global_constant_closure_sources.py --phase baseline --case closure-identity-and-shared-statics --output .tools/global-closure-query-native-25",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 180s prlimit --as=3221225472 -- taskset -c 2 python3 tests/semantics/global_constant_closure_sources.py --phase model --output .tools/global-closure-query-native-25",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 2 python3 tests/semantics/global_constant_closure_protocol.py --phase prepare --sources .tools/global-closure-query-native-25 --output .tools/global-closure-query-public-25",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 240s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/global_constant_closure_protocol.py --phase check --sources .tools/global-closure-query-native-25 --output .tools/global-closure-query-public-25",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/global_constant_closure_review_sources.py --phase native --output .tools/global-closure-query-review-25",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/global_constant_closure_review_sources.py --phase model --output .tools/global-closure-query-review-25"
+  ]
+}

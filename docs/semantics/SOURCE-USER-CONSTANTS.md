@@ -227,11 +227,20 @@ cloning or property reset. The [instance-query review](../../coverage/semantics/
 records plain/completed-constructor queries, shared aliases/property references,
 actual owner increments, malformed certificates and budget resumption.
 
+Installed `PVCLOSURE` rows also retain their original object identity and creation
+certificate. Existing live-allocation, wrapper and source guards remain authoritative.
+An alias keeps its own declaration origin and the original callable's creation
+certificate. Querying does not rebuild the Closure or its static cells. Literal
+Closure, named-function FCC and inherited static-method FCC results preserve
+static storage and lexical/called scope. The
+ordinary RESULT adds one owner alongside every installed table alias. The
+[Closure-query review](../../coverage/semantics/global-constant-closure-review.json)
+records actual query fronts, shared counters, alias roots and certificate refusals.
+
 Absent names raise `Error` with the stripped lookup spelling and the full captured
 argument in the API trace. Unknown startup values retain their prior Unsupported
-result. Closures, generic `PVOBJECT`, instance-bearing array trees, coercions and
-packed/owning calls remain
-outside this slice. The original ordinary `const` string producer refusal retains
+result. Generic `PVOBJECT`, object-bearing array trees, coercions and packed/owning
+calls remain outside this slice. The original ordinary `const` string producer refusal retains
 its historical cut; the string-publication follow-up above admits that producer
 domain without renewing the older lookup campaign. The [global-query ledger](../../coverage/semantics/global-constant-review.json)
 binds the source and public-state cuts without closing the constant family.
