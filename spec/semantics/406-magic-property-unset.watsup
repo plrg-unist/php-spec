@@ -157,6 +157,14 @@ dec $property_unset_tail(pstate, ppropertyunset, ptask*) : bool
 def $property_unset_tail(S, ppropertyunset, (PROPERTY_UNSET_RESULT ppropertyunset) :: ptask_tail*) = $property_unset_valid(S, ppropertyunset)
 def $property_unset_tail(S, ppropertyunset, ptask*) = false -- otherwise
 
+dec $property_unset_throw_tail(pstate, ppropertyunset) : bool
+def $property_unset_throw_tail(S, ppropertyunset) = true
+  -- if S.TODO = (THROW_SEARCH n) :: (PROPERTY_UNSET_RESULT ppropertyunset) :: ptask_tail*
+  -- if $throwable_live(S, n)
+  -- if S.ORIGIN = (ppropertyunset.SITE)
+  -- if $property_unset_tail(S, ppropertyunset, (PROPERTY_UNSET_RESULT ppropertyunset) :: ptask_tail*)
+def $property_unset_throw_tail(S, ppropertyunset) = false -- otherwise
+
 dec $property_unset_pending_call(pstate, ppropertyunset) : bool
 def $property_unset_pending_call(S, ppropertyunset) = true
   -- if poperand = KNOWN (PSTRING ppropertyunset.NAME)
@@ -273,4 +281,4 @@ def $named_receives_ready(S, pfunction) = true
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.FUNCTION = pfunction.ORIGIN
   -- if $property_unset_context(S, pcallcontext)
-def $call_task_valid(S, PROPERTY_UNSET_RESULT ppropertyunset) = ($property_unset_pending_call(S, ppropertyunset) \/ $property_unset_tail(S, ppropertyunset, S.TODO))
+def $call_task_valid(S, PROPERTY_UNSET_RESULT ppropertyunset) = ($property_unset_pending_call(S, ppropertyunset) \/ $property_unset_tail(S, ppropertyunset, S.TODO) \/ $property_unset_throw_tail(S, ppropertyunset))
