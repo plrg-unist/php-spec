@@ -7,6 +7,21 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Non-NUL string `define` names containing `::` now raise parameter-1 ValueError
+before any ignored-true Warning. Omitted/bool flags preserve raw API arguments;
+strict bool calls keep the same priority after all argument effects. No class
+resolution, warning callback or constant-table mutation occurs.
+Four exact originals agree at acf518e8. Author 167+69+69 and independent 145 public
+premises pass 450 across four groups/seven genuine CONFIG error fronts, checking
+raw two/three-argument traces, real caller frames, unchanged store/events/table,
+request-string captures, source/carrier refusals and budgets. The unchanged
+Unsupported baseline retains zero credit. The runtime adds only 30 module400
+lines; wider/coerced flags, names and owning values remain partial. Pointwise
+composition over 0cc3e18a preserves the 399-module incoming parent. Source4/state450
+retain their private cuts; independent review warrants no joined actor or renewed
+execution claim.
+[Class-name review](coverage/semantics/define-class-name-review.json).
+
 WeakMap and WeakReference numeric comparisons now dispatch real Notice callbacks
 with fixed class names, including wrappers whose referents have expired. Private
 1/1.0, CV/COPY/retained-cell selection and SECOND callbacks survive live writes.

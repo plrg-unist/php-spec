@@ -1062,6 +1062,11 @@ registration; a later ignored-warning throw still reaches the registration tail.
 Strict calls reject after argument effects without warnings.
 [Four source agreements and 472 state premises](coverage/semantics/define-nan-flag-review.json)
 cover these phases, live-table duplicates, captured arguments and budget resumption.
+Non-NUL string names containing `::` raise parameter-1 `ValueError` before the
+ignored-true Warning. Omitted/bool flags and strict calls retain raw arguments
+after their effects.
+[Four source agreements and 450 state premises](coverage/semantics/define-class-name-review.json)
+cover exact errors, caller traces and preserved state; wider flags/values remain partial.
 Fresh two-argument `define` also copies nonempty acyclic scalar-array trees,
 dereferencing source cells and rebuilding append history. Request-string leaves,
 nested reference snapshots and literal constraints pass
