@@ -856,3 +856,22 @@ failure has zero state credit. This covers one normal destructor and the
 nullable, no-argument assignment shape; it does not establish physical
 Zend collection or throwing/reentrant destructor behavior. See the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M80 admits the no-argument integer assignment source under a nonnullable
+`&f():int` declaration. The finalizer's selected `$y` return fails its int
+recheck and is caught; the consumed old assignment cursor then restores NULL
+with a new pending old-line VALUE Notice. NULL fails the declared int check
+before that Notice can be delivered. The resulting TypeError survives a
+second outer-finalizer passage and reaches the caller catch with `$r` still
+7. A direct-call control observes `F:0` on the first passage; the assignment
+observes `F:1`. Both call `old_value()` once, emit `F:0` on the second
+passage, and deliver no Notice. Native observations at `e90b3a74`/399 are
+matched by strict compilation and both original-source agreements at private
+`8b7c539a`/399; the unchanged model admitted only the direct control.
+One assigned source-reached fixture distinguishes the
+selected-array and restored-NULL TypeErrors, pending versus delivered Notice,
+the surviving NULL error at the caller, a cursor-line refusal and budget
+resumption. This extension applies only to the exact builtin-int signature
+in the no-argument assigned-integer source guard; effectful arguments and
+other nonnullable source/value shapes remain open. See the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).

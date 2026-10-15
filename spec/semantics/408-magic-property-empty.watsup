@@ -1,5 +1,5 @@
 ;; False selects __isset; true selects __get. One saved RESULT owns the receiver
-;; through both calls. Null/bool/int and authenticated byte strings use pure truth.
+;; through both calls. Non-NaN primitive results use pure truth; carriers authenticate.
 dec $property_empty_method(pstate, nat, bool) : pmethoddesc?
 def $property_empty_method(S, n, false) = $property_isset_method(S, n)
 def $property_empty_method(S, n, true) = $property_get_method(S, n)
@@ -197,6 +197,9 @@ dec $property_empty_truth(pstate, pvalue) : bool?
 def $property_empty_truth(S, PNULL) = (true)
 def $property_empty_truth(S, PBOOL b) = (~b)
 def $property_empty_truth(S, PINT i) = (i = 0)
+def $property_empty_truth(S, PFLOAT n_float) = (~b)
+  -- if $(n_float < 18446744073709551616)
+  -- if (b, false) = $number_bool(NFLOAT n_float)
 def $property_empty_truth(S, PSTRING ptbytes) = (ptbytes = eps \/ ptbytes = [48])
 def $property_empty_truth(S, PSTRING_CARRIER pstringidentity ptbytes) = (ptbytes = eps \/ ptbytes = [48])
   -- if $string_carrier_valid(S, PSTRING_CARRIER pstringidentity ptbytes)

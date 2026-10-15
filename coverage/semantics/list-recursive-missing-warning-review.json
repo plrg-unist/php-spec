@@ -1,7 +1,7 @@
 {
   "version": 1,
   "milestone": "A5 recursive by-value destructuring missing-key handlers",
-  "status": "independently reviewed private milestone; actual-parent composition pending",
+  "status": "independently reviewed and pointwise composed for integration",
   "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle and tests/semantics/profile.json",
   "base": "7638815fe33851f050e8695c2db1bfcc715b7021",
   "scope": "Finite recursive by-value patterns from a direct-CV RHS, with direct-CV leaves and quiet implicit/compiled constant keys; missing ancestors and descendants are admitted without a depth tag.",
@@ -21,7 +21,7 @@
     "An outer missing fetch feeds NULL through three child patterns without additional warnings, overwriting callback target writes in order and preserving the captured root result despite live RHS replacement.",
     "A heterogeneous completed deep sibling precedes a selected three-child branch. Callback replacement of the shared row cell disconnects the old row from the returned root, but old row/middle/leaf tasks still read33/6/7. The returned root sees the new row22 and its later44 mutation. Source validation never reconstructs a historical lookup from the current parent table or RHS CV.",
     "Raw steps establish dispatch, NULL store scheduling, next old-leaf reads, silent descent and outer-tail ordering. In the throwing case the first retirement frontier leaves root1/upper2/parent2/inner1/cell1; the later caller frontier retires all otherwise unowned nodes while preserving prior stores, callback writes, destination100 and the supplied Throwable.",
-    "Existing flat/literal/mixed and one-level runtime paths are preserved. Two inherited pure depth-refusal expectations become positive because their shapes are now intentionally supported; no A1–A4 source or state program is replayed or renewed."
+    "Existing flat/literal/mixed and one-level runtime paths are preserved. Two inherited pure depth-refusal expectations become positive because their shapes are now intentionally supported; no A1\u2013A4 source or state program is replayed or renewed."
   ],
   "accepted": {
     "source": {
@@ -116,7 +116,17 @@
   "actual_parent_review": {
     "parent": "c5d1e29754c666308aa3ee74c68e579292fce7fb",
     "seams": "Incoming30/55/404 add left/right bitwise-assignment warning tasks/guards,400 class-name NULL/NaN define conversion,283 coalescing stdClass newborn-receipt paths,408 non-NaN float property-empty truth and156 exact-int assigned-call return eligibility. These disjoint guards do not change409 or list source paths, task ownership, compiler lines or NULL descent.",
-    "joined_actor": "No concrete semantic interaction found; pointwise composition and exact FF review add no replay credit."
+    "joined_actor": "No concrete semantic interaction found; pointwise composition and exact FF review add no replay credit.",
+    "composition": {
+      "runtime_delta": [
+        "spec/semantics/409-list-missing-warnings.watsup"
+      ],
+      "modules": 399,
+      "tested_leaf": "1e5e02b466eefd72f79137b066bcc34591dacb40",
+      "checks": "409 and six new tests plus the two affected one-line A4 control files retain exact tested bytes; every other parent runtime/module and inventory row/field is retained; the combined checkpoint preserves all other parent checkpoints.",
+      "joined_actor": "No concrete interaction; no new actor or renewed agreement credit.",
+      "runtime_diff_sha256": "365855d321b8ad86acff9b97b9717a6b0cdbd9d753ad807ce069425788376539"
+    }
   },
   "remaining": [
     "Reference nesting, nested literal/call/wider RHS producers and non-CV target leaves.",

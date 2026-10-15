@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "milestone": "OP30 plain-CV numeric bitwise assignments after fractional-RHS deprecation",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; project-local pinned PHP and profile",
+  "scope": "Ordinary &=, |= and ^= with distinct initially defined plain CVs, a quiet signed-64-bit integer LEFT and a finite in-range fractional-float RHS, and a named eligible deprecation handler. Both converted longs remain historical after dispatch; resumption checks only the original target binding is live, allocated, nonowning and unconstrained. A late target reference is admitted.",
+  "runtime_revision": "9bcb1a3c9b65f55d680ca699d638449cd8047058",
+  "helper_revision": "3f53cfce6a2c95d772610dc08393e7bf4255bae5",
+  "private_modules": 399,
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "ee5e9db78127f5f4894bb5f1e706cfd39f3d544c3453e220569d61be5fbe20d0",
+    "spec/semantics/55-compound-assignment.watsup": "a901bc637a412680ae95acd74c99a8de56d644a2f6564dae539a87747d7882a9",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "36969f033f71afea6bad22575595ba553fe5e278f2483d8625dd6c89aa73ce62"
+  },
+  "engine_basis": [
+    "Zend/zend_operators.c bitwise_and_function/bitwise_or_function/bitwise_xor_function inline long conversion after initial ZVAL_DEREF(both). Quiet integer LEFT/fractional-float RHS bypasses the two-string specialization. LEFT is copied before zendi_try_get_long saves the RIGHT long and emits its precision-loss diagnostic; both locals survive callback writes.",
+    "A supplied handler Exception makes conversion fail; zend_binop_error preserves the pending Exception and returns FAILURE before result destruction. On success result==op1 is destroyed before integer storage. Negative converted values remain ordinary bit masks. Existing pure integer_binary/long_and/long_or/long_xor supply signed-64-bit answers.",
+    "Zend/zend_vm_def.h ZEND_ASSIGN_OP selects the target before the binary call. Successful replacement destroys a callback-created reference wrapper at that initially plain slot; failure preserves it. Existing bitassign_warning_source, generic modassign_right_warning_snapshot, powerassign_warning_ready and arithmetic_addassign_cv_write stay unchanged. Old modulo/shift and fractional-LEFT bitwise bodies/contracts are not broadened."
+  ],
+  "contract": [
+    "Authentic COMPOUND_APPLY BITAND/BITOR/BITXOR false, matching three AssignOpBitwise ASTs, distinct plain selections and compiled RHS line bind both original cells and converted longs at stage0 and fresh TARGETeps dispatch. Entered/returned stages retain both longs; the current numeric RHS is never consulted again for the result.",
+    "Captured12/5 from5.5 stores4/13/9 for AND/OR/XOR despite callback LEFT99/RHS10. All four cached/live alternatives differ for every operator. Real successful replacement creates a new nonreference CELL/LOCATION; the old alias retains99 with one owner, and later target7 leaves alias99.",
+    "The AND supplied-handler Exception cancels the marker/store, keeps callback target/alias99 and RHS10, and resumes the same Exception with no Previous. Destination100 survives; later target7 reaches alias7. The Throwable retains its actual two roots and the target alias retains two owners.",
+    "Independent XOR retains negative RIGHT(-1) from-1.5 with LEFT12, producing(-13) despite current99/10. Exactly one original-RHS-line16 default Deprecated follows the false handler; real new CELL/LOCATION and alias owner2-to1 authenticate successful negative-mask storage and later alias99.",
+    "Production drive_steps supplies every driven state; actual heap/call descriptors, target/cell/alias/Throwable owners and full/budget resumes validate. Fresh source/op/line/target/both-cache/diagnostic/range counterfeits and old MOD_ASSIGN_RIGHT_WARNING/LEFT BIT_ASSIGN_WARNING stage0 markers are public-validator negatives only, never driven. Initial-reference and pruned/missing/wrong/constrained/owning target projections are pure refusals, not wider execution or valid-heap claims."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-30/source-9bcb1a3c9-author-four/report.json",
+        "sha256": "8940e3ef7ff2c6ad58798415fcf1a3ab85e182a4dcf830be4d39b23482ba5454",
+        "cases": [
+          "bitassign-right-and-handler-write",
+          "bitassign-right-or-handler-write",
+          "bitassign-right-xor-handler-write",
+          "bitassign-right-and-handler-throw"
+        ],
+        "revision": "9bcb1a3c9b65f55d680ca699d638449cd8047058",
+        "agreements": 4
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-30/review-model-9bcb1a3c9-negative-default/report.json",
+        "sha256": "8260c0da114dd6daf928c8b6791820cc86b721eb557209fffc3dbadce8a90d40",
+        "cases": [
+          "bitassign-right-xor-negative-default"
+        ],
+        "revision": "9bcb1a3c9b65f55d680ca699d638449cd8047058",
+        "agreements": 1
+      }
+    ],
+    "state": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-30/state-3f53cfce6-five/report.json",
+      "sha256": "19cf0efa549170bc2ee00cccd3f173b1d9b548864eca739979adce48f6089ecf",
+      "revision": "3f53cfce6a2c95d772610dc08393e7bf4255bae5",
+      "modules": 399,
+      "author_conditions": [
+        155,
+        155,
+        155,
+        140
+      ],
+      "independent_conditions": [
+        119
+      ],
+      "total": 724
+    },
+    "total_source_agreements": 5,
+    "total_focused_state_conditions": 724,
+    "compatibility": "Only two helper scripts changed9bcb1a3c9..3f53cfce6; runtime bytes stayed identical. Checked frontend/adapter preparation reused accepted original paths/native bytes without native/application replay. Complete155/155/155/140/119 immutable full399 SL fixtures use maintained conditions/HELPERS with grouped negative constructor payloads and execute no PHP/frontend stage. Counts include setup/refusal premises, not724 separate programs or renewed source agreement."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-30/baseline-64faf1e95-handler-write/report.json",
+      "sha256": "6a83605e9a8944f3c4b61953236620b66e430ec1e85c63ab158951ab8396cd8f",
+      "result": "Accepted checked program Unsupported: error-handler ingress requires a producer continuation; native AND stores4 with detached alias99, model streams empty."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-30/native-64faf1e95-author-four/report.json",
+        "sha256": "fff4405c6c182fc29b6a4dfbcfe8a3cfe85261ed826ebdd988bf385eda05431f"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-30/native-64faf1e95-review-one/report.json",
+        "sha256": "9f979fc80a3411ebb6db33d254c25e7082438fd5b74ea2491e0c55bb5f33d9e3"
+      }
+    ],
+    "checked_preparation": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-30/state-prep-3f53cfce6-five/report.json",
+      "sha256": "06268055214f75bb98a3c31079f1191e6239dc769b8888fef88f8c1a0818cac6",
+      "result": "Only checked frontend parse/adapter check with retained original source/native bytes; no application or numeric actor."
+    },
+    "standalone_syntax": "The five syntax rows in the accepted state report parse full files before the expected undefined-pstate standalone environment diagnostic; zero semantic credit."
+  },
+  "required_follow_on": [
+    "Both-fractional operands, initial references/COPY/TMP, container/property targets, missing/rebound/expired/owning/constrained targets and wider callback/exit/lifecycle forms remain partial. Both-string specialization and wider number-conversion forms are separate scopes.",
+    "All nine affected inventory rows remain partial. Earlier modulo/shift/fractional-LEFT bitwise source authority/validators/bodies and accepted cuts remain unchanged with zero renewed credit; OP12 stays paused."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-30",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "environment": "LC_ALL=C, TZ=UTC, no PHP_SPEC_SCRIPT_ENCODING. Native5/baseline used CPU1; source5 used CPU3; checked-prep/syntax/SL724 used CPU1. Native30/modelCLI60-process90; checked workers30; syntax30 and separate full399 SL groups120, true newline/empty stderr, no interruption and reaped PIDs/groups.",
+    "commands": [
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 tests/semantics/bitassign_right_warnings.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 tests/semantics/bitassign_right_warning_review.py --case bitassign-right-xor-negative-default --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-30/state-prep-3f53cfce6-five/run-prepare.py",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-30/state-3f53cfce6-five/run-state.py"
+    ],
+    "record": "Restore matching Git cuts/project-local tools and fresh outputs. External records retain original source/native/checked-worker packets, full immutable fixtures, commands/exits/reaping; no evidence archive is a runtime dependency."
+  },
+  "composition": {
+    "parent": "67c660172167ea554c2c41b3f2b2329f80c57714",
+    "private_publication": "6640aa69a8635dcc59b9d51279fd3748049be485",
+    "modules": 399,
+    "runtime_sha256": {
+      "spec/semantics/30-storage.watsup": "9dc0bbb96b3644a246bc1fe07fca6c2552ccf09ee15240a13bcff6304ea8b9b6",
+      "spec/semantics/55-compound-assignment.watsup": "a901bc637a412680ae95acd74c99a8de56d644a2f6564dae539a87747d7882a9",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "36969f033f71afea6bad22575595ba553fe5e278f2483d8625dd6c89aa73ce62"
+    },
+    "other_incoming_paths_preserved": 81,
+    "gate": "No joined actor:55/404 retain exact private bodies;30 is the parent plus only BIT_ASSIGN_RIGHT_WARNING. Typed assigned-return cursors, Generator initialization/delegation/unpack/close, stdClass constant births/define, property-empty/list and weak comparison selectors are absent from OP30 source5. New NULL/NaN define contexts and property float-truth tasks select distinct continuations. Common handler/CV-write/heap/integer/source-line interfaces remain unchanged. Independent pointwise review preserves every parent path; source5@9bcb1a3c9/state724@3f53cfce6 retain private399 cuts without replay or renewed credit."
+  }
+}

@@ -7,6 +7,95 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+With a quiet integer LEFT, plain-CV numeric `&=`/`|=`/`^=` now retain both longs
+through fractional-RHS deprecation. Captured12/5 from5.5 stores4/13/9 despite
+callback99/10 and detaches a late alias; supplied throw preserves callback writes,
+the same Exception and alias write-through. Independent negative RHS(-1) from-1.5
+still stores XOR-13, with original-line default Deprecated and detached alias99.
+Five exact originals pass at9bcb1a3c9; author155/155/155/140 plus independent119
+SL premises pass724 at3f53cfce6/399. Fresh both-cache/source/op/line/range guards,
+actual cells/owners and budgets are covered; only the safe target is rechecked
+after conversion. Native/baseline/retained checked prep/syntax retain0; pure ready
+projections establish refusals only. Both-fractional operands, initial references/
+copies, unsafe targets and wider callbacks/lifecycle remain partial; OP12 stays paused.
+[RHS bitwise-assignment ledger](coverage/semantics/bitassign-right-warning-review.json).
+
+Composed over 67c660172/399 after pointwise review of typed returns, Generator,
+stdClass/define, property-empty/list and weak comparison seams. Source5/state724
+retain their private cuts; no joined actor, replay or renewed credit.
+
+NaN third flags with non-NUL `::` define names now emit their conversion Warning
+before the name ValueError, skipping the ignored-true Warning. Returning handlers
+retain raw captures and callback effects; first-handler throws cancel the body
+while preserving the original Exception and inner binding. Strict calls reject the
+raw float after argument effects without either Warning.
+Four exact originals agree at 0dd57949; default and false-return cases each retain
+one expected PHP-stderr Warning. All 441 public premises pass: author 96+147+72 and
+independent 126 across four groups, covering actual dispatch/handler/resume/discard,
+raw API/caller traces, canonical-literal versus runtime NaN captures, source/carrier
+refusals and budgets. The unchanged Unsupported baseline retains zero credit;
+copied rule labels were fixed before execution. Runtime adds one tag and 51
+module400 lines; existing marker guards stay exact. NUL/coerced names, owning/wider
+values and wider NaN producers/payloads remain partial. Native bit identity is not
+claimed. [NaN class-name review](coverage/semantics/define-class-nan-flag-review.json).
+
+Pointwise composition over e70950fc preserves the incoming 399-module parent.
+Source4/state441 retain their private cuts; independent seam review warrants no
+joined actor or renewed execution claim.
+
+Terminal inherited `empty` now accepts valid non-NaN float getter results within
+the existing CV/literal private-property slice. Both signed zeros are empty;
+other finite/subnormal values and infinities are not. One 235-byte original agrees
+at1abb46624; state145 =132 reached +13 derived passes at1b54b5d6e, checking nine
+actual binary64 payloads, pure conversion, saved receiver owner release and late
+budget resume. Constructed NaN/invalid-bit refusals cover both older active
+refusal controls without replay. The unchanged Unsupported baseline retains zero
+agreement credit; no runtime actor failed. NaN warning continuations, owning RV
+disposal and wider signature/receiver/recursive/quiet combinations remain partial.
+[Float result review](coverage/semantics/magic-empty-floats-review.json).
+Earlier integer/call state208 and null/bool/byte-string state155 retain their tested
+cuts, original source identities and historical failures without renewal:
+[magic empty review](coverage/semantics/magic-empty-review.json),
+[primitive result review](coverage/semantics/magic-empty-scalars-review.json).
+Pointwise composition over f63866b36 preserves the incoming399-module parent.
+Source1/state145 retain their private cuts; seam review warrants no joined actor or renewed credit.
+
+Plain-CV numeric `&=`/`|=`/`^=` now retain their fractional LEFT conversion
+through deprecation handlers, then read the live quiet integer RHS. Captured12/live5
+stores4/13/9 despite callback99 and detaches a late alias; supplied throw cancels
+storage, preserves the same Exception and leaves later alias writes connected.
+Independent signed XOR stores-15 with original-line default Deprecated.
+Four exact originals pass at2a1acc7f2; corrected peer1 passes at9feef8126.
+Author148/148/148/131 plus independent117 SL premises pass692 atcc0cd7bef/399,
+covering all3 AST/OP guards, fresh cache/source/line refusals, actual cells/owners
+and budgets. Retained checked prep/native/baseline/syntax and original unsupported
+is_int observer failure keep0; only its strict-equality correction was rerun.
+Initial references/copies, noninteger or warning RHS, unsafe targets and wider
+callbacks/lifecycle remain partial; pure projections establish refusals only.
+[Bitwise-assignment ledger](coverage/semantics/bitassign-warning-review.json). OP12 stays paused.
+
+Composed over edd7296de/399 after pointwise review of typed assigned returns,
+Generator, stdClass/define, property-empty/list and weak comparison seams. Source5
+and state692 retain their private cuts; no joined actor, replay or renewed credit.
+
+For non-NUL `define` names containing `::`, a NULL third flag now emits its
+bool-reception deprecation before the name ValueError. Returning handlers preserve
+raw captures despite live argument/callee writes; a throwing handler cancels the
+body and keeps its original Exception and inner binding. Strict calls reject raw
+NULL with parameter-3 TypeError after argument effects, without deprecation.
+Four exact originals agree at 12e06acc, including the default Deprecated PHP-stderr
+line. All 429 public premises pass: author 92+145+72 and independent 120 across four
+groups, checking actual default/entered-handler/result/throw-discard steps, raw API
+and caller traces, retained callback effects, source/carrier refusals and budgets.
+The unchanged Unsupported baseline retains zero credit. Runtime adds one task tag
+and 51 module400 lines; existing flag-marker guards stay exact. NaN flags for
+these names, NUL/coerced names and wider/owning values remain partial.
+[NULL class-name review](coverage/semantics/define-class-null-flag-review.json).
+
+Pointwise composition over 7638815f preserves the incoming 399-module parent.
+Source4/state429 retain their private cuts; independent seam review warrants no
+joined actor or renewed execution claim.
+
 With a quiet integer left operand, plain-CV `<<=`/`>>=` now keep both converted
 longs through a fractional-count deprecation. Captured `-12`/`2` from `2.5` stores
 `-48`/`-3` despite callback `99`/`1`, detaching a late alias. Supplied throw cancels
@@ -24,22 +113,6 @@ callbacks/lifecycle remain partial; OP12 stays paused.
 Composed over e90b3a746/399 after pointwise review of Generator, stdClass/define,
 property-empty/list and typed assigned-return seams. Source5/state674 retain their
 private cuts; no joined actor, replay or renewed credit.
-
-Terminal inherited `empty` now accepts null/bool/int and byte-string getter results
-within the existing CV/literal private-property slice; identity carriers are
-authenticated. Empty bytes and sole ASCII `0` are empty strings; NUL and `0` plus NUL are not. One further
-201-byte original agrees at ebec20005; state155 =132 reached +23 derived passes at
-6ea911050, checking actual literal INTERNED payloads, pure conversion, receiver
-release and late budget resume. REQUEST metadata authentication/refusals are
-derived controls with no new producer claim. The initial changed Unsupported, two
-pre-app fixture failures and expired no-actor observer retain zero passing credit.
-Float/NaN, owning results and wider signatures/receivers/recursive/quiet forms
-remain partial. [Primitive result review](coverage/semantics/magic-empty-scalars-review.json).
-The prior integer/call/receiver slice retains original d9df16379/state208 e8703a594
-and its 4206eef78 composition without replay; both abrupt cleanups remain derived.
-[Magic empty review](coverage/semantics/magic-empty-review.json).
-Pointwise composition over 03a29bd22 preserves the incoming399-module parent.
-Source1/state155 retain their private cuts; seam review warrants no joined actor or renewed credit.
 
 Non-NUL `define` names containing `::` now receive int/string/non-NaN float
 third flags with primitive values. Weak calls raise the name ValueError before any
@@ -126,6 +199,9 @@ retain their original cuts. Flat literals retain table snapshots; flat mixed pat
 retain the source cell through value replacement or CV rebind. Quiet compiled/implicit
 keys and CV leaves bound these slices; reference nesting, nested literal/call/wider
 RHS or targets, scalar diagnostic callbacks and lifecycle remain partial.
+The pointwise399-module composition overc5d1e2975 preserves incoming bitwise,
+define, constant/property-empty and return paths. Source5/state738 retain their
+private cuts; seam review warrants no joined actor or renewed agreement credit.
 
 Plain-CV `%=` now keeps both converted longs through a fractional-RHS deprecation.
 Captured12/5 stores2 despite callback99/7 and detaches a late target alias; supplied
@@ -331,6 +407,22 @@ producers remain partial.
 Pointwise composition over c9fc1c864 preserves the incoming399-module parent,
 including define, arithmetic, Generator, return and mixed-list selectors.
 Source4/state1107 retain their private398 cuts; no joined actor or renewed credit.
+
+Newborn stdClass `??` leaves now keep a nonnull left value or select a fresh
+fallback after a captured NULL, including nested chains and eval units. Only two
+module283 flow heads are added; source/completion and separate live-value guards
+remain. Three exact sources agree at their retained399-module cuts. Author282/316
+plus independent219 SL premises pass817 at aee1b2cae, covering ordinary
+COALESCE_RESULT handoff, quiet literal-DIM capture with V61 ternaries, two births
+from five sites, temporary retirement
+and real query/COW owners. Pure malformed histories are never driven. The
+unchanged Unsupported and initial peer elaboration binding failure retain0; only
+the affected peer fixture is renewed. Alias/whole-array coalescing, arguments,
+defaults and wider producers remain partial.
+[Coalescing review](coverage/semantics/global-constant-stdclass-coalesce-review.json).
+Pointwise composition over c53bf2a3d preserves incoming399 modules, define,
+shift, typed-return, magic-empty and nested-list selectors. Source3/state817
+retain their private cuts; no joined actor or renewed credit.
 
 Selected inherited `__unset(string): void` now dispatches direct CV/literal-name
 access to a declared private property. Accessible public unset skips magic;
@@ -8533,7 +8625,10 @@ failures and interrupted evidence.
   and one folded integer RHS. M78 adds a flat owning-array assignment return with
   a witnessed x-table copy and detached NULL restoration. M79 adds a bounded
   ordinary-object assignment return through destructor release and caught
-  selected-reference recheck.
+  selected-reference recheck. M80 adds the exact nonnullable builtin-int
+  no-argument assignment source: a restored NULL fails return verification,
+  cancels its pending Notice and re-enters the outer finalizer before the
+  original TypeError reaches the caller.
   Other VALUE signatures/layouts, general CONST/other
   NULL and multiple-active histories, genuinely released
   CV targets, destructor throw/reentry, real suspension and wider typed consumers
@@ -8595,6 +8690,20 @@ has zero state credit; only its active-state timing predicate was corrected
 and rerun. This proves neither physical Zend collection nor throwing or
 reentrant destructors; no prior return fixture was replayed.
 [M79 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M80's used `&f():int` assigned no-argument integer call initially gives
+`x41/F:1`, then selected-y array rejection is caught. The nonowning cursor
+restores NULL and one pending old-line VALUE Notice, but int verification
+throws a distinct TypeError and cancels the Notice before delivery. The
+original NULL error survives a second outer-finalizer pass and reaches the
+caller with `r7/x99/yarray`; direct `return old_value()` is separately exact
+with first `F:0`, while both sources call the helper once and deliver no
+Notice. Native2 and unchanged baseline at `e90b3a74`/399 show direct exact
+and assigned Unsupported; strict/source2 pass at `8b7c539a`/399. One assigned
+128-premise reached fixture binds both error identities, the pending versus
+delivered Notice, second `F:0`, caller error/r7, LINE refusal and budget.
+No prior return fixture was replayed. Only the exact builtin-int
+no-argument assigned source is newly admitted.
+[M80 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, destructor throw/reentry, real suspension and wider typed

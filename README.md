@@ -608,6 +608,16 @@ through a fractional-count deprecation. Success detaches a late alias; supplied
 throw or a captured negative count preserves it. A captured count of `64` keeps
 the original signed-right-shift result. Five exact originals and 674 focused SL
 premises pass in the [RHS shift ledger](coverage/semantics/shiftassign-right-warning-review.json).
+For initially plain variables, numeric `&=`, `|=` and `^=` now keep their fractional
+left conversion through deprecation handlers, then read the live quiet integer RHS.
+Success detaches late aliases; supplied throw preserves callback writes and the
+same Exception. Five exact originals and 692 focused SL premises pass in the
+[bitwise-assignment ledger](coverage/semantics/bitassign-warning-review.json).
+With a quiet integer left value, numeric `&=`, `|=` and `^=` also keep both converted
+longs through fractional-RHS deprecation. Success detaches late aliases; supplied
+throw preserves callback writes and the same Exception. Negative RHS values remain
+ordinary signed masks. Five exact originals and 724 focused SL premises pass in the
+[RHS bitwise ledger](coverage/semantics/bitassign-right-warning-review.json).
 Explicit array-to-string casts now suspend through named warning handlers for
 a bounded plain-CV array input. The borrowed array adds no saved owner: replacing
 or removing its CV still yields fixed `Array`, while a supplied throw preserves
@@ -1086,7 +1096,18 @@ For the same non-NUL `::` names, weak int/string/non-NaN float flags reach that
 ValueError, while strict calls reject the raw flag first with parameter-3 TypeError.
 [Four source agreements and 620 state premises](coverage/semantics/define-class-scalar-flag-review.json)
 cover both priorities, raw negative-zero/request-string traces and unchanged state.
-NULL/NaN flags for these names and wider values remain partial.
+A NULL flag for these non-NUL `::` names emits its deprecation before the name
+ValueError; a throwing handler cancels that body check. Strict calls reject raw
+NULL first after argument effects.
+[Four source agreements and 429 state premises](coverage/semantics/define-class-null-flag-review.json)
+cover default reporting, callback return/throw, raw traces, preserved caller result
+and callback effects.
+NaN flags for these non-NUL `::` names emit only the bool-conversion Warning before
+the name ValueError. First-handler throws cancel the body; strict calls reject raw
+float after argument effects without warnings.
+[Four source agreements and 441 state premises](coverage/semantics/define-class-nan-flag-review.json)
+cover raw captures, false-handler reporting, callback effects and throw cancellation.
+NUL/coerced names, owning/wider values and wider NaN producers remain partial.
 Fresh two-argument `define` also copies nonempty acyclic scalar-array trees,
 dereferencing source cells and rebuilding append history. Request-string leaves,
 nested reference snapshots and literal constraints pass
@@ -2614,13 +2635,16 @@ slots bypass it; actual true/false results preserve short circuiting and storage
 One original and one state/215 checks cover typed name reception, lexical scope
 and receiver cleanup; [magic isset review](coverage/semantics/magic-isset-review.json).
 Terminal `empty` now chains that inherited `__isset` with an untyped by-value
-`__get`: false skips the getter, while true tests its null/bool/int/byte-string
-result. Only empty bytes or exactly ASCII `0` make a string empty; NUL and `0` plus
-NUL do not. The original integer/call state208 remains historical; one further
+`__get`: false skips the getter, while true tests its null, bool, int, non-NaN
+float or byte-string result. Only empty bytes or exactly ASCII `0` make a string
+empty; NUL and `0` plus NUL do not. The original integer/call state208 remains historical; one further
 original and state155 cover primitive results and authenticated string metadata.
 [Magic empty review](coverage/semantics/magic-empty-review.json),
 [primitive result review](coverage/semantics/magic-empty-scalars-review.json).
-Other signatures, receivers, float/owning results and coalesce magic combinations
+Both signed float zeros are empty; other finite/subnormal values and infinities
+are not. One further original and state145 check the actual float bits and bounds;
+[float result review](coverage/semantics/magic-empty-floats-review.json).
+Other signatures, receivers, NaN/owning results and coalesce magic combinations
 remain unsupported.
 Hooked iteration, defaulted virtual hooks, other paired or virtual setters, wider trait
 setters, other explicit setter parameter forms, references, other inherited/trait
@@ -2752,7 +2776,13 @@ Earlier facts retain their source guards; birth receipts preserve distinct leaf
 identities, shared property writes and duplicate-candidate cleanup.
 The [nested-birth review](coverage/semantics/global-constant-stdclass-new-review.json)
 records four source agreements and 1,107 reached-state premises. Whole-array conditional
-transfer, coalescing and wider object producers remain partial.
+transfer and wider object producers remain partial.
+Newborn stdClass leaves also transfer through `??`, including nested operand
+chains, eval units and quiet literal-array dimension reads. A nonnull left keeps
+its identity and skips the right; a NULL constant selects a fresh fallback leaf.
+The [coalescing review](coverage/semantics/global-constant-stdclass-coalesce-review.json)
+records the focused source and state cuts. Conditional aliases, whole-array
+coalescing, arguments and defaults remain partial.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is

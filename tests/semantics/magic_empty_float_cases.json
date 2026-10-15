@@ -1,0 +1,34 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "scalar",
+      "source": "<?php\nclass MagicFloatParent85 {\n    private int $pluszero = 1;\n    private int $minuszero = 2;\n    private int $positive = 3;\n    private int $negative = 4;\n    private int $tiny = 5;\n    private int $minustiny = 6;\n    private int $largest = 7;\n    private int $infinity = 8;\n    private int $minusinf = 9;\n    public function __isset(string $name): bool {\n        echo 'I:', $name, '|';\n        return true;\n    }\n    public function __get($name) {\n        echo 'G:', $name, '|';\n        return match ($name) {\n            'pluszero' => 0.0,\n            'minuszero' => -0.0,\n            'positive' => 1.5,\n            'negative' => -2.5,\n            'tiny' => 5e-324,\n            'minustiny' => -5e-324,\n            'largest' => 1.7976931348623157e308,\n            'infinity' => INF,\n            'minusinf' => -INF\n        };\n    }\n}\nclass MagicFloatChild85 extends MagicFloatParent85 {}\n$child = new MagicFloatChild85();\necho 'A:', empty($child->pluszero) ? 'T' : 'F', '|';\necho 'B:', empty($child->minuszero) ? 'T' : 'F', '|';\necho 'C:', empty($child->positive) ? 'T' : 'F', '|';\necho 'D:', empty($child->negative) ? 'T' : 'F', '|';\necho 'E:', empty($child->tiny) ? 'T' : 'F', '|';\necho 'F:', empty($child->minustiny) ? 'T' : 'F', '|';\necho 'G:', empty($child->largest) ? 'T' : 'F', '|';\necho 'H:', empty($child->infinity) ? 'T' : 'F', '|';\necho 'I:', empty($child->minusinf) ? 'T' : 'F', '|';\n$raw = (array) $child;\necho 'R:', $raw === [\"\\0MagicFloatParent85\\0pluszero\" => 1, \"\\0MagicFloatParent85\\0minuszero\" => 2, \"\\0MagicFloatParent85\\0positive\" => 3, \"\\0MagicFloatParent85\\0negative\" => 4, \"\\0MagicFloatParent85\\0tiny\" => 5, \"\\0MagicFloatParent85\\0minustiny\" => 6, \"\\0MagicFloatParent85\\0largest\" => 7, \"\\0MagicFloatParent85\\0infinity\" => 8, \"\\0MagicFloatParent85\\0minusinf\" => 9] ? 'ONLY' : 'BAD', '|';\n",
+      "source_sha256": "ab424b94db5ac4f4a7a809e9e4d68efbc438f0f7abeaaa2bb3dd805b34c507ee",
+      "stdout_base64": "QTpJOnBsdXN6ZXJvfEc6cGx1c3plcm98VHxCOkk6bWludXN6ZXJvfEc6bWludXN6ZXJvfFR8QzpJOnBvc2l0aXZlfEc6cG9zaXRpdmV8RnxEOkk6bmVnYXRpdmV8RzpuZWdhdGl2ZXxGfEU6STp0aW55fEc6dGlueXxGfEY6STptaW51c3Rpbnl8RzptaW51c3Rpbnl8RnxHOkk6bGFyZ2VzdHxHOmxhcmdlc3R8RnxIOkk6aW5maW5pdHl8RzppbmZpbml0eXxGfEk6STptaW51c2luZnxHOm1pbnVzaW5mfEZ8UjpPTkxZfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-empty-floats-private-85/.tools/magic-empty-floats-probes-85/scalar.php",
+      "native_report_sha256": "d178f6ab60517788dac0ba4a6459c69407a10f957f78582f15dd34d4dbdb7086",
+      "native_group": "magic-empty85-floats-native-e90b3a74",
+      "native_raw_sha256": "f837f212a5deea881da443640586e55aee4b14f734afeb489d590cc0a5661c9d",
+      "native_raw_hash_recipe": "stdout + NUL + stderr + NUL + ASCII exit"
+    }
+  ]
+}

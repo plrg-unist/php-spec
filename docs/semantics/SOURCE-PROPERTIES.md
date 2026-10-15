@@ -446,7 +446,7 @@ parameter or return type, declared on the same parentless ordinary owner. False
 skips the getter; true calls it with the original name and captured receiver. One
 saved RESULT owns the receiver across both borrowed calls. Null/bool/int and byte
 strings use PHP truth; only empty bytes or exactly ASCII `0` make a string empty.
-Float/NaN and owning result families stop explicitly. Parent
+NaN and owning result families stop explicitly. Parent
 lexical scope and Child called scope remain distinct, and initialized public or
 typed-INITIAL slots bypass both callbacks. An active getter can still read its own
 initialized private slot ordinarily. The original integer slice and state208 =138 reached
@@ -461,6 +461,13 @@ payloads, saved receiver owner release, pure conversion and late budget resume. 
 carrier authentication and stale/mismatched/invalid-byte refusals are constructed
 controls; they add no computed-producer source claim or heap ownership machinery.
 [Primitive result review](../../coverage/semantics/magic-empty-scalars-review.json).
+Non-NaN float RVs now use the existing numeric truth helper after a 64-bit range
+guard: both signed zeros are empty; other finite/subnormal values and infinities
+are not. One further original and state145 =132 reached +13 derived check nine
+actual float bit patterns, saved receiver owner release and late budget equality.
+NaN and invalid-bit refusals are constructed result-state controls. NaN warning
+continuations and owning RV disposal remain required.
+[Float result review](../../coverage/semantics/magic-empty-floats-review.json).
 
 Constructor promotion declares a property from its original parameter flags and
 source occurrence. A parameter default does not initialize the property, and
