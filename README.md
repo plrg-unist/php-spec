@@ -681,13 +681,18 @@ detached payload stay separate, including repeated returns of one raw property.
 Reversed named sends release failed arguments in parameter order; duplicate or
 positional-after-named keys fail before another warning. See the
 [noninitial reference review](coverage/semantics/iterator-call-unpack-noninitial-reference-review.json).
+Later array property-reference sends use the same fixed untyped slots. The
+detached container becomes a fresh private cell; repeated source arrays stay
+independent under nested writes, and source aliases retain their children.
+Warning throws and Fiber injection preserve Iterator-before-argument cleanup.
+See the [noninitial array reference review](coverage/semantics/iterator-call-unpack-noninitial-array-reference-review.json).
 Valid NaN warnings retain the raw return through handler mutation, Fiber parking
 and throw. One numeric reread distinguishes copied NaN from a live reference;
 the raw return retires before current or iterator teardown.
 Generator/Aggregate ordinary-call unpack, Generator callback methods, nonnumeric
 raw valid changes, request/plain reference strings and handler replacements with
 those strings, other typed array warnings, broader array/COW interactions,
-other reference sources, later array/typed or variadic reference sends and live
+other reference sources, later typed or variadic reference sends and live
 payload replacements,
 general shared named buffers and
 other type shapes and wider-site variadic object warnings remain

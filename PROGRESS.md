@@ -1485,10 +1485,23 @@ retained capture79, author292 and independent153. The unchanged Unsupported
 baseline, original source/parked-state timeouts and transfer fixture failure keep
 zero credit; corrections touch test bounds/registry assertions only. Earlier cuts
 are retained without replay. Later arrays, typed/variadic targets and wider
-sources/live replacements remain required.
+sources/live replacements remained required at that cut.
 [Noninitial reference review](coverage/semantics/iterator-call-unpack-noninitial-reference-review.json).
 Canonical394 composition over `122f54805` passes inventory and strict SL at
 `415d9afa1`; private source/state evidence retains its original cuts.
+
+Noninitial stable array property-reference sends now reuse that fixed untyped
+admission. Detached containers transfer to distinct private cells while child
+edges remain single; nested writes preserve repeated-source arguments and source
+aliases through COW. Reversed warning aborts preserve parameter-order cleanup,
+retired receipts read no dead array storage, and real second-warning Fiber throw
+retains saved owners. Strict394, nine new originals and six genuine-source state
+groups/546 driver premises pass at `31e9d1262`. The sole affected prior documentary
+group/80 passes separately; native9 and the unchanged second-send Unsupported
+baseline earn zero model agreement. Earlier cuts remain frozen. Later typed or
+variadic reference targets, wider sources/live replacements and broader array/
+reference/COW interactions remain required.
+[Noninitial array reference review](coverage/semantics/iterator-call-unpack-noninitial-array-reference-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or

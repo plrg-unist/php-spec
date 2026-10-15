@@ -1,0 +1,32 @@
+[
+  {
+    "id": "iterator-noninitial-array-review-reversed-current-array-alias",
+    "source": "<?php\nclass ReviewArrayEarlier05 { public function __destruct() { echo \"A|\"; } }\nclass ReviewArrayCurrent05 { public function __destruct() { echo \"B|\"; } }\nclass ReviewArrayIterator05 implements Iterator {\n    public $earlier;\n    public $current;\n    private int $position = 0;\n    public function __construct() { $this->earlier = [new ReviewArrayEarlier05()]; $this->current = [new ReviewArrayCurrent05()]; }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 2; }\n    public function &current(): mixed { echo \"C|\"; if ($this->position === 0) { return $this->earlier; } return $this->current; }\n    public function key(): mixed { echo \"K|\"; if ($this->position === 0) { return \"second\"; } $GLOBALS[\"alias\"] =& $this->current; return \"first\"; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction reviewArrays05(&$first, &$second) { echo \"BODY|\"; $first[0] = null; echo \"F|\"; $second[0] = null; echo \"G|\"; }\n$alias = null;\nset_error_handler(static function ($severity, $message, $file, $line) { echo \"H\", $severity, \":\", $message, \"|\"; return true; });\ntry { reviewArrays05(...new ReviewArrayIterator05()); }\ncatch (Error $caught) { echo \"T:\", $caught->getMessage(), \"|\"; }\necho $alias[0] === null ? \"NULL|\" : \"HELD|\";\nunset($alias);\necho \"E\";\n",
+    "source_sha256": "15d00cd1ea05ad0248be1ea34642648beb858408000e9bb53a1877e100f3b369",
+    "purpose": "A later fixed named raw array reference fills an earlier parameter; the private nested write separates its container while the current source alias keeps its child through earlier-array retirement.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H2:Cannot pass by-reference argument 2 of reviewArrays05() by unpacking a Traversable, passing by-value instead|X|V|C|K|H2:Cannot pass by-reference argument 1 of reviewArrays05() by unpacking a Traversable, passing by-value instead|X|V|I|BODY|F|A|G|HELD|B|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-noninitial-array-review-duplicate-key-before-second-array-hold",
+    "source": "<?php\nclass ReviewArrayEarlier05 { public function __destruct() { echo \"A|\"; } }\nclass ReviewArrayCurrent05 { public function __destruct() { echo \"B|\"; } }\nclass ReviewArrayIterator05 implements Iterator {\n    public $earlier;\n    public $current;\n    private int $position = 0;\n    public function __construct() { $this->earlier = [new ReviewArrayEarlier05()]; $this->current = [new ReviewArrayCurrent05()]; }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 2; }\n    public function &current(): mixed { echo \"C|\"; if ($this->position === 0) { return $this->earlier; } return $this->current; }\n    public function key(): mixed { echo \"K|\"; if ($this->position === 0) { return \"second\"; } return \"second\"; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction reviewArrays05(&$first, &$second) { echo \"BODY|\"; $first[0] = null; echo \"F|\"; $second[0] = null; echo \"G|\"; }\n$alias = null;\nset_error_handler(static function ($severity, $message, $file, $line) { echo \"H\", $severity, \":\", $message, \"|\"; return true; });\ntry { reviewArrays05(...new ReviewArrayIterator05()); }\ncatch (Error $caught) { echo \"T:\", $caught->getMessage(), \"|\"; }\n\necho \"E\";\n",
+    "source_sha256": "0d4c90a88fbc1173e7daa6daf362f34df45df89e63d7ea44fd103ee28dbbaca3",
+    "purpose": "A duplicate fixed named key raises Error before the second array hold or warning; current child retires before the earlier private array child.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H2:Cannot pass by-reference argument 2 of reviewArrays05() by unpacking a Traversable, passing by-value instead|X|V|C|K|I|B|A|T:Named parameter $second overwrites previous argument|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-noninitial-array-review-same-array-source-two-private-cells",
+    "source": "<?php\nclass ReviewArrayShared05 { public function __destruct() { echo \"O|\"; } }\nclass ReviewArrayRepeat05 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = [new ReviewArrayShared05()]; }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 2; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; return $this->position; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction reviewArrayShared05(&$first, &$second) { echo \"BODY|\"; $first[0] = null; echo \"ONE|\", $second[0] === null ? \"BAD|\" : \"HELD|\"; $second[0] = null; echo \"TWO|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) { echo \"H\", $severity, \":\", $message, \"|\"; return true; });\nreviewArrayShared05(...new ReviewArrayRepeat05());\necho \"E\";\n",
+    "source_sha256": "79dc682eee338593b3a9c6d35a217442f88b907b65a74448c86ee4b0220d9ed5",
+    "purpose": "Returning one raw property array twice creates two private fixed cells; nested first write performs COW without changing the second child, which dies exactly once at its own write.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H2:Cannot pass by-reference argument 1 of reviewArrayShared05() by unpacking a Traversable, passing by-value instead|X|V|C|K|H2:Cannot pass by-reference argument 2 of reviewArrayShared05() by unpacking a Traversable, passing by-value instead|X|V|I|BODY|ONE|HELD|O|TWO|E",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]

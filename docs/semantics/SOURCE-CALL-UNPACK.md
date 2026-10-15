@@ -388,9 +388,28 @@ capture and warning. Aborts retire Iterator data before failed arguments in fixe
 parameter order, including reversed named sends. Retired SOURCE authentication
 uses the frozen object shape without reading dead source storage. The filled-slot
 bound does not assert replay of prior value history. Later arrays, typed targets,
-variadic reference sends and wider sources/live replacements remain required.
+variadic reference sends and wider sources/live replacements remained required at
+that cut.
 The [noninitial reference review](../../coverage/semantics/iterator-call-unpack-noninitial-reference-review.json)
 records this extension separately from initial-send evidence.
+
+Noninitial stable array property references now use that same fixed untyped
+target admission. `SEND_UNPACK` dereferences and adds an array owner before the
+warning, then `ZVAL_NEW_REF` gives each send a distinct private cell. Earlier
+fixed arguments can hold a copied array or a private reference. Multiple array
+owners do not duplicate the container's child edges. Returning the same raw array
+twice still permits a nested first-parameter write to copy its container while
+the second retains its child; a separate source alias likewise survives private
+nested writes. Aborts retire Iterator data before arguments in fixed parameter
+order, including reversed names and a second warning suspended in a Fiber.
+Retired SOURCE checks keep frozen array shape after raw cell and container
+retirement without reading dead storage. One-child arrays without embedded
+references provide the new differential/state evidence; admission uses the
+existing array graph rather than a new child-shape restriction. Later typed or
+variadic reference targets, wider sources, live replacements and broader
+array/reference/COW interactions remain required. The
+[noninitial array reference review](../../coverage/semantics/iterator-call-unpack-noninitial-array-reference-review.json)
+keeps these originals and the sole affected prior documentary check separate.
 
 Iterator valid NaN warnings keep the raw retval in CURRENT through handler invoke,
 result, cleanup and saved Fiber frames. The native `zend_user_it_valid` wrapper

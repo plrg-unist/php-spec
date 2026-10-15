@@ -1,0 +1,135 @@
+{
+  "milestone": "Noninitial fixed Iterator array property-reference sends",
+  "status": "accepted private implementation and focused validation; actual-parent composition pending",
+  "reviewer": "/root/iterator_review_01, independent of /root/iterator_dev_01",
+  "scope": "Stable declared untyped nonstatic property-reference arrays reuse the noninitial fixed untyped BYREF admission at one direct statically named Iterator construction. At least one fixed slot is filled; named/positional extras remain excluded, fixed vacancy and named-history checks remain. Initial typed/untyped and noninitial object cuts are preserved.",
+  "semantic_cut": "31e9d1262f205a0a4a3e113d2349cfb433f52483",
+  "module": {
+    "path": "spec/semantics/385-call-iterator-unpack.watsup",
+    "sha256": "4772896ed25b0072efb7b22115bbadd205dd6a277e3b53733ab2fa452e731a90",
+    "change": "Remove only the two initial-or-object payload guards from warning_hold and documentary hold_allowed. Existing known object/array hold, raw-property identity, nonowning snapshot, target/site/history and fresh-cell machinery remain."
+  },
+  "target": {
+    "php": "8.5.10 CLI NTS, 64-bit",
+    "php_source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle": ".tools/php/bin/php",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "spectec": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "mode": "SL, caches off, encountered determinism checks; existing binaries reused"
+  },
+  "engine_authority": [
+    "Zend/zend_vm_def.h SEND_UNPACK: key/name errors precede dereference/addref, then a BYREF warning precedes ZVAL_NEW_REF; raw source references are not sent as callee aliases.",
+    "Zend/zend_execute.c zend_handle_named_arg maps fixed slots and rejects duplicates; zend_cleanup_unfinished_execution -> cleanup_unfinished_calls -> Zend/zend_execute.h zend_vm_stack_free_args retires failed arguments in increasing parameter order.",
+    "Zend/zend_interfaces.c zend_user_it_get_current_data retains the raw return; zend_user_it_move_forward and zend_user_it_dtor invalidate it before Iterator data retirement.",
+    "Zend/zend_execute.c zend_fetch_dimension_address follows a reference to its array and applies Zend/zend_types.h SEPARATE_ARRAY before nested writes; shared tables copy while their object children retain identity."
+  ],
+  "review_findings": [
+    "Prior fixed KNOWN arrays/private cells, the current raw HCELL and detached array HOLD have distinct owners. Holding another table owner does not duplicate its child edge; sending the same raw array twice creates distinct private cells sharing one table.",
+    "Real nested writes separate repeated-source and source-aliased containers. The current private table contains NULL while the global source and earlier private array retain their different children; exact output and zero-owner checks discriminate cleanup.",
+    "Reversed named warning abort maps the failed array to its fixed slot. Array retirement queues its child before the earlier private cell; frozen documentary SOURCE remains valid after dead STORE and ARRAY rows are erased without changing the heap graph.",
+    "A genuine suspended second warning preserves earlier/current array owners and single child edges. A real Fiber::throw restores that state and begins the original Throwable search; short split-budget checks preserve the transition.",
+    "Duplicate named keys fail before the second hold/warning. Live payload replacement still fails capture validation; documentary shape acceptance alone does not admit a mismatched live object/array snapshot."
+  ],
+  "validation": {
+    "native_only": {
+      "revision": "b8b92ac020276476e291336abdeba57e9e7ee580",
+      "originals": 9,
+      "model_agreements": 0,
+      "reports": [
+        ".tools/iterator-noninitial-array-reference-native-nyg5a7xr/report.json",
+        ".tools/iterator-noninitial-array-review-native-dv442ul_/report.json"
+      ],
+      "result": "All expected tuples pass at the unchanged base/module6ef; 8 seconds per original, serial stop-first."
+    },
+    "unchanged_baseline": {
+      "revision": "b8b92ac020276476e291336abdeba57e9e7ee580",
+      "report": ".tools/iterator-reference-noninitial-array-baseline-x33lzfjz/report.json",
+      "source_sha256": "96668ce9037027be2aebc8f04bb46ef9e3197a8dacfaae840e5ecd03826360dd",
+      "result": "Genuine second-send Unsupported Iterator unpack by-reference raw payload after17 exact OUTPUT events, including only the first warning. Exit1, no diagnostic/timeout; zero agreement."
+    },
+    "strict": {
+      "report": ".tools/iterator-reference-noninitial-array-sl-k93mgmky/report.json",
+      "modules": 394,
+      "result": "PASS true stdout, empty stderr, exit0/no timeout, HEAD and watched inputs stable."
+    },
+    "source_normal_agreements": 9,
+    "source_runs": [
+      {
+        "originals": 6,
+        "report": ".tools/iterator-call-unpack-noninitial-array-reference-source-wv4g6c7j/report.json",
+        "bounds": "model100/process120 seconds",
+        "selection": "Positional/reversed normal and second-warning throw; earlier BYVALUE array; real parked injected throw."
+      },
+      {
+        "originals": 3,
+        "report": ".tools/iterator-noninitial-array-review-source-fcv6yvw9/report.json",
+        "bounds": "model60/process75 seconds",
+        "selection": "Reversed current-source alias, duplicate-key Error and repeated raw array COW."
+      }
+    ],
+    "source_result": "All nine compare original bytes with retained native stdout/stderr/exit and normal completion; the duplicate control catches a real Error. No new native execution or observation normalization.",
+    "new_state_groups": 6,
+    "new_state_driver_premises": 546,
+    "author_premises": 370,
+    "independent_premises": 176,
+    "new_state_runs": [
+      {
+        "premises": 81,
+        "report": ".tools/fiber-state-review-wtkgybim/report.json",
+        "frontier": "Second array capture before warning."
+      },
+      {
+        "premises": 106,
+        "report": ".tools/fiber-state-review-gvu99knv/report.json",
+        "frontier": "Second private send with distinct earlier/current arrays."
+      },
+      {
+        "premises": 82,
+        "report": ".tools/fiber-state-review-2jyxbc8s/report.json",
+        "frontier": "Reversed abort, container/child jobs and dead-array documentary SOURCE."
+      },
+      {
+        "premises": 101,
+        "report": ".tools/fiber-state-review-7hbwhe52/report.json",
+        "frontier": "Real Fiber throw at a saved second warning."
+      },
+      {
+        "premises": 94,
+        "report": ".tools/fiber-state-review-94tbo_dp/report.json",
+        "frontier": "Same raw array, distinct fresh private cell and unchanged earlier cell."
+      },
+      {
+        "premises": 82,
+        "report": ".tools/fiber-state-review-a8ho2vr5/report.json",
+        "frontier": "Actual reversed-source-alias COW body and remaining cleanup."
+      }
+    ],
+    "affected_prior": {
+      "groups": 1,
+      "premises": 80,
+      "report": ".tools/fiber-state-review-0nwx3wz2/report.json",
+      "result": "Prior object capture79 now accepts documentary array HOLD/SNAPSHOT shape while separately refusing that mismatched live capture. No other prior group is rerun."
+    },
+    "state_result": "All pass true stdout, empty stderr, exit0/no timeout at31e9. Counts include five setup premises per genuine source group and embedded counterfactual checks; no standalone eligibility groups. Zero/one/two-step budgets test resumption; source runs validate full continuations.",
+    "state_bounds": "One worker, seek/finish4000; process120 seconds except the real parked group180. Actual per-case caps are recorded.",
+    "input_identity": "Source/strict reports fingerprint inputs before/after; state harness asserts watched semantic inputs unchanged, wrappers verify helper/catalog and HEAD stability. Final review matched all four current executable fingerprints to all seven state identity snapshots.",
+    "failures": "No source/state validation failure in this milestone. Native-only and unchanged Unsupported records retain zero model agreement; prior milestone failures remain at their historical cuts."
+  },
+  "commands": {
+    "environment": "LC_ALL=C TZ=UTC; PHP_SPEC_SCRIPT_ENCODING unset; pinned PHP -n and ordinary profile; one worker on root-leased CPU2/SLOT4, serial stop-first.",
+    "author": "taskset -c 2 python3 .tools/strict.py; source wrapper with --native-report nyg5a7xr/report.json; four state --case commands in declared order; sole affected prior capture --case.",
+    "independent": "taskset -c 2 python3 tests/semantics/iterator_call_unpack_noninitial_array_review_sources.py --native-report .tools/iterator-noninitial-array-review-native-dv442ul_/report.json; then state.py --case same-raw-array-second-send-preserves-prior-private-cell; then --case reversed-current-array-write-separates-source-alias-container.",
+    "exact_commands": "External manifest lists all thirteen full commands; fixture sources, checked ASTs, commands, streams and exits are preserved in raw report directories."
+  },
+  "limits": "One-child acyclic arrays without embedded references establish this new source/state evidence; admission uses the existing array graph and adds no child-shape restriction. Later typed/variadic targets, wider sources/sites, live payload replacement and broader array/reference/COW interactions remain required. This is not Iterator or core closure; no engine bug or intentional divergence identified.",
+  "artifacts": {
+    "archive": "../php-spec-evidence-archive/iterator-reference-noninitial-array-05/evidence.tar.gz",
+    "bytes": 457314,
+    "sha256": "14d31b6ffa9b1fdfb01376c8ed79e8c3f844063887b45f072bf95df378db60b1",
+    "manifest": "../php-spec-evidence-archive/iterator-reference-noninitial-array-05/manifest.json",
+    "reports": 13,
+    "recovery": "Recreate the private root or equivalent source path relationships; extract raw/ report directories and drivers. Recover maintained author helpers from31e9; reviewer files were untracked there and come from the Git publication containing this ledger, matching independent_inputs hashes. Manifest binds every report hash, revision and exact outer command. Rebuild/use local pinned dependencies; archives are evidence, not build/runtime inputs."
+  }
+}
