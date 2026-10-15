@@ -2845,6 +2845,17 @@ refusal and active-replay split budget. The interned payload carries no heap
 owner; other computed scalars, CONST forms and broad returns remain open in the
 [ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
+M58 repairs the caught `?object` recheck with two nested computed owning
+returns. Both A and B objects are pending before the deepest replacement;
+their destructor callbacks retire B then A while two source-only cursors keep
+the return history. Replay restores detached NULL and one Notice from the inner
+B return. Native2/source2 agree at private `86109c30`/394. Public123 admits
+both saved callback views, rejects a heap-identical inner cursor LINE forgery,
+and checks split/full budget from the B callback and detached final r/a versus
+bad y. The first private guard failure and output-only query retain zero repair
+credit. Physical collection, other payloads and broad returns verification
+remain open in the [ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
 Per-constant protection survives namespace publication and parked handlers.

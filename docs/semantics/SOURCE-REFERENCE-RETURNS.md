@@ -544,3 +544,14 @@ Notice each, rejects a heap-identical cursor LINE forgery through the driver,
 and checks split budget at active replay. This adds no heap-owner rule and does
 not cover other computed scalars or general CONST sources; see the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M58 handles two nested computed owning object returns when a deepest selected
+`?object` return fails recheck and the error is caught. The replacement records
+two nonowning source cursors; ordinary destruction still retires the B and A
+objects in order. Both saved destructor callback views pass public admission.
+Pair replay restores detached NULL with one Notice from the inner B return,
+while the retained-y control delivers its alias. Native2/source2 and a
+source-linked public123 pass at private `86109c30`/394, including a saved inner
+cursor LINE refusal and B-callback split budget. This proves modeled retirement
+for the reached pair, not physical collection or other nested layouts; see the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
