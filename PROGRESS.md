@@ -15,6 +15,9 @@ source/history refusal and one budget resume. Raw headers authenticate the bound
 source independently of derived implicit interfaces; the latter control is pure.
 Wider dependency lists, parents, adaptations and loading/failure interactions remain
 partial. [Trait autoload review](coverage/semantics/trait-dependency-autoload-review.json).
+The 395-module composition over b94139c8 preserves the incoming parent and accepted
+rules at 06e40e61. Incoming reference-return/internal-object/private-set/Generator
+selectors are absent; source2/public380 retain their private cuts without replay.
 
 Public private(set) backed implicit class setters now retain their public slot key
 and implicit finality. An inherited Parent writer on Child stores33 and returns
