@@ -368,8 +368,8 @@ CONTROL_DERIVED = ['$property_set_trait_origin(S_linked,ppropertydesc_source) = 
  'pcpath_use = pcpath_trait ++ [PCFIELD 2,PCINDEX n_use]',
  '$code_name(pcode_source.NAMES,pcpath_use ++ [PCFIELD 0,PCINDEX 0]) = eps',
  'S_nested = S_linked[.SOURCES = ([pcunit_source[.OCCURRENCES = '
- '$tis_replace($tis_replace(pcunit_source.OCCURRENCES,pcpath_trait,NStmtTrait phpType14_trait phpType3_trait (SEQUENCE '
- '(statement_trait_body* ++ [statement_use])) metadata_trait),pcpath_use,statement_use)]])][.CODE = '
+ '$tis_replace(pcunit_source.OCCURRENCES,pcpath_trait,NStmtTrait phpType14_trait phpType3_trait (SEQUENCE '
+ '(statement_trait_body* ++ [statement_use])) metadata_trait) ++ [(PCOCCURRENCE pcpath_use statement_use)]]])][.CODE = '
  '([pcode_source[.NAMES = pcode_source.NAMES ++ [(CODENAME (pcpath_use ++ [PCFIELD 0,PCINDEX 0]) pclassdesc_trait.NAME '
  'eps)]]])]',
  '$trait_plan(S_nested,pclassdesc_trait).TRAITS = [pclassdesc_trait.NAME]',
