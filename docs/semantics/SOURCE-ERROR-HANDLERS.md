@@ -122,6 +122,12 @@ Other live left operands, read-modify-write, dimensions
 and other eligible warning producers remain
 explicitly `Unsupported`, rather than running a callback after a consumer.
 
+[Missing-key destructuring409](SOURCE-DESTRUCTURING-WARNINGS.md) retains a
+direct-CV array snapshot through real handlers, supplies null after insertion,
+then fetches later items with shared embedded references intact. Throws cancel
+the pending store and later items. Flat CV targets and warning-free compiled
+keys bound this producer; wider destructuring diagnostics remain required.
+
 Weak-null `ini_get` and `ini_restore` are admitted internal producers. Their
 authenticated unary continuation resumes once after normal handling or false
 fallback; a thrown handler aborts lookup. Weak handler argument conversion,

@@ -111,7 +111,8 @@
         "spec/semantics/62-list-values.watsup",
         "spec/semantics/63-list-control.watsup",
         "spec/semantics/64-list-compiler.watsup",
-        "spec/semantics/33-runtime-compiler.watsup"
+        "spec/semantics/33-runtime-compiler.watsup",
+        "spec/semantics/409-list-missing-warnings.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
@@ -122,12 +123,19 @@
         "tests/semantics/destructuring.py",
         "tests/semantics/destructuring_compiler.py",
         "tests/semantics/destructuring_mechanism.py",
-        "coverage/semantics/destructuring-source.json"
+        "coverage/semantics/destructuring-source.json",
+        "tests/semantics/list_missing_warnings.py",
+        "tests/semantics/list_missing_warning_review_sources.py"
       ],
-      "review": "Array-valued unpack source activation accepted in4ca826d2 with independent array-unpack-review.json:155 exact sources+24 outcome negatives,31 state programs/2454 assertions,42 compiler lints+10 descriptor controls, and8 independent source/state programs/1368 assertions. Integer append/string replacement, singleton/shared reference transfer, builder ownership and constant/runtime error phases are reviewed. Traversable objects/callbacks and full family closure remain pending. Prior ordinary array/omission/reference contracts remain covered by their historical reviews. Current scalar/array destructuring and retained compiler-result effects are also accepted77f8d3c0 (destructuring-review.json); object/frame contexts remain pending.",
+      "review": "Array-valued unpack source activation accepted in4ca826d2 with independent array-unpack-review.json:155 exact sources+24 outcome negatives,31 state programs/2454 assertions,42 compiler lints+10 descriptor controls, and8 independent source/state programs/1368 assertions. Integer append/string replacement, singleton/shared reference transfer, builder ownership and constant/runtime error phases are reviewed. Traversable objects/callbacks and full family closure remain pending. Prior ordinary array/omission/reference contracts remain covered by their historical reviews. Current scalar/array destructuring and retained compiler-result effects are also accepted77f8d3c0 (destructuring-review.json); object/frame contexts remain pending. Missing-key Warning409 retains direct-CV by-value array snapshots through handlers, delivers null before the next item and preserves embedded references and throw cancellation. Flat CV targets and warning-free compiled/implicit keys bound this slice; list-missing-warning-review.json records its source/state cuts and remaining dependencies.",
       "helper_tests": [
         "tests/semantics/ownership.py",
-        "coverage/semantics/ownership.json"
+        "coverage/semantics/ownership.json",
+        "tests/semantics/list_missing_warning_protocol.py",
+        "tests/semantics/list_missing_warning_state_review.py"
+      ],
+      "evidence": [
+        "coverage/semantics/list-missing-warning-review.json"
       ]
     },
     {
@@ -323,7 +331,8 @@
         "spec/semantics/64-list-compiler.watsup",
         "spec/semantics/33-runtime-compiler.watsup",
         "spec/semantics/205-array-callables.watsup",
-        "spec/semantics/215-scoped-callables.watsup"
+        "spec/semantics/215-scoped-callables.watsup",
+        "spec/semantics/409-list-missing-warnings.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
@@ -340,18 +349,23 @@
         "tests/semantics/array_callables.py",
         "tests/semantics/array_callables_cases.json",
         "tests/semantics/scoped_callables.py",
-        "tests/semantics/scoped_callables_cases.json"
+        "tests/semantics/scoped_callables_cases.json",
+        "tests/semantics/list_missing_warnings.py",
+        "tests/semantics/list_missing_warning_review_sources.py"
       ],
-      "review": "Array-valued unpack source activation accepted in4ca826d2 with independent array-unpack-review.json:155 exact sources+24 outcome negatives,31 state programs/2454 assertions,42 compiler lints+10 descriptor controls, and8 independent source/state programs/1368 assertions. Integer append/string replacement, singleton/shared reference transfer, builder ownership and constant/runtime error phases are reviewed. Traversable objects/callbacks and full family closure remain pending. Prior ordinary array/omission/reference contracts remain covered by their historical reviews. Current scalar/array destructuring and retained compiler-result effects are also accepted77f8d3c0 (destructuring-review.json); object/frame contexts remain pending. Selected public concrete method arrays now classify, dispatch and capture/clone with receiver retirement (array-callables-current-review.json); keyword/compound, magic/autoload/internal and transformed array resolution remain open. Ordinary lexical private/protected array/string selectors preserve genuine selecting permission across argument effects and capture/clone. Object selectors can redirect to parent-private methods; concrete class selectors use the requested table. The scoped-callable ledger retains failure cutoffs and separately reached witnesses; full family closure remains open.",
+      "review": "Array-valued unpack source activation accepted in4ca826d2 with independent array-unpack-review.json:155 exact sources+24 outcome negatives,31 state programs/2454 assertions,42 compiler lints+10 descriptor controls, and8 independent source/state programs/1368 assertions. Integer append/string replacement, singleton/shared reference transfer, builder ownership and constant/runtime error phases are reviewed. Traversable objects/callbacks and full family closure remain pending. Prior ordinary array/omission/reference contracts remain covered by their historical reviews. Current scalar/array destructuring and retained compiler-result effects are also accepted77f8d3c0 (destructuring-review.json); object/frame contexts remain pending. Selected public concrete method arrays now classify, dispatch and capture/clone with receiver retirement (array-callables-current-review.json); keyword/compound, magic/autoload/internal and transformed array resolution remain open. Ordinary lexical private/protected array/string selectors preserve genuine selecting permission across argument effects and capture/clone. Object selectors can redirect to parent-private methods; concrete class selectors use the requested table. The scoped-callable ledger retains failure cutoffs and separately reached witnesses; full family closure remains open. Missing-key Warning409 retains direct-CV by-value array snapshots through handlers, delivers null before the next item and preserves embedded references and throw cancellation. Flat CV targets and warning-free compiled/implicit keys bound this slice; list-missing-warning-review.json records its source/state cuts and remaining dependencies.",
       "helper_tests": [
         "tests/semantics/ownership.py",
         "coverage/semantics/ownership.json",
         "tests/semantics/array_callables_protocol.py",
-        "tests/semantics/scoped_callables_protocol.py"
+        "tests/semantics/scoped_callables_protocol.py",
+        "tests/semantics/list_missing_warning_protocol.py",
+        "tests/semantics/list_missing_warning_state_review.py"
       ],
       "evidence": [
         "coverage/semantics/array-callables-current-review.json",
-        "coverage/semantics/scoped-callables-current-review.json"
+        "coverage/semantics/scoped-callables-current-review.json",
+        "coverage/semantics/list-missing-warning-review.json"
       ]
     },
     {
@@ -3010,15 +3024,25 @@
         "spec/semantics/62-list-values.watsup",
         "spec/semantics/63-list-control.watsup",
         "spec/semantics/64-list-compiler.watsup",
-        "spec/semantics/33-runtime-compiler.watsup"
+        "spec/semantics/33-runtime-compiler.watsup",
+        "spec/semantics/409-list-missing-warnings.watsup"
       ],
       "source_tests": [
         "tests/semantics/destructuring.py",
         "tests/semantics/destructuring_compiler.py",
         "tests/semantics/destructuring_mechanism.py",
-        "coverage/semantics/destructuring-source.json"
+        "coverage/semantics/destructuring-source.json",
+        "tests/semantics/list_missing_warnings.py",
+        "tests/semantics/list_missing_warning_review_sources.py"
       ],
-      "review": "Accepted77f8d3c0 with independent destructuring-review.json:283 selected sources(263 additions),24 negatives,7 state programs/3633 assertions,23 mechanism checks,328 retained cross-family sources,all5 compiler gates and independent44+16 controls/12 dense programs6192 assertions. Scalar/array list evaluation,reference targets,fetch-before-store ordering and retained effects of known results are source-active. Header diagnostics,object/ArrayAccess and property/frame-dependent targets remain pending."
+      "review": "Accepted77f8d3c0 with independent destructuring-review.json:283 selected sources(263 additions),24 negatives,7 state programs/3633 assertions,23 mechanism checks,328 retained cross-family sources,all5 compiler gates and independent44+16 controls/12 dense programs6192 assertions. Scalar/array list evaluation,reference targets,fetch-before-store ordering and retained effects of known results are source-active. Wider header diagnostics,object/ArrayAccess and property/frame-dependent targets remain pending. Missing-key Warning409 retains direct-CV by-value array snapshots through handlers, delivers null before the next item and preserves embedded references and throw cancellation. Flat CV targets and warning-free compiled/implicit keys bound this slice; list-missing-warning-review.json records its source/state cuts and remaining dependencies.",
+      "helper_tests": [
+        "tests/semantics/list_missing_warning_protocol.py",
+        "tests/semantics/list_missing_warning_state_review.py"
+      ],
+      "evidence": [
+        "coverage/semantics/list-missing-warning-review.json"
+      ]
     },
     {
       "node": "Expr_Match",
@@ -10593,20 +10617,27 @@
         "spec/semantics/62-list-values.watsup",
         "spec/semantics/63-list-control.watsup",
         "spec/semantics/64-list-compiler.watsup",
-        "spec/semantics/33-runtime-compiler.watsup"
+        "spec/semantics/33-runtime-compiler.watsup",
+        "spec/semantics/409-list-missing-warnings.watsup"
       ],
-      "helper_tests": [],
+      "helper_tests": [
+        "tests/semantics/list_missing_warning_protocol.py",
+        "tests/semantics/list_missing_warning_state_review.py"
+      ],
       "source_tests": [
         "tests/semantics/destructuring.py",
         "tests/semantics/destructuring_compiler.py",
         "tests/semantics/destructuring_mechanism.py",
-        "coverage/semantics/destructuring-source.json"
+        "coverage/semantics/destructuring-source.json",
+        "tests/semantics/list_missing_warnings.py",
+        "tests/semantics/list_missing_warning_review_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
-        "vendor/php-src/Zend/zend_vm_def.h"
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "coverage/semantics/list-missing-warning-review.json"
       ],
-      "review": "Accepted77f8d3c0 with independent destructuring-review.json:283 selected sources(263 additions),24 negatives,7 state programs/3633 assertions,23 mechanism checks,328 retained cross-family sources,all5 compiler gates and independent44+16 controls/12 dense programs6192 assertions. Scalar/array list evaluation,reference targets,fetch-before-store ordering and retained effects of known results are source-active. Header diagnostics,object/ArrayAccess and property/frame-dependent targets remain pending.",
+      "review": "Accepted77f8d3c0 with independent destructuring-review.json:283 selected sources(263 additions),24 negatives,7 state programs/3633 assertions,23 mechanism checks,328 retained cross-family sources,all5 compiler gates and independent44+16 controls/12 dense programs6192 assertions. Scalar/array list evaluation,reference targets,fetch-before-store ordering and retained effects of known results are source-active. Wider header diagnostics,object/ArrayAccess and property/frame-dependent targets remain pending. Missing-key Warning409 retains direct-CV by-value array snapshots through handlers, delivers null before the next item and preserves embedded references and throw cancellation. Flat CV targets and warning-free compiled/implicit keys bound this slice; list-missing-warning-review.json records its source/state cuts and remaining dependencies.",
       "planned_source_tests": [
         "tests/semantics/conformance/destructure-reference.php"
       ]

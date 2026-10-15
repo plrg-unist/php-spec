@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+By-value direct-CV destructuring now retains its captured array through missing-key
+Warning handlers. Callback insertion/rebinding still supplies null; later items
+observe the captured table and shared reference cells in order. Throws cancel the
+pending store and later items while preserving callback writes and the Throwable.
+Six exact sources agree at their retained cuts; five SL fronts pass 468 premises
+(460 Boolean +8 raw steps) at 1a35de425/345274fb5. Source/carrier/line/liveness
+refusals and physical owner2→1→0 cleanup are checked. The initial string-carrier
+rejection and two fixture elaboration failures retain zero credit. Flat CV targets
+and warning-free compiled/implicit keys bound this slice; wider destructuring
+producers and diagnostics remain partial.
+[Destructuring-warning review](coverage/semantics/list-missing-warning-review.json).
 
 A comparison's second implicit string cast now fails quietly when its opposing
 live operand becomes a WeakMap or WeakReference, even after referent expiry.

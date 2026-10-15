@@ -16,6 +16,10 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
+[Missing-key destructuring warnings](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md)
+now retain captured direct-CV arrays and shared embedded references through
+handlers, with null delivery and ordered normal/throw cleanup.
+
 The [checked eval parser service](docs/semantics/DYNAMIC-SOURCE-SERVICE.md)
 accepts raw eval-source bytes, uses a native parse-only scanner for rejection
 facts including catchable parse-time `CompileError` provenance, and validates
