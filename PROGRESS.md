@@ -17,6 +17,9 @@ The native observations, unchanged Unsupported baseline, preparation and syntax
 recorder/adjudication retain zero agreement credit. Wider operands, owning/expired
 values and callback/lifecycle forms remain partial; OP12 stays paused.
 [ADD failure ledger](coverage/semantics/arithmetic-failure-review.json).
+The 394-module composition over 4ff preserves the accepted rules at c2ce.
+Independent pointwise review finds unchanged direct interfaces and disjoint parent
+selectors; source2/state159 retain their private cuts without another actor.
 
 
 Real/named Closure, Generator and Fiber numeric comparisons now enter Notice
