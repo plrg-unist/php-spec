@@ -8292,7 +8292,8 @@ failures and interrupted evidence.
   Notice dispatch. Bounded single-active-finalizer CV replay and aliased-CV Stringable
   reference conversion 186 and bounded sole-local-CV lifetime 381 are integrated.
   Immutable string-literal, explicit-NULL and bounded computed string VALUE consumed
-  continuations are also integrated. Other VALUE signatures/layouts, general CONST/other
+  continuations are also integrated. M75 adds the bounded nullable integer assignment
+  VALUE return across a caught finalizer. Other VALUE signatures/layouts, general CONST/other
   NULL and multiple-active histories, genuinely released
   CV targets, destructor throw/reentry, real suspension and wider typed consumers
   remain open. [String contract](docs/semantics/USER-STRING.md),
@@ -8315,7 +8316,10 @@ Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is
 bounded physical-array owner recovery. Bounded single-active-finalizer CV replay and deferred VALUE/NULL Notice dispatch are
 integrated, as are bounded aliased-CV Stringable reference conversion 186 and sole-local-CV
 lifetime 381, immutable string-literal, explicit-NULL and bounded computed string VALUE
-consumed continuations. Wider owner domains, other VALUE signatures/layouts, general
+consumed continuations. M75's assigned integer call has two exact original-source
+agreements and one reached 96-premise proof at private `8afe016f`/397; the
+[local CV ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json)
+retains its failed syntax gate with zero credit. Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, destructor throw/reentry, real suspension and wider typed
 consumers remain required.

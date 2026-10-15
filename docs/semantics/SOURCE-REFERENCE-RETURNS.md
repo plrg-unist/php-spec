@@ -778,3 +778,18 @@ scalar/CONST recovery. The unchanged Unsupported baseline and output-only
 category query retain zero repair credit. Other scalar expressions and return
 layouts remain open; see the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M75 admits a used `&f():?int` old return of `($x = old_value())` while one
+finalizer is active. The named call runs once and leaves a root-free integer 41;
+the finalizer observes `$x === 41` before writing 99. After a selected `$y`
+return fails and its error is caught, replay restores NULL with one old-line
+VALUE Notice. It does not repeat the assignment or undo `$x = 99`. The direct
+`return old_value()` control observes `$x === 0` at the same finalizer and
+retains its existing result. Both original sources match exact stdout, stderr
+and exit at private `8afe016f`/397. One source-reached fixture binds the old
+carrier, active cursor, raw NULL/Notice marker, detached caller alias, bad
+cursor-line refusal and split-budget equality. The initial rule-name parse
+failure has zero semantic credit. This covers only the reached nullable,
+simple-variable assignment of a named no-argument integer call; other return
+signatures, layouts and complete returns verification remain open in the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
