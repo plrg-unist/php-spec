@@ -230,6 +230,21 @@ Null deprecation, Stringable/array reception and packed/owning forms remain sepa
 The [scalar-name review](../../coverage/semantics/global-constant-scalar-name-review.json)
 records source-backed reception, trace values, source rejection and budgets.
 
+`define` also receives int/bool/float names with nonowning primitive values and
+an omitted/already-false flag. Each source send maps to its normalized captured
+slot before available immutable facts are checked, including reordered named
+arguments. Weak calls convert at live precision; strict TypeErrors retain raw
+arguments and publish no row. Registered keys survive later precision changes.
+Historical immutable-name checks retain the same scalar and allow a possible
+conversion without reconstructing the actual past precision.
+
+Scalar-name duplicate warnings retain the original call, received carrier,
+call-time precision and pre-warning table prefix. Returning handlers preserve the
+old value and return false; a handler that changes precision and throws still shows
+the received name in the API trace. The caller's scalar and assignment destination
+stay intact. The [scalar-define review](../../coverage/semantics/define-scalar-name-review.json)
+binds four sources and351 public premises, with failed initial checks kept separate.
+
 User-array queries retain the stored root and child identities. The admitted
 tree contains nonstring scalars, raw strings, authenticated string carriers,
 certified `PVINSTANCE`/`PVCLOSURE` leaves and arrays with matching key/class trees
@@ -283,7 +298,8 @@ and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`. `PHP_FUNCTION(constant)` us
 exception-class lookup and `ZVAL_COPY_OR_DUP`; `zend_declare_typed_class_constant`
 interns direct string values before installation.
 Nested empty values in `define`, cycles, objects, array duplicate/third-argument paths,
-name/flag coercion, startup/special-name warnings,
+null/Stringable/array names, array/object values with scalar names, true/coerced
+flags with scalar names, startup/special-name warnings,
 internal/trait/interface/enum class queries, deferred keyword initializers and
 keyword `constant` array values, other deferred initializers,
 owning/FCC call forms and wider conversion/arity paths remain Unsupported. The [dynamic ledger](../../coverage/semantics/dynamic-constants-review.json)

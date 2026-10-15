@@ -7,6 +7,21 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+`define` now receives int/bool/float names with primitive values and an
+omitted/already-false flag. Weak registration uses call-time precision; historical
+immutable-name checks allow a possible conversion after later precision changes.
+Source sends map to normalized named slots while raw call authority stays intact.
+Duplicate warnings retain the received carrier, precision and old table prefix;
+throwing handlers expose the converted API name while caller values remain raw.
+Author3 at 3e61a3a9 and an independent reordered-named source at 425a5543 agree;
+351 public premises pass as157 at425a +194 atb537, including actual publication,
+handler resume, source/identity refusals, strict TypeError and budget equality.
+Original elaboration, mapping and fixture failures remain zero credit. Null,
+Stringable/array names, array/object values with scalar names, true/coerced flags,
+packed/owning calls and wider arity remain separate. Private validation is accepted;
+current-parent integration is pending.
+[Scalar-define review](coverage/semantics/define-scalar-name-review.json).
+
 Global constant AST `new` now runs autoload before target allocation or argument
 reads, then resumes with its authentic declaration context and loaded constructor.
 A missed load raises the real Error without publishing the constant; a fresh

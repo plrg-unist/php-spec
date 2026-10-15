@@ -899,6 +899,12 @@ namespace-prefix normalization and captured request strings after CV mutation.
 Rows retain the actual value and string-carrier class. Available positional
 literal facts constrain inputs; variable payloads retain the existing structural table
 policy. Wider values, conversion/warning paths and namespace fallback remain open.
+Scalar `define` names also follow caller strictness with primitive values and an
+omitted/already-false flag. Weak registration keeps its received key across later
+precision changes and duplicate handlers; strict errors retain raw arguments.
+Named sends match their normalized slots without changing captured call authority.
+[Four source agreements and 351 state premises](coverage/semantics/define-scalar-name-review.json)
+cover registration, returning/throwing warnings and source/budget controls.
 Global `constant` queries return primitive values, authenticated string carriers,
 validated user array trees, certified completed user instances and certified
 Closures. They use the captured query, remove one leading separator and preserve

@@ -97,6 +97,7 @@ dec $dynamic_global_constant_call(pconfigcall) : bool
 dec $dynamic_halt_call(pconfigcall) : bool
 dec $dynamic_halt_receive(pstate, pconfigcall) : pstate
 dec $dynamic_global_constant_finish(pstate, pconfigcall) : pstate
+dec $dynamic_scalar_define_call(pconfigcall) : bool
 dec $dynamic_define_finish(pstate, pconfigcall) : pstate
 def $dynamic_define_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME $user_constant_key(preqbytes), ORIGIN pconfigcall.SITE, VALUE pvalue, CLASS pvalueclass, READS eps, RECEIVES eps}]][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pconfigcall.KIND = INTRINSIC_DEFINE
@@ -161,6 +162,7 @@ rule PhpStep/dynamic-constant-invoke: S ~> $dynamic_constant_receive(S, pconfigc
   -- if $config_invoke_valid(S, pconfigcall)
   -- if $dynamic_constant_kind(pconfigcall.KIND)
   -- if ~$dynamic_scalar_constant_call(pconfigcall)
+  -- if ~$dynamic_scalar_define_call(pconfigcall)
 
 def $task_nodes(DYNAMIC_CONSTANT_CASE_WARNING pconfigcall) = $config_nodes(pconfigcall)
 def $selected_task_nonce(DYNAMIC_CONSTANT_CASE_WARNING pconfigcall) = pconfigcall.SELECTION
@@ -1137,3 +1139,139 @@ rule PhpStep/dynamic-scalar-constant-invoke: S ~> $dynamic_scalar_constant_recei
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $config_invoke_valid(S, pconfigcall)
   -- if $dynamic_scalar_constant_call(pconfigcall)
+
+;; Registration keeps the raw call; only its received name and trace view change.
+dec $dynamic_scalar_define_values(pconfigcall) : (pvalue, pvalue)?
+def $dynamic_scalar_define_values(pconfigcall) = ((pvalue_name, pvalue))
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_name), NAMED_SENT (KNOWN pvalue)]
+def $dynamic_scalar_define_values(pconfigcall) = ((pvalue_name, pvalue))
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_name), NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN (PBOOL false))]
+def $dynamic_scalar_define_values(pconfigcall) = eps -- otherwise
+def $dynamic_scalar_define_call(pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_DEFINE
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps
+  -- if $dynamic_scalar_define_values(pconfigcall) = ((pvalue_name, pvalue))
+  -- if $typed_scalar(pvalue_name) /\ ~$method_string(pvalue_name)
+def $dynamic_scalar_define_call(pconfigcall) = false -- otherwise
+dec $dynamic_scalar_define_arguments(pstate, pconfigcall, nat) : bool
+def $dynamic_scalar_define_arguments(S, pconfigcall, n_index) = true -- if n_index = pconfigcall.INDEX
+def $dynamic_scalar_define_arguments(S, pconfigcall, n_index) = $dynamic_scalar_define_arguments(S, pconfigcall, $(n_index + 1))
+  -- if $(n_index < pconfigcall.INDEX)
+  -- if $intrinsic_argument(S, pconfigcall.SITE, n_index) = ((expression, false, preqbytes?, porigin, z))
+  -- if $config_destination(pconfigcall.KIND, preqbytes?, n_index) = (n_destination)
+  -- if $named_slot_at(pconfigcall.SENT, n_destination) = NAMED_SENT (KNOWN pvalue)
+  -- if $dynamic_define_value_matches(pvalue, $compiled_read(S, porigin))
+def $dynamic_scalar_define_arguments(S, pconfigcall, n_index) = false -- otherwise
+dec $dynamic_scalar_define_valid(pstate, pconfigcall) : bool
+def $dynamic_scalar_define_valid(S, pconfigcall) = true
+  -- if $dynamic_scalar_define_call(pconfigcall) /\ $config_invoke_valid(S, pconfigcall)
+  -- if $dynamic_define_source(S, pconfigcall.SITE)
+  -- if $dynamic_scalar_define_values(pconfigcall) = ((pvalue_name, pvalue))
+  -- if $dynamic_scalar_define_arguments(S, pconfigcall, 0)
+  -- if $dynamic_constant_class(pvalue) = (pvalueclass)
+  -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
+def $dynamic_scalar_define_valid(S, pconfigcall) = false -- otherwise
+dec $dynamic_scalar_name_at(pvalue, int) : preqbytes?
+def $dynamic_scalar_name_at(PINT i, z_precision) = ($decimal_integer(i))
+def $dynamic_scalar_name_at(PBOOL b, z_precision) = ($echo_value(PBOOL b))
+def $dynamic_scalar_name_at(PFLOAT n, z_precision) = (preqbytes)
+  -- if (preqbytes, b_warning) = $number_text(NFLOAT n, z_precision)
+def $dynamic_scalar_name_at(pvalue, z_precision) = eps -- otherwise
+;; This is a possible historical conversion, not the current live precision.
+;; Any positive precision's minimal reproducer is bounded by the emitted length.
+dec $dynamic_scalar_float_name(preqbytes, nat, nat) : bool
+def $dynamic_scalar_float_name(preqbytes, n, 0) = (preqbytes = preqbytes_shortest)
+  -- if (preqbytes_shortest, b_warning) = $number_text(NFLOAT n, -1)
+def $dynamic_scalar_float_name(preqbytes, n, n_precision) = (preqbytes = preqbytes_at \/ $dynamic_scalar_float_name(preqbytes, n, $nabs($(n_precision - 1))))
+  -- if $(n_precision > 0)
+  -- if (preqbytes_at, b_warning) = $number_text(NFLOAT n, n_precision)
+dec $dynamic_scalar_name_possible(preqbytes, pvalue?) : bool
+def $dynamic_scalar_name_possible(preqbytes, (PINT i)) = (preqbytes = $decimal_integer(i))
+def $dynamic_scalar_name_possible(preqbytes, (PBOOL b)) = (preqbytes = $echo_value(PBOOL b))
+def $dynamic_scalar_name_possible(preqbytes, (PFLOAT n)) = $dynamic_scalar_float_name(preqbytes, n, |preqbytes|)
+def $dynamic_scalar_name_possible(preqbytes, pvalue?) = false -- otherwise
+def $user_constants_valid(S, puserconstant :: puserconstant_tail*) = true
+  -- if $dynamic_define_source(S, puserconstant.ORIGIN)
+  -- if ~$exit_strict(S, puserconstant.ORIGIN)
+  -- if $dynamic_constant_global_name(puserconstant.NAME)
+  -- if ~$dynamic_constant_initial(puserconstant.NAME)
+  -- if $dynamic_scalar_name_possible(puserconstant.NAME, $dynamic_define_known(S, puserconstant.ORIGIN, 0))
+  -- if $dynamic_constant_class(puserconstant.VALUE) = (puserconstant.CLASS)
+  -- if $string_plain(puserconstant.VALUE) = puserconstant.VALUE \/ $string_carrier_valid(S, puserconstant.VALUE)
+  -- if puserconstant.READS = eps /\ puserconstant.RECEIVES = eps
+  -- if $dynamic_define_value_matches(puserconstant.VALUE, $dynamic_define_known(S, puserconstant.ORIGIN, 1))
+  -- if $user_constant_at(puserconstant_tail*, puserconstant.NAME) = eps
+  -- if $user_constants_valid(S, puserconstant_tail*)
+dec $dynamic_scalar_define_received(pstate, pconfigcall, pvalue, int) : bool
+def $dynamic_scalar_define_received(S, pconfigcall, pvalue_name, z_precision) = true
+  -- if $dynamic_scalar_define_valid(S, pconfigcall) /\ ~$config_strict(S, pconfigcall)
+  -- if $(z_precision >= -1 /\ z_precision <= 9223372036854775807)
+  -- if $dynamic_scalar_define_values(pconfigcall) = ((pvalue_raw, pvalue))
+  -- if $dynamic_scalar_name_at(pvalue_raw, z_precision) = (preqbytes)
+  -- if $string_bytes(pvalue_name) = (preqbytes) /\ $string_carrier_valid(S, pvalue_name)
+  -- if $dynamic_constant_global_name(preqbytes) /\ ~$dynamic_constant_initial(preqbytes)
+def $dynamic_scalar_define_received(S, pconfigcall, pvalue_name, z_precision) = false -- otherwise
+dec $dynamic_scalar_define_duplicate_valid(pstate, pconfigcall, pvalue, int, nat) : bool
+def $dynamic_scalar_define_duplicate_valid(S, pconfigcall, pvalue_name, z_precision, n_constants) = true
+  -- if $dynamic_scalar_define_received(S, pconfigcall, pvalue_name, z_precision)
+  -- if $string_bytes(pvalue_name) = (preqbytes)
+  -- if $(n_constants <= |S.USERCONSTANTS|)
+  -- if $user_constant_at(S.USERCONSTANTS[0:n_constants], preqbytes) =/= eps
+def $dynamic_scalar_define_duplicate_valid(S, pconfigcall, pvalue_name, z_precision, n_constants) = false -- otherwise
+dec $dynamic_scalar_define_finish(pstate, pconfigcall) : pstate
+def $dynamic_scalar_define_finish(S, pconfigcall) = S -- if S.COMPLETION =/= NORMAL
+def $dynamic_scalar_define_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME preqbytes, ORIGIN pconfigcall.SITE, VALUE pvalue, CLASS pvalueclass, READS eps, RECEIVES eps}]][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN pvalue_name
+  -- if $dynamic_scalar_define_received(S, pconfigcall, pvalue_name, $precision_value(S))
+  -- if $string_bytes(pvalue_name) = (preqbytes)
+  -- if $source_constant_lookup(S, preqbytes) = eps
+  -- if $dynamic_scalar_define_values(pconfigcall) = ((pvalue_raw, pvalue))
+  -- if $dynamic_constant_class(pvalue) = (pvalueclass)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_scalar_define_finish(S, pconfigcall) = $error_dispatch(S[.TODO = ptask_duplicate :: ptask_tail*], 2, ptbytes_message, pconfigcall.LINE, DIAGNOSTIC "Warning" ptbytes_message pconfigcall.LINE, ptask_duplicate)
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN pvalue_name
+  -- if z_precision = $precision_value(S)
+  -- if n_constants = |S.USERCONSTANTS|
+  -- if $dynamic_scalar_define_duplicate_valid(S, pconfigcall, pvalue_name, z_precision, n_constants)
+  -- if $string_bytes(pvalue_name) = (preqbytes)
+  -- if ptbytes_message = $global_constant_duplicate_message(preqbytes)
+  -- if ptask_duplicate = DYNAMIC_SCALAR_DEFINE_DUPLICATE pconfigcall pvalue_name z_precision n_constants
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_scalar_define_finish(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "scalar define publication"] -- otherwise
+dec $dynamic_scalar_define_receive(pstate, pconfigcall) : pstate
+def $dynamic_scalar_define_receive(S, pconfigcall) = $config_error(S[.TODO = ptask_tail*], pconfigcall, "TypeError", $ptascii("define(): Argument #1 ($constant_name) must be of type string, ") ++ $typed_given(S, pvalue_name) ++ $ptascii(" given"))
+  -- if $dynamic_scalar_define_valid(S, pconfigcall) /\ $config_strict(S, pconfigcall)
+  -- if $dynamic_scalar_define_values(pconfigcall) = ((pvalue_name, pvalue))
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_scalar_define_receive(S, pconfigcall) = $dynamic_scalar_define_finish($typed_apply(S, ptypeconversion, pconfigcall.LINE), pconfigcall)
+  -- if $dynamic_scalar_define_valid(S, pconfigcall) /\ ~$config_strict(S, pconfigcall)
+  -- if $dynamic_scalar_define_values(pconfigcall) = ((pvalue_name, pvalue))
+  -- if ptypeconversion = $config_conversion(S, pconfigcall, pvalue_name)
+  -- if ptypeconversion =/= TYPEREJECT
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_scalar_define_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "scalar define name reception"] -- otherwise
+rule PhpStep/dynamic-scalar-define-invoke: S ~> $dynamic_scalar_define_receive(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $config_invoke_valid(S, pconfigcall) /\ $dynamic_scalar_define_call(pconfigcall)
+def $task_nodes(DYNAMIC_SCALAR_DEFINE_DUPLICATE pconfigcall pvalue z n_constants) = $config_nodes(pconfigcall) ++ $value_nodes(pvalue)
+def $selected_task_nonce(DYNAMIC_SCALAR_DEFINE_DUPLICATE pconfigcall pvalue z n_constants) = pconfigcall.SELECTION
+def $call_task_valid(S, DYNAMIC_SCALAR_DEFINE_DUPLICATE pconfigcall pvalue z n_constants) = $dynamic_scalar_define_duplicate_valid(S, pconfigcall, pvalue, z, n_constants)
+rule PhpStep/dynamic-scalar-define-duplicate: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (DYNAMIC_SCALAR_DEFINE_DUPLICATE pconfigcall pvalue z n_constants) :: ptask_tail*
+  -- if $dynamic_scalar_define_duplicate_valid(S, pconfigcall, pvalue, z, n_constants)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = DYNAMIC_SCALAR_DEFINE_DUPLICATE pconfigcall pvalue_name z_precision n_constants
+  -- if $dynamic_scalar_define_duplicate_valid(S, pconfigcall, pvalue_name, z_precision, n_constants)
+  -- if $string_bytes(pvalue_name) = (preqbytes)
+  -- if perrorcall.SITE = pconfigcall.SITE /\ perrorcall.LEVEL = 2 /\ perrorcall.LINE = pconfigcall.LINE
+  -- if perrorcall.MESSAGE = $global_constant_duplicate_message(preqbytes)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pconfigcall.LINE
+def $error_context_trigger(S, pcallcontext) = (pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT, 0, KNOWN pvalue_name)])
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = DYNAMIC_SCALAR_DEFINE_DUPLICATE pconfigcall pvalue_name z_precision n_constants
+def $error_handler_trace_values(S, pcallcontext, pconfigcall_api) = $trace_extra(S, $getclass_trace_operands(pconfigcall_api.SENT))
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = DYNAMIC_SCALAR_DEFINE_DUPLICATE pconfigcall pvalue_name z_precision n_constants
+  -- if pconfigcall_api = pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT, 0, KNOWN pvalue_name)]
