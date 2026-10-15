@@ -1,4 +1,4 @@
-;; FETCH_LIST_R keeps QM_ASSIGN's array snapshot and returns uninitialized/null
+;; FETCH_LIST_R keeps its captured array and returns uninitialized/null
 ;; after a missing-key warning. The handler cannot turn this fetch into a lookup.
 dec $list_missing_flat(phpType13*) : bool
 def $list_missing_flat(eps) = true
@@ -34,6 +34,17 @@ def $list_missing_item(S, porigin, (NArrayItem expression_key expression (BOOLEA
   -- if $code_expression_at_source(S, porigin, [PCFIELD 0, PCINDEX n, PCFIELD 0]) = (z_key)
 def $list_missing_item(S, porigin, phpType13*, n, n_selected, z) = eps -- otherwise
 
+dec $list_missing_rhs(pstate, porigin, expression, nat) : bool
+def $list_missing_rhs(S, porigin, expression, n_array) = true
+  -- if $list_value_cv(expression) = (n_name*)
+def $list_missing_rhs(S, porigin, NExprArray (SEQUENCE phpType13*) metadata, n_array) = true
+  -- if $compiled_read(S, porigin) = (PARRAY n_array)
+def $list_missing_rhs(S, PORIGIN n pcpath, NExprArray (SEQUENCE phpType13*) metadata, n_array) = true
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if ~$array_immutable(S, n_array)
+def $list_missing_rhs(S, porigin, expression, n_array) = false -- otherwise
+
 ;; Source shape and compiler lines authenticate both the initial callback and
 ;; its saved continuation. The captured table is a runtime fact, not a reread CV.
 dec $list_missing_source(pstate, poperand, nat, expression, phpType13*, int, pkey) : bool
@@ -44,7 +55,8 @@ def $list_missing_source(S, KNOWN (PARRAY n_array), n, expression, phpType13*, z
   -- if $list_missing_flat(phpType13_all*)
   -- if $reference_origin_parent(porigin, 1) = ((porigin_assign, [PCFIELD 0]))
   -- if $origin_node(S.SOURCES, porigin_assign) = (NExprAssign expression_pattern expression_rhs metadata)
-  -- if $list_value_cv(expression_rhs) = (n_name*)
+  -- if $origin_child((porigin_assign), [PCFIELD 1]) = (porigin_rhs)
+  -- if $list_missing_rhs(S, porigin_rhs, expression_rhs, n_array)
   -- if $code_expression_at_source(S, porigin_assign, [PCFIELD 1]) = (z_initial)
   -- if $list_missing_item(S, porigin, phpType13_all*, 0, n, z_initial) = ((expression, phpType13*, z, pvalue, pkey))
   -- if $(z > 0 /\ n_array < |S.ARRAYS|)
