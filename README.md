@@ -2500,6 +2500,12 @@ skips the callback; the callback retains Parent lexical scope and Child called
 scope, removes Parent's private slot and sets `seen=13`.
 One original and one state/212 checks cover selection, reception and receiver
 cleanup; [magic unset review](coverage/semantics/magic-unset-review.json).
+A selected inherited `__isset(string $name): bool` now handles terminal `isset`
+of a direct CV/literal private property. Initialized public and typed-uninitialized
+slots bypass it; actual true/false results preserve short circuiting and storage.
+One original and one state/215 checks cover typed name reception, lexical scope
+and receiver cleanup; [magic isset review](coverage/semantics/magic-isset-review.json).
+Other signatures, receivers and `empty`/coalesce magic combinations remain unsupported.
 Hooked iteration, defaulted virtual hooks, other paired or virtual setters, wider trait
 setters, other explicit setter parameter forms, references, other inherited/trait
 and wider receiver, quiet or indirect-access families and wider `__unset` consumers remain required.
