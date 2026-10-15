@@ -18,6 +18,9 @@ projections establish refusals only. Baseline/native/preparation/syntax retain z
 agreement credit. Left-array warnings and wider operands/targets/callbacks/lifecycle
 remain partial; OP12 stays paused.
 [Concat-assignment ledger](coverage/semantics/concatassign-array-warning-review.json).
+The 395-module composition over 11955af3 preserves incoming trait-autoload,
+return/comparison/hook/Generator paths. Independent pointwise review warrants no
+joined actor; source3 and state395 retain their private cuts without replay.
 
 Class and trait declarations now autoload a sole missing user trait before method
 import and publication. Parent availability precedes trait lookup, which precedes
