@@ -202,8 +202,24 @@ binds four exact originals and 620 public premises across nine genuine CONFIG
 fronts, including truthy int/string/float flags, raw negative zero and authenticated
 request `"0"`, selected named captures despite live mutations, actual API/caller
 traces, preserved stores/events/table/handler registry, refusals and budgets.
-The omitted/bool route is unchanged; NULL/NaN flags for these names, NUL names,
-coerced names, wider values and owning/packed forms remain partial.
+The omitted/bool route is unchanged; NULL flags follow below. NaN flags for these
+names, NUL/coerced names, wider values and owning/packed forms remain partial.
+
+A NULL flag for a non-NUL `::` name first emits the parameter-3 bool deprecation.
+After normal return, a distinct conversion-only marker raises the name ValueError
+using the original captured arguments. Callback writes to name/value/flag/callee
+cannot alter that check, and quiet inner bindings survive it. A throwing first
+handler instead cancels the body, preserving the same Exception, callback effects
+and caller destination. Strict raw NULL raises parameter-3 TypeError after argument
+effects without deprecation. No path reaches registration or class resolution.
+The [NULL class-name review](../../coverage/semantics/define-class-null-flag-review.json)
+binds four exact originals and 429 public premises across default reporting,
+returning handler, strict rejection and throwing-handler groups. Actual transitions
+cover raw API/caller traces, source file/line, Previous NULL, preserved stores/table,
+complete restored-state discard equality, forged captures/markers and budgets.
+Default PHP stderr retains its one Deprecated line; the other originals are quiet.
+Old flag routes are unchanged; NaN flags for these names, NUL/coerced names,
+wider values and owning/packed forms remain partial.
 
 Fresh two-argument array definitions recursively dereference source cells into
 new DIRECT entries. Reinserting surviving keys rebuilds NEXT, positions and serial

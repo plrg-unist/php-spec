@@ -1086,7 +1086,13 @@ For the same non-NUL `::` names, weak int/string/non-NaN float flags reach that
 ValueError, while strict calls reject the raw flag first with parameter-3 TypeError.
 [Four source agreements and 620 state premises](coverage/semantics/define-class-scalar-flag-review.json)
 cover both priorities, raw negative-zero/request-string traces and unchanged state.
-NULL/NaN flags for these names and wider values remain partial.
+A NULL flag for these non-NUL `::` names emits its deprecation before the name
+ValueError; a throwing handler cancels that body check. Strict calls reject raw
+NULL first after argument effects.
+[Four source agreements and 429 state premises](coverage/semantics/define-class-null-flag-review.json)
+cover default reporting, callback return/throw, raw traces, preserved caller result
+and callback effects.
+NaN flags for these names and wider values remain partial.
 Fresh two-argument `define` also copies nonempty acyclic scalar-array trees,
 dereferencing source cells and rebuilding append history. Request-string leaves,
 nested reference snapshots and literal constraints pass

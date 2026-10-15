@@ -7,6 +7,24 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+For non-NUL `define` names containing `::`, a NULL third flag now emits its
+bool-reception deprecation before the name ValueError. Returning handlers preserve
+raw captures despite live argument/callee writes; a throwing handler cancels the
+body and keeps its original Exception and inner binding. Strict calls reject raw
+NULL with parameter-3 TypeError after argument effects, without deprecation.
+Four exact originals agree at 12e06acc, including the default Deprecated PHP-stderr
+line. All 429 public premises pass: author 92+145+72 and independent 120 across four
+groups, checking actual default/entered-handler/result/throw-discard steps, raw API
+and caller traces, retained callback effects, source/carrier refusals and budgets.
+The unchanged Unsupported baseline retains zero credit. Runtime adds one task tag
+and 51 module400 lines; existing flag-marker guards stay exact. NaN flags for
+these names, NUL/coerced names and wider/owning values remain partial.
+[NULL class-name review](coverage/semantics/define-class-null-flag-review.json).
+
+Pointwise composition over 7638815f preserves the incoming 399-module parent.
+Source4/state429 retain their private cuts; independent seam review warrants no
+joined actor or renewed execution claim.
+
 With a quiet integer left operand, plain-CV `<<=`/`>>=` now keep both converted
 longs through a fractional-count deprecation. Captured `-12`/`2` from `2.5` stores
 `-48`/`-3` despite callback `99`/`1`, detaching a late alias. Supplied throw cancels
