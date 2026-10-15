@@ -5,6 +5,7 @@ dec $generator_unpack_abort_input(pstate, pgeneratorunpack) : bool
 dec $generator_unpack_shape(pgeneratorunpack, text) : bool
 dec $generator_unpack_valid(pstate, pgeneratorunpack, text) : bool
 dec $generator_unpack_count(ptask*) : nat
+dec $generator_unpack_task_count(ptask) : nat
 dec $generator_unpack_header(pstate, pgeneratorop, pgeneratorunpack, text) : bool
 dec $generator_unpack_operation_tasks(pstate, pgeneratorop, ptask*) : bool
 dec $generator_unpack_operation_frames(pstate, pgeneratorop, pframe*) : bool
@@ -43,9 +44,10 @@ def $generator_unpack_shape(pgeneratorunpack, "rewind") = (pgeneratorunpack.COUN
 def $generator_unpack_shape(pgeneratorunpack, "next") = $(pgeneratorunpack.COUNT > 0)
 def $generator_unpack_shape(pgeneratorunpack, "ready") = (pgeneratorunpack.COUNT =/= 0 \/ ~pgeneratorunpack.NAMED)
 def $generator_unpack_shape(pgeneratorunpack, text) = false -- otherwise
+def $generator_unpack_task_count(GENERATOR_UNPACK pgeneratorunpack text) = 1
+def $generator_unpack_task_count(ptask) = 0 -- otherwise
 def $generator_unpack_count(eps) = 0
-def $generator_unpack_count((GENERATOR_UNPACK pgeneratorunpack text) :: ptask*) = $(1 + $generator_unpack_count(ptask*))
-def $generator_unpack_count(ptask :: ptask_tail*) = $generator_unpack_count(ptask_tail*) -- otherwise
+def $generator_unpack_count(ptask :: ptask_tail*) = $($generator_unpack_task_count(ptask) + $generator_unpack_count(ptask_tail*))
 def $generator_unpack_valid(S, pgeneratorunpack, text) = true
   -- if $generator_unpack_shape(pgeneratorunpack, text)
   -- if $unpack_origin(S, pgeneratorunpack.CALL) = (porigin)
