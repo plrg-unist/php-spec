@@ -180,6 +180,19 @@ The 397-module composition over 1e732d1ca preserves incoming comparison, pending
 define and modulo rules pointwise; source2/state384 retain their private cuts
 without replay.
 
+Certified stdClass aliases now pass through global constant array trees and
+`constant()` queries, including eval declarations and whole-tree donation.
+Querying adds one array root owner without copying or adding an object edge;
+nested COW adds a real shared-object edge, while caller bucket replacement
+preserves the original DIRECT tree. Three exact originals and author392 plus
+independent256 SL premises pass648 at runtime d5026ab1/397. The baseline remains genuinely Unsupported;
+its wrong expected-reason assertion is retained separately. Direct nested NEW,
+defaults, generic objects and wider query forms remain partial.
+[stdClass array review](coverage/semantics/global-constant-stdclass-array-review.json).
+The 398-module composition over 84d03da88 preserves incoming Generator, list,
+WeakMap, NaN-define and return selectors pointwise. Source3/state648 retain their
+private397 cuts without replay.
+
 Selected inherited `__unset(string): void` now dispatches direct CV/literal-name
 access to a declared private property. Accessible public unset skips magic;
 the callback retains Parent lexical scope and Child called scope, removes the

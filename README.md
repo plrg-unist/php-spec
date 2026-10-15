@@ -2695,8 +2695,13 @@ resume. Certified global `constant()` queries now return that same live stdClass
 through literal and retained selected calls, preserving shared writes and adding
 only the ordinary result owner. [The query review](coverage/semantics/global-constant-stdclass-query-review.json)
 keeps two source comparisons and 384 SL premises separate from producer evidence.
-Other internal/Throwable producers, arguments, embedded/default values
+Other internal/Throwable producers, arguments, direct embedded NEW/default values
 and wider query forms remain partial.
+Certified stdClass aliases now also pass through global constant array trees,
+including eval declarations and whole-tree donation. Array queries share the
+stored containers until ordinary COW, while embedded object identity and property
+writes remain shared. Three exact originals and 648 SL premises retain their
+[reviewed cut](coverage/semantics/global-constant-stdclass-array-review.json).
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is

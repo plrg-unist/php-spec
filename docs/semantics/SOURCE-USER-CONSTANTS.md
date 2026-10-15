@@ -336,7 +336,7 @@ fixture and unchanged baseline retain zero agreement credit.
 
 User-array queries retain the stored root and child identities. The admitted
 tree contains nonstring scalars, raw strings, authenticated string carriers,
-certified `PVINSTANCE`/`PVCLOSURE` leaves and arrays with matching key/class trees
+certified `PVINSTANCE`/`PVCLOSURE`/`PVSTDCLASS` leaves and arrays with matching key/class trees
 and canonical table history. Immutable empty
 arrays require their actual provenance; mutable empty copies remain distinct.
 Lookup does not clone, allocate or intern values. Existing COW handles writes and
@@ -475,5 +475,17 @@ so changing the next query from one constant to another selects the second objec
 The [query ledger](../../coverage/semantics/global-constant-stdclass-query-review.json)
 records two exact originals, reached state fronts, budget resumption and undriven
 certificate refusals. The unchanged Unsupported baseline remains zero credit;
-embedded stdClass trees, generic objects and wider owning/coercing query forms
+direct embedded stdClass NEW, generic objects and wider owning/coercing query forms
 remain partial.
+
+Certified stdClass aliases may now be leaves in literal global constant array
+trees. Shape admission permits their nonowning class facts; existing captured
+lookup prefixes and recursive live-value checks still authenticate each donated
+leaf. Whole-tree aliases retain those receipts. The query leaf rule delegates
+to the same completed-birth/live-allocation check as a direct stdClass query.
+Lookup shares the root and child arrays and adds only a root owner. Real nested
+COW creates another physical array-to-object edge; properties stay shared, while
+replacing a caller bucket leaves the installed DIRECT tree intact. Eval donor
+sources retain their own unit origins. Direct nested stdClass NEW, default
+caching and callable folding keep their separate producer/consumer boundaries.
+[stdClass array-alias review](../../coverage/semantics/global-constant-stdclass-array-review.json).
