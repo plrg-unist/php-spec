@@ -422,9 +422,23 @@ One native/source original and a genuine state cut212 =165 reached +47 derived
 cover public bypass, typed name reception, private deletion, `seen=13` and restoration;
 abrupt cleanup is a task-local derived check. Other signatures, absent/public-unset
 or protected callback selection, wider receivers/names and recursive magic remain
-unsupported. `__isset` is still required. Unrecognized pending receivers or names conservatively stop
+unsupported. Unrecognized pending receivers or names conservatively stop
 when a declared `__unset` exists, without evaluating a receiver in demand detection.
 [Magic unset review](../../coverage/semantics/magic-unset-review.json).
+
+A selected public nonstatic `__isset(string $name): bool` uses the same closed
+physical method-source proof, with a separate terminal-isset call/result protocol.
+Direct CV/literal declared-private tests invoke the inherited method; initialized
+accessible slots and typed INITIAL slots bypass it. The actual callback boolean
+passes unchanged to `ISSET_NEXT`, so a false result skips later operands. Parent
+lexical/private scope and Child called scope remain distinct, and cast storage is
+unchanged. A saved RESULT retains one receiver owner through return or abrupt
+frame discard. One original and state215 =164 reached +51 derived cover the
+selected behavior; abrupt cleanup is a task-local derived check. Other signatures,
+traits/owners, property families, receivers/names and recursive magic remain
+unsupported. `empty`, coalesce and `__get` combinations stop explicitly rather
+than silently use quiet NULL.
+[Magic isset review](../../coverage/semantics/magic-isset-review.json).
 
 Constructor promotion declares a property from its original parameter flags and
 source occurrence. A parameter default does not initialize the property, and

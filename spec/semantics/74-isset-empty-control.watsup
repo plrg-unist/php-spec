@@ -1,5 +1,7 @@
 ;; Only the terminal access uses ISSET_ISEMPTY; ancestors retain FETCH_DIM_IS.
 ;; Empty tests truth, including NaN diagnostics; isset tests only absence/null.
+dec $property_isset_pending(pstate) : bool
+def $property_isset_pending(S) = false -- otherwise
 dec $isset_value(pstate, pvalue, bool, int) : pstate
 def $isset_value(S, pvalue, false, z) = S[.RESULT = KNOWN (PBOOL (pvalue =/= PNULL))]
 def $isset_value(S, pvalue, true, z) = $boolean_result(S[.RESULT = KNOWN pvalue], true, z)
@@ -110,10 +112,12 @@ rule PhpStep/isset-global: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL (~
   -- if $ppglobals_base(expression)
 rule PhpStep/isset-result: S ~> S_read[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (ISSET_RESULT b z) :: ptask_tail*
+  -- if ~$property_isset_pending(S)
   -- if S_read = $isset_base(S, S.BASE, b, z)
   -- if S_read.COMPLETION = NORMAL
 rule PhpStep/isset-abrupt: S ~> S_read[.TODO = eps][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (ISSET_RESULT b z) :: ptask_tail*
+  -- if ~$property_isset_pending(S)
   -- if S_read = $isset_base(S, S.BASE, b, z)
   -- if S_read.COMPLETION =/= NORMAL
 rule PhpStep/isset-next: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0, PCINDEX n]), ISSET_PREP expression false), ISSET_NEXT expression_tail* $(n + 1)] ++ ptask_tail*]

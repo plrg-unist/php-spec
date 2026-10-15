@@ -7,6 +7,15 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Selected inherited `__isset(string): bool` now handles terminal CV/literal private
+property tests, while initialized public and typed-INITIAL slots bypass it. Actual
+true/false callback results preserve multi-property short circuiting and unchanged
+storage. Source1 passes at 5a6f91be; one state215 =164 reached +51 derived passes
+at 5551514f, including normal/abrupt receiver release. Empty/coalesce combinations
+and wider magic forms remain unsupported. Historical `__unset` retains an exact
+source-proof compatibility bridge without replay.
+[Review](coverage/semantics/magic-isset-review.json).
+
 Primitive plain-CV `**=` now commits captured power even when the deprecation
 handler throws. The same pending Exception resumes after the store and detachment
 of a late alias; the outer assignment stays at 100 and later target writes leave the

@@ -133,9 +133,13 @@ def $property_read(S, POBJECT n, ptbytes, z) = $property_access_error(S, n, ptby
 def $property_read(S, pvalue, ptbytes, z) = $property_read_key(S, pvalue, ptbytes, z)
   -- if $type_bytes(pvalue) =/= $ptascii("object")
 
+dec $property_isset_needed(pstate, nat, ptbytes) : bool
+def $property_quiet(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "magic isset quiet consumer"]
+  -- if $property_isset_needed(S, n, ptbytes)
 def $property_quiet(S, POBJECT n, ptbytes, z) = $property_quiet_key(S, POBJECT n, ptbytes_key, z)
   -- if ~$instance_storage_freeing(S, n)
   -- if ~$throwable_object(S, n)
+  -- if ~$property_isset_needed(S, n, ptbytes)
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes_key
 def $property_quiet(S, pvalue, ptbytes, z) = S[.RESULT = KNOWN PNULL] -- otherwise
 

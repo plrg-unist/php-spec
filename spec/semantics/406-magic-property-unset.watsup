@@ -85,10 +85,14 @@ def $property_unset_body_source(pcunit*, n, pcpath, statement :: statement_tail*
   -- if $property_unset_body_source(pcunit*, n, pcpath, statement_tail*, $(n_index + 1))
 def $property_unset_body_source(pcunit*, n, pcpath, statement*, n_index) = false -- otherwise
 
-dec $property_unset_function(pstate, ppropertyunset) : pfunction?
-def $property_unset_function(S, ppropertyunset) = (pfunction)
-  -- if $property_unset_method(S, ppropertyunset.OBJECT) = (pmethoddesc)
-  -- if pmethoddesc.FUNCTION.ORIGIN = ppropertyunset.METHOD
+;; Only these two one-name magic consumers share the physical method proof.
+dec $property_magic_method_signature(pssignature, text) : bool
+def $property_magic_method_signature(pssignature, "__unset") = $ppmethod_unset_signature(pssignature)
+def $property_magic_method_signature(pssignature, "__isset") = $ppmethod_isset_signature(pssignature)
+def $property_magic_method_signature(pssignature, text) = false -- otherwise
+
+dec $property_magic_method_source(pstate, pmethoddesc, text) : bool
+def $property_magic_method_source(S, pmethoddesc, text_magic) = true
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
   -- if pfunction = pmethoddesc.FUNCTION
   -- if pmethoddesc.OWNER = PORIGIN n pcpath_owner
@@ -104,17 +108,27 @@ def $property_unset_function(S, ppropertyunset) = (pfunction)
   -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (statement_method)
   -- if statement_method = NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE ([NParam (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_type) metadata_type) (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES text_parameter) metadata_parameter_name) ABSENT (SEQUENCE eps) metadata_parameter])) (NIdentifier (BYTES text_return) metadata_return) (SEQUENCE statement*) metadata
   -- if statement_owner*[n_method] = statement_method
-  -- if $ppmethod_unset(flags, $base64(text_method))
+  -- if flags <- [0,1] /\ $ptlc($base64(text_method)) = $ptascii(text_magic)
   -- if pmethoddesc.NAME = $base64(text_method)
-  -- if $ptlc($base64(text_type)) = $ptascii("string") /\ $ptlc($base64(text_return)) = $ptascii("void")
+  -- if $ptlc($base64(text_type)) = $ptascii("string")
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 4, PCINDEX 0])) = (NParam (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_type) metadata_type) (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES text_parameter) metadata_parameter_name) ABSENT (SEQUENCE eps) metadata_parameter)
   -- if pfunction.SIGNATURE.PARAMETERS = [psparam]
-  -- if psparam.NAME = $base64(text_parameter) /\ $ppmethod_unset_signature(pfunction.SIGNATURE)
+  -- if psparam.NAME = $base64(text_parameter) /\ $property_magic_method_signature(pfunction.SIGNATURE, text_magic)
+  -- if pfunction.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN text_return_type]))]
+  -- if $ptlc($base64(text_return)) = $ptascii(text_return_type)
   -- if pfunction.NAME = pclassdesc_owner.NAME ++ $ptascii("::") ++ pmethoddesc.NAME
   -- if pfunction.BODY = pcpath ++ [PCFIELD 6] /\ pfunction.DEFAULTS = eps
   -- if $property_unset_body_source(S.SOURCES, n, pfunction.BODY, statement*, 0)
   -- if pfunction.LINE = $ppmethod_line(metadata) /\ pfunction.ENDLINE = $psendline(metadata)
   -- if ~$generator_statements(statement*)
+def $property_magic_method_source(S, pmethoddesc, text_magic) = false -- otherwise
+
+dec $property_unset_function(pstate, ppropertyunset) : pfunction?
+def $property_unset_function(S, ppropertyunset) = (pfunction)
+  -- if $property_unset_method(S, ppropertyunset.OBJECT) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = ppropertyunset.METHOD
+  -- if pfunction = pmethoddesc.FUNCTION
+  -- if $property_magic_method_source(S, pmethoddesc, "__unset")
   -- if $target_function(S, METHOD_TARGET ppropertyunset.OBJECT ppropertyunset.METHOD) = (pfunction)
 def $property_unset_function(S, ppropertyunset) = eps -- otherwise
 
