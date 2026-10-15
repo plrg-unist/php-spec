@@ -1,6 +1,6 @@
 {
   "scope": "Null names in nonowning constant/defined calls without argument unpacking. Partial core; define-null reception is separate.",
-  "status": "independently_accepted_private",
+  "status": "independently_accepted_actual_parent",
   "reviewer": "/root/core_breadth_review_01",
   "parent": "94402a17b208f11966137746e61be1cab6dd8e1e",
   "semantic_revision": "dae1196f03076c90d8990bd7b58534932e8ea066",
@@ -38,7 +38,8 @@
     "author/review/native-report.json": "f82b45c3ed56cc49820501f4d88943c0242bc6b283bc4b1a871b263cc6fad674",
     "author/sources/baseline-report.json": "c1bdafb696b9cdf024f73526c729b79fe8fecc031b09f6ddfb884c37534d4cfa",
     "author/sources/model-report.json": "8e23eb39806e331f6a915785b9cd145548a3d84cd9f798949a44f5d74fd01d04",
-    "author/sources/native-report.json": "742075e435843a59b9e62568f9a7b7ed00f0719f9b7fe28def3a41a19471d5bb"
+    "author/sources/native-report.json": "742075e435843a59b9e62568f9a7b7ed00f0719f9b7fe28def3a41a19471d5bb",
+    "join/report.json": "0ff4d8e229874eff2b79d34a82c00cd91490fcf68d44d4da95dc7ea9527e6fd3"
   },
   "commands": [
     "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/global_constant_null_name_sources.py --phase native --output .tools/global-null-name-query-native-29",
@@ -51,7 +52,13 @@
     "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/global_constant_null_name_protocol.py --phase prepare --sources .tools/global-null-name-query-native-29 --output .tools/global-null-name-query-public-fixed-29",
     "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 330s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/global_constant_null_name_protocol.py --phase check --sources .tools/global-null-name-query-native-29 --output .tools/global-null-name-query-public-fixed-29"
   ],
-  "recovery": "Four owned ignored trees moved once without copies after reviewer STOP and focused cwd/cmdline/fd no-use scan; report hashes unchanged. Restore author/sources,public-initial,public,review respectively as .tools/global-null-name-query-{native,public,public-fixed,review}-29 inside .tools/source-global-null-name-query-29 at the recorded revisions. Branch refs retain exact historical source and fixture cuts.",
+  "recovery": "Four owned ignored trees moved once without copies after reviewer STOP and focused cwd/cmdline/fd no-use scan; report hashes unchanged. Restore author/sources,public-initial,public,review respectively as .tools/global-null-name-query-{native,public,public-fixed,review}-29 inside .tools/source-global-null-name-query-29 at the recorded revisions. Branch refs retain exact historical source and fixture cuts. Restore join to .tools/source-global-null-name-query-join-29/.tools/global-null-name-query-current-parent-29 at the tested candidate for its historical loader; this owned tree was also moved once without copies after STOP/no-use.",
   "remaining": "Null define names, Stringable/array reception, packed/owning/FCC forms, wider arity and callback/lifecycle domains remain separate. Core remains partial; no engine bug or intentional divergence.",
-  "actual_parent_integration": null
+  "actual_parent_integration": {
+    "parent": "a7b6bf8b554c075fbc6cc2c2204b378d29aa9295",
+    "candidate": "58697e2787422447fbb592d5b59308d89e36d4ff",
+    "report": "join/report.json",
+    "command": "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 120s prlimit --as=3221225472 -- taskset -c 5 python3 .tools/global-null-name-query-current-parent-29/run.py",
+    "result": "Full395 SL loading/initialization trueLF/0/emptyerr,7.522s, stable inputs/HEAD, no timeout, reaped/groups[]. Exact private30+1/400+51 preserves all other parent runtime/manifest bytes. Incoming encoding-declare/dynamic parser stderr, byref-array return, array-cast warning and object-comparison selectors are absent from these sources. No application/source/state agreement added; source4/public400 keep their private cuts."
+  }
 }

@@ -18,7 +18,9 @@ default reporting, immutable source refusal, raw/converted traces and budgets.
 The initial inner-handler terminal-phase assertion remains zero credit; its
 correction checks the same refusal inside budgeted error unwind. Null `define`
 names, Stringable/array reception and packed/owning forms remain separate.
-Private acceptance is complete; actual-parent integration is pending.
+The 395-module composition over a7b6bf8b passes full SL initialization at 58697e27.
+Independent pointwise review preserves the parent; source4/public400 retain their
+private cuts without a replay.
 [Null-query review](coverage/semantics/global-constant-null-name-review.json).
 
 The authenticated numeric comparison remainder now skips builtin and inherited
