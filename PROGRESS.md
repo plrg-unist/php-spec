@@ -20,7 +20,9 @@ pending effects, refusals and budget resume. The original peer binder collision
 remains zero credit; only its two captured-name premises changed.
 NULL/NaN flags, scalar/null names with coerced flags, and pending duplicate warnings
 remain separate; the corresponding boolean-true abrupt registration tail remains open.
-Private acceptance is complete; actual-parent integration is pending.
+The 395-module composition over 91a58a8b passes full SL initialization at 7260f84c.
+Independent pointwise review preserves V56 and every incoming runtime selector;
+source4/public462 retain their private cuts without replay.
 [Scalar-flag review](coverage/semantics/define-scalar-flag-review.json).
 
 Plain-CV `.=` now retains the first string across a right-array warning.
