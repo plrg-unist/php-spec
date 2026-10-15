@@ -15,6 +15,9 @@ publication, source/history guards and budget resume. Two filename fixture failu
 retain zero credit. Admission requires a parentless ordinary user target without
 traits; wider dependency lists, parent/trait loading and callback/failure interactions
 remain partial. [Interface autoload review](coverage/semantics/interface-dependency-autoload-review.json).
+The 395-module composition over 859ae9eb preserves the incoming parent and accepted
+rules at 96b1f9fd. Incoming concat/null-query/setter/reference-return/Generator selectors
+are absent; source2/public324 retain their private cuts without renewed numeric credit.
 
 Ordinary `.` now suspends for named array-warning handlers on two distinct
 plain CVs with one nonempty mutable flat scalar array and one quiet string.
