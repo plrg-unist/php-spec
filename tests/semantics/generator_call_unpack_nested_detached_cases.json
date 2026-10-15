@@ -1,0 +1,42 @@
+[
+  {
+    "id": "generator-nested-detached-unpack-retained-middle-real-return-and-tail",
+    "purpose": "A detached middle cache reached below an active outer link raises its real null-key Error; explicit next then consumes the scalar return and resumes both source tails while a retained original child owns its old object cache.",
+    "source": "<?php\nclass NestedRetainedCache16 { function __destruct() { echo \"A|\"; } }\nfunction nestedRetainedChild16() { echo \"C|\"; yield new NestedRetainedCache16(); echo \"L|\"; return 23; }\nfunction nestedRetainedMiddle16() { try { echo \"H|\"; $result = yield from $GLOBALS[\"child\"]; echo \"R|\", $result, \"|\"; yield 13; return 29; } finally { echo \"J|\"; } }\nfunction nestedRetainedOuter16() { try { echo \"G|\"; $result = yield from $GLOBALS[\"middle\"]; echo \"OR|\", $result, \"|\"; } finally { echo \"F|\"; } }\nfunction nestedRetainedTarget16($value) { echo \"BAD|\"; }\n$child = nestedRetainedChild16(); $middle = nestedRetainedMiddle16(); $outer = nestedRetainedOuter16();\necho \"P|\"; $outer->rewind(); $child->next();\necho \"V|\", $middle->current() instanceof NestedRetainedCache16 ? \"HELD|\" : \"BAD|\";\ntry { nestedRetainedTarget16(...$outer); } catch (Error $caught) { echo \"T|\", $caught->getLine(), \"|\", $caught->getTrace() === [] ? \"NOFRAME|\" : \"BADTRACE|\"; }\necho \"N|\"; $outer->next(); echo \"D|\", $outer->current(), \"|K|\", $outer->key(), \"|\";\n$outer->next(); unset($outer, $middle); echo \"M|\"; unset($child); echo \"E\";\n",
+    "source_sha256": "641e61809564345684059cedd6f33a0f4b2bd6c179864ca0a57b78c388a9ebe1",
+    "expected_model": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|G|H|C|L|V|HELD|T|10|NOFRAME|N|R|23|D|13|K|0|J|OR|29|F|M|A|E"
+  },
+  {
+    "id": "generator-nested-detached-unpack-two-active-links-unowned-middle-close",
+    "purpose": "Two active outer links above a detached cache retain only graph owners after independent CV retirement; their real null-key error and close lifecycle distinguish dropped intermediates from the source outer finalizer.",
+    "source": "<?php\nclass NestedUnownedCache16 { function __destruct() { echo \"A|\"; } }\nfunction nestedUnownedChild16() { echo \"C|\"; yield new NestedUnownedCache16(); echo \"L|\"; return 23; }\nfunction nestedUnownedMiddle16() { try { echo \"H|\"; yield from $GLOBALS[\"child\"]; echo \"BAD|\"; } finally { echo \"J|\"; } }\nfunction nestedUnownedOuter16() { try { echo \"O|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD|\"; } finally { echo \"F|\"; } }\nfunction nestedUnownedRoot16() { try { echo \"G|\"; yield from $GLOBALS[\"outer\"]; echo \"BAD|\"; } finally { echo \"Z|\"; } }\nfunction nestedUnownedTarget16($value) { echo \"BAD|\"; }\n$child = nestedUnownedChild16(); $middle = nestedUnownedMiddle16(); $outer = nestedUnownedOuter16(); $root = nestedUnownedRoot16();\necho \"P|\"; $root->rewind(); $child->next();\necho \"V|\", $middle->current() instanceof NestedUnownedCache16 ? \"HELD|\" : \"BAD|\";\nunset($child, $middle, $outer); echo \"M|\";\ntry { nestedUnownedTarget16(...$root); } catch (Error $caught) { echo \"T|\", $caught->getLine(), \"|\", $caught->getTrace() === [] ? \"NOFRAME|\" : \"BADTRACE|\"; }\nunset($root); echo \"E\";\n",
+    "source_sha256": "de444ed0747ce540af6a396e1ed4186051de0a7784f5ccc30c9fd0749c9f87da",
+    "expected_model": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|G|O|H|C|L|V|HELD|M|T|12|NOFRAME|A|F|Z|E"
+  },
+  {
+    "id": "generator-nested-detached-unpack-assigned-result-same-unowned-start-history",
+    "purpose": "One native-only discriminant changes only ignored-to-assigned yield-from result use, keeping graph and initialization history fixed.",
+    "source": "<?php\nclass NestedUnownedCache16 { function __destruct() { echo \"A|\"; } }\nfunction nestedUnownedChild16() { echo \"C|\"; yield new NestedUnownedCache16(); echo \"L|\"; return 23; }\nfunction nestedUnownedMiddle16() { try { echo \"H|\"; $result = yield from $GLOBALS[\"child\"]; echo \"BAD|\"; } finally { echo \"J|\"; } }\nfunction nestedUnownedOuter16() { try { echo \"O|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD|\"; } finally { echo \"F|\"; } }\nfunction nestedUnownedRoot16() { try { echo \"G|\"; yield from $GLOBALS[\"outer\"]; echo \"BAD|\"; } finally { echo \"Z|\"; } }\nfunction nestedUnownedTarget16($value) { echo \"BAD|\"; }\n$child = nestedUnownedChild16(); $middle = nestedUnownedMiddle16(); $outer = nestedUnownedOuter16(); $root = nestedUnownedRoot16();\necho \"P|\"; $root->rewind(); $child->next();\necho \"V|\", $middle->current() instanceof NestedUnownedCache16 ? \"HELD|\" : \"BAD|\";\nunset($child, $middle, $outer); echo \"M|\";\ntry { nestedUnownedTarget16(...$root); } catch (Error $caught) { echo \"T|\", $caught->getLine(), \"|\", $caught->getTrace() === [] ? \"NOFRAME|\" : \"BADTRACE|\"; }\nunset($root); echo \"E\";\n",
+    "source_sha256": "147e2b2f98b31dbc0ca9359d9e8fe58f407859f4091c0caf131240b58b5b9dee",
+    "expected_model": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|G|O|H|C|L|V|HELD|M|T|12|NOFRAME|A|F|Z|E"
+  },
+  {
+    "id": "generator-nested-detached-unpack-direct-next-clears-pending-init-without-advancing",
+    "purpose": "An actual direct middle next consumes pending initialization without running the copied-return tail; later unowned close executes that middle finally, unlike inherited startup with no direct next.",
+    "source": "<?php\nclass NestedUnownedCache16 { function __destruct() { echo \"A|\"; } }\nfunction nestedUnownedChild16() { echo \"C|\"; yield new NestedUnownedCache16(); echo \"L|\"; return 23; }\nfunction nestedUnownedMiddle16() { try { echo \"H|\"; $result = yield from $GLOBALS[\"child\"]; echo \"BAD|\"; } finally { echo \"J|\"; } }\nfunction nestedUnownedOuter16() { try { echo \"O|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD|\"; } finally { echo \"F|\"; } }\nfunction nestedUnownedRoot16() { try { echo \"G|\"; yield from $GLOBALS[\"outer\"]; echo \"BAD|\"; } finally { echo \"Z|\"; } }\nfunction nestedUnownedTarget16($value) { echo \"BAD|\"; }\n$child = nestedUnownedChild16(); $middle = nestedUnownedMiddle16(); $outer = nestedUnownedOuter16(); $root = nestedUnownedRoot16();\necho \"P|\"; $root->rewind(); $child->next();\necho \"V|\", $middle->current() instanceof NestedUnownedCache16 ? \"HELD|\" : \"BAD|\";\n$middle->next(); echo \"Q|\";\nunset($child, $middle, $outer); echo \"M|\";\ntry { nestedUnownedTarget16(...$root); } catch (Error $caught) { echo \"T|\", $caught->getLine(), \"|\", $caught->getTrace() === [] ? \"NOFRAME|\" : \"BADTRACE|\"; }\nunset($root); echo \"E\";\n",
+    "source_sha256": "082133dad911b66c752f0e0ffa468585f58b07a184c515936a0ee6a0ad1e0a87",
+    "expected_model": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|G|O|H|C|L|V|HELD|Q|M|T|13|NOFRAME|J|A|F|Z|E"
+  }
+]

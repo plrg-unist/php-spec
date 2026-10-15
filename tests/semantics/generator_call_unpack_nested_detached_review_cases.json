@@ -1,0 +1,22 @@
+[
+  {
+    "id": "generator-call-unpack-nested-detached-review-retained-middle-row-cow-and-real-return-tail",
+    "purpose": "An active outer shares a detached middle's cached row. A copied current row mutates independently, null-key unpack leaves the real return23 continuation intact, and later next reaches yield13 and normal outer return29.",
+    "source": "<?php\nclass ReviewNestedDetachedFirst16 { function __destruct() { echo \"A|\"; } }\nclass ReviewNestedDetachedSecond16 { function __destruct() { echo \"B|\"; } }\nfunction reviewNestedDetachedLeaf16() { echo \"C|\"; yield [new ReviewNestedDetachedFirst16()]; echo \"L|\"; return 23; }\nfunction reviewNestedDetachedMiddle16() { try { echo \"H|\"; $result = yield from $GLOBALS[\"child\"]; echo \"R|\", $result, \"|\"; yield 13; } finally { echo \"J|\"; } }\nfunction reviewNestedDetachedOuter16() { try { echo \"G|\"; yield from $GLOBALS[\"middle\"]; echo \"O|\"; return 29; } finally { echo \"F|\"; } }\nfunction reviewNestedDetachedTarget16($value) { echo \"BAD|\"; }\n$child = reviewNestedDetachedLeaf16(); $middle = reviewNestedDetachedMiddle16(); $outer = reviewNestedDetachedOuter16();\necho \"P|\"; $outer->rewind(); $child->next();\n$row = $outer->current(); $row[0] = new ReviewNestedDetachedSecond16();\necho \"V|\", $middle->current()[0] instanceof ReviewNestedDetachedFirst16 ? \"HELD|\" : \"BAD|\";\nunset($child, $row); echo \"M|\";\ntry { reviewNestedDetachedTarget16(...$outer); }\ncatch (Error $error) { echo \"T|\", $error->getMessage() === \"Keys must be of type int|string during argument unpacking\" ? \"KEY|\" : \"BAD|\", $error->getTrace() === [] ? \"NOFRAME|\" : \"BAD|\"; }\necho \"N|\"; $outer->next(); echo \"D|\", $outer->current(), \"|\";\n$outer->next(); echo \"Q|\", $outer->getReturn(), \"|\";\nunset($outer, $middle); echo \"E\";\n",
+    "expected_model": "normal",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "5f8f2658a17e7f4c768b57dc4e6e96b519999e668bc825afda974ec428f82909",
+    "native_stdout": "P|G|H|C|L|V|HELD|B|M|T|KEY|NOFRAME|N|R|23|A|D|13|J|O|F|Q|29|E"
+  },
+  {
+    "id": "generator-call-unpack-nested-detached-review-temporary-outer-unowned-middle-close",
+    "purpose": "A middle initialized directly before temporary outer acquisition is detached and loses its independent CV through a helper. Null-key failure runs its own finally before cache destruction and outer finally, contrasting a middle initialized only through an outer link.",
+    "source": "<?php\nclass ReviewNestedDetachedCache16 { function __destruct() { echo \"A|\"; } }\nfunction reviewNestedDetachedCloseLeaf16() { echo \"C|\"; yield new ReviewNestedDetachedCache16(); echo \"L|\"; return 23; }\nfunction reviewNestedDetachedCloseMiddle16() { try { echo \"H|\"; $result = yield from $GLOBALS[\"child\"]; echo \"BAD|\"; } finally { echo \"J|\"; } }\nfunction reviewNestedDetachedTake16() { $value = $GLOBALS[\"middle\"]; unset($GLOBALS[\"middle\"]); return $value; }\nfunction reviewNestedDetachedCloseOuter16() { try { echo \"G|\"; yield from reviewNestedDetachedTake16(); echo \"BAD|\"; } finally { echo \"F|\"; } }\nfunction reviewNestedDetachedCloseTarget16($value) { echo \"BAD|\"; }\n$child = reviewNestedDetachedCloseLeaf16(); $middle = reviewNestedDetachedCloseMiddle16();\necho \"P|\"; $middle->rewind(); $child->next();\necho \"V|\", $middle->current() instanceof ReviewNestedDetachedCache16 ? \"HELD|\" : \"BAD|\";\nunset($child); echo \"M|\";\ntry { reviewNestedDetachedCloseTarget16(...reviewNestedDetachedCloseOuter16()); }\ncatch (Error $error) { echo \"T|\", $error->getMessage() === \"Keys must be of type int|string during argument unpacking\" ? \"KEY|\" : \"BAD|\", $error->getTrace() === [] ? \"NOFRAME|\" : \"BAD|\"; }\necho \"E\";\n",
+    "expected_model": "normal",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "aec9c117a6bef68c64c67b09d3b5ad245d73ba80926fa8b0532ef52969c57183",
+    "native_stdout": "P|H|C|L|V|HELD|M|G|J|A|F|T|KEY|NOFRAME|E"
+  }
+]

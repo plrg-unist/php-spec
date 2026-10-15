@@ -8,8 +8,8 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 ## Current checkpoint
 
 Terminal inherited `empty` now accepts null/bool/int and byte-string getter results
-within the existing CV/literal private-property slice; identity carriers are authenticated. Empty bytes
-and sole ASCII `0` are empty strings; NUL and `0` plus NUL are not. One further
+within the existing CV/literal private-property slice; identity carriers are
+authenticated. Empty bytes and sole ASCII `0` are empty strings; NUL and `0` plus NUL are not. One further
 201-byte original agrees at ebec20005; state155 =132 reached +23 derived passes at
 6ea911050, checking actual literal INTERNED payloads, pure conversion, receiver
 release and late budget resume. REQUEST metadata authentication/refusals are
@@ -20,6 +20,93 @@ remain partial. [Primitive result review](coverage/semantics/magic-empty-scalars
 The prior integer/call/receiver slice retains original d9df16379/state208 e8703a594
 and its 4206eef78 composition without replay; both abrupt cleanups remain derived.
 [Magic empty review](coverage/semantics/magic-empty-review.json).
+Pointwise composition over 03a29bd22 preserves the incoming399-module parent.
+Source1/state155 retain their private cuts; seam review warrants no joined actor or renewed credit.
+
+Non-NUL `define` names containing `::` now receive int/string/non-NaN float
+third flags with primitive values. Weak calls raise the name ValueError before any
+ignored-flag Warning; strict calls instead raise parameter-3 TypeError after all
+argument effects. Both retain raw flags, including negative zero and request `"0"`,
+without warning callback, class lookup or constant-table mutation.
+Four exact originals agree at f09a31dc. All 620 public premises pass: author
+189+84+184 and independent 163 across four groups/nine genuine CONFIG error fronts,
+checking raw API/caller traces, captured arguments despite live mutations, unchanged
+state, source/carrier refusals and budgets. The unchanged Unsupported baseline retains
+zero credit. Only 35 module400 insertions change runtime; the omitted/bool route
+stays exact. NULL/NaN flags for these names, NUL names and wider/owning values remain
+partial. [Scalar class-name review](coverage/semantics/define-class-scalar-flag-review.json).
+
+Pointwise composition over 91ff8844 preserves the incoming 399-module parent.
+Source4/state620 retain their private cuts; independent seam review warrants no
+joined actor or renewed execution claim.
+
+Plain-CV `<<=`/`>>=` now keep their fractional left conversion through deprecation
+handlers, then read the live quiet integer count. Captured `-12` and count `2` store
+`-48` or `-3` despite callback `99` and detach a late target alias. Supplied throw cancels storage;
+negative live count raises the original-line `ArithmeticError` without detachment,
+preserving callback writes/aliases and destination `100`. Four exact originals pass at
+4a919d8f0; 141/141/124 author plus 120 independent SL premises pass 526 at 92a8ad2e0/398.
+They cover both source/op guards, unchanged modulo refusals, actual CELL/LOCATION
+and alias/error owners, default Deprecated and budgets. Checked prep reuses retained
+source/native bytes; native/baseline/prep/syntax retain0. Pure ready projections
+establish refusals only. Initial references/copies, warning or noninteger counts,
+unsafe targets and wider callbacks/lifecycle remain partial; OP12 stays paused.
+[Shift-assignment ledger](coverage/semantics/shiftassign-warning-review.json).
+
+Composed over 040868796/399 after pointwise review of define, typed/byref return,
+property-empty/list and weak numeric-comparison seams. Source4/state526 retain their
+private cuts; no joined actor, replay or renewed credit.
+
+Non-NUL string `define` names containing `::` now raise parameter-1 ValueError
+before any ignored-true Warning. Omitted/bool flags preserve raw API arguments;
+strict bool calls keep the same priority after all argument effects. No class
+resolution, warning callback or constant-table mutation occurs.
+Four exact originals agree at acf518e8. Author 167+69+69 and independent 145 public
+premises pass 450 across four groups/seven genuine CONFIG error fronts, checking
+raw two/three-argument traces, real caller frames, unchanged store/events/table,
+request-string captures, source/carrier refusals and budgets. The unchanged
+Unsupported baseline retains zero credit. The runtime adds only 30 module400
+lines; wider/coerced flags, names and owning values remain partial. Pointwise
+composition over 0cc3e18a preserves the 399-module incoming parent. Source4/state450
+retain their private cuts; independent review warrants no joined actor or renewed
+execution claim.
+[Class-name review](coverage/semantics/define-class-name-review.json).
+
+WeakMap and WeakReference numeric comparisons now dispatch real Notice callbacks
+with fixed class names, including wrappers whose referents have expired. Private
+1/1.0, CV/COPY/retained-cell selection and SECOND callbacks survive live writes.
+Two exact originals and 355 Boolean premises (331 setup + 24 pure)/14 actual steps
+pass at 1337908c3/398, covering private owner1, weak nonownership, real ALIAS/COW,
+registered-handler restoration, pending late weak Notice/caster skips and the same
+TypeError/finally with fresh guard cleanup. No actor failed; native/baseline,
+preparation and typed elaboration add no agreement credit. Wider handlers, other
+internal/custom classes and weak producer/lifetime protocols remain partial.
+[Weak numeric review](coverage/semantics/weak-numeric-comparison-review.json).
+The pointwise 399-module composition over 6f3488104 preserves incoming list,
+property, arithmetic, constants and return paths. Source2/state355 retain their
+private cut; independent seam review warrants no joined actor or renewed credit.
+
+Missing-key Warning now continues flat CV destructuring from saved arrays or
+mixed-pattern source cells. By-value CV/literal RHS snapshots retain shared embedded
+references. Mixed value/reference patterns capture a direct-CV source cell: callback
+value replacement affects later reference fetches, while CV unsetting/rebinding leaves
+the old cell authoritative. The interrupted fetch still supplies null before its store;
+a later reference leaf applies COW or creates an array after callback null replacement.
+Prior reference leaves preserve the fetch line. Throws cancel pending stores/items and
+result delivery, preserving callback effects and the supplied Throwable.
+Five A3 exact originals agree at 88494f937; five reached SL fronts pass591 premises
+(576 Boolean +15 raw steps) at 1b2ab113f, checking marked-cell/source/line refusals,
+real frames, same-cell replacement, saved-cell COW, null creation, retirement and budgets.
+The [mixed-reference review](coverage/semantics/list-reference-missing-warning-review.json)
+retains its native/unchanged Unsupported baseline with zero agreement credit.
+The earlier [CV slice](coverage/semantics/list-missing-warning-review.json) source6/state468
+and [literal slice](coverage/semantics/list-literal-missing-warning-review.json) source6/state417
+retain their original cuts without replay. Quiet compiled/implicit keys and flat CV
+targets bound these slices; nested/wider RHS, scalar diagnostic callbacks and lifecycle
+remain partial.
+The pointwise399-module composition over08c650fd3 preserves incoming Generator,
+shift, return, define and weak-object numeric paths. Source5/state591 retain their
+private cuts; seam review warrants no joined actor or renewed agreement credit.
 
 Plain-CV `%=` now keeps both converted longs through a fractional-RHS deprecation.
 Captured12/5 stores2 despite callback99/7 and detaches a late target alias; supplied
@@ -64,22 +151,6 @@ other internal/custom counterparts and wider producer/lifetime forms remain part
 The pointwise 398-module composition over f8882d5c preserves incoming
 LIST_MISSING_RESULT and every parent helper. Source3/state398 retain their private
 cuts; independent seam review warrants no joined actor or renewed agreement credit.
-
-By-value direct-CV destructuring now retains its captured array through missing-key
-Warning handlers. Callback insertion/rebinding still supplies null; later items
-observe the captured table and shared reference cells in order. Throws cancel the
-pending store and later items while preserving callback writes and the Throwable.
-Six exact sources agree at their retained cuts; five SL fronts pass 468 premises
-(460 Boolean +8 raw steps) at 1a35de425/345274fb5. Source/carrier/line/liveness
-refusals and physical owner2→1→0 cleanup are checked. The initial string-carrier
-rejection and two fixture elaboration failures retain zero credit. Flat CV targets
-and warning-free compiled/implicit keys bound this slice; wider destructuring
-producers and diagnostics remain partial.
-[Destructuring-warning review](coverage/semantics/list-missing-warning-review.json).
-The pointwise 398-module composition over 79da8331 preserves every incoming
-runtime declaration/helper, including modulo assignment, constant queries, return
-replay and Generator unpack. Source6/state468 retain their private cuts; independent
-seam review warrants no joined actor or renewed agreement credit.
 
 Plain-CV `%=` now keeps its fractional-float left conversion through deprecation
 handlers, then reads the live quiet integer RHS. Captured12/live5 stores2; a supplied
@@ -222,6 +293,25 @@ defaults, generic objects and wider query forms remain partial.
 The 398-module composition over 84d03da88 preserves incoming Generator, list,
 WeakMap, NaN-define and return selectors pointwise. Source3/state648 retain their
 private397 cuts without replay.
+
+Nested global constant arrays now create zero-argument stdClass leaves after
+authentic earlier facts. Full and shorthand ternaries transfer the selected
+newborn through immediate source arms to its exact completed birth receipt.
+Fresh eval duplicate candidates remain distinct from installed leaves and retire
+after the real Warning handler; shared property writes and ordinary COW persist.
+Four exact sources and author596 plus independent511 SL premises pass1107.
+Literal244 retains its original cut; corrected eval352 and peer307/204 retain
+their affected398-module cuts. The
+[nested-birth review](coverage/semantics/global-constant-stdclass-new-review.json)
+records exact source paths, birth/flow guards, query owners and cleanup.
+The unchanged Unsupported, first peer transfer failure and original cross-unit
+empty-array fixture failure retain zero passing credit. A relocated-path pass
+also retains zero credit; the accepted peer retry uses its native filename/cwd.
+Defaults, arguments, whole-array conditional transfer/coalescing and wider
+producers remain partial.
+Pointwise composition over c9fc1c864 preserves the incoming399-module parent,
+including define, arithmetic, Generator, return and mixed-list selectors.
+Source4/state1107 retain their private398 cuts; no joined actor or renewed credit.
 
 Selected inherited `__unset(string): void` now dispatches direct CV/literal-name
 access to a declared private property. Accessible public unset skips magic;
@@ -2390,11 +2480,32 @@ agree at `80ad118bf`; strict397 and four reached groups/436 premises pass there
 (author195, independent241). See the
 [acquired-Generator ledger](coverage/semantics/generator-call-unpack-acquired-generator-review.json).
 Native-only observations and the unchanged Unsupported baseline earn zero model
-agreement. Ordinary Aggregate call operands, valid-key by-reference targets,
-owning copied returns and active chains ending in detached roots remain required.
+agreement. At that cut ordinary Aggregate call operands, valid-key by-reference
+targets, owning copied returns and active chains ending in detached roots remained required.
 The397-module composition over `bb312fcd2` preserves the tested405 bytes and
 every incoming runtime selector. Independent pointwise review warrants no joined
 actor; private strict/source/state evidence retains its `80ad118bf` cut.
+
+Generator call unpack now follows finite active shared links to a detached middle
+whose copied child return owns no heap nodes. Its null key raises the real Error
+before SEND; copied current rows, retained cache owners and later return/tail
+execution remain intact. A nonowning pending-initialization bit models Zend's
+root-resume history: an inherited middle with its own cache can skip finally on
+forced close, while direct initialization or a real next that consumes the bit
+without advancing restores finally execution. The earlier omitted-middle-finally
+native answer is preserved; the assigned-yield-from probe refutes a result-demand
+explanation. Six new exact originals and one promoted prior control agree;
+strict397 and four reached groups/341 premises pass (author159, independent182).
+Runtime/source evidence retains `10c4c10bf`; fixture-only corrections and independent
+checks retain their `c150ad30a`/`5ee387433` cuts. Native-only observations, the
+unchanged baseline and original observer failures earn zero model agreement. See the
+[nested-detached ledger](coverage/semantics/generator-call-unpack-nested-detached-review.json).
+Owning copied returns, pending-initialization send/throw, ordinary Aggregate call
+operands, valid-key by-reference targets and wider callback/Fiber interactions
+remain required.
+The399-module composition over `ee0b6af27` preserves the tested Generator rules
+and the parent's disjoint storage tasks/manifest. Independent pointwise review
+and inventory pass; no joined runtime actor adds execution credit.
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or
@@ -8400,7 +8511,8 @@ failures and interrupted evidence.
   Immutable string-literal, explicit-NULL and bounded computed string VALUE consumed
   continuations are also integrated. M75-M77 add bounded nullable integer assignment
   VALUE returns across a caught finalizer, including one effectful positional argument
-  and one folded integer RHS.
+  and one folded integer RHS. M78 adds a flat owning-array assignment return with
+  a witnessed x-table copy and detached NULL restoration.
   Other VALUE signatures/layouts, general CONST/other
   NULL and multiple-active histories, genuinely released
   CV targets, destructor throw/reentry, real suspension and wider typed consumers
@@ -8436,6 +8548,17 @@ absence, raw NULL/new Notice, alias, LINE refusal and budget. Historical native
 and Unsupported baseline retain their private `7465dc88`/397 identities. The
 [local CV ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json)
 retains M75's failed syntax gate and M76-M77's Unsupported baselines with zero repair credit.
+M78's assigned `($x = old_value())` with `old_value()` returning `[41]`
+separates `$x` to `[41,99]` after the finalizer append, while its direct-call
+control ends with `[99]`; both callers receive detached NULL and one old-line
+Notice. Native2, unchanged baseline (direct exact/assigned Unsupported), strict,
+and source2 are pinned at private `0ca75133` then `90e931fe`/399. One assigned
+108-premise reached fixture binds pending old HARRAY and x sharing, distinct
+COW x table, root-free consumed marker, raw NULL/new Notice, caller alias,
+LINE refusal and budget. The old literal can remain pool-owned, so this does
+not isolate pending-root COW causality or prove collection. Its first fixture
+compiler binding failure has zero state credit; only the affected fixture was
+rerun. [M78 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, destructor throw/reentry, real suspension and wider typed

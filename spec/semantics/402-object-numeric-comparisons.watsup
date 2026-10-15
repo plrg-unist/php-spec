@@ -1,6 +1,6 @@
 ;; zend_std_compare_objects captures the numeric type, reports a failed cast,
 ;; then compares private 1/1.0 against the live opposing zval.
-syntax pnumberclass = porigin | NUMBER_STDCLASS | NUMBER_THROWABLE text | NUMBER_CLOSURE | NUMBER_GENERATOR | NUMBER_FIBER
+syntax pnumberclass = porigin | NUMBER_STDCLASS | NUMBER_THROWABLE text | NUMBER_CLOSURE | NUMBER_GENERATOR | NUMBER_FIBER | NUMBER_WEAKMAP | NUMBER_WEAKREFERENCE
 syntax pnumberphase = NUMBER_PRIMARY | NUMBER_SECOND nat pnumberclass
 syntax pnumbercompare = {SOURCE paggregatecompare, POINTER pcomparepointer?, ENV pbinding*, REFS nat*, CLASS pnumberclass, TARGET pvalue, PHASE pnumberphase}
 
@@ -53,6 +53,12 @@ def $number_compare_receiver_image(S, n, NUMBER_GENERATOR) = true
 def $number_compare_receiver_image(S, n, NUMBER_FIBER) = true
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = FIBER pfiber
+def $number_compare_receiver_image(S, n, NUMBER_WEAKMAP) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = WEAKMAP pweakmapentry?
+def $number_compare_receiver_image(S, n, NUMBER_WEAKREFERENCE) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = WEAKREFERENCE n_target?
 def $number_compare_receiver_image(S, n, pnumberclass) = false -- otherwise
 dec $number_compare_receiver(pstate, nat) : pnumberclass?
 def $number_compare_receiver(S, n) = (porigin)
@@ -81,6 +87,14 @@ def $number_compare_receiver(S, n) = (NUMBER_GENERATOR)
   -- if ~$instance_storage_freeing(S, n)
 def $number_compare_receiver(S, n) = (NUMBER_FIBER)
   -- if $number_compare_receiver_image(S, n, NUMBER_FIBER)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, n)
+def $number_compare_receiver(S, n) = (NUMBER_WEAKMAP)
+  -- if $number_compare_receiver_image(S, n, NUMBER_WEAKMAP)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, n)
+def $number_compare_receiver(S, n) = (NUMBER_WEAKREFERENCE)
+  -- if $number_compare_receiver_image(S, n, NUMBER_WEAKREFERENCE)
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if ~$instance_storage_freeing(S, n)
 def $number_compare_receiver(S, n) = eps -- otherwise
@@ -182,6 +196,8 @@ def $number_compare_class_name(S, NUMBER_THROWABLE text_kind) = $ptascii(text_ki
 def $number_compare_class_name(S, NUMBER_CLOSURE) = $ptascii("Closure")
 def $number_compare_class_name(S, NUMBER_GENERATOR) = $ptascii("Generator")
 def $number_compare_class_name(S, NUMBER_FIBER) = $ptascii("Fiber")
+def $number_compare_class_name(S, NUMBER_WEAKMAP) = $ptascii("WeakMap")
+def $number_compare_class_name(S, NUMBER_WEAKREFERENCE) = $ptascii("WeakReference")
 def $number_compare_class_name(S, pnumberclass) = eps -- otherwise
 dec $number_compare_cast_message(pstate, pnumberclass, pvalue) : preqbytes
 def $number_compare_cast_message(S, pnumberclass, PINT 1) = $ptascii("Object of class ") ++ $number_compare_class_name(S, pnumberclass) ++ $ptascii(" could not be converted to int")

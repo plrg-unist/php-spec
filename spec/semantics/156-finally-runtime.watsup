@@ -283,6 +283,15 @@ def $ref_return_cursor_old_operand(S, prefreturncursor, KNOWN (PARRAY n)) = true
   -- if $ref_return_cursor_computed_call(S, prefreturncursor)
   -- if HARRAY n <- S.ALLOCATIONS
   -- if S.ARRAYS[n] = parray
+def $ref_return_cursor_old_operand(S, prefreturncursor, KNOWN (PARRAY n)) = true
+  -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprAssign (NExprVariable (BYTES text_variable) metadata_variable) (NExprFuncCall (NName (BYTES text_function) metadata_name) (SEQUENCE eps) metadata_call) metadata_assign) metadata_return)
+  -- if $ref_return_cursor_assigned_int_call(S, prefreturncursor)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if $typed_exact(pfunction.SIGNATURE.RETURNS, PARRAY n)
+  -- if HARRAY n <- S.ALLOCATIONS
+  -- if S.ARRAYS[n] = parray
+  -- if parray.ITEMS = [ENTRY (KINT 0) (DIRECT (PINT z_item))]
 def $ref_return_cursor_old_operand(S, prefreturncursor, KNOWN pvalue) = true
   -- if $ref_return_cursor_computed_call(S, prefreturncursor)
   -- if $typed_string_value(pvalue)

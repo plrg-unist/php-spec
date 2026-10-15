@@ -17,7 +17,7 @@ The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
 [Missing-key destructuring warnings](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md)
-now retain captured direct-CV arrays and shared embedded references through
+now retain captured arrays or mixed-pattern source reference cells through
 handlers, with null delivery and ordered normal/throw cleanup.
 
 The [checked eval parser service](docs/semantics/DYNAMIC-SOURCE-SERVICE.md)
@@ -598,6 +598,11 @@ Normal `%=` detaches a late target alias; supplied throw or a captured zero divi
 preserves callback writes and aliases even after the live RHS changes.
 Three exact originals and 404 focused SL premises pass in the
 [RHS modulo ledger](coverage/semantics/modassign-right-warning-review.json).
+For initially plain variables, `<<=` and `>>=` now retain a fractional left
+conversion through deprecation handlers, then read the live quiet integer count.
+Success detaches a late target alias; supplied throw or a negative count preserves
+callback writes and aliases. Four exact originals and 526 focused SL premises pass
+in the [shift-assignment ledger](coverage/semantics/shiftassign-warning-review.json).
 Explicit array-to-string casts now suspend through named warning handlers for
 a bounded plain-CV array input. The borrowed array adds no saved owner: replacing
 or removing its CV still yields fixed `Array`, while a supplied throw preserves
@@ -819,8 +824,13 @@ Their copied raw cache and child owners stay distinct; generic iterator mode
 discards child returns, preserves method receivers and orders child close before
 parent finally and cached values.
 See the [acquired-Generator review](coverage/semantics/generator-call-unpack-acquired-generator-review.json).
-Aggregate ordinary-call unpack, owning copied returns
-and active chains ending in detached roots, Generator by-reference
+Active shared chains may also end in detached roots whose copied return owns no
+heap nodes. Their null key raises the real unpack error before argument sending;
+retained caches, later next/return/tail execution and cleanup preserve initialization
+history. A direct middle next can consume pending initialization without advancing.
+See the [nested-detached review](coverage/semantics/generator-call-unpack-nested-detached-review.json).
+Aggregate ordinary-call unpack, owning copied returns, pending-initialization
+send/throw, Generator by-reference
 call targets and callback methods, nonnumeric raw valid changes, request/plain
 reference strings and handler replacements with
 those strings, other typed array warnings, broader array/COW interactions,
@@ -1062,6 +1072,16 @@ registration; a later ignored-warning throw still reaches the registration tail.
 Strict calls reject after argument effects without warnings.
 [Four source agreements and 472 state premises](coverage/semantics/define-nan-flag-review.json)
 cover these phases, live-table duplicates, captured arguments and budget resumption.
+Non-NUL string names containing `::` raise parameter-1 `ValueError` before the
+ignored-true Warning. Omitted/bool flags and strict calls retain raw arguments
+after their effects.
+[Four source agreements and 450 state premises](coverage/semantics/define-class-name-review.json)
+cover exact errors, caller traces and preserved state; wider flags/values remain partial.
+For the same non-NUL `::` names, weak int/string/non-NaN float flags reach that
+ValueError, while strict calls reject the raw flag first with parameter-3 TypeError.
+[Four source agreements and 620 state premises](coverage/semantics/define-class-scalar-flag-review.json)
+cover both priorities, raw negative-zero/request-string traces and unchanged state.
+NULL/NaN flags for these names and wider values remain partial.
 Fresh two-argument `define` also copies nonempty acyclic scalar-array trees,
 dereferencing source cells and rebuilding append history. Request-string leaves,
 nested reference snapshots and literal constraints pass
@@ -2018,7 +2038,7 @@ also admit WeakMap and WeakReference after the first source cast, including a li
 wrapper whose referent has expired. The second implicit cast fails quietly without
 reading private entries or referents. Three exact sources and 318 Boolean premises/
 12 raw steps preserve signed order, COPY/cell distinctions, COW and throw cleanup;
-pair, numeric, explicit-cast and existing producer/lifetime domains are unchanged.
+pair, explicit-cast and existing producer/lifetime domains are unchanged.
 [Finite Throwable comparisons](coverage/semantics/throwable-string-comparison-review.json)
 now format builtin and inherited internal handlers at reached string leaves, including
 a new opposing object after a source cast. Root cache updates, ignored previous
@@ -2034,7 +2054,7 @@ limits remain separate.
 Mixed comparisons with live stdClass, source instances and WeakReference now
 return uncomparable +1 in both directions before properties or private entries.
 Seven-operator rows include expired referents; aggregate mismatches skip later
-Stringable leaves. Other internal/custom counterparts and numeric routes remain partial.
+Stringable leaves. Other internal/custom counterparts and wider numeric routes remain partial.
 [Mixed comparison review](coverage/semantics/weakmap-mixed-comparison-review.json).
 
 [Numeric object comparison Notices](coverage/semantics/object-numeric-comparison-review.json)
@@ -2062,6 +2082,11 @@ now retain fixed class images for real/named Closures, Generators and Fibers.
 Three exact sources and 317 reached premises/13 raw steps preserve saved second
 numbers, captured children and aggregate cleanup, with no callable invocation or VM
 resumption by the numeric cast.
+[Weak numeric Notices](coverage/semantics/weak-numeric-comparison-review.json)
+now include WeakMap and WeakReference with fixed names and opaque private data,
+even after referent expiry. Saved 1/1.0, copied/retained operands, real COW and
+pending-Throwable cleanup pass two exact originals and 355 premises/14 raw steps.
+Other handler and weak-lifetime forms remain partial.
 [Pending comparison remainders](coverage/semantics/pending-exception-comparison-review.json)
 now skip later registered callbacks and source string casts while preserving
 default numeric Notices and the original thrown object. Three exact sources and
@@ -2709,13 +2734,20 @@ resume. Certified global `constant()` queries now return that same live stdClass
 through literal and retained selected calls, preserving shared writes and adding
 only the ordinary result owner. [The query review](coverage/semantics/global-constant-stdclass-query-review.json)
 keeps two source comparisons and 384 SL premises separate from producer evidence.
-Other internal/Throwable producers, arguments, direct embedded NEW/default values
-and wider query forms remain partial.
+Other internal/Throwable producers, arguments, defaults and wider query forms
+remain partial.
 Certified stdClass aliases now also pass through global constant array trees,
 including eval declarations and whole-tree donation. Array queries share the
 stored containers until ordinary COW, while embedded object identity and property
 writes remain shared. Three exact originals and 648 SL premises retain their
 [reviewed cut](coverage/semantics/global-constant-stdclass-array-review.json).
+Zero-argument stdClass NEW can now appear directly in nested global constant
+arrays, including selected full/shorthand ternary leaves and eval declarations.
+Earlier facts retain their source guards; birth receipts preserve distinct leaf
+identities, shared property writes and duplicate-candidate cleanup.
+The [nested-birth review](coverage/semantics/global-constant-stdclass-new-review.json)
+records four source agreements and 1,107 reached-state premises. Whole-array conditional
+transfer, coalescing and wider object producers remain partial.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is

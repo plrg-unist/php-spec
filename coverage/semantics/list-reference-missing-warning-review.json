@@ -1,0 +1,126 @@
+{
+  "version": 1,
+  "milestone": "A3 mixed value/reference flat destructuring missing-key handlers",
+  "status": "independently reviewed milestone; pointwise399-module composition over08c650fd3",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle and tests/semantics/profile.json",
+  "base": "6f348810435907a22f7d8009485fd31815bd6777",
+  "scope": "Missing by-value fetches in flat direct-CV targets with reference leaves, from a direct-CV RHS and quiet implicit/compiled constant keys.",
+  "runtime_commit": "88494f9379643132ce7235c327d9784c09d271ba",
+  "runtime_sha256": {
+    "spec/semantics/409-list-missing-warnings.watsup": "b1a6418fedcefe030fe4913089ec8572cb5a7520dfc03d55f1d9d36436857617"
+  },
+  "private_modules": 399,
+  "engine_basis": [
+    "Vendored PHP8.5.10 commit34308a6666b2d489c509541ea9befea9e2b42348: zend_compile_assign propagates reference leaves and emits MAKE_REF before targets, then zend_compile_list_assign uses FETCH_LIST_R for value leaves and FETCH_LIST_W/MAKE_REF for reference leaves.",
+    "The saved reference wrapper holds its original cell after the RHS CV is unset/rebound. Value assignment changes that cell's contents; later reference acquisition performs ordinary writable conversion/COW against its current value. A missing FETCH_LIST_R returns uninitialized/null without repeating the lookup.",
+    "The VM checks a handler exception before the pending target store. Existing operand/task ownership supplies one HCELL owner through dispatch, callback frames and normal/throw cleanup; assignment-result delivery resolves that saved cell after the targets."
+  ],
+  "reviewed_behavior": [
+    "Source/shape/index/tail/key/compiler-line checks authenticate the interrupted value fetch. Mixed resume requires an allocated marked in-bounds source HCELL, without requiring its current CV binding, array type or original table identity. Only the initial plan checks the current table for a missing key.",
+    "A returning handler that inserts the selected key or replaces the table still delivers NULL for the interrupted fetch. Later reference targets read the live saved cell; NULL replacement permits array creation. Earlier reference targets remain visible, and reference leaves retain their fetch/key line rather than adopting the target line.",
+    "Unset/rebind leaves the old source cell with a sole task owner. A later reference fetch separates its shared table from a retained copy, binds the old entry and delivers that table as the result; new global aliases stay separate. Actual raw acquisition/binding and driver retirement are distinguished.",
+    "A supplied handler throw preserves Throwable identity/Previous, callback writes and the caller destination; it cancels the pending store, later leaves and result delivery, retiring the otherwise unowned source cell, runtime array and embedded reference cell.",
+    "Known-array nonreference admission is pointwise equivalent to A2. No A1/A2 source/state check was replayed or renewed; no task, module, ownership projection or generic read/write helper changed."
+  ],
+  "accepted": {
+    "source": {
+      "report": ".tools/list-reference-source-03/report.json",
+      "sha256": "5fb41867c8071fcf64e87084616826f3e5843aaefabe2541e300d670258de963",
+      "revision": "88494f9379643132ce7235c327d9784c09d271ba",
+      "agreements": 5,
+      "cases": [
+        "list-reference-missing-replace-value",
+        "list-reference-missing-replace-null",
+        "list-reference-missing-throw-retire",
+        "list-reference-review-unset-rebind-cow",
+        "list-reference-review-earlier-reference-line"
+      ],
+      "native_reuse": "Fresh A3 originals retain native argv/source paths/streams from the baseline and native preparations; model-only comparisons reuse those same paths, with no oracle replay."
+    },
+    "states": [
+      {
+        "report": ".tools/list-reference-author-state-03/report.json",
+        "sha256": "97c879c697f7bae20c3e31de22271f9f4c5ea838eb55343afeaa24c4d0a06a19",
+        "revision": "1b2ab113f6b4f400c13e52d6ddff42c3e37c023e",
+        "fronts": 3,
+        "conditions": [
+          113,
+          101,
+          89
+        ],
+        "raw_steps": [
+          3,
+          3,
+          1
+        ],
+        "boolean_premises": 296
+      },
+      {
+        "report": ".tools/list-reference-review-state-03/report.json",
+        "sha256": "7f254f64629ac9bdec0a2a63d6a3bc82e6fdc90d7fe2b938d9bf144ddb9089a1",
+        "revision": "1b2ab113f6b4f400c13e52d6ddff42c3e37c023e",
+        "fronts": 2,
+        "conditions": [
+          151,
+          137
+        ],
+        "raw_steps": [
+          4,
+          4
+        ],
+        "boolean_premises": 280
+      }
+    ],
+    "source_agreements": 5,
+    "state_fronts": 5,
+    "total_conditions": 591,
+    "boolean_premises": 576,
+    "raw_steps": 15,
+    "credit_note": "Conditions include setup and pure refusal premises, not separate PHP programs. Every recorded group_after is empty. Source/state checks retain their private cuts; later documentation/composition adds no agreement credit."
+  },
+  "preserved_zero_credit": [
+    {
+      "report": ".tools/list-reference-baseline-03/report.json",
+      "sha256": "6c2d90c5579d99516830e621a388539aac7791e0faa818654e2002bf8f2048f6",
+      "revision": "6f348810435907a22f7d8009485fd31815bd6777",
+      "result": "Unchanged A2 runtime explicitly Unsupported at handler ingress for list-reference-missing-replace-value; its original native path/bytes are reused for the accepted model comparison."
+    },
+    {
+      "report": ".tools/list-reference-native-rest-03/report.json",
+      "sha256": "f71e29aee96d1b503b52e6981c46751620660b49dbeba053a88ad702835fb827",
+      "revision": "6f348810435907a22f7d8009485fd31815bd6777",
+      "result": "Fresh author NULL-replacement and supplied-throw native2 preparation only."
+    },
+    {
+      "report": ".tools/list-reference-review-native-03/report.json",
+      "sha256": "478175919899d5c650cfd878f45a724d6106ee972f7bd967d725b1024b124f70",
+      "revision": "6f348810435907a22f7d8009485fd31815bd6777",
+      "result": "Fresh independent unset/rebind/COW and earlier-reference/line/fallback native2 preparation only."
+    }
+  ],
+  "raw_evidence": {
+    "archive": "/home/user/workspace/php-spec/.tools/list-reference-missing-warning-03-raw.tar.gz",
+    "bytes": 277107,
+    "members": 152,
+    "sha256": "b516305c566575020cb5c81ada77c8675746dce6706edd97fe9728351d0e68b4",
+    "recovery": "Archive retains six original relative .tools report/fixture/process/source directories and list-reference-reuse-sources-03.py. Extract beneath a checkout of the recorded cut; absolute argv/cwd are historical provenance. No archive is a build dependency."
+  },
+  "actual_parent_review": {
+    "seams": "Incoming30 shift-warning task and Generator PENDING_INIT field are disjoint;280/289/303/405 change only Generator initialization/delegation/close/unpack,156 adds assigned-call flat-array return-finalizer admission,400 class-qualified define rejection,402 weak-object numeric Notice receivers and55/404 shift-assignment handlers. None changes409,33,39,62,63 or301; A3 has no Generator/object comparison/shift/define/assigned-call-return producer.",
+    "joined_actor": "No concrete semantic interaction found; pointwise composition and exact FF review add no replay credit.",
+    "parent": "08c650fd336b557bc2c7afb46e90402a3d1250c9",
+    "composed_modules": 399,
+    "pointwise_checks": [
+      "Only409 differs from actual parent; its bytes and all6 new mixed-reference test files preserve the accepted private leaf.",
+      "Every other incoming runtime file and the399-entry module list remain byte-identical, including Generator PENDING_INIT and shift handlers.",
+      "Only4 partial inventory rows append mixed-reference tests/evidence/review; incoming implementation lists and every other row remain unchanged.",
+      "Source5/state591 retain their original cuts; no joined actor or renewed agreement credit."
+    ],
+    "runtime_diff_sha256": "b9d9315d5ef9a22c0d22907307edc2e951b4933fd48398356e6e6667fd5ba753"
+  },
+  "remaining": [
+    "Nested patterns, non-CV/property/dimension targets and reference RHS producers beyond a direct CV.",
+    "Undefined-CV/null/lossy-float key warning producers and scalar/object destructuring diagnostic callbacks.",
+    "Wider callbacks, suspension and lifecycle; full array/diagnostic/core closure and final offline portability."
+  ]
+}

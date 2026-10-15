@@ -823,3 +823,18 @@ and budget resumption. The direct source agrees independently; M74 examined
 the direct-folded source category in a separate state fixture, which was not rerun.
 Two-literal integer addition and this nullable used-return layout bound the
 new rule; see the [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M78 admits one flat owning array from a named no-argument call in a used
+`&f():?array` assigned return. Before the finalizer, the pending old `[41]`
+array and global `$x` share a table; appending 99 leaves `$x` with a distinct
+`[41,99]` table. A direct `return old_value()` control leaves `$x` as `[99]`.
+After the selected `$y` recheck fails and is caught, the assigned source's
+root-free cursor restores detached NULL and one new old-line VALUE Notice.
+Both originals agree exactly with PHP at private `90e931fe`/399. One assigned
+reached fixture binds the table split, root-free consumed marker, raw restore,
+caller alias, cursor-line refusal and budget equality. The compiler pool may
+retain the old literal table after its pending root is consumed; no physical
+collection or independent pending-root COW causality is claimed. The first
+fixture's compiler binding error has zero state credit. This covers only a
+live, single direct-integer array at key 0 from the no-argument assignment
+shape; see the [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
