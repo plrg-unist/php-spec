@@ -844,7 +844,7 @@ heap nodes. Their null key raises the real unpack error before argument sending;
 retained caches, later next/return/tail execution and cleanup preserve initialization
 history. A direct middle next can consume pending initialization without advancing.
 See the [nested-detached review](coverage/semantics/generator-call-unpack-nested-detached-review.json).
-Aggregate ordinary-call unpack, owning copied returns, pending-initialization
+Aggregate ordinary-call unpack, owning copied returns, other pending-initialization
 send/throw, Generator by-reference
 call targets and callback methods, nonnumeric raw valid changes, request/plain
 reference strings and handler replacements with
@@ -858,7 +858,11 @@ required.
 ordinary bodies in object-owned frames. Value yields, literal iterator methods,
 `getReturn`, `send`, `throw` and value `foreach` retain real resumer scope and
 traces. Inputs survive initialization; exception injection preserves ordinary
-catch/finally execution and exception identity. [Delegation](docs/semantics/GENERATOR-DELEGATION.md)
+catch/finally execution and exception identity. A pending `send` on a detached root
+with a nonowning copied return snapshots its current without advancing. Argument
+cleanup precedes receiver release; shared resumes preserve the first-yield history
+used by `rewind`. See the [pending-send review](coverage/semantics/generator-pending-init-send-review.json).
+[Delegation](docs/semantics/GENERATOR-DELEGATION.md)
 adds arrays, source Iterators and shared Generator graphs with live raw caches
 and natural return/unwind. Aggregate yield-from now acquires nested real iterator
 data, retires layers and the original operand before rewind, and treats returned

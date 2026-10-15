@@ -2611,12 +2611,32 @@ Runtime/source evidence retains `10c4c10bf`; fixture-only corrections and indepe
 checks retain their `c150ad30a`/`5ee387433` cuts. Native-only observations, the
 unchanged baseline and original observer failures earn zero model agreement. See the
 [nested-detached ledger](coverage/semantics/generator-call-unpack-nested-detached-review.json).
-Owning copied returns, pending-initialization send/throw, ordinary Aggregate call
+At that cut owning copied returns, pending-initialization send/throw, ordinary Aggregate call
 operands, valid-key by-reference targets and wider callback/Fiber interactions
-remain required.
+remained required.
 The399-module composition over `ee0b6af27` preserves the tested Generator rules
 and the parent's disjoint storage tasks/manifest. Independent pointwise review
 and inventory pass; no joined runtime actor adds execution credit.
+
+Pending `send` on an authenticated detached Generator with a nonowning copied
+return now clears initialization and snapshots the raw current without advancing.
+Yield-from has no native send target, so no argument buffer is added. Argument
+cleanup precedes receiver release, preserving a sole method receiver; returned
+rows survive a reference-cache rewrite and an argument-destructor throw preserves
+the cleared bit for later finally. Shared internal resumes now preserve actual-root
+first-yield history, including a previously initialized middle whose rewind stays
+allowed after shared advancement. The
+[pending-send ledger](coverage/semantics/generator-pending-init-send-review.json)
+retains five exact original-source agreements and strict399 at runtime `0969bd40c`,
+plus five reached groups/468 physical premises (author308 + independent160) at
+fixture-only `4efd38733`. The combined five-fixture parse/elab gate adds no runtime
+agreement. Native-only observations, unchanged Unsupported baseline and original
+preparation/observer failures retain zero agreement. Pending sends to live yield
+targets, owning copied returns and pending throw remain Unsupported; broader
+callback/Fiber interactions remain required.
+The399-module composition over `e319c9e89` preserves both tested Generator
+modules and the parent's runtime/manifest. Independent pointwise review and
+inventory pass; no joined actor adds execution credit.
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or

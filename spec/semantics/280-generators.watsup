@@ -29,6 +29,7 @@ dec $generator_create(pstate, pfunction) : pstate
 dec $generator_resume(pstate, pgeneratorop) : pstate
 dec $generator_resume_root(pstate, pgeneratorop) : bool
 dec $generator_pending_resume(pstate, pgeneratorop) : bool
+dec $generator_pending_detached_send(pstate, pgeneratorop) : bool
 dec $generator_resumed(pstate, pgeneratorop) : pstate
 dec $generator_cache_value(pvalue?) : pvalue
 dec $generator_error(pstate, pgeneratorop, text, ptbytes) : pstate
@@ -275,11 +276,13 @@ def $generator_resumed(S, pgeneratorop) = $generator_set(S, pgeneratorop.OBJECT,
 def $generator_resumed(S, pgeneratorop) = S -- otherwise
 def $generator_resume(S, pgeneratorop) = $generator_complete($generator_result($generator_resumed(S, pgeneratorop), pgeneratorop), pgeneratorop)
   -- if $generator_pending_resume(S, pgeneratorop)
-  -- if pgeneratorop.NAME = "next"
+  -- if pgeneratorop.NAME = "next" \/ $generator_pending_detached_send(S, pgeneratorop)
 def $generator_resume(S, pgeneratorop) = S[.COMPLETION = UNSUPPORTED "Generator pending initialization send or throw"]
   -- if $generator_pending_resume(S, pgeneratorop)
   -- if pgeneratorop.NAME <- ["send", "throw"]
-def $generator_resume(S, pgeneratorop) = $generator_install($generator_set($save_frame(S[.TODO = (GENERATOR_RESUME pgeneratorop) :: S.TODO]), pgeneratorop.OBJECT, pgenerator[.FRAME = eps][.PHASE = GENERATOR_RUNNING][.FIRST = (pgenerator.PHASE = GENERATOR_FRESH)]), pframe)
+  -- if ~$generator_pending_detached_send(S, pgeneratorop)
+;; Synthetic shared-child resumes preserve the native rewind history.
+def $generator_resume(S, pgeneratorop) = $generator_install($generator_set($save_frame(S[.TODO = (GENERATOR_RESUME pgeneratorop) :: S.TODO]), pgeneratorop.OBJECT, pgenerator[.FRAME = eps][.PHASE = GENERATOR_RUNNING][.FIRST = (($generator_resume_root(S, pgeneratorop) /\ pgenerator.PHASE = GENERATOR_FRESH) \/ (~$generator_resume_root(S, pgeneratorop) /\ pgenerator.FIRST))]), pframe)
   -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.FRAME = (pframe)
   -- if ~$generator_pending_resume(S, pgeneratorop)
@@ -761,7 +764,7 @@ def $generator_resumption_stage(S, pgeneratorop) = true
   -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.PHASE =/= GENERATOR_FRESH
   -- if ~pgeneratorop.ADVANCE
-  -- if ~(pgeneratorop.NAME <- ["send", "throw"]) \/ ~pgenerator.FIRST
+  -- if ~(pgeneratorop.NAME <- ["send", "throw"]) \/ ~pgenerator.FIRST \/ ~$generator_resume_root(S, pgeneratorop)
 def $generator_resumption_stage(S, pgeneratorop) = true
   -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.PHASE =/= GENERATOR_FRESH

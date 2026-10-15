@@ -87,6 +87,33 @@ dec $generator_from_tasks_position(ptask*) : bool
 dec $generator_from_search_position(ptask*) : bool
 dec $generator_from_valid_task(pstate, nat, porigin, poperand) : bool
 
+;; YIELD_FROM has no send target. Its detached current can be returned without
+;; advancing, but an owning unfinished return keeps its separate close boundary.
+def $generator_pending_detached_send(S, pgeneratorop) = true
+  -- if $generator_pending_resume(S, pgeneratorop)
+  -- if pgeneratorop.NAME = "send" /\ ~pgeneratorop.ADVANCE
+  -- if $generator_operation_valid(S, pgeneratorop)
+  -- if pgeneratorop.ARGUMENTS = [pvalue]
+  -- if $call_reference_operand_valid(S, KNOWN pvalue)
+  -- if $getter_arguments(S, pgeneratorop.SITE) = PCALLARGUMENTS phpType7* 2
+  -- if |phpType7*| = 1 /\ $generator_arguments_supported(phpType7*)
+  -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_DELEGATING
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.INPUT = eps /\ pgeneratorfrom.ACQUISITION = eps
+  -- if pgeneratorfrom.CURRENT =/= eps /\ pgeneratorfrom.POSITION = 1
+  -- if $generator_from_record_valid(S, pgeneratorop.OBJECT, pgenerator)
+  -- if pgenerator.FRAME = (pframe)
+  -- if pframe.TODO = (GENERATOR_FROM_COMPLETE pgeneratorop.OBJECT pgeneratorfrom.SITE n_child pvalue_return) :: ptask*
+  -- if $generator_from_complete_valid(S, pgeneratorop.OBJECT, pgeneratorfrom.SITE, n_child, pvalue_return)
+  -- if $value_nodes(pvalue_return) = eps
+def $generator_pending_detached_send(S, pgeneratorop) = false -- otherwise
+
+;; Native API argument cleanup precedes releasing its method receiver.
+def $eager_task_inputs(S, GENERATOR_ARGS pgeneratorop eps ([KNOWN pvalue])) = $value_nodes(pvalue) ++ $generator_operation_nodes(pgeneratorop)
+  -- if pgeneratorop.ARGUMENTS = eps
+  -- if $generator_pending_detached_send(S, pgeneratorop[.ARGUMENTS = [pvalue]])
+
 def $generator_from_statements(eps) = false
 def $generator_from_statements(statement :: statement_tail*) = ($generator_from_syntax(statement) \/ $generator_from_statements(statement_tail*))
 def $generator_from_syntax(NExprYieldFrom expression metadata) = true

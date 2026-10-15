@@ -23,8 +23,9 @@ The old yield cache is released before fetching the next CV operands. Ordinary
 eager destructors remain an explicit dependency boundary.
 
 Literal `current`, `key`, `valid`, `rewind`, `next` and `getReturn` calls initialize
-a fresh Generator as required. The first yield can be rewound; later advancement
-forbids rewind. Fresh `next` initializes and advances, while empty initialization
+a fresh Generator as required. Rewind follows the actual root's first-yield
+history; synthetic shared-child resumes preserve that history. Fresh `next`
+initializes and advances, while empty initialization
 preserves the first-yield flag. `getReturn` starts an uninitialized Generator,
 then returns its by-value completion or throws without advancing a suspended
 yield. Positional excess arguments run before the argument-count error and appear
@@ -35,9 +36,20 @@ first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter
 refreshes preserve it. An actual `next()` with pending initialization and a live
 current consumes the bit without advancing, including after child detachment.
-Pending-initialization `send`/`throw` remain an explicit Unsupported boundary.
 This history also determines the [forced-close exception](GENERATOR-FORCE-CLOSE.md)
 for an inherited middle that owns a copied current.
+
+A pending `send` on a source-authenticated detached root with a nonowning copied
+return clears initialization and returns a dereferenced current snapshot without
+advancing. `YIELD_FROM` has reset the native send target, so the argument is not
+buffered. Argument cleanup precedes receiver release, keeping a sole receiver
+alive while destructors run. A returned row stays separate from a reference cache
+changed by that cleanup; an argument-destructor throw preserves the cleared bit.
+Synthetic shared-child resumes also preserve the first-yield flag: an inherited
+middle rejects rewind, while a previously initialized middle can still accept it
+after shared advancement. The [pending-send review](../../coverage/semantics/generator-pending-init-send-review.json)
+records both histories. Pending sends to live yield targets, owning copied returns
+and pending `throw` remain Unsupported.
 
 Literal `send` and `throw` validate and capture their single argument before
 initialization. Fresh calls first reach the initial yield, then deliver the
