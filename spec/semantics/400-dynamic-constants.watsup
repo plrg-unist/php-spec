@@ -1673,3 +1673,25 @@ def $error_handler_trace_values(S, pcallcontext, pconfigcall_api) = $trace_extra
   -- if $error_context_call(S, pcallcontext) = (perrorcall)
   -- if perrorcall.RESUME = DYNAMIC_NULL_DEFINE_FLAG_DUPLICATE pconfigcall n_constants
   -- if pconfigcall_api = pconfigcall
+
+;; zend_call_function skips an eligible handler while an exception is pending.
+;; An excluded handler still permits the duplicate Warning's default report.
+dec $dynamic_define_pending_duplicate(pstate, preqbytes, int) : pstate
+def $dynamic_define_pending_duplicate(S, preqbytes, z) = S[.ERRORFATALTRACE = eps]
+  -- if $error_handler_eligible(S, 2)
+def $dynamic_define_pending_duplicate(S, preqbytes, z) = $error_default(S[.ERRORFATALTRACE = eps], DIAGNOSTIC "Warning" ($global_constant_duplicate_message(preqbytes)) z, 2)
+  -- if ~$error_handler_eligible(S, 2)
+def $dynamic_constant_case_pending(S, pconfigcall) = $dynamic_define_pending_duplicate(S, preqbytes, pconfigcall.LINE)
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $throwable_live(S, n)
+  -- if $dynamic_constant_case_valid(S, pconfigcall)
+  -- if $named_slot_at(pconfigcall.SENT, 0) = NAMED_SENT (KNOWN pvalue_name)
+  -- if $string_plain(pvalue_name) = pvalue_name \/ $string_carrier_valid(S, pvalue_name)
+  -- if $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
+  -- if $source_constant_lookup(S, preqbytes) =/= eps
+def $dynamic_scalar_define_flag_pending(S, pconfigcall) = $dynamic_define_pending_duplicate(S, preqbytes, pconfigcall.LINE)
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $throwable_live(S, n)
+  -- if $dynamic_scalar_define_flag_case_valid(S, pconfigcall)
+  -- if $dynamic_scalar_define_flag_values(pconfigcall) = ((preqbytes, pvalue, pvalue_flag))
+  -- if $source_constant_lookup(S, preqbytes) =/= eps

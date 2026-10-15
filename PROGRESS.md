@@ -7,6 +7,23 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Primitive `define` now completes duplicate reporting while an ignored-flag
+warning exception is pending. An eligible handler is skipped without fallback;
+a live handler that excludes Warning level uses default reporting instead. The
+original binding, Throwable identity/Previous, captured arguments, callback effects
+and caller destination survive. The duplicate report clears the stale fatal-trace
+snapshot and respects the current reporting mask.
+Two author originals agree at fc4e235a; an independent preexisting-row/scalar-flag
+original agrees at 7d069659. Author 83 and independent strict 123 state premises
+pass 206 at 7d069659, covering actual discard steps, complete state preservation,
+source/carrier refusals, a source-backed seeded trace, quiet reporting and budgets.
+The unchanged Unsupported baseline retains zero credit. The sole runtime change
+is a 22-line module400 append using the existing boolean/scalar-flag guards;
+wider values, NaN/coerced-name flags and owning/packed paths remain separate.
+Pointwise composition over 52357c36 preserves the 397-module incoming parent.
+Source3/state206 retain their private cuts; independent review warrants no joined
+actor or renewed execution claim.
+[Pending-duplicate review](coverage/semantics/define-pending-duplicate-review.json).
 
 A comparison's second implicit string cast now fails quietly when its opposing
 live operand becomes a WeakMap or WeakReference, even after referent expiry.
@@ -109,9 +126,9 @@ definition. The unchanged model had returned normally with the binding absent;
 that measured disagreement remains zero credit.
 Two original sources agree at cd8121ee; author 76 and independent strict 120 public
 premises pass 196 at ba8d720c, checking exact row-only actual steps, immutable facts,
-carrier/source/throw refusals and whole budget resumption. A key present after the
-first throw still needs a pending duplicate-warning protocol; wider values and
-NaN flag reception and flags with scalar/null names remain separate. The 395-module
+carrier/source/throw refusals and whole budget resumption. The pending duplicate
+follow-up is recorded above. Wider values, NaN flags and coerced flags with
+scalar/null names remain separate. The 395-module
 composition over af5b5255 passes full SL load/elaboration at 8044e425; its true fixture makes no PHP application
 or initial-state assertion. Independent pointwise review preserves the incoming parent;
 source2/public196 retain their private revisions without replay.
@@ -128,8 +145,8 @@ Public462 retains author188/126/51 at 8643b193 plus independent97 at 4fb4eb6d,
 covering named capture, raw traces, authentic string carriers, exact row-only
 pending effects, refusals and budget resume. The original peer binder collision
 remains zero credit; only its two captured-name premises changed.
-NaN flags, scalar/null names with coerced flags, and pending duplicate warnings
-remain separate; the boolean-true follow-up is recorded above.
+NaN flags and scalar/null names with coerced flags remain separate; the
+boolean-true and pending-duplicate follow-ups are recorded above.
 The 395-module composition over 91a58a8b passes full SL initialization at 7260f84c.
 Independent pointwise review preserves V56 and every incoming runtime selector;
 source4/public462 retain their private cuts without replay.

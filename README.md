@@ -1023,7 +1023,12 @@ calls raise `TypeError` after all argument effects. A throwing ignored-warning
 handler still permits fresh registration of the captured value before its
 exception escapes. [Four source agreements and 462 state premises](coverage/semantics/define-scalar-flag-review.json)
 cover both warning phases, this pending registration tail and source/budget guards.
-NaN flags and a duplicate after that first throw remain separate.
+NaN flags remain separate. When a binding exists after that first throw, the
+pending duplicate skips an eligible PHP handler without fallback. An excluded
+Warning level uses default reporting; both paths preserve the original exception,
+binding and caller destination.
+[Three source agreements and 206 state premises](coverage/semantics/define-pending-duplicate-review.json)
+cover live handler masks, raw captures, fatal-trace clearing and quiet reporting.
 A NULL third flag instead emits its deprecation before the C body. Normal return
 uses false and checks the live table; a first-handler throw cancels registration.
 Both warning traces keep raw NULL, and strict calls reject after argument effects.
