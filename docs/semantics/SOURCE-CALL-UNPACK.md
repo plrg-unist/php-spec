@@ -578,7 +578,26 @@ cache-before-sent cleanup, without invented Generator API trace frames. This
 follows `zend_generator_get_next_delegated_value`, `zend_user_it_get_current_data`
 and `zend_user_it_move_forward` at the pinned engine. The existing CURRENT is an
 ownership abstraction, not a literal copy of Zend's internal cache refcounts.
-Aggregate-acquired leaves, by-reference call targets, owning copied returns and
-active chains ending in detached roots remain required. The
+At that cut Aggregate-acquired leaves, by-reference call targets, owning copied returns and
+active chains ending in detached roots remained required. The
 [Iterator-leaf review](../../coverage/semantics/generator-call-unpack-iterator-delegation-review.json)
 keeps the promoted prior Iterator control separate from the new evidence.
+
+
+## Acquired Iterator delegation leaves
+
+An Iterator leaf acquired through Aggregate getIterator callbacks now uses the
+same unpack admission. The existing acquisition mode validates its original
+Aggregate, source function, site and line. Acquisition/input owners release before
+Iterator rewind; otherwise unowned receivers retire then, while independent CVs
+may retain them. The receipt owns no node and remains valid after receiver
+retirement. INPUT/current and any independent Iterator CV retain their actual owners. SEND and resume preserve
+that mode through named defaults, key errors, reference snapshots, row COW and
+real callback exceptions. This follows `zend_user_it_get_new_iterator` and
+`ZEND_YIELD_FROM`; acquisition, cache ownership and close order stay unchanged.
+Queued close authenticates the captured acquired-next marker against the retained
+receipt before excluding its detached input claim from scoped validation.
+Aggregate-returned Generator iterator data, ordinary-call Aggregate operands and
+the earlier by-reference/owning-return/nested-detached limits remain required.
+The [acquired-Iterator review](../../coverage/semantics/generator-call-unpack-acquired-iterator-review.json)
+keeps the promoted prior acquisition control separate from the new evidence.

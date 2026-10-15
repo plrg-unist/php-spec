@@ -1,0 +1,69 @@
+{
+  "milestone": "Generator argument unpack through Aggregate-acquired Iterator leaves",
+  "status": "independently accepted privately; actual-parent composition pending",
+  "independent_reviewer": "iterator_review_01, paired with iterator_dev_01",
+  "base": "0533d3972edaa91882f841d85581b8dced4ddc30",
+  "initial_private_code": "ab70184381a5d05b26afe5d4142b8631e40d33fc",
+  "tested_private_code": "1a0b15cdbc0f0db41337cf28c718a2bc9b43cc29",
+  "modules": 396,
+  "scope": "Ordinary Generator by-value argument unpack through an Aggregate-acquired source Iterator, directly or below active Generator links. Existing acquisition releases intermediate/input owners before rewind; otherwise unowned Aggregates retire, while independent aliases retain their lifetimes. The acquisition receipt remains nonowning. Acquired Generator iterator data and ordinary Aggregate call operands remain Unsupported.",
+  "semantics": {
+    "admission": "405 removes only the Iterator-leaf ACQUISITION=eps restriction. Allocated DELEGATING state, user Iterator INPUT, present CURRENT, position1 and the existing source-valid record remain required. Existing380 receipt validation authenticates the original Aggregate, Generator function, yield-from site and line after receiver retirement.",
+    "cleanup": "A temporary key error exposed a missing acquired close claim. 303 now passes state to close_drop_claim while preserving its plain NEXT/COMPLETE clauses. A late380 arm excludes only an allocated CLOSING Generator's same-site acquired NEXT marker whose detached INPUT, exact retained receipt, function and source-valid receipt match. Ordinary live Iterator validity is not relaxed. This restores queued destructor-carrier validation and the existing Iterator/finally/cache/SENT order.",
+    "ownership": "Named/default SEND, raw-reference key mutation, row COW, real callback traces and borrowed resumption reuse existing rules. An independent Iterator CV keeps its replacement row alive after Generator abort until explicit unset. No Aggregate owner or duplicate cache is added by the receipt or unpack.",
+    "module_sha256": {"303": "cb9fe3e560c7ea219a8879c59a3715f126453d553ebbba70157ee09e0ef1f069", "380": "2ddc9db597083a4d55e03ec72011418402915b41c963219ae6cdef556e9c928d", "405": "7f72810416e678f2bc3caf4d2770ed0eb6555f48a1e0518fb5d0bed8dab7879d"}
+  },
+  "source_authority": [
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_SEND_UNPACK and ZEND_YIELD_FROM",
+    "vendor/php-src/Zend/zend_interfaces.c::zend_user_it_get_new_iterator, zend_user_it_get_current_data and zend_user_it_move_forward",
+    "vendor/php-src/Zend/zend_generators.c::zend_generator_get_next_delegated_value, zend_generator_cleanup_unfinished_execution and zend_generator_dtor_storage"
+  ],
+  "validation_identity": {
+    "php": "8.5.10 CLI NTS64; source34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml5.1.0; SL, caches off and encountered determinism checks",
+    "environment": "tests/semantics/profile.json; PHP -n; LC_ALL=C; TZ=UTC; PHP_SPEC_SCRIPT_ENCODING unset; worker1",
+    "commands": "Reports retain exact commands/selections/exits. Fresh CPU3 packets ran serially, stop-first, and fully reaped. Native8s; strict/state120s; author sources model100/process120s; reviewer sources and baseline model60/process75s. Each state group ran separately."
+  },
+  "raw_root": ".tools/generator-call-unpack-acquired-iterator-14/.tools/",
+  "native_and_baseline": {
+    "cut": "Untouched0533/405095d. Five distinct native originals earn zero model agreement.",
+    "reports": ["generator-acquired-iterator-unpack-native-7hejkrcz/report.json", "generator-acquired-iterator-unpack-review-native-vmx1l2xd/report.json"],
+    "unchanged_baseline": "generator-acquired-iterator-unpack-baseline-87_8tny0/report.json uses the exact aa24963a original: Generator unpack delegated producer Unsupported before SEND, after P|G|GET1|GET2|B|O|R|V|C|K| and ten OUTPUT events, zero agreement."
+  },
+  "normal_sources": {
+    "new_distinct_originals": 4,
+    "reports": [["generator-acquired-iterator-unpack-source-0oalxvg_/report.json", 1, "aa249 passed prefix atab701"], ["generator-acquired-iterator-unpack-source-l_3_klcq/report.json", 1, "affected TEMP at1a0b"], ["generator-call-unpack-acquired-iterator-review-source-t3t551bz/report.json", 2, "independent originals at1a0b"]],
+    "observations": "Exact original-byte stdout/stderr/exit agreement with stable HEAD/inputs: nested acquisition retirement and named defaults, temporary key errors, active links with raw-reference snapshots, and real next71/COW cleanup with a separately retained Iterator."
+  },
+  "new_reached_states": {
+    "groups": 3,
+    "driver_premises": 303,
+    "cut": "1a0b15cdb",
+    "author_reports": [["fiber-state-review-s9jk27_b/report.json", 115], ["fiber-state-review-rvn0gl2o/report.json", 81]],
+    "independent_reports": [["fiber-state-review-cmw_l5a2/report.json", 107]],
+    "checks": "Genuine ready/SEND, queued Iterator release and next-Throwable fronts check retired Aggregate0/nonowning receipt, same-heap forged receipt refusals, named holes/defaults, real acquired NEXT and borrowed resumer, queued close/pending Error16, ordinary release admission, real receiver/producer trace, independent CV plus INPUT/receiver Iterator3, COW snapshot2/new row1, zero/split budgets, public call/heap validity and exact remaining destruction. All are true/exit0/no timeout with stable inputs."
+  },
+  "affected_prior_source": {
+    "report": "generator-iterator-unpack-source-3ka1jw1y/report.json",
+    "result": "Only prior13 7a29f9d3 acquisition control is promoted and freshly modeled: one normal agreement at1a0b, separate from the four new originals. Source bytes and native answer are unchanged; no older suite or native campaign is replayed.",
+    "retained_native": "legacy-acquired-iterator-native-14/report.json SHA936983edbaa881f9212bae99c987f9c5a21b6410e6c68d211c35c74f3572581f changes only raw path and explicit relocation metadata. Original-report SHA5120da3995f4b592c16d70da06d25427d5f224e851af59c591617b02719c7da7 and selected raw files are preserved."
+  },
+  "required_control": "The Aggregate-returned Generator source in l_3_klcq passes its exact authenticated Generator unpack delegated producer stop after P|G|GET|, without a diagnostic or timeout, earning zero normal agreement.",
+  "strict": "Repaired generator-acquired-iterator-unpack-author-sl-ei9a0981/report.json at1a0b passes all396 modules: true stdout, empty stderr, exit0/no timeout, stable HEAD/inputs. Original strict o5p23u9a atab701 remains a separate earlier cut.",
+  "preserved_failure_and_bridge": "Original0oalxvg_ preserves TEMP's ordinary destructor release before request stage Unsupported, after the second key and before I/F/B/A, zero credit. Its first aa249 normal row remains accepted atab701: natural exhaustion never selects the new CLOSING receipt arm. Renew only strict, affected TEMP, unrun control/states and selected prior source. No source or fixture expectation was corrected.",
+  "evidence_recovery": {
+    "archive": "../php-spec-evidence-archive/generator-call-unpack-acquired-iterator-14/private.tar.gz",
+    "bytes": 333821,
+    "sha256": "06d06514afe87dc630a9a2ffa1ba2a5af6192953b7f150543a9427c1495bd3fc",
+    "manifest": "Sibling manifest.json maps12 report roles, five ignored inputs and retained legacy native recovery.",
+    "restore": "Restore raw .tools subpaths at the recorded private root. Author inputs recover fromab701/1a0b on iterator/generator-call-unpack-acquired-iterator-14; native/base inputs use0533. Reviewer files recover from the publication containing this ledger, hash-matched to independent_inputs. The legacy tuple retains its historical cut and explicit relocation. External raw evidence is not a build/runtime prerequisite."
+  },
+  "remaining": [
+    "Aggregate-returned Generator iterator data and ordinary-call Aggregate operands remain required.",
+    "Valid-key Generator by-reference targets, owning copied returns, active chains ending in detached roots and wider callback/reentrant/Fiber interactions remain open.",
+    "No full Generator, argument-unpack or PHP-core closure is claimed."
+  ]
+}

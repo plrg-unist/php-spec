@@ -2215,11 +2215,23 @@ real producer frames and existing owners. Strict395, six new normal originals
 and four source-reached groups/360 premises pass at `4a67329a1`; the promoted
 prior Iterator-leaf source agrees separately. Seven native observations, the
 Aggregate-acquisition control and unchanged baseline earn zero agreement.
-Acquired leaves, valid-key by-reference targets, owning copied returns and
-active chains ending in detached roots remain required.
+At that cut acquired leaves, valid-key by-reference targets, owning copied returns and
+active chains ending in detached roots remained required.
 [Iterator-leaf review](coverage/semantics/generator-call-unpack-iterator-delegation-review.json).
 Canonical396 composition over `40468e240` passes inventory and strict SL at
 `a14595aee`; private source/state evidence retains its `4a67329a1` cut.
+
+Generator call unpack now admits Aggregate-acquired Iterator leaves through the
+existing nonowning receipt. Acquisition/input owners release before rewind;
+independent aliases keep their own lifetimes. Queued close authenticates the
+acquired-next marker after input detachment, preserving the real destructor
+carrier. Four new normal originals and one promoted prior control agree across
+`ab7018438`/`1a0b15cdb`; strict396 and three reached groups/303 premises pass at
+the latter cut. Native5, the unchanged baseline, acquired-Generator control and
+original temporary-cleanup Unsupported failure retain zero agreement.
+Acquired Generator data, ordinary Aggregate call operands, valid-key by-reference
+targets, owning copied returns and nested detached roots remain required.
+[Acquired-Iterator review](coverage/semantics/generator-call-unpack-acquired-iterator-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or
