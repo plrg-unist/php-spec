@@ -16,6 +16,9 @@ retain runtime diff 07143790; current public chains cover the narrow source-site
 guard at f79db9. Other initializers, fixed namespace fallback and wider class,
 autoload and owning forms remain open.
 [Deferred-defined ledger](coverage/semantics/class-qualified-defined-deferred-review.json).
+The 394-module composition over 6c80b851 preserves the incoming parent and accepted
+class-defined rules at 746d1dcb. Private source2/public415 retain their tested cuts;
+no joined numeric evidence is claimed.
 
 Selected-cell ADD now raises TypeError from live raw scalar operand types when
 RIGHT conversion fails after a leading-numeric warning. Completed RIGHT warnings
