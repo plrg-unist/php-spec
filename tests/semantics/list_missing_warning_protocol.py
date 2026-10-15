@@ -56,9 +56,12 @@ def $list_warning_seek(S, n_stage, n) = $list_warning_seek($drive_steps(S[.COMPL
   -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
   -- if $(n > 0)
 dec $list_warning_outputs(pevent*) : ptbytes
+dec $list_warning_is_output(pevent) : bool
 def $list_warning_outputs(eps) = eps
 def $list_warning_outputs((OUTPUT n*) :: pevent_tail*) = n* ++ $list_warning_outputs(pevent_tail*)
-def $list_warning_outputs(pevent :: pevent_tail*) = $list_warning_outputs(pevent_tail*) -- otherwise
+def $list_warning_outputs(pevent :: pevent_tail*) = $list_warning_outputs(pevent_tail*) -- if ~$list_warning_is_output(pevent)
+def $list_warning_is_output(OUTPUT n*) = true
+def $list_warning_is_output(pevent) = false -- otherwise
 '''
 
 
