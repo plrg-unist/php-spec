@@ -157,14 +157,23 @@ ordered keys and table history. No define-style recursive snapshot is taken.
 Two exact sources and two public fronts/326 premises cover same-root/no-allocation
 returns, root/nested detachment, actual reference acquisition and tree/history
 refusal in the [array-query ledger](../../coverage/semantics/class-qualified-constant-array-review.json).
-Global `constant` queries, empty/deferred/nonliteral arrays and wider values remain open.
+Immutable empty roots and children retain their exact pool class and table.
+Admission reuses the existing exact-empty allocation/source-pool authority;
+empty topology alone is insufficient. An emptied mutable copy keeps its append
+history, and a canonical mutable clone cannot impersonate a pooled literal.
+Acquiring a reference to an empty bucket separates its parent while the reference
+cell still holds the shared immutable child; append separates that child later.
+Two exact sources and two public fronts/244 premises cover these distinctions in
+the [empty-query ledger](../../coverage/semantics/class-qualified-constant-empty-review.json).
+Global `constant` queries, mutable-empty/deferred/nonliteral array query values and
+wider domains remain open.
 
 The matching engine routes are `ZEND_FUNCTION(define)`/`ZVAL_COPY`,
 `validate_constant_array_argument`/`copy_constant_array`, `zend_register_constant`,
 and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`. `PHP_FUNCTION(constant)` uses
 exception-class lookup and `ZVAL_COPY_OR_DUP`; `zend_declare_typed_class_constant`
 interns direct string values before installation.
-Nested empty arrays, cycles, objects, array duplicate/third-argument paths,
+Nested empty values in `define`, cycles, objects, array duplicate/third-argument paths,
 name/flag coercion, startup/special-name warnings,
 keyword/internal/trait/interface/enum class queries, deferred value initialization,
 owning/FCC call forms and wider conversion/arity paths remain Unsupported. The [dynamic ledger](../../coverage/semantics/dynamic-constants-review.json)

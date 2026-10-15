@@ -1,0 +1,79 @@
+{
+  "status": "private accepted; awaiting actual-parent composition",
+  "target": "PHP 8.5.10 CLI NTS64",
+  "base": "bd3a28b41459abb73015e4e6af3588ac29fc996c",
+  "implementation_revision": "3d9971f1bd12ee29c9e8a12d12c760835a348acd",
+  "module_count": 394,
+  "tested_cut": {
+    "runtime_diff_sha256": "015b51c0eede6f23d542b23f260e8a9452b2eb2a200dc6f22bfb6284ddac7311",
+    "committed_files_sha256": {
+      "spec/semantics/400-dynamic-constants.watsup": "3de26b772d7ff3a264436b4dcd55aa741395c80ed7f5f2e79ec17d2c7ff73833",
+      "tests/semantics/class_constant_empty_call_protocol.py": "322568bf4f180b91259a72b343d5449af7f254efd5645702eb2ea4091c46bbb7"
+    }
+  },
+  "behavior": [
+    "A separate PVARRAY true eps tree arm requires allocation, bounds and existing array_immutable authority: the exact empty record plus an immutable allocation flag or actual empty-literal pool origin. Empty topology is insufficient.",
+    "The qualified array success arm passes the actual pool flag to that tree guard. FOLDED/NExprArray/compiled-root authority and the nonempty false arm remain unchanged. An immutable empty root or nested child returns the same pooled identity without allocation/copying.",
+    "Ordinary COW preserves append history in an emptied mutable copy. Acquiring a reference to the whole empty bucket separates its parent while the cell initially retains the immutable child; append then separates that child. The constant, peer and second lookup preserve the originals.",
+    "Only class-specific module400 rules and the new maintained protocol change. Global dispatch/lookup work, schema, class/compiler/autoload and array/GC/ownership helpers remain unchanged."
+  ],
+  "engine_routes": [
+    "vendor/php-src/ext/standard/basic_functions.c: PHP_FUNCTION(constant) uses executed scope, exception-class lookup and ZVAL_COPY_OR_DUP",
+    "vendor/php-src/Zend/zend_compile.c: zend_try_ct_eval_array uses zend_empty_array for an actual empty literal; Zend/zend_hash.c defines that immutable singleton",
+    "vendor/php-src/Zend/zend_types.h and Zend/zend_hash.c: separation duplicates an immutable/shared array and preserves its append history; ordinary reference/cell writes use the existing array ownership routes"
+  ],
+  "accepted": {
+    "exact_cli_sources": 2,
+    "source_cases": [
+      "static-native-v47/loaded-empty-root",
+      "static-native-v47/selected-nested-empty-reference"
+    ],
+    "source_result": "Both accepted checked-program normal0/CLI0/full native stdout/empty stderr tuples are stable at runtime diff 015b. Native observations retain model credit 0.",
+    "public_fronts": {
+      "root": 123,
+      "nested": 121
+    },
+    "public_premises": 244,
+    "public_result": "Both full 394-module SL runners exit0/exact trueLF/empty stderr/stable at the same runtime cut. Two original-derived chains pass public/declaration/heap checks and retain the exact native endings.",
+    "counterexamples": "Real pooled empties pass source-pool/immutable/class checks. The reached post-unset empty has NEXT1/SERIAL1 and stays mutable; a pure canonical empty clone has identical contents but lacks immutable provenance. History/class impersonation rejects. A real bucket cell initially holds the original empty child, then points to a distinct mutable child after append; the peer and pool remain unchanged. Live alias topology is accepted by generic value classes but excluded from the constant DIRECT tree.",
+    "production_continuations": 2,
+    "isolated_raw_phpstep_projections": 0,
+    "synthetic_or_proof_continuations_driven": 0
+  },
+  "preserved_zero_credit": [
+    "The unchanged root baseline stops Unsupported class constant value query after B|, CLI1/empty stderr/clean empty diff; agreement credit 0 remains retained.",
+    "Native observations, fixture preparation and whole-file standalone syntax checks retain 0. No affected source or public numeric actor failed, and no V46 or earlier source/state campaign was replayed."
+  ],
+  "remaining": [
+    "Mutable-empty array query values, nonliteral/nonfolded/deferred array initializers, objects/identity-unknown carriers and wider class/coercion/owning/FCC/arity/pack forms remain outside this cut. Existing global lookup and named-autoload work keeps its own scope/evidence.",
+    "Native bytes establish values, append indexes and ordering rather than pointer identity. Pooled sharing and allocation-class claims use engine source and reached model checks; no new history field or replay of arbitrary past values is added.",
+    "Only three inventory rows gain this query evidence and remain partial. No full constant/core, fresh build or portability claim."
+  ],
+  "artifacts": {
+    "native_pair": {
+      "path": ".tools/dynamic-review-02/static-native-v47/report.json",
+      "sha256": "3b1edc56f08f647c39697e22105baa5224d1dfef01ea7d797eaec3030b665a9b"
+    },
+    "unchanged_root_baseline": {
+      "path": ".tools/dynamic-source-class-constant-empty-baseline-27/report.json",
+      "sha256": "88daae6c3138515bf990dc78f8fcbdec8411d9daf76060c5dbed5687b1463610"
+    },
+    "affected_root_source": {
+      "path": ".tools/dynamic-source-class-constant-empty-model-28/report.json",
+      "sha256": "69b59d79de92358ff2060f57ff036726ad1249d2bb0b3504bf62d5177eb7db54"
+    },
+    "independent_nested_source": {
+      "path": ".tools/dynamic-review-02/class-constant-empty-nested-model-v1/report.json",
+      "sha256": "a2d9a00e32514f93bf8047fa44cc33f5df6ff6ea2fd8ffd3cd99e22b319513b3"
+    },
+    "public_preparation": {
+      "path": ".tools/dynamic-source-class-constant-empty-state-01/fixtures-report.json",
+      "sha256": "520f9a958d0dfb450256d54a3898b992f0361f498df274cce07b78e2d0e9b0bb"
+    },
+    "public_two_fronts": {
+      "path": ".tools/dynamic-source-class-constant-empty-state-01/check-report.json",
+      "sha256": "f80d9388505209e36ba589eba8dd4d98fb79ebd574bec6cd60b927385b6884ae"
+    }
+  },
+  "recovery": "Canonical ignored originals/raw retain PHP/profile/pipeline identities. class_constant_empty_call_protocol.py --phase fixtures --sources/--output prepares both original-derived fronts; --phase check uses full modules --sl with 90s each, serial stop-first under a 240s host cap. Source CLI 60s/process 90s, native process 30s; input pins/raw commands/streams/exits retained. Whole-file parse-only outputs are state01/parse-preflight. Metadata needs no semantic rerun."
+}

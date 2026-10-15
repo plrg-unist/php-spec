@@ -7,6 +7,15 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Class-qualified `constant` now admits source-authenticated immutable empty array
+roots and children. Queries retain pooled identity; a reference bucket initially
+holds the shared empty child, then append detaches it. Two exact sources and two
+public fronts/244 premises pass with runtime diff 015b, distinguishing post-unset
+append history and canonical mutable clones from immutable provenance. The
+baseline/native/preparations retain 0; mutable-empty/deferred/nonliteral query
+values remain Unsupported.
+[Empty-query ledger](coverage/semantics/class-qualified-constant-empty-review.json).
+
 Module404 now stages leading-numeric-string DIV warnings for two direct CVs with
 preexisting untyped reference cells and named handlers. The next conversion reads
 its selected referent; captured numbers survive later handler writes. Two exact
@@ -38,8 +47,8 @@ acquisition use the existing COW machinery without changing the constant or peer
 Two exact sources and two public fronts/326 premises pass with runtime diff 580b,
 including same-root/no-allocation results, shallow then nested detachment, real
 reference acquisition and canonical DIRECT-tree/history checks. The unchanged
-baseline, native observations and preparations retain 0. Empty/deferred/nonliteral
-arrays and wider value domains remain Unsupported.
+baseline, native observations and preparations retain 0. At that cut, empty,
+deferred and nonliteral arrays and wider value domains remain Unsupported.
 [Array-query ledger](coverage/semantics/class-qualified-constant-array-review.json).
 The 394-module composition over a5d519d7 passes independent pointwise review at
 700649de1; accepted array rules/protocol and all incoming paths are preserved.

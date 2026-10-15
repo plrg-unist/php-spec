@@ -866,8 +866,13 @@ evaluation and wider domains remain Unsupported.
 [Array-valued qualified `constant` queries](coverage/semantics/class-qualified-constant-array-review.json)
 now share source-pooled nonempty literal trees until ordinary COW writes or reference
 acquisition separate them. Two exact sources and 326 public premises cover pooled
-identity, root/nested separation, reference cells and table history; empty/deferred
-arrays and wider values remain Unsupported.
+identity, root/nested separation, reference cells and table history; at that cut,
+empty/deferred arrays and wider values remain Unsupported.
+[Immutable empty qualified values](coverage/semantics/class-qualified-constant-empty-review.json)
+now preserve pooled root/child identity. Emptied copies retain append history,
+and a reference to an empty bucket separates its child only on write. Two exact
+sources and 244 public premises cover provenance and delayed COW; mutable-empty
+query values and deferred/nonliteral arrays remain Unsupported.
 [Untyped positional defaults](docs/semantics/SOURCE-POSITIONAL-DEFAULTS.md) now preserve
 omitted receives, declaration context, observable caches and fresh reference/array
 ownership. [Independent acceptance](coverage/semantics/default-parameter-review.json)
