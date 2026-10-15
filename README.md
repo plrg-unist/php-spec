@@ -1966,6 +1966,14 @@ now format builtin and inherited internal handlers at reached string leaves, inc
 a new opposing object after a source cast. Root cache updates, ignored previous
 overrides, skipped leaves and saved CV/cell completion pass three exact sources
 and 278 reached premises/8 raw steps. Wider formatter callbacks remain open.
+
+Distinct live WeakMap pairs now compare with order zero without reading private
+entries or invoking their values. Array and declared-property comparisons continue
+to later real casters; COW, private-value ownership and normal/throw cleanup pass
+three exact sources and 246 Boolean premises/9 raw steps. Existing entry/lifetime
+limits and mixed/numeric protocols remain separate.
+[WeakMap comparison review](coverage/semantics/weakmap-comparison-review.json).
+
 [Numeric object comparison Notices](coverage/semantics/object-numeric-comparison-review.json)
 now pause ordinary source-instance/int/float leaves through real error handlers.
 Live CV/cell reads remain distinct from copies; a second Notice uses saved 1/1.0,

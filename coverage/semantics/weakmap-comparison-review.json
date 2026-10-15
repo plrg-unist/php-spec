@@ -1,0 +1,250 @@
+{
+  "version": 1,
+  "milestone": "COMP65",
+  "status": "independently reviewed and accepted within the stated comparison domain",
+  "behavior": "Distinct live nonfreeing WeakMap pairs compare with order zero before property or private-entry traversal; enclosing array and declared-property comparisons continue to later leaves.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "vendor_php_tree": "6cf60397fba27e0d712b7ae0f872d5a46059d664",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "tested_revision": "12046434be2e96ead371716bd8258c09d11d9c60",
+  "ordered_modules": 395,
+  "manifest_sha256": "2f211b2689095c7c333cf0fe4b37d5696ef14a0231292875f65e26e76a9478ef",
+  "implementation": {
+    "path": "spec/semantics/386-weak-map-lifetime.watsup",
+    "sha256": "98290294cb5850550b1b1839bf61effb12e3858db8f65a7166426066c5e2f4f2",
+    "contract": [
+      "Both operands must be distinct, live WeakMaps outside freeing storage. The existing mixed-object refusal now matches exactly one live WeakMap.",
+      "The pair rule never reads entries, keys, values or the comparison seen set, and changes no state, owner or callback machinery. Same identity retains the existing route."
+    ]
+  },
+  "engine_basis": [
+    "Zend/zend_weakrefs.c: WeakMap inherits the standard comparison handler; its private dimensions are separate from ordinary properties.",
+    "Zend/zend_weakrefs_arginfo.h and zend_object_handlers.c: final zero-default-property class, with same-class order zero before property traversal or recursion protection."
+  ],
+  "native": {
+    "revision": "b94139c8a50ef6a14770ff9c70e882f4f1f1cd5c",
+    "observations": 3,
+    "source_agreements": 0,
+    "result": "Six seven-operator rows are 1001010 for empty, populated and different-entry pairs in both orientations; strict identity, private leaf silence, later casters/COW and identical-throw cleanup controls observed."
+  },
+  "unchanged_frontier": {
+    "status": "unsupported",
+    "reason": "WeakMap comparison protocol",
+    "stdout_prefix": "empty|",
+    "seconds": 14.966771526,
+    "source_agreements": 0
+  },
+  "validation": {
+    "initializer": {
+      "mode": "SL",
+      "passed": true,
+      "semantic_assertions": 0,
+      "raw_php_steps": 0
+    },
+    "original_sources": {
+      "catalogue": "tests/semantics/weakmap_comparison_cases.json",
+      "sha256": "33d60fc06bc1505c981210a92077552178a99d754dc6d894f35f868d3a961454",
+      "agreements": 3,
+      "caps_seconds": [
+        [
+          240,
+          250
+        ],
+        [
+          240,
+          250
+        ],
+        [
+          240,
+          250
+        ]
+      ],
+      "seconds": [
+        41.481908053159714,
+        35.326375083997846,
+        54.985696820542216
+      ]
+    },
+    "syntax_preparation": {
+      "requests": 6,
+      "submitted_executions": 0,
+      "raw_php_steps": 0
+    },
+    "author": {
+      "groups": 2,
+      "premises": 127,
+      "setup": 118,
+      "pure": 9,
+      "raw_php_steps": 5,
+      "seconds": [
+        33.07339537143707,
+        36.086284790188074
+      ],
+      "result": "Three genuine binary pair fronts preserve private child ownership; PLAIN zero-prefix traversal reaches head mutation, skips Tail on nonzero, then reaches real Tail after a fresh comparison."
+    },
+    "independent": {
+      "groups": 1,
+      "premises": 119,
+      "setup": 113,
+      "pure": 6,
+      "raw_php_steps": 4,
+      "seconds": [
+        55.34365642443299
+      ],
+      "result": "Two map-zero prefixes reach First and Tail; pinned old right yields true despite current COW, supplied TypeError/finally and fresh false clear guards. Private value owner remains one without a direct comparison-task root."
+    },
+    "total": {
+      "premises": 246,
+      "setup": 231,
+      "pure": 15,
+      "raw_php_steps": 9
+    },
+    "typed_elaboration_runtime_credit": 0
+  },
+  "preserved_failures": [
+    {
+      "artifact": ".tools/weakmap-comparison-peer-state-65/run-el-v1/report.json",
+      "classification": "pre-main type failure: missing DEFINED wrapper in a STORE observer",
+      "accepted_premises": 0,
+      "source_agreements": 0
+    },
+    {
+      "artifact": ".tools/weakmap-comparison-state-65/run-sl-v1/report.json",
+      "classification": "reached fixture observer failure: expected binary state omitted task pop and BASE clearing",
+      "accepted_premises": 0,
+      "source_agreements": 0,
+      "property_group": "unrun"
+    }
+  ],
+  "limits": [
+    "Existing empty/single-entry construction and key/value/lifetime admission remain unchanged. No WeakMap projection, iteration, GC or multi-entry expansion is claimed.",
+    "Mixed-object comparison, numeric conversion and wider internal protocols remain Unsupported or otherwise outside this increment. Strict identity is separate.",
+    "State cuts end at the checked comparison results; complete source observations supply the later explicit private-value call and source endings."
+  ],
+  "raw_recovery": {
+    "root": "/home/user/workspace/php-spec/.tools/weakmap-comparison-65",
+    "note": "Ignored originals, small failure inputs and owned raw records remain at these paths; report input maps bind complete compiler/runtime identities, environment, argv and closures."
+  },
+  "artifacts": [
+    {
+      "path": ".tools/weakmap-comparison-native-65/run.py",
+      "sha256": "becca4cbf68957f81a666b27d1346cc2332715863b78fd4879fd3703645ede54"
+    },
+    {
+      "path": ".tools/weakmap-comparison-native-65/cases.json",
+      "sha256": "ee8dfc55e8fac68a3e04d15fdfffd32de5dd22e7a8525a71710dc7ff6c631269"
+    },
+    {
+      "path": ".tools/weakmap-comparison-native-65/run-native-v1/report.json",
+      "sha256": "ff4d29204fa4aa6f8180aa91c1813a88ba149ce3d20618e3a335dfb11012c6ac"
+    },
+    {
+      "path": ".tools/weakmap-comparison-support-65/actor.py",
+      "sha256": "6ae00a36205cb5a5ed015ac33e500e7e9027d2f700d271e96ca157bc9d376d92"
+    },
+    {
+      "path": ".tools/weakmap-comparison-support-65/inputs.py",
+      "sha256": "7a9a7fe466828a6a1771f6be46d014cf3bb62a5e350d1b32f16fba164194f656"
+    },
+    {
+      "path": ".tools/weakmap-comparison-support-65/baseline.py",
+      "sha256": "a9a66ca161b4487448d9585ddbb1f2b8afd0f1214ed3ea5a31c3064c07853d47"
+    },
+    {
+      "path": ".tools/weakmap-comparison-support-65/baseline-case.json",
+      "sha256": "653a4b71c1ac3192b3d7e89ccf69cde42b8fa229e0bc597257e149d285d7a193"
+    },
+    {
+      "path": ".tools/weakmap-comparison-support-65/run-baseline-v1/report.json",
+      "sha256": "61e17644d55dd34da0bb4a0556e47f6d9813e5f8abdc37099d4fc342fcbc7388"
+    },
+    {
+      "path": ".tools/weakmap-comparison-support-65/validate.py",
+      "sha256": "4ae8806f4f659c3a57ed34fba16f89106116e0fb2e1cbd9791abd67264777540"
+    },
+    {
+      "path": ".tools/weakmap-comparison-support-65/run-init-v1/report.json",
+      "sha256": "c1c79b1f632895c657c615f66f72216d30e18cd863fbd4173818ed57fdd33b8f"
+    },
+    {
+      "path": ".tools/weakmap-comparison-support-65/run-sources-v1/report.json",
+      "sha256": "7de3985da242dd0f326de239c17a2f5c589dffe31aaa030af63a1253b36254cb"
+    },
+    {
+      "path": ".tools/weakmap-comparison-support-65/prepare.py",
+      "sha256": "fbd42288cf9d4122b9bc718877a53e18890368375c1f17e54736d724d99b6c6c"
+    },
+    {
+      "path": ".tools/weakmap-comparison-support-65/syntax-v1/report.json",
+      "sha256": "77562f9a93fb8f7b93ba09315e6a2ac26b710cf764b609135e2449b41b9798a0"
+    },
+    {
+      "path": ".tools/weakmap-comparison-state-65/build.py",
+      "sha256": "258285811a75ad252cc5dab349ad7976c54cd0790bd6602953bdd851623fa341"
+    },
+    {
+      "path": ".tools/weakmap-comparison-state-65/helpers.watsup",
+      "sha256": "7b24db0bfb2a012209e0a676ff7eae3b29b9735f9da5afea6b3c7dd220af91a9"
+    },
+    {
+      "path": ".tools/weakmap-comparison-state-65/plan.json",
+      "sha256": "d8aba145829a17cc0b05cb06d575e9ac3c5541299f2d7f0ec0dccb383b23908f"
+    },
+    {
+      "path": ".tools/weakmap-comparison-state-65/run-binary-retry1.py",
+      "sha256": "8fe62531c1e0e7712175013c1bfc53eaa5ed00c2e1a29b7327fa3185cbe2f4c9"
+    },
+    {
+      "path": ".tools/weakmap-comparison-state-65/run-el-v1/report.json",
+      "sha256": "53dfbf8d30869ef257472702e97a86d4129bb571dd2f62319b34c85eb239921f"
+    },
+    {
+      "path": ".tools/weakmap-comparison-state-65/run-sl-v1/report.json",
+      "sha256": "214816b2cd447ab6ff0d6e8ee2962065153fc14884ca66a890c93ef97b52d85a"
+    },
+    {
+      "path": ".tools/weakmap-comparison-state-65/run-el-binary-retry1/report.json",
+      "sha256": "22e54df302198c10915de4e16b09eb4a1156d96afdbc5adf4b2991d71c2a1d66"
+    },
+    {
+      "path": ".tools/weakmap-comparison-state-65/run-sl-binary-retry1/report.json",
+      "sha256": "4418940f810944115536ddb6b1861bc0e87c994b9d3b96d95f6afbdf51261d08"
+    },
+    {
+      "path": ".tools/weakmap-comparison-peer-state-65/build.py",
+      "sha256": "f69c5ec876aba389059e4116c26dda54c89b51538d1e16828b1ac016a65a7183"
+    },
+    {
+      "path": ".tools/weakmap-comparison-peer-state-65/body.py",
+      "sha256": "d5f2d8a4fe6c46384623e1f482b1848efbb7c6ce7a0691bc40f0f5d3f549ff48"
+    },
+    {
+      "path": ".tools/weakmap-comparison-peer-state-65/helpers.watsup",
+      "sha256": "68da1eddc5ce81ed60d2b21d74c7c7b4b427e74e5f24e792249e27b6f8b69569"
+    },
+    {
+      "path": ".tools/weakmap-comparison-peer-state-65/plan.json",
+      "sha256": "b18326be9f40b82287350455fdbaf63d8b8a287a28f7e7a76723acf586ff7df6"
+    },
+    {
+      "path": ".tools/weakmap-comparison-peer-state-65/run-slot-retry1.py",
+      "sha256": "f801e8751b6ef029da85099870567914f9f6068129e5b79a3a43adbe109e423e"
+    },
+    {
+      "path": ".tools/weakmap-comparison-peer-state-65/run-el-v1/report.json",
+      "sha256": "fa866ab567872c8a7cbbcb115e3191c5ef06d34a51af50cd11967f0fceaef9a5"
+    },
+    {
+      "path": ".tools/weakmap-comparison-peer-state-65/run-el-slot-retry1/report.json",
+      "sha256": "bb87ffb08bd0ecbd35f587d15016152677d7264cf57d905a77b361b2a9fd0ea4"
+    },
+    {
+      "path": ".tools/weakmap-comparison-peer-state-65/run-sl-slot-retry1/report.json",
+      "sha256": "b5da5eb7e5d03f1b67baec7508a7da1464a9325dfe8ecc18c604b97a09521a55"
+    }
+  ],
+  "publication_verdict": "Independent semantic, source/state, publication and inventory review CLEAR; broader WeakMap protocols remain partial."
+}

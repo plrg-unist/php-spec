@@ -220,6 +220,17 @@ CLI60 and numeric120 timeout records stay zero. Wider Value methods/classes,
 map shapes and inactive contexts remain required.
 [Ledger](../../coverage/semantics/weak-map-review.json).
 
+## WeakMap comparison
+
+Distinct live nonfreeing maps compare with order zero through Zend's standard
+zero-default-property shortcut. The comparator does not inspect entries or call
+private values, and creates no entry/key/value owners. Array and declared-property
+comparisons then continue to later leaves. Three exact sources and 246 Boolean
+premises/9 raw steps cover opaque entries, later casters, COW and throw cleanup.
+The existing empty/single-entry producer and lifetime bounds remain; mixed-object,
+numeric, iteration and wider map protocols are separate.
+[Comparison ledger](../../coverage/semantics/weakmap-comparison-review.json).
+
 ## WeakMap first entry and key retirement
 
 Module386 admits zero-argument `new WeakMap()` and one first insertion with a

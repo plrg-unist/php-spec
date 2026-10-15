@@ -40,6 +40,13 @@ Their second implicit string cast fails quietly without executing the callable o
 VM. Live admission checks allocation; existing saved text, signed order, retained
 cells and cursors finish without a new receiver root. Other internal handlers remain open.
 
+[Live WeakMap pairs](../../coverage/semantics/weakmap-comparison-review.json)
+also return order zero before recursion protection or any private-entry traversal.
+Empty versus populated and different-key/value maps compare equally; strict identity
+stays separate. Existing array and declared-property cursors continue to later
+values or real casts without adding map-value roots. Mixed-object/numeric routes
+and the existing map producer/lifetime limits are unchanged.
+
 [Generator/Generator and Fiber/Fiber pairs](../../coverage/semantics/generator-fiber-comparison-review.json)
 return order zero through the standard zero-default-property shortcut. The pair
 predicate tests arena bounds and exact runtime tags, independently of saved VM

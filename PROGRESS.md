@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Live WeakMap pairs now return order zero through the standard zero-property
+shortcut, without reading their private entries. Enclosing array and declared-slot
+walks reach later casters; keys stay weak and map-owned values retain their owners.
+Three exact sources and author/independent state tests pass 246 Boolean premises
+(231 setup + 15 pure) and 9 raw steps at 12046434/395, including COW, skipped private
+bodies, real later callbacks and identical-TypeError/finally cleanup. The original
+peer type failure and author binary-state observer failure retain zero credit;
+initialization, syntax preparation and typed elaboration add no agreement credit.
+Mixed/numeric comparisons and wider map protocols/lifetimes remain partial.
+[WeakMap comparison ledger](coverage/semantics/weakmap-comparison-review.json).
+
 Direct-root zero-argument global `new stdClass()` now installs a genuine internal
 object with a separate nonowning birth certificate. Ordinary reads share identity
 and property writes; duplicate registration retains its fresh candidate through
