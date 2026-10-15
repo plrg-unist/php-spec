@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Reached nested stdClass births, earlier facts and duplicate-array release."""
+import argparse
 import base64
 import hashlib
 import json
 from pathlib import Path
+import sys
 
 import global_constant_stdclass_array_protocol as packet
 import global_constant_stdclass_new_sources as sources
@@ -114,7 +116,9 @@ def checks(initial, name, stdout, responses, restore_line):
             'perrorcall.LEVEL = 2',
             'perrorcall.RESUME = GLOBAL_CONSTANT_DUPLICATE porigin_decl_candidate_right (PARRAY n_candidate_root) pvalueclass_candidate n_constants pconstantfact_reads* z_line',
             'S_handler.ARRAYS[n_candidate_root].ITEMS = [ENTRY (KINT 0) (DIRECT (PFLOAT 9221120237041090560)),ENTRY (KINT 1) (DIRECT (PARRAY n_candidate_child))]',
-            'S_handler.ARRAYS[n_candidate_child].ITEMS = [ENTRY (KINT 0) (DIRECT (POBJECT n_candidate_left)),ENTRY (KINT 1) (DIRECT (POBJECT n_candidate_right)),ENTRY (KINT 2) (DIRECT (PARRAY n_empty))]',
+            'S_handler.ARRAYS[n_candidate_child].ITEMS = [ENTRY (KINT 0) (DIRECT (POBJECT n_candidate_left)),ENTRY (KINT 1) (DIRECT (POBJECT n_candidate_right)),ENTRY (KINT 2) (DIRECT (PARRAY n_candidate_empty))]',
+            'S_handler.ARRAYS[n_candidate_empty].ITEMS = eps',
+            '$array_immutable(S_handler,n_candidate_empty)',
             '$heap_owners($heap_graph(S_handler),HARRAY n_candidate_root) = 1',
             '$heap_owners($heap_graph(S_handler),HOBJECT n_candidate_left) = 1',
             '$heap_owners($heap_graph(S_handler),HOBJECT n_candidate_right) = 1',
@@ -182,4 +186,10 @@ def fingerprint():
 sources.family.fingerprint = fingerprint
 
 if __name__=='__main__':
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--case', choices=sources.family.CASES)
+    args, remaining = parser.parse_known_args()
+    if args.case:
+        sources.family.CASES = {args.case:sources.family.CASES[args.case]}
+    sys.argv = [sys.argv[0], *remaining]
     raise SystemExit(0 if packet.main() else 1)
