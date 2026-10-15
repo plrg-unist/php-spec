@@ -1,0 +1,168 @@
+{
+  "version": 1,
+  "milestone": "COMP59",
+  "status": "independently reviewed and accepted within the stated comparison domain",
+  "behavior": "Distinct Generator/Generator and Fiber/Fiber pairs compare with order zero without traversing VM/capture data; existing aggregate comparison continues to later leaves.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "vendor_php_tree": "6cf60397fba27e0d712b7ae0f872d5a46059d664",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "tested_revision": "2929a957fa0c0fe97e0e3e79d049efbee55907e2",
+  "ordered_modules": 394,
+  "manifest_sha256": "16b07a5d2e6754f502c05eb8dfb19d5d4c56d076cc50fbbc91ed82a4cca5a9a4",
+  "implementation": {
+    "path": "spec/semantics/52-comparison.watsup",
+    "sha256": "67fc944acbfad7f7d4bd126d745060d01c2cb9f46b5c5688fe43c6edc6c3e327",
+    "contract": [
+      "A separate bounds/exact-tag pair predicate matches independent Generator or Fiber records. Both distinct-object scalar zero/complement arms use it.",
+      "The zero-default-property shortcut does not enter ordinary property traversal or create an internal-object recursion guard. No VM/capture/owner schema is changed.",
+      "Strict identity, mixed-class and Closure routes retain their observed distinctions."
+    ]
+  },
+  "engine_basis": [
+    "Zend/zend_object_handlers.c: zend_std_compare_objects same-class zero-default-properties shortcut",
+    "Zend/zend_generators.c and zend_fibers.c: inherited standard comparison handlers; final classes with no dynamic/default properties"
+  ],
+  "native": {
+    "revision": "0fbe768475e04b1210753a28de70bb8c178a433e",
+    "observations": 3,
+    "model_agreements": 0,
+    "result": "Both orientations produce the expected seven loose-operator results from order0 for new same-class pairs; suspended/completed, strict/mixed/Closure, cold-body and later-caster/throw controls observed."
+  },
+  "unchanged_frontier": {
+    "revision": "0fbe768475e04b1210753a28de70bb8c178a433e",
+    "status": "normal mismatch",
+    "actual_operator_row": "0100001",
+    "native_operator_row": "1001010",
+    "seconds": 74.40858021751046,
+    "source_agreements": 0
+  },
+  "validation": {
+    "initializer": {
+      "mode": "SL",
+      "passed": true,
+      "semantic_assertions": 0,
+      "php_steps": 0
+    },
+    "original_sources": {
+      "catalogue": "tests/semantics/generator_fiber_comparison_cases.json",
+      "sha256": "57b42c4838719c49c7fb57c3d6b4bd36ed793ad88c7d62d35721cfcf2f39ee53",
+      "agreements": 3,
+      "caps_seconds": [
+        [
+          120,
+          130
+        ],
+        [
+          180,
+          190
+        ],
+        [
+          120,
+          130
+        ]
+      ],
+      "seconds": [
+        73.61042654700577,
+        125.34847619570792,
+        53.62962571159005
+      ]
+    },
+    "syntax_preparation": {
+      "requests": 6,
+      "runtime_credit": 0,
+      "php_steps": 0
+    },
+    "author": {
+      "groups": 2,
+      "premises": 259,
+      "setup": 232,
+      "pure": 27,
+      "raw_php_steps": 8,
+      "seconds": [
+        49.48564650118351,
+        119.40788724832237
+      ]
+    },
+    "independent": {
+      "groups": 1,
+      "premises": 150,
+      "setup": 144,
+      "pure": 6,
+      "raw_php_steps": 6,
+      "seconds": [
+        52.083558632060885
+      ]
+    },
+    "total": {
+      "premises": 409,
+      "setup": 376,
+      "pure": 33,
+      "raw_php_steps": 14,
+      "source_agreements": 3
+    },
+    "preserved_failures": [
+      {
+        "cut": "author run-el-v1",
+        "result": "pre-main natural-fuel type diagnostic; variable-family names also corrected before retry",
+        "runtime_credit": 0
+      },
+      {
+        "cut": "peer run-el-v1",
+        "result": "pre-main undeclared S0 variable-family diagnostic",
+        "runtime_credit": 0
+      }
+    ]
+  },
+  "reached_state_results": [
+    "Authentic created Generator parameter cells and Fiber Closure captures remain real outgoing edges; pure order and raw binary steps preserve VM/storage.",
+    "Fresh/paused/closed Generator and init/suspended/terminated Fiber pairs yield true equality. Guard-list, bounds and mixed-tag controls are helper-only; ordinary property traversal remains distinct.",
+    "Actual aggregate cursor reaches index3 after Generator0 and Fiber0, retaining real array pins. The later caster preserves unchanged-left recursion, right COW and the same injected TypeError through both finally paths; a fresh unchanged-left comparison then returns false."
+  ],
+  "limits": [
+    "Numeric Notice callbacks for these internal classes are a separate open slice; this milestone does not broaden internal handlers or Closure-pair comparison.",
+    "Wider lifecycle, collector, cloning, storage and arbitrary historical-state provenance are unclaimed. Seeks/driver progress and helper-only controls add no raw-Step or source-agreement credit."
+  ],
+  "reproduction": {
+    "root": "/home/user/workspace/php-spec/.tools/generator-fiber-comparison-59",
+    "commands": "Retain exact original File/CWD and profile. Native run.py, baseline.py, initialize.py, model.py and prepare.py take --cpu CPU --slot SLOT. State retry drivers take --mode el then --mode sl; numeric execution is explicit --sl. Closed records preserve actual argv/ENV digest/START/raw streams/exits/owned reap.",
+    "publication_verdict": "CLEAR: concise publication and scoped partial inventory updates independently reviewed"
+  },
+  "tool_sha256": {
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "artifacts": {
+    ".tools/generator-fiber-comparison-native-59/run-native-v1/report.json": "906052b07e7723f7de76e353da54e4685aa83381b664a0ecf9e8a37f8db98e5d",
+    ".tools/generator-fiber-comparison-native-59/run.py": "db8fc22730b38e35823e81421fec319809075d28368ebb93b9ab1c8c92f02e15",
+    ".tools/generator-fiber-comparison-support-59/actor.py": "ab3aa7084125b1cb8a9d2b0328e7f76dfd2be5b3c8c1cfbad575a4557ea060a9",
+    ".tools/generator-fiber-comparison-support-59/run-baseline-v1/report.json": "e3a39ac1bb7152f8a3cb74de6c36a144b33c716b997424f18fdf72e4b4e88bbe",
+    ".tools/generator-fiber-comparison-support-59/baseline.py": "af5bd4d1ed4a75ff47ca7c89d053951824a4a278ee8cd27f46e028868e67ae05",
+    ".tools/generator-fiber-comparison-support-59/run-initialize-v1/report.json": "8224d949a4a145512ce22ba1365aa437f70669d34cd1f7b7ee8247d8b62ffb5d",
+    ".tools/generator-fiber-comparison-support-59/initialize.py": "8b12bffd10cda505bb2696b479da55b67cfa9537b60adb92d4d12b35a6e1d4e6",
+    ".tools/generator-fiber-comparison-support-59/run-model-v1/report.json": "4d74f3abbf5ce2c7fd14dce009b0c6a899e527da60a385512878405dfe5922ca",
+    ".tools/generator-fiber-comparison-support-59/model.py": "79d1dc84c20e75c8d46c098a561ce7bd62851bbbafa5af7287376dfbca970b1e",
+    ".tools/generator-fiber-comparison-support-59/syntax-v1/report.json": "1dbfe8aae7fcd21040c658b9061493250a9c1c041083a4a8cdec58ac87dee95d",
+    ".tools/generator-fiber-comparison-support-59/prepare.py": "4a8c39f1c460da08ec140a318d6bb977d5e71c4ad8d6b33bc2840f8c4d30e137",
+    ".tools/generator-fiber-comparison-state-59/run-el-v1/report.json": "de5e94e545694a2e9c956f9b660c43262b1acca83411329876a16d7b38e5f570",
+    ".tools/generator-fiber-comparison-state-59/run-el-fuel-retry1/report.json": "a26e1c6bd746c481e9ce55c06cb6d1c35b5f72362ccaa1c2a6dfbffb6e0fa1d6",
+    ".tools/generator-fiber-comparison-state-59/run-sl-fuel-retry1/report.json": "2a442d98a73f00778fb6c8a1149c12d849eea6460c0f8c1865f89f2b3c7553ef",
+    ".tools/generator-fiber-comparison-state-59/run-fuel-retry1.py": "4da2cadac6d62d7f2ccd6960cd8144e33156cab4ea8e832c187c68b67a78655e",
+    ".tools/generator-fiber-comparison-state-59/build.py": "940381be477fa8fa482a992249a0ff436e23da22d3d809a3acfcf4979db942b6",
+    ".tools/generator-fiber-comparison-state-59/helpers.watsup": "94e789b23cf074c3dcd693e42ec215ad1f1b6d4d9d5f3a2fb729273ba48af0f4",
+    ".tools/generator-fiber-comparison-state-59/plan.json": "d237de8c535cafded7071a38e417d271eaa6b573a7131e3dd027c40cd6d4c14c",
+    ".tools/generator-fiber-comparison-peer-state-59/run-el-v1/report.json": "78590886c243e930a7383692a0eeeec641fe64f907e10e1f6ff13439b36f883e",
+    ".tools/generator-fiber-comparison-peer-state-59/run-el-family-retry1/report.json": "9652a4df59a7673cf7a70668fbfcb4acfd5f5cb32212fffa222438549799ce4d",
+    ".tools/generator-fiber-comparison-peer-state-59/run-sl-family-retry1/report.json": "10f1e8ad5dbe80601f4f204b3a44d3d3bca307a33ff69564804c26fed1505f3b",
+    ".tools/generator-fiber-comparison-peer-state-59/run-family-retry1.py": "a8ccfd5531801252493112fd182d191412e8cb8b96dc60f9e0206476a209ac39",
+    ".tools/generator-fiber-comparison-peer-state-59/build.py": "b5cf72f3a58e12b5a059caeea92b33f6758e22ab0731379d081b847409f8bfd7",
+    ".tools/generator-fiber-comparison-peer-state-59/helpers.watsup": "cee3def675c8eb7b726f799be672ae49729fa85e8d2cdbb7f48502d0c0b1760c",
+    ".tools/generator-fiber-comparison-peer-state-59/plan.json": "b1bba0d5509c6c8ae43431ad36f3d3147e686a6a6513f8664ae7ed57d1674b7e"
+  },
+  "engine_bug_or_intentional_divergence": false
+}

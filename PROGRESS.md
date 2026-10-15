@@ -7,6 +7,16 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+
+Same-class Generator and Fiber pairs now compare with order zero through the
+standard zero-property shortcut. Comparison preserves VM/capture storage and
+continues to later array or declared-property leaves. Three exact sources and
+author and independent tests pass 409 premises (376 setup + 33 pure) and 14 raw steps
+at 2929/394, including created/suspended/completed pairs, real later casts, COW
+and same-TypeError/finally cleanup. The unchanged normal mismatch and two fixture
+elaboration failures retain zero agreement. Numeric internal handlers and wider
+lifetime behavior remain separate.
+[Generator/Fiber comparison ledger](coverage/semantics/generator-fiber-comparison-review.json).
 Selected nonowning `trigger_error` calls now drain a retained file-compiler
 fatal with the current callback trace. An exact CONFIG/nonce receipt preserves
 captured arguments and authenticates each abandoned record. One retained v33

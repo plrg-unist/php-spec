@@ -6,6 +6,10 @@ initialization. Named functions, ordinary Closures and ordinary object method
 calls use the accepted call machinery; no unaccepted return implementation is
 required.
 
+[Same-class comparison](../../coverage/semantics/generator-fiber-comparison-review.json)
+now returns order zero for distinct Generators, including fresh, paused and closed
+values. It preserves the deferred frame, captures and cached results.
+
 The Generator owns its suspended function frame. Resuming moves that frame into
 the machine and saves the actual resumer. Yielding moves it back into the object.
 The frame, received arguments, receiver and Closure captures are outgoing heap

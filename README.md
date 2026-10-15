@@ -1813,6 +1813,10 @@ now use builtin nominal kinds and source-subclass names without stringification.
 Saved second-Notice targets, copied values, retained cells and original-Exception
 throw cleanup pass three exact sources and 340 reached premises/17 raw steps;
 string caches and previous links remain intact. Wider limits are unchanged.
+[Generator and Fiber pairs](coverage/semantics/generator-fiber-comparison-review.json)
+now compare with order zero within the same runtime class, preserving their VM
+and capture state. Three exact sources and 409 reached premises/14 raw steps
+cover created, suspended and completed values, later aggregate casts and throw cleanup.
 [Match expressions](docs/semantics/SOURCE-MATCH.md) preserve strict, lazy arm
 selection, delayed CV subjects, ordered compiler diagnostics and owned value
 results; their [review](coverage/semantics/match-review.json) binds source, compiler

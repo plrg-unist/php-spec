@@ -27,6 +27,14 @@ Values behind references are dereferenced. A revisited left array raises
 `Error: Nesting level too deep - recursive dependency?`; input roots survive
 comparison and budget resumption. Strict identity remains a separate operation.
 
+[Generator/Generator and Fiber/Fiber pairs](../../coverage/semantics/generator-fiber-comparison-review.json)
+return order zero through the standard zero-default-property shortcut. The pair
+predicate tests arena bounds and exact runtime tags, independently of saved VM
+state or captures, before any property traversal or recursion protection. Strict
+identity, cross-class and Closure controls agree with PHP. New, suspended and
+completed fronts preserve storage; array/declared-property comparisons continue
+to later values or real casts. Internal numeric Notice admission remains separate.
+
 [Numeric object Notices](../../coverage/semantics/object-numeric-comparison-review.json)
 now suspend ordinary source instances compared with int/float through module402
 and the existing error-handler machinery. The failed cast captures the numeric

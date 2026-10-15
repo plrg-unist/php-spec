@@ -8,6 +8,10 @@ later changes to a referenced method name do not select another function.
 Callable validation precedes the repeated-constructor status error. Callback
 receive is weak because the Fiber enters through an internal call.
 
+[Same-class comparison](../../coverage/semantics/generator-fiber-comparison-review.json)
+now returns order zero for distinct Fibers, including new, suspended and terminated
+values. It preserves the callback, saved VM and stored return value.
+
 The model moves each VM continuation, local symbol table, frames, scratch owners
 and live reporting mask. Heap storage, references, globals, handler registries,
 INI and allocation counters remain shared. A saved main continuation does not
