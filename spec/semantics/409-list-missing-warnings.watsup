@@ -25,6 +25,10 @@ def $list_missing_item(S, porigin, ABSENT :: phpType13*, n, n_selected, z) = $li
 def $list_missing_item(S, porigin, (NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13*, n, n_selected, z) = $list_missing_item(S, porigin, phpType13*, $(n + 1), n_selected, $source_line(metadata_target))
   -- if $(n < n_selected)
   -- if expression = NExprVariable phpType32 metadata_target
+def $list_missing_item(S, porigin, (NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13*, n, n_selected, z) = $list_missing_item(S, porigin, phpType13*, $(n + 1), n_selected, z_nested)
+  -- if $(n < n_selected)
+  -- if $list_pattern(expression) = (phpType13_nested*)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 0, PCINDEX n, PCFIELD 1]) = (z_nested)
 def $list_missing_item(S, porigin, (NArrayItem ABSENT expression (BOOLEAN true) (BOOLEAN false) metadata) :: phpType13*, n, n_selected, z) = $list_missing_item(S, porigin, phpType13*, $(n + 1), n_selected, z)
   -- if $(n < n_selected)
 def $list_missing_item(S, porigin, (NArrayItem expression_key expression (BOOLEAN true) (BOOLEAN false) metadata) :: phpType13*, n, n_selected, z) = $list_missing_item(S, porigin, phpType13*, $(n + 1), n_selected, z_key)
@@ -71,6 +75,38 @@ def $list_missing_array(S, REFERENCE n_source) = $list_missing_array(S, KNOWN (P
   -- if S.STORE[n_source] = DEFINED (PARRAY n_array)
 def $list_missing_array(S, poperand) = eps -- otherwise
 
+;; One child layer is by value throughout. Its first fetch inherits the outer
+;; fetch line; the next outer item inherits the compiled nested-target line.
+dec $list_missing_nested_items(phpType13*) : bool
+def $list_missing_nested_items(eps) = true
+def $list_missing_nested_items(ABSENT :: phpType13*) = $list_missing_nested_items(phpType13*)
+def $list_missing_nested_items((NArrayItem phpType5 (NExprVariable phpType32 metadata_target) (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13*) = $list_missing_nested_items(phpType13*)
+  -- if $cv_name(phpType32) = (n_name*)
+def $list_missing_nested_items((NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13*) = $list_missing_nested_items(phpType13*)
+  -- if $list_pattern(expression) = (phpType13_child*)
+  -- if $list_missing_flat(phpType13_child*) /\ ~$list_references(phpType13_child*)
+def $list_missing_nested_items(phpType13*) = false -- otherwise
+
+dec $list_missing_nested_context(pstate, porigin) : int?
+def $list_missing_nested_context(S, porigin) = (z_initial)
+  -- if $origin_node(S.SOURCES, porigin) = (expression_pattern)
+  -- if $list_pattern(expression_pattern) = (phpType13_all*)
+  -- if ~$list_missing_flat(phpType13_all*) /\ $list_missing_nested_items(phpType13_all*)
+  -- if $reference_origin_parent(porigin, 1) = ((porigin_assign, [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin_assign) = (NExprAssign expression_pattern expression_rhs metadata)
+  -- if $list_value_cv(expression_rhs) = (n_name*)
+  -- if $code_expression_at_source(S, porigin_assign, [PCFIELD 1]) = (z_initial)
+def $list_missing_nested_context(S, porigin) = (z_child)
+  -- if $origin_node(S.SOURCES, porigin) = (expression_pattern)
+  -- if $list_pattern(expression_pattern) = (phpType13_child*)
+  -- if $list_missing_flat(phpType13_child*)
+  -- if $reference_origin_parent(porigin, 3) = ((porigin_outer, [PCFIELD 0, PCINDEX n_outer, PCFIELD 1]))
+  -- if $list_missing_nested_context(S, porigin_outer) = (z_initial)
+  -- if $origin_node(S.SOURCES, porigin_outer) = (expression_outer)
+  -- if $list_pattern(expression_outer) = (phpType13_outer*)
+  -- if $list_missing_item(S, porigin_outer, phpType13_outer*, 0, n_outer, z_initial) = ((expression_pattern, phpType13_tail*, z_child, pvalue, pkey))
+def $list_missing_nested_context(S, porigin) = eps -- otherwise
+
 ;; Source shape and compiler lines authenticate both the initial callback and
 ;; its saved continuation. The captured operand is a runtime fact, not a reread CV.
 dec $list_missing_source(pstate, poperand, nat, expression, phpType13*, int, pkey) : bool
@@ -86,6 +122,14 @@ def $list_missing_source(S, poperand, n, expression, phpType13*, z, pkey) = true
   -- if $code_expression_at_source(S, porigin_assign, [PCFIELD 1]) = (z_initial)
   -- if $list_missing_item(S, porigin, phpType13_all*, 0, n, z_initial) = ((expression, phpType13*, z, pvalue, pkey))
   -- if $(z > 0)
+def $list_missing_source(S, KNOWN (PARRAY n_array), n, expression, phpType13*, z, pkey) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $list_missing_nested_context(S, porigin) = (z_initial)
+  -- if $origin_node(S.SOURCES, porigin) = (expression_pattern)
+  -- if $list_pattern(expression_pattern) = (phpType13_all*)
+  -- if $list_missing_item(S, porigin, phpType13_all*, 0, n, z_initial) = ((expression, phpType13*, z, pvalue, pkey))
+  -- if $(z > 0 /\ n_array < |S.ARRAYS|)
+  -- if (HARRAY n_array) <- S.ALLOCATIONS
 def $list_missing_source(S, poperand, n, expression, phpType13*, z, pkey) = false -- otherwise
 
 dec $list_missing_plan(pstate) : (poperand, nat, expression, phpType13*, int, pkey)?
@@ -100,6 +144,17 @@ def $list_missing_plan(S) = ((poperand, n, expression, phpType13*, z, pkey))
   -- if S.RESULT = KNOWN pvalue
   -- if $list_missing_source(S, poperand, n, expression, phpType13*, z, pkey)
   -- if $list_missing_array(S, poperand) = (n_array)
+  -- if $entry_lookup(S.ARRAYS[n_array].ITEMS, pkey) = eps
+def $list_missing_plan(S) = ((KNOWN (PARRAY n_array), n, expression, phpType13*, z, pkey))
+  -- if S.TODO = (LIST_FETCH (KNOWN (PARRAY n_array)) n expression false phpType13* z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $reference_origin_parent(porigin, 3) = ((porigin_outer, [PCFIELD 0, PCINDEX n_outer, PCFIELD 1]))
+  -- if $list_missing_nested_context(S, porigin) = (z_initial)
+  -- if $origin_node(S.SOURCES, porigin) = (expression_pattern)
+  -- if $list_pattern(expression_pattern) = (phpType13_all*)
+  -- if $list_missing_item(S, porigin, phpType13_all*, 0, n, z_initial) = ((expression, phpType13*, z, pvalue, pkey))
+  -- if S.RESULT = KNOWN pvalue
+  -- if $list_missing_source(S, KNOWN (PARRAY n_array), n, expression, phpType13*, z, pkey)
   -- if $entry_lookup(S.ARRAYS[n_array].ITEMS, pkey) = eps
 def $list_missing_plan(S) = eps -- otherwise
 def $list_missing_pending(S) = true
