@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Global `constant`/`defined` now receive int/bool/float names after argument
+effects. Weak calls use the existing string conversion; strict calls raise the
+native `TypeError`. Captured originals retain exact immutable input and callee
+authority; only a weak missing-name Error's argument view becomes the converted
+string. Three exact sources at 5b6d1079, an independent false-CV source at a8945805
+and 320 public premises at a8945805 pass, covering selection mutation, raw/converted
+traces, unchanged stores, source forgery refusal and budget resumption. Null
+deprecation, Stringable/array reception, arity, packed/owning calls and define
+name/flag coercions remain separate. Private validation
+is accepted; current-parent integration is pending.
+[Scalar-name review](coverage/semantics/global-constant-scalar-name-review.json).
+
 A selected sole implicit virtual class SET now omits its value slot while its
 body writes separate stored10→33. Assignment20 returns20; reads raise the receiver’s
 write-only Error, and array input fails before the body. Active same-object virtual

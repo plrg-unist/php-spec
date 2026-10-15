@@ -1,0 +1,72 @@
+{
+  "scope": "Int/bool/float name reception for ordinary constant()/defined() calls. Partial core.",
+  "status": "independently_accepted_private",
+  "reviewer": "/root/core_breadth_review_01",
+  "parent": "0c7eec9f6025c5cfeda5a3f69ac5672023111000",
+  "semantic_revision": "5b6d1079635e0eada04d707d66e5b926dbe3a64f",
+  "semantic_sha256": {
+    "spec/semantics/400-dynamic-constants.watsup": "7eac92740df90ffbca9c18e08ce4fa26b21af5baa7dc393c299c97337008c7f8"
+  },
+  "module_count": 394,
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+  "profile": "tests/semantics/profile.json",
+  "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+  "behavior": "The disjoint72-line400 scalar path keeps original CONFIG/SENT and exact available compiled argument equality, captured KIND/selection, OWNER/PACKS bounds and caller stores. Existing weak conversion runs after argument effects; only weak missing-name Error trace arguments use the actual received string. Strict TypeErrors keep raw arguments and actual parameter names. Original string/global/class/HALT/keyword guards and typing/state/schema protocols stay unchanged.",
+  "source_routes": [
+    "vendor/php-src/ext/standard/basic_functions.c PHP_FUNCTION(constant) and Zend/zend_builtin_functions.c ZEND_FUNCTION(defined) both use Z_PARAM_STR",
+    "vendor/php-src/Zend/zend_API.c zend_parse_arg_str_weak: convert_to_string mutates the API slot; zend_parse_arg_str_slow refuses strict nonstrings before mutation",
+    "spec/semantics/172-file-context-intrinsics.watsup config_conversion/config_strict and95 typed_apply supply existing scalar conversion; original argument authority uses intrinsic_argument/compiled_read"
+  ],
+  "sources": [
+    {
+      "revision": "5b6d1079635e0eada04d707d66e5b926dbe3a64f",
+      "report": "author/sources/model-report.json",
+      "agreements": 3,
+      "checks": "Weak int/bool/float lookup and quiet defined(false); selected constant KIND survives live callee mutation; missing404 Error has converted string args, strict int/true/float TypeErrors retain original args and sentinel99."
+    },
+    {
+      "revision": "a89458058a0d07c623081aba5a18ca2bf4202102",
+      "report": "author/review/model-report.json",
+      "agreements": 1,
+      "checks": "Independent function-local false CV stays false, destination99 survives; Error trace receives empty string with constant/caller frames and ordinary finally."
+    }
+  ],
+  "public": {
+    "revision": "a89458058a0d07c623081aba5a18ca2bf4202102",
+    "report": "author/public/check-report.json",
+    "premises": 320,
+    "groups": {
+      "weak-scalar-name-lookups": 121,
+      "captured-scalar-query-and-converted-error-arg": 107,
+      "strict-scalar-name-type-errors": 92
+    },
+    "checks": "Actual weak int37/quiet defined(false), saved selected int37/missing404, strict constant(int37)/defined(true) fronts. Converted request/interned carrier versus raw TypeError args, unchanged stores/table/selection, exact immutable source match, valid generic CFG plus rejected forged scalar payload/actual Unsupported, null/string/owner boundaries and whole budget0/one-step equality. No ending drive or repeated float state campaign."
+  },
+  "zero_credit": "Native observations and syntax preparation retain zero agreement. Sole unchanged weak-source baseline at98e2730e: checked Unsupported/class constant value query after B|, CLI1/null PHP exit/emptyerr. No fixture/runtime failure or baseline renewal.",
+  "execution": "Coordinated CPU5/SLOT3, LC_ALL=C TZ=UTC, AS3GiB, serial stop-first/reap. Native children15s; model CLI45/host60; public fullSL90 each. All4 source models checked normal0/reasonNone/native-exact/emptyerr; all3 public children trueLF/0/emptyerr. Inputs/HEAD stable, no timeout, reaped/groups[]. Reports preserve exact inner argv/raw exits/streams/tool pins.",
+  "raw_root": ".tools/global-scalar-name-query-evidence-27",
+  "reports": {
+    "author/public/check-report.json": "2bbfd36230e2c309dcd1abacf729423285a3cba1e78194744250d3e4d51f4949",
+    "author/public/prepare-report.json": "51687ed3de2f7bf275fdc98fdee7211f6ad21b8e63559aaaaf9c30f621a6ed7e",
+    "author/review/model-report.json": "c02e7e7812eae33a6ef26c5b0d127dad12367a1cf07ba4cf73cc682e280559e6",
+    "author/review/native-report.json": "76fafc03798a98266630885a2721593ab0d520ce098934e5034aa38a4c741f15",
+    "author/sources/baseline-report.json": "79cf70ff20fccae1a7802351f8a1cf16a02adb32d917412989aef1fb11b7d382",
+    "author/sources/model-report.json": "f98845cf146aaffa8c2f910cca533360d9009b016443d110b1b3ddbd73ce8a5d",
+    "author/sources/native-report.json": "2f76a97a5051f93ce55cd5d3969d8cf1b09dfb448f1b93ed72273de92663a598"
+  },
+  "recovery": "Three owned ignored trees moved once without copies after reviewer STOP and focused process/cwd/fd no-use checks; hashes unchanged. Restore author/{sources,public,review} as .tools/global-scalar-name-query-{native,public,review}-27 within .tools/source-global-scalar-name-query-27 at the recorded revisions for historical cwd/source identities. Maintained scripts can create fresh packets; branches preserve original cuts.",
+  "remaining": "Weak null deprecation/handlers, Stringable/array name reception, arity, packed/owning calls, define name/flag coercions and wider value domains remain separate. Core remains partial; no engine bug or intentional divergence.",
+  "actual_parent_integration": null,
+  "commands": [
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/global_constant_scalar_name_sources.py --phase native --output .tools/global-scalar-name-query-native-27",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/global_constant_scalar_name_sources.py --phase baseline --case weak-scalar-name-lookups --output .tools/global-scalar-name-query-native-27",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 240s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/global_constant_scalar_name_sources.py --phase model --output .tools/global-scalar-name-query-native-27",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/global_constant_scalar_name_protocol.py --phase prepare --sources .tools/global-scalar-name-query-native-27 --output .tools/global-scalar-name-query-public-27",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 330s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/global_constant_scalar_name_protocol.py --phase check --sources .tools/global-scalar-name-query-native-27 --output .tools/global-scalar-name-query-public-27",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/global_constant_scalar_name_review_sources.py --phase native --output .tools/global-scalar-name-query-review-27",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/global_constant_scalar_name_review_sources.py --phase model --output .tools/global-scalar-name-query-review-27"
+  ]
+}

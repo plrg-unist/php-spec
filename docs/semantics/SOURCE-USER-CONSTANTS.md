@@ -211,13 +211,24 @@ Mutable-empty/deferred/nonliteral class-array query values and wider domains rem
 
 Global `constant` queries now read primitive user values, authenticated interned or
 request strings, special `true`/`false`/`null`, and the modeled primitive startup
-constants. The captured string supplies the full query: remove one leading
+constants. The received string supplies the full query: remove one leading
 separator, lowercase only namespace components, and preserve terminal-name case.
 Caller namespaces and imports do not prefix the string. Lookup occurs after
 argument effects. Stored string carriers retain their allocation class; the API
 does not intern or rebuild a result. Named and positional literal arguments use
 immutable compiler facts, while mutable arguments retain the existing capture
 policy.
+
+Plain `constant`/`defined` calls also receive integer, boolean and float query
+names. Weak callers use the existing string conversion after
+argument effects; strict callers raise `TypeError` before conversion. The captured
+call keeps its original value and selected callee. Available immutable argument
+facts must match that exact value. Conversion changes only the API slot: a weak
+missing-name Error shows the received string in its trace, while strict TypeErrors
+retain the original argument and actual parameter name. Caller CVs stay unchanged.
+Null deprecation, Stringable/array reception and packed/owning forms remain separate.
+The [scalar-name review](../../coverage/semantics/global-constant-scalar-name-review.json)
+records source-backed reception, trace values, source rejection and budgets.
 
 User-array queries retain the stored root and child identities. The admitted
 tree contains nonstring scalars, raw strings, authenticated string carriers,
@@ -258,10 +269,10 @@ ordinary RESULT adds one owner alongside every installed table alias. The
 [Closure-query review](../../coverage/semantics/global-constant-closure-review.json)
 records actual query fronts, shared counters, alias roots and certificate refusals.
 
-Absent names raise `Error` with the stripped lookup spelling and the full captured
-argument in the API trace. Unknown startup values retain their prior Unsupported
-result. Generic `PVOBJECT`, stored ALIAS/cyclic array trees, coercions and packed/owning
-calls remain outside this slice. The original ordinary `const` string producer refusal retains
+Absent names raise `Error` with the stripped lookup spelling and the full received
+string argument in the API trace. Unknown startup values retain their prior Unsupported
+result. Generic `PVOBJECT`, stored ALIAS/cyclic array trees, null/Stringable/array name
+reception and packed/owning calls remain outside this slice. The original ordinary `const` string producer refusal retains
 its historical cut; the string-publication follow-up above admits that producer
 domain without renewing the older lookup campaign. The [global-query ledger](../../coverage/semantics/global-constant-review.json)
 binds the source and public-state cuts without closing the constant family.
