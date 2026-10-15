@@ -15,6 +15,9 @@ append history and canonical mutable clones from immutable provenance. The
 baseline/native/preparations retain 0; mutable-empty/deferred/nonliteral query
 values remain Unsupported.
 [Empty-query ledger](coverage/semantics/class-qualified-constant-empty-review.json).
+The 394-module composition over 8aa85111 passes independent pointwise review at
+2222a077; accepted class-only rules/protocol and incoming paths are preserved.
+No renewed actor/source/state evidence is claimed.
 
 Module404 now stages leading-numeric-string DIV warnings for two direct CVs with
 preexisting untyped reference cells and named handlers. The next conversion reads
