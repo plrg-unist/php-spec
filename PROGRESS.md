@@ -9113,8 +9113,23 @@ VALUE Notice and detached caller. Actual descriptor admission, heap-equal
 LINE-only refusal and exit-cut budget equality pass. The first fixture's false
 pre-finalizer Notice premise failed with zero full-state credit; only that
 affected fixture was retried. Normal pending-free method exits, arguments,
-dynamic names and wider owner/destructor histories remain open.
+dynamic names and wider owner/destructor histories remained open at M85.
 [M85 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M86 removes M83's extra old-source classifier only from the normal pending-free
+destructor-exit saved-descriptor guard. An actual selected return operation,
+matching source/caller/origin/context, unique nonowning cursor and full queued
+cursor validity still gate admission; normal finish, ownership and pending
+Throwable routing are unchanged. A diagnosis-only historical M72 `?object`
+method-reference cut on unchanged `b21c01dfd`/399 passes 62 Boolean premises
+and one raw normal finish: actual public entry rejects its valid queued cursor
+after old HCELL/O retirement. Strict SL init passes at private `ff7b9418f`/399.
+One reached fixture there passes 102 Boolean premises and one raw step, proving
+normal-exit admission and finish, M72's `r=bNULL` then changed alias/y bad and
+one Notice, equal-heap LINE-only public refusal, and whole/split budget
+equality. The historical M72 native/source agreements are separate; no old
+actor was replayed and the diagnostic has zero repair credit. Wider normal
+source histories and broad returns remain open.
+[M86 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, wider destructor throw/reentry, real suspension and wider typed

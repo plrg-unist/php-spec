@@ -960,6 +960,23 @@ Notice continuation. It also passes actual exit admission, a heap-equal
 LINE-only public refusal and budget equality. The initial fixture's false
 assumption of an early Notice has zero state credit; the genuine reference has
 no marker at that pre-finalizer cut. Only pending-throw admission changed;
-normal pending-free method admission is unchanged, and wider method forms remain
-open. See the
+normal pending-free method admission was unchanged at M85. See the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M86 admits public resumption at a normal pending-free destructor operation exit
+whenever the queued selected return has one fully authenticated old-return
+cursor. It removes the extra old-source classification from M83's normal-exit
+descriptor guard; operation identity, context and the projected cursor
+validator remain. The historical M72 `&f():?object` method-reference original
+reaches this gap after `Factory::old_ref()` supplies an old HCELL→O return,
+then selected-return replacement retires the old HCELL and O after the
+property binding is unset, while Factory stays live. A diagnostic on unchanged
+`b21c01dfd`/399 proved actual public entry rejected the valid queued cursor;
+strict compilation and a 102-Boolean, one-raw-step reached proof pass at
+`ff7b9418f`/399. The proof checks admission, normal finish, the M72 caller's
+`r=bNULL` then changed alias, one Notice, a LINE-only public refusal and
+equal split/whole budgets. M72's original PHP agreements remain historical;
+no native or source actor was rerun. Pending-Throwable routing and ownership
+rules are unchanged. Wider authenticated normal-source histories still need
+focused validation. See the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
