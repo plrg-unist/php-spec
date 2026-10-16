@@ -19,7 +19,7 @@ remains later research.
 [Missing-key destructuring warnings](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md)
 now retain captured arrays or source reference cells through handlers, including
 recursive by-value CV/literal and mixed CV patterns, with ordered null delivery
-and normal/throw cleanup. Flat CV-source patterns also freeze selected integer-CV
+and normal/throw cleanup. Flat CV-source patterns also freeze converted variable
 keys across callbacks while later key variables are read afresh.
 
 The [checked eval parser service](docs/semantics/DYNAMIC-SOURCE-SERVICE.md)

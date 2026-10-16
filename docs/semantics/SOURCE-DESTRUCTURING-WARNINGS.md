@@ -5,17 +5,22 @@ direct CV leaves. Recursive by-value patterns admit direct CV or literal RHS arr
 recursive mixed value/reference patterns require a direct CV RHS. Implicit integer keys
 and warning-free compiled constant keys are admitted. Literal strings retain their
 authenticated interned-string carrier before key conversion. Flat direct-CV RHS
-patterns also admit selected ordinary defined integer-CV keys. Dynamic keys in
-nested/literal-root patterns, computed key names, other CV key types and undefined
-or null/lossy-float key diagnostics remain separate dependencies, along with wider
-RHS producers and target forms.
+patterns also admit ordinary defined integer, boolean, exact-float and non-NUL
+string CV keys. Dynamic keys in nested/literal-root patterns, computed key names,
+NUL CV strings and undefined or null/lossy-float key diagnostics remain separate
+dependencies, along with wider RHS producers and target forms.
 
-An integer-CV key stays a delayed variable operand until the missing fetch. The
-initial plan checks its exact name, operand/compiler lines and defined integer,
-then freezes the integer before dispatch. Callback writes, alias unsetting or
-name rebinding cannot redirect that fetch or turn it into a successful lookup.
-The saved continuation checks source compatibility and integer kind without
-reading the key cell again; it cannot reconstruct the historical integer.
+The key stays a delayed variable operand until the missing fetch. The initial
+plan checks its exact name, operand/compiler lines and warning-free conversion,
+then freezes the converted integer or string bytes before dispatch. String
+carriers must authenticate their bytes; their identities are immutable metadata
+without heap ownership. Canonical numeric strings such as `"2"` select integer `2`,
+while `"02"` stays a string and can select a different later reference target.
+Callback writes, alias unsetting or name rebinding cannot redirect that fetch
+or turn it into a successful lookup.
+The saved continuation checks source compatibility, key kind and validity of
+non-NUL string bytes without reading the key cell or carrier again; it cannot
+reconstruct history.
 Following keys are evaluated after the interrupted null target store, including
 when an earlier target overwrites a key variable or a callback replaces the handler.
 
@@ -90,6 +95,7 @@ paths/streams without an oracle replay. Separate ledgers retain the
 [one-layer](../../coverage/semantics/list-nested-missing-warning-review.json),
 [recursive CV](../../coverage/semantics/list-recursive-missing-warning-review.json),
 [recursive literal](../../coverage/semantics/list-recursive-literal-missing-warning-review.json),
-[nested mixed](../../coverage/semantics/list-nested-reference-missing-warning-review.json) and
-[integer CV keys](../../coverage/semantics/list-integer-cv-missing-warning-review.json)
+[nested mixed](../../coverage/semantics/list-nested-reference-missing-warning-review.json),
+[integer CV keys](../../coverage/semantics/list-integer-cv-missing-warning-review.json) and
+[quiet CV keys](../../coverage/semantics/list-quiet-cv-missing-warning-review.json)
 cuts and failures. No complete array, diagnostics or lifecycle-family claim follows.
