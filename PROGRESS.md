@@ -675,6 +675,19 @@ failure is likewise corrected locally. Other owning classes, generic NEW
 duplicates, references/unpacking, defaults and wider lifecycle remain partial.
 [Duplicate-argument review](coverage/semantics/global-constant-stdclass-duplicate-arguments-review.json).
 
+String-name `define` with an omitted/false flag now registers certified live
+stdClass donors. Sole400 +13/-3 reuses their completed birth/live guards; actual
+CONFIG capture transfers one call root to one row root without allocation.
+Three exact sources agree, including named capture before a CV rebind, callback
+mutation and throwing-handler cleanup. Author287 and independent229 premises
+pass516, checking publication/query owners,
+pure certificate refusals, normal false delivery and actual Exception trace/call
+root release while the old property ALIAS keeps 53.
+The first eval original's temporary-property write compile failure and literal
+fixture binding failure remain0; only affected checks were renewed. Ordinary
+uncertified objects, object-array payloads and wider flags/names remain partial.
+[Certified define review](coverage/semantics/define-stdclass-review.json).
+
 Selected inherited `__unset(string): void` now dispatches direct CV/literal-name
 access to a declared private property. Accessible public unset skips magic;
 the callback retains Parent lexical scope and Child called scope, removes the

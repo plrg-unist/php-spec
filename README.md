@@ -1164,8 +1164,14 @@ nested reference snapshots and literal constraints pass
 Top-level empty definitions retain an authenticated immutable table or create a
 fresh mutable copy. [Two exact sources and 162 public premises](coverage/semantics/dynamic-constant-empty-review.json)
 distinguish allocation classes and rebuilt append history, rejecting a mutable
-clone of a fixed literal. Nested empties, array warning/flag paths, objects and
+clone of a fixed literal. Nested empties, array warning/flag paths, other objects and
 cycles remain Unsupported.
+String-name `define` with an omitted/false flag now shares already-certified
+stdClass donors. Named/selected calls preserve the captured pointer through later
+CV changes, and duplicate handlers keep the old binding and property writes on
+normal return or throw. Existing call and Exception-trace cleanup release the
+temporary owners. [Certified define review](coverage/semantics/define-stdclass-review.json).
+Ordinary uncertified objects, object-array payloads and wider flags/names remain partial.
 Class-qualified `defined` now checks inherited user constants with lexical visibility
 and quiet misses. Named autoload resumes the same captured query once.
 [Two exact sources and 288 public premises](coverage/semantics/class-qualified-defined-review.json)
