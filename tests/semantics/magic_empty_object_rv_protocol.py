@@ -173,7 +173,7 @@ S_invalid = S[.RESULT = KNOWN (PFLOAT 18446744073709551617)]
 ~$property_empty_rv_ready(S_invalid,ppropertyempty) /\ $property_empty_truth(S_invalid,PFLOAT 18446744073709551617) = eps
 PhpStep: S_invalid ~> S_invalid_done
 S_invalid_done.COMPLETION = UNSUPPORTED "magic empty getter result type" /\ S_invalid_done.TODO = S_invalid.TODO /\ S_invalid_done.EVENTS = S_invalid.EVENTS
-S_internal = S[.OBJECTS[n_rv] = STDINSTANCE]
+S_internal = S[.OBJECTS[n_rv] = WEAKMAP eps]
 ~$property_empty_rv_ready(S_internal,ppropertyempty)
 S_outofrange = S[.RESULT = KNOWN (POBJECT (|S.OBJECTS|))]
 ~$property_empty_rv_ready(S_outofrange,ppropertyempty)
