@@ -52,6 +52,14 @@ def $dynamic_constant_class(PSTRING_CARRIER (REQUEST_STRING n_string) n_bytes*) 
 def $dynamic_constant_class(pvalue) = (PVSCALAR) -- if $constant_nonstring_scalar(pvalue)
 def $dynamic_constant_class(pvalue) = eps -- otherwise
 
+dec $dynamic_define_value_class(pstate, pvalue) : pvalueclass?
+def $dynamic_define_value_class(S, pvalue) = (pvalueclass)
+  -- if $dynamic_constant_class(pvalue) = (pvalueclass)
+def $dynamic_define_value_class(S, POBJECT n_object) = (PVSTDCLASS n_object pconstantstdobject.SITE)
+  -- if $global_std_record(S.CONSTANTSTDOBJECTS, n_object) = (pconstantstdobject)
+  -- if $constant_value_class_valid(S, POBJECT n_object, PVSTDCLASS n_object pconstantstdobject.SITE)
+def $dynamic_define_value_class(S, pvalue) = eps -- otherwise
+
 ;; A historical definition does not resolve mutable CVs or a namespace fallback
 ;; that a later conditional function declaration could shadow.
 dec $dynamic_define_selected(pstate, porigin, pselectedcall*) : bool
@@ -114,7 +122,8 @@ def $dynamic_define_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.USERCONSTAN
   -- if $dynamic_define_source(S, pconfigcall.SITE)
   -- if $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
   -- if $dynamic_constant_global_name(preqbytes)
-  -- if $dynamic_constant_class(pvalue) = (pvalueclass)
+  -- if $dynamic_define_value_class(S, pvalue) = (pvalueclass)
+  -- if ~$dynamic_constant_case_flag(pconfigcall) \/ $dynamic_constant_class(pvalue) =/= eps
   -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
   -- if ~$dynamic_constant_initial(preqbytes)
   -- if $source_constant_lookup(S, preqbytes) = eps
@@ -214,7 +223,7 @@ def $user_constants_valid(S, puserconstant :: puserconstant_tail*) = true
   -- if $dynamic_constant_global_name(puserconstant.NAME)
   -- if puserconstant.NAME = $user_constant_key(puserconstant.NAME)
   -- if ~$dynamic_constant_initial(puserconstant.NAME)
-  -- if $dynamic_constant_class(puserconstant.VALUE) = (puserconstant.CLASS)
+  -- if $dynamic_define_value_class(S, puserconstant.VALUE) = (puserconstant.CLASS)
   -- if $string_plain(puserconstant.VALUE) = puserconstant.VALUE \/ $string_carrier_valid(S, puserconstant.VALUE)
   -- if puserconstant.READS = eps
   -- if puserconstant.RECEIVES = eps
@@ -233,7 +242,8 @@ def $dynamic_constant_duplicate_valid(S, pconfigcall, n_constants) = true
   -- if $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
   -- if $dynamic_constant_global_name(preqbytes)
   -- if ~$dynamic_constant_initial(preqbytes)
-  -- if $dynamic_constant_class(pvalue) = (pvalueclass)
+  -- if $dynamic_define_value_class(S, pvalue) = (pvalueclass)
+  -- if ~$dynamic_constant_case_flag(pconfigcall) \/ $dynamic_constant_class(pvalue) =/= eps
   -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
   -- if $(n_constants <= |S.USERCONSTANTS|)
   -- if $user_constant_at(S.USERCONSTANTS[0:n_constants], $user_constant_key(preqbytes)) =/= eps
