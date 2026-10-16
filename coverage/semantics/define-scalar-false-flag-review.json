@@ -1,0 +1,62 @@
+{
+  "scope": "Nonowning define(int/bool name, primitive, quiet false-valued nonbool scalar flag: integer 0, empty or \"0\" strings, signed float zero). Weak converted-name publication/duplicate traces versus strict first-parameter precedence. Partial core.",
+  "status": "independently_accepted_actual_parent",
+  "reviewer": "/root/source_review_35",
+  "parent": "c5d1e29754c666308aa3ee74c68e579292fce7fb",
+  "semantic_revision": "8226a8dc261b373c621cee7deb6e892b79939b1a",
+  "tested_revision": "b00e6346edb2f515340841f3f58115a146c7cedc",
+  "semantic_files": {
+    "spec/semantics/400-dynamic-constants.watsup": "8621b7e2199512e11f4e133bb4bc7a97f0e100e3d0d14a001a99c53e346268ce"
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "tools": {
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7"
+  },
+  "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+  "primary": "Pinned Zend/zend_builtin_functions.c::ZEND_FUNCTION(define) parses parameter 1 with Z_PARAM_STR before parameter 3 with Z_PARAM_BOOL. Weak int/bool name reception updates its API argument to a string; bool reception reads the raw flag without replacement. Quiet false flags reach registration with no ignored-flag Warning. Strict name rejection therefore precedes nonbool third-parameter rejection after all argument effects.",
+  "semantics": "Only 20 module400 insertions: pure nonbool false-scalar flag predicate, two explicit int/bool three-slot parser heads and optional-third carrier authentication. The existing scalar-name marker domain deliberately extends only to these quiet false flags; normalized source-send authority remains. Legacy two-argument and bool-false paths keep a trivially true carrier guard; receive/name conversion/duplicate/trace/strict code is unchanged. No new task/schema, native evaluation or ownership/error-policy change; float names with these flags, truthy/NULL/NaN and owning forms remain outside.",
+  "accepted": [
+    "Three author originals at b00e6346 match native at 7e287ed0: int/bool names publish four keys with 0/string \"0\"/negative-zero/empty flags, then default duplicate Warning preserves old 401. A selected named request-string \"0\" flag survives V|N/live truthy flag/callee writes without ignored Warning. Strict int/false name errors win over nonbool flags after effects and retain raw API arguments. PHP exits 0; only default duplicate has its expected one PHP-stderr Warning.",
+    "Independent original at b00e6346 verifies raw false name becomes the empty API string while the request-string \"0\" flag/candidate stay raw. The duplicate callback appends sibling 569 and throws the same saved Exception/Previous NULL; old 557, callback effects and caller 99 survive. The captured duplicate prefix is 1 despite two current rows. No ordinary-library helper or owning value is used.",
+    "All 595 public premises pass: author 274+80+108=462 and independent 133 at b00e6346, true LF/0/empty worker stderr, across four original-derived groups. Actual publication/default duplicate/return/strict/throw-discard steps verify converted-name/raw-flag API traces, empty/signed-zero captures, physical table entries, retained effects and full restored-state discard equality. Source/literal/carrier/prefix/metadata/domain refusals, old bool-true rejection and whole budget equality remain explicit."
+  ],
+  "zero_credit": "The sole unchanged first-source baseline 2131a65e at 7e287ed0 is accepted/checked Unsupported dynamic constant call domain after B|, CLI 1/null PHP exit/empty stderr, with zero agreement. Native and syntax preparation add no application agreement. One fixture state-name collision was corrected before execution; no semantic failure or retry occurred.",
+  "execution": "LC_ALL=C/TZ=UTC, AS 3 GiB, INT timeout+kill5, serial stop-first/reap. CPU 4 author native3/baseline at 7e287ed0; CPU 1 independent native1, model4 and public prepare/check4 at b00e6346. Native children 15s, source CLI 45s/host 60s, public fresh full SL children 90s. Inputs/HEAD stayed stable. Semantic CLI host and SL worker stderr are empty; only default duplicate PHP stderr contains its one Warning, other PHP stderr are empty, every process group reaped.",
+  "raw_root": ".tools/define-scalar-false-flag-evidence-40",
+  "report_sha256": {
+    "author/sources/model-report.json": "ac9d5c0edabac06d513009f834f3f94518f83b65928365b64dfba13555c6e8b6",
+    "author/sources/baseline-report.json": "2131a65ec24408ca31839b4ae05fa159cdd0aaf935ec8054f6731f4d2dde5f30",
+    "author/sources/native-report.json": "545638b42b3644ce24efda9be9a9aaca393d6df9eaaf13c1b369308efa4530eb",
+    "author/review/model-report.json": "8d5d1b8ced43e0daa96bdaeb326d0cee0f8dafe379890a84b3f7fd6ac59f5739",
+    "author/review/native-report.json": "ac06a63e3201301a60a14ffb5445f6b51b41af4bb5f620fe9ea6fd9f3a6a9761",
+    "author/public/check-report.json": "09b4c16ee0408e7c6bb1d39799a34114cb69a1ad2389ae45b64307e43767bae4",
+    "author/public/prepare-report.json": "36455cd2e27109190f1d45437e2ee82448f8c33760934a237a38100e59199c6e",
+    "author/review-public/check-report.json": "705f8b37ff3bb577d3a4163a6edee0526737a99c3830f743862c7b699fd2b6c7",
+    "author/review-public/prepare-report.json": "0d36e39fb97abe433bb30ad870639c6b09f8088e99a14fc27959dea887fb644a"
+  },
+  "commands": [
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 4 python3 tests/semantics/define_scalar_false_flag_sources.py --phase native --output .tools/define-scalar-false-flag-native-40",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 4 python3 tests/semantics/define_scalar_false_flag_sources.py --phase baseline --output .tools/define-scalar-false-flag-native-40 --case fresh-scalar-names-false-flags-and-default-duplicate",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/define_scalar_false_flag_review_sources.py --phase native --output .tools/define-scalar-false-flag-review-40",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 240s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/define_scalar_false_flag_sources.py --phase model --output .tools/define-scalar-false-flag-native-40",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/define_scalar_false_flag_review_sources.py --phase model --output .tools/define-scalar-false-flag-review-40",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/define_scalar_false_flag_protocol.py --phase prepare --sources .tools/define-scalar-false-flag-native-40 --output .tools/define-scalar-false-flag-public-40",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 360s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/define_scalar_false_flag_protocol.py --phase check --sources .tools/define-scalar-false-flag-native-40 --output .tools/define-scalar-false-flag-public-40",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/define_scalar_false_flag_review_protocol.py --phase prepare --sources .tools/define-scalar-false-flag-review-40 --output .tools/define-scalar-false-flag-review-public-40",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 120s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/define_scalar_false_flag_review_protocol.py --phase check --sources .tools/define-scalar-false-flag-review-40 --output .tools/define-scalar-false-flag-review-public-40"
+  ],
+  "recovery": "Four owned raw directories moved once into the canonical root after reviewer STOP and focused cwd/cmdline/fd users[]. All nine report hashes are unchanged. Restore author/sources, author/review, author/public and author/review-public as .tools/define-scalar-false-flag-{native,review,public,review-public}-40 in a worktree at the recorded cuts to recover original source/command/cwd identities.",
+  "remaining": "Float/null names with these flags, truthy/NULL/NaN flags with scalar names, wider/owning values, packed/FCC/arity forms and full define-family closure remain partial. No engine bug or intentional divergence.",
+  "composition": {
+    "parent": "108b026fe4ef6e002c553cdf29b43f9bc11faecc",
+    "private_publication": "d99024255779d4f5ffe48cfad00fc463181ca5dc",
+    "modules": 399,
+    "method": "Pointwise composition: private-exact module400 and four tests; all other incoming runtime paths and ordered manifest preserved. Inventory retains only the own 2+2+1 appends and review suffix; incoming documentation and checkpoints remain.",
+    "seams": "Shared400/30 and source/config/error/name-conversion/string/bitwise helpers are exact private base. V63/283 applies only global stdClass initializer argument ownership;270 requires nullable-object ref-return/destructor cursors;280/289 require Generator/yield-from tasks;409 only LIST_FETCH recursion;152/386 require a WeakMap object pair. Our primitive dynamic define and Exception IDENTICAL path select none of those branches.",
+    "evidence": "Source4/public595 retain the recorded private cuts. Independent seam review found no concrete interaction, so no joined actor, replay or renewed execution credit."
+  }
+}

@@ -1014,6 +1014,11 @@ precision changes and duplicate handlers; strict errors retain raw arguments.
 Named sends match their normalized slots without changing captured call authority.
 [Four source agreements and 351 state premises](coverage/semantics/define-scalar-name-review.json)
 cover registration, returning/throwing warnings and source/budget controls.
+Integer/boolean names also accept false scalar flags (`0`, empty/`"0"` strings and
+float zero). Weak calls convert the API name while preserving the raw flag;
+strict name errors precede flag rejection after argument effects.
+[Four source agreements and 595 state premises](coverage/semantics/define-scalar-false-flag-review.json)
+cover publication, converted duplicate traces, callback throws and carrier guards.
 Weak null `define` names dispatch the deprecation before conversion and registration.
 A returning handler can create the empty-name binding first, causing a separate
 duplicate warning with the converted string in its API trace. A throwing first

@@ -129,7 +129,8 @@ pending tail changes only the constant table and preserves the original Throwabl
 caller destination and callback mutations. The pending duplicate case is
 covered below. The [scalar-flag review](../../coverage/semantics/define-scalar-flag-review.json)
 binds four source agreements and 462 public premises. NaN reception is covered
-below; wider values and coerced flags with scalar/null names remain separate.
+below; the bounded false-flag scalar-name follow-up is also covered below. Wider
+values and other coerced flags with scalar/null names remain separate.
 
 Boolean true uses its original warning marker for the fresh registration tail
 after a handler throws. The step appends the captured primitive after any unrelated
@@ -376,6 +377,20 @@ the received name in the API trace. The caller's scalar and assignment destinati
 stay intact. The [scalar-define review](../../coverage/semantics/define-scalar-name-review.json)
 binds four sources and351 public premises, with failed initial checks kept separate.
 
+Int/bool names accept nonbool false scalar flags: integer 0, empty/`"0"` strings and
+signed float zero. The existing scalar-name path converts the name before quiet
+bool reception, leaving the raw third argument in duplicate API traces. Strict
+parameter-1 errors precede nonbool third-parameter rejection after all effects.
+An optional-third carrier guard authenticates request strings; legacy two-argument
+and bool-false paths keep a trivially true guard. Only 20 module400 insertions extend
+the existing marker domain; receive, duplicate, trace and strict code are unchanged.
+The [false-flag name review](../../coverage/semantics/define-scalar-false-flag-review.json)
+binds four exact originals and 595 public premises across fresh/default duplicate,
+captured publication, strict and throwing empty-key duplicate groups. They check
+converted names/raw request flags, old binding/sibling effects, full restored-state
+discard equality, literal/carrier/prefix refusals and budgets. Float/null names with
+these flags, truthy/NULL/NaN flags and owning/wider forms remain partial.
+
 Null `define` names use a separate weak-call deprecation before conversion and
 registration, with the same primitive-value and omitted/already-false flag boundary.
 The first callback sees the raw null API argument. Normal return converts it to
@@ -443,8 +458,8 @@ and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`. `PHP_FUNCTION(constant)` us
 exception-class lookup and `ZVAL_COPY_OR_DUP`; `zend_declare_typed_class_constant`
 interns direct string values before installation.
 Nested empty values in `define`, cycles, objects, array duplicate/third-argument paths,
-Stringable/array names, array/object values with scalar or null names, true/coerced
-flags with scalar or null names, startup/special-name warnings,
+Stringable/array names, array/object values with scalar or null names, true/NULL/NaN
+flags with scalar names, nonbool flags with float/null names, startup/special-name warnings,
 internal/trait/interface/enum class queries, deferred keyword initializers and
 keyword `constant` array values, other deferred initializers,
 owning/FCC call forms and wider conversion/arity paths remain Unsupported. The [dynamic ledger](../../coverage/semantics/dynamic-constants-review.json)

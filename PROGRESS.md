@@ -7,6 +7,25 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Int/bool `define` names now accept nonbool false scalar flags: integer zero,
+empty or `"0"` strings and signed float zero. Weak calls convert only the API name,
+retaining the raw flag; strict parameter-1 errors precede flag rejection after all
+argument effects. Duplicate callbacks preserve converted empty-name traces, raw
+request flags, old bindings, sibling effects and the original Exception/caller result.
+Four exact originals agree at b00e6346. All 595 public premises pass: author
+274+80+108 and independent 133 across four groups, covering fresh publication,
+default duplication and handler return/throw, strict errors, full discard equality,
+carrier and source refusals and budgets. The unchanged Unsupported baseline retains zero
+credit; a fixture name collision was fixed before execution. Runtime adds only 20
+module400 lines and reuses existing receive/duplicate/trace code with a bounded
+marker-domain extension. Float/null names with these flags, truthy/NULL/NaN flags,
+owning/wider values and full family closure remain partial.
+[False-flag name review](coverage/semantics/define-scalar-false-flag-review.json).
+
+Pointwise composition over 108b026fe preserves the incoming 399-module parent.
+Source4/state595 retain their private cuts; shared selectors are disjoint, so no
+joined actor or renewed execution claim is warranted.
+
 WeakMap now compares with normalized real/named Closure, actual Generator/Fiber
 and finite builtin Throwable objects as uncomparable +1 in both directions.
 Class mismatch precedes private entries, captures, VMs and formatter/cache fields;
