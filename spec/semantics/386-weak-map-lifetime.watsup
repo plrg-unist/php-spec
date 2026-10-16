@@ -725,6 +725,8 @@ def $weakmap_standard_other(pobject) = true
   -- if $object_body(pobject) = METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?
 def $weakmap_standard_other(pobject) = true
   -- if $object_body(pobject) = ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture?
+def $weakmap_standard_other(pobject) = true
+  -- if $object_body(pobject) = STRINGMETHODCLOSURE pcalltarget pstringselection
 def $weakmap_standard_other(pobject) = false -- otherwise
 def $weakmap_standard_mismatch(S, n_left, n_right) = true
   -- if $(n_left < |S.OBJECTS|) /\ $(n_right < |S.OBJECTS|)

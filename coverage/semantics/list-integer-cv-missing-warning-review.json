@@ -1,0 +1,166 @@
+{
+  "version": 1,
+  "milestone": "A8 flat direct-CV destructuring integer-CV missing keys",
+  "status": "independently reviewed and pointwise composed for integration",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle and tests/semantics/profile.json",
+  "base": "bbcfe62e5378070bf1e85a6af7fd431591550362",
+  "scope": "Selected defined ordinary integer-CV keys for missing by-value leaves in flat by-value or mixed direct-CV RHS patterns, with direct-CV targets. Existing compiled/implicit keys and recursive contexts retain their prior contracts.",
+  "runtime_commit": "2a7398187addbfbd4ef77e328a0be4213316d8e9",
+  "runtime_sha256": {
+    "spec/semantics/409-list-missing-warnings.watsup": "4877dd5f6bface80de4cac7a78fe529b7381d99d5de3f3abddfe274ca9d3791b"
+  },
+  "private_modules": 399,
+  "engine_basis": [
+    "Vendored PHP8.5.10 commit34308a6666b2d489c509541ea9befea9e2b42348: zend_compile_list_assign compiles each key before FETCH_LIST_R; a simple key CV remains delayed until that fetch. The matching VM passes OP2 to zend_fetch_dimension_address_LIST_r.",
+    "zend_fetch_dimension_address_inner copies a long offset into hval before zend_undefined_offset calls the handler, then supplies uninitialized/null without another lookup. Removing, mutating or rebinding the CV cannot replace that captured integer.",
+    "Later key expressions execute after the prior target store; reference fetches use ordinary writable acquisition/COW. The VM exception check cancels the interrupted store and later targets when the handler throws."
+  ],
+  "reviewed_behavior": [
+    "Only409 changes runtime: a separate bounded flat integer-CV item helper, compatible source clause and initial plan. Existing item/context APIs, tasks/state/modules and generic read/write/compiler/ownership helpers are unchanged; no inherited tests or A1-A7 actors are replayed.",
+    "The plan authenticates source/key occurrence, exact delayed VARIABLE name and operand/compiler lines, selected index/target/tail, allocated bounded defined PINT cell, blocked/released-read exclusions and the actual missing entry. KNOWN versus marked REFERENCE source authority follows existing pattern reference demand.",
+    "Resume validates compatible source shape and frozen KINT kind, independently of the current key name/cell/value. Pure compatibility controls accept another integer argument without executing a forged state; only the reached plan selects the actual historical integer.",
+    "A missing key0 keeps NULL after insertion11 while the next key changes1 to2 and reads shared q33. A present NULL constant entry stays silent; later q55 changes the saved result array while the already stored y remains33.",
+    "An earlier target writes key4 before its missing fetch. The callback changes the future key to5 and replaces the handler; that second handler sees the earlier NULL store, changes it to77 and changes the pending tail88, which is then overwritten by NULL. Both exact warning keys and lines remain captured.",
+    "The independent negative-key case retires both aliases to the original key CELL and rebinds the name to replacement4. The original key-7 still supplies NULL while the later changed key2 reads22. The old source table remains task-owned after callback insertion77 creates a different live table.",
+    "The independent mixed case first stores key1, then the handler changes it to2. Later evaluation of the same CV acquires shared q33 at key2 through COW; raw acquisition/binding has four physical q owners, with old target pruning and final array/cell retirement distinguished. Final continuation follows a real driver step after raw COW acquisition, preserving destruction/GC bookkeeping while checking raw STORE/ARRAYS/TODO/RESULT equality and whole-state drive equality.",
+    "A supplied throw preserves earlier before9, callback x99, later y8 and destination100. At the caller TRY_END frontier the removed key cell, source array and embedded q have retired; the same Throwable and finally output are preserved."
+  ],
+  "accepted": {
+    "source": {
+      "report": ".tools/list-integer-cv-source-08/report.json",
+      "sha256": "bfebe190652a45a2107b5e3b460cf91a0e51abacbc7046ebdeaa22b8f04e4776",
+      "revision": "2a7398187addbfbd4ef77e328a0be4213316d8e9",
+      "agreements": 5,
+      "cases": [
+        "list-integer-cv-snapshot-next",
+        "list-integer-cv-second-handler",
+        "list-integer-cv-throw-retire",
+        "list-integer-cv-review-key-cell-retire",
+        "list-integer-cv-review-prior-store-later-reference"
+      ],
+      "native_reuse": "Fresh A8 originals retain native argv/source paths/streams from baseline/native preparations; model-only comparisons use the same original paths, without oracle replay."
+    },
+    "states": [
+      {
+        "report": ".tools/list-integer-cv-author-state-08/report.json",
+        "sha256": "da664c668daeaac730fccb32ab3e8f4621cd3b99e8176321d95db198bec9c2b2",
+        "revision": "d7431d9cb9f354853a12c14b365aea7c7678e3c7",
+        "cases": [
+          "list-integer-cv-snapshot-next",
+          "list-integer-cv-second-handler",
+          "list-integer-cv-throw-retire"
+        ],
+        "fronts": 3,
+        "conditions": [
+          136,
+          139,
+          115
+        ],
+        "raw_steps": [
+          3,
+          4,
+          1
+        ],
+        "boolean_premises": 382
+      },
+      {
+        "report": ".tools/list-integer-cv-review-state-09/report.json",
+        "sha256": "32493371d8537bdeb1116392f35ec25b6e1e4ffad98db65c7cc690659f5648f5",
+        "revision": "c7fe9d462ececd1d9d8259c36e871d22e5ca0f98",
+        "cases": [
+          "list-integer-cv-review-key-cell-retire"
+        ],
+        "fronts": 1,
+        "conditions": [
+          132
+        ],
+        "raw_steps": [
+          3
+        ],
+        "boolean_premises": 129
+      },
+      {
+        "report": ".tools/list-integer-cv-review-state-10/report.json",
+        "sha256": "57c0329100433eee654ddf53b473a70f8bfb23b16eb8f455981a0d72f92a3c92",
+        "revision": "5596ac57af29faac9a165454a46b2092e29b70e5",
+        "cases": [
+          "list-integer-cv-review-prior-store-later-reference"
+        ],
+        "fronts": 1,
+        "conditions": [
+          152
+        ],
+        "raw_steps": [
+          4
+        ],
+        "boolean_premises": 148
+      }
+    ],
+    "credit_note": "Each selected accepted state front passed in full. Failed or unrun fronts receive no premise credit. Conditions include setup and pure source/refusal premises, not separate PHP programs; all recorded process groups were reaped. Only affected independent fronts were retried after fixture corrections; source5/author390 retain their original cuts. Later fixture/docs/composition changes renew no earlier credit.",
+    "source_agreements": 5,
+    "state_fronts": 5,
+    "total_conditions": 674,
+    "boolean_premises": 659,
+    "raw_steps": 15
+  },
+  "preserved_zero_credit": [
+    {
+      "report": ".tools/list-integer-cv-baseline-08/report.json",
+      "sha256": "593e63c74e36edf1cc99dbcf64546b397e3c4c8081ec1e2d1c17d9c072e6cd04",
+      "revision": "bbcfe62e5378070bf1e85a6af7fd431591550362",
+      "result": "Unchanged runtime explicitly Unsupported at accepted handler ingress: error-handler ingress requires a producer continuation. Original native bytes/path are reused by accepted model comparison."
+    },
+    {
+      "report": ".tools/list-integer-cv-native-rest-08/report.json",
+      "sha256": "bd9eb7ded549b31b61df2a2184a5e15818b2b1f7d54e692b87c091bcd32de54f",
+      "revision": "bbcfe62e5378070bf1e85a6af7fd431591550362",
+      "result": "Fresh author second-handler and supplied-throw native2 preparation only."
+    },
+    {
+      "report": ".tools/list-integer-cv-review-native-08/report.json",
+      "sha256": "68f090b9654f27398a579619668747cb2558bda305177474a221fadba92791cd",
+      "revision": "bbcfe62e5378070bf1e85a6af7fd431591550362",
+      "result": "Fresh independent negative-key CELL retirement/rebinding and prior-store/later-reference native2 preparation only."
+    },
+    {
+      "report": ".tools/list-integer-cv-review-state-08/report.json",
+      "sha256": "dd8b9595a041689b583d5da507a069386e00e658aa873ace663f2aec55ac089f",
+      "revision": "d7431d9cb9f354853a12c14b365aea7c7678e3c7",
+      "result": "First fixture failed elaboration before execution: n_key* name and scalar n_key shared an iteration basename. No premises or runtime credit; second front unrun. Fixture-only scalar rename to n_key_cell atc7fe9d462; only independent packet retried, retaining author/source cuts."
+    },
+    {
+      "report": ".tools/list-integer-cv-review-state-09/report.json",
+      "sha256": "32493371d8537bdeb1116392f35ec25b6e1e4ffad98db65c7cc690659f5648f5",
+      "revision": "c7fe9d462ececd1d9d8259c36e871d22e5ca0f98",
+      "case": "list-integer-cv-review-prior-store-later-reference",
+      "result": "Mixed front passed output/target/heap/COW assertions but failed whole-state resume-drive equality: fixture continued from raw COW acquisition without driver destruction/GC bookkeeping. Added a real one-step driver normalization with raw STORE/ARRAYS/TODO/RESULT equality checks, retaining whole-state equalities; only this mixed front retried. The independently passing retirement front132/raw3 retains its c7fe cut separately."
+    }
+  ],
+  "raw_evidence": {
+    "archive": "/home/user/workspace/php-spec/.tools/list-integer-cv-missing-warning-08-raw.tar.gz",
+    "bytes": 454334,
+    "members": 199,
+    "sha256": "fa46098866904211be6370d0c370070a5ddd4d64b867b87f5ac7f225df3b17e5",
+    "recovery": "Archive retains eight original relative .tools report/fixture/process/source directories plus list-integer-cv-reuse-sources-08.py, including failed08 and partly accepted09. Extract beneath a checkout of the recorded cut; absolute argv/cwd are historical provenance. No archive is a build dependency."
+  },
+  "actual_parent_review": {
+    "parent": "c77b5f817598248ce04ec549eacd93a72af8fe4c",
+    "seams": "Incoming30/55/404 add distinct bitwise COMPOUND_APPLY/8192 stages;270 broadens authenticated typed-reference-return destructor Throwable guards;400 admits finite-float define names with false scalar flags. Subsequent Generator buffered-input state starts empty, adds no roots and validates trivially for these Generator-free originals; WeakMap/method-closure comparison guards are separate. No409/list key or delayed CV read helper changed. Final30/408 add a distinct PROPERTY_EMPTY_RV phase for standard-object magic-empty result disposal with scoped receiver guards; these originals never enter property-empty evaluation.",
+    "joined_actor": "No concrete semantic interaction found; pointwise composition and exact FF review add no replay credit.",
+    "composition": {
+      "runtime_delta": [
+        "spec/semantics/409-list-missing-warnings.watsup"
+      ],
+      "modules": 399,
+      "tested_leaf": "5596ac57af29faac9a165454a46b2092e29b70e5",
+      "checks": "409 and all six new test files retain final private leaf bytes; accepted source/author/independent state cuts remain distinct. No inherited test changes. Other parent runtime/modules, inventory rows/fields and all other PROGRESS checkpoints remain exact.",
+      "joined_actor": "No concrete interaction; no new actor or renewed agreement credit.",
+      "runtime_diff_sha256": "40ffc75e1425789f8386dcd677aefd44a61cfd030f2092d033d0facd7fa8b9f2"
+    }
+  },
+  "remaining": [
+    "Dynamic selected keys in recursive patterns or by-value literal-root patterns; call/wider RHS and non-CV targets. A mixed literal RHS is compile-invalid, not a pending runtime producer.",
+    "Other CV key types, computed key names/expressions, undefined-CV/null/lossy-float key warning producers and scalar/object destructuring diagnostic callbacks.",
+    "Wider callbacks, suspension and lifecycle; full array/diagnostic/core closure and final offline portability."
+  ]
+}

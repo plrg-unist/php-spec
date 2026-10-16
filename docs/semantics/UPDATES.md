@@ -199,6 +199,14 @@ retains five exact originals and 929 focused SL premises, including the quiet
 handoff, both throwing phases and default-second cached-zero Error. Initial
 references/copies, wider RHS conversions, unsafe targets and lifecycle remain partial.
 
+A fitting integral float RHS after the first modulo callback now converts quietly
+and commits directly from the returned LEFT marker. `5.0` stores `2` and detaches
+alias `99`; default-first `-0.0` raises RHS-line `DivisionByZeroError` without
+storage or detachment. Supplied first-handler throws preserve the same Exception,
+destination and aliases. [Quiet float evidence](../../coverage/semantics/modassign-quiet-float-review.json)
+retains three exact originals and 364 focused SL premises; no old operator cut is
+renewed. Other initial forms, unsafe bindings/targets and wider lifecycle remain partial.
+
 For distinct initially plain CVs, `<<=` and `>>=` keep the converted fractional
 left value through deprecation handlers, then read the live quiet integer count.
 Success detaches a late target alias; supplied throw or a negative count preserves

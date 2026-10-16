@@ -250,6 +250,18 @@ cells/owners and budgets are covered; LEFT remains historical at the second
 capture. Initial references/copies, other RHS conversions, unsafe or rebound
 bindings and wider callbacks/lifecycle remain partial; pure projections are refusals only.
 
+After the first modulo callback, a fitting integral float RHS also converts
+without a second diagnostic. Historical LEFT `12` and live `5.0` store `2` through
+a fresh result cell, detaching late alias `99`; the RHS remains a float. A supplied
+first-handler throw preserves its Exception, destination and alias write-through.
+Independent default-first `-0.0` instead raises `DivisionByZeroError` at RHS line 25
+without storing or detaching. Three exact originals and author 135/99 plus
+independent 130 SL premises pass in the
+[quiet float modulo ledger](../../coverage/semantics/modassign-quiet-float-review.json),
+covering the actual atomic commit/error, original bindings, owners and budgets.
+Initial references/copies, unsafe targets and wider RHS/callback/lifecycle forms
+remain partial; refusal projections do not establish wider execution.
+
 For distinct initially plain CVs, `<<=` and `>>=` keep a fractional-float left
 conversion before their deprecation and read the live quiet integer count afterward.
 Captured `-12` with live count `2` stores `-48` or `-3` despite callback target `99`;

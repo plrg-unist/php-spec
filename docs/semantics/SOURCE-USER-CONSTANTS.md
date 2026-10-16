@@ -258,6 +258,18 @@ retain structural authority. Two exact sources and two public fronts/162 premise
 check these distinctions and later copies in the
 [empty ledger](../../coverage/semantics/dynamic-constant-empty-review.json).
 
+String-name `define` also retains an already-certified live stdClass donor with
+an omitted or false flag. Registration stores the captured object pointer and
+its completed-birth class, transferring the call owner to a constant-row owner
+without allocation. Named/selected sends retain their earlier value even when
+a later argument rebinds the caller's CV. Duplicate warnings keep the original
+row and callback property writes; throwing handlers preserve the Exception trace
+owners until ordinary catch/unset cleanup. Historical rows validate their stored
+birth/value and source policy, without reconstructing a past mutable CV or flag.
+[Certified define review](../../coverage/semantics/define-stdclass-review.json).
+Ordinary uncertified objects, object-array payloads, true/coerced flags, coerced
+names and wider owning define domains remain partial.
+
 Class-qualified `defined` queries reuse inherited lookup and the actual caller's
 lexical visibility. Missing or inaccessible members return false. The initial
 folded-value slice did not evaluate deferred descriptors. An absent
@@ -488,7 +500,7 @@ The matching engine routes are `ZEND_FUNCTION(define)`/`ZVAL_COPY`,
 and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`. `PHP_FUNCTION(constant)` uses
 exception-class lookup and `ZVAL_COPY_OR_DUP`; `zend_declare_typed_class_constant`
 interns direct string values before installation.
-Nested empty values in `define`, cycles, objects, array duplicate/third-argument paths,
+Nested empty values in `define`, cycles, other objects, array duplicate/third-argument paths,
 Stringable/array names, array/object values with scalar or null names, true/NULL/NaN
 flags with scalar names, nonbool flags with nonfinite float names, true/NULL/NaN flags with
 null names, startup/special-name warnings,

@@ -19,7 +19,8 @@ remains later research.
 [Missing-key destructuring warnings](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md)
 now retain captured arrays or source reference cells through handlers, including
 recursive by-value CV/literal and mixed CV patterns, with ordered null delivery
-and normal/throw cleanup.
+and normal/throw cleanup. Flat CV-source patterns also freeze selected integer-CV
+keys across callbacks while later key variables are read afresh.
 
 The [checked eval parser service](docs/semantics/DYNAMIC-SOURCE-SERVICE.md)
 accepts raw eval-source bytes, uses a native parse-only scanner for rejection
@@ -605,6 +606,11 @@ integer RHS after the first callback skips the second diagnostic. Success detach
 late aliases; either supplied throw or a captured zero preserves them. Five exact
 originals and 929 focused SL premises pass in the
 [ordered modulo ledger](coverage/semantics/modassign-both-warning-review.json).
+An integral float RHS after the first callback also converts quietly: with cached
+LEFT `12`, RHS `5.0` stores `2` and detaches alias `99`; signed zero raises
+`DivisionByZeroError` before storage.
+Three exact originals and 364 focused SL premises pass in the
+[quiet float modulo ledger](coverage/semantics/modassign-quiet-float-review.json).
 For initially plain variables, `<<=` and `>>=` now retain a fractional left
 conversion through deprecation handlers, then read the live quiet integer count.
 Success detaches a late target alias; supplied throw or a negative count preserves
@@ -1158,8 +1164,14 @@ nested reference snapshots and literal constraints pass
 Top-level empty definitions retain an authenticated immutable table or create a
 fresh mutable copy. [Two exact sources and 162 public premises](coverage/semantics/dynamic-constant-empty-review.json)
 distinguish allocation classes and rebuilt append history, rejecting a mutable
-clone of a fixed literal. Nested empties, array warning/flag paths, objects and
+clone of a fixed literal. Nested empties, array warning/flag paths, other objects and
 cycles remain Unsupported.
+String-name `define` with an omitted/false flag now shares already-certified
+stdClass donors. Named/selected calls preserve the captured pointer through later
+CV changes, and duplicate handlers keep the old binding and property writes on
+normal return or throw. Existing call and Exception-trace cleanup release the
+temporary owners. [Certified define review](coverage/semantics/define-stdclass-review.json).
+Ordinary uncertified objects, object-array payloads and wider flags/names remain partial.
 Class-qualified `defined` now checks inherited user constants with lexical visibility
 and quiet misses. Named autoload resumes the same captured query once.
 [Two exact sources and 288 public premises](coverage/semantics/class-qualified-defined-review.json)
@@ -2145,6 +2157,13 @@ Three exact sources and 266 Boolean premises/8 actual steps preserve real captur
 receiver owners and unchanged aggregate states; later real method/tail bodies remain
 quiet until explicitly called. Other Closure representations and wider weak lifetimes
 remain partial. [Method-Closure review](coverage/semantics/weakmap-method-comparison-review.json).
+
+Fixed literal method-string Closures now also compare with live WeakMap before
+receiver, scope or private-entry traversal. Bound captures and inherited static
+captures pass all seven operators in both directions; cloned parent selection,
+sole receiver owners and skipped aggregate tails pass two exact sources and
+321 Boolean premises/8 actual steps. Stored-string carrier conversion remains a
+separate producer gap. [Literal-string review](coverage/semantics/weakmap-string-method-comparison-review.json).
 
 [Numeric object comparison Notices](coverage/semantics/object-numeric-comparison-review.json)
 now pause ordinary source-instance/int/float leaves through real error handlers.

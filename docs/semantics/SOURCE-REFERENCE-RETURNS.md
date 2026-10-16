@@ -945,3 +945,21 @@ source, operation, owner, liveness and single-cursor checks. This is one
 TypeError history; M81 Exception, M82 RuntimeException and M83 normal-exit
 proofs remain separate. Other built-in kinds and wider destructor histories
 need focused validation. See the [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M85 admits an ordinary no-argument, literal-name method call on a variable
+receiver as the old source at that pending destructor-throw exit. The paired
+`?O` sources differ only in whether `Factory::old_ref()` returns by reference.
+After `f` unsets the retained Factory's slot, O's destructor throws
+`TypeError("dtor85")`. Native2 and repaired source2 both reach the local
+`CT:1` catch, resume the old return as detached NULL, and emit one old-line
+VALUE Notice; the unchanged model wrongly reaches outer `OT` without a Notice.
+The reference-only reached proof binds the old property HCELL to O before
+unset, their separate modeled retirement while Factory remains live, the same
+destructor TypeError at the local catch, and the root-free cursor's NULL/new
+Notice continuation. It also passes actual exit admission, a heap-equal
+LINE-only public refusal and budget equality. The initial fixture's false
+assumption of an early Notice has zero state credit; the genuine reference has
+no marker at that pre-finalizer cut. Only pending-throw admission changed;
+normal pending-free method admission is unchanged, and wider method forms remain
+open. See the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).

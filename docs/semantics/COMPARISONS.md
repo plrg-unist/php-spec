@@ -87,9 +87,20 @@ uses standard comparison directly. Seven-operator rows return `0100001` in eithe
 direction, with strict identity unchanged. The mismatch reads no receiver/capture,
 scope row or private entry and adds no roots or guards. Four direct and four genuine
 zero-prefix aggregate steps preserve complete state apart from the consumed task,
-reset BASE and result; later real casters are skipped. Other Closure representations
-and wider producer/lifetime routes remain partial. The retained STRING slice failed
-before comparison and supplies no coverage for that representation.
+reset BASE and result; later real casters are skipped. Other producers and wider
+lifetimes remain partial. At the retained COMP71 cut, the computed STRING slice
+failed before comparison and supplied no coverage for that producer.
+
+[Literal method-string WeakMap mismatches](../../coverage/semantics/weakmap-string-method-comparison-review.json)
+also admit exact normalized STRINGMETHODCLOSURE under the same live allocated
+nonfreeing guards. The Closure handler falls back before fake-Closure target/scope
+fields, so class mismatch returns +1 in either direction without receiver or private
+traversal. Source witnesses use fixed literals: bound parent selection on a child
+and inherited static captures, including a cloned capture with its seed retired.
+Two originals and 321 Boolean premises/8 actual steps preserve whole comparison
+states, sole receiver owners, scope rows and skipped later aggregate casters. This
+extends comparison admission; stored-string carrier conversion and other producer/
+representation/lifetime routes remain partial.
 
 [Generator/Generator and Fiber/Fiber pairs](../../coverage/semantics/generator-fiber-comparison-review.json)
 return order zero through the standard zero-default-property shortcut. The pair
