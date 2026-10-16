@@ -18,7 +18,7 @@ remains later research.
 
 [Missing-key destructuring warnings](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md)
 now retain captured arrays or source reference cells through handlers, including
-recursive by-value nesting, with null delivery and ordered normal/throw cleanup.
+recursive by-value CV/literal nesting, with null delivery and ordered normal/throw cleanup.
 
 The [checked eval parser service](docs/semantics/DYNAMIC-SOURCE-SERVICE.md)
 accepts raw eval-source bytes, uses a native parse-only scanner for rejection

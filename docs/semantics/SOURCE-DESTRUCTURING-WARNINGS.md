@@ -1,9 +1,8 @@
 # Missing-key destructuring warnings
 
 Module409 supplies the E_WARNING continuation for missing by-value fetches into
-direct CV leaves. Flat by-value patterns admit direct CV or literal RHS arrays;
-recursive by-value patterns and flat mixed value/reference patterns require a direct
-CV RHS. Implicit integer keys
+direct CV leaves. Recursive by-value patterns admit direct CV or literal RHS arrays;
+flat mixed value/reference patterns require a direct CV RHS. Implicit integer keys
 and warning-free compiled constant keys are admitted. Literal strings retain their
 authenticated interned-string carrier before key conversion. Undefined key CVs,
 null/lossy-float key diagnostics, nested reference leaves, wider RHS producers
@@ -48,12 +47,14 @@ The generic error-handler machinery supplies mask eligibility, temporary handler
 disabling, exact-false default reporting and restoration. A present null entry
 does not enter the missing-key continuation.
 
-For a compiled literal the captured table must match the RHS pool occurrence.
-A runtime literal instead requires its nonconstant compiler descriptor and a
+For a compiled literal root the captured table must match the RHS pool occurrence.
+A runtime root instead requires its nonconstant compiler descriptor and a
 mutable live table; its embedded references are not reconstructed from live CVs. Rebinding
 `q` in the handler leaves the literal's old reference cell available to later
 fetches. Pooled arrays keep permanent owners; runtime literal arrays can have only
 the saved task owner, then retire with otherwise unowned cells after discard or throw.
+Captured children retain their own live tables, independently of root pool identity
+or a shared parent cell's later value.
 Known-result effect replay still performs the destructuring effects before
 delivering its constant result. A handler throw cancels that later delivery.
 
@@ -70,6 +71,7 @@ paths/streams without an oracle replay. Separate ledgers retain the
 [CV](../../coverage/semantics/list-missing-warning-review.json),
 [literal](../../coverage/semantics/list-literal-missing-warning-review.json),
 [mixed](../../coverage/semantics/list-reference-missing-warning-review.json),
-[one-layer](../../coverage/semantics/list-nested-missing-warning-review.json) and
-[recursive](../../coverage/semantics/list-recursive-missing-warning-review.json)
+[one-layer](../../coverage/semantics/list-nested-missing-warning-review.json),
+[recursive CV](../../coverage/semantics/list-recursive-missing-warning-review.json) and
+[recursive literal](../../coverage/semantics/list-recursive-literal-missing-warning-review.json)
 cuts and failures. No complete array, diagnostics or lifecycle-family claim follows.
