@@ -1,0 +1,126 @@
+{
+  "version": 1,
+  "milestone": "A9 quiet CV keys for flat direct-CV destructuring missing-key handlers",
+  "status": "independently reviewed private milestone; actual-parent composition pending",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle and tests/semantics/profile.json",
+  "base": "21d54a66d2530c5efd59afd1f62191eab9e04665",
+  "scope": "Defined ordinary bool, exact-float and non-NUL string CV keys for selected missing by-value leaves in flat by-value or mixed direct-CV RHS patterns, with direct-CV targets. Integer/compiled keys and recursive contexts retain their previous contracts.",
+  "runtime_commit": "818a7239e81d89f2f6bc3c8c4afbac8b19e4c641",
+  "runtime_sha256": {
+    "spec/semantics/409-list-missing-warnings.watsup": "ada951b5b6e7cc61009c79c389df8f0e18bf76073cc2bb2542dd95c50bef9394"
+  },
+  "private_modules": 399,
+  "engine_basis": [
+    "Vendored PHP8.5.10 commit34308a6666b2d489c509541ea9befea9e2b42348: zend_compile_list_assign leaves ordinary key CV reads delayed until FETCH_LIST_R. zend_fetch_dimension_address_inner selects the converted integer or string before the missing-key handler and returns uninitialized/null without another lookup.",
+    "The engine maps false/true to0/1 and exact floats to integers without a conversion diagnostic. Canonical numeric strings such as2 select integer2, while leading-zero02 stays a distinct string key. Later key expressions execute after the prior target store.",
+    "String carrier identities in this model are immutable STRINGDATA metadata without heap owners. Planning authenticates a carrier before conversion; the saved key contains only the converted key value, independently of the original CV cell. A callback exception cancels the store and later items."
+  ],
+  "reviewed_behavior": [
+    "Only409 changes runtime: a CV-only frozen-key validity guard admits KINT or valid non-NUL KSTRING; initial planning validates carriers and reuses the unchanged quiet conversion helper. Existing integer_cv_item, compiled-key and recursive-context bodies, task/state/modules and generic read/write/compiler/ownership helpers remain unchanged.",
+    "The actual delayed VARIABLE name/operand/compiler lines, flat direct-CV RHS/target/tail, bounded allocated defined CV cell and blocked/released-read exclusions still authenticate initial planning. Resume checks compatible source shape and admitted frozen key kind/byte validity without rereading the current key cell or carrier or reconstructing historical value equality.",
+    "Actual boolfalse selects missing0; callback livekey1.5 cannot cause a conversion or relookup. A fresh nextbooltrue selects missing1 under the replacement handler, which preserves earlier callback x77 while pending y88 is overwritten by NULL. Present NULL remains silent and exactly two callbacks occur.",
+    "Actual exact float-2 selects missing integer-2. Callback key2.5 and insertion55 do not affect NULL delivery; fresh nextfalse selects shared q33 at0. A later q44 affects result/live arrays while the already stored y remains33.",
+    "The independent non-NUL request-string old-row becomes a frozen KSTRING. Its old aliased key CELL retires after callback mutation/unsets and the name rebinds to replacementnew; immutable STRINGDATA history persists. The original source array remains task-owned after insertion77 creates another live table; fresh nextold reads11.",
+    "The independent numeric-string2 becomes KINT2. Callback insertion77 COW-separates the live mixed root from its copy while key02 remains a distinct KSTRING for later reference acquisition. Raw q owners3 to4, target binding/pruning and final retirement follow actual driver bookkeeping; full-state drive equalities and original native bytes agree.",
+    "A supplied throw after before9 preserves callback x99, later y8, destination100, the same Throwable and finally. At caller TRY_END, key CELL/source array/q have retired while authenticated request-string history remains immutable metadata.",
+    "Two affected inherited A8 pure-control files receive five surgical substitutions: obsolete KSTRING-kind refusals become wrong KNOWN PNULL source refusals; obsolete bool/string type refusals become array/lossy-float/nonfinite exclusions. Equivalent controls execute on new A9 reached fronts; A8 and earlier actors retain original cuts with no replay or renewed credit.",
+    "The new CV guard excludes NUL keys. Only pure frozen-key guard refusal checks use a zero byte; no NUL PHP source or positive owned-NUL execution was introduced. Wider diagnostic and lifecycle boundaries remain open."
+  ],
+  "accepted": {
+    "source": {
+      "report": ".tools/list-quiet-cv-source-09/report.json",
+      "sha256": "6a9a20f51d603487c77a17482735dffc7c9e5e93a7194afcf88addbbd2fd99ab",
+      "revision": "818a7239e81d89f2f6bc3c8c4afbac8b19e4c641",
+      "agreements": 5,
+      "cases": [
+        "list-quiet-cv-bool-two-handlers",
+        "list-quiet-cv-float-snapshot",
+        "list-quiet-cv-string-throw",
+        "list-quiet-cv-review-request-key-cell-retire",
+        "list-quiet-cv-review-numeric-string-reference"
+      ],
+      "native_reuse": "Fresh A9 originals retain native argv/source paths/streams from baseline/native preparations; model-only comparisons use the same original paths, without oracle replay."
+    },
+    "states": [
+      {
+        "report": ".tools/list-quiet-cv-author-state-09/report.json",
+        "sha256": "776eed358cb98d853f807bc5eec16026ca53a97463a097f012da4310cc2356dd",
+        "revision": "1b0359ee3a2af38b886cb8aa6b753ffc20d34747",
+        "fronts": 3,
+        "conditions": [
+          134,
+          127,
+          111
+        ],
+        "raw_steps": [
+          4,
+          3,
+          1
+        ],
+        "boolean_premises": 364
+      },
+      {
+        "report": ".tools/list-quiet-cv-review-state-09/report.json",
+        "sha256": "b19d6f717bc39763a6ca935c0e4eb2e6eab96883f7d668af3a3092eed6ff1003",
+        "revision": "1b0359ee3a2af38b886cb8aa6b753ffc20d34747",
+        "fronts": 2,
+        "conditions": [
+          135,
+          145
+        ],
+        "raw_steps": [
+          3,
+          4
+        ],
+        "boolean_premises": 273
+      }
+    ],
+    "source_agreements": 5,
+    "state_fronts": 5,
+    "total_conditions": 652,
+    "boolean_premises": 637,
+    "raw_steps": 15,
+    "credit_note": "Conditions include setup and pure source/guard/refusal premises, not separate PHP programs. All recorded process groups were reaped; no A9 fixture failed. Source/state checks retain their private cuts; later documentation/composition adds no agreement credit."
+  },
+  "preserved_zero_credit": [
+    {
+      "report": ".tools/list-quiet-cv-baseline-09/report.json",
+      "sha256": "53313959ce0f475fda7744fb5a14d6a07fc679d308f19965b4242f58a9fff7cb",
+      "revision": "21d54a66d2530c5efd59afd1f62191eab9e04665",
+      "result": "Unchanged A8 frontend accepted the original bool-key program, then explicitly Unsupported at handler ingress: error-handler ingress requires a producer continuation. Its original native path/bytes are reused for accepted model comparison."
+    },
+    {
+      "report": ".tools/list-quiet-cv-native-rest-09/report.json",
+      "sha256": "dc6e40290b82c6a9cf849cbf9d9426929da16877ae06df965f5cd46272bd4f0c",
+      "revision": "21d54a66d2530c5efd59afd1f62191eab9e04665",
+      "result": "Fresh author exact-float snapshot and non-NUL request-string supplied-throw native2 preparation only."
+    },
+    {
+      "report": ".tools/list-quiet-cv-review-native-09/report.json",
+      "sha256": "eaeee3e04e984debdd316e0055ffcbebc979a6e009fae727553b1d9d5173e9ab",
+      "revision": "21d54a66d2530c5efd59afd1f62191eab9e04665",
+      "result": "Fresh independent non-NUL request-key CELL retirement and numeric-string/reference selection native2 preparation only."
+    }
+  ],
+  "affected_historical_controls": [
+    "tests/semantics/list_integer_cv_missing_warning_protocol.py",
+    "tests/semantics/list_integer_cv_missing_warning_state_review.py"
+  ],
+  "raw_evidence": {
+    "archive": "/home/user/workspace/php-spec/.tools/list-quiet-cv-missing-warning-09-raw.tar.gz",
+    "bytes": 318967,
+    "members": 152,
+    "sha256": "b0e689c4c9b9bfac5e166cbc2126e32b1ee8381bd9000b664d998b3a56e144f6",
+    "recovery": "Archive retains six original relative .tools report/fixture/process/source directories plus list-quiet-cv-reuse-sources-09.py. Extract beneath a checkout of the recorded cut; absolute argv/cwd are historical provenance. No archive is a build dependency."
+  },
+  "actual_parent_review": {
+    "parent": "cdcf742272c5914dff02aa1b4f7c262766471968",
+    "seams": "Incoming270 admits authenticated nullable-class typed-reference method-return destructor cursors;280/289 admit discarded-yield Generator sends;386 adds WeakMap/string-method-closure mismatch;400 extends checked stdClass define/userconstant receipts;408 admits stdClass magic-empty RV disposal. These source/task/value paths are absent from the originals; user constants and Generator buffers remain empty. No409/array/key/string-carrier helper changed.",
+    "joined_actor": "No concrete semantic interaction found; pointwise composition and exact FF review add no replay credit."
+  },
+  "remaining": [
+    "Dynamic selected keys in recursive patterns or by-value literal-root patterns; call/wider RHS and non-CV targets. Mixed literal RHS is compile-invalid, not a runtime frontier.",
+    "Paused owned-NUL/CV-NUL behavior, computed key names/expressions, undefined/null/lossy-float conversion warnings and scalar/object destructuring diagnostic callbacks.",
+    "Wider callbacks, suspension and lifecycle; full array/diagnostic/core closure and final offline portability."
+  ]
+}
