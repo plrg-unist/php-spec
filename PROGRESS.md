@@ -17,6 +17,10 @@ retain zero credit; no actor failed. Stored-string carrier conversion, other Clo
 representations and wider weak lifetimes remain partial.
 [Literal method-string review](coverage/semantics/weakmap-string-method-comparison-review.json).
 
+Composed over 7994b0e50/399 after pointwise review of magic-empty disposal,
+list-key, abrupt-return, integral-modulo and constant-born define selectors, all
+absent here. Source2/state321 retain their private cut; no joined actor or renewed credit.
+
 Modulo now quietly converts a fitting integral float RHS left by the first
 handler in the both-fractional plain-CV route. Cached LEFT 12 with live `5.0`
 stores 2 and detaches alias 99 in one production step; supplied throw preserves the
