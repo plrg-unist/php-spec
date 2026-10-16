@@ -26,6 +26,10 @@ def $test_rejected_front(S,1,n_object) = true
   -- if $destructor_handle(S,S.DESTRUCTION.INDEX,0) = (n_object)
   -- if ~(n_object <- S.DESTRUCTION.CALLED)
   -- if $destructor_method(S,n_object) =/= eps
+def $test_rejected_front(S,2,n_object) = true
+  -- if S.TODO = (THROW_SEARCH n_error) :: ptask_tail*
+  -- if $global_std_record(S.CONSTANTSTDOBJECTS,n_object) = (pconstantstdobject)
+  -- if ~pconstantstdobject.COMPLETE
 def $test_rejected_front(S,n_phase,n_object) = false -- otherwise
 dec $test_rejected_seek(pstate, nat, nat, nat) : pstate
 def $test_rejected_seek(S,n_phase,n_object,0) = S
@@ -39,11 +43,11 @@ def $test_rejected_seek(S,n_phase,n_object,n) = $test_rejected_seek($test_std_ru
 '''
 
 
-def reach(state,start,phase,obj):
+def reach(state,start,phase,obj,public=True):
     return [f'{state}_found = $test_rejected_seek({start},{phase},{obj},5000)',
         fr'{state}_found.COMPLETION = NORMAL \/ {state}_found.COMPLETION = BUDGET',
         f'{state} = $test_std_running({state}_found)',
-        f'$test_rejected_front({state},{phase},{obj})',*common.public(state)]
+        f'$test_rejected_front({state},{phase},{obj})',*(common.public(state) if public else [])]
 
 
 def born(start):
@@ -140,16 +144,23 @@ def checks(initial,name,stdout,after_line):
             'S_resume = $test_std_running(S_pause)', 'S_resume = S_current']
         launch='S_resume'
     values += [*common.step('S_error',launch),
-        'S_error.TODO = (THROW_SEARCH n_error) :: (DEFAULT_NEW_SEND pdefaultnew) :: ptask_current*',
-        'S_error.CONSTCONTEXT = eps', 'S_error.DESTRUCTION.REJECTED = [pconstantargument]',
+        'S_error.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_current*',
+        'pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HOBJECT n_outer),DESTRUCTION_VALUE (HOBJECT n_prior)]',
+        'pdestructionoperation.SOURCE = DEFAULT_NEW_SEND pdefaultnew',
+        'pdestructionoperation.COMPLETION = THROWING n_error',
+        'pdestructionoperation.PENDING = (n_error)',
+        'S_error.CONSTCONTEXT = S_current.CONSTCONTEXT',
+        'S_error.DESTRUCTION.REJECTED = [pconstantargument]',
         '$constant_argument_header(S_error,pconstantargument)', '$heap_valid($heap_graph(S_error))',
         'S_error.OBJECTS[n_error] = THROWABLE pthrowable',
         '$string_bytes($throwable_field(S_error,n_error,"message")) = ('+text('Named parameter $keep overwrites previous argument')+')',
         '$throwable_field(S_error,n_error,"line") = PINT 1',*owners('S_error',array),
-        '$global_new_argument_owned(S_error,pdefaultnew)',
-        *common.step('S_discarded','S_error'),
-        'S_discarded.DESTRUCTION.REJECTED = S_error.DESTRUCTION.REJECTED',
-        *std.reach('S_after','S_discarded',2,after_line),
+        *reach('S_throw','S_error',2,'n_outer',public=False),
+        'S_throw.TODO = (THROW_SEARCH n_error) :: ptask_current*',
+        'S_throw.CONSTCONTEXT = eps',
+        'S_throw.DESTRUCTION.REJECTED = S_error.DESTRUCTION.REJECTED',
+        '$constant_argument_header(S_throw,pconstantargument)',*owners('S_throw',array),
+        *std.reach('S_after','S_throw',2,after_line),
         'S_after.CONSTCONTEXT = eps',
         '$user_constant_at(S_after.USERCONSTANTS,'+text(target)+') = eps',
         'S_after.DESTRUCTION.REJECTED = [pconstantargument]',
