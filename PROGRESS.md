@@ -7,6 +7,28 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Both-fractional plain-CV `<<=`/`>>=` now order both conversion deprecations.
+LEFT (-12) survives the first callback, then live 2.5 becomes cached count 2 before
+the second; later 88/1 still stores (-48)/(-3) and detaches alias 88. A quiet count 2
+after the first callback skips the second diagnostic and reaches the unchanged
+shift commit, detaching alias 99. First/second supplied throws preserve the same
+Exception, callback effects, destination 100 and alias write-through. Independent
+cached (-1) from -1.5 still raises ArithmeticError at line 25 after the second default
+Deprecated despite live count 2, without storage or detachment.
+Six exact originals pass at e9144f0d7; author 227/227/144/211/180 plus independent 183
+SL premises pass 1172 at 01ce8b03b/399. Both AST/OP pairs, fresh first-LEFT/second-count
+guards, actual entered frames, quiet handoff, real cells/owners and budgets are
+covered; LEFT stays historical at second capture. Native/baseline/retained checked
+prep/syntax retain 0. Initial references/copies, wider count conversions, unsafe
+bindings/targets and wider callbacks/lifecycle remain partial; pure projections
+establish refusals only.
+[Ordered shift ledger](coverage/semantics/shiftassign-both-warning-review.json).
+OP12 stays paused; earlier accepted operator cuts retain 0 renewed credit.
+
+Composed over 440cf9c2b/399 after pointwise review of abrupt reference returns,
+WeakMap comparison/array casts, Generator send, stdClass/define and recursive-list
+seams. Source6/state1172 retain private cuts; no joined actor, replay or renewed credit.
+
 Live nonfreeing WeakMap array casts now create fresh mutable empty arrays,
 including populated maps, without exporting entries or retaining their key/value.
 Two exact originals and 177 Boolean premises (168 setup + 9 pure)/6 actual casts pass

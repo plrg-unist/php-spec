@@ -614,6 +614,12 @@ through a fractional-count deprecation. Success detaches a late alias; supplied
 throw or a captured negative count preserves it. A captured count of `64` keeps
 the original signed-right-shift result. Five exact originals and 674 focused SL
 premises pass in the [RHS shift ledger](coverage/semantics/shiftassign-right-warning-review.json).
+With two fractional floats, plain-CV `<<=`/`>>=` order both conversion
+deprecations and retain each long after its own conversion. A quiet integer count
+after the first callback skips the second diagnostic. Success detaches late aliases;
+either supplied throw or a captured negative count preserves them. Six exact
+originals and 1172 focused SL premises pass in the
+[ordered shift ledger](coverage/semantics/shiftassign-both-warning-review.json).
 For initially plain variables, numeric `&=`, `|=` and `^=` now keep their fractional
 left conversion through deprecation handlers, then read the live quiet integer RHS.
 Success detaches late aliases; supplied throw preserves callback writes and the
