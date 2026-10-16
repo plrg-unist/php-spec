@@ -7,6 +7,26 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+
+Pending shared Generator `send` now also accepts a bare statement yield with no
+native result target. It snapshots current and clears initialization without
+advancing or buffering the ignored argument. Argument destruction precedes receiver
+cleanup, preserving old reference-row snapshots through live-cache COW and the same
+supplied Exception through real child/middle close. Four exact normal originals
+and four reached state groups/363 premises (167 author +196 independent, including
+20 generic reachability premises) pass at `dcc8f917d`/399. Real API/OP_EXIT/queued
+close steps, physical owners, source/tail refusals and budget resume are covered.
+Strict399 passes; the four-fixture elaboration gate adds no semantic credit.
+No actor failed or was retried. Native4 and the unchanged genuine Unsupported
+baseline retain `844f` and zero model credit. Existing used-slot retention stays
+unchanged; other expression shapes, pending/buffered `throw`, owning copied returns
+and broader lifecycle remain partial. No engine bug or intentional divergence is
+claimed. [Unused-target review](coverage/semantics/generator-pending-unused-send-review.json).
+Composed over `f4bfc340e`/399 after pointwise review of incoming class-RV,
+constant, comparison, list, arithmetic and abrupt-return selectors. Only Generator
+modules 280/289 change; all other runtime and the manifest preserve parent bytes.
+Source/state/strict retain their private cut; no joined actor or renewed credit.
+
 Terminal inherited `empty` now admits stdClass getter RVs through the existing
 receiver-only disposal phase. An owned payload destructor runs while the stdClass
 storage pin and captured receiver remain; isset stays active and Get inactive.

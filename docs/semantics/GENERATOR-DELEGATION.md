@@ -106,6 +106,11 @@ result when it is assigned directly to a simple CV. When a direct or forwarded
 `next` resumes the child, it consumes that value without adding another owner.
 Close and overwrite preserve its native request-late count independently of the
 chain and raw reference cache; see the [shared-send review](../../coverage/semantics/generator-pending-shared-send-review.json).
+Bare statement yields instead have no send target. Pending `send` captures the
+current snapshot, then retires its ignored argument before the receiver, without
+advancing or buffering it. Reference-cache writes and a supplied destructor
+exception preserve that ordering through later real next or forced close; see the
+[unused-target review](../../coverage/semantics/generator-pending-unused-send-review.json).
 Aggregate/Iterator data is outside this route. Owning copied returns, other used
 yield shapes, active buffered `throw` and pending `throw` remain Unsupported.
 

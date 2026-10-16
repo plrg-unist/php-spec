@@ -892,6 +892,9 @@ assigned directly to a simple CV. A direct or forwarded `next` that resumes the
 child consumes it; close and overwrite preserve its count until request-store destruction,
 independently of caches and Generator owners.
 See the [shared-send review](coverage/semantics/generator-pending-shared-send-review.json).
+At a bare statement yield, pending `send` instead ignores its argument. The current
+snapshot precedes argument destruction, which runs before receiver cleanup even
+when it throws. See the [unused-target review](coverage/semantics/generator-pending-unused-send-review.json).
 [Delegation](docs/semantics/GENERATOR-DELEGATION.md)
 adds arrays, source Iterators and shared Generator graphs with live raw caches
 and natural return/unwind. Aggregate yield-from now acquires nested real iterator
