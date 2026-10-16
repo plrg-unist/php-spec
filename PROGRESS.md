@@ -17,6 +17,11 @@ failure retain zero credit; the bounded diagnostic and prelaunch provisioning ad
 none. STRING and other Closure representations, producers and wider weak lifetimes
 remain partial. [Method-Closure review](coverage/semantics/weakmap-method-comparison-review.json).
 
+Composed over af38e86d0/399 after pointwise review of constant arguments, define,
+property/list, abrupt-return and Generator-input seams. GENERATORINPUTS stays empty
+for these non-generator sources, adding no roots or validity restriction. Source3/
+state266 retain their private cut; no joined actor or renewed execution credit.
+
 Pending shared Generator `send` now fills a paused child's used yield assigned
 directly to a simple CV, through finite native Generator links, without advancing.
 A direct or forwarded `next` that resumes the child transfers its one payload
