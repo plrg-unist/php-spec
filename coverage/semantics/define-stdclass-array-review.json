@@ -1,0 +1,84 @@
+{
+  "status": "independently reviewed bounded implementation and focused validation",
+  "target": "PHP 8.5.10 CLI NTS64, sole pinned local PHP/profile, exact original bytes/filename/cwd, full399 SL modules",
+  "base": "2c18a6d83b7d49854202251fa087bdac6ea780e0",
+  "implementation_revision": "83394ec50201face5a8b63e649e366f34ee205be",
+  "runtime": {
+    "file": "spec/semantics/400-dynamic-constants.watsup",
+    "sha256": "a0ae987d80861b3323da5c0e243b282388cf598e0b8aeb06f16a3105e62f0b74",
+    "delta": "Sole400 +4/-4: three comment lines and one array-leaf classifier replacement with existing dynamic_define_value_class(S,value). Primitive behavior is unchanged; certified stdClass leaves reuse completed/live birth authority. Existing copy/check folds, source selection, two-argument fresh-only, nested-empty/cycle and flag/duplicate fences are unchanged."
+  },
+  "engine_route": "Zend/zend_builtin_functions.c::validate_constant_array_argument checks recursive containers. copy_constant_array dereferences each entry, creates fresh nonempty nested containers and reinserts surviving keys, while Z_TRY_ADDREF shares object leaves. ZEND_FUNCTION(define) registers the copied value. Object graph-owner counts here distinguish physical edges from container/call roots, rather than asserting raw Zend C refcounts.",
+  "accepted": {
+    "source_agreements": 3,
+    "author_sources": 2,
+    "independent_sources": 1,
+    "author_literal_premises": 153,
+    "author_eval_premises": 146,
+    "independent_premises": 270,
+    "total_premises": 569,
+    "driven_forged_states": 0,
+    "zero_budget_restoration_checks": 1
+  },
+  "behavior": [
+    "Reached literal CONFIG consumes the captured input root and publishes two fresh canonical DIRECT containers containing the same certified object twice. One source cell owns its leaf once; two copied physical edges add two owners while the source remains live. Surviving integer keys rebuild NEXT6 instead of source NEXT91. Later source-cell rebinding and caller bucket replacement do not change the stored tree; shared property writes remain visible.",
+    "Actual source-unit1 eval selected define snapshots an inline nested donor array. Literal and eval query deliveries return the exact stored root, add one RESULT owner, leave leaf owners/heap edges unchanged and allocate nothing. Final canonical root/child each own one incoming edge/root; the leaf has donor plus two stored physical edges (owners3). Temporary input/caller containers retire.",
+    "Pure missing/incomplete/dead birth, wrong generic tree tag and forged append history are refused by copy-check/row validation; input ALIAS cells are copy-only. Selected source receipts remain required. No projected state is driven. Historical variable/named payloads retain the existing structural source policy rather than replaying past mutable CVs.",
+    "Independent selected named source freezes one shared cell into two DIRECT edges (LEFT owners2 to4), then cellRIGHT leaves storedLEFT intact (LEFT3/RIGHT2). A real completed bucket-reference replacement reaches distinct caller root/child containers and an actual ALIAS pointing RIGHT (LEFT4/RIGHT3). The second no-allocation query returns the canonical original; ordinary final release retires source/private containers and cells, ending LEFT3/RIGHT1."
+  ],
+  "cuts": {
+    "native_and_baseline": "4c92a50cc148f9fcab53697e692a4122adb2292f/399",
+    "author_source2": "83394ec50201face5a8b63e649e366f34ee205be/399",
+    "authority": "Runtime is byte-identical across the source/state cuts. State preparation adds tests only. All model comparisons use the actual corresponding native main.php path and unchanged WT cwd. No V65 or unrelated accepted evidence is replayed.",
+    "peer_source1_and_state569": "b639a9aa0411e9883cc6d338e47d5cdc753ded8a/399"
+  },
+  "preserved_outcomes": {
+    "baseline": "Genuine Unsupported dynamic constant call domain after B|, CLI1/empty stderr/stable/reaped at clean4c92. Passing boundary assertion contributes0 agreement.",
+    "other": "Accepted native/source/state checks pass first attempts. Zero-budget check proves pause/restoration identity and reuses the ordinary tested delivery; it adds no separate driven-resume credit. No accepted engine divergence."
+  },
+  "remaining": "Other owning or uncertified object leaves, nested empty descendants, array duplicates/warnings, third flags, coerced names and packed/FCC/wider owning forms remain partial. Existing primitive and top-level-empty contracts are unchanged.",
+  "artifacts": {
+    "author_sources": {
+      "root": ".tools/dynamic-stdclass-array-define-native-66",
+      "sha256": {
+        "native-report.json": "162a2daa9b2f7679b69335b0d3f6700a531432e1cbef43303c0ca035e891c6a3",
+        "baseline-report.json": "2f71c8822d52872a3216945993fb31eeb110633c52c8b678d40201202b355ebf",
+        "model-report.json": "67369b0be8920d5e6a28704f4d915a2b54d5e29cc9986fe100bc7dc91eeb72a5"
+      }
+    },
+    "peer_source": {
+      "root": ".tools/dynamic-stdclass-array-define-peer-66",
+      "sha256": {
+        "native-report.json": "4aac0a1f4c8f97b72d51e07dc5aa7188c130b1ae3626b0d00211f536f657287f",
+        "model-report.json": "0cec6faa84c32a3d973b342dbb9d4ee8da95615ce2354f338711720fb553058b"
+      }
+    },
+    "literal_state": {
+      "root": ".tools/dynamic-stdclass-array-define-literal-state-66",
+      "sha256": {
+        "fixtures-report.json": "74ec5bba0ff1cc8cb3a515e1bd6853db85d2ab7b795e157f37cf914012c164fb",
+        "check-report.json": "1a22b2fa929e17ccc645c11b2308cd1f6765371ae8ac492c5e6e9940dc6a1eff"
+      }
+    },
+    "eval_state": {
+      "root": ".tools/dynamic-stdclass-array-define-eval-state-66",
+      "sha256": {
+        "fixtures-report.json": "406c5d495c056e5559b46e37bd6ab4e06898ad89f1f7b05f88a8ae6133bdf1e9",
+        "check-report.json": "75638111907568ffb7156b093bfa8f6ec974a997f2f8b7003447a5521f33dd2b"
+      }
+    },
+    "peer_state": {
+      "root": ".tools/dynamic-stdclass-array-define-peer-state-66",
+      "sha256": {
+        "fixtures-report.json": "ff9cee8037eba34b5473b2ac97afe5a3cd6ec269a33083ab873e6878481d3496",
+        "check-report.json": "d5c8ef8c1729e97fa40ab9fd5765ca918b1d54ad6e438af43b67d618b277955e"
+      }
+    }
+  },
+  "recovery": "Tracked source/protocol wrappers reuse the existing checked worker/SL recorder. Native uses host45/process15, unchanged baseline host90/CLI45/process60 onCPU3, changed author model2 host150 with serial CLI45/process60 and peer native45/model90 onCPU4. Author protocol requires --case; per-case fixtureshost120 then checkhost150/perSL90, preserving the original native66 source paths. Peer fixtures120/check150 use its own main-only prepare and original native peer66 root. Proof stdout is lowercase true plus LF, empty stderr. Raw artifacts remain ignored in canonical.tools. After cleanup restore scripts from the publication containing this ledger and peer protocol (the actorHEAD lacks its then-untracked peer script), recreate original WT path and provision report-pinned executables/references, preserving recorded runtime and native filename/cwd identities.",
+  "review": {
+    "reviewer": "/root/dynamic_review_59",
+    "decision": "cleared",
+    "scope": "Actual fresh snapshot/captured roots, completed/live std receipt, physical array/object edges versus references, canonical rebuilt tables, named/selected eval, no-allocation query and real nested bucket-reference COW."
+  }
+}

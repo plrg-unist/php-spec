@@ -256,14 +256,23 @@ and full family closure remain partial.
 Fresh two-argument array definitions recursively dereference source cells into
 new DIRECT entries. Reinserting surviving keys rebuilds NEXT, positions and serial
 metadata; ordinary copies and later source/reference writes preserve the constant.
-Nonempty acyclic trees contain primitive/carrier leaves, whose actual string
-classes are retained. Repeated noncyclic children may copy independently.
+Nonempty acyclic trees contain primitive/carrier leaves and certified live
+stdClass donors. String classes and object birth classes are retained; copied
+containers share the exact object pointers. Repeated noncyclic children may copy
+independently.
 Public checks require a canonical DIRECT tree and available literal-array facts,
 comparing ordered keys and leaf values rather than internal array IDs. Variable
 payloads keep structural authority without replaying past CVs. Two exact sources
 and two public fronts/219 premises cover request strings, gap appends, nested
 reference freezing and a later literal registration in the
 [array ledger](../../coverage/semantics/dynamic-constant-array-review.json).
+The [object-leaf snapshot review](../../coverage/semantics/define-stdclass-array-review.json)
+adds literal/eval and selected named originals: one shared source cell becomes
+two DIRECT object edges, later cell rebinding leaves the snapshot intact, and
+real query bucket-reference COW changes caller containers while property writes
+still reach the stored objects. Queries add only a root owner and allocate
+nothing. The leaf classifier reuses completed/live birth guards; producer,
+two-argument fresh-only, canonical-table and cycle/empty boundaries are unchanged.
 
 Top-level empty values use the existing source-pool or retained immutable flag.
 An authenticated immutable empty keeps its table and `PVARRAY true eps`; a mutable
@@ -283,8 +292,8 @@ row and callback property writes; throwing handlers preserve the Exception trace
 owners until ordinary catch/unset cleanup. Historical rows validate their stored
 birth/value and source policy, without reconstructing a past mutable CV or flag.
 [Certified define review](../../coverage/semantics/define-stdclass-review.json).
-Ordinary uncertified objects, object-array payloads, true/coerced flags, coerced
-names and wider owning define domains remain partial.
+Ordinary uncertified objects, other owning array leaves, array duplicates,
+true/coerced flags, coerced names and wider owning define domains remain partial.
 
 Class-qualified `defined` queries reuse inherited lookup and the actual caller's
 lexical visibility. Missing or inaccessible members return false. The initial

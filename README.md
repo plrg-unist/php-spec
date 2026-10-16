@@ -1185,7 +1185,12 @@ stdClass donors. Named/selected calls preserve the captured pointer through late
 CV changes, and duplicate handlers keep the old binding and property writes on
 normal return or throw. Existing call and Exception-trace cleanup release the
 temporary owners. [Certified define review](coverage/semantics/define-stdclass-review.json).
-Ordinary uncertified objects, object-array payloads and wider flags/names remain partial.
+Fresh two-argument definitions also copy nonempty array trees containing certified
+stdClass leaves. Copied containers freeze source reference values while object
+pointers and property writes remain shared, including selected eval calls
+and nested query COW. [Array-object define review](coverage/semantics/define-stdclass-array-review.json).
+Ordinary uncertified objects, other owning leaves, nested empties, array duplicate
+warnings and wider flags/names remain partial.
 Class-qualified `defined` now checks inherited user constants with lexical visibility
 and quiet misses. Named autoload resumes the same captured query once.
 [Two exact sources and 288 public premises](coverage/semantics/class-qualified-defined-review.json)

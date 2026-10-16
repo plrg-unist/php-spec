@@ -768,8 +768,18 @@ pure certificate refusals, normal false delivery and actual Exception trace/call
 root release while the old property ALIAS keeps 53.
 The first eval original's temporary-property write compile failure and literal
 fixture binding failure remain0; only affected checks were renewed. Ordinary
-uncertified objects, object-array payloads and wider flags/names remain partial.
+uncertified objects and wider flags/names remain partial.
 [Certified define review](coverage/semantics/define-stdclass-review.json).
+
+Fresh two-argument `define` now copies nonempty array trees containing certified
+stdClass leaves. Sole400 changes one leaf classifier; existing folds dereference
+source cells, rebuild append history and share exact object pointers. Three exact
+sources agree. Author299 and independent 270 premises check fresh physical
+containers/leaf edges, literal and eval capture, no-allocation queries and real
+nested bucket-reference COW, with pure live-birth/table refusals. All accepted
+checks pass their first attempt; the unchanged Unsupported baseline retains0.
+Other owning leaves, nested empties, array duplicates and wider flags/names remain
+partial. [Array-object define review](coverage/semantics/define-stdclass-array-review.json).
 
 Selected inherited `__unset(string): void` now dispatches direct CV/literal-name
 access to a declared private property. Accessible public unset skips magic;
