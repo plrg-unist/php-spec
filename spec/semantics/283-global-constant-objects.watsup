@@ -551,7 +551,8 @@ def $global_std_rejected(S, pdefaultnew) = (pconstantargument)
   -- if $global_std_record(S.CONSTANTSTDOBJECTS, pdefaultnew.OBJECT) = (pconstantstdobject)
   -- if pvalueclass = $constant_class(S, porigin_arg)
   -- if pconstantfact_read* = $constant_argument_reads(S, porigin_arg, $global_constant_reads(S, pconstantstdobject.DECL))
-  -- if pconstantargument = {OBJECT pdefaultnew.OBJECT, INDEX pdefaultnew.INDEX, VALUE pvalue, CLASS pvalueclass, CONSTANTS |S.USERCONSTANTS|, READS pconstantfact_read*}
+  -- if n_constants = |S.USERCONSTANTS|
+  -- if pconstantargument = {OBJECT pdefaultnew.OBJECT, INDEX pdefaultnew.INDEX, VALUE pvalue, CLASS pvalueclass, CONSTANTS n_constants, READS pconstantfact_read*}
   -- if $constant_argument_header(S, pconstantargument)
 def $global_std_rejected(S, pdefaultnew) = eps -- otherwise
 
