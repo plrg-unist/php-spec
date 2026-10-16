@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "milestone": "COMP72",
+  "status": "independently reviewed within the stated live WeakMap/literal-method-string Closure domain",
+  "behavior": "Live WeakMap versus normalized STRINGMETHODCLOSURE returns uncomparable +1 in either orientation before target, receiver, scope or private-entry traversal.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "tested_revision": "79559094c822a44bc283990b0a99a692a9e5dc05",
+  "ordered_modules": 399,
+  "manifest_sha256": "2e38df4b97a41f654a8c3f01ffb0c078c337ed17d1ce8816ff7429a23b031761",
+  "implementation": {
+    "spec/semantics/386-weak-map-lifetime.watsup": "340320ecc4423aca3d88ccc1d4303766bcd16ab1816e69febe3fcc0b97a793cb"
+  },
+  "engine_basis": [
+    "Zend/zend_operators.c zend_compare chooses the left object handler. Zend/zend_closures.c zend_closure_compare runs ZEND_COMPARE_OBJECTS_FALLBACK for unlike compare pointers before fake-Closure fields.",
+    "Zend/zend_object_handlers.c zend_std_compare_objects rejects unlike classes before properties; WeakMap copies standard handlers in zend_register_weakref_ce."
+  ],
+  "contract": [
+    "Only the exact normalized STRINGMETHODCLOSURE pattern extends $weakmap_standard_other. Existing bounds/allocation/nonfreeing mismatch guards, ORDER1 effect and refusal exclusion remain unchanged.",
+    "Existing fixed literal module210/215 STRING_CONVERT producers supply bound requested-parent/child-called and receiver-free inherited-static captures. No module120 producer rule changes. Seven-operator rows yield 0100001 both ways; strict identity remains separate."
+  ],
+  "source_catalogues": {
+    "tests/semantics/weakmap_string_method_comparison_cases.json": "5819b121d5beb447634c35d52f36bb9e53ab63d428690d2a2088ea320a999c2c",
+    "tests/semantics/weakmap_string_method_comparison_review_cases.json": "fa9687985a5c3a4cef8f242b75c6e6a70671003631bbcc743e9feb271a367631"
+  },
+  "unchanged_frontier": {
+    "revision": "844f6957d59d2af2b8e3dc632f0d8cea1fa8f342",
+    "report": ".tools/string72-support/run-baseline-v1/report.json",
+    "reason": "WeakMap comparison protocol",
+    "stdout_prefix": "string-bound|",
+    "producer": "Fixed literal bound capture returned from a real Child receiver frame and passed get_class(Closure) before the prefix.",
+    "agreement_credit": 0
+  },
+  "validation": {
+    "original_sources": {
+      "normal_agreements": 2,
+      "author_seconds": 29.92074711807072,
+      "independent_seconds": 42.09295633621514,
+      "cli_and_host_caps_seconds": [
+        240,
+        250
+      ]
+    },
+    "author": {
+      "premises": 157,
+      "setup": 149,
+      "pure": 8,
+      "raw_php_steps": 4,
+      "seconds": 26.207348436117172,
+      "result": "Four genuine row72 EQUAL fronts cover bound/static captures in both directions, with exact string selection and Receiver lexical/Child called scopes. Sole bound receiver edge/owner1 versus static no edge, private/key owner1, whole-step false, scope preservation and budget equality pass."
+    },
+    "independent": {
+      "premises": 164,
+      "setup": 160,
+      "pure": 4,
+      "raw_php_steps": 4,
+      "seconds": 36.83517333120108,
+      "result": "Four genuine aggregate spaceship fronts stop after zero prefixes. A cloned literal parent-method capture on an overriding Child keeps the sole receiver owner after seed object and maker CV retirement; the static capture has no child edge. Full source endings call only Parent body, return Map/29 and execute real tail/private casters."
+    },
+    "total": {
+      "premises": 321,
+      "setup": 309,
+      "pure": 12,
+      "raw_php_steps": 8
+    },
+    "separate_zero_credit": "Native observations and unchanged Unsupported baseline, initializer, author EL and four parse/check operations supply no application agreement or extra state credit.",
+    "failures": []
+  },
+  "limits": [
+    "Pure bounds/dead-allocation/intrinsic denial and prior-guard projections establish helper admission/effects only, not malformed-global execution.",
+    "Stored-string carrier conversion remains outside this increment; its retained COMP71 failure keeps its original cut and zero credit. Other Closure/internal/custom counterparts, producers and wider weak lifetimes remain partial.",
+    "Scope/selection, clone retirement and owners are genuine reached prerequisites and source observations. No COW, mutation or wider lifecycle protocol is newly claimed."
+  ],
+  "artifacts": {
+    ".tools/string72-support/gates.py": "ca82d9a41209982b90f544dab07271bf634d3bdf44730d7fb87868da0085a0e5",
+    ".tools/string72-support/inputs.py": "dab4de01314b2afd64e1f53644a42bcd676c285ccb2b1f3eacdc937cb3edc6e1",
+    ".tools/string72-support/actor.py": "6109e68c4fd308663791b20b4afeb6bcae6bdf9302ab1688a9099169ae948acf",
+    ".tools/string72-support/run-native-v1/report.json": "d35609c26b993e9987635232cfa46e86d2f1ef72bb763e224babbda7f36aa79c",
+    ".tools/string72-support/run-baseline-v1/report.json": "84c4097f92d01223516ab765031eb99c923d3ae85150868f7f8f8b24ac77b770",
+    ".tools/string72-support/run-init-v1/report.json": "a773e4857c5f1ab82d3209409936ac7b78543bb272c2a2970b4a456556c36105",
+    ".tools/string72-support/run-sources-v1/report.json": "7db7d8313f5dd44ab07ab45566c46c3bedcd6747a279c5c50f7259541ce294a5",
+    ".tools/string72-support/run-prepare-v1/report.json": "f9676796d77f4a6e37d4d80fcfda139f37a65c2f903ac5b6ab54b69639d02961",
+    ".tools/string72-state/build.py": "e41a0c21462ae8a61db706f44f2af1177476d0bdab5d570e11a5c9dcfd60e66c",
+    ".tools/string72-state/helpers.watsup": "351f21a6d2a8b4237e299cc25d98b46edbe9af3fd4a74e71d3bd2863152746aa",
+    ".tools/string72-state/run.py": "8c6b3a0b48ab0b10e14300da42cb73f924d9e95e15cbb710db3bedd9315131ac",
+    ".tools/string72-state/plan.json": "4b5952cced889e324e834e8e581af25105067ca6576ed59db1049307e1a321df",
+    ".tools/string72-state/run-el-v1/report.json": "d335a93c1926b7227ed7c1a72b213198149da1e60d3b5ce04fa126161eee0883",
+    ".tools/string72-state/run-sl-v1/report.json": "d7cf2216674c03d8e36428c695d376c515acd1a5d23ba12b811ead8e86f7075c",
+    ".tools/string72-peer/run.py": "829b0d9918207411a7962ff5dbe3d63a11a21ed586c265296d6c9b390a3b3c36",
+    ".tools/string72-peer/build.py": "93afb8c1f3011ae00baac1afd1f5641d6bd14de6b1a7560952ba960298ef4bbf",
+    ".tools/string72-peer/helpers.watsup": "ce565d80549b88b208684551b105135b3c325f046d178ae5abd756362f1c5dd2",
+    ".tools/string72-peer/plan.json": "d7f7ca1810e2688e95726374929f1524f76d304e9f5cb647763ad4a6580cf56d",
+    ".tools/string72-peer/native-v1/report.json": "b3d4e770297d6f9bb0c09cb4c49b92493faee0ec40831f40fdedff214e1ac5be",
+    ".tools/string72-peer/source-v1/report.json": "865d0aa3c6c6cd0b4dba90a1fa287a53c47d778451c26541eb522e53ec86707e",
+    ".tools/string72-peer/prepare-v1/report.json": "307004a332993432a6ade0d6e08b08d5bfa76fcfd00059eb86dd6ab819470ca5",
+    ".tools/string72-peer/state-v1/report.json": "3a7a42d7710c3bc02b364fa759b830b3255a4aad3baf87ef249b8456cd709893",
+    ".tools/string72-peer/review.json": "b3941dbbe9520ce74ddd086f3d123ea649022e5bec871bc584fcf6ca11fb3426"
+  },
+  "recovery": "Ignored originals, fixtures, START/command/environment records and raw streams remain under .tools/weakmap-string-method-comparison-72/.tools/string72-{native,support,state,peer}; branch codex/weakmap-string-method-comparison-72 retains the tested revision. No evidence archive is committed.",
+  "independent_review": {
+    "reviewer": "/root/comp_review_67",
+    "semantic_verdict": "CLEAR",
+    "source_and_state_verdict": "CLEAR",
+    "publication_verdict": "CLEAR",
+    "record": ".tools/string72-peer/review.json",
+    "record_sha256": "b3941dbbe9520ce74ddd086f3d123ea649022e5bec871bc584fcf6ca11fb3426"
+  }
+}

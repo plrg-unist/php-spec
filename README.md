@@ -2158,6 +2158,13 @@ receiver owners and unchanged aggregate states; later real method/tail bodies re
 quiet until explicitly called. Other Closure representations and wider weak lifetimes
 remain partial. [Method-Closure review](coverage/semantics/weakmap-method-comparison-review.json).
 
+Fixed literal method-string Closures now also compare with live WeakMap before
+receiver, scope or private-entry traversal. Bound captures and inherited static
+captures pass all seven operators in both directions; cloned parent selection,
+sole receiver owners and skipped aggregate tails pass two exact sources and
+321 Boolean premises/8 actual steps. Stored-string carrier conversion remains a
+separate producer gap. [Literal-string review](coverage/semantics/weakmap-string-method-comparison-review.json).
+
 [Numeric object comparison Notices](coverage/semantics/object-numeric-comparison-review.json)
 now pause ordinary source-instance/int/float leaves through real error handlers.
 Live CV/cell reads remain distinct from copies; a second Notice uses saved 1/1.0,

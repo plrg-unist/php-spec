@@ -7,6 +7,16 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+WeakMap comparisons now admit normalized STRINGMETHODCLOSURE objects from fixed
+literal method captures, returning uncomparable +1 in either direction. Two exact
+originals and 321 Boolean premises (309 setup + 12 pure)/8 actual steps pass at
+79559094c/399. Bound and inherited static operator rows, cloned parent-descriptor
+selection on an overriding child, sole receiver ownership, unchanged scope rows,
+quiet aggregate tails and budget resume are covered. Native/baseline/preparation/EL
+retain zero credit; no actor failed. Stored-string carrier conversion, other Closure
+representations and wider weak lifetimes remain partial.
+[Literal method-string review](coverage/semantics/weakmap-string-method-comparison-review.json).
+
 Modulo now quietly converts a fitting integral float RHS left by the first
 handler in the both-fractional plain-CV route. Cached LEFT 12 with live `5.0`
 stores 2 and detaches alias 99 in one production step; supplied throw preserves the
@@ -52,8 +62,8 @@ private-entry traversal. Three exact originals and 266 Boolean premises
 real aggregate frames, receiver-only capture owners, scope rows, quiet later tails and budget
 resume are covered. Two earlier source failures and the split STRING producer
 failure retain zero credit; the bounded diagnostic and prelaunch provisioning add
-none. STRING and other Closure representations, producers and wider weak lifetimes
-remain partial. [Method-Closure review](coverage/semantics/weakmap-method-comparison-review.json).
+none. That retained cut covers two representations; other producers and wider
+weak lifetimes remain partial. [Method-Closure review](coverage/semantics/weakmap-method-comparison-review.json).
 
 Composed over af38e86d0/399 after pointwise review of constant arguments, define,
 property/list, abrupt-return and Generator-input seams. GENERATORINPUTS stays empty
