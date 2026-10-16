@@ -1,17 +1,31 @@
 {
   "milestone": "COMP71",
   "native_revision": "f2a3bfb6d9c7f863323e0d22c23c820a6613eac5",
-  "native_report": ".tools/method71-support/run-native-v1/report.json",
-  "native_report_sha256": "170f48523516e273bb60d9fffc9554000a935fd53f24242b5921966a509c2797",
+  "native_report": ".tools/method71-support/run-native-v2/report.json",
+  "native_report_sha256": "e09aad082be7ae0a8726770ce3b2c82d865b48889b985edab0c6ea3d43aee68c",
   "cases": [
     {
-      "id": "direct",
-      "file": "/home/user/workspace/php-spec/.tools/weakmap-method-comparison-71/.tools/method71-native/direct.php",
-      "cwd": "/home/user/workspace/php-spec/.tools/weakmap-method-comparison-71/.tools/method71-native",
-      "source_sha256": "c8b8fb7e6e24c965f719b2b1ed177cfe01e994403af6e2df824dae964df886eb",
-      "native_start_sha256": "6fea4c3fb5849a7525dc50ce1a564b7fa0fd578fb95a0eef8c2d8289a81363ad",
+      "id": "method",
+      "file": "/home/user/workspace/php-spec/.tools/weakmap-method-comparison-71/.tools/method71-split/method.php",
+      "cwd": "/home/user/workspace/php-spec/.tools/weakmap-method-comparison-71/.tools/method71-split",
+      "source_sha256": "bc5979ede9a155045e102f2369f094e02d9707fa57487d245be37496fd813e29",
+      "native_start_sha256": "14c44021096c081ea298c9446903b13978f2d1e07684fe86f54a1806c51611b8",
       "oracle": {
-        "stdout": "bWV0aG9kLWluc3RhbmNlfDAxMDAwMDF8MDEwMDAwMXxtZXRob2Qtc3RhdGljfDAxMDAwMDF8MDEwMDAwMXxhcnJheS1pbnN0YW5jZXwwMTAwMDAxfDAxMDAwMDF8YXJyYXktc3RhdGljfDAxMDAwMDF8MDEwMDAwMXxzdHJpbmctc3RhdGljfDAxMDAwMDF8MDEwMDAwMXxxdWlldHxpZGVudGl0eXxjYWxsfDE6MTc6MToxNzoxN3xib2RpZXN8cHJpdmF0ZXxvbmNlfGRvbmU=",
+        "stdout": "bWV0aG9kLWluc3RhbmNlfDAxMDAwMDF8MDEwMDAwMXxtZXRob2Qtc3RhdGljfDAxMDAwMDF8MDEwMDAwMXxxdWlldHxpZGVudGl0eXxjYWxsfDE6MTd8Ym9kaWVzfHByaXZhdGV8b25jZXxkb25l",
+        "stderr": "",
+        "exit_status": 0
+      },
+      "cli_timeout_seconds": 240,
+      "host_timeout_seconds": 250
+    },
+    {
+      "id": "array",
+      "file": "/home/user/workspace/php-spec/.tools/weakmap-method-comparison-71/.tools/method71-split/array.php",
+      "cwd": "/home/user/workspace/php-spec/.tools/weakmap-method-comparison-71/.tools/method71-split",
+      "source_sha256": "f495fd6dd7e200df6e9ceec862c913e14807860f931cd5d85bdaf57be3faf120",
+      "native_start_sha256": "a1735ba3517248b00d23c539bce10aa1320866ee918a05c1585cf4c8f06efc98",
+      "oracle": {
+        "stdout": "YXJyYXktaW5zdGFuY2V8MDEwMDAwMXwwMTAwMDAxfGFycmF5LXN0YXRpY3wwMTAwMDAxfDAxMDAwMDF8cXVpZXR8aWRlbnRpdHl8Y2FsbHwxOjE3fGJvZGllc3xwcml2YXRlfG9uY2V8ZG9uZQ==",
         "stderr": "",
         "exit_status": 0
       },
