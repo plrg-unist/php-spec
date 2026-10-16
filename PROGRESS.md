@@ -7,6 +7,27 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Both-fractional plain-CV `%=` now orders the two conversion deprecations. LEFT12
+is retained through the first callback, then live RHS5.5 becomes cached5 before
+the second; later88/7 still stores2 and detaches alias88. A quiet RHS5 after the
+first callback instead skips the second diagnostic and uses the unchanged modulo
+commit, leaving alias99 detached. Either supplied throw preserves the same
+Exception, callback effects, destination100 and alias write-through. Independent
+cached0 from0.5 still raises DivisionByZeroError at line25 after the second default
+Deprecated despite liveRHS7, without storage or detachment.
+Five exact originals pass at3964e0453; author223/140/207/176 plus independent183 SL
+premises pass929 at70a8c13cc/399. Fresh first-LEFT/second-RHS guards, actual entered
+frames, quiet handoff, real cells/owners and budgets are covered; LEFT stays
+historical at the second capture. Native/baseline/retained checked prep/syntax
+retain0. Initial references/copies, wider RHS conversions, unsafe bindings/targets
+and wider callbacks/lifecycle remain partial; pure projections establish refusals
+only. [Ordered modulo ledger](coverage/semantics/modassign-both-warning-review.json).
+OP12 stays paused; earlier accepted operator cuts retain0 renewed credit.
+
+Composed over 573d02d38/399 after pointwise review of abrupt reference returns,
+WeakMap/Throwable comparison, Generator send, stdClass/define and recursive-list
+seams. Source5/state929 retain private cuts; no joined actor, replay or renewed credit.
+
 Int/bool `define` names now accept nonbool false scalar flags: integer zero,
 empty or `"0"` strings and signed float zero. Weak calls convert only the API name,
 retaining the raw flag; strict parameter-1 errors precede flag rejection after all

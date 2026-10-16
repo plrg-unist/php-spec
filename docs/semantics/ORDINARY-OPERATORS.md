@@ -231,8 +231,24 @@ safe target; it never rereads the RHS. Three exact originals and 267 author plus
 137 independent SL premises pass in the
 [RHS modulo ledger](../../coverage/semantics/modassign-right-warning-review.json).
 Fresh cache/source/line/range guards, actual cells/owners, default Deprecated and
-budgets are covered; pure refusals establish no wider execution. Both-fractional
-operands, initial references/copies, unsafe targets and wider lifecycle remain partial.
+budgets are covered; pure refusals establish no wider execution. Wider operand
+combinations, initial references/copies, unsafe targets and wider lifecycle remain partial.
+
+For two initially fractional-float plain CVs, `%=` captures LEFT before its first
+deprecation, then reads the RHS after that callback. Captured `12` with the new
+`5.5` captures divisor `5` before the second deprecation; later writes `88`/`7`
+still store `2`, leaving late alias `88` detached. A quiet integer `5` after the
+first callback instead reaches the existing modulo commit with one diagnostic.
+Either supplied handler throw cancels storage and preserves its Exception, callback
+writes and alias. Captured `0.5` remains zero despite a second callback writing `7`:
+one default Deprecated precedes the original-line `DivisionByZeroError`, without
+storage or detachment. Five exact originals and 746 author plus 183 independent SL
+premises pass in the
+[ordered modulo ledger](../../coverage/semantics/modassign-both-warning-review.json).
+Fresh first-LEFT and second-RHS guards, actual entered frames, quiet handoff,
+cells/owners and budgets are covered; LEFT remains historical at the second
+capture. Initial references/copies, other RHS conversions, unsafe or rebound
+bindings and wider callbacks/lifecycle remain partial; pure projections are refusals only.
 
 For distinct initially plain CVs, `<<=` and `>>=` keep a fractional-float left
 conversion before their deprecation and read the live quiet integer count afterward.

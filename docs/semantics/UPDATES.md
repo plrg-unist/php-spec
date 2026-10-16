@@ -185,8 +185,19 @@ converted longs across the RHS deprecation. Success detaches a late target alias
 supplied throw or a captured zero divisor preserves callback writes and aliases.
 The live RHS is never reread after capture.
 [RHS modulo evidence](../../coverage/semantics/modassign-right-warning-review.json)
-retains three source agreements and 404 focused SL premises; both-fractional
-operands, initial references/copies and unsafe targets remain partial.
+retains three source agreements and 404 focused SL premises; wider operand
+combinations, initial references/copies and unsafe targets remain partial.
+
+For two initially fractional-float plain CVs, `%=` orders the LEFT deprecation
+before converting the live RHS. A fractional RHS gets its own captured long and
+deprecation; a quiet integer skips the second diagnostic. Success detaches a late
+alias. Either handler throw or a captured zero divisor preserves callback writes,
+unchanged destination and alias write-through. Fresh second dispatch checks the
+current RHS, while LEFT remains historical.
+[Ordered modulo evidence](../../coverage/semantics/modassign-both-warning-review.json)
+retains five exact originals and 929 focused SL premises, including the quiet
+handoff, both throwing phases and default-second cached-zero Error. Initial
+references/copies, wider RHS conversions, unsafe targets and lifecycle remain partial.
 
 For distinct initially plain CVs, `<<=` and `>>=` keep the converted fractional
 left value through deprecation handlers, then read the live quiet integer count.

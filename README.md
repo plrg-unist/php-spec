@@ -598,6 +598,12 @@ Normal `%=` detaches a late target alias; supplied throw or a captured zero divi
 preserves callback writes and aliases even after the live RHS changes.
 Three exact originals and 404 focused SL premises pass in the
 [RHS modulo ledger](coverage/semantics/modassign-right-warning-review.json).
+With two fractional floats, plain-CV `%=` now orders both deprecations: capture
+LEFT, run its handler, then capture the live RHS before its handler. A quiet
+integer RHS after the first callback skips the second diagnostic. Success detaches
+late aliases; either supplied throw or a captured zero preserves them. Five exact
+originals and 929 focused SL premises pass in the
+[ordered modulo ledger](coverage/semantics/modassign-both-warning-review.json).
 For initially plain variables, `<<=` and `>>=` now retain a fractional left
 conversion through deprecation handlers, then read the live quiet integer count.
 Success detaches a late target alias; supplied throw or a negative count preserves
