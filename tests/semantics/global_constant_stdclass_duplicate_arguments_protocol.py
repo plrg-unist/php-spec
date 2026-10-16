@@ -114,7 +114,7 @@ def checks(initial,name,stdout,after_line):
         '$heap_owners($heap_graph(S_current),HOBJECT n_outer) = 1',
         '$heap_owners($heap_graph(S_current),HOBJECT n_prior) = 1',*owners('S_current',array)]
     if array:
-        values += ['pconstantargument.CLASS = PVARRAY false [(KINT 0,PVSCALAR),(KINT 1,PVARRAY false [(KINT 0,PVINSTANCE n_current pconstantobject_current.SITE)])]']
+        values += ['pconstantargument.CLASS = PVARRAY false ([(KINT 0,PVSCALAR),(KINT 1,PVARRAY false ([(KINT 0,PVINSTANCE n_current pconstantobject_current.SITE)]))])']
     else:
         values += ['pconstantargument.CLASS = PVINSTANCE n_current pconstantobject_current.SITE']
     # Pure projections are never driven.
