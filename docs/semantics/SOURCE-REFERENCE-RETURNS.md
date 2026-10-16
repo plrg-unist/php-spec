@@ -906,7 +906,7 @@ reached fixture passes 124 Boolean checks and two raw steps. It binds the
 pending subclass and message at the actual operation exit, the same object in
 the local superclass catch, retired old HOBJECT, public descriptor and
 LINE-only refusal, caller `rNULL/b7` and budget equality. The guard reuses the
-existing Exception parent relation; Error siblings remain excluded. This
+existing Exception parent relation; Error siblings remained excluded at M82. This
 fixture proves one RuntimeException history, with M81's exact Exception proof
 separate. Other admitted built-in Exception descendants lack focused validation;
 user-defined throwable subclasses, Error siblings and reentrant destructors
@@ -927,3 +927,21 @@ native/source agreements remain separate; no old actor was rerun. This proof
 covers one normal C destructor and named no-argument nullable-class source;
 wider histories and broad returns remain open. See the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M84 admits finite modeled built-in Throwable kinds at the same authenticated
+pending destructor exit. In new direct/assigned `&f():?C` originals, C's
+destructor throws `TypeError("dtor84")`; local `catch (TypeError)` checks that
+message and prints `CT:1`. Native2 at `ee63167a`/399 has
+`F:0/1;I;D;I;CT:1;A;S`, detached `rNULL/b7` and one old-line VALUE Notice;
+strict compilation and both exact original-source agreements pass at
+`913c8747`/399. The unchanged model wrongly
+routes both to outer `OT`, with r7 and no Notice. One assigned reached fixture
+passes 131 Boolean checks and two raw steps: its pending TypeError originates
+at the destructor's `new TypeError`, distinct from the selected-y return, and
+the same object and message reach local `CT`. It also proves retired old
+HOBJECT, consumed NULL/new Notice, public descriptor and LINE-only refusal,
+caller state and exit-cut budget equality. The two changed guards retain their
+source, operation, owner, liveness and single-cursor checks. This is one
+TypeError history; M81 Exception, M82 RuntimeException and M83 normal-exit
+proofs remain separate. Other built-in kinds and wider destructor histories
+need focused validation. See the [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).

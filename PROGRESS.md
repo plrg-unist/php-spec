@@ -8821,7 +8821,9 @@ failures and interrupted evidence.
   during selected reference replacement. M82 admits modeled built-in
   Exception descendants at that same authenticated destructor exit. M83
   admits public resumption from a normal pending-free destructor operation
-  exit with the same bounded old-return cursor.
+  exit with the same bounded old-return cursor. M84 admits finite modeled
+  built-in Throwable kinds at the pending destructor exit; one destructor-
+  produced TypeError is checked through its local catch and consumed return.
   Other VALUE signatures/layouts, general CONST/other
   NULL and multiple-active histories, genuinely released
   CV targets, wider destructor throw/reentry, real suspension and wider typed consumers
@@ -8951,6 +8953,23 @@ remain separate; no M79 or M82 actor was replayed. Normal operation finish,
 Throwable routing and ownership rules are unchanged. Wider destructor,
 source and cursor histories remain open.
 [M83 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M84 changes only the two pending-destructor guards from modeled Exception
+nominality to the existing finite built-in Throwable-kind predicate; operation,
+source, owner, liveness and single-cursor checks remain. New direct/assigned
+`&f():?C` originals make C's destructor throw `TypeError("dtor84")`, distinct
+from the selected-y return-verification TypeError. Native2 at clean
+`ee63167a1`/399 ends with `F:0/1;I;D;I;CT:1;A;S`, detached `rNULL/b7` and
+one old-line Notice. The unchanged model routes both to outer OT with r7/no
+Notice, giving zero agreements. Strict SL initialization and both exact
+original-source agreements pass at private `913c87471`/399. One assigned
+133-premise reached fixture (131 Boolean, two raw steps) binds the actual
+pending TypeError to the destructor's `new TypeError` origin and dtor84 message,
+distinct from selected-y; the same object reaches local CT. It also proves
+old HOBJECT retirement, root-free consumed NULL/new Notice, detached caller,
+real public descriptor and equal-heap LINE-only refusal, and exit-cut budget
+equality. This is one TypeError witness; the admitted other built-in kinds
+need focused validation, while M81/M82/M83 evidence remains separate.
+[M84 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, wider destructor throw/reentry, real suspension and wider typed
