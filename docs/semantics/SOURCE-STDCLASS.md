@@ -33,9 +33,20 @@ constant row, and allow a distinct fresh-eval retry. The
 [argument review](../../coverage/semantics/global-constant-stdclass-arguments-review.json)
 checks donor owners, actual value destructors and ordinary storage retirement.
 The immediate argument discard leaves CALLED unchanged; normal storage
-retirement may later set it. Duplicate names remain Unsupported: native PHP retains the rejected current value until shutdown, which
-the current argument table does not yet model. References, unpacking, defaults
-and wider lifecycle behavior remain partial.
+retirement may later set it.
+
+Duplicate argument names throw after the current value is evaluated. A dedicated
+request owner retains exactly that rejected value, including whole array
+containers; earlier values and the unfinished target follow ordinary eager
+cleanup. Exact source/index, incomplete outer receipt, current-value class and
+lookup-prefix guards authenticate the record without keeping earlier values
+alive. The existing object-store scan invokes retained destructors after normal
+output; escaped property writes and fresh eval publication preserve the same
+rooted value. Scalar/string values, certified user-instance/stdClass values and
+arrays of those leaves have this bounded contract.
+[Duplicate-argument review](../../coverage/semantics/global-constant-stdclass-duplicate-arguments-review.json).
+Other owning classes, references, unpacking, defaults, generic NEW duplicates and
+wider callback/lifecycle behavior remain partial.
 
 Nonempty array and scalar casts now populate genuine property storage, with
 shared-table COW, clone, array round trips and callback-sensitive NaN operands.

@@ -550,10 +550,24 @@ The first peer fixture assumed late marker absence; its corrected pin check
 renews only that failed packet, with original failure0 preserved.
 The original source with duplicate argument names exposes a real lifetime
 mismatch and retains0: native keeps the rejected current value until shutdown.
-The source guard requires unique names; duplicate argument names require a
-later lifetime milestone.
+That milestone's source guard requires unique names; the retained-current-value
+follow-up below addresses its duplicate argument names.
 References, unpacking, defaults and wider lifecycle forms remain partial.
 [Argument review](coverage/semantics/global-constant-stdclass-arguments-review.json).
+
+Duplicate named global stdClass AST arguments now retain the rejected current
+value in a dedicated request owner, including whole nested arrays and their
+physical leaf edges. Earlier values and the unfinished target retire before
+catch search; the existing store scan invokes retained destructors after normal
+output. Three exact sources agree, including escaped leaf41 and fresh-unit retry.
+Author408 and independent312 premises pass720, checking real capture/root
+neutrality, ordinary eager cleanup, durable source/prefix/live guards and
+shutdown ownership. The V63 mismatch stays
+historical0; parser/type and fixture scheduling/context/array-syntax failures are
+preserved0, with only affected checks renewed. The first peer elaboration binder
+failure is likewise corrected locally. Other owning classes, generic NEW
+duplicates, references/unpacking, defaults and wider lifecycle remain partial.
+[Duplicate-argument review](coverage/semantics/global-constant-stdclass-duplicate-arguments-review.json).
 
 Selected inherited `__unset(string): void` now dispatches direct CV/literal-name
 access to a declared private property. Accessible public unset skips magic;

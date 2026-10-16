@@ -2831,8 +2831,13 @@ Global stdClass constant-AST NEW now evaluates and drops ordinary positional and
 uniquely named arguments, preserving donated identities, real value destructors
 and fresh eval retry after an argument Error. The
 [argument review](coverage/semantics/global-constant-stdclass-arguments-review.json)
-keeps duplicate argument names Unsupported after a genuine lifetime counterexample;
-references, unpacking and wider lifecycle forms remain partial.
+records the initial duplicate-name lifetime counterexample. Bounded duplicate
+argument names now retain the rejected current value, including its nested array
+containers, while earlier values and the unfinished target retire. Existing
+shutdown callbacks observe that same value after normal output, including writes
+through an escaped leaf and a fresh eval retry.
+[Duplicate-argument review](coverage/semantics/global-constant-stdclass-duplicate-arguments-review.json).
+References, unpacking, defaults and wider lifecycle forms remain partial.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is
