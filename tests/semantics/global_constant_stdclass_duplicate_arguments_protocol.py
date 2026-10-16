@@ -157,7 +157,7 @@ def checks(initial,name,stdout,after_line):
         '$throwable_field(S_error,n_error,"line") = PINT 1',*owners('S_error',array),
         *reach('S_throw','S_error',2,'n_outer',public=False),
         'S_throw.TODO = (THROW_SEARCH n_error) :: ptask_current*',
-        'S_throw.CONSTCONTEXT = eps',
+        'S_throw.CONSTCONTEXT = S_current.CONSTCONTEXT',
         'S_throw.DESTRUCTION.REJECTED = S_error.DESTRUCTION.REJECTED',
         '$constant_argument_header(S_throw,pconstantargument)',*owners('S_throw',array),
         *std.reach('S_after','S_throw',2,after_line),
