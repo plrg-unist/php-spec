@@ -183,13 +183,25 @@ PhpStep: S_same ~> S_same_raw
 S_same_raw.TODO = (PROPERTY_EMPTY_RV ppropertyemptyrv) :: ptask_tail* /\ S_same_raw.RESULT = KNOWN (PBOOL false)
 $heap_owners($heap_graph(S_same_raw),HOBJECT n_child) = 2
 S_same_done = $mr_after(S_same,S_same_raw)
-S_same_done.DESTRUCTION.OPERATIONS = S_same.DESTRUCTION.OPERATIONS /\ (HOBJECT n_child) <- S_same_done.ALLOCATIONS /\ (HOBJECT n_rv) <- S_same_done.ALLOCATIONS
+S_same_resume_found = $mr_seek(S_same_done,MR_RESUME,1000)
+S_same_resume_found.COMPLETION = NORMAL \/ S_same_resume_found.COMPLETION = BUDGET
+S_same_resume = S_same_resume_found[.COMPLETION = NORMAL]
+S_same_resume.TODO = (PROPERTY_EMPTY_RV ppropertyemptyrv) :: ptask_tail*
+S_same_resume.EVENTS = S.EVENTS /\ S_same_resume.DESTRUCTION.CALLED = S.DESTRUCTION.CALLED
+(HOBJECT n_child) <- S_same_resume.ALLOCATIONS /\ (HOBJECT n_rv) <- S_same_resume.ALLOCATIONS
+$heap_owners($heap_graph(S_same_resume),HOBJECT n_child) = 2 /\ $heap_owners($heap_graph(S_same_resume),HOBJECT n_rv) = 1
 S_alias = S[.HELD = S.HELD ++ [HOBJECT n_rv]]
 $property_empty_rv_ready(S_alias,ppropertyempty) /\ $heap_owners($heap_graph(S_alias),HOBJECT n_rv) = 2
 PhpStep: S_alias ~> S_alias_raw
 S_alias_raw.TODO = (PROPERTY_EMPTY_RV ppropertyemptyrv) :: ptask_tail* /\ $heap_owners($heap_graph(S_alias_raw),HOBJECT n_rv) = 1
 S_alias_done = $mr_after(S_alias,S_alias_raw)
-S_alias_done.DESTRUCTION.OPERATIONS = S_alias.DESTRUCTION.OPERATIONS /\ (HOBJECT n_rv) <- S_alias_done.ALLOCATIONS
+S_alias_resume_found = $mr_seek(S_alias_done,MR_RESUME,1000)
+S_alias_resume_found.COMPLETION = NORMAL \/ S_alias_resume_found.COMPLETION = BUDGET
+S_alias_resume = S_alias_resume_found[.COMPLETION = NORMAL]
+S_alias_resume.TODO = (PROPERTY_EMPTY_RV ppropertyemptyrv) :: ptask_tail*
+S_alias_resume.EVENTS = S.EVENTS /\ S_alias_resume.DESTRUCTION.CALLED = S.DESTRUCTION.CALLED
+(HOBJECT n_child) <- S_alias_resume.ALLOCATIONS /\ (HOBJECT n_rv) <- S_alias_resume.ALLOCATIONS
+$heap_owners($heap_graph(S_alias_resume),HOBJECT n_child) = 2 /\ $heap_owners($heap_graph(S_alias_resume),HOBJECT n_rv) = 1
 ppropertyemptyrv_badowner = ppropertyemptyrv[.OWNER = 1]
 S_badowner = S_resume[.TODO = (PROPERTY_EMPTY_RV ppropertyemptyrv_badowner) :: ptask_tail*]
 ~$property_empty_rv_valid(S_badowner,ppropertyemptyrv_badowner) /\ ~$call_task_valid(S_badowner,PROPERTY_EMPTY_RV ppropertyemptyrv_badowner)
