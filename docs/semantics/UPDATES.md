@@ -212,8 +212,20 @@ longs through a fractional-count deprecation. Success detaches a late alias;
 supplied throw or a cached negative count preserves callback writes/aliases.
 A captured count of `64` keeps the original right-shift sign despite live writes.
 [RHS shift evidence](../../coverage/semantics/shiftassign-right-warning-review.json)
-retains five exact originals and 674 focused SL premises. Both-fractional operands,
+retains five exact originals and 674 focused SL premises. Wider operand combinations,
 initial references/copies, unsafe targets and wider lifecycle remain partial.
+
+For two initially fractional-float plain CVs, `<<=`/`>>=` order LEFT deprecation
+before converting the live count. A fractional count gets its own saved long and
+deprecation; a quiet integer skips the second diagnostic. Success detaches late
+aliases. Either handler throw or a captured negative count preserves callback
+writes, destination and alias write-through. Fresh second dispatch checks only
+the count, while LEFT remains historical.
+[Ordered shift evidence](../../coverage/semantics/shiftassign-both-warning-review.json)
+retains six exact originals and 1172 focused SL premises, including both signed
+directions, quiet handoff, both throwing phases and default-second negative-count
+ArithmeticError. Initial references/copies, wider count conversions, unsafe targets
+and lifecycle remain partial.
 
 Distinct initially plain CV numeric `&=`, `|=` and `^=` keep their fractional LEFT
 conversion through deprecation handlers, then read the live quiet integer RHS.

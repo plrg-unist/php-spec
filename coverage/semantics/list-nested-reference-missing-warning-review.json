@@ -1,7 +1,7 @@
 {
   "version": 1,
   "milestone": "A7 recursive mixed direct-CV destructuring missing-key handlers",
-  "status": "independently reviewed private milestone; actual-parent composition pending",
+  "status": "independently reviewed and pointwise composed for integration",
   "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle and tests/semantics/profile.json",
   "base": "dc87cf01d91bfbbc1c70a02a4da170df16ca1f75",
   "scope": "Finite recursive mixed by-value/reference patterns from a direct-CV RHS, with direct-CV leaves and quiet implicit/compiled constant keys. Each reference-bearing pattern retains a source CELL; by-value children retain captured arrays.",
@@ -22,7 +22,7 @@
     "A detached child CELL reads replacement22 while the separately held root resolves66/44 and a rebound live CV resolves77/55. Initial child/parent tables and q have retired before resume, yet saved cells remain valid. Raw acquisition/COW/binding then retires the detached child before outer tail44, leaving y independently writable at33.",
     "A depth3 mixed pattern with an earlier implicit reference reaches native line22, not the missing target line. All three current arrays are separated from the copied graph; early scalar5 stays isolated in the copy while the embedded q alias is shared. Its physical owners grow3 to4 through raw acquisition/binding and every otherwise unowned array/cell retires at final unsets.",
     "The throwing depth3 case preserves earlier9/5, callback99, destination100 and the supplied Throwable. Immediately after emitter discard, root/parent/source/q CELL owners are1/2/1/1 and all three arrays remain owned1; the later caller TRY_END has retired them all.",
-    "No task, state field, module or generic read/write/compiler/ownership helper changes. No inherited test/control file changes or A1–A6 actor replays are needed; old evidence retains its original cuts and zero renewed credit."
+    "No task, state field, module or generic read/write/compiler/ownership helper changes. No inherited test/control file changes or A1\u2013A6 actor replays are needed; old evidence retains its original cuts and zero renewed credit."
   ],
   "accepted": {
     "source": {
@@ -108,9 +108,19 @@
     "recovery": "Archive retains six original relative .tools report/fixture/process/source directories and list-nested-reference-reuse-sources-07.py. Extract beneath a checkout of the recorded cut; absolute argv/cwd are historical provenance. No archive is a build dependency."
   },
   "actual_parent_review": {
-    "parent": "2d5bd20c103f6709918f371a2148381615cee3ef",
-    "seams": "Incoming30/55/404 add both-fractional shift COMPOUND_APPLY/8192 continuations,270 extends typed by-reference-return destructor replay to nominal Exception descendants,386 allocates an empty array for WeakMap CASTARRAY. Their distinct tags/source/value shapes leave409, list/CELL/COW ownership and33/39/62–64 unchanged.",
-    "joined_actor": "No concrete semantic interaction found; pointwise composition and exact FF review add no replay credit."
+    "parent": "393a5c8b60370110f2e64fed7c9bb4ed0d933c51",
+    "seams": "Incoming30/55/404 add both-fractional shift COMPOUND_APPLY/8192 continuations,270 extends typed by-reference-return destructor replay to nominal Exception descendants,386 allocates an empty array for WeakMap CASTARRAY. Their distinct tags/source/value shapes leave409, list/CELL/COW ownership and33/39/62\u201364 unchanged. Subsequent270 adds matching typed-reference-return cursor validation for normal destructor exit;30/408 add a distinct PROPERTY_EMPTY_NAN receiver warning/discard path;400 admits NULL-name false scalar flags. Their separate task/source/value guards preserve list source-cell authority.",
+    "joined_actor": "No concrete semantic interaction found; pointwise composition and exact FF review add no replay credit.",
+    "composition": {
+      "runtime_delta": [
+        "spec/semantics/409-list-missing-warnings.watsup"
+      ],
+      "modules": 399,
+      "tested_leaf": "b8148e051c2658c58e6f201e74d396ebb39c7081",
+      "checks": "409 and all six new tests retain exact tested bytes; no inherited test changes. All other parent runtime/modules and inventory rows/fields are retained; all other parent checkpoints remain exact.",
+      "joined_actor": "No concrete interaction; no new actor or renewed agreement credit.",
+      "runtime_diff_sha256": "db1d93245b4fb2eb1d335041484dca0fe11c4d1ff4c128104bd358f8944fd878"
+    }
   },
   "remaining": [
     "Mixed literal/call or wider RHS producers and non-CV target leaves.",

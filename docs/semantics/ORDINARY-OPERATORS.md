@@ -275,8 +275,25 @@ SL premises pass in the
 [RHS shift ledger](../../coverage/semantics/shiftassign-right-warning-review.json).
 Both source directions, fresh cache/source/op/line guards, actual cells/owners,
 default Deprecated and budgets are covered. Pure projections establish refusals
-only. Both-fractional operands, initial references/copies, unsafe targets and wider
-lifecycle remain partial; earlier modulo/LEFT-shift contracts stay unchanged.
+only. Wider operand combinations, initial references/copies, unsafe targets and
+wider lifecycle remain partial; earlier modulo/LEFT-shift contracts stay unchanged.
+
+For two initially fractional-float plain CVs, `<<=`/`>>=` retain LEFT before its
+first deprecation, then read the live count after that callback. Captured `-12`
+with the new `2.5` captures count `2` before the second deprecation; later writes
+`88`/`1` still store `-48` or `-3` and detach late alias `88`. A quiet integer
+count `2` after the first callback instead reaches the existing shift commit with
+one diagnostic, leaving alias `99`. Either supplied handler throw cancels storage,
+preserving the same Exception, callback writes, destination and alias write-through.
+Cached `-1` from `-1.5` still raises the original-line `ArithmeticError` after its
+default Deprecated even if the second callback writes positive `2`, without
+storage or detachment. Six exact originals and 989 author plus 183 independent SL
+premises pass in the
+[ordered shift ledger](../../coverage/semantics/shiftassign-both-warning-review.json).
+Both AST/OP pairs, fresh first-LEFT/second-count guards, actual entered frames,
+quiet handoff, cells/owners and budgets are covered. LEFT stays historical at
+second capture; pure projections are refusals only. Initial references/copies,
+other count conversions, unsafe bindings/targets and wider callbacks/lifecycle remain partial.
 
 For distinct initially plain CVs, numeric `&=`, `|=` and `^=` keep a fractional
 LEFT conversion before deprecation and read the live quiet integer RHS afterward.

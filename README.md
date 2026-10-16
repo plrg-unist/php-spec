@@ -615,6 +615,12 @@ through a fractional-count deprecation. Success detaches a late alias; supplied
 throw or a captured negative count preserves it. A captured count of `64` keeps
 the original signed-right-shift result. Five exact originals and 674 focused SL
 premises pass in the [RHS shift ledger](coverage/semantics/shiftassign-right-warning-review.json).
+With two fractional floats, plain-CV `<<=`/`>>=` order both conversion
+deprecations and retain each long after its own conversion. A quiet integer count
+after the first callback skips the second diagnostic. Success detaches late aliases;
+either supplied throw or a captured negative count preserves them. Six exact
+originals and 1172 focused SL premises pass in the
+[ordered shift ledger](coverage/semantics/shiftassign-both-warning-review.json).
 For initially plain variables, numeric `&=`, `|=` and `^=` now keep their fractional
 left conversion through deprecation handlers, then read the live quiet integer RHS.
 Success detaches late aliases; supplied throw preserves callback writes and the
@@ -1033,6 +1039,11 @@ handler retains raw null and cancels registration; strict calls retain raw
 arguments after all argument effects.
 [Four source agreements and 396 state premises](coverage/semantics/define-null-name-review.json)
 cover source-backed empty-key rows, both warning continuations and budget pauses.
+NULL names also accept quiet false scalar flags (`0`, empty/`"0"` strings and
+float zero), preserving raw flags through deprecation and converted-name duplicate
+traces. Strict name errors win first; conversion-handler throws cancel publication.
+[Four source agreements and 755 state premises](coverage/semantics/define-null-name-false-flag-review.json)
+cover default diagnostics, callback return/throw and authenticated captures.
 Global `constant` queries return primitive values, authenticated string carriers,
 validated user array trees, certified completed user instances and certified
 Closures. They use the captured query, remove one leading separator and preserve
@@ -1575,6 +1586,12 @@ checks pass at their separate cuts. Wider map free and wider ephemeron GC stop e
 general multi-map order, wider wrapper creation or mutation during freeing,
 additional strong key/map owners retained beyond callback cleanup and wider
 entry/read/mutation protocols remain required.
+
+An explicit array cast of a live nonfreeing map now creates a fresh empty array,
+even when populated. Results expose no entries and retain neither keys nor private
+values. Two originals and 177 premises/6 actual casts cover fresh results, real
+function frames, COW/reference history and subsequent key retirement.
+[Array-cast review](coverage/semantics/weakmap-array-cast-review.json).
 
 Scalar entries now also retire through eager cleanup while a live leaf key
 remains held. The plain 40-byte original already agrees at `b88b45fc`; a held
@@ -2658,8 +2675,8 @@ slots bypass it; actual true/false results preserve short circuiting and storage
 One original and one state/215 checks cover typed name reception, lexical scope
 and receiver cleanup; [magic isset review](coverage/semantics/magic-isset-review.json).
 Terminal `empty` now chains that inherited `__isset` with an untyped by-value
-`__get`: false skips the getter, while true tests its null, bool, int, non-NaN
-float or byte-string result. Only empty bytes or exactly ASCII `0` make a string
+`__get`: false skips the getter, while true tests its null, bool, int, float
+or byte-string result. Only empty bytes or exactly ASCII `0` make a string
 empty; NUL and `0` plus NUL do not. The original integer/call state208 remains historical; one further
 original and state155 cover primitive results and authenticated string metadata.
 [Magic empty review](coverage/semantics/magic-empty-review.json),
@@ -2667,8 +2684,12 @@ original and state155 cover primitive results and authenticated string metadata.
 Both signed float zeros are empty; other finite/subnormal values and infinities
 are not. One further original and state145 check the actual float bits and bounds;
 [float result review](coverage/semantics/magic-empty-floats-review.json).
-Other signatures, receivers, NaN/owning results and coalesce magic combinations
-remain unsupported.
+NaN getter results now warn after Get returns, keeping the receiver through a
+returning or throwing handler. Three originals and two state cuts totaling242
+checks cover the default Warning, caller-CV rebinding and destruction before
+result/catch; [NaN warning review](coverage/semantics/magic-empty-nan-review.json).
+Other signatures, receivers, owning results and wider recursive/coalesce magic
+combinations remain unsupported.
 Hooked iteration, defaulted virtual hooks, other paired or virtual setters, wider trait
 setters, other explicit setter parameter forms, references, other inherited/trait
 and wider receiver, quiet or indirect-access families and wider `__unset` consumers remain required.

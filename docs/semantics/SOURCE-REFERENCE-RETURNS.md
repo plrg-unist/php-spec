@@ -894,3 +894,36 @@ has zero full-state credit; it exposed the missing operation-exit descriptor
 case. This proves one echoing C destructor throwing an ordinary Exception,
 not other exception types, reentry or physical Zend collection. See the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M82 admits the modeled built-in subclasses of Exception at that same bounded
+selected-return destructor exit. A new direct/assigned pair makes C's
+destructor throw `RuntimeException("boom82")`; the local `catch (Exception)`
+observes its subclass and message as `CE:1/1`, then consumed replay restores
+detached NULL and one old-line VALUE Notice. Native2 and the unchanged
+two-mismatch baseline are pinned at `108b026fe`/399; strict compilation and
+both exact original-source agreements pass at `345244d14`/399. One assigned
+reached fixture passes 124 Boolean checks and two raw steps. It binds the
+pending subclass and message at the actual operation exit, the same object in
+the local superclass catch, retired old HOBJECT, public descriptor and
+LINE-only refusal, caller `rNULL/b7` and budget equality. The guard reuses the
+existing Exception parent relation; Error siblings remain excluded. This
+fixture proves one RuntimeException history, with M81's exact Exception proof
+separate. Other admitted built-in Exception descendants lack focused validation;
+user-defined throwable subclasses, Error siblings and reentrant destructors
+remain open. See the [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M83 admits public resumption at a normal pending-free destructor operation
+exit in the same bounded nullable-class old-return family. After `D`, the
+old modeled HOBJECT is retired; the operation exit still precedes the
+selected reference return and carries one nonowning old-return cursor.
+The unchanged model rejected this source-reached exit before its valid
+normal finish step. A narrow saved-descriptor clause now validates the
+queued return and cursor, leaving finish and return-value behavior intact.
+Strict compilation passes at private `cb2f199bf`/399. One assigned reached
+fixture passes 90 Boolean checks and one raw step: public admission, raw
+normal finish, the historical M79 caller `r=bNULL` then `42` and one Notice,
+a heap-equal LINE-only public refusal, and equal split/whole budgets. M79's
+native/source agreements remain separate; no old actor was rerun. This proof
+covers one normal C destructor and named no-argument nullable-class source;
+wider histories and broad returns remain open. See the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).

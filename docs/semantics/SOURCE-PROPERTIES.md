@@ -465,9 +465,18 @@ Non-NaN float RVs now use the existing numeric truth helper after a 64-bit range
 guard: both signed zeros are empty; other finite/subnormal values and infinities
 are not. One further original and state145 =132 reached +13 derived check nine
 actual float bit patterns, saved receiver owner release and late budget equality.
-NaN and invalid-bit refusals are constructed result-state controls. NaN warning
-continuations and owning RV disposal remain required.
+At that cut, NaN and invalid-bit refusals were constructed result-state controls.
 [Float result review](../../coverage/semantics/magic-empty-floats-review.json).
+NaN getter truth now emits its Warning after Get returns, with the isset guard
+and saved receiver still active. Default reporting and return-true/throwing
+handlers agree in three originals. Handler CV rebinding cannot replace the saved
+NaN: normal completion yields empty false; a throw retains the same Exception.
+The last receiver owner is released before branch output or catch binding.
+Normal141 at5a05 and throwing101 atb66 total242 checks (195 reached +47 derived),
+covering callback guards, genuine receiver/destructor/catch steps and budgets.
+Default dispatch and malformed record/value/packet refusals are derived controls.
+Owning getter RV disposal and wider signature/receiver/recursive combinations
+remain partial. [NaN warning review](../../coverage/semantics/magic-empty-nan-review.json).
 
 Constructor promotion declares a property from its original parameter flags and
 source occurrence. A parameter default does not initialize the property, and

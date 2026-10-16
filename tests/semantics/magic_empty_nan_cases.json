@@ -1,0 +1,68 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "default",
+      "source": "<?php\nclass MagicNanParent86 {\n    private int $value = 1;\n    public function __isset(string $name): bool {\n        echo 'I|';\n        return true;\n    }\n    public function __get($name) {\n        echo 'G|';\n        return NAN;\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass MagicNanChild86 extends MagicNanParent86 {}\n$child = new MagicNanChild86();\necho 'B:', empty($child->value) ? 'T' : 'F', '|';\n$raw = (array) $child;\necho 'R:', $raw === [\"\\0MagicNanParent86\\0value\" => 1] ? 'ONLY' : 'BAD', '|';\nunset($raw);\nunset($child);\necho 'E|';\n",
+      "source_sha256": "75574dd955e29ce4ad1507a4b54de13f8904e1b01656b87d80dbe84a1115c7ff",
+      "source_file": "magic-empty-nan-default.php",
+      "warning_line": 16,
+      "stdout_base64": "QjpJfEd8RnxSOk9OTFl8RHxFfA==",
+      "stderr_template_base64": "V2FybmluZzogdW5leHBlY3RlZCBOQU4gdmFsdWUgd2FzIGNvZXJjZWQgdG8gYm9vbCBpbiB7RklMRX0gb24gbGluZSAxNgo=",
+      "exit_status": 0,
+      "status": "normal",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-empty-nan-private-86/.tools/magic-empty-nan-probes-86/default.php",
+      "native_report_sha256": "e648af03eafbb9deb7ecfdd875ef677d7c14097f7640eafaf8834dbb28e196cc",
+      "native_group": "magic-empty86-nan-native-e70950fc",
+      "native_raw_sha256": "c94056b2035ae7dd3b4c05f6d1029a952614532da6f59f19ad9e7e63cc9df7ec",
+      "native_raw_hash_recipe": "stdout + NUL + stderr + NUL + ASCII exit"
+    },
+    {
+      "id": "returning",
+      "source": "<?php\nclass MagicNanParent86 {\n    private int $value = 1;\n    public function __isset(string $name): bool {\n        echo 'I|';\n        return true;\n    }\n    public function __get($name) {\n        echo 'G|';\n        return NAN;\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass MagicNanChild86 extends MagicNanParent86 {}\nfunction acceptNan86($level, $message, $file, $line): bool {\n    global $child;\n    echo 'H:', $level, '/', $message, '/', $line, '|';\n    $child = null;\n    echo 'h|';\n    return true;\n}\nset_error_handler('acceptNan86');\n$child = new MagicNanChild86();\necho 'N:', empty($child->value) ? 'T' : 'F', '|';\nrestore_error_handler();\necho 'E|';\n",
+      "source_sha256": "dc45b2d84c6d0be23923ff00dab63936dbc9e313c3f7ea15408a8f331a90db49",
+      "source_file": "magic-empty-nan-returning.php",
+      "warning_line": 24,
+      "stdout_base64": "TjpJfEd8SDoyL3VuZXhwZWN0ZWQgTkFOIHZhbHVlIHdhcyBjb2VyY2VkIHRvIGJvb2wvMjR8aHxEfEZ8RXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-empty-nan-private-86/.tools/magic-empty-nan-probes-86/returning.php",
+      "native_report_sha256": "e648af03eafbb9deb7ecfdd875ef677d7c14097f7640eafaf8834dbb28e196cc",
+      "native_group": "magic-empty86-nan-native-e70950fc",
+      "native_raw_sha256": "6b3b5a73270ee8507d8023c785236583814273672297e2027666780a9ed57de9",
+      "native_raw_hash_recipe": "stdout + NUL + stderr + NUL + ASCII exit"
+    },
+    {
+      "id": "throwing",
+      "source": "<?php\nclass MagicNanParent86 {\n    private int $value = 1;\n    public function __isset(string $name): bool {\n        echo 'I|';\n        return true;\n    }\n    public function __get($name) {\n        echo 'G|';\n        return NAN;\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass MagicNanChild86 extends MagicNanParent86 {}\nfunction rejectNan86($level, $message, $file, $line) {\n    global $child;\n    echo 'H:', $level, '/', $message, '/', $line, '|';\n    $child = null;\n    echo 'h|';\n    throw new Exception('nan-stop');\n}\nset_error_handler('rejectNan86');\n$child = new MagicNanChild86();\necho 'X:';\ntry { echo empty($child->value) ? 'T' : 'F', '|'; }\ncatch (Exception $caught) { echo 'C|'; }\nrestore_error_handler();\necho 'E|';\n",
+      "source_sha256": "41cea2c34c5d03f50dca72875b6086cc125d11d20cac079ddbdc2c4649331779",
+      "source_file": "magic-empty-nan-throwing.php",
+      "warning_line": 25,
+      "stdout_base64": "WDpJfEd8SDoyL3VuZXhwZWN0ZWQgTkFOIHZhbHVlIHdhcyBjb2VyY2VkIHRvIGJvb2wvMjV8aHxEfEN8RXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-empty-nan-private-86/.tools/magic-empty-nan-probes-86/throwing.php",
+      "native_report_sha256": "e648af03eafbb9deb7ecfdd875ef677d7c14097f7640eafaf8834dbb28e196cc",
+      "native_group": "magic-empty86-nan-native-e70950fc",
+      "native_raw_sha256": "1fbdbfb6dfcbb5f82be465f541a09f7a34f81db20469348a83d65aa99c212946",
+      "native_raw_hash_recipe": "stdout + NUL + stderr + NUL + ASCII exit"
+    }
+  ]
+}

@@ -7,6 +7,81 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+NULL `define` names now receive quiet false nonbool flags with primitive values.
+The first deprecation keeps raw NULL and captured flags; normal return converts
+only the name, checks the live empty-key binding and can issue a separate duplicate
+Warning. Strict parameter-1 errors precede flag rejection after argument effects;
+a first-handler throw preserves the same Exception/callback effects without
+registering the empty key. Four exact originals agree across retained tested cuts.
+All 755 public premises pass: author 334+116+179 and independent 126 across four
+groups, covering actual dispatch/return/duplicate/discard, raw versus converted API
+views, carrier/source refusals and budgets. The original captured-source timeout,
+pre-main fixture binding failure and unchanged Unsupported baseline retain zero
+credit; only affected checks were repeated. Runtime adds four module400 lines,
+reusing the old NULL-name pipeline with a bounded marker-domain extension.
+Float names with these flags, other coerced flags with NULL/scalar names and
+owning/wider forms remain partial.
+[NULL-name false-flag review](coverage/semantics/define-null-name-false-flag-review.json).
+
+Pointwise composition over ee63167a1 preserves the incoming 399-module parent.
+Source4/state755 retain their distinct private cuts; shared task/source selectors
+are disjoint, so no joined actor or renewed execution credit is warranted.
+
+Terminal inherited `empty` now warns for NaN getter results after Get returns,
+retaining the isset guard and captured receiver through the warning callback.
+Caller-CV rebinding leaves the saved NaN unchanged: normal completion gives false;
+a throwing handler keeps the same Exception. Receiver destruction precedes branch
+output or catch binding. Three exact originals agree at d16aef394. Normal141 at
+5a05e5afc plus affected throwing101 at b66d611c9 total242 checks (195 reached +47
+derived), including actual callback/cleanup/destructor/catch steps, authenticated
+record refusals and budgets. Two pre-app fixture failures and an invalid terminal
+catch lookup retain zero credit; the diagnostic adds none. The unchanged baseline
+remains genuine Unsupported/zero agreement. Owning getter RV disposal and wider
+signature/receiver/recursive combinations remain partial.
+[NaN warning review](coverage/semantics/magic-empty-nan-review.json).
+Earlier integer/call, scalar/string and non-NaN float cuts retain their identities:
+[magic empty](coverage/semantics/magic-empty-review.json),
+[primitive results](coverage/semantics/magic-empty-scalars-review.json),
+[float results](coverage/semantics/magic-empty-floats-review.json).
+
+Pointwise composition over 2d5bd20c1 preserves the incoming399-module parent.
+Source3 and normal141/throw101 retain their separate cuts; no joined actor or renewed credit.
+
+Both-fractional plain-CV `<<=`/`>>=` now order both conversion deprecations.
+LEFT (-12) survives the first callback, then live 2.5 becomes cached count 2 before
+the second; later 88/1 still stores (-48)/(-3) and detaches alias 88. A quiet count 2
+after the first callback skips the second diagnostic and reaches the unchanged
+shift commit, detaching alias 99. First/second supplied throws preserve the same
+Exception, callback effects, destination 100 and alias write-through. Independent
+cached (-1) from -1.5 still raises ArithmeticError at line 25 after the second default
+Deprecated despite live count 2, without storage or detachment.
+Six exact originals pass at e9144f0d7; author 227/227/144/211/180 plus independent 183
+SL premises pass 1172 at 01ce8b03b/399. Both AST/OP pairs, fresh first-LEFT/second-count
+guards, actual entered frames, quiet handoff, real cells/owners and budgets are
+covered; LEFT stays historical at second capture. Native/baseline/retained checked
+prep/syntax retain 0. Initial references/copies, wider count conversions, unsafe
+bindings/targets and wider callbacks/lifecycle remain partial; pure projections
+establish refusals only.
+[Ordered shift ledger](coverage/semantics/shiftassign-both-warning-review.json).
+OP12 stays paused; earlier accepted operator cuts retain 0 renewed credit.
+
+Composed over 440cf9c2b/399 after pointwise review of abrupt reference returns,
+WeakMap comparison/array casts, Generator send, stdClass/define and recursive-list
+seams. Source6/state1172 retain private cuts; no joined actor, replay or renewed credit.
+
+Live nonfreeing WeakMap array casts now create fresh mutable empty arrays,
+including populated maps, without exporting entries or retaining their key/value.
+Two exact originals and 177 Boolean premises (168 setup + 9 pure)/6 actual casts pass
+at 243651a80/399. Empty CV/temporary and real function fronts preserve private owner1,
+fresh result IDs, actual COW/reference history, key retirement and budget resume.
+Native/baseline/preparation/EL retain zero credit; no actor failed. Pure pin/bounds
+controls establish refusal only. Freeing casts and wider map producers/lifetimes
+remain partial. [Array-cast review](coverage/semantics/weakmap-array-cast-review.json).
+
+Composed over dc87cf01d/399 after pointwise review of abrupt reference returns,
+stdClass constant births, define flags, modulo and list dispatch. The two source
+agreements and 177 state premises retain their private cut; no joined actor or renewed credit.
+
 Both-fractional plain-CV `%=` now orders the two conversion deprecations. LEFT12
 is retained through the first callback, then live RHS5.5 becomes cached5 before
 the second; later88/7 still stores2 and detaches alias88. A quiet RHS5 after the
@@ -39,7 +114,7 @@ default duplication and handler return/throw, strict errors, full discard equali
 carrier and source refusals and budgets. The unchanged Unsupported baseline retains zero
 credit; a fixture name collision was fixed before execution. Runtime adds only 20
 module400 lines and reuses existing receive/duplicate/trace code with a bounded
-marker-domain extension. Float/null names with these flags, truthy/NULL/NaN flags,
+marker-domain extension. Float names with these flags, truthy/NULL/NaN flags,
 owning/wider values and full family closure remain partial.
 [False-flag name review](coverage/semantics/define-scalar-false-flag-review.json).
 
@@ -99,23 +174,6 @@ claimed. [NaN class-name review](coverage/semantics/define-class-nan-flag-review
 Pointwise composition over e70950fc preserves the incoming 399-module parent.
 Source4/state441 retain their private cuts; independent seam review warrants no
 joined actor or renewed execution claim.
-
-Terminal inherited `empty` now accepts valid non-NaN float getter results within
-the existing CV/literal private-property slice. Both signed zeros are empty;
-other finite/subnormal values and infinities are not. One 235-byte original agrees
-at1abb46624; state145 =132 reached +13 derived passes at1b54b5d6e, checking nine
-actual binary64 payloads, pure conversion, saved receiver owner release and late
-budget resume. Constructed NaN/invalid-bit refusals cover both older active
-refusal controls without replay. The unchanged Unsupported baseline retains zero
-agreement credit; no runtime actor failed. NaN warning continuations, owning RV
-disposal and wider signature/receiver/recursive/quiet combinations remain partial.
-[Float result review](coverage/semantics/magic-empty-floats-review.json).
-Earlier integer/call state208 and null/bool/byte-string state155 retain their tested
-cuts, original source identities and historical failures without renewal:
-[magic empty review](coverage/semantics/magic-empty-review.json),
-[primitive result review](coverage/semantics/magic-empty-scalars-review.json).
-Pointwise composition over f63866b36 preserves the incoming399-module parent.
-Source1/state145 retain their private cuts; seam review warrants no joined actor or renewed credit.
 
 Plain-CV numeric `&=`/`|=`/`^=` now retain their fractional LEFT conversion
 through deprecation handlers, then read the live quiet integer RHS. Captured12/live5
@@ -256,6 +314,9 @@ Earlier [CV source6/state468](coverage/semantics/list-missing-warning-review.jso
 and [recursive literal source5/state809](coverage/semantics/list-recursive-literal-missing-warning-review.json)
 retain their original cuts. Mixed literal/call or wider RHS/targets, scalar
 key/destructuring diagnostic callbacks and lifecycle remain partial.
+The pointwise399-module composition over393a5c8b6 preserves incoming shift,
+reference-unwind, WeakMap, magic-empty NaN and define paths. Source5/state811 retain
+their private cuts; seam review warrants no joined actor or renewed agreement credit.
 
 Plain-CV `%=` now keeps both converted longs through a fractional-RHS deprecation.
 Captured12/5 stores2 despite callback99/7 and detaches a late target alias; supplied
@@ -8720,7 +8781,10 @@ failures and interrupted evidence.
   cancels its pending Notice and re-enters the outer finalizer before the
   original TypeError reaches the caller. M81 restores the local catch and
   consumed return cursor when an old C destructor throws an Exception
-  during selected reference replacement.
+  during selected reference replacement. M82 admits modeled built-in
+  Exception descendants at that same authenticated destructor exit. M83
+  admits public resumption from a normal pending-free destructor operation
+  exit with the same bounded old-return cursor.
   Other VALUE signatures/layouts, general CONST/other
   NULL and multiple-active histories, genuinely released
   CV targets, wider destructor throw/reentry, real suspension and wider typed consumers
@@ -8816,6 +8880,40 @@ This covers one ordinary C with a throwing destructor, exact Exception,
 named no-argument old source, nullable class declaration and single cursor.
 Other exception types, reentrant destructor histories and wider returns remain
 open. [M81 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M82 changes only the two exact Exception KIND guards at the selected return's
+pending destructor exit and saved descriptor to use the existing modeled
+Exception hierarchy. New direct/assigned `&f():?C` originals have C's
+destructor throw `RuntimeException("boom82")`; local `catch (Exception)`
+reports subtype and message as `CE:1/1`. Native2 at `108b026fe`/399 ends
+with `F:0/1;I;D;I;CE:1/1;A;S`, detached `rNULL/b7` and one old-line Notice.
+The unchanged model routes both to outer OE with r7/no Notice, giving zero
+agreements. Strict and both exact source agreements pass at private
+`345244d14`/399. One assigned 126-premise reached proof binds pending
+RuntimeException and boom82 message bytes at real OP_EXIT, the same object
+in the local superclass catch, retired old HOBJECT, root-free consumed
+NULL/new Notice, public descriptor/LINE-only refusal and exit-cut budget.
+The proof is one RuntimeException history; M81's exact Exception evidence is
+separate. Other admitted built-in Exception descendants lack focused validation;
+user-defined throwable subclasses, Error siblings, reentrant destructors and
+wider returns remain open.
+[M82 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M83 repairs public descriptor admission at a normal pending-free
+`DESTRUCTOR_OPERATION_EXIT` ahead of a selected `RETURN_REF_UNWIND` and one
+nonowning old-return cursor. The source-reached diagnostic on unchanged
+`440cf9c2b`/399 proves a valid operation and projected cursor after the old
+HOBJECT retires, while actual public entry rejects the exit; its 49 Boolean
+premises and one raw normal finish have zero repair credit. The seven-line
+saved-descriptor clause preserves operation source/context and the bounded
+named no-argument nullable-class direct/assigned old-source guard. Strict SL
+initialization passes at private `cb2f199bf`/399. One assigned reached
+fixture passes 90 Boolean premises and one raw step: real exit admission,
+raw finish, M79's `r=bNULL` then `42` caller and one Notice, equal-heap
+LINE-only public refusal, and 0→1+10000 versus 10001 budget equality with
+the accepted terminal output. The historical M79 native/source agreements
+remain separate; no M79 or M82 actor was replayed. Normal operation finish,
+Throwable routing and ownership rules are unchanged. Wider destructor,
+source and cursor histories remain open.
+[M83 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, wider destructor throw/reentry, real suspension and wider typed
