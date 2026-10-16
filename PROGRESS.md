@@ -8763,7 +8763,9 @@ failures and interrupted evidence.
   original TypeError reaches the caller. M81 restores the local catch and
   consumed return cursor when an old C destructor throws an Exception
   during selected reference replacement. M82 admits modeled built-in
-  Exception descendants at that same authenticated destructor exit.
+  Exception descendants at that same authenticated destructor exit. M83
+  admits public resumption from a normal pending-free destructor operation
+  exit with the same bounded old-return cursor.
   Other VALUE signatures/layouts, general CONST/other
   NULL and multiple-active histories, genuinely released
   CV targets, wider destructor throw/reentry, real suspension and wider typed consumers
@@ -8874,9 +8876,25 @@ NULL/new Notice, public descriptor/LINE-only refusal and exit-cut budget.
 The proof is one RuntimeException history; M81's exact Exception evidence is
 separate. Other admitted built-in Exception descendants lack focused validation;
 user-defined throwable subclasses, Error siblings, reentrant destructors and
-wider returns remain open. Public resumption from a normal pending-free
-operation-exit cursor is the next focused boundary.
+wider returns remain open.
 [M82 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M83 repairs public descriptor admission at a normal pending-free
+`DESTRUCTOR_OPERATION_EXIT` ahead of a selected `RETURN_REF_UNWIND` and one
+nonowning old-return cursor. The source-reached diagnostic on unchanged
+`440cf9c2b`/399 proves a valid operation and projected cursor after the old
+HOBJECT retires, while actual public entry rejects the exit; its 49 Boolean
+premises and one raw normal finish have zero repair credit. The seven-line
+saved-descriptor clause preserves operation source/context and the bounded
+named no-argument nullable-class direct/assigned old-source guard. Strict SL
+initialization passes at private `cb2f199bf`/399. One assigned reached
+fixture passes 90 Boolean premises and one raw step: real exit admission,
+raw finish, M79's `r=bNULL` then `42` caller and one Notice, equal-heap
+LINE-only public refusal, and 0→1+10000 versus 10001 budget equality with
+the accepted terminal output. The historical M79 native/source agreements
+remain separate; no M79 or M82 actor was replayed. Normal operation finish,
+Throwable routing and ownership rules are unchanged. Wider destructor,
+source and cursor histories remain open.
+[M83 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, wider destructor throw/reentry, real suspension and wider typed

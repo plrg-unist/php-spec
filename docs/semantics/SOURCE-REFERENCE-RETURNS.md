@@ -910,6 +910,20 @@ existing Exception parent relation; Error siblings remain excluded. This
 fixture proves one RuntimeException history, with M81's exact Exception proof
 separate. Other admitted built-in Exception descendants lack focused validation;
 user-defined throwable subclasses, Error siblings and reentrant destructors
-remain open. Public resumption from a normal pending-free operation exit is a
-separate cursor boundary.
-See the [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+remain open. See the [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M83 admits public resumption at a normal pending-free destructor operation
+exit in the same bounded nullable-class old-return family. After `D`, the
+old modeled HOBJECT is retired; the operation exit still precedes the
+selected reference return and carries one nonowning old-return cursor.
+The unchanged model rejected this source-reached exit before its valid
+normal finish step. A narrow saved-descriptor clause now validates the
+queued return and cursor, leaving finish and return-value behavior intact.
+Strict compilation passes at private `cb2f199bf`/399. One assigned reached
+fixture passes 90 Boolean checks and one raw step: public admission, raw
+normal finish, the historical M79 caller `r=bNULL` then `42` and one Notice,
+a heap-equal LINE-only public refusal, and equal split/whole budgets. M79's
+native/source agreements remain separate; no old actor was rerun. This proof
+covers one normal C destructor and named no-argument nullable-class source;
+wider histories and broad returns remain open. See the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
