@@ -7,6 +7,29 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Both-fractional plain-CV numeric `&=`/`|=`/`^=` now order both conversion
+deprecations. LEFT 12 survives the first callback, then live 5.5 becomes cached 5
+before the second; later 88/10 still stores 4/13/9 and detaches alias 88. Quiet
+integer RHS 5 after the first callback skips the second diagnostic and reaches the
+unchanged OR commit, detaching alias 99. First/second supplied throws preserve the
+same Exception, callback effects, destination 100 and alias write-through.
+Independent negative RHS (-1) from -1.5 still stores XOR (-13) after the second
+default Deprecated at line 25 despite live 88/10, detaching alias 88.
+Seven exact originals pass at 37d32f153; author 231/231/231/148/215/184 plus
+independent 181 SL premises pass 1421 at 2858f5b35/399. All three AST/OP pairs,
+fresh first-LEFT/second-RHS guards, actual entered frames, quiet handoff, cells/
+owners and budgets are covered; LEFT stays historical at second capture. Native/
+baseline/retained checked prep/syntax retain 0. Initial references/copies, wider
+RHS conversions, unsafe bindings/targets and wider callbacks/lifecycle remain
+partial; pure projections establish refusals only.
+[Ordered bitwise ledger](coverage/semantics/bitassign-both-warning-review.json).
+OP12 stays paused; earlier accepted operator cuts retain 0 renewed credit.
+
+Composed over bbcfe62e5/399 after pointwise review of rejected constant owners,
+NaN property empty, typed reference-return cleanup and define/list seams. The new
+owner channel stays empty; source7/state1421 retain private cuts without actor,
+replay or renewed credit.
+
 NULL `define` names now receive quiet false nonbool flags with primitive values.
 The first deprecation keeps raw NULL and captured flags; normal return converts
 only the name, checks the live empty-key binding and can issue a separate duplicate

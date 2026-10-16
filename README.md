@@ -631,6 +631,12 @@ longs through fractional-RHS deprecation. Success detaches late aliases; supplie
 throw preserves callback writes and the same Exception. Negative RHS values remain
 ordinary signed masks. Five exact originals and 724 focused SL premises pass in the
 [RHS bitwise ledger](coverage/semantics/bitassign-right-warning-review.json).
+With two fractional floats, plain-CV numeric `&=`/`|=`/`^=` order both conversion
+deprecations and retain each long after its own conversion. A quiet integer RHS
+after the first callback skips the second diagnostic. Success detaches late aliases;
+either supplied throw preserves them. Negative masks still store signed integers.
+Seven exact originals and 1421 focused SL premises pass in the
+[ordered bitwise ledger](coverage/semantics/bitassign-both-warning-review.json).
 Explicit array-to-string casts now suspend through named warning handlers for
 a bounded plain-CV array input. The borrowed array adds no saved owner: replacing
 or removing its CV still yields fixed `Array`, while a supplied throw preserves

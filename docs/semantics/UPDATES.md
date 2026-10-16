@@ -240,8 +240,20 @@ keep both converted longs through fractional-RHS deprecation. Success detaches a
 late alias; supplied throw preserves callback writes, the same Exception and alias
 write-through. Negative RHS masks still store signed integers after the callback.
 [RHS bitwise evidence](../../coverage/semantics/bitassign-right-warning-review.json)
-retains five exact originals and 724 focused SL premises. Both-fractional operands,
+retains five exact originals and 724 focused SL premises. Wider operand combinations,
 initial references/copies, unsafe targets and wider lifecycle remain partial.
+
+For two initially fractional-float plain CVs, numeric `&=`/`|=`/`^=` order LEFT
+deprecation before converting the live RHS. A fractional RHS gets its own saved
+long and deprecation; a quiet integer skips the second diagnostic. Success detaches
+late aliases; either handler throw preserves callback writes, destination and
+alias write-through. Negative masks remain ordinary signed integers, including
+after the second default Deprecated. Fresh second dispatch checks the RHS while
+LEFT remains historical.
+[Ordered bitwise evidence](../../coverage/semantics/bitassign-both-warning-review.json)
+retains seven exact originals and 1421 focused SL premises, including all three
+operators, quiet OR handoff, both throwing phases and default-second negative XOR.
+Initial references/copies, wider RHS conversions, unsafe targets and lifecycle remain partial.
 
 Stringable `.=` converts the left value before dereferencing the selected RHS
 slot. A defined direct RHS CV is borrowed and follows callback rebinding; an
