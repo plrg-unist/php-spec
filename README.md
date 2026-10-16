@@ -2139,6 +2139,13 @@ complete step states; the old non-map Throwable refusal stays distinct.
 Other Closure bodies/internal/custom counterparts and wider lifetimes remain partial.
 [Internal counterpart review](coverage/semantics/weakmap-internal-comparison-review.json).
 
+Mixed WeakMap comparisons now also admit normalized direct-method and callable-array
+method Closures, without reading receivers, captures, scope rows or private entries.
+Three exact sources and 266 Boolean premises/8 actual steps preserve real captured
+receiver owners and unchanged aggregate states; later real method/tail bodies remain
+quiet until explicitly called. Other Closure representations and wider weak lifetimes
+remain partial. [Method-Closure review](coverage/semantics/weakmap-method-comparison-review.json).
+
 [Numeric object comparison Notices](coverage/semantics/object-numeric-comparison-review.json)
 now pause ordinary source-instance/int/float leaves through real error handlers.
 Live CV/cell reads remain distinct from copies; a second Notice uses saved 1/1.0,

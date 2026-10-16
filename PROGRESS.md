@@ -7,6 +7,16 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+WeakMap comparisons now admit normalized direct-method and callable-array method
+Closures, returning uncomparable +1 in either direction before receiver/capture or
+private-entry traversal. Three exact originals and 266 Boolean premises
+(254 setup + 12 pure)/8 actual steps pass at 623149672/399. All seven operators,
+real aggregate frames, receiver-only capture owners, scope rows, quiet later tails and budget
+resume are covered. Two earlier source failures and the split STRING producer
+failure retain zero credit; the bounded diagnostic and prelaunch provisioning add
+none. STRING and other Closure representations, producers and wider weak lifetimes
+remain partial. [Method-Closure review](coverage/semantics/weakmap-method-comparison-review.json).
+
 Pending shared Generator `send` now fills a paused child's used yield assigned
 directly to a simple CV, through finite native Generator links, without advancing.
 A direct or forwarded `next` that resumes the child transfers its one payload

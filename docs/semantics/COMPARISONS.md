@@ -79,6 +79,18 @@ suspended VMs, warmed Exception bytes, zero-prefix aggregates and skipped real t
 Other Closure representations, internal/custom counterparts and wider lifetimes
 remain partial.
 
+[Method-Closure WeakMap mismatches](../../coverage/semantics/weakmap-method-comparison-review.json)
+extend the same live allocated nonfreeing admission to normalized METHODCLOSURE
+and ARRAYMETHODCLOSURE bodies from actual first-class method producers. Left Closure
+fallback reaches the class mismatch before reading fake-Closure fields; Map-left
+uses standard comparison directly. Seven-operator rows return `0100001` in either
+direction, with strict identity unchanged. The mismatch reads no receiver/capture,
+scope row or private entry and adds no roots or guards. Four direct and four genuine
+zero-prefix aggregate steps preserve complete state apart from the consumed task,
+reset BASE and result; later real casters are skipped. Other Closure representations
+and wider producer/lifetime routes remain partial. The retained STRING slice failed
+before comparison and supplies no coverage for that representation.
+
 [Generator/Generator and Fiber/Fiber pairs](../../coverage/semantics/generator-fiber-comparison-review.json)
 return order zero through the standard zero-default-property shortcut. The pair
 predicate tests arena bounds and exact runtime tags, independently of saved VM

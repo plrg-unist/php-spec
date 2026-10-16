@@ -1,0 +1,171 @@
+{
+  "version": 1,
+  "milestone": "COMP71",
+  "status": "independently reviewed within the stated live WeakMap/method-Closure domain",
+  "behavior": "Live WeakMap versus normalized direct-method or callable-array method Closure returns uncomparable +1 in either orientation before private/capture/receiver/scope traversal.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "tested_revision": "6231496722ae8dce32ede2b29af617c51eea065b",
+  "ordered_modules": 399,
+  "manifest_sha256": "2e38df4b97a41f654a8c3f01ffb0c078c337ed17d1ce8816ff7429a23b031761",
+  "implementation": {
+    "spec/semantics/386-weak-map-lifetime.watsup": "fc27498ebf2c5a02fee4b90edacaf892ae6129d5825980b5c9e4dba9c91896e1"
+  },
+  "engine_basis": [
+    "Zend/zend_operators.c zend_compare selects the left object handler.",
+    "Zend/zend_closures.c zend_closure_compare and Zend/zend_object_handlers.h ZEND_COMPARE_OBJECTS_FALLBACK use standard comparison for unlike compare pointers, before Closure fields.",
+    "Zend/zend_object_handlers.c zend_std_compare_objects rejects unlike classes before properties; WeakMap copies standard handlers in zend_register_weakref_ce."
+  ],
+  "contract": [
+    "Only two exact $object_body patterns extend $weakmap_standard_other; existing arena bounds, allocation and nonfreeing mismatch checks, ORDER1 effect and refusal exclusion remain unchanged.",
+    "Actual source METHOD_CONVERT and ARRAY_CONVERT producers establish native Closure representations, including instance and static methods. Seven operators yield 0100001 both ways, strict identity remains separate, and aggregate mismatches skip later real leaves."
+  ],
+  "source_catalogues": {
+    "tests/semantics/weakmap_method_comparison_cases.json": "7c3c44f9ee2a80d1a45035dd84dc5c3e5d20713d42898247b36159f9f49007f8",
+    "tests/semantics/weakmap_method_comparison_review_cases.json": "a837a100bd3c4dc9892417e5772574d8bd9f27289c0db71f79e8ce185073a31f"
+  },
+  "unchanged_frontiers": {
+    "revision": "f2a3bfb6d9c7f863323e0d22c23c820a6613eac5",
+    "report": ".tools/method71-support/run-baseline-v2/report.json",
+    "report_passed": false,
+    "accepted_cases": [
+      {
+        "id": "method",
+        "reason": "WeakMap comparison protocol",
+        "stdout_prefix": "method-instance|"
+      },
+      {
+        "id": "array",
+        "reason": "WeakMap comparison protocol",
+        "stdout_prefix": "array-instance|"
+      }
+    ],
+    "other_case": "STRING returned interpreter_failure before its comparison prefix; it is not an accepted Unsupported baseline.",
+    "agreement_credit": 0
+  },
+  "validation": {
+    "original_sources": {
+      "normal_agreements": 3,
+      "author_seconds": [
+        29.379353895783424,
+        34.6978973839432
+      ],
+      "independent_seconds": 37.3316412884742,
+      "cli_and_host_caps_seconds": [
+        240,
+        250
+      ]
+    },
+    "author": {
+      "premises": 120,
+      "setup": 112,
+      "pure": 8,
+      "raw_php_steps": 4,
+      "seconds": 27.078450048342347,
+      "result": "Two genuine source initializers reach instance METHOD and ARRAY EQUAL in both orientations; real function frames, exact scope rows/receiver-to-Map edges, private/key owner1, whole-step false and budget equality pass."
+    },
+    "independent": {
+      "premises": 146,
+      "setup": 142,
+      "pure": 4,
+      "raw_php_steps": 4,
+      "seconds": 31.60737696290016,
+      "result": "Declared-box and array zero-prefix spaceship fronts in both directions preserve complete state and scope rows. Maker CVs/callable array are already unset; each actual captured receiver has sole physical Closure owner and a real Map property edge. Later method/tail/private calls in the complete source prove bodies observable."
+    },
+    "total": {
+      "premises": 266,
+      "setup": 254,
+      "pure": 12,
+      "raw_php_steps": 8
+    },
+    "separate_zero_credit": "Native observations, unchanged Unsupported controls, initializer, author EL and six parse/check operations supply no application agreement or extra state credit.",
+    "failures": [
+      {
+        "report": ".tools/method71-support/run-sources-v1/report.json",
+        "revision": "bed3dcc2a1a3821d8a187acb2c6889509fd3c5bc",
+        "status": "interpreter_failure",
+        "seconds": 57.221605656668544,
+        "credit": 0,
+        "inputs": ".tools/method71-support/run-sources-v1/failure-inputs"
+      },
+      {
+        "report": ".tools/method71-peer/source-v1/report.json",
+        "revision": "bed3dcc2a1a3821d8a187acb2c6889509fd3c5bc",
+        "status": "interpreter_failure",
+        "seconds": 21.502855556085706,
+        "credit": 0,
+        "inputs": ".tools/method71-peer/source-v1/failure-inputs"
+      },
+      {
+        "report": ".tools/method71-support/run-baseline-v2/report.json",
+        "case": "string",
+        "revision": "f2a3bfb6d9c7f863323e0d22c23c820a6613eac5",
+        "status": "interpreter_failure",
+        "seconds": 11.265849214047194,
+        "credit": 0
+      }
+    ],
+    "diagnostic": {
+      "report": ".tools/method71-probe/steps300-v1/report.json",
+      "revision": "bed3dcc2a1a3821d8a187acb2c6889509fd3c5bc",
+      "cli_steps": 300,
+      "cli_and_host_caps_seconds": [
+        60,
+        70
+      ],
+      "status": "budget_exhausted",
+      "stdout_prefix": "method-instance|0100001|0",
+      "credit": 0
+    },
+    "prelaunch": "A split snapshot failed for missing sparse-WT oracle references before any actor launched. The preserved split-prelaunch-failure-v1 note has zero application credit; pinned reference bytes were re-provisioned before the successful packet."
+  },
+  "limits": [
+    "Pure bounds/dead-allocation/intrinsic denial and prior-guard projections test helper admission/effects only, not execution of malformed global states.",
+    "STRINGMETHODCLOSURE and other Closure counterparts/producers, custom handlers and wider weak lifetime routes remain partial. The retained STRING baseline failed before comparison at its original cut; no producer repair is part of COMP71.",
+    "Receiver/scope/owner facts are genuine reached prerequisites and source observations; no COW, mutation or wider cleanup protocol is newly claimed."
+  ],
+  "artifacts": {
+    ".tools/method71-support/gates.py": "835da19abcf5f553fa971264cc113e1ae61e1b167ec68b3df06a1da6b6949ee9",
+    ".tools/method71-support/inputs.py": "13c7e99e22d3ed51907335626ae1fe25d258144857d01d238da99840ede05129",
+    ".tools/method71-support/actor.py": "dd579dff042e58b86676fb938b58487fc639e1607f2062c835c77822f5e734de",
+    ".tools/method71-support/run-native-v1/report.json": "170f48523516e273bb60d9fffc9554000a935fd53f24242b5921966a509c2797",
+    ".tools/method71-support/run-baseline-v1/report.json": "6cb679b2a083e18c0b0b2d7a77ca8f3f7e385faa8c886ed01dafd1d3617347bb",
+    ".tools/method71-support/run-native-v2/report.json": "e09aad082be7ae0a8726770ce3b2c82d865b48889b985edab0c6ea3d43aee68c",
+    ".tools/method71-support/run-baseline-v2/report.json": "1fd2c550d67e2e0c715864092b7ad1853204b1603ab002221154aef2cc3e8d43",
+    ".tools/method71-support/run-init-v1/report.json": "389a5da9c87157d987e8c212b4ada108e3865128481339d4c0912ae1ffa952dc",
+    ".tools/method71-support/run-sources-v1/report.json": "7312952d74923501d3f17e0c431e1ef9685cc818de1e9e72e0fbe645552d3bb9",
+    ".tools/method71-support/run-sources-v2/report.json": "4b0105247872c41a53d40671c37fae68306bbf4a1beccebb16eb370d693543d9",
+    ".tools/method71-support/run-prepare-v1/report.json": "832407de8f85ba413af993e172dce1b963b493b1cb0e489f67bbbe661d4ecff0",
+    ".tools/method71-state/build.py": "85d3b6049a9f229f29141fb021382323b20354e88f43d3dc9047aa174fddca61",
+    ".tools/method71-state/helpers.watsup": "56b4e3148fb551ed1d731fd15c2b22e81c0676e8be09dddf0698cc6e2b9746b7",
+    ".tools/method71-state/run.py": "d79932e885bd9bb20f8d0631e32b2215fae82a2734d9226726140628cb785a24",
+    ".tools/method71-state/plan.json": "cd48f0107d8935230a242f98c103c28eebf0b901fcb756383131826b670a9010",
+    ".tools/method71-state/run-el-v1/report.json": "9e0c640c20ed5f57370d4ce4b1bf7005bc30f54df3044ab7ac59ac7253051098",
+    ".tools/method71-state/run-sl-v1/report.json": "6cea4d1c8e7b754b635394bdf6eadd79e8a27df14e5498e2d46fdc3c2f99479f",
+    ".tools/method71-probe/run.py": "bd9fbfe419b817a6331d3a00531dee59eebfa2eb70b26d4f46b3bcc7681fa4da",
+    ".tools/method71-probe/steps300-v1/report.json": "097609fa6f256553ca3461ecebf7f8d14ee7183fe32c8b62a6b985504b519278",
+    ".tools/method71-peer/run.py": "e654377bcf7e057111ca2c5178556598495ada48558bb0509e07c72e552e1319",
+    ".tools/method71-peer/build.py": "b4605225c0b8073660fb9066d10833003f1d1ab1d4223cac68af12112f814eea",
+    ".tools/method71-peer/helpers.watsup": "380f9beadc7bafb883544f434f869c5accf8ab215a1cecf5b8702422c406d655",
+    ".tools/method71-peer/plan.json": "8d78fe6305c4383408b074b64b9d95f810fe89c950de7fad1098c717d95d5ca0",
+    ".tools/method71-peer/native-v2/report.json": "4700cc653bfd251ec315072523d2c978f4b2b27e75e753c691e56450ef7e5fe8",
+    ".tools/method71-peer/source-v1/report.json": "7989f06a6ff7e5329d38018c3e088789cebee401314653d7332fe4d80f9f3177",
+    ".tools/method71-peer/source-v2/report.json": "45691f7ef1427ff30be8002d537431eb05a7a6f75edd7fd3675f4e5bb164204f",
+    ".tools/method71-peer/prepare-v2/report.json": "5ef6337d2205e0ee4a7d1c1ad287eabd27a8a318487bdbb4077f599154b852de",
+    ".tools/method71-peer/state-v2/report.json": "828ec243c9f08581dc50e9306e1b13e99050025944d825a1fbd8c358f912ab42",
+    ".tools/method71-peer/review.json": "3c825e527555d40ed89d47d5aa54bb329afb4342bcba43f1d672409442a0443a"
+  },
+  "recovery": "Ignored originals, fixtures, START/command/environment records and raw output remain under .tools/weakmap-method-comparison-71/.tools/method71-{native,split,support,state,probe,peer}. Branch codex/weakmap-method-comparison-71 retains tested commits; old failure inputs stay beside their reports. No evidence archive is committed.",
+  "independent_review": {
+    "reviewer": "/root/comp_review_67",
+    "semantic_verdict": "CLEAR",
+    "source_and_state_verdict": "CLEAR",
+    "publication_verdict": "CLEAR",
+    "record": ".tools/method71-peer/review.json",
+    "record_sha256": "3c825e527555d40ed89d47d5aa54bb329afb4342bcba43f1d672409442a0443a"
+  }
+}
