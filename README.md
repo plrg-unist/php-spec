@@ -2715,8 +2715,11 @@ Ordinary user-object getter RVs now dispose while the isset guard and receiver
 remain, before receiver release and false result/catch. Two originals and focused247
 checks cover actual RV/receiver destructors, rebinding, the same Exception and
 budgets; [object RV review](coverage/semantics/magic-empty-object-rv-review.json).
-Other signatures, receivers, arrays/internal-object RVs and wider recursive/coalesce
-magic combinations remain unsupported.
+stdClass RVs now retain that phase through storage and owned-child disposal.
+Two originals and focused222 checks cover the real storage pin, child throw,
+receiver release and catch; [stdClass RV review](coverage/semantics/magic-empty-std-rv-review.json).
+Other signatures, receivers, arrays/other internal-object RVs and wider
+recursive/coalesce magic combinations remain unsupported.
 Hooked iteration, defaulted virtual hooks, other paired or virtual setters, wider trait
 setters, other explicit setter parameter forms, references, other inherited/trait
 and wider receiver, quiet or indirect-access families and wider `__unset` consumers remain required.

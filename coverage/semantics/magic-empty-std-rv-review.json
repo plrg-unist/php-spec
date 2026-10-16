@@ -1,0 +1,102 @@
+{
+  "scope": "Live nonfreeing stdClass getter RV truth/disposal for terminal inherited empty in the existing external CV/literal private property slice, with observable owned-child normal/throw cleanup. Same bool isset and same-owner untyped by-value get.",
+  "implementation": {
+    "base": "c77b5f817598248ce04ec549eacd93a72af8fe4c",
+    "revision": "bc38cd5c74c9a3f3fa5091df133ee5ba3cd826d8",
+    "modules": 399,
+    "change": "Module408 moves the exact INSTANCE/class guard into a kind predicate, adds STDINSTANCE only, and retains bounds/allocation/nonfreeing checks. Receiver-only phase, pure truth helper and generic storage/returns are unchanged.",
+    "maintenance": "Active CLASS87 internal-kind negative changes STDINSTANCE to WEAKMAP eps; new actual derived refusal covers the boundary without replaying historical247."
+  },
+  "engine": {
+    "target": "PHP8.5.10 CLI NTS64",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_object_handlers.c zend_std_has_property: RV disposal precedes IN_ISSET clear/receiver release; standard bool cast true",
+      "Zend/zend_operators.h i_zend_is_true standard-object branch; zend_object_handlers.c zend_std_cast_object_tostring _IS_BOOL",
+      "Zend/zend_objects_API.c zend_objects_store_del; zend_objects.c zend_object_std_dtor: physical object pin and property-child disposal"
+    ],
+    "intentional_divergences": []
+  },
+  "sources": {
+    "catalogue": "tests/semantics/magic_empty_std_rv_cases.json",
+    "original_root": "/home/user/workspace/php-spec/.tools/magic-empty-std-rv-private-88/.tools/magic-empty-std-rv-probes-88",
+    "maintained_byte_identical": true,
+    "cases": "Ordinary runtime new stdClass box->payload, returning the box CV. Payload destructor emits V, rebinds sole callerCV=null, emits v and returns/throws. Receiver D follows child/box disposal and precedes F/catch; no kept receiver/box alias or constant-publication route."
+  },
+  "validation": {
+    "native": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-std-rv-private-88/.tools/magic-empty-std-rv-probes-88/native-first/report.json",
+      "sha256": "9bc8955979307e923c5a648a4b38cc4023437629d1861f677a1c006f77a7d9a2",
+      "revision": "c77b5f817598248ce04ec549eacd93a72af8fe4c",
+      "result": "Two exact16 stdout/0 stderr/exit0 tuples",
+      "source_agreements": 0
+    },
+    "baseline": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-std-rv-private-88/.tools/magic-empty-std-rv-probes-88/accepted-current-baseline/report.json",
+      "sha256": "90ba3e4aa382ba2c7e8b64f9cb6baa8bb094cd9b5b6d8d0a406200a93d1413a0",
+      "revision": "c77b5f817598248ce04ec549eacd93a72af8fe4c",
+      "result": "Two checked getter-result-type Unsupported/CLI1 after N/X:I|G|;10.860/11.119s",
+      "source_agreements": 0
+    },
+    "changed_source": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-std-rv-private-88/.tools/magic-empty-std-rv-probes-88/changed-model-x5cengku/report.json",
+      "sha256": "e3a5f4544dde48eed9379ec6efac691480ea79dea645d7673af084119fe2938e",
+      "revision": "bc38cd5c74c9a3f3fa5091df133ee5ba3cd826d8",
+      "result": "Two checked normal exact native16/0/0 tuples;11.490/12.468s",
+      "source_agreements": 2
+    },
+    "focused": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-std-rv-private-88/.tools/magic-empty-std-rv-protocol-4_eps3ij/report.json",
+      "sha256": "c1ef0ebdc7c73a6b5b0136a9130d19b78e2e9cac5a7f7ca98bd0e879bbab28a7",
+      "revision": "649ea9a3843afd21b3f1bfd5a785501b0897dc0c",
+      "result": "Both true/exit0: normal108=94reached+14derived; throw114reached; total222=208+14",
+      "times": "normal AL6.934/SL16.333; throw AL6.977/SL19.699",
+      "source_agreements": 0
+    }
+  },
+  "focused_scope": "Actual STDINSTANCE RV and owned payload, receiver-only phase nodes, authenticated359 storage NEXT0 to1 and retained box pin through payload destructor, caller CV=null with recapture refusal/valid saved frame, Isset active/Get inactive, box+payload retirement then receiver destructor, same Throwable at genuine CATCH_BIND and full budget equality. Derived old INSTANCE/newSTD kind, WEAKMAP result rejection, bounds and reached freeing-pin refusal add no source agreements.",
+  "nonpassing": [],
+  "execution": {
+    "cwd": "/home/user/workspace/php-spec/.tools/magic-empty-std-rv-private-88",
+    "environment": "LC_ALL=C TZ=UTC PHP_SPEC_SCRIPT_ENCODING absent; jobs1; all native/model/state actors taskset CPU1; fixed native_profile in catalogue/reports.",
+    "caps": "native45; model60/outer75/steps100000 percase serial; focused each AL90 then strictSL90/cachefalse/dettrue/stop-first.",
+    "commands": [
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/magic-empty-std-rv-probes-88/run.py native --revision c77b5f817598248ce04ec549eacd93a72af8fe4c",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/magic-empty-std-rv-probes-88/run.py baseline --revision c77b5f817598248ce04ec549eacd93a72af8fe4c",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/magic-empty-std-rv-probes-88/run.py changed --revision bc38cd5c74c9a3f3fa5091df133ee5ba3cd826d8",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u tests/semantics/magic_empty_std_rv_protocol.py --revision 649ea9a3843afd21b3f1bfd5a785501b0897dc0c"
+    ],
+    "affinity": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-std-rv-private-88/.tools/magic-empty-std-rv-probes-88/affinity-native-first.json",
+        "sha256": "07daedd7c6f365f75dcdad932af39650d72904b19cf53070a0ca9c8302ac0ad1"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-std-rv-private-88/.tools/magic-empty-std-rv-probes-88/affinity-accepted-current-baseline.json",
+        "sha256": "e678e33af9088c3b0b21e7b8c12b5d6eea2c034d07ac2748fbe3640b78a0707a"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-std-rv-private-88/.tools/magic-empty-std-rv-probes-88/affinity-changed-source-88.json",
+        "sha256": "abaedb0520dabbefd0e707a223059e193e0c6879bccbfcf01167a294c510f99e"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-std-rv-private-88/.tools/magic-empty-std-rv-probes-88/affinity-state-88.json",
+        "sha256": "6274e0437e3aec70faeb4c3822c49a62f174df5c6a95b71fbcf0d7c6822af1cf"
+      }
+    ],
+    "observations": "Both native CPU1 masks captured; normal full argv and throwing empty argv at exit. Exact recorded taskset-parent argv remains available; no blanket native live-argv claim. Baseline2/source2/state4 have complete live mask+argv captures. All accepted watched inputs/head/status/fixtures stable, groups empty, actors/observers reaped."
+  },
+  "tools": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "private_source_driver_sha256": "22dcbece6f80467096c5fc288538b5084247348e37958f6df50572524f219d6e",
+    "focused_driver_sha256": "57f9467516970d8c72c14aa3f331ae795dc74edaf7787290ae87c4b659fcee50"
+  },
+  "limits": "Arrays, other internal-object kinds, wider signatures/receivers/recursive and callback/lifecycle combinations remain partial. No global constant/stdClass argument publication changed. CLASS87 instance247 and earlier primitive/NaN cuts retain original identities and failures, without replay. Public source2 loads strictSL399; no separate initialization actor.",
+  "artifacts": "Ignored raw reports/streams/process records and private run.py remain at original paths. Maintained sources/catalogue/focused harness recover from tested commits. No large artifacts, backup WT or extra cleanup receipt chain tracked.",
+  "review": {
+    "independent": "class_review_84",
+    "accepted": "Native/baseline/source2, production, focused222 and concise publication independently accepted. Structural inventory/diff checks pass; no semantic rerun for publication."
+  }
+}

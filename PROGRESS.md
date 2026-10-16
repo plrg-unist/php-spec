@@ -7,25 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Terminal inherited `empty` now disposes ordinary user-object getter RVs while
-retaining the isset guard and captured receiver; Get is already inactive. An RV
-destructor can replace the sole caller CV with null: receiver destruction still
-follows RV disposal, before the false result or catch binding. A throwing RV
-destructor preserves the same Exception. Two exact originals agree at662443a55;
-focused247 at47847ca06 (188 reached +59 derived) checks actual RV/receiver
-destructors, saved-frame guards, catch identity, authenticated record refusals,
-same-identity/extra-owner controls and budgets. The initial false131 used two
-incorrect no-bookkeeping expectations; it and its locating diagnostic retain zero
-credit. Runtime and source2 did not change for that fixture correction. Arrays,
-internal-object RVs and wider signature/receiver/recursive forms remain partial.
-[Object RV review](coverage/semantics/magic-empty-object-rv-review.json).
-Earlier cuts retain their identities: [integer/call](coverage/semantics/magic-empty-review.json),
-[primitive/string](coverage/semantics/magic-empty-scalars-review.json),
-[float](coverage/semantics/magic-empty-floats-review.json) and
-[NaN warning](coverage/semantics/magic-empty-nan-review.json).
-
-Pointwise composition over844f6957d preserves the incoming399-module parent.
-Source2/state247 retain their private cuts; no joined actor or renewed credit.
+Terminal inherited `empty` now admits stdClass getter RVs through the existing
+receiver-only disposal phase. An owned payload destructor runs while the stdClass
+storage pin and captured receiver remain; isset stays active and Get inactive.
+Rebinding the sole caller CV to null still releases the receiver only after box
+and payload retirement, before false output or catch binding. A payload throw
+preserves the same Exception. Two exact originals agree atbc38cd5c7; focused222
+at649ea9a38 (208 reached +14 derived) checks actual storage NEXT0→1, payload/receiver
+destructors, saved-frame guards, catch identity, bounds/kind/freeing refusals and
+budgets. No actor failed. Pure truth, the saved phase and generic storage/return
+code remain unchanged; no global constant/stdClass argument publication changed.
+Arrays, other internal-object RVs and wider signatures/receivers/lifecycles remain
+partial. [stdClass RV review](coverage/semantics/magic-empty-std-rv-review.json).
+The earlier [instance RV247](coverage/semantics/magic-empty-object-rv-review.json)
+and primitive/NaN cuts retain their original identities; no replay or renewed credit.
 
 WeakMap comparisons now admit normalized direct-method and callable-array method
 Closures, returning uncomparable +1 in either direction before receiver/capture or
