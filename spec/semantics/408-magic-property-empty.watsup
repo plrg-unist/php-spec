@@ -1,5 +1,5 @@
 ;; False selects __isset; true selects __get. One saved RESULT owns the receiver
-;; through both calls and NaN warnings. Other primitive truth is pure; carriers authenticate.
+;; through calls, NaN warnings and ordinary object RV disposal. Primitive truth is pure.
 dec $property_empty_method(pstate, nat, bool) : pmethoddesc?
 def $property_empty_method(S, n, false) = $property_isset_method(S, n)
 def $property_empty_method(S, n, true) = $property_get_method(S, n)
@@ -144,6 +144,7 @@ def $property_empty_get_active(S, n, ptbytes) = true
 
 dec $property_empty_guard(pstate, nat, ptbytes) : bool
 dec $property_empty_nan_guard(pstate, nat, ptbytes) : bool
+dec $property_empty_rv_guard(pstate, nat, ptbytes) : bool
 def $property_empty_guard(S, n, ptbytes) = true
   -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty b_get) :: ptask_tail*
   -- if ppropertyempty.OBJECT = n /\ ppropertyempty.NAME = ptbytes
@@ -153,7 +154,7 @@ def $property_empty_guard(S, n, ptbytes) = true
   -- if S.TODO = (CALL_ARGS (PROPERTY_EMPTY_TARGET ppropertyempty b_get) eps 1 poperand* porigin? z) :: ptask_tail*
   -- if ppropertyempty.OBJECT = n /\ ppropertyempty.NAME = ptbytes
   -- if $property_empty_pending_call(S, ppropertyempty, b_get)
-def $property_empty_guard(S, n, ptbytes) = ($property_empty_active(S, S.CURRENT, S.FRAMES, n, ptbytes, false) \/ $property_empty_active(S, S.CURRENT, S.FRAMES, n, ptbytes, true) \/ $property_empty_nan_guard(S, n, ptbytes)) -- otherwise
+def $property_empty_guard(S, n, ptbytes) = ($property_empty_active(S, S.CURRENT, S.FRAMES, n, ptbytes, false) \/ $property_empty_active(S, S.CURRENT, S.FRAMES, n, ptbytes, true) \/ $property_empty_nan_guard(S, n, ptbytes) \/ $property_empty_rv_guard(S, n, ptbytes)) -- otherwise
 
 def $property_empty_pending(S) = true
   -- if S.TODO = (ISSET_RESULT true z) :: ptask_tail*
@@ -279,6 +280,63 @@ def $property_empty_nan_discard(S, ppropertyemptynan) = S[.COMPLETION = UNSUPPOR
 def $error_read_discard(S, PROPERTY_EMPTY_NAN ppropertyemptynan) = $property_empty_nan_discard(S, ppropertyemptynan)
 def $return_discard(S, PROPERTY_EMPTY_NAN ppropertyemptynan) = $property_empty_nan_discard(S, ppropertyemptynan)
 
+;; Standard user objects are true, but their owning RV must be disposed while
+;; IN_ISSET and the saved receiver remain. The phase itself owns only receiver.
+dec $property_empty_rv_ready(pstate, ppropertyempty) : bool
+def $property_empty_rv_ready(S, ppropertyempty) = true
+  -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
+  -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty true) :: ptask_tail*
+  -- if S.ORIGIN = (ppropertyempty.SITE) /\ S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if $property_empty_valid(S, ppropertyempty)
+  -- if S.RESULT = KNOWN (POBJECT n_rv)
+  -- if $(n_rv < |S.OBJECTS|) /\ (HOBJECT n_rv) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_rv] = INSTANCE porigin_class
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if ~$instance_storage_freeing(S, n_rv)
+def $property_empty_rv_ready(S, ppropertyempty) = false -- otherwise
+dec $property_empty_rv_valid(pstate, ppropertyemptyrv) : bool
+def $property_empty_rv_valid(S, ppropertyemptyrv) = true
+  -- if S.ORIGIN = (ppropertyemptyrv.EMPTY.SITE)
+  -- if $property_empty_valid(S, ppropertyemptyrv.EMPTY)
+  -- if ppropertyemptyrv.OWNER = |S.FRAMES| /\ ppropertyemptyrv.CALLER = S.CURRENT
+  -- if $source_operand_suffix(S.TODO, PROPERTY_EMPTY_RV ppropertyemptyrv, ppropertyemptyrv.TAIL)
+def $property_empty_rv_valid(S, ppropertyemptyrv) = false -- otherwise
+
+rule PhpStep/property-empty-object-release: S ~> S[.TODO = (PROPERTY_EMPTY_RV ppropertyemptyrv) :: ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty true) :: ptask_tail*
+  -- if $property_empty_rv_ready(S, ppropertyempty)
+  -- if ppropertyemptyrv = {EMPTY ppropertyempty, OWNER (|S.FRAMES|), CALLER S.CURRENT, TAIL ptask_tail*}
+rule PhpStep/property-empty-object-result: S ~> S[.TODO = ppropertyemptyrv.TAIL][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROPERTY_EMPTY_RV ppropertyemptyrv) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if $property_empty_rv_valid(S, ppropertyemptyrv)
+rule PhpStep/property-empty-object-invalid: S ~> S[.COMPLETION = UNSUPPORTED "magic empty object RV continuation"]
+  -- if S.TODO = (PROPERTY_EMPTY_RV ppropertyemptyrv) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if ~$property_empty_rv_valid(S, ppropertyemptyrv)
+def $task_nodes(PROPERTY_EMPTY_RV ppropertyemptyrv) = [HOBJECT ppropertyemptyrv.EMPTY.OBJECT]
+def $call_task_valid(S, PROPERTY_EMPTY_RV ppropertyemptyrv) = $property_empty_rv_valid(S, ppropertyemptyrv)
+
+dec $property_empty_rv_task(pstate, ptask, nat, ptbytes) : bool
+def $property_empty_rv_task(S, PROPERTY_EMPTY_RV ppropertyemptyrv, n, ptbytes) = ($property_empty_rv_valid(S, ppropertyemptyrv) /\ ppropertyemptyrv.EMPTY.OBJECT = n /\ ppropertyemptyrv.EMPTY.NAME = ptbytes)
+def $property_empty_rv_task(S, ptask, n, ptbytes) = false -- otherwise
+dec $property_empty_rv_tasks(pstate, ptask*, nat, ptbytes) : bool
+def $property_empty_rv_tasks(S, eps, n, ptbytes) = false
+def $property_empty_rv_tasks(S, ptask :: ptask_tail*, n, ptbytes) = ($property_empty_rv_task(S, ptask, n, ptbytes) \/ $property_empty_rv_tasks(S, ptask_tail*, n, ptbytes))
+dec $property_empty_rv_frames(pstate, pframe*, nat, ptbytes) : bool
+def $property_empty_rv_frames(S, eps, n, ptbytes) = false
+def $property_empty_rv_frames(S, pframe :: pframe_tail*, n, ptbytes) = ($property_empty_rv_tasks($constant_frame_view(S, pframe, pframe_tail*), pframe.TODO, n, ptbytes) \/ $property_empty_rv_frames(S, pframe_tail*, n, ptbytes))
+def $property_empty_rv_guard(S, n, ptbytes) = ($property_empty_rv_tasks(S, S.TODO, n, ptbytes) \/ $property_empty_rv_frames(S, S.FRAMES, n, ptbytes))
+
+dec $property_empty_rv_discard(pstate, ppropertyemptyrv) : pstate
+def $property_empty_rv_discard(S, ppropertyemptyrv) = S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (THROW_SEARCH n_error) :: ppropertyemptyrv.TAIL
+  -- if $throwable_live(S, n_error)
+  -- if $property_empty_rv_valid(S[.TODO = (PROPERTY_EMPTY_RV ppropertyemptyrv) :: ppropertyemptyrv.TAIL], ppropertyemptyrv)
+def $property_empty_rv_discard(S, ppropertyemptyrv) = S[.COMPLETION = UNSUPPORTED "magic empty object RV cleanup"] -- otherwise
+def $return_discard(S, PROPERTY_EMPTY_RV ppropertyemptyrv) = $property_empty_rv_discard(S, ppropertyemptyrv)
+
 rule PhpStep/property-empty-value: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL b)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty true) :: ptask_tail*
   -- if S.COMPLETION = NORMAL
@@ -291,7 +349,7 @@ rule PhpStep/property-empty-result-unsupported: S ~> S[.COMPLETION = UNSUPPORTED
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN pvalue
   -- if $property_empty_truth(S, pvalue) = eps
-  -- if ~$property_empty_nan_ready(S, ppropertyempty)
+  -- if ~$property_empty_nan_ready(S, ppropertyempty) /\ ~$property_empty_rv_ready(S, ppropertyempty)
   -- if S.ORIGIN = (ppropertyempty.SITE)
   -- if $property_empty_valid(S, ppropertyempty)
 
