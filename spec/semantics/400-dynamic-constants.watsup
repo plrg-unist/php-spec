@@ -1180,6 +1180,10 @@ def $dynamic_scalar_define_values(pconfigcall) = ((PINT i, pvalue))
 def $dynamic_scalar_define_values(pconfigcall) = ((PBOOL b, pvalue))
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (PBOOL b)), NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN pvalue_flag)]
   -- if $dynamic_define_false_scalar_flag(pvalue_flag)
+def $dynamic_scalar_define_values(pconfigcall) = ((PFLOAT n, pvalue))
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (PFLOAT n)), NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN pvalue_flag)]
+  -- if $float_decode(n) = FINITE n_s n_n n_d
+  -- if $dynamic_define_false_scalar_flag(pvalue_flag)
 def $dynamic_scalar_define_values(pconfigcall) = ((PNULL, pvalue))
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN pvalue_flag)]
   -- if $dynamic_define_false_scalar_flag(pvalue_flag)

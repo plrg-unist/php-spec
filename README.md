@@ -1038,6 +1038,11 @@ float zero). Weak calls convert the API name while preserving the raw flag;
 strict name errors precede flag rejection after argument effects.
 [Four source agreements and 595 state premises](coverage/semantics/define-scalar-false-flag-review.json)
 cover publication, converted duplicate traces, callback throws and carrier guards.
+Finite float names also accept those false flags. Weak calls retain distinct
+`"-0"`/`"0"` keys and the received duplicate key across handler precision changes;
+strict calls reject the raw float first after argument effects.
+[Four source agreements and 603 state premises](coverage/semantics/define-float-false-flag-review.json)
+cover captured flags, historical precision, strict errors and throwing cleanup.
 Weak null `define` names dispatch the deprecation before conversion and registration.
 A returning handler can create the empty-name binding first, causing a separate
 duplicate warning with the converted string in its API trace. A throwing first

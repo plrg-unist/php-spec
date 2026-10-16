@@ -109,7 +109,10 @@ def checks(program, path, name):
         values += ['~$dynamic_scalar_define_valid(S,pconfigcall[' + field + '])']
     for flag in ('PNULL', 'PBOOL true', 'PINT 1', 'PFLOAT 4607182418800017408', 'PFLOAT 9221120237041090560', 'PSTRING ' + text('false')):
         values += ['~$dynamic_scalar_define_call(pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT,2,KNOWN (' + flag + '))])']
-    for raw_name in ('PNULL', 'PFLOAT 4612811918334230528', 'PSTRING ' + text('Ordinary40')):
+    values += ['pconfigcall_float_name = pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT,0,KNOWN (PFLOAT 4612811918334230528))]',
+        '$dynamic_scalar_define_call(pconfigcall_float_name)',
+        '~$dynamic_scalar_define_duplicate_valid(S,pconfigcall_float_name,pvalue_received,z_precision,n_prefix)']
+    for raw_name in ('PNULL', 'PSTRING ' + text('Ordinary40')):
         values += ['~$dynamic_scalar_define_call(pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT,0,KNOWN (' + raw_name + '))])']
     for field in ('.LEVEL = 8192', '.MESSAGE = ' + text('changed'), '.LINE = $(perrorcall.LINE + 1)',
             '.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE $(perrorcall.LINE + 1)'):

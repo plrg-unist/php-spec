@@ -118,7 +118,8 @@ def checks(program, path, name):
         for flag in ('PBOOL true', 'PNULL', 'PINT 1', 'PFLOAT 9221120237041090560', 'PSTRING ' + text('false'), 'PARRAY 0', 'POBJECT 0'):
             values += ['~$dynamic_define_false_scalar_flag(' + flag + ')', '~$dynamic_scalar_define_call(pconfigcall_S[.SENT = $named_slot_set(pconfigcall_S.SENT,2,KNOWN (' + flag + '))])']
         values += ['$dynamic_scalar_define_call(pconfigcall_S[.SENT = $named_slot_set(pconfigcall_S.SENT,2,KNOWN (PBOOL false))])',
-            '~$dynamic_scalar_define_call(pconfigcall_S[.SENT = $named_slot_set(pconfigcall_S.SENT,0,KNOWN (PFLOAT 4612811918334230528))])']
+            '$dynamic_scalar_define_call(pconfigcall_S[.SENT = $named_slot_set(pconfigcall_S.SENT,0,KNOWN (PFLOAT 4612811918334230528))])',
+            '~$dynamic_scalar_define_valid(S,pconfigcall_S[.SENT = $named_slot_set(pconfigcall_S.SENT,0,KNOWN (PFLOAT 4612811918334230528))])']
     elif name == 'captured-request-zero-before-live-truthy-flag-effects':
         values += [*front('S', 'S_initial', 'PINT 42', 'pvalue_candidate'), 'S.USERCONSTANTS = eps',
             'pvalue_flag_S = PSTRING_CARRIER (REQUEST_STRING n_flag_string) preqbytes_flag', 'preqbytes_flag = ' + text('0'),

@@ -7,6 +7,26 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Finite float `define` names now accept quiet false scalar flags with primitive
+values. Weak calls keep distinct `"-0"`/`"0"` keys and raw captured flags; duplicate
+handlers retain the received key and call-time precision despite later writes.
+Strict parameter-1 errors precede nonbool flag rejection after argument effects.
+Four exact originals agree at 9fb6cdf4, with one expected default duplicate Warning.
+All 603 public premises pass: author 274+80+108 and independent 141 across four
+groups, including actual publication/duplicate/strict/discard steps, saved precision
+14 versus live 1, old binding/sibling/caller effects, carrier/source/name refusals
+and budgets. The unchanged Unsupported baseline retains zero credit; no actor failed
+or was repeated. Runtime adds four module400 lines. Two obsolete float-shape
+refusals now check shape admission plus immutable source or received-name authority;
+their equivalents are exercised here without replaying the old 595 campaign.
+Nonfinite names with these flags, truthy/NULL/NaN flags and owning/wider forms remain
+partial. [Float false-flag review](coverage/semantics/define-float-false-flag-review.json).
+
+Pointwise composition over 06f381e75 preserves the incoming 399-module parent.
+Source4/state603 and the older 595 campaign retain their tested cuts; the incoming
+empty REJECTED field and other selectors are conservative here, so no joined actor
+or renewed execution credit is warranted.
+
 Both-fractional plain-CV numeric `&=`/`|=`/`^=` now order both conversion
 deprecations. LEFT 12 survives the first callback, then live 5.5 becomes cached 5
 before the second; later 88/10 still stores 4/13/9 and detaches alias 88. Quiet
@@ -42,7 +62,7 @@ views, carrier/source refusals and budgets. The original captured-source timeout
 pre-main fixture binding failure and unchanged Unsupported baseline retain zero
 credit; only affected checks were repeated. Runtime adds four module400 lines,
 reusing the old NULL-name pipeline with a bounded marker-domain extension.
-Float names with these flags, other coerced flags with NULL/scalar names and
+Nonfinite float names with these flags, other coerced flags with NULL/scalar names and
 owning/wider forms remain partial.
 [NULL-name false-flag review](coverage/semantics/define-null-name-false-flag-review.json).
 
@@ -137,7 +157,7 @@ default duplication and handler return/throw, strict errors, full discard equali
 carrier and source refusals and budgets. The unchanged Unsupported baseline retains zero
 credit; a fixture name collision was fixed before execution. Runtime adds only 20
 module400 lines and reuses existing receive/duplicate/trace code with a bounded
-marker-domain extension. Float names with these flags, truthy/NULL/NaN flags,
+marker-domain extension. Nonfinite float names with these flags, truthy/NULL/NaN flags,
 owning/wider values and full family closure remain partial.
 [False-flag name review](coverage/semantics/define-scalar-false-flag-review.json).
 
