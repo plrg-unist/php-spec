@@ -606,6 +606,11 @@ integer RHS after the first callback skips the second diagnostic. Success detach
 late aliases; either supplied throw or a captured zero preserves them. Five exact
 originals and 929 focused SL premises pass in the
 [ordered modulo ledger](coverage/semantics/modassign-both-warning-review.json).
+An integral float RHS after the first callback also converts quietly: with cached
+LEFT `12`, RHS `5.0` stores `2` and detaches alias `99`; signed zero raises
+`DivisionByZeroError` before storage.
+Three exact originals and 364 focused SL premises pass in the
+[quiet float modulo ledger](coverage/semantics/modassign-quiet-float-review.json).
 For initially plain variables, `<<=` and `>>=` now retain a fractional left
 conversion through deprecation handlers, then read the live quiet integer count.
 Success detaches a late target alias; supplied throw or a negative count preserves

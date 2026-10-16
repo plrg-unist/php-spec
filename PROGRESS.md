@@ -7,6 +7,24 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Modulo now quietly converts a fitting integral float RHS left by the first
+handler in the both-fractional plain-CV route. Cached LEFT 12 with live `5.0`
+stores 2 and detaches alias 99 in one production step; supplied throw preserves the
+same Exception, destination 100 and alias write-through. Independent default-first
+`-0.0` raises DivisionByZeroError at line 25 without storage or detachment, after
+exactly one LEFT deprecation. Three exact originals pass at edb2bf2a2; author
+135/99 plus independent 130 SL premises pass 364 at f9f677e78/399, covering real
+frames, original bindings, result/error cells and owners, and budgets. Only module404
+gains 25 lines plus a boundary exclusion; tasks/schema and other routes stay unchanged.
+Native/baseline/checked prep/syntax and earlier renewed credit stay 0. Wider initial
+forms, RHS conversions, unsafe targets and lifecycle remain partial; OP12 paused.
+[Quiet float modulo ledger](coverage/semantics/modassign-quiet-float-review.json).
+
+Composed over 13313e206/399 after pointwise review of Generator buffered inputs,
+integer-CV list warnings, object-RV empty cleanup, Throwable returns and define/
+WeakMap seams. The new owner channel stays empty; source3/state364 retain private
+cuts without actor, replay or renewed credit.
+
 Terminal inherited `empty` now disposes ordinary user-object getter RVs while
 retaining the isset guard and captured receiver; Get is already inactive. An RV
 destructor can replace the sole caller CV with null: receiver destruction still
