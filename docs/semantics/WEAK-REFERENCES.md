@@ -231,6 +231,18 @@ The existing empty/single-entry producer and lifetime bounds remain; mixed-objec
 numeric, iteration and wider map protocols are separate.
 [Comparison ledger](../../coverage/semantics/weakmap-comparison-review.json).
 
+## WeakMap array casts
+
+Module386 casts a live allocated nonfreeing map to a fresh mutable empty array,
+including populated maps. Zend returns no property view for ARRAY_CAST, so neither
+keys nor private values enter the result or gain owners. Ordinary cast resolution,
+source returns and temporary cleanup remain in force. Two exact originals and 177
+Boolean premises/6 actual casts cover empty/temporary/populated fronts, owner1,
+real COW/reference history, key/value retirement and budget resume. Pure pin and
+bounds controls establish helper refusals only; freeing casts and wider map
+producers/lifetimes retain their existing limits.
+[Array-cast ledger](../../coverage/semantics/weakmap-array-cast-review.json).
+
 ## WeakMap first entry and key retirement
 
 Module386 admits zero-argument `new WeakMap()` and one first insertion with a

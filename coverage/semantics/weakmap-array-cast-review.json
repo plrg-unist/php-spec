@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "milestone": "COMP70",
+  "status": "independently reviewed within the stated live WeakMap array-cast domain",
+  "behavior": "An explicit array cast of a live allocated nonfreeing WeakMap creates a fresh mutable empty array, including when populated; private entries and their owners remain untouched.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "tested_revision": "243651a8089db58a49301d2564101e6fa927ace7",
+  "ordered_modules": 399,
+  "manifest_sha256": "2e38df4b97a41f654a8c3f01ffb0c078c337ed17d1ce8816ff7429a23b031761",
+  "implementation": {
+    "spec/semantics/386-weak-map-lifetime.watsup": "67be88cac8c45801331cf6ef5e660d0c734fda472e46a460011d307de00e669a"
+  },
+  "engine_basis": [
+    "Zend/zend_weakrefs.c zend_weakmap_get_properties_for returns NULL for ARRAY_CAST (all purposes other than DEBUG).",
+    "Zend/zend_operators.c convert_to_array consumes that NULL property view using array_init; it does not export entries or reuse an immutable empty constant."
+  ],
+  "contract": [
+    "Existing $weakmap_at bounds/allocation and nonfreeing checks admit the rule. It uses the existing array allocator; no key/value/property/callback traversal or new continuation is introduced.",
+    "The older module359 freeing array-cast refusal is disjoint and unchanged. Existing cast operand resolution, temporary release and source return machinery remain authoritative."
+  ],
+  "source_catalogues": {
+    "tests/semantics/weakmap_array_cast_cases.json": "48ca345985bdfe4ee7165a62487084829a4489c6ce50d3eca6280518dc1511ec",
+    "tests/semantics/weakmap_array_cast_review_cases.json": "165be586ec87b8677cc44b7ccff07847bcdfe4da5b265e25de5b4e653ee794b8"
+  },
+  "validation": {
+    "original_sources": {
+      "normal_agreements": 2,
+      "author_seconds": 20.88973747752607,
+      "independent_seconds": 19.61422459036112,
+      "cli_and_host_caps_seconds": [
+        240,
+        250
+      ]
+    },
+    "author": {
+      "premises": 64,
+      "setup": 57,
+      "pure": 7,
+      "raw_php_steps": 3,
+      "seconds": 15.884419057518244,
+      "result": "Real empty-CV, empty-temporary and populated view70 function fronts match explicit fresh-array allocation of the complete state. Private/key owner1, no result edges, mutable distinct result IDs, prior map retirement and budget equality pass."
+    },
+    "independent": {
+      "premises": 113,
+      "setup": 111,
+      "pure": 2,
+      "raw_php_steps": 3,
+      "seconds": 19.408795230090618,
+      "result": "Two real populated function casts and a post-key-retirement empty cast preserve complete state except explicit result allocation. Actual source prefix COW/reference history, old result arrays, weak-key null, sole child destruction and physical key/value retirement pass."
+    },
+    "total": {
+      "premises": 177,
+      "setup": 168,
+      "pure": 9,
+      "raw_php_steps": 6
+    },
+    "separate_zero_credit": "Native observations and exact unchanged Unsupported baseline, initializer, author EL and four parse/check operations establish no application agreement or extra state credit.",
+    "failures": []
+  },
+  "limits": [
+    "Pure bounds/tag/dead-allocation and constructed-pin checks establish helper admission/refusal only; the pin tests the unchanged freeing cast refusal without a malformed-global execution claim.",
+    "Existing map producers, entries and lifetime bounds remain partial; freeing casts, clone, iteration and wider map protocols are not extended. The six raw steps are casts; COW writes and retirement occur in genuine source prefixes, not separate raw-step claims."
+  ],
+  "artifacts": {
+    ".tools/cast70-support/gates.py": "cf9dcc50f4c2f23fb24fb4cf355e4afb2e2b028c9db3c3fab29bef6df5825fa3",
+    ".tools/cast70-support/inputs.py": "2d1670f48ec85646b5072dddb4fa02824b1e427c906c7e5e05553c18bbefc1f3",
+    ".tools/cast70-support/actor.py": "dd579dff042e58b86676fb938b58487fc639e1607f2062c835c77822f5e734de",
+    ".tools/cast70-support/run-native-v1/report.json": "56a187bc1aaeb2e477234b239a6fc84dda2f5c31eb80b5547a5e3acce41f25c5",
+    ".tools/cast70-support/run-baseline-v1/report.json": "6e23a261d6c747c79ae40778c474a9f74e97c825755dce6dc632b2867ecf977f",
+    ".tools/cast70-support/run-init-v1/report.json": "4cd8e22831739cce8805d690e749fdd38ee6e676f5777953dfa8d7487b5fdc07",
+    ".tools/cast70-support/run-sources-v1/report.json": "bf490f8d688fd30b5637693b4724069bbfd1fd46f8d4fd09ae0bdaa586bf23c2",
+    ".tools/cast70-support/run-prepare-v1/report.json": "200e224ad13fab3073f35b4e81df0d7b3adb593abf7e86e7aacb7fcc84bf86ac",
+    ".tools/cast70-state/build.py": "f0509d9bb2c2d916bc1d38fa3672c2c201d433b714a905dbea7c46940ab26e42",
+    ".tools/cast70-state/helpers.watsup": "3501326350d26dfd73ceef7408f7a6642b334f323ad4614771af2fc20204a9f1",
+    ".tools/cast70-state/run.py": "6382f7a81436b094e4d468167131ec1afe9f955d622772904f28a39f74e47b91",
+    ".tools/cast70-state/plan.json": "1b946bd1e2b009780dd04ec6b227350fee82266d9c641112b683777c3e0c5f5f",
+    ".tools/cast70-state/run-el-v1/report.json": "46bcf927b412d6d5651f14c07493732f9add7b054411f8c4e1dc31c7f873f223",
+    ".tools/cast70-state/run-sl-v1/report.json": "4ac05e904566edfc62151eed343ff130f08f7d4c1149fa13eaf78fd1799a887d",
+    ".tools/cast70-peer/run.py": "29d3faacebae98f03ec8858b9b49ec32bc7a4a125b18aecd71d29b044a9bda37",
+    ".tools/cast70-peer/build.py": "2279b4d092ee0f4a25ddd69b86f7719b73d0070c662655a73e0a6fb987895e5c",
+    ".tools/cast70-peer/helpers.watsup": "e397bd4ea63255c4a833f844e7d193e146ac4ba2fca6d690f59e1596bbff6ac8",
+    ".tools/cast70-peer/plan.json": "a3dbd109816c18291a30877eced7043fa59098391512ad3026b5aa3259ab10d5",
+    ".tools/cast70-peer/native-v1/report.json": "8f9c9f8ba114f39f089bba52f3345ad3dc9ddf340eed7aa9c2de7f04111d12a7",
+    ".tools/cast70-peer/source-v1/report.json": "3cb8e0fddd8e3d3f7101e29c93b2e6074fcc57e737ccbbfcc2069ef29567a5ae",
+    ".tools/cast70-peer/prepare-v1/report.json": "0b353cd1949b72bf1eb30319aaee07cbd028a0fda3cd2b0b67971e42e9b5c850",
+    ".tools/cast70-peer/state-v1/report.json": "67725fe728011bef1ee4278f1c5a0449de7366361d7de8d084bf9a0ac76da08a",
+    ".tools/cast70-peer/review.json": "ed8c9fa4a39f2fc90e18ad356c732db5169f2cf26bc14e1ab775f8ee5444390f"
+  },
+  "recovery": "Ignored originals, fixtures, commands, environment/START records and raw stdout/stderr remain under .tools/weakmap-array-cast-70/.tools/cast70-{native,support,state,peer}; branch codex/weakmap-array-cast-70 retains the tested revision. No evidence archive is committed.",
+  "independent_review": {
+    "reviewer": "/root/comp_review_67",
+    "semantic_verdict": "CLEAR",
+    "source_and_state_verdict": "CLEAR",
+    "publication_verdict": "CLEAR",
+    "record": ".tools/cast70-peer/review.json",
+    "record_sha256": "ed8c9fa4a39f2fc90e18ad356c732db5169f2cf26bc14e1ab775f8ee5444390f"
+  },
+  "unchanged_frontier": {
+    "revision": "8452129cf02ecc4d537bd6b5630d889f55cbd715",
+    "reason": "WeakMap array cast protocol",
+    "stdout_prefix": "empty|",
+    "agreement_credit": 0,
+    "report": ".tools/cast70-support/run-baseline-v1/report.json"
+  },
+  "composition": {
+    "parent": "dc87cf01d91bfbbc1c70a02a4da170df16ca1f75",
+    "ordered_modules": 399,
+    "method": "Pointwise actual-parent source review; no concrete syntax or dispatch-order dependency warrants a joined actor.",
+    "runtime": "Only the tested-identical module386 changes; manifest and all other runtime files remain parent-exact.",
+    "parent_seams": "Pending Exception/ref-return cursors, constant-birth stdClass arguments, define flags, both-modulo continuations and list source/dispatch guards do not match the originals. Existing cast, array and weak lifetime routes are parent-unchanged.",
+    "execution_credit": 0,
+    "retained_cut": "Source2/state177 with six actual casts at243651a8089db58a49301d2564101e6fa927ace7."
+  }
+}

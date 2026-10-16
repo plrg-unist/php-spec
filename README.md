@@ -1575,6 +1575,12 @@ general multi-map order, wider wrapper creation or mutation during freeing,
 additional strong key/map owners retained beyond callback cleanup and wider
 entry/read/mutation protocols remain required.
 
+An explicit array cast of a live nonfreeing map now creates a fresh empty array,
+even when populated. Results expose no entries and retain neither keys nor private
+values. Two originals and 177 premises/6 actual casts cover fresh results, real
+function frames, COW/reference history and subsequent key retirement.
+[Array-cast review](coverage/semantics/weakmap-array-cast-review.json).
+
 Scalar entries now also retire through eager cleanup while a live leaf key
 remains held. The plain 40-byte original already agrees at `b88b45fc`; a held
 unrelated destructor object exposes the active path. That 42-byte original and

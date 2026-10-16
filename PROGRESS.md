@@ -7,6 +7,19 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Live nonfreeing WeakMap array casts now create fresh mutable empty arrays,
+including populated maps, without exporting entries or retaining their key/value.
+Two exact originals and 177 Boolean premises (168 setup + 9 pure)/6 actual casts pass
+at 243651a80/399. Empty CV/temporary and real function fronts preserve private owner1,
+fresh result IDs, actual COW/reference history, key retirement and budget resume.
+Native/baseline/preparation/EL retain zero credit; no actor failed. Pure pin/bounds
+controls establish refusal only. Freeing casts and wider map producers/lifetimes
+remain partial. [Array-cast review](coverage/semantics/weakmap-array-cast-review.json).
+
+Composed over dc87cf01d/399 after pointwise review of abrupt reference returns,
+stdClass constant births, define flags, modulo and list dispatch. The two source
+agreements and 177 state premises retain their private cut; no joined actor or renewed credit.
+
 Both-fractional plain-CV `%=` now orders the two conversion deprecations. LEFT12
 is retained through the first callback, then live RHS5.5 becomes cached5 before
 the second; later88/7 still stores2 and detaches alias88. A quiet RHS5 after the
