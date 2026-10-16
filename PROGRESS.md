@@ -7,6 +7,63 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Both-fractional plain-CV `%=` now orders the two conversion deprecations. LEFT12
+is retained through the first callback, then live RHS5.5 becomes cached5 before
+the second; later88/7 still stores2 and detaches alias88. A quiet RHS5 after the
+first callback instead skips the second diagnostic and uses the unchanged modulo
+commit, leaving alias99 detached. Either supplied throw preserves the same
+Exception, callback effects, destination100 and alias write-through. Independent
+cached0 from0.5 still raises DivisionByZeroError at line25 after the second default
+Deprecated despite liveRHS7, without storage or detachment.
+Five exact originals pass at3964e0453; author223/140/207/176 plus independent183 SL
+premises pass929 at70a8c13cc/399. Fresh first-LEFT/second-RHS guards, actual entered
+frames, quiet handoff, real cells/owners and budgets are covered; LEFT stays
+historical at the second capture. Native/baseline/retained checked prep/syntax
+retain0. Initial references/copies, wider RHS conversions, unsafe bindings/targets
+and wider callbacks/lifecycle remain partial; pure projections establish refusals
+only. [Ordered modulo ledger](coverage/semantics/modassign-both-warning-review.json).
+OP12 stays paused; earlier accepted operator cuts retain0 renewed credit.
+
+Composed over 573d02d38/399 after pointwise review of abrupt reference returns,
+WeakMap/Throwable comparison, Generator send, stdClass/define and recursive-list
+seams. Source5/state929 retain private cuts; no joined actor, replay or renewed credit.
+
+Int/bool `define` names now accept nonbool false scalar flags: integer zero,
+empty or `"0"` strings and signed float zero. Weak calls convert only the API name,
+retaining the raw flag; strict parameter-1 errors precede flag rejection after all
+argument effects. Duplicate callbacks preserve converted empty-name traces, raw
+request flags, old bindings, sibling effects and the original Exception/caller result.
+Four exact originals agree at b00e6346. All 595 public premises pass: author
+274+80+108 and independent 133 across four groups, covering fresh publication,
+default duplication and handler return/throw, strict errors, full discard equality,
+carrier and source refusals and budgets. The unchanged Unsupported baseline retains zero
+credit; a fixture name collision was fixed before execution. Runtime adds only 20
+module400 lines and reuses existing receive/duplicate/trace code with a bounded
+marker-domain extension. Float/null names with these flags, truthy/NULL/NaN flags,
+owning/wider values and full family closure remain partial.
+[False-flag name review](coverage/semantics/define-scalar-false-flag-review.json).
+
+Pointwise composition over 108b026fe preserves the incoming 399-module parent.
+Source4/state595 retain their private cuts; shared selectors are disjoint, so no
+joined actor or renewed execution claim is warranted.
+
+WeakMap now compares with normalized real/named Closure, actual Generator/Fiber
+and finite builtin Throwable objects as uncomparable +1 in both directions.
+Class mismatch precedes private entries, captures, VMs and formatter/cache fields;
+nonzero aggregate leaves skip later real casts. The old Throwable effect refusal
+and admitted route are explicitly disjoint. Three exact originals and 468 Boolean
+premises (438 setup + 30 pure)/16 actual steps pass at the retained be386/2f97 cuts,
+covering all seven operators, VM phases, warm caches, private owner1 and budgets.
+The oversized originals' three timeouts, initial reserved-constructor fixture,
+older effect refusal and pre-main fixture failures retain zero credit; two smaller
+complete author originals preserve the intended coverage. Other Closure bodies,
+internal/custom counterparts and wider weak producers/lifetimes remain partial.
+[Internal WeakMap review](coverage/semantics/weakmap-internal-comparison-review.json).
+
+Composed over e50d681b7/399 after pointwise review of shared tasks, typed returns,
+Generator/delegation, constants, assignments and property/list dispatch. Source3
+and state468 retain their private cuts; no joined actor or renewed credit.
+
 With a quiet integer LEFT, plain-CV numeric `&=`/`|=`/`^=` now retain both longs
 through fractional-RHS deprecation. Captured12/5 from5.5 stores4/13/9 despite
 callback99/10 and detaches a late alias; supplied throw preserves callback writes,
@@ -200,6 +257,9 @@ and [recursive CV source5/state738](coverage/semantics/list-recursive-missing-wa
 retain their original cuts. Flat mixed patterns retain the source cell through
 value replacement or CV rebind. Reference nesting, call/wider RHS or targets,
 scalar diagnostic callbacks and lifecycle remain partial.
+The pointwise399-module composition over0181f6333 preserves incoming Generator,
+reference-unwind, stdClass/WeakMap, define and modulo paths. Source5/state809 retain
+their private cuts; seam review warrants no joined actor or renewed agreement credit.
 
 Plain-CV `%=` now keeps both converted longs through a fractional-RHS deprecation.
 Captured12/5 stores2 despite callback99/7 and detaches a late target alias; supplied
@@ -421,6 +481,22 @@ defaults and wider producers remain partial.
 Pointwise composition over c53bf2a3d preserves incoming399 modules, define,
 shift, typed-return, magic-empty and nested-list selectors. Source3/state817
 retain their private cuts; no joined actor or renewed credit.
+
+Global stdClass constant-AST NEW now evaluates ordinary positional and uniquely
+named ignored arguments through227. Exact source/value-table guards retain
+argument owners; saved incomplete birth and pending binding survive context
+clearing and avoid constructor-failed marking at the immediate discard. Source3
+and author376/independent320 premises pass696, checking donor/array retirement,
+argument Error, distinct fresh-eval retry and real value destructors. Normal
+storage retirement later uses its ordinary CALLED marker and physical pin.
+The first peer fixture assumed late marker absence; its corrected pin check
+renews only that failed packet, with original failure0 preserved.
+The original source with duplicate argument names exposes a real lifetime
+mismatch and retains0: native keeps the rejected current value until shutdown.
+The source guard requires unique names; duplicate argument names require a
+later lifetime milestone.
+References, unpacking, defaults and wider lifecycle forms remain partial.
+[Argument review](coverage/semantics/global-constant-stdclass-arguments-review.json).
 
 Selected inherited `__unset(string): void` now dispatches direct CV/literal-name
 access to a declared private property. Accessible public unset skips magic;
@@ -2609,12 +2685,32 @@ Runtime/source evidence retains `10c4c10bf`; fixture-only corrections and indepe
 checks retain their `c150ad30a`/`5ee387433` cuts. Native-only observations, the
 unchanged baseline and original observer failures earn zero model agreement. See the
 [nested-detached ledger](coverage/semantics/generator-call-unpack-nested-detached-review.json).
-Owning copied returns, pending-initialization send/throw, ordinary Aggregate call
+At that cut owning copied returns, pending-initialization send/throw, ordinary Aggregate call
 operands, valid-key by-reference targets and wider callback/Fiber interactions
-remain required.
+remained required.
 The399-module composition over `ee0b6af27` preserves the tested Generator rules
 and the parent's disjoint storage tasks/manifest. Independent pointwise review
 and inventory pass; no joined runtime actor adds execution credit.
+
+Pending `send` on an authenticated detached Generator with a nonowning copied
+return now clears initialization and snapshots the raw current without advancing.
+Yield-from has no native send target, so no argument buffer is added. Argument
+cleanup precedes receiver release, preserving a sole method receiver; returned
+rows survive a reference-cache rewrite and an argument-destructor throw preserves
+the cleared bit for later finally. Shared internal resumes now preserve actual-root
+first-yield history, including a previously initialized middle whose rewind stays
+allowed after shared advancement. The
+[pending-send ledger](coverage/semantics/generator-pending-init-send-review.json)
+retains five exact original-source agreements and strict399 at runtime `0969bd40c`,
+plus five reached groups/468 physical premises (author308 + independent160) at
+fixture-only `4efd38733`. The combined five-fixture parse/elab gate adds no runtime
+agreement. Native-only observations, unchanged Unsupported baseline and original
+preparation/observer failures retain zero agreement. Pending sends to live yield
+targets, owning copied returns and pending throw remain Unsupported; broader
+callback/Fiber interactions remain required.
+The399-module composition over `e319c9e89` preserves both tested Generator
+modules and the parent's runtime/manifest. Independent pointwise review and
+inventory pass; no joined actor adds execution credit.
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or
@@ -8626,10 +8722,12 @@ failures and interrupted evidence.
   selected-reference recheck. M80 adds the exact nonnullable builtin-int
   no-argument assignment source: a restored NULL fails return verification,
   cancels its pending Notice and re-enters the outer finalizer before the
-  original TypeError reaches the caller.
+  original TypeError reaches the caller. M81 restores the local catch and
+  consumed return cursor when an old C destructor throws an Exception
+  during selected reference replacement.
   Other VALUE signatures/layouts, general CONST/other
   NULL and multiple-active histories, genuinely released
-  CV targets, destructor throw/reentry, real suspension and wider typed consumers
+  CV targets, wider destructor throw/reentry, real suspension and wider typed consumers
   remain open. [String contract](docs/semantics/USER-STRING.md),
   [finally contract](docs/semantics/SOURCE-FINALLY.md).
 - Objects and lifetime: remaining static members, effectful trait data composition,
@@ -8702,9 +8800,29 @@ delivered Notice, second `F:0`, caller error/r7, LINE refusal and budget.
 No prior return fixture was replayed. Only the exact builtin-int
 no-argument assigned source is newly admitted.
 [M80 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M81's used `&f():?C` returns a named no-argument old call directly or through
+`($x = old_value())`; selected-y replacement releases the old object and its
+destructor emits `D` then throws an Exception. The pending selected return
+retains that Exception and a nonowning old cursor after old HOBJECT retirement.
+The bounded pending-finish rule reconstructs the source replay owners, so the
+same Exception reaches local `CE` rather than outer `OE`; consumed replay then
+restores caller NULL with one old-line VALUE Notice. Native2 at `e70950fcb`/399
+has `F:0/1;I;D;I;CE;A;S`, detached `rNULL/b7` and xNULL/y0. The unchanged
+model's two NORMAL outputs route to OE and have zero agreements. A 44-premise
+source-reached diagnostic isolates the old premature THROW_SEARCH with zero
+repair credit. Strict and both original-source agreements pass at clean
+`7bc06612d`/399. One assigned 122-premise reached fixture proves pending
+Exception transfer, local catch identity, root-free consumed NULL/new Notice,
+real operation-exit descriptor admission, heap-equal LINE-only public refusal
+and pending-exit budget equality. The first public state failure at `75c47721a`
+has zero full-state credit; only affected guards and checks were rerun.
+This covers one ordinary C with a throwing destructor, exact Exception,
+named no-argument old source, nullable class declaration and single cursor.
+Other exception types, reentrant destructor histories and wider returns remain
+open. [M81 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
-genuinely released CV targets, destructor throw/reentry, real suspension and wider typed
+genuinely released CV targets, wider destructor throw/reentry, real suspension and wider typed
 consumers remain required.
 
 Rocq interaction-tree semantics and BOLA proofs follow completed PHP core.

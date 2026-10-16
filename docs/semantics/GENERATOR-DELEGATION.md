@@ -99,7 +99,10 @@ shared internal resumption preserves pending initialization, while an actual
 root resume clears it. A direct middle `next()` can clear it without advancing.
 The [nested-detached ledger](../../coverage/semantics/generator-call-unpack-nested-detached-review.json)
 records the paired retained/temporary cases and their physical cache owners.
-Owning copied returns and pending-initialization `send`/`throw` remain Unsupported.
+Pending `send` on these detached roots now returns a cache snapshot without
+advancing; see the [API review](../../coverage/semantics/generator-pending-init-send-review.json).
+Owning copied returns, pending sends to live yield targets and pending `throw`
+remain Unsupported.
 
 Callback admission binds the actual owner, source unit/path, stage, target, line
 and saved lexical/called scopes. Only the immediate authenticated implicit call

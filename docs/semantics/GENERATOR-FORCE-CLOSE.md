@@ -20,7 +20,9 @@ return before finally. A detached copied CURRENT qualifies; a cache borrowed onl
 through a shared leaf does not. The model releases the real frame and pending
 exception through the existing jobs, retaining caches until storage release.
 Direct initialization clears the bit, as does a later direct `next()` that consumes
-it without advancing; those middles execute finally on close. The
+it without advancing. An admitted detached pending `send` also clears it before
+argument cleanup, including cleanup that throws; those middles execute finally
+on close. The
 [nested-detached review](../../coverage/semantics/generator-call-unpack-nested-detached-review.json)
 preserves both native close orders and the earlier omitted-finally observation.
 

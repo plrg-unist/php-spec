@@ -1,0 +1,130 @@
+{
+  "milestone": "Detached pending Generator send and shared first-yield history",
+  "status": "independently accepted and pointwise composed on the actual canonical parent",
+  "independent_reviewer": "iterator_review_15, paired with iterator_dev_15",
+  "base": "08c650fd336b557bc2c7afb46e90402a3d1250c9",
+  "tested_runtime": "0969bd40cf2c65d7777f467c1489044f53fcf5d6",
+  "author_fixture": "4efd38733913981a44660bf2afe2d602e5e0e881",
+  "modules": 399,
+  "scope": "A real one-positional-argument send on a pending actual Generator root, detached with a present CURRENT and authenticated completed-child receipt whose copied return owns no heap nodes. No live native send target exists.",
+  "semantics": {
+    "admission": "289 authenticates the operation/source/line, one positional captured argument, pending root, detached FROM_COMPLETE receipt and node-free child return. Physical captured values rely on the global heap invariant; KNOWN operand validation alone does not authenticate allocation. Live used-yield targets, owning copied returns and pending throw retain Unsupported.",
+    "result": "280 clears PENDING_INIT and returns a dereferenced cached snapshot without advancing, installing a frame or retaining the ignored argument. Present null and false remain distinct from no current.",
+    "cleanup": "A guarded GEN_ARGS eager-input order in289 retires argument roots before receiver roots, preserving exact root multiplicities. The sole receiver survives argument cleanup; captured rows survive reference-cache replacement, and a throwing argument destructor leaves initialization cleared.",
+    "first_yield": "280 sets FIRST on actual-root body resume as before. Synthetic shared-child resume preserves prior FIRST; the genuine synthetic send/throw resumption marker may therefore retain FIRSTtrue. Source/owner authentication remains required.",
+    "runtime_delta": "Only280-generators and289-generator-delegation change. No owner field, continuation, pipeline or manifest changes.",
+    "module_sha256": {
+      "280": "8ea37139ba00fb7c2783806b0e59f2af01c410bad1fe79dde1390bf5df94be6e",
+      "289": "9a2722d564524abe0878a428da316c7fb07daa9006636618568c9f2e273f5aac"
+    }
+  },
+  "source_authority": [
+    "vendor/php-src/Zend/zend_generators.c::zend_generator_ensure_initialized, zend_generator_resume, Generator::send and Generator::rewind",
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_YIELD_FROM resets send_target; ZEND_YIELD stores the used result target",
+    "vendor/php-src/Zend/zend_generators.h::ZEND_GENERATOR_DO_INIT and ZEND_GENERATOR_AT_FIRST_YIELD"
+  ],
+  "validation_identity": {
+    "php": "8.5.10 CLI NTS64; source34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml5.1.0; SL, caches off and encountered determinism checks",
+    "environment": "tests/semantics/profile.json; PHP -n; LC_ALL=C; TZ=UTC; PHP_SPEC_SCRIPT_ENCODING unset. Exact command vectors, caps, hashes, exits and source bytes remain in the raw reports."
+  },
+  "raw_root": ".tools/generator-pending-init-send-17/.tools/",
+  "native_and_baseline": {
+    "distinct_native_originals": 5,
+    "reports": [
+      "generator-pending-init-send-native-ye_2kq54/report.json",
+      "generator-pending-init-send-review-native-7hfvdl53/report.json",
+      "generator-pending-init-send-history-native-zo49lf3_/report.json"
+    ],
+    "cuts": "Initial author2/peer2 and unchanged baseline use untouched08c/399. The two-history native discriminator uses35192/399 before FIRST correction. Immutable catalogs preassert no stdout; all captures have pinned normal exit, empty stderr, stable inputs and zero model credit.",
+    "unchanged_baseline": "uzkb2xnt reuses the exact author2e01943c original/native tuple: Unsupported Generator force-close at request end after P|O|M|C|L|H|1|D|, exit1/no timeout/no PHP diagnostic or exit_status. No agreement.303 request pruning exposes this public reason before the inner pending-send stop."
+  },
+  "strict": {
+    "report": "generator-pending-init-send-author-sl-62hpfa71/report.json",
+    "revision": "0969bd40c",
+    "result": "PASS399; true/empty stderr/exit0/no timeout/stable HEAD and inputs. Initialization adds no source agreement."
+  },
+  "normal_sources": {
+    "new_distinct_originals": 5,
+    "reports": [
+      [
+        "generator-pending-init-send-source-u_of9onk/report.json",
+        3,
+        "0969bd40c"
+      ],
+      [
+        "generator-pending-init-send-review-source-yna_xniw/report.json",
+        2,
+        "4efd38733"
+      ]
+    ],
+    "result": "All five exact original normal stdout/stderr/exit agreements reuse native tuples without PHP replay. Author cases cover object cache/later real scalar tails, false cache/sole receiver, and two distinct root first-yield histories in one program. Independent cases cover reference-row snapshot before argument-destructor rewrite, and present-null cache with argument-destructor throw then later finally. Runtime inputs are exact0969 across fixture-only4efd; no prior source campaign was replayed."
+  },
+  "reached_states": {
+    "groups": 5,
+    "driver_premises": 468,
+    "author_premises": 308,
+    "independent_premises": 160,
+    "revision": "4efd38733913981a44660bf2afe2d602e5e0e881",
+    "reports": [
+      [
+        "fiber-state-review-8_mcj1xs/report.json",
+        118
+      ],
+      [
+        "fiber-state-review-j1whqy7l/report.json",
+        112
+      ],
+      [
+        "fiber-state-review-h5duo5dv/report.json",
+        78
+      ],
+      [
+        "fiber-state-review-04lp0xhz/report.json",
+        94
+      ],
+      [
+        "fiber-state-review-rn_a77xn/report.json",
+        66
+      ]
+    ],
+    "checks": "Real GEN_ARGS fronts prove pending-bit-only mutation, cached object/false result, no frame/store/array advancement, exact argument-before-receiver release jobs, sole receiver/cache owners, source/line/arity/receipt/owning-return refusals and malformed captured-handle heap rejection. A real RUNNING shared SEND marker preserves FIRSTtrue, authenticates synthetic root/source and rejects a same-heap ARG mismatch before an actual COMPLETE step and native rewind/tail ending. Independent OP_EXIT retains old row while a reference cache owns the replacement row, then restores the real result and tails. Independent queued CLOSING after a caught argument-destructor throw retains null CURRENT, cleared initialization and the exact exception before real finally. All include public/heap and zero/split budget checks.",
+    "compatibility": "All processes finish true/empty stderr/exit0/no timeout with stable HEAD and input checks.4efd differs from0969 only in author observer fixtures; runtime/source bytes remain exact. All actors were reaped and CPU slots released."
+  },
+  "preserved_zero_credit": [
+    "Baseline ju0nhbqc at08c expected the internal pending-send reason but observed the genuine public force-close reason. uzkb2xnt corrects declared reason only, retaining identical source/native/runtime outcome; neither is agreement.",
+    "Strict0wib8krl at214969 rejected operand-list constructor spelling. cc9a fixes only syntax; strictcvykj_8g then rejects declaration order. e22a moves unchanged admission after delegation declarations; strictip4yr4z3 rejects eager-task declaration order.0969 moves the unchanged ordering arm after its declaration. No application ran in these failed gates.",
+    "Elabkppwebzl at0969 produced full IL with exit0/empty stderr but the recorder expected empty parentheses omitted by the IL printer. Original report remains FAIL. corrected-marker-review.json binds the retained9746950-byte IL SHA b13bd3c4f5bc4298c7c4582215b51ae97b2f99845fc3c6a9d0f7c54f79d669a2, exact unique EOF sentinel and both new function headers, unchanged inputs and original recorder. This assertion-only gate review passes with no compiler reexecution or runtime/source credit.",
+    "Statex4cu6dkx at0969 fails parsing the invalid-object fixture constructor before premise execution. b9cde binds the missing handle first, changing only the observer syntax. Accepted runtime/source inputs remain exact0969.",
+    "State njyhfo59 atb9cde fails elaborating a pgenerator alias used for pgeneratorop; ca230 only renames the operation alias. State zi37ybbv atca230 then reaches a mistaken predicate-level missing-object refusal.4efd installs the malformed value in a real GEN_ARGS carrier and checks global heap rejection, matching the existing helper contract. Runtime/source stay exact0969; original failures remain zero credit.",
+    "Prior16 malformed helper SEND lacks a real send source/argument and remains refused. Existing fixed FIRST assertions concern actual roots. Only the newly exposed synthetic first-yield history is affected, so no prior16 campaign was replayed."
+  ],
+  "remaining": [
+    "Pending send to a live used-yield target needs real buffered result-slot ownership; pending throw needs exact exception/opline history. Both remain Unsupported.",
+    "Owning copied detached returns retain the prior authenticated guard because unfinished return lifetime at forced close is unresolved.",
+    "Broader callback/reentry/Fiber and lifecycle interactions remain required. No full Generator/core closure, engine bug or intentional engine divergence is claimed."
+  ],
+  "fixture_elaboration": {
+    "report": "generator-pending-init-send-state-elab-tjkrudue/report.json",
+    "revision": "4efd38733",
+    "result": "PASS all five exact generated state/check lists in one ordered399 parse/elab invocation; harness helper names only are uniquely suffixed. Unique typed EOF sentinel and all five main headers, exit0/empty stderr/no timeout/stable inputs. No interpretation or semantic agreement credit."
+  },
+  "evidence_recovery": {
+    "archive": "../php-spec-evidence-archive/generator-pending-init-send-17/private.tar.gz",
+    "bytes": 3331573,
+    "sha256": "6945c4feee7ed793e8b4cddb618e54f3b131510a662dcfb54a807783438a2e87",
+    "manifest": "Sibling manifest.json maps21 raw report roles, the retained-IL corrected-marker review and13 ignored driver/catalog inputs. Full raw source/output/error/commands remain external.",
+    "restore": "Extract .tools members at the recorded private root. Native/baseline runtime recovers from08c, history discriminator from35192, final runtime and strict/source from0969, and corrected author fixtures from4efd. Peer fixtures recover from the publication containing this ledger. Original failed reports and pre-correction inputs remain unchanged. Provision read-only references with scripts/private-semantics-references.py; binary identities are not archived build prerequisites."
+  },
+  "composition": {
+    "actual_parent": "e319c9e89a0268a052ae6b29049e6d222882cf08",
+    "private_publication": "a4dd7a222",
+    "modules": 399,
+    "preservation": "Only280/289 differ from the actual parent runtime; both are exact tested0969 bytes. All other runtime, Generator layout,399 manifest and pipeline remain parent bytes. The six inventory rows preserve parent list/review prefixes and unrelated fields; only send promotes pending to partial. All other rows/fields remain unchanged.",
+    "independent_seam_review": "Incoming30 task tags,156 assigned ordinary return cursors,283 global-constant birth paths,400 class-name DEFINE flags,55/404 compound numeric warning plans,408 property-empty truth and409 list-warning source paths cannot select these real pending SEND/GEN_ARGS/shared-resume/close fronts.280/289/270 and the Generator layout are unchanged from the private base. No concrete interaction requires a joined actor.",
+    "static_validation": "python3 scripts/check-semantic-inventory.py:169 constructors/306 runtime obligations; git diff --check clean.",
+    "evidence_limit": "No joined runtime actor or new execution credit. Private strict/source retain0969 and independent source/states retain fixture-only4efd. Exact bytes and independent selector review provide the compatibility bridge."
+  }
+}

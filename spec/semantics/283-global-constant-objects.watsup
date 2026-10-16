@@ -318,7 +318,7 @@ def $call_task_valid(S, AUTO_GLOBAL_NEW ptbytes phpType7* pconstantcontext) = $g
 def $task_nodes(AUTO_GLOBAL_NEW preqbytes phpType7* pconstantcontext) = eps
 
 ;; Internal stdClass has no declaring class origin. Its separate, nonowning
-;; birth history authenticates zero-argument global initializer sites.
+;; birth history authenticates global initializer sites and their argument ASTs.
 dec $global_std_source(pstate, porigin, porigin, nat) : bool
 dec $global_std_record(pconstantstdobject*, nat) : pconstantstdobject?
 dec $global_std_record_put(pconstantstdobject*, pconstantstdobject) : pconstantstdobject*
@@ -335,7 +335,9 @@ def $global_std_source(S, porigin_site, porigin_decl, n_prefix) = true
   -- if $global_constant_scope(S, n_unit) = (true, porigin_scope?)
   -- if $global_constant_scope_published(S.DECLARATIONS[0:n_prefix], porigin_scope?)
   -- if $constant_callable_path(S, porigin_site, $constant_child(porigin_decl, [PCFIELD 1]))
-  -- if $origin_node(S.SOURCES, porigin_site) = (NExprNew name (SEQUENCE eps) metadata)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $parameter_new_prefix(phpType7*)
+  -- if $default_new_unique(phpType7*)
   -- if $global_constant_class_name(S, porigin_site, porigin_scope?, name) = (ptbytes)
   -- if $ptlc(ptbytes) = $ptascii("stdclass")
 def $global_std_source(S, porigin_site, porigin_decl, n_prefix) = false -- otherwise
@@ -390,13 +392,30 @@ def $global_new_birth(S, S_new, ptbytes, n_object) = S_new[.CONSTANTSTDOBJECTS =
 def $global_std_pending(S, pdefaultnew) = true
   -- if $global_std_ready(S, pdefaultnew.CLASS)
   -- if $global_new_context(S, pdefaultnew.SITE) = ((porigin_decl, porigin_scope?))
-  -- if pdefaultnew.ARGUMENTS = eps /\ pdefaultnew.INDEX = 0 /\ pdefaultnew.VALUES = eps
+  -- if $origin_node(S.SOURCES, pdefaultnew.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if pdefaultnew.ARGUMENTS = phpType7*
+  -- if $(pdefaultnew.INDEX <= |phpType7*|)
+  -- if |pdefaultnew.VALUES| = pdefaultnew.INDEX
   -- if $global_std_record(S.CONSTANTSTDOBJECTS, pdefaultnew.OBJECT) = (pconstantstdobject)
   -- if pconstantstdobject.SITE = pdefaultnew.SITE /\ pconstantstdobject.DECL = porigin_decl
   -- if ~pconstantstdobject.COMPLETE
   -- if $global_std_header(S, pconstantstdobject)
   -- if (HOBJECT pdefaultnew.OBJECT) <- S.ALLOCATIONS
 def $global_std_pending(S, pdefaultnew) = false -- otherwise
+def $global_new_argument_owned(S, pdefaultnew) = true
+  -- if $global_std_record(S.CONSTANTSTDOBJECTS, pdefaultnew.OBJECT) = (pconstantstdobject)
+  -- if pconstantstdobject.SITE = pdefaultnew.SITE
+  -- if porigin_decl = pconstantstdobject.DECL
+  -- if $constant_bindings(S, S.TODO) = [porigin_decl]
+  -- if ~pconstantstdobject.COMPLETE
+  -- if $global_std_header(S, pconstantstdobject)
+  -- if $constant_declaration(S, porigin_decl) = ((preqbytes, pdefaultnew.LINE))
+  -- if $new_source_name(S, pdefaultnew.SITE) = (pdefaultnew.CLASS)
+  -- if $origin_node(S.SOURCES, pdefaultnew.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if pdefaultnew.ARGUMENTS = phpType7*
+  -- if $(pdefaultnew.INDEX <= |phpType7*|)
+  -- if |pdefaultnew.VALUES| = pdefaultnew.INDEX
+  -- if (HOBJECT pdefaultnew.OBJECT) <- S.ALLOCATIONS
 def $global_new_pending(S, pdefaultnew) = true
   -- if $global_std_pending(S, pdefaultnew)
 def $default_new_object_valid(S, pdefaultnew) = true

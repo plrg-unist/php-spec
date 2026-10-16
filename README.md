@@ -598,6 +598,12 @@ Normal `%=` detaches a late target alias; supplied throw or a captured zero divi
 preserves callback writes and aliases even after the live RHS changes.
 Three exact originals and 404 focused SL premises pass in the
 [RHS modulo ledger](coverage/semantics/modassign-right-warning-review.json).
+With two fractional floats, plain-CV `%=` now orders both deprecations: capture
+LEFT, run its handler, then capture the live RHS before its handler. A quiet
+integer RHS after the first callback skips the second diagnostic. Success detaches
+late aliases; either supplied throw or a captured zero preserves them. Five exact
+originals and 929 focused SL premises pass in the
+[ordered modulo ledger](coverage/semantics/modassign-both-warning-review.json).
 For initially plain variables, `<<=` and `>>=` now retain a fractional left
 conversion through deprecation handlers, then read the live quiet integer count.
 Success detaches a late target alias; supplied throw or a negative count preserves
@@ -844,7 +850,7 @@ heap nodes. Their null key raises the real unpack error before argument sending;
 retained caches, later next/return/tail execution and cleanup preserve initialization
 history. A direct middle next can consume pending initialization without advancing.
 See the [nested-detached review](coverage/semantics/generator-call-unpack-nested-detached-review.json).
-Aggregate ordinary-call unpack, owning copied returns, pending-initialization
+Aggregate ordinary-call unpack, owning copied returns, other pending-initialization
 send/throw, Generator by-reference
 call targets and callback methods, nonnumeric raw valid changes, request/plain
 reference strings and handler replacements with
@@ -858,7 +864,11 @@ required.
 ordinary bodies in object-owned frames. Value yields, literal iterator methods,
 `getReturn`, `send`, `throw` and value `foreach` retain real resumer scope and
 traces. Inputs survive initialization; exception injection preserves ordinary
-catch/finally execution and exception identity. [Delegation](docs/semantics/GENERATOR-DELEGATION.md)
+catch/finally execution and exception identity. A pending `send` on a detached root
+with a nonowning copied return snapshots its current without advancing. Argument
+cleanup precedes receiver release; shared resumes preserve the first-yield history
+used by `rewind`. See the [pending-send review](coverage/semantics/generator-pending-init-send-review.json).
+[Delegation](docs/semantics/GENERATOR-DELEGATION.md)
 adds arrays, source Iterators and shared Generator graphs with live raw caches
 and natural return/unwind. Aggregate yield-from now acquires nested real iterator
 data, retires layers and the original operand before rewind, and treats returned
@@ -1010,6 +1020,11 @@ precision changes and duplicate handlers; strict errors retain raw arguments.
 Named sends match their normalized slots without changing captured call authority.
 [Four source agreements and 351 state premises](coverage/semantics/define-scalar-name-review.json)
 cover registration, returning/throwing warnings and source/budget controls.
+Integer/boolean names also accept false scalar flags (`0`, empty/`"0"` strings and
+float zero). Weak calls convert the API name while preserving the raw flag;
+strict name errors precede flag rejection after argument effects.
+[Four source agreements and 595 state premises](coverage/semantics/define-scalar-false-flag-review.json)
+cover publication, converted duplicate traces, callback throws and carrier guards.
 Weak null `define` names dispatch the deprecation before conversion and registration.
 A returning handler can create the empty-name binding first, causing a separate
 duplicate warning with the converted string in its API trace. A throwing first
@@ -2057,14 +2072,14 @@ pass three exact sources and 423 Boolean premises/12 raw steps.
 now admit real/named Closures and Generator/Fiber targets after the first source
 cast. The quiet failed second implicit cast preserves signed order, retained cells,
 cursor pins and captured children without invoking a callable or resuming a VM.
-Three exact sources and 352 Boolean premises/13 raw steps pass; custom object-pair
-comparisons, numeric Notice routes and wider lifetime limits are unchanged.
+Three exact sources and 352 Boolean premises/13 raw steps pass; other object-pair
+handlers and wider lifetime limits remain partial.
 [Weak internal changed operands](coverage/semantics/weak-nonstringable-redispatch-review.json)
 also admit WeakMap and WeakReference after the first source cast, including a live
 wrapper whose referent has expired. The second implicit cast fails quietly without
 reading private entries or referents. Three exact sources and 318 Boolean premises/
 12 raw steps preserve signed order, COPY/cell distinctions, COW and throw cleanup;
-pair, explicit-cast and existing producer/lifetime domains are unchanged.
+explicit-cast and existing producer/lifetime domains are unchanged.
 [Finite Throwable comparisons](coverage/semantics/throwable-string-comparison-review.json)
 now format builtin and inherited internal handlers at reached string leaves, including
 a new opposing object after a source cast. Root cache updates, ignored previous
@@ -2080,8 +2095,15 @@ limits remain separate.
 Mixed comparisons with live stdClass, source instances and WeakReference now
 return uncomparable +1 in both directions before properties or private entries.
 Seven-operator rows include expired referents; aggregate mismatches skip later
-Stringable leaves. Other internal/custom counterparts and wider numeric routes remain partial.
+Stringable leaves. Wider producer/lifetime forms remain partial.
 [Mixed comparison review](coverage/semantics/weakmap-mixed-comparison-review.json).
+Mixed WeakMap comparisons also admit normalized real/named Closures, actual
+Generator/Fiber tags and finite builtin Throwable kinds. Left-handler fallback and
+class mismatch skip captures, VMs, formatter/cache fields and later aggregate casts.
+Three exact originals and 468 Boolean premises/16 actual steps preserve owner1 and
+complete step states; the old non-map Throwable refusal stays distinct.
+Other Closure bodies/internal/custom counterparts and wider lifetimes remain partial.
+[Internal counterpart review](coverage/semantics/weakmap-internal-comparison-review.json).
 
 [Numeric object comparison Notices](coverage/semantics/object-numeric-comparison-review.json)
 now pause ordinary source-instance/int/float leaves through real error handlers.
@@ -2782,7 +2804,13 @@ chains, eval units and quiet literal-array dimension reads. A nonnull left keeps
 its identity and skips the right; a NULL constant selects a fresh fallback leaf.
 The [coalescing review](coverage/semantics/global-constant-stdclass-coalesce-review.json)
 records the focused source and state cuts. Conditional aliases, whole-array
-coalescing, arguments and defaults remain partial.
+coalescing and defaults remain partial.
+Global stdClass constant-AST NEW now evaluates and drops ordinary positional and
+uniquely named arguments, preserving donated identities, real value destructors
+and fresh eval retry after an argument Error. The
+[argument review](coverage/semantics/global-constant-stdclass-arguments-review.json)
+keeps duplicate argument names Unsupported after a genuine lifetime counterexample;
+references, unpacking and wider lifecycle forms remain partial.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is

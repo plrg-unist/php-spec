@@ -875,3 +875,22 @@ resumption. This extension applies only to the exact builtin-int signature
 in the no-argument assigned-integer source guard; effectful arguments and
 other nonnullable source/value shapes remain open. See the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M81 covers a throwing destructor during the selected-reference replacement of
+a used `&f():?C` old return. The old source is a named no-argument call,
+directly returned or assigned to a simple variable before return. Releasing
+the old C object runs `D` and leaves its Exception pending at the selected
+return operation exit. The bounded pending-finish rule restores the source
+replay owners and single nonowning cursor, so the same Exception reaches the
+local `CE` catch; the consumed old return then restores detached NULL and
+one new old-line VALUE Notice. Native observations and unchanged mismatching
+baseline are pinned at `e70950fcb`/399; strict compilation and both exact
+original-source agreements pass at `7bc06612d`/399. One assigned reached
+fixture passes 120 Boolean checks and two raw steps. It binds the retired old
+HOBJECT and pending Exception, public descriptor admission at the operation
+exit, local catch identity, caller `rNULL/b7`, a LINE-only public refusal and
+whole/split budget equality. The first public state failure at `75c47721a`
+has zero full-state credit; it exposed the missing operation-exit descriptor
+case. This proves one echoing C destructor throwing an ordinary Exception,
+not other exception types, reentry or physical Zend collection. See the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).

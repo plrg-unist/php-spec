@@ -1,0 +1,223 @@
+{
+  "version": 1,
+  "milestone": "COMP69",
+  "status": "independently reviewed within the stated mixed WeakMap/internal comparison domain",
+  "behavior": "Live allocated nonfreeing WeakMap versus finite builtin Throwable, actual Generator/Fiber and normalized real/named Closure returns uncomparable +1 in both directions, before private payloads, captures, VMs or formatter fields.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "native_identity": ".tools/mixed69-support/run-native-v4/{version,extensions,ini}"
+  },
+  "tested_revision": "be386d4c27f08d888c49fd7142a1aaf741ee26ac",
+  "ordered_modules": 399,
+  "manifest_sha256": "2e38df4b97a41f654a8c3f01ffb0c078c337ed17d1ce8816ff7429a23b031761",
+  "implementation": {
+    "spec/semantics/52-comparison.watsup": "24f595a8fa3db2042153f8e3525b3027ce3febcea98b3d1b3da7289a5cd53e85",
+    "spec/semantics/152-throwable-runtime.watsup": "7a394be5105cecff2ecba949d501fdf1651f55a105d85dcbf2491e7a75aa4d7b",
+    "spec/semantics/386-weak-map-lifetime.watsup": "53f8ed9651327aefc30d4bc1706cc5c1c013c54e25e9dd4caab3f312ad506cdb"
+  },
+  "source_catalogues": {
+    "tests/semantics/weakmap_internal_comparison_cases.json": "f06181838de785acb86c6ed1670f1a4b0553e6aceb5a4a03469f4bc834a799cc",
+    "tests/semantics/weakmap_internal_comparison_review_cases.json": "8d085b5b3c85117fab68f4d1d0bd7324f6caf93d5e7cf30eb137fd765a32c94b"
+  },
+  "engine_basis": [
+    "zend_compare selects the left object handler; zend_std_compare_objects rejects distinct classes before property/recursion traversal.",
+    "WeakMap, Generator/Fiber and builtin Throwable copy standard comparison; Closure uses ZEND_COMPARE_OBJECTS_FALLBACK when the handler pointers differ."
+  ],
+  "contract": [
+    "Existing bounds/allocation/nonfreeing admission remains. Exact new tags and finite Throwable kinds extend its opposite-side predicate; normalized Closure bodies are classified without capture or callable evaluation.",
+    "The old Throwable effect refusal explicitly excludes the exact admitted mismatch, and a matching unchanged-state ORDER1 effect is added. Its declaration moves to52; all non-map Throwable refusals and other comparison routes retain their limits.",
+    "All seven operators preserve greater-operand reversal. The mismatch adds no roots or guards and does not execute VMs or update formatter/cache fields. Existing aggregate scans stop before later real casts."
+  ],
+  "validation": {
+    "original_sources": {
+      "author": 2,
+      "independent": 1,
+      "normal_agreements": 3,
+      "author_revision": "be386d4c27f08d888c49fd7142a1aaf741ee26ac",
+      "author_seconds": [
+        113.81076031178236,
+        191.216459967196
+      ],
+      "independent_revision": "2f97c98f786f83db6bf3047de068859f26ed32c1",
+      "independent_seconds": 223.23561481758952,
+      "caps_seconds": [
+        240,
+        250
+      ]
+    },
+    "author": {
+      "revision": "be386d4c27f08d888c49fd7142a1aaf741ee26ac",
+      "premises": 199,
+      "setup": 173,
+      "pure": 26,
+      "raw_php_steps": 8,
+      "seconds": 346.3933844342828,
+      "result": "Two real source initializers reach real/named Closure, closed Generator/Fiber, cold Exception and engine-produced FiberError frames. Complete step equality, private/key owner1 and budget resume pass. Prior-guard, non-map Throwable refusal and bounded/custom admission checks are separate pure controls."
+    },
+    "independent": {
+      "revision": "2f97c98f786f83db6bf3047de068859f26ed32c1",
+      "premises": 269,
+      "setup": 265,
+      "pure": 4,
+      "raw_php_steps": 8,
+      "seconds": 187.22363753803074,
+      "result": "Eight actual zero-prefix array/declared-property spaceship fronts preserve live captures, paused/suspended VMs, warm Exception bytes and owner1; later real tails stay skipped and whole-step states match."
+    },
+    "total": {
+      "premises": 468,
+      "setup": 438,
+      "pure": 30,
+      "raw_php_steps": 16
+    },
+    "syntax_preparation": {
+      "accepted_original_requests": 6,
+      "diagnostic_requests": 2,
+      "application_executions": 0,
+      "runtime_credit": 0
+    },
+    "initializer": {
+      "revision": "2f97c98f786f83db6bf3047de068859f26ed32c1",
+      "passed": true,
+      "runtime_credit": 0
+    },
+    "typed_elaboration_runtime_credit": 0,
+    "native_and_unchanged_baseline_credit": 0,
+    "inventory": {
+      "command": "python3 scripts/check-semantic-inventory.py",
+      "exit_code": 0,
+      "constructors": 169,
+      "runtime_obligations": 306,
+      "runtime_credit": 0
+    }
+  },
+  "unchanged_frontier": {
+    "revision": "0cc3e18af947f6318079eb078d3cccb21c585b65",
+    "status": "unsupported",
+    "reason": "WeakMap comparison protocol",
+    "stdout_prefix": "closure-real|",
+    "source_agreements": 0
+  },
+  "preserved_failures": [
+    {
+      "path": ".tools/mixed69-support/run-native-v1",
+      "classification": "Original fixture manually instantiated reserved FiberError and exited255; source/scripts and raw fatal are preserved in failure-inputs.",
+      "credit": 0
+    },
+    {
+      "path": ".tools/mixed69-support/run-sources-v1/report.json",
+      "classification": "Combined author original reached the CLI timeout; the smaller complete operator/VM and one-at-a-time Throwable originals replace it without renewed credit.",
+      "cli_cap_seconds": 240,
+      "seconds": 245.24121751263738,
+      "preserved_inputs": ".tools/mixed69-support/run-sources-v1/failure-inputs",
+      "credit": 0
+    },
+    {
+      "path": ".tools/mixed69-support/run-sources-v2/report.json",
+      "classification": "Combined author original reached the CLI timeout; the smaller complete operator/VM and one-at-a-time Throwable originals replace it without renewed credit.",
+      "cli_cap_seconds": 240,
+      "seconds": 245.20249757356942,
+      "preserved_inputs": ".tools/mixed69-support/run-sources-v2/failure-inputs",
+      "credit": 0
+    },
+    {
+      "path": ".tools/mixed69-support/run-sources-v3/report.json",
+      "classification": "Combined author original reached the CLI timeout; the smaller complete operator/VM and one-at-a-time Throwable originals replace it without renewed credit.",
+      "cli_cap_seconds": 480,
+      "seconds": 485.22201921232045,
+      "preserved_inputs": ".tools/mixed69-support/run-sources-v3/failure-inputs",
+      "credit": 0
+    },
+    {
+      "path": ".tools/mixed69-peer/source-v1/report.json",
+      "revision": "b846fdc404a19bc0f2771b2aa5e9b231dea3ff1a",
+      "classification": "Independent source exposed the older distinct-Throwable effect refusal after Closure/Generator/Fiber successes; fixed by explicit clause disjointness.",
+      "status": "unsupported",
+      "reason": "Throwable property comparison",
+      "preserved_inputs": ".tools/mixed69-peer/source-v1/failure-inputs",
+      "credit": 0
+    },
+    {
+      "paths": [
+        ".tools/mixed69-diagnostic/prefix1000-v1",
+        ".tools/mixed69-diagnostic/prefix1000-v2"
+      ],
+      "classification": "Diagnostic-only fixtures stopped before main at record-length syntax and otherwise/list binding checks. Original inputs/raw remain; corrected v3 was abandoned unrun. No progress observation was obtained.",
+      "credit": 0
+    },
+    {
+      "path": ".tools/mixed69-state/run-el-v1/report.json",
+      "classification": "Pre-main typed metavariable typo pstaticcell0 lacked its separator. Only an alpha rename changed; original five inputs remain in el-variable-failure-v1.",
+      "credit": 0
+    }
+  ],
+  "limits": [
+    "Only the exact admitted representations and finite kinds are extended. Other Closure bodies/internal/custom counterparts and wider weak producers/lifetimes remain partial.",
+    "State cuts end at comparison results; complete originals supply later calls/resumes, private/caster observability and endings. The four peer prior-guard projections and author bounds/nonlive/custom/unknown-kind controls are pure helpers, not wider malformed-state execution.",
+    "The two successful split originals retain every intended operator/VM and finite-kind control. No passing claim is made for the three combined-source timeouts or the abandoned diagnostic."
+  ],
+  "raw_recovery": {
+    "root": "/home/user/workspace/php-spec/.tools/weakmap-internal-comparison-69",
+    "branch": "codex/weakmap-internal-comparison-69",
+    "note": "Ignored original sources, checked programmes, actors and raw streams stay in place. Reports retain exact commands, environment, before/after closures and reaped process groups; failure-inputs retain original versions. Peer2f97 and authorbe386 cuts have byte-identical runtime and retain distinct source/state identities."
+  },
+  "artifacts": {
+    ".tools/mixed69-support/actor.py": "bce808670d73f626256221292e0b17883f48fc760e0f3692d37ef61f0006d2ac",
+    ".tools/mixed69-support/inputs.py": "295e87b77a525437d6ebb01c96b8c7da28a7db704bdd99bec90d7f3cdb8a2e3f",
+    ".tools/mixed69-support/gates.py": "ece8972a34adbc1ee369846b3b00390ac6f005e12be56f2509ec65c2d1181377",
+    ".tools/mixed69-support/run-native-v2/report.json": "12c0fcea07e3946cdebee54070bb8e819e32efce4a0f2ac0cbcecc322f78c9a5",
+    ".tools/mixed69-support/run-native-v3/report.json": "04b480d2a617edc2b92b6eebf5a0ee085fa86fa7b2541a8bd6b4c488932eda69",
+    ".tools/mixed69-support/run-native-v4/report.json": "d7e8e3a6c9af65d7828a85c5c9cdecc385d5def3a13ae4357c2d64cb107b7844",
+    ".tools/mixed69-support/run-baseline-v1/report.json": "3b006a867cac68f1abd881e2c6d969cd06b7e12a1e195a61bb349d315bd6be76",
+    ".tools/mixed69-support/run-init-v2/report.json": "779210cedd168cda3b8494c1ada382128ba358bc6029ebaec4e750c76a91a9bc",
+    ".tools/mixed69-support/run-sources-v4/report.json": "2aa55529db0ce7168c29bbe5bfbc67a2434f2c5ef43cdae6242bbcb4ac39eb10",
+    ".tools/mixed69-support/run-prepare-v1/report.json": "731e902e12d0a3ae717aeba8fc99d85101b4594bad56ece332f1486676a7ca94",
+    ".tools/mixed69-state/build.py": "39aa5d38d70fe5fb5cbec0d520e0f8f50785dea4001059bee8d86309e07b3902",
+    ".tools/mixed69-state/helpers.watsup": "2fb29f2d3113c474d424c64ddf4f537f88470f9fbe6aaaf1c2a204280185f263",
+    ".tools/mixed69-state/run.py": "e7ced1a3c237aef370e5e15ef13323bf43f5bd64e26203c4d8ddf44d5fed43bc",
+    ".tools/mixed69-state/plan.json": "456cce99229aa7ee4fe9b8ffe956b467e28053dad0a08259b2abdc9ba1cc3ac2",
+    ".tools/mixed69-state/run-el-variable-retry1/report.json": "570c3cab06990e55305c879e708b3b5948b19cb0c6e0be093b31093d73ce277c",
+    ".tools/mixed69-state/run-sl-variable-retry1/report.json": "750496f5f1e12e11ec9351e21e125d828914a890f99a85d2a32f986215b15bc9",
+    ".tools/mixed69-peer/peer.php": "3c201b17c47882f6e54edc61803a80f485be5a4fc0dd7e35f9e1d402aee09156",
+    ".tools/mixed69-peer/run.py": "4f3922922d148ff572b47feba4645859d2906facf935fc8971a7c32fb15ecf41",
+    ".tools/mixed69-peer/build.py": "25d4e9c16df5ac39d69ece17705186bbc3b3c5596b1091d3b783d9c80b6eff2c",
+    ".tools/mixed69-peer/helpers.watsup": "b629414e941b35f521d772dacefef2483aeb713a8c17e709bca5c469dd90c7cd",
+    ".tools/mixed69-peer/plan.json": "eb6ed721c50ce7e54139d27af8f1499d916fc852ffc477f5878adc957a1eebb0",
+    ".tools/mixed69-peer/native-v2/report.json": "607191481b15f99aa992e1f3c051747b7f01d3a65ec6abd07341617fc05de091",
+    ".tools/mixed69-peer/source-v2/report.json": "6144b75b48f6160bb2b79760d31ceb925c91332c0c2dcdd9dcf65ade01dea1b0",
+    ".tools/mixed69-peer/prepare-v2/report.json": "40c0206f653f1b0b276f24c497d1ec4b866be000bb2f95cd66073476d1ff0811",
+    ".tools/mixed69-peer/state-v2/report.json": "c8bdbb9ecef27c54ebb0d78dfa8736425b182a53cc5ff75e41f8fd71b134ac14",
+    ".tools/mixed69-peer/review.json": "4267d4503e13c654741f52295adb1911b8f9698ef9c23e77cd540e489a43acb9",
+    ".tools/mixed69-support/run-native-v1/report.json": "e78544586a4b1f36d05890558a1a79ba4402ad8706294a9404144f3d33de2d5c",
+    ".tools/mixed69-support/run-sources-v1/report.json": "819534092524ddd4b5f48c760aea10430fa4d73ee8cecc761fb86425b5212f58",
+    ".tools/mixed69-support/run-sources-v2/report.json": "539a61a007600be529c428f0b52cc7b880317dd3e297014066e424a1f48ed785",
+    ".tools/mixed69-support/run-sources-v3/report.json": "823a4b7c7d873b2243bfad3f1143e223fd1b9e0af48be77cadbd7df562e51db4",
+    ".tools/mixed69-peer/source-v1/report.json": "a06f881249566acb743262a9c8d790abe05bc4ffda2a0b1d4ad170462c67394d",
+    ".tools/mixed69-diagnostic/prefix1000-v1/report.json": "e83c5199ec3155cedbc67262cb0127ea8caa65b4db4c0a6fda7b307a26930d5f",
+    ".tools/mixed69-diagnostic/prefix1000-v2/report.json": "033458c1ca51fc42823061188613e685f88c957c9fbd0a121b422b5e0545e6a8",
+    ".tools/mixed69-state/run-el-v1/report.json": "15039513cd4f1536dcef248eed7f1e7ffd84f68187511a5c90b0025b7951c65d",
+    ".tools/mixed69-diagnostic/prepare.py": "40d4de7c832b02ce069a7b8a5b1bf0c6875c40e66b6d95025a6965e494941231",
+    ".tools/mixed69-diagnostic/prepare-v1/report.json": "92e36cdd08e328e2ec6ff41590fbfb5485244b6a4f95c875b28f46e55b93a4f7"
+  },
+  "independent_review": {
+    "reviewer": "/root/comp_review_67",
+    "semantic_verdict": "CLEAR",
+    "source_and_state_verdict": "CLEAR",
+    "publication_verdict": "CLEAR"
+  },
+  "composition": {
+    "parent": "e50d681b7af165483ed0dbd3ac7b8ef990994cd0",
+    "ordered_modules": 399,
+    "manifest_sha256": "2e38df4b97a41f654a8c3f01ffb0c078c337ed17d1ce8816ff7429a23b031761",
+    "method": "Pointwise actual-parent source review; no concrete syntax or dispatch-order dependency warrants a joined actor.",
+    "runtime": "Only52/152/386 differ from the incoming parent and remain byte-identical to the accepted author/peer implementation.",
+    "parent_seams": [
+      "Shared task alternatives, typed assigned-return cursor shapes, constant/define, compound assignment, magic-empty and list dispatch do not match these originals.",
+      "Generator PENDING_INIT is preserved opaquely and stays false for ordinary nondelegating yields. Iterator17 detached-send needs pending delegation; direct current/next has the same FIRST and root-resumption behavior."
+    ],
+    "execution_credit": 0,
+    "retained_cuts": "Author source2/state199 atbe386d4c2 and independent source1/state269 at2f97c98f7 remain unchanged."
+  }
+}

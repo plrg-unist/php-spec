@@ -1,7 +1,7 @@
 {
   "version": 1,
   "milestone": "A6 recursive literal-RHS destructuring missing-key handlers",
-  "status": "independently reviewed private milestone; actual-parent composition pending",
+  "status": "independently reviewed and pointwise composed for integration",
   "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle and tests/semantics/profile.json",
   "base": "e319c9e89a0268a052ae6b29049e6d222882cf08",
   "scope": "Finite recursive by-value patterns from a direct array-literal RHS, with direct-CV leaves and quiet implicit/compiled constant keys; pooled and runtime literal roots keep different source authority.",
@@ -21,7 +21,7 @@
     "An effect-only pooled root with missing outer key0 supplies NULL through three children without further warnings, overwrites callback target writes in order and finishes with only its permanent pool owners. Removing pools cannot route that source through runtime literal admission.",
     "A sole temporary literal root owns a row-cell alias. The callback replaces that old cell value, then unsets/rebinds its CV name: old row/middle/leaf tasks still read33/6/7, the returned root sees saved-cell22 then88, and the rebound live row sees66 then44. The root task keeps the old cell alive after its external name disappears; the disconnected old array chain retires before the outer tail4.",
     "Pooled throw checks reach the caller TRY_END after all list/known-result tasks are discarded. Root ownership is pool-only and descendants retain pool/parent edges, while earlier stores, callback writes, destination100 and the supplied Throwable survive. No physical retirement is claimed for pooled arrays.",
-    "Existing direct-CV/flat literal/mixed and recursive-CV paths keep their behavior. Three historical pure literal-root refusal projections now use scalar1 to preserve the still-open scalar-root boundary; equivalent new-front controls pass without replaying A1–A5 actors. No task, state field, module or generic read/write/compiler/ownership helper changes."
+    "Existing direct-CV/flat literal/mixed and recursive-CV paths keep their behavior. Three historical pure literal-root refusal projections now use scalar1 to preserve the still-open scalar-root boundary; equivalent new-front controls pass without replaying A1\u2013A5 actors. No task, state field, module or generic read/write/compiler/ownership helper changes."
   ],
   "accepted": {
     "source": {
@@ -115,9 +115,19 @@
     "recovery": "Archive retains six original relative .tools report/fixture/process/source directories and list-recursive-literal-reuse-sources-06.py. Extract beneath a checkout of the recorded cut; absolute argv/cwd are historical provenance. No archive is a build dependency."
   },
   "actual_parent_review": {
-    "parent": "108b026fe4ef6e002c553cdf29b43f9bc11faecc",
-    "seams": "Incoming280/289 add detached Generator send/resume history and argument cleanup,270 typed by-reference return destructor replay,283 global stdClass constructor-argument receipts,52/152/386 WeakMap versus standard-handler object comparison. Their distinct task tags/source shapes do not change409, array pool descriptors, list ownership/compiler locations or captured child authority.",
-    "joined_actor": "No concrete semantic interaction found; pointwise composition and exact FF review add no replay credit."
+    "parent": "0181f6333c736b9a99465c251f17e98204469c63",
+    "seams": "Incoming280/289 add detached Generator send/resume history and argument cleanup,270 typed by-reference return destructor replay,283 global stdClass constructor-argument receipts,52/152/386 WeakMap versus standard-handler object comparison. Their distinct task tags/source shapes do not change409, array pool descriptors, list ownership/compiler locations or captured child authority. Subsequent30/55/404 add both-fractional modulo-assignment warning stages, and400 admits false scalar define flags for integer/bool names; distinct COMPOUND_APPLY/CONFIG guards leave list/literal source admission unchanged.",
+    "joined_actor": "No concrete semantic interaction found; pointwise composition and exact FF review add no replay credit.",
+    "composition": {
+      "runtime_delta": [
+        "spec/semantics/409-list-missing-warnings.watsup"
+      ],
+      "modules": 399,
+      "tested_leaf": "604e9b4fc3897e47e337ba95241d598ecc942292",
+      "checks": "409 and six new tests plus the three affected one-line scalar-control files retain exact tested bytes; all other parent runtime/modules and inventory rows/fields are retained; all other parent checkpoints remain exact.",
+      "joined_actor": "No concrete interaction; no new actor or renewed agreement credit.",
+      "runtime_diff_sha256": "b270a89244de60b5786363bae4ac90869545a5a7be8d70fc5db9ebb7d6f75d30"
+    }
   },
   "remaining": [
     "Reference nesting, call/wider RHS producers and non-CV target leaves.",

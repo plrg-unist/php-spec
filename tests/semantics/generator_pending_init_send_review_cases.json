@@ -1,0 +1,22 @@
+[
+  {
+    "id": "generator-pending-init-send-review-reference-row-snapshot-before-argument-destructor",
+    "purpose": "A detached middle consumes pending initialization without advancing; RETURN_COPY_DEREF snapshots a reference row before temporary argument cleanup replaces the referent, preserving the old result and the new live cache through later real return/tails.",
+    "source": "<?php\nclass ReviewPendingSendFirst17 { function __destruct() { echo \"A|\"; } }\nclass ReviewPendingSendSecond17 { function __destruct() { echo \"B|\"; } }\nclass ReviewPendingSendArgument17 { function __destruct() { global $payload; echo \"S|\"; $payload = [new ReviewPendingSendSecond17()]; echo \"W|\"; } }\nfunction &reviewPendingSendLeaf17() { global $payload; echo \"C|\"; yield $payload; echo \"L|\"; return 23; }\nfunction reviewPendingSendMiddle17() { try { echo \"H|\"; $result = yield from $GLOBALS[\"child\"]; echo \"R|\", $result, \"|\"; yield 13; } finally { echo \"J|\"; } }\nfunction reviewPendingSendOuter17() { try { echo \"G|\"; yield from $GLOBALS[\"middle\"]; echo \"O|\"; return 29; } finally { echo \"F|\"; } }\nfunction reviewPendingSendTarget17($value) { echo \"BAD|\"; }\n$payload = [new ReviewPendingSendFirst17()];\n$child = reviewPendingSendLeaf17(); $middle = reviewPendingSendMiddle17(); $outer = reviewPendingSendOuter17();\necho \"P|\"; $outer->rewind(); $child->next();\necho \"V|\", $middle->current()[0] instanceof ReviewPendingSendFirst17 ? \"HELD|\" : \"BAD|\";\nunset($child); echo \"M|\";\n$row = $middle->send(new ReviewPendingSendArgument17());\necho \"X|\", $row[0] instanceof ReviewPendingSendFirst17 ? \"OLD|\" : \"BAD|\", $middle->current()[0] instanceof ReviewPendingSendSecond17 ? \"LIVE|\" : \"BAD|\";\n$row[0] = null; unset($row); echo \"N|\";\ntry { reviewPendingSendTarget17(...$outer); }\ncatch (Error $error) { echo \"T|\", $error->getMessage() === \"Keys must be of type int|string during argument unpacking\" ? \"KEY|\" : \"BAD|\", $error->getTrace() === [] ? \"NOFRAME|\" : \"BAD|\"; }\n$outer->next(); echo \"D|\", $outer->current(), \"|\";\n$outer->next(); echo \"Q|\", $outer->getReturn(), \"|\";\nunset($outer, $middle, $payload); echo \"E\";\n",
+    "expected_model": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "source_sha256": "c9e1d5b32ce2165e869ed4d9b48e2708432c8e3e3a3b90442c24804c7e6e91f8",
+    "native_stdout": "P|G|H|C|L|V|HELD|M|S|W|X|OLD|LIVE|A|N|T|KEY|NOFRAME|R|23|D|13|J|O|F|Q|29|B|E"
+  },
+  {
+    "id": "generator-pending-init-send-review-null-cache-argument-throw-and-later-finally",
+    "purpose": "A present copied null cache still consumes pending initialization on send. A temporary argument destructor throws after that no-advance return; the same cache and real return receipt survive, and later unowned close now executes middle finally before outer finally.",
+    "source": "<?php\nclass ReviewPendingSendThrowArgument17 { function __destruct() { echo \"S|\"; throw new Exception(\"argument17\"); } }\nfunction reviewPendingSendNullLeaf17() { echo \"C|\"; yield null; echo \"L|\"; return 23; }\nfunction reviewPendingSendNullMiddle17() { try { echo \"H|\"; $result = yield from $GLOBALS[\"child\"]; echo \"BAD|\"; } finally { echo \"J|\"; } }\nfunction reviewPendingSendNullOuter17() { try { echo \"G|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD|\"; } finally { echo \"F|\"; } }\n$child = reviewPendingSendNullLeaf17(); $middle = reviewPendingSendNullMiddle17(); $outer = reviewPendingSendNullOuter17();\necho \"P|\"; $outer->rewind(); $child->next();\necho \"V|\", $middle->current() === null ? \"NULL|\" : \"BAD|\";\nunset($child); echo \"M|\";\ntry { $middle->send(new ReviewPendingSendThrowArgument17()); }\ncatch (Exception $error) { echo \"T|\", $error->getMessage() === \"argument17\" ? \"ARG|\" : \"BAD|\", $error->getPrevious() === null ? \"NOPREV|\" : \"BAD|\"; }\necho \"K|\", $middle->current() === null ? \"NULL|\" : \"BAD|\";\nunset($middle); echo \"U|\"; unset($outer); echo \"E\";\n",
+    "expected_model": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "source_sha256": "3a68c7f3e84ad13462993f1ec925727ec5b13657b2237fb575e5472b659a72dc",
+    "native_stdout": "P|G|H|C|L|V|NULL|M|S|T|ARG|NOPREV|K|NULL|U|J|F|E"
+  }
+]

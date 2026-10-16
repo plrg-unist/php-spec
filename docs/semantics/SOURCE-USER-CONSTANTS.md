@@ -1,6 +1,6 @@
 # Ordinary source user constants
 
-Ordinary `const` declarations and reads use the checked source compiler and runtime for the pinned PHP 8.5.10 CLI profile. Scalar/array, certified Closure/FCC, bounded user-instance NEW and zero-argument stdClass values, including nested arrays and selected newborn ternary/coalescing leaves, are supported; the constant family and full core remain partial.
+Ordinary `const` declarations and reads use the checked source compiler and runtime for the pinned PHP 8.5.10 CLI profile. Scalar/array, certified Closure/FCC, bounded user-instance NEW and bounded stdClass values, including uniquely named ignored arguments, nested arrays and selected newborn ternary/coalescing leaves, are supported; the constant family and full core remain partial.
 
 ## Declaration and lookup
 
@@ -129,7 +129,8 @@ pending tail changes only the constant table and preserves the original Throwabl
 caller destination and callback mutations. The pending duplicate case is
 covered below. The [scalar-flag review](../../coverage/semantics/define-scalar-flag-review.json)
 binds four source agreements and 462 public premises. NaN reception is covered
-below; wider values and coerced flags with scalar/null names remain separate.
+below; the bounded false-flag scalar-name follow-up is also covered below. Wider
+values and other coerced flags with scalar/null names remain separate.
 
 Boolean true uses its original warning marker for the fresh registration tail
 after a handler throws. The step appends the captured primitive after any unrelated
@@ -376,6 +377,20 @@ the received name in the API trace. The caller's scalar and assignment destinati
 stay intact. The [scalar-define review](../../coverage/semantics/define-scalar-name-review.json)
 binds four sources and351 public premises, with failed initial checks kept separate.
 
+Int/bool names accept nonbool false scalar flags: integer 0, empty/`"0"` strings and
+signed float zero. The existing scalar-name path converts the name before quiet
+bool reception, leaving the raw third argument in duplicate API traces. Strict
+parameter-1 errors precede nonbool third-parameter rejection after all effects.
+An optional-third carrier guard authenticates request strings; legacy two-argument
+and bool-false paths keep a trivially true guard. Only 20 module400 insertions extend
+the existing marker domain; receive, duplicate, trace and strict code are unchanged.
+The [false-flag name review](../../coverage/semantics/define-scalar-false-flag-review.json)
+binds four exact originals and 595 public premises across fresh/default duplicate,
+captured publication, strict and throwing empty-key duplicate groups. They check
+converted names/raw request flags, old binding/sibling effects, full restored-state
+discard equality, literal/carrier/prefix refusals and budgets. Float/null names with
+these flags, truthy/NULL/NaN flags and owning/wider forms remain partial.
+
 Null `define` names use a separate weak-call deprecation before conversion and
 registration, with the same primitive-value and omitted/already-false flag boundary.
 The first callback sees the raw null API argument. Normal return converts it to
@@ -443,8 +458,8 @@ and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`. `PHP_FUNCTION(constant)` us
 exception-class lookup and `ZVAL_COPY_OR_DUP`; `zend_declare_typed_class_constant`
 interns direct string values before installation.
 Nested empty values in `define`, cycles, objects, array duplicate/third-argument paths,
-Stringable/array names, array/object values with scalar or null names, true/coerced
-flags with scalar or null names, startup/special-name warnings,
+Stringable/array names, array/object values with scalar or null names, true/NULL/NaN
+flags with scalar names, nonbool flags with float/null names, startup/special-name warnings,
 internal/trait/interface/enum class queries, deferred keyword initializers and
 keyword `constant` array values, other deferred initializers,
 owning/FCC call forms and wider conversion/arity paths remain Unsupported. The [dynamic ledger](../../coverage/semantics/dynamic-constants-review.json)
@@ -518,7 +533,7 @@ invalid duplicate observer remains zero credit; only its corrected local-alias
 version supplies that source comparison. The producer milestone keeps embedded trees, default
 caching and callable folding outside its slice; existing `defined()` presence
 lookup remains unchanged. Other
-internal/Throwable NEW, argument and wider lifecycle forms remain partial.
+internal/Throwable NEW, duplicate argument names and wider lifecycle forms remain partial.
 [stdClass producer ledger](../../coverage/semantics/global-constant-stdclass-review.json).
 
 Global `constant()` also returns certified `PVSTDCLASS` rows. The sole module400
@@ -552,7 +567,7 @@ transfer follows the newborn's SITE to its completed receipt, while value guards
 separately require the live allocation. Eval duplicate candidates create distinct
 leaves, then retire while nonowning birth history remains. Four exact sources and
 1,107 SL premises retain their [nested-birth cuts](../../coverage/semantics/global-constant-stdclass-new-review.json).
-Conditional aliases/whole-array transfer, arguments and defaults remain partial.
+Conditional aliases/whole-array transfer, duplicate argument names and defaults remain partial.
 
 Newborn stdClass coalescing leaves retain a nonnull left value or select the right
 after a captured NULL, including nested chains and eval units. Two module283 flow
@@ -562,3 +577,13 @@ and quiet capture compose with ternary selection, then retire their temporary
 array while preserving the chosen object. The
 [coalescing review](../../coverage/semantics/global-constant-stdclass-coalesce-review.json)
 records source, handoff and ownership checks. Alias/whole-array coalescing remains partial.
+
+Global stdClass constant-AST NEW evaluates ordinary positional and uniquely named
+arguments before dropping their values, even for unknown names. Earlier values
+retire on an argument Error; the target keeps an incomplete birth receipt and
+the constant stays absent, while fresh eval can retry with a distinct birth.
+Donated object identity survives ignored root/array owners and real user-value destructors run
+before continuation. [The argument review](../../coverage/semantics/global-constant-stdclass-arguments-review.json)
+retains the duplicate-name counterexample: the rejected current value survives
+until native shutdown, so that source shape remains Unsupported. References,
+unpacking, default caching and broader lifecycle consumers remain partial.

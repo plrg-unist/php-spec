@@ -706,14 +706,20 @@ def $value_order(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*) = ORDE
   -- if n_left =/= n_right
   -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if $weakmap_at(S, n_left) /\ $weakmap_at(S, n_right)
-;; These opposite tags also use zend_std_compare_objects. Different classes
-;; return ZEND_UNCOMPARABLE (+1) in either direction before any property walk.
+;; These pairs use zend_std_compare_objects, including Closure's fallback for
+;; unlike compare handlers. Class mismatch precedes any property or body walk.
 dec $weakmap_standard_other(pobject) : bool
 def $weakmap_standard_other(STDINSTANCE) = true
 def $weakmap_standard_other(INSTANCE porigin) = true
 def $weakmap_standard_other(WEAKREFERENCE n_target?) = true
+def $weakmap_standard_other(THROWABLE pthrowable) = $throwable_kind(pthrowable.KIND)
+def $weakmap_standard_other(GENERATOR pgenerator) = true
+def $weakmap_standard_other(FIBER pfiber) = true
+def $weakmap_standard_other(pobject) = true
+  -- if $object_body(pobject) = REALCLOSURE porigin pitem* pstaticcell*
+def $weakmap_standard_other(pobject) = true
+  -- if $object_body(pobject) = NAMEDCLOSURE porigin
 def $weakmap_standard_other(pobject) = false -- otherwise
-dec $weakmap_standard_mismatch(pstate, nat, nat) : bool
 def $weakmap_standard_mismatch(S, n_left, n_right) = true
   -- if $(n_left < |S.OBJECTS|) /\ $(n_right < |S.OBJECTS|)
   -- if (HOBJECT n_left) <- S.ALLOCATIONS /\ (HOBJECT n_right) <- S.ALLOCATIONS
@@ -721,6 +727,8 @@ def $weakmap_standard_mismatch(S, n_left, n_right) = true
   -- if ($weakmap_at(S, n_left) /\ $weakmap_standard_other(S.OBJECTS[n_right])) \/ ($weakmap_at(S, n_right) /\ $weakmap_standard_other(S.OBJECTS[n_left]))
 def $weakmap_standard_mismatch(S, n_left, n_right) = false -- otherwise
 def $value_order(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*) = ORDER 1
+  -- if $weakmap_standard_mismatch(S, n_left, n_right)
+def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = (S, ORDER 1)
   -- if $weakmap_standard_mismatch(S, n_left, n_right)
 def $value_order(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*) = ORDERUNSUPPORTED "WeakMap comparison protocol"
   -- if n_left =/= n_right

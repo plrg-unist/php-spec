@@ -1162,11 +1162,24 @@ rule PhpStep/dynamic-scalar-constant-invoke: S ~> $dynamic_scalar_constant_recei
   -- if $dynamic_scalar_constant_call(pconfigcall)
 
 ;; Registration keeps the raw call; only its received name and trace view change.
+dec $dynamic_define_false_scalar_flag(pvalue) : bool
+def $dynamic_define_false_scalar_flag(PINT 0) = true
+def $dynamic_define_false_scalar_flag(PFLOAT n) = true -- if (false, false) = $number_bool(NFLOAT n)
+def $dynamic_define_false_scalar_flag(pvalue) = true
+  -- if $string_bytes(pvalue) = (preqbytes)
+  -- if preqbytes = eps \/ preqbytes = $ptascii("0")
+def $dynamic_define_false_scalar_flag(pvalue) = false -- otherwise
 dec $dynamic_scalar_define_values(pconfigcall) : (pvalue, pvalue)?
 def $dynamic_scalar_define_values(pconfigcall) = ((pvalue_name, pvalue))
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_name), NAMED_SENT (KNOWN pvalue)]
 def $dynamic_scalar_define_values(pconfigcall) = ((pvalue_name, pvalue))
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_name), NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN (PBOOL false))]
+def $dynamic_scalar_define_values(pconfigcall) = ((PINT i, pvalue))
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (PINT i)), NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN pvalue_flag)]
+  -- if $dynamic_define_false_scalar_flag(pvalue_flag)
+def $dynamic_scalar_define_values(pconfigcall) = ((PBOOL b, pvalue))
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (PBOOL b)), NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN pvalue_flag)]
+  -- if $dynamic_define_false_scalar_flag(pvalue_flag)
 def $dynamic_scalar_define_values(pconfigcall) = eps -- otherwise
 def $dynamic_scalar_define_call(pconfigcall) = true
   -- if pconfigcall.KIND = INTRINSIC_DEFINE
@@ -1183,8 +1196,15 @@ def $dynamic_scalar_define_arguments(S, pconfigcall, n_index) = $dynamic_scalar_
   -- if $named_slot_at(pconfigcall.SENT, n_destination) = NAMED_SENT (KNOWN pvalue)
   -- if $dynamic_define_value_matches(pvalue, $compiled_read(S, porigin))
 def $dynamic_scalar_define_arguments(S, pconfigcall, n_index) = false -- otherwise
+dec $dynamic_scalar_define_flag_carrier_valid(pstate, pconfigcall) : bool
+def $dynamic_scalar_define_flag_carrier_valid(S, pconfigcall) = true -- if $(|pconfigcall.SENT| = 2)
+def $dynamic_scalar_define_flag_carrier_valid(S, pconfigcall) = true
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_name), NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN pvalue_flag)]
+  -- if $string_plain(pvalue_flag) = pvalue_flag \/ $string_carrier_valid(S, pvalue_flag)
+def $dynamic_scalar_define_flag_carrier_valid(S, pconfigcall) = false -- otherwise
 dec $dynamic_scalar_define_valid(pstate, pconfigcall) : bool
 def $dynamic_scalar_define_valid(S, pconfigcall) = true
+  -- if $dynamic_scalar_define_flag_carrier_valid(S, pconfigcall)
   -- if $dynamic_scalar_define_call(pconfigcall) /\ $config_invoke_valid(S, pconfigcall)
   -- if $dynamic_define_source(S, pconfigcall.SITE)
   -- if $dynamic_scalar_define_values(pconfigcall) = ((pvalue_name, pvalue))
