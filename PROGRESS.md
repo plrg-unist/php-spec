@@ -292,31 +292,30 @@ The pointwise 399-module composition over 6f3488104 preserves incoming list,
 property, arithmetic, constants and return paths. Source2/state355 retain their
 private cut; independent seam review warrants no joined actor or renewed credit.
 
-Missing-key Warning continues finite recursive patterns with quiet keys and CV
-leaves. By-value patterns admit CV/literal roots; mixed patterns require direct CVs.
-Each pattern keeps its own table or reference cell. Parent replacement can leave
-a by-value child reading33 while later root fetches use40; detached child22,
-held-root66 and rebound-CV77 remain distinct. Null replacement permits later
-nested writable creation without another warning. COW separates copied scalars
-while preserving shared references and inherited reference compiler lines.
-Throw cleanup retains ancestor cell/table chains until their remaining tasks unwind.
-Five A7 exact originals agree at 9b8d4db2b; five SL fronts pass811 premises
-(792 Boolean +19 raw steps) at b8148e051, checking source demand, real frames,
-ordered NULL stores/acquisition, COW/binding, staged cleanup and budgets.
-The [nested mixed review](coverage/semantics/list-nested-reference-missing-warning-review.json)
-retains the unchanged Unsupported baseline with zero agreement credit. By-value
-shape/source APIs and historical tests stay unchanged; no old actors are replayed.
+Missing-key Warning continues recursive CV/literal by-value and direct-CV mixed
+patterns with quiet compiled/implicit keys. Captured tables and mutable source
+cells keep their distinct authority through handler writes, NULL descent, COW,
+ordered target stores and staged throw cleanup.
+Flat direct-CV patterns now also freeze a selected defined integer-CV key before
+warning dispatch. Callback mutation, alias retirement and name rebinding cannot
+redirect its NULL result; later key CVs are read afresh after earlier stores.
+Earlier key-target stores and handler replacement preserve the same ordering.
+Five A8 exact originals agree at 2a7398187; five SL fronts pass674 premises
+(659 Boolean +15 raw steps). Author390 at d7431d9cb and independent132/152 at
+c7fe9d462/5596ac57a retain their separate cuts.
+The [integer-CV key review](coverage/semantics/list-integer-cv-missing-warning-review.json)
+retains the unchanged Unsupported baseline and fixture failures at zero credit.
+Existing constant/recursive APIs and historical tests stay unchanged.
 Earlier [CV source6/state468](coverage/semantics/list-missing-warning-review.json),
 [literal source6/state417](coverage/semantics/list-literal-missing-warning-review.json),
 [flat mixed source5/state591](coverage/semantics/list-reference-missing-warning-review.json),
 [one-layer source5/state637](coverage/semantics/list-nested-missing-warning-review.json),
-[recursive CV source5/state738](coverage/semantics/list-recursive-missing-warning-review.json)
-and [recursive literal source5/state809](coverage/semantics/list-recursive-literal-missing-warning-review.json)
-retain their original cuts. Mixed literal/call or wider RHS/targets, scalar
-key/destructuring diagnostic callbacks and lifecycle remain partial.
-The pointwise399-module composition over393a5c8b6 preserves incoming shift,
-reference-unwind, WeakMap, magic-empty NaN and define paths. Source5/state811 retain
-their private cuts; seam review warrants no joined actor or renewed agreement credit.
+[recursive CV source5/state738](coverage/semantics/list-recursive-missing-warning-review.json),
+[recursive literal source5/state809](coverage/semantics/list-recursive-literal-missing-warning-review.json)
+and [nested mixed source5/state811](coverage/semantics/list-nested-reference-missing-warning-review.json)
+retain their original cuts without replay. Nested/by-value-literal dynamic keys,
+other CV key types, undefined/conversion diagnostics, wider RHS/targets and
+scalar/object destructuring callbacks and lifecycle remain partial.
 
 Plain-CV `%=` now keeps both converted longs through a fractional-RHS deprecation.
 Captured12/5 stores2 despite callback99/7 and detaches a late target alias; supplied

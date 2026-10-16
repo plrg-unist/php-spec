@@ -4,9 +4,20 @@ Module409 supplies the E_WARNING continuation for missing by-value fetches into
 direct CV leaves. Recursive by-value patterns admit direct CV or literal RHS arrays;
 recursive mixed value/reference patterns require a direct CV RHS. Implicit integer keys
 and warning-free compiled constant keys are admitted. Literal strings retain their
-authenticated interned-string carrier before key conversion. Undefined key CVs,
-null/lossy-float key diagnostics, mixed literal/call or wider RHS producers
-and target forms remain separate dependencies.
+authenticated interned-string carrier before key conversion. Flat direct-CV RHS
+patterns also admit selected ordinary defined integer-CV keys. Dynamic keys in
+nested/literal-root patterns, computed key names, other CV key types and undefined
+or null/lossy-float key diagnostics remain separate dependencies, along with wider
+RHS producers and target forms.
+
+An integer-CV key stays a delayed variable operand until the missing fetch. The
+initial plan checks its exact name, operand/compiler lines and defined integer,
+then freezes the integer before dispatch. Callback writes, alias unsetting or
+name rebinding cannot redirect that fetch or turn it into a successful lookup.
+The saved continuation checks source compatibility and integer kind without
+reading the key cell again; it cannot reconstruct the historical integer.
+Following keys are evaluated after the interrupted null target store, including
+when an earlier target overwrites a key variable or a callback replaces the handler.
 
 The by-value RHS is captured before the first item; a direct CV uses Zend's `QM_ASSIGN`.
 The saved task owns that array through handler selection, the ordinary callback
@@ -41,7 +52,7 @@ shared embedded references, and earlier reference targets remain visible to the
 callback. Once tasks and other owners disappear, cells and their tables retire.
 
 Source occurrence, admitted RHS shape, remaining items, selected index,
-constant/implicit key, compiler line and captured array/cell allocation authenticate
+constant/implicit key or CV-key occurrence, compiler line and captured array/cell allocation authenticate
 the producer and saved resume. These checks establish source compatibility and
 liveness; they do not reconstruct historical identity from a live CV. A mixed
 resume does not require the cell to retain its original array. Prior reference
@@ -78,6 +89,7 @@ paths/streams without an oracle replay. Separate ledgers retain the
 [mixed](../../coverage/semantics/list-reference-missing-warning-review.json),
 [one-layer](../../coverage/semantics/list-nested-missing-warning-review.json),
 [recursive CV](../../coverage/semantics/list-recursive-missing-warning-review.json),
-[recursive literal](../../coverage/semantics/list-recursive-literal-missing-warning-review.json) and
-[nested mixed](../../coverage/semantics/list-nested-reference-missing-warning-review.json)
+[recursive literal](../../coverage/semantics/list-recursive-literal-missing-warning-review.json),
+[nested mixed](../../coverage/semantics/list-nested-reference-missing-warning-review.json) and
+[integer CV keys](../../coverage/semantics/list-integer-cv-missing-warning-review.json)
 cuts and failures. No complete array, diagnostics or lifecycle-family claim follows.
