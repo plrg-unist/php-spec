@@ -9053,6 +9053,23 @@ real public descriptor and equal-heap LINE-only refusal, and exit-cut budget
 equality. This is one TypeError witness; the admitted other built-in kinds
 need focused validation, while M81/M82/M83 evidence remains separate.
 [M84 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M85 adds the simple-variable receiver, literal-name no-argument method source
+only to the two authenticated pending-destructor-throw guards. A retained
+Factory supplies O through reference-returning versus value-returning
+`old_ref()`; native2 at clean `06f381e75`/399 reaches local
+`CT:1;A;S`, detached `rNULL/b7` and one old-line Notice in both, while the
+unchanged model wrongly reaches outer OT/no Notice (zero agreements). Strict
+SL and both exact original-source agreements pass at private `c528b1850`/399.
+The reference-only reached fixture passes 159 Boolean premises and two raw
+steps: pre-finalizer BYREF source/Factory slot/HCELL→O, no early reference
+Notice, distinct HCELL and O retirement at the pending TypeError exit while
+Factory remains live, the same `dtor85` object at local CT, consumed NULL/new
+VALUE Notice and detached caller. Actual descriptor admission, heap-equal
+LINE-only refusal and exit-cut budget equality pass. The first fixture's false
+pre-finalizer Notice premise failed with zero full-state credit; only that
+affected fixture was retried. Normal pending-free method exits, arguments,
+dynamic names and wider owner/destructor histories remain open.
+[M85 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, wider destructor throw/reentry, real suspension and wider typed
