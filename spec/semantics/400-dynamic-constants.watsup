@@ -1180,6 +1180,9 @@ def $dynamic_scalar_define_values(pconfigcall) = ((PINT i, pvalue))
 def $dynamic_scalar_define_values(pconfigcall) = ((PBOOL b, pvalue))
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (PBOOL b)), NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN pvalue_flag)]
   -- if $dynamic_define_false_scalar_flag(pvalue_flag)
+def $dynamic_scalar_define_values(pconfigcall) = ((PNULL, pvalue))
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN pvalue_flag)]
+  -- if $dynamic_define_false_scalar_flag(pvalue_flag)
 def $dynamic_scalar_define_values(pconfigcall) = eps -- otherwise
 def $dynamic_scalar_define_call(pconfigcall) = true
   -- if pconfigcall.KIND = INTRINSIC_DEFINE
@@ -1374,6 +1377,7 @@ def $dynamic_null_define_call(pconfigcall) = true
 def $dynamic_null_define_call(pconfigcall) = false -- otherwise
 dec $dynamic_null_define_valid(pstate, pconfigcall) : bool
 def $dynamic_null_define_valid(S, pconfigcall) = true
+  -- if $dynamic_scalar_define_flag_carrier_valid(S, pconfigcall)
   -- if $dynamic_null_define_call(pconfigcall) /\ $config_invoke_valid(S, pconfigcall)
   -- if $dynamic_define_source(S, pconfigcall.SITE)
   -- if $dynamic_scalar_define_values(pconfigcall) = ((PNULL, pvalue))

@@ -7,6 +7,26 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+NULL `define` names now receive quiet false nonbool flags with primitive values.
+The first deprecation keeps raw NULL and captured flags; normal return converts
+only the name, checks the live empty-key binding and can issue a separate duplicate
+Warning. Strict parameter-1 errors precede flag rejection after argument effects;
+a first-handler throw preserves the same Exception/callback effects without
+registering the empty key. Four exact originals agree across retained tested cuts.
+All 755 public premises pass: author 334+116+179 and independent 126 across four
+groups, covering actual dispatch/return/duplicate/discard, raw versus converted API
+views, carrier/source refusals and budgets. The original captured-source timeout,
+pre-main fixture binding failure and unchanged Unsupported baseline retain zero
+credit; only affected checks were repeated. Runtime adds four module400 lines,
+reusing the old NULL-name pipeline with a bounded marker-domain extension.
+Float names with these flags, other coerced flags with NULL/scalar names and
+owning/wider forms remain partial.
+[NULL-name false-flag review](coverage/semantics/define-null-name-false-flag-review.json).
+
+Pointwise composition over ee63167a1 preserves the incoming 399-module parent.
+Source4/state755 retain their distinct private cuts; shared task/source selectors
+are disjoint, so no joined actor or renewed execution credit is warranted.
+
 Terminal inherited `empty` now warns for NaN getter results after Get returns,
 retaining the isset guard and captured receiver through the warning callback.
 Caller-CV rebinding leaves the saved NaN unchanged: normal completion gives false;
@@ -94,7 +114,7 @@ default duplication and handler return/throw, strict errors, full discard equali
 carrier and source refusals and budgets. The unchanged Unsupported baseline retains zero
 credit; a fixture name collision was fixed before execution. Runtime adds only 20
 module400 lines and reuses existing receive/duplicate/trace code with a bounded
-marker-domain extension. Float/null names with these flags, truthy/NULL/NaN flags,
+marker-domain extension. Float names with these flags, truthy/NULL/NaN flags,
 owning/wider values and full family closure remain partial.
 [False-flag name review](coverage/semantics/define-scalar-false-flag-review.json).
 

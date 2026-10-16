@@ -1038,6 +1038,11 @@ handler retains raw null and cancels registration; strict calls retain raw
 arguments after all argument effects.
 [Four source agreements and 396 state premises](coverage/semantics/define-null-name-review.json)
 cover source-backed empty-key rows, both warning continuations and budget pauses.
+NULL names also accept quiet false scalar flags (`0`, empty/`"0"` strings and
+float zero), preserving raw flags through deprecation and converted-name duplicate
+traces. Strict name errors win first; conversion-handler throws cancel publication.
+[Four source agreements and 755 state premises](coverage/semantics/define-null-name-false-flag-review.json)
+cover default diagnostics, callback return/throw and authenticated captures.
 Global `constant` queries return primitive values, authenticated string carriers,
 validated user array trees, certified completed user instances and certified
 Closures. They use the captured query, remove one leading separator and preserve

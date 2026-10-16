@@ -388,8 +388,9 @@ The [false-flag name review](../../coverage/semantics/define-scalar-false-flag-r
 binds four exact originals and 595 public premises across fresh/default duplicate,
 captured publication, strict and throwing empty-key duplicate groups. They check
 converted names/raw request flags, old binding/sibling effects, full restored-state
-discard equality, literal/carrier/prefix refusals and budgets. Float/null names with
-these flags, truthy/NULL/NaN flags and owning/wider forms remain partial.
+discard equality, literal/carrier/prefix refusals and budgets. Float names with
+these flags, truthy/NULL/NaN flags and owning/wider forms remain partial; the bounded
+NULL-name false-flag follow-up is below.
 
 Null `define` names use a separate weak-call deprecation before conversion and
 registration, with the same primitive-value and omitted/already-false flag boundary.
@@ -404,6 +405,22 @@ row without rereading caller CVs or storing a conversion receipt.
 The [null-define review](../../coverage/semantics/define-null-name-review.json)
 binds four source agreements and396 public premises; the failed optional-field
 fixture and unchanged baseline retain zero agreement credit.
+
+NULL names also receive integer-zero, empty/`"0"` string and signed-zero float
+flags. The first 8192 callback sees raw NULL and the original flag; normal return
+converts only the name and checks the current empty-key binding. The duplicate
+callback therefore sees an empty string name while the flag stays raw. A throw
+from the first callback cancels registration; strict parameter-1 errors precede
+nonbool flag rejection after all argument effects. Four module400 insertions reuse
+the existing NULL receive/duplicate/trace path and authenticate optional-third
+string carriers, deliberately extending only this marker domain.
+The [NULL-name false-flag review](../../coverage/semantics/define-null-name-false-flag-review.json)
+binds four source agreements and 755 public premises across separate retained cuts,
+including current-table duplicate return, actual first-throw discard equality,
+raw request flags, source/carrier refusals and budgets. The original source timeout,
+pre-main fixture failure and baseline keep zero credit; only affected checks were
+repeated. Other coerced flags, float names with these flags and owning/wider forms
+remain partial.
 
 User-array queries retain the stored root and child identities. The admitted
 tree contains nonstring scalars, raw strings, authenticated string carriers,
@@ -459,7 +476,8 @@ exception-class lookup and `ZVAL_COPY_OR_DUP`; `zend_declare_typed_class_constan
 interns direct string values before installation.
 Nested empty values in `define`, cycles, objects, array duplicate/third-argument paths,
 Stringable/array names, array/object values with scalar or null names, true/NULL/NaN
-flags with scalar names, nonbool flags with float/null names, startup/special-name warnings,
+flags with scalar names, nonbool flags with float names, true/NULL/NaN flags with
+null names, startup/special-name warnings,
 internal/trait/interface/enum class queries, deferred keyword initializers and
 keyword `constant` array values, other deferred initializers,
 owning/FCC call forms and wider conversion/arity paths remain Unsupported. The [dynamic ledger](../../coverage/semantics/dynamic-constants-review.json)
