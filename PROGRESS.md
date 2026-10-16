@@ -7,6 +7,112 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Terminal inherited `empty` now disposes ordinary user-object getter RVs while
+retaining the isset guard and captured receiver; Get is already inactive. An RV
+destructor can replace the sole caller CV with null: receiver destruction still
+follows RV disposal, before the false result or catch binding. A throwing RV
+destructor preserves the same Exception. Two exact originals agree at662443a55;
+focused247 at47847ca06 (188 reached +59 derived) checks actual RV/receiver
+destructors, saved-frame guards, catch identity, authenticated record refusals,
+same-identity/extra-owner controls and budgets. The initial false131 used two
+incorrect no-bookkeeping expectations; it and its locating diagnostic retain zero
+credit. Runtime and source2 did not change for that fixture correction. Arrays,
+internal-object RVs and wider signature/receiver/recursive forms remain partial.
+[Object RV review](coverage/semantics/magic-empty-object-rv-review.json).
+Earlier cuts retain their identities: [integer/call](coverage/semantics/magic-empty-review.json),
+[primitive/string](coverage/semantics/magic-empty-scalars-review.json),
+[float](coverage/semantics/magic-empty-floats-review.json) and
+[NaN warning](coverage/semantics/magic-empty-nan-review.json).
+
+Pointwise composition over844f6957d preserves the incoming399-module parent.
+Source2/state247 retain their private cuts; no joined actor or renewed credit.
+
+WeakMap comparisons now admit normalized direct-method and callable-array method
+Closures, returning uncomparable +1 in either direction before receiver/capture or
+private-entry traversal. Three exact originals and 266 Boolean premises
+(254 setup + 12 pure)/8 actual steps pass at 623149672/399. All seven operators,
+real aggregate frames, receiver-only capture owners, scope rows, quiet later tails and budget
+resume are covered. Two earlier source failures and the split STRING producer
+failure retain zero credit; the bounded diagnostic and prelaunch provisioning add
+none. STRING and other Closure representations, producers and wider weak lifetimes
+remain partial. [Method-Closure review](coverage/semantics/weakmap-method-comparison-review.json).
+
+Composed over af38e86d0/399 after pointwise review of constant arguments, define,
+property/list, abrupt-return and Generator-input seams. GENERATORINPUTS stays empty
+for these non-generator sources, adding no roots or validity restriction. Source3/
+state266 retain their private cut; no joined actor or renewed execution credit.
+
+Pending shared Generator `send` now fills a paused child's used yield assigned
+directly to a simple CV, through finite native Generator links, without advancing.
+A direct or forwarded `next` that resumes the child transfers its one payload
+owner. Close and overwrite preserve the pinned engine's untraced count through
+real finally/cache cleanup until request-store destruction, independently of
+Generator and receiver owners. Reference-row snapshots and COW stay separate.
+Six exact normal originals agree: three author cases at `2b9ceced5` and three
+independent cases at `3bc9dcbf6`. Five genuine state groups pass 470 premises
+(255 author + 215 independent), including
+actual API/forwarded/close/store steps, immutable-source and continuation refusals,
+physical owners and budget resume. Strict checking of 399 modules passes at `2b9`;
+the combined five-fixture
+elaboration gate adds no semantic credit. Two DSL/application failures and two
+observer failures remain zero credit; only affected checks were retried.
+Six native captures and the unchanged Unsupported baseline retain `845` and zero
+model credit.
+Pending/active-buffered `throw`, other used-expression shapes, owning copied
+returns and broader GC/callback/Fiber lifetimes remain partial. No engine bug or
+intentional divergence is claimed.
+[Shared-send review](coverage/semantics/generator-pending-shared-send-review.json).
+
+Pointwise composition over `6d2b2fdef` preserves the incoming retained-constant
+fields, roots and defaults in modules 30/39/40 alongside the new Generator input
+field. The other four Generator runtime files keep the tested bytes; all other
+runtime, pipeline and the 399-module manifest retain parent bytes.
+Source/state/strict evidence keeps its private cuts; no joined actor or renewed
+execution credit.
+
+Finite float `define` names now accept quiet false scalar flags with primitive
+values. Weak calls keep distinct `"-0"`/`"0"` keys and raw captured flags; duplicate
+handlers retain the received key and call-time precision despite later writes.
+Strict parameter-1 errors precede nonbool flag rejection after argument effects.
+Four exact originals agree at 9fb6cdf4, with one expected default duplicate Warning.
+All 603 public premises pass: author 274+80+108 and independent 141 across four
+groups, including actual publication/duplicate/strict/discard steps, saved precision
+14 versus live 1, old binding/sibling/caller effects, carrier/source/name refusals
+and budgets. The unchanged Unsupported baseline retains zero credit; no actor failed
+or was repeated. Runtime adds four module400 lines. Two obsolete float-shape
+refusals now check shape admission plus immutable source or received-name authority;
+their equivalents are exercised here without replaying the old 595 campaign.
+Nonfinite names with these flags, truthy/NULL/NaN flags and owning/wider forms remain
+partial. [Float false-flag review](coverage/semantics/define-float-false-flag-review.json).
+
+Pointwise composition over 06f381e75 preserves the incoming 399-module parent.
+Source4/state603 and the older 595 campaign retain their tested cuts; the incoming
+empty REJECTED field and other selectors are conservative here, so no joined actor
+or renewed execution credit is warranted.
+
+Both-fractional plain-CV numeric `&=`/`|=`/`^=` now order both conversion
+deprecations. LEFT 12 survives the first callback, then live 5.5 becomes cached 5
+before the second; later 88/10 still stores 4/13/9 and detaches alias 88. Quiet
+integer RHS 5 after the first callback skips the second diagnostic and reaches the
+unchanged OR commit, detaching alias 99. First/second supplied throws preserve the
+same Exception, callback effects, destination 100 and alias write-through.
+Independent negative RHS (-1) from -1.5 still stores XOR (-13) after the second
+default Deprecated at line 25 despite live 88/10, detaching alias 88.
+Seven exact originals pass at 37d32f153; author 231/231/231/148/215/184 plus
+independent 181 SL premises pass 1421 at 2858f5b35/399. All three AST/OP pairs,
+fresh first-LEFT/second-RHS guards, actual entered frames, quiet handoff, cells/
+owners and budgets are covered; LEFT stays historical at second capture. Native/
+baseline/retained checked prep/syntax retain 0. Initial references/copies, wider
+RHS conversions, unsafe bindings/targets and wider callbacks/lifecycle remain
+partial; pure projections establish refusals only.
+[Ordered bitwise ledger](coverage/semantics/bitassign-both-warning-review.json).
+OP12 stays paused; earlier accepted operator cuts retain 0 renewed credit.
+
+Composed over bbcfe62e5/399 after pointwise review of rejected constant owners,
+NaN property empty, typed reference-return cleanup and define/list seams. The new
+owner channel stays empty; source7/state1421 retain private cuts without actor,
+replay or renewed credit.
+
 NULL `define` names now receive quiet false nonbool flags with primitive values.
 The first deprecation keeps raw NULL and captured flags; normal return converts
 only the name, checks the live empty-key binding and can issue a separate duplicate
@@ -19,33 +125,13 @@ views, carrier/source refusals and budgets. The original captured-source timeout
 pre-main fixture binding failure and unchanged Unsupported baseline retain zero
 credit; only affected checks were repeated. Runtime adds four module400 lines,
 reusing the old NULL-name pipeline with a bounded marker-domain extension.
-Float names with these flags, other coerced flags with NULL/scalar names and
+Nonfinite float names with these flags, other coerced flags with NULL/scalar names and
 owning/wider forms remain partial.
 [NULL-name false-flag review](coverage/semantics/define-null-name-false-flag-review.json).
 
 Pointwise composition over ee63167a1 preserves the incoming 399-module parent.
 Source4/state755 retain their distinct private cuts; shared task/source selectors
 are disjoint, so no joined actor or renewed execution credit is warranted.
-
-Terminal inherited `empty` now warns for NaN getter results after Get returns,
-retaining the isset guard and captured receiver through the warning callback.
-Caller-CV rebinding leaves the saved NaN unchanged: normal completion gives false;
-a throwing handler keeps the same Exception. Receiver destruction precedes branch
-output or catch binding. Three exact originals agree at d16aef394. Normal141 at
-5a05e5afc plus affected throwing101 at b66d611c9 total242 checks (195 reached +47
-derived), including actual callback/cleanup/destructor/catch steps, authenticated
-record refusals and budgets. Two pre-app fixture failures and an invalid terminal
-catch lookup retain zero credit; the diagnostic adds none. The unchanged baseline
-remains genuine Unsupported/zero agreement. Owning getter RV disposal and wider
-signature/receiver/recursive combinations remain partial.
-[NaN warning review](coverage/semantics/magic-empty-nan-review.json).
-Earlier integer/call, scalar/string and non-NaN float cuts retain their identities:
-[magic empty](coverage/semantics/magic-empty-review.json),
-[primitive results](coverage/semantics/magic-empty-scalars-review.json),
-[float results](coverage/semantics/magic-empty-floats-review.json).
-
-Pointwise composition over 2d5bd20c1 preserves the incoming399-module parent.
-Source3 and normal141/throw101 retain their separate cuts; no joined actor or renewed credit.
 
 Both-fractional plain-CV `<<=`/`>>=` now order both conversion deprecations.
 LEFT (-12) survives the first callback, then live 2.5 becomes cached count 2 before
@@ -114,7 +200,7 @@ default duplication and handler return/throw, strict errors, full discard equali
 carrier and source refusals and budgets. The unchanged Unsupported baseline retains zero
 credit; a fixture name collision was fixed before execution. Runtime adds only 20
 module400 lines and reuses existing receive/duplicate/trace code with a bounded
-marker-domain extension. Float names with these flags, truthy/NULL/NaN flags,
+marker-domain extension. Nonfinite float names with these flags, truthy/NULL/NaN flags,
 owning/wider values and full family closure remain partial.
 [False-flag name review](coverage/semantics/define-scalar-false-flag-review.json).
 
@@ -316,6 +402,9 @@ and [nested mixed source5/state811](coverage/semantics/list-nested-reference-mis
 retain their original cuts without replay. Nested/by-value-literal dynamic keys,
 other CV key types, undefined/conversion diagnostics, wider RHS/targets and
 scalar/object destructuring callbacks and lifecycle remain partial.
+The pointwise399-module composition overc77b5f817 preserves incoming arithmetic,
+define, typed-reference-return, Generator/WeakMap and magic-empty RV paths.
+Source5/state674 retain their private cuts; no joined actor or renewed credit.
 
 Plain-CV `%=` now keeps both converted longs through a fractional-RHS deprecation.
 Captured12/5 stores2 despite callback99/7 and detaches a late target alias; supplied
@@ -8797,7 +8886,9 @@ failures and interrupted evidence.
   during selected reference replacement. M82 admits modeled built-in
   Exception descendants at that same authenticated destructor exit. M83
   admits public resumption from a normal pending-free destructor operation
-  exit with the same bounded old-return cursor.
+  exit with the same bounded old-return cursor. M84 admits finite modeled
+  built-in Throwable kinds at the pending destructor exit; one destructor-
+  produced TypeError is checked through its local catch and consumed return.
   Other VALUE signatures/layouts, general CONST/other
   NULL and multiple-active histories, genuinely released
   CV targets, wider destructor throw/reentry, real suspension and wider typed consumers
@@ -8927,6 +9018,23 @@ remain separate; no M79 or M82 actor was replayed. Normal operation finish,
 Throwable routing and ownership rules are unchanged. Wider destructor,
 source and cursor histories remain open.
 [M83 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M84 changes only the two pending-destructor guards from modeled Exception
+nominality to the existing finite built-in Throwable-kind predicate; operation,
+source, owner, liveness and single-cursor checks remain. New direct/assigned
+`&f():?C` originals make C's destructor throw `TypeError("dtor84")`, distinct
+from the selected-y return-verification TypeError. Native2 at clean
+`ee63167a1`/399 ends with `F:0/1;I;D;I;CT:1;A;S`, detached `rNULL/b7` and
+one old-line Notice. The unchanged model routes both to outer OT with r7/no
+Notice, giving zero agreements. Strict SL initialization and both exact
+original-source agreements pass at private `913c87471`/399. One assigned
+133-premise reached fixture (131 Boolean, two raw steps) binds the actual
+pending TypeError to the destructor's `new TypeError` origin and dtor84 message,
+distinct from selected-y; the same object reaches local CT. It also proves
+old HOBJECT retirement, root-free consumed NULL/new Notice, detached caller,
+real public descriptor and equal-heap LINE-only refusal, and exit-cut budget
+equality. This is one TypeError witness; the admitted other built-in kinds
+need focused validation, while M81/M82/M83 evidence remains separate.
+[M84 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, wider destructor throw/reentry, real suspension and wider typed

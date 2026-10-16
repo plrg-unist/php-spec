@@ -1,0 +1,143 @@
+{
+  "milestone": "Pending shared Generator SEND into a live used-yield result",
+  "status": "independently accepted and pointwise composed on the actual canonical parent",
+  "independent_reviewer": "iterator_review_15, paired with iterator_dev_15",
+  "base": "8452129cf02ecc4d537bd6b5630d889f55cbd715",
+  "tested_runtime": "2b9ceced57668c40a3100a3ba469e90e041ef533",
+  "author_fixture": "3bc9dcbf68899a83801afdd4e46f21f297fbb344",
+  "modules": 399,
+  "scope": "A genuine one-positional-argument send on a pending actual Generator root, through finite native shared Generator links to a paused child whose used yield is assigned directly to a simple CV. Aggregate/Iterator data and other used-expression shapes are excluded.",
+  "semantics": {
+    "admission": "280/289 authenticate the real operation/source/line, captured argument, pending delegator, finite native links and physical paused leaf. Immutable yield/parent-assignment/CV source proof matches the exact saved ORIGIN_RETURN/WRITE_NAME tail; acquired data is not a native send target.",
+    "no_advance": "The actual root clears initialization and returns the dereferenced current snapshot while the child frame/cache/store remain unchanged. The captured argument transfers atomically to one counted payload owner. SOURCE receiver and yield/leaf receipts are nonowning history; they never retain a Generator.",
+    "consume": "When a direct or forwarded next actually resumes the child, its live input transfers to RESULT and the record disappears. Another still-pending ancestor can first consume initialization without reaching the child. Pure getters preserve the input.",
+    "close_and_overwrite": "The native used-result TMP is initialized before its cleanup/GC live range. Closing or raw ZVAL_COPY overwrite preserves its count without a release job. LIVE becomes orphaned, retaining only the payload until the existing request object-store destructor pass. This is an external count rather than a Generator graph edge; no general GC closure is claimed.",
+    "validation": "Live records are unique per leaf and require its actual paused source/frame/tail. Orphans use immutable source/Generator identity metadata after frame and receiver retirement. Physical roots count only the one captured SOURCE.ARGUMENTS value; public admission rejects wrong source/line/tail and duplicate live records.",
+    "runtime_delta": "One pgeneratorinput record and GENERATORINPUTS pstate field in30, initial empty state40, payload roots39 and scoped public validation84;280/289 implement admission/resume/argument retirement,303 transfers the count before ordinary close. No new task tag, pgenerator field, module, manifest or pipeline change.",
+    "module_sha256": {
+      "30-storage.watsup": "f3385072b6b90cb13e61a1891ca3134b54e0e418cab31dbdcf5d5cb2d02ed367",
+      "39-ownership.watsup": "f91a4c809970cbaebe43c93f3c9b4e36baacccc1ca3cd1bcbc9326260f893a13",
+      "40-control.watsup": "65c66b9549aa9b353801b432ffe0a58fc10dedc8701347ba5698f221c9f9bca2",
+      "84-call-integrity.watsup": "68786c004a4b28dae5ce71df12e12d36eafe369a354474b8733e7c5103fca0fd",
+      "280-generators.watsup": "7434d66d8695e6a5d72b889707d646d7dfcf2659fb91108a3955e1f21569a754",
+      "289-generator-delegation.watsup": "a70d6de12a6922ef23b48a37118aec4272127da378633b575780f704234d41d4",
+      "303-generator-force-close.watsup": "f03672cea07aab6ee011d0f972aa07a844f517ae2181702d2e91589dddd37fd3"
+    }
+  },
+  "source_authority": [
+    "vendor/php-src/Zend/zend_generators.c::zend_generator_yield_from sets DO_INIT; Generator::send copies into current root send_target before zend_generator_resume early return; destructor storage/unfinished-frame cleanup",
+    "vendor/php-src/Zend/zend_compile.c::zend_compile_yield and Zend/zend_opcode.c::emit_live_range (ordinary TMP result range starts after YIELD)",
+    "vendor/php-src/Zend/zend_execute.c::cleanup_live_vars stops before ranges beginning after the paused opline; zend_vm_def.h::ZEND_YIELD uses the result target"
+  ],
+  "validation_identity": {
+    "php": "8.5.10 CLI NTS64; source34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml5.1.0; SL, caches off and encountered determinism checks",
+    "environment": "tests/semantics/profile.json; PHP -n; LC_ALL=C; TZ=UTC; PHP_SPEC_SCRIPT_ENCODING unset. Raw reports retain exact command vectors, caps, input hashes, original bytes and exits."
+  },
+  "raw_root": ".tools/generator-pending-shared-send-18/.tools/",
+  "native_and_baseline": {
+    "distinct_native_originals": 6,
+    "reports": [
+      "generator-pending-shared-send-native-afmprs9p/report.json",
+      "generator-pending-shared-send-review-native-hn9xhb8p/report.json",
+      "generator-pending-shared-send-overwrite-native-vr54l4rz/report.json",
+      "generator-pending-shared-send-review-forwarded-native-bwxiz3ru/report.json"
+    ],
+    "cuts": "All six originals at untouched845/399. Initial author2+peer2, one owning overwrite discriminator and one exact direct-child-next to outer-next variant use immutable no-stdout-preclaim catalogs. Pinned normal exit0/empty stderr/no timeout/stable HEAD and inputs; zero model credit.",
+    "unchanged_baseline": {
+      "report": "generator-pending-shared-send-baseline-ct7d42z3/report.json",
+      "result": "Exact18e01401 original/native tuple reused without PHP replay. Genuine public Unsupported Generator force-close at request end after seven OUTPUT events P|O|M|C|H|1|; exit1/no timeout/empty stderr/no PHP diagnostic or exit_status, stable845. Zero agreement."
+    }
+  },
+  "strict": {
+    "report": "generator-pending-shared-send-author-sl-fyoqm6pc/report.json",
+    "revision": "2b9ceced5",
+    "result": "PASS399; true/empty stderr/exit0/no timeout/stable inputs and HEAD. Earlier qcx23auu at8ee is a retained preparation pass, not final application credit."
+  },
+  "normal_sources": {
+    "author": [
+      "generator-pending-shared-send-source-uu9k12nw/report.json",
+      3,
+      "2b9ceced5"
+    ],
+    "independent": [
+      "generator-pending-shared-send-review-source-5vqxcyim/report.json",
+      3,
+      "3bc9dcbf6"
+    ],
+    "result": "All six exact original normal stdout/stderr/exit tuples agree, with retained native reuse and no PHP replay. Author sources cover direct child consumption, sole receiver close and owning overwrite. Independent sources cover reference-row snapshot/COW/cache replacement with both direct and forwarded next, and a cache/payload alias becoming the sole buffered owner before close.",
+    "new_distinct_originals": 6
+  },
+  "reached_states": {
+    "author_premises": 255,
+    "author_reports": [
+      [
+        "fiber-state-review-x3mkev77/report.json",
+        114,
+        "d2b079682"
+      ],
+      [
+        "fiber-state-review-jvwxwze7/report.json",
+        71,
+        "3bc9dcbf6"
+      ],
+      [
+        "fiber-state-review-iagtukcd/report.json",
+        70,
+        "3bc9dcbf6"
+      ]
+    ],
+    "independent_reports": [
+      [
+        "fiber-state-review-d3cc0a__/report.json",
+        130,
+        "3bc9dcbf6"
+      ],
+      [
+        "fiber-state-review-m1scvchw/report.json",
+        85,
+        "3bc9dcbf6"
+      ]
+    ],
+    "checks": "Actual GEN_ARGS no-advance conserves frame/store/cache and transfers argument owner1 to input owner1, with only receiver retirement. Actual last-owner child close is selected after the retained local alias retires, then preserves payload through real finally/cache release and caller output. Ordinary child send orphans the old count before actual frame installation/new value delivery. Together these include public/heap invariants, source/line/arity/phase/missing-handle refusals and zero/split budget checks. Independent forwarded FROM_NEXT transfers array ROOT to RESULT without store/array/cache-cell mutation, rejects a same-heap wrong WRITE_NAME continuation and completes the native tails. Independent actual DESTRUCTOR_STORE proves orphan-only payload owner1 after all Generators retire and caller E; one real store selection adds C/This pins and invokes the late destructor. Wrong immutable source/line/site/LIVE flags reject without allocating receiver authority.",
+    "compatibility": "Runtime/source bytes are exact2b9 across observer-only d2b/3bc. No accepted source/strict/state1 replay for later observer corrections. Independent source3/state215 use frozen3bc with runtime exact2b9; all processes have stable input/HEAD checks, true/empty stderr/exit0/no timeout. Every actor is reaped and CPU leases released.",
+    "groups": 5,
+    "driver_premises": 470,
+    "independent_premises": 215
+  },
+  "fixture_elaboration": {
+    "report": "generator-pending-shared-send-state-elab-0oj1iw29/report.json",
+    "revision": "8ee63039f",
+    "result": "PASS all five generated state/check lists in one ordered399 parse/elab invocation, with only harness names uniquely suffixed. Exact unique EOF sentinel and all five main headers, exit0/empty stderr/no timeout/stable inputs/HEAD. Zero interpretation/source credit. Later optional construction spelling and two observer corrections are independently reviewed; affected strict/state executions validate final bytes without repeating this preparation gate."
+  },
+  "preserved_zero_credit": [
+    "Source e4ng4r90 at8ee stops in generator_input_take: tuple inference leaves scalar POBJECT where pvalue? is required. Original interpreter failure and raw trace retained; no source agreement.",
+    "0a369 binds the optional before tuple construction but reuses scalar pvalue as its iterator base. Strict v8nwdw3k rejects empty iteration before application.2b9 uses distinct pvalue_taken? and passes strict/application. Guards, selected value, owners and order are unchanged.",
+    "State6e8xll1t at2b9 reaches the authentic no-advance front but expected a second payload owner/release job.270 multiset subtraction transfers arg1 into input1, so d2b corrects only JOBS=[middle] and owner1. Original failure retains zero credit.",
+    "Stateuqg1f6n_ atd2b selects the earlier shared-input leaf-release attempt while a middle-frame local alias still owns the child, before middle J.3bc adds exactly303 prepare-arm zero-owner-after-head-removal stage condition, preserving all71 assertions and native events. Original failure retains zero credit.",
+    "Existing16/17 fixtures derive initial_state and have no full pstate literals needing repair. Empty GENERATORINPUTS leaves old roots/resume paths unchanged; the old malformed SEND helper still lacks real source/arity. No unrelated prior campaign was replayed."
+  ],
+  "remaining": [
+    "Pending throw needs exact native exception/opline history. Active buffered throw remains explicitly Unsupported before child body effects.",
+    "Other used-yield expression/target shapes, acquired Aggregate/Iterator send targets and broader callback/reentry/Fiber/GC interactions remain required.",
+    "Owning copied detached-return lifetime remains separate and guarded in its existing admission paths. No full Generator/core closure, engine-bug classification or intentional divergence is claimed."
+  ],
+  "evidence_recovery": {
+    "archive": "../php-spec-evidence-archive/generator-pending-shared-send-18/private.tar.gz",
+    "bytes": 1882562,
+    "sha256": "3cc6d351946016ff1691b2de3d15385a529f68a4a35327f038fdfc569c0db54e",
+    "manifest": "Sibling manifest.json maps19 report roles and12 ignored recorder/catalog inputs. Full original source/output/trace/commands remain external, including four original zero-credit failures and the successful IL preparation gate.",
+    "restore": "Extract at private_root. Native/baseline runtime is8452129cf; original implementation/gate/source failure8ee63039f; optional-dimension failure0a3690845; final runtime/strict/source2b9ceced5; corrected transfer fixtured2b079682 and close/independent fixtures3bc9dcbf6. Final publication preserves peer files. Provision read-only source references with scripts/private-semantics-references.py; executed binary identities in reports are not archived build prerequisites."
+  },
+  "composition": {
+    "actual_parent": "6d2b2fdef5a4171df21712393de5c0ec0c9fcc57",
+    "private_publication": "97462ce066b3ce4a57db670546c1f436b19fd5ca",
+    "modules": 399,
+    "preservation": "84/280/289/303 are exact tested2b9 bytes.30 preserves every parent type/task/pdestruction field while adding only the tested input record/pstate field/helper declarations.39 adds only the tested payload-root term beside the parent retained-constant root;40 adds only GENERATORINPUTS eps to the complete parent initial state, preserving REJECTED eps. All other runtime, manifest and pipeline files remain parent bytes. Six inventory rows preserve parent status, list/review prefixes and unrelated fields; all other rows remain unchanged.",
+    "independent_seam_review": "Incoming270 M81 RETURN_REF_UNWIND/cursor/Throwable selectors leave eager_owner_order/slots/operation_begin unchanged.257 validates constant_arguments(REJECTED), whose eps case283 is true;39/40 retained-constant roots/defaults are independent and remain empty in these programs. Source42 DEFAULT_NEW_SEND/duplicate/global-stdClass selectors and400 finite-PFLOAT DEFINE names cannot select GEN_ARGS/native Generator/yield-tail fronts. Other parent numeric-warning/property-empty/list/WeakMap selectors are likewise disjoint. No concrete interaction requires a joined actor.",
+    "static_validation": "python3 scripts/check-semantic-inventory.py:169 constructors/306 runtime obligations; git diff --check clean.",
+    "evidence_limit": "No joined runtime actor or new execution credit. Private strict/author source retain2b9; reached states retain fixture-onlyd2b/3bc, independent source/state retain3bc. Exact added hunks and independently reviewed empty/disjoint parent selectors provide the compatibility bridge."
+  }
+}

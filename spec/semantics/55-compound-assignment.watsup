@@ -107,6 +107,7 @@ dec $shiftassign_right_warning_plan(pstate) : ptask?
 dec $shiftassign_both_warning_plan(pstate) : ptask?
 dec $bitassign_warning_plan(pstate) : ptask?
 dec $bitassign_right_warning_plan(pstate) : ptask?
+dec $bitassign_both_warning_plan(pstate) : ptask?
 rule PhpStep/compound-apply: S ~> S_updated[.HELD = S.HELD]
   -- if S.TODO = (COMPOUND_APPLY pbin pbase false z) :: ptask_tail*
   -- if ~$key_write_pending(S)
@@ -124,6 +125,7 @@ rule PhpStep/compound-apply: S ~> S_updated[.HELD = S.HELD]
   -- if $shiftassign_both_warning_plan(S) = eps
   -- if $bitassign_warning_plan(S) = eps
   -- if $bitassign_right_warning_plan(S) = eps
+  -- if $bitassign_both_warning_plan(S) = eps
   -- if S_updated = $compound_target($hold_task_inputs(S), pbin, pbase, S.RESULT, z)
 rule PhpStep/compound-self: S ~> S_updated[.HELD = S.HELD]
   -- if S.TODO = (COMPOUND_APPLY pbin pbase true z) :: ptask_tail*

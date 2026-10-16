@@ -1,0 +1,63 @@
+{
+  "scope": "Finite float define names with primitive values and quiet false nonbool third flags (integer zero, empty or \"0\" strings, signed float zero). Weak converted-name publication/duplicate handling versus strict first-parameter precedence. Partial core.",
+  "status": "independently_accepted_actual_parent",
+  "reviewer": "/root/source_review_35",
+  "parent": "393a5c8b60370110f2e64fed7c9bb4ed0d933c51",
+  "semantic_revision": "7b717d44154fc00b7ba0e5e0295c4912840e4357",
+  "tested_revision": "9fb6cdf4af063851da1f81cd70b7b067b2630088",
+  "semantic_files": {
+    "spec/semantics/400-dynamic-constants.watsup": "ae9247fa912ee3e6392c697401f904cbab00b07b35ddfc6cfb0a78c3013d2c51"
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "tools": {
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7"
+  },
+  "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+  "primary": "Pinned ZEND_FUNCTION(define) receives its string name before its bool flag. zend_parse_arg_str_weak converts finite float names at live precision and updates only that API argument; zend_parse_arg_bool_weak reads the raw false flag without replacement. Strict parameter-1 float rejection precedes parameter 3 after every argument effect.",
+  "semantics": "Four module400 insertions add a finite PFLOAT+false-scalar parser head. Existing third-carrier authentication, normalized source sends, name conversion, historical precision, duplicate marker, trace view and strict code are unchanged. The finite guard excludes NaN/INF names from this new shape; omitted/bool-false routes stay exact. This deliberately extends the bounded scalar duplicate marker domain, with no new task/schema, native evaluation or ownership/error-policy change.",
+  "accepted": [
+    "Four exact model/native originals agree at 9fb6cdf4: signed zeros register distinct \"-0\"/\"0\" keys, all four false-flag representations reach publication or duplicate reporting without an ignored-flag Warning, and a default duplicate preserves old 701. Only this original has its one expected PHP-stderr Warning. A captured request-\"0\" flag survives V|N/live truthy flag/callee writes while the float 2.75 receives the original candidate. Strict float/negative-zero parameter-1 errors retain raw arguments after effects; all other PHP stderr are empty.",
+    "The independent original retains received key \"2.5\" and saved precision 14 after its duplicate handler sets live precision 1. Raw request flag \"0\", old 701, sibling 719, live mutations, caller 99 and the same Exception/Previous NULL survive. No phantom \"2\" row appears; actual discard equals the full restored state.",
+    "All 603 public premises pass: author 274+80+108 and independent 141 across four original-derived groups at 9fb6cdf4, raw true LF/exit 0/empty worker stderr/reaped. Actual fresh publication, default duplicate return, strict errors and throwing discard check signed-zero source authority, raw API/caller traces, frozen key/precision/prefix, malformed carriers/source/domain refusals and budget equality."
+  ],
+  "compatibility": "Two old Source40 active float-shape refusals intentionally change: the literal-int source now admits the finite-float shape but rejects its immutable source mismatch; the mutable bool-CV duplicate admits the shape but rejects inconsistency with its saved empty received-name/precision/prefix. Source42 reached literal37 and peer converted-name controls exercise equivalents. No exact historical mutable-CV equality is invented. The older source4/state595 evidence retains its original tested cut and is not replayed or renewed.",
+  "zero_credit": "Unchanged first-source baseline at clean 3e729863d is accepted/checked Unsupported dynamic constant call domain after B|, CLI 1/null PHP exit/empty stderr, zero agreement. Native/preparation adds no application agreement. No failed actor, timeout or retry occurred.",
+  "execution": "LC_ALL=C/TZ=UTC, AS 3 GiB, serial stop-first/reap, INT+kill5 wrappers. CPU 3 initial native3/baseline at 3e729863d; CPU 5 peer native1, model4 and fresh public prepare/check4 at 9fb6cdf4. Native children 15s, source CLI 45s/host 60s, public full SL children 90s. Nine reports pass with stable HEAD/inputs; all process groups reaped. Accepted semantic CLI and SL worker stderr are empty; the default duplicate PHP-stderr Warning is preserved.",
+  "raw_root": ".tools/define-float-false-flag-evidence-42",
+  "report_sha256": {
+    "author/public/check-report.json": "ce3f843dcaeb3bba1db8567093621cdb4388e82e88a89861f1a3708504718624",
+    "author/public/prepare-report.json": "600616322c3aaf214ad9c5db3b0ac5c90387776a311da866b245a618dd2541f5",
+    "author/review/model-report.json": "816891c92bbd17c8c674a4ebd48655b470e6ac013d8fa8a3f3d1f29e02949466",
+    "author/review/native-report.json": "5aa8f12ed50f0894cb82f46ff3f68bcd99d256d000106b931abdb0b7052f4f4a",
+    "author/review-public/check-report.json": "c1e9b930e325c6c994121415f1bf0109b3028f3ccb25cd5ff56e313f97265475",
+    "author/review-public/prepare-report.json": "ea51e6cfbefd821ed81acadc468618fd034cca4d5e631eb81f1f82ba225da030",
+    "author/sources/baseline-report.json": "bb4d26e68fc79d8b236b94ed25a0855913aa2fe3e99a77cfebd3dd9d8b2246ca",
+    "author/sources/model-report.json": "69848f74bf09258eeba1f55afd3366c75f06a6e519aeaf5cc021fb08578b9551",
+    "author/sources/native-report.json": "2bbcaeb02ccd307cd127722d653b206545d4ab41bb89646ad5819b624e449329"
+  },
+  "commands": [
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/define_float_false_flag_sources.py --phase native --output .tools/define-float-false-flag-native-42",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/define_float_false_flag_sources.py --phase baseline --output .tools/define-float-false-flag-native-42 --case signed-zero-float-names-false-flags-and-default-duplicate",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_float_false_flag_review_sources.py --phase native --output .tools/define-float-false-flag-review-42",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 240s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_float_false_flag_sources.py --phase model --output .tools/define-float-false-flag-native-42",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_float_false_flag_review_sources.py --phase model --output .tools/define-float-false-flag-review-42",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_float_false_flag_protocol.py --phase prepare --sources .tools/define-float-false-flag-native-42 --output .tools/define-float-false-flag-public-42",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 360s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_float_false_flag_protocol.py --phase check --sources .tools/define-float-false-flag-native-42 --output .tools/define-float-false-flag-public-42",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_float_false_flag_review_protocol.py --phase prepare --sources .tools/define-float-false-flag-review-42 --output .tools/define-float-false-flag-review-public-42",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 120s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_float_false_flag_review_protocol.py --phase check --sources .tools/define-float-false-flag-review-42 --output .tools/define-float-false-flag-review-public-42"
+  ],
+  "recovery": "Four owned raw roots moved once into canonical author/{sources,review,public,review-public} after reviewer STOP and focused cwd/cmdline/fd users[]. Nine report hashes are unchanged. Restore those directories as .tools/define-float-false-flag-{native,review,public,review-public}-42 at the recorded cuts to recover exact original file/cwd identities.",
+  "remaining": "Nonfinite float names with these flags, other truthy/NULL/NaN flags with scalar/NULL names, wider/owning values, packed/FCC/arity forms and full define-family closure remain partial. No engine bug or intentional divergence.",
+  "composition": {
+    "parent": "06f381e75fb08bca982cc95931a0c62c93545ea8",
+    "private_publication": "1d39ad36604898e9ff59e3fa7f3071d0ebada747",
+    "modules": 399,
+    "method": "Pointwise composition: private-exact module400, four new tests and two surgical old Source40 controls; every other runtime path and ordered manifest preserved. Inventory adds only own 2+2+1 entries/private review suffix; incoming checkpoints/docs stay, with directly stale finite-float boundaries corrected.",
+    "seams": "Module400 and shared source/config/error/string/precision helpers are exact private base. V64 initializes DESTRUCTION.REJECTED to eps; its validity and roots are vacuous there, and only global stdClass duplicate NEW populates it, absent here. Our Exception uses an ordinary named constructor. Ref-return destructor heads, BIT_ASSIGN_BOTH/COMPOUND_APPLY tasks and LIST handlers cannot select this plain finite-float define path; request \"0\" uses ordinary BINARY BITAND.",
+    "evidence": "Independent actual-parent review found no concrete interaction: the new empty-field extension stays empty and all other selectors are disjoint. Source4/state603 and older Source40 source4/state595 keep their exact tested cuts; no joined actor, replay or renewed execution credit."
+  }
+}

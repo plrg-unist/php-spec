@@ -1,0 +1,120 @@
+{
+  "scope": "Ordinary live, nonfreeing user INSTANCE getter RV disposal for terminal inherited empty in the existing external CV/literal declared-private property slice; same public nonstatic nonref bool isset and same-owner untyped by-value get.",
+  "implementation": {
+    "base": "393a5c8b60370110f2e64fed7c9bb4ed0d933c51",
+    "revision": "662443a55732a370f0ee9f436b6adf077d949fff",
+    "modules": 399,
+    "change": "Shared30 adds a record/task; module408 adds a receiver-only release phase authenticated by source/method/caller/depth/tail. Cache empty false, dispose RV with ordinary eager destruction while Isset stays active/Get inactive, then release receiver. Checked pending-Throwable discard preserves identity. Pure truth and generic return/destruction code are unchanged."
+  },
+  "engine": {
+    "target": "PHP8.5.10 CLI NTS64",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_object_handlers.c zend_std_has_property:2490-2520 clears IN_GET, tests RV, disposes RV with IN_ISSET/receiver retained, then clears/releases even on throw",
+      "Zend/zend_operators.h i_zend_is_true object branch; zend_object_handlers.c zend_std_cast_object_tostring _IS_BOOL always true for standard user objects"
+    ],
+    "intentional_divergences": []
+  },
+  "sources": {
+    "catalogue": "tests/semantics/magic_empty_object_rv_cases.json",
+    "original_root": "/home/user/workspace/php-spec/.tools/magic-empty-object-rv-private-87/.tools/magic-empty-object-rv-probes-87",
+    "maintained_byte_identical": true,
+    "cases": "normal and throwing: RV destructor emits V, replaces sole caller CV with null, emits v, returns/throws; receiver D follows v and precedes F/catch. No kept receiver alias."
+  },
+  "validation": {
+    "native": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-object-rv-private-87/.tools/magic-empty-object-rv-probes-87/native-first/report.json",
+      "sha256": "350f1f3c08dee09e7db66dcfd4b22a7f6fbc7caf8411b337a8ff2af414e7d1f0",
+      "revision": "393a5c8b60370110f2e64fed7c9bb4ed0d933c51",
+      "result": "Two exact16 stdout/0 stderr/exit0 tuples; native is not model agreement",
+      "source_agreements": 0
+    },
+    "baseline": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-object-rv-private-87/.tools/magic-empty-object-rv-probes-87/accepted-current-baseline/report.json",
+      "sha256": "1028f9d38f385fdb577f8125daa45f8d4e2b9e427c5608bddfbba4578f5e2e0d",
+      "revision": "393a5c8b60370110f2e64fed7c9bb4ed0d933c51",
+      "result": "Two checked getter-result-type Unsupported/CLI1 after N/X:I|G|;9.854/10.015s",
+      "source_agreements": 0
+    },
+    "changed_source": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-object-rv-private-87/.tools/magic-empty-object-rv-probes-87/changed-model-hqs188y7/report.json",
+      "sha256": "baec1c385a0e4da822f735e33143b64fd966d7204fa1fc96077967e21ed56279",
+      "revision": "662443a55732a370f0ee9f436b6adf077d949fff",
+      "result": "Two checked normal exact native16/0/0 tuples;10.790/11.587s",
+      "source_agreements": 2
+    },
+    "focused": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-object-rv-private-87/.tools/magic-empty-object-rv-protocol-jzpgrncn/report.json",
+      "sha256": "cc4b753c48fd6cef46155603c274c56a6def721644ccf950d64fa5134b9f83b5",
+      "revision": "47847ca066aa670ed3c2b9a4c44f61165c39ce81",
+      "result": "Both true/exit0: normal143=84reached+59derived, throw104reached; total247=188+59",
+      "times": "normal AL7.030/SL14.739; throw AL6.989/SL17.357",
+      "source_agreements": 0
+    }
+  },
+  "focused_scope": "Actual RV and receiver owners, raw result handoff, real RV destructor with saved-frame validity despite CV recapture refusal, Isset active/Get inactive, RV retirement, receiver release/destruction, same live Throwable at genuine CATCH_BIND and full budget equality. Derived same-identity/extra-owner release, malformed owner/caller/tail/site/method/line, invalid bits/nonordinary-object boundaries add no source agreements.",
+  "nonpassing": [
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-object-rv-private-87/.tools/magic-empty-object-rv-protocol-i9u3hkll/report.json",
+      "sha256": "affe47adfa580f948d1f952371086865a4125e89cc3aa9537d30b37c97b5e8a0",
+      "revision": "aebd5c386802765b096f2640453b21385b640682",
+      "result": "Normal131 false after successful AL; throw unrun. Two derived no-bookkeeping expectations were wrong: a shared owner decrement can schedule cleanup without invoking a destructor. Passingcredit0; runtime/source unchanged."
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-object-rv-private-87/.tools/magic-empty-object-rv-probes-87/diagnostic-87-cszbrbqt/report.json",
+      "sha256": "24f8c8619948d5f90a82724d231bf2c266f3f88a1986808be7c8de2d7cefece3",
+      "revision": "aebd5c386802765b096f2640453b21385b640682",
+      "result": "StrictSL33.516s prefix17/32/45/52/67/84 true,131 false locates derived-only failure; diagnostic/source/passingcredit0"
+    }
+  ],
+  "execution": {
+    "cwd": "/home/user/workspace/php-spec/.tools/magic-empty-object-rv-private-87",
+    "environment": "LC_ALL=C TZ=UTC PHP_SPEC_SCRIPT_ENCODING absent; jobs1; all actors taskset CPU1; fixed native_profile in catalogue/reports.",
+    "caps": "native45; model60/outer75/steps100000 percase serial; focused each AL90 then strictSL90/cachefalse/dettrue/stop-first.",
+    "commands": [
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/magic-empty-object-rv-probes-87/run.py native --revision 393a5c8b60370110f2e64fed7c9bb4ed0d933c51",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/magic-empty-object-rv-probes-87/run.py baseline --revision 393a5c8b60370110f2e64fed7c9bb4ed0d933c51",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/magic-empty-object-rv-probes-87/run.py changed --revision 662443a55732a370f0ee9f436b6adf077d949fff",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u tests/semantics/magic_empty_object_rv_protocol.py --revision 47847ca066aa670ed3c2b9a4c44f61165c39ce81"
+    ],
+    "affinity": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-object-rv-private-87/.tools/magic-empty-object-rv-probes-87/affinity-native-first.json",
+        "sha256": "dc280e3414b9477854da2f1440f68ab1c62e3419a57f83f85b8b0b0a3b096ee0"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-object-rv-private-87/.tools/magic-empty-object-rv-probes-87/affinity-accepted-current-baseline.json",
+        "sha256": "758f6bca903a373c1809bce3c567a8770a72f105676f81985f0daba074b23f37"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-object-rv-private-87/.tools/magic-empty-object-rv-probes-87/affinity-changed-source-87.json",
+        "sha256": "55670ed578e1f47e4278f580c0c634af53876665ba2e55a1f8c070d1e3a98d86"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-object-rv-private-87/.tools/magic-empty-object-rv-probes-87/affinity-state-87-repair1.json",
+        "sha256": "8eaad72097665e7fe1669427687475380d0d111ffd03be578c43f215e9d36c25"
+      }
+    ],
+    "observations": "Native normal escaped sampling; throwing maskCPU1 was caught with empty argv at exit. Exact taskset-parent argv records both inherit CPU1; no blanket native live-argv claim. Baseline2/source2/state4 have complete live mask+argv captures. All accepted watched inputs/head/status/fixtures stable, process groups empty and actors/observers reaped."
+  },
+  "tools": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "private_source_driver_sha256": "71f3710d487c2a02d0ef07fcc2cf7d574dc606580f155e14af2118f5c96336c5",
+    "focused_driver_sha256": "784325de7bd6c6c2168f32e23416c0e4162b4b3f7ff83ce3f9d8357cd7d2d383"
+  },
+  "limits": "Arrays/internal-object RVs, wider signatures/receivers/recursive access and wider callback/lifecycle combinations remain partial. Same-identity/extra-owner claims are derived only. Old integer/string/float/NaN cuts retain their identities; no old actor or separate SL initialization load was replayed.",
+  "artifacts": "Ignored raw reports/streams/process records/diagnostic and private run.py remain at original paths. Maintained sources/catalogue/focused harness recover from tested commits. No large artifacts, backup WT or extra cleanup receipt chain tracked.",
+  "review": {
+    "independent": "class_review_84",
+    "accepted": "Native/baseline/source2, production, focused247 and concise publication independently accepted. Structural inventory/diff checks pass; no semantic rerun for publication."
+  },
+  "composition": {
+    "parent": "844f6957d59d2af2b8e3dc632f0d8cea1fa8f342",
+    "publication": "775e7bb9888531a87942ba06732023a8c84e1653",
+    "modules": 399,
+    "basis": "Incoming rejected stdClass-argument and Generator-input fields retain EPS defaults on all selected original/derived paths; added roots are EPS and validators true. Reference-return destructor replay remains cursor-gated; WeakMap/define/list/bitwise selectors are absent. Preserve the incoming shared state layout and declarations plus owned record/tag.",
+    "validation": "Independent pointwise composition: no concrete selected path/declaration/order interaction, no joined actor or renewed native/source/state credit."
+  }
+}

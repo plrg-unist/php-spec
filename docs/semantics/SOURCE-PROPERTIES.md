@@ -446,7 +446,7 @@ parameter or return type, declared on the same parentless ordinary owner. False
 skips the getter; true calls it with the original name and captured receiver. One
 saved RESULT owns the receiver across both borrowed calls. Null/bool/int and byte
 strings use PHP truth; only empty bytes or exactly ASCII `0` make a string empty.
-NaN and owning result families stop explicitly. Parent
+At that primitive cut, NaN and owning result families stopped explicitly. Parent
 lexical scope and Child called scope remain distinct, and initialized public or
 typed-INITIAL slots bypass both callbacks. An active getter can still read its own
 initialized private slot ordinarily. The original integer slice and state208 =138 reached
@@ -475,8 +475,17 @@ The last receiver owner is released before branch output or catch binding.
 Normal141 at5a05 and throwing101 atb66 total242 checks (195 reached +47 derived),
 covering callback guards, genuine receiver/destructor/catch steps and budgets.
 Default dispatch and malformed record/value/packet refusals are derived controls.
-Owning getter RV disposal and wider signature/receiver/recursive combinations
-remain partial. [NaN warning review](../../coverage/semantics/magic-empty-nan-review.json).
+[NaN warning review](../../coverage/semantics/magic-empty-nan-review.json).
+Ordinary user-object RV truth now caches empty false, then disposes the RV while
+the isset guard and saved receiver remain; Get is already inactive. The phase owns
+only the receiver and survives an RV destructor's caller-CV rebinding. Normal RV
+disposal releases the receiver next; a throwing RV destructor keeps the same live
+Exception through receiver destruction and actual catch binding. Two exact originals
+and focused247 (188 reached +59 derived) cover these steps and budgets. Same-object
+RV/receiver and extra-owner cases are derived controls that preserve allocations and
+skip user destructors after ordinary release bookkeeping. Arrays/internal-object RVs,
+other signatures/receivers and wider recursive combinations remain partial.
+[Object RV review](../../coverage/semantics/magic-empty-object-rv-review.json).
 
 Constructor promotion declares a property from its original parameter flags and
 source occurrence. A parameter default does not initialize the property, and

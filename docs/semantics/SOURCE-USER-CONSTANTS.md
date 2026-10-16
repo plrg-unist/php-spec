@@ -388,9 +388,23 @@ The [false-flag name review](../../coverage/semantics/define-scalar-false-flag-r
 binds four exact originals and 595 public premises across fresh/default duplicate,
 captured publication, strict and throwing empty-key duplicate groups. They check
 converted names/raw request flags, old binding/sibling effects, full restored-state
-discard equality, literal/carrier/prefix refusals and budgets. Float names with
+discard equality, literal/carrier/prefix refusals and budgets. Nonfinite float names with
 these flags, truthy/NULL/NaN flags and owning/wider forms remain partial; the bounded
 NULL-name false-flag follow-up is below.
+
+Finite float names also receive these quiet false scalar flags. Name conversion
+uses call-time precision and leaves the flag raw; `-0.0` and `0.0` register distinct
+`"-0"` and `"0"` keys. A duplicate marker retains the converted name, precision and
+original table prefix across handlers. Strict calls reject the raw float name
+before nonbool flag parsing, after all argument effects. Four module400 lines
+extend only the finite-float parser domain; receive/duplicate/trace and legacy
+omitted/bool-false code are unchanged. Two older float-shape refusals are updated
+to shape admission plus immutable-source or received-name mismatch controls.
+The [float false-flag review](../../coverage/semantics/define-float-false-flag-review.json)
+binds four source agreements and 603 public premises. Reached signed-zero/literal37,
+captured request-flag and precision-changing throw fronts exercise those changed
+controls without replaying the historical 595 campaign. Nonfinite names with these
+flags, truthy/NULL/NaN flags and owning/wider forms remain partial.
 
 Null `define` names use a separate weak-call deprecation before conversion and
 registration, with the same primitive-value and omitted/already-false flag boundary.
@@ -419,7 +433,7 @@ binds four source agreements and 755 public premises across separate retained cu
 including current-table duplicate return, actual first-throw discard equality,
 raw request flags, source/carrier refusals and budgets. The original source timeout,
 pre-main fixture failure and baseline keep zero credit; only affected checks were
-repeated. Other coerced flags, float names with these flags and owning/wider forms
+repeated. Other coerced flags, nonfinite float names with these flags and owning/wider forms
 remain partial.
 
 User-array queries retain the stored root and child identities. The admitted
@@ -476,7 +490,7 @@ exception-class lookup and `ZVAL_COPY_OR_DUP`; `zend_declare_typed_class_constan
 interns direct string values before installation.
 Nested empty values in `define`, cycles, objects, array duplicate/third-argument paths,
 Stringable/array names, array/object values with scalar or null names, true/NULL/NaN
-flags with scalar names, nonbool flags with float names, true/NULL/NaN flags with
+flags with scalar names, nonbool flags with nonfinite float names, true/NULL/NaN flags with
 null names, startup/special-name warnings,
 internal/trait/interface/enum class queries, deferred keyword initializers and
 keyword `constant` array values, other deferred initializers,

@@ -632,6 +632,12 @@ longs through fractional-RHS deprecation. Success detaches late aliases; supplie
 throw preserves callback writes and the same Exception. Negative RHS values remain
 ordinary signed masks. Five exact originals and 724 focused SL premises pass in the
 [RHS bitwise ledger](coverage/semantics/bitassign-right-warning-review.json).
+With two fractional floats, plain-CV numeric `&=`/`|=`/`^=` order both conversion
+deprecations and retain each long after its own conversion. A quiet integer RHS
+after the first callback skips the second diagnostic. Success detaches late aliases;
+either supplied throw preserves them. Negative masks still store signed integers.
+Seven exact originals and 1421 focused SL premises pass in the
+[ordered bitwise ledger](coverage/semantics/bitassign-both-warning-review.json).
 Explicit array-to-string casts now suspend through named warning handlers for
 a bounded plain-CV array input. The borrowed array adds no saved owner: replacing
 or removing its CV still yields fixed `Array`, while a supplied throw preserves
@@ -876,6 +882,11 @@ catch/finally execution and exception identity. A pending `send` on a detached r
 with a nonowning copied return snapshots its current without advancing. Argument
 cleanup precedes receiver release; shared resumes preserve the first-yield history
 used by `rewind`. See the [pending-send review](coverage/semantics/generator-pending-init-send-review.json).
+Pending `send` through native shared links also buffers a paused child's yield
+assigned directly to a simple CV. A direct or forwarded `next` that resumes the
+child consumes it; close and overwrite preserve its count until request-store destruction,
+independently of caches and Generator owners.
+See the [shared-send review](coverage/semantics/generator-pending-shared-send-review.json).
 [Delegation](docs/semantics/GENERATOR-DELEGATION.md)
 adds arrays, source Iterators and shared Generator graphs with live raw caches
 and natural return/unwind. Aggregate yield-from now acquires nested real iterator
@@ -1033,6 +1044,11 @@ float zero). Weak calls convert the API name while preserving the raw flag;
 strict name errors precede flag rejection after argument effects.
 [Four source agreements and 595 state premises](coverage/semantics/define-scalar-false-flag-review.json)
 cover publication, converted duplicate traces, callback throws and carrier guards.
+Finite float names also accept those false flags. Weak calls retain distinct
+`"-0"`/`"0"` keys and the received duplicate key across handler precision changes;
+strict calls reject the raw float first after argument effects.
+[Four source agreements and 603 state premises](coverage/semantics/define-float-false-flag-review.json)
+cover captured flags, historical precision, strict errors and throwing cleanup.
 Weak null `define` names dispatch the deprecation before conversion and registration.
 A returning handler can create the empty-name binding first, causing a separate
 duplicate warning with the converted string in its API trace. A throwing first
@@ -2124,6 +2140,13 @@ complete step states; the old non-map Throwable refusal stays distinct.
 Other Closure bodies/internal/custom counterparts and wider lifetimes remain partial.
 [Internal counterpart review](coverage/semantics/weakmap-internal-comparison-review.json).
 
+Mixed WeakMap comparisons now also admit normalized direct-method and callable-array
+method Closures, without reading receivers, captures, scope rows or private entries.
+Three exact sources and 266 Boolean premises/8 actual steps preserve real captured
+receiver owners and unchanged aggregate states; later real method/tail bodies remain
+quiet until explicitly called. Other Closure representations and wider weak lifetimes
+remain partial. [Method-Closure review](coverage/semantics/weakmap-method-comparison-review.json).
+
 [Numeric object comparison Notices](coverage/semantics/object-numeric-comparison-review.json)
 now pause ordinary source-instance/int/float leaves through real error handlers.
 Live CV/cell reads remain distinct from copies; a second Notice uses saved 1/1.0,
@@ -2689,8 +2712,12 @@ NaN getter results now warn after Get returns, keeping the receiver through a
 returning or throwing handler. Three originals and two state cuts totaling242
 checks cover the default Warning, caller-CV rebinding and destruction before
 result/catch; [NaN warning review](coverage/semantics/magic-empty-nan-review.json).
-Other signatures, receivers, owning results and wider recursive/coalesce magic
-combinations remain unsupported.
+Ordinary user-object getter RVs now dispose while the isset guard and receiver
+remain, before receiver release and false result/catch. Two originals and focused247
+checks cover actual RV/receiver destructors, rebinding, the same Exception and
+budgets; [object RV review](coverage/semantics/magic-empty-object-rv-review.json).
+Other signatures, receivers, arrays/internal-object RVs and wider recursive/coalesce
+magic combinations remain unsupported.
 Hooked iteration, defaulted virtual hooks, other paired or virtual setters, wider trait
 setters, other explicit setter parameter forms, references, other inherited/trait
 and wider receiver, quiet or indirect-access families and wider `__unset` consumers remain required.

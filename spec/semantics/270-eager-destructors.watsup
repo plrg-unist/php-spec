@@ -385,7 +385,7 @@ def $ref_return_cursor_saved_descriptor_valid(S, prefreturncursor, porigin_selec
   -- if pdestructionoperation.CALLER = S.CURRENT /\ pdestructionoperation.ORIGIN = S.ORIGIN /\ pdestructionoperation.CONSTCONTEXT = S.CONSTCONTEXT
   -- if $throwable_live(S, n_exception)
   -- if S.OBJECTS[n_exception] = THROWABLE pthrowable
-  -- if $throwable_nominal(pthrowable.KIND, $ptascii("Exception"), 4)
+  -- if $throwable_kind(pthrowable.KIND)
   -- if $ref_abrupt_destructor_cursor(ptask_tail*) = (prefreturncursor)
   -- if $ref_abrupt_destructor_old_source(S, prefreturncursor)
 def $destructor_pending_finish(S, pdestructionoperation, n, (RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected) :: ptask_tail*) = S[.TODO = (THROW_SEARCH n) :: ($ref_replay_tasks(porigin_selected, z_selected, prefowner_first :: prefowner_tail*) ++ $ref_consumed_tasks(prefreturncursor))][.ORIGIN = ($ref_owner_origin(prefowner_first))][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = NORMAL]
@@ -395,7 +395,7 @@ def $destructor_pending_finish(S, pdestructionoperation, n, (RETURN_REF_UNWIND (
   -- if pdestructionoperation.CALLER = S.CURRENT /\ pdestructionoperation.ORIGIN = S.ORIGIN
   -- if $throwable_live(S, n)
   -- if S.OBJECTS[n] = THROWABLE pthrowable
-  -- if $throwable_nominal(pthrowable.KIND, $ptascii("Exception"), 4)
+  -- if $throwable_kind(pthrowable.KIND)
   -- if S_queued = S[.TODO = (RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected) :: ptask_tail*]
   -- if $ref_abrupt_destructor_cursor(ptask_tail*) = (prefreturncursor)
   -- if $ref_return_cursor_valid(S_queued, prefreturncursor, porigin_selected, z_selected)
