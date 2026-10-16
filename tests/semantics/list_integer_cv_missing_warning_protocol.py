@@ -43,7 +43,7 @@ def conditions(name, program, path, stdout):
         '$list_missing_source(S, ' + args + ')',
         # Pure source compatibility cannot reconstruct the historical integer.
         f'$list_missing_source(S, KNOWN (PARRAY n_array), {index}, expression, phpType13*, z, KINT {key + 9})',
-        f'~$list_missing_source(S, KNOWN (PARRAY n_array), {index}, expression, phpType13*, z, KSTRING ($ptascii("key")))',
+        f'~$list_missing_source(S, KNOWN PNULL, {index}, expression, phpType13*, z, KINT {key})',
         f'~$list_missing_source(S, KNOWN (PARRAY n_array), {index}, expression, phpType13*, $(z + 1), KINT {key})',
         f'~$list_missing_source(S, KNOWN (PARRAY n_array), {index + 1}, expression, phpType13*, z, KINT {key})',
         f'~$list_missing_source(S, KNOWN (PARRAY n_array), {index}, expression, eps, z, KINT {key})',
@@ -56,7 +56,7 @@ def conditions(name, program, path, stdout):
         '$list_missing_plan(S[.RESULT = VARIABLE ($ptascii("key")) $(z + 1)]) = eps',
         '$list_missing_plan(S[.STORE = $set_cell(S.STORE, n_key, UNDEFINED)]) = eps',
         '$list_missing_plan(S[.STORE = $set_cell(S.STORE, n_key, DEFINED PNULL)]) = eps',
-        '$list_missing_plan(S[.STORE = $set_cell(S.STORE, n_key, DEFINED (PBOOL false))]) = eps',
+        '$list_missing_plan(S[.STORE = $set_cell(S.STORE, n_key, DEFINED (PARRAY n_array))]) = eps',
         '$list_missing_plan(S[.ENV = $unbind(S.ENV, $ptascii("key"))]) = eps',
         'porigin_assign = PORIGIN n_unit pcpath_assign', 'S.SOURCES[n_unit] = pcunit',
         'S_literal = S[.SOURCES[n_unit] = pcunit[.OCCURRENCES = (PCOCCURRENCE pcpath_assign (NExprAssign expression_pattern (NExprArray (SEQUENCE eps) eps) metadata_assign)) :: pcunit.OCCURRENCES]]',
