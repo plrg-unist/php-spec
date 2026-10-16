@@ -1,0 +1,29 @@
+[
+  {
+    "id": "generator-pending-shared-send-review-reference-row-snapshot-and-used-result",
+    "purpose": "A pending middle send retains its payload in the live child's used-yield result slot while copied reference-row caches undergo COW and replacement, then direct child next consumes that payload.",
+    "source": "<?php\nclass ReviewSharedSendOld18 { function __destruct() { echo \"A|\"; } }\nclass ReviewSharedSendNew18 { function __destruct() { echo \"CACHE|\"; } }\nclass ReviewSharedSendPayload18 { function __destruct() { echo \"B|\"; } }\nfunction &reviewSharedSendLeaf18() { global $cache; try { echo \"C|\"; $received = yield $cache; echo \"R|\", $received[0] instanceof ReviewSharedSendPayload18 ? \"PAYLOAD|\" : \"BAD|\"; $received[0] = null; unset($received); echo \"N|\"; $tail = 17; yield $tail; echo \"T|\"; return 23; } finally { echo \"J|\"; } }\nfunction reviewSharedSendMiddle18() { try { echo \"M|\"; $answer = yield from $GLOBALS[\"child\"]; echo \"I|\", $answer, \"|\"; return 29; } finally { echo \"K|\"; } }\nfunction reviewSharedSendOuter18() { try { echo \"O|\"; $answer = yield from $GLOBALS[\"middle\"]; echo \"F|\", $answer, \"|\"; } finally { echo \"Z|\"; } }\n$cache = [new ReviewSharedSendOld18()];\n$child = reviewSharedSendLeaf18(); $middle = reviewSharedSendMiddle18(); $outer = reviewSharedSendOuter18();\necho \"P|\"; $outer->rewind();\n$row = $middle->send([new ReviewSharedSendPayload18()]);\necho \"S|\", $row[0] instanceof ReviewSharedSendOld18 ? \"OLD|\" : \"BAD|\";\n$row[0] = null; unset($row); echo \"W|\";\n$cache = [new ReviewSharedSendNew18()]; echo \"V|\", $middle->current()[0] instanceof ReviewSharedSendNew18 ? \"LIVE|\" : \"BAD|\";\n$child->next(); echo \"D|\", $child->current(), \"|\";\n$outer->next(); echo \"Q|\", $outer->valid() ? \"BAD|\" : \"DONE|\";\nunset($child, $middle, $outer, $cache); echo \"E\";\n",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|M|C|S|OLD|W|A|V|LIVE|R|PAYLOAD|B|N|D|17|T|J|I|23|K|F|29|Z|Q|DONE|CACHE|E",
+    "source_sha256": "59077fb3613b9d0c984460d3120814071cb3a2f1956e862fdbbd3af77f56ece2"
+  },
+  {
+    "id": "generator-pending-shared-send-review-cache-alias-becomes-sole-slot-owner-on-close",
+    "purpose": "A sent object initially aliases the raw reference-row cache; replacing that cache and dropping its returned snapshot leaves only the child's unconsumed used-yield slot before real chain close.",
+    "source": "<?php\nclass ReviewSharedSendAlias18 { function __destruct() { echo \"A|\"; } }\nfunction &reviewSharedSendAliasLeaf18() { global $cache; try { echo \"C|\"; $received = yield $cache; echo \"BAD|\"; } finally { echo \"J|\"; } }\nfunction reviewSharedSendAliasMiddle18() { try { echo \"M|\"; yield from $GLOBALS[\"child\"]; echo \"BAD|\"; } finally { echo \"K|\"; } }\nfunction reviewSharedSendAliasOuter18() { try { echo \"O|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD|\"; } finally { echo \"Z|\"; } }\n$cache = [new ReviewSharedSendAlias18()];\n$child = reviewSharedSendAliasLeaf18(); $middle = reviewSharedSendAliasMiddle18(); $outer = reviewSharedSendAliasOuter18();\necho \"P|\"; $outer->rewind();\n$row = $middle->send($cache[0]);\necho \"S|\", $row[0] instanceof ReviewSharedSendAlias18 ? \"OLD|\" : \"BAD|\";\n$cache = []; unset($row); echo \"D|\";\nunset($child, $middle); echo \"U|\";\nunset($outer, $cache); echo \"E\";\n",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|M|C|S|OLD|D|U|J|K|Z|EA|",
+    "source_sha256": "85d3e37e15ae4632713d04d94dbb5daca88338901c83097c897e768614025661"
+  },
+  {
+    "id": "generator-pending-shared-send-review-reference-row-snapshot-and-forwarded-next",
+    "purpose": "The same reference-row/cache and buffered array owners survive a real outer next forwarding through both shared links before the paused child consumes the used-yield input.",
+    "source": "<?php\nclass ReviewSharedSendOld18 { function __destruct() { echo \"A|\"; } }\nclass ReviewSharedSendNew18 { function __destruct() { echo \"CACHE|\"; } }\nclass ReviewSharedSendPayload18 { function __destruct() { echo \"B|\"; } }\nfunction &reviewSharedSendLeaf18() { global $cache; try { echo \"C|\"; $received = yield $cache; echo \"R|\", $received[0] instanceof ReviewSharedSendPayload18 ? \"PAYLOAD|\" : \"BAD|\"; $received[0] = null; unset($received); echo \"N|\"; $tail = 17; yield $tail; echo \"T|\"; return 23; } finally { echo \"J|\"; } }\nfunction reviewSharedSendMiddle18() { try { echo \"M|\"; $answer = yield from $GLOBALS[\"child\"]; echo \"I|\", $answer, \"|\"; return 29; } finally { echo \"K|\"; } }\nfunction reviewSharedSendOuter18() { try { echo \"O|\"; $answer = yield from $GLOBALS[\"middle\"]; echo \"F|\", $answer, \"|\"; } finally { echo \"Z|\"; } }\n$cache = [new ReviewSharedSendOld18()];\n$child = reviewSharedSendLeaf18(); $middle = reviewSharedSendMiddle18(); $outer = reviewSharedSendOuter18();\necho \"P|\"; $outer->rewind();\n$row = $middle->send([new ReviewSharedSendPayload18()]);\necho \"S|\", $row[0] instanceof ReviewSharedSendOld18 ? \"OLD|\" : \"BAD|\";\n$row[0] = null; unset($row); echo \"W|\";\n$cache = [new ReviewSharedSendNew18()]; echo \"V|\", $middle->current()[0] instanceof ReviewSharedSendNew18 ? \"LIVE|\" : \"BAD|\";\n$outer->next(); echo \"D|\", $child->current(), \"|\";\n$outer->next(); echo \"Q|\", $outer->valid() ? \"BAD|\" : \"DONE|\";\nunset($child, $middle, $outer, $cache); echo \"E\";\n",
+    "native_exit": 0,
+    "native_stderr": "",
+    "source_sha256": "27c36c8aec6525b75cea4d8a7e5b174c960ea648580fb1ab8a278ecd918234ed",
+    "native_stdout": "P|O|M|C|S|OLD|W|A|V|LIVE|R|PAYLOAD|B|N|D|17|T|J|I|23|K|F|29|Z|Q|DONE|CACHE|E"
+  }
+]

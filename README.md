@@ -881,6 +881,11 @@ catch/finally execution and exception identity. A pending `send` on a detached r
 with a nonowning copied return snapshots its current without advancing. Argument
 cleanup precedes receiver release; shared resumes preserve the first-yield history
 used by `rewind`. See the [pending-send review](coverage/semantics/generator-pending-init-send-review.json).
+Pending `send` through native shared links also buffers a paused child's yield
+assigned directly to a simple CV. A direct or forwarded `next` that resumes the
+child consumes it; close and overwrite preserve its count until request-store destruction,
+independently of caches and Generator owners.
+See the [shared-send review](coverage/semantics/generator-pending-shared-send-review.json).
 [Delegation](docs/semantics/GENERATOR-DELEGATION.md)
 adds arrays, source Iterators and shared Generator graphs with live raw caches
 and natural return/unwind. Aggregate yield-from now acquires nested real iterator

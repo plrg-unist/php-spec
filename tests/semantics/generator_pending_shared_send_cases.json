@@ -1,0 +1,31 @@
+[
+  {
+    "id": "generator-pending-shared-send-object-buffer-consumed-by-direct-child-next",
+    "source": "<?php\nclass SharedSendCache18 { function __destruct() { echo \"K|\"; } }\nclass SharedSendPayload18 { function __destruct() { echo \"A|\"; } }\nfunction sharedSendChild18() { echo \"C|\"; try { $received = yield new SharedSendCache18(); echo \"R|\", $received instanceof SharedSendPayload18 ? 1 : 0, \"|\"; unset($received); echo \"D|\"; yield 13; echo \"L|\"; return 23; } finally { echo \"F|\"; } }\nfunction sharedSendMiddle18() { global $child; echo \"M|\"; try { $result = yield from ($child = sharedSendChild18()); echo \"Q|\", $result, \"|\"; return 29; } finally { echo \"J|\"; } }\nfunction sharedSendOuter18() { global $middle; echo \"O|\"; try { yield from ($middle = sharedSendMiddle18()); echo \"Z|\"; return 31; } finally { echo \"T|\"; } }\necho \"P|\"; $outer = sharedSendOuter18(); $outer->rewind(); echo \"H|\", $outer->valid() ? 1 : 0, \"|\";\n$snapshot = $middle->send(new SharedSendPayload18()); echo \"S|\", $snapshot instanceof SharedSendCache18 ? 1 : 0, \"|\"; unset($snapshot); echo \"N|\";\n$child->next(); echo \"V|\", $child->current(), \"|\"; $outer->next(); echo \"G|\", $outer->getReturn(), \"|\";\nunset($outer, $middle, $child); echo \"E\";\n",
+    "source_sha256": "18e01401b1fe8e4ef106df1e238e7d0876a26fee23c5cb08ef39616a3460638d",
+    "expected": "normal",
+    "purpose": "One pending parent SEND must retain the ignored API argument only in the child used-yield result slot; direct child next consumes it before real shared return/tails.",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|M|C|H|1|S|1|N|R|1|A|D|K|V|13|L|F|Q|23|J|Z|T|G|31|E"
+  },
+  {
+    "id": "generator-pending-shared-send-sole-receiver-closes-buffer-before-finally",
+    "source": "<?php\nclass SharedSoleCache18 { function __destruct() { echo \"K|\"; } }\nclass SharedSolePayload18 { function __destruct() { echo \"A|\"; } }\nfunction sharedSoleChild18() { echo \"C|\"; try { $received = yield new SharedSoleCache18(); echo \"BODY|\"; } finally { echo \"F|\"; } }\nfunction sharedSoleMiddle18() { global $child; echo \"M|\"; try { yield from ($child = sharedSoleChild18()); echo \"TAIL|\"; } finally { echo \"J|\"; } }\nfunction sharedSoleOuter18() { global $middle; echo \"O|\"; try { yield from ($middle = sharedSoleMiddle18()); } finally { echo \"T|\"; } }\nfunction sharedSoleArgument18() { unset($GLOBALS[\"outer\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"D|\"; return new SharedSolePayload18(); }\necho \"P|\"; $outer = sharedSoleOuter18(); $outer->rewind(); echo \"H|\", $outer->valid() ? 1 : 0, \"|\";\n$snapshot = $middle->send(sharedSoleArgument18()); echo \"S|\", $snapshot instanceof SharedSoleCache18 ? 1 : 0, \"|\"; unset($snapshot); echo \"E\";\n",
+    "source_sha256": "f53be355c7c5312b8c860a3c96fb94c75b7218a8ebf8498ba6e2379921162700",
+    "expected": "normal",
+    "purpose": "Argument evaluation removes all CV/outer owners; the method receiver must retain the active child and its pending yield-result owner until authentic close, while the result snapshot retains the cache.",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|M|C|H|1|T|D|J|F|S|1|K|EA|"
+  },
+  {
+    "id": "generator-pending-shared-send-overwritten-owning-buffer-native-discriminator",
+    "source": "<?php\nclass SharedOverwritePayload18 { function __destruct() { echo \"A|\"; } }\nfunction sharedOverwriteChild18() { echo \"C|\"; try { $received = yield 1; echo \"R|\", $received === 7 ? 1 : 0, \"|\"; yield 2; echo \"BODY|\"; } finally { echo \"F|\"; } }\nfunction sharedOverwriteMiddle18() { global $child; echo \"M|\"; try { yield from ($child = sharedOverwriteChild18()); } finally { echo \"J|\"; } }\nfunction sharedOverwriteOuter18() { global $middle; echo \"O|\"; try { yield from ($middle = sharedOverwriteMiddle18()); } finally { echo \"T|\"; } }\necho \"P|\"; $outer = sharedOverwriteOuter18(); $outer->rewind(); echo \"H|\";\necho \"S|\", $middle->send(new SharedOverwritePayload18()), \"|\"; echo \"N|\", $child->send(7), \"|\";\nunset($outer, $middle, $child); echo \"E|\";\n",
+    "source_sha256": "80f62f92dfaf28e2171e6967b2891f8c26f6e459565051f180785538f99305aa",
+    "native_exit": 0,
+    "native_stderr": "",
+    "purpose": "A later direct child send overwrites the pending used-result slot; the old physical count persists through real body/close and its destructor runs only in request-store order.",
+    "native_stdout": "P|O|M|C|H|S|1|N|R|1|2|T|J|F|E|A|"
+  }
+]

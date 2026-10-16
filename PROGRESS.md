@@ -7,6 +7,34 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Pending shared Generator `send` now fills a paused child's used yield assigned
+directly to a simple CV, through finite native Generator links, without advancing.
+A direct or forwarded `next` that resumes the child transfers its one payload
+owner. Close and overwrite preserve the pinned engine's untraced count through
+real finally/cache cleanup until request-store destruction, independently of
+Generator and receiver owners. Reference-row snapshots and COW stay separate.
+Six exact normal originals agree: three author cases at `2b9ceced5` and three
+independent cases at `3bc9dcbf6`. Five genuine state groups pass 470 premises
+(255 author + 215 independent), including
+actual API/forwarded/close/store steps, immutable-source and continuation refusals,
+physical owners and budget resume. Strict checking of 399 modules passes at `2b9`;
+the combined five-fixture
+elaboration gate adds no semantic credit. Two DSL/application failures and two
+observer failures remain zero credit; only affected checks were retried.
+Six native captures and the unchanged Unsupported baseline retain `845` and zero
+model credit.
+Pending/active-buffered `throw`, other used-expression shapes, owning copied
+returns and broader GC/callback/Fiber lifetimes remain partial. No engine bug or
+intentional divergence is claimed.
+[Shared-send review](coverage/semantics/generator-pending-shared-send-review.json).
+
+Pointwise composition over `6d2b2fdef` preserves the incoming retained-constant
+fields, roots and defaults in modules 30/39/40 alongside the new Generator input
+field. The other four Generator runtime files keep the tested bytes; all other
+runtime, pipeline and the 399-module manifest retain parent bytes.
+Source/state/strict evidence keeps its private cuts; no joined actor or renewed
+execution credit.
+
 Finite float `define` names now accept quiet false scalar flags with primitive
 values. Weak calls keep distinct `"-0"`/`"0"` keys and raw captured flags; duplicate
 handlers retain the received key and call-time precision despite later writes.

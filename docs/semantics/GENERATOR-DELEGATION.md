@@ -101,8 +101,13 @@ The [nested-detached ledger](../../coverage/semantics/generator-call-unpack-nest
 records the paired retained/temporary cases and their physical cache owners.
 Pending `send` on these detached roots now returns a cache snapshot without
 advancing; see the [API review](../../coverage/semantics/generator-pending-init-send-review.json).
-Owning copied returns, pending sends to live yield targets and pending `throw`
-remain Unsupported.
+Pending `send` through native shared links can now buffer a paused child's yield
+result when it is assigned directly to a simple CV. When a direct or forwarded
+`next` resumes the child, it consumes that value without adding another owner.
+Close and overwrite preserve its native request-late count independently of the
+chain and raw reference cache; see the [shared-send review](../../coverage/semantics/generator-pending-shared-send-review.json).
+Aggregate/Iterator data is outside this route. Owning copied returns, other used
+yield shapes, active buffered `throw` and pending `throw` remain Unsupported.
 
 Callback admission binds the actual owner, source unit/path, stage, target, line
 and saved lexical/called scopes. Only the immediate authenticated implicit call

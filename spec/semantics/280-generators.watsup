@@ -30,6 +30,19 @@ dec $generator_resume(pstate, pgeneratorop) : pstate
 dec $generator_resume_root(pstate, pgeneratorop) : bool
 dec $generator_pending_resume(pstate, pgeneratorop) : bool
 dec $generator_pending_detached_send(pstate, pgeneratorop) : bool
+dec $generator_send_leaf(pstate, nat, nat) : nat?
+dec $generator_pending_shared_send(pstate, pgeneratorop) : bool
+dec $generator_input_site(pstate, nat, porigin) : bool
+dec $generator_input_tail(pstate, porigin, ptask*) : bool
+dec $generator_input_count(pgeneratorinput*, nat) : nat
+dec $generator_input_source_valid(pstate, pgeneratorinput) : bool
+dec $generator_input_live_valid(pstate, pgeneratorinput) : bool
+dec $generator_input_orphans(pgeneratorinput*, nat) : pgeneratorinput*
+dec $generator_input_orphan(pstate, nat) : pstate
+dec $generator_input_send(pstate, pgeneratorop) : pstate
+dec $generator_input_take(pgeneratorinput*, nat) : (pvalue?, pgeneratorinput*)
+dec $generator_input_resume(pstate, pgeneratorop) : pstate
+dec $generator_input_blocked(pstate, pgeneratorop) : bool
 dec $generator_resumed(pstate, pgeneratorop) : pstate
 dec $generator_cache_value(pvalue?) : pvalue
 dec $generator_error(pstate, pgeneratorop, text, ptbytes) : pstate
@@ -277,15 +290,22 @@ def $generator_resumed(S, pgeneratorop) = S -- otherwise
 def $generator_resume(S, pgeneratorop) = $generator_complete($generator_result($generator_resumed(S, pgeneratorop), pgeneratorop), pgeneratorop)
   -- if $generator_pending_resume(S, pgeneratorop)
   -- if pgeneratorop.NAME = "next" \/ $generator_pending_detached_send(S, pgeneratorop)
+def $generator_resume(S, pgeneratorop) = $generator_complete($generator_result($generator_resumed($generator_input_send(S, pgeneratorop), pgeneratorop), pgeneratorop), pgeneratorop)
+  -- if $generator_pending_shared_send(S, pgeneratorop)
 def $generator_resume(S, pgeneratorop) = S[.COMPLETION = UNSUPPORTED "Generator pending initialization send or throw"]
   -- if $generator_pending_resume(S, pgeneratorop)
   -- if pgeneratorop.NAME <- ["send", "throw"]
   -- if ~$generator_pending_detached_send(S, pgeneratorop)
+  -- if ~$generator_pending_shared_send(S, pgeneratorop)
+def $generator_resume(S, pgeneratorop) = S[.COMPLETION = UNSUPPORTED "Generator buffered send throw"]
+  -- if ~$generator_pending_resume(S, pgeneratorop)
+  -- if $generator_input_blocked(S, pgeneratorop)
 ;; Synthetic shared-child resumes preserve the native rewind history.
-def $generator_resume(S, pgeneratorop) = $generator_install($generator_set($save_frame(S[.TODO = (GENERATOR_RESUME pgeneratorop) :: S.TODO]), pgeneratorop.OBJECT, pgenerator[.FRAME = eps][.PHASE = GENERATOR_RUNNING][.FIRST = (($generator_resume_root(S, pgeneratorop) /\ pgenerator.PHASE = GENERATOR_FRESH) \/ (~$generator_resume_root(S, pgeneratorop) /\ pgenerator.FIRST))]), pframe)
+def $generator_resume(S, pgeneratorop) = $generator_input_resume($generator_install($generator_set($save_frame(S[.TODO = (GENERATOR_RESUME pgeneratorop) :: S.TODO]), pgeneratorop.OBJECT, pgenerator[.FRAME = eps][.PHASE = GENERATOR_RUNNING][.FIRST = (($generator_resume_root(S, pgeneratorop) /\ pgenerator.PHASE = GENERATOR_FRESH) \/ (~$generator_resume_root(S, pgeneratorop) /\ pgenerator.FIRST))]), pframe), pgeneratorop)
   -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.FRAME = (pframe)
   -- if ~$generator_pending_resume(S, pgeneratorop)
+  -- if ~$generator_input_blocked(S, pgeneratorop)
 def $generator_return(S, KNOWN pvalue) = $restore_frame($generator_set(S, pgeneratorop.OBJECT, pgenerator[.FRAME = eps][.PHASE = GENERATOR_CLOSED][.RETURN = (pvalue)])[.RESULT = KNOWN PNULL][.TODO = eps][.HELD = eps])
   -- if S.FRAMES = pframe :: pframe_tail*
   -- if pframe.TODO = (GENERATOR_RESUME pgeneratorop) :: ptask_tail*
@@ -394,12 +414,15 @@ def $generator_effect(S, pgeneratorop) = S_resumed
   -- if pgenerator.PHASE = GENERATOR_PAUSED
   -- if S_resumed = $generator_resume(S, pgeneratorop[.ADVANCE = false])
   -- if ~$generator_send_target(S_resumed.TODO)
+def $generator_effect(S, pgeneratorop) = S[.COMPLETION = UNSUPPORTED "Generator buffered send throw"]
+  -- if $generator_input_blocked(S, pgeneratorop)
 def $generator_effect(S, pgeneratorop) = S_resumed[.TODO = (THROW_SEARCH n) :: S_resumed.TODO]
   -- if pgeneratorop.NAME = "throw"
   -- if pgeneratorop.ARGUMENTS = [POBJECT n]
   -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_PAUSED
   -- if S_resumed = $generator_resume(S, pgeneratorop[.ADVANCE = false])
+  -- if ~$generator_input_blocked(S, pgeneratorop)
 
 ;; A CV key is fetched after the value expression. Other key expressions
 ;; are captured as ordinary values before evaluating that expression.

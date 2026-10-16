@@ -112,7 +112,141 @@ def $generator_pending_detached_send(S, pgeneratorop) = false -- otherwise
 ;; Native API argument cleanup precedes releasing its method receiver.
 def $eager_task_inputs(S, GENERATOR_ARGS pgeneratorop eps ([KNOWN pvalue])) = $value_nodes(pvalue) ++ $generator_operation_nodes(pgeneratorop)
   -- if pgeneratorop.ARGUMENTS = eps
-  -- if $generator_pending_detached_send(S, pgeneratorop[.ARGUMENTS = [pvalue]])
+  -- if $generator_pending_detached_send(S, pgeneratorop[.ARGUMENTS = [pvalue]]) \/ $generator_pending_shared_send(S, pgeneratorop[.ARGUMENTS = [pvalue]])
+
+;; Pending SEND initializes a TMP before its live range begins. Count that
+;; physical reference externally; SOURCE's receiver is nonowning history.
+def $generator_inputs_nodes(eps) = eps
+def $generator_inputs_nodes(pgeneratorinput :: pgeneratorinput_tail*) = $generator_arguments_nodes(pgeneratorinput.SOURCE.ARGUMENTS) ++ $generator_inputs_nodes(pgeneratorinput_tail*)
+def $generator_input_count(eps, n) = 0
+def $generator_input_count(pgeneratorinput :: pgeneratorinput_tail*, n) = $(1 + $generator_input_count(pgeneratorinput_tail*, n))
+  -- if pgeneratorinput.LIVE /\ pgeneratorinput.OBJECT = n
+def $generator_input_count(pgeneratorinput :: pgeneratorinput_tail*, n) = $generator_input_count(pgeneratorinput_tail*, n)
+  -- if ~pgeneratorinput.LIVE \/ pgeneratorinput.OBJECT =/= n
+
+;; Initially support a used yield assigned directly to a simple CV. This source
+;; proof remains readable after the frame and original API receiver retire.
+def $generator_input_site(S, n, PORIGIN n_unit pcpath) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if $function_at($all_functions(S), pgenerator.FUNCTION) = (pfunction)
+  -- if $function_generator(S, pfunction)
+  -- if n_unit = pfunction.CODE.UNIT
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprYield phpType5_key phpType5_value metadata_yield)
+  -- if $(|pcpath| > 0)
+  -- if n_parent = $nabs($(|pcpath| - 1))
+  -- if pcpath[n_parent] = PCFIELD 1
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath[0:n_parent]) = (NExprAssign (NExprVariable phpType32 metadata_name) (NExprYield phpType5_key phpType5_value metadata_yield) metadata_assign)
+  -- if $cv_name(phpType32) =/= eps
+def $generator_input_site(S, n, porigin) = false -- otherwise
+
+def $generator_input_tail(S, PORIGIN n_unit pcpath, (ORIGIN_RETURN (porigin_assign)) :: (WRITE_NAME n_name* z) :: ptask*) = true
+  -- if $(|pcpath| > 0)
+  -- if n_parent = $nabs($(|pcpath| - 1))
+  -- if porigin_assign = PORIGIN n_unit pcpath[0:n_parent]
+  -- if $origin_node(S.SOURCES, porigin_assign) = (NExprAssign (NExprVariable phpType32 metadata_name) expression metadata_assign)
+  -- if $cv_name(phpType32) = (n_name*)
+  -- if z = $variable_line(phpType32, metadata_name)
+def $generator_input_tail(S, porigin, ptask*) = false -- otherwise
+
+def $generator_input_source_valid(S, pgeneratorinput) = true
+  -- if $generator_input_site(S, pgeneratorinput.OBJECT, pgeneratorinput.SITE)
+  -- if $generator_object(S, pgeneratorinput.SOURCE.OBJECT)
+  -- if pgeneratorinput.SOURCE.NAME = "send" /\ ~pgeneratorinput.SOURCE.ADVANCE
+  -- if $generator_operation_site(S, pgeneratorinput.SOURCE)
+  -- if pgeneratorinput.SOURCE.ARGUMENTS = [pvalue]
+  -- if $getter_arguments(S, pgeneratorinput.SOURCE.SITE) = PCALLARGUMENTS phpType7* 2
+  -- if |phpType7*| = 1 /\ $generator_arguments_supported(phpType7*)
+def $generator_input_source_valid(S, pgeneratorinput) = false -- otherwise
+
+def $generator_input_live_valid(S, pgeneratorinput) = true -- if ~pgeneratorinput.LIVE
+def $generator_input_live_valid(S, pgeneratorinput) = true
+  -- if pgeneratorinput.LIVE
+  -- if (HOBJECT pgeneratorinput.OBJECT) <- S.ALLOCATIONS
+  -- if S.OBJECTS[pgeneratorinput.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_PAUSED /\ pgenerator.DELEGATE = eps
+  -- if pgenerator.FRAME = (pframe)
+  -- if pframe.ORIGIN = (pgeneratorinput.SITE)
+  -- if $generator_input_tail(S, pgeneratorinput.SITE, pframe.TODO)
+  -- if $generator_record_valid(S, pgenerator)
+def $generator_input_live_valid(S, pgeneratorinput) = false -- otherwise
+
+def $generator_inputs_valid(S, eps) = true
+def $generator_inputs_valid(S, pgeneratorinput :: pgeneratorinput_tail*) = ($generator_input_source_valid(S, pgeneratorinput) /\ $generator_input_live_valid(S, pgeneratorinput) /\ (~pgeneratorinput.LIVE \/ $generator_input_count(pgeneratorinput_tail*, pgeneratorinput.OBJECT) = 0) /\ $generator_inputs_valid(S, pgeneratorinput_tail*))
+
+def $generator_send_leaf(S, n, 0) = eps
+def $generator_send_leaf(S, n, n_left) = (n)
+  -- if $(n_left > 0) /\ $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_PAUSED /\ pgenerator.DELEGATE = eps
+  -- if pgenerator.FRAME = (pframe)
+  -- if pframe.ORIGIN = (porigin)
+  -- if $generator_input_site(S, n, porigin)
+  -- if $generator_input_tail(S, porigin, pframe.TODO)
+  -- if $generator_record_valid(S, pgenerator)
+def $generator_send_leaf(S, n, n_left) = $generator_send_leaf(S, n_child, $nabs($(n_left - 1)))
+  -- if $(n_left > 0) /\ $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_DELEGATING
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.INPUT = (POBJECT n_child)
+  -- if pgeneratorfrom.ACQUISITION = eps /\ pgeneratorfrom.CURRENT = eps
+  -- if $generator_from_record_valid(S, n, pgenerator)
+def $generator_send_leaf(S, n, n_left) = eps -- otherwise
+
+def $generator_pending_shared_send(S, pgeneratorop) = true
+  -- if $generator_pending_resume(S, pgeneratorop)
+  -- if pgeneratorop.NAME = "send" /\ ~pgeneratorop.ADVANCE
+  -- if $generator_operation_valid(S, pgeneratorop)
+  -- if pgeneratorop.ARGUMENTS = [pvalue]
+  -- if $getter_arguments(S, pgeneratorop.SITE) = PCALLARGUMENTS phpType7* 2
+  -- if |phpType7*| = 1 /\ $generator_arguments_supported(phpType7*)
+  -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_DELEGATING
+  -- if $generator_send_leaf(S, pgeneratorop.OBJECT, |S.OBJECTS|) = (n_leaf)
+def $generator_pending_shared_send(S, pgeneratorop) = false -- otherwise
+
+def $generator_input_orphans(eps, n) = eps
+def $generator_input_orphans(pgeneratorinput :: pgeneratorinput_tail*, n) = pgeneratorinput[.LIVE = false] :: $generator_input_orphans(pgeneratorinput_tail*, n)
+  -- if pgeneratorinput.OBJECT = n
+def $generator_input_orphans(pgeneratorinput :: pgeneratorinput_tail*, n) = pgeneratorinput :: $generator_input_orphans(pgeneratorinput_tail*, n)
+  -- if pgeneratorinput.OBJECT =/= n
+def $generator_input_orphan(S, n) = S[.GENERATORINPUTS = $generator_input_orphans(S.GENERATORINPUTS, n)]
+def $generator_input_send(S, pgeneratorop) = S[.GENERATORINPUTS = $generator_input_orphans(S.GENERATORINPUTS, n_leaf) ++ [{OBJECT n_leaf, SITE porigin, SOURCE pgeneratorop, LIVE true}]]
+  -- if $generator_send_leaf(S, pgeneratorop.OBJECT, |S.OBJECTS|) = (n_leaf)
+  -- if S.OBJECTS[n_leaf] = GENERATOR pgenerator
+  -- if pgenerator.FRAME = (pframe)
+  -- if pframe.ORIGIN = (porigin)
+
+def $generator_input_take(eps, n) = (eps, eps)
+def $generator_input_take(pgeneratorinput :: pgeneratorinput_tail*, n) = (pvalue_taken?, pgeneratorinput_tail*)
+  -- if pgeneratorinput.LIVE /\ pgeneratorinput.OBJECT = n
+  -- if pgeneratorinput.SOURCE.ARGUMENTS = [pvalue]
+  -- if pvalue_taken? = (pvalue)
+def $generator_input_take(pgeneratorinput :: pgeneratorinput_tail*, n) = (pvalue?, pgeneratorinput :: pgeneratorinput_rest*)
+  -- if ~pgeneratorinput.LIVE \/ pgeneratorinput.OBJECT =/= n
+  -- if (pvalue?, pgeneratorinput_rest*) = $generator_input_take(pgeneratorinput_tail*, n)
+
+;; Installation has already selected the real paused leaf. NEXT consumes its
+;; slot; SEND overwrites it without a decrement, retaining the old count.
+def $generator_input_resume(S, pgeneratorop) = $generator_input_orphan(S, pgeneratorop.OBJECT)
+  -- if pgeneratorop.NAME = "send"
+def $generator_input_resume(S, pgeneratorop) = S[.GENERATORINPUTS = pgeneratorinput*][.RESULT = KNOWN pvalue]
+  -- if pgeneratorop.NAME = "next"
+  -- if (pvalue_taken?, pgeneratorinput*) = $generator_input_take(S.GENERATORINPUTS, pgeneratorop.OBJECT)
+  -- if pvalue_taken? = (pvalue)
+def $generator_input_resume(S, pgeneratorop) = S
+  -- if pgeneratorop.NAME = "next"
+  -- if (eps, pgeneratorinput*) = $generator_input_take(S.GENERATORINPUTS, pgeneratorop.OBJECT)
+def $generator_input_resume(S, pgeneratorop) = S -- if ~(pgeneratorop.NAME <- ["send", "next"])
+def $generator_input_blocked(S, pgeneratorop) = true
+  -- if pgeneratorop.NAME = "throw"
+  -- if $generator_send_leaf(S, pgeneratorop.OBJECT, |S.OBJECTS|) = (n_leaf)
+  -- if $($generator_input_count(S.GENERATORINPUTS, n_leaf) > 0)
+def $generator_input_blocked(S, pgeneratorop) = false -- otherwise
 
 def $generator_from_statements(eps) = false
 def $generator_from_statements(statement :: statement_tail*) = ($generator_from_syntax(statement) \/ $generator_from_statements(statement_tail*))

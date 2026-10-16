@@ -48,14 +48,26 @@ changed by that cleanup; an argument-destructor throw preserves the cleared bit.
 Synthetic shared-child resumes also preserve the first-yield flag: an inherited
 middle rejects rewind, while a previously initialized middle can still accept it
 after shared advancement. The [pending-send review](../../coverage/semantics/generator-pending-init-send-review.json)
-records both histories. Pending sends to live yield targets, owning copied returns
-and pending `throw` remain Unsupported.
+records both histories. Owning copied detached returns and pending `throw` remain
+Unsupported.
+
+Pending `send` through finite native Generator links can also fill a paused
+child's used yield assigned directly to a simple CV. It clears the actual root's
+initialization bit and returns a current snapshot without advancing. When a later
+direct or forwarded `next` resumes the child, it transfers the single buffered
+owner into that yield result. Closing before consumption or overwriting with
+another `send` preserves the pinned engine's untraced reference count; its payload
+destructor runs in the request object-store pass, after ordinary finally and caller output. Pure getters
+preserve the buffer. The [shared-send review](../../coverage/semantics/generator-pending-shared-send-review.json)
+distinguishes payload ownership from reference caches, method receivers and
+Generator frames. Active buffered `throw` and other used-expression shapes remain
+Unsupported; this slice makes no general cyclic-collection claim.
 
 Literal `send` and `throw` validate and capture their single argument before
 initialization. Fresh calls first reach the initial yield, then deliver the
 value or Throwable at that suspension. `send` supplies the result of a used
-yield expression; `next` supplies null. Closed `send` returns null, while closed
-`throw` rethrows the same object. If fresh initialization throws, `throw` keeps
+yield expression; `next` supplies null when no buffered input exists. Closed
+`send` returns null, while closed `throw` rethrows the same object. If fresh initialization throws, `throw` keeps
 its supplied exception as primary and links the initialization exception as its
 previous exception. Ordinary catch/finally execution can yield again before the
 pending exception resumes.
