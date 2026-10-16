@@ -185,8 +185,19 @@ converted longs across the RHS deprecation. Success detaches a late target alias
 supplied throw or a captured zero divisor preserves callback writes and aliases.
 The live RHS is never reread after capture.
 [RHS modulo evidence](../../coverage/semantics/modassign-right-warning-review.json)
-retains three source agreements and 404 focused SL premises; both-fractional
-operands, initial references/copies and unsafe targets remain partial.
+retains three source agreements and 404 focused SL premises; wider operand
+combinations, initial references/copies and unsafe targets remain partial.
+
+For two initially fractional-float plain CVs, `%=` orders the LEFT deprecation
+before converting the live RHS. A fractional RHS gets its own captured long and
+deprecation; a quiet integer skips the second diagnostic. Success detaches a late
+alias. Either handler throw or a captured zero divisor preserves callback writes,
+unchanged destination and alias write-through. Fresh second dispatch checks the
+current RHS, while LEFT remains historical.
+[Ordered modulo evidence](../../coverage/semantics/modassign-both-warning-review.json)
+retains five exact originals and 929 focused SL premises, including the quiet
+handoff, both throwing phases and default-second cached-zero Error. Initial
+references/copies, wider RHS conversions, unsafe targets and lifecycle remain partial.
 
 For distinct initially plain CVs, `<<=` and `>>=` keep the converted fractional
 left value through deprecation handlers, then read the live quiet integer count.
@@ -201,8 +212,20 @@ longs through a fractional-count deprecation. Success detaches a late alias;
 supplied throw or a cached negative count preserves callback writes/aliases.
 A captured count of `64` keeps the original right-shift sign despite live writes.
 [RHS shift evidence](../../coverage/semantics/shiftassign-right-warning-review.json)
-retains five exact originals and 674 focused SL premises. Both-fractional operands,
+retains five exact originals and 674 focused SL premises. Wider operand combinations,
 initial references/copies, unsafe targets and wider lifecycle remain partial.
+
+For two initially fractional-float plain CVs, `<<=`/`>>=` order LEFT deprecation
+before converting the live count. A fractional count gets its own saved long and
+deprecation; a quiet integer skips the second diagnostic. Success detaches late
+aliases. Either handler throw or a captured negative count preserves callback
+writes, destination and alias write-through. Fresh second dispatch checks only
+the count, while LEFT remains historical.
+[Ordered shift evidence](../../coverage/semantics/shiftassign-both-warning-review.json)
+retains six exact originals and 1172 focused SL premises, including both signed
+directions, quiet handoff, both throwing phases and default-second negative-count
+ArithmeticError. Initial references/copies, wider count conversions, unsafe targets
+and lifecycle remain partial.
 
 Distinct initially plain CV numeric `&=`, `|=` and `^=` keep their fractional LEFT
 conversion through deprecation handlers, then read the live quiet integer RHS.
@@ -211,6 +234,14 @@ Exception and alias write-through. Signed XOR/default Deprecated is independentl
 covered. [Bitwise-assignment evidence](../../coverage/semantics/bitassign-warning-review.json)
 retains five exact originals and 692 focused SL premises. Initial references/copies,
 warning or noninteger RHS, unsafe targets and wider lifecycle remain partial.
+
+With a quiet integer LEFT, distinct initially plain CV numeric `&=`, `|=` and `^=`
+keep both converted longs through fractional-RHS deprecation. Success detaches a
+late alias; supplied throw preserves callback writes, the same Exception and alias
+write-through. Negative RHS masks still store signed integers after the callback.
+[RHS bitwise evidence](../../coverage/semantics/bitassign-right-warning-review.json)
+retains five exact originals and 724 focused SL premises. Both-fractional operands,
+initial references/copies, unsafe targets and wider lifecycle remain partial.
 
 Stringable `.=` converts the left value before dereferencing the selected RHS
 slot. A defined direct RHS CV is borrowed and follows callback rebinding; an

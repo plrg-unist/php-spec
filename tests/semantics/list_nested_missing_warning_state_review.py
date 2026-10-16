@@ -38,7 +38,7 @@ def conditions(name, program, path, stdout):
         '$reference_origin_parent(porigin, 1) = ((porigin_assign, [PCFIELD 0]))',
         '$origin_node(S_entry.SOURCES, porigin_assign) = (NExprAssign expression_pattern expression_rhs metadata_assign)',
         '$list_value_cv(expression_rhs) = (n_name*)',
-        '~$list_missing_nested_items([NArrayItem ABSENT expression_pattern (BOOLEAN false) (BOOLEAN false) metadata_assign])',
+        '$list_missing_nested_items([NArrayItem ABSENT expression_pattern (BOOLEAN false) (BOOLEAN false) metadata_assign])',
         '~$list_missing_nested_items([NArrayItem ABSENT expression_rhs (BOOLEAN true) (BOOLEAN false) metadata_assign])',
         '~$list_missing_nested_items([NArrayItem ABSENT expression_rhs (BOOLEAN false) (BOOLEAN true) metadata_assign])',
         '$lookup(S_entry.ENV, $ptascii("a")) = (n_a)',

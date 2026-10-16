@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "milestone": "A6 recursive literal-RHS destructuring missing-key handlers",
+  "status": "independently reviewed and pointwise composed for integration",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle and tests/semantics/profile.json",
+  "base": "e319c9e89a0268a052ae6b29049e6d222882cf08",
+  "scope": "Finite recursive by-value patterns from a direct array-literal RHS, with direct-CV leaves and quiet implicit/compiled constant keys; pooled and runtime literal roots keep different source authority.",
+  "runtime_commit": "00ac419b9f10589ddef1f7bb47ed6bb5aa6d77b6",
+  "runtime_sha256": {
+    "spec/semantics/409-list-missing-warnings.watsup": "63ad6cff9c17b972f9830d83ad7345a024b767303a9ecc87554ad9fb1736a6ca"
+  },
+  "private_modules": 399,
+  "engine_basis": [
+    "Vendored PHP8.5.10 commit34308a6666b2d489c509541ea9befea9e2b42348: zend_compile_list_assign emits FETCH_LIST_R before recursively compiling the child target, then continues outer items. Literal roots can be constant-array operands or constructed temporary arrays; each selected child is captured separately.",
+    "ZEND_FETCH_LIST_R supplies uninitialized/null after the missing-key callback without repeating the lookup. NULL descends silently through by-value patterns. Captured child tables remain authoritative after a callback changes an embedded reference cell value or unsets/rebinds its external CV name.",
+    "The VM checks a handler exception before the pending store. Known-result effect replay must perform the destructuring effects before delivery; an exception cancels that delivery. Pooled arrays retain pool/parent-edge owners after saved tasks disappear."
+  ],
+  "reviewed_behavior": [
+    "Only409 changes runtime. Recursive context syntax now admits literal roots; a separate operand gate authenticates a root through the existing exact compiled pool entry or actual nonconstant CODEEXPR descriptor plus live nonimmutable table. Child operands require a recursively authenticated context and allocated captured table, independently of root identity or current parent lookup. Root and child source paths are disjoint.",
+    "Depth3/4 originals cover pooled keyed missing reads after an earlier store, a present NULL entry, masked false fallback, runtime old embedded reference cells after CV rebind and supplied-throw cancellation of known-result delivery. Compiler locations, every pending task owner, real callback frames and raw next6/old2 reads are checked.",
+    "An effect-only pooled root with missing outer key0 supplies NULL through three children without further warnings, overwrites callback target writes in order and finishes with only its permanent pool owners. Removing pools cannot route that source through runtime literal admission.",
+    "A sole temporary literal root owns a row-cell alias. The callback replaces that old cell value, then unsets/rebinds its CV name: old row/middle/leaf tasks still read33/6/7, the returned root sees saved-cell22 then88, and the rebound live row sees66 then44. The root task keeps the old cell alive after its external name disappears; the disconnected old array chain retires before the outer tail4.",
+    "Pooled throw checks reach the caller TRY_END after all list/known-result tasks are discarded. Root ownership is pool-only and descendants retain pool/parent edges, while earlier stores, callback writes, destination100 and the supplied Throwable survive. No physical retirement is claimed for pooled arrays.",
+    "Existing direct-CV/flat literal/mixed and recursive-CV paths keep their behavior. Three historical pure literal-root refusal projections now use scalar1 to preserve the still-open scalar-root boundary; equivalent new-front controls pass without replaying A1\u2013A5 actors. No task, state field, module or generic read/write/compiler/ownership helper changes."
+  ],
+  "accepted": {
+    "source": {
+      "report": ".tools/list-recursive-literal-source-06/report.json",
+      "sha256": "3e8e432688a4801bfec7894204bd80047a016d5638e20a4e48766aae9eb4b411",
+      "revision": "00ac419b9f10589ddef1f7bb47ed6bb5aa6d77b6",
+      "agreements": 5,
+      "cases": [
+        "list-recursive-literal-pooled-keyed",
+        "list-recursive-literal-runtime-ref-rebind",
+        "list-recursive-literal-pooled-throw",
+        "list-recursive-literal-review-outer-null-effect",
+        "list-recursive-literal-review-row-rebind"
+      ],
+      "native_reuse": "Fresh A6 originals retain native argv/source paths/streams from baseline/native preparations; model-only comparisons use the same original paths, with no oracle replay."
+    },
+    "states": [
+      {
+        "report": ".tools/list-recursive-literal-author-state-06/report.json",
+        "sha256": "91d3f73a632121bd0f06bdb9d6b3bf654d57dc8d30ae1afe6e12bfe4fca4e8b7",
+        "revision": "604e9b4fc3897e47e337ba95241d598ecc942292",
+        "fronts": 3,
+        "conditions": [
+          143,
+          143,
+          155
+        ],
+        "raw_steps": [
+          3,
+          3,
+          1
+        ],
+        "boolean_premises": 434
+      },
+      {
+        "report": ".tools/list-recursive-literal-review-state-06/report.json",
+        "sha256": "65cc64c0095b83525430f9a2aee4d54c5879680e4c256ec3bf51f21f58ce2972",
+        "revision": "604e9b4fc3897e47e337ba95241d598ecc942292",
+        "fronts": 2,
+        "conditions": [
+          172,
+          196
+        ],
+        "raw_steps": [
+          6,
+          4
+        ],
+        "boolean_premises": 358
+      }
+    ],
+    "source_agreements": 5,
+    "state_fronts": 5,
+    "total_conditions": 809,
+    "boolean_premises": 792,
+    "raw_steps": 17,
+    "credit_note": "Conditions include setup and pure shape/refusal premises, not separate PHP programs. Every recorded group_after is empty. Source/state checks retain their private cuts; later documentation/composition adds no agreement credit. No A6 fixture failed."
+  },
+  "affected_historical_controls": {
+    "files": [
+      "tests/semantics/list_nested_missing_warning_protocol.py",
+      "tests/semantics/list_recursive_missing_warning_protocol.py",
+      "tests/semantics/list_recursive_missing_warning_state_review.py"
+    ],
+    "change": "One pure RHS projection per file substitutes scalar1 for an empty array literal, preserving its wider scalar-producer refusal after literal roots become supported. Equivalent projections are checked on genuine A6 fronts. All other inherited test code and historical evidence remain unchanged, with zero renewed credit."
+  },
+  "preserved_zero_credit": [
+    {
+      "report": ".tools/list-recursive-literal-baseline-06/report.json",
+      "sha256": "66f7e8ff9d72c6df87b164cbd6741486d01c3e60e3e9802bd11f98dd92f12a1d",
+      "revision": "e319c9e89a0268a052ae6b29049e6d222882cf08",
+      "result": "Unchanged A5 explicitly Unsupported at handler ingress for list-recursive-literal-pooled-keyed; its original native path/bytes are reused for the accepted model comparison."
+    },
+    {
+      "report": ".tools/list-recursive-literal-native-rest-06/report.json",
+      "sha256": "ff817dd3ce82115bc65715a8eb1c62b42f02a09f7266f6697347dc7a88d2a0e8",
+      "revision": "e319c9e89a0268a052ae6b29049e6d222882cf08",
+      "result": "Fresh author runtime embedded-cell rebind and pooled depth4 supplied-throw native2 preparation only."
+    },
+    {
+      "report": ".tools/list-recursive-literal-review-native-06/report.json",
+      "sha256": "819d10e795f6d19dfac30244fd3a1ab507a9f212fa5dceb611582126b0cf7643",
+      "revision": "e319c9e89a0268a052ae6b29049e6d222882cf08",
+      "result": "Fresh independent pooled effect-only NULL-chain and runtime saved row-cell value/name replacement native2 preparation only."
+    }
+  ],
+  "raw_evidence": {
+    "archive": "/home/user/workspace/php-spec/.tools/list-recursive-literal-missing-warning-06-raw.tar.gz",
+    "bytes": 312232,
+    "members": 152,
+    "sha256": "2c8922748abe02397b9b2431eb8a960c2a099a7934e3709d70c8c0ea5e2d27ea",
+    "recovery": "Archive retains six original relative .tools report/fixture/process/source directories and list-recursive-literal-reuse-sources-06.py. Extract beneath a checkout of the recorded cut; absolute argv/cwd are historical provenance. No archive is a build dependency."
+  },
+  "actual_parent_review": {
+    "parent": "0181f6333c736b9a99465c251f17e98204469c63",
+    "seams": "Incoming280/289 add detached Generator send/resume history and argument cleanup,270 typed by-reference return destructor replay,283 global stdClass constructor-argument receipts,52/152/386 WeakMap versus standard-handler object comparison. Their distinct task tags/source shapes do not change409, array pool descriptors, list ownership/compiler locations or captured child authority. Subsequent30/55/404 add both-fractional modulo-assignment warning stages, and400 admits false scalar define flags for integer/bool names; distinct COMPOUND_APPLY/CONFIG guards leave list/literal source admission unchanged.",
+    "joined_actor": "No concrete semantic interaction found; pointwise composition and exact FF review add no replay credit.",
+    "composition": {
+      "runtime_delta": [
+        "spec/semantics/409-list-missing-warnings.watsup"
+      ],
+      "modules": 399,
+      "tested_leaf": "604e9b4fc3897e47e337ba95241d598ecc942292",
+      "checks": "409 and six new tests plus the three affected one-line scalar-control files retain exact tested bytes; all other parent runtime/modules and inventory rows/fields are retained; all other parent checkpoints remain exact.",
+      "joined_actor": "No concrete interaction; no new actor or renewed agreement credit.",
+      "runtime_diff_sha256": "b270a89244de60b5786363bae4ac90869545a5a7be8d70fc5db9ebb7d6f75d30"
+    }
+  },
+  "remaining": [
+    "Reference nesting, call/wider RHS producers and non-CV target leaves.",
+    "Undefined-CV/null/lossy-float key warning producers and scalar/object destructuring diagnostic callbacks.",
+    "Wider callbacks, suspension and lifecycle; full array/diagnostic/core closure and final offline portability."
+  ]
+}

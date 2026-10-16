@@ -55,6 +55,8 @@ dec $destructor_operation_finish(pstate, pdestructionoperation) : pstate
 dec $destructor_operation_postfinish(pstate, pdestructionoperation) : pstate
 def $destructor_operation_postfinish(S, pdestructionoperation) = S -- otherwise
 dec $destructor_pending_finish(pstate, pdestructionoperation, nat, ptask*) : pstate
+dec $ref_abrupt_destructor_old_source(pstate, prefreturncursor) : bool
+dec $ref_abrupt_destructor_cursor(ptask*) : prefreturncursor?
 
 dec $eager_operation_internal(pstate) : bool
 dec $eager_abandoned_owner(ptask) : pnode*
@@ -360,6 +362,39 @@ def $destructor_operation_finish(S, pdestructionoperation) = $destructor_operati
   -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail*
   -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
   -- if pdestructionoperation.PENDING = (n)
+def $ref_abrupt_destructor_old_source(S, prefreturncursor) = true
+  -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprFuncCall (NName (BYTES text_function) metadata_name) (SEQUENCE eps) metadata_call) metadata_return)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if pfunction.SIGNATURE.RETURNS = [(PTBRANCH ([PTCLASS ptbytes_class])), (PTBRANCH ([PTBUILTIN "null"]))]
+def $ref_abrupt_destructor_old_source(S, prefreturncursor) = $ref_return_cursor_assigned_noarg_object(S, prefreturncursor) -- otherwise
+def $ref_abrupt_destructor_cursor((REF_RETURN_CURSOR prefreturncursor porigin z) :: ptask_tail*) = (prefreturncursor)
+def $ref_abrupt_destructor_cursor(ptask :: ptask_tail*) = $ref_abrupt_destructor_cursor(ptask_tail*) -- if ~$ref_return_cursor_task(ptask)
+def $ref_abrupt_destructor_cursor(ptask*) = eps -- otherwise
+def $ref_return_cursor_saved_descriptor_valid(S, prefreturncursor, porigin_selected, z_selected) = $ref_return_cursor_valid(S[.TODO = (RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected) :: ptask_tail*], prefreturncursor, porigin_selected, z_selected)
+  -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected) :: ptask_tail*
+  -- if pdestructionoperation.SOURCE = RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected
+  -- if pdestructionoperation.PENDING = (n_exception)
+  -- if pdestructionoperation.CALLER = S.CURRENT /\ pdestructionoperation.ORIGIN = S.ORIGIN /\ pdestructionoperation.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if $throwable_live(S, n_exception)
+  -- if S.OBJECTS[n_exception] = THROWABLE pthrowable
+  -- if $throwable_nominal(pthrowable.KIND, $ptascii("Exception"), 4)
+  -- if $ref_abrupt_destructor_cursor(ptask_tail*) = (prefreturncursor)
+  -- if $ref_abrupt_destructor_old_source(S, prefreturncursor)
+def $destructor_pending_finish(S, pdestructionoperation, n, (RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected) :: ptask_tail*) = S[.TODO = (THROW_SEARCH n) :: ($ref_replay_tasks(porigin_selected, z_selected, prefowner_first :: prefowner_tail*) ++ $ref_consumed_tasks(prefreturncursor))][.ORIGIN = ($ref_owner_origin(prefowner_first))][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = NORMAL]
+  -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected) :: ptask_tail*
+  -- if pdestructionoperation.SOURCE = RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected
+  -- if pdestructionoperation.PENDING = (n)
+  -- if pdestructionoperation.CALLER = S.CURRENT /\ pdestructionoperation.ORIGIN = S.ORIGIN
+  -- if $throwable_live(S, n)
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if $throwable_nominal(pthrowable.KIND, $ptascii("Exception"), 4)
+  -- if S_queued = S[.TODO = (RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected) :: ptask_tail*]
+  -- if $ref_abrupt_destructor_cursor(ptask_tail*) = (prefreturncursor)
+  -- if $ref_return_cursor_valid(S_queued, prefreturncursor, porigin_selected, z_selected)
+  -- if $ref_abrupt_destructor_old_source(S_queued, prefreturncursor)
+  -- if $ref_replay_contexts(S_queued, porigin_selected) = prefowner_first :: prefowner_tail*
+  -- if $ref_replay_site(S_queued, porigin_selected, z_selected, prefowner_first :: prefowner_tail*)
 def $destructor_pending_finish(S, pdestructionoperation, n, ptask_tail*) = S[.TODO = (THROW_SEARCH n) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = NORMAL] -- otherwise
 dec $eager_operation_validation_value(pstate, pdestructionoperation) : poperand
 def $eager_operation_validation_value(S, pdestructionoperation) = S.RESULT -- otherwise

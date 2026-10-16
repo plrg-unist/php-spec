@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "milestone": "A5 recursive by-value destructuring missing-key handlers",
+  "status": "independently reviewed and pointwise composed for integration",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle and tests/semantics/profile.json",
+  "base": "7638815fe33851f050e8695c2db1bfcc715b7021",
+  "scope": "Finite recursive by-value patterns from a direct-CV RHS, with direct-CV leaves and quiet implicit/compiled constant keys; missing ancestors and descendants are admitted without a depth tag.",
+  "runtime_commit": "f473653325574fb211c5434105b64476bb01acdc",
+  "runtime_sha256": {
+    "spec/semantics/409-list-missing-warnings.watsup": "eb9ff6365d927820926976a9547e302dc179ea14aca01fe56fff97be1df6c301"
+  },
+  "private_modules": 399,
+  "engine_basis": [
+    "Vendored PHP8.5.10 commit34308a6666b2d489c509541ea9befea9e2b42348: zend_compile_list_assign emits FETCH_LIST_R before recursively compiling each child target, then continues outer items. Child entry and following outer fetches inherit the current compiler location.",
+    "ZEND_FETCH_LIST_R supplies uninitialized/null after a missing-key callback without another lookup. NULL silently descends through further by-value patterns. Each captured child and pending outer continuation retains its own array, independently of later CV rebinding or shared row-cell replacement.",
+    "A callback exception cancels the pending target store. Existing throw search discards nested scaffolding in order, so inner task retirement may leave ancestor tasks retaining arrays/cells until the later caller TRY_END."
+  ],
+  "reviewed_behavior": [
+    "Only two child gates in409 change: recursive shape checking consumes checked child subtrees, and context checking removes one item path at each call. Root direct-CV, by-value CV leaves, quiet keys, selected-item/source lineage, live-array, key/index/tail/line and saved-result requirements remain unchanged. No depth-specific rule, task, state field, module or ownership helper is added.",
+    "Depth3/4 originals cover inner snapshot/rebind and shared-cell reads, keyed missing fetches after earlier stores, masked false fallback and a supplied throw after stores at three ancestor levels. Actual callback frames retain every captured table and inherit the original compiler locations.",
+    "An outer missing fetch feeds NULL through three child patterns without additional warnings, overwriting callback target writes in order and preserving the captured root result despite live RHS replacement.",
+    "A heterogeneous completed deep sibling precedes a selected three-child branch. Callback replacement of the shared row cell disconnects the old row from the returned root, but old row/middle/leaf tasks still read33/6/7. The returned root sees the new row22 and its later44 mutation. Source validation never reconstructs a historical lookup from the current parent table or RHS CV.",
+    "Raw steps establish dispatch, NULL store scheduling, next old-leaf reads, silent descent and outer-tail ordering. In the throwing case the first retirement frontier leaves root1/upper2/parent2/inner1/cell1; the later caller frontier retires all otherwise unowned nodes while preserving prior stores, callback writes, destination100 and the supplied Throwable.",
+    "Existing flat/literal/mixed and one-level runtime paths are preserved. Two inherited pure depth-refusal expectations become positive because their shapes are now intentionally supported; no A1\u2013A4 source or state program is replayed or renewed."
+  ],
+  "accepted": {
+    "source": {
+      "report": ".tools/list-recursive-source-05/report.json",
+      "sha256": "d315f84e78b9326c08721c40bf60e1122f8c94a33920b41cb1fad9f0ad7e6664",
+      "revision": "f473653325574fb211c5434105b64476bb01acdc",
+      "agreements": 5,
+      "cases": [
+        "list-recursive-missing-depth3-snapshot",
+        "list-recursive-missing-depth4-keyed",
+        "list-recursive-missing-depth4-throw",
+        "list-recursive-review-outer-null-chain",
+        "list-recursive-review-completed-deep-line"
+      ],
+      "native_reuse": "Fresh A5 originals retain native argv/source paths/streams from baseline/native preparations; model-only comparisons use the same original paths, with no oracle replay."
+    },
+    "states": [
+      {
+        "report": ".tools/list-recursive-author-state-05/report.json",
+        "sha256": "b269f6736fa09a296e13fb85ea6c6b1bbecfc1ca7e82b56dd86669d14e7d717f",
+        "revision": "1e5e02b466eefd72f79137b066bcc34591dacb40",
+        "fronts": 3,
+        "conditions": [
+          127,
+          136,
+          140
+        ],
+        "raw_steps": [
+          3,
+          3,
+          1
+        ],
+        "boolean_premises": 396
+      },
+      {
+        "report": ".tools/list-recursive-review-state-05/report.json",
+        "sha256": "885a0d8bf753a874e261153cd54b64b6c269bd8888cceb45e34befbe22e76b37",
+        "revision": "1e5e02b466eefd72f79137b066bcc34591dacb40",
+        "fronts": 2,
+        "conditions": [
+          158,
+          177
+        ],
+        "raw_steps": [
+          6,
+          4
+        ],
+        "boolean_premises": 325
+      }
+    ],
+    "source_agreements": 5,
+    "state_fronts": 5,
+    "total_conditions": 738,
+    "boolean_premises": 721,
+    "raw_steps": 17,
+    "credit_note": "Conditions include setup and pure shape/refusal premises, not separate PHP programs. Every recorded group_after is empty. Source/state checks retain their private cuts; later documentation/composition adds no agreement credit. No A5 fixture failed."
+  },
+  "affected_historical_controls": {
+    "files": [
+      "tests/semantics/list_nested_missing_warning_protocol.py",
+      "tests/semantics/list_nested_missing_warning_state_review.py"
+    ],
+    "change": "One pure shape expectation per file changes from refusing deeper nesting to accepting it. Equivalent wrapped depth+1 positives are exercised on genuine A5 fronts. All other inherited test code is unchanged; the A4 ledger retains its original cut and zero renewed credit."
+  },
+  "preserved_zero_credit": [
+    {
+      "report": ".tools/list-recursive-baseline-05/report.json",
+      "sha256": "4b5a490dc426cd7b43646bc9e5f94257f68766399432e4c19fac10de63339e0b",
+      "revision": "7638815fe33851f050e8695c2db1bfcc715b7021",
+      "result": "Unchanged A4 explicitly Unsupported at handler ingress for list-recursive-missing-depth3-snapshot; its original native path/bytes are reused for the accepted model comparison."
+    },
+    {
+      "report": ".tools/list-recursive-native-rest-05/report.json",
+      "sha256": "53df10846da62e5397b48f2a0d099d913c6754b0c9eb7a139d826fda48587d79",
+      "revision": "7638815fe33851f050e8695c2db1bfcc715b7021",
+      "result": "Fresh author depth4 keyed-fallback and supplied-throw native2 preparation only."
+    },
+    {
+      "report": ".tools/list-recursive-review-native-05/report.json",
+      "sha256": "f0f0a094682be3027cdc9a8015b7f21055dc96ffb74b3a500c9cc6b55d977764",
+      "revision": "7638815fe33851f050e8695c2db1bfcc715b7021",
+      "result": "Fresh independent recursive NULL-chain and completed-sibling/shared-row replacement native2 preparation only."
+    }
+  ],
+  "raw_evidence": {
+    "archive": "/home/user/workspace/php-spec/.tools/list-recursive-missing-warning-05-raw.tar.gz",
+    "bytes": 311455,
+    "members": 152,
+    "sha256": "e1b6aec400bb90afcdc5b76cbadf9435fa4fb5df2432754496cdeedc72355bfe",
+    "recovery": "Archive retains six original relative .tools report/fixture/process/source directories and list-recursive-reuse-sources-05.py. Extract beneath a checkout of the recorded cut; absolute argv/cwd are historical provenance. No archive is a build dependency."
+  },
+  "actual_parent_review": {
+    "parent": "c5d1e29754c666308aa3ee74c68e579292fce7fb",
+    "seams": "Incoming30/55/404 add left/right bitwise-assignment warning tasks/guards,400 class-name NULL/NaN define conversion,283 coalescing stdClass newborn-receipt paths,408 non-NaN float property-empty truth and156 exact-int assigned-call return eligibility. These disjoint guards do not change409 or list source paths, task ownership, compiler lines or NULL descent.",
+    "joined_actor": "No concrete semantic interaction found; pointwise composition and exact FF review add no replay credit.",
+    "composition": {
+      "runtime_delta": [
+        "spec/semantics/409-list-missing-warnings.watsup"
+      ],
+      "modules": 399,
+      "tested_leaf": "1e5e02b466eefd72f79137b066bcc34591dacb40",
+      "checks": "409 and six new tests plus the two affected one-line A4 control files retain exact tested bytes; every other parent runtime/module and inventory row/field is retained; the combined checkpoint preserves all other parent checkpoints.",
+      "joined_actor": "No concrete interaction; no new actor or renewed agreement credit.",
+      "runtime_diff_sha256": "365855d321b8ad86acff9b97b9717a6b0cdbd9d753ad807ce069425788376539"
+    }
+  },
+  "remaining": [
+    "Reference nesting, nested literal/call/wider RHS producers and non-CV target leaves.",
+    "Undefined-CV/null/lossy-float key warning producers and scalar/object destructuring diagnostic callbacks.",
+    "Wider callbacks, suspension and lifecycle; full array/diagnostic/core closure and final offline portability."
+  ]
+}

@@ -18,13 +18,24 @@ The paused ownership check validates the live object graph without requiring
 creation history for this intrinsic object.
 
 Global constant initializers additionally retain nonowning birth receipts for
-zero-argument stdClass NEW, including nested array, ternary and coalescing leaves.
+stdClass NEW, including nested array, ternary and coalescing leaves.
 Actual source paths and earlier facts guard births; query results share the live
 objects, while rejected duplicate candidates retire and their nonowning birth
 history remains.
 The [nested-birth review](../../coverage/semantics/global-constant-stdclass-new-review.json)
 and [coalescing review](../../coverage/semantics/global-constant-stdclass-coalesce-review.json)
 keep these bounded producer contracts separate from ordinary stdClass creation.
+
+The constant-AST path also evaluates and drops ordinary positional and uniquely
+named argument values when no constructor exists, including unknown names.
+Argument Errors release earlier values and the unfinished target, leave no
+constant row, and allow a distinct fresh-eval retry. The
+[argument review](../../coverage/semantics/global-constant-stdclass-arguments-review.json)
+checks donor owners, actual value destructors and ordinary storage retirement.
+The immediate argument discard leaves CALLED unchanged; normal storage
+retirement may later set it. Duplicate names remain Unsupported: native PHP retains the rejected current value until shutdown, which
+the current argument table does not yet model. References, unpacking, defaults
+and wider lifecycle behavior remain partial.
 
 Nonempty array and scalar casts now populate genuine property storage, with
 shared-table COW, clone, array round trips and callback-sensitive NaN operands.
@@ -33,6 +44,7 @@ boundaries; [its ledger](../../coverage/semantics/object-casts-review.json) keep
 the new source/state cuts separate from the empty-object baseline.
 
 The identity rules are in `130-stdclass-runtime.watsup`. [The review](../../coverage/semantics/stdclass-review.json)
-binds source and ownership checks. [No-constructor allocation arguments](SOURCE-NOCTOR-ARGS.md)
-now cover argument effects for this class. Wider property/lifecycle consumers,
+binds source and ownership checks. Ordinary
+[no-constructor allocation arguments](SOURCE-NOCTOR-ARGS.md) have their separate
+runtime contract. Wider property/lifecycle consumers,
 methods and other internal-class bodies remain required.

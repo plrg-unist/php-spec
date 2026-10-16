@@ -45,7 +45,7 @@ also admit live WeakMap and WeakReference objects, including wrappers with expir
 referents. Their second implicit string cast fails quietly without reading private
 entries or referents. Saved text, operand direction, copied values and retained
 cells remain authoritative; nonzero array/property leaves skip later casts.
-Existing pair, explicit-cast and producer/lifetime domains are unchanged.
+Existing explicit-cast and producer/lifetime domains are unchanged.
 
 [Live WeakMap pairs](../../coverage/semantics/weakmap-comparison-review.json)
 also return order zero before recursion protection or any private-entry traversal.
@@ -63,8 +63,21 @@ contract; other internal parents remain unsupported. Neither an effective
 `__toString` nor an expired weak referent changes the class mismatch. The seven
 operators retain the existing greater-operand reversal, so `<=>` returns +1 both
 ways while `>` and `>=` stay false both ways. The mismatch adds no roots or guards;
-array and declared-property scans stop before later leaves. Other counterpart tags,
-numeric protocols and wider producers/lifetimes remain partial.
+array and declared-property scans stop before later leaves. Wider producer and
+lifetime forms remain partial.
+
+[Finite internal WeakMap mismatches](../../coverage/semantics/weakmap-internal-comparison-review.json)
+also admit allocated nonfreeing builtin Throwable kinds, actual Generator/Fiber
+and object-body-normalized real/named Closures. Zend selects the left comparison
+handler; Closure falls back to standard comparison when the handler pointers differ.
+Class mismatch returns +1 in both directions without inspecting captures, saved VMs,
+private entries, formatter fields or caches. An exact unchanged-state effect and
+negated guard on the older Throwable refusal keep the routes disjoint; non-map
+Throwable property comparison remains unsupported. Three exact originals and
+468 Boolean premises/16 actual steps cover direct operator rows, closed and paused/
+suspended VMs, warmed Exception bytes, zero-prefix aggregates and skipped real tails.
+Other Closure representations, internal/custom counterparts and wider lifetimes
+remain partial.
 
 [Generator/Generator and Fiber/Fiber pairs](../../coverage/semantics/generator-fiber-comparison-review.json)
 return order zero through the standard zero-default-property shortcut. The pair

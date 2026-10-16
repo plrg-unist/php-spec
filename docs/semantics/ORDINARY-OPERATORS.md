@@ -231,8 +231,24 @@ safe target; it never rereads the RHS. Three exact originals and 267 author plus
 137 independent SL premises pass in the
 [RHS modulo ledger](../../coverage/semantics/modassign-right-warning-review.json).
 Fresh cache/source/line/range guards, actual cells/owners, default Deprecated and
-budgets are covered; pure refusals establish no wider execution. Both-fractional
-operands, initial references/copies, unsafe targets and wider lifecycle remain partial.
+budgets are covered; pure refusals establish no wider execution. Wider operand
+combinations, initial references/copies, unsafe targets and wider lifecycle remain partial.
+
+For two initially fractional-float plain CVs, `%=` captures LEFT before its first
+deprecation, then reads the RHS after that callback. Captured `12` with the new
+`5.5` captures divisor `5` before the second deprecation; later writes `88`/`7`
+still store `2`, leaving late alias `88` detached. A quiet integer `5` after the
+first callback instead reaches the existing modulo commit with one diagnostic.
+Either supplied handler throw cancels storage and preserves its Exception, callback
+writes and alias. Captured `0.5` remains zero despite a second callback writing `7`:
+one default Deprecated precedes the original-line `DivisionByZeroError`, without
+storage or detachment. Five exact originals and 746 author plus 183 independent SL
+premises pass in the
+[ordered modulo ledger](../../coverage/semantics/modassign-both-warning-review.json).
+Fresh first-LEFT and second-RHS guards, actual entered frames, quiet handoff,
+cells/owners and budgets are covered; LEFT remains historical at the second
+capture. Initial references/copies, other RHS conversions, unsafe or rebound
+bindings and wider callbacks/lifecycle remain partial; pure projections are refusals only.
 
 For distinct initially plain CVs, `<<=` and `>>=` keep a fractional-float left
 conversion before their deprecation and read the live quiet integer count afterward.
@@ -259,8 +275,25 @@ SL premises pass in the
 [RHS shift ledger](../../coverage/semantics/shiftassign-right-warning-review.json).
 Both source directions, fresh cache/source/op/line guards, actual cells/owners,
 default Deprecated and budgets are covered. Pure projections establish refusals
-only. Both-fractional operands, initial references/copies, unsafe targets and wider
-lifecycle remain partial; earlier modulo/LEFT-shift contracts stay unchanged.
+only. Wider operand combinations, initial references/copies, unsafe targets and
+wider lifecycle remain partial; earlier modulo/LEFT-shift contracts stay unchanged.
+
+For two initially fractional-float plain CVs, `<<=`/`>>=` retain LEFT before its
+first deprecation, then read the live count after that callback. Captured `-12`
+with the new `2.5` captures count `2` before the second deprecation; later writes
+`88`/`1` still store `-48` or `-3` and detach late alias `88`. A quiet integer
+count `2` after the first callback instead reaches the existing shift commit with
+one diagnostic, leaving alias `99`. Either supplied handler throw cancels storage,
+preserving the same Exception, callback writes, destination and alias write-through.
+Cached `-1` from `-1.5` still raises the original-line `ArithmeticError` after its
+default Deprecated even if the second callback writes positive `2`, without
+storage or detachment. Six exact originals and 989 author plus 183 independent SL
+premises pass in the
+[ordered shift ledger](../../coverage/semantics/shiftassign-both-warning-review.json).
+Both AST/OP pairs, fresh first-LEFT/second-count guards, actual entered frames,
+quiet handoff, cells/owners and budgets are covered. LEFT stays historical at
+second capture; pure projections are refusals only. Initial references/copies,
+other count conversions, unsafe bindings/targets and wider callbacks/lifecycle remain partial.
 
 For distinct initially plain CVs, numeric `&=`, `|=` and `^=` keep a fractional
 LEFT conversion before deprecation and read the live quiet integer RHS afterward.
@@ -275,6 +308,20 @@ Fresh cache/source/op/line guards, actual cells/owners and budgets are covered;
 pure projections establish refusals only. Initial references/copies, warning or
 noninteger RHS, unsafe targets and wider lifecycle remain partial. Initial float
 LEFT/quiet integer RHS bypasses Zend's separate two-string specialization.
+
+With a quiet signed-64-bit integer LEFT, distinct initially plain CV numeric
+`&=`, `|=` and `^=` keep both converted longs through fractional-RHS deprecation.
+Captured12/5 from5.5 stores4/13/9 despite callback99/10 and detaches a late alias;
+a supplied handler Exception cancels storage and preserves callback writes, the
+same Throwable and alias write-through. A negative converted RHS remains an
+ordinary bit mask: captured12/(-1) stores XOR(-13), with default Deprecated at
+RHSline16. Only the safe original target is rechecked; the numeric RHS is not reread.
+Five exact originals and 605 author plus 119 independent SL premises pass in the
+[RHS bitwise ledger](../../coverage/semantics/bitassign-right-warning-review.json).
+All three source/OP pairs, fresh both-cache/source/line/range guards, actual cells/
+owners and budgets are covered; pure projections establish refusals only.
+Both-fractional operands, initial references/copies, unsafe targets and wider
+lifecycle remain partial. Earlier modulo/shift/LEFT-bitwise contracts stay unchanged.
 
 Arithmetic and bitwise conversion use the existing pure SpecTec numeric and byte
 helpers, including signed 64-bit boundaries, binary64 values, string operands,

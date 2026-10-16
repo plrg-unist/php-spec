@@ -1,0 +1,32 @@
+[
+  {
+    "id": "generator-pending-init-send-detached-object-cache-and-real-tail",
+    "purpose": "A pending detached middle ignores a temporary send payload, returns its copied object cache without advancing, then consumes the actual child return/tail through its active outer.",
+    "source": "<?php\nclass PendingSendCache17 { function __destruct() { echo \"A|\"; } }\nclass PendingSendArgument17 { function __destruct() { echo \"S|\"; } }\nfunction pendingSendChild17() { echo \"C|\"; yield new PendingSendCache17; echo \"L|\"; return 23; }\nfunction pendingSendMiddle17() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"R|\", $reply, \"|\"; yield 13; return 29; } finally { echo \"J|\"; } }\nfunction pendingSendOuter17() { try { echo \"O|\"; $reply = yield from $GLOBALS[\"middle\"]; echo \"Q|\", $reply, \"|\"; } finally { echo \"F|\"; } }\n$child = pendingSendChild17(); $middle = pendingSendMiddle17(); $outer = pendingSendOuter17();\necho \"P|\"; $outer->rewind(); $child->next();\necho \"H|\", $middle->current() instanceof PendingSendCache17 ? 1 : 0, \"|\"; unset($child); echo \"D|\";\n$snapshot = $middle->send(new PendingSendArgument17); echo \"V|\", $snapshot instanceof PendingSendCache17 ? 1 : 0, \"|K|\", $middle->key() === null ? 1 : 0, \"|\";\n$outer->next(); echo \"N|\", $outer->current(), \"|\"; $outer->next(); unset($outer, $middle); echo \"U|\"; unset($snapshot); echo \"E\";\n",
+    "source_sha256": "2e01943cf5aa5c43e563b2d9e8dc27a6c88539b65acde4a5e661364077357a6c",
+    "expected_model": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|M|C|L|H|1|D|S|V|1|K|1|R|23|N|13|J|Q|29|F|U|A|E"
+  },
+  {
+    "id": "generator-pending-init-send-detached-false-cache-sole-receiver",
+    "purpose": "Argument evaluation retires outer/middle CVs before send; the actual method receiver alone retains the pending detached middle and its present-false cache through argument cleanup and restored middle finally.",
+    "source": "<?php\nclass PendingSoleArgument17 { function __destruct() { echo \"S|\"; } }\nfunction pendingSoleChild17() { echo \"C|\"; yield false; echo \"L|\"; return 23; }\nfunction pendingSoleMiddle17() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"BAD|\"; } finally { echo \"J|\"; } }\nfunction pendingSoleOuter17() { try { echo \"O|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD|\"; } finally { echo \"F|\"; } }\nfunction pendingSoleDrop17() { unset($GLOBALS[\"outer\"], $GLOBALS[\"middle\"]); echo \"D|\"; return new PendingSoleArgument17; }\n$child = pendingSoleChild17(); $middle = pendingSoleMiddle17(); $outer = pendingSoleOuter17();\necho \"P|\"; $outer->rewind(); $child->next(); echo \"H|\", $middle->current() === false ? 1 : 0, \"|\"; unset($child);\n$answer = $middle->send(pendingSoleDrop17()); echo \"V|\", $answer === false ? 1 : 0, \"|E\";\n",
+    "source_sha256": "963aee50276927a3df40b891d5626af884e1c94710aafd90adbf5f648c09011a",
+    "expected_model": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|M|C|L|H|1|F|D|S|J|V|1|E"
+  },
+  {
+    "id": "generator-pending-init-send-preserves-two-real-first-yield-histories",
+    "purpose": "Pending SEND after inherited startup preserves a false first-yield flag; prior direct initialization preserves true through later synthetic outer resumption and pending SEND. Real rewind calls discriminate both histories. A real forwarded outer send then checks synthetic resume admission and preservation through a later own yield.",
+    "source": "<?php\nfunction pendingHistoryChildA17() { echo \"CA|\"; yield 5; echo \"LA|\"; return 23; }\nfunction pendingHistoryMiddleA17() { try { $reply = yield from $GLOBALS[\"childA\"]; echo \"RA|\", $reply, \"|\"; yield 9; } finally { echo \"JA|\"; } }\nfunction pendingHistoryOuterA17() { try { yield from $GLOBALS[\"middleA\"]; } finally { echo \"FA|\"; } }\n$childA = pendingHistoryChildA17(); $middleA = pendingHistoryMiddleA17(); $outerA = pendingHistoryOuterA17();\necho \"P|\"; $outerA->rewind(); $childA->next(); $middleA->current(); echo \"SA|\", $middleA->send(null), \"|\";\ntry { $middleA->rewind(); echo \"BAD|\"; } catch (Exception $errorA) { echo \"IA|\", $errorA->getMessage() === \"Cannot rewind a generator that was already run\" ? 1 : 0, \"|\"; }\n$outerA->next(); $outerA->next(); unset($outerA, $middleA, $childA);\nfunction pendingHistoryChildB17() { echo \"CB|\"; yield 7; echo \"LB|\"; return 23; }\nfunction pendingHistoryMiddleB17() { try { yield 0; $reply = yield from $GLOBALS[\"childB\"]; echo \"RB|\", $reply, \"|\"; yield 9; } finally { echo \"JB|\"; } }\nfunction pendingHistoryOuterB17() { try { yield from $GLOBALS[\"middleB\"]; } finally { echo \"FB|\"; } }\n$childB = pendingHistoryChildB17(); $middleB = pendingHistoryMiddleB17(); $outerB = pendingHistoryOuterB17();\n$middleB->rewind(); $outerB->rewind(); $outerB->next(); $childB->next(); $middleB->current(); echo \"SB|\", $middleB->send(null), \"|\";\ntry { $middleB->rewind(); echo \"IB|\"; } catch (Exception $errorB) { echo \"BAD|\"; }\necho \"VB|\", $outerB->send(11), \"|\";\ntry { $middleB->rewind(); echo \"KB|\"; } catch (Exception $errorC) { echo \"BAD|\"; }\n$outerB->next(); unset($outerB, $middleB, $childB); echo \"E\";\n",
+    "source_sha256": "67497d87836ce4cc6f91a64199e199a336f7c2d329b4420e9850075fec823ba1",
+    "expected_model": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|CA|LA|SA|5|IA|1|RA|23|JA|FA|CB|LB|SB|7|IB|VB|RB|23|9|KB|JB|FB|E"
+  }
+]

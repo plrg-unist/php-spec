@@ -24,6 +24,137 @@ Earlier integer/call, scalar/string and non-NaN float cuts retain their identiti
 [primitive results](coverage/semantics/magic-empty-scalars-review.json),
 [float results](coverage/semantics/magic-empty-floats-review.json).
 
+Pointwise composition over 2d5bd20c1 preserves the incoming399-module parent.
+Source3 and normal141/throw101 retain their separate cuts; no joined actor or renewed credit.
+
+Both-fractional plain-CV `<<=`/`>>=` now order both conversion deprecations.
+LEFT (-12) survives the first callback, then live 2.5 becomes cached count 2 before
+the second; later 88/1 still stores (-48)/(-3) and detaches alias 88. A quiet count 2
+after the first callback skips the second diagnostic and reaches the unchanged
+shift commit, detaching alias 99. First/second supplied throws preserve the same
+Exception, callback effects, destination 100 and alias write-through. Independent
+cached (-1) from -1.5 still raises ArithmeticError at line 25 after the second default
+Deprecated despite live count 2, without storage or detachment.
+Six exact originals pass at e9144f0d7; author 227/227/144/211/180 plus independent 183
+SL premises pass 1172 at 01ce8b03b/399. Both AST/OP pairs, fresh first-LEFT/second-count
+guards, actual entered frames, quiet handoff, real cells/owners and budgets are
+covered; LEFT stays historical at second capture. Native/baseline/retained checked
+prep/syntax retain 0. Initial references/copies, wider count conversions, unsafe
+bindings/targets and wider callbacks/lifecycle remain partial; pure projections
+establish refusals only.
+[Ordered shift ledger](coverage/semantics/shiftassign-both-warning-review.json).
+OP12 stays paused; earlier accepted operator cuts retain 0 renewed credit.
+
+Composed over 440cf9c2b/399 after pointwise review of abrupt reference returns,
+WeakMap comparison/array casts, Generator send, stdClass/define and recursive-list
+seams. Source6/state1172 retain private cuts; no joined actor, replay or renewed credit.
+
+Live nonfreeing WeakMap array casts now create fresh mutable empty arrays,
+including populated maps, without exporting entries or retaining their key/value.
+Two exact originals and 177 Boolean premises (168 setup + 9 pure)/6 actual casts pass
+at 243651a80/399. Empty CV/temporary and real function fronts preserve private owner1,
+fresh result IDs, actual COW/reference history, key retirement and budget resume.
+Native/baseline/preparation/EL retain zero credit; no actor failed. Pure pin/bounds
+controls establish refusal only. Freeing casts and wider map producers/lifetimes
+remain partial. [Array-cast review](coverage/semantics/weakmap-array-cast-review.json).
+
+Composed over dc87cf01d/399 after pointwise review of abrupt reference returns,
+stdClass constant births, define flags, modulo and list dispatch. The two source
+agreements and 177 state premises retain their private cut; no joined actor or renewed credit.
+
+Both-fractional plain-CV `%=` now orders the two conversion deprecations. LEFT12
+is retained through the first callback, then live RHS5.5 becomes cached5 before
+the second; later88/7 still stores2 and detaches alias88. A quiet RHS5 after the
+first callback instead skips the second diagnostic and uses the unchanged modulo
+commit, leaving alias99 detached. Either supplied throw preserves the same
+Exception, callback effects, destination100 and alias write-through. Independent
+cached0 from0.5 still raises DivisionByZeroError at line25 after the second default
+Deprecated despite liveRHS7, without storage or detachment.
+Five exact originals pass at3964e0453; author223/140/207/176 plus independent183 SL
+premises pass929 at70a8c13cc/399. Fresh first-LEFT/second-RHS guards, actual entered
+frames, quiet handoff, real cells/owners and budgets are covered; LEFT stays
+historical at the second capture. Native/baseline/retained checked prep/syntax
+retain0. Initial references/copies, wider RHS conversions, unsafe bindings/targets
+and wider callbacks/lifecycle remain partial; pure projections establish refusals
+only. [Ordered modulo ledger](coverage/semantics/modassign-both-warning-review.json).
+OP12 stays paused; earlier accepted operator cuts retain0 renewed credit.
+
+Composed over 573d02d38/399 after pointwise review of abrupt reference returns,
+WeakMap/Throwable comparison, Generator send, stdClass/define and recursive-list
+seams. Source5/state929 retain private cuts; no joined actor, replay or renewed credit.
+
+Int/bool `define` names now accept nonbool false scalar flags: integer zero,
+empty or `"0"` strings and signed float zero. Weak calls convert only the API name,
+retaining the raw flag; strict parameter-1 errors precede flag rejection after all
+argument effects. Duplicate callbacks preserve converted empty-name traces, raw
+request flags, old bindings, sibling effects and the original Exception/caller result.
+Four exact originals agree at b00e6346. All 595 public premises pass: author
+274+80+108 and independent 133 across four groups, covering fresh publication,
+default duplication and handler return/throw, strict errors, full discard equality,
+carrier and source refusals and budgets. The unchanged Unsupported baseline retains zero
+credit; a fixture name collision was fixed before execution. Runtime adds only 20
+module400 lines and reuses existing receive/duplicate/trace code with a bounded
+marker-domain extension. Float/null names with these flags, truthy/NULL/NaN flags,
+owning/wider values and full family closure remain partial.
+[False-flag name review](coverage/semantics/define-scalar-false-flag-review.json).
+
+Pointwise composition over 108b026fe preserves the incoming 399-module parent.
+Source4/state595 retain their private cuts; shared selectors are disjoint, so no
+joined actor or renewed execution claim is warranted.
+
+WeakMap now compares with normalized real/named Closure, actual Generator/Fiber
+and finite builtin Throwable objects as uncomparable +1 in both directions.
+Class mismatch precedes private entries, captures, VMs and formatter/cache fields;
+nonzero aggregate leaves skip later real casts. The old Throwable effect refusal
+and admitted route are explicitly disjoint. Three exact originals and 468 Boolean
+premises (438 setup + 30 pure)/16 actual steps pass at the retained be386/2f97 cuts,
+covering all seven operators, VM phases, warm caches, private owner1 and budgets.
+The oversized originals' three timeouts, initial reserved-constructor fixture,
+older effect refusal and pre-main fixture failures retain zero credit; two smaller
+complete author originals preserve the intended coverage. Other Closure bodies,
+internal/custom counterparts and wider weak producers/lifetimes remain partial.
+[Internal WeakMap review](coverage/semantics/weakmap-internal-comparison-review.json).
+
+Composed over e50d681b7/399 after pointwise review of shared tasks, typed returns,
+Generator/delegation, constants, assignments and property/list dispatch. Source3
+and state468 retain their private cuts; no joined actor or renewed credit.
+
+With a quiet integer LEFT, plain-CV numeric `&=`/`|=`/`^=` now retain both longs
+through fractional-RHS deprecation. Captured12/5 from5.5 stores4/13/9 despite
+callback99/10 and detaches a late alias; supplied throw preserves callback writes,
+the same Exception and alias write-through. Independent negative RHS(-1) from-1.5
+still stores XOR-13, with original-line default Deprecated and detached alias99.
+Five exact originals pass at9bcb1a3c9; author155/155/155/140 plus independent119
+SL premises pass724 at3f53cfce6/399. Fresh both-cache/source/op/line/range guards,
+actual cells/owners and budgets are covered; only the safe target is rechecked
+after conversion. Native/baseline/retained checked prep/syntax retain0; pure ready
+projections establish refusals only. Both-fractional operands, initial references/
+copies, unsafe targets and wider callbacks/lifecycle remain partial; OP12 stays paused.
+[RHS bitwise-assignment ledger](coverage/semantics/bitassign-right-warning-review.json).
+
+Composed over 67c660172/399 after pointwise review of typed returns, Generator,
+stdClass/define, property-empty/list and weak comparison seams. Source5/state724
+retain their private cuts; no joined actor, replay or renewed credit.
+
+NaN third flags with non-NUL `::` define names now emit their conversion Warning
+before the name ValueError, skipping the ignored-true Warning. Returning handlers
+retain raw captures and callback effects; first-handler throws cancel the body
+while preserving the original Exception and inner binding. Strict calls reject the
+raw float after argument effects without either Warning.
+Four exact originals agree at 0dd57949; default and false-return cases each retain
+one expected PHP-stderr Warning. All 441 public premises pass: author 96+147+72 and
+independent 126 across four groups, covering actual dispatch/handler/resume/discard,
+raw API/caller traces, canonical-literal versus runtime NaN captures, source/carrier
+refusals and budgets. The unchanged Unsupported baseline retains zero credit;
+copied rule labels were fixed before execution. Runtime adds one tag and 51
+module400 lines; existing marker guards stay exact. NUL/coerced names, owning/wider
+values and wider NaN producers/payloads remain partial. Native bit identity is not
+claimed. [NaN class-name review](coverage/semantics/define-class-nan-flag-review.json).
+
+Pointwise composition over e70950fc preserves the incoming 399-module parent.
+Source4/state441 retain their private cuts; independent seam review warrants no
+joined actor or renewed execution claim.
+
 Plain-CV numeric `&=`/`|=`/`^=` now retain their fractional LEFT conversion
 through deprecation handlers, then read the live quiet integer RHS. Captured12/live5
 stores4/13/9 despite callback99 and detaches a late alias; supplied throw cancels
@@ -141,30 +272,32 @@ The pointwise 399-module composition over 6f3488104 preserves incoming list,
 property, arithmetic, constants and return paths. Source2/state355 retain their
 private cut; independent seam review warrants no joined actor or renewed credit.
 
-Missing-key Warning now continues one nested by-value destructuring layer from
-a direct CV, retaining the current inner array and the outer continuation separately.
-Outer missing keys supply null to child reads without another warning; inner missing
-fetches still supply null after callback insertion/rebinding. Later items/results use
-the captured tables, including shared embedded references. Child entry and the next
-outer item use their inherited compiler locations. During throw cleanup, discarding
-the inner warning task can leave the outer task owning parent/child/reference cells;
-later unwind retires all otherwise unowned nodes while preserving prior stores and
-the supplied Throwable.
-Five A4 exact originals agree at a5628799f; five SL fronts pass637 premises
-(623 Boolean +14 raw steps) at 31f2b999c, checking source/shape/depth/ref/line refusals,
-real frames, both owners, keyed/shared reads, null descent, staged cleanup and budgets.
-The [nested review](coverage/semantics/list-nested-missing-warning-review.json) retains
-the unchanged Unsupported baseline with zero agreement credit.
+Missing-key Warning continues finite recursive by-value patterns from direct CV
+or literal arrays, with quiet keys and CV leaves. Each pending pattern retains
+its table and compiler location. Literal roots authenticate exact pool identity
+or a nonconstant runtime descriptor; children retain historical captured tables.
+A callback can leave inner reads at33/6/7, the returned shared row at22/88 and a
+rebound live CV at66/44. Missing ancestors descend silently through null.
+Known-result effects precede result delivery; supplied throws cancel stores and
+pending delivery, retire task owners in order and preserve permanent pool owners.
+Five A6 exact originals agree at 00ac419b9; five SL fronts pass809 premises
+(792 Boolean +17 raw steps) at 604e9b4fc, checking root authority, real frames,
+NULL scheduling/descent, shared reads, pool/runtime cleanup and budgets.
+Three inherited literal-root refusals now project unsupported scalar roots;
+equivalent controls execute on new A6 fronts without replaying old actors.
+The [recursive literal review](coverage/semantics/list-recursive-literal-missing-warning-review.json)
+retains the unchanged Unsupported baseline with zero agreement credit.
 Earlier [CV source6/state468](coverage/semantics/list-missing-warning-review.json),
-[literal source6/state417](coverage/semantics/list-literal-missing-warning-review.json)
-and [mixed source5/state591](coverage/semantics/list-reference-missing-warning-review.json)
-retain their original cuts without replay. Flat literals retain array snapshots;
-flat mixed patterns retain the source cell through value replacement or CV rebind.
-Quiet compiled/implicit keys and CV leaves bound these slices; deeper/reference
-nesting, wider RHS/targets, scalar diagnostic callbacks and lifecycle remain partial.
-The pointwise399-module composition overdc3c1fb9e preserves incoming shift,
-return, constant/define and property-empty paths. Source5/state637 retain their
-private cuts; seam review warrants no joined actor or renewed agreement credit.
+[literal source6/state417](coverage/semantics/list-literal-missing-warning-review.json),
+[mixed source5/state591](coverage/semantics/list-reference-missing-warning-review.json),
+[one-layer source5/state637](coverage/semantics/list-nested-missing-warning-review.json)
+and [recursive CV source5/state738](coverage/semantics/list-recursive-missing-warning-review.json)
+retain their original cuts. Flat mixed patterns retain the source cell through
+value replacement or CV rebind. Reference nesting, call/wider RHS or targets,
+scalar diagnostic callbacks and lifecycle remain partial.
+The pointwise399-module composition over0181f6333 preserves incoming Generator,
+reference-unwind, stdClass/WeakMap, define and modulo paths. Source5/state809 retain
+their private cuts; seam review warrants no joined actor or renewed agreement credit.
 
 Plain-CV `%=` now keeps both converted longs through a fractional-RHS deprecation.
 Captured12/5 stores2 despite callback99/7 and detaches a late target alias; supplied
@@ -386,6 +519,22 @@ defaults and wider producers remain partial.
 Pointwise composition over c53bf2a3d preserves incoming399 modules, define,
 shift, typed-return, magic-empty and nested-list selectors. Source3/state817
 retain their private cuts; no joined actor or renewed credit.
+
+Global stdClass constant-AST NEW now evaluates ordinary positional and uniquely
+named ignored arguments through227. Exact source/value-table guards retain
+argument owners; saved incomplete birth and pending binding survive context
+clearing and avoid constructor-failed marking at the immediate discard. Source3
+and author376/independent320 premises pass696, checking donor/array retirement,
+argument Error, distinct fresh-eval retry and real value destructors. Normal
+storage retirement later uses its ordinary CALLED marker and physical pin.
+The first peer fixture assumed late marker absence; its corrected pin check
+renews only that failed packet, with original failure0 preserved.
+The original source with duplicate argument names exposes a real lifetime
+mismatch and retains0: native keeps the rejected current value until shutdown.
+The source guard requires unique names; duplicate argument names require a
+later lifetime milestone.
+References, unpacking, defaults and wider lifecycle forms remain partial.
+[Argument review](coverage/semantics/global-constant-stdclass-arguments-review.json).
 
 Selected inherited `__unset(string): void` now dispatches direct CV/literal-name
 access to a declared private property. Accessible public unset skips magic;
@@ -2574,12 +2723,32 @@ Runtime/source evidence retains `10c4c10bf`; fixture-only corrections and indepe
 checks retain their `c150ad30a`/`5ee387433` cuts. Native-only observations, the
 unchanged baseline and original observer failures earn zero model agreement. See the
 [nested-detached ledger](coverage/semantics/generator-call-unpack-nested-detached-review.json).
-Owning copied returns, pending-initialization send/throw, ordinary Aggregate call
+At that cut owning copied returns, pending-initialization send/throw, ordinary Aggregate call
 operands, valid-key by-reference targets and wider callback/Fiber interactions
-remain required.
+remained required.
 The399-module composition over `ee0b6af27` preserves the tested Generator rules
 and the parent's disjoint storage tasks/manifest. Independent pointwise review
 and inventory pass; no joined runtime actor adds execution credit.
+
+Pending `send` on an authenticated detached Generator with a nonowning copied
+return now clears initialization and snapshots the raw current without advancing.
+Yield-from has no native send target, so no argument buffer is added. Argument
+cleanup precedes receiver release, preserving a sole method receiver; returned
+rows survive a reference-cache rewrite and an argument-destructor throw preserves
+the cleared bit for later finally. Shared internal resumes now preserve actual-root
+first-yield history, including a previously initialized middle whose rewind stays
+allowed after shared advancement. The
+[pending-send ledger](coverage/semantics/generator-pending-init-send-review.json)
+retains five exact original-source agreements and strict399 at runtime `0969bd40c`,
+plus five reached groups/468 physical premises (author308 + independent160) at
+fixture-only `4efd38733`. The combined five-fixture parse/elab gate adds no runtime
+agreement. Native-only observations, unchanged Unsupported baseline and original
+preparation/observer failures retain zero agreement. Pending sends to live yield
+targets, owning copied returns and pending throw remain Unsupported; broader
+callback/Fiber interactions remain required.
+The399-module composition over `e319c9e89` preserves both tested Generator
+modules and the parent's runtime/manifest. Independent pointwise review and
+inventory pass; no joined actor adds execution credit.
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or
@@ -8591,10 +8760,13 @@ failures and interrupted evidence.
   selected-reference recheck. M80 adds the exact nonnullable builtin-int
   no-argument assignment source: a restored NULL fails return verification,
   cancels its pending Notice and re-enters the outer finalizer before the
-  original TypeError reaches the caller.
+  original TypeError reaches the caller. M81 restores the local catch and
+  consumed return cursor when an old C destructor throws an Exception
+  during selected reference replacement. M82 admits modeled built-in
+  Exception descendants at that same authenticated destructor exit.
   Other VALUE signatures/layouts, general CONST/other
   NULL and multiple-active histories, genuinely released
-  CV targets, destructor throw/reentry, real suspension and wider typed consumers
+  CV targets, wider destructor throw/reentry, real suspension and wider typed consumers
   remain open. [String contract](docs/semantics/USER-STRING.md),
   [finally contract](docs/semantics/SOURCE-FINALLY.md).
 - Objects and lifetime: remaining static members, effectful trait data composition,
@@ -8667,9 +8839,47 @@ delivered Notice, second `F:0`, caller error/r7, LINE refusal and budget.
 No prior return fixture was replayed. Only the exact builtin-int
 no-argument assigned source is newly admitted.
 [M80 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M81's used `&f():?C` returns a named no-argument old call directly or through
+`($x = old_value())`; selected-y replacement releases the old object and its
+destructor emits `D` then throws an Exception. The pending selected return
+retains that Exception and a nonowning old cursor after old HOBJECT retirement.
+The bounded pending-finish rule reconstructs the source replay owners, so the
+same Exception reaches local `CE` rather than outer `OE`; consumed replay then
+restores caller NULL with one old-line VALUE Notice. Native2 at `e70950fcb`/399
+has `F:0/1;I;D;I;CE;A;S`, detached `rNULL/b7` and xNULL/y0. The unchanged
+model's two NORMAL outputs route to OE and have zero agreements. A 44-premise
+source-reached diagnostic isolates the old premature THROW_SEARCH with zero
+repair credit. Strict and both original-source agreements pass at clean
+`7bc06612d`/399. One assigned 122-premise reached fixture proves pending
+Exception transfer, local catch identity, root-free consumed NULL/new Notice,
+real operation-exit descriptor admission, heap-equal LINE-only public refusal
+and pending-exit budget equality. The first public state failure at `75c47721a`
+has zero full-state credit; only affected guards and checks were rerun.
+This covers one ordinary C with a throwing destructor, exact Exception,
+named no-argument old source, nullable class declaration and single cursor.
+Other exception types, reentrant destructor histories and wider returns remain
+open. [M81 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M82 changes only the two exact Exception KIND guards at the selected return's
+pending destructor exit and saved descriptor to use the existing modeled
+Exception hierarchy. New direct/assigned `&f():?C` originals have C's
+destructor throw `RuntimeException("boom82")`; local `catch (Exception)`
+reports subtype and message as `CE:1/1`. Native2 at `108b026fe`/399 ends
+with `F:0/1;I;D;I;CE:1/1;A;S`, detached `rNULL/b7` and one old-line Notice.
+The unchanged model routes both to outer OE with r7/no Notice, giving zero
+agreements. Strict and both exact source agreements pass at private
+`345244d14`/399. One assigned 126-premise reached proof binds pending
+RuntimeException and boom82 message bytes at real OP_EXIT, the same object
+in the local superclass catch, retired old HOBJECT, root-free consumed
+NULL/new Notice, public descriptor/LINE-only refusal and exit-cut budget.
+The proof is one RuntimeException history; M81's exact Exception evidence is
+separate. Other admitted built-in Exception descendants lack focused validation;
+user-defined throwable subclasses, Error siblings, reentrant destructors and
+wider returns remain open. Public resumption from a normal pending-free
+operation-exit cursor is the next focused boundary.
+[M82 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
-genuinely released CV targets, destructor throw/reentry, real suspension and wider typed
+genuinely released CV targets, wider destructor throw/reentry, real suspension and wider typed
 consumers remain required.
 
 Rocq interaction-tree semantics and BOLA proofs follow completed PHP core.

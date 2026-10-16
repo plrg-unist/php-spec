@@ -697,7 +697,9 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.COMPLETION = UN
 def $scoped_select(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "WeakMap static method protocol"]
   -- if $ptlc($typed_callable_name(ptbytes_class)) = $ptascii("weakmap")
 def $clone_value(S, POBJECT n, z) = S[.COMPLETION = UNSUPPORTED "WeakMap clone protocol"] -- if $weakmap_at(S, n)
-def $cast_value(S, CASTARRAY, POBJECT n, z) = S[.COMPLETION = UNSUPPORTED "WeakMap array cast protocol"] -- if $weakmap_at(S, n)
+;; get_properties_for(ARRAY_CAST) returns NULL, including for populated maps.
+def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array(S, {ITEMS eps, NEXT 0, POSITIONS eps, SERIAL 0})
+  -- if $weakmap_at(S, n) /\ ~$instance_storage_freeing(S, n)
 def $object_foreach_reset(S, n) = S[.COMPLETION = UNSUPPORTED "WeakMap iteration protocol"] -- if $weakmap_at(S, n)
 def $property_unset_key_unshared(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "WeakMap property unset protocol"] -- if $weakmap_at(S, n)
 def $property_quiet_key(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "WeakMap quiet property protocol"] -- if $weakmap_at(S, n)
@@ -706,14 +708,20 @@ def $value_order(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*) = ORDE
   -- if n_left =/= n_right
   -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if $weakmap_at(S, n_left) /\ $weakmap_at(S, n_right)
-;; These opposite tags also use zend_std_compare_objects. Different classes
-;; return ZEND_UNCOMPARABLE (+1) in either direction before any property walk.
+;; These pairs use zend_std_compare_objects, including Closure's fallback for
+;; unlike compare handlers. Class mismatch precedes any property or body walk.
 dec $weakmap_standard_other(pobject) : bool
 def $weakmap_standard_other(STDINSTANCE) = true
 def $weakmap_standard_other(INSTANCE porigin) = true
 def $weakmap_standard_other(WEAKREFERENCE n_target?) = true
+def $weakmap_standard_other(THROWABLE pthrowable) = $throwable_kind(pthrowable.KIND)
+def $weakmap_standard_other(GENERATOR pgenerator) = true
+def $weakmap_standard_other(FIBER pfiber) = true
+def $weakmap_standard_other(pobject) = true
+  -- if $object_body(pobject) = REALCLOSURE porigin pitem* pstaticcell*
+def $weakmap_standard_other(pobject) = true
+  -- if $object_body(pobject) = NAMEDCLOSURE porigin
 def $weakmap_standard_other(pobject) = false -- otherwise
-dec $weakmap_standard_mismatch(pstate, nat, nat) : bool
 def $weakmap_standard_mismatch(S, n_left, n_right) = true
   -- if $(n_left < |S.OBJECTS|) /\ $(n_right < |S.OBJECTS|)
   -- if (HOBJECT n_left) <- S.ALLOCATIONS /\ (HOBJECT n_right) <- S.ALLOCATIONS
@@ -721,6 +729,8 @@ def $weakmap_standard_mismatch(S, n_left, n_right) = true
   -- if ($weakmap_at(S, n_left) /\ $weakmap_standard_other(S.OBJECTS[n_right])) \/ ($weakmap_at(S, n_right) /\ $weakmap_standard_other(S.OBJECTS[n_left]))
 def $weakmap_standard_mismatch(S, n_left, n_right) = false -- otherwise
 def $value_order(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*) = ORDER 1
+  -- if $weakmap_standard_mismatch(S, n_left, n_right)
+def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = (S, ORDER 1)
   -- if $weakmap_standard_mismatch(S, n_left, n_right)
 def $value_order(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*) = ORDERUNSUPPORTED "WeakMap comparison protocol"
   -- if n_left =/= n_right

@@ -75,8 +75,8 @@ def $list_missing_array(S, REFERENCE n_source) = $list_missing_array(S, KNOWN (P
   -- if S.STORE[n_source] = DEFINED (PARRAY n_array)
 def $list_missing_array(S, poperand) = eps -- otherwise
 
-;; One child layer is by value throughout. Its first fetch inherits the outer
-;; fetch line; the next outer item inherits the compiled nested-target line.
+;; Shape recursion consumes checked child subtrees; context recursion removes
+;; one item path while preserving the inherited compiler location.
 dec $list_missing_nested_items(phpType13*) : bool
 def $list_missing_nested_items(eps) = true
 def $list_missing_nested_items(ABSENT :: phpType13*) = $list_missing_nested_items(phpType13*)
@@ -84,8 +84,13 @@ def $list_missing_nested_items((NArrayItem phpType5 (NExprVariable phpType32 met
   -- if $cv_name(phpType32) = (n_name*)
 def $list_missing_nested_items((NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13*) = $list_missing_nested_items(phpType13*)
   -- if $list_pattern(expression) = (phpType13_child*)
-  -- if $list_missing_flat(phpType13_child*) /\ ~$list_references(phpType13_child*)
+  -- if $list_missing_nested_items(phpType13_child*)
 def $list_missing_nested_items(phpType13*) = false -- otherwise
+
+dec $list_missing_nested_rhs(expression) : bool
+def $list_missing_nested_rhs(expression) = true -- if $list_value_cv(expression) =/= eps
+def $list_missing_nested_rhs(NExprArray (SEQUENCE phpType13*) metadata) = true
+def $list_missing_nested_rhs(expression) = false -- otherwise
 
 dec $list_missing_nested_context(pstate, porigin) : int?
 def $list_missing_nested_context(S, porigin) = (z_initial)
@@ -94,18 +99,33 @@ def $list_missing_nested_context(S, porigin) = (z_initial)
   -- if ~$list_missing_flat(phpType13_all*) /\ $list_missing_nested_items(phpType13_all*)
   -- if $reference_origin_parent(porigin, 1) = ((porigin_assign, [PCFIELD 0]))
   -- if $origin_node(S.SOURCES, porigin_assign) = (NExprAssign expression_pattern expression_rhs metadata)
-  -- if $list_value_cv(expression_rhs) = (n_name*)
+  -- if $list_missing_nested_rhs(expression_rhs)
   -- if $code_expression_at_source(S, porigin_assign, [PCFIELD 1]) = (z_initial)
 def $list_missing_nested_context(S, porigin) = (z_child)
   -- if $origin_node(S.SOURCES, porigin) = (expression_pattern)
   -- if $list_pattern(expression_pattern) = (phpType13_child*)
-  -- if $list_missing_flat(phpType13_child*)
+  -- if $list_missing_nested_items(phpType13_child*)
   -- if $reference_origin_parent(porigin, 3) = ((porigin_outer, [PCFIELD 0, PCINDEX n_outer, PCFIELD 1]))
   -- if $list_missing_nested_context(S, porigin_outer) = (z_initial)
   -- if $origin_node(S.SOURCES, porigin_outer) = (expression_outer)
   -- if $list_pattern(expression_outer) = (phpType13_outer*)
   -- if $list_missing_item(S, porigin_outer, phpType13_outer*, 0, n_outer, z_initial) = ((expression_pattern, phpType13_tail*, z_child, pvalue, pkey))
 def $list_missing_nested_context(S, porigin) = eps -- otherwise
+
+;; Root operands keep literal pool/runtime authority. Child operands are saved
+;; fetch values, independent of a callback's later parent-table or cell writes.
+dec $list_missing_nested_operand_source(pstate, porigin, nat) : bool
+def $list_missing_nested_operand_source(S, porigin, n_array) = true
+  -- if $origin_node(S.SOURCES, porigin) = (expression_pattern)
+  -- if $reference_origin_parent(porigin, 1) = ((porigin_assign, [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin_assign) = (NExprAssign expression_pattern expression_rhs metadata)
+  -- if $origin_child((porigin_assign), [PCFIELD 1]) = (porigin_rhs)
+  -- if $list_missing_operand_source(S, porigin_rhs, expression_rhs, KNOWN (PARRAY n_array), false)
+def $list_missing_nested_operand_source(S, porigin, n_array) = true
+  -- if $reference_origin_parent(porigin, 3) = ((porigin_outer, [PCFIELD 0, PCINDEX n_outer, PCFIELD 1]))
+  -- if $list_missing_nested_context(S, porigin) =/= eps
+  -- if $list_missing_array(S, KNOWN (PARRAY n_array)) = (n_array)
+def $list_missing_nested_operand_source(S, porigin, n_array) = false -- otherwise
 
 ;; Source shape and compiler lines authenticate both the initial callback and
 ;; its saved continuation. The captured operand is a runtime fact, not a reread CV.
@@ -128,8 +148,8 @@ def $list_missing_source(S, KNOWN (PARRAY n_array), n, expression, phpType13*, z
   -- if $origin_node(S.SOURCES, porigin) = (expression_pattern)
   -- if $list_pattern(expression_pattern) = (phpType13_all*)
   -- if $list_missing_item(S, porigin, phpType13_all*, 0, n, z_initial) = ((expression, phpType13*, z, pvalue, pkey))
-  -- if $(z > 0 /\ n_array < |S.ARRAYS|)
-  -- if (HARRAY n_array) <- S.ALLOCATIONS
+  -- if $(z > 0)
+  -- if $list_missing_nested_operand_source(S, porigin, n_array)
 def $list_missing_source(S, poperand, n, expression, phpType13*, z, pkey) = false -- otherwise
 
 dec $list_missing_plan(pstate) : (poperand, nat, expression, phpType13*, int, pkey)?
