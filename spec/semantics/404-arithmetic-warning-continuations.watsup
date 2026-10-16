@@ -1689,3 +1689,111 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 8192
   -- if $integer_float_notices([PRECISIONLOSS], n_bits_right) = [(8192, perrorcall.MESSAGE)]
   -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE pintegeroperation.LINE
+
+;; Both-fractional shifts use the ordered captures, with shift-only source
+;; authority and signed integer operations at the final commit.
+dec $shiftassign_both_left_valid(pstate, pintegeroperation, nat, nat, nat, int, nat) : bool
+def $shiftassign_both_left_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, n_stage) = true
+  -- if $shiftassign_warning_source(S, pintegeroperation)
+  -- if $(n_target < |S.STORE| /\ n_right < |S.STORE| /\ n_target =/= n_right /\ n_bits_left < 18446744073709551616 /\ n_stage <= 1)
+  -- if $float_long(n_bits_left, true) = (i_left, [PRECISIONLOSS])
+  -- if n_stage = 1 \/ $modassign_both_snapshot(S, pintegeroperation, n_target, n_right, n_bits_left)
+def $shiftassign_both_left_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, n_stage) = false -- otherwise
+
+def $shiftassign_both_warning_plan(S) = (SHIFT_ASSIGN_BOTH_LEFT pintegeroperation n_target n_right n_bits_left i_left 0)
+  -- if S.TODO = (COMPOUND_APPLY pbin (BASE_VALUE poperand_left) false z) :: ptask_tail*
+  -- if pbin = SHIFTLEFT \/ pbin = SHIFTRIGHT
+  -- if $error_handler_eligible(S, 8192) /\ $arithmetic_add_named(S)
+  -- if S.ORIGIN = (porigin)
+  -- if poperand_right = S.RESULT
+  -- if poperand_left = VARIABLE ptbytes_left z_left
+  -- if poperand_right = VARIABLE ptbytes_right z_right
+  -- if $lookup(S.ENV, ptbytes_left) = (n_target)
+  -- if $lookup(S.ENV, ptbytes_right) = (n_right)
+  -- if $integer_pointer_value(S, INTEGER_CV ptbytes_left) = (PFLOAT n_bits_left)
+  -- if $(n_bits_left < 18446744073709551616)
+  -- if $float_long(n_bits_left, true) = (i_left, [PRECISIONLOSS])
+  -- if pintegeroperation = {SITE porigin, OP pbin, LINE z, SWAPPED false, LEFT poperand_left, RIGHT poperand_right, LEFTPOINTER INTEGER_CV ptbytes_left, RIGHTPOINTER INTEGER_CV ptbytes_right}
+  -- if $shiftassign_both_left_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, 0)
+def $shiftassign_both_warning_plan(S) = eps -- otherwise
+
+dec $shiftassign_both_right_valid(pstate, pintegeroperation, nat, nat, nat, int, nat, int, nat) : bool
+def $shiftassign_both_right_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, n_bits_right, i_right, n_stage) = true
+  -- if $shiftassign_warning_source(S, pintegeroperation)
+  -- if $(n_target < |S.STORE| /\ n_right < |S.STORE| /\ n_target =/= n_right /\ n_bits_left < 18446744073709551616 /\ n_bits_right < 18446744073709551616 /\ n_stage <= 1)
+  -- if $float_long(n_bits_left, true) = (i_left, [PRECISIONLOSS])
+  -- if $float_long(n_bits_right, true) = (i_right, [PRECISIONLOSS])
+  -- if n_stage = 1 \/ $modassign_both_right_snapshot(S, pintegeroperation, n_target, n_right) = ((n_bits_right, i_right))
+def $shiftassign_both_right_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, n_bits_right, i_right, n_stage) = false -- otherwise
+
+rule PhpStep/shiftassign-both-begin: S ~> S[.TODO = ptask :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.LOCATION = ROOT n_target]
+  -- if S.TODO = ptask_old :: ptask_tail*
+  -- if $shiftassign_both_warning_plan(S) = (ptask)
+  -- if ptask = SHIFT_ASSIGN_BOTH_LEFT pintegeroperation n_target n_right n_bits_left i_left 0
+rule PhpStep/shiftassign-both-left-dispatch: S ~> $error_dispatch(S, 8192, n_message*, pintegeroperation.LINE, DIAGNOSTIC "Deprecated" n_message* pintegeroperation.LINE, SHIFT_ASSIGN_BOTH_LEFT pintegeroperation n_target n_right n_bits_left i_left 1)
+  -- if S.TODO = (SHIFT_ASSIGN_BOTH_LEFT pintegeroperation n_target n_right n_bits_left i_left 0) :: ptask_tail*
+  -- if $shiftassign_both_left_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, 0)
+  -- if $integer_float_notices([PRECISIONLOSS], n_bits_left) = [(8192, n_message*)]
+  -- if ~$error_handler_eligible(S, 8192) \/ $arithmetic_add_named(S)
+rule PhpStep/shiftassign-both-left-owning-handler: S ~> S[.COMPLETION = UNSUPPORTED "shift assignment owning first deprecation callback"]
+  -- if S.TODO = (SHIFT_ASSIGN_BOTH_LEFT pintegeroperation n_target n_right n_bits_left i_left 0) :: ptask_tail*
+  -- if $shiftassign_both_left_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, 0)
+  -- if $error_handler_eligible(S, 8192) /\ ~$arithmetic_add_named(S)
+rule PhpStep/shiftassign-both-quiet: S ~> S[.TODO = (SHIFT_ASSIGN_WARNING pintegeroperation n_target n_right n_bits_left i_left 1) :: ptask_tail*]
+  -- if S.TODO = (SHIFT_ASSIGN_BOTH_LEFT pintegeroperation n_target n_right n_bits_left i_left 1) :: ptask_tail*
+  -- if $shiftassign_both_left_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, 1)
+  -- if $powerassign_warning_ready(S, pintegeroperation, n_target)
+  -- if $modassign_warning_ready(S, pintegeroperation, n_target, n_right) = (i_right)
+rule PhpStep/shiftassign-both-capture-right: S ~> S[.TODO = (SHIFT_ASSIGN_BOTH_RIGHT pintegeroperation n_target n_right n_bits_left i_left n_bits_right i_right 0) :: ptask_tail*]
+  -- if S.TODO = (SHIFT_ASSIGN_BOTH_LEFT pintegeroperation n_target n_right n_bits_left i_left 1) :: ptask_tail*
+  -- if $shiftassign_both_left_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, 1)
+  -- if $modassign_both_right_snapshot(S, pintegeroperation, n_target, n_right) = ((n_bits_right, i_right))
+rule PhpStep/shiftassign-both-first-boundary: S ~> S[.COMPLETION = UNSUPPORTED "shift assignment live RHS or expired, rebound, owning or constrained target after first deprecation"]
+  -- if S.TODO = (SHIFT_ASSIGN_BOTH_LEFT pintegeroperation n_target n_right n_bits_left i_left 1) :: ptask_tail*
+  -- if $shiftassign_both_left_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, 1)
+  -- if ~$powerassign_warning_ready(S, pintegeroperation, n_target) \/ ($modassign_warning_ready(S, pintegeroperation, n_target, n_right) = eps /\ $modassign_both_right_snapshot(S, pintegeroperation, n_target, n_right) = eps)
+rule PhpStep/shiftassign-both-right-dispatch: S ~> $error_dispatch(S, 8192, n_message*, pintegeroperation.LINE, DIAGNOSTIC "Deprecated" n_message* pintegeroperation.LINE, SHIFT_ASSIGN_BOTH_RIGHT pintegeroperation n_target n_right n_bits_left i_left n_bits_right i_right 1)
+  -- if S.TODO = (SHIFT_ASSIGN_BOTH_RIGHT pintegeroperation n_target n_right n_bits_left i_left n_bits_right i_right 0) :: ptask_tail*
+  -- if $shiftassign_both_right_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, n_bits_right, i_right, 0)
+  -- if $integer_float_notices([PRECISIONLOSS], n_bits_right) = [(8192, n_message*)]
+  -- if ~$error_handler_eligible(S, 8192) \/ $arithmetic_add_named(S)
+rule PhpStep/shiftassign-both-right-owning-handler: S ~> S[.COMPLETION = UNSUPPORTED "shift assignment owning second deprecation callback"]
+  -- if S.TODO = (SHIFT_ASSIGN_BOTH_RIGHT pintegeroperation n_target n_right n_bits_left i_left n_bits_right i_right 0) :: ptask_tail*
+  -- if $shiftassign_both_right_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, n_bits_right, i_right, 0)
+  -- if $error_handler_eligible(S, 8192) /\ ~$arithmetic_add_named(S)
+rule PhpStep/shiftassign-both-commit: S ~> $arithmetic_addassign_cv_write(S[.TODO = ptask_tail*][.RESULT = KNOWN (PINT i_result)], ptbytes_left, PINT i_result)
+  -- if S.TODO = (SHIFT_ASSIGN_BOTH_RIGHT pintegeroperation n_target n_right n_bits_left i_left n_bits_right i_right 1) :: ptask_tail*
+  -- if $shiftassign_both_right_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, n_bits_right, i_right, 1)
+  -- if $powerassign_warning_ready(S, pintegeroperation, n_target)
+  -- if $integer_binary(pintegeroperation.OP, i_left, i_right) = IRESULT i_result
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CV ptbytes_left
+rule PhpStep/shiftassign-both-negative: S ~> $integer_result(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL], NEGSHIFT, pintegeroperation.LINE)
+  -- if S.TODO = (SHIFT_ASSIGN_BOTH_RIGHT pintegeroperation n_target n_right n_bits_left i_left n_bits_right i_right 1) :: ptask_tail*
+  -- if $shiftassign_both_right_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, n_bits_right, i_right, 1)
+  -- if $powerassign_warning_ready(S, pintegeroperation, n_target)
+  -- if $integer_binary(pintegeroperation.OP, i_left, i_right) = NEGSHIFT
+rule PhpStep/shiftassign-both-second-boundary: S ~> S[.COMPLETION = UNSUPPORTED "shift assignment expired, rebound, owning or constrained target after second deprecation"]
+  -- if S.TODO = (SHIFT_ASSIGN_BOTH_RIGHT pintegeroperation n_target n_right n_bits_left i_left n_bits_right i_right 1) :: ptask_tail*
+  -- if $shiftassign_both_right_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, n_bits_right, i_right, 1)
+  -- if ~$powerassign_warning_ready(S, pintegeroperation, n_target)
+
+def $task_nodes(SHIFT_ASSIGN_BOTH_LEFT pintegeroperation n_target n_right n_bits_left i_left n_stage) = eps
+def $task_nodes(SHIFT_ASSIGN_BOTH_RIGHT pintegeroperation n_target n_right n_bits_left i_left n_bits_right i_right n_stage) = eps
+def $call_task_valid(S, SHIFT_ASSIGN_BOTH_LEFT pintegeroperation n_target n_right n_bits_left i_left n_stage) = $shiftassign_both_left_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, n_stage)
+def $call_task_valid(S, SHIFT_ASSIGN_BOTH_RIGHT pintegeroperation n_target n_right n_bits_left i_left n_bits_right i_right n_stage) = $shiftassign_both_right_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, n_bits_right, i_right, n_stage)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = SHIFT_ASSIGN_BOTH_LEFT pintegeroperation n_target n_right n_bits_left i_left 1
+  -- if $shiftassign_both_left_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, 1)
+  -- if perrorcall.TARGET =/= eps \/ $shiftassign_both_left_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, 0)
+  -- if perrorcall.SITE = pintegeroperation.SITE /\ perrorcall.LINE = pintegeroperation.LINE
+  -- if perrorcall.LEVEL = 8192
+  -- if $integer_float_notices([PRECISIONLOSS], n_bits_left) = [(8192, perrorcall.MESSAGE)]
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE pintegeroperation.LINE
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = SHIFT_ASSIGN_BOTH_RIGHT pintegeroperation n_target n_right n_bits_left i_left n_bits_right i_right 1
+  -- if $shiftassign_both_right_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, n_bits_right, i_right, 1)
+  -- if perrorcall.TARGET =/= eps \/ $shiftassign_both_right_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, n_bits_right, i_right, 0)
+  -- if perrorcall.SITE = pintegeroperation.SITE /\ perrorcall.LINE = pintegeroperation.LINE
+  -- if perrorcall.LEVEL = 8192
+  -- if $integer_float_notices([PRECISIONLOSS], n_bits_right) = [(8192, perrorcall.MESSAGE)]
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE pintegeroperation.LINE
