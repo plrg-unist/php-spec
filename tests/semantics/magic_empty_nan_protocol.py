@@ -11,7 +11,7 @@ sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
 git = lambda *parts: subprocess.check_output(['git', *parts], cwd=ROOT, env=recorder.ENV).decode().strip()
 
 PREFIX = r'''
-syntax pemptywarnstage = MN_RV | MN_REBOUND ptbytes | MN_RETURN | MN_CLEAN | MN_RESUME | MN_RAISED | MN_THROW | MN_DTOR
+syntax pemptywarnstage = MN_RV | MN_REBOUND ptbytes | MN_RETURN | MN_CLEAN | MN_RESUME | MN_RAISED | MN_THROW | MN_DTOR | MN_CATCH
 dec $mn_output(pevent*) : ptbytes
 def $mn_output(eps) = eps
 def $mn_output((OUTPUT ptbytes) :: pevent*) = ptbytes ++ $mn_output(pevent*)
@@ -40,6 +40,9 @@ def $mn_stage(S,MN_THROW) = true
 def $mn_stage(S,MN_DTOR) = true
   -- if S.CURRENT = (pcallcontext)
   -- if $destructor_context_kind(S,pcallcontext)
+def $mn_stage(S,MN_CATCH) = true
+  -- if S.CURRENT = eps
+  -- if S.TODO = (CATCH_BIND porigin n_index n_error) :: ptask*
 def $mn_stage(S,pemptywarnstage) = false -- otherwise
 dec $mn_seek(pstate,pemptywarnstage,nat) : pstate
 def $mn_seek(S,pemptywarnstage,n) = S
@@ -235,6 +238,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--revision', required=True)
     parser.add_argument('--prepare-only', action='store_true')
+    parser.add_argument('--case', choices=('returning', 'throwing'))
     args = parser.parse_args()
     recorder.ROOT = ROOT
     catalogue = HERE / 'magic_empty_nan_cases.json'
@@ -243,6 +247,9 @@ def main():
     profile = json.loads(profile_file.read_bytes())
     assert data['native_profile'] == profile and data['native_gate_completed']
     selected = [case for case in data['cases'] if case['id'] in ('returning', 'throwing')]
+    assert len(selected) == 2
+    if args.case:
+        selected = [case for case in selected if case['id'] == args.case]
     php, adapter, bridge, worker, runner, compiler = (ROOT / name for name in [
         '.tools/php/bin/php', '_build/default/adapter/main.exe', '.tools/php-file.so',
         'frontend/worker.php', 'tests/semantics/_build/default/numeric_runner.exe', '.tools/spectec/bin/p4spectec'])
@@ -261,7 +268,7 @@ def main():
     out = Path(tempfile.mkdtemp(prefix='magic-empty-nan-protocol-', dir=ROOT / '.tools'))
     print(out, flush=True)
     report = {'revision': revision, 'inputs': before, 'profile': profile, 'module_count': len(modules),
-              'mode': 'SL', 'cache': False, 'det': True, 'records': [], 'fixtures': [],
+              'mode': 'SL', 'cache': False, 'det': True, 'records': [], 'fixtures': [], 'selection': [case['id'] for case in selected],
               'application_invocations': 0, 'application_evaluations': 0, 'source_agreements': 0,
               'premises': 0, 'reached_premises': 0, 'derived_premises': 0,
               'cap_seconds': 90, 'environment': {'LC_ALL': 'C', 'TZ': 'UTC', 'PHP_SPEC_SCRIPT_ENCODING': 'absent', 'jobs': 1}, 'passed': False}
@@ -297,7 +304,21 @@ def main():
                      'ptbytes_final = $ptascii(' + json.dumps(output) + ')']
             reached = setup + COMMON + [f'ppropertyempty.LINE = {case["warning_line"]}'] + (RETURN if name == 'returning' else THROW) + FINISH
             if name == 'throwing':
-                reached += ['$lookup(S_final.ENV,$ptascii("caught")) = (n_caught_cell)', 'S_final.STORE[n_caught_cell] = DEFINED (POBJECT n_error)']
+                # Request shutdown unbinds object-valued globals; inspect the
+                # actual catch receive before terminal teardown instead.
+                reached += [
+                    'S_catch_found = $mn_seek(S_dtor,MN_CATCH,1000)',
+                    r'S_catch_found.COMPLETION = NORMAL \/ S_catch_found.COMPLETION = BUDGET',
+                    'S_catch = S_catch_found[.COMPLETION = NORMAL]',
+                    'S_catch.TODO = (CATCH_BIND porigin_try n_catch n_error) :: ptask_catch*',
+                    '$throwable_live(S_catch,n_error) /\\ $mn_output(S_catch.EVENTS) = ptbytes_handler ++ $ptascii("D|")',
+                    'PhpStep: S_catch ~> S_catch_raw',
+                    '$lookup(S_catch_raw.ENV,$ptascii("caught")) = (n_caught_cell)',
+                    'S_catch_raw.STORE[n_caught_cell] = DEFINED (POBJECT n_error)',
+                    'S_catch_done = $mn_after(S_catch,S_catch_raw)',
+                    'S_catch_done.COMPLETION = NORMAL /\\ $throwable_live(S_catch_done,n_error) /\\ $mn_guard(S_catch_done)',
+                    '$drive_steps(S_catch_done,10000) = S_final',
+                ]
             derived = DERIVED if name == 'returning' else []
             content = PREFIX + '\ndec $main() : bool\ndef $main() = true\n'
             for condition in reached + derived:
