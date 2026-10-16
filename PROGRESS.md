@@ -8681,10 +8681,12 @@ failures and interrupted evidence.
   selected-reference recheck. M80 adds the exact nonnullable builtin-int
   no-argument assignment source: a restored NULL fails return verification,
   cancels its pending Notice and re-enters the outer finalizer before the
-  original TypeError reaches the caller.
+  original TypeError reaches the caller. M81 restores the local catch and
+  consumed return cursor when an old C destructor throws an Exception
+  during selected reference replacement.
   Other VALUE signatures/layouts, general CONST/other
   NULL and multiple-active histories, genuinely released
-  CV targets, destructor throw/reentry, real suspension and wider typed consumers
+  CV targets, wider destructor throw/reentry, real suspension and wider typed consumers
   remain open. [String contract](docs/semantics/USER-STRING.md),
   [finally contract](docs/semantics/SOURCE-FINALLY.md).
 - Objects and lifetime: remaining static members, effectful trait data composition,
@@ -8757,9 +8759,29 @@ delivered Notice, second `F:0`, caller error/r7, LINE refusal and budget.
 No prior return fixture was replayed. Only the exact builtin-int
 no-argument assigned source is newly admitted.
 [M80 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M81's used `&f():?C` returns a named no-argument old call directly or through
+`($x = old_value())`; selected-y replacement releases the old object and its
+destructor emits `D` then throws an Exception. The pending selected return
+retains that Exception and a nonowning old cursor after old HOBJECT retirement.
+The bounded pending-finish rule reconstructs the source replay owners, so the
+same Exception reaches local `CE` rather than outer `OE`; consumed replay then
+restores caller NULL with one old-line VALUE Notice. Native2 at `e70950fcb`/399
+has `F:0/1;I;D;I;CE;A;S`, detached `rNULL/b7` and xNULL/y0. The unchanged
+model's two NORMAL outputs route to OE and have zero agreements. A 44-premise
+source-reached diagnostic isolates the old premature THROW_SEARCH with zero
+repair credit. Strict and both original-source agreements pass at clean
+`7bc06612d`/399. One assigned 122-premise reached fixture proves pending
+Exception transfer, local catch identity, root-free consumed NULL/new Notice,
+real operation-exit descriptor admission, heap-equal LINE-only public refusal
+and pending-exit budget equality. The first public state failure at `75c47721a`
+has zero full-state credit; only affected guards and checks were rerun.
+This covers one ordinary C with a throwing destructor, exact Exception,
+named no-argument old source, nullable class declaration and single cursor.
+Other exception types, reentrant destructor histories and wider returns remain
+open. [M81 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
-genuinely released CV targets, destructor throw/reentry, real suspension and wider typed
+genuinely released CV targets, wider destructor throw/reentry, real suspension and wider typed
 consumers remain required.
 
 Rocq interaction-tree semantics and BOLA proofs follow completed PHP core.
