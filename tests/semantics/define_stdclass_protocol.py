@@ -93,7 +93,9 @@ def fresh(initial,target,donor,budget=False):
             'S_resume = $test_running(S_pause)', 'S_resume = S']
         start='S_resume'
     values += [*common.step('S_row',start,'PBOOL true'),
-        'S_row.TODO = ptask_tail*', 'S_row.USERCONSTANTS = S.USERCONSTANTS ++ [puserconstant]',
+        'S_row.TODO = ptask_tail*',
+        '$user_constant_at(S_row.USERCONSTANTS,preqbytes) = (puserconstant)',
+        'S_row.USERCONSTANTS = S.USERCONSTANTS ++ [puserconstant]',
         'puserconstant.NAME = preqbytes', 'puserconstant.ORIGIN = pconfigcall.SITE',
         'puserconstant.VALUE = POBJECT n_object',
         'puserconstant.CLASS = PVSTDCLASS n_object porigin_site',
@@ -155,6 +157,7 @@ def checks(initial,name,stdout,response):
         'S_dispatch.USERCONSTANTS = S_dup.USERCONSTANTS', 'S_dispatch.EVENTS = S_dup.EVENTS',
         *reach('S_true','S_dispatch',2,target),
         'S_true.RESULT = KNOWN (PBOOL true)',
+        '$user_constant_at(S_true.USERCONSTANTS,$ptascii("V65_HANDLER_SIDE")) = (puserconstant_side)',
         'S_true.USERCONSTANTS = S_dup.USERCONSTANTS ++ [puserconstant_side]',
         'puserconstant_side.NAME = $ptascii("V65_HANDLER_SIDE")',
         'puserconstant_side.VALUE = PINT 19',
