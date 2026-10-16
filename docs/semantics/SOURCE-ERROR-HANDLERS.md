@@ -130,10 +130,13 @@ keys bound this producer; wider destructuring diagnostics remain required.
 Literal sources retain pool owners or the sole runtime temporary, preserve old
 embedded reference cells after CV rebinding, and cancel known-result delivery
 when a handler throws.
-Mixed direct-CV patterns retain the source cell: value replacement affects later
-fetches, while CV unsetting/rebinding leaves its saved old cell authoritative.
+Mixed direct-CV patterns retain a root cell and separate reference-bearing child
+cells. Each cell's value replacement affects its later fetches, while parent/CV
+replacement leaves saved children authoritative. By-value children retain tables.
 The interrupted fetch supplies null before later reference acquisition/COW;
 callback null replacement can autovivify an array at that later fetch.
+Nested writable fetches can create both root and child arrays after root-null
+replacement; later outer items and result delivery still resolve the held root.
 Recursive by-value CV/literal nesting retains captured tables and compiler locations.
 Outer missing reads feed silent nulls into the child; inner warning-task discard
 can leave the outer continuation owning both tables until later unwind cleanup.

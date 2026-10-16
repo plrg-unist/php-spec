@@ -234,32 +234,28 @@ The pointwise 399-module composition over 6f3488104 preserves incoming list,
 property, arithmetic, constants and return paths. Source2/state355 retain their
 private cut; independent seam review warrants no joined actor or renewed credit.
 
-Missing-key Warning continues finite recursive by-value patterns from direct CV
-or literal arrays, with quiet keys and CV leaves. Each pending pattern retains
-its table and compiler location. Literal roots authenticate exact pool identity
-or a nonconstant runtime descriptor; children retain historical captured tables.
-A callback can leave inner reads at33/6/7, the returned shared row at22/88 and a
-rebound live CV at66/44. Missing ancestors descend silently through null.
-Known-result effects precede result delivery; supplied throws cancel stores and
-pending delivery, retire task owners in order and preserve permanent pool owners.
-Five A6 exact originals agree at 00ac419b9; five SL fronts pass809 premises
-(792 Boolean +17 raw steps) at 604e9b4fc, checking root authority, real frames,
-NULL scheduling/descent, shared reads, pool/runtime cleanup and budgets.
-Three inherited literal-root refusals now project unsupported scalar roots;
-equivalent controls execute on new A6 fronts without replaying old actors.
-The [recursive literal review](coverage/semantics/list-recursive-literal-missing-warning-review.json)
-retains the unchanged Unsupported baseline with zero agreement credit.
+Missing-key Warning continues finite recursive patterns with quiet keys and CV
+leaves. By-value patterns admit CV/literal roots; mixed patterns require direct CVs.
+Each pattern keeps its own table or reference cell. Parent replacement can leave
+a by-value child reading33 while later root fetches use40; detached child22,
+held-root66 and rebound-CV77 remain distinct. Null replacement permits later
+nested writable creation without another warning. COW separates copied scalars
+while preserving shared references and inherited reference compiler lines.
+Throw cleanup retains ancestor cell/table chains until their remaining tasks unwind.
+Five A7 exact originals agree at 9b8d4db2b; five SL fronts pass811 premises
+(792 Boolean +19 raw steps) at b8148e051, checking source demand, real frames,
+ordered NULL stores/acquisition, COW/binding, staged cleanup and budgets.
+The [nested mixed review](coverage/semantics/list-nested-reference-missing-warning-review.json)
+retains the unchanged Unsupported baseline with zero agreement credit. By-value
+shape/source APIs and historical tests stay unchanged; no old actors are replayed.
 Earlier [CV source6/state468](coverage/semantics/list-missing-warning-review.json),
 [literal source6/state417](coverage/semantics/list-literal-missing-warning-review.json),
-[mixed source5/state591](coverage/semantics/list-reference-missing-warning-review.json),
-[one-layer source5/state637](coverage/semantics/list-nested-missing-warning-review.json)
-and [recursive CV source5/state738](coverage/semantics/list-recursive-missing-warning-review.json)
-retain their original cuts. Flat mixed patterns retain the source cell through
-value replacement or CV rebind. Reference nesting, call/wider RHS or targets,
-scalar diagnostic callbacks and lifecycle remain partial.
-The pointwise399-module composition over0181f6333 preserves incoming Generator,
-reference-unwind, stdClass/WeakMap, define and modulo paths. Source5/state809 retain
-their private cuts; seam review warrants no joined actor or renewed agreement credit.
+[flat mixed source5/state591](coverage/semantics/list-reference-missing-warning-review.json),
+[one-layer source5/state637](coverage/semantics/list-nested-missing-warning-review.json),
+[recursive CV source5/state738](coverage/semantics/list-recursive-missing-warning-review.json)
+and [recursive literal source5/state809](coverage/semantics/list-recursive-literal-missing-warning-review.json)
+retain their original cuts. Mixed literal/call or wider RHS/targets, scalar
+key/destructuring diagnostic callbacks and lifecycle remain partial.
 
 Plain-CV `%=` now keeps both converted longs through a fractional-RHS deprecation.
 Captured12/5 stores2 despite callback99/7 and detaches a late target alias; supplied
