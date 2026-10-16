@@ -2687,8 +2687,12 @@ NaN getter results now warn after Get returns, keeping the receiver through a
 returning or throwing handler. Three originals and two state cuts totaling242
 checks cover the default Warning, caller-CV rebinding and destruction before
 result/catch; [NaN warning review](coverage/semantics/magic-empty-nan-review.json).
-Other signatures, receivers, owning results and wider recursive/coalesce magic
-combinations remain unsupported.
+Ordinary user-object getter RVs now dispose while the isset guard and receiver
+remain, before receiver release and false result/catch. Two originals and focused247
+checks cover actual RV/receiver destructors, rebinding, the same Exception and
+budgets; [object RV review](coverage/semantics/magic-empty-object-rv-review.json).
+Other signatures, receivers, arrays/internal-object RVs and wider recursive/coalesce
+magic combinations remain unsupported.
 Hooked iteration, defaulted virtual hooks, other paired or virtual setters, wider trait
 setters, other explicit setter parameter forms, references, other inherited/trait
 and wider receiver, quiet or indirect-access families and wider `__unset` consumers remain required.

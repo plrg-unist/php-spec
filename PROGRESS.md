@@ -7,6 +7,23 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Terminal inherited `empty` now disposes ordinary user-object getter RVs while
+retaining the isset guard and captured receiver; Get is already inactive. An RV
+destructor can replace the sole caller CV with null: receiver destruction still
+follows RV disposal, before the false result or catch binding. A throwing RV
+destructor preserves the same Exception. Two exact originals agree at662443a55;
+focused247 at47847ca06 (188 reached +59 derived) checks actual RV/receiver
+destructors, saved-frame guards, catch identity, authenticated record refusals,
+same-identity/extra-owner controls and budgets. The initial false131 used two
+incorrect no-bookkeeping expectations; it and its locating diagnostic retain zero
+credit. Runtime and source2 did not change for that fixture correction. Arrays,
+internal-object RVs and wider signature/receiver/recursive forms remain partial.
+[Object RV review](coverage/semantics/magic-empty-object-rv-review.json).
+Earlier cuts retain their identities: [integer/call](coverage/semantics/magic-empty-review.json),
+[primitive/string](coverage/semantics/magic-empty-scalars-review.json),
+[float](coverage/semantics/magic-empty-floats-review.json) and
+[NaN warning](coverage/semantics/magic-empty-nan-review.json).
+
 NULL `define` names now receive quiet false nonbool flags with primitive values.
 The first deprecation keeps raw NULL and captured flags; normal return converts
 only the name, checks the live empty-key binding and can issue a separate duplicate
@@ -26,26 +43,6 @@ owning/wider forms remain partial.
 Pointwise composition over ee63167a1 preserves the incoming 399-module parent.
 Source4/state755 retain their distinct private cuts; shared task/source selectors
 are disjoint, so no joined actor or renewed execution credit is warranted.
-
-Terminal inherited `empty` now warns for NaN getter results after Get returns,
-retaining the isset guard and captured receiver through the warning callback.
-Caller-CV rebinding leaves the saved NaN unchanged: normal completion gives false;
-a throwing handler keeps the same Exception. Receiver destruction precedes branch
-output or catch binding. Three exact originals agree at d16aef394. Normal141 at
-5a05e5afc plus affected throwing101 at b66d611c9 total242 checks (195 reached +47
-derived), including actual callback/cleanup/destructor/catch steps, authenticated
-record refusals and budgets. Two pre-app fixture failures and an invalid terminal
-catch lookup retain zero credit; the diagnostic adds none. The unchanged baseline
-remains genuine Unsupported/zero agreement. Owning getter RV disposal and wider
-signature/receiver/recursive combinations remain partial.
-[NaN warning review](coverage/semantics/magic-empty-nan-review.json).
-Earlier integer/call, scalar/string and non-NaN float cuts retain their identities:
-[magic empty](coverage/semantics/magic-empty-review.json),
-[primitive results](coverage/semantics/magic-empty-scalars-review.json),
-[float results](coverage/semantics/magic-empty-floats-review.json).
-
-Pointwise composition over 2d5bd20c1 preserves the incoming399-module parent.
-Source3 and normal141/throw101 retain their separate cuts; no joined actor or renewed credit.
 
 Both-fractional plain-CV `<<=`/`>>=` now order both conversion deprecations.
 LEFT (-12) survives the first callback, then live 2.5 becomes cached count 2 before
