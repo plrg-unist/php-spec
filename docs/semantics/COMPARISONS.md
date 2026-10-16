@@ -102,6 +102,18 @@ states, sole receiver owners, scope rows and skipped later aggregate casters. Th
 extends comparison admission; stored-string carrier conversion and other producer/
 representation/lifetime routes remain partial.
 
+[Factory and rebound WeakMap mismatches](../../coverage/semantics/weakmap-factory-comparison-review.json)
+extend the same bounded live admission to normalized FROMCALLABLECLOSURE and
+BOUNDFAKECLOSURE. Both are native Closures: unlike-handler fallback precedes fake
+function, target, receiver and binding fields. Seven-operator rows return `0100001`
+in either direction, with strict identity separate. SOURCE indices and optional
+copied pclosurescope ORIGINAL remain nonowning; only the current receiver is an edge.
+Two exact originals and 361 Boolean premises/8 actual steps include cloned rebinding
+on an overriding child after seed/old-receiver retirement, a separate live factory
+capture and quiet later aggregate casters. Full source endings verify selected
+receiver markers and Parent bodies. Other producers/representations and wider weak
+lifetimes remain partial; stored-string carrier conversion is not extended.
+
 [Generator/Generator and Fiber/Fiber pairs](../../coverage/semantics/generator-fiber-comparison-review.json)
 return order zero through the standard zero-default-property shortcut. The pair
 predicate tests arena bounds and exact runtime tags, independently of saved VM

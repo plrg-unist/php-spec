@@ -2179,6 +2179,13 @@ sole receiver owners and skipped aggregate tails pass two exact sources and
 321 Boolean premises/8 actual steps. Stored-string carrier conversion remains a
 separate producer gap. [Literal-string review](coverage/semantics/weakmap-string-method-comparison-review.json).
 
+Live WeakMap comparisons also admit supported fromCallable and rebound fake Closures.
+They preserve current receiver owners while leaving SOURCE and copied original-scope
+history nonowning, even after the seed Closure and old receiver retire. Two exact
+sources and 361 Boolean premises/8 actual steps cover all seven operators, cloned
+parent-body selection, quiet skipped tails and complete unchanged comparison states.
+[Factory/binding review](coverage/semantics/weakmap-factory-comparison-review.json).
+
 [Numeric object comparison Notices](coverage/semantics/object-numeric-comparison-review.json)
 now pause ordinary source-instance/int/float leaves through real error handlers.
 Live CV/cell reads remain distinct from copies; a second Notice uses saved 1/1.0,

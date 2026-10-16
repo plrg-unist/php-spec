@@ -7,6 +7,16 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+WeakMap comparisons now admit normalized FROMCALLABLECLOSURE and BOUNDFAKECLOSURE
+objects as uncomparable +1 in either direction before factory/binding metadata or
+private-entry traversal. Two exact originals and 361 Boolean premises
+(349 setup + 12 pure)/8 actual steps pass at 8504d9800/399. All seven operators, distinct bound
+receiver markers, cloned rebinding on an overriding child, retired nonowning history,
+sole receiver owners, skipped aggregate tails and budgets are covered. Native/
+baseline/preparation/EL retain zero credit; no actor failed. Other Closure forms,
+producers and wider weak lifetimes remain partial; stored-string carrier conversion
+is separate. [Factory/binding review](coverage/semantics/weakmap-factory-comparison-review.json).
+
 Duplicate `define` of known fixed startup primitives now warns and returns false
 without changing the builtin or publishing a user row. Omitted/bool-false flags and
 primitive candidates cover ordinary/strict calls, argument effects, returning
