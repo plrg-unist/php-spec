@@ -7,6 +7,28 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Duplicate `define` of known fixed startup primitives now warns and returns false
+without changing the builtin or publishing a user row. Omitted/bool-false flags and
+primitive candidates cover ordinary/strict calls, argument effects, returning
+handlers and supplied throws. Four exact originals agree at b55e4edaf. All 614
+public premises pass across four groups: retained literal199 at f9a7e2cb9 and
+corrected author154+129 plus independent132 at 7891c0df5, including actual dispatch,
+raw request-string API traces, sibling/caller effects, full restored discard,
+source/carrier/bounds refusals and budgets. A real trace-guard counterexample
+corrected projection from handler scope without changing continuation admission;
+source4 retains its earlier cut because observed string values are unchanged.
+That failed actor, the earlier pre-main syntax failure and unchanged Unsupported
+baseline retain zero credit. Only affected state checks repeated. Runtime adds
+30 module400 lines; old user-duplicate and ignored-flag domains stay exact.
+Special names, unknown startup values, other flags/coercions and owning/wider
+candidates remain partial.
+[Startup duplicate review](coverage/semantics/define-startup-duplicate-review.json).
+
+Pointwise composition over 6d3771b64 preserves the incoming 399-module parent.
+The primitive value-class delegate is exact and GENERATORINPUTS stays empty;
+other incoming task/source selectors are disjoint. Source4/literal199/affected415
+retain their tested cuts; no joined actor or renewed execution credit.
+
 Shifts now quietly convert fitting integral float counts left by the first
 handler in the both-fractional plain-CV route. Cached LEFT (-12) with `2.0` stores
 (-48)/(-3) and detaches alias 99 directly. Supplied throw preserves its Exception,

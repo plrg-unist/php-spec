@@ -106,6 +106,22 @@ authorize it. Two exact sources and two public fronts/207 premises cover default
 false-handler and handled delivery in the
 [duplicate ledger](../../coverage/semantics/dynamic-constant-duplicate-review.json).
 
+Exact non-NUL string names of modeled fixed startup primitives now take the same
+duplicate Warning/false path with primitive candidates and omitted or bool-false
+flags, including strict calls. They predate every user-table prefix: only its
+bounds matter, and no user row is published for the builtin. A returning handler
+may append a sibling and mutate the caller; a throwing handler keeps the same
+Exception, callback effects and caller destination. Raw captured request strings
+remain in the API trace. Trace projection selects the saved startup call in handler
+scope, while continuation validation authenticates it in restored caller scope.
+The [startup-duplicate review](../../coverage/semantics/define-startup-duplicate-review.json)
+retains four exact sources at b55e4edaf, literal199 at f9a7e2cb9 and callback/strict/
+throw415 at 7891c0df5. The projection correction preserves observed string values;
+fresh peer state checks the actual Throwable trace and full discard. The pre-main
+syntax failure, later trace-guard counterexample and unchanged Unsupported baseline
+retain zero credit. Special names, unknown startup values, coerced names, other
+flags and owning/wider candidates remain partial.
+
 The boolean true `case_insensitive` flag emits its level2 ignored-flag Warning
 before registration and leaves name lookup case sensitive. Its authenticated
 resume retains the original true argument. Registration then uses the live table:
@@ -503,7 +519,7 @@ interns direct string values before installation.
 Nested empty values in `define`, cycles, other objects, array duplicate/third-argument paths,
 Stringable/array names, array/object values with scalar or null names, true/NULL/NaN
 flags with scalar names, nonbool flags with nonfinite float names, true/NULL/NaN flags with
-null names, startup/special-name warnings,
+null names, special-name warnings and startup names/flags/values beyond the bounded follow-up,
 internal/trait/interface/enum class queries, deferred keyword initializers and
 keyword `constant` array values, other deferred initializers,
 owning/FCC call forms and wider conversion/arity paths remain Unsupported. The [dynamic ledger](../../coverage/semantics/dynamic-constants-review.json)

@@ -1112,6 +1112,12 @@ Primitive duplicate `define` now warns and returns false while retaining the old
 binding, including named handlers and retained dynamic selection with callback
 appends. [Two exact sources and 207 public premises](coverage/semantics/dynamic-constant-duplicate-review.json)
 cover default, false-handler and handled delivery; wider candidates remain partial.
+Exact non-NUL names of modeled startup primitives now warn and return false with
+primitive candidates and omitted/bool-false flags, preserving the builtin through
+strict calls and returning or throwing handlers.
+[Four source agreements and 614 state premises](coverage/semantics/define-startup-duplicate-review.json)
+cover captured request strings, callback siblings and exact throwing discard;
+special names, unknown startup values and wider flag/value forms remain partial.
 Boolean `case_insensitive=true` now warns before registration while keeping case
 sensitivity. A handler-created binding wins the subsequent duplicate check;
 [two exact sources and 221 public premises](coverage/semantics/dynamic-constant-flag-review.json)
