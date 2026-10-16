@@ -307,6 +307,19 @@ quiet handoff, cells/owners and budgets are covered. LEFT stays historical at
 second capture; pure projections are refusals only. Initial references/copies,
 other count conversions, unsafe bindings/targets and wider callbacks/lifecycle remain partial.
 
+After the first callback in that both-fractional shift route, a fitting integral
+float count also converts quietly. Historical LEFT `-12` and live `2.0` store
+`-48`/`-3` directly through fresh result cells, detaching alias `99`; the RHS stays
+a float and calls stay one. A supplied first-handler throw preserves its Exception,
+destination and alias write-through. Independent default-first `-1.0` raises
+`ArithmeticError` at RHS line 25 without storage or detachment; `64.0` still gives
+right-shift `-1` from the cached negative sign despite live LEFT `99`, detaching
+its alias. Five exact originals and author 135/135/99 plus independent 130/130 SL
+premises pass in the [quiet float shift ledger](../../coverage/semantics/shiftassign-quiet-float-review.json),
+covering actual atomic commit/error, original bindings, cells/owners and budgets.
+Wider initial forms, conversions, unsafe targets and lifecycle remain partial;
+pure projections establish refusals only, and older threshold cuts are not renewed.
+
 For distinct initially plain CVs, numeric `&=`, `|=` and `^=` keep a fractional
 LEFT conversion before deprecation and read the live quiet integer RHS afterward.
 Captured12/live5 stores4/13/9 despite callback target99 and initial RHS3, detaching

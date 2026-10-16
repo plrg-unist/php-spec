@@ -627,6 +627,11 @@ after the first callback skips the second diagnostic. Success detaches late alia
 either supplied throw or a captured negative count preserves them. Six exact
 originals and 1172 focused SL premises pass in the
 [ordered shift ledger](coverage/semantics/shiftassign-both-warning-review.json).
+An integral float count after the first callback also converts quietly. With
+cached LEFT `-12`, `2.0` stores `-48`/`-3`; `64.0` stores right-shift `-1`.
+Success detaches late aliases; negative counts error before storage. Five exact
+originals and 629 focused SL premises pass in the
+[quiet float shift ledger](coverage/semantics/shiftassign-quiet-float-review.json).
 For initially plain variables, numeric `&=`, `|=` and `^=` now keep their fractional
 left conversion through deprecation handlers, then read the live quiet integer RHS.
 Success detaches late aliases; supplied throw preserves callback writes and the

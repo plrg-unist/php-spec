@@ -7,6 +7,25 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Shifts now quietly convert fitting integral float counts left by the first
+handler in the both-fractional plain-CV route. Cached LEFT (-12) with `2.0` stores
+(-48)/(-3) and detaches alias 99 directly. Supplied throw preserves its Exception,
+destination 100 and alias write-through. Independent default-first `-1.0` raises
+ArithmeticError at line 25 without storage/detachment; `64.0` still stores right-
+shift (-1) from the historical sign despite live 99, detaching alias 99. Each has
+one LEFT deprecation. Five exact originals pass at 92a56ffcc; author 135/135/99 plus
+independent 130/130 SL premises pass 629 at 33bc8b754/399, covering real first frames,
+original bindings, atomic commit/error, cells/owners and budgets. Runtime adds two
+rules and one boundary exclusion, reusing the exact OP34 snapshot; tasks/schema
+and other routes stay unchanged. Native/baseline/prep/syntax and earlier renewed
+credit stay 0. Wider forms remain partial; OP12 paused.
+[Quiet float shift ledger](coverage/semantics/shiftassign-quiet-float-review.json).
+
+Composed over a43c7a30a/399 after pointwise review of reference-return cleanup,
+unused Generator send, stdClass define/property-empty and WeakMap/string-method
+Closure seams. Source5/state629 retain private cuts without actor, replay or
+renewed credit.
+
 
 Pending shared Generator `send` now also accepts a bare statement yield with no
 native result target. It snapshots current and clears initialization without
