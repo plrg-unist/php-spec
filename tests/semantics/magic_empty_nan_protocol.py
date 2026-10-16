@@ -15,7 +15,7 @@ syntax pemptywarnstage = MN_RV | MN_REBOUND ptbytes | MN_RETURN | MN_CLEAN | MN_
 dec $mn_output(pevent*) : ptbytes
 def $mn_output(eps) = eps
 def $mn_output((OUTPUT ptbytes) :: pevent*) = ptbytes ++ $mn_output(pevent*)
-def $mn_output(pevent :: pevent*) = $mn_output(pevent*) -- otherwise
+def $mn_output(pevent :: pevent_tail*) = $mn_output(pevent_tail*) -- otherwise
 dec $mn_stage(pstate,pemptywarnstage) : bool
 def $mn_stage(S,MN_RV) = true
   -- if S.CURRENT = eps
