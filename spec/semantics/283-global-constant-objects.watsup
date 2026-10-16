@@ -337,7 +337,6 @@ def $global_std_source(S, porigin_site, porigin_decl, n_prefix) = true
   -- if $constant_callable_path(S, porigin_site, $constant_child(porigin_decl, [PCFIELD 1]))
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprNew name (SEQUENCE phpType7*) metadata)
   -- if $parameter_new_prefix(phpType7*)
-  -- if $default_new_unique(phpType7*)
   -- if $global_constant_class_name(S, porigin_site, porigin_scope?, name) = (ptbytes)
   -- if $ptlc(ptbytes) = $ptascii("stdclass")
 def $global_std_source(S, porigin_site, porigin_decl, n_prefix) = false -- otherwise
@@ -485,3 +484,88 @@ def $global_constant_flow_at(S, porigin_site, porigin_decl, porigin_scope?, PVST
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprBinaryOpCoalesce expression_left expression_right metadata)
   -- if porigin_target = $constant_child(porigin_site, [PCFIELD 1])
   -- if $constant_callable_path(S, porigin_birth, porigin_target)
+
+;; Zend's named AST table abandons its current value when insertion fails.
+;; This request owner retains that value, not the prior values or NEW target.
+dec $constant_argument_class(pvalueclass) : bool
+dec $constant_argument_classes((pkey, pvalueclass)*) : bool
+def $constant_argument_class(PVSCALAR) = true
+def $constant_argument_class(PVSTRING b) = true
+def $constant_argument_class(PVINSTANCE n porigin) = true
+def $constant_argument_class(PVSTDCLASS n porigin) = true
+def $constant_argument_class(PVARRAY b (pkey, pvalueclass)*) = $constant_argument_classes((pkey, pvalueclass)*)
+def $constant_argument_class(pvalueclass) = false -- otherwise
+def $constant_argument_classes(eps) = true
+def $constant_argument_classes((pkey, pvalueclass) :: (pkey_tail, pvalueclass_tail)*) = ($constant_argument_class(pvalueclass) /\ $constant_argument_classes((pkey_tail, pvalueclass_tail)*))
+
+def $constant_argument_roots(eps) = eps
+def $constant_argument_roots(pconstantargument :: pconstantargument_tail*) = $value_nodes(pconstantargument.VALUE) ++ $constant_argument_roots(pconstantargument_tail*)
+dec $constant_argument_present(pconstantargument*, nat) : bool
+def $constant_argument_present(eps, n_object) = false
+def $constant_argument_present(pconstantargument :: pconstantargument_tail*, n_object) = true
+  -- if pconstantargument.OBJECT = n_object
+def $constant_argument_present(pconstantargument :: pconstantargument_tail*, n_object) = $constant_argument_present(pconstantargument_tail*, n_object)
+  -- if pconstantargument.OBJECT =/= n_object
+
+dec $constant_argument_reads(pstate, porigin, pconstantfact*) : pconstantfact*
+def $constant_argument_reads(S, porigin, eps) = eps
+def $constant_argument_reads(S, porigin, pconstantfact :: pconstantfact_tail*) = pconstantfact :: $constant_argument_reads(S, porigin, pconstantfact_tail*)
+  -- if $constant_callable_path(S, pconstantfact.ORIGIN, porigin)
+def $constant_argument_reads(S, porigin, pconstantfact :: pconstantfact_tail*) = $constant_argument_reads(S, porigin, pconstantfact_tail*)
+  -- if ~$constant_callable_path(S, pconstantfact.ORIGIN, porigin)
+
+dec $constant_argument_header(pstate, pconstantargument) : bool
+def $constant_argument_header(S, pconstantargument) = true
+  -- if $global_std_record(S.CONSTANTSTDOBJECTS, pconstantargument.OBJECT) = (pconstantstdobject)
+  -- if ~pconstantstdobject.COMPLETE
+  -- if $global_std_header(S, pconstantstdobject)
+  -- if $origin_node(S.SOURCES, pconstantstdobject.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $(pconstantargument.INDEX < |phpType7*|)
+  -- if $default_new_unique(phpType7*[0:pconstantargument.INDEX])
+  -- if phpType7*[pconstantargument.INDEX] = NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg
+  -- if $parameter_new_name_present(phpType7*[0:pconstantargument.INDEX], $base64(text))
+  -- if porigin_arg = $constant_child(pconstantstdobject.SITE, [PCFIELD 1, PCINDEX pconstantargument.INDEX, PCFIELD 1])
+  -- if $(pconstantargument.CONSTANTS <= |S.USERCONSTANTS|)
+  -- if puserconstant_prior* = S.USERCONSTANTS[0:pconstantargument.CONSTANTS]
+  -- if $constant_argument_reads(S, porigin_arg, pconstantargument.READS) = pconstantargument.READS
+  -- if $global_constant_reads_valid(S, pconstantstdobject.DECL, pconstantargument.READS, puserconstant_prior*)
+  -- if pconstantstdobject.DECL = PORIGIN n_unit pcpath_decl
+  -- if $global_constant_scope(S, n_unit) = (true, porigin_scope?)
+  -- if $constant_argument_class(pconstantargument.CLASS)
+  -- if $global_constant_flow(S, porigin_arg, pconstantstdobject.DECL, porigin_scope?, pconstantargument.CLASS, puserconstant_prior*, pconstantargument.READS, eps)
+  -- if $constant_value_class_valid(S, pconstantargument.VALUE, pconstantargument.CLASS)
+def $constant_argument_header(S, pconstantargument) = false -- otherwise
+
+def $constant_arguments_valid(S, eps) = true
+def $constant_arguments_valid(S, pconstantargument :: pconstantargument_tail*) = ($constant_argument_header(S, pconstantargument) /\ ~$constant_argument_present(pconstantargument_tail*, pconstantargument.OBJECT) /\ $constant_arguments_valid(S, pconstantargument_tail*))
+
+dec $global_std_rejected(pstate, pdefaultnew) : pconstantargument?
+def $global_std_rejected(S, pdefaultnew) = (pconstantargument)
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (DEFAULT_NEW_SEND pdefaultnew) :: ptask_tail*
+  -- if $global_std_pending(S, pdefaultnew)
+  -- if $default_new_valid(S, pdefaultnew)
+  -- if S.RESULT = KNOWN pvalue
+  -- if ~$constant_argument_present(S.DESTRUCTION.REJECTED, pdefaultnew.OBJECT)
+  -- if porigin_arg = $constant_child(pdefaultnew.SITE, [PCFIELD 1, PCINDEX pdefaultnew.INDEX, PCFIELD 1])
+  -- if $global_std_record(S.CONSTANTSTDOBJECTS, pdefaultnew.OBJECT) = (pconstantstdobject)
+  -- if pvalueclass = $constant_class(S, porigin_arg)
+  -- if pconstantfact_read* = $constant_argument_reads(S, porigin_arg, $global_constant_reads(S, pconstantstdobject.DECL))
+  -- if n_constants = |S.USERCONSTANTS|
+  -- if pconstantargument = {OBJECT pdefaultnew.OBJECT, INDEX pdefaultnew.INDEX, VALUE pvalue, CLASS pvalueclass, CONSTANTS n_constants, READS pconstantfact_read*}
+  -- if $constant_argument_header(S, pconstantargument)
+def $global_std_rejected(S, pdefaultnew) = eps -- otherwise
+
+def $global_std_duplicate(S, pdefaultnew) = true
+  -- if $global_new_site(S, pdefaultnew.SITE)
+  -- if $new_source_name(S, pdefaultnew.SITE) = (ptbytes)
+  -- if $ptlc(ptbytes) = $ptascii("stdclass")
+def $global_std_duplicate(S, pdefaultnew) = false -- otherwise
+def $default_new_duplicate(S, pdefaultnew) = $throw_scalar(S[.DESTRUCTION.REJECTED = S.DESTRUCTION.REJECTED ++ [pconstantargument]], "Error", $ptascii("Named parameter $") ++ $base64(text) ++ $ptascii(" overwrites previous argument"), pdefaultnew.LINE)
+  -- if $global_std_duplicate(S, pdefaultnew)
+  -- if $global_std_rejected(S, pdefaultnew) = (pconstantargument)
+  -- if pdefaultnew.ARGUMENTS[pdefaultnew.INDEX] = NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata
+
+def $default_new_duplicate(S, pdefaultnew) = S[.COMPLETION = UNSUPPORTED "global constant duplicate argument value"]
+  -- if $global_std_duplicate(S, pdefaultnew)
+  -- if $global_std_rejected(S, pdefaultnew) = eps

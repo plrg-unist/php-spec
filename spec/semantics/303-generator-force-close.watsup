@@ -339,7 +339,7 @@ def $generator_close_prepare_store(S, pgenrelease, n, n_store?) = $generator_clo
   -- if pgenerator.FRAME = (pframe)
   -- if pframe.ORIGIN = (porigin)
   -- if pframe.CONTEXT = (pcallcontext)
-  -- if S_detached = $generator_set(S, n, pgenerator[.FRAME = eps][.PHASE = GENERATOR_CLOSING][.DELEGATE = $generator_from_closed(pgenerator.DELEGATE)])
+  -- if S_detached = $generator_set($generator_input_orphan(S, n), n, pgenerator[.FRAME = eps][.PHASE = GENERATOR_CLOSING][.DELEGATE = $generator_from_closed(pgenerator.DELEGATE)])
 
 ;; The helper frame is only a scoped view. It returns to the real caller
 ;; before a released operand can run a nested Generator finalizer.

@@ -26,6 +26,16 @@ on close. The
 [nested-detached review](../../coverage/semantics/generator-call-unpack-nested-detached-review.json)
 preserves both native close orders and the earlier omitted-finally observation.
 
+An unconsumed used-yield input installed by pending shared `send` has a separate
+lifetime. In the pinned engine its result slot precedes the live range used by
+unfinished-frame cleanup. Closing frees the frame and executes finally without
+decrementing that count; overwriting the slot also retains the old count. The
+model keeps only the payload owner through these steps, with immutable source
+history, then runs its destructor in the normal request object-store pass. It
+does not retain the child or API receiver. The [shared-send review](../../coverage/semantics/generator-pending-shared-send-review.json)
+checks both close orders arising from real local aliases and a payload/cache
+alias whose sole remaining owner is this count.
+
 The release walk preserves physical owner order, including compiled local-slot
 order and key-before-value cleanup after a forbidden keyed yield. It can close
 other started Generators through ordinary reference/array/object edges. General

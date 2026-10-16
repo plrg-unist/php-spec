@@ -1,0 +1,142 @@
+{
+  "status": "independently reviewed bounded implementation and focused validation",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; sole project-local PHP/profile; exact original bytes, file paths/cwd and all399 SL modules",
+  "base": "a3ae0c4f5e752dcdf6582b20a28514cf723400d1",
+  "implementation_revision": "9684a6c0859ce852311433102c1370a1ffa1bb1a",
+  "runtime": {
+    "sha256": {
+      "spec/semantics/30-storage.watsup": "2c7d97a55c2eff8b9166b87a6468bf4b444b4956d4fba6a6f467e4ad8638ca6d",
+      "spec/semantics/39-ownership.watsup": "f7a8f44ca536720f1359c7f6cdf40a69db3367945c4e907281346f5349e87a06",
+      "spec/semantics/40-control.watsup": "d0c8adeca8bb3036b04d5f30f63d55e747cab746a5c43b7dcfc8fa87f78b84f2",
+      "spec/semantics/227-default-constructors.watsup": "ac32748a9ebf2aeafdec669012cc1c75938585a097b5ae80f1eaf5158821850a",
+      "spec/semantics/257-request-destructors.watsup": "57ecdae87811565e1841b24f8d4fad594dce4f30965986770db3a2883f7e04c4",
+      "spec/semantics/283-global-constant-objects.watsup": "c548ab87b8e108b6dc73e8407fb7980c7b0912e4b0e46ee1b34ed90f905b2d78"
+    },
+    "delta": "Six files +99/-5: a request-global DESTRUCTION.REJECTED list owns only rejected current VALUE roots; initial empty list, machine roots and public destruction validation use it. Source/index/incomplete std receipt, current-only lookup facts, saved constant prefix, bounded class and live-value guards authenticate capture/header. Global std duplicate dispatch is structural, so failed capture is explicit Unsupported; generic/default duplicate behavior and ordinary eager/shutdown loops are unchanged."
+  },
+  "engine_route": "Zend/zend_ast.c::zend_ast_evaluate_ex ZEND_AST_NEW evaluates a named current value before zend_hash_add. Duplicate insertion destroys the prior argument table and unfinished target but leaves local current arg undestroyed. The exact observed object/array therefore remains owned through shutdown callbacks. Zend/zend_objects_API.c::zend_objects_store_call_destructors scans handles upward and pins each selected live object. The new owner represents that rejected zval; it invents no constructor/callback target and stays owning through terminal modeled request state.",
+  "accepted": {
+    "source_agreements": 3,
+    "author_sources": 2,
+    "independent_sources": 1,
+    "author_object_premises": 187,
+    "author_array_premises": 221,
+    "independent_premises": 312,
+    "total_premises": 720,
+    "driven_forged_states": 0,
+    "author_zero_budget_restoration_checks": 1
+  },
+  "behavior": [
+    "The original V63 duplicate-name counterexample now agrees: ignored GOOD values retire before continuation; duplicate BAD evaluates both current values, releases prior First before catch, skips late NEW, leaves BAD absent and retains current Second until after A|. Nested array current values retain the actual root, child and physical leaf edges rather than leaking only one object leaf.",
+    "Independent source escapes an array leaf through a real constructor, mutates that same leaf to41, removes global/CV owners and publishes the formerly failed constant name in a distinct eval unit. Existing shutdown store order prints escaped:41| then last| after A|, matching native exactly.",
+    "Reached author SEND capture transfers one RESULT root to the dedicated record without changing current owners. Actual152 consumes the faulting SEND;270 eagerly releases only outer/prior, then restores pending Error search with the saved constant context. Catch restoration clears context; outer/prior allocations die while the retained value remains live through actual store callback and terminal state.",
+    "Durable header checks depend on current-subtree reads and source/birth/value identity, not earlier argument VALUES or full earlier FACTS. Wrong source indexes/prefixes/value classes, missing or premature outer/current receipts, dead current leaves and duplicate records are pure refusals. A missing context cannot fall back to generic early-drop Error. No projected state is driven.",
+    "Independent312 reaches rejected root/child owners1, escaped leaf owners2 before alias release then1 after mutation41, unchanged retained prefix0 across a fresh unit2 row, and both real store entries with retained edge plus two callback pins (owners3), returning to1 at terminal state. Exactly three completed user births prove the later argument was skipped."
+  ],
+  "source_cuts": {
+    "native_and_unchanged_baseline": "ed97fcf3ae4703762e89eb512ee643f3089e93f8/399",
+    "author_and_independent_sources": "9684a6c0859ce852311433102c1370a1ffa1bb1a/399",
+    "author_object_state": "4f97aa62770d3eaca9e638db663306c2e55eb25e/399, passing187 row retained from otherwise failed v3 report",
+    "author_array_state": "8f28b90565b81a983ee7a24b6956551df9a7c764/399, array-only v4",
+    "authority": "Runtime bytes are identical968 throughout all state cuts. The only later source-wrapper expectation edit removes the obsolete V63 duplicate Unsupported mapping; V64 already overrides UNSUPPORTED={}, so accepted source3 behavior/input scope is unchanged. The final author fixture edit groups only the nested-array CLASS tuple syntax; object187 is not renewed. V63 source/state evidence is not replayed or recounted.",
+    "independent_state": "8f28b90565b81a983ee7a24b6956551df9a7c764/399, peer v2 after binder-only elaboration correction"
+  },
+  "preserved_outcomes": {
+    "unchanged_baseline": "Exact duplicate-object source reaches genuine Unsupported global constant internal or Throwable initializer after B|first|second|ready|41| at clean ed97; CLI1/empty stderr, stable and reaped. Passing boundary assertion adds0 agreement.",
+    "original_v63": "V63 normal-vs-normal rejected-current lifetime mismatch remains historical0 in its unchanged ledger/raw root; this milestone supplies new accepted cuts for the same exact bytes, not retroactive credit.",
+    "first_source_failures": "a180 fails parsing a record literal containing |USERCONSTANTS|; f2e fails type elaboration because pconstantfact needs a forward declaration in30. Both reports retain0 and only the first selected object actor was attempted. Binder-only n_constants and forward-type fixes precede accepted968. In the original author source directory, failed object model.* files were preserved as model-parser-failure.* and model-type-failure.* respectively before successful model.* outputs; report filenames retain their original mapping. Native/baseline were never replayed.",
+    "author_state_failures": "v1 wrongly expects THROW_SEARCH+DEFAULT_NEW_SEND immediately after duplicate SEND; v2 correctly checks eager release but wrongly expects context already cleared at pending search. Both count0. One compact post-SEND diagnostic in v1/diagnostic records the real task/operation/context and adds0. v3 accepts object187 but its array row fails parsing unparenthesized PVARRAY tuple sequences before any premise, credit0 for that array row. Only array v4 is renewed after grouping the tuple list; accepted object187 is retained once.",
+    "independent_first_state": "The first peer packet stops at elaboration (empty iteration) because an optional property-slot list and scalar use the same binder. Separating their binder names preserves assertions; only this failed state packet is renewed, no source/native/runtime/author replay.",
+    "other": "Native/preparation and zero-step pause/restoration add no agreement or separate driven-resume credit. The ordinary duplicate SEND step is reused after restoration identity. No accepted engine divergence or portability/full-core claim."
+  },
+  "remaining": "Other owning current classes (including Closure/FCC), ordinary/default NEW duplicate lifetime, references/unpacking, throwing/reentrant value destructors and wider lifecycle/core behavior remain partial. Failed bounded global-std capture stops explicitly instead of silently using generic early drop.",
+  "artifacts": {
+    "author_sources": {
+      "root": ".tools/dynamic-stdclass-duplicate-arguments-native-64",
+      "sha256": {
+        "native-report.json": "dfe1a8d7257a5f8141a4941dab4fe98200c29456be28c0fedd20abd8d6a1a560",
+        "baseline-report.json": "1b79078166deaa6590def67014fdbf05ddc495af1d6b450ea6d42208405b1abc",
+        "model-report.json": "ccad9c9e2ffbb243b7f6c6ff2ca7a8e635d40055d52b60eb128aeca8ec335a72",
+        "model-duplicate-current-object-duplicate-current-nested-array-report.json": "9845846566d7e7875df9070600135a61c62abe4f0e981e466d52847bd0583feb",
+        "model-duplicate-current-object-report.json": "a6b43c88251659ff58da8ae4acc607e61c8bcf2cb9045245f43161c4a15ac51b",
+        "model-duplicate-current-nested-array-report.json": "c6065d38afd3f85a03baf3666809e365909b486e48a6316b6533627dd4df3c8c"
+      }
+    },
+    "author_first_state_zero": {
+      "root": ".tools/dynamic-stdclass-duplicate-arguments-state-64",
+      "sha256": {
+        "fixtures-report.json": "79e8107a9071121db50dfe6aef9083ee864d6f7a18050364312e0980668ff9b7",
+        "check-report.json": "bf592ea68e887dae216d54cfdc0b067d0e47ddb31ea9e92c4f1e34ef0f66d791"
+      }
+    },
+    "author_second_state_zero": {
+      "root": ".tools/dynamic-stdclass-duplicate-arguments-state-64-v2",
+      "sha256": {
+        "fixtures-report.json": "82141a72c39c244641f9c7efa52e190e166d80668d6d75c173e5a1f4cb31046b",
+        "check-report.json": "abe99fb58849292b6411185a010e6c237bad7e85bc9057a14f700504704b542e"
+      }
+    },
+    "author_object_and_array_parser_zero": {
+      "root": ".tools/dynamic-stdclass-duplicate-arguments-state-64-v3",
+      "sha256": {
+        "fixtures-report.json": "10a51c3db2bdb3113119a23689655355539f6fd071c853a7ee433ac5fb186421",
+        "check-report.json": "dbde8cf105096bfd827d86458c4264a29200cba0145a230cdedbcd1fbf0d7d60"
+      }
+    },
+    "author_array_state": {
+      "root": ".tools/dynamic-stdclass-duplicate-arguments-state-64-v4",
+      "sha256": {
+        "fixtures-report.json": "b2c3fe7d5077b80b714b8dda0191e0bf503f1b89d70609fe272a5220c0611454",
+        "check-report.json": "b228be9ee24e537089edc48602460f90a7177e7cb56935a009759147a6d0fb44"
+      }
+    },
+    "independent_sources": {
+      "root": ".tools/dynamic-stdclass-duplicate-arguments-peer-64",
+      "sha256": {
+        "native-report.json": "75edba6b784acfe3c6e282cfac75406f3381d0ee00e27e80b26d5aacc7d1b748",
+        "model-report.json": "b5804d7cac81e33b27d025ceebbbac9ce96582e93a0bbf73270a2e0f1f4c6985"
+      }
+    },
+    "independent_first_state_zero": {
+      "root": ".tools/dynamic-stdclass-duplicate-arguments-peer-state-64",
+      "sha256": {
+        "fixtures-report.json": "ffd3891ec82f19b3cffa35abe4f2461f1f7150ad0195fac864041b3f7167bf57",
+        "check-report.json": "f258413bd37e55d7d8ace74871bfe8a8feaf3601f253a944127316618750ebcd"
+      }
+    },
+    "independent_state": {
+      "root": ".tools/dynamic-stdclass-duplicate-arguments-peer-state-64-v2",
+      "sha256": {
+        "fixtures-report.json": "aa2530d9403a2273a9513d6b5bd7348b0bab7f39b57512b8de57baf117259bec",
+        "check-report.json": "33c180f55d314c10da9b8d389baf6ddc39b73424fe79cef226fb1fbb48095d56"
+      }
+    }
+  },
+  "recovery": "Source wrappers: native host45/process15; sole unchanged baseline host90/CLI45/process60; changed source2 initial host150 then affected case-only model host90/CLI45/process60, peer native45/model90. All model argv/cwd/source paths match their original native identities. Author state uses existing checked worker/SL recorder: fixtureshost120, checkhost240 serial2/perSL90; final array-only renewal host150/perSL90. Peer uses same runner with its own two-unit preparation/checks, fixtureshost120/checkhost150/perSL90. Accepted proof stdout is lowercase true plus LF, empty stderr. Preserve report revisions/runtime hashes and original WT/native paths. After cleanup, recover tracked scripts from publication containing this ledger and peer protocol (peer was untracked at actorHEAD8f28), recreate original WT path and provision report-pinned executables/references. Raw bulky fixtures/logs stay outside Git in canonical .tools. All accepted actor process groups are reaped.",
+  "review": {
+    "reviewer": "/root/dynamic_review_59",
+    "decision": "cleared",
+    "scope": "Actual Zend AST duplicate insertion/current zval ownership, bounded current classes, full array roots, durable source/read-prefix authority, existing eager release and shutdown store callback timing, exact source identity and independently reached escaped mutation/fresh retry."
+  },
+  "integration": {
+    "parent": "83f369b7db85f8e9a894a6d68a315015e4d8f111",
+    "private_publication": "382a82469c53f87a5df8dfadf7ebb5a54b3dc9f9",
+    "module_count": 399,
+    "runtime_bridge": "The only runtime delta is the reviewed six-file +99/-5. Incoming39/40/227/257/283 equal the original V63 base, and composed bytes equal tested968. Shared30 reverses exactly to parent by removing only the pconstantfact forward, pconstantargument record and REJECTED field. Reversing the full original runtime patch also checks cleanly; all incoming tags/records remain exact.",
+    "shared30_parent_sha256": "a1065d2703a8cf809d37146d2a956aa3c70b9f44ff64760b1b3ed6b71e2beb84",
+    "shared30_composed_sha256": "d1475519d8ef6f3466f0dde2a1006c3cf6ffc7c572a0dfc8b7a5abe3dc379c5e",
+    "incoming_files_preserved": {
+      "spec/semantics/270-eager-destructors.watsup": "c9cfc0ee1d7e4f4e6acd73a4e5ea4f8dbe0311dc2a79b1c0cde1d5a4c36622b0",
+      "spec/semantics/386-weak-map-lifetime.watsup": "67be88cac8c45801331cf6ef5e660d0c734fda472e46a460011d307de00e669a",
+      "spec/semantics/400-dynamic-constants.watsup": "52054eee953c5a473171a6275f5ed43c48d74f3bc1f27fd6e249a5942c8a0fa6",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "d462d31e808e57b1287297b187de20998c63154526c20642c161ca5a91010c0e",
+      "spec/semantics/408-magic-property-empty.watsup": "e3cbad2de1daa37f882214c596934c3e7850c579dacdedf9441cda19974be3f1",
+      "spec/semantics/409-list-missing-warnings.watsup": "dce71d8773fb4004a5067564debe8b404cbb15c118dee4aa7273f8804d0da60e",
+      "spec/semantics/55-compound-assignment.watsup": "25003abb4457aa3feab96284ebc89220104d659be39c37f4aea0c5fa99f31554",
+      "spec/semantics/modules.json": "2e38df4b97a41f654a8c3f01ffb0c078c337ed17d1ce8816ff7429a23b031761"
+    },
+    "method": "Actual-parent selector review with independent peer:270 pending-finish specialization requires RETURN_REF_UNWIND/reference cursor and nominal Exception; proven V64 uses DEFAULT_NEW_SEND and Error. Incoming30 magic-empty/mod/shift variants,386 WeakMap CASTARRAY,400 DEFINE,404 compound warnings,408 INSTANCE magic-empty/NaN and409 LIST_FETCH/mixed destructuring cannot select V64 originals. Existing eager release and store fallback bodies are preserved. Exact two feature rows append to all incoming list/review prefixes.",
+    "reviewer": "/root/dynamic_review_59",
+    "evidence_credit": "Source3/state720 retain their private399 cuts. Pointwise composition adds no joined actor or renewed source/native/state credit; original tested branch and all raw canonical.tools roots remain."
+  }
+}

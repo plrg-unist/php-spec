@@ -320,8 +320,24 @@ Five exact originals and 605 author plus 119 independent SL premises pass in the
 [RHS bitwise ledger](../../coverage/semantics/bitassign-right-warning-review.json).
 All three source/OP pairs, fresh both-cache/source/line/range guards, actual cells/
 owners and budgets are covered; pure projections establish refusals only.
-Both-fractional operands, initial references/copies, unsafe targets and wider
+Wider operand combinations, initial references/copies, unsafe targets and wider
 lifecycle remain partial. Earlier modulo/shift/LEFT-bitwise contracts stay unchanged.
+
+For two initially fractional-float plain CVs, numeric `&=`/`|=`/`^=` retain LEFT
+before its first deprecation, then read the live RHS after that callback. Captured
+`12` with the new `5.5` captures mask `5` before the second deprecation; later
+writes `88`/`10` still store `4`/`13`/`9` and detach late alias `88`. A quiet integer
+RHS `5` after the first callback instead reaches the existing OR commit with one
+diagnostic, leaving alias `99`. Either supplied handler throw cancels storage,
+preserving the same Exception, callback writes, destination and alias write-through.
+Cached `-1` from `-1.5` remains a valid mask: XOR still stores `-13` after the second
+default Deprecated despite live `88`/`10`, leaving alias `88` detached. Seven exact
+originals and 1240 author plus 181 independent SL premises pass in the
+[ordered bitwise ledger](../../coverage/semantics/bitassign-both-warning-review.json).
+All three AST/OP pairs, fresh first-LEFT/second-RHS guards, actual entered frames,
+quiet handoff, cells/owners and budgets are covered. LEFT stays historical at
+second capture; pure projections are refusals only. Initial references/copies,
+other RHS conversions, unsafe bindings/targets and wider callbacks/lifecycle remain partial.
 
 Arithmetic and bitwise conversion use the existing pure SpecTec numeric and byte
 helpers, including signed 64-bit boundaries, binary64 values, string operands,

@@ -1,0 +1,130 @@
+{
+  "version": 1,
+  "milestone": "A7 recursive mixed direct-CV destructuring missing-key handlers",
+  "status": "independently reviewed and pointwise composed for integration",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle and tests/semantics/profile.json",
+  "base": "dc87cf01d91bfbbc1c70a02a4da170df16ca1f75",
+  "scope": "Finite recursive mixed by-value/reference patterns from a direct-CV RHS, with direct-CV leaves and quiet implicit/compiled constant keys. Each reference-bearing pattern retains a source CELL; by-value children retain captured arrays.",
+  "runtime_commit": "9b8d4db2b42f602b08fb53e024b3ae8baf6ffe45",
+  "runtime_sha256": {
+    "spec/semantics/409-list-missing-warnings.watsup": "dce71d8773fb4004a5067564debe8b404cbb15c118dee4aa7273f8804d0da60e"
+  },
+  "private_modules": 399,
+  "engine_basis": [
+    "Vendored PHP8.5.10 commit34308a6666b2d489c509541ea9befea9e2b42348: zend_propagate_list_refs and MAKE_REF capture the mixed direct-CV root wrapper. A reference-bearing child uses FETCH_LIST_W/MAKE_REF, while a by-value child uses FETCH_LIST_R and captures its array separately.",
+    "Missing FETCH_LIST_R supplies uninitialized/null after the callback without repeating the lookup. Later writable fetches use the saved source cell live value, separate arrays for COW and may create root/child arrays from NULL. Implicit reference leaves preserve the inherited compiler location.",
+    "The VM checks a callback exception before the pending store. Throw cleanup removes nested source tasks in order; outer CELL/array edges may keep a discarded inner cell alive until the caller unwind retires all otherwise unowned nodes."
+  ],
+  "reviewed_behavior": [
+    "Only409 changes runtime. A separate recursive mixed-shape predicate admits CV reference leaves; its nonflat reference-bearing root requires a direct-CV RHS. Child context recursion decreases the checked source path. Existing by-value shape/nat operand APIs remain unchanged, and mixed literal/call roots remain excluded.",
+    "The current pattern reference demand selects the source operand: a by-value child requires a live captured PARRAY, while a reference-bearing pattern requires a bounded marked allocated HCELL. Only planning reads its current array/missing key; resume authenticates source/key/index/tail/line and cell liveness independently of its value, external name or current parent lookup.",
+    "A KNOWN child snapshot keeps old embedded q33 after parent replacement, while the root CELL later supplies tail40 and the returned new root. A callback root-NULL assignment still supplies the interrupted NULL, then actual writable fetches create root/child arrays and a NULL reference slot; the intervening by-value NULL read is silent.",
+    "A detached child CELL reads replacement22 while the separately held root resolves66/44 and a rebound live CV resolves77/55. Initial child/parent tables and q have retired before resume, yet saved cells remain valid. Raw acquisition/COW/binding then retires the detached child before outer tail44, leaving y independently writable at33.",
+    "A depth3 mixed pattern with an earlier implicit reference reaches native line22, not the missing target line. All three current arrays are separated from the copied graph; early scalar5 stays isolated in the copy while the embedded q alias is shared. Its physical owners grow3 to4 through raw acquisition/binding and every otherwise unowned array/cell retires at final unsets.",
+    "The throwing depth3 case preserves earlier9/5, callback99, destination100 and the supplied Throwable. Immediately after emitter discard, root/parent/source/q CELL owners are1/2/1/1 and all three arrays remain owned1; the later caller TRY_END has retired them all.",
+    "No task, state field, module or generic read/write/compiler/ownership helper changes. No inherited test/control file changes or A1\u2013A6 actor replays are needed; old evidence retains its original cuts and zero renewed credit."
+  ],
+  "accepted": {
+    "source": {
+      "report": ".tools/list-nested-reference-source-07/report.json",
+      "sha256": "86d656321998077574d3cc4e3c31923ec61683f58fb378e0b2e56e16a4bab46c",
+      "revision": "9b8d4db2b42f602b08fb53e024b3ae8baf6ffe45",
+      "agreements": 5,
+      "cases": [
+        "list-nested-reference-root-replace",
+        "list-nested-reference-root-null-descent",
+        "list-nested-reference-throw-cleanup",
+        "list-nested-reference-review-detached-child-rebind",
+        "list-nested-reference-review-prior-reference-cow"
+      ],
+      "native_reuse": "Fresh A7 originals retain native argv/source paths/streams from baseline/native preparations; model-only comparisons use the same original paths, with no oracle replay."
+    },
+    "states": [
+      {
+        "report": ".tools/list-nested-reference-author-state-07/report.json",
+        "sha256": "033d44b8b82e3b31915ab95a7ad3c92f625c129d1ca79060fa8bed6669974e2c",
+        "revision": "b8148e051c2658c58e6f201e74d396ebb39c7081",
+        "fronts": 3,
+        "conditions": [
+          135,
+          144,
+          144
+        ],
+        "raw_steps": [
+          4,
+          5,
+          1
+        ],
+        "boolean_premises": 413
+      },
+      {
+        "report": ".tools/list-nested-reference-review-state-07/report.json",
+        "sha256": "efeafdde4f7a098e61904113bcc6badf415ad4d8f1b4597f45a8c648c6fe296c",
+        "revision": "b8148e051c2658c58e6f201e74d396ebb39c7081",
+        "fronts": 2,
+        "conditions": [
+          192,
+          196
+        ],
+        "raw_steps": [
+          5,
+          4
+        ],
+        "boolean_premises": 379
+      }
+    ],
+    "source_agreements": 5,
+    "state_fronts": 5,
+    "total_conditions": 811,
+    "boolean_premises": 792,
+    "raw_steps": 19,
+    "credit_note": "Conditions include setup and pure shape/refusal premises, not separate PHP programs. Every recorded group_after is empty. Source/state checks retain their private cuts; later documentation/composition adds no agreement credit. No A7 fixture failed."
+  },
+  "preserved_zero_credit": [
+    {
+      "report": ".tools/list-nested-reference-baseline-07/report.json",
+      "sha256": "e5f8ead5b974c54884782a8a9838c800821f6ea0bc8bf75d136d0143b060839c",
+      "revision": "dc87cf01d91bfbbc1c70a02a4da170df16ca1f75",
+      "result": "Unchanged A6 explicitly Unsupported at handler ingress for list-nested-reference-root-replace; its original native path/bytes are reused for the accepted model comparison."
+    },
+    {
+      "report": ".tools/list-nested-reference-native-rest-07/report.json",
+      "sha256": "d1607b4a912efd95958d1688dbfa41d4a1608fa65a467fe2627507adca452271",
+      "revision": "dc87cf01d91bfbbc1c70a02a4da170df16ca1f75",
+      "result": "Fresh author root-NULL writable descent and depth3 supplied-throw native2 preparation only."
+    },
+    {
+      "report": ".tools/list-nested-reference-review-native-07/report.json",
+      "sha256": "e784dd0aa184467c507fbcb72ad524e30f628759527fa942918fdefa8212d03f",
+      "revision": "dc87cf01d91bfbbc1c70a02a4da170df16ca1f75",
+      "result": "Fresh independent detached child/root/CV replacement and prior-reference depth3 COW native2 preparation only."
+    }
+  ],
+  "raw_evidence": {
+    "archive": "/home/user/workspace/php-spec/.tools/list-nested-reference-missing-warning-07-raw.tar.gz",
+    "bytes": 318834,
+    "members": 152,
+    "sha256": "bc2a5ffa784f2b9fec18c00a2fdb5624285088e1d7780c97bfaf1ecd1a7382b6",
+    "recovery": "Archive retains six original relative .tools report/fixture/process/source directories and list-nested-reference-reuse-sources-07.py. Extract beneath a checkout of the recorded cut; absolute argv/cwd are historical provenance. No archive is a build dependency."
+  },
+  "actual_parent_review": {
+    "parent": "393a5c8b60370110f2e64fed7c9bb4ed0d933c51",
+    "seams": "Incoming30/55/404 add both-fractional shift COMPOUND_APPLY/8192 continuations,270 extends typed by-reference-return destructor replay to nominal Exception descendants,386 allocates an empty array for WeakMap CASTARRAY. Their distinct tags/source/value shapes leave409, list/CELL/COW ownership and33/39/62\u201364 unchanged. Subsequent270 adds matching typed-reference-return cursor validation for normal destructor exit;30/408 add a distinct PROPERTY_EMPTY_NAN receiver warning/discard path;400 admits NULL-name false scalar flags. Their separate task/source/value guards preserve list source-cell authority.",
+    "joined_actor": "No concrete semantic interaction found; pointwise composition and exact FF review add no replay credit.",
+    "composition": {
+      "runtime_delta": [
+        "spec/semantics/409-list-missing-warnings.watsup"
+      ],
+      "modules": 399,
+      "tested_leaf": "b8148e051c2658c58e6f201e74d396ebb39c7081",
+      "checks": "409 and all six new tests retain exact tested bytes; no inherited test changes. All other parent runtime/modules and inventory rows/fields are retained; all other parent checkpoints remain exact.",
+      "joined_actor": "No concrete interaction; no new actor or renewed agreement credit.",
+      "runtime_diff_sha256": "db1d93245b4fb2eb1d335041484dca0fe11c4d1ff4c128104bd358f8944fd878"
+    }
+  },
+  "remaining": [
+    "Mixed literal/call or wider RHS producers and non-CV target leaves.",
+    "Undefined-CV/null/lossy-float key warning producers and scalar/object destructuring diagnostic callbacks.",
+    "Wider callbacks, suspension and lifecycle; full array/diagnostic/core closure and final offline portability."
+  ]
+}

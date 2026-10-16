@@ -199,6 +199,7 @@ syntax pautoloadregistration = { ENTRY pautoloadentry, INDEX nat, THROW bool, PR
 syntax pshutdownphase = SHUTDOWN_PENDING | SHUTDOWN_RUNNING | SHUTDOWN_DONE
 syntax pdestructionphase = DESTRUCTION_PENDING | DESTRUCTION_GLOBALS | DESTRUCTION_STORE | DESTRUCTION_DONE
 syntax pcallcontext
+syntax pconstantfact
 syntax pconstantcontext
 syntax pobject
 syntax pframe
@@ -216,12 +217,13 @@ syntax pdestructionjob = DESTRUCTION_VALUE pnode | DESTRUCTION_TEMP pnode | DEST
 syntax pdestructionrelease = {JOBS pdestructionjob*, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, USER bool}
 syntax pdestructionframe = {PENDING nat?, VALUE poperand, CALLER pcallcontext?, FUNCTION porigin, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?}
 syntax pdestructioncleanup = {SOURCE ptask, TARGET pshutdownproducer, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, RELEASED bool}
+syntax pconstantargument = {OBJECT nat, INDEX nat, VALUE pvalue, CLASS pvalueclass, CONSTANTS nat, READS pconstantfact*}
 syntax pdestructionhandler = {VALUE pvalue, ARRAY parray?, CELLS (nat, pslot)*}
 syntax pdestructionfatal = {FRAME pframe, FRAMES pframe*, GLOBAL psymboltable, VALUE poperand, BASE pbase, DESTRUCTION pdestruction, SHUTDOWN pshutdown, ERRORHANDLER perrorhandler, ERRORHANDLERS perrorhandler*, EXCEPTIONHANDLER pvalue?, EXCEPTIONHANDLERS pvalue?*, HANDLERS pdestructionhandler*, EVALCONTEXTS pevalcontext*, FILECONTEXTS pfilecontext*, DECLARATIONS pdeclaration*, COMPLETION pcompletion, FROZEN pcompletion, ERRORORIGIN porigin?, TRACE ptraceframe*, ERRORTRACE ptraceframe*, COMPILESTOP bool, REPORTING int}
 syntax pgctemporary = {OPERAND poperand, PENDING bool}
 syntax pdestructionoperation = {VALUE poperand, BASE pbase, CELL nat, KEY pkey, LOCATION plocation, COMPLETION pcompletion, PENDING nat?, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, SOURCE ptask, CLEANUP pdestructioncleanup?, NOGC pgctemporary?}
 syntax pdestructorcall = {OBJECT nat, TARGET pcalltarget, STORE bool, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, USER bool, SITE porigin?, LINE int, RELEASE pdestructionrelease?, FRAME pdestructionframe?, OPERATION pdestructionoperation?, PENDING nat?}
-syntax pdestruction = {HANDLES nat*, FREE nat*, NEXT nat, NOREUSE bool, CALLED nat*, RETIRED (nat, nat)*, PHASE pdestructionphase, NAMES nat**, PASS nat**, COUNT nat, INDEX nat, COMPLETION pcompletion, RELEASES pdestructionrelease*, CALLS pdestructorcall*, FRAMES pdestructionframe*, OPERATIONS pdestructionoperation*, CLEANUPS pdestructioncleanup*, ABANDONED pdestructioncleanup*, PROPCACHE (porigin, pobject)*}
+syntax pdestruction = {HANDLES nat*, FREE nat*, NEXT nat, NOREUSE bool, CALLED nat*, RETIRED (nat, nat)*, PHASE pdestructionphase, NAMES nat**, PASS nat**, COUNT nat, INDEX nat, COMPLETION pcompletion, RELEASES pdestructionrelease*, CALLS pdestructorcall*, FRAMES pdestructionframe*, OPERATIONS pdestructionoperation*, CLEANUPS pdestructioncleanup*, REJECTED pconstantargument*, ABANDONED pdestructioncleanup*, PROPCACHE (porigin, pobject)*}
 syntax hedge
 syntax hgraph
 syntax pgcvisit = GC_VISIT pnode bool
@@ -375,6 +377,8 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | SHIFT_ASSIGN_BOTH_RIGHT pintegeroperation nat nat nat int nat int nat
   | BIT_ASSIGN_WARNING pintegeroperation nat nat nat int nat
   | BIT_ASSIGN_RIGHT_WARNING pintegeroperation nat nat int nat int nat
+  | BIT_ASSIGN_BOTH_LEFT pintegeroperation nat nat nat int nat
+  | BIT_ASSIGN_BOTH_RIGHT pintegeroperation nat nat nat int nat int nat
   | UPDATE_WARNING_NOTICE pupdatewarning | UPDATE_WARNING_RESTORE pupdatewarning | UPDATE_WARNING_DONE pupdatewarning
   | UPDATE_WARNING_RELEASE pupdaterestore | UPDATE_WARNING_COMMIT pupdaterestore
   | UPDATE_WARNING_EXIT perrorcall int
@@ -538,6 +542,8 @@ syntax pgenerator = { FUNCTION porigin, FRAME pframe?, PHASE pgeneratorphase, FI
 syntax pgeneratorfrom = { SITE porigin, INPUT pvalue?, POSITION nat, CURRENT poperand?, ACQUISITION pyieldfromreceipt? }
 syntax pgeneratorloop = { ITERATOR nat, STATEMENT statement }
 syntax pgeneratorop = { OBJECT nat, NAME text, SITE porigin, LINE int, LOOP pgeneratorloop?, ADVANCE bool, ARGUMENTS pvalue*, STARTPACK bool, BORROWED bool }
+;; SOURCE receiver/site are borrowed history; only its single argument owns.
+syntax pgeneratorinput = { OBJECT nat, SITE porigin, SOURCE pgeneratorop, LIVE bool }
 syntax pweakmapentry = { KEY nat, VALUE pvalue, BEFORE nat? }
 syntax pobject = SENSITIVEUNSET porigin | SENSITIVEVALUE pvalue | WEAKREFERENCE nat? | WEAKMAP pweakmapentry? | FIBERGRACEFUL nat nat | FIBER pfiber | FIBERAPICLOSURE pfibercapture | GENERATOR pgenerator | INTERNALCALLCLOSURE pinternalclosurescope pobject | CONSTANTCLOSURE porigin pobject | PARAMETERSOURCECLOSURE nat pobject | THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | FROMCALLABLEFACTORY porigin | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture? | STRINGMETHODCLOSURE pcalltarget pstringselection | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text pgettersource | CTORCLOSURE nat text porigin | FROMCALLABLECLOSURE pfrommethod | BOUNDFAKECLOSURE pboundfake | INTERNALSCOPECLOSURE pinternalclosurescope pobject | INSTANCE porigin | STDINSTANCE
 syntax pdeclautoload = (nat, pautoloadcall, pautoloadentry)
@@ -566,7 +572,7 @@ syntax ptickmarker = { PATH pcpath, FREQUENCY nat, LINE int }
 syntax ptickentry = { ID nat, ENTRY pshutdownentry }
 syntax ptickdispatch = { SITE porigin, MARKER ptickmarker, CURSOR nat, ENTRY nat?, SENT poperand* }
 syntax pstate = { TICKCOUNT nat, TICKSEQ nat, TICKENTRIES ptickentry*, OUTPUTSEQ nat, OUTPUTBUFFERS poutputbuffer*, OUTPUTIMPLICIT bool, OUTPUTBLOCKED bool, EXITSTATUS int, OBJECTS pobject*, CLOSURESCOPES pclosurescope*, CLOSUREBINDINGS pclosurebinding*, OBJECTPROPS pobjectprops*, OBJECTTABLES pobjecttable*, PROPREFS ppropref*, REFCOERCIONS prefcoercion*, CONTAINERINITS pcontainerinit*, PARAMETERBACKINGS pparameterbacking*, CLONES pclonewindow*, CLONEMAKERS pclonemaker*, CLASSES pclassdesc*, CLASSNAMES (preqbytes, porigin)*, DECLARATIONS pdeclaration*, LINKEDPARENTS pclasslink*, LINKEDINTERFACES pinterfacelink*, CLOSURETEMPLATES pfunction*, STATICS pstaticcell*, CLASSSTATICS pclassstatic*, INSTANCEDEFAULTS pinstancetemplate*, CLASSCONSTANTCACHE pdefaultcache*, CLASSCONSTANTHISTORY pclassconstantevent*, CLASSCONSTANTINIT pclassconstantcontext*, CONSTANTCLOSURES pconstantclosure*, PARAMETERCLOSURES pparameterclosure*, CONSTANTOBJECTS pconstantobject*, CONSTANTSTDOBJECTS pconstantstdobject*, STARTUP pstartup?, ASSERTIONS int, ASSERTIONSINIT preqbytes, ASSERTIONSINI preqbytes, ASSERTIONSMODIFIED bool, ASSERTIONSRAW pvalue, ASSERTIONSORIGINAL pvalue, ASSERTIONSMODE passertmode, ASSERTIONININEXT nat, ASSERTIONINI passertini*, STRINGDATA (nat*)*, ASSERTACTIVE passertflag, ASSERTBAIL passertflag, ASSERTWARNING passertflag, ASSERTEXCEPTION passertflag, ASSERTCALLBACK pvalue?, ASSERTOPTIONNEXT nat, ASSERTOPTIONS passertoption*, REPORTING int, REPORTINGINI preqbytes, REPORTINGMODIFIED bool, DISPLAYINIT preqbytes?, DISPLAYINI preqbytes?, DISPLAYMODIFIED bool, PRECISIONINIT preqbytes, PRECISIONINI preqbytes, PRECISIONMODIFIED bool, SILENCES psilence*, ERRORHANDLER perrorhandler, ERRORHANDLERS perrorhandler*, EXCEPTIONHANDLER pvalue?, EXCEPTIONHANDLERS pvalue?*, AUTOLOAD pautoloadregistry, AUTOSEQ nat, SHUTDOWN pshutdown, DESTRUCTION pdestruction, GC pgc, BORROWEDREAD pidentityread?, OBJECTCAST pobjectcast?, DEFAULTCACHE pdefaultcache*, PARAMETERSEQ nat, PARAMETERRECEIVES preceivebirth*, CONSTCONTEXT pconstantcontext?, USERCONSTANTS puserconstant*, TRACE ptraceframe*, ERRORFATALTRACE ptraceframe*, ERRORORIGIN porigin?, RECORDEDCOMPILEERROR nat?, FUNCTIONS pfunction*, CALLABLES (preqbytes, porigin)*, GLOBALTABLE psymboltable?, ACTIVEFIBER nat?, FIBERCALLERS pfibercaller*, FIBERCLOSERS pfiberclose*, FIBERSEQ nat, FRAMES pframe*, CURRENT pcallcontext?, RETIREDOWNERS pretiredowner*, REQUEST prequest?, FILECWD preqbytes?, FILEINCLUDEPATH preqbytes?, FILESEQ nat, DIRSEQ nat, DIRCONVSEQ nat, DIRCONVERSIONS pdirconversion*, DIRCONTEXT pdircontext?, SHELLSEQ nat, SHELLCONTEXT pshellcontext?, SELECTSEQ nat, SELECTEDCALLS pselectedcall*, FILECONTEXTS pfilecontext*, FILEBINDINGS pfilebinding*, INCLUDEDOPENED preqbytes*, EVALCONTEXTS pevalcontext*, EVALBINDINGS pevalbinding*, FAILEDSOURCES pfailedsource*, SOURCEPENDING psourcepending?, SERVICELEFT nat?, COMPILESTOP bool, SYMBOLS preqbytes*, CVS preqbytes*, HTTPROOTS (preqbytes, pvalue)*, ACTIVATED preqbytes*, TODO ptask*, EVENTS pevent*, COMPLETION pcompletion,
-  ENV pbinding*, STORE pslot*, REFCELLS nat*, RESULT poperand, CELL nat, ARRAYS parray*, KEY pkey, BASE pbase, LOCATION plocation, ALLOCATIONS pnode*, HELD pnode*, SOURCES pcunit*, ORIGIN porigin?, POOLS ppool*, FILES psourcefile*, CODE pcode*, ITERATORS piterator*, NEXTITER nat, YIELDRETAINED pyieldfromretained* }
+  ENV pbinding*, STORE pslot*, REFCELLS nat*, RESULT poperand, CELL nat, ARRAYS parray*, KEY pkey, BASE pbase, LOCATION plocation, ALLOCATIONS pnode*, HELD pnode*, SOURCES pcunit*, ORIGIN porigin?, POOLS ppool*, FILES psourcefile*, CODE pcode*, ITERATORS piterator*, NEXTITER nat, YIELDRETAINED pyieldfromretained*, GENERATORINPUTS pgeneratorinput* }
 
 dec $output_write(pstate, preqbytes) : pstate
 dec $output_display(pstate, pevent*) : pstate
@@ -1358,6 +1364,8 @@ dec $yield_from_aggregate_pending_site(pstate, porigin) : bool
 dec $yield_from_aggregate_context(pstate, pcallcontext) : bool
 dec $yield_from_retained_nodes(pyieldfromretained*) : pnode*
 dec $yield_from_retained_valid(pstate, pyieldfromretained*) : bool
+dec $generator_inputs_nodes(pgeneratorinput*) : pnode*
+dec $generator_inputs_valid(pstate, pgeneratorinput*) : bool
 
 ;; A property hook is a source function with an owning implicit receiver.
 dec $property_hook_pending(pstate) : bool
