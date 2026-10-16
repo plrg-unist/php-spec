@@ -2625,8 +2625,8 @@ slots bypass it; actual true/false results preserve short circuiting and storage
 One original and one state/215 checks cover typed name reception, lexical scope
 and receiver cleanup; [magic isset review](coverage/semantics/magic-isset-review.json).
 Terminal `empty` now chains that inherited `__isset` with an untyped by-value
-`__get`: false skips the getter, while true tests its null, bool, int, non-NaN
-float or byte-string result. Only empty bytes or exactly ASCII `0` make a string
+`__get`: false skips the getter, while true tests its null, bool, int, float
+or byte-string result. Only empty bytes or exactly ASCII `0` make a string
 empty; NUL and `0` plus NUL do not. The original integer/call state208 remains historical; one further
 original and state155 cover primitive results and authenticated string metadata.
 [Magic empty review](coverage/semantics/magic-empty-review.json),
@@ -2634,8 +2634,12 @@ original and state155 cover primitive results and authenticated string metadata.
 Both signed float zeros are empty; other finite/subnormal values and infinities
 are not. One further original and state145 check the actual float bits and bounds;
 [float result review](coverage/semantics/magic-empty-floats-review.json).
-Other signatures, receivers, NaN/owning results and coalesce magic combinations
-remain unsupported.
+NaN getter results now warn after Get returns, keeping the receiver through a
+returning or throwing handler. Three originals and two state cuts totaling242
+checks cover the default Warning, caller-CV rebinding and destruction before
+result/catch; [NaN warning review](coverage/semantics/magic-empty-nan-review.json).
+Other signatures, receivers, owning results and wider recursive/coalesce magic
+combinations remain unsupported.
 Hooked iteration, defaulted virtual hooks, other paired or virtual setters, wider trait
 setters, other explicit setter parameter forms, references, other inherited/trait
 and wider receiver, quiet or indirect-access families and wider `__unset` consumers remain required.

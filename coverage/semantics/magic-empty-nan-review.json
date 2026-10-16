@@ -1,0 +1,141 @@
+{
+  "scope": "NaN getter truth for terminal inherited empty in the existing external CV/literal declared-private property slice; same public nonstatic nonref bool isset and same-owner untyped by-value get.",
+  "implementation": {
+    "base": "e70950fcbc240ec0acd48126dd299779ac289a6a",
+    "revision": "d16aef39424ad25bf4ba1688b879c236bc59a4ad",
+    "modules": 399,
+    "change": "One shared30 record/task and79 module408 lines. Preserve captured NaN, caller/depth/site/method/tail and one receiver owner through error wrappers/saved frames; Isset stays active, Get is already inactive. Normal completion yields false; checked throw cleanup drops the receiver before catch search without replacing the Throwable. Existing Get-active predicate and quiet truth helper are unchanged.",
+    "maintenance": "All three active older actual qNaN Unsupported controls now use invalid2^64+1; new derived actual refusal covers them without replay. Pure NaN helper refusals and historical ledgers retain their cuts."
+  },
+  "engine": {
+    "target": "PHP8.5.10 CLI NTS64",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_object_handlers.c zend_std_has_property:2490-2520 clears IN_GET before truth, retains IN_ISSET/receiver through warning and RV disposal, then clears/releases even on throw",
+      "Zend/zend_operators.h i_zend_is_true double branch; Zend/zend_operators.c zend_nan_coerced_to_type_warning",
+      "main/main.c php_error_cb CLI stderr Warning formatting"
+    ],
+    "intentional_divergences": []
+  },
+  "sources": {
+    "catalogue": "tests/semantics/magic_empty_nan_cases.json",
+    "original_root": "/home/user/workspace/php-spec/.tools/magic-empty-nan-private-86/.tools/magic-empty-nan-probes-86",
+    "maintained_byte_identical": true,
+    "cases": "default, returning, throwing; exact source hashes/raw native tuples/profile in catalogue. Returning/throwing handlers replace the sole caller CV with null: h precedes D, then F/catch; default separately observes unchanged private storage."
+  },
+  "validation": {
+    "native": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-nan-private-86/.tools/magic-empty-nan-probes-86/native-first/report.json",
+      "sha256": "e648af03eafbb9deb7ecfdd875ef677d7c14097f7640eafaf8834dbb28e196cc",
+      "revision": "e70950fcbc240ec0acd48126dd299779ac289a6a",
+      "tuples": "stdout/stderr/exit:19/173/0,62/0/0,62/0/0",
+      "source_agreements": 0
+    },
+    "baseline": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-nan-private-86/.tools/magic-empty-nan-probes-86/accepted-current-baseline/report.json",
+      "sha256": "abfa0c56f9fe0fe9e8e43a4d291b34a8dbddc2155d24ebbd8f2b4123850eb3b1",
+      "revision": "e70950fcbc240ec0acd48126dd299779ac289a6a",
+      "result": "Three checked Unsupported: magic empty getter result type, after B/N/X:I|G|",
+      "source_agreements": 0
+    },
+    "changed_source": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-nan-private-86/.tools/magic-empty-nan-probes-86/changed-model-cuh91lte/report.json",
+      "sha256": "577079f685964ab65f9cb4b06281aaf14e9f963448ae23996f6c7f63e7c85815",
+      "revision": "d16aef39424ad25bf4ba1688b879c236bc59a4ad",
+      "result": "Three checked normal exact native tuples",
+      "source_agreements": 3
+    },
+    "returning_state": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-nan-private-86/.tools/magic-empty-nan-protocol-r28ts8as/report.json",
+      "sha256": "7170e2d483c283b51141218a1eef938886892747f4dd012f5ebe3d02adc8fced",
+      "revision": "5a05e5afc335db36fcb84cbdbb97ee3f52df42a6",
+      "accepted_record": "returning-strict-SL-application",
+      "premises": "141=94reached+47derived",
+      "AL_seconds": 6.704853534698486,
+      "SL_seconds": 18.39978575706482,
+      "result": "true/exit0; enclosing two-case packet remains false because original throw92 failed"
+    },
+    "throwing_state": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-nan-private-86/.tools/magic-empty-nan-protocol-zvnsjm2c/report.json",
+      "sha256": "00ead69d2433c1a9bdfeb8ffcab7fc63532766c3c82080dbb3b6f9fd21c279bb",
+      "revision": "b66d611c99d6c283646550063afc8dda4a018ae7",
+      "accepted_record": "throwing-strict-SL-application",
+      "premises": "101reached",
+      "fixture_sha256": "035c85f39857aa8f18a66167e3641020e5e06a44c494d9ffacacb922bae4d0bb",
+      "AL_seconds": 6.8408074378967285,
+      "SL_seconds": 22.356553554534912,
+      "result": "true/exit0"
+    },
+    "combined": "Two independently accepted cuts:141+101=242,195reached+47derived; not one all242 execution at b66. Normal compatibility: new MN_CATCH branch is unused there; selector/report metadata changes no fixture premises or runtime behavior."
+  },
+  "focused_scope": "Actual getter RV, warning/entered handler, caller CV=null with saved-frame validity despite recapture refusal, Isset active/Get inactive, single receiver owner, normal result/CLEAN and throwing discard, genuine destruction before output/catch, same Exception bound by CATCH_BIND, and late budgets. Derived default dispatch, invalid bits and fresh matching queued-record owner/caller/NaN/tail/source/method/packet refusals add no source agreements.",
+  "nonpassing": [
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-nan-private-86/.tools/magic-empty-nan-protocol-yng9o2x6/report.json",
+      "sha256": "1625269f9b75804dc2bdff291e2d84857f632cbac462fd34e9a53028758479e0",
+      "result": "pre-app empty iteration diagnostic; app0/passingcredit0"
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-nan-private-86/.tools/magic-empty-nan-protocol-43mh_zvi/report.json",
+      "sha256": "574ab2096fd66793e277fd12fd34391f27280baf38a95a283ed30d56a9e33147",
+      "result": "pre-app otherwise/non-pure-premise diagnostic; app0/passingcredit0"
+    },
+    {
+      "report": "validation.returning_state",
+      "record": "throwing-strict-SL-application",
+      "result": "Original throw92 false/passingcredit0: terminal caught global was already unbound by request teardown (257 destructor-global-release). Corrected to actual pre-terminal catch binding."
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-nan-private-86/.tools/magic-empty-nan-probes-86/diagnostic-86-di9dwyvy/report.json",
+      "sha256": "23967f013da36bd3bc8332a091340af64bfe821183963df92eef0d8fedc04785",
+      "result": "Prefix49/56/72/90 vector alltrue locates only finalcatch2 failure; diagnostic passingcredit0/source0"
+    }
+  ],
+  "execution": {
+    "cwd": "/home/user/workspace/php-spec/.tools/magic-empty-nan-private-86",
+    "environment": "LC_ALL=C TZ=UTC PHP_SPEC_SCRIPT_ENCODING absent; jobs1; fixed native_profile in catalogue/raw reports. Native/baselineCPU1, changedCPU2, states/diagnosticCPU4.",
+    "caps": "native45; model60/outer75/steps100000 percase serial; focused AL90 then strictSL90/cachefalse/dettrue/stop-first.",
+    "commands": [
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/magic-empty-nan-probes-86/run.py native --revision e70950fcbc240ec0acd48126dd299779ac289a6a",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/magic-empty-nan-probes-86/run.py baseline --revision e70950fcbc240ec0acd48126dd299779ac289a6a",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 2 python3 -u .tools/magic-empty-nan-probes-86/run.py changed --revision d16aef39424ad25bf4ba1688b879c236bc59a4ad",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 4 python3 -u tests/semantics/magic_empty_nan_protocol.py --revision 5a05e5afc335db36fcb84cbdbb97ee3f52df42a6",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 4 python3 -u tests/semantics/magic_empty_nan_protocol.py --case throwing --revision b66d611c99d6c283646550063afc8dda4a018ae7"
+    ],
+    "affinity": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-nan-private-86/.tools/magic-empty-nan-probes-86/affinity-native-first.json",
+        "sha256": "257dd816836170d0067460fe56fe469b2b502221c8db17eec4db72be42f7b5e4"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-nan-private-86/.tools/magic-empty-nan-probes-86/affinity-accepted-current-baseline.json",
+        "sha256": "72fbcdb23a8aefeeb02e158a8fc3cdc557687bbe166c80a6d409ff5d6083b1fa"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-nan-private-86/.tools/magic-empty-nan-probes-86/affinity-changed-source-86.json",
+        "sha256": "7e643338d3a577d8939b8f27ac9c85ba5f3621d28b1991e4137e4b22d652af77"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-nan-private-86/.tools/magic-empty-nan-probes-86/affinity-state-86-repair2.json",
+        "sha256": "914ce15de3638ae2faa18b4ef4733d7c846d23fc35e7f14f65e7c8662cbce981"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-nan-private-86/.tools/magic-empty-nan-probes-86/affinity-state-86-repair3.json",
+        "sha256": "c94d19bb00c9a5e962db584af443e8deb48cbf23c918a1b640ba543bb0769cb7"
+      }
+    ],
+    "observations": "Native2\u20133ms children escaped sampling: zero native live-mask/argv captures, partial observer preserved; CPU1 follows exact taskset-parent inheritance. Baseline3/changed3/state4+2 have full live captures. All accepted input/head/status checks stable, fixtures stable, empty groups and actors/observers reaped."
+  },
+  "tools": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "private_source_driver_sha256": "1135c8cfc172ee242f904de904c2d59a93a0783441e57c1c14dc89e88350631b"
+  },
+  "limits": "Owning getter RV disposal and wider signature/receiver/recursive/quiet combinations remain partial. Source cases use NAN; actual model bits are checked, with no native NaN payload-bit identity claim. Source3 publicly loads SL399; no separate initialization load or older83\u201385 replay.",
+  "artifacts": "Original ignored raw reports/streams/process records/diagnostics and private run.py remain in place. Maintained source/catalogue/focused harness recover from tested commits. No large artifacts, backup worktrees or extra cleanup receipt chain tracked.",
+  "review": {
+    "independent": "class_review_84",
+    "accepted": "Native/baseline/source3, production, the two focused cuts and concise publication independently accepted. Structural inventory/diff checks pass; no semantic rerun for publication."
+  }
+}

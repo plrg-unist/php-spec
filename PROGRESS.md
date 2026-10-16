@@ -7,22 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Terminal inherited `empty` now accepts valid non-NaN float getter results within
-the existing CV/literal private-property slice. Both signed zeros are empty;
-other finite/subnormal values and infinities are not. One 235-byte original agrees
-at1abb46624; state145 =132 reached +13 derived passes at1b54b5d6e, checking nine
-actual binary64 payloads, pure conversion, saved receiver owner release and late
-budget resume. Constructed NaN/invalid-bit refusals cover both older active
-refusal controls without replay. The unchanged Unsupported baseline retains zero
-agreement credit; no runtime actor failed. NaN warning continuations, owning RV
-disposal and wider signature/receiver/recursive/quiet combinations remain partial.
-[Float result review](coverage/semantics/magic-empty-floats-review.json).
-Earlier integer/call state208 and null/bool/byte-string state155 retain their tested
-cuts, original source identities and historical failures without renewal:
-[magic empty review](coverage/semantics/magic-empty-review.json),
-[primitive result review](coverage/semantics/magic-empty-scalars-review.json).
-Pointwise composition over f63866b36 preserves the incoming399-module parent.
-Source1/state145 retain their private cuts; seam review warrants no joined actor or renewed credit.
+Terminal inherited `empty` now warns for NaN getter results after Get returns,
+retaining the isset guard and captured receiver through the warning callback.
+Caller-CV rebinding leaves the saved NaN unchanged: normal completion gives false;
+a throwing handler keeps the same Exception. Receiver destruction precedes branch
+output or catch binding. Three exact originals agree at d16aef394. Normal141 at
+5a05e5afc plus affected throwing101 at b66d611c9 total242 checks (195 reached +47
+derived), including actual callback/cleanup/destructor/catch steps, authenticated
+record refusals and budgets. Two pre-app fixture failures and an invalid terminal
+catch lookup retain zero credit; the diagnostic adds none. The unchanged baseline
+remains genuine Unsupported/zero agreement. Owning getter RV disposal and wider
+signature/receiver/recursive combinations remain partial.
+[NaN warning review](coverage/semantics/magic-empty-nan-review.json).
+Earlier integer/call, scalar/string and non-NaN float cuts retain their identities:
+[magic empty](coverage/semantics/magic-empty-review.json),
+[primitive results](coverage/semantics/magic-empty-scalars-review.json),
+[float results](coverage/semantics/magic-empty-floats-review.json).
 
 Plain-CV numeric `&=`/`|=`/`^=` now retain their fractional LEFT conversion
 through deprecation handlers, then read the live quiet integer RHS. Captured12/live5
