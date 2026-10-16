@@ -8737,7 +8737,8 @@ failures and interrupted evidence.
   cancels its pending Notice and re-enters the outer finalizer before the
   original TypeError reaches the caller. M81 restores the local catch and
   consumed return cursor when an old C destructor throws an Exception
-  during selected reference replacement.
+  during selected reference replacement. M82 admits modeled built-in
+  Exception descendants at that same authenticated destructor exit.
   Other VALUE signatures/layouts, general CONST/other
   NULL and multiple-active histories, genuinely released
   CV targets, wider destructor throw/reentry, real suspension and wider typed consumers
@@ -8833,6 +8834,24 @@ This covers one ordinary C with a throwing destructor, exact Exception,
 named no-argument old source, nullable class declaration and single cursor.
 Other exception types, reentrant destructor histories and wider returns remain
 open. [M81 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M82 changes only the two exact Exception KIND guards at the selected return's
+pending destructor exit and saved descriptor to use the existing modeled
+Exception hierarchy. New direct/assigned `&f():?C` originals have C's
+destructor throw `RuntimeException("boom82")`; local `catch (Exception)`
+reports subtype and message as `CE:1/1`. Native2 at `108b026fe`/399 ends
+with `F:0/1;I;D;I;CE:1/1;A;S`, detached `rNULL/b7` and one old-line Notice.
+The unchanged model routes both to outer OE with r7/no Notice, giving zero
+agreements. Strict and both exact source agreements pass at private
+`345244d14`/399. One assigned 126-premise reached proof binds pending
+RuntimeException and boom82 message bytes at real OP_EXIT, the same object
+in the local superclass catch, retired old HOBJECT, root-free consumed
+NULL/new Notice, public descriptor/LINE-only refusal and exit-cut budget.
+The proof is one RuntimeException history; M81's exact Exception evidence is
+separate. Other admitted built-in Exception descendants lack focused validation;
+user-defined throwable subclasses, Error siblings, reentrant destructors and
+wider returns remain open. Public resumption from a normal pending-free
+operation-exit cursor is the next focused boundary.
+[M82 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, wider destructor throw/reentry, real suspension and wider typed
