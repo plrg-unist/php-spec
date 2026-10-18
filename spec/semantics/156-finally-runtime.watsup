@@ -1108,12 +1108,24 @@ def $ref_consumed_pair_tail(ptask :: ptask_tail*) = $ref_consumed_pair_tail(ptas
   -- if ~$ref_consumed_pair_task(ptask)
   -- if ~$ref_consumed_task(ptask)
 def $ref_consumed_pair_tail(ptask*) = eps -- otherwise
+dec $ref_partial_pair_scope_tail(ptask*) : ptask*
+def $ref_partial_pair_scope_tail(ptask*) = ptask_suffix*
+  -- if $(|ptask*| >= 8)
+  -- if n_prefix = $nabs($(|ptask*| - 8))
+  -- if ptask_suffix* = ptask*[n_prefix:8]
+  -- if ptask_suffix* = [FINALLY_REF_RETURN porigin_inner porigin_old (KNOWN PNULL) z_old, FINALLY_PHASE porigin_inner 3, ORIGIN_RETURN (porigin_restore), FINALLY_REF_RETURN porigin_outer porigin_z (REFERENCE n_z) z_z, FINALLY_PHASE porigin_outer 3, ORIGIN_RETURN (porigin_function), TYPE_FALLTHROUGH porigin_function, REF_RETURN_NOTICE porigin_old z_old REF_NOTICE_VALUE]
+  -- if (porigin_restore) = $origin_child((porigin_outer), [PCFIELD 2])
+def $ref_partial_pair_scope_tail(ptask*) = eps -- otherwise
 dec $ref_consumed_scope_tail(ptask*) : ptask*
 def $ref_consumed_scope_tail(ptask*) = ptask_pair*
   -- if ptask_pair* = $ref_consumed_pair_tail(ptask*)
   -- if ptask_pair* =/= eps
+def $ref_consumed_scope_tail(ptask*) = ptask_partial*
+  -- if ptask_partial* = $ref_partial_pair_scope_tail(ptask*)
+  -- if ptask_partial* =/= eps
 def $ref_consumed_scope_tail(ptask*) = $ref_consumed_tail(ptask*)
   -- if $ref_consumed_pair_tail(ptask*) = eps
+  -- if $ref_partial_pair_scope_tail(ptask*) = eps
   -- if $ref_chain_consumed_tail(ptask*) = eps
 def $ref_consumed_scope_tail(ptask*) = ptask_chain*
   -- if ptask_chain* = $ref_chain_consumed_tail(ptask*)
