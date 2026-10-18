@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "milestone": "A16 defined NULL CV destructuring-key deprecation and frozen empty lookup",
+  "status": "independently reviewed and validated; actual-parent composition pending",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle and tests/semantics/profile.json",
+  "base": "ef587edd391325e24bdda210b8afa12ddfa26849",
+  "scope": "Selected by-value fetch in flat direct-CV RHS patterns with CV leaves, wholly by-value or reference-bearing. An ordinary defined NULL CV key deprecates before selection of the empty string. The initial captured operand must be array-valued. Undefined keys, selected reference-fetch conversion and nested/literal NULL-key producers remain separate; empty bytes contain no NUL byte.",
+  "runtime_commit": "264e00221365290883250f7be3fb022bf4c4f422",
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "d5a42684b64aaa7ef49a41449d163f78c4cd7e02ad0b12ea79bef0394211724e",
+    "spec/semantics/63-list-control.watsup": "3efc3001fcd382667cf13cc62ec9f6b9386bf4b118e0bcad83ed73f4b8dfdd88",
+    "spec/semantics/410-list-key-conversion-warnings.watsup": "7a84f38f695ce52f30b2a075b6a97d6a7473cd9b19361a43d82928d0d938ab4e"
+  },
+  "private_modules": 401,
+  "engine_basis": [
+    "Vendored PHP8.5.10 commit34308a6666b2d489c509541ea9befea9e2b42348: FETCH_LIST_R reaches slow_index_convert in zend_execute.c. IS_NULL protects the selected table through E_DEPRECATED, drops that protection, cancels on expiry/exception, and otherwise selects ZSTR_EMPTY_ALLOC(). The key is not reread after the handler.",
+    "A by-value list temporary already retains its captured table, so temporary protection cannot become its sole table owner. A mixed source retains a reference CELL; replacing its array during the callback can leave only the protection. Releasing it before lookup can retire the table and silently supply NULL. A surviving table is read regardless of having one or several owners; this differs from the writable conversion's exact-one test.",
+    "Present entries are read after callback changes to embedded references. An absent empty key enters the ordinary missing-key Warning before target storage; handler replacement and default deprecation reporting remain ordered. Later reference fetches and assignment results use the saved source CELL, independently of live source/key names."
+  ],
+  "reviewed_behavior": [
+    "Module410 adds a NULL plan/source and two-phase continuation, one30 task constructor and a value-fetch pending guard in63. Existing lossy-float tasks, compiler/key conversion, ownership APIs, module inventory, historical tests and shared harness are unchanged.",
+    "Only the initial plan reads the defined allocated NULL key cell and current array. Resume authenticates the actual flat source occurrence, selected CV/target/tail/compiler line and saved operand. KNOWN repeats the same allocated table identity in both phases; REFERENCE retains a marked allocated CELL, requires its protected table live in phase0, and permits a bounded retired table in phase1. No key reread, current source-name equality or current reference-CELL/table equality is imposed after the callback.",
+    "Default deprecation then a replacement Warning handler precede the first NULL target store. A second NULL CV uses fresh state after that store; an E_WARNING-only handler still requires the deprecation producer to resume through default reporting. Present NULL remains distinct from a missing key. The state front authenticates exactly two default Deprecated events/lines and the original stderr bytes.",
+    "Mixed insertion COW can expire the old protected table despite its originally present empty slot, silently delivering NULL before later live reference acquisition. Independent normal completion instead retires/rebinds the old key and source CV cells while the captured by-value table alone keeps old q33, rather than following live replacement88/77 or new q66.",
+    "Independent mixed handling retains the actual old source CELL through a hold, retires/rebinds the source name, and changes key/next to lossy floats. A real replacement Warning sees the pre-store x77 and inserts empty66; pending NULL still overwrites x99, then the freshly read next1 binds old q55. Saved result66/55 stays distinct from live88/44.",
+    "A supplied Throwable after earlier target9 cancels lookup, later targets and result delivery, preserves callback x99/destination100, and retires source/key/table/q at the caller TRY_END. Source-reached state fronts check real handler frames, table/CELL roots and retirement, raw versus driven release/read/bind/prune, exact native output and whole-state budgets. Edited projections are refusal controls only."
+  ],
+  "accepted": {
+    "source": {
+      "report": ".tools/list-null-key-source-16/report.json",
+      "sha256": "818c9f8d66b68c775cec46ebcf06523c3927ecda29cbc96bc29850fc14c763ca",
+      "revision": "264e00221365290883250f7be3fb022bf4c4f422", "agreements": 5,
+      "cases": ["list-null-key-default-missing-order", "list-null-key-mixed-protection-expiry", "list-null-key-mixed-supplied-throw", "list-null-key-review-present-retired-cells", "list-null-key-review-missing-replacement-handler"],
+      "native_reuse": "Five fresh originals retain exact native source paths, argv and streams from three preparation reports. Model-only comparisons use those original paths; no native replay."
+    },
+    "states": [
+      {
+        "report": ".tools/list-null-key-author-state-16/report.json",
+        "sha256": "7dd74edd9b3327988cb188bd247ceee28ea797cad7e82184e5c2830699e9f6dc",
+        "revision": "1aa78deef511afac7792fc8517feeccac591563c",
+        "cases": ["list-null-key-default-missing-order", "list-null-key-mixed-protection-expiry", "list-null-key-mixed-supplied-throw"],
+        "conditions": [202, 186, 132], "raw_steps": [6, 5, 1], "boolean_premises": 508
+      },
+      {
+        "report": ".tools/list-null-key-review-state-16/report.json",
+        "sha256": "06a07366a5749e220b93073746f5c1d683b684b09fafa123b4a1fd7c973d6a40",
+        "revision": "1aa78deef511afac7792fc8517feeccac591563c",
+        "cases": ["list-null-key-review-present-retired-cells"],
+        "conditions": [161], "raw_steps": [5], "boolean_premises": 156,
+        "credit_note": "Only the first row counts; the mixed row failed elaboration and is preserved below."
+      },
+      {
+        "report": ".tools/list-null-key-review-state-17/report.json",
+        "sha256": "4faedc11e2f550281ff1a46c23d740d0e6d3fc6cee3725b05a91bc43cb64eade",
+        "revision": "3fe712b02195f578bff4a896d9fac3ea832c5948",
+        "cases": ["list-null-key-review-missing-replacement-handler"],
+        "conditions": [211], "raw_steps": [7], "boolean_premises": 204
+      }
+    ],
+    "source_agreements": 5, "normal_source_agreements": 5,
+    "state_fronts": 5, "total_conditions": 892, "boolean_premises": 868, "raw_steps": 24,
+    "credit_note": "Source5/264e, author520 and independent161/1aa plus corrected independent211/3fe count. Premises include setup/source/refusal/raw checks, not separate programs. All accepted actors exit0 without timeout/interruption and with empty recorded groups. Original cuts remain separate; docs/composition add no execution credit."
+  },
+  "preserved_zero_credit": [
+    {
+      "report": ".tools/list-null-key-baseline-16/report.json",
+      "sha256": "21086ef8138a3cbcf7d59e0b821f2f6b4838a249ff8a630cc50f479bfdd54679",
+      "revision": "ef587edd391325e24bdda210b8afa12ddfa26849",
+      "result": "Unchanged source is frontend accepted/checked but explicitly Unsupported at error-handler ingress. Native exits0, model exits1 in14.35s; ordinary comparison fails naturally without timeout or surviving groups. Zero agreement credit."
+    },
+    {
+      "report": ".tools/list-null-key-native-rest-16/report.json",
+      "sha256": "289f0316dc30302f474db78d06efcf0cbbf6bbbef8762ed76fb6661e6a2ea10b",
+      "revision": "ef587edd391325e24bdda210b8afa12ddfa26849", "result": "Fresh mixed-expiry and supplied-throw native2 preparation only."
+    },
+    {
+      "report": ".tools/list-null-key-review-native-16/report.json",
+      "sha256": "75149d31cfdae9309c87fc39871d8b583e537d46c3ad879c4eb81fe108936f47",
+      "revision": "ef587edd391325e24bdda210b8afa12ddfa26849", "result": "Fresh independent key/source-cell retirement and replacement-warning native2 preparation only."
+    },
+    {
+      "report": ".tools/list-null-key-review-state-16/report.json",
+      "sha256": "06a07366a5749e220b93073746f5c1d683b684b09fafa123b4a1fd7c973d6a40",
+      "revision": "1aa78deef511afac7792fc8517feeccac591563c",
+      "case": "list-null-key-review-missing-replacement-handler", "conditions": 211, "raw_steps": 7,
+      "result": "Elaboration stopped before runtime because perror_missing/perror_warning lacked the perrorcall domain prefix. Only those mixed-branch identifiers changed; counts and the accepted first161 condition list stayed unchanged. Only the failed mixed front retried in17. This original row contributes zero credit."
+    }
+  ],
+  "shared_harness_change": "None. Existing optional exact-stderr callback authenticates the original two NULL Deprecated/path/line25/26 lines; all other state originals require empty stderr.",
+  "affected_historical_controls": [],
+  "raw_evidence": {
+    "archive": "/home/user/workspace/php-spec/.tools/list-null-key-warning-16-raw.tar.gz",
+    "bytes": 412720, "members": 173, "sha256": "023893d46ef4ff869d92063aa9c80e57e307ba28d86c20817d2a01b12250770a",
+    "recovery": "Seven original relative .tools report/fixture/process/source roots plus list-null-key-reuse-sources-16.py are preserved, including the failed mixed elaboration row and its affected-only retry. Extract beneath a checkout of the recorded cut; absolute argv/cwd are historical provenance. The archive is not a build dependency."
+  },
+  "actual_parent_review": {
+    "parent": "e1b3acf355405d146a1f1a726dc94b0bda820cf2",
+    "seams": "Incoming156 relaxes only a typed CV reference-return cursor return-type filter; incoming400 adds guarded Stringable constant/defined query receipt and CONFIG_STRING_RESULT flow. A16 uses untyped named callbacks, ordinary Throwable handling and no Stringable query. No list/key/ownership helper changed.",
+    "joined_actor": "No concrete semantic interaction found; pointwise composition and exact FF review add no replay credit."
+  },
+  "remaining": [
+    "Undefined-key read diagnostics, selected reference-fetch NULL conversion and nested/literal NULL-key producers; nested/literal lossy-float conversion; wider constrained sources/RHS/targets and other conversion/source diagnostics.",
+    "Paused owned-NUL/current-CV NUL behavior, wider callbacks/lifecycle, full array/core closure and offline portability."
+  ]
+}
