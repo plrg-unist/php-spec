@@ -704,7 +704,7 @@ def $ref_return_cursor_capture(S, porigin_inner, porigin_old, REFERENCE n_inner,
   -- if S_left = $finally_leave_ref_return($retired_replace_transfer(S, porigin_old, z_old, porigin_source, z, b, ptask_tail*), porigin_inner, porigin_source, REFERENCE n, z, b, ptask_tail*)
 def $ref_return_cursor_capture(S, porigin_inner, porigin_old, REFERENCE n_inner, z_old, porigin_source, REFERENCE n, z, b, (FINALLY_PHASE porigin_inner 3) :: (ORIGIN_RETURN porigin_restore_inner?) :: (TRY_END porigin_catch) :: (ORIGIN_RETURN porigin_final?) :: (AT porigin_echo (STMT statement_echo)) :: (FINALLY_REF_RETURN porigin_outer porigin_old_outer poperand_outer z_outer) :: (FINALLY_PHASE porigin_outer 3) :: (ORIGIN_RETURN porigin_restore_outer?) :: (TYPE_FALLTHROUGH porigin_function) :: (REF_RECHECK porigin_source porigin_first (REFERENCE n) z) :: eps) = S_left[.TODO = [RETURN_REF_UNWIND (REFERENCE n) z true porigin_source, TRY_END porigin_catch, ORIGIN_RETURN porigin_final?, AT porigin_echo (STMT statement_echo), FINALLY_REF_RETURN porigin_outer porigin_old_outer poperand_outer z_outer, FINALLY_PHASE porigin_outer 3, ORIGIN_RETURN porigin_restore_outer?, TYPE_FALLTHROUGH porigin_function, REF_RETURN_PAIR_PENDING prefreturncursor_inner prefreturncursor_outer porigin_source z, REF_RECHECK porigin_source porigin_first (REFERENCE n) z]]
   -- if b
-  -- if ~$destructor_operational(S)
+  -- if ~$destructor_operational(S) \/ S.OBJECTS = eps
   -- if prefreturncursor_inner = { OWNER porigin_inner, SOURCE porigin_old, LINE z_old, OUTER porigin_restore_inner? }
   -- if prefreturncursor_outer = { OWNER porigin_outer, SOURCE porigin_old_outer, LINE z_outer, OUTER porigin_restore_outer? }
   -- if porigin_restore_outer? = (porigin_function)
