@@ -22,6 +22,12 @@ def $property_empty_source(S, porigin, ptbytes, z) = true
   -- if $compiled_effects(S, porigin) = eps
 def $property_empty_source(S, porigin, ptbytes, z) = false -- otherwise
 
+;; Without __get, either __isset boolean makes empty true after callback cleanup.
+def $property_isset_empty(S, ppropertyisset) = true
+  -- if $property_empty_source(S, ppropertyisset.SITE, ppropertyisset.NAME, ppropertyisset.LINE)
+def $property_isset_source(S, ppropertyisset) = true
+  -- if $property_isset_empty(S, ppropertyisset)
+
 ;; Only authenticated empty preparation defers the ordinary getter interception.
 def $property_empty_prepare(S) = true
   -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: (ORIGIN_RETURN (porigin)) :: (ISSET_RESULT true z) :: ptask_tail*
@@ -182,7 +188,7 @@ rule PhpStep/property-empty-call: S ~> S_inputs[.TODO = [(CALL_ARGS (PROPERTY_EM
   -- if S_inputs = $hold_task_inputs(S)
 rule PhpStep/property-empty-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "magic empty source, methods, or recursive access"]
   -- if $property_empty_pending(S)
-  -- if $property_empty_plan(S) = eps
+  -- if $property_empty_plan(S) = eps /\ $property_isset_plan(S) = eps
 rule PhpStep/property-empty-false: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty false) :: ptask_tail*
   -- if S.COMPLETION = NORMAL

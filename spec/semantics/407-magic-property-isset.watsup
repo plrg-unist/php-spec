@@ -1,6 +1,8 @@
 ;; Terminal isset retains the receiver while its one-name callback runs.
 dec $property_empty_pending(pstate) : bool
 def $property_empty_pending(S) = false -- otherwise
+dec $property_isset_empty(pstate, ppropertyisset) : bool
+def $property_isset_empty(S, ppropertyisset) = false -- otherwise
 dec $property_isset_method(pstate, nat) : pmethoddesc?
 def $property_isset_method(S, n) = $effective_method(S, porigin, $ptascii("__isset"), |S.CLASSES|)
   -- if $(n < |S.OBJECTS|)
@@ -137,7 +139,7 @@ def $property_isset_guard(S, pcallcontext?, eps, n, ptbytes) = false
 
 dec $property_isset_plan(pstate) : ppropertyisset?
 def $property_isset_plan(S) = (ppropertyisset)
-  -- if S.TODO = (ISSET_RESULT false z) :: ptask_tail*
+  -- if S.TODO = (ISSET_RESULT b_empty z) :: ptask_tail*
   -- if S.BASE = BASE_PROPERTY (POBJECT n) ptbytes
   -- if S.RESULT = KNOWN PNULL
   -- if S.ORIGIN = (porigin)
@@ -148,6 +150,7 @@ def $property_isset_plan(S) = (ppropertyisset)
   -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
   -- if porigin_property = ppropertydesc.ORIGIN
   -- if ppropertyisset = {SITE porigin, NAME ptbytes, LINE z, OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, PROPERTY porigin_property}
+  -- if b_empty = $property_isset_empty(S, ppropertyisset)
   -- if $property_isset_capture(S, ppropertyisset)
   -- if ~$property_isset_guard(S, S.CURRENT, S.FRAMES, n, ptbytes)
 def $property_isset_plan(S) = eps -- otherwise
@@ -159,12 +162,13 @@ rule PhpStep/property-isset-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "magic
   -- if $property_isset_pending(S)
   -- if ~$property_empty_pending(S)
   -- if $property_isset_plan(S) = eps
-rule PhpStep/property-isset-result: S ~> S[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/property-isset-result: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL b_result)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (PROPERTY_ISSET_RESULT ppropertyisset) :: ptask_tail*
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN (PBOOL b)
   -- if S.ORIGIN = (ppropertyisset.SITE)
   -- if $property_isset_valid(S, ppropertyisset)
+  -- if b_result = (b \/ $property_isset_empty(S, ppropertyisset))
 
 ;; RESULT owns the receiver; normal completion or abrupt discard drops it once.
 def $task_nodes(PROPERTY_ISSET_RESULT ppropertyisset) = [HOBJECT ppropertyisset.OBJECT]
