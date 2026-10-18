@@ -308,7 +308,7 @@ the live flag; the original API input and private snapshot keep their distinct
 owners. The existing fold also composes with primitive/carrier trees and fresh
 top-level empties; new exact sources focus certified object leaves. Stored-row
 source validation remains structural and does not reconstruct a past mutable
-flag. True/coerced flags, empty duplicates and nested empties remain partial.
+flag. True/coerced flags and nested empties remain partial.
 [False-flag review](../../coverage/semantics/define-stdclass-array-false-flag-review.json).
 
 Top-level empty values use the existing source-pool or retained immutable flag.
@@ -320,6 +320,17 @@ retain structural authority. Two exact sources and two public fronts/162 premise
 check these distinctions and later copies in the
 [empty ledger](../../coverage/semantics/dynamic-constant-empty-review.json).
 
+Empty-root duplicates reuse the same reporting marker. An authenticated immutable
+argument retains its pooled table without allocation; the abstract marker may
+name that ID both as candidate and as API input. A mutable emptied argument gets
+a distinct canonical empty candidate with NEXT0, preserving its captured input's
+old append history. Caller writes COW away from that input, so Exception traces
+retain the original empty table and append index. Normal false delivery and
+throwing-handler discard release the mutable private root before API input;
+a trace can keep the latter alive while the immutable pooled table stays pinned.
+Root counts describe abstract owners, not Zend refcounts.
+[Empty-duplicate review](../../coverage/semantics/define-empty-array-duplicate-review.json).
+
 String-name `define` also retains an already-certified live stdClass donor with
 an omitted or false flag. Registration stores the captured object pointer and
 its completed-birth class, transferring the call owner to a constant-row owner
@@ -329,8 +340,8 @@ row and callback property writes; throwing handlers preserve the Exception trace
 owners until ordinary catch/unset cleanup. Historical rows validate their stored
 birth/value and source policy, without reconstructing a past mutable CV or flag.
 [Certified define review](../../coverage/semantics/define-stdclass-review.json).
-Ordinary uncertified objects, other owning array leaves, empty-array duplicates,
-nested empties, owning true/coerced flags, coerced names and
+Ordinary uncertified objects, other owning array leaves, nested empties,
+owning true/coerced flags, coerced names and
 wider owning define domains remain partial.
 
 Class-qualified `defined` queries reuse inherited lookup and the actual caller's
@@ -603,8 +614,7 @@ The matching engine routes are `ZEND_FUNCTION(define)`/`ZVAL_COPY`,
 and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`. `PHP_FUNCTION(constant)` uses
 exception-class lookup and `ZVAL_COPY_OR_DUP`; `zend_declare_typed_class_constant`
 interns direct string values before installation.
-Nested empty values in `define`, cycles, other objects, empty-array duplicates
-and true/coerced array flags,
+Nested empty values in `define`, cycles, other objects, true/coerced array flags,
 Stringable/array names, array/object values with scalar or null names, true/NULL/NaN
 flags with scalar names, nonbool flags with nonfinite float names, true/NULL/NaN flags with
 null names, special/startup names with flags or values beyond the bounded follow-ups,

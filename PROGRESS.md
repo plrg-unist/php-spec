@@ -1002,8 +1002,19 @@ true while its API trace retains false. All 524 premises pass (377 author, 147
 independent), covering copied/original owners, normal/abrupt retirement and
 true/nonboolean refusals. The first fixture preflight missing-import failure
 remains0; only that fixture was corrected.
-True/coerced flags, empty duplicates and nested empties remain partial.
+True/coerced flags and nested empties remain partial.
 [False-flag array review](coverage/semantics/define-stdclass-array-false-flag-review.json).
+
+Empty-root duplicate definitions now distinguish an authenticated pooled argument
+from a freshly copied mutable empty candidate. Existing marker roots and ordinary
+cleanup preserve source-pool pins and original API/Exception trace append history.
+Three exact sources agree, including eval default reporting and a throwing
+handler after flag-expression COW. All 398 premises pass (276 author, 122
+independent), covering root multiplicity, canonical class/identity/history and
+actual normal/abrupt retirement. A moved nonempty-input guard rejects mixed-shape
+forged candidates; retained source cuts are pointwise unaffected. Nested empty
+descendants and wider flags/names remain partial.
+[Empty-duplicate review](coverage/semantics/define-empty-array-duplicate-review.json).
 
 Selected inherited `__unset(string): void` now dispatches direct CV/literal-name
 access to a declared private property. Accessible public unset skips magic;

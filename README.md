@@ -1214,8 +1214,12 @@ nested reference snapshots and literal constraints pass
 Top-level empty definitions retain an authenticated immutable table or create a
 fresh mutable copy. [Two exact sources and 162 public premises](coverage/semantics/dynamic-constant-empty-review.json)
 distinguish allocation classes and rebuilt append history, rejecting a mutable
-clone of a fixed literal. Nested empties, wider array warning/flag paths,
-uncertified objects and cycles remain Unsupported.
+clone of a fixed literal. Empty-root duplicates retain the pooled argument or
+create a fresh canonical mutable candidate. Normal and throwing handlers keep
+the original API trace append history while cleanup releases temporary candidate owners.
+[Empty-duplicate review](coverage/semantics/define-empty-array-duplicate-review.json).
+Nested empties, wider array warning/flag paths, uncertified objects and cycles
+remain Unsupported.
 String-name `define` with an omitted/false flag now shares already-certified
 stdClass donors. Named/selected calls preserve the captured pointer through later
 CV changes, and duplicate handlers keep the old binding and property writes on
@@ -1232,8 +1236,8 @@ the old row and callback writes. [Array-duplicate review](coverage/semantics/def
 Explicit false flags retain their captured value through callbacks and traces;
 copying observes reference changes from all argument expressions.
 [False-flag array review](coverage/semantics/define-stdclass-array-false-flag-review.json).
-Ordinary uncertified objects, other owning leaves, empty-array duplicates, nested
-empties and wider flags/names remain partial.
+Ordinary uncertified objects, other owning leaves, nested empties and wider
+flags/names remain partial.
 Class-qualified `defined` now checks inherited user constants with lexical visibility
 and quiet misses. Named autoload resumes the same captured query once.
 [Two exact sources and 288 public premises](coverage/semantics/class-qualified-defined-review.json)
