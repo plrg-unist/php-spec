@@ -94,6 +94,46 @@ def $sensitive_value_live(S, n) = false -- otherwise
 def $object_name(S, n) = $ptascii("SensitiveParameterValue") -- if $sensitive_value_body(S.OBJECTS[n])
 def $node_children(S, HOBJECT n) = eps -- if S.OBJECTS[n] = SENSITIVEUNSET porigin
 def $node_children(S, HOBJECT n) = $value_nodes(pvalue) -- if S.OBJECTS[n] = SENSITIVEVALUE pvalue
+
+;; Standard comparison reads the private slot, not get_properties_for. Keep
+;; payload callbacks and diagnostic effects explicit until their cursors exist.
+dec $sensitive_initialized_pair(pstate, nat, nat) : bool
+def $sensitive_initialized_pair(S, n_left, n_right) = true
+  -- if n_left =/= n_right
+  -- if $sensitive_value_live(S, n_left) /\ $sensitive_value_live(S, n_right)
+  -- if S.OBJECTS[n_left] = SENSITIVEVALUE pvalue_left
+  -- if S.OBJECTS[n_right] = SENSITIVEVALUE pvalue_right
+  -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
+def $sensitive_initialized_pair(S, n_left, n_right) = false -- otherwise
+dec $sensitive_order_closed(porder) : bool
+def $sensitive_order_closed(ORDER i) = true
+def $sensitive_order_closed(ORDERRECURSIVE) = true
+def $sensitive_order_closed(ORDERUNSUPPORTED text) = true
+def $sensitive_order_closed(porder) = false -- otherwise
+dec $sensitive_pair_order(pstate, nat, nat, pcompareguard*, int) : (pstate, porder)
+def $sensitive_pair_order(S, n_left, n_right, pcompareguard_seen*, z) = (S, ORDERRECURSIVE)
+  -- if (HOBJECT n_left) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S))
+def $sensitive_pair_order(S, n_left, n_right, pcompareguard_seen*, z) = (S, porder)
+  -- if ~((HOBJECT n_left) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S)))
+  -- if S.OBJECTS[n_left] = SENSITIVEVALUE pvalue_left
+  -- if S.OBJECTS[n_right] = SENSITIVEVALUE pvalue_right
+  -- if (S, porder) = $value_order_effect(S, pvalue_left, pvalue_right, (HOBJECT n_left) :: pcompareguard_seen*, z)
+  -- if $sensitive_order_closed(porder)
+def $sensitive_pair_order(S, n_left, n_right, pcompareguard_seen*, z) = (S, ORDERUNSUPPORTED "SensitiveParameterValue payload comparison effects") -- otherwise
+def $value_order(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*) = porder
+  -- if $sensitive_initialized_pair(S, n_left, n_right)
+  -- if (S, porder) = $sensitive_pair_order(S, n_left, n_right, pcompareguard_seen*, 0)
+def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = $sensitive_pair_order(S, n_left, n_right, pcompareguard_seen*, z)
+  -- if $sensitive_initialized_pair(S, n_left, n_right)
+
+;; A shallow clone adds one initialized wrapper and retains its owning snapshot.
+def $clone_object(S, n_source) = S[.OBJECTS = S.OBJECTS ++ [SENSITIVEVALUE pvalue]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)]
+  -- if $sensitive_value_live(S, n_source)
+  -- if ~$instance_storage_freeing(S, n_source)
+  -- if S.OBJECTS[n_source] = SENSITIVEVALUE pvalue
+  -- if n = |S.OBJECTS|
+def $clone_same_kind(SENSITIVEVALUE pvalue, SENSITIVEVALUE pvalue) = true
+
 def $class_instanceof(S, POBJECT n, ptbytes) = ($ptlc($typed_callable_name(ptbytes)) = $ptascii("sensitiveparametervalue"))
   -- if $sensitive_value_body(S.OBJECTS[n])
 def $typed_object_exact(S, ptbranch*, POBJECT n) = $typed_class_type(ptbranch*, $ptascii("SensitiveParameterValue"))

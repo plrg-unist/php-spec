@@ -176,6 +176,19 @@ Explicit getValue and readonly-error source endings reuse existing protocols;
 no constructor, clone or lifetime rule changes. SENSITIVEUNSET, other constructor
 bases, special intrinsic captures and wider lifetimes remain partial.
 
+[Initialized sensitive-value pairs](../../coverage/semantics/sensitive-value-review.json)
+compare the private readonly slot through the standard object handler, independently
+of hidden property export. Distinct wrappers sharing a Map are loosely equal;
+scalar 2/9 and array/reference payloads determine signed order. Only unchanged-state
+closed payload results are admitted, with left-object recursion protection;
+callback/diagnostic effects remain explicit Unsupported. Three originals and
+413 Boolean premises/11 actual transitions cover eight comparisons and three
+shallow clones, preserving ownership, COW/shared aliases and checked budgets.
+Equal wrapped values continue outer scans; differing values skip real later
+casters. The later peer Stringable callback belongs to the existing outer scan.
+One pre-main fixture syntax correction and both unchanged counterexamples stay
+zero; uninitialized wrappers and wider protocols remain partial.
+
 [Sensitive constructor-Closure pairs](../../coverage/semantics/constructor-closure-comparison-review.json)
 compare equal for two authentic live raw CTORCLOSURE objects selecting the same
 SensitiveParameterValue receiver. Each capture site is authenticated independently;

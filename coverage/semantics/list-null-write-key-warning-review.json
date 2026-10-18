@@ -1,0 +1,111 @@
+{
+  "version": 1,
+  "milestone": "A18 defined NULL CV keys at selected reference destructuring fetches",
+  "status": "independently reviewed and composed for fast-forward integration",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle and tests/semantics/profile.json",
+  "base": "f63bef8695d1211c988dbd0290f6248d109da457",
+  "scope": "Flat reference-bearing direct-CV RHS patterns with direct-CV leaves and a selected ordinary defined NULL CV key. Writable preparation accepts reached array/NULL/reference-false sources. Key/source aliasing that changes the key during preparation takes the existing array-offset TypeError path. Undefined selected-reference keys, nested/literal producers and wider constrained sources remain partial.",
+  "runtime_commit": "8a92760024ee75e21d2195c4c95c3845289794a6",
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "95f68f5833899c514f4e3ca3fd4d5d586b4d3c544f66fe32f447fa65a3870aca",
+    "spec/semantics/63-list-control.watsup": "b609cb87177ad051df18ba0f72ed36fcfe63ebab39d8fa6e0d0b6e8d7a709e04",
+    "spec/semantics/410-list-key-conversion-warnings.watsup": "a9f651d7f61485e7674aeef5564f15fd83065165ccda9001f941d0ca48a537fb"
+  },
+  "private_modules": 401,
+  "engine_basis": [
+    "Vendored PHP8.5.10 commit34308a6666b2d489c509541ea9befea9e2b42348: FETCH_LIST_W obtains source/key pointers, then zend_fetch_dimension_address separates the source array or initializes a reference-wrapped NULL/false before zend_fetch_dimension_address_inner dereferences the key. slow_index_convert_w IS_NULL protects the selected table, emits E_DEPRECATED, releases protection and requires exactly one remaining table owner before selecting ZSTR_EMPTY_ALLOC().",
+    "A surviving unique table can supply an existing empty-slot alias or create a missing slot silently. Zero or multiple remaining owners return a detached NULL reference, including a live table with a present slot. The continuation retains the saved source CELL; later fetches/results read that cell despite CV rebinding. A throw cancels reference acquisition/binding while preserving preparation and earlier target stores.",
+    "If a NULL key aliases a NULL source CELL, writable initialization changes the key to ARRAY before conversion. The native result is TypeError without a deprecation callback or target binding. A plan-only CELL inequality leaves this case to the existing generic preparation/key-conversion order; resume validity must not reread the live key."
+  ],
+  "reviewed_behavior": [
+    "Three runtime paths change: one30 task tag,63 reference-fetch pending exclusions and appended410 rules. Earlier A14-A17 helpers/rules, compiler/key/ownership APIs,401-module list, historical tests and shared harness remain exact. The plan authenticates the true-reference ordinary-CV occurrence/line/slice, saved marked allocated CELL, supported container and defined NULL key. Only the plan reads that key, and it excludes a key CELL identical to the source CELL.",
+    "Initial dispatch uses the existing reference-aware fetch_location_array before entering a real error-handler frame. Phase0 owns the saved CELL and actual post-COW table; phase1 drops table protection through the actual driver before testing ownership. A unique table uses element_reference(KSTRING eps); other counts use call_fresh_reference(PNULL). Both schedule the actual reference result, independently of the source cell's later value/name.",
+    "Author NULL initialization is visible through two CV aliases before the default-false handler; frozen empty and fresh later key1 bind distinct NULL references. Reference-false insertion COW expires the old empty table and detaches the selected target while later value fetch reads shared33. Supplied throw after target9 preserves outside99/destination100 and the same Throwable/previousNULL/finally while retiring CELL/table/key/q.",
+    "Independent pre-COW handling distinguishes the initial copy from the actual selected table retained by the handler. The old key CELL retires; source/key CVs rebind, while a sole old-table hold receives the empty-slot alias. Later repeated key1 freshly acquires22 from the saved CELL's pooled replacement; the returned22/44, rebound live88/66 and held alias55 remain distinct. A second case keeps two ordinary table owners and therefore binds detached NULL despite present shared33, preserving outside99 and later fresh key2/value6. Raw operations, driver normalization, binding/pruning and whole-state budgets are checked.",
+    "A targeted source-only original fills the unique-present branch: post-handler existing ALIASq supplies33, then target55 updates q/source/result while outside99 remains detached. A fresh source/key-alias counterexample then exposed an erroneous early NULL freeze; the single guard correction restores TypeError after observable empty-array initialization. Only that new original/model/state front ran after correction. All earlier programs/922 condition lists and their accepted cuts remain unchanged."
+  ],
+  "paused_boundary": {
+    "record": ".tools/source-nul-owned-02/.tools/source-nul-owned02/baseline-xtfl3m4c/report.json at14786911d051cd550f27ccf5a75ac1621125babf",
+    "producer": ".tools/source-nul-path-01/.tools/source-nul-owned02/returning.php: include new N calls __toString returning prefix, byte0, tail; SOURCE_STRING_READY/SOURCE_OPERAND_RELEASE retain HOBJECT. Module243 refuses with 'NUL file path with captured operand or unavailable include_path'. The reviewer native-5v4feyjf record observes include Warning then destructor before assignment.",
+    "comparison": "A18 uses a NULL zval, an empty key with zero bytes, saved HCELL/protected HARRAY and the array-offset deprecation/TypeError consumers. It has no include/require, Stringable conversion, SOURCE_OPERAND_RELEASE, embedded zero byte or file-NUL diagnostic. The exact paused records were read only; no paused source/runtime/actor was changed or run."
+  },
+  "accepted": {
+    "source_batches": [
+      {
+        "report": ".tools/list-null-write-key-source-18/report.json", "sha256": "0521543e52ebcb9eac4f5d00fc84ae1c96d44c6a5f75ad652c9add8547dd10cc",
+        "revision": "8396f5161eedd7bcb7ed8a90eb1896cdfca79b2c", "agreements": 5,
+        "native_reuse": "Original native paths/argv/bytes/streams from the three initial preparation reports; strict model-only comparison, no native replay."
+      },
+      {
+        "report": ".tools/list-null-write-key-existing-source-18/report.json", "sha256": "27da73ac5b705a7de7e62ad01157eefc54b8283238ac374601a5897eb275682c",
+        "revision": "d24427458745b38810b01a74f8db0f97d1ace3fb", "agreements": 1,
+        "credit_note": "One fresh unique-present-ALIAS source-only original; original five bytes/state CASES3+2 unchanged."
+      },
+      {
+        "report": ".tools/list-null-write-key-alias-source-18/report.json", "sha256": "789d2b01c3e1162215178041397c470c02ce503d5537a5bedb8765324d9fc2b0",
+        "revision": "8a92760024ee75e21d2195c4c95c3845289794a6", "agreements": 1,
+        "credit_note": "Corrected model-only comparison reuses the original c931 alias counterexample native path/streams. Original six source agreements retain their earlier cuts; the added inequality is satisfied at their distinct-key/source plans."
+      }
+    ],
+    "states": [
+      {
+        "report": ".tools/list-null-write-key-author-state-18/report.json", "sha256": "989ec6d283d30fab2023c55a4f711a873e8e1ecaa1e1717f284bd537501f3832",
+        "revision": "1f5e0b1ab0589e32b202cf619de4edcc9f270b0f", "conditions": [200, 184, 131], "raw_steps": [6, 5, 1], "boolean_premises": 503
+      },
+      {
+        "report": ".tools/list-null-write-key-review-state-18/report.json", "sha256": "c743d06ffd9d21826980dec079f213ef5063e5047c2b6139dadf6249e6b543e4",
+        "revision": "1f5e0b1ab0589e32b202cf619de4edcc9f270b0f", "conditions": [217, 190], "raw_steps": [5, 5], "boolean_premises": 397
+      },
+      {
+        "report": ".tools/list-null-write-key-alias-state-18/report.json", "sha256": "fbcd97ff0c897a4301aad4565bd2122a1d8f7f56622da48edb72887f718ce06c",
+        "revision": "8a92760024ee75e21d2195c4c95c3845289794a6", "conditions": [55], "raw_steps": [1], "boolean_premises": 54
+      }
+    ],
+    "source_agreements": 7, "normal_source_agreements": 7,
+    "state_fronts": 6, "total_conditions": 977, "boolean_premises": 954, "raw_steps": 23,
+    "credit_note": "Source5/8396+1/d244+1/8a927 and state922/1f5e+55/8a927 count at separate cuts. Premises include setup/source/refusal/raw checks, not separate programs. All accepted actors exit0 without timeout/interruption or surviving groups. No fixture actor failed; the semantic alias mismatch below stays zero credit. No earlier sources/states were replayed; docs/composition add no execution credit."
+  },
+  "preserved_zero_credit": [
+    {
+      "report": ".tools/list-null-write-key-baseline-18/report.json", "sha256": "e5ba90002a20425962aed7872cb30940f0c603bde72cb56ece660433775af728",
+      "revision": "f63bef8695d1211c988dbd0290f6248d109da457",
+      "result": "Unchanged frontend accepted/checked source reaches explicit Unsupported error-handler ingress in12.16s; native0/model1, natural comparator false, no timeout/groups. Zero credit."
+    },
+    {
+      "report": ".tools/list-null-write-key-native-rest-18/report.json", "sha256": "da14b5ada0003f003f5085ad5ef2b84a740fe0de1c5c9ad1bde57f7a6a498330",
+      "revision": "f63bef8695d1211c988dbd0290f6248d109da457", "result": "Fresh false-expiry and supplied-throw native2 preparation only."
+    },
+    {
+      "report": ".tools/list-null-write-key-review-native-18/report.json", "sha256": "41f75ba921d6a1794db552ea00c4d81f5f77a4be812f1d277a54debe01e7bb08",
+      "revision": "f63bef8695d1211c988dbd0290f6248d109da457", "result": "Fresh independent sole-hold/live-shared native2 preparation only."
+    },
+    {
+      "report": ".tools/list-null-write-key-alias-baseline-18/report.json", "sha256": "9679ec386abd948e7da4628ffd469fe9dfd4f340a93046ace6bc535238550b73",
+      "revision": "c9317e5f1ac8b37d6bf0933a5f8c059eb8404ac6",
+      "result": "Genuine semantic counterexample, both processes exit0. Native prepares empty source/key then catches array-offset TypeError without handler/binding; pre-fix model wrongly invokes8192 handler and completes assignment. Ordinary comparison false/zero credit; no timeout or surviving groups. Only the affected alias model/state ran after the one-line plan correction."
+    }
+  ],
+  "reproduction": "Raw reports pin binaries, modules/helpers, profile/environment, original bytes, argv/cwd, streams and exits. Native cap30s; source model60s/outer90s; SL180s/front with drive budget2000. The finite ignored reuse18 and alias-reuse18 scripts authenticate original native paths/streams; state scripts use shared source-report reuse. Existing exact-stderr support authenticates the unique default Deprecated/path/line12; all other state originals require empty stderr.",
+  "affected_historical_controls": [],
+  "raw_evidence": {
+    "archive": "/home/user/workspace/php-spec/.tools/list-null-write-key-warning-18-raw.tar.gz",
+    "bytes": 455094, "members": 208, "sha256": "2cce8f0334a637cbc4f7b086504e8987ae9a73babe7b2e0392ace04190acfb97",
+    "recovery": "Extract into a recorded-cut checkout's .tools directory: ten basename source/native/state/counterexample roots plus list-null-write-key-reuse-sources-18.py and list-null-write-key-alias-reuse-18.py, without a leading .tools component. All ten report copies match the original bytes. Absolute argv/cwd are provenance; the archive is not a build dependency."
+  },
+  "actual_parent_review": {
+    "parent": "396feeccaefc3d57821a6917c45e9b286e0ba690",
+    "seams": "Incoming156/270 extend typed-reference-return pending/partial-finally replay, absent normal bool callbacks.280/289/303 add parked Generator reference-foreach retention; A18 creates no Generator/iterator and retains no such late root.400 changes Stringable define and recursive pending duplicate guards, absent CONFIG paths here.30/40/404 add SUB/MUL continuation tags and BINARY_RIGHT guards requiring minus/multiply CV selectors; A18 counters use the separate update route. Final379 changes initialized SensitiveParameterValue comparison/shallow clone only, and400 adds nonStringable-object define reception. A18 has neither SensitiveValue/clone nor define selectors. No37/39/62/63/409/410 or relevant key/ownership helper changed. Final7fe9-to396 tail:270 adds normal typed-reference-return destructor-exit pair projections;289 admits assigned-yield parked Generator reference-foreach retention;30/40/404 add POWER conversion/deprecation tasks and a BINARY_RIGHT POWER gate. A18 has no typed reference return/destructor, Generator/yield/foreach or power expression; bool comparisons and counters use other operator/update paths. No list/key/TypeError or relevant source/owner helper changed.",
+    "joined_actor": "No concrete semantic interaction found through the exact actual parent; no joined actor or replay."
+  },
+  "remaining": [
+    "Undefined selected-reference keys, nested/literal conversion, wider constrained source/RHS/targets and diagnostic/lifecycle producers.",
+    "Paused owned-NUL/current-CV NUL behavior, full array/core closure and offline portability."
+  ],
+  "composition": {
+    "parent": "396feeccaefc3d57821a6917c45e9b286e0ba690",
+    "private_packet": "be07d810f79202e8200a9b70f7d70ad9f3c98b39",
+    "tested_runtime_cut": "8a92760024ee75e21d2195c4c95c3845289794a6",
+    "runtime_diff_sha256": "88609595b5b611db6e7f6daafb6242698e41f4b4ddf0a7f1d8307d5d10ddcf49",
+    "checks": "Only30/63/410 runtime changes:63/410 exact tested cut and removing the new NULL-write tag recovers parent30. All other runtime and401 unique modules preserve parent bytes. Six new tests preserve tested bytes; original922 generated conditions retain their accepted cut. Four partial inventory rows append only; all other fields/checkpoints and reviewed documentation deltas preserve the actual parent. Accepted evidence/cuts unchanged; no execution credit."
+  }
+}

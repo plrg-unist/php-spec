@@ -83,3 +83,12 @@ The final catalogue adds twelve unchanged prerequisite sources to the corrected
 candidate. Exact non-CASES harness bytes, selected sources, fixtures, modules and
 tools bind the completed state runs to publication; this does not relabel those
 runs as a fresh aggregate campaign. The later full source campaign now passes its independent ordered/raw/archive audit.
+
+The [parked Generator reference-foreach review](../../coverage/semantics/generator-pending-reference-foreach-throw-review.json)
+adds a separate close path at a bare yield in one by-reference array loop. The
+acquired wrapper count survives close; the item CV alias retires normally. Later
+whole-wrapper replacement or escaped-item writes follow those mutable cells.
+The [buffered reference-foreach review](../../coverage/semantics/generator-pending-buffered-reference-foreach-throw-review.json)
+adds one simple-CV used-yield input, keeping its value separate from the acquired
+wrapper across close and post-close writes. Both paths reuse ordinary iteration
+advance; wider owning tails and later parked resume remain open.

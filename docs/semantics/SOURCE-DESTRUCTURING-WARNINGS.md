@@ -53,20 +53,26 @@ assignment-result delivery use the saved cell's live value, independently of a
 rebound source CV. A saved null cell can create an array at the later reference
 fetch. Throws cancel both owners.
 
-A selected lossy-float reference fetch first makes the saved source cell writable. An undefined
-source CV acquires a null reference without a read warning; earlier by-value null
-fetches stay silent. Null and reference-wrapped false then create a fresh mutable
+A selected lossy-float or defined-NULL CV reference fetch first makes the saved
+source cell writable. An undefined source CV acquires a null reference without a
+read warning; earlier by-value null fetches stay silent. Null and reference-wrapped
+false then create a fresh mutable
 empty array before key conversion. This reference path skips the false-to-array
 deprecation, and the callback can observe the new table even when it later throws.
 An existing array separates when needed, unwrapping singleton references in that
 copy, before the conversion callback.
+If the initially null key shares the source cell, initialization changes it to an
+array; key conversion throws `TypeError` before deprecation or target binding.
 After releasing protection, it binds into that selected table only when exactly
 one owner remains. This owner may be a handler-created hold after source replacement
 and CV rebinding. Zero owners or multiple remaining owners instead supply a fresh
 null reference, even when the old table remains live with a present slot. Binding
 replaces the target alias without writing through its previous reference. A missing
 writable slot is silently created in the selected table; no missing-key warning is
-emitted. Later fetches and the assignment result still resolve the saved source
+emitted. A key still NULL after preparation fixes empty-key selection across
+callbacks: an existing alias supplies its post-handler value and identity,
+independently of later key writes.
+Later fetches and the assignment result still resolve the saved source
 cell. Throws cancel acquisition and binding. The initial plan accepts reached null
 and false slots, not an uninitialized slot; saved resumes remain independent of
 the cell's later value. Nested/literal conversion, wider constrained sources and
@@ -180,6 +186,7 @@ paths/streams without an oracle replay. Separate ledgers retain the
 [mixed float CV keys](../../coverage/semantics/list-float-ref-key-warning-review.json),
 [writable float CV keys](../../coverage/semantics/list-float-write-key-warning-review.json),
 [writable source initialization](../../coverage/semantics/list-float-write-autovivify-review.json),
-[null CV keys](../../coverage/semantics/list-null-key-warning-review.json) and
-[undefined CV keys](../../coverage/semantics/list-undefined-key-warning-review.json)
+[null CV keys](../../coverage/semantics/list-null-key-warning-review.json),
+[undefined CV keys](../../coverage/semantics/list-undefined-key-warning-review.json) and
+[NULL writable keys](../../coverage/semantics/list-null-write-key-warning-review.json)
 cuts and failures. No complete array, diagnostics or lifecycle-family claim follows.

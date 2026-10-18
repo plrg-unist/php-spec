@@ -134,8 +134,9 @@ explicitly `Unsupported`, rather than running a callback after a consumer.
 
 [Destructuring key warnings](SOURCE-DESTRUCTURING-WARNINGS.md) include module410's
 lossy float CV conversion at value and reference fetches in flat direct-CV source patterns.
-Defined null CV keys also deprecate before selecting the empty string at by-value
-fetches. Their captured array or source cell survives key retirement/rebinding;
+Defined null CV keys also deprecate before selecting the empty string at value or
+reference fetches. For value fetches, their captured array or source cell survives
+key retirement/rebinding;
 lookup follows the callback and a miss enters module409 before storing null.
 Undefined CV keys at these by-value fetches first warn under their own table
 protection. A surviving table then enters null conversion without rereading the initialized or rebound key;
@@ -150,13 +151,17 @@ result delivery. In mixed patterns, a by-value fetch also protects the old table
 alongside its saved source cell. Releasing that protection precedes lookup:
 retirement silently supplies null, while a surviving table can enter the missing
 warning. Later reference fetches and result delivery resolve the saved cell,
-including after source-name rebinding or null replacement. A selected lossy-float reference
+including after source-name rebinding or null replacement. A selected lossy-float or defined-NULL reference
 fetch first makes its source writable before dispatch. Null or reference-wrapped
 false creates an empty mutable array without a false-conversion deprecation; an
 undefined CV first acquires a null reference silently. The key handler sees the
 created table, and a throw preserves earlier null stores while cancelling binding.
+When the source and NULL key share a cell, initialization instead makes the key an
+array and raises `TypeError` before deprecation or binding.
 After protection is released, exactly one remaining table owner permits reference
 acquisition there; zero or multiple owners yield a fresh detached null reference.
+For a key still NULL after preparation, existing empty-slot aliases are read after
+the callback; key writes cannot redirect that selection or its reference identity.
 Writable missing slots are created silently, and throws cancel binding. Wider
 conversion producers remain partial.
 
