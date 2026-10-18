@@ -656,6 +656,14 @@ are not replayed. Other builtin/custom/supplied Throwables, bodies, deeper
 reentry, properties, larger/mixed histories, GC and wider consumers remain open.
 [Owning-return review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
+Composed over `0d35177b7`/406 after reviewing the actual ADD, DEFINE,
+array-retarget and magic-property coalesce additions. Their source producers are
+absent here; ordinary zero-argument destructor/getMessage calls and builtin NEW
+stay on the existing paths, with literal-array debts/retention empty. Only270
+differs and keeps exact tested1c871 bytes; every other parent runtime file, task
+variant and ordered406 manifest stays exact. Native1/source1, diagnosis62/1 and
+state385/4 retain their private405 cuts without joined execution or renewed credit.
+
 Retained propertyless Stringable `define` names now accept captured boolean true
 with primitive candidates and non-NUL global/class-like results. One module400
 raw-shape alternative preserves all source/carrier/saved-site, conversion, warning,
