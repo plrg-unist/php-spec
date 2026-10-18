@@ -2,6 +2,7 @@ dec $list_temporary_rhs(expression) : bool
 dec $list_capture_value(pstate, int) : pstate
 dec $list_missing_pending(pstate) : bool
 dec $list_float_key_pending(pstate) : bool
+dec $list_float_write_key_pending(pstate) : bool
 dec $list_call_rhs(expression) : bool
 dec $list_value_cv(expression) : (nat*)?
 def $list_value_cv(NExprVariable phpType32 metadata) = $cv_name(phpType32)
@@ -63,6 +64,7 @@ rule PhpStep/list-fetch-value: S ~> S_read[.TODO = $list_fetched_tasks(S_read, p
   -- if S_read.COMPLETION = NORMAL
 rule PhpStep/list-fetch-reference: S ~> S_ref[.TODO = $list_fetched_tasks(S_ref[.RESULT = REFERENCE S_ref.CELL], REFERENCE n_source, n, expression, true, phpType13*, z) ++ ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (LIST_FETCH (REFERENCE n_source) n expression true phpType13* z) :: ptask_tail*
+  -- if ~$list_float_write_key_pending(S)
   -- if S_ref = $list_acquire(S, n_source, S.RESULT, z)
   -- if S_ref.COMPLETION = NORMAL
 rule PhpStep/list-fetch-value-abrupt: S ~> S_read[.TODO = eps]
@@ -72,6 +74,7 @@ rule PhpStep/list-fetch-value-abrupt: S ~> S_read[.TODO = eps]
   -- if S_read.COMPLETION =/= NORMAL
 rule PhpStep/list-fetch-reference-abrupt: S ~> S_ref[.TODO = eps]
   -- if S.TODO = (LIST_FETCH (REFERENCE n_source) n expression true phpType13* z) :: ptask_tail*
+  -- if ~$list_float_write_key_pending(S)
   -- if S_ref = $list_acquire(S, n_source, S.RESULT, z)
   -- if S_ref.COMPLETION =/= NORMAL
 
