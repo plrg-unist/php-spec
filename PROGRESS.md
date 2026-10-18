@@ -7,6 +7,26 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+M106 admits public resumption throughout one normal adjacent partial reference-return
+pair's destructor cleanup: VALUE release, physical instance storage, HANDLE release,
+and the remaining empty releases. The outer reference owner stays live; exact
+source, scope, LINE and cleanup records remain required. Only module270 changes.
+Author140/one raw step and independent156/six raw steps pass at `dc0b93c9f`/401,
+including each public one-step resume, original Notice/aliases and whole/split
+budget equality. These are new reached-state checks using authenticated M68 packets,
+with zero renewed native/source credit. The first peer fixture omitted ordinary
+empty-property-row pruning; its failure and the precise field diagnosis are retained.
+Final/single-cursor and pending-Throwable cleanup prefixes, interposed lifecycle
+capture, wider owning/reentrant histories and GC remain open.
+[M106 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+Composed over `44e0af9f7`/402 after independent actual-parent review. Incoming
+POWER/Sensitive comparison, DEFINE, NULL-key LIST and magic-setter selectors have
+no producer in the preserved M68 source; its destructor uses the existing method
+route. Only module270 changes and is byte-exact tested `dc0b93c9f`; all other
+runtime files and the 402-module manifest retain parent bytes. State296/raw7
+keep their private401 cut without a joined actor or renewed native/source credit.
+
 Initialized SensitiveParameterValue/int/float comparisons now emit the standard
 Notice and use private 1/1.0 without reading the wrapped value. Nine added
 module402 lines reuse existing numeric callbacks, captured CV/COPY/cell selection,
@@ -10172,9 +10192,10 @@ failures and interrupted evidence.
 
 The temporary `returns_verify` audit has reached its finite paired-return
 handoff. Preserve the accepted evidence and do not retry the rejected engine
-experiment. Permanent lifecycle/control work still owns RELEASE-only cleanup
-prefixes, normal interposed-catch partial pairs, larger or reentrant owning
-histories, GC and wider typed consumers. These are open core obligations.
+experiment. M106 covers the normal adjacent partial-pair release/storage interval.
+Final/single-cursor and pending-Throwable cleanup prefixes, normal interposed-catch
+partial pairs, larger or reentrant owning histories, GC and wider typed consumers
+remain open core obligations for permanent lifecycle/control work.
 Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is
 bounded physical-array owner recovery. Bounded single-active-finalizer CV replay and deferred VALUE/NULL Notice dispatch are
 integrated, as are bounded aliased-CV Stringable reference conversion 186 and sole-local-CV
@@ -10582,8 +10603,8 @@ the completed exit into the existing full pair validators. Focused final
 wrong LINE, and preserve the normal finish, terminal aliases and budget.
 The final case delivers no Notice; the partial case retains outer `z`
 ownership and delivers its original line-4 VALUE Notice. These are state
-proofs, not new native/source agreements. Normal interposed-catch partial
-pairs and RELEASE-only cleanup prefixes remain for permanent lifecycle/control
+proofs, not new native/source agreements. At that cut, normal interposed-catch partial
+pairs and RELEASE-only cleanup prefixes remained for permanent lifecycle/control
 work. [M105 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
