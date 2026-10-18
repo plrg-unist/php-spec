@@ -1,0 +1,79 @@
+{
+  "scope": "External literal missing static calls using inherited public __callStatic(string,array) without a return declaration; original positional sends packed into a real array, no receiver, cached scalar result or supplied throw after cleanup.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_gate_completed": true,
+  "native_revision": "b311c793abe584521bc10cae555e4fa4b1c4293f",
+  "native_report_sha256": "7a0baafec050734ed1aaa3235baee2e898a57543119320c779fedb96eb8bae0f",
+  "cases": [
+    {
+      "id": "snapshot",
+      "source_file": "magic-static-call-snapshot.php",
+      "source": "<?php\nclass MagicStaticParent100 {\n    public static function __callStatic(string $name, array $arguments) {\n        echo 'M|', $name, '|', __CLASS__, '|', static::class, '|', $arguments[0], '|', $arguments[1], '|m|';\n        return $arguments[0];\n    }\n}\nclass MagicStaticChild100 extends MagicStaticParent100 {}\nfunction mutateStaticCall100() {\n    global $rhs;\n    $rhs = 99;\n    echo 'A|';\n    return 2;\n}\n$rhs = 7;\n$answer = 42;\necho 'N:';\n$answer = MagicStaticChild100::MiSsInG($rhs, mutateStaticCall100());\necho 'R|', $answer, '|', $rhs, '|E|';\n",
+      "source_sha256": "c63f744466fbd781da627827d4b6dc86a27dd11db2b851094f0864efa3307589",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-static-call-private-100/.tools/magic-static-call-probes-100/snapshot.php",
+      "native_group": "native-first",
+      "stdout_base64": "TjpBfE18TWlTc0luR3xNYWdpY1N0YXRpY1BhcmVudDEwMHxNYWdpY1N0YXRpY0NoaWxkMTAwfDd8MnxtfFJ8N3w5OXxFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "call_line": 18,
+      "native_raw_sha256": "da52c6a46de6880029916ade09048d0d7e4a16615fffca2582f6b44c1e759617",
+      "status": "normal"
+    },
+    {
+      "id": "owning",
+      "source_file": "magic-static-call-owning.php",
+      "source": "<?php\nclass MagicStaticPayload100 {\n    public function __destruct() {\n        global $value;\n        echo 'P|';\n        $value = 99;\n        echo 'p|';\n    }\n}\nclass MagicStaticParent100 {\n    public static function __callStatic(string $name, array $arguments) {\n        global $value;\n        echo 'M|', $name, '|', __CLASS__, '|', static::class, '|';\n        if (isset($arguments[0])) { echo 'A|'; }\n        echo 'm|';\n        return $value;\n    }\n}\nclass MagicStaticChild100 extends MagicStaticParent100 {}\n$value = 7;\n$answer = 42;\necho 'O:';\n$answer = MagicStaticChild100::MiSsInG(new MagicStaticPayload100());\necho 'R|', $answer, '|', $value, '|E|';\n",
+      "source_sha256": "83db404255a77daba98086390d1c77f67de3a35ac4941f42fc59c4a8abe9e229",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-static-call-private-100/.tools/magic-static-call-probes-100/owning.php",
+      "native_group": "native-first",
+      "stdout_base64": "TzpNfE1pU3NJbkd8TWFnaWNTdGF0aWNQYXJlbnQxMDB8TWFnaWNTdGF0aWNDaGlsZDEwMHxBfG18UHxwfFJ8N3w5OXxFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "call_line": 23,
+      "native_raw_sha256": "e43296abe59cbd831ea21ca8a2ccc24d610acf8ee5260caa10bad1150535d796",
+      "status": "normal"
+    },
+    {
+      "id": "throwing",
+      "source_file": "magic-static-call-throwing.php",
+      "source": "<?php\nclass MagicStaticPayload100 {\n    public function __destruct() {\n        global $value;\n        echo 'P|';\n        $value = 99;\n        echo 'p|';\n    }\n}\nclass MagicStaticParent100 {\n    public static function __callStatic(string $name, array $arguments) {\n        global $error;\n        echo 'M|', $name, '|', __CLASS__, '|', static::class, '|';\n        if (isset($arguments[0])) { echo 'A|'; }\n        echo 'm|';\n        throw $error;\n    }\n}\nclass MagicStaticChild100 extends MagicStaticParent100 {}\n$error = new Exception('magic-static-stop');\n$value = 7;\n$answer = 42;\necho 'X:';\ntry { $answer = MagicStaticChild100::MiSsInG(new MagicStaticPayload100()); }\ncatch (Exception $caught) {\n    echo 'C|', $answer, '|';\n    if ($caught === $error) { echo 'T|'; } else { echo 'F|'; }\n}\necho $value, '|E|';\n",
+      "source_sha256": "6b673f5affd8fe14c5907adfe4e86424bf684c82cf961451dbd2fd37f06ca5b2",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-static-call-private-100/.tools/magic-static-call-probes-100/throwing.php",
+      "native_group": "native-first",
+      "stdout_base64": "WDpNfE1pU3NJbkd8TWFnaWNTdGF0aWNQYXJlbnQxMDB8TWFnaWNTdGF0aWNDaGlsZDEwMHxBfG18UHxwfEN8NDJ8VHw5OXxFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "call_line": 24,
+      "native_raw_sha256": "7e9021050e90286deccbba71d7866d67e3fd9ed2b0d947c2149d246d38d21026",
+      "status": "normal"
+    },
+    {
+      "id": "public",
+      "source_file": "magic-static-call-public.php",
+      "source": "<?php\nclass MagicStaticParent100 {\n    public static function __callStatic(string $name, array $arguments) {\n        throw new Exception('magic-static-must-not-run');\n    }\n    public static function direct($incoming) {\n        echo 'B|', $incoming, '|', __CLASS__, '|', static::class, '|b|';\n        return 17;\n    }\n}\nclass MagicStaticChild100 extends MagicStaticParent100 {}\n$answer = 42;\necho 'B:';\n$answer = MagicStaticChild100::direct(7);\necho 'R|', $answer, '|E|';\n",
+      "source_sha256": "38d0a20aca055abcc48078ebe228362e985ed6b52b898842e0085e4a1a403c86",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-static-call-private-100/.tools/magic-static-call-probes-100/public.php",
+      "native_group": "native-first",
+      "stdout_base64": "QjpCfDd8TWFnaWNTdGF0aWNQYXJlbnQxMDB8TWFnaWNTdGF0aWNDaGlsZDEwMHxifFJ8MTd8RXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "call_line": 14,
+      "native_raw_sha256": "1fce03e57f854d4a7bd7ed12a2db6b831bc2149a98480c11ea9275e44ff65537",
+      "status": "normal"
+    }
+  ]
+}
