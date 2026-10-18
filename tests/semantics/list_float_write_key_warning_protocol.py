@@ -126,8 +126,15 @@ def conditions(name, program, path, stdout):
                    '$heap_owners($heap_prune($heap_graph(S_dispatch)), HCELL n_q) = 1']
     elif thrown:
         checks += ['$entry_lookup(S_dispatch.ARRAYS[n_array].ITEMS, KINT 2) = (ALIAS n_q)',
-                   '$heap_owners($heap_prune($heap_graph(S_dispatch)), HCELL n_q) = 3']
-    checks += seek('S_dispatch', 13, 'S_entered') + [
+                   '$heap_owners($heap_prune($heap_graph(S_dispatch)), HCELL n_q) = 3',
+                   'S_dispatch_driven_found = $drive_steps(S, 1)',
+                   'S_dispatch_driven_found.COMPLETION = BUDGET',
+                   'S_dispatch_driven = S_dispatch_driven_found[.COMPLETION = NORMAL]',
+                   'S_dispatch_driven.STORE = S_dispatch.STORE',
+                   'S_dispatch_driven.ARRAYS = S_dispatch.ARRAYS',
+                   'S_dispatch_driven.TODO = S_dispatch.TODO',
+                   'S_dispatch_driven.RESULT = S_dispatch.RESULT']
+    checks += seek('S_dispatch_driven' if thrown else 'S_dispatch', 13, 'S_entered') + [
         'S_entered.CURRENT =/= eps', 'S_entered.ERRORHANDLER.CALLBACK = eps',
         'S_entered.FRAMES = pframe :: pframe_tail*',
         'pframe.TODO = (ERROR_HANDLER_RESULT perrorcall_entered) :: ptask_tail*',
