@@ -277,7 +277,7 @@ PhpStep: S_flag ~> S_flag_done
 S_flag_done.COMPLETION = UNSUPPORTED "magic getter receiver, signature or recursive access"
 S_source = S_prep[.ORIGIN = eps]
 ~$property_empty_prepare(S_source)
-S_std_created = $new_class(S,$ptascii("stdClass"),z_site)
+S_std_created = $destruction_store_new($new_class(S,$ptascii("stdClass"),z_site))
 S_std_created.RESULT = KNOWN (POBJECT n_std)
 S_std = S_std_created[.HELD = S.HELD ++ [HOBJECT n_payload]]
 $ti_guard(S_std) /\ ~$property_isset_rv_ready(S_std,ppropertyisset)
