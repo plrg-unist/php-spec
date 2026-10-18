@@ -7,6 +7,34 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Retained intrinsic `ini_set(NULL, quiet primitive)` now resumes handlers through
+one numeric two-item unpack. The original owner and captured NULL/REQUEST value
+survive live callee replacement and retained pack mutation. Numeric keys3/7 map to
+API/wrapper slots0/1. Ordinary strict calls reject NULL first; explicit `__invoke`
+is weak. Returning handlers preserve precision before false; supplied throws keep
+Exception identity/caller99/precision10/sibling2197 and cancel the body, then the
+retained setter recovers10→12.
+
+Four source comparisons and author584 premises retain `35aa840bc`/`bbde7c32c`/405;
+peer330 passes at `dc8798c3b`/the same runtime, totaling914. Initial `a3a17aa48`
+CPU3 native4/baseline0 precedes implementation; affected checks use CPU2. Eleven
+stable/reaped reports preserve one pre-main peer binding failure0; only that peer
+fixture repeats after assertion reordering. No accepted source/native/author or
+old623/746/782/928 replay. Actual unpack cursors, owner/array roots, historical
+snapshot validity, pooled literal authority, full raw four-frame trace/discard,
+source/carrier/count controls and budgets pass. Expected Deprecated lines7/20 are
+separate from quiet accepted worker stderr. Existing continuations/trace/GC remain
+exact; other packs, PIPE, sole-owner lifetimes and wider values remain partial.
+[Numeric unpack NULL INI review](coverage/semantics/ini-set-owned-unpack-null-option-review.json).
+
+Composed over `5a011788f`/406 with module172/four tests private-exact and entire
+incoming400 preserved except its moved declaration. New416/property-coalesce tags
+are inert here; certified Closure DEFINE values, Generator parked returns,
+finally-reference retirement, ADD repair and lossy float array-key producers are
+absent. Existing debt fields stay empty. Other parent runtime/schema/ordered406
+manifest bytes remain exact; source4/author584 and peer330 retain their separate
+private405 cuts and original peer failure0 without a joined actor or replay.
+
 An already parked owning simple-CV copied return now accepts another pending
 literal THROW directly or through finite native links. Reversed receiver orders
 show that only the selected receiver needs initialization; the physical middle
@@ -101,8 +129,8 @@ fixture failures0: optional-name tuple typing and a missing existing GC buffer
 update in the exact finish expectation. Runtime/shared64 helpers are unchanged by
 those corrections; no accepted source/native or old782 replay. Selected default
 Deprecated line24 is expected; other PHP and accepted worker stderr are empty.
-Packed/PIPE, sole-owner lifetime, owning/NaN/legacy-string values and wider
-configuration remain partial.
+Other packed forms, PIPE, sole-owner lifetime, owning/NaN/legacy-string values
+and wider configuration remain partial.
 [Named retained NULL INI review](coverage/semantics/ini-set-owned-named-null-option-review.json).
 
 Composed over `5401de02d`/405 with module172/four tests private-exact and every
