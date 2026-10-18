@@ -515,8 +515,8 @@ Plain compiled string leaves remained a separate boundary at that cut; the
 literal-string follow-up above admits them without replaying that campaign.
 
 String-name `define` also retains an already-certified live stdClass donor or
-completed user instance with an omitted or false flag. Registration stores the
-captured object pointer and its completed-birth class, transferring the call owner
+completed user instance with an omitted, boolean or NULL flag. Registration stores
+the captured object pointer and its completed-birth class, transferring the call owner
 to a constant-row owner
 without allocation. Named/selected sends retain their earlier value even when
 a later argument rebinds the caller's CV. Duplicate warnings keep the original
@@ -530,9 +530,20 @@ and live-allocation guards. Copying arrays shares the same instance pointer;
 property writes remain visible through donor rows and copied leaves. No constructor
 is replayed, and existing destructor/trace cleanup keeps its ordinary owners.
 [Instance define review](../../coverage/semantics/define-certified-instance-review.json).
-Ordinary uncertified objects, other owning array leaves,
-true/coerced flags for direct object payloads, coerced names and
-wider owning define domains remain partial.
+True flags emit the ignored-case Warning before registering the captured object
+pointer. Rebinding the caller's candidate CV does not replace that pointer;
+property writes through its aliases remain shared. A supplied Warning Exception
+still permits fresh registration with the same pending Throwable and unassigned
+caller destination. NULL flags instead deprecate before the body: normal return
+uses the current key table, while a throw cancels registration. Strict NULL raises
+TypeError before callbacks. Normal true/NULL duplicates preserve the old row and
+release the captured call owner through existing eager cleanup; source donors and
+published rows keep their own roots. The exact sources observe shutdown destructors,
+not early destruction or native refcounts. The pending-existing-key object helper
+is covered by a pure, undriven composition control, not another executed callback.
+[Object-flag review](../../coverage/semantics/define-object-flag-review.json).
+Ordinary uncertified objects, other owning array leaves, scalar-coerced flags for
+direct object payloads, coerced names and wider owning define domains remain partial.
 
 Class-qualified `defined` queries reuse inherited lookup and the actual caller's
 lexical visibility. Missing or inaccessible members return false. The initial
