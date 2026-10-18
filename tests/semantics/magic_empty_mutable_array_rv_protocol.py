@@ -139,7 +139,8 @@ S_raised_found = $mm_seek(S_dtor,MM_RAISED,1000)
 S_raised_found.COMPLETION = NORMAL \/ S_raised_found.COMPLETION = BUDGET
 S_raised = S_raised_found[.COMPLETION = NORMAL]
 S_raised.TODO = (THROW_SEARCH n_error) :: ptask_throw*
-S_raised.CURRENT = (pcallcontext_dtor) /\ $throwable_live(S_raised,n_error)
+S_raised.CURRENT = (pcallcontext_dtor)
+$throwable_live(S_raised,n_error)
 ~(HARRAY n_rv <- S_raised.ALLOCATIONS) /\ ~(HARRAY n_rv <- $gc_nodes(S_raised.GC.BUFFER))
 ~$property_empty_guard(S_raised,n_child,$ptascii("value"))
 S_catch_found = $mm_seek(S_raised,MM_CATCH,1000)
