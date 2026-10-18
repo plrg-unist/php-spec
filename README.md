@@ -3954,12 +3954,12 @@ Scoped descriptor checks now require every registered destructor operation's exa
 exit marker in current or saved tasks, including parked Fibers. Focused source,
 carrier/caller and public refusal checks pass; physical cell collection and broader
 returns remain open. Details are in the local CV lifetime review above.
-Normal adjacent partial reference-return pairs also resume through the ordinary
-release and instance-storage interval after a destructor. The remaining outer
-reference stays rooted; altered source/LINE, owner and cleanup records refuse.
-Two reached proofs pass 296 assertions and seven raw steps, with the original
-Notice/aliases and exact split-budget ending. Cleanup prefixes for final pairs
-and pending-Throwable histories, and broader lifecycle histories, remain open.
+Normal adjacent partial and final reference-return pairs also resume through
+ordinary release and instance-storage pauses. The partial pair retains its outer
+reference owner; the completed pair is root-free. Separate reached proofs pass
+296/7 at `dc0b93c9f` and 275/7 at `c1540ff96`, preserving original diagnostics,
+aliases and exact budget endings. Single-cursor and pending-Throwable cleanup
+prefixes, interposed lifecycle capture and broader histories remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

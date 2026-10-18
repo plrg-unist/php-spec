@@ -7,6 +7,24 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+M107 extends normal two-return cleanup admission to final `REF_RETURN_PAIR`.
+The existing same-scope release/storage view now feeds its full final validator;
+the pair is root-free after both older transfers retire. Only six module270 lines
+change. Author 117/one raw step and independent 158/six raw steps pass at
+`c1540ff96`/402, with every public cleanup pause, source/LINE/scope/registry/storage
+refusals, zero diagnostics, detached aliases and exact whole/split budget equality.
+No failure or retry occurred; native/source credit is zero for reused M66 packets.
+M106's still-owning partial pair retains separate 296/7 evidence at `dc0b93c9f`/401.
+Single-cursor and pending-Throwable cleanup prefixes, interposed lifecycle capture,
+wider owning/reentrant histories, GC and typed consumers remain open.
+[M106/M107 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+Composed over `b1a9fd146`/402 after independent actual-parent review. Incoming
+module404 right-only arithmetic Warnings require a named handler and arithmetic
+conversion, absent from M66. Only270 changes and is byte-exact tested `c1540ff96`;
+every other runtime file and the 402-module manifest retain parent bytes.
+State275/raw7 keeps its private cut without a joined actor or renewed source credit.
+
 Quiet LEFT/right-only numeric-string Warnings now enter the existing `+`, `-`,
 `*`, `/`, `**` continuations for two selected reference cells. One shared snapshot and four plan
 arms preserve every old body; actual CONVERT steps capture both holders before
@@ -21,26 +39,6 @@ Composed over33fb9bef1/402 after review of magic property-write, LIST, DEFINE,
 reference-return destructor and numeric SensitiveParameterValue selectors, absent
 here. All incoming paths are retained; source9/state576 keep their private401
 cuts without a joined actor or renewed execution credit.
-
-M106 admits public resumption throughout one normal adjacent partial reference-return
-pair's destructor cleanup: VALUE release, physical instance storage, HANDLE release,
-and the remaining empty releases. The outer reference owner stays live; exact
-source, scope, LINE and cleanup records remain required. Only module270 changes.
-Author140/one raw step and independent156/six raw steps pass at `dc0b93c9f`/401,
-including each public one-step resume, original Notice/aliases and whole/split
-budget equality. These are new reached-state checks using authenticated M68 packets,
-with zero renewed native/source credit. The first peer fixture omitted ordinary
-empty-property-row pruning; its failure and the precise field diagnosis are retained.
-Final/single-cursor and pending-Throwable cleanup prefixes, interposed lifecycle
-capture, wider owning/reentrant histories and GC remain open.
-[M106 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
-
-Composed over `44e0af9f7`/402 after independent actual-parent review. Incoming
-POWER/Sensitive comparison, DEFINE, NULL-key LIST and magic-setter selectors have
-no producer in the preserved M68 source; its destructor uses the existing method
-route. Only module270 changes and is byte-exact tested `dc0b93c9f`; all other
-runtime files and the 402-module manifest retain parent bytes. State296/raw7
-keep their private401 cut without a joined actor or renewed native/source credit.
 
 Initialized SensitiveParameterValue/int/float comparisons now emit the standard
 Notice and use private 1/1.0 without reading the wrapped value. Nine added
@@ -10179,8 +10177,8 @@ failures and interrupted evidence.
 
 The temporary `returns_verify` audit has reached its finite paired-return
 handoff. Preserve the accepted evidence and do not retry the rejected engine
-experiment. M106 covers the normal adjacent partial-pair release/storage interval.
-Final/single-cursor and pending-Throwable cleanup prefixes, normal interposed-catch
+experiment. M106/M107 cover normal adjacent partial/final-pair release/storage intervals.
+Single-cursor and pending-Throwable cleanup prefixes, normal interposed-catch
 partial pairs, larger or reentrant owning histories, GC and wider typed consumers
 remain open core obligations for permanent lifecycle/control work.
 Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is
