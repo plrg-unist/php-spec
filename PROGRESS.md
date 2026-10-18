@@ -9276,6 +9276,23 @@ credit; the corrected fixture alone was rerun. Existing ownership and normal
 exit rules are unchanged. This proof covers one runtime single-entry array
 with one throwing child; M56's accepted normal-child control stays separate.
 [M87 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M88 adds a literal-name no-argument `?array` method source only to the
+authenticated pending-Throwable destructor-exit guards. Reference-returning
+and value-returning `Factory::old_ref()` originals differ only in BYREF; native2
+at clean `62c33de71`/399 reaches local `CT:1;A;S`, detached `rNULL/b7` and
+one old-line Notice in both. The unchanged model wrongly reaches outer OT/r7
+without a Notice (zero agreements). Strict SL initialization and two exact
+original-source agreements pass at private `7966a4557`/399. A reference-only
+reached fixture passes 195 Boolean premises and two raw steps: after Factory's
+slot is unset, the protected old REFERENCE still roots live HCELL→HARRAY→O;
+selected-return replacement retires all three at the child88 TypeError exit.
+The same destructor-origin exception reaches local CT, then the nonowning
+cursor restores NULL/new Notice and detached caller. Actual descriptor
+admission, equal-heap LINE-only public refusal and exit budget equality pass.
+The value source has separate source agreement, without a reached owner proof.
+Normal pending-free routing and ownership rules are unchanged; wider arrays,
+other owner histories and broad returns_verify remain OPEN.
+[M88 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, wider destructor throw/reentry, real suspension and wider typed
