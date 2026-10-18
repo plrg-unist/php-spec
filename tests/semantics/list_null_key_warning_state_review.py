@@ -130,15 +130,15 @@ def conditions(name, program, path, stdout):
                'PhpStep: S_phase ~> S_lookup']
     if mixed:
         checks += [
-            'S_lookup.TODO = (ERROR_HANDLER_INVOKE perror_missing) :: ptask_tail*',
-            'perror_missing.RESUME = ' + missing, 'perror_missing.LEVEL = 2', 'perror_missing.LINE = z',
-            'perror_missing.MESSAGE = $list_missing_message(KSTRING eps)', '$error_call_valid(S_lookup, perror_missing)',
+            'S_lookup.TODO = (ERROR_HANDLER_INVOKE perrorcall_missing) :: ptask_tail*',
+            'perrorcall_missing.RESUME = ' + missing, 'perrorcall_missing.LEVEL = 2', 'perrorcall_missing.LINE = z',
+            'perrorcall_missing.MESSAGE = $list_missing_message(KSTRING eps)', '$error_call_valid(S_lookup, perrorcall_missing)',
             'S_lookup.STORE[n_x] = DEFINED (PINT 77)',
         ] + seek('S_lookup', 3, 'S_warning_entered') + [
             'S_warning_entered.FRAMES = pframe_warning :: pframe_warning_tail*',
-            'pframe_warning.TODO = (ERROR_HANDLER_RESULT perror_warning) :: ptask_warning_tail*',
-            'perror_warning.RESUME = ' + missing, 'perror_warning.TARGET =/= eps',
-            '$task_nodes(perror_warning.RESUME) = [HCELL n_a]',
+            'pframe_warning.TODO = (ERROR_HANDLER_RESULT perrorcall_warning) :: ptask_warning_tail*',
+            'perrorcall_warning.RESUME = ' + missing, 'perrorcall_warning.TARGET =/= eps',
+            '$task_nodes(perrorcall_warning.RESUME) = [HCELL n_a]',
         ] + seek('S_warning_entered', 2, 'S_missing_resume') + [
             'S_missing_resume.TODO = (' + missing + ') :: ptask_tail*',
             'S_missing_resume.STORE[n_x] = DEFINED (PINT 99)', 'S_missing_resume.STORE[n_before] = DEFINED (PINT 9)',
