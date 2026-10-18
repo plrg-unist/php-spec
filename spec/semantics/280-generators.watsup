@@ -36,6 +36,7 @@ dec $generator_unused_send_tail(pstate, porigin, ptask*) : bool
 dec $generator_send_leaf(pstate, nat, nat) : nat?
 dec $generator_pending_shared_send(pstate, pgeneratorop) : bool
 dec $generator_pending_throw_leaf(pstate, nat, nat) : nat?
+dec $generator_pending_throw_target(pstate, pgeneratorop) : nat?
 dec $generator_pending_throw_ready(pstate, pgeneratorop) : bool
 dec $generator_pending_throw(pstate, pgeneratorop) : pstate
 dec $generator_parked(pstate, nat, nat) : bool
@@ -57,6 +58,7 @@ dec $generator_parked_foreach_any(pstate, pnode*) : bool
 dec $generator_return_site(pstate, nat, porigin) : bool
 dec $generator_return_receipt(pstate, nat, porigin, nat, pvalue) : bool
 dec $generator_return_waiting(pstate, nat) : bool
+dec $generator_return_parked_waiting(pstate, nat) : bool
 dec $generator_return_waiting_any(pstate, pnode*) : bool
 dec $generator_return_orphan(pstate, nat) : pstate
 dec $generator_return_closing(pstate, nat) : bool

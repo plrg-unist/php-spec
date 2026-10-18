@@ -7,6 +7,34 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Pending `throw` now admits an owning simple-CV copied return on the actual
+detached middle. It reaches the caller without advancing and keeps getters live;
+parked close omits finally and transfers the return count into existing request
+retention before frame cleanup. Its transient cache copy retires separately and
+can replace the supplied exception with Previous intact. Cache/return array aliases
+keep separate counts with one edge set; post-close returned cells stay mutable.
+Normal waiting/unpack and the old recursive leaf domain remain unchanged. Owning
+ancestor receivers, later parked resume, wider continuations and GC remain open.
+[Owning THROW review](coverage/semantics/generator-pending-owning-return-throw-review.json).
+
+Four normal originals and strict405 pass at `b1b40309f`; four real fronts pass 553
+premises (273 author + 280 independent, including 20 generic checks) at the same
+cut with `cf9682790` runtime. Invocation, retired-receiver copy destructor,
+parked CLOSING/skip and late shared-cell write reach all native endings with exact
+owners, public/heap validity and zero/split budgets. No actor failed or repeated.
+Native4 and the genuine unchanged Unsupported baseline retain `520f23d4f`/405
+with zero agreement; the four-fixture elaboration and derived GC refusal grant
+no execution/GC source credit. Earlier Generator evidence is not renewed; raw
+artifacts remain external.
+
+Composed over `6ea104961`/405 after pointwise review of ordinary reference-return
+cleanup, literal-reference deficits and copied arithmetic-warning selectors.
+Those producers are absent here; new debt fields lift empty without changing
+owners or validity. Only280/289 change and keep tested `cf9682790` bytes;
+all other runtime/control/root/default bytes and the405-module manifest stay
+parent-exact. Source4/state553/strict405 retain their private cuts without a
+joined actor, accepted replay or renewed execution credit.
+
 Nonowning copied operands now stage ordinary `+`, `-`, `*`, `/`, `**` Warnings.
 Saved copies survive origin mutation/unset and retain raw TypeError labels.
 MUL follows opcode slot-rank swapping: literal/CV order yields cached `60` with
@@ -106,8 +134,8 @@ before its receiver. Actual next consumes the return; close retains its count.
 If argument destruction throws, the copied cache survives receiver retirement;
 its later destructor can replace the exception before catch with Previous intact.
 Reference-row COW and post-close embedded-cell writes preserve distinct owners.
-Only module289's admission guard changes; pending owning-return THROW, wider
-continuations, active-chain owning unpack and GC remain open.
+Only module289's admission guard changed. At that cut, pending owning-return THROW,
+wider continuations, active-chain owning unpack and GC remained open.
 [Owning SEND review](coverage/semantics/generator-pending-owning-return-send-review.json).
 
 Four normal originals and strict403 pass at `5e5803e64`. Four new fronts pass 544

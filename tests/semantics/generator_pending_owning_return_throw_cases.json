@@ -1,0 +1,22 @@
+[
+  {
+    "id": "generator-pending-owning-return-throw-object-getters-close",
+    "purpose": "A pending detached middle receives THROW while its simple-CV yield-from result owns a child object. Observe caller identity, unchanged getters, cache snapshots and explicit-close cleanup without a later resume.",
+    "source": "<?php\nclass PendingOwningThrowCache29 { function __destruct() { echo \"A|\"; } }\nclass PendingOwningThrowReturn29 { function __destruct() { echo \"R|\"; } }\nfunction pendingOwningThrowLeaf29() { echo \"C|\"; yield new PendingOwningThrowCache29(); echo \"L|\"; return new PendingOwningThrowReturn29(); }\nfunction pendingOwningThrowMiddle29() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"BAD-BODY|\"; } finally { echo \"J|\"; } }\nfunction pendingOwningThrowOuter29() { try { echo \"O|\"; yield from $GLOBALS[\"middle\"]; } finally { echo \"F|\"; } }\n$injected = new Exception(\"pending29\"); $child = pendingOwningThrowLeaf29(); $middle = pendingOwningThrowMiddle29(); $outer = pendingOwningThrowOuter29();\necho \"P|\"; $outer->rewind(); $child->next(); $held = $middle->current(); echo \"H|\", $held instanceof PendingOwningThrowCache29 ? 1 : 0, \"|\"; unset($child); echo \"T|\";\ntry { $snapshot = $middle->throw($injected); echo \"BAD-RETURN|\"; } catch (Exception $caught) { echo \"CALLER|\", $caught === $injected ? 1 : 0, \"|\", $caught->getPrevious() === null ? 1 : 0, \"|\"; }\necho \"GET|\", $middle->current() === $held ? 1 : 0, \"|\", $middle->key() === null ? 1 : 0, \"|\", $middle->valid() ? 1 : 0, \"|\";\nunset($outer); echo \"OUT|\"; unset($middle); echo \"MID|\"; unset($held); echo \"HELD|\"; unset($caught, $injected); echo \"E\";\n",
+    "source_sha256": "2c66b850278bea595dbcd1d8032d1471b11abe406906e3d97c90b26d621a1bb0",
+    "expected": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|M|C|L|H|1|T|CALLER|1|1|GET|1|1|1|F|OUT|MID|A|HELD|ER|"
+  },
+  {
+    "id": "generator-pending-owning-return-throw-sole-receiver-replacement",
+    "purpose": "Argument evaluation drops every Generator alias after selecting the pending detached middle. Its copied owning array return and distinct cached destructor expose snapshot retirement, supplied-exception replacement and previous identity before catch.",
+    "source": "<?php\nclass PendingOwningThrowLate29 { function __destruct() { echo \"R|\"; } }\nclass PendingOwningThrowReplaceCache29 { function __destruct() { echo \"D|\"; throw new Exception(\"replacement29\"); } }\nfunction pendingOwningThrowReplaceLeaf29() { echo \"C|\"; yield new PendingOwningThrowReplaceCache29(); echo \"L|\"; return [new PendingOwningThrowLate29()]; }\nfunction pendingOwningThrowReplaceMiddle29() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"BAD-BODY|\"; } finally { echo \"J|\"; } }\nfunction pendingOwningThrowReplaceOuter29() { try { echo \"O|\"; yield from $GLOBALS[\"middle\"]; } finally { echo \"F|\"; } }\nfunction pendingOwningThrowDrop29() { unset($GLOBALS[\"outer\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"DROP|\"; return $GLOBALS[\"injected\"]; }\n$injected = new Exception(\"pending29\"); $child = pendingOwningThrowReplaceLeaf29(); $middle = pendingOwningThrowReplaceMiddle29(); $outer = pendingOwningThrowReplaceOuter29();\necho \"P|\"; $outer->rewind(); $child->next(); echo \"H|\", $middle->current() instanceof PendingOwningThrowReplaceCache29 ? 1 : 0, \"|\"; unset($child); echo \"T|\";\ntry { $snapshot = $middle->throw(pendingOwningThrowDrop29()); echo \"BAD-RETURN|\"; }\ncatch (Exception $caught) { echo \"CALLER|\", $caught->getMessage() === \"replacement29\" ? 1 : 0, \"|\", $caught->getPrevious() === $injected ? 1 : 0, \"|\"; }\nunset($caught, $injected); echo \"E\";\n",
+    "source_sha256": "8f57dc2410ac976648f236b629bebb5448f586f4f6dbe326c311461f5bd456d2",
+    "expected": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|M|C|L|H|1|T|F|DROP|D|CALLER|1|1|ER|"
+  }
+]

@@ -57,7 +57,16 @@ Actual next consumes that return; close retains its count. If an argument
 destructor throws, the cache snapshot survives receiver retirement and can replace
 that exception before caller catch. The
 [owning SEND review](../../coverage/semantics/generator-pending-owning-return-send-review.json)
-keeps this path separate from pending owning-return `throw`, which remains open.
+records this path separately from pending `throw`.
+
+Pending `throw` on that actual detached receiver now also preserves the owning
+simple-CV return. It reaches the caller without advancing, leaves getters live,
+and parks the frame so close omits its finally. Close transfers the return count
+to request retention before dropping frame owners; its embedded cells remain
+mutable. The transient cache copy retires independently before catch and may
+replace the supplied exception with Previous intact. The
+[owning THROW review](../../coverage/semantics/generator-pending-owning-return-throw-review.json)
+does not admit owning returns through ancestor receivers or later parked resume.
 
 A direct detached parent with an owning copied return now admits ordinary unpack
 at a simple-CV assigned `yield from`. Null-key rejection leaves its COMPLETE

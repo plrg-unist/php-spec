@@ -1035,6 +1035,11 @@ Its current copy survives receiver cleanup; getters remain available, but later
 resumption is Unsupported. Explicit
 close preserves the pinned parked-frame finally omission. See the
 [pending-throw review](coverage/semantics/generator-pending-throw-review.json).
+The actual detached middle also accepts an owning simple-CV copied return on
+pending `throw`: getters stay live, close omits finally and retains the return,
+and a separate cache snapshot can replace the exception before catch. Array/cache
+aliases and mutable returned cells preserve their separate owners. See the
+[owning THROW review](coverage/semantics/generator-pending-owning-return-throw-review.json).
 With a buffered input, pending `throw` preserves its count; physical close retains
 it until request-store destruction, including receiver cleanup before caller
 catch. The independent current copy can still trigger a replacement exception. See the
