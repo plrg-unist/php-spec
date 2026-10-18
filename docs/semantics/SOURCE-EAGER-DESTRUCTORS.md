@@ -37,9 +37,14 @@ single cursor and final pair own no payload. Each public marker checks its live
 registry or storage receipt; later virtual queue traversal has consumed those
 borrowed registries. M108 single 288/7, M106 partial 296/7 and M107 final 275/7
 reached proofs cover every cleanup budget, original diagnostics, aliases and
-complete budget identity at distinct tested cuts. Pending-Throwable cleanup
-prefixes, interposed capture, wider owners/reentry and GC remain open.
-[Review and recovery](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+complete budget identity at distinct tested cuts.
+
+One empty release directly before a pending single-cursor exit delegates to the
+unchanged live finite-Throwable/source/full-cursor validator. M109's 325/6 proof
+preserves the destructor TypeError through local CT and consumed NULL, then one
+VALUE Notice at old source line5 and detached rNULL/b7. Earlier auxiliary-operation/
+storage intervals, pending-pair prefixes, interposed capture, wider owners/reentry and GC
+remain open. [Review and recovery](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
 Pruning prepares the object store and fatal marks once, then selects the same
 unsupported, refused, pending-release or store-drop result. Unmatch in preparation,

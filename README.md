@@ -4007,8 +4007,11 @@ through ordinary release and instance-storage pauses. The partial pair retains
 its outer reference owner; single cursors and completed pairs are root-free.
 Separate reached proofs pass 288/7 at `799f07366`, 296/7 at `dc0b93c9f` and
 275/7 at `c1540ff96`, preserving original diagnostics, aliases and exact budget
-endings. Pending-Throwable cleanup prefixes, interposed lifecycle capture and
-broader histories remain open.
+endings. A final empty release before a pending single-cursor destructor exit also
+resumes through the existing finite-Throwable/source validator. Separate 325/6
+checks at `3256ba13e` preserve the same TypeError, a VALUE Notice at old source line5
+and detached rNULL/b7. Earlier auxiliary/storage intervals, pending-pair prefixes, interposed
+lifecycle capture and broader histories remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

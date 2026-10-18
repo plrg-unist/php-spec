@@ -7,6 +7,29 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+M109 admits one final empty release directly before an authenticated pending
+single-cursor destructor exit. Six module270 lines strip that marker and delegate
+to the unchanged live finite-Throwable/source/full-cursor validator; the normal
+release/storage view stays pending-free. Author 144/three raw steps and independent
+181/three raw steps pass at `3256ba13e`/403: the same destructor TypeError reaches
+local CT, old C stays retired, the root-free consumed cursor produces one VALUE
+Notice at its old source line5, and the caller keeps detached rNULL/b7. Source,
+LINE, scope, registries, USER/CALLER, kind and valid nonempty-job refusals plus exact
+two-step/whole budget identity pass. No failure/retry or new native/source credit;
+authenticated M84 packets retain their historical cut. Normal M106–M108 cleanup
+proofs stay separate. Earlier auxiliary-operation/storage intervals, pending-pair
+prefixes, interposed capture, wider owners/reentry, GC and typed consumers remain
+open. [Cleanup review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+Composed over `b311c793a`/404 after independent actual-parent review. Incoming
+Generator-return retention stays eps with no M84 producer, so its added roots and
+validator are neutral; parent field/init bytes are preserved. New arithmetic plans
+need an absent named Warning handler, and magic-call guards exclude this C without
+__call and the builtin TypeError.getMessage route. Only270 changes and matches
+`3256ba13e`; every other runtime file and the 404-module manifest retain parent
+bytes. The 325/6 proof keeps its private403 state cut without a joined actor or
+renewed source credit.
+
 Missing literal instance calls now invoke inherited public `__call(string,array)`
 with original spelling and a real packed positional argument array. The selected
 receiver and early scalar sends survive argument callbacks that clear its CV and
@@ -71,25 +94,6 @@ and reference-return cleanup validation. None has a producer in these untyped
 by-value Generator sources. Incoming403 modules and task variants are preserved;
 the tested nine-file additions retain their private401 cuts. No joined actor,
 accepted replay or renewed execution credit is claimed.
-
-M108 admits normal single `REF_RETURN_CURSOR` cleanup through the existing
-same-scope release/storage view and full cursor validator. Only six module270
-lines change; the cursor remains root-free. Author 120/one raw step and independent
-168/six raw steps pass at `799f07366`/402: all six public cleanup pauses, exact
-empty-property-row pruning, source/LINE/scope/registry/storage refusals, one VALUE
-Notice at the old source line4, detached r/b aliases and whole/split budget equality.
-No failure or retry occurred; reused M79/M83 packets add no native/source credit.
-M106 partial 296/7 at `dc0b93c9f`/401 and M107 final 275/7 at `c1540ff96`/402
-retain separate evidence. Pending-Throwable cleanup prefixes, interposed lifecycle
-capture, wider owning/reentrant histories, GC and typed consumers remain open.
-[Cleanup review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
-
-Composed over `f5c412d58`/403 after independent actual-parent review. Incoming
-array-float keys, NULL DEFINE flags, method-Closure numeric images and Stringable
-class-query selectors have no M79 producer. Only270 changes and matches tested
-`799f07366` bytes; every other runtime file and the 403-module manifest retain
-parent bytes. The 288/7 proof keeps its private402 cut without a joined actor or
-renewed source credit.
 
 Retained propertyless Stringable query names now hand non-NUL class-qualified
 results to existing guarded user-class lookup. One module 400 predicate/comment
@@ -10298,9 +10302,11 @@ failures and interrupted evidence.
 The temporary `returns_verify` audit has reached its finite paired-return
 handoff. Preserve the accepted evidence and do not retry the rejected engine
 experiment. M106–M108 cover normal single-cursor and adjacent partial/final-pair
-release/storage intervals. Pending-Throwable cleanup prefixes, normal interposed-catch
-partial pairs, larger or reentrant owning histories, GC and wider typed consumers
-remain open core obligations for permanent lifecycle/control work.
+release/storage intervals; M109 adds the final empty release before a pending
+single-cursor exit. Earlier auxiliary/storage intervals, pending-pair prefixes,
+normal interposed-catch partial pairs, larger or reentrant owning histories, GC and
+wider typed consumers remain open core obligations for permanent lifecycle/control
+work.
 Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is
 bounded physical-array owner recovery. Bounded single-active-finalizer CV replay and deferred VALUE/NULL Notice dispatch are
 integrated, as are bounded aliased-CV Stringable reference conversion 186 and sole-local-CV
