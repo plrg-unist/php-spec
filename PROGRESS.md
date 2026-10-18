@@ -7,6 +7,31 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Retained propertyless Stringable `define` names now receive quiet nonboolean
+integer, non-NaN float and authenticated string flags with primitive candidates
+in admitted non-NUL user-global/class-name domains. A disjoint module400 head
+reuses existing cast/flag/duplicate rules; captured flags survive live mutations.
+Four originals and 1,203 premises (482+282+100 author,339 independent) pass at
+cc7f88f54: false0/-0/string0 fresh/duplicates retain1907, truthy REQUESTfalse
+warns then reaches handler-created1931, quietINF class rejection and strict raw-name
+priority, and REQUEST0 duplicate throw preserves old1901/sibling1957/sameException99.
+Actual state traces retain all three string carriers; peer native avoids trace traversal.
+Initial59d native/base and peer-native af678 stay separate from corrected actors,
+all on CPU3. The first model Unsupported and CONFIG localization retain zero:
+documented SpecTec Cons/Fixed overlap required an equivalent exact-length Cons
+pattern, with no vendor or PHP divergence. Twelve reports are stable/reaped,
+no timeout/interruption/survivor; accepted PHP Warnings are2/1/0/0 and accepted worker
+stderr is empty. One old60 PINT0 control becomes positive shape without1084 replay;
+V79 object payloads stay disjoint. Startup/special/HALT results, NaN flags,
+owning candidates and wider lifetime/forms remain partial; Source47/owned-NUL stay paused.
+[Stringable scalar-flag review](coverage/semantics/define-stringable-scalar-flag-review.json).
+
+Pointwise composition over1549f127b/405 keeps module400 and five tests private-exact.
+Incoming LITERALREFDEBTS stays empty, so heap debt/validity changes reduce to the
+old behavior; SPACESHIP, staged arithmetic, reference-return and Generator
+producers are absent. Every other runtime/schema/ordered405 path retains parent
+bytes. Source4/state1203 keep their private cuts without a joined actor or replay.
+
 Undefined scalar `<=>` now suspends through ordinary warning handlers while
 retaining the missing NULL. Later right CVs follow callback rebinding; computed
 primitive operands stay captured. Reference aliases, false/default Warning order
@@ -107,8 +132,8 @@ Nine reports all PASS/stable/reaped, no failure/retry/timeout; default has 3 Dep
 1 Warning, selected has 1 Warning, strict/peer quiet and empty worker stderr. Initial
 7ec085 native/base and later af0 actors use CPU3; Unsupported/B| retains zero. Two old55
 append-NULL controls become source-valid refusals without older 717/974 replay.
-V79 direct payloads remain disjoint. Startup/special/HALT results, other coerced
-flags, owning candidates and wider lifetime/forms stay partial; Source47/owned-NUL
+V79 direct payloads remain disjoint. Startup/special/HALT results, flags beyond
+the bounded follow-ups, owning candidates and wider lifetime/forms stay partial; Source47/owned-NUL
 remain paused/untouched.
 [Stringable NULL-flag review](coverage/semantics/define-stringable-null-flag-review.json).
 
