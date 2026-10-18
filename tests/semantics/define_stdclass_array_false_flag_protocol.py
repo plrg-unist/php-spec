@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Reached false-flag capture and array copying after argument effects."""
 import argparse
+from pathlib import Path
 import sys
 
 import define_stdclass_array_protocol as array
