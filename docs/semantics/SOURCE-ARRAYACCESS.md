@@ -112,9 +112,11 @@ replacement-exception behavior. Ordinary helper calls can supply compound
 dimension bases; special builtin temporary results remain compiler errors.
 The [Stringable compound ledger](../../coverage/semantics/arrayaccess-stringable-compound-review.json)
 keeps the 23 normal original-source agreements, compiler negatives and independent
-reached-state checks at their separate cuts. Bare/fall-through NULL and
-finally-sensitive reference-Get Notices remain unaccepted; non-mixed typed return
-verification remains user-paused.
+reached-state checks at their separate cuts. Bare/fall-through NULL remains
+unaccepted; non-mixed typed return verification remains user-paused. M99–M101
+separately validate one finally-sensitive mixed reference-Get VALUE Notice with
+an accepting handler, a throwing handler, and temporary receiver/RV destructor
+order. These source agreements do not establish wider handler or owner histories.
 Module344 creates an unstarted Generator from mixed/untyped implicit Get,
 including reference-yield declarations. The received frame owns its key and
 receiver after the access returns. A nonowning target/site/line certificate
@@ -157,8 +159,8 @@ constructor and pruning fields; the earlier307 source/reached cut stays separate
 without execution renewal.
 
 Wider memoized/property/GLOBALS producers and combined Iterator/ArrayAccess notice
-ordering remain required. Finally-sensitive Notice
-ingress, bare/fall-through NULL and handler exit remain open. Typed non-mixed Get stops
+ordering remain required. The M99–M101 finally-sensitive Notice controls agree
+with PHP; bare/fall-through NULL, handler exit and wider ingress remain open. Typed non-mixed Get stops
 explicitly before the user-paused return verification; no typed body validation
 is claimed.
 

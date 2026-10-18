@@ -10088,6 +10088,32 @@ terminates without a Notice. The caught error's message and producer were not
 observed. This is one original source agreement, with no runtime repair or new
 state proof; broader returns_verify remains OPEN.
 [M98 control](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M99–M101 validate three finally-sensitive mixed ArrayAccess reference-Get
+VALUE Notice originals at separate unchanged 401-module cuts. An accepting
+handler observes value 41; a throwing handler leaves the prior assignment 7
+and reaches the access caller with the retained Exception; a temporary
+receiver/RV variant also observes destructor A before D. Each has one exact
+native/model source agreement, with no runtime repair or reached-state proof.
+Bare/fall-through NULL, other handler exits, non-mixed typed Get and wider
+owner histories remain open.
+[M99–M101 controls](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M102 removes an incidental declaration-type filter from plain-variable
+old-return source authentication. Native nominal `&f():Base102` and array
+`&f():array` originals catch their old-value destructor TypeError locally,
+then run a second finalizer and reach outer OT; the unchanged model instead
+routes the destructor directly to OT (zero agreements each). At private
+`2db8f45d3`/401, strict initialization and both unchanged original sources
+pass exactly. One array-original reached fixture passes 240 Boolean premises
+and two raw steps: the protected HCELL→HARRAY→O survives local unset, saved
+D and pending-exit descriptors authenticate the cursor, and the same arr102
+throwable reaches first CT. Generic consumed `KNOWN NULL` makes no allocation
+across its raw step; distinct modeled NULL/string return errors and prior r/b7
+follow the two later catches. Actual LINE-only public refusal and D-cut budget
+equality pass. Fresh-reference selection remains Boolean-identical to M93–M95
+because its typed-NULL gate already implied the removed filter. The nominal
+case has source-only credit; native CT:0/OT:0 output alone does not identify
+its error producers. Wider owner/reentry and physical collection remain open.
+[M102 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, wider destructor throw/reentry, real suspension and wider typed
