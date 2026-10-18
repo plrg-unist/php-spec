@@ -89,6 +89,11 @@ CV alias, leaving the wrapper and entry mutable.
 Whole-wrapper replacement and escaped-item writes after close therefore have
 distinct release effects. See the
 [reference-foreach review](../../coverage/semantics/generator-pending-reference-foreach-throw-review.json).
+With one authenticated simple-CV used-yield input, physical close first orphans
+that input and then retains the acquired wrapper. A later wrapper or entry write
+drops only its own edge, leaving the old input value alive. The
+[buffered reference-foreach review](../../coverage/semantics/generator-pending-buffered-reference-foreach-throw-review.json)
+checks these independent counts and ordinary cache-replacement cleanup.
 
 The release walk preserves physical owner order, including compiled local-slot
 order and key-before-value cleanup after a forbidden keyed yield. It can close

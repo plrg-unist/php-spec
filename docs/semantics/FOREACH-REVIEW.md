@@ -88,5 +88,7 @@ The [parked Generator reference-foreach review](../../coverage/semantics/generat
 adds a separate close path at a bare yield in one by-reference array loop. The
 acquired wrapper count survives close; the item CV alias retires normally. Later
 whole-wrapper replacement or escaped-item writes follow those mutable cells.
-This lifecycle path reuses the ordinary iteration-advance algorithm; buffered
-reference loops, wider owning tails and later resume remain open.
+The [buffered reference-foreach review](../../coverage/semantics/generator-pending-buffered-reference-foreach-throw-review.json)
+adds one simple-CV used-yield input, keeping its value separate from the acquired
+wrapper across close and post-close writes. Both paths reuse ordinary iteration
+advance; wider owning tails and later parked resume remain open.

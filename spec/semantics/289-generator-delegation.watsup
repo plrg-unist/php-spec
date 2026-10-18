@@ -394,6 +394,19 @@ def $generator_foreach_reference_site(S, pgenerator, PORIGIN n_unit pcpath_yield
   -- if pcpath_yield[n_parent] = PCFIELD 0
   -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_yield[0:n_parent]) = (NStmtExpression (NExprYield phpType5_key phpType5_value metadata_yield) metadata_statement)
   -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_yield) = (NExprYield phpType5_key phpType5_value metadata_yield)
+def $generator_foreach_reference_site(S, pgenerator, PORIGIN n_unit pcpath_yield, PORIGIN n_unit pcpath_loop) = true
+  -- if $generator_parked_site(S, pgenerator, PORIGIN n_unit pcpath_yield)
+  -- if $function_at($all_functions(S), pgenerator.FUNCTION) = (pfunction)
+  -- if $effect_below(pfunction.BODY, pcpath_loop)
+  -- if $effect_below(pcpath_loop ++ [PCFIELD 4], pcpath_yield)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_loop) = (NStmtForeach expression_iterable phpType5 (BOOLEAN true) (NExprVariable phpType32 metadata_variable) phpType23 (BOOLEAN false) metadata_loop)
+  -- if $cv_name(phpType32) =/= eps
+  -- if $(|pcpath_yield| > 0)
+  -- if n_parent = $nabs($(|pcpath_yield| - 1))
+  -- if pcpath_yield[n_parent] = PCFIELD 1
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_yield[0:n_parent]) = (NExprAssign (NExprVariable phpType32_target metadata_target) (NExprYield phpType5_key phpType5_value metadata_yield) metadata_assign)
+  -- if $cv_name(phpType32_target) =/= eps
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_yield) = (NExprYield phpType5_key phpType5_value metadata_yield)
 def $generator_foreach_reference_site(S, pgenerator, porigin_yield, porigin_loop) = false -- otherwise
 def $generator_foreach_reference_cell(S, n_cell) = true
   -- if $(n_cell < |S.STORE|)
@@ -428,7 +441,7 @@ def $generator_foreach_saved(S, pgenerator, pframe) = (ptask_foreach)
 def $generator_foreach_saved(S, pgenerator, pframe) = (ptask_foreach)
   -- if pframe.ORIGIN = (porigin_yield)
   -- if pframe.HELD = eps
-  -- if $generator_unused_send_tail(S, porigin_yield, pframe.TODO)
+  -- if $generator_unused_send_tail(S, porigin_yield, pframe.TODO) \/ $generator_input_tail(S, porigin_yield, pframe.TODO)
   -- if $generator_foreach_find(S, pgenerator, porigin_yield, pframe.TODO) = (ptask_foreach)
   -- if ptask_foreach = FOREACH_NEXT n_iterator (HCELL n_cell) statement porigin_loop? z
   -- if $tasks_nodes(pframe.TODO) = [HCELL n_cell]

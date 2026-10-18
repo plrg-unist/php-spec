@@ -7,6 +7,35 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Pending Generator `throw` now preserves one buffered simple-CV used-yield input
+inside one active by-reference array `foreach`. The input captures a value while
+the loop owns its acquired wrapper. Close orphans the input, then retains that
+wrapper and retires the item CV. The same array can have two counts with one set
+of entry edges. A later whole-wrapper replacement leaves the old array through
+the input; an escaped-item write leaves the old object through the input while
+the wrapper follows the new value. Cache cleanup can replace the supplied
+Throwable before catch, linking the replacement to the injected one. Only
+module289 extends two source/tail receipts; roots, close, ordinary advance and
+collector steps stay unchanged.
+Wider owning tails, later parked resume and GC remain open.
+[Buffered reference-foreach review](coverage/semantics/generator-pending-buffered-reference-foreach-throw-review.json).
+
+Four exact normal originals, strict401 and four genuine fronts pass at `ce55d962d`:
+687 premises (336 author + 351 independent, including 20 generic reachability checks),
+with all native endings. Wrapper/input/item-cell multiplicities, exact close
+transfer, mutable wrapper and entry writes, the real replacement-cache callback,
+malformed metadata refusals, public/heap validity and zero/split budgets pass.
+The derived parked-frame GC refusal grants no GC source agreement. Native4 and
+the genuine unchanged Unsupported baseline retain `d43a696d7`/401 with zero
+agreement. No actor failed or repeated; earlier Generator evidence is not replayed.
+
+Composed over `7fe9c0247`/401 after pointwise review of reference-return cursors,
+selected-CV SUB/MUL warning tasks, constant APIs and SensitiveParameterValue
+comparison/clone selectors, all absent here. Only module289 changes and remains
+byte-exact tested `ce55d962d`; every other runtime file, pipeline and the 401-module
+manifest retain the parent bytes. Source4/state687/strict401 keep their private
+cuts without a joined actor, accepted replay or renewed execution credit.
+
 Positional `define` now rejects retained ordinary nonStringable instances and
 `stdClass` names before primitive flag processing or registration, weak or strict,
 after all argument effects. Exactly 24 module400 additions reuse the live object
@@ -128,8 +157,8 @@ the iterator before ordinary item-CV and current-copy cleanup. Replacing the who
 wrapper releases the old array, while an escaped-item write changes its actual
 entry cell. These remain mutable after the physical Generator retires. Cache
 cleanup can replace the supplied Throwable before caller catch with its previous
-chain intact. Used-yield reference loops, wider owning tails, later parked resume
-and GC remain open; ordinary iteration advance is unchanged.
+chain intact. At that cut, used-yield reference loops, wider owning tails,
+later parked resume and GC remained open; ordinary iteration advance is unchanged.
 [Reference-foreach review](coverage/semantics/generator-pending-reference-foreach-throw-review.json).
 
 Four exact normal originals, strict401 and four genuine fronts pass at `dc90aaefb`:

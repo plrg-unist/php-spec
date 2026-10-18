@@ -143,8 +143,11 @@ receiver cleanup before caller catch. At a bare yield in one by-reference array
 loop, close retains the acquired wrapper itself, allowing whole-wrapper and
 escaped-item writes after close; see the
 [reference-foreach review](../../coverage/semantics/generator-pending-reference-foreach-throw-review.json).
-Other input/loop shapes, used-yield reference loops, object loops, nested owning
-loops and later parked resumption remain open.
+The [buffered reference-foreach review](../../coverage/semantics/generator-pending-buffered-reference-foreach-throw-review.json)
+adds one simple-CV input in that reference loop. Its value remains independent of
+the acquired wrapper across physical close and later wrapper or entry writes.
+Other input/loop shapes, object loops, nested owning loops and later parked
+resumption remain open.
 
 Callback admission binds the actual owner, source unit/path, stage, target, line
 and saved lexical/called scopes. Only the immediate authenticated implicit call
