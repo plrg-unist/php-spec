@@ -235,6 +235,16 @@ directions, quiet handoff, both throwing phases and default-second negative-coun
 ArithmeticError. Initial references/copies, wider count conversions, unsafe targets
 and lifecycle remain partial.
 
+Fitting integral float counts after the first callback now convert quietly in
+the both-fractional shift route. Cached LEFT `-12` with `2.0` stores `-48`/`-3`,
+while `64.0` stores right-shift `-1`; both detach late alias `99`. Negative `-1.0`
+raises RHS-line `ArithmeticError` before storage or detachment. Supplied first throws
+preserve the same Exception, destination and aliases.
+[Quiet float shift evidence](../../coverage/semantics/shiftassign-quiet-float-review.json)
+retains five exact originals and 629 focused SL premises, including default-first
+negative/wide counts. Wider initial forms, unsafe bindings/targets and lifecycle
+remain partial; OP34 and earlier threshold evidence receive no renewed credit.
+
 Distinct initially plain CV numeric `&=`, `|=` and `^=` keep their fractional LEFT
 conversion through deprecation handlers, then read the live quiet integer RHS.
 Success detaches a late alias; supplied throw preserves callback writes, the same

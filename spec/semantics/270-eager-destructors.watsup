@@ -384,7 +384,6 @@ def $ref_return_cursor_saved_descriptor_valid(S, prefreturncursor, porigin_selec
   -- if pdestructionoperation.PENDING = eps
   -- if pdestructionoperation.CALLER = S.CURRENT /\ pdestructionoperation.ORIGIN = S.ORIGIN /\ pdestructionoperation.CONSTCONTEXT = S.CONSTCONTEXT
   -- if $ref_abrupt_destructor_cursor(ptask_tail*) = (prefreturncursor)
-  -- if $ref_abrupt_destructor_old_source(S, prefreturncursor)
 def $ref_return_cursor_saved_descriptor_valid(S, prefreturncursor, porigin_selected, z_selected) = $ref_return_cursor_valid(S[.TODO = (RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected) :: ptask_tail*], prefreturncursor, porigin_selected, z_selected)
   -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected) :: ptask_tail*
   -- if pdestructionoperation.SOURCE = RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected

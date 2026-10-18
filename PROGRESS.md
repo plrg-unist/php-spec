@@ -7,6 +7,79 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Terminal inherited `empty` now accepts nonempty array getter RVs through the
+receiver-only disposal phase, and immutable empty literals through direct true
+delivery. Owned-element destructors run after array retirement with isset active,
+Get inactive and the saved receiver retained; caller-CV rebinding and payload
+throws preserve receiver ordering and the same Exception at actual catch binding.
+Three exact originals agree at fa9e185e2; focused255 at9a5722902 (222 reached +33
+derived) covers both result branches, disposal, shared-array owners, mutable-empty/
+allocation/type refusals and budgets. No semantic actor failed. Native affinity
+sampling captured only the empty case; recorded taskset-parent provenance remains.
+The saved phase and generic array/key/return/destruction code remain unchanged.
+Mutable-empty arrays, other internal kinds and wider signatures/receivers/lifecycles
+remain partial. [Array RV review](coverage/semantics/magic-empty-array-rv-review.json).
+Earlier instance/stdClass/primitive/NaN cuts retain their original identities and
+failures without replay or renewed credit.
+
+Pointwise composition over425174b59 preserves the incoming399-module parent.
+Source3/state255 retain tested cuts; no joined actor or renewed execution credit.
+
+WeakMap comparisons now admit normalized FROMCALLABLECLOSURE and BOUNDFAKECLOSURE
+objects as uncomparable +1 in either direction before factory/binding metadata or
+private-entry traversal. Two exact originals and 361 Boolean premises
+(349 setup + 12 pure)/8 actual steps pass at 8504d9800/399. All seven operators, distinct bound
+receiver markers, cloned rebinding on an overriding child, retired nonowning history,
+sole receiver owners, skipped aggregate tails and budgets are covered. Native/
+baseline/preparation/EL retain zero credit; no actor failed. Other Closure forms,
+producers and wider weak lifetimes remain partial; stored-string carrier conversion
+is separate. [Factory/binding review](coverage/semantics/weakmap-factory-comparison-review.json).
+
+Composed over 180baaf665/399 after pointwise review of startup-constant duplicate
+traces, magic-empty, Generator send, shifts and abrupt-return selectors, all absent
+here. Source2/state361 retain their private cut; no joined actor or renewed credit.
+
+Duplicate `define` of known fixed startup primitives now warns and returns false
+without changing the builtin or publishing a user row. Omitted/bool-false flags and
+primitive candidates cover ordinary/strict calls, argument effects, returning
+handlers and supplied throws. Four exact originals agree at b55e4edaf. All 614
+public premises pass across four groups: retained literal199 at f9a7e2cb9 and
+corrected author154+129 plus independent132 at 7891c0df5, including actual dispatch,
+raw request-string API traces, sibling/caller effects, full restored discard,
+source/carrier/bounds refusals and budgets. A real trace-guard counterexample
+corrected projection from handler scope without changing continuation admission;
+source4 retains its earlier cut because observed string values are unchanged.
+That failed actor, the earlier pre-main syntax failure and unchanged Unsupported
+baseline retain zero credit. Only affected state checks repeated. Runtime adds
+30 module400 lines; old user-duplicate and ignored-flag domains stay exact.
+Special names, unknown startup values, other flags/coercions and owning/wider
+candidates remain partial.
+[Startup duplicate review](coverage/semantics/define-startup-duplicate-review.json).
+
+Pointwise composition over 6d3771b64 preserves the incoming 399-module parent.
+The primitive value-class delegate is exact and GENERATORINPUTS stays empty;
+other incoming task/source selectors are disjoint. Source4/literal199/affected415
+retain their tested cuts; no joined actor or renewed execution credit.
+
+Shifts now quietly convert fitting integral float counts left by the first
+handler in the both-fractional plain-CV route. Cached LEFT (-12) with `2.0` stores
+(-48)/(-3) and detaches alias 99 directly. Supplied throw preserves its Exception,
+destination 100 and alias write-through. Independent default-first `-1.0` raises
+ArithmeticError at line 25 without storage/detachment; `64.0` still stores right-
+shift (-1) from the historical sign despite live 99, detaching alias 99. Each has
+one LEFT deprecation. Five exact originals pass at 92a56ffcc; author 135/135/99 plus
+independent 130/130 SL premises pass 629 at 33bc8b754/399, covering real first frames,
+original bindings, atomic commit/error, cells/owners and budgets. Runtime adds two
+rules and one boundary exclusion, reusing the exact OP34 snapshot; tasks/schema
+and other routes stay unchanged. Native/baseline/prep/syntax and earlier renewed
+credit stay 0. Wider forms remain partial; OP12 paused.
+[Quiet float shift ledger](coverage/semantics/shiftassign-quiet-float-review.json).
+
+Composed over a43c7a30a/399 after pointwise review of reference-return cleanup,
+unused Generator send, stdClass define/property-empty and WeakMap/string-method
+Closure seams. Source5/state629 retain private cuts without actor, replay or
+renewed credit.
+
 
 Pending shared Generator `send` now also accepts a bare statement yield with no
 native result target. It snapshots current and clears initialization without
@@ -26,21 +99,6 @@ Composed over `f4bfc340e`/399 after pointwise review of incoming class-RV,
 constant, comparison, list, arithmetic and abrupt-return selectors. Only Generator
 modules 280/289 change; all other runtime and the manifest preserve parent bytes.
 Source/state/strict retain their private cut; no joined actor or renewed credit.
-
-Terminal inherited `empty` now accepts nonempty array getter RVs through the
-receiver-only disposal phase, and immutable empty literals through direct true
-delivery. Owned-element destructors run after array retirement with isset active,
-Get inactive and the saved receiver retained; caller-CV rebinding and payload
-throws preserve receiver ordering and the same Exception at actual catch binding.
-Three exact originals agree at fa9e185e2; focused255 at9a5722902 (222 reached +33
-derived) covers both result branches, disposal, shared-array owners, mutable-empty/
-allocation/type refusals and budgets. No semantic actor failed. Native affinity
-sampling captured only the empty case; recorded taskset-parent provenance remains.
-The saved phase and generic array/key/return/destruction code remain unchanged.
-Mutable-empty arrays, other internal kinds and wider signatures/receivers/lifecycles
-remain partial. [Array RV review](coverage/semantics/magic-empty-array-rv-review.json).
-Earlier instance/stdClass/primitive/NaN cuts retain their original identities and
-failures without replay or renewed credit.
 
 WeakMap comparisons now admit normalized STRINGMETHODCLOSURE objects from fixed
 literal method captures, returning uncomparable +1 in either direction. Two exact
@@ -426,32 +484,28 @@ property, arithmetic, constants and return paths. Source2/state355 retain their
 private cut; independent seam review warrants no joined actor or renewed credit.
 
 Missing-key Warning continues recursive CV/literal by-value and direct-CV mixed
-patterns with quiet compiled/implicit keys. Captured tables and mutable source
-cells keep their distinct authority through handler writes, NULL descent, COW,
-ordered target stores and staged throw cleanup.
-Flat direct-CV patterns now also freeze a selected defined integer-CV key before
-warning dispatch. Callback mutation, alias retirement and name rebinding cannot
-redirect its NULL result; later key CVs are read afresh after earlier stores.
-Earlier key-target stores and handler replacement preserve the same ordering.
-Five A8 exact originals agree at 2a7398187; five SL fronts pass674 premises
-(659 Boolean +15 raw steps). Author390 at d7431d9cb and independent132/152 at
-c7fe9d462/5596ac57a retain their separate cuts.
-The [integer-CV key review](coverage/semantics/list-integer-cv-missing-warning-review.json)
-retains the unchanged Unsupported baseline and fixture failures at zero credit.
-Existing constant/recursive APIs and historical tests stay unchanged.
-Earlier [CV source6/state468](coverage/semantics/list-missing-warning-review.json),
-[literal source6/state417](coverage/semantics/list-literal-missing-warning-review.json),
-[flat mixed source5/state591](coverage/semantics/list-reference-missing-warning-review.json),
-[one-layer source5/state637](coverage/semantics/list-nested-missing-warning-review.json),
-[recursive CV source5/state738](coverage/semantics/list-recursive-missing-warning-review.json),
-[recursive literal source5/state809](coverage/semantics/list-recursive-literal-missing-warning-review.json)
-and [nested mixed source5/state811](coverage/semantics/list-nested-reference-missing-warning-review.json)
-retain their original cuts without replay. Nested/by-value-literal dynamic keys,
-other CV key types, undefined/conversion diagnostics, wider RHS/targets and
-scalar/object destructuring callbacks and lifecycle remain partial.
-The pointwise399-module composition overc77b5f817 preserves incoming arithmetic,
-define, typed-reference-return, Generator/WeakMap and magic-empty RV paths.
-Source5/state674 retain their private cuts; no joined actor or renewed credit.
+patterns with quiet compiled/implicit keys. Flat direct-CV patterns also admit defined
+integer, boolean, exact-float and non-NUL string CV keys. Planning authenticates
+carriers and freezes the converted key before dispatch; later writes, key-cell
+retirement or rebinding cannot replace its NULL result. Later keys are read after
+the target store, including fresh `"2"` integer versus `"02"` string reference selection.
+String identities remain immutable metadata with no heap owner. Captured tables
+and source cells preserve their distinct authority, COW and throw cleanup.
+Five A9 exact originals agree at 818a7239e; five SL fronts pass652 premises
+(637 Boolean +15 raw steps) at 1b0359ee3, with author372 and independent280.
+No A9 fixture failed.
+The [quiet-CV key review](coverage/semantics/list-quiet-cv-missing-warning-review.json)
+retains the unchanged Unsupported baseline with zero agreement credit. Two affected
+A8 pure-control files replace superseded type/kind refusals; equivalent guard
+checks run on these new fronts. Earlier [integer-key cuts](coverage/semantics/list-integer-cv-missing-warning-review.json)
+and the other [family reviews](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md)
+retain their original source/state cuts and failures without replay.
+Nested/by-value-literal dynamic keys, computed key names, NUL CV strings,
+undefined/conversion diagnostics, wider RHS/targets and scalar/object destructuring
+callbacks and lifecycle remain partial.
+Pointwise composition over e5d83caf3 preserves the incoming 399-module parent,
+including startup define, return-cursor, integral-shift and WeakMap closure paths.
+Source5/state652 retain their private cuts; no joined actor or renewed credit.
 
 Plain-CV `%=` now keeps both converted longs through a fractional-RHS deprecation.
 Captured12/5 stores2 despite callback99/7 and detaches a late target alias; supplied
@@ -714,8 +768,18 @@ pure certificate refusals, normal false delivery and actual Exception trace/call
 root release while the old property ALIAS keeps 53.
 The first eval original's temporary-property write compile failure and literal
 fixture binding failure remain0; only affected checks were renewed. Ordinary
-uncertified objects, object-array payloads and wider flags/names remain partial.
+uncertified objects and wider flags/names remain partial.
 [Certified define review](coverage/semantics/define-stdclass-review.json).
+
+Fresh two-argument `define` now copies nonempty array trees containing certified
+stdClass leaves. Sole400 changes one leaf classifier; existing folds dereference
+source cells, rebuild append history and share exact object pointers. Three exact
+sources agree. Author299 and independent 270 premises check fresh physical
+containers/leaf edges, literal and eval capture, no-allocation queries and real
+nested bucket-reference COW, with pure live-birth/table refusals. All accepted
+checks pass their first attempt; the unchanged Unsupported baseline retains0.
+Other owning leaves, nested empties, array duplicates and wider flags/names remain
+partial. [Array-object define review](coverage/semantics/define-stdclass-array-review.json).
 
 Selected inherited `__unset(string): void` now dispatches direct CV/literal-name
 access to a declared private property. Accessible public unset skips magic;
@@ -9110,8 +9174,23 @@ VALUE Notice and detached caller. Actual descriptor admission, heap-equal
 LINE-only refusal and exit-cut budget equality pass. The first fixture's false
 pre-finalizer Notice premise failed with zero full-state credit; only that
 affected fixture was retried. Normal pending-free method exits, arguments,
-dynamic names and wider owner/destructor histories remain open.
+dynamic names and wider owner/destructor histories remained open at M85.
 [M85 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M86 removes M83's extra old-source classifier only from the normal pending-free
+destructor-exit saved-descriptor guard. An actual selected return operation,
+matching source/caller/origin/context, unique nonowning cursor and full queued
+cursor validity still gate admission; normal finish, ownership and pending
+Throwable routing are unchanged. A diagnosis-only historical M72 `?object`
+method-reference cut on unchanged `b21c01dfd`/399 passes 62 Boolean premises
+and one raw normal finish: actual public entry rejects its valid queued cursor
+after old HCELL/O retirement. Strict SL init passes at private `ff7b9418f`/399.
+One reached fixture there passes 102 Boolean premises and one raw step, proving
+normal-exit admission and finish, M72's `r=bNULL` then changed alias/y bad and
+one Notice, equal-heap LINE-only public refusal, and whole/split budget
+equality. The historical M72 native/source agreements are separate; no old
+actor was replayed and the diagnostic has zero repair credit. Wider normal
+source histories and broad returns remain open.
+[M86 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, wider destructor throw/reentry, real suspension and wider typed

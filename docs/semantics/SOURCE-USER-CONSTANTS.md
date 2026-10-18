@@ -106,6 +106,22 @@ authorize it. Two exact sources and two public fronts/207 premises cover default
 false-handler and handled delivery in the
 [duplicate ledger](../../coverage/semantics/dynamic-constant-duplicate-review.json).
 
+Exact non-NUL string names of modeled fixed startup primitives now take the same
+duplicate Warning/false path with primitive candidates and omitted or bool-false
+flags, including strict calls. They predate every user-table prefix: only its
+bounds matter, and no user row is published for the builtin. A returning handler
+may append a sibling and mutate the caller; a throwing handler keeps the same
+Exception, callback effects and caller destination. Raw captured request strings
+remain in the API trace. Trace projection selects the saved startup call in handler
+scope, while continuation validation authenticates it in restored caller scope.
+The [startup-duplicate review](../../coverage/semantics/define-startup-duplicate-review.json)
+retains four exact sources at b55e4edaf, literal199 at f9a7e2cb9 and callback/strict/
+throw415 at 7891c0df5. The projection correction preserves observed string values;
+fresh peer state checks the actual Throwable trace and full discard. The pre-main
+syntax failure, later trace-guard counterexample and unchanged Unsupported baseline
+retain zero credit. Special names, unknown startup values, coerced names, other
+flags and owning/wider candidates remain partial.
+
 The boolean true `case_insensitive` flag emits its level2 ignored-flag Warning
 before registration and leaves name lookup case sensitive. Its authenticated
 resume retains the original true argument. Registration then uses the live table:
@@ -240,14 +256,23 @@ and full family closure remain partial.
 Fresh two-argument array definitions recursively dereference source cells into
 new DIRECT entries. Reinserting surviving keys rebuilds NEXT, positions and serial
 metadata; ordinary copies and later source/reference writes preserve the constant.
-Nonempty acyclic trees contain primitive/carrier leaves, whose actual string
-classes are retained. Repeated noncyclic children may copy independently.
+Nonempty acyclic trees contain primitive/carrier leaves and certified live
+stdClass donors. String classes and object birth classes are retained; copied
+containers share the exact object pointers. Repeated noncyclic children may copy
+independently.
 Public checks require a canonical DIRECT tree and available literal-array facts,
 comparing ordered keys and leaf values rather than internal array IDs. Variable
 payloads keep structural authority without replaying past CVs. Two exact sources
 and two public fronts/219 premises cover request strings, gap appends, nested
 reference freezing and a later literal registration in the
 [array ledger](../../coverage/semantics/dynamic-constant-array-review.json).
+The [object-leaf snapshot review](../../coverage/semantics/define-stdclass-array-review.json)
+adds literal/eval and selected named originals: one shared source cell becomes
+two DIRECT object edges, later cell rebinding leaves the snapshot intact, and
+real query bucket-reference COW changes caller containers while property writes
+still reach the stored objects. Queries add only a root owner and allocate
+nothing. The leaf classifier reuses completed/live birth guards; producer,
+two-argument fresh-only, canonical-table and cycle/empty boundaries are unchanged.
 
 Top-level empty values use the existing source-pool or retained immutable flag.
 An authenticated immutable empty keeps its table and `PVARRAY true eps`; a mutable
@@ -267,8 +292,8 @@ row and callback property writes; throwing handlers preserve the Exception trace
 owners until ordinary catch/unset cleanup. Historical rows validate their stored
 birth/value and source policy, without reconstructing a past mutable CV or flag.
 [Certified define review](../../coverage/semantics/define-stdclass-review.json).
-Ordinary uncertified objects, object-array payloads, true/coerced flags, coerced
-names and wider owning define domains remain partial.
+Ordinary uncertified objects, other owning array leaves, array duplicates,
+true/coerced flags, coerced names and wider owning define domains remain partial.
 
 Class-qualified `defined` queries reuse inherited lookup and the actual caller's
 lexical visibility. Missing or inaccessible members return false. The initial
@@ -503,7 +528,7 @@ interns direct string values before installation.
 Nested empty values in `define`, cycles, other objects, array duplicate/third-argument paths,
 Stringable/array names, array/object values with scalar or null names, true/NULL/NaN
 flags with scalar names, nonbool flags with nonfinite float names, true/NULL/NaN flags with
-null names, startup/special-name warnings,
+null names, special-name warnings and startup names/flags/values beyond the bounded follow-up,
 internal/trait/interface/enum class queries, deferred keyword initializers and
 keyword `constant` array values, other deferred initializers,
 owning/FCC call forms and wider conversion/arity paths remain Unsupported. The [dynamic ledger](../../coverage/semantics/dynamic-constants-review.json)

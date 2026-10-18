@@ -126,8 +126,8 @@ explicitly `Unsupported`, rather than running a callback after a consumer.
 CV/literal array snapshot through real handlers, supplies null after insertion,
 then fetches later items with shared embedded references intact. Throws cancel
 the pending store and later items. CV leaves and implicit/compiled keys, plus
-defined integer-CV keys in flat direct-CV patterns, bound this producer.
-Selected integers survive key-cell retirement/rebinding; later keys are read
+quiet CV keys in flat direct-CV patterns, bound this producer.
+Selected converted keys survive key-cell retirement/rebinding; later keys are read
 afresh after the previous target store. Wider diagnostics remain required.
 Literal sources retain pool owners or the sole runtime temporary, preserve old
 embedded reference cells after CV rebinding, and cancel known-result delivery

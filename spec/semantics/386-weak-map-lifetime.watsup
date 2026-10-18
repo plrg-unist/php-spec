@@ -727,6 +727,10 @@ def $weakmap_standard_other(pobject) = true
   -- if $object_body(pobject) = ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture?
 def $weakmap_standard_other(pobject) = true
   -- if $object_body(pobject) = STRINGMETHODCLOSURE pcalltarget pstringselection
+def $weakmap_standard_other(pobject) = true
+  -- if $object_body(pobject) = FROMCALLABLECLOSURE pfrommethod
+def $weakmap_standard_other(pobject) = true
+  -- if $object_body(pobject) = BOUNDFAKECLOSURE pboundfake
 def $weakmap_standard_other(pobject) = false -- otherwise
 def $weakmap_standard_mismatch(S, n_left, n_right) = true
   -- if $(n_left < |S.OBJECTS|) /\ $(n_right < |S.OBJECTS|)

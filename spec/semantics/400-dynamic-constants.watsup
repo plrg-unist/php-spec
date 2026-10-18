@@ -102,6 +102,7 @@ dec $dynamic_constant_case_message() : ptbytes
 def $dynamic_constant_case_message() = $ptascii("define(): Argument #3 ($case_insensitive) is ignored since declaration of case-insensitive constants is no longer supported")
 dec $dynamic_constant_case_valid(pstate, pconfigcall) : bool
 dec $dynamic_constant_duplicate_valid(pstate, pconfigcall, nat) : bool
+dec $dynamic_startup_define_duplicate_valid(pstate, pconfigcall, nat) : bool
 ;; Registration occurs after the ignored-flag warning, so a callback may have
 ;; installed the same key. Keep the original captured arguments in either path.
 dec $dynamic_define_known(pstate, porigin, nat) : pvalue?
@@ -249,6 +250,8 @@ def $dynamic_constant_duplicate_valid(S, pconfigcall, n_constants) = true
   -- if $user_constant_at(S.USERCONSTANTS[0:n_constants], $user_constant_key(preqbytes)) =/= eps
   -- if $dynamic_define_name_matches($user_constant_key(preqbytes), $dynamic_define_known(S, pconfigcall.SITE, 0))
   -- if $dynamic_define_value_matches(pvalue, $dynamic_define_known(S, pconfigcall.SITE, 1))
+def $dynamic_constant_duplicate_valid(S, pconfigcall, n_constants) = true
+  -- if $dynamic_startup_define_duplicate_valid(S, pconfigcall, n_constants)
 def $dynamic_constant_duplicate_valid(S, pconfigcall, n_constants) = false -- otherwise
 def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.RESUME = DYNAMIC_CONSTANT_DUPLICATE pconfigcall n_constants
@@ -260,6 +263,14 @@ def $error_call_valid(S, perrorcall) = true
 def $error_context_trigger(S, pcallcontext) = (pconfigcall)
   -- if $error_context_call(S, pcallcontext) = (perrorcall)
   -- if perrorcall.RESUME = DYNAMIC_CONSTANT_DUPLICATE pconfigcall n_constants
+;; Trace projection runs in handler scope; marker validity restores the caller.
+def $error_handler_trace_values(S, pcallcontext, pconfigcall_api) = $trace_extra(S, $getclass_trace_operands(pconfigcall_api.SENT))
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = DYNAMIC_CONSTANT_DUPLICATE pconfigcall n_constants
+  -- if $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
+  -- if $builtin_value_bytes(preqbytes) = (pvalue_old)
+  -- if ~$dynamic_constant_case_flag(pconfigcall)
+  -- if pconfigcall_api = pconfigcall
 
 ;; This phase bypasses only the warning already delivered; SENT stays true.
 def $dynamic_constant_case_valid(S, pconfigcall) = true
@@ -286,9 +297,9 @@ def $error_context_trigger(S, pcallcontext) = (pconfigcall)
   -- if $error_context_call(S, pcallcontext) = (perrorcall)
   -- if perrorcall.RESUME = DYNAMIC_CONSTANT_CASE_WARNING pconfigcall
 
-;; Dynamic array constants copy scalar trees, rather than retaining source
-;; reference cells or their append history. Check mode allocates nothing and
-;; requires the exact DIRECT table that the copying fold would have rebuilt.
+;; Dynamic array constants copy bounded trees and share certified object leaves.
+;; Reference cells and append history belong only to the source. Check mode
+;; allocates nothing and requires the copying fold's exact DIRECT tables.
 dec $dynamic_array_item(pstate, pitem, bool) : pvalue?
 def $dynamic_array_item(S, DIRECT pvalue, b_copy) = (pvalue)
 def $dynamic_array_item(S, ALIAS n_cell, true) = (pvalue)
@@ -300,7 +311,7 @@ def $dynamic_array_item(S, pitem, b_copy) = eps -- otherwise
 dec $dynamic_array_entries(pstate, pentry*, nat*, parray, (pkey, pvalueclass)*, bool) : (pstate, parray, (pkey, pvalueclass)*)?
 dec $dynamic_array_finish(pstate, nat, parray, (pkey, pvalueclass)*, bool) : (pstate, pvalue, pvalueclass)?
 def $dynamic_array_value(S, pvalue, n_seen*, b_copy) = ((S, pvalue, pvalueclass))
-  -- if $dynamic_constant_class(pvalue) = (pvalueclass)
+  -- if $dynamic_define_value_class(S, pvalue) = (pvalueclass)
   -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
 ;; Empty roots retain their actual non-refcounted provenance. Empty descendants
 ;; remain outside this slice; a mutable root is rebuilt even when it has no keys.
@@ -2046,3 +2057,22 @@ def $error_handler_trace_values(S, pcallcontext, pconfigcall_api) = $trace_extra
   -- if $error_context_call(S, pcallcontext) = (perrorcall)
   -- if perrorcall.RESUME = DYNAMIC_CLASS_DEFINE_NAN_RESULT pconfigcall
   -- if pconfigcall_api = pconfigcall
+
+;; Fixed startup primitives predate every user-table prefix. The warning keeps
+;; the same captured arguments while a handler may append unrelated user rows.
+def $dynamic_startup_define_duplicate_valid(S, pconfigcall, n_constants) = true
+  -- if pconfigcall.KIND = INTRINSIC_DEFINE
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if $dynamic_define_source(S, pconfigcall.SITE)
+  -- if ~$dynamic_constant_case_flag(pconfigcall)
+  -- if $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
+  -- if $dynamic_constant_global_name(preqbytes)
+  -- if $builtin_value_bytes(preqbytes) = (pvalue_old)
+  -- if $dynamic_scalar_define_arguments(S, pconfigcall, 0)
+  -- if $named_slot_at(pconfigcall.SENT, 0) = NAMED_SENT (KNOWN pvalue_name)
+  -- if $string_plain(pvalue_name) = pvalue_name \/ $string_carrier_valid(S, pvalue_name)
+  -- if $dynamic_constant_class(pvalue) = (pvalueclass)
+  -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
+  -- if $(n_constants <= |S.USERCONSTANTS|)
+def $dynamic_startup_define_duplicate_valid(S, pconfigcall, n_constants) = false -- otherwise

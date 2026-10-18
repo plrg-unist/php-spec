@@ -32,7 +32,11 @@ allocation, sharing property writes through ordinary reads and `constant()`.
 Duplicate handlers keep the old binding and their writes when they return or
 throw; existing call/trace cleanup retires their temporary owners.
 [Certified define review](../../coverage/semantics/define-stdclass-review.json).
-This does not admit ordinary uncertified NEW or other owning define values.
+Fresh two-argument array definitions likewise copy nonempty containers and freeze
+source reference cells while sharing these certified pointers. Actual copied
+edges, rebuilt append history and nested query COW preserve shared property writes.
+[Array-object define review](../../coverage/semantics/define-stdclass-array-review.json).
+Ordinary uncertified NEW and other object leaf classes remain partial.
 
 The constant-AST path also evaluates and drops ordinary positional and uniquely
 named argument values when no constructor exists, including unknown names.

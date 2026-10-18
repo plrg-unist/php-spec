@@ -7,8 +7,8 @@ def $list_missing_flat((NArrayItem phpType5 (NExprVariable phpType32 metadata_ta
   -- if $cv_name(phpType32) = (n_name*)
 def $list_missing_flat(phpType13*) = false -- otherwise
 
-;; Only warning-free constant keys enter this continuation. Undefined CV keys,
-;; null and lossy float conversions retain their separate diagnostic boundary.
+;; Warning-free key conversion. Undefined CV keys, null and lossy floats retain
+;; their separate diagnostic boundary.
 dec $list_missing_quiet_key(pvalue) : pkey?
 def $list_missing_quiet_key(PINT i) = (KINT i)
 def $list_missing_quiet_key(PBOOL false) = (KINT 0)
@@ -44,7 +44,7 @@ def $list_missing_item(S, porigin, (NArrayItem expression_key expression (BOOLEA
 def $list_missing_item(S, porigin, phpType13*, n, n_selected, z) = eps -- otherwise
 
 ;; A flat ordinary CV key is delayed until FETCH_LIST_R. Only initial planning
-;; reads its integer; saved source checks must survive name/cell retirement.
+;; converts its value; saved source checks survive name/cell retirement.
 dec $list_missing_integer_cv_item(pstate, nat, expression, phpType13*, int) : poperand?
 def $list_missing_integer_cv_item(S, n, expression, phpType13*, z) = (VARIABLE n_key* z_key)
   -- if S.ORIGIN = (porigin)
@@ -64,6 +64,11 @@ def $list_missing_integer_cv_item(S, n, expression, phpType13*, z) = (VARIABLE n
   -- if $(z > 0)
   -- if z_key = $variable_line(BYTES text_key, metadata_key)
 def $list_missing_integer_cv_item(S, n, expression, phpType13*, z) = eps -- otherwise
+
+;; The CV producer excludes NUL string keys; constant-key admission is unchanged.
+dec $list_missing_cv_key_valid(pkey) : bool
+def $list_missing_cv_key_valid(KINT i) = true
+def $list_missing_cv_key_valid(KSTRING n*) = ($startup_bytes(n*) /\ ~(0 <- n*))
 
 dec $list_missing_rhs(pstate, porigin, expression, nat) : bool
 def $list_missing_rhs(S, porigin, expression, n_array) = true
@@ -183,7 +188,8 @@ def $list_missing_source(S, poperand, n, expression, phpType13*, z, pkey) = true
   -- if $code_expression_at_source(S, porigin_assign, [PCFIELD 1]) = (z_initial)
   -- if $list_missing_item(S, porigin, phpType13_all*, 0, n, z_initial) = ((expression, phpType13*, z, pvalue, pkey))
   -- if $(z > 0)
-def $list_missing_source(S, poperand, n, expression, phpType13*, z, KINT i) = true
+def $list_missing_source(S, poperand, n, expression, phpType13*, z, pkey) = true
+  -- if $list_missing_cv_key_valid(pkey)
   -- if $list_missing_integer_cv_item(S, n, expression, phpType13*, z) =/= eps
   -- if S.ORIGIN = (porigin)
   -- if $origin_node(S.SOURCES, porigin) = (expression_pattern)
@@ -214,18 +220,20 @@ def $list_missing_source(S, REFERENCE n_source, n, expression, phpType13*, z, pk
 def $list_missing_source(S, poperand, n, expression, phpType13*, z, pkey) = false -- otherwise
 
 dec $list_missing_plan(pstate) : (poperand, nat, expression, phpType13*, int, pkey)?
-def $list_missing_plan(S) = ((poperand, n, expression, phpType13*, z, KINT i))
+def $list_missing_plan(S) = ((poperand, n, expression, phpType13*, z, pkey))
   -- if S.TODO = (LIST_FETCH poperand n expression false phpType13* z) :: ptask_tail*
   -- if $list_missing_integer_cv_item(S, n, expression, phpType13*, z) = (VARIABLE n_key* z_key)
   -- if S.RESULT = VARIABLE n_key* z_key
   -- if ~$environment_blocked(S, n_key*)
   -- if $lookup(S.ENV, n_key*) = (n_cell)
   -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
-  -- if S.STORE[n_cell] = DEFINED (PINT i)
+  -- if S.STORE[n_cell] = DEFINED pvalue
   -- if ~$foreach_released_container_cell(S, n_cell) /\ ~$update_released_array_name(S, n_key*)
-  -- if $list_missing_source(S, poperand, n, expression, phpType13*, z, KINT i)
+  -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
+  -- if $list_missing_quiet_key(pvalue) = (pkey)
+  -- if $list_missing_source(S, poperand, n, expression, phpType13*, z, pkey)
   -- if $list_missing_array(S, poperand) = (n_array)
-  -- if $entry_lookup(S.ARRAYS[n_array].ITEMS, KINT i) = eps
+  -- if $entry_lookup(S.ARRAYS[n_array].ITEMS, pkey) = eps
 def $list_missing_plan(S) = ((poperand, n, expression, phpType13*, z, pkey))
   -- if S.TODO = (LIST_FETCH poperand n expression false phpType13* z) :: ptask_tail*
   -- if S.ORIGIN = (porigin)

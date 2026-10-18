@@ -44,7 +44,7 @@ def conditions(name, program, path, stdout):
         '$list_missing_source(S_entry, ' + args + ')',
         f'~$list_missing_source(S_entry, ({operand}), {index}, expression, phpType13*, $(z + 1), KINT {integer})',
         f'~$list_missing_source(S_entry, ({operand}), {index}, expression, eps, z, KINT {integer})',
-        f'~$list_missing_source(S_entry, ({operand}), {index}, expression, phpType13*, z, KSTRING eps)',
+        f'~$list_missing_source(S_entry, KNOWN PNULL, {index}, expression, phpType13*, z, KINT {integer})',
         '~$list_missing_source(S_entry[.ORIGIN = eps], ' + args + ')',
         '~$list_missing_source(S_entry[.CODE = eps], ' + args + ')',
         '~$list_missing_source(S_entry[.SOURCES = eps], ' + args + ')',
@@ -54,8 +54,8 @@ def conditions(name, program, path, stdout):
         '$list_missing_plan(S_entry[.ENV = eps]) = eps',
         '$list_missing_plan(S_entry[.STORE[n_key_cell] = UNDEFINED]) = eps',
         '$list_missing_plan(S_entry[.STORE[n_key_cell] = DEFINED PNULL]) = eps',
-        '$list_missing_plan(S_entry[.STORE[n_key_cell] = DEFINED (PBOOL true)]) = eps',
-        '$list_missing_plan(S_entry[.STORE[n_key_cell] = DEFINED (PSTRING ($ptascii("1")))]) = eps',
+        '$list_missing_plan(S_entry[.STORE[n_key_cell] = DEFINED (PFLOAT 4609434218613702656)]) = eps',
+        '$list_missing_plan(S_entry[.STORE[n_key_cell] = DEFINED (PFLOAT 9218868437227405312)]) = eps',
         '$call_descriptors_valid(S_entry)', '$heap_valid($heap_graph(S_entry))',
     ]
     if retired:

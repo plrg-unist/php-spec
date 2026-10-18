@@ -19,7 +19,7 @@ remains later research.
 [Missing-key destructuring warnings](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md)
 now retain captured arrays or source reference cells through handlers, including
 recursive by-value CV/literal and mixed CV patterns, with ordered null delivery
-and normal/throw cleanup. Flat CV-source patterns also freeze selected integer-CV
+and normal/throw cleanup. Flat CV-source patterns also freeze converted variable
 keys across callbacks while later key variables are read afresh.
 
 The [checked eval parser service](docs/semantics/DYNAMIC-SOURCE-SERVICE.md)
@@ -627,6 +627,11 @@ after the first callback skips the second diagnostic. Success detaches late alia
 either supplied throw or a captured negative count preserves them. Six exact
 originals and 1172 focused SL premises pass in the
 [ordered shift ledger](coverage/semantics/shiftassign-both-warning-review.json).
+An integral float count after the first callback also converts quietly. With
+cached LEFT `-12`, `2.0` stores `-48`/`-3`; `64.0` stores right-shift `-1`.
+Success detaches late aliases; negative counts error before storage. Five exact
+originals and 629 focused SL premises pass in the
+[quiet float shift ledger](coverage/semantics/shiftassign-quiet-float-review.json).
 For initially plain variables, numeric `&=`, `|=` and `^=` now keep their fractional
 left conversion through deprecation handlers, then read the live quiet integer RHS.
 Success detaches late aliases; supplied throw preserves callback writes and the
@@ -1107,6 +1112,12 @@ Primitive duplicate `define` now warns and returns false while retaining the old
 binding, including named handlers and retained dynamic selection with callback
 appends. [Two exact sources and 207 public premises](coverage/semantics/dynamic-constant-duplicate-review.json)
 cover default, false-handler and handled delivery; wider candidates remain partial.
+Exact non-NUL names of modeled startup primitives now warn and return false with
+primitive candidates and omitted/bool-false flags, preserving the builtin through
+strict calls and returning or throwing handlers.
+[Four source agreements and 614 state premises](coverage/semantics/define-startup-duplicate-review.json)
+cover captured request strings, callback siblings and exact throwing discard;
+special names, unknown startup values and wider flag/value forms remain partial.
 Boolean `case_insensitive=true` now warns before registration while keeping case
 sensitivity. A handler-created binding wins the subsequent duplicate check;
 [two exact sources and 221 public premises](coverage/semantics/dynamic-constant-flag-review.json)
@@ -1174,7 +1185,12 @@ stdClass donors. Named/selected calls preserve the captured pointer through late
 CV changes, and duplicate handlers keep the old binding and property writes on
 normal return or throw. Existing call and Exception-trace cleanup release the
 temporary owners. [Certified define review](coverage/semantics/define-stdclass-review.json).
-Ordinary uncertified objects, object-array payloads and wider flags/names remain partial.
+Fresh two-argument definitions also copy nonempty array trees containing certified
+stdClass leaves. Copied containers freeze source reference values while object
+pointers and property writes remain shared, including selected eval calls
+and nested query COW. [Array-object define review](coverage/semantics/define-stdclass-array-review.json).
+Ordinary uncertified objects, other owning leaves, nested empties, array duplicate
+warnings and wider flags/names remain partial.
 Class-qualified `defined` now checks inherited user constants with lexical visibility
 and quiet misses. Named autoload resumes the same captured query once.
 [Two exact sources and 288 public premises](coverage/semantics/class-qualified-defined-review.json)
@@ -2167,6 +2183,13 @@ captures pass all seven operators in both directions; cloned parent selection,
 sole receiver owners and skipped aggregate tails pass two exact sources and
 321 Boolean premises/8 actual steps. Stored-string carrier conversion remains a
 separate producer gap. [Literal-string review](coverage/semantics/weakmap-string-method-comparison-review.json).
+
+Live WeakMap comparisons also admit supported fromCallable and rebound fake Closures.
+They preserve current receiver owners while leaving SOURCE and copied original-scope
+history nonowning, even after the seed Closure and old receiver retire. Two exact
+sources and 361 Boolean premises/8 actual steps cover all seven operators, cloned
+parent-body selection, quiet skipped tails and complete unchanged comparison states.
+[Factory/binding review](coverage/semantics/weakmap-factory-comparison-review.json).
 
 [Numeric object comparison Notices](coverage/semantics/object-numeric-comparison-review.json)
 now pause ordinary source-instance/int/float leaves through real error handlers.

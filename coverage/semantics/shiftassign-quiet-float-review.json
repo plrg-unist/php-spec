@@ -1,0 +1,121 @@
+{
+  "version": 1,
+  "milestone": "OP35 quiet integral-float counts after first shift assignment deprecation",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; project-local pinned PHP and profile",
+  "scope": "Initially distinct defined plain-CV finite in-range fractional floats with an eligible named deprecation handler. After LEFT conversion and its callback, a live original plain RHS holding a fitting integral float converts quietly for <<= or >>=, with no second diagnostic. A safe allocated original nonowning unconstrained target may commit, including a late target reference; original source/compiled RHS line and historical signed LEFT remain authenticated.",
+  "runtime_revision": "92a56ffcc269635131d206929e15373920832f28",
+  "helper_revision": "33bc8b754ff974b11bbee379e86e2ba00f8d8201",
+  "private_modules": 399,
+  "runtime_sha256": {
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "1cbbe0d3f9ba656dc7b9208d543c0c9acc07d695199f1f38fbba080a34fd171e"
+  },
+  "engine_basis": [
+    "Pinned Zend/zend_operators.c shift_left_function/shift_right_function invoke convert_op1_op2_long: converted LEFT is retained before its diagnostic, then the live RHS is read after the callback. Fitting integral floats convert through zendi_try_get_long without another diagnostic, while the RHS CV remains a float.",
+    "Negative counts raise ArithmeticError(\"Bit shift by negative number\") before result destruction. Nonnegative counts destroy the result wrapper and store the integer; >=64 right shifts use the captured LEFT sign for -1 or0. A callback replacement of LEFT with positive99 cannot change that sign.",
+    "Module404 adds two direct returned-LEFT1 rules and excludes their integral snapshot from the existing first-boundary refusal (12 insertions/1 deletion). OP34 integral snapshot, source/phase validators, PINT handoff, fractional second-warning paths and all other modulo/shift/bitwise bodies stay exact; no task/schema/search protocol changes."
+  ],
+  "contract": [
+    "Actual initial both-fractional shift source and first fresh handler dispatch retain LEFT(-12) from-12.5, independently for <<= and >>=. At returned LEFT1, the unchanged OP34 integral snapshot authenticates safe target and original allocated/nonreleased plain RHS pointer/binding/current float. The historical LEFT is never reread from the callback-mutated target.",
+    "Normal callback late-aliases LEFT, writes99 and PFLOAT2.0, and returns true. The next production step stores(-48) or(-3) through a new CELL/LOCATION and appends only that result cell; alias99 owners fall2 to1. Events and the float RHS stay unchanged, calls remain1, and later target7 leaves alias99. Neither a second marker nor the old PINT marker is reached.",
+    "A supplied first-handler Exception cancels operator markers before RHS conversion. The same Exception/no Previous has two roots, destination100 and alias owners2 survive with target99/PFLOAT2.0/calls1, and later target7 reaches alias7.",
+    "Independent false first handler leaves99/PFLOAT(-1.0) after exactly one default Deprecated for LEFT-12.5 at RHS25. Quiet conversion gives(-1); a direct production step creates fresh caller ArithmeticError25 with sole Throwable owner and exact STORE/ENV/REFCELLS/events. Alias owners2 and destination100 survive, and later target7 reaches alias7.",
+    "Independent false first handler instead leaves99/PFLOAT64.0 after the same single LEFT default. Captured(-12)>>64 still stores(-1), despite current positive99, via a new CELL/LOCATION with exact store/allocation append and alias owner2 to1. RHS float64.0 remains; later target7 leaves alias99 and destination(-1). This is new quiet-float composition coverage, not renewed threshold evidence.",
+    "Driven states use production drive_steps and actual entered first-handler frames. Descriptor/heap validity, cells/aliases/Throwable owners, exact output and whole/budget equality validate. Type/fractional/nonfinite/range/ref/missing/wrong/owning/constrained projections establish snapshot refusal only, not wider executed behavior."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-35/source-92a56ffcc-author-three/report.json",
+        "sha256": "54ae4f22d5f658d86d062116cfe3bb2235d8ce9f608aa605dab6d0554084f9e3",
+        "cases": [
+          "shiftassign-quiet-float-left-handler-write",
+          "shiftassign-quiet-float-right-handler-write",
+          "shiftassign-quiet-float-left-handler-throw"
+        ],
+        "revision": "92a56ffcc269635131d206929e15373920832f28",
+        "agreements": 3
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-35/review-model-92a56ffcc-two/report.json",
+        "sha256": "c95c40443d01caade30d468d52c8d34cb2ebdf681a84ecb14324f621ea8bf091",
+        "cases": [
+          "shiftassign-quiet-float-negative-default",
+          "shiftassign-quiet-float-wide-default"
+        ],
+        "revision": "92a56ffcc269635131d206929e15373920832f28",
+        "agreements": 2
+      }
+    ],
+    "state": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-35/state-33bc8b754-five/report.json",
+      "sha256": "15a7c53eea1f1f7530c8354dd632b2a3df9d0582111f3ce1e599da8f26bbc6f9",
+      "revision": "33bc8b754ff974b11bbee379e86e2ba00f8d8201",
+      "modules": 399,
+      "author_conditions": [
+        135,
+        135,
+        99
+      ],
+      "independent_conditions": [
+        130,
+        130
+      ],
+      "total": 629
+    },
+    "total_source_agreements": 5,
+    "total_focused_state_conditions": 629,
+    "compatibility": "Only two helper scripts changed92a56ffcc..33bc8b754; runtime stayed byte-identical. Checked preparation reuses accepted original source paths/native bytes with no application replay; full399 immutable SL fixtures use maintained conditions and unchanged SHIFT BOTH HELPERS. Counts include setup/refusal premises, not629 separate programs or renewed source agreement."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-35/baseline-dc697cf3e-handler-write/report.json",
+      "sha256": "839415ffa28a7044e82545f5140bbef8b8d8563313be273dec53d0d92ffd247c",
+      "result": "Accepted checked program Unsupported after genuine first-handler stdout H:1:8192:25:1; with exact reason \"shift assignment live RHS or expired, rebound, owning or constrained target after first deprecation\". Model exit1/stderr empty; native stores(-48) and detaches alias99. No override or agreement credit."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-35/native-dc697cf3e-author-three/report.json",
+        "sha256": "485d31f9f5661fb58bb1b2452f3c5d62287deea8ba0832765a3cc3a58b05081f"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-35/native-dc697cf3e-review-two/report.json",
+        "sha256": "630acf050022b4b70ef549a8ab494af0f0bcfd976575e554f6e5ce15cd7845b5"
+      }
+    ],
+    "checked_preparation": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-35/state-prep-33bc8b754-five/report.json",
+      "sha256": "55152ffcdb01f9cf8de7ad965ca37f978c7c85ab1bce435c27e090f320bc2e7c",
+      "result": "Checked frontend parse and adapter check only, using retained original paths/native bytes; no native/application/numeric replay."
+    },
+    "standalone_syntax": "The five standalone syntax rows parse full files before the expected undefined-pstate diagnostic; zero semantic credit."
+  },
+  "required_follow_on": [
+    "Initial references/COPY/TMP, property/container targets, live RHS conversions other than the supported plain integer/fitting finite float forms, reference/rebound/expired RHS, unsafe/missing/rebound/expired/owning/constrained targets and wider callback/exit/lifecycle forms remain partial.",
+    "Numeric bitwise paired integral-float RHS remains partial. All eight affected inventory rows stay partial. OP34 and earlier accepted operator cuts receive zero renewed credit; OP12 stays paused."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-35",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "environment": "LC_ALL=C, TZ=UTC, no PHP_SPEC_SCRIPT_ENCODING; CPU4/SLOT2. Native30/modelCLI60-process90; checked workers30; syntax30 and separate full399 SL groups120. Accept only exact true newline/empty stderr, clean exits/no interruption/reaped groups/PIDs.",
+    "commands": [
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 tests/semantics/shiftassign_quiet_floats.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 tests/semantics/shiftassign_quiet_float_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-35/state-prep-33bc8b754-five/run-prepare.py",
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-35/state-33bc8b754-five/run-state.py"
+    ],
+    "record": "Restore matching Git cuts/project-local tools and fresh outputs; archive retains original bytes, checked packets, immutable fixtures, commands/exits/reaping. No evidence archive is a runtime dependency."
+  },
+  "composition": {
+    "parent": "a43c7a30ae4c4bce5fa3e81c2134a03b10780626",
+    "private_publication": "02141e84995299e72daeb6d8aacdc0b1a994ac4a",
+    "modules": 399,
+    "runtime_sha256": {
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "1cbbe0d3f9ba656dc7b9208d543c0c9acc07d695199f1f38fbba080a34fd171e"
+    },
+    "other_incoming_paths_preserved": 38,
+    "gate": "No joined actor:404 retains exact private runtime;30/39/40/55/84/modules and every other incoming path retain the parent. New reference-return destructor cleanup still requires DESTRUCTOR_OPERATION_EXIT plus RETURN_REF_UNWIND cursor; throwing method replay additionally pins typed/byref returned method calls, absent from untyped scalar h/main getters. Unused-yield Generator send, WeakMap/string-method Closure, certified stdClass DEFINE and stdClass property-empty RV selectors are absent; USERCONSTANTS stays eps. Common handler/CV-write/integral snapshot/float_long/integer_binary/heap/descriptor bodies remain unchanged. Source5@92a56ffcc/state629@33bc8b754 retain private399 cuts without replay or renewed credit."
+  }
+}
