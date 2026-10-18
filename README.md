@@ -1493,6 +1493,12 @@ Completed user-instance donors also retain their exact construction receipt and
 pointer in direct definitions and copied array leaves. Typed property aliases
 stay shared; existing normal, throwing-handler and shutdown cleanup retain the
 ordinary owners. [Instance define review](coverage/semantics/define-certified-instance-review.json).
+Direct certified objects also receive true and NULL flags. An ignored-flag
+Warning keeps the captured pointer, including fresh registration after a supplied
+handler Exception; a throwing NULL deprecation cancels registration. Normal
+callbacks can install a later duplicate key, and strict NULL rejects before them.
+[Object-flag review](coverage/semantics/define-object-flag-review.json).
+
 Fresh definitions also copy nonempty array trees containing certified stdClass
 or user-instance leaves under the admitted flags. Copied containers freeze source
 reference values while object pointers and property writes remain shared,

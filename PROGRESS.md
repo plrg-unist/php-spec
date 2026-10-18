@@ -7,6 +7,21 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Direct certified-object `define` receives true and NULL flags while retaining the
+earlier pointer across caller-CV rebinding and shared property writes. Normal
+Warning/Deprecated callbacks can install a later duplicate key; the old row and
+ordinary eager shared-owner release remain exact. A throwing true Warning still
+publishes a fresh row, while a throwing NULL Deprecated cancels reception/body;
+strict NULL raises TypeError before callbacks. Three originals agree at d294/404
+and 931 focused premises (504+100+327) pass at 1580. The original eval-strict setup
+and source/state timeouts retain zero; all bounded diagnostic probes also receive
+zero credit. Removing four identical validator trios
+preserves every distinct original premise; no semantic defect or runtime change
+is inferred from the timeouts. Shutdown values and abstract owners establish no
+new native refcount or early-destruction claim. Scalar-coerced direct-object flags,
+uncertified objects and wider name/lifetime domains remain partial.
+[Object-flag review](coverage/semantics/define-object-flag-review.json).
+
 Defined scalar left CVs now resume after a missing-right `<=>` warning using
 the current CV wrapper. Late reference creation and rebinding reach the new cell;
 the missing right remains NULL even after its name becomes 9. False/default Warning
