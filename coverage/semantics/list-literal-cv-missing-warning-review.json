@@ -1,0 +1,128 @@
+{
+  "version": 1,
+  "milestone": "A11 quiet CV keys in flat and recursive by-value literal-root destructuring",
+  "status": "independent semantic/source/state review complete; exact-parent publication pending",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle and tests/semantics/profile.json",
+  "base": "2e75ac2d15804b91de422ea3124e56206ce6270a",
+  "scope": "Flat or recursive by-value literal RHS patterns with direct-CV leaves and selected ordinary defined quiet CV keys. Dynamic ancestor contexts preserve source/compiler locations. Reference targets with a literal RHS are compile-invalid; embedded references inside a literal RHS remain supported.",
+  "runtime_commit": "ac4ee4bdcb60132c9056a4ac740ad5db4198649a",
+  "runtime_sha256": {
+    "spec/semantics/409-list-missing-warnings.watsup": "d9b1fffac66a996bec0c18867fcaad3689be65605a4e054a7b243f42e144818f"
+  },
+  "private_modules": 399,
+  "engine_basis": [
+    "Vendored PHP8.5.10 commit34308a6666b2d489c509541ea9befea9e2b42348: zend_compile_list_assign emits each key expression and FETCH_LIST_R before target stores/recursive descent. Ordinary key CV reads remain delayed until their own fetch. zend_compile_assign rejects a literal RHS when list reference targets propagate a writable source requirement.",
+    "zend_fetch_dimension_address_LIST_r selects the converted key and captured source before a missing-key handler. Return supplies uninitialized/null without another lookup; later keys execute after the pending store. Literal embedded references retain their original reference cells after external names rebind.",
+    "Compiled literal roots use their actual pool occurrence. Runtime literal roots retain the constructed temporary. Compiler-known assignment results are delivered only after their effects finish and are cancelled by a throw. String identities remain immutable metadata without heap ownership."
+  ],
+  "reviewed_behavior": [
+    "Only409 changes runtime:23 additions/2 removals add actual RHS child-occurrence equality, restrict literal roots to by-value patterns and split recursive ROOT versus CHILD saved-operand authority. Existing producer plans, quiet conversion/frozen-key guards, tasks/state/modules and generic compiler/ownership helpers remain unchanged.",
+    "A pooled ROOT must match the exact RHS pool table; a runtime ROOT requires a nonconstant compiler descriptor and mutable allocated table, establishing source compatibility rather than reconstructing historical identity. A CHILD retains its captured allocated table under source/compiler ancestry, independently of changed parent aliases or live names.",
+    "The source guard checks assignment RHS against the actual RHS occurrence before admitting CV/literal syntax. Three inherited malformed parent-only literal projections therefore remain refusal controls without historical test edits or actors. Literal reference-target refusal is also checked as an original compile-invalid source; embedded RHS references remain legal.",
+    "The pooled flat double-handler case freezes boolfalse0 then freshly reads booltrue1. The second handler preserves x77 while pending y88 becomes NULL, present NULL is silent and callback destination200 is overwritten by the original compiled literal array. Exactly two callbacks run; pooled contents and owners remain intact.",
+    "The runtime flat case authenticates a request-string key before dispatch, then retires its old CELL while STRINGDATA history persists. The literal keeps old q2 after the q name rebinds to other44; later dest55 mutates only that saved reference and leaves stored y2/live q44. Its sole temporary root and unowned old reference retire after unset.",
+    "Recursive pooled throw preserves earlier9/5, callback x99, later y8/near50/tail70, destination100, the same Throwable and finally. At caller TRY_END the pending known-result task and key cells are gone while literal ROOT/CHILD arrays retain only permanent pool/parent edges; current CHILD is never required to equal ROOT.",
+    "Independent pooled effect-only execution retires/rebinds the old ancestor key CELL, then descends three NULL levels, reading lossy middle2.5 against NULL without conversion diagnostics. Both leaves become NULL, fresh tailkeytrue reads3, and the original ROOT retains only its measured pool owners.",
+    "Independent runtime execution keeps captured child q33, saved result row ALIAS66 and rebound row CV99 distinct. Old current/ancestor key cells retire; child and q are solely retained through the saved child task/entry and retire before tail4. The actual destination receives the original constructed ROOT, preventing RHS replay through the rebound row CV. Later result77 leaves live row99 and stored y55 independent.",
+    "All state executions start from original source. Pure malformed source/state projections establish refusals only; real dispatch/handler frames, raw NULL reads/resumes, driver-normalized continuation and full-state budget equalities are checked. No NUL PHP source/positive owned-NUL producer or A1-A10 actor replay was introduced."
+  ],
+  "accepted": {
+    "source": {
+      "report": ".tools/list-literal-cv-source-11/report.json",
+      "sha256": "97b646eaca485547119808e50e19055c018d9ae53c1db5f5b8ca0c9c8b3cd005",
+      "revision": "ac4ee4bdcb60132c9056a4ac740ad5db4198649a",
+      "agreements": 6,
+      "normal_agreements": 5,
+      "static_rejections": 1,
+      "cases": [
+        "list-literal-cv-pooled-two-handlers",
+        "list-literal-cv-runtime-reference",
+        "list-literal-cv-recursive-pooled-throw",
+        "list-literal-cv-mixed-rejection",
+        "list-literal-cv-review-pooled-null-key-retire",
+        "list-literal-cv-review-detached-child-result-rebind"
+      ],
+      "native_reuse": "Six fresh originals retain native argv/source paths/streams from baseline/native preparations. Strict model-only comparisons resolve those same paths with explicit exit255/static_rejection only for the mixed literal control; no native replay."
+    },
+    "states": [
+      {
+        "report": ".tools/list-literal-cv-author-state-11/report.json",
+        "sha256": "b777ea34faaf16d427522255acd8a08858e0128d33ef6749deeb7d40b2e8fab7",
+        "revision": "50c4195ead89c9e080237d3f95714006449faecd",
+        "fronts": 3,
+        "conditions": [
+          153,
+          153,
+          149
+        ],
+        "raw_steps": [
+          4,
+          3,
+          1
+        ],
+        "boolean_premises": 447
+      },
+      {
+        "report": ".tools/list-literal-cv-review-state-11/report.json",
+        "sha256": "bca793ead58dcad7433f2fd81147f86345e68b83422ae7466b7c884fea7393eb",
+        "revision": "50c4195ead89c9e080237d3f95714006449faecd",
+        "fronts": 2,
+        "conditions": [
+          165,
+          184
+        ],
+        "raw_steps": [
+          6,
+          4
+        ],
+        "boolean_premises": 339
+      }
+    ],
+    "source_agreements": 6,
+    "normal_source_agreements": 5,
+    "static_rejection_agreements": 1,
+    "state_fronts": 5,
+    "total_conditions": 804,
+    "boolean_premises": 786,
+    "raw_steps": 18,
+    "credit_note": "Source6 separates five normal programs from one compile-invalid agreement. State conditions include setup, source/guard/refusal premises and raw steps, not separate PHP programs. All recorded process groups were reaped; no A11 fixture failed. Later docs/composition add no agreement credit."
+  },
+  "preserved_zero_credit": [
+    {
+      "report": ".tools/list-literal-cv-baseline-11/report.json",
+      "sha256": "5e5df532745722f7fac9d904bed20263119cfa56a04210ffe955ffffa72e7acb",
+      "revision": "2e75ac2d15804b91de422ea3124e56206ce6270a",
+      "result": "Unchanged A10 frontend accepted the pooled dynamic-key program, then explicitly Unsupported at handler ingress: error-handler ingress requires a producer continuation. Native completed normally; no timeout or agreement credit."
+    },
+    {
+      "report": ".tools/list-literal-cv-native-rest-11/report.json",
+      "sha256": "beeb275636e3a079759de0d85f6353550e12913b351c87f0214608f0bf173e63",
+      "revision": "2e75ac2d15804b91de422ea3124e56206ce6270a",
+      "result": "Fresh author runtime reference and recursive pooled throw normal2 plus mixed literal compile-invalid1 native preparation only; explicit exit255 for the rejection."
+    },
+    {
+      "report": ".tools/list-literal-cv-review-native-11/report.json",
+      "sha256": "4d43c0be3d70fa12dbbdcedbcf36e835897522500bee54d6e3ac2e0cf46b2030",
+      "revision": "2e75ac2d15804b91de422ea3124e56206ce6270a",
+      "result": "Fresh independent pooled ancestor NULL descent/key-CELL retirement and runtime captured child/result/live-CV authority native2 preparation only."
+    }
+  ],
+  "affected_historical_controls": [],
+  "raw_evidence": {
+    "archive": "/home/user/workspace/php-spec/.tools/list-literal-cv-missing-warning-11-raw.tar.gz",
+    "bytes": 329768,
+    "members": 166,
+    "sha256": "d68d3bc6b15680aab464e1238111956ab4e40a0719457a4e3dd939d581490cae",
+    "recovery": "Archive retains six original relative .tools report/fixture/process/source directories plus list-literal-cv-reuse-sources-11.py, including the compile-invalid original. Extract beneath a checkout of the recorded cut; absolute argv/cwd are historical provenance. No archive is a build dependency."
+  },
+  "actual_parent_review": {
+    "parent": "242340c13e42fd9df44f0ad091229802b089e50e",
+    "seams": "Incoming280/289 add Generator throw/input receipts;301 generic temporary guards activate only for those Generator operation/receipt selectors. Incoming386 adds WeakMap getter/factory closure mismatch;400 extends optional false define flags/startup INF;404 adds guarded compound bool/null RHS stages. No Generator, WeakMap, define or compound source/task occurs in A11 originals; list/key/carrier APIs are unchanged. Since a555,156 adds only authenticated nullable-array typed-reference assigned-noarg return cursors with old INSTANCE-array disposal;386 adds SensitiveParameterValue/SENSITIVEVALUE WeakMap mismatch. No matching return, signature, destructor or WeakMap source/task occurs in A11 originals; list/key/carrier APIs remain unchanged.",
+    "joined_actor": "No concrete semantic interaction found; pointwise composition and exact FF review add no replay credit."
+  },
+  "remaining": [
+    "Call/wider RHS producers, non-CV targets and computed current key names/expressions; undefined/null/lossy-float key conversion warning callbacks and scalar/object destructuring diagnostic producers.",
+    "Paused owned-NUL/current-CV NUL behavior. Source-only ancestor contexts make no historical type/carrier/byte reconstruction claim; runtime literal-root table checks establish source compatibility.",
+    "Wider callbacks, suspension/lifecycle, full array/diagnostic/core closure and final offline portability."
+  ]
+}
