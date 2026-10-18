@@ -124,7 +124,8 @@ dec $array_float_ref_key_item(pstate, phpType13*, int) : (poperand, poperand)?
 def $array_float_ref_key_item(S, phpType13*, z) = ((VARIABLE n_key* z_key, VARIABLE n_value* z))
   -- if S.ORIGIN = (porigin)
   -- if $origin_node(S.SOURCES, porigin) = (NArrayItem (NExprVariable (BYTES text_key) metadata_key) (NExprVariable (BYTES text_value) metadata_value) (BOOLEAN true) (BOOLEAN false) metadata)
-  -- if n_key* = $base64(text_key) /\ n_value* = $base64(text_value)
+  -- if n_key* = $base64(text_key)
+  -- if n_value* = $base64(text_value)
   -- if ~$this_name(n_key*) /\ ~$psautoglobal(n_key*)
   -- if ~$this_name(n_value*) /\ ~$psautoglobal(n_value*)
   -- if z_key = $variable_line(BYTES text_key, metadata_key)
@@ -166,7 +167,8 @@ def $array_float_ref_key_value(S, n_old, poperand) = eps -- otherwise
 dec $array_float_ref_key_ready(pstate, nat, nat, poperand) : bool
 def $array_float_ref_key_ready(S, n, n_old, poperand) = true
   -- if $array_float_ref_key_value(S, n_old, poperand) =/= eps
-  -- if $(n_old < |S.STORE|) /\ S.STORE[n_old] = DEFINED pvalue
+  -- if $(n_old < |S.STORE|)
+  -- if S.STORE[n_old] = DEFINED pvalue
   -- if $array_float_key_scalar(S, pvalue)
   -- if $array_float_key_plain_nodes($heap_reach([HARRAY n, HCELL n_old], eps, $heap_graph(S).EDGES))
 def $array_float_ref_key_ready(S, n, n_old, poperand) = false -- otherwise
@@ -183,6 +185,8 @@ def $array_float_ref_key_plan(S) = ((n, S.CELL, poperand_value, phpType13*, z, n
   -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
   -- if S.STORE[n_cell] = DEFINED (PFLOAT n_bits)
   -- if ~$foreach_released_container_cell(S, n_cell) /\ ~$update_released_array_name(S, n_key*)
+  -- if $(n_bits < 18446744073709551616)
+  -- if $float_long(n_bits, true) = (i, [PRECISIONLOSS])
   -- if $array_float_ref_key_source(S, n, S.CELL, poperand_value, phpType13*, z, n_bits, i)
   -- if $array_float_ref_key_ready(S, n, S.CELL, poperand_value)
 def $array_float_ref_key_plan(S) = eps -- otherwise
