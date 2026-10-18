@@ -484,28 +484,26 @@ property, arithmetic, constants and return paths. Source2/state355 retain their
 private cut; independent seam review warrants no joined actor or renewed credit.
 
 Missing-key Warning continues recursive CV/literal by-value and direct-CV mixed
-patterns with quiet compiled/implicit keys. Flat direct-CV patterns also admit defined
-integer, boolean, exact-float and non-NUL string CV keys. Planning authenticates
-carriers and freezes the converted key before dispatch; later writes, key-cell
-retirement or rebinding cannot replace its NULL result. Later keys are read after
-the target store, including fresh `"2"` integer versus `"02"` string reference selection.
-String identities remain immutable metadata with no heap owner. Captured tables
-and source cells preserve their distinct authority, COW and throw cleanup.
-Five A9 exact originals agree at 818a7239e; five SL fronts pass652 premises
-(637 Boolean +15 raw steps) at 1b0359ee3, with author372 and independent280.
-No A9 fixture failed.
-The [quiet-CV key review](coverage/semantics/list-quiet-cv-missing-warning-review.json)
-retains the unchanged Unsupported baseline with zero agreement credit. Two affected
-A8 pure-control files replace superseded type/kind refusals; equivalent guard
-checks run on these new fronts. Earlier [integer-key cuts](coverage/semantics/list-integer-cv-missing-warning-review.json)
+patterns with quiet compiled/implicit keys. Direct-CV recursive patterns now also
+freeze selected integer, bool, exact-float and non-NUL string CV keys, including
+missing ancestors whose NULL result descends silently through nested children.
+Ancestor contexts authenticate source occurrences and compiler locations without
+rereading old key values or reselecting parent tables; historical ancestor types,
+carriers and bytes are not reconstructed. Current-key conversion remains plan-only.
+Captured child tables and reference cells retain distinct authority after parent
+replacement, key-cell retirement or name rebinding. Compiled selected keys retain
+exact equality; prior reference leaves preserve inherited dynamic-key locations.
+Five A10 exact originals agree at e8619c439; five SL fronts pass826 premises
+(809 Boolean +17 raw steps) at f77db09cc: author489 and independent337.
+No A10 fixture failed. The [recursive-CV key review](coverage/semantics/list-recursive-cv-missing-warning-review.json)
+retains the unchanged Unsupported baseline with zero agreement credit.
+Existing flat/compiled helpers, tasks and historical controls remain unchanged.
+Earlier [quiet-CV cuts](coverage/semantics/list-quiet-cv-missing-warning-review.json)
 and the other [family reviews](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md)
 retain their original source/state cuts and failures without replay.
-Nested/by-value-literal dynamic keys, computed key names, NUL CV strings,
+Literal-root dynamic keys, computed key names, selected NUL CV strings,
 undefined/conversion diagnostics, wider RHS/targets and scalar/object destructuring
 callbacks and lifecycle remain partial.
-Pointwise composition over e5d83caf3 preserves the incoming 399-module parent,
-including startup define, return-cursor, integral-shift and WeakMap closure paths.
-Source5/state652 retain their private cuts; no joined actor or renewed credit.
 
 Plain-CV `%=` now keeps both converted longs through a fractional-RHS deprecation.
 Captured12/5 stores2 despite callback99/7 and detaches a late target alias; supplied
