@@ -473,6 +473,25 @@ are distinct from getter17/134. Their getter rules compose unchanged with
 current setters; 198-module compilation adds no semantic execution credit.
 Other producer continuations remain open.
 
+The [two-slot NULL-option follow-up](../../coverage/semantics/ini-set-null-option-review.json)
+extends the same marker to ordinary positional `ini_set(NULL, value)` with quiet
+primitive values: NULL/bool/int, non-NaN floats and authenticated INTERNED/REQUEST
+strings. Source facts authenticate immutable arguments without inventing mutable-CV
+history. The returning handler preserves its precision8/live writes before empty-option
+`false`; the throwing handler preserves sameException/caller99/sibling2003 and cancels
+the body. Strict reception keeps raw NULL/value in its TypeError trace before any
+handler. Actual handler traces retain raw NULL and the captured REQUEST value.
+
+Four exact originals retain author3 at `fcac3d863`/`a5ee611ba` and corrected peer1 at
+`d4ca9022f`; 623 premises (111+178+113 author,221 independent) pass at the corrected
+cut. One default Deprecated is expected; other source PHP stderr and accepted
+CLI/SL worker stderr are empty. Ten stable/reaped reports include the preserved
+peer interpreter failure with zero credit: a redundant new trace head overlapped
+existing module368 INI_SET projection. Removing those three lines reuses the exact
+raw projection; accepted author models/native/baseline are not replayed. Owning,
+NaN/legacy-string values, named/packed/owner/PIPE forms and wider configuration
+remain partial. Existing unary rules, source/service boundaries and paused work stay intact.
+
 The [unary CONFIG PIPE increment](../../coverage/semantics/include-config-pipe-review.json)
 replays the authenticated left child and `CODEPIPE_SEND`, rather than an ordinary
 call argument. An RHS factory's recorded subcall name cannot replace its returned

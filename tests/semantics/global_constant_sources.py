@@ -68,6 +68,7 @@ echo 'B|'; constant('GlobalArray21'); echo 'after';
 }
 UNSUPPORTED = {}
 BASELINE = ('class constant value query', b'B|')
+MODEL_TIMEOUTS = {}
 
 
 def fingerprint():
@@ -134,8 +135,9 @@ def main():
                 assert native['passed'] and native['inputs_stable']
                 original, = [r for r in native['records'] if r['id'] == name]
                 assert original['source_sha256'] == row['source_sha256']
-                command = [str(ROOT / 'bin/php-semantics'), str(source), '--steps', '10000', '--timeout', '45']
-                row['process'] = recorder.recorded(command, directory / args.phase, 60)
+                timeout = MODEL_TIMEOUTS.get(name, 45)
+                command = [str(ROOT / 'bin/php-semantics'), str(source), '--steps', '10000', '--timeout', str(timeout)]
+                row['process'] = recorder.recorded(command, directory / args.phase, timeout + 15)
                 outcome = json.loads((directory / (args.phase + '.stdout')).read_bytes()); row['outcome'] = outcome
                 assert not row['process']['timeout'] and not row['process']['group_after']
                 assert (directory / (args.phase + '.stderr')).read_bytes() == b''

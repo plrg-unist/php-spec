@@ -1,0 +1,22 @@
+[
+  {
+    "id": "generator-owning-chain-unpack-review-return-cache-array-alias-cow",
+    "purpose": "Ancestor call unpack must reach an owning detached middle return without consuming it or entering the callee. Its array aliases a raw reference current; held/return counts survive later row COW and physical close with unique element edges.",
+    "source": "<?php\nclass ReviewChainOld30 { function __destruct() { echo \"A|\"; } }\nclass ReviewChainNew30 { function __destruct() { echo \"B|\"; } }\nfunction &reviewChainChild30() { global $row; $row = [new ReviewChainOld30()]; echo \"C|\"; yield $row; echo \"L|\"; return $row; }\nfunction reviewChainMiddle30() { try { echo \"M|\"; $answer = yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; } finally { echo \"J|\"; } }\nfunction reviewChainOuter30() { try { echo \"O|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\nfunction reviewChainTarget30(...$arguments) { echo \"BAD-CALLEE|\"; }\n$child = reviewChainChild30(); $middle = reviewChainMiddle30(); $outer = reviewChainOuter30();\necho \"P|\"; $outer->rewind(); $child->next(); $held = $outer->current(); echo \"H|\", $held[0] instanceof ReviewChainOld30 ? 1 : 0, \"|\"; unset($child); echo \"T|\";\ntry { reviewChainTarget30(...$outer); echo \"BAD-RETURN|\"; } catch (Error $error) { echo \"K|\", $error->getLine(), \"|\", $error->getPrevious() === null ? \"NOPREV|\" : \"PREV|\"; }\n$row[0] = new ReviewChainNew30(); echo \"W|\", $held[0] instanceof ReviewChainOld30 ? 1 : 0, \"|\", $outer->current()[0] instanceof ReviewChainNew30 ? 1 : 0, \"|\"; unset($error); echo \"EX|\";\nunset($outer); echo \"OUT|\"; unset($middle); echo \"MID|\"; unset($row); echo \"ROW|\"; unset($held); echo \"HELD|\"; echo \"E\";\n",
+    "source_sha256": "92ceb6fce91953e9a3df5480cc3c7cbba8fe31512a90627c31889821a91540bd",
+    "expected": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|M|C|L|H|1|T|K|10|NOPREV|W|1|1|EX|F|OUT|MID|B|ROW|HELD|EA|"
+  },
+  {
+    "id": "generator-owning-chain-unpack-review-return-cell-rebind",
+    "purpose": "A present-null cache and owning array with an embedded global reference sit below an unpacked native Generator ancestor. After actual unpack Error and physical close, rebinding the shared cell must update retained ownership and retire the old object before the write marker.",
+    "source": "<?php\nclass ReviewChainCellOld30 { function __destruct() { echo \"R|\"; } }\nclass ReviewChainCellNew30 { function __destruct() { echo \"CNEW|\"; } }\nfunction reviewChainCellChild30() { global $slot; echo \"C|\"; yield null; echo \"L|\"; $slot = new ReviewChainCellOld30(); return [&$slot]; }\nfunction reviewChainCellMiddle30() { try { echo \"M|\"; $answer = yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; } finally { echo \"J|\"; } }\nfunction reviewChainCellOuter30() { try { echo \"O|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\nfunction reviewChainCellTarget30(...$arguments) { echo \"BAD-CALLEE|\"; }\n$child = reviewChainCellChild30(); $middle = reviewChainCellMiddle30(); $outer = reviewChainCellOuter30();\necho \"P|\"; $outer->rewind(); $child->next(); echo \"H|\", $outer->current() === null ? 1 : 0, \"|\"; unset($child); echo \"T|\";\ntry { reviewChainCellTarget30(...$outer); echo \"BAD-RETURN|\"; } catch (Error $error) { echo \"K|\", $error->getLine(), \"|\", $error->getPrevious() === null ? \"NOPREV|\" : \"PREV|\"; }\nunset($error); echo \"EX|\"; unset($outer); echo \"OUT|\"; unset($middle); echo \"MID|\";\n$slot = new ReviewChainCellNew30(); echo \"WRITE|\"; unset($slot); echo \"UNSET|\"; echo \"E\";\n",
+    "source_sha256": "83854244545702dd9c35bbeb753716aceb214cf6318d236ceed99be109ded62a",
+    "expected": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|M|C|L|H|1|T|K|10|NOPREV|EX|F|OUT|MID|R|WRITE|UNSET|ECNEW|"
+  }
+]

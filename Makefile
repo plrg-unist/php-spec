@@ -373,6 +373,10 @@ test-semantics: build
 	python3 tests/semantics/generator_pending_owning_return_throw_review_sources.py
 	python3 tests/semantics/generator_pending_owning_return_throw_state.py
 	python3 tests/semantics/generator_pending_owning_return_throw_review_state.py
+	python3 tests/semantics/generator_owning_chain_unpack_sources.py
+	python3 tests/semantics/generator_owning_chain_unpack_review_sources.py
+	python3 tests/semantics/generator_owning_chain_unpack_state.py
+	python3 tests/semantics/generator_owning_chain_unpack_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
@@ -732,6 +736,8 @@ test-semantics: build
 	python3 tests/semantics/dynamic_new_protocol.py --group contexts
 	python3 tests/semantics/dynamic_new_protocol.py --group rebound
 	python3 tests/semantics/dynamic_new_protocol.py --group cached
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/dynamic_new_selector_cases.json
+	python3 tests/semantics/dynamic_new_selector_protocol.py --revision $$(git rev-parse HEAD)
 	python3 tests/semantics/named_keyword_new_sources.py
 	python3 tests/semantics/named_keyword_new_protocol.py --group cold
 	python3 tests/semantics/named_keyword_new_protocol.py --group recursive

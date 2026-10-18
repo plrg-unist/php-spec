@@ -21,6 +21,7 @@ dec $generator_unpack_acquired_generator_delegate(pstate, nat) : bool
 dec $generator_unpack_detached(pstate, nat) : bool
 dec $generator_unpack_delegate(pstate, nat) : bool
 dec $generator_unpack_chain(pstate, nat, nat) : bool
+dec $generator_unpack_owning_chain(pstate, nat, nat) : bool
 dec $generator_unpack_delegated_blocked(pstate) : bool
 
 def $generator_unpack_input(S, pgeneratorunpack) = $iterator_unpack_input(S, pgeneratorunpack.CALL, pgeneratorunpack.INPUT)
@@ -108,7 +109,7 @@ def $generator_unpack_detached(S, n) = true
   -- if $value_nodes(pvalue) = eps
 def $generator_unpack_detached(S, n) = false -- otherwise
 ;; A shared Generator link borrows the leaf cache; it has no CURRENT copy.
-def $generator_unpack_delegate(S, n) = ($generator_unpack_chain(S, n, $(|S.OBJECTS| + 1)) \/ $generator_unpack_detached(S, n) \/ $generator_return_waiting(S, n))
+def $generator_unpack_delegate(S, n) = ($generator_unpack_chain(S, n, $(|S.OBJECTS| + 1)) \/ $generator_unpack_detached(S, n) \/ $generator_return_waiting(S, n) \/ $generator_unpack_owning_chain(S, n, $(|S.OBJECTS| + 1)))
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_DELEGATING
 def $generator_unpack_delegate(S, n) = false -- otherwise
@@ -146,6 +147,24 @@ def $generator_unpack_chain(S, n, n_depth) = $generator_unpack_chain(S, n_child,
   -- if pgeneratorfrom.POSITION = 1
   -- if $generator_from_record_valid(S, n, pgenerator)
 def $generator_unpack_chain(S, n, n_depth) = false -- otherwise
+;; Native links borrow the physical current. An owning copied return stays in
+;; its authenticated simple-CV leaf; unpack does not consume that continuation.
+def $generator_unpack_owning_chain(S, n, 0) = false
+def $generator_unpack_owning_chain(S, n, n_depth) = true
+  -- if $(n_depth > 0)
+  -- if $generator_return_waiting(S, n)
+def $generator_unpack_owning_chain(S, n, n_depth) = $generator_unpack_owning_chain(S, n_child, $nabs($(n_depth - 1)))
+  -- if $(n_depth > 0)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_DELEGATING /\ pgenerator.PARKED = eps
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.INPUT = (POBJECT n_child)
+  -- if $generator_object(S, n_child)
+  -- if pgeneratorfrom.ACQUISITION = eps /\ pgeneratorfrom.CURRENT = eps
+  -- if pgeneratorfrom.POSITION = 1
+  -- if $generator_from_record_valid(S, n, pgenerator)
+def $generator_unpack_owning_chain(S, n, n_depth) = false -- otherwise
 def $generator_unpack_valid(S, pgeneratorunpack, text) = true
   -- if $generator_unpack_shape(pgeneratorunpack, text)
   -- if $unpack_origin(S, pgeneratorunpack.CALL) = (porigin)

@@ -68,8 +68,14 @@ validator now admits its normal shared-HCELL RELEASE/empty/EXIT pauses; 463/8 at
 heap-equal deletion of the required outer literal task. The same engine TypeError
 reaches the catch, then the outer literal returns through a fresh detached cell
 with one Notice7. The first projection-overlap failure remains zero; two equivalent
-return-head guards resolve it. Call-before-echo capture, storage/interposed
-variants, wider pending histories, owners/reentry and GC remain open.
+return-head guards resolve it. M114 separately validates three simultaneous
+sole-owning computed return slots with one fresh native/model agreement and 347/7
+state checks at `f305be84b`; no runtime change. C's saved caller retains B/A, actual
+body/RESULT pauses preserve normal C/B/A retirement, and removing an outer task
+fails lexical-finally completeness despite a valid heap. The selected y reference
+and prior b7 retain exact whole/split endings without a Notice. This establishes
+normal retirement, leaving pending/reentrant three-history replay open alongside
+call-before-echo capture, storage/interposed variants, wider owners and GC.
 [Review and recovery](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
 Pruning prepares the object store and fatal marks once, then selects the same

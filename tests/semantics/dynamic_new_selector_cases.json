@@ -1,0 +1,79 @@
+{
+  "scope": "Finite owning dynamic NEW selector release before target allocation/access, supplied-throw Previous order and held/public controls.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_gate_completed": true,
+  "native_revision": "d2f594f3ac068ee2f8841ea086fd6699976da7da",
+  "native_report_sha256": "4abd52e75e39aeeec096399ab9f15a0aa581d39312ee704f67a7b8729601140c",
+  "cases": [
+    {
+      "id": "normal",
+      "source_file": "dynamic-new-selector-normal.php",
+      "source_sha256": "1d345466e6d09a59f278e5ca8a9697e826e298c8312ee23ae5209835ac344f77",
+      "original_source": "/home/user/workspace/php-spec/.tools/dynamic-new-selector-private-103/.tools/dynamic-new-selector-probes-103/normal.php",
+      "native_group": "native-first",
+      "stdout_base64": "TnxCfFN8RHxkfEV8NDJ8OTl8Wnw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "ea9fdfdc4f8b4df8d1872a91a7e50d228636e1d9a0d7a9e68b95b31f7cc9f2ac",
+      "status": "normal",
+      "source": "<?php\nclass Private103 {\n    private function __construct() { echo \"B|\"; }\n    public static function make() { return new self; }\n    public function __destruct() {\n        global $rhs, $throws, $error;\n        echo \"D|\";\n        $rhs = 99;\n        if ($throws) { throw $error; }\n        echo \"d|\";\n    }\n}\nfunction choose103() {\n    global $original;\n    $value = $original;\n    $original = null;\n    echo \"S|\";\n    return $value;\n}\nfunction argument103() { echo \"A|\"; return 7; }\necho \"N|\";\n$error = new Exception(\"supplied\");\n$rhs = 7;\n$throws = false;\n$original = Private103::make();\n$answer = 42;\ntry { $answer = new (choose103())(argument103()); }\ncatch (Error $caught) { echo \"E|\"; }\necho $answer, \"|\", $rhs, \"|Z|\";\n",
+      "new_line": 27
+    },
+    {
+      "id": "throwing",
+      "source_file": "dynamic-new-selector-throwing.php",
+      "source_sha256": "06f00114d88c53b6c3c25884d72c34a65129125f7d0504a800991a1edd297a1e",
+      "original_source": "/home/user/workspace/php-spec/.tools/dynamic-new-selector-private-103/.tools/dynamic-new-selector-probes-103/throwing.php",
+      "native_group": "native-first",
+      "stdout_base64": "WHxCfFN8RHxDfFB8NDJ8OTl8Wnw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "fde71db73a97b836c2efcf2bb3b8e36482d63245c6401fbbca9224196704206a",
+      "status": "normal",
+      "source": "<?php\nclass Private103 {\n    private function __construct() { echo \"B|\"; }\n    public static function make() { return new self; }\n    public function __destruct() {\n        global $rhs, $throws, $error;\n        echo \"D|\";\n        $rhs = 99;\n        if ($throws) { throw $error; }\n        echo \"d|\";\n    }\n}\nfunction choose103() {\n    global $original;\n    $value = $original;\n    $original = null;\n    echo \"S|\";\n    return $value;\n}\nfunction argument103() { echo \"A|\"; return 7; }\necho \"X|\";\n$error = new Exception(\"supplied\");\n$rhs = 7;\n$throws = true;\n$original = Private103::make();\n$answer = 42;\ntry { $answer = new (choose103())(argument103()); }\ncatch (Throwable $caught) {\n    echo $caught === $error ? \"C|\" : \"W|\";\n    echo $caught->getPrevious() === null ? \"P|\" : \"Q|\";\n}\necho $answer, \"|\", $rhs, \"|Z|\";\n",
+      "new_line": 27
+    },
+    {
+      "id": "held",
+      "source_file": "dynamic-new-selector-held.php",
+      "source_sha256": "e11062cbd5e941f40da2746b153f6310f2da289db84c96f038a80a07dda3aaaa",
+      "original_source": "/home/user/workspace/php-spec/.tools/dynamic-new-selector-private-103/.tools/dynamic-new-selector-probes-103/held.php",
+      "native_group": "native-first",
+      "stdout_base64": "SHxCfFN8RXxGfER8Q3xQfDQyfDk5fFp8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "a99fca1c110550f1ad87257e0e3ac16c920efcf5e81569119e4c94368cc52dc5",
+      "status": "normal",
+      "source": "<?php\nclass Private103 {\n    private function __construct() { echo \"B|\"; }\n    public static function make() { return new self; }\n    public function __destruct() {\n        global $rhs, $throws, $error;\n        echo \"D|\";\n        $rhs = 99;\n        if ($throws) { throw $error; }\n        echo \"d|\";\n    }\n}\nfunction choose103() {\n    global $original;\n    $value = $original;\n    $original = null;\n    echo \"S|\";\n    return $value;\n}\nfunction argument103() { echo \"A|\"; return 7; }\necho \"H|\";\n$error = new Exception(\"supplied\");\n$rhs = 7;\n$throws = true;\n$original = Private103::make();\n$held = $original;\n$answer = 42;\ntry { $answer = new (choose103())(argument103()); }\ncatch (Error $caught) { echo \"E|\"; }\necho \"F|\";\ntry { $held = null; }\ncatch (Throwable $caught) {\n    echo $caught === $error ? \"C|\" : \"W|\";\n    echo $caught->getPrevious() === null ? \"P|\" : \"Q|\";\n}\necho $answer, \"|\", $rhs, \"|Z|\";\n",
+      "new_line": 28
+    },
+    {
+      "id": "public",
+      "source_file": "dynamic-new-selector-public.php",
+      "source_sha256": "258a88283f1d3a24414917a598ec831f05762ba3773058b7c3489e8986ab76e4",
+      "original_source": "/home/user/workspace/php-spec/.tools/dynamic-new-selector-private-103/.tools/dynamic-new-selector-probes-103/public.php",
+      "native_group": "native-first",
+      "stdout_base64": "UHxDMHxTfEQwfGR8QXxDOTl8OTl8MnxEOTl8ZHxafA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "cc3d17ddefeeb01563c6343cfcefd895853476f0b5e35cc1486088f2a84a25ec",
+      "status": "normal",
+      "source": "<?php\nclass Public103 {\n    public int $mark = 0;\n    public function __construct($number = 0) {\n        global $made;\n        $made++;\n        $this->mark = $number;\n        echo \"C\", $number, \"|\";\n    }\n    public function __destruct() {\n        global $rhs;\n        echo \"D\", $this->mark, \"|\";\n        if ($this->mark === 0) { $rhs = 99; }\n        echo \"d|\";\n    }\n}\nfunction choose103() {\n    global $original;\n    $value = $original;\n    $original = null;\n    echo \"S|\";\n    return $value;\n}\nfunction argument103() { global $rhs; echo \"A|\"; return $rhs; }\necho \"P|\";\n$rhs = 7;\n$made = 0;\n$original = new Public103;\n$answer = new (choose103())(argument103());\necho $answer->mark, \"|\", $made, \"|\";\n$answer = null;\necho \"Z|\";\n",
+      "new_line": 29
+    }
+  ]
+}

@@ -16,9 +16,10 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
-[Scalar spaceship warnings](docs/semantics/COMPARISONS.md) now preserve a missing
-variable's null result through error handlers while reading current scalar variables
-after callback effects, including a rebound left reference. Other comparison warning paths remain partial.
+[Scalar comparison warnings](docs/semantics/COMPARISONS.md) preserve a missing
+variable's null result through handlers while following current scalar CV bindings.
+This covers bounded spaceship operands and `==`/`<` direct-CV pairs with one
+missing operand, including reference rebinding. Wider warning paths remain partial.
 
 [Array-literal float keys](docs/semantics/DIMENSIONS.md) now retain their converted
 integer across deprecation handlers. Unwrapped null/bool/int/float element variables
@@ -218,6 +219,14 @@ full `include_path` bytes, including callback writes. Primitive/null Restore
 parsing preserves strict direct refusal and weak explicit `Closure->__invoke` calls. Eligible unary
 null deprecations suspend for handlers; normal return, false fallback and throw
 preserve raw mutation and caller arguments.
+
+[Two-slot NULL INI options](coverage/semantics/ini-set-null-option-review.json)
+now resume ordinary positional `ini_set(NULL, quiet primitive)` through admitted
+deprecation handlers. Captured NULL/value arguments survive live writes; a returning
+handler reaches the empty-option `false` result while preserving its precision
+changes, and a supplied throw cancels the body. Strict NULL rejects before the
+handler. Four originals and 623 state premises pass; wider values/forms remain partial.
+
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
 send/callback site. Ordinary Closure PIPE follows caller strictness; normal and
@@ -659,7 +668,7 @@ vanish. Multiplication follows PHP's physical opcode order: a literal-left/CV-ri
 witness yields `60` after two Warnings. Ten originals and 767 focused premises also
 check strict float `68.75` and final power cancellation in the
 [copied-arithmetic ledger](coverage/semantics/copied-arithmetic-warning-review.json).
-Quiet/no-Warning orders and owning or wider copied inputs remain partial.
+Other quiet/no-Warning orders and owning or wider copied inputs remain partial.
 
 Arithmetic Warnings now retain evaluated scalar reference results after all
 source names disappear. Two operands may hold the same cell twice; those owners
@@ -667,6 +676,13 @@ retire on result, error or handler throw. Nine originals and 853 focused premise
 cover shared-cell arithmetic, cached-zero division and final power cancellation in
 the [owned-arithmetic ledger](coverage/semantics/owned-arithmetic-warning-review.json).
 Selected cells must stay scalar and unconstrained; wider traces remain partial.
+
+Quiet scalar multiplication TypeErrors now follow the pinned physical operand
+order, including saved copies whose source variables change. Seven originals and
+217 focused premises distinguish bool/int/float/string error labels, zero Warning
+callbacks and cancelled result assignment in the
+[quiet-MUL ledger](coverage/semantics/quiet-multiply-order-review.json).
+Numeric products and staged Warning rules retain their existing paths.
 
 Primitive plain-CV `**=` now commits its captured result even when the deprecation
 handler throws. A late alias detaches before the same exception continues; the
@@ -1010,8 +1026,14 @@ heap nodes. Their null key raises the real unpack error before argument sending;
 retained caches, later next/return/tail execution and cleanup preserve initialization
 history. A direct middle next can consume pending initialization without advancing.
 See the [nested-detached review](coverage/semantics/generator-call-unpack-nested-detached-review.json).
-Aggregate ordinary-call unpack, owning copied returns below active links or in
-wider continuations, other pending-initialization
+Ordinary unpack follows finite native ancestor links while an owning simple-CV
+copied return waits in the middle. A null key errors before sending.
+Actual outer `next()` consumes the return normally. Close retains its one count;
+a middle with inherited pending initialization skips its finally. A sole outer
+receiver can lose its middle cache before outer finally, replacing the key Error.
+See the [owning-chain review](coverage/semantics/generator-owning-chain-unpack-review.json).
+Aggregate ordinary-call unpack, owning copied returns in wider continuations,
+other pending-initialization
 send/throw, Generator by-reference
 call targets and callback methods, nonnumeric raw valid changes, request/plain
 reference strings and handler replacements with
@@ -1509,6 +1531,11 @@ Warning keeps the captured pointer, including fresh registration after a supplie
 handler Exception; a throwing NULL deprecation cancels registration. Normal
 callbacks can install a later duplicate key, and strict NULL rejects before them.
 [Object-flag review](coverage/semantics/define-object-flag-review.json).
+Certified objects also receive integers, finite floats and strings as flags.
+The call retains the raw flag and earlier pointer across callback changes;
+truthy flags warn before publication or duplicate lookup. Strict calls reject
+the raw nonboolean flag.
+[Quiet object-flag review](coverage/semantics/define-object-scalar-flag-review.json).
 
 Fresh definitions also copy nonempty array trees containing certified stdClass
 or user-instance leaves under the admitted flags. Copied containers freeze source
@@ -4139,8 +4166,11 @@ credit is unchanged. An unused destructor declaration now also preserves the
 no-instance, echo-only interposed scalar history. Fresh control/treatment sources
 agree with PHP; separate 463/8 state checks cover its shared-cell RELEASE/EXIT
 pauses, required literal history despite an unchanged heap, engine TypeError catch,
-one line7 Notice and detached aliases. Wider interposed/pending histories, reentry,
-GC and broader consumers remain open.
+one line7 Notice and detached aliases. Three simultaneously owning computed
+object returns also pass a fresh source comparison and 347/7 reached checks at
+`f305be84b`: normal C/B/A retirement, saved-caller owners, source-region refusals
+and selected-reference aliases. This requires no runtime change. Wider
+interposed/pending histories, reentry, GC and broader consumers remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;
@@ -4219,7 +4249,9 @@ and recursive conversion consumers retain their own constructor.
 the real class name without a cast, preserving child effects, compiled lines and
 captured missing-CV reads through handlers. Broader constrained conversion remains open.
 [Ordinary dynamic NEW](coverage/semantics/dynamic-new-review.json) captures a string or object
-class selector before arguments and releases selector temporaries before class work.
+class selector before arguments. [Owning selector release](coverage/semantics/dynamic-new-selector-review.json)
+now finishes before allocation and constructor access, so a throwing selector cannot
+acquire a premature access Error as `Previous`.
 Compiled keyword scopes survive recursive constructors and retired receiving Closures;
 cached property method callables retain lexical and called class separately.
 [Ordinary named keyword NEW](coverage/semantics/named-keyword-new-review.json)

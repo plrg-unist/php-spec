@@ -67,6 +67,11 @@ are in `../php-spec-evidence-archive/lifecycle-interposed-capture-113/manifest.j
 617,423 bytes under `.tools/m113/`, eight distinct actor reports and selected runtime
 patches, SHA-256 `6f291adecb3455f5140c3bf1d460f35155369dea3e1d69bb38b36af858d0c0db`.
 
+Normal three-owning computed returns are validated in
+`../php-spec-evidence-archive/lifecycle-three-owning-114/manifest.json`:
+398,023 bytes under `.tools/m114/`, six distinct actor reports including two
+fixture failures, SHA-256 `62aaa027e78aaea3c957a968db2509de829d7fbb8a91f5ada7421b0bdd532ccb`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the
