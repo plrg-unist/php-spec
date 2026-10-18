@@ -129,6 +129,15 @@ def $list_missing_nested_rhs(expression) = true -- if $list_value_cv(expression)
 def $list_missing_nested_rhs(NExprArray (SEQUENCE phpType13*) metadata) = true
 def $list_missing_nested_rhs(expression) = false -- otherwise
 
+;; Runtime literal authority requires its actual RHS occurrence, not a parent-only
+;; AST substitution over a CV/call descriptor. Mixed literal patterns are invalid.
+dec $list_missing_cv_rhs_source(pstate, porigin, expression, bool) : bool
+def $list_missing_cv_rhs_source(S, porigin, expression, b_refs) = true
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $list_missing_nested_rhs(expression)
+  -- if $list_value_cv(expression) =/= eps \/ ~b_refs
+def $list_missing_cv_rhs_source(S, porigin, expression, b_refs) = false -- otherwise
+
 dec $list_missing_nested_context(pstate, porigin) : int?
 def $list_missing_nested_context(S, porigin) = (z_initial)
   -- if $origin_node(S.SOURCES, porigin) = (expression_pattern)
@@ -216,7 +225,8 @@ def $list_missing_recursive_cv_context(S, porigin) = (z_initial)
   -- if ~$list_missing_flat(phpType13_all*) /\ $list_missing_nested_mixed_items(phpType13_all*)
   -- if $reference_origin_parent(porigin, 1) = ((porigin_assign, [PCFIELD 0]))
   -- if $origin_node(S.SOURCES, porigin_assign) = (NExprAssign expression_pattern expression_rhs metadata)
-  -- if $list_value_cv(expression_rhs) = (n_name*)
+  -- if $origin_child((porigin_assign), [PCFIELD 1]) = (porigin_rhs)
+  -- if $list_missing_cv_rhs_source(S, porigin_rhs, expression_rhs, $list_references(phpType13_all*))
   -- if $code_expression_at_source(S, porigin_assign, [PCFIELD 1]) = (z_initial)
 def $list_missing_recursive_cv_context(S, porigin) = (z_child)
   -- if $origin_node(S.SOURCES, porigin) = (expression_pattern)
@@ -234,6 +244,17 @@ def $list_missing_recursive_cv_operand_source(S, porigin, KNOWN (PARRAY n_array)
   -- if $origin_node(S.SOURCES, porigin) = (expression_pattern)
   -- if $list_pattern(expression_pattern) = (phpType13*)
   -- if ~$list_references(phpType13*)
+  -- if $reference_origin_parent(porigin, 1) = ((porigin_assign, [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin_assign) = (NExprAssign expression_pattern expression_rhs metadata)
+  -- if $origin_child((porigin_assign), [PCFIELD 1]) = (porigin_rhs)
+  -- if $list_missing_cv_rhs_source(S, porigin_rhs, expression_rhs, false)
+  -- if $list_missing_operand_source(S, porigin_rhs, expression_rhs, KNOWN (PARRAY n_array), false)
+def $list_missing_recursive_cv_operand_source(S, porigin, KNOWN (PARRAY n_array)) = true
+  -- if $origin_node(S.SOURCES, porigin) = (expression_pattern)
+  -- if $list_pattern(expression_pattern) = (phpType13*)
+  -- if ~$list_references(phpType13*)
+  -- if $reference_origin_parent(porigin, 3) = ((porigin_outer, [PCFIELD 0, PCINDEX n_outer, PCFIELD 1]))
+  -- if $list_missing_recursive_cv_context(S, porigin) =/= eps
   -- if $list_missing_array(S, KNOWN (PARRAY n_array)) = (n_array)
 def $list_missing_recursive_cv_operand_source(S, porigin, REFERENCE n_source) = true
   -- if $origin_node(S.SOURCES, porigin) = (expression_pattern)
@@ -266,8 +287,8 @@ def $list_missing_source(S, poperand, n, expression, phpType13*, z, pkey) = true
   -- if $list_pattern(expression_pattern) = (phpType13_all*)
   -- if $reference_origin_parent(porigin, 1) = ((porigin_assign, [PCFIELD 0]))
   -- if $origin_node(S.SOURCES, porigin_assign) = (NExprAssign expression_pattern expression_rhs metadata)
-  -- if $list_value_cv(expression_rhs) = (n_name*)
   -- if $origin_child((porigin_assign), [PCFIELD 1]) = (porigin_rhs)
+  -- if $list_missing_cv_rhs_source(S, porigin_rhs, expression_rhs, $list_references(phpType13_all*))
   -- if $list_missing_operand_source(S, porigin_rhs, expression_rhs, poperand, $list_references(phpType13_all*))
 def $list_missing_source(S, KNOWN (PARRAY n_array), n, expression, phpType13*, z, pkey) = true
   -- if S.ORIGIN = (porigin)
