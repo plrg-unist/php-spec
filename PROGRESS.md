@@ -7,6 +7,19 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Undefined scalar `<=>` now suspends through ordinary warning handlers while
+retaining the missing NULL. Later right CVs follow callback rebinding; computed
+primitive operands stay captured. Reference aliases, false/default Warning order
+and supplied-Exception destination/catch/finally behavior retain their meanings.
+Eight exact originals pass at `56d3e2501`; five strict-SL state groups pass
+375 premises (226 author +149 independent) at `06f6d6c6b`/405, including whole
+states, cell owners and zero/split budgets. Both source Unsupported controls and
+the genuine unchanged baseline retain zero agreement. One test-projection compiler
+failure and one peer preparation NameError retain zero; only affected state
+fixtures repeat. Both-missing/owning/wider operands and other comparison warning
+fetches remain partial; private-payload/paused work is untouched.
+[Scalar warning review](coverage/semantics/undefined-spaceship-review.json).
+
 Paired `empty` now accepts live arrays returned by inherited untyped `__isset`.
 Array truth is cached before ordinary disposal. A sole table retires before its
 payload destructor, which can clear the caller CV and change the captured getter's
