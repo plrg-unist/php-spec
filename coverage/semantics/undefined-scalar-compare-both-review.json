@@ -1,0 +1,79 @@
+{
+  "milestone": "COMP95 both-missing forward scalar comparisons with right initialization",
+  "status": "bounded independent source/state review passed; comparison family remains partial",
+  "scope": "Distinct direct CVs at ==/!=/</<=, initially both missing. The first Warning freezes left NULL; a returning handler must define the right as a scalar before its delayed UNDEF check. Same-Exception throw suppresses the second Warning even if both remain missing.",
+  "target": "PHP 8.5.10 CLI NTS64; ordinary profile; LC_ALL=C TZ=UTC",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "runtime_revision": "c8a88e958",
+  "runtime_sha256": {
+    "spec/semantics/207-error-handler-runtime.watsup": "01d73fa7ea7c22e82c2181c125d19e1ebb97dc5c766d11fabccf1ebd839d0061"
+  },
+  "modules": 405,
+  "engine_basis": "Zend/zend_vm_def.h comparison helpers check raw OP1 UNDEF, then current OP2. A first handler defining right suppresses its Warning. Zend/zend_execute.c::zval_undefined_cv checks EG(exception)==NULL before reporting, so a supplied throw leaves no second Warning. Both-remain-missing returning native probes show two handlers and remain an explicit boundary.",
+  "implementation": "Only an ingress-only scalar_compare_missing_pair guard and its disjunction in the generic read plan are added in module207. It checks the old left-frozen shape, four forward operators and two distinct missing CVs. Source validity, resume scalar guard, shapes, fields, tasks, roots and discard stay unchanged.",
+  "behavior": [
+    "All four forward operators admit the first Warning with both names missing, preserving left NULL and reading the right created by the handler. Not-equal leaves the first name undefined; less-or-equal false handlers retain default Warning order.",
+    "The handler creates a fresh right/alias cell or binds right to an existing target reference. Initial owners0 or1 become2; later alias writes, multiline consumer lines and frozen NULL remain exact.",
+    "Supplied Exception identity, destination41 and finally survive without a second Warning while right remains missing. Four strict-SL groups verify authentic dispatch/restore/compare, raw states, fresh owners, source/operator/line corruption, single-missing compatibility, entry versus resume separation and zero/split budgets."
+  ],
+  "baseline": {
+    "revision": "00573848110e661bb2e70519be10622c2977298d",
+    "report": "initial/initial-report.json",
+    "sha256": "23f4ff8173a33cbae8e272d8c6a94368761725fcb45c2f57e3e600d653346bf7",
+    "native": "Two exact originals normal H:1:10:1;R:1:1:1;END;, empty stderr.",
+    "model": "Genuine unchanged both-missing == Unsupported/error-handler ingress requires a producer continuation, empty output.",
+    "agreement_credit": 0
+  },
+  "accepted": [
+    {
+      "report": "author-source/model-report.json",
+      "sha256": "2de8da37e3ed98cfccc1df15b3741fb1074644b5bbc2445c77b9811ef61ab9cf",
+      "revision": "1298c92c8838f8a01d0c2f66f723d214993ce700",
+      "agreements": 5,
+      "unsupported_controls": 1
+    },
+    {
+      "report": "peer-source/model.json",
+      "sha256": "cf5fb77168ef8ba12fae85523213077ffae1a62062324fefd55ad81e29966c63",
+      "revision": "1298c92c8838f8a01d0c2f66f723d214993ce700",
+      "agreements": 3,
+      "unsupported_controls": 1
+    },
+    {
+      "report": "author-state/report.json",
+      "sha256": "a587cb318226f53e1c3d27e13191733fb2842b05551ea0e14594c74f77af903e",
+      "revision": "1298c92c8838f8a01d0c2f66f723d214993ce700",
+      "premises": 209,
+      "groups": 2
+    },
+    {
+      "report": "peer-state/report.json",
+      "sha256": "095c17d772eb74f2ec72e7b74c108910d989ffbc755c0cd69360450a574c01fd",
+      "revision": "1298c92c8838f8a01d0c2f66f723d214993ce700",
+      "premises": 212,
+      "groups": 2
+    }
+  ],
+  "totals": {
+    "source_agreements": 8,
+    "unsupported_source_controls": 2,
+    "state_groups": 4,
+    "state_premises": 421
+  },
+  "failures": [],
+  "remaining": [
+    "A returning first handler that leaves right missing still stops explicitly Unsupported before the native second-Warning chain. Owning/removed counterparts and same-CV inputs remain partial; array-right and still-missing-right controls retain zero agreement.",
+    "Both-missing >/>= reversed fetches, spaceship and wider captured/computed producers remain partial. Prior COMP89\u201394 cuts are not replayed or renewed; unrelated arithmetic and quarantined COMP88 remain excluded."
+  ],
+  "artifact_root": "../php-spec-evidence-archive/comparison-95",
+  "artifact_manifest_sha256": "6f919aae8d5129353806519531944632c80aaaf1d5e464d8736e8444d3823da5",
+  "independent_reviewer": "/root/comp89_review",
+  "divergences": [],
+  "reproduction": [
+    "python3 tests/semantics/undefined_scalar_compare_both_sources.py --phase native --output .tools/comp95-source-new",
+    "python3 tests/semantics/undefined_scalar_compare_both_sources.py --phase model --output .tools/comp95-source-new",
+    "python3 tests/semantics/undefined_scalar_compare_both_state.py --output .tools/comp95-state-new",
+    "python3 tests/semantics/undefined_scalar_compare_both_review_state.py --output .tools/comp95-peer-state-new"
+  ]
+}

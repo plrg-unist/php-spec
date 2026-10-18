@@ -7,6 +7,19 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Forward `==`/`!=`/`<`/`<=` comparisons now admit two initially missing distinct
+CVs when the first Warning handler defines the right scalar. An ingress-only
+predicate reuses the frozen-left/current-right shape; resume validity/domain,
+roots and discard stay unchanged. A pending Exception suppresses the second
+Warning, confirmed by `zval_undefined_cv` and fresh supplied-throw probes.
+Eight source agreements plus two zero-credit controls and 421 strict-SL premises /
+four groups (209 author + 212 independent) pass first attempts at `1298c92c8`/405.
+Fresh alias/target owners 0/1→2, raw restore/compare, source/line/operator corruption,
+entry/resume separation and budgets pass; the genuine `005738481` baseline stays zero.
+Returning second-Warning chains, same-CV/owning counterparts and reversed greater/
+spaceship both-missing paths remain partial; prior cuts and COMP88 stay excluded.
+[Both-missing review](coverage/semantics/undefined-scalar-compare-both-review.json).
+
 Distinct direct-CV `>` and `>=` now suspend through single-missing warnings in
 both orientations, preserving NULL and current scalar wrappers. Zend reverses
 physical comparison operands after left-to-right source evaluation; the existing

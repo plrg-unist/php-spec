@@ -49,6 +49,16 @@ confirm one Warning without admitting that wider path. Both-missing/same-CV inpu
 owning/removed counterparts and wider producers remain partial. Earlier spaceship cuts remain in the
 [scalar warning review](../../coverage/semantics/undefined-spaceship-review.json).
 
+Distinct forward `==`/`!=`/`<`/`<=` CV pairs can also begin with both values
+missing. The first Warning freezes left NULL; if its handler defines the right
+scalar, Zend suppresses the second Warning and reads that current binding. The
+first name may remain undefined. A supplied throw suppresses the second Warning
+while retaining destination, Exception identity and finally; `zval_undefined_cv`
+checks the pending exception before reporting. Returning with right still missing
+remains explicit Unsupported before the second-Warning chain. Same-CV, owning or
+removed counterparts and reversed greater/spaceship both-missing paths remain
+partial. See the [both-missing review](../../coverage/semantics/undefined-scalar-compare-both-review.json).
+
 Array comparison first handles identical container identity, then recursion on
 the left operand, element counts, and exact normalized key lookup in left
 insertion order. Distinct insertion orders alone do not imply inequality.
