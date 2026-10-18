@@ -18,6 +18,11 @@ Canonical copies, original ALIAS traces, query COW and actual cancellation owner
 remain distinct. Wider domains and the constants obligation stay partial.
 [NULL array-flag review](coverage/semantics/define-array-null-flag-review.json).
 
+Composed over bd9e946b6/403 with the exact tested400 delta, all twelve incoming
+runtime/module paths and four private scripts preserved. Stringable-name, magic
+setter, reference-return, Sensitive, numeric-CV and float-key paths have no producer
+here; source4/state701 retain private401 cuts and both fixture failures without replay.
+
 Array-literal finite lossy-float CV keys now keep their converted integer across
 deprecation callbacks. Unwrapped null/bool/int/float element CVs supply their live
 post-handler value; captured runtime array temporaries retain their table and old
