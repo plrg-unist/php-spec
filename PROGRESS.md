@@ -7,6 +7,27 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Non-pending Generator `throw` now releases a paused child's buffered simple-CV
+yield result before catch search, directly or through finite native links. The
+no-GC temporary decrement preserves independent cache/orphan owners; payload
+destruction can replace the injected Exception with its previous chain intact.
+Four exact normal originals agree at `46f1d6208`/399. Five genuine fronts pass
+509 premises (267 author + 242 independent), including real slot/release/search
+steps, COW/cache aliases, pending/receipt refusals and public validity inside the
+payload destructor. Strict399 passes; fixture elaboration adds no semantic credit.
+The main435 retain `46f1`, and the separate callback74 uses test-only `d5a499c3e`.
+Two pre-application compiler failures remain zero credit; only affected checks
+were retried. Native4 and unchanged Unsupported retain `6d377` and zero agreement;
+no source/state actor failed or was replayed. Pending/global-opline `throw`, acquired
+producers, other result shapes and wider lifecycle remain partial. No engine bug
+or intentional divergence is claimed. See the [buffered-throw review](coverage/semantics/generator-buffered-throw-review.json).
+
+Composed over `fcf554d6b`/399 after pointwise review of nullable-array return
+cleanup, constant snapshots, magic-empty/list, bitwise and WeakMap/Closure
+selectors. Only modules280/289/301 change; every other parent runtime file,
+task layout, pipeline and manifest is preserved. Source4/state509/strict
+retain their private cuts; no joined actor or renewed execution credit.
+
 WeakMap comparisons now admit normalized GETTERCLOSURE and FROMCALLABLEFACTORY
 objects as uncomparable +1 in either direction before receiver, method, source or
 private-entry traversal. Both producers precede the genuine unchanged baseline.

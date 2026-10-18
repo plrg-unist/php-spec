@@ -1,0 +1,22 @@
+[
+  {
+    "id": "generator-buffered-throw-direct-child-releases-payload-before-catch",
+    "source": "<?php\nclass BufferedThrowPayload20 { function __destruct() { echo \"D|\"; } }\nfunction bufferedThrowChild20() { echo \"C|\"; try { $received = yield 5; echo \"BODY|\"; } catch (Exception $caught) { echo \"CA|\", $caught === $GLOBALS[\"injected\"] ? \"SAME|\" : \"OTHER|\"; yield 13; echo \"TAIL|\"; } finally { echo \"F|\"; } return 17; }\nfunction bufferedThrowMiddle20() { global $child; echo \"M|\"; try { $result = yield from ($child = bufferedThrowChild20()); echo \"MR|\", $result, \"|\"; return 23; } finally { echo \"J|\"; } }\nfunction bufferedThrowOuter20() { global $middle; echo \"O|\"; try { $result = yield from ($middle = bufferedThrowMiddle20()); echo \"OR|\", $result, \"|\"; return 29; } finally { echo \"Z|\"; } }\necho \"P|\"; $injected = new Exception(\"injected20\"); $outer = bufferedThrowOuter20(); $outer->rewind(); echo \"H|\", $outer->valid() ? 1 : 0, \"|\";\n$snapshot = $middle->send(new BufferedThrowPayload20()); echo \"S|\", $snapshot, \"|\"; unset($snapshot); echo \"T|\";\n$result = $child->throw($injected); echo \"K|\", $result, \"|\"; unset($result); $outer->next(); echo \"Q|\", $outer->getReturn(), \"|\";\nunset($outer, $middle, $child, $injected); echo \"E\";\n",
+    "source_sha256": "9d8f7cda13f6cafa1788c3c6d26826a53f0e785ee6081035bcc2265587598029",
+    "expected": "normal",
+    "purpose": "A direct non-pending throw into the physical paused used-yield child must retire its buffered object before the child catches the exact supplied Exception, then complete genuine yield and return tails.",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|M|C|H|1|S|5|T|D|CA|SAME|K|13|TAIL|F|MR|17|J|OR|23|Z|Q|29|E"
+  },
+  {
+    "id": "generator-buffered-throw-payload-destructor-replaces-injected-exception",
+    "source": "<?php\nclass BufferedThrowReplacementPayload20 { function __destruct() { echo \"D|\"; throw $GLOBALS[\"replacement\"]; } }\nfunction bufferedReplacementChild20() { echo \"C|\"; try { $received = yield 7; echo \"BODY|\"; } catch (Exception $caught) { echo \"CA|\", $caught === $GLOBALS[\"replacement\"] ? \"REPLACED|\" : \"OTHER|\"; echo $caught->getPrevious() === $GLOBALS[\"injected\"] ? \"PREV|\" : \"BAD|\"; echo $caught->getPrevious()->getPrevious() === null ? \"END|\" : \"MORE|\"; yield 11; echo \"TAIL|\"; } finally { echo \"F|\"; } return 19; }\nfunction bufferedReplacementMiddle20() { global $child; echo \"M|\"; try { $result = yield from ($child = bufferedReplacementChild20()); echo \"MR|\", $result, \"|\"; return 31; } finally { echo \"J|\"; } }\nfunction bufferedReplacementOuter20() { global $middle; echo \"O|\"; try { $result = yield from ($middle = bufferedReplacementMiddle20()); echo \"OR|\", $result, \"|\"; return 37; } finally { echo \"Z|\"; } }\necho \"P|\"; $injected = new Exception(\"injected20\"); $replacement = new Exception(\"replacement20\"); $outer = bufferedReplacementOuter20(); $outer->rewind(); echo \"H|\", $outer->valid() ? 1 : 0, \"|\";\n$snapshot = $middle->send(new BufferedThrowReplacementPayload20()); echo \"S|\", $snapshot, \"|\"; unset($snapshot); echo \"T|\";\n$result = $child->throw($injected); echo \"K|\", $result, \"|\"; unset($result); $outer->next(); echo \"Q|\", $outer->getReturn(), \"|\";\nunset($outer, $middle, $child, $injected, $replacement); echo \"E\";\n",
+    "source_sha256": "546e8168c96504bd084292ea0f7f070e4046047e765034d7563ad6a73879c85f",
+    "expected": "normal",
+    "purpose": "Buffered-result destruction throws a supplied replacement while the original injected Exception is pending. Native observation must determine the caught identity/previous chain before ordinary source tails complete.",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|M|C|H|1|S|7|T|D|CA|REPLACED|PREV|END|K|11|TAIL|F|MR|19|J|OR|31|Z|Q|37|E"
+  }
+]

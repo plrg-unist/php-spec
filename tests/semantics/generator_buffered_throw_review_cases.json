@@ -1,0 +1,20 @@
+[
+  {
+    "id": "generator-buffered-throw-review-forwarded-array-input-and-reference-cache",
+    "purpose": "A non-pending outer throw forwards to the used-yield leaf; its array-owned buffered payload is released before the same supplied Exception is caught, while a separate raw reference cache and copied rows retain their own lifetimes.",
+    "source": "<?php\nclass ReviewBufferedOld20 { function __destruct() { echo \"A|\"; } }\nclass ReviewBufferedNew20 { function __destruct() { echo \"CACHE|\"; } }\nclass ReviewBufferedPayload20 { function __destruct() { echo \"B|\"; } }\nfunction &reviewBufferedLeaf20() { global $cache; try { echo \"C|\"; $received = yield $cache; echo \"BAD-BODY|\"; } catch (Exception $caught) { echo \"CATCH|\", $caught === $GLOBALS[\"exception\"] ? 1 : 0, \"|\"; echo \"LIVE|\", $cache[0] instanceof ReviewBufferedNew20 ? 1 : 0, \"|\"; $tail = 13; yield $tail; echo \"T|\"; return 23; } finally { echo \"J|\"; } }\nfunction reviewBufferedMiddle20() { try { echo \"M|\"; $answer = yield from $GLOBALS[\"child\"]; echo \"I|\", $answer, \"|\"; return 29; } finally { echo \"K|\"; } }\nfunction reviewBufferedOuter20() { try { echo \"O|\"; $answer = yield from $GLOBALS[\"middle\"]; echo \"F|\", $answer, \"|\"; return 31; } finally { echo \"Z|\"; } }\n$cache = [new ReviewBufferedOld20()]; $exception = new Exception(\"buffer20\");\n$child = reviewBufferedLeaf20(); $middle = reviewBufferedMiddle20(); $outer = reviewBufferedOuter20();\necho \"P|\"; $outer->rewind();\n$row = $middle->send([new ReviewBufferedPayload20()]);\necho \"S|\", $row[0] instanceof ReviewBufferedOld20 ? \"OLD|\" : \"BAD|\";\n$row[0] = null; unset($row); echo \"W|\";\n$cache = [new ReviewBufferedNew20()]; echo \"V|\", $middle->current()[0] instanceof ReviewBufferedNew20 ? \"LIVE|\" : \"BAD|\";\n$result = $outer->throw($exception); echo \"THROW|\", $result, \"|\"; unset($result);\n$outer->next(); echo \"RET|\", $outer->getReturn(), \"|\";\nunset($child, $middle, $outer, $cache, $exception); echo \"E\";\n",
+    "native_exit": 0,
+    "native_stderr": "",
+    "source_sha256": "8cc0256a9d03011870790dbb657a945c2931f01517ba2c5904d53036eabc6776",
+    "native_stdout": "P|O|M|C|S|OLD|W|A|V|LIVE|B|CATCH|1|LIVE|1|THROW|13|T|J|I|23|K|F|29|Z|RET|31|CACHE|E"
+  },
+  {
+    "id": "generator-buffered-throw-review-buffer-alias-preserves-current-until-catch-yield",
+    "purpose": "The buffered input aliases the yielded object. Releasing only the used-result slot leaves the raw current owner intact through catch; replacement by the catch yield releases that cache before the API returns.",
+    "source": "<?php\nclass ReviewBufferedAlias20 { function __destruct() { echo \"A|\"; } }\nfunction reviewBufferedAliasLeaf20() { try { echo \"C|\"; $received = yield new ReviewBufferedAlias20(); echo \"BAD-BODY|\"; } catch (Exception $caught) { echo \"CATCH|\", $caught === $GLOBALS[\"exception\"] ? 1 : 0, \"|\"; yield 13; echo \"T|\"; return 23; } finally { echo \"J|\"; } }\nfunction reviewBufferedAliasMiddle20() { try { echo \"M|\"; $answer = yield from $GLOBALS[\"child\"]; echo \"I|\", $answer, \"|\"; return 29; } finally { echo \"K|\"; } }\nfunction reviewBufferedAliasOuter20() { try { echo \"O|\"; $answer = yield from $GLOBALS[\"middle\"]; echo \"F|\", $answer, \"|\"; return 31; } finally { echo \"Z|\"; } }\n$exception = new Exception(\"alias20\");\n$child = reviewBufferedAliasLeaf20(); $middle = reviewBufferedAliasMiddle20(); $outer = reviewBufferedAliasOuter20();\necho \"P|\"; $outer->rewind();\n$snapshot = $middle->send($middle->current());\necho \"S|\", $snapshot instanceof ReviewBufferedAlias20 ? 1 : 0, \"|\"; unset($snapshot); echo \"W|\";\n$result = $middle->throw($exception); echo \"THROW|\", $result, \"|\"; unset($result);\n$outer->next(); echo \"RET|\", $outer->getReturn(), \"|\";\nunset($child, $middle, $outer, $exception); echo \"E\";\n",
+    "native_exit": 0,
+    "native_stderr": "",
+    "source_sha256": "5ece6f20adb32c96f4b72e712e2f489debae407407026cb8d95b3e7e87e28a3c",
+    "native_stdout": "P|O|M|C|S|1|W|CATCH|1|A|THROW|13|T|J|I|23|K|F|29|Z|RET|31|E"
+  }
+]

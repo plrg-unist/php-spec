@@ -60,8 +60,17 @@ another `send` preserves the pinned engine's untraced reference count; its paylo
 destructor runs in the request object-store pass, after ordinary finally and caller output. Pure getters
 preserve the buffer. The [shared-send review](../../coverage/semantics/generator-pending-shared-send-review.json)
 distinguishes payload ownership from reference caches, method receivers and
-Generator frames. Active buffered `throw` and other used-expression shapes remain
-Unsupported; this slice makes no general cyclic-collection claim.
+Generator frames. Other used-expression shapes remain Unsupported; this slice
+makes no general cyclic-collection claim.
+
+A non-pending direct or native forwarded `throw` into that paused child releases
+the buffered yield result before searching its catch handlers. The slot uses a
+temporary decrement that does not register a potential GC root; outgoing child
+slots keep ordinary cleanup. An aliased current remains alive until its own cache
+is replaced. A payload-destructor exception replaces the injected exception while
+keeping it in the previous chain. The [buffered-throw review](../../coverage/semantics/generator-buffered-throw-review.json)
+checks these distinct owners and the real exception-search continuation. Pending
+`throw`, acquired data and other yield-result shapes remain outside this route.
 
 A pending `send` through native links to a bare statement yield instead ignores
 the argument and adds no buffered owner. It returns a dereferenced current

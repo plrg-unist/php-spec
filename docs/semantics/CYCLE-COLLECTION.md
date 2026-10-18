@@ -110,6 +110,11 @@ entered destructor captures the operation. CV/reference retirement and outgoing
 child slots keep ordinary `VALUE` decrements, including children of the discarded
 temporary itself. Admission checks local receipt consistency; producer
 reachability for arbitrary synthetic states remains unproved.
+Buffered non-pending Generator `throw` uses the same `TEMP` decrement for its
+used-yield result, matching `HANDLE_EXCEPTION`'s no-GC release. Its saved real
+resumer, exact yield/assignment tail and adjacent release/exit authenticate the
+borrowed receipt through payload destruction; ordinary cache owners stay separate.
+See the [buffered-throw review](../../coverage/semantics/generator-buffered-throw-review.json).
 Fiber force-close retains the tagged head and pending receipt in its genuine
 caller VM until ordinary release consumes it. Generator close consumes the head
 and updates progress before capturing its continuation; its new close jobs

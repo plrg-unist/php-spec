@@ -1,0 +1,137 @@
+{
+  "milestone": "Buffered non-pending Generator THROW releases the used-yield result",
+  "status": "independently accepted implementation and exact-parent pointwise composition",
+  "independent_reviewer": "iterator_review_15, paired with iterator_dev_15",
+  "base": "6d3771b648d84f232d57110bc985aa8e939c7820",
+  "tested_runtime": "46f1d62086014fbf6fbb1bb4c3e3e1024f43b700",
+  "callback_test_revision": "d5a499c3ee7caa3145d2275566ce66f29a3878f1",
+  "modules": 399,
+  "scope": "A non-pending, one-Throwable literal method call or finite native-forwarded THROW reaching a PAUSED child with a LIVE pending-SEND input at a source-authenticated used yield assigned directly to a simple CV. Loop/startpack/borrowed acquisition and pending actual-root THROW are excluded.",
+  "semantics": {
+    "release": "Actual physical-child installation removes only its LIVE registry record, transferring the one count to ordinary eager cleanup without returning the payload or orphaning it. Ancestor entry retains the input; earlier orphan records and raw current/reference caches remain separate.",
+    "exception": "The existing THROW_SEARCH/pending operation owns the exact supplied Throwable while the slot is released before child catch. Payload destruction may replace it with a supplied Exception linked to the original previous chain. Existing catch/finally and genuine later yield/return tails continue.",
+    "no_gc_temporary": "HANDLE_EXCEPTION uses dtor_nogc for the YIELD result. Module301 reuses the typed borrowed temporary receipt, one TEMP job and consumed-progress/decrement suppression; array children keep VALUE cleanup. A cache alias survives that one count decrement, with GC state unchanged.",
+    "admission": "Module289 authenticates pending state, source/line/argument, finite native links and unique valid input. A narrow imminent RESUME/FROM_RESULT view certifies real pre-install forwarding without relaxing the post-install validator. During cleanup, the actual saved THROW source, child caller/yield origin and OP_EXIT-to-used-CV tail authenticate the nonowning receipt through destructor callbacks.",
+    "module_sha256": {
+      "280-generators.watsup": "d218888bf6813d40b17407a3c6da5c43b7eb75d673afadd75f13a5cc9473f61c",
+      "289-generator-delegation.watsup": "f4b69eb2ff216d4dd5b366bcc5b53d08eff7cd77de27cb2b57f603c6644e7e09",
+      "301-cycle-collection.watsup": "65ce3debad10d7b56a73cf3ec4d8a1085c47427d5336887aad01a1b9f0039c56"
+    }
+  },
+  "source_authority": [
+    "vendor/php-src/Zend/zend_generators.c::Generator::throw, zend_generator_throw_exception and zend_generator_resume: immediate exception dispatch after a non-pending resume; pending DO_INIT/global exception-opline history is a separate boundary.",
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_HANDLE_EXCEPTION: releases a used YIELD result with zval_ptr_dtor_nogc before zend_dispatch_try_catch_finally_helper.",
+    "vendor/php-src/Zend/zend_compile.c::zend_compile_yield and existing eager/collector protocols distinguish the used result temporary, raw current and ordinary outgoing child decrements."
+  ],
+  "validation_identity": {
+    "php": "8.5.10 CLI NTS64; source34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml5.1.0; SL, caches off and encountered determinism checks",
+    "environment": "tests/semantics/profile.json; PHP -n; LC_ALL=C; TZ=UTC; PHP_SPEC_SCRIPT_ENCODING unset. Serial scoped taskset commands; raw reports retain exact commands/caps/bytes/exits/stable inputs/HEAD."
+  },
+  "raw_root": ".tools/generator-buffered-throw-20/.tools/",
+  "native_and_baseline": {
+    "distinct_native_originals": 4,
+    "reports": [
+      "generator-buffered-throw-native-3mdce23r/report.json",
+      "generator-buffered-throw-review-native-2ekuln26/report.json"
+    ],
+    "result": "Four immutable originals captured at untouched6d377/399, with no preasserted stdout, pinned normal0/empty stderr/no timeout/stable inputs and HEAD. Independent semantic review accepts actual tuples; zero model credit.",
+    "unchanged_baseline": {
+      "report": "generator-buffered-throw-baseline-i51la5d3/report.json",
+      "result": "Exact9d8f original/native tuple reused without PHP replay: genuine public Unsupported Generator force-close at request end after11 authentic OUTPUT events P|O|M|C|H|1|S|5|T|; exit1/no timeout/no PHP diagnostic or exit_status/empty stderr/stable untouched6d377. Zero agreement."
+    }
+  },
+  "strict": {
+    "report": "generator-buffered-throw-author-sl-uz2ctciu/report.json",
+    "revision": "46f1d6208",
+    "result": "PASS399; true/exit0/empty stderr/no timeout/stable inputs and HEAD; no source agreement credit."
+  },
+  "fixture_elaboration": {
+    "reports": [
+      "generator-buffered-throw-state-elab-fst15w0c/report.json",
+      "generator-buffered-throw-callback-elab-30z6s91m/report.json"
+    ],
+    "result": "First all four exact generated fixtures at e86d, then only the new authentic callback fixture at d5a. Ordered399 parse/elab, unique EOF and all selected main headers, exit0/empty stderr/no timeout/stable inputs/HEAD; zero interpretation/source credit.",
+    "bridge": "Four fixtures are byte-unchanged after e86d. The46f runtime correction splits four equivalent binding/conjunction premises; strict399 covers the current runtime. d5a adds only the callback wrapper and Makefile command, preserving accepted runtime/source/four-fixture bytes."
+  },
+  "normal_sources": {
+    "new_distinct_originals": 4,
+    "revision": "46f1d6208",
+    "reports": [
+      [
+        "generator-buffered-throw-source-f1wfdoty/report.json",
+        2
+      ],
+      [
+        "generator-buffered-throw-review-source-9pqho3u4/report.json",
+        2
+      ]
+    ],
+    "result": "All four exact normal stdout/stderr/exit tuples agree with retained native captures, without PHP replay: direct normal/replacement cleanup, independent forwarded array/reference-cache COW and payload/current alias. Genuine catch/yield/finally/return tails complete."
+  },
+  "reached_states": {
+    "groups": 5,
+    "driver_premises": 509,
+    "author_premises": 267,
+    "independent_premises": 242,
+    "reports": [
+      [
+        "fiber-state-review-sj8_d0m1/report.json",
+        118
+      ],
+      [
+        "fiber-state-review-xdnfbmds/report.json",
+        75
+      ],
+      [
+        "fiber-state-review-0ndooqf0/report.json",
+        148
+      ],
+      [
+        "fiber-state-review-krdzvufw/report.json",
+        94
+      ],
+      [
+        "fiber-state-review-cbsxn4ju/report.json",
+        74
+      ]
+    ],
+    "revisions": "Main four fronts46f1; separate callback frontd5a (test-only change).",
+    "checks": "Together these cover real direct/forwarded slot-to-TEMP transfer with pending original, no RESULT/orphan owner, exact frame/store/cache preservation, replacement previous chain before catch, reference COW/HCELL3, alias count2-to1 with unchanged GC, and public validity while CURRENT is the real payload destructor (here false, saved-frame receipt true, two receiver owners). Source/line/arity/flags/tail/malformed controls, real one-step transitions and zero/split/full budget continuation accompany these genuine fronts.",
+    "counting": "484 local checks plus25 generic reachability premises. All true/exit0/empty stderr/no timeout/stable inputs and HEAD; no source/state actor failed or was replayed. All actors reaped and CPU leases released."
+  },
+  "preserved_failures_zero": [
+    {
+      "report": "generator-buffered-throw-state-elab-jodyk8s2/report.json",
+      "revision": "b3ea3a5c7",
+      "result": "Original CLI elab failure: scalar ptask/list ptask* binder collision, exit0 diagnostic/no complete IL. Alpha-renamed tails only; affected combined4 gate retried. Zero interpretation/agreement."
+    },
+    {
+      "report": "generator-buffered-throw-author-sl-lq3em62y/report.json",
+      "revision": "e86d553e1",
+      "result": "Original strict failure: fresh binding inside conjunction, exit1 before application. Four equivalent premises split sequentially; affected strict only retried before still-unrun sources/states. Zero agreement."
+    }
+  ],
+  "compatibility": "Existing pending actual-root THROW stays Unsupported. Empty-registry input_resume is identity; existing non-buffered THROW and DISCARD temporary selectors remain pointwise unchanged. Prior16-19 malformed/pending controls stay outside new guards; no prior buffered-throw original required promotion and no old campaign was replayed.",
+  "remaining": [
+    "Pending THROW still needs native exception-opline/global-history modeling.",
+    "Acquired/borrowed, loop/startpack and other yield-result shapes, owning copied detached returns and broader reentry/Fiber/GC interactions remain required.",
+    "No full Generator/core closure, BOLA/security proof, engine-bug classification or intentional divergence is claimed."
+  ],
+  "evidence_recovery": {
+    "archive": "../php-spec-evidence-archive/generator-buffered-throw-20/private.tar.gz",
+    "bytes": 3308990,
+    "sha256": "f4e645c2f98b91bee69e209b2cb38326295473c0927e5280415fe649b9705823",
+    "manifest": "Sibling manifest.json maps15 report roles (including both original failures0) and9 ignored recorder/catalog inputs; full raw originals, generated fixtures, outputs, commands and hashes remain external.",
+    "restore": "Extract at private_root. Native/baseline use untouched6d3771b64. Runtime, main sources/four states and strict use46f1d6208; callback test-only cutd5a499c3e preserves those bytes. Retained private Git branch supplies implementation/tests. Provision read-only references with scripts/private-semantics-references.py; reports identify executed binaries, not archived build prerequisites."
+  },
+  "composition": {
+    "parent": "fcf554d6bcfe8ada7e9b87fbe71ce5131ab04ac9",
+    "private_publication": "1e82bf2a33c50c7dede9168737e5acc564c90a94",
+    "runtime": "Only280/289/301 change, each byte-exact to accepted46f1. Every other parent runtime file, source pipeline, task layout and399-module manifest is preserved.",
+    "pointwise_review": "Incoming30 task tag,270 nullable-array ordinary/reference-return cursor guards,386 WeakMap Closure classes,400 constant duplicate copies,404 bitwise commit,407/408 isset/empty and409 list-key continuations are source/task-disjoint from these GEN_ARGS/native-forwarded THROW/used-yield cleanup fronts. Eager owner/slot/pending machinery is unchanged. Independent iterator_review_15 actual-parent seam CLEAR.",
+    "validation_credit": "Source4/state509/strict399 retain their private cuts; the callback test-only bridge remains explicit. No joined actor, replay or renewed execution credit."
+  }
+}

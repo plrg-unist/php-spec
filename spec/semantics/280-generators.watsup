@@ -46,6 +46,15 @@ dec $generator_input_send(pstate, pgeneratorop) : pstate
 dec $generator_input_take(pgeneratorinput*, nat) : (pvalue?, pgeneratorinput*)
 dec $generator_input_resume(pstate, pgeneratorop) : pstate
 dec $generator_input_blocked(pstate, pgeneratorop) : bool
+dec $generator_input_throw_ready(pstate, pgeneratorop) : bool
+dec $generator_input_throw_forward(pstate, pgeneratorop) : bool
+dec $generator_input_throw_operation(pstate, ptask) : pgeneratorop?
+dec $generator_input_throw_value(pstate, ptask) : pvalue?
+dec $generator_input_throw_source(ptask, pgeneratorop, ptask*) : bool
+dec $generator_input_throw_tail(pstate, pdestructionoperation, ptask*) : bool
+dec $generator_input_throw_here(pstate, pdestructionoperation) : bool
+dec $generator_input_throw_frames(pstate, pdestructionoperation, pframe*) : bool
+dec $generator_input_throw_receipt(pstate, pdestructionoperation) : bool
 dec $generator_resumed(pstate, pgeneratorop) : pstate
 dec $generator_cache_value(pvalue?) : pvalue
 dec $generator_error(pstate, pgeneratorop, text, ptbytes) : pstate
