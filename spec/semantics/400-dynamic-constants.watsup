@@ -324,15 +324,17 @@ dec $dynamic_array_finish(pstate, nat, parray, (pkey, pvalueclass)*, bool) : (ps
 def $dynamic_array_value(S, pvalue, n_seen*, b_copy) = ((S, pvalue, pvalueclass))
   -- if $dynamic_define_value_class(S, pvalue) = (pvalueclass)
   -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
-;; Empty roots retain their actual non-refcounted provenance. Empty descendants
-;; remain outside this slice; a mutable root is rebuilt even when it has no keys.
-def $dynamic_array_value(S, PARRAY n_array, eps, b_copy) = ((S, PARRAY n_array, PVARRAY true eps))
+;; Empty descendants retain authenticated immutable provenance or rebuild
+;; mutable tables canonically. The ancestor list guards every array descent.
+def $dynamic_array_value(S, PARRAY n_array, n_seen*, b_copy) = ((S, PARRAY n_array, PVARRAY true eps))
   -- if $(n_array < |S.ARRAYS|)
   -- if HARRAY n_array <- S.ALLOCATIONS
+  -- if ~(n_array <- n_seen*)
   -- if $array_immutable(S, n_array)
-def $dynamic_array_value(S, PARRAY n_array, eps, b_copy) = $dynamic_array_finish(S, n_array, $array_empty(), eps, b_copy)
+def $dynamic_array_value(S, PARRAY n_array, n_seen*, b_copy) = $dynamic_array_finish(S, n_array, $array_empty(), eps, b_copy)
   -- if $(n_array < |S.ARRAYS|)
   -- if HARRAY n_array <- S.ALLOCATIONS
+  -- if ~(n_array <- n_seen*)
   -- if S.ARRAYS[n_array].ITEMS = eps
   -- if ~$array_immutable(S, n_array)
 def $dynamic_array_value(S, PARRAY n_array, n_seen*, b_copy) = $dynamic_array_finish(S_items, n_array, parray, (pkey_items, pvalueclass_items)*, b_copy)

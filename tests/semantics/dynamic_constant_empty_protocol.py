@@ -81,8 +81,8 @@ def assertions(main, case, constant, stdout, stage):
                 '~$call_descriptors_valid(' + bad + ')']
         checks += ['S_nested = $allocate_array(S_row,$array_insert($array_empty(),KSTRING ($ptascii("child")),DIRECT (PARRAY n_value)))',
             'S_nested.RESULT = KNOWN (PARRAY n_parent)', 'n_parent =/= n_value',
-            '$dynamic_array_value(S_nested,PARRAY n_parent,eps,true) = eps',
-            '$dynamic_array_value(S_nested,PARRAY n_parent,eps,false) = eps']
+            '$dynamic_array_value(S_nested,PARRAY n_parent,eps,true) =/= eps',
+            '$dynamic_array_value(S_nested,PARRAY n_parent,eps,false) = ((S_nested,PARRAY n_parent,PVARRAY false ([(KSTRING ($ptascii("child")),PVARRAY false eps)])))']
     variants = ['[puserconstant[.CLASS = PVARRAY ' + wrong + ' eps]]',
         '[puserconstant[.ORIGIN = PORIGIN 0 eps]]',
         '[puserconstant[.NAME = $ptascii("V43_FORGED")]]', '[puserconstant,puserconstant]']
