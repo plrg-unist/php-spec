@@ -142,7 +142,7 @@ S_catch_found.COMPLETION = NORMAL \/ S_catch_found.COMPLETION = BUDGET
 S_catch = S_catch_found[.COMPLETION = NORMAL]
 S_catch.TODO = (CATCH_BIND porigin_catch n_index n_error) :: ptask_catch*
 S_catch.OBJECTS[n_error] = THROWABLE pthrowable_error
-pthrowable_error.KIND = "Exception" /\ pthrowable_error.PREVIOUS = eps
+pthrowable_error.KIND = "Exception" /\ $throwable_previous_id(S_catch,n_error) = eps
 S_catch.OBJECTS = S.OBJECTS
 S_catch.DESTRUCTION.CALLED = S.DESTRUCTION.CALLED ++ [n_selector]
 ~(HOBJECT n_selector <- S_catch.ALLOCATIONS)
@@ -186,7 +186,7 @@ S_second_found.COMPLETION = NORMAL \/ S_second_found.COMPLETION = BUDGET
 S_second = S_second_found[.COMPLETION = NORMAL]
 S_second.TODO = (CATCH_BIND porigin_second n_second n_error) :: ptask_second*
 S_second.OBJECTS[n_error] = THROWABLE pthrowable_error
-pthrowable_error.PREVIOUS = eps
+$throwable_previous_id(S_second,n_error) = eps
 S_second.STORE[n_answer] = DEFINED (PINT 42)
 ~(HOBJECT n_selector <- S_second.ALLOCATIONS)
 $ds_guard(S_second)
