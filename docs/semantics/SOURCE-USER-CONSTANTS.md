@@ -77,10 +77,11 @@ The quiet-coalesce path captures the already computed left result before tempora
 ## Dynamic global constants
 
 Module400 implements `define`/`defined` for global string names, primitive
-values and bounded array snapshots, including authenticated interned and request strings. Existing CONFIG
+values, certified stdClass/user-instance donors and bounded array snapshots,
+including authenticated interned and request strings. Existing CONFIG
 argument evaluation and retained dynamic-callee selection supply the actual
-completed arguments. Registration stores the primitive value or copied array
-snapshot in `USERCONSTANTS`; later
+completed arguments. Registration stores the value, captured object pointer or
+copied array snapshot in `USERCONSTANTS`; later
 changes to the name or value CV do not change the row. The string class follows
 its actual carrier (`PVSTRING true` for interned, false for request strings).
 Identity-unknown legacy scalar string payloads remain Unsupported. Array leaves
@@ -93,7 +94,7 @@ for lookup separately. Fixed global/explicit-global `define` and retained dynami
 selection authenticate the call site; namespaced fallback is outside this slice.
 
 Public row checks require a genuine source/selection, canonical unique name,
-matching primitive/carrier class and empty read/receive metadata. Available immutable
+matching value class and empty read/receive metadata. Available immutable
 positional literal facts constrain names and values. Variable-derived payloads keep
 the existing structural value policy: the row is the runtime capture, not a full
 proof of past argument evaluation. Validators never reread mutable CVs.
@@ -360,8 +361,9 @@ recursively dereference source cells into new DIRECT entries. Reinserting surviv
 keys rebuilds NEXT, positions and serial
 metadata; ordinary copies and later source/reference writes preserve the constant.
 Nonempty acyclic trees contain primitive/carrier leaves, byte-only strings and
-certified live stdClass donors. Existing carrier classes and object
-birth classes are retained; copied containers share the exact object pointers.
+certified live stdClass or user-instance donors. Existing carrier classes and
+object birth classes are retained; copied containers share the exact object
+pointers.
 Repeated noncyclic children may copy independently.
 Byte-only strings keep their exact bytes in 0..255 and use conservative `PVSTRING false`
 without string-table allocation or recovered scanner/refcount provenance. This
@@ -446,18 +448,25 @@ no duplicate Warning. Explicitly breaking edges allows a fresh retry or ordinary
 duplicate reporting. Invalid edges remain separate from genuine recursion, and
 known compiled literal payloads cannot be replaced by forged cyclic captures.
 [Recursive-input review](../../coverage/semantics/define-recursive-array-review.json).
-Plain strings inside compiled literal arrays remain a separate leaf-admission
-boundary; the accepted scalar/carrier fold is unchanged.
+Plain compiled string leaves remained a separate boundary at that cut; the
+literal-string follow-up above admits them without replaying that campaign.
 
-String-name `define` also retains an already-certified live stdClass donor with
-an omitted or false flag. Registration stores the captured object pointer and
-its completed-birth class, transferring the call owner to a constant-row owner
+String-name `define` also retains an already-certified live stdClass donor or
+completed user instance with an omitted or false flag. Registration stores the
+captured object pointer and its completed-birth class, transferring the call owner
+to a constant-row owner
 without allocation. Named/selected sends retain their earlier value even when
 a later argument rebinds the caller's CV. Duplicate warnings keep the original
 row and callback property writes; throwing handlers preserve the Exception trace
 owners until ordinary catch/unset cleanup. Historical rows validate their stored
 birth/value and source policy, without reconstructing a past mutable CV or flag.
 [Certified define review](../../coverage/semantics/define-stdclass-review.json).
+User-instance admission derives the exact object/SITE class from its recorded
+global construction and reuses completed-header, publication-prefix, no-busy-phase
+and live-allocation guards. Copying arrays shares the same instance pointer;
+property writes remain visible through donor rows and copied leaves. No constructor
+is replayed, and existing destructor/trace cleanup keeps its ordinary owners.
+[Instance define review](../../coverage/semantics/define-certified-instance-review.json).
 Ordinary uncertified objects, other owning array leaves,
 owning true/coerced flags, coerced names and
 wider owning define domains remain partial.
@@ -552,7 +561,8 @@ call keeps its original value and selected callee. Available immutable argument
 facts must match that exact value. Conversion changes only the API slot: a weak
 missing-name Error shows the received string in its trace, while strict TypeErrors
 retain the original argument and actual parameter name. Caller CVs stay unchanged.
-Stringable/array reception and packed/owning forms remain separate.
+Stringable and bounded array query reception are covered below; packed/wider
+owning forms remain separate.
 The [scalar-name review](../../coverage/semantics/global-constant-scalar-name-review.json)
 records source-backed reception, trace values, source rejection and budgets.
 
@@ -565,6 +575,23 @@ the converted string; a throwing handler keeps null in the API trace and cancels
 the lookup. Strict null calls raise `TypeError` without dispatching a deprecation.
 The [null-name review](../../coverage/semantics/global-constant-null-name-review.json)
 records genuine warning/resume fronts, source refusals and budget continuation.
+
+One positional Stringable query name now uses the existing user-method conversion
+pipeline. Weak `constant`/`defined` calls retain the raw object through
+`__toString()`; a normal string return replaces the API slot in a separate CONFIG
+step before ordinary non-NUL global lookup. A missing-name Error therefore traces
+the received string. Strict calls reject the raw object without method entry.
+A method-created Exception keeps the real method/API/caller trace, raw receiver,
+identity and callback effects while both conversion consumers are discarded.
+Dedicated saved-site guards enforce one positional argument even in file-enabled
+states; query kinds stay outside the broad string-conversion kind predicate.
+The [Stringable-query review](../../coverage/semantics/constant-query-stringable-name-review.json)
+binds source4/author463 at bc3590e16 and independent179 at 9fa625b8b, all runtime
+931f6caac. The sole pre-main peer frame-field assertion failure retains zero credit;
+only its one-line fixture correction repeats. Retained propertyless receivers,
+ordinary typed-string returns and existing global values bound the validated slice;
+sole-owner destruction, wider receiver/return lifetimes, class/NUL/HALT names and
+named/packed/owner forms remain partial. No task/schema or shared stringifier change.
 
 `define` also receives int/bool/float names with nonowning primitive values and
 an omitted/already-false flag. Each source send maps to its normalized captured
@@ -733,7 +760,8 @@ and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`. `PHP_FUNCTION(constant)` us
 exception-class lookup and `ZVAL_COPY_OR_DUP`; `zend_declare_typed_class_constant`
 interns direct string values before installation.
 Stored cyclic trees, other objects, true/coerced array flags,
-Stringable names and array names beyond the bounded flat query/DEFINE domains,
+Stringable names beyond the bounded retained query domain,
+array names beyond the bounded flat query/DEFINE domains,
 array/object values with scalar or null names, true/NULL/NaN
 flags with scalar names, nonbool flags with nonfinite float names, true/NULL/NaN flags with
 null names, special/startup names with flags or values beyond the bounded follow-ups,

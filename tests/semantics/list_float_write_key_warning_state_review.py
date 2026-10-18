@@ -58,7 +58,7 @@ def conditions(name, program, path, stdout):
         '$list_float_write_key_plan(S[.STORE[n_key_cell] = DEFINED PNULL]) = eps',
         '$list_float_write_key_plan(S[.STORE[n_key_cell] = DEFINED (PFLOAT 4611686018427387904)]) = eps',
         '$list_float_write_key_plan(S[.STORE[n_key_cell] = DEFINED (PFLOAT 9221120237041090560)]) = eps',
-        '$list_float_write_key_plan(S[.STORE[n_source] = DEFINED PNULL]) = eps',
+        '$list_float_write_key_plan(S[.STORE[n_source] = DEFINED (PBOOL true)]) = eps',
         f'$list_float_write_key_plan(S[.TODO = (LIST_FETCH (REFERENCE n_source) {index} expression false phpType13* z) :: ptask_tail*]) = eps',
         '$call_descriptors_valid(S)', '$heap_valid($heap_graph(S))',
     ]

@@ -133,8 +133,11 @@ alongside its saved source cell. Releasing that protection precedes lookup:
 retirement silently supplies null, while a surviving table can enter the missing
 warning. Later reference fetches and result delivery resolve the saved cell,
 including after source-name rebinding or null replacement. A selected reference
-fetch first makes its initially array-valued source writable before dispatch. After
-protection is released, exactly one remaining table owner permits reference
+fetch first makes its source writable before dispatch. Null or reference-wrapped
+false creates an empty mutable array without a false-conversion deprecation; an
+undefined CV first acquires a null reference silently. The key handler sees the
+created table, and a throw preserves earlier null stores while cancelling binding.
+After protection is released, exactly one remaining table owner permits reference
 acquisition there; zero or multiple owners yield a fresh detached null reference.
 Writable missing slots are created silently, and throws cancel binding. Wider
 conversion producers remain partial.

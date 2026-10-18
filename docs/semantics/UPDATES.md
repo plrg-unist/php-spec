@@ -327,6 +327,13 @@ late aliases; errors and supplied throws cancel the store, preserving callback
 effects. [Precision string evidence](../../coverage/semantics/precision-string-review.json)
 records twelve originals and 1089 focused SL premises; earlier cuts receive no renewed credit.
 
+Fractional-LEFT compound operations with an initially quiet integer RHS now continue
+when the first handler changes that RHS. Three marker handoffs reuse the existing
+float/scalar/string and rejected-conversion pipeline, preserving historical LEFT
+and all earlier initial guards. Stores detach late aliases; errors and supplied
+throws cancel storage while callback effects survive. [Single-LEFT evidence](../../coverage/semantics/single-left-bridge-review.json)
+records ten originals and 857 focused SL premises; earlier cuts receive no renewed credit.
+
 Stringable `.=` converts the left value before dereferencing the selected RHS
 slot. A defined direct RHS CV is borrowed and follows callback rebinding; an
 initially undefined read keeps its warned null value, while a later unset is a

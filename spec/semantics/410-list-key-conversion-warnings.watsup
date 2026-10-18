@@ -135,8 +135,8 @@ def $error_call_valid(S, perrorcall) = true
 def $task_nodes(LIST_KEY_FLOAT_REF_RESULT n_source n_array n expression phpType13* z n_bits i 0) = [HCELL n_source, HARRAY n_array]
 def $task_nodes(LIST_KEY_FLOAT_REF_RESULT n_source n_array n expression phpType13* z n_bits i 1) = [HCELL n_source]
 
-;; FETCH_LIST_W separates before conversion and aborts if the old table has
-;; anything other than one owner after releasing the callback protection.
+;; FETCH_LIST_W makes arrays writable before conversion; reference-wrapped
+;; null/false initialize silently. After protection, exactly one owner is needed.
 dec $list_float_write_key_item(pstate, nat, expression, phpType13*, int) : poperand?
 def $list_float_write_key_item(S, n, expression, phpType13*, z) = (VARIABLE n_key* z_key)
   -- if S.ORIGIN = (porigin)
@@ -157,10 +157,9 @@ def $list_float_write_key_item(S, n, expression, phpType13*, z) = (VARIABLE n_ke
   -- if z_key = $variable_line(BYTES text_key, metadata_key)
 def $list_float_write_key_item(S, n, expression, phpType13*, z) = eps -- otherwise
 
-dec $list_float_write_key_source(pstate, nat, nat, nat, expression, phpType13*, int, nat, int, nat) : bool
-def $list_float_write_key_source(S, n_source, n_array, n, expression, phpType13*, z, n_bits, i, n_phase) = true
-  -- if $(n_phase < 2 /\ n_bits < 18446744073709551616 /\ n_array < |S.ARRAYS|)
-  -- if n_phase = 1 \/ (HARRAY n_array) <- S.ALLOCATIONS
+dec $list_float_write_key_origin(pstate, nat, nat, expression, phpType13*, int, nat, int) : bool
+def $list_float_write_key_origin(S, n_source, n, expression, phpType13*, z, n_bits, i) = true
+  -- if $(n_bits < 18446744073709551616)
   -- if $float_long(n_bits, true) = (i, [PRECISIONLOSS])
   -- if $list_float_write_key_item(S, n, expression, phpType13*, z) = (VARIABLE n_key* z_key)
   -- if S.ORIGIN = (porigin)
@@ -170,12 +169,27 @@ def $list_float_write_key_source(S, n_source, n_array, n, expression, phpType13*
   -- if $origin_child((porigin_assign), [PCFIELD 1]) = (porigin_rhs)
   -- if $origin_node(S.SOURCES, porigin_rhs) = (expression_rhs)
   -- if $list_missing_operand_source(S, porigin_rhs, expression_rhs, REFERENCE n_source, true)
+def $list_float_write_key_origin(S, n_source, n, expression, phpType13*, z, n_bits, i) = false -- otherwise
+
+dec $list_float_write_key_source(pstate, nat, nat, nat, expression, phpType13*, int, nat, int, nat) : bool
+def $list_float_write_key_source(S, n_source, n_array, n, expression, phpType13*, z, n_bits, i, n_phase) = true
+  -- if $(n_phase < 2 /\ n_array < |S.ARRAYS|)
+  -- if n_phase = 1 \/ (HARRAY n_array) <- S.ALLOCATIONS
+  -- if $list_float_write_key_origin(S, n_source, n, expression, phpType13*, z, n_bits, i)
 def $list_float_write_key_source(S, n_source, n_array, n, expression, phpType13*, z, n_bits, i, n_phase) = false -- otherwise
+
+dec $list_float_write_key_container(pstate, nat) : bool
+def $list_float_write_key_container(S, n_source) = true
+  -- if $list_missing_array(S, REFERENCE n_source) =/= eps
+def $list_float_write_key_container(S, n_source) = true
+  -- if $(n_source < |S.STORE|) /\ (HCELL n_source) <- S.ALLOCATIONS
+  -- if S.STORE[n_source] <- [DEFINED PNULL, DEFINED (PBOOL false)]
+def $list_float_write_key_container(S, n_source) = false -- otherwise
 
 dec $list_float_write_key_plan(pstate) : (nat, nat, expression, phpType13*, int, nat, int)?
 def $list_float_write_key_plan(S) = ((n_source, n, expression, phpType13*, z, n_bits, i))
   -- if S.TODO = (LIST_FETCH (REFERENCE n_source) n expression true phpType13* z) :: ptask_tail*
-  -- if $list_missing_array(S, REFERENCE n_source) = (n_array)
+  -- if $list_float_write_key_container(S, n_source)
   -- if $list_float_write_key_item(S, n, expression, phpType13*, z) = (VARIABLE n_key* z_key)
   -- if S.RESULT = VARIABLE n_key* z_key
   -- if ~$environment_blocked(S, n_key*)
@@ -185,7 +199,7 @@ def $list_float_write_key_plan(S) = ((n_source, n, expression, phpType13*, z, n_
   -- if $(n_bits < 18446744073709551616)
   -- if ~$foreach_released_container_cell(S, n_cell) /\ ~$update_released_array_name(S, n_key*)
   -- if $float_long(n_bits, true) = (i, [PRECISIONLOSS])
-  -- if $list_float_write_key_source(S, n_source, n_array, n, expression, phpType13*, z, n_bits, i, 0)
+  -- if $list_float_write_key_origin(S, n_source, n, expression, phpType13*, z, n_bits, i)
 def $list_float_write_key_plan(S) = eps -- otherwise
 
 def $list_float_write_key_pending(S) = true
@@ -196,14 +210,14 @@ def $list_float_write_key_pending(S) = false -- otherwise
 rule PhpStep/list-float-write-key-warning: S ~> $error_dispatch(S_prepared, 8192, $list_float_key_message(n_bits), z, DIAGNOSTIC "Deprecated" $list_float_key_message(n_bits) z, LIST_KEY_FLOAT_WRITE_RESULT n_source n_array n expression phpType13* z n_bits i 0)
   -- if $list_float_write_key_pending(S)
   -- if $list_float_write_key_plan(S) = ((n_source, n, expression, phpType13*, z, n_bits, i))
-  -- if S_prepared = $location_array(S, ROOT n_source, z)
+  -- if S_prepared = $fetch_location_array(S, ROOT n_source, z)
   -- if S_prepared.COMPLETION = NORMAL
   -- if S_prepared.STORE[n_source] = DEFINED (PARRAY n_array)
   -- if $list_float_write_key_source(S_prepared, n_source, n_array, n, expression, phpType13*, z, n_bits, i, 0)
 rule PhpStep/list-float-write-key-prepare-abrupt: S ~> S_prepared[.TODO = eps]
   -- if $list_float_write_key_pending(S)
   -- if $list_float_write_key_plan(S) = ((n_source, n, expression, phpType13*, z, n_bits, i))
-  -- if S_prepared = $location_array(S, ROOT n_source, z)
+  -- if S_prepared = $fetch_location_array(S, ROOT n_source, z)
   -- if S_prepared.COMPLETION =/= NORMAL
 rule PhpStep/list-float-write-key-release: S ~> S[.TODO = (LIST_KEY_FLOAT_WRITE_RESULT n_source n_array n expression phpType13* z n_bits i 1) :: ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (LIST_KEY_FLOAT_WRITE_RESULT n_source n_array n expression phpType13* z n_bits i 0) :: ptask_tail*

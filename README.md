@@ -26,6 +26,8 @@ Value fetches in mixed patterns release the old table's temporary protection fir
 expiry supplies null, while a surviving table can enter the following missing-key warning.
 Reference fetches make the array writable before the callback, then bind into the
 selected table only if one owner remains; zero or multiple owners yield a detached null reference.
+Null and reference-wrapped false sources initialize silently before that callback;
+an undefined source variable first becomes a null reference without a read warning.
 
 The [checked eval parser service](docs/semantics/DYNAMIC-SOURCE-SERVICE.md)
 accepts raw eval-source bytes, uses a native parse-only scanner for rejection
@@ -679,6 +681,12 @@ saved numbers and later diagnostic messages survive RHS replacement, references
 or unset. Success detaches late aliases; errors and supplied throws cancel the
 store. Twelve originals and 1089 focused SL premises pass in the
 [precision string ledger](coverage/semantics/precision-string-review.json).
+Fractional LEFT with an initially quiet integer RHS now also reaches that delayed
+conversion pipeline when its first handler changes RHS. Three marker handoffs reuse
+the post-LEFT conversions; cached LEFT survives, stores detach aliases, and errors
+or supplied throws cancel storage while retaining callback effects. Ten originals
+and 857 focused SL premises pass in the
+[single-LEFT ledger](coverage/semantics/single-left-bridge-review.json).
 
 In those both-fractional routes, a nonnumeric string or array RHS produced by the
 first callback now raises TypeError with the live operand types. Callback writes
@@ -1127,6 +1135,12 @@ registration. Later arguments still run and can change ordinary fields or shared
 references after the name capture.
 [Four source agreements and 590 state premises](coverage/semantics/define-array-name-review.json)
 cover NULL/strict-flag/body-warning priority and raw array/candidate/flag traces.
+Retained, propertyless Stringable names now enter `__toString()` before positional
+`constant()`/`defined()` global lookup. Success replaces only the API slot; strict
+calls reject the raw object before entry, and a method throw cancels the query.
+[Four source agreements and 642 state premises](coverage/semantics/constant-query-stringable-name-review.json)
+cover raw versus converted traces, selected callees, callback effects and discard.
+Sole-owner destruction, wider receivers and named/packed forms remain partial.
 Positional `define()` calls with primitive arguments also reject counts below two
 or above three before name/flag reception or registration. Exact count messages
 and raw API arguments survive all argument effects, including a captured true
@@ -1306,9 +1320,14 @@ stdClass donors. Named/selected calls preserve the captured pointer through late
 CV changes, and duplicate handlers keep the old binding and property writes on
 normal return or throw. Existing call and Exception-trace cleanup release the
 temporary owners. [Certified define review](coverage/semantics/define-stdclass-review.json).
+Completed user-instance donors also retain their exact construction receipt and
+pointer in direct definitions and copied array leaves. Typed property aliases
+stay shared; existing normal, throwing-handler and shutdown cleanup retain the
+ordinary owners. [Instance define review](coverage/semantics/define-certified-instance-review.json).
 Fresh definitions with an omitted or captured false third flag also copy nonempty
-array trees containing certified stdClass leaves. Copied containers freeze source
-reference values while object pointers and property writes remain shared, including
+array trees containing certified stdClass or user-instance leaves. Copied
+containers freeze source reference values while object pointers and property
+writes remain shared, including
 selected eval calls and nested query COW. [Array-object define review](coverage/semantics/define-stdclass-array-review.json).
 Duplicate nonempty array definitions retain a private canonical candidate through
 the Warning while callbacks and Exception traces keep the original API argument.
@@ -1317,7 +1336,7 @@ the old row and callback writes. [Array-duplicate review](coverage/semantics/def
 Explicit false flags retain their captured value through callbacks and traces;
 copying observes reference changes from all argument expressions.
 [False-flag array review](coverage/semantics/define-stdclass-array-false-flag-review.json).
-Ordinary uncertified objects, other owning leaves, nested empties and wider
+Ordinary uncertified objects, other owning leaves and wider
 flags/names remain partial.
 Class-qualified `defined` now checks inherited user constants with lexical visibility
 and quiet misses. Named autoload resumes the same captured query once.
