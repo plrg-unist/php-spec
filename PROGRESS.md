@@ -7,24 +7,19 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Referenced public float-property `empty` now captures the original inner cell
-before its NaN Warning. A handler can rebind the property to another reference:
-old0/new1 yields true, old1/new0 or oldNaN/new0 false, and supplied throw preserves
-the same Exception at catch. Saved receiver/old-cell aliases keep storage live;
-the marker owns neither. Four originals agree at `3cc556f60`; 298 focused premises
-at `32216baeb` (257 reached +41 derived) cover actual cell/type-source transfer,
-outside-frame owners, normal/throw cleanup and budgets. Derived old1/NaN and a
-well-formed direct-mode bridge add no renewed CLASS92 credit. One optional-tuple
-interpreter failure remains zero; native partial1/4 sampling is qualified. Only
-Module30's optional selector and411 capture/read helpers change; generic reference,
-GC, return and warning rules stay unchanged. Retired/nonfloat cells, sole-owner
-receiver lifetime, wider quiet-CV GC and mutable-empty array retirement remain open.
-[Reference NaN review](coverage/semantics/quiet-public-reference-nan-review.json).
+Mutable empty array getter RVs now cache true while the receiver-only phase
+orders table disposal before receiver release. A sole mutable table is absent and
+unbuffered at the receiver destructor; a held table remains buffered with one
+owner. Three originals agree at `471c0a3d7`. The 265 focused premises across normal171 at
+`9502cfd72` and corrected throw94 at `16e175dda` (245 reached +20 derived) cover
+actual table/owner/GC state, cached true/false, the same Exception at catch and
+budgets. One throwing-fixture binding diagnostic remains zero; accepted normal
+checks were not replayed. A separate native pair observes roots 1 versus 2 and
+retains zero source credit; no `gc_status` semantics is claimed. Only408's ready,
+cached-result and finish guards change; generic array, GC and destruction rules
+stay unchanged. Sole-owner public-NaN lifetime and wider quiet-CV GC remain open.
+[Mutable array RV review](coverage/semantics/magic-empty-mutable-array-rv-review.json).
 Earlier class cuts retain their original evidence without replay.
-
-Composed over `4d27a8a60` after pointwise review of Closure comparisons,
-reference-return cleanup, constant API arity and compound-warning selectors.
-Source4/state298 retain their tested cuts; no joined actor or renewed credit.
 
 Positional `define` calls with primitive arguments now reject counts outside
 two through three before name/flag reception and registration, after all argument

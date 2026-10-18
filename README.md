@@ -2897,7 +2897,11 @@ receiver release and catch; [stdClass RV review](coverage/semantics/magic-empty-
 Nonempty array RVs now retain the phase through owned-element disposal; immutable
 empty literals yield true directly. Three originals and focused255 checks cover
 normal/throw cleanup, shared owners and budgets; [array RV review](coverage/semantics/magic-empty-array-rv-review.json).
-Other signatures, receivers, mutable-empty arrays/other internal-object RVs and
+Mutable empty RVs now cache true in that phase: a sole table retires before the
+receiver destructor, while a held table survives with one owner. Three originals
+and 265 focused premises across two cuts cover normal/throw cleanup and budgets;
+[mutable array RV review](coverage/semantics/magic-empty-mutable-array-rv-review.json).
+Other signatures, receivers, other internal-object RVs and
 wider recursive/coalesce magic combinations remain unsupported.
 Hooked iteration, defaulted virtual hooks, other paired or virtual setters, wider trait
 setters, other explicit setter parameter forms, references, other inherited/trait

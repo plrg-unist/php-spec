@@ -1,0 +1,134 @@
+{
+  "scope": "Terminal inherited external CV/literal private-property empty with bool __isset and untyped nonref __get: mutable-empty by-value array RV disposal before saved-receiver release, including a real held-array owner.",
+  "implementation": {
+    "base": "6b07628917ec22779339978d8be5dd3b461d8d3a",
+    "revision": "471c0a3d7027043ab27707ef00795c63355ee965",
+    "modules": 401,
+    "change": "408 reuses the existing receiver-only phase/record: admit mutable-empty arrays, cache pure empty truth in RESULT before ordinary RV disposal and preserve the restored Boolean on finish. Malformed nonbool resumes are Unsupported. Immutable-empty direct delivery, roots/guards/discard and generic array/GC/return/destruction rules remain unchanged."
+  },
+  "engine": {
+    "target": "PHP8.5.10 CLI NTS64",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_object_handlers.c zend_std_has_property: clear IN_GET, evaluate getter RV truth, zval_ptr_dtor(&rv), then clear IN_ISSET and OBJ_RELEASE(receiver)",
+      "Zend/zend_operators.h i_zend_is_true IS_ARRAY: element-count truth before disposal",
+      "Zend/zend_variables.c zval_ptr_dtor and Zend/zend_variables.h i_zval_ptr_dtor: shared decrement calls gc_check_possible_root",
+      "Zend/zend_hash.c zend_array_destroy: remove buffered table before child/free work; Zend/zend_hash.h zend_array_release: immutable release is separate"
+    ],
+    "intentional_divergences": []
+  },
+  "sources": {
+    "catalogue": "tests/semantics/magic_empty_mutable_array_rv_cases.json",
+    "original_root": "/home/user/workspace/php-spec/.tools/magic-empty-mutable-array-rv-private-94/.tools/magic-empty-mutable-array-rv-probes-94",
+    "maintained_byte_identical": true,
+    "cases": "Getter builds [new stdClass], copies/drops an alias to prebuffer the table, unsets its only item, optionally saves global held, nulls caller CV and returns the mutable-empty table. Receiver destructor returns or throws an Exception; no child remains in RV."
+  },
+  "validation": {
+    "native": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-mutable-array-rv-private-94/.tools/magic-empty-mutable-array-rv-probes-94/native-first/report.json",
+      "sha256": "fe20ab49f3cc69a308710b9e13feb513f78062a8da30df5f43d3a5fbe13cf6af",
+      "revision": "6b07628917ec22779339978d8be5dd3b461d8d3a",
+      "result": "Three exact N/H/X:I|G|g|D|T-or-C|E| tuples,14 stdout bytes each/zero stderr/exit0",
+      "source_agreements": 0
+    },
+    "baseline": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-mutable-array-rv-private-94/.tools/magic-empty-mutable-array-rv-probes-94/accepted-current-baseline/report.json",
+      "sha256": "e6eb30edb1318009eb1c530424a05ae27e6d447b84f2be8a111b7c32b66dbe72",
+      "revision": "6b07628917ec22779339978d8be5dd3b461d8d3a",
+      "result": "Three checked magic empty getter result type Unsupported/CLI1;13.255/13.475/13.026s",
+      "source_agreements": 0
+    },
+    "changed_source": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-mutable-array-rv-private-94/.tools/magic-empty-mutable-array-rv-probes-94/changed-model-e1wbnd8a/report.json",
+      "sha256": "adb1d1ac58190cb053455b985a55529e5787e7bdc2a6b7779853a6373c5b237f",
+      "revision": "471c0a3d7027043ab27707ef00795c63355ee965",
+      "result": "Three checked normal exact native tuples;13.036/13.670/14.217s",
+      "source_agreements": 3
+    },
+    "normal_state": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-mutable-array-rv-private-94/.tools/magic-empty-mutable-array-rv-protocol-cu0zlfdr/report.json",
+      "sha256": "b5e7a57ac41194b14058fcc8aab84c6c9b452ad22f84f4914cbd04543ec9bbec",
+      "revision": "9502cfd72e8be3af48a3fd8a77c8694800e0d49c",
+      "result": "Only sole94 and shared77 accepted (151 reached+20 derived), exact true;AL/SL6.923/16.670 and6.933/16.414s. Enclosing report passed=false because later throwing AL failed before its application.",
+      "source_agreements": 0
+    },
+    "throw_state": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-mutable-array-rv-private-94/.tools/magic-empty-mutable-array-rv-protocol-3h3eq18g/report.json",
+      "sha256": "4c96782e72c6ab9f5913121f43440b8ab641a5f9aa40da224f59cfbc66999a89",
+      "revision": "16e175ddadb9d62c4c37d9f43db82e5f87b7db28",
+      "result": "Throwing-only94 reached premises, exact true;AL7.107/SL20.639s. Combined acceptance265=245 reached+20 derived across two cuts, not one full265 run.",
+      "source_agreements": 0
+    }
+  },
+  "native_gc_diagnostic": {
+    "path": "/home/user/workspace/php-spec/.tools/magic-empty-mutable-array-rv-private-94/.tools/magic-empty-mutable-array-rv-probes-94/native-gc/report.json",
+    "sha256": "a4a57a67c2fd48c34f80c00fd4b019e703a8ec4040b00528690cd62d94992a6a",
+    "revision": "6b07628917ec22779339978d8be5dd3b461d8d3a",
+    "result": "At receiver destructor gc_status roots1 sole versus2 held, observed delta1. Copy/drop prebuffers: evidence of removal versus retention, not new insertion at RV drop.",
+    "source_agreements": 0,
+    "semantic_credit": 0,
+    "bridge": "Catalogue embeds exact diagnostic bytes; preparation checks only output-prefix and destructor-observation differences. Main reached-D proofs identify the exact table allocation/owner/buffer. No diagnostic-prefix model actor or gc_status implementation/agreement is claimed."
+  },
+  "focused_scope": "Actual empty ITEMS/NEXT1/SERIAL1 and prebuffered HARRAY; receiver1 after callerCV=null; cached true in ordinary destruction operation, receiver-only phase; sole table absent/unbuffered versus held owner1/buffered before receiver D; normal/throw final output, same live Exception at genuine CATCH_BIND and budget equality. Derived malformed-cache refusal and nonempty integer-leaf false-result compatibility. Historical CLASS89 mutable-empty negative is retired without replay or renewed historical255 credit.",
+  "nonpassing": [
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-mutable-array-rv-private-94/.tools/magic-empty-mutable-array-rv-protocol-cu0zlfdr/throwing/compiler.stdout",
+      "sha256": "60d3a2f41a6a2a1388866f4ce5dd6d3830009f898e602c24df69ecbc5dbc30a1",
+      "result": "AL exit0 diagnostic: fresh destructor-context binder in Boolean conjunction. Throw application unrun/zero credit; fixture-only standalone split, then only throwing AL/SL repeated."
+    }
+  ],
+  "execution": {
+    "cwd": "/home/user/workspace/php-spec/.tools/magic-empty-mutable-array-rv-private-94",
+    "environment": "LC_ALL=C TZ=UTC PHP_SPEC_SCRIPT_ENCODING absent; jobs1; native/baseline/GC CPU3, source/state CPU1; fixed catalogue profile.",
+    "caps": "native45; model60/outer75/steps100000 per case serial; each focused AL90 then strictSL90/cachefalse/dettrue/stop-first.",
+    "commands": [
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 3 python3 -u .tools/magic-empty-mutable-array-rv-probes-94/run.py native --revision 6b07628917ec22779339978d8be5dd3b461d8d3a",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 3 python3 -u .tools/magic-empty-mutable-array-rv-probes-94/run.py baseline --revision 6b07628917ec22779339978d8be5dd3b461d8d3a",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 3 python3 -u .tools/magic-empty-mutable-array-rv-probes-94/run-native-gc.py --revision 6b07628917ec22779339978d8be5dd3b461d8d3a",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/magic-empty-mutable-array-rv-probes-94/run.py changed --revision 471c0a3d7027043ab27707ef00795c63355ee965",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u tests/semantics/magic_empty_mutable_array_rv_protocol.py --revision 9502cfd72e8be3af48a3fd8a77c8694800e0d49c",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u tests/semantics/magic_empty_mutable_array_rv_protocol.py --case throwing --revision 16e175ddadb9d62c4c37d9f43db82e5f87b7db28"
+    ],
+    "affinity": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-mutable-array-rv-private-94/.tools/magic-empty-mutable-array-rv-probes-94/affinity-native-first.json",
+        "sha256": "058842346b1b4f3a0412d2aafa5f28a9525823c019624038b8b317c7602dada8"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-mutable-array-rv-private-94/.tools/magic-empty-mutable-array-rv-probes-94/affinity-accepted-current-baseline.json",
+        "sha256": "a0531c7d5a6c73ce3912b4039e5fd5505493a8acdfa1298a175d9922f0868275"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-mutable-array-rv-private-94/.tools/magic-empty-mutable-array-rv-probes-94/affinity-native-gc.json",
+        "sha256": "816e82db838f7e5ace0b42a5f8dc42ec4e9a4c7c76eb910d1379c53ddddb034d"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-mutable-array-rv-private-94/.tools/magic-empty-mutable-array-rv-probes-94/affinity-changed-source-94.json",
+        "sha256": "62db4940cf7e3b71f80989a32b96882b89f9e64e11e5ee8f34b70f9f8c4f5a5f"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-mutable-array-rv-private-94/.tools/magic-empty-mutable-array-rv-probes-94/affinity-state-94.json",
+        "sha256": "8fb12e7c2c0679770e82dcc9bc4600938b4af2ce7e771df11617ff72819991cc"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-mutable-array-rv-private-94/.tools/magic-empty-mutable-array-rv-probes-94/affinity-state-94-repair1.json",
+        "sha256": "359ba22d2671f8adaa3154034bdf05f7e1bb50845595a94ff370a8dea2d75b02"
+      }
+    ],
+    "observations": "Native3 CPU3 masks captured; only shared fullargv, sole/throw argv empty. Native-GC partial1/2 mask/emptyargv; incomplete observer exit1 qualified,0credit. Baseline3/source3 full masks/argv. First state observer partial5/6 due throw AL failure; accepted normal4 have fullCPU1/argv; correctedthrow2 complete. Inputs/head/status/fixtures stable, groups empty and actors/observers reaped."
+  },
+  "tools": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "private_source_driver_sha256": "76def13f9ccc2ea6a2dbbb2531d72502ffdcd3a3d831c11387aa56c7b5fa01e5",
+    "native_gc_driver_sha256": "40fc3748e916071b6e6ffb86434b712260d6aba7eb66425f28c1c73c25eeddb0",
+    "focused_driver_sha256": "e92f6fbaf71873082ee1a0fb8eb7fe6b8fd3d981af22056fa1f1bea6c6de635d"
+  },
+  "limits": "Existing same-owner/public/nonref magic signatures and external CV/literal terminal-empty scope remain bounded. Other internal RVs, wider lifecycles/receivers/signatures, sole-owner public-NaN retirement and wider quiet-CV GC remain open. No generic gc_status source semantics or full-family closure; earlier class evidence retains original identities without replay.",
+  "artifacts": "Original ignored raw reports/streams/processes and private drivers remain at their paths. Maintained originals/catalogue/focused harness recover from tested commits; diagnostic originals are also embedded in the catalogue. No bulky archive, backup WT or receipt chain tracked.",
+  "review": {
+    "independent": "class_review_84",
+    "accepted": "Production, native/baseline/source3, split focused265 and concise publication independently accepted. Inventory169/306 and diff checks pass; no semantic rerun for publication."
+  }
+}
