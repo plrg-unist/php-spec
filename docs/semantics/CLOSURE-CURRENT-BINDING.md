@@ -138,8 +138,9 @@ trace-frame checks are pure projections; the supplied exception keeps its old
 empty trace. Invalid/embedded-NUL name diagnostic formatting remains unresolved;
 Zend uses a C-string `%s` while the old raw missing-name rule emits full bytes.
 Fresh exceptions inside binding handlers, autoload expansion and nonstring scope
-conversion and COMP71 stored-string first-class capture are
-separate obligations. The original COMP80 carrier failure retains zero credit;
+conversion remain separate obligations. [COMP82](../../coverage/semantics/stored-callable-carrier-review.json)
+separately repairs bounded stored callable-name reception from the retained COMP71
+cut. The original COMP80 carrier failure retains zero credit;
 its accepted comparison evidence is not replayed.
 
 A free user-function fake bound to an object acquires internal `Closure` lexical

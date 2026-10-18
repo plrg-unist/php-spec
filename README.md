@@ -2228,6 +2228,13 @@ lifetime remain required.
 preserve named static roots and existing closure identity through conversion;
 [their review](coverage/semantics/first-class-review.json) binds 17 source outcomes
 and the separate reference and paused-state gates.
+[Stored callable-name reception](coverage/semantics/stored-callable-carrier-review.json)
+now accepts interned/request names through the existing resolver. Alias replacement
+preserves selected named/static targets; inherited private static capture retains
+lexical permission while fresh outside capture is denied. Three originals and
+291 premises/12 typed transitions cover allocations, selections and scalar errors.
+The unchanged interpreter failures retain zero credit. Nonstatic, autoload and
+invalid/NUL-name behavior remain partial.
 [Pipe arrow grouping](coverage/semantics/pipe-syntax-review.json) survives checked
 syntax and printing, so a bare arrow RHS receives the matching compile error
 before operand effects. [Pipe execution](docs/semantics/SOURCE-PIPE.md) forces the
@@ -3726,7 +3733,7 @@ the raw captured arguments. Private parent/child access, lowercase `static`,
 case/slash lookup and normal/throwing warning callbacks pass three originals and
 324 Boolean premises/nine actual transitions; two pre-main fixture failures stay
 zero. ASCII names are covered; invalid/NUL formatting, autoload/scalar conversion
-and COMP71 stored-string capture remain separate.
+remain separate; COMP82 covers bounded stored callable-name reception above.
 [Scope-carrier review](coverage/semantics/closure-binding-scope-carrier-review.json).
 Literal named-static `Closure::getCurrent(...)` capture now preserves the immediate
 ordinary caller; selected API and returned body retire independently. A named

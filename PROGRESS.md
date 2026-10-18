@@ -7,6 +7,31 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Stored callable names now receive raw, interned and request string bytes through
+module120's existing resolver. Named-function and public/inherited private-static
+captures freeze their selected target and lexical/called scope across alias writes;
+fresh same-byte private names outside the maker remain denied. Missing targets
+keep their callee-initialization lines. Three exact originals and 291 Boolean
+premises (283 setup + 8 pure)/12 actual transitions pass at 3b575dd74/401:
+two named allocations, four method selections, three method-capture allocations
+and three scalar Error fronts. Whole states, string tables, alias-cell storage,
+scopes and driver budgets pass. Later source calls, clone/seed retirement and
+allocated Error catches are prerequisites/endings, not extra raw-step credit.
+Both unchanged originals return interpreter_failure without frontend/program/
+outcome receipts and retain zero credit; their fixed controls are source ordering
+and native observations. No affected actor failed. This repairs the bounded
+COMP71 stored-name reception seam; its old failure and comparison cuts remain
+unchanged. Nonstatic expansion, autoload and invalid/NUL name behavior stay partial.
+[Stored callable-name review](coverage/semantics/stored-callable-carrier-review.json).
+
+Composed over a621305990/401 after independent pointwise review. Incoming global
+constant queries, reference LIST keys, typed by-reference return cleanup,
+compound-warning continuations and magic-empty selectors have no producer here.
+The raw ::class/carrier/compiler/callable interfaces stay exact. Only module120
+changes; every other runtime file and the manifest retain the parent bytes.
+Source3/state291/12 retain their private 3b575dd74 cut without a joined actor or
+renewed execution credit.
+
 Single-LEFT deprecations with an initially quiet integer RHS now continue into the
 existing delayed conversion pipeline when their handler changes RHS. Exactly three
 rule headers hand returned MOD/SHIFT/BIT single1 tasks to corresponding BOTH_LEFT1;
@@ -90,8 +115,8 @@ the separate carrier original returns interpreter_failure, not Unsupported, and
 stays zero. Two pre-main fixture syntax/binding failures also stay zero; only their
 affected state check repeats. Trace-frame projections are pure; no fresh handler
 Exception trace, invalid/NUL name formatting or new autoload/scalar conversion is
-claimed. COMP80's old failure keeps its cut; COMP71 stored-string capture
-conversion remains separate.
+claimed. COMP80's old failure keeps its cut; COMP82 separately extends the
+bounded stored-name reception identified at the retained COMP71 cut.
 [Binding scope-carrier review](coverage/semantics/closure-binding-scope-carrier-review.json).
 
 Composed over 847a307e4/401 after pointwise review of the incoming DEFINE,

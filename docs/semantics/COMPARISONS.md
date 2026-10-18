@@ -90,6 +90,9 @@ zero-prefix aggregate steps preserve complete state apart from the consumed task
 reset BASE and result; later real casters are skipped. Other producers and wider
 lifetimes remain partial. At the retained COMP71 cut, the computed STRING slice
 failed before comparison and supplied no coverage for that producer.
+[COMP82](../../coverage/semantics/stored-callable-carrier-review.json) later repairs
+bounded named-function/static-method stored-name reception with fresh evidence;
+none of these retained comparison cuts is replayed.
 
 [Literal method-string WeakMap mismatches](../../coverage/semantics/weakmap-string-method-comparison-review.json)
 also admit exact normalized STRINGMETHODCLOSURE under the same live allocated
@@ -99,8 +102,8 @@ traversal. Source witnesses use fixed literals: bound parent selection on a chil
 and inherited static captures, including a cloned capture with its seed retired.
 Two originals and 321 Boolean premises/8 actual steps preserve whole comparison
 states, sole receiver owners, scope rows and skipped later aggregate casters. This
-extends comparison admission; stored-string carrier conversion and other producer/
-representation/lifetime routes remain partial.
+extends comparison admission; stored-name reception was outside that cut. Other
+producer/representation/lifetime routes remain partial.
 
 [Factory and rebound WeakMap mismatches](../../coverage/semantics/weakmap-factory-comparison-review.json)
 extend the same bounded live admission to normalized FROMCALLABLECLOSURE and
@@ -112,7 +115,7 @@ Two exact originals and 361 Boolean premises/8 actual steps include cloned rebin
 on an overriding child after seed/old-receiver retirement, a separate live factory
 capture and quiet later aggregate casters. Full source endings verify selected
 receiver markers and Parent bodies. Other producers/representations and wider weak
-lifetimes remain partial; stored-string carrier conversion is not extended.
+lifetimes remain partial; that increment does not extend stored-name reception.
 
 [Intrinsic/API WeakMap mismatches](../../coverage/semantics/weakmap-api-comparison-review.json)
 also admit ordinary eligible INTRINSICCLOSURE and normalized FIBERAPICLOSURE bodies.
@@ -143,8 +146,8 @@ the new receiver/body. The original literal binding-scope carrier source returne
 interpreter_failure and stays zero; its sole ::class argument correction retains
 the nested witness without API repair at that cut.
 [COMP81](../../coverage/semantics/closure-binding-scope-carrier-review.json) later
-extends binding-scope reception; COMP71 stored-string capture conversion remains
-separate. Other special forms and wider lifetimes stay partial. Eight raw steps
+extends binding-scope reception; COMP82 separately covers bounded stored callable
+names. Other special forms and wider lifetimes stay partial. Eight raw steps
 are comparisons, not invocation or binding transitions.
 
 [Getter/factory WeakMap mismatches](../../coverage/semantics/weakmap-getter-factory-comparison-review.json)
