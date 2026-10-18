@@ -536,30 +536,29 @@ The pointwise 399-module composition over 6f3488104 preserves incoming list,
 property, arithmetic, constants and return paths. Source2/state355 retain their
 private cut; independent seam review warrants no joined actor or renewed credit.
 
-Missing-key Warning continues recursive CV/literal by-value and direct-CV mixed
-patterns with quiet compiled/implicit keys. Direct-CV recursive patterns now also
-freeze selected integer, bool, exact-float and non-NUL string CV keys, including
-missing ancestors whose NULL result descends silently through nested children.
-Ancestor contexts authenticate source occurrences and compiler locations without
-rereading old key values or reselecting parent tables; historical ancestor types,
-carriers and bytes are not reconstructed. Current-key conversion remains plan-only.
-Captured child tables and reference cells retain distinct authority after parent
-replacement, key-cell retirement or name rebinding. Compiled selected keys retain
-exact equality; prior reference leaves preserve inherited dynamic-key locations.
-Five A10 exact originals agree at e8619c439; five SL fronts pass826 premises
-(809 Boolean +17 raw steps) at f77db09cc: author489 and independent337.
-No A10 fixture failed. The [recursive-CV key review](coverage/semantics/list-recursive-cv-missing-warning-review.json)
+Missing-key Warning continues recursive by-value CV/literal and mixed direct-CV
+patterns with quiet compiled/implicit or ordinary defined quiet CV keys. Selected
+integer/bool/exact-float/non-NUL string keys freeze before handlers; later keys
+are read after the pending NULL store. Ancestor contexts retain source/compiler
+locations without reconstructing old key values or parent-table selections.
+Literal-root CV keys now require the actual RHS source occurrence. Pooled ROOT
+identity is exact; runtime ROOT authority is source-compatible with a nonconstant
+descriptor and live table. Captured CHILD tables remain independent of the root
+pool or a parent cell's new value. Returned runtime roots retain saved row aliases
+after CV rebinding; mixed patterns with literal RHS are compile-invalid.
+Five normal A11 originals and one exact compile rejection agree at ac4ee4bdc.
+Five SL fronts pass 804 premises (786 Boolean + 18 raw steps) at 50c4195ea:
+author 455 and independent 349. No A11 fixture failed. The
+[literal-CV key review](coverage/semantics/list-literal-cv-missing-warning-review.json)
 retains the unchanged Unsupported baseline with zero agreement credit.
-Existing flat/compiled helpers, tasks and historical controls remain unchanged.
-Earlier [quiet-CV cuts](coverage/semantics/list-quiet-cv-missing-warning-review.json)
-and the other [family reviews](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md)
-retain their original source/state cuts and failures without replay.
-Literal-root dynamic keys, computed key names, selected NUL CV strings,
-undefined/conversion diagnostics, wider RHS/targets and scalar/object destructuring
-callbacks and lifecycle remain partial.
-Pointwise composition over 82d2f394c preserves the incoming 399-module parent,
-including define candidates, return cursors, bitwise and magic-property paths.
-Source5/state826 retain their private cuts; no joined actor or renewed credit.
+Plans, key conversion, tasks and historical tests remain unchanged; the three
+malformed-parent literal projections still refuse through actual RHS validation.
+Earlier [recursive-CV cuts](coverage/semantics/list-recursive-cv-missing-warning-review.json)
+and [family reviews](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md) retain their
+original source/state cuts and failures without replay. Computed key names,
+selected NUL CV strings, undefined/conversion diagnostics, wider RHS/targets and
+scalar/object destructuring callbacks and lifecycle remain partial.
+
 
 Plain-CV `%=` now keeps both converted longs through a fractional-RHS deprecation.
 Captured12/5 stores2 despite callback99/7 and detaches a late target alias; supplied

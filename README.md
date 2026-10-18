@@ -19,8 +19,8 @@ remains later research.
 [Missing-key destructuring warnings](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md)
 now retain captured arrays or source reference cells through handlers, including
 recursive by-value CV/literal and mixed CV patterns, with ordered null delivery
-and normal/throw cleanup. Recursive CV-source patterns also freeze converted variable
-keys across callbacks while later key variables are read afresh.
+and normal/throw cleanup. These patterns also freeze quiet converted variable keys
+across callbacks while later key variables are read afresh.
 
 The [checked eval parser service](docs/semantics/DYNAMIC-SOURCE-SERVICE.md)
 accepts raw eval-source bytes, uses a native parse-only scanner for rejection

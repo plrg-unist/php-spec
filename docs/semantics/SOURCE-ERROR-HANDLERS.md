@@ -126,11 +126,15 @@ explicitly `Unsupported`, rather than running a callback after a consumer.
 CV/literal array snapshot through real handlers, supplies null after insertion,
 then fetches later items with shared embedded references intact. Throws cancel
 the pending store and later items. CV leaves and implicit/compiled keys, plus
-quiet CV keys in recursive direct-CV patterns, bound this producer.
+quiet CV keys in recursive by-value CV/literal and mixed CV patterns, bound this
+producer.
 Selected converted keys survive key-cell retirement/rebinding; later keys are read
 afresh after the previous target store. Ancestor contexts retain compiler locations
 and saved operands without reselecting through changed ancestor keys or parent tables.
 Wider diagnostics remain required.
+Literal admission checks the actual RHS occurrence. A pattern with reference
+targets and a literal RHS is rejected at compilation. Pooled roots require exact table identity;
+runtime roots use source-compatible nonconstant descriptors and live tables.
 Literal sources retain pool owners or the sole runtime temporary, preserve old
 embedded reference cells after CV rebinding, and cancel known-result delivery
 when a handler throws.
