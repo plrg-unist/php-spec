@@ -267,7 +267,7 @@ rule PhpStep/property-empty-get: S ~> S[.TODO = [(CALL_ARGS (PROPERTY_EMPTY_TARG
   -- if S.ORIGIN = (ppropertyempty.SITE)
   -- if $property_empty_valid(S, ppropertyempty)
 
-;; Cache __isset object truth in its existing receiver-owning marker. Ordinary
+;; Cache __isset object/array truth in its receiver-owning marker. Ordinary
 ;; eager disposal must finish before the following step may start __get.
 dec $property_empty_isset_rv_ready(pstate, ppropertyempty) : bool
 def $property_empty_isset_rv_ready(S, ppropertyempty) = true
@@ -282,10 +282,20 @@ def $property_empty_isset_rv_ready(S, ppropertyempty) = true
   -- if S.OBJECTS[n_rv] = INSTANCE porigin_class
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
   -- if pclassdesc.KIND = "class" /\ ~$instance_storage_freeing(S, n_rv)
+def $property_empty_isset_rv_ready(S, ppropertyempty) = true
+  -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
+  -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty false) :: ptask_tail*
+  -- if S.ORIGIN = (ppropertyempty.SITE) /\ S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if $property_empty_valid(S, ppropertyempty)
+  -- if $property_empty_method(S, ppropertyempty.OBJECT, false) = (pmethoddesc)
+  -- if $property_empty_isset_source(S, pmethoddesc)
+  -- if S.RESULT = KNOWN (PARRAY n_rv)
+  -- if $(n_rv < |S.ARRAYS|) /\ (HARRAY n_rv) <- S.ALLOCATIONS
 def $property_empty_isset_rv_ready(S, ppropertyempty) = false -- otherwise
-rule PhpStep/property-empty-isset-object-release: S ~> S[.RESULT = KNOWN (PBOOL true)]
+rule PhpStep/property-empty-isset-rv-release: S ~> S[.RESULT = KNOWN (PBOOL $truth(S, pvalue))]
   -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty false) :: ptask_tail*
   -- if $property_empty_isset_rv_ready(S, ppropertyempty)
+  -- if S.RESULT = KNOWN pvalue
 rule PhpStep/property-empty-isset-result-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "magic empty isset result type"]
   -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty false) :: ptask_tail*
   -- if S.COMPLETION = NORMAL
