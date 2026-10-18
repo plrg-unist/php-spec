@@ -202,9 +202,6 @@ def $property_coalesce_throw_tail(S, ppropertycoalesce, b_get) = true
   -- if $throwable_live(S, n)
   -- if $property_coalesce_tail(S, ppropertycoalesce, b_get, (PROPERTY_COALESCE_RESULT ppropertycoalesce b_get) :: ptask_tail*)
 def $property_coalesce_throw_tail(S, ppropertycoalesce, b_get) = false -- otherwise
-rule PhpStep/property-coalesce-discard: S ~> S[.TODO = (THROW_SEARCH n) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if S.TODO = (THROW_SEARCH n) :: (PROPERTY_COALESCE_RESULT ppropertycoalesce b_get) :: ptask_tail*
-  -- if $property_coalesce_throw_tail(S, ppropertycoalesce, b_get)
 def $return_discard(S, PROPERTY_COALESCE_RESULT ppropertycoalesce b_get) = S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
 def $error_read_discard(S, PROPERTY_COALESCE_RESULT ppropertycoalesce b_get) = S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
 
