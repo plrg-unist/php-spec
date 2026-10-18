@@ -7,6 +7,16 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Live Closure DEFINE flags now raise parameter-3 TypeError before body work or
+implicit invocation in weak and strict calls. Raw traces retain lexical aliases
+and bound receivers; explicit recovery calls work, and an unpinned method receiver
+is destroyed only after its Error-trace/Closure chain releases. Three originals
+pass at d61a/405 and 459 focused premises (150+102+207) pass at 65b8/405, including
+one zero-budget identity. All first attempts pass without failure/retry; three
+old pure Closure projections change without renewing V81 credit. Other object
+flags, publication classes and wider names/lifetimes remain partial.
+[Closure-flag review](coverage/semantics/define-closure-flag-review.json).
+
 Selected-reference DIV now delays initially bad RHS text until the LEFT Warning
 returns. Four originals pass at `70add9ed5`/405; three focused fixtures pass 468
 premises at `fd80a78f8`/405, covering strict `2.4`, live bool/string TypeError and

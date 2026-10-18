@@ -1576,11 +1576,13 @@ The call retains the raw flag and earlier pointer across callback changes;
 truthy flags warn before publication or duplicate lookup. Strict calls reject
 the raw nonboolean flag.
 [Quiet object-flag review](coverage/semantics/define-object-scalar-flag-review.json).
-Arrays and ordinary class instances used as flags raise TypeError before the
-`define` body in weak and strict calls, even with a recursive value or existing key. Raw traces
-retain the captured arrays and object pointers; ordinary flag-object destruction
-waits until those trace owners are released.
-[Invalid-flag review](coverage/semantics/define-invalid-flag-review.json).
+Arrays, stdClass, ordinary class instances and live Closures used as flags raise
+TypeError before the `define` body in weak and strict calls, even with a recursive
+value or existing key. Raw traces retain the captured values; recovered Closures
+keep their lexical aliases and bound receivers. Ordinary object destruction waits
+until the trace and Closure owners are released.
+[Invalid flags](coverage/semantics/define-invalid-flag-review.json),
+[Closure flags](coverage/semantics/define-closure-flag-review.json).
 
 Fresh definitions also copy nonempty array trees containing certified stdClass
 or user-instance leaves under the admitted flags. Copied containers freeze source

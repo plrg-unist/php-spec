@@ -435,6 +435,8 @@ def $dynamic_define_invalid_flag_kind(S, POBJECT n) = true
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if pclassdesc.KIND = "class"
+def $dynamic_define_invalid_flag_kind(S, POBJECT n) = true
+  -- if $typed_closure(S, n)
 def $dynamic_define_invalid_flag_kind(S, pvalue) = false -- otherwise
 dec $dynamic_define_invalid_flag_values(pconfigcall) : (preqbytes, pvalue, pvalue)?
 def $dynamic_define_invalid_flag_values(pconfigcall) = ((preqbytes, pvalue, pvalue_flag))
