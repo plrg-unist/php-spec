@@ -11,7 +11,7 @@ import list_missing_warning_protocol as shared
 
 HELPERS = prior.HELPERS + r'''
 def $list_warning_frontier(S, 15) = true
-  -- if S.TODO = (ACQUIRE (NExprVariable (BYTES text) metadata)) :: (LIST_CAPTURE expression true z) :: ptask_tail*
+  -- if S.TODO = (ACQUIRE (NExprVariable (BYTES text) metadata)) :: (ORIGIN_RETURN porigin_previous?) :: (LIST_CAPTURE expression true z) :: ptask_tail*
   -- if $base64(text) = $ptascii("a")
 '''
 
