@@ -29,7 +29,8 @@ def $di_stage(S,DI_DTOR n) = true
 def $di_stage(S,DI_CLASS_STRING ptbytes) = true
   -- if S.CURRENT = eps
   -- if S.TODO = (INSTANCEOF_DYNAMIC_CLASS poperand z) :: ptask_tail*
-  -- if S_read = $quiet_operand(S,S.RESULT)
+  -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
+  -- if S_read = $quiet_operand(S[.COMPLETION = NORMAL],S.RESULT)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
   -- if $instanceof_dynamic_class(S_read,pvalue) = (ptbytes)
@@ -214,7 +215,7 @@ S_error.COMPLETION = THROWN "Error" ($ptascii("Class name must be a valid object
 S_error.EVENTS = S.EVENTS /\ S_error.STORE = S.STORE
 $di_undefined(S_error,$ptascii("undefinedLeft"))
 S_raised = $di_after(S,S_error)
-S_raised.TODO = (THROW_SEARCH n_error) :: ptask_raised*
+S_raised.COMPLETION = THROWING n_error
 $throwable_live(S_raised,n_error)
 S_raised.OBJECTS[n_error] = THROWABLE pthrowable_error
 pthrowable_error.KIND = "Error"
