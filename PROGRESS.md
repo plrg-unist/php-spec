@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Certified Closure values now publish directly or as nested array leaves through
+existing durable object/site/source-prefix/live authority. Direct rows and copied
+leaves share the same pointer/static cells; normal duplicates preserve the old
+row, query bucket COW preserves stored containers, and a true-Warning throw still
+publishes the earlier captured Closure with the same Exception. Three originals
+pass at c51cc27c5/405; 614 focused premises (180+154+280) pass at 04623358/405,
+including one zero-budget identity, all first attempts without failure/retry.
+Plain Closures and unstamped clones remain Unsupported. Other admitted flag
+routes compose structurally without extra source credit; wider domains stay
+partial. [Certified Closure review](coverage/semantics/define-certified-closure-review.json).
+
 Live Closure DEFINE flags now raise parameter-3 TypeError before body work or
 implicit invocation in weak and strict calls. Raw traces retain lexical aliases
 and bound receivers; explicit recovery calls work, and an unpinned method receiver
