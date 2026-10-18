@@ -54,8 +54,8 @@ def reach(state, start, phase, target):
 
 def callback(state, start, marker, target, suffix):
     return [*reach(state + '_done', start, 1, target),
-        f'{state}_done.TODO = (ERROR_HANDLER_RESULT perrorcall_{suffix}) :: ptask_{suffix}*',
-        f'perrorcall_{suffix}.RESUME = {marker}',
+        f'{state}_done.TODO = (ERROR_HANDLER_RESULT perrorcall_{suffix}_done) :: ptask_{suffix}*',
+        f'perrorcall_{suffix}_done.RESUME = {marker}',
         f'{state}_done.RESULT = KNOWN (PBOOL true)',
         *reach(state, state + '_done', 2, target),
         f'{state}.TODO = ({marker}) :: ptask_{suffix}*',
