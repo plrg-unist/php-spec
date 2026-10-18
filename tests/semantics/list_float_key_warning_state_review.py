@@ -18,7 +18,7 @@ def $list_warning_frontier(S, 11) = true
 
 def conditions(name, program, path, stdout):
     present = name.endswith('present-negative-retire')
-    line, integer, q_key = (19, -2, -2) if present else (21, 0, 1)
+    line, integer, q_key = (19, -2, '$(-2)') if present else (21, 0, '1')
     args = 'n_array, 0, expression, phpType13*, z, n_bits, i'
     marker = 'LIST_KEY_FLOAT_RESULT n_array 0 expression phpType13* z n_bits i'
     missing = 'LIST_MISSING_RESULT (KNOWN (PARRAY n_array)) 0 expression phpType13* z (KINT i)'
@@ -115,7 +115,7 @@ def conditions(name, program, path, stdout):
             '$lookup(S_resume.ENV, $ptascii("q")) = (n_other)',
             'S_resume.STORE[n_other] = DEFINED (PINT 44)', 'S_resume.STORE[n_q] = DEFINED (PINT 33)',
             'n_live_array =/= n_array',
-            '$entry_lookup(S_resume.ARRAYS[n_live_array].ITEMS, KINT -2) = (DIRECT (PINT 22))',
+            '$entry_lookup(S_resume.ARRAYS[n_live_array].ITEMS, KINT $(-2)) = (DIRECT (PINT 22))',
             '$heap_owners($heap_prune($heap_graph(S_resume)), HARRAY n_array) = 1',
             '$heap_owners($heap_prune($heap_graph(S_resume)), HCELL n_q) = 1',
             'S_resume.STORE[n_x] = DEFINED (PINT 99)',
