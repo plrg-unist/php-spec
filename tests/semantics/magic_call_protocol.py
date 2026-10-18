@@ -60,7 +60,8 @@ def $mc_guard(S) = ($call_descriptors_valid(S) /\ $declaration_history_valid(S) 
 '''
 
 COMMON = r'''
-S_raw.TODO = (CALL_ARGS (MAGIC_METHOD_SEND_TARGET pmagicmethodcall) phpType7_arguments* 0 eps (pmagicmethodcall.SITE) pmagicmethodcall.LINE) :: METHOD_RESULT :: ptask_tail*
+S_raw.TODO = (CALL_ARGS (MAGIC_METHOD_SEND_TARGET pmagicmethodcall) phpType7_arguments* 0 eps (porigin_site) z_line) :: METHOD_RESULT :: ptask_tail*
+porigin_site = pmagicmethodcall.SITE /\ z_line = pmagicmethodcall.LINE
 pmagicmethodcall.ARGUMENTS = phpType7_arguments* /\ pmagicmethodcall.TAIL = ptask_tail* /\ pmagicmethodcall.CALLER = eps /\ pmagicmethodcall.OWNER = 0
 pmagicmethodcall.NAME = $ptascii("MiSsInG")
 n_child = pmagicmethodcall.OBJECT
