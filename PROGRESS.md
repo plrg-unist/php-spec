@@ -9681,6 +9681,26 @@ behavior, capture, cleanup, normal exit and consumed materialization remain
 unchanged. M62's normal DIM history stays separate; physical collection,
 other DIM forms, reentry and broad returns_verify remain OPEN.
 [M92 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M93 authenticates a used nullable plain-variable old reference across a
+throwing destructor and restores its consumed result as a fresh NULL reference.
+In a sole `&f():?object` original, the finalizer unsets local `$x` before a
+selected return releases the protected old HCELL→O; O throws
+`TypeError("cv93")`. Native PHP catches that error locally, returns detached
+`rNULL/b7`, and emits no Notice. The unchanged model takes outer OT/r7. A first
+private source-guard cut (`799824f16`) fixed the route but wrongly emitted a
+Notice and changed the old alias, so it retains zero agreement. At private
+`0e8b65009`/401 strict SL initialization passes and the original source
+agrees exactly. One reached fixture passes 182 Boolean premises and two raw
+steps: `$x` is unbound while the protected HCELL→O remains live; inside D the
+old cell is retired while O lives, and the saved cursor passes its descriptor
+with an actual equal-heap LINE-only public refusal and budget split. At the
+pending exit the destructor's cv93 TypeError reaches the same local CT object;
+consumed recovery creates a distinct fresh NULL HCELL without a Notice. The
+new source predicate requires a used plain-variable return and a nonempty
+NULL-accepting declaration; capture and owner release are unchanged. This is
+one local-O/unset history, separate from M20 and broader CV, reentry, physical
+collection and returns_verify coverage.
+[M93 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, wider destructor throw/reentry, real suspension and wider typed

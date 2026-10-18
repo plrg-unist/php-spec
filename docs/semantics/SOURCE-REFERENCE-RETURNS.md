@@ -1086,3 +1086,25 @@ behavior and capture, cleanup, normal-exit and consumed-return rules remain
 unchanged. This is one throwing DIM history, separate from M62's accepted
 normal-destructor control and physical Zend collection. See the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M93 adds a used, NULL-acceptable plain-variable old reference source to the
+authenticated saved-destructor and pending-Throwable cursor guards. Its sole
+`&f():?object` original returns local `$x` holding O, then unsets `$x` before
+the selected return releases the protected old reference. O's destructor
+throws `TypeError("cv93")`. Native PHP catches that exact error in local CT
+and delivers detached NULL without a Notice; the unchanged model takes outer
+OT/r7. The first source-guard repair reaches CT but emits a Notice and changes
+the preexisting alias, while the final repair also uses the existing fresh
+NULL-reference step for a consumed CV. The repaired original source agrees
+exactly. A reached proof binds `$x` unbound while the protected HCELL→O stays
+live, then the old cell retired and O live inside D. The saved frame accepts
+the nonowning cursor, with an actual equal-heap LINE-only public refusal and
+split/whole budget check. The same destructor TypeError reaches local CT;
+consumed recovery creates a fresh NULL HCELL distinct from the old cell,
+selected-y cell and prior b alias, preserving `rNULL/b7` with no Notice. The
+source predicate authenticates the plain-variable shape, used result and
+nonempty declaration accepting NULL; it does not require a local variable or a
+particular class.
+This proof covers one local O and unset history, separate from M20, other CV
+lifetimes, physical Zend collection and wider returns. See the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
