@@ -324,8 +324,8 @@ def $property_empty_nan_discard(S, ppropertyemptynan) = S[.COMPLETION = UNSUPPOR
 def $error_read_discard(S, PROPERTY_EMPTY_NAN ppropertyemptynan) = $property_empty_nan_discard(S, ppropertyemptynan)
 def $return_discard(S, PROPERTY_EMPTY_NAN ppropertyemptynan) = $property_empty_nan_discard(S, ppropertyemptynan)
 
-;; Standard objects and nonempty arrays are true, but their RV must be disposed
-;; while IN_ISSET and the saved receiver remain. The phase owns only receiver.
+;; Cache object/array truth before disposing RV while IN_ISSET and the saved
+;; receiver remain. Mutable empty tables also use this phase; it owns receiver.
 dec $property_empty_rv_kind(pstate, pobject) : bool
 def $property_empty_rv_kind(S, STDINSTANCE) = true
 def $property_empty_rv_kind(S, INSTANCE porigin_class) = true
@@ -349,7 +349,7 @@ def $property_empty_rv_ready(S, ppropertyempty) = true
   -- if $property_empty_valid(S, ppropertyempty)
   -- if S.RESULT = KNOWN (PARRAY n_rv)
   -- if $(n_rv < |S.ARRAYS|) /\ (HARRAY n_rv) <- S.ALLOCATIONS
-  -- if S.ARRAYS[n_rv].ITEMS =/= eps
+  -- if S.ARRAYS[n_rv].ITEMS =/= eps \/ ~$array_immutable(S, n_rv)
 def $property_empty_rv_ready(S, ppropertyempty) = false -- otherwise
 dec $property_empty_rv_valid(pstate, ppropertyemptyrv) : bool
 def $property_empty_rv_valid(S, ppropertyemptyrv) = true
@@ -359,18 +359,21 @@ def $property_empty_rv_valid(S, ppropertyemptyrv) = true
   -- if $source_operand_suffix(S.TODO, PROPERTY_EMPTY_RV ppropertyemptyrv, ppropertyemptyrv.TAIL)
 def $property_empty_rv_valid(S, ppropertyemptyrv) = false -- otherwise
 
-rule PhpStep/property-empty-object-release: S ~> S[.TODO = (PROPERTY_EMPTY_RV ppropertyemptyrv) :: ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/property-empty-object-release: S ~> S[.TODO = (PROPERTY_EMPTY_RV ppropertyemptyrv) :: ptask_tail*][.RESULT = KNOWN (PBOOL b)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty true) :: ptask_tail*
   -- if $property_empty_rv_ready(S, ppropertyempty)
+  -- if S.RESULT = KNOWN pvalue
+  -- if b = ~$truth(S, pvalue)
   -- if ppropertyemptyrv = {EMPTY ppropertyempty, OWNER (|S.FRAMES|), CALLER S.CURRENT, TAIL ptask_tail*}
-rule PhpStep/property-empty-object-result: S ~> S[.TODO = ppropertyemptyrv.TAIL][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/property-empty-object-result: S ~> S[.TODO = ppropertyemptyrv.TAIL][.RESULT = KNOWN (PBOOL b)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (PROPERTY_EMPTY_RV ppropertyemptyrv) :: ptask_tail*
   -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (PBOOL b)
   -- if $property_empty_rv_valid(S, ppropertyemptyrv)
 rule PhpStep/property-empty-object-invalid: S ~> S[.COMPLETION = UNSUPPORTED "magic empty object RV continuation"]
   -- if S.TODO = (PROPERTY_EMPTY_RV ppropertyemptyrv) :: ptask_tail*
   -- if S.COMPLETION = NORMAL
-  -- if ~$property_empty_rv_valid(S, ppropertyemptyrv)
+  -- if ~$property_empty_rv_valid(S, ppropertyemptyrv) \/ ~(S.RESULT <- [KNOWN (PBOOL false), KNOWN (PBOOL true)])
 def $task_nodes(PROPERTY_EMPTY_RV ppropertyemptyrv) = [HOBJECT ppropertyemptyrv.EMPTY.OBJECT]
 def $call_task_valid(S, PROPERTY_EMPTY_RV ppropertyemptyrv) = $property_empty_rv_valid(S, ppropertyemptyrv)
 
