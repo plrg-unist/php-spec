@@ -374,6 +374,9 @@ def $dynamic_array_item(S, pitem, b_copy) = eps -- otherwise
 
 dec $dynamic_array_entries(pstate, pentry*, nat*, parray, (pkey, pvalueclass)*, bool) : (pstate, parray, (pkey, pvalueclass)*)?
 dec $dynamic_array_finish(pstate, nat, parray, (pkey, pvalueclass)*, bool) : (pstate, pvalue, pvalueclass)?
+;; Byte-only leaves keep unknown string identity and create no carrier.
+def $dynamic_array_value(S, PSTRING n_bytes*, n_seen*, b_copy) = ((S, PSTRING n_bytes*, PVSTRING false))
+  -- if $startup_bytes(n_bytes*)
 def $dynamic_array_value(S, pvalue, n_seen*, b_copy) = ((S, pvalue, pvalueclass))
   -- if $dynamic_define_value_class(S, pvalue) = (pvalueclass)
   -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
