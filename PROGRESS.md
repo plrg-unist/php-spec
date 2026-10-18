@@ -270,6 +270,14 @@ at the public-proof cut. Call-before-echo capture, storage/interposed variants,
 larger or reentrant histories, GC and wider typed consumers remain open.
 [Cleanup review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
+Composed over `2f2407afa`/405 after independent actual-parent review. Incoming
+LITERALREFDEBTS stays empty, so debt-aware heap ownership and driver hooks preserve
+this source's old paths. Generator, spaceship/arithmetic Warning, DEFINE and
+dynamic instanceof selectors are absent; TypeError catch matching is unchanged.
+Only156/270 differ and match `75c78611b`; all other runtime files, new fields and
+the405 manifest retain parent bytes. Private source/state cuts are unchanged;
+there is no joined actor or renewed credit.
+
 Retained propertyless Stringable `define` names now accept captured boolean true
 with primitive candidates and non-NUL global/class-like results. One module400
 raw-shape alternative preserves all source/carrier/saved-site, conversion, warning,
