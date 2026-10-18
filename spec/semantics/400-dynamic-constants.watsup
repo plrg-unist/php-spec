@@ -88,10 +88,11 @@ def $dynamic_define_source(S, porigin) = true
   -- if $intrinsic_count(S, porigin) = (n_count)
   -- if $(n_count >= 2 /\ n_count <= 3)
 def $dynamic_define_source(S, porigin) = false -- otherwise
-;; Quiet array flags retain the raw argument: integers, finite floats and existing
-;; string carriers, without recovering legacy identity.
+;; Quiet array flags retain the raw argument: integers, finite floats and byte-only
+;; or authenticated strings, without recovering legacy identity.
 dec $dynamic_array_quiet_flag(pvalue) : bool
 def $dynamic_array_quiet_flag(PINT i) = true
+def $dynamic_array_quiet_flag(PSTRING n*) = $startup_bytes(n*)
 def $dynamic_array_quiet_flag(PFLOAT n) = true
   -- if $float_decode(n) = FINITE n_sign n_numerator n_denominator
 def $dynamic_array_quiet_flag(pvalue) = ($method_string(pvalue) /\ $dynamic_constant_class(pvalue) =/= eps) -- otherwise

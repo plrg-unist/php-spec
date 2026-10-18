@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Array `define` now receives byte-only string flags from compiled-array element
+reads without adding a carrier identity. Empty/`"0"` are false; other nonempty
+bytes are true. Later flag-array COW and callback writes leave the raw API
+capture intact through normal duplicate cleanup, pending fresh publication and
+strict TypeError before cycle validation. Three sources agree at b45ca/403;
+632 focused premises pass: 276+101 at 9f2b and independent255 at 5de6. The first
+peer CLI45 timeout/secondary KeyError and one NEXT-sentinel fixture failure retain
+zero; only an exact-path model timing retry and affected peer state rerun occur.
+Canonical copies/query COW remain distinct from source ALIAS traces and history.
+Shared scalar classification is unchanged; nonfinite flags, identity-sensitive
+consumers and wider domains remain partial. Source47/owned-NUL pauses and
+Source58/59 are untouched.
+[Byte-only array-flag review](coverage/semantics/define-array-byte-flag-review.json).
+
 Reference elements in array literals now preserve the pre-conversion acquired
 wrapper across finite lossy-float CV-key handlers. Stable or same-cell rebinding
 transfers the owner into an array alias; ordinary scalar retargeting inserts the
@@ -251,8 +265,8 @@ Existing array markers and pending cleanup preserve callback COW, trace aliases
 and rejected-copy ownership. Three sources agree at a03fcfe86/401; all 549 focused
 premises pass at 4d585: 233 main, 96 strict eval and 220 independent, first attempts
 at SL90. The strict Error allocates only four trace tables; raw request flags and
-trace-only input remain distinct from retired duplicate copies. Nonfinite/
-identity-unknown flags and wider domains remain partial; Source47/56 are untouched.
+trace-only input remain distinct from retired duplicate copies. Nonfinite flags
+and wider domains remain partial; Source47/56 are untouched.
 [Scalar array-flag review](coverage/semantics/define-array-scalar-flag-review.json).
 
 Composed over 51abb7683/401 with the exact tested400 delta, eight private-exact

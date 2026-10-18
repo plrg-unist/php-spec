@@ -442,8 +442,7 @@ after all argument effects. Header/source/known-value and carrier guards run
 without folding the array; primitive duplicate markers remain separate from the
 private-array marker. Exact sources distinguish callback caller-CV COW, retained
 request-string flags, copied candidates and trace-only inputs, with real bucket
-references and query COW. Nonfinite-float and identity-unknown byte-only
-string flags remain outside this extension.
+references and query COW. Nonfinite-float flags remain outside this extension.
 [Scalar array-flag review](../../coverage/semantics/define-array-scalar-flag-review.json).
 
 NULL array flags use the existing parameter-3 bool Deprecated diagnostic before
@@ -458,6 +457,18 @@ Strict calls instead raise TypeError before Deprecated or recursive validation,
 after argument effects. Trace-owned inputs retain original aliases and append
 history while queries use canonical copied tables.
 [NULL array-flag review](../../coverage/semantics/define-array-null-flag-review.json).
+
+Byte-only `PSTRING` array flags use the same reception path when their contents
+are valid bytes. Compiled literal-array element reads are a genuine producer: the raw
+value remains separate from later COW writes to the caller's flag array. Empty
+and `"0"` are false; other nonempty byte strings are true. Normal and pending
+Warnings keep those captured bytes while copying the current array graph;
+strict calls reject before cycle validation. This adds no carrier, string
+allocation identity or cache authority: the shared scalar constant classifier
+still refuses these values. Malformed bytes and invalid authenticated carriers
+remain rejected. Existing source/known-value and array-ownership guards remain
+unchanged; wider identity-sensitive consumers remain partial.
+[Byte-only array-flag review](../../coverage/semantics/define-array-byte-flag-review.json).
 
 Top-level empty values use the existing source-pool or retained immutable flag.
 An authenticated immutable empty keeps its table and `PVARRAY true eps`; a mutable
@@ -902,7 +913,7 @@ The matching engine routes are `ZEND_FUNCTION(define)`/`ZVAL_COPY`,
 and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`. `PHP_FUNCTION(constant)` uses
 exception-class lookup and `ZVAL_COPY_OR_DUP`; `zend_declare_typed_class_constant`
 interns direct string values before installation.
-Stored cyclic trees, other objects, nonfinite/identity-unknown array flags,
+Stored cyclic trees, other objects, nonfinite array flags,
 Stringable names beyond the bounded retained query/DEFINE domains,
 array names beyond the bounded flat query/DEFINE domains,
 array/object values with scalar or null names, true/NULL/NaN

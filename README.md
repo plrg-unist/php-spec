@@ -1468,6 +1468,12 @@ the body then uses the current graph and table. A throwing callback cancels that
 body, preserving the original NULL trace and caller destination. Strict calls
 raise TypeError before the deprecation.
 [NULL array-flag review](coverage/semantics/define-array-null-flag-review.json).
+Byte-only string flags read from compiled literal arrays also use their bytes
+without acquiring a carrier identity. Raw empty/`"0"` flags are false; other
+nonempty byte strings are true. Flag-array COW and later callback writes leave the
+original API flag intact through duplicate cleanup or pending fresh publication.
+Strict calls retain the raw string in TypeError traces.
+[Byte-only array-flag review](coverage/semantics/define-array-byte-flag-review.json).
 Ordinary uncertified objects, other owning leaves and wider
 flags/names remain partial.
 Class-qualified `defined` now checks inherited user constants with lexical visibility
