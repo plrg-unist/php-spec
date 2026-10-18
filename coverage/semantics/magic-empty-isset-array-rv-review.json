@@ -1,0 +1,96 @@
+{
+  "scope": "Selected paired external private-property empty with inherited public nonreference __isset(string) and absent return declaration; live array RV truth and ordinary disposal before optional captured Get, finite sole/shared/mutable-empty and supplied-throw lifetimes.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_object_handlers.c zend_std_has_property: retain receiver/IN_ISSET, call issetter, zend_is_true(rv), zval_ptr_dtor(rv), conditional Get only if truth and no pending exception, clear guard/release receiver.",
+      "Zend/zend_operators.h i_zend_is_true uses current array element count, not append history. Zend/zend_variables.c zval_ptr_dtor delegates to Zend/zend_variables.h i_zval_ptr_dtor; Zend/zend_hash.c zend_array_destroy releases children and removes retired tables from the GC buffer."
+    ]
+  },
+  "implementation": {
+    "files": [
+      "spec/semantics/408-magic-property-empty.watsup"
+    ],
+    "basis": "A disjoint live/bounded/allocated PARRAY readiness arm repeats the existing source/context guards. Pure truth replaces the former constant object true only after readiness. Ordinary eager disposal retains the existing receiver-owning false marker; bool decisions, Isset/Get guards and the authenticated VALUEtrue destructor cleanup certificate remain byte-exact. No schema/owner/source compiler/generic array/destruction/GC change."
+  },
+  "validation": {
+    "native": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-isset-array-rv-private-101/.tools/magic-empty-isset-array-rv-probes-101/native-first/report.json",
+      "sha256": "7c56aabda42e57b4eb28ab6b578aa5f189ad12d88cd67fb3897fc8de2bdd83af",
+      "revision": "46ad925eec1397c76489463212a5292788abe9d2",
+      "result": "Four exact native tuples16/16/19/10 with quiet stderr/exit0; zero source credit."
+    },
+    "baseline": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-isset-array-rv-private-101/.tools/magic-empty-isset-array-rv-probes-101/accepted-current-baseline/report.json",
+      "sha256": "9029f073ae62787a245cf923692cbc9e9cb32d751db1a4027a11045ba40586a9",
+      "revision": "46ad925eec1397c76489463212a5292788abe9d2",
+      "result": "Four checked actual-RV Unsupported magic empty isset result type/CLI1/zero agreements after exact N/H/X/F:I|; stable/emptygroups."
+    },
+    "source": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-isset-array-rv-private-101/.tools/magic-empty-isset-array-rv-probes-101/changed-model-yr8nh4zu/report.json",
+      "sha256": "d97815a2a8d3e60e4777814260eaa1cf6bcc6710bbb4e3308590d0495b79b443",
+      "revision": "ee77488c6bbac461a241e299f8f80cce940e0657",
+      "result": "Four exact checked normal agreements16/16/19/10; stable/emptygroups."
+    },
+    "focused": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-isset-array-rv-private-101/.tools/magic-empty-isset-array-rv-protocol-smh3kcql/report.json",
+      "sha256": "c7ed8459d7fa43220f4ac4e65c2557b679f0502d0ad1ab05f12a7cb67860bdbc",
+      "revision": "25cda991d88b5f0eb33dc2438b29d60f72b8c8e8",
+      "result": "Four exact true:123/104/118/71,416=403reached+13derived/app4/source0. AL7.304/7.265/7.336/7.373; SL18.138/19.285/20.813/15.723seconds."
+    }
+  },
+  "focused_scope": "Actual mutable array identity/NEXT1/SERIAL1 and cached true/false; sole table absent/unbuffered before payload destructor, captured receiver survives caller-CV null with Isset active/Get inactive, then Get sees0. Shared table/payload stay live with one owner and no payload callback after RV drop; Get sees1 before delayed disposal and nested receiverD. Supplied Exception remains the same pending/catch object with destination42. Empty ITEMSeps despite NEXT1 retires before receiverD and skips the throwing Get. Actual saved call validity, endings and budget resumes span the relevant cleanup. Derived out-of-bounds/retired-table Unsupported controls and a retained-array old-object truth bridge add no old97 execution credit.",
+  "nonpassing": [],
+  "reproduction": {
+    "cwd": "/home/user/workspace/php-spec/.tools/magic-empty-isset-array-rv-private-101",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": "absent",
+      "jobs": 1
+    },
+    "profile": "tests/semantics/profile.json",
+    "native_baseline": "Ready watch-affinity.py native-first native 3; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 3 python3 -u .tools/magic-empty-isset-array-rv-probes-101/run.py native --revision 46ad925eec1397c76489463212a5292788abe9d2; after PASS/reap fresh accepted-current-baseline model 3 watcher and same actor baseline.",
+    "source": "Ready capture-candidate-affinity.py 1 changed-model- 4 changed-source-101; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/magic-empty-isset-array-rv-probes-101/run.py changed --revision ee77488c6bbac461a241e299f8f80cce940e0657",
+    "focused": "Ready watch-state-affinity.py 1; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u tests/semantics/magic_empty_isset_array_rv_protocol.py --revision 25cda991d88b5f0eb33dc2438b29d60f72b8c8e8",
+    "caps": "Native45/model60/outer75/100000steps; four serial AL90 then strictSL90/cachefalse/dettrue/fail-first. Checked --prepare-only has zero semantic applications. Eight-worker observer cap840seconds.",
+    "affinity": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-isset-array-rv-private-101/.tools/magic-empty-isset-array-rv-probes-101/affinity-native-first.json",
+        "sha256": "8efecd033b4267981b84149b0420ccf322f6fb3dfd25c37b3bfae3a170409fe2",
+        "result": "Partial1/4 CPU3 normal mask-only/emptyargv; other fast children missed. Taskset-parent provenance retained, observer stopped/reaped without sampling-only replay."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-isset-array-rv-private-101/.tools/magic-empty-isset-array-rv-probes-101/affinity-accepted-current-baseline.json",
+        "sha256": "1713ebbfe3d1fa81adb0822c397c2b19918417648355263ca0f4ea5e42c689d1",
+        "result": "Complete4CPU3/fullargv."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-isset-array-rv-private-101/.tools/magic-empty-isset-array-rv-probes-101/affinity-changed-source-101.json",
+        "sha256": "ca142af9ceb39f4894d772c5adc1b9cc1099c8b699bf0cfe6fdd545866c18d3e",
+        "result": "Complete4CPU1/fullargv."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-isset-array-rv-private-101/.tools/magic-empty-isset-array-rv-probes-101/affinity-state-101.json",
+        "sha256": "e2e47e963cc7aee165166fe941c9ce7ff4331b798bf2068f7b31063441f5792a",
+        "result": "Complete8CPU1/fullargv."
+      }
+    ],
+    "stability": "All accepted inputs/head/status/fixtures stable, workers/observers reaped, groups empty; no semantic failure/retry/timeout/interruption. Native partial observation is separately qualified."
+  },
+  "limits": "Ordinary/no-Get407 retains typed-bool admission. Other untyped scalar/null/internal-object Isset results, wider producers/receivers/recursion, embedded reference cells, cycles and wider alias/reentry histories remain partial. Sole-owner public-NaN retirement/wider quiet-CV GC and paused NaN callback work are untouched. No full-program GC-preservation, gc_status or old97 replay claim.",
+  "artifacts": "Original ignored PHP/private driver/reports/streams/processes and generated fixtures stay in their original paths. Maintained sources/catalogue/harness recover from tested commits; no bulky archive, backup or receipt chain tracked.",
+  "review": {
+    "independent": "class_review_84",
+    "status": "Native/genuine baseline/source4/state416 and concise publication independently accepted; ordinary/no-Get typed-bool, native sampling and wider lifetime limits explicit."
+  },
+  "tools": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "source_driver_sha256": "8a311a4f3c7b03736794d2b9f961c292712bfdc4f9accf92728091c5f082f492",
+    "focused_driver_sha256": "448f5394af4180803fb509b9d8ae8c11924d6909b03db2962bfbbe46f75fed76",
+    "state_observer_sha256": "c7c64d83cc6cdd14f4b3392bc6dd6fda7450c1542f77dbcdcf25ae69a226d689"
+  }
+}

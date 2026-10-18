@@ -7,29 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-External literal missing static calls now invoke inherited public
-`__callStatic(string,array)` with original spelling and a real packed positional
-array. Early scalar sends survive later argument effects; lexical Parent and
-called Child stay distinct without a receiver owner. Compiled-local cleanup
-retires the array before the payload destructor; return value 7 stays cached while that
-destructor changes the live global to 99. A supplied throw preserves destination42
-and the same catch object. Declared public static methods bypass magic.
-Four exact originals pass at `b445c70b6`; 341 focused premises at `c639b4d8b`
-(314 reached +27 derived) check real reception, saved raw sends, cached return,
-cleanup/catch and budget resumption. All actors passed on their first attempt.
-Module415 reuses414's pure packing helpers and ordinary call/free/GC paths;
-414 stays exact. Compatible-current-This `__call` priority and constructor-special
-selection are preserved, with a structural predicate-only priority control.
-Forwarding/inaccessible/dynamic/API magic positives, named/unpacked/reference
-sends and wider ownership remain open; needed unselected forms stay Unsupported.
-[Static magic call review](coverage/semantics/magic-static-call-review.json).
-
-Composed over `a6e86f3c9`/404 after independent actual-parent review. Incoming
-literal-reference retention starts eps and adds no roots or validation constraint
-on these paths; all fields and initializers are preserved. Reference-return cleanup,
-DEFINE/query and literal float-key selectors are unselected. Existing414 stays exact;
-parent manifest order is retained before415. Source4/state341 keep their private
-cuts without a joined actor or renewed execution credit.
+Paired `empty` now accepts live arrays returned by inherited untyped `__isset`.
+Array truth is cached before ordinary disposal. A sole table retires before its
+payload destructor, which can clear the caller CV and change the captured getter's
+value from 1 to 0; a held table instead preserves its payload through Get/result.
+A supplied payload-destructor Exception cancels Get and preserves destination 42
+and the same catch object. A mutable empty table with NEXT1/SERIAL1 caches false,
+retires before receiver destruction and skips a deliberately throwing Get.
+Four originals agree at `ee77488c6`; 416 focused premises at `25cda991d`
+(403 reached +13 derived) cover these owners, guards, saved call validity,
+retirement/catch and budget resumes. Bounds/retired-table refusals and a derived
+old-object truth bridge stay separate from source credit. All semantic actors
+passed on their first attempt. Only408 changes: live-array readiness and guarded
+pure truth caching; existing bool/object behavior, VALUEtrue cleanup certificate
+and generic array/destruction/GC code remain unchanged. Ordinary/no-Get407 still
+requires typed-bool `__isset`; other result kinds and wider lifetimes remain open.
+[Isset array RV review](coverage/semantics/magic-empty-isset-array-rv-review.json).
 
 M110 admits the earlier cleanup interval for one pending single cursor through
 one normal auxiliary THROW_SEARCH operation. A 25-line module270 view matches

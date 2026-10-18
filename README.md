@@ -3173,6 +3173,13 @@ declaration. Its ordinary object result is truth-tested and disposed before the
 captured getter; a held result delays its destructor, while a throw cancels Get.
 Four originals and 313 focused premises cover mutations, receiver retention and
 the same catch; [isset RV review](coverage/semantics/magic-empty-isset-rv-review.json).
+
+Live array RVs now cache their truth before disposal. Sole table/payload cleanup
+precedes captured Get; a held table delays cleanup, while a mutable empty table
+skips Get and retires before receiver destruction. A supplied payload-destructor
+Exception preserves the same catch and assignment destination.
+[Four originals and 416 focused premises](coverage/semantics/magic-empty-isset-array-rv-review.json)
+cover these paths without changing generic array/free/GC behavior.
 Ordinary `isset` and no-Get `empty` keep their typed-bool callback requirement.
 Other signatures, receivers, other internal-object RVs and
 wider recursive/coalesce magic combinations remain unsupported.
