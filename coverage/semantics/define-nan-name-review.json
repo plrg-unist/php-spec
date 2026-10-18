@@ -1,0 +1,68 @@
+{
+  "scope": "Weak NaN define names whose pre-callback rendered string is full NAN, primitive candidates and omitted/bool-false flags. Conversion Warning then protected duplicate Warning, raw-first/converted-second API traces, normal return and supplied throws. Strict and low-initial-precision old routes remain unchanged. Partial core.",
+  "status": "independently_accepted_private_integrated_on_join",
+  "reviewer": "/root/source_review_35",
+  "parent": "a555481f480040075ef45d45ac03c69acca5e435",
+  "semantic_revision": "75be7123104ddb88a7c12cc27eaac1a49fe9cac4",
+  "tested_revision": "317d31b62f0f1d5b39b3dd15ac147c650da5e558",
+  "semantic_files": {
+    "spec/semantics/30-storage.watsup": "a993e0202d5cfa375863590634fe544ff33febe9adf055081b34a9db165ebf84",
+    "spec/semantics/400-dynamic-constants.watsup": "8194d16afa681d179a414e30b87654aabba3b29b730f2a40ea23c0489db91cc5"
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "tools": {
+    "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+  "primary": "Pinned ZEND_FUNCTION(define) receives Z_PARAM_STR then Z_PARAM_BOOL. zend_double_to_str renders/allocates its string before zend_nan_coerced_to_type_warning(IS_STRING); convert_to_string replaces the API zval only after that call returns. zend_parse_arg_str_weak checks pending exceptions before body entry. Therefore the first handler sees raw NaN and its throw cancels the body; normal return exposes the previously rendered string to zend_register_constant duplicate delivery, whose API view is converted. Strict slow reception rejects the raw float first.",
+  "semantics": "Two module30 task alternatives and83 module400 insertions. A weak/current-fullNAN entry excludes only that route from old scalar invoke. Strict and truncated N/NA old paths remain pointwise. Before first dispatch string_request allocates REQUEST NAN; RESULT holds raw cfg, received carrier and saved precision. Received validation authenticates raw source/normalized sends/primitive candidate/actual request carrier/full rendering and bounds without rereading live precision. A separate DUPLICATE marker retains current bounded prefix and protected builtin; old scalar NaN received/duplicate refusal stays exact. Structural first/second trace views avoid handler-scope source revalidation; unchanged generic discard cancels either phase. No shared stringifier/numeric/error change or native fallback.",
+  "accepted": [
+    "Four exact originals agree at317d31b62/runtime75be. Default literal produces conversion then duplicate PHP-stderr Warnings and false; captured selected named false and request candidate survive V|N/live mutations. Its first true handler changes precision14 to1, adds sibling971 and mutates caller CVs; second duplicate throw retains fullNAN API string, raw request candidate/false, same Exception/PreviousNULL/caller99 and callback effects. Strict rawNaN TypeError has no handler or conversion Warning. Captured/strict/peer PHPstderr are empty.",
+    "All451 public premises pass at317d31b62: author105+157+58 plus independent131 across four original-derived groups. Four SL raws exactly true LF/0/empty workerstderr; all9 reports stable/head-stable/PASS/reaped with no timeout/failure/retry. Actual first CONFIG/allocation/handler/RESULT, second duplicate/API/throw and complete discard transitions check saved14 versus live1, immutable alternate-NaN source refusal, candidate/received carriers, metadata/phase/bounds/domain controls and budget equality.",
+    "Independent runtime INF-CV minus itself produces modeled negative quietNaN bits18444492273895866368; native observes only self-inequality. First conversion handler changes precision1, appends sibling977 and throws savedException. Actual rawNaN three-frame API trace, one callback, sameException/PreviousNULL/caller99/builtinNAN and preallocated string survive full restored-state discard; no body duplicate or registration follows. Payload bits are model facts, not native bit-identity observations."
+  ],
+  "compatibility": "Old scalar received/duplicate helpers still refuse NAN, so the old marker cannot skip the new conversion phase. Old strict and low-initial-precision generic entry takes the same state transition; low N/NA callback protocols gain no new coverage. Source45 source4/public529/failure retain original cuts without replay; only directly stale prose is updated. No older actor is renewed.",
+  "zero_credit": "Unchanged first-source baseline atce75c4d07 is accepted/checked Unsupported scalar define publication afterB|, CLI1/null PHPexit/empty workerstderr and0agreement. Its PHPstderr intentionally retains the first conversion Warning. Native/preparation grants no application agreement. No actor failed, timed out or repeated.",
+  "execution": "LC_ALL=C/TZ=UTC, AS3GiB, serial stop-first/reap, INT+kill5 wrappers. Initial author native3/baseline atce75c4d07 onCPU3/SLOT5; peer native1/model4/fresh public4 at317d31b62 onCPU5/SLOT3. Native children15s, source CLI45s/host60s, fresh full SL children90s; every group reaped. PHP diagnostic output is separate from empty CLI/SL workerstderr.",
+  "raw_root": ".tools/define-nan-name-evidence-46",
+  "report_sha256": {
+    "author/review-public/check-report.json": "a0dea0c978f6f0608d6762502a2a2d2e264570134e40a6be225932d8a5d74858",
+    "author/review-public/prepare-report.json": "a2bc0b1a3dcadb07904253372c13e69760b1596232bfa125b04b8dc0e9e251f6",
+    "author/public/check-report.json": "344c4f539a6a5fed3efb81af2091aa41b6ab56312a7e2a71de539e3440fbde97",
+    "author/public/prepare-report.json": "04f1594d584d22539da28e1a949693d0e478498c1c3bd696eeab6a1a3517615a",
+    "author/review/model-report.json": "65e7a9af2012e287c6751bbb736ec9d07291addb79db2a9f215324d7fe7af26f",
+    "author/review/native-report.json": "822b85e5df6be5ccf48bd1c678cc1105fe8e919690828034b0e3598c80b94e8e",
+    "author/sources/model-report.json": "e21b18b94e032a92b57d4747ff32870aa7936dd350e770f5087f63e20fb374c5",
+    "author/sources/baseline-report.json": "d224c9afadfd4e6afa066af2e5f3aee83e1b7ca6906f2b1b9d727689a3375007",
+    "author/sources/native-report.json": "25631ec286cad11d618d64902691d2445d06368d96aad374444397740325cb0b"
+  },
+  "commands": [
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/define_nan_name_sources.py --phase native --output .tools/define-nan-name-native-46",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/define_nan_name_sources.py --phase baseline --output .tools/define-nan-name-native-46 --case literal-nan-name-conversion-warning-then-startup-duplicate",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_nan_name_review_sources.py --phase native --output .tools/define-nan-name-review-46",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 240s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_nan_name_sources.py --phase model --output .tools/define-nan-name-native-46",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_nan_name_review_sources.py --phase model --output .tools/define-nan-name-review-46",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_nan_name_protocol.py --phase prepare --sources .tools/define-nan-name-native-46 --output .tools/define-nan-name-public-46",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 360s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_nan_name_protocol.py --phase check --sources .tools/define-nan-name-native-46 --output .tools/define-nan-name-public-46",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_nan_name_review_protocol.py --phase prepare --sources .tools/define-nan-name-review-46 --output .tools/define-nan-name-review-public-46",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 120s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_nan_name_review_protocol.py --phase check --sources .tools/define-nan-name-review-46 --output .tools/define-nan-name-review-public-46"
+  ],
+  "recovery": "Four owned roots moved once into canonical author/{sources,review,public,review-public} after reviewer STOP and focused cwd/cmdline/fd users[]. Nine report hashes unchanged. Restore them as .tools/define-nan-name-{native,review,public,review-public}-46 at recorded cuts for exact source/cwd identities.",
+  "remaining": "Truncated N/NA callback protocols, other third flags, owning/wider candidates and producers, packed/FCC/arity forms and complete define-family closure remain partial. No engine bug or intentional divergence.",
+  "composition": {
+    "parent": "1ec88d68f15302c0ad2194d8afe14d7285fd0601",
+    "private_publication": "906158e67b8ed2d2ea33c72e0bdb1ec009e68c00",
+    "modules": 399,
+    "method": "Modules30/400 and four tests private-exact; both parent runtime files were exact privatebase. Every other runtime/schema/ordered manifest parent-exact. Inventory only own2/2/1/review suffix; incoming docs/checkpoints retained and only directly stale weakNaN scope prose updated.",
+    "runtime_sha256": {
+      "spec/semantics/30-storage.watsup": "a993e0202d5cfa375863590634fe544ff33febe9adf055081b34a9db165ebf84",
+      "spec/semantics/400-dynamic-constants.watsup": "8194d16afa681d179a414e30b87654aabba3b29b730f2a40ea23c0489db91cc5"
+    },
+    "seams": "Incoming136/408 private getter-only-empty interception requires PROPERTY_PREP/ISSET_RESULT true and sourceempty shape absent from these calls and trace DIM reads.156 nullable-array assigned noarg return/refcursor guards do not select ordinary untyped string/bool callbacks or try/finally.386 SensitiveValue/CTORClosure comparisons require WeakMap operands absent here.404 numeric-string RHS requires staged MOD/SHIFT/BIT_ASSIGN_BOTH_LEFT after fractional diagnostics; these sources use integer count++, INF subtraction and concat only.409 recursive literal/CV LIST_FETCH patterns are absent. Shared source/config/error/stringifier/numeric helpers and ordered399 manifest are unchanged.",
+    "evidence": "Independent actual-parent review finds no concrete interaction. Source4/public451 retain317d31b62/runtime75be; initial native/baseline retaince75/CPU3 and later packetCPU5. Older Source45 source4/public529/failure keep original cuts. No joined actor, replay or renewed execution credit."
+  }
+}

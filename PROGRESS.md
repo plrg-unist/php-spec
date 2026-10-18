@@ -7,6 +7,30 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Weak NaN `define` names with primitive candidates and omitted/bool-false flags
+now preserve full `NAN` rendering/allocation before the first string-conversion
+Warning. Its callback/API trace sees raw NaN; normal return
+then emits the protected duplicate Warning with the converted name despite live
+precision changes. Default delivery returns false without a user NAN row; either
+phase can throw the same supplied Exception while keeping callback effects and the
+unassigned caller result. Two module30 alternatives and83 module400 insertions keep
+the old strict/low-precision routes, scalar NaN refusals and shared numeric/string/
+error rules unchanged. Four originals agree at317d31b62; all451 public premises pass:
+author105+157+58 and independent131 across default, captured second-throw, strict
+and runtime-NaN first-throw groups. Actual raw/converted API traces, saved14/live1,
+preallocated carrier, sameException/caller99/siblings, full restored discards,
+source/bit/carrier/phase/bounds refusals and budgets pass. No actor failed or repeated.
+Initial native/baseline usedCPU3 atce75c4d07; later source/state usedCPU5. Baseline
+Unsupported afterB| retains its single PHP conversion Warning and0 credit; accepted
+literal PHPstderr has two Warnings, captured/strict/peer are quiet. Truncated N/NA
+callback protocols, other flags and wider candidates remain partial.
+[NaN-name review](coverage/semantics/define-nan-name-review.json).
+
+Pointwise composition over 1ec88d68f preserves the incoming 399-module parent.
+Modules30/400 and four tests are private-exact; incoming return, magic-property,
+WeakMap, LIST and compound-operator selectors are disjoint. Source4/public451 retain
+their private cut with no joined actor or renewed execution credit.
+
 Complete quiet numeric strings now convert after the first callback in the
 both-fractional plain-CV modulo/shift/numeric-bitwise routes. Cached LEFT `12` with
 numeric `5` stores `2`/`384`/`0`/`4`/`13`/`9`, preserving RHS string identity and
@@ -79,7 +103,7 @@ truncate it to `I`. That failure and the unchanged Unsupported baseline retain0;
 only affected state fixtures repeated, with source4 kept at its original cut.
 Initial native/baseline usedCPU4; later source/state usedCPU1. Expected PHP stderr
 has two literal duplicate Warnings and one false-handler Warning; strict/peer are
-quiet. Weak NaN reception, nonbool nonfinite flags and wider candidates remain open.
+quiet. Nonbool nonfinite flags and wider candidates remain open.
 [Infinite-name review](coverage/semantics/define-nonfinite-name-review.json).
 
 Pointwise composition over 464c0cf26 preserves the incoming 399-module parent.

@@ -1075,7 +1075,14 @@ protected duplicate path with primitive candidates and omitted/bool-false flags,
 preserving the builtin and converted API name through callbacks. Negative infinity keeps its fresh
 `"-INF"` key at profile precision 14. [Four source agreements and 529 state premises](coverage/semantics/define-nonfinite-name-review.json)
 cover captured arguments, historical precision, strict NaN rejection and throwing
-discard. Weak NaN name reception and nonbool infinite-name flags remain separate.
+discard. Nonbool infinite-name flags remain separate.
+Weak NaN names whose rendered spelling is full `NAN`, with primitive candidates
+and omitted/bool-false flags, now warn before the protected duplicate check. The first callback sees raw NaN; normal return keeps the string
+rendered before that callback, and the duplicate API trace shows the converted name.
+A throw from either phase preserves the same Exception and unassigned caller result.
+[Four source agreements and 451 state premises](coverage/semantics/define-nan-name-review.json)
+cover preallocation, precision changes and both cancellation paths. Truncated
+initial `N`/`NA` conversions keep their earlier partial behavior.
 Integer/boolean names also accept false scalar flags (`0`, empty/`"0"` strings and
 float zero). Weak calls convert the API name while preserving the raw flag;
 strict name errors precede flag rejection after argument effects.

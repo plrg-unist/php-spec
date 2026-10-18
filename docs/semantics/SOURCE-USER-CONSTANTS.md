@@ -467,8 +467,30 @@ the saved conversion still shows `"INF"`. Pinned `zend_gcvt` truncates a new
 precision1 conversion to `"I"`, so that alternate historical precision is refused,
 while 3 and -1 remain possible. The initial incorrect precision premise retains zero
 credit; only affected state fixtures repeated. Strict NaN names reject the raw
-float before conversion. Weak NaN string-conversion warnings, nonbool flags with
+float before conversion. The full-NAN weak follow-up is below; nonbool flags with
 nonfinite names and owning/wider candidates remain partial.
+
+Weak NaN `define` names whose rendered spelling is full `"NAN"`, with primitive
+candidates and omitted/bool-false flags, now dispatch the string-conversion Warning
+before the protected duplicate Warning. Rendering and
+request-string allocation precede the first callback; its API trace still contains
+the raw NaN. Normal return uses that saved string even if the callback changes
+precision or caller name/value/flag/callee CVs. The second callback sees the converted
+name while the candidate and false flag remain raw. Default delivery warns twice
+and returns false without publishing a user NAN row. A supplied throw from either
+phase cancels the remaining work, preserving its Exception, callback effects and
+unassigned caller result.
+Two authenticated RESULT/DUPLICATE task alternatives retain the allocated carrier,
+saved precision and later table-prefix bound. The old scalar NaN received/duplicate
+refusals remain exact. A state-aware entry selects only weak full-NAN conversion;
+strict calls and low initial precision `"N"`/`"NA"` take their unchanged old routes.
+The [NaN-name review](../../coverage/semantics/define-nan-name-review.json) binds four
+exact originals and 451 public premises, including raw-first/converted-second API
+traces, live1 versus saved14 rendering, both actual throw discards, immutable
+NaN-bit/source/carrier/phase/bounds refusals and budgets. Native self-inequality
+observes NaN; payload bits are model facts, not native bit observations. No failed
+actor or retry occurred. Truncated-name callback protocols, other flags and
+owning/wider candidates remain partial; no earlier evidence is renewed.
 
 Int/bool names accept nonbool false scalar flags: integer 0, empty/`"0"` strings and
 signed float zero. The existing scalar-name path converts the name before quiet
