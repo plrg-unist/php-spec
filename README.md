@@ -2808,6 +2808,11 @@ skips the getter and borrows its CV receiver without adding a GC root. Later
 ordinary reads still invoke the getter and preserve its return or Exception.
 Two originals and 235 focused checks cover this slice;
 [getter-only empty review](coverage/semantics/magic-empty-get-only-review.json).
+Initialized public float-property `empty` now resumes NaN warnings against the
+captured live slot: handler writes of `0.0` make it true, while `1.0` or unchanged
+NaN make it false without a second warning. A saved alias keeps the receiver live
+after caller-CV rebinding. Four originals and 469 focused checks cover default,
+handled and thrown warnings; [public NaN review](coverage/semantics/quiet-public-nan-review.json).
 With an untyped by-value `__get`, terminal `empty` chains it after the inherited
 `__isset`: false skips the getter, while true tests its null, bool, int, float
 or byte-string result. Only empty bytes or exactly ASCII `0` make a string

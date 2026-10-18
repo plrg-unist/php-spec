@@ -1,0 +1,105 @@
+{
+  "scope": "Terminal empty of an ordinary CV/literal public nonreadonly, nonstatic, unhooked float property stored directly on a live ordinary instance. A warning handler may change the float slot or rebind the source CV; the captured property is reread after the warning. Native lifetime claims keep a saved receiver alias.",
+  "implementation": {
+    "base": "1ec88d68f15302c0ad2194d8afe14d7285fd0601",
+    "revision": "0a8b0c8e42a90e080a7970b235596c37a354ca0c",
+    "modules": 400,
+    "change": "411 intercepts authenticated NaN preparation before BASE ownership, records nonowning receiver/property/source/caller history, dispatches the Warning and quietly reads the live float slot after normal handler completion. Throw discard preserves the pending Throwable without releasing the receiver.30 adds the record/tag,136 excludes only this preparation, and the manifest appends411.408, generic truth, ownership, GC and return code stay unchanged."
+  },
+  "engine": {
+    "target": "PHP8.5.10 CLI NTS64",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_vm_def.h ZEND_ISSET_ISEMPTY_PROP_OBJ: borrowed CV and empty negation of has_property",
+      "Zend/zend_object_handlers.c zend_std_has_property found: passes the initialized live property zval to zend_is_true",
+      "Zend/zend_operators.h i_zend_is_true IS_DOUBLE: warns on NaN, then rereads the double; Zend/zend_operators.c zend_is_true delegates to it"
+    ],
+    "intentional_divergences": []
+  },
+  "sources": {
+    "catalogue": "tests/semantics/quiet_public_nan_cases.json",
+    "original_root": "/home/user/workspace/php-spec/.tools/quiet-public-nan-private-92/.tools/quiet-public-nan-probes-92",
+    "maintained_byte_identical": true,
+    "cases": "Four14-byte normal tuples: zero mutation delivers true;1.0/default-false handler and unchanged NaN deliver false; supplied Exception reaches catch. Initial isset is quiet. Handler nulls child while saved remains the sole receiver owner; explicit saved=null emits D after result/catch. Only default-false has179-byte Warning stderr."
+  },
+  "validation": {
+    "native": {
+      "path": "/home/user/workspace/php-spec/.tools/quiet-public-nan-private-92/.tools/quiet-public-nan-probes-92/native-first/report.json",
+      "sha256": "c7fa0718cc4efd41664ad948c383c828034ad8543583a437e9952344afee2431",
+      "revision": "1ec88d68f15302c0ad2194d8afe14d7285fd0601",
+      "result": "Four exact declared stdout/stderr/exit0 tuples; source credit0"
+    },
+    "baseline": {
+      "path": "/home/user/workspace/php-spec/.tools/quiet-public-nan-private-92/.tools/quiet-public-nan-probes-92/accepted-current-baseline/report.json",
+      "sha256": "3c754d3734de085508f61ce7e0734b7f7bca014f068e828d5c1edb46c191fa1c",
+      "revision": "1ec88d68f15302c0ad2194d8afe14d7285fd0601",
+      "result": "Four checked Unsupported/CLI1 after Z/O/N/X:I|, reason error-handler ingress requires a producer continuation; zero agreement"
+    },
+    "changed_source": {
+      "path": "/home/user/workspace/php-spec/.tools/quiet-public-nan-private-92/.tools/quiet-public-nan-probes-92/changed-model-u4tk4s8g/report.json",
+      "sha256": "00c2e53ae4657ef07a7e3f9b2be606bb67caf5f7b210a2091899d4a755ed9241",
+      "revision": "0a8b0c8e42a90e080a7970b235596c37a354ca0c",
+      "result": "Four checked normal exact native tuples;13.175/13.179/12.805/14.356s",
+      "source_agreements": 4
+    },
+    "focused": {
+      "path": "/home/user/workspace/php-spec/.tools/quiet-public-nan-private-92/.tools/quiet-public-nan-protocol-llost44k/report.json",
+      "sha256": "04bd5934fd8541e7d961ac573967cc8706dc451ef583b1588717f801c9736e7a",
+      "revision": "59e5036d3b7802bb4c9b31ba0472a097b4a4a720",
+      "result": "Four true strict applications;469=409 reached+60 derived premises; eight successful AL/SL processes",
+      "source_agreements": 0
+    }
+  },
+  "focused_scope": "Actual prep has two real CV owners/no BASE, marker/error wrappers own no receiver, handler child=null leaves saved as one owner, captured selection remains valid without source-CV recapture. Real0/1/NaN slots are read after handled/default Warning, with no second warning on resume. Throw discard and actual CATCH_BIND preserve the same live Exception and receiver; destructor follows result/catch. Source/consumer/owning-operand, record depth/caller/tail/source/property/NaN-bit, retired allocation and unset/nonfloat/invalid-bit slot refusals are derived; default-without-handler is derived. All groups check budget resumption. GC is compared locally around nonowning resume/discard, never across the real CV decrement.",
+  "nonpassing": [
+    {
+      "path": "/home/user/workspace/php-spec/.tools/quiet-public-nan-private-92/.tools/quiet-public-nan-probes-92/changed-model-1mdxp6f6/report.json",
+      "sha256": "4b2dddf56aa1cf2dd0b5984569ca6f5228338c6f8f8f05286f654878448dd1d6",
+      "revision": "8f9e7d3b5d8258b56b20e0cccc1b911a6ff75656",
+      "result": "First zero source failed before semantic execution: pcallcontext was not forward-declared at the new record position. Moved only that declaration; remaining cases unrun. Zero passing/source credit."
+    }
+  ],
+  "execution": {
+    "cwd": "/home/user/workspace/php-spec/.tools/quiet-public-nan-private-92",
+    "environment": "LC_ALL=C TZ=UTC PHP_SPEC_SCRIPT_ENCODING absent; jobs1; fixed profile in catalogue/reports. Native/baseline CPU1; changed source CPU5; focused CPU4.",
+    "caps": "native45; public model60/outer75/steps100000 serial stop-first; focused each AL90 then strict SL90/cachefalse/dettrue, serial stop-first.",
+    "commands": [
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/quiet-public-nan-probes-92/run.py native --revision 1ec88d68f15302c0ad2194d8afe14d7285fd0601",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/quiet-public-nan-probes-92/run.py baseline --revision 1ec88d68f15302c0ad2194d8afe14d7285fd0601",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 5 python3 -u .tools/quiet-public-nan-probes-92/run.py changed --revision 0a8b0c8e42a90e080a7970b235596c37a354ca0c",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 4 python3 -u tests/semantics/quiet_public_nan_protocol.py --revision 59e5036d3b7802bb4c9b31ba0472a097b4a4a720"
+    ],
+    "affinity": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/quiet-public-nan-private-92/.tools/quiet-public-nan-probes-92/affinity-native-first.json",
+        "sha256": "5c9c37610e270ce5b306660ab871c60772d796b9bd9715110c4b760d995c0e37"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/quiet-public-nan-private-92/.tools/quiet-public-nan-probes-92/affinity-accepted-current-baseline.json",
+        "sha256": "d7914d71a01539ab48171ab0ec701b6f2b1d248f28bb93272edb93fa937e432a"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/quiet-public-nan-private-92/.tools/quiet-public-nan-probes-92/affinity-changed-source-92-repair1.json",
+        "sha256": "2833035f90579120fddd1dcd95886606472622d8a579171aa5660cae6e1ec8f0"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/quiet-public-nan-private-92/.tools/quiet-public-nan-probes-92/affinity-state-92.json",
+        "sha256": "9545d01a94c9efcd9a24fe7f9d11fcce300bdaac9ba4926f871a1a7308895200"
+      }
+    ],
+    "observations": "Native observer captured only zero CPU1 mask at an empty-argv exit race (partial1/4); other native cases retain exact taskset-parent provenance, with no live-mask/argv claim. Baseline4, changed4 and focused8 have full live masks/argv. Accepted inputs/head/status/fixtures stable; groups empty and all actors/observers reaped."
+  },
+  "tools": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "private_source_driver_sha256": "089936ce365c4460d3641d0030be6815bad40c84d5be572274de02895469087c",
+    "focused_driver_sha256": "0fda28c5f76e9f212d3ea549709b142520975d1dd788104d6983758430cc35c2"
+  },
+  "limits": "Sole-owner receiver retirement, referenced/unset/nonfloat live slots, hooks, readonly/asymmetric access, wider receivers/consumers and general quiet-CV GC behavior remain outside this slice. No native claim for rereading retired property storage. Mutable-empty getter-array retirement stays open. Earlier magic-property cuts retain original identities without replay; no global determinism/equivalence claim.",
+  "artifacts": "Ignored raw reports/streams/process records/private run.py remain at original paths. Maintained byte-identical sources/catalogue/focused harness recover from tested commits; no bulky evidence or cleanup receipt tracked.",
+  "review": {
+    "independent": "class_review_84",
+    "accepted": "Native/baseline/source4, implementation, focused469 and concise publication independently accepted. Structural inventory/diff checks pass; no semantic rerun for publication."
+  }
+}

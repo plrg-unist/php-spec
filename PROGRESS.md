@@ -7,6 +7,21 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Public initialized float-property `empty` now dispatches the NaN Warning and
+rereads its captured live slot after the handler: `0.0` yields true; `1.0` or
+unchanged NaN yields false, with one warning. Caller-CV nulling cannot redirect
+the selected receiver/key; the marker is nonowning and the originals keep a saved
+alias live. Supplied throw preserves the same Exception at actual catch. Four
+originals agree at `0a8b0c8e4`; 469 focused premises at `59e5036d3`
+(409 reached +60 derived) cover owner2→1 without BASE, live rereads, default and
+throw cleanup, source/record/slot refusals and budgets. The first declaration-order
+runner failure remains zero credit. Native sampling is qualified as partial1/4;
+later source/state masks and argv were complete. Module411 leaves magic408,
+generic truth, ownership and GC unchanged. Sole-owner/retired or referenced slots,
+wider quiet-CV GC paths and mutable-empty array retirement remain open.
+[Public NaN review](coverage/semantics/quiet-public-nan-review.json).
+Earlier class cuts retain their original evidence without replay.
+
 Complete quiet numeric strings now convert after the first callback in the
 both-fractional plain-CV modulo/shift/numeric-bitwise routes. Cached LEFT `12` with
 numeric `5` stores `2`/`384`/`0`/`4`/`13`/`9`, preserving RHS string identity and
@@ -25,26 +40,6 @@ Composed over b4661142f/399 after pointwise review of typed-return array
 cleanup, DEFINE flags/INF, SensitiveParameterValue/WeakMap comparison, literal-list
 and private-member empty/getter selectors. Source10/state807 retain private cuts
 without actor, replay or renewed credit.
-
-Terminal inherited private-property `empty` now skips an untyped public
-by-value `__get` when `__isset` is absent. It authenticates the external CV/literal
-site and completes true without manufacturing a receiver owner. Later ordinary
-reads still run the real getter and preserve its return or same Exception at catch.
-Two originals agree at `7f348182d`; 235 focused premises at `d82965600`
-(201 reached +34 derived) cover borrowed preparation, public false bypass,
-actual Get/catch, source/consumer and
-live-dynamic-slot refusals, and budgets. A clean-collection prefix preserves the
-GC buffer and one receiver owner through private empty. The original Unsupported
-source and locating GC mismatch retain zero credit; the intermediate stream-only
-cut is superseded. Native CPU4 masks were observed for both short cases, with
-empty argv at exit qualified. No generic GC, ownership, return or quiet-read rule
-is relaxed. Other quiet-CV GC paths, terminal isset/coalesce and mutable-empty
-array retirement remain open. [Getter-only empty review](coverage/semantics/magic-empty-get-only-review.json).
-Earlier class cuts retain their identities without replay.
-
-Composed over `816e1c57d` after pointwise review of unrelated selectors.
-Both originals and the 235 focused premises retain their tested revisions;
-no joined actor or renewed execution credit.
 
 WeakMap comparisons now admit initialized SENSITIVEVALUE wrappers and exact
 SensitiveParameterValue CTORCLOSURE captures as uncomparable +1 both ways, before

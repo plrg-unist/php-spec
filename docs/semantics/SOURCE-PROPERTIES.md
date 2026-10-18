@@ -19,6 +19,18 @@ deprecation capture; see the [attribute review](../../coverage/semantics/allow-d
 A leading-NUL computed name raises the engine error
 for read, write and unset, while quiet tests remain silent.
 
+Selected terminal CV/literal `empty` of an initialized public nonreadonly float
+property now warns on NaN before rereading the live slot. Handlers can change it
+to `0.0` (empty true), `1.0` (false), or leave NaN (false, without another Warning).
+The continuation captures receiver/key/source history without owning a receiver
+or manufacturing BASE; it survives source-CV nulling while a saved alias stays
+live. A supplied throw preserves the same Exception at catch, and the receiver
+destructor follows result/catch after the alias is cleared. Four originals and
+469 focused premises (409 reached +60 derived) cover these paths, authenticity
+refusals and budgets. Referenced, unset, nonfloat or retired slots, sole-owner
+retirement and wider quiet-CV GC behavior remain open; mutable-empty getter-array
+retirement is unchanged. [Public NaN review](../../coverage/semantics/quiet-public-nan-review.json).
+
 Public backed by-value block and expression `get` hooks compile into source functions with the
 property's return type. Literal reads through an ordinary CV or `$this` execute
 the hook each time. Direct backing access requires the same property and receiver
