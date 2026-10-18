@@ -329,3 +329,61 @@ def $error_call_valid(S, perrorcall) = true
 def $task_nodes(LIST_KEY_NULL_RESULT (KNOWN (PARRAY n_array)) n_array n expression phpType13* z n_phase) = [HARRAY n_array]
 def $task_nodes(LIST_KEY_NULL_RESULT (REFERENCE n_source) n_array n expression phpType13* z 0) = [HCELL n_source, HARRAY n_array]
 def $task_nodes(LIST_KEY_NULL_RESULT (REFERENCE n_source) n_array n expression phpType13* z 1) = [HCELL n_source]
+
+;; Undefined CVs warn under their own protection before falling through to the
+;; null conversion. Initialization by that handler cannot redirect either read.
+dec $list_undefined_key_empty(pstate, nat*) : bool
+def $list_undefined_key_empty(S, n_name*) = true
+  -- if $lookup(S.ENV, n_name*) = eps
+def $list_undefined_key_empty(S, n_name*) = true
+  -- if $lookup(S.ENV, n_name*) = (n_cell)
+  -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
+  -- if S.STORE[n_cell] = UNDEFINED
+  -- if ~$foreach_released_container_cell(S, n_cell)
+def $list_undefined_key_empty(S, n_name*) = false -- otherwise
+
+dec $list_undefined_key_plan(pstate) : (poperand, nat, nat, expression, phpType13*, int)?
+def $list_undefined_key_plan(S) = ((poperand, n_array, n, expression, phpType13*, z))
+  -- if S.TODO = (LIST_FETCH poperand n expression false phpType13* z) :: ptask_tail*
+  -- if $list_missing_array(S, poperand) = (n_array)
+  -- if $list_missing_integer_cv_item(S, n, expression, phpType13*, z) = (VARIABLE n_name* z_name)
+  -- if S.RESULT = VARIABLE n_name* z_name
+  -- if ~$environment_blocked(S, n_name*) /\ ~$update_released_array_name(S, n_name*)
+  -- if $list_undefined_key_empty(S, n_name*)
+  -- if $list_null_key_source(S, poperand, n_array, n, expression, phpType13*, z, 0)
+def $list_undefined_key_plan(S) = eps -- otherwise
+
+def $list_undefined_key_pending(S) = true
+  -- if $error_handler_eligible(S, 2) \/ $error_handler_eligible(S, 8192)
+  -- if $list_undefined_key_plan(S) =/= eps
+def $list_undefined_key_pending(S) = false -- otherwise
+
+dec $list_undefined_key_message(nat*) : nat*
+def $list_undefined_key_message(n_name*) = $ptascii("Undefined variable $") ++ n_name*
+
+rule PhpStep/list-undefined-key-warning: S ~> $error_dispatch(S, 2, $list_undefined_key_message(n_name*), z, WARNING n_name* z, LIST_KEY_UNDEFINED_RESULT poperand n_array n expression phpType13* z 0)
+  -- if $list_undefined_key_pending(S)
+  -- if $list_undefined_key_plan(S) = ((poperand, n_array, n, expression, phpType13*, z))
+  -- if $list_missing_integer_cv_item(S, n, expression, phpType13*, z) = (VARIABLE n_name* z_name)
+rule PhpStep/list-undefined-key-release: S ~> S[.TODO = (LIST_KEY_UNDEFINED_RESULT poperand n_array n expression phpType13* z 1) :: ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (LIST_KEY_UNDEFINED_RESULT poperand n_array n expression phpType13* z 0) :: ptask_tail*
+  -- if $list_null_key_source(S, poperand, n_array, n, expression, phpType13*, z, 0)
+rule PhpStep/list-undefined-key-expired: S ~> S[.TODO = $list_fetched_tasks(S[.RESULT = KNOWN PNULL], poperand, n, expression, false, phpType13*, z) ++ ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (LIST_KEY_UNDEFINED_RESULT poperand n_array n expression phpType13* z 1) :: ptask_tail*
+  -- if $list_null_key_source(S, poperand, n_array, n, expression, phpType13*, z, 1)
+  -- if ~((HARRAY n_array) <- S.ALLOCATIONS)
+rule PhpStep/list-undefined-key-null: S ~> $error_dispatch(S, 8192, $list_null_key_message(), z, DIAGNOSTIC "Deprecated" $list_null_key_message() z, LIST_KEY_NULL_RESULT poperand n_array n expression phpType13* z 0)
+  -- if S.TODO = (LIST_KEY_UNDEFINED_RESULT poperand n_array n expression phpType13* z 1) :: ptask_tail*
+  -- if $list_null_key_source(S, poperand, n_array, n, expression, phpType13*, z, 1)
+  -- if (HARRAY n_array) <- S.ALLOCATIONS
+
+def $call_task_valid(S, LIST_KEY_UNDEFINED_RESULT poperand n_array n expression phpType13* z n_phase) = $list_null_key_source(S, poperand, n_array, n, expression, phpType13*, z, n_phase)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = LIST_KEY_UNDEFINED_RESULT poperand n_array n expression phpType13* z 0
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if $list_null_key_source(S, poperand, n_array, n, expression, phpType13*, z, 0)
+  -- if $list_missing_integer_cv_item(S, n, expression, phpType13*, z) = (VARIABLE n_name* z_name)
+  -- if perrorcall.LEVEL = 2 /\ perrorcall.LINE = z
+  -- if perrorcall.MESSAGE = $list_undefined_key_message(n_name*)
+  -- if perrorcall.EVENT = WARNING n_name* z
+def $task_nodes(LIST_KEY_UNDEFINED_RESULT poperand n_array n expression phpType13* z n_phase) = $task_nodes(LIST_KEY_NULL_RESULT poperand n_array n expression phpType13* z n_phase)
