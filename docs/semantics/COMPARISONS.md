@@ -287,7 +287,7 @@ or VM contents. Live admission checks allocation; documentary post-message image
 check bounds and tags without adding owners. Private second-Notice targets and
 existing aggregate pointers/guards survive handlers. The numeric cast itself
 does not invoke a callable or resume a VM.
-Other Closure bodies remain outside this admitted callback route.
+Other Closure bodies remain outside that original admitted slice.
 [WeakMap and WeakReference numeric leaves](../../coverage/semantics/weak-numeric-comparison-review.json)
 also authenticate fixed builtin Notice names through exact outer tags. Live admission
 requires allocation and nonfreeing storage; documentary post-message images use only
@@ -310,6 +310,19 @@ Wrapped Stringable/Map/scalar9 values remain untouched until explicit source use
 creating the primary clone and retiring its seed are source prerequisites,
 without new clone-step credit.
 Uninitialized wrappers and private-payload comparison effects remain separate.
+
+[Method Closure numeric leaves](../../coverage/semantics/method-numeric-comparison-review.json)
+add exactly normalized METHOD/ARRAYMETHOD/STRINGMETHOD images to the existing
+Closure class. Live admission still checks allocation/nonfreeing; the documentary
+post-message image needs only bounds and the saved body. Two originals and 381
+Boolean premises/11 actual transitions preserve CV/COPY selection, signed order,
+cross-tag SECOND numeric targets, authentic scope rows and physical owning edges.
+A real first handler may retire its selected capture, receiver, held Map and private
+value before comparison returns. The saved image stays valid without those owners,
+weak observers return null and private 1/1.0 finishes normally. Captured methods
+and private casters are not invoked by the comparison. Later explicit calls/casts
+and clone/seed retirement reuse existing rules; other representations and wider
+lifetimes remain partial. Producer/visibility/magic-callable admission is unchanged.
 
 Other internal/custom comparison handlers, legacy materialized callbacks without a
 retained cursor and wider handler/lifetime behavior remain open.

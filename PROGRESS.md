@@ -7,6 +7,31 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Direct, array-method and fixed-string-method Closure captures now use the standard
+numeric Notice and private 1/1.0. Nine module402 image lines preserve existing live
+guards, source/scope authentication, pointers and ownership. Two exact originals
+and 381 Boolean premises (371 setup + 10 pure)/11 actual transitions pass at
+ad3c241a0/402: nine numeric results and two ingresses. CV/COPY, signed order and
+cross-tag SECOND targets remain distinct despite callback writes. The independent
+first handler retires its selected capture, sole receiver, held Map and private
+value; authentic weak observers return null while the saved class image and numeric
+continuation remain valid. The weak key stays live. Whole states, scopes, owners
+and driver budgets pass; later real method calls and explicit casts reuse existing
+routes. The twelve native Notices are separate from transition credit. The genuine
+unchanged checked-program Unsupported retains zero agreement; no actor failed or
+repeated. Other Closure numeric bodies, broader lifetimes and magic dispatch remain
+partial. [Method numeric review](coverage/semantics/method-numeric-comparison-review.json).
+
+Composed over 84f0fdfec/403 after independent actual-parent review. Incoming
+by-reference-return cleanup, level2 numeric-string Warning, keyed-array float-loss
+and DEFINE NULL-array flag selectors are absent. The callable array literals are
+unkeyed, the handlers register only E_NOTICE, and ordinary ADD copies/counter ++
+keep prior paths. No state-field/initializer change occurs; incoming module413
+and the 403-module manifest stay exact. Only module402 changes and is byte-exact
+testedad3c241a0. Source2/state381/11 retain their private402 cut without a joined
+actor, accepted replay or renewed execution credit. CLASS99 has not entered this
+parent; its direct missing-method lane remains separately coordinated.
+
 Array `define` now receives NULL third flags through Deprecated before body
 validation/copy/key lookup. Normal handlers can repair/create cycles or install
 the duplicate key; a throwing handler cancels the body with raw NULL traces and

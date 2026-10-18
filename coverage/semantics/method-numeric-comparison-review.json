@@ -1,0 +1,143 @@
+{
+  "version": 1,
+  "milestone": "COMP86",
+  "status": "independently reviewed within existing method-capture numeric Notice reception",
+  "behavior": "Direct, array-method and fixed-string-method Closure captures use standard numeric Notices/private 1 or 1.0; a first handler may retire the borrowed capture graph before comparison returns.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "tested_revision": "ad3c241a0301cfaa342eee2e5ead73f051573ada",
+  "ordered_modules": 402,
+  "manifest_sha256": "eb5462486ad138278927b4d9024ed7a525b118825a09204e26ed5a3605c662a5",
+  "implementation": {
+    "spec/semantics/402-object-numeric-comparisons.watsup": "e7dbb8787346e4282d1cce09996317b708f634964b1600f9fc7ca9f6e81d117f"
+  },
+  "engine_basis": [
+    "Zend/zend_closures.c zend_closure_compare starts with ZEND_COMPARE_OBJECTS_FALLBACK; object-versus-number uses zend_std_compare_objects before fake-function, receiver or scope metadata.",
+    "Zend/zend_object_handlers.c zend_std_compare_objects saves the original opposing scalar type, diagnoses failed numeric cast and substitutes private integer1 or float1.0 before zend_compare. It does not invoke the captured method or reuse the original object after the callback.",
+    "Existing173/205/210 rules authentically produce METHODCLOSURE, ARRAYMETHODCLOSURE and STRINGMETHODCLOSURE; normalized body tags are native Closure class images. Compiler, source/target/scope selection and magic-callable barriers stay unchanged."
+  ],
+  "contract": [
+    "Exactly nine module402 lines extend only the NUMBER_CLOSURE documentary image with three normalized body patterns. Bounds precede indexing; existing allocation/nonfreeing live admission, fixed Closure name, targets, pointers, continuations and root rules are unchanged.",
+    "All three genuine public known-method producers precede native/model comparison ingress. CV live1 versus copied0, both orientations, signed order and cross-tag SECOND compare against the original numeric target despite late live9 writes. Later real method calls return the same held Map exactly three times; comparison never invokes those bodies or the private caster.",
+    "The independent METHOD clone and ARRAYMETHOD capture each solely own a receiver holding a Map/private value. The actual first Notice overwrites the selected Closure CV; capture, receiver, Map and private value retire inside the callback, while the weak key remains live. Authentic WeakReferences keep nonowning history and get null.",
+    "After actual retirement the saved raw documentary image remains true, fresh live admission is false and the existing zero-root numeric continuation remains valid. Complete true result states and checked-driver zero/split budgets preserve all remaining state."
+  ],
+  "source_catalogues": {
+    "tests/semantics/method_numeric_comparison_cases.json": "27228f1942c5815a8917de19c2a0115cc2191f893850865fcc8ed658c40b2bc2",
+    "tests/semantics/method_numeric_comparison_review_cases.json": "aa4576d65da14cc90a0a102d922a8209958244df32bb55abd560cee825653f94"
+  },
+  "unchanged_frontier": {
+    "revision": "44e0af9f7283fa5b4d0b657845c3a647ef84790c",
+    "report": ".tools/method86-support/run-baseline-v1/report.json",
+    "aggregate_passed": false,
+    "public_status": "unsupported",
+    "reason": "error-handler ingress requires a producer continuation",
+    "stdout_prefix": "producers|quiet|Y|N|Y|N|method-int|",
+    "host_exit": 1,
+    "seconds": 48.956236930564046,
+    "accepted": true,
+    "observation_recorded": true,
+    "agreement": false,
+    "preserved_inputs": ".tools/method86-support/run-baseline-v1/failure-inputs",
+    "agreement_credit": 0
+  },
+  "validation": {
+    "original_sources": {
+      "normal_agreements": 2,
+      "author_seconds": 126.59181732684374,
+      "independent_seconds": 112.14633941277862,
+      "cli_and_host_caps_seconds": [
+        240,
+        250
+      ],
+      "native_notices": 12
+    },
+    "author": {
+      "premises": 171,
+      "setup": 165,
+      "pure": 6,
+      "raw_php_steps": 7,
+      "seconds": 119.25830248557031,
+      "result": "Seven genuine NUMBER_COMPARE_RESULT steps: direct-method live read, array-method COPY, signed fixed-string-method order and two cross-tag SECOND dispatch/result pairs. Full states preserve authentic scope rows, three receiver edges, sole held Map/private/key owners and quiet bodies."
+    },
+    "independent": {
+      "premises": 210,
+      "setup": 206,
+      "pure": 4,
+      "raw_php_steps": 4,
+      "seconds": 118.42233298532665,
+      "result": "Two real BINARY_RIGHT ingresses and two actual numeric returns after callback-side capture/receiver/Map/private retirement. Whole dispatch/true finish states, original weak history/null gets, documentary versus live guards, typed targets and source budgets pass."
+    },
+    "total": {
+      "premises": 381,
+      "setup": 371,
+      "pure": 10,
+      "raw_php_steps": 11,
+      "transition_types": {
+        "number_compare_results": 9,
+        "numeric_ingresses": 2
+      }
+    },
+    "failures": [],
+    "separate_zero_credit": "Native, unchanged Unsupported, initializer, four parse/check operations and EL add no application/state credit. Ten marked pure projections are separate from the eleven transitions and twelve source Notices. METHOD cloning/seed-maker retirement, later real calls and explicit casts use existing source routes without new clone/free/call protocol transition credit."
+  },
+  "limits": [
+    "Only existing normalized METHOD/ARRAYMETHOD/STRINGMETHOD numeric image admission is added. Other Closure representations and wider numeric callback/lifetime forms remain partial.",
+    "Producer/compiler/callable classification, visibility/capture authentication, magic __call and ARRAYUNKNOWN barriers are unchanged. Both originals use declared known public methods; CLASS99 missing-method dispatch is a separate lane.",
+    "No new aggregate, supplied-throw, WeakMap, clone, getter, GC, ownership, task or schema rule is added. Real callback-return retirement is distinguished from the earlier clone/seed retirement prerequisite; the key remains live through its ordinary global owner.",
+    "Bounds/wrong-kind/dead-image projections are pure local controls, not malformed-global admission. Paused owned-NUL/OP12/Source47 are untouched; copied local binaries establish no fresh build/portability, complete PHP or BOLA claim."
+  ],
+  "artifacts": {
+    ".tools/method86-support/gates.py": "3b4b89eedaa8b8e32e557f3af47bbf4ec41b0eba0616cab4f2a4d6ce91d98cf5",
+    ".tools/method86-support/actor.py": "4e9eb4731301006fdd0d32a1dd7d41886a19143dad50ef48b03a9a7c0635f747",
+    ".tools/method86-support/inputs.py": "7daf2486a6acf65e0e9b92b01ffed85628d8dd3e6aaadac535c115e87b001de7",
+    ".tools/method86-support/run-native-v1/report.json": "63fbcf25e8a5842eefbef41f7b887624f8afcb2ab8666fbafe3f365608cf3704",
+    ".tools/method86-support/run-baseline-v1/report.json": "190d3cf13b95f260c8c6573bc07c7973a9e447c0f4cf653681b87a34d4a99540",
+    ".tools/method86-support/run-init-v1/report.json": "5443e9d270ba69247be52d04112cbc6614401d3c8c6a89fd5c976f2aa1999eeb",
+    ".tools/method86-support/run-sources-v1/report.json": "7ebe2ba8b90829d5b6a2654c35cf860a50a1cfdb567f3b9e8723014828def793",
+    ".tools/method86-support/run-prepare-v1/report.json": "cb23e09ba54a875ce25154045445aa3db1d214f91d3eb416af81f6355345a9ff",
+    ".tools/method86-state/build.py": "ea9701c59cf60518784e9c4c8ce7d01ce5144508126d6e56b3a1890cee20c08b",
+    ".tools/method86-state/helpers.watsup": "f8e9593f7ebfce2fadb954c02e66bc7c5a0b0ecf2b3fa60e2a5a4b300eb93f1f",
+    ".tools/method86-state/run.py": "0d3115912130b552370a49b1cfc0a6675c4ac008f2c5c414f728411882ddda88",
+    ".tools/method86-state/plan.json": "37f4d7ce3d6b82303fb9a0ffa8570048c6d87bda566a384cc2cbc92e0eafd203",
+    ".tools/method86-state/run-el-v1/report.json": "c75d8e448fb354aa4f3568040176aa8aebb904f5652b3b1dcb8d3fa60c33f694",
+    ".tools/method86-state/run-sl-v1/report.json": "c3db3901234cfeac9782e340076a5b34981beb3922fc68ab69fcf245893f5afb",
+    ".tools/method86-peer/run.py": "f3c220a666de59fad4856e026ebc0abbfde7777df8df6c0a93bbf02d13fa55de",
+    ".tools/method86-peer/build.py": "ccb70ad419c50d6c49e2ee46e9080fa1e0a6b3ed1674ba450c23cd406322bdcb",
+    ".tools/method86-peer/helpers.watsup": "ae5dd6e2d35c3b44d361c92c60cbf466935ce9f91cfc82135a2fe5d44f21619e",
+    ".tools/method86-peer/plan.json": "9729a6ad2256fc86942474a18974b99ee03396ef09bfaf65daba06d19e70e9e3",
+    ".tools/method86-peer/native-v1/report.json": "d6c6a2f409c0366147fa95a29b1c7da99622b334a95d3f5d57cce77c038622a4",
+    ".tools/method86-peer/source-v1/report.json": "e3cf779cc116b5bec6d353aadc7e7cc38f21a05f2d3628b373b1b020f65c5770",
+    ".tools/method86-peer/prepare-v1/report.json": "6e50d8bf796c2694f201ea3d399c9ee01dc3321e3e739f669fa641819332997c",
+    ".tools/method86-peer/state-v1/report.json": "ae93fa2c17e58f84f491e52dd7c13893af40228ecd9386941d38e525603a31ea",
+    ".tools/method86-peer/review.json": "a80ce420e9db4993eab4e87a68e178a8c96a97c62879ea633dfa2c49e07a3594"
+  },
+  "recovery": "Ignored originals, programmes, fixtures, START/closed environment records and raw streams remain under .tools/method-numeric-comparison-86/.tools/method86-{native,support,state,peer}; branch codex/method-numeric-comparison-86 retains testedad3c. START/closed records retain exact commands; no accepted evidence is replayed for publication.",
+  "independent_review": {
+    "reviewer": "/root/comp_review_67",
+    "semantic_verdict": "CLEAR",
+    "source_and_state_verdict": "CLEAR",
+    "publication_verdict": "CLEAR",
+    "record": ".tools/method86-peer/review.json",
+    "record_sha256": "a80ce420e9db4993eab4e87a68e178a8c96a97c62879ea633dfa2c49e07a3594"
+  },
+  "composition": {
+    "parent": "84f0fdfec57cdf70898b1a547c2fe07a3e002305",
+    "ordered_modules": 403,
+    "method": "Independent pointwise actual-parent and exact FF review; no concrete joined-actor dependency.",
+    "runtime": "Only nine module402 image lines are incoming and the resulting402 blob is byte-identical testedad3c. Every other spec and the incoming 403-module manifest keep exact parent bytes.",
+    "parent_seams": [
+      "Module270 reference-return-pair cleanup markers require the paired RETURN_REF_UNWIND/destructor suffix, absent from both originals. Ordinary capture/receiver retirement and typed by-value __toString methods cannot select it.",
+      "Module404 quiet-left/right Warning plans require level2 eligibility plus two selected INTEGER_CELL holders and numeric-string conversion. Both source handlers register E_NOTICE only; comparison tasks use level8, the ADD COPY uses a CV plus literal and counter increments use their existing update route.",
+      "A19 modules30/41/413 add only ARRAY_KEY_FLOAT_RESULT and guarded literal-key conversion for a variable finite lossy float key under level8192. Both callable-array literals are unkeyed; there is no keyed float source or eligible Deprecated handler. New task variants add no pstate fields/initializer change. Appended413 and manifest stay parent-exact.",
+      "V77 module400 adds NULL-array DEFINE-flag validation/finish under DEFINE CONFIG kinds. Neither source calls define, constant or defined; ordinary E_NOTICE fetches and fixed method strings use unchanged compiler/resolver paths.",
+      "CLASS99 was coordinated independently with both class agents: it concerns literal missing-instance __call and keeps numeric images/known-public capture producers and magic callable barriers unchanged. Its module414 is not in this exact parent. No141/142/173/205/210/215/221/234 delta is being bridged here."
+    ],
+    "execution_credit": 0,
+    "retained_cut": "Two exact source agreements/381=371setup+10pure/11 actual (nine numeric result transitions,two ingresses) retainad3c/402. Twelve native Notices and zero-credit baseline/initializer/parse-check/EL/pure controls stay distinct; no failures or accepted replay."
+  }
+}
