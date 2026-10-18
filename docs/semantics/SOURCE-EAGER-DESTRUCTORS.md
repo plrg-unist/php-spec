@@ -98,7 +98,13 @@ mirrored deep receipts and valid-heap owner-removal refusals. A wrong constructo
 origin still leaves a live pending Throwable before history refusal. The same D
 exception traverses child UNSET and parent return exits into the local catch,
 then cleared C gives one Notice17 and a fresh detached NULL reference with exact
-whole/split ending. Other bodies/throw forms and deeper reentry remain open.
+whole/split ending. M117 admits canonical literal Exception alongside TypeError
+through the same finite body predicate, requiring compiled-name equality and
+pending KIND correlation with that constructor. Source1 and385/4 at `1c87142fd`
+include a valid wrong-kind property layout with unchanged heap/origins/message,
+deep saved-owner/LINE and constructor-origin refusals, exact parent/NULL budgets
+and the same caught Exception/Notice17/detached ending. History/transition/root
+rules are unchanged; other constructors/throw forms and deeper reentry remain open.
 [Review and recovery](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
 Pruning prepares the object store and fatal marks once, then selects the same

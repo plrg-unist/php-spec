@@ -4271,8 +4271,10 @@ and 514/12 checks at `9aa2136d9` prove cleared-NULL recovery, one Notice and det
 caller aliases. One nested destructor now follows the same path: C creates
 and releases D, whose TypeError reaches that local catch. A fresh comparison and
 454/9 checks at `bf107b70c` prove nested saved scopes, remaining owners and detached
-NULL recovery. Other bodies/throw forms, deeper reentry, GC and broader consumers
-remain open.
+NULL recovery. Literal builtin Exception now follows that finite path too:
+source1 and 385/4 checks at `1c87142fd` bind its pending kind to the compiled
+constructor, reject a valid wrong-kind Throwable and preserve Notice17/detached
+NULL recovery. Other throw forms, deeper reentry, GC and broader consumers remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

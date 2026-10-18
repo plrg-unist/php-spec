@@ -633,44 +633,28 @@ joined actor, accepted replay or renewed execution credit.
 The earlier mixed CV/selected-reference arithmetic route retains source9/state858
 in its [review ledger](coverage/semantics/mixed-arithmetic-warning-review.json).
 
-M116 preserves computed-C return history when C's destructor creates and
-unsets a local D whose destructor throws. The same D TypeError reaches the
-source-local catch; cleared C resumes NULL with one old-line17 VALUE Notice,
-then B/A retire normally. The caller gets a fresh NULL reference, detached from
-selected y and prior b7. Only the finite throw-site classifier changes: C uses
-one non-this, non-superglobal local; D is a declared nonabstract class with the
-same propertyless/public/noarg direct-TypeError restrictions. The old direct
-case factors equivalently; SOURCE, saved-scope, pending/replay, roots and GC rules
-stay unchanged.
+M117 extends finite destructor return-history replay to a literal builtin
+Exception. The direct throw classifier admits exactly canonical TypeError or
+Exception, requires its compiled NEW name to match, and binds the live pending
+Throwable kind to that constructor. All finite class/body, source/origin/message,
+saved-scope and remaining-owner guards stay intact; no history, replay, roots,
+release/storage, GC or state/task schema changes.
 
-One native observation and an unchanged wrong-ending baseline retain
-`72449a6d9`/405. A separate 100/2 diagnosis proves actual D→C→f frames and missing
-history. The repaired source and 454 Boolean/nine raw checks agree at
-`bf107b70c`/405 (author226/3, independent228/6). D has one owner before unset;
-active C/D each have receiver plus saved RESULT roots, while B/A each retain
-one owning return task. Public steps match whole
-driver states. Mirrored LINE receipts, deep owner-only deletions with valid heaps,
-and a wrong constructor origin with a live pending Throwable all refuse. Child
-UNSET and parent return exits preserve exception identity, Notice/aliases and
-exact whole/split endings.
+Native1 and the unchanged wrong-ending baseline retain `54238b756`/405. A focused
+62 Boolean/one raw diagnosis proves actual compiled Exception/KIND identity,
+the old TypeError-only selector loss and generic pending exit. The repaired
+source and 385 Boolean/four raw checks pass at `1c87142fd`/405 (author139/2,
+independent246/2). A valid TypeError property layout at the Exception constructor
+preserves heap, live pending validity, message and origins but refuses history
+admission. Deep LINE/owner controls, constructor ORIGIN/FILEORIGIN controls,
+borrowed/physical receipts, exact parent/cleared-C public steps, same local
+Exception, Notice17 and fresh detached NULL/whole-split ending pass.
 
-Two fixture failures remain zero, both before state evaluation: a diagnostic
-type-prefix typo and a recursive otherwise fallback. Only those affected checks
-repeat; native, baseline, accepted source/author/diagnosis and M115 are not replayed.
-Both final state actors use strict45/state180 and are quiet/stable/reaped.
-Other destructor bodies/throw forms, deeper reentry, properties, larger/mixed
-histories, GC and wider consumers remain open.
+All six actors pass first attempts, quiet/stable/reaped; state actors use
+strict45/state180. Original native/baseline/diagnosis/source and TypeError cuts
+are not replayed. Other builtin/custom/supplied Throwables, bodies, deeper
+reentry, properties, larger/mixed histories, GC and wider consumers remain open.
 [Owning-return review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
-
-Composed over `826bdf0b3`/405 after independent actual-parent review. The source
-has no literal-array key, INI/DEFINE, Generator, isset/property-magic or eligible
-arithmetic/comparison Warning producer. New LITERALARRAYRETAINED/LITERALARRAYDEBTS
-stay empty, so added roots/debts/validation and the driver wrapper reduce to the
-original behavior. Only270 changes and keeps exact testedbf107 bytes; every
-other runtime file, parent field/default/task and ordered405 manifest stay exact.
-Native1/source1, diagnosis100/2 and state454/9 retain their private cuts without
-joined execution or renewed credit.
-
 
 Retained propertyless Stringable `define` names now accept captured boolean true
 with primitive candidates and non-NUL global/class-like results. One module400
@@ -11005,9 +10989,10 @@ validates one normal three-computed-owner chain with source1 and 347/7 at f305,
 including saved callers and source-region owner refusals, without a runtime fix.
 M115 adds first-C direct-TypeError history/replay with B/A still owning, source1
 and 514/12 at9aa, same local catch and cleared-C NULL/Notice16 recovery. M116
-adds one nested C→D destructor path with source1 and454/9 atbf107, genuine deep
-saved scopes, live outer owners and the same D Throwable/NULL/Notice17 result.
-Other interposed/pending histories, deeper reentry or larger/mixed owners, GC and
+adds one nested C→D destructor path with source1 and454/9 atbf107. M117 adds
+literal Exception constructor-kind correlation, source1 and385/4 at1c871 with
+same local catch/NULL/Notice17 and live outer-owner refusals. Other
+interposed/pending histories, deeper reentry or larger/mixed owners, GC and
 wider typed consumers remain open core obligations for permanent lifecycle/control work.
 Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is
 bounded physical-array owner recovery. Bounded single-active-finalizer CV replay and deferred VALUE/NULL Notice dispatch are
