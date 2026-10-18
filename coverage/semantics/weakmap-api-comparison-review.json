@@ -1,0 +1,121 @@
+{
+  "version": 1,
+  "milestone": "COMP74",
+  "status": "independently reviewed within the stated live WeakMap/eligible intrinsic and Fiber API Closure domain",
+  "behavior": "Live WeakMap versus ordinary eligible INTRINSICCLOSURE or normalized FIBERAPICLOSURE returns uncomparable +1 both ways before callable, capture, VM or private-entry traversal.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "tested_revision": "8ce9bd0e2277918532b1a2935213a078e83a4693",
+  "ordered_modules": 399,
+  "manifest_sha256": "2e38df4b97a41f654a8c3f01ffb0c078c337ed17d1ce8816ff7429a23b031761",
+  "implementation": {
+    "spec/semantics/386-weak-map-lifetime.watsup": "f3b3dbc15c843e54214b0f8dece357c1cfcf125fef677a025418fbab75cc09f8"
+  },
+  "engine_basis": [
+    "Zend/zend_closures.c creates native Closures for first-class internal functions and Fiber APIs. zend_compare in zend_operators.c selects the left object handler.",
+    "zend_closure_compare runs ZEND_COMPARE_OBJECTS_FALLBACK for unlike handlers before fake-Closure fields. Standard object comparison returns ZEND_UNCOMPARABLE for different WeakMap/Closure classes before properties."
+  ],
+  "contract": [
+    "Six module386 lines extend $weakmap_standard_other. Ordinary intrinsic admission mirrors module148 callable eligibility: exclude $from_kind, INTRINSIC_CLOSURE_CURRENT, $closure_bind_kind and $fiber_kind in this representation; exact normalized FIBERAPICLOSURE is the other arm.",
+    "Existing bounds/allocation/nonfreeing mismatch guards, ORDER1 unchanged-state effect and refusal exclusion stay exact. No producer, API invocation, GC or lifecycle rule changes. Seven-operator rows yield 0100001 both ways, with strict identity separate."
+  ],
+  "source_catalogues": {
+    "tests/semantics/weakmap_api_comparison_cases.json": "2dd63868bcdd7b9e80d2d18e75e6744eeba26fdec6efba3ef46b1b30bb3b78e2",
+    "tests/semantics/weakmap_api_comparison_review_cases.json": "42d181f76dcef9f05e9c4a43ef55451497055d4f3316a18cf2da23dd02be77e9"
+  },
+  "unchanged_frontier": {
+    "revision": "e5d83caf31ba226d52e9bc47b1c82f6ea328e382",
+    "report": ".tools/api74-support/run-baseline-v1/report.json",
+    "reason": "WeakMap comparison protocol",
+    "stdout_prefix": "producers|intrinsic|",
+    "producer": "Both captures passed nominal Closure and GC-on checks before the first comparison.",
+    "agreement_credit": 0
+  },
+  "validation": {
+    "original_sources": {
+      "normal_agreements": 2,
+      "author_seconds": 31.03922989219427,
+      "independent_seconds": 65.89073738642037,
+      "cli_and_host_caps_seconds": [
+        240,
+        250
+      ]
+    },
+    "author": {
+      "premises": 124,
+      "setup": 115,
+      "pure": 9,
+      "raw_php_steps": 4,
+      "seconds": 24.685632940381765,
+      "result": "Four genuine row74 EQUAL fronts preserve GC.ENABLED, receiver-free ordinary GC_DISABLE and authenticated static Fiber CURRENT capture, absent scope/binding rows, private/key owner1 and complete false-result states. Budget and separately pure bounds/dead/current denials plus eligible GC_ENABLED admission pass."
+    },
+    "independent": {
+      "premises": 155,
+      "setup": 151,
+      "pure": 4,
+      "raw_php_steps": 4,
+      "seconds": 50.16922453418374,
+      "result": "Four genuine zero-prefix declared-box/array spaceship fronts preserve GC-on, sole start-capture ownership of a cold Fiber, callback-to-Map edges, private/key owner1, quiet counters and complete ORDER1 states. Full original endings explicitly disable/enable GC, start the real callback and execute real tail/private casts."
+    },
+    "total": {
+      "premises": 279,
+      "setup": 266,
+      "pure": 13,
+      "raw_php_steps": 8
+    },
+    "separate_zero_credit": "Native observations and exact unchanged Unsupported baseline, initializer, author EL and four parse/check operations supply no application agreement or extra state credit.",
+    "failures": []
+  },
+  "limits": [
+    "Special intrinsic representations remain outside this bounded comparison admission, even where existing native Closure producers/handlers exist. Other producers/custom counterparts and wider weak lifetimes remain partial; COMP71 stored-string carrier conversion remains separate.",
+    "Pure helper projections, including a substituted CLOSURE_CURRENT tag, establish local admission/effects only, not malformed-global execution. Fiber/callback owner and cold-state facts are genuine reached prerequisites; eight raw steps are comparisons.",
+    "GC claims cover comparison noninvocation and the existing enabled observer. Explicit later calls provide flag-change/Fiber execution observations, without extending INI, collection, ephemeron or broader lifecycle semantics."
+  ],
+  "artifacts": {
+    ".tools/api74-support/gates.py": "2780f7123482b8aefc4acdc958c226f18daf68eaf29c76590351919f8c6a1a8d",
+    ".tools/api74-support/inputs.py": "6625760530907a206b01b96f42b4f35e43d4f444982dc788286e5771e528a53c",
+    ".tools/api74-support/actor.py": "859b81c64e86fb3545c3d0a7bee5b5583a74dd53e813d238fa423573611b6fb6",
+    ".tools/api74-support/run-native-v1/report.json": "2a59b5f3014e2e4fc3e2783370043cfb3eaee7cd38e2749f9eaa85cb653cea5e",
+    ".tools/api74-support/run-baseline-v1/report.json": "9124b6e15c4c211797560da06851e88a6d8fb7a342acaf7c8ce6c688fe7a6737",
+    ".tools/api74-support/run-init-v1/report.json": "e7f9728939b5e36015688e24f6bdbe62b2119d3a10375bd5c8cee53e746eca42",
+    ".tools/api74-support/run-sources-v1/report.json": "b8334294fec883661d2dc8a3ccff462a988e72c03904b74997f91ee9062ba4d9",
+    ".tools/api74-support/run-prepare-v1/report.json": "684a943f17768dc4ea04319bd3d54652dbdf8fdfb0d1a7dd7f965184041c3180",
+    ".tools/api74-state/build.py": "39e4ef9f2e6872aac72676d3a10c3cc29aad1dbd86773c0b9f7443c0e0553b55",
+    ".tools/api74-state/helpers.watsup": "16bc1a8a21552827f65730aa19114a593210c01d3fdfe080bf63fdd9cf793bd8",
+    ".tools/api74-state/run.py": "6a02719fb9edea6d1a849b72ae9fab6a26219f7f38c2cd4aa05943d162930a28",
+    ".tools/api74-state/plan.json": "8f1e62383390e570f7138c95f8505de90a70c6ad9b7edc99ca3e7d929bdd0dcf",
+    ".tools/api74-state/run-el-v1/report.json": "1ed0c9a7b7d53732104ed5ab47daab200087c833b86ab1de5e3c5814389385fd",
+    ".tools/api74-state/run-sl-v1/report.json": "465b6bb88adf2d2d05a50c7a279553229c6b49de1e6b12729b542704cef6ad15",
+    ".tools/api74-peer/run.py": "038fd41e4479bf66732c278ea45d8aad05fd0516f53df374cb7500e704d3e23e",
+    ".tools/api74-peer/build.py": "9d7d0271a04e20cbcb1b13de2b9bdee3b150b7af346dad38f5bab69855c75f1e",
+    ".tools/api74-peer/helpers.watsup": "5c22939259456a8384e6b9eca7f8192af1311ae888f4bdb8614dc3962d22758b",
+    ".tools/api74-peer/plan.json": "965383f96f73cb263684b19bb1a50d70a75d711a226d520a8e6c4e6eae0b7da7",
+    ".tools/api74-peer/native-v1/report.json": "c89006688f5fcc00c05ce02f4a73f812e32388502946eacf57e6423b97c65c82",
+    ".tools/api74-peer/source-v1/report.json": "e9e611f682c8b773bda2626af5581f99321a94f14723411b35b9dc92862ad7b8",
+    ".tools/api74-peer/prepare-v1/report.json": "8b3bea502c8e27537915b8ec8cacf584b21e06270b855196bbf0b099a19f0e89",
+    ".tools/api74-peer/state-v1/report.json": "de5f0eb55869d6110517adc284bab5c7bf9919370198fa402dcd99f7127840f9",
+    ".tools/api74-peer/review.json": "790fb4a54921f1620cf25d62cbce61868003c159ccf39632a169f377bad70af1"
+  },
+  "recovery": "Ignored originals, fixtures, START/commands/environment records and raw streams remain under .tools/weakmap-api-comparison-74/.tools/api74-{native,support,state,peer}; branch codex/weakmap-api-comparison-74 retains the tested revision. No evidence archive is committed.",
+  "independent_review": {
+    "reviewer": "/root/comp_review_67",
+    "semantic_verdict": "CLEAR",
+    "source_and_state_verdict": "CLEAR",
+    "publication_verdict": "CLEAR",
+    "record": ".tools/api74-peer/review.json",
+    "record_sha256": "790fb4a54921f1620cf25d62cbce61868003c159ccf39632a169f377bad70af1"
+  },
+  "composition": {
+    "parent": "7af29e2c633cf37e585b6eb4fafd8441a4ed948f",
+    "ordered_modules": 399,
+    "method": "Independent pointwise actual-parent source review; no concrete syntax or dispatch-order dependency warrants a joined actor.",
+    "runtime": "Only six tested-identical module386 lines differ from the parent; manifest and every other runtime file remain parent-exact.",
+    "parent_seams": "Module400 special-name/startup duplicate admission and trace projection require define/DYNAMIC_CONSTANT_DUPLICATE; ordinary captured GC and Fiber API calls use distinct KIND/RESUME forms. Certified array-constant snapshots, magic-empty array RV, LIST_FETCH CV keys, integral bitwise assignment and authenticated destructor nullable-array return selectors are absent in both originals. Intrinsic/Fiber/capture producers and comparison interfaces are unchanged.",
+    "execution_credit": 0,
+    "retained_cut": "Two source agreements and 279 = 266 setup + 13 pure premises with eight actual comparison steps at8ce9bd0e2277918532b1a2935213a078e83a4693/399."
+  }
+}

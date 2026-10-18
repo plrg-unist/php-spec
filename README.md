@@ -2201,6 +2201,13 @@ sources and 361 Boolean premises/8 actual steps cover all seven operators, clone
 parent-body selection, quiet skipped tails and complete unchanged comparison states.
 [Factory/binding review](coverage/semantics/weakmap-factory-comparison-review.json).
 
+Ordinary eligible intrinsic and Fiber API Closures also compare with live WeakMap
+before capture, VM or private-entry traversal. Two exact sources and 279 Boolean
+premises/8 actual steps preserve GC-enabled observations, a sole cold Fiber owner
+and skipped aggregate tails. Later explicit calls expose the flag change and VM
+execution. Special intrinsic kinds and wider protocols remain partial.
+[Intrinsic/API review](coverage/semantics/weakmap-api-comparison-review.json).
+
 [Numeric object comparison Notices](coverage/semantics/object-numeric-comparison-review.json)
 now pause ordinary source-instance/int/float leaves through real error handlers.
 Live CV/cell reads remain distinct from copies; a second Notice uses saved 1/1.0,

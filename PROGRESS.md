@@ -7,6 +7,23 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+WeakMap comparisons now admit ordinary eligible INTRINSICCLOSURE and normalized
+FIBERAPICLOSURE objects as uncomparable +1 in either direction before callable,
+capture, VM or private-entry traversal. Two exact originals and 279 Boolean
+premises (266 setup + 13 pure)/8 actual steps pass at 8ce9bd0e2/399. All seven
+operators, unchanged GC-enabled observations, a sole cold Fiber owner, quiet
+aggregate tails and budgets are covered. Later explicit calls supply observable
+GC flag changes and Fiber execution. Native/baseline/preparation/EL retain zero
+credit; no actor failed. Special intrinsic kinds, other producers and wider weak
+lifetimes remain partial; no new INI, collection or ephemeron semantics is claimed.
+Stored-string carrier conversion stays separate.
+[Intrinsic/API review](coverage/semantics/weakmap-api-comparison-review.json).
+
+Composed over 7af29e2c6/399 after pointwise review of special-name/array constants,
+magic-empty array RV, quiet-CV list keys, bitwise assignment and abrupt-return
+selectors, all absent here. Source2/state279 retain their private cut; no joined
+actor or renewed execution credit.
+
 Duplicate `define` now recognizes non-NUL `true`/`false`/`null` string names without
 case sensitivity, warning and returning false with primitive candidates and
 omitted/bool-false flags. Messages and raw API traces retain the supplied spelling;
