@@ -4152,8 +4152,11 @@ credit is unchanged. An unused destructor declaration now also preserves the
 no-instance, echo-only interposed scalar history. Fresh control/treatment sources
 agree with PHP; separate 463/8 state checks cover its shared-cell RELEASE/EXIT
 pauses, required literal history despite an unchanged heap, engine TypeError catch,
-one line7 Notice and detached aliases. Wider interposed/pending histories, reentry,
-GC and broader consumers remain open.
+one line7 Notice and detached aliases. Three simultaneously owning computed
+object returns also pass a fresh source comparison and 347/7 reached checks at
+`f305be84b`: normal C/B/A retirement, saved-caller owners, source-region refusals
+and selected-reference aliases. This requires no runtime change. Wider
+interposed/pending histories, reentry, GC and broader consumers remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;
