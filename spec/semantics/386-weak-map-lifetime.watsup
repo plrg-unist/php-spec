@@ -737,6 +737,10 @@ def $weakmap_standard_other(pobject) = true
   -- if ~$from_kind(pintrinsic)
   -- if pintrinsic =/= INTRINSIC_CLOSURE_CURRENT /\ ~$closure_bind_kind(pintrinsic) /\ ~$fiber_kind(pintrinsic)
 def $weakmap_standard_other(pobject) = true
+  -- if $object_body(pobject) = INTRINSICCLOSURE INTRINSIC_CLOSURE_CURRENT
+def $weakmap_standard_other(pobject) = true
+  -- if $object_body(pobject) = INTRINSICCLOSURE INTRINSIC_CLOSURE_BIND
+def $weakmap_standard_other(pobject) = true
   -- if $object_body(pobject) = FIBERAPICLOSURE pfibercapture
 def $weakmap_standard_other(pobject) = true
   -- if $object_body(pobject) = GETTERCLOSURE n_receiver pgettermethod text_base pgettersource
