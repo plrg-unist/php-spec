@@ -138,7 +138,20 @@ seed/maker CV retirement and quiet zero-prefix aggregate tails. The receiver sta
 live through its sole capture owner; the factory has no receiver edge. Later source
 calls supply message/code values and a real factory-created body. One pre-main
 fixture-type failure stays zero. No getter/factory producer, clone or lifetime
-rule changes; constructor/special intrinsic captures and wider protocols remain partial.
+rule changes; special intrinsic captures and wider protocols remain partial.
+
+[Sensitive wrapper/capture WeakMap mismatches](../../coverage/semantics/weakmap-sensitive-comparison-review.json)
+admit raw initialized SENSITIVEVALUE and normalized CTORCLOSURE with the exact
+SensitiveParameterValue base through the same live allocated nonfreeing guards.
+The wrapper retains standard comparison: class mismatch precedes private-value
+or property export. Its constructor capture is a native Closure, whose unlike-handler
+fallback precedes receiver/source fields. Both return +1 in either direction with
+unchanged state. Two originals and 264 Boolean premises/8 actual steps preserve
+the wrapped Map, private/key owners, a cloned constructor after seed retirement and
+wrapper array/CV removal, sole receiver ownership, quiet aggregate tails and budgets.
+Explicit getValue and readonly-error source endings reuse existing protocols;
+no constructor, clone or lifetime rule changes. SENSITIVEUNSET, other constructor
+bases, special intrinsic captures and wider lifetimes remain partial.
 
 [Generator/Generator and Fiber/Fiber pairs](../../coverage/semantics/generator-fiber-comparison-review.json)
 return order zero through the standard zero-default-property shortcut. The pair

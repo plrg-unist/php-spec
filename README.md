@@ -2236,6 +2236,13 @@ fields, a cloned getter's sole receiver, factory metadata and quiet aggregate ta
 The one fixture-type failure retains zero credit; wider producers and lifetimes
 remain partial. [Getter/factory review](coverage/semantics/weakmap-getter-factory-comparison-review.json).
 
+Initialized sensitive-value wrappers and their constructor Closures also compare
+with live WeakMap before wrapped-value or receiver traversal. Two originals and
+264 Boolean premises/8 actual steps preserve a wrapped Map, staged sole receiver
+ownership and quiet aggregate tails; later calls expose the existing readonly Error.
+Uninitialized wrappers and wider protocols remain partial.
+[Sensitive wrapper/capture review](coverage/semantics/weakmap-sensitive-comparison-review.json).
+
 [Numeric object comparison Notices](coverage/semantics/object-numeric-comparison-review.json)
 now pause ordinary source-instance/int/float leaves through real error handlers.
 Live CV/cell reads remain distinct from copies; a second Notice uses saved 1/1.0,

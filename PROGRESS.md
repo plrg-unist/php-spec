@@ -7,6 +7,24 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+WeakMap comparisons now admit initialized SENSITIVEVALUE wrappers and exact
+SensitiveParameterValue CTORCLOSURE captures as uncomparable +1 both ways, before
+wrapped-value or receiver traversal. Both real producers precede the unchanged
+baseline. Two originals and 264 Boolean premises (252 setup + 12 pure)/8 actual
+comparison steps pass at 5207218f5/399. All seven operators, a wrapped Map snapshot,
+cloned constructor ownership after wrapper array/CV removal, private/key owners,
+quiet aggregate tails and budgets are covered. Later calls confirm getValue
+identity and the existing readonly constructor Error. No actor failed; native/
+baseline/preparation/EL retain zero credit. Uninitialized wrappers, other constructor
+bases, special intrinsic captures and wider lifetimes remain partial; carrier and
+factory-clone gaps stay separate.
+[Sensitive wrapper/capture review](coverage/semantics/weakmap-sensitive-comparison-review.json).
+
+Composed over 08ef06924/399 after pointwise review of nullable-array abrupt
+return, infinite/array define names and quiet compound RHS selectors, all absent
+here. Source2/state264 retain their private cut; no joined actor or renewed
+execution credit.
+
 At profile precision14, positive infinite float `define` names now reach the
 protected `INF` duplicate Warning/false path with primitive candidates and
 omitted/bool-false flags. Two module400 predicates reuse the existing received
