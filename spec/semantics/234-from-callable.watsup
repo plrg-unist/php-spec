@@ -445,6 +445,17 @@ def $from_split(pfrommethod) = false -- otherwise
 
 ;; Invocation, cloning and fake static storage use the selected method.
 def $node_children(S, HOBJECT n) = eps -- if S.OBJECTS[n] = FROMCALLABLEFACTORY porigin
+;; Captured factories are receiver-free fake Closures. Cloning preserves the
+;; authenticated creation occurrence; comparison ignores that occurrence.
+def $clone_object(S, n_source) = S[.OBJECTS = S.OBJECTS ++ [FROMCALLABLEFACTORY porigin]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)]
+  -- if $from_factory_live(S, n_source)
+  -- if ~$instance_storage_freeing(S, n_source)
+  -- if S.OBJECTS[n_source] = FROMCALLABLEFACTORY porigin
+  -- if n = |S.OBJECTS|
+def $clone_same_kind(FROMCALLABLEFACTORY porigin, FROMCALLABLEFACTORY porigin) = true
+def $named_closure_same(S, n_left, n_right) = true
+  -- if $from_factory_live(S, n_left)
+  -- if $from_factory_live(S, n_right)
 def $closure_live_object_valid(S, n) = $from_factory_live(S, n)
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = FROMCALLABLEFACTORY porigin
