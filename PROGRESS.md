@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Defined scalar left CVs now resume after a missing-right `<=>` warning using
+the current CV wrapper. Late reference creation and rebinding reach the new cell;
+the missing right remains NULL even after its name becomes 9. False/default Warning
+order and supplied-Exception destination/catch/finally behavior stay intact.
+Six originals pass at `17948e7ad`; four strict-SL groups pass 353 premises
+(174 author + 179 independent) at `599fdebb0`/405, with real wrappers/owners, exact
+raw states, compiled-line refusals and zero/split budgets. Both Unsupported controls
+and the genuine `1549f127b` baseline retain zero agreement; no actor failed or repeated.
+Removed/owning left values and wider warning-fetch paths remain partial. Prior
+COMP89 cuts are not renewed; private-payload/paused work is untouched.
+[Left CV review](coverage/semantics/undefined-spaceship-right-review.json).
+
 Undefined scalar `<=>` now suspends through ordinary warning handlers while
 retaining the missing NULL. Later right CVs follow callback rebinding; computed
 primitive operands stay captured. Reference aliases, false/default Warning order
