@@ -9209,6 +9209,25 @@ equality. The historical M72 native/source agreements are separate; no old
 actor was replayed and the diagnostic has zero repair credit. Wider normal
 source histories and broad returns remain open.
 [M86 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M87 adds a direct named no-argument `?array` old-return source to the
+authenticated pending-Throwable destructor-exit guards. A new
+`&f():?array` original returns `[new O]`; O's destructor throws
+`TypeError("child87")` during selected-reference replacement. Native1 at
+clean `a43c7a30a`/399 reaches local `CT:1;A;S`, detached `rNULL/b7` and one
+old-line VALUE Notice; the unchanged model wrongly reaches outer OT with r7
+and no Notice. A diagnosis-only cut there proves the old table and child retire
+before pending exit, with a valid projected cursor but rejected public entry
+and premature THROW_SEARCH. Strict SL initialization passes, and the original
+source agrees exactly at private `67396fd4c`/399. One reached fixture passes
+136 Boolean premises and two raw steps: the old HARRAY→O edge, child87
+TypeError origin/message and same local-catch object, retired old nodes,
+consumed NULL/new Notice,
+caller state, actual LINE-only public refusal and exit budget equality. The
+first fixture run failed only a reused metadata binder and has zero state
+credit; the corrected fixture alone was rerun. Existing ownership and normal
+exit rules are unchanged. This proof covers one runtime single-entry array
+with one throwing child; M56's accepted normal-child control stays separate.
+[M87 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, wider destructor throw/reentry, real suspension and wider typed
