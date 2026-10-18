@@ -36,10 +36,11 @@ reference cells may also hold flat runtime arrays of direct null/bool/int/float 
 debt stays separate from child-table COW, including deletion and throw cleanup.
 Retargeting a flat-array wrapper to an ordinary scalar preserves its acquired
 count, cancelling debt first or retaining the old wrapper and its child.
-Ordinary unwrapped array CVs have a separate table-count continuation: a handler
-may retarget a flat primitive array, and inverse retargeting balances its missing
-owner before cleanup. Same-table transfer and restored COW keep ordinary values
-distinct from PHP reference wrappers.
+Ordinary unwrapped CVs may switch between null/bool/int/float and flat runtime
+arrays of those direct values during the handler. Separate table counts preserve
+old array owners and omitted new-array owners; inverse retargeting cancels them before cleanup. Initial scalar
+and array plans remain distinct, while same-table transfer and restored COW keep
+ordinary values distinct from PHP reference wrappers.
 Unsafe deficit retirement and wider domains remain Unsupported. Duplicate
 replacement and later items stay ordered.
 
