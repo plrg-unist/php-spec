@@ -1489,10 +1489,8 @@ def $property_release_partition(ppropertyslot :: ppropertyslot_tail*, b) = $prop
 ;; First retirement in a three-object return chain can throw before another
 ;; finalizer has installed a cursor. Keep its exact source queue as non-owning
 ;; operation evidence; normal completion discards it with the operation.
-dec $ref_return_retire_method(pstate, nat) : pmethoddesc?
-def $ref_return_retire_method(S, n) = (pmethoddesc)
-  -- if $(n < |S.OBJECTS|)
-  -- if S.OBJECTS[n] = INSTANCE porigin_class
+dec $ref_return_retire_class_method(pstate, porigin) : pmethoddesc?
+def $ref_return_retire_class_method(S, porigin_class) = (pmethoddesc)
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
   -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ pclassdesc.INTERFACES = eps
   -- if pclassdesc.PROPERTIES = eps /\ pclassdesc.CONSTANTS = eps
@@ -1502,6 +1500,11 @@ def $ref_return_retire_method(S, n) = (pmethoddesc)
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
   -- if pmethoddesc.FUNCTION.SIGNATURE.PARAMETERS = eps /\ ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
   -- if pmethoddesc.FUNCTION.SIGNATURE.RETURNS = eps
+def $ref_return_retire_class_method(S, porigin_class) = eps -- otherwise
+dec $ref_return_retire_method(pstate, nat) : pmethoddesc?
+def $ref_return_retire_method(S, n) = $ref_return_retire_class_method(S, porigin_class)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
 def $ref_return_retire_method(S, n) = eps -- otherwise
 dec $ref_return_retire_echo(statement) : bool
 def $ref_return_retire_echo(NStmtEcho (SEQUENCE ([NScalarString (BYTES text) metadata_string])) metadata_echo) = true
@@ -1512,14 +1515,30 @@ def $ref_return_retire_normal_class(S, n) = true
   -- if $origin_node(S.SOURCES, pmethoddesc.FUNCTION.ORIGIN) = (NStmtClassMethod (SEQUENCE eps) phpType24 phpType4 phpType11 phpType16 phpType18 (SEQUENCE ([statement_echo])) metadata_method)
   -- if $ref_return_retire_echo(statement_echo)
 def $ref_return_retire_normal_class(S, n) = false -- otherwise
-dec $ref_return_retire_throw_site(pstate, nat) : porigin?
-def $ref_return_retire_throw_site(S, n) = (porigin_new)
-  -- if $ref_return_retire_method(S, n) = (pmethoddesc)
+dec $ref_return_retire_throw_method(pstate, pmethoddesc) : porigin?
+def $ref_return_retire_throw_method(S, pmethoddesc) = (porigin_new)
   -- if $origin_node(S.SOURCES, pmethoddesc.FUNCTION.ORIGIN) = (NStmtClassMethod (SEQUENCE eps) phpType24 phpType4 phpType11 phpType16 phpType18 (SEQUENCE ([statement_echo, NStmtExpression (NExprThrow (NExprNew (NName (BYTES text_class) metadata_name) (SEQUENCE ([NArg ABSENT (NScalarString (BYTES text_message) metadata_message) (BOOLEAN false) (BOOLEAN false) metadata_arg])) metadata_new) metadata_throw) metadata_statement])) metadata_method)
   -- if $ref_return_retire_echo(statement_echo)
   -- if $base64(text_class) = $ptascii("TypeError")
   -- if $origin_child((pmethoddesc.FUNCTION.ORIGIN), [PCFIELD 6, PCINDEX 1, PCFIELD 0, PCFIELD 0]) = (porigin_new)
   -- if $new_source_name(S, porigin_new) = ($ptascii("TypeError"))
+def $ref_return_retire_throw_method(S, pmethoddesc) = eps -- otherwise
+dec $ref_return_retire_throw_site(pstate, nat) : porigin?
+def $ref_return_retire_throw_site(S, n) = (porigin_new)
+  -- if $ref_return_retire_method(S, n) = (pmethoddesc)
+  -- if $ref_return_retire_throw_method(S, pmethoddesc) = (porigin_new)
+def $ref_return_retire_throw_site(S, n) = (porigin_new)
+  -- if $ref_return_retire_method(S, n) = (pmethoddesc)
+  -- if $origin_node(S.SOURCES, pmethoddesc.FUNCTION.ORIGIN) = (NStmtClassMethod (SEQUENCE eps) phpType24 phpType4 phpType11 phpType16 phpType18 (SEQUENCE ([statement_echo, NStmtExpression (NExprAssign (NExprVariable (BYTES text_local) metadata_local) (NExprNew (NName (BYTES text_class) metadata_name) (SEQUENCE eps) metadata_new) metadata_assign) metadata_statement, NStmtUnset (SEQUENCE ([NExprVariable (BYTES text_local) metadata_unset_local])) metadata_unset])) metadata_method)
+  -- if $ref_return_retire_echo(statement_echo)
+  -- if ~$this_name($base64(text_local)) /\ ~$psautoglobal($base64(text_local))
+  -- if $origin_child((pmethoddesc.FUNCTION.ORIGIN), [PCFIELD 6, PCINDEX 1, PCFIELD 0, PCFIELD 1]) = (porigin_new_child)
+  -- if $new_source_name(S, porigin_new_child) = (preqbytes_child)
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes_child)) = (porigin_class_child)
+  -- if $class_at(S.CLASSES, porigin_class_child) = (pclassdesc_child)
+  -- if ~pclassdesc_child.ABSTRACT
+  -- if $ref_return_retire_class_method(S, porigin_class_child) = (pmethoddesc_child)
+  -- if $ref_return_retire_throw_method(S, pmethoddesc_child) = (porigin_new)
 def $ref_return_retire_throw_site(S, n) = eps -- otherwise
 dec $ref_return_retire_call(pstate, prefreturncursor) : bool
 def $ref_return_retire_call(S, prefreturncursor) = true
