@@ -63,6 +63,20 @@ source/phase/expiry guards, sole Error ownership and budget resumption in the
 [ADD failure ledger](../../coverage/semantics/arithmetic-failure-review.json).
 
 
+Selected-reference ADD now admits valid nonnumeric RHS text before the LEFT
+Warning. A separate entry keeps the old plan exact and enters its existing phases;
+both selected cells must be live, untyped and nonowning. The LEFT number is captured
+before its handler repairs the selected old RHS. Fractional holders `12.5` and `5.5`
+yield strict float `18.0` despite later writes. Repair to complete text `5.5` gives
+`17.5` with one Warning after the current RHS name is rebound to `2tail`: the
+replacement neither converts nor warns. Unrepaired text uses the unchanged live
+bool + string TypeError route, without storing the outer result. A first supplied
+throw suppresses later conversion and is source-only. Four originals and 428
+focused premises check these routes in the
+[ADD repair ledger](../../coverage/semantics/add-repair-review.json).
+Other producers, owning/constrained/expired cells, failed LEFT conversion,
+indirect handlers and wider lifetimes remain partial.
+
 Binary `-` and `*` now have a separate named-handler continuation for the same
 bounded preexisting reference-cell class. Both cells are selected before LEFT
 conversion, but RHS conversion waits until LEFT's handler returns, so initially bad
@@ -75,7 +89,7 @@ Seven exact originals and 834 focused premises check real dispatch/entered phase
 default Warning bytes, selected-cell owners and budget resumption in the
 [SUB/MUL ledger](../../coverage/semantics/submul-warning-review.json). Other mixed,
 owning/constrained/expired and wider arithmetic/lifecycle forms remain partial;
-old ADD/DIV rules and evidence are unchanged.
+earlier ADD/DIV evidence retains its original cuts.
 
 Numeric compound `+=` now stages the same leading-left warning for direct CVs
 with preexisting untyped reference cells and a quiet numeric RHS. The saved left
@@ -120,6 +134,20 @@ in the [DIV ledger](../../coverage/semantics/division-warning-review.json). Init
 selection, fresh input snapshots, historical resume holders, sole Error ownership,
 default Warning and budget resumption are checked. Wider operands, callbacks and
 lifecycle paths remain required; the ADD bodies and evidence are unchanged.
+
+Selected-reference DIV now also admits valid nonnumeric RHS text before the
+LEFT Warning. A separate entry preserves the old plan while the existing phases
+capture the left number `12`, run its handler, then convert the selected old RHS. Repair to
+`5tail` yields strict float `2.4` despite later writes. Repair to `0tail` still
+raises DivisionByZeroError after the current RHS name is rebound to `2tail` and
+the old alias becomes `7`. Failed RHS conversion instead uses the live selected
+scalar types, including bool / string, and removes its marker before ordinary
+TypeError allocation; this also covers the same late failure from old DIV entry.
+A first supplied throw cancels later conversion and assignment. Four originals
+and 468 focused premises check these routes in the
+[DIV repair ledger](../../coverage/semantics/div-repair-review.json).
+Selected cells must remain live, untyped and nonowning; other producers,
+owning/constrained payloads, failed LEFT conversion and wider lifetimes remain partial.
 
 Unary `+`/`-` now suspend leading-numeric warnings from defined non-reference
 CVs through named handlers. Zend's `zend_compile_unary_pm` lowers to multiplication

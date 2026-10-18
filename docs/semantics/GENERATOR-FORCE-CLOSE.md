@@ -98,6 +98,13 @@ after retirement. A separate current copy can keep a cached object alive until
 receiver retirement and then replace the exception before catch; returned arrays
 retain mutable reference cells. See the
 [owning THROW review](../../coverage/semantics/generator-pending-owning-return-throw-review.json).
+With an inherited-pending ancestor receiver, THROW clears only that receiver
+and parks the distinct physical middle, which still carries its pending bit.
+Middle close uses the same copied-return transfer and skips finally; its source
+receipt is valid while CLOSING has both pending and parked history. Cache-copy
+cleanup can run after upper finally and replace the supplied exception before
+catch, independently of the retained return. See the
+[ancestor THROW review](../../coverage/semantics/generator-pending-owning-chain-throw-review.json).
 A live used-yield input stays in place at the pending THROW step. Physical leaf
 close retains its count before retiring the parked frame; the payload runs only
 in the request object-store pass. It is neither released before caller catch nor

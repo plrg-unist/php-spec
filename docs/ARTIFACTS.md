@@ -78,6 +78,12 @@ First-C pending three-owning replay is in
 binding and timeout failures plus runtime patches, SHA-256
 `993cb5c5d8f5417ea4e4a6b9b8b67457aa68c73a62151c86a639466db4e0214d`.
 
+The nested C→D destructor return-history proof is in
+`../php-spec-evidence-archive/lifecycle-reentrant-three-owning-116/manifest.json`:
+579,650 bytes under `.tools/m116/`, eight reports including both strict-only fixture
+failures and the runtime patch, SHA-256
+`ddad5ee4e9af8e7ffe8b0475db2923f8fb0b0d8258fca42a4a127f9fd5a14547`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the

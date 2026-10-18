@@ -58,6 +58,24 @@ compiler images reject both runtime fields. The [deficit review](../../coverage/
 keeps fresh balanced sources separate from the earlier
 [positive-owner slice](../../coverage/semantics/array-literal-float-ref-key-warning-review.json).
 
+Ordinary by-value array CVs use separate `LITERALARRAYRETAINED` and
+`LITERALARRAYDEBTS` fields for HARRAY counts. Their saved continuation owns the
+pre-conversion table, rather than its original CV cell. Inserting a different live
+table preserves the old count and omits one new-table owner; inverse retargeting
+cancels both, while same-table insertion adds no bias. Only unmarked ordinary CVs
+and mutable nonpool flat DIRECT null/bool/int/float tables are admitted. Combined
+CELL/table debt safety uses logical pruning before subtracting either count bias;
+positive flat table targets have no outgoing owner edges. Deletion/throw deficits,
+restored COW and retired original CV cells are checked in the
+[ordinary array-CV ledger](../../coverage/semantics/array-literal-float-array-cv-review.json).
+Mixed completion also admits ordinary null/bool/int/float values. An initially
+scalar CV owns no table; a new array omits one owner or cancels an earlier retained
+count. An array CV that becomes scalar preserves its acquired table
+count, cancelling debt before retaining an unmatched owner. The two initial plans
+stay disjoint, and captured runtime-array temporaries incur no debt. The
+[mixed-CV ledger](../../coverage/semantics/array-literal-float-mixed-cv-review.json)
+checks both inverse cycles, deletion and supplied-throw cleanup before balanced COW.
+
 `tests/semantics/reference_wrappers.py` checks original source regressions,
 copying and rebinding, budget resumption, ownership graphs, cycle collection and
 compiler-pool isolation. The cycle check exercises the pure collection helper;

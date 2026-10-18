@@ -392,6 +392,8 @@ dec $generator_state_valid(pstate) : bool
 dec $tick_state_valid(pstate) : bool
 dec $literal_reference_retained_valid(pstate, nat*) : bool
 dec $literal_reference_debts_valid(pstate, nat*) : bool
+dec $literal_array_retained_valid(pstate, nat*) : bool
+dec $literal_array_debts_valid(pstate, nat*) : bool
 dec $call_descriptors_valid(pstate) : bool
 dec $source_pending_state_valid(pstate) : bool
 def $source_pending_state_valid(S) = true -- otherwise
@@ -405,6 +407,8 @@ def $call_descriptors_scoped_valid(S_live, S) = true
   -- if $source_pending_state_valid(S)
   -- if $literal_reference_retained_valid(S_live, S_live.LITERALREFRETAINED)
   -- if $literal_reference_debts_valid(S_live, S_live.LITERALREFDEBTS)
+  -- if $literal_array_retained_valid(S_live, S_live.LITERALARRAYRETAINED)
+  -- if $literal_array_debts_valid(S_live, S_live.LITERALARRAYDEBTS)
   -- if $startup_state_valid(S)
   -- if $display_state_valid(S)
   -- if $precision_state_valid(S)

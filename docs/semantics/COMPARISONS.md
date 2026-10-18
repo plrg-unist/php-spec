@@ -45,19 +45,22 @@ and [greater review](../../coverage/semantics/undefined-scalar-compare-gt-ge-rev
 record the separate cuts. Zend evaluates `>`/`>=` source expressions left to right,
 then reverses physical comparison operands. The single-missing/scalar-throughout
 bound makes these source-oriented records valid; removed-right native probes
-confirm one Warning without admitting that wider path. Both-missing/same-CV inputs,
-owning/removed counterparts and wider producers remain partial. Earlier spaceship cuts remain in the
+confirm one Warning without admitting that wider path. Second-Warning chains,
+same-CV inputs, owning/removed counterparts and wider producers remain partial. Earlier spaceship cuts remain in the
 [scalar warning review](../../coverage/semantics/undefined-spaceship-review.json).
 
-Distinct forward `==`/`!=`/`<`/`<=` CV pairs can also begin with both values
-missing. The first Warning freezes left NULL; if its handler defines the right
-scalar, Zend suppresses the second Warning and reads that current binding. The
-first name may remain undefined. A supplied throw suppresses the second Warning
-while retaining destination, Exception identity and finally; `zval_undefined_cv`
-checks the pending exception before reporting. Returning with right still missing
-remains explicit Unsupported before the second-Warning chain. Same-CV, owning or
-removed counterparts and reversed greater/spaceship both-missing paths remain
-partial. See the [both-missing review](../../coverage/semantics/undefined-scalar-compare-both-review.json).
+Distinct loose-comparison CV pairs can also begin with both values missing.
+Forward `==`/`!=`/`<`/`<=` warn for left first and freeze its NULL while the handler
+defines current right. Reversed `>`/`>=` warn for source right first and freeze its
+NULL while the handler defines current left. The first name may remain undefined.
+A supplied throw suppresses the second Warning while retaining destination,
+Exception identity and finally; `zval_undefined_cv` checks the pending exception
+before reporting. Returning with the opposing name still missing remains explicit
+Unsupported before the second-Warning chain. Same-CV, owning/removed counterparts,
+spaceship both-missing and wider producers remain partial. The
+[forward review](../../coverage/semantics/undefined-scalar-compare-both-review.json)
+and [reversed review](../../coverage/semantics/undefined-scalar-compare-both-reversed-review.json)
+record the separate cuts.
 
 Array comparison first handles identical container identity, then recursion on
 the left operand, element counts, and exact normalized key lookup in left

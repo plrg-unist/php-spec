@@ -59,6 +59,9 @@ def $dynamic_constant_class(pvalue) = eps -- otherwise
 dec $dynamic_define_value_class(pstate, pvalue) : pvalueclass?
 def $dynamic_define_value_class(S, pvalue) = (pvalueclass)
   -- if $dynamic_constant_class(pvalue) = (pvalueclass)
+def $dynamic_define_value_class(S, POBJECT n_object) = (PVCLOSURE n_object pconstantclosure.SITE)
+  -- if $constant_callable_record(S.CONSTANTCLOSURES, n_object) = (pconstantclosure)
+  -- if $constant_value_class_valid(S, POBJECT n_object, PVCLOSURE n_object pconstantclosure.SITE)
 def $dynamic_define_value_class(S, POBJECT n_object) = (PVINSTANCE n_object pconstantobject.SITE)
   -- if $global_new_record(S.CONSTANTOBJECTS, n_object) = (pconstantobject)
   -- if $constant_value_class_valid(S, POBJECT n_object, PVINSTANCE n_object pconstantobject.SITE)
@@ -435,6 +438,8 @@ def $dynamic_define_invalid_flag_kind(S, POBJECT n) = true
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if pclassdesc.KIND = "class"
+def $dynamic_define_invalid_flag_kind(S, POBJECT n) = true
+  -- if $typed_closure(S, n)
 def $dynamic_define_invalid_flag_kind(S, pvalue) = false -- otherwise
 dec $dynamic_define_invalid_flag_values(pconfigcall) : (preqbytes, pvalue, pvalue)?
 def $dynamic_define_invalid_flag_values(pconfigcall) = ((preqbytes, pvalue, pvalue_flag))

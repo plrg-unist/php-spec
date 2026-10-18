@@ -370,7 +370,7 @@ def $error_read_plan(S) = (perrorread)
   -- if $scalar_compare_right_read_shape(ptask, S.RESULT, S.BASE) = (perrorread)
   -- if $error_missing_operand(S, $error_read_operand(perrorread))
   -- if $error_read_source(S, perrorread)
-  -- if $scalar_compare_read_other(S, perrorread)
+  -- if $scalar_compare_read_other(S, perrorread) \/ $scalar_compare_missing_pair(S, perrorread)
 def $error_read_plan(S) = eps -- otherwise
 def $error_read_pending(S) = ($key_read_pending(S) \/ $property_undefined_reference_plan(S) =/= eps \/ (($error_handler_eligible(S, 2) \/ $eval_compile_recorded_error(S, 2)) /\ ($error_read_plan(S) =/= eps \/ $identity_read_plan(S) =/= eps \/ $global_read_plan(S) =/= eps \/ $computed_name_plan(S) =/= eps \/ $computed_cv_name_plan(S) =/= eps \/ $computed_array_name_plan(S) =/= eps \/ $property_null_read_plan(S) =/= eps \/ $property_undefined_read_plan(S) =/= eps)))
 def $error_read_begin(S) = $key_read_begin(S)
@@ -445,6 +445,14 @@ def $scalar_compare_missing_pair(S, perrorread) = true
   -- if $error_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread)
   -- if $error_missing_operand(S, $error_read_operand(perrorread))
   -- if $error_missing_operand(S, perrorread.INPUT)
+;; Greater operators check source right first, so only the right-frozen shape
+;; may start their both-missing read. The source-left CV remains live.
+def $scalar_compare_missing_pair(S, perrorread) = true
+  -- if $scalar_compare_right_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread)
+  -- if perrorread.ORIGINAL = BINARY_RIGHT pbin (VARIABLE n_left* z_left) z
+  -- if pbin = GREATER \/ pbin = GREATEREQUAL
+  -- if $error_missing_operand(S, $error_read_operand(perrorread))
+  -- if $error_missing_operand(S, VARIABLE n_left* z_left)
 def $scalar_compare_missing_pair(S, perrorread) = false -- otherwise
 def $error_read_resume(S, perrorread, ptask_tail*) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "spaceship warning changed opposing scalar"]
   -- if ~$spaceship_read_other(S, perrorread)

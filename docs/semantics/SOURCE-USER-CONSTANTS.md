@@ -557,8 +557,29 @@ Warning first. The original flag and value remain in the API trace despite later
 CV rebinding, array COW and shared property writes. An ordinary unpinned flag
 object remains alive while the Error owns its trace, then uses normal destructor
 cleanup when the trace is released. This rejection needs live argument authority,
-not a new publication receipt; other object flag kinds remain Unsupported.
+not a new publication receipt.
 [Invalid-flag review](../../coverage/semantics/define-invalid-flag-review.json).
+Live Closures used as flags also reject before invocation or body work. The
+existing Closure authority requires completed lexical capture or a valid named,
+method or other supported callable record. A recovered lexical Closure preserves
+its actual reference cell; a method Closure keeps its unpinned receiver through
+the Error trace, and ordinary destruction follows release of that chain. Flag
+rejection grants no publication authority and leaves callable conversion
+unchanged. Other object flag kinds remain Unsupported.
+[Closure-flag review](../../coverage/semantics/define-closure-flag-review.json).
+
+Already certified Closure values can be published directly or inside array
+snapshots. The existing durable record, exact object/site identity, source prefix
+and live value validator supply the class; ordinary Closures and unstamped clones
+remain Unsupported. Direct rows and copied array leaves share the original
+pointer and static cells. A normal duplicate keeps the old row, and an ignored
+true-flag Warning throw can still publish the captured Closure while propagating
+the same Exception. Query bucket COW changes only the caller containers. These
+checks execute omitted/false publication and true pending publication; other
+admitted flag routes reuse the existing classifier and guards without additional
+source credit.
+[Certified Closure define review](../../coverage/semantics/define-certified-closure-review.json).
+
 Uncertified object values, other owning array leaves, nonfinite direct-object
 flags, coerced names and wider owning define domains remain partial.
 
