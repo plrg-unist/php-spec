@@ -714,6 +714,7 @@ dec $weakmap_standard_other(pobject) : bool
 def $weakmap_standard_other(STDINSTANCE) = true
 def $weakmap_standard_other(INSTANCE porigin) = true
 def $weakmap_standard_other(WEAKREFERENCE n_target?) = true
+def $weakmap_standard_other(SENSITIVEVALUE pvalue) = true
 def $weakmap_standard_other(THROWABLE pthrowable) = $throwable_kind(pthrowable.KIND)
 def $weakmap_standard_other(GENERATOR pgenerator) = true
 def $weakmap_standard_other(FIBER pfiber) = true
@@ -741,6 +742,8 @@ def $weakmap_standard_other(pobject) = true
   -- if $object_body(pobject) = GETTERCLOSURE n_receiver pgettermethod text_base pgettersource
 def $weakmap_standard_other(pobject) = true
   -- if $object_body(pobject) = FROMCALLABLEFACTORY porigin
+def $weakmap_standard_other(pobject) = true
+  -- if $object_body(pobject) = CTORCLOSURE n_receiver "SensitiveParameterValue" porigin
 def $weakmap_standard_other(pobject) = false -- otherwise
 def $weakmap_standard_mismatch(S, n_left, n_right) = true
   -- if $(n_left < |S.OBJECTS|) /\ $(n_right < |S.OBJECTS|)
