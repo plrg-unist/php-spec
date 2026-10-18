@@ -114,7 +114,8 @@ def $property_empty_prepare(S) = true
   -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if $property_isset_method(S, n) = (pmethoddesc)
   -- if $property_effective_desc(S, n, $base64(text_name)) = (ppropertydesc)
-  -- if ppropertyisset = {SITE porigin, NAME $base64(text_name), LINE z, OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, PROPERTY ppropertydesc.ORIGIN}
+  -- if porigin_property = ppropertydesc.ORIGIN
+  -- if ppropertyisset = {SITE porigin, NAME $base64(text_name), LINE z, OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, PROPERTY porigin_property}
   -- if $property_isset_untyped(S, ppropertyisset) /\ $property_isset_capture(S, ppropertyisset)
 
 dec $property_isset_tail(pstate, ppropertyisset, ptask*) : bool
