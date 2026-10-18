@@ -7,21 +7,21 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Terminal inherited `empty` now handles the existing typed bool `__isset` when
-`__get` is absent. False and true both deliver true before the saved receiver
-owner drops; caller-CV rebinding and callback throws preserve destructor ordering
-and the same Exception at actual catch binding. Source3 agrees at c7ebc8d60;
-focused242 at2750f4181 (224 reached +18 derived) covers actual borrowed callbacks,
-result caching, receiver cleanup, flag/source separation, refusals and budgets.
-No semantic actor failed. Native masks were sampled for two of three short cases;
-recorded taskset-parent provenance remains. The existing isset record/target,
-roots, frames and throw machinery are reused; ordinary isset and getter-present
-empty behavior remain pointwise unchanged. Wider signatures/receivers/lifecycles
-and mutable-empty array GC ordering stay open. [Isset-only empty review](coverage/semantics/magic-empty-isset-only-review.json).
-Earlier class cuts, including arrayRV255, retain their identities without replay.
-
-Pointwise composition overfcfec63d preserves the incoming399-module parent.
-Source3/state242 retain tested cuts; no joined actor or renewed execution credit.
+Terminal inherited private-property `empty` now skips an untyped public
+by-value `__get` when `__isset` is absent. It authenticates the external CV/literal
+site and completes true without manufacturing a receiver owner. Later ordinary
+reads still run the real getter and preserve its return or same Exception at catch.
+Two originals agree at `7f348182d`; 235 focused premises at `d82965600`
+(201 reached +34 derived) cover borrowed preparation, public false bypass,
+actual Get/catch, source/consumer and
+live-dynamic-slot refusals, and budgets. A clean-collection prefix preserves the
+GC buffer and one receiver owner through private empty. The original Unsupported
+source and locating GC mismatch retain zero credit; the intermediate stream-only
+cut is superseded. Native CPU4 masks were observed for both short cases, with
+empty argv at exit qualified. No generic GC, ownership, return or quiet-read rule
+is relaxed. Other quiet-CV GC paths, terminal isset/coalesce and mutable-empty
+array retirement remain open. [Getter-only empty review](coverage/semantics/magic-empty-get-only-review.json).
+Earlier class cuts retain their identities without replay.
 
 WeakMap comparisons now admit ordinary eligible INTRINSICCLOSURE and normalized
 FIBERAPICLOSURE objects as uncomparable +1 in either direction before callable,

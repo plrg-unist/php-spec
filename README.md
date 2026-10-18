@@ -2763,6 +2763,11 @@ Without `__get`, terminal `empty` now returns true after either inherited
 `__isset` boolean, retaining the receiver through callback CV rebinding or throw.
 Three originals and focused242 checks cover delivery, cleanup and catch;
 [isset-only empty review](coverage/semantics/magic-empty-isset-only-review.json).
+With inherited `__get` and no `__isset`, terminal private-property `empty` now
+skips the getter and borrows its CV receiver without adding a GC root. Later
+ordinary reads still invoke the getter and preserve its return or Exception.
+Two originals and 235 focused checks cover this slice;
+[getter-only empty review](coverage/semantics/magic-empty-get-only-review.json).
 With an untyped by-value `__get`, terminal `empty` chains it after the inherited
 `__isset`: false skips the getter, while true tests its null, bool, int, float
 or byte-string result. Only empty bytes or exactly ASCII `0` make a string

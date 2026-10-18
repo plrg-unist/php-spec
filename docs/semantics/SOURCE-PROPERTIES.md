@@ -452,6 +452,19 @@ lines, names, methods and missing source are derived refusals. Ordinary isset an
 the getter-present route keep their prior behavior; no new phase or task is added.
 [Isset-only empty review](../../coverage/semantics/magic-empty-isset-only-review.json).
 
+With no `__isset`, terminal `empty` now skips the inherited public untyped
+by-value `__get` for the same external CV/literal private-property family.
+Authenticated preparation delivers true without creating a BASE receiver owner;
+both source-CV identity and inaccessible/missing effective-private lookup are
+checked. Two originals and 235 focused premises (201 reached +34 derived) cover the skip,
+initialized-public false bypass, later real getter return/throw and catch,
+source/flag/owning-operand/dynamic-slot refusals and budgets. A native GC diagnostic
+exposed an artificial BASE decrement; the focused clean-collection prefix now
+preserves the buffer and one receiver owner through private empty. The diagnostic
+stops before unsupported `gc_status` and has no full-source credit. Other quiet-CV
+GC paths, terminal isset/coalesce and mutable-empty array ordering remain open.
+[Getter-only empty review](../../coverage/semantics/magic-empty-get-only-review.json).
+
 Terminal `empty` of that external CV/literal private property now composes the
 inherited bool `__isset` with a public nonstatic nonref `__get($name)` having no
 parameter or return type, declared on the same parentless ordinary owner. False

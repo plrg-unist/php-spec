@@ -1,0 +1,123 @@
+{
+  "scope": "Terminal empty of an external ordinary CV/literal private property with inherited public nonstatic nonref untyped __get($name), no __isset, same parentless declaring owner and no hook/readonly/asymmetric access. Private skip and later ordinary getter return/throw.",
+  "implementation": {
+    "base": "eb57aa4ff42bd2511d59485e7f1265da63b4e9fc",
+    "revision": "7f348182d9c40eaaa3bd5e9ff91bcc7ddce8ada3",
+    "modules": 399,
+    "change": "408 authenticates exact true-flag empty source, matching actual/source CV identity, live private/access/get-needed and getter authority. A specific prep step returns true while preserving ORIGIN_RETURN/tail, borrowing the CV without BASE.136 excludes only that step from generic preparation; quiet reads, GC, ownership, calls and returns stay unchanged."
+  },
+  "engine": {
+    "target": "PHP8.5.10 CLI NTS64",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_object_handlers.c zend_std_has_property: no __isset jumps to lazy_init/false without invoking __get or retaining ordinary object",
+      "Zend/zend_vm_def.h ZEND_ISSET_ISEMPTY_PROP_OBJ: borrowed CV/FREE_OP1 no-op; empty negates has_property"
+    ],
+    "intentional_divergences": []
+  },
+  "sources": {
+    "catalogue": "tests/semantics/magic_empty_get_only_cases.json",
+    "original_root": "/home/user/workspace/php-spec/.tools/magic-empty-get-only-private-91/.tools/magic-empty-get-only-probes-91",
+    "maintained_byte_identical": true,
+    "cases": "Private empty emits true without G; initialized public ready emits false; later ordinary read emits G then42 or catches supplied Exception; explicit CV=null invokes D. Exact15/14 stdout bytes, zero stderr/exit0."
+  },
+  "validation": {
+    "native": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-get-only-private-91/.tools/magic-empty-get-only-probes-91/native-first/report.json",
+      "sha256": "f7664b61ca04737c0eb696d274b1c94a2431ccbee04b34cad84f3c2e93dfe325",
+      "revision": "eb57aa4ff42bd2511d59485e7f1265da63b4e9fc",
+      "result": "Two exact native15/14 stdout,0stderr,exit0 tuples",
+      "source_agreements": 0
+    },
+    "baseline": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-get-only-private-91/.tools/magic-empty-get-only-probes-91/accepted-current-baseline/report.json",
+      "sha256": "667dbfd74001057dd85309bc48230845fa278a1a08aaf14c057a26355157289b",
+      "revision": "eb57aa4ff42bd2511d59485e7f1265da63b4e9fc",
+      "result": "Two checked getter-prepare Unsupported/CLI1 after N:/X:, zero agreement;8.879/8.759s",
+      "source_agreements": 0
+    },
+    "changed_source": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-get-only-private-91/.tools/magic-empty-get-only-probes-91/changed-model-b32s5ghp/report.json",
+      "sha256": "b5a6f04dbfa974db2652d18f72a6b65961bb06bb2545bfa2b7b33d5020db8250",
+      "revision": "7f348182d9c40eaaa3bd5e9ff91bcc7ddce8ada3",
+      "result": "Two checked normal exact native tuples;9.506/10.266s",
+      "source_agreements": 2
+    },
+    "focused": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-get-only-private-91/.tools/magic-empty-get-only-protocol-xfkvg7nb/report.json",
+      "sha256": "fb69b49c9efb98a561444f13e7977f716a512446b298c89467216c14482fc687",
+      "revision": "d8296560067b6525c74215ca320f317681e9f635",
+      "result": "Both true/exit0;normal146=112+34derived,throw89;235=201+34. AL/SL6.886/14.287 and6.960/14.682s",
+      "source_agreements": 0
+    }
+  },
+  "focused_scope": "Actual borrowed prep1owner/noBASE, cached true and preserved source return/tail with unchanged GC; public false then actual ordinary getter return/throw and same Exception at reached CATCH_BIND, final destructor/output and budgets. A second checked-source prefix reaches genuine gc_collect_cycles then private empty with buffer0 unchanged before unsupported gc_status/public-ready. Derived source/flag/ancestor/owning-operand/cached-BASE/source-CV mismatch refusals, live dynamic literal slot denies skip and deliversfalse, and general getter method-authority refusal (not an isolated line check).",
+  "nonpassing": [
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-get-only-private-91/.tools/magic-empty-get-only-probes-91/changed-model-7clpg7x5/report.json",
+      "sha256": "25e2a2e22161ff42aaa82be4d60a34fc163de2f4297c8114228f8cbcbcf5e0e1",
+      "revision": "ee1430c5c549c403244dded1d5e9128e35451a91",
+      "result": "First normal Unsupported after N:, throw unrun; incorrect DENIED-only admission;8.908s. Passingcredit0.",
+      "source_agreements": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-get-only-private-91/.tools/magic-empty-get-only-probes-91/diagnostic-gc-91-e7ezxxaw/report.json",
+      "sha256": "2087c93e464d79b57b34948e30fe5f34f4f070d03d76d14acdb62838c3e94a46",
+      "revision": "bd68b8bc147348a278f1d4240dc44343a9921043",
+      "result": "Zero-credit native/checked-prefix diagnostic: native roots0; model [rootsbefore0,ownersprep1,ORIGINowners2,terminalowners2,rootsafter1,ownersafter1]. Exposed artificial BASE owner/decrement;9.708s. No gc_status implementation or full-source agreement.",
+      "source_agreements": 0
+    }
+  ],
+  "superseded_stream_cut": {
+    "path": "/home/user/workspace/php-spec/.tools/magic-empty-get-only-private-91/.tools/magic-empty-get-only-probes-91/changed-model-hrge1ngr/report.json",
+    "sha256": "79d7184a62d0ae59f10e36ecd6e57ccd5d03b15dc0aacf5e7659060029316e5e",
+    "revision": "bd68b8bc147348a278f1d4240dc44343a9921043",
+    "result": "Exact source2 streams9.633/10.757s before GC mismatch discovery; superseded by direct-prep7f348, no renewed/current coverage credit.",
+    "observed_stream_agreements": 2,
+    "current_coverage_credit": 0
+  },
+  "execution": {
+    "cwd": "/home/user/workspace/php-spec/.tools/magic-empty-get-only-private-91",
+    "environment": "LC_ALL=C TZ=UTC PHP_SPEC_SCRIPT_ENCODING absent; jobs1; all packets CPU4; fixed profile in catalogue/reports.",
+    "caps": "native45; public model60/outer75/steps100000 serialstopfirst; diagnostic native45 then strictSL90; focused each AL90 then strictSL90/cachefalse/dettrue/stopfirst.",
+    "commands": [
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 4 python3 -u .tools/magic-empty-get-only-probes-91/run.py native --revision eb57aa4ff42bd2511d59485e7f1265da63b4e9fc",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 4 python3 -u .tools/magic-empty-get-only-probes-91/run.py baseline --revision eb57aa4ff42bd2511d59485e7f1265da63b4e9fc",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 4 python3 -u .tools/magic-empty-get-only-probes-91/run.py changed --revision 7f348182d9c40eaaa3bd5e9ff91bcc7ddce8ada3",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 4 python3 -u tests/semantics/magic_empty_get_only_protocol.py --revision d8296560067b6525c74215ca320f317681e9f635",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 4 python3 -u .tools/magic-empty-get-only-probes-91/run-gc-diagnostic.py (frozen bd68;diagnostic0)"
+    ],
+    "affinity": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-get-only-private-91/.tools/magic-empty-get-only-probes-91/affinity-native-first.json",
+        "sha256": "8b70da068ae10e7eb5485b173ba8390675544cd725345d6a3329a351342d099c"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-get-only-private-91/.tools/magic-empty-get-only-probes-91/affinity-accepted-current-baseline.json",
+        "sha256": "d9e4915f812b33f1b671c6087ea646d588f7ab984e44af7c389640ec0611593e"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-get-only-private-91/.tools/magic-empty-get-only-probes-91/affinity-changed-source-91-repair2.json",
+        "sha256": "ea21e2d672fe86bfd3d1eafe7206d6c19a2a4bc4a6aa51885aa860f9f3e493e1"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-get-only-private-91/.tools/magic-empty-get-only-probes-91/affinity-state-91.json",
+        "sha256": "6bded74870b7e75a66988673f290518d7e5c21036e002c5ba0dece0c7ef97a61"
+      }
+    ],
+    "observations": "Native masks observed for both CPU4 children with empty argv at exit; exact taskset-parent provenance retained, no live-argv claim. Baseline2/finalsource2/focused4 full CPU4 masks/argv. All accepted watched inputs/head/status/fixtures stable, groups empty and actors/observers reaped."
+  },
+  "tools": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "private_source_driver_sha256": "104eaa9c52b378e34082f62df00b76dc9ad959dcd28d7c04ad2d88d0625bd2ec",
+    "focused_driver_sha256": "e7f2fe9e04aee52cde7ae4bfcf39a2eeb5727a8d83ea24b1e255ad67131ba318"
+  },
+  "limits": "Other quiet-CV GC paths including generic public-ready traversal are not covered by the private skip correction. Terminal isset, coalescing/ancestor quiet reads, wider signatures/receivers/property families and mutable-empty array GC table retirement remain open. Earlier class cuts/failures retain identities without replay. Public source2 already loads strictSL399; no separate initialization/joined actor absent concrete interaction.",
+  "artifacts": "Ignored raw reports/streams/process records/private run.py and diagnostic scripts remain at original paths. Maintained sources/catalogue/focused harness recover from tested commits. No bulky evidence, backup worktree or cleanup receipt chain tracked.",
+  "review": {
+    "independent": "class_review_84",
+    "accepted": "Native/baseline/finalsource2, production, focused235 and concise publication independently accepted. Structural inventory/diff checks pass; no semantic rerun for publication."
+  }
+}
