@@ -7,6 +7,19 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Plain-CV `+=` now stages a second RHS Warning after its LEFT handler changes
+the initially quiet value to leading text. Four originals pass at `ba9a8d17e`/405;
+three focused fixtures pass 465 premises at `367bc7c9e`/405. Cached float `18.0`
+survives late references or RHS unset. A late target reference detaches on success;
+a second supplied throw preserves alias write-through without storing. Author
+normal is source-only.
+[Second-Warning ledger](coverage/semantics/addassign-rhs-warning-review.json).
+Other target/producer classes and wider lifetimes remain partial; OP12 paused.
+
+Composed over `d946f57ec`/406, preserving incoming fields, task variants
+and manifest. Source4/state465 retain their private405 cuts; independently reviewed
+incoming selectors require no joined execution or renewed credit.
+
 Both-missing distinct-CV `<=>` now warns left first and freezes NULL before
 reading the handler-created scalar right. The first name may stay absent;
 supplied Exception suppresses the second Warning. Only two module207 entry lines
@@ -106,17 +119,8 @@ INI_SET, Generator, destructor-return history and lossy-float literal-key plans
 are unselected; counter arithmetic is quiet. Source3/state614 keep their private
 cuts without a joined actor, accepted replay or renewed credit.
 
-Selected-reference ADD now delays initially bad RHS text until the LEFT Warning
-returns. Four originals pass at `d87c533dc`/405; three focused fixtures pass 428
-premises at `8aceff008`/405, covering strict float `18.0`, live bool/string TypeError
-and quiet selected old `5.5` through name rebinding (`17.5`, one Warning).
-A first supplied throw is source-only. The old plan and phase/error/root bodies
-remain exact. [ADD repair ledger](coverage/semantics/add-repair-review.json).
-Owning/constrained/expired cells and wider forms remain partial; OP12 paused.
-
-Composed over `54238b756`/405, preserving incoming fields, task variants
-and manifest. Source4/state428 retain their private405 cuts; independently reviewed
-incoming selectors require no joined execution or renewed credit.
+Earlier selected-reference ADD repair retains source4/state428 in its
+[review ledger](coverage/semantics/add-repair-review.json).
 
 Both-missing `>`/`>=` comparisons now warn for source right first, freeze its
 NULL and follow the scalar left initialized by the handler. A second ingress

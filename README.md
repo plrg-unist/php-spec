@@ -481,8 +481,17 @@ alias and writes a new non-reference CV cell; a supplied throw preserves the
 alias and callback writes. Three exact originals and 387 focused SL premises
 cover capture, default Warning, commit/cancellation and public guards in the
 [plain-CV compound ledger](coverage/semantics/addassign-cv-warning-review.json).
-The RHS remains defined, plain and quietly numeric; owning/constrained targets,
+Its quiet-RHS completion requires a defined, plain numeric RHS; owning/constrained targets,
 wider producers and lifecycle paths remain partial.
+
+Plain-CV `+=` now also captures a newly leading RHS after the LEFT Warning and
+issues a second Warning before storing. Cached float `18.0` survives RHS unset or
+late reference creation; successful storage detaches a late referenced target, while a
+second supplied throw preserves alias write-through and cancels the outer store.
+Four originals and 465 focused premises are retained in the
+[second-Warning ledger](coverage/semantics/addassign-rhs-warning-review.json).
+Other target/producer classes and wider lifetimes remain partial.
+
 [Stringable compound concatenation352](coverage/semantics/compound-string-live-rhs-review.json)
 reads a defined RHS CV after the left conversion, preserves the non-reference
 self-CV fast path, and retains evaluated temporary/reference operands through
