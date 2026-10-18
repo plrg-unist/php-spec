@@ -272,29 +272,23 @@ joined actor, accepted replay or renewed execution credit.
 The earlier nonowning-copy arithmetic route retains source10/state767 in its
 [review ledger](coverage/semantics/copied-arithmetic-warning-review.json).
 
-Owning dynamic `new` selectors now finish ordinary disposal before allocation,
-constructor access and arguments. Captured class history owns no selector. A supplied
-selector-destructor Exception cancels construction with null `Previous`, rather than
-acquiring a premature private-access Error. Returning and held selectors retain their
-native access order; public construction receives 99 after selector destruction.
-Four originals agree at `d0faf9819`; the genuine unchanged baseline has three
-agreements and the exact throwing `Previous` mismatch. The 370 focused premises
-(356 reached +14 derived) combine normal 103 at `000821d8a`, throwing 76/held 97
-at `ee90de61c`, and public 94 at `ed7eb4486`. Actual no-allocation/no-pending-Error
-fronts, saved call validity, retired history, same catch/destination 42, constructor
-argument 99 and zero/resume budgets pass. Both earlier fixture failures remain zero
-in their false enclosing reports; only affected/unrun groups repeated.
-Only modules 260/30 change. Generic ownership/destruction/GC and the manifest stay
-unchanged; the nonowning route has a derived compatibility bridge, without renewed
-source credit. Wider selector/constructor/autoload and reference-return lifetimes
-remain partial. [Selector review](coverage/semantics/dynamic-new-selector-review.json).
-
-Composed over `933817eae`/405 after reviewing incoming INI/DEFINE, missing-CV
-comparison, arithmetic and Generator selectors, absent here. OP51's new binary
-apply wrapper defaults to the original helper; its special MUL form is unselected.
-Modules 260/30 retain tested bytes; every other runtime, incoming field/default
-and the ordered manifest remain parent-exact. Source4/focused370 retain original
-cuts without joined execution, accepted replay or renewed credit.
+Terminal private-property `isset` now consumes selected inherited absent-return
+`__isset(string)` callbacks, including a present throwing `__get` that stays inactive.
+Ordinary object/array RV truth is cached before disposal. A sole RV retains the
+captured receiver and IN_ISSET through caller-CV nulling and its destructor; held
+arrays dispose later and permit nested receiver destruction. Mutable-empty false
+retires its table before receiver D, while a supplied destructor Exception preserves
+the same catch and destination 42.
+Four originals agree at `2e00b17c8`; 457 focused premises (434 reached +23 derived)
+pass at `dc93a67d8`, covering real PREP deferral, saved call validity, guards,
+sole/held/throw/empty lifetimes, source/result refusals and zero/resume budgets.
+The original pre-execution sort failure, missing stdClass destruction metadata
+and prefix diagnostic retain zero credit; only corrected normal plus three unrun
+groups repeated. Only modules 407/408 change, reusing the existing physical method proof,
+receiver marker and ordinary cleanup. No-Get `empty` stays typed-bool; terminal
+typed-bool-with-Get, other RV kinds and wider recursive/alias/GC histories remain
+partial. No task/schema or generic ownership/destruction/GC rule changes.
+[Terminal isset review](coverage/semantics/terminal-isset-rv-review.json).
 
 Retained propertyless Stringable `define` names now receive captured NULL flags
 with primitive candidates in admitted user-global/class-name domains. One module400

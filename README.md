@@ -3298,9 +3298,18 @@ skips Get and retires before receiver destruction. A supplied payload-destructor
 Exception preserves the same catch and assignment destination.
 [Four originals and 416 focused premises](coverage/semantics/magic-empty-isset-array-rv-review.json)
 cover these paths without changing generic array/free/GC behavior.
-Ordinary `isset` and no-Get `empty` keep their typed-bool callback requirement.
-Other signatures, receivers, other internal-object RVs and
-wider recursive/coalesce magic combinations remain unsupported.
+No-Get `empty` keeps its typed-bool callback requirement. Terminal typed-bool
+callbacks with `__get`, other signatures/receivers/internal-object RVs and wider
+recursive/coalesce magic combinations remain unsupported.
+
+Terminal CV/literal private-property `isset` also accepts inherited
+`__isset(string $name)` without a return declaration. It caches ordinary
+object/array truth and skips `__get`, including a declared throwing getter.
+A sole RV is disposed while the receiver
+and IN_ISSET remain; held RVs dispose later. Mutable-empty false and a supplied
+destructor Exception preserve result and cleanup order.
+[Four originals and 457 focused premises](coverage/semantics/terminal-isset-rv-review.json)
+cover these paths and saved call validity without changing generic destruction/GC.
 
 Inherited private writes now invoke a public `__set(string $name, $incoming): void`
 for selected external CV/literal assignments. The setter receives integer `7`,

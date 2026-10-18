@@ -1,0 +1,134 @@
+{
+  "scope": "Selected terminal CV/literal private-property isset with inherited public nonreference __isset(string) and absent return declaration; ordinary INSTANCE/live array RV truth and disposal, present untyped Get suppression, finite sole/held/empty/supplied-throw lifetimes.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_object_handlers.c zend_std_has_property: ADDREF receiver, set IN_ISSET, call issetter, zend_is_true(rv), zval_ptr_dtor(rv), clear IN_ISSET and release receiver. Get is conditional on PROPERTY_NOT_EMPTY, so terminal isset never invokes it.",
+      "Zend/zend_operators.h i_zend_is_true: ordinary objects are true and arrays use current element count. Zend/zend_variables.h i_zval_ptr_dtor and Zend/zend_hash.c zend_array_destroy perform ordinary RV/table/child release."
+    ]
+  },
+  "implementation": {
+    "files": [
+      "spec/semantics/407-magic-property-isset.watsup",
+      "spec/semantics/408-magic-property-empty.watsup"
+    ],
+    "basis": "Terminal-only source admission reuses the existing absent-return physical method proof; its declaration moves from408 to407. Exact PREP/ORIGIN_RETURN/ISSET_RESULT false source/CV/line proof defers ordinary Get interception. Live INSTANCE/array readiness caches pure truth while retaining the existing receiver marker. Actual/saved marker guards and the exact destructor-prefix/call/release-tail/operation SOURCE plus VALUEtrue certificate preserve call validity during sole RV cleanup. Existing bool finish, abrupt discard and roots remain. No141 declaration, task/schema/manifest, generic ownership/destruction/GC change."
+  },
+  "validation": {
+    "native": {
+      "path": "/home/user/workspace/php-spec/.tools/terminal-isset-rv-private-104/.tools/terminal-isset-rv-probes-104/native-first/report.json",
+      "sha256": "187874c4d8bd129168d59a2d2f3043c67368bea714bf8f823652e2876d013ef4",
+      "revision": "0dff04c2b3d24f726d26fac3840768c038a60a02",
+      "result": "Four exact native stdout lengths14/16/15/10, quiet stderr/exit0; zero model/source credit."
+    },
+    "baseline": {
+      "path": "/home/user/workspace/php-spec/.tools/terminal-isset-rv-private-104/.tools/terminal-isset-rv-probes-104/accepted-current-baseline/report.json",
+      "sha256": "f9c315f63afdead7f8f8280905e6145bae4b6e9def68637c77a7995b18657a85",
+      "revision": "0dff04c2b3d24f726d26fac3840768c038a60a02",
+      "result": "Four genuine checked Unsupported/CLI1/zero agreements before I. N:/H:/F: use magic getter receiver, signature or recursive access; X: with no Get uses magic isset source, function, or recursive access."
+    },
+    "source": {
+      "path": "/home/user/workspace/php-spec/.tools/terminal-isset-rv-private-104/.tools/terminal-isset-rv-probes-104/changed-model-4xg02826/report.json",
+      "sha256": "4194fe095560363f959f98ec0529cf271ced1ecbcb2c3c6616a91cc3520235ea",
+      "revision": "2e00b17c89dcc3cb4bb335c4da7f90d554d3092e",
+      "result": "Four exact checked normal native agreements14/16/15/10, quiet exits0/all stability/empty groups."
+    },
+    "focused": {
+      "path": "/home/user/workspace/php-spec/.tools/terminal-isset-rv-private-104/.tools/terminal-isset-rv-protocol-1zmsc6cr/report.json",
+      "sha256": "a859ad5a4231522a73347dbbd48fbf70e1967e8dfd9a89d831d8c9b44777e6db",
+      "revision": "dc93a67d8dfde6665bdbc100d954727955d9a8c1",
+      "result": "Four exact true:132/112/123/90 =457,434 reached+23 derived, app4/source0. AL7.317/7.533/8.111/7.386; strictSL25.042/30.304/27.101/21.975seconds, quiet exits0/all stability/empty groups."
+    }
+  },
+  "focused_scope": "Actual terminal PREP deferral despite a declared throwing Get; selected lexical Parent/called Child and receiver root. Ordinary INSTANCE/array truth caches before disposal. Sole payload D keeps IN_ISSET, Get inactive and receiver alive after caller-CV null, then receiver D sees guard false. Held array survives the result and later payload D permits nested receiver D. Mutable empty NEXT1/SERIAL1 table uses ITEMSeps, retires before receiver D and delivers false. Supplied Exception remains the same pending/catch object with destination42. Full saved call validity and zero/resume budgets span PREP/capture/disposal. Derived wrong consumer/source and well-rooted stdClass use actual Unsupported/refusal controls; consistently relinked operation SOURCE/VALUE mutations reject the cleanup certificate. No old paired-empty/typed callback execution credit.",
+  "nonpassing": [
+    {
+      "path": "/home/user/workspace/php-spec/.tools/terminal-isset-rv-private-104/.tools/terminal-isset-rv-probes-104/changed-model-_ubtygaq/report.json",
+      "sha256": "1d18fef74ca219df62ff541c52bd72a556a5d4e4695104d5ccec90e3a2f3d5f2",
+      "revision": "3b7fabfaa2c11ae86c9808dbc515e9d80fefd1b7",
+      "passing_credit": 0,
+      "result": "First normal pre-execution runner_failure: ppropertydesc.ORIGIN has wider ppropertyid sort than record PROPERTY porigin. Narrow standalone porigin alias fixes only elaboration; other three cases unrun. Original report retained."
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/terminal-isset-rv-private-104/.tools/terminal-isset-rv-protocol-muwq84r8/report.json",
+      "sha256": "25e52fed7c7b10610e7153b72f850b71bceb052537d9b180cacdcf59f6f76213",
+      "revision": "a678b7d619c5df06338add49e6ff7061b97a0606",
+      "passing_credit": 0,
+      "result": "First normal132 compiled but returned false; held/throwing/empty unrun, original overall false retained. Raw derived stdClass allocation omitted DESTRUCTION.HANDLES, so its full-state guard failed. Corrected only with existing destruction_store_new before adding HELD displaced payload."
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/terminal-isset-rv-private-104/.tools/terminal-isset-rv-probes-104/diagnostic-104-rr1uf1xl/report.json",
+      "sha256": "ac7f32687b4d3cb548ff397974264d972a5a8134ce5943386f52a99716466fde",
+      "revision": "a678b7d619c5df06338add49e6ff7061b97a0606",
+      "passing_credit": 0,
+      "result": "One strictSL90 diagnostic, exact original prefixes20/55/73/99/109/132 and shared initial: [true,true,true,true,true,false], localizing the failure to derived controls. All109 reached assertions passed diagnostically only; zero source/passing credit. No second diagnostic."
+    }
+  ],
+  "reproduction": {
+    "cwd": "/home/user/workspace/php-spec/.tools/terminal-isset-rv-private-104",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": "absent",
+      "jobs": 1
+    },
+    "profile": "tests/semantics/profile.json",
+    "native_baseline": "Ready watch-affinity.py native-first native 3; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 3 python3 -u .tools/terminal-isset-rv-probes-104/run.py native --revision 0dff04c2b3d24f726d26fac3840768c038a60a02; only PASS/reap permits fresh accepted-current-baseline model 3 watcher and same actor baseline.",
+    "source": "Ready capture-candidate-affinity.py 5 changed-model- 4 changed-source-104-repair1; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 5 python3 -u .tools/terminal-isset-rv-probes-104/run.py changed --revision 2e00b17c89dcc3cb4bb335c4da7f90d554d3092e",
+    "focused": "Ready watch-state-affinity-repair1.py 3; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 3 python3 -u tests/semantics/terminal_isset_rv_protocol.py --revision dc93a67d8dfde6665bdbc100d954727955d9a8c1",
+    "caps": "Native45/model60/outer75/100000steps, serial/fail-first; focused four serial AL90 then strictSL90/cachefalse/dettrue. Checked preparation has zero applications. Eight-worker focused observer840seconds.",
+    "affinity": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/terminal-isset-rv-private-104/.tools/terminal-isset-rv-probes-104/affinity-native-first.json",
+        "sha256": "ab1bb9eefc71ca8cd2bfe0a94fea94f2db2da569361f05026ad0129d5a902646",
+        "result": "Partial1/4 CPU3 normal mask/fullargv only; other fast children missed. Taskset-parent provenance retained; observer stopped/reaped, no sampling-only replay."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/terminal-isset-rv-private-104/.tools/terminal-isset-rv-probes-104/affinity-accepted-current-baseline.json",
+        "sha256": "046d8c3b61215583ef9047ce035b1320633b3cd535229dfc617b74dc1775062d",
+        "result": "Complete4CPU3/fullargv."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/terminal-isset-rv-private-104/.tools/terminal-isset-rv-probes-104/affinity-changed-source-104.json",
+        "sha256": "9544f6b8459bc0b5a61867a3d42178c6885ea9dddb961548d500cd1e00e5d563",
+        "result": "Partial1/4 CPU3 on first pre-execution source failure, fullargv; observer stopped/reaped, other cases unrun."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/terminal-isset-rv-private-104/.tools/terminal-isset-rv-probes-104/affinity-changed-source-104-repair1.json",
+        "sha256": "3034217c9e6b87ee51246b3a2e558af69e16011e50d4dfb001a5994164802f26",
+        "result": "Complete4CPU5/fullargv."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/terminal-isset-rv-private-104/.tools/terminal-isset-rv-probes-104/affinity-state-104.json",
+        "sha256": "89434e359b506f1a751f272ccbfb991435820bb93c14c5e92fa87c9fa85dac66",
+        "result": "Partial2/8 CPU2: first normal AL/SL mask/fullargv; stopped/reaped on false, later groups unrun."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/terminal-isset-rv-private-104/.tools/terminal-isset-rv-probes-104/affinity-normal-diagnostic-104.json",
+        "sha256": "979b80d31d737e104c00eea5599892ec33d1e719c4a4d0e0941a51ff08789830",
+        "result": "Complete1CPU2/fullargv, one diagnostic only."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/terminal-isset-rv-private-104/.tools/terminal-isset-rv-probes-104/affinity-state-104-repair1.json",
+        "sha256": "a1045f228de5b07d1926f345737af690f35b720f032109ade3f7892505519fdc",
+        "result": "Complete8CPU3/fullargv matching actual workers."
+      }
+    ],
+    "stability": "All recorded input/head/status/fixture stability true, groups empty and worker/observer PIDs reaped. Accepted attempts have no timeout/interruption. Original source and fixture failures plus diagnostic remain zero; only corrected normal and three unrun groups execute in the final state packet."
+  },
+  "limits": "Selected direct external CV/literal inherited private-property family only. Existing no-Get empty remains typed-bool; terminal typed-bool callbacks with Get remain excluded. Other untyped nonboolean primitives/null/internal RVs, reference returns, recursive magic, wider receiver/source/alias/cycle and GC histories remain partial. Direct Boolean finish is preserved without a fresh Boolean source campaign. No native gc_status, whole-program GC preservation, old97/101 replay, PHP engine bug or intentional divergence claim.",
+  "artifacts": "Original ignored sources/private drivers/reports/streams/processes and generated fixtures remain at their original paths. Maintained sources/catalogue/harness recover from tested commits; fixtures remain in original ignored raw directories. No evidence archive, backup or receipt chain is tracked.",
+  "tools": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "source_driver_sha256": "a3fc6e5fbd71b01a1019ac96e891e1993057da959bcbe59ee88749493074857f",
+    "focused_driver_sha256": "0e71af9ac2c661c3301d11a6c2d154c1a4c234ebd6e5d01a731d4bb44bc75e76",
+    "focused_observer_sha256": "e3028bc909b4b1ab85cf6ed1e6e691253678f7f720bffdc21d04298ad932d64c"
+  },
+  "review": {
+    "independent": "class_review_84",
+    "status": "Native/genuine baseline/source4/focused457 and concise publication independently accepted; terminal-only admission, preserved failures/diagnostic, native sampling and wider lifetime limits explicit."
+  }
+}
