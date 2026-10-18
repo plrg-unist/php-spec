@@ -7,24 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Public initialized float-property `empty` now dispatches the NaN Warning and
-rereads its captured live slot after the handler: `0.0` yields true; `1.0` or
-unchanged NaN yields false, with one warning. Caller-CV nulling cannot redirect
-the selected receiver/key; the marker is nonowning and the originals keep a saved
-alias live. Supplied throw preserves the same Exception at actual catch. Four
-originals agree at `0a8b0c8e4`; 469 focused premises at `59e5036d3`
-(409 reached +60 derived) cover owner2→1 without BASE, live rereads, default and
-throw cleanup, source/record/slot refusals and budgets. The first declaration-order
-runner failure remains zero credit. Native sampling is qualified as partial1/4;
-later source/state masks and argv were complete. Module411 leaves magic408,
-generic truth, ownership and GC unchanged. Sole-owner/retired or referenced slots,
-wider quiet-CV GC paths and mutable-empty array retirement remain open.
-[Public NaN review](coverage/semantics/quiet-public-nan-review.json).
+Referenced public float-property `empty` now captures the original inner cell
+before its NaN Warning. A handler can rebind the property to another reference:
+old0/new1 yields true, old1/new0 or oldNaN/new0 false, and supplied throw preserves
+the same Exception at catch. Saved receiver/old-cell aliases keep storage live;
+the marker owns neither. Four originals agree at `3cc556f60`; 298 focused premises
+at `32216baeb` (257 reached +41 derived) cover actual cell/type-source transfer,
+outside-frame owners, normal/throw cleanup and budgets. Derived old1/NaN and a
+well-formed direct-mode bridge add no renewed CLASS92 credit. One optional-tuple
+interpreter failure remains zero; native partial1/4 sampling is qualified. Only
+Module30's optional selector and411 capture/read helpers change; generic reference,
+GC, return and warning rules stay unchanged. Retired/nonfloat cells, sole-owner
+receiver lifetime, wider quiet-CV GC and mutable-empty array retirement remain open.
+[Reference NaN review](coverage/semantics/quiet-public-reference-nan-review.json).
 Earlier class cuts retain their original evidence without replay.
-
-Composed over `a5bb4b155` after pointwise review of Generator, LIST-key, DEFINE
-and closure-comparison selectors. Source4/state469 retain their tested revisions;
-no joined actor or renewed execution credit.
 
 Pending Generator `throw` now reaches the caller without body entry when a
 delegating actual root still has pending initialization and native links end

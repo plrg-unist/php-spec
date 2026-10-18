@@ -2838,6 +2838,10 @@ captured live slot: handler writes of `0.0` make it true, while `1.0` or unchang
 NaN make it false without a second warning. A saved alias keeps the receiver live
 after caller-CV rebinding. Four originals and 469 focused checks cover default,
 handled and thrown warnings; [public NaN review](coverage/semantics/quiet-public-nan-review.json).
+Referenced float slots now keep their original inner cell across handler property
+rebinding: old-cell `0.0`/`1.0` decides the result even when the new property holds
+the opposite value. Four originals and 298 focused checks cover type-source transfer,
+nonowning capture and the same catch; [reference NaN review](coverage/semantics/quiet-public-reference-nan-review.json).
 With an untyped by-value `__get`, terminal `empty` chains it after the inherited
 `__isset`: false skips the getter, while true tests its null, bool, int, float
 or byte-string result. Only empty bytes or exactly ASCII `0` make a string
