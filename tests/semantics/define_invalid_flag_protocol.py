@@ -160,7 +160,7 @@ def strict(initial, stdout):
         'S.ARRAYS[n_flag_root] = $array_empty()',
         '$dynamic_define_invalid_flag_kind(S,POBJECT n_left)',
         'S_internal = S[.OBJECTS[n_left] = INTRINSICCLOSURE INTRINSIC_DEFINE]',
-        '~$dynamic_define_invalid_flag_kind(S_internal,POBJECT n_left)',
+        '$dynamic_define_invalid_flag_kind(S_internal,POBJECT n_left)',
         '$lookup(S.ENV,$ptascii("candidate")) = (n_cv)',
         '$lookup(S.ENV,$ptascii("flag")) = (n_flag_cv)',
         '$lookup(S.ENV,$ptascii("calls")) = (n_calls)',
