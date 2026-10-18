@@ -205,8 +205,23 @@ cancels delivery and preserves the destination. Three exact originals plus
 265 author and 101 independent SL premises pass in the
 [power-warning ledger](../../coverage/semantics/power-warning-review.json).
 Counterfeit source/cache/range/metadata states are validator negatives only.
-Numeric-string conversion warnings, references/copies, wider `**=` forms and callbacks
-or lifecycle forms remain partial.
+Copied and wider operand/callback/lifecycle forms remain partial.
+
+Binary `**` also admits leading numeric LEFT strings on two preexisting untyped
+reference cells. Both referents are selected first; the LEFT Warning may repair initially
+nonnumeric RHS text before its conversion. Each number is captured before its
+Warning. A final power Deprecated uses both historical holders even at fresh
+dispatch, after callbacks changed the cells or rebound the RHS name. A surviving
+alias retains the selected old RHS; its one owner stays distinct from the current
+replacement's two owners. Cached numbers yield integer `8`, strict float `2.0` or
+signed infinities despite live writes. Failed conversion reports live selected
+types; supplied throws cancel outer result assignment while callback writes survive.
+Seven exact originals and 951 focused premises cover real phases, default Warning/
+Deprecated bytes, atomic results/errors, owners and budgets in the
+[power-conversion ledger](../../coverage/semantics/power-conversion-review.json).
+Initially quiet LEFT/right-only warnings, plain/mixed/copied/owning/constrained or
+expired operands and wider callbacks/lifecycles remain partial. Old numeric-CV
+power and other arithmetic bodies and evidence are unchanged.
 
 Primitive plain-CV `**=` now retains both numbers and the original target binding
 through zero-base/negative-exponent deprecation. Normal return stores the captured

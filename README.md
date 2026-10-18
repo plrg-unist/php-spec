@@ -599,7 +599,16 @@ deprecation handlers. Callback writes cannot change the captured infinity or its
 sign; a supplied throw preserves the pending destination. Three exact originals
 and 366 focused SL premises pass in the
 [power-warning ledger](coverage/semantics/power-warning-review.json).
-Numeric-string warnings, wider operands/callbacks and wider `**=` forms remain partial.
+Other operand classes, right-only warnings and wider callbacks/lifecycles or `**=`
+forms remain partial.
+
+For `**`, leading numeric strings now convert through named handlers for two
+preselected reference cells. A first Warning may repair bad RHS text;
+both numeric holders then survive a final zero/negative-exponent Deprecated and
+RHS-name rebinding. Seven originals and 951 focused SL premises cover integer `8`,
+strict float `2.0`, signed infinities, live-type TypeError and supplied throws in the
+[power-conversion ledger](coverage/semantics/power-conversion-review.json).
+
 Primitive plain-CV `**=` now commits its captured result even when the deprecation
 handler throws. A late alias detaches before the same exception continues; the
 outer assignment stays unchanged. Three exact originals and 407 focused SL

@@ -7,6 +7,23 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Binary `**` with a leading numeric LEFT string now selects both reference cells
+before converting LEFT and the delayed RHS. A first Warning may repair bad text; each
+number survives its Warning, then both are historical at the final zero-base/
+negative-exponent Deprecated even after RHS-name rebinding. Seven originals pass
+at 5a9096207/401 and five focused fixtures pass 951 SL premises at 7542c04dd/401:
+integer `8`, strict float `2.0`, signed infinities, live bool/string TypeError,
+supplied throws at the second Warning/final Deprecated, selected-old-RHS owners
+and budget resumption. Nine rows remain partial; old CV power/ADD/DIV/SUBMUL bodies
+and evidence are unchanged, OP12 paused.
+[Power-conversion ledger](coverage/semantics/power-conversion-review.json).
+
+Composed over 1c0f2a579/401 after four incoming runtime paths were reviewed.
+Sensitive wrapper comparisons, DEFINE-name conversion, reference-return destructor
+cursors and parked Generator/yield history have no producer in these named-handler
+scalar/reference sources. Incoming paths and old arithmetic bodies are preserved;
+source7 and state951 retain their private401 cuts without replay.
+
 Pending Generator `throw` now preserves one buffered simple-CV used-yield input
 inside one active by-reference array `foreach`. The input captures a value while
 the loop owns its acquired wrapper. Close orphans the input, then retains that

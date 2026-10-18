@@ -1,0 +1,133 @@
+{
+  "version": 1,
+  "milestone": "OP45 selected-reference power conversion and final deprecation",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/profile",
+  "scope": "Ordinary binary ** with two defined direct CVs already selecting live untyped reference cells, a leading-numeric LEFT string and a named Warning handler. The initial nonowning scalar RHS need not be numeric: its selected referent is converted only after the LEFT callback. Both historical numeric holders then determine the power and any final zero-base/negative-exponent Deprecated, including a fresh final dispatch after prior callback mutation or RHS-name rebinding. Old numeric plain-CV POWER_WARNING and other arithmetic routes stay exact; wider operand/callback/lifecycle forms remain partial.",
+  "runtime_revision": "5a9096207012556d76e0cb77cbf8133203fdde4d",
+  "helper_revision": "7542c04dd3f75fca9b191477912a6df35cb0f1b2",
+  "private_modules": 401,
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "ee7eabfc85a0c3a40cba2e8eaac4371d6db68d0cdea212a5c187a6334ab763c3",
+    "spec/semantics/40-control.watsup": "2af27b4a7b9e5cbc0f07b4fe264b5dab44a0836e624ec2cec4ad6194dad7a565",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "a0e5bb4d72eb7931aecc593e3919699f3fdd1d3e8ef45d3d8324a4578f5c116a"
+  },
+  "engine_basis": [
+    "Pinned Zend/zend_operators.c pow_function dereferences both operands before zendi_try_convert_scalar_to_number. Each numeric holder is filled before its leading-number Warning; the selected RHS may be repaired by the first callback without changing which referent is read. pow_function_base then invokes safe_pow, whose zero/negative-exponent Deprecated precedes pow but follows both number conversions.",
+    "The dedicated POWER_CONVERT/POWER_CONVERSION_WARNING path reuses unchanged source-pointer, scalar class/conversion and numeric validity helpers. Three40 EPS gates keep generic binary evaluation disjoint. Quiet completion uses existing num_pow; its diagnostic flag creates POWER_CONVERSION_DEPRECATED with both numbers retained. No old CV POWER source/snapshot or ADD/DIV/SUBMUL body is changed.",
+    "Fresh conversion Warning dispatch authenticates the selected scalar input. At final Deprecated dispatch both numbers are historical even when TARGET is eps; they must not be checked against live cells or the current RHS name. Final validity checks source, number ranges, num_pow diagnostic coherence and stage only. All new tasks add no owners; saved string metadata adds no HSTRING root. A supplied final callback throw cancels outer result assignment while callback writes survive; the scalar power computed by Zend during unwinding is unobservable in this bounded route."
+  ],
+  "contract": [
+    "Author cached integer2**3 returns strict8 after99/3tail then88/7. Cached0**(-2) emits Warning/Warning/Deprecated and returns positive infinity after final77/9. Supplied Exception20 at the second Warning or final Deprecated preserves exact identity/nullPrevious and destination100 with callback effects. Integer8 and second-Warning throw are source-only; the final-Deprecated success/throw have focused state fixtures.",
+    "Independent fractional4.0**0.5 returns strictfloat2.0 after live false/bad with one default RHS Warning. Failed RHS conversion reports live bool ** string after one default LEFT Warning, not earlier numeric types. Independent -0.0**(-3) retains selected old RHS through name rebinding and a second Warning, then emits the default final Deprecated and returns strict negative infinity. The real old RHS owner1 remains separate from replacement owner2 and later alias6/replacement8 writes.",
+    "Focused author206/186 and peer179/144/236 start from initialized machines, reach actual fresh/entered conversion warnings and final deprecation, and inspect numeric result-only or TypeError/throw transitions, real cell/Throwable owners, metadata prefixes versus atomic equality, diagnostic order and compact meaningful budget cuts. Pure source/cache/stage/ref projections are guard checks, never executed forged states. Peer source stderr deliberately contains two separate default Warning originals and one final Deprecated original; standalone SL requires exact true newline and empty stderr."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-45/source-5a9096207-author-four/report.json",
+        "sha256": "ad04e9c9ecb5615594220dd0536db70912d8745c5259c60d9dbd5e3f1db4673e",
+        "revision": "5a9096207012556d76e0cb77cbf8133203fdde4d",
+        "cases": [
+          "power-conversion-cached-integer",
+          "power-conversion-final-deprecated",
+          "power-conversion-second-warning-throw",
+          "power-conversion-final-deprecated-throw"
+        ],
+        "agreements": 4
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-45/review-model-5a9096207-three/report.json",
+        "sha256": "c0e684efd427b2259a63a08cd23ead6edf6fe25a048a159783ecc0bf2404308b",
+        "revision": "5a9096207012556d76e0cb77cbf8133203fdde4d",
+        "cases": [
+          "power-conversion-fractional-default",
+          "power-conversion-live-types-default",
+          "power-conversion-negative-zero-old-right-default"
+        ],
+        "agreements": 3
+      }
+    ],
+    "state": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-45/state-7542c04dd-five/report.json",
+        "sha256": "7c3ddb4aa29402d05b056c8b59b80e4d9d28d34440bd2f05123d2f5b3f75bde4",
+        "revision": "7542c04dd3f75fca9b191477912a6df35cb0f1b2",
+        "modules": 401,
+        "cases": [
+          "power-conversion-final-deprecated",
+          "power-conversion-final-deprecated-throw",
+          "power-conversion-fractional-default",
+          "power-conversion-live-types-default",
+          "power-conversion-negative-zero-old-right-default"
+        ],
+        "conditions": [
+          206,
+          186,
+          179,
+          144,
+          236
+        ],
+        "total": 951
+      }
+    ],
+    "total_source_agreements": 7,
+    "total_focused_state_conditions": 951,
+    "compatibility": "The accepted5a9096207 runtime and all seven originals remain exact through two helper-only commits. Checked preparation authenticates full author4/peer3 selections, then maps focused2+3 using retained original paths/native bytes; no source/native application is replayed. Old power/numeric primitive evidence receives no renewed credit."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-45/baseline-81b7eb036-cached-integer/report.json",
+      "sha256": "296ec79e1541e9ee0bcdba0e313c08f6e732f789e5d753babe7efd196d26f488",
+      "result": "Accepted checked Unsupported before any H1; empty semantic streams, error-handler ingress requires a producer continuation, model exit1/credit0; no override."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-45/native-81b7eb036-author-four/report.json",
+        "sha256": "cf225d2359c176cd50b978028e2ca17aa46da690f4fed4f5332f7c1412d26b45"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-45/native-81b7eb036-review-three/report.json",
+        "sha256": "e6c7028fdf7005cbdeeec4cc62d9231fb24233c3a1cd0e4d9ea10606516aa0b9"
+      }
+    ],
+    "checked_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-45/state-prep-7542c04dd-five/report.json",
+        "sha256": "93e0b6b2f8c3cf100b862c45ca55e45c5ef68feb6b9f41377e0e50fbb7c6c9cd",
+        "result": "Checked frontend/adapter only; workers exit0/reaped, original paths/native bytes retained, no application/native/numeric replay."
+      }
+    ],
+    "standalone_syntax": "Five standalone undefined-pstate diagnostics carry zero semantic credit."
+  },
+  "required_follow_on": [
+    "Plain/mixed CV and copied/reference-result operands, initially quiet LEFT/right-only Warning ingress, owning/constrained/expired referents, object conversions and wider callbacks/lifecycles remain partial. Selected-old-RHS rebinding requires a genuine surviving alias; no unheld-pointer claim is made.",
+    "All nine linked inventory rows remain partial. Old CV power/ADD/DIV/SUBMUL, primitive numeric power and earlier cuts receive zero renewed credit; OP12 remains paused. No engine bug or intentional divergence is claimed."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-45",
+    "environment": "LC_ALL=C,TZ=UTC,no PHP_SPEC_SCRIPT_ENCODING. Native/baselineCPU5, changed sourceCPU1, focused prep/SL CPU5. Native30/modelCLI60-process90; checked workers30/full401 immutable SL120 per group. Exact native/model stdout+stderr agree, including peer defaults; SL true newline/empty stderr/exits0/no interruption/reaped groups/PIDs.",
+    "commands": [
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 tests/semantics/power_conversions.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 tests/semantics/power_conversion_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-45/state-prep-7542c04dd-five/run-prepare.py",
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-45/state-7542c04dd-five/run-state.py"
+    ],
+    "record": "Restore matching Git cuts/local tools and fresh output roots; records retain original paths/bytes/native streams, fixtures/hashes, exact commands/exits/reaping. Copied tools add no rebuild/portability claim; archive is not a runtime dependency.",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "composition": {
+    "parent": "1c0f2a579a02ce79480936ea3c42676f64677e72",
+    "private_publication": "2445ea1dfdc490ed4857e4c117fe3c8493906e7d",
+    "modules": 401,
+    "runtime_sha256": {
+      "spec/semantics/30-storage.watsup": "ee7eabfc85a0c3a40cba2e8eaac4371d6db68d0cdea212a5c187a6334ab763c3",
+      "spec/semantics/40-control.watsup": "2af27b4a7b9e5cbc0f07b4fe264b5dab44a0836e624ec2cec4ad6194dad7a565",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "a0e5bb4d72eb7931aecc593e3919699f3fdd1d3e8ef45d3d8324a4578f5c116a"
+    },
+    "other_incoming_paths_preserved": 30,
+    "gate": "No joined actor:all3 runtime files and six tests retain exact private bytes, all other spec bytes/401 manifest remain parent-exact, and nine partial rows compose pointwise. Four incoming runtime paths require SensitiveParameterValue compare/clone objects, nonStringable DEFINE-name reception, saved by-reference return/destructor cursors, or parked Generator by-reference foreach/yield/input-tail history. None occurs in these named untyped by-value h/scalar-reference/builtin-Throwable originals. There is no SensitiveParameterValue, clone, DEFINE, declared by-reference return, destructor, Generator, yield or foreach source; reference variable aliases do not select reference-return cursors. Shared30/40/404/numeric/conversion/carrier/handler/heap interfaces remain unchanged. Source7@5a9096207 and state951@7542c04dd keep their private401 cuts without replay or renewed credit."
+  }
+}
