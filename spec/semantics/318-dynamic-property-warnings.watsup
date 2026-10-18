@@ -71,6 +71,7 @@ def $property_dynamic_capture(S, pbase, z, b) = (pdynamicproperty)
   -- if S_base = $property_string_base(S, pbase, z)
   -- if S_base.COMPLETION = NORMAL
   -- if S_base.BASE = BASE_PROPERTY (POBJECT n_target) ptbytes
+  -- if ~$property_magic_set_needed(S_base, n_target, ptbytes)
   -- if $property_resolve(S_base, n_target, ptbytes) = PROPERTY_ACCESS ptbytes_key
   -- if $objectprops_record_at(S_base.OBJECTPROPS, n_target) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes_key) = eps
