@@ -233,29 +233,27 @@ GENERATORRETURNRETAINED and LITERALREFRETAINED lift by empty fields with no root
 and valid empty receipts, preserving owners/budgets pointwise. Source3/state632
 retain private403 cuts and both zero-credit failures without replay.
 
-Different-reference elements at finite lossy-float literal-key callbacks now
-preserve the old acquired owner and the omitted new-cell owner separately.
-Logical aliases remain present; per-cell debt changes both ownership queries and
-pruning counters. Same-cell insertion preserves existing debt, while scalar and
-inverse-reference retargets canonically cancel biases, including multiplicity2
-and a residual positive owner. Fresh balanced sources cover shared versus
-singleton COW, entry deletion and supplied-throw builder cleanup. Five original
-sources and strict404 pass at `cd8e16179`; 1159 state premises (1142 Boolean +17
-raw; author709/independent450) pass at `ff0410375` with no fixture failure.
-The unchanged Unsupported baseline, declaration-order strict failure and first
-multiplicity CLI60 timeout retain zero credit. Only helper declarations moved;
-only that unchanged source was retried at CLI120, with no native/source2 replay.
-Debt cells must remain untyped null/bool/int/float and keep positive effective
-counts. Effective-zero/owning/typed retirement, active collection and outstanding
-request-end debt are explicit Unsupported before pruning. Wider producers and the
-held undefined-reference LIST and owned-NUL paths remain untouched.
-[Deficit review](coverage/semantics/array-literal-float-ref-deficit-review.json).
+Finite lossy-float literal-key reference callbacks now admit ordinary live
+instance-property type sources on either acquired or rebound primitive cell.
+The existing owner deficit remains per cell: type metadata adds no edge, physical
+singleton copies unwrap, and shared copies retain typed rejection/coercion.
+For debt-bearing cells, every source object/property alias must survive logical
+pruning. Fresh int-property programs cover singleton copies, two source properties,
+typed old cells, supplied throws and balanced inverse cleanup. Four originals and strict405 pass at
+`eb44824e1`; 864 state premises (853 Boolean +11 raw; author433/independent431)
+pass at `96176f7c1`. Strict, source and state checks all pass first attempt; the
+genuine unchanged Unsupported baseline stays zero credit. Only413 changes;
+existing typed-write, source/handler, owner-count and prune algorithms remain
+unchanged. Effective-zero, owning payloads,
+static/hooked/queued or retired sources, coercion/backing records, active collection
+and outstanding request-end debt remain Unsupported. Held undefined-reference LIST
+and owned-NUL paths stay untouched.
+[Typed-source review](coverage/semantics/array-literal-float-ref-types-review.json).
 
-Composed over `4ff5f52ef`/405 after independent incoming-selector review.
-Parent magic static calls, typed-reference recovery, detached Generator send,
-DEFINE flags, mixed arithmetic and magic-empty array returns remain intact.
-The debt field lifts unrelated states by eps; accepted source5/strict404/state1159
-retain their private cuts and both failures without a joined actor or replay.
+The earlier untyped deficit slice retains source5/strict404 at `cd8e16179` and
+state1159 at `ff0410375`, composed over `4ff5f52ef`/405 as `7bed41edf`.
+Its original strict failure and source timeout retain zero credit in the
+[deficit ledger](coverage/semantics/array-literal-float-ref-deficit-review.json).
 
 The earlier positive-owner slice retains source5/strict403 at `61a8b26d9` and
 state830 at `5ca23fe19`, composed over `0714bbadb`/404 as `9984783b2`.

@@ -22,9 +22,11 @@ remain live, while runtime array temporaries retain their own tables. Reference
 elements transfer a stable cell normally; retargeting preserves the acquired
 count, cancelling existing debt before retaining unmatched old owners for the
 request, including on throw. Different-reference retargeting between primitive
-untyped cells also tracks the new cell's missing owner until it is balanced.
-Copies distinguish shared and singleton references; unsafe deficit retirement and
-wider domains remain Unsupported. Duplicate replacement and later items stay ordered.
+cells also tracks the new cell's missing owner until it is balanced. Ordinary
+live instance-property type sources are admitted: singleton copies shed their
+constraint while the original stays typed; shared copies retain it. Unsafe deficit
+retirement and wider domains remain Unsupported. Duplicate replacement and later
+items stay ordered.
 
 [Destructuring key warnings](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md)
 now retain captured arrays or source reference cells through handlers, including
