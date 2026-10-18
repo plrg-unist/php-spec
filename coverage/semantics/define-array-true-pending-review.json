@@ -1,0 +1,87 @@
+{
+  "status": "independently reviewed bounded implementation and focused validation",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, sole pinned local PHP/profile, original source bytes/filename/cwd, full401 SL modules",
+  "base": "41cc370dd13230a8059f331595a16522262358b9",
+  "runtime": {
+    "source_revision": "2e79fb7bb70bc661ac4e53a6884be3ae569b550f",
+    "state_revision": "e8538cf3f5b0d1dd664e487bae0f8d9427aa5b4b",
+    "module400_sha256": "88dc32e2fada2443bec44326b5b28f5b1494314633ca3562bb6b285697355a31",
+    "delta": "Sole400+19: two pending-array heads preserve an existing Throwable when cyclic validation fails, or copy an acyclic duplicate then restore RESULT and reuse the existing pending-warning policy. Two V74 pure Unsupported projections become narrow preservation controls; no older campaign is replayed. Shared Throwable, array fold, driver cleanup and GC rules are unchanged."
+  },
+  "engine_route": "Zend/zend_builtin_functions.c::define validates arrays after the ignored-flag Warning even if its handler throws. Zend/zend_API.c::zend_argument_error_variadic immediately returns when EG(exception) is set, so recursive validation leaves the original Throwable/Previous chain instead of allocating ValueError. Acyclic duplicates still run copy_constant_array before zend_register_constant. Its eligible handler is not entered while an exception is pending; the existing pending-duplicate policy and ordinary cleanup retain the old row and release the unregistered copy.",
+  "accepted": {
+    "source_agreements": 3,
+    "author_sources": 2,
+    "independent_sources": 1,
+    "author_main_premises": 128,
+    "author_eval_premises": 146,
+    "independent_premises": 253,
+    "total_premises": 527,
+    "zero_budget_restoration_checks": 1,
+    "driven_forged_states": 0
+  },
+  "behavior": [
+    "Actual pending-cycle discard preserves the original Exception, Previous, result, rows, events and trace arguments with no additional Error, trace or canonical array allocation. Author input owners4\u21923 and independent owners5\u21924 reflect removal of the captured CONFIG root; the peer retains two real Exception traces but only one physical input-to-reference-cell edge.",
+    "Acyclic pending duplicates copy canonical child/root tables, preserve the current old row and handler side row, and skip an eligible callback. The real driver retires both new unregistered allocations while the original API input survives through its trace; input owners3\u21922. Historical append metadata stays on the original trace input, not on the canonical temporary.",
+    "The independent PENDING\u2192BASE\u2192null chain survives cycle failure before an existing-key lookup. A real saved-trace bucket reference updates the original shared cell41. Fresh false-flag recovery copies that graph; query COW53 and later source67 leave stored41 intact, followed by actual chain, source and temporary retirement.",
+    "Missing current cells, dead pending Throwable, absent THROW_SEARCH and rawfalse controls are pure and never driven. One zero-budget restoration precedes the genuine author discard. Established array/source/leaf and historical-row policies remain unchanged; new exact sources focus primitive leaves."
+  ],
+  "cuts": {
+    "native2_and_unchanged_baseline": "6a54fbf3550405ec5e2f1af3d6704ebe5392b6bd/401",
+    "source3": "2e79fb7bb70bc661ac4e53a6884be3ae569b550f/401",
+    "state527": "e8538cf3f5b0d1dd664e487bae0f8d9427aa5b4b/401",
+    "authority": "Runtime400 is byte-identical across accepted source2e79 and statee853. Author states run once at SL90; peer state runs once with a local SL150 bound and unchanged assertions/shared runner. The sole source retry reuses exact original peer bytes/path/cwd/argv except CLI45\u219290; native and author sources are not repeated."
+  },
+  "preserved_outcomes": {
+    "baseline": "Sole unchanged main is genuine Unsupported boolean define flag pending-exception registration after B|H|, CLI1/empty/stable/reaped; zero agreement.",
+    "native_hypothesis": "Native observes the original Exception, not the initially predicted recursive ValueError chain. The early generic-chaining inference is corrected before production implementation or peer execution; its unrun source hypothesis is not a failed actor. The author main retains its original historical case ID and bytes.",
+    "peer_timeout": "First peer model returns status:timeout at CLI45, outer process exit1/empty stderr after50.1428s with no group left. The wrapper then raises KeyError frontend because timeout has no frontend field. Both raw result and fail0 report remain unchanged; neither is semantic disagreement or Unsupported.",
+    "timing_retry": "One exact-original-path peer model-only recorder uses CLI90/process105/host120 and passes in49.6527s at 2e79. No PHP/runtime/shared-runner change or native/author replay occurs.",
+    "accepted": "Accepted PHP source outputs are exact native normal0/empty; state outputs are lowercase true plus LF/empty stderr. No state actor fails, no accepted engine divergence, and no earlier source/state credit is renewed."
+  },
+  "remaining": "Coerced array flags, direct-object true flags, wider names/owning call forms and full constant-family behavior remain partial. The reused pending-warning policy retains its earlier mask/default-reporting domains; these new sources exercise eligible-handler suppression. Stored cyclic trees are not admitted. Paused Source47 NaN/precision callbacks and Source55 Stringable DEFINE names are untouched.",
+  "artifacts": {
+    "author_sources": {
+      "root": ".tools/dynamic-array-true-pending-native-75",
+      "sha256": {
+        "native-report.json": "705e92a1900256571e5229fe92805aadc2fb9a636626f3c34b7643a7fd7f8b04",
+        "baseline-report.json": "90cfec44ba5dc4829e365b4d6161aa7140286ba5838fb88c2e364cc707efec14",
+        "model-report.json": "b36460b6fdc9b4a800ef04f7f0de10524827ea95a7620a14c92bd9a92b010ea6"
+      }
+    },
+    "independent_source_first": {
+      "root": ".tools/dynamic-array-true-pending-peer-75",
+      "sha256": {
+        "native-report.json": "a80d6d8d6a85721fa473cf362c79437a781fcaf77ddc69e1f695586439ec0b3f",
+        "model-report.json": "0d058b455ece4f456d3cedb0c26648c13c30c9b9774b8beb8c3ce32fbba7cd90"
+      }
+    },
+    "independent_source_timing_retry": {
+      "root": ".tools/dynamic-array-true-pending-peer-model-retry-75",
+      "sha256": {
+        "model-report.json": "47a29a68f87da1dc42fa700e9b2217275c1c4319f8557b12043649ad97f20cd1",
+        "exact-model.py": "ee28eca98fb627dac7539d776303e35899b3bafb45e711a55f2ee9b092f76b6a"
+      }
+    },
+    "author_states": {
+      "root": ".tools/dynamic-array-true-pending-state-75",
+      "sha256": {
+        "fixtures-report.json": "a00396f71ee823eb0338b58fc61fbe6393abb241ea2248a63da91611f5d43755",
+        "check-report.json": "0b97dc03cdf46fa2697c803d4aae8deecb916d92682a9d5776b3f7b3380881ab"
+      }
+    },
+    "independent_state": {
+      "root": ".tools/dynamic-array-true-pending-peer-state-75",
+      "sha256": {
+        "fixtures-report.json": "6f63404996038545bb4e9be51fb643917d54e88e27d619cb999fedae7627c282",
+        "check-report.json": "980511aad78275c3280851ea8f6d76ba7f7589dacad265715d1b681c7d1a0e65"
+      }
+    }
+  },
+  "recovery": "Recreate the original .tools/dynamic-source-array-true-pending-75 WT path with report-pinned binaries/references. Native2 host45/process15 and sole unchanged main baseline host90/CLI45/process60 use 6a54; changed author2 host150 serialCLI45/process60 use 2e79 at the retained native75 paths/cwd. Peer native45/model90 initially uses2e79 and retains the CLI45 timeout0. Its listed external exact-model.py is the accepted model-only CLI90/process105/host120 retry against that same original source path; recover into a fresh raw output while preserving the original command/native/source paths and 2e79 HEAD. Both final proof wrappers are tracked at e853. Author fixtures120/check240 serial2 perSL90 use native75\u2192state75; independent fixtures120/check180 perSL150 use peer75\u2192peer-state75. The peer-only local process wrapper changes the bound, not the shared runner or assertions. CPU3 ran all actors. Five canonical raw roots retain original reports, commands, sources, generated fixtures and timing recorder; no raw archive enters Git.",
+  "review": {
+    "reviewer": "/root/dynamic_review_59",
+    "decision": "cleared",
+    "scope": "Pending-cycle suppression versus ordinary ValueError; unchanged Previous/result/rows/trace ownership; copy-before-registration and real rejected-container retirement; eligible-handler nonentry; actual trace bucket/recovery/query COW; bounded source/current-state controls and preserved timeout provenance."
+  }
+}

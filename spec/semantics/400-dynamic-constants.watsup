@@ -1930,6 +1930,15 @@ def $error_read_discard(S, DYNAMIC_SCALAR_DEFINE_FLAG_RESULT pconfigcall) = $dyn
 ;; BOOL true reaches the registration tail after an ignored-warning throw too.
 ;; A fresh acyclic array is copied after the callback; retain the pending result.
 dec $dynamic_constant_case_pending(pstate, pconfigcall) : pstate
+;; zend_argument_error_variadic keeps an existing exception. Validation still
+;; fails before copying or key lookup, without allocating another ValueError.
+def $dynamic_constant_case_pending(S, pconfigcall) = S
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $throwable_live(S, n)
+  -- if $dynamic_constant_case_valid(S, pconfigcall)
+  -- if $dynamic_define_values(pconfigcall) = ((preqbytes, PARRAY n_array))
+  -- if $dynamic_define_known(S, pconfigcall.SITE, 1) = eps
+  -- if $dynamic_array_recursive(S, PARRAY n_array, eps) = (true)
 def $dynamic_constant_case_pending(S, pconfigcall) = S_copy[.RESULT = S.RESULT][.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME $user_constant_key(preqbytes), ORIGIN pconfigcall.SITE, VALUE pvalue, CLASS pvalueclass, READS eps, RECEIVES eps}]]
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if $throwable_live(S, n)
@@ -2058,6 +2067,16 @@ def $dynamic_define_pending_duplicate(S, preqbytes, z) = S[.ERRORFATALTRACE = ep
   -- if $error_handler_eligible(S, 2)
 def $dynamic_define_pending_duplicate(S, preqbytes, z) = $error_default(S[.ERRORFATALTRACE = eps], DIAGNOSTIC "Warning" ($global_constant_duplicate_message(preqbytes)) z, 2)
   -- if ~$error_handler_eligible(S, 2)
+;; Preserve the captured input/result; ordinary driver cleanup retires the
+;; unregistered copied containers after pending-warning handling.
+def $dynamic_constant_case_pending(S, pconfigcall) = $dynamic_define_pending_duplicate(S_copy[.RESULT = S.RESULT], preqbytes, pconfigcall.LINE)
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $throwable_live(S, n)
+  -- if $dynamic_constant_case_valid(S, pconfigcall)
+  -- if $dynamic_define_values(pconfigcall) = ((preqbytes, PARRAY n_array))
+  -- if $source_constant_lookup(S, preqbytes) =/= eps
+  -- if $dynamic_array_value(S, PARRAY n_array, eps, true) = ((S_copy, pvalue, pvalueclass))
+  -- if $dynamic_array_known_matches(S_copy, pvalue, $dynamic_define_known(S_copy, pconfigcall.SITE, 1))
 def $dynamic_constant_case_pending(S, pconfigcall) = $dynamic_define_pending_duplicate(S, preqbytes, pconfigcall.LINE)
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if $throwable_live(S, n)

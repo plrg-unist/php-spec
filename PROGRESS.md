@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+A pending exception from the ignored-case Warning now survives cyclic-array
+validation without a new ValueError, copy or key lookup. Acyclic duplicates still
+copy before registration; ordinary cleanup retires the rejected containers while
+preserving the old row, original trace input, caller result and callback side rows.
+The eligible handler is not entered again. Sole400+19 reuses the existing pending
+warning policy; ordinary ValueError and Throwable allocation stay unchanged.
+Three sources agree at 2e79/401, including one exact-path peer timing retry with
+its original CLI45 timeout retained0. All 527 state premises pass at e853:
+128 main, 146 eval and 253 independent. Author checks first run at SL90; the peer
+first runs at a local SL150 bound with unchanged assertions. Source47/55 are untouched.
+[Pending-array review](coverage/semantics/define-array-true-pending-review.json).
+
 Positional `define` now converts retained propertyless Stringable names with
 primitive candidates and omitted/bool-false flags before registration. A callback
 can create the key before the outer duplicate Warning; strict calls reject raw
@@ -119,9 +131,8 @@ cleanup retires only the private candidate. Source3 agrees at b007/401; all 629 
 premises pass at bcdb: main263, eval180 and independent186. Main reuses its
 original fixture after a timing-only retry (98.75s/SL150); eval and peer pass
 their first executions at SL90. The original SL90 timeout and
-recorder count preflight remain zero; no source/native/runtime replay. Pending
-cyclic/duplicate arrays after a first-warning throw and coerced flags remain
-partial; paused Source47 NaN/precision behavior is untouched.
+recorder count preflight remain zero; no source/native/runtime replay. Coerced
+flags remain partial; paused Source47 NaN/precision behavior is untouched.
 [True-flag array review](coverage/semantics/define-array-true-flag-review.json).
 
 Composed over a560dd4c/401 with the exact tested400 delta and all incoming paths

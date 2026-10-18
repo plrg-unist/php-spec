@@ -249,11 +249,11 @@ def selected(initial, stdout):
         '$heap_owners($heap_graph(S_throw),HARRAY n_input) = 2',
         '~$destructor_operational(S_throw)',
         'n_before = |S_throw.ARRAYS|',
-        # Pending cyclic registration stays an explicit, undriven boundary.
+        # These pending helper projections remain undriven.
         'S_cyclic = S_throw[.STORE[n_cell] = DEFINED (PARRAY n_input)]',
         '$dynamic_array_recursive(S_cyclic,PARRAY n_input,eps) = (true)',
         'S_cyclic_pending = $dynamic_constant_case_pending(S_cyclic,pconfigcall)',
-        'S_cyclic_pending.COMPLETION = UNSUPPORTED "boolean define flag pending-exception registration"',
+        'S_cyclic_pending = S_cyclic',
         *common.step('S_row', 'S_throw'), *common.public('S_row'),
         'S_row.TODO = (THROW_SEARCH n_error) :: ptask_throw*',
         'S_row.RESULT = S_throw.RESULT',
@@ -273,10 +273,13 @@ def selected(initial, stdout):
         '$heap_owners($heap_graph(S_row),HARRAY n_root) = 1',
         '$heap_owners($heap_graph(S_row),HARRAY n_child) = 1',
         'S_row.STORE[n_result] = DEFINED pvalue_sentinel',
-        # An existing array row does not silently use primitive pending cleanup.
+        # Copying a rejected array does not overwrite its old row or result.
         '$dynamic_constant_case_valid(S_row,pconfigcall)',
         'S_duplicate_pending = $dynamic_constant_case_pending(S_row,pconfigcall)',
-        'S_duplicate_pending.COMPLETION = UNSUPPORTED "boolean define flag pending-exception registration"',
+        'S_duplicate_pending.COMPLETION = NORMAL',
+        'S_duplicate_pending.TODO = S_row.TODO',
+        'S_duplicate_pending.RESULT = S_row.RESULT',
+        'S_duplicate_pending.USERCONSTANTS = S_row.USERCONSTANTS',
         *query('S_query', 'S_row', 'V74_EVAL_TREE'),
         *define.finish('S_value', stdout),
         'S_final.USERCONSTANTS = S_row.USERCONSTANTS',

@@ -1372,9 +1372,13 @@ Captured true runs the ignored-case Warning before validation, copying and key
 lookup. A callback can repair or create a cycle, change referenced leaves or
 install the target key. A throwing first callback still publishes a fresh
 acyclic snapshot while the same Exception continues; original trace arguments
-remain separate from copied containers. Pending cyclic/duplicate arrays after
-that first throw remain partial.
+remain separate from copied containers.
 [True-flag array review](coverage/semantics/define-array-true-flag-review.json).
+If the first callback throws with a cyclic array, validation preserves that same
+Exception and Previous chain without a new ValueError, copy or binding. Acyclic
+duplicates still copy, then retire the rejected containers while preserving the
+old row and original trace input; an eligible handler is not entered again.
+[Pending-array review](coverage/semantics/define-array-true-pending-review.json).
 Ordinary uncertified objects, other owning leaves and wider
 flags/names remain partial.
 Class-qualified `defined` now checks inherited user constants with lexical visibility
