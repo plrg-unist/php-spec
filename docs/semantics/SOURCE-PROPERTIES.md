@@ -19,6 +19,30 @@ deprecation capture; see the [attribute review](../../coverage/semantics/allow-d
 A leading-NUL computed name raises the engine error
 for read, write and unset, while quiet tests remain silent.
 
+Selected terminal CV/literal `empty` of an initialized public nonreadonly float
+property now warns on NaN before rereading the live slot. Handlers can change it
+to `0.0` (empty true), `1.0` (false), or leave NaN (false, without another Warning).
+The continuation captures receiver/key/source history without owning a receiver
+or manufacturing BASE; it survives source-CV nulling while a saved alias stays
+live. A supplied throw preserves the same Exception at catch, and the receiver
+destructor follows result/catch after the alias is cleared. Four originals and
+469 focused premises (409 reached +60 derived) cover these paths, authenticity
+refusals and budgets. Changing an initially direct slot into a reference,
+unsetting/retyping it or retiring its receiver remains outside that direct-slot
+slice; wider quiet-CV GC and mutable-empty getter-array retirement stay open.
+[Public NaN review](../../coverage/semantics/quiet-public-nan-review.json).
+
+An initially referenced public float slot now captures its original inner cell
+before the Warning. Handler property rebinding transfers the property type-source
+to a new cell; the old alias keeps the captured cell live without a marker owner.
+Old-cell `0.0` gives true and `1.0`/NaN false despite opposite new-property values.
+Four originals and 298 focused premises (257 reached +41 derived) cover actual
+cell identities/type-source transfer, outside-frame owners, same Exception at
+catch and budgets. The direct-mode bridge and old1/NaN/cell refusals are derived;
+earlier direct-slot evidence is not rerun. Retired or nonfloat old cells, sole-owner
+receiver retirement and wider quiet-CV GC remain open.
+[Reference NaN review](../../coverage/semantics/quiet-public-reference-nan-review.json).
+
 Public backed by-value block and expression `get` hooks compile into source functions with the
 property's return type. Literal reads through an ordinary CV or `$this` execute
 the hook each time. Direct backing access requires the same property and receiver

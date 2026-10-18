@@ -1,0 +1,112 @@
+{
+  "scope": "Terminal empty of a selected initialized public float property whose value is an ALIAS to a live reference cell containing NaN. The saved receiver and old-cell aliases remain live while a warning handler rebinds the property to another cell; truth rereads the originally captured inner cell.",
+  "implementation": {
+    "base": "9ade0dc0f6f85d0393b422c690b96503b4eef5f4",
+    "revision": "3cc556f606984556a83e6b4e190e7b98edc947fe",
+    "modules": 401,
+    "change": "30 adds optional CELL to the existing nonowning public-NaN marker.411 authenticates the initial ALIAS/type-source and bounded live HCELL, then validates/reads that old cell without recapturing the current property or requiring its removed type-source. CELL eps retains direct92 slot selection. Dispatch, receiver/cell roots, result/throw rules, generic bindings, GC and returns stay unchanged."
+  },
+  "engine": {
+    "target": "PHP8.5.10 CLI NTS64",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_object_handlers.c zend_std_has_property found passes the initialized property zval to zend_is_true",
+      "Zend/zend_operators.h i_zend_is_true IS_REFERENCE selects the original inner zval before IS_DOUBLE warns and rereads it",
+      "Zend/zend_execute.c zend_assign_to_property_reference and zend_assign_to_variable_reference replace property aliases; zend_ref_add_type_source/zend_ref_del_type_source maintain declaration constraints"
+    ],
+    "intentional_divergences": []
+  },
+  "sources": {
+    "catalogue": "tests/semantics/quiet_public_reference_nan_cases.json",
+    "original_root": "/home/user/workspace/php-spec/.tools/quiet-public-reference-nan-private-93/.tools/quiet-public-reference-nan-probes-93",
+    "maintained_byte_identical": true,
+    "cases": "Four14-byte normal tuples: old0/new property1 yields true; old1/new0 and oldNaN/new0 yield false; supplied Exception reaches catch. Initial isset is quiet. Aliases survive until after result/catch and receiver destruction. Only default-false handler emits199-byte Warning stderr."
+  },
+  "validation": {
+    "native": {
+      "path": "/home/user/workspace/php-spec/.tools/quiet-public-reference-nan-private-93/.tools/quiet-public-reference-nan-probes-93/native-first/report.json",
+      "sha256": "1157a8818ef4c115557cadbe2553892d5931b39b4bbe1fa9a8f0553ecc571f42",
+      "revision": "9ade0dc0f6f85d0393b422c690b96503b4eef5f4",
+      "result": "Four exact declared native stdout/stderr/exit0 tuples; source credit0"
+    },
+    "baseline": {
+      "path": "/home/user/workspace/php-spec/.tools/quiet-public-reference-nan-private-93/.tools/quiet-public-reference-nan-probes-93/accepted-current-baseline/report.json",
+      "sha256": "9187f9c26b6dff776e8342c369c1bfe0afce893c92e6899d3d9bf388c4cbde99",
+      "revision": "9ade0dc0f6f85d0393b422c690b96503b4eef5f4",
+      "result": "Four checked ingress Unsupported/CLI1 after Z/O/N/X:I|, zero agreement;11.179/11.167/11.153/11.545s"
+    },
+    "changed_source": {
+      "path": "/home/user/workspace/php-spec/.tools/quiet-public-reference-nan-private-93/.tools/quiet-public-reference-nan-probes-93/changed-model-mk_cynwd/report.json",
+      "sha256": "45de172fda0bcd3a8115da8f7629eeb86661e9503dfddd9e674229bf87012bd9",
+      "revision": "3cc556f606984556a83e6b4e190e7b98edc947fe",
+      "result": "Four checked normal exact native tuples;15.251/15.135/14.877/16.710s",
+      "source_agreements": 4
+    },
+    "focused": {
+      "path": "/home/user/workspace/php-spec/.tools/quiet-public-reference-nan-private-93/.tools/quiet-public-reference-nan-protocol-bhgzv5ki/report.json",
+      "sha256": "e2561aa5ed5651fe47f92e9045b9c5e6efcba99f838a57cbef4c8a97d5452d4a",
+      "revision": "32216baeb825a5a1d509568b0f2337eeea2b6181",
+      "result": "Both true;298=257 reached+41 derived. Zero171=130+41, throw127; AL/SL6.911/24.078 and7.022/25.522s",
+      "source_agreements": 0
+    }
+  },
+  "focused_scope": "Actual old/new reference identities, initial property type-source on old cell then removal/attachment to new cell, saved receiver2\u21921 and outside-frame old/new cell owners1/2. Marker/wrappers add no object or cell root. Real zero resume ignores new property1; throw preserves the same Exception at actual CATCH_BIND, then full endings/budgets. Derived old1/NaN quiet delivery, missing initial source, invalid/nonfloat/retired/nonreference/out-of-range cells and well-formed direct-mode compatibility. The direct bridge detaches the old type-source, retains its alias and selects a direct-zero slot despite old-cell NaN; it adds no renewed92 source credit.",
+  "nonpassing": [
+    {
+      "path": "/home/user/workspace/php-spec/.tools/quiet-public-reference-nan-private-93/.tools/quiet-public-reference-nan-probes-93/changed-model-be4melxv/report.json",
+      "sha256": "2ecc9e607a06d9a71887cca35847e68a5f285476105e48a2a7fbfda73463f021",
+      "revision": "af35f9e43731e259b42f551f22f90303dd68f750",
+      "result": "Zero interpreter_failure during source evaluation at optional tuple return: cannot upcast nat2 to nat?. Other three unrun, source/passing credit0. Explicit typed optional aliases repaired representation without changing selection."
+    }
+  ],
+  "execution": {
+    "cwd": "/home/user/workspace/php-spec/.tools/quiet-public-reference-nan-private-93",
+    "environment": "LC_ALL=C TZ=UTC PHP_SPEC_SCRIPT_ENCODING absent; jobs1; fixed catalogue/report profile. Native/baseline CPU4; changed source CPU5; focused CPU4.",
+    "caps": "native45; public model60/outer75/steps100000 serial stop-first; focused each AL90 then strict SL90/cachefalse/dettrue, serial stop-first.",
+    "commands": [
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 4 python3 -u .tools/quiet-public-reference-nan-probes-93/run.py native --revision 9ade0dc0f6f85d0393b422c690b96503b4eef5f4",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 4 python3 -u .tools/quiet-public-reference-nan-probes-93/run.py baseline --revision 9ade0dc0f6f85d0393b422c690b96503b4eef5f4",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 5 python3 -u .tools/quiet-public-reference-nan-probes-93/run.py changed --revision 3cc556f606984556a83e6b4e190e7b98edc947fe",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 4 python3 -u tests/semantics/quiet_public_reference_nan_protocol.py --revision 32216baeb825a5a1d509568b0f2337eeea2b6181"
+    ],
+    "affinity": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/quiet-public-reference-nan-private-93/.tools/quiet-public-reference-nan-probes-93/affinity-native-first.json",
+        "sha256": "3b97be951ccd091097797c6c51ea624d180fdcfc0851ef60fd7804b2fc7577ca"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/quiet-public-reference-nan-private-93/.tools/quiet-public-reference-nan-probes-93/affinity-accepted-current-baseline.json",
+        "sha256": "e1877583e359de4d220c2857329c959bc41713bf4018a53abb7d3d95d0b09d90"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/quiet-public-reference-nan-private-93/.tools/quiet-public-reference-nan-probes-93/affinity-changed-source-93-repair1.json",
+        "sha256": "46c9c96d755a919b65470edee53e000ea87d32bde6433c6ec866c877a3bb2ca1"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/quiet-public-reference-nan-private-93/.tools/quiet-public-reference-nan-probes-93/affinity-state-93.json",
+        "sha256": "8ecb42e38a8c43f8a067924b0e6dc59a53876167b711f9ac86c6b58718e609f1"
+      }
+    ],
+    "observations": "Native observer captured only zero CPU4 mask with empty argv at exit (partial1/4); other natives retain exact taskset-parent provenance, without live-mask/argv claims. Baseline4/changed4/focused4 have full live masks/argv. Accepted inputs/head/status/fixtures stable; groups empty and actors/observers reaped."
+  },
+  "tools": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "private_source_driver_sha256": "333e8827d9c7dfd7602a2c69468989932ee5e59751d00ea9624d66b4c164b800",
+    "focused_driver_sha256": "2701e813a54bd3fa552ec525d2cc626520e21d239eb9e96ce7ea077a67f12e2c"
+  },
+  "limits": "Captured cell and receiver must remain live; nonfloat/invalid old-cell values, sole-owner retirement, wider property families/consumers and general quiet-CV GC remain outside the slice. An initially direct slot still cannot become a reference during its warning continuation. Mutable-empty getter-array retirement remains open. Old92 direct behavior is pointwise preserved and derived-checked, with no old source/state replay or renewed evidence credit.",
+  "artifacts": "Ignored raw reports/streams/process records/private run.py remain at original paths. Maintained sources/catalogue/focused harness recover from tested commits; no bulky archive or cleanup receipt tracked.",
+  "review": {
+    "independent": "class_review_84",
+    "accepted": "Native/baseline/source4, runtime, focused298 and concise publication independently accepted. Structural inventory/diff checks pass; no semantic rerun for publication."
+  },
+  "composition": {
+    "parent": "4d27a8a607107447fd8ea3215a4337a7019156f0",
+    "publication": "4e4dc62e8ee0cd36493e9f06694363465d3921fc",
+    "modules": 401,
+    "basis": "Incoming234 requires GetterClosure comparisons;270 requires reference-return cursors, not property AssignRef.400 arity/tree changes require define/constant/defined APIs, and404 requires compound task heads. All are absent from the originals/derived controls. Incoming136/138/301 and401 manifest are retained;30 keeps its disjoint tag plus the owned optional CELL field.411 retains the reviewed reference-capture extension.",
+    "validation": "Independent pointwise selected-path/exact-union review found no concrete declaration/order interaction; no joined actor. Source4/state298 and direct92 history keep their original cuts without renewed execution credit."
+  }
+}

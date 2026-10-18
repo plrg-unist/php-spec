@@ -213,6 +213,7 @@ syntax ptraceframe
 syntax ppropertygetstring = { GET ppropertyget, INPUT poperand, OBJECT nat, SOURCES pproptypesource*, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
 syntax ppropertyemptynan = { EMPTY ppropertyempty, FLOAT nat, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
 syntax ppropertyemptyrv = { EMPTY ppropertyempty, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
+syntax ppropertypublicnan = { READ pnameread, OBJECT nat, CLASS porigin, PROPERTY ppropertyid, FLOAT nat, CELL nat?, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
 syntax pdestructionjob = DESTRUCTION_VALUE pnode | DESTRUCTION_TEMP pnode | DESTRUCTION_HANDLE nat | DESTRUCTION_PROP_SOURCE pproptypesource nat
 syntax pdestructionrelease = {JOBS pdestructionjob*, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, USER bool}
 syntax pdestructionframe = {PENDING nat?, VALUE poperand, CALLER pcallcontext?, FUNCTION porigin, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?}
@@ -345,6 +346,7 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | EXCEPTION_HANDLER_INVOKE pexceptioncall | EXCEPTION_HANDLER_ENTER pexceptioncall | EXCEPTION_HANDLER_RESULT pexceptioncall
   | ERROR_HANDLER_INVOKE perrorcall | ERROR_HANDLER_RESULT perrorcall | ERROR_READ_RESULT perrorread | ERROR_TRIGGER_PHASE pconfigcall nat | CONFIG_INI_NULL_RESULT pconfigcall | ASSERTION_INI_RESULT passertini | ASSERT_OPTIONS_READY pconfigcall | ASSERT_OPTIONS_ARRAY passertoption | ASSERT_OPTIONS_STRING passertoption nat porigin int | ASSERT_DESCRIPTION_STRING pconfigcall nat porigin int | ASSERT_CALLBACK_INVOKE passertcall | ASSERT_CALLBACK_RESULT passertcall | ASSERT_CALLBACK_CLEAN passertcall | ASSERT_FAILURE_WARNING passertfailure | CHDIR_WARNING_RESULT pdircontext nat* nat | ERROR_IDENTITY_RESULT pidentityread
   | GLOBAL_READ_RESULT pglobalread | NAME_READ_RESULT pnameread | NAME_CV_READ_RESULT pnameread | NAME_ARRAY_RESULT pnameread | PROPERTY_NULL_RESULT pnameread | PROPERTY_UNDEFINED_RESULT ppropertywarning | PROPERTY_GET_RESULT ppropertyget | PROPERTY_GET_NAN ppropertynan | PROPERTY_GET_BOOL_NAN ppropertyboolnan | PROPERTY_GET_STRING_RESULT ppropertygetstring | PROPERTY_GET_STRING_READY ppropertygetstring pvalue | PROPERTY_GET_STRING_COPY ppropertygetstring pvalue | PROPERTY_GET_LONG ppropertylong | PROPERTY_GET_STRING_LONG ppropertystringlong | PROPERTY_GET_COPY ppropertyget poperand | PROPERTY_GET_DROP ppropertyget pvalue | PROPERTY_GET_BASE ppropertyget
+  | PROPERTY_PUBLIC_NAN ppropertypublicnan
   | NAME_STRING_RESULT pnamestring | NAME_STRING_READY pnamestring preqbytes | NAME_STRING_PENDING pnamestring preqbytes nat
   | KEY_READ_BASE pbase pkeymode | KEY_READ_DIM poperand int pkeymode | KEY_READ_GLOBAL poperand int pkeymode | KEY_READ_RESULT pkeyread | KEY_READ_FINISH porigin ptask
   | KEY_WRITE_BASE pbase bool | KEY_WRITE_DIM poperand int bool | KEY_WRITE_APPEND int bool | KEY_WRITE_GLOBAL poperand int bool | KEY_WRITE_RESULT pkeywrite | KEY_WRITE_FINISH pkeywriter
@@ -379,6 +381,7 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | BIT_ASSIGN_RIGHT_WARNING pintegeroperation nat nat int nat int nat
   | BIT_ASSIGN_BOTH_LEFT pintegeroperation nat nat nat int nat
   | BIT_ASSIGN_BOTH_RIGHT pintegeroperation nat nat nat int nat int nat
+  | BOTH_ASSIGN_STRING_WARNING pintegeroperation nat nat nat int pvalue int nat
   | UPDATE_WARNING_NOTICE pupdatewarning | UPDATE_WARNING_RESTORE pupdatewarning | UPDATE_WARNING_DONE pupdatewarning
   | UPDATE_WARNING_RELEASE pupdaterestore | UPDATE_WARNING_COMMIT pupdaterestore
   | UPDATE_WARNING_EXIT perrorcall int

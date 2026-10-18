@@ -666,6 +666,11 @@ operators, preserving RHS string identity while using the captured LEFT. Dynamic
 `"05"` and whitespace/exponent text succeed; `"-1"` is a valid XOR mask but an
 invalid shift count. Ten originals and 807 focused SL premises pass in the
 [quiet string ledger](coverage/semantics/quiet-string-review.json).
+Leading numeric strings such as `"05tail"` after that first callback now suspend
+through a second Warning. The saved parse survives RHS writes, reference rebinding
+and unset; successful stores detach aliases, while Errors and supplied throws
+cancel the store. Eleven originals and 1211 focused SL premises pass in the
+[leading string ledger](coverage/semantics/leading-string-review.json).
 Explicit array-to-string casts now suspend through named warning handlers for
 a bounded plain-CV array input. The borrowed array adds no saved owner: replacing
 or removing its CV still yields fixed `Array`, while a supplied throw preserves
@@ -1072,6 +1077,21 @@ namespace-prefix normalization and captured request strings after CV mutation.
 Rows retain the actual value and string-carrier class. Available positional
 literal facts constrain inputs; variable payloads retain the existing structural table
 policy. Wider values, conversion/warning paths and namespace fallback remain open.
+Positional `constant()`/`defined()` calls with zero or two primitive arguments now
+raise ArgumentCountError before string reception or lookup, after all argument
+effects. Captured callees and raw trace arguments survive live CV changes;
+strict calls also check count before parameter type.
+[Four source agreements and 392 state premises](coverage/semantics/constant-query-arity-review.json)
+cover actual error transitions, caller results and source/carrier/count controls.
+Arity-error handling of larger counts, owning values and packed/named forms
+remains partial.
+Positional `define()` calls with primitive arguments also reject counts below two
+or above three before name/flag reception or registration. Exact count messages
+and raw API arguments survive all argument effects, including a captured true
+flag whose body Warning never runs.
+[Four source agreements and 444 state premises](coverage/semantics/define-arity-review.json)
+cover too-few/excess counts, strict priority, live callee changes and caller results.
+Owning and packed/named arity-error handling remains partial.
 Scalar `define` names also follow caller strictness with primitive values and an
 omitted/already-false flag. Weak registration keeps its received key across later
 precision changes and duplicate handlers; strict errors retain raw arguments.
@@ -1226,8 +1246,11 @@ clone of a fixed literal. Empty-root duplicates retain the pooled argument or
 create a fresh canonical mutable candidate. Normal and throwing handlers keep
 the original API trace append history while cleanup releases temporary candidate owners.
 [Empty-duplicate review](coverage/semantics/define-empty-array-duplicate-review.json).
-Nested empties, wider array warning/flag paths, uncertified objects and cycles
-remain Unsupported.
+Nested empty children use the same provenance rules: immutable tables retain
+their identity, while each mutable occurrence gets a canonical copy. Query COW
+and duplicate reporting preserve the stored tree and original trace input.
+[Nested-empty review](coverage/semantics/define-nested-empty-array-review.json).
+Wider array warning/flag paths, uncertified objects and cycles remain Unsupported.
 String-name `define` with an omitted/false flag now shares already-certified
 stdClass donors. Named/selected calls preserve the captured pointer through later
 CV changes, and duplicate handlers keep the old binding and property writes on
@@ -2274,6 +2297,13 @@ premises/10 actual steps preserve signed aggregate continuation, ownership and
 quiet later casters. Other Closure representations and wider lifetimes remain
 partial. [Constructor-pair review](coverage/semantics/constructor-closure-comparison-review.json).
 
+Authentic internal-getter Closures compare equal across direct/factory sites and
+clones when receiver, method and C owner match. Distinct receivers stay unequal
+even with matching fields. Three originals and 617 Boolean premises/12 actual
+steps preserve caches, ownership and signed aggregate continuation. Other capture
+representations and wider lifetimes remain partial.
+[Getter-pair review](coverage/semantics/getter-closure-comparison-review.json).
+
 [Numeric object comparison Notices](coverage/semantics/object-numeric-comparison-review.json)
 now pause ordinary source-instance/int/float leaves through real error handlers.
 Live CV/cell reads remain distinct from copies; a second Notice uses saved 1/1.0,
@@ -2834,6 +2864,15 @@ skips the getter and borrows its CV receiver without adding a GC root. Later
 ordinary reads still invoke the getter and preserve its return or Exception.
 Two originals and 235 focused checks cover this slice;
 [getter-only empty review](coverage/semantics/magic-empty-get-only-review.json).
+Initialized public float-property `empty` now resumes NaN warnings against the
+captured live slot: handler writes of `0.0` make it true, while `1.0` or unchanged
+NaN make it false without a second warning. A saved alias keeps the receiver live
+after caller-CV rebinding. Four originals and 469 focused checks cover default,
+handled and thrown warnings; [public NaN review](coverage/semantics/quiet-public-nan-review.json).
+Referenced float slots now keep their original inner cell across handler property
+rebinding: old-cell `0.0`/`1.0` decides the result even when the new property holds
+the opposite value. Four originals and 298 focused checks cover type-source transfer,
+nonowning capture and the same catch; [reference NaN review](coverage/semantics/quiet-public-reference-nan-review.json).
 With an untyped by-value `__get`, terminal `empty` chains it after the inherited
 `__isset`: false skips the getter, while true tests its null, bool, int, float
 or byte-string result. Only empty bytes or exactly ASCII `0` make a string

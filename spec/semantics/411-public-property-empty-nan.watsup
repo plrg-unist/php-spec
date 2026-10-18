@@ -1,0 +1,144 @@
+;; has_property passes the live public slot to i_zend_is_true, which warns before
+;; rereading its double payload (the original inner cell for a reference).
+;; The CV receiver and any selected cell are borrowed throughout.
+dec $property_public_nan_source(pstate, pnameread) : bool
+def $property_public_nan_source(S, pnameread) = true
+  -- if $property_empty_source(S, pnameread.SITE, pnameread.NAME, pnameread.LINE)
+  -- if pnameread.SITE = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, pnameread.SITE) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) phpType20 metadata)
+  -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0], NExprVariable (BYTES text_receiver) metadata_receiver)
+  -- if ~$scope_global(S[.ORIGIN = (pnameread.SITE)], [PCFIELD 0])
+def $property_public_nan_source(S, pnameread) = false -- otherwise
+
+dec $property_public_nan_descriptor(pstate, ppropertypublicnan) : bool
+def $property_public_nan_descriptor(S, ppropertypublicnan) = true
+  -- if $property_public_nan_source(S, ppropertypublicnan.READ)
+  -- if $(ppropertypublicnan.OBJECT < |S.OBJECTS|)
+  -- if (HOBJECT ppropertypublicnan.OBJECT) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, ppropertypublicnan.OBJECT)
+  -- if S.OBJECTS[ppropertypublicnan.OBJECT] = INSTANCE ppropertypublicnan.CLASS
+  -- if $class_at(S.CLASSES, ppropertypublicnan.CLASS) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ $class_throwable_kind(S, ppropertypublicnan.CLASS, |S.CLASSES|) = eps
+  -- if $property_effective_desc(S, ppropertypublicnan.OBJECT, ppropertypublicnan.READ.NAME) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertypublicnan.PROPERTY
+  -- if ppropertydesc.NAME = ppropertypublicnan.READ.NAME /\ ppropertydesc.KEY = ppropertypublicnan.READ.NAME
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.SETVISIBILITY = eps
+  -- if $ptmasks(ppropertydesc.TYPE) = ["float"]
+  -- if ~$property_hook_declared(S, ppropertypublicnan.OBJECT, ppropertypublicnan.READ.NAME)
+  -- if $property_resolve_scope(S, ppropertypublicnan.OBJECT, ppropertypublicnan.READ.NAME, $closure_source_class(S, ppropertypublicnan.READ.SITE)) = PROPERTY_ACCESS ppropertypublicnan.READ.NAME
+def $property_public_nan_descriptor(S, ppropertypublicnan) = false -- otherwise
+
+dec $property_public_nan_reference_valid(pstate, nat?) : bool
+def $property_public_nan_reference_valid(S, eps) = true
+def $property_public_nan_reference_valid(S, (n_cell)) = true
+  -- if $(n_cell < |S.STORE|)
+  -- if n_cell <- S.REFCELLS
+  -- if (HCELL n_cell) <- S.ALLOCATIONS
+def $property_public_nan_reference_valid(S, n_cell?) = false -- otherwise
+
+dec $property_public_nan_cell(pstate, nat) : nat?
+def $property_public_nan_cell(S, n_cell) = (n_float)
+  -- if $property_public_nan_reference_valid(S, (n_cell))
+  -- if S.STORE[n_cell] = DEFINED (PFLOAT n_float)
+  -- if $(n_float < 18446744073709551616)
+def $property_public_nan_cell(S, n_cell) = eps -- otherwise
+
+dec $property_public_nan_initial(pstate, nat, ptbytes, ppropertyid) : (nat, nat?)?
+def $property_public_nan_initial(S, n, ptbytes, ppropertyid) = ((n_float, n_selected?))
+  -- if n_selected? = eps
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_all*)
+  -- if $property_slot_at(ppropertyslot_all*, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.DECL = (ppropertyid)
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (PFLOAT n_float))
+  -- if $(n_float < 18446744073709551616)
+def $property_public_nan_initial(S, n, ptbytes, ppropertyid) = ((n_float, n_selected?))
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_all*)
+  -- if $property_slot_at(ppropertyslot_all*, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.DECL = (ppropertyid)
+  -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell)
+  -- if $propref_source_present(S.PROPREFS, n_cell, OBJECT_PROP_SOURCE n ptbytes ppropertyid)
+  -- if $property_public_nan_cell(S, n_cell) = (n_float)
+  -- if n_selected? = (n_cell)
+def $property_public_nan_initial(S, n, ptbytes, ppropertyid) = eps -- otherwise
+
+dec $property_public_nan_slot(pstate, ppropertypublicnan) : nat?
+def $property_public_nan_slot(S, ppropertypublicnan) = (n_float)
+  -- if ppropertypublicnan.CELL = eps
+  -- if $objectprops_at(S.OBJECTPROPS, ppropertypublicnan.OBJECT) = (ppropertyslot_all*)
+  -- if $property_slot_at(ppropertyslot_all*, ppropertypublicnan.READ.NAME) = (ppropertyslot)
+  -- if ppropertyslot.DECL = (ppropertypublicnan.PROPERTY)
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (PFLOAT n_float))
+  -- if $(n_float < 18446744073709551616)
+def $property_public_nan_slot(S, ppropertypublicnan) = $property_public_nan_cell(S, n_cell)
+  -- if ppropertypublicnan.CELL = (n_cell)
+def $property_public_nan_slot(S, ppropertypublicnan) = eps -- otherwise
+
+dec $property_public_nan_plan(pstate) : ppropertypublicnan?
+def $property_public_nan_plan(S) = (ppropertypublicnan)
+  -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
+  -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: (ORIGIN_RETURN (porigin)) :: (ISSET_RESULT true z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin) /\ S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if $operand_nodes(S.RESULT) = eps
+  -- if S_read = $quiet_operand(S, S.RESULT)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) phpType20 metadata)
+  -- if S_cv = $quiet_operand(S, VARIABLE $base64(text_receiver) $variable_line(BYTES text_receiver, metadata_receiver))
+  -- if S_cv.COMPLETION = NORMAL
+  -- if S_cv.RESULT = KNOWN (POBJECT n)
+  -- if $property_lookup_scope(S) = $closure_source_class(S, porigin)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $property_effective_desc(S, n, $base64(text_name)) = (ppropertydesc)
+  -- if $property_public_nan_initial(S, n, $base64(text_name), ppropertydesc.ORIGIN) = ((n_float, n_cell?))
+  -- if $float_decode(n_float) = NOTNUMBER n_float
+  -- if ptask_return* = (ORIGIN_RETURN (porigin)) :: ptask_tail*
+  -- if ppropertypublicnan = {READ {SITE porigin, NAME $base64(text_name), LINE z}, OBJECT n, CLASS porigin_class, PROPERTY ppropertydesc.ORIGIN, FLOAT n_float, CELL n_cell?, OWNER (|S.FRAMES|), CALLER S.CURRENT, TAIL ptask_return*}
+  -- if $property_public_nan_descriptor(S, ppropertypublicnan)
+  -- if $property_public_nan_slot(S, ppropertypublicnan) = (n_float)
+def $property_public_nan_plan(S) = eps -- otherwise
+def $property_public_nan_prepare(S) = ($property_public_nan_plan(S) =/= eps)
+
+dec $property_public_nan_valid(pstate, ppropertypublicnan) : bool
+def $property_public_nan_valid(S, ppropertypublicnan) = true
+  -- if S.ORIGIN = (ppropertypublicnan.READ.SITE)
+  -- if ppropertypublicnan.OWNER = |S.FRAMES| /\ ppropertypublicnan.CALLER = S.CURRENT
+  -- if $property_lookup_scope(S) = $closure_source_class(S, ppropertypublicnan.READ.SITE)
+  -- if $source_operand_suffix(S.TODO, PROPERTY_PUBLIC_NAN ppropertypublicnan, ppropertypublicnan.TAIL)
+  -- if $(ppropertypublicnan.FLOAT < 18446744073709551616)
+  -- if $float_decode(ppropertypublicnan.FLOAT) = NOTNUMBER ppropertypublicnan.FLOAT
+  -- if $property_public_nan_descriptor(S, ppropertypublicnan)
+  -- if $property_public_nan_reference_valid(S, ppropertypublicnan.CELL)
+def $property_public_nan_valid(S, ppropertypublicnan) = false -- otherwise
+
+rule PhpStep/property-public-nan-warning: S ~> $error_dispatch(S[.TODO = (PROPERTY_PUBLIC_NAN ppropertypublicnan) :: ppropertypublicnan.TAIL][.RESULT = KNOWN PNULL], 2, $ptascii("unexpected NAN value was coerced to bool"), ppropertypublicnan.READ.LINE, DIAGNOSTIC "Warning" ($ptascii("unexpected NAN value was coerced to bool")) ppropertypublicnan.READ.LINE, PROPERTY_PUBLIC_NAN ppropertypublicnan)
+  -- if $property_public_nan_plan(S) = (ppropertypublicnan)
+rule PhpStep/property-public-nan-result: S ~> S[.TODO = ppropertypublicnan.TAIL][.RESULT = KNOWN (PBOOL (~b))]
+  -- if S.TODO = (PROPERTY_PUBLIC_NAN ppropertypublicnan) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if $property_public_nan_valid(S, ppropertypublicnan)
+  -- if $property_public_nan_slot(S, ppropertypublicnan) = (n_float)
+  -- if (b, b_warning) = $number_bool(NFLOAT n_float)
+rule PhpStep/property-public-nan-invalid: S ~> S[.COMPLETION = UNSUPPORTED "public empty NaN property continuation"]
+  -- if S.TODO = (PROPERTY_PUBLIC_NAN ppropertypublicnan) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if ~$property_public_nan_valid(S, ppropertypublicnan) \/ $property_public_nan_slot(S, ppropertypublicnan) = eps
+
+def $task_nodes(PROPERTY_PUBLIC_NAN ppropertypublicnan) = eps
+def $call_task_valid(S, PROPERTY_PUBLIC_NAN ppropertypublicnan) = $property_public_nan_valid(S, ppropertypublicnan)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = PROPERTY_PUBLIC_NAN ppropertypublicnan
+  -- if $property_public_nan_valid(S, ppropertypublicnan)
+  -- if perrorcall.SITE = ppropertypublicnan.READ.SITE /\ perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = ppropertypublicnan.READ.LINE
+  -- if perrorcall.MESSAGE = $ptascii("unexpected NAN value was coerced to bool")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
+
+dec $property_public_nan_discard(pstate, ppropertypublicnan) : pstate
+def $property_public_nan_discard(S, ppropertypublicnan) = S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (THROW_SEARCH n_error) :: ppropertypublicnan.TAIL
+  -- if $throwable_live(S, n_error)
+  -- if $property_public_nan_valid(S[.TODO = (PROPERTY_PUBLIC_NAN ppropertypublicnan) :: ppropertypublicnan.TAIL], ppropertypublicnan)
+def $property_public_nan_discard(S, ppropertypublicnan) = S[.COMPLETION = UNSUPPORTED "public empty NaN property cleanup"] -- otherwise
+def $error_read_discard(S, PROPERTY_PUBLIC_NAN ppropertypublicnan) = $property_public_nan_discard(S, ppropertypublicnan)
+def $return_discard(S, PROPERTY_PUBLIC_NAN ppropertypublicnan) = $property_public_nan_discard(S, ppropertypublicnan)

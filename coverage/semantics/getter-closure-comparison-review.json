@@ -1,0 +1,152 @@
+{
+  "version": 1,
+  "milestone": "COMP78",
+  "status": "independently reviewed within the stated authenticated internal-getter Closure domain",
+  "behavior": "Authentic internal-getter Closures compare equal when receiver, getter method and C owner match, independently of direct/factory creation site. Distinct receiver identities remain uncomparable even when their fields match.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "tested_revision": "3b113a3dd751d95e6c4fa470dbd504ccc090fc9b",
+  "ordered_modules": 399,
+  "manifest_sha256": "2e38df4b97a41f654a8c3f01ffb0c078c337ed17d1ce8816ff7429a23b031761",
+  "implementation": {
+    "spec/semantics/234-from-callable.watsup": "b85732f54c0e78d0b42ccbd85c131e6eb1a2c93cb6362c10383aec9e1089b71b"
+  },
+  "engine_basis": [
+    "Zend/zend_closures.c zend_closure_compare requires fake Closure flags, receiver identity, called scope and function type/scope/name; creation site does not contribute. The finite getter method and C-owner mapping is injective in function name, while the same receiver fixes called scope.",
+    "Module174 authenticates builtin/source Throwable getters, excluding source overrides;234 authenticates fromCallable getter selections;379 authenticates initialized SensitiveParameterValue getValue. Clones retain the original source. The ten existing finite getter kinds keep their own live admission.",
+    "The independent source creates two Exception descendants on the same line, with equal message/code/file/line, empty traces, null previous and the same held Map. Native comparison still distinguishes their receiver pointers and leaves formatter caches cold."
+  ],
+  "contract": [
+    "The existing module234 same-getter clause drops its factory-only source requirement, with both live guards moved before indexing. Exact raw GETTERCLOSURE receiver/method/base matching and independently authenticated provenance remain. No overlapping clause, producer, clone, wrapper, binding or lifecycle rule is added.",
+    "Same-receiver clone/fresh rows yield 1001010, distinct receivers yield 0100001 both ways, and direct-to-fromCallable equality remains0. Different methods and strict identity remain separate. Source coverage samples getMessage/getValue equality and a cold inherited __toString getter; getCode/constructor are different-method controls. The Sensitive getValue source uses direct captures; factory producers are unchanged.",
+    "Array scans continue through equal getter leaves to signed integer tails(-1/+1); declared-property scans stop at different receivers before real casters. Whole states preserve receiver, held Map, private-value/key and trace ownership, caches and scope records."
+  ],
+  "source_catalogues": {
+    "tests/semantics/getter_closure_comparison_cases.json": "cea86bacf94a3a9e21ca417a018854556a15ef003117bc1d8d1afcd048895c49",
+    "tests/semantics/getter_closure_comparison_review_cases.json": "203816c843dea1a9e1829a05ee56a3d7fbc3b4b9fcf63a4159ca319ef6673b3c"
+  },
+  "unchanged_counterexamples": {
+    "revision": "cdb9702536da6f545f69ba1ae1b9ce6733b4b034",
+    "report": ".tools/getter78-support/run-baseline-v1/report.json",
+    "cases": [
+      {
+        "id": "throwable",
+        "status": "normal",
+        "reason": null,
+        "exit_status": 0,
+        "wrong_direct_same_receiver_row": "0100001",
+        "native_same_receiver_row": "1001010",
+        "full_stdout_checked": true,
+        "seconds": 101.45472318679094
+      },
+      {
+        "id": "sensitive",
+        "status": "normal",
+        "reason": null,
+        "exit_status": 0,
+        "wrong_direct_same_receiver_row": "0100001",
+        "native_same_receiver_row": "1001010",
+        "full_stdout_checked": true,
+        "seconds": 66.70406707748771
+      }
+    ],
+    "prior_direct_to_fromCallable_row": "1001010",
+    "all_real_producers_precede_comparison": true,
+    "agreement_credit": 0
+  },
+  "validation": {
+    "original_sources": {
+      "normal_agreements": 3,
+      "author_seconds": {
+        "throwable": 105.01296378485858,
+        "sensitive": 69.08265556767583
+      },
+      "independent_seconds": 47.93415500037372,
+      "cli_and_host_caps_seconds": [
+        240,
+        250
+      ]
+    },
+    "author": {
+      "premises": 378,
+      "setup": 358,
+      "pure": 20,
+      "raw_php_steps": 8,
+      "seconds": 145.5446321349591,
+      "result": "Two authentic initializers reach eight fresh-same/different-receiver EQUAL fronts. Source Throwable and Sensitive getValue captures preserve shared Map payloads, physical receiver owners5/1 and4/1, private/key owner1, separate trace children, cold cache, scope rows and whole true/false states. Clone/source provenance, direct-to-factory0, method/dead/bounds controls are pure; budgets pass."
+    },
+    "independent": {
+      "premises": 239,
+      "setup": 235,
+      "pure": 4,
+      "raw_php_steps": 4,
+      "seconds": 44.300796853378415,
+      "result": "Four genuine cold-formatter array/box spaceship fronts continue to integer tails for clone/fresh equality and stop at distinct receivers with equal fields. Retired seed/maker CVs, receiver owners2/1, held Map/trace children, cold cache, private/key owner1, whole states and budgets pass. Complete source endings call real formatters and compare their exact returned strings, then invoke real tail/private casts."
+    },
+    "total": {
+      "premises": 617,
+      "setup": 593,
+      "pure": 24,
+      "raw_php_steps": 12
+    },
+    "separate_zero_credit": "Native observations, two exact unchanged normal-result disagreements, initializer, author EL and six parse/check operations supply no application agreement or extra state credit.",
+    "failures": []
+  },
+  "limits": [
+    "Pure prior-guard, clone/factory-zero, method, dead-allocation and live-helper bounds projections are local checks, not malformed-global execution claims.",
+    "Clone/seed and maker CV retirement are reached prerequisites; formatter/getter calls and explicit casts are complete-source observations. Twelve raw steps are comparisons; no new clone, binding, formatter, readonly or lifecycle protocol is claimed.",
+    "Only authentic raw matching getter tags gain the broader equality route. Overridden/transformed captures, other internal Closure bodies and wider lifetimes remain partial; stored-string carriers, factory cloning, special intrinsic and uninitialized-wrapper gaps stay separate."
+  ],
+  "artifacts": {
+    ".tools/getter78-support/gates.py": "6c5540b2b7dbbc5941e3c627be91af9ab1d1cb0be61a939bef091d9f4f85a302",
+    ".tools/getter78-support/inputs.py": "b7ed896cc1446cfca88d33e836feb41b6f757293328de0c8307782c6cb33ccf3",
+    ".tools/getter78-support/actor.py": "da2005f41d61cb28f69512ed8c1272748bc77d39c05cb5e807f4bcb580c9e1bf",
+    ".tools/getter78-support/run-native-v1/report.json": "cb8915d2af181ab13934a88249d982fe2163f9532f8483bc3d97e04de7330763",
+    ".tools/getter78-support/run-baseline-v1/report.json": "92e3d5c5ef427d9b67b6c55cafd572e185083854a5d8e589eb5345d1d74a555c",
+    ".tools/getter78-support/run-init-v1/report.json": "1561aa98491c561ca681b37a87ecb3156ce0307e1f636aa67b5c15f8d925cf90",
+    ".tools/getter78-support/run-sources-v1/report.json": "3c2d60bda6dd932b74eb6dcf61590ff759d22b548069bd74a1f3c2f7a30a4c44",
+    ".tools/getter78-support/run-prepare-v1/report.json": "64004da100fabd3fc895d91a7f1a8004d82062c00fe358d44f9268ce66bd7b41",
+    ".tools/getter78-state/build.py": "5ea0d21798d4405a07882b6bf034b5cb8a28068d0ed59c155e55f388241c8489",
+    ".tools/getter78-state/helpers.watsup": "4a25d2dc3826167ac2b58f004c65d1969f18f11ca00354fe3565ed6074db7212",
+    ".tools/getter78-state/run.py": "b1b815b7a0ab9a6d68d721512a3d4a702cdf2c1a0fa8258c055809394ed958f7",
+    ".tools/getter78-state/plan.json": "dcb29b5830658470c5ccacc6f349f635355424ef81958d4c38b1894e66af9d5d",
+    ".tools/getter78-state/run-el-v1/report.json": "92c281c553901c180def7cbd77c6a364998083b041c6cb8a45ff9adc2ad20e41",
+    ".tools/getter78-state/run-sl-v1/report.json": "fb1ddda93608dfd15092f425e4da96c79f8e38a3c3d7d52d7f18dead78543181",
+    ".tools/getter78-peer/run.py": "0e22ea5ac5b4250e0e1d07cb1ad84e5f41f78dab0d50cb3187bc27d194a188e9",
+    ".tools/getter78-peer/build.py": "1bdd07b8af0dc38a6c9294582457d1648cc7a485bffcb451766ece9b2299e3f9",
+    ".tools/getter78-peer/helpers.watsup": "f9be780d01da4ffabedaa05fce8831befcae404e12b8463e207b912b4178ac27",
+    ".tools/getter78-peer/plan.json": "4145078303b4ad0108fc7c60028f50d35d84f4b417fa6a17dbc485c7f43aa2c5",
+    ".tools/getter78-peer/native-v1/report.json": "1b7b37998e97172ca457efbd82cd012a3ef8b26f2fad155e5a3be8436fd0e5a4",
+    ".tools/getter78-peer/source-v1/report.json": "94d6c03ed4ad7f3adfd8fcb6793ba4284f7951341e3a9b5bac9195b9ee6b015b",
+    ".tools/getter78-peer/prepare-v1/report.json": "dafa7499f431b60473bdc6844577b5e6aea0a194bce04fc880aed3c291a63b05",
+    ".tools/getter78-peer/state-v1/report.json": "f2b77ece6bbe4f351a4a2110df15ad815876e9645df2b4e69392ddc70d4fbc4c",
+    ".tools/getter78-peer/review.json": "56356647e8eb510b844ae056a14e16ee3028e349cd120e994e9625795a5cfe7a"
+  },
+  "recovery": "Ignored originals, checked programmes, fixtures, START/environment records and raw streams remain under .tools/getter-closure-comparison-78/.tools/getter78-{native,support,state,peer}; branch codex/getter-closure-comparison-78 retains the tested revision. Use recorded gate/state commands and hashes; copied executables establish no fresh portability or rebuild claim.",
+  "independent_review": {
+    "reviewer": "/root/comp_review_67",
+    "semantic_verdict": "CLEAR",
+    "source_and_state_verdict": "CLEAR",
+    "publication_verdict": "CLEAR",
+    "record": ".tools/getter78-peer/review.json",
+    "record_sha256": "56356647e8eb510b844ae056a14e16ee3028e349cd120e994e9625795a5cfe7a"
+  },
+  "composition": {
+    "parent": "61dac8e858a3841fbf0549e8becca29d1e5ee778",
+    "ordered_modules": 401,
+    "method": "pointwise actual-parent semantic review and exact fast-forward candidate review; no concrete syntax/dispatch-order dependency and no joined actor",
+    "runtime": "Only the reviewed module234 getter-equality change is incoming; the resulting file is byte-identical to tested3b113a3dd. Every other spec file and the401-module manifest are parent-exact.",
+    "parent_seams": [
+      "New410 is appended for LIST_FETCH float-key conversion and new411 for authenticated empty public typed-float NaN continuation. Sources contain no destructuring/empty/NaN; ordinary held POBJECT reads cannot select411 and source Throwable/Sensitive receivers are excluded. New30 types/tasks add no pstate field or initializer change.",
+      "Iterator21 adds pgenerator.PARKED and pending-throw task routes. All three sources and fixtures contain no Generator/yield/send or pgenerator literal, so Generator-specific continuation, eager cleanup and GC clauses remain unselected.",
+      "V70/Source48 module400 changes require define, constant or defined operations, absent here. Empty trace arrays and comparison arrays never enter dynamic constant-copy routes; USERCONSTANTS remains empty.",
+      "M92 broadens an authenticated reference-return/destructor cursor source; sources contain no byref/null-typed return, finally or destructor. Earlier numeric-string compound/magic/LIST routes are also absent. Module234/174/158/379 and pstate initializer are unchanged by the parent."
+    ],
+    "execution_credit": 0,
+    "retained_cut": "Three original agreements and617=593setup+24pure/12actual comparison steps retain3b113a3dd/399. No accepted native/source/state check is replayed."
+  }
+}

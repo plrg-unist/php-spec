@@ -118,6 +118,7 @@ dec $dynamic_halt_call(pconfigcall) : bool
 dec $dynamic_halt_receive(pstate, pconfigcall) : pstate
 dec $dynamic_global_constant_finish(pstate, pconfigcall) : pstate
 dec $dynamic_scalar_define_call(pconfigcall) : bool
+dec $dynamic_scalar_define_arguments(pstate, pconfigcall, nat) : bool
 dec $dynamic_nan_define_name_entry(pstate, pconfigcall) : bool
 dec $dynamic_define_finish(pstate, pconfigcall) : pstate
 def $dynamic_define_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME $user_constant_key(preqbytes), ORIGIN pconfigcall.SITE, VALUE pvalue, CLASS pvalueclass, READS eps, RECEIVES eps}]][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -155,10 +156,54 @@ def $dynamic_define_finish(S, pconfigcall) = $error_dispatch(S_copy[.TODO = (DYN
   -- if S.TODO = ptask :: ptask_tail*
 def $dynamic_define_finish(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "dynamic constant call domain"] -- otherwise
 
+;; Query arity is checked before string reception and lookup.
+dec $dynamic_query_arity_call(pconfigcall) : bool
+def $dynamic_query_arity_call(pconfigcall) = true
+  -- if pconfigcall.KIND <- [INTRINSIC_CONSTANT, INTRINSIC_DEFINED]
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps /\ ~pconfigcall.NAMED
+  -- if $(|pconfigcall.SENT| = 0 \/ |pconfigcall.SENT| = 2)
+def $dynamic_query_arity_call(pconfigcall) = false -- otherwise
+dec $dynamic_query_arity_arguments(pstate, pnamedslot*) : bool
+def $dynamic_query_arity_arguments(S, eps) = true
+def $dynamic_query_arity_arguments(S, (NAMED_SENT (KNOWN pvalue)) :: pnamedslot*) = true
+  -- if $dynamic_constant_class(pvalue) =/= eps
+  -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
+  -- if $dynamic_query_arity_arguments(S, pnamedslot*)
+def $dynamic_query_arity_arguments(S, pnamedslot*) = false -- otherwise
+dec $dynamic_query_arity_valid(pstate, pconfigcall) : bool
+def $dynamic_query_arity_valid(S, pconfigcall) = true
+  -- if $dynamic_query_arity_call(pconfigcall) /\ $config_invoke_valid(S, pconfigcall)
+  -- if $dynamic_scalar_define_arguments(S, pconfigcall, 0)
+  -- if $dynamic_query_arity_arguments(S, pconfigcall.SENT)
+def $dynamic_query_arity_valid(S, pconfigcall) = false -- otherwise
+dec $dynamic_define_arity_call(pconfigcall) : bool
+def $dynamic_define_arity_call(pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_DEFINE
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps /\ ~pconfigcall.NAMED
+  -- if $(|pconfigcall.SENT| < 2 \/ |pconfigcall.SENT| > 3)
+def $dynamic_define_arity_call(pconfigcall) = false -- otherwise
+dec $dynamic_define_arity_valid(pstate, pconfigcall) : bool
+def $dynamic_define_arity_valid(S, pconfigcall) = true
+  -- if $dynamic_define_arity_call(pconfigcall) /\ $config_invoke_valid(S, pconfigcall)
+  -- if $dynamic_scalar_define_arguments(S, pconfigcall, 0)
+  -- if $dynamic_query_arity_arguments(S, pconfigcall.SENT)
+def $dynamic_define_arity_valid(S, pconfigcall) = false -- otherwise
+dec $dynamic_define_arity_message(pconfigcall) : preqbytes
+def $dynamic_define_arity_message(pconfigcall) = $ptascii("define() expects at least 2 arguments, ") ++ $decimal_integer(|pconfigcall.SENT|) ++ $ptascii(" given")
+  -- if $(|pconfigcall.SENT| < 2)
+def $dynamic_define_arity_message(pconfigcall) = $ptascii("define() expects at most 3 arguments, ") ++ $decimal_integer(|pconfigcall.SENT|) ++ $ptascii(" given")
+  -- if $(|pconfigcall.SENT| > 3)
 dec $dynamic_constant_receive(pstate, pconfigcall) : pstate
+def $dynamic_constant_receive(S, pconfigcall) = $config_error(S[.TODO = ptask_tail*], pconfigcall, "ArgumentCountError", $dynamic_define_arity_message(pconfigcall))
+  -- if $dynamic_define_arity_valid(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_constant_receive(S, pconfigcall) = $config_error(S[.TODO = ptask_tail*], pconfigcall, "ArgumentCountError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("() expects exactly 1 argument, ") ++ $decimal_integer(|pconfigcall.SENT|) ++ $ptascii(" given"))
+  -- if $dynamic_query_arity_valid(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
 def $dynamic_constant_receive(S, pconfigcall) = $dynamic_define_finish(S, pconfigcall)
   -- if pconfigcall.KIND = INTRINSIC_DEFINE
   -- if ~$dynamic_constant_case_flag(pconfigcall)
+  -- if ~$dynamic_define_arity_call(pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
 def $dynamic_constant_receive(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL $dynamic_constant_exists(S, preqbytes))][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pconfigcall.KIND = INTRINSIC_DEFINED
@@ -179,6 +224,7 @@ def $dynamic_constant_receive(S, pconfigcall) = $dynamic_class_constant_receive(
   -- if pconfigcall.KIND = INTRINSIC_CONSTANT
   -- if ~$dynamic_global_constant_call(pconfigcall)
   -- if ~$dynamic_halt_call(pconfigcall)
+  -- if ~$dynamic_query_arity_call(pconfigcall)
 def $dynamic_constant_receive(S, pconfigcall) = $dynamic_halt_receive(S, pconfigcall)
   -- if pconfigcall.KIND = INTRINSIC_DEFINED \/ pconfigcall.KIND = INTRINSIC_CONSTANT
   -- if $dynamic_halt_call(pconfigcall)
@@ -324,15 +370,17 @@ dec $dynamic_array_finish(pstate, nat, parray, (pkey, pvalueclass)*, bool) : (ps
 def $dynamic_array_value(S, pvalue, n_seen*, b_copy) = ((S, pvalue, pvalueclass))
   -- if $dynamic_define_value_class(S, pvalue) = (pvalueclass)
   -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
-;; Empty roots retain their actual non-refcounted provenance. Empty descendants
-;; remain outside this slice; a mutable root is rebuilt even when it has no keys.
-def $dynamic_array_value(S, PARRAY n_array, eps, b_copy) = ((S, PARRAY n_array, PVARRAY true eps))
+;; Empty descendants retain authenticated immutable provenance or rebuild
+;; mutable tables canonically. The ancestor list guards every array descent.
+def $dynamic_array_value(S, PARRAY n_array, n_seen*, b_copy) = ((S, PARRAY n_array, PVARRAY true eps))
   -- if $(n_array < |S.ARRAYS|)
   -- if HARRAY n_array <- S.ALLOCATIONS
+  -- if ~(n_array <- n_seen*)
   -- if $array_immutable(S, n_array)
-def $dynamic_array_value(S, PARRAY n_array, eps, b_copy) = $dynamic_array_finish(S, n_array, $array_empty(), eps, b_copy)
+def $dynamic_array_value(S, PARRAY n_array, n_seen*, b_copy) = $dynamic_array_finish(S, n_array, $array_empty(), eps, b_copy)
   -- if $(n_array < |S.ARRAYS|)
   -- if HARRAY n_array <- S.ALLOCATIONS
+  -- if ~(n_array <- n_seen*)
   -- if S.ARRAYS[n_array].ITEMS = eps
   -- if ~$array_immutable(S, n_array)
 def $dynamic_array_value(S, PARRAY n_array, n_seen*, b_copy) = $dynamic_array_finish(S_items, n_array, parray, (pkey_items, pvalueclass_items)*, b_copy)
@@ -1227,7 +1275,6 @@ def $dynamic_scalar_define_call(pconfigcall) = true
   -- if $dynamic_scalar_define_values(pconfigcall) = ((pvalue_name, pvalue))
   -- if $typed_scalar(pvalue_name) /\ ~$method_string(pvalue_name)
 def $dynamic_scalar_define_call(pconfigcall) = false -- otherwise
-dec $dynamic_scalar_define_arguments(pstate, pconfigcall, nat) : bool
 def $dynamic_scalar_define_arguments(S, pconfigcall, n_index) = true -- if n_index = pconfigcall.INDEX
 def $dynamic_scalar_define_arguments(S, pconfigcall, n_index) = $dynamic_scalar_define_arguments(S, pconfigcall, $(n_index + 1))
   -- if $(n_index < pconfigcall.INDEX)

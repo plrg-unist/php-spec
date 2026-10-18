@@ -720,11 +720,13 @@ def $named_closure_same(S, n_left, n_right) = $from_compare(S, n_left, n_right)
 
 def $from_object(FROMCALLABLECLOSURE pfrommethod) = true
 def $from_object(pobject) = false -- otherwise
+;; Authentic getter captures compare by receiver and selected internal method;
+;; independently checked direct or factory creation sites do not contribute.
 def $named_closure_same(S, n_left, n_right) = true
+  -- if $getter_capture_live(S, n_left)
+  -- if $getter_capture_live(S, n_right)
   -- if S.OBJECTS[n_left] = GETTERCLOSURE n_receiver pgettermethod text_base pgettersource_left
   -- if S.OBJECTS[n_right] = GETTERCLOSURE n_receiver pgettermethod text_base pgettersource_right
-  -- if $from_getter_source(S, pgettersource_left, n_left) \/ $from_getter_source(S, pgettersource_right, n_right)
-  -- if $getter_capture_live(S, n_left) /\ $getter_capture_live(S, n_right)
 
 
 ;; Before C API entry, ordinary argument reads preserve captured null. These
