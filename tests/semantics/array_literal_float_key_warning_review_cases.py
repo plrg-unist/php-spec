@@ -53,3 +53,22 @@ unset($dest,$copy,$q,$outside,$new_q,$key,$next,$tail);
 echo "U:",isset($dest),":",isset($copy),":",isset($outside),";";
 ''',
 }
+
+NATIVE_PROBES = {
+    'array-literal-float-review-reference-owner-probe': b'''<?php
+function literal_float_owner_probe($n,$m,$f,$l) {
+    echo "D:",$n,":",($m==="Implicit conversion from float 2.5 to int loses precision"),":",$l,";";
+    $GLOBALS["q"]=33;unset($GLOBALS["q"]);
+    $GLOBALS["q"]=&$GLOBALS["replacement"];
+    return true;
+}
+$q=2;$outside=&$q;$replacement=44;$key=2.5;
+set_error_handler("literal_float_owner_probe",E_DEPRECATED);
+$a=[$key=>&$q];
+restore_error_handler();
+$probe=[&$outside];unset($outside);$copy=$probe;$copy[0]=66;
+echo "R:",$a[2],":",$q,":",$replacement,":",$probe[0],":",$copy[0],";";
+unset($a,$q,$replacement,$key,$probe,$copy);
+echo "U:",isset($a),":",isset($q),":",isset($probe),";";
+''',
+}
