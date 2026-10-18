@@ -1,0 +1,87 @@
+{
+  "milestone": "COMP92 live scalar left CV / missing right == and < continuations",
+  "status": "bounded independent source/state review passed; comparison family remains partial",
+  "scope": "Two distinct direct CVs: initially defined scalar left and missing right, with left still defined and scalar after a returning handler. Includes late reference creation and rebinding, scalar/string-carrier tags, false/default reporting and supplied-handler Exception cleanup. The missing right name may remain undefined.",
+  "target": "PHP 8.5.10 CLI NTS64; ordinary profile; LC_ALL=C TZ=UTC",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "runtime_revision": "12ac75176",
+  "runtime_sha256": {
+    "spec/semantics/207-error-handler-runtime.watsup": "d650e5e91194ccd2a091cb31b9ed8fa998ce2d683451ef5fa05a81cb2fe30b56"
+  },
+  "modules": 405,
+  "engine_basis": "Zend/zend_vm_def.h::ZEND_IS_EQUAL/ZEND_IS_SMALLER fetch both raw CV pointers through GET_OP*_ZVAL_PTR_UNDEF. Their helpers check op1, then warn and freeze an UNDEF op2 before zend_compare dereferences the current op1 wrapper. Native late-reference and old-cell rebind witnesses distinguish this from identity-style early dereference. Unsetting left after the OP2 warning produces quiet UNDEF/NULL comparison natively; this increment explicitly refuses that state.",
+  "implementation": "Module 207 adds a distinct pure right-read ERROR_READ_RESULT shape: TASK retains VARIABLE left and RESULT freezes NULL, unlike COMP91 frozen-left records. A third ingress arm, structural source/compiled-line certificate and validity alternative admit this shape. The scalar guard checks current left, independently of missing right; shape-specific resume refusals preserve the old right-domain reason. No new fields, tasks, roots or manifest entries.",
+  "behavior": [
+    "Left 2 to 0 compares equal to frozen right NULL even when the handler initializes right to 9. A LESS witness distinguishes NULL from that 9; scalar left < NULL is false.",
+    "Late left 0 to reference string 0 makes equality false; an old reference string 0 rebound to new zero makes it true. Old aliases survive with exact owners 1 to 2 or old 2 to 1/new 2 and later writes reach current left.",
+    "An eight-tag equality source leaves right undefined through every callback and ends with !isset(right). The guard therefore cannot accidentally require the missing input to become readable. Reached state controls also remove right and still restore/compare without another event.",
+    "False/default Warning order and supplied Exception destination 41, catch identity and finally match exactly. Four strict-SL groups check authentic dispatch/resume, raw whole states, owners, compiled/source/operator refusals and zero/split budgets."
+  ],
+  "baseline": {
+    "revision": "306f147a159680483fdd0acbed06290878e4d52e",
+    "report": "initial/initial-report.json",
+    "sha256": "9bc1689cb4292342acd5645b4c862314edd3c5c71787f229d50e628b7249e41d",
+    "native": "Two exact native originals normal H:1:10:1;R:1:1:1;END;, empty stderr.",
+    "model": "Genuine unchanged == Unsupported/error-handler ingress requires a producer continuation, empty output.",
+    "agreement_credit": 0
+  },
+  "accepted": [
+    {
+      "report": "author-source/model-report.json",
+      "sha256": "6186c7af81b113ebb8b94fac71561d5f97f4e887cb0b5283bf093a79be681de0",
+      "revision": "d6a65e8dd9904348433044903447d3f6db9d629d",
+      "agreements": 5,
+      "unsupported_controls": 1
+    },
+    {
+      "report": "peer-source/model.json",
+      "sha256": "dff7220e36152d4b9f3897bb3bbd078e950aa8064095698acea4bc23eca78753",
+      "revision": "d6a65e8dd9904348433044903447d3f6db9d629d",
+      "agreements": 3,
+      "unsupported_controls": 1
+    },
+    {
+      "report": "author-state/report.json",
+      "sha256": "fa7729a5bedb65abc344809e2257c5b610720f96c392fde49af3f036b8932f8b",
+      "revision": "d6a65e8dd9904348433044903447d3f6db9d629d",
+      "premises": 186,
+      "groups": 2
+    },
+    {
+      "report": "peer-state/report.json",
+      "sha256": "faf71e5dbabafab1b16c810742c2d3e1943b3dbefa5c51800eebd096dc4d77c9",
+      "revision": "d6a65e8dd9904348433044903447d3f6db9d629d",
+      "premises": 211,
+      "groups": 2
+    }
+  ],
+  "totals": {
+    "source_agreements": 8,
+    "unsupported_source_controls": 2,
+    "state_groups": 4,
+    "state_premises": 397
+  },
+  "failures": [],
+  "remaining": [
+    "Both-missing/same-CV inputs, initially owning or callback-removed/owning opposing values and captured/computed operands remain partial. Native unset-left and callback-produced array controls are explicit zero-credit Unsupported boundaries.",
+    "!=, <= and reversed greater warning-fetch paths remain partial. Prior COMP89/90/91 cuts are not replayed or renewed; OP51 and quarantined COMP88 Stringable-supplied-throw remain excluded."
+  ],
+  "artifact_root": "../php-spec-evidence-archive/comparison-92",
+  "artifact_manifest_sha256": "a2dbcdf9c39d0ce3b0e37ec0e6ec15a96e3340a57663c7478bf4c7d1b3e70789",
+  "independent_reviewer": "/root/comp89_review",
+  "divergences": [],
+  "reproduction": [
+    "python3 tests/semantics/undefined_scalar_compare_right_sources.py --phase native --output .tools/comp92-source-new",
+    "python3 tests/semantics/undefined_scalar_compare_right_sources.py --phase model --output .tools/comp92-source-new",
+    "python3 tests/semantics/undefined_scalar_compare_right_state.py --output .tools/comp92-state-new",
+    "python3 tests/semantics/undefined_scalar_compare_right_review_state.py --output .tools/comp92-peer-state-new"
+  ],
+  "integration": {
+    "parent": "3c2e5056c9e7eae0225fe78b9fa0a247bce6dfa3",
+    "modules": 405,
+    "actual_tail": "Runtime 172 adds NULL-option INI_SET dispatch/finish; 400 moves its helper declaration earlier. Modules 303/405 add Generator close/unpack selectors. INI_SET/CONFIG_INI_NULL_RESULT and Generator/delegation/unpack/destructor producers are absent from COMP92 sources and state fixtures. M114 latest is metadata only.",
+    "preservation": "Only module 207 differs from this parent, retaining tested d650e5e9 bytes. Every other runtime, schema, task/field/default and ordered module manifest is parent-exact; incoming docs, inventory and checkpoints are preserved.",
+    "validation": "Independent pointwise seam review. Source8/state397 retain d6a65e8dd; no joined actor, accepted replay or renewed execution credit."
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "scope": "Ordinary positional two-slot ini_set(NULL, quiet primitive value) with admitted deprecation handlers. Values are NULL/bool/int, non-NaN binary64 or authenticated INTERNED/REQUEST strings. Owning/NaN/legacy-PSTRING values and named/packed/owner/PIPE forms remain outside the new continuation; existing no-handler/strict and unary INI routes retain their behavior.",
+  "status": "independently_accepted_private_integrated_on_join",
+  "reviewer": "/root/source_review_35",
+  "parent": "888c7b9840e0f6a130076502e87abbd59c1f6060",
+  "semantic_revision": "d4ca9022fe0767a3a3ea257b63d472eec184036f",
+  "semantic_files": {
+    "spec/semantics/172-file-context-intrinsics.watsup": "d01cf982e355ca4012d284d09960570db124e4130d2cd221e6f98accf7dfe59d",
+    "spec/semantics/400-dynamic-constants.watsup": "8ed6328793c61cdaaa75fec0732519eef8828cebe4b22be329cf7c977e2ac166"
+  },
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "primary": "Pinned ext/standard/basic_functions.c PHP_FUNCTION(ini_set) parses Z_PARAM_STR(option) before receiving/validating value or looking up the directive. Zend/zend_API.c zend_parse_arg_str_weak runs the NULL Deprecated helper before convert_to_string; a pending Exception returns before conversion/body. Normal NULL becomes the empty option and returns false. Quiet values exclude a new stringify Warning; wider directive behavior is not added.",
+  "semantics": "Module172 adds a disjoint positional2/rawNULL validator, quiet-value guard and finish delegate using existing CONFIG_INI_NULL_RESULT/error dispatch. The unchanged normalized argument authenticator rejects immutable source substitutions while mutable captures stay structural; only its declaration moves from400 before new use. Eligible calls use the marker; ineligible/out-of-domain calls retain the old generic route. Unary validation/body, nonce, trace, discard and ownership helpers remain exact. No new task/schema or provider behavior.",
+  "accepted": [
+    "Four checked normal model records exactly match native stdout/PHPstderr/PHPexit0. Default NULL/int1973 returnsfalse, leaves precision14, then genuine precision SET returns14/installs12 (one Deprecated). Returning selected handler sees8192, preserves earlier REQUEST value despite V/live writes, installs precision8 and returns true; outer returnsfalse without overwriting it. Strict selected rawNULL/1987 TypeError follows value effects/precision9 with no deprecation. Peer throws a new saved Exception in the Deprecated handler, preserving identity/caller99/precision8/sibling2003 and actual later selected ini_get recovery. Other PHPstderr is empty; no Warnings.",
+    "All623 source-bound SL premises pass:111+178+113 author and221 independent. Actual CONFIG, entered-handler, returned/restored-marker and supplied-throw/unwind states preserve rawNULL/REQUEST API arguments. A genuine compiled precision literal rejects a forged rawNULL descriptor while unknown captured-CV history remains structural. Exact returning marker/body and whole thrown discard equalities, strict raw2 API/caller trace, malformed carrier/count/selection/phase/metadata controls, quiet-domain pure controls and zero/split budgets pass. Four raw SL stdout values are true LF/exit0/empty stderr. Peer native intentionally avoids trace traversal; its full three-frame trace is state-only.",
+    "Ten reports are input/HEAD stable and reaped:9PASS and original peer interpreter failure0. No timeout/interruption/group survivor. Source3 author evidence is retained without replay after the trace correction; all public checks were previously unrun. No old actor is renewed."
+  ],
+  "cuts": {
+    "initial_native3_baseline1": {
+      "revision": "d48047350845366f6f1cef78fafe57900441bfbf",
+      "runtime": "888c7b9840e0f6a130076502e87abbd59c1f6060",
+      "cpu": 1
+    },
+    "author_model3_peer_native1": {
+      "revision": "fcac3d86394f71212799f41aef46bba1f8490eaa",
+      "runtime": "a5ee611ba10a9467b8925818f2e0dac546db6d2d",
+      "cpu": 5
+    },
+    "peer_model1_state623": {
+      "revision": "d4ca9022fe0767a3a3ea257b63d472eec184036f",
+      "runtime": "d4ca9022fe0767a3a3ea257b63d472eec184036f",
+      "cpu": 5
+    }
+  },
+  "baseline_zero_credit": "Sole selected returning-handler original at d480 on unchanged runtime: Unsupported error-handler ingress requires a producer continuation after B|V|, CLI1/nullPHPexit/quiet workerstderr. Native instead reaches handler and empty-option false while retaining precision8; zero agreement for baseline.",
+  "preserved_failure": {
+    "revision": "fcac3d86394f71212799f41aef46bba1f8490eaa",
+    "report": "author/review/model-first-report.json",
+    "credit": 0,
+    "outcome": "interpreter_failure, CLI1/21.07s/quiet workerstderr/no timeout/group[]. Handler Exception trace hit cannot have both return and tail call: new172 rawNULL2 head overlapped existing368 INI_SET raw projection. Delete only the redundant new three-line head, reuse existing368 unchanged. Report/four streams/process/exit renamed model-first with bytes unchanged; main.php/native remain exact. No recorder change, PHP engine bug or intentional divergence."
+  },
+  "compatibility": "Existing unary NULL continuation and no-handler/strict routes retain their bodies. Focused old INI controls stay unary/wrong-kind/count or Stringable, so no obsolete expectation or old actor is renewed. V80 ordinary string DEFINE names/owning payload/quiet flags are disjoint;400 helper body remains exact apart from moving its declaration. Source47 and owned-NUL remain paused/untouched.",
+  "execution": "LC_ALL=C TZ=UTC, AS3221225472, INT+kill5, taskset1 initial and taskset5 later; serial fail-first/full reap. Native child15s, CLI45s/host60s, fresh SL90s. Accepted workerstderr empty; expected default PHP Deprecated is a separate channel.",
+  "command_prefix": "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s <cap>s prlimit --as=3221225472 -- taskset -c <cpu> python3 <step>",
+  "commands": [
+    {
+      "revision": "d48047350845366f6f1cef78fafe57900441bfbf",
+      "cpu": 1,
+      "caps": [
+        90,
+        90
+      ],
+      "steps": [
+        "tests/semantics/ini_set_null_option_sources.py --phase native --output .tools/ini-set-null-option-native-62",
+        "tests/semantics/ini_set_null_option_sources.py --phase baseline --output .tools/ini-set-null-option-native-62 --case selected-null-option-handler-preserves-captures-and-precision"
+      ]
+    },
+    {
+      "revision": "fcac3d86394f71212799f41aef46bba1f8490eaa",
+      "cpu": 5,
+      "caps": [
+        90,
+        240,
+        90
+      ],
+      "steps": [
+        "tests/semantics/ini_set_null_option_review_sources.py --phase native --output .tools/ini-set-null-option-review-62",
+        "tests/semantics/ini_set_null_option_sources.py --phase model --output .tools/ini-set-null-option-native-62",
+        "tests/semantics/ini_set_null_option_review_sources.py --phase model --output .tools/ini-set-null-option-review-62"
+      ]
+    },
+    {
+      "revision": "d4ca9022fe0767a3a3ea257b63d472eec184036f",
+      "cpu": 5,
+      "caps": [
+        90,
+        90,
+        360,
+        90,
+        120
+      ],
+      "steps": [
+        "tests/semantics/ini_set_null_option_review_sources.py --phase model --output .tools/ini-set-null-option-review-62",
+        "tests/semantics/ini_set_null_option_protocol.py --phase prepare --sources .tools/ini-set-null-option-native-62 --output .tools/ini-set-null-option-public-62",
+        "tests/semantics/ini_set_null_option_protocol.py --phase check --sources .tools/ini-set-null-option-native-62 --output .tools/ini-set-null-option-public-62",
+        "tests/semantics/ini_set_null_option_review_protocol.py --phase prepare --sources .tools/ini-set-null-option-review-62 --output .tools/ini-set-null-option-review-public-62",
+        "tests/semantics/ini_set_null_option_review_protocol.py --phase check --sources .tools/ini-set-null-option-review-62 --output .tools/ini-set-null-option-review-public-62"
+      ]
+    }
+  ],
+  "raw_root": ".tools/ini-set-null-option-evidence-62",
+  "report_sha256": {
+    "author/public/check-report.json": "aabb772f6c9e5c12b9a402599a4ac69bb1872fa6be397305979937a96d3778c0",
+    "author/public/prepare-report.json": "3f0793a51d2c2def427a022d46bdd022495222e98756f9dbcb9dd08ec1c8457d",
+    "author/review/model-first-report.json": "95b053c6afe39ae47af0432d6af1809a02c51bd11c5bb4ecd5d35475e71d0494",
+    "author/review/model-report.json": "b2118f486dd9b7de6e0be980708b0bed36e616666c2d610714b952ef27078b9f",
+    "author/review/native-report.json": "7160443996677256d69a7ac3a1bd8c3c2b75ba9645833b9b335ec6a323971f12",
+    "author/review-public/check-report.json": "392ab303dd49346caf6692af57ac80dec3507b21894afbb8b46d356ac857a3d4",
+    "author/review-public/prepare-report.json": "92562b81fb903979f5a90b244cb1e823fdf34f21b30930c3831a3ed5d02a7e53",
+    "author/sources/baseline-report.json": "8cd56dee088ec42a60c364e037ecd7773577fcbd2ff5d81c934a6b451adb87a1",
+    "author/sources/model-report.json": "bd25d2022312d52bbf79662fa6f685f36f717efa0cd4087f5f569d1293c36a3d",
+    "author/sources/native-report.json": "c176182da82d1f342d6c3bd1696f3f4236668d535ec2adc0cde0cab3dc775a9c"
+  },
+  "recovery": "Four owned roots moved once after reviewer RAW STOP/focused users[] into canonical author/{sources,review,public,review-public}; only ten concise reports hashed once. Restore named roots at recorded private cut/path for original source/cwd identity; raw reports retain original paths. Earlier evidence/inputs are not renewed.",
+  "remaining": "Owning/NaN/legacy-PSTRING values, wider call forms/directives/handlers, source providers and complete configuration semantics remain partial. Pure quiet-domain controls do not add native execution cases. No full-core/equivalence/BOLA claim.",
+  "composition": {
+    "parent": "306f147a159680483fdd0acbed06290878e4d52e",
+    "private_publication": "d6e5d95fc12d800a7803e0327ca7c4ea11633bf6",
+    "modules": 405,
+    "method": "Module172 and four tests are private-exact;400 preserves complete incoming owning DEFINE changes and deletes only the moved dynamic_scalar_define_arguments declaration. Every other spec/schema/ordered405 manifest path is parent-exact. Inventory only environment.config implementation172/own2helper/2source/1ledger plus review suffix; all incoming docs/checkpoints are preserved.",
+    "runtime_sha256": {
+      "spec/semantics/172-file-context-intrinsics.watsup": "d01cf982e355ca4012d284d09960570db124e4130d2cd221e6f98accf7dfe59d",
+      "spec/semantics/400-dynamic-constants.watsup": "41a1fe56b8a667d6b86729019c3f7b2dbda90e3be47ff067caed005b24c6e4bd"
+    },
+    "seams": "Independent actual-parent review CLEAR. Existing172/368 handler/trace bodies and normalized source helper are base-exact. Incoming400 owning DEFINE payload/bool-NULL paths are disjoint; the sole sibling DEFINE is primitive2003/omitted flag and retains its old delegate. Dynamic instanceof, missing-CV comparison ingress, owning arithmetic-reference warnings, pending by-reference returns and literal-reference property debts have no source producer here; debt state remains eps. New task variants add no pstate field. No concrete interaction warrants a joined actor.",
+    "evidence": "Source4 retains author3 fcac/a5ee and corrected peer1 d4ca; state623 retains d4ca/405, initial native/base d480 and original peer failure0. No accepted replay, joined actor or renewed execution credit."
+  }
+}

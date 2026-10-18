@@ -1,0 +1,113 @@
+{
+  "milestone": "COMP91 missing-left direct-CV scalar == and < warning continuations",
+  "status": "bounded independent source/state review passed; comparison family remains partial",
+  "scope": "Two distinct direct CVs: missing left and initially defined scalar right, which remains defined and scalar after the handler. Includes late reference creation and rebinding, primitive/string-carrier right values, false/default reporting and supplied-handler Exception cleanup.",
+  "target": "PHP 8.5.10 CLI NTS64; ordinary profile; LC_ALL=C TZ=UTC",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "runtime_revision": "dd84b7114",
+  "runtime_sha256": {
+    "spec/semantics/207-error-handler-runtime.watsup": "a51ced253ae3c6002e5226bcd9208f420504118c209cfce2a7f482574efcf72b"
+  },
+  "modules": 405,
+  "engine_basis": "Zend/zend_vm_def.h::ZEND_IS_EQUAL/ZEND_IS_SMALLER fetch both raw CV pointers through GET_OP*_ZVAL_PTR_UNDEF. zend_is_equal_helper/zend_is_smaller_helper warn and freeze an UNDEF op1, then check the current op2 before zend_compare. These pointers retain current CV wrappers without identity-style early dereference.",
+  "implementation": "Module 207 reuses the stable missing-left ERROR_READ_RESULT shape. A separate Equal/Smaller source mapping admits only distinct direct CVs with both compiled lines; scalar domain guards apply at entry/resume, independently of the saved source certificate. The old generic source mapping, fields, tasks, roots and module manifest are unchanged.",
+  "behavior": [
+    "The missing left stays NULL after its name becomes 9. Plain right 1 to 0 makes == true and < false; right 0 to string 0 makes == false and < true.",
+    "A newly created right reference and a rebound preexisting reference follow the current cell. Old alias values survive; owners change 1 to 2 or old 2 to 1/new 2, with no borrowed old-cell owner.",
+    "False/default Warning order and supplied Exception destination 41, catch identity and finally agree exactly. Four SL groups check authentic warning dispatch/resume/comparison, whole raw states, owners, source/compiled-line refusals and zero/split budgets.",
+    "Both-missing ingress and callback-produced array right values are explicit source refusals. Coherent removed-right states retain valid source evidence but stop Unsupported without a new event."
+  ],
+  "baseline": {
+    "revision": "888c7b9840e0f6a130076502e87abbd59c1f6060",
+    "report": "initial/initial-report.json",
+    "sha256": "3b8337faf65cf68c86ba789b35a11b2f654d18a221aee31f361a873e104358c1",
+    "native": "Two exact direct-CV originals return normal H:1:10:1;R:1:1:1;END; with empty stderr.",
+    "model": "Genuine unchanged == Unsupported/error-handler ingress requires a producer continuation, empty output.",
+    "agreement_credit": 0
+  },
+  "accepted": [
+    {
+      "report": "author-source/model-report.json",
+      "sha256": "e0ca89b55489edefb5ca28e41191d131f9fb1cd23306642cc55f39e52ad2bb70",
+      "revision": "fea71d5c35fb4a32b6604da2045a8d5c6f6a951c",
+      "ids": [
+        "equal-live-plain",
+        "less-live-string"
+      ],
+      "agreements": 2,
+      "note": "Accepted per-record slice; aggregate passed=false because the later matrix timed out. Both selected records passed with stable inputs/head."
+    },
+    {
+      "report": "author-source/model-scalar-tags-both-operators-report.json",
+      "sha256": "4b68ed17b76e6c4e10986281e30d1293f04bd4a03c0bb7183dc9fee7cea33882",
+      "revision": "52827748f27ce9b91d16c0c767226de8ef178952",
+      "agreements": 1
+    },
+    {
+      "report": "author-source/model-less-false-default-equal-throw-right-array-boundary-report.json",
+      "sha256": "c12517cca19b3e3873bbdc627b8146b07571bf5c47c5a7b7310a59086818ea3d",
+      "revision": "52827748f27ce9b91d16c0c767226de8ef178952",
+      "agreements": 2,
+      "unsupported_controls": 1
+    },
+    {
+      "report": "peer-source/model.json",
+      "sha256": "c356c42750a8673df1ac32777c5ee920a994070663059b2fca68245367c1c4ef",
+      "revision": "52827748f27ce9b91d16c0c767226de8ef178952",
+      "agreements": 3,
+      "unsupported_controls": 1
+    },
+    {
+      "report": "author-state/report.json",
+      "sha256": "168ce902f4b2380739d412f2f2c2431155b3a5e214a31ec539f1433c2f6a49e2",
+      "revision": "52827748f27ce9b91d16c0c767226de8ef178952",
+      "premises": 184,
+      "groups": 2
+    },
+    {
+      "report": "peer-state/report.json",
+      "sha256": "70daf5bbddbc089cb946ede8b9935ac31a4281b35a56d274042e7102caf1c75d",
+      "revision": "52827748f27ce9b91d16c0c767226de8ef178952",
+      "premises": 185,
+      "groups": 2
+    }
+  ],
+  "totals": {
+    "source_agreements": 8,
+    "unsupported_source_controls": 2,
+    "state_groups": 4,
+    "state_premises": 369
+  },
+  "failures": [
+    {
+      "case": "scalar-tags-both-operators",
+      "revision": "fea71d5c35fb4a32b6604da2045a8d5c6f6a951c",
+      "outcome": "CLI status timeout at inner45; recorder itself not timed out, process fully reaped and inputs stable. The family wrapper then raised KeyError for the absent frontend field.",
+      "raw": "author-source/matrix-timeout45/model.{stdout,stderr,process.json,exit.json}",
+      "credit": 0,
+      "resolution": "Only this case repeated at CLI90/recorder105 and passed. A tiny maintained MODEL_TIMEOUTS override keeps other commands at their exact old45/60. The first two accepted cases were not repeated; three later cases had not run before the failure."
+    }
+  ],
+  "remaining": [
+    "Initially both-missing/owning right values, same-CV pairs, removed or owning callback-produced right values, right-missing and captured/computed operands remain partial for ==/<.",
+    "!=, <= and reversed greater warning-fetch paths remain partial. COMP89/90 and other accepted evidence are not replayed or renewed. Quarantined COMP88 Stringable-supplied-throw and paused private-payload work remain excluded."
+  ],
+  "artifact_root": "../php-spec-evidence-archive/comparison-91",
+  "artifact_manifest_sha256": "549aefe49c5746f0f2b6d7a375543b188a39292f08703fd23e3bb24bd929b752",
+  "independent_reviewer": "/root/comp89_review",
+  "divergences": [],
+  "reproduction": [
+    "python3 tests/semantics/undefined_scalar_compare_sources.py --phase native --output .tools/comp91-source-new",
+    "python3 tests/semantics/undefined_scalar_compare_sources.py --phase model --output .tools/comp91-source-new",
+    "python3 tests/semantics/undefined_scalar_compare_state.py --output .tools/comp91-state-new",
+    "python3 tests/semantics/undefined_scalar_compare_review_state.py --output .tools/comp91-peer-state-new"
+  ],
+  "integration": {
+    "parent": "548f405ba09376e4b64f13def74ec34072a41cf7",
+    "modules": 405,
+    "actual_tail": "Dynamic INSTANCEOF task variants, DEFINE object flags, typed literal-reference debts and RETURN_REF_UNWIND/pair producers are absent from the admitted fixtures. OP50 maps only +,-,*,/,**; its owned-arithmetic guard is false for comparison/identity/concat observers, and ARITHMETIC_CV tasks do not occur.",
+    "preservation": "Only module 207 differs from this parent, retaining tested a51ced25 bytes. Every other runtime, schema, task variant, field/default and ordered module manifest is parent-exact; incoming docs, inventory and checkpoints are preserved.",
+    "validation": "Independent pointwise seam review. Source8/state369 retain their recorded private cuts; no joined actor, accepted replay or renewed execution credit."
+  }
+}

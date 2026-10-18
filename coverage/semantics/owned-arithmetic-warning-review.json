@@ -1,0 +1,139 @@
+{
+  "version": 1,
+  "milestone": "OP50 owned scalar reference-result arithmetic Warning continuations",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/profile",
+  "scope": "Ordinary +,-,*,/,** staged Warning ingress with at least one evaluated REFERENCE result from an untyped byref named function return or direct-CV reference assignment. Counterparts may be nonowning copies, plain CVs or selected cells. All selected reference cells stay allocated, defined, nonowning scalar and unconstrained throughout the admitted trace; pending CVs retain prior still-plain conversion rules. Real operand owners survive origin-name removal, retain multiplicity when two operands select one cell, and retire on numeric result, error or supplied throw. Quiet/no-Warning orders, typed/owning referents and wider producers/lifetimes remain partial.",
+  "runtime_revision": "5c28a56c94a2bb832d357193fb6fa09ba242f1f6",
+  "helper_revision": "d6bd1ae9c1a6cd9c0f305d3fea309dcf061dfa72",
+  "private_modules": 405,
+  "runtime_sha256": {
+    "spec/semantics/40-control.watsup": "3f25b6563ac843b2bd5666c138d4e4402aabae8cf5d6d95cac6c350189fa9ee3",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "d322cd741f66ef339e4dce28916d2615d2932842918739ded066a13af076ca85"
+  },
+  "engine_basis": [
+    "Pinned Zend VM numeric helpers perform the binary operation before zval_ptr_dtor_nogc on evaluated TMP/VAR inputs. A byref result therefore retains its selected referent across conversion callbacks even after every source name disappears; two evaluated references to one cell retain two owners. Both operands are selected before conversion and numeric holders precede their Warnings. Final safe_pow Deprecated uses the two captured holders.",
+    "Separate arithmetic_owned_reference_source accepts direct-CV reference assignments or named functions with SIGNATURE.BYREF and RETURNS=eps. Owned source/operation/plan/begin authenticate existing operand and slot-rank authority, require at least one real owning operand and retain the prior physical MUL pointer selection. Old plain/mixed/copy/reference entries and numeric/getter/dispatch/error/result bodies are unchanged.",
+    "arithmetic_owned_cell_valid requires an allocated live reference, a defined nonowning scalar payload and absent PROPREFS/REFCOERCIONS/PARAMETERBACKINGS. The guarded owned-valid arm applies that safety to selected CELL pointers even in historical phases. These checks do not replace captured numbers with current values or consult current origin names. Fresh conversions still use selected pointers, while returned Warning/final power holders remain historical.",
+    "All three ARITHMETIC_CV task root formulas now concatenate operand_nodes(left) and operand_nodes(right), preserving duplicate HCELL entries. INTEGER_CELL pointers and scalar conversion snapshots add no owners. The formula is pointwise eps for every old admitted CV/mixed/copy descriptor. Existing handler-frame roots carry the owned resume through actual callbacks; numeric/error/throw retirement removes the real holds, and the unchanged driver prunes zero-owner cells."
+  ],
+  "contract": [
+    "Author6 spans quiet ADD17 from RHS reference assignment, owned-leading SUB7 with RHS repair, physical-right-first MUL60 where its first Warning repairs initially bad owned LEFT before origin+alias removal, strict DIV2.4 after both owned origins and refassign alias disappear, final power +INF and the same supplied final-deprecation Exception20/nullPrevious/caller100. Fresh replacement names77/9 survive cancellation; old selected cells are distinct. Focus selects swapped MUL and final POWER throw; the other four normal author cases retain source checks.",
+    "Independent lhs()+rhs() returns one shared cell twice: first Warning changes12tail to5tail then removes the sole origin, second Warning creates a fresh88 name, and cached17 survives. Old-cell owners are3 before unset,2 through the second callback and0 on result. An owned LEFT becomesfalse before its origin disappears while copied bad RHS cannot be repaired through its origin, yielding live bool - string TypeError25. Quiet COPY12 divided by owned0tail still raises DivisionByZeroError25 after the Warning changes old payload to7 and unsets its name. Single old cells go2\u21921\u21920; both errors preserve destination100.",
+    "Focused174/200/171/156/152 reaches authentic owned plans, exact root transfer, real fresh/entered Warning frames, multiplicity, historical old pointers despite new or absent names, final Deprecated/supplied throw and zero-owner retirement. Raw PhpStep numeric equality is separate from actual driver pruning; error atomic STORE/ENV/REFCELLS/events and string metadata remain exact. One source/scalar/constraint guard matrix is pure and never driven. Each peer source intentionally emits one default Warning at source line25; full SL instead requires true newline/empty stderr."
+  ],
+  "required_follow_on": [
+    "Scalar-throughout is a trace-domain restriction. Late array/object/resource, constrained or missing selected-cell replacements are outside this slice and can invalidate a handler-return continuation; no automatic Unsupported result is claimed for them. Explicit boundary and ownership/lifecycle continuations for those dynamic cases remain required.",
+    "Typed/byref-return constraints, wider reference producers, owning payloads, pending-CV wrapping, unheld referent lifetimes and quiet/no-Warning MUL physical ordering remain partial. All15 linked rows remain partial; old controls/operator evidence receive0 renewed credit, OP12 stays paused, and no engine bug or intentional divergence is claimed."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-50/source-5c28a56c9-author-six/report.json",
+        "sha256": "2477476d9a66fc072f20554bde2394e733597b165db21196d3a2119257bc38c9",
+        "revision": "5c28a56c94a2bb832d357193fb6fa09ba242f1f6",
+        "cases": [
+          "owned-arithmetic-add-right-refassign",
+          "owned-arithmetic-sub-left-refcall",
+          "owned-arithmetic-mul-swapped-refassign",
+          "owned-arithmetic-div-both-unset",
+          "owned-arithmetic-power-deprecated",
+          "owned-arithmetic-power-deprecated-throw"
+        ],
+        "agreements": 6
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-50/review-model-5c28a56c9-three/report.json",
+        "sha256": "40d46b93571da3e326899fa7e94534d7066fa8dd13aacb8a0dd25f8105e7c898",
+        "revision": "5c28a56c94a2bb832d357193fb6fa09ba242f1f6",
+        "cases": [
+          "owned-arithmetic-same-cell-default",
+          "owned-arithmetic-left-types-default",
+          "owned-arithmetic-zero-unset-default"
+        ],
+        "agreements": 3
+      }
+    ],
+    "state": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-50/state-d6bd1ae9c-five/report.json",
+        "sha256": "e8a827b2b9990db98d36649d49cbecc8ec788d17a23ce21a8b0c10851cbf8217",
+        "revision": "d6bd1ae9c1a6cd9c0f305d3fea309dcf061dfa72",
+        "modules": 405,
+        "cases": [
+          "owned-arithmetic-mul-swapped-refassign",
+          "owned-arithmetic-power-deprecated-throw",
+          "owned-arithmetic-same-cell-default",
+          "owned-arithmetic-left-types-default",
+          "owned-arithmetic-zero-unset-default"
+        ],
+        "conditions": [
+          174,
+          200,
+          171,
+          156,
+          152
+        ],
+        "total": 853
+      }
+    ],
+    "total_source_agreements": 9,
+    "total_focused_state_conditions": 853,
+    "compatibility": "The accepted5c28 source/runtime stays exact through helper-only commits. Retained preparation authenticates full author6/peer3 before focused2+3, keeping original paths/native bytes and exact30/40/404/manifest bridge. Existing source controls/getters/number and finish bodies remain exact; per-operand task nodes are eps for all prior admitted descriptors. Source-only earlier paths and old evidence are not replayed or recredited."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-50/baseline-e5c32e22f-add-refassign/report.json",
+      "sha256": "a44d8d8b8bc8b7054001739cd975caf4196019153069248062757d1962efd95b",
+      "result": "Actual accepted checked unsupported before H1 with empty semantic streams, error-handler ingress requires a producer continuation, model exit1/credit0; ordinary wrapper false retained, no override."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-50/native-e5c32e22f-author-six/report.json",
+        "sha256": "e8589b0c5a4591ce49220bed7b00cefce9b58c0f5efdee7931d8a5278ac710d9"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-50/native-e5c32e22f-review-three/report.json",
+        "sha256": "0573f9178b6561dd60123077e6a0e78afef91a0c27a5dab712b44e77e3eae4c3"
+      }
+    ],
+    "checked_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-50/state-prep-d6bd1ae9c-five/report.json",
+        "sha256": "30c2485db5fdf853dd6304268de28ca03ab339d9ca2be04748e7d94a1fe909b5",
+        "result": "Checked frontend/adapter only, zero application/native replay, retained paths/native bytes and workers0/reaped."
+      }
+    ],
+    "standalone_syntax": "Five standalone undefined-pstate diagnostics carry zero semantic credit."
+  },
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-50",
+    "environment": "LC_ALL=C,TZ=UTC,no PHP_SPEC_SCRIPT_ENCODING. Native/baseline CPU5; changed source CPU1; focused checked prep/SL CPU5. Native30/modelCLI60-process90; checked workers30/full405 immutable SL120 per group. Exact native/model streams include intended peer Warning stderr. Accepted SL requires true newline/empty stderr/exits0/no interruption/reaped groups/PIDs.",
+    "commands": [
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 tests/semantics/owned_arithmetic_warnings.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 tests/semantics/owned_arithmetic_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-50/state-prep-d6bd1ae9c-five/run-prepare.py",
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-50/state-d6bd1ae9c-five/run-state.py"
+    ],
+    "record": "Restore matching Git cuts/local tools and fresh output roots. Retained records hold original paths/native streams, fixture hashes, commands/exits and reaping. Archive is not a runtime dependency; copied tools add no rebuild/portability claim.",
+    "tool_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "composition": {
+    "parent": "d2f594f3ac068ee2f8841ea086fd6699976da7da",
+    "private_publication": "88738b66a93424721b8b13d8768b2582809d99bb",
+    "modules": 405,
+    "runtime_sha256": {
+      "spec/semantics/40-control.watsup": "3f25b6563ac843b2bd5666c138d4e4402aabae8cf5d6d95cac6c350189fa9ee3",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "d322cd741f66ef339e4dce28916d2615d2932842918739ded066a13af076ca85"
+    },
+    "other_incoming_paths_preserved": 54,
+    "gate": "Eight incoming runtime paths remain disjoint from OP50. Error-handler additions require a SPACESHIP binary-right continuation; DEFINE/constant capture APIs are absent. Dynamic instanceof requires an expression-valued class operand, while OP50 uses only named Throwable instanceof checks. Return-pair/destructor additions require nested finally/ref-return cursor history and destruction tasks, absent from the untyped direct GLOBALS returns. Array-key changes require an explicit-reference float-key literal producer and its retained/debt context, absent from these arithmetic sources. Parent task variants, empty literal retention/debt fields and all ownership/driver behavior are preserved; no new field or module is introduced. Shared arithmetic, numeric conversion, selected-pointer and handler routes are unchanged. No concrete interaction warrants joined execution or renewal of the private405 source9/state853 evidence."
+  }
+}

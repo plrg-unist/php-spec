@@ -20,6 +20,11 @@ receive their normal request-store destructor calls; arrays and embedded referen
 cells remain shared and mutable. Actual next consumes the result normally.
 The [owning-return review](../../coverage/semantics/generator-owning-detached-return-review.json)
 checks both paths and a temporary cache destructor replacing the unpack Error.
+Finite native ancestor unpack keeps the same one physical copied-return count.
+Input unlink can retire the middle cache before outer finally; its destructor
+may replace the key Error with Previous intact. The initialization-history rule
+below also applies to that owning middle, as the
+[owning-chain review](../../coverage/semantics/generator-owning-chain-unpack-review.json) checks.
 
 The pinned engine has an initialization-history exception. A middle first entered
 only through shared outer resumption can retain pending initialization. After

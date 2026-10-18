@@ -76,8 +76,14 @@ The current cache retires separately and may replace the unpack Error. A returne
 array retains its live embedded cells, so later writes can retire old referents.
 The [owning-return review](../../coverage/semantics/generator-owning-detached-return-review.json)
 keeps normal consumption, close retention and the original affected control separate.
-Active-chain owning returns, wider continuations and explicit collection while
-that copied result waits remain open.
+Ordinary unpack now also follows finite native ancestor links to that owning
+simple-CV continuation. Refresh can detach the child without an intervening getter;
+the ancestor borrows current while the physical middle owns the single return copy.
+A null key errors before sending or callee entry. Actual outer next consumes the
+return normally; close retains it and respects the middle's initialization history.
+The [owning-chain review](../../coverage/semantics/generator-owning-chain-unpack-review.json)
+checks these paths, cache-error replacement and mutable returned cells. Wider
+continuations and explicit collection while that copied result waits remain open.
 
 Pending `send` through finite native Generator links can also fill a paused
 child's used yield assigned directly to a simple CV. It clears the actual root's
