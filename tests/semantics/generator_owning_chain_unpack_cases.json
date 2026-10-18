@@ -1,0 +1,22 @@
+[
+  {
+    "id": "generator-owning-chain-unpack-object-normal-consumption",
+    "purpose": "A native ancestor is unpacked after its child independently completes, without any intervening current getter. Observe real iterator refresh/null-key rejection and later outer.next consuming the owning copied result.",
+    "source": "<?php\nclass OwningChainReturn30 { function __destruct() { echo \"R|\"; } }\nfunction owningChainLeaf30() { echo \"C|\"; yield 9; echo \"L|\"; return new OwningChainReturn30(); }\nfunction owningChainMiddle30() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"BODY|\", $reply instanceof OwningChainReturn30 ? 1 : 0, \"|\"; unset($reply); echo \"DROP|\"; yield 31; echo \"TAIL|\"; return 29; } finally { echo \"J|\"; } }\nfunction owningChainOuter30() { try { echo \"O|\"; $reply = yield from $GLOBALS[\"middle\"]; echo \"OUTER|\", $reply, \"|\"; } finally { echo \"F|\"; } }\nfunction owningChainTarget30($value) { echo \"BAD-TARGET|\"; }\n$child = owningChainLeaf30(); $middle = owningChainMiddle30(); $outer = owningChainOuter30();\necho \"P|\"; $outer->rewind(); $child->next(); unset($child); echo \"H|\";\ntry { owningChainTarget30(...$outer); echo \"BAD-RETURN|\"; } catch (Error $caught) { echo \"CALLER|\", $caught->getLine(), \"|\", $caught->getTrace() === [] ? 1 : 0, \"|\", $caught->getPrevious() === null ? 1 : 0, \"|\"; }\nunset($caught); echo \"N|\"; $outer->next(); echo \"CURRENT|\", $outer->current(), \"|\", $outer->valid() ? 1 : 0, \"|\";\necho \"N2|\"; $outer->next(); echo \"DONE|\", $outer->valid() ? 0 : 1, \"|\"; unset($outer, $middle); echo \"E\";\n",
+    "source_sha256": "290207b155d75097ab572731131411ccd93e647e1d0a9fad344dd2bc360966f8",
+    "expected": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|M|C|L|H|CALLER|9|1|1|N|BODY|1|R|DROP|CURRENT|31|1|N2|TAIL|J|OUTER|29|F|DONE|1|E"
+  },
+  {
+    "id": "generator-owning-chain-unpack-sole-root-cache-replacement",
+    "purpose": "A temporary sole outer unpack receiver retains a live native link to an owning detached middle. Its distinct cached destructor can replace the null-key Error during cleanup; observe previous identity and owning-return lifetime without forecasting finally order.",
+    "source": "<?php\nclass OwningChainLate30 { function __destruct() { echo \"R|\"; } }\nclass OwningChainReplaceCache30 { function __destruct() { echo \"D|\"; throw new Exception(\"replacement30\"); } }\nfunction owningChainReplaceLeaf30() { echo \"C|\"; yield new OwningChainReplaceCache30(); echo \"L|\"; return [new OwningChainLate30()]; }\nfunction owningChainReplaceMiddle30() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; } finally { echo \"J|\"; } }\nfunction owningChainReplaceOuter30() { try { echo \"O|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\nfunction owningChainReplaceTarget30($value) { echo \"BAD-TARGET|\"; }\nfunction owningChainTake30() { $selected = $GLOBALS[\"outer\"]; unset($GLOBALS[\"outer\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"TAKE|\"; return $selected; }\n$child = owningChainReplaceLeaf30(); $middle = owningChainReplaceMiddle30(); $outer = owningChainReplaceOuter30();\necho \"P|\"; $outer->rewind(); $child->next(); echo \"H|\", $middle->current() instanceof OwningChainReplaceCache30 ? 1 : 0, \"|\"; unset($child); echo \"T|\";\ntry { owningChainReplaceTarget30(...owningChainTake30()); echo \"BAD-RETURN|\"; }\ncatch (Throwable $caught) { echo \"CALLER|\", $caught->getMessage() === \"replacement30\" ? 1 : 0, \"|\", $caught->getPrevious() instanceof Error ? 1 : 0, \"|\"; if ($caught->getPrevious() !== null) { echo \"LINE|\", $caught->getPrevious()->getLine(), \"|\"; } }\nunset($caught); echo \"E\";\n",
+    "source_sha256": "672b8f96df1e24e088949a6e23110a2e97ba590983ca796390b81882baaec1fc",
+    "expected": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|M|C|L|H|1|T|TAKE|D|F|CALLER|1|1|LINE|11|ER|"
+  }
+]

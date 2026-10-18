@@ -453,13 +453,38 @@ def $config_ini_unary_kind(INTRINSIC_INI_RESTORE) = true
 def $config_ini_unary_kind(pintrinsic) = false -- otherwise
 dec $config_ini_null_message(pconfigcall) : preqbytes
 def $config_ini_null_message(pconfigcall) = $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Passing null to parameter #1 ($option) of type string is deprecated")
+dec $config_ini_quiet_value(pstate, pvalue) : bool
+def $config_ini_quiet_value(S, PNULL) = true
+def $config_ini_quiet_value(S, PBOOL b) = true
+def $config_ini_quiet_value(S, PINT i) = true
+def $config_ini_quiet_value(S, PFLOAT n) = true -- if (b, false) = $number_bool(NFLOAT n)
+def $config_ini_quiet_value(S, PSTRING_CARRIER pstringidentity n*) = $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n*)
+def $config_ini_quiet_value(S, pvalue) = false -- otherwise
+dec $dynamic_scalar_define_arguments(pstate, pconfigcall, nat) : bool
 dec $config_ini_null_valid(pstate, pconfigcall) : bool
 def $config_ini_null_valid(S, pconfigcall) = true
   -- if $config_invoke_valid(S, pconfigcall)
   -- if $config_ini_unary_kind(pconfigcall.KIND)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL)]
   -- if ~$config_strict(S, pconfigcall)
+def $config_ini_null_valid(S, pconfigcall) = true
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps /\ ~pconfigcall.NAMED
+  -- if ~$pipe_site(S, pconfigcall.SITE)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN pvalue)]
+  -- if $config_ini_quiet_value(S, pvalue)
+  -- if $dynamic_scalar_define_arguments(S, pconfigcall, 0)
+  -- if ~$config_strict(S, pconfigcall)
 def $config_ini_null_valid(S, pconfigcall) = false -- otherwise
+dec $config_ini_unary_finish(pstate, pconfigcall, preqbytes) : pstate
+dec $config_ini_null_finish(pstate, pconfigcall) : pstate
+def $config_ini_null_finish(S, pconfigcall) = $config_ini_unary_finish(S, pconfigcall, eps)
+  -- if $config_ini_unary_kind(pconfigcall.KIND)
+def $config_ini_null_finish(S, pconfigcall) = $config_ini_finish(S, pconfigcall, eps, pvalue)
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN pvalue)]
+  -- if $config_ini_quiet_value(S, pvalue)
 dec $config_ini_option_miss(pconfigcall, preqbytes) : bool
 def $config_ini_option_miss(pconfigcall, n_option*) = true
   -- if n_option* =/= $ptascii("include_path")
@@ -504,7 +529,6 @@ dec $config_reporting_restore(pstate) : pstate
 def $config_reporting_restore(S) = S[.REPORTING = $startup_reporting_mask(S.STARTUP)][.REPORTINGINI = $startup_reporting_ini(S.STARTUP)][.REPORTINGMODIFIED = false]
   -- if S.REPORTINGMODIFIED
 def $config_reporting_restore(S) = S -- otherwise
-dec $config_ini_unary_finish(pstate, pconfigcall, preqbytes) : pstate
 def $config_ini_unary_finish(S, pconfigcall, n_option*) = $config_ini_get_finish(S, pconfigcall, n_option*)
   -- if pconfigcall.KIND = INTRINSIC_INI_GET
 def $config_ini_unary_finish(S, pconfigcall, n_option*) = $config_reporting_restore(S)[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -683,16 +707,22 @@ def $config_receive(S, pconfigcall) = $config_ini_finish(S_option, pconfigcall, 
   -- if S_option.COMPLETION = NORMAL
   -- if S_option.RESULT = KNOWN pvalue_string
   -- if $string_bytes(pvalue_string) = (n_option*)
+def $config_receive(S, pconfigcall) = $error_dispatch(S, 8192, $config_ini_null_message(pconfigcall), pconfigcall.LINE, DIAGNOSTIC "Deprecated" $config_ini_null_message(pconfigcall) pconfigcall.LINE, CONFIG_INI_NULL_RESULT pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
+  -- if $config_ini_null_valid(S, pconfigcall)
+  -- if $error_handler_eligible(S, 8192)
 def $config_receive(S, pconfigcall) = $config_ini_finish(S_diagnostic, pconfigcall, eps, pvalue)
   -- if pconfigcall.KIND = INTRINSIC_INI_SET
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN pvalue)]
   -- if ~$config_strict(S, pconfigcall)
+  -- if ~$error_handler_eligible(S, 8192) \/ ~$config_ini_null_valid(S, pconfigcall)
   -- if S_diagnostic = $diagnostic(S, "Deprecated", $ptascii("ini_set(): Passing null to parameter #1 ($option) of type string is deprecated"), pconfigcall.LINE)
   -- if S_diagnostic.COMPLETION = NORMAL
 def $config_receive(S, pconfigcall) = S_diagnostic
   -- if pconfigcall.KIND = INTRINSIC_INI_SET
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN pvalue)]
   -- if ~$config_strict(S, pconfigcall)
+  -- if ~$error_handler_eligible(S, 8192) \/ ~$config_ini_null_valid(S, pconfigcall)
   -- if S_diagnostic = $diagnostic(S, "Deprecated", $ptascii("ini_set(): Passing null to parameter #1 ($option) of type string is deprecated"), pconfigcall.LINE)
   -- if S_diagnostic.COMPLETION =/= NORMAL
 def $config_receive(S, pconfigcall) = $config_error(S, pconfigcall, "TypeError", $ptascii("ini_set(): Argument #1 ($option) must be of type string, ") ++ $typed_given(S, pvalue_option) ++ $ptascii(" given"))
@@ -770,7 +800,7 @@ rule PhpStep/config-stringable-call: S ~> $user_string_begin(S[.ORIGIN = (porigi
   -- if $config_string_launch(S, pconfigcall)
   -- if $config_string_object(pconfigcall) = (n_object)
   -- if $config_string_source(S, pconfigcall) = ((porigin_child, z_child))
-rule PhpStep/config-ini-null-result: S ~> $config_ini_unary_finish(S, pconfigcall, eps)
+rule PhpStep/config-ini-null-result: S ~> $config_ini_null_finish(S, pconfigcall)
   -- if S.TODO = (CONFIG_INI_NULL_RESULT pconfigcall) :: ptask_tail*
   -- if $config_ini_null_valid(S, pconfigcall)
 def $error_call_valid(S, perrorcall) = true

@@ -217,6 +217,14 @@ full `include_path` bytes, including callback writes. Primitive/null Restore
 parsing preserves strict direct refusal and weak explicit `Closure->__invoke` calls. Eligible unary
 null deprecations suspend for handlers; normal return, false fallback and throw
 preserve raw mutation and caller arguments.
+
+[Two-slot NULL INI options](coverage/semantics/ini-set-null-option-review.json)
+now resume ordinary positional `ini_set(NULL, quiet primitive)` through admitted
+deprecation handlers. Captured NULL/value arguments survive live writes; a returning
+handler reaches the empty-option `false` result while preserving its precision
+changes, and a supplied throw cancels the body. Strict NULL rejects before the
+handler. Four originals and 623 state premises pass; wider values/forms remain partial.
+
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
 send/callback site. Ordinary Closure PIPE follows caller strictness; normal and
@@ -1009,8 +1017,14 @@ heap nodes. Their null key raises the real unpack error before argument sending;
 retained caches, later next/return/tail execution and cleanup preserve initialization
 history. A direct middle next can consume pending initialization without advancing.
 See the [nested-detached review](coverage/semantics/generator-call-unpack-nested-detached-review.json).
-Aggregate ordinary-call unpack, owning copied returns below active links or in
-wider continuations, other pending-initialization
+Ordinary unpack follows finite native ancestor links while an owning simple-CV
+copied return waits in the middle. A null key errors before sending.
+Actual outer `next()` consumes the return normally. Close retains its one count;
+a middle with inherited pending initialization skips its finally. A sole outer
+receiver can lose its middle cache before outer finally, replacing the key Error.
+See the [owning-chain review](coverage/semantics/generator-owning-chain-unpack-review.json).
+Aggregate ordinary-call unpack, owning copied returns in wider continuations,
+other pending-initialization
 send/throw, Generator by-reference
 call targets and callback methods, nonnumeric raw valid changes, request/plain
 reference strings and handler replacements with
@@ -4138,8 +4152,11 @@ credit is unchanged. An unused destructor declaration now also preserves the
 no-instance, echo-only interposed scalar history. Fresh control/treatment sources
 agree with PHP; separate 463/8 state checks cover its shared-cell RELEASE/EXIT
 pauses, required literal history despite an unchanged heap, engine TypeError catch,
-one line7 Notice and detached aliases. Wider interposed/pending histories, reentry,
-GC and broader consumers remain open.
+one line7 Notice and detached aliases. Three simultaneously owning computed
+object returns also pass a fresh source comparison and 347/7 reached checks at
+`f305be84b`: normal C/B/A retirement, saved-caller owners, source-region refusals
+and selected-reference aliases. This requires no runtime change. Wider
+interposed/pending histories, reentry, GC and broader consumers remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;
