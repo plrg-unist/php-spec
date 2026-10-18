@@ -19,6 +19,11 @@ def $list_warning_frontier(S, 13) = true
 def $list_warning_frontier(S, 14) = true
   -- if S.TODO = (LIST_FETCH (REFERENCE n_source) n expression true phpType13* z) :: ptask_tail*
   -- if $(n > 0)
+def $list_warning_frontier(S, 15) = true
+  -- if S.TODO = (LIST_FETCH (REFERENCE n_source) 0 expression true eps z) :: ptask_tail*
+  -- if S.RESULT = VARIABLE n_key* z_key
+  -- if $lookup(S.ENV, n_key*) = (n_source)
+  -- if S.STORE[n_source] = DEFINED PNULL
 '''
 
 
@@ -35,7 +40,49 @@ def driven(start, raw, result):
             *[f'{result}.{field} = {raw}.{field}' for field in ('STORE', 'ARRAYS', 'TODO', 'RESULT')]]
 
 
+def alias_conditions(program, path, stdout):
+    return [
+        'S_initial = $php_run(' + program + ', 0, ' + json.dumps(base64.b64encode(bytes(path)).decode()) + ')',
+        'S_initial.COMPLETION = BUDGET',
+    ] + seek('S_initial', 15, 'S') + [
+        'S.TODO = (LIST_FETCH (REFERENCE n_source) 0 expression true eps z) :: ptask_tail*',
+        'S.RESULT = VARIABLE ($ptascii("key")) 7', 'z = 7',
+        '$lookup(S.ENV, $ptascii("a")) = (n_source)',
+        '$lookup(S.ENV, $ptascii("key")) = (n_source)',
+        'S.STORE[n_source] = DEFINED PNULL', 'n_source <- S.REFCELLS',
+        '$list_null_write_key_origin(S, n_source, 0, expression, eps, z)',
+        '$list_float_write_key_container(S, n_source)',
+        '$list_null_write_key_plan(S) = eps', '~$list_null_write_key_pending(S)',
+        '$list_float_write_key_plan(S) = eps',
+        '$lookup(S.ENV, $ptascii("x")) = (n_old_target)',
+        '$lookup(S.ENV, $ptascii("outside")) = (n_old_target)',
+        'S.STORE[n_old_target] = DEFINED (PINT 7)',
+        '$lookup(S.ENV, $ptascii("dest")) = (n_dest)', 'S.STORE[n_dest] = DEFINED (PINT 100)',
+        'S.EVENTS = eps', 'S.FRAMES = eps', '$call_descriptors_valid(S)', '$heap_valid($heap_graph(S))',
+        'PhpStep: S ~> S_error',
+        'S_error.COMPLETION = THROWN "TypeError" ($ptascii("Cannot access offset of type array on array")) z',
+        'S_error.TODO = eps', 'S_error.ENV = S.ENV',
+        'S_error.STORE[n_source] = DEFINED (PARRAY n_array)', 'n_array = |S.ARRAYS|',
+        'S_error.ARRAYS[n_array].ITEMS = eps', '~$array_immutable(S_error, n_array)',
+        '(HARRAY n_array) <- S_error.ALLOCATIONS',
+        'S_error.STORE[n_old_target] = DEFINED (PINT 7)', 'S_error.STORE[n_dest] = DEFINED (PINT 100)',
+        'S_error.EVENTS = S.EVENTS', 'S_error.FRAMES = S.FRAMES', 'S_error.ERRORHANDLER = S.ERRORHANDLER',
+        '$heap_valid($heap_graph(S_error))',
+        'S_done = $drive_steps(S, 2000)',
+        'S_done.COMPLETION = NORMAL', 'S_done.EXITSTATUS = 0',
+        'S_done.TODO = eps', 'S_done.FRAMES = eps', 'S_done.HELD = eps',
+        '~((HCELL n_source) <- S_done.ALLOCATIONS)', '~((HARRAY n_array) <- S_done.ALLOCATIONS)',
+        '~((HCELL n_old_target) <- S_done.ALLOCATIONS)',
+        '$call_descriptors_valid(S_done)', '$heap_valid($heap_graph(S_done))',
+        '$list_warning_outputs(S_done.EVENTS) = ([' + ','.join(map(str, stdout)) + '])',
+        '$drive_steps(S, 0) = S[.COMPLETION = BUDGET]',
+        '$drive_steps(S_initial[.COMPLETION = NORMAL], 2000) = S_done',
+    ]
+
+
 def conditions(name, program, path, stdout):
+    if name == 'list-null-write-review-key-source-alias':
+        return alias_conditions(program, path, stdout)
     held = name.endswith('detached-sole-hold')
     index, line = (0, 18) if held else (1, 15)
     args = f'n_source, n_array, {index}, expression, phpType13*, z'
@@ -231,6 +278,7 @@ def conditions(name, program, path, stdout):
 if __name__ == '__main__':
     own = Path(__file__)
     before = hashlib.sha256(own.read_bytes()).hexdigest()
+    cases.CASES = {**cases.CASES, **cases.SOURCE_ONLY}
     passed = shared.run(cases, conditions, HELPERS)
     assert before == hashlib.sha256(own.read_bytes()).hexdigest()
     raise SystemExit(0 if passed else 1)
