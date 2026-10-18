@@ -9864,6 +9864,24 @@ fresh NULL-reference materialization. M93's used behavior is preserved by
 the guards, without a new M93 actor run. Other discarded sources and broader
 returns_verify remain OPEN.
 [M94 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M95 tests a used nonnullable `&f():object` plain-CV return with the same local
+O/unset history. Native PHP at integrated `e8cf11865`/401 catches O's
+`TypeError("cv95")` locally, then a restored-NULL return TypeError survives a
+second outer-finalizer pass. That pass attempts the now-string selected `y`
+return, whose separate TypeError is caught locally; the NULL error reaches
+outer OT. A message-only native variant identifies the two return diagnostics
+without changing the authoritative original. The unchanged model instead
+routes the destructor error directly to outer OT (zero agreement). At private
+`e57fb7319`/401 strict initialization and the original source pass exactly.
+One reached fixture passes 224 Boolean premises and two raw steps: it binds
+the three distinct modeled TypeError objects and their catch identities,
+`KNOWN NULL` restoration with no fresh allocation across that step, the
+second-F pending error, and actual inside-D LINE refusal and budget equality.
+The source guard adds only the exact builtin `object` declaration; nullable
+used/unused CV materialization remains Boolean-identical to M93/M94. This is
+one local O/unset history, not general nonnullable or physical-GC coverage;
+broader returns_verify remains OPEN.
+[M95 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, wider destructor throw/reentry, real suspension and wider typed

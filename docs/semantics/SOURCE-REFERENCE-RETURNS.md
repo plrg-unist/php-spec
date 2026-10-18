@@ -1124,3 +1124,23 @@ equality pass. The proof covers one local O/unset discarded-call history; M93's
 used branch is preserved by the guards without a fresh M93 run. Other discarded
 sources and wider returns remain open. See the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M95 covers a used, nonnullable `&f():object` plain-CV return with the same
+local O/unset history. O's destructor throws `TypeError("cv95")`, caught by
+the first local CT. Consumed recovery restores `KNOWN NULL` before the
+nonnullable return check. That check raises a distinct NULL-return TypeError,
+carried through a second outer finalizer; its now-string selected `y` return
+raises a third TypeError, caught by the second local CT. The original NULL
+error then reaches outer OT. Native PHP and the repaired model agree exactly,
+while the unchanged model routes the destructor error straight to outer OT.
+A native message-only variant identifies both return diagnostics; a reached
+model proof binds all three distinct objects, their origins and catches, the
+second-F pending error, and the saved D cursor with actual LINE refusal and
+budget equality. Allocations, reference cells and store stay unchanged across
+the raw consumed restoration step, so no doomed fresh result cell is made
+before verification. The new source admission adds only the exact builtin
+`object` signature; the existing typed-NULL and used guards continue to
+select fresh materialization for nullable returns. This is one local O/unset
+history, separate from wider nonnullable signatures, reentry and physical
+Zend collection. See the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
