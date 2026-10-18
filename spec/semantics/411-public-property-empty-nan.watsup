@@ -44,19 +44,21 @@ def $property_public_nan_cell(S, n_cell) = (n_float)
 def $property_public_nan_cell(S, n_cell) = eps -- otherwise
 
 dec $property_public_nan_initial(pstate, nat, ptbytes, ppropertyid) : (nat, nat?)?
-def $property_public_nan_initial(S, n, ptbytes, ppropertyid) = ((n_float, eps))
+def $property_public_nan_initial(S, n, ptbytes, ppropertyid) = ((n_float, n_selected?))
+  -- if n_selected? = eps
   -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_all*)
   -- if $property_slot_at(ppropertyslot_all*, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.DECL = (ppropertyid)
   -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (PFLOAT n_float))
   -- if $(n_float < 18446744073709551616)
-def $property_public_nan_initial(S, n, ptbytes, ppropertyid) = ((n_float, (n_cell)))
+def $property_public_nan_initial(S, n, ptbytes, ppropertyid) = ((n_float, n_selected?))
   -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_all*)
   -- if $property_slot_at(ppropertyslot_all*, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.DECL = (ppropertyid)
   -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell)
   -- if $propref_source_present(S.PROPREFS, n_cell, OBJECT_PROP_SOURCE n ptbytes ppropertyid)
   -- if $property_public_nan_cell(S, n_cell) = (n_float)
+  -- if n_selected? = (n_cell)
 def $property_public_nan_initial(S, n, ptbytes, ppropertyid) = eps -- otherwise
 
 dec $property_public_nan_slot(pstate, ppropertypublicnan) : nat?
