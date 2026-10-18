@@ -84,5 +84,12 @@
     "python3 tests/semantics/undefined_spaceship_right_sources.py --phase model --output .tools/comp90-source-new",
     "python3 tests/semantics/undefined_spaceship_right_state.py --output .tools/comp90-state-new",
     "python3 tests/semantics/undefined_spaceship_right_review_state.py --output .tools/comp90-peer-state-new"
-  ]
+  ],
+  "integration": {
+    "parent": "81af5d32f4971b0e5ec70de2784c5b60633a6728",
+    "modules": 405,
+    "actual_tail": "Source61 changes only module 400: a Stringable define-name selector for quiet scalar third flags, with its helper declaration moved earlier. All COMP90 source and state fixtures lack DEFINE/CONFIG_STRING producers, so the new selector is unreachable.",
+    "preservation": "Only module 207 differs from this parent, with tested e03a87d2 bytes. Every other runtime, schema, field/default and ordered module manifest is parent-exact. Incoming documentation, partial inventory and checkpoint are preserved.",
+    "validation": "Pointwise independent seam review; no joined actor, accepted replay or renewed source/state credit."
+  }
 }

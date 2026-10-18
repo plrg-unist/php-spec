@@ -15,6 +15,7 @@ def $dynamic_constant_kind(INTRINSIC_CONSTANT) = true
 dec $dynamic_scalar_constant_call(pconfigcall) : bool
 dec $dynamic_null_constant_call(pconfigcall) : bool
 dec $dynamic_null_define_call(pconfigcall) : bool
+dec $dynamic_define_quiet_flag(pvalue) : bool
 dec $dynamic_scalar_define_flag_call(pconfigcall) : bool
 dec $dynamic_scalar_define_flag_values(pconfigcall) : (preqbytes, pvalue, pvalue)?
 dec $dynamic_scalar_define_flag_valid(pstate, pconfigcall) : bool
@@ -321,6 +322,12 @@ def $dynamic_define_string_call(pconfigcall) = true
   -- if pconfigcall.SENT = (NAMED_SENT (KNOWN (POBJECT n_object))) :: (NAMED_SENT (KNOWN pvalue)) :: pnamedslot*
   -- if pnamedslot* = eps \/ pnamedslot* = [NAMED_SENT (KNOWN (PBOOL false))] \/ pnamedslot* = [NAMED_SENT (KNOWN (PBOOL true))] \/ pnamedslot* = [NAMED_SENT (KNOWN PNULL)]
   -- if $dynamic_constant_class(pvalue) =/= eps
+def $dynamic_define_string_call(pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_DEFINE
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps /\ ~pconfigcall.NAMED
+  -- if pconfigcall.SENT = (NAMED_SENT (KNOWN (POBJECT n_object))) :: (NAMED_SENT (KNOWN pvalue)) :: (NAMED_SENT (KNOWN pvalue_flag)) :: eps
+  -- if $dynamic_constant_class(pvalue) =/= eps
+  -- if $dynamic_define_quiet_flag(pvalue_flag)
 def $dynamic_define_string_call(pconfigcall) = false -- otherwise
 dec $dynamic_define_string_valid(pstate, pconfigcall) : bool
 def $dynamic_define_string_valid(S, pconfigcall) = true
@@ -1843,7 +1850,6 @@ def $error_handler_trace_values(S, pcallcontext, pconfigcall_api) = $trace_extra
 
 ;; BOOL parsing computes a C bool without replacing the captured API argument.
 ;; NaN has a separate conversion Warning; only quiet scalar flags enter here.
-dec $dynamic_define_quiet_flag(pvalue) : bool
 def $dynamic_define_quiet_flag(PINT i) = true
 def $dynamic_define_quiet_flag(PFLOAT n) = true -- if (b, false) = $number_bool(NFLOAT n)
 def $dynamic_define_quiet_flag(pvalue) = $method_string(pvalue) -- otherwise

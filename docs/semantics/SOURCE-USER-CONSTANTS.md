@@ -750,8 +750,8 @@ pass on their first attempts: literal default delivery has exactly three PHP
 Warnings, other accepted cases are quiet, and all worker stderr is empty. Initial
 1d6ea057f native/base and later d731 actors use CPU3; Unsupported/B| retains zero
 credit. Source55/56/57 evidence stays at its earlier cuts without replay. Pending
-duplicates under a Stringable-derived Warning throw, owning candidates, non-NULL coerced
-flags, wider lifetimes and call forms remain partial.
+duplicates under a Stringable-derived Warning throw, owning candidates, coerced
+flags beyond the follow-ups, wider lifetimes and call forms remain partial.
 
 Retained propertyless Stringable `define` names now receive captured NULL flags
 with primitive candidates, for the existing admitted non-NUL user-global and
@@ -774,8 +774,32 @@ strict/peer quiet and empty worker stderr. Initial7ec085 native/base and lateraf
 actors use CPU3; unchanged Unsupported/B| retains zero. Two old55 append-NULL
 raw-shape refusals become source-valid refusals, with all other controls/counts
 unchanged; genuine NULL3 and mismatched2/4 controls cover that admission without
-renewing Source55's717 or Source59's974 cuts. Startup/special/HALT results, other
-coerced flags, owning candidates and wider lifetimes/call forms remain partial.
+renewing Source55's717 or Source59's974 cuts. Startup/special/HALT results,
+flags beyond the follow-ups, owning candidates and wider lifetimes/call forms remain partial.
+
+Retained propertyless Stringable `define` names now receive quiet nonboolean
+integer, non-NaN float and authenticated INTERNED/REQUEST string flags with
+primitive candidates in admitted non-NUL user-global/class-name domains.
+A separate three-argument raw head leaves bool/NULL/omitted guards and all
+source/carrier/saved-site, conversion, reception, trace and discard code unchanged.
+Conversion preserves the raw flag: false skips the ignored Warning, truthy warns
+before duplicate lookup, and class-name ValueError precedes that body Warning.
+Strict calls still reject the raw name before method/flag processing. Returning
+handlers can install the target before the outer duplicate; a duplicate-handler
+Exception preserves the old row, sibling and caller99. Actual state API traces
+retain the returned REQUEST name, earlier candidate and raw REQUEST flag; peer
+native observes effects/identity without trace traversal.
+The [Stringable scalar-flag review](../../coverage/semantics/define-stringable-scalar-flag-review.json)
+binds source4 and 1,203 premises (482+282+100 author,339 independent) at cc7f88f54
+across seven genuine DEFINE fronts. Initial59d native/base and peer-native af678
+keep their cuts; Unsupported/B| remains zero. The first model and CONFIG diagnostic
+localization remain zero; the documented Cons/Fixed overlap limitation required
+only an equivalent exact-length Cons pattern, with no vendor change or PHP divergence.
+All twelve reports are stable/reaped with no timeout/interruption/survivor;
+accepted PHP Warning counts are2/1/0/0 and accepted worker stderr is empty.
+One old60 PINT0 refusal becomes positive raw shape; genuine quiet0 fronts cover
+that boundary without old1084 replay. Bare legacy PSTRING flags, NaN flags,
+startup/special/HALT results, owning candidates and wider lifetimes/forms remain partial.
 
 Positional `define` now rejects retained ordinary nonStringable instances and
 `stdClass` names before primitive optional flag reception or registration, weak

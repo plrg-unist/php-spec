@@ -1289,7 +1289,18 @@ calls still reject the raw name first. A returning handler can create the target
 before duplicate lookup; a throwing deprecation handler cancels registration.
 [Four source agreements and 1,084 state premises](coverage/semantics/define-stringable-null-flag-review.json)
 cover both continuations and authentic converted API captures. Startup/special
-results, other flag conversions and wider values/lifetimes/forms remain partial.
+results, flags beyond the bounded follow-ups and wider values/lifetimes/forms remain partial.
+
+Retained propertyless Stringable `define()` names now receive quiet nonboolean
+integer, non-NaN float and authenticated string flags with primitive candidates
+in admitted non-NUL user-global/class-name domains.
+The captured flag survives conversion and live writes: false skips the ignored
+Warning, while truthy warns before duplicate lookup. Strict calls reject the raw
+name first; class-like results reject before the ignored Warning.
+[Four source agreements and 1,203 state premises](coverage/semantics/define-stringable-scalar-flag-review.json)
+cover fresh/duplicate results, returning handlers and duplicate cleanup preserving
+the same Exception and exact request captures. Startup/special/HALT results, NaN flags,
+owning candidates and wider receiver lifetimes/call forms remain partial.
 
 Retained ordinary nonStringable instances and `stdClass` now fail positional
 `define()` name reception before primitive flag processing or registration.
