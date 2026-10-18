@@ -1,0 +1,79 @@
+{
+  "scope": "Selected absent literal instance methods using inherited public __call(string,array) without return declaration; captured receiver and one/two positional int/leaf-instance sends packed into a real argument array, cleanup before scalar result or supplied throw.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_gate_completed": true,
+  "native_revision": "44e0af9f7283fa5b4d0b657845c3a647ef84790c",
+  "native_report_sha256": "20bfd132f2932995315260cb844c036c5d3459c4c3fdaca2bcdf1b8c8d691b86",
+  "cases": [
+    {
+      "id": "snapshot",
+      "source_file": "magic-call-snapshot.php",
+      "source": "<?php\nclass MagicCallParent99 {\n    private int $tag = 41;\n    public function __call(string $name, array $arguments) {\n        echo 'M|', $name, '|', $this->tag, '|', $arguments[0], '|', $arguments[1], '|m|';\n        return $arguments[0];\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass MagicCallChild99 extends MagicCallParent99 {}\nfunction mutateCall99() {\n    global $child, $rhs;\n    $child = null;\n    $rhs = 99;\n    echo 'A|';\n    return 2;\n}\n$rhs = 7;\n$child = new MagicCallChild99();\n$answer = 42;\necho 'N:';\n$answer = $child->MiSsInG($rhs, mutateCall99());\necho 'R|', $answer, '|', $rhs, '|';\n$child = null;\necho 'E|';\n",
+      "source_sha256": "7429667110874ce64aa3357fb951178ebdc94bfc8d8845acb0f61f1a8218b36a",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-call-private-99/.tools/magic-call-probes-99/snapshot.php",
+      "native_group": "native-first",
+      "stdout_base64": "TjpBfE18TWlTc0luR3w0MXw3fDJ8bXxEfFJ8N3w5OXxFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "call_line": 22,
+      "native_raw_sha256": "af12f3ee0c4f654edb8be7215e4aa9aaabb1ba754b120a0416ebe2d6864425a5",
+      "status": "normal"
+    },
+    {
+      "id": "owning",
+      "source_file": "magic-call-owning.php",
+      "source": "<?php\nclass MagicCallPayload99 {\n    public function __destruct() {\n        global $child;\n        echo 'P|';\n        if ($child === null) { echo 'K|'; } else { echo 'Q|'; }\n        echo 'p|';\n    }\n}\nclass MagicCallParent99 {\n    private int $tag = 41;\n    public function __call(string $name, array $arguments) {\n        global $child;\n        echo 'M|', $name, '|', $this->tag, '|';\n        if (isset($arguments[0])) { echo 'A|'; }\n        $child = null;\n        echo 'm|';\n        return 7;\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass MagicCallChild99 extends MagicCallParent99 {}\n$child = new MagicCallChild99();\n$answer = 42;\necho 'O:';\n$answer = $child->MiSsInG(new MagicCallPayload99());\necho 'R|', $answer, '|';\n$child = null;\necho 'E|';\n",
+      "source_sha256": "f914c31188e62c3d0a4de562d8b73e58bbeca08c5e15b74b6850a2d9de0ac1f7",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-call-private-99/.tools/magic-call-probes-99/owning.php",
+      "native_group": "native-first",
+      "stdout_base64": "TzpNfE1pU3NJbkd8NDF8QXxtfFB8S3xwfER8Unw3fEV8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "call_line": 26,
+      "native_raw_sha256": "ca0e2d9f8ceb106a7f32d2db191580097fdaab417525134570929853c66ba2f5",
+      "status": "normal"
+    },
+    {
+      "id": "throwing",
+      "source_file": "magic-call-throwing.php",
+      "source": "<?php\nclass MagicCallPayload99 {\n    public function __destruct() {\n        global $child;\n        echo 'P|';\n        if ($child === null) { echo 'K|'; } else { echo 'Q|'; }\n        echo 'p|';\n    }\n}\nclass MagicCallParent99 {\n    private int $tag = 41;\n    public function __call(string $name, array $arguments) {\n        global $child, $error;\n        echo 'M|', $name, '|', $this->tag, '|';\n        if (isset($arguments[0])) { echo 'A|'; }\n        $child = null;\n        echo 'm|';\n        throw $error;\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass MagicCallChild99 extends MagicCallParent99 {}\n$error = new Exception('magic-call-stop');\n$child = new MagicCallChild99();\n$answer = 42;\necho 'X:';\ntry { $answer = $child->MiSsInG(new MagicCallPayload99()); }\ncatch (Exception $caught) {\n    echo 'C|', $answer, '|';\n    if ($caught === $error) { echo 'T|'; } else { echo 'F|'; }\n}\n$child = null;\necho 'E|';\n",
+      "source_sha256": "df19f4557f6b0650f28146c2836df29b89108861d2c1fd4a096ec5b19c5141d2",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-call-private-99/.tools/magic-call-probes-99/throwing.php",
+      "native_group": "native-first",
+      "stdout_base64": "WDpNfE1pU3NJbkd8NDF8QXxtfFB8S3xwfER8Q3w0MnxUfEV8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "call_line": 27,
+      "native_raw_sha256": "eaf972dde45cbe5f759f660107c0723966cb2fd31c3717306a815caaca843575",
+      "status": "normal"
+    },
+    {
+      "id": "public",
+      "source_file": "magic-call-public.php",
+      "source": "<?php\nclass MagicCallParent99 {\n    public function __call(string $name, array $arguments) {\n        throw new Exception('magic-must-not-run');\n    }\n    public function direct($incoming) {\n        global $child;\n        echo 'B|', $incoming, '|';\n        $child = null;\n        echo 'b|';\n        return 17;\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass MagicCallChild99 extends MagicCallParent99 {}\n$child = new MagicCallChild99();\n$answer = 42;\necho 'B:';\n$answer = $child->direct(7);\necho 'R|', $answer, '|';\n$child = null;\necho 'E|';\n",
+      "source_sha256": "6c85db20f2a8f811242118e9c69a0d3027ee706daa71667b8766669dc0a5ce3c",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-call-private-99/.tools/magic-call-probes-99/public.php",
+      "native_group": "native-first",
+      "stdout_base64": "QjpCfDd8YnxEfFJ8MTd8RXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "call_line": 19,
+      "native_raw_sha256": "df7286241cbd31cfe8b59a9bd9ebe3a3ed7369663ccf5c6b2aae3f0a3bff3f8b",
+      "status": "normal"
+    }
+  ]
+}
