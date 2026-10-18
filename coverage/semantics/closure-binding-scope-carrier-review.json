@@ -1,0 +1,178 @@
+{
+  "version": 1,
+  "milestone": "COMP81",
+  "status": "independently reviewed within direct string binding-scope reception",
+  "behavior": "Closure::bind and bindTo select scopes and authenticate held warnings from raw or interned/request string bytes while retaining captured original values.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "tested_revision": "7b90720cc15f9059363c497ca8e23a29214e9e7e",
+  "ordered_modules": 401,
+  "manifest_sha256": "dc7fc18c3f0bc9dbb832981af549a9bb36ce9e7eae56f1ad39938d09a4a44985",
+  "implementation": {
+    "spec/semantics/253-closure-current-binding.watsup": "eb3e0566d9463f65eb209fb1f177d84239a57c38da598618ae9a086b282d41ea"
+  },
+  "engine_basis": [
+    "Pinned Zend/zend_closures.c do_closure_bind receives object|string|null, recognizes exact lowercase static, otherwise calls zend_lookup_class and returns null after a missing-class Warning before binding validation. Closure::bind and bindTo share this path.",
+    "Model142 method_string already accepts carriers, which bypass scalar conversion. The old253 raw-PSTRING-only scope selectors therefore had no selected-scope derivation for genuine literal/CV carriers; both the raw-control baseline and fresh carrier failure isolate that reception seam."
+  ],
+  "contract": [
+    "Four scope-result clauses, three scope-argument clauses and the historical missing-warning validator read string_bytes in place. NULL/object/scalar conversion, class lookup/autoload, producer/source/selection checks, CONFIG transport, allocation and ownership helpers are unchanged.",
+    "Exact lowercase static retains the source lexical scope. Known class names preserve existing case-insensitive/leading-slash lookup; STATIC remains missing. Private parent/child slots select11/22, including an owned concatenation through an aliased CV followed by live-cell mutation.",
+    "Raw captured values and request identities remain intact. A handler may publish the missing class and replace scope/body/receiver/API cells; the held warning still returns null. The internal REAL warning propagates the same supplied exception through finally. No binding body runs on either failed selection."
+  ],
+  "source_catalogues": {
+    "tests/semantics/closure_binding_scope_carrier_cases.json": "cf2a898ba1cfc48645bb241b67a49143f0868dc628fb4b9aa6479bf03416231c",
+    "tests/semantics/closure_binding_scope_carrier_review_cases.json": "ba21e7809420091ef7effba3020503bca1b22f4d6e393f72a739f166883eee62"
+  },
+  "unchanged_frontier": {
+    "revision": "e17a4ed7ac856db79887b32243cec2811f011e58",
+    "report": ".tools/scope81-support/run-baseline-v1/report.json",
+    "aggregate_passed": false,
+    "control": "Complete NORMAL raw ::class private-scope control agrees; zero new source credit.",
+    "carrier": {
+      "status": "interpreter_failure",
+      "diagnostic": "function php_run failed",
+      "host_exit": 1,
+      "returned_frontend_program_or_outcome": false,
+      "seconds": 17.888502437621355,
+      "passed": false,
+      "accepted": false,
+      "observation_recorded": false
+    },
+    "agreement_credit": 0
+  },
+  "validation": {
+    "original_sources": {
+      "normal_agreements": 3,
+      "author_seconds": [
+        13.345314420759678,
+        38.13844175264239
+      ],
+      "independent_seconds": 60.67791075631976,
+      "cli_and_host_caps_seconds": [
+        240,
+        250
+      ]
+    },
+    "author": {
+      "premises": 187,
+      "setup": 168,
+      "pure": 19,
+      "raw_php_steps": 5,
+      "seconds": 34.74570823274553,
+      "result": "Five genuine CONFIG_INVOKE fronts allocate exact REAL object/allocation/binding rows, preserving original raw carriers, request data, scope/receiver metadata, receiver owners and alias-cell identity/storage and whole-state/full-driver budget equality."
+    },
+    "independent": {
+      "premises": 137,
+      "setup": 131,
+      "pure": 6,
+      "raw_php_steps": 4,
+      "seconds": 46.20708673261106,
+      "result": "Two real Warning dispatches retain original carrier/body/receiver/API inputs. Actual class publication and alias/CV mutation precede historical missing-warning null result; the supplied exception throws from the real named handler. Whole states, captured owners and driver budgets pass; two API trace projections are explicitly pure."
+    },
+    "total": {
+      "premises": 324,
+      "setup": 299,
+      "pure": 25,
+      "raw_php_steps": 9,
+      "transition_types": {
+        "bind_allocations": 5,
+        "warning_dispatches": 2,
+        "held_warning_result": 1,
+        "supplied_throw": 1
+      }
+    },
+    "separate_zero_credit": "Native, unchanged normal control/carrier failure, initializer, six parse/check operations and author EL provide no extra application or state credit.",
+    "failures": [
+      {
+        "report": ".tools/scope81-peer/state-v1/report.json",
+        "stage": "pre-main syntax",
+        "seconds": 0.38401114754378796,
+        "credit": 0,
+        "correction": "Replace unsupported inline trace ARGS record syntax with existing trace_indexed_args over the same raw values; only affected SL repeats.",
+        "preserved_inputs": ".tools/scope81-peer/state-v1/failure-inputs"
+      },
+      {
+        "report": ".tools/scope81-peer/state-v2/report.json",
+        "stage": "pre-main algorithmic binding",
+        "seconds": 6.735787870362401,
+        "credit": 0,
+        "correction": "Read captured scope argument first, then match its existing REQUEST_STRING pattern (+1 setup). Runtime/source/helpers/runner stay exact; only affected SL repeats.",
+        "preserved_inputs": ".tools/scope81-peer/state-v2/failure-inputs"
+      }
+    ]
+  },
+  "limits": [
+    "Only direct string reception and warning authentication change. Object/NULL and nonstring conversion, autoload/class producers, callable body semantics and wider creation/clone/equality/lifetime behavior remain unchanged or partial.",
+    "Request carrier identity is immutable nonowning metadata, not a new heap owner. Physical receiver/payload owners and alias-cell identity/storage are checked separately.",
+    "Pure scope/forged-warning and API trace projections are not additional transitions or coherent malformed-world admission. A preconstructed supplied Exception preserves its original empty trace; fresh handler-created binding API traces are not claimed.",
+    "The COMP80 literal scope-carrier failure remains at its original cut with zero credit. COMP71 stored-string first-class capture conversion is a separate unresolved seam; no old source/state campaign is replayed.",
+    "Project-local binaries were copied exactly; no new build or portability claim.",
+    "Coverage uses ASCII class names. Invalid/embedded-NUL name diagnostic formatting remains unresolved: the old raw missing-name rule emits full selected bytes whereas Zend uses a C-string %s. This reception change does not repair that formatter or claim invalid-name/autoload coverage."
+  ],
+  "artifacts": {
+    ".tools/scope81-support/gates.py": "1de6a3b9025dac1ee7cf74a2ee1af500aa67a790222d0874a4d20eb12bd24936",
+    ".tools/scope81-support/inputs.py": "70b83f868741ec3edc774e13367146311c078399d4ca1260b9800e63c8b436ef",
+    ".tools/scope81-support/actor.py": "c93b5da6d514eb073d9132f4a0f8ae066508ab241ef664c1c6833a744999e497",
+    ".tools/scope81-support/run-native-v1/report.json": "69b64b29c5e7b2f84c065ccfd0c60cc13b1da967834e77dd27681cb5c0c6a0b5",
+    ".tools/scope81-support/run-baseline-v1/report.json": "39308a40ac295e187a76499d86ae687d24bf84f863f2783e6e9bb21bb1e59970",
+    ".tools/scope81-support/run-init-v1/report.json": "91df204581a524c3684db656e346a30dfc0115deafe298a93efcf186a6028ae5",
+    ".tools/scope81-support/run-sources-v1/report.json": "2855fc0b474202688434c6853daf0f20c897fa64a105698bd41c465fb3b2b839",
+    ".tools/scope81-support/run-prepare-v1/report.json": "b6e9828dbecaa7da67661aacaa3240db853885372c54ba850c1d95ea2803b955",
+    ".tools/scope81-state/build.py": "760437499c0a68d1f05048c8a4eedbd874203956c069a355acd0add3d3b039aa",
+    ".tools/scope81-state/helpers.watsup": "1d99db9a8ac695f7c94661919ac9ee76c5350f92124c4b89a4d549095bfbf236",
+    ".tools/scope81-state/run.py": "8b4df9d0f4ca95a34caa3a98885ee8ecdcbbc6c68828da3cc8e393f8415eb276",
+    ".tools/scope81-state/plan.json": "374c0b9779d44985fe43341687010b3517011f2c55fda865abb6e79a9bdea28b",
+    ".tools/scope81-state/run-el-v1/report.json": "f11b123f26dc4d6b979d3b5fbcebcdad7c3e521344eec3578c01f661ac2f959b",
+    ".tools/scope81-state/run-sl-v1/report.json": "dc02c0aef306694828d9a6a14f41b87c40c5ff032d59f2870d3d1698e3148545",
+    ".tools/scope81-peer/run.py": "91bf18094e3af2237fb024c96fc8b6859bf625122b027cea7ef9f1901f19e7c5",
+    ".tools/scope81-peer/build.py": "37ad2d8b04fc9688569e0b4778259d22ac1caa6c2c2b3f0a94eed3cdd93e1833",
+    ".tools/scope81-peer/helpers.watsup": "a8d9101b7d3919ba8e9d26b9fb19ea7bd923dfb11783421c3077dadebbd94861",
+    ".tools/scope81-peer/plan.json": "58619dbcce79f14074d7230b825e098a79b8e221cb69a4ecd47d923d690977e2",
+    ".tools/scope81-peer/native-v1/report.json": "13f144071672546758d97e4ab55f7309ab8dc0f783477dd6d612ed3d64282961",
+    ".tools/scope81-peer/source-v1/report.json": "c7fd3c03a37ec84632f17eea874c5586c8a675114a224702f7ff11db72684ee1",
+    ".tools/scope81-peer/prepare-v1/report.json": "745147ceff3b74df31462898dceee0278878d6e0368ae090552e4c61821c85f7",
+    ".tools/scope81-peer/state-v1/report.json": "b22fa7ea39ac8b0e6446f6254b1480a2a23f3eabac447b26d3af2a801171eb7b",
+    ".tools/scope81-peer/state-v2/report.json": "7bb34040ec3dfce17feac298f968cc606736edfdf5d680bc2620a0bbda477bb9",
+    ".tools/scope81-peer/state-v3/report.json": "8b89eb9e5c12a5be25ae924ea2d8526eb636d53294ee2b793783b5b404c42d8e",
+    ".tools/scope81-peer/review.json": "73cc02a10b8b8be1c8901cdc7f51e98dc6b34a9678cf02589b390bb9ce991696"
+  },
+  "publication_verdict": "CLEAR",
+  "independent_review": {
+    "path": ".tools/scope81-peer/review.json",
+    "sha256": "73cc02a10b8b8be1c8901cdc7f51e98dc6b34a9678cf02589b390bb9ce991696",
+    "verdict": "CLEAR"
+  },
+  "composition": {
+    "parent": "847a307e4c7ff58b277a185d93d52f1eb86906b9",
+    "ordered_modules": 401,
+    "method": "Independent pointwise actual-parent review; no concrete syntax or dispatch-order dependency, so no joined actor.",
+    "incoming_runtime": [
+      "280-generators",
+      "289-generator-delegation",
+      "30-storage",
+      "301-cycle-collection",
+      "303-generator-force-close",
+      "39-ownership",
+      "40-control",
+      "400-dynamic-constants",
+      "404-arithmetic-warning-continuations",
+      "408-magic-property-empty",
+      "84-call-integrity"
+    ],
+    "bridge": [
+      "GENERATORLOOPRETAINED initializes eps; roots(eps)=eps and validity(eps)=true. Only parked Generator foreach close populates it. All three sources have no Generator/yield/foreach/GC and fixtures derive states from php_file_run then update them, so the field remains opaque empty.",
+      "OP41 adds a unique BOTH_ASSIGN_PRECISION_STRING task and exact MOD/SHIFT/BIT-after-first-deprecation dispatch/validity/error-resume rules. Sources only concatenate, compare and increment integers; no new task or error-resume clause selects FAKE_BIND_WARNING.",
+      "CLASS95 only admits WEAKMAP in magic-empty RV; no source has WeakMap/empty/magic calls. DEFINE array-name400 guards are also absent.",
+      "Raw ::class141/184, carrier33/30-string-carriers, binding181/253/264, named handlers207 and Throwable152 interfaces are parent-exact except the reviewed253 patch. Manifest and every other runtime file remain exact parent bytes."
+    ],
+    "tested_runtime": "Module253 byte-identical to tested7b90720cc/401; private source3/state324=299+25/nine transitions and both pre-main failures0 retain their original cuts.",
+    "new_source_agreements": 0,
+    "new_premises": 0,
+    "new_raw_steps": 0
+  }
+}

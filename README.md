@@ -2330,8 +2330,8 @@ Fixed CURRENT and static BIND API Closures also compare with live WeakMap before
 invocation or private traversal. Two originals and 372 Boolean premises/eight actual
 comparisons preserve real frames, captures and bindings; later calls distinguish
 CURRENT caller identity/Error and BIND's selected receiver. The old literal binding-
-scope carrier failure stays zero; its supported class-name workaround leaves that
-dependency open. [Special API review](coverage/semantics/weakmap-special-api-comparison-review.json).
+scope carrier failure stays zero at its retained cut; scope reception is extended
+separately below. [Special API review](coverage/semantics/weakmap-special-api-comparison-review.json).
 
 Getter Closures and first-class `Closure::fromCallable` factory Closures also
 compare with live WeakMap before receiver or private-entry traversal. Two exact
@@ -3697,6 +3697,13 @@ retire. [REAL binding](docs/semantics/CLOSURE-BINDING.md) now stages ordered
 static/internal warnings and uses the function's compiled `$this` flag when
 removing a receiver. Valid unbinding copies REAL statics, preserves reference
 captures and resets called scope; explicit null scope removes class permission.
+Binding scope names now accept interned/request string carriers without replacing
+the raw captured arguments. Private parent/child access, lowercase `static`,
+case/slash lookup and normal/throwing warning callbacks pass three originals and
+324 Boolean premises/nine actual transitions; two pre-main fixture failures stay
+zero. ASCII names are covered; invalid/NUL formatting, autoload/scalar conversion
+and COMP71 stored-string capture remain separate.
+[Scope-carrier review](coverage/semantics/closure-binding-scope-carrier-review.json).
 Literal named-static `Closure::getCurrent(...)` capture now preserves the immediate
 ordinary caller; selected API and returned body retire independently. A named
 helper still errors under an outer Closure. Three native originals, one direct and

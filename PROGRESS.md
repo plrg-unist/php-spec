@@ -7,6 +7,33 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Closure binding now receives raw, interned and request string scope names through
+existing CONFIG calls. Exact lowercase `static`, case/slash class lookup and
+private parent/child scope selection stay distinct; raw captured arguments and
+request identities are preserved. Missing-class warnings remain selected after a
+handler publishes that class or changes scope/callback/receiver/API cells; internal
+scope warnings retain the supplied exception through `finally`. Three originals
+and 324 Boolean premises (299 setup + 25 pure)/nine actual transitions pass at
+7b90720cc/401: five binding allocations, two warning dispatches, one held warning
+result and one supplied throw. Whole states, lexical/called scope, receiver owners and
+alias-cell identity/storage and driver budgets pass. Raw ::class controls agree at the unchanged cut;
+the separate carrier original returns interpreter_failure, not Unsupported, and
+stays zero. Two pre-main fixture syntax/binding failures also stay zero; only their
+affected state check repeats. Trace-frame projections are pure; no fresh handler
+Exception trace, invalid/NUL name formatting or new autoload/scalar conversion is
+claimed. COMP80's old failure keeps its cut; COMP71 stored-string capture
+conversion remains separate.
+[Binding scope-carrier review](coverage/semantics/closure-binding-scope-carrier-review.json).
+
+Composed over 847a307e4/401 after pointwise review of the incoming DEFINE,
+Generator, compound-warning and magic-empty changes. GENERATORLOOPRETAINED stays
+eps with no roots here; genuine initializer states and updates preserve that new
+field. Neither source family contains Generator/foreach/GC, DEFINE, integer
+compound-warning or magic-empty operations. Raw ::class, carrier production,
+binding and error-handler interfaces stay exact; only the tested253 byte reception
+changes. Source3/state324 retain private7b90720cc/401, both fixture failures stay
+zero, and composition adds no execution credit or joined actor.
+
 Protected fractional numeric-string RHS conversion now stages precision Deprecated,
 or leading Warning then precision Deprecated, after the first LEFT callback in the
 existing both-fractional plain-CV modulo/shift/numeric-bitwise routes. The first RHS

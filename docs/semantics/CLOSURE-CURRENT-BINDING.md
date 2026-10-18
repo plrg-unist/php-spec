@@ -119,6 +119,29 @@ to strings. Selected warnings suspend for error handlers. Handler class declarat
 cannot undo a held missing-class warning, and throws run `finally` and retain
 callback writes before the binding unwinds.
 
+Direct string scope reception reads both legacy `PSTRING` and authenticated
+interned/request carriers through `$string_bytes`. The original CONFIG argument
+stays intact; scope selection does not allocate or normalize a string. Exact
+lowercase `static` keeps the prior scope, while other names use the existing
+case-insensitive class lookup and optional leading slash. `STATIC` remains a
+missing class. The same byte reception authenticates normal/internal warnings and
+historical missing-class continuations after callbacks publish a class or replace
+live argument cells.
+
+[Scope-carrier evidence](../../coverage/semantics/closure-binding-scope-carrier-review.json)
+records three exact ASCII-name originals and 324 Boolean premises
+(299 setup + 25 pure)/nine actual transitions at 7b90720cc/401: five REAL copies, two Warning dispatches, one
+held null result and one supplied throw. Private parent/child values 11/22,
+request/alias identity, exact allocations/binding rows, receiver owners and alias-cell identity/storage and
+full-driver budgets pass. Two pre-main fixture failures stay zero. Captured API
+trace-frame checks are pure projections; the supplied exception keeps its old
+empty trace. Invalid/embedded-NUL name diagnostic formatting remains unresolved;
+Zend uses a C-string `%s` while the old raw missing-name rule emits full bytes.
+Fresh exceptions inside binding handlers, autoload expansion and nonstring scope
+conversion and COMP71 stored-string first-class capture are
+separate obligations. The original COMP80 carrier failure retains zero credit;
+its accepted comparison evidence is not replayed.
+
 A free user-function fake bound to an object acquires internal `Closure` lexical
 scope. A returned ordinary source Closure copies that scope, called class and
 receiver as durable evidence; cloning copies its ordinary static storage.
