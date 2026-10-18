@@ -123,7 +123,7 @@ $api = 'define';
 $result = 'kept';
 set_error_handler('v79Never', E_WARNING | E_DEPRECATED);
 try {
-    eval('$result = $api(case_insensitive: $flag, value: $candidate, constant_name: v79StrictName()); echo "BAD_RETURN|";');
+    eval('declare(strict_types=1); $result = $api(case_insensitive: $flag, value: $candidate, constant_name: v79StrictName()); echo "BAD_RETURN|";');
 } catch (TypeError $error) {
     echo 'E|', $error->getMessage(), '|';
     $trace = $error->getTrace();
