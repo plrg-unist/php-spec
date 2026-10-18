@@ -74,9 +74,9 @@ transfers the acquired owner to an alias. If it rebinds the CV to an unwrapped
 null/bool/int/float, insertion uses that live scalar directly and preserves the
 acquired count: an existing debt cancels first, otherwise the old wrapper gains a
 request owner. Supplied throws preserve that count while discarding the builder.
-This ordinary-scalar completion requires a primitive old value; the builder
-must remain object-free. Retargeting between different admitted reference cells also records the
-omitted new-cell owner. This debt survives deletion of the originating entry and
+The acquired value may be primitive or an admitted untyped flat array; the
+builder must remain object-free. Retargeting between different admitted reference
+cells also records the omitted new-cell owner. This debt survives deletion of the originating entry and
 abrupt builder cleanup. Copies at effective count1 unwrap the stored value; copies at
 larger counts retain the alias. Same-cell insertion preserves an existing debt;
 scalar and inverse-reference retargets cancel count biases per cell, including
@@ -99,8 +99,12 @@ table independently of its wrapper count. Singleton copies unwrap to DIRECT
 array values; later child writes use ordinary COW. A still-indebted wrapper can
 switch child tables while a direct CV retains its previous table. Stable same-cell
 array insertion transfers the acquired owner without adding a request root.
-Old array payloads require ALIAS completion, and neither old nor current payload
-may be the active builder. The [flat-array ledger](../../coverage/semantics/array-literal-float-ref-arrays-review.json)
+Old array payloads also admit ordinary-scalar DIRECT completion: unmatched
+acquired counts retain the wrapper and its child table, while existing wrapper
+debt cancels first. Neither old nor current payload may be the active builder.
+The [array-to-scalar ledger](../../coverage/semantics/array-literal-float-ref-array-scalar-review.json)
+checks normal/throw transfer, debt cancellation and repeated owners.
+The [flat-array ledger](../../coverage/semantics/array-literal-float-ref-arrays-review.json)
 records fresh singleton/shared, deletion, supplied-throw and inverse-cleanup cases.
 Array-valued type sources, pooled/immutable or nested/reference-bearing/string-leaf
 arrays, other owning payloads, effective-zero, static/hooked/queued or retired

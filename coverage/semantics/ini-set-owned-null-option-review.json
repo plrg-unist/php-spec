@@ -1,0 +1,88 @@
+{
+  "scope": "Retained live intrinsic Closure INI_SET, ordinary or explicit __invoke, positional two-slot NULL option and quiet primitive value. Values retain Source62 NULL/bool/int/non-NaN float/authenticated INTERNED-REQUEST strings. A caller/global keep alias preserves the owner; owned named/packed/PIPE, sole-owner retirement and wider values/configuration remain partial.",
+  "status": "independently_accepted_private_integrated_on_join",
+  "reviewer": "/root/source_review_35",
+  "parent": "0dff04c2b3d24f726d26fac3840768c038a60a02",
+  "semantic_revision": "85d2879341b0984826962fafbd4f2df49751b93a",
+  "tested_revision": "5b53c02b013a0838db722ec87ca35662dddab451",
+  "semantic_files": {
+    "spec/semantics/172-file-context-intrinsics.watsup": "17cfa534ae131a16deceebda8b7928679ff6eb2d0f7495be7699c1f36eecfefe"
+  },
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "primary": "Pinned ext/standard/basic_functions.c ini_set parses option before value; Zend/zend_API.c zend_parse_arg_str_weak deprecates rawNULL before conversion and returns before conversion on a pending Exception. Zend/zend_closures.c Closure::__invoke forwards through its internal wrapper: ordinary Closure invocation follows caller strictness, explicit __invoke supplies weak reception. Native strict-ordinary versus explicit-weak observations confirm this boundary.",
+  "semantics": "Ten additive module172 lines supply one disjoint owner-present positional NULL2 config_ini_null_valid arm. Existing config_invoke_valid authenticates live allocated INTRINSICCLOSURE INI_SET and its actual source; quiet/source-argument/strict guards stay intact. Ownerless named63/unary validators, config_nodes/task roots, existing368 raw trace projection, wrapper frame construction, result/body and discard bodies remain unchanged. No new task, schema, ownership mechanism or shared helper body.",
+  "accepted": [
+    "Four checked normal model records exactly match native stdout/PHPstderr/PHPexit0 at5b53c02b0/runtime85d287934/405. Ordinary weak default and true-handler cases keep the original owner; selected value effects rebind live callee to a distinct INI_GET Closure while the captured INI_SET owner/keep survive. False/default handling preserves precision9 before false, then original setter recovers9 to10. Strict ordinary rawNULL/2089 errors after the value effect with caller99/handler0/precision9; the same retained owner explicit __invoke accepts weak NULL/2093 and runs the true handler. Only default Deprecated lines8/18 are expected; strict/peer PHPstderr is quiet.",
+    "All782 premises pass:161+155+183 author,283 independent. Actual pre-value CONFIG_ARGS retains the original owner and keep; completed cfg keeps that owner despite live replacement. Actual explicit-weak handler Exception has handler/ini_set/__invoke/caller frames, rawNULL and the same authenticated REQUEST value in both API and wrapper frames, PreviousNULL/same identity/caller99/precision10/sibling2099. Owner task roots and exact entire-state throwing discard preserve the owner without registration/body work. Actual post-catch ordinary strict keep setter recovers10 to11. Source/owner-kind/dead/out-of-range/count/carrier/phase controls and zero/split budgets pass. Peer native deliberately avoids trace traversal; full trace credit is state proof. Four raw SL outputs are true LF/exit0/empty stderr.",
+    "Nine input/HEAD-stable reports all PASS on first attempts, fully reaped with no failure/retry/timeout/interruption/group survivor. Initial native3/baseline at9d082 onCPU5 remain distinct from laterCPU2. No old623/746 actor is renewed."
+  ],
+  "baseline_zero_credit": "At source-only9d082a173e18a023a413704260cd5c079eadfda2/unchanged0dff04c2b onCPU5, sole captured-intrinsic-owner-before-value-rebinding-and-fallback produces Unsupported error-handler ingress requires a producer continuation afterB|V|, CLI1/nullPHPexit/quiet workerstderr. Native reaches false/default deprecation, owner recovery and precision10; baseline receives zero agreement.",
+  "compatibility": "Existing ownerless63 and unary heads remain byte-exact, as do source/quiet-value/body/strict/wrapper/368/marker/discard/root bodies. Old62/63 forged OWNER controls on fixed/direct ordinary source remain source-inconsistent; no repair/623/746 replay. V81 DEFINE invalid owning flags and class/lifecycle domains are disjoint. Source47, owned-NUL and low-initial-precision NaN callback work remain paused/untouched.",
+  "execution": "LC_ALL=C TZ=UTC, INT+kill5, AS3221225472, taskset5 initial/taskset2 later; serial fail-first/full reap. Native15s/CLI45s-host60s/freshSL90s. Default PHP Deprecated is separate from empty CLI/SL workerstderr.",
+  "command_prefix": "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s <cap>s prlimit --as=3221225472 -- taskset -c <cpu> python3 <step>",
+  "commands": [
+    {
+      "revision": "9d082a173e18a023a413704260cd5c079eadfda2",
+      "cpu": 5,
+      "caps": [
+        90,
+        90
+      ],
+      "steps": [
+        "tests/semantics/ini_set_owned_null_option_sources.py --phase native --output .tools/ini-set-owned-null-option-native-64",
+        "tests/semantics/ini_set_owned_null_option_sources.py --phase baseline --output .tools/ini-set-owned-null-option-native-64 --case captured-intrinsic-owner-before-value-rebinding-and-fallback"
+      ]
+    },
+    {
+      "revision": "5b53c02b013a0838db722ec87ca35662dddab451",
+      "cpu": 2,
+      "caps": [
+        90,
+        240,
+        90,
+        90,
+        360,
+        90,
+        120
+      ],
+      "steps": [
+        "tests/semantics/ini_set_owned_null_option_review_sources.py --phase native --output .tools/ini-set-owned-null-option-review-64",
+        "tests/semantics/ini_set_owned_null_option_sources.py --phase model --output .tools/ini-set-owned-null-option-native-64",
+        "tests/semantics/ini_set_owned_null_option_review_sources.py --phase model --output .tools/ini-set-owned-null-option-review-64",
+        "tests/semantics/ini_set_owned_null_option_protocol.py --phase prepare --sources .tools/ini-set-owned-null-option-native-64 --output .tools/ini-set-owned-null-option-public-64",
+        "tests/semantics/ini_set_owned_null_option_protocol.py --phase check --sources .tools/ini-set-owned-null-option-native-64 --output .tools/ini-set-owned-null-option-public-64",
+        "tests/semantics/ini_set_owned_null_option_review_protocol.py --phase prepare --sources .tools/ini-set-owned-null-option-review-64 --output .tools/ini-set-owned-null-option-review-public-64",
+        "tests/semantics/ini_set_owned_null_option_review_protocol.py --phase check --sources .tools/ini-set-owned-null-option-review-64 --output .tools/ini-set-owned-null-option-review-public-64"
+      ]
+    }
+  ],
+  "raw_root": ".tools/ini-set-owned-null-option-evidence-64",
+  "report_sha256": {
+    "author/public/check-report.json": "f6f8f17addc1bccda1c62c07e7824e62d38d4a6663cc224eea7e69f11164e0ba",
+    "author/public/prepare-report.json": "2e441acf947f14742ca52ce4d4bb398b4cb7905e61e08c12e0aaf8ae14c00fdb",
+    "author/review/model-report.json": "ce008c28dbd567380a11eb238dbfbef9eda134d13779a2c43c4ade0f1d3e25ba",
+    "author/review/native-report.json": "43656a75036e88f2b8aaf58981ab8df6fd427a7db09e6b2e6f0e6797fc0c3f6a",
+    "author/review-public/check-report.json": "5fddb262beb9a0a63da1f2deecf742d55c21971f90241d84545daca6c9266688",
+    "author/review-public/prepare-report.json": "03f2a718579cf89603a2a5b197d2f9cc5e7be469c0ab0b70d7d26b7219c8fba6",
+    "author/sources/baseline-report.json": "c63219c0c1cbaff178c14bf8f340950e5040af925dd835bc86b4fe56370dcc57",
+    "author/sources/model-report.json": "70e2e6b64d0f1dbacdc92b1a4fb6d8fb72d586a67948fbcac4b4964aa652ae26",
+    "author/sources/native-report.json": "bc6261b4512289904afc741766f72323e6b03d949d24b0d95afaceaad8aa07e9"
+  },
+  "recovery": "Four owned roots moved once after reviewer RAW STOP/focused users[] into author/{sources,review,public,review-public}; only nine concise reports hashed once. Restore recorded original private root paths/cut for exact source/cwd identity. Full fingerprints/commands/exits remain in reports; old evidence is not renewed.",
+  "remaining": "Owned named/packed/PIPE forms, sole-owner retirement, owning/NaN/legacy-PSTRING values and complete configuration semantics remain partial. No engine bug or intentional PHP divergence; no full-core/equivalence/BOLA claim.",
+  "composition": {
+    "parent": "bbb986fb3a3d674463ccc3304e788350743445b3",
+    "private_publication": "4cf2a9cd396ef2e97a20687390334dd3d23a3897",
+    "modules": 405,
+    "method": "Module172 and four tests are private-exact; parent172 is base-exact, so reversing the sole ten-line owner-present validator addition restores entire incoming172. Every other runtime/schema/ordered405 manifest path remains parent-exact. Inventory only environment.config own2helper/2source/1ledger plus review suffix; incoming docs/checkpoints preserved.",
+    "runtime_sha256": {
+      "spec/semantics/172-file-context-intrinsics.watsup": "17cfa534ae131a16deceebda8b7928679ff6eb2d0f7495be7699c1f36eecfefe"
+    },
+    "seams": "Independent actual-parent review CLEAR.172/368/Closure source, owner roots, ownership, frames/traces and400 are base-exact.207 widens only missing-CV scalar comparison warning selectors; these sources have defined CVs and identity comparisons.40/404 quiet-power requires BINARY_RIGHT POWER and ternary, absent from concat/increment sources.289 requires Generator delegation;413 requires variable lossy-float explicit-reference array-literal keys, absent from these sources and internal trace arrays. No schema/state-field change or concrete interaction warrants a joined actor.",
+    "evidence": "Source4/state782 retain5b53c02b0/runtime85d287934/405, initial9d082 CPU5 native/base versus laterCPU2, nine first-attempt PASS and baseline0. No accepted replay, joined actor or renewed execution credit."
+  }
+}

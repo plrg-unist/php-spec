@@ -45,6 +45,13 @@ argument's destructor throws, the returned cache snapshot survives receiver stor
 retirement; its later destructor can replace the exception before catch. The
 [owning SEND review](../../coverage/semantics/generator-pending-owning-return-send-review.json)
 distinguishes that snapshot from the request-late return value.
+With a native ancestor receiver, pending `send` clears that receiver rather than
+the owning physical middle. An inherited-pending middle therefore still skips
+finally on close, while the initialized outer and cleared receiver execute theirs.
+Normal argument destruction can retire the chain before the used cache result
+reaches the caller; that snapshot remains independent of the retained return.
+Actual outer next instead consumes the return and reaches the ordinary tails.
+See the [ancestor SEND review](../../coverage/semantics/generator-pending-owning-chain-send-review.json).
 
 An unconsumed used-yield input installed by pending shared `send` has a separate
 lifetime. In the pinned engine its result slot precedes the live range used by

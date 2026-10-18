@@ -124,7 +124,7 @@ Scalar `<=>` additionally admits a missing left CV with a captured primitive or
 defined direct-CV right operand, and a captured primitive or defined scalar
 direct-CV left with a missing right CV. The latter follows the current left
 wrapper after the callback, including reference rebinding; it adds no borrowed
-old-cell owner. Distinct direct-CV `==`/`<` pairs also admit either missing
+old-cell owner. Distinct direct-CV `==`/`!=`/`<`/`<=`/`>`/`>=` pairs also admit either missing
 operand with an initially defined scalar counterpart, following that counterpart's
 current wrapper after the callback. A missing right name need not be initialized.
 Both protocols freeze null while preserving the opposing read; both-missing and
@@ -133,7 +133,11 @@ non-scalar opposing CVs. Source certificates stay valid through those changes;
 entry/resume domain guards refuse unsupported values without another Warning.
 [The equality/less review](../../coverage/semantics/undefined-scalar-compare-review.json)
 and [missing-right review](../../coverage/semantics/undefined-scalar-compare-right-review.json)
-record the scalar continuations and their separate validation cuts.
+and [not-equal/less-or-equal review](../../coverage/semantics/undefined-scalar-compare-ne-le-review.json)
+and [greater review](../../coverage/semantics/undefined-scalar-compare-gt-ge-review.json)
+record the scalar continuations and their separate validation cuts. Greater
+operators reverse physical VM operands; the same source shapes apply within the
+single-missing/scalar-throughout bound.
 Missing-left binaries retain the later right read; missing-right binaries admit
 known or temporary values and initially-reference CVs in strict identity comparisons.
 Module208 retains the borrowed old cell through the saved caller without adding
@@ -190,7 +194,8 @@ transfers its acquired owner when the CV still names the same cell, including
 unset/rebind to that cell. Retargeting to an ordinary null/bool/int/float inserts
 the live scalar and preserves the acquired count, cancelling old debt first or
 retaining an unmatched request owner, also on throw.
-Ordinary-scalar completion keeps primitive old values and the builder object-free.
+Ordinary-scalar completion admits primitive or bounded untyped flat-array old
+values and keeps the builder object-free.
 The [reference-element ledger](../../coverage/semantics/array-literal-float-ref-key-warning-review.json)
 records repeated owners and singleton-copy observations. Different-reference
 retargets now preserve both the old owner and a per-cell new-owner deficit through
@@ -206,7 +211,11 @@ checks int-property singletons, two sources, typed old cells and supplied throws
 Untyped wrappers may also contain mutable nonpool flat arrays of DIRECT
 null/bool/int/float values. Wrapper debt and child-table owners remain distinct across singleton
 unwrapping, later child COW, entry deletion and supplied-throw builder cleanup.
-Old arrays require ALIAS completion, with both payloads distinct from the builder.
+Old arrays also complete with ordinary-scalar DIRECT insertion, retaining their
+acquired wrapper count or cancelling its existing debt. Repeated unmatched counts
+remain request owners, and their child table keeps ordinary COW semantics. Both
+payloads must differ from the builder. The [array-to-scalar ledger](../../coverage/semantics/array-literal-float-ref-array-scalar-review.json)
+checks live scalar values, normal/throw ownership and debt cancellation.
 The [flat-array ledger](../../coverage/semantics/array-literal-float-ref-arrays-review.json)
 checks stable/inverse transfer and safe final retirement. Effective-zero retirement,
 array-valued type sources, nested/reference-bearing/string-leaf or pooled/immutable

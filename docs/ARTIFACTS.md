@@ -72,6 +72,12 @@ Normal three-owning computed returns are validated in
 398,023 bytes under `.tools/m114/`, six distinct actor reports including two
 fixture failures, SHA-256 `62aaa027e78aaea3c957a968db2509de829d7fbb8a91f5ada7421b0bdd532ccb`.
 
+First-C pending three-owning replay is in
+`../php-spec-evidence-archive/lifecycle-pending-three-owning-115/manifest.json`:
+640,934 bytes under `.tools/m115/`, nine reports retaining the original diagnostic,
+binding and timeout failures plus runtime patches, SHA-256
+`993cb5c5d8f5417ea4e4a6b9b8b67457aa68c73a62151c86a639466db4e0214d`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the

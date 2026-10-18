@@ -18,8 +18,8 @@ remains later research.
 
 [Scalar comparison warnings](docs/semantics/COMPARISONS.md) preserve a missing
 variable's null result through handlers while following current scalar CV bindings.
-This covers bounded spaceship operands and `==`/`<` direct-CV pairs with one
-missing operand, including reference rebinding. Wider warning paths remain partial.
+This covers bounded spaceship operands and direct-CV `==`/`!=`/`<`/`<=`/`>`/`>=` pairs
+with one missing operand, including rebinding. Wider warning paths remain partial.
 
 [Array-literal float keys](docs/semantics/DIMENSIONS.md) now retain their converted
 integer across deprecation handlers. Unwrapped null/bool/int/float element variables
@@ -32,6 +32,8 @@ live instance-property type sources: singleton copies shed their
 constraint while the original stays typed; shared copies retain it. Untyped
 reference cells may also hold flat runtime arrays of direct null/bool/int/float values. Wrapper
 debt stays separate from child-table COW, including deletion and throw cleanup.
+Retargeting a flat-array wrapper to an ordinary scalar preserves its acquired
+count, cancelling debt first or retaining the old wrapper and its child.
 Unsafe deficit retirement and wider domains remain Unsupported. Duplicate
 replacement and later items stay ordered.
 
@@ -232,7 +234,15 @@ extend that quiet-value domain to ordinary named and mixed arguments. Reversed
 `value:`/`option:` calls capture the earlier value before later option effects;
 handler and strict-error traces retain normalized `[NULL, value]` arguments.
 Four additional originals and 746 premises pass, including false/default delivery
-and throwing-handler cancellation. Packed/owned/PIPE forms remain partial.
+and throwing-handler cancellation. Owned named, packed and PIPE forms remain partial.
+
+[Retained intrinsic NULL INI calls](coverage/semantics/ini-set-owned-null-option-review.json)
+extend the quiet-value continuation to positional `ini_set` Closures. The original
+owner survives value effects that replace the live callee. Ordinary strict calls
+reject NULL first; explicit `__invoke` uses weak reception through its wrapper.
+Four originals and 782 premises cover returning/throwing handlers, the actual
+four-frame wrapper trace and reuse of the retained setter. Sole-owner lifetimes
+and wider values/forms remain partial.
 
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
@@ -691,6 +701,13 @@ callbacks and cancelled result assignment in the
 [quiet-MUL ledger](coverage/semantics/quiet-multiply-order-review.json).
 Numeric products and staged Warning rules retain their existing paths.
 
+Quiet `**` now admits a ternary scalar LEFT copy with a plain RHS variable
+when only final power deprecation occurs. An `E_DEPRECATED`-only handler may
+change or unset the source variables without changing captured signed infinity;
+a supplied throw cancels assignment. Three originals and 266 focused premises
+pass in the [quiet-power-copy ledger](coverage/semantics/quiet-power-copy-review.json).
+Other producer classes and operand/lifecycle forms remain partial.
+
 Primitive plain-CV `**=` now commits its captured result even when the deprecation
 handler throws. A late alias detaches before the same exception continues; the
 outer assignment stays unchanged. Three exact originals and 407 focused SL
@@ -1062,6 +1079,11 @@ An owning copied return at a simple-CV assigned `yield from` also supports that
 pending `send`: the return stays intact until actual next or close. The cache
 snapshot precedes argument cleanup and can outlive receiver retirement when an
 argument destructor throws. See the [owning SEND review](coverage/semantics/generator-pending-owning-return-send-review.json).
+Pending `send` also follows finite native ancestor links to that owning return,
+including refresh inside the call. It clears only the receiver's initialization;
+the physical middle keeps its return and pending history. Its cache snapshot
+survives normal argument cleanup, reference-row COW and receiver retirement.
+See the [ancestor SEND review](coverage/semantics/generator-pending-owning-chain-send-review.json).
 Pending `send` through native shared links also buffers a paused child's yield
 assigned directly to a simple CV. A direct or forwarded `next` that resumes the
 child consumes it; close and overwrite preserve its count until request-store destruction,
@@ -1543,6 +1565,11 @@ The call retains the raw flag and earlier pointer across callback changes;
 truthy flags warn before publication or duplicate lookup. Strict calls reject
 the raw nonboolean flag.
 [Quiet object-flag review](coverage/semantics/define-object-scalar-flag-review.json).
+Arrays and ordinary class instances used as flags raise TypeError before the
+`define` body in weak and strict calls, even with a recursive value or existing key. Raw traces
+retain the captured arrays and object pointers; ordinary flag-object destruction
+waits until those trace owners are released.
+[Invalid-flag review](coverage/semantics/define-invalid-flag-review.json).
 
 Fresh definitions also copy nonempty array trees containing certified stdClass
 or user-instance leaves under the admitted flags. Copied containers freeze source
@@ -4185,8 +4212,11 @@ pauses, required literal history despite an unchanged heap, engine TypeError cat
 one line7 Notice and detached aliases. Three simultaneously owning computed
 object returns also pass a fresh source comparison and 347/7 reached checks at
 `f305be84b`: normal C/B/A retirement, saved-caller owners, source-region refusals
-and selected-reference aliases. This requires no runtime change. Wider
-interposed/pending histories, reentry, GC and broader consumers remain open.
+and selected-reference aliases. This requires no runtime change. A direct
+TypeError from the first computed object's destructor now preserves its local
+catch while the other two returns still own their objects. One fresh comparison
+and 514/12 checks at `9aa2136d9` prove cleared-NULL recovery, one Notice and detached
+caller aliases. Other throw forms, reentry, GC and broader consumers remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

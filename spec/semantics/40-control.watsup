@@ -183,6 +183,7 @@ dec $arithmetic_mixed_plan(pstate) : pintegeroperation?
 dec $arithmetic_copy_plan(pstate) : pintegeroperation?
 dec $arithmetic_owned_plan(pstate) : pintegeroperation?
 dec $power_warning_plan(pstate) : (pintegeroperation, pnumber, pnumber)?
+dec $quiet_power_copy_plan(pstate) : (pintegeroperation, pnumber, pnumber)?
 dec $arithmetic_unary_plan(pstate) : punarywarning?
 dec $string_compare_pending(pstate) : bool
 dec $aggregate_compare_pending(pstate) : bool
@@ -202,6 +203,7 @@ rule PhpStep/binary-right: S ~> S_out[.HELD = S.HELD]
   -- if $arithmetic_copy_plan(S) = eps
   -- if $arithmetic_owned_plan(S) = eps
   -- if $power_warning_plan(S) = eps
+  -- if $quiet_power_copy_plan(S) = eps
   -- if ~$string_compare_pending(S)
   -- if ~$aggregate_compare_pending(S)
   -- if S_left = $resolve_at($hold_task_inputs(S), poperand, z)
@@ -224,6 +226,7 @@ rule PhpStep/binary-left-abrupt: S ~> S_left[.TODO = eps][.HELD = S.HELD]
   -- if $arithmetic_copy_plan(S) = eps
   -- if $arithmetic_owned_plan(S) = eps
   -- if $power_warning_plan(S) = eps
+  -- if $quiet_power_copy_plan(S) = eps
   -- if S_left = $resolve_at($hold_task_inputs(S), poperand, z)
   -- if S_left.COMPLETION =/= NORMAL
 rule PhpStep/binary-right-abrupt: S ~> S_right[.TODO = eps][.HELD = S.HELD]
@@ -239,6 +242,7 @@ rule PhpStep/binary-right-abrupt: S ~> S_right[.TODO = eps][.HELD = S.HELD]
   -- if $arithmetic_copy_plan(S) = eps
   -- if $arithmetic_owned_plan(S) = eps
   -- if $power_warning_plan(S) = eps
+  -- if $quiet_power_copy_plan(S) = eps
   -- if S_left = $resolve_at($hold_task_inputs(S), poperand, z)
   -- if S_left.COMPLETION = NORMAL
   -- if S_right = $resolve_at(S_left, S.RESULT, z)
