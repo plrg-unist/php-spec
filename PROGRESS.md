@@ -521,6 +521,15 @@ throw forms, properties/reentry, larger/mixed histories, GC and wider consumers
 remain open.
 [Owning-return review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
+Composed over `0df235208`/405 after independent actual-tail review. Static builtin
+NEW TypeError produces no dynamic-NEW selector task; the source has no INI/DEFINE,
+array-debt, Generator or eligible arithmetic/comparison Warning producer.
+LITERALREFDEBTS stays empty. Module30 preserves incoming DYNAMIC_NEW_START and
+adds only the nonexecuting history tag;156/270 keep exact tested9aa bytes. Every
+other runtime file and the ordered405 manifest stay parent-exact. Native1/source1,
+diagnosis73/2 and state514/12 retain their distinct private cuts without replay.
+
+
 
 Retained propertyless Stringable `define` names now accept captured boolean true
 with primitive candidates and non-NUL global/class-like results. One module400
