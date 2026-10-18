@@ -625,6 +625,14 @@ cached-zero division, final power deprecation after RHS-name rebinding and a
 supplied throw in the [right-warning ledger](coverage/semantics/right-arithmetic-warning-review.json).
 Other operand and lifecycle forms remain partial.
 
+Initially plain variables now retain the same arithmetic holders for
+`+`, `-`, `*`, `/`, `**`. A first Warning can repair bad RHS text; after its own
+Warning the RHS may become an alias or be unset without replacing the captured
+number. Ten originals and 1,055 focused SL premises cover both warning orders,
+TypeError with current operand types, final power deprecation and supplied throws
+in the [plain-arithmetic ledger](coverage/semantics/plain-arithmetic-warning-review.json).
+An input must stay plain until its conversion; wider forms remain partial.
+
 Primitive plain-CV `**=` now commits its captured result even when the deprecation
 handler throws. A late alias detaches before the same exception continues; the
 outer assignment stays unchanged. Three exact originals and 407 focused SL

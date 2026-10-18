@@ -7,6 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Initially plain CVs now stage `+`, `-`, `*`, `/`, `**` numeric-string diagnostics.
+A first Warning can repair bad RHS text; each captured number survives its callback,
+including a later RHS reference or unset. Fresh conversion inputs must still be plain;
+returned holders and final power Deprecated use captured numbers. Ten originals pass at
+9f1d477a8/402 and six focused fixtures pass 1,055 SL premises at f59178b78/402:
+both warning orders, strict numeric types, live TypeError, supplied throws,
+one or two cell owners, an unowned old RHS after unset, and budget resumption.
+Thirteen rows remain partial; old reference-based bodies/readers and evidence
+are unchanged, OP12 paused.
+[Plain-arithmetic ledger](coverage/semantics/plain-arithmetic-warning-review.json).
+
+Composed over 8cace0a9/403 after review of Generator return retention, float-array
+keys, DEFINE, destructor and object-numeric selectors, absent here. Complete parent
+fields/defaults and incoming paths are retained; empty Generator retention is inert.
+Source10/state1055 keep their private402 cuts without a joined actor or renewed credit.
+
 Direct Generator unpack now admits an owning child return copied into a
 simple-CV assigned `yield from`. Normal next consumes the copied result; forced
 close preserves its single count before finally and current-cache cleanup.
@@ -144,20 +160,8 @@ paths stay exact; only30/41/new413 and the 403-module manifest carry A19.
 Source4/strict402 and state589 retain their private cuts without a joined actor,
 accepted replay or renewed execution credit.
 
-Quiet LEFT/right-only numeric-string Warnings now enter the existing `+`, `-`,
-`*`, `/`, `**` continuations for two selected reference cells. One shared snapshot and four plan
-arms preserve every old body; actual CONVERT steps capture both holders before
-the sole RHS Warning. Callback writes cannot change cached results or zero division;
-power still reaches its final Deprecated after RHS-name rebinding. Nine originals
-pass at 0f1b299d6/401; four focused fixtures pass 576 SL premises at cd4715302/401,
-covering all four arms, exact capture order, owners and budget resumption.
-Thirteen rows remain partial, earlier cuts receive no renewed credit, OP12 paused.
-[Right-warning ledger](coverage/semantics/right-arithmetic-warning-review.json).
-
-Composed over33fb9bef1/402 after review of magic property-write, LIST, DEFINE,
-reference-return destructor and numeric SensitiveParameterValue selectors, absent
-here. All incoming paths are retained; source9/state576 keep their private401
-cuts without a joined actor or renewed execution credit.
+The earlier selected-reference right-only Warning route retains source9/state576
+in its [review ledger](coverage/semantics/right-arithmetic-warning-review.json).
 
 Initialized SensitiveParameterValue/int/float comparisons now emit the standard
 Notice and use private 1/1.0 without reading the wrapped value. Nine added

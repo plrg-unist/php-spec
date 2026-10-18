@@ -366,6 +366,8 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | SUBMUL_CONVERT pintegeroperation parithmeticphase | SUBMUL_WARNING pintegeroperation parithmeticphase pvalue pnumber nat
   | POWER_CONVERT pintegeroperation parithmeticphase | POWER_CONVERSION_WARNING pintegeroperation parithmeticphase pvalue pnumber nat
   | POWER_CONVERSION_DEPRECATED pintegeroperation pnumber pnumber nat
+  | ARITHMETIC_CV_CONVERT pintegeroperation parithmeticphase | ARITHMETIC_CV_WARNING pintegeroperation parithmeticphase pvalue pnumber nat
+  | ARITHMETIC_CV_DEPRECATED pintegeroperation pnumber pnumber nat
   | ARITHMETIC_UNARY_WARNING punarywarning nat
   | BITNOT_WARNING pbitnotwarning nat
   | ARRAY_STRING_CAST_WARNING porigin poperand int nat
