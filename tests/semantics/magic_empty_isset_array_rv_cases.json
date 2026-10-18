@@ -1,0 +1,79 @@
+{
+  "scope": "Paired external private-property empty with inherited untyped __isset returning live arrays; cached truth, ordinary disposal before Get or skip, receiver/guard lifetime, supplied throw and shared table delay.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_gate_completed": true,
+  "native_revision": "46ad925eec1397c76489463212a5292788abe9d2",
+  "native_report_sha256": "7c56aabda42e57b4eb28ab6b578aa5f189ad12d88cd67fb3897fc8de2bdd83af",
+  "cases": [
+    {
+      "id": "normal",
+      "source_file": "magic-empty-isset-array-rv-normal.php",
+      "source": "<?php\nclass IssetArrayPayload101 {\n    public function __destruct() {\n        global $child, $next;\n        echo 'V|';\n        $child = null;\n        $next = 0;\n        echo 'v|';\n    }\n}\nclass IssetArrayParent101 {\n    private int $value = 1;\n    public function __isset(string $name) {\n        echo 'I|';\n        return [new IssetArrayPayload101()];\n    }\n    public function __get($name) {\n        global $next;\n        echo 'G|';\n        return $next;\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass IssetArrayChild101 extends IssetArrayParent101 {}\n$held = null;\n$next = 1;\n$child = new IssetArrayChild101();\necho 'N:';\necho empty($child->value) ? 'T' : 'F', '|';\n$held = null;\n$child = null;\necho 'E|';\n",
+      "source_sha256": "0975a6a2be3b7bd81d52aaf36800e831081e0443ea5ebb527edf11e854e12f83",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-empty-isset-array-rv-private-101/.tools/magic-empty-isset-array-rv-probes-101/normal.php",
+      "native_group": "native-first",
+      "stdout_base64": "TjpJfFZ8dnxHfER8VHxFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "empty_line": 29,
+      "native_raw_sha256": "561e4a2de92a45d40bb9c804f3fb4dbbf22e88ffd5347c5e3af38bbc2a9390ea",
+      "status": "normal"
+    },
+    {
+      "id": "held",
+      "source_file": "magic-empty-isset-array-rv-held.php",
+      "source": "<?php\nclass IssetArrayPayload101 {\n    public function __destruct() {\n        global $child, $next;\n        echo 'V|';\n        $child = null;\n        $next = 0;\n        echo 'v|';\n    }\n}\nclass IssetArrayParent101 {\n    private int $value = 1;\n    public function __isset(string $name) {\n        global $held;\n        echo 'I|';\n        $rv = [new IssetArrayPayload101()];\n        $held = $rv;\n        return $rv;\n    }\n    public function __get($name) {\n        global $next;\n        echo 'G|';\n        return $next;\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass IssetArrayChild101 extends IssetArrayParent101 {}\n$held = null;\n$next = 1;\n$child = new IssetArrayChild101();\necho 'H:';\necho empty($child->value) ? 'T' : 'F', '|';\n$held = null;\n$child = null;\necho 'E|';\n",
+      "source_sha256": "cf13622d3eb9098467aaf69ad39570ebc650ed8427c59079b0b78f6500ce54e9",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-empty-isset-array-rv-private-101/.tools/magic-empty-isset-array-rv-probes-101/held.php",
+      "native_group": "native-first",
+      "stdout_base64": "SDpJfEd8RnxWfER8dnxFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "empty_line": 32,
+      "native_raw_sha256": "f506a860297da1546917b01327a38f278e9d4f8b4c99892b89729a4fdb7c6e33",
+      "status": "normal"
+    },
+    {
+      "id": "throwing",
+      "source_file": "magic-empty-isset-array-rv-throwing.php",
+      "source": "<?php\nclass IssetArrayPayload101 {\n    public function __destruct() {\n        global $child, $next, $error;\n        echo 'V|';\n        $child = null;\n        $next = 0;\n        echo 'v|';\n        throw $error;\n    }\n}\nclass IssetArrayParent101 {\n    private int $value = 1;\n    public function __isset(string $name) {\n        echo 'I|';\n        return [new IssetArrayPayload101()];\n    }\n    public function __get($name) {\n        global $next;\n        echo 'G|';\n        return $next;\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass IssetArrayChild101 extends IssetArrayParent101 {}\n$error = new Exception('isset-array-stop');\n$held = null;\n$next = 1;\n$child = new IssetArrayChild101();\n$answer = 42;\necho 'X:';\ntry { $answer = empty($child->value); }\ncatch (Exception $caught) {\n    echo 'C|', $answer, '|';\n    if ($caught === $error) { echo 'T|'; } else { echo 'F|'; }\n}\n$held = null;\n$child = null;\necho 'E|';\n",
+      "source_sha256": "c3f875d331cd899821a6f5741c156b2cf2ad7af1f56cf635e86680be43d6b881",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-empty-isset-array-rv-private-101/.tools/magic-empty-isset-array-rv-probes-101/throwing.php",
+      "native_group": "native-first",
+      "stdout_base64": "WDpJfFZ8dnxEfEN8NDJ8VHxFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "empty_line": 32,
+      "native_raw_sha256": "efed8a34c083866c80cdb23600a1812e7c8b9e32c86b21253c6261fc6b680e62",
+      "status": "normal"
+    },
+    {
+      "id": "empty",
+      "source_file": "magic-empty-isset-array-rv-empty.php",
+      "source": "<?php\nclass IssetArrayParent101 {\n    private int $value = 1;\n    public function __isset(string $name) {\n        global $child;\n        echo 'I|';\n        $rv = [];\n        $rv[] = 7;\n        unset($rv[0]);\n        $child = null;\n        return $rv;\n    }\n    public function __get($name) {\n        echo 'G|';\n        throw new Exception('unexpected-array-get');\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass IssetArrayChild101 extends IssetArrayParent101 {}\n$held = null;\n$next = 1;\n$child = new IssetArrayChild101();\necho 'F:';\necho empty($child->value) ? 'T' : 'F', '|';\n$held = null;\n$child = null;\necho 'E|';\n",
+      "source_sha256": "07640e32e756433fa700b0260ad43ab2cab9aeb852452c480480182b88874742",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-empty-isset-array-rv-private-101/.tools/magic-empty-isset-array-rv-probes-101/empty.php",
+      "native_group": "native-first",
+      "stdout_base64": "RjpJfER8VHxFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "empty_line": 24,
+      "native_raw_sha256": "461403d6ad9dedbd245496ae5a07bea8e1cb81adcf87729f52bb4b8064f375b5",
+      "status": "normal"
+    }
+  ]
+}
