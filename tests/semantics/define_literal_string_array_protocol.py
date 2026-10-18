@@ -59,7 +59,7 @@ def checks(initial, name, stdout):
         # Pure leaf checks preserve bytes and unknown identity in both modes.
         '$dynamic_array_value(S,PSTRING ' + term(b'A\0\xffB') + ',eps,true) = ((S,PSTRING ' + term(b'A\0\xffB') + ',PVSTRING false))',
         '$dynamic_array_value(S,PSTRING eps,eps,false) = ((S,PSTRING eps,PVSTRING false))',
-        '$dynamic_array_value(S,PSTRING [256],eps,true) = eps',
+        '$dynamic_array_value(S,PSTRING ([256]),eps,true) = eps',
         '$dynamic_constant_class(PSTRING ' + text('alpha') + ') = eps',
         '$dynamic_define_value_class(S,PSTRING ' + text('alpha') + ') = eps',
         '~$default_cacheable(PVSTRING false)',
