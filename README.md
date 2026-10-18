@@ -1129,6 +1129,12 @@ registration. Later arguments still run and can change ordinary fields or shared
 references after the name capture.
 [Four source agreements and 590 state premises](coverage/semantics/define-array-name-review.json)
 cover NULL/strict-flag/body-warning priority and raw array/candidate/flag traces.
+Retained, propertyless Stringable names now enter `__toString()` before positional
+`constant()`/`defined()` global lookup. Success replaces only the API slot; strict
+calls reject the raw object before entry, and a method throw cancels the query.
+[Four source agreements and 642 state premises](coverage/semantics/constant-query-stringable-name-review.json)
+cover raw versus converted traces, selected callees, callback effects and discard.
+Sole-owner destruction, wider receivers and named/packed forms remain partial.
 Positional `define()` calls with primitive arguments also reject counts below two
 or above three before name/flag reception or registration. Exact count messages
 and raw API arguments survive all argument effects, including a captured true

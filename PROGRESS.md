@@ -7,6 +7,33 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+One positional Stringable `constant`/`defined` name now executes `__toString()`
+before global lookup in weak calls; strict calls reject before method entry.
+Raw object API arguments survive method throws; normal returns create a separate
+converted CONFIG step, so missing-name errors trace the string. Exactly 53 module400
+insertions reuse existing conversion/trace/unwind machinery with dedicated saved-site
+admission; query kinds stay outside the broad string-kind predicate. Four originals
+and author463 pass at bc3590e16/runtime931f6caac; independent179 passes at9fa625b8b,
+for 642 premises across actual call/method/result/query/error/discard fronts.
+Selected callees, live mutations, callback sibling, raw/converted API traces,
+Exception identity/caller99, complete discard equality and source/shape/carrier/budget
+controls pass. The original peer frame ENV assertion cannot elaborate and retains0;
+only that one-line fixture correction repeats. Initial22f611 native/baseline and all
+later actors use CPU1; PHP/worker stderr is empty on accepted runs. Unchanged baseline
+Unsupported class constant value query after B| retains0. Retained propertyless
+receivers/non-NUL global results bound the validated slice; sole-owner destruction,
+wider lifetimes and named/packed/owner/class-name forms remain partial.
+[Stringable-query review](coverage/semantics/constant-query-stringable-name-review.json).
+
+Pointwise composition over ef587edd3 preserves the incoming 401-module parent.
+The 53-line query patch is applied alongside certified-instance DEFINE-value
+classification; all four tests are private-exact. Generator retained-loop state
+starts empty and its roots/validity are vacuous here; Closure scope, property-empty,
+LIST and compound-warning selectors have no producer in these originals. Shared
+stringifier/trace/frame helpers are unchanged. Source4/author463 retain bc3590e16
+and peer179 9fa625b8b/runtime931f, with the original peer failure0 and no joined actor
+or renewed execution credit.
+
 Certified completed user-instance donors now retain their exact pointer and birth
 class in direct `define` rows and copied array leaves. Typed property aliases stay
 shared; normal and throwing duplicate handlers preserve the old row, callback

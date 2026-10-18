@@ -249,7 +249,58 @@ def $dynamic_define_array_name_valid(S, pconfigcall) = true
   -- if $dynamic_query_arity_arguments(S, pnamedslot*)
 def $dynamic_define_array_name_valid(S, pconfigcall) = false -- otherwise
 
+;; Query Stringables keep the raw API slot through the method, then replace it
+;; in a separate CONFIG step before ordinary global lookup.
+dec $dynamic_query_string_call(pconfigcall) : bool
+def $dynamic_query_string_call(pconfigcall) = true
+  -- if pconfigcall.KIND <- [INTRINSIC_CONSTANT, INTRINSIC_DEFINED]
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps /\ ~pconfigcall.NAMED
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
+def $dynamic_query_string_call(pconfigcall) = false -- otherwise
+dec $dynamic_query_string_valid(pstate, pconfigcall) : bool
+def $dynamic_query_string_valid(S, pconfigcall) = true
+  -- if $dynamic_query_string_call(pconfigcall) /\ $config_invoke_valid(S, pconfigcall)
+  -- if ~$pipe_site(S, pconfigcall.SITE)
+  -- if $dynamic_scalar_define_arguments(S, pconfigcall, 0)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
+  -- if $stringable_instance(S, n_object)
+def $dynamic_query_string_valid(S, pconfigcall) = false -- otherwise
+def $config_string_object(pconfigcall) = (n_object)
+  -- if $dynamic_query_string_call(pconfigcall)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
+def $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call) = true
+  -- if $dynamic_query_string_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
+  -- if $config_string_source(S, pconfigcall) = ((porigin_child, z_child))
+  -- if pconfigcall.LINE = z_call
+  -- if $config_string_child_site(S, porigin_child, z_call)
+  -- if ~$config_strict(S, pconfigcall)
+def $config_string_launch(S, pconfigcall) = true
+  -- if S.FILEINCLUDEPATH = eps
+  -- if $dynamic_query_string_call(pconfigcall)
+  -- if $config_string_object(pconfigcall) = (n_object)
+  -- if $config_string_source(S, pconfigcall) = ((porigin_child, z_child))
+  -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, pconfigcall.LINE)
+dec $dynamic_query_string_finish(pstate, pconfigcall, pvalue) : pstate
+def $dynamic_query_string_finish(S, pconfigcall, pvalue) = S[.ORIGIN = (pconfigcall.SITE)][.TODO = (CONFIG_INVOKE pconfigcall[.SENT = [NAMED_SENT (KNOWN pvalue)]]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $string_bytes(pvalue) = (preqbytes)
+  -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
+  -- if $dynamic_constant_global_name($dynamic_constant_query(preqbytes))
+  -- if S.TODO = ptask :: ptask_tail*
+def $dynamic_query_string_finish(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "Stringable query global name"] -- otherwise
+rule PhpStep/dynamic-query-string-result: S ~> $dynamic_query_string_finish(S, pconfigcall, pvalue)
+  -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
+  -- if $dynamic_query_string_call(pconfigcall)
+  -- if S.ORIGIN = (porigin_child)
+  -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
+  -- if S.RESULT = KNOWN pvalue
+
 dec $dynamic_constant_receive(pstate, pconfigcall) : pstate
+def $dynamic_constant_receive(S, pconfigcall) = $config_error(S[.TODO = ptask_tail*], pconfigcall, "TypeError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Argument #1 ($") ++ $config_parameter_name(pconfigcall.KIND, 0) ++ $ptascii(") must be of type string, ") ++ $typed_given(S, POBJECT n_object) ++ $ptascii(" given"))
+  -- if $dynamic_query_string_valid(S, pconfigcall)
+  -- if $config_strict(S, pconfigcall)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
 def $dynamic_constant_receive(S, pconfigcall) = $config_error(S[.TODO = ptask_tail*], pconfigcall, "TypeError", $ptascii("define(): Argument #1 ($constant_name) must be of type string, array given"))
   -- if $dynamic_define_array_name_valid(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
@@ -289,6 +340,7 @@ def $dynamic_constant_receive(S, pconfigcall) = $dynamic_class_constant_receive(
   -- if ~$dynamic_halt_call(pconfigcall)
   -- if ~$dynamic_query_arity_call(pconfigcall)
   -- if ~$dynamic_query_array_call(pconfigcall)
+  -- if ~$dynamic_query_string_valid(S, pconfigcall)
 def $dynamic_constant_receive(S, pconfigcall) = $dynamic_halt_receive(S, pconfigcall)
   -- if pconfigcall.KIND = INTRINSIC_DEFINED \/ pconfigcall.KIND = INTRINSIC_CONSTANT
   -- if $dynamic_halt_call(pconfigcall)
@@ -301,6 +353,7 @@ rule PhpStep/dynamic-constant-invoke: S ~> $dynamic_constant_receive(S, pconfigc
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $config_invoke_valid(S, pconfigcall)
   -- if $dynamic_constant_kind(pconfigcall.KIND)
+  -- if ~$config_string_launch(S, pconfigcall)
   -- if ~$dynamic_scalar_constant_call(pconfigcall)
   -- if ~$dynamic_scalar_define_call(pconfigcall)
   -- if ~$dynamic_null_constant_call(pconfigcall)
