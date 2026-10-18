@@ -418,10 +418,19 @@ If that first callback throws, a fresh acyclic array is still copied and
 registered while the same Throwable continues. The destination stays unassigned;
 the original API trace and copied row keep distinct owners. A later duplicate
 Warning uses the existing private-candidate cleanup and retains the old row.
-First-warning throws with cyclic or duplicate arrays remain explicitly Unsupported,
-as do coerced array flags. The established array fold and historical row policy
-are unchanged; new exact witnesses focus primitive and certified stdClass leaves.
+The established array fold and historical row policy are unchanged; new exact
+witnesses focus primitive and certified stdClass leaves.
 [True-flag review](../../coverage/semantics/define-array-true-flag-review.json).
+
+When that first callback leaves an exception pending, cyclic validation fails
+without allocating a new ValueError, copying or looking up the target. The same
+Throwable, Previous chain, result and trace arguments continue. For an acyclic
+duplicate, canonical copying still precedes registration; the existing pending
+warning policy skips an eligible callback, and ordinary cleanup retires the
+unregistered containers. The old row, callback side rows and trace-owned input
+survive. Real trace-bucket references and a fresh false-flag retry distinguish
+shared source cells from copied recovery/query containers. Coerced array flags
+remain partial. [Pending-array review](../../coverage/semantics/define-array-true-pending-review.json).
 
 Top-level empty values use the existing source-pool or retained immutable flag.
 An authenticated immutable empty keeps its table and `PVARRAY true eps`; a mutable
@@ -625,6 +634,45 @@ Source53's conversion/trace/lifetime rules and accepted642 cuts stay unchanged.
 Propertyless retained receivers bound this validation; sole-owner destruction,
 other internal objects, `__call` declarations and wider forms remain partial.
 
+Retained propertyless Stringable names now convert before positional `define`
+registration with primitive candidates and an omitted/bool-false flag. Dedicated
+arg0/source and saved-site guards keep DEFINE outside the broad string-kind
+predicate. A successful method returns to a separate converted CONFIG before
+current-table registration, so a method-created key selects the real duplicate
+Warning. Strict calls reject the raw object before method entry. A method throw
+retains its raw receiver/earlier candidate API trace and discards both consumers.
+The converted CONFIG preserves its authenticated name carrier; later user-duplicate
+traces keep the existing name byte projection, without name-carrier identity credit.
+The original candidate carrier and false flag remain exact.
+The [Stringable-define review](../../coverage/semantics/define-stringable-name-review.json)
+binds literal agreement at83a7b816b and final captured/strict/peer agreements plus
+all717 state premises atf13b5e451/runtime83a7. The captured source observes exact
+Warning metadata, supplied Exception identity, caller99 and callback effects;
+its actual full trace/message/PreviousNULL and discard are checked at reached
+state fronts. Earlier trace-observing native originals remain native-only: two
+CLI45 timeouts and one prior DSL binding failure retain zero credit. Only the
+changed source and affected/unrun checks repeat; Source53/54 evidence is unchanged.
+Sole-owner destruction, wider receivers/returns, class/NUL/HALT results, owning
+candidates, true/coerced flags and named/packed/owner forms remain partial.
+
+Positional `define` now rejects retained ordinary nonStringable instances and
+`stdClass` names before primitive optional flag reception or registration, weak
+or strict. Later arguments have already run: raw receiver, request candidate and
+true/NULL/integer flag captures survive live callee/name/value/flag changes.
+A public ordinary `toString()` remains uncalled. The separate guarded route reuses
+the live query-object classifier and primitive/carrier/source checks, allocates
+raw TypeError directly and consumes the original CONFIG tail. It leaves Source55
+Stringable conversion and the shared trace/ownership machinery unchanged.
+The [nonStringable-define review](../../coverage/semantics/define-nonstringable-name-review.json)
+binds four exact originals and all 556 state premises at 4a71a12f7/runtime ead614ee6:
+author166+110+105 and independent175 across five actual errors and a selected normal
+query recovery. Raw owner edges/API/caller traces, receiver property projection,
+untouched stores/table/events, source/carrier/liveness/domain controls and budgets
+pass. All nine reports pass on their first attempts; initial afb8 native/baseline
+uses CPU3, later actors use CPU5 and baseline Unsupported/B| retains zero credit.
+Primitive tail strings require authenticated interned/request carriers. Other
+internal objects, owning values, sole-owner destruction and wider forms remain partial.
+
 `define` also receives int/bool/float names with nonowning primitive values and
 an omitted/already-false flag. Each source send maps to its normalized captured
 slot before available immutable facts are checked, including reordered named
@@ -792,8 +840,7 @@ and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`. `PHP_FUNCTION(constant)` us
 exception-class lookup and `ZVAL_COPY_OR_DUP`; `zend_declare_typed_class_constant`
 interns direct string values before installation.
 Stored cyclic trees, other objects, coerced array flags,
-cyclic/duplicate arrays after an ignored-flag handler throws,
-Stringable names beyond the bounded retained query domain,
+Stringable names beyond the bounded retained query/DEFINE domains,
 array names beyond the bounded flat query/DEFINE domains,
 array/object values with scalar or null names, true/NULL/NaN
 flags with scalar names, nonbool flags with nonfinite float names, true/NULL/NaN flags with

@@ -1,0 +1,110 @@
+{
+  "milestone": "Iterator25: pending THROW retains a by-reference foreach wrapper",
+  "status": "Implemented, validated and independently accepted; pointwise composed over f63bef869/401.",
+  "independent_reviewer": "iterator_review_15",
+  "base": "b9f4af8cd5f670ea288200498fd8ee207d97022f",
+  "tested_runtime": "dc90aaefb6e6d3eb2899185a67b670c0ebdfcd8b",
+  "modules": 401,
+  "scope": "A one-Throwable literal throw method call on a pending actual Generator follows finite pure native links to a bare statement yield inside exactly one active by-reference array foreach with a simple-CV item target. No buffered input or other owning suspended task/HELD value, inactive GC; getters and explicit close only, no later real resume.",
+  "semantics": [
+    "The acquired foreach count belongs to the actual reference wrapper, not a frozen array snapshot. The item CV aliases an embedded entry cell and contributes a separate count. Pending THROW preserves both until physical close, without body entry or a persistent exception owner in the parked Generator.",
+    "Physical close transfers the acquired HCELL task count to existing request retention, removes the iterator, and retires the item CV normally. Whole-wrapper replacement can release the old array and its elements; the new value remains reachable through the retained wrapper. An escaped-item write instead changes its actual entry cell.",
+    "Copied-current cleanup remains separate: a genuine cache destructor after receiver close can replace the injected Throwable while retaining its previous chain. Request-store payload destruction leaves the retained wrapper count in the terminal state. No new state field, root representation, collector algorithm or ordinary iteration-advance rule is introduced."
+  ],
+  "source_authority": [
+    "vendor/php-src/Zend/zend_generators.c::Generator::throw, zend_generator_resume, zend_generator_dtor_storage and zend_generator_close: pending THROW parks before HANDLE_EXCEPTION, while close follows the parked unfinished-execution history.",
+    "Zend/zend_vm_def.h::FE_RESET_RW and FE_FETCH_RW retain the acquired reference wrapper and alias the visited entry into the item CV. Zend/zend_execute.c::cleanup_live_vars normally releases a LOOP owner; the observed parked close misses that live range, retaining the mutable wrapper rather than immutable element pins.",
+    "Pinned implementation observations are not portable evaluation-order guarantees. No engine bug or intentional divergence is classified."
+  ],
+  "validation_identity": {
+    "php": "8.5.10 CLI NTS 64-bit; source 34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml 5.1.0; SL, caches off and encountered determinism checks",
+    "environment": "tests/semantics/profile.json; PHP -n; LC_ALL=C; TZ=UTC; PHP_SPEC_SCRIPT_ENCODING unset. All native/baseline/preparation/strict/source/state actors ran serially on CPU4. Raw reports preserve commands, caps, bytes, exits and stable input/HEAD identities."
+  },
+  "runtime_sha256": {
+    "spec/semantics/280-generators.watsup": "598e5f8677b1724629e8efeb46af14c2bbf7f6cec954cd2b39b16ec034061e90",
+    "spec/semantics/289-generator-delegation.watsup": "cbd5f6e87f56e6e43a593e6cd098479fde8df23e4f2979ce24f79cfd70df12d9",
+    "spec/semantics/303-generator-force-close.watsup": "f80e12cc1d3e103b5a2b1358cae4fd55f3c8def605e71ea4469b7735dcb14329"
+  },
+  "raw_root": ".tools/generator-pending-reference-foreach-throw-25/.tools/",
+  "native_and_baseline": {
+    "revision": "b9f4af8cd5f670ea288200498fd8ee207d97022f",
+    "native_reports": [
+      "generator-pending-reference-foreach-throw-native-ftqx3hof/report.json",
+      "generator-pending-reference-foreach-throw-review-native-jig72u_g/report.json"
+    ],
+    "native_result": "Four immutable originals captured before production with no preasserted stdout; normal exit0/empty stderr/no timeout and independently reviewed raw tuples. Zero model credit.",
+    "baseline_report": "generator-pending-reference-foreach-throw-baseline-amgmfggx/report.json",
+    "baseline_result": "Exact 27fc7d96 original and retained ftqx native tuple reused without PHP replay. Genuine public Unsupported Generator force-close at request end after 8 OUTPUT chunks joining P|O|M|C|V|H|1|T|. Exit1/empty stderr/no timeout/diagnostic/exit_status; stable unchanged b9f4/401, zero agreement."
+  },
+  "strict": {
+    "report": "generator-pending-reference-foreach-throw-author-sl-nwy6_69z/report.json",
+    "revision": "dc90aaefb6e6d3eb2899185a67b670c0ebdfcd8b",
+    "result": "Strict 401 returns true with caches off and encountered determinism checks; stable inputs/HEAD. No failure or repeat."
+  },
+  "fixture_elaboration": {
+    "report": "generator-pending-reference-foreach-throw-state-elab-y2k6m3r4/report.json",
+    "revision": "dc90aaefb6e6d3eb2899185a67b670c0ebdfcd8b",
+    "result": "One ordered 401-module parse/elab invocation includes the exact four generated fixtures, alpha-renaming only stage/seek/main. Unique EOF sentinel and all four main headers, exit0/empty stderr/no timeout/stable inputs/HEAD pass. Zero interpretation or semantic credit."
+  },
+  "normal_sources": {
+    "new_distinct_originals": 4,
+    "revision": "dc90aaefb6e6d3eb2899185a67b670c0ebdfcd8b",
+    "reports": [
+      "generator-pending-reference-foreach-throw-source-g_va1m73/report.json",
+      "generator-pending-reference-foreach-throw-review-source-jugcqw_e/report.json"
+    ],
+    "result": "Four exact normal stdout/stderr/exit tuples agree with the retained native originals without PHP replay. Stable inputs/HEAD, no source failure or repeat."
+  },
+  "reached_states": {
+    "groups": 4,
+    "premises": 557,
+    "author": 261,
+    "independent": 296,
+    "local_checks": 537,
+    "generic_reachability": 20,
+    "revision": "dc90aaefb6e6d3eb2899185a67b670c0ebdfcd8b",
+    "reports": [
+      [
+        "fiber-state-review-htwh5mzv/report.json",
+        147
+      ],
+      [
+        "fiber-state-review-iio90xs3/report.json",
+        114
+      ],
+      [
+        "fiber-state-review-7i_x2bj_/report.json",
+        166
+      ],
+      [
+        "fiber-state-review-yrcrss0h/report.json",
+        130
+      ]
+    ],
+    "checks": "Together these cover real pending invocation with acquired wrapper/item alias/frame unchanged; wrapper-to-array and entry-cell multiplicities; source/line/argument/mode/REFCELLS/HELD/owning-tail/duplicate refusals; exact close transfer with only the item HCELL job; mutable whole-wrapper replacement and escaped-entry write with real retirement jobs; actual replacement-cache destructor CURRENT, saved-frame receipt/public validation and previous chain; heap/public validity, zero/split budgets and all native endings. A derived CONFIG/gc_begin refusal is helper-only and grants zero GC source agreement.",
+    "result": "All true/empty stderr/exit0/no timeout, stable HEAD and author/independent inputs. All four native endings pass. No failed or repeated actor."
+  },
+  "compatibility": "Only modules280/289/303 change: two declarations, source/mode/allocated-reference-cell receipts and a separate bare-yield HCELL foreach arm, then generic node extraction after that exact close proof. Existing HARRAY arms and task-root retention remain unchanged. The late wrapper receipt permits a mutable defined STORE value and a retired old array; it does not freeze referents. Used-yield reference loops remain excluded. No Iterator18-24 actor replay or renewed credit, manifest/pipeline change or new ordinary iteration-advance algorithm.",
+  "remaining": [
+    "Later direct or forwarded real resume after parked THROW still needs global exception-opline history and fresh native originals; it remains Unsupported.",
+    "Used-yield reference loops, object foreach, multiple or nested owning loops, other suspended owning TMP/HELD values, acquired/borrowed producers and owning copied returns remain required.",
+    "Explicit collection with the owning parked frame is Unsupported; wider collection during or after retention, Fiber/reentry lifecycle and full Generator/core closure remain open. No new GC source/collector agreement or BOLA/security proof is claimed."
+  ],
+  "evidence_recovery": {
+    "archive": "../php-spec-evidence-archive/generator-pending-reference-foreach-throw-25/private.tar.gz",
+    "bytes": 1744432,
+    "sha256": "dc28ad17bd0f5b30a205cfdf04bb5deae529455d43a01e9b5f133f4ae42d9c7b",
+    "manifest": "Sibling manifest.json maps 11 report roles and 8 ignored recorder/catalog inputs. Full raw originals/generated fixtures/commands/outputs and identities remain external; no failures or retries.",
+    "restore": "Extract at private_root. Native/baseline use untouched b9f4af8cd/401; strict401/source4/state557 use dc90aaefb with the same three-file runtime. The retained private branch supplies tracked implementation/tests; provision references with scripts/private-semantics-references.py. Commands identify executed binaries, not archived build prerequisites. All validation passed first invocation."
+  },
+  "composition": {
+    "parent": "f63bef8695d1211c988dbd0290f6248d109da457",
+    "parent_modules": 401,
+    "private_publication": "bd87476c152db1bd478ee0177e7dab84dd862cd0",
+    "review": "Independent actual-parent review: nullable typed reference-return cursors, global constant APIs, compound-warning initial snapshots, magic-property empty, Closure binding warning traces and keyed LIST undefined/null continuations are absent from these originals/fronts. Only modules280/289/303 change and remain byte-exact tested dc90. Every other runtime byte, pipeline and the 401-module manifest is preserved.",
+    "validation": "Private strict401/source4/state557 retain dc90 with the same three tested runtime digests; native4 and unchanged baseline0 retain b9f4. No joined runtime actor, accepted replay or renewed execution credit."
+  }
+}

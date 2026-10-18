@@ -296,6 +296,68 @@ rule PhpStep/dynamic-query-string-result: S ~> $dynamic_query_string_finish(S, p
   -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
   -- if S.RESULT = KNOWN pvalue
 
+;; Define names convert in the same saved API context before registration.
+dec $dynamic_define_string_call(pconfigcall) : bool
+def $dynamic_define_string_call(pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_DEFINE
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps /\ ~pconfigcall.NAMED
+  -- if pconfigcall.SENT = (NAMED_SENT (KNOWN (POBJECT n_object))) :: (NAMED_SENT (KNOWN pvalue)) :: pnamedslot*
+  -- if pnamedslot* = eps \/ pnamedslot* = [NAMED_SENT (KNOWN (PBOOL false))]
+  -- if $dynamic_constant_class(pvalue) =/= eps
+def $dynamic_define_string_call(pconfigcall) = false -- otherwise
+dec $dynamic_define_string_valid(pstate, pconfigcall) : bool
+def $dynamic_define_string_valid(S, pconfigcall) = true
+  -- if $dynamic_define_string_call(pconfigcall) /\ $config_invoke_valid(S, pconfigcall)
+  -- if ~$pipe_site(S, pconfigcall.SITE)
+  -- if $dynamic_define_source(S, pconfigcall.SITE)
+  -- if $dynamic_scalar_define_arguments(S, pconfigcall, 0)
+  -- if pconfigcall.SENT = (NAMED_SENT (KNOWN (POBJECT n_object))) :: pnamedslot*
+  -- if $dynamic_query_arity_arguments(S, pnamedslot*)
+  -- if $stringable_instance(S, n_object)
+def $dynamic_define_string_valid(S, pconfigcall) = false -- otherwise
+def $config_string_object(pconfigcall) = (n_object)
+  -- if $dynamic_define_string_call(pconfigcall)
+  -- if pconfigcall.SENT = (NAMED_SENT (KNOWN (POBJECT n_object))) :: pnamedslot*
+def $config_string_source(S, pconfigcall) = ((porigin_child, z_child))
+  -- if $dynamic_define_string_call(pconfigcall)
+  -- if ~$pipe_site(S, pconfigcall.SITE)
+  -- if $dynamic_define_source(S, pconfigcall.SITE)
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression, false, eps, porigin_child, z_child))
+def $config_string_child_site(S, PORIGIN n_unit pcpath_child, z_call) = true
+  -- if $(|pcpath_child| >= 3)
+  -- if pcpath_parent = pcpath_child[0:$nabs($(|pcpath_child| - 3))]
+  -- if $dynamic_define_source(S, PORIGIN n_unit pcpath_parent)
+  -- if $intrinsic_count(S, PORIGIN n_unit pcpath_parent) = (3)
+  -- if $intrinsic_argument(S, PORIGIN n_unit pcpath_parent, 0) = ((expression, false, eps, PORIGIN n_unit pcpath_child, z_child))
+  -- if $call_line_valid(S, (PORIGIN n_unit pcpath_parent), z_call)
+def $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call) = true
+  -- if $dynamic_define_string_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
+  -- if pconfigcall.SENT = (NAMED_SENT (KNOWN (POBJECT n_object))) :: pnamedslot*
+  -- if $config_string_source(S, pconfigcall) = ((porigin_child, z_child))
+  -- if pconfigcall.LINE = z_call
+  -- if $config_string_child_site(S, porigin_child, z_call)
+  -- if ~$config_strict(S, pconfigcall)
+def $config_string_launch(S, pconfigcall) = true
+  -- if S.FILEINCLUDEPATH = eps
+  -- if $dynamic_define_string_call(pconfigcall)
+  -- if $config_string_object(pconfigcall) = (n_object)
+  -- if $config_string_source(S, pconfigcall) = ((porigin_child, z_child))
+  -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, pconfigcall.LINE)
+dec $dynamic_define_string_finish(pstate, pconfigcall, pvalue) : pstate
+def $dynamic_define_string_finish(S, pconfigcall, pvalue) = S[.ORIGIN = (pconfigcall.SITE)][.TODO = (CONFIG_INVOKE pconfigcall[.SENT = (NAMED_SENT (KNOWN pvalue)) :: pnamedslot_tail*]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pconfigcall.SENT = pnamedslot :: pnamedslot_tail*
+  -- if $string_bytes(pvalue) = (preqbytes)
+  -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
+  -- if $dynamic_constant_global_name(preqbytes)
+  -- if S.TODO = ptask :: ptask_tail*
+def $dynamic_define_string_finish(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "Stringable define global name"] -- otherwise
+rule PhpStep/dynamic-define-string-result: S ~> $dynamic_define_string_finish(S, pconfigcall, pvalue)
+  -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
+  -- if $dynamic_define_string_call(pconfigcall)
+  -- if S.ORIGIN = (porigin_child)
+  -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
+  -- if S.RESULT = KNOWN pvalue
+
 ;; The standard object cast has no __call fallback when __toString is absent.
 dec $dynamic_query_nonstring_object(pstate, nat) : bool
 def $dynamic_query_nonstring_object(S, n_object) = true
@@ -316,7 +378,35 @@ def $dynamic_query_nonstring_valid(S, pconfigcall) = true
   -- if $dynamic_query_nonstring_object(S, n_object)
 def $dynamic_query_nonstring_valid(S, pconfigcall) = false -- otherwise
 
+;; NonStringable define names fail before value/optional bool reception.
+dec $dynamic_define_nonstring_call(pconfigcall) : bool
+def $dynamic_define_nonstring_call(pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_DEFINE
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps /\ ~pconfigcall.NAMED
+  -- if pconfigcall.SENT = (NAMED_SENT (KNOWN (POBJECT n_object))) :: pnamedslot*
+  -- if $(|pnamedslot*| = 1 \/ |pnamedslot*| = 2)
+def $dynamic_define_nonstring_call(pconfigcall) = false -- otherwise
+dec $dynamic_define_nonstring_valid(pstate, pconfigcall) : bool
+def $dynamic_define_nonstring_valid(S, pconfigcall) = true
+  -- if $dynamic_define_nonstring_call(pconfigcall) /\ $config_invoke_valid(S, pconfigcall)
+  -- if ~$pipe_site(S, pconfigcall.SITE)
+  -- if $dynamic_define_source(S, pconfigcall.SITE)
+  -- if $dynamic_scalar_define_arguments(S, pconfigcall, 0)
+  -- if pconfigcall.SENT = (NAMED_SENT (KNOWN (POBJECT n_object))) :: pnamedslot*
+  -- if $dynamic_query_arity_arguments(S, pnamedslot*)
+  -- if $dynamic_query_nonstring_object(S, n_object)
+def $dynamic_define_nonstring_valid(S, pconfigcall) = false -- otherwise
+
 dec $dynamic_constant_receive(pstate, pconfigcall) : pstate
+def $dynamic_constant_receive(S, pconfigcall) = $config_error(S[.TODO = ptask_tail*], pconfigcall, "TypeError", $ptascii("define(): Argument #1 ($constant_name) must be of type string, ") ++ $typed_given(S, POBJECT n_object) ++ $ptascii(" given"))
+  -- if $dynamic_define_nonstring_valid(S, pconfigcall)
+  -- if pconfigcall.SENT = (NAMED_SENT (KNOWN (POBJECT n_object))) :: pnamedslot*
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_constant_receive(S, pconfigcall) = $config_error(S[.TODO = ptask_tail*], pconfigcall, "TypeError", $ptascii("define(): Argument #1 ($constant_name) must be of type string, ") ++ $typed_given(S, POBJECT n_object) ++ $ptascii(" given"))
+  -- if $dynamic_define_string_valid(S, pconfigcall)
+  -- if $config_strict(S, pconfigcall)
+  -- if pconfigcall.SENT = (NAMED_SENT (KNOWN (POBJECT n_object))) :: pnamedslot*
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
 def $dynamic_constant_receive(S, pconfigcall) = $config_error(S[.TODO = ptask_tail*], pconfigcall, "TypeError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Argument #1 ($") ++ $config_parameter_name(pconfigcall.KIND, 0) ++ $ptascii(") must be of type string, ") ++ $typed_given(S, POBJECT n_object) ++ $ptascii(" given"))
   -- if $dynamic_query_nonstring_valid(S, pconfigcall)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
@@ -343,6 +433,8 @@ def $dynamic_constant_receive(S, pconfigcall) = $dynamic_define_finish(S, pconfi
   -- if ~$dynamic_constant_case_flag(pconfigcall)
   -- if ~$dynamic_define_arity_call(pconfigcall)
   -- if ~$dynamic_define_array_name_call(pconfigcall)
+  -- if ~$dynamic_define_string_valid(S, pconfigcall)
+  -- if ~$dynamic_define_nonstring_valid(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
 def $dynamic_constant_receive(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL $dynamic_constant_exists(S, preqbytes))][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pconfigcall.KIND = INTRINSIC_DEFINED
@@ -1862,6 +1954,15 @@ def $error_read_discard(S, DYNAMIC_SCALAR_DEFINE_FLAG_RESULT pconfigcall) = $dyn
 ;; BOOL true reaches the registration tail after an ignored-warning throw too.
 ;; A fresh acyclic array is copied after the callback; retain the pending result.
 dec $dynamic_constant_case_pending(pstate, pconfigcall) : pstate
+;; zend_argument_error_variadic keeps an existing exception. Validation still
+;; fails before copying or key lookup, without allocating another ValueError.
+def $dynamic_constant_case_pending(S, pconfigcall) = S
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $throwable_live(S, n)
+  -- if $dynamic_constant_case_valid(S, pconfigcall)
+  -- if $dynamic_define_values(pconfigcall) = ((preqbytes, PARRAY n_array))
+  -- if $dynamic_define_known(S, pconfigcall.SITE, 1) = eps
+  -- if $dynamic_array_recursive(S, PARRAY n_array, eps) = (true)
 def $dynamic_constant_case_pending(S, pconfigcall) = S_copy[.RESULT = S.RESULT][.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME $user_constant_key(preqbytes), ORIGIN pconfigcall.SITE, VALUE pvalue, CLASS pvalueclass, READS eps, RECEIVES eps}]]
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if $throwable_live(S, n)
@@ -1990,6 +2091,16 @@ def $dynamic_define_pending_duplicate(S, preqbytes, z) = S[.ERRORFATALTRACE = ep
   -- if $error_handler_eligible(S, 2)
 def $dynamic_define_pending_duplicate(S, preqbytes, z) = $error_default(S[.ERRORFATALTRACE = eps], DIAGNOSTIC "Warning" ($global_constant_duplicate_message(preqbytes)) z, 2)
   -- if ~$error_handler_eligible(S, 2)
+;; Preserve the captured input/result; ordinary driver cleanup retires the
+;; unregistered copied containers after pending-warning handling.
+def $dynamic_constant_case_pending(S, pconfigcall) = $dynamic_define_pending_duplicate(S_copy[.RESULT = S.RESULT], preqbytes, pconfigcall.LINE)
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $throwable_live(S, n)
+  -- if $dynamic_constant_case_valid(S, pconfigcall)
+  -- if $dynamic_define_values(pconfigcall) = ((preqbytes, PARRAY n_array))
+  -- if $source_constant_lookup(S, preqbytes) =/= eps
+  -- if $dynamic_array_value(S, PARRAY n_array, eps, true) = ((S_copy, pvalue, pvalueclass))
+  -- if $dynamic_array_known_matches(S_copy, pvalue, $dynamic_define_known(S_copy, pconfigcall.SITE, 1))
 def $dynamic_constant_case_pending(S, pconfigcall) = $dynamic_define_pending_duplicate(S, preqbytes, pconfigcall.LINE)
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if $throwable_live(S, n)

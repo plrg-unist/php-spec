@@ -1,0 +1,169 @@
+{
+  "version": 1,
+  "milestone": "COMP84",
+  "status": "independently reviewed within initialized closed-effect wrapper pairs and shallow snapshots",
+  "behavior": "Initialized SensitiveParameterValue wrappers compare their private value and clone shallowly with fresh identity; payload callback or diagnostic effects remain explicit Unsupported.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "tested_revision": "84b3c1f2073249394c62f98d58871760622a8865",
+  "ordered_modules": 401,
+  "manifest_sha256": "dc7fc18c3f0bc9dbb832981af549a9bb36ce9e7eae56f1ad39938d09a4a44985",
+  "implementation": {
+    "spec/semantics/379-sensitive-parameters.watsup": "ce07fd18de1775369c5de5043be8a755937eb174a3f4a60c2a7d283ac14e7475"
+  },
+  "engine_basis": [
+    "Zend/zend_attributes.c copies std_object_handlers, overriding only get_properties_for. zend_attributes_arginfo.h declares a final class with one private readonly mixed value and no dynamic properties.",
+    "Zend/zend_object_handlers.c zend_std_compare_objects compares declared slot zvals through zend_compare, protecting only the left object against recursion. Hidden property export is not the comparison source.",
+    "Zend/zend_objects.c zend_objects_clone_members shallow-copies the slot zval and increments its value owner. SensitiveParameterValue has no __clone method or readonly reinitialization window."
+  ],
+  "contract": [
+    "Forty module379 lines admit distinct initialized/live/nonfreeing wrapper pairs. Same identity keeps prior reflexivity. The private snapshot uses existing value_order_effect with a left HOBJECT guard, retaining only unchanged original state and closed ORDER/RECURSIVE/Unsupported results; other effects are explicit Unsupported, without a fabricated callback cursor.",
+    "Distinct wrappers sharing one Map compare equal while strict identities differ. Scalar 2/9 payloads give -1/+1. Private array values read shared reference cells live; equal wrapped values advance outer aggregate scans and nonzero values skip later real casters.",
+    "A shallow clone appends one fresh wrapper/allocation retaining exactly the original owning pvalue, array snapshot and embedded aliases. Original wrapper retirement, WeakReference nonowning history/null get, Map/private-value/key owners, readonly re-entry and subsequent getter COW remain observable through existing rules."
+  ],
+  "source_catalogues": {
+    "tests/semantics/sensitive_value_cases.json": "21e077327927479fcebd9ce62e65539c3d375932c48e8440e23be120521fcd8e",
+    "tests/semantics/sensitive_value_review_cases.json": "420c3668bf273d5ac055f1f965844ff1078290ccf6c5fd8234d99da0238ca2bd"
+  },
+  "unchanged_frontier": {
+    "revision": "f63bef8695d1211c988dbd0290f6248d109da457",
+    "report": ".tools/sensitive84-support/run-baseline-v1/report.json",
+    "aggregate_passed": false,
+    "rows": [
+      {
+        "id": "pair",
+        "public_status": "normal",
+        "reason": null,
+        "host_exit": 0,
+        "seconds": 41.91870794631541,
+        "accepted": true,
+        "agreement": false,
+        "counterexample_assertion_passed": true
+      },
+      {
+        "id": "clone",
+        "public_status": "interpreter_failure",
+        "host_exit": 1,
+        "seconds": 14.895149871706963,
+        "accepted": false,
+        "agreement": false,
+        "counterexample_assertion_passed": false,
+        "detail_category": "interpreter_failure",
+        "frontend_receipt": false,
+        "program_receipt": false,
+        "outcome_receipt": false
+      }
+    ],
+    "difference": "Pair full normal output has 0100001 for both same-Map and both ordered-wrapper rows; native has 1001010 for equal payloads and 011100-1/0100111 for 2/9. Clone has public interpreter_failure/function php_run failed, no frontend/program/outcome receipt or modeled prefix. Do not classify it as Unsupported.",
+    "preserved_inputs": ".tools/sensitive84-support/run-baseline-v1/failure-inputs",
+    "agreement_credit": 0
+  },
+  "validation": {
+    "original_sources": {
+      "normal_agreements": 3,
+      "author_seconds": [
+        41.06529547832906,
+        26.159550353884697
+      ],
+      "independent_seconds": 56.20608482696116,
+      "cli_and_host_caps_seconds": [
+        240,
+        250
+      ]
+    },
+    "author": {
+      "premises": 190,
+      "setup": 182,
+      "pure": 8,
+      "raw_php_steps": 6,
+      "seconds": 51.27285551652312,
+      "result": "Four genuine signed row frames0/0/-1/+1 and two explicit Map/array clone append states; private owners, shared alias storage, original retirement and checked-driver budgets."
+    },
+    "independent": {
+      "premises": 223,
+      "setup": 219,
+      "pure": 4,
+      "raw_php_steps": 5,
+      "seconds": 45.00718478485942,
+      "result": "One explicit array-snapshot clone and four actual outer array/box signed comparisons; unchanged tables, owning-edge increment, retired seed, live shared cells and skipped tails. The later outer callback and private cast are full-source observations."
+    },
+    "total": {
+      "premises": 413,
+      "setup": 401,
+      "pure": 12,
+      "raw_php_steps": 11,
+      "transition_types": {
+        "comparisons": 8,
+        "shallow_clones": 3
+      }
+    },
+    "separate_zero_credit": "Native, both unchanged counterexamples, initializer, six parse/check operations and author EL add no application/state credit. Twelve marked pure projections and source endings are separate from raw transitions.",
+    "fixture_failures": [
+      {
+        "report": ".tools/sensitive84-state/run-el-v1/report.json",
+        "stage": "pre-main syntax",
+        "seconds": 0.40110459737479687,
+        "correction": "Render the single negative expected integer as PINT $(-1); preserve original five inputs, repeat affected EL then first SL only, count190 unchanged.",
+        "credit": 0
+      }
+    ]
+  },
+  "limits": [
+    "Only initialized raw SENSITIVEVALUE pairs and shallow clones are added. Uninitialized wrappers, property/debug export, nonempty clone-with-properties updates and wider lifecycle protocols remain partial.",
+    "Payload callbacks, numeric Notices and other state-changing comparison effects remain Unsupported; the later peer Stringable callback is in the existing outer box scan, after the wrapped payload comparison has finished.",
+    "Prior-left recursion/dead/bounds/reflexive/effect and clone-snapshot projections are pure helper controls, not malformed-global execution or new callback coverage. Cell metadata/storage are checked separately from physical object/array owner counts.",
+    "No constructor, getter, WeakMap, GC, string-carrier or task/schema change. Paused owned-NUL and other active lanes are untouched; copied project-local binaries establish no fresh build/portability or complete PHP/BOLA claim."
+  ],
+  "artifacts": {
+    ".tools/sensitive84-support/gates.py": "5bd62c30040250e440d7e333ac07371373d85a18f07301eadd2a96fa8bf82475",
+    ".tools/sensitive84-support/inputs.py": "de2990284c9abea0c3db18589ae591455335ef004fd59676f97e18534513cfed",
+    ".tools/sensitive84-support/actor.py": "b3d72bc2929e5c73c0f599d06485ecd864c18380469cd4373016b229ed24ae6b",
+    ".tools/sensitive84-support/run-native-v1/report.json": "7ab4a9e98ca1cdf49e699516f34e92def678f7357a50a8c85a30bb254f811eb9",
+    ".tools/sensitive84-support/run-baseline-v1/report.json": "8c1f60593e5a557a6b7b9fead38954b57223369e7b7470920ab19c9021a3100a",
+    ".tools/sensitive84-support/run-init-v1/report.json": "8493e16e6d8270e23d809f3eb4a7e81c8ad2735a8f256d5cf5535be8431d4a4e",
+    ".tools/sensitive84-support/run-sources-v1/report.json": "b2445791aa85260b2337ac162a8a9755c9066d0168fc9eeaffc9a2440a4b3a8a",
+    ".tools/sensitive84-support/run-prepare-v1/report.json": "56a45da1ccda35990993bb6ccc2001eb08e9f24fdf87a23d9f30e757f2ad1c23",
+    ".tools/sensitive84-state/build.py": "ab36dbdb9863f5fd5f5a45bb316b0b7f27b8056f6ccbd3667f1e6269000d11f8",
+    ".tools/sensitive84-state/helpers.watsup": "fe9c7ab8dd5cc74cacfb0f5b6045befc183b3fdb363859b4e5b8bbf542e8c22e",
+    ".tools/sensitive84-state/run.py": "d50ee0607dc024fb6bcf5ec8e2f1adf686a5d9d19a2225784a7de26f6525a2a5",
+    ".tools/sensitive84-state/plan.json": "f958d2a0f7d4073645a76d70931df5ff76016cf4be2d8baec499a2db7cd0b53c",
+    ".tools/sensitive84-state/run-el-v1/report.json": "a40e2d28dfbfd177151cab325575e50181baa839016173bd7aa0270da45e4969",
+    ".tools/sensitive84-state/run-el-sign-retry1/report.json": "5b7d63fd79316cb4111adaa7911d47d6ada36363fa37ca3bb4fd5289fd8915af",
+    ".tools/sensitive84-state/run-sl-sign-retry1/report.json": "0e62b77d64f757ac18e50e72b795423e91d81afe8d05463163fec36be4208007",
+    ".tools/sensitive84-peer/run.py": "0a02a5480ad2dff937619e25828e9467a29be2e3898657402b0f69db0563e93c",
+    ".tools/sensitive84-peer/build.py": "572e58f409ea89f7f3e2aa7d504c82bcf5851c784e6ee628c7aae57464cef970",
+    ".tools/sensitive84-peer/helpers.watsup": "c5926c3fd5530bc51960731d84eee785faad10d791f921da7043ad59a8f5930a",
+    ".tools/sensitive84-peer/plan.json": "1bf13c7f83bd9d2ef1bb8733a58a503e6315f0ff8d00ffb65693d24b08a4b42b",
+    ".tools/sensitive84-peer/native-v1/report.json": "1a9d611f1e5f204ebb07018c065a542685cd33a2c25f63a0fdcbf0040a49d556",
+    ".tools/sensitive84-peer/source-v1/report.json": "e991e0981f5b21bc16b1af85cd80af8e663f60496af60e6a63d2fcd9e8cd7a86",
+    ".tools/sensitive84-peer/prepare-v1/report.json": "6fd6f08e366e2b6c7daaad74638f4797ec35091994095713acc40c71c56f53bd",
+    ".tools/sensitive84-peer/state-v1/report.json": "fe41d608f3c045979e140bf19e869cbe4593f03310bfa0e29100c2071545e490",
+    ".tools/sensitive84-peer/review.json": "176bee109f676add224ed1d762ff37426eb8794a8160b326964d739a747923c5"
+  },
+  "recovery": "Ignored originals, programmes, fixtures, START/environment records and raw streams remain under .tools/sensitive-value-comparison-84/.tools/sensitive84-{native,support,state,peer}; branch codex/sensitive-value-comparison-84 retains tested84b3. Reports retain exact commands; no accepted evidence is renewed for publication.",
+  "independent_review": {
+    "reviewer": "/root/comp_review_67",
+    "semantic_verdict": "CLEAR",
+    "source_and_state_verdict": "CLEAR",
+    "publication_verdict": "CLEAR",
+    "record": ".tools/sensitive84-peer/review.json",
+    "record_sha256": "176bee109f676add224ed1d762ff37426eb8794a8160b326964d739a747923c5"
+  },
+  "composition": {
+    "parent": "7be8de0d755b47d143063ce30fc3aae01c2fd34e",
+    "ordered_modules": 401,
+    "method": "Independent pointwise actual-parent and exact FF review; no concrete syntax/dispatch dependency or joined actor.",
+    "runtime": "Only40 module379 lines are incoming; resulting379 is byte-identical tested84b3. Every other spec and manifest keep exact parent bytes.",
+    "parent_seams": [
+      "Modules280/289/303 require Generator/yield/foreach and parked-close records, absent in all3 originals. Existing retained-loop roots stay empty. No state-field/initializer change.",
+      "Modules156/270 require by-reference return cursors, pending destructor replay and typed/mixed nested finally remainders. The originals use ordinary untyped value returns and have no destructor/finally source.",
+      "Module400 requires DEFINE/constant registration or related captured query kinds, absent. Modules30/40/404 add SUBMUL tasks and a guarded selected-reference SUBTRACT/MULTIPLY Warning plan; all comparison operators, CONCAT and integer ++ fronts are disjoint, with no error handler in these originals."
+    ],
+    "execution_credit": 0,
+    "retained_cut": "Three source agreements/413=401setup+12pure/11actual (8comparisons,3clones) retain84b3/401. Original wrong-normal pair, no-receipt clone failure and pre-main signed-literal failure remain zero; no accepted replay."
+  }
+}

@@ -569,6 +569,15 @@ number despite later invalid writes. Two exact originals and 159 genuine state
 premises check the ordinary TypeError, unchanged destination and warning priority.
 [ADD failure evidence](coverage/semantics/arithmetic-failure-review.json) retains
 the original Unsupported baseline; wider operand and lifecycle forms remain partial.
+
+Leading-numeric-string `-` and `*` now retain both selected reference cells and
+numeric holders through named Warning handlers. A first handler can repair an
+initially nonnumeric RHS; rebinding its variable name cannot redirect the selected
+referent. Seven originals and 834 focused SL premises cover cached integer results,
+strict float `68.75`, live-type TypeError, both supplied-throw fronts and default
+warnings. [SUB/MUL evidence](coverage/semantics/submul-warning-review.json) retains
+the baseline; wider operand and lifecycle forms remain partial.
+
 Leading-numeric-string `/` now retains selected reference cells and captured
 numbers through the same bounded named-handler route. A handler can make the
 next divisor zero; a second handler cannot replace an already-captured zero by
@@ -593,7 +602,16 @@ deprecation handlers. Callback writes cannot change the captured infinity or its
 sign; a supplied throw preserves the pending destination. Three exact originals
 and 366 focused SL premises pass in the
 [power-warning ledger](coverage/semantics/power-warning-review.json).
-Numeric-string warnings, wider operands/callbacks and wider `**=` forms remain partial.
+Other operand classes, right-only warnings and wider callbacks/lifecycles or `**=`
+forms remain partial.
+
+For `**`, leading numeric strings now convert through named handlers for two
+preselected reference cells. A first Warning may repair bad RHS text;
+both numeric holders then survive a final zero/negative-exponent Deprecated and
+RHS-name rebinding. Seven originals and 951 focused SL premises cover integer `8`,
+strict float `2.0`, signed infinities, live-type TypeError and supplied throws in the
+[power-conversion ledger](coverage/semantics/power-conversion-review.json).
+
 Primitive plain-CV `**=` now commits its captured result even when the deprecation
 handler throws. A late alias detaches before the same exception continues; the
 outer assignment stays unchanged. Three exact originals and 407 focused SL
@@ -979,6 +997,13 @@ pending throw and close. If both name one array, the two roles contribute separa
 counts without duplicating its element edges. Rebinding an embedded reference
 leaves the old buffered object alive.
 See the [joint lifecycle review](coverage/semantics/generator-pending-buffered-foreach-throw-review.json).
+A bare yield in one by-reference array loop retains the acquired reference wrapper
+on parked close. Later whole-wrapper or escaped-item writes update its real cells;
+the item CV and current-copy cleanup remain separate. See the
+[reference-foreach review](coverage/semantics/generator-pending-reference-foreach-throw-review.json).
+One buffered simple-CV used yield in that loop keeps its slot value separate from
+the acquired wrapper: a later wrapper or item write can leave the old input alive.
+See the [buffered reference-foreach review](coverage/semantics/generator-pending-buffered-reference-foreach-throw-review.json).
 [Delegation](docs/semantics/GENERATOR-DELEGATION.md)
 adds arrays, source Iterators and shared Generator graphs with live raw caches
 and natural return/unwind. Aggregate yield-from now acquires nested real iterator
@@ -1162,6 +1187,24 @@ and strict code. Raw receiver traces and selected callees survive later argument
 effects; an ordinary `toString()` method is never invoked as a cast.
 [Four source agreements and 508 state premises](coverage/semantics/constant-query-nonstringable-name-review.json)
 cover errors and normal recovery. Other internal objects and wider forms stay partial.
+
+Retained propertyless Stringable names with non-NUL global results now convert
+before positional `define()` registration with primitive candidates and
+omitted/bool-false flags. A callback can
+create the key before the outer duplicate check; strict calls reject before method
+entry, while method throws preserve the raw object API trace and caller result.
+[Four source agreements and 717 state premises](coverage/semantics/define-stringable-name-review.json)
+cover conversion, registration, duplicate warnings and unwind. Wider receivers,
+values, flags and call forms remain partial.
+
+Retained ordinary nonStringable instances and `stdClass` now fail positional
+`define()` name reception before primitive flag processing or registration.
+Later candidate/flag effects finish first, while strict code still reports the
+first-parameter error. An ordinary `toString()` method is never used as a cast.
+[Four source agreements and 556 state premises](coverage/semantics/define-nonstringable-name-review.json)
+cover raw arguments, selected callees and normal recovery. Wider values, objects,
+lifetimes and call forms remain partial.
+
 Positional `define()` calls with primitive arguments also reject counts below two
 or above three before name/flag reception or registration. Exact count messages
 and raw API arguments survive all argument effects, including a captured true
@@ -1361,9 +1404,13 @@ Captured true runs the ignored-case Warning before validation, copying and key
 lookup. A callback can repair or create a cycle, change referenced leaves or
 install the target key. A throwing first callback still publishes a fresh
 acyclic snapshot while the same Exception continues; original trace arguments
-remain separate from copied containers. Pending cyclic/duplicate arrays after
-that first throw remain partial.
+remain separate from copied containers.
 [True-flag array review](coverage/semantics/define-array-true-flag-review.json).
+If the first callback throws with a cyclic array, validation preserves that same
+Exception and Previous chain without a new ValueError, copy or binding. Acyclic
+duplicates still copy, then retire the rejected containers while preserving the
+old row and original trace input; an eligible handler is not entered again.
+[Pending-array review](coverage/semantics/define-array-true-pending-review.json).
 Ordinary uncertified objects, other owning leaves and wider
 flags/names remain partial.
 Class-qualified `defined` now checks inherited user constants with lexical visibility
@@ -2400,6 +2447,13 @@ with live WeakMap before wrapped-value or receiver traversal. Two originals and
 ownership and quiet aggregate tails; later calls expose the existing readonly Error.
 Uninitialized wrappers and wider protocols remain partial.
 [Sensitive wrapper/capture review](coverage/semantics/weakmap-sensitive-comparison-review.json).
+
+Initialized SensitiveParameterValue wrappers compare their private payload and
+clone shallowly with fresh identity. Three originals and 413 Boolean premises
+cover eight comparisons and three clones, retaining array COW/shared references,
+signed aggregate continuation and original retirement. Payload comparison effects
+and uninitialized wrappers remain partial.
+[Sensitive-value review](coverage/semantics/sensitive-value-review.json).
 
 Authenticated SensitiveParameterValue constructor Closures compare equal across
 fresh captures and clones of the same live receiver. Distinct receivers stay

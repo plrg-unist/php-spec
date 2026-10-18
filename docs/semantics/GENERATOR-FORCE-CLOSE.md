@@ -83,6 +83,18 @@ shared-cell rebind after close can therefore retain both the old input object an
 the cell's new referent. See the
 [joint lifecycle review](../../coverage/semantics/generator-pending-buffered-foreach-throw-review.json).
 
+For one by-reference array loop at a bare yield, the retained count belongs to
+the acquired reference wrapper. Close removes the iterator and retires the item
+CV alias, leaving the wrapper and entry mutable.
+Whole-wrapper replacement and escaped-item writes after close therefore have
+distinct release effects. See the
+[reference-foreach review](../../coverage/semantics/generator-pending-reference-foreach-throw-review.json).
+With one authenticated simple-CV used-yield input, physical close first orphans
+that input and then retains the acquired wrapper. A later wrapper or entry write
+drops only its own edge, leaving the old input value alive. The
+[buffered reference-foreach review](../../coverage/semantics/generator-pending-buffered-reference-foreach-throw-review.json)
+checks these independent counts and ordinary cache-replacement cleanup.
+
 The release walk preserves physical owner order, including compiled local-slot
 order and key-before-value cleanup after a forbidden keyed yield. It can close
 other started Generators through ordinary reference/array/object edges. General
