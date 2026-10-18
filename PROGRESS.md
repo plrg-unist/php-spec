@@ -9787,6 +9787,23 @@ NULL-accepting declaration; capture and owner release are unchanged. This is
 one local-O/unset history, separate from M20 and broader CV, reentry, physical
 collection and returns_verify coverage.
 [M93 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M94 carries the same plain-CV destructor return through a discarded `f()`
+call. Native PHP at integrated `aa45aca25`/401 catches `TypeError("cv94")`
+locally, completes the following `S` echo, preserves the prior `r=b7` alias
+and emits no Notice. The unchanged model escapes to outer OT/r7 (zero
+agreement). At private `5e9b20b1d`/401 strict initialization and the one
+original source pass exactly. A reached fixture passes 187 Boolean premises
+and two raw steps: the expression-statement call is unused at the saved D,
+pending exit and consumed cuts; the protected old HCELL→O survives `$x`
+unbinding, and O's destructor error reaches the same local CT object. The raw
+consumed step restores `KNOWN NULL` with identical allocations, reference
+cells and store, and caller `r=b7` remains unchanged. Actual inside-D LINE
+public refusal and budget equality pass. The source guard now authenticates
+both used and unused plain-variable returns; only used CV returns select
+fresh NULL-reference materialization. M93's used behavior is preserved by
+the guards, without a new M93 actor run. Other discarded sources and broader
+returns_verify remain OPEN.
+[M94 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, wider destructor throw/reentry, real suspension and wider typed

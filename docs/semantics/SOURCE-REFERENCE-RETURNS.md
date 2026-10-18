@@ -1108,3 +1108,19 @@ particular class.
 This proof covers one local O and unset history, separate from M20, other CV
 lifetimes, physical Zend collection and wider returns. See the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M94 checks that same plain-CV return when the caller discards `f()`'s result.
+O's destructor throws `TypeError("cv94")`; native PHP catches it locally,
+continues to S, preserves the caller's prior `r=b7` alias and emits no Notice.
+The unchanged model takes outer OT instead. The repaired original source agrees
+exactly. The source predicate now authenticates the plain-variable return
+independently of result demand. Only a used CV selects fresh NULL-reference
+materialization; the discarded result uses the generic `KNOWN NULL` consumed
+step. A reached proof binds unused demand through saved D, pending exit and
+consumption, the protected old HCELL→O lifetime, the same TypeError object in
+local CT, and unchanged allocations, reference cells and store across the raw
+consumed restoration step. Actual inside-D LINE-only public refusal and budget
+equality pass. The proof covers one local O/unset discarded-call history; M93's
+used branch is preserved by the guards without a fresh M93 run. Other discarded
+sources and wider returns remain open. See the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
