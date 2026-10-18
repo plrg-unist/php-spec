@@ -1,0 +1,79 @@
+{
+  "scope": "Inherited private external CV/literal magic __set(string,untyped):void writes; scalar CV/literal RHS parameter snapshot versus post-receiver-release assignment delivery, held receiver and throw.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_gate_completed": true,
+  "native_revision": "f63bef8695d1211c988dbd0290f6248d109da457",
+  "native_report_sha256": "2c6dc2851df59a9a1bd5e1f03b1895a621f19e2006ca541d3331a2def7fbf8ee",
+  "cases": [
+    {
+      "id": "normal",
+      "source_file": "magic-setter-normal.php",
+      "source": "<?php\nclass SetterParent98 {\n    private int $value = 1;\n    public int $ready = 3;\n    public function __set(string $name, $incoming): void {\n        global $child, $rhs;\n        echo 'S|', $name, '|', $incoming, '|';\n        $this->value = $incoming;\n        $rhs = 99;\n        $child = null;\n        echo 's|';\n    }\n    public function __destruct() {\n        global $rhs;\n        echo 'D|', $this->value, '|';\n        $rhs = 123;\n    }\n}\nclass SetterChild98 extends SetterParent98 {}\n$rhs = 7;\n$child = new SetterChild98();\n$child->ready = 5;\n$result = 42;\necho 'N:';\n$result = ($child->value = $rhs);\necho $result, '|', $rhs, '|';\n$child = null;\necho 'E|';\n",
+      "source_sha256": "2cffbc885429b33b196a8d1907e444fb09cdf6837a0310982e85221e6df1921e",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-setter-private-98/.tools/magic-setter-probes-98/normal.php",
+      "native_group": "native-first",
+      "stdout_base64": "TjpTfHZhbHVlfDd8c3xEfDd8MTIzfDEyM3xFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "assignment_line": 25,
+      "native_raw_sha256": "58f99a9046183e3649fadd6b88f12a7e70df6b16580dad5e33cda1bf8915d209",
+      "status": "normal"
+    },
+    {
+      "id": "literal",
+      "source_file": "magic-setter-literal.php",
+      "source": "<?php\nclass SetterParent98 {\n    private int $value = 1;\n    public int $ready = 3;\n    public function __set(string $name, $incoming): void {\n        global $child, $rhs;\n        echo 'S|', $name, '|', $incoming, '|';\n        $this->value = $incoming;\n        $rhs = 99;\n        $child = null;\n        echo 's|';\n    }\n    public function __destruct() {\n        global $rhs;\n        echo 'D|', $this->value, '|';\n        $rhs = 123;\n    }\n}\nclass SetterChild98 extends SetterParent98 {}\n$rhs = 7;\n$child = new SetterChild98();\n$child->ready = 5;\n$result = 42;\necho 'L:';\n$result = ($child->value = 7);\necho $result, '|', $rhs, '|';\n$child = null;\necho 'E|';\n",
+      "source_sha256": "390b57c4a05f9456324ea0827b00d33148a3a85016510f27d47ef62e3ce87f56",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-setter-private-98/.tools/magic-setter-probes-98/literal.php",
+      "native_group": "native-first",
+      "stdout_base64": "TDpTfHZhbHVlfDd8c3xEfDd8N3wxMjN8RXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "assignment_line": 25,
+      "native_raw_sha256": "dc7179efb3fc86bed3262064e8f03c50dab5ed241df2fca7f7e22e1f328ec780",
+      "status": "normal"
+    },
+    {
+      "id": "held",
+      "source_file": "magic-setter-held.php",
+      "source": "<?php\nclass SetterParent98 {\n    private int $value = 1;\n    public int $ready = 3;\n    public function __set(string $name, $incoming): void {\n        global $child, $rhs;\n        echo 'S|', $name, '|', $incoming, '|';\n        $this->value = $incoming;\n        $rhs = 99;\n        $child = null;\n        echo 's|';\n    }\n    public function __destruct() {\n        global $rhs;\n        echo 'D|', $this->value, '|';\n        $rhs = 123;\n    }\n}\nclass SetterChild98 extends SetterParent98 {}\n$rhs = 7;\n$child = new SetterChild98();\n$child->ready = 5;\n$result = 42;\n$keep = $child;\necho 'H:';\n$result = ($child->value = $rhs);\necho $result, '|', $rhs, '|';\n$keep = null;\necho 'Z|', $rhs, '|';\n$child = null;\necho 'E|';\n",
+      "source_sha256": "d743d0631806501b5ecf8213aca721dd4271b49854b44b66c4200671d2d0252c",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-setter-private-98/.tools/magic-setter-probes-98/held.php",
+      "native_group": "native-first",
+      "stdout_base64": "SDpTfHZhbHVlfDd8c3w5OXw5OXxEfDd8WnwxMjN8RXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "assignment_line": 26,
+      "native_raw_sha256": "c64714507af80ba2882ee07f831df144d98b453ba02931e67e129cc992731cab",
+      "status": "normal"
+    },
+    {
+      "id": "throwing",
+      "source_file": "magic-setter-throwing.php",
+      "source": "<?php\nclass SetterParent98 {\n    private int $value = 1;\n    public int $ready = 3;\n    public function __set(string $name, $incoming): void {\n        global $child, $rhs;\n        echo 'S|', $name, '|', $incoming, '|';\n        $this->value = $incoming;\n        $rhs = 99;\n        $child = null;\n        echo 's|';\n        throw new Exception('setter-stop');\n    }\n    public function __destruct() {\n        global $rhs;\n        echo 'D|', $this->value, '|';\n        $rhs = 123;\n    }\n}\nclass SetterChild98 extends SetterParent98 {}\n$rhs = 7;\n$child = new SetterChild98();\n$child->ready = 5;\n$result = 42;\necho 'X:';\ntry {\n    $result = ($child->value = $rhs);\n} catch (Exception $caught) {\n    echo 'C|', $result, '|', $rhs, '|';\n}\n$child = null;\necho 'E|';\n",
+      "source_sha256": "f499c8994bd1a566e5ec684e4113fc4f0bd227ec09e45a18cd8dae956eb892e2",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-setter-private-98/.tools/magic-setter-probes-98/throwing.php",
+      "native_group": "native-first",
+      "stdout_base64": "WDpTfHZhbHVlfDd8c3xEfDd8Q3w0MnwxMjN8RXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "assignment_line": 27,
+      "native_raw_sha256": "4d5aa039fac6b8c8862c5f15ed61c82b7271965ae51196e0767e45ba5afc8cb6",
+      "status": "normal"
+    }
+  ]
+}
