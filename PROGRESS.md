@@ -10216,6 +10216,20 @@ because its typed-NULL gate already implied the removed filter. The nominal
 case has source-only credit; native CT:0/OT:0 output alone does not identify
 its error producers. Wider owner/reentry and physical collection remain open.
 [M102 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M103 routes a pending destructor TypeError through the existing final mixed
+`REF_RETURN_PAIR` for an outer computed old value, middle `z` return and inner
+`y` return. Native PHP catches `pair103` locally after the old O destructor,
+then returns detached `rNULL/b7`; the unchanged model routes to outer T:1/r7.
+At private `2e3050e3e`/401, strict initialization passes and the original
+source agrees exactly. One reached proof passes 130 Boolean premises and two raw steps:
+the pending pair descriptor is valid, the same D-origin TypeError reaches local
+C, and consumed pair recovery creates a fresh NULL cell distinct from z, y and
+the prior b alias without a Notice. Actual exit LINE-only public refusal and
+whole/split budget equality pass. The new route uses existing pair sites and
+finite modeled Throwable kinds; this one witness is nullable `?object` with a
+TypeError. Normal pair, single-cursor and chain behavior remain unchanged;
+wider multi-active histories and returns_verify remain OPEN.
+[M103 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, wider destructor throw/reentry, real suspension and wider typed
