@@ -127,6 +127,24 @@ casters. Explicit source endings call the APIs and real bodies. This extends
 comparison admission; it adds no INI, collection, ephemeron or producer protocol.
 Special intrinsic representations and wider weak lifetimes remain partial.
 
+[Fixed special API WeakMap mismatches](../../coverage/semantics/weakmap-special-api-comparison-review.json)
+add exact normalized CURRENT and static BIND intrinsic Closure arms while leaving
+the ordinary intrinsic guard unchanged. The Closure-left handler falls back and
+the Map-left handler uses standard comparison; both decide class mismatch before
+callable metadata. The common live allocated nonfreeing admission returns +1 with
+unchanged state. Seven-operator rows yield 0100001 in both orientations, with strict
+identity separate. Two originals and 372 Boolean premises/eight actual comparisons
+preserve child-free APIs, nested REAL frames, Map/API captures, scopes/bindings
+and private-value/key owners 1. The callback's original receiver keeps 2 owners
+and its target keeps 1. Zero-prefix array
+and declared scans stop before real later casters. Explicit API postcalls prove
+CURRENT observes the executing real caller and errors outside, while BIND selects
+the new receiver/body. The original literal binding-scope carrier source returned
+interpreter_failure and stays zero; its sole ::class argument correction retains
+the nested witness without API repair. That carrier dependency and COMP71 stored-string
+capture conversion remain distinct; other special forms and wider lifetimes stay
+partial. Eight raw steps are comparisons, not invocation or binding transitions.
+
 [Getter/factory WeakMap mismatches](../../coverage/semantics/weakmap-getter-factory-comparison-review.json)
 also admit normalized GETTERCLOSURE and FROMCALLABLEFACTORY through the same live
 allocated nonfreeing guards. Native Closure fallback runs before getter receiver,

@@ -1,0 +1,154 @@
+{
+  "version": 1,
+  "milestone": "COMP80",
+  "status": "independently reviewed within the stated fixed CURRENT/static BIND Closure comparison domain",
+  "behavior": "Live WeakMap comparisons with normalized Closure::getCurrent and fixed static Closure::bind API captures return uncomparable order+1 in either orientation without invocation or capture/private traversal.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "tested_revision": "c778e43a866ae0dacba88046b1377a709a2453dd",
+  "ordered_modules": 401,
+  "manifest_sha256": "dc7fc18c3f0bc9dbb832981af549a9bb36ce9e7eae56f1ad39938d09a4a44985",
+  "implementation": {
+    "spec/semantics/386-weak-map-lifetime.watsup": "c0da459776ecd16a78b15f3f2ba25321008c17c04f60f98084e981af34b4bf3b"
+  },
+  "engine_basis": [
+    "Zend/zend_compare chooses the left handler for two objects. zend_closure_compare invokes ZEND_COMPARE_OBJECTS_FALLBACK before fake metadata; WeakMap retains standard comparison, so different classes decide order+1 before properties or callable fields.",
+    "Module253 genuinely produces both fixed static API kinds as native Closures and supplies explicit bounds/allocation callable/live validators. Both raw kinds have no children, scope row or binding row."
+  ],
+  "contract": [
+    "Exactly four module386 lines add normalized INTRINSICCLOSURE CURRENT and BIND arms. Ordinary intrinsic eligibility and the common live/bounds/nonfreeing mismatch admission, unchanged-state effect and residual refusal remain exact. No producer, clone, pair equality, binding or current API body changes.",
+    "All seven loose operators/both orientations yield0100001; strict self identity remains separate. Comparisons cannot call CURRENT or BIND, mutate callback bindings, traverse private Map entries or enter later aggregate casters.",
+    "Existing API postcalls distinguish invocation context and effects: CURRENT returns the executing ordinary REAL Closure inside, throws the exact existing Error outside, and BIND selects marker22 rather than the original receiver11. These are complete-source observations, not extra raw transition credit."
+  ],
+  "source_catalogues": {
+    "tests/semantics/weakmap_special_api_comparison_cases.json": "e0e96b773f57e31f4ef836d1f20cf373050401478d220bc0a457e06111722ba3",
+    "tests/semantics/weakmap_special_api_comparison_review_cases.json": "51db91300fd4e8235cd0ca9faae28855419b19ac43d662ed1e3a822cbc31e02e"
+  },
+  "unchanged_frontier": {
+    "revision": "02db78694c5575ba995688bc30622f5314c492f8",
+    "report": ".tools/api80-support/run-baseline-v1/report.json",
+    "status": "unsupported",
+    "reason": "WeakMap comparison protocol",
+    "stdout_prefix": "producers|current|",
+    "both_actual_producers_nominal_before_ingress": true,
+    "seconds": 22.670899083837867,
+    "agreement_credit": 0
+  },
+  "validation": {
+    "original_sources": {
+      "normal_agreements": 2,
+      "author_seconds": 55.00276297703385,
+      "independent_seconds": 57.38111100718379,
+      "cli_and_host_caps_seconds": [
+        240,
+        250
+      ]
+    },
+    "author": {
+      "premises": 148,
+      "setup": 140,
+      "pure": 8,
+      "raw_php_steps": 4,
+      "seconds": 39.22753600217402,
+      "result": "Four genuine row80 EQUAL frames preserve child-free APIs, old REAL callback receiver owners2 and untouched new receiver owner1, scopes/bindings, private-value/key owners1 and quiet counters. Whole false-result steps and full driver budget split pass."
+    },
+    "independent": {
+      "premises": 224,
+      "setup": 220,
+      "pure": 4,
+      "raw_php_steps": 4,
+      "seconds": 42.727449053898454,
+      "result": "Four genuine CURRENT array/BIND declared-box SPACESHIP fronts retain the nested outer REAL frame and exact Map/CURRENT/BIND capture graph. Zero prefixes stop at mismatch before real tails; whole states/scopes/bindings, quiet body/tail/private counters, key/value owners1 and budgets pass."
+    },
+    "total": {
+      "premises": 372,
+      "setup": 360,
+      "pure": 12,
+      "raw_php_steps": 8,
+      "transition_type": "comparisons"
+    },
+    "separate_zero_credit": "Native, exact unchanged Unsupported, initializer, four parse/check operations and author EL supply no application agreement or extra state credit.",
+    "failures": [
+      {
+        "report": ".tools/api80-peer/source-v1/report.json",
+        "status": "interpreter_failure",
+        "detail": "function php_run failed",
+        "host_exit": 1,
+        "returned_frontend_program_or_outcome": false,
+        "seconds": 50.487,
+        "credit": 0,
+        "preserved_inputs": ".tools/api80-peer/source-v1/failure-inputs",
+        "static_cause": "Module253 fake_bind_scope_result/argument accept raw PSTRING only;142 method_string accepts PSTRING_CARRIER and blocks conversion, leaving literal scope reception without a derivation.",
+        "correction": "Change only the peer third argument from literal PeerOwner80 to PeerOwner80::class, the already-supported raw class-name form. Fresh native/source/prepare bind the changed source; no runtime/API repair or accepted author replay."
+      }
+    ]
+  },
+  "limits": [
+    "The literal Closure-binding scope string-carrier dependency remains unresolved, separately from COMP71 stored-string first-class capture conversion. The failed original remains zero, with no returned frontend/program/prefix receipt claimed.",
+    "Module253 and class-name production are unchanged. The accepted ::class workaround depends on its raw class-name representation; actual-parent compatibility must inspect this producer as well as the comparison and API interfaces.",
+    "Dead-allocation/bounds/reserved-kind and prior-guard projections are pure local controls, not malformed-world execution claims. Old COMP74 CURRENT-denial fixtures retain their original tested cut.",
+    "Only two existing fixed API representations gain Map mismatch admission. Other special forms, temporary call frames, creation/binding protocols and wider lifetimes remain partial. Local binaries were copied; no new build/portability claim."
+  ],
+  "artifacts": {
+    ".tools/api80-support/gates.py": "145685b73b9999df4e70ab9bcbb6206e067009a8d2bcecdf238149b3bf638886",
+    ".tools/api80-support/inputs.py": "a4df90a48a4943444c0de8a94f4e255a9b056d5233d01845944a73941589ec8a",
+    ".tools/api80-support/actor.py": "6661a8421571e833eb3d8209a1b2725860fe8e9e8102cd3efd87d6fb3558f3aa",
+    ".tools/api80-support/run-native-v1/report.json": "0d826381f82b96bb466576a49418953f76eca18b50cd049bdf80b1a403bd2ba7",
+    ".tools/api80-support/run-baseline-v1/report.json": "f70393463c685816feca868de63c9f7a1161d24cb07b2211afdedbe74e1dd566",
+    ".tools/api80-support/run-init-v1/report.json": "140b881e2ea00596b5ad52277a8b801567fb64ea19c6e34df0422faef529fce4",
+    ".tools/api80-support/run-sources-v1/report.json": "e8ccdfce7e8e4838be5fcb22648894a8422f8dcaed5e16d8456c302a091f9a12",
+    ".tools/api80-support/run-prepare-v1/report.json": "c3f71a49a798cc2044e495b984e2d0eea2bee942cb0d3e437168fb38814b3dea",
+    ".tools/api80-state/build.py": "4c9f1ece7d0d8930ddcdabe860522c277af5503edfe74de4e7dcbb648cd91b21",
+    ".tools/api80-state/helpers.watsup": "eb25fb27d5b7576023d8de3c08242075357e98fe8855092ef8aa0204c6c0efe3",
+    ".tools/api80-state/run.py": "48bb9b688619f47b070e634efc5f28e957b9cced39675fd262db6f06b499240f",
+    ".tools/api80-state/plan.json": "e51a9ed2730f4878a95666aec6b536dbd14689a3fda28a4c4da4e535d2d419fe",
+    ".tools/api80-state/run-el-v1/report.json": "1983ae4ad0bc6da528006fbf9892248f09624513e542b980ca7437dce98739ee",
+    ".tools/api80-state/run-sl-v1/report.json": "8e5fd92ce5b62d75c71f7ab6a246240adebbf58ce1dc9948147db9806b7ada94",
+    ".tools/api80-peer/run.py": "355778aad06b5a255544b52caffc631cc47d41922b5a6de7a8e59035915ed17f",
+    ".tools/api80-peer/build.py": "0106c843568469aef7dcd9a8b6152bf3999d8e4b6ceecdbc6f9e07ba0ea52932",
+    ".tools/api80-peer/helpers.watsup": "d079468e05f9a4fbb40a7ca44b0a992a78d513abf005f66aaf95d79634947604",
+    ".tools/api80-peer/plan.json": "bb3f5e2d78cc9604142865fe5a55a7c2764b6f9db71ba04f888087e953e463a8",
+    ".tools/api80-peer/native-v1/report.json": "5b8209faf8b4a7e5fc5214c4c7c45915f3ce53d80097b48fa273b98517202fed",
+    ".tools/api80-peer/source-v1/report.json": "9bbedbc2b68b7e372432625a566c11cc52cfdd5d2a99c609af271d2107a740e7",
+    ".tools/api80-peer/native-v2/report.json": "7320b19bb1b431ad08241795f633fb854c73f1c86472d56faf0f3a1ee30a5c58",
+    ".tools/api80-peer/source-v2/report.json": "089777876ce95d1ee96b219f26bd307c8605cd4320194752e16e0e43f3214f79",
+    ".tools/api80-peer/prepare-v2/report.json": "e142227901550169ed95627df0d9af31d3978c8400634d20b147591f7f83ceff",
+    ".tools/api80-peer/state-v2/report.json": "1180023b9d2d9fcc916f2c9c767ccee9ec806ed68e1b8003e556f380e86e50a1",
+    ".tools/api80-peer/review.json": "c2a635fadce257e07c5dfc9b6e80355c0f1e6bc3325961698e9183cf32304650"
+  },
+  "recovery": {
+    "ignored_archive": ".tools/current-bind-comparison-80",
+    "note": "Original/corrected PHP, checked programmes, fixtures and owned START/closed raw streams/reports remain ignored; source-v1/failure-inputs preserves the four originals. Report snapshots bind exact commands, target, profile and tested revision."
+  },
+  "independent_review": {
+    "agent": "/root/comp_review_67",
+    "artifact": ".tools/api80-peer/review.json",
+    "artifact_sha256": "c2a635fadce257e07c5dfc9b6e80355c0f1e6bc3325961698e9183cf32304650",
+    "semantic_verdict": "CLEAR",
+    "publication_verdict": "CLEAR"
+  },
+  "composition": {
+    "parent": "7750c53a6e87d641be9dff464e6bd000eed4f57c",
+    "ordered_modules": 401,
+    "reviewer": "/root/comp_review_67",
+    "verdict": "CLEAR",
+    "method": "Pointwise actual-parent semantic compatibility; no concrete syntax/dispatch interaction and no joined actor.",
+    "findings": [
+      "Fixed named ::class is folded to raw PSTRING pnreference.RESOLVED by141;184 class-name result is also raw. These producers and127/283/142/253 remain parent-exact, preserving the material workaround. ::class is not an explicit global constant API.",
+      "156 typed nullable/ref-return cleanup requires signatures and saved cleanup absent here. 280/289 require Generator pending-throw paths; neither source has Generator/yield/send.",
+      "404 changes require modulo/shift/bitwise compound-warning tasks;408 requires magic empty RV. No source has those operations.400 changes require explicit global query arity/DEFINE arraycopy, distinct from CURRENT/BIND configuration.",
+      "Only386 has the reviewed four-line delta, byte-identical to testedc778. Every other spec and modules.json is exact parent; no pstate/init change."
+    ],
+    "retained_evidence": {
+      "tested_revision": "c778e43a866ae0dacba88046b1377a709a2453dd",
+      "source_agreements": 2,
+      "premises": 372,
+      "raw_steps": 8
+    },
+    "new_execution_credit": 0
+  }
+}

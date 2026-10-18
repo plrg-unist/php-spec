@@ -7,6 +7,28 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Live WeakMap comparisons now admit the exact CURRENT and fixed static BIND API
+Closure kinds, returning +1 in both directions before invocation or private/capture
+traversal. Ordinary intrinsic eligibility and API bodies remain unchanged. Both
+producers precede the exact unchanged Unsupported. Two originals and 372 Boolean
+premises (360 setup + 12 pure)/eight actual comparisons pass at c778e43a8/401.
+Whole states preserve callback receivers, nested REAL frames/captures, scopes,
+bindings, private-value/key owners and budgets; aggregate mismatches skip real tails.
+Later calls verify CURRENT inside-self/outside-Error and BIND's new receiver marker 22.
+One independent original hit the existing module253 literal scope-carrier derivation gap;
+its failure stays zero. Only its scope argument changes to the supported ::class
+form before fresh native/source/preparation; no API repair or accepted replay.
+The scope-carrier issue stays separate from COMP71 stored-string capture conversion.
+Other special forms and wider lifetimes remain partial.
+[Special API comparison review](coverage/semantics/weakmap-special-api-comparison-review.json).
+
+Composed over 7750c53a6/401 after pointwise review of typed REF-return,
+Generator pending-throw, arithmetic-warning, magic-empty and global constant API
+routes, whose selectors are absent here. The fixed ::class fold remains raw PSTRING
+through unchanged141/184;253 and the API/comparison interfaces remain exact.
+Source2/state372 retain privatec778/401 with zero renewed credit; no joined actor
+or accepted replay.
+
 Delayed integer-conversion failure now raises TypeError after the first callback
 in the existing both-fractional plain-CV modulo/shift/numeric-bitwise routes.
 An authenticated nonnumeric-string or allocated-array RHS is rejected immediately;

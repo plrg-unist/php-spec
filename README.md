@@ -2301,6 +2301,13 @@ and skipped aggregate tails. Later explicit calls expose the flag change and VM
 execution. Special intrinsic kinds and wider protocols remain partial.
 [Intrinsic/API review](coverage/semantics/weakmap-api-comparison-review.json).
 
+Fixed CURRENT and static BIND API Closures also compare with live WeakMap before
+invocation or private traversal. Two originals and 372 Boolean premises/eight actual
+comparisons preserve real frames, captures and bindings; later calls distinguish
+CURRENT caller identity/Error and BIND's selected receiver. The old literal binding-
+scope carrier failure stays zero; its supported class-name workaround leaves that
+dependency open. [Special API review](coverage/semantics/weakmap-special-api-comparison-review.json).
+
 Getter Closures and first-class `Closure::fromCallable` factory Closures also
 compare with live WeakMap before receiver or private-entry traversal. Two exact
 sources and 353 Boolean premises/10 actual steps preserve builtin/inherited getter
