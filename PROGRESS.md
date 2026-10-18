@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Nonowning copied operands now stage ordinary `+`, `-`, `*`, `/`, `**` Warnings.
+Saved copies survive origin mutation/unset and retain raw TypeError labels.
+MUL follows opcode slot-rank swapping: literal/CV order yields cached `60` with
+two Warnings. Ten originals pass at `2d6ca1eeb`/405; five focused fixtures pass
+767 premises at `1ed6e0127`/405, including copied bad-RHS priority, strict `68.75`
+after both source names disappear and final power supplied-throw cancellation.
+Old entry controls/readers are preserved; 13 rows stay partial. Quiet/no-Warning
+orders, owning/wider copies and lifetimes remain open; OP12 paused.
+[Copied-arithmetic ledger](coverage/semantics/copied-arithmetic-warning-review.json).
+
+Composed over `7bed41edf`/405, preserving incoming fields, task variants and
+manifest. Independently reviewed incoming selectors are absent here; source10 and
+state767 retain their private405 cuts without joined execution or renewed credit.
+
 Paired `empty` now accepts live arrays returned by inherited untyped `__isset`.
 Array truth is cached before ordinary disposal. A sole table retires before its
 payload destructor, which can clear the caller CV and change the captured getter's
@@ -115,20 +129,8 @@ Incoming roots, defaults, task variants and the 405-module manifest are
 preserved; source4/new544+old119/strict403 keep their private cuts without a
 joined actor, accepted replay or renewed execution credit.
 
-Arithmetic now admits one initially plain CV and one pre-existing reference.
-The reference keeps its selected cell through name rebind/unset while an alias
-retains it; the plain input stays plain until conversion. Existing numeric holders
-preserve results and final power diagnostics, while conversion failure uses the
-live selected referents' types. Nine originals pass at `805d3225e`/404 and five focused
-fixtures pass 858 premises at `6d906edaf`/404: both mixed orientations, old-cell
-selection, strict float `68.75`, bool-string TypeError, cached-zero DIV and supplied
-final-deprecation throw. Old entry/readers/bodies are preserved; 13 linked rows
-remain partial, wider lifetime/operand forms open, OP12 paused.
-[Mixed-arithmetic ledger](coverage/semantics/mixed-arithmetic-warning-review.json).
-
-Composed over `46ad925ee`/405 with parent fields, array-key retention defaults and
-incoming paths preserved. Array/DEFINE, reference-return cleanup and static magic
-selectors are absent here; source9/state858 retain private404 cuts without replay.
+The earlier mixed CV/selected-reference arithmetic route retains source9/state858
+in its [review ledger](coverage/semantics/mixed-arithmetic-warning-review.json).
 
 M112 admits pending still-owning partial-pair cleanup through its final empty
 release and one normal auxiliary THROW_SEARCH operation. Twenty lines in270 reuse

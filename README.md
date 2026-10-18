@@ -645,6 +645,14 @@ and cancellation by a final power-deprecation throw in the
 [mixed-arithmetic ledger](coverage/semantics/mixed-arithmetic-warning-review.json).
 A surviving alias keeps the selected reference live; wider forms remain partial.
 
+Evaluated scalar copies now join ordinary arithmetic Warning continuations.
+They keep their saved values and error types after source variables change or
+vanish. Multiplication follows PHP's physical opcode order: a literal-left/CV-right
+witness yields `60` after two Warnings. Ten originals and 767 focused premises also
+check strict float `68.75` and final power cancellation in the
+[copied-arithmetic ledger](coverage/semantics/copied-arithmetic-warning-review.json).
+Quiet/no-Warning orders and owning or wider copied inputs remain partial.
+
 Primitive plain-CV `**=` now commits its captured result even when the deprecation
 handler throws. A late alias detaches before the same exception continues; the
 outer assignment stays unchanged. Three exact originals and 407 focused SL
