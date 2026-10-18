@@ -31,7 +31,7 @@ created reference or rebinding to another scalar cell. The missing right stays
 null. Removing the left CV or replacing it with an owning value remains explicitly
 unsupported on return, without another warning. See the
 [live-left review](../../coverage/semantics/undefined-spaceship-right-review.json).
-Distinct direct-CV `==`/`!=`/`<`/`<=` pairs also suspend with one missing operand
+Distinct direct-CV `==`/`!=`/`<`/`<=`/`>`/`>=` pairs also suspend with one missing operand
 and a defined scalar counterpart. The missing value stays null while the opposing
 wrapper follows callback writes, late reference creation and rebinding. A missing
 right name can remain undefined throughout the callback. False handlers preserve
@@ -41,8 +41,12 @@ Unsupported without another warning. The
 [missing-left review](../../coverage/semantics/undefined-scalar-compare-review.json)
 and [missing-right review](../../coverage/semantics/undefined-scalar-compare-right-review.json)
 and [not-equal/less-or-equal review](../../coverage/semantics/undefined-scalar-compare-ne-le-review.json)
-record the separate cuts. Both-missing/same-CV inputs, owning opposing values and
-wider producers remain partial. Reversed `>`/`>=` warning fetches still need continuations. Earlier spaceship cuts remain in the
+and [greater review](../../coverage/semantics/undefined-scalar-compare-gt-ge-review.json)
+record the separate cuts. Zend evaluates `>`/`>=` source expressions left to right,
+then reverses physical comparison operands. The single-missing/scalar-throughout
+bound makes these source-oriented records valid; removed-right native probes
+confirm one Warning without admitting that wider path. Both-missing/same-CV inputs,
+owning/removed counterparts and wider producers remain partial. Earlier spaceship cuts remain in the
 [scalar warning review](../../coverage/semantics/undefined-spaceship-review.json).
 
 Array comparison first handles identical container identity, then recursion on

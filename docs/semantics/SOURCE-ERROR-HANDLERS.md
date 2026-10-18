@@ -124,7 +124,7 @@ Scalar `<=>` additionally admits a missing left CV with a captured primitive or
 defined direct-CV right operand, and a captured primitive or defined scalar
 direct-CV left with a missing right CV. The latter follows the current left
 wrapper after the callback, including reference rebinding; it adds no borrowed
-old-cell owner. Distinct direct-CV `==`/`!=`/`<`/`<=` pairs also admit either missing
+old-cell owner. Distinct direct-CV `==`/`!=`/`<`/`<=`/`>`/`>=` pairs also admit either missing
 operand with an initially defined scalar counterpart, following that counterpart's
 current wrapper after the callback. A missing right name need not be initialized.
 Both protocols freeze null while preserving the opposing read; both-missing and
@@ -134,7 +134,10 @@ entry/resume domain guards refuse unsupported values without another Warning.
 [The equality/less review](../../coverage/semantics/undefined-scalar-compare-review.json)
 and [missing-right review](../../coverage/semantics/undefined-scalar-compare-right-review.json)
 and [not-equal/less-or-equal review](../../coverage/semantics/undefined-scalar-compare-ne-le-review.json)
-record the scalar continuations and their separate validation cuts.
+and [greater review](../../coverage/semantics/undefined-scalar-compare-gt-ge-review.json)
+record the scalar continuations and their separate validation cuts. Greater
+operators reverse physical VM operands; the same source shapes apply within the
+single-missing/scalar-throughout bound.
 Missing-left binaries retain the later right read; missing-right binaries admit
 known or temporary values and initially-reference CVs in strict identity comparisons.
 Module208 retains the borrowed old cell through the saved caller without adding

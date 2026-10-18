@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Distinct direct-CV `>` and `>=` now suspend through single-missing warnings in
+both orientations, preserving NULL and current scalar wrappers. Zend reverses
+physical comparison operands after left-to-right source evaluation; the existing
+source shapes remain valid while the counterpart stays defined/scalar. Multiline
+warning lines, late references/rebinding, no-init-right, false/default and supplied
+throw cleanup agree. Eight source agreements plus two zero-credit controls and
+380 strict-SL premises / four groups (182 author + 198 independent) pass first
+attempts at `a2da3ece2`/405. The genuine `1bf5d39e8` baseline stays zero.
+Both-missing/same-CV, owning/removed counterparts and wider producers remain
+partial; prior cuts are not renewed and quarantined COMP88 stays excluded.
+[Greater warning review](coverage/semantics/undefined-scalar-compare-gt-ge-review.json).
+
 Distinct direct-CV `!=` and `<=` now suspend through missing-value handlers in
 both orientations, retaining NULL and the current scalar counterpart. Two operator
 memberships and two source mappings reuse the existing shapes/guards. Aliases,
