@@ -1884,7 +1884,8 @@ def $dynamic_scalar_define_flag_valid(S, pconfigcall) = true
   -- if $dynamic_constant_global_name(preqbytes) /\ ~$dynamic_constant_initial(preqbytes)
   -- if $dynamic_scalar_define_arguments(S, pconfigcall, 0)
   -- if $named_slot_at(pconfigcall.SENT, 0) = NAMED_SENT (KNOWN pvalue_name)
-  -- if $dynamic_constant_class(pvalue) = (pvalueclass)
+  -- if $dynamic_define_value_class(S, pvalue) = (pvalueclass)
+  -- if $dynamic_constant_class(pvalue) =/= eps \/ $dynamic_array_quiet_flag(pvalue_flag)
   -- if $string_plain(pvalue_name) = pvalue_name \/ $string_carrier_valid(S, pvalue_name)
   -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
   -- if $string_plain(pvalue_flag) = pvalue_flag \/ $string_carrier_valid(S, pvalue_flag)
@@ -1913,7 +1914,7 @@ dec $dynamic_scalar_define_flag_duplicate_valid(pstate, pconfigcall, nat) : bool
 def $dynamic_scalar_define_flag_duplicate_valid(S, pconfigcall, n_constants) = true
   -- if $dynamic_scalar_define_flag_valid(S, pconfigcall) /\ ~$config_strict(S, pconfigcall)
   -- if $dynamic_scalar_define_flag_values(pconfigcall) = ((preqbytes, pvalue, pvalue_flag))
-  -- if $dynamic_constant_class(pvalue) =/= eps
+  -- if $dynamic_define_value_class(S, pvalue) =/= eps
   -- if $(n_constants <= |S.USERCONSTANTS|)
   -- if $user_constant_at(S.USERCONSTANTS[0:n_constants], $user_constant_key(preqbytes)) =/= eps
 def $dynamic_scalar_define_flag_duplicate_valid(S, pconfigcall, n_constants) = false -- otherwise
@@ -1924,7 +1925,7 @@ def $dynamic_scalar_define_flag_finish(S, pconfigcall) = $dynamic_define_finish(
 def $dynamic_scalar_define_flag_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME $user_constant_key(preqbytes), ORIGIN pconfigcall.SITE, VALUE pvalue, CLASS pvalueclass, READS eps, RECEIVES eps}]][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $dynamic_scalar_define_flag_valid(S, pconfigcall) /\ ~$config_strict(S, pconfigcall)
   -- if $dynamic_scalar_define_flag_values(pconfigcall) = ((preqbytes, pvalue, pvalue_flag))
-  -- if $dynamic_constant_class(pvalue) = (pvalueclass)
+  -- if $dynamic_define_value_class(S, pvalue) = (pvalueclass)
   -- if $source_constant_lookup(S, preqbytes) = eps
   -- if S.TODO = ptask :: ptask_tail*
 def $dynamic_scalar_define_flag_finish(S, pconfigcall) = $error_dispatch(S[.TODO = (DYNAMIC_SCALAR_DEFINE_FLAG_DUPLICATE pconfigcall n_constants) :: ptask_tail*], 2, ptbytes_message, pconfigcall.LINE, DIAGNOSTIC "Warning" ptbytes_message pconfigcall.LINE, DYNAMIC_SCALAR_DEFINE_FLAG_DUPLICATE pconfigcall n_constants)
@@ -2015,7 +2016,7 @@ def $dynamic_scalar_define_flag_pending(S, pconfigcall) = S[.USERCONSTANTS = S.U
   -- if $throwable_live(S, n)
   -- if $dynamic_scalar_define_flag_case_valid(S, pconfigcall)
   -- if $dynamic_scalar_define_flag_values(pconfigcall) = ((preqbytes, pvalue, pvalue_flag))
-  -- if $dynamic_constant_class(pvalue) = (pvalueclass)
+  -- if $dynamic_define_value_class(S, pvalue) = (pvalueclass)
   -- if $source_constant_lookup(S, preqbytes) = eps
 def $dynamic_scalar_define_flag_pending(S, pconfigcall) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "scalar define flag pending-exception registration"] -- otherwise
 def $error_read_discard(S, DYNAMIC_SCALAR_DEFINE_FLAG_RESULT pconfigcall) = $dynamic_scalar_define_flag_pending(S, pconfigcall)
@@ -2200,7 +2201,7 @@ def $dynamic_scalar_define_flag_pending(S, pconfigcall) = $dynamic_define_pendin
   -- if $throwable_live(S, n)
   -- if $dynamic_scalar_define_flag_case_valid(S, pconfigcall)
   -- if $dynamic_scalar_define_flag_values(pconfigcall) = ((preqbytes, pvalue, pvalue_flag))
-  -- if $dynamic_constant_class(pvalue) =/= eps
+  -- if $dynamic_define_value_class(S, pvalue) =/= eps
   -- if $source_constant_lookup(S, preqbytes) =/= eps
 def $dynamic_scalar_define_flag_pending(S, pconfigcall) = $dynamic_define_pending_duplicate(S_copy[.RESULT = S.RESULT], preqbytes, pconfigcall.LINE)
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*

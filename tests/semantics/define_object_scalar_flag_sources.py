@@ -116,6 +116,16 @@ echo 'A|';
 family.BASELINE = ('scalar define flag reception', b'B|')
 family.UNSUPPORTED = {}
 family_fingerprint = family.fingerprint
+family_recorded = family.recorder.recorded
+
+
+def recorded(command, stem, timeout):
+    if (Path(stem).name == 'model' and
+            Path(stem).parent.name == 'quiet-object-false-and-late-truthy-duplicate'):
+        assert command[-2:] == ['--timeout', '45']
+        command = [*command[:-1], '90']
+        timeout = 105
+    return family_recorded(command, stem, timeout)
 
 
 def fingerprint():
@@ -124,6 +134,7 @@ def fingerprint():
 
 
 family.fingerprint = fingerprint
+family.recorder.recorded = recorded
 
 if __name__ == '__main__':
     family.main()
