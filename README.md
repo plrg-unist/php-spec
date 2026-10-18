@@ -4203,8 +4203,11 @@ pauses, required literal history despite an unchanged heap, engine TypeError cat
 one line7 Notice and detached aliases. Three simultaneously owning computed
 object returns also pass a fresh source comparison and 347/7 reached checks at
 `f305be84b`: normal C/B/A retirement, saved-caller owners, source-region refusals
-and selected-reference aliases. This requires no runtime change. Wider
-interposed/pending histories, reentry, GC and broader consumers remain open.
+and selected-reference aliases. This requires no runtime change. A direct
+TypeError from the first computed object's destructor now preserves its local
+catch while the other two returns still own their objects. One fresh comparison
+and 514/12 checks at `9aa2136d9` prove cleared-NULL recovery, one Notice and detached
+caller aliases. Other throw forms, reentry, GC and broader consumers remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;
