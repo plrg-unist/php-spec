@@ -1,0 +1,118 @@
+{
+  "scope": "Selected absent literal instance methods on an ordinary CV receiver; inherited public nonstatic nonref __call(string $name,array $arguments) without a return declaration. One or two positional int/leaf-instance sends; an initial CV send is nonreference. Receiver and scalar argument snapshots, real packed argument-array cleanup, cached scalar result and supplied throw.",
+  "implementation": {
+    "base": "44e0af9f7283fa5b4d0b657845c3a647ef84790c",
+    "source_revision": "c3dd5f3d81a11b63965578a5a5169b808a8dadbf",
+    "state_revision": "a2fb398bafa153947e681fbb8901f7ffe81ac7eb",
+    "modules": 403,
+    "change": "141 declaration/signature admission;30 source-history record and raw/final targets;142 direct/scoped fallback barriers;84/105 narrow real-argument shape exclusions;414 selection/send/pack/entered certificates. Generic80/86/call-return/free/GC and callable API classifiers205/215/221/234 stay exact."
+  },
+  "engine": {
+    "target": "PHP8.5.10 CLI NTS64",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_object_handlers.c zend_std_get_method/zend_get_user_call_function and get_static_method_fallback.",
+      "Zend/zend_vm_def.h ZEND_CALL_TRAMPOLINE moves original sent zvals into a packed array and preserves requested spelling/receiver.",
+      "Zend/zend_vm_def.h zend_leave_helper calls Zend/zend_execute.c i_free_compiled_variables before OBJ_RELEASE(This); Zend/zend_API.c validates magic signatures."
+    ],
+    "intentional_divergences": []
+  },
+  "sources": {
+    "catalogue": "tests/semantics/magic_call_cases.json",
+    "maintained_byte_identical": true,
+    "results": "Four exact stdout34/33/36/17, stderr empty/exit0. Mutate clears child and writes RHS99 but __call receives original7/2 and original MiSsInG spelling; owning payload P/K/p precedes receiverD and cached7; preconstructed supplied Exception preserves destination42 and exact catch identity; declared public direct method bypasses magic."
+  },
+  "validation": {
+    "native": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-call-private-99/.tools/magic-call-probes-99/native-first/report.json",
+      "sha256": "20bfd132f2932995315260cb844c036c5d3459c4c3fdaca2bcdf1b8c8d691b86",
+      "result": "Four exact native tuples; zero source agreement credit.",
+      "revision": "44e0af9f7283fa5b4d0b657845c3a647ef84790c"
+    },
+    "baseline": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-call-private-99/.tools/magic-call-probes-99/accepted-current-baseline/report.json",
+      "sha256": "bf3507dce408038e259f3ce23c97612245eebdc284b79bdc430ea3f1820cafb0",
+      "result": "Four checked compiler Unsupported: method visibility, static, or magic consumer;CLI1/0agreements; stable/emptygroups.",
+      "revision": "44e0af9f7283fa5b4d0b657845c3a647ef84790c"
+    },
+    "source": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-call-private-99/.tools/magic-call-probes-99/changed-model-j_zkcga1/report.json",
+      "sha256": "59cefb1891a72d0e1b5e599e9ee46848ae7a78e9fa565fed8882e8ff51d86bf9",
+      "result": "Four exact checked normal agreements;13.386/13.559/15.815/10.451s.",
+      "revision": "c3dd5f3d81a11b63965578a5a5169b808a8dadbf"
+    },
+    "focused": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-call-private-99/.tools/magic-call-protocol-o9umqq6z/report.json",
+      "sha256": "9868f6d32423d9d4d6f8e04b027017c66ad28ea7a62d6a3b67bec1e81030d395",
+      "result": "Three exact true:130/106/119,355=334reached+21derived/app3/source0;AL7.358/7.188/7.300,SL21.892/24.262/30.552s.",
+      "revision": "a2fb398bafa153947e681fbb8901f7ffe81ac7eb"
+    }
+  },
+  "focused_scope": "Reached raw receiver root and nonreference sends; actual saved CALL_SEND during mutate keeps7/receiver1 despite RHS99/childNULL; real packed entries/array owner and entered TYPE_RECEIVE lexical Parent/called Child; sole argument-array retirement before PayloadD while receiver1 survives, then receiverD before cached7 or same Throwable CATCH_BIND/destination42; full endings and zero-budget resumption. Derived source/signature/initial-reference/scoped-compatibility guards and final packed-array certificate rejections; malformed raw count/PNULL sends take explicit Unsupported. Public bypass retains source agreement only.",
+  "nonpassing": [
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-call-private-99/.tools/magic-call-probes-99/changed-model-6auwf82z/report.json",
+      "sha256": "c73de444b9b91ac077a2101a5b69f6bc269516fa66154e70f07cecddd6754c8b",
+      "result": "Pre-execution runner_failure: unparenthesized literal SLOTS list in414. Snapshot only/other3unrun/source0; one-line grouping repair.",
+      "revision": "220df0c994dfb76a9af5ab07c92d02b63865c23d",
+      "passing_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-call-private-99/.tools/magic-call-protocol-yk73s2jh/report.json",
+      "sha256": "d30c91f19aac6aa64de744182f4f7ed93748b05f7a139a9e5dee3da4f3bbe322",
+      "result": "Pre-application AL binding diagnostic: fresh record projected SITE/LINE in its first pattern. Snapshot AL only/app0/other2unrun; split binding adds one premise per app, no runtime change.",
+      "revision": "c2d668d316706c8aa4d18a58444bda0cefa039a8",
+      "passing_credit": 0
+    }
+  ],
+  "reproduction": {
+    "cwd": "/home/user/workspace/php-spec/.tools/magic-call-private-99",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": "absent",
+      "jobs": 1
+    },
+    "profile": "tests/semantics/profile.json",
+    "native_baseline": "ready watch-affinity.py native-first native 1, then env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/magic-call-probes-99/run.py native --revision 44e0af9f7283fa5b4d0b657845c3a647ef84790c; after PASS/reap fresh accepted-current-baseline model 1 watcher and same actor baseline.",
+    "source": "ready capture-candidate-affinity.py 1 changed-model- 4 changed-source-99-repair1; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/magic-call-probes-99/run.py changed --revision c3dd5f3d81a11b63965578a5a5169b808a8dadbf",
+    "focused": "ready watch-state-affinity-repair1.py 1; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u tests/semantics/magic_call_protocol.py --revision a2fb398bafa153947e681fbb8901f7ffe81ac7eb",
+    "caps": "Native45/model60/outer75/100000steps; each focused AL90 then strictSL90/cachefalse/dettrue, serial stop-first. Checked --prepare-only performs no semantic application.",
+    "affinity": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-call-private-99/.tools/magic-call-probes-99/affinity-native-first.json",
+        "sha256": "4cf144618bf0aa2cc9101ada6308995ed84edf55f9f5f2722d4e72dc9d724dec",
+        "result": "Partial3/4 CPU1: snapshot fullargv, owning/throwing emptyargv, public missed. Exact taskset-parent provenance retained; no sampling-only replay."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-call-private-99/.tools/magic-call-probes-99/affinity-accepted-current-baseline.json",
+        "sha256": "fdda0a028e4baca7b550eb98928833a741ec070833fdbda2976d731e3f6950e9",
+        "result": "Complete4CPU1/fullargv."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-call-private-99/.tools/magic-call-probes-99/affinity-changed-source-99-repair1.json",
+        "sha256": "79aacd35efc06a02bbce31bce0a51c4f20846c193b6e91ec34a17235511e8b9c",
+        "result": "Complete4CPU1/fullargv."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-call-private-99/.tools/magic-call-probes-99/affinity-state-99-repair1.json",
+        "sha256": "b8526d5c8a6679402378101def3462218410104603ba5d0079168b29cd185a71",
+        "result": "Complete6CPU1/fullargv."
+      }
+    ],
+    "stability": "Accepted inputs/head/status/fixtures stable; no timeout/interruption; groups empty and actors/observers reaped. Original failures retain0."
+  },
+  "tools": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "source_driver_sha256": "db73cb3d740afb40e11f6973b1d5db8d5d8af28367f9f8350af6b2589603ce92",
+    "focused_driver_sha256": "c4132cf56575e6f2a67bf4ac5ba0be4c50ffe91ff17e3fde54d29ce29fff3671"
+  },
+  "limits": "__callStatic, inaccessible/scoped/dynamic/first-class magic positives, named/unpacked/reference sends, exported argument arrays, held/wider owning results and broader lifetimes remain outside this checked slice. Needed unselected direct/scoped forms are explicit Unsupported; existing callable API unknown/refusal routes remain unchanged. No generic GC preservation, NaN callback work or earlier class-suite replay.",
+  "artifacts": "Ignored originals/private drivers/raw reports/streams/processes and generated fixtures remain at original locations. Maintained sources/catalogue/harness recover from tested commits; no bulky archive, backup or receipt chain tracked.",
+  "review": {
+    "independent": "class_review_84",
+    "status": "Native/baseline/source4/state355 and concise publication independently accepted; engine route, live-RHS and no-magic-fallback visibility wording clarified."
+  }
+}

@@ -7,6 +7,21 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Missing literal instance calls now invoke inherited public `__call(string,array)`
+with original spelling and a real packed positional argument array. The selected
+receiver and early scalar sends survive argument callbacks that clear its CV and
+write the live RHS. Sole array/payload cleanup precedes receiver destruction and
+cached scalar result delivery; a supplied throw preserves destination42 and the
+same catch object. Declared public methods bypass magic. Four exact originals
+pass at `c3dd5f3d8`; 355 focused premises at `a2fb398ba` (334 reached +21 derived)
+cover saved raw calls, actual parameter reception, array/receiver owners, cleanup,
+catch and budgets. A parser failure and a pre-application fixture-binding failure
+remain zero; their corrections were grouping/binding only. Module414 reuses the
+ordinary call/free/GC protocols. Scoped/inaccessible positives, `__callStatic`,
+dynamic/named/unpacked/reference and wider ownership/lifetime paths remain open;
+needed unselected magic forms stay Unsupported. No earlier class suite is replayed.
+[Magic call review](coverage/semantics/magic-call-review.json).
+
 Initialized SensitiveParameterValue/int/float comparisons now emit the standard
 Notice and use private 1/1.0 without reading the wrapped value. Nine added
 module402 lines reuse existing numeric callbacks, captured CV/COPY/cell selection,
@@ -56,29 +71,6 @@ five tests are exact; every other runtime/manifest path retains parent bytes.
 Array/coerced flags, magic setters, reference-return cleanup, Generator/POWER and
 LIST tasks have no producer in these originals. Source4/844 retain their private
 309d/96f cuts without a joined actor, accepted replay or renewed execution credit.
-
-Inherited private writes now call a public `__set(string $name, $incoming): void`
-for selected external CV/literal integer assignments. The callback receives `7`,
-but used CV results are read after receiver release: setter `99` then receiver
-destructor `123` yields `123`; literal `7` stays `7`, and a held receiver yields
-`99` before its later destructor. Lexical private and initialized public writes bypass
-magic. A supplied setter Exception leaves the outer destination `42` and reaches
-the same catch after receiver cleanup. A receiver-owning call marker and nonowning
-late-delivery marker preserve these orders without changing generic free or GC.
-Four originals agree at `a4e84a4b6`; 524 focused premises at `76b44693c`
-(506 reached +18 derived) cover actual parameter reception, IN_SET timing, saved
-receiver/delivery validity, pointer/input refusals and budgets. Two source failures
-remain zero (a DSL binder error, then entered-function lookup); the latter received
-a narrow authenticated lookup repair. The first focused failure and two diagnostics
-also stay zero; only its NORMAL/BUDGET plan detector needed correction. Wider
-setter signatures/RHSs, recursion, sole-owner public-NaN retirement and wider
-quiet-CV GC remain open. No earlier class suite is replayed.
-[Magic setter review](coverage/semantics/magic-setter-review.json).
-
-Composed over `08eafbb85`/401 after pointwise review of reference-return/finally,
-Generator, constant API, operator-warning, LIST and internal-wrapper changes, all
-unselected here. Incoming paths and task variants are retained; the manifest adds
-only412 for402 modules. Source4/state524 retain their tested cuts without replay.
 
 Array `define` now receives integer, finite-float and authenticated string third
 flags without replacing the raw API capture. Weak false values skip the ignored
