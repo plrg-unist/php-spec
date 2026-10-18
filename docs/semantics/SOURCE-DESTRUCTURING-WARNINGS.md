@@ -9,18 +9,30 @@ admit ordinary defined integer, boolean, exact-float and non-NUL string CV keys.
 Computed key names, NUL CV strings and undefined/null key diagnostics remain
 separate dependencies, along with wider RHS producers and target forms.
 
-Module410 adds lossy float CV-key conversion for flat wholly by-value patterns
-with a direct CV RHS and direct CV leaves. The initial plan captures the fitting
+Module410 adds lossy float CV-key conversion for flat patterns with a direct CV RHS
+and direct CV leaves. The initial plan captures the fitting
 converted integer and original binary64 bits before E_DEPRECATED. A returning
-handler resumes lookup against the captured table: an embedded reference supplies
+handler in a wholly by-value pattern resumes lookup against the captured table:
+an embedded reference supplies
 its value after the callback, while a present null stays silent. A miss dispatches
 the existing module409 warning before any target store. The two diagnostics may
 select different handlers; a handler eligible only for E_WARNING still follows
 the default deprecation. Following key CVs are read after the completed store.
 The saved task owns the table, and source validation checks the stored conversion
 without rereading the old key cell. A throwing handler cancels lookup, targets and
-result delivery. Nested patterns, literal RHS, mixed reference patterns and other
-key diagnostics need separate conversion continuations.
+result delivery.
+
+For a mixed pattern's by-value fetch, the saved task keeps the source reference
+cell and separately protects its current table. After the handler returns, it
+releases that table owner before lookup. If the table retires, the fetch silently
+supplies null, even if the old key existed. Otherwise lookup reads the old table's
+current embedded-reference value or enters module409's warning. A handler-created
+copy can keep that table alive after source replacement; insertion can instead
+force COW and leave only the temporary protection. Later reference fetches and
+assignment-result delivery use the saved cell's live value, independently of a
+rebound source CV. A saved null cell can create an array at the later reference
+fetch. Throws cancel both owners. Nested/literal conversion, selected reference
+fetch conversion and other key diagnostics remain separate dependencies.
 
 For module409, the key stays a delayed variable operand until the missing fetch. The initial
 plan checks its exact name, operand/compiler lines and warning-free conversion,
@@ -106,7 +118,8 @@ delivering its constant result. A handler throw cancels that later delivery.
 The pinned PHP8.5.10 source routes are `zend_compile_assign` and
 `zend_compile_list_assign` in `vendor/php-src/Zend/zend_compile.c`,
 `ZEND_MAKE_REF`, `ZEND_FETCH_LIST_R` / `ZEND_FETCH_LIST_W` in `Zend/zend_vm_def.h`, and
-`zend_fetch_dimension_address_LIST_r` / `zend_fetch_dimension_address_read` in
+`zend_fetch_dimension_address_LIST_r` / `zend_fetch_dimension_address_read` and
+`slow_index_convert` in
 `Zend/zend_execute.c`. The VM checks a callback exception before executing the
 following target store.
 
@@ -123,6 +136,7 @@ paths/streams without an oracle replay. Separate ledgers retain the
 [integer CV keys](../../coverage/semantics/list-integer-cv-missing-warning-review.json),
 [quiet CV keys](../../coverage/semantics/list-quiet-cv-missing-warning-review.json),
 [recursive CV keys](../../coverage/semantics/list-recursive-cv-missing-warning-review.json),
-[literal-root CV keys](../../coverage/semantics/list-literal-cv-missing-warning-review.json) and
-[lossy float CV keys](../../coverage/semantics/list-float-key-warning-review.json)
+[literal-root CV keys](../../coverage/semantics/list-literal-cv-missing-warning-review.json),
+[lossy float CV keys](../../coverage/semantics/list-float-key-warning-review.json) and
+[mixed float CV keys](../../coverage/semantics/list-float-ref-key-warning-review.json)
 cuts and failures. No complete array, diagnostics or lifecycle-family claim follows.
