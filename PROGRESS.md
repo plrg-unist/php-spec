@@ -17,6 +17,10 @@ baseline/preparation/EL retain zero credit; no actor failed. Other Closure forms
 producers and wider weak lifetimes remain partial; stored-string carrier conversion
 is separate. [Factory/binding review](coverage/semantics/weakmap-factory-comparison-review.json).
 
+Composed over 180baaf665/399 after pointwise review of startup-constant duplicate
+traces, magic-empty, Generator send, shifts and abrupt-return selectors, all absent
+here. Source2/state361 retain their private cut; no joined actor or renewed credit.
+
 Duplicate `define` of known fixed startup primitives now warns and returns false
 without changing the builtin or publishing a user row. Omitted/bool-false flags and
 primitive candidates cover ordinary/strict calls, argument effects, returning
