@@ -250,3 +250,82 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" $list_float_key_message(n_bits) z
 def $task_nodes(LIST_KEY_FLOAT_WRITE_RESULT n_source n_array n expression phpType13* z n_bits i 0) = [HCELL n_source, HARRAY n_array]
 def $task_nodes(LIST_KEY_FLOAT_WRITE_RESULT n_source n_array n expression phpType13* z n_bits i 1) = [HCELL n_source]
+
+;; A defined null CV key deprecates before selecting the empty string. A value
+;; snapshot keeps its table; a mixed source releases its temporary protection.
+dec $list_null_key_origin(pstate, poperand, nat, expression, phpType13*, int) : bool
+def $list_null_key_origin(S, poperand, n, expression, phpType13*, z) = true
+  -- if $list_missing_integer_cv_item(S, n, expression, phpType13*, z) =/= eps
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (expression_pattern)
+  -- if $reference_origin_parent(porigin, 1) = ((porigin_assign, [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin_assign) = (NExprAssign expression_pattern expression_rhs metadata)
+  -- if $list_value_cv(expression_rhs) = (n_name*)
+  -- if $list_missing_source(S, poperand, n, expression, phpType13*, z, KSTRING eps)
+def $list_null_key_origin(S, poperand, n, expression, phpType13*, z) = false -- otherwise
+
+dec $list_null_key_source(pstate, poperand, nat, nat, expression, phpType13*, int, nat) : bool
+def $list_null_key_source(S, KNOWN (PARRAY n_array), n_array, n, expression, phpType13*, z, n_phase) = true
+  -- if $(n_phase < 2)
+  -- if $list_null_key_origin(S, KNOWN (PARRAY n_array), n, expression, phpType13*, z)
+def $list_null_key_source(S, REFERENCE n_source, n_array, n, expression, phpType13*, z, n_phase) = true
+  -- if $(n_phase < 2 /\ n_array < |S.ARRAYS|)
+  -- if n_phase = 1 \/ (HARRAY n_array) <- S.ALLOCATIONS
+  -- if $list_null_key_origin(S, REFERENCE n_source, n, expression, phpType13*, z)
+def $list_null_key_source(S, poperand, n_array, n, expression, phpType13*, z, n_phase) = false -- otherwise
+
+dec $list_null_key_plan(pstate) : (poperand, nat, nat, expression, phpType13*, int)?
+def $list_null_key_plan(S) = ((poperand, n_array, n, expression, phpType13*, z))
+  -- if S.TODO = (LIST_FETCH poperand n expression false phpType13* z) :: ptask_tail*
+  -- if $list_missing_array(S, poperand) = (n_array)
+  -- if $list_missing_integer_cv_item(S, n, expression, phpType13*, z) = (VARIABLE n_key* z_key)
+  -- if S.RESULT = VARIABLE n_key* z_key
+  -- if ~$environment_blocked(S, n_key*)
+  -- if $lookup(S.ENV, n_key*) = (n_cell)
+  -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
+  -- if S.STORE[n_cell] = DEFINED PNULL
+  -- if ~$foreach_released_container_cell(S, n_cell) /\ ~$update_released_array_name(S, n_key*)
+  -- if $list_null_key_source(S, poperand, n_array, n, expression, phpType13*, z, 0)
+def $list_null_key_plan(S) = eps -- otherwise
+
+def $list_null_key_pending(S) = true
+  -- if $error_handler_eligible(S, 8192) \/ $error_handler_eligible(S, 2)
+  -- if $list_null_key_plan(S) =/= eps
+def $list_null_key_pending(S) = false -- otherwise
+
+dec $list_null_key_message() : nat*
+def $list_null_key_message() = $ptascii("Using null as an array offset is deprecated, use an empty string instead")
+
+rule PhpStep/list-null-key-warning: S ~> $error_dispatch(S, 8192, $list_null_key_message(), z, DIAGNOSTIC "Deprecated" $list_null_key_message() z, LIST_KEY_NULL_RESULT poperand n_array n expression phpType13* z 0)
+  -- if $list_null_key_pending(S)
+  -- if $list_null_key_plan(S) = ((poperand, n_array, n, expression, phpType13*, z))
+rule PhpStep/list-null-key-release: S ~> S[.TODO = (LIST_KEY_NULL_RESULT poperand n_array n expression phpType13* z 1) :: ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (LIST_KEY_NULL_RESULT poperand n_array n expression phpType13* z 0) :: ptask_tail*
+  -- if $list_null_key_source(S, poperand, n_array, n, expression, phpType13*, z, 0)
+rule PhpStep/list-null-key-expired: S ~> S[.TODO = $list_fetched_tasks(S[.RESULT = KNOWN PNULL], poperand, n, expression, false, phpType13*, z) ++ ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (LIST_KEY_NULL_RESULT poperand n_array n expression phpType13* z 1) :: ptask_tail*
+  -- if $list_null_key_source(S, poperand, n_array, n, expression, phpType13*, z, 1)
+  -- if ~((HARRAY n_array) <- S.ALLOCATIONS)
+rule PhpStep/list-null-key-result: S ~> S[.TODO = $list_fetched_tasks(S[.RESULT = KNOWN pvalue], poperand, n, expression, false, phpType13*, z) ++ ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (LIST_KEY_NULL_RESULT poperand n_array n expression phpType13* z 1) :: ptask_tail*
+  -- if $list_null_key_source(S, poperand, n_array, n, expression, phpType13*, z, 1)
+  -- if (HARRAY n_array) <- S.ALLOCATIONS
+  -- if $entry_lookup(S.ARRAYS[n_array].ITEMS, KSTRING eps) = (pitem)
+  -- if pvalue = $entry_read_value(S, pitem)
+rule PhpStep/list-null-key-missing: S ~> $error_dispatch(S, 2, $list_missing_message(KSTRING eps), z, DIAGNOSTIC "Warning" $list_missing_message(KSTRING eps) z, LIST_MISSING_RESULT poperand n expression phpType13* z (KSTRING eps))
+  -- if S.TODO = (LIST_KEY_NULL_RESULT poperand n_array n expression phpType13* z 1) :: ptask_tail*
+  -- if $list_null_key_source(S, poperand, n_array, n, expression, phpType13*, z, 1)
+  -- if (HARRAY n_array) <- S.ALLOCATIONS
+  -- if $entry_lookup(S.ARRAYS[n_array].ITEMS, KSTRING eps) = eps
+
+def $call_task_valid(S, LIST_KEY_NULL_RESULT poperand n_array n expression phpType13* z n_phase) = $list_null_key_source(S, poperand, n_array, n, expression, phpType13*, z, n_phase)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = LIST_KEY_NULL_RESULT poperand n_array n expression phpType13* z 0
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if $list_null_key_source(S, poperand, n_array, n, expression, phpType13*, z, 0)
+  -- if perrorcall.LEVEL = 8192 /\ perrorcall.LINE = z
+  -- if perrorcall.MESSAGE = $list_null_key_message()
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" $list_null_key_message() z
+def $task_nodes(LIST_KEY_NULL_RESULT (KNOWN (PARRAY n_array)) n_array n expression phpType13* z n_phase) = [HARRAY n_array]
+def $task_nodes(LIST_KEY_NULL_RESULT (REFERENCE n_source) n_array n expression phpType13* z 0) = [HCELL n_source, HARRAY n_array]
+def $task_nodes(LIST_KEY_NULL_RESULT (REFERENCE n_source) n_array n expression phpType13* z 1) = [HCELL n_source]

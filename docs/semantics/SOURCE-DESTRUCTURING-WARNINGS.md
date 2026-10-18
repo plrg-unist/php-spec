@@ -6,7 +6,7 @@ recursive mixed value/reference patterns require a direct CV RHS. Implicit integ
 and warning-free compiled constant keys are admitted. Literal strings retain their
 authenticated interned-string carrier before key conversion. These patterns also
 admit ordinary defined integer, boolean, exact-float and non-NUL string CV keys.
-Computed key names, NUL CV strings and undefined/null key diagnostics remain
+Computed key names, NUL CV strings and undefined key diagnostics remain
 separate dependencies, along with wider RHS producers and target forms.
 
 Module410 adds lossy float CV-key conversion for flat patterns with a direct CV RHS
@@ -22,6 +22,15 @@ The saved task owns the table, and source validation checks the stored conversio
 without rereading the old key cell. A throwing handler cancels lookup, targets and
 result delivery.
 
+Defined null CV keys also deprecate before a by-value fetch selects the empty
+string. The initial plan requires an array-valued captured operand; the saved
+continuation checks source compatibility without rereading the key cell. Lookup
+follows the callback, so a present shared reference supplies its new value and a
+missing empty key enters module409 before target storage. A warning-only handler
+still follows default deprecation. The same table protection and release rules
+below distinguish a by-value snapshot from a mixed source cell. Undefined keys,
+selected reference fetches and nested/literal null-key producers remain separate.
+
 For a mixed pattern's by-value fetch, the saved task keeps the source reference
 cell and separately protects its current table. After the handler returns, it
 releases that table owner before lookup. If the table retires, the fetch silently
@@ -33,7 +42,7 @@ assignment-result delivery use the saved cell's live value, independently of a
 rebound source CV. A saved null cell can create an array at the later reference
 fetch. Throws cancel both owners.
 
-A selected reference fetch first makes the saved source cell writable. An undefined
+A selected lossy-float reference fetch first makes the saved source cell writable. An undefined
 source CV acquires a null reference without a read warning; earlier by-value null
 fetches stay silent. Null and reference-wrapped false then create a fresh mutable
 empty array before key conversion. This reference path skips the false-to-array
@@ -158,6 +167,7 @@ paths/streams without an oracle replay. Separate ledgers retain the
 [literal-root CV keys](../../coverage/semantics/list-literal-cv-missing-warning-review.json),
 [lossy float CV keys](../../coverage/semantics/list-float-key-warning-review.json),
 [mixed float CV keys](../../coverage/semantics/list-float-ref-key-warning-review.json),
-[writable float CV keys](../../coverage/semantics/list-float-write-key-warning-review.json) and
-[writable source initialization](../../coverage/semantics/list-float-write-autovivify-review.json)
+[writable float CV keys](../../coverage/semantics/list-float-write-key-warning-review.json),
+[writable source initialization](../../coverage/semantics/list-float-write-autovivify-review.json) and
+[null CV keys](../../coverage/semantics/list-null-key-warning-review.json)
 cuts and failures. No complete array, diagnostics or lifecycle-family claim follows.

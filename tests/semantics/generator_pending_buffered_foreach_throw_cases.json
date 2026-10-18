@@ -1,0 +1,22 @@
+[
+  {
+    "id": "generator-pending-buffered-foreach-throw-same-array-two-counts",
+    "purpose": "One physical HARRAY occupies both the active by-value foreach slot and the unconsumed used-yield input after its global alias is removed. Observe pending upper THROW, getters and explicit close without collapsing the two container counts or duplicating element edges; no output forecast.",
+    "source": "<?php\nclass JointLoopA24 { function __destruct() { echo \"A|\"; } }\nclass JointLoopB24 { function __destruct() { echo \"B|\"; } }\nfunction jointLoopChild24() { global $items; echo \"C|\"; try { foreach ($items as $item) { unset($items); $received = yield 7 => 5; echo \"BAD-BODY|\"; } } catch (Exception $caught) { echo \"BAD-CHILD|\"; } finally { echo \"F|\"; } }\nfunction jointLoopLower24() { echo \"L|\"; try { yield from ($GLOBALS[\"child\"] = jointLoopChild24()); } finally { echo \"J|\"; } }\nfunction jointLoopUpper24() { echo \"U|\"; try { yield from ($GLOBALS[\"lower\"] = jointLoopLower24()); } finally { echo \"K|\"; } }\nfunction jointLoopOuter24() { echo \"O|\"; try { yield from ($GLOBALS[\"upper\"] = jointLoopUpper24()); } finally { echo \"Z|\"; } }\n$items = [new JointLoopA24(), new JointLoopB24()]; $exception = new Exception(\"joint-array24\");\necho \"P|\"; $outer = jointLoopOuter24(); $outer->rewind(); echo \"H|\", $outer->valid() ? 1 : 0, \"|\";\n$lower->send($items); echo \"S|\"; unset($items); echo \"DROP|T|\";\ntry { $upper->throw($exception); echo \"BAD-RETURN|\"; } catch (Exception $caught) { echo \"CALLER|\", $caught === $exception ? \"SAME|\" : \"OTHER|\", $caught->getPrevious() === null ? \"NOPREV|\" : \"PREV|\"; }\necho \"GET|\", $upper->current(), \"|\", $upper->key(), \"|\", $upper->valid() ? 1 : 0, \"|\";\nunset($outer); echo \"OUT|\"; unset($upper); echo \"UP|\"; unset($lower); echo \"LOW|\"; unset($child); echo \"CHILD|\";\nunset($caught, $exception); echo \"E\";\n",
+    "source_sha256": "df062e9118799ad2ea24a5bd041321e121e03489bd29ec1b559717811646c174",
+    "expected": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|U|L|C|H|1|S|DROP|T|CALLER|SAME|NOPREV|GET|5|7|1|Z|OUT|K|UP|J|LOW|CHILD|EA|B|"
+  },
+  {
+    "id": "generator-pending-buffered-foreach-throw-sole-upper-cache-replacement",
+    "purpose": "A selected sole upper receiver survives argument-time removal of all Generator CVs. Distinct used-input and foreach arrays remain independent while the transient current-copy destructor replaces the supplied Exception before caller catch; observe the actual previous chain and request-late payload order without forecasting stdout.",
+    "source": "<?php\nclass JointLoopVisited24b { function __destruct() { echo \"A|\"; } }\nclass JointLoopUnvisited24b { function __destruct() { echo \"C|\"; } }\nclass JointLoopInput24b { function __destruct() { echo \"B|\"; } }\nclass JointLoopCache24b { function __destruct() { echo \"D|\"; throw new Exception(\"joint-cache24\"); } }\nfunction jointLoopChild24b() { echo \"G|\"; try { foreach ([new JointLoopVisited24b(), new JointLoopUnvisited24b()] as $item) { $received = yield new JointLoopCache24b(); echo \"BAD-BODY|\"; } } catch (Exception $caught) { echo \"BAD-CHILD|\"; } finally { echo \"F|\"; } }\nfunction jointLoopLower24b() { echo \"L|\"; try { yield from ($GLOBALS[\"child\"] = jointLoopChild24b()); } finally { echo \"J|\"; } }\nfunction jointLoopUpper24b() { echo \"U|\"; try { yield from ($GLOBALS[\"lower\"] = jointLoopLower24b()); } finally { echo \"K|\"; } }\nfunction jointLoopOuter24b() { echo \"O|\"; try { yield from ($GLOBALS[\"upper\"] = jointLoopUpper24b()); } finally { echo \"Z|\"; } }\nfunction jointLoopDrop24b() { echo \"T|\"; unset($GLOBALS[\"outer\"], $GLOBALS[\"upper\"], $GLOBALS[\"lower\"], $GLOBALS[\"child\"]); echo \"DROP|\"; return $GLOBALS[\"exception\"]; }\necho \"P|\"; $exception = new Exception(\"joint-pending24\"); $outer = jointLoopOuter24b(); $outer->rewind(); echo \"H|\";\n$lower->send([new JointLoopInput24b()]); echo \"S|\";\ntry { $result = $upper->throw(jointLoopDrop24b()); echo \"BAD-RETURN|\"; } catch (Exception $caught) { echo \"CALLER|\", $caught === $exception ? \"SAME|\" : \"OTHER|\", $caught->getPrevious() === $exception ? \"PREV|\" : \"NOPREV|\"; }\nunset($result, $caught, $exception); echo \"E\";\n",
+    "source_sha256": "160e73ccdbfefca58d014bf5c69103c595470bc136f2e78c4873203b78ae960d",
+    "expected": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|U|L|G|H|S|T|Z|DROP|J|K|D|CALLER|OTHER|PREV|EA|C|B|"
+  }
+]

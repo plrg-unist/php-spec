@@ -22,6 +22,7 @@ recursive by-value CV/literal and mixed CV patterns, with ordered null delivery
 and normal/throw cleanup. These patterns also freeze quiet converted variable keys
 across callbacks while later key variables are read afresh.
 Flat CV-source patterns also resume lossy float keys in value and reference fetches.
+Defined null variable keys deprecate before selecting the empty string in value fetches.
 Value fetches in mixed patterns release the old table's temporary protection first:
 expiry supplies null, while a surviving table can enter the following missing-key warning.
 Reference fetches make the array writable before the callback, then bind into the
@@ -687,6 +688,10 @@ the post-LEFT conversions; cached LEFT survives, stores detach aliases, and erro
 or supplied throws cancel storage while retaining callback effects. Ten originals
 and 857 focused SL premises pass in the
 [single-LEFT ledger](coverage/semantics/single-left-bridge-review.json).
+A fractional LEFT now also warns before converting an initially NULL, bool,
+fitting finite float or string RHS. A named handler can repair nonnumeric text or
+replace leading text before any RHS diagnostic. Nine originals and 593 focused
+SL premises pass in the [initial-scalar ledger](coverage/semantics/initial-scalar-review.json).
 
 In those both-fractional routes, a nonnumeric string or array RHS produced by the
 first callback now raises TypeError with the live operand types. Callback writes
@@ -964,6 +969,11 @@ iteration container while locals and current caches retire normally. Its payload
 are destroyed in the request-store pass; embedded references remain mutable, and
 independently started Generators in that array close there. See the
 [parked-foreach review](coverage/semantics/generator-pending-foreach-throw-review.json).
+A simple-CV used yield in that loop can also retain one buffered input across
+pending throw and close. If both name one array, the two roles contribute separate
+counts without duplicating its element edges. Rebinding an embedded reference
+leaves the old buffered object alive.
+See the [joint lifecycle review](coverage/semantics/generator-pending-buffered-foreach-throw-review.json).
 [Delegation](docs/semantics/GENERATOR-DELEGATION.md)
 adds arrays, source Iterators and shared Generator graphs with live raw caches
 and natural return/unwind. Aggregate yield-from now acquires nested real iterator
@@ -1141,6 +1151,12 @@ calls reject the raw object before entry, and a method throw cancels the query.
 [Four source agreements and 642 state premises](coverage/semantics/constant-query-stringable-name-review.json)
 cover raw versus converted traces, selected callees, callback effects and discard.
 Sole-owner destruction, wider receivers and named/packed forms remain partial.
+Retained ordinary nonStringable instances and `stdClass` now raise TypeError in
+`constant()`/`defined()` calls with one positional argument, before lookup in weak
+and strict code. Raw receiver traces and selected callees survive later argument
+effects; an ordinary `toString()` method is never invoked as a cast.
+[Four source agreements and 508 state premises](coverage/semantics/constant-query-nonstringable-name-review.json)
+cover errors and normal recovery. Other internal objects and wider forms stay partial.
 Positional `define()` calls with primitive arguments also reject counts below two
 or above three before name/flag reception or registration. Exact count messages
 and raw API arguments survive all argument effects, including a captured true
@@ -1324,7 +1340,7 @@ Completed user-instance donors also retain their exact construction receipt and
 pointer in direct definitions and copied array leaves. Typed property aliases
 stay shared; existing normal, throwing-handler and shutdown cleanup retain the
 ordinary owners. [Instance define review](coverage/semantics/define-certified-instance-review.json).
-Fresh definitions with an omitted or captured false third flag also copy nonempty
+Fresh definitions with an omitted or captured boolean third flag also copy nonempty
 array trees containing certified stdClass or user-instance leaves. Copied
 containers freeze source reference values while object pointers and property
 writes remain shared, including
@@ -1336,6 +1352,13 @@ the old row and callback writes. [Array-duplicate review](coverage/semantics/def
 Explicit false flags retain their captured value through callbacks and traces;
 copying observes reference changes from all argument expressions.
 [False-flag array review](coverage/semantics/define-stdclass-array-false-flag-review.json).
+Captured true runs the ignored-case Warning before validation, copying and key
+lookup. A callback can repair or create a cycle, change referenced leaves or
+install the target key. A throwing first callback still publishes a fresh
+acyclic snapshot while the same Exception continues; original trace arguments
+remain separate from copied containers. Pending cyclic/duplicate arrays after
+that first throw remain partial.
+[True-flag array review](coverage/semantics/define-array-true-flag-review.json).
 Ordinary uncertified objects, other owning leaves and wider
 flags/names remain partial.
 Class-qualified `defined` now checks inherited user constants with lexical visibility

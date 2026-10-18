@@ -106,6 +106,14 @@ mutable embedded references and a nested Generator keep their distinct owners.
 Explicit collection while that frame is parked is Unsupported; see the
 [parked-foreach review](../../coverage/semantics/generator-pending-foreach-throw-review.json).
 
+The [joint lifecycle review](../../coverage/semantics/generator-pending-buffered-foreach-throw-review.json)
+adds one buffered simple-CV yield result inside that loop. Pending throw preserves
+both counts; physical close orphans the input and retains the iteration container
+separately. Even when they name the same array, its element edges occur only once.
+A later shared-cell rebind drops that cell's old referent while the buffered old
+object remains retained. Cache snapshots and replacement exceptions keep their
+existing cleanup order. Other owning suspended values and later resume stay open.
+
 Literal `send` and `throw` validate and capture their single argument before
 initialization. Fresh calls first reach the initial yield, then deliver the
 value or Throwable at that suspension. `send` supplies the result of a used

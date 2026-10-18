@@ -1553,8 +1553,20 @@ def $error_call_valid(S, perrorcall) = true
   -- if $integer_float_notices([PRECISIONLOSS], n_bits) = [(8192, perrorcall.MESSAGE)]
   -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE pintegeroperation.LINE
 
-;; Both-fractional modulo converts LEFT before the first callback, then the
-;; live RHS before a possible second callback. Each cached long is historical.
+;; The initial RHS is not converted before LEFT's callback. Keep the old PINT
+;; entry separate; initialized nonowning scalars use the shared delayed route.
+dec $bothassign_initial_right_valid(pstate, pvalue) : bool
+def $bothassign_initial_right_valid(S, PNULL) = true
+def $bothassign_initial_right_valid(S, PBOOL b) = true
+def $bothassign_initial_right_valid(S, PFLOAT n_bits) = true
+  -- if $(n_bits < 18446744073709551616)
+  -- if $fparts_fits($float_decode(n_bits))
+def $bothassign_initial_right_valid(S, pvalue) = true
+  -- if $string_bytes(pvalue) = (n_bytes*)
+  -- if $startup_bytes(n_bytes*)
+  -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
+def $bothassign_initial_right_valid(S, pvalue) = false -- otherwise
+
 dec $modassign_both_snapshot(pstate, pintegeroperation, nat, nat, nat) : bool
 def $modassign_both_snapshot(S, pintegeroperation, n_target, n_right, n_bits_left) = true
   -- if pintegeroperation.LEFTPOINTER = INTEGER_CV ptbytes_left
@@ -1566,9 +1578,8 @@ def $modassign_both_snapshot(S, pintegeroperation, n_target, n_right, n_bits_lef
   -- if (HCELL n_target) <- S.ALLOCATIONS /\ (HCELL n_right) <- S.ALLOCATIONS
   -- if ~$foreach_released_name(S, ptbytes_left) /\ ~$foreach_released_name(S, ptbytes_right)
   -- if $integer_pointer_value(S, pintegeroperation.LEFTPOINTER) = (PFLOAT n_bits_left)
-  -- if $integer_pointer_value(S, pintegeroperation.RIGHTPOINTER) = (PFLOAT n_bits_right)
-  -- if $(n_bits_right < 18446744073709551616)
-  -- if $float_long(n_bits_right, true) = (i_right, [PRECISIONLOSS])
+  -- if $integer_pointer_value(S, pintegeroperation.RIGHTPOINTER) = (pvalue_right)
+  -- if $bothassign_initial_right_valid(S, pvalue_right)
 def $modassign_both_snapshot(S, pintegeroperation, n_target, n_right, n_bits_left) = false -- otherwise
 
 dec $modassign_both_left_valid(pstate, pintegeroperation, nat, nat, nat, int, nat) : bool

@@ -7,6 +7,97 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Fractional-LEFT compound operations now enter with an initial non-PINT scalar RHS:
+NULL/bool, fitting finite floats and authenticated strings. One shared initial
+snapshot predicate defers RHS parsing/conversion until after the LEFT handler;
+the existing PINT route and all later conversion/storage rules stay unchanged.
+Native invalid-text repair and leading-text replacement precede RHS diagnostics;
+the old baseline stops before H1. Nine originals pass at b3fff559f/401 and four
+focused fixtures pass 593 SL premises at b91c97048/401, covering real callback
+fronts, carrier/class guards, cached stores, live TypeError, alias owners and
+resumption. Initial owning/ref/undefined/nonfinite/range forms remain partial; all 15 rows
+stay partial, earlier renewed credit0, OP12 paused.
+[Initial-scalar ledger](coverage/semantics/initial-scalar-review.json).
+
+Composed over 7b512c0bb/401 after seven incoming runtime paths were reviewed.
+First-class callables, pending reference-return destructor replay, parked
+Generators, LIST null-key warnings and DEFINE/constant query selectors are absent
+from these untyped named-handler/scalar sources. Shared conversion, carrier,
+handler and heap interfaces stay unchanged; source9 and state593 retain their
+private401 cuts without replay or renewed credit.
+
+Captured true array `define` now emits the ignored-case Warning before recursive
+validation, copying and target lookup. Callbacks may change shared leaves, repair
+or create cycles, or install the duplicate key. A throwing first callback still
+publishes a fresh acyclic snapshot while the original Throwable continues, with
+its result/destination and original trace input preserved. Later duplicate Warning
+cleanup retires only the private candidate. Source3 agrees at b007/401; all 629 focused
+premises pass at bcdb: main263, eval180 and independent186. Main reuses its
+original fixture after a timing-only retry (98.75s/SL150); eval and peer pass
+their first executions at SL90. The original SL90 timeout and
+recorder count preflight remain zero; no source/native/runtime replay. Pending
+cyclic/duplicate arrays after a first-warning throw and coerced flags remain
+partial; paused Source47 NaN/precision behavior is untouched.
+[True-flag array review](coverage/semantics/define-array-true-flag-review.json).
+
+Composed over a560dd4c/401 with the exact tested400 delta and all incoming paths
+preserved. Stringable-query, REF-return/unwind, Generator, FIRSTCLASS, compound,
+LIST and property-empty selectors are disjoint. Source3/state629 retain their
+private cuts; no new actor or Source47 work is added.
+
+`constant`/`defined` calls with one positional argument now reject retained ordinary
+nonStringable instances and `stdClass` before lookup, weak or strict. Exactly25
+module400 additions reuse positional/source admission and direct raw TypeError
+allocation; Source53 Stringable guards/launch are unchanged. Raw receiver API/caller
+traces, selected callees after argument effects, caller99, ordinary `toString()`
+nonentry and normal query recovery pass. Four originals agree: author3 at c77c7abca
+and changed peer1 at 7e8a3c0ce/runtime6282a8468. All508 state premises pass at7e8:
+author155+98+99 and independent156 across five errors and a real normal recovery,
+with receiver property projection, stores/events/autoload metadata, source/shape/
+liveness/domain refusals and budgets. The first peer stops before B| on the existing
+`__call` declaration boundary and retains0; only that peer changes, then unrun state
+checks execute. Initialb423 native/baseline used CPU5; later actors use CPU1.
+Accepted PHP/worker stderr is empty; baseline Unsupported classquery/B| retains0.
+Propertyless retained receivers bound this slice; other internal objects, wider
+lifetimes/call forms and `__call` declarations remain partial.
+[NonStringable-query review](coverage/semantics/constant-query-nonstringable-name-review.json).
+
+Pointwise composition over b9f4af8cd preserves the incoming 401-module parent.
+Module400 and all four tests are private-exact; all other runtime/manifest paths
+keep parent bytes. FIRSTCLASS conversion, typed reference-return cursors, Generator,
+property-empty, staged compound arithmetic and LIST NULL-key selectors are absent
+from these originals. Shared query/stringifier/trace/error/ownership helpers are
+unchanged. Source3 retains c77c7abca and peer1/state508 7e8a3c0ce/runtime6282, with
+original peer/baseline zero cuts and no joined actor or renewed execution credit.
+
+Pending Generator `throw` now preserves one buffered simple-CV yield result inside
+one active by-value array `foreach`. A lower pending `send` fills the physical slot;
+an upper pending `throw` parks before body entry. Close orphans the input and retains
+the iteration container separately. The same array has two counts but one set of
+element edges. COW preserves the old iterator array, and a shared-cell rebind leaves
+the old object alive through its separate input owner. Current-copy cleanup can
+still replace the exception before caller catch with its previous chain intact.
+Only module289 widens two existing guards; roots, close and collector steps stay
+unchanged. Later parked resume, wider loops/owning temporaries and GC remain open.
+[Joint lifecycle review](coverage/semantics/generator-pending-buffered-foreach-throw-review.json).
+
+Four exact normal originals, strict401 and four genuine fronts pass at `3c61f86fa`:
+591 premises (295 author + 296 independent, including 20 generic reachability checks),
+with all native endings. Same-array multiplicities, COW, exact close transfer,
+post-close shared-cell writes, a real cache-destructor callback, malformed metadata
+refusals, public/heap validity and zero/split budgets pass. The derived parked-frame
+GC refusal grants no GC source agreement. Native4 and the genuine unchanged
+Unsupported baseline retain `847a307e4`/401 with zero agreement. No actor failed or
+repeated; earlier Generator evidence is not replayed. Large raw artifacts stay
+external.
+
+Composed over `f8794af8e`/401 after pointwise review of typed reference-return,
+Closure binding/stored callable names, constant API, compound-warning, magic-empty
+and float-key reference LIST selectors, all disjoint here. Module289 remains
+byte-exact tested `3c61f86fa`; every other runtime file, pipeline and the 401-module
+manifest retain the parent bytes. Source4/state591/strict401 keep their private
+cuts without a joined actor, accepted replay or renewed execution credit.
+
 Stored callable names now receive raw, interned and request string bytes through
 module120's existing resolver. Named-function and public/inherited private-static
 captures freeze their selected target and lexical/called scope across alias writes;
@@ -156,9 +247,9 @@ array `foreach`. Parked close retains its one container count and removes the
 iterator before ordinary CV/context and current-cache cleanup. The array keeps
 its real COW and embedded reference cells: a later rebind releases the old object
 while the new referent stays retained. An array-owned Generator closes in the
-request-store pass; the container count itself remains. Buffered-input/loop
-combinations, reference/object foreach, nested owning temporaries and later
-parked resume remain open. Explicit collection while this owning frame is parked
+request-store pass; the container count itself remains. At that cut, combinations
+of buffered input and loops, reference/object foreach, nested owning temporaries
+and later parked resume remained open. Explicit collection while this frame is parked
 is Unsupported; no new GC source agreement is claimed.
 [Parked-foreach review](coverage/semantics/generator-pending-foreach-throw-review.json).
 
@@ -355,6 +446,11 @@ Module407 remains typed-bool only. Wider untyped results/recursion, sole-owner
 public-NaN retirement and wider quiet-CV GC remain open; no generic GC change or
 earlier class replay.
 [Isset RV review](coverage/semantics/magic-empty-isset-rv-review.json).
+
+Composed over `41cc370dd`/401 after review of reference-return/unwind, parked
+Generator, constant API, compound and LIST-key changes, all unselected here.
+141/408 retain the reviewed implementation; all other incoming runtime/manifest
+paths are preserved. Source4/state313 keep their original cuts without replay.
 
 Positional `define` calls with primitive arguments now reject counts outside
 two through three before name/flag reception and registration, after all argument
@@ -1150,35 +1246,36 @@ private cut; independent seam review warrants no joined actor or renewed credit.
 
 Destructuring key warnings retain recursive by-value CV/literal and mixed CV
 patterns with quiet compiled/implicit or ordinary defined quiet CV keys. Module410
-resumes lossy CV keys in flat direct-CV patterns. Value fetches retain table
-snapshots or a source CELL plus temporary table protection. Writable fetches make
-the saved source writable before the callback, then bind into the selected table
-only if exactly one owner remains after protection release; zero or multiple
-owners yield a detached NULL reference. Later targets/results use the saved CELL.
-Null and reference-wrapped false now initialize a fresh mutable empty array before
-the key callback, without a false-to-array deprecation. Undefined source acquisition
-first produces referenceNULL silently; earlier by-value NULL stores precede the
-later writable initialization. Callback insertion/holds/rebinding preserve unique,
-expired and shared-table outcomes, target alias isolation, later reference COW and
-supplied-Throwable cleanup. The initial plan admits reached NULL/false, not UNDEFINED;
-origin authentication is separate from post-preparation table liveness.
-Five A15 originals agree at bc3d1b83c. Five SL fronts pass 887 premises
-(863 Boolean + 24 raw): author 326 at 2a08686e0, corrected 146 and independent 415 at
-5c1d2e75a. The original undefined fixture omitted ORIGIN_RETURN in its acquisition
-frontier and retains zero credit; only that front was retried. Two superseded A14
-NULL-source refusals now use true-scalar refusals without replay. The
-[initialization review](coverage/semantics/list-float-write-autovivify-review.json)
-retains native/unchanged Unsupported baseline, separate cuts and that failed row.
-The [A14 review](coverage/semantics/list-float-write-key-warning-review.json) retains
-source5/state900 and its raw-COW fixture failure/affected retry; earlier
+also handles lossy float CV keys in flat direct-CV value/reference fetches, including
+silent writable initialization of null/reference-false sources and quiet undefined
+CV acquisition. Defined NULL CV keys now deprecate before selecting the empty
+string at by-value fetches in flat direct-CV patterns with captured array operands.
+Lookup follows the callback: shared references supply new values, and a miss
+enters module409 before the target's NULL store. Default deprecation still precedes
+an E_WARNING-only handler; following keys are read after earlier stores. A by-value
+snapshot keeps its table. A mixed source releases temporary table protection:
+expiry silently supplies NULL even for an old present key, while a surviving
+table can enter a replacement warning handler. Later references/results resolve
+the saved source CELL despite source/key rebinding. Throws cancel lookup and
+retire both roots without changing earlier stores or supplied Throwable identity.
+Five A16 originals agree at 264e00221. Five SL fronts pass 892 premises
+(868 Boolean + 24 raw): author 520 and independent 161 at 1aa78deef, corrected
+independent 211 at 3fe712b02. The original mixed fixture used invalid descriptor
+variable prefixes and failed elaboration before runtime; it retains zero credit.
+Only those names were corrected and that front retried. Earlier tasks/compiler/ownership
+APIs remain unchanged, with no historical control or shared-harness edits. The
+[NULL-key review](coverage/semantics/list-null-key-warning-review.json) retains
+native/unchanged Unsupported baseline, separate cuts and the failed row. The
+[A15 review](coverage/semantics/list-float-write-autovivify-review.json) retains
+source5/state887 and its undefined acquisition-frontier correction; earlier
 [family reviews](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md) retain original
-cuts and failures without replay. Nested/literal lossy conversion, other source/key
-diagnostics, wider constrained sources/RHS/targets and callback/lifecycle coverage
-remain partial.
+cuts and failures without replay. Undefined current keys, NULL-key reference
+fetches, nested/literal conversion, wider constrained sources/RHS/targets and
+callback/lifecycle coverage remain partial.
 
-Pointwise composition over 46e6bf7cf preserves all 401 incoming modules. Generator
-retention stays empty for these sources; compound, closure, define and property
-guards are disjoint. Source5/state887 retain their cuts without a joined actor.
+Pointwise composition over 9ee00d718 preserves all 401 incoming modules. Typed-return,
+Stringable query, first-class callable, Generator, compound and property selectors
+are disjoint. Source5/state892 retain their cuts without a joined actor.
 
 Plain-CV `%=` now keeps both converted longs through a fractional-RHS deprecation.
 Captured12/5 stores2 despite callback99/7 and detaches a late target alias; supplied
@@ -10156,6 +10253,20 @@ because its typed-NULL gate already implied the removed filter. The nominal
 case has source-only credit; native CT:0/OT:0 output alone does not identify
 its error producers. Wider owner/reentry and physical collection remain open.
 [M102 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M103 routes a pending destructor TypeError through the existing final mixed
+`REF_RETURN_PAIR` for an outer computed old value, middle `z` return and inner
+`y` return. Native PHP catches `pair103` locally after the old O destructor,
+then returns detached `rNULL/b7`; the unchanged model routes to outer T:1/r7.
+At private `2e3050e3e`/401, strict initialization passes and the original
+source agrees exactly. One reached proof passes 130 Boolean premises and two raw steps:
+the pending pair descriptor is valid, the same D-origin TypeError reaches local
+C, and consumed pair recovery creates a fresh NULL cell distinct from z, y and
+the prior b alias without a Notice. Actual exit LINE-only public refusal and
+whole/split budget equality pass. The new route uses existing pair sites and
+finite modeled Throwable kinds; this one witness is nullable `?object` with a
+TypeError. Normal pair, single-cursor and chain behavior remain unchanged;
+wider multi-active histories and returns_verify remain OPEN.
+[M103 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, wider destructor throw/reentry, real suspension and wider typed
