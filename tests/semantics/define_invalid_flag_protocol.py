@@ -33,7 +33,7 @@ def $test_invalid_flag_seek(S,n_phase,preqbytes,n) = $test_invalid_flag_seek($dr
 
 
 def reach(state, start, phase, target):
-    return [f'{state}_found = $test_invalid_flag_seek({start},{phase},{text(target)},500)',
+    return [f'{state}_found = $test_invalid_flag_seek({start},{phase},{text(target)},{1000 if phase == 1 else 500})',
         fr'{state}_found.COMPLETION = NORMAL \/ {state}_found.COMPLETION = BUDGET',
         f'{state} = $test_running({state}_found)',
         f'$test_invalid_flag_front({state},{phase},{text(target)})']
