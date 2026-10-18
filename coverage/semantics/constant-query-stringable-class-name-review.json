@@ -1,0 +1,92 @@
+{
+  "scope": "One positional constant/defined call with a retained propertyless/destructor-free Stringable name returning non-NUL class-qualified text accepted by the existing user-class query guards. Validated folded primitive values, existence/missing-member results, selected-callee capture, named-loader throw and same-receiver global recovery. Existing class lookup/authentication boundaries remain; wider receivers, lifetimes, lookup/value domains and call forms remain partial.",
+  "status": "independently_accepted_private_integrated_on_join",
+  "reviewer": "/root/source_review_35",
+  "parent": "5a79065df8f3a010adf2a96f098ac59b761b292e",
+  "semantic_revision": "4a7f0f801b8dd8600d6c22f95466b9aae9f05bea",
+  "tested_revision": "5f47101bdbd827175e1dfd2c9ebc725eab2c4b97",
+  "semantic_files": {
+    "spec/semantics/400-dynamic-constants.watsup": "83f98b444f95101a43fd52eb55e4c44c52892ebd5cd7b434ba4c1b06e1edbf54"
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "tools": {
+    "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+  "primary": "Pinned Zend/zend_API.c zend_parse_arg_str_weak installs the successful object string-cast result in the API slot. ext/standard/basic_functions.c PHP_FUNCTION(constant) then calls zend_get_constant_ex with exception class fetching, while Zend/zend_builtin_functions.c ZEND_FUNCTION(defined) uses silent class fetching; both follow Z_PARAM_STR. Zend/zend_constants.c class-qualified lookup splits class/member and may invoke autoload after conversion. Named loaders receive the bare class while the API frame retains the full query. Retained aliases/propertyless classes without destructors bound receiver lifetime.",
+  "semantics": "One module400 query-finish predicate is widened by a disjoint OR for non-NUL class-name text, with its directly stale global-only comment updated. Authentic result carriers, saved source/site admission, separate converted CONFIG and original tail remain exact. Existing class/defined/lookup/autoload/throw rules perform the rest without new tasks/schema or shared stringifier/trace/ownership changes. One old53 A::B finish refusal is repaired to positive converted CONFIG/class-query admission; NUL/HALT/invalid-carrier refusals remain.",
+  "accepted": [
+    "Four checked normal model records at 5f47101bd/runtime 4a7f0f801 exactly match original native stdout/stderr/PHP exit 0: loaded value 1693 value/defined true, selected REQUEST missing-member Error with converted API/caller result 99 after argument/cast writes, missing defined false followed by same-receiver global TRUE, and a named loader supplied throw after Stringable conversion. Peer native observes the bare requested class, same saved Exception/message, casts 1/loads 1, caller result 99, sibling 1699 and live state; it deliberately does not traverse getTrace. All accepted PHPstderr empty.",
+    "All 1026 premises pass at the same cut: author 271+189+260 plus independent 306 across five actual class-query fronts and one global recovery. Actual raw CONFIG/method/returned string/converted CONFIG precede loaded folded-member/visibility/value or true/false results, missing-member Error and AUTO_NEXT. The peer reaches actual loader THROW_VALUE, a three-frame saved Exception with bare-class loader argument versus full authentic REQUEST API query and caller, restored AUTO_RESULT and full-state discard. Recursion keys clear without changing registry/callback effects; actual final output passes. Receiver projections, source/carrier/member/result/autoload metadata controls and zero/split budgets pass; four raw SL checks exactly true LF/exit0/empty stderr.",
+    "Nine reports all PASS, stable inputs and HEAD, children reaped; no failure/retry/timeout/survivor or accepted-source replay."
+  ],
+  "compatibility": "Only the obsolete A::B finish refusal in query_stringable_name_protocol.py changes. New genuinely returned class strings exercise the widened path and same-object global TRUE recovery exercises the unchanged global arm. Source53 source4/state642 and Source57 source4/state844 keep their original cuts without actors or renewed credit. Raw strict rejection, Stringable DEFINE, class-member/source/autoload guards and shared conversion/trace/ownership machinery remain unchanged.",
+  "baseline_zero_credit": "At 8fd2d2768 on CPU2, author native3 then sole genuine unchanged baseline stringable-loaded-class-value-and-existence: Unsupported Stringable query global name after B|S|, CLI1/null PHPexit/empty workerstderr, zero agreement. Native instead returns 1693 and true after two casts. Later source/state uses CPU1.",
+  "execution": "LC_ALL=C/TZ=UTC, AS3GiB, INT+kill5, serial stop-first/reap. Initial native3/base1 at 8fd2 uses CPU2; peer native1/author model3/peer model1 and public prepare/check at 5f471 use CPU1. Native children15s, source CLI45s/host60s, fresh SL90s children. Accepted PHP/CLI/SL workerstderr empty.",
+  "command_prefix": "From the recorded private worktree, run each step as: env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s <cap>s prlimit --as=3221225472 -- taskset -c <cpu> python3 tests/semantics/<step>. Exact selections/caps are below; stop on first failure.",
+  "commands": [
+    {
+      "revision": "8fd2d27687f4710fbc5aa2ee09ee16ae04b6a04a",
+      "cpu": 2,
+      "caps": [
+        90,
+        90
+      ],
+      "steps": [
+        "query_stringable_class_name_sources.py --phase native --output .tools/query-stringable-class-name-native-58",
+        "query_stringable_class_name_sources.py --phase baseline --output .tools/query-stringable-class-name-native-58 --case stringable-loaded-class-value-and-existence"
+      ]
+    },
+    {
+      "revision": "5f47101bdbd827175e1dfd2c9ebc725eab2c4b97",
+      "cpu": 1,
+      "caps": [
+        90,
+        240,
+        90,
+        90,
+        360,
+        90,
+        120
+      ],
+      "steps": [
+        "query_stringable_class_name_review_sources.py --phase native --output .tools/query-stringable-class-name-review-58",
+        "query_stringable_class_name_sources.py --phase model --output .tools/query-stringable-class-name-native-58",
+        "query_stringable_class_name_review_sources.py --phase model --output .tools/query-stringable-class-name-review-58",
+        "query_stringable_class_name_protocol.py --phase prepare --sources .tools/query-stringable-class-name-native-58 --output .tools/query-stringable-class-name-public-58",
+        "query_stringable_class_name_protocol.py --phase check --sources .tools/query-stringable-class-name-native-58 --output .tools/query-stringable-class-name-public-58",
+        "query_stringable_class_name_review_protocol.py --phase prepare --sources .tools/query-stringable-class-name-review-58 --output .tools/query-stringable-class-name-review-public-58",
+        "query_stringable_class_name_review_protocol.py --phase check --sources .tools/query-stringable-class-name-review-58 --output .tools/query-stringable-class-name-review-public-58"
+      ]
+    }
+  ],
+  "raw_root": ".tools/query-stringable-class-name-evidence-58",
+  "report_sha256": {
+    "author/public/check-report.json": "1fb01fe6a103ccd29123e25ac3a562f18dc2b8b680ec843441cffebf23608342",
+    "author/public/prepare-report.json": "5296b5d892a0f66ac48c85394c0676f49377860705bdc3f06cb65a730819bc05",
+    "author/review/model-report.json": "72f1a56c3d31933ccaeb082aa7def6ce1741d8e216d901a01816dd1265c4d269",
+    "author/review/native-report.json": "e301ebe53ad4f9cdc36ab85e79260438c94dc86ff5dbb68a4ab82ce223016a22",
+    "author/review-public/check-report.json": "0492778049081ff976596efb658075ba4cb478fd25957431f4b73fa90d31ada4",
+    "author/review-public/prepare-report.json": "afa0e702589f9ad0af99a9b4c0213539d44cc672eb29828e530711e4dfeb42d3",
+    "author/sources/baseline-report.json": "689f2331f43f76121b153dfc31a238f67bf40d83b0622a61cb78b51cd8a99e24",
+    "author/sources/model-report.json": "d8fc5b9efb733f03c2c35198648100af17218a0a8577d8db9c1ea7413611038c",
+    "author/sources/native-report.json": "8bff93d6d2fd3f347fb5430edb10157b9439ea273c1aaabaed7ba20c06f99520"
+  },
+  "recovery": "Four owned roots moved once after reviewer STOP and focused users[] into canonical author/{sources,review,public,review-public}; nine concise report hashes retained. Restore query-stringable-class-name-{native,review,public,review-public}-58 at the recorded private cuts for exact source/cwd identity. Both protocols fingerprint the reused Source53 conversion helper.",
+  "remaining": "NUL/HALT results, lookup/value domains beyond existing user-class guards, sole-owner destruction/owning receiver properties, wider method-return lifetimes and named/packed/owner/PIPE/FCC forms remain partial. No engine bug or intentional divergence identified. Source47 and owned-NUL work remain paused and untouched.",
+  "composition": {
+    "parent": "e831290ac4e25366194e96b689b1af0769906350",
+    "private_publication": "66c6e4e96c45f1c119be378a00ca61bcb8ad9652",
+    "modules": 403,
+    "method": "Exact private query-finish predicate/comment transformation atop incoming400. Four new tests and the sole repaired old53 test are private-exact; every other spec/schema/ordered403 manifest path is parent-exact, including413. Inventory only own2/2/1+review suffix and all incoming docs/checkpoints retained.",
+    "runtime_sha256": {
+      "spec/semantics/400-dynamic-constants.watsup": "22cab956513e6d55202e8d1c95cfc0739c0e080e53bc1a73163d9e9bf5226467"
+    },
+    "seams": "Incoming400 DEFINE array/NULL flag reception and body guards cannot match query1/Stringable-to-string or primitive sibling DEFINE2. Module413/41/30 float array-literal key callbacks need source ARRAY_VALUE/PFLOAT keys/eligible handlers; trace arrays are internal. Reference-return pair/destructor heads, Sensitive/method-Closure numeric Notices and selected numeric RHS Warnings require absent cursors, objects or operators. Shared168/172/277/source/config/class lookup/trace/frontend/adapter remain unchanged.",
+    "evidence": "Independent actual-parent review finds no concrete interaction. Source4/state1026 retain the 5f47101bd/runtime4a7f0f801 private402 cut, initial8fd2 baseline zero credit and no failures/retries. No joined actor, accepted replay or renewed execution credit."
+  }
+}

@@ -1194,6 +1194,14 @@ calls reject the raw object before entry, and a method throw cancels the query.
 [Four source agreements and 642 state premises](coverage/semantics/constant-query-stringable-name-review.json)
 cover raw versus converted traces, selected callees, callback effects and discard.
 Sole-owner destruction, wider receivers and named/packed forms remain partial.
+
+Retained propertyless Stringable query names returning non-NUL class-qualified
+text now hand the converted API slot to existing guarded user-class lookup.
+Loaded values, `defined()` true/false and missing-member errors follow conversion;
+autoload receives the bare class while its API context keeps the full query.
+[Four source agreements and 1,026 state premises](coverage/semantics/constant-query-stringable-class-name-review.json)
+cover selected captures, loader throw/unwind and same-receiver global recovery.
+
 Retained ordinary nonStringable instances and `stdClass` now raise TypeError in
 `constant()`/`defined()` calls with one positional argument, before lookup in weak
 and strict code. Raw receiver traces and selected callees survive later argument

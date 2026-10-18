@@ -642,8 +642,27 @@ binds source4/author463 at bc3590e16 and independent179 at 9fa625b8b, all runtim
 931f6caac. The sole pre-main peer frame-field assertion failure retains zero credit;
 only its one-line fixture correction repeats. Retained propertyless receivers,
 ordinary typed-string returns and existing global values bound the validated slice;
-sole-owner destruction, wider receiver/return lifetimes, class/NUL/HALT names and
+sole-owner destruction, wider receiver/return lifetimes, NUL/HALT names and
 named/packed/owner forms remain partial. No task/schema or shared stringifier change.
+
+Retained propertyless Stringable query names returning non-NUL class-qualified
+text now reach the existing user-class lookup guards after conversion. One finish
+predicate and its comment change; source/carrier/saved-site checks, the global arm
+and class/autoload machinery stay exact. Actual loaded folded-member value,
+`defined` true/false and missing-member Error fronts preserve earlier selection
+and the returned string. A named loader receives the bare class only after that
+handoff; a supplied throw preserves caller99, callback siblings and live writes.
+The [Stringable class-query review](../../coverage/semantics/constant-query-stringable-class-name-review.json)
+binds four exact originals and 1,026 state premises (271+189+260 author, 306 independent)
+at 5f47101bd/runtime 4a7f0f801. The peer native observes loader output, saved Exception
+identity/message and effects without trace traversal. Its actual three-frame
+loader/converted API/caller trace, authentic request carrier, recursion-key cleanup
+and full-state discard are state assertions. Same-object global TRUE recovery
+exercises the unchanged arm. Nine stable reports pass on their first attempts;
+quiet PHP/worker stderr and all children reaped. Initial 8fd2/CPU2 baseline
+Unsupported/B|S| retains zero credit; later actors use CPU1. Only the old Source53
+`A::B` finish control changes, freshly covered here without renewing 642 or Source57's
+844. NUL/HALT results and wider lifetime/lookup/value/call domains remain partial.
 
 Retained ordinary nonStringable instances and `stdClass` names now fail the
 query's string parameter before lookup, in weak and strict calls.

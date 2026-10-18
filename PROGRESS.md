@@ -7,6 +7,30 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Retained propertyless Stringable query names now hand non-NUL class-qualified
+results to existing guarded user-class lookup. One module 400 predicate/comment
+change preserves the global arm, source/carrier/saved-site guards, converted CONFIG
+boundary and class/autoload/trace/ownership machinery. Four originals agree at
+5f47101bd/runtime 4a7f0f801: loaded value 1693/defined true, captured missing-member Error,
+false-to-global recovery, and a named-loader throw after conversion. All 1,026
+premises pass there: author 271+189+260 plus independent 306 across five class queries
+and one global recovery. Actual converted API carriers, bare loader argument,
+three-frame Exception/caller result 99/sibling 1699, active-key cleanup and whole-state
+discard are checked; peer native observes effects/identity without trace traversal.
+Nine reports all PASS/stable/reaped, no failure/retry/timeout; PHP/worker stderr
+empty. Initial 8fd2 native/base uses CPU2, later actors CPU1; unchanged Unsupported
+B|S| retains zero credit. Only the obsolete Source53 `A::B` control changes; new reached
+fronts cover it without renewing older 642/844 cuts. NUL/HALT results, wider domains
+and paused Source47/owned-NUL work remain outside this milestone.
+[Stringable class-query review](coverage/semantics/constant-query-stringable-class-name-review.json).
+
+Pointwise composition over e831290ac preserves the incoming 403-module parent,
+including array-key module413. The query finish-predicate/comment transformation
+and five tests are private-exact; every other runtime/manifest path retains parent
+bytes. Array/NULL flags, source float keys, reference-return destructor pairs and
+internal-wrapper/operator warnings have no producer in these originals. Source4/1026
+keep their private 5f471/4a7f cuts without a joined actor or renewed execution credit.
+
 Direct, array-method and fixed-string-method Closure captures now use the standard
 numeric Notice and private 1/1.0. Nine module402 image lines preserve existing live
 guards, source/scope authentication, pointers and ownership. Two exact originals
