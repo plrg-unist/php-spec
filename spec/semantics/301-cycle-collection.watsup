@@ -445,6 +445,10 @@ def $gc_operation_temporary(S, ptask, pnode_slots*) = ({OPERAND (KNOWN pvalue), 
   -- if $generator_input_throw_value(S, ptask) = (pvalue)
   -- if $gc_temporary_node(KNOWN pvalue) = (pnode)
   -- if pnode <- pnode_slots*
+def $gc_operation_temporary(S, ptask, pnode_slots*) = ({OPERAND (KNOWN pgeneratorpendingthrow.VALUE), PENDING true})
+  -- if $generator_pending_throw_discard(S, ptask) = (pgeneratorpendingthrow)
+  -- if $gc_temporary_node(KNOWN pgeneratorpendingthrow.VALUE) = (pnode)
+  -- if pnode <- pnode_slots*
 def $gc_temporary_jobs(pnode :: pnode_tail*, pnode) = (DESTRUCTION_TEMP pnode) :: $destruction_values(pnode_tail*)
 def $gc_temporary_jobs(pnode_other :: pnode_tail*, pnode) = (DESTRUCTION_VALUE pnode_other) :: $gc_temporary_jobs(pnode_tail*, pnode)
   -- if pnode_other =/= pnode
@@ -497,6 +501,13 @@ def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
   -- if pdestructionoperation.NOGC = (pgctemporary)
   -- if pdestructionoperation.CLEANUP = eps
   -- if $generator_input_throw_receipt(S, pdestructionoperation)
+  -- if $gc_temporary_node(pgctemporary.OPERAND) = (pnode)
+  -- if $gc_temporary_bounded(S, pnode)
+  -- if $gc_temporary_pending($gc_temporary_release($gc_temporary_pairs(S), pdestructionoperation), pgctemporary)
+def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
+  -- if pdestructionoperation.NOGC = (pgctemporary)
+  -- if pdestructionoperation.CLEANUP = eps
+  -- if $generator_pending_throw_receipt(S, pdestructionoperation)
   -- if $gc_temporary_node(pgctemporary.OPERAND) = (pnode)
   -- if $gc_temporary_bounded(S, pnode)
   -- if $gc_temporary_pending($gc_temporary_release($gc_temporary_pairs(S), pdestructionoperation), pgctemporary)

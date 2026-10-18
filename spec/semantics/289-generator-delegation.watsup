@@ -251,6 +251,150 @@ def $generator_pending_unused_send(S, pgeneratorop) = true
   -- if $generator_unused_send_leaf(S, pgeneratorop.OBJECT, |S.OBJECTS|) = (n_leaf)
 def $generator_pending_unused_send(S, pgeneratorop) = false -- otherwise
 
+;; Pending THROW parks the physical frame at the native exception opline while
+;; DO_INIT returns to the caller. No exception belongs to the parked Generator.
+def $generator_pending_throw_leaf(S, n, 0) = eps
+def $generator_pending_throw_leaf(S, n, n_left) = (n)
+  -- if $(n_left > 0)
+  -- if $generator_object(S, n)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PARKED = eps
+  -- if $generator_unused_send_leaf(S, n, 1) = (n)
+  -- if pgenerator.FRAME = (pframe)
+  -- if pframe.HELD = eps /\ $tasks_nodes(pframe.TODO) = eps
+def $generator_pending_throw_leaf(S, n, n_left) = (n)
+  -- if $(n_left > 0)
+  -- if $generator_object(S, n)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PARKED = eps /\ pgenerator.PHASE = GENERATOR_DELEGATING
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.INPUT = eps /\ pgeneratorfrom.ACQUISITION = eps
+  -- if pgeneratorfrom.CURRENT =/= eps /\ pgeneratorfrom.POSITION = 1
+  -- if $generator_from_record_valid(S, n, pgenerator)
+  -- if pgenerator.FRAME = (pframe)
+  -- if pframe.TODO = (GENERATOR_FROM_COMPLETE n pgeneratorfrom.SITE n_child pvalue_return) :: ptask*
+  -- if $generator_from_complete_valid(S, n, pgeneratorfrom.SITE, n_child, pvalue_return)
+  -- if $value_nodes(pvalue_return) = eps
+  -- if pframe.HELD = eps /\ $tasks_nodes(pframe.TODO) = eps
+def $generator_pending_throw_leaf(S, n, n_left) = $generator_pending_throw_leaf(S, n_child, $nabs($(n_left - 1)))
+  -- if $(n_left > 0)
+  -- if $generator_object(S, n)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PARKED = eps /\ pgenerator.PHASE = GENERATOR_DELEGATING
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.INPUT = (POBJECT n_child)
+  -- if pgeneratorfrom.ACQUISITION = eps /\ pgeneratorfrom.CURRENT = eps
+  -- if $generator_from_record_valid(S, n, pgenerator)
+def $generator_pending_throw_leaf(S, n, n_left) = eps -- otherwise
+def $generator_pending_throw_ready(S, pgeneratorop) = true
+  -- if $generator_pending_resume(S, pgeneratorop)
+  -- if pgeneratorop.NAME = "throw" /\ ~pgeneratorop.ADVANCE
+  -- if pgeneratorop.LOOP = eps /\ ~pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED
+  -- if $generator_operation_valid(S, pgeneratorop)
+  -- if pgeneratorop.ARGUMENTS = [POBJECT n_exception]
+  -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_DELEGATING
+  -- if $getter_arguments(S, pgeneratorop.SITE) = PCALLARGUMENTS phpType7* 2
+  -- if |phpType7*| = 1 /\ $generator_arguments_supported(phpType7*)
+  -- if $generator_pending_throw_leaf(S, pgeneratorop.OBJECT, |S.OBJECTS|) = (n_leaf)
+  -- if $generator_input_count(S.GENERATORINPUTS, n_leaf) = 0
+def $generator_pending_throw_ready(S, pgeneratorop) = false -- otherwise
+def $generator_pending_throw(S, pgeneratorop) = S_parked[.TODO = (GENERATOR_PENDING_THROW pgeneratorpendingthrow) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = THROWING n_exception]
+  -- if $generator_pending_throw_leaf(S, pgeneratorop.OBJECT, |S.OBJECTS|) = (n_leaf)
+  -- if S.OBJECTS[n_leaf] = GENERATOR pgenerator
+  -- if pgenerator.FRAME = (pframe)
+  -- if pframe.ORIGIN = (porigin)
+  -- if pgeneratorop.ARGUMENTS = [POBJECT n_exception]
+  -- if pgeneratorpendingthrow = {SOURCE pgeneratorop, LEAF n_leaf, SITE porigin, VALUE $generator_cached_value(S, pgeneratorop.OBJECT, false)}
+  -- if S_parked = $generator_resumed($generator_set(S, n_leaf, pgenerator[.PARKED = (porigin)]), pgeneratorop)
+
+;; Preserve this producer's new owning continuation before eager retirement.
+;; Generic same-frame throw adaptation otherwise restores the predecessor tail.
+def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = S_next
+  -- if S.TODO = (GENERATOR_ARGS pgeneratorop eps ([KNOWN (POBJECT n_exception)])) :: ptask_tail*
+  -- if pgeneratorop.NAME = "throw" /\ pgeneratorop.ARGUMENTS = eps
+  -- if S_next.TODO = (GENERATOR_PENDING_THROW pgeneratorpendingthrow) :: ptask_tail*
+  -- if pgeneratorpendingthrow.SOURCE = pgeneratorop[.ARGUMENTS = [POBJECT n_exception]]
+  -- if S_next.COMPLETION = THROWING n_exception
+  -- if S_next = $generator_operate(S[.TODO = ptask_tail*], pgeneratorpendingthrow.SOURCE)
+
+def $generator_parked(S, n, 0) = false
+def $generator_parked(S, n, n_left) = true
+  -- if $(n_left > 0)
+  -- if $generator_object(S, n)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PARKED =/= eps
+def $generator_parked(S, n, n_left) = $generator_parked(S, n_child, $nabs($(n_left - 1)))
+  -- if $(n_left > 0)
+  -- if $generator_object(S, n)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PARKED = eps
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.INPUT = (POBJECT n_child)
+  -- if pgeneratorfrom.ACQUISITION = eps
+def $generator_parked(S, n, n_left) = false -- otherwise
+def $generator_parked_site(S, pgenerator, PORIGIN n_unit pcpath) = true
+  -- if $function_at($all_functions(S), pgenerator.FUNCTION) = (pfunction)
+  -- if $function_generator(S, pfunction)
+  -- if n_unit = pfunction.CODE.UNIT
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $generator_parked_node($origin_node(S.SOURCES, PORIGIN n_unit pcpath))
+def $generator_parked_site(S, pgenerator, porigin) = false -- otherwise
+def $generator_parked_node((NExprYield phpType5_key phpType5_value metadata)) = true
+def $generator_parked_node((NExprYieldFrom expression metadata)) = true
+def $generator_parked_node(pcnode?) = false -- otherwise
+def $generator_parked_frame(eps, porigin) = true
+def $generator_parked_frame((pframe), porigin) = (pframe.ORIGIN = (porigin))
+def $generator_parked_valid(S, pgenerator) = true -- if pgenerator.PARKED = eps
+def $generator_parked_valid(S, pgenerator) = true
+  -- if pgenerator.PARKED = (porigin)
+  -- if pgenerator.PHASE <- [GENERATOR_PAUSED, GENERATOR_DELEGATING, GENERATOR_CLOSING]
+  -- if $generator_parked_site(S, pgenerator, porigin)
+  -- if $generator_parked_frame(pgenerator.FRAME, porigin)
+def $generator_parked_valid(S, pgenerator) = false -- otherwise
+
+;; The copied API result survives receiver retirement. Throw search then drops
+;; precisely this value; SOURCE does not retain the receiver or Throwable.
+def $task_nodes(GENERATOR_PENDING_THROW pgeneratorpendingthrow) = $value_nodes(pgeneratorpendingthrow.VALUE)
+def $generator_pending_throw_valid(S, pgeneratorpendingthrow) = true
+  -- if pgeneratorop = pgeneratorpendingthrow.SOURCE
+  -- if $generator_object(S, pgeneratorop.OBJECT)
+  -- if pgeneratorop.NAME = "throw" /\ ~pgeneratorop.ADVANCE
+  -- if pgeneratorop.LOOP = eps /\ ~pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED
+  -- if $generator_operation_site(S, pgeneratorop)
+  -- if pgeneratorop.ARGUMENTS = [POBJECT n_exception]
+  -- if $generator_input_valid(S, POBJECT n_exception)
+  -- if $getter_arguments(S, pgeneratorop.SITE) = PCALLARGUMENTS phpType7* 2
+  -- if |phpType7*| = 1 /\ $generator_arguments_supported(phpType7*)
+  -- if $generator_object(S, pgeneratorpendingthrow.LEAF)
+  -- if S.OBJECTS[pgeneratorpendingthrow.LEAF] = GENERATOR pgenerator
+  -- if $generator_parked_site(S, pgenerator, pgeneratorpendingthrow.SITE)
+def $generator_pending_throw_valid(S, pgeneratorpendingthrow) = false -- otherwise
+def $call_task_valid(S, GENERATOR_PENDING_THROW pgeneratorpendingthrow) = ($generator_pending_throw_valid(S, pgeneratorpendingthrow) /\ ($eager_operation_pending(S) =/= eps \/ $destructor_selected_pending(S, eps) =/= eps))
+def $generator_pending_throw_discard(S, THROW_SEARCH n) = (pgeneratorpendingthrow)
+  -- if S.TODO = (THROW_SEARCH n) :: (GENERATOR_PENDING_THROW pgeneratorpendingthrow) :: ptask*
+  -- if S.COMPLETION = NORMAL
+  -- if $generator_pending_throw_valid(S, pgeneratorpendingthrow)
+  -- if S.ORIGIN = (pgeneratorpendingthrow.SOURCE.SITE)
+def $generator_pending_throw_discard(S, ptask) = eps -- otherwise
+def $eager_operation_source(S, ptask) = GENERATOR_PENDING_THROW pgeneratorpendingthrow
+  -- if $generator_pending_throw_discard(S, ptask) = (pgeneratorpendingthrow)
+def $generator_pending_throw_here(S, pdestructionoperation) = true
+  -- if pdestructionoperation.SOURCE = GENERATOR_PENDING_THROW pgeneratorpendingthrow
+  -- if $generator_pending_throw_valid(S, pgeneratorpendingthrow)
+  -- if S.CURRENT = pdestructionoperation.CALLER
+  -- if S.ORIGIN = (pgeneratorpendingthrow.SOURCE.SITE)
+  -- if pdestructionoperation.ORIGIN = S.ORIGIN
+  -- if pdestructionoperation.PENDING =/= eps
+  -- if (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) <- S.TODO
+  -- if pdestructionoperation.NOGC = (pgctemporary)
+  -- if pgctemporary.OPERAND = KNOWN pgeneratorpendingthrow.VALUE
+def $generator_pending_throw_here(S, pdestructionoperation) = false -- otherwise
+def $generator_pending_throw_frames(S, pdestructionoperation, eps) = false
+def $generator_pending_throw_frames(S, pdestructionoperation, pframe :: pframe_tail*) = ($generator_pending_throw_here($constant_frame_scope(S, pframe, pframe_tail*), pdestructionoperation) \/ $generator_pending_throw_frames(S, pdestructionoperation, pframe_tail*))
+def $generator_pending_throw_receipt(S, pdestructionoperation) = ($generator_pending_throw_here(S, pdestructionoperation) \/ $generator_pending_throw_frames(S, pdestructionoperation, S.FRAMES))
+
 def $generator_input_orphans(eps, n) = eps
 def $generator_input_orphans(pgeneratorinput :: pgeneratorinput_tail*, n) = pgeneratorinput[.LIVE = false] :: $generator_input_orphans(pgeneratorinput_tail*, n)
   -- if pgeneratorinput.OBJECT = n
@@ -717,12 +861,13 @@ def $generator_operate_plain(S, pgeneratorop) = $generator_resume(S, pgeneratoro
   -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_DELEGATING
   -- if pgeneratorop.NAME <- ["next", "send", "throw"]
-  -- if pgeneratorop.NAME =/= "throw" \/ $generator_from_shared(S, pgenerator.DELEGATE)
+  -- if pgeneratorop.NAME =/= "throw" \/ $generator_from_shared(S, pgenerator.DELEGATE) \/ $generator_pending_throw_ready(S, pgeneratorop)
 def $generator_operate_plain(S, pgeneratorop) = S_resumed[.TODO = (THROW_SEARCH n) :: S_resumed.TODO]
   -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_DELEGATING
   -- if pgeneratorop.NAME = "throw"
   -- if ~$generator_from_shared(S, pgenerator.DELEGATE)
+  -- if ~$generator_pending_throw_ready(S, pgeneratorop)
   -- if pgeneratorop.ARGUMENTS = [POBJECT n]
   -- if S_resumed = $generator_resume(S, pgeneratorop[.ADVANCE = false])
 rule PhpStep/generator-from-complete: S ~> S[.TODO = ptask_tail*][.ORIGIN = (porigin)][.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)]

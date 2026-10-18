@@ -116,8 +116,16 @@ yield result before child catch search. Its one temporary owner stays separate
 from current/reference caches and earlier orphan counts; payload cleanup can
 replace the injected exception with its exact previous chain. See the
 [buffered-throw review](../../coverage/semantics/generator-buffered-throw-review.json).
-Aggregate/Iterator data is outside this route. Owning copied returns, other used
-yield shapes and pending `throw` remain Unsupported.
+Aggregate/Iterator data is outside this route. Owning copied returns and other
+used-yield shapes remain Unsupported.
+
+Pending `throw` follows a separate no-advance path through native links to a bare
+yield or detached current with a node-free copied return. It throws to the caller
+while retaining the copied current through receiver retirement. Only the physical leaf is parked;
+getters preserve it and later real resume through any ancestor is Unsupported.
+Explicit close omits the parked frame's finally, including a detached middle with
+cleared initialization. Suspended task/held owners and buffered used yields stay
+outside this admission; see the [pending-throw review](../../coverage/semantics/generator-pending-throw-review.json).
 
 Callback admission binds the actual owner, source unit/path, stage, target, line
 and saved lexical/called scopes. Only the immediate authenticated implicit call

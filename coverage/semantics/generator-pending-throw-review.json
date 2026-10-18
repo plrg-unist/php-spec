@@ -1,0 +1,134 @@
+{
+  "milestone": "Iterator21: pending Generator THROW caller escape and parked close",
+  "status": "Implemented, validated and independently accepted; pointwise composed over f42dcd6c5/400.",
+  "independent_reviewer": "iterator_review_15",
+  "base": "464c0cf26a27dca6023f8bceb934aa419189c46b",
+  "tested_runtime": "d01b2715d026510e05043839ebcff6806795479b",
+  "modules": 399,
+  "scope": "One-Throwable literal method THROW on a pending DELEGATING actual root through finite pure native Generator links to a bare statement yield, or a detached current with a node-free copied return. Physical leaf suspended TODO and HELD own no heap nodes; no LIVE used-yield input is admitted.",
+  "semantics": [
+    "Native DO_INIT returns before body entry after throw has parked the physical frame at exception_op. The actual root clears initialization and the same supplied Throwable reaches the caller; getters retain raw current/key/valid behavior.",
+    "RETURN_COPY_DEREF creates a separate current owner before receiver retirement. The source-authenticated transient task owns only VALUE; receiver, leaf, source and argument receipts are borrowed. Caller search releases that copy once as a no-GC TEMP before catch, preserving sole receiver finally order and a cache-destructor replacement previous chain.",
+    "PARKED is nonowning immutable-source history, independent of PENDING_INIT. Explicit close skips that physical frame finally but frees real CV/context owners through existing jobs and preserves caches to storage release. No Throwable belongs to the parked Generator.",
+    "Any later real resume reaching the parked leaf, directly or through finite native ancestors, is explicit Unsupported. The wider global exception-opline history is not approximated."
+  ],
+  "source_authority": [
+    "vendor/php-src/Zend/zend_generators.c::Generator::throw, zend_generator_throw_exception, zend_generator_resume and zend_generator_dtor_storage: injection before DO_INIT early return, copied current and parked close.",
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_CATCH/HANDLE_EXCEPTION and Zend/zend_exceptions.c::zend_throw_exception_internal: caller catch clears the exception while exception-opline history remains; caller temporary cleanup uses no-GC decrement.",
+    "Pinned implementation observations are not portable evaluation-order guarantees. No engine bug or intentional divergence is classified."
+  ],
+  "validation_identity": {
+    "php": "8.5.10 CLI NTS64; source34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml5.1.0; SL, caches off and encountered determinism checks",
+    "environment": "tests/semantics/profile.json; PHP -n; LC_ALL=C; TZ=UTC; PHP_SPEC_SCRIPT_ENCODING unset. Serial scoped taskset commands; raw reports retain exact commands/caps/bytes/exits/stable inputs/HEAD."
+  },
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "9d3634333e90148702a911edc84612c05680df507a51520534822e8e55d27e48",
+    "spec/semantics/280-generators.watsup": "802a586bfc0bca418ebf0d291299f67e7094a828627a417d77bf5d684950c321",
+    "spec/semantics/289-generator-delegation.watsup": "4db0fa1c24683e4543602c175cb9619e3af3f81c0ab9bd7ea8d23718903caaac",
+    "spec/semantics/301-cycle-collection.watsup": "1dfc779f63c80e9f8a94dd4830b0dd7b466a63c08cfbc1544ff81b15a45736d6",
+    "spec/semantics/303-generator-force-close.watsup": "ce251b2a09ecaa21de841d764315b3165d83778ae410c690bd5fb0b0d9b670fa"
+  },
+  "raw_root": ".tools/generator-pending-throw-21/.tools/",
+  "native_and_baseline": {
+    "revision": "464c0cf26a27dca6023f8bceb934aa419189c46b",
+    "native_reports": [
+      "generator-pending-throw-native-xl0t7wki/report.json",
+      "generator-pending-throw-review-native-l6o7mxn6/report.json"
+    ],
+    "native_result": "Four immutable originals captured before production: normal exit0/empty stderr, no preasserted stdout. Both authors independently reviewed exact raw tuples; all captures grant zero model credit.",
+    "baseline_report": "generator-pending-throw-baseline-8kx86pmq/report.json",
+    "baseline_result": "Exact24f19125 original and retained xl0t native tuple reused without PHP replay; genuine public Unsupported Generator force-close at request end after seven OUTPUT chunks P|O|M|C|H|1|. Exit1/empty stderr/no diagnostic/exit_status/timeout; stable unchanged464. Zero agreement."
+  },
+  "strict": {
+    "reports": [
+      "generator-pending-throw-author-sl-r7h9o7dk/report.json",
+      "generator-pending-throw-author-sl-5qt6jkx8/report.json",
+      "generator-pending-throw-author-sl-9trztdt3/report.json"
+    ],
+    "result": "Strict399 exacttrue at initial e349, producer correction9d517 and final d01. Each affected runtime correction retested strict before application; no compiler failure."
+  },
+  "fixture_elaboration": {
+    "initial_report": "generator-pending-throw-state-elab-h3jpze49/report.json",
+    "revised_detached_report": "generator-pending-throw-detached-elab-z9n14u4e/report.json",
+    "result": "Initial ordered399 combined4 parse/elab at e349 passed exact EOF sentinel/four headers, no interpretation. Three formulas remain unchanged; the unrun detached fixture was replaced with an actual copied-result front and alone reparsed at d01. Final strict and all four real state executions bind final runtime. Both gates grant zero semantic credit."
+  },
+  "normal_sources": {
+    "new_distinct_originals": 4,
+    "reports": [
+      [
+        "generator-pending-throw-source-rv8goz9y/report.json",
+        "e34980807500d69bacc14330a06d3a8e50118945",
+        "first record PASS1 only; campaign FAIL because second mismatch"
+      ],
+      [
+        "generator-pending-throw-source-0j07go7x/report.json",
+        "9d517e94d00519ff79c0424de21e3447c56258d8",
+        "sole-receiver corrected PASS1"
+      ],
+      [
+        "generator-pending-throw-review-source-u8r2fu8t/report.json",
+        "9d517e94d00519ff79c0424de21e3447c56258d8",
+        "independent reference and detached PASS2"
+      ]
+    ],
+    "result": "Exact normal stdout/stderr/exit tuples agree with retained native captures, without PHP replay. Final d01 state groups execute these same four original full endings and expose transient owners masked by retained aliases; this is an affected runtime bridge, not renewed wrapper credit."
+  },
+  "reached_states": {
+    "revision": "d01b2715d026510e05043839ebcff6806795479b",
+    "groups": 4,
+    "premises": 428,
+    "author": 208,
+    "independent": 220,
+    "local_checks": 408,
+    "generic_reachability": 20,
+    "reports": [
+      [
+        "fiber-state-review-3opkuzjk/report.json",
+        123
+      ],
+      [
+        "fiber-state-review-zzw3cico/report.json",
+        85
+      ],
+      [
+        "fiber-state-review-baiquvzv/report.json",
+        97
+      ],
+      [
+        "fiber-state-review-qcok2zzr/report.json",
+        123
+      ]
+    ],
+    "checks": "Together these cover real caller-search copied owner3/E2, TEMP shared decrement3\u21922 without GC/destructor, source/line/argument/site and replay refusals, blocked parked resume, a genuine cache destructor with retired Generators and saved-frame receipt/public validity, reference-child close HCELL3/frame-job1 without finally, detached scalarCOMPLETE23/nullkey/initfalse/PARKED and copied owner, exact no-advance steps, heap/public validity, zero/split budgets and all original endings.",
+    "result": "All true/empty stderr/exit0/no timeout; stable HEAD and author/independent input hashes. No state failure or rerun."
+  },
+  "preserved_discrepancy": {
+    "report": "generator-pending-throw-source-rv8goz9y/report.json",
+    "revision": "e34980807500d69bacc14330a06d3a8e50118945",
+    "result": "Campaign failed: first live-child original PASS1 retained at e349; sole-receiver second record0 printed D before J instead of native J before D. Generic Throwable continuation reset erased the transient copy; ten source-authenticated289 lines preserve the producer continuation. Only failed second source wrapper repeated after affected strict; original bytes/failure remain external.",
+    "additional_static_fix": "Independent detached route review found its legacy wrapper prepended an extra THROW_SEARCH, again masking the transient copy under retained aliases. Two complementary ready guards route only the new producer around that wrapper. No observed mismatch is fabricated: prior peer detached wrapper PASS retains9d517 cut; replacement of its unrun state proves the actual copy at final d01."
+  },
+  "compatibility": "Empty PARKED preserves existing behavior. New admission excludes buffered used-yield input, acquired/borrowed/loop/startpack producers, own-PAUSED actual roots and owning suspended task/HELD nodes. Existing buffered throw/no-GC and pending SEND selectors remain unchanged; prior18\u201320 controls/cuts need no replay. No generic Throwable/eager/destructor algorithm or manifest/pipeline changes.",
+  "remaining": [
+    "Later real resume after parked throw needs global exception-opline history and fresh native originals; it is explicitly Unsupported here.",
+    "Active used-yield buffers, owning suspended foreach/TMP/finally values, owning copied returns, acquired producers and wider Fiber/reentry/GC lifecycle remain required.",
+    "Full Generator/core closure and later BOLA/security proofs remain open; no engine-bug classification or intentional divergence."
+  ],
+  "evidence_recovery": {
+    "archive": "../php-spec-evidence-archive/generator-pending-throw-21/private.tar.gz",
+    "bytes": 3115159,
+    "sha256": "7f2e4e350a07c3da38ac035eb8e4fff14005129c6c62447a84847e392ed4155c",
+    "manifest": "Sibling manifest.json maps15 report roles, including per-record partial original failure, and9 ignored recorder/catalog inputs. Full raw originals/generated fixtures/output/commands/hashes remain external.",
+    "restore": "Extract at private_root. Native/baseline use untouched464c0cf26. Source wrappers retain e349 firstPASS,9d517 corrected sole and peer2 cuts; final runtime/strict/state428 use d01b2715d. Retained private Git branch supplies implementation/tests. Provision read-only references with scripts/private-semantics-references.py; reports identify executed binaries, not archived build prerequisites."
+  },
+  "composition": {
+    "parent": "f42dcd6c545129abd6cd076061df9cafae09816c",
+    "parent_modules": 400,
+    "private_publication": "bc50cbe6d1b764b9f0427452aca4fe385e31da50",
+    "review": "Independent actual-parent/pointwise review: new A12 Module410 and63 guard require flat by-value LIST_FETCH/CV float precision-loss/errorhandler sources absent here. Earlier incoming30/136/156/270/379/386/400/404/408/409 selectors are likewise disjoint. Preserve parent task tags/manifest/pipeline and every unrelated runtime byte. Four Iterator runtime files remain d01-exact; shared30 preserves parent additions plus exact tested Generator additions.",
+    "validation": "Source4 and state428 retain their private cuts; actual400 manifest belongs composition, not private strict399. No joined runtime actor or renewed execution credit."
+  }
+}

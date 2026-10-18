@@ -48,8 +48,7 @@ changed by that cleanup; an argument-destructor throw preserves the cleared bit.
 Synthetic shared-child resumes also preserve the first-yield flag: an inherited
 middle rejects rewind, while a previously initialized middle can still accept it
 after shared advancement. The [pending-send review](../../coverage/semantics/generator-pending-init-send-review.json)
-records both histories. Owning copied detached returns and pending `throw` remain
-Unsupported.
+records both histories. Owning copied detached returns remain Unsupported.
 
 Pending `send` through finite native Generator links can also fill a paused
 child's used yield assigned directly to a simple CV. It clears the actual root's
@@ -80,6 +79,18 @@ stays cleared. Real aliases determine later child/middle finally order. The
 [unused-target review](../../coverage/semantics/generator-pending-unused-send-review.json)
 checks scalar/object caches, COW snapshots and the supplied cleanup exception.
 Other discarded-expression shapes remain outside this bounded admission.
+
+Pending `throw` on a delegating actual root can reach a bare statement yield
+through native links, or a detached current with a node-free copied return.
+It clears initialization without entering the body and throws the supplied
+Throwable to the caller. A transient dereferenced current copy survives receiver
+close, then retires before caller catch; its destructor can replace the exception
+and preserve the previous chain. The physical frame keeps nonowning parked-source
+history, so getters preserve its cache while later real resumption stays
+Unsupported. Explicit close omits that frame's finally even after initialization
+was cleared. The [pending-throw review](../../coverage/semantics/generator-pending-throw-review.json)
+bounds this route to empty suspended task/held owners and no used-yield buffer.
+Owning unfinished temporaries and later exception-opline resumption remain open.
 
 Literal `send` and `throw` validate and capture their single argument before
 initialization. Fresh calls first reach the initial yield, then deliver the

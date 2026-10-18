@@ -35,6 +35,19 @@ dec $generator_unused_send_leaf(pstate, nat, nat) : nat?
 dec $generator_unused_send_tail(pstate, porigin, ptask*) : bool
 dec $generator_send_leaf(pstate, nat, nat) : nat?
 dec $generator_pending_shared_send(pstate, pgeneratorop) : bool
+dec $generator_pending_throw_leaf(pstate, nat, nat) : nat?
+dec $generator_pending_throw_ready(pstate, pgeneratorop) : bool
+dec $generator_pending_throw(pstate, pgeneratorop) : pstate
+dec $generator_parked(pstate, nat, nat) : bool
+dec $generator_parked_site(pstate, pgenerator, porigin) : bool
+dec $generator_parked_node(pcnode?) : bool
+dec $generator_parked_frame(pframe?, porigin) : bool
+dec $generator_parked_valid(pstate, pgenerator) : bool
+dec $generator_pending_throw_valid(pstate, pgeneratorpendingthrow) : bool
+dec $generator_pending_throw_discard(pstate, ptask) : pgeneratorpendingthrow?
+dec $generator_pending_throw_here(pstate, pdestructionoperation) : bool
+dec $generator_pending_throw_frames(pstate, pdestructionoperation, pframe*) : bool
+dec $generator_pending_throw_receipt(pstate, pdestructionoperation) : bool
 dec $generator_input_site(pstate, nat, porigin) : bool
 dec $generator_input_tail(pstate, porigin, ptask*) : bool
 dec $generator_input_count(pgeneratorinput*, nat) : nat
@@ -247,7 +260,7 @@ dec $generator_creation_frame(pstate, pfunction) : pframe
 def $generator_creation_frame(S, pfunction) = $generator_frame(S, $function_body_tasks(S, pfunction)) -- otherwise
 def $generator_install(S, pframe) = $set_active_table(S[.SILENCES = pframe.SILENCES][.TODO = pframe.TODO][.ORIGIN = pframe.ORIGIN][.HELD = pframe.HELD][.CURRENT = pframe.CONTEXT][.RETIREDOWNERS = pframe.RETIREDOWNERS][.BORROWEDREAD = pframe.BORROWEDREAD][.OBJECTCAST = pframe.OBJECTCAST][.CONSTCONTEXT = pframe.CONSTCONTEXT][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], psymboltable)
   -- if pframe.LOCALS = (psymboltable)
-def $generator_create(S, pfunction) = $restore_frame(S[.OBJECTS = S.OBJECTS ++ [GENERATOR {FUNCTION pfunction.ORIGIN, FRAME ($generator_creation_frame(S, pfunction)), PHASE GENERATOR_FRESH, FIRST false, PENDING_INIT false, INDEX $(-1), VALUE eps, REFCELL eps, KEY eps, BORROWED eps, RETURN eps, CLOSURE pcallcontext.INSTANCE, DELEGATE eps, ACCESS $access_generator_capture(S, pcallcontext)}]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)][.TODO = eps][.HELD = eps])
+def $generator_create(S, pfunction) = $restore_frame(S[.OBJECTS = S.OBJECTS ++ [GENERATOR {FUNCTION pfunction.ORIGIN, FRAME ($generator_creation_frame(S, pfunction)), PHASE GENERATOR_FRESH, FIRST false, PENDING_INIT false, PARKED eps, INDEX $(-1), VALUE eps, REFCELL eps, KEY eps, BORROWED eps, RETURN eps, CLOSURE pcallcontext.INSTANCE, DELEGATE eps, ACCESS $access_generator_capture(S, pcallcontext)}]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)][.TODO = eps][.HELD = eps])
   -- if n = |S.OBJECTS|
   -- if S.CURRENT = (pcallcontext)
 rule PhpStep/generator-create: S ~> $generator_create(S, pfunction)
@@ -301,24 +314,34 @@ def $generator_resumed(S, pgeneratorop) = $generator_set(S, pgeneratorop.OBJECT,
 def $generator_resumed(S, pgeneratorop) = S -- otherwise
 def $generator_resume(S, pgeneratorop) = $generator_complete($generator_result($generator_resumed(S, pgeneratorop), pgeneratorop), pgeneratorop)
   -- if $generator_pending_resume(S, pgeneratorop)
+  -- if ~$generator_parked(S, pgeneratorop.OBJECT, |S.OBJECTS|)
   -- if pgeneratorop.NAME = "next" \/ $generator_pending_detached_send(S, pgeneratorop) \/ $generator_pending_unused_send(S, pgeneratorop)
 def $generator_resume(S, pgeneratorop) = $generator_complete($generator_result($generator_resumed($generator_input_send(S, pgeneratorop), pgeneratorop), pgeneratorop), pgeneratorop)
   -- if $generator_pending_shared_send(S, pgeneratorop)
+  -- if ~$generator_parked(S, pgeneratorop.OBJECT, |S.OBJECTS|)
+def $generator_resume(S, pgeneratorop) = $generator_pending_throw(S, pgeneratorop)
+  -- if $generator_pending_throw_ready(S, pgeneratorop)
 def $generator_resume(S, pgeneratorop) = S[.COMPLETION = UNSUPPORTED "Generator pending initialization send or throw"]
   -- if $generator_pending_resume(S, pgeneratorop)
   -- if pgeneratorop.NAME <- ["send", "throw"]
   -- if ~$generator_pending_detached_send(S, pgeneratorop)
   -- if ~$generator_pending_shared_send(S, pgeneratorop)
   -- if ~$generator_pending_unused_send(S, pgeneratorop)
+  -- if ~$generator_pending_throw_ready(S, pgeneratorop)
+  -- if ~$generator_parked(S, pgeneratorop.OBJECT, |S.OBJECTS|)
+def $generator_resume(S, pgeneratorop) = S[.COMPLETION = UNSUPPORTED "Generator resume after pending throw"]
+  -- if $generator_parked(S, pgeneratorop.OBJECT, |S.OBJECTS|)
 def $generator_resume(S, pgeneratorop) = S[.COMPLETION = UNSUPPORTED "Generator buffered send throw"]
   -- if ~$generator_pending_resume(S, pgeneratorop)
   -- if $generator_input_blocked(S, pgeneratorop)
+  -- if ~$generator_parked(S, pgeneratorop.OBJECT, |S.OBJECTS|)
 ;; Synthetic shared-child resumes preserve the native rewind history.
 def $generator_resume(S, pgeneratorop) = $generator_input_resume($generator_install($generator_set($save_frame(S[.TODO = (GENERATOR_RESUME pgeneratorop) :: S.TODO]), pgeneratorop.OBJECT, pgenerator[.FRAME = eps][.PHASE = GENERATOR_RUNNING][.FIRST = (($generator_resume_root(S, pgeneratorop) /\ pgenerator.PHASE = GENERATOR_FRESH) \/ (~$generator_resume_root(S, pgeneratorop) /\ pgenerator.FIRST))]), pframe), pgeneratorop)
   -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.FRAME = (pframe)
   -- if ~$generator_pending_resume(S, pgeneratorop)
   -- if ~$generator_input_blocked(S, pgeneratorop)
+  -- if ~$generator_parked(S, pgeneratorop.OBJECT, |S.OBJECTS|)
 def $generator_return(S, KNOWN pvalue) = $restore_frame($generator_set(S, pgeneratorop.OBJECT, pgenerator[.FRAME = eps][.PHASE = GENERATOR_CLOSED][.RETURN = (pvalue)])[.RESULT = KNOWN PNULL][.TODO = eps][.HELD = eps])
   -- if S.FRAMES = pframe :: pframe_tail*
   -- if pframe.TODO = (GENERATOR_RESUME pgeneratorop) :: ptask_tail*
@@ -933,7 +956,7 @@ def $generator_node_valid(S, HOBJECT n) = ($generator_object_valid(S, S.OBJECTS[
 def $generator_yield_key_node_valid(S, n) = true -- otherwise
 def $generator_node_valid(S, HARRAY n) = true
 def $generator_node_valid(S, HCELL n) = true
-def $generator_object_valid(S, GENERATOR pgenerator) = ($generator_record_valid(S, pgenerator) /\ $access_generator_record_valid(S, pgenerator))
+def $generator_object_valid(S, GENERATOR pgenerator) = ($generator_record_valid(S, pgenerator) /\ $access_generator_record_valid(S, pgenerator) /\ $generator_parked_valid(S, pgenerator))
 def $generator_object_valid(S, pobject) = true -- otherwise
 dec $generator_close_state_valid(pstate) : bool
 def $generator_close_state_valid(S) = true -- otherwise
@@ -972,6 +995,7 @@ def $generator_internal_task(GENERATOR_CREATE porigin) = true
 def $generator_internal_task(GENERATOR_ARGS pgeneratorop phpType7* poperand*) = true
 def $generator_internal_task(GENERATOR_SEND pgeneratorop phpType7* poperand*) = true
 def $generator_internal_task(GENERATOR_RESUME pgeneratorop) = true
+def $generator_internal_task(GENERATOR_PENDING_THROW pgeneratorpendingthrow) = true
 def $generator_internal_task(GENERATOR_YIELD_VALUE porigin poperand?) = true
 def $generator_internal_task(GENERATOR_YIELD_DONE porigin poperand?) = true
 def $generator_internal_task(GENERATOR_YIELD_STORE porigin poperand?) = true

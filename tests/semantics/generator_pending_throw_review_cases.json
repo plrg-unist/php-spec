@@ -1,0 +1,20 @@
+[
+  {
+    "id": "generator-pending-throw-review-reference-cache-snapshot-and-explicit-close",
+    "purpose": "Pending native-link throw escapes to the caller without entering the child catch. A raw reference cache and copied old row distinguish cache reads, COW ownership and explicit close history after the same supplied Exception is caught.",
+    "source": "<?php\nclass ReviewPendingOld21 { function __destruct() { echo \"A|\"; } }\nclass ReviewPendingLive21 { function __destruct() { echo \"B|\"; } }\nfunction &reviewPendingLeaf21() { global $cache; try { echo \"C|\"; yield 7 => $cache; echo \"BAD-BODY|\"; } catch (Exception $caught) { echo \"BAD-CATCH|\"; } finally { echo \"F|\"; } }\nfunction reviewPendingMiddle21() { try { echo \"M|\"; yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; } finally { echo \"J|\"; } }\nfunction reviewPendingOuter21() { try { echo \"O|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-OUTER|\"; } finally { echo \"Z|\"; } }\n$cache = [new ReviewPendingOld21()]; $exception = new Exception(\"pending21\");\n$child = reviewPendingLeaf21(); $middle = reviewPendingMiddle21(); $outer = reviewPendingOuter21();\necho \"P|\"; $outer->rewind();\n$row = $middle->current(); $cache = [new ReviewPendingLive21()]; echo \"W|\";\ntry { $middle->throw($exception); echo \"BAD-RETURN|\"; }\ncatch (Exception $caught) { echo \"CATCH|\", $caught === $exception ? 1 : 0, \"|\", $caught->getPrevious() === null ? 1 : 0, \"|\"; }\necho \"GET|\", $middle->current()[0] instanceof ReviewPendingLive21 ? 1 : 0, \"|\", $middle->key(), \"|\", $middle->valid() ? 1 : 0, \"|\";\n$row[0] = null; unset($row); echo \"ROW|\";\nunset($outer); echo \"OUT|\"; unset($middle); echo \"MID|\"; unset($child); echo \"CHILD|\";\nunset($cache, $caught, $exception); echo \"E\";\n",
+    "source_sha256": "ec62cbbdbb45122c7f5ab993a7bd44c9a4372d0c65d4193cb07452457f4e21d1",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|M|C|W|CATCH|1|1|GET|1|7|1|A|ROW|Z|OUT|J|MID|CHILD|B|E"
+  },
+  {
+    "id": "generator-pending-throw-review-detached-current-with-node-free-return",
+    "purpose": "A child completes with scalar return23 before the pending middle throw. The middle retains a real detached current and null key; caller catch/getters and explicit cache/Generator retirement distinguish parked exception-opline history from pending initialization alone.",
+    "source": "<?php\nclass ReviewPendingDetached21 { function __destruct() { echo \"A|\"; } }\nfunction reviewPendingDetachedLeaf21() { echo \"C|\"; yield new ReviewPendingDetached21(); echo \"L|\"; return 23; }\nfunction reviewPendingDetachedMiddle21() { try { echo \"M|\"; $answer = yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; } finally { echo \"J|\"; } }\nfunction reviewPendingDetachedOuter21() { try { echo \"O|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-OUTER|\"; } finally { echo \"Z|\"; } }\n$exception = new Exception(\"detached21\");\n$child = reviewPendingDetachedLeaf21(); $middle = reviewPendingDetachedMiddle21(); $outer = reviewPendingDetachedOuter21();\necho \"P|\"; $outer->rewind(); $child->next();\n$snapshot = $outer->current(); echo \"HELD|\", $snapshot instanceof ReviewPendingDetached21 ? 1 : 0, \"|\";\nunset($child); echo \"DROP|\";\ntry { $middle->throw($exception); echo \"BAD-RETURN|\"; }\ncatch (Exception $caught) { echo \"CATCH|\", $caught === $exception ? 1 : 0, \"|\", $caught->getPrevious() === null ? 1 : 0, \"|\"; }\necho \"GET|\", $middle->current() instanceof ReviewPendingDetached21 ? 1 : 0, \"|\", $middle->key() === null ? 1 : 0, \"|\", $middle->valid() ? 1 : 0, \"|\";\nunset($snapshot); echo \"ROW|\"; unset($outer); echo \"OUT|\"; unset($middle); echo \"MID|\";\nunset($caught, $exception); echo \"E\";\n",
+    "source_sha256": "aad455fb5dba96084545c21c54c4f23a4e270674c57dccb43d16627c90817c9f",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|M|C|L|HELD|1|DROP|CATCH|1|1|GET|1|1|1|ROW|Z|OUT|A|MID|E"
+  }
+]

@@ -50,6 +50,19 @@ API current snapshot keeps its separate cache owner during this cleanup.
 The [unused-target review](../../coverage/semantics/generator-pending-unused-send-review.json)
 distinguishes both paths and real local-alias close order.
 
+Pending `throw` has a separate exception-opline history. At a bare yield or
+detached current with a node-free copied return, pending initialization returns
+before body entry but the physical frame remains parked at the native exception operation. Later
+explicit close skips that frame's finally even though initialization is cleared.
+Real CV/context owners still retire through the existing frame jobs; owning
+suspended task/held temporaries are excluded. The API's transient copied current
+keeps a cache alive through sole receiver close, then releases before caller catch.
+A cache destructor can replace the injected exception with its previous chain
+intact. No exception owner belongs to the parked Generator. The
+[pending-throw review](../../coverage/semantics/generator-pending-throw-review.json)
+checks reference-child and detached-middle histories; later resumption remains
+Unsupported because the global exception-opline history is not yet modeled.
+
 The release walk preserves physical owner order, including compiled local-slot
 order and key-before-value cleanup after a forbidden keyed yield. It can close
 other started Generators through ordinary reference/array/object edges. General

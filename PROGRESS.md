@@ -7,6 +7,35 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Pending Generator `throw` now reaches the caller without body entry when a
+delegating actual root still has pending initialization and native links end
+at a bare yield, or at a detached current with a nonowning copied return.
+Its current copy survives receiver close and then retires before catch as a
+no-GC temporary, preserving a destructor replacement's previous chain.
+Nonowning parked-source history keeps getters live and omits that physical
+frame's finally on explicit close even after initialization clears.
+Four exact normal originals agree across retained `e349`/`9d517` cuts. Four
+genuine fronts pass428 premises (208 author +220 independent) and the same
+four full endings at `d01b2715d`/399; strict399 passes. Real snapshot/TEMP
+owners, retired-Generator destructor receipts, reference frame jobs, detached
+COMPLETE23, public admission and budgets are covered. Initial preparation
+and one revised-fixture elab grant0 credit; no compiler or state actor failed.
+The original mixed source packet retains firstPASS1/secondFAIL0: sole-receiver
+cache destruction preceded middle finally because Throwable adaptation erased
+the current copy. Only the failed wrapper repeated; later state fronts expose
+that copy and the separately corrected detached route hidden by retained aliases.
+Native4/unchanged baseline remain0. Later real resume after parked throw,
+used-yield buffers, owning suspended temporaries and wider exception-opline
+history remain explicit open scope. See the
+[pending-throw ledger](coverage/semantics/generator-pending-throw-review.json).
+
+Composed over `f42dcd6c5`/400 after pointwise review of the incoming
+NaN/empty-array DEFINE, nullable-array return cleanup, class/WeakMap, quiet
+numeric, property-empty and LIST selectors, all absent from these originals.
+A12's new list-key module and parent task tags are preserved; only the tested
+Generator field/task additions compose into shared Module30. Source4/state428
+retain their private cuts with no joined actor or renewed execution credit.
+
 Distinct authenticated SensitiveParameterValue constructor Closures now compare
 equal when they select the same live receiver, including clones and fresh capture
 sites. Distinct receivers remain uncomparable +1 both ways even when wrapping the

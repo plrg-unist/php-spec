@@ -25,6 +25,7 @@ dec $generator_close_request_valid(pstate, pgenclose) : bool
 dec $generator_request_done_pending(pstate, pgenclose) : bool
 dec $generator_close_enter(pstate, pgenclose) : pstate
 dec $generator_close_pending_init(pstate, pgenclose) : bool
+dec $generator_close_parked(pstate, pgenclose) : bool
 dec $generator_own_cache(pgenerator) : bool
 dec $generator_close_scan(pstate, nat, porigin, ptask*) : pstate
 dec $generator_close_skip_marker(pstate, ptask, ptask*) : pstate
@@ -367,22 +368,27 @@ def $generator_close_pending_init(S, pgenclose) = true
   -- if pgenerator.PENDING_INIT
   -- if $generator_own_cache(pgenerator)
 def $generator_close_pending_init(S, pgenclose) = false -- otherwise
-def $generator_close_enter(S, pgenclose) = $generator_close_begin_pending($generator_set(S[.TODO = (GENERATOR_CLOSE_DONE pgenclose[.FRAME = eps][.STAGE = CLOSE_FINISHED][.PENDING = eps]) :: ptask*], pgenclose.OBJECT, pgenerator[.PHASE = GENERATOR_CLOSED][.PENDING_INIT = false]), $destruction_values($generator_close_frame_nodes(S, pframe)), pgenclose.PENDING)
+def $generator_close_parked(S, pgenclose) = true
+  -- if pgenclose.STAGE = CLOSE_QUEUED
+  -- if S.OBJECTS[pgenclose.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PARKED =/= eps
+def $generator_close_parked(S, pgenclose) = false -- otherwise
+def $generator_close_enter(S, pgenclose) = $generator_close_begin_pending($generator_set(S[.TODO = (GENERATOR_CLOSE_DONE pgenclose[.FRAME = eps][.STAGE = CLOSE_FINISHED][.PENDING = eps]) :: ptask*], pgenclose.OBJECT, pgenerator[.PHASE = GENERATOR_CLOSED][.PENDING_INIT = false][.PARKED = eps]), $destruction_values($generator_close_frame_nodes(S, pframe)), pgenclose.PENDING)
   -- if S.TODO = (GENERATOR_CLOSE_ENTER pgenclose) :: ptask*
   -- if pgenclose.FRAME = (pframe)
   -- if S.OBJECTS[pgenclose.OBJECT] = GENERATOR pgenerator
-  -- if $generator_close_pending_init(S, pgenclose)
+  -- if $generator_close_pending_init(S, pgenclose) \/ $generator_close_parked(S, pgenclose)
 def $generator_close_enter(S, pgenclose) = $generator_close_queued_skip(S, pgenclose, ptask, ptask_tail*)
   -- if pgenclose.FRAME = (pframe)
   -- if pframe.TODO = ptask :: ptask_tail*
   -- if ~$generator_close_initial_finally(S, ptask)
-  -- if ~$generator_close_pending_init(S, pgenclose)
+  -- if ~$generator_close_pending_init(S, pgenclose) /\ ~$generator_close_parked(S, pgenclose)
 def $generator_close_enter(S, pgenclose) = $generator_close_finally_enter(S_installed, porigin, ptask_tail*)
   -- if S.TODO = (GENERATOR_CLOSE_ENTER pgenclose) :: ptask_caller*
   -- if pgenclose.FRAME = (pframe)
   -- if pframe.TODO = ptask :: ptask_tail*
   -- if $generator_close_initial_finally(S, ptask)
-  -- if ~$generator_close_pending_init(S, pgenclose)
+  -- if ~$generator_close_pending_init(S, pgenclose) /\ ~$generator_close_parked(S, pgenclose)
   -- if $finally_marker_origin(ptask) = (porigin)
   -- if S.OBJECTS[pgenclose.OBJECT] = GENERATOR pgenerator
   -- if S_installed = $generator_install($generator_set($save_frame(S[.TODO = (GENERATOR_CLOSE_DONE pgenclose[.FRAME = eps]) :: ptask_caller*]), pgenclose.OBJECT, pgenerator[.PHASE = GENERATOR_RUNNING]), pframe)
@@ -391,7 +397,7 @@ def $generator_close_enter(S, pgenclose) = $generator_close_begin_pending($gener
   -- if pgenclose.FRAME = (pframe)
   -- if pframe.TODO = eps
   -- if S.OBJECTS[pgenclose.OBJECT] = GENERATOR pgenerator
-  -- if ~$generator_close_pending_init(S, pgenclose)
+  -- if ~$generator_close_pending_init(S, pgenclose) /\ ~$generator_close_parked(S, pgenclose)
 def $generator_close_initial_finally(S, TRY_END porigin) = ($finally_present(S, porigin) /\ $generator_close_selected(S, porigin))
 def $generator_close_initial_finally(S, FINALLY_ONLY porigin) = $generator_close_selected(S, porigin)
 def $generator_close_initial_finally(S, ptask) = false -- otherwise
