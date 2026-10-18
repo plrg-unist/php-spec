@@ -1050,3 +1050,21 @@ pass. Capture, D-frame, normal-exit, ownership and release rules are unchanged;
 the proof covers one runtime single-entry array with one throwing child, not
 physical Zend collection or arbitrary aggregate histories. See the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M91 admits a used nullable property return as the old source at a pending
+destructor-throw operation exit. A sole local Box has a typed `?object` slot
+holding O; `&f():?object` returns `$box->slot`, then its finalizer unsets Box
+before the selected `y` return. O's destructor throws `TypeError("slot91")`.
+Native PHP catches that error locally and delivers detached NULL without a
+by-reference Notice, while the unchanged model wrongly takes the outer catch.
+The repaired source agrees exactly. A reached proof binds the typed ALIAS
+property and its PROPREF source before cleanup, retirement of the old Box,
+cell and O at the pending exit, and the same TypeError object in the local
+catch. The nonowning cursor then materializes a fresh NULL HCELL without
+PROPREFS or a Notice. An actual equal-heap LINE-only public refusal and exit
+budget split pass. The source guard requires existing used nullable slot
+materialization; capture, property cleanup, normal exit and consumed-return
+rules remain unchanged. This is one typed-property throwing-destructor history,
+separate from M63's accepted normal-destructor control and physical Zend
+collection. See the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).

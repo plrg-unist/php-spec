@@ -9513,6 +9513,23 @@ public refusal and whole/split budget equality pass. M89 capture and D-frame,
 normal exit, ownership and release rules are unchanged; this is one throwing
 child history, with wider aggregate and reentrant returns still open.
 [M90 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M91 routes a pending destructor TypeError from a typed `$box->slot` old
+reference source in a used `&f():?object` return. The sole local Box is unset
+before selected-reference replacement; O's destructor throws `slot91`.
+Native PHP on unchanged `cd776548f`/399 catches that exact error locally,
+returns detached `rNULL/b7`, and emits no Notice. The unchanged model instead
+takes outer OT/r7 (zero agreement). At private `dad7475ce`/399 strict SL
+initialization passes and the one original source agrees exactly. One reached
+fixture passes 167 Boolean premises and two raw steps: preF typed ALIAS slot
+and PROPREF source, retirement of Box/old cell/O at the pending exit, same
+destructor-origin TypeError in local CT, then a distinct fresh NULL HCELL with
+no PROPREFS or Notice and the detached caller. Actual equal-heap LINE-only
+public refusal and exit budget equality pass. Only the authenticated
+pending-Throwable property-source guard changed; capture, typed cleanup,
+normal exit and consumed materialization remain unchanged. M63's normal
+typed-property history stays separate; physical collection, other property
+forms, reentry and broad returns_verify remain OPEN.
+[M91 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, wider destructor throw/reentry, real suspension and wider typed
