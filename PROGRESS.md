@@ -22,6 +22,13 @@ new native refcount or early-destruction claim. Scalar-coerced direct-object fla
 uncertified objects and wider name/lifetime domains remain partial.
 [Object-flag review](coverage/semantics/define-object-flag-review.json).
 
+Composed over `888c7b984`/405 with the exact tested400 patch and all other
+incoming runtime/manifest bytes preserved. Literal-reference debt fields lift
+empty in states, heap graphs and compiler memory; owners and budget identities
+are preserved. Incoming arithmetic COPY sees quiet PINT operands; Stringable
+name, spaceship, Generator and reference-return producers are unselected.
+Source3/state931 keep their private404 cuts without a joined actor or replay.
+
 Defined scalar left CVs now resume after a missing-right `<=>` warning using
 the current CV wrapper. Late reference creation and rebinding reach the new cell;
 the missing right remains NULL even after its name becomes 9. False/default Warning
