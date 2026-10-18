@@ -2970,6 +2970,11 @@ map disposal unregisters its key before releasing the owned value. Four original
 and 333 focused premises cover sole/held ownership, logical weak-reference expiry,
 receiver release and a value destructor's Exception;
 [WeakMap RV review](coverage/semantics/magic-empty-weakmap-rv-review.json).
+Real static Closure RVs now use that phase for ordered release. A held Closure
+and a retained reference cell give different weak-reference lifetimes and delay
+capture disposal; four originals and 452 focused premises
+cover both, normal receiver release and a capture destructor's Exception;
+[Closure RV review](coverage/semantics/magic-empty-closure-rv-review.json).
 Other signatures, receivers, other internal-object RVs and
 wider recursive/coalesce magic combinations remain unsupported.
 Hooked iteration, defaulted virtual hooks, other paired or virtual setters, wider trait

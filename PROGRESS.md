@@ -246,25 +246,21 @@ array routes. Their guarded tasks and source shapes are absent here; factory,
 clone, getter and ownership interfaces remain exact. Source3/state271 retain the
 private2135/401 cut with zero new execution credit; no joined actor or replay.
 
-Empty and singleton WeakMap getter RVs now use the receiver-only disposal phase;
-entry count does not change their truth. Map disposal unregisters the leaf key
-before the owned value's destructor, with a real empty-map storage pin through
-the callback. Dropping the key makes the retained weak wrapper read null without
-erasing its semantic target history. Sole and held ownership distinguish value
-disposal before receiver release from later nested receiver destruction.
-Four originals agree at `9af665058`; 333 focused premises at `a81a0e78a`
-(315 reached +18 derived) cover these states, the same Exception at catch,
-wrapper refusal, empty-map truth and budgets. The original raw-wrapper fixture
-failure and two narrow diagnostics retain zero credit. One408 kind arm and four
-superseded negative controls change; generic WeakMap/GC/disposal rules stay exact.
-Other map/key/value lifetimes, sole-owner public-NaN retirement and wider quiet-CV
-GC remain open. Earlier class cuts retain their original evidence without replay.
-[WeakMap RV review](coverage/semantics/magic-empty-weakmap-rv-review.json).
-
-Composed over `1cd75a1bd`/401 after pointwise review of reference-return,
-Generator foreach retention, LIST float-key, constant API, comparison and
-compound-warning selectors. New Generator retention stays empty; source4/state333
-retain their cuts without joined execution or renewed credit.
+Real static Closure getter RVs now use the receiver-only phase for ordered RV
+release. For a sole RV, its weak wrapper expires before the capture destructor;
+the saved receiver survives caller-CV nulling and is released before result/catch.
+A held Closure remains live after `empty`, while a shared reference cell retains
+the payload after Closure retirement. Later held/alias writes permit nested
+receiver destruction. Four originals agree at `9d9f857a3`; 452 focused premises
+at `458d8942b` (447 reached +5 derived) cover actual DIRECT/ALIAS edges, static scope,
+cell owners 2 to 1 and null replacement, logical weak reads, the same Exception
+at catch and budgets. One raw Closure-kind arm changes; capture/reference/free/GC
+machinery stays unchanged. Native evidence keeps accepted first-two and corrected
+second-two cuts; the original local-reference export mistake retains zero credit.
+Fake/internal/wrapped Closure RVs, wider implicit-receiver/cold-static/cyclic
+lifecycles, sole-owner public-NaN retirement and wider quiet-CV GC remain open.
+Earlier class evidence is not replayed.
+[Closure RV review](coverage/semantics/magic-empty-closure-rv-review.json).
 
 Positional `define` calls with primitive arguments now reject counts outside
 two through three before name/flag reception and registration, after all argument

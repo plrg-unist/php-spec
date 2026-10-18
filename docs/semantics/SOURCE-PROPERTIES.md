@@ -584,6 +584,23 @@ GC and destruction machinery stays unchanged. Wider map/key/value lifetimes and
 sole-owner public-NaN retirement remain open.
 [WeakMap RV review](../../coverage/semantics/magic-empty-weakmap-rv-review.json).
 
+Real static Closure getter RVs now use the phase for ordered RV release, with
+one ordinary payload captured by value or reference. For a sole RV, Closure
+disposal expires its weak wrapper before releasing captures; the phase keeps the
+receiver through the payload destructor and its possible Exception. A held Closure
+stays live after `empty`, whereas a retained reference cell keeps the payload alive
+after the Closure expires.
+The later held/alias write then permits nested receiver destruction inside the
+payload callback. Four originals and 452 focused premises (447 reached +5 derived)
+verify actual DIRECT/ALIAS edges, static scope without an implicit receiver,
+cell owners 2 to 1 and the subsequent null write, logical weak reads, catch identity
+and budgets. Only the raw REALCLOSURE RV-kind arm changes; capture, reference,
+free and GC rules stay unchanged. The original reference-export source mistake
+retains zero credit. Fake/internal/wrapped Closure RVs remain unsupported; wider
+implicit-receiver, cold-static, reentry and cycle combinations are outside this
+validated slice.
+[Closure RV review](../../coverage/semantics/magic-empty-closure-rv-review.json).
+
 Constructor promotion declares a property from its original parameter flags and
 source occurrence. A parameter default does not initialize the property, and
 promoted nonnullable types do not acquire ordinary implicit nullable widening.
