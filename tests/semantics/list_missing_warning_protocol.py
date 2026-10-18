@@ -204,7 +204,7 @@ def conditions(name, program, path, stdout):
     ]
 
 
-def run(source_cases, make_conditions, helpers=HELPERS):
+def run(source_cases, make_conditions, helpers=HELPERS, expected_stderr=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--source-report', type=Path, action='append', required=True)
     parser.add_argument('--case', choices=tuple(source_cases.CASES))
@@ -245,7 +245,7 @@ def run(source_cases, make_conditions, helpers=HELPERS):
         assert path.read_bytes() == source_cases.CASES[name]
         assert digest(path) == source_row['source_sha256']
         stdout_path, stderr_path = path.parent / 'native.stdout', path.parent / 'native.stderr'
-        assert not stderr_path.read_bytes()
+        assert stderr_path.read_bytes() == (expected_stderr(name, path) if expected_stderr else b'')
         checks = make_conditions(name, programs[name], path, stdout_path.read_bytes())
         fixture = out / (name + '.watsup')
         fixture.write_text(helpers + '\ndec $main() : bool\ndef $main() = true\n'

@@ -1,0 +1,22 @@
+[
+  {
+    "id": "generator-pending-throw-live-child-caller-catch-getters-and-close",
+    "source": "<?php\nclass PendingThrowCache21 { function __destruct() { echo \"D|\"; } }\nfunction pendingThrowChild21() { echo \"C|\"; try { yield new PendingThrowCache21(); echo \"BODY|\"; } catch (Exception $caught) { echo \"CHILD|\"; } finally { echo \"F|\"; } return 17; }\nfunction pendingThrowMiddle21() { global $child; echo \"M|\"; try { $result = yield from ($child = pendingThrowChild21()); echo \"MR|\", $result, \"|\"; return 23; } finally { echo \"J|\"; } }\nfunction pendingThrowOuter21() { global $middle; echo \"O|\"; try { $result = yield from ($middle = pendingThrowMiddle21()); echo \"OR|\", $result, \"|\"; return 29; } finally { echo \"Z|\"; } }\necho \"P|\"; $injected = new Exception(\"pending21\"); $outer = pendingThrowOuter21(); $outer->rewind(); $held = $outer->current(); echo \"H|\", $outer->valid() ? 1 : 0, \"|\";\ntry { $result = $middle->throw($injected); echo \"RETURNED|\"; } catch (Exception $caught) { echo \"CALLER|\", $caught === $injected ? \"SAME|\" : \"OTHER|\"; }\necho \"V|\", $middle->valid() ? 1 : 0, \"|\", $child->key(), \"|\", $child->current() === $held ? \"LIVE|\" : \"BAD|\"; echo $middle->current() === $held ? \"SHARED|\" : \"WRONG|\";\nunset($outer, $middle, $child); echo \"CLOSED|\"; unset($held); echo \"END|\"; unset($caught, $result, $injected); echo \"E\";\n",
+    "source_sha256": "24f1912546623974db71bbd4760cd21fbe49e74e954a843063c3a07cdda594b5",
+    "expected": "normal",
+    "purpose": "Pending native-link THROW first records exact caller catch versus child catch, preserved current/key/valid getters, and later finally/cache cleanup while an independent snapshot retains the cached object.",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|M|C|H|1|CALLER|SAME|V|1|0|LIVE|SHARED|Z|J|CLOSED|D|END|E"
+  },
+  {
+    "id": "generator-pending-throw-sole-receiver-cache-destructor-replacement",
+    "source": "<?php\nclass PendingThrowReplacementCache21 { function __destruct() { echo \"D|\"; throw $GLOBALS[\"replacement\"]; } }\nfunction pendingReplacementChild21() { echo \"C|\"; try { yield new PendingThrowReplacementCache21(); echo \"BODY|\"; } catch (Exception $caught) { echo \"CHILD|\"; } finally { echo \"F|\"; } return 19; }\nfunction pendingReplacementMiddle21() { echo \"M|\"; try { $result = yield from ($GLOBALS[\"child\"] = pendingReplacementChild21()); echo \"MR|\", $result, \"|\"; return 31; } finally { echo \"J|\"; } }\nfunction pendingReplacementOuter21() { echo \"O|\"; try { $result = yield from ($GLOBALS[\"middle\"] = pendingReplacementMiddle21()); echo \"OR|\", $result, \"|\"; return 37; } finally { echo \"Z|\"; } }\nfunction pendingDropGenerators21() { echo \"H|\"; unset($GLOBALS[\"outer\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"DROP|\"; return $GLOBALS[\"injected\"]; }\necho \"P|\"; $injected = new Exception(\"pending21\"); $replacement = new Exception(\"replacement21\"); $outer = pendingReplacementOuter21(); $outer->rewind(); echo \"T|\";\ntry { $result = $middle->throw(pendingDropGenerators21()); echo \"RETURNED|\"; } catch (Exception $caught) { echo \"CALLER|\", $caught === $injected ? \"ORIGINAL|\" : \"OTHER|\"; echo $caught === $replacement ? \"REPLACED|\" : \"NOTREPLACED|\"; echo $caught->getPrevious() === $injected ? \"PREV|\" : \"NOPREV|\"; echo $caught->getPrevious() === null ? \"NONE|\" : \"SOME|\"; }\nunset($caught, $result, $injected, $replacement); echo \"E\";\n",
+    "source_sha256": "9bd4daac14a52fbed57986925a560d8f5c16db6f00f65321aa64aa488bd13b47",
+    "expected": "normal",
+    "purpose": "A selected method receiver survives argument evaluation that removes every Generator CV. Observe pending THROW, internal current snapshot retirement, real cache-destructor replacement and previous identity without predicting their order.",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|M|C|T|H|Z|DROP|J|D|CALLER|OTHER|REPLACED|PREV|SOME|E"
+  }
+]

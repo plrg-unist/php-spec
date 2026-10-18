@@ -1,0 +1,130 @@
+{
+  "version": 1,
+  "milestone": "COMP77",
+  "status": "independently reviewed within the stated authenticated constructor-Closure pair domain",
+  "behavior": "Distinct live SensitiveParameterValue constructor Closures compare equal when they select the same receiver, independently of capture site. Distinct receivers remain uncomparable +1 both ways even when wrapping the same Map.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "tested_revision": "27032c3bb3df6c8377b989f3dab100e8cd23539d",
+  "ordered_modules": 399,
+  "manifest_sha256": "2e38df4b97a41f654a8c3f01ffb0c078c337ed17d1ce8816ff7429a23b031761",
+  "implementation": {
+    "spec/semantics/379-sensitive-parameters.watsup": "e8256ba3e8c6dd9adfffcb0d384a1f1a82f19f9859af18a82b5346485d0f4a8c"
+  },
+  "engine_basis": [
+    "Zend/zend_closures.c zend_closure_compare requires fake Closure flags, receiver identity, called scope, function type/scope and function name; creation site is not compared. SensitiveParameterValue is final and its authentic constructor captures fix the remaining metadata.",
+    "Module379 independently authenticates each live raw CTORCLOSURE receiver, exact SensitiveParameterValue base and first-class constructor source site. Clones retain that source; a fresh capture may use a different site.",
+    "Zend/zend_attributes.c and zend_attributes_arginfo.h retain the private readonly value. A later explicit constructor call throws the existing readonly Error; comparison does not invoke it."
+  ],
+  "contract": [
+    "Eight module379 lines extend named_closure_same only for two authentic live exact-base constructor tags with the same receiver. Both live guards precede indexing; capture sites remain independent. Generic scalar, aggregate, strict-identity, producer, clone and lifetime rules are unchanged.",
+    "Seven-operator same-receiver rows yield 1001010; distinct-receiver rows yield 0100001 in either direction. Same-object identity, distinct cloned identities and getter-versus-constructor method mismatch remain separate.",
+    "Array scans continue past equal constructor leaves to integer tails, returning -1/+1. Declared-property scans stop at different receivers with +1 both ways, skipping real later Stringable leaves. Whole states preserve receiver/Map/private-value/key ownership and scope records."
+  ],
+  "source_catalogues": {
+    "tests/semantics/constructor_closure_comparison_cases.json": "ce83efb2d82fed6c0ae383f8ec85ff49700621b8e584d19657cd04826607044f",
+    "tests/semantics/constructor_closure_comparison_review_cases.json": "8a8f98823627a79b606fa457670b6a41c61af222d805245637ba31c063902a63"
+  },
+  "unchanged_counterexample": {
+    "revision": "242340c13e42fd9df44f0ad091229802b089e50e",
+    "report": ".tools/ctor77-support/run-baseline-v1/report.json",
+    "status": "normal",
+    "reason": null,
+    "exit_status": 0,
+    "wrong_same_receiver_row": "0100001",
+    "native_same_receiver_row": "1001010",
+    "full_stdout_checked": true,
+    "producer": "All constructor/getter nominal producers, distinct identities and both getValue===same Map observations precede the first comparison.",
+    "agreement_credit": 0
+  },
+  "validation": {
+    "original_sources": {
+      "normal_agreements": 2,
+      "author_seconds": 63.493949776515365,
+      "independent_seconds": 40.27031364105642,
+      "cli_and_host_caps_seconds": [
+        240,
+        250
+      ]
+    },
+    "author": {
+      "premises": 267,
+      "setup": 257,
+      "pure": 10,
+      "raw_php_steps": 6,
+      "seconds": 60.13717830553651,
+      "result": "Six genuine row77 EQUAL fronts return true for clone/fresh same-receiver pairs and false for distinct receivers in both orientations. Capture origins, shared Map snapshots, physical receiver owners4 versus1, private/key owner1, empty scope/binding rows, whole states and budget checks pass."
+    },
+    "independent": {
+      "premises": 181,
+      "setup": 177,
+      "pure": 4,
+      "raw_php_steps": 4,
+      "seconds": 34.76403973065317,
+      "result": "Four genuine array/box spaceship fronts continue from clone/fresh equality to signed integer tails and stop at distinct receivers before a real caster. Seed and wrapper CV retirement, same Map payload, receiver owners2 versus1, private/key owner1, whole states and budgets pass. Complete source endings supply readonly Error55 and explicit tail/private casts."
+    },
+    "total": {
+      "premises": 448,
+      "setup": 434,
+      "pure": 14,
+      "raw_php_steps": 10
+    },
+    "separate_zero_credit": "Native observations and exact unchanged normal-result disagreement, initializer, author EL and four parse/check operations supply no application agreement or extra state credit.",
+    "failures": []
+  },
+  "limits": [
+    "Pure preexisting-guard, dead-allocation, bounded-live and getter-method projections are local helper checks, not malformed-global execution claims.",
+    "Seed/wrapper CV retirement and clone/capture ownership are reached prerequisites; later readonly Error and casts are complete-source observations. Ten raw steps are comparisons; no new invocation, clone or lifecycle protocol is claimed.",
+    "Only authentic raw initialized SensitiveParameterValue constructor pairs gain equality. Other Closure representations, constructor bases and wider lifetimes remain partial; stored-string carrier conversion, factory cloning, special intrinsic and uninitialized-wrapper gaps remain separate."
+  ],
+  "artifacts": {
+    ".tools/ctor77-support/gates.py": "3fc1946a40ea51816d0d8af987defdcd1cf7c2b2d0b9858ea29d7d460098e9c7",
+    ".tools/ctor77-support/inputs.py": "a90e0a9dcffb66ad2f504d2d256dbd7160c6ed82b7b55ad6b3ebb5d86e2fc536",
+    ".tools/ctor77-support/actor.py": "4ae87084c814a6838d044a7743e09bdb0bfda1ca4e6c18fd0b37a35bfe463412",
+    ".tools/ctor77-support/run-native-v1/report.json": "e985e3cec791b628a6624f8bf0bc51206b2e4bb4ac15bef61587b1b63413f0fc",
+    ".tools/ctor77-support/run-baseline-v1/report.json": "417080130feaf5fdf6cb18b962ba4be42d0d1f89fd6f8d24dd091a5d9612da5f",
+    ".tools/ctor77-support/run-init-v1/report.json": "d65710cb6103e8753f3726a7daf3bb47c12908aba19979eafa56367cac44d534",
+    ".tools/ctor77-support/run-sources-v1/report.json": "bba9ab3e369bb878ae8ae84fab467aa464e7df9bb9a98c83346ed57a9a8a6ff9",
+    ".tools/ctor77-support/run-prepare-v1/report.json": "15e5fc3b4fccc946b15245d484fe7a2a478da06b104d68328d0435f1f130f8c0",
+    ".tools/ctor77-state/build.py": "19b26281b6a5124e9cf39f260c09d82cc7fdc3fe3892bb3c3a24f18b94614b71",
+    ".tools/ctor77-state/helpers.watsup": "4069644b4bb84b6ee54491af2e24edf4a393b516b4f8859611f65cdd00fb7ca4",
+    ".tools/ctor77-state/run.py": "20b52f10dbb928fc1e08a078ae4b0cafe2defe0ae928c9ecdd8e9ecc01b7682d",
+    ".tools/ctor77-state/plan.json": "2a424ef481bc1eb22696ac2abdd448815d47ec21c6c541fc430a01c15872ccc3",
+    ".tools/ctor77-state/run-el-v1/report.json": "ac22fd63a539d97a748df9d8f6fb14fc97bc1e7ec8276536d76da806e7182db9",
+    ".tools/ctor77-state/run-sl-v1/report.json": "9302af3c763ec715e3b255929b0aa74a8d356e72cb026ae33e04150deb6a4e1b",
+    ".tools/ctor77-peer/run.py": "e0c6e1cbc3227a0e31fd7b0875e6fccb29101898314937c3a97dfbb0d1f31bad",
+    ".tools/ctor77-peer/build.py": "7b9121c7bf874f907817731ad4456523f2d70d0424407ee397ef8fc717777d53",
+    ".tools/ctor77-peer/helpers.watsup": "6f91780f73d6ae026b84ac7dd9c96d97eda01f9a51eea6b10eb8c3f761614649",
+    ".tools/ctor77-peer/plan.json": "33c1f78791e1de1b3e9a673553bdb0265f9d9bac55bdd6e67cdf04760dfe03a1",
+    ".tools/ctor77-peer/native-v1/report.json": "3dcf42ef71af0499f7c5b2ac565c0dc7cf4310f0ee9ecd2c0b6f468c3ba328d4",
+    ".tools/ctor77-peer/source-v1/report.json": "f9bb82e2a3750a76ed031a97a6edf6a775aed5ab066cc064820463b12750fd15",
+    ".tools/ctor77-peer/prepare-v1/report.json": "650c41a6c959804d857d1135791ad251625d5469a4fe89e827f42e25fd474e34",
+    ".tools/ctor77-peer/state-v1/report.json": "1be2a33d3bea6d1734ee6d8e89527e9606205576e55f8a94bcd9d92c5e891dd8",
+    ".tools/ctor77-peer/review.json": "000806b8a1599415ea5985d801f223dec58c81de8170f9edf2ebbf3de5555b3e"
+  },
+  "recovery": "Ignored originals, programmes, fixtures, START/environment records and raw streams remain under .tools/constructor-closure-comparison-77/.tools/ctor77-{native,support,state,peer}; branch codex/constructor-closure-comparison-77 retains the tested revision. Use the recorded gate/state commands and hashes; copied executables establish no fresh portability or rebuild claim.",
+  "independent_review": {
+    "reviewer": "/root/comp_review_67",
+    "semantic_verdict": "CLEAR",
+    "source_and_state_verdict": "CLEAR",
+    "publication_verdict": "CLEAR",
+    "record": ".tools/ctor77-peer/review.json",
+    "record_sha256": "000806b8a1599415ea5985d801f223dec58c81de8170f9edf2ebbf3de5555b3e"
+  },
+  "composition": {
+    "parent": "694afed07fb4204a07a2a63460e93fc4e4ab6721",
+    "ordered_modules": 399,
+    "method": "pointwise actual-parent semantic review and exact fast-forward candidate review; no concrete syntax/dispatch-order dependency and no joined actor",
+    "runtime": "Only eight module379 lines are incoming; the resulting file is byte-identical to tested27032c3bb. Every other spec file and the manifest are parent-exact.",
+    "parent_seams": [
+      "Module30 adds only fresh NaN-define task constructors, without a state field or initializer change. All module400 additions require INTRINSIC_DEFINE/constant-duplicate tasks, absent from both originals. V69 empty immutable/mutable array candidate validation is reached only from those define routes; aggregate comparison arrays cannot select it.",
+      "Modules136/408 require empty or magic-property continuations;270 requires authenticated pending destructor return-assignment;404 requires numeric-string compound-warning continuation;409 requires LIST_FETCH. Both sources contain none of these operations. Module379/52 and constructor/getter producers are unchanged in the parent."
+    ],
+    "execution_credit": 0,
+    "retained_cut": "Two original agreements and448=434setup+14pure/10actual comparison steps retain27032c3bb/399. No accepted native/source/state check is replayed."
+  }
+}

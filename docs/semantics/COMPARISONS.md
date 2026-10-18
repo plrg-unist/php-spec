@@ -153,6 +153,20 @@ Explicit getValue and readonly-error source endings reuse existing protocols;
 no constructor, clone or lifetime rule changes. SENSITIVEUNSET, other constructor
 bases, special intrinsic captures and wider lifetimes remain partial.
 
+[Sensitive constructor-Closure pairs](../../coverage/semantics/constructor-closure-comparison-review.json)
+compare equal for two authentic live raw CTORCLOSURE objects selecting the same
+SensitiveParameterValue receiver. Each capture site is authenticated independently;
+fresh sites and clones share the fixed fake-Closure function/scope metadata.
+Different receivers return +1 both ways even when their wrapped Map is identical;
+getter/constructor mismatch and strict identity remain separate. The unchanged
+model completed normally with the wrong same-receiver rows before the module379
+rule. Two originals and 448 Boolean premises/10 actual steps cover all seven
+operators, whole states, retired seed/wrapper CVs, receiver and private/key owners,
+scopes and budgets. Equal array leaves continue to integer tails (-1/+1); distinct
+receiver leaves stop declared-property scans before real later casters. Explicit
+readonly-Error calls and casts reuse existing protocols. Other representations,
+constructor bases and wider lifetimes remain partial.
+
 [Generator/Generator and Fiber/Fiber pairs](../../coverage/semantics/generator-fiber-comparison-review.json)
 return order zero through the standard zero-default-property shortcut. The pair
 predicate tests arena bounds and exact runtime tags, independently of saved VM

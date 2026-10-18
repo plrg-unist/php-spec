@@ -115,6 +115,12 @@ used-yield result, matching `HANDLE_EXCEPTION`'s no-GC release. Its saved real
 resumer, exact yield/assignment tail and adjacent release/exit authenticate the
 borrowed receipt through payload destruction; ordinary cache owners stay separate.
 See the [buffered-throw review](../../coverage/semantics/generator-buffered-throw-review.json).
+Pending Generator `throw` also copies the current before receiver retirement.
+Its later caller-search discard owns only that copy and uses the same temporary
+no-GC decrement. Borrowed API/source and saved-frame receipts remain valid during
+a cache destructor after the Generators retire; they add no exception or receiver
+owner. This is separate from buffered-slot cleanup and makes no wider collection
+claim; see the [pending-throw review](../../coverage/semantics/generator-pending-throw-review.json).
 Fiber force-close retains the tagged head and pending receipt in its genuine
 caller VM until ordinary release consumes it. Generator close consumes the head
 and updates progress before capturing its continuation; its new close jobs
