@@ -1004,6 +1004,10 @@ catch/finally execution and exception identity. A pending `send` on a detached r
 with a nonowning copied return snapshots its current without advancing. Argument
 cleanup precedes receiver release; shared resumes preserve the first-yield history
 used by `rewind`. See the [pending-send review](coverage/semantics/generator-pending-init-send-review.json).
+An owning copied return at a simple-CV assigned `yield from` also supports that
+pending `send`: the return stays intact until actual next or close. The cache
+snapshot precedes argument cleanup and can outlive receiver retirement when an
+argument destructor throws. See the [owning SEND review](coverage/semantics/generator-pending-owning-return-send-review.json).
 Pending `send` through native shared links also buffers a paused child's yield
 assigned directly to a simple CV. A direct or forwarded `next` that resumes the
 child consumes it; close and overwrite preserve its count until request-store destruction,

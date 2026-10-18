@@ -1,0 +1,22 @@
+[
+  {
+    "id": "generator-pending-owning-return-send-review-reference-cache-cow",
+    "purpose": "A pending detached middle has a distinct owning copied return and a raw reference-row cache. SEND must snapshot the dereferenced row before ignored-argument destruction mutates its shared cell through COW; actual parent close and later snapshot cleanup distinguish the owners.",
+    "source": "<?php\nclass ReviewOwningSendCache28 { function __destruct() { echo \"A|\"; } }\nclass ReviewOwningSendNew28 { function __destruct() { echo \"B|\"; } }\nclass ReviewOwningSendReturn28 { function __destruct() { echo \"R|\"; } }\nclass ReviewOwningSendArgument28 { function __destruct() { echo \"S|\"; $GLOBALS[\"row\"][0] = new ReviewOwningSendNew28(); echo \"W|\"; } }\nfunction &reviewOwningSendChild28() { global $row; $row = [new ReviewOwningSendCache28()]; echo \"C|\"; yield $row; echo \"L|\"; $answer = new ReviewOwningSendReturn28(); return $answer; }\nfunction reviewOwningSendMiddle28() { try { echo \"M|\"; $answer = yield from $GLOBALS[\"child\"]; echo \"BAD-TAIL|\"; } finally { echo \"J|\"; } }\nfunction reviewOwningSendOuter28() { try { echo \"O|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\n$child = reviewOwningSendChild28(); $middle = reviewOwningSendMiddle28(); $outer = reviewOwningSendOuter28();\necho \"P|\"; $outer->rewind(); $child->next(); echo \"H|\", $middle->current()[0] instanceof ReviewOwningSendCache28 ? 1 : 0, \"|\"; unset($child); echo \"D|\";\n$snapshot = $middle->send(new ReviewOwningSendArgument28()); echo \"V|\", $snapshot[0] instanceof ReviewOwningSendCache28 ? 1 : 0, \"|LIVE|\", $row[0] instanceof ReviewOwningSendNew28 ? 1 : 0, \"|K|\", $middle->key() === null ? 1 : 0, \"|\";\nunset($outer); echo \"OUT|\"; unset($middle); echo \"MID|\"; unset($row); echo \"ROW|\"; unset($snapshot); echo \"E\";\n",
+    "source_sha256": "6b01cdb9677984eb355ccc8fbc0b5eff174952751cfe53d1537578c57a24f2bf",
+    "expected_model": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|M|C|L|H|1|D|S|W|V|1|LIVE|1|K|1|F|OUT|J|MID|B|ROW|A|ER|"
+  },
+  {
+    "id": "generator-pending-owning-return-send-review-return-array-cell-rebind",
+    "purpose": "An inherited pending middle has a present-null current and an owning copied array containing a live embedded global reference. Ignored SEND returns null without consuming the child result; close and a subsequent actual shared-cell write distinguish retained array ownership from frozen referents.",
+    "source": "<?php\nclass ReviewOwningSendCellOld28 { function __destruct() { echo \"R|\"; } }\nclass ReviewOwningSendCellNew28 { function __destruct() { echo \"CNEW|\"; } }\nclass ReviewOwningSendCellArgument28 { function __destruct() { echo \"S|\"; } }\nfunction reviewOwningSendCellChild28() { global $slot; echo \"C|\"; yield null; echo \"L|\"; $slot = new ReviewOwningSendCellOld28(); return [&$slot]; }\nfunction reviewOwningSendCellMiddle28() { try { echo \"M|\"; $answer = yield from $GLOBALS[\"child\"]; echo \"BAD-TAIL|\"; } finally { echo \"J|\"; } }\nfunction reviewOwningSendCellOuter28() { try { echo \"O|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\n$child = reviewOwningSendCellChild28(); $middle = reviewOwningSendCellMiddle28(); $outer = reviewOwningSendCellOuter28();\necho \"P|\"; $outer->rewind(); $child->next(); echo \"H|\", $middle->current() === null ? 1 : 0, \"|\"; unset($child); echo \"D|\";\n$answer = $middle->send(new ReviewOwningSendCellArgument28()); echo \"V|\", $answer === null ? 1 : 0, \"|K|\", $middle->key() === null ? 1 : 0, \"|\";\nunset($outer); echo \"OUT|\"; unset($middle); echo \"MID|\";\n$slot = new ReviewOwningSendCellNew28(); echo \"WRITE|\"; unset($slot); echo \"UNSET|\"; unset($answer); echo \"E\";\n",
+    "source_sha256": "ee3586aede8a6db8c078b486b1f3f4d2f6bda03ff08b23d35043702e2e08c8f7",
+    "expected_model": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|M|C|L|H|1|D|S|V|1|K|1|F|OUT|J|MID|R|WRITE|UNSET|ECNEW|"
+  }
+]

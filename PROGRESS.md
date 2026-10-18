@@ -7,6 +7,36 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Pending `send` now admits an owning copied child return at a detached middle's
+simple-CV assigned `yield from`. It clears initialization without consuming the
+return, snapshots current before ignored-argument cleanup and retires the argument
+before its receiver. Actual next consumes the return; close retains its count.
+If argument destruction throws, the copied cache survives receiver retirement;
+its later destructor can replace the exception before catch with Previous intact.
+Reference-row COW and post-close embedded-cell writes preserve distinct owners.
+Only module289's admission guard changes; pending owning-return THROW, wider
+continuations, active-chain owning unpack and GC remain open.
+[Owning SEND review](coverage/semantics/generator-pending-owning-return-send-review.json).
+
+Four normal originals and strict403 pass at `5e5803e64`. Four new fronts pass 544
+premises (266 author + 278 independent, including 20 generic checks); one directly
+affected historical group separately passes 119. Invocation/noadvance, real later
+consumption, retired-receiver snapshot cleanup, COW and shared-cell writes reach
+all native endings with exact owners, public/heap validity and zero/split budgets.
+Author141 uses `768e35aef`; callback125/independent278/historical119 use `6bd20f990`,
+all with byte-exact `9b115deb3` runtime. One binding failure and one string-carrier
+observer failure remain zero; only affected groups repeat. Native4 and the genuine
+unchanged Unsupported baseline retain `3de6366d5`/403 with zero agreement; the
+five-fixture elaboration retains `5e` with zero interpretation credit.
+
+Composed over `a33a254e1`/405 after pointwise review of reference-return
+cleanup, magic call tasks, mixed arithmetic and array-key/constant selectors.
+Those producers are absent here; byref cache yields use the existing Generator
+return path. Only module289 changes and remains byte-exact tested `9b115deb3`.
+Incoming roots, defaults, task variants and the 405-module manifest are
+preserved; source4/new544+old119/strict403 keep their private cuts without a
+joined actor, accepted replay or renewed execution credit.
+
 Arithmetic now admits one initially plain CV and one pre-existing reference.
 The reference keeps its selected cell through name rebind/unset while an alias
 retains it; the plain input stays plain until conversion. Existing numeric holders
@@ -150,8 +180,8 @@ close preserves its single count before finally and current-cache cleanup.
 Returned arrays keep live embedded reference cells, so later writes can retire
 old referents while new values remain retained. A temporary cache destructor can
 replace the null-key unpack Error before catch while the return stays late.
-Active-chain owning returns, wider continuations, pending APIs and waiting-result
-GC remain open. No general lifecycle or collector closure is claimed.
+At that cut, active-chain owning returns, wider continuations, pending APIs and
+waiting-result GC remained open. No general lifecycle or collector closure was claimed.
 [Owning-return review](coverage/semantics/generator-owning-detached-return-review.json).
 
 Four new originals and one promoted historical control agree at `0195cd721`/401;
