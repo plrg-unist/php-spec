@@ -1081,35 +1081,32 @@ private cut; independent seam review warrants no joined actor or renewed credit.
 
 Destructuring key warnings retain recursive by-value CV/literal and mixed CV
 patterns with quiet compiled/implicit or ordinary defined quiet CV keys. Module410
-resumes lossy CV keys in flat direct-CV patterns. Value fetches retain table
-snapshots or a source CELL plus temporary table protection. Writable fetches make
-the saved source writable before the callback, then bind into the selected table
-only if exactly one owner remains after protection release; zero or multiple
-owners yield a detached NULL reference. Later targets/results use the saved CELL.
-Null and reference-wrapped false now initialize a fresh mutable empty array before
-the key callback, without a false-to-array deprecation. Undefined source acquisition
-first produces referenceNULL silently; earlier by-value NULL stores precede the
-later writable initialization. Callback insertion/holds/rebinding preserve unique,
-expired and shared-table outcomes, target alias isolation, later reference COW and
-supplied-Throwable cleanup. The initial plan admits reached NULL/false, not UNDEFINED;
-origin authentication is separate from post-preparation table liveness.
-Five A15 originals agree at bc3d1b83c. Five SL fronts pass 887 premises
-(863 Boolean + 24 raw): author 326 at 2a08686e0, corrected 146 and independent 415 at
-5c1d2e75a. The original undefined fixture omitted ORIGIN_RETURN in its acquisition
-frontier and retains zero credit; only that front was retried. Two superseded A14
-NULL-source refusals now use true-scalar refusals without replay. The
-[initialization review](coverage/semantics/list-float-write-autovivify-review.json)
-retains native/unchanged Unsupported baseline, separate cuts and that failed row.
-The [A14 review](coverage/semantics/list-float-write-key-warning-review.json) retains
-source5/state900 and its raw-COW fixture failure/affected retry; earlier
+also handles lossy float CV keys in flat direct-CV value/reference fetches, including
+silent writable initialization of null/reference-false sources and quiet undefined
+CV acquisition. Defined NULL CV keys now deprecate before selecting the empty
+string at by-value fetches in flat direct-CV patterns with captured array operands.
+Lookup follows the callback: shared references supply new values, and a miss
+enters module409 before the target's NULL store. Default deprecation still precedes
+an E_WARNING-only handler; following keys are read after earlier stores. A by-value
+snapshot keeps its table. A mixed source releases temporary table protection:
+expiry silently supplies NULL even for an old present key, while a surviving
+table can enter a replacement warning handler. Later references/results resolve
+the saved source CELL despite source/key rebinding. Throws cancel lookup and
+retire both roots without changing earlier stores or supplied Throwable identity.
+Five A16 originals agree at 264e00221. Five SL fronts pass 892 premises
+(868 Boolean + 24 raw): author 520 and independent 161 at 1aa78deef, corrected
+independent 211 at 3fe712b02. The original mixed fixture used invalid descriptor
+variable prefixes and failed elaboration before runtime; it retains zero credit.
+Only those names were corrected and that front retried. Earlier tasks/compiler/ownership
+APIs remain unchanged, with no historical control or shared-harness edits. The
+[NULL-key review](coverage/semantics/list-null-key-warning-review.json) retains
+native/unchanged Unsupported baseline, separate cuts and the failed row. The
+[A15 review](coverage/semantics/list-float-write-autovivify-review.json) retains
+source5/state887 and its undefined acquisition-frontier correction; earlier
 [family reviews](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md) retain original
-cuts and failures without replay. Nested/literal lossy conversion, other source/key
-diagnostics, wider constrained sources/RHS/targets and callback/lifecycle coverage
-remain partial.
-
-Pointwise composition over 46e6bf7cf preserves all 401 incoming modules. Generator
-retention stays empty for these sources; compound, closure, define and property
-guards are disjoint. Source5/state887 retain their cuts without a joined actor.
+cuts and failures without replay. Undefined current keys, NULL-key reference
+fetches, nested/literal conversion, wider constrained sources/RHS/targets and
+callback/lifecycle coverage remain partial.
 
 Plain-CV `%=` now keeps both converted longs through a fractional-RHS deprecation.
 Captured12/5 stores2 despite callback99/7 and detaches a late target alias; supplied

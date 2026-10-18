@@ -22,6 +22,7 @@ recursive by-value CV/literal and mixed CV patterns, with ordered null delivery
 and normal/throw cleanup. These patterns also freeze quiet converted variable keys
 across callbacks while later key variables are read afresh.
 Flat CV-source patterns also resume lossy float keys in value and reference fetches.
+Defined null variable keys deprecate before selecting the empty string in value fetches.
 Value fetches in mixed patterns release the old table's temporary protection first:
 expiry supplies null, while a surviving table can enter the following missing-key warning.
 Reference fetches make the array writable before the callback, then bind into the
