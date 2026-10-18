@@ -1143,6 +1143,13 @@ clears initialization; the physical middle stays parked with its return intact.
 Close retains that return and skips the middle finally; cache copies, row COW
 and mutable returned cells keep separate lifetimes. See the
 [ancestor THROW review](coverage/semantics/generator-pending-owning-chain-throw-review.json).
+An already parked owning return also admits another pending `throw` when the
+selected receiver still needs initialization. That receiver clears its own bit
+without entering the body, even if the physical middle was already initialized.
+Distinct or reused exceptions, current snapshots and return cells keep their
+separate lifetimes; actual parked body entry remains Unsupported. See the
+[repeated THROW review](coverage/semantics/generator-repeated-pending-owning-throw-review.json).
+Parked next/send and wider repeated-THROW leaves remain open.
 With a buffered input, pending `throw` preserves its count; physical close retains
 it until request-store destruction, including receiver cleanup before caller
 catch. The independent current copy can still trigger a replacement exception. See the

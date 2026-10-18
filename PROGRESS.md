@@ -7,6 +7,32 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+An already parked owning simple-CV copied return now accepts another pending
+literal THROW directly or through finite native links. Reversed receiver orders
+show that only the selected receiver needs initialization; the physical middle
+may already be initialized. Its parked source/frame/return stay intact and the
+call returns before body entry. Distinct or reused exceptions, current snapshots,
+sole-middle replacement, raw-row COW and returned cells retain separate lifetimes.
+Parked next/send, nonowning/input/loop repeats, actual body entry and GC remain open.
+[Repeated THROW review](coverage/semantics/generator-repeated-pending-owning-throw-review.json).
+
+Four originals and 629 new premises (289 author +340 independent;609 local +20
+generic) pass at `743179929`/405 with runtime `d4dbefafb`: only280+1 and289+10.
+The four real fronts check direct/ancestor receiver bits, unchanged parked history,
+cache ownership and replacement pending receipts, array counts/unique payload edges,
+and late shared-cell writes. Strict405 and four-fixture elaboration pass at the
+same cut; elaboration has zero execution credit. Native4 and genuine unchanged
+second-call public force-close Unsupported retain `fcbbb186d`/405 with zero model
+agreement. No failures, retries, historical renewal or new GC credit; all actors
+reaped and CPU released.
+
+Composed over `c162060e5`/406 with tested280/289 bytes unchanged and all
+other runtime/schema/default/root/ordered-manifest/pipeline bytes parent-exact.
+Incoming ordinary typed-ref Exception replay, magic-property coalesce,
+lossy-float literal-key debt and certified Closure DEFINE selectors are absent.
+Source4/state629/strict405 keep their private cuts; parent406 is composition,
+not renewed execution credit. No joined actor or accepted replay was needed.
+
 Certified Closure values now publish directly or as nested array leaves through
 existing durable object/site/source-prefix/live authority. Direct rows and copied
 leaves share the same pointer/static cells; normal duplicates preserve the old
@@ -92,7 +118,8 @@ receiver clears initialization; the distinct physical middle keeps its pending
 bit and parked source site. Getters and close preserve the return; middle close
 skips finally while upper finally remains live. Copied-cache replacement,
 held-return array COW and mutable returned cells retain separate lifetimes.
-Later parked resume, wider owning continuations and waiting-result GC remain open.
+At that cut, repeated pending THROW, later parked body entry, wider owning
+continuations and waiting-result GC remained open.
 [Ancestor THROW review](coverage/semantics/generator-pending-owning-chain-throw-review.json).
 
 Four originals and 601 new premises (313 author + 288 independent; 581 local +20
