@@ -25,9 +25,14 @@ handler. The missing value stays null even if the callback initializes its name.
 A later direct-CV right operand follows the callback's live binding; a computed
 value remains captured. Known primitive left operands also survive a missing
 right read. Normal, false-returning and throwing handlers keep their ordinary
-reporting and unwind behavior. Both-missing inputs, owning opposing values,
-removed or non-scalar right operands and a live left CV with a missing right remain
-partial. `==`/`!=`/`<`/`<=` use different VM warning-fetch paths; `>`/`>=` also
+reporting and unwind behavior. A defined scalar left CV also survives a missing
+right read: its current wrapper is read after the callback, including a newly
+created reference or rebinding to another scalar cell. The missing right stays
+null. Removing the left CV or replacing it with an owning value remains explicitly
+unsupported on return, without another warning. See the
+[live-left review](../../coverage/semantics/undefined-spaceship-right-review.json).
+Both-missing inputs, owning opposing values and removed or non-scalar right
+operands remain partial. `==`/`!=`/`<`/`<=` use different VM warning-fetch paths; `>`/`>=` also
 reverse operands and need separate continuations. See the
 [scalar warning review](../../coverage/semantics/undefined-spaceship-review.json).
 
