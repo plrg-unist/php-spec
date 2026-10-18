@@ -483,9 +483,17 @@ disposal releases the receiver next; a throwing RV destructor keeps the same liv
 Exception through receiver destruction and actual catch binding. Two exact originals
 and focused247 (188 reached +59 derived) cover these steps and budgets. Same-object
 RV/receiver and extra-owner cases are derived controls that preserve allocations and
-skip user destructors after ordinary release bookkeeping. Arrays/internal-object RVs,
-other signatures/receivers and wider recursive combinations remain partial.
+skip user destructors after ordinary release bookkeeping.
 [Object RV review](../../coverage/semantics/magic-empty-object-rv-review.json).
+stdClass RVs now use the same phase without changing pure truth or storage/return
+rules. Two originals place an ordinary owned payload in the RV: its destructor
+rebinds the sole caller CV and returns/throws while the box storage pin and saved
+receiver remain. Focused222 (208 reached +14 derived) checks actual NEXT0→1,
+Get-inactive/isset-active guards, box/payload retirement before receiver destruction,
+the same Exception at catch and budgets. Kind/bounds and already-freeing box
+refusals are derived controls. Arrays/other internal-object RVs, wider signatures,
+receivers and recursive/lifecycle combinations remain partial.
+[stdClass RV review](../../coverage/semantics/magic-empty-std-rv-review.json).
 
 Constructor promotion declares a property from its original parameter flags and
 source occurrence. A parameter default does not initialize the property, and

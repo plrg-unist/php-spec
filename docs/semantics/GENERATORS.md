@@ -63,6 +63,15 @@ distinguishes payload ownership from reference caches, method receivers and
 Generator frames. Active buffered `throw` and other used-expression shapes remain
 Unsupported; this slice makes no general cyclic-collection claim.
 
+A pending `send` through native links to a bare statement yield instead ignores
+the argument and adds no buffered owner. It returns a dereferenced current
+snapshot without advancing. Argument destruction precedes receiver release: it
+can change a live reference cache after the snapshot or throw while initialization
+stays cleared. Real aliases determine later child/middle finally order. The
+[unused-target review](../../coverage/semantics/generator-pending-unused-send-review.json)
+checks scalar/object caches, COW snapshots and the supplied cleanup exception.
+Other discarded-expression shapes remain outside this bounded admission.
+
 Literal `send` and `throw` validate and capture their single argument before
 initialization. Fresh calls first reach the initial yield, then deliver the
 value or Throwable at that suspension. `send` supplies the result of a used

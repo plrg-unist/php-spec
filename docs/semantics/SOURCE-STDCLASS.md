@@ -26,6 +26,14 @@ The [nested-birth review](../../coverage/semantics/global-constant-stdclass-new-
 and [coalescing review](../../coverage/semantics/global-constant-stdclass-coalesce-review.json)
 keep these bounded producer contracts separate from ordinary stdClass creation.
 
+String-name `define` with an omitted/false flag can also register these certified
+global donors. The captured pointer becomes another constant-row owner without
+allocation, sharing property writes through ordinary reads and `constant()`.
+Duplicate handlers keep the old binding and their writes when they return or
+throw; existing call/trace cleanup retires their temporary owners.
+[Certified define review](../../coverage/semantics/define-stdclass-review.json).
+This does not admit ordinary uncertified NEW or other owning define values.
+
 The constant-AST path also evaluates and drops ordinary positional and uniquely
 named argument values when no constructor exists, including unknown names.
 Argument Errors release earlier values and the unfinished target, leave no

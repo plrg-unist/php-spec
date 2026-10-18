@@ -627,6 +627,11 @@ after the first callback skips the second diagnostic. Success detaches late alia
 either supplied throw or a captured negative count preserves them. Six exact
 originals and 1172 focused SL premises pass in the
 [ordered shift ledger](coverage/semantics/shiftassign-both-warning-review.json).
+An integral float count after the first callback also converts quietly. With
+cached LEFT `-12`, `2.0` stores `-48`/`-3`; `64.0` stores right-shift `-1`.
+Success detaches late aliases; negative counts error before storage. Five exact
+originals and 629 focused SL premises pass in the
+[quiet float shift ledger](coverage/semantics/shiftassign-quiet-float-review.json).
 For initially plain variables, numeric `&=`, `|=` and `^=` now keep their fractional
 left conversion through deprecation handlers, then read the live quiet integer RHS.
 Success detaches late aliases; supplied throw preserves callback writes and the
@@ -892,6 +897,9 @@ assigned directly to a simple CV. A direct or forwarded `next` that resumes the
 child consumes it; close and overwrite preserve its count until request-store destruction,
 independently of caches and Generator owners.
 See the [shared-send review](coverage/semantics/generator-pending-shared-send-review.json).
+At a bare statement yield, pending `send` instead ignores its argument. The current
+snapshot precedes argument destruction, which runs before receiver cleanup even
+when it throws. See the [unused-target review](coverage/semantics/generator-pending-unused-send-review.json).
 [Delegation](docs/semantics/GENERATOR-DELEGATION.md)
 adds arrays, source Iterators and shared Generator graphs with live raw caches
 and natural return/unwind. Aggregate yield-from now acquires nested real iterator
@@ -1104,6 +1112,12 @@ Primitive duplicate `define` now warns and returns false while retaining the old
 binding, including named handlers and retained dynamic selection with callback
 appends. [Two exact sources and 207 public premises](coverage/semantics/dynamic-constant-duplicate-review.json)
 cover default, false-handler and handled delivery; wider candidates remain partial.
+Exact non-NUL names of modeled startup primitives now warn and return false with
+primitive candidates and omitted/bool-false flags, preserving the builtin through
+strict calls and returning or throwing handlers.
+[Four source agreements and 614 state premises](coverage/semantics/define-startup-duplicate-review.json)
+cover captured request strings, callback siblings and exact throwing discard;
+special names, unknown startup values and wider flag/value forms remain partial.
 Boolean `case_insensitive=true` now warns before registration while keeping case
 sensitivity. A handler-created binding wins the subsequent duplicate check;
 [two exact sources and 221 public premises](coverage/semantics/dynamic-constant-flag-review.json)
@@ -1164,8 +1178,14 @@ nested reference snapshots and literal constraints pass
 Top-level empty definitions retain an authenticated immutable table or create a
 fresh mutable copy. [Two exact sources and 162 public premises](coverage/semantics/dynamic-constant-empty-review.json)
 distinguish allocation classes and rebuilt append history, rejecting a mutable
-clone of a fixed literal. Nested empties, array warning/flag paths, objects and
+clone of a fixed literal. Nested empties, array warning/flag paths, other objects and
 cycles remain Unsupported.
+String-name `define` with an omitted/false flag now shares already-certified
+stdClass donors. Named/selected calls preserve the captured pointer through later
+CV changes, and duplicate handlers keep the old binding and property writes on
+normal return or throw. Existing call and Exception-trace cleanup release the
+temporary owners. [Certified define review](coverage/semantics/define-stdclass-review.json).
+Ordinary uncertified objects, object-array payloads and wider flags/names remain partial.
 Class-qualified `defined` now checks inherited user constants with lexical visibility
 and quiet misses. Named autoload resumes the same captured query once.
 [Two exact sources and 288 public premises](coverage/semantics/class-qualified-defined-review.json)
@@ -2152,6 +2172,20 @@ receiver owners and unchanged aggregate states; later real method/tail bodies re
 quiet until explicitly called. Other Closure representations and wider weak lifetimes
 remain partial. [Method-Closure review](coverage/semantics/weakmap-method-comparison-review.json).
 
+Fixed literal method-string Closures now also compare with live WeakMap before
+receiver, scope or private-entry traversal. Bound captures and inherited static
+captures pass all seven operators in both directions; cloned parent selection,
+sole receiver owners and skipped aggregate tails pass two exact sources and
+321 Boolean premises/8 actual steps. Stored-string carrier conversion remains a
+separate producer gap. [Literal-string review](coverage/semantics/weakmap-string-method-comparison-review.json).
+
+Live WeakMap comparisons also admit supported fromCallable and rebound fake Closures.
+They preserve current receiver owners while leaving SOURCE and copied original-scope
+history nonowning, even after the seed Closure and old receiver retire. Two exact
+sources and 361 Boolean premises/8 actual steps cover all seven operators, cloned
+parent-body selection, quiet skipped tails and complete unchanged comparison states.
+[Factory/binding review](coverage/semantics/weakmap-factory-comparison-review.json).
+
 [Numeric object comparison Notices](coverage/semantics/object-numeric-comparison-review.json)
 now pause ordinary source-instance/int/float leaves through real error handlers.
 Live CV/cell reads remain distinct from copies; a second Notice uses saved 1/1.0,
@@ -2721,8 +2755,11 @@ Ordinary user-object getter RVs now dispose while the isset guard and receiver
 remain, before receiver release and false result/catch. Two originals and focused247
 checks cover actual RV/receiver destructors, rebinding, the same Exception and
 budgets; [object RV review](coverage/semantics/magic-empty-object-rv-review.json).
-Other signatures, receivers, arrays/internal-object RVs and wider recursive/coalesce
-magic combinations remain unsupported.
+stdClass RVs now retain that phase through storage and owned-child disposal.
+Two originals and focused222 checks cover the real storage pin, child throw,
+receiver release and catch; [stdClass RV review](coverage/semantics/magic-empty-std-rv-review.json).
+Other signatures, receivers, arrays/other internal-object RVs and wider
+recursive/coalesce magic combinations remain unsupported.
 Hooked iteration, defaulted virtual hooks, other paired or virtual setters, wider trait
 setters, other explicit setter parameter forms, references, other inherited/trait
 and wider receiver, quiet or indirect-access families and wider `__unset` consumers remain required.

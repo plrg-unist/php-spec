@@ -1,0 +1,20 @@
+[
+  {
+    "id": "generator-pending-unused-send-review-reference-snapshot-before-argument-cow",
+    "purpose": "An ignored pending payload is destroyed before the caller receives the old reference-row snapshot; its destructor mutates the live cache through COW before a real forwarded next.",
+    "source": "<?php\nclass ReviewUnusedOld19 { function __destruct() { echo \"A|\"; } }\nclass ReviewUnusedNew19 { function __destruct() { echo \"CACHE|\"; } }\nclass ReviewUnusedArgument19 { function __destruct() { global $cache; echo \"D|\"; $cache[0] = new ReviewUnusedNew19(); echo \"W|\"; } }\nfunction &reviewUnusedLeaf19() { global $cache; try { echo \"C|\"; yield $cache; echo \"BODY|\"; $tail = 17; yield $tail; echo \"T|\"; return 23; } finally { echo \"J|\"; } }\nfunction reviewUnusedMiddle19() { try { echo \"M|\"; $answer = yield from $GLOBALS[\"child\"]; echo \"I|\", $answer, \"|\"; return 29; } finally { echo \"K|\"; } }\nfunction reviewUnusedOuter19() { try { echo \"O|\"; $answer = yield from $GLOBALS[\"middle\"]; echo \"F|\", $answer, \"|\"; } finally { echo \"Z|\"; } }\n$cache = [new ReviewUnusedOld19()];\n$child = reviewUnusedLeaf19(); $middle = reviewUnusedMiddle19(); $outer = reviewUnusedOuter19();\necho \"P|\"; $outer->rewind();\n$row = $middle->send(new ReviewUnusedArgument19());\necho \"S|\", $row[0] instanceof ReviewUnusedOld19 ? \"OLD|\" : \"BAD|\";\n$row[0] = null; unset($row); echo \"X|\";\necho \"V|\", $middle->current()[0] instanceof ReviewUnusedNew19 ? \"LIVE|\" : \"BAD|\";\n$outer->next(); echo \"N|\", $child->current(), \"|\";\n$outer->next(); echo \"Q|\", $outer->valid() ? \"BAD|\" : \"DONE|\";\nunset($child, $middle, $outer, $cache); echo \"E\";\n",
+    "native_exit": 0,
+    "native_stderr": "",
+    "source_sha256": "0a5003293f7abc3dc124dce2d7ede348cd02fc2c1ba545e470aaf15a0aa32b5b",
+    "native_stdout": "P|O|M|C|D|W|S|OLD|A|X|V|LIVE|BODY|N|17|T|J|I|23|K|F|29|Z|Q|DONE|CACHE|E"
+  },
+  {
+    "id": "generator-pending-unused-send-review-null-cache-argument-throw-and-last-receiver",
+    "purpose": "A present-null bare-yield cache supports no-advance initialization before a supplied argument-destructor throw; the last method receiver then closes the live chain and preserves the same exception.",
+    "source": "<?php\nclass ReviewUnusedThrowArgument19 { function __destruct() { echo \"D|\"; throw $GLOBALS[\"exception\"]; } }\nfunction reviewUnusedNullLeaf19() { try { echo \"C|\"; yield null; echo \"BAD-BODY|\"; } finally { echo \"J|\"; } }\nfunction reviewUnusedNullMiddle19() { try { echo \"M|\"; yield from $GLOBALS[\"child\"]; echo \"BAD-TAIL|\"; } finally { echo \"K|\"; } }\nfunction reviewUnusedNullOuter19() { try { echo \"O|\"; yield from $GLOBALS[\"middle\"]; } finally { echo \"F|\"; } }\nfunction reviewUnusedThrowArgument19() { unset($GLOBALS[\"outer\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"DROP|\"; return new ReviewUnusedThrowArgument19(); }\n$exception = new Exception(\"unused19\");\n$child = reviewUnusedNullLeaf19(); $middle = reviewUnusedNullMiddle19(); $outer = reviewUnusedNullOuter19();\necho \"P|\"; $outer->rewind(); echo \"H|\", $outer->valid() ? 1 : 0, \"|\";\ntry { $snapshot = $middle->send(reviewUnusedThrowArgument19()); echo \"BAD-RETURN|\"; }\ncatch (Exception $caught) { echo \"CATCH|\", $caught === $exception ? 1 : 0, \"|\"; }\nunset($caught, $exception); echo \"E\";\n",
+    "native_exit": 0,
+    "native_stderr": "",
+    "source_sha256": "504d20371217e6ba487482d6f3ee8971e786af4b98b38a5cb0ac969dce75e984",
+    "native_stdout": "P|O|M|C|H|1|F|DROP|D|J|K|CATCH|1|E"
+  }
+]

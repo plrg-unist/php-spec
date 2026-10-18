@@ -36,6 +36,14 @@ does not retain the child or API receiver. The [shared-send review](../../covera
 checks both close orders arising from real local aliases and a payload/cache
 alias whose sole remaining owner is this count.
 
+A bare statement yield has no such result slot. Its ignored pending-SEND
+argument retires before the method receiver; it cannot acquire the used-slot
+request-late owner above. A throwing argument destructor preserves cleared
+initialization and the same Exception through real child/middle close. The saved
+API current snapshot keeps its separate cache owner during this cleanup.
+The [unused-target review](../../coverage/semantics/generator-pending-unused-send-review.json)
+distinguishes both paths and real local-alias close order.
+
 The release walk preserves physical owner order, including compiled local-slot
 order and key-before-value cleanup after a forbidden keyed yield. It can close
 other started Generators through ordinary reference/array/object edges. General

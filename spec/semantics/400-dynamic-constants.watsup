@@ -52,6 +52,14 @@ def $dynamic_constant_class(PSTRING_CARRIER (REQUEST_STRING n_string) n_bytes*) 
 def $dynamic_constant_class(pvalue) = (PVSCALAR) -- if $constant_nonstring_scalar(pvalue)
 def $dynamic_constant_class(pvalue) = eps -- otherwise
 
+dec $dynamic_define_value_class(pstate, pvalue) : pvalueclass?
+def $dynamic_define_value_class(S, pvalue) = (pvalueclass)
+  -- if $dynamic_constant_class(pvalue) = (pvalueclass)
+def $dynamic_define_value_class(S, POBJECT n_object) = (PVSTDCLASS n_object pconstantstdobject.SITE)
+  -- if $global_std_record(S.CONSTANTSTDOBJECTS, n_object) = (pconstantstdobject)
+  -- if $constant_value_class_valid(S, POBJECT n_object, PVSTDCLASS n_object pconstantstdobject.SITE)
+def $dynamic_define_value_class(S, pvalue) = eps -- otherwise
+
 ;; A historical definition does not resolve mutable CVs or a namespace fallback
 ;; that a later conditional function declaration could shadow.
 dec $dynamic_define_selected(pstate, porigin, pselectedcall*) : bool
@@ -94,6 +102,7 @@ dec $dynamic_constant_case_message() : ptbytes
 def $dynamic_constant_case_message() = $ptascii("define(): Argument #3 ($case_insensitive) is ignored since declaration of case-insensitive constants is no longer supported")
 dec $dynamic_constant_case_valid(pstate, pconfigcall) : bool
 dec $dynamic_constant_duplicate_valid(pstate, pconfigcall, nat) : bool
+dec $dynamic_startup_define_duplicate_valid(pstate, pconfigcall, nat) : bool
 ;; Registration occurs after the ignored-flag warning, so a callback may have
 ;; installed the same key. Keep the original captured arguments in either path.
 dec $dynamic_define_known(pstate, porigin, nat) : pvalue?
@@ -114,7 +123,8 @@ def $dynamic_define_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.USERCONSTAN
   -- if $dynamic_define_source(S, pconfigcall.SITE)
   -- if $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
   -- if $dynamic_constant_global_name(preqbytes)
-  -- if $dynamic_constant_class(pvalue) = (pvalueclass)
+  -- if $dynamic_define_value_class(S, pvalue) = (pvalueclass)
+  -- if ~$dynamic_constant_case_flag(pconfigcall) \/ $dynamic_constant_class(pvalue) =/= eps
   -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
   -- if ~$dynamic_constant_initial(preqbytes)
   -- if $source_constant_lookup(S, preqbytes) = eps
@@ -214,7 +224,7 @@ def $user_constants_valid(S, puserconstant :: puserconstant_tail*) = true
   -- if $dynamic_constant_global_name(puserconstant.NAME)
   -- if puserconstant.NAME = $user_constant_key(puserconstant.NAME)
   -- if ~$dynamic_constant_initial(puserconstant.NAME)
-  -- if $dynamic_constant_class(puserconstant.VALUE) = (puserconstant.CLASS)
+  -- if $dynamic_define_value_class(S, puserconstant.VALUE) = (puserconstant.CLASS)
   -- if $string_plain(puserconstant.VALUE) = puserconstant.VALUE \/ $string_carrier_valid(S, puserconstant.VALUE)
   -- if puserconstant.READS = eps
   -- if puserconstant.RECEIVES = eps
@@ -233,12 +243,15 @@ def $dynamic_constant_duplicate_valid(S, pconfigcall, n_constants) = true
   -- if $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
   -- if $dynamic_constant_global_name(preqbytes)
   -- if ~$dynamic_constant_initial(preqbytes)
-  -- if $dynamic_constant_class(pvalue) = (pvalueclass)
+  -- if $dynamic_define_value_class(S, pvalue) = (pvalueclass)
+  -- if ~$dynamic_constant_case_flag(pconfigcall) \/ $dynamic_constant_class(pvalue) =/= eps
   -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
   -- if $(n_constants <= |S.USERCONSTANTS|)
   -- if $user_constant_at(S.USERCONSTANTS[0:n_constants], $user_constant_key(preqbytes)) =/= eps
   -- if $dynamic_define_name_matches($user_constant_key(preqbytes), $dynamic_define_known(S, pconfigcall.SITE, 0))
   -- if $dynamic_define_value_matches(pvalue, $dynamic_define_known(S, pconfigcall.SITE, 1))
+def $dynamic_constant_duplicate_valid(S, pconfigcall, n_constants) = true
+  -- if $dynamic_startup_define_duplicate_valid(S, pconfigcall, n_constants)
 def $dynamic_constant_duplicate_valid(S, pconfigcall, n_constants) = false -- otherwise
 def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.RESUME = DYNAMIC_CONSTANT_DUPLICATE pconfigcall n_constants
@@ -250,6 +263,14 @@ def $error_call_valid(S, perrorcall) = true
 def $error_context_trigger(S, pcallcontext) = (pconfigcall)
   -- if $error_context_call(S, pcallcontext) = (perrorcall)
   -- if perrorcall.RESUME = DYNAMIC_CONSTANT_DUPLICATE pconfigcall n_constants
+;; Trace projection runs in handler scope; marker validity restores the caller.
+def $error_handler_trace_values(S, pcallcontext, pconfigcall_api) = $trace_extra(S, $getclass_trace_operands(pconfigcall_api.SENT))
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = DYNAMIC_CONSTANT_DUPLICATE pconfigcall n_constants
+  -- if $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
+  -- if $builtin_value_bytes(preqbytes) = (pvalue_old)
+  -- if ~$dynamic_constant_case_flag(pconfigcall)
+  -- if pconfigcall_api = pconfigcall
 
 ;; This phase bypasses only the warning already delivered; SENT stays true.
 def $dynamic_constant_case_valid(S, pconfigcall) = true
@@ -2036,3 +2057,22 @@ def $error_handler_trace_values(S, pcallcontext, pconfigcall_api) = $trace_extra
   -- if $error_context_call(S, pcallcontext) = (perrorcall)
   -- if perrorcall.RESUME = DYNAMIC_CLASS_DEFINE_NAN_RESULT pconfigcall
   -- if pconfigcall_api = pconfigcall
+
+;; Fixed startup primitives predate every user-table prefix. The warning keeps
+;; the same captured arguments while a handler may append unrelated user rows.
+def $dynamic_startup_define_duplicate_valid(S, pconfigcall, n_constants) = true
+  -- if pconfigcall.KIND = INTRINSIC_DEFINE
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if $dynamic_define_source(S, pconfigcall.SITE)
+  -- if ~$dynamic_constant_case_flag(pconfigcall)
+  -- if $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
+  -- if $dynamic_constant_global_name(preqbytes)
+  -- if $builtin_value_bytes(preqbytes) = (pvalue_old)
+  -- if $dynamic_scalar_define_arguments(S, pconfigcall, 0)
+  -- if $named_slot_at(pconfigcall.SENT, 0) = NAMED_SENT (KNOWN pvalue_name)
+  -- if $string_plain(pvalue_name) = pvalue_name \/ $string_carrier_valid(S, pvalue_name)
+  -- if $dynamic_constant_class(pvalue) = (pvalueclass)
+  -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
+  -- if $(n_constants <= |S.USERCONSTANTS|)
+def $dynamic_startup_define_duplicate_valid(S, pconfigcall, n_constants) = false -- otherwise

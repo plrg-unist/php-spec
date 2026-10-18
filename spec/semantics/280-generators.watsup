@@ -30,6 +30,9 @@ dec $generator_resume(pstate, pgeneratorop) : pstate
 dec $generator_resume_root(pstate, pgeneratorop) : bool
 dec $generator_pending_resume(pstate, pgeneratorop) : bool
 dec $generator_pending_detached_send(pstate, pgeneratorop) : bool
+dec $generator_pending_unused_send(pstate, pgeneratorop) : bool
+dec $generator_unused_send_leaf(pstate, nat, nat) : nat?
+dec $generator_unused_send_tail(pstate, porigin, ptask*) : bool
 dec $generator_send_leaf(pstate, nat, nat) : nat?
 dec $generator_pending_shared_send(pstate, pgeneratorop) : bool
 dec $generator_input_site(pstate, nat, porigin) : bool
@@ -289,7 +292,7 @@ def $generator_resumed(S, pgeneratorop) = $generator_set(S, pgeneratorop.OBJECT,
 def $generator_resumed(S, pgeneratorop) = S -- otherwise
 def $generator_resume(S, pgeneratorop) = $generator_complete($generator_result($generator_resumed(S, pgeneratorop), pgeneratorop), pgeneratorop)
   -- if $generator_pending_resume(S, pgeneratorop)
-  -- if pgeneratorop.NAME = "next" \/ $generator_pending_detached_send(S, pgeneratorop)
+  -- if pgeneratorop.NAME = "next" \/ $generator_pending_detached_send(S, pgeneratorop) \/ $generator_pending_unused_send(S, pgeneratorop)
 def $generator_resume(S, pgeneratorop) = $generator_complete($generator_result($generator_resumed($generator_input_send(S, pgeneratorop), pgeneratorop), pgeneratorop), pgeneratorop)
   -- if $generator_pending_shared_send(S, pgeneratorop)
 def $generator_resume(S, pgeneratorop) = S[.COMPLETION = UNSUPPORTED "Generator pending initialization send or throw"]
@@ -297,6 +300,7 @@ def $generator_resume(S, pgeneratorop) = S[.COMPLETION = UNSUPPORTED "Generator 
   -- if pgeneratorop.NAME <- ["send", "throw"]
   -- if ~$generator_pending_detached_send(S, pgeneratorop)
   -- if ~$generator_pending_shared_send(S, pgeneratorop)
+  -- if ~$generator_pending_unused_send(S, pgeneratorop)
 def $generator_resume(S, pgeneratorop) = S[.COMPLETION = UNSUPPORTED "Generator buffered send throw"]
   -- if ~$generator_pending_resume(S, pgeneratorop)
   -- if $generator_input_blocked(S, pgeneratorop)

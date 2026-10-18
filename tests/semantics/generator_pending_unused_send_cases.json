@@ -1,0 +1,22 @@
+[
+  {
+    "id": "generator-pending-unused-send-scalar-cache-and-forwarded-next",
+    "source": "<?php\nclass UnusedSendPayload19 { function __destruct() { echo \"A|\"; } }\nfunction unusedSendChild19() { echo \"C|\"; try { yield 5; echo \"R|\"; yield 13; echo \"L|\"; return 23; } finally { echo \"F|\"; } }\nfunction unusedSendMiddle19() { global $child; echo \"M|\"; try { $result = yield from ($child = unusedSendChild19()); echo \"Q|\", $result, \"|\"; return 29; } finally { echo \"J|\"; } }\nfunction unusedSendOuter19() { global $middle; echo \"O|\"; try { yield from ($middle = unusedSendMiddle19()); echo \"Z|\"; return 31; } finally { echo \"T|\"; } }\necho \"P|\"; $outer = unusedSendOuter19(); $outer->rewind(); echo \"H|\", $outer->valid() ? 1 : 0, \"|\";\n$snapshot = $middle->send(new UnusedSendPayload19()); echo \"S|\", $snapshot, \"|\"; unset($snapshot); echo \"N|\";\n$outer->next(); echo \"V|\", $child->current(), \"|\"; $outer->next(); echo \"G|\", $outer->getReturn(), \"|\";\nunset($outer, $middle, $child); echo \"E\";\n",
+    "source_sha256": "92522258e4fb515ae873285913ae848fc027065c87b25808257fdda6ac598f98",
+    "expected": "normal",
+    "purpose": "Pending shared SEND to a bare yield ignores and destroys its owning argument before caller output, without advancing; a later real forwarded next resumes the child and its source tail.",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|M|C|H|1|A|S|5|N|R|V|13|L|F|Q|23|J|Z|T|G|31|E"
+  },
+  {
+    "id": "generator-pending-unused-send-sole-receiver-cache-snapshot-and-close",
+    "source": "<?php\nclass UnusedSoleCache19 { function __destruct() { echo \"K|\"; } }\nclass UnusedSolePayload19 { function __destruct() { echo \"A|\"; } }\nfunction unusedSoleChild19() { echo \"C|\"; try { yield new UnusedSoleCache19(); echo \"BODY|\"; } finally { echo \"F|\"; } }\nfunction unusedSoleMiddle19() { global $child; echo \"M|\"; try { yield from ($child = unusedSoleChild19()); echo \"TAIL|\"; } finally { echo \"J|\"; } }\nfunction unusedSoleOuter19() { global $middle; echo \"O|\"; try { yield from ($middle = unusedSoleMiddle19()); } finally { echo \"T|\"; } }\nfunction unusedSoleArgument19() { unset($GLOBALS[\"outer\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"D|\"; return new UnusedSolePayload19(); }\necho \"P|\"; $outer = unusedSoleOuter19(); $outer->rewind(); echo \"H|\", $outer->valid() ? 1 : 0, \"|\";\n$snapshot = $middle->send(unusedSoleArgument19()); echo \"S|\", $snapshot instanceof UnusedSoleCache19 ? 1 : 0, \"|\"; unset($snapshot); echo \"E\";\n",
+    "source_sha256": "fbfc8a2796255fb5e00e9ea965b9dc97017001b7c7dc0cd03d7c2029b1ef34b6",
+    "expected": "normal",
+    "purpose": "Argument evaluation removes all independent Generator owners after method selection. Ignored-argument cleanup must run while the sole receiver is held, then real finally/cache release preserves the captured API snapshot.",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|M|C|H|1|T|D|A|J|F|S|1|K|E"
+  }
+]

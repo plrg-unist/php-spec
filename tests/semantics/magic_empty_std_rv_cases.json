@@ -1,0 +1,52 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "normal",
+      "source": "<?php\nclass EmptyPayload88 {\n    public function __destruct() {\n        global $child;\n        echo 'V|';\n        $child = null;\n        echo 'v|';\n    }\n}\nclass MagicObjectParent88 {\n    private int $value = 1;\n    public function __isset(string $name): bool {\n        echo 'I|';\n        return true;\n    }\n    public function __get($name) {\n        echo 'G|';\n        $box = new stdClass();\n        $box->payload = new EmptyPayload88();\n        return $box;\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass MagicObjectChild88 extends MagicObjectParent88 {}\n$child = new MagicObjectChild88();\necho 'N:', empty($child->value) ? 'T' : 'F', '|';\necho 'E|';\n",
+      "source_sha256": "b56fd2bae48c81124cf15f3de32fc5cfa584145b519b69422ed78a164903bc98",
+      "source_file": "magic-empty-std-rv-normal.php",
+      "empty_line": 26,
+      "stdout_base64": "TjpJfEd8Vnx2fER8RnxFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-empty-std-rv-private-88/.tools/magic-empty-std-rv-probes-88/normal.php",
+      "native_report_sha256": "9bc8955979307e923c5a648a4b38cc4023437629d1861f677a1c006f77a7d9a2",
+      "native_group": "magic-empty88-std-rv-native-c77b5f81",
+      "native_raw_sha256": "3d52fc8d22cf4c67d227e54f8fae865391e3c1503b04292979f284ca089eb042",
+      "native_raw_hash_recipe": "stdout + NUL + stderr + NUL + ASCII exit"
+    },
+    {
+      "id": "throwing",
+      "source": "<?php\nclass EmptyPayload88 {\n    public function __destruct() {\n        global $child;\n        echo 'V|';\n        $child = null;\n        echo 'v|';\n        throw new Exception('std-rv-stop');\n    }\n}\nclass MagicObjectParent88 {\n    private int $value = 1;\n    public function __isset(string $name): bool {\n        echo 'I|';\n        return true;\n    }\n    public function __get($name) {\n        echo 'G|';\n        $box = new stdClass();\n        $box->payload = new EmptyPayload88();\n        return $box;\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass MagicObjectChild88 extends MagicObjectParent88 {}\n$child = new MagicObjectChild88();\necho 'X:';\ntry { echo empty($child->value) ? 'T' : 'F', '|'; }\ncatch (Exception $caught) { echo 'C|'; }\necho 'E|';\n",
+      "source_sha256": "49e7f6d1afb2e915a95beb4b9d0c1a35ab97237ce85f7779c6a3d47abd3107d5",
+      "source_file": "magic-empty-std-rv-throwing.php",
+      "empty_line": 28,
+      "stdout_base64": "WDpJfEd8Vnx2fER8Q3xFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-empty-std-rv-private-88/.tools/magic-empty-std-rv-probes-88/throwing.php",
+      "native_report_sha256": "9bc8955979307e923c5a648a4b38cc4023437629d1861f677a1c006f77a7d9a2",
+      "native_group": "magic-empty88-std-rv-native-c77b5f81",
+      "native_raw_sha256": "0e0aa839670494158066303d5777f9e06f63fcfb92770211ce5b0b5de663d283",
+      "native_raw_hash_recipe": "stdout + NUL + stderr + NUL + ASCII exit"
+    }
+  ]
+}

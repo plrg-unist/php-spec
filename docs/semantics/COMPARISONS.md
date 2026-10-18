@@ -87,9 +87,32 @@ uses standard comparison directly. Seven-operator rows return `0100001` in eithe
 direction, with strict identity unchanged. The mismatch reads no receiver/capture,
 scope row or private entry and adds no roots or guards. Four direct and four genuine
 zero-prefix aggregate steps preserve complete state apart from the consumed task,
-reset BASE and result; later real casters are skipped. Other Closure representations
-and wider producer/lifetime routes remain partial. The retained STRING slice failed
-before comparison and supplies no coverage for that representation.
+reset BASE and result; later real casters are skipped. Other producers and wider
+lifetimes remain partial. At the retained COMP71 cut, the computed STRING slice
+failed before comparison and supplied no coverage for that producer.
+
+[Literal method-string WeakMap mismatches](../../coverage/semantics/weakmap-string-method-comparison-review.json)
+also admit exact normalized STRINGMETHODCLOSURE under the same live allocated
+nonfreeing guards. The Closure handler falls back before fake-Closure target/scope
+fields, so class mismatch returns +1 in either direction without receiver or private
+traversal. Source witnesses use fixed literals: bound parent selection on a child
+and inherited static captures, including a cloned capture with its seed retired.
+Two originals and 321 Boolean premises/8 actual steps preserve whole comparison
+states, sole receiver owners, scope rows and skipped later aggregate casters. This
+extends comparison admission; stored-string carrier conversion and other producer/
+representation/lifetime routes remain partial.
+
+[Factory and rebound WeakMap mismatches](../../coverage/semantics/weakmap-factory-comparison-review.json)
+extend the same bounded live admission to normalized FROMCALLABLECLOSURE and
+BOUNDFAKECLOSURE. Both are native Closures: unlike-handler fallback precedes fake
+function, target, receiver and binding fields. Seven-operator rows return `0100001`
+in either direction, with strict identity separate. SOURCE indices and optional
+copied pclosurescope ORIGINAL remain nonowning; only the current receiver is an edge.
+Two exact originals and 361 Boolean premises/8 actual steps include cloned rebinding
+on an overriding child after seed/old-receiver retirement, a separate live factory
+capture and quiet later aggregate casters. Full source endings verify selected
+receiver markers and Parent bodies. Other producers/representations and wider weak
+lifetimes remain partial; stored-string carrier conversion is not extended.
 
 [Generator/Generator and Fiber/Fiber pairs](../../coverage/semantics/generator-fiber-comparison-review.json)
 return order zero through the standard zero-default-property shortcut. The pair

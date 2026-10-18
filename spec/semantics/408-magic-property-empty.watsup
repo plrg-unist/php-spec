@@ -280,8 +280,14 @@ def $property_empty_nan_discard(S, ppropertyemptynan) = S[.COMPLETION = UNSUPPOR
 def $error_read_discard(S, PROPERTY_EMPTY_NAN ppropertyemptynan) = $property_empty_nan_discard(S, ppropertyemptynan)
 def $return_discard(S, PROPERTY_EMPTY_NAN ppropertyemptynan) = $property_empty_nan_discard(S, ppropertyemptynan)
 
-;; Standard user objects are true, but their owning RV must be disposed while
+;; Standard user objects and stdClass are true, but their RV must be disposed while
 ;; IN_ISSET and the saved receiver remain. The phase itself owns only receiver.
+dec $property_empty_rv_kind(pstate, pobject) : bool
+def $property_empty_rv_kind(S, STDINSTANCE) = true
+def $property_empty_rv_kind(S, INSTANCE porigin_class) = true
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+def $property_empty_rv_kind(S, pobject) = false -- otherwise
 dec $property_empty_rv_ready(pstate, ppropertyempty) : bool
 def $property_empty_rv_ready(S, ppropertyempty) = true
   -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
@@ -290,9 +296,7 @@ def $property_empty_rv_ready(S, ppropertyempty) = true
   -- if $property_empty_valid(S, ppropertyempty)
   -- if S.RESULT = KNOWN (POBJECT n_rv)
   -- if $(n_rv < |S.OBJECTS|) /\ (HOBJECT n_rv) <- S.ALLOCATIONS
-  -- if S.OBJECTS[n_rv] = INSTANCE porigin_class
-  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
-  -- if pclassdesc.KIND = "class"
+  -- if $property_empty_rv_kind(S, S.OBJECTS[n_rv])
   -- if ~$instance_storage_freeing(S, n_rv)
 def $property_empty_rv_ready(S, ppropertyempty) = false -- otherwise
 dec $property_empty_rv_valid(pstate, ppropertyemptyrv) : bool

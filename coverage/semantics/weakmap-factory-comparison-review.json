@@ -1,0 +1,121 @@
+{
+  "version": 1,
+  "milestone": "COMP73",
+  "status": "independently reviewed within the stated live WeakMap/factory-and-rebound Closure domain",
+  "behavior": "Live WeakMap versus normalized FROMCALLABLECLOSURE or BOUNDFAKECLOSURE returns uncomparable +1 both ways before fake function/binding/history or private-entry traversal.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "tested_revision": "8504d98004ef6af0bfd8a2e81edaa5d0f48f8e62",
+  "ordered_modules": 399,
+  "manifest_sha256": "2e38df4b97a41f654a8c3f01ffb0c078c337ed17d1ce8816ff7429a23b031761",
+  "implementation": {
+    "spec/semantics/386-weak-map-lifetime.watsup": "24dd7961ffc760df240a64ed2b5a424b9f4d042648209d8705116e9ca8b49731"
+  },
+  "engine_basis": [
+    "Zend/zend_closures.c fromCallable and compatible bindTo allocate native Closures. Zend/zend_operators.c zend_compare selects the left object handler.",
+    "Zend/zend_closures.c zend_closure_compare runs ZEND_COMPARE_OBJECTS_FALLBACK for unlike handler pointers before fake fields. Standard comparison rejects the different WeakMap/Closure classes before properties."
+  ],
+  "contract": [
+    "Only two exact $object_body patterns extend $weakmap_standard_other; existing bounds/allocation/nonfreeing mismatch guards, ORDER1 effect and old refusal exclusion remain unchanged.",
+    "Source witnesses use authenticated public method-array fromCallable, compatible Child bindTo with original Parent scope, and existing clone/retirement. No producer/binding/lifetime rule changes. Seven-operator rows yield 0100001 both ways, with identity separate."
+  ],
+  "source_catalogues": {
+    "tests/semantics/weakmap_factory_comparison_cases.json": "5f1317b244c1a0fea6e8671bd4b9fad4ff46c71c9190471751c5503a7ed5d61a",
+    "tests/semantics/weakmap_factory_comparison_review_cases.json": "8a4bcb319b780d64a68cda4b6d1288fb22560beeb88ba80b5b29b1bee2676e12"
+  },
+  "unchanged_frontier": {
+    "revision": "2c18a6d83b7d49854202251fa087bdac6ea780e0",
+    "report": ".tools/factory73-support/run-baseline-v1/report.json",
+    "reason": "WeakMap comparison protocol",
+    "stdout_prefix": "producers|from|",
+    "producer": "Both fromCallable/bindTo objects passed nominal Closure and distinct-identity checks before the first comparison.",
+    "agreement_credit": 0
+  },
+  "validation": {
+    "original_sources": {
+      "normal_agreements": 2,
+      "author_seconds": 36.709529999643564,
+      "independent_seconds": 57.9961315728724,
+      "cli_and_host_caps_seconds": [
+        240,
+        250
+      ]
+    },
+    "author": {
+      "premises": 187,
+      "setup": 179,
+      "pure": 8,
+      "raw_php_steps": 4,
+      "seconds": 32.985298819839954,
+      "result": "Four genuine EQUAL frames preserve fromCallable Parent scope/old receiver marker11 and rebound Parent-scope/Child-called/new receiver marker22, each sole owner after maker CV unsets. SOURCE/copied optional ORIGINAL scope, no bound scope row, private/key owner1, whole-step false, scope preservation and budget pass."
+    },
+    "independent": {
+      "premises": 174,
+      "setup": 170,
+      "pure": 4,
+      "raw_php_steps": 4,
+      "seconds": 52.50647260248661,
+      "result": "Four genuine zero-prefix aggregate spaceship steps preserve a cloned rebound Closure with retired SOURCE seed, old receiver and intermediate bound object. ORIGINAL is copied optional pclosurescope metadata and has no owner edge; only the new Child receiver is owned. A separate live factory capture owns its Parent receiver. Full source endings select Parent bodies and new/from markers, return the Map and execute real tail/private casts."
+    },
+    "total": {
+      "premises": 361,
+      "setup": 349,
+      "pure": 12,
+      "raw_php_steps": 8
+    },
+    "separate_zero_credit": "Native observations and exact unchanged Unsupported baseline, initializer, author EL and four parse/check operations supply no application agreement or extra state credit.",
+    "failures": []
+  },
+  "limits": [
+    "Pure bounds/dead-allocation/intrinsic denial and prior-guard projections establish helper admission/effects only, not malformed-global execution.",
+    "Clone, history retirement, scope/receiver and private/key owners are genuine reached prerequisites and complete-source observations. The eight raw steps are comparisons; no new lifecycle or COW/mutation protocol is claimed.",
+    "Other Closure/internal/custom counterparts, producers and wider weak lifetimes remain partial. COMP71 stored-string carrier conversion remains a separate producer gap at its retained cut."
+  ],
+  "artifacts": {
+    ".tools/factory73-support/gates.py": "5dc66e696ba2ddc65b36483a0f01d074e7b74501159c99d62fb3f761413b35f2",
+    ".tools/factory73-support/inputs.py": "48cb50324800d6a99722ffea1dd07f0ab76001b676ede6ca23c0838237cae96e",
+    ".tools/factory73-support/actor.py": "9f5ad9017b33f580ea6babc5fe76291bc95a40f03947e85b74cc31e12c7d5455",
+    ".tools/factory73-support/run-native-v1/report.json": "ce9613ab81e87b50b1b02835b274ec49930540bec486430e96d7ed2bc2db4f74",
+    ".tools/factory73-support/run-baseline-v1/report.json": "a9264fb18b2124aa2461c086657b376826cf860a6d64598d8cea0291270cdaf3",
+    ".tools/factory73-support/run-init-v1/report.json": "ddccda50216f72e2389b235b64eaea9fea5706bfa81e6a35582acc83778fa53a",
+    ".tools/factory73-support/run-sources-v1/report.json": "2b3cbfa0e35e76c2117c7a13a6141182e18a933fb700e0f5042a0576d8eef772",
+    ".tools/factory73-support/run-prepare-v1/report.json": "e12216d4aaf9e6d9421254a464ab9ae354455947f4395e14cda0c77c6fd41ea7",
+    ".tools/factory73-state/build.py": "964f95a3570257cacb89b8b74bce2973a053671ca4152f5e2685f267b342e9af",
+    ".tools/factory73-state/helpers.watsup": "9821578be5dece5249ef4f45c89c06414554114fccfa5fee0907dd9b90b3483d",
+    ".tools/factory73-state/run.py": "4ed81d3ba49ea2e2c4f59706c89f8813b87202deaebc594d8d11d2e250d17689",
+    ".tools/factory73-state/plan.json": "969427390a6b691df6c8cbb21a68cbd783c6289cd2be10e576432b2bd331170c",
+    ".tools/factory73-state/run-el-v1/report.json": "f2c6e15a52c74c1a9bd7d3fada0746d23307c0bc88fb8255d17f8f6a02731667",
+    ".tools/factory73-state/run-sl-v1/report.json": "7c785955b8530dfd3a927ba814e56e7cf3f8dfb4853d290ce9f55f8a20e8a8a6",
+    ".tools/factory73-peer/run.py": "5d44db9278e17ef96b049838705b84b4fe99220cc40152a4c3d5045f2512b768",
+    ".tools/factory73-peer/build.py": "562626ce2aa94e34aa03cb5cc74c59a291748b2041c1d074d95d6b748deb2a80",
+    ".tools/factory73-peer/helpers.watsup": "7d0691ea65b5e839d3b1e3c3b4310b766eda2cb5ab6c7f7db7bb1732486d3249",
+    ".tools/factory73-peer/plan.json": "69812d8088492897b2b886c1a859bb660b4ba1b7974f0d696a6e9b76e230b209",
+    ".tools/factory73-peer/native-v1/report.json": "2130051271e2b888b386b1b3caac4c6e6b665581aab1215fffd3ff31743eae08",
+    ".tools/factory73-peer/source-v1/report.json": "4472ae8ecf4e91ccf30a797313b3fd99b74ab168fbdf2a64c30552f15f53b1a8",
+    ".tools/factory73-peer/prepare-v1/report.json": "73d6c2d29f7965dc55ec9fd4a596c2d034e377d3eea8200caf6d695ad0b2b902",
+    ".tools/factory73-peer/state-v1/report.json": "5b0631a0637d6fb7a6df5875870eb4c9fc70fc064b108933fd8f279ff3fd6819",
+    ".tools/factory73-peer/review.json": "acb524615fccc91495b351158e31c28f81c0f938b65c508eda3ec1ca2bd1040c"
+  },
+  "recovery": "Ignored originals, fixtures, START/command/environment records and raw streams remain under .tools/weakmap-factory-comparison-73/.tools/factory73-{native,support,state,peer}; branch codex/weakmap-factory-comparison-73 retains the tested revision. No evidence archive is committed.",
+  "independent_review": {
+    "reviewer": "/root/comp_review_67",
+    "semantic_verdict": "CLEAR",
+    "source_and_state_verdict": "CLEAR",
+    "publication_verdict": "CLEAR",
+    "record": ".tools/factory73-peer/review.json",
+    "record_sha256": "acb524615fccc91495b351158e31c28f81c0f938b65c508eda3ec1ca2bd1040c"
+  },
+  "composition": {
+    "parent": "180baaf6653f58e3c9354cca6d11ab8cf2ae79d8",
+    "ordered_modules": 399,
+    "method": "Independent pointwise actual-parent source review; no concrete syntax or dispatch-order dependency warrants a joined actor.",
+    "runtime": "Only four tested-identical module386 lines differ from the parent; manifest and every other runtime file remain parent-exact.",
+    "parent_seams": "Module400 startup-constant duplicate admission/trace projection requires define and DYNAMIC_CONSTANT_DUPLICATE; fromCallable/bindTo/get_class use distinct KIND/RESUME forms. Other incoming magic-empty RV, unused-result Generator send, integral-shift and pending destructor reference-return selectors are absent in both originals. Closure producers234/253 and comparison interfaces are unchanged.",
+    "execution_credit": 0,
+    "retained_cut": "Two source agreements and 361 = 349 setup + 12 pure premises with eight actual comparison steps at8504d98004ef6af0bfd8a2e81edaa5d0f48f8e62/399."
+  }
+}

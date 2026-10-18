@@ -1,0 +1,75 @@
+{
+  "scope": "Duplicate define of exact non-NUL string names for already-modeled fixed startup primitives, primitive candidates and omitted or bool-false third flags. Ordinary/strict calls and default/returning/throwing handlers. Partial core.",
+  "status": "independently_accepted_actual_parent",
+  "reviewer": "/root/source_review_35",
+  "parent": "6d2b2fdef5a4171df21712393de5c0ec0c9fcc57",
+  "semantic_revision": "e2cbf70f2d10fed48b99eb6b0d54c36e017b7356",
+  "source_revision": "b55e4edaff3b9624144b69f977dda73412907902",
+  "literal_state_revision": "f9a7e2cb9a7859d5ae83aa036ffbfff0fe6ca4ff",
+  "affected_state_revision": "7891c0df5dcf00ee8bcef5cffe4a842a74336560",
+  "semantic_files": {
+    "spec/semantics/400-dynamic-constants.watsup": "7e567721cac04f3a7167f235fb4df87661e36e91a20f621ccb036075f7f208a6"
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "tools": {
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7"
+  },
+  "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+  "primary": "Pinned ZEND_FUNCTION(define) receives the name/value/bool flag before zend_register_constant attempts a table add. An existing startup entry emits the same level-2 duplicate Warning as a user entry and returns false without replacing the builtin. Primitive rejected candidates add no owning cleanup.",
+  "semantics": "Thirty module400 insertions add a separate startup-valid arm to the existing duplicate marker. Exact builtin_value_bytes, normalized argument/source authority, primitive class, name/value carrier authentication, omitted/bool-false flags and an in-bounds user prefix guard it. Startup entries predate all prefixes, so a later in-bounds prefix is also admissible; no fictitious historical-prefix uniqueness is required. Existing user-duplicate, ignored-flag, registration, return, error policy and discard code stays exact. No new task/schema or native evaluation.",
+  "accepted": [
+    "Four exact model/native originals agree at b55e4edaf/runtime46e7a2bc0. Literal PHP_INT_SIZE/E_WARNING/INF duplicates preserve 8/2/infinity and produce three expected PHP-stderr Warning lines. The selected captured request-name/value call keeps its earlier inputs through V effects and a false-return handler, retains builtin8/sibling819/live writes and emits one default Warning. Strict V|N effects still lead to duplicate false; its true handler suppresses default stderr. Independent request NAN/823/false keeps same Exception/Previous NULL/caller99 and sibling811; strict and peer PHP stderr are empty.",
+    "All 614 accepted public premises pass across four original-derived groups: literal199 at f9a7e2cb9/runtime46e7a2bc0 inside a retained aggregate-false report, and affected author154+129 plus independent132 at7891c0df5/runtimee2cbf70f2. Four accepted raw checks are exactly true LF/exit0/empty worker stderr/reaped. Actual dispatch/handler/return/discard steps cover raw API captures, builtin preservation without a user row, sibling/live effects, immutable/source/carrier/metadata/bounds refusals and budget equality.",
+    "The independent actual Throwable carries the raw REQUEST NAN name, 823 and false through its three-frame trace. Known canonical NAN bits are SL source-state facts; native observation is self-inequality only. The saved pending object, sibling811, builtin lookup and caller99 survive full restored-state discard equality."
+  ],
+  "compatibility": "The corrected trace projection selects the saved startup cfg structurally in handler scope; continuation/source authentication still runs against restored caller scope. It changes only string carrier preservation in the API trace, retaining string_bytes, cfg/marker admission and source-visible string comparisons. Source4 remains explicitly at b55/46, not renewed at the corrected runtime. Captured/strict returning sources construct no Throwable trace; fresh peer state executes actual Throwable allocation/raw-carrier trace and discard. Literal199 uses no handler and its unchanged path retains f9/46. Prior user-duplicate and case-warning trace domains remain unchanged.",
+  "failures_zero_credit": "Two original failed check actors are retained unchanged: initial public syntax error in an ungrouped NUL-byte control, then a real captured API-view counterexample because the new trace guard incorrectly reran caller-origin validity inside handler scope. Both workers exit1 without timeout/survivors and receive zero credit. The fixed partial report credits only its passed literal199 record. Only affected callback/strict state and unrun peer state were executed after the semantic correction; no native/model/baseline/literal replay.",
+  "zero_credit": "The unchanged first-source baseline at clean ec0f683c9 is accepted/checked Unsupported dynamic constant call domain after B|, CLI1/null PHP exit/empty stderr, zero agreement. Native/preparation adds no application agreement.",
+  "execution": "LC_ALL=C/TZ=UTC, AS3GiB, serial stop-first/reap, INT+kill5 wrappers. CPU4 initial native3/baseline at ec0f683c9; CPU5 peer native1/model4 and initial public prep/failure at b55e4edaf; CPU3 grouped-control public prep with passed literal and captured failure at f9a7e2cb9; CPU2 final affected/public peer at7891c0df5. Native children15s, source CLI45s/host60s, fresh full SL children90s. Thirteen reports are input/HEAD-stable; eleven pass and two checks are aggregate-false. Every child is reaped; no timeout. Accepted CLI/SL worker stderr is empty; expected PHP Warning output is retained separately.",
+  "raw_root": ".tools/define-startup-duplicate-evidence-43",
+  "report_sha256": {
+    "author/sources/model-report.json": "d31d299383999d43d2e3634564414c62e7e217eeecbadfd2bd77b3ea1c4bd166",
+    "author/sources/baseline-report.json": "10715884cd141855c62314988549da76a69352653491b43434ccd895ee677a46",
+    "author/sources/native-report.json": "c6df5546f12d391fcbb88eeb32cf1a93f99d2f89dbfff472c0ed8f66ddc29d29",
+    "author/review/model-report.json": "75b23f2331ed65be03af17a62b92936ffaa13b68f14d179dd7e9b0cdcaf5d870",
+    "author/review/native-report.json": "0dafad241dd61f85924af37b766caab226ca760043321242583698930790b9d6",
+    "author/public/check-report.json": "fd9c36a03a2bbabc879349959305e37f62ef57abc0df3305b350e5a34ff5ad4d",
+    "author/public/prepare-report.json": "ba05a9fedc83eaa0baa251507ca8e03cfb0788a59e242b3b1807fdb5f741f6ca",
+    "author/public-fixed/check-report.json": "6d9060d0e0dc63c0f9c33aea398b33e06c73debd8289bdaa2baf97d5243a547d",
+    "author/public-fixed/prepare-report.json": "72a1dbf5058ac7c4e02508f8a80af4aadb77e4b01473ec7551827e1518786e4f",
+    "author/public-affected/check-report.json": "31b2085e106916122be0a5e875a0d51c6ea155aab70ac4d9ea8628299c34ede4",
+    "author/public-affected/prepare-report.json": "1e0e6596c1188fa417799fbc16e530776cead41a3eda86eb373e3812f3e0eb61",
+    "author/review-public/check-report.json": "4b843882d26955ae064de78c54e6a1737c57033782585b425d2de0073f9aae78",
+    "author/review-public/prepare-report.json": "89c1b515f051e438191810d4e27dedbb30a9fc1eb3cc8630e76098ce34768189"
+  },
+  "commands": [
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 4 python3 tests/semantics/define_startup_duplicate_sources.py --phase native --output .tools/define-startup-duplicate-native-43",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 4 python3 tests/semantics/define_startup_duplicate_sources.py --phase baseline --output .tools/define-startup-duplicate-native-43 --case literal-startup-duplicates-keep-original-values",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_startup_duplicate_review_sources.py --phase native --output .tools/define-startup-duplicate-review-43",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 240s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_startup_duplicate_sources.py --phase model --output .tools/define-startup-duplicate-native-43",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_startup_duplicate_review_sources.py --phase model --output .tools/define-startup-duplicate-review-43",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_startup_duplicate_protocol.py --phase prepare --sources .tools/define-startup-duplicate-native-43 --output .tools/define-startup-duplicate-public-43",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 360s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_startup_duplicate_protocol.py --phase check --sources .tools/define-startup-duplicate-native-43 --output .tools/define-startup-duplicate-public-43",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/define_startup_duplicate_protocol.py --phase prepare --sources .tools/define-startup-duplicate-native-43 --output .tools/define-startup-duplicate-public-fixed-43",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 360s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/define_startup_duplicate_protocol.py --phase check --sources .tools/define-startup-duplicate-native-43 --output .tools/define-startup-duplicate-public-fixed-43",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 2 python3 tests/semantics/define_startup_duplicate_protocol.py --phase prepare --sources .tools/define-startup-duplicate-native-43 --output .tools/define-startup-duplicate-public-affected-43 --case captured-startup-name-before-returning-duplicate-effects --case strict-startup-duplicate-after-all-argument-effects",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 240s prlimit --as=3221225472 -- taskset -c 2 python3 tests/semantics/define_startup_duplicate_protocol.py --phase check --sources .tools/define-startup-duplicate-native-43 --output .tools/define-startup-duplicate-public-affected-43 --case captured-startup-name-before-returning-duplicate-effects --case strict-startup-duplicate-after-all-argument-effects",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 2 python3 tests/semantics/define_startup_duplicate_review_protocol.py --phase prepare --sources .tools/define-startup-duplicate-review-43 --output .tools/define-startup-duplicate-review-public-43",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 120s prlimit --as=3221225472 -- taskset -c 2 python3 tests/semantics/define_startup_duplicate_review_protocol.py --phase check --sources .tools/define-startup-duplicate-review-43 --output .tools/define-startup-duplicate-review-public-43"
+  ],
+  "recovery": "Six owned roots moved once into canonical author/{sources,review,public,public-fixed,public-affected,review-public} after reviewer STOP and focused cwd/cmdline/fd users[]. All13 report hashes are unchanged. Restore directories to .tools/define-startup-duplicate-{native,review,public,public-fixed,public-affected,review-public}-43 at the recorded cuts to recover exact original path/cwd identities.",
+  "remaining": "Special true/false/null names, unknown startup values, coerced or prefixed/case-variant names, true/nonbool flags, wider/owning candidates, packed/FCC/arity forms and full define-family closure remain partial. No engine bug or intentional divergence.",
+  "composition": {
+    "parent": "6d3771b648d84f232d57110bc985aa8e939c7820",
+    "private_publication": "04d6e47b55ff1f9a5c5d3244e0c1e74944e07c4f",
+    "modules": 399,
+    "method": "Pointwise30-line module400 insertion over the incoming V65 value-class changes, private-exact four tests, every other runtime path and ordered manifest parent-exact. Inventory only own2+2+1 entries/review suffix; incoming docs/checkpoints retained.",
+    "runtime400_sha256": "ec015cee65cbaf8635f089b743d3065e9ef9f9ad9d94a47936194c12d4a38795",
+    "seams": "The incoming dynamic_define_value_class delegates primitives exactly; fresh/user/user-duplicate paths retain initial-name refusal and primitive case guards. Our startup arm stays primitive-only with exact builtin selection, so no stdClass candidate or old user/case trace domain is widened. GENERATORINPUTS initializes eps, its roots/validity are eps/true, and writers require a real Generator absent here. Ref-return destructor cursors, PROPERTY_EMPTY_RV, WeakMap comparisons, LIST CV-key and MOD/SHIFT BOTH tasks do not select these ordinary calls, Exception and integer count++.",
+    "evidence": "Independent actual-parent review found no concrete interaction. Source4 at b55/46, literal199 at f9/46 and affected415 at7891/e2 retain their exact cuts. The projection-fix byte-observer bridge and failed actors keep the reviewed disposition; no joined actor, replay or renewed execution credit."
+  }
+}

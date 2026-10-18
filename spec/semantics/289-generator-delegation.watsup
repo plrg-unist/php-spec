@@ -112,7 +112,7 @@ def $generator_pending_detached_send(S, pgeneratorop) = false -- otherwise
 ;; Native API argument cleanup precedes releasing its method receiver.
 def $eager_task_inputs(S, GENERATOR_ARGS pgeneratorop eps ([KNOWN pvalue])) = $value_nodes(pvalue) ++ $generator_operation_nodes(pgeneratorop)
   -- if pgeneratorop.ARGUMENTS = eps
-  -- if $generator_pending_detached_send(S, pgeneratorop[.ARGUMENTS = [pvalue]]) \/ $generator_pending_shared_send(S, pgeneratorop[.ARGUMENTS = [pvalue]])
+  -- if $generator_pending_detached_send(S, pgeneratorop[.ARGUMENTS = [pvalue]]) \/ $generator_pending_shared_send(S, pgeneratorop[.ARGUMENTS = [pvalue]]) \/ $generator_pending_unused_send(S, pgeneratorop[.ARGUMENTS = [pvalue]])
 
 ;; Pending SEND initializes a TMP before its live range begins. Count that
 ;; physical reference externally; SOURCE's receiver is nonowning history.
@@ -208,6 +208,48 @@ def $generator_pending_shared_send(S, pgeneratorop) = true
   -- if pgenerator.PHASE = GENERATOR_DELEGATING
   -- if $generator_send_leaf(S, pgeneratorop.OBJECT, |S.OBJECTS|) = (n_leaf)
 def $generator_pending_shared_send(S, pgeneratorop) = false -- otherwise
+
+;; A bare statement yield has no native send target. Authenticate its actual
+;; discarded continuation without admitting the used-result buffer route.
+def $generator_unused_send_tail(S, PORIGIN n_unit pcpath, (ORIGIN_RETURN (porigin_statement)) :: DISCARD :: ptask*) = true
+  -- if $(|pcpath| > 0)
+  -- if n_parent = $nabs($(|pcpath| - 1))
+  -- if pcpath[n_parent] = PCFIELD 0
+  -- if porigin_statement = PORIGIN n_unit pcpath[0:n_parent]
+  -- if $origin_node(S.SOURCES, porigin_statement) = (NStmtExpression (NExprYield phpType5_key phpType5_value metadata_yield) metadata_statement)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprYield phpType5_key phpType5_value metadata_yield)
+def $generator_unused_send_tail(S, porigin, ptask*) = false -- otherwise
+def $generator_unused_send_leaf(S, n, 0) = eps
+def $generator_unused_send_leaf(S, n, n_left) = (n)
+  -- if $(n_left > 0) /\ $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_PAUSED /\ pgenerator.DELEGATE = eps
+  -- if pgenerator.FRAME = (pframe)
+  -- if pframe.ORIGIN = (porigin)
+  -- if $generator_unused_send_tail(S, porigin, pframe.TODO)
+  -- if $generator_record_valid(S, pgenerator)
+def $generator_unused_send_leaf(S, n, n_left) = $generator_unused_send_leaf(S, n_child, $nabs($(n_left - 1)))
+  -- if $(n_left > 0) /\ $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_DELEGATING
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.INPUT = (POBJECT n_child)
+  -- if pgeneratorfrom.ACQUISITION = eps /\ pgeneratorfrom.CURRENT = eps
+  -- if $generator_from_record_valid(S, n, pgenerator)
+def $generator_unused_send_leaf(S, n, n_left) = eps -- otherwise
+def $generator_pending_unused_send(S, pgeneratorop) = true
+  -- if $generator_pending_resume(S, pgeneratorop)
+  -- if pgeneratorop.NAME = "send" /\ ~pgeneratorop.ADVANCE
+  -- if $generator_operation_valid(S, pgeneratorop)
+  -- if pgeneratorop.ARGUMENTS = [pvalue]
+  -- if $getter_arguments(S, pgeneratorop.SITE) = PCALLARGUMENTS phpType7* 2
+  -- if |phpType7*| = 1 /\ $generator_arguments_supported(phpType7*)
+  -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_DELEGATING
+  -- if $generator_unused_send_leaf(S, pgeneratorop.OBJECT, |S.OBJECTS|) = (n_leaf)
+def $generator_pending_unused_send(S, pgeneratorop) = false -- otherwise
 
 def $generator_input_orphans(eps, n) = eps
 def $generator_input_orphans(pgeneratorinput :: pgeneratorinput_tail*, n) = pgeneratorinput[.LIVE = false] :: $generator_input_orphans(pgeneratorinput_tail*, n)
