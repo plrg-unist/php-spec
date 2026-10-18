@@ -9598,6 +9598,24 @@ normal exit and consumed materialization remain unchanged. M63's normal
 typed-property history stays separate; physical collection, other property
 forms, reentry and broad returns_verify remain OPEN.
 [M91 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M92 routes a pending destructor TypeError from a local integer-key DIM old
+reference source in a used `&f():?object` return. A sole `[new O]` array is
+unset before selected-reference replacement; O's destructor throws `dim92`.
+Native PHP on unchanged `070236b5f`/399 catches that exact error locally,
+returns detached `rNULL/b7`, and emits no Notice. The unchanged model instead
+takes outer OT/r7 (zero agreement). At private `68e3866e9`/399 strict SL
+initialization passes and the one original source agrees exactly. One reached
+fixture passes 157 Boolean premises and two raw steps: preF local `a` owns
+HARRAY→ALIAS bucket HCELL→O, while the protected old return separately
+roots HCELL→O; all three are retired by the pending exit. The same
+destructor-origin TypeError reaches local CT, then consumed recovery creates
+a distinct fresh NULL reference without a Notice. Actual equal-heap LINE-only public refusal and exit budget equality
+pass. The pending-Throwable source guard now uses the existing nullable used
+slot materialization predicate for both DIM and property sources; property
+behavior, capture, cleanup, normal exit and consumed materialization remain
+unchanged. M62's normal DIM history stays separate; physical collection,
+other DIM forms, reentry and broad returns_verify remain OPEN.
+[M92 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, wider destructor throw/reentry, real suspension and wider typed
