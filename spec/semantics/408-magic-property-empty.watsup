@@ -518,4 +518,24 @@ def $named_receives_ready(S, pfunction) = true
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.FUNCTION = pfunction.ORIGIN
   -- if $property_empty_context(S, pcallcontext)
-def $call_task_valid(S, PROPERTY_EMPTY_RESULT ppropertyempty b_get) = ($property_empty_pending_call(S, ppropertyempty, b_get) \/ $property_empty_tail(S, ppropertyempty, b_get, S.TODO) \/ $property_empty_throw_tail(S, ppropertyempty, b_get))
+;; Task validation projects past the eager prefix without consuming S.TODO.
+;; Its already-checked release/operation records still authenticate this marker.
+dec $property_empty_isset_cleanup(pstate, ppropertyempty) : bool
+def $property_empty_isset_cleanup(S, ppropertyempty) = true
+  -- if S.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (PROPERTY_EMPTY_RESULT ppropertyempty false) :: ptask_tail*
+  -- if S.ORIGIN = (ppropertyempty.SITE)
+  -- if $property_empty_valid(S, ppropertyempty)
+  -- if $property_empty_method(S, ppropertyempty.OBJECT, false) = (pmethoddesc)
+  -- if $property_empty_isset_source(S, pmethoddesc)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructorcall.RELEASE = (pdestructionrelease_before)
+  -- if pdestructionrelease_before.JOBS = pdestructionjob_head :: pdestructionjob_tail*
+  -- if $destruction_job_node(pdestructionjob_head) = (HOBJECT pdestructorcall.OBJECT)
+  -- if pdestructionrelease = pdestructionrelease_before[.JOBS = pdestructionjob_tail*]
+  -- if pdestructorcall.USER /\ ~pdestructorcall.STORE
+  -- if pdestructorcall.CALLER = S.CURRENT /\ pdestructorcall.ORIGIN = S.ORIGIN /\ pdestructorcall.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if pdestructionoperation.CALLER = S.CURRENT /\ pdestructionoperation.ORIGIN = S.ORIGIN /\ pdestructionoperation.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if pdestructionoperation.SOURCE = PROPERTY_EMPTY_RESULT ppropertyempty false
+  -- if pdestructionoperation.VALUE = KNOWN (PBOOL true) /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL) /\ pdestructionoperation.CLEANUP = eps
+def $property_empty_isset_cleanup(S, ppropertyempty) = false -- otherwise
+def $call_task_valid(S, PROPERTY_EMPTY_RESULT ppropertyempty b_get) = ($property_empty_pending_call(S, ppropertyempty, b_get) \/ $property_empty_tail(S, ppropertyempty, b_get, S.TODO) \/ $property_empty_throw_tail(S, ppropertyempty, b_get) \/ (~b_get /\ $property_empty_isset_cleanup(S, ppropertyempty)))

@@ -264,6 +264,18 @@ $ir_guard(S_false) /\ $property_empty_valid(S_false,ppropertyempty)
 PhpStep: S_false ~> S_false_done
 S_false_done.RESULT = KNOWN (PBOOL true) /\ S_false_done.TODO = ptask_tail* /\ S_false_done.EVENTS = S.EVENTS
 $heap_owners($heap_graph(S_false_done),HOBJECT n_child) = 1
+S_saved.TODO = (DESTRUCTOR_RESULT pdestructorcall_saved) :: (DESTRUCTOR_RELEASE pdestructionrelease_saved) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_saved) :: (PROPERTY_EMPTY_RESULT ppropertyempty false) :: ptask_saved_tail*
+S_saved.DESTRUCTION.CALLS = pdestructorcall_saved :: pdestructorcall_tail*
+S_saved.DESTRUCTION.OPERATIONS = pdestructionoperation_saved :: pdestructionoperation_tail*
+$property_empty_isset_cleanup(S_saved,ppropertyempty) /\ $call_task_valid(S_saved,PROPERTY_EMPTY_RESULT ppropertyempty false)
+pdestructionoperation_source = pdestructionoperation_saved[.SOURCE = PROPERTY_EMPTY_RESULT ppropertyempty true]
+pdestructorcall_source = pdestructorcall_saved[.OPERATION = (pdestructionoperation_source)]
+S_wrong_source = S_saved[.TODO = (DESTRUCTOR_RESULT pdestructorcall_source) :: (DESTRUCTOR_RELEASE pdestructionrelease_saved) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_source) :: (PROPERTY_EMPTY_RESULT ppropertyempty false) :: ptask_saved_tail*][.DESTRUCTION.CALLS = pdestructorcall_source :: pdestructorcall_tail*][.DESTRUCTION.OPERATIONS = pdestructionoperation_source :: pdestructionoperation_tail*]
+~$property_empty_isset_cleanup(S_wrong_source,ppropertyempty) /\ ~$call_task_valid(S_wrong_source,PROPERTY_EMPTY_RESULT ppropertyempty false)
+pdestructionoperation_value = pdestructionoperation_saved[.VALUE = KNOWN (PBOOL false)]
+pdestructorcall_value = pdestructorcall_saved[.OPERATION = (pdestructionoperation_value)]
+S_wrong_value = S_saved[.TODO = (DESTRUCTOR_RESULT pdestructorcall_value) :: (DESTRUCTOR_RELEASE pdestructionrelease_saved) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_value) :: (PROPERTY_EMPTY_RESULT ppropertyempty false) :: ptask_saved_tail*][.DESTRUCTION.CALLS = pdestructorcall_value :: pdestructorcall_tail*][.DESTRUCTION.OPERATIONS = pdestructionoperation_value :: pdestructionoperation_tail*]
+~$property_empty_isset_cleanup(S_wrong_value,ppropertyempty) /\ ~$call_task_valid(S_wrong_value,PROPERTY_EMPTY_RESULT ppropertyempty false)
 '''.strip().splitlines()
 
 def main():
