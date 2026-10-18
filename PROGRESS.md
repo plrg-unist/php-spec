@@ -7,6 +7,29 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+One positional array name now raises TypeError before `constant`/`defined` lookup,
+in weak and strict calls. Empty/flat live arrays admit primitive nonstring and
+authenticated string-carrier leaves, direct or through live scalar reference cells.
+Exactly 30 module400 insertions reuse source/literal facts and the existing raw
+error allocator, preserving the captured array and embedded references without a
+copy fold or shared ownership change. Four exact originals and all 533 premises
+pass at 46a59b565/runtime38e5756d: author 163+122+95 and independent 153 across five
+real CONFIG errors, caller/trace COW and two actual reference-update snapshots.
+Raw API/caller traces, caller99/effects, unchanged stores/autoload/class state,
+literal/carrier/source/cell/domain refusals and budgets pass. No actor failed or
+repeated; PHP/worker stderr is empty. Initial f4b06bac6 native/baseline and later
+source/state both use CPU3; unchanged Unsupported after B| retains zero credit.
+Legacy PSTRING/nested/object leaves, DEFINE array names and wider forms stay open.
+[Array-name review](coverage/semantics/constant-query-array-name-review.json).
+
+Pointwise composition over 7e2759ae5 preserves the incoming 401-module parent.
+Module400 adds only the private 30-line receiver patch alongside the incoming
+legacy-string array-value fold; all four tests are private-exact. The new query
+guard keeps its separate primitive/carrier domain. Typed ref-return/finally,
+WeakMap Closures, compound arithmetic and magic-empty selectors are disjoint.
+Source4/public533 retain 46a59b565/runtime38e5756d without a joined actor or renewed
+execution credit.
+
 Live WeakMap comparisons now admit the exact CURRENT and fixed static BIND API
 Closure kinds, returning +1 in both directions before invocation or private/capture
 traversal. Ordinary intrinsic eligibility and API bodies remain unchanged. Both

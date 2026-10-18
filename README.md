@@ -1102,6 +1102,12 @@ recovers normally after the caught error.
 [Four new source agreements and 487 state premises](coverage/semantics/constant-query-excess-arity-review.json)
 cover counts 3/4/5, strict priority, class-like request names and normal recovery.
 Owning and packed/named arity-error handling remains partial.
+One positional array name now raises TypeError in `constant()`/`defined()` before
+lookup, in weak and strict calls. Flat arrays admit primitive nonstring and
+authenticated string-carrier leaves, including live scalar reference cells.
+[Four source agreements and 533 state premises](coverage/semantics/constant-query-array-name-review.json)
+cover raw array traces, caller/trace COW and shared reference updates. Nested,
+object/legacy-string leaves, DEFINE array names and wider call forms remain open.
 Positional `define()` calls with primitive arguments also reject counts below two
 or above three before name/flag reception or registration. Exact count messages
 and raw API arguments survive all argument effects, including a captured true

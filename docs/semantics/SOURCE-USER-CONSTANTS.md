@@ -128,6 +128,24 @@ without replaying its 392 premises. No actor failed or repeated; the unchanged
 Unsupported baseline retains zero credit. Owning arguments, owners and
 packed/named/FCC arity-error handling remain partial.
 
+One positional array name now raises parameter-one TypeError in `constant` and
+`defined` before lookup, independently of caller strictness. The bounded domain
+is empty/flat live arrays with primitive nonstring or authenticated string-carrier
+leaves, stored directly or through live scalar reference cells. The raw API trace
+owns the captured array; ordinary COW separates plain fields while embedded
+references still share their backing cell. Argument effects and caller results
+survive the error.
+
+Thirty module400 insertions authenticate the query shape, source/literal array
+facts, live array/cells and leaf carriers before the existing error allocator.
+No copy fold, task/schema or shared trace/ownership rule changes. The
+[array-name review](../../coverage/semantics/constant-query-array-name-review.json)
+binds four exact originals and 533 premises at 46a59b565/runtime38e5756d: five real
+CONFIG errors, actual caller/snapshot/trace COW endings and two reached reference
+updates. All checks pass on their first attempts; the unchanged Unsupported baseline
+retains zero credit. Nested arrays, objects, legacy PSTRING leaves, DEFINE array
+names and owner/named/packed/FCC forms remain partial.
+
 Positional `define` calls with primitive arguments now reject every count outside
 two through three before receiving the name or optional flag. Too few arguments
 produce `at least 2 arguments`; excess arguments produce `at most 3 arguments`,
@@ -696,7 +714,8 @@ and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`. `PHP_FUNCTION(constant)` us
 exception-class lookup and `ZVAL_COPY_OR_DUP`; `zend_declare_typed_class_constant`
 interns direct string values before installation.
 Stored cyclic trees, other objects, true/coerced array flags,
-Stringable/array names, array/object values with scalar or null names, true/NULL/NaN
+Stringable/DEFINE array names and query arrays beyond the bounded flat domain,
+array/object values with scalar or null names, true/NULL/NaN
 flags with scalar names, nonbool flags with nonfinite float names, true/NULL/NaN flags with
 null names, special/startup names with flags or values beyond the bounded follow-ups,
 internal/trait/interface/enum class queries, deferred keyword initializers and
