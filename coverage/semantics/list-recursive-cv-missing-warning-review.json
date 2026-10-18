@@ -1,0 +1,133 @@
+{
+  "version": 1,
+  "milestone": "A10 recursive direct-CV destructuring keys with historical ancestor contexts",
+  "status": "independently reviewed; pointwise composed over the exact canonical parent",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle and tests/semantics/profile.json",
+  "base": "4c778d0c0dbe22deeb19aa0668876c21c17012cb",
+  "scope": "Recursive by-value or mixed direct-CV RHS patterns with direct-CV leaves; selected ordinary defined quiet CV keys and implicit/quiet compiled keys beneath dynamic ancestor keys. Current selected CV keys retain integer/bool/exact-float/non-NUL string conversion guards; saved ancestor contexts authenticate syntax and compiler locations without reconstructing historical values.",
+  "runtime_commit": "e8619c4393587a70a987f2a1328f127f2d339cf0",
+  "runtime_sha256": {
+    "spec/semantics/409-list-missing-warnings.watsup": "6805d6e06608f1327d4c001037451e3fb65c946914adf69cf06702fba1411b46"
+  },
+  "private_modules": 399,
+  "engine_basis": [
+    "Vendored PHP8.5.10 commit34308a6666b2d489c509541ea9befea9e2b42348: zend_compile_list_assign recursively emits each key expression and FETCH_LIST_R/W before descending into its target. Ordinary key CV reads are delayed until that fetch; reference leaves preserve the inherited compiler location for a later implicit fetch.",
+    "zend_fetch_dimension_address_LIST_r delegates to zend_fetch_dimension_address_read with is_list=true. The selected converted key and captured array/source reference are used for the interrupted missing fetch; a returning handler supplies uninitialized/null without another lookup. Later key expressions execute after prior target stores.",
+    "Nested by-value fetches retain captured child tables; mixed patterns propagate reference demand and retain mutable source CELLs. Parent replacement or external CV rebinding does not redirect a saved child. Exception checks cancel the pending store and later targets while ordinary unwinding releases the saved ownership graph."
+  ],
+  "reviewed_behavior": [
+    "Only409 changes runtime:113 additive lines introduce source-only recursive CV item/line/context and saved-operand checks plus current-CV/compiled-selected producer clauses. Existing flat/compiled/context function bodies, tasks, state, module list and generic compiler/read/write/ownership helpers are unchanged; no inherited test changes.",
+    "Context recursion shortens structural source paths and authenticates the exact root assignment pattern and direct-CV RHS. Ancestor item lines come from compiled descriptors or ordinary CV syntax at explicit origins, never the current parent table or key value. Historical ancestor type/carrier/bytes are intentionally opaque.",
+    "Initial current-CV planning still requires the actual delayed VARIABLE name/lines, bounded allocated defined cell, blocked/released-read exclusions, valid carrier and quiet conversion. Saved CV keys retain compatible admitted kind/byte validity without rereading the key. Selected compiled keys keep exact constant pkey equality.",
+    "The depth3 current-CV snapshot reads old q33/near3/tail4 after callback root replacement with22, ancestor null/lossy values and current key1.5. Fresh next string1 selects integer1; all old runtime arrays and q retire after delivery.",
+    "A missing dynamic outer key supplies NULL into nested targets despite callback insertion. Further lossy middle2.5 is read against NULL without key conversion, both leaves become NULL silently, and fresh tailkeytrue selects the original captured value3. The old literal array retains only its genuine pool roots.",
+    "Independent detached-child execution retires/rebinds the old ancestor key CELL and changes the current key to1.5. The saved child table has one task owner and keeps q through its entry, supplying33, while the assignment-result root follows its embedded row ALIAS to replacement66 and the new source CV contains88. Child/q retire before the outer tail reads4; later row77 remains shared only with the returned root.",
+    "Independent depth3 mixed execution confirms inherited warning line16 after an implicit reference leaf, all three COW tables distinct from their copies, live early21 versus copied5, and inserted missing1=77 unable to replace pending NULL. Later reference2 reads shared q33; raw owners3 to4, binding/pruning and final retirement follow driver-normalized execution and preserve full-state budget equalities.",
+    "Supplied throw after earlier9/5 preserves callback x99, later y8/near50/tail70 and destination100, the same Throwable and finally. Staged source CELL/array ownership persists through intermediate emitter removal, then all saved source arrays/cells/q and retired key cells disappear at caller TRY_END.",
+    "No NUL PHP source or positive owned-NUL producer was introduced; the current selected CV non-NUL guard is unchanged. Pure malformed source/state projections establish refusals only. Old A1-A9 cuts/failures remain historical without replay or renewed credit."
+  ],
+  "accepted": {
+    "source": {
+      "report": ".tools/list-recursive-cv-source-10/report.json",
+      "sha256": "aabd525d60b709841541b98e4e4e5abeb9acaa68eebb410208415c8c90a5e4d8",
+      "revision": "e8619c4393587a70a987f2a1328f127f2d339cf0",
+      "agreements": 5,
+      "cases": [
+        "list-recursive-cv-depth3-snapshot",
+        "list-recursive-cv-ancestor-null",
+        "list-recursive-cv-depth3-throw",
+        "list-recursive-cv-review-detached-child-key-retire",
+        "list-recursive-cv-review-dynamic-ancestor-prior-reference"
+      ],
+      "native_reuse": "Five fresh A10 originals retain native argv/source paths/streams from baseline/native preparations. Model-only comparisons resolve those same original paths; no native replay."
+    },
+    "states": [
+      {
+        "report": ".tools/list-recursive-cv-author-state-10/report.json",
+        "sha256": "496ce419aa4cb89c291b71db8dbc14d8702ecff679aa02d299fb371dcb97df54",
+        "revision": "f77db09cc4711cf39a4488a0e769e72cb38c0681",
+        "fronts": 3,
+        "conditions": [
+          175,
+          146,
+          168
+        ],
+        "raw_steps": [
+          3,
+          5,
+          1
+        ],
+        "boolean_premises": 480
+      },
+      {
+        "report": ".tools/list-recursive-cv-review-state-10/report.json",
+        "sha256": "3b7e880a7605744e83e0f52192d6d959648f66b8bf7459a6d195bd8c580555aa",
+        "revision": "f77db09cc4711cf39a4488a0e769e72cb38c0681",
+        "fronts": 2,
+        "conditions": [
+          166,
+          171
+        ],
+        "raw_steps": [
+          4,
+          4
+        ],
+        "boolean_premises": 329
+      }
+    ],
+    "source_agreements": 5,
+    "state_fronts": 5,
+    "total_conditions": 826,
+    "boolean_premises": 809,
+    "raw_steps": 17,
+    "credit_note": "Conditions include setup, source/guard/refusal premises and raw steps, not separate PHP programs. Every recorded process group was reaped. No A10 fixture failed; all pre-actor binding/driver corrections preceded accepted state execution. Later docs/composition add no agreement credit."
+  },
+  "preserved_zero_credit": [
+    {
+      "report": ".tools/list-recursive-cv-baseline-10/report.json",
+      "sha256": "2eea072c0f1b9db806ce3998919f2e9c3ae6af3dd3a3d9fc22056bca09d1a4e1",
+      "revision": "4c778d0c0dbe22deeb19aa0668876c21c17012cb",
+      "result": "Unchanged A9 frontend accepted the depth3 current-CV original, then explicitly Unsupported at handler ingress: error-handler ingress requires a producer continuation. Native completed normally; no timeout or agreement credit."
+    },
+    {
+      "report": ".tools/list-recursive-cv-native-rest-10/report.json",
+      "sha256": "d693d7c998916c0eed39071c532e33f38c3a9fe814980620ea6f4958d015b700",
+      "revision": "4c778d0c0dbe22deeb19aa0668876c21c17012cb",
+      "result": "Fresh author dynamic-ancestor NULL descent and mixed current-CV supplied-throw native2 preparation only."
+    },
+    {
+      "report": ".tools/list-recursive-cv-review-native-10/report.json",
+      "sha256": "2e6221d350ed43475a8282431dbc5ee269358d317f666b4a5e6b9ea409635ef5",
+      "revision": "4c778d0c0dbe22deeb19aa0668876c21c17012cb",
+      "result": "Fresh independent detached child/ancestor-key CELL retirement and dynamic-ancestor prior-reference COW native2 preparation only."
+    }
+  ],
+  "affected_historical_controls": [],
+  "raw_evidence": {
+    "archive": "/home/user/workspace/php-spec/.tools/list-recursive-cv-missing-warning-10-raw.tar.gz",
+    "bytes": 340177,
+    "members": 152,
+    "sha256": "2df0f241b19fa3a710e0dc9aef3529b10cabfe1145e57e9d1f426f4c380bab49",
+    "recovery": "Archive retains six original relative .tools report/fixture/process/source directories plus list-recursive-cv-reuse-sources-10.py. Extract beneath a checkout of the recorded cut; absolute argv/cwd are historical provenance. No archive is a build dependency."
+  },
+  "actual_parent_review": {
+    "parent": "82d2f394cb458336e4509f18656daa4beb6f1fd1",
+    "seams": "Incoming270 extends nullablearray typed-reference return cursors;386 adds intrinsic/FiberAPI closure WeakMap mismatch;400 extends special-startup duplicate guards and certified-object define tree leaves;404 adds BIT_ASSIGN_BOTH integral-stage commit;408 adds property-empty array RV classification/disposal. These source/task selectors are absent from A10 originals;409/list/key/carrier/ownership helpers are unchanged. Since fcfec,30/400 add DYNAMIC_ARRAY_CONSTANT_DUPLICATE copy/candidate ownership under define-only config/markers;407/408 route empty without __get through property_isset descriptors and BASE_PROPERTY. A10 has no define, property isset/empty or magic methods; its isset probes use CV/array paths and getPrevious is an ordinary Throwable method. LIST/key/carrier/ownership APIs are unchanged.",
+    "joined_actor": "No concrete semantic interaction found; pointwise composition and exact FF review add no replay credit."
+  },
+  "remaining": [
+    "Dynamic selected keys in by-value literal-root patterns; call/wider RHS and non-CV targets. Mixed literal RHS is compile-invalid, not a runtime frontier.",
+    "Paused owned-NUL/current-CV NUL behavior, computed current key names/expressions, undefined/null/lossy-float conversion warning callbacks, and scalar/object destructuring diagnostic producers. Source-only ancestor contexts make no historical type/carrier/byte reconstruction claim.",
+    "Wider callbacks, suspension/lifecycle, full array/diagnostic/core closure and final offline portability."
+  ],
+  "composition": {
+    "parent": "82d2f394cb458336e4509f18656daa4beb6f1fd1",
+    "modules": 399,
+    "runtime_delta": [
+      "spec/semantics/409-list-missing-warnings.watsup"
+    ],
+    "runtime_diff_sha256": "920a8eabc8cd1d91bdfd8f029e690c39ef1ee2626c0af71a177dc5f0f7270f56",
+    "tested_leaf": "f77db09cc4711cf39a4488a0e769e72cb38c0681",
+    "validation": "Pointwise composition and independent exact FF review; accepted source5/state826 retain private cuts with no joined actor, replay or renewed execution credit."
+  }
+}

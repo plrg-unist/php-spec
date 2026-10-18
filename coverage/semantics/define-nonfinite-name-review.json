@@ -1,0 +1,69 @@
+{
+  "scope": "Raw positive infinite float define names whose received string is INF, primitive candidates and omitted/bool-false flags. Negative-INF fresh registration and strict raw-NaN error are controls; weak NaN reception is not admitted. Partial core.",
+  "status": "independently_accepted_private_integrated_on_join",
+  "reviewer": "/root/source_review_35",
+  "parent": "eb57aa4ff42bd2511d59485e7f1265da63b4e9fc",
+  "semantic_revision": "d93cdb9ebc1a25fa37c1d7d410c8d82282a42278",
+  "source_revision": "83478a4040789237bc1af3558a27fec851df9c04",
+  "state_revision": "33743f57fd5bedf30f7552a740bef829cb4bb154",
+  "semantic_files": {
+    "spec/semantics/400-dynamic-constants.watsup": "41bcf33c4b50b40e5262477d4d39392bcf1906fa7333c41bd10767e7268c402d"
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "tools": {
+    "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+  "primary": "Pinned ZEND_FUNCTION(define) receives Z_PARAM_STR before Z_PARAM_BOOL; zend_parse_arg_str_weak converts the API name. zend_double_to_str/zend_gcvt render INF and zend_register_constant warns/returns false on the protected builtin. Strict slow string reception rejects the raw float first. zend_gcvt uses snprintf(ndigit+1) for nonfinite text, so precision1 truncates INF to I; zend_double_to_str separately warns on NaN string conversion.",
+  "semantics": "Exactly two module400 guard replacements admit received bytes INF alongside existing noninitial names and alongside an existing user-prefix binding. Raw-to-received conversion, normalized all-argument source authority, primitive/carrier/strictness/precision/prefix bounds and current lookup remain unchanged. Fresh lookup prevents a builtin user row. Existing scalar duplicate tasks, warning/error metadata, converted trace view, false result and generic throw discard are reused; no parser/helper/task/schema or native fallback.",
+  "accepted": [
+    "Source4 exactly match original native stdout/stderr/PHP exit at83478a404/runtime d93. Literal omitted/false INF duplicates retain the builtin and two PHP-stderr Warning lines; -INF registers fresh -INF=911. The selected named call captures false before V|N and live flag/callee writes; its request candidate and false-return handler preserve builtinINF, sibling929 and callback effects with one default Warning. Strict rawNaN produces parameter1 TypeError after effects with no handler entry/conversion warning; strict/peer PHPstderr are empty.",
+    "All529 public premises pass at33743f57f/runtime d93: author205+124+61 and independent139 across four source-derived groups. Four raw SL checks exactly true LF/exit0/empty workerstderr, stable/reaped. Actual CONFIG/default/entered-handler/RESULT/duplicate resume/discard transitions check received carriers, raw flags/request candidate, source/immutable-name/carrier/error-metadata/domain/bounds refusals and budget equality.",
+    "Independent rawINF907/false throw retains converted REQUEST INF in actual three-frame Throwable trace, same Exception/PreviousNULL, caller99 and sibling919 only. Live precision1 cannot replace saved14; explicit format14=INF/1=I and alternate3/-1 checks distinguish possible historical spellings. Prefix0 and later in-bound1 both admit the protected builtin;2 refuses. Full discard equals the restored caller state with no registration."
+  ],
+  "compatibility": "The old scalar, Source40/41 and finite-only Source42 false-nonbool parser domains and active controls remain unchanged. No older actor replay or renewed credit. Weak NaN was removed from proposed originals before execution after pinned source review exposed its separate conversion Warning; no weakNaN source/model evidence is claimed.",
+  "zero_credit": "Unchanged first-source baseline at776f63765 is accepted/checked Unsupported scalar define publication after B|, CLI1/null PHPexit/empty workerstderr and0agreement. Original public/check at834 failed its first precision1 received premise (exit1, not timeout); its raw files/report remain unchanged and carry0state credit. The numeric runtime was correct. Only author/peer fixture precision controls changed, then fresh affected author and unrun peer state ran; no source/native/model replay.",
+  "execution": "LC_ALL=C/TZ=UTC, AS3GiB, serial stop-first/reap, INT+kill5 wrappers. Initial native3/baseline at776f63765 onCPU4/SLOT2; later peer native1/model4 at834 and corrected public4 at33743 onCPU1/SLOT1. Native children15s, source CLI45s/host60s, fresh full SL children90s. Eleven reports stable/head-stable,10PASS plus one preserved failed check; no timeout/survivor.",
+  "raw_root": ".tools/define-nonfinite-name-evidence-45",
+  "report_sha256": {
+    "author/review-public/check-report.json": "5731e411fc2e194cecbb7ffd245567934b90d76130ccba1af084d83bc0af8d8a",
+    "author/review-public/prepare-report.json": "0fa12ddaabd48d99806c7d8b58cd3d38b6ccdf3326492f8cae5ef3a0f9df2d53",
+    "author/public/check-report.json": "db974b9f090fbcdeac995e19c4599f3b5f6735a07b671ca53f9dac82b60a9714",
+    "author/public/prepare-report.json": "25e3296f7e536fa118dfc4f7e83a367c2950395318c51d7cbcac932dd8bbe80b",
+    "author/review/model-report.json": "223f1bd5b226391079363ea390e76b2cae6cca05ef0316c12e166c0bcf778b73",
+    "author/review/native-report.json": "b68f14b8d1e5b87cffdffd6331937d811ccede3ac27031e8a47fa2948ab563cb",
+    "author/sources/model-report.json": "7d7de7c5e3b161f8863d9527cbc26d3c2ee2c6f4d64e99cf6f474671db27302a",
+    "author/sources/baseline-report.json": "30ac8c3da1a73bff1878f92a127f43d3574cebbf173dfff263682a34e9d4a77b",
+    "author/sources/native-report.json": "8b21ec59583991622993a71b9396991c7b0a5d690301b94dd41aa3e7ff127b3f",
+    "author/public-fixed/check-report.json": "536f0c0703a55a6cacfbd9a3201ba8c1d5a81a7703776be6e334672e505e78c0",
+    "author/public-fixed/prepare-report.json": "f5f81d190f4ccd2b0a7f6d574b5d055666237aeef41b5375a2f0a1fc77919d4d"
+  },
+  "commands": [
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 4 python3 tests/semantics/define_nonfinite_name_sources.py --phase native --output .tools/define-nonfinite-name-native-45",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 4 python3 tests/semantics/define_nonfinite_name_sources.py --phase baseline --output .tools/define-nonfinite-name-native-45 --case infinite-names-startup-duplicates-and-negative-fresh-key",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/define_nonfinite_name_review_sources.py --phase native --output .tools/define-nonfinite-name-review-45",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 240s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/define_nonfinite_name_sources.py --phase model --output .tools/define-nonfinite-name-native-45",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/define_nonfinite_name_review_sources.py --phase model --output .tools/define-nonfinite-name-review-45",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/define_nonfinite_name_protocol.py --phase prepare --sources .tools/define-nonfinite-name-native-45 --output .tools/define-nonfinite-name-public-45",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 360s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/define_nonfinite_name_protocol.py --phase check --sources .tools/define-nonfinite-name-native-45 --output .tools/define-nonfinite-name-public-45",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/define_nonfinite_name_protocol.py --phase prepare --sources .tools/define-nonfinite-name-native-45 --output .tools/define-nonfinite-name-public-fixed-45",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 360s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/define_nonfinite_name_protocol.py --phase check --sources .tools/define-nonfinite-name-native-45 --output .tools/define-nonfinite-name-public-fixed-45",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/define_nonfinite_name_review_protocol.py --phase prepare --sources .tools/define-nonfinite-name-review-45 --output .tools/define-nonfinite-name-review-public-45",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 120s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/define_nonfinite_name_review_protocol.py --phase check --sources .tools/define-nonfinite-name-review-45 --output .tools/define-nonfinite-name-review-public-45"
+  ],
+  "recovery": "Five owned roots moved once after reviewer STOP and focused cwd/cmdline/fd users[]. Eleven report hashes unchanged. Restore author/{sources,review,public,public-fixed,review-public} as .tools/define-nonfinite-name-{native,review,public,public-fixed,review-public}-45 at recorded cuts for exact original source/cwd identities.",
+  "remaining": "Weak NaN name string-conversion Warning protocol, true/NULL/NaN/nonbool flags with nonfinite names, owning/wider candidates, packed/FCC/arity forms and complete define-family semantics remain partial. No engine bug or intentional divergence.",
+  "composition": {
+    "parent": "464c0cf26a27dca6023f8bceb934aa419189c46b",
+    "private_publication": "5c663cf908dd6124704980ab62058c13914408f9",
+    "modules": 399,
+    "method": "Pointwise exact two-guard module400 patch, four private-exact test files, every other runtime/schema/ordered manifest parent-exact. Inventory only own2/2/1 and review suffix; incoming docs/checkpoints retained.",
+    "runtime400_sha256": "ab5be0953ef78589f07f2b2f33c0b9af1c2c3fa59f5af507a7a357f3648012e2",
+    "seams": "V67 string-name array duplicates use a dedicated ARRAY marker and do not overlap rawPFLOAT/primitive scalar-name markers. Incoming270 nullable-array return cursors,280/289 buffered Generator throw and301 generic temporary/receipt heads require source/operation/leaf/input forms absent here.386 Closure heads require WeakMap operands;404 quiet scalar RHS heads require MOD/SHIFT/BIT_ASSIGN_BOTH_LEFT after fractional deprecation;409 requires recursive LIST_FETCH patterns. Ordinary integer count++, intrinsic calls and trace DIM reads do not select them. Shared config/source/error/conversion/storage helpers and ordered399 manifest remain unchanged.",
+    "evidence": "Independent current-parent seam review finds no concrete interaction. Source4 retains83478a404/d93 and public529 retains33743f57f/d93; original precision-fixture failure and baseline remain0. No joined actor, replay or renewed execution credit."
+  }
+}

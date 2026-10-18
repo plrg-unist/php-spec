@@ -19,8 +19,8 @@ remains later research.
 [Missing-key destructuring warnings](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md)
 now retain captured arrays or source reference cells through handlers, including
 recursive by-value CV/literal and mixed CV patterns, with ordered null delivery
-and normal/throw cleanup. Flat CV-source patterns also freeze converted variable
-keys across callbacks while later key variables are read afresh.
+and normal/throw cleanup. These patterns also freeze quiet converted variable keys
+across callbacks while later key variables are read afresh.
 
 The [checked eval parser service](docs/semantics/DYNAMIC-SOURCE-SERVICE.md)
 accepts raw eval-source bytes, uses a native parse-only scanner for rejection
@@ -653,6 +653,11 @@ LEFT `12` with `5.0` stores `4`/`13`/`9`; negative `-1.0` gives XOR `-13`.
 Success detaches late aliases; a supplied first throw preserves them. Five exact
 originals and 634 focused SL premises pass in the
 [quiet float bitwise ledger](coverage/semantics/bitassign-quiet-float-review.json).
+In the both-fractional compound routes, a first handler may also leave a quiet
+`bool` or `null` RHS: `true` converts to 1, `false`/`null` to 0. Success uses the
+captured LEFT and detaches late aliases; modulo zero preserves them and raises
+DivisionByZeroError. Ten exact originals and 688 focused SL premises pass in the
+[quiet scalar ledger](coverage/semantics/quiet-scalar-review.json).
 Explicit array-to-string casts now suspend through named warning handlers for
 a bounded plain-CV array input. The borrowed array adds no saved owner: replacing
 or removing its CV still yields fixed `Array`, while a supplied throw preserves
@@ -905,6 +910,9 @@ See the [shared-send review](coverage/semantics/generator-pending-shared-send-re
 At a bare statement yield, pending `send` instead ignores its argument. The current
 snapshot precedes argument destruction, which runs before receiver cleanup even
 when it throws. See the [unused-target review](coverage/semantics/generator-pending-unused-send-review.json).
+Non-pending `throw` into a buffered used yield releases that slot before child
+catch, preserving cache owners and a replacement destructor exception's previous
+chain. See the [buffered-throw review](coverage/semantics/generator-buffered-throw-review.json).
 [Delegation](docs/semantics/GENERATOR-DELEGATION.md)
 adds arrays, source Iterators and shared Generator graphs with live raw caches
 and natural return/unwind. Aggregate yield-from now acquires nested real iterator
@@ -1057,6 +1065,12 @@ precision changes and duplicate handlers; strict errors retain raw arguments.
 Named sends match their normalized slots without changing captured call authority.
 [Four source agreements and 351 state premises](coverage/semantics/define-scalar-name-review.json)
 cover registration, returning/throwing warnings and source/budget controls.
+When conversion yields full `INF`, positive infinite float names now use its
+protected duplicate path with primitive candidates and omitted/bool-false flags,
+preserving the builtin and converted API name through callbacks. Negative infinity keeps its fresh
+`"-INF"` key at profile precision 14. [Four source agreements and 529 state premises](coverage/semantics/define-nonfinite-name-review.json)
+cover captured arguments, historical precision, strict NaN rejection and throwing
+discard. Weak NaN name reception and nonbool infinite-name flags remain separate.
 Integer/boolean names also accept false scalar flags (`0`, empty/`"0"` strings and
 float zero). Weak calls convert the API name while preserving the raw flag;
 strict name errors precede flag rejection after argument effects.
@@ -1188,19 +1202,26 @@ nested reference snapshots and literal constraints pass
 Top-level empty definitions retain an authenticated immutable table or create a
 fresh mutable copy. [Two exact sources and 162 public premises](coverage/semantics/dynamic-constant-empty-review.json)
 distinguish allocation classes and rebuilt append history, rejecting a mutable
-clone of a fixed literal. Nested empties, array warning/flag paths, other objects and
-cycles remain Unsupported.
+clone of a fixed literal. Nested empties, wider array warning/flag paths,
+uncertified objects and cycles remain Unsupported.
 String-name `define` with an omitted/false flag now shares already-certified
 stdClass donors. Named/selected calls preserve the captured pointer through later
 CV changes, and duplicate handlers keep the old binding and property writes on
 normal return or throw. Existing call and Exception-trace cleanup release the
 temporary owners. [Certified define review](coverage/semantics/define-stdclass-review.json).
-Fresh two-argument definitions also copy nonempty array trees containing certified
-stdClass leaves. Copied containers freeze source reference values while object
-pointers and property writes remain shared, including selected eval calls
-and nested query COW. [Array-object define review](coverage/semantics/define-stdclass-array-review.json).
-Ordinary uncertified objects, other owning leaves, nested empties, array duplicate
-warnings and wider flags/names remain partial.
+Fresh definitions with an omitted or captured false third flag also copy nonempty
+array trees containing certified stdClass leaves. Copied containers freeze source
+reference values while object pointers and property writes remain shared, including
+selected eval calls and nested query COW. [Array-object define review](coverage/semantics/define-stdclass-array-review.json).
+Duplicate nonempty array definitions retain a private canonical candidate through
+the Warning while callbacks and Exception traces keep the original API argument.
+Normal false delivery and throwing-handler cleanup retire the candidate, preserving
+the old row and callback writes. [Array-duplicate review](coverage/semantics/define-stdclass-array-duplicate-review.json).
+Explicit false flags retain their captured value through callbacks and traces;
+copying observes reference changes from all argument expressions.
+[False-flag array review](coverage/semantics/define-stdclass-array-false-flag-review.json).
+Ordinary uncertified objects, other owning leaves, empty-array duplicates, nested
+empties and wider flags/names remain partial.
 Class-qualified `defined` now checks inherited user constants with lexical visibility
 and quiet misses. Named autoload resumes the same captured query once.
 [Two exact sources and 288 public premises](coverage/semantics/class-qualified-defined-review.json)
@@ -2207,6 +2228,20 @@ premises/8 actual steps preserve GC-enabled observations, a sole cold Fiber owne
 and skipped aggregate tails. Later explicit calls expose the flag change and VM
 execution. Special intrinsic kinds and wider protocols remain partial.
 [Intrinsic/API review](coverage/semantics/weakmap-api-comparison-review.json).
+
+Getter Closures and first-class `Closure::fromCallable` factory Closures also
+compare with live WeakMap before receiver or private-entry traversal. Two exact
+sources and 353 Boolean premises/10 actual steps preserve builtin/inherited getter
+fields, a cloned getter's sole receiver, factory metadata and quiet aggregate tails.
+The one fixture-type failure retains zero credit; wider producers and lifetimes
+remain partial. [Getter/factory review](coverage/semantics/weakmap-getter-factory-comparison-review.json).
+
+Initialized sensitive-value wrappers and their constructor Closures also compare
+with live WeakMap before wrapped-value or receiver traversal. Two originals and
+264 Boolean premises/8 actual steps preserve a wrapped Map, staged sole receiver
+ownership and quiet aggregate tails; later calls expose the existing readonly Error.
+Uninitialized wrappers and wider protocols remain partial.
+[Sensitive wrapper/capture review](coverage/semantics/weakmap-sensitive-comparison-review.json).
 
 [Numeric object comparison Notices](coverage/semantics/object-numeric-comparison-review.json)
 now pause ordinary source-instance/int/float leaves through real error handlers.

@@ -377,6 +377,20 @@ covering actual first frames, original bindings, atomic storage, cells/owners an
 budgets. Wider initial forms, conversions, unsafe targets and lifecycle remain
 partial; pure projections establish refusals only.
 
+The first callback in the both-fractional plain-CV `%=`/shift/numeric-bitwise routes
+may also leave a quiet `bool` or `null` RHS in its original nonreference cell.
+`true` converts to 1; `false` and `null` to 0, with no second warning. Historical
+LEFT `12` with `true` stores `0`/`24`/`6`/`0`/`13`/`13` for `%=`/`<<=`/`>>=`/`&=`/`|=`/`^=`;
+success detaches the handler's alias `99`. False/null modulo raises DivisionByZeroError
+at RHS line 25 before store/detachment, preserving destination `100` and alias write-through.
+Independent default-first null XOR stores `12` despite current `99`, while null modulo
+preserves the alias; both have one LEFT Deprecated. A supplied first throw retains
+its Exception and skips conversion. Ten exact originals and 688 focused SL premises
+(one fixture per new rule plus the independent null cases) pass in the
+[quiet scalar ledger](../../coverage/semantics/quiet-scalar-review.json).
+Other initial forms, conversions, unsafe targets and wider lifecycles remain partial;
+type/ref/binding/ownership projections are refusals only.
+
 Arithmetic and bitwise conversion use the existing pure SpecTec numeric and byte
 helpers, including signed 64-bit boundaries, binary64 values, string operands,
 pinned power behavior and conversion diagnostics. Explicit casts keep their

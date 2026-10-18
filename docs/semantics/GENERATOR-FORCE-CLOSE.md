@@ -36,6 +36,12 @@ does not retain the child or API receiver. The [shared-send review](../../covera
 checks both close orders arising from real local aliases and a payload/cache
 alias whose sole remaining owner is this count.
 
+Non-pending `throw` into the paused used-yield child follows exception cleanup
+instead: it releases the buffered slot before catch search, without orphaning
+that count. Current caches and earlier orphan counts remain separate. Payload
+destructor replacement preserves the injected exception in its previous chain; see the
+[buffered-throw review](../../coverage/semantics/generator-buffered-throw-review.json).
+
 A bare statement yield has no such result slot. Its ignored pending-SEND
 argument retires before the method receiver; it cannot acquire the used-slot
 request-late owner above. A throwing argument destructor preserves cleared

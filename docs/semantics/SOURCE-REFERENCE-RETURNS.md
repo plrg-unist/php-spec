@@ -997,3 +997,39 @@ source category; the executed owner proof covers one runtime single-entry
 array and one throwing O child. Existing table/child release, normal-exit
 rules and M56's accepted nonthrowing control remain separate. See the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M88 adds a simple-variable receiver, literal-name no-argument `?array` method
+source to those same pending-Throwable guards. The paired old_ref methods
+differ only in BYREF and return Factory.slot's runtime `[new O]`. Native PHP
+and the repaired model both reach local `CT:1;A;S` after O throws
+`TypeError("child88")`, with detached `rNULL/b7` and one old-line VALUE
+Notice; the unchanged model reaches outer OT/r7 without the Notice. The
+reference-only reached proof binds the old property ALIAS HCELL→HARRAY→O
+before unset. At the next inner-try cut, the Factory slot is PROP_UNSET but
+the protected old return still roots all three nodes. Selected-reference
+replacement releases that carrier and invokes the child destructor; all
+three modeled nodes are retired at the pending TypeError exit. The same
+exception reaches local CT, while the nonowning cursor resumes as NULL/new
+Notice. Public exit admission, an equal-heap LINE-only refusal and budget
+equality pass. The value-method control has original-source agreement only;
+normal pending-free admission, owner and release rules are unchanged. This
+is one runtime single-entry array/child history, not physical Zend collection
+or arbitrary aggregate coverage. See the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M89 extends assigned `return ($x = old_value())` capture under `&f():?array`
+for a live one-entry array containing a direct ordinary object child. A new
+direct/assigned source pair returns runtime `[new O]`; O's destructor echoes D
+normally. Native PHP shows F0/F1 respectively, then local CT, detached
+`rNULL/b7` and one old-line VALUE Notice. The unchanged model agrees on the
+direct control but stops the assigned case after D. The repaired model agrees
+with both originals. One assigned reached proof binds x sharing the old
+HARRAY→O graph before finalization, then xNULL while the protected old return
+still roots both nodes. During D the table is retired and O remains live; the
+saved f frame authenticates its nonowning cursor even though the old operand
+is no longer live. After D, the selected f-origin TypeError is caught locally;
+consumed recovery yields NULL/new Notice and the detached caller. A real
+inside-D LINE-only public refusal and budget split pass. This covers one
+normal child-destructor history. Pending-Throwable routing and wider aggregate
+returns remain separate. See the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
