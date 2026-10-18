@@ -18,7 +18,8 @@ def $ms_output((OUTPUT ptbytes) :: pevent*) = ptbytes ++ $ms_output(pevent*)
 dec $ms_stage(pstate,pmagicsetstage) : bool
 def $ms_stage(S,MS_PLAN) = true
   -- if S.CURRENT = eps
-  -- if $property_magic_set_plan(S) =/= eps
+  -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
+  -- if $property_magic_set_plan(S[.COMPLETION = NORMAL]) =/= eps
 def $ms_stage(S,MS_RECEIVE porigin) = true
   -- if S.TODO = (TYPE_RECEIVE porigin 0) :: ptask*
 def $ms_stage(S,MS_RETURN) = true
