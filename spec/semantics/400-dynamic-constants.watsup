@@ -149,7 +149,6 @@ def $dynamic_define_finish(S, pconfigcall) = $error_dispatch(S_copy[.TODO = (DYN
   -- if n_constants = |S.USERCONSTANTS|
   -- if $dynamic_array_duplicate_call_valid(S, pconfigcall, n_constants)
   -- if $dynamic_define_values(pconfigcall) = ((preqbytes, PARRAY n_input))
-  -- if $(n_input < |S.ARRAYS|) /\ S.ARRAYS[n_input].ITEMS =/= eps
   -- if $dynamic_array_value(S, PARRAY n_input, eps, true) = ((S_copy, PARRAY n_candidate, pvalueclass))
   -- if $dynamic_array_duplicate_valid(S_copy, pconfigcall, n_candidate, pvalueclass, n_constants)
   -- if ptbytes_message = $global_constant_duplicate_message(preqbytes)
@@ -2104,6 +2103,18 @@ def $dynamic_array_duplicate_valid(S, pconfigcall, n_candidate, pvalueclass, n_c
   -- if $dynamic_define_values(pconfigcall) = ((preqbytes, PARRAY n_input))
   -- if n_candidate =/= n_input
   -- if $(n_candidate < |S.ARRAYS|) /\ S.ARRAYS[n_candidate].ITEMS =/= eps
+  -- if $dynamic_array_value(S, PARRAY n_candidate, eps, false) = ((S, PARRAY n_candidate, pvalueclass))
+  -- if $dynamic_array_known_matches(S, PARRAY n_candidate, $dynamic_define_known(S, pconfigcall.SITE, 1))
+;; Immutable empty arguments retain their pooled table; mutable empties have a
+;; distinct canonical copy even when their captured append history is nonzero.
+def $dynamic_array_duplicate_valid(S, pconfigcall, n_candidate, pvalueclass, n_constants) = true
+  -- if $dynamic_array_duplicate_call_valid(S, pconfigcall, n_constants)
+  -- if $dynamic_define_values(pconfigcall) = ((preqbytes, PARRAY n_input))
+  -- if $(n_input < |S.ARRAYS|) /\ S.ARRAYS[n_input].ITEMS = eps
+  -- if HARRAY n_input <- S.ALLOCATIONS
+  -- if pvalueclass = PVARRAY b_immutable eps
+  -- if b_immutable = $array_immutable(S, n_input)
+  -- if (b_immutable /\ n_candidate = n_input) \/ (~b_immutable /\ n_candidate =/= n_input)
   -- if $dynamic_array_value(S, PARRAY n_candidate, eps, false) = ((S, PARRAY n_candidate, pvalueclass))
   -- if $dynamic_array_known_matches(S, PARRAY n_candidate, $dynamic_define_known(S, pconfigcall.SITE, 1))
 def $dynamic_array_duplicate_valid(S, pconfigcall, n_candidate, pvalueclass, n_constants) = false -- otherwise
