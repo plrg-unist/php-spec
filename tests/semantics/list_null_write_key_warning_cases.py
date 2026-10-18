@@ -69,3 +69,26 @@ restore_error_handler();
 echo "U:",isset($a),":",isset($q),":",isset($key),";";
 ''',
 }
+
+SOURCE_ONLY = {
+    'list-null-write-key-existing-alias': b'''<?php
+function list_null_write_existing($n,$m,$f,$l) {
+    $GLOBALS["calls"]++;
+    echo "D:",$n,":",($m==="Using null as an array offset is deprecated, use an empty string instead"),":",$l,";";
+    $GLOBALS["q"]=33;$GLOBALS["outside"]=99;$GLOBALS["key"]=1.5;
+    return true;
+}
+$key=null;$q=2;$a=[""=>&$q,1=>6];
+$outside=8;$x=&$outside;$tail=7;$dest=100;$calls=0;
+set_error_handler("list_null_write_existing",E_DEPRECATED);
+$dest=([
+$key=>&$x,
+1=>$tail
+]=$a);
+restore_error_handler();
+echo "R:",$x,":",$q,":",$a[""],":",$dest[""],":",$outside,":",$tail,":",$key,":",$calls,";";
+$x=55;
+echo "A:",$q,":",$a[""],":",$dest[""],":",$outside,";";
+unset($a,$dest,$q,$x,$key);
+''',
+}
