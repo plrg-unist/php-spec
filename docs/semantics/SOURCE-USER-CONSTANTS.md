@@ -710,7 +710,8 @@ state fronts. Earlier trace-observing native originals remain native-only: two
 CLI45 timeouts and one prior DSL binding failure retain zero credit. Only the
 changed source and affected/unrun checks repeat; Source53/54 evidence is unchanged.
 Sole-owner destruction, wider receivers/returns, NUL/HALT results, owning
-candidates, coerced flags and named/packed/owner forms remain partial.
+candidates, coerced flags outside the NULL follow-up and
+named/packed/owner forms remain partial.
 
 Retained propertyless Stringable `define` names returning non-NUL `::` text reach the
 existing class-name ValueError before registration, with primitive candidates and
@@ -749,8 +750,32 @@ pass on their first attempts: literal default delivery has exactly three PHP
 Warnings, other accepted cases are quiet, and all worker stderr is empty. Initial
 1d6ea057f native/base and later d731 actors use CPU3; Unsupported/B| retains zero
 credit. Source55/56/57 evidence stays at its earlier cuts without replay. Pending
-duplicates under a Stringable-derived Warning throw, owning candidates, coerced
+duplicates under a Stringable-derived Warning throw, owning candidates, non-NULL coerced
 flags, wider lifetimes and call forms remain partial.
+
+Retained propertyless Stringable `define` names now receive captured NULL flags
+with primitive candidates, for the existing admitted non-NUL user-global and
+class-name result domains. One raw-shape alternative hands the converted CONFIG
+to unchanged NULL reception/registration rules. Conversion precedes Deprecated,
+including before a class-name ValueError; strict calls reject the raw object
+before conversion or NULL reception. The actual NULL-handler API trace preserves
+the returned REQUEST name, earlier candidate and raw NULL, unlike the separate
+true-Warning name-byte projection. A returning deprecation handler may publish
+the key first, so the outer call reaches a later duplicate Warning/false result.
+A supplied deprecation-handler Exception instead cancels registration, preserving
+the same Throwable, caller99, callback sibling1877 and live writes. Native peer
+observes effects/identity without trace traversal; state checks the actual trace
+and entire restored discard.
+The [Stringable NULL-flag review](../../coverage/semantics/define-stringable-null-flag-review.json)
+binds four exact originals and 1,084 premises (396+273+97 author,318 independent)
+at af0ba7814/runtime b2c1de3bc across six actual Stringable DEFINE fronts. All nine
+reports pass on their first attempts, with default3 Deprecated+1 Warning, selected1 Warning,
+strict/peer quiet and empty worker stderr. Initial7ec085 native/base and lateraf0
+actors use CPU3; unchanged Unsupported/B| retains zero. Two old55 append-NULL
+raw-shape refusals become source-valid refusals, with all other controls/counts
+unchanged; genuine NULL3 and mismatched2/4 controls cover that admission without
+renewing Source55's717 or Source59's974 cuts. Startup/special/HALT results, other
+coerced flags, owning candidates and wider lifetimes/call forms remain partial.
 
 Positional `define` now rejects retained ordinary nonStringable instances and
 `stdClass` names before primitive optional flag reception or registration, weak

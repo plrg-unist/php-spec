@@ -1263,6 +1263,15 @@ registers a fresh captured value before propagating the same Exception.
 cover both throw phases, normal fresh/duplicate results and strict raw-name rejection.
 Wider values, flag conversions, lifetimes and call forms remain partial.
 
+Retained propertyless Stringable `define()` names now receive captured NULL flags
+with primitive candidates in the admitted non-NUL user-global/class-name domains. The
+Deprecated diagnostic follows conversion and precedes even `::` rejection; strict
+calls still reject the raw name first. A returning handler can create the target
+before duplicate lookup; a throwing deprecation handler cancels registration.
+[Four source agreements and 1,084 state premises](coverage/semantics/define-stringable-null-flag-review.json)
+cover both continuations and authentic converted API captures. Startup/special
+results, other flag conversions and wider values/lifetimes/forms remain partial.
+
 Retained ordinary nonStringable instances and `stdClass` now fail positional
 `define()` name reception before primitive flag processing or registration.
 Later candidate/flag effects finish first, while strict code still reports the

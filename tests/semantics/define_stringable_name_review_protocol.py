@@ -150,7 +150,8 @@ def checks(program, path, name):
     for field in ('.OWNER = (0)', '.NAMED = true', '.KIND = INTRINSIC_CONSTANT', '.SENT = eps',
             '.SENT = pconfigcall.SENT ++ [NAMED_SENT (KNOWN PNULL)]', '.SENT = pconfigcall.SENT[0:1]'):
         bad = 'pconfigcall[' + field + ']'
-        values += ['~$dynamic_define_string_call(' + bad + ')',
+        refusal = '~$dynamic_define_string_valid(S,' + bad + ')' if field == '.SENT = pconfigcall.SENT ++ [NAMED_SENT (KNOWN PNULL)]' else '~$dynamic_define_string_call(' + bad + ')'
+        values += [refusal,
             '~$config_string_site_valid(S_throw,' + bad + ',n_receiver,porigin_child,z_child,pconfigcall.LINE)']
     values += ['pconfigcall_three = pconfigcall[.SENT = pconfigcall.SENT ++ [NAMED_SENT (KNOWN (PBOOL false))]][.INDEX = 3]',
         '$dynamic_define_string_call(pconfigcall_three)', '~$dynamic_define_string_valid(S,pconfigcall_three)',

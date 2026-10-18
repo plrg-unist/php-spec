@@ -7,6 +7,33 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Retained propertyless Stringable `define` names now receive captured NULL flags
+with primitive candidates in admitted user-global/class-name domains. One module400
+raw-shape alternative keeps all source/carrier/saved-site, NULL receive/finish,
+trace and cancellation code exact. Four originals agree at af0ba7814/runtime
+b2c1de3bc: fresh1807/duplicate false-old1807, Deprecated before class-name ValueError,
+returning handler installs1823 before duplicate/false, strict raw-name TypeError,
+and supplied deprecation throw cancels/no outer row while sibling1877 survives.
+All 1,084 premises pass there: 396+273+97 author plus 318 independent across six real
+Stringable fronts, authentic returned REQUEST API name/candidate/NULL, callback
+writes/caller 99, exact restored discard, source/carrier/phase controls and budgets.
+Peer native avoids trace traversal; state inspects the actual three-frame trace.
+Nine reports all PASS/stable/reaped, no failure/retry/timeout; default has 3 Deprecated and
+1 Warning, selected has 1 Warning, strict/peer quiet and empty worker stderr. Initial
+7ec085 native/base and later af0 actors use CPU3; Unsupported/B| retains zero. Two old55
+append-NULL controls become source-valid refusals without older 717/974 replay.
+V79 direct payloads remain disjoint. Startup/special/HALT results, other coerced
+flags, owning candidates and wider lifetime/forms stay partial; Source47/owned-NUL
+remain paused/untouched.
+[Stringable NULL-flag review](coverage/semantics/define-stringable-null-flag-review.json).
+
+Pointwise composition over 9e06d4213 preserves incoming module415/ordered405.
+Module400 and six tests are private-exact; every other runtime path keeps parent
+bytes. Static magic calls, mixed arithmetic Warnings, Closure receiver images,
+Generator delegation and pending ref-return cleanup have no producers here;
+shared conversion/source/trace code is unchanged. Source4/1084 retain their
+private404 cut without a joined actor or renewed execution credit.
+
 Authentic factory/getter/constructor, intrinsic and Fiber Closure captures now
 use standard numeric Notices and private 1/1.0. Only 29 module402 image lines
 change: ordinary intrinsic eligibility mirrors148, CURRENT/static BIND have
