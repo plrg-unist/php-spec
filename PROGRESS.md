@@ -7,6 +7,32 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Ordinary positional `ini_set(NULL, quiet primitive)` now suspends through the
+existing NULL-option marker for admitted deprecation handlers. Captured NULL and
+REQUEST values survive live callee/option/value writes. A returning handler's
+precision8 changes survive the empty-option false result; a supplied handler throw
+cancels the body while preserving sameException/caller99/sibling2003. Strict NULL
+still errors first after all argument effects; ordinary precision recovery stays usable.
+
+Four originals agree exactly: author3 retain `fcac3d863`/`a5ee611ba`, corrected peer1
+and all623 premises (111+178+113+221) use `d4ca9022f`/405. Initial `d48047350`
+native3/baseline on CPU1 remain distinct from later CPU5; genuine baseline Unsupported
+producer continuation after B|V| has zero agreement. Ten reports are stable/reaped,
+9PASS plus the original peer interpreter failure0; no timeout/interruption/survivor.
+An overlapping new trace head was deleted in favor of existing module368 raw INI_SET
+projection, with no accepted source replay. Default PHP Deprecated count1; other PHP
+stderr and accepted worker stderr are empty. New source/carrier/phase/count/budget
+controls pass without old actor renewal. Owning/NaN/legacy-string values and wider
+forms/configuration remain partial; V80 and paused work are untouched.
+[NULL INI-option review](coverage/semantics/ini-set-null-option-review.json).
+
+Composed over `306f147a1`/405 with module172/four tests private-exact and only
+the source-helper declaration removed from incoming400. Owning DEFINE payload,
+dynamic instanceof, missing-CV comparison, owning arithmetic/reference-return and
+literal-reference debt producers are absent here. Every other runtime/schema/ordered
+manifest path stays parent-exact; private source4/state623 cuts are retained without
+a joined actor or replay.
+
 Missing-left `==` and `<` now suspend through handlers for distinct direct CVs
 with a defined scalar right. The missing left stays NULL while current right
 wrappers follow writes, late references and rebinding. Default Warning order and

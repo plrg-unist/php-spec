@@ -27158,20 +27158,25 @@
         "spec/semantics/272-live-precision.watsup",
         "spec/semantics/236-eval-declaration-notices.watsup",
         "spec/semantics/368-assertions.watsup",
-        "spec/semantics/368-assertion-quantity.watsup"
+        "spec/semantics/368-assertion-quantity.watsup",
+        "spec/semantics/172-file-context-intrinsics.watsup"
       ],
       "helper_tests": [
         "tests/semantics/startup_ini_protocol.py",
         "tests/semantics/display_errors_protocol.py",
         "tests/semantics/precision_protocol.py",
-        "tests/semantics/suspended_precision_protocol.py"
+        "tests/semantics/suspended_precision_protocol.py",
+        "tests/semantics/ini_set_null_option_protocol.py",
+        "tests/semantics/ini_set_null_option_review_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/request_environment.py",
         "tests/semantics/startup_ini.py",
         "tests/semantics/display_errors.py",
         "tests/semantics/precision_sources.py",
-        "tests/semantics/suspended_precision_sources.py"
+        "tests/semantics/suspended_precision_sources.py",
+        "tests/semantics/ini_set_null_option_sources.py",
+        "tests/semantics/ini_set_null_option_review_sources.py"
       ],
       "evidence": [
         "vendor/php-src/main/main.c",
@@ -27179,9 +27184,10 @@
         "coverage/semantics/startup-ini-review.json",
         "coverage/semantics/display-errors-review.json",
         "coverage/semantics/precision-review.json",
-        "coverage/semantics/assertion-quantity-review.json"
+        "coverage/semantics/assertion-quantity-review.json",
+        "coverage/semantics/ini-set-null-option-review.json"
       ],
-      "review": "Effective variables_order and auto_globals_jit inputs reviewed; broader configuration remains pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open. Registered two-slot startup225 and modified-only Restore are reviewed in startup-ini-review.json:9 exact profile comparisons/99 state/15 transport at36810, with source-equivalent221-module actual0592 preservation. Wider startup directives/parsing/profiles and lifecycle remain required. Live display_errors237 adds nullable original/live raw get/set/Restore and captured ordinary text-CLI destinations;11 exact profile/source comparisons,76 state premises and17 transport controls pass at b8e8/223. Actualddb6/233 preservation adds no execution credit. Actual231/237 held-original fatal freezing agrees atccd900 after rendering and before queue mode writes; shutdown-functions-review.json records that separate composition. Wider display/configuration and later request stages remain required. Precision272 adds nonnullable registered bytes, raw get/set/Restore and independent optional startup transport while retaining reporting/path/display facts. Partial16 source/profile,194 supplied checks and12 transport cuts remain separate in precision-review.json. Later eval compiler precision and exact array/class image refresh retain scoped source/state cuts in precision-review.json; wider callback, source and configuration contexts remain required. Bounded zend.assertions parser warnings preserve frozen quantity/old return, later live refusal and nested raw/throw/restore effects. Reentrant request retirement is an intentional lifetime-defect boundary; per-round original recapture and warned restore pass two safe originals and182 source-frontier checks plus one pure companion at57ee. Retained-entry Stringable SET adds three safe originals and236 frontier checks at7eaee, preserving converted trace args and real handler retirement. Warned Stringable RESTORE adds two safe originals and211 frontier checks at05db with unary converted trace args, real handler retirement and shared pending Throwable before/after commit. NaN SET separates pre-conversion old return from post-callback raw/original and commits through a pending shared Throwable without second handler entry; two safe originals and247 source-frontier checks plus eight pure companions pass atc2b195. Cleared-original restore preserves NULL raw, empty getter, parsed mode and shared Throwable through no-op restore; two safe originals and323 frontier checks plus12 pure exclusions pass at242576. New/active SET and NaN-fromNULL remain explicit Unsupported follow-ons; last-owner entry and wider configuration remain required. See assertion-quantity-review.json."
+      "review": "Effective variables_order and auto_globals_jit inputs reviewed; broader configuration remains pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open. Registered two-slot startup225 and modified-only Restore are reviewed in startup-ini-review.json:9 exact profile comparisons/99 state/15 transport at36810, with source-equivalent221-module actual0592 preservation. Wider startup directives/parsing/profiles and lifecycle remain required. Live display_errors237 adds nullable original/live raw get/set/Restore and captured ordinary text-CLI destinations;11 exact profile/source comparisons,76 state premises and17 transport controls pass at b8e8/223. Actualddb6/233 preservation adds no execution credit. Actual231/237 held-original fatal freezing agrees atccd900 after rendering and before queue mode writes; shutdown-functions-review.json records that separate composition. Wider display/configuration and later request stages remain required. Precision272 adds nonnullable registered bytes, raw get/set/Restore and independent optional startup transport while retaining reporting/path/display facts. Partial16 source/profile,194 supplied checks and12 transport cuts remain separate in precision-review.json. Later eval compiler precision and exact array/class image refresh retain scoped source/state cuts in precision-review.json; wider callback, source and configuration contexts remain required. Bounded zend.assertions parser warnings preserve frozen quantity/old return, later live refusal and nested raw/throw/restore effects. Reentrant request retirement is an intentional lifetime-defect boundary; per-round original recapture and warned restore pass two safe originals and182 source-frontier checks plus one pure companion at57ee. Retained-entry Stringable SET adds three safe originals and236 frontier checks at7eaee, preserving converted trace args and real handler retirement. Warned Stringable RESTORE adds two safe originals and211 frontier checks at05db with unary converted trace args, real handler retirement and shared pending Throwable before/after commit. NaN SET separates pre-conversion old return from post-callback raw/original and commits through a pending shared Throwable without second handler entry; two safe originals and247 source-frontier checks plus eight pure companions pass atc2b195. Cleared-original restore preserves NULL raw, empty getter, parsed mode and shared Throwable through no-op restore; two safe originals and323 frontier checks plus12 pure exclusions pass at242576. New/active SET and NaN-fromNULL remain explicit Unsupported follow-ons; last-owner entry and wider configuration remain required. See assertion-quantity-review.json. Two-slot positional ini_set(NULL, quiet primitive) now resumes admitted Deprecated handlers through the existing NULL-option marker with source/carrier authentication. Returning and throwing callbacks preserve captured arguments, precision/live writes and caller99; throw cancels the body, strict NULL rejects before callback, and real precision recovery stays usable. Four exact originals retain author3 fcac/a5ee versus corrected peer1 d4ca; all623 SL premises pass at d4ca. Ten stable reports preserve one trace-head interpreter failure0 and baseline0; only redundant new trace projection is deleted, with no accepted replay. Owning/NaN/legacy-string values and wider call/configuration forms remain partial. See ini-set-null-option-review.json."
     },
     {
       "id": "environment.initialization",

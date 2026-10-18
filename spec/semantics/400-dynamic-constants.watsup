@@ -140,7 +140,6 @@ dec $dynamic_halt_call(pconfigcall) : bool
 dec $dynamic_halt_receive(pstate, pconfigcall) : pstate
 dec $dynamic_global_constant_finish(pstate, pconfigcall) : pstate
 dec $dynamic_scalar_define_call(pconfigcall) : bool
-dec $dynamic_scalar_define_arguments(pstate, pconfigcall, nat) : bool
 dec $dynamic_nan_define_name_entry(pstate, pconfigcall) : bool
 dec $dynamic_define_finish(pstate, pconfigcall) : pstate
 def $dynamic_define_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME $user_constant_key(preqbytes), ORIGIN pconfigcall.SITE, VALUE pvalue, CLASS pvalueclass, READS eps, RECEIVES eps}]][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]

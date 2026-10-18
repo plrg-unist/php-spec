@@ -217,6 +217,14 @@ full `include_path` bytes, including callback writes. Primitive/null Restore
 parsing preserves strict direct refusal and weak explicit `Closure->__invoke` calls. Eligible unary
 null deprecations suspend for handlers; normal return, false fallback and throw
 preserve raw mutation and caller arguments.
+
+[Two-slot NULL INI options](coverage/semantics/ini-set-null-option-review.json)
+now resume ordinary positional `ini_set(NULL, quiet primitive)` through admitted
+deprecation handlers. Captured NULL/value arguments survive live writes; a returning
+handler reaches the empty-option `false` result while preserving its precision
+changes, and a supplied throw cancels the body. Strict NULL rejects before the
+handler. Four originals and 623 state premises pass; wider values/forms remain partial.
+
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
 send/callback site. Ordinary Closure PIPE follows caller strictness; normal and
