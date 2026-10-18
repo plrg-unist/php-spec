@@ -190,7 +190,8 @@ rule PhpStep/property-coalesce-false: S ~> S[.TODO = (ORIGIN_RETURN (porigin_par
   -- if $property_coalesce_valid(S, ppropertycoalesce)
 rule PhpStep/property-coalesce-value: S ~> S[.TODO = (ORIGIN_RETURN (porigin_parent)) :: (COALESCE_RESULT expression_right z_left z_right) :: ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (PROPERTY_COALESCE_RESULT ppropertycoalesce true) :: (ORIGIN_RETURN (porigin_parent)) :: (COALESCE_QUIET expression_right z_left z_right) :: ptask_tail*
-  -- if S.COMPLETION = NORMAL /\ S.RESULT = KNOWN pvalue
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN pvalue
   -- if $property_coalesce_valid(S, ppropertycoalesce)
 
 ;; Abrupt completion drops the same owner and never evaluates the quiet RHS.
