@@ -18,6 +18,14 @@ Plain Closures and unstamped clones remain Unsupported. Other admitted flag
 routes compose structurally without extra source credit; wider domains stay
 partial. [Certified Closure review](coverage/semantics/define-certified-closure-review.json).
 
+Composed over `38493a809`/405 with the exact tested400+3 patch, preserving
+incoming runtime/manifest bytes and inventory prefixes. All reached/projected
+states and fold memories lift with LITERALARRAYRETAINED/LITERALARRAYDEBTS empty;
+roots, debt validators and compiler-memory publication reduce to previous results.
+INI_SET, Generator, destructor-return history and lossy-float literal-key plans
+are unselected; counter arithmetic is quiet. Source3/state614 keep their private
+cuts without a joined actor, accepted replay or renewed credit.
+
 Selected-reference ADD now delays initially bad RHS text until the LEFT Warning
 returns. Four originals pass at `d87c533dc`/405; three focused fixtures pass 428
 premises at `8aceff008`/405, covering strict float `18.0`, live bool/string TypeError
