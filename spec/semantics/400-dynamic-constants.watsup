@@ -16,6 +16,8 @@ dec $dynamic_scalar_constant_call(pconfigcall) : bool
 dec $dynamic_null_constant_call(pconfigcall) : bool
 dec $dynamic_null_define_call(pconfigcall) : bool
 dec $dynamic_scalar_define_flag_call(pconfigcall) : bool
+dec $dynamic_scalar_define_flag_values(pconfigcall) : (preqbytes, pvalue, pvalue)?
+dec $dynamic_scalar_define_flag_valid(pstate, pconfigcall) : bool
 dec $dynamic_null_define_flag_call(pconfigcall) : bool
 dec $dynamic_nan_define_flag_call(pconfigcall) : bool
 dec $dynamic_class_define_call(pconfigcall) : bool
@@ -85,6 +87,13 @@ def $dynamic_define_source(S, porigin) = true
   -- if $intrinsic_count(S, porigin) = (n_count)
   -- if $(n_count >= 2 /\ n_count <= 3)
 def $dynamic_define_source(S, porigin) = false -- otherwise
+;; Quiet array flags retain the raw argument: integers, finite floats and existing
+;; string carriers, without recovering legacy identity.
+dec $dynamic_array_quiet_flag(pvalue) : bool
+def $dynamic_array_quiet_flag(PINT i) = true
+def $dynamic_array_quiet_flag(PFLOAT n) = true
+  -- if $float_decode(n) = FINITE n_sign n_numerator n_denominator
+def $dynamic_array_quiet_flag(pvalue) = ($method_string(pvalue) /\ $dynamic_constant_class(pvalue) =/= eps) -- otherwise
 dec $dynamic_define_values(pconfigcall) : (preqbytes, pvalue)?
 def $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_name), NAMED_SENT (KNOWN pvalue)]
@@ -95,6 +104,9 @@ def $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
 def $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_name), NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN (PBOOL true))]
   -- if $string_bytes(pvalue_name) = (preqbytes)
+def $dynamic_define_values(pconfigcall) = ((preqbytes, PARRAY n_array))
+  -- if $dynamic_scalar_define_flag_values(pconfigcall) = ((preqbytes, PARRAY n_array, pvalue_flag))
+  -- if $dynamic_array_quiet_flag(pvalue_flag)
 def $dynamic_define_values(pconfigcall) = eps -- otherwise
 
 dec $dynamic_constant_case_flag(pconfigcall) : bool
@@ -156,7 +168,7 @@ def $dynamic_define_finish(S, pconfigcall) = $config_error(S[.TODO = ptask_tail*
   -- if $dynamic_define_known(S, pconfigcall.SITE, 1) = eps
   -- if $dynamic_array_recursive(S, PARRAY n_array, eps) = (true)
   -- if S.TODO = ptask :: ptask_tail*
-  -- if ptask = CONFIG_INVOKE pconfigcall \/ ptask = DYNAMIC_CONSTANT_CASE_WARNING pconfigcall
+  -- if ptask = CONFIG_INVOKE pconfigcall \/ ptask = DYNAMIC_CONSTANT_CASE_WARNING pconfigcall \/ ptask = DYNAMIC_SCALAR_DEFINE_FLAG_RESULT pconfigcall
 def $dynamic_define_finish(S, pconfigcall) = $error_dispatch(S_copy[.TODO = (DYNAMIC_ARRAY_CONSTANT_DUPLICATE pconfigcall n_candidate pvalueclass n_constants) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 2, ptbytes_message, pconfigcall.LINE, DIAGNOSTIC "Warning" ptbytes_message pconfigcall.LINE, DYNAMIC_ARRAY_CONSTANT_DUPLICATE pconfigcall n_candidate pvalueclass n_constants)
   -- if n_constants = |S.USERCONSTANTS|
   -- if $dynamic_array_duplicate_call_valid(S, pconfigcall, n_constants)
@@ -700,6 +712,7 @@ def $dynamic_array_call_valid(S, pconfigcall) = true
   -- if $config_invoke_valid(S, pconfigcall)
   -- if $dynamic_array_source(S, pconfigcall.SITE)
   -- if $dynamic_define_values(pconfigcall) = ((preqbytes, PARRAY n_array))
+  -- if ~$dynamic_scalar_define_flag_call(pconfigcall) \/ ($dynamic_scalar_define_flag_valid(S, pconfigcall) /\ ~$config_strict(S, pconfigcall))
   -- if $dynamic_constant_global_name(preqbytes)
   -- if ~$dynamic_constant_initial(preqbytes)
   -- if $dynamic_define_name_matches($user_constant_key(preqbytes), $dynamic_define_known(S, pconfigcall.SITE, 0))
@@ -1828,7 +1841,6 @@ dec $dynamic_define_quiet_flag(pvalue) : bool
 def $dynamic_define_quiet_flag(PINT i) = true
 def $dynamic_define_quiet_flag(PFLOAT n) = true -- if (b, false) = $number_bool(NFLOAT n)
 def $dynamic_define_quiet_flag(pvalue) = $method_string(pvalue) -- otherwise
-dec $dynamic_scalar_define_flag_values(pconfigcall) : (preqbytes, pvalue, pvalue)?
 def $dynamic_scalar_define_flag_values(pconfigcall) = ((preqbytes, pvalue, pvalue_flag))
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_name), NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN pvalue_flag)]
   -- if $string_bytes(pvalue_name) = (preqbytes)
@@ -1839,7 +1851,6 @@ def $dynamic_scalar_define_flag_call(pconfigcall) = true
   -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps
   -- if $dynamic_scalar_define_flag_values(pconfigcall) = ((preqbytes, pvalue, pvalue_flag))
 def $dynamic_scalar_define_flag_call(pconfigcall) = false -- otherwise
-dec $dynamic_scalar_define_flag_valid(pstate, pconfigcall) : bool
 def $dynamic_scalar_define_flag_valid(S, pconfigcall) = true
   -- if $dynamic_scalar_define_flag_call(pconfigcall) /\ $config_invoke_valid(S, pconfigcall)
   -- if $dynamic_define_source(S, pconfigcall.SITE)
@@ -1851,6 +1862,20 @@ def $dynamic_scalar_define_flag_valid(S, pconfigcall) = true
   -- if $string_plain(pvalue_name) = pvalue_name \/ $string_carrier_valid(S, pvalue_name)
   -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
   -- if $string_plain(pvalue_flag) = pvalue_flag \/ $string_carrier_valid(S, pvalue_flag)
+;; Reception authenticates the captured array without traversing its leaves:
+;; strict nonbool rejection and the ignored Warning precede cycle validation.
+def $dynamic_scalar_define_flag_valid(S, pconfigcall) = true
+  -- if $dynamic_scalar_define_flag_call(pconfigcall) /\ $config_invoke_valid(S, pconfigcall)
+  -- if $dynamic_define_source(S, pconfigcall.SITE)
+  -- if $dynamic_scalar_define_flag_values(pconfigcall) = ((preqbytes, PARRAY n_array, pvalue_flag))
+  -- if $dynamic_array_quiet_flag(pvalue_flag)
+  -- if $dynamic_constant_global_name(preqbytes) /\ ~$dynamic_constant_initial(preqbytes)
+  -- if $dynamic_scalar_define_arguments(S, pconfigcall, 0)
+  -- if $named_slot_at(pconfigcall.SENT, 0) = NAMED_SENT (KNOWN pvalue_name)
+  -- if $string_plain(pvalue_name) = pvalue_name \/ $string_carrier_valid(S, pvalue_name)
+  -- if $string_plain(pvalue_flag) = pvalue_flag \/ $string_carrier_valid(S, pvalue_flag)
+  -- if $(n_array < |S.ARRAYS|) /\ HARRAY n_array <- S.ALLOCATIONS
+  -- if $dynamic_array_known_matches(S, PARRAY n_array, $dynamic_define_known(S, pconfigcall.SITE, 1))
 def $dynamic_scalar_define_flag_valid(S, pconfigcall) = false -- otherwise
 dec $dynamic_scalar_define_flag_case_valid(pstate, pconfigcall) : bool
 def $dynamic_scalar_define_flag_case_valid(S, pconfigcall) = true
@@ -1862,10 +1887,14 @@ dec $dynamic_scalar_define_flag_duplicate_valid(pstate, pconfigcall, nat) : bool
 def $dynamic_scalar_define_flag_duplicate_valid(S, pconfigcall, n_constants) = true
   -- if $dynamic_scalar_define_flag_valid(S, pconfigcall) /\ ~$config_strict(S, pconfigcall)
   -- if $dynamic_scalar_define_flag_values(pconfigcall) = ((preqbytes, pvalue, pvalue_flag))
+  -- if $dynamic_constant_class(pvalue) =/= eps
   -- if $(n_constants <= |S.USERCONSTANTS|)
   -- if $user_constant_at(S.USERCONSTANTS[0:n_constants], $user_constant_key(preqbytes)) =/= eps
 def $dynamic_scalar_define_flag_duplicate_valid(S, pconfigcall, n_constants) = false -- otherwise
 dec $dynamic_scalar_define_flag_finish(pstate, pconfigcall) : pstate
+def $dynamic_scalar_define_flag_finish(S, pconfigcall) = $dynamic_define_finish(S, pconfigcall)
+  -- if $dynamic_scalar_define_flag_valid(S, pconfigcall) /\ ~$config_strict(S, pconfigcall)
+  -- if $dynamic_scalar_define_flag_values(pconfigcall) = ((preqbytes, PARRAY n_array, pvalue_flag))
 def $dynamic_scalar_define_flag_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME $user_constant_key(preqbytes), ORIGIN pconfigcall.SITE, VALUE pvalue, CLASS pvalueclass, READS eps, RECEIVES eps}]][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $dynamic_scalar_define_flag_valid(S, pconfigcall) /\ ~$config_strict(S, pconfigcall)
   -- if $dynamic_scalar_define_flag_values(pconfigcall) = ((preqbytes, pvalue, pvalue_flag))
@@ -1940,6 +1969,21 @@ def $error_handler_trace_values(S, pcallcontext, pconfigcall_api) = $trace_extra
 ;; Unlike ZPP failure, an ignored-flag handler throw does not stop the C body.
 ;; A fresh primitive binding is installed before the original exception escapes.
 dec $dynamic_scalar_define_flag_pending(pstate, pconfigcall) : pstate
+def $dynamic_scalar_define_flag_pending(S, pconfigcall) = S
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $throwable_live(S, n)
+  -- if $dynamic_scalar_define_flag_case_valid(S, pconfigcall)
+  -- if $dynamic_scalar_define_flag_values(pconfigcall) = ((preqbytes, PARRAY n_array, pvalue_flag))
+  -- if $dynamic_define_known(S, pconfigcall.SITE, 1) = eps
+  -- if $dynamic_array_recursive(S, PARRAY n_array, eps) = (true)
+def $dynamic_scalar_define_flag_pending(S, pconfigcall) = S_copy[.RESULT = S.RESULT][.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME $user_constant_key(preqbytes), ORIGIN pconfigcall.SITE, VALUE pvalue, CLASS pvalueclass, READS eps, RECEIVES eps}]]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $throwable_live(S, n)
+  -- if $dynamic_scalar_define_flag_case_valid(S, pconfigcall)
+  -- if $dynamic_scalar_define_flag_values(pconfigcall) = ((preqbytes, PARRAY n_array, pvalue_flag))
+  -- if $source_constant_lookup(S, preqbytes) = eps
+  -- if $dynamic_array_value(S, PARRAY n_array, eps, true) = ((S_copy, pvalue, pvalueclass))
+  -- if $dynamic_array_known_matches(S_copy, pvalue, $dynamic_define_known(S_copy, pconfigcall.SITE, 1))
 def $dynamic_scalar_define_flag_pending(S, pconfigcall) = S[.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME $user_constant_key(preqbytes), ORIGIN pconfigcall.SITE, VALUE pvalue, CLASS pvalueclass, READS eps, RECEIVES eps}]]
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if $throwable_live(S, n)
@@ -2115,7 +2159,16 @@ def $dynamic_scalar_define_flag_pending(S, pconfigcall) = $dynamic_define_pendin
   -- if $throwable_live(S, n)
   -- if $dynamic_scalar_define_flag_case_valid(S, pconfigcall)
   -- if $dynamic_scalar_define_flag_values(pconfigcall) = ((preqbytes, pvalue, pvalue_flag))
+  -- if $dynamic_constant_class(pvalue) =/= eps
   -- if $source_constant_lookup(S, preqbytes) =/= eps
+def $dynamic_scalar_define_flag_pending(S, pconfigcall) = $dynamic_define_pending_duplicate(S_copy[.RESULT = S.RESULT], preqbytes, pconfigcall.LINE)
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $throwable_live(S, n)
+  -- if $dynamic_scalar_define_flag_case_valid(S, pconfigcall)
+  -- if $dynamic_scalar_define_flag_values(pconfigcall) = ((preqbytes, PARRAY n_array, pvalue_flag))
+  -- if $source_constant_lookup(S, preqbytes) =/= eps
+  -- if $dynamic_array_value(S, PARRAY n_array, eps, true) = ((S_copy, pvalue, pvalueclass))
+  -- if $dynamic_array_known_matches(S_copy, pvalue, $dynamic_define_known(S_copy, pconfigcall.SITE, 1))
 
 ;; NaN bool reception warns before the C body; the raw API argument stays NaN.
 ;; A receive-time throw cancels publication, unlike a later ignored-flag throw.

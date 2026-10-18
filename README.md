@@ -1388,11 +1388,11 @@ Completed user-instance donors also retain their exact construction receipt and
 pointer in direct definitions and copied array leaves. Typed property aliases
 stay shared; existing normal, throwing-handler and shutdown cleanup retain the
 ordinary owners. [Instance define review](coverage/semantics/define-certified-instance-review.json).
-Fresh definitions with an omitted or captured boolean third flag also copy nonempty
-array trees containing certified stdClass or user-instance leaves. Copied
-containers freeze source reference values while object pointers and property
-writes remain shared, including
-selected eval calls and nested query COW. [Array-object define review](coverage/semantics/define-stdclass-array-review.json).
+Fresh definitions also copy nonempty array trees containing certified stdClass
+or user-instance leaves under the admitted flags. Copied containers freeze source
+reference values while object pointers and property writes remain shared,
+including selected eval calls and nested query COW.
+[Array-object define review](coverage/semantics/define-stdclass-array-review.json).
 Duplicate nonempty array definitions retain a private canonical candidate through
 the Warning while callbacks and Exception traces keep the original API argument.
 Normal false delivery and throwing-handler cleanup retire the candidate, preserving
@@ -1411,6 +1411,12 @@ Exception and Previous chain without a new ValueError, copy or binding. Acyclic
 duplicates still copy, then retire the rejected containers while preserving the
 old row and original trace input; an eligible handler is not entered again.
 [Pending-array review](coverage/semantics/define-array-true-pending-review.json).
+Array definitions also receive integer, finite-float and authenticated string
+flags while retaining their raw API arguments. Weak false values skip the
+ignored-case Warning; truthy values warn before validation and copying. Strict
+nonboolean calls raise TypeError first, including cyclic captured inputs.
+Callback COW, pending duplicate cleanup and trace aliases retain the same owners.
+[Scalar array-flag review](coverage/semantics/define-array-scalar-flag-review.json).
 Ordinary uncertified objects, other owning leaves and wider
 flags/names remain partial.
 Class-qualified `defined` now checks inherited user constants with lexical visibility

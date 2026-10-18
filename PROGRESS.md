@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Array `define` now receives integer, finite-float and authenticated string third
+flags without replacing the raw API capture. Weak false values skip the ignored
+Warning; truthy values warn before array validation/copy. Strict calls reject raw
+nonboolean flags before that body, even with a late-created captured cycle.
+Existing array markers and pending cleanup preserve callback COW, trace aliases
+and rejected-copy ownership. Three sources agree at a03fcfe86/401; all 549 focused
+premises pass at 4d585: 233 main, 96 strict eval and 220 independent, first attempts
+at SL90. The strict Error allocates only four trace tables; raw request flags and
+trace-only input remain distinct from retired duplicate copies. NULL/nonfinite/
+identity-unknown flags and wider domains remain partial; Source47/56 are untouched.
+[Scalar array-flag review](coverage/semantics/define-array-scalar-flag-review.json).
+
 Binary `**` with a leading numeric LEFT string now selects both reference cells
 before converting LEFT and the delayed RHS. A first Warning may repair bad text; each
 number survives its Warning, then both are historical at the final zero-base/
@@ -249,8 +261,8 @@ cleanup retires only the private candidate. Source3 agrees at b007/401; all 629 
 premises pass at bcdb: main263, eval180 and independent186. Main reuses its
 original fixture after a timing-only retry (98.75s/SL150); eval and peer pass
 their first executions at SL90. The original SL90 timeout and
-recorder count preflight remain zero; no source/native/runtime replay. Coerced
-flags remain partial; paused Source47 NaN/precision behavior is untouched.
+recorder count preflight remain zero; no source/native/runtime replay. Other flag
+conversions remain partial; paused Source47 NaN/precision behavior is untouched.
 [True-flag array review](coverage/semantics/define-array-true-flag-review.json).
 
 Composed over a560dd4c/401 with the exact tested400 delta and all incoming paths

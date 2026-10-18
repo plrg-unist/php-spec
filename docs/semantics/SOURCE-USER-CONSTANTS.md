@@ -356,7 +356,7 @@ stderr each contain one conversion Warning; strict/peer are quiet. Previous mark
 domains are unchanged; NUL/coerced names, owning/wider values, wider NaN producers
 and full family closure remain partial.
 
-Fresh array definitions with an omitted or captured boolean third flag
+Fresh array definitions with an omitted, boolean or admitted quiet scalar third flag
 recursively dereference source cells into new DIRECT entries. Reinserting surviving
 keys rebuilds NEXT, positions and serial
 metadata; ordinary copies and later source/reference writes preserve the constant.
@@ -404,7 +404,7 @@ the live flag; the original API input and private snapshot keep their distinct
 owners. The existing fold also composes with primitive/carrier trees and fresh
 top-level empties; new exact sources focus certified object leaves. Stored-row
 source validation remains structural and does not reconstruct a past mutable
-flag. Coerced flags remain partial.
+flag. Other flag conversions remain partial.
 [False-flag review](../../coverage/semantics/define-stdclass-array-false-flag-review.json).
 
 A captured true flag emits its ignored-case Warning before recursive validation,
@@ -429,8 +429,22 @@ duplicate, canonical copying still precedes registration; the existing pending
 warning policy skips an eligible callback, and ordinary cleanup retires the
 unregistered containers. The old row, callback side rows and trace-owned input
 survive. Real trace-bucket references and a fresh false-flag retry distinguish
-shared source cells from copied recovery/query containers. Coerced array flags
+shared source cells from copied recovery/query containers. Other flag conversions
 remain partial. [Pending-array review](../../coverage/semantics/define-array-true-pending-review.json).
+
+Quiet nonboolean array flags admit integers, finite floats and existing string
+carriers. Weak reception computes a C boolean without replacing the captured
+argument. False values proceed directly; truthy values use the existing ignored
+Warning and only then validate/copy/register. A throwing Warning preserves the
+same pending cyclic/fresh/duplicate behavior under that original raw capture.
+Strict calls reject nonboolean flags before the Warning or recursive-array check,
+after all argument effects. Header/source/known-value and carrier guards run
+without folding the array; primitive duplicate markers remain separate from the
+private-array marker. Exact sources distinguish callback caller-CV COW, retained
+request-string flags, copied candidates and trace-only inputs, with real bucket
+references and query COW. NULL, nonfinite-float and identity-unknown byte-only
+string flags remain outside this extension.
+[Scalar array-flag review](../../coverage/semantics/define-array-scalar-flag-review.json).
 
 Top-level empty values use the existing source-pool or retained immutable flag.
 An authenticated immutable empty keeps its table and `PVARRAY true eps`; a mutable
@@ -839,7 +853,7 @@ The matching engine routes are `ZEND_FUNCTION(define)`/`ZVAL_COPY`,
 and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`. `PHP_FUNCTION(constant)` uses
 exception-class lookup and `ZVAL_COPY_OR_DUP`; `zend_declare_typed_class_constant`
 interns direct string values before installation.
-Stored cyclic trees, other objects, coerced array flags,
+Stored cyclic trees, other objects, NULL/nonfinite/identity-unknown array flags,
 Stringable names beyond the bounded retained query/DEFINE domains,
 array names beyond the bounded flat query/DEFINE domains,
 array/object values with scalar or null names, true/NULL/NaN

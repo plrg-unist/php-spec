@@ -58,8 +58,8 @@ def flag_checks():
         '$dynamic_constant_case_flag(pconfigcall_true)',
         '$dynamic_array_call_valid(S,pconfigcall_true)',
         'pconfigcall_nonbool = pconfigcall[.SENT = pconfigcall_before.SENT ++ [NAMED_SENT (KNOWN (PINT 0))]]',
-        '$dynamic_define_values(pconfigcall_nonbool) = eps',
-        '~$dynamic_array_call_valid(S,pconfigcall_nonbool)']
+        '$dynamic_define_values(pconfigcall_nonbool) = $dynamic_define_values(pconfigcall)',
+        '$dynamic_array_call_valid(S,pconfigcall_nonbool)']
 
 
 def checks(initial,name,stdout):
