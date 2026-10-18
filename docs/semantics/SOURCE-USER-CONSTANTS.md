@@ -77,10 +77,11 @@ The quiet-coalesce path captures the already computed left result before tempora
 ## Dynamic global constants
 
 Module400 implements `define`/`defined` for global string names, primitive
-values and bounded array snapshots, including authenticated interned and request strings. Existing CONFIG
+values, certified stdClass/user-instance donors and bounded array snapshots,
+including authenticated interned and request strings. Existing CONFIG
 argument evaluation and retained dynamic-callee selection supply the actual
-completed arguments. Registration stores the primitive value or copied array
-snapshot in `USERCONSTANTS`; later
+completed arguments. Registration stores the value, captured object pointer or
+copied array snapshot in `USERCONSTANTS`; later
 changes to the name or value CV do not change the row. The string class follows
 its actual carrier (`PVSTRING true` for interned, false for request strings).
 Identity-unknown legacy scalar string payloads remain Unsupported. Array leaves
@@ -93,7 +94,7 @@ for lookup separately. Fixed global/explicit-global `define` and retained dynami
 selection authenticate the call site; namespaced fallback is outside this slice.
 
 Public row checks require a genuine source/selection, canonical unique name,
-matching primitive/carrier class and empty read/receive metadata. Available immutable
+matching value class and empty read/receive metadata. Available immutable
 positional literal facts constrain names and values. Variable-derived payloads keep
 the existing structural value policy: the row is the runtime capture, not a full
 proof of past argument evaluation. Validators never reread mutable CVs.
@@ -360,8 +361,9 @@ recursively dereference source cells into new DIRECT entries. Reinserting surviv
 keys rebuilds NEXT, positions and serial
 metadata; ordinary copies and later source/reference writes preserve the constant.
 Nonempty acyclic trees contain primitive/carrier leaves, byte-only strings and
-certified live stdClass donors. Existing carrier classes and object
-birth classes are retained; copied containers share the exact object pointers.
+certified live stdClass or user-instance donors. Existing carrier classes and
+object birth classes are retained; copied containers share the exact object
+pointers.
 Repeated noncyclic children may copy independently.
 Byte-only strings keep their exact bytes in 0..255 and use conservative `PVSTRING false`
 without string-table allocation or recovered scanner/refcount provenance. This
@@ -446,18 +448,25 @@ no duplicate Warning. Explicitly breaking edges allows a fresh retry or ordinary
 duplicate reporting. Invalid edges remain separate from genuine recursion, and
 known compiled literal payloads cannot be replaced by forged cyclic captures.
 [Recursive-input review](../../coverage/semantics/define-recursive-array-review.json).
-Plain strings inside compiled literal arrays remain a separate leaf-admission
-boundary; the accepted scalar/carrier fold is unchanged.
+Plain compiled string leaves remained a separate boundary at that cut; the
+literal-string follow-up above admits them without replaying that campaign.
 
-String-name `define` also retains an already-certified live stdClass donor with
-an omitted or false flag. Registration stores the captured object pointer and
-its completed-birth class, transferring the call owner to a constant-row owner
+String-name `define` also retains an already-certified live stdClass donor or
+completed user instance with an omitted or false flag. Registration stores the
+captured object pointer and its completed-birth class, transferring the call owner
+to a constant-row owner
 without allocation. Named/selected sends retain their earlier value even when
 a later argument rebinds the caller's CV. Duplicate warnings keep the original
 row and callback property writes; throwing handlers preserve the Exception trace
 owners until ordinary catch/unset cleanup. Historical rows validate their stored
 birth/value and source policy, without reconstructing a past mutable CV or flag.
 [Certified define review](../../coverage/semantics/define-stdclass-review.json).
+User-instance admission derives the exact object/SITE class from its recorded
+global construction and reuses completed-header, publication-prefix, no-busy-phase
+and live-allocation guards. Copying arrays shares the same instance pointer;
+property writes remain visible through donor rows and copied leaves. No constructor
+is replayed, and existing destructor/trace cleanup keeps its ordinary owners.
+[Instance define review](../../coverage/semantics/define-certified-instance-review.json).
 Ordinary uncertified objects, other owning array leaves,
 owning true/coerced flags, coerced names and
 wider owning define domains remain partial.

@@ -1306,9 +1306,14 @@ stdClass donors. Named/selected calls preserve the captured pointer through late
 CV changes, and duplicate handlers keep the old binding and property writes on
 normal return or throw. Existing call and Exception-trace cleanup release the
 temporary owners. [Certified define review](coverage/semantics/define-stdclass-review.json).
+Completed user-instance donors also retain their exact construction receipt and
+pointer in direct definitions and copied array leaves. Typed property aliases
+stay shared; existing normal, throwing-handler and shutdown cleanup retain the
+ordinary owners. [Instance define review](coverage/semantics/define-certified-instance-review.json).
 Fresh definitions with an omitted or captured false third flag also copy nonempty
-array trees containing certified stdClass leaves. Copied containers freeze source
-reference values while object pointers and property writes remain shared, including
+array trees containing certified stdClass or user-instance leaves. Copied
+containers freeze source reference values while object pointers and property
+writes remain shared, including
 selected eval calls and nested query COW. [Array-object define review](coverage/semantics/define-stdclass-array-review.json).
 Duplicate nonempty array definitions retain a private canonical candidate through
 the Warning while callbacks and Exception traces keep the original API argument.
@@ -1317,7 +1322,7 @@ the old row and callback writes. [Array-duplicate review](coverage/semantics/def
 Explicit false flags retain their captured value through callbacks and traces;
 copying observes reference changes from all argument expressions.
 [False-flag array review](coverage/semantics/define-stdclass-array-false-flag-review.json).
-Ordinary uncertified objects, other owning leaves, nested empties and wider
+Ordinary uncertified objects, other owning leaves and wider
 flags/names remain partial.
 Class-qualified `defined` now checks inherited user constants with lexical visibility
 and quiet misses. Named autoload resumes the same captured query once.

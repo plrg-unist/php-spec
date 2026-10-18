@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Certified completed user-instance donors now retain their exact pointer and birth
+class in direct `define` rows and copied array leaves. Typed property aliases stay
+shared; normal and throwing duplicate handlers preserve the old row, callback
+writes and original API traces. Existing eager cleanup releases call/candidate
+owners before delivery; ordinary store callbacks remain after `A|`. Three lines in module400 reuse exact
+source/SITE, completed-header, publication-prefix and live guards. Three originals
+agree at 35a6/401. The 571 focused premises pass across main (136 at 3e4), eval
+(216 at 2ed) and independent (219 at 0a6) checks, with identical runtime bytes.
+The first peer CLI45 timeout and two eager-phase fixture failures retain zero;
+only exact-path timing and affected proofs repeat, preserving accepted checks.
+One zero-budget restoration reuses the ordinary dispatch. Constants stays partial;
+ordinary uncertified/other owning values and wider flags/lifetimes remain open.
+[Certified instance review](coverage/semantics/define-certified-instance-review.json).
+
 Closure binding now receives raw, interned and request string scope names through
 existing CONFIG calls. Exact lowercase `static`, case/slash class lookup and
 private parent/child scope selection stay distinct; raw captured arguments and
