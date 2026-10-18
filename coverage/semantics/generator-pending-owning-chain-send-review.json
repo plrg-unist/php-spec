@@ -1,0 +1,82 @@
+{
+  "milestone": "Iterator31: pending ancestor SEND with an owning copied Generator return",
+  "status": "Validated and integrated after independent private and actual-parent review",
+  "independent_reviewer": "iterator_review_15",
+  "base": "d04108822d75a189d48390df823053ea200ee2c4",
+  "native_baseline_cut": "7ed17008e2dc47f5795e7e0867e33a3ee6d5e967",
+  "source_state_strict_cut": "a29026a4a6fc6c7d44e219a860d992c1051a6441",
+  "tested_runtime": "3d94e5d6d",
+  "modules": 405,
+  "scope": "Pending one-argument literal SEND through finite native Generator links to an owning simple-CV assigned yield-from COMPLETE. Receiver, physical middle and return child are distinct; no owning ancestor task/HELD, parked history, acquisition, loop/startpack/borrowed API or active GC.",
+  "semantics": [
+    "A separate finite walk ends in unchanged normal return_waiting. A borrowed refresh view admits the real no-getter source before SEND performs that refresh. The old direct SEND arm, pending THROW, roots, close and ordinary consume transitions remain exact.",
+    "SEND clears only the receiver initialization bit and returns the physical current snapshot without consuming or overwriting the copied return. YIELD_FROM has no send target. Normal argument cleanup precedes receiver release; actual outer next consumes the return, while inherited-pending middle close retains it and omits its finally.",
+    "Snapshot capture precedes real reference-row COW and Generator-alias retirement. After COW the return and snapshot own two old-array counts with one payload edge; the raw cache follows the new array. A used object result survives retired receiver/middle storage, independently of the retained return. Returned embedded cells stay mutable."
+  ],
+  "source_authority": [
+    "Pinned Zend/zend_generators.c::zend_generator_update_current/get_current detach the completed child and copy retval into the physical YIELD_FROM slot. Generator::send obtains that root, calls zend_generator_resume on the original receiver and RETURN_COPY_DEREF before call argument/receiver cleanup.",
+    "zend_generator_resume DO_INIT clears only orig_generator when current is defined; ZEND_YIELD_FROM resets send_target=NULL. Existing unfinished-frame/storage cleanup distinguishes normal consumption from inherited-pending close. These are pinned observations; no engine bug or intentional divergence is classified."
+  ],
+  "validation_identity": {
+    "php": "8.5.10 CLI NTS 64-bit; source 34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml 5.1.0; SL, caches off, encountered determinism",
+    "environment": "profile.json, PHP -n, LC_ALL=C, TZ=UTC, PHP_SPEC_SCRIPT_ENCODING unset. Native/baseline serial CPU1; elaboration/strict/source/state serial CPU4. Exact commands and raw outputs in reports; all actors reaped/released."
+  },
+  "runtime_sha256": {
+    "spec/semantics/289-generator-delegation.watsup": "afe5a5663a5796416797eb2978865d17ec943360346745e116a388a2cfcf8656"
+  },
+  "reports": {
+    "native_author": ".tools/generator-pending-owning-chain-send-native-l8ndknam/report.json",
+    "native_peer": ".tools/generator-pending-owning-chain-send-review-native-te8ikrhe/report.json",
+    "unchanged_baseline": ".tools/generator-pending-owning-chain-send-baseline-6qt4rpx8/report.json",
+    "fixture_elaboration": ".tools/generator-pending-owning-chain-send-state-elab-0gnmkj8m/report.json",
+    "strict405": ".tools/generator-pending-owning-chain-send-author-sl-5ziyb3wj/report.json",
+    "source_author": ".tools/generator-pending-owning-chain-send-source-nswx7a1_/report.json",
+    "source_peer": ".tools/generator-pending-owning-chain-send-review-source-qapmug8d/report.json",
+    "state_author208": ".tools/fiber-state-review-gb0vk257/report.json",
+    "state_author128": ".tools/fiber-state-review-zd6zsgdv/report.json",
+    "state_peer183": ".tools/fiber-state-review-fucqdqjf/report.json",
+    "state_peer134": ".tools/fiber-state-review-jkxari__/report.json"
+  },
+  "native_and_baseline": {
+    "native_originals": 4,
+    "model_agreements": 0,
+    "baseline": "Unchanged source9522447b reuses exact l8nd native tuple, no PHP replay. Genuine public Unsupported Generator force-close at request end after eight OUTPUT chunks P|O|U|M|C|L|H|S|, exit1/empty stderr/no timeout/null diagnostic and exit_status. No production edit before this gate."
+  },
+  "strict_and_elaboration": "Four current fixtures elaborate with unique EOF/all four headers under 60s, zero execution credit. Ordered 405-module strict SL returns exact true/empty stderr under 120s; both HEAD/input stable.",
+  "normal_sources": {
+    "normal_agreements": 4,
+    "contract": "Two author and two independent exact originals reuse captured native tuples, model 100/process 120s, normal/exit0/empty stderr/no timeout/stable HEAD+inputs. No native or prior campaign replay."
+  },
+  "reached_states": {
+    "premises": 653,
+    "author": 336,
+    "independent": 317,
+    "local_checks": 633,
+    "generic_reachability": 20,
+    "checks": [
+      "Real no-getter GEN_ARGS refresh queues child, argument, upper in that order. R1 temporarily becomes child RETURN1 plus copied COMPLETE1 until child cleanup. Only upper clears initialization; finite-depth and source/link/tail/HELD/duplicate/park refusals precede the complete normal outer-next ending.",
+      "Real OP_EXIT after normal argument alias-drop has retired upper/middle/child, D1 solely in saved API value and independent retained return-array1. Actual EXIT transfers D1 to RESULT without changing the heap; caller precedes D destruction, return payload stays after E.",
+      "Real OP_EXIT after argument COW keeps upper cleared/middle pending, old-array2/one old-object edge and raw cache on the new array. Actual EXIT preserves counts through the complete native close ending.",
+      "Real post-close shared-cell WRITE queues oldR retirement, keeps newC through the retained cell and has null unused OP.VALUE. OldR precedes WRITE; newC remains request-late."
+    ],
+    "budgets": "SL 120s/group, seek 4000/full ending 4000, public+heap validity, zero-budget identity and whole/split equality. All four groups true/exit0/empty stderr/no timeout/stable HEAD+inputs."
+  },
+  "failures_and_bridges": [],
+  "compatibility": "No previous campaign renewed. Direct28 and recursive paused-yield SEND selectors remain disjoint; THROW and405 unpack unchanged. M115 ordinary typed by-reference return producers and dynamic DEFINE/INI/class/arithmetic/literal-warning selectors are absent.",
+  "remaining": [
+    "Ancestor owning-return THROW, exceptional ignored-argument cleanup and wider owning continuations/acquisition/reentrancy.",
+    "Waiting-result explicit GC, later parked resume/global-opline behavior and wider Fiber interactions.",
+    "No complete Generator/core PHP, interaction-tree/Rocq or BOLA-verification closure."
+  ],
+  "evidence_recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/generator-pending-owning-chain-send-31/private.tar.gz",
+    "bytes": 1832553,
+    "sha256": "4c0ae0679bb2799790936ed5827666457235cc13ff7338a3c12dc8c142b63860",
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/generator-pending-owning-chain-send-31/manifest.json",
+    "contents": "Eleven raw report roles, eight ignored capture/preparation inputs, six exact new tests and tested289. Restore the retained private branch at the original worktree path and extract relative members; tools rebuild from dependencies/README.md. External archive is evidence, never an operational dependency."
+  },
+  "composition": "Composed over 1bf5d39e8d244eeedc8a76df6f4b813fc4227fe6/405. Incoming named INI172, missing-CV comparisons207, dynamic NEW260/30, quiet MUL40/404, certified DEFINE400 and float-key literal413 selectors are absent here. Only289 changes with exact tested bytes; every other runtime, field/default, pipeline and ordered405 manifest is parent-exact. Source4/state653/strict405 retain their private cut; no joined actor or renewed credit."
+}

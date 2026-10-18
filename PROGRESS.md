@@ -7,6 +7,32 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Pending `send` now follows finite native ancestor links to an owning simple-CV
+copied return, including first refresh inside the call. Only the receiver clears
+initialization; the physical middle keeps its waiting return and history. The
+captured cache precedes normal argument cleanup, row COW and Generator-alias
+retirement. Actual outer next consumes the return; inherited-pending middle close
+retains it and omits finally. Used snapshots and mutable returned cells keep their
+separate lifetimes. Ancestor owning THROW, exceptional argument cleanup, wider
+continuations, waiting-result GC and later parked resume remain open.
+[Ancestor SEND review](coverage/semantics/generator-pending-owning-chain-send-review.json).
+
+Four originals and 653 focused premises (336 author + 317 independent;633 local + 20
+generic) pass at `a29026a4a`/405 with only module 289 runtime `3d94e5d6d`. The four real
+fronts check no-getter child/argument/receiver release and transient R2, used D1
+after receiver retirement, return/snapshot array counts across COW, and retained
+cell mutation. Strict 405 and four-fixture elaboration pass at the same cut;
+elaboration grants zero execution credit. Four natives and genuine unchanged public
+force-close Unsupported retain `7ed17008e`/405 with zero model agreement. No
+failures, retries or older campaign renewal; all actors reaped and CPUs released.
+
+Composed over `1bf5d39e8`/405 after reviewing the actual named INI, comparison,
+dynamic NEW, DEFINE, arithmetic and float-key literal selectors, absent here.
+Only module 289 changes and keeps its tested bytes. Incoming task variants,
+fields/defaults, other runtime/pipeline paths and the ordered 405 manifest stay
+parent-exact. Source4/state653/strict405 retain their private cut without joined
+execution, accepted replay or renewed credit.
+
 Distinct direct-CV `!=` and `<=` now suspend through missing-value handlers in
 both orientations, retaining NULL and the current scalar counterpart. Two operator
 memberships and two source mappings reuse the existing shapes/guards. Aliases,
@@ -104,8 +130,8 @@ the child without a getter. The null key raises Error before sending; actual
 outer next consumes the return normally. Close retains its one count, and an
 inherited pending-init middle skips its finally. A sole outer can lose its middle
 cache before outer finally; replacement Previous Error and mutable returned cells
-retain their distinct lifetimes. Wider continuations, pending ancestor APIs,
-waiting-result GC and later parked resume remain open.
+retain their distinct lifetimes. At that cut, wider continuations, pending ancestor APIs,
+waiting-result GC and later parked resume remained open.
 [Owning-chain review](coverage/semantics/generator-owning-chain-unpack-review.json).
 
 Four originals pass at `5bfe2b990`/405 with module405 `5449b8a4a`. Four real fronts
