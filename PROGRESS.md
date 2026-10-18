@@ -634,32 +634,28 @@ The pointwise 399-module composition over 6f3488104 preserves incoming list,
 property, arithmetic, constants and return paths. Source2/state355 retain their
 private cut; independent seam review warrants no joined actor or renewed credit.
 
-Missing-key Warning continues recursive by-value CV/literal and mixed direct-CV
-patterns with quiet compiled/implicit or ordinary defined quiet CV keys. Selected
-integer/bool/exact-float/non-NUL string keys freeze before handlers; later keys
-are read after the pending NULL store. Ancestor contexts retain source/compiler
-locations without reconstructing old key values or parent-table selections.
-Literal-root CV keys now require the actual RHS source occurrence. Pooled ROOT
-identity is exact; runtime ROOT authority is source-compatible with a nonconstant
-descriptor and live table. Captured CHILD tables remain independent of the root
-pool or a parent cell's new value. Returned runtime roots retain saved row aliases
-after CV rebinding; mixed patterns with literal RHS are compile-invalid.
-Five normal A11 originals and one exact compile rejection agree at ac4ee4bdc.
-Five SL fronts pass 804 premises (786 Boolean + 18 raw steps) at 50c4195ea:
-author 455 and independent 349. No A11 fixture failed. The
-[literal-CV key review](coverage/semantics/list-literal-cv-missing-warning-review.json)
-retains the unchanged Unsupported baseline with zero agreement credit.
-Plans, key conversion, tasks and historical tests remain unchanged; the three
-malformed-parent literal projections still refuse through actual RHS validation.
-Earlier [recursive-CV cuts](coverage/semantics/list-recursive-cv-missing-warning-review.json)
+Destructuring key warnings retain recursive by-value CV/literal and mixed CV
+patterns with quiet compiled/implicit or ordinary defined quiet CV keys. Module410
+now resumes lossy float CV-key conversion for flat wholly by-value direct-CV RHS
+patterns with direct CV leaves. The converted integer and table survive
+E_DEPRECATED; lookup afterward sees current embedded-reference values or enters
+module409's missing warning before any target store. Later key CVs are read afresh.
+Default reporting, handler replacement and E_WARNING-only handlers preserve the
+deprecation/lookup/warning order. Supplied throws cancel lookup and result delivery;
+the captured table and otherwise unowned cells retire after their owners disappear.
+Six A12 exact originals agree at f9fb2ad96. Five SL fronts pass 710 premises
+(695 Boolean + 15 raw steps): author 151+135 at 0920e58fb, corrected throw 116
+and independent 308 at 5a8d19d10. The initial throw fixture's negative constructor
+atom failed before execution; only that fixture repeated, with zero credit for
+the failure. The [float-key review](coverage/semantics/list-float-key-warning-review.json)
+retains the unchanged Unsupported baseline and source/state cuts. A two-line
+state-helper extension checks exact expected default stderr; old callers retain
+empty-stderr behavior. Existing module409 plans, source gates and key conversion
+helpers remain unchanged. Earlier [literal-CV cuts](coverage/semantics/list-literal-cv-missing-warning-review.json)
 and [family reviews](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md) retain their
-original source/state cuts and failures without replay. Computed key names,
-selected NUL CV strings, undefined/conversion diagnostics, wider RHS/targets and
-scalar/object destructuring callbacks and lifecycle remain partial.
+original evidence without replay. Nested/literal/mixed lossy conversion, other key
+diagnostics, wider RHS/targets and scalar/object callbacks/lifecycle remain partial.
 
-Pointwise composition over 242340c1 preserves the incoming 399-module parent,
-including Generator receipts, return cursors, constants, compound and WeakMap paths.
-Normal5/static1/state804 retain their private cuts; no joined actor or renewed credit.
 
 Plain-CV `%=` now keeps both converted longs through a fractional-RHS deprecation.
 Captured12/5 stores2 despite callback99/7 and detaches a late target alias; supplied

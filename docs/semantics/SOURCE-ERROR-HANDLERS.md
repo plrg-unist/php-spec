@@ -122,7 +122,15 @@ Other live left operands, read-modify-write, dimensions
 and other eligible warning producers remain
 explicitly `Unsupported`, rather than running a callback after a consumer.
 
-[Missing-key destructuring409](SOURCE-DESTRUCTURING-WARNINGS.md) retains a
+[Destructuring key warnings](SOURCE-DESTRUCTURING-WARNINGS.md) include module410's
+lossy float CV conversion in flat by-value direct-CV source patterns. It retains
+the converted integer and table before E_DEPRECATED, then looks up the table after
+return. A present embedded reference reads its new value; a miss enters the
+module409 warning before any target store, honoring handler replacement and
+default deprecation before an E_WARNING-only handler. Throws cancel lookup and
+result delivery. Wider conversion producers remain partial.
+
+Missing-key module409 retains a
 CV/literal array snapshot through real handlers, supplies null after insertion,
 then fetches later items with shared embedded references intact. Throws cancel
 the pending store and later items. CV leaves and implicit/compiled keys, plus

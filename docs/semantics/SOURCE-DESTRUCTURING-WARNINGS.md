@@ -1,4 +1,4 @@
-# Missing-key destructuring warnings
+# Destructuring key warnings
 
 Module409 supplies the E_WARNING continuation for missing by-value fetches within
 patterns with direct CV leaves. Recursive by-value patterns admit direct CV or literal RHS arrays;
@@ -6,10 +6,23 @@ recursive mixed value/reference patterns require a direct CV RHS. Implicit integ
 and warning-free compiled constant keys are admitted. Literal strings retain their
 authenticated interned-string carrier before key conversion. These patterns also
 admit ordinary defined integer, boolean, exact-float and non-NUL string CV keys.
-Computed key names, NUL CV strings and undefined or null/lossy-float key diagnostics
-remain separate dependencies, along with wider RHS producers and target forms.
+Computed key names, NUL CV strings and undefined/null key diagnostics remain
+separate dependencies, along with wider RHS producers and target forms.
 
-The key stays a delayed variable operand until the missing fetch. The initial
+Module410 adds lossy float CV-key conversion for flat wholly by-value patterns
+with a direct CV RHS and direct CV leaves. The initial plan captures the fitting
+converted integer and original binary64 bits before E_DEPRECATED. A returning
+handler resumes lookup against the captured table: an embedded reference supplies
+its value after the callback, while a present null stays silent. A miss dispatches
+the existing module409 warning before any target store. The two diagnostics may
+select different handlers; a handler eligible only for E_WARNING still follows
+the default deprecation. Following key CVs are read after the completed store.
+The saved task owns the table, and source validation checks the stored conversion
+without rereading the old key cell. A throwing handler cancels lookup, targets and
+result delivery. Nested patterns, literal RHS, mixed reference patterns and other
+key diagnostics need separate conversion continuations.
+
+For module409, the key stays a delayed variable operand until the missing fetch. The initial
 plan checks its exact name, operand/compiler lines and warning-free conversion,
 then freezes the converted integer or string bytes before dispatch. String
 carriers must authenticate their bytes; their identities are immutable metadata
@@ -23,7 +36,7 @@ reconstruct history.
 Following keys are evaluated after the interrupted null target store, including
 when an earlier target overwrites a key variable or a callback replaces the handler.
 
-Nested contexts authenticate each ancestor's source occurrence and
+Module409's nested contexts authenticate each ancestor's source occurrence and
 compiler location without rereading its key or parent table. After an ancestor
 fetch, callbacks may change its key value, retire the old key cell or rebind its
 name; historical type, carrier and bytes are not reconstructed. The current selected CV
@@ -109,6 +122,7 @@ paths/streams without an oracle replay. Separate ledgers retain the
 [nested mixed](../../coverage/semantics/list-nested-reference-missing-warning-review.json),
 [integer CV keys](../../coverage/semantics/list-integer-cv-missing-warning-review.json),
 [quiet CV keys](../../coverage/semantics/list-quiet-cv-missing-warning-review.json),
-[recursive CV keys](../../coverage/semantics/list-recursive-cv-missing-warning-review.json) and
-[literal-root CV keys](../../coverage/semantics/list-literal-cv-missing-warning-review.json)
+[recursive CV keys](../../coverage/semantics/list-recursive-cv-missing-warning-review.json),
+[literal-root CV keys](../../coverage/semantics/list-literal-cv-missing-warning-review.json) and
+[lossy float CV keys](../../coverage/semantics/list-float-key-warning-review.json)
 cuts and failures. No complete array, diagnostics or lifecycle-family claim follows.

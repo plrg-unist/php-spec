@@ -16,11 +16,13 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
-[Missing-key destructuring warnings](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md)
+[Destructuring key warnings](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md)
 now retain captured arrays or source reference cells through handlers, including
 recursive by-value CV/literal and mixed CV patterns, with ordered null delivery
 and normal/throw cleanup. These patterns also freeze quiet converted variable keys
 across callbacks while later key variables are read afresh.
+Flat by-value CV-source patterns also resume lossy float key conversion before
+looking up the captured table, including a following missing-key warning.
 
 The [checked eval parser service](docs/semantics/DYNAMIC-SOURCE-SERVICE.md)
 accepts raw eval-source bytes, uses a native parse-only scanner for rejection
