@@ -7,6 +7,31 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Positional `constant`/`defined` calls with zero or two primitive arguments now
+raise ArgumentCountError before string reception and lookup, after every argument
+effect. Raw NULL remains unconverted in ordinary and strict API traces; captured
+callees/request extras survive live CV changes and the caller destination stays 99.
+One guarded module400 receive branch reuses existing source, carrier and error/trace
+checks, excluding only the new shape from the broad class-query fallback. Four
+originals agree at 6d62201c0/runtime 9ac74304b. All 392 public premises pass across five
+actual CONFIG error fronts: author 122+85+82 at 6d622 and independent 103 at 027fc5877.
+Actual errors/raw API and caller traces, preserved stores/table/events, immutable
+argument/carrier/selection/count refusals and budgets pass. The independent fixture
+first compared a handler record with eps and failed before execution; its raw
+failure retains 0, and only the corrected peer prepare/check repeated. Source4 and
+author 289 keep their original cuts. Initial native/baseline used CPU3 at 8f6430b96;
+later source/author state used CPU3, corrected peer state CPU5. PHP and accepted worker
+stderr are empty; unchanged Unsupported dynamic-domain baseline after B| retains 0.
+Arity-error handling of larger counts, owning values and packed/named forms
+remains partial.
+[Query-arity review](coverage/semantics/constant-query-arity-review.json).
+
+Pointwise composition over 6bdcc005a preserves the incoming 401-module parent.
+Module400 retains its nested-empty array fold and adds only the reviewed arity
+branch/guards; four tests are private-exact. Public float-property empty, Generator,
+LIST-key and ref-return selectors are disjoint. Source4/author289 retain 6d62201c0,
+peer103 retains 027fc5877, with no joined actor or renewed execution credit.
+
 Public initialized float-property `empty` now dispatches the NaN Warning and
 rereads its captured live slot after the handler: `0.0` yields true; `1.0` or
 unchanged NaN yields false, with one warning. Caller-CV nulling cannot redirect

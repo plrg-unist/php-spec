@@ -96,6 +96,25 @@ positional literal facts constrain names and values. Variable-derived payloads k
 the existing structural value policy: the row is the runtime capture, not a full
 proof of past argument evaluation. Validators never reread mutable CVs.
 
+Positional `constant`/`defined` calls with zero or two primitive arguments check
+arity before string reception or lookup. All argument expressions run first;
+the selected callee and raw captured arguments determine the ArgumentCountError,
+even after an extra argument changes the caller's CVs. A raw NULL remains NULL in
+the API trace, without a deprecation or strict parameter-type error. The caller's
+unassigned destination and completed argument effects survive.
+
+Module400 authenticates the original CONFIG/source, immutable argument facts and
+string carriers before using the existing count-error/trace machinery. Its new
+shape is excluded from the broad class-query fallback; one-slot routes remain
+unchanged. The [query-arity review](../../coverage/semantics/constant-query-arity-review.json)
+binds four exact originals and 392 premises across five genuine CONFIG error
+fronts. Author 289 retain 6d62201c0; independent 103 pass at 027fc5877 after a one-line
+fixture type correction. The original pre-main failure and unchanged Unsupported
+baseline retain zero credit; the fixture correction leaves source execution and
+runtime rules unchanged.
+Arity-error handling of larger counts, owning arguments, owners and packed/named
+forms remains partial.
+
 Primitive duplicate `define` of an existing user constant emits the ordinary
 level2 Warning and returns false without publishing its candidate. A named handler
 may suppress default delivery or append another constant; the original binding

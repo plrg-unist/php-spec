@@ -1,0 +1,71 @@
+{
+  "scope": "Positional constant()/defined() with zero or two primitive arguments, including selected mixed-case callees, request strings and strict calls. ArgumentCountError before parameter reception/lookup after all argument effects. No owning/owner/packed/named widening. Partial core.",
+  "status": "independently_accepted_private_integrated_on_join",
+  "reviewer": "/root/source_review_35",
+  "parent": "cdb9702536da6f545f69ba1ae1b9ce6733b4b034",
+  "semantic_revision": "9ac74304bd8e71a0a8052c4cc13c7bb2d1f877dd",
+  "tested_revision": "6d62201c0fefec04da1d0582ba4500810e592214",
+  "corrected_peer_revision": "027fc587775050c8ab6918af681b2e2815e5e53a",
+  "semantic_files": {
+    "spec/semantics/400-dynamic-constants.watsup": "87667c4f1b66ef584d360b31a8cb1488d8397aae565ba291624eb520f1e57a5c"
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "tools": {
+    "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+  "primary": "Pinned ext/standard/basic_functions.c PHP_FUNCTION(constant) and Zend/zend_builtin_functions.c ZEND_FUNCTION(defined) both use ZEND_PARSE_PARAMETERS_START(1,1) before Z_PARAM_STR. Zend/zend_API.c zend_wrong_parameters_count_error emits canonical builtin name plus exactly 1 argument and actual count. Count rejection therefore precedes weak NULL deprecation or strict string TypeError, after completed argument evaluation.",
+  "semantics": "One module400 arity shape/argument/source guard and receive head reuse config_error and the existing raw CONFIG trace. Guards admit only 0/2 positional primitive slots with authentic source/callee selection and string carriers. Existing normalized-argument source validation is reused by relocating its declaration; its body is unchanged. The broad constant-to-class fallback excludes only the new arity shape. No task/schema/ownership/error-policy change, native fallback or library helper.",
+  "accepted": [
+    "Four exact originals agree at6d62201c0/runtime9ac74304b. Zero defined/constant preserve caller99; weak selected constant evaluates A then E and retains NULL/request extra despite live callee writes; strict defined evaluates extra before ArgumentCountError, preserving raw NULL/1073 rather than TypeError. All PHP stdout/stderr/exits match, PHPstderr empty.",
+    "Public392 passes across five genuine CONFIG error fronts: author122+85+82=289 at6d62201c0 and independent103 at027fc5877, runtime9ac74304b unchanged. Four accepted SL raws are exactly true LF/0/empty workerstderr; all11 reports have stable inputs/HEAD and reaped groups, 10 PASS plus one retained pre-main failure. Actual ArgumentCountError objects, canonical messages, origin/file/line/PreviousNULL, raw API/caller traces, consumed original tails and unchanged stores/table/carriers/events/selection pass.",
+    "Independent selected DeFiNeD receives initial NULL and authentic request-extra before the extra expression changes live callee/name/extra. Native E/effects1/result99 and actual two-frame trace agree; state checks preserve captured carrier identity and callback-free error transition. Count1, extra counts, owner/named/kind/source/selection/immutable argument/carrier/domain refusals and budget equality pass."
+  ],
+  "compatibility": "All existing one-slot global/class/conversion query routes remain unchanged; only the 0/2 arity shape is excluded from broad fallback. Source execution and author289 retain6d62201c0; the fixture-only peer correction does not alter source/runtime or renew their evidence. No older source/state actor is replayed. Focused old-protocol search found no empty/two-slot query fallback assertion requiring repair; the two direct receive refusals belong to INTRINSIC_DEFINE and remain disjoint.",
+  "zero_credit": "Unchanged first-source baseline at8f6430b96 is checked Unsupported dynamic constant call domain afterB|, CLI1/null PHPexit/empty stderr and0agreement. The first peer state actor at6d622 failed before main because ERRORHANDLER record was compared with eps; its report/raw exit1/diagnostic remain unchanged with0credit. One-line correction checks ERRORHANDLER.CALLBACK instead, followed only by fresh peer prepare/check. No semantic failure, timeout or source replay; native/preparation are not agreement credit.",
+  "execution": "LC_ALL=C/TZ=UTC, AS3GiB, serial stop-first/reap, INT+kill5 wrappers. Initial author native3/baseline at8f6430b96 onCPU3/SLOT5; peer native1/model4/author state289 and failed peer check at6d62201c0 onCPU3; corrected peer prepare/check at027fc5877 onCPU5/SLOT3. Native children15s, source CLI45s/host60s, fresh full SL children90s; every group reaped. Accepted PHP and CLI/SL workerstderr are empty.",
+  "raw_root": ".tools/constant-query-arity-evidence-48",
+  "report_sha256": {
+    "author/review-public/check-report.json": "e5e5382d11fca05ebbe9ddfe686a65803c96d1d58c434b26d4161a2fca61ebae",
+    "author/review-public/prepare-report.json": "eb232542780430f9f022904bea411cd7151083def260a4ed0553477220839e53",
+    "author/public/check-report.json": "37267462df258f2b87a14edd87d33edb484971f977c901c257d4d34c289d7d53",
+    "author/public/prepare-report.json": "4f00e7c0d290b34098fd709476ce8ed719e385063d31e9cff6bed44fc5a2e0a0",
+    "author/review/model-report.json": "29a8bc068725b11095f79ea588ade124ad2e600e6e2fbd2d211ac13ae8dee865",
+    "author/review/native-report.json": "44e865e22b5612ac0581068184fc2a6ef55b36476ce88ef8ba554bb909e8babd",
+    "author/sources/model-report.json": "09a123fc5a6b360ec6daac935f6d2058aab7bfa2f580914f39144e5ef7581415",
+    "author/sources/baseline-report.json": "2c11eceeddb0023fb9266d412fb4279abcaba60df3b900ba1c1a79edcdbf0762",
+    "author/sources/native-report.json": "5cafe6987d51cd0df684b877377b9d75bb99da0731e40ba9fab5b206f07de79e",
+    "author/review-public-fixed/check-report.json": "827b93b3e0ef25ffb1587dfdcc70943eba7347dccf3074093d4b18a9323f9abb",
+    "author/review-public-fixed/prepare-report.json": "b59bd38547fe1e5b34fdb2b4f935fbde1d7e09d23c9a378852f066c46cd1ee86"
+  },
+  "commands": [
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/define_query_arity_sources.py --phase native --output .tools/constant-query-arity-native-48",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/define_query_arity_sources.py --phase baseline --output .tools/constant-query-arity-native-48 --case zero-argument-query-errors-retain-caller-result",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/define_query_arity_review_sources.py --phase native --output .tools/constant-query-arity-review-48",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 240s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/define_query_arity_sources.py --phase model --output .tools/constant-query-arity-native-48",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/define_query_arity_review_sources.py --phase model --output .tools/constant-query-arity-review-48",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/define_query_arity_protocol.py --phase prepare --sources .tools/constant-query-arity-native-48 --output .tools/constant-query-arity-public-48",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 360s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/define_query_arity_protocol.py --phase check --sources .tools/constant-query-arity-native-48 --output .tools/constant-query-arity-public-48",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/define_query_arity_review_protocol.py --phase prepare --sources .tools/constant-query-arity-review-48 --output .tools/constant-query-arity-review-public-48",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 120s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/define_query_arity_review_protocol.py --phase check --sources .tools/constant-query-arity-review-48 --output .tools/constant-query-arity-review-public-48",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_query_arity_review_protocol.py --phase prepare --sources .tools/constant-query-arity-review-48 --output .tools/constant-query-arity-review-public-fixed-48",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 120s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/define_query_arity_review_protocol.py --phase check --sources .tools/constant-query-arity-review-48 --output .tools/constant-query-arity-review-public-fixed-48"
+  ],
+  "recovery": "Five owned roots moved once into canonical author/{sources,review,public,review-public,review-public-fixed} after reviewer STOP and focused cwd/cmdline/fd users[]. Eleven report hashes unchanged. Restore as .tools/constant-query-arity-{native,review,public,review-public,review-public-fixed}-48 at recorded cuts for exact source/cwd identities.",
+  "remaining": "Arity-error handling of larger excess counts, owning argument values, owners and packed/named/FCC forms remains partial. Existing ordinary one-slot routes keep their earlier scope. Full query/define-family closure remains open. No engine bug or intentional divergence.",
+  "composition": {
+    "parent": "6bdcc005a1beef8d10427f4d5d7feafa43c30b15",
+    "private_publication": "5ac649a8d96074894a79310a4506f05940932932",
+    "modules": 401,
+    "method": "Exact private module400 additions/declaration move applied atop parent nested-empty array fold; all four tests private-exact. Every other spec/schema/ordered401 manifest parent-exact. Inventory only own2/2/1/review suffix; incoming docs/checkpoints retained.",
+    "runtime_sha256": {
+      "spec/semantics/400-dynamic-constants.watsup": "c774283e2ef3e70da678d33d63e7c60dd7cf2c923c4ec32b7a549baa1a4fc200"
+    },
+    "seams": "Incoming400 empty-descendant array-copy heads and ancestor guards never select primitive query count errors.136/411 public float-property empty requires PROPERTY_PREP plus ISSET_RESULT and typed live slot, absent from Throwable methods/trace DIM reads.270 typed-property/ref-return destructor cursors, Generator280/289/301/303 operation/parked records and410/63 LIST_FETCH/LIST_KEY_FLOAT_RESULT producers are absent from ordinary scalar CONFIG/error tails. Shared172/83/106/source/error/conversion helpers are unchanged. Parent new30 tags/records and ordered401 manifest preserved.",
+    "evidence": "Independent actual-parent semantic review finds no concrete interaction. Source4 and author289 retain6d62201c0/runtime9ac, peer103 retains027fc5877/runtime9ac; initial8f643 native/baseline and original pre-main failure retain their identities. No joined actor, source/state replay or renewed execution credit."
+  }
+}

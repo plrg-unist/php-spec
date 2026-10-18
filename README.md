@@ -1071,6 +1071,14 @@ namespace-prefix normalization and captured request strings after CV mutation.
 Rows retain the actual value and string-carrier class. Available positional
 literal facts constrain inputs; variable payloads retain the existing structural table
 policy. Wider values, conversion/warning paths and namespace fallback remain open.
+Positional `constant()`/`defined()` calls with zero or two primitive arguments now
+raise ArgumentCountError before string reception or lookup, after all argument
+effects. Captured callees and raw trace arguments survive live CV changes;
+strict calls also check count before parameter type.
+[Four source agreements and 392 state premises](coverage/semantics/constant-query-arity-review.json)
+cover actual error transitions, caller results and source/carrier/count controls.
+Arity-error handling of larger counts, owning values and packed/named forms
+remains partial.
 Scalar `define` names also follow caller strictness with primitive values and an
 omitted/already-false flag. Weak registration keeps its received key across later
 precision changes and duplicate handlers; strict errors retain raw arguments.
