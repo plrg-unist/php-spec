@@ -480,6 +480,20 @@ Warning throw is source-tested with same Exception20 and destination100; unchang
 cancellation and prior malformed-state matrices are not replayed. Other initial
 forms, unsafe targets/pre-snapshot RHS and wider lifecycle remain partial.
 
+In the existing named-handler routes, initial RHS admission for fractional-LEFT
+modulo, shifts and numeric bitwise assignments now includes NULL/bool, finite
+signed64-fitting floats and valid plain or carrier strings. Text is not parsed at
+entry: the first LEFT handler can repair invalid text or replace leading text
+before any RHS notice. One shared snapshot
+predicate reuses the existing plans and continuations; PINT keeps its earlier
+single-warning route. Nine originals and four focused fixtures (593 SL premises)
+pass in the [initial-scalar ledger](../../coverage/semantics/initial-scalar-review.json).
+They check actual first/RHS callback frames, repaired cached results, live
+`string ^ string` TypeError without a string-specialization retry, fresh storage
+and alias owners, supplied-throw priority, immutable carrier data and resumed
+budgets. Initial owning/undefined/reference RHS, nonfinite/range floats, unsafe
+targets and wider lifecycle remain partial.
+
 Arithmetic and bitwise conversion use the existing pure SpecTec numeric and byte
 helpers, including signed 64-bit boundaries, binary64 values, string operands,
 pinned power behavior and conversion diagnostics. Explicit casts keep their

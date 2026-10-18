@@ -7,6 +7,25 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Fractional-LEFT compound operations now enter with an initial non-PINT scalar RHS:
+NULL/bool, fitting finite floats and authenticated strings. One shared initial
+snapshot predicate defers RHS parsing/conversion until after the LEFT handler;
+the existing PINT route and all later conversion/storage rules stay unchanged.
+Native invalid-text repair and leading-text replacement precede RHS diagnostics;
+the old baseline stops before H1. Nine originals pass at b3fff559f/401 and four
+focused fixtures pass 593 SL premises at b91c97048/401, covering real callback
+fronts, carrier/class guards, cached stores, live TypeError, alias owners and
+resumption. Initial owning/ref/undefined/nonfinite/range forms remain partial; all 15 rows
+stay partial, earlier renewed credit0, OP12 paused.
+[Initial-scalar ledger](coverage/semantics/initial-scalar-review.json).
+
+Composed over 7b512c0bb/401 after seven incoming runtime paths were reviewed.
+First-class callables, pending reference-return destructor replay, parked
+Generators, LIST null-key warnings and DEFINE/constant query selectors are absent
+from these untyped named-handler/scalar sources. Shared conversion, carrier,
+handler and heap interfaces stay unchanged; source9 and state593 retain their
+private401 cuts without replay or renewed credit.
+
 Captured true array `define` now emits the ignored-case Warning before recursive
 validation, copying and target lookup. Callbacks may change shared leaves, repair
 or create cycles, or install the duplicate key. A throwing first callback still

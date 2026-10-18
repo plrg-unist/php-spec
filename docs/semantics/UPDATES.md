@@ -334,6 +334,13 @@ and all earlier initial guards. Stores detach late aliases; errors and supplied
 throws cancel storage while callback effects survive. [Single-LEFT evidence](../../coverage/semantics/single-left-bridge-review.json)
 records ten originals and 857 focused SL premises; earlier cuts receive no renewed credit.
 
+Fractional-LEFT compound operations now defer conversion of an initially NULL,
+bool, fitting finite float or string RHS until after the LEFT callback. Invalid
+text can be repaired and leading text replaced before its diagnostic; unchanged
+invalid text instead reports live operand types. [Initial-scalar evidence](../../coverage/semantics/initial-scalar-review.json)
+records nine originals and 593 focused SL premises, including first-throw priority
+and alias detachment versus no-store errors; previous cuts receive no renewed credit.
+
 Stringable `.=` converts the left value before dereferencing the selected RHS
 slot. A defined direct RHS CV is borrowed and follows callback rebinding; an
 initially undefined read keeps its warned null value, while a later unset is a

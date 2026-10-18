@@ -688,6 +688,10 @@ the post-LEFT conversions; cached LEFT survives, stores detach aliases, and erro
 or supplied throws cancel storage while retaining callback effects. Ten originals
 and 857 focused SL premises pass in the
 [single-LEFT ledger](coverage/semantics/single-left-bridge-review.json).
+A fractional LEFT now also warns before converting an initially NULL, bool,
+fitting finite float or string RHS. A named handler can repair nonnumeric text or
+replace leading text before any RHS diagnostic. Nine originals and 593 focused
+SL premises pass in the [initial-scalar ledger](coverage/semantics/initial-scalar-review.json).
 
 In those both-fractional routes, a nonnumeric string or array RHS produced by the
 first callback now raises TypeError with the live operand types. Callback writes
