@@ -491,9 +491,19 @@ rebinds the sole caller CV and returns/throws while the box storage pin and save
 receiver remain. Focused222 (208 reached +14 derived) checks actual NEXT0→1,
 Get-inactive/isset-active guards, box/payload retirement before receiver destruction,
 the same Exception at catch and budgets. Kind/bounds and already-freeing box
-refusals are derived controls. Arrays/other internal-object RVs, wider signatures,
-receivers and recursive/lifecycle combinations remain partial.
+refusals are derived controls; the original stdClass cut is retained.
 [stdClass RV review](../../coverage/semantics/magic-empty-std-rv-review.json).
+Nonempty array RVs now use the same receiver-only phase. The array retires before
+its owned payload destructor runs with isset active and Get inactive; the saved
+receiver survives caller-CV rebinding and is released after payload disposal.
+Immutable empty literal RVs use direct true delivery: they have no children and
+are not GC candidates. Three originals and focused255 (222 reached +33 derived)
+cover these paths, the same Throwable at catch and budgets. Mutable-empty refusal
+and an extra array owner preventing premature payload destruction are derived.
+The empty helper gains only the authenticated immutable-empty case; generic array,
+key, return and destruction rules are unchanged. Mutable-empty arrays, other
+internal-object RVs and wider signatures/receivers/lifecycles remain partial.
+[Array RV review](../../coverage/semantics/magic-empty-array-rv-review.json).
 
 Constructor promotion declares a property from its original parameter flags and
 source occurrence. A parameter default does not initialize the property, and

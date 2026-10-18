@@ -27,23 +27,20 @@ constant, comparison, list, arithmetic and abrupt-return selectors. Only Generat
 modules 280/289 change; all other runtime and the manifest preserve parent bytes.
 Source/state/strict retain their private cut; no joined actor or renewed credit.
 
-Terminal inherited `empty` now admits stdClass getter RVs through the existing
-receiver-only disposal phase. An owned payload destructor runs while the stdClass
-storage pin and captured receiver remain; isset stays active and Get inactive.
-Rebinding the sole caller CV to null still releases the receiver only after box
-and payload retirement, before false output or catch binding. A payload throw
-preserves the same Exception. Two exact originals agree atbc38cd5c7; focused222
-at649ea9a38 (208 reached +14 derived) checks actual storage NEXT0→1, payload/receiver
-destructors, saved-frame guards, catch identity, bounds/kind/freeing refusals and
-budgets. No actor failed. Pure truth, the saved phase and generic storage/return
-code remain unchanged; no global constant/stdClass argument publication changed.
-Arrays, other internal-object RVs and wider signatures/receivers/lifecycles remain
-partial. [stdClass RV review](coverage/semantics/magic-empty-std-rv-review.json).
-The earlier [instance RV247](coverage/semantics/magic-empty-object-rv-review.json)
-and primitive/NaN cuts retain their original identities; no replay or renewed credit.
-
-Pointwise composition over2c18a6d83 preserves the incoming399-module parent.
-Source2/state222 retain private cuts; no joined actor or renewed execution credit.
+Terminal inherited `empty` now accepts nonempty array getter RVs through the
+receiver-only disposal phase, and immutable empty literals through direct true
+delivery. Owned-element destructors run after array retirement with isset active,
+Get inactive and the saved receiver retained; caller-CV rebinding and payload
+throws preserve receiver ordering and the same Exception at actual catch binding.
+Three exact originals agree at fa9e185e2; focused255 at9a5722902 (222 reached +33
+derived) covers both result branches, disposal, shared-array owners, mutable-empty/
+allocation/type refusals and budgets. No semantic actor failed. Native affinity
+sampling captured only the empty case; recorded taskset-parent provenance remains.
+The saved phase and generic array/key/return/destruction code remain unchanged.
+Mutable-empty arrays, other internal kinds and wider signatures/receivers/lifecycles
+remain partial. [Array RV review](coverage/semantics/magic-empty-array-rv-review.json).
+Earlier instance/stdClass/primitive/NaN cuts retain their original identities and
+failures without replay or renewed credit.
 
 WeakMap comparisons now admit normalized STRINGMETHODCLOSURE objects from fixed
 literal method captures, returning uncomparable +1 in either direction. Two exact
