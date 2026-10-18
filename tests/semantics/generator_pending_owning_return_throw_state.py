@@ -79,7 +79,7 @@ CASES = {
             '$generator_pending_throw_leaf(S, n_middle, |S.OBJECTS|) = eps',
             '$generator_pending_throw_target(S, pgeneratorop_throw) = (n_middle)',
             '$generator_pending_throw_ready(S, pgeneratorop_throw)',
-            '$generator_pending_throw_target(S, pgeneratorop_throw[.OBJECT = n_outer]) = eps',
+            '$generator_pending_throw_target(S, pgeneratorop_throw[.OBJECT = n_outer]) = (n_middle)',
             '~$generator_pending_throw_ready(S, pgeneratorop_throw[.OBJECT = n_outer])',
             '~$generator_unpack_detached(S, n_middle)',
             '~$generator_unpack_chain(S, n_middle, |S.OBJECTS|)',

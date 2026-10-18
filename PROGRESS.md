@@ -20,6 +20,94 @@ compiled lines, entry/resume separation and zero/split budgets pass; genuine
 counterparts and spaceship both-missing remain partial; prior cuts are not renewed.
 [Reversed both-missing review](coverage/semantics/undefined-scalar-compare-both-reversed-review.json).
 
+Composed over `18cbdedb3`/405 after reviewing DIVIDE repair, Generator routing,
+owner INI/DEFINE and array float-key selectors, absent here. New literal-array
+retained/debt fields stay empty, contributing no roots/debts and preserving the
+same descriptor, pruning and budget paths. Empty-array controls have no keyed
+producer. Only module207 differs and retains tested bytes; all other parent
+runtime/task/field/default and ordered manifest paths stay exact. Source8/state453
+retain their private cut without a joined actor, accepted replay or renewed credit.
+
+Retained intrinsic `ini_set(NULL, quiet primitive)` now resumes handlers with
+named or mixed arguments. Reversed V→O captures the original owner and REQUEST
+value before later option/live-callee writes. Native `__invoke` retains numeric
+normalized arguments; ordinary strict calls still reject NULL before handlers,
+while explicit calls use weak reception. A supplied throw preserves Exception
+identity/caller99/precision10/sibling2131 and cancels the body; the original setter
+then recovers10→12.
+
+Four source comparisons retain `3563cd099`/`4f7c217d5`/405; all 928 premises
+(248+170+189+321) pass at `64c24d775`/the same runtime. Initial `cc6e09523` CPU2
+native4/baseline0 and numeric wrapper observation precede the sole NAMED guard
+removal. Final state checks use CPU3. Thirteen stable/reaped reports preserve two
+fixture failures0: optional-name tuple typing and a missing existing GC buffer
+update in the exact finish expectation. Runtime/shared64 helpers are unchanged by
+those corrections; no accepted source/native or old782 replay. Selected default
+Deprecated line24 is expected; other PHP and accepted worker stderr are empty.
+Packed/PIPE, sole-owner lifetime, owning/NaN/legacy-string values and wider
+configuration remain partial.
+[Named retained NULL INI review](coverage/semantics/ini-set-owned-named-null-option-review.json).
+
+Composed over `5401de02d`/405 with module172/four tests private-exact and every
+other runtime/schema/new field/default/ordered manifest parent-exact. New array
+debt fields stay empty; DEFINE flag, missing-CV comparison, DIVIDE, magic-property,
+Generator and reference-return retirement producers are absent here. Private
+source4/state928 cuts and both fixture failures0 stay separate, without a joined
+actor or accepted replay.
+
+Pending `throw` now follows finite native ancestor links to an owning simple-CV
+copied return, including first child detachment inside the call. Only the selected
+receiver clears initialization; the distinct physical middle keeps its pending
+bit and parked source site. Getters and close preserve the return; middle close
+skips finally while upper finally remains live. Copied-cache replacement,
+held-return array COW and mutable returned cells retain separate lifetimes.
+Later parked resume, wider owning continuations and waiting-result GC remain open.
+[Ancestor THROW review](coverage/semantics/generator-pending-owning-chain-throw-review.json).
+
+Four originals and 601 new premises (313 author + 288 independent; 581 local +20
+generic) pass at `5eadf3743`/405 with only module289 runtime `63b07f1ab`. One affected
+Iterator29 group171 separately passes target-positive/initialized-receiver-ready-negative
+checks; other historical groups and sources are not renewed. Strict405 and five
+fixture elaboration pass at the same cut; elaboration has zero execution credit.
+Four natives and genuine unchanged public force-close Unsupported retain
+`485c5ca38`/405 with zero model agreement. No failures/retries or new GC agreement;
+all actors reaped and CPUs released.
+
+Composed over `d23e7bc03`/405 after independent actual-parent
+review. Incoming ordinary typed reference-return, named INI, scalar
+comparison, DEFINE, magic isset, DIVIDE and float-key array selectors are
+absent here; new array-retention/debt fields stay empty.
+Only module289 changes and retains its tested bytes; other parent runtime,
+fields/defaults, tasks, pipeline and ordered manifest remain exact. Source4,
+new601, separate affected171 and strict405 keep their private cuts without
+joined execution, accepted replay or renewed credit.
+
+Live Closure DEFINE flags now raise parameter-3 TypeError before body work or
+implicit invocation in weak and strict calls. Raw traces retain lexical aliases
+and bound receivers; explicit recovery calls work, and an unpinned method receiver
+is destroyed only after its Error-trace/Closure chain releases. Three originals
+pass at d61a/405 and 459 focused premises (150+102+207) pass at 65b8/405, including
+one zero-budget identity. All first attempts pass without failure/retry; three
+old pure Closure projections change without renewing V81 credit. Other object
+flags, publication classes and wider names/lifetimes remain partial.
+[Closure-flag review](coverage/semantics/define-closure-flag-review.json).
+
+Composed over `37f07ed95`/405 with the exact tested400+2 patch; incoming runtime/
+manifest paths and fields remain intact. Loose missing-CV comparison, magic
+property-isset and delayed DIV producers are absent. Source3/state459 retain
+their private405 cuts without a joined actor, accepted replay or renewed credit.
+
+Selected-reference DIV now delays initially bad RHS text until the LEFT Warning
+returns. Four originals pass at `70add9ed5`/405; three focused fixtures pass 468
+premises at `fd80a78f8`/405, covering strict `2.4`, live bool/string TypeError and
+cached zero through old-RHS/name rebinding. A first supplied throw is source-only.
+[DIV repair ledger](coverage/semantics/div-repair-review.json).
+Owning/constrained/expired cells and wider operands remain partial; OP12 paused.
+
+Composed over `98da5a300`/405, preserving incoming fields, task variants
+and manifest. Source4/state468 retain their private405 cuts; independently reviewed
+incoming selectors require no joined execution or renewed credit.
+
 Forward `==`/`!=`/`<`/`<=` comparisons now admit two initially missing distinct
 CVs when the first Warning handler defines the right scalar. An ingress-only
 predicate reuses the frozen-left/current-right shape; resume validity/domain,
@@ -73,7 +161,7 @@ survivor. Initial `9d082a173` CPU5 native3/baseline0 stays distinct from laterCP
 genuine producer-continuation Unsupported after B|V| receives zero agreement.
 Only default Deprecated lines8/18 are expected; other PHP and worker stderr are
 empty. Ten additive module172 lines preserve ownerless/unary/source/368/root/
-discard bodies; no old623/746 actor is renewed. Owned named/packed/PIPE, sole-owner
+discard bodies; no old623/746 actor is renewed. Packed/PIPE, sole-owner
 lifetime, owning/NaN/legacy-string values and wider configuration remain partial.
 [Retained NULL INI review](coverage/semantics/ini-set-owned-null-option-review.json).
 
@@ -101,16 +189,8 @@ Only module207 differs and retains tested bytes; every other parent runtime,
 task/field/default and ordered manifest stays exact. Source8/state380 retain
 their private cut without a joined actor, accepted replay or renewed credit.
 
-Quiet ternary-copy/plain-CV POWER now reaches final deprecation with an
-`E_DEPRECATED`-only named handler. Three originals pass at `551d61055`/405;
-two focused fixtures pass 266 premises at `8deff7b83`/405, covering signed infinity
-after origin unsets and same-Exception cancellation before assignment.
-[Quiet-power-copy ledger](coverage/semantics/quiet-power-copy-review.json).
-Other quiet-power producers and wider operands/lifetimes remain partial; OP12 paused.
-
-Composed over `dba71ba43`/405, preserving incoming fields, task variants
-and manifest. Source3/state266 retain their private405 cuts; independently reviewed
-incoming selectors require no joined execution or renewed credit.
+Earlier quiet ternary-copy POWER retains source3/state266 in its
+[review ledger](coverage/semantics/quiet-power-copy-review.json).
 
 Pending `send` now follows finite native ancestor links to an owning simple-CV
 copied return, including first refresh inside the call. Only the receiver clears
@@ -118,8 +198,8 @@ initialization; the physical middle keeps its waiting return and history. The
 captured cache precedes normal argument cleanup, row COW and Generator-alias
 retirement. Actual outer next consumes the return; inherited-pending middle close
 retains it and omits finally. Used snapshots and mutable returned cells keep their
-separate lifetimes. Ancestor owning THROW, exceptional argument cleanup, wider
-continuations, waiting-result GC and later parked resume remain open.
+separate lifetimes. At that cut, ancestor owning THROW, exceptional argument
+cleanup, wider continuations, waiting-result GC and later parked resume remained open.
 [Ancestor SEND review](coverage/semantics/generator-pending-owning-chain-send-review.json).
 
 Four originals and 653 focused premises (336 author + 317 independent;633 local + 20
@@ -612,33 +692,39 @@ GENERATORRETURNRETAINED and LITERALREFRETAINED lift by empty fields with no root
 and valid empty receipts, preserving owners/budgets pointwise. Source3/state632
 retain private403 cuts and both zero-credit failures without replay.
 
-Lossy-float literal-key reference callbacks now admit old flat-array wrappers
-when the handler replaces the element CV with an unwrapped null/bool/int/float.
-Insertion uses that live scalar directly and preserves the acquired old count:
-existing debt cancels first; otherwise a request owner retains the wrapper and
-its single child-table edge. After ordinary names disappear, unmatched owners
-keep probe copies aliased while child-table COW still separates a direct snapshot.
-Repeated retargets preserve owner multiplicity, including supplied-throw cleanup.
-The source/handler, count/cancellation and prune algorithms remain unchanged;
-only module413's old-payload guard broadens. One superseded A23 pure control now rejects
-an ordinary owning-array CV; original PHP and historical cuts stay exact.
-Four fresh natives and a genuine checked Unsupported after-callback baseline
-retain `605451811`; the baseline has zero agreement credit. Strict405 and four
-model-only source comparisons pass at `050b6b476`;
-722 focused premises (711 Boolean +11 raw; author338/independent384) pass at
-`700ab34e0`. All postimplementation actors pass first attempt, quiet and reaped;
+Lossy-float literal-key callbacks now admit ordinary unwrapped array-CV values
+holding mutable nonpool flat DIRECT null/bool/int/float tables. The continuation
+owns the pre-conversion table; insertion uses the live table without a new ADDREF.
+Separate HARRAY retained/debt fields preserve these counts. Same-table transfer
+adds no bias even after the original CV cell retires; different-table insertion
+can share writes between ordinary CV and literal values at physical count1.
+Entry deletion and supplied-throw builder cleanup preserve the deficit, while
+inverse retargeting restores ordinary COW and balances counts before teardown.
+Both debt families now share the existing pre-owner/direct-prune lifetime gate:
+logical pruning must retain positive flat table targets and existing valid CELL
+targets. Graph owner-count/prune algorithms and prior wrapper semantics are unchanged.
+Four fresh natives and the genuine checked Unsupported ingress baseline retain
+`016683a36`; the baseline stays zero agreement. Strict405 and four model-only source agreements pass at `e9382c39e`;
+808 focused premises (796 Boolean +12 raw; author347/independent461) pass at
+`a0730822b`. All postimplementation actors pass first attempt, quiet and reaped;
 original native paths/bytes/streams are reused without replay.
-Untyped arrays remain mutable, nonpool and flat DIRECT null/bool/int/float, with
-neither payload equal to the builder. Owning-CV/table debt, array-valued type
-sources, nested/reference-bearing/string-leaf or pooled/immutable arrays and other
-owning payloads remain Unsupported. Effective-zero, active collection and
-outstanding request-end debt remain refused; held LIST/owned-NUL paths are untouched.
-[Array-to-scalar review](coverage/semantics/array-literal-float-ref-array-scalar-review.json).
+Wrapped CVs, mixed scalar/array retargets, pooled/immutable or nested/reference-
+bearing/string-leaf arrays and other owning values remain Unsupported. Builders
+stay object-free and distinct from both tables. Effective-zero, active collection
+and outstanding request-end debt remain refused; held LIST/owned-NUL paths and
+active lifecycle/class scopes are untouched.
+[Ordinary array-CV review](coverage/semantics/array-literal-float-array-cv-review.json).
 
-Composed over `005738481`/405: incoming comparison, Generator and quiet-power
-selectors are absent. Module413, six new tests and the one pure-control edit keep
-accepted bytes; other runtime paths and the ordered manifest remain parent-exact.
-Source4/state722 retain their private cuts without a joined actor or replay.
+Composed over `ff95ac656`/405, preserving incoming return-history task tags,
+comparison/DEFINE/magic-property and DIVIDE paths whose selectors are absent here.
+New table fields lift empty for incoming sources; owner contributions and prior
+CELL gates are unchanged. Seven runtime edits and six tests keep their accepted
+private hunks; the ordered manifest and other runtime paths remain parent-exact.
+Source4/state808 retain their cuts without a joined actor or replay.
+
+The earlier array-to-scalar wrapper slice retains source4/strict405 at `050b6b476`
+and state722 at `700ab34e0`, composed over `005738481` as `bbb986fb3`.
+[Array-to-scalar ledger](coverage/semantics/array-literal-float-ref-array-scalar-review.json).
 
 The earlier flat-array slice retains source4/strict405 at `7aec957b6` and state847
 at `ecb5a26e8`, composed over `0824bac1b` as `27718dbb1`.

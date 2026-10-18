@@ -332,6 +332,9 @@ def $literal_reference_flat_items(S, eps) = true
 def $literal_reference_flat_items(S, (ENTRY pkey (DIRECT pvalue)) :: pentry*) = ($array_float_key_scalar(S, pvalue) /\ $literal_reference_flat_items(S, pentry*))
 def $literal_reference_flat_items(S, pentry*) = false -- otherwise
 
+dec $literal_array_debt_tables_safe(pstate, hgraph, nat*) : bool
+def $literal_debt_pending(S) = (S.LITERALREFDEBTS =/= eps \/ S.LITERALARRAYDEBTS =/= eps)
+
 ;; A positive debt CELL survives biased pruning and keeps its child-table edge.
 ;; Admitted array children are leaves; primitive targets have no outgoing owners.
 dec $literal_reference_debt_cells_safe(pstate, hgraph, nat*) : bool
@@ -342,20 +345,141 @@ def $literal_reference_debt_cells_safe(S, H, n :: n_tail*) = true
   -- if $($heap_count(HCELL n, $literal_reference_retained_nodes(S.LITERALREFDEBTS)) < $heap_owners(H, HCELL n))
   -- if $literal_reference_debt_cells_safe(S, H, n_tail*)
 def $literal_reference_debt_cells_safe(S, H, n*) = false -- otherwise
-def $literal_reference_debt_safe(S, H) = true -- if S.LITERALREFDEBTS = eps
+def $literal_reference_debt_safe(S, H) = true -- if ~$literal_debt_pending(S)
 def $literal_reference_debt_safe(S, H) = true
-  -- if S.LITERALREFDEBTS =/= eps
+  -- if $literal_debt_pending(S)
   -- if ~S.COMPILESTOP /\ S.GC.ACTIVE = eps
   -- if ~(S.TODO = eps /\ S.FRAMES = eps /\ S.CURRENT = eps)
   -- if $heap_valid(H[.DEBTS = eps])
   -- if H_live = $heap_prune(H[.DEBTS = eps])
   -- if $literal_reference_debt_cells_safe(S, H_live, S.LITERALREFDEBTS)
+  -- if $literal_array_debt_tables_safe(S, H_live, S.LITERALARRAYDEBTS)
 def $literal_reference_debt_safe(S, H) = false -- otherwise
-def $literal_reference_debt_check(S) = S -- if S.LITERALREFDEBTS = eps
+def $literal_reference_debt_check(S) = S -- if ~$literal_debt_pending(S)
 def $literal_reference_debt_check(S) = S
-  -- if S.LITERALREFDEBTS =/= eps
+  -- if $literal_debt_pending(S)
   -- if $literal_reference_debt_safe(S, $heap_graph(S))
 def $literal_reference_debt_check(S) = S[.COMPLETION = UNSUPPORTED "array literal reference deficit lifetime"]
-  -- if S.LITERALREFDEBTS =/= eps
+  -- if $literal_debt_pending(S)
   -- if ~$literal_reference_debt_safe(S, $heap_graph(S))
 def $literal_reference_debt_blocked(S) = (S.COMPLETION = UNSUPPORTED "array literal reference deficit lifetime")
+
+;; An ordinary array CV acquires its table before key conversion. Retargeting
+;; then inserts the live table without a new ADDREF; count biases stay on HARRAY.
+dec $literal_array_table_valid(pstate, nat) : bool
+def $literal_array_table_valid(S, n) = true
+  -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
+  -- if ~$array_immutable(S, n)
+  -- if $heap_count(HARRAY n, $pools_nodes(S.POOLS)) = 0
+def $literal_array_table_valid(S, n) = false -- otherwise
+def $literal_array_retained_valid(S, eps) = true
+def $literal_array_retained_valid(S, n :: n_tail*) = ($literal_array_table_valid(S, n) /\ $literal_array_retained_valid(S, n_tail*))
+def $literal_array_debts_valid(S, eps) = true
+def $literal_array_debts_valid(S, n :: n_tail*) = ($literal_array_table_valid(S, n) /\ ~(n <- S.LITERALARRAYRETAINED) /\ $literal_array_debts_valid(S, n_tail*))
+
+dec $literal_array_retain(pstate, nat) : pstate
+def $literal_array_retain(S, n) = S[.LITERALARRAYDEBTS = $literal_reference_delete(S.LITERALARRAYDEBTS, n)]
+  -- if n <- S.LITERALARRAYDEBTS
+def $literal_array_retain(S, n) = S[.LITERALARRAYRETAINED = S.LITERALARRAYRETAINED ++ [n]]
+  -- if ~(n <- S.LITERALARRAYDEBTS)
+dec $literal_array_owe(pstate, nat) : pstate
+def $literal_array_owe(S, n) = S[.LITERALARRAYRETAINED = $literal_reference_delete(S.LITERALARRAYRETAINED, n)]
+  -- if n <- S.LITERALARRAYRETAINED
+def $literal_array_owe(S, n) = S[.LITERALARRAYDEBTS = S.LITERALARRAYDEBTS ++ [n]]
+  -- if ~(n <- S.LITERALARRAYRETAINED)
+
+;; Logical pruning first removes ordinary garbage. Surviving positive-count
+;; table targets are flat leaves, so subtracting their debts creates no cascade.
+def $literal_array_debt_tables_safe(S, H, eps) = true
+def $literal_array_debt_tables_safe(S, H, n :: n_tail*) = true
+  -- if $literal_reference_flat_array(S, n, H.NODES)
+  -- if $($heap_count(HARRAY n, $literal_array_retained_nodes(S.LITERALARRAYDEBTS)) < $heap_owners(H, HARRAY n))
+  -- if $literal_array_debt_tables_safe(S, H, n_tail*)
+def $literal_array_debt_tables_safe(S, H, n*) = false -- otherwise
+
+dec $array_float_array_key_value(pstate, poperand) : nat?
+def $array_float_array_key_value(S, VARIABLE n_name* z) = (n_array)
+  -- if ~$environment_blocked(S, n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n_cell)
+  -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
+  -- if ~(n_cell <- S.REFCELLS)
+  -- if ~$foreach_released_container_cell(S, n_cell) /\ ~$update_released_array_name(S, n_name*)
+  -- if $propref_at(S.PROPREFS, n_cell) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n_cell) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n_cell) = eps
+  -- if S.STORE[n_cell] = DEFINED (PARRAY n_array)
+  -- if $literal_reference_flat_array(S, n_array, S.ALLOCATIONS)
+def $array_float_array_key_value(S, poperand) = eps -- otherwise
+
+dec $array_float_array_key_ready(pstate, nat, nat, poperand) : bool
+def $array_float_array_key_ready(S, n, n_old, poperand) = true
+  -- if $array_float_array_key_value(S, poperand) = (n_current)
+  -- if n_old =/= n /\ n_current =/= n
+  -- if $literal_reference_flat_array(S, n_old, S.ALLOCATIONS)
+  -- if $array_float_key_plain_nodes($heap_reach([HARRAY n], eps, $heap_graph(S).EDGES))
+def $array_float_array_key_ready(S, n, n_old, poperand) = false -- otherwise
+
+dec $array_float_array_key_source(pstate, nat, nat, poperand, phpType13*, int, nat, int) : bool
+def $array_float_array_key_source(S, n, n_old, poperand, phpType13*, z, n_bits, i) = true
+  -- if $(n_bits < 18446744073709551616 /\ n < |S.ARRAYS|)
+  -- if $float_long(n_bits, true) = (i, [PRECISIONLOSS])
+  -- if $literal_array_table_valid(S, n) /\ $literal_array_table_valid(S, n_old)
+  -- if n_old =/= n
+  -- if $array_float_key_item(S, phpType13*, z) = ((expression, poperand_key))
+  -- if expression = NExprVariable (BYTES text) metadata
+  -- if poperand = VARIABLE n_name* z
+  -- if $array_float_key_input_source(S, expression, poperand)
+def $array_float_array_key_source(S, n, n_old, poperand, phpType13*, z, n_bits, i) = false -- otherwise
+
+dec $array_float_array_key_plan(pstate) : (nat, nat, poperand, phpType13*, int, nat, int)?
+def $array_float_array_key_plan(S) = ((n, n_old, S.RESULT, phpType13*, z, n_bits, i))
+  -- if S.TODO = (ARRAY_VALUE n (VARIABLE n_key* z_key) phpType13* z) :: ptask_tail*
+  -- if S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if $array_float_key_item(S, phpType13*, z) = ((expression, VARIABLE n_key* z_key))
+  -- if $array_float_array_key_value(S, S.RESULT) = (n_old)
+  -- if ~$environment_blocked(S, n_key*)
+  -- if $lookup(S.ENV, n_key*) = (n_cell)
+  -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
+  -- if S.STORE[n_cell] = DEFINED (PFLOAT n_bits)
+  -- if $(n_bits < 18446744073709551616)
+  -- if ~$foreach_released_container_cell(S, n_cell) /\ ~$update_released_array_name(S, n_key*)
+  -- if $float_long(n_bits, true) = (i, [PRECISIONLOSS])
+  -- if $array_float_array_key_source(S, n, n_old, S.RESULT, phpType13*, z, n_bits, i)
+  -- if $array_float_array_key_ready(S, n, n_old, S.RESULT)
+def $array_float_array_key_plan(S) = eps -- otherwise
+def $array_float_array_key_pending(S) = ($error_handler_eligible(S, 8192) /\ $array_float_array_key_plan(S) =/= eps)
+
+dec $array_float_array_key_retain(pstate, nat, poperand) : pstate
+def $array_float_array_key_retain(S, n_old, poperand) = S
+  -- if $array_float_array_key_value(S, poperand) = (n_old)
+def $array_float_array_key_retain(S, n_old, poperand) = $literal_array_owe($literal_array_retain(S, n_old), n_current)
+  -- if $array_float_array_key_value(S, poperand) = (n_current)
+  -- if n_current =/= n_old
+
+rule PhpStep/array-float-array-key-warning: S ~> $error_dispatch(S[.RESULT = KNOWN PNULL], 8192, $list_float_key_message(n_bits), z, DIAGNOSTIC "Deprecated" $list_float_key_message(n_bits) z, ARRAY_KEY_FLOAT_ARRAY_RESULT n n_old poperand phpType13* z n_bits i)
+  -- if $array_float_array_key_pending(S)
+  -- if $array_float_array_key_plan(S) = ((n, n_old, poperand, phpType13*, z, n_bits, i))
+rule PhpStep/array-float-array-key-result: S ~> S_out[.TODO = (ARRAY_NEXT n phpType13*) :: ptask_tail*][.RESULT = KNOWN PNULL][.ORIGIN = $origin_next_item(S.ORIGIN, phpType13*)]
+  -- if S.TODO = (ARRAY_KEY_FLOAT_ARRAY_RESULT n n_old poperand phpType13* z n_bits i) :: ptask_tail*
+  -- if $array_float_array_key_source(S, n, n_old, poperand, phpType13*, z, n_bits, i)
+  -- if $array_float_array_key_ready(S, n, n_old, poperand)
+  -- if $array_float_array_key_value(S, poperand) = (n_current)
+  -- if S_out = $literal_insert($array_float_array_key_retain(S, n_old, poperand), n, (KINT i), PARRAY n_current, z)
+rule PhpStep/array-float-array-key-result-unsupported: S ~> S[.TODO = eps][.RESULT = KNOWN PNULL][.COMPLETION = UNSUPPORTED "array literal float-key array CV after callback"]
+  -- if S.TODO = (ARRAY_KEY_FLOAT_ARRAY_RESULT n n_old poperand phpType13* z n_bits i) :: ptask_tail*
+  -- if $array_float_array_key_source(S, n, n_old, poperand, phpType13*, z, n_bits, i)
+  -- if ~$array_float_array_key_ready(S, n, n_old, poperand)
+
+def $call_task_valid(S, ARRAY_KEY_FLOAT_ARRAY_RESULT n n_old poperand phpType13* z n_bits i) = $array_float_array_key_source(S, n, n_old, poperand, phpType13*, z, n_bits, i)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = ARRAY_KEY_FLOAT_ARRAY_RESULT n n_old poperand phpType13* z n_bits i
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if $array_float_array_key_source(S, n, n_old, poperand, phpType13*, z, n_bits, i)
+  -- if perrorcall.LEVEL = 8192 /\ perrorcall.LINE = z
+  -- if perrorcall.MESSAGE = $list_float_key_message(n_bits)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" $list_float_key_message(n_bits) z
+def $task_nodes(ARRAY_KEY_FLOAT_ARRAY_RESULT n n_old poperand phpType13* z n_bits i) = [HARRAY n, HARRAY n_old]
+def $error_read_discard(S, ARRAY_KEY_FLOAT_ARRAY_RESULT n n_old poperand phpType13* z n_bits i) = $array_float_array_key_retain(S, n_old, poperand)
+  -- if $array_float_array_key_ready(S, n, n_old, poperand)
+def $error_read_discard(S, ARRAY_KEY_FLOAT_ARRAY_RESULT n n_old poperand phpType13* z n_bits i) = S[.COMPLETION = UNSUPPORTED "array literal float-key array CV during throw"]
+  -- if ~$array_float_array_key_ready(S, n, n_old, poperand)

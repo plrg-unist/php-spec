@@ -1,0 +1,80 @@
+{
+  "milestone": "Iterator32: pending ancestor THROW with an owning copied Generator return",
+  "status": "Validated and integrated after independent private and actual-parent review",
+  "independent_reviewer": "iterator_review_15",
+  "base": "00573848110e661bb2e70519be10622c2977298d",
+  "native_baseline_cut": "485c5ca38dd61b9ef9f1e7f955d2d7e17a7aa652",
+  "source_state_strict_cut": "5eadf374366444857bbce7a27f843aab75a4b075",
+  "tested_runtime": "63b07f1aba201ebd40fb2fc49d73dd4cd23d0881",
+  "modules": 405,
+  "scope": "Literal one-Throwable pending THROW through finite native Generator links to an owning simple-CV assigned yield-from COMPLETE. Selected ancestor, physical middle and return child are distinct. No owning input/other task/HELD, acquired producer, loop/startpack/borrowed API, active GC or later parked resume.",
+  "semantics": [
+    "One target arm reuses the existing finite normal copied-return leaf walk. The actual API refreshes before target selection; raw no-getter ready remains false. Direct admission, recursive paused-yield leaf, builder, marker, roots, close and collector rules stay exact.",
+    "THROW parks the physical middle but clears initialization only on the selected receiver. The same Throwable reaches the caller without body entry; getters preserve the return and cache. Close transfers the one copied-return count to retention and skips the middle finally while ordinary upper finally remains live.",
+    "The transient cache copy owns only its value and survives receiver retirement. Its destructor can replace the supplied exception with Previous identity intact. Return/cache array aliases preserve separate container counts with one element-edge set; post-catch raw-row COW and post-close returned-cell writes remain live."
+  ],
+  "source_authority": [
+    "Pinned Zend/zend_generators.c::zend_generator_update_current/get_current copy child retval into the physical YIELD_FROM result and detach the child. Generator::throw injects into that physical root, resumes the original receiver and copies the current result.",
+    "zend_generator_resume DO_INIT clears only orig_generator and returns before body entry when current is defined. Parked exception-opline cleanup and the pre-live-range copied result distinguish close from later resume. No engine bug or intentional divergence is classified."
+  ],
+  "validation_identity": {
+    "php": "8.5.10 CLI NTS 64-bit; source 34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml 5.1.0; SL, caches off, encountered determinism",
+    "environment": "profile.json, PHP -n, LC_ALL=C, TZ=UTC, PHP_SPEC_SCRIPT_ENCODING unset. Native/baseline serial CPU4; gate/strict/source/state serial CPU2. Exact commands/exits/raw outputs in reports; all actors reaped and CPUs released."
+  },
+  "runtime_sha256": {
+    "spec/semantics/289-generator-delegation.watsup": "6e0716082e197f36a8428720dad554aacc7638ffd3b6ff6cf10cb4f114861def"
+  },
+  "reports": {
+    "native_author": ".tools/generator-pending-owning-chain-throw-native-1l_die_k/report.json",
+    "native_peer": ".tools/generator-pending-owning-chain-throw-review-native-j3ac5g54/report.json",
+    "unchanged_baseline": ".tools/generator-pending-owning-chain-throw-baseline-2kahhzxg/report.json",
+    "fixture_elaboration": ".tools/generator-pending-owning-chain-throw-state-elab-6bkxnbr8/report.json",
+    "strict405": ".tools/generator-pending-owning-chain-throw-author-sl-ucsua1v2/report.json",
+    "source_author": ".tools/generator-pending-owning-chain-throw-source-nr5v9x16/report.json",
+    "source_peer": ".tools/generator-pending-owning-chain-throw-review-source-4zvq3_cp/report.json",
+    "state_author198": ".tools/fiber-state-review-akcv2rb4/report.json",
+    "state_author115": ".tools/fiber-state-review-c_m77qqg/report.json",
+    "affected_old171": ".tools/fiber-state-review-i37ghcjl/report.json",
+    "state_peer155": ".tools/fiber-state-review-3f3fapz7/report.json",
+    "state_peer133": ".tools/fiber-state-review-wq_i7i_i/report.json"
+  },
+  "native_and_baseline": {
+    "native_originals": 4,
+    "model_agreements": 0,
+    "baseline": "Unchanged source 386f1238 reuses the exact 1l_die native tuple without PHP replay. Genuine public Unsupported Generator force-close at request end after eight OUTPUT chunks P|O|U|M|C|L|H|T|, exit1/empty stderr/no timeout/null diagnostic and exit_status; zero agreement."
+  },
+  "source_agreements": {
+    "normal": 4,
+    "php_error": 0,
+    "native_replayed": false
+  },
+  "reached_states": {
+    "new_premises": 601,
+    "author": 313,
+    "independent": 288,
+    "local_checks": 581,
+    "generic_reachability": 20,
+    "checks": [
+      "Authentic no-getter GEN_ARGS refresh queues child then upper. R1 becomes child RETURN1 plus copied COMPLETE1, cacheA3 includes child/current/marker, and E2 stays global/pending. Only upper clears initialization; middle remains pending and parked. Finite depth/source/tail/HELD/duplicate refusals and full held-cache ending pass.",
+      "Real copied-cache destructor callback has retired SOURCE upper distinct from LEAF middle, D2/E2 and retained return-array1. Saved NOGC pending receipt, forged source/leaf/value/caller controls and complete K-before-D/replacement Previous ending pass.",
+      "Queued middle close after real row COW has both pending and parked history, held+return old-array2 and one old-object edge. The real skip clears both flags without J, preserving retained count and full native ending.",
+      "Real late returned-cell WRITE queues oldR retirement, preserves newC through the same retained cell and produces null unused OP.VALUE. OldR precedes WRITE; newC remains request-late."
+    ],
+    "affected_historical": "Only Iterator29 first group (171 premises) is renewed: target selects physical middle through initialized outer, but ready remains false. No old source/native or other historical group is renewed.",
+    "budgets": "SL 120s/group, seek 4000/full ending 4000, public+heap validity, zero-budget identity and whole/split equality. Five separate groups true/exit0/empty stderr/no timeout/stable HEAD+inputs."
+  },
+  "elaboration_and_strict": "Combined five-fixture elaboration (60s) has unique EOF and all five headers, zero execution credit; strict 405-module SL (120s) returns true with caches off and encountered determinism.",
+  "failures_and_retries": "None; all twelve report roles pass first attempts. No new GC source agreement.",
+  "remaining": "Later parked resume/global exception-opline semantics, wider owning continuations/active-chain shapes, acquired producers, exceptional argument cleanup and waiting-result GC remain partial. No rebuild/portability, whole-core, interaction-tree or BOLA claim.",
+  "evidence": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/generator-pending-owning-chain-throw-32/private.tar.gz",
+    "bytes": 1910427,
+    "sha256": "b04286bda745f19f1d1cc3ca1e5a4c77f74c7948061fb1770fc36cec366093ae",
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/generator-pending-owning-chain-throw-32/manifest.json",
+    "recovery": "Restore the private branch/cut, extract private.tar.gz at its root and provision existing local tools. Re-run exact commands from reports; source wrappers use --native-report. Raw reports preserve original paths and commands; bulky artifacts remain outside Git."
+  },
+  "composition": "Composed over d23e7bc03741ab69ff77eb6489d533ce17b4f148/405. Incoming ordinary typed reference-return, named INI, scalar comparison, DEFINE, magic isset, DIVIDE and float-key array selectors are absent here; new array-retention/debt fields stay empty. Only289 changes with exact tested bytes; all other runtime, fields/defaults, tasks, pipeline and ordered manifest are parent-exact. Source4/new601/separate affected171/strict405 retain their private cut. No joined actor or renewed credit."
+}

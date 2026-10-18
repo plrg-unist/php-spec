@@ -207,11 +207,13 @@ rule PhpStep/arithmetic-div-expired: S ~> S[.COMPLETION = UNSUPPORTED "arithmeti
   -- if S.TODO = (ARITHMETIC_DIV_CONVERT pintegeroperation parithmeticphase) :: ptask_tail*
   -- if $call_task_valid(S, ARITHMETIC_DIV_CONVERT pintegeroperation parithmeticphase)
   -- if $integer_pointer_value(S, $arithmetic_add_pointer(pintegeroperation, parithmeticphase)) = eps
+dec $arithmetic_div_failure_operands(pstate, pintegeroperation, parithmeticphase) : (pvalue, pvalue)?
 rule PhpStep/arithmetic-div-invalid-conversion: S ~> S[.COMPLETION = UNSUPPORTED "arithmetic division selected operand conversion"]
   -- if S.TODO = (ARITHMETIC_DIV_CONVERT pintegeroperation parithmeticphase) :: ptask_tail*
   -- if $call_task_valid(S, ARITHMETIC_DIV_CONVERT pintegeroperation parithmeticphase)
   -- if $integer_pointer_value(S, $arithmetic_add_pointer(pintegeroperation, parithmeticphase)) = (pvalue)
   -- if $arithmetic_add_conversion(pvalue) = eps
+  -- if $arithmetic_div_failure_operands(S, pintegeroperation, parithmeticphase) = eps
 rule PhpStep/arithmetic-div-warning: S ~> $error_dispatch(S, 2, $ptascii("A non-numeric value encountered"), pintegeroperation.LINE, DIAGNOSTIC "Warning" ($ptascii("A non-numeric value encountered")) pintegeroperation.LINE, ARITHMETIC_DIV_WARNING pintegeroperation parithmeticphase pvalue pnumber 1)
   -- if S.TODO = (ARITHMETIC_DIV_WARNING pintegeroperation parithmeticphase pvalue pnumber 0) :: ptask_tail*
   -- if $arithmetic_div_warning_valid(S, pintegeroperation, parithmeticphase, pvalue, pnumber, 0)
@@ -2989,3 +2991,46 @@ def $quiet_power_copy_plan(S) = eps -- otherwise
 rule PhpStep/quiet-power-copy-begin: S ~> S[.TODO = (ARITHMETIC_CV_DEPRECATED pintegeroperation pnumber_left pnumber_right 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if $quiet_power_copy_plan(S) = ((pintegeroperation, pnumber_left, pnumber_right))
+
+
+;; A valid nonnumeric RHS can be repaired by the selected LEFT's first Warning.
+;; Keep the old plan exact and capture each number only in its existing phase.
+def $arithmetic_div_repair_plan(S) = (pintegeroperation)
+  -- if S.TODO = (BINARY_RIGHT DIVIDE poperand_left z) :: ptask_tail*
+  -- if $error_handler_eligible(S, 2)
+  -- if $arithmetic_add_named(S)
+  -- if ~$gc_retired_binary(S, DIVIDE, poperand_left)
+  -- if $arithmetic_div_plan(S) = eps
+  -- if S.ORIGIN = (porigin)
+  -- if poperand_right = S.RESULT
+  -- if $integer_pointer_select(S, poperand_left) = (INTEGER_CELL n_left)
+  -- if $integer_pointer_select(S, poperand_right) = (INTEGER_CELL n_right)
+  -- if $arithmetic_owned_cell_valid(S, n_left)
+  -- if $arithmetic_owned_cell_valid(S, n_right)
+  -- if $integer_pointer_value(S, INTEGER_CELL n_left) = (pvalue_left)
+  -- if $integer_pointer_value(S, INTEGER_CELL n_right) = (pvalue_right)
+  -- if $arithmetic_add_conversion(pvalue_left) = ((pnumber_left, true))
+  -- if $string_bytes(pvalue_right) = (ptbytes_right)
+  -- if $arithmetic_add_conversion(pvalue_right) = eps
+  -- if pintegeroperation = {SITE porigin, OP DIVIDE, LINE z, SWAPPED false, LEFT poperand_left, RIGHT poperand_right, LEFTPOINTER INTEGER_CELL n_left, RIGHTPOINTER INTEGER_CELL n_right}
+  -- if $arithmetic_div_valid(S, pintegeroperation)
+def $arithmetic_div_repair_plan(S) = eps -- otherwise
+rule PhpStep/arithmetic-div-repair-begin: S ~> S[.TODO = (ARITHMETIC_DIV_CONVERT pintegeroperation ARITHMETIC_LEFT) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $arithmetic_div_repair_plan(S) = (pintegeroperation)
+
+;; Failed RHS conversion reports the live types at the preselected referents.
+;; The shared cell guard admits only allocated, untyped, nonowning scalar values.
+def $arithmetic_div_failure_operands(S, pintegeroperation, ARITHMETIC_RIGHT pnumber) = ((pvalue_left, pvalue_right))
+  -- if $call_task_valid(S, ARITHMETIC_DIV_CONVERT pintegeroperation (ARITHMETIC_RIGHT pnumber))
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CELL n_left
+  -- if pintegeroperation.RIGHTPOINTER = INTEGER_CELL n_right
+  -- if $arithmetic_owned_cell_valid(S, n_left)
+  -- if $arithmetic_owned_cell_valid(S, n_right)
+  -- if $integer_pointer_value(S, pintegeroperation.LEFTPOINTER) = (pvalue_left)
+  -- if $integer_pointer_value(S, pintegeroperation.RIGHTPOINTER) = (pvalue_right)
+  -- if $arithmetic_add_conversion(pvalue_right) = eps
+def $arithmetic_div_failure_operands(S, pintegeroperation, parithmeticphase) = eps -- otherwise
+rule PhpStep/arithmetic-div-type-failure: S ~> $type_failure(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL], DIVIDE, pvalue_left, pvalue_right, pintegeroperation.LINE)
+  -- if S.TODO = (ARITHMETIC_DIV_CONVERT pintegeroperation parithmeticphase) :: ptask_tail*
+  -- if $arithmetic_div_failure_operands(S, pintegeroperation, parithmeticphase) = ((pvalue_left, pvalue_right))

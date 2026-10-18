@@ -176,6 +176,7 @@ def $gc_retired_binary(S, pbin, poperand) = false -- otherwise
 dec $integer_operator_plan(pstate) : pintegeroperation?
 dec $arithmetic_add_plan(pstate) : pintegeroperation?
 dec $arithmetic_div_plan(pstate) : pintegeroperation?
+dec $arithmetic_div_repair_plan(pstate) : pintegeroperation?
 dec $submul_warning_plan(pstate) : pintegeroperation?
 dec $power_conversion_warning_plan(pstate) : pintegeroperation?
 dec $arithmetic_cv_plan(pstate) : pintegeroperation?
@@ -196,6 +197,7 @@ rule PhpStep/binary-right: S ~> S_out[.HELD = S.HELD]
   -- if $integer_operator_plan(S) = eps
   -- if $arithmetic_add_plan(S) = eps
   -- if $arithmetic_div_plan(S) = eps
+  -- if $arithmetic_div_repair_plan(S) = eps
   -- if $submul_warning_plan(S) = eps
   -- if $power_conversion_warning_plan(S) = eps
   -- if $arithmetic_cv_plan(S) = eps
@@ -219,6 +221,7 @@ rule PhpStep/binary-left-abrupt: S ~> S_left[.TODO = eps][.HELD = S.HELD]
   -- if $integer_operator_plan(S) = eps
   -- if $arithmetic_add_plan(S) = eps
   -- if $arithmetic_div_plan(S) = eps
+  -- if $arithmetic_div_repair_plan(S) = eps
   -- if $submul_warning_plan(S) = eps
   -- if $power_conversion_warning_plan(S) = eps
   -- if $arithmetic_cv_plan(S) = eps
@@ -235,6 +238,7 @@ rule PhpStep/binary-right-abrupt: S ~> S_right[.TODO = eps][.HELD = S.HELD]
   -- if $integer_operator_plan(S) = eps
   -- if $arithmetic_add_plan(S) = eps
   -- if $arithmetic_div_plan(S) = eps
+  -- if $arithmetic_div_repair_plan(S) = eps
   -- if $submul_warning_plan(S) = eps
   -- if $power_conversion_warning_plan(S) = eps
   -- if $arithmetic_cv_plan(S) = eps
@@ -419,14 +423,15 @@ def $update_callback_previous_blocked(S) = false -- otherwise
 def $drive_steps(S, n) = S -- if $update_callback_previous_blocked(S)
 dec $literal_reference_debt_blocked(pstate) : bool
 def $drive_steps(S, n) = S -- if $literal_reference_debt_blocked(S)
+dec $literal_debt_pending(pstate) : bool
 dec $literal_reference_debt_step(pstate, pstate) : pstate
 def $literal_reference_debt_step(S, S_next) = $output_guard($gc_transition_owners(S, $destruction_transition_owners(S, S_next)))
-  -- if S_next.LITERALREFDEBTS = eps
+  -- if ~$literal_debt_pending(S_next)
 def $literal_reference_debt_step(S, S_next) = $output_guard($gc_transition_owners(S, $destruction_transition_owners(S, S_next)))
-  -- if S_next.LITERALREFDEBTS =/= eps
+  -- if $literal_debt_pending(S_next)
   -- if $literal_reference_debt_safe(S_next, $heap_graph(S_next))
 def $literal_reference_debt_step(S, S_next) = $literal_reference_debt_check(S_next)
-  -- if S_next.LITERALREFDEBTS =/= eps
+  -- if $literal_debt_pending(S_next)
   -- if ~$literal_reference_debt_safe(S_next, $heap_graph(S_next))
 dec $drive_checked(pstate, nat) : pstate
 def $drive_checked(S, n) = $drive_steps($literal_reference_debt_check($output_guard($sensitive_trace_freeze(S))), n) -- if S.COMPLETION = NORMAL
@@ -502,7 +507,7 @@ def $drive_steps(S, n) = $drive_steps($literal_reference_debt_step(S, $sensitive
   -- if ~$error_read_pending(S)
   -- PhpStep: S ~> S_next
 
-def $initial_state(pcompletion) = {TICKCOUNT 0, TICKSEQ 0, TICKENTRIES eps, OUTPUTSEQ 0, OUTPUTBUFFERS eps, OUTPUTIMPLICIT true, OUTPUTBLOCKED false, EXITSTATUS 0, OBJECTS eps, CLOSURESCOPES eps, CLOSUREBINDINGS eps, OBJECTPROPS eps, OBJECTTABLES eps, PROPREFS eps, REFCOERCIONS eps, CONTAINERINITS eps, PARAMETERBACKINGS eps, CLONES eps, CLONEMAKERS eps, CLASSES eps, CLASSNAMES eps, DECLARATIONS eps, LINKEDPARENTS eps, LINKEDINTERFACES eps, CLOSURETEMPLATES eps, STATICS eps, CLASSSTATICS eps, INSTANCEDEFAULTS eps, CLASSCONSTANTCACHE eps, CLASSCONSTANTHISTORY eps, CLASSCONSTANTINIT eps, CONSTANTCLOSURES eps, PARAMETERCLOSURES eps, CONSTANTOBJECTS eps, CONSTANTSTDOBJECTS eps, STARTUP eps, ASSERTIONS 1, ASSERTIONSINIT ($ptascii("1")), ASSERTIONSINI ($ptascii("1")), ASSERTIONSMODIFIED false, ASSERTIONSRAW (PSTRING_CARRIER INTERNED_STRING ($ptascii("1"))), ASSERTIONSORIGINAL (PSTRING_CARRIER INTERNED_STRING ($ptascii("1"))), ASSERTIONSMODE {INPUT (PSTRING_CARRIER INTERNED_STRING ($ptascii("1"))), VALUE 1}, ASSERTIONININEXT 0, ASSERTIONINI eps, STRINGDATA eps, ASSERTACTIVE {VALUE true, INITIAL ($ptascii("1")), RAW ($ptascii("1")), MODIFIED false}, ASSERTBAIL {VALUE false, INITIAL ($ptascii("0")), RAW ($ptascii("0")), MODIFIED false}, ASSERTWARNING {VALUE true, INITIAL ($ptascii("1")), RAW ($ptascii("1")), MODIFIED false}, ASSERTEXCEPTION {VALUE true, INITIAL ($ptascii("1")), RAW ($ptascii("1")), MODIFIED false}, ASSERTCALLBACK eps, ASSERTOPTIONNEXT 0, ASSERTOPTIONS eps, REPORTING 30719, REPORTINGINI ($ptascii("30719")), REPORTINGMODIFIED false, DISPLAYINIT ($ptascii("stderr")), DISPLAYINI ($ptascii("stderr")), DISPLAYMODIFIED false, PRECISIONINIT ($ptascii("14")), PRECISIONINI ($ptascii("14")), PRECISIONMODIFIED false, SILENCES eps, ERRORHANDLER {CALLBACK eps, LEVELS 0}, ERRORHANDLERS eps, EXCEPTIONHANDLER eps, EXCEPTIONHANDLERS eps, AUTOLOAD {ENTRIES eps, BIRTHS eps, CAPACITY 0}, AUTOSEQ 0, SHUTDOWN {ENTRIES eps, INDEX 0, PHASE SHUTDOWN_PENDING, SENT eps, RECEIVED eps, RENDER eps, COMPLETION NORMAL}, DESTRUCTION {HANDLES eps, FREE eps, NEXT 1, NOREUSE false, CALLED eps, RETIRED eps, PHASE DESTRUCTION_PENDING, NAMES eps, PASS eps, COUNT 0, INDEX 0, COMPLETION NORMAL, RELEASES eps, CALLS eps, FRAMES eps, OPERATIONS eps, CLEANUPS eps, REJECTED eps, ABANDONED eps, PROPCACHE eps}, GC {ENABLED true, IMMUTABLE eps, BUFFER eps, FREE eps, NEXT 0, ACTIVE eps, PLAN eps, WORKER eps, SCAN {INDEX 0, END 0}}, BORROWEDREAD eps, OBJECTCAST eps, DEFAULTCACHE eps, PARAMETERSEQ 0, PARAMETERRECEIVES eps, CONSTCONTEXT eps, USERCONSTANTS eps, TRACE eps, ERRORFATALTRACE eps, ERRORORIGIN eps, RECORDEDCOMPILEERROR eps, FUNCTIONS eps, CALLABLES eps, GLOBALTABLE eps, ACTIVEFIBER eps, FIBERCALLERS eps, FIBERCLOSERS eps, FIBERSEQ 1, FRAMES eps, CURRENT eps, RETIREDOWNERS eps, REQUEST eps, FILECWD eps, FILEINCLUDEPATH eps, FILESEQ 0, DIRSEQ 0, DIRCONVSEQ 0, DIRCONVERSIONS eps, DIRCONTEXT eps, SHELLSEQ 0, SHELLCONTEXT eps, SELECTSEQ 0, SELECTEDCALLS eps, FILECONTEXTS eps, FILEBINDINGS eps, INCLUDEDOPENED eps, EVALCONTEXTS eps, EVALBINDINGS eps, FAILEDSOURCES eps, SOURCEPENDING eps, SERVICELEFT eps, COMPILESTOP false, SYMBOLS eps, CVS eps, HTTPROOTS eps, ACTIVATED eps, TODO eps, EVENTS eps, COMPLETION pcompletion, ENV eps, STORE eps, REFCELLS eps, LITERALREFRETAINED eps, LITERALREFDEBTS eps, RESULT KNOWN PNULL, CELL 0, ARRAYS eps, KEY KINT 0, BASE BASE_VALUE (KNOWN PNULL), LOCATION ROOT 0, ALLOCATIONS eps, HELD eps, SOURCES eps, ORIGIN eps, POOLS eps, FILES eps, CODE eps, ITERATORS eps, NEXTITER 0, YIELDRETAINED eps, GENERATORINPUTS eps, GENERATORLOOPRETAINED eps, GENERATORRETURNRETAINED eps}
+def $initial_state(pcompletion) = {TICKCOUNT 0, TICKSEQ 0, TICKENTRIES eps, OUTPUTSEQ 0, OUTPUTBUFFERS eps, OUTPUTIMPLICIT true, OUTPUTBLOCKED false, EXITSTATUS 0, OBJECTS eps, CLOSURESCOPES eps, CLOSUREBINDINGS eps, OBJECTPROPS eps, OBJECTTABLES eps, PROPREFS eps, REFCOERCIONS eps, CONTAINERINITS eps, PARAMETERBACKINGS eps, CLONES eps, CLONEMAKERS eps, CLASSES eps, CLASSNAMES eps, DECLARATIONS eps, LINKEDPARENTS eps, LINKEDINTERFACES eps, CLOSURETEMPLATES eps, STATICS eps, CLASSSTATICS eps, INSTANCEDEFAULTS eps, CLASSCONSTANTCACHE eps, CLASSCONSTANTHISTORY eps, CLASSCONSTANTINIT eps, CONSTANTCLOSURES eps, PARAMETERCLOSURES eps, CONSTANTOBJECTS eps, CONSTANTSTDOBJECTS eps, STARTUP eps, ASSERTIONS 1, ASSERTIONSINIT ($ptascii("1")), ASSERTIONSINI ($ptascii("1")), ASSERTIONSMODIFIED false, ASSERTIONSRAW (PSTRING_CARRIER INTERNED_STRING ($ptascii("1"))), ASSERTIONSORIGINAL (PSTRING_CARRIER INTERNED_STRING ($ptascii("1"))), ASSERTIONSMODE {INPUT (PSTRING_CARRIER INTERNED_STRING ($ptascii("1"))), VALUE 1}, ASSERTIONININEXT 0, ASSERTIONINI eps, STRINGDATA eps, ASSERTACTIVE {VALUE true, INITIAL ($ptascii("1")), RAW ($ptascii("1")), MODIFIED false}, ASSERTBAIL {VALUE false, INITIAL ($ptascii("0")), RAW ($ptascii("0")), MODIFIED false}, ASSERTWARNING {VALUE true, INITIAL ($ptascii("1")), RAW ($ptascii("1")), MODIFIED false}, ASSERTEXCEPTION {VALUE true, INITIAL ($ptascii("1")), RAW ($ptascii("1")), MODIFIED false}, ASSERTCALLBACK eps, ASSERTOPTIONNEXT 0, ASSERTOPTIONS eps, REPORTING 30719, REPORTINGINI ($ptascii("30719")), REPORTINGMODIFIED false, DISPLAYINIT ($ptascii("stderr")), DISPLAYINI ($ptascii("stderr")), DISPLAYMODIFIED false, PRECISIONINIT ($ptascii("14")), PRECISIONINI ($ptascii("14")), PRECISIONMODIFIED false, SILENCES eps, ERRORHANDLER {CALLBACK eps, LEVELS 0}, ERRORHANDLERS eps, EXCEPTIONHANDLER eps, EXCEPTIONHANDLERS eps, AUTOLOAD {ENTRIES eps, BIRTHS eps, CAPACITY 0}, AUTOSEQ 0, SHUTDOWN {ENTRIES eps, INDEX 0, PHASE SHUTDOWN_PENDING, SENT eps, RECEIVED eps, RENDER eps, COMPLETION NORMAL}, DESTRUCTION {HANDLES eps, FREE eps, NEXT 1, NOREUSE false, CALLED eps, RETIRED eps, PHASE DESTRUCTION_PENDING, NAMES eps, PASS eps, COUNT 0, INDEX 0, COMPLETION NORMAL, RELEASES eps, CALLS eps, FRAMES eps, OPERATIONS eps, CLEANUPS eps, REJECTED eps, ABANDONED eps, PROPCACHE eps}, GC {ENABLED true, IMMUTABLE eps, BUFFER eps, FREE eps, NEXT 0, ACTIVE eps, PLAN eps, WORKER eps, SCAN {INDEX 0, END 0}}, BORROWEDREAD eps, OBJECTCAST eps, DEFAULTCACHE eps, PARAMETERSEQ 0, PARAMETERRECEIVES eps, CONSTCONTEXT eps, USERCONSTANTS eps, TRACE eps, ERRORFATALTRACE eps, ERRORORIGIN eps, RECORDEDCOMPILEERROR eps, FUNCTIONS eps, CALLABLES eps, GLOBALTABLE eps, ACTIVEFIBER eps, FIBERCALLERS eps, FIBERCLOSERS eps, FIBERSEQ 1, FRAMES eps, CURRENT eps, RETIREDOWNERS eps, REQUEST eps, FILECWD eps, FILEINCLUDEPATH eps, FILESEQ 0, DIRSEQ 0, DIRCONVSEQ 0, DIRCONVERSIONS eps, DIRCONTEXT eps, SHELLSEQ 0, SHELLCONTEXT eps, SELECTSEQ 0, SELECTEDCALLS eps, FILECONTEXTS eps, FILEBINDINGS eps, INCLUDEDOPENED eps, EVALCONTEXTS eps, EVALBINDINGS eps, FAILEDSOURCES eps, SOURCEPENDING eps, SERVICELEFT eps, COMPILESTOP false, SYMBOLS eps, CVS eps, HTTPROOTS eps, ACTIVATED eps, TODO eps, EVENTS eps, COMPLETION pcompletion, ENV eps, STORE eps, REFCELLS eps, LITERALREFRETAINED eps, LITERALREFDEBTS eps, LITERALARRAYRETAINED eps, LITERALARRAYDEBTS eps, RESULT KNOWN PNULL, CELL 0, ARRAYS eps, KEY KINT 0, BASE BASE_VALUE (KNOWN PNULL), LOCATION ROOT 0, ALLOCATIONS eps, HELD eps, SOURCES eps, ORIGIN eps, POOLS eps, FILES eps, CODE eps, ITERATORS eps, NEXTITER 0, YIELDRETAINED eps, GENERATORINPUTS eps, GENERATORLOOPRETAINED eps, GENERATORRETURNRETAINED eps}
 dec $source_filename(nat*) : bool
 def $source_filename(n*) = (n* =/= eps /\ ~(0 <- n*))
 dec $php_run(program, nat, text) : pstate
