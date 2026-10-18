@@ -7,6 +7,24 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Inherited private writes now call a public `__set(string $name, $incoming): void`
+for selected external CV/literal integer assignments. The callback receives `7`,
+but used CV results are read after receiver release: setter `99` then receiver
+destructor `123` yields `123`; literal `7` stays `7`, and a held receiver yields
+`99` before its later destructor. Lexical private and initialized public writes bypass
+magic. A supplied setter Exception leaves the outer destination `42` and reaches
+the same catch after receiver cleanup. A receiver-owning call marker and nonowning
+late-delivery marker preserve these orders without changing generic free or GC.
+Four originals agree at `a4e84a4b6`; 524 focused premises at `76b44693c`
+(506 reached +18 derived) cover actual parameter reception, IN_SET timing, saved
+receiver/delivery validity, pointer/input refusals and budgets. Two source failures
+remain zero (a DSL binder error, then entered-function lookup); the latter received
+a narrow authenticated lookup repair. The first focused failure and two diagnostics
+also stay zero; only its NORMAL/BUDGET plan detector needed correction. Wider
+setter signatures/RHSs, recursion, sole-owner public-NaN retirement and wider
+quiet-CV GC remain open. No earlier class suite is replayed.
+[Magic setter review](coverage/semantics/magic-setter-review.json).
+
 Fresh Exceptions in Closure binding warning handlers now retain the held API
 frame and original arguments after live CV/alias writes. Two existing-hook clauses
 in module253 also identify that internal C callback for weak parameter reception;
@@ -457,27 +475,6 @@ records, LIST float-key release, typed REF-return cleanup and DEFINE arity/recur
 array routes. Their guarded tasks and source shapes are absent here; factory,
 clone, getter and ownership interfaces remain exact. Source3/state271 retain the
 private2135/401 cut with zero new execution credit; no joined actor or replay.
-
-Paired terminal `empty` now accepts inherited `__isset(string $name)` without a
-return declaration. Ordinary object results cache true in the existing saved
-receiver marker and are disposed before the captured Get. A destructor can null
-the caller CV and change Get's value; held RVs instead delay disposal until after
-the result. A destructor's Exception cancels Get and reaches the same catch, while
-an untyped false result skips a deliberately throwing Get. Four originals agree
-at `24d04e3b6`; 313 focused premises at `d2babf78e` (289 reached +24 derived) cover
-actual owners, saved Isset guard/Get inactivity, cached delivery, call certificates
-and budgets. The first normal110 failure exposed the eager-prefix validation
-seam; a local certificate repair preserves steps/roots. That failure and three
-diagnostic records keep zero credit, including one diagnostic preparse error.
-Module407 remains typed-bool only. Wider untyped results/recursion, sole-owner
-public-NaN retirement and wider quiet-CV GC remain open; no generic GC change or
-earlier class replay.
-[Isset RV review](coverage/semantics/magic-empty-isset-rv-review.json).
-
-Composed over `41cc370dd`/401 after review of reference-return/unwind, parked
-Generator, constant API, compound and LIST-key changes, all unselected here.
-141/408 retain the reviewed implementation; all other incoming runtime/manifest
-paths are preserved. Source4/state313 keep their original cuts without replay.
 
 Positional `define` calls with primitive arguments now reject counts outside
 two through three before name/flag reception and registration, after all argument

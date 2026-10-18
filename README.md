@@ -3034,6 +3034,17 @@ the same catch; [isset RV review](coverage/semantics/magic-empty-isset-rv-review
 Ordinary `isset` and no-Get `empty` keep their typed-bool callback requirement.
 Other signatures, receivers, other internal-object RVs and
 wider recursive/coalesce magic combinations remain unsupported.
+
+Inherited private writes now invoke a public `__set(string $name, $incoming): void`
+for selected external CV/literal assignments. The setter receives integer `7`,
+but a used CV RHS is read for the result after receiver release: callback `99`
+then destructor `123` yields `123`; a literal stays `7`, while a held receiver
+permits `99` before its later destructor. Setter throws preserve the destination
+and the same Exception. Four originals and 524 focused premises cover entry,
+receiver ownership, late delivery and cleanup;
+[setter review](coverage/semantics/magic-setter-review.json). Initial references,
+owning RHS values and wider magic-write forms remain unsupported.
+
 Hooked iteration, defaulted virtual hooks, other paired or virtual setters, wider trait
 setters, other explicit setter parameter forms, references, other inherited/trait
 and wider receiver, quiet or indirect-access families and wider `__unset` consumers remain required.

@@ -617,6 +617,29 @@ other untyped scalar/null/array/internal-object results and wider recursive case
 remain Unsupported. No new task, owner or generic destruction/GC rule is added.
 [Isset RV review](../../coverage/semantics/magic-empty-isset-rv-review.json).
 
+Selected inherited private writes now call a public nonstatic, nonref
+`__set(string $name, $incoming): void`, with a required untyped value parameter.
+The source receiver is an external CV, the property name is literal, and the RHS
+is initially a nonreference integer CV or integer literal. The setter's lexical
+private write and the caller's initialized public write use ordinary storage.
+The callback receives the original integer; a receiver-owning result marker keeps
+the object through the call even when the caller CV becomes null. IN_SET ends
+with that call, before receiver destruction. A nonowning delivery marker then
+reads the captured RHS cell after release, allowing ordinary global binding to
+promote it to a reference. Thus callback `99` followed by destructor `123` yields
+`123` for a used CV assignment, literal `7` stays `7`, and a held receiver yields
+`99` before its later destruction. A setter throw cancels outer assignment and
+keeps the same Exception through receiver cleanup and actual catch binding.
+Four originals and 524 focused premises (506 reached +18 derived) verify these
+transitions, actual typed parameter reception, saved delivery after receiver
+retirement, pointer/input/source refusals and driver budgets. The reached module318
+check covers the default-handler bypass, without a handler-enabled suppression
+claim. Two original source failures, the first focused failure and two diagnostics
+retain zero credit. Other setter signatures, owning/initial-reference RHSs,
+indirect or recursive writes and wider receiver/lifetime forms remain open;
+generic ownership, destruction and GC rules are unchanged.
+[Magic setter review](../../coverage/semantics/magic-setter-review.json).
+
 Constructor promotion declares a property from its original parameter flags and
 source occurrence. A parameter default does not initialize the property, and
 promoted nonnullable types do not acquire ordinary implicit nullable widening.
@@ -920,7 +943,7 @@ mangled storage keys are described in [SOURCE-PROPERTY-VISIBILITY.md](SOURCE-PRO
 and access contract. Non-object casts and stdClass table sharing are described in
 [OBJECT-CASTS.md](OBJECT-CASTS.md), including numeric/NUL storage keys, raw undefined
 buckets and callback-sensitive iteration. Wider readonly operations, hooks,
-magic setters and quiet access, and wider property consumers remain open.
+other magic-setter forms and quiet access, and wider property consumers remain open.
 Public constructors are implemented separately.
 
 Weak builtin-string MAGIC_GET also converts non-NaN floats using shared stringify

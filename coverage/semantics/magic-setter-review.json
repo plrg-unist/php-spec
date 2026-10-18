@@ -1,0 +1,136 @@
+{
+  "scope": "First inherited private external-CV/literal magic write: public nonstatic nonref __set(string $name,$incoming):void, required untyped value parameter, initially nonreference integer CV or integer literal RHS. Ordinary lexical private/public-ready bypass; sole/held receiver, post-release used RHS result and supplied setter throw.",
+  "implementation": {
+    "base": "f63bef8695d1211c988dbd0290f6248d109da457",
+    "source_revision": "a4e84a4b6dc170ed1404b629ccbcd8ddd986c46b",
+    "state_revision": "76b44693c3b9735d2ec1655fd597fde3f1b6fb97",
+    "modules": 402,
+    "change": "141 signature admission;30 record/target/owning RESULT/nonowning DELIVERY;42/154/318 scoped exclusions;412 source/pointer/call/guard/history certificates and transitions. Entered target lookup reconstructs the genuine saved caller. No generic call/free/GC step change."
+  },
+  "engine": {
+    "target": "PHP8.5.10 CLI NTS64",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_object_handlers.c zend_std_call_setter copies parameters; zend_std_write_property sets/clears IN_SET and OBJ_RELEASE before returning the original value pointer.",
+      "Zend/zend_vm_def.h ZEND_ASSIGN_OBJ copies the used assignment result with ZVAL_COPY_DEREF after write_property returns.",
+      "Zend/zend_API.c zend_check_magic_method_implementation validates __set parameters/void result."
+    ],
+    "intentional_divergences": []
+  },
+  "sources": {
+    "catalogue": "tests/semantics/magic_setter_cases.json",
+    "maintained_byte_identical": true,
+    "results": "Normal CV result123 after receiverD, literal7, held99 before laterD; throw preserves destination42 and sameException. Native stdout28/26/32/29 bytes, all stderr empty/exit0."
+  },
+  "validation": {
+    "native": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-setter-private-98/.tools/magic-setter-probes-98/native-first/report.json",
+      "sha256": "2c6dc2851df59a9a1bd5e1f03b1895a621f19e2006ca541d3331a2def7fbf8ee",
+      "result": "Four exact native tuples; no source credit.",
+      "revision": "f63bef8695d1211c988dbd0290f6248d109da457"
+    },
+    "baseline": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-setter-private-98/.tools/magic-setter-probes-98/accepted-current-baseline/report.json",
+      "sha256": "2cd413137423e37eccd6236d9654c8d80ea1eca723b4f46b4b57dc2a70c665fa",
+      "result": "Four checked compiler Unsupported: method visibility, static, or magic consumer;CLI1/0agreements.8.519/8.601/8.774/8.625s.",
+      "revision": "f63bef8695d1211c988dbd0290f6248d109da457"
+    },
+    "source": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-setter-private-98/.tools/magic-setter-probes-98/changed-model-kun2469t/report.json",
+      "sha256": "dabf38224ad116debeaabcf3c268024e985d327fe2cf06cb598c9de91a9ce890",
+      "result": "Four exact checked normal agreements;13.885/13.690/14.753/15.522s.",
+      "revision": "a4e84a4b6dc170ed1404b629ccbcd8ddd986c46b"
+    },
+    "focused": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-setter-private-98/.tools/magic-setter-protocol-3c3d9nz5/report.json",
+      "sha256": "89983e9cc1b3dba4efc14cf9dfc3b736097cebac93b80cf4ff6be48daf63756f",
+      "result": "Four true:146/128/128/122 premises,524=506reached+18derived/app4/source0;AL7.094/7.155/7.191/7.318,SL19.459/18.839/21.721/22.519s.",
+      "revision": "76b44693c3b9735d2ec1655fd597fde3f1b6fb97"
+    }
+  },
+  "focused_scope": "Actual pending source/CELL/input and raw call, TYPE_RECEIVE target/receiving_function, parameter7, lexical private7/public-ready5, receiver1/2 with callerNULL and saved capturefalse/IN_SETtrue, IN_SETfalse before receiverD, nonowning saved DELIVERY after object retirement, late REF cell123/literal7/held99, exact sameThrowable at CATCH_BIND/destination42, full endings and budgets. Derived source/signature predicates and pending-call certificates reject wrongCELL/wrongINPUT; initialREF and late nonint controls take actual Unsupported steps.318 assertion is only a reached default-handler bypass.",
+  "nonpassing": [
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-setter-private-98/.tools/magic-setter-probes-98/changed-model-m0ljqpse/report.json",
+      "sha256": "b8059de6d49be7e962e2ed81a53f642040963abefa9df06815bee0c5859c1065",
+      "result": "Pre-execution runner_failure: two scalar/list pframe binder bases collided;normal only/other3unrun/source0. Two fallback aliases renamed.",
+      "revision": "9390d1879e6bab19e67ee5c707d9d82453336664",
+      "passing_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-setter-private-98/.tools/magic-setter-probes-98/changed-model-m8ce_lky/report.json",
+      "sha256": "bdcddc8a24b204658a5c1fdfd8bb6432789c76d749eff525b744dfd5358d21a9",
+      "result": "Interpreter_failure during normal evaluation: caller-only target_function failed at entered TYPE_RECEIVE;other3unrun/source0. Repaired by authenticated entered proof.",
+      "revision": "759880c71cfd38d9b025723d3eba69f5d0a3eb3a",
+      "passing_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-setter-private-98/.tools/magic-setter-protocol-19vzhmzd/report.json",
+      "sha256": "e3f55ecea3d3e8b16776ef8eed7b43446189180e3e093c90ef1240b2e1f153a7",
+      "result": "Enclosing524 packet false: normal146 false, other3unrun;no passing credit. MS_PLAN skipped the real BUDGET boundary.",
+      "revision": "1603ca145319eb3b55ac35ecc5a41b66944854c9",
+      "passing_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-setter-private-98/.tools/magic-setter-probes-98/diagnostic-98-7xsurtk0/report.json",
+      "sha256": "a73065357778e9d583f92f9f529ca4187d69b1130190553cbad41de80e4295f2",
+      "result": "Diagnostic0: six false prefixes localize initial COMMON;oneSL39.171s.",
+      "revision": "1603ca145319eb3b55ac35ecc5a41b66944854c9",
+      "passing_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-setter-private-98/.tools/magic-setter-probes-98/diagnostic-common-98-avohzr3z/report.json",
+      "sha256": "ef8d04da860a10a5ce200d84bc0e4d37607bd307a4451a72faa52b373c0360aa",
+      "result": "Diagnostic0: no vector/function-main failure at plan binding after missed seek;oneSL14.264s. Static40 driver trace identifies NORMAL-only stage query on BUDGET;stage-only correction, no runtime change.",
+      "revision": "1603ca145319eb3b55ac35ecc5a41b66944854c9",
+      "passing_credit": 0
+    }
+  ],
+  "execution": {
+    "cwd": "/home/user/workspace/php-spec/.tools/magic-setter-private-98",
+    "environment": "LC_ALL=C TZ=UTC PHP_SPEC_SCRIPT_ENCODING absent,jobs1,catalogue profile;native/baseline/source CPU4,focused/diagnostics CPU1;SL/cachefalse/dettrue.",
+    "caps": "Native45/model60/outer75/steps100000;focused eachAL90 then strictSL90 serial/stop-first;diagnostics oneSL90.",
+    "commands": [
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 4 python3 -u .tools/magic-setter-probes-98/run.py native --revision f63bef8695d1211c988dbd0290f6248d109da457",
+      "Same run.py baseline --revision f63bef8695d1211c988dbd0290f6248d109da457",
+      "Same run.py changed --revision a4e84a4b6dc170ed1404b629ccbcd8ddd986c46b",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u tests/semantics/magic_setter_protocol.py --revision 76b44693c3b9735d2ec1655fd597fde3f1b6fb97"
+    ],
+    "affinity": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-setter-private-98/.tools/magic-setter-probes-98/affinity-native-first.json",
+        "sha256": "672e5ae3775598279c1fd44e805511a83f372dcce2a9bbba591a301fc9c86036",
+        "result": "Partial2/4: normalCPU4/fullargv,throwCPU4/emptyargv,literal/held missed. Exact taskset-parent provenance retained; no sampling-only replay."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-setter-private-98/.tools/magic-setter-probes-98/affinity-accepted-current-baseline.json",
+        "sha256": "32715e89e38874eabf4df37766e3f5c627aa41f4a133d051058cc68277fcf4e5",
+        "result": "Complete4CPU4/fullargv."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-setter-private-98/.tools/magic-setter-probes-98/affinity-changed-source-98-repair2.json",
+        "sha256": "c5693556741486fe99705725da7ca448946fcaae16853878033502a7bf0296f9",
+        "result": "Complete4CPU4/fullargv."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-setter-private-98/.tools/magic-setter-probes-98/affinity-state-98-repair1.json",
+        "sha256": "b5c17fa22d6bcdd5e9261ccb0aed1eee928d3184ee2e35f08bd7008971ff9ea2",
+        "result": "Complete8CPU1/fullargv."
+      }
+    ],
+    "stability": "Accepted inputs/head/status/fixtures stable;no timeout/interruption;groups empty/actors and observers reaped. All earlier outcomes retained0."
+  },
+  "tools": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "source_driver_sha256": "c897ea696c0af67f44e74835592dea79883a47ef7cd8fcd015153f77f5e5e04c",
+    "focused_driver_sha256": "e0c0b3982a46ce8ef40962294fb9c700308a97dca86719a95a2bd8b777e7737b"
+  },
+  "limits": "Other setter signatures, owning/initial-reference or retyped/retired RHS forms, indirect/recursive writes and wider lifetimes remain Unsupported. No handler-enabled318 proof, generic GC preservation, sole-owner public-NaN retirement or earlier class replay.",
+  "artifacts": "Ignored original sources/drivers/reports/streams/processes/diagnostics and generated fixtures remain in original raw directories; maintained sources/catalogue/harness recover from tested commits. No bulky archive, backup or receipt chain tracked.",
+  "review": {
+    "independent": "class_review_84",
+    "accepted": "Native/baseline/source4, focused524 and concise publication independently accepted; certificate-rejection versus actual-Unsupported and generated-fixture recovery wording clarified."
+  }
+}
