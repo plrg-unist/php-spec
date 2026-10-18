@@ -1,0 +1,87 @@
+{
+  "status": "independently reviewed bounded implementation and focused validation",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, sole pinned local PHP/profile, exact original bytes/filename/cwd, full399 SL modules",
+  "base": "2e75ac2d15804b91de422ea3124e56206ce6270a",
+  "runtime": {
+    "revision": "f41af5e0ce67881e61c0c23267e65e1e3265d7d4",
+    "sha256": {
+      "spec/semantics/400-dynamic-constants.watsup": "48445b8702527a6728bbc0d6fca21b574fe89fefbdc4933200887b5b8675c02e"
+    },
+    "delta": "Sole400+2/-1: array source delegates the existing exact2..3 define-source policy; actual array-call validation explicitly rejects the captured true caseflag. Existing dynamic_define_values admits a third raw PBOOL false/true only, so nonboolean slots still fail. Copy/publication/query/marker/lifecycle rules are unchanged."
+  },
+  "engine_route": "Zend/zend_builtin_functions.c::ZEND_FUNCTION(define) receives all arguments before testing non_cs or copying; copy_constant_array dereferences cells and recursively creates containers before zend_register_constant. Duplicate reporting keeps the original API arguments for callbacks/Exception traces while the canonical copied candidate retains earlier leaf edges.",
+  "accepted": {
+    "source_agreements": 3,
+    "author_sources": 2,
+    "independent_sources": 1,
+    "author_main_premises": 183,
+    "author_eval_premises": 194,
+    "independent_premises": 147,
+    "total_premises": 524,
+    "driven_forged_states": 0,
+    "zero_budget_restoration_checks": 1
+  },
+  "behavior": [
+    "Fresh source captures an input array while its cell holds LEFT, then the third-argument expression rebinds that same cell RIGHT and returns false. Reached CONFIG_ARGS INDEX2 and CONFIG_INVOKE INDEX3 preserve the same input containers/births; publication snapshots RIGHT into two fresh DIRECT edges. Later source-cell LEFT, shared RIGHT property11 and real bucket-reference COW leave the stored snapshot exact; query adds only a root owner and allocates nothing. Final donor owners are LEFT1/RIGHT3.",
+    "Selected eval duplicate likewise runs its flag-expression OLD-to-NEXT rebind before copying. Normal true handler rebinds original cellOLD; a real probe API trace sees original OLD input and the captured false third slot, while private candidate keeps NEXT with property23. No ignored-flag Warning occurs. Actual false delivery retires candidate edges and original CFG root, preserving the old tree/property19; final old donor+two stored edges3 and NEXT donor1.",
+    "Independent reversed-named call duplicates scalar17 with captured false. Handler changes live global flagtrue and input cellRIGHT, mutates copied/shared LEFT41, appends SIDE31 and throws. Real Exception trace args contains original input plus false, despite live flagtrue. One actual ERROR_HANDLER_RESULT discard retires only candidate root/child and drops LEFT3 to1; original input remains caller+trace rooted, RIGHT2 unchanged. Catch/unset preserves sentinel/old17/SIDE31 and leaves both donors1.",
+    "Pure true and nonboolean flag, live-birth/class/canonical-history, prefix and selected-source controls are never driven. Historical stored rows authenticate the source structure and stored tree, without reconstructing a past mutable flag. Existing primitive/carrier and fresh top-level-empty folds compose with this source widening; exact new sources focus nonempty certified stdClass trees."
+  ],
+  "cuts": {
+    "native_and_baseline": "22bb47be4393cb58b699b77ec441bb207cda5e37/399",
+    "author_source2": "f41af5e0ce67881e61c0c23267e65e1e3265d7d4/399",
+    "peer_source1": "99687e95cf3c74c4a0d200f39403540c465c650d/399",
+    "state524": "d8c513a500163a901a2935f981fc7dbc5d62ce82/399",
+    "authority": "Runtime400 bytes are exact across accepted source/state cuts. Both state scripts were tracked at state cut. Each actor uses its matching original native main.php and WT cwd, including exact eval literal/unit1. V66/V67 two-argument cuts are retained without replay."
+  },
+  "preserved_outcomes": {
+    "baseline": "Genuine Unsupported dynamic constant call domain after B| at clean22bb47be4, CLI1/empty stderr/stable/reaped; contributes0 agreement.",
+    "preflight": "Initial fixtures at6a7215039 failed before report/worker creation: fingerprint NameError for missing Path import. Exact tool stderr and command are copied into the original state68 root with explicit provenance/credit0. The sole Path import correction renewed only affected fixtures/checks in v2. No runtime premise or source/native actor was repeated.",
+    "other": "All source and executed SL checks pass first attempts with normal0/empty source stderr and lowercase true plus LF/empty proof stderr. One zero-budget pause/restoration identity reuses the ordinary fresh-copy step and adds no separate driven-resume credit. No engine divergence."
+  },
+  "remaining": "True/coerced array flags, empty-root duplicates, nested empty descendants, other owning/uncertified leaves, startup-name array payloads, coerced names and wider callback/call dependencies remain partial. Inventory obligations stay partial.",
+  "artifacts": {
+    "author_sources": {
+      "root": ".tools/dynamic-stdclass-array-false-flag-native-68",
+      "sha256": {
+        "native-report.json": "8592d1a6b178b6d9a4b1867e74c0a0e5a68bc34d6032dc659fbe5aff0e63c32d",
+        "baseline-report.json": "268040040851161e31cabbcf322f3e62eb1e4e8038e62458184362c49f45de64",
+        "model-report.json": "77e0feb091a38469d296f5cc09381cd95f0bee9f4ae863a0e8134f55b3b6a99d"
+      }
+    },
+    "peer_source": {
+      "root": ".tools/dynamic-stdclass-array-false-flag-peer-68",
+      "sha256": {
+        "native-report.json": "a467891a98f3a9425275319e24b1acd04ff408c34ee01041625e3271482c59bd",
+        "model-report.json": "5d45001f44e29a8886f7dbd44bfd924ca9950aa49ab37f05fed5ce3ccf7fe08c"
+      }
+    },
+    "author_preflight_failure": {
+      "root": ".tools/dynamic-stdclass-array-false-flag-state-68",
+      "sha256": {
+        "fixture-preflight-failure.json": "f43170c3138dcc665ffc1b6ce819d4ae2685d70d971ead9996a5e77aba0c5cc1",
+        "fixture-preflight.stderr": "a6f5adc89cc41f4194c97297280e74bf685982373e1120a9a94f51090dbd59c2"
+      }
+    },
+    "author_state": {
+      "root": ".tools/dynamic-stdclass-array-false-flag-state-68-v2",
+      "sha256": {
+        "fixtures-report.json": "7695bc271dce564d5452dcae6ec29f18f936620afeafa10261ec7bca4836d4fa",
+        "check-report.json": "a78fe7e7e0472814b59b34898198bc7702ff5b873d379854285a04859ce28e23"
+      }
+    },
+    "peer_state": {
+      "root": ".tools/dynamic-stdclass-array-false-flag-peer-state-68",
+      "sha256": {
+        "fixtures-report.json": "35be46fd8107ac782ecc794587355f2a30840bb5b8a34154629ae806eba2fa99",
+        "check-report.json": "79c09b24e9ab15033b068e9732d66cdde97c7a68772bfbb84e0b249e12fcf43b"
+      }
+    }
+  },
+  "recovery": "Source wrappers: author nativehost45/process15 and sole fresh baselinehost90/CLI45/process60 onCPU2; author model2host150 with serial CLI45/process60; peer native45/model90 onCPU2. Author v2 fixtureshost120/checkhost240 serial2/perSL90, peer fixtures120/check150/perSL90 onCPU2. Raw reports/fixtures/logs remain ignored in canonical.tools. Restore tracked scripts from this publication or state d8c513a50, recreate original WT path and provision report-pinned local executables/references, preserving original native filenames/cwd and runtime400 hash. All accepted process groups are reaped.",
+  "review": {
+    "reviewer": "/root/dynamic_review_59",
+    "decision": "cleared",
+    "scope": "All-argument copy timing versus captured input; exact false slot versus mutable caller flag; distinct private candidate/original API-trace roots and real normal/abrupt cleanup. No old evidence renewal."
+  }
+}

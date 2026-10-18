@@ -32,7 +32,7 @@ allocation, sharing property writes through ordinary reads and `constant()`.
 Duplicate handlers keep the old binding and their writes when they return or
 throw; existing call/trace cleanup retires their temporary owners.
 [Certified define review](../../coverage/semantics/define-stdclass-review.json).
-Fresh two-argument array definitions likewise copy nonempty containers and freeze
+Fresh array definitions with omitted/false flags copy nonempty containers and freeze
 source reference cells while sharing these certified pointers. Actual copied
 edges, rebuilt append history and nested query COW preserve shared property writes.
 [Array-object define review](../../coverage/semantics/define-stdclass-array-review.json).
@@ -41,6 +41,9 @@ these object leaves while the original input remains available to callbacks and
 Exception traces. Ordinary normal/throw cleanup releases the private edges and
 preserves old bindings and property writes.
 [Array-duplicate review](../../coverage/semantics/define-stdclass-array-duplicate-review.json).
+Copying follows all argument effects, including flag-expression alias rebinding.
+Callbacks may change the live flag while the continuation and API trace keep the
+captured false value. [False-flag review](../../coverage/semantics/define-stdclass-array-false-flag-review.json).
 Ordinary uncertified NEW and other object leaf classes remain partial.
 
 The constant-AST path also evaluates and drops ordinary positional and uniquely

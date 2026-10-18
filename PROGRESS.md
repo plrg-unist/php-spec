@@ -927,6 +927,17 @@ unchanged Unsupported baseline retains0. Empty-array duplicates, nested empties,
 other owning leaves, startup keys and wider flags remain partial.
 [Array-duplicate review](coverage/semantics/define-stdclass-array-duplicate-review.json).
 
+Array definitions now also admit a captured boolean-false third slot. Actual
+pre-flag and invoke fronts distinguish alias rebinding during flag evaluation
+from later callback writes; copies retain the values after all arguments.
+Three exact sources agree, including a throwing handler whose live flag becomes
+true while its API trace retains false. All 524 premises pass (377 author, 147
+independent), covering copied/original owners, normal/abrupt retirement and
+true/nonboolean refusals. The first fixture preflight missing-import failure
+remains0; only that fixture was corrected.
+True/coerced flags, empty duplicates and nested empties remain partial.
+[False-flag array review](coverage/semantics/define-stdclass-array-false-flag-review.json).
+
 Selected inherited `__unset(string): void` now dispatches direct CV/literal-name
 access to a declared private property. Accessible public unset skips magic;
 the callback retains Parent lexical scope and Child called scope, removes the

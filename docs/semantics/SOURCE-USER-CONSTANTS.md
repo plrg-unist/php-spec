@@ -267,8 +267,9 @@ stderr each contain one conversion Warning; strict/peer are quiet. Previous mark
 domains are unchanged; NUL/coerced names, owning/wider values, wider NaN producers
 and full family closure remain partial.
 
-Fresh two-argument array definitions recursively dereference source cells into
-new DIRECT entries. Reinserting surviving keys rebuilds NEXT, positions and serial
+Fresh array definitions with an omitted or captured boolean-false third flag
+recursively dereference source cells into new DIRECT entries. Reinserting surviving
+keys rebuilds NEXT, positions and serial
 metadata; ordinary copies and later source/reference writes preserve the constant.
 Nonempty acyclic trees contain primitive/carrier leaves and certified live
 stdClass donors. String classes and object birth classes are retained; copied
@@ -286,7 +287,7 @@ two DIRECT object edges, later cell rebinding leaves the snapshot intact, and
 real query bucket-reference COW changes caller containers while property writes
 still reach the stored objects. Queries add only a root owner and allocate
 nothing. The leaf classifier reuses completed/live birth guards; producer,
-two-argument, canonical-table and cycle/empty boundaries are unchanged.
+canonical-table and cycle/empty boundaries are unchanged.
 
 Duplicate user keys with nonempty array candidates copy before the Warning.
 A dedicated marker owns the private canonical root and the unchanged original
@@ -299,6 +300,16 @@ retires the private copy while preserving the old row, callback writes and any
 real Exception trace owners of the original input. The established primitive and
 carrier fold is reused; new exact sources discriminate certified object leaves.
 [Array-duplicate review](../../coverage/semantics/define-stdclass-array-duplicate-review.json).
+
+Array calls also admit an explicit captured boolean-false third slot. Copying
+follows all argument effects: a late flag expression can rebind cells already
+present in the captured input. Reporting retains false even if a callback changes
+the live flag; the original API input and private snapshot keep their distinct
+owners. The existing fold also composes with primitive/carrier trees and fresh
+top-level empties; new exact sources focus certified object leaves. Stored-row
+source validation remains structural and does not reconstruct a past mutable
+flag. True/coerced flags, empty duplicates and nested empties remain partial.
+[False-flag review](../../coverage/semantics/define-stdclass-array-false-flag-review.json).
 
 Top-level empty values use the existing source-pool or retained immutable flag.
 An authenticated immutable empty keeps its table and `PVARRAY true eps`; a mutable
@@ -319,7 +330,7 @@ owners until ordinary catch/unset cleanup. Historical rows validate their stored
 birth/value and source policy, without reconstructing a past mutable CV or flag.
 [Certified define review](../../coverage/semantics/define-stdclass-review.json).
 Ordinary uncertified objects, other owning array leaves, empty-array duplicates,
-nested empties, array third flags, owning true/coerced flags, coerced names and
+nested empties, owning true/coerced flags, coerced names and
 wider owning define domains remain partial.
 
 Class-qualified `defined` queries reuse inherited lookup and the actual caller's
@@ -570,7 +581,8 @@ The matching engine routes are `ZEND_FUNCTION(define)`/`ZVAL_COPY`,
 and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`. `PHP_FUNCTION(constant)` uses
 exception-class lookup and `ZVAL_COPY_OR_DUP`; `zend_declare_typed_class_constant`
 interns direct string values before installation.
-Nested empty values in `define`, cycles, other objects, array duplicate/third-argument paths,
+Nested empty values in `define`, cycles, other objects, empty-array duplicates
+and true/coerced array flags,
 Stringable/array names, array/object values with scalar or null names, true/NULL/NaN
 flags with scalar names, nonbool flags with nonfinite float names, true/NULL/NaN flags with
 null names, special/startup names with flags or values beyond the bounded follow-ups,

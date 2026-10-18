@@ -1209,14 +1209,17 @@ stdClass donors. Named/selected calls preserve the captured pointer through late
 CV changes, and duplicate handlers keep the old binding and property writes on
 normal return or throw. Existing call and Exception-trace cleanup release the
 temporary owners. [Certified define review](coverage/semantics/define-stdclass-review.json).
-Fresh two-argument definitions also copy nonempty array trees containing certified
-stdClass leaves. Copied containers freeze source reference values while object
-pointers and property writes remain shared, including selected eval calls
-and nested query COW. [Array-object define review](coverage/semantics/define-stdclass-array-review.json).
+Fresh definitions with an omitted or captured false third flag also copy nonempty
+array trees containing certified stdClass leaves. Copied containers freeze source
+reference values while object pointers and property writes remain shared, including
+selected eval calls and nested query COW. [Array-object define review](coverage/semantics/define-stdclass-array-review.json).
 Duplicate nonempty array definitions retain a private canonical candidate through
 the Warning while callbacks and Exception traces keep the original API argument.
 Normal false delivery and throwing-handler cleanup retire the candidate, preserving
 the old row and callback writes. [Array-duplicate review](coverage/semantics/define-stdclass-array-duplicate-review.json).
+Explicit false flags retain their captured value through callbacks and traces;
+copying observes reference changes from all argument expressions.
+[False-flag array review](coverage/semantics/define-stdclass-array-false-flag-review.json).
 Ordinary uncertified objects, other owning leaves, empty-array duplicates, nested
 empties and wider flags/names remain partial.
 Class-qualified `defined` now checks inherited user constants with lexical visibility
