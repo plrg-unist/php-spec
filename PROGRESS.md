@@ -9384,6 +9384,22 @@ The value source has separate source agreement, without a reached owner proof.
 Normal pending-free routing and ownership rules are unchanged; wider arrays,
 other owner histories and broad returns_verify remain OPEN.
 [M88 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M89 adds bounded assigned `?array` capture for a runtime one-entry
+array holding an ordinary object child. Direct `return old_value()` and
+assigned `return ($x = old_value())` originals differ by F0/F1; native PHP
+runs D normally during selected-reference replacement, then catches the
+selected TypeError locally and returns detached NULL with one old-line Notice.
+On unchanged `2e75ac2d1`/399 the direct model agrees but assigned stops
+after D as Unsupported, without Notice. At private `a50272b80`/399 strict
+SL initialization passes and both original source packets agree exactly.
+One assigned fixture passes 159 Boolean premises and one raw step: xNULL
+leaves the protected HARRAY→O live; inside D the table is retired while O
+remains live and the saved descriptor admits a nonowning cursor despite the
+dead old operand. After D the f-origin TypeError, consumed NULL/new Notice,
+caller `rNULL/b7/xNULL/ybad`, actual inside-D LINE-only public refusal and
+whole/split budget equality pass. Existing normal destructor, pending-Throwable
+and ownership/release rules stay unchanged; this is one normal child history.
+[M89 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, wider destructor throw/reentry, real suspension and wider typed
