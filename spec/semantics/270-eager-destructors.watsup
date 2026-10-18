@@ -425,6 +425,12 @@ def $ref_return_pair_release_view(S, porigin_selected, z_selected) = (S[.TODO = 
   -- if pdestructionoperation.PENDING = eps
   -- if pdestructionoperation.CALLER = S.CURRENT /\ pdestructionoperation.ORIGIN = S.ORIGIN /\ pdestructionoperation.CONSTCONTEXT = S.CONSTCONTEXT
 def $ref_return_pair_release_view(S, porigin_selected, z_selected) = eps -- otherwise
+def $ref_return_pair_saved_valid(S, prefreturncursor_inner, prefreturncursor_outer, porigin_selected, z_selected) = $ref_return_pair_valid(S_queued, prefreturncursor_inner, prefreturncursor_outer, porigin_selected, z_selected)
+  -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
+  -- if $ref_return_pair_release_view(S, porigin_selected, z_selected) = (S_queued)
+def $ref_return_pair_saved_valid(S, prefreturncursor_inner, prefreturncursor_outer, porigin_selected, z_selected) = $ref_return_pair_valid(S_queued, prefreturncursor_inner, prefreturncursor_outer, porigin_selected, z_selected)
+  -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*
+  -- if $ref_return_pair_release_view(S, porigin_selected, z_selected) = (S_queued)
 def $ref_return_pair_pending_saved_valid(S, prefreturncursor_inner, prefreturncursor_outer, porigin_selected, z_selected) = $ref_return_pair_pending_valid(S_queued, prefreturncursor_inner, prefreturncursor_outer, porigin_selected, z_selected)
   -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
   -- if prefreturncursor_inner.OUTER = $origin_child((prefreturncursor_outer.OWNER), [PCFIELD 2])
