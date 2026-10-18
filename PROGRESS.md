@@ -7,6 +7,31 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+`constant`/`defined` calls with one positional argument now reject retained ordinary
+nonStringable instances and `stdClass` before lookup, weak or strict. Exactly25
+module400 additions reuse positional/source admission and direct raw TypeError
+allocation; Source53 Stringable guards/launch are unchanged. Raw receiver API/caller
+traces, selected callees after argument effects, caller99, ordinary `toString()`
+nonentry and normal query recovery pass. Four originals agree: author3 at c77c7abca
+and changed peer1 at 7e8a3c0ce/runtime6282a8468. All508 state premises pass at7e8:
+author155+98+99 and independent156 across five errors and a real normal recovery,
+with receiver property projection, stores/events/autoload metadata, source/shape/
+liveness/domain refusals and budgets. The first peer stops before B| on the existing
+`__call` declaration boundary and retains0; only that peer changes, then unrun state
+checks execute. Initialb423 native/baseline used CPU5; later actors use CPU1.
+Accepted PHP/worker stderr is empty; baseline Unsupported classquery/B| retains0.
+Propertyless retained receivers bound this slice; other internal objects, wider
+lifetimes/call forms and `__call` declarations remain partial.
+[NonStringable-query review](coverage/semantics/constant-query-nonstringable-name-review.json).
+
+Pointwise composition over b9f4af8cd preserves the incoming 401-module parent.
+Module400 and all four tests are private-exact; all other runtime/manifest paths
+keep parent bytes. FIRSTCLASS conversion, typed reference-return cursors, Generator,
+property-empty, staged compound arithmetic and LIST NULL-key selectors are absent
+from these originals. Shared query/stringifier/trace/error/ownership helpers are
+unchanged. Source3 retains c77c7abca and peer1/state508 7e8a3c0ce/runtime6282, with
+original peer/baseline zero cuts and no joined actor or renewed execution credit.
+
 Pending Generator `throw` now preserves one buffered simple-CV yield result inside
 one active by-value array `foreach`. A lower pending `send` fills the physical slot;
 an upper pending `throw` parks before body entry. Close orphans the input and retains

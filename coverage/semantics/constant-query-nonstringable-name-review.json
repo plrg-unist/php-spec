@@ -1,0 +1,75 @@
+{
+  "scope": "constant()/defined() with one positional retained ordinary nonStringable INSTANCE or stdClass name, weak or strict, raises raw-object TypeError before lookup after all argument effects. Validated receivers are propertyless without destructors. Ordinary toString is not an implicit cast. No other internal object kinds, DEFINE, arity, owner/named/packed/PIPE/FCC or wider receiver-lifetime admission. Partial core.",
+  "status": "independently_accepted_private_integrated_on_join",
+  "reviewer": "/root/source_review_35",
+  "parent": "34a75bec92341aee8dd6a83553d65d660cd5782d",
+  "semantic_revision": "6282a8468c44377a988d18bc0953d59657835232",
+  "source_revisions": {
+    "author3": "c77c7abca51ec8e887b8a65c30d2e04054859d6d",
+    "corrected_peer1": "7e8a3c0ce45d4295004c89952261c9cec5bd8ae1"
+  },
+  "tested_revision": "7e8a3c0ce45d4295004c89952261c9cec5bd8ae1",
+  "semantic_files": {
+    "spec/semantics/400-dynamic-constants.watsup": "ca39573fef3d22bf866f4bb156d9762542490155fa45da0a4d80d8722f9c3763"
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "tools": {
+    "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+  "primary": "Pinned Zend/zend_API.c zend_parse_arg_str_slow rejects strict objects before weak conversion. zend_parse_arg_str_weak keeps the raw API zval when cast_object returns FAILURE. zend_object_handlers.c zend_std_cast_object_tostring checks only ce->__tostring for IS_STRING and otherwise returns FAILURE, with no ordinary-toString or __call fallback. constant/defined Z_PARAM_STR precedes lookup. Existing trace allocation retains object identity.",
+  "semantics": "Exactly25 additive module400 lines add live allocated INSTANCE/class_at/~stringable_instance and STDINSTANCE guards, source/config/positional query validation, direct raw TypeError and one matching CONSTANT fallback exclusion. Source53 shape/source guards are reused, while all Stringable valid/site/launch/result rules remain exact. No conversion/magic/lookup callback runs. No task/schema/compiler/shared trace/ownership change.",
+  "accepted": [
+    "Four original agreements: author3 atc77 and corrected peer1 at7e8, runtime6282 unchanged. Weak ordinary constant/defined, selected constant after argument rebinding and strict defined(stdClass) preserve canonical class/parameter messages, actual raw receiver/API/caller traces, PreviousNULL, completed effects and caller99. The ordinary public toString peer remains uncalled/count0; selected defined(TRUE) later returns true. PHP stdout/stderr/exits exactly match; accepted PHPstderr empty.",
+    "All508 premises pass at7e8/runtime6282: author155+98+99=352 and independent156 across five actual CONFIG-to-TypeError fronts plus one real normal recovery. Four accepted SL raws exactly true LF/0/empty workerstderr. All11 retained reports stable/head-stable/reaped:10PASS plus one original pre-query Unsupported0, no timeout/survivor.",
+    "Actual raw-object trace edges and same receiver, receiver property projection, store/table/carrier/event/autoload/class preservation, source/selection/line/count/shape/liveness/invalid-class/internal-kind refusals and budgets pass. File-enabled helper checks also reject Stringable launch on these objects. No broad internal-object or receiver-retirement claim."
+  ],
+  "source_correction": "Original peer __call declaration is rejected beforeB| by141 ppmethod_checked: it is a magic method outside the currently admitted consumers. Its native original and failed model report remain unchanged/0agreement; this is not a6282 query runtime defect. Only peer source/protocol replace __call with ordinary toString, rename the counter/case and update method lookup; fresh peer native/model plus previously unrun public groups pass at7e8. Accepted author3/native/baseline are not replayed. __call declarations/interactions remain explicitly partial.",
+  "compatibility": "The new nonStringable route is disjoint from Source53 method conversion and all scalar/null/array/query-arity/DEFINE paths; it preserves raw cfg and uses existing direct error allocation. Other internal object bodies are not admitted. Source53 source4/642 and earlier cuts stay unchanged without old actor renewal.",
+  "zero_credit": "Initialb423 CPU5 baseline is Unsupported class constant value query afterB|, CLI1/null PHPexit/empty stderr/0agreement. Original peer c77 model exits1 with Unsupported method visibility, static, or magic consumer beforeB| and zero agreement; its native/preparation evidence cannot count as modeled behavior. All original bytes/report/raw artifacts remain preserved.",
+  "execution": "LC_ALL=C/TZ=UTC, AS3GiB, serial stop-first/reap, INT+kill5. Initial author native3/baseline1 atb423 usesCPU5. First peer native/author model3/failed peer model atc77 and changed-peer native/model plus all unrun state at7e8 useCPU1. Native children15s, source CLI45s/host60s and fresh SL90s children. Accepted PHP/CLI/SL stderr empty; original Unsupported CLIstderr also empty.",
+  "raw_root": ".tools/constant-query-nonstringable-name-evidence-54",
+  "report_sha256": {
+    "author/public/check-report.json": "7c03a00b6fa243c99857901ae3c9b89e4f1f0d4328fd61a62d3851c1093a3113",
+    "author/public/prepare-report.json": "acf0e4fc935d5f7c511bd417f12319420d14d0878e4fceaed5d7d572627f5fcc",
+    "author/review-fixed/model-report.json": "2cfcdd7fb0c7b35271d08482de3c59fd715b45edf2510d7d19242828dabfbefd",
+    "author/review-fixed/native-report.json": "5af869945fd81c244e58f298042baeb04657fc5d5e71c1d959009be64b06bc47",
+    "author/review-public/check-report.json": "c996e2ce192dcca0b71eb220f3564f40bb7cc3b6a5eecab574fc53619fb24bfa",
+    "author/review-public/prepare-report.json": "a55138bb1f3e2ca935591190bda3f25fdf7c6fd7cf22762c34d4388a8aeca424",
+    "author/review/model-report.json": "152d40783c2e7fbf3acca4e2e91ba9b14a366ea5bbf27e49afb1651fbd58b69d",
+    "author/review/native-report.json": "d5e2e9d76d68731e17ea7f410a7d957f568c66b31adc8fb4cbda35a1fc1c4731",
+    "author/sources/baseline-report.json": "45792c457d2c55c4080448bee034e457351354b9578429337d9d1effe8ea93b2",
+    "author/sources/model-report.json": "51f3fc943e31b40251567cbaf9a1247208a3b17a3bad1cd996aefe077891df32",
+    "author/sources/native-report.json": "70c598958771de8bed9d34c66661c4ba2fed7c8f39b23ea44d41b35214b12a97"
+  },
+  "commands": [
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/query_nonstringable_name_sources.py --phase native --output .tools/constant-query-nonstringable-name-native-54",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 5 python3 tests/semantics/query_nonstringable_name_sources.py --phase baseline --output .tools/constant-query-nonstringable-name-native-54 --case ordinary-object-query-names-reject-before-lookup",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/query_nonstringable_name_review_sources.py --phase native --output .tools/constant-query-nonstringable-name-review-54",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 240s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/query_nonstringable_name_sources.py --phase model --output .tools/constant-query-nonstringable-name-native-54",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/query_nonstringable_name_review_sources.py --phase model --output .tools/constant-query-nonstringable-name-review-54",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/query_nonstringable_name_review_sources.py --phase native --output .tools/constant-query-nonstringable-name-review-fixed-54",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/query_nonstringable_name_review_sources.py --phase model --output .tools/constant-query-nonstringable-name-review-fixed-54",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/query_nonstringable_name_protocol.py --phase prepare --sources .tools/constant-query-nonstringable-name-native-54 --output .tools/constant-query-nonstringable-name-public-54",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 360s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/query_nonstringable_name_protocol.py --phase check --sources .tools/constant-query-nonstringable-name-native-54 --output .tools/constant-query-nonstringable-name-public-54",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/query_nonstringable_name_review_protocol.py --phase prepare --sources .tools/constant-query-nonstringable-name-review-fixed-54 --output .tools/constant-query-nonstringable-name-review-public-54",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 120s prlimit --as=3221225472 -- taskset -c 1 python3 tests/semantics/query_nonstringable_name_review_protocol.py --phase check --sources .tools/constant-query-nonstringable-name-review-fixed-54 --output .tools/constant-query-nonstringable-name-review-public-54"
+  ],
+  "recovery": "Five owned raw roots moved once after reviewer STOP and focused cwd/cmdline/fd users[] into canonical author/{sources,review,review-fixed,public,review-public}; all11 report hashes preserved. Restore constant-query-nonstringable-name-{native,review,review-fixed,public,review-public}-54 at recorded cuts for exact source/cwd identity.",
+  "remaining": "Other internal object kinds, sole-owner receiver destruction/owning properties, __call declarations/interactions and owner/named/packed/PIPE/FCC or wider call/arity/lifetime forms remain partial. No engine bug or intentional divergence identified.",
+  "composition": {
+    "parent": "b9f4af8cd5f670ea288200498fd8ee207d97022f",
+    "private_publication": "9fb7a4e15e165b7a377f2182ff3cafd7cc7cf281",
+    "modules": 401,
+    "method": "Parent400 exactprivatebase;400 and four tests private-exact. Every other spec/schema/ordered401 manifest parent-exact. Inventory own2/2/1/review suffix only; incoming docs/checkpoints retained.",
+    "runtime_sha256": {
+      "spec/semantics/400-dynamic-constants.watsup": "ca39573fef3d22bf866f4bb156d9762542490155fa45da0a4d80d8722f9c3763"
+    },
+    "seams": "Shared400/config/stringifier/method/compiler/trace/error/ownership helpers exactbase34a75. Incoming120 requires FIRSTCLASS conversion;156 requires typed reference-return cursors, while these helpers are untyped by-value. Generator, Closure-getter, BOTH_ASSIGN and LIST_KEY_NULL tags/consumers have no producer in these sources. New30 adds only a disjoint NULL-key task alternative; public state fields unchanged.",
+    "evidence": "Independent actual-parent review finds no concrete interaction. Author3 retainc77, corrected peer1 and state508 retain7e8/runtime6282; initialb423 baseline0 and original __call Unsupported0 preserved. No joined actor, accepted replay or renewed execution credit."
+  }
+}

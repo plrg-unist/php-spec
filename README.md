@@ -1147,6 +1147,12 @@ calls reject the raw object before entry, and a method throw cancels the query.
 [Four source agreements and 642 state premises](coverage/semantics/constant-query-stringable-name-review.json)
 cover raw versus converted traces, selected callees, callback effects and discard.
 Sole-owner destruction, wider receivers and named/packed forms remain partial.
+Retained ordinary nonStringable instances and `stdClass` now raise TypeError in
+`constant()`/`defined()` calls with one positional argument, before lookup in weak
+and strict code. Raw receiver traces and selected callees survive later argument
+effects; an ordinary `toString()` method is never invoked as a cast.
+[Four source agreements and 508 state premises](coverage/semantics/constant-query-nonstringable-name-review.json)
+cover errors and normal recovery. Other internal objects and wider forms stay partial.
 Positional `define()` calls with primitive arguments also reject counts below two
 or above three before name/flag reception or registration. Exact count messages
 and raw API arguments survive all argument effects, including a captured true

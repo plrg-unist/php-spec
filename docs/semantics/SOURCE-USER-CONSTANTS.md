@@ -593,6 +593,22 @@ ordinary typed-string returns and existing global values bound the validated sli
 sole-owner destruction, wider receiver/return lifetimes, class/NUL/HALT names and
 named/packed/owner forms remain partial. No task/schema or shared stringifier change.
 
+Retained ordinary nonStringable instances and `stdClass` names now fail the
+query's string parameter before lookup, in weak and strict calls.
+A separate live-instance guard excludes Stringable receivers and other internal
+object kinds. It reuses the same source/positional checks and direct raw TypeError
+allocator without launching conversion or changing the captured object. An ordinary
+public `toString()` method does not make a class Stringable. Earlier argument
+captures survive live callee/name changes, and a later ordinary query recovers.
+The [nonStringable-query review](../../coverage/semantics/constant-query-nonstringable-name-review.json)
+binds author3 at c77c7abca and corrected peer1 at 7e8a3c0ce, with all 508 state premises
+at 7e8/runtime6282a8468. The original peer's `__call` declaration stops before B|
+in the existing method-compiler boundary and retains zero agreement; only that peer
+changes to an ordinary `toString()` method, followed by previously unrun state checks.
+Source53's conversion/trace/lifetime rules and accepted642 cuts stay unchanged.
+Propertyless retained receivers bound this validation; sole-owner destruction,
+other internal objects, `__call` declarations and wider forms remain partial.
+
 `define` also receives int/bool/float names with nonowning primitive values and
 an omitted/already-false flag. Each source send maps to its normalized captured
 slot before available immutable facts are checked, including reordered named
