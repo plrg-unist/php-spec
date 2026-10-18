@@ -1088,8 +1088,13 @@ effects. Captured callees and raw trace arguments survive live CV changes;
 strict calls also check count before parameter type.
 [Four source agreements and 392 state premises](coverage/semantics/constant-query-arity-review.json)
 cover actual error transitions, caller results and source/carrier/count controls.
-Arity-error handling of larger counts, owning values and packed/named forms
-remains partial.
+All excess counts now share that guarded path: positional primitive queries reject
+every count except one, before string reception or class lookup. Captured callees
+and raw arguments survive later argument effects; a real one-argument call still
+recovers normally after the caught error.
+[Four new source agreements and 487 state premises](coverage/semantics/constant-query-excess-arity-review.json)
+cover counts 3/4/5, strict priority, class-like request names and normal recovery.
+Owning and packed/named arity-error handling remains partial.
 Positional `define()` calls with primitive arguments also reject counts below two
 or above three before name/flag reception or registration. Exact count messages
 and raw API arguments survive all argument effects, including a captured true

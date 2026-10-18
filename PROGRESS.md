@@ -7,6 +7,28 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Positional primitive `constant`/`defined` calls now reject every count other than
+one before reception or lookup, after all argument effects. One module400 count
+predicate widens; zero/two admission, normal one-slot and Source49 define routes
+stay exact. Four new originals and all 487 premises pass at e29316a34/runtime
+430ce135e: author 139+99+93 and independent 156 across five real CONFIG errors and
+one normal recovery. Counts 3/4/5, raw NULL/request captures, strict type priority,
+class-like name lookup bypass, selected callees/live writes, actual raw API/caller
+traces, unchanged stores/autoload/class metadata and budgets pass. Two old48
+controls now admit three-slot shape while refusing source-length mismatch; fresh
+equivalents run here without old392 replay. No actor failed or repeated. Initial
+native/baseline used CPU3 at 8d204bf7c; later source/state used CPU2. PHP/worker stderr
+are empty; unchanged Unsupported after B| retains zero credit. Owning and
+packed/named arity errors and wider family closure remain partial.
+[Excess-query review](coverage/semantics/constant-query-excess-arity-review.json).
+
+Pointwise composition over 8fa8fa81d preserves the incoming 401-module parent.
+Module400 adds only the private count-predicate change atop recursive-array DEFINE
+validation; all six test files are private-exact. Ref-return/finally, factory clone,
+Generator, LIST-key and property-empty selectors are disjoint. Source4/public487
+retain e29316a34/runtime430ce135e; old392 keeps its cut without a joined actor or
+renewed execution credit.
+
 Pending Generator `throw` now preserves one live input at a simple-CV used yield.
 A lower pending `send` fills the slot while an upper pending `throw` still returns
 before body entry: the same Throwable reaches the caller, and getters preserve
@@ -153,8 +175,7 @@ failure retains 0, and only the corrected peer prepare/check repeated. Source4 a
 author 289 keep their original cuts. Initial native/baseline used CPU3 at 8f6430b96;
 later source/author state used CPU3, corrected peer state CPU5. PHP and accepted worker
 stderr are empty; unchanged Unsupported dynamic-domain baseline after B| retains 0.
-Arity-error handling of larger counts, owning values and packed/named forms
-remains partial.
+Owning values and packed/named arity-error handling remain partial.
 [Query-arity review](coverage/semantics/constant-query-arity-review.json).
 
 Pointwise composition over 6bdcc005a preserves the incoming 401-module parent.

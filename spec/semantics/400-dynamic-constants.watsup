@@ -168,7 +168,7 @@ dec $dynamic_query_arity_call(pconfigcall) : bool
 def $dynamic_query_arity_call(pconfigcall) = true
   -- if pconfigcall.KIND <- [INTRINSIC_CONSTANT, INTRINSIC_DEFINED]
   -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps /\ ~pconfigcall.NAMED
-  -- if $(|pconfigcall.SENT| = 0 \/ |pconfigcall.SENT| = 2)
+  -- if $(|pconfigcall.SENT| =/= 1)
 def $dynamic_query_arity_call(pconfigcall) = false -- otherwise
 dec $dynamic_query_arity_arguments(pstate, pnamedslot*) : bool
 def $dynamic_query_arity_arguments(S, eps) = true

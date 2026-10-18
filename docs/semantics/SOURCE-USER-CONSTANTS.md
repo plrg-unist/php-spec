@@ -112,8 +112,19 @@ fronts. Author 289 retain 6d62201c0; independent 103 pass at 027fc5877 after a o
 fixture type correction. The original pre-main failure and unchanged Unsupported
 baseline retain zero credit; the fixture correction leaves source execution and
 runtime rules unchanged.
-Arity-error handling of larger counts, owning arguments, owners and packed/named
-forms remains partial.
+The excess-count follow-up now rejects every positional primitive query count
+other than one through the same guarded path. A single count predicate widens;
+source/capture/carrier, message and raw-error construction stay exact. Zero/two
+admission and normal one-slot reception are unchanged. Count rejection also
+precedes class-name lookup, preserving autoload and class metadata.
+The [excess-query review](../../coverage/semantics/constant-query-excess-arity-review.json)
+binds four new originals and 487 premises at e29316a34: counts 3/4/5, raw NULL and
+request captures, strict priority, five actual errors and a genuine selected
+`defined('TRUE')` recovery. Two old Source48 shape controls now admit count3 while
+rejecting source-length-inconsistent records; fresh equivalent controls run here
+without replaying its 392 premises. No actor failed or repeated; the unchanged
+Unsupported baseline retains zero credit. Owning arguments, owners and
+packed/named/FCC arity-error handling remain partial.
 
 Positional `define` calls with primitive arguments now reject every count outside
 two through three before receiving the name or optional flag. Too few arguments
