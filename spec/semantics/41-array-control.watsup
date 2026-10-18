@@ -1,4 +1,5 @@
 dec $array_float_key_pending(pstate) : bool
+dec $array_float_ref_key_pending(pstate) : bool
 
 rule PhpStep/array-literal: S ~> S_new[.TODO = (ARRAY_NEXT n phpType13*) :: ptask_tail*][.RESULT = KNOWN PNULL][.ORIGIN = $origin_first_item(S.ORIGIN, phpType13*)]
   -- if S.TODO = (EVAL (NExprArray (SEQUENCE phpType13*) metadata)) :: ptask_tail*
@@ -57,11 +58,13 @@ rule PhpStep/array-reference-value-unkeyed: S ~> S_out[.TODO = (ARRAY_NEXT n php
   -- if S_out = $literal_item_insert($hold_literal_reference(S), n, eps, ALIAS S.CELL, z)
 rule PhpStep/array-reference-value-keyed: S ~> S_out[.TODO = (ARRAY_NEXT n phpType13_tail*) :: ptask_tail*][.HELD = S.HELD][.RESULT = KNOWN PNULL][.ORIGIN = $origin_next_item(S.ORIGIN, phpType13_tail*)]
   -- if S.TODO = (ARRAY_REF_VALUE n (poperand) phpType13_tail* z) :: ptask_tail*
+  -- if ~$array_float_ref_key_pending(S)
   -- if S_key = $key_operand($hold_literal_reference(S), poperand, z)
   -- if S_key.COMPLETION = NORMAL
   -- if S_out = $literal_item_insert(S_key, n, (S_key.KEY), ALIAS S.CELL, z)
 rule PhpStep/array-reference-key-abrupt: S ~> S_key[.TODO = eps][.HELD = S.HELD][.RESULT = KNOWN PNULL]
   -- if S.TODO = (ARRAY_REF_VALUE n (poperand) phpType13_tail* z) :: ptask_tail*
+  -- if ~$array_float_ref_key_pending(S)
   -- if S_key = $key_operand($hold_literal_reference(S), poperand, z)
   -- if S_key.COMPLETION =/= NORMAL
 

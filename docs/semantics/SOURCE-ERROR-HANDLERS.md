@@ -169,10 +169,16 @@ Array-literal module413 freezes a finite lossy-float CV key across deprecation,
 then reads a live unwrapped null/bool/int/float element CV or inserts its retained
 runtime array temporary. The builder stays owned through the callback and is
 released on throw; duplicate positions and later item evaluation stay ordered.
-Reachable objects, owning CV values and explicit reference elements remain outside
-this producer.
+Reachable objects and owning CV values remain outside this by-value producer.
 The [array-literal ledger](../../coverage/semantics/array-literal-float-key-warning-review.json)
-records its separate source/state cuts and the deferred reference-ownership probe.
+records its separate source/state cuts. A reference-element continuation now
+transfers its acquired owner when the CV still names the same cell, including
+unset/rebind to that cell. Retargeting to an ordinary null/bool/int/float inserts
+the live scalar and retains the old wrapper for the request, also on throw.
+Old values must remain null/bool/int/float and the builder object-free.
+The [reference-element ledger](../../coverage/semantics/array-literal-float-ref-key-warning-review.json)
+records repeated owners and singleton-copy observations. Different-reference
+retargeting remains Unsupported because it also creates a new-cell owner deficit.
 
 Missing-key module409 retains a
 CV/literal array snapshot through real handlers, supplies null after insertion,

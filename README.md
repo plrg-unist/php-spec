@@ -18,9 +18,11 @@ remains later research.
 
 [Array-literal float keys](docs/semantics/DIMENSIONS.md) now retain their converted
 integer across deprecation handlers. Unwrapped null/bool/int/float element variables
-remain live, while runtime array temporaries retain their own tables. Duplicate
-replacement, later items and object-free throw cleanup are covered; reference
-elements and wider lifetimes remain partial.
+remain live, while runtime array temporaries retain their own tables. Reference
+elements transfer a stable cell normally; scalar retargeting retains the acquired
+old wrapper for the request, including on throw. Duplicate replacement and later
+items stay ordered. Retargeting to a different reference cell and wider domains
+remain partial.
 
 [Destructuring key warnings](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md)
 now retain captured arrays or source reference cells through handlers, including
@@ -1240,6 +1242,15 @@ method effects; no class lookup or autoload runs.
 [Four source agreements and 844 state premises](coverage/semantics/define-stringable-class-name-review.json)
 cover malformed names, caller results and same-receiver global recovery.
 
+Retained propertyless Stringable `define()` names also admit a captured boolean
+true flag with primitive candidates and non-NUL global or class-like results.
+Conversion precedes the ignored-flag Warning; `::` results reject before it.
+A method throw cancels registration, while a supplied Warning-handler throw still
+registers a fresh captured value before propagating the same Exception.
+[Four source agreements and 974 state premises](coverage/semantics/define-stringable-true-flag-review.json)
+cover both throw phases, normal fresh/duplicate results and strict raw-name rejection.
+Wider values, flag conversions, lifetimes and call forms remain partial.
+
 Retained ordinary nonStringable instances and `stdClass` now fail positional
 `define()` name reception before primitive flag processing or registration.
 Later candidate/flag effects finish first, while strict code still reports the
@@ -1466,6 +1477,12 @@ the body then uses the current graph and table. A throwing callback cancels that
 body, preserving the original NULL trace and caller destination. Strict calls
 raise TypeError before the deprecation.
 [NULL array-flag review](coverage/semantics/define-array-null-flag-review.json).
+Byte-only string flags read from compiled literal arrays also use their bytes
+without acquiring a carrier identity. Raw empty/`"0"` flags are false; other
+nonempty byte strings are true. Flag-array COW and later callback writes leave the
+original API flag intact through duplicate cleanup or pending fresh publication.
+Strict calls retain the raw string in TypeError traces.
+[Byte-only array-flag review](coverage/semantics/define-array-byte-flag-review.json).
 Ordinary uncertified objects, other owning leaves and wider
 flags/names remain partial.
 Class-qualified `defined` now checks inherited user constants with lexical visibility
@@ -4016,8 +4033,11 @@ through ordinary release and instance-storage pauses. The partial pair retains
 its outer reference owner; single cursors and completed pairs are root-free.
 Separate reached proofs pass 288/7 at `799f07366`, 296/7 at `dc0b93c9f` and
 275/7 at `c1540ff96`, preserving original diagnostics, aliases and exact budget
-endings. Pending-Throwable cleanup prefixes, interposed lifecycle capture and
-broader histories remain open.
+endings. One pending single-cursor cleanup also resumes through release/storage
+and its normal auxiliary exception-search operation. Separate 452/16 checks at
+`abb946c14` preserve the same TypeError, one VALUE Notice at old source line5 and
+detached rNULL/b7, including operation metadata refusals and exact budgets. M109's final-empty 325/6 keeps its separate cut. Other pending histories,
+pending pairs, interposed lifecycle capture and broader consumers remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

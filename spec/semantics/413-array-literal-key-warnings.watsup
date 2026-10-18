@@ -116,3 +116,115 @@ def $error_call_valid(S, perrorcall) = true
 def $task_nodes(ARRAY_KEY_FLOAT_RESULT n poperand phpType13* z n_bits i) = [HARRAY n] ++ $operand_nodes(poperand)
 def $error_read_discard(S, ARRAY_KEY_FLOAT_RESULT n poperand phpType13* z n_bits i) = S[.COMPLETION = UNSUPPORTED "array literal float-key element during throw"]
   -- if ~$array_float_key_ready(S, n, poperand)
+
+;; The reference producer increments its acquired wrapper before conversion.
+;; A float callback can retarget the CV; an ordinary scalar then gets inserted
+;; directly, leaving that increment on the old wrapper for the whole request.
+dec $array_float_ref_key_item(pstate, phpType13*, int) : (poperand, poperand)?
+def $array_float_ref_key_item(S, phpType13*, z) = ((VARIABLE n_key* z_key, VARIABLE n_value* z))
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NArrayItem (NExprVariable (BYTES text_key) metadata_key) (NExprVariable (BYTES text_value) metadata_value) (BOOLEAN true) (BOOLEAN false) metadata)
+  -- if n_key* = $base64(text_key)
+  -- if n_value* = $base64(text_value)
+  -- if ~$this_name(n_key*) /\ ~$psautoglobal(n_key*)
+  -- if ~$this_name(n_value*) /\ ~$psautoglobal(n_value*)
+  -- if z_key = $variable_line(BYTES text_key, metadata_key)
+  -- if z = $variable_line(BYTES text_value, metadata_value)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 0]) = (z_key)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 1]) = (z)
+  -- if $(z > 0)
+  -- if $reference_origin_parent(porigin, 2) = ((porigin_array, [PCFIELD 0, PCINDEX n_index]))
+  -- if $origin_node(S.SOURCES, porigin_array) = (NExprArray (SEQUENCE phpType13_all*) metadata_array)
+  -- if $(n_index < |phpType13_all*|)
+  -- if n_after = $(n_index + 1)
+  -- if n_remaining = $(|phpType13_all*| - n_after)
+  -- if phpType13* = phpType13_all*[n_after:n_remaining]
+def $array_float_ref_key_item(S, phpType13*, z) = eps -- otherwise
+
+dec $array_float_ref_key_source(pstate, nat, nat, poperand, phpType13*, int, nat, int) : bool
+def $array_float_ref_key_source(S, n, n_old, poperand, phpType13*, z, n_bits, i) = true
+  -- if $(n_bits < 18446744073709551616 /\ n < |S.ARRAYS|)
+  -- if $float_long(n_bits, true) = (i, [PRECISIONLOSS])
+  -- if (HARRAY n) <- S.ALLOCATIONS /\ ~$array_immutable(S, n)
+  -- if $heap_count(HARRAY n, $pools_nodes(S.POOLS)) = 0
+  -- if $call_reference_operand_valid(S, REFERENCE n_old)
+  -- if $array_float_ref_key_item(S, phpType13*, z) = ((poperand_key, poperand))
+def $array_float_ref_key_source(S, n, n_old, poperand, phpType13*, z, n_bits, i) = false -- otherwise
+
+dec $array_float_ref_key_value(pstate, nat, poperand) : pitem?
+def $array_float_ref_key_value(S, n_old, VARIABLE n_name* z) = (ALIAS n_old)
+  -- if ~$environment_blocked(S, n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n_old)
+  -- if $call_reference_operand_valid(S, REFERENCE n_old)
+  -- if ~$foreach_released_container_cell(S, n_old) /\ ~$update_released_array_name(S, n_name*)
+def $array_float_ref_key_value(S, n_old, VARIABLE n_name* z) = (DIRECT pvalue)
+  -- if ~$environment_blocked(S, n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n_current)
+  -- if n_current =/= n_old
+  -- if $array_float_key_value(S, VARIABLE n_name* z) = (pvalue)
+def $array_float_ref_key_value(S, n_old, poperand) = eps -- otherwise
+
+dec $array_float_ref_key_ready(pstate, nat, nat, poperand) : bool
+def $array_float_ref_key_ready(S, n, n_old, poperand) = true
+  -- if $array_float_ref_key_value(S, n_old, poperand) =/= eps
+  -- if $(n_old < |S.STORE|)
+  -- if S.STORE[n_old] = DEFINED pvalue
+  -- if $array_float_key_scalar(S, pvalue)
+  -- if $array_float_key_plain_nodes($heap_reach([HARRAY n, HCELL n_old], eps, $heap_graph(S).EDGES))
+def $array_float_ref_key_ready(S, n, n_old, poperand) = false -- otherwise
+
+dec $array_float_ref_key_plan(pstate) : (nat, nat, poperand, phpType13*, int, nat, int)?
+def $array_float_ref_key_plan(S) = ((n, S.CELL, poperand_value, phpType13*, z, n_bits, i))
+  -- if S.TODO = (ARRAY_REF_VALUE n (VARIABLE n_key* z_key) phpType13* z) :: ptask_tail*
+  -- if S.BASE = BASE_VALUE (KNOWN PNULL) /\ S.RESULT = KNOWN PNULL
+  -- if $array_float_ref_key_item(S, phpType13*, z) = ((VARIABLE n_key* z_key, poperand_value))
+  -- if poperand_value = VARIABLE n_value* z
+  -- if $lookup(S.ENV, n_value*) = (S.CELL)
+  -- if ~$environment_blocked(S, n_key*)
+  -- if $lookup(S.ENV, n_key*) = (n_cell)
+  -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
+  -- if S.STORE[n_cell] = DEFINED (PFLOAT n_bits)
+  -- if ~$foreach_released_container_cell(S, n_cell) /\ ~$update_released_array_name(S, n_key*)
+  -- if $(n_bits < 18446744073709551616)
+  -- if $float_long(n_bits, true) = (i, [PRECISIONLOSS])
+  -- if $array_float_ref_key_source(S, n, S.CELL, poperand_value, phpType13*, z, n_bits, i)
+  -- if $array_float_ref_key_ready(S, n, S.CELL, poperand_value)
+def $array_float_ref_key_plan(S) = eps -- otherwise
+def $array_float_ref_key_pending(S) = ($error_handler_eligible(S, 8192) /\ $array_float_ref_key_plan(S) =/= eps)
+
+dec $array_float_ref_key_retain(pstate, nat, poperand) : pstate
+def $array_float_ref_key_retain(S, n_old, poperand) = S
+  -- if $array_float_ref_key_value(S, n_old, poperand) = (ALIAS n_old)
+def $array_float_ref_key_retain(S, n_old, poperand) = S[.LITERALREFRETAINED = S.LITERALREFRETAINED ++ [n_old]]
+  -- if $array_float_ref_key_value(S, n_old, poperand) = (DIRECT pvalue)
+
+rule PhpStep/array-float-ref-key-warning: S ~> $error_dispatch(S[.RESULT = KNOWN PNULL], 8192, $list_float_key_message(n_bits), z, DIAGNOSTIC "Deprecated" $list_float_key_message(n_bits) z, ARRAY_KEY_FLOAT_REF_RESULT n n_old poperand phpType13* z n_bits i)
+  -- if $array_float_ref_key_pending(S)
+  -- if $array_float_ref_key_plan(S) = ((n, n_old, poperand, phpType13*, z, n_bits, i))
+rule PhpStep/array-float-ref-key-result: S ~> S_out[.TODO = (ARRAY_NEXT n phpType13*) :: ptask_tail*][.RESULT = KNOWN PNULL][.ORIGIN = $origin_next_item(S.ORIGIN, phpType13*)]
+  -- if S.TODO = (ARRAY_KEY_FLOAT_REF_RESULT n n_old poperand phpType13* z n_bits i) :: ptask_tail*
+  -- if $array_float_ref_key_source(S, n, n_old, poperand, phpType13*, z, n_bits, i)
+  -- if $array_float_ref_key_ready(S, n, n_old, poperand)
+  -- if $array_float_ref_key_value(S, n_old, poperand) = (pitem)
+  -- if S_out = $literal_item_insert($array_float_ref_key_retain(S, n_old, poperand), n, (KINT i), pitem, z)
+rule PhpStep/array-float-ref-key-result-unsupported: S ~> S[.TODO = eps][.RESULT = KNOWN PNULL][.COMPLETION = UNSUPPORTED "array literal float-key reference after callback"]
+  -- if S.TODO = (ARRAY_KEY_FLOAT_REF_RESULT n n_old poperand phpType13* z n_bits i) :: ptask_tail*
+  -- if $array_float_ref_key_source(S, n, n_old, poperand, phpType13*, z, n_bits, i)
+  -- if ~$array_float_ref_key_ready(S, n, n_old, poperand)
+
+def $call_task_valid(S, ARRAY_KEY_FLOAT_REF_RESULT n n_old poperand phpType13* z n_bits i) = $array_float_ref_key_source(S, n, n_old, poperand, phpType13*, z, n_bits, i)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = ARRAY_KEY_FLOAT_REF_RESULT n n_old poperand phpType13* z n_bits i
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if $array_float_ref_key_source(S, n, n_old, poperand, phpType13*, z, n_bits, i)
+  -- if perrorcall.LEVEL = 8192 /\ perrorcall.LINE = z
+  -- if perrorcall.MESSAGE = $list_float_key_message(n_bits)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" $list_float_key_message(n_bits) z
+def $task_nodes(ARRAY_KEY_FLOAT_REF_RESULT n n_old poperand phpType13* z n_bits i) = [HARRAY n, HCELL n_old]
+def $error_read_discard(S, ARRAY_KEY_FLOAT_REF_RESULT n n_old poperand phpType13* z n_bits i) = $array_float_ref_key_retain(S, n_old, poperand)
+  -- if $array_float_ref_key_ready(S, n, n_old, poperand)
+def $error_read_discard(S, ARRAY_KEY_FLOAT_REF_RESULT n n_old poperand phpType13* z n_bits i) = S[.COMPLETION = UNSUPPORTED "array literal float-key reference during throw"]
+  -- if ~$array_float_ref_key_ready(S, n, n_old, poperand)
+
+def $literal_reference_retained_valid(S, eps) = true
+def $literal_reference_retained_valid(S, n :: n_tail*) = ($call_reference_operand_valid(S, REFERENCE n) /\ $literal_reference_retained_valid(S, n_tail*))

@@ -24,6 +24,108 @@ Forwarding/inaccessible/dynamic/API magic positives, named/unpacked/reference
 sends and wider ownership remain open; needed unselected forms stay Unsupported.
 [Static magic call review](coverage/semantics/magic-static-call-review.json).
 
+Composed over `a6e86f3c9`/404 after independent actual-parent review. Incoming
+literal-reference retention starts eps and adds no roots or validation constraint
+on these paths; all fields and initializers are preserved. Reference-return cleanup,
+DEFINE/query and literal float-key selectors are unselected. Existing414 stays exact;
+parent manifest order is retained before415. Source4/state341 keep their private
+cuts without a joined actor or renewed execution credit.
+
+M110 admits the earlier cleanup interval for one pending single cursor through
+one normal auxiliary THROW_SEARCH operation. A 25-line module270 view matches
+its exception to the selected pending return, requires normal completion, and
+projects same-scope release/storage prefixes to unchanged M109 admission. Author
+191/seven raw steps and independent 261/nine pass at `abb946c14`/404: every cleanup
+pause and pending replay, exact one-empty-property-row pruning with GC unchanged,
+physical/virtual registries and malformed auxiliary records that pass physical
+validation.
+The same TypeError reaches local CT, then consumed NULL produces one VALUE Notice
+at old source line5 and detached rNULL/b7. Whole/split states agree exactly; no
+failure/retry or new native/source credit. Reused M84 packets retain their original
+cut, as do M109's final-empty 325/6 and normal M106–M108 proofs. Other pending-cursor
+histories, pending pairs, interposed capture, wider owners/reentry, GC and typed
+consumers remain open. [Cleanup review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+Composed over `7f103f844`/404 after independent actual-parent review. Incoming
+LITERALREFRETAINED starts eps and has no M84 array-literal producer; its added roots,
+validator and compiler empty-field check are neutral. Parent field/init bytes stay
+exact. Byte DEFINE flags and Stringable-name true flags also have no producer.
+Only270 changes and matches `abb946c14`; every other runtime file and the 404-module
+manifest retain parent bytes. The 452/16 proof keeps its private404 state cut without a
+joined actor or renewed source credit.
+
+Retained propertyless Stringable `define` names now accept captured boolean true
+with primitive candidates and non-NUL global/class-like results. One module400
+raw-shape alternative preserves all source/carrier/saved-site, conversion, warning,
+trace and pending-registration code. Four originals agree at d731cddc8/runtime
+d4055de44: fresh1733, duplicate false/old1733, class-name ValueError before Warning,
+method-throw cancellation, strict raw-name TypeError and a Warning-handler throw
+that still registers the fresh captured value. All 974 premises pass there:
+383+179+99 author plus313 independent across six genuine DEFINE fronts, including
+actual raw/converted traces, callback effects/caller99 and full restored discards.
+Native throw observers avoid trace traversal; actual state checks cover it without
+name-carrier identity credit for the existing Warning name-byte projection.
+Nine reports all PASS/stable/reaped, no failure/retry/timeout; literal default has
+three expected PHP Warnings, other accepted PHP and all worker stderr quiet.
+Initial1d6 native/base and later d731 actors use CPU3; unchanged Unsupported/B|
+retains0. No old55/56/57 replay, V78 array flags remain disjoint, and wider candidate,
+flag/lifetime/forms and paused Source47/owned-NUL work remain partial.
+[Stringable true-flag review](coverage/semantics/define-stringable-true-flag-review.json).
+
+Pointwise composition over79e19a9f4 preserves incoming module414/ordered404 and
+retained-state fields. Module400 keeps V78's array-flag head and adds only the
+private raw-shape alternative; four tests are private-exact, every other runtime
+path parent-exact. Float reference-key, Generator, magic-call, arithmetic-Warning
+and ref-return cleanup producers are absent here. Private source4/974 retain their
+403-module cut with no joined actor or renewed execution credit.
+
+Array `define` now receives byte-only string flags from compiled-array element
+reads without adding a carrier identity. Empty/`"0"` are false; other nonempty
+bytes are true. Later flag-array COW and callback writes leave the raw API
+capture intact through normal duplicate cleanup, pending fresh publication and
+strict TypeError before cycle validation. Three sources agree at b45ca/403;
+632 focused premises pass: 276+101 at 9f2b and independent255 at 5de6. The first
+peer CLI45 timeout/secondary KeyError and one NEXT-sentinel fixture failure retain
+zero; only an exact-path model timing retry and affected peer state rerun occur.
+Canonical copies/query COW remain distinct from source ALIAS traces and history.
+Shared scalar classification is unchanged; nonfinite flags, identity-sensitive
+consumers and wider domains remain partial. Source47/owned-NUL pauses and
+Source58/59 are untouched.
+[Byte-only array-flag review](coverage/semantics/define-array-byte-flag-review.json).
+
+Composed over 9984783b2/404 with the exact tested400 arm/comment and all twenty other
+incoming runtime/manifest paths preserved. Stringable class-query, magic-call,
+Generator, numeric-CV Warning and reference-return selectors are absent; the
+ordinary literal ALIAS build fails A20's variable float-key/scalar-value plan.
+GENERATORRETURNRETAINED and LITERALREFRETAINED lift by empty fields with no roots
+and valid empty receipts, preserving owners/budgets pointwise. Source3/state632
+retain private403 cuts and both zero-credit failures without replay.
+
+Reference elements in array literals now preserve the pre-conversion acquired
+wrapper across finite lossy-float CV-key handlers. Stable or same-cell rebinding
+transfers the owner into an array alias; ordinary scalar retargeting inserts the
+live null/bool/int/float and retains one old-wrapper owner per occurrence for the
+request, including supplied throws. Five fresh originals and strict403 pass at
+`61a8b26d9`; all 830 focused state premises (479 author + 351 independent,
+including twelve raw transitions) pass at `5ca23fe19`, with no fixture failure
+or retry. Same-cell singleton unwrapping and retained multiplicity1/2 remain
+distinct across actual callbacks, cleanup and whole/split budgets.
+The genuine unchanged Unsupported baseline and one strict executable-binding
+failure retain zero credit. The corrected strict check and all five first source
+comparisons pass without native replay. Initial/resumed old values and current
+scalar targets are bounded to null/bool/int/float, with object-free builders.
+Different-reference retargeting remains Unsupported on return and throw: a fresh
+native-only inverse-retarget probe confirms both retained old ownership and a
+new-cell owner deficit. That deficit is the next array follow-up, not covered by
+this positive-owner slice; the held undefined-reference LIST-key candidate stays
+untouched. [Reference-element review](coverage/semantics/array-literal-float-ref-key-warning-review.json).
+
+Composed over `0714bbadb`/404 after independent review of incoming Generator
+return roots, magic calls, typed-reference cleanup, plain-CV arithmetic and
+Stringable-query selectors, absent here. Both request-retention fields and
+parent414 remain intact. Source5/strict403/state830 retain their private cuts
+without a joined actor, native replay or renewed historical credit.
+
 Initially plain CVs now stage `+`, `-`, `*`, `/`, `**` numeric-string diagnostics.
 A first Warning can repair bad RHS text; each captured number survives its callback,
 including a later RHS reference or unset. Fresh conversion inputs must still be plain;
@@ -68,25 +170,6 @@ and reference-return cleanup validation. None has a producer in these untyped
 by-value Generator sources. Incoming403 modules and task variants are preserved;
 the tested nine-file additions retain their private401 cuts. No joined actor,
 accepted replay or renewed execution credit is claimed.
-
-M108 admits normal single `REF_RETURN_CURSOR` cleanup through the existing
-same-scope release/storage view and full cursor validator. Only six module270
-lines change; the cursor remains root-free. Author 120/one raw step and independent
-168/six raw steps pass at `799f07366`/402: all six public cleanup pauses, exact
-empty-property-row pruning, source/LINE/scope/registry/storage refusals, one VALUE
-Notice at the old source line4, detached r/b aliases and whole/split budget equality.
-No failure or retry occurred; reused M79/M83 packets add no native/source credit.
-M106 partial 296/7 at `dc0b93c9f`/401 and M107 final 275/7 at `c1540ff96`/402
-retain separate evidence. Pending-Throwable cleanup prefixes, interposed lifecycle
-capture, wider owning/reentrant histories, GC and typed consumers remain open.
-[Cleanup review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
-
-Composed over `f5c412d58`/403 after independent actual-parent review. Incoming
-array-float keys, NULL DEFINE flags, method-Closure numeric images and Stringable
-class-query selectors have no M79 producer. Only270 changes and matches tested
-`799f07366` bytes; every other runtime file and the 403-module manifest retain
-parent bytes. The 288/7 proof keeps its private402 cut without a joined actor or
-renewed source credit.
 
 Retained propertyless Stringable query names now hand non-NUL class-qualified
 results to existing guarded user-class lookup. One module 400 predicate/comment
@@ -153,29 +236,10 @@ runtime/module paths and four private scripts preserved. Stringable-name, magic
 setter, reference-return, Sensitive, numeric-CV and float-key paths have no producer
 here; source4/state701 retain private401 cuts and both fixture failures without replay.
 
-Array-literal finite lossy-float CV keys now keep their converted integer across
-deprecation callbacks. Unwrapped null/bool/int/float element CVs supply their live
-post-handler value; captured runtime array temporaries retain their table and old
-embedded references. Duplicate replacement preserves position, following items
-stay fresh, and supplied throws retire the object-free builder/input graphs while
-preserving callback writes, destination and Throwable identity. Four normal
-originals and strict402 pass at `f625e2c3c`; all 589 focused state premises
-(440 author + 149 independent, including eight raw transitions) pass at
-`b3027bcd7`. All post-change actors passed on first attempt; the unchanged
-Unsupported baseline and native preparation retain zero credit.
-Only30/41/new413 and the manifest change runtime; five affected inventory rows
-remain partial. String/owning or wrapped CV elements, reachable objects and wider
-producers remain open. Explicit reference-element retargeting has separate native
-evidence of old-wrapper sharing and stays Unsupported/zero credit; its original
-and one fresh ownership probe are preserved.
-[Array-literal review](coverage/semantics/array-literal-float-key-warning-review.json).
-
-Composed over `85a9c6ec8`/402 after independent review of the incoming
-property-setter, reference-return, DEFINE, SensitiveParameterValue and arithmetic
-selectors, absent from these sources. Parent412 and all other incoming runtime
-paths stay exact; only30/41/new413 and the 403-module manifest carry A19.
-Source4/strict402 and state589 retain their private cuts without a joined actor,
-accepted replay or renewed execution credit.
+The earlier by-value literal-key slice retains source4/strict402 at `f625e2c3c`
+and state589 at `b3027bcd7`, composed over `85a9c6ec8`/402 as `bd9e946b6`/403
+without replay. Its native reference-retarget originals/probe remain historical
+zero credit. [A19 ledger](coverage/semantics/array-literal-float-key-warning-review.json).
 
 The earlier selected-reference right-only Warning route retains source9/state576
 in its [review ledger](coverage/semantics/right-arithmetic-warning-review.json).
@@ -238,8 +302,8 @@ Existing array markers and pending cleanup preserve callback COW, trace aliases
 and rejected-copy ownership. Three sources agree at a03fcfe86/401; all 549 focused
 premises pass at 4d585: 233 main, 96 strict eval and 220 independent, first attempts
 at SL90. The strict Error allocates only four trace tables; raw request flags and
-trace-only input remain distinct from retired duplicate copies. Nonfinite/
-identity-unknown flags and wider domains remain partial; Source47/56 are untouched.
+trace-only input remain distinct from retired duplicate copies. Nonfinite flags
+and wider domains remain partial; Source47/56 are untouched.
 [Scalar array-flag review](coverage/semantics/define-array-scalar-flag-review.json).
 
 Composed over 51abb7683/401 with the exact tested400 delta, eight private-exact
@@ -10295,7 +10359,9 @@ failures and interrupted evidence.
 The temporary `returns_verify` audit has reached its finite paired-return
 handoff. Preserve the accepted evidence and do not retry the rejected engine
 experiment. M106–M108 cover normal single-cursor and adjacent partial/final-pair
-release/storage intervals. Pending-Throwable cleanup prefixes, normal interposed-catch
+release/storage intervals. M109/M110 cover one pending single-cursor cleanup
+through its final empty release and one normal auxiliary THROW_SEARCH operation.
+Other pending-cursor histories, pending-pair prefixes, normal interposed-catch
 partial pairs, larger or reentrant owning histories, GC and wider typed consumers
 remain open core obligations for permanent lifecycle/control work.
 Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is

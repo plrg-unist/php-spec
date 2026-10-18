@@ -11,7 +11,7 @@ def $ppimage_gotos(P, false) = eps
 dec $ppimage(ppstate, bool) : ppinstalled?
 def $ppimage(P, b) = ({ CLASSES P.CLASSES, FUNCTIONS P.FUNCTIONS, CLOSURETEMPLATES P.CLOSURETEMPLATES, ARRAYS P.FOLD.MEMORY.ARRAYS, ALLOCATIONS P.FOLD.MEMORY.ALLOCATIONS, CONSTANTS ($export_constants((pcpath, pvalue)*) ++ $export_classes(P.FOLD.CLASSFACTS) ++ $export_precisions(P.EXPRESSIONS)), CODE { STRICT P.ENV.STRICT, GLOBALS P.GLOBALS, UNIT P.FOLD.SOURCE.ID, EXPRESSIONS ($compiled_operands(P, P.EXPRESSIONS) ++ $ppimage_gotos(P, b) ++ $compiled_writes(P.WRITES)), NAMES $compiled_names(P.NAMES), REDIRECTS $compiled_redirects(P.REDIRECTS) } })
   -- if P.COMPLETION = PPCNORMAL
-  -- if P.FOLD.MEMORY.ENV = eps /\ P.FOLD.MEMORY.STORE = eps /\ P.FOLD.MEMORY.REFCELLS = eps
+  -- if P.FOLD.MEMORY.ENV = eps /\ P.FOLD.MEMORY.STORE = eps /\ P.FOLD.MEMORY.REFCELLS = eps /\ P.FOLD.MEMORY.LITERALREFRETAINED = eps
   -- if $ppconstants(P) = PPCCONSTANTS (pcpath, pvalue)*
 def $ppimage(P, b) = eps -- otherwise
 

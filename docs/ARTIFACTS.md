@@ -45,6 +45,14 @@ The single-cursor sibling is in
 `../php-spec-evidence-archive/lifecycle-normal-cursor-108/manifest.json`:
 271,278 bytes under `.tools/m108/`, SHA-256
 `bf8cb58209c01ac4e495337633ffc441ee51202229246ef511a0b3b2c529ad21`.
+The pending single-cursor final-release evidence is in
+`../php-spec-evidence-archive/lifecycle-pending-cursor-109/manifest.json`:
+286,021 bytes under `.tools/m109/`, SHA-256
+`a8b5638d3fc6b6d1171226ab8d188b3ee4b54c36917324c36db91c1a6e5c52ff`.
+Its auxiliary-operation interval sibling is in
+`../php-spec-evidence-archive/lifecycle-pending-cursor-110/manifest.json`:
+290,603 bytes under `.tools/m110/`, SHA-256
+`5904fbea170d1bf4c2e2f48386205656b2dd6218da742af02cf194c704aefb1b`.
 
 ## Commit provenance and recovery
 

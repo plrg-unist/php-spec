@@ -55,7 +55,7 @@ echo "U:",isset($dest),":",isset($copy),":",isset($outside),";";
 }
 
 BOUNDARIES = {
-    'array-literal-float-review-reference-entry': 'error-handler ingress requires a producer continuation',
+    'array-literal-float-review-reference-entry': 'array literal float-key reference after callback',
 }
 
 NATIVE_PROBES = {
