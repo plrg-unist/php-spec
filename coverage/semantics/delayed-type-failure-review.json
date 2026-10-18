@@ -1,0 +1,155 @@
+{
+  "version": 1,
+  "milestone": "OP40 delayed integer-conversion TypeError in compound operators",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP8.5.10 CLI NTS64; project-local pinned engine/profile",
+  "scope": "Initially distinct defined plain-CV finite in-range fractional floats enter the unchanged BOTH LEFT-deprecation routes for %=, <<=, >>=, &=, |=, ^=. After its callback, the safe original target may hold a defined nonowning scalar/string, and the original allocated nonreference RHS cell may hold an authenticated nonnumeric string or allocated in-range array. Integer conversion rejects that current RHS without a second callback; TypeError labels use both live operand types, never cached LEFT12 or the initial float types. The pending marker retires before the error, without compound storage or late-alias detachment. Callback writes survive. No initial/source/phase admission widening.",
+  "runtime_revision": "d3b35b8567c0efaac9a54f0a0ef5e1be700c0227",
+  "helper_revision": "378be41d9c2fe3b0621be2cb91c6c70b31c2dbab",
+  "private_modules": 401,
+  "runtime_sha256": {
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "c2ea7ba7f326dc8fb93853a48aa51d4689bb8d8bffb0907288b71f228526fe99"
+  },
+  "engine_basis": [
+    "Pinned Zend/zend_operators.c convert_op1_op2_long and inline bitwise_and/or/xor capture LEFT before its deprecation and then convert the live RHS. zendi_try_get_long fails immediately for nonnumeric strings and arrays; no array cast, diagnostic or element traversal occurs.",
+    "On failed RHS conversion, zend_binop_error returns an existing supplied Exception unchanged or calls zend_type_error with zend_zval_type_name for both current operands. zend_zval_type_name dereferences callback-created references; true/false both label bool, and NULL labels null. These paths return before result destruction/storage.",
+    "The bitwise two-string specialization is selected before the initial float conversion. Callback-created string/string operands cannot retry it; they still fail the selected numeric conversion path. Compound error sigils are %, <<, >>, &, |, ^, without =.",
+    "One module404 predicate admits exactly STRINTERROR strings with valid bytes/carrier or allocated in-range PARRAY; a shared original-cell/target-safe helper returns the live pair. Three family-specific LEFT1 rules reuse unchanged source/phase validators and type_failure; only three existing boundary EPS exclusions change. No new task/schema/protocol and all earlier conversion/carrier/handler/storage helpers remain exact."
+  ],
+  "contract": [
+    "Author six native/source originals change live LEFT to bool, NULL, float, or string and RHS to a nonnumeric string, including a real bad5 request carrier. TypeError messages at multiline RHS25 are bool%string, null<<string, float>>string and string&/|/^string. Destination100 and callback-created aliases remain; later target7 reaches alias7. A supplied first callback throw preserves exact global Exception identity/message/line20/null Previous and suppresses TypeError/default diagnostic.",
+    "Independent false-first handlers show string^string TypeError without bytewise specialization, null%array and bool>>array TypeErrors before numeric zero/shift behavior. Each emits exactly one default LEFT12.5 Deprecated at25 and retains destination100, original RHS string/array and later alias write-through.",
+    "Focused state intentionally selects author carrier plus the three independent peers, not all ten originals. Actual first dispatch/entered/returned frames reach live-type LEFT1, then production TypeError25 with fresh object/null Previous/sole thrown owner. Exact STORE/ENV/REFCELLS/events/atomic STRINGDATA are preserved; existing ARRAY prefix and original RHS identity/items/owners2 (pool1 plus cell1) survive trace-array allocation. Whole execution and resumed budgets agree. Pure carrier/domain/binding/unsafe controls are not driven as malformed machines."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-40/source-d3b35b856-author-seven/report.json",
+        "sha256": "c353676bc40d02e42afcb0c8041db6f4b42e3de379d133305ea43d7f26b7d83c",
+        "revision": "d3b35b8567c0efaac9a54f0a0ef5e1be700c0227",
+        "cases": [
+          "delayed-failure-mod-carrier",
+          "delayed-failure-left-null",
+          "delayed-failure-right-float",
+          "delayed-failure-and-strings",
+          "delayed-failure-or-strings",
+          "delayed-failure-xor-strings",
+          "delayed-failure-first-throw"
+        ],
+        "agreements": 7
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-40/review-model-d3b35b856-three/report.json",
+        "sha256": "3e51f0d79128400aede1058fadf76335b8a4ad6ce6533b49df04367c3f91e0f0",
+        "revision": "d3b35b8567c0efaac9a54f0a0ef5e1be700c0227",
+        "cases": [
+          "delayed-type-failure-xor-string-default",
+          "delayed-type-failure-mod-array-default",
+          "delayed-type-failure-shift-array-default"
+        ],
+        "agreements": 3
+      }
+    ],
+    "state": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-40/state-e900a6674-four/report.json",
+        "sha256": "9ea5b35f18d1b44987724562c8a649f972c0f7182bfad0d77e0c82783828a86f",
+        "revision": "e900a667493c386f517e8aecb0e6706d05d10548",
+        "modules": 401,
+        "cases": [
+          "delayed-failure-mod-carrier",
+          "delayed-type-failure-xor-string-default"
+        ],
+        "conditions": [
+          135,
+          139
+        ],
+        "total": 274,
+        "scope": "Accepted first2 exacttrue groups of partial packet; following array owner assertion failed0, second array was unrun."
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-40/state-378be41d9-affected-two/report.json",
+        "sha256": "003f3d417eac32bc8b0ef2e5685cce93a6599504d7d4867572d31b7a97909a21",
+        "revision": "378be41d9c2fe3b0621be2cb91c6c70b31c2dbab",
+        "modules": 401,
+        "cases": [
+          "delayed-type-failure-mod-array-default",
+          "delayed-type-failure-shift-array-default"
+        ],
+        "conditions": [
+          146,
+          146
+        ],
+        "total": 292
+      }
+    ],
+    "total_source_agreements": 10,
+    "total_focused_state_conditions": 566,
+    "compatibility": "Runtime/source bytes remain exact through helper-only commits. Author135 and independent string139 retain e900a6674. Sole peer fix378be41d9 adds the existing literal-pool root premise and corrects array owners1 to2 (pool1 plus RHS cell), changing array fixtures145 to146 each. Only corrected array2/292 and previously unrun shift execute; no accepted state/source/native replay."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-40/baseline-5123ebd98-mod-carrier/report.json",
+      "sha256": "8bb7cecf28f711364125ee0d30489737c8ad805ff224fedc0e10a856afb54d80",
+      "result": "Accepted checked Unsupported after exact H:1:8192:25:1; at modulo after-first live-RHS boundary, model exit1/empty stderr/0credit. No boundary override."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-40/native-5123ebd98-author-seven/report.json",
+        "sha256": "2130e3438bfef59adf4aa5c561f8f08c3fd78e05e3399cb152f9fdaccbdc1e49"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-40/native-5123ebd98-review-three/report.json",
+        "sha256": "dc0baea2027424b5ebeb1bd70c9eac02472f1c0e8e4bf1ca56d27545e2f95d8b"
+      }
+    ],
+    "checked_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-40/state-prep-e900a6674-four/report.json",
+        "sha256": "c4d88b2ec0c74a4b68683538afbd06781568fd5f2de8671c51b91e0a13d9e4a0",
+        "result": "Checked parse/adapter only, retained original paths/native bytes; zero application/native/numeric replay; workers exit0/reaped."
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-40/state-prep-378be41d9-affected-two/report.json",
+        "sha256": "c45141d855d0603e082b2901111c8e5396a32fe974c1f26d55aeed2b3b2a2ea7",
+        "result": "Checked parse/adapter only, retained original paths/native bytes; zero application/native/numeric replay; workers exit0/reaped."
+      }
+    ],
+    "standalone_syntax": "Original4 plus corrected array2 standalone undefined-pstate diagnostics carry zero semantic credit.",
+    "array_pool_fixture_failure": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-40/state-e900a6674-four/report.json",
+      "sha256": "9ea5b35f18d1b44987724562c8a649f972c0f7182bfad0d77e0c82783828a86f",
+      "result": "First array fixture reaches the returned handler then fails HARRAY owners1 before the TypeError step: literal[3] retains one permanent compiled-pool root plus its RHS-cell edge. Failure0 retained; second array unrun. Exact poolcount1 and owners2 at return/error/EOF correct only the owned peer array branches at378, with identities/items and all runtime/source bytes unchanged."
+    }
+  },
+  "required_follow_on": [
+    "Initial forms outside this BOTH-fractional plain-CV route, lossy/further-warning string conversions, objects/resources, pre-snapshot RHS references/rebinding/expiry, owning or missing/rebound/expired/constrained targets and wider callback/exit/lifecycle behavior remain partial. RHS arrays are immediate rejected operands, not numeric conversions; array/object LEFT targets stay outside this safe-target domain.",
+    "All15 affected inventory rows remain partial. OP39 and earlier cuts receive zero renewed credit; OP12 remains paused."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-40",
+    "environment": "LC_ALL=C,TZ=UTC,no PHP_SPEC_SCRIPT_ENCODING. Native/baseline CPU3; affected source CPU2; original prep/SL CPU1 and corrected array prep/SL CPU3. Native30/modelCLI60-process90; checked workers30 and full401 immutable SL120 per group, syntax separately0. Accept exact true newline/empty stderr/exits0/no interruption/reaped groups/PIDs.",
+    "commands": [
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 tests/semantics/delayed_integer_failures.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 tests/semantics/delayed_type_failure_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-40/state-prep-e900a6674-four/run-prepare.py",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-40/state-e900a6674-four/run-state.py",
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-40/state-prep-378be41d9-affected-two/run-prepare.py",
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-40/state-378be41d9-affected-two/run-state.py"
+    ],
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "record": "Restore matching Git cuts/local tools and fresh output roots; archive retains original paths/bytes/raw streams, checked fixtures, commands/exits/reaping. Copied local tools are not a new rebuild/portability claim. External archives are not runtime dependencies."
+  },
+  "composition": {
+    "parent": "e8cf118655dfb48b9749e10d039bc637a2c7f55f",
+    "private_publication": "b605cf28ae2265556dce7dd5e07e9204489b0776",
+    "modules": 401,
+    "runtime_sha256": {
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "c2ea7ba7f326dc8fb93853a48aa51d4689bb8d8bffb0907288b71f228526fe99"
+    },
+    "other_incoming_paths_preserved": 64,
+    "gate": "No joined actor:404 and six tests retain exact private bytes; every other spec byte, shared30 schema and401 manifest retain the parent. Nine incoming runtime paths require typed nullable CV/byref return/destructor cursors, FROMCALLABLEFACTORY cloning/comparison, Generator pending-throw/input/operation carriers, DEFINE/constant CONFIG calls, LIST_FETCH/reference destructuring or public-property empty/NaN reads. None occur in these ten originals: h is untyped by-value with literal bool returns; only builtin Throwables/getter calls occur, ordinary RHS arrays/index reads are not LIST_FETCH, no Generator/Closure/DEFINE/property-empty source exists and GENERATORINPUTS stays eps. New broader nullable-CV return helper still requires a declared return type. Current live TypeError labels and first handler paths use unchanged404/54/55/35/39/40/conversion/carrier/heap interfaces. Source10@d3b35b856, accepted274@e900a6674 and corrected292@378be41d9 retain private401 cuts and original pool-owner fixture failure0 without replay or renewed credit."
+  }
+}

@@ -312,6 +312,13 @@ protected exponent parse, two actual callback frames, default Warning and owners
 Original source-elaboration and state-fixture failures retain 0; earlier cuts
 receive no renewed credit. Further-warning conversions and wider forms remain partial.
 
+In the initially both-fractional modulo/shift/numeric-bitwise routes, nonnumeric
+string and array RHS values produced by the first callback now raise TypeError
+using current operand types. The numeric bitwise path cannot retry string
+specialization. Callback effects, late aliases and RHS identities survive without
+a compound store. [Delayed failure evidence](../../coverage/semantics/delayed-type-failure-review.json)
+records ten originals and 566 focused SL premises; earlier cuts receive no renewed credit.
+
 Stringable `.=` converts the left value before dereferencing the selected RHS
 slot. A defined direct RHS CV is borrowed and follows callback rebinding; an
 initially undefined read keeps its warned null value, while a later unset is a

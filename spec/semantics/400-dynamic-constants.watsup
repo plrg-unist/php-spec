@@ -110,6 +110,7 @@ dec $dynamic_array_call_valid(pstate, pconfigcall) : bool
 dec $dynamic_array_duplicate_call_valid(pstate, pconfigcall, nat) : bool
 dec $dynamic_array_duplicate_valid(pstate, pconfigcall, nat, pvalueclass, nat) : bool
 dec $dynamic_array_value(pstate, pvalue, nat*, bool) : (pstate, pvalue, pvalueclass)?
+dec $dynamic_array_recursive(pstate, pvalue, nat*) : bool?
 dec $dynamic_array_known_matches(pstate, pvalue, pvalue?) : bool
 dec $dynamic_defined_receive(pstate, pconfigcall) : pstate
 dec $dynamic_class_constant_receive(pstate, pconfigcall) : pstate
@@ -146,6 +147,12 @@ def $dynamic_define_finish(S, pconfigcall) = S_copy[.TODO = ptask_tail*][.USERCO
   -- if $dynamic_array_value(S, PARRAY n_array, eps, true) = ((S_copy, pvalue, pvalueclass))
   -- if $dynamic_array_known_matches(S_copy, pvalue, $dynamic_define_known(S_copy, pconfigcall.SITE, 1))
   -- if S.TODO = ptask :: ptask_tail*
+def $dynamic_define_finish(S, pconfigcall) = $config_error(S[.TODO = ptask_tail*], pconfigcall, "ValueError", $ptascii("define(): Argument #2 ($value) cannot be a recursive array"))
+  -- if $dynamic_array_call_valid(S, pconfigcall)
+  -- if $dynamic_define_values(pconfigcall) = ((preqbytes, PARRAY n_array))
+  -- if $dynamic_define_known(S, pconfigcall.SITE, 1) = eps
+  -- if $dynamic_array_recursive(S, PARRAY n_array, eps) = (true)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
 def $dynamic_define_finish(S, pconfigcall) = $error_dispatch(S_copy[.TODO = (DYNAMIC_ARRAY_CONSTANT_DUPLICATE pconfigcall n_candidate pvalueclass n_constants) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 2, ptbytes_message, pconfigcall.LINE, DIAGNOSTIC "Warning" ptbytes_message pconfigcall.LINE, DYNAMIC_ARRAY_CONSTANT_DUPLICATE pconfigcall n_candidate pvalueclass n_constants)
   -- if n_constants = |S.USERCONSTANTS|
   -- if $dynamic_array_duplicate_call_valid(S, pconfigcall, n_constants)
@@ -161,7 +168,7 @@ dec $dynamic_query_arity_call(pconfigcall) : bool
 def $dynamic_query_arity_call(pconfigcall) = true
   -- if pconfigcall.KIND <- [INTRINSIC_CONSTANT, INTRINSIC_DEFINED]
   -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps /\ ~pconfigcall.NAMED
-  -- if $(|pconfigcall.SENT| = 0 \/ |pconfigcall.SENT| = 2)
+  -- if $(|pconfigcall.SENT| =/= 1)
 def $dynamic_query_arity_call(pconfigcall) = false -- otherwise
 dec $dynamic_query_arity_arguments(pstate, pnamedslot*) : bool
 def $dynamic_query_arity_arguments(S, eps) = true
@@ -403,6 +410,29 @@ def $dynamic_array_finish(S, n_array, parray, (pkey_items, pvalueclass_items)*, 
 def $dynamic_array_finish(S, n_array, parray, (pkey_items, pvalueclass_items)*, false) = ((S, PARRAY n_array, PVARRAY false (pkey_items, pvalueclass_items)*))
   -- if S.ARRAYS[n_array] = parray
 def $dynamic_array_finish(S, n_array, parray, (pkey_items, pvalueclass_items)*, b_copy) = eps -- otherwise
+
+;; Validate current dereferenced edges before copying or checking duplicate keys.
+;; An ancestor path permits repeated DAG children; malformed edges are not cycles.
+dec $dynamic_array_recursive_entries(pstate, pentry*, nat*) : bool?
+def $dynamic_array_recursive(S, pvalue, n_seen*) = (false)
+  -- if ~$is_array_value(pvalue)
+def $dynamic_array_recursive(S, PARRAY n_array, n_seen*) = (true)
+  -- if $(n_array < |S.ARRAYS|)
+  -- if HARRAY n_array <- S.ALLOCATIONS
+  -- if n_array <- n_seen*
+def $dynamic_array_recursive(S, PARRAY n_array, n_seen*) = $dynamic_array_recursive_entries(S, S.ARRAYS[n_array].ITEMS, n_seen* ++ [n_array])
+  -- if $(n_array < |S.ARRAYS|)
+  -- if HARRAY n_array <- S.ALLOCATIONS
+  -- if ~(n_array <- n_seen*)
+def $dynamic_array_recursive(S, pvalue, n_seen*) = eps -- otherwise
+def $dynamic_array_recursive_entries(S, eps, n_seen*) = (false)
+def $dynamic_array_recursive_entries(S, (ENTRY pkey pitem) :: pentry_tail*, n_seen*) = (true)
+  -- if $dynamic_array_item(S, pitem, true) = (pvalue)
+  -- if $dynamic_array_recursive(S, pvalue, n_seen*) = (true)
+def $dynamic_array_recursive_entries(S, (ENTRY pkey pitem) :: pentry_tail*, n_seen*) = $dynamic_array_recursive_entries(S, pentry_tail*, n_seen*)
+  -- if $dynamic_array_item(S, pitem, true) = (pvalue)
+  -- if $dynamic_array_recursive(S, pvalue, n_seen*) = (false)
+def $dynamic_array_recursive_entries(S, pentry*, n_seen*) = eps -- otherwise
 
 ;; Literal facts constrain contents and empty-array provenance, not internal IDs.
 ;; Variables keep the same structural table policy as primitive dynamic values.

@@ -68,9 +68,12 @@ def refusals(state):
     values = []
     for field in ('.SITE = PORIGIN 0 eps', '.LINE = $(' + call + '.LINE + 1)', '.SELECTION = (|' + state + '.SELECTEDCALLS|)', '.KIND = INTRINSIC_DEFINE'):
         values += ['~$dynamic_query_arity_valid(' + state + ',' + call + '[' + field + '])']
-    for field in ('.OWNER = (0)', '.NAMED = true', '.SENT = [NAMED_SENT (KNOWN PNULL)]', '.SENT = [NAMED_SENT (KNOWN PNULL),NAMED_SENT (KNOWN PNULL),NAMED_SENT (KNOWN PNULL)]'):
+    for field in ('.OWNER = (0)', '.NAMED = true', '.SENT = [NAMED_SENT (KNOWN PNULL)]'):
         values += ['~$dynamic_query_arity_call(' + call + '[' + field + '])']
-    values += ['~$dynamic_query_arity_arguments(' + state + ',[NAMED_SENT (KNOWN (PARRAY 0))])',
+    values += ['pconfigcall_' + state + '_three = ' + call + '[.SENT = [NAMED_SENT (KNOWN PNULL),NAMED_SENT (KNOWN PNULL),NAMED_SENT (KNOWN PNULL)]]',
+        '$dynamic_query_arity_call(pconfigcall_' + state + '_three)',
+        '~$dynamic_query_arity_valid(' + state + ',pconfigcall_' + state + '_three)',
+        '~$dynamic_query_arity_arguments(' + state + ',[NAMED_SENT (KNOWN (PARRAY 0))])',
         '~$dynamic_query_arity_arguments(' + state + ',[NAMED_SENT (KNOWN (POBJECT 0))])',
         '$dynamic_query_arity_arguments(' + state + ',[NAMED_SENT (KNOWN (PINT 48)),NAMED_SENT (KNOWN (PBOOL false))])',
         '$dynamic_query_arity_arguments(' + state + ',[NAMED_SENT (KNOWN (PFLOAT 4612811918334230528))])']
