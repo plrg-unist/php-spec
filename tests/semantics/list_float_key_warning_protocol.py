@@ -93,7 +93,7 @@ def conditions(name, program, path, stdout):
                    '$entry_lookup(S.ARRAYS[n_array].ITEMS, KINT 2) = (DIRECT (PINT 22))']
     else:
         checks += ['n_pool = 0', '$lookup(S.ENV, $ptascii("q")) = (n_q)', 'S.STORE[n_q] = DEFINED (PINT 2)',
-                   f'$entry_lookup(S.ARRAYS[n_array].ITEMS, KINT {-2 if thrown else 1}) = (ALIAS n_q)',
+                   f'$entry_lookup(S.ARRAYS[n_array].ITEMS, KINT {"$(-2)" if thrown else "1"}) = (ALIAS n_q)',
                    '$heap_owners($heap_prune($heap_graph(S)), HCELL n_q) = 2']
     checks += [
         'PhpStep: S ~> S_dispatch', 'S_dispatch.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*',
