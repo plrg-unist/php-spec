@@ -10381,6 +10381,21 @@ finite modeled Throwable kinds; this one witness is nullable `?object` with a
 TypeError. Normal pair, single-cursor and chain behavior remain unchanged;
 wider multi-active histories and returns_verify remain OPEN.
 [M103 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M104 handles the distinct partially consumed pair: the inner computed O throws
+`pending104` while the outer `z` reference still has a `FINALLY_REF_RETURN`
+owner. Native PHP catches it locally and returns detached `rNULL/b7` with one
+deferred line-9 VALUE Notice; the unchanged model escapes to outer T/r7 and
+changes the prior `b` alias. At private `18b8086c7`/401, strict initialization
+passes and the original source agrees exactly. A reached proof passes 167
+Boolean premises and two raw steps: the pending EXIT and replay retain the
+outer owner through C and K, then resume the cleared inner return and its
+Notice. It binds the same modeled destructor TypeError in C, the fresh NULL
+caller result, real EXIT LINE and virtual-origin public refusals, and budget
+equality. Deleting only the outer task is rejected even with the global `z`
+root and unchanged allocations, store and reference cells. This is one
+nullable-object, two-history witness; normal pair admission and wider
+multi-active/reentrant histories remain open.
+[M104 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, wider destructor throw/reentry, real suspension and wider typed

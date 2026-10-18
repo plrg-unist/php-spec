@@ -1159,3 +1159,21 @@ finite modeled Throwable guards; normal pair and single/chain routes are
 unchanged. This is one nullable object TypeError witness, separate from M66's
 normal destructor control and wider multi-active histories. See the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M104 covers a pending Throwable while an outer pair carrier remains owning:
+an outer global `z` return, inner computed O return and selected `y` under
+`&f():?object`. O's destructor throws `TypeError("pending104")`. The repaired
+operation exit authenticates the queued partial pair, replays the error, and
+keeps the original outer `FINALLY_REF_RETURN` reference and phase. The cleared
+inner slot later resumes as `KNOWN NULL` with its original line-9 VALUE Notice.
+The native and repaired source agree on local C, detached `rNULL/b7` and
+unchanged `b`/`z` aliases; the unchanged model escapes to outer T/r7. A reached
+proof follows the outer task through EXIT, replay, C and K; deleting that task
+fails public validation despite an independently retained global `z` root and
+unchanged allocations, store and reference cells. It also checks the same
+modeled destructor error at C, the inner Notice and caller, actual EXIT LINE
+refusal, virtual-origin entry refusal and budget equality. Native C:1 observes
+message equality; model state binds object identity. The new route uses the
+existing reversed mixed `?object` pair sites and finite modeled Throwable
+kinds; this witness covers one TypeError and two histories. Normal pair EXIT
+admission, larger chains and reentrant destruction remain open. See the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
