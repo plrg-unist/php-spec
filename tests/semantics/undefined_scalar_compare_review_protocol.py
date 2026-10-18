@@ -80,7 +80,7 @@ def checks(program, path, name):
         '~$error_read_valid(S_resume,perrorread_other)',
         'S_both = $unset_name(S,$ptascii("right"))', '$us_guard(S_both)',
         '$error_read_valid(S_both,perrorread)', '~$scalar_compare_read_other(S_both,perrorread)',
-        '$error_read_plan(S_both) = eps',
+        '$error_read_plan(S_both) = (perrorread)',
         'S_without = $unset_name(S_resume,$ptascii("right"))', '$us_guard(S_without)',
         '$error_read_valid(S_without,perrorread)', '~$scalar_compare_read_other(S_without,perrorread)',
         'PhpStep: S_without ~> S_denied',

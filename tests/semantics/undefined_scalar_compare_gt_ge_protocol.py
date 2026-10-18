@@ -16,6 +16,12 @@ def checks(program, path, name):
     # and its result. Diagnostic, ownership and complete raw-state checks remain.
     result = [values[0]]
     for condition in values[1:]:
+        if left and condition == '$error_read_plan(S_missing_entry) = (perrorread)':
+            result += [
+                '$scalar_compare_right_read_shape(ptask_original,S.RESULT,S.BASE) = (perrorread_right)',
+                '$error_read_plan(S_missing_entry) = (perrorread_right)',
+            ]
+            continue
         condition = condition.replace(old, new)
         if condition.startswith('S_compared = '):
             old_result, new_result = ('true', 'false') if left else ('false', 'true')

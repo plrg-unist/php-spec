@@ -17,6 +17,12 @@ def checks(program, path, name):
         if left:
             condition = condition.replace('BINARY_RIGHT NOTEQUAL ', 'BINARY_RIGHT GREATEREQUAL ')
             condition = condition.replace(') 11', ') 13').replace(' = 11', ' = 13')
+            if condition == '$error_read_plan(S_both) = (perrorread)':
+                result += [
+                    '$scalar_compare_right_read_shape(perrorread.ORIGINAL,perrorread.INPUT,perrorread.BASE) = (perrorread_both_right)',
+                    '$error_read_plan(S_both) = (perrorread_both_right)',
+                ]
+                continue
             if condition.startswith('S_compared = '):
                 condition = condition.replace('KNOWN (PBOOL true)', 'KNOWN (PBOOL false)')
             if condition.startswith('$us_output('):
@@ -24,6 +30,8 @@ def checks(program, path, name):
                     'H:1:1:13;G:1:1:1;H:1:1:16;P:1:1:1;A:1;END;')
         else:
             condition = condition.replace('BINARY_RIGHT LESSEQUAL ', 'BINARY_RIGHT GREATER ')
+            if condition == '$error_read_plan(S_both) = (perrorread_left)':
+                condition = '$error_read_plan(S_both) = (perrorread)'
             if condition.startswith(('S_compared = ', 'S_right_compared = ')):
                 condition = condition.replace('KNOWN (PBOOL false)', 'KNOWN (PBOOL true)')
         result.append(condition)
