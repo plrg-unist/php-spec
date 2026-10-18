@@ -240,7 +240,7 @@ extend that quiet-value domain to ordinary named and mixed arguments. Reversed
 `value:`/`option:` calls capture the earlier value before later option effects;
 handler and strict-error traces retain normalized `[NULL, value]` arguments.
 Four additional originals and 746 premises pass, including false/default delivery
-and throwing-handler cancellation. Owned named, packed and PIPE forms remain partial.
+and throwing-handler cancellation. Packed and PIPE forms remain partial.
 
 [Retained intrinsic NULL INI calls](coverage/semantics/ini-set-owned-null-option-review.json)
 extend the quiet-value continuation to positional `ini_set` Closures. The original
@@ -249,6 +249,13 @@ reject NULL first; explicit `__invoke` uses weak reception through its wrapper.
 Four originals and 782 premises cover returning/throwing handlers, the actual
 four-frame wrapper trace and reuse of the retained setter. Sole-owner lifetimes
 and wider values/forms remain partial.
+
+[Named retained NULL INI calls](coverage/semantics/ini-set-owned-named-null-option-review.json)
+now preserve the original Closure and early value across reversed named argument
+effects. Native `__invoke` arguments remain numeric and normalized. Four originals
+and 928 state premises cover true/false handlers, throwing cancellation, strict
+ordinary versus weak explicit calls, owner roots and reuse of the retained setter.
+Packed/PIPE forms, sole-owner lifetimes and wider values remain partial.
 
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled

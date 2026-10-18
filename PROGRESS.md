@@ -7,6 +7,33 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Retained intrinsic `ini_set(NULL, quiet primitive)` now resumes handlers with
+named or mixed arguments. Reversed V→O captures the original owner and REQUEST
+value before later option/live-callee writes. Native `__invoke` retains numeric
+normalized arguments; ordinary strict calls still reject NULL before handlers,
+while explicit calls use weak reception. A supplied throw preserves Exception
+identity/caller99/precision10/sibling2131 and cancels the body; the original setter
+then recovers10→12.
+
+Four source comparisons retain `3563cd099`/`4f7c217d5`/405; all 928 premises
+(248+170+189+321) pass at `64c24d775`/the same runtime. Initial `cc6e09523` CPU2
+native4/baseline0 and numeric wrapper observation precede the sole NAMED guard
+removal. Final state checks use CPU3. Thirteen stable/reaped reports preserve two
+fixture failures0: optional-name tuple typing and a missing existing GC buffer
+update in the exact finish expectation. Runtime/shared64 helpers are unchanged by
+those corrections; no accepted source/native or old782 replay. Selected default
+Deprecated line24 is expected; other PHP and accepted worker stderr are empty.
+Packed/PIPE, sole-owner lifetime, owning/NaN/legacy-string values and wider
+configuration remain partial.
+[Named retained NULL INI review](coverage/semantics/ini-set-owned-named-null-option-review.json).
+
+Composed over `5401de02d`/405 with module172/four tests private-exact and every
+other runtime/schema/new field/default/ordered manifest parent-exact. New array
+debt fields stay empty; DEFINE flag, missing-CV comparison, DIVIDE, magic-property,
+Generator and reference-return retirement producers are absent here. Private
+source4/state928 cuts and both fixture failures0 stay separate, without a joined
+actor or accepted replay.
+
 Pending `throw` now follows finite native ancestor links to an owning simple-CV
 copied return, including first child detachment inside the call. Only the selected
 receiver clears initialization; the distinct physical middle keeps its pending
@@ -113,7 +140,7 @@ survivor. Initial `9d082a173` CPU5 native3/baseline0 stays distinct from laterCP
 genuine producer-continuation Unsupported after B|V| receives zero agreement.
 Only default Deprecated lines8/18 are expected; other PHP and worker stderr are
 empty. Ten additive module172 lines preserve ownerless/unary/source/368/root/
-discard bodies; no old623/746 actor is renewed. Owned named/packed/PIPE, sole-owner
+discard bodies; no old623/746 actor is renewed. Packed/PIPE, sole-owner
 lifetime, owning/NaN/legacy-string values and wider configuration remain partial.
 [Retained NULL INI review](coverage/semantics/ini-set-owned-null-option-review.json).
 

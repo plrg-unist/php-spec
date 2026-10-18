@@ -1,0 +1,117 @@
+{
+  "scope": "Retained live intrinsic Closure INI_SET, ordinary or explicit __invoke, named or mixed two-slot NULL option and quiet primitive value. Source64 value and retained keep-owner boundaries stay exact: NULL/bool/int/non-NaN float/authenticated INTERNED-REQUEST strings; no packed/PIPE/sole-owner/owning-value widening.",
+  "status": "independently_accepted_private_integrated_on_join",
+  "reviewer": "/root/source_review_35",
+  "parent": "0b775c686af81d5fab10b83a8dd3d3b0a660febc",
+  "semantic_revision": "4f7c217d50d4eef9c3b7f25b4ad74d61729be79b",
+  "tested_revision": "64c24d775c9289843f6e136c39b8ad89ddcbcef7",
+  "source_tested_revision": "3563cd0996827d4bc882e9fba003c820cd9a0bc4",
+  "semantic_files": {
+    "spec/semantics/172-file-context-intrinsics.watsup": "ad50104f5c4aa4c3af86715359c1153cc048072e3d67fb9dc6b8f30b4f40ac4c"
+  },
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "primary": "Pinned Zend/zend_compile.c preserves written named argument evaluation; Zend/zend_execute.c resolves parameter destinations. zend_closures.c zend_get_closure_invoke_method copies the underlying nonvariadic INI_SET argument metadata; debug_backtrace_get_args appends named extras only for variadic calls, so both wrapper and inner API use numeric normalized option/value slots. Native checks that policy before the guard change. NULL deprecation timing and strict ordinary versus weak explicit wrapper reception stay as in Source64.",
+  "semantics": "Only ~NAMED is removed from the existing owner-present NULL2 config_ini_null_valid arm. config_invoke_valid and dynamic_scalar_define_arguments still authenticate source named layout, written-index to destination mapping, live owner, quiet value and immutable arguments. Ownerless/unary/positional, pack/PIPE/strict,368 raw projection, wrapper frames, task roots, body/discard and GC runtime helpers are unchanged. A local65 fixture adaptation expects the exact existing gc_buffer_add on consuming a retained owner task root; shared64 bytes stay exact.",
+  "accepted": [
+    "Four checked normal model records exactly match native stdout/PHPstderr/PHPexit0 at3563cd099/runtime4f7c217d5/405. Ordinary reversed literal and explicit mixed-prefix calls run true handlers. Selected reversed V then O preserves the original INI_SET Closure and authentic earlier REQUEST while live owner/option/value change; false handling adds the sole default Deprecated on24, reachesfalse/precision8 and retained named setter8 to11. Strict ordinary rawNULL/2129 errors after both effects with99/handler0/precision9, then the same owner explicit mixedNULL/2137 is weak. Peer supplied Exception preserves identity99/effects2/precision10/sibling2131 and real setter10 to12 recovery; its minimal native getTrace observer confirms numeric wrapper NULL/earlyvalue. Other PHPstderr is quiet.",
+    "All928 premises pass at64c24d775/runtime4f7:248+170+189 author,321 independent. Actual partial CONFIG_ARGS INDEX1/NAMEDtrue/[NAMED_HOLE,earlier REQUEST] retains original owner/keep while live call is a distinct INI_GET Closure. Source names value/option map1/0; completion changes only INDEX and fills option0 after O. Actual handler Exception has handler/ini_set/__invoke/caller frames with normalized rawNULL/same REQUEST carrier in API and wrapper args. Full throwing identity discard, strict raw normalized TypeError, owner roots, true/false body equality with exact retained-owner GC update, source/immutable/carrier/owner/count/phase refusals, final native output and zero/split budgets pass. Four accepted SL raws are true LF/exit0/empty stderr.",
+    "Thirteen input/HEAD-stable reports:11PASS plus two preserved author fixture failures0. No timeout/interruption/group survivor. First failed public check has optional-name tuple type mismatch; fresh public-fixed reaches the exact finish equality but omits existing GC buffer bookkeeping. Only affected author checks repeat, followed by previously unrun peer checks. Source4/native4/baseline and old782 are not renewed."
+  ],
+  "baseline_zero_credit": "At source-onlycc6e095238a38ceb08127d3d1c49ad90464a392d/unchanged0b775c686 onCPU2, sole captured-owned-named-null-before-live-owner-and-option-writes produces Unsupported error-handler ingress requires a producer continuation afterB|V|O|, CLI1/nullPHPexit/quiet workerstderr. Author native3 and peer native1, including numeric wrapper observation, precede implementation. Baseline receives zero agreement.",
+  "compatibility": "Old64 NAMEDtrue descriptor forgeries still contradict positional source prefixes, so they remain invalid; no782 repair/replay. Reused64 handled/reach/budget helper is explicitly fingerprinted, imported before own sources, and unchanged. Only local65 expected GC is refined: CONFIG_INI_NULL_RESULT owns one HOBJECT, primitive args are nonowning, and existing301 buffers the still-live owner on task consumption; later buffer additions are idempotent. No GC implementation, trace rewrite, engine bug, intentional divergence or physical native lifetime claim. V82 DEFINE Closure flags and class/lifecycle work are disjoint; paused Source47/owned-NUL/low-precision NaN remain untouched.",
+  "execution": "LC_ALL=C TZ=UTC, INT+kill5, AS3221225472, taskset2 initial native/base/source4 and first state attempt; taskset3 corrected author/unrun peer state. Serial fail-first/full reap, native15s/CLI45s-host60s/freshSL90s. Accepted CLI/SL workerstderr is empty; failed checks retain diagnostic stderr. Sole selected PHP Deprecated is separate.",
+  "command_prefix": "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s <cap>s prlimit --as=3221225472 -- taskset -c <cpu> python3 <step>",
+  "commands": [
+    {
+      "revision": "cc6e095238a38ceb08127d3d1c49ad90464a392d",
+      "cpu": 2,
+      "caps": [
+        90,
+        90,
+        90
+      ],
+      "steps": [
+        "tests/semantics/ini_set_owned_named_null_option_sources.py --phase native --output .tools/ini-set-owned-named-null-option-native-65",
+        "tests/semantics/ini_set_owned_named_null_option_review_sources.py --phase native --output .tools/ini-set-owned-named-null-option-review-65",
+        "tests/semantics/ini_set_owned_named_null_option_sources.py --phase baseline --output .tools/ini-set-owned-named-null-option-native-65 --case captured-owned-named-null-before-live-owner-and-option-writes"
+      ]
+    },
+    {
+      "revision": "3563cd0996827d4bc882e9fba003c820cd9a0bc4",
+      "cpu": 2,
+      "caps": [
+        240,
+        90,
+        90,
+        360
+      ],
+      "steps": [
+        "tests/semantics/ini_set_owned_named_null_option_sources.py --phase model --output .tools/ini-set-owned-named-null-option-native-65",
+        "tests/semantics/ini_set_owned_named_null_option_review_sources.py --phase model --output .tools/ini-set-owned-named-null-option-review-65",
+        "tests/semantics/ini_set_owned_named_null_option_protocol.py --phase prepare --sources .tools/ini-set-owned-named-null-option-native-65 --output .tools/ini-set-owned-named-null-option-public-65",
+        "tests/semantics/ini_set_owned_named_null_option_protocol.py --phase check --sources .tools/ini-set-owned-named-null-option-native-65 --output .tools/ini-set-owned-named-null-option-public-65"
+      ]
+    },
+    {
+      "revision": "065afd947de8bd802462210f28297e256a4deda3",
+      "cpu": 3,
+      "caps": [
+        90,
+        360
+      ],
+      "steps": [
+        "tests/semantics/ini_set_owned_named_null_option_protocol.py --phase prepare --sources .tools/ini-set-owned-named-null-option-native-65 --output .tools/ini-set-owned-named-null-option-public-fixed-65",
+        "tests/semantics/ini_set_owned_named_null_option_protocol.py --phase check --sources .tools/ini-set-owned-named-null-option-native-65 --output .tools/ini-set-owned-named-null-option-public-fixed-65"
+      ]
+    },
+    {
+      "revision": "64c24d775c9289843f6e136c39b8ad89ddcbcef7",
+      "cpu": 3,
+      "caps": [
+        90,
+        360,
+        90,
+        120
+      ],
+      "steps": [
+        "tests/semantics/ini_set_owned_named_null_option_protocol.py --phase prepare --sources .tools/ini-set-owned-named-null-option-native-65 --output .tools/ini-set-owned-named-null-option-public-final-65",
+        "tests/semantics/ini_set_owned_named_null_option_protocol.py --phase check --sources .tools/ini-set-owned-named-null-option-native-65 --output .tools/ini-set-owned-named-null-option-public-final-65",
+        "tests/semantics/ini_set_owned_named_null_option_review_protocol.py --phase prepare --sources .tools/ini-set-owned-named-null-option-review-65 --output .tools/ini-set-owned-named-null-option-review-public-65",
+        "tests/semantics/ini_set_owned_named_null_option_review_protocol.py --phase check --sources .tools/ini-set-owned-named-null-option-review-65 --output .tools/ini-set-owned-named-null-option-review-public-65"
+      ]
+    }
+  ],
+  "raw_root": ".tools/ini-set-owned-named-null-option-evidence-65",
+  "report_sha256": {
+    "author/public/check-report.json": "6ac37713501a24d338c5ac828ee4b8b14359323b0d7333df42f4628656b1c22d",
+    "author/public/prepare-report.json": "d8ec641751b1e8fa467891bdc895a9846df1fa0d47d0b4f9a020c6a2dd33a02b",
+    "author/public-final/check-report.json": "53ee74ee9510f3110a971e77900350f1a538daf0844cdc62c79a7dcdaf5a1f36",
+    "author/public-final/prepare-report.json": "1a57f93979d5234e17e83168818e87d8a26b60f492d6c499fef810d73e8e7ac3",
+    "author/public-fixed/check-report.json": "90ec8dc65f5351991a93e7e801ee2688ca282265e7e45bc500b6d983572183bf",
+    "author/public-fixed/prepare-report.json": "1d79a7cfe5bece0cd9049093a8ff95cae8ef0b0f3204bffdb1ac7b0dec74ea18",
+    "author/review/model-report.json": "7665cbc468f0d89cdaa83d45b0c04afd796ea6890f26f857c4dda166da9557d4",
+    "author/review/native-report.json": "644f973002df0167e2a17e6a3ddfb86803a2f8bc11ca71ddaa69e12e6e8d3119",
+    "author/review-public/check-report.json": "fb838535aa463c259f3ade77136f03e5a3e66de9a311a402b4cc80cbe822f36f",
+    "author/review-public/prepare-report.json": "0d7e64dd74f3bffbab8fefdc3d51a4d96864a9f0f81eebae008d931b6fa9c271",
+    "author/sources/baseline-report.json": "64330ff3b41c8684a22d2990f9a1bc50dfd128ea858b01f76c0da2ad9f8697b6",
+    "author/sources/model-report.json": "eab4c6fbb49b9e25c57cb089ef3903090408670c60e74cd94844a14d28be526b",
+    "author/sources/native-report.json": "9b6e17b6c8f2de371a2c6458f709a837689a102f4f795e4a569f7e28572383f4"
+  },
+  "recovery": "Six roots moved once after reviewer RAW STOP/focused users[] into author/{sources,review,public,public-fixed,public-final,review-public}; only thirteen concise reports hashed once. Both failed roots remain untouched0. Restore recorded original private paths/cuts for exact source/cwd identity; reports retain full fingerprints/commands/exits. No old evidence renewal.",
+  "remaining": "Packed/PIPE and wider call forms, sole-owner retirement, owning/NaN/legacy-PSTRING values and complete configuration remain partial. No full-core/equivalence/BOLA claim.",
+  "composition": {
+    "parent": "5401de02d1c3cfbcc17efe3499313fb088ad4ce6",
+    "private_publication": "ff5ff15360a3bbf843665bac6e6dfc07e9b4ee26",
+    "modules": 405,
+    "method": "Module172 and four tests are private-exact. Parent172 is base-exact, so restoring the sole owned-arm ~NAMED exclusion restores entire incoming172. Every other runtime/schema/ordered405 manifest byte, including all incoming fields/defaults/tags, stays parent-exact. Inventory only environment.config own2helper/2source/1ledger plus review suffix; incoming docs/checkpoints preserved.",
+    "runtime_sha256": {
+      "spec/semantics/172-file-context-intrinsics.watsup": "ad50104f5c4aa4c3af86715359c1153cc048072e3d67fb9dc6b8f30b4f40ac4c"
+    },
+    "seams": "Independent actual-parent semantic review CLEAR.172/368/Closure trace and301 GC bodies are base-exact. Incoming LITERALARRAYRETAINED/LITERALARRAYDEBTS start eps and only float-key ARRAY_VALUE/ARRAY_KEY_FLOAT_ARRAY_RESULT produces them; these sources have none, so roots/debts/public validity and exact GC/discard reduce to prior behavior. Other incoming tails require invalid DEFINE flags, missing-CV scalar comparison, DIVIDE repair, __isset/empty RV, Generator delegation or finally-reference retirement; all absent here. No concrete interaction warrants a joined actor.",
+    "evidence": "Source4 retains3563/runtime4f7 and state928 retains64c24d775/runtime4f7/405. Initialcc6e CPU2 native4/base0, laterCPU3 final state and both author fixture failures0 remain distinct; no accepted actor replay or joined execution credit."
+  }
+}
