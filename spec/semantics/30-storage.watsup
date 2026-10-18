@@ -382,6 +382,7 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | BIT_ASSIGN_BOTH_LEFT pintegeroperation nat nat nat int nat
   | BIT_ASSIGN_BOTH_RIGHT pintegeroperation nat nat nat int nat int nat
   | BOTH_ASSIGN_STRING_WARNING pintegeroperation nat nat nat int pvalue int nat
+  | BOTH_ASSIGN_PRECISION_STRING pintegeroperation nat nat nat int pintegerconversion nat
   | UPDATE_WARNING_NOTICE pupdatewarning | UPDATE_WARNING_RESTORE pupdatewarning | UPDATE_WARNING_DONE pupdatewarning
   | UPDATE_WARNING_RELEASE pupdaterestore | UPDATE_WARNING_COMMIT pupdaterestore
   | UPDATE_WARNING_EXIT perrorcall int
