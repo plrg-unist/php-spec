@@ -1175,5 +1175,20 @@ refusal, virtual-origin entry refusal and budget equality. Native C:1 observes
 message equality; model state binds object identity. The new route uses the
 existing reversed mixed `?object` pair sites and finite modeled Throwable
 kinds; this witness covers one TypeError and two histories. Normal pair EXIT
-admission, larger chains and reentrant destruction remain open. See the
+admission is checked separately by M105; larger chains and reentrant
+destruction remain open. See the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M105 covers normal `PENDING=eps` EXIT admission for final pairs and
+source-adjacent partial pairs with an outer owning reference. Separate
+historical M66/M68 source and native agreements were preserved, not rerun.
+At `7be8de0d7`/401, two reached diagnoses found valid queued pairs but
+rejected actual EXIT descriptors. The repaired saved projection delegates to
+the existing full pair validators; it does not change the finish, owning
+tasks, payload or replay. Focused final and partial proofs pass 82 and 100
+Boolean premises, respectively, plus one raw step each: actual EXIT admission,
+wrong-LINE refusal, normal finish, terminal alias contract and split/whole
+budget. Final delivery has no Notice; the partial case retains the outer
+`z` owner and delivers the original line-4 VALUE Notice. Normal
+interposed-catch partial pairs, RELEASE-only cleanup prefixes and larger or
+reentrant owner histories remain for permanent lifecycle/control work. See
+the [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).

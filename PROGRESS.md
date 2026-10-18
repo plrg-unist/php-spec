@@ -10078,8 +10078,11 @@ failures and interrupted evidence.
   Called-class introspection223 leaves builtin Closure rebinding, builtin API
   callback targets, suspension and wider reference-result consumers open.
 
-`returns_verify` has resumed with the authorized temporary verifier. Preserve
-held branches and evidence, and do not retry the rejected engine experiment.
+The temporary `returns_verify` audit has reached its finite paired-return
+handoff. Preserve the accepted evidence and do not retry the rejected engine
+experiment. Permanent lifecycle/control work still owns RELEASE-only cleanup
+prefixes, normal interposed-catch partial pairs, larger or reentrant owning
+histories, GC and wider typed consumers. These are open core obligations.
 Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is
 bounded physical-array owner recovery. Bounded single-active-finalizer CV replay and deferred VALUE/NULL Notice dispatch are
 integrated, as are bounded aliased-CV Stringable reference conversion 186 and sole-local-CV
@@ -10473,9 +10476,23 @@ Notice. It binds the same modeled destructor TypeError in C, the fresh NULL
 caller result, real EXIT LINE and virtual-origin public refusals, and budget
 equality. Deleting only the outer task is rejected even with the global `z`
 root and unchanged allocations, store and reference cells. This is one
-nullable-object, two-history witness; normal pair admission and wider
-multi-active/reentrant histories remain open.
+nullable-object, two-history witness; normal pair EXIT admission is checked
+separately by M105 below. Wider multi-active/reentrant histories remain open.
 [M104 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M105 admits normal `PENDING=eps` operation exits for final
+`REF_RETURN_PAIR` and source-adjacent, still-owning
+`REF_RETURN_PAIR_PENDING`. Preserved M66/M68 originals already agreed with
+native PHP; they were not rerun. At integrated `7be8de0d7`/401, separate
+49- and 59-premise diagnoses reached valid queued pairs whose actual EXIT
+descriptors rejected. The sole `270` change at private `6e6a42a3` projects
+the completed exit into the existing full pair validators. Focused final
+83-premise and partial 101-premise proofs now admit each actual EXIT, reject a
+wrong LINE, and preserve the normal finish, terminal aliases and budget.
+The final case delivers no Notice; the partial case retains outer `z`
+ownership and delivers its original line-4 VALUE Notice. These are state
+proofs, not new native/source agreements. Normal interposed-catch partial
+pairs and RELEASE-only cleanup prefixes remain for permanent lifecycle/control
+work. [M105 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, wider destructor throw/reentry, real suspension and wider typed
