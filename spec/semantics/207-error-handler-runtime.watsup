@@ -343,7 +343,7 @@ def $spaceship_right_read_shape(BINARY_RIGHT SPACESHIP (VARIABLE n_left* z_left)
   -- if n_left* =/= n_right*
 def $spaceship_right_read_shape(ptask, poperand, pbase) = eps -- otherwise
 def $scalar_compare_right_read_shape(BINARY_RIGHT pbin (VARIABLE n_left* z_left) z, VARIABLE n_right* z_right, pbase) = ({ORIGINAL BINARY_RIGHT pbin (VARIABLE n_left* z_left) z, INPUT VARIABLE n_right* z_right, BASE pbase, NAME n_right*, LINE z, TASK BINARY_RIGHT pbin (VARIABLE n_left* z_left) z, RESULT KNOWN PNULL})
-  -- if pbin = EQUAL \/ pbin = NOTEQUAL \/ pbin = LESS \/ pbin = LESSEQUAL
+  -- if pbin = EQUAL \/ pbin = NOTEQUAL \/ pbin = LESS \/ pbin = LESSEQUAL \/ pbin = GREATER \/ pbin = GREATEREQUAL
   -- if n_left* =/= n_right*
 def $scalar_compare_right_read_shape(ptask, poperand, pbase) = eps -- otherwise
 def $error_read_line(EMIT z, z_origin) = z_origin
@@ -423,14 +423,15 @@ def $spaceship_read_other(S, perrorread) = $spaceship_read_operand(S, perrorread
 def $spaceship_read_other(S, perrorread) = $spaceship_read_scalar(pvalue)
   -- if perrorread.ORIGINAL = BINARY_RIGHT SPACESHIP (KNOWN pvalue) z
 def $spaceship_read_other(S, perrorread) = true -- otherwise
-;; The ==/!=/</<= helpers test the first raw CV for UNDEF, then the current second CV.
+;; Comparison helpers test raw physical OP1, then current OP2; >/>= swap them.
+;; A single missing CV with a defined scalar counterpart keeps the source shape.
 ;; The missing value freezes NULL; the defined opposing CV keeps its live wrapper.
 def $scalar_compare_read_other(S, perrorread) = $spaceship_read_operand(S, VARIABLE n_left* z_left)
   -- if $scalar_compare_right_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread)
   -- if perrorread.ORIGINAL = BINARY_RIGHT pbin (VARIABLE n_left* z_left) z
 def $scalar_compare_read_other(S, perrorread) = $spaceship_read_operand(S, perrorread.INPUT)
   -- if perrorread.ORIGINAL = BINARY_RIGHT pbin (VARIABLE n* z_origin) z
-  -- if pbin = EQUAL \/ pbin = NOTEQUAL \/ pbin = LESS \/ pbin = LESSEQUAL
+  -- if pbin = EQUAL \/ pbin = NOTEQUAL \/ pbin = LESS \/ pbin = LESSEQUAL \/ pbin = GREATER \/ pbin = GREATEREQUAL
   -- if $scalar_compare_right_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) =/= (perrorread)
 def $scalar_compare_read_other(S, perrorread) = true -- otherwise
 def $error_read_resume(S, perrorread, ptask_tail*) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "spaceship warning changed opposing scalar"]
@@ -465,6 +466,8 @@ def $scalar_compare_read_source(NExprBinaryOpEqual expression_left expression_ri
 def $scalar_compare_read_source(NExprBinaryOpNotEqual expression_left expression_right metadata) = (NOTEQUAL)
 def $scalar_compare_read_source(NExprBinaryOpSmaller expression_left expression_right metadata) = (LESS)
 def $scalar_compare_read_source(NExprBinaryOpSmallerOrEqual expression_left expression_right metadata) = (LESSEQUAL)
+def $scalar_compare_read_source(NExprBinaryOpGreater expression_left expression_right metadata) = (GREATER)
+def $scalar_compare_read_source(NExprBinaryOpGreaterOrEqual expression_left expression_right metadata) = (GREATEREQUAL)
 def $scalar_compare_read_source(pcnode) = eps -- otherwise
 def $spaceship_read_source_operand(S, porigin, KNOWN pvalue) = true
 def $spaceship_read_source_operand(S, porigin, VARIABLE n* z) = $error_variable_source(S, (porigin), [PCFIELD 1], n*)
