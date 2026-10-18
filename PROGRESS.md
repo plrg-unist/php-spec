@@ -7,6 +7,24 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Both-missing distinct-CV `<=>` now warns left first and freezes NULL before
+reading the handler-created scalar right. The first name may stay absent;
+supplied Exception suppresses the second Warning. Only two module207 entry lines
+change; source validity, scalar resume guard, fields, roots and discard stay exact.
+Eight source agreements plus two zero-credit controls retain `04b3378e3`/405;
+439 strict-SL premises/four groups retain author208 at that cut and peer231 at
+`55e64f682`. Fresh alias/target owners, signed result, raw restore/compare, actual
+read-line/source/shape refusals and zero/split budgets pass. Genuine `826bdf0b3`
+baseline stays zero. Returning second-Warning chains, same-CV/owning counterparts
+and wider producers remain partial.
+[Both-missing spaceship review](coverage/semantics/undefined-spaceship-both-review.json).
+
+Surgical maintained controls now select the first physical missing record:
+136 strict-SL premises/three entry-only groups and two affected source selectors
+pass at `04b3378e3` without renewing historical credit. Two fixture failures
+(raw-step warning dispatch and unused-line corruption) stay zero; only affected
+packets retried. Accepted source/author/maintenance cuts are not replayed.
+
 Both-missing `>`/`>=` comparisons now warn for source right first, freeze its
 NULL and follow the scalar left initialized by the handler. A second ingress
 clause matches only the existing right-frozen record and reversed operators;

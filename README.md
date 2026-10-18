@@ -18,9 +18,11 @@ remains later research.
 
 [Scalar comparison warnings](docs/semantics/COMPARISONS.md) preserve a missing
 variable's null result through handlers while following current scalar CV bindings.
-This covers bounded spaceship operands and direct-CV `==`/`!=`/`<`/`<=`/`>`/`>=` pairs
-with one missing operand, including rebinding. Both-missing pairs can resume if
-the first handler defines the opposing scalar; greater operators warn right first.
+This covers bounded spaceship operands and distinct direct-CV
+`==`/`!=`/`<`/`<=`/`>`/`>=` pairs with one missing operand, including rebinding.
+Both-missing pairs, including `<=>`,
+can resume if the first handler defines the opposing scalar; greater operators
+warn right first.
 Wider warning paths remain partial.
 
 [Array-literal float keys](docs/semantics/DIMENSIONS.md) now retain their converted
