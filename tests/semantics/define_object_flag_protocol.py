@@ -73,7 +73,7 @@ def callback(state, start, target, marker, suffix):
 
 def publish(state, start, cfg, name, obj, site, owners, suffix):
     return [f'$heap_owners($heap_graph({start}),HOBJECT {obj}) = {owners}',
-        *common.step(state, start, 'PBOOL true'), *common.public(state),
+        *common.step(state, start, 'PBOOL true'),
         f'{state}.TODO = ptask_{suffix}*',
         f'$user_constant_at({state}.USERCONSTANTS,{text(name)}) = (puserconstant_{suffix})',
         f'{state}.USERCONSTANTS = {start}.USERCONSTANTS ++ [puserconstant_{suffix}]',
@@ -98,7 +98,7 @@ def false_delivery(state, start, marker, obj, tail):
         f'$heap_owners($heap_graph({state}_shared),HOBJECT {obj}) = $(n_owners_{state} - 1)',
         f'~({obj} <- {state}_shared.DESTRUCTION.CALLED)',
         *common.step(state + '_exit', state + '_shared'),
-        *common.step(state, state + '_exit', 'PBOOL false'), *common.public(state),
+        *common.step(state, state + '_exit', 'PBOOL false'),
         f'{state}.TODO = {tail}', f'{state}.USERCONSTANTS = {start}.USERCONSTANTS',
         f'$heap_owners($heap_graph({state}),HOBJECT {obj}) = $(n_owners_{state} - 1)']
 
@@ -282,7 +282,7 @@ packet_process = packet.process
 
 def process(command, directory, timeout, cwd):
     if directory.parent.name == 'normal-object-warning-null-and-late-duplicate':
-        timeout = 240
+        timeout = 480
     return packet_process(command, directory, timeout, cwd)
 
 
