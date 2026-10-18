@@ -43,8 +43,8 @@ function v71Report($level, $message) {
     return true;
 }
 set_error_handler('v71Report', E_WARNING);
-$left = ['tag' => 'L'];
-$right = ['tag' => 'R'];
+$left = ['tag' => 11];
+$right = ['tag' => 19];
 $left['peer'] =& $right;
 $right['peer'] =& $left;
 $result = 'kept';
@@ -56,7 +56,7 @@ try {
     $trace = $error->getTrace();
     $raw = $trace[0]['args'][1];
     echo $trace[0]['function'], '|';
-    echo $raw['peer']['peer']['tag'] === 'L' ? 'mutual|' : 'BAD|';
+    echo $raw['peer']['peer']['tag'] === 11 ? 'mutual|' : 'BAD|';
     echo $trace[0]['args'][2] === false ? 'false|' : 'BAD|';
 }
 echo $warnings, '|', constant('V71_OLD'), '|', $result, '|';
