@@ -273,6 +273,15 @@ retains seven exact originals and 1421 focused SL premises, including all three
 operators, quiet OR handoff, both throwing phases and default-second negative XOR.
 Initial references/copies, wider RHS conversions, unsafe targets and lifecycle remain partial.
 
+Fitting integral float RHS values after the first callback now convert quietly
+in the both-fractional bitwise route. Cached LEFT `12` with `5.0` stores `4`/`13`/`9`
+and detaches alias `99`; negative `-1.0` similarly stores XOR `-13` after one default
+LEFT Deprecated. A supplied first throw preserves its Exception, destination and
+alias write-through. [Quiet float bitwise evidence](../../coverage/semantics/bitassign-quiet-float-review.json)
+retains five exact originals and 634 focused SL premises, including original
+bindings, direct stores, cells/owners and budgets. Wider initial forms, conversions,
+unsafe targets and lifecycle remain partial; earlier cuts receive no renewed credit.
+
 Stringable `.=` converts the left value before dereferencing the selected RHS
 slot. A defined direct RHS CV is borrowed and follows callback rebinding; an
 initially undefined read keeps its warned null value, while a later unset is a

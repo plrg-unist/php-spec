@@ -7,6 +7,24 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Numeric bitwise assignments now quietly convert fitting integral float masks
+left by the first handler in the both-fractional plain-CV route. Cached LEFT 12
+with live `5.0` directly stores 4/13/9 and detaches alias 99; supplied throw keeps
+the same Exception, destination 100 and alias write-through. An independent handler
+returning false leaves `-1.0`: XOR stores (-13) despite live LEFT 99, with one default
+LEFT Deprecated at line 25, no second callback and alias detachment. Five exact originals pass at
+7724196ca; author 135/135/135/99 plus independent 130 SL premises pass 634 at
+1332b0f1c/399, covering actual first frames, original bindings, atomic storage,
+cells/owners and budgets. Runtime adds one direct commit and a boundary exclusion,
+reusing the exact integral snapshot; tasks/schema and other routes stay unchanged.
+Native/baseline/prep/syntax and earlier renewed credit stay 0. Wider forms remain
+partial; OP12 paused.
+[Quiet float bitwise ledger](coverage/semantics/bitassign-quiet-float-review.json).
+
+Composed over 73f140047/399 after pointwise review of startup/array constants,
+magic-empty array RV, quiet-CV list keys and WeakMap/Closure seams. Source5/state634
+retain private cuts without actor, replay or renewed credit.
+
 Terminal inherited `empty` now accepts nonempty array getter RVs through the
 receiver-only disposal phase, and immutable empty literals through direct true
 delivery. Owned-element destructors run after array retirement with isset active,

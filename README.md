@@ -648,6 +648,11 @@ after the first callback skips the second diagnostic. Success detaches late alia
 either supplied throw preserves them. Negative masks still store signed integers.
 Seven exact originals and 1421 focused SL premises pass in the
 [ordered bitwise ledger](coverage/semantics/bitassign-both-warning-review.json).
+An integral float RHS after the first callback also converts quietly. Cached
+LEFT `12` with `5.0` stores `4`/`13`/`9`; negative `-1.0` gives XOR `-13`.
+Success detaches late aliases; a supplied first throw preserves them. Five exact
+originals and 634 focused SL premises pass in the
+[quiet float bitwise ledger](coverage/semantics/bitassign-quiet-float-review.json).
 Explicit array-to-string casts now suspend through named warning handlers for
 a bounded plain-CV array input. The borrowed array adds no saved owner: replacing
 or removing its CV still yields fixed `Array`, while a supplied throw preserves
