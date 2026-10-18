@@ -451,8 +451,9 @@ def $destructor_pending_finish(S, pdestructionoperation, n, (RETURN_REF_UNWIND (
   -- if $throwable_live(S, n)
   -- if S.OBJECTS[n] = THROWABLE pthrowable
   -- if $throwable_kind(pthrowable.KIND)
-  -- if ptask_tail* = [FINALLY_REF_RETURN prefreturncursor_outer.OWNER prefreturncursor_outer.SOURCE (REFERENCE n_outer) prefreturncursor_outer.LINE, FINALLY_PHASE prefreturncursor_outer.OWNER 3, ORIGIN_RETURN prefreturncursor_outer.OUTER, TYPE_FALLTHROUGH porigin_function, REF_RETURN_PAIR_PENDING prefreturncursor_inner prefreturncursor_outer porigin_selected z_selected, REF_RECHECK porigin_selected porigin_first (REFERENCE n_selected) z_selected]
-  -- if prefreturncursor_outer.OUTER = (porigin_function)
+  -- if ptask_tail* = [FINALLY_REF_RETURN porigin_outer porigin_z (REFERENCE n_outer) z_outer, FINALLY_PHASE porigin_outer 3, ORIGIN_RETURN porigin_restore?, TYPE_FALLTHROUGH porigin_function, REF_RETURN_PAIR_PENDING prefreturncursor_inner prefreturncursor_outer porigin_selected z_selected, REF_RECHECK porigin_selected porigin_first (REFERENCE n_selected) z_selected]
+  -- if prefreturncursor_outer = { OWNER porigin_outer, SOURCE porigin_z, LINE z_outer, OUTER porigin_restore? }
+  -- if porigin_restore? = (porigin_function)
   -- if $ref_return_pair_reversed_mixed_sites(S, prefreturncursor_inner, prefreturncursor_outer)
   -- if S_queued = S[.TODO = (RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected) :: ptask_tail*]
   -- if $ref_return_pair_pending_valid(S_queued, prefreturncursor_inner, prefreturncursor_outer, porigin_selected, z_selected)
