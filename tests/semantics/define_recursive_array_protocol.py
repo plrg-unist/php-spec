@@ -95,7 +95,10 @@ def checks(initial, name, stdout):
         'n_retry_before = |S_retry.ARRAYS|']
     if selected:
         values += [f'parray_repaired = $array_insert($array_empty(),KSTRING {tag},DIRECT (PINT 11))',
-            'S_retry.ARRAYS[n_repaired] = parray_repaired',
+            'S_retry.ARRAYS[n_repaired].ITEMS = parray_repaired.ITEMS',
+            'S_retry.ARRAYS[n_repaired].NEXT = parray_repaired.NEXT',
+            'S_retry.ARRAYS[n_repaired].POSITIONS = parray_repaired.POSITIONS',
+            'S_retry.ARRAYS[n_repaired].SERIAL = S.ARRAYS[n_input].SERIAL',
             'S_retry.STORE[n_warnings] = DEFINED (PINT 0)',
             '~(HOBJECT n_error <- S_retry.ALLOCATIONS)',
             '~(HARRAY n_input <- S_retry.ALLOCATIONS)',
@@ -120,7 +123,10 @@ def checks(initial, name, stdout):
             '~(HCELL n_right_cell <- S_final.ALLOCATIONS)']
     else:
         values += [f'parray_repaired = $array_insert($array_insert($array_empty(),KSTRING {empty},DIRECT (PARRAY n_pooled)),KSTRING {tag},DIRECT (PINT 11))',
-            'S_retry.ARRAYS[n_repaired] = parray_repaired',
+            'S_retry.ARRAYS[n_repaired].ITEMS = parray_repaired.ITEMS',
+            'S_retry.ARRAYS[n_repaired].NEXT = parray_repaired.NEXT',
+            'S_retry.ARRAYS[n_repaired].POSITIONS = parray_repaired.POSITIONS',
+            'S_retry.ARRAYS[n_repaired].SERIAL = S.ARRAYS[n_input].SERIAL',
             'S_retry.ARRAYS[n_input] = S.ARRAYS[n_input]',
             '$dynamic_array_recursive(S_retry,PARRAY n_input,eps) = (false)',
             *common.step('S_row','S_retry','PBOOL true'),
