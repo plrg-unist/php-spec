@@ -29,30 +29,28 @@ GENERATORRETURNRETAINED and LITERALREFRETAINED lift by empty fields with no root
 and valid empty receipts, preserving owners/budgets pointwise. Source3/state632
 retain private403 cuts and both zero-credit failures without replay.
 
-Reference elements in array literals now preserve the pre-conversion acquired
-wrapper across finite lossy-float CV-key handlers. Stable or same-cell rebinding
-transfers the owner into an array alias; ordinary scalar retargeting inserts the
-live null/bool/int/float and retains one old-wrapper owner per occurrence for the
-request, including supplied throws. Five fresh originals and strict403 pass at
-`61a8b26d9`; all 830 focused state premises (479 author + 351 independent,
-including twelve raw transitions) pass at `5ca23fe19`, with no fixture failure
-or retry. Same-cell singleton unwrapping and retained multiplicity1/2 remain
-distinct across actual callbacks, cleanup and whole/split budgets.
-The genuine unchanged Unsupported baseline and one strict executable-binding
-failure retain zero credit. The corrected strict check and all five first source
-comparisons pass without native replay. Initial/resumed old values and current
-scalar targets are bounded to null/bool/int/float, with object-free builders.
-Different-reference retargeting remains Unsupported on return and throw: a fresh
-native-only inverse-retarget probe confirms both retained old ownership and a
-new-cell owner deficit. That deficit is the next array follow-up, not covered by
-this positive-owner slice; the held undefined-reference LIST-key candidate stays
-untouched. [Reference-element review](coverage/semantics/array-literal-float-ref-key-warning-review.json).
+Different-reference elements at finite lossy-float literal-key callbacks now
+preserve the old acquired owner and the omitted new-cell owner separately.
+Logical aliases remain present; per-cell debt changes both ownership queries and
+pruning counters. Same-cell insertion preserves existing debt, while scalar and
+inverse-reference retargets canonically cancel biases, including multiplicity2
+and a residual positive owner. Fresh balanced sources cover shared versus
+singleton COW, entry deletion and supplied-throw builder cleanup. Five original
+sources and strict404 pass at `cd8e16179`; 1159 state premises (1142 Boolean +17
+raw; author709/independent450) pass at `ff0410375` with no fixture failure.
+The unchanged Unsupported baseline, declaration-order strict failure and first
+multiplicity CLI60 timeout retain zero credit. Only helper declarations moved;
+only that unchanged source was retried at CLI120, with no native/source2 replay.
+Debt cells must remain untyped null/bool/int/float and keep positive effective
+counts. Effective-zero/owning/typed retirement, active collection and outstanding
+request-end debt are explicit Unsupported before pruning. Wider producers and the
+held undefined-reference LIST and owned-NUL paths remain untouched.
+[Deficit review](coverage/semantics/array-literal-float-ref-deficit-review.json).
 
-Composed over `0714bbadb`/404 after independent review of incoming Generator
-return roots, magic calls, typed-reference cleanup, plain-CV arithmetic and
-Stringable-query selectors, absent here. Both request-retention fields and
-parent414 remain intact. Source5/strict403/state830 retain their private cuts
-without a joined actor, native replay or renewed historical credit.
+The earlier positive-owner slice retains source5/strict403 at `61a8b26d9` and
+state830 at `5ca23fe19`, composed over `0714bbadb`/404 as `9984783b2`.
+Its baseline, strict failure and native-only deficit probe stay historical zero
+credit. [A20 ledger](coverage/semantics/array-literal-float-ref-key-warning-review.json).
 
 M109 admits one final empty release directly before an authenticated pending
 single-cursor destructor exit. Six module270 lines strip that marker and delegate

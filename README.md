@@ -19,10 +19,12 @@ remains later research.
 [Array-literal float keys](docs/semantics/DIMENSIONS.md) now retain their converted
 integer across deprecation handlers. Unwrapped null/bool/int/float element variables
 remain live, while runtime array temporaries retain their own tables. Reference
-elements transfer a stable cell normally; scalar retargeting retains the acquired
-old wrapper for the request, including on throw. Duplicate replacement and later
-items stay ordered. Retargeting to a different reference cell and wider domains
-remain partial.
+elements transfer a stable cell normally; retargeting preserves the acquired
+count, cancelling existing debt before retaining unmatched old owners for the
+request, including on throw. Different-reference retargeting between primitive
+untyped cells also tracks the new cell's missing owner until it is balanced.
+Copies distinguish shared and singleton references; unsafe deficit retirement and
+wider domains remain Unsupported. Duplicate replacement and later items stay ordered.
 
 [Destructuring key warnings](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md)
 now retain captured arrays or source reference cells through handlers, including
