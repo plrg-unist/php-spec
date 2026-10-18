@@ -3766,6 +3766,13 @@ case/slash lookup and normal/throwing warning callbacks pass three originals and
 zero. ASCII names are covered; invalid/NUL formatting, autoload/scalar conversion
 remain separate; COMP82 covers bounded stored callable-name reception above.
 [Scope-carrier review](coverage/semantics/closure-binding-scope-carrier-review.json).
+[Fresh binding-warning traces](coverage/semantics/binding-warning-trace-review.json)
+now retain the held bind/bindTo frame and raw arguments after handler writes.
+Strict-source C callbacks receive weakly; traces own explicit arguments and exclude
+bindTo's implicit Closure owner. Three originals and 241 premises/eight typed
+transitions preserve same-object throws, alias storage and trace-only receiver
+survival. Earlier observer/fixture failures retain zero; wider warning/lifetime
+and invalid/NUL-name routes remain partial.
 Literal named-static `Closure::getCurrent(...)` capture now preserves the immediate
 ordinary caller; selected API and returned body retire independently. A named
 helper still errors under an outer Closure. Three native originals, one direct and

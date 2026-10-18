@@ -7,6 +7,32 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Fresh Exceptions in Closure binding warning handlers now retain the held API
+frame and original arguments after live CV/alias writes. Two existing-hook clauses
+in module253 also identify that internal C callback for weak parameter reception;
+a strict-source handler receives string level `2`. Static `bind` keeps its explicit
+Closure argument in the trace; `bindTo` excludes its implicit owner. Three originals
+and 241 Boolean premises (233 setup + 8 pure)/eight actual transitions pass at
+701530d98/401: three fresh trace allocations, three getTrace returns, one Warning
+dispatch and one handler throw. Whole states, raw scope identity, alias storage,
+receiver owners and driver budgets pass. The original captured payload retires
+after bindTo unwinds; its new receiver survives through trace arguments alone.
+Both unchanged sources complete normally with missing API frames and retain zero
+agreement credit. Earlier count observers stopped before that target; their two
+Unsupported runs stay zero. Two author pre-main fixture errors and one peer raw
+WeakReference assertion failure also stay zero; only affected checks repeat.
+WeakReference keeps nonowning retired history and returns null. NUL/autoload/
+nonstring scope and wider callback/lifetime routes remain separate.
+[Binding warning-trace review](coverage/semantics/binding-warning-trace-review.json).
+
+Composed over 852f41025/401 after independent pointwise review. Incoming magic
+property/__isset, reference LIST, typed return/destructor, Generator-input,
+constant-query and compound-warning guards are disjoint. The sources' indexed
+isset operations inspect arrays. New LIST task variants add no state fields;
+shared C callback/trace/Throwable/binding/WeakReference interfaces stay exact.
+Only module253 changes; source3/state241/eight transitions retain private701530d98
+without a joined actor or renewed execution credit.
+
 Fractional-LEFT compound operations now enter with an initial non-PINT scalar RHS:
 NULL/bool, fitting finite floats and authenticated strings. One shared initial
 snapshot predicate defers RHS parsing/conversion until after the LEFT handler;
@@ -204,10 +230,11 @@ result and one supplied throw. Whole states, lexical/called scope, receiver owne
 alias-cell identity/storage and driver budgets pass. Raw ::class controls agree at the unchanged cut;
 the separate carrier original returns interpreter_failure, not Unsupported, and
 stays zero. Two pre-main fixture syntax/binding failures also stay zero; only their
-affected state check repeats. Trace-frame projections are pure; no fresh handler
-Exception trace, invalid/NUL name formatting or new autoload/scalar conversion is
-claimed. COMP80's old failure keeps its cut; COMP82 separately extends the
-bounded stored-name reception identified at the retained COMP71 cut.
+affected state check repeats. Trace-frame projections are pure at that retained
+cut; COMP83 later covers fresh binding-handler Exceptions. Invalid/NUL formatting
+and new autoload/scalar conversion are not claimed. COMP80's old failure keeps its
+cut; COMP82 separately extends the bounded stored-name reception identified at the
+retained COMP71 cut.
 [Binding scope-carrier review](coverage/semantics/closure-binding-scope-carrier-review.json).
 
 Composed over 847a307e4/401 after pointwise review of the incoming DEFINE,

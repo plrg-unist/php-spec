@@ -107,6 +107,16 @@ are captured before the callback; later errors clear that snapshot even when
 masked. A nonfatal false fallback preserves any inner fatal snapshot, rendering
 its stack without adding heap owners. Fatal bailout precedes raw restoration.
 
+[Binding-warning callbacks](../../coverage/semantics/binding-warning-trace-review.json)
+now register their held API context through the same hooks. Fresh Exceptions retain
+an internal handler frame, bind/bindTo frame and ordinary caller, using original
+captured arguments after live CV writes. A strict-source string severity parameter
+receives `2` weakly from the C callback. Explicit trace arguments own their values;
+bindTo's implicit Closure owner does not become an argument. Three exact sources
+and 241 Boolean premises/eight typed steps cover fresh allocation, dispatch,
+throw and trace return, with source-only weak reception/finally/retirement evidence
+kept separate from raw-step credit. Other producers/lifetimes remain partial.
+
 Missing-CV read continuations suspend the existing consumer and retain a null
 result even if the callback defines the variable. The admitted consumers are
 output, simple assignment, unary signs and six arithmetic/identity operators.

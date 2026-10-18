@@ -1,0 +1,222 @@
+{
+  "version": 1,
+  "milestone": "COMP83",
+  "status": "independently reviewed within binding-warning C callback context",
+  "behavior": "Fresh binding-warning handler Exceptions retain the actual bind/bindTo frame and captured arguments; the existing C callback reception and wrapper rules recognize that same context.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "tested_revision": "701530d98c8bd4cb1c9f7e0015648e87224c2733",
+  "ordered_modules": 401,
+  "manifest_sha256": "dc7fc18c3f0bc9dbb832981af549a9bb36ce9e7eae56f1ad39938d09a4a44985",
+  "implementation": {
+    "spec/semantics/253-closure-current-binding.watsup": "5b423b1ef80608c95f1bc18a483ba296ef4050f5368ed146b5ae9a85f3f9b9f7"
+  },
+  "engine_basis": [
+    "Pinned Zend/zend_closures.c do_closure_bind and zend_valid_closure_binding emit warnings while the Closure internal frame is active. Zend/zend.c dispatches four warning arguments through call_user_function; this is a C callback, including under a strict source caller.",
+    "Zend/zend_exceptions.c zend_default_exception_new captures zend_fetch_debug_backtrace before constructor argument sends. bind has an explicit Closure argument; bindTo has an implicit Closure owner, which is not an argument/object field in this exception trace.",
+    "The existing207 error_context_trigger/trace path and95 weak callback reception already serve other API warnings. Two253 clauses recover FAKE_BIND_WARNING.CALL and its original SENT values, using existing Closure frame names/types. No207/264, task, state, constructor, trace allocator or ownership rule changes."
+  ],
+  "contract": [
+    "Normal missing-scope and throwing internal/static-receiver warnings preserve handler\u2192API\u2192caller frame order, file/line, class Closure, ::/-> and raw scope/body/receiver arguments after callback CV/alias writes. Existing warning priority/null result and same Exception/finally behavior are unchanged.",
+    "The same hook marks binding-warning handlers as C callbacks. The strict-source independent handler receives string level2 through weak coercion; source/frame observations establish that reception, not an extra credited raw conversion step.",
+    "Explicit bind Closure/receiver arguments gain trace owners. bindTo excludes its implicit Closure owner: after unwind the original captured payload expires while the new receiver stays alive solely through the trace arguments. WeakReference retains nonowning retired target history and get returns null."
+  ],
+  "source_catalogues": {
+    "tests/semantics/binding_warning_trace_cases.json": "ccae1d60a1ea9b067ee294f4e5b033408be974d0a9f6a64b3b06f5234540dcd7",
+    "tests/semantics/binding_warning_trace_review_cases.json": "8c627287b249ad7a38942cb4fd9ec1d598d7c8546dbd2f8861eff4488fe90d17"
+  },
+  "unchanged_frontier": {
+    "revision": "f8794af8e7f1adb166c50d513c06e3acf264e9bb",
+    "report": ".tools/trace83-support/run-baseline-v2/report.json",
+    "aggregate_passed": false,
+    "rows": [
+      {
+        "id": "bind",
+        "status": "normal",
+        "reason": null,
+        "host_exit": 0,
+        "seconds": 38.36041804216802,
+        "accepted": true,
+        "observation_recorded": true,
+        "passed": false,
+        "agreement": false
+      },
+      {
+        "id": "bindto",
+        "status": "normal",
+        "reason": null,
+        "host_exit": 0,
+        "seconds": 34.81992220506072,
+        "accepted": true,
+        "observation_recorded": true,
+        "passed": false,
+        "agreement": false
+      }
+    ],
+    "difference": "Both complete normal outputs have BAD-size|4|no-api instead of native handler/API frame and raw-argument tuples. Full raw tuples are bound by the reports and native catalogues.",
+    "preserved_inputs": ".tools/trace83-support/run-baseline-v2/failure-inputs",
+    "agreement_credit": 0
+  },
+  "validation": {
+    "original_sources": {
+      "normal_agreements": 3,
+      "author_seconds": [
+        53.53752953931689,
+        46.83013249747455
+      ],
+      "independent_seconds": 74.37265823967755,
+      "cli_and_host_caps_seconds": [
+        240,
+        250
+      ]
+    },
+    "author": {
+      "premises": 117,
+      "setup": 113,
+      "pure": 4,
+      "raw_php_steps": 4,
+      "seconds": 43.080540059134364,
+      "result": "Two real source initializers; explicit five-array/two-frame graphs plus fresh Exception/CTOR_ARGS allocations, bind argument versus bindTo owner increments, and unchanged existing trace-array returns. Whole states, original string/store data and full-driver budgets pass."
+    },
+    "independent": {
+      "premises": 124,
+      "setup": 120,
+      "pure": 4,
+      "raw_php_steps": 4,
+      "seconds": 39.74390672519803,
+      "result": "Actual Warning dispatch, explicit three-frame fresh allocation, same-object handler throw and post-unwind getTrace return. Strict C reception, restored emitter, retained request bytes and implicit-owner/trace-only receiver facts are reached prerequisites."
+    },
+    "total": {
+      "premises": 241,
+      "setup": 233,
+      "pure": 8,
+      "raw_php_steps": 8,
+      "transition_types": {
+        "fresh_trace_allocations": 3,
+        "get_trace_returns": 3,
+        "warning_dispatch": 1,
+        "handler_throw": 1
+      }
+    },
+    "separate_zero_credit": "Native, unchanged wrong-normal counterexamples, initializer, six parse/check operations and author EL add no application/state credit. Eight forged/helper projections are pure only; later source endings and weak argument conversion are not extra raw transitions.",
+    "prior_observer_boundary": {
+      "report": ".tools/trace83-support/run-baseline-v1/report.json",
+      "rows": 2,
+      "status": "unsupported",
+      "reason": "registered builtin call",
+      "explanation": "Unrelated count observer stopped both originals before the target observation. Only count calls became indexed isset bounds before fresh native-v2/baseline-v2; original native/raw/five inputs retained.",
+      "credit": 0
+    },
+    "fixture_failures": [
+      {
+        "report": ".tools/trace83-state/run-el-v1/report.json",
+        "stage": "pre-main syntax",
+        "seconds": 0.4150928631424904,
+        "correction": "Bind array index arithmetic before indexed reads (+2 setup); affected EL only, SL unrun.",
+        "credit": 0
+      },
+      {
+        "report": ".tools/trace83-state/run-el-index-retry1/report.json",
+        "stage": "pre-main elaboration arity",
+        "seconds": 6.280250445008278,
+        "correction": "Pass known diagnostic line9 to six read_name observations; affected EL then first SL only.",
+        "credit": 0
+      },
+      {
+        "report": ".tools/trace83-peer/state-v1/report.json",
+        "stage": "fixture assertion",
+        "seconds": 39.735977282747626,
+        "correction": "Retain original WeakReference target metadata and assert get null after actual referent retirement (+1 setup); affected SL only.",
+        "credit": 0
+      }
+    ]
+  },
+  "limits": [
+    "Only binding-warning context registration changes. Other warning producers, fresh callback forms, wider wrappers/lifetimes, autoload, nonstring scope conversion and invalid/NUL-name formatting remain separate; paused owned-NUL is untouched.",
+    "The retained COMP81 supplied-Exception/pure trace-projection cut is unchanged. COMP80 scope-carrier failure and all prior counterexamples/failures retain zero credit; no old campaign is renewed.",
+    "Explicit object owners are checked separately from string/cell metadata. Request identities/store/cell contents persist; no new physical string/cell ownership protocol is claimed.",
+    "Project-local binaries were copied exactly; no new build/portability or complete PHP/BOLA proof claim. Failed actors provide zero partial premise/step credit; original five inputs remain beside each failed report."
+  ],
+  "artifacts": {
+    ".tools/trace83-support/gates.py": "45e2ef754e72fd8bbd94de61443224a5b0035026c8deb6bba61e269eb347e73c",
+    ".tools/trace83-support/inputs.py": "8a17374493b1d6457c50f59e3f766986a2fe5106e8269533b0217eeab987e21c",
+    ".tools/trace83-support/actor.py": "efa31c7f97cb5ecaf9e4672053e5d18bf75fce5fcdf4d5df560afde30e1d3004",
+    ".tools/trace83-support/run-native-v1/report.json": "d5ea5a6435f046a1d5b63d403f8bccbff8ee2f28e4d488dab16eb1d0de9518a3",
+    ".tools/trace83-support/run-baseline-v1/report.json": "a42ebbd5459fb3ff59f23ecbf4e936d6520982f59deff6c30ba4c69154790bbd",
+    ".tools/trace83-support/run-native-v2/report.json": "6c3af34c79624a94e5b451bf92ee1e74ca37b17d435d24fbb601fe540508cf09",
+    ".tools/trace83-support/run-baseline-v2/report.json": "329f3c1da63ed87650d7a5edcf64d8ea7f56b4063a8eea33c070aeb5c7faac6d",
+    ".tools/trace83-support/run-init-v1/report.json": "bb3bd547efed72443d5ebdee64faf151e85aaf1e46a3f2ce99547fadc8f6bc82",
+    ".tools/trace83-support/run-sources-v1/report.json": "5acae1cba9a6f5d33bc3153a951a70fda0ec5e7d8f0b101486f2d85ffc9a5022",
+    ".tools/trace83-support/run-prepare-v1/report.json": "fdda2de448ad1484af8aeb32dd99118a645f6b6857ac303763a935b083be7d0b",
+    ".tools/trace83-state/helpers.watsup": "b70c2ab0e80ba17d5e9c55c9522bb808c681c0c56fe96f351bc73feeb038a099",
+    ".tools/trace83-state/build.py": "78b51fef8025e5b574ed14fee7c58420f32960f2075c7d1118064afa909fac9d",
+    ".tools/trace83-state/run.py": "3b9f1afc51a54784fc2fea5cba34b13bc02f32d91dcd2b6e5eb6678f459fdb84",
+    ".tools/trace83-state/direct.watsup": "4c9c59392d5aea8e98123590caad16707d76c73a6220513ccb597e147f3ca299",
+    ".tools/trace83-state/plan.json": "bc1099349b0c0911a1e65ed82f0c2eb226c6cbd1566c7fbb9f4f15c4cf2a213b",
+    ".tools/trace83-state/run-el-v1/report.json": "b4d93b715d9f5f92e9f65e65e63348ef31818ff48851d153de1630b98856f37e",
+    ".tools/trace83-state/run-el-index-retry1/report.json": "9410b134022036e2e7bb81a04e7c6650d52df10478c3bad25fb3d4b9f93d03a7",
+    ".tools/trace83-state/run-el-read-retry1/report.json": "7ab1ba0cd8d378fa6f088698986539384313d1c313d08d98110ece8d092c7164",
+    ".tools/trace83-state/run-sl-read-retry1/report.json": "183eaacbb938ffe24bf6dd4a7775acc3c557f5332d9d5cfaed050c243cf7a685",
+    ".tools/trace83-peer/helpers.watsup": "c6e758a98615e7c90210b0b47d3133ca845b0b69813e1d8514ed2f84e56bfa68",
+    ".tools/trace83-peer/build.py": "916829a1ef754421b4a53ad78fb5a5cdbec49bda746b792c8f46fa7cebe99510",
+    ".tools/trace83-peer/run.py": "d2911259bc5a37a368f41705dd3d0821528a1f425091a663f6d3e04b9d1f70ee",
+    ".tools/trace83-peer/peer.watsup": "a07c204fc53eec0ec39d06883957defd1945156d991e0ab53bdfb6bd9c3d56dc",
+    ".tools/trace83-peer/plan.json": "6646e2d43272bc3a9c61cfa6b89e5e678bcab97e9cf4490c411a790a7ecc5a2f",
+    ".tools/trace83-peer/native-v1/report.json": "94ba945db763069d18a416aa6998c347835eabf903290d8d19a1f06edbe939a2",
+    ".tools/trace83-peer/source-v1/report.json": "49d6ad93971fed5a11041065a41ff36220f16b61c8ea53734b47e4541dc3a2e6",
+    ".tools/trace83-peer/prepare-v1/report.json": "f5b8d4d0d14a0672559d545d4232df947941eca6e35de0c1ea1a12b7dcba1da3",
+    ".tools/trace83-peer/state-v1/report.json": "f2f4023379c4cbd88df256722ba88289e1ed8c922422e8fc36a0ab0b78af751d",
+    ".tools/trace83-peer/state-v2/report.json": "b0f00c79b83eb12f0c74b4b942ba4ebeecf971461879ae46d9c466a113663b17",
+    ".tools/trace83-peer/review.json": "f27009f4793706edb50dfaf98c4fcdb2eb214a889803d3e7681fd5391054c6bd"
+  },
+  "commands": [
+    "python3 .tools/trace83-support/gates.py native --cpu 5 --slot 3 (v1 then corrected v2)",
+    "python3 .tools/trace83-support/gates.py baseline --cpu 5 --slot 3 (v1 then corrected v2)",
+    "python3 .tools/trace83-support/gates.py init --cpu 5 --slot 3",
+    "python3 .tools/trace83-support/gates.py sources --cpu 5 --slot 3",
+    "python3 .tools/trace83-support/gates.py prepare --cpu 5 --slot 3",
+    "python3 .tools/trace83-state/build.py",
+    "python3 .tools/trace83-state/run.py el --cpu 1 --slot 1 (v1)",
+    "python3 .tools/trace83-state/run.py el --cpu 1 --slot 1 --label index-retry1",
+    "python3 .tools/trace83-state/run.py el --cpu 5 --slot 3 --label read-retry1",
+    "python3 .tools/trace83-state/run.py sl --cpu 5 --slot 3 --label read-retry1",
+    "Peer review.json binds raw reports; their START and closed reports retain exact commands."
+  ],
+  "publication_verdict": "CLEAR",
+  "independent_review": {
+    "path": ".tools/trace83-peer/review.json",
+    "sha256": "f27009f4793706edb50dfaf98c4fcdb2eb214a889803d3e7681fd5391054c6bd",
+    "verdict": "CLEAR"
+  },
+  "composition": {
+    "parent": "852f41025bc0fda12478b9a15aeba09911423df6",
+    "ordered_modules": 401,
+    "method": "Independent pointwise actual-parent review; no concrete syntax or dispatch dependency, so no joined actor.",
+    "incoming_runtime": [
+      "spec/semantics/141-method-compiler.watsup",
+      "spec/semantics/270-eager-destructors.watsup",
+      "spec/semantics/289-generator-delegation.watsup",
+      "spec/semantics/30-storage.watsup",
+      "spec/semantics/400-dynamic-constants.watsup",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup",
+      "spec/semantics/408-magic-property-empty.watsup",
+      "spec/semantics/410-list-key-conversion-warnings.watsup",
+      "spec/semantics/63-list-control.watsup"
+    ],
+    "bridge": [
+      "New30 LIST_KEY_NULL_RESULT/LIST_KEY_UNDEFINED_RESULT alternatives add no state fields or initializer change.63/410 and new error_call_valid branches require distinct LIST_FETCH/continuation tags, absent from83; FAKE_BIND_WARNING remains disjoint.",
+      "CLASS97 magic141 __isset signature and408 paired PROPERTY_EMPTY_RESULT guards are not selected.83 does use indexed isset but only on ARRAY bounds; no magic object property method exists in any original.",
+      "270 typed/mixed REF_RETURN_PAIR pending-destructor routing and289 pending Generator input require producers absent here. The peer string parameter is ordinary by-value C callback reception, with no typed by-reference return or destructor.",
+      "400 global constant/query/define and404 modulo/shift/bit compound-warning selectors are absent; CONCAT names and integer counter UPDATE_PREP do not enter them.",
+      "Shared207/95/83 handler/typed-C,161/163/164 Throwable,253/264 binding and296 WeakReference interfaces retain parent bytes except the reviewed253 hooks. Manifest and every other runtime file remain parent-exact; fixtures derive real initializer states and update them."
+    ],
+    "tested_runtime": "Module253 byte-identical to tested701530d98/401. Private source3/state241=233+8/eight typed transitions and all original counterexamples/observer/fixture failures0 retain their cuts.",
+    "new_source_agreements": 0,
+    "new_premises": 0,
+    "new_raw_steps": 0
+  }
+}

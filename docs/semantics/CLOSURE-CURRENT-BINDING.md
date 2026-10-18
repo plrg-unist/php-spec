@@ -137,11 +137,26 @@ full-driver budgets pass. Two pre-main fixture failures stay zero. Captured API
 trace-frame checks are pure projections; the supplied exception keeps its old
 empty trace. Invalid/embedded-NUL name diagnostic formatting remains unresolved;
 Zend uses a C-string `%s` while the old raw missing-name rule emits full bytes.
-Fresh exceptions inside binding handlers, autoload expansion and nonstring scope
-conversion remain separate obligations. [COMP82](../../coverage/semantics/stored-callable-carrier-review.json)
+Autoload expansion and nonstring scope conversion remain separate obligations.
+Fresh handler Exceptions were outside that retained cut; COMP83 covers them below.
+[COMP82](../../coverage/semantics/stored-callable-carrier-review.json)
 separately repairs bounded stored callable-name reception from the retained COMP71
 cut. The original COMP80 carrier failure retains zero credit;
 its accepted comparison evidence is not replayed.
+
+[Fresh binding-warning traces](../../coverage/semantics/binding-warning-trace-review.json)
+register the held bind/bindTo call with the existing handler context hooks. Trace
+allocation keeps handler/API/caller order, raw arguments and original file/line
+after callback CV/alias writes. The same context gives C callback weak reception
+under strict source calls. Three exact originals and 241 Boolean premises
+(233 setup + 8 pure)/eight typed transitions pass. Explicit bind Closure/receiver
+arguments acquire trace owners; bindTo's implicit Closure owner is excluded.
+After unwind its captured payload expires while the new receiver stays alive
+through the trace. WeakReference preserves retired target metadata and get returns
+null. Two raw NEW graphs, a third independent allocation, actual dispatch/throw
+and three getTrace returns retain whole states and budgets. Pure controls and
+source-only coercion/endings add no transition credit. Prior count observers,
+two pre-main author errors and one peer raw-tag fixture error remain zero.
 
 A free user-function fake bound to an object acquires internal `Closure` lexical
 scope. A returned ordinary source Closure copies that scope, called class and
