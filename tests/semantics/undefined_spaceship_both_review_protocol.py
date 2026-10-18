@@ -22,6 +22,10 @@ def checks(program, path, name):
                                       'spaceship warning changed opposing scalar')
         if target:
             condition = condition.replace(') 10', ') 9').replace(' = 10', ' = 9')
+        if condition.startswith('perrorread_bad = '):
+            condition = ('perrorread_bad = perrorread[.ORIGINAL = BINARY_RIGHT SPACESHIP '
+                         '(VARIABLE ($ptascii("missing")) z_left) 999][.LINE = 999]'
+                         '[.TASK = BINARY_RIGHT SPACESHIP (KNOWN PNULL) 999]')
         if condition.startswith('S_compared = '):
             condition = condition.replace('KNOWN (PBOOL true)', 'KNOWN (PINT $(-1))')
         if condition == '$spaceship_right_read_shape(perrorread.ORIGINAL,perrorread.INPUT,perrorread.BASE) = eps':
