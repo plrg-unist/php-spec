@@ -1182,6 +1182,14 @@ entry, while method throws preserve the raw object API trace and caller result.
 cover conversion, registration, duplicate warnings and unwind. Wider receivers,
 values, flags and call forms remain partial.
 
+Retained ordinary nonStringable instances and `stdClass` now fail positional
+`define()` name reception before primitive flag processing or registration.
+Later candidate/flag effects finish first, while strict code still reports the
+first-parameter error. An ordinary `toString()` method is never used as a cast.
+[Four source agreements and 556 state premises](coverage/semantics/define-nonstringable-name-review.json)
+cover raw arguments, selected callees and normal recovery. Wider values, objects,
+lifetimes and call forms remain partial.
+
 Positional `define()` calls with primitive arguments also reject counts below two
 or above three before name/flag reception or registration. Exact count messages
 and raw API arguments survive all argument effects, including a captured true

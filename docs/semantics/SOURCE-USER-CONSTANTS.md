@@ -655,6 +655,24 @@ changed source and affected/unrun checks repeat; Source53/54 evidence is unchang
 Sole-owner destruction, wider receivers/returns, class/NUL/HALT results, owning
 candidates, true/coerced flags and named/packed/owner forms remain partial.
 
+Positional `define` now rejects retained ordinary nonStringable instances and
+`stdClass` names before primitive optional flag reception or registration, weak
+or strict. Later arguments have already run: raw receiver, request candidate and
+true/NULL/integer flag captures survive live callee/name/value/flag changes.
+A public ordinary `toString()` remains uncalled. The separate guarded route reuses
+the live query-object classifier and primitive/carrier/source checks, allocates
+raw TypeError directly and consumes the original CONFIG tail. It leaves Source55
+Stringable conversion and the shared trace/ownership machinery unchanged.
+The [nonStringable-define review](../../coverage/semantics/define-nonstringable-name-review.json)
+binds four exact originals and all 556 state premises at 4a71a12f7/runtime ead614ee6:
+author166+110+105 and independent175 across five actual errors and a selected normal
+query recovery. Raw owner edges/API/caller traces, receiver property projection,
+untouched stores/table/events, source/carrier/liveness/domain controls and budgets
+pass. All nine reports pass on their first attempts; initial afb8 native/baseline
+uses CPU3, later actors use CPU5 and baseline Unsupported/B| retains zero credit.
+Primitive tail strings require authenticated interned/request carriers. Other
+internal objects, owning values, sole-owner destruction and wider forms remain partial.
+
 `define` also receives int/bool/float names with nonowning primitive values and
 an omitted/already-false flag. Each source send maps to its normalized captured
 slot before available immutable facts are checked, including reordered named

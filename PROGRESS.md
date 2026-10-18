@@ -7,6 +7,33 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Positional `define` now rejects retained ordinary nonStringable instances and
+`stdClass` names before primitive flag processing or registration, weak or strict,
+after all argument effects. Exactly 24 module400 additions reuse the live object
+classifier, normalized source/primitive-tail/carrier guards and direct raw TypeError;
+Source55 Stringable conversion and shared machinery stay exact. Four originals
+agree at 4a71a12f7/runtime ead614ee6, with raw receiver/candidate/true/NULL/int17
+traces, earlier captures versus live rewrites, caller99, ordinary `toString()`
+nonentry and real selected query recovery. All 556 state premises pass there:
+author166+110+105 plus independent175 across five actual errors and a recovery,
+checking original tails, owner edges, receiver property projection, unchanged
+stores/table/events, source/carrier/liveness/domain guards and budgets. Nine reports
+all pass, inputs/HEAD stable and children reaped; no failure, timeout or retry.
+Initial afb8 native/base uses CPU3, later source/state CPU5; baseline Unsupported/B|
+retains zero credit. Accepted PHP/worker stderr is empty. Primitive candidates/flags
+and retained propertyless receivers bound this slice; other internal objects,
+owning values, wider lifetimes and call forms remain partial.
+[NonStringable-define review](coverage/semantics/define-nonstringable-name-review.json).
+
+Pointwise composition over 7fa11a417 preserves the incoming 401-module parent.
+The exact 24 additions retain incoming pending-array rules; all four tests are
+private-exact, and every other runtime/manifest path keeps parent bytes. Pending
+true-flag arrays, SensitiveParameterValue comparisons/clones, reference-return
+cleanup and SUB/MUL warning plans have no producer in these originals. Shared
+source/config/classifier/trace/error machinery is unchanged. Source4/556 retain
+their 4a71/ead614ee6 private cut, without a joined actor, accepted replay
+or renewed execution credit.
+
 Initialized SensitiveParameterValue wrappers now compare their private payload
 and clone shallowly with fresh identity. Forty module379 lines reuse existing
 value comparison and owning snapshots; only closed results with unchanged state
