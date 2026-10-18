@@ -137,8 +137,11 @@ def checks(initial, name, stdout):
         '$heap_edge_owners(HOBJECT n_flag,$heap_graph(S_error).EDGES,[HARRAY n_args]) = 1',
         '~(n_flag <- S_error.DESTRUCTION.CALLED)']
     values += [f'S_error.{field} = S.{field}' for field in
-        ['STORE','ENV','USERCONSTANTS','CONSTANTOBJECTS','CONSTANTSTDOBJECTS','EVENTS','ERRORHANDLER','OBJECTPROPS','OBJECTTABLES','PROPREFS']]
-    values += [*reach('S_reference','S_error',2),
+        ['STORE','ENV','USERCONSTANTS','CONSTANTOBJECTS','CONSTANTSTDOBJECTS','EVENTS','ERRORHANDLER']]
+    values += [
+        'S_error.OBJECTPROPS = S.OBJECTPROPS ++ [{OBJECT n_error,SLOTS $throwable_slots("TypeError",$ptascii("define(): Argument #3 ($case_insensitive) must be of type bool, V81ReviewFlag given"),$call_sourcefile(S.FILES,pconfigcall.SITE),pconfigcall.LINE,n_trace,PNULL),MATERIALIZED false}]',
+        'S_error.OBJECTTABLES = S.OBJECTTABLES', 'S_error.PROPREFS = S.PROPREFS',
+        *reach('S_reference','S_error',2),
         '$lookup(S_reference.ENV,$ptascii("slot")) = (n_slot)',
         'n_slot <- S_reference.REFCELLS', 'HCELL n_slot <- S_reference.ALLOCATIONS',
         'S_reference.STORE[n_slot] = DEFINED (PINT 53)',
