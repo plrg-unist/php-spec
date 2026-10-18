@@ -1,0 +1,137 @@
+{
+  "scope": "Owning temporary dynamic NEW selectors produced by the four fresh ordinary-object sources: returning versus supplied-throw destructor before private-constructor access, held-selector control and public-constructor argument after selector disposal.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_compile.c zend_compile_new emits zend_compile_class_ref/FETCH_CLASS before NEW and argument sends.",
+      "Zend/zend_vm_def.h ZEND_FETCH_CLASS captures object class without a cast, then FREE_OP2 and exception handling complete before ZEND_NEW. ZEND_NEW initializes the object and invokes get_constructor before sends; Zend/zend_object_handlers.c zend_std_get_constructor performs constructor visibility checks."
+    ]
+  },
+  "implementation": {
+    "revision": "d0faf9819f57d84f76a0162a75a5b83f993a9830",
+    "files": [
+      "spec/semantics/260-dynamic-new.watsup",
+      "spec/semantics/30-storage.watsup"
+    ],
+    "basis": "Test nodes of the original selected operand, rather than the resolved operand. Owning operands clear RESULT and queue a node-free DYNAMIC_NEW_START so ordinary eager disposal completes before existing constructor/noctor start. START authenticates source/site/lines/scope/class history, recovers original AST arguments and installs FINISH before reusing allocation/access. Retired selector identity is metadata, not a live owner. Nonowning operands take the previous FINISH+start branch pointwise. Generic ownership/destruction/GC, class-default machinery, autoload and ordered405 manifest remain unchanged."
+  },
+  "validation": {
+    "native": {
+      "path": "/home/user/workspace/php-spec/.tools/dynamic-new-selector-private-103/.tools/dynamic-new-selector-probes-103/native-first/report.json",
+      "sha256": "4abd52e75e39aeeec096399ab9f15a0aa581d39312ee704f67a7b8729601140c",
+      "revision": "d2f594f3ac068ee2f8841ea086fd6699976da7da",
+      "result": "Four exact normal tuples20/20/24/31, quiet stderr/exit0; zero source credit."
+    },
+    "baseline": {
+      "path": "/home/user/workspace/php-spec/.tools/dynamic-new-selector-private-103/.tools/dynamic-new-selector-probes-103/accepted-current-baseline/report.json",
+      "sha256": "708d98d9df74452e3e88f234d7eca746182a65d063c67497f4a082c90e817273",
+      "revision": "d2f594f3ac068ee2f8841ea086fd6699976da7da",
+      "result": "All four frontend-accepted/adapter-checked normal executions, quiet stderr/CLI0. Returning/held/public agree; throwing differs exactly X|B|S|D|C|Q|42|99|Z| versus native P at Previous. Three source agreements, one genuine model ordering defect; no Unsupported substitution."
+    },
+    "source": {
+      "path": "/home/user/workspace/php-spec/.tools/dynamic-new-selector-private-103/.tools/dynamic-new-selector-probes-103/changed-model-sgujhmtq/report.json",
+      "sha256": "30b1dd408a7a2f43aeac3a651b726ef24c055c3ca0e1af25d56d4a3aa3cee5a6",
+      "revision": "d0faf9819f57d84f76a0162a75a5b83f993a9830",
+      "result": "Four exact checked normal agreements20/20/24/31, quiet stderr/CLI0;12.879/13.685/14.925/15.366seconds."
+    },
+    "focused_normal": {
+      "path": "/home/user/workspace/php-spec/.tools/dynamic-new-selector-private-103/.tools/dynamic-new-selector-protocol-imx3tihn/report.json",
+      "sha256": "8f4f0bccddecb781903d117b356ee9efb0e0b7a59352d2bd54fe274d28df6863",
+      "revision": "000821d8a66d855bc2bb3afa1dff62c6b64d2219",
+      "result": "Overall report false. Only normal103=94reached+9derived accepted from exact true, AL7.622/SL18.380seconds. Throwing AL field error contributes zero applications/credit; held/public unrun."
+    },
+    "focused_throwing_held": {
+      "path": "/home/user/workspace/php-spec/.tools/dynamic-new-selector-private-103/.tools/dynamic-new-selector-protocol-80m2q25q/report.json",
+      "sha256": "95870976417ba7234fc64dfef8b006523c97ffe05c21f02436d59d95c410e138",
+      "revision": "ee90de61ca5b23e21a5e883dc716fa3be64e904a",
+      "result": "Overall report false. Throwing76 and held97=92reached+5derived independently accepted from exact true, AL7.334/7.387 and SL18.665/22.903seconds. Public94 false/zero."
+    },
+    "focused_public": {
+      "path": "/home/user/workspace/php-spec/.tools/dynamic-new-selector-private-103/.tools/dynamic-new-selector-protocol-r0qxkx92/report.json",
+      "sha256": "5dcc54712b91e3b94c3f21a152ab29be547441776197b815e635dc4ea56d5dca",
+      "revision": "ed7eb44869dd45514716f90eb13725184ff7e62b",
+      "result": "Public94 reached exact true, AL7.480/SL22.892seconds; one application/zero source agreements."
+    }
+  },
+  "focused_scope": "Combined370=356reached+14derived in four independently accepted groups across three cuts; neither earlier false enclosing report is accepted as a whole. Actual CLASS-to-START owner1/2 to0/1, no selector owner in START, and zero/resume budgets span capture and disposal. During sole selector D, no target/Error allocation, failed-constructor suppression or pending Error exists; full saved call validation and expired class history remain valid. Returning D resumes the real private-access Error afterward. Supplied D throw cancels START with same Exception/null Previous/destination42 and no target allocation. Held alias keeps selector owner1 through access Error before later D with no old pending exception. Public allocation/argument99/constructor binding and final destruction are real reached states. Wrong line/origin controls take actual Unsupported; the five-premise borrowed-variable/class-string helper bridge is derived compatibility only, not renewed source coverage.",
+  "nonpassing": [
+    {
+      "record": "validation.focused_normal",
+      "case": "throwing76 AL",
+      "credit": 0,
+      "cause": "Fixture incorrectly projected a nonexistent pthrowable.PREVIOUS field. Previous is represented in object properties; the correction uses throwable_previous_id in throwing and held-late checks, retaining same IDs/KIND. Normal103 remains accepted at its original cut; only affected/unrun cases repeated."
+    },
+    {
+      "record": "validation.focused_throwing_held",
+      "case": "public94 strict SL",
+      "credit": 0,
+      "cause": "DS_CTOR compared context.NAME to __construct, but method compilation/call entry uses Public103::__construct. One literal correction keeps target, argc1, bound99, output/full guards and all94 premises; only public repeated."
+    }
+  ],
+  "reproduction": {
+    "cwd": "/home/user/workspace/php-spec/.tools/dynamic-new-selector-private-103",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": "absent",
+      "jobs": 1
+    },
+    "profile": "tests/semantics/profile.json",
+    "native_baseline": "Ready watch-affinity.py native-first native 3; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 3 python3 -u .tools/dynamic-new-selector-probes-103/run.py native --revision d2f594f3ac068ee2f8841ea086fd6699976da7da; after PASS/reap fresh accepted-current-baseline model 3 watcher and same actor baseline.",
+    "source": "Ready capture-candidate-affinity.py 3 changed-model- 4 changed-source-103; same environment/taskset3 run.py changed --revision d0faf9819f57d84f76a0162a75a5b83f993a9830",
+    "focused": [
+      "Ready watch-state-affinity.py 5; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 5 python3 -u tests/semantics/dynamic_new_selector_protocol.py --revision 000821d8a66d855bc2bb3afa1dff62c6b64d2219",
+      "Ready watch-state-affinity-repair1.py 5; same environment/taskset5/driver --case throwing --case held --case public --revision ee90de61ca5b23e21a5e883dc716fa3be64e904a",
+      "Ready watch-state-affinity-repair2.py 5; same environment/taskset5/driver --case public --revision ed7eb44869dd45514716f90eb13725184ff7e62b"
+    ],
+    "caps": "Native45/model60/outer75/100000steps. Each focused group serial AL90 then strictSL90/cachefalse/dettrue/fail-first. Checked --prepare-only has zero applications/source credit. State observer deadline840seconds.",
+    "affinity": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/dynamic-new-selector-private-103/.tools/dynamic-new-selector-probes-103/affinity-native-first.json",
+        "sha256": "75bcdd25efd8e9c54cad9258c099a89da4dd041fc34628126035b36c4db2a701",
+        "result": "Partial1/4 CPU3: normal mask/fullargv. Other fast children missed; taskset-parent provenance retained, observer stopped/reaped without sampling-only replay."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/dynamic-new-selector-private-103/.tools/dynamic-new-selector-probes-103/affinity-accepted-current-baseline.json",
+        "sha256": "4250c5c68a1dcb9fc0d14a5ed29008464930e75cfa546159227d467e11933936",
+        "result": "Complete4CPU3/fullargv."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/dynamic-new-selector-private-103/.tools/dynamic-new-selector-probes-103/affinity-changed-source-103.json",
+        "sha256": "284db9aff0f884cbd7048db7f830b3ffafab12d3e76fbf2342ee4ea4225af554",
+        "result": "Complete4CPU3/fullargv."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/dynamic-new-selector-private-103/.tools/dynamic-new-selector-probes-103/affinity-state-103.json",
+        "sha256": "74fab33b814822a2b725c05bf5b447053784926649bfe756d671498938fa9d43",
+        "result": "Three CPU5/fullargv captures of expected8; stopped/reaped after throwing AL field error."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/dynamic-new-selector-private-103/.tools/dynamic-new-selector-probes-103/affinity-state-103-repair1.json",
+        "sha256": "eb84acc02103ca2206db203350217f4127eca8c203b8b3596314c5fa958d1945",
+        "result": "Complete6CPU5/fullargv for throwing/held/public; stopped after public false."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/dynamic-new-selector-private-103/.tools/dynamic-new-selector-probes-103/affinity-state-103-repair2.json",
+        "sha256": "7d099a67a52cc7c5c54a1a8c47eb3bde6500d99885ec290538ac43defb105ad5",
+        "result": "Complete2CPU5/fullargv for corrected public only."
+      }
+    ],
+    "stability": "All recorded inputs/head/status/fixtures stable. Accepted workers quiet stderr/exits0/no timeout/interruption/groups; original AL field diagnostic remains a failure despite CLI0. Workers and observers reaped/PIDs absent. No diagnostic actor, accepted replay or unrelated campaign."
+  },
+  "limits": "The four originals return owning ordinary object selectors, including the held2-to1 drop; held is not a nonowning-operand source. No new reference-return, cold-default, unknown-class/autoload, keyword-scope, other object-kind or wider selector/constructor/callback lifetime coverage is inferred. Existing260/name/default/autoload evidence retains its own cuts. No native engine bug or deliberate PHP divergence is claimed.",
+  "artifacts": "Maintained sources/catalogue/harness recover from the tested commits. Ignored original PHP/private drivers/reports/streams/process records and generated fixtures remain at original paths; no bulky archive/backup/receipt chain tracked.",
+  "review": {
+    "independent": "class_review_84",
+    "status": "Native/genuine baseline/source4, all focused subsets and concise publication independently accepted; separate tested cuts, both enclosing false reports and wider limits explicit."
+  },
+  "tools": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "source_driver_sha256": "8509d08b7edc61d0850ca2b2528aa40735e8223cee0a60ea1731819b0b4ee7d9",
+    "focused_driver_sha256": "5e5aaf971c0503af1a745eda320fc001b40a5af84cd23c205737814a2355ea1d",
+    "state_observer_sha256": "c1143e98c9b1e61dc951129de94a3d64df7baef65daa45058397e730a378369e"
+  }
+}

@@ -134,30 +134,22 @@ Composed over `7bed41edf`/405, preserving incoming fields, task variants and
 manifest. Independently reviewed incoming selectors are absent here; source10 and
 state767 retain their private405 cuts without joined execution or renewed credit.
 
-Dynamic-RHS `instanceof` now captures the class of a live source object or `stdClass`
-before ordinary RHS disposal. A returning RHS destructor can replace the delayed
-left CV; an owning left temporary instead survives matching and its destructor
-observes the cached Boolean. Runtime strings use case-insensitive fully qualified
-lookup without imports or autoload. Invalid RHS types error before reading an
-undefined/scalar left and preserve destination 42. A scanner int/float/string literal left
-folds false without compiling or executing the RHS.
-Four originals agree at `3b63d71c7`; 335 focused premises (314 reached +21 derived)
-combine borrowed 105 at `4597d7be4`, owning 101 at `669950865`, and strings 65/invalid 64
-at `44e95391e`. Full saved call validity, expired nonowning class history,
-source/name/line refusals, exact Error/catch and zero/split budgets are covered.
-Earlier owning/strings fixture failures stay zero in their false enclosing reports;
-only affected/unrun groups repeated. No runtime repair or diagnostic actor was needed.
-Only modules 126/127/30 add the staged consumer; name-RHS rules, manifest and generic
-ownership/destruction/GC remain unchanged. Wider expressions/object kinds,
-reference-return operands, owning invalid RHS and throwing-RHS lifetimes stay open.
-[Dynamic instanceof review](coverage/semantics/dynamic-instanceof-review.json).
-
-Composed over `89740ccad`/405 after reviewing incoming literal-reference debt,
-Generator, arithmetic/spaceship-warning and DEFINE selectors, absent here.
-Incoming LITERALREFDEBTS stays empty; fields/defaults/roots/validators are retained.
-Modules 126/127 keep tested bytes; 30 retains the incoming field plus new task variants.
-Every other runtime and the ordered manifest remain parent-exact. Source4/focused335
-retain original cuts without joined execution or renewed credit.
+Owning dynamic `new` selectors now finish ordinary disposal before allocation,
+constructor access and arguments. Captured class history owns no selector. A supplied
+selector-destructor Exception cancels construction with null `Previous`, rather than
+acquiring a premature private-access Error. Returning and held selectors retain their
+native access order; public construction receives 99 after selector destruction.
+Four originals agree at `d0faf9819`; the genuine unchanged baseline has three
+agreements and the exact throwing `Previous` mismatch. The 370 focused premises
+(356 reached +14 derived) combine normal 103 at `000821d8a`, throwing 76/held 97
+at `ee90de61c`, and public 94 at `ed7eb4486`. Actual no-allocation/no-pending-Error
+fronts, saved call validity, retired history, same catch/destination 42, constructor
+argument 99 and zero/resume budgets pass. Both earlier fixture failures remain zero
+in their false enclosing reports; only affected/unrun groups repeated.
+Only modules 260/30 change. Generic ownership/destruction/GC and the manifest stay
+unchanged; the nonowning route has a derived compatibility bridge, without renewed
+source credit. Wider selector/constructor/autoload and reference-return lifetimes
+remain partial. [Selector review](coverage/semantics/dynamic-new-selector-review.json).
 
 Retained propertyless Stringable `define` names now receive captured NULL flags
 with primitive candidates in admitted user-global/class-name domains. One module400

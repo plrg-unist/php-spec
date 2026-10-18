@@ -4210,7 +4210,9 @@ and recursive conversion consumers retain their own constructor.
 the real class name without a cast, preserving child effects, compiled lines and
 captured missing-CV reads through handlers. Broader constrained conversion remains open.
 [Ordinary dynamic NEW](coverage/semantics/dynamic-new-review.json) captures a string or object
-class selector before arguments and releases selector temporaries before class work.
+class selector before arguments. [Owning selector release](coverage/semantics/dynamic-new-selector-review.json)
+now finishes before allocation and constructor access, so a throwing selector cannot
+acquire a premature access Error as `Previous`.
 Compiled keyword scopes survive recursive constructors and retired receiving Closures;
 cached property method callables retain lexical and called class separately.
 [Ordinary named keyword NEW](coverage/semantics/named-keyword-new-review.json)
