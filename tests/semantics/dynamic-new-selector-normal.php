@@ -1,0 +1,29 @@
+<?php
+class Private103 {
+    private function __construct() { echo "B|"; }
+    public static function make() { return new self; }
+    public function __destruct() {
+        global $rhs, $throws, $error;
+        echo "D|";
+        $rhs = 99;
+        if ($throws) { throw $error; }
+        echo "d|";
+    }
+}
+function choose103() {
+    global $original;
+    $value = $original;
+    $original = null;
+    echo "S|";
+    return $value;
+}
+function argument103() { echo "A|"; return 7; }
+echo "N|";
+$error = new Exception("supplied");
+$rhs = 7;
+$throws = false;
+$original = Private103::make();
+$answer = 42;
+try { $answer = new (choose103())(argument103()); }
+catch (Error $caught) { echo "E|"; }
+echo $answer, "|", $rhs, "|Z|";
