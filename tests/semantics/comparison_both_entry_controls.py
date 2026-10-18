@@ -43,7 +43,9 @@ def checks(program, path, name):
         result += ['~$scalar_compare_missing_pair(' + entry + ',perrorread)',
                    selected + ' =/= perrorread']
     result += [
-        'PhpStep: ' + entry + ' ~> S_entry_warn',
+        'S_entry_pause = $drive_steps(' + entry + ',1)',
+        'S_entry_pause.COMPLETION = BUDGET',
+        'S_entry_warn = S_entry_pause[.COMPLETION = NORMAL]',
         'S_entry_warn = $prune_allocations($error_read_begin(' + entry + '))',
         'S_entry_warn.TODO = (ERROR_HANDLER_INVOKE perrorcall_entry) :: ptask_tail*',
         'perrorcall_entry.RESUME = ERROR_READ_RESULT ' + selected,
