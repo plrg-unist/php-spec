@@ -387,3 +387,81 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.MESSAGE = $list_undefined_key_message(n_name*)
   -- if perrorcall.EVENT = WARNING n_name* z
 def $task_nodes(LIST_KEY_UNDEFINED_RESULT poperand n_array n expression phpType13* z n_phase) = $task_nodes(LIST_KEY_NULL_RESULT poperand n_array n expression phpType13* z n_phase)
+
+;; A NULL reference key selects the empty string only after writable preparation
+;; and a returning deprecation handler leave exactly one selected-table owner.
+dec $list_null_write_key_origin(pstate, nat, nat, expression, phpType13*, int) : bool
+def $list_null_write_key_origin(S, n_source, n, expression, phpType13*, z) = true
+  -- if $list_float_write_key_item(S, n, expression, phpType13*, z) =/= eps
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (expression_pattern)
+  -- if $reference_origin_parent(porigin, 1) = ((porigin_assign, [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin_assign) = (NExprAssign expression_pattern expression_rhs metadata)
+  -- if $origin_child((porigin_assign), [PCFIELD 1]) = (porigin_rhs)
+  -- if $origin_node(S.SOURCES, porigin_rhs) = (expression_rhs)
+  -- if $list_missing_operand_source(S, porigin_rhs, expression_rhs, REFERENCE n_source, true)
+def $list_null_write_key_origin(S, n_source, n, expression, phpType13*, z) = false -- otherwise
+
+dec $list_null_write_key_source(pstate, nat, nat, nat, expression, phpType13*, int, nat) : bool
+def $list_null_write_key_source(S, n_source, n_array, n, expression, phpType13*, z, n_phase) = true
+  -- if $(n_phase < 2 /\ n_array < |S.ARRAYS|)
+  -- if n_phase = 1 \/ (HARRAY n_array) <- S.ALLOCATIONS
+  -- if $list_null_write_key_origin(S, n_source, n, expression, phpType13*, z)
+def $list_null_write_key_source(S, n_source, n_array, n, expression, phpType13*, z, n_phase) = false -- otherwise
+
+dec $list_null_write_key_plan(pstate) : (nat, nat, expression, phpType13*, int)?
+def $list_null_write_key_plan(S) = ((n_source, n, expression, phpType13*, z))
+  -- if S.TODO = (LIST_FETCH (REFERENCE n_source) n expression true phpType13* z) :: ptask_tail*
+  -- if $list_float_write_key_container(S, n_source)
+  -- if $list_float_write_key_item(S, n, expression, phpType13*, z) = (VARIABLE n_key* z_key)
+  -- if S.RESULT = VARIABLE n_key* z_key
+  -- if ~$environment_blocked(S, n_key*)
+  -- if $lookup(S.ENV, n_key*) = (n_cell)
+  -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
+  -- if S.STORE[n_cell] = DEFINED PNULL
+  -- if ~$foreach_released_container_cell(S, n_cell) /\ ~$update_released_array_name(S, n_key*)
+  -- if $list_null_write_key_origin(S, n_source, n, expression, phpType13*, z)
+def $list_null_write_key_plan(S) = eps -- otherwise
+
+def $list_null_write_key_pending(S) = true
+  -- if $error_handler_eligible(S, 8192)
+  -- if $list_null_write_key_plan(S) =/= eps
+def $list_null_write_key_pending(S) = false -- otherwise
+
+rule PhpStep/list-null-write-key-warning: S ~> $error_dispatch(S_prepared, 8192, $list_null_key_message(), z, DIAGNOSTIC "Deprecated" $list_null_key_message() z, LIST_KEY_NULL_WRITE_RESULT n_source n_array n expression phpType13* z 0)
+  -- if $list_null_write_key_pending(S)
+  -- if $list_null_write_key_plan(S) = ((n_source, n, expression, phpType13*, z))
+  -- if S_prepared = $fetch_location_array(S, ROOT n_source, z)
+  -- if S_prepared.COMPLETION = NORMAL
+  -- if S_prepared.STORE[n_source] = DEFINED (PARRAY n_array)
+  -- if $list_null_write_key_source(S_prepared, n_source, n_array, n, expression, phpType13*, z, 0)
+rule PhpStep/list-null-write-key-prepare-abrupt: S ~> S_prepared[.TODO = eps]
+  -- if $list_null_write_key_pending(S)
+  -- if $list_null_write_key_plan(S) = ((n_source, n, expression, phpType13*, z))
+  -- if S_prepared = $fetch_location_array(S, ROOT n_source, z)
+  -- if S_prepared.COMPLETION =/= NORMAL
+rule PhpStep/list-null-write-key-release: S ~> S[.TODO = (LIST_KEY_NULL_WRITE_RESULT n_source n_array n expression phpType13* z 1) :: ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (LIST_KEY_NULL_WRITE_RESULT n_source n_array n expression phpType13* z 0) :: ptask_tail*
+  -- if $list_null_write_key_source(S, n_source, n_array, n, expression, phpType13*, z, 0)
+
+dec $list_null_write_key_reference(pstate, nat) : pstate
+def $list_null_write_key_reference(S, n_array) = S_leaf[.RESULT = REFERENCE S_leaf.CELL]
+  -- if $list_float_write_key_unique(S, n_array)
+  -- if S_leaf = $element_reference(S, n_array, KSTRING eps)
+def $list_null_write_key_reference(S, n_array) = $call_fresh_reference(S, PNULL)
+  -- if ~$list_float_write_key_unique(S, n_array)
+rule PhpStep/list-null-write-key-result: S ~> S_ref[.TODO = $list_fetched_tasks(S_ref, REFERENCE n_source, n, expression, true, phpType13*, z) ++ ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (LIST_KEY_NULL_WRITE_RESULT n_source n_array n expression phpType13* z 1) :: ptask_tail*
+  -- if $list_null_write_key_source(S, n_source, n_array, n, expression, phpType13*, z, 1)
+  -- if S_ref = $list_null_write_key_reference(S, n_array)
+
+def $call_task_valid(S, LIST_KEY_NULL_WRITE_RESULT n_source n_array n expression phpType13* z n_phase) = $list_null_write_key_source(S, n_source, n_array, n, expression, phpType13*, z, n_phase)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = LIST_KEY_NULL_WRITE_RESULT n_source n_array n expression phpType13* z 0
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if $list_null_write_key_source(S, n_source, n_array, n, expression, phpType13*, z, 0)
+  -- if perrorcall.LEVEL = 8192 /\ perrorcall.LINE = z
+  -- if perrorcall.MESSAGE = $list_null_key_message()
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" $list_null_key_message() z
+def $task_nodes(LIST_KEY_NULL_WRITE_RESULT n_source n_array n expression phpType13* z 0) = [HCELL n_source, HARRAY n_array]
+def $task_nodes(LIST_KEY_NULL_WRITE_RESULT n_source n_array n expression phpType13* z 1) = [HCELL n_source]
