@@ -119,8 +119,22 @@ retains four exact sources at b55e4edaf, literal199 at f9a7e2cb9 and callback/st
 throw415 at 7891c0df5. The projection correction preserves observed string values;
 fresh peer state checks the actual Throwable trace and full discard. The pre-main
 syntax failure, later trace-guard counterexample and unchanged Unsupported baseline
-retain zero credit. Special names, unknown startup values, coerced names, other
+retain zero credit. Unknown startup values, coerced names, other
 flags and owning/wider candidates remain partial.
+
+Non-NUL special names `true`, `false` and `null` also warn and return false with
+primitive candidates and omitted/bool-false flags. Their recognition ignores case,
+while the duplicate message and raw API trace retain the captured spelling. They
+never publish a user row. Ordinary/strict calls and handlers preserve the special
+values and callback effects; throws leave the caller result unchanged.
+The [special-name review](../../coverage/semantics/define-special-duplicate-review.json)
+binds four exact originals and 645 public premises at 84817642f, including actual
+dispatch/handler/resume/discard, raw request strings, immutable spelling versus
+mutable-name message authority and budgets. Two old Source43 protocol files repair
+obsolete refusals with admission plus stale-message rejection; fresh equivalents run
+here without renewing its 614 campaign. Only two name predicates widen; all other
+admission, trace-projection, return and discard code stays exact. Unknown startup values,
+other flags/coercions and owning/wider candidates remain partial.
 
 The boolean true `case_insensitive` flag emits its level2 ignored-flag Warning
 before registration and leaves name lookup case sensitive. Its authenticated
@@ -256,14 +270,35 @@ and full family closure remain partial.
 Fresh two-argument array definitions recursively dereference source cells into
 new DIRECT entries. Reinserting surviving keys rebuilds NEXT, positions and serial
 metadata; ordinary copies and later source/reference writes preserve the constant.
-Nonempty acyclic trees contain primitive/carrier leaves, whose actual string
-classes are retained. Repeated noncyclic children may copy independently.
+Nonempty acyclic trees contain primitive/carrier leaves and certified live
+stdClass donors. String classes and object birth classes are retained; copied
+containers share the exact object pointers. Repeated noncyclic children may copy
+independently.
 Public checks require a canonical DIRECT tree and available literal-array facts,
 comparing ordered keys and leaf values rather than internal array IDs. Variable
 payloads keep structural authority without replaying past CVs. Two exact sources
 and two public fronts/219 premises cover request strings, gap appends, nested
 reference freezing and a later literal registration in the
 [array ledger](../../coverage/semantics/dynamic-constant-array-review.json).
+The [object-leaf snapshot review](../../coverage/semantics/define-stdclass-array-review.json)
+adds literal/eval and selected named originals: one shared source cell becomes
+two DIRECT object edges, later cell rebinding leaves the snapshot intact, and
+real query bucket-reference COW changes caller containers while property writes
+still reach the stored objects. Queries add only a root owner and allocate
+nothing. The leaf classifier reuses completed/live birth guards; producer,
+two-argument, canonical-table and cycle/empty boundaries are unchanged.
+
+Duplicate user keys with nonempty array candidates copy before the Warning.
+A dedicated marker owns the private canonical root and the unchanged original
+CONFIG, so callback cell rebinding changes the API/Exception trace input while
+the copied candidate keeps its earlier values. Candidate validation checks its
+canonical tree, live leaf classes and the saved old-row prefix without re-copying
+mutable input aliases. A true handler suppresses reporting; false handlers retain
+the exact source-tagged Warning. Normal false delivery or abrupt handler cleanup
+retires the private copy while preserving the old row, callback writes and any
+real Exception trace owners of the original input. The established primitive and
+carrier fold is reused; new exact sources discriminate certified object leaves.
+[Array-duplicate review](../../coverage/semantics/define-stdclass-array-duplicate-review.json).
 
 Top-level empty values use the existing source-pool or retained immutable flag.
 An authenticated immutable empty keeps its table and `PVARRAY true eps`; a mutable
@@ -283,8 +318,9 @@ row and callback property writes; throwing handlers preserve the Exception trace
 owners until ordinary catch/unset cleanup. Historical rows validate their stored
 birth/value and source policy, without reconstructing a past mutable CV or flag.
 [Certified define review](../../coverage/semantics/define-stdclass-review.json).
-Ordinary uncertified objects, object-array payloads, true/coerced flags, coerced
-names and wider owning define domains remain partial.
+Ordinary uncertified objects, other owning array leaves, empty-array duplicates,
+nested empties, array third flags, owning true/coerced flags, coerced names and
+wider owning define domains remain partial.
 
 Class-qualified `defined` queries reuse inherited lookup and the actual caller's
 lexical visibility. Missing or inaccessible members return false. The initial
@@ -519,7 +555,7 @@ interns direct string values before installation.
 Nested empty values in `define`, cycles, other objects, array duplicate/third-argument paths,
 Stringable/array names, array/object values with scalar or null names, true/NULL/NaN
 flags with scalar names, nonbool flags with nonfinite float names, true/NULL/NaN flags with
-null names, special-name warnings and startup names/flags/values beyond the bounded follow-up,
+null names, special/startup names with flags or values beyond the bounded follow-ups,
 internal/trait/interface/enum class queries, deferred keyword initializers and
 keyword `constant` array values, other deferred initializers,
 owning/FCC call forms and wider conversion/arity paths remain Unsupported. The [dynamic ledger](../../coverage/semantics/dynamic-constants-review.json)

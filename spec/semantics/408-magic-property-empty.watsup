@@ -22,6 +22,12 @@ def $property_empty_source(S, porigin, ptbytes, z) = true
   -- if $compiled_effects(S, porigin) = eps
 def $property_empty_source(S, porigin, ptbytes, z) = false -- otherwise
 
+;; Without __get, either __isset boolean makes empty true after callback cleanup.
+def $property_isset_empty(S, ppropertyisset) = true
+  -- if $property_empty_source(S, ppropertyisset.SITE, ppropertyisset.NAME, ppropertyisset.LINE)
+def $property_isset_source(S, ppropertyisset) = true
+  -- if $property_isset_empty(S, ppropertyisset)
+
 ;; Only authenticated empty preparation defers the ordinary getter interception.
 def $property_empty_prepare(S) = true
   -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: (ORIGIN_RETURN (porigin)) :: (ISSET_RESULT true z) :: ptask_tail*
@@ -182,7 +188,7 @@ rule PhpStep/property-empty-call: S ~> S_inputs[.TODO = [(CALL_ARGS (PROPERTY_EM
   -- if S_inputs = $hold_task_inputs(S)
 rule PhpStep/property-empty-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "magic empty source, methods, or recursive access"]
   -- if $property_empty_pending(S)
-  -- if $property_empty_plan(S) = eps
+  -- if $property_empty_plan(S) = eps /\ $property_isset_plan(S) = eps
 rule PhpStep/property-empty-false: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty false) :: ptask_tail*
   -- if S.COMPLETION = NORMAL
@@ -205,6 +211,9 @@ def $property_empty_truth(S, PFLOAT n_float) = (~b)
 def $property_empty_truth(S, PSTRING ptbytes) = (ptbytes = eps \/ ptbytes = [48])
 def $property_empty_truth(S, PSTRING_CARRIER pstringidentity ptbytes) = (ptbytes = eps \/ ptbytes = [48])
   -- if $string_carrier_valid(S, PSTRING_CARRIER pstringidentity ptbytes)
+def $property_empty_truth(S, PARRAY n) = (true)
+  -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
+  -- if $array_immutable(S, n) /\ S.ARRAYS[n].ITEMS = eps
 def $property_empty_truth(S, pvalue) = eps -- otherwise
 
 ;; i_zend_is_true warns after IN_GET is cleared, retaining IN_ISSET and the
@@ -280,8 +289,8 @@ def $property_empty_nan_discard(S, ppropertyemptynan) = S[.COMPLETION = UNSUPPOR
 def $error_read_discard(S, PROPERTY_EMPTY_NAN ppropertyemptynan) = $property_empty_nan_discard(S, ppropertyemptynan)
 def $return_discard(S, PROPERTY_EMPTY_NAN ppropertyemptynan) = $property_empty_nan_discard(S, ppropertyemptynan)
 
-;; Standard user objects and stdClass are true, but their RV must be disposed while
-;; IN_ISSET and the saved receiver remain. The phase itself owns only receiver.
+;; Standard objects and nonempty arrays are true, but their RV must be disposed
+;; while IN_ISSET and the saved receiver remain. The phase owns only receiver.
 dec $property_empty_rv_kind(pstate, pobject) : bool
 def $property_empty_rv_kind(S, STDINSTANCE) = true
 def $property_empty_rv_kind(S, INSTANCE porigin_class) = true
@@ -298,6 +307,14 @@ def $property_empty_rv_ready(S, ppropertyempty) = true
   -- if $(n_rv < |S.OBJECTS|) /\ (HOBJECT n_rv) <- S.ALLOCATIONS
   -- if $property_empty_rv_kind(S, S.OBJECTS[n_rv])
   -- if ~$instance_storage_freeing(S, n_rv)
+def $property_empty_rv_ready(S, ppropertyempty) = true
+  -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
+  -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty true) :: ptask_tail*
+  -- if S.ORIGIN = (ppropertyempty.SITE) /\ S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if $property_empty_valid(S, ppropertyempty)
+  -- if S.RESULT = KNOWN (PARRAY n_rv)
+  -- if $(n_rv < |S.ARRAYS|) /\ (HARRAY n_rv) <- S.ALLOCATIONS
+  -- if S.ARRAYS[n_rv].ITEMS =/= eps
 def $property_empty_rv_ready(S, ppropertyempty) = false -- otherwise
 dec $property_empty_rv_valid(pstate, ppropertyemptyrv) : bool
 def $property_empty_rv_valid(S, ppropertyemptyrv) = true

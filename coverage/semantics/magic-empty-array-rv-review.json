@@ -1,0 +1,107 @@
+{
+  "scope": "Terminal inherited external CV/literal private-property empty: nonempty by-value array getter RV disposal, plus authenticated immutable-empty literal true. Existing same-owner bool isset and untyped by-value get.",
+  "implementation": {
+    "base": "cdcf742272c5914dff02aa1b4f7c262766471968",
+    "revision": "fa9e185e2e588f472f700c01bd5d40b79a6ad321",
+    "modules": 399,
+    "change": "408 adds bounds/allocation/immutable-empty helper case and nonempty-array readiness. Existing receiver-only phase/record/roots/guards/throw-discard and generic array/key/return/destruction remain unchanged."
+  },
+  "engine": {
+    "target": "PHP8.5.10 CLI NTS64",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_object_handlers.c zend_std_has_property: Get clear, truth then RV disposal while IN_ISSET and receiver remain; receiver release afterward even on throw",
+      "Zend/zend_operators.h i_zend_is_true IS_ARRAY uses zend_hash_num_elements",
+      "Zend/zend_hash.c zend_array_destroy: GC buffer retirement and element zval disposal; Zend/zend_hash.h zend_array_release: immutable no-op release"
+    ],
+    "intentional_divergences": []
+  },
+  "sources": {
+    "catalogue": "tests/semantics/magic_empty_array_rv_cases.json",
+    "original_root": "/home/user/workspace/php-spec/.tools/magic-empty-array-rv-private-89/.tools/magic-empty-array-rv-probes-89",
+    "maintained_byte_identical": true,
+    "cases": "Literal [] getter rebinds sole callerCV=null before returning and produces true. Nonempty implicit-append [new Payload] getters produce false after payload destructor emits V, rebinds callerCV=null and emits v, then returns/throws. Receiver D follows payload disposal before F/catch; no kept source alias or key conversion."
+  },
+  "validation": {
+    "native": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-array-rv-private-89/.tools/magic-empty-array-rv-probes-89/native-first/report.json",
+      "sha256": "074659b464e11fa71d5cff14ebb6ab273cfa2385bde18e086153599ddfea026b",
+      "revision": "cdcf742272c5914dff02aa1b4f7c262766471968",
+      "result": "Three exact stdout14/16/16, zero stderr, exit0",
+      "source_agreements": 0
+    },
+    "baseline": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-array-rv-private-89/.tools/magic-empty-array-rv-probes-89/accepted-current-baseline/report.json",
+      "sha256": "943946e12e928c2018e843d02c9a9a66ab29fa8e04a4631b12e9824281e1736c",
+      "revision": "cdcf742272c5914dff02aa1b4f7c262766471968",
+      "result": "Three checked getter-result-type Unsupported/CLI1;9.994/10.133/10.301s",
+      "source_agreements": 0
+    },
+    "changed_source": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-array-rv-private-89/.tools/magic-empty-array-rv-probes-89/changed-model-992wuqld/report.json",
+      "sha256": "1163b95b1a88ae15d7843c3e4957958652bbb39e80cce8b1674b52b0282bcbc4",
+      "revision": "fa9e185e2e588f472f700c01bd5d40b79a6ad321",
+      "result": "Three checked normal exact native tuples;10.165/10.895/11.703s",
+      "source_agreements": 3
+    },
+    "focused": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-array-rv-private-89/.tools/magic-empty-array-rv-protocol-4kxedj71/report.json",
+      "sha256": "e4ed7bb61ff89db6d2db0136e196835086cb67a0d67495895098988efff61ce9",
+      "revision": "9a5722902eafb15846113b1efdc97664943f3484",
+      "result": "Three true/exit0;empty42,normal113=80+33derived,throw100;total255=222+33. AL/SL seconds6.911/12.024,6.940/15.138,7.146/17.151",
+      "source_agreements": 0
+    }
+  },
+  "focused_scope": "Actual immutable-empty/no-GC-root direct true versus nonempty fixed-false receiver phase; actual KINT0 owned payload; array retired during payload callback; saved callerCV=null, Isset active/Get inactive, receiver release after payload, same live Exception at genuine CATCH_BIND and full budget equality. Derived mutable-empty refusal keeps NEXT/SERIAL and displaced payload root; bounds/retired-array/WEAKMAP result refusals and extra HELD array owner survive real bookkeeping without premature payload destructor.",
+  "nonpassing": [],
+  "execution": {
+    "cwd": "/home/user/workspace/php-spec/.tools/magic-empty-array-rv-private-89",
+    "environment": "LC_ALL=C TZ=UTC PHP_SPEC_SCRIPT_ENCODING absent; jobs1; taskset CPU1; fixed native_profile in catalogue/reports.",
+    "caps": "native45; model60/outer75/steps100000 percase serial; focused each AL90 then strictSL90/cachefalse/dettrue/stop-first.",
+    "commands": [
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/magic-empty-array-rv-probes-89/run.py native --revision cdcf742272c5914dff02aa1b4f7c262766471968",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/magic-empty-array-rv-probes-89/run.py baseline --revision cdcf742272c5914dff02aa1b4f7c262766471968",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/magic-empty-array-rv-probes-89/run.py changed --revision fa9e185e2e588f472f700c01bd5d40b79a6ad321",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u tests/semantics/magic_empty_array_rv_protocol.py --revision 9a5722902eafb15846113b1efdc97664943f3484"
+    ],
+    "affinity": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-array-rv-private-89/.tools/magic-empty-array-rv-probes-89/affinity-native-first.json",
+        "sha256": "0da64f91045f0bbb0f3fe674411800d19ad824d64f35ab445a9eeb10169f39ac"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-array-rv-private-89/.tools/magic-empty-array-rv-probes-89/affinity-accepted-current-baseline.json",
+        "sha256": "f6bbb18fd3babd23778cd27d85196618390a5f6337746e72d84a75193364ba67"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-array-rv-private-89/.tools/magic-empty-array-rv-probes-89/affinity-changed-source-89.json",
+        "sha256": "a03c9072ee2bf3f27a43dfe6f67d6c85cab4b36e7b6b47777b956021cda6fba9"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-array-rv-private-89/.tools/magic-empty-array-rv-probes-89/affinity-state-89.json",
+        "sha256": "e2265da5496038b05bb343b69ebb1956f4cdc7741a5173985e2719c7c208d9e9"
+      }
+    ],
+    "observations": "Native observer partial1/3: empty live CPU1/fullargv, normal/throwing too brief to sample; observer stopped/reaped with nonzero incomplete status, zero semantic credit. Exact recorded taskset-parent provenance remains; no live-mask claim for missed children. Baseline3/source3/state6 complete live CPU1/fullargv. All accepted watched inputs/head/status/fixtures stable, groups empty, actors/observers reaped."
+  },
+  "tools": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "private_source_driver_sha256": "01934c937023050d659cb2a56f7fa90e45e3b99d6a33bef7336c87dfe89d455b",
+    "focused_driver_sha256": "4583aac2e2d9fec2247977dd9ec527721074d8650f6803303379ded7d94bc7c4"
+  },
+  "limits": "Mutable empty arrays require preserving table retirement before receiver release, so remain Unsupported; no blanket direct owning-array truth. Other internal-object RVs and wider signatures/receivers/recursive/callback/lifecycles remain partial. Shared-array-owner control is derived, not a source producer claim. CLASS87/88 and earlier cuts/failures retain original identities without replay; no separate strict-initialization actor because changed source3 loads strictSL399.",
+  "artifacts": "Ignored reports/raw streams/process records/private run.py remain at original paths. Maintained originals/catalogue/focused harness recover from tested commits. No bulky artifacts, backup WT or cleanup receipt chain tracked.",
+  "review": {
+    "independent": "class_review_84",
+    "accepted": "Native/baseline/source3, production, focused255 and concise publication independently accepted. Structural inventory/diff checks pass; no semantic rerun for publication."
+  },
+  "composition": {
+    "parent": "425174b59914807b257491f08e55660db56d84a2",
+    "publication": "c4497a0acbe636f7238323973818bdee3eedb301",
+    "modules": 399,
+    "basis": "Incoming V66 constant array/object leaves require define publication; Source43 requires startup define duplicate, A9 LIST_FETCH, COMP73 WeakMap comparison, and shift continuations require compound shifts. All are absent; USERCONSTANTS stays EPS. Incoming270 change is reference-cursor/RETURN_REF_UNWIND-gated and absent from by-value array returns. Shared storage/array ownership/GC/call/property/ordinary destruction and manifest are unchanged.",
+    "validation": "Independent pointwise composition; no concrete declaration/order/selected-path interaction or joined actor; accepted source3/state255 retain original cuts without renewed credit."
+  }
+}

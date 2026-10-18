@@ -105,9 +105,13 @@ def checks(program, path, name):
     for flag in ('PBOOL true', 'PNULL', 'PINT 0', 'PFLOAT 9221120237041090560', 'PSTRING ' + text('0')):
         values += ['~$dynamic_startup_define_duplicate_valid(S,pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT,2,KNOWN (' + flag + '))],n_prefix)',
             '~$dynamic_constant_duplicate_valid(S,pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT,2,KNOWN (' + flag + '))],n_prefix)']
-    for raw_name in ('PSTRING ' + text('null'), 'PSTRING ' + text('True'), 'PSTRING ' + text('PHP_VERSION'),
+    for raw_name in ('PSTRING ' + text('PHP_VERSION'),
             'PSTRING ' + text('Unbound43'), 'PSTRING ' + text('C::K'), 'PINT 8'):
         values += ['~$dynamic_startup_define_duplicate_valid(S,pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT,0,KNOWN (' + raw_name + '))],n_prefix)']
+    for label, name in (('null', 'null'), ('true', 'True')):
+        values += ['pconfigcall_special_' + label + ' = pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT,0,KNOWN (PSTRING ' + text(name) + '))]',
+            '$dynamic_startup_define_duplicate_valid(S,pconfigcall_special_' + label + ',n_prefix)',
+            '~$error_call_valid(S,perrorcall[.RESUME = DYNAMIC_CONSTANT_DUPLICATE pconfigcall_special_' + label + ' n_prefix])']
     for field in ('.LEVEL = 8192', '.MESSAGE = ' + text('changed'), '.LINE = $(perrorcall.LINE + 1)',
             '.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE $(perrorcall.LINE + 1)'):
         values += ['~$error_call_valid(S,perrorcall[' + field + '])']

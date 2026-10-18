@@ -648,6 +648,11 @@ after the first callback skips the second diagnostic. Success detaches late alia
 either supplied throw preserves them. Negative masks still store signed integers.
 Seven exact originals and 1421 focused SL premises pass in the
 [ordered bitwise ledger](coverage/semantics/bitassign-both-warning-review.json).
+An integral float RHS after the first callback also converts quietly. Cached
+LEFT `12` with `5.0` stores `4`/`13`/`9`; negative `-1.0` gives XOR `-13`.
+Success detaches late aliases; a supplied first throw preserves them. Five exact
+originals and 634 focused SL premises pass in the
+[quiet float bitwise ledger](coverage/semantics/bitassign-quiet-float-review.json).
 Explicit array-to-string casts now suspend through named warning handlers for
 a bounded plain-CV array input. The borrowed array adds no saved owner: replacing
 or removing its CV still yields fixed `Array`, while a supplied throw preserves
@@ -1117,7 +1122,12 @@ primitive candidates and omitted/bool-false flags, preserving the builtin throug
 strict calls and returning or throwing handlers.
 [Four source agreements and 614 state premises](coverage/semantics/define-startup-duplicate-review.json)
 cover captured request strings, callback siblings and exact throwing discard;
-special names, unknown startup values and wider flag/value forms remain partial.
+unknown startup values and wider flag/value forms remain partial.
+Non-NUL special `true`/`false`/`null` names now use the same Warning/false path with
+primitive candidates and omitted/bool-false flags. Recognition ignores case;
+messages and raw API captures keep the supplied spelling through handlers.
+[Four source agreements and 645 state premises](coverage/semantics/define-special-duplicate-review.json)
+cover preserved special values, strict calls and exact throwing discard.
 Boolean `case_insensitive=true` now warns before registration while keeping case
 sensitivity. A handler-created binding wins the subsequent duplicate check;
 [two exact sources and 221 public premises](coverage/semantics/dynamic-constant-flag-review.json)
@@ -1178,14 +1188,23 @@ nested reference snapshots and literal constraints pass
 Top-level empty definitions retain an authenticated immutable table or create a
 fresh mutable copy. [Two exact sources and 162 public premises](coverage/semantics/dynamic-constant-empty-review.json)
 distinguish allocation classes and rebuilt append history, rejecting a mutable
-clone of a fixed literal. Nested empties, array warning/flag paths, other objects and
-cycles remain Unsupported.
+clone of a fixed literal. Nested empties, wider array warning/flag paths,
+uncertified objects and cycles remain Unsupported.
 String-name `define` with an omitted/false flag now shares already-certified
 stdClass donors. Named/selected calls preserve the captured pointer through later
 CV changes, and duplicate handlers keep the old binding and property writes on
 normal return or throw. Existing call and Exception-trace cleanup release the
 temporary owners. [Certified define review](coverage/semantics/define-stdclass-review.json).
-Ordinary uncertified objects, object-array payloads and wider flags/names remain partial.
+Fresh two-argument definitions also copy nonempty array trees containing certified
+stdClass leaves. Copied containers freeze source reference values while object
+pointers and property writes remain shared, including selected eval calls
+and nested query COW. [Array-object define review](coverage/semantics/define-stdclass-array-review.json).
+Duplicate nonempty array definitions retain a private canonical candidate through
+the Warning while callbacks and Exception traces keep the original API argument.
+Normal false delivery and throwing-handler cleanup retire the candidate, preserving
+the old row and callback writes. [Array-duplicate review](coverage/semantics/define-stdclass-array-duplicate-review.json).
+Ordinary uncertified objects, other owning leaves, empty-array duplicates, nested
+empties and wider flags/names remain partial.
 Class-qualified `defined` now checks inherited user constants with lexical visibility
 and quiet misses. Named autoload resumes the same captured query once.
 [Two exact sources and 288 public premises](coverage/semantics/class-qualified-defined-review.json)
@@ -2186,6 +2205,13 @@ sources and 361 Boolean premises/8 actual steps cover all seven operators, clone
 parent-body selection, quiet skipped tails and complete unchanged comparison states.
 [Factory/binding review](coverage/semantics/weakmap-factory-comparison-review.json).
 
+Ordinary eligible intrinsic and Fiber API Closures also compare with live WeakMap
+before capture, VM or private-entry traversal. Two exact sources and 279 Boolean
+premises/8 actual steps preserve GC-enabled observations, a sole cold Fiber owner
+and skipped aggregate tails. Later explicit calls expose the flag change and VM
+execution. Special intrinsic kinds and wider protocols remain partial.
+[Intrinsic/API review](coverage/semantics/weakmap-api-comparison-review.json).
+
 [Numeric object comparison Notices](coverage/semantics/object-numeric-comparison-review.json)
 now pause ordinary source-instance/int/float leaves through real error handlers.
 Live CV/cell reads remain distinct from copies; a second Notice uses saved 1/1.0,
@@ -2737,8 +2763,12 @@ of a direct CV/literal private property. Initialized public and typed-uninitiali
 slots bypass it; actual true/false results preserve short circuiting and storage.
 One original and one state/215 checks cover typed name reception, lexical scope
 and receiver cleanup; [magic isset review](coverage/semantics/magic-isset-review.json).
-Terminal `empty` now chains that inherited `__isset` with an untyped by-value
-`__get`: false skips the getter, while true tests its null, bool, int, float
+Without `__get`, terminal `empty` now returns true after either inherited
+`__isset` boolean, retaining the receiver through callback CV rebinding or throw.
+Three originals and focused242 checks cover delivery, cleanup and catch;
+[isset-only empty review](coverage/semantics/magic-empty-isset-only-review.json).
+With an untyped by-value `__get`, terminal `empty` chains it after the inherited
+`__isset`: false skips the getter, while true tests its null, bool, int, float
 or byte-string result. Only empty bytes or exactly ASCII `0` make a string
 empty; NUL and `0` plus NUL do not. The original integer/call state208 remains historical; one further
 original and state155 cover primitive results and authenticated string metadata.
@@ -2758,8 +2788,11 @@ budgets; [object RV review](coverage/semantics/magic-empty-object-rv-review.json
 stdClass RVs now retain that phase through storage and owned-child disposal.
 Two originals and focused222 checks cover the real storage pin, child throw,
 receiver release and catch; [stdClass RV review](coverage/semantics/magic-empty-std-rv-review.json).
-Other signatures, receivers, arrays/other internal-object RVs and wider
-recursive/coalesce magic combinations remain unsupported.
+Nonempty array RVs now retain the phase through owned-element disposal; immutable
+empty literals yield true directly. Three originals and focused255 checks cover
+normal/throw cleanup, shared owners and budgets; [array RV review](coverage/semantics/magic-empty-array-rv-review.json).
+Other signatures, receivers, mutable-empty arrays/other internal-object RVs and
+wider recursive/coalesce magic combinations remain unsupported.
 Hooked iteration, defaulted virtual hooks, other paired or virtual setters, wider trait
 setters, other explicit setter parameter forms, references, other inherited/trait
 and wider receiver, quiet or indirect-access families and wider `__unset` consumers remain required.

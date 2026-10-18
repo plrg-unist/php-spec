@@ -980,3 +980,20 @@ no native or source actor was rerun. Pending-Throwable routing and ownership
 rules are unchanged. Wider authenticated normal-source histories still need
 focused validation. See the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M87 adds a direct named no-argument `?array` old-return source only to the
+authenticated pending-Throwable destructor-exit guards. In the new
+`&f():?array` original, `old_value()` returns a runtime `[new O]`, whose
+child destructor throws `TypeError("child87")` during selected-reference
+replacement. Native PHP reaches local `CT:1;A;S` with detached `rNULL/b7`
+and one old-line VALUE Notice; the unchanged model instead reaches outer OT
+with r7 and no Notice. The reached proof binds the pending old HARRAY→O edge,
+their retirement before the pending exit, the destructor-origin child87
+TypeError and the same object in local CT. Ordinary replay retains the
+nonowning cursor, then consumed recovery restores NULL and a new Notice.
+Public descriptor admission, an equal-heap LINE-only refusal and exit-cut
+budget equality pass. Admission covers the bounded direct-call `?array`
+source category; the executed owner proof covers one runtime single-entry
+array and one throwing O child. Existing table/child release, normal-exit
+rules and M56's accepted nonthrowing control remain separate. See the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).

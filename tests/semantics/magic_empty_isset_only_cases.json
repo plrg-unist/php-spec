@@ -1,0 +1,68 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "false",
+      "source": "<?php\nclass MagicIssetOnlyParent90 {\n    private int $value = 1;\n    public function __isset(string $name): bool {\n        global $child;\n        echo 'I|';\n        $child = null;\n        echo 'i|';\n        return false;\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass MagicIssetOnlyChild90 extends MagicIssetOnlyParent90 {}\n$child = new MagicIssetOnlyChild90();\necho 'F:', empty($child->value) ? 'T' : 'F', '|';\necho 'E|';\n",
+      "source_sha256": "829a682527b8c9b153055a9f38888a368238aa47d496c642490b2931e6d3428f",
+      "source_file": "magic-empty-isset-only-false.php",
+      "empty_line": 15,
+      "stdout_base64": "RjpJfGl8RHxUfEV8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-empty-isset-only-private-90/.tools/magic-empty-isset-only-probes-90/false.php",
+      "native_report_sha256": "514d98b99de47086579b5353510061969f2de32e3ff6585990c821a10c261c7d",
+      "native_group": "magic-empty90-isset-only-native-73f140047",
+      "native_raw_sha256": "6d2e19fe8b8fa26eae496073fd210399acc49d4bf56a4b8fdf0cfd9bdec35540",
+      "native_raw_hash_recipe": "stdout + NUL + stderr + NUL + ASCII exit"
+    },
+    {
+      "id": "true",
+      "source": "<?php\nclass MagicIssetOnlyParent90 {\n    private int $value = 1;\n    public function __isset(string $name): bool {\n        global $child;\n        echo 'I|';\n        $child = null;\n        echo 'i|';\n        return true;\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass MagicIssetOnlyChild90 extends MagicIssetOnlyParent90 {}\n$child = new MagicIssetOnlyChild90();\necho 'T:', empty($child->value) ? 'T' : 'F', '|';\necho 'E|';\n",
+      "source_sha256": "328b4172b57c49be941b31735ec2ba803d3b266a7b48ba5d563d5e2d6e5c436f",
+      "source_file": "magic-empty-isset-only-true.php",
+      "empty_line": 15,
+      "stdout_base64": "VDpJfGl8RHxUfEV8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-empty-isset-only-private-90/.tools/magic-empty-isset-only-probes-90/true.php",
+      "native_report_sha256": "514d98b99de47086579b5353510061969f2de32e3ff6585990c821a10c261c7d",
+      "native_group": "magic-empty90-isset-only-native-73f140047",
+      "native_raw_sha256": "081be389ed00826e3086baa28c3188cd08201786c4f45f7a3774617f12527e2b",
+      "native_raw_hash_recipe": "stdout + NUL + stderr + NUL + ASCII exit"
+    },
+    {
+      "id": "throwing",
+      "source": "<?php\nclass MagicIssetOnlyParent90 {\n    private int $value = 1;\n    public function __isset(string $name): bool {\n        global $child;\n        echo 'I|';\n        $child = null;\n        echo 'i|';\n        throw new Exception('isset-only-stop');\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass MagicIssetOnlyChild90 extends MagicIssetOnlyParent90 {}\n$child = new MagicIssetOnlyChild90();\necho 'X:';\ntry { echo empty($child->value) ? 'T' : 'F', '|'; }\ncatch (Exception $caught) { echo 'C|'; }\necho 'E|';\n",
+      "source_sha256": "db42036c1eed5476f341f3f1f51f735069d616a94c25c357f2e2ce23bbd9ac74",
+      "source_file": "magic-empty-isset-only-throwing.php",
+      "empty_line": 16,
+      "stdout_base64": "WDpJfGl8RHxDfEV8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-empty-isset-only-private-90/.tools/magic-empty-isset-only-probes-90/throwing.php",
+      "native_report_sha256": "514d98b99de47086579b5353510061969f2de32e3ff6585990c821a10c261c7d",
+      "native_group": "magic-empty90-isset-only-native-73f140047",
+      "native_raw_sha256": "9419c879e3d7ed2abd6875813cddb9006c18c403fd0b285635fd9a661cd96985",
+      "native_raw_hash_recipe": "stdout + NUL + stderr + NUL + ASCII exit"
+    }
+  ]
+}

@@ -107,6 +107,8 @@ dec $dynamic_startup_define_duplicate_valid(pstate, pconfigcall, nat) : bool
 ;; installed the same key. Keep the original captured arguments in either path.
 dec $dynamic_define_known(pstate, porigin, nat) : pvalue?
 dec $dynamic_array_call_valid(pstate, pconfigcall) : bool
+dec $dynamic_array_duplicate_call_valid(pstate, pconfigcall, nat) : bool
+dec $dynamic_array_duplicate_valid(pstate, pconfigcall, nat, pvalueclass, nat) : bool
 dec $dynamic_array_value(pstate, pvalue, nat*, bool) : (pstate, pvalue, pvalueclass)?
 dec $dynamic_array_known_matches(pstate, pvalue, pvalue?) : bool
 dec $dynamic_defined_receive(pstate, pconfigcall) : pstate
@@ -141,6 +143,15 @@ def $dynamic_define_finish(S, pconfigcall) = S_copy[.TODO = ptask_tail*][.USERCO
   -- if $source_constant_lookup(S, preqbytes) = eps
   -- if $dynamic_array_value(S, PARRAY n_array, eps, true) = ((S_copy, pvalue, pvalueclass))
   -- if $dynamic_array_known_matches(S_copy, pvalue, $dynamic_define_known(S_copy, pconfigcall.SITE, 1))
+  -- if S.TODO = ptask :: ptask_tail*
+def $dynamic_define_finish(S, pconfigcall) = $error_dispatch(S_copy[.TODO = (DYNAMIC_ARRAY_CONSTANT_DUPLICATE pconfigcall n_candidate pvalueclass n_constants) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 2, ptbytes_message, pconfigcall.LINE, DIAGNOSTIC "Warning" ptbytes_message pconfigcall.LINE, DYNAMIC_ARRAY_CONSTANT_DUPLICATE pconfigcall n_candidate pvalueclass n_constants)
+  -- if n_constants = |S.USERCONSTANTS|
+  -- if $dynamic_array_duplicate_call_valid(S, pconfigcall, n_constants)
+  -- if $dynamic_define_values(pconfigcall) = ((preqbytes, PARRAY n_input))
+  -- if $(n_input < |S.ARRAYS|) /\ S.ARRAYS[n_input].ITEMS =/= eps
+  -- if $dynamic_array_value(S, PARRAY n_input, eps, true) = ((S_copy, PARRAY n_candidate, pvalueclass))
+  -- if $dynamic_array_duplicate_valid(S_copy, pconfigcall, n_candidate, pvalueclass, n_constants)
+  -- if ptbytes_message = $global_constant_duplicate_message(preqbytes)
   -- if S.TODO = ptask :: ptask_tail*
 def $dynamic_define_finish(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "dynamic constant call domain"] -- otherwise
 
@@ -268,7 +279,7 @@ def $error_handler_trace_values(S, pcallcontext, pconfigcall_api) = $trace_extra
   -- if $error_context_call(S, pcallcontext) = (perrorcall)
   -- if perrorcall.RESUME = DYNAMIC_CONSTANT_DUPLICATE pconfigcall n_constants
   -- if $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
-  -- if $builtin_value_bytes(preqbytes) = (pvalue_old)
+  -- if $builtin_value_bytes(preqbytes) =/= eps \/ $special_constant(preqbytes) =/= eps
   -- if ~$dynamic_constant_case_flag(pconfigcall)
   -- if pconfigcall_api = pconfigcall
 
@@ -297,9 +308,9 @@ def $error_context_trigger(S, pcallcontext) = (pconfigcall)
   -- if $error_context_call(S, pcallcontext) = (perrorcall)
   -- if perrorcall.RESUME = DYNAMIC_CONSTANT_CASE_WARNING pconfigcall
 
-;; Dynamic array constants copy scalar trees, rather than retaining source
-;; reference cells or their append history. Check mode allocates nothing and
-;; requires the exact DIRECT table that the copying fold would have rebuilt.
+;; Dynamic array constants copy bounded trees and share certified object leaves.
+;; Reference cells and append history belong only to the source. Check mode
+;; allocates nothing and requires the copying fold's exact DIRECT tables.
 dec $dynamic_array_item(pstate, pitem, bool) : pvalue?
 def $dynamic_array_item(S, DIRECT pvalue, b_copy) = (pvalue)
 def $dynamic_array_item(S, ALIAS n_cell, true) = (pvalue)
@@ -311,7 +322,7 @@ def $dynamic_array_item(S, pitem, b_copy) = eps -- otherwise
 dec $dynamic_array_entries(pstate, pentry*, nat*, parray, (pkey, pvalueclass)*, bool) : (pstate, parray, (pkey, pvalueclass)*)?
 dec $dynamic_array_finish(pstate, nat, parray, (pkey, pvalueclass)*, bool) : (pstate, pvalue, pvalueclass)?
 def $dynamic_array_value(S, pvalue, n_seen*, b_copy) = ((S, pvalue, pvalueclass))
-  -- if $dynamic_constant_class(pvalue) = (pvalueclass)
+  -- if $dynamic_define_value_class(S, pvalue) = (pvalueclass)
   -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
 ;; Empty roots retain their actual non-refcounted provenance. Empty descendants
 ;; remain outside this slice; a mutable root is rebuilt even when it has no keys.
@@ -2058,8 +2069,8 @@ def $error_handler_trace_values(S, pcallcontext, pconfigcall_api) = $trace_extra
   -- if perrorcall.RESUME = DYNAMIC_CLASS_DEFINE_NAN_RESULT pconfigcall
   -- if pconfigcall_api = pconfigcall
 
-;; Fixed startup primitives predate every user-table prefix. The warning keeps
-;; the same captured arguments while a handler may append unrelated user rows.
+;; Startup primitives and special names predate every user-table prefix.
+;; The warning keeps captured arguments while a handler may append user rows.
 def $dynamic_startup_define_duplicate_valid(S, pconfigcall, n_constants) = true
   -- if pconfigcall.KIND = INTRINSIC_DEFINE
   -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps
@@ -2068,7 +2079,7 @@ def $dynamic_startup_define_duplicate_valid(S, pconfigcall, n_constants) = true
   -- if ~$dynamic_constant_case_flag(pconfigcall)
   -- if $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
   -- if $dynamic_constant_global_name(preqbytes)
-  -- if $builtin_value_bytes(preqbytes) = (pvalue_old)
+  -- if $builtin_value_bytes(preqbytes) =/= eps \/ $special_constant(preqbytes) =/= eps
   -- if $dynamic_scalar_define_arguments(S, pconfigcall, 0)
   -- if $named_slot_at(pconfigcall.SENT, 0) = NAMED_SENT (KNOWN pvalue_name)
   -- if $string_plain(pvalue_name) = pvalue_name \/ $string_carrier_valid(S, pvalue_name)
@@ -2076,3 +2087,42 @@ def $dynamic_startup_define_duplicate_valid(S, pconfigcall, n_constants) = true
   -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
   -- if $(n_constants <= |S.USERCONSTANTS|)
 def $dynamic_startup_define_duplicate_valid(S, pconfigcall, n_constants) = false -- otherwise
+
+;; The private canonical candidate survives reporting independently of SENT.
+;; Handler mutations may change input aliases, so only the copy is rechecked.
+def $dynamic_array_duplicate_call_valid(S, pconfigcall, n_constants) = true
+  -- if $dynamic_array_call_valid(S, pconfigcall)
+  -- if $dynamic_define_values(pconfigcall) = ((preqbytes, PARRAY n_input))
+  -- if $(n_constants <= |S.USERCONSTANTS|)
+  -- if $user_constant_at(S.USERCONSTANTS[0:n_constants], $user_constant_key(preqbytes)) =/= eps
+def $dynamic_array_duplicate_call_valid(S, pconfigcall, n_constants) = false -- otherwise
+def $dynamic_array_duplicate_valid(S, pconfigcall, n_candidate, pvalueclass, n_constants) = true
+  -- if $dynamic_array_duplicate_call_valid(S, pconfigcall, n_constants)
+  -- if $dynamic_define_values(pconfigcall) = ((preqbytes, PARRAY n_input))
+  -- if n_candidate =/= n_input
+  -- if $(n_candidate < |S.ARRAYS|) /\ S.ARRAYS[n_candidate].ITEMS =/= eps
+  -- if $dynamic_array_value(S, PARRAY n_candidate, eps, false) = ((S, PARRAY n_candidate, pvalueclass))
+  -- if $dynamic_array_known_matches(S, PARRAY n_candidate, $dynamic_define_known(S, pconfigcall.SITE, 1))
+def $dynamic_array_duplicate_valid(S, pconfigcall, n_candidate, pvalueclass, n_constants) = false -- otherwise
+
+;; zend_register_constant disposes its rejected copy before the API argument.
+def $task_nodes(DYNAMIC_ARRAY_CONSTANT_DUPLICATE pconfigcall n_candidate pvalueclass n_constants) = [HARRAY n_candidate] ++ $config_nodes(pconfigcall)
+def $selected_task_nonce(DYNAMIC_ARRAY_CONSTANT_DUPLICATE pconfigcall n_candidate pvalueclass n_constants) = pconfigcall.SELECTION
+def $call_task_valid(S, DYNAMIC_ARRAY_CONSTANT_DUPLICATE pconfigcall n_candidate pvalueclass n_constants) = $dynamic_array_duplicate_valid(S, pconfigcall, n_candidate, pvalueclass, n_constants)
+rule PhpStep/dynamic-array-constant-duplicate: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (DYNAMIC_ARRAY_CONSTANT_DUPLICATE pconfigcall n_candidate pvalueclass n_constants) :: ptask_tail*
+  -- if $dynamic_array_duplicate_valid(S, pconfigcall, n_candidate, pvalueclass, n_constants)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = DYNAMIC_ARRAY_CONSTANT_DUPLICATE pconfigcall n_candidate pvalueclass n_constants
+  -- if $dynamic_array_duplicate_valid(S, pconfigcall, n_candidate, pvalueclass, n_constants)
+  -- if $dynamic_define_values(pconfigcall) = ((preqbytes, PARRAY n_input))
+  -- if perrorcall.SITE = pconfigcall.SITE /\ perrorcall.LEVEL = 2 /\ perrorcall.LINE = pconfigcall.LINE
+  -- if perrorcall.MESSAGE = $global_constant_duplicate_message(preqbytes)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pconfigcall.LINE
+def $error_context_trigger(S, pcallcontext) = (pconfigcall)
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = DYNAMIC_ARRAY_CONSTANT_DUPLICATE pconfigcall n_candidate pvalueclass n_constants
+def $error_handler_trace_values(S, pcallcontext, pconfigcall_api) = $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT))
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = DYNAMIC_ARRAY_CONSTANT_DUPLICATE pconfigcall n_candidate pvalueclass n_constants
+  -- if pconfigcall_api = pconfigcall

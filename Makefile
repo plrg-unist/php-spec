@@ -966,6 +966,10 @@ test-semantics: build
 	python3 tests/semantics/magic_empty_object_rv_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_empty_std_rv_cases.json
 	python3 tests/semantics/magic_empty_std_rv_protocol.py --revision "$$(git rev-parse HEAD)"
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_empty_array_rv_cases.json
+	python3 tests/semantics/magic_empty_array_rv_protocol.py --revision "$$(git rev-parse HEAD)"
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_empty_isset_only_cases.json
+	python3 tests/semantics/magic_empty_isset_only_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_publication_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_composed_retry_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/assertion_cases.json

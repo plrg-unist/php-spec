@@ -1,0 +1,120 @@
+{
+  "version": 1,
+  "milestone": "OP36 quiet integral-float masks after first bitwise assignment deprecation",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; project-local pinned PHP and profile",
+  "scope": "Initially distinct defined plain-CV finite in-range fractional floats with an eligible named deprecation handler. After LEFT conversion and its callback, a live original plain RHS holding a fitting integral float converts quietly for numeric &=/|=/^=, with no second diagnostic. A safe allocated original nonowning unconstrained target may commit, including a late target reference; original source/compiled RHS line and historical LEFT remain authenticated.",
+  "runtime_revision": "7724196ca2969961a67abdbaf36051c18591be81",
+  "helper_revision": "1332b0f1c72f8600208e04a4c8cc66b944693596",
+  "private_modules": 399,
+  "runtime_sha256": {
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "c327e9ceee9846080e50f3fcf9598ec21d49079a508deb7478b69331afb1f796"
+  },
+  "engine_basis": [
+    "Pinned Zend/zend_operators.c bitwise_and_function/bitwise_or_function/bitwise_xor_function dereference both inputs and bypass the two-string specialization for initial floats. Their inline long-conversion sequence saves LEFT before its diagnostic, then reads the live RHS after the callback. zendi_try_get_long quietly converts a fitting integral float, including a negative mask; the RHS CV stays a float.",
+    "Successful numeric bitwise operations destroy the result wrapper before integer storage, detaching late aliases. A supplied first-handler Exception cancels before the second conversion and result destruction. Negative converted masks are ordinary signed operands, not shift-count errors.",
+    "Module404 adds one direct returned BIT_ASSIGN_BOTH_LEFT1 IRESULT commit and excludes its integral snapshot from the existing first-boundary refusal (7 insertions/1 deletion). OP34 integral snapshot, bit3 source/phase validators, PINT handoff, fractional second-warning paths and all other modulo/shift/bitwise bodies stay exact; no task/schema/search protocol changes."
+  ],
+  "contract": [
+    "Actual initial both-fractional bitwise source and first fresh handler dispatch retain LEFT12 from12.5 independently for &=/|=/^=. At returned LEFT1, the unchanged integral snapshot authenticates target safety and original allocated/nonreleased plain RHS pointer/binding/current float. Historical LEFT is never reread from the callback-mutated target.",
+    "Normal callback late-aliases LEFT, writes99 and PFLOAT5.0, and returns true. The next production step stores4/13/9 through a fresh CELL/LOCATION and appends only that result cell; alias99 owners fall2 to1. Events and the float RHS remain unchanged, calls stay1, and later target7 leaves alias99. Neither a second marker nor the old PINT marker is reached.",
+    "A supplied first-handler Exception cancels operator markers before RHS conversion. The same Exception/no Previous has two roots; destination100 and alias owners2 survive with target99/PFLOAT5.0/calls1, and later target7 reaches alias7.",
+    "Independent false first handler leaves99/PFLOAT(-1.0) after exactly one default Deprecated for LEFT12.5 at RHS25. Quiet conversion gives(-1), and the direct XOR commit stores(-13) despite current LEFT99. Actual new CELL/LOCATION/store/allocation append reduce alias owners2 to1; events and the float RHS stay exact. Later target7 leaves alias99, with destination(-13) and calls1.",
+    "Driven states use production drive_steps and actual entered first-handler frames. Descriptor/heap validity, result cells/aliases/Throwable owners, exact output and whole/budget equality validate. Type/fractional/nonfinite/range/ref/missing/wrong/owning/constrained projections establish snapshot refusal only, not wider executed behavior."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-36/source-7724196ca-author-four/report.json",
+        "sha256": "abf912bbf8c5ccfc6171679f7b52c21b415cc1059c88fdc2c68bfd67ca5bb29f",
+        "cases": [
+          "bitassign-quiet-float-and-handler-write",
+          "bitassign-quiet-float-or-handler-write",
+          "bitassign-quiet-float-xor-handler-write",
+          "bitassign-quiet-float-and-handler-throw"
+        ],
+        "revision": "7724196ca2969961a67abdbaf36051c18591be81",
+        "agreements": 4
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-36/review-model-7724196ca-negative-default/report.json",
+        "sha256": "74f06d84356efb1975e2e11a6bbe4c2d6e1302e99dcdd3a5d016f28829157242",
+        "cases": [
+          "bitassign-quiet-float-negative-default"
+        ],
+        "revision": "7724196ca2969961a67abdbaf36051c18591be81",
+        "agreements": 1
+      }
+    ],
+    "state": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-36/state-1332b0f1c-five/report.json",
+      "sha256": "b52eba4f81442fb187ce436de5468b50737fddf2659fc7b66bc9c6dccc5843b1",
+      "revision": "1332b0f1c72f8600208e04a4c8cc66b944693596",
+      "modules": 399,
+      "author_conditions": [
+        135,
+        135,
+        135,
+        99
+      ],
+      "independent_conditions": [
+        130
+      ],
+      "total": 634
+    },
+    "total_source_agreements": 5,
+    "total_focused_state_conditions": 634,
+    "compatibility": "Only two helper scripts changed7724196ca..1332b0f1c; runtime stayed byte-identical. Checked preparation reuses accepted original source paths/native bytes with no application replay; full399 immutable SL fixtures use maintained conditions and unchanged BIT BOTH HELPERS. Counts include setup/refusal premises, not634 separate programs or renewed source agreement."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-36/baseline-f6ca110c1-handler-write/report.json",
+      "sha256": "27d78c373725adb80237b9bcf60c98c1beaa82681ba864fa66e9e294ac2008aa",
+      "result": "Accepted checked program Unsupported after genuine first-handler stdout H:1:8192:25:1; with exact reason \"bitwise assignment live RHS or expired, rebound, owning or constrained target after first deprecation\". Model exit1/stderr empty; native stores4 and detaches alias99. No override or agreement credit."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-36/native-f6ca110c1-author-four/report.json",
+        "sha256": "94b210e895ece80afaad84c3d171cd68f0a40d3413e55db76c010291bbfb0fd7"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-36/native-f6ca110c1-review-one/report.json",
+        "sha256": "817a6a5729675461bf5f4748345a5dcb9447852388b8b0405a14e6461ab32a45"
+      }
+    ],
+    "checked_preparation": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-36/state-prep-1332b0f1c-five/report.json",
+      "sha256": "716bca994ebcb9710ff08f90a8dc1928e8a69609a06d4ba861fd143ac5d6a647",
+      "result": "Checked frontend parse and adapter check only, using retained original paths/native bytes; no native/application/numeric replay."
+    },
+    "standalone_syntax": "The five standalone syntax rows parse full files before the expected undefined-pstate diagnostic; zero semantic credit."
+  },
+  "required_follow_on": [
+    "Initial references/COPY/TMP, property/container targets, live RHS conversions other than the supported plain integer/fitting finite float forms, reference/rebound/expired RHS, unsafe/missing/rebound/expired/owning/constrained targets and wider callback/exit/lifecycle forms remain partial.",
+    "All nine affected inventory rows stay partial. OP34/35 and earlier accepted operator cuts receive zero renewed credit; OP12 stays paused."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-36",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "environment": "LC_ALL=C, TZ=UTC, no PHP_SPEC_SCRIPT_ENCODING; native/baseline/source used CPU3/SLOT5, checked prep/SL used CPU1/SLOT1. Native30/modelCLI60-process90; checked workers30; syntax30 and separate full399 SL groups120. Accept only exact true newline/empty stderr, clean exits/no interruption/reaped groups/PIDs.",
+    "commands": [
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 tests/semantics/bitassign_quiet_floats.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 tests/semantics/bitassign_quiet_float_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-36/state-prep-1332b0f1c-five/run-prepare.py",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-36/state-1332b0f1c-five/run-state.py"
+    ],
+    "record": "Restore matching Git cuts/project-local tools and fresh outputs; archive retains original bytes, checked packets, immutable fixtures, commands/exits/reaping. No evidence archive is a runtime dependency."
+  },
+  "composition": {
+    "parent": "73f140047bcf8a2b18487b2b1d23392ffea1084e",
+    "private_publication": "a9bbf29c035edd0fd13e978923b5b19acac3de12",
+    "modules": 399,
+    "runtime_sha256": {
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "c327e9ceee9846080e50f3fcf9598ec21d49079a508deb7478b69331afb1f796"
+    },
+    "other_incoming_paths_preserved": 40,
+    "gate": "No joined actor:404 retains exact private runtime;30/55/modules and every other incoming path retain the parent. Incoming startup-duplicate trace/validity branches require DYNAMIC_CONSTANT_DUPLICATE and DEFINE source; certified array object leaves require define publication, with USERCONSTANTS staying eps in OP36. Magic-empty array RV/PROPERTY_EMPTY_RESULT, quiet-CV LIST_FETCH and WeakMap/FROMCALLABLE or BOUNDFAKE Closure comparison selectors are absent. Named h is untyped/scalar and the only object is builtin Exception. Common handler/CV-write/integral snapshot/float_long/integer_binary/heap/descriptor bodies remain unchanged. Source5@7724196ca/state634@1332b0f1c retain private399 cuts without replay or renewed credit."
+  }
+}
