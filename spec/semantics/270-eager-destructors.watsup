@@ -1495,7 +1495,8 @@ def $ref_return_retire_method(S, n) = (pmethoddesc)
   -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
   -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ pclassdesc.INTERFACES = eps
-  -- if pclassdesc.PROPERTIES = eps /\ pclassdesc.CONSTANTS = eps /\ pclassdesc.METHODS = [pmethoddesc]
+  -- if pclassdesc.PROPERTIES = eps /\ pclassdesc.CONSTANTS = eps
+  -- if pclassdesc.METHODS = [pmethoddesc]
   -- if $ptlc(pmethoddesc.NAME) = $ptascii("__destruct")
   -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
