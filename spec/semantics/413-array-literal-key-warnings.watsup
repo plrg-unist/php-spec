@@ -151,6 +151,9 @@ def $array_float_ref_key_source(S, n, n_old, poperand, phpType13*, z, n_bits, i)
   -- if $array_float_ref_key_item(S, phpType13*, z) = ((poperand_key, poperand))
 def $array_float_ref_key_source(S, n, n_old, poperand, phpType13*, z, n_bits, i) = false -- otherwise
 
+dec $literal_reference_plain_cell(pstate, nat) : bool
+dec $literal_reference_retain(pstate, nat) : pstate
+dec $literal_reference_owe(pstate, nat) : pstate
 dec $array_float_ref_key_value(pstate, nat, poperand) : pitem?
 def $array_float_ref_key_value(S, n_old, VARIABLE n_name* z) = (ALIAS n_old)
   -- if ~$environment_blocked(S, n_name*)
@@ -162,6 +165,12 @@ def $array_float_ref_key_value(S, n_old, VARIABLE n_name* z) = (DIRECT pvalue)
   -- if $lookup(S.ENV, n_name*) = (n_current)
   -- if n_current =/= n_old
   -- if $array_float_key_value(S, VARIABLE n_name* z) = (pvalue)
+def $array_float_ref_key_value(S, n_old, VARIABLE n_name* z) = (ALIAS n_current)
+  -- if ~$environment_blocked(S, n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n_current)
+  -- if n_current =/= n_old
+  -- if ~$foreach_released_container_cell(S, n_current) /\ ~$update_released_array_name(S, n_name*)
+  -- if $literal_reference_plain_cell(S, n_old) /\ $literal_reference_plain_cell(S, n_current)
 def $array_float_ref_key_value(S, n_old, poperand) = eps -- otherwise
 
 dec $array_float_ref_key_ready(pstate, nat, nat, poperand) : bool
@@ -195,8 +204,11 @@ def $array_float_ref_key_pending(S) = ($error_handler_eligible(S, 8192) /\ $arra
 dec $array_float_ref_key_retain(pstate, nat, poperand) : pstate
 def $array_float_ref_key_retain(S, n_old, poperand) = S
   -- if $array_float_ref_key_value(S, n_old, poperand) = (ALIAS n_old)
-def $array_float_ref_key_retain(S, n_old, poperand) = S[.LITERALREFRETAINED = S.LITERALREFRETAINED ++ [n_old]]
+def $array_float_ref_key_retain(S, n_old, poperand) = $literal_reference_retain(S, n_old)
   -- if $array_float_ref_key_value(S, n_old, poperand) = (DIRECT pvalue)
+def $array_float_ref_key_retain(S, n_old, poperand) = $literal_reference_owe($literal_reference_retain(S, n_old), n_current)
+  -- if $array_float_ref_key_value(S, n_old, poperand) = (ALIAS n_current)
+  -- if n_current =/= n_old
 
 rule PhpStep/array-float-ref-key-warning: S ~> $error_dispatch(S[.RESULT = KNOWN PNULL], 8192, $list_float_key_message(n_bits), z, DIAGNOSTIC "Deprecated" $list_float_key_message(n_bits) z, ARRAY_KEY_FLOAT_REF_RESULT n n_old poperand phpType13* z n_bits i)
   -- if $array_float_ref_key_pending(S)
@@ -228,3 +240,59 @@ def $error_read_discard(S, ARRAY_KEY_FLOAT_REF_RESULT n n_old poperand phpType13
 
 def $literal_reference_retained_valid(S, eps) = true
 def $literal_reference_retained_valid(S, n :: n_tail*) = ($call_reference_operand_valid(S, REFERENCE n) /\ $literal_reference_retained_valid(S, n_tail*))
+
+;; Missing ADDREFs are count biases, not missing logical aliases. Inverse
+;; retargeting cancels a bias before creating a new request root or debt.
+dec $literal_reference_delete(nat*, nat) : nat*
+def $literal_reference_delete(eps, n) = eps
+def $literal_reference_delete(n :: n_tail*, n) = n_tail*
+def $literal_reference_delete(n_other :: n_tail*, n) = n_other :: $literal_reference_delete(n_tail*, n)
+  -- if n_other =/= n
+def $literal_reference_retain(S, n) = S[.LITERALREFDEBTS = $literal_reference_delete(S.LITERALREFDEBTS, n)]
+  -- if n <- S.LITERALREFDEBTS
+def $literal_reference_retain(S, n) = S[.LITERALREFRETAINED = S.LITERALREFRETAINED ++ [n]]
+  -- if ~(n <- S.LITERALREFDEBTS)
+def $literal_reference_owe(S, n) = S[.LITERALREFRETAINED = $literal_reference_delete(S.LITERALREFRETAINED, n)]
+  -- if n <- S.LITERALREFRETAINED
+def $literal_reference_owe(S, n) = S[.LITERALREFDEBTS = S.LITERALREFDEBTS ++ [n]]
+  -- if ~(n <- S.LITERALREFRETAINED)
+
+def $literal_reference_debts_valid(S, eps) = true
+def $literal_reference_debts_valid(S, n :: n_tail*) = ($call_reference_operand_valid(S, REFERENCE n) /\ ~(n <- S.LITERALREFRETAINED) /\ $literal_reference_debts_valid(S, n_tail*))
+
+def $literal_reference_plain_cell(S, n) = true
+  -- if $call_reference_operand_valid(S, REFERENCE n)
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if $array_float_key_scalar(S, pvalue)
+  -- if $propref_at(S.PROPREFS, n) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
+def $literal_reference_plain_cell(S, n) = false -- otherwise
+
+;; Primitive debt targets have no outgoing owners. Logical pruning can thus
+;; certify positive final counts before biased pruning starts any cascade.
+dec $literal_reference_debt_cells_safe(pstate, hgraph, nat*) : bool
+def $literal_reference_debt_cells_safe(S, H, eps) = true
+def $literal_reference_debt_cells_safe(S, H, n :: n_tail*) = true
+  -- if $literal_reference_plain_cell(S, n)
+  -- if (HCELL n) <- H.NODES
+  -- if $($heap_count(HCELL n, $literal_reference_retained_nodes(S.LITERALREFDEBTS)) < $heap_owners(H, HCELL n))
+  -- if $literal_reference_debt_cells_safe(S, H, n_tail*)
+def $literal_reference_debt_cells_safe(S, H, n*) = false -- otherwise
+def $literal_reference_debt_safe(S, H) = true -- if S.LITERALREFDEBTS = eps
+def $literal_reference_debt_safe(S, H) = true
+  -- if S.LITERALREFDEBTS =/= eps
+  -- if ~S.COMPILESTOP /\ S.GC.ACTIVE = eps
+  -- if ~(S.TODO = eps /\ S.FRAMES = eps /\ S.CURRENT = eps)
+  -- if $heap_valid(H[.DEBTS = eps])
+  -- if H_live = $heap_prune(H[.DEBTS = eps])
+  -- if $literal_reference_debt_cells_safe(S, H_live, S.LITERALREFDEBTS)
+def $literal_reference_debt_safe(S, H) = false -- otherwise
+def $literal_reference_debt_check(S) = S -- if S.LITERALREFDEBTS = eps
+def $literal_reference_debt_check(S) = S
+  -- if S.LITERALREFDEBTS =/= eps
+  -- if $literal_reference_debt_safe(S, $heap_graph(S))
+def $literal_reference_debt_check(S) = S[.COMPLETION = UNSUPPORTED "array literal reference deficit lifetime"]
+  -- if S.LITERALREFDEBTS =/= eps
+  -- if ~$literal_reference_debt_safe(S, $heap_graph(S))
+def $literal_reference_debt_blocked(S) = (S.COMPLETION = UNSUPPORTED "array literal reference deficit lifetime")

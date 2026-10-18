@@ -83,10 +83,7 @@ def fresh(initial,target,donor,budget=False):
         '$dynamic_define_value_class(S[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS,HOBJECT n_object)],POBJECT n_object) = eps',
         'n_absent = |S.OBJECTS|', '$dynamic_define_value_class(S,POBJECT n_absent) = eps',
         'pconfigcall.SENT = (NAMED_SENT (KNOWN pvalue_name)) :: pnamedslot_tail*',
-        '$string_bytes(pvalue_name) = (preqbytes)',
-        'pconfigcall_true = pconfigcall[.SENT = [NAMED_SENT (KNOWN pvalue_name),NAMED_SENT (KNOWN (POBJECT n_object)),NAMED_SENT (KNOWN (PBOOL true))]]',
-        'S_fenced = $dynamic_define_finish(S,pconfigcall_true)',
-        'S_fenced.COMPLETION = UNSUPPORTED "dynamic constant call domain"']
+        '$string_bytes(pvalue_name) = (preqbytes)']
     start='S'
     if budget:
         values += ['S_pause = $drive_steps(S,0)', 'S_pause = S[.COMPLETION = BUDGET]',

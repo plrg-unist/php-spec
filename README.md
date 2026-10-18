@@ -16,13 +16,19 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
+[Scalar spaceship warnings](docs/semantics/COMPARISONS.md) now preserve a missing
+variable's null result through error handlers while reading current scalar variables
+after callback effects, including a rebound left reference. Other comparison warning paths remain partial.
+
 [Array-literal float keys](docs/semantics/DIMENSIONS.md) now retain their converted
 integer across deprecation handlers. Unwrapped null/bool/int/float element variables
 remain live, while runtime array temporaries retain their own tables. Reference
-elements transfer a stable cell normally; scalar retargeting retains the acquired
-old wrapper for the request, including on throw. Duplicate replacement and later
-items stay ordered. Retargeting to a different reference cell and wider domains
-remain partial.
+elements transfer a stable cell normally; retargeting preserves the acquired
+count, cancelling existing debt before retaining unmatched old owners for the
+request, including on throw. Different-reference retargeting between primitive
+untyped cells also tracks the new cell's missing owner until it is balanced.
+Copies distinguish shared and singleton references; unsafe deficit retirement and
+wider domains remain Unsupported. Duplicate replacement and later items stay ordered.
 
 [Destructuring key warnings](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md)
 now retain captured arrays or source reference cells through handlers, including
@@ -643,6 +649,14 @@ and cancellation by a final power-deprecation throw in the
 [mixed-arithmetic ledger](coverage/semantics/mixed-arithmetic-warning-review.json).
 A surviving alias keeps the selected reference live; wider forms remain partial.
 
+Evaluated scalar copies now join ordinary arithmetic Warning continuations.
+They keep their saved values and error types after source variables change or
+vanish. Multiplication follows PHP's physical opcode order: a literal-left/CV-right
+witness yields `60` after two Warnings. Ten originals and 767 focused premises also
+check strict float `68.75` and final power cancellation in the
+[copied-arithmetic ledger](coverage/semantics/copied-arithmetic-warning-review.json).
+Quiet/no-Warning orders and owning or wider copied inputs remain partial.
+
 Primitive plain-CV `**=` now commits its captured result even when the deprecation
 handler throws. A late alias detaches before the same exception continues; the
 outer assignment stays unchanged. Three exact originals and 407 focused SL
@@ -1025,6 +1039,11 @@ Its current copy survives receiver cleanup; getters remain available, but later
 resumption is Unsupported. Explicit
 close preserves the pinned parked-frame finally omission. See the
 [pending-throw review](coverage/semantics/generator-pending-throw-review.json).
+The actual detached middle also accepts an owning simple-CV copied return on
+pending `throw`: getters stay live, close omits finally and retains the return,
+and a separate cache snapshot can replace the exception before catch. Array/cache
+aliases and mutable returned cells preserve their separate owners. See the
+[owning THROW review](coverage/semantics/generator-pending-owning-return-throw-review.json).
 With a buffered input, pending `throw` preserves its count; physical close retains
 it until request-store destruction, including receiver cleanup before caller
 catch. The independent current copy can still trigger a replacement exception. See the
@@ -1270,7 +1289,18 @@ calls still reject the raw name first. A returning handler can create the target
 before duplicate lookup; a throwing deprecation handler cancels registration.
 [Four source agreements and 1,084 state premises](coverage/semantics/define-stringable-null-flag-review.json)
 cover both continuations and authentic converted API captures. Startup/special
-results, other flag conversions and wider values/lifetimes/forms remain partial.
+results, flags beyond the bounded follow-ups and wider values/lifetimes/forms remain partial.
+
+Retained propertyless Stringable `define()` names now receive quiet nonboolean
+integer, non-NaN float and authenticated string flags with primitive candidates
+in admitted non-NUL user-global/class-name domains.
+The captured flag survives conversion and live writes: false skips the ignored
+Warning, while truthy warns before duplicate lookup. Strict calls reject the raw
+name first; class-like results reject before the ignored Warning.
+[Four source agreements and 1,203 state premises](coverage/semantics/define-stringable-scalar-flag-review.json)
+cover fresh/duplicate results, returning handlers and duplicate cleanup preserving
+the same Exception and exact request captures. Startup/special/HALT results, NaN flags,
+owning candidates and wider receiver lifetimes/call forms remain partial.
 
 Retained ordinary nonStringable instances and `stdClass` now fail positional
 `define()` name reception before primitive flag processing or registration.
@@ -1463,6 +1493,12 @@ Completed user-instance donors also retain their exact construction receipt and
 pointer in direct definitions and copied array leaves. Typed property aliases
 stay shared; existing normal, throwing-handler and shutdown cleanup retain the
 ordinary owners. [Instance define review](coverage/semantics/define-certified-instance-review.json).
+Direct certified objects also receive true and NULL flags. An ignored-flag
+Warning keeps the captured pointer, including fresh registration after a supplied
+handler Exception; a throwing NULL deprecation cancels registration. Normal
+callbacks can install a later duplicate key, and strict NULL rejects before them.
+[Object-flag review](coverage/semantics/define-object-flag-review.json).
+
 Fresh definitions also copy nonempty array trees containing certified stdClass
 or user-instance leaves under the admitted flags. Copied containers freeze source
 reference values while object pointers and property writes remain shared,

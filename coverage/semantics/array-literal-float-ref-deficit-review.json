@@ -1,0 +1,68 @@
+{
+  "status": "independently reviewed and validated; actual-parent composition accepted",
+  "scope": "Finite fitting lossy-float CV keys in array literals with direct-CV reference elements. Different-reference retargets require primitive untyped acquired/current cells and an object-free builder.",
+  "engine_basis": "Pinned PHP 8.5.10 CLI NTS64, vendor engine 34308a6666b2d489c509541ea9befea9e2b42348: Zend/zend_vm_def.h::ZEND_ADD_ARRAY_ELEMENT acquires the old wrapper before key conversion but inserts the live element CV afterward; Zend/zend_hash.c::zend_array_dup_value distinguishes singleton reference unwrapping from sharing.",
+  "semantics": "LITERALREFRETAINED and LITERALREFDEBTS represent unmatched positive/missing owners per cell while preserving every logical alias. Same-cell transfer preserves bias; scalar retargeting first cancels existing debt; inverse reference retargeting canonically cancels both biases. Debt persists after entry deletion and abrupt builder cleanup, including multiplicity 2 and residual positive ownership.",
+  "authentication": "Existing occurrence, compiler-line, remaining-item, saved-builder and acquired-cell checks remain authoritative. Only the initial plan reads the float key; resume reads the live element CV. Source/error validation does not reconstruct current key bindings or freeze the callback's new reference identity.",
+  "lifetime_boundary": "Before owner transitions and direct pruning, logical pruning without debt certifies primitive untyped debt cells with positive effective counts. Effective-zero, owning/typed cells, active collection and outstanding request-end debt produce sticky Unsupported without retiring allocations. Isolated compiler memory rejects debt; empty debt preserves ordinary ownership behavior.",
+  "base": "79e19a9f4ca9adee11285e69e2752fa3efcb0341",
+  "cuts": {
+    "native_and_unchanged_baseline": "c14262bcafa9619dede0eec5f9b37ba653ba911d",
+    "failed_strict": "78125435b250a193abdde18ada01f43e9f0b5506",
+    "corrected_runtime_strict_and_sources": "cd8e161792913ae8578727495a350762bbab2c19",
+    "focused_state": "ff0410375e5bb5a798c26280e838f72f883df98a"
+  },
+  "accepted": {
+    "strict_modules": 404,
+    "source_agreements": 5,
+    "author_state_conditions": [190, 253, 266],
+    "independent_state_conditions": [240, 210],
+    "state_conditions": 1159,
+    "boolean_conditions": 1142,
+    "raw_transitions": 17,
+    "result": "All five source agreements are normal and byte-exact; all focused fixtures return true with quiet stderr, exit 0, no timeout/interruption and empty reaped groups. State fixtures pass first attempt."
+  },
+  "zero_credit": {
+    "baseline": "The unchanged checked program naturally stops with array literal float-key reference after callback; native succeeds and the ordinary comparator fails.",
+    "native_preparation": "Five fresh native observations establish the intended traces; preparation alone supplies no model agreement.",
+    "strict_failure": "The first strict check fails before execution because plain_cell/retain/owe declarations follow their first use. Only those three declarations move; the fresh strict retry passes.",
+    "source_timeout": "Only the first multiplicity model row times out at the 60s model limit. Its accepted sibling rows remain credited. The unchanged original path/bytes pass one affected-only 120s-model/150s-outer retry in 61.82s; no native replay or semantic correction.",
+    "historical": "A19/A20 probes and earlier source/state gates retain their original cuts and credit. This milestone does not rerun or renew them."
+  },
+  "private_runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "c5a90c2fe3b01d09b7ab61f02b76dc59934ebfb32684cd0ca2c50881f42ff3b4",
+    "spec/semantics/39-ownership.watsup": "13f100d71fc19c1a02289023573060f182e3ad261c636bb4a1c590cef01f5b51",
+    "spec/semantics/40-control.watsup": "c74e3b951ca92bf50e11d33549f99abb29542fc07f595529d2ef17cb12f9eb78",
+    "spec/semantics/84-call-integrity.watsup": "062aa38e5876bcd0e289637b2a85dc51989a3324c90b02a52549beac3c47a233",
+    "spec/semantics/190-declaration-publication.watsup": "96fe0b2d115dcdf387ca076355b419ddcce5799c5b9fb90867d904de84f26e24",
+    "spec/semantics/413-array-literal-key-warnings.watsup": "b3afd552e1f551d83b8f103140730da5d674653ccca5baebaa864a2c345b3be0"
+  },
+  "reports": [
+    {"path": ".tools/array-literal-float-ref-deficit-baseline-21/report.json", "sha256": "a2015fa12c6427b1f5740a5aa41f2c27921fe92b4425359f62bd17e2d9179e13", "cut": "native_and_unchanged_baseline", "credit": "0; genuine unchanged Unsupported"},
+    {"path": ".tools/array-literal-float-ref-deficit-native-rest-21/report.json", "sha256": "728b53b9c468a1f2b9a0daaa5b3914cac4632a192b9d6beda7234484895992cd", "cut": "native_and_unchanged_baseline", "credit": "0; native 2"},
+    {"path": ".tools/array-literal-float-ref-deficit-review-native-21/report.json", "sha256": "156423b6ef8d78e81ac5ea2267a314aa0a0369c9544af72332da3eb35d97c238", "cut": "native_and_unchanged_baseline", "credit": "0; independent native 2"},
+    {"path": ".tools/array-literal-float-ref-deficit-strict-21/report.json", "sha256": "1d489d582a68731661655a2af7757ddb8d567c85797aa73cda5163a3a90179c1", "cut": "failed_strict", "credit": "0; declaration failure"},
+    {"path": ".tools/array-literal-float-ref-deficit-strict-21-fixed/report.json", "sha256": "6fbbb3d2a71e3753d7be779e057d226df16c35d7618493cd4d8a08059abca1af", "cut": "corrected_runtime_strict_and_sources", "credit": "strict 404 pass"},
+    {"path": ".tools/array-literal-float-ref-deficit-author-source-21/report.json", "sha256": "bd0a4da950422825c170fd819f5418625126a035437c2df6d9961c321624b56e", "cut": "corrected_runtime_strict_and_sources", "credit": "2 accepted rows; multiplicity timeout 0 preserved"},
+    {"path": ".tools/array-literal-float-ref-deficit-multiplicity-source-21/report.json", "sha256": "a10b25991612e8c4ed821b8b3dee4713034884d3cce98e6b6a140b4351ff8f98", "cut": "corrected_runtime_strict_and_sources", "credit": "1; affected-only timing retry"},
+    {"path": ".tools/array-literal-float-ref-deficit-review-source-21/report.json", "sha256": "5664b39e959f8c22c60cffca36b8bc26b7b59edcbab0cb1e57aa8e240eab731f", "cut": "corrected_runtime_strict_and_sources", "credit": "2; independent source agreements"},
+    {"path": ".tools/array-literal-float-ref-deficit-author-state-21/report.json", "sha256": "04615cc8bd51717653812b9194778ad53016a5793d46b8c17946c3391ad9ae63", "cut": "focused_state", "credit": "709 premises, including 12 raw"},
+    {"path": ".tools/array-literal-float-ref-deficit-review-state-21/report.json", "sha256": "e31d0efa304ad616036fff7797d30872a8617f8c60a530fb05a03479973d7ca1", "cut": "focused_state", "credit": "450 premises, including 5 raw"}
+  ],
+  "reproduction": "Pinned target/profile, before/after inputs, exact argv, source paths, process completion and raw streams are retained in the reports. Native prep used CPU2; strict/source/state used CPU4. Ordinary source limits are 60s model/90s outer, except the single 120/150 multiplicity retry; strict and each focused SL fixture have 180s caps. Source models reuse original native bytes/paths/streams; state checks authenticate those source reports.",
+  "archive": {
+    "path": ".tools/array-literal-float-ref-deficit-21-raw.tar.gz",
+    "bytes": 469910,
+    "members": 158,
+    "sha256": "caede81eb5c54863cd4afc340a9222360aee176b9511cf4638c27ab56e1bf245",
+    "contents": "Ten basename report roots and four scripts: original strict, corrected strict, reuse and timing retry; the failed strict root also retains its exact original runner. All ten archived report copies independently match originals.",
+    "recovery": "Restore the recorded cut at .tools/array-literal-float-reference-deficit-21, provision the pinned local tools, then extract this archive into that worktree's .tools directory. Basename roots restore the original relative source paths and raw recipes. No archive/build artifact is tracked in Git."
+  },
+  "maintenance": "Two A20 new-reference refusal projections now use an owning array value; two existing pure-graph fixtures add DEBTS eps; A19's deferred-reference boundary reason becomes the explicit deficit-lifetime reason. Original PHP bytes stay unchanged and historical actors are not rerun.",
+  "incoming_review": "Independently reviewed 79e19 through 4ff5f52eff1a0d23e71be1ba2de17fcdbdc223b1/405: magic static-method415, typed-reference cursor recovery, detached Generator send, object define flags, closure numeric classification, mixed arithmetic and magic-empty array RV selectors are absent here. Preserve parent 30/40 changes and the 405-module list at composition; the new debt field lifts unrelated states by eps. No concrete joined actor indicated.",
+  "composition": {
+    "parent": "4ff5f52eff1a0d23e71be1ba2de17fcdbdc223b1", "modules": 405,
+    "result": "Actual parent module order and independent 30/40 additions are retained pointwise. Own 39/84/190/413 and maintained tests retain their accepted private bytes; both positive and debt fields coexist with the parent Generator root families. Independent selector review found no concrete joined actor. Source5/strict404 and state1159 keep their original cuts and zero-credit failures; no execution or historical credit is added."
+  },
+  "remaining": "Effective-zero/dangling references, owning/typed debt payloads, active collection, outstanding request-end debt and wider key/element producers remain partial. The held undefined-reference LIST-key candidate and paused owned-NUL include path remain untouched."
+}

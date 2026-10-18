@@ -101,7 +101,7 @@ def conditions(name, program, path, stdout):
         '~$error_call_valid(S_dispatch, perrorcall[.EVENT = DIAGNOSTIC "Notice" perrorcall.MESSAGE z])',
         '~$error_call_valid(S_dispatch, perrorcall[.SITE = PORIGIN 999999 eps])',
         '$call_descriptors_valid(S_dispatch)', '$heap_valid($heap_graph(S_dispatch))',
-        'S_newref = S_dispatch[.ENV = (BIND ($ptascii("q")) n_key) :: $unbind(S_dispatch.ENV, $ptascii("q"))][.REFCELLS = S_dispatch.REFCELLS ++ [n_key]]',
+        'S_newref = S_dispatch[.ENV = (BIND ($ptascii("q")) n_key) :: $unbind(S_dispatch.ENV, $ptascii("q"))][.REFCELLS = S_dispatch.REFCELLS ++ [n_key]][.STORE[n_key] = DEFINED (PARRAY n_builder)]',
         '$call_task_valid(S_newref, ' + marker + ')',
         '$array_float_ref_key_value(S_newref, n_old, poperand) = eps',
         '~$array_float_ref_key_ready(S_newref, n_builder, n_old, poperand)',

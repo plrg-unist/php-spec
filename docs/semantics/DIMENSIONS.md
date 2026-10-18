@@ -71,16 +71,21 @@ Owning/string CV elements and initially wrapped CVs remain outside this producer
 The separate reference-element continuation acquires a direct CV's wrapper before
 conversion. If the callback leaves or rebinds that CV to the same cell, insertion
 transfers the acquired owner to an alias. If it rebinds the CV to an unwrapped
-null/bool/int/float, insertion uses that live scalar directly and retains the old
-wrapper for the request. Repeated retargets retain one owner each; supplied throws
-retain the same owner while discarding the builder. Initial and resumed old values
+null/bool/int/float, insertion uses that live scalar directly and preserves the
+acquired count: an existing debt cancels first, otherwise the old wrapper gains a
+request owner. Supplied throws preserve that count while discarding the builder. Initial and resumed old values
 must remain null/bool/int/float, and the builder must remain object-free.
-Retargeting to a different reference cell stays Unsupported on return or throw:
-native insertion both retains the old owner and omits an owner on the new wrapper.
-A fresh inverse-retarget probe exposes and then balances that deficit; it has
-native-only, zero agreement credit. The
-[reference-element ledger](../../coverage/semantics/array-literal-float-ref-key-warning-review.json)
-keeps these source/state cuts separate from A19's historical reference probes.
+Retargeting between different primitive untyped reference cells also records the
+omitted new-cell owner. This debt survives deletion of the originating entry and
+abrupt builder cleanup. Copies at effective count1 unwrap the scalar; copies at
+larger counts retain the alias. Same-cell insertion preserves an existing debt;
+scalar and inverse-reference retargets cancel count biases per cell, including
+repeated debts and residual positive owners. Logical edges are never removed to
+represent the missing count. Effective-zero, owning/typed debt cells, active
+collection and outstanding request-end debt remain explicit Unsupported before
+pruning. The [deficit ledger](../../coverage/semantics/array-literal-float-ref-deficit-review.json)
+records fresh balanced source/state evidence; historical reference probes retain
+zero credit in the [positive-owner ledger](../../coverage/semantics/array-literal-float-ref-key-warning-review.json).
 The source basis is pinned `Zend/zend_vm_def.h::ZEND_ADD_ARRAY_ELEMENT`,
 `Zend/zend_hash.c::zend_array_dup_value`, and
 `Zend/zend_operators.h::zend_dval_to_lval_safe`.

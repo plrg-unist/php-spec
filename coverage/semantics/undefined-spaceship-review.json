@@ -1,0 +1,97 @@
+{
+  "milestone": "COMP89 undefined scalar spaceship warning continuations",
+  "status": "bounded independent source/state review passed; family remains partial",
+  "scope": "Missing left simple CV at <=> with an already evaluated primitive or an initially defined direct-CV scalar right; already evaluated primitive left with a missing right simple CV. Primitive null/bool/int/binary64/byte-string values include existing string carriers and initially referenced scalar right CVs.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; ordinary tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "runtime_revision": "56d3e2501d51986bc14bf50cbe8262b32f09741c",
+  "runtime_sha256": {
+    "spec/semantics/207-error-handler-runtime.watsup": "741f70b6e7867dd41b2394273f5eaf48b8937730cdf42be70e12c8ecbf2b12d5"
+  },
+  "private_modules": 405,
+  "engine_basis": [
+    "Zend/zend_vm_def.h::ZEND_SPACESHIP fetches OP1 with GET_OP1_ZVAL_PTR(BP_VAR_R), then OP2, before compare_function. Missing OP1 remains the uninitialized/null result despite handler initialization; later OP2 follows live CV rebinding.",
+    "Zend/zend_operators.c::compare_function and zend_compare choose the primitive order. Other comparison VM handlers use PTR_UNDEF/helper paths, and greater operators reverse operands; this increment does not admit those warning producers."
+  ],
+  "implementation": "47 lines in207 reuse ERROR_READ_RESULT and its existing handler/cleanup protocol, with stable structural source certificates, ingress-only scalar eligibility and an explicit non-scalar/missing opposing-CV refusal on return. No fields, tasks, roots, compiler descriptors or module ordering change; existing consumers keep a true admission predicate and unchanged resume.",
+  "behavior": [
+    "The missing value stays NULL after the handler initializes its name to9; an ordinary scalar RHS changed2 to0 compares against0.",
+    "A preexisting right reference rebound to a new string0 cell follows that new cell; its old alias keeps2 with one owner. A computed RHS assignment instead retains its captured1 after the callback writes live0.",
+    "False handlers emit the ordinary default Warning before result0. A supplied Exception preserves destination41, catch identity and finally order. Source warning lines10/14 come from compiled descriptors.",
+    "Five source-reached state groups check authentic warning/handler/resume states, exact raw restored/comparison states, old/new cell owners, source/line/handler corruption controls and full zero/split budget equality."
+  ],
+  "baseline": {
+    "revision": "64e61f10502ba51da6053fdd0a1badd39352ba1a",
+    "original_source_sha256": "e343fb8c9b8340d0dd338da71df761ff4f819089b36a90af23585da6cd072df7",
+    "outcome": "genuine unchanged Unsupported: error-handler ingress requires a producer continuation; empty output",
+    "credit": 0,
+    "raw": "baseline/baseline.stdout"
+  },
+  "accepted": [
+    {
+      "kind": "source",
+      "report": "author-source/model-report.json",
+      "sha256": "14197fe5788ba60f4e81d60ea918fea22993c9a0b2e275e0a632317504bcbe8d",
+      "revision": "56d3e2501d51986bc14bf50cbe8262b32f09741c",
+      "agreements": 4,
+      "unsupported_controls": 2
+    },
+    {
+      "kind": "source",
+      "report": "peer-probes-and-source/peer/model.json",
+      "sha256": "8ea177c2ae1892263b241592bf2b2d43786a95d39a43b93933ca863780078851",
+      "revision": "56d3e2501d51986bc14bf50cbe8262b32f09741c",
+      "agreements": 4
+    },
+    {
+      "kind": "state",
+      "report": "author-state/report.json",
+      "sha256": "c095f53bf6e1c725b5738d8e2674913269c447a0bcc7eb8b545cb1ef4fd340a5",
+      "revision": "06f6d6c6bffd395b2255ff8e03a7a354361ca073",
+      "premises": 226,
+      "groups": 3
+    },
+    {
+      "kind": "state",
+      "report": "peer-state/report.json",
+      "sha256": "0fb731c46fa6ac50cd7cb98181c471d820d27e18bdd7d2a928d645da870b90ae",
+      "revision": "06f6d6c6bffd395b2255ff8e03a7a354361ca073",
+      "premises": 149,
+      "groups": 2
+    }
+  ],
+  "totals": {
+    "source_agreements": 8,
+    "unsupported_source_controls": 2,
+    "state_groups": 5,
+    "state_premises": 375
+  },
+  "failures_zero_credit": [
+    "Peer model preparation NameError occurred before workers; raw peer/model-preparation-failure.txt is preserved.",
+    "First author state fixture failed compilation before evaluation because its test output projection put recursion alongside otherwise. Only the shared test projection changed; all five previously unevaluated state fixtures then passed. Raw author-state-compiler-failure/report.json is preserved."
+  ],
+  "remaining": [
+    "Both-missing operands, initially owning opposing values, callback-produced array/object/missing right operands, and live-left-CV/missing-right forms remain Unsupported.",
+    "Other loose comparison warning paths, reversed greater-operator warning fetches, wider operand producers and lifetime contexts remain partial. Private-payload comparison and paused work are untouched."
+  ],
+  "artifact_root": "../php-spec-evidence-archive/comparison-89",
+  "artifact_manifest_sha256": "8b2263838695d5d2425eb9eb3257f45942d00b6f5a704490dd882096a189711b",
+  "reproduction": [
+    "python3 tests/semantics/undefined_spaceship_sources.py --phase native --output .tools/comp89-source-new",
+    "python3 tests/semantics/undefined_spaceship_sources.py --phase model --output .tools/comp89-source-new",
+    "python3 tests/semantics/undefined_spaceship_state.py --output .tools/comp89-state-new",
+    "python3 tests/semantics/undefined_spaceship_review_state.py --output .tools/comp89-peer-state-new"
+  ],
+  "independent_reviewer": "/root/comp89_review",
+  "divergences": [],
+  "integration": {
+    "parent": "6821275c02b8eaaa443636b31550715351c3361e",
+    "modules": 405,
+    "runtime_delta": [
+      "spec/semantics/207-error-handler-runtime.watsup"
+    ],
+    "seam": "New pending-throw Generator selectors, pending reference-return cleanup and arithmetic-warning producers are absent. Incoming literal-reference debt metadata initializes empty and adds no owners/validity restriction here. All non207 runtime files, parent fields/defaults and the ordered module manifest remain parent-exact;207 retains the tested source/state bytes.",
+    "credit": "Pointwise composition only; source8/state375 retain their private execution cuts without replay."
+  }
+}

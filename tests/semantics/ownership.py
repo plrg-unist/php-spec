@@ -25,7 +25,7 @@ def node(n):
 
 def graph(nodes, edges, roots):
     return '{NODES ' + seq([node(n) for n in nodes]) + ', EDGES ' + seq([
-        f'HEDGE ({node(a)}) ({node(b)})' for a, b in edges]) + ', ROOTS ' + seq([node(n) for n in roots]) + '}'
+        f'HEDGE ({node(a)}) ({node(b)})' for a, b in edges]) + ', ROOTS ' + seq([node(n) for n in roots]) + ', DEBTS eps}'
 
 
 def expected(nodes, edges, roots):
@@ -110,9 +110,9 @@ def main():
     cases += [[f'$machine_roots({initial}[.RESULT = VARIABLE ([97]) 1][.BASE = BASE_NAME (VARIABLE ([98]) 1) 1]) = eps'],
               [f'$machine_roots({initial}[.RESULT = KNOWN (PARRAY 0)][.BASE = BASE_DIM (BASE_VALUE (KNOWN (PARRAY 1))) (KNOWN (PARRAY 2)) 1][.HELD = [HCELL 3]]) = [HARRAY 0, HARRAY 1, HARRAY 2, HCELL 3]'],
               ['$tasks_nodes([ARRAY_NEXT 0 eps, ARRAY_VALUE 1 (KNOWN (PARRAY 2)) eps 1, BINARY_RIGHT ADD (KNOWN (PARRAY 3)) 1, DIM_PATH (BASE_NAME (KNOWN (PARRAY 4)) 1) 1, ASSIGN_ARRAY (BASE_APPEND (BASE_VALUE (KNOWN (PARRAY 5))) 1) 1 false]) = [HARRAY 0, HARRAY 1, HARRAY 2, HARRAY 3, HARRAY 4, HARRAY 5]'],
-              ['$heap_valid({NODES ([HARRAY 0, HARRAY 0]), EDGES eps, ROOTS eps}) = false'],
-              ['$heap_valid({NODES ([HARRAY 0]), EDGES ([HEDGE (HARRAY 0) (HARRAY 1)]), ROOTS eps}) = false'],
-              ['$heap_valid({NODES eps, EDGES eps, ROOTS ([HCELL 0])}) = false'],
+              ['$heap_valid({NODES ([HARRAY 0, HARRAY 0]), EDGES eps, ROOTS eps, DEBTS eps}) = false'],
+              ['$heap_valid({NODES ([HARRAY 0]), EDGES ([HEDGE (HARRAY 0) (HARRAY 1)]), ROOTS eps, DEBTS eps}) = false'],
+              ['$heap_valid({NODES eps, EDGES eps, ROOTS ([HCELL 0]), DEBTS eps}) = false'],
               [f'$prune_allocations($allocate_array({initial}, $array_empty())[.RESULT = KNOWN PNULL]).ALLOCATIONS = eps'],
               [f'$allocate_array({initial}, $array_empty()).ALLOCATIONS = [HARRAY 0]', f'$ensure({initial}, [97]).ALLOCATIONS = [HCELL 0]']]
     cases += [[

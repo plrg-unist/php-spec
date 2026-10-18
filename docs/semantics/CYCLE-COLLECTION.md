@@ -151,7 +151,10 @@ Explicit collection while an owning copied direct `yield from` result waits in
 its saved continuation is also refused: the pinned result slot precedes its live
 range. Close retention preserves the external count, while ordinary next consumes
 it; the [owning-return review](../../coverage/semantics/generator-owning-detached-return-review.json)
-grants no new GC agreement.
+grants no new GC agreement. This refusal also covers the same waiting continuation
+after a pending detached `throw` parks its frame; the
+[owning THROW review](../../coverage/semantics/generator-pending-owning-return-throw-review.json)
+adds close and ownership observations, with no GC source agreement.
 
 Fiber force-close retains the tagged head and pending receipt in its genuine
 caller VM until ordinary release consumes it. Generator close consumes the head

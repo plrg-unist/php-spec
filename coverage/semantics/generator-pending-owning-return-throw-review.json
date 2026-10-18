@@ -1,0 +1,104 @@
+{
+  "milestone": "Iterator29: pending THROW on an owning detached Generator return",
+  "status": "Validated and integrated after independent private and actual-parent review",
+  "independent_reviewer": "iterator_review_15",
+  "base": "af50cdb7418192b47e026ce1ea1f53ba675d9e6e",
+  "native_baseline_cut": "520f23d4f26640e74570be480cb22fceeebb2155",
+  "validated_cut": "b1b40309f8b61d1580d914c93fed47ffa7021f40",
+  "tested_runtime": "cf9682790",
+  "modules": 405,
+  "scope": "Literal one-Throwable pending THROW on the actual detached middle, inherited through native Generator links and explicitly detached by current after independent child completion. One owning simple-CV assigned yield-from result, no input/acquisition/borrowed/loop/startpack producers, no other owning suspended tail/HELD and inactive GC. Getters and physical close follow; no later real resume.",
+  "semantics": [
+    "Root-only target admission reuses authenticated normal owning-return waiting. The previous finite leaf search is unchanged and excludes owning returns reached through an ancestor receiver. Source flags, exact used tail and child tombstone receipt stay required.",
+    "DO_INIT clears the actual receiver initialization and returns to the caller without consuming COMPLETE or storing the injected Throwable in the Generator. Existing transient current-copy and pending carriers preserve supplied identity and replacement Previous chains independently of the owning return.",
+    "Parked waiting authenticates matching PARKED/delegate/frame origin through a borrowed unparked validation view. Close moves the COMPLETE count into existing request retention before frame jobs; the exact CLOSING/PARKED receipt remains valid until existing close skip clears it and omits finally.",
+    "Normal waiting and owning unpack admission remain unchanged. The existing waiting-result GC scan also recognizes this parked shape and preserves WeakMap/refusal priority; one derived helper check has zero GC source credit. No new roots, layouts, fields, close or ordinary-consume transition.",
+    "Return/cache array aliases have separate container counts and one element-edge set. Raw reference-cache COW and post-close returned-cell writes remain live, without frozen referents."
+  ],
+  "source_authority": [
+    "Pinned Zend/zend_generators.c: Generator::throw, zend_generator_throw_exception, zend_generator_resume DO_INIT, zend_generator_update_current and zend_generator_dtor_storage/cleanup_unfinished_execution.",
+    "Pinned Zend/zend_vm_def.h DO_FCALL and HANDLE_EXCEPTION distinguish receiver/argument retirement from copied-result cleanup; matching existing transient no-GC receipt handles callbacks.",
+    "These are observations of the pinned implementation. No engine bug or intentional divergence was classified."
+  ],
+  "validation_identity": {
+    "php": "8.5.10 CLI NTS 64-bit; source 34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml 5.1.0; SL, caches off and encountered determinism checks",
+    "environment": "tests/semantics/profile.json; PHP -n; LC_ALL=C; TZ=UTC; PHP_SPEC_SCRIPT_ENCODING unset. All actors ran serially on coordinated CPU5. Reports retain exact commands, binary/profile hashes, caps, bytes, exits and stable HEAD+inputs. No native replay or old campaign renewal."
+  },
+  "runtime_sha256": {
+    "spec/semantics/280-generators.watsup": "1101ffa214284a1464520dd2eef1c936733fdb66e4592cea3f592c42a61397e7",
+    "spec/semantics/289-generator-delegation.watsup": "243f3cf43bf7d05a24ab68622dcd9870622d3718c0c3b19665a9f569f743cd2e"
+  },
+  "raw_root": ".tools/generator-pending-owning-return-throw-29",
+  "native_and_baseline": {
+    "reports": [
+      ".tools/generator-pending-owning-return-throw-native-sbso93_9/report.json",
+      ".tools/generator-pending-owning-return-throw-review-native-xr1tiaio/report.json",
+      ".tools/generator-pending-owning-return-throw-baseline-2nmzshox/report.json"
+    ],
+    "native_originals": 4,
+    "model_agreements": 0,
+    "baseline": "Exact original 2c66b850/native sbso row reused without PHP replay. Genuine public Unsupported force-close after nine OUTPUT chunks P|O|M|C|L|H|1|T|; exit1, empty stderr, no diagnostic/exit_status/timeout and stable inputs. No production edits before native4 and baseline.",
+    "caps": "Native8s each; unchanged model100s/process120s."
+  },
+  "strict_and_elaboration": {
+    "reports": [
+      ".tools/generator-pending-owning-return-throw-state-elab-i6tj2sqb/report.json",
+      ".tools/generator-pending-owning-return-throw-author-sl-mf_b20cu/report.json"
+    ],
+    "strict": "Ordered405 SL initialization, caches off/encountered determinism, exact true and empty stderr/exit0 under120s.",
+    "preparation": "Four actual source fixtures parse/check/elaborate in ordered405 with all four headers and unique EOF/empty stderr/exit0 under60s. Zero interpretation or source agreement credit."
+  },
+  "normal_sources": {
+    "reports": [
+      ".tools/generator-pending-owning-return-throw-source-ghsogffw/report.json",
+      ".tools/generator-pending-owning-return-throw-review-source-pcz8ytcn/report.json"
+    ],
+    "normal_agreements": 4,
+    "contract": "Two author and two independent originals reuse exact native tuples. All normal/exit0/empty stderr/no timeout/stable HEAD+inputs at b1b4; model100s/process120s. No old source renewal."
+  },
+  "reached_states": {
+    "reports": [
+      ".tools/fiber-state-review-utume5tj/report.json",
+      ".tools/fiber-state-review-vr46svda/report.json",
+      ".tools/fiber-state-review-456_i5uc/report.json",
+      ".tools/fiber-state-review-hitkduva/report.json"
+    ],
+    "premises": 553,
+    "author": 273,
+    "independent": 280,
+    "local_checks": 533,
+    "generic_reachability": 20,
+    "checks": [
+      "Actual GEN_ARGS preserves R1, raises cache2 to3 through the transient snapshot, retains E2 and queues only the receiver. Normal waiting becomes parked waiting; wrong ancestor/source/flags/tail/HELD/duplicate controls and derived GC refusal isolate scope.",
+      "Real cache destructor CURRENT after receiver retirement has consumed no-GC snapshot authority in its saved frame, D2/E2 and independently retained returned array1; wrong caller/origin/source/value controls reject and full replacement Previous identity follows.",
+      "Actual parked CLOSING close holds old array2 (held snapshot plus copied return), unique A edge1 and live raw cache cell2. Exact skip clears PARKED without finally, drops no return count and reaches old-A-after-E ending.",
+      "Actual post-close shared-cell WRITE keeps retained array1/cell2, retires old R through its real job and stores new C with OP.VALUE null; old R precedes WRITE, new C stays request-late."
+    ],
+    "budgets": "SL120s per group, source seek4000/full ending4000; actual public/heap validity, zero-budget identity and whole/split equality in each group. All true/empty stderr/exit0/no timeout/stable inputs and HEAD."
+  },
+  "failures_and_retries": [],
+  "compatibility": "Old maintained selectors inspected offline found no newly changed assertion. No accepted older Generator source/state campaign rerun. M111/M112 ordinary reference-return cleanup is independent and will be preserved in actual-parent composition.",
+  "remaining": [
+    "Owning pending THROW through ancestor receivers and owning active-chain unpack.",
+    "Later parked resume/global exception-opline behavior, wider owning continuations/held temporaries/producers and general Fiber interactions.",
+    "Explicit collection while the owning result waits is Unsupported; no new GC/cycle or full lifecycle claim.",
+    "Complete core PHP, final combined integration/rebuild, Rocq interaction trees and BOLA proofs remain open."
+  ],
+  "evidence_recovery": {
+    "archive": "../php-spec-evidence-archive/generator-pending-owning-return-throw-29/private.tar.gz",
+    "bytes": 1764607,
+    "sha256": "325965aa77161e1f54ea0f33372d3efcb62069399c8e67525e00cb26754a1487",
+    "manifest": "Sibling manifest.json maps eleven accepted roles, eight ignored driver/catalog inputs and two tested runtime hashes. Full original sources, generated fixtures, commands, process outputs and identities stay external.",
+    "restore": "Extract into a private root; retained iterator/generator-pending-owning-return-throw-29 branch supplies tracked author/peer inputs. Use scripts/private-semantics-references.py for exact local references. Native/baseline keep520f, all other validation b1b4/runtimecf968; neither external evidence nor copied binaries are operational build prerequisites."
+  },
+  "composition": {
+    "parent": "6ea10496159bf88580b174d5a605558f4fd0424e",
+    "parent_modules": 405,
+    "private_publication": "8652367baac100e7d6a9bdef64511c767a2d1396",
+    "review": "Independent actual-parent review confirms M111/M112 ordinary REF_RETURN cursor cleanup, A21 float-key reference-deficit producers and OP49 copied arithmetic warning plans are absent here. New LITERALREFDEBTS/heap.DEBTS fields and validators lift empty; no explicit full-state literal needs repair. Only280/289 change and retain tested cf968 bytes; every other runtime, root/default/control/pipeline byte and the405-module manifest is parent-exact.",
+    "validation": "Native4/baseline0 retain520f/405, gate0/strict405/source4/state553 retainb1b4/405 with runtimecf968. No concrete joined actor, accepted replay or renewed credit."
+  }
+}

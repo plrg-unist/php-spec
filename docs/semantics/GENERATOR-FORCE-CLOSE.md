@@ -78,6 +78,14 @@ intact. No exception owner belongs to the parked Generator. The
 [pending-throw review](../../coverage/semantics/generator-pending-throw-review.json)
 checks reference-child and detached-middle histories; later resumption remains
 Unsupported because the global exception-opline history is not yet modeled.
+For a direct detached middle with an owning simple-CV copied return, pending
+THROW also parks the frame. Close first transfers that return's count out of the
+saved continuation, then skips finally and releases the remaining frame owners.
+The exact source receipt remains valid during the parked CLOSING interval and
+after retirement. A separate current copy can keep a cached object alive until
+receiver retirement and then replace the exception before catch; returned arrays
+retain mutable reference cells. See the
+[owning THROW review](../../coverage/semantics/generator-pending-owning-return-throw-review.json).
 A live used-yield input stays in place at the pending THROW step. Physical leaf
 close retains its count before retiring the parked frame; the payload runs only
 in the request object-store pass. It is neither released before caller catch nor

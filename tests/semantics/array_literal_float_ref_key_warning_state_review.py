@@ -125,9 +125,10 @@ def conditions(name, program, path, stdout):
             '$lookup(S_return.ENV, $ptascii("key_alias")) = eps',
             'S_return.STORE[n_dest] = DEFINED (PINT 200)',
             '$heap_owners($heap_prune($heap_graph(S_return)), HCELL n_old) = 2',
-            '~$array_float_ref_key_ready(S_return[.REFCELLS = n_current :: S_return.REFCELLS], n_builder, n_old, ' + value + ')',
-            '$array_float_ref_key_source(S_return[.REFCELLS = n_current :: S_return.REFCELLS], ' + args + ')',
-            'S_refused = $error_read_discard(S_return[.REFCELLS = n_current :: S_return.REFCELLS], ' + marker + ')',
+            'S_owning_ref = S_return[.STORE[n_current] = DEFINED (PARRAY n_builder)][.REFCELLS = n_current :: S_return.REFCELLS]',
+            '~$array_float_ref_key_ready(S_owning_ref, n_builder, n_old, ' + value + ')',
+            '$array_float_ref_key_source(S_owning_ref, ' + args + ')',
+            'S_refused = $error_read_discard(S_owning_ref, ' + marker + ')',
             'S_refused.COMPLETION = UNSUPPORTED "array literal float-key reference during throw"',
             'S_refused.LITERALREFRETAINED = eps',
         ]
