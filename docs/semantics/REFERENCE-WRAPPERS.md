@@ -20,6 +20,15 @@ an unreachable allocation alive. Dead markers are inert because IDs are never
 recycled. Constant compilation rejects reference markers in isolated compiler
 memory; installing a valid unit preserves runtime markers.
 
+`LITERALREFRETAINED` separately records acquired `ADD_ARRAY_ELEMENT` owners left
+on old wrappers when a lossy-float key handler retargets the element CV to an
+ordinary scalar. It contributes one request root per occurrence, including
+repeated IDs, and survives normal and abrupt frame cleanup. Stable same-cell
+insertion transfers the owner into its array alias instead. Isolated compiler
+images reject this runtime field. Different-reference retargeting still needs a
+new-cell owner deficit and remains Unsupported; this field models positive old
+owners only. See the [reference-element review](../../coverage/semantics/array-literal-float-ref-key-warning-review.json).
+
 `tests/semantics/reference_wrappers.py` checks original source regressions,
 copying and rebinding, budget resumption, ownership graphs, cycle collection and
 compiler-pool isolation. The cycle check exercises the pure collection helper;

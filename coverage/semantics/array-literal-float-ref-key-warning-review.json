@@ -1,0 +1,59 @@
+{
+  "status": "independently reviewed and validated privately; actual-parent composition pending",
+  "target": "PHP 8.5.10 CLI NTS64, vendored 34308a6666b2d489c509541ea9befea9e2b42348; project-local .tools/php/bin/php and tests/semantics/profile.json only",
+  "scope": "ADD_ARRAY_ELEMENT explicit-reference elements with an ordinary CV value and finite fitting lossy-float ordinary CV key. Initial/resumed acquired-cell values and retargeted ordinary values are bounded to null/bool/int/float; builders are object-free. Stable or same-cell name rebinding transfers the acquired owner into ALIAS. The name rebound to a different unmarked scalar cell supplies DIRECT and leaves one acquired old-cell owner per occurrence for the request, including on supplied throw.",
+  "engine_basis": {
+    "routes": "Pinned Zend/zend_vm_def.h::ZEND_ADD_ARRAY_ELEMENT increments the acquired reference before float conversion, then inserts the current CV without restoring it, even with a pending exception. Zend/zend_hash.c::zend_array_dup_value unwraps a reference only at physical count1.",
+    "counterexamples": "Scalar retarget inserts44 independently of later q55/copied88, while old-cell probe copies both read77. Unset/rebind to the same cell adds no retained owner: after external aliases vanish, copying unwraps and isolates original33 from copied55. Supplied throw preserves destination99/later7 and the old retained owner; repeated retargets retain multiplicity2.",
+    "open_deficit": "A new native-only discriminator retargets to a different reference, observes original/replacement44 versus copied55, then inverse-retargets before teardown to balance both count biases and recover shared77. Different-reference retargets require a new-cell owner deficit as well as old positive ownership; this milestone explicitly rejects them on return and throw and claims no agreement for this probe. No engine divergence is introduced."
+  },
+  "implementation": {
+    "runtime_cut": "61a8b26d961729e4991ec87acf48d8b5f7c6b5a6",
+    "changes": "Seven runtime paths: new ARRAY_KEY_FLOAT_REF_RESULT task; request-wide duplicate-preserving LITERALREFRETAINED roots, initialization and validity; compiler-memory isolation; two keyed-reference pending exclusions; separate413 source/plan/normal/discard continuations. Source/error validation authenticates the actual reference item, ordinary CV syntax, compiled lines, exact remaining slice and frozen float conversion without rereading live key/value bindings. Only the initial plan reads the key; completion distinguishes same-cell ALIAS from fresh unmarked scalar DIRECT.",
+    "ownership": "The callback marker owns builder+acquired oldCELL. Stable insertion transfers the owner to its array edge. Scalar retarget transfers it to LITERALREFRETAINED; frame/temporary cleanup preserves this request root and repeated IDs remain separate owners. New-reference/object/out-of-domain completion is explicit Unsupported. Old by-value413 bodies and the 403-module list are unchanged.",
+    "private_runtime_sha256": {
+      "spec/semantics/30-storage.watsup": "2f34775b646e43a68c34ddf660aab4624d2784cf8ee6380ae5fe29a0ab88f923",
+      "spec/semantics/39-ownership.watsup": "23730785c41a7e7bed73aeb191e44fc4ab28e8ef8264d0cb43bfa25588b42a78",
+      "spec/semantics/40-control.watsup": "b62cfd76e552554b417ef490923954511eda0809b52bc4414deca6600b7cb9b3",
+      "spec/semantics/41-array-control.watsup": "33e121215dd8b995d62bc382dfd66ea13b7d15613cd88e8319d474e24cf484bf",
+      "spec/semantics/84-call-integrity.watsup": "f6c26c7a18aff8eefb249d4a5721de45ede9ae30d64bc73eabc748c78162009f",
+      "spec/semantics/190-declaration-publication.watsup": "de6e103931c267ce9d7d2553f31215ad9f4ed7cc64ef3fb9904ae7dcd459aa22",
+      "spec/semantics/413-array-literal-key-warnings.watsup": "9090a183f16f0675fcc8213b9f5f6fd8f10cfb72f5fb75bbaa0386afaf9aa822"
+    }
+  },
+  "validation": {
+    "native_and_baseline": "Six new natives at c2bdd2f0224e6ba2e69c24b01cbf5956d4ed6ff2: five normal milestone originals plus one deferred deficit probe, all preparation0. The ordinary stable baseline naturally fails comparison: native exit0, checked/frontend-accepted model Unsupported error-handler ingress requires a producer continuation, exit1; zero credit.",
+    "strict_correction": "First strict 403-module at 6c3c1507a stopped at executable binding elaboration before any source model began. Split output bindings, bound ready's value separately and bound converted integer after the64-bit guard; failed strict20 remains0. Fresh strict20-fixed passes at 61a8; only strict was retried.",
+    "source_agreements": "Five at 61a8: author3 and independent2, model-only comparisons using exact frozen native paths/bytes/streams; each frontendaccepted/checked/normal, matching stdout/stderr/exits. No native replay.",
+    "state": "830 premises =818 Boolean+12 raw at 5ca23fe1978df066475e526fb5788209271d0851: author142/151/186 (479, raw2/1/3) and independent189/162 (351, raw3/3). All state fronts pass first attempt. Actual callback roots, key-cell retirement, late keys, scalar isolation, same-cell singleton unwrapping, retained multiplicity1/2, throw cleanup, compiler isolation and whole/split budgets are checked; raw steps are normalized through the actual driver before continuing.",
+    "commands": "CPU2 serial strict script (cap180); reuse script --group author|review --output fresh-source-root (model60/outer90); author/independent protocol scripts --source-report their source report --output fresh-state-root (SL180/front). Initial author/review source wrappers use native30/model60/outer90; the separate deficit probe runner is native-only. Exact argv, cwd, environment/profile, tool/input fingerprints, outputs and exits are retained in the reports.",
+    "completion": "All accepted actors exit0 with quiet stderr, no timeout/interruption and empty reaped groups. Baseline and failed strict records retain their actual failure classification/zero credit; no PHP/state fixture failed.",
+    "affected_older_control": "Only A19 review BOUNDARIES reason metadata changes from ingress refusal to array literal float-key reference after callback for its deferred different-reference source. Original PHP bytes are unchanged. No A19 source/state/native replay or renewed credit."
+  },
+  "reports": [
+    {"path": ".tools/array-literal-float-ref-baseline-20/report.json", "revision": "c2bdd2f0224e6ba2e69c24b01cbf5956d4ed6ff2", "sha256": "fca2e8b4824876486e658f3cdbe8b4c5ea04391c08215380f93d9504bdee999e", "credit": "baseline0"},
+    {"path": ".tools/array-literal-float-ref-native-rest-20/report.json", "revision": "c2bdd2f0224e6ba2e69c24b01cbf5956d4ed6ff2", "sha256": "7e9c3c67e447989cd054ea483c49dac1d5e4c2c00aefcc9b7a0ca3732ff6e98e", "credit": "native2 preparation0"},
+    {"path": ".tools/array-literal-float-ref-review-native-20/report.json", "revision": "c2bdd2f0224e6ba2e69c24b01cbf5956d4ed6ff2", "sha256": "b1557b77565007f605f1b2c96c7961aa9a1d92a2b0dc067a5e9769be1ad6cd6e", "credit": "native2 preparation0"},
+    {"path": ".tools/array-literal-float-ref-deficit-native-20/report.json", "revision": "c2bdd2f0224e6ba2e69c24b01cbf5956d4ed6ff2", "sha256": "41cde27c8983e5c5e45c37432ba187fb28d5124b6fb83cb985a34f47931a7a99", "credit": "deferred new-reference deficit native1 preparation0"},
+    {"path": ".tools/array-literal-float-ref-strict-20/report.json", "revision": "6c3c1507a100ea5a8987afab8c16a3340c8321d2", "sha256": "aab554c08a8e3a5d5d48ebbdc0ef62ea7a94fd90e98c4983432c91f1d4655c17", "credit": "strict elaboration failure0"},
+    {"path": ".tools/array-literal-float-ref-strict-20-fixed/report.json", "revision": "61a8b26d961729e4991ec87acf48d8b5f7c6b5a6", "sha256": "c9ac13a5ec1b71b477952850f6e722578dcf789d7b98d858b64994a92b733083", "credit": "strict 403-module closure; PHP0"},
+    {"path": ".tools/array-literal-float-ref-author-source-20/report.json", "revision": "61a8b26d961729e4991ec87acf48d8b5f7c6b5a6", "sha256": "3799821b9ec6ae0e7eb02988b8f4f3bbc59f63df5457f38c38810fb15f6e95c5", "credit": "3 source agreements"},
+    {"path": ".tools/array-literal-float-ref-review-source-20/report.json", "revision": "61a8b26d961729e4991ec87acf48d8b5f7c6b5a6", "sha256": "7a1c3d57c141e2a8af4f21cb3db64ecc0b6d4570965847be5548af53c7628972", "credit": "2 source agreements"},
+    {"path": ".tools/array-literal-float-ref-author-state-20/report.json", "revision": "5ca23fe1978df066475e526fb5788209271d0851", "sha256": "1ee9673b2ec834ed862b8bd623d65ff03f06ba01885db9092866c0f833792513", "credit": "479 premises including 6 raw"},
+    {"path": ".tools/array-literal-float-ref-review-state-20/report.json", "revision": "5ca23fe1978df066475e526fb5788209271d0851", "sha256": "5ad4dbda0653522183c0a2b0ad3526f5ae81c36797e84467aca4ed75b475c7b2", "credit": "351 premises including 6 raw"}
+  ],
+  "actual_parent_review": {
+    "through": "0714bbadb1d53f10cd29f8bc018a56e782f195b9",
+    "seams": "Independent full e831-to-2e499 review covers Generator-return retention/close/GC, typed-ref destructor views, Stringable constant queries and plain-CV arithmetic continuations. Full 2e499-to-0714 review covers magic __call/class compilation and one final pending typed-ref destructor view. These selectors are absent from normal named handlers, scalar callbacks, ordinary array copies and intrinsic Throwable observers. GENERATORRETURNRETAINED stays eps; arithmeticCV needs two ordinary variable operands, absent from the constant/dimension additions here. No joined actor indicated.",
+    "composition_requirement": "Retain actual parent 404-module order including414, all unrelated tasks/routes and GENERATORRETURNRETAINED initialization/roots/validity while adding LITERALREFRETAINED. Review only subsequent parent delta and the exact composed tree; do not renew accepted evidence."
+  },
+  "remaining": "Different-reference retarget owner deficits are the next independent array follow-up. Owning/string old/current CV values, reachable objects and wider key/value producers remain partial. The held undefined selected-reference LIST-key candidate and paused owned-NUL include/Stringable producer are untouched.",
+  "archive": {
+    "path": ".tools/array-literal-float-ref-key-warning-20-raw.tar.gz",
+    "bytes": 437364,
+    "members": 159,
+    "sha256": "f7ffeb57e7a000bcacc9f7749010a7ea1a166fdb086c8f6acdd9825b61469510",
+    "contents": "Ten basename report/raw roots above plus strict/reuse/deficit runners; failed strict root also preserves its original runner.py. Bulky artifacts remain outside Git.",
+    "recovery": "Restore a worktree at 5ca23fe19 at the recorded .tools/array-literal-float-reference-key-20 path and extract this canonical sibling archive into its .tools directory. Source originals and report paths then recover their recorded identities. Use fresh output directories for reproductions; historical reports/cuts remain unchanged."
+  }
+}

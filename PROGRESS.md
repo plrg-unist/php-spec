@@ -7,6 +7,25 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Reference elements in array literals now preserve the pre-conversion acquired
+wrapper across finite lossy-float CV-key handlers. Stable or same-cell rebinding
+transfers the owner into an array alias; ordinary scalar retargeting inserts the
+live null/bool/int/float and retains one old-wrapper owner per occurrence for the
+request, including supplied throws. Five fresh originals and strict403 pass at
+`61a8b26d9`; all 830 focused state premises (479 author + 351 independent,
+including twelve raw transitions) pass at `5ca23fe19`, with no fixture failure
+or retry. Same-cell singleton unwrapping and retained multiplicity1/2 remain
+distinct across actual callbacks, cleanup and whole/split budgets.
+The genuine unchanged Unsupported baseline and one strict executable-binding
+failure retain zero credit. The corrected strict check and all five first source
+comparisons pass without native replay. Initial/resumed old values and current
+scalar targets are bounded to null/bool/int/float, with object-free builders.
+Different-reference retargeting remains Unsupported on return and throw: a fresh
+native-only inverse-retarget probe confirms both retained old ownership and a
+new-cell owner deficit. That deficit is the next array follow-up, not covered by
+this positive-owner slice; the held undefined-reference LIST-key candidate stays
+untouched. [Reference-element review](coverage/semantics/array-literal-float-ref-key-warning-review.json).
+
 Direct, array-method and fixed-string-method Closure captures now use the standard
 numeric Notice and private 1/1.0. Nine module402 image lines preserve existing live
 guards, source/scope authentication, pointers and ownership. Two exact originals
@@ -48,29 +67,10 @@ runtime/module paths and four private scripts preserved. Stringable-name, magic
 setter, reference-return, Sensitive, numeric-CV and float-key paths have no producer
 here; source4/state701 retain private401 cuts and both fixture failures without replay.
 
-Array-literal finite lossy-float CV keys now keep their converted integer across
-deprecation callbacks. Unwrapped null/bool/int/float element CVs supply their live
-post-handler value; captured runtime array temporaries retain their table and old
-embedded references. Duplicate replacement preserves position, following items
-stay fresh, and supplied throws retire the object-free builder/input graphs while
-preserving callback writes, destination and Throwable identity. Four normal
-originals and strict402 pass at `f625e2c3c`; all 589 focused state premises
-(440 author + 149 independent, including eight raw transitions) pass at
-`b3027bcd7`. All post-change actors passed on first attempt; the unchanged
-Unsupported baseline and native preparation retain zero credit.
-Only30/41/new413 and the manifest change runtime; five affected inventory rows
-remain partial. String/owning or wrapped CV elements, reachable objects and wider
-producers remain open. Explicit reference-element retargeting has separate native
-evidence of old-wrapper sharing and stays Unsupported/zero credit; its original
-and one fresh ownership probe are preserved.
-[Array-literal review](coverage/semantics/array-literal-float-key-warning-review.json).
-
-Composed over `85a9c6ec8`/402 after independent review of the incoming
-property-setter, reference-return, DEFINE, SensitiveParameterValue and arithmetic
-selectors, absent from these sources. Parent412 and all other incoming runtime
-paths stay exact; only30/41/new413 and the 403-module manifest carry A19.
-Source4/strict402 and state589 retain their private cuts without a joined actor,
-accepted replay or renewed execution credit.
+The earlier by-value literal-key slice retains source4/strict402 at `f625e2c3c`
+and state589 at `b3027bcd7`, composed over `85a9c6ec8`/402 as `bd9e946b6`/403
+without replay. Its native reference-retarget originals/probe remain historical
+zero credit. [A19 ledger](coverage/semantics/array-literal-float-key-warning-review.json).
 
 M107 extends normal two-return cleanup admission to final `REF_RETURN_PAIR`.
 The existing same-scope release/storage view now feeds its full final validator;

@@ -67,11 +67,22 @@ before dispatch and on completion. Zend inserts even with a pending exception;
 without objects, abandoning both graphs has the same observable cleanup. A
 callback introducing objects enters explicit Unsupported on return or throw.
 Owning/string CV elements and initially wrapped CVs remain outside this producer.
-Selected reference elements requiring this float-key callback also remain
-Unsupported: a native retargeting case inserts the rebound reference but leaves
-the old wrapper observably shared.
-Its original and ownership probe retain zero agreement credit. The source basis
-is pinned `Zend/zend_vm_def.h::ZEND_ADD_ARRAY_ELEMENT` and
+
+The separate reference-element continuation acquires a direct CV's wrapper before
+conversion. If the callback leaves or rebinds that CV to the same cell, insertion
+transfers the acquired owner to an alias. If it rebinds the CV to an unwrapped
+null/bool/int/float, insertion uses that live scalar directly and retains the old
+wrapper for the request. Repeated retargets retain one owner each; supplied throws
+retain the same owner while discarding the builder. Initial and resumed old values
+must remain null/bool/int/float, and the builder must remain object-free.
+Retargeting to a different reference cell stays Unsupported on return or throw:
+native insertion both retains the old owner and omits an owner on the new wrapper.
+A fresh inverse-retarget probe exposes and then balances that deficit; it has
+native-only, zero agreement credit. The
+[reference-element ledger](../../coverage/semantics/array-literal-float-ref-key-warning-review.json)
+keeps these source/state cuts separate from A19's historical reference probes.
+The source basis is pinned `Zend/zend_vm_def.h::ZEND_ADD_ARRAY_ELEMENT`,
+`Zend/zend_hash.c::zend_array_dup_value`, and
 `Zend/zend_operators.h::zend_dval_to_lval_safe`.
 
 
