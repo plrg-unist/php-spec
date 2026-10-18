@@ -1,5 +1,5 @@
 {
-  "status": "privately reviewed; integration pending",
+  "status": "independently reviewed and validated; actual-parent composition accepted",
   "scope": "Finite fitting lossy-float CV keys in array literals with direct-CV reference elements. Different-reference retargets require primitive untyped acquired/current cells and an object-free builder.",
   "engine_basis": "Pinned PHP 8.5.10 CLI NTS64, vendor engine 34308a6666b2d489c509541ea9befea9e2b42348: Zend/zend_vm_def.h::ZEND_ADD_ARRAY_ELEMENT acquires the old wrapper before key conversion but inserts the live element CV afterward; Zend/zend_hash.c::zend_array_dup_value distinguishes singleton reference unwrapping from sharing.",
   "semantics": "LITERALREFRETAINED and LITERALREFDEBTS represent unmatched positive/missing owners per cell while preserving every logical alias. Same-cell transfer preserves bias; scalar retargeting first cancels existing debt; inverse reference retargeting canonically cancels both biases. Debt persists after entry deletion and abrupt builder cleanup, including multiplicity 2 and residual positive ownership.",
@@ -60,5 +60,9 @@
   },
   "maintenance": "Two A20 new-reference refusal projections now use an owning array value; two existing pure-graph fixtures add DEBTS eps; A19's deferred-reference boundary reason becomes the explicit deficit-lifetime reason. Original PHP bytes stay unchanged and historical actors are not rerun.",
   "incoming_review": "Independently reviewed 79e19 through 4ff5f52eff1a0d23e71be1ba2de17fcdbdc223b1/405: magic static-method415, typed-reference cursor recovery, detached Generator send, object define flags, closure numeric classification, mixed arithmetic and magic-empty array RV selectors are absent here. Preserve parent 30/40 changes and the 405-module list at composition; the new debt field lifts unrelated states by eps. No concrete joined actor indicated.",
+  "composition": {
+    "parent": "4ff5f52eff1a0d23e71be1ba2de17fcdbdc223b1", "modules": 405,
+    "result": "Actual parent module order and independent 30/40 additions are retained pointwise. Own 39/84/190/413 and maintained tests retain their accepted private bytes; both positive and debt fields coexist with the parent Generator root families. Independent selector review found no concrete joined actor. Source5/strict404 and state1159 keep their original cuts and zero-credit failures; no execution or historical credit is added."
+  },
   "remaining": "Effective-zero/dangling references, owning/typed debt payloads, active collection, outstanding request-end debt and wider key/element producers remain partial. The held undefined-reference LIST-key candidate and paused owned-NUL include path remain untouched."
 }

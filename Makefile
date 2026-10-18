@@ -365,6 +365,10 @@ test-semantics: build
 	python3 tests/semantics/generator_owning_detached_return_review_sources.py
 	python3 tests/semantics/generator_owning_detached_return_state.py
 	python3 tests/semantics/generator_owning_detached_return_review_state.py
+	python3 tests/semantics/generator_pending_owning_return_send_sources.py
+	python3 tests/semantics/generator_pending_owning_return_send_review_sources.py
+	python3 tests/semantics/generator_pending_owning_return_send_state.py
+	python3 tests/semantics/generator_pending_owning_return_send_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
@@ -1009,10 +1013,14 @@ test-semantics: build
 	python3 tests/semantics/magic_empty_closure_rv_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_empty_isset_rv_cases.json
 	python3 tests/semantics/magic_empty_isset_rv_protocol.py --revision "$$(git rev-parse HEAD)"
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_empty_isset_array_rv_cases.json
+	python3 tests/semantics/magic_empty_isset_array_rv_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_setter_cases.json
 	python3 tests/semantics/magic_setter_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_call_cases.json
 	python3 tests/semantics/magic_call_protocol.py --revision "$$(git rev-parse HEAD)"
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_static_call_cases.json
+	python3 tests/semantics/magic_static_call_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_empty_isset_only_cases.json
 	python3 tests/semantics/magic_empty_isset_only_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_empty_get_only_cases.json

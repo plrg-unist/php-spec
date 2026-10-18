@@ -56,6 +56,35 @@ def $number_compare_receiver_image(S, n, NUMBER_CLOSURE) = true
 def $number_compare_receiver_image(S, n, NUMBER_CLOSURE) = true
   -- if $(n < |S.OBJECTS|)
   -- if $object_body(S.OBJECTS[n]) = STRINGMETHODCLOSURE pcalltarget pstringselection
+def $number_compare_receiver_image(S, n, NUMBER_CLOSURE) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[n]) = FROMCALLABLECLOSURE pfrommethod
+def $number_compare_receiver_image(S, n, NUMBER_CLOSURE) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[n]) = BOUNDFAKECLOSURE pboundfake
+def $number_compare_receiver_image(S, n, NUMBER_CLOSURE) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[n]) = GETTERCLOSURE n_receiver pgettermethod text_base pgettersource
+def $number_compare_receiver_image(S, n, NUMBER_CLOSURE) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[n]) = CTORCLOSURE n_receiver "SensitiveParameterValue" porigin
+def $number_compare_receiver_image(S, n, NUMBER_CLOSURE) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[n]) = FROMCALLABLEFACTORY porigin
+def $number_compare_receiver_image(S, n, NUMBER_CLOSURE) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[n]) = INTRINSICCLOSURE pintrinsic
+  -- if ~$from_kind(pintrinsic)
+  -- if pintrinsic =/= INTRINSIC_CLOSURE_CURRENT /\ ~$closure_bind_kind(pintrinsic) /\ ~$fiber_kind(pintrinsic)
+def $number_compare_receiver_image(S, n, NUMBER_CLOSURE) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[n]) = INTRINSICCLOSURE INTRINSIC_CLOSURE_CURRENT
+def $number_compare_receiver_image(S, n, NUMBER_CLOSURE) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[n]) = INTRINSICCLOSURE INTRINSIC_CLOSURE_BIND
+def $number_compare_receiver_image(S, n, NUMBER_CLOSURE) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[n]) = FIBERAPICLOSURE pfibercapture
 def $number_compare_receiver_image(S, n, NUMBER_GENERATOR) = true
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = GENERATOR pgenerator

@@ -613,9 +613,26 @@ Four originals and 313 focused premises (289 reached +24 derived) cover these
 states, authenticated saved-prefix call certificates, Boolean/source/result
 refusals and budgets. The original normal certificate failure and three diagnostic
 records remain zero credit. Module407 still requires a typed-bool callback;
-other untyped scalar/null/array/internal-object results and wider recursive cases
+other untyped scalar/null/internal-object results and wider recursive cases
 remain Unsupported. No new task, owner or generic destruction/GC rule is added.
 [Isset RV review](../../coverage/semantics/magic-empty-isset-rv-review.json).
+
+The paired route now also truth-tests live array RVs before ordinary disposal.
+Nonempty truth survives table retirement and a payload destructor that clears the
+caller CV and changes Get's value from 1 to 0. A held table delays that destructor
+until after Get/result, when receiver destruction may nest inside it. A supplied
+payload-destructor Exception skips Get and reaches the same catch/destination.
+Mutable empty tables use ITEMSeps despite NEXT1/SERIAL1 history: false skips a
+throwing Get, with the table retired before receiver destruction. IN_ISSET and
+the saved receiver remain through sole payload cleanup; Get is inactive there.
+
+[Four originals and 416 focused premises](../../coverage/semantics/magic-empty-isset-array-rv-review.json)
+check these lifetimes, full call validity and budget resumption. Bounds/allocation
+refusals and the derived old-object truth bridge add no earlier-suite execution
+credit. The existing VALUEtrue destructor cleanup certificate, bool decisions,
+ordinary/no-Get typed-bool admission and generic array/free/GC rules stay unchanged.
+Embedded reference cells, cycles, wider alias/reentry histories and other untyped
+result kinds remain partial; no full-program GC-preservation claim is made.
 
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.

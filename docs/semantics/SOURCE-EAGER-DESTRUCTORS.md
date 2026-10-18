@@ -39,12 +39,29 @@ borrowed registries. M108 single 288/7, M106 partial 296/7 and M107 final 275/7
 reached proofs cover every cleanup budget, original diagnostics, aliases and
 complete budget identity at distinct tested cuts.
 
-One empty release directly before a pending single-cursor exit delegates to the
-unchanged live finite-Throwable/source/full-cursor validator. M109's 325/6 proof
-preserves the destructor TypeError through local CT and consumed NULL, then one
-VALUE Notice at old source line5 and detached rNULL/b7. Earlier auxiliary-operation/
-storage intervals, pending-pair prefixes, interposed capture, wider owners/reentry and GC
-remain open. [Review and recovery](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+Pending single-cursor and adjacent partial/final-pair cleanup can project same-scope
+release/storage prefixes through one normal auxiliary THROW_SEARCH exit to the existing final-empty release
+and pending-return validator. The auxiliary SOURCE must name the same pending
+Throwable and retain empty PENDING plus NORMAL completion; it cannot hide a future
+abrupt restoration. Full source/finite-Throwable/cursor or mixed-pair checks remain
+unchanged.
+M110's 452/16 proof covers all seven cleanup transitions and pending replay with
+one ordinary empty-property-row prune, unchanged GC and exact budgets. The same
+TypeError reaches CT, then consumed NULL gives one VALUE Notice at old source line5
+and detached rNULL/b7. M109's final-empty 325/6 retains its separate cut. M111's
+556/18 final-pair proof covers that interval and its direct empty release, then
+same-TypeError replay and fresh NULL reference recovery with no Notice. The
+computed outer/CV inner pair is root-free; z's object and prior b7 stay live while
+r detaches. All eight public pauses match raw states, with the same precise row
+prune; source/LINE/scope/registry and physically valid malformed auxiliary records
+refuse. M112's 684/18 owning partial-pair proof reuses the same view while
+preserving the required outer HCELL task. Virtual auxiliary EXIT validation rebases
+only outer.OUTER to the actual inner.OUTER; the real outer-origin entry still
+refuses. Removing only the task refuses with unchanged stores/allocations/reference
+cells, valid heap and live global z. Same-TypeError C, inner KNOWN NULL/one line9
+VALUE Notice, fresh caller NULL and later r-only write agree with exact budgets.
+Other pending histories, interposed capture/EXIT, wider owners/reentry and GC remain
+open. [Review and recovery](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
 Pruning prepares the object store and fatal marks once, then selects the same
 unsupported, refused, pending-release or store-drop result. Unmatch in preparation,

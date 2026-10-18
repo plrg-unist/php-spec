@@ -50,7 +50,7 @@ holders add no owners. A supplied handler throw discards the addition without
 delivering a result. Initial selection and pre-callback input snapshots are checked;
 post-callback holders remain historical. Three exact originals and 321 genuine SL
 premises retain their cuts in the [ADD ledger](../../coverage/semantics/arithmetic-warning-review.json).
-Mixed/copied operands, owning/expired replacements, failed LEFT conversion and
+Other mixed/copied operands, owning/expired replacements, failed LEFT conversion and
 wider arithmetic/exit paths remain required; existing integer-operator evidence is unchanged.
 
 Failed RIGHT conversion on this selected-cell route now raises TypeError using
@@ -73,7 +73,7 @@ values become invalid. Failed RHS conversion instead reports the live selected
 types, and supplied throws cancel result delivery while preserving callback writes.
 Seven exact originals and 834 focused premises check real dispatch/entered phases,
 default Warning bytes, selected-cell owners and budget resumption in the
-[SUB/MUL ledger](../../coverage/semantics/submul-warning-review.json). Mixed,
+[SUB/MUL ledger](../../coverage/semantics/submul-warning-review.json). Other mixed,
 owning/constrained/expired and wider arithmetic/lifecycle forms remain partial;
 old ADD/DIV rules and evidence are unchanged.
 
@@ -218,7 +218,7 @@ types; supplied throws cancel outer result assignment while callback writes surv
 Seven exact originals and 951 focused premises cover real phases, default Warning/
 Deprecated bytes, atomic results/errors, owners and budgets in the
 [power-conversion ledger](../../coverage/semantics/power-conversion-review.json).
-Mixed/copied/owning/constrained or expired operands and wider
+Other mixed/copied/owning/constrained or expired operands and wider
 callbacks/lifecycles remain partial. Old numeric-CV power and other arithmetic
 bodies and evidence are unchanged.
 
@@ -232,7 +232,7 @@ a surviving alias keeps the old selected cell live. Nine originals and 576 focus
 premises cover all four plan arms, strict float `68.75`, signed infinity, default
 diagnostics and result/error ownership in the
 [right-warning ledger](../../coverage/semantics/right-arithmetic-warning-review.json).
-Mixed/copied/owning/constrained or expired operands, other conversion orders
+Other mixed/copied/owning/constrained or expired operands, other conversion orders
 and wider callbacks/lifecycles remain partial. Earlier evidence receives no renewed credit.
 
 Ordinary arithmetic now also stages these diagnostics for two initially plain CVs.
@@ -246,8 +246,25 @@ Ten originals and 1,055 focused premises check quiet/leading LEFT, cached result
 live bool/string TypeError, supplied Warning/Deprecated throws, and one cell owner
 versus two after aliasing or none after unset in the
 [plain-arithmetic ledger](../../coverage/semantics/plain-arithmetic-warning-review.json).
-Mixed/copied/reference-result and owning/constrained operands, pre-conversion
+Other mixed/copied/reference-result and owning/constrained operands, pre-conversion
 reference creation and wider lifecycles remain partial.
+
+The same arithmetic holders now accept exactly one initially plain CV and one
+pre-existing reference. Both selections precede numeric conversion: the reference
+keeps its original cell when its name is rebound, while the plain input names its
+CV until capture. Until converted, the selected cell must remain allocated, untyped,
+live and nonowning; a surviving alias keeps it alive in these witnesses. A fresh RHS Warning
+reads that old referent even when the current name selects a replacement. Returned
+holders and final power Deprecated use history, while failed conversion reports
+the live types at the selected pointers. Separate mixed entry preserves old plain
+and reference plan controls and reuses all conversion/result bodies.
+Nine originals and 858 focused premises check both orientations, quiet/leading
+entry, cached float `68.75` after old-RHS rebinding, old bool-string TypeError,
+cached-zero division after RHS-name unset and final supplied-throw cancellation.
+Old and replacement cell owners, exact atomic effects and budgets are recorded in
+the [mixed-arithmetic ledger](../../coverage/semantics/mixed-arithmetic-warning-review.json).
+Copied/reference-result/owning operands, unheld referent lifetimes, wrapping a
+pending plain input and wider callbacks remain partial; OP12 remains paused.
 
 Primitive plain-CV `**=` now retains both numbers and the original target binding
 through zero-base/negative-exponent deprecation. Normal return stores the captured

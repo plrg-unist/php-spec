@@ -179,6 +179,7 @@ dec $arithmetic_div_plan(pstate) : pintegeroperation?
 dec $submul_warning_plan(pstate) : pintegeroperation?
 dec $power_conversion_warning_plan(pstate) : pintegeroperation?
 dec $arithmetic_cv_plan(pstate) : pintegeroperation?
+dec $arithmetic_mixed_plan(pstate) : pintegeroperation?
 dec $power_warning_plan(pstate) : (pintegeroperation, pnumber, pnumber)?
 dec $arithmetic_unary_plan(pstate) : punarywarning?
 dec $string_compare_pending(pstate) : bool
@@ -192,6 +193,7 @@ rule PhpStep/binary-right: S ~> S_out[.HELD = S.HELD]
   -- if $submul_warning_plan(S) = eps
   -- if $power_conversion_warning_plan(S) = eps
   -- if $arithmetic_cv_plan(S) = eps
+  -- if $arithmetic_mixed_plan(S) = eps
   -- if $power_warning_plan(S) = eps
   -- if ~$string_compare_pending(S)
   -- if ~$aggregate_compare_pending(S)
@@ -211,6 +213,7 @@ rule PhpStep/binary-left-abrupt: S ~> S_left[.TODO = eps][.HELD = S.HELD]
   -- if $submul_warning_plan(S) = eps
   -- if $power_conversion_warning_plan(S) = eps
   -- if $arithmetic_cv_plan(S) = eps
+  -- if $arithmetic_mixed_plan(S) = eps
   -- if $power_warning_plan(S) = eps
   -- if S_left = $resolve_at($hold_task_inputs(S), poperand, z)
   -- if S_left.COMPLETION =/= NORMAL
@@ -223,6 +226,7 @@ rule PhpStep/binary-right-abrupt: S ~> S_right[.TODO = eps][.HELD = S.HELD]
   -- if $submul_warning_plan(S) = eps
   -- if $power_conversion_warning_plan(S) = eps
   -- if $arithmetic_cv_plan(S) = eps
+  -- if $arithmetic_mixed_plan(S) = eps
   -- if $power_warning_plan(S) = eps
   -- if S_left = $resolve_at($hold_task_inputs(S), poperand, z)
   -- if S_left.COMPLETION = NORMAL

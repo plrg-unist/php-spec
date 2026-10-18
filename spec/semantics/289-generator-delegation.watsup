@@ -88,7 +88,7 @@ dec $generator_from_search_position(ptask*) : bool
 dec $generator_from_valid_task(pstate, nat, porigin, poperand) : bool
 
 ;; YIELD_FROM has no send target. Its detached current can be returned without
-;; advancing, but an owning unfinished return keeps its separate close boundary.
+;; advancing. A bounded owning result keeps its separate close boundary.
 def $generator_pending_detached_send(S, pgeneratorop) = true
   -- if $generator_pending_resume(S, pgeneratorop)
   -- if pgeneratorop.NAME = "send" /\ ~pgeneratorop.ADVANCE
@@ -106,7 +106,7 @@ def $generator_pending_detached_send(S, pgeneratorop) = true
   -- if pgenerator.FRAME = (pframe)
   -- if pframe.TODO = (GENERATOR_FROM_COMPLETE pgeneratorop.OBJECT pgeneratorfrom.SITE n_child pvalue_return) :: ptask*
   -- if $generator_from_complete_valid(S, pgeneratorop.OBJECT, pgeneratorfrom.SITE, n_child, pvalue_return)
-  -- if $value_nodes(pvalue_return) = eps
+  -- if $value_nodes(pvalue_return) = eps \/ ($generator_return_waiting(S, pgeneratorop.OBJECT) /\ pgeneratorop.LOOP = eps /\ ~pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED)
 def $generator_pending_detached_send(S, pgeneratorop) = false -- otherwise
 
 ;; Native API argument cleanup precedes releasing its method receiver.

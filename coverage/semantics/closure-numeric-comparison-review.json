@@ -1,0 +1,289 @@
+{
+  "version": 1,
+  "milestone": "COMP87",
+  "status": "independently reviewed within the stated authentic Closure numeric Notice family",
+  "behavior": "Authentic factory, internal API and Fiber Closure bodies use standard numeric Notices/private 1 or 1.0, including actual capture-graph retirement during the callback.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "tested_revision": "d6db2b1313b810f2060027ec7212250a6727e027",
+  "ordered_modules": 403,
+  "manifest_sha256": "56f38c5408557e2a3eae72fe309af9109b2861cf864c2a4b2a999554f5520c4b",
+  "implementation": {
+    "spec/semantics/402-object-numeric-comparisons.watsup": "ccb8c567400285f94470d04c002af1870473addf7e7cf8ccddb64864b608a39b"
+  },
+  "engine_basis": [
+    "Zend/zend_closures.c zend_closure_compare begins with ZEND_COMPARE_OBJECTS_FALLBACK (zend_object_handlers.h). Object-versus-number reaches zend_std_compare_objects before fake-function, receiver, scope or Fiber metadata.",
+    "Zend/zend_object_handlers.c zend_std_compare_objects captures the original scalar type, reports a failed numeric cast, substitutes private int1 or float1.0 and then compares against the opposing zval. The original Closure is not consulted after the callback.",
+    "Existing234/253/174/379/148/331/348 rules produce the authentic normalized native Closure forms. The nine added402 clauses change only documentary class images; producer, callable, scope, visibility and magic barriers are unchanged."
+  ],
+  "contract": [
+    "Exactly 29 module402 lines admit normalized FROMCALLABLECLOSURE, BOUNDFAKECLOSURE, GETTERCLOSURE, exact SensitiveParameterValue CTORCLOSURE, FROMCALLABLEFACTORY, ordinary 148-eligible INTRINSICCLOSURE, exact CURRENT/static BIND and FIBERAPICLOSURE. Bounds precede indexing. Allocation/nonfreeing live admission, Closure name, targets, pointers, roots and continuations are unchanged.",
+    "Both author originals authenticate all selected real producers before the first numeric ingress. CV live1 versus copied0 and cross-family SECOND private float1.0 despite live9 writes distinguish the standard remainder. Later Parent selection on overriding Child, getter/factory calls, readonly constructor rejection, GC-enabled flag, inside/outside CURRENT, rebinding and Fiber start are real source endings, without new API-step credit.",
+    "The independent bound clone has retired SOURCE seed/intermediate and copied ORIGINAL old-receiver history before ingress. Only its current Child receiver owns the Map/private graph. A separate start capture owns a cold Fiber, real callback and second Map/private graph. The first Notice overwrites the selected Closure CV and all actual graph objects retire; weak keys remain live through ordinary global owners.",
+    "Actual retired raw class images remain true, fresh live admission becomes false and zero-root numeric continuations remain valid. Complete dispatch/result states, authentic raw WeakReference history/null gets, scopes, owners and full-driver zero/split budgets are checked. Eighteen synthetic bounds/kind/dead-image projections are separate local diagnostics, not malformed-global or new producer admission."
+  ],
+  "source_catalogues": {
+    "tests/semantics/closure_numeric_comparison_cases.json": "a0f5c5bf957ff2758888350e24181b4dffe8e535d8140d7ac16f995353b79b1c",
+    "tests/semantics/closure_numeric_comparison_review_cases.json": "71fbaed74413f6976cb2b79274ec436a5849e058f22443c29c500e7ef5046319"
+  },
+  "unchanged_frontier": {
+    "revision": "f5c412d58d5914902f22e5ef43b950e05d27409b",
+    "report": ".tools/closure87-support/run-baseline-v1/report.json",
+    "aggregate_passed": false,
+    "agreement_credit": 0,
+    "cases": [
+      {
+        "id": "factory",
+        "public_status": "unsupported",
+        "reason": "error-handler ingress requires a producer continuation",
+        "stdout_prefix": "producers|history|from-int|",
+        "host_exit": 1,
+        "seconds": 88.34933610633016,
+        "accepted": true,
+        "observation_recorded": true,
+        "agreement": false,
+        "agreement_credit": 0
+      },
+      {
+        "id": "api",
+        "public_status": "unsupported",
+        "reason": "error-handler ingress requires a producer continuation",
+        "stdout_prefix": "producers|gc-int|",
+        "host_exit": 1,
+        "seconds": 120.5508177652955,
+        "accepted": true,
+        "observation_recorded": true,
+        "agreement": false,
+        "agreement_credit": 0
+      }
+    ],
+    "preserved_inputs": ".tools/closure87-support/run-baseline-v1/failure-inputs"
+  },
+  "validation": {
+    "original_sources": {
+      "normal_agreements": 4,
+      "author_seconds": [
+        216.34855780936778,
+        232.39773193001747
+      ],
+      "independent_seconds": [
+        78.12425334751606,
+        66.19514264166355
+      ],
+      "cli_and_host_caps_seconds": [
+        240,
+        250
+      ],
+      "native_notices": 24
+    },
+    "focused": {
+      "factory": {
+        "report": ".tools/closure87-state/run-factory-sl-receiver-retry1/report.json",
+        "premises": 183,
+        "setup": 178,
+        "pure": 5,
+        "raw_php_steps": 7,
+        "seconds": 204.08713296428323
+      },
+      "api": {
+        "report": ".tools/closure87-state/run-api-sl-guard-retry1/report.json",
+        "premises": 167,
+        "setup": 158,
+        "pure": 9,
+        "raw_php_steps": 6,
+        "seconds": 194.3349262494594
+      },
+      "bound": {
+        "report": ".tools/closure87-peer/bound-state-v2/report.json",
+        "premises": 127,
+        "setup": 125,
+        "pure": 2,
+        "raw_php_steps": 2,
+        "seconds": 82.55254123732448
+      },
+      "fiber": {
+        "report": ".tools/closure87-peer/fiber-state-capture-retry1/report.json",
+        "premises": 117,
+        "setup": 115,
+        "pure": 2,
+        "raw_php_steps": 2,
+        "seconds": 64.2994471359998
+      }
+    },
+    "total": {
+      "premises": 594,
+      "setup": 576,
+      "pure": 18,
+      "raw_php_steps": 17,
+      "transition_types": {
+        "number_compare_results": 15,
+        "numeric_ingresses": 2
+      }
+    },
+    "failures": [
+      {
+        "report": ".tools/closure87-peer/source-v1/report.json",
+        "classification": "public timeout; host1/reliable/reaped, no frontend/program/outcome receipt or modeled prefix",
+        "seconds": 245.2154605705291,
+        "correction": "Split the same bound/Fiber retirement witnesses into source-bound originals and fixtures; fresh affected native2/source2/prep4, unchanged caps/runtime.",
+        "preserved_inputs": ".tools/closure87-peer/source-v1/failure-inputs",
+        "agreement_credit": 0,
+        "premise_credit": 0,
+        "raw_step_credit": 0
+      },
+      {
+        "report": ".tools/closure87-state/run-factory-sl-v1/report.json",
+        "classification": "fixture metadata assertion: creator THIS is not the selected receiver",
+        "correction": "Only THIS to CLASS.RECEIVER; affected factory EL/SL, source/runtime unchanged.",
+        "preserved_inputs": ".tools/closure87-state/run-factory-sl-v1/failure-inputs",
+        "premise_credit": 0,
+        "raw_step_credit": 0
+      },
+      {
+        "report": ".tools/closure87-peer/fiber-state-v2/report.json",
+        "classification": "pre-main fixture capture-list syntax",
+        "correction": "Bind pitem_vm* then check its singleton capture separately; only Fiber SL repeated. Bound fixture/plan stay byte-exact; old builder is preserved in the failed Fiber inputs.",
+        "preserved_inputs": ".tools/closure87-peer/fiber-state-v2/failure-inputs",
+        "premise_credit": 0,
+        "raw_step_credit": 0
+      },
+      {
+        "report": ".tools/closure87-state/run-api-sl-v1/report.json",
+        "classification": "wrong pure synthetic exclusion: existing fiber_kind omits START",
+        "correction": "Only the negative projection START to CURRENT, which 281 excludes; affected API EL/SL. Actual bound-start tag and runtime unchanged.",
+        "preserved_inputs": ".tools/closure87-state/run-api-sl-v1/failure-inputs",
+        "premise_credit": 0,
+        "raw_step_credit": 0
+      }
+    ],
+    "separate_zero_credit": "Native/unchanged Unsupported, initializer, eight parse/check operations and EL add no application/state credit. Author API capture-list correction was prelaunch, not a failed actor. Accepted factory inputs are archived before unselected API-builder corrections; bound inputs retain the prior builder through its failed Fiber archive. Source clone/seed retirement, later calls/casts and GC flag observations reuse existing routes without new clone/free/API/collection step credit.",
+    "accepted_input_bridges": [
+      {
+        "accepted_report": ".tools/closure87-state/run-factory-sl-receiver-retry1/report.json",
+        "preserved_inputs": ".tools/closure87-state/run-factory-sl-receiver-retry1/accepted-inputs",
+        "builder": ".tools/closure87-state/run-factory-sl-receiver-retry1/accepted-inputs/build.py",
+        "reason": "Only the unselected API capture-pattern and pure-kind branch changed afterward; accepted factory fixture/plan remain byte-identical, with no replay."
+      },
+      {
+        "accepted_report": ".tools/closure87-peer/bound-state-v2/report.json",
+        "preserved_inputs": ".tools/closure87-peer/fiber-state-v2/failure-inputs",
+        "builder": ".tools/closure87-peer/fiber-state-v2/failure-inputs/build.py",
+        "reason": "Only the unselected Fiber capture-pattern branch changed afterward; accepted bound fixture/plan remain byte-identical, with no replay. The independent record binds this cut."
+      }
+    ]
+  },
+  "limits": [
+    "Ordinary intrinsic eligibility is the exact existing 148 predicate: not from_kind, not CURRENT, not closure_bind_kind, not fiber_kind. Exact CURRENT/static BIND are separate additions. No blanket INTRINSICCLOSURE arm is added. Pure FROM_CALLABLE/FROM_CALLABLE_FACTORY/BINDTO/FIBER_CURRENT denials test only these selected predicates; START is intentionally absent from 281 fiber_kind.",
+    "INVOKECLOSURE has no actual producer in this specification and stays excluded. Other representations, producer/visibility/magic callable domains and broader callback/lifetime forms remain partial.",
+    "No new aggregate, supplied-throw, WeakMap, clone, GC, ephemeron, task or schema rule is added. GC evidence is only existing enabled-flag/noninvocation observation, not wider INI/collection behavior. Payload/body/VM silence is distinguished from later real source calls.",
+    "CLASS99/100 missing-instance/static magic calls remain separate. Paused owned-NUL/OP12/Source47 are untouched. Copied local tools establish no new build/portability, complete-PHP or BOLA claim."
+  ],
+  "artifacts": {
+    ".tools/closure87-support/run-native-v1/report.json": "b90fd9cce3e65546472d31d6d44fb9c77d3125ceec20ff7678d04694815aa3c4",
+    ".tools/closure87-support/run-baseline-v1/report.json": "243d495857df5e47cdde12c83de0ea528e5d41f43214efb853dc37ee6c724e69",
+    ".tools/closure87-support/run-init-v1/report.json": "b3445e33d2a6abf9da2cb9f6489d1532efa98dce46130919d60b3dbdd926bc89",
+    ".tools/closure87-support/run-sources-v1/report.json": "1931ef8aff1d3add5ef4dbaeac0616fb791b9ab1c1f0605520e0d9b2475e69fa",
+    ".tools/closure87-support/run-prepare-v1/report.json": "80f5dfe55573aadb83111440e636b88a9f47e117d848e7ece92542f903c913f7",
+    ".tools/closure87-state/run-factory-el-v1/report.json": "c348ca6845992524ddc8b35aadb9251749c5393fb4188999d0eac8d9643cfca4",
+    ".tools/closure87-state/run-factory-sl-v1/report.json": "4fd8f1e11540f55069e4984d9f4ea7178bb0efff09a367cd5c3d5be363f0562f",
+    ".tools/closure87-state/run-factory-el-receiver-retry1/report.json": "7718ea27e59fa1d8cfd444a51c37ab10004c8e1f06e32501592d12c412536a12",
+    ".tools/closure87-state/run-factory-sl-receiver-retry1/report.json": "032d122dacf180e9563a2d35706dfb476bb2b02b20e1e46d4cd4ed87fd70b1a5",
+    ".tools/closure87-state/run-api-el-v1/report.json": "0dc5c2314ae0c16e2685353b3be7e79d5ad28a052a87b09a90ceb8515585aea7",
+    ".tools/closure87-state/run-api-sl-v1/report.json": "8a54fdf15d20fa5a7ad9ac0b42359fada22e09303f986fba85e5d2c24def5361",
+    ".tools/closure87-state/run-api-el-guard-retry1/report.json": "94b5f7339e034b02716dfb942332208a812f3faf2b389c150eac48a6a0959175",
+    ".tools/closure87-state/run-api-sl-guard-retry1/report.json": "a022cb3f3fb2fecae321ae592ba4e03c4e79dedfbdc95ddb25ddb6afbfc0dc65",
+    ".tools/closure87-peer/native-v1/report.json": "a615dec21134e0e8876b851b790e55f5d419feb74df16502d5bd8fda6be93c9d",
+    ".tools/closure87-peer/source-v1/report.json": "0d5f63977d9d54c7092bba3e760554ec1b4f2f1af6cd9fb833b7e3756dcc4b89",
+    ".tools/closure87-peer/native-v2/report.json": "2ad64640376fd316990292268b3a531acca4ec3909e71ab83a13ad94950d5f35",
+    ".tools/closure87-peer/source-v2/report.json": "33ac1047695d2ea3716087f14b87dc77754404fa2fd45ad24a7b0179b433baf3",
+    ".tools/closure87-peer/prepare-v2/report.json": "52371ac2d33b26cf83d9d0ff1427f13379ca56538b06ce6480a3b3807d7e535b",
+    ".tools/closure87-peer/bound-state-v2/report.json": "00ff57414bab191c487b7393538420de43036bef1d65499241ff3f696be918cd",
+    ".tools/closure87-peer/fiber-state-v2/report.json": "215d58be0821698eb4dd30721c4e7616fc80b29bbdad32bb7fb51163b9c0bb31",
+    ".tools/closure87-peer/fiber-state-capture-retry1/report.json": "56d523157ea7a0bb7d21838cc99cf915f84add98d0e5df1bcc6a7cc6de959fea",
+    ".tools/closure87-state/factory.watsup": "6d0efb9ea27687f006258ae2f33ec553c1d2333e09cbef1d7c7b778433c3a01c",
+    ".tools/closure87-state/factory.plan.json": "7151c93d2aa56480a9c89d77cbda822a765baedca46f1c1ed11d465f2d9ecfd2",
+    ".tools/closure87-state/api.watsup": "72fa68f601c5e150b607d03867f9bb14d91351dee86b99807ba5e9fde981f47f",
+    ".tools/closure87-state/api.plan.json": "04d2c799c9035db2e982b4907c046f51016266aa63fa64078cca1f5b32b1ca9a",
+    ".tools/closure87-state/build.py": "4baf00e1854ffddd5ba655d34786303d56b637eda947babeb830efd0a8a09432",
+    ".tools/closure87-state/helpers.watsup": "39aa03a9d2a54e10f1a03bdf536f40436b8cdc9682e5e75ef23ea659e72c1717",
+    ".tools/closure87-state/run.py": "167e7952860d85531a1bc3feb2fe104cdd7dd7d30db3907cf8001f59b817f130",
+    ".tools/closure87-peer/bound.watsup": "97857ab546ff825b260bdf5d68dde5b7ceb4c1f7ae79dde1c7fbf5a652d6123b",
+    ".tools/closure87-peer/bound.plan.json": "b89f41004f472c6c1a6bf3a8c1a577985d9af8512018d442141a7763bed6237b",
+    ".tools/closure87-peer/fiber.watsup": "64d7eafab7424d85ee569811c88375d49c30602199828be1cbd9c3b038affe4c",
+    ".tools/closure87-peer/fiber.plan.json": "b870a0e341b11ff31c07608b0e598a94217db9eb91ea443814418ff956c86653",
+    ".tools/closure87-peer/build.py": "6df6add3edc94db2e7f23159cc19578347ae431961d18626cd5e32c1952d0cac",
+    ".tools/closure87-peer/helpers.watsup": "e73b389f3273d96fb400e757bac9e838bf4218e18815224ee6807901ab2fe477",
+    ".tools/closure87-peer/run.py": "a89c762a4886c2d9b4d60ea983aea92f67429fe4a0800b00197df52281f00a17",
+    ".tools/closure87-peer/review.json": "3f17efb73d920b4e2a438b24ae5b536543e72c0b32315eccb6100e105550f6ce",
+    ".tools/closure87-native/factory.php": "5d5deb36400f8dd04197d3a02d62ddfc33f4079e3b98315b5a722323723b1611",
+    ".tools/closure87-native/api.php": "65c8171c4b49880b74bcdaf92a64f620dc8a6b7f633c02c10079ca7441638b1a",
+    ".tools/closure87-peer/bound.php": "68d20d35e873df3b93ccca75f321fc5a3b78a6d872130613140b975d49798c87",
+    ".tools/closure87-peer/fiber.php": "67326a377f5889b752a8b4f99b825351424fe84389bfdf684b661f162d35a2d9",
+    ".tools/closure87-state/run-factory-sl-receiver-retry1/accepted-inputs/build.py": "73c13289665038968492bce3701538c591a875645651ef136f6cd89bc12f99b3",
+    ".tools/closure87-peer/fiber-state-v2/failure-inputs/build.py": "fcc14bdda05f809625069ded9b232f5bd2a11e3479edeb46452e0bf8984d73ed"
+  },
+  "recovery": "Ignored originals, prepared programmes, fixtures, START/closed environment/command records and raw streams remain under .tools/closure-numeric-comparison-87/.tools/closure87-{native,support,state,peer}. Branch codex/closure-numeric-comparison-87 retains testedd6db. Exact commands are in START/closed records; the peer review binds reports. Accepted evidence is not replayed for publication.",
+  "independent_review": {
+    "reviewer": "/root/comp_review_67",
+    "semantic_verdict": "CLEAR",
+    "source_and_state_verdict": "CLEAR",
+    "publication_verdict": "CLEAR",
+    "record": ".tools/closure87-peer/review.json",
+    "record_sha256": "3f17efb73d920b4e2a438b24ae5b536543e72c0b32315eccb6100e105550f6ce"
+  },
+  "composition": {
+    "parent": "7282cde8dbca6227733554121fb40b0c0a018b15",
+    "ordered_modules": 405,
+    "private_publication": "17165508d2c6aaf0191a5634ecd402051f7dd2a3",
+    "method": "Independent pointwise actual-parent and exact candidate review; no concrete joined-actor dependency.",
+    "runtime": "Only29 module402 image lines are incoming; resulting402 matches testedd6db byte-for-byte. Every other spec and incoming405-module manifest retains exact parent bytes.",
+    "incoming_spec_paths": [
+      "spec/semantics/105-named-arguments.watsup",
+      "spec/semantics/141-method-compiler.watsup",
+      "spec/semantics/142-method-runtime.watsup",
+      "spec/semantics/190-declaration-publication.watsup",
+      "spec/semantics/270-eager-destructors.watsup",
+      "spec/semantics/280-generators.watsup",
+      "spec/semantics/289-generator-delegation.watsup",
+      "spec/semantics/30-storage.watsup",
+      "spec/semantics/301-cycle-collection.watsup",
+      "spec/semantics/303-generator-force-close.watsup",
+      "spec/semantics/39-ownership.watsup",
+      "spec/semantics/40-control.watsup",
+      "spec/semantics/400-dynamic-constants.watsup",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup",
+      "spec/semantics/405-call-generator-unpack.watsup",
+      "spec/semantics/41-array-control.watsup",
+      "spec/semantics/413-array-literal-key-warnings.watsup",
+      "spec/semantics/414-magic-method-calls.watsup",
+      "spec/semantics/415-magic-static-method-calls.watsup",
+      "spec/semantics/84-call-integrity.watsup",
+      "spec/semantics/modules.json"
+    ],
+    "parent_seams": [
+      "CLASS99/100 modules30/84/105/141/142/414/415 add only distinct MAGIC_METHOD and MAGIC_STATIC targets, signatures, missing-call guards and shape validation. All87 source methods are known public and fixed Closure/Fiber/getter/ctor APIs retain their old routes; no __call/__callStatic or missing-name source can produce these targets. Existing205/210/215/221/234 classifiers stay exact.",
+      "Generator280/289/301/303/405 plus30/39/40/84 add GENERATORRETURNRETAINED initialized eps; tasks_nodes(eps)=eps and retained_valid(eps)=true. No original contains Generator/yield/yield-from/send/foreach/unpack; real Fiber callbacks are ordinary functions. Iterator28 final owning detached-send guard still requires actual waiting Generator state, absent here.",
+      "Array-reference413 plus30/39/40/41/84/190 adds LITERALREFRETAINED initialized eps. Literal callable arrays here use unkeyed value items with no reference element, float key or eligible8192 handler. The field stays eps, adds no roots, and satisfies validity/publication. All fixtures use php_file_run plus field updates, preserving both new fields.",
+      "Module404 and40 plain-CV/mixed CV-cell arithmetic Warning plans require eligible level2 and numeric-string arithmetic contexts. Handlers register E_NOTICE8; comparisons are nonarithmetic and COPY uses CV plus literal0. The new plans and distinct ARITHMETIC tasks cannot be selected.",
+      "Module270 saved/pending reference-return cleanup and auxiliary THROW_SEARCH projection require RETURN_REF_UNWIND/pending destructor cursor. All source functions return by value with no destructor/ref-return cursor; ordinary Closure/receiver storage retirement cannot create that suffix.",
+      "Module400 DEFINE flag changes require DEFINE CONFIG. Neither author nor peer invokes DEFINE or dynamic constant queries; ordinary E_NOTICE fetch and raw named ::class compilation remain on unchanged routes."
+    ],
+    "retained_evidence": {
+      "tested_revision": "d6db2b1313b810f2060027ec7212250a6727e027",
+      "ordered_modules": 403,
+      "source_agreements": 4,
+      "premises": 594,
+      "raw_php_steps": 17,
+      "failed_actors_zero_credit": 4
+    },
+    "new_execution_credit": {
+      "source_agreements": 0,
+      "premises": 0,
+      "raw_php_steps": 0
+    }
+  }
+}

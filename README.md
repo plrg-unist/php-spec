@@ -637,6 +637,14 @@ TypeError with current operand types, final power deprecation and supplied throw
 in the [plain-arithmetic ledger](coverage/semantics/plain-arithmetic-warning-review.json).
 An input must stay plain until its conversion; wider forms remain partial.
 
+Arithmetic may now mix one initially plain variable and one pre-existing reference.
+The reference retains its selected cell after its name is rebound; the plain input
+stays plain until conversion. Nine originals and 858 focused premises cover old
+referent selection, strict float results, current error types, cached-zero division
+and cancellation by a final power-deprecation throw in the
+[mixed-arithmetic ledger](coverage/semantics/mixed-arithmetic-warning-review.json).
+A surviving alias keeps the selected reference live; wider forms remain partial.
+
 Primitive plain-CV `**=` now commits its captured result even when the deprecation
 handler throws. A late alias detaches before the same exception continues; the
 outer assignment stays unchanged. Three exact originals and 407 focused SL
@@ -998,6 +1006,10 @@ catch/finally execution and exception identity. A pending `send` on a detached r
 with a nonowning copied return snapshots its current without advancing. Argument
 cleanup precedes receiver release; shared resumes preserve the first-yield history
 used by `rewind`. See the [pending-send review](coverage/semantics/generator-pending-init-send-review.json).
+An owning copied return at a simple-CV assigned `yield from` also supports that
+pending `send`: the return stays intact until actual next or close. The cache
+snapshot precedes argument cleanup and can outlive receiver retirement when an
+argument destructor throws. See the [owning SEND review](coverage/semantics/generator-pending-owning-return-send-review.json).
 Pending `send` through native shared links also buffers a paused child's yield
 assigned directly to a simple CV. A direct or forwarded `next` that resumes the
 child consumes it; close and overwrite preserve its count until request-store destruction,
@@ -1243,6 +1255,24 @@ omitted/bool-false flags. Converted API arguments and earlier captures survive
 method effects; no class lookup or autoload runs.
 [Four source agreements and 844 state premises](coverage/semantics/define-stringable-class-name-review.json)
 cover malformed names, caller results and same-receiver global recovery.
+
+Retained propertyless Stringable `define()` names also admit a captured boolean
+true flag with primitive candidates and non-NUL global or class-like results.
+Conversion precedes the ignored-flag Warning; `::` results reject before it.
+A method throw cancels registration, while a supplied Warning-handler throw still
+registers a fresh captured value before propagating the same Exception.
+[Four source agreements and 974 state premises](coverage/semantics/define-stringable-true-flag-review.json)
+cover both throw phases, normal fresh/duplicate results and strict raw-name rejection.
+Wider values, flag conversions, lifetimes and call forms remain partial.
+
+Retained propertyless Stringable `define()` names now receive captured NULL flags
+with primitive candidates in the admitted non-NUL user-global/class-name domains. The
+Deprecated diagnostic follows conversion and precedes even `::` rejection; strict
+calls still reject the raw name first. A returning handler can create the target
+before duplicate lookup; a throwing deprecation handler cancels registration.
+[Four source agreements and 1,084 state premises](coverage/semantics/define-stringable-null-flag-review.json)
+cover both continuations and authentic converted API captures. Startup/special
+results, other flag conversions and wider values/lifetimes/forms remain partial.
 
 Retained ordinary nonStringable instances and `stdClass` now fail positional
 `define()` name reception before primitive flag processing or registration.
@@ -2582,7 +2612,14 @@ comparison effects and uninitialized wrappers remain partial.
 now include direct, array-method and fixed-string-method captures. Two originals
 and 381 Boolean premises/11 actual transitions preserve private numeric targets,
 scope/owner graphs and a capture's actual retirement inside its first handler.
-Other Closure bodies and broader lifetimes remain partial.
+At that cut, other Closure bodies and broader lifetimes remain partial.
+
+[Factory and API Closure numeric Notices](coverage/semantics/closure-numeric-comparison-review.json)
+now cover nine authentic body forms, preserving exact intrinsic eligibility and
+private 1/1.0. Four originals and 594 Boolean premises/17 actual transitions cover
+CV/COPY and SECOND targets, nonowning capture history and callback-side retirement
+of bound-receiver and cold-Fiber graphs. API invocation, cloning and collection
+rules are unchanged; wider producers and lifetimes remain partial.
 
 [Pending comparison remainders](coverage/semantics/pending-exception-comparison-review.json)
 now skip later registered callbacks and source string casts while preserving
@@ -3166,6 +3203,13 @@ declaration. Its ordinary object result is truth-tested and disposed before the
 captured getter; a held result delays its destructor, while a throw cancels Get.
 Four originals and 313 focused premises cover mutations, receiver retention and
 the same catch; [isset RV review](coverage/semantics/magic-empty-isset-rv-review.json).
+
+Live array RVs now cache their truth before disposal. Sole table/payload cleanup
+precedes captured Get; a held table delays cleanup, while a mutable empty table
+skips Get and retires before receiver destruction. A supplied payload-destructor
+Exception preserves the same catch and assignment destination.
+[Four originals and 416 focused premises](coverage/semantics/magic-empty-isset-array-rv-review.json)
+cover these paths without changing generic array/free/GC behavior.
 Ordinary `isset` and no-Get `empty` keep their typed-bool callback requirement.
 Other signatures, receivers, other internal-object RVs and
 wider recursive/coalesce magic combinations remain unsupported.
@@ -3745,6 +3789,15 @@ array. Early sends survive argument mutation; array/payload cleanup precedes
 receiver release and cached result or supplied-exception delivery.
 [Four source agreements and 355 focused premises](coverage/semantics/magic-call-review.json)
 cover these paths and public-method bypass. Wider magic call forms remain partial.
+
+External literal missing static calls also invoke inherited public
+`__callStatic(string,array)`, retaining lexical Parent/called Child and early sends
+with no receiver owner. Argument-array cleanup precedes cached scalar result or
+supplied-throw delivery; a payload destructor changes the live global while the
+used result keeps its earlier value.
+[Four source agreements and 341 focused premises](coverage/semantics/magic-static-call-review.json)
+cover these paths and public-static bypass. Forwarding, inaccessible/dynamic/API
+magic positives and wider argument/ownership modes remain partial.
 Ordinary abstract scoped calls reject before arguments. Without magic fallback,
 inaccessible concrete nonstatic methods report access errors before missing-receiver
 errors. Literal
@@ -4017,11 +4070,19 @@ through ordinary release and instance-storage pauses. The partial pair retains
 its outer reference owner; single cursors and completed pairs are root-free.
 Separate reached proofs pass 288/7 at `799f07366`, 296/7 at `dc0b93c9f` and
 275/7 at `c1540ff96`, preserving original diagnostics, aliases and exact budget
-endings. A final empty release before a pending single-cursor destructor exit also
-resumes through the existing finite-Throwable/source validator. Separate 325/6
-checks at `3256ba13e` preserve the same TypeError, a VALUE Notice at old source line5
-and detached rNULL/b7. Earlier auxiliary/storage intervals, pending-pair prefixes, interposed
-lifecycle capture and broader histories remain open.
+endings. One pending single-cursor cleanup also resumes through release/storage
+and its normal auxiliary exception-search operation. Separate 452/16 checks at
+`abb946c14` preserve the same TypeError, one VALUE Notice at old source line5 and
+detached rNULL/b7, including operation metadata refusals and exact budgets. M109's
+final-empty 325/6 keeps its separate cut. A pending final pair also resumes across
+the full cleanup interval: 556/18 at `c0bc7a9b4` preserves its destructor
+TypeError and fresh NULL reference recovery with zero Notices, live z and detached
+r/b aliases. A still-owning pending partial pair passes 684/18 at `3c90313b4`:
+the required outer task survives cleanup and local C, then one old-line9 VALUE
+Notice precedes fresh NULL recovery; later r writes preserve b/z/y. Owner-only
+deletions refuse despite a valid heap and live global z. Historical source/native
+credit is unchanged. Wider histories, interposed lifecycle capture, reentry, GC
+and broader consumers remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

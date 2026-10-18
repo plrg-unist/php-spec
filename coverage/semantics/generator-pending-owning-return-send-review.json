@@ -1,0 +1,131 @@
+{
+  "milestone": "Iterator28: pending SEND with an owning copied detached return",
+  "status": "Implemented, validated and independently accepted; pointwise composed over a33a254e1/405.",
+  "independent_reviewer": "iterator_review_15",
+  "base": "8cace0a9da9954d5d4e7ef4a58eae3add9029356",
+  "tested_runtime": "9b115deb331cf739a534db50fa1082d4d75b4829",
+  "modules": 403,
+  "scope": "A one-argument literal SEND on a live, inherited-pending detached middle Generator whose child independently completed with an owning copied return at a simple-CV assigned yield from. Exactly that waiting return, no other owning suspended task or HELD value, inactive GC, no borrowed/startpack/loop producer. Ordinary next and explicit close are separate continuations; no parked history.",
+  "semantics": [
+    "YIELD_FROM has no send target. Pending SEND ignores its argument, clears only the actual receiver initialization flag and returns a dereferenced current snapshot without advancing or consuming the owning COMPLETE. Existing argument-before-receiver cleanup applies.",
+    "The snapshot precedes ignored-argument destruction: reference-row mutation can cause COW while the returned old row and the owning child return stay separate. Real later next consumes the owning result normally; actual close retains its count through the existing Iterator27 path. Returned arrays retain mutable embedded reference cells.",
+    "When an ignored argument destructor throws, its captured return snapshot survives physical receiver close and storage retirement. Exceptional result cleanup then decrements the snapshot before caller catch. A cache destructor can replace the supplied Exception with the original as Previous. Its real saved THROW_SEARCH is the existing borrowed pending anchor; the owning child return remains request-store-late."
+  ],
+  "source_authority": [
+    "vendor/php-src/Zend/zend_generators.c::Generator::send calls ensure_initialized/get_current, writes only a nonnull send_target, resumes and RETURN_COPY_DEREFs current. zend_generator_resume clears DO_INIT and returns without advancing when current is defined. zend_generator_update_current supplies the detached copied return.",
+    "Zend/zend_vm_def.h::DO_FCALL cleanup frees arguments and releases THIS before HANDLE_EXCEPTION decrements the used call result with zval_ptr_dtor_nogc. The observed receiver/finally/snapshot order follows this route. Iterator27 documents the separate unfinished YIELD_FROM return count and close retention.",
+    "These are pinned implementation observations, not portable lifetime guarantees. No engine bug or intentional divergence is classified."
+  ],
+  "validation_identity": {
+    "php": "8.5.10 CLI NTS 64-bit; source 34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml 5.1.0; SL, caches off and encountered determinism checks",
+    "environment": "tests/semantics/profile.json; PHP -n; LC_ALL=C; TZ=UTC; PHP_SPEC_SCRIPT_ENCODING unset. Native4/baseline ran serially on CPU1; preparation/strict/source4 and initial author states on CPU4; corrected callback, selected old group and independent states on CPU1. Raw reports preserve commands, caps, bytes, exits and stable inputs/HEAD."
+  },
+  "runtime_sha256": {
+    "spec/semantics/289-generator-delegation.watsup": "e363f3a3184d278214aa2f751329ae03889ca638f0388e4e465a14c697eb0bd0"
+  },
+  "raw_root": ".tools/generator-pending-owning-return-send-28/.tools/",
+  "native_and_baseline": {
+    "revision": "3de6366d57e0575d4342fe18864b8378ce14239e",
+    "native_reports": [
+      "generator-pending-owning-return-send-native-_ckk9ek7/report.json",
+      "generator-pending-owning-return-send-review-native-ksmgz2k_/report.json"
+    ],
+    "native_result": "Four immutable originals captured before production without forecast stdout; normal exit0/empty stderr/no timeout and independently reviewed raw tuples. Zero model credit.",
+    "baseline_report": "generator-pending-owning-return-send-baseline-lja0v5nx/report.json",
+    "baseline_result": "Exact 855cbfa5 original and retained _ckk native tuple reused without PHP replay. Genuine public Unsupported Generator force-close at request end after nine OUTPUT chunks joining P|O|M|C|L|H|1|T|. The terminal wrapper masks the pending owning SEND refusal. Model exit1/empty stderr/no timeout/null diagnostic and exit_status, stable unchanged runtime, zero agreement. Expected terminal reason was corrected statically before its first run."
+  },
+  "strict_and_elaboration": {
+    "revision": "5e5803e6496c876ada8fd8b3e7225d01ffcfeaa8",
+    "strict_report": "generator-pending-owning-return-send-author-sl-rem89r8d/report.json",
+    "strict_result": "Strict 403 returns exact true with stable inputs/HEAD, empty stderr, exit0/no timeout.",
+    "elaboration_report": "generator-pending-owning-return-send-state-elab-l956z7a9/report.json",
+    "elaboration_result": "One ordered 403-module parse/elab invocation includes four new fixtures and the selected historical fixture, alpha-renaming stage/seek/main only. Unique EOF/all five main headers, stable inputs/HEAD, exit0/empty stderr/no timeout. Zero interpretation or semantic credit."
+  },
+  "normal_sources": {
+    "new_distinct_originals": 4,
+    "revision": "5e5803e6496c876ada8fd8b3e7225d01ffcfeaa8",
+    "reports": [
+      "generator-pending-owning-return-send-source-ilz_63is/report.json",
+      "generator-pending-owning-return-send-review-source-sq9dbh9l/report.json"
+    ],
+    "result": "All four exact normal stdout/stderr/exit tuples agree with retained native originals without PHP replay. Real later consumption, sole-receiver exceptional snapshot cleanup, reference-row COW and returned-cell mutation are distinct originals. No source failure or repeat."
+  },
+  "reached_states": {
+    "new_groups": 4,
+    "new_premises": 544,
+    "author": 266,
+    "independent": 278,
+    "local_checks": 524,
+    "generic_reachability": 20,
+    "reports": [
+      [
+        "fiber-state-review-tf9ec11u/report.json",
+        141,
+        "768e35aefaeb8c787705b0b7ceb20c8c2e4b447c"
+      ],
+      [
+        "fiber-state-review-ac5_duca/report.json",
+        125,
+        "6bd20f990e7fbc6621847b4e65503fdec45ef05f"
+      ],
+      [
+        "fiber-state-review-woad60zj/report.json",
+        146,
+        "6bd20f990e7fbc6621847b4e65503fdec45ef05f"
+      ],
+      [
+        "fiber-state-review-7p6u4n43/report.json",
+        132,
+        "6bd20f990e7fbc6621847b4e65503fdec45ef05f"
+      ]
+    ],
+    "checks": "Together these cover genuine GEN_ARGS noadvance/init-clear with owning COMPLETE1 and snapshot1-to2, exact argument-before-receiver jobs, no input/return retention until consumption or close; actual snapshot-destructor CURRENT after parent/child retirement, saved Search/pending/public authority and D2/E2/retained array1; real OP_EXIT after cache COW; and post-close shared-cell WRITE with old referent retirement and new referent request-late. Source/line/flags/tail/HELD/duplicate/pending refusals, physical owners, public/heap validity, zero/split budgets and every native ending pass. No GC source credit.",
+    "affected_prior": {
+      "group": "detached-send-captures-cache-without-advancing-or-retaining-argument",
+      "premises": 119,
+      "local_checks": 114,
+      "generic_reachability": 5,
+      "revision": "6bd20f990e7fbc6621847b4e65503fdec45ef05f",
+      "report": "fiber-state-review-iepvur5h/report.json",
+      "result": "Only this directly affected Iterator17 group is renewed. Its derived owning RETURN/COMPLETE now has positive waiting and pending SEND assertions. Original source/native bytes and other historical groups are unchanged; no renewed source/native credit."
+    },
+    "result": "All accepted groups return exact true, empty stderr, exit0/no timeout with stable HEAD and author/independent inputs. New 544 and renewed 119 remain distinct, totaling 663 premises."
+  },
+  "fixture_failures_and_bridges": [
+    {
+      "report": "fiber-state-review-ws8hv9_i/report.json",
+      "revision": "5e5803e6496c876ada8fd8b3e7225d01ffcfeaa8",
+      "credit": 0,
+      "cause": "Pre-interpretation executable binding failure: an alias and child/return IDs were simultaneously fresh. Two clauses now extract COMPLETE from the known frame before forming its alias. The same ordering was corrected in the still-unrun peer146 before its first execution; counts/formulas unchanged. Only the failed group of 141 premises repeated at 768e."
+    },
+    {
+      "report": "fiber-state-review-v1b3qfdu/report.json",
+      "revision": "768e35aefaeb8c787705b0b7ceb20c8c2e4b447c",
+      "credit": 0,
+      "cause": "The real callback was reached, but a message observer required raw PSTRING although source compilation preserves an INTERNED_STRING carrier. One clause now checks string_bytes of the unchanged Throwable message. Count 125 stays exact; only affected 125 repeated at 6bd before unrun groups."
+    }
+  ],
+  "compatibility": "Only module289 changes its comment and final pending detached SEND guard: the old node-free arm is unchanged; an owning alternative reuses authenticated generator_return_waiting plus no-loop/no-startpack/nonborrowed flags. Roots, layouts, close, ordinary COMPLETE consumption, THROW, GC and the403-module manifest are unchanged. Runtime 9b115 is byte-exact across 5e/768e/6bd. Fixture-only corrections use existing typed projections/constructors; strict/source/gate 5e retain their cuts through this explicit type/formula bridge. No unrelated historical replay or renewed accepted execution credit.",
+  "remaining": [
+    "Owning detached pending THROW, owning active-chain unpack, wider result expressions/owning tails, acquisition/borrowed producers and broader lifecycle combinations remain required.",
+    "Waiting-result explicit collection and wider GC/cycle interactions remain open; no new collector or GC source agreement is claimed. Later parked THROW resume still needs global exception-opline history and fresh native evidence.",
+    "Full Generator/Fiber/core semantics, interaction-tree/Rocq semantics and BOLA/security proofs remain open."
+  ],
+  "evidence_recovery": {
+    "archive": "../php-spec-evidence-archive/generator-pending-owning-return-send-28/private.tar.gz",
+    "bytes": 1959189,
+    "sha256": "8c47f12c0d82598e1833ba6975fd1684455a509b1164dad36df16f69a01735a8",
+    "manifest": "Sibling manifest.json maps 14 report roles (12 accepted and two failures0), eight ignored recorder/catalog inputs and the tested module289 digest. Full raw sources/generated fixtures/commands/process outputs and identities stay external.",
+    "restore": "Extract at private_root; the retained private branch supplies tracked inputs and scripts/private-semantics-references.py provisions local references. Native/base retain 3de/403, strict/source/gate retain 5e, author141 at768e and remaining states at6bd, all current semantics at 9b115. Commands identify executed binaries, not archived build prerequisites; preserve the separate cuts and affected-only retries."
+  },
+  "composition": {
+    "parent": "a33a254e172858e3aef9216d0753bb77bd4d1428",
+    "parent_modules": 405,
+    "private_publication": "b13298932f272b28c9c7c442c71eec63a8793078",
+    "review": "Independent actual-parent review: ordinary reference-return pending/auxiliary cursor validation, instance/static magic calls, mixed-reference arithmetic warnings, float array-key/reference retention and DEFINE/query continuations have no producer in these untyped Generator cases. The byref current-cache child uses its existing Generator return route; builtin Throwable getters retain theirs. Only module289 changes and stays byte-exact tested9b115; all other runtime/pipeline bytes, incoming fields/roots/defaults/task variants and the405-module manifest are preserved.",
+    "validation": "Native4/baseline0 retain3de/403; strict/source4/gate retain5e/403, author141 retains768e and callback125/independent278/historical119 retain6bd, all with the same tested289 digest. Private cuts and both failures0 remain distinct. No concrete joined actor, accepted replay or renewed execution credit."
+  }
+}
