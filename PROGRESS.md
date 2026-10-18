@@ -7,6 +7,19 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Missing-left `==` and `<` now suspend through handlers for distinct direct CVs
+with a defined scalar right. The missing left stays NULL while current right
+wrappers follow writes, late references and rebinding. Default Warning order and
+supplied-Exception destination/catch/finally remain intact. Eight source agreements
+and two zero-credit refusal controls pass at the recorded `fea71d5c3`/`52827748f`
+cuts; four strict-SL groups pass 369 premises (184 author + 185 independent) at
+`52827748f`/405. Whole states, owners, compiled lines and zero/split budgets pass.
+One 45-second matrix timeout stays zero; only that case repeats at 90 seconds and
+passes. The first two accepted cases retain their original cut. Both-missing,
+owning/removed right values and wider warning-fetch paths remain partial; prior
+COMP89/90 cuts are not renewed and quarantined COMP88 stays excluded.
+[Equality/less review](coverage/semantics/undefined-scalar-compare-review.json).
+
 Defined scalar left CVs now resume after a missing-right `<=>` warning using
 the current CV wrapper. Late reference creation and rebinding reach the new cell;
 the missing right remains NULL even after its name becomes 9. False/default Warning

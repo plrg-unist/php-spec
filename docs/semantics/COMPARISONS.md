@@ -31,9 +31,16 @@ created reference or rebinding to another scalar cell. The missing right stays
 null. Removing the left CV or replacing it with an owning value remains explicitly
 unsupported on return, without another warning. See the
 [live-left review](../../coverage/semantics/undefined-spaceship-right-review.json).
-Both-missing inputs, owning opposing values and removed or non-scalar right
-operands remain partial. `==`/`!=`/`<`/`<=` use different VM warning-fetch paths; `>`/`>=` also
-reverse operands and need separate continuations. See the
+Distinct direct-CV `==`/`<` pairs now also suspend when the left CV is missing
+and the right is a defined scalar. The left stays null while the current right
+wrapper follows callback writes, late reference creation and rebinding. False
+handlers preserve default Warning order; throws preserve destination/catch/finally.
+The right must remain defined and scalar on return; removing it or producing an
+owning value stops Unsupported without another warning. See the
+[equality/less review](../../coverage/semantics/undefined-scalar-compare-review.json).
+Both-missing inputs, owning opposing values and wider producers remain partial.
+Other `==`/`<` orientations, `!=`/`<=` warning paths and reversed `>`/`>=` fetches
+still need continuations. Earlier spaceship cuts remain in the
 [scalar warning review](../../coverage/semantics/undefined-spaceship-review.json).
 
 Array comparison first handles identical container identity, then recursion on

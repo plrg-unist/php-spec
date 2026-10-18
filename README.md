@@ -16,9 +16,10 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
-[Scalar spaceship warnings](docs/semantics/COMPARISONS.md) now preserve a missing
-variable's null result through error handlers while reading current scalar variables
-after callback effects, including a rebound left reference. Other comparison warning paths remain partial.
+[Scalar comparison warnings](docs/semantics/COMPARISONS.md) preserve a missing
+variable's null result through handlers while following current scalar CV bindings.
+This covers bounded spaceship operands and missing-left `==`/`<` direct-CV pairs,
+including reference rebinding. Other comparison warning paths remain partial.
 
 [Array-literal float keys](docs/semantics/DIMENSIONS.md) now retain their converted
 integer across deprecation handlers. Unwrapped null/bool/int/float element variables
