@@ -1,0 +1,80 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "normal",
+      "source_file": "terminal-isset-rv-normal.php",
+      "source": "<?php\nclass IssetPayload104 {\n    public function __destruct() {\n        global $child, $throws, $error;\n        echo 'V|';\n        $child = null;\n        if ($throws) { throw $error; }\n        echo 'v|';\n    }\n}\nclass IssetParent104 {\n    private int $value = 1;\n    public function __isset(string $name) {\n        echo 'I|';\n        return new IssetPayload104();\n    }\n    public function __get($name) {\n        global $error;\n        echo 'G|';\n        throw $error;\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass IssetChild104 extends IssetParent104 {}\n$error = new Exception('supplied');\n$held = null;\n$throws = false;\n$child = new IssetChild104();\necho 'N:';\n$answer = isset($child->value);\necho $answer ? 'T' : 'F', '|';\n\n$held = null;\n$child = null;\necho 'E|';\n",
+      "source_sha256": "a8b755b754f260a1ef1e1d44e838a441c9812e7a344319f13237ba50c406a9ec",
+      "original_source": "/home/user/workspace/php-spec/.tools/terminal-isset-rv-private-104/.tools/terminal-isset-rv-probes-104/normal.php",
+      "stdout_base64": "TjpJfFZ8dnxEfFR8RXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/terminal-isset-rv-private-104/.tools/terminal-isset-rv-probes-104/native-first",
+      "native_raw_sha256": "bd7feee512c1219263dbaa58fb2c6f691aab17be7169acde8624d58f45671ea6",
+      "isset_line": 30,
+      "has_get": true
+    },
+    {
+      "id": "held",
+      "source_file": "terminal-isset-rv-held.php",
+      "source": "<?php\nclass IssetPayload104 {\n    public function __destruct() {\n        global $child, $throws, $error;\n        echo 'V|';\n        $child = null;\n        if ($throws) { throw $error; }\n        echo 'v|';\n    }\n}\nclass IssetParent104 {\n    private int $value = 1;\n    public function __isset(string $name) {\n        global $held;\n        echo 'I|';\n        $rv = [new IssetPayload104()];\n        $held = $rv;\n        return $rv;\n    }\n    public function __get($name) {\n        global $error;\n        echo 'G|';\n        throw $error;\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass IssetChild104 extends IssetParent104 {}\n$error = new Exception('supplied');\n$held = null;\n$throws = false;\n$child = new IssetChild104();\necho 'H:';\n$answer = isset($child->value);\necho $answer ? 'T' : 'F', '|';\necho 'F|';\n\n$held = null;\n$child = null;\necho 'E|';\n",
+      "source_sha256": "ecf7095dcc6f345a7bd6cdaa29725c8ecbd3e1f9b8d9ff7082fddf92d3f3f309",
+      "original_source": "/home/user/workspace/php-spec/.tools/terminal-isset-rv-private-104/.tools/terminal-isset-rv-probes-104/held.php",
+      "stdout_base64": "SDpJfFR8RnxWfER8dnxFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/terminal-isset-rv-private-104/.tools/terminal-isset-rv-probes-104/native-first",
+      "native_raw_sha256": "fd166aa5dfffba5a1e9d391d905b82ebe6c03eaf4435c73262b44a4390f6b56e",
+      "isset_line": 33,
+      "has_get": true
+    },
+    {
+      "id": "throwing",
+      "source_file": "terminal-isset-rv-throwing.php",
+      "source": "<?php\nclass IssetPayload104 {\n    public function __destruct() {\n        global $child, $throws, $error;\n        echo 'V|';\n        $child = null;\n        if ($throws) { throw $error; }\n        echo 'v|';\n    }\n}\nclass IssetParent104 {\n    private int $value = 1;\n    public function __isset(string $name) {\n        echo 'I|';\n        return [new IssetPayload104()];\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass IssetChild104 extends IssetParent104 {}\n$error = new Exception('supplied');\n$held = null;\n$throws = true;\n$child = new IssetChild104();\necho 'X:';\n$answer = 42;\ntry {\n    $answer = isset($child->value);\n} catch (Exception $caught) {\n    echo $caught === $error ? 'C' : '!', '|';\n}\necho $answer, '|';\n\n$held = null;\n$child = null;\necho 'E|';\n",
+      "source_sha256": "b256608c028e5401ee8d8bac54d2158c4a41013fda777ed2dadec71ceaea4e90",
+      "original_source": "/home/user/workspace/php-spec/.tools/terminal-isset-rv-private-104/.tools/terminal-isset-rv-probes-104/throwing.php",
+      "stdout_base64": "WDpJfFZ8RHxDfDQyfEV8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/terminal-isset-rv-private-104/.tools/terminal-isset-rv-probes-104/native-first",
+      "native_raw_sha256": "3344407e12a1a71e03aeefa2b4f02875714c534474c566afd504472a39a34664",
+      "isset_line": 27,
+      "has_get": false
+    },
+    {
+      "id": "empty",
+      "source_file": "terminal-isset-rv-empty.php",
+      "source": "<?php\nclass IssetParent104 {\n    private int $value = 1;\n    public function __isset(string $name) {\n        global $child;\n        echo 'I|';\n        $child = null;\n        $rv = [];\n        $rv[] = 1;\n        unset($rv[0]);\n        return $rv;\n    }\n    public function __get($name) {\n        global $error;\n        echo 'G|';\n        throw $error;\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass IssetChild104 extends IssetParent104 {}\n$error = new Exception('supplied');\n$held = null;\n$throws = false;\n$child = new IssetChild104();\necho 'F:';\n$answer = isset($child->value);\necho $answer ? 'T' : 'F', '|';\n\n$held = null;\n$child = null;\necho 'E|';\n",
+      "source_sha256": "d8439acafe5b61b8bbf92db95b163164b48d82e6d734ec3fa192a49625e707b1",
+      "original_source": "/home/user/workspace/php-spec/.tools/terminal-isset-rv-private-104/.tools/terminal-isset-rv-probes-104/empty.php",
+      "stdout_base64": "RjpJfER8RnxFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/terminal-isset-rv-private-104/.tools/terminal-isset-rv-probes-104/native-first",
+      "native_raw_sha256": "968c72e28223334a24c2c25e13192099e45a3dbfedfde3eb51d8e5dae21edf4f",
+      "isset_line": 26,
+      "has_get": true
+    }
+  ]
+}

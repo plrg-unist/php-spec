@@ -612,7 +612,7 @@ the same Exception through receiver release and catch.
 Four originals and 313 focused premises (289 reached +24 derived) cover these
 states, authenticated saved-prefix call certificates, Boolean/source/result
 refusals and budgets. The original normal certificate failure and three diagnostic
-records remain zero credit. Module407 still requires a typed-bool callback;
+records remain zero credit. At that cut, module407 required a typed-bool callback;
 other untyped scalar/null/internal-object results and wider recursive cases
 remain Unsupported. No new task, owner or generic destruction/GC rule is added.
 [Isset RV review](../../coverage/semantics/magic-empty-isset-rv-review.json).
@@ -629,10 +629,29 @@ the saved receiver remain through sole payload cleanup; Get is inactive there.
 [Four originals and 416 focused premises](../../coverage/semantics/magic-empty-isset-array-rv-review.json)
 check these lifetimes, full call validity and budget resumption. Bounds/allocation
 refusals and the derived old-object truth bridge add no earlier-suite execution
-credit. The existing VALUEtrue destructor cleanup certificate, bool decisions,
-ordinary/no-Get typed-bool admission and generic array/free/GC rules stay unchanged.
+credit. At that cut, the existing VALUEtrue destructor cleanup certificate, bool
+decisions, ordinary/no-Get typed-bool admission and generic array/free/GC rules remained unchanged.
 Embedded reference cells, cycles, wider alias/reentry histories and other untyped
 result kinds remain partial; no full-program GC-preservation claim is made.
+
+Terminal `isset` now consumes the already-admitted absent-return
+`__isset(string $name)` for the selected inherited private-property CV/literal
+family, including a present untyped `__get`. Authenticated PREP deferral prevents
+ordinary getter interception; terminal isset never calls Get. Live ordinary
+INSTANCE and array RVs cache truth in the receiver-owning result marker before
+ordinary disposal. For a sole RV, IN_ISSET and the captured receiver remain through
+its destructor despite caller-CV nulling, then end before receiver destruction.
+A held array delays payload disposal until after the result, permitting nested
+receiver destruction. Mutable-empty false retires its table before receiver D;
+a supplied payload-destructor Exception preserves the same catch and destination 42.
+
+[Four originals and 457 focused premises](../../coverage/semantics/terminal-isset-rv-review.json)
+check these lifetimes, Get inactivity, actual saved-prefix/full call validity,
+source/result refusals and zero/resume budgets. The original pre-execution source
+failure, derived-fixture failure and prefix diagnostic retain zero credit.
+Only modules 407/408 change; no task/schema or generic destruction/GC rule changes.
+No-Get `empty` remains typed-bool; terminal typed-bool-with-Get, other untyped
+primitive/internal RVs, recursive and wider ownership/GC histories remain partial.
 
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.

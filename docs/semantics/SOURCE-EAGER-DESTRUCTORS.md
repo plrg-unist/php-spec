@@ -74,8 +74,19 @@ state checks at `f305be84b`; no runtime change. C's saved caller retains B/A, ac
 body/RESULT pauses preserve normal C/B/A retirement, and removing an outer task
 fails lexical-finally completeness despite a valid heap. The selected y reference
 and prior b7 retain exact whole/split endings without a Notice. This establishes
-normal retirement, leaving pending/reentrant three-history replay open alongside
-call-before-echo capture, storage/interposed variants, wider owners and GC.
+normal retirement. M115 preserves a SOURCE-only, nonowning history for the
+first C retirement while B/A still own their computed return slots. Original
+false source versus queued true, exact sites/restores, authentic current/saved f
+scope and unchanged B/A object IDs are required. Its finite direct builtin
+TypeError enters the source-local catch; ordinary cleared-C NULL then gives one
+old-line16 Notice and a fresh detached caller reference. The exact 11-task replay
+suffix retains both outer owners. Source1 and 514/12 at `9aa2136d9` cover callback,
+release/storage/auxiliary exits, physical/borrowed guards, mirrored metadata and
+valid-heap owner removals, full budgets and the native ending. The normal finish
+matches its unwrapped source; roots/GC/CV-chain rules are unchanged. The domain
+requires propertyless public noarg literal-echo A/B destructors and C echo plus
+direct resolved TypeError/literal message, with empty output buffers. Other throw
+forms, properties/reentry, call-before-echo capture, wider histories and GC remain open.
 [Review and recovery](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
 Pruning prepares the object store and fatal marks once, then selects the same

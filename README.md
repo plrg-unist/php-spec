@@ -34,6 +34,8 @@ live instance-property type sources: singleton copies shed their
 constraint while the original stays typed; shared copies retain it. Untyped
 reference cells may also hold flat runtime arrays of direct null/bool/int/float values. Wrapper
 debt stays separate from child-table COW, including deletion and throw cleanup.
+Retargeting a flat-array wrapper to an ordinary scalar preserves its acquired
+count, cancelling debt first or retaining the old wrapper and its child.
 Unsafe deficit retirement and wider domains remain Unsupported. Duplicate
 replacement and later items stay ordered.
 
@@ -234,7 +236,15 @@ extend that quiet-value domain to ordinary named and mixed arguments. Reversed
 `value:`/`option:` calls capture the earlier value before later option effects;
 handler and strict-error traces retain normalized `[NULL, value]` arguments.
 Four additional originals and 746 premises pass, including false/default delivery
-and throwing-handler cancellation. Packed/owned/PIPE forms remain partial.
+and throwing-handler cancellation. Owned named, packed and PIPE forms remain partial.
+
+[Retained intrinsic NULL INI calls](coverage/semantics/ini-set-owned-null-option-review.json)
+extend the quiet-value continuation to positional `ini_set` Closures. The original
+owner survives value effects that replace the live callee. Ordinary strict calls
+reject NULL first; explicit `__invoke` uses weak reception through its wrapper.
+Four originals and 782 premises cover returning/throwing handlers, the actual
+four-frame wrapper trace and reuse of the retained setter. Sole-owner lifetimes
+and wider values/forms remain partial.
 
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
@@ -1557,6 +1567,11 @@ The call retains the raw flag and earlier pointer across callback changes;
 truthy flags warn before publication or duplicate lookup. Strict calls reject
 the raw nonboolean flag.
 [Quiet object-flag review](coverage/semantics/define-object-scalar-flag-review.json).
+Arrays and ordinary class instances used as flags raise TypeError before the
+`define` body in weak and strict calls, even with a recursive value or existing key. Raw traces
+retain the captured arrays and object pointers; ordinary flag-object destruction
+waits until those trace owners are released.
+[Invalid-flag review](coverage/semantics/define-invalid-flag-review.json).
 
 Fresh definitions also copy nonempty array trees containing certified stdClass
 or user-instance leaves under the admitted flags. Copied containers freeze source
@@ -3312,9 +3327,18 @@ skips Get and retires before receiver destruction. A supplied payload-destructor
 Exception preserves the same catch and assignment destination.
 [Four originals and 416 focused premises](coverage/semantics/magic-empty-isset-array-rv-review.json)
 cover these paths without changing generic array/free/GC behavior.
-Ordinary `isset` and no-Get `empty` keep their typed-bool callback requirement.
-Other signatures, receivers, other internal-object RVs and
-wider recursive/coalesce magic combinations remain unsupported.
+No-Get `empty` keeps its typed-bool callback requirement. Terminal typed-bool
+callbacks with `__get`, other signatures/receivers/internal-object RVs and wider
+recursive/coalesce magic combinations remain unsupported.
+
+Terminal CV/literal private-property `isset` also accepts inherited
+`__isset(string $name)` without a return declaration. It caches ordinary
+object/array truth and skips `__get`, including a declared throwing getter.
+A sole RV is disposed while the receiver
+and IN_ISSET remain; held RVs dispose later. Mutable-empty false and a supplied
+destructor Exception preserve result and cleanup order.
+[Four originals and 457 focused premises](coverage/semantics/terminal-isset-rv-review.json)
+cover these paths and saved call validity without changing generic destruction/GC.
 
 Inherited private writes now invoke a public `__set(string $name, $incoming): void`
 for selected external CV/literal assignments. The setter receives integer `7`,
@@ -4190,8 +4214,11 @@ pauses, required literal history despite an unchanged heap, engine TypeError cat
 one line7 Notice and detached aliases. Three simultaneously owning computed
 object returns also pass a fresh source comparison and 347/7 reached checks at
 `f305be84b`: normal C/B/A retirement, saved-caller owners, source-region refusals
-and selected-reference aliases. This requires no runtime change. Wider
-interposed/pending histories, reentry, GC and broader consumers remain open.
+and selected-reference aliases. This requires no runtime change. A direct
+TypeError from the first computed object's destructor now preserves its local
+catch while the other two returns still own their objects. One fresh comparison
+and 514/12 checks at `9aa2136d9` prove cleared-NULL recovery, one Notice and detached
+caller aliases. Other throw forms, reentry, GC and broader consumers remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

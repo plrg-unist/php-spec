@@ -41,7 +41,12 @@ be mutable nonpool flat arrays of DIRECT null/bool/int/float entries. The CELL
 keeps one child-table edge; its debt never subtracts from HARRAY owners. A singleton
 outer copy unwraps the wrapper, then ordinary child COW separates array values.
 Changing the child table leaves the same CELL debt in place. Old-array completion
-requires ALIAS, and the active builder cannot be either payload. The
+also admits an ordinary-scalar DIRECT value. Its acquired count cancels an existing
+debt first; otherwise the wrapper and its child remain owned for the request.
+Repeated unmatched occurrences preserve multiplicity through normal and throwing
+callbacks. The active builder cannot be either payload. The
+[array-to-scalar review](../../coverage/semantics/array-literal-float-ref-array-scalar-review.json)
+checks child COW after ordinary names disappear and debt cancellation. The
 [flat-array review](../../coverage/semantics/array-literal-float-ref-arrays-review.json)
 checks these counts through stable insertion, deletion, throw and inverse cleanup.
 Debt cells must keep positive effective counts. Array-valued type sources,
