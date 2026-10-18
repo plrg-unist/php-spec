@@ -1,0 +1,99 @@
+{
+  "scope": "Terminal inherited empty of the external CV/literal private-property slice with typed public nonstatic nonref __isset(string):bool and no __get; both booleans and throwing callback with sole caller-CV rebinding.",
+  "implementation": {
+    "base": "73f140047bcf8a2b18487b2b1d23392ffea1084e",
+    "revision": "c7ebc8d60c77c892a4a545731f7ea6689f7a4d2a",
+    "modules": 399,
+    "change": "407 authenticates ISSET_RESULT consumer flag against source classification and delivers true for empty;408 adds positive empty source classification to the existing no-get isset protocol and disjoins Unsupported. Existing record/target/roots/frame/throw machinery unchanged; ordinary isset and getter-present empty stay pointwise unchanged."
+  },
+  "engine": {
+    "target": "PHP8.5.10 CLI NTS64",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_object_handlers.c zend_std_has_property: retained receiver and IN_ISSET across callback, typed bool truth, no getter makes NOT_EMPTY result false before receiver release; exceptions propagate",
+      "Zend/zend_vm_def.h ZEND_ISSET_ISEMPTY_PROP_OBJ: empty negates has_property result"
+    ],
+    "intentional_divergences": []
+  },
+  "sources": {
+    "catalogue": "tests/semantics/magic_empty_isset_only_cases.json",
+    "original_root": "/home/user/workspace/php-spec/.tools/magic-empty-isset-only-private-90/.tools/magic-empty-isset-only-probes-90",
+    "maintained_byte_identical": true,
+    "cases": "Exact inherited __isset returns false/true or throws, after I, sole callerCV=null, then i. No __get exists. Receiver D follows callback and precedes true output or catch. No kept receiver alias/arrays/define route."
+  },
+  "validation": {
+    "native": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-isset-only-private-90/.tools/magic-empty-isset-only-probes-90/native-first/report.json",
+      "sha256": "514d98b99de47086579b5353510061969f2de32e3ff6585990c821a10c261c7d",
+      "revision": "73f140047bcf8a2b18487b2b1d23392ffea1084e",
+      "result": "Three exact stdout12/zero stderr/exit0 tuples",
+      "source_agreements": 0
+    },
+    "baseline": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-isset-only-private-90/.tools/magic-empty-isset-only-probes-90/accepted-current-baseline/report.json",
+      "sha256": "99d49ae87e6da93eaf5c8d139f14436e0a0423a0783f63f02692416e9a85c9b4",
+      "revision": "73f140047bcf8a2b18487b2b1d23392ffea1084e",
+      "result": "Three checked pre-callback magic-empty source/method Unsupported/CLI1 after F:/T:/X:;8.814/8.907/8.969s",
+      "source_agreements": 0
+    },
+    "changed_source": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-isset-only-private-90/.tools/magic-empty-isset-only-probes-90/changed-model-ckl6i4sw/report.json",
+      "sha256": "418bda28c5aaaaa2ee671be77805cb6875c35e50634ac3b80d863fc96a9446dd",
+      "revision": "c7ebc8d60c77c892a4a545731f7ea6689f7a4d2a",
+      "result": "Three checked normal exact native tuples;10.370/10.324/11.067s",
+      "source_agreements": 3
+    },
+    "focused": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-isset-only-private-90/.tools/magic-empty-isset-only-protocol-furk6khd/report.json",
+      "sha256": "77fe7768e3a7154731f9fc469c7734241f712969b8742c9f5bfb584d34222498",
+      "revision": "2750f4181df028eb8d349e1a189e7e801d998a02",
+      "result": "Three true/exit0:false89=71+18derived,true71,throw82;total242=224+18. AL/SL seconds6.990/12.033,7.042/11.944,6.919/14.528",
+      "source_agreements": 0
+    }
+  },
+  "focused_scope": "Actual source/consumer flag and mutually exclusive plans, noGet lookup, borrowed407 receiver owner after callerCV=null, valid saved frame despite recapturefalse, callback IN_ISSET guard/Getinactive; actual false/true RESULT becomes true before owner drop and eager cached VALUE, actual throw retains same live Throwable/pending receiver destructor/real CATCH_BIND and full budget equality. Derived wrongflag on authentic empty source plus line/name/method/missing-source refusals and other-name guard. No claim that lexical private access inside the callback selects recursive magic.",
+  "nonpassing": [],
+  "execution": {
+    "cwd": "/home/user/workspace/php-spec/.tools/magic-empty-isset-only-private-90",
+    "environment": "LC_ALL=C TZ=UTC PHP_SPEC_SCRIPT_ENCODING absent; jobs1; native/baseline CPU2, changedsource CPU1, focused CPU5; fixed native_profile in catalogue/reports.",
+    "caps": "native45; model60/outer75/steps100000 percase serial; focused each AL90 then strictSL90/cachefalse/dettrue/stop-first.",
+    "commands": [
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 2 python3 -u .tools/magic-empty-isset-only-probes-90/run.py native --revision 73f140047bcf8a2b18487b2b1d23392ffea1084e",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 2 python3 -u .tools/magic-empty-isset-only-probes-90/run.py baseline --revision 73f140047bcf8a2b18487b2b1d23392ffea1084e",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/magic-empty-isset-only-probes-90/run.py changed --revision c7ebc8d60c77c892a4a545731f7ea6689f7a4d2a",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 5 python3 -u tests/semantics/magic_empty_isset_only_protocol.py --revision 2750f4181df028eb8d349e1a189e7e801d998a02"
+    ],
+    "affinity": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-isset-only-private-90/.tools/magic-empty-isset-only-probes-90/affinity-native-first.json",
+        "sha256": "e7c3d838fd9063c06c05fae9bcac7e8e486c8831bb61faade23072eeb4cee265"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-isset-only-private-90/.tools/magic-empty-isset-only-probes-90/affinity-accepted-current-baseline.json",
+        "sha256": "b77bc03b3ac47dad570897af2742f3799d6e114cf167f0a82a74aca7dc243f7e"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-isset-only-private-90/.tools/magic-empty-isset-only-probes-90/affinity-changed-source-90.json",
+        "sha256": "afe455dc38bf8b9af5fa0f53cef23b3a802e859e074c2f94fc777dd04520dc9d"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-isset-only-private-90/.tools/magic-empty-isset-only-probes-90/affinity-state-90.json",
+        "sha256": "95763023ded45e8ce6d8d3fc30b5f78ecef0bbe51d1257bada8041e40528e5cf"
+      }
+    ],
+    "observations": "Native observer partial2/3: false full CPU2/argv, true CPU2 mask with empty argv at exit, throwing missed. Observer stopped/reaped nonzero/incomplete with zero semantic credit; recorded taskset-parent provenance retained, no live-mask claim for missed child. Baseline3/source3/state6 complete live masks/argv. All watched inputs/head/status/fixtures stable, groups empty, actors/observers reaped."
+  },
+  "tools": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "private_source_driver_sha256": "8db8791fbd780265490f22e539903d59374e502a3bebae324136251d124dfc60",
+    "focused_driver_sha256": "0bad03593b42c7a79eefe9876ab2dcb57e891c5d4ce0e1bfd1edbc50e71ae503"
+  },
+  "limits": "Other signatures/receivers/names, wider owners/traits/property kinds and callback/recursive/lifecycles remain partial. Mutable-empty array GC ordering remains open; no array/return machinery changed. Old82 flag-true on an isset-source fixture remains refused pointwise by flag/classifier equality, not replayed. Other accepted class cuts/failures retain original identities. Source3 loads strictSL399, no separate initialization actor.",
+  "artifacts": "Ignored reports/raw streams/process records/private run.py remain at original paths. Maintained originals/catalogue/focused harness recover from tested commits. No bulky artifacts, backup WT or cleanup receipt chain tracked.",
+  "review": {
+    "independent": "class_review_84",
+    "accepted": "Native/baseline/source3, production, focused242 and concise publication independently accepted. Structural inventory/diff checks pass; no semantic rerun for publication."
+  }
+}

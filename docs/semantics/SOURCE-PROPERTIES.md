@@ -440,6 +440,18 @@ unsupported. Coalesce and wider magic combinations stop explicitly rather than
 silently use quiet NULL.
 [Magic isset review](../../coverage/semantics/magic-isset-review.json).
 
+Terminal `empty` now also accepts that inherited bool `__isset` when `__get` is
+absent. Either callback boolean delivers true before the receiver-owning RESULT
+pops. The borrowed call and saved receiver use the existing isset protocol;
+caller-CV rebinding does not invalidate the captured selection. A callback throw
+keeps the same Exception through receiver destruction and actual catch binding.
+Three originals and focused242 (224 reached +18 derived) cover false/true/throw,
+callback isset guards, Get inactivity, receiver ownership, cached result and budgets.
+The plan authenticates the consumer flag against the source AST; mismatched flags,
+lines, names, methods and missing source are derived refusals. Ordinary isset and
+the getter-present route keep their prior behavior; no new phase or task is added.
+[Isset-only empty review](../../coverage/semantics/magic-empty-isset-only-review.json).
+
 Terminal `empty` of that external CV/literal private property now composes the
 inherited bool `__isset` with a public nonstatic nonref `__get($name)` having no
 parameter or return type, declared on the same parentless ordinary owner. False

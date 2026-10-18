@@ -2742,8 +2742,12 @@ of a direct CV/literal private property. Initialized public and typed-uninitiali
 slots bypass it; actual true/false results preserve short circuiting and storage.
 One original and one state/215 checks cover typed name reception, lexical scope
 and receiver cleanup; [magic isset review](coverage/semantics/magic-isset-review.json).
-Terminal `empty` now chains that inherited `__isset` with an untyped by-value
-`__get`: false skips the getter, while true tests its null, bool, int, float
+Without `__get`, terminal `empty` now returns true after either inherited
+`__isset` boolean, retaining the receiver through callback CV rebinding or throw.
+Three originals and focused242 checks cover delivery, cleanup and catch;
+[isset-only empty review](coverage/semantics/magic-empty-isset-only-review.json).
+With an untyped by-value `__get`, terminal `empty` chains it after the inherited
+`__isset`: false skips the getter, while true tests its null, bool, int, float
 or byte-string result. Only empty bytes or exactly ASCII `0` make a string
 empty; NUL and `0` plus NUL do not. The original integer/call state208 remains historical; one further
 original and state155 cover primitive results and authenticated string metadata.

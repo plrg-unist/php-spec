@@ -7,23 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Terminal inherited `empty` now accepts nonempty array getter RVs through the
-receiver-only disposal phase, and immutable empty literals through direct true
-delivery. Owned-element destructors run after array retirement with isset active,
-Get inactive and the saved receiver retained; caller-CV rebinding and payload
-throws preserve receiver ordering and the same Exception at actual catch binding.
-Three exact originals agree at fa9e185e2; focused255 at9a5722902 (222 reached +33
-derived) covers both result branches, disposal, shared-array owners, mutable-empty/
-allocation/type refusals and budgets. No semantic actor failed. Native affinity
-sampling captured only the empty case; recorded taskset-parent provenance remains.
-The saved phase and generic array/key/return/destruction code remain unchanged.
-Mutable-empty arrays, other internal kinds and wider signatures/receivers/lifecycles
-remain partial. [Array RV review](coverage/semantics/magic-empty-array-rv-review.json).
-Earlier instance/stdClass/primitive/NaN cuts retain their original identities and
-failures without replay or renewed credit.
-
-Pointwise composition over425174b59 preserves the incoming399-module parent.
-Source3/state255 retain tested cuts; no joined actor or renewed execution credit.
+Terminal inherited `empty` now handles the existing typed bool `__isset` when
+`__get` is absent. False and true both deliver true before the saved receiver
+owner drops; caller-CV rebinding and callback throws preserve destructor ordering
+and the same Exception at actual catch binding. Source3 agrees at c7ebc8d60;
+focused242 at2750f4181 (224 reached +18 derived) covers actual borrowed callbacks,
+result caching, receiver cleanup, flag/source separation, refusals and budgets.
+No semantic actor failed. Native masks were sampled for two of three short cases;
+recorded taskset-parent provenance remains. The existing isset record/target,
+roots, frames and throw machinery are reused; ordinary isset and getter-present
+empty behavior remain pointwise unchanged. Wider signatures/receivers/lifecycles
+and mutable-empty array GC ordering stay open. [Isset-only empty review](coverage/semantics/magic-empty-isset-only-review.json).
+Earlier class cuts, including arrayRV255, retain their identities without replay.
 
 WeakMap comparisons now admit normalized FROMCALLABLECLOSURE and BOUNDFAKECLOSURE
 objects as uncomparable +1 in either direction before factory/binding metadata or
