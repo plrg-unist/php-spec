@@ -101,8 +101,38 @@ def $property_empty_get_source(S, pmethoddesc) = true
   -- if ~$generator_statements(statement*)
 def $property_empty_get_source(S, pmethoddesc) = false -- otherwise
 
+;; Absent __isset return declarations are selected only by this paired route.
+dec $property_empty_isset_source(pstate, pmethoddesc) : bool
+def $property_empty_isset_source(S, pmethoddesc) = true
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if pfunction = pmethoddesc.FUNCTION
+  -- if pmethoddesc.OWNER = PORIGIN n pcpath_owner
+  -- if pfunction.ORIGIN = PORIGIN n pcpath
+  -- if $(|pcpath| > 0)
+  -- if PCINDEX n_method = pcpath[$nabs($(|pcpath| - 1))]
+  -- if pcpath = pcpath_owner ++ [PCFIELD 5, PCINDEX n_method]
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc_owner)
+  -- if pclassdesc_owner.KIND = "class" /\ pclassdesc_owner.PARENT = eps /\ ~pclassdesc_owner.READONLY
+  -- if $method_origin(pclassdesc_owner.METHODS, pfunction.ORIGIN) = (pmethoddesc)
+  -- if $origin_node(S.SOURCES, pclassdesc_owner.ORIGIN) = (NStmtClass phpType14_owner phpType24_owner phpType3_owner ABSENT phpType42_owner (SEQUENCE statement_owner*) metadata_owner)
+  -- if $(n_method < |statement_owner*|)
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (statement_method)
+  -- if statement_method = NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE ([NParam (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_type) metadata_type) (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES text_parameter) metadata_parameter_name) ABSENT (SEQUENCE eps) metadata_parameter])) ABSENT (SEQUENCE statement*) metadata
+  -- if statement_owner*[n_method] = statement_method
+  -- if flags <- [0,1] /\ $ptlc($base64(text_method)) = $ptascii("__isset") /\ pmethoddesc.NAME = $base64(text_method)
+  -- if $ptlc($base64(text_type)) = $ptascii("string")
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 4, PCINDEX 0])) = (NParam (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_type) metadata_type) (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES text_parameter) metadata_parameter_name) ABSENT (SEQUENCE eps) metadata_parameter)
+  -- if pfunction.SIGNATURE.PARAMETERS = [psparam]
+  -- if psparam.NAME = $base64(text_parameter) /\ $ppmethod_isset_signature(pfunction.SIGNATURE) /\ pfunction.SIGNATURE.RETURNS = eps
+  -- if pfunction.NAME = pclassdesc_owner.NAME ++ $ptascii("::") ++ pmethoddesc.NAME
+  -- if pfunction.BODY = pcpath ++ [PCFIELD 6] /\ pfunction.DEFAULTS = eps
+  -- if $property_unset_body_source(S.SOURCES, n, pfunction.BODY, statement*, 0)
+  -- if pfunction.LINE = $ppmethod_line(metadata) /\ pfunction.ENDLINE = $psendline(metadata)
+  -- if ~$generator_statements(statement*)
+def $property_empty_isset_source(S, pmethoddesc) = false -- otherwise
+
 dec $property_empty_method_source(pstate, pmethoddesc, bool) : bool
-def $property_empty_method_source(S, pmethoddesc, false) = $property_magic_method_source(S, pmethoddesc, "__isset")
+def $property_empty_method_source(S, pmethoddesc, false) = ($property_magic_method_source(S, pmethoddesc, "__isset") \/ $property_empty_isset_source(S, pmethoddesc))
 def $property_empty_method_source(S, pmethoddesc, true) = $property_empty_get_source(S, pmethoddesc)
 dec $property_empty_function(pstate, ppropertyempty, bool) : pfunction?
 def $property_empty_function(S, ppropertyempty, b_get) = (pfunction)
@@ -236,6 +266,35 @@ rule PhpStep/property-empty-get: S ~> S[.TODO = [(CALL_ARGS (PROPERTY_EMPTY_TARG
   -- if S.RESULT = KNOWN (PBOOL true)
   -- if S.ORIGIN = (ppropertyempty.SITE)
   -- if $property_empty_valid(S, ppropertyempty)
+
+;; Cache __isset object truth in its existing receiver-owning marker. Ordinary
+;; eager disposal must finish before the following step may start __get.
+dec $property_empty_isset_rv_ready(pstate, ppropertyempty) : bool
+def $property_empty_isset_rv_ready(S, ppropertyempty) = true
+  -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
+  -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty false) :: ptask_tail*
+  -- if S.ORIGIN = (ppropertyempty.SITE) /\ S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if $property_empty_valid(S, ppropertyempty)
+  -- if $property_empty_method(S, ppropertyempty.OBJECT, false) = (pmethoddesc)
+  -- if $property_empty_isset_source(S, pmethoddesc)
+  -- if S.RESULT = KNOWN (POBJECT n_rv)
+  -- if $(n_rv < |S.OBJECTS|) /\ (HOBJECT n_rv) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_rv] = INSTANCE porigin_class
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ ~$instance_storage_freeing(S, n_rv)
+def $property_empty_isset_rv_ready(S, ppropertyempty) = false -- otherwise
+rule PhpStep/property-empty-isset-object-release: S ~> S[.RESULT = KNOWN (PBOOL true)]
+  -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty false) :: ptask_tail*
+  -- if $property_empty_isset_rv_ready(S, ppropertyempty)
+rule PhpStep/property-empty-isset-result-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "magic empty isset result type"]
+  -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty false) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN pvalue
+  -- if ~(pvalue <- [PBOOL false, PBOOL true])
+  -- if ~$property_empty_isset_rv_ready(S, ppropertyempty)
+  -- if S.ORIGIN = (ppropertyempty.SITE)
+  -- if $property_empty_valid(S, ppropertyempty)
+
 dec $property_empty_truth(pstate, pvalue) : bool?
 def $property_empty_truth(S, PNULL) = (true)
 def $property_empty_truth(S, PBOOL b) = (~b)
@@ -381,6 +440,10 @@ def $call_task_valid(S, PROPERTY_EMPTY_RV ppropertyemptyrv) = $property_empty_rv
 
 dec $property_empty_rv_task(pstate, ptask, nat, ptbytes) : bool
 def $property_empty_rv_task(S, PROPERTY_EMPTY_RV ppropertyemptyrv, n, ptbytes) = ($property_empty_rv_valid(S, ppropertyemptyrv) /\ ppropertyemptyrv.EMPTY.OBJECT = n /\ ppropertyemptyrv.EMPTY.NAME = ptbytes)
+def $property_empty_rv_task(S, PROPERTY_EMPTY_RESULT ppropertyempty false, n, ptbytes) = true
+  -- if ppropertyempty.OBJECT = n /\ ppropertyempty.NAME = ptbytes
+  -- if S.ORIGIN = (ppropertyempty.SITE)
+  -- if $property_empty_valid(S, ppropertyempty)
 def $property_empty_rv_task(S, ptask, n, ptbytes) = false -- otherwise
 dec $property_empty_rv_tasks(pstate, ptask*, nat, ptbytes) : bool
 def $property_empty_rv_tasks(S, eps, n, ptbytes) = false
