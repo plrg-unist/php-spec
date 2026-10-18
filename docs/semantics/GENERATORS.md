@@ -48,7 +48,18 @@ changed by that cleanup; an argument-destructor throw preserves the cleared bit.
 Synthetic shared-child resumes also preserve the first-yield flag: an inherited
 middle rejects rewind, while a previously initialized middle can still accept it
 after shared advancement. The [pending-send review](../../coverage/semantics/generator-pending-init-send-review.json)
-records both histories. Owning copied detached returns remain Unsupported.
+records both histories. Owning copied returns remain outside those pending API routes.
+
+A direct detached parent with an owning copied return now admits ordinary unpack
+at a simple-CV assigned `yield from`. Null-key rejection leaves its COMPLETE
+continuation intact. Actual next transfers the value into the parent result;
+forced close instead preserves that single count before frame cleanup and finally.
+The current cache retires separately and may replace the unpack Error. A returned
+array retains its live embedded cells, so later writes can retire old referents.
+The [owning-return review](../../coverage/semantics/generator-owning-detached-return-review.json)
+keeps normal consumption, close retention and the original affected control separate.
+Active-chain owning returns, wider continuations and explicit collection while
+that copied result waits remain open.
 
 Pending `send` through finite native Generator links can also fill a paused
 child's used yield assigned directly to a simple CV. It clears the actual root's

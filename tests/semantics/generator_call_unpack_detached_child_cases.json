@@ -13,106 +13,11 @@
     "id": "generator-detached-unpack-owning-return-required-control",
     "source": "<?php\nclass GeneratorDetachedCache12 { function __destruct() { echo \"A|\"; } }\nclass GeneratorDetachedReturn12 { function __destruct() { echo \"R|\"; } }\nfunction generatorDetachedObjectsLeaf12() { echo \"C|\"; yield new GeneratorDetachedCache12; echo \"L|\"; return new GeneratorDetachedReturn12; }\nfunction generatorDetachedObjectsParent12() { try { echo \"G|\"; $result = yield from $GLOBALS[\"child\"]; echo \"BAD|\"; } finally { echo \"F|\"; } }\nfunction generatorDetachedObjectsTarget12($value) { echo \"BAD|\"; }\n$child = generatorDetachedObjectsLeaf12(); $parent = generatorDetachedObjectsParent12(); echo \"P|\"; $parent->rewind(); $child->next();\necho \"V|\", $parent->current() instanceof GeneratorDetachedCache12 ? \"HELD|\" : \"BAD|\", \"K|\", $parent->key() === null ? 1 : 0, \"|\";\nunset($child); echo \"M|\";\ntry { generatorDetachedObjectsTarget12(...$parent); } catch (Error $caught) { echo \"T|\", $caught->getLine(), \"|\", $caught->getTrace() === [] ? \"NOFRAME|\" : \"FRAME|\"; }\nunset($parent); echo \"E\";\n",
     "source_sha256": "fa821ebdd043f44e0411f42b19eacd1d69284ac951bb42794dff9a14d057b07d",
-    "purpose": "An owning copied yield-from result survives forced parent close until request shutdown in the pinned engine; this unfinished result lifetime stays explicitly Unsupported before unpack cleanup.",
-    "expected_model": "unsupported",
+    "purpose": "An owning copied yield-from result survives forced parent close until request shutdown; Iterator27 admits this direct source-authenticated return temporary and preserves the original native tuple.",
+    "expected_model": "normal",
     "native_stdout": "P|G|C|L|V|HELD|K|1|M|T|10|NOFRAME|F|A|ER|",
     "native_stderr": "",
-    "native_exit": 0,
-    "unsupported_reason": "Generator unpack delegated producer",
-    "unsupported_stdout": "P|G|C|L|V|HELD|K|1|M|",
-    "unsupported_events": [
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "80",
-            "124"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "71",
-            "124"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "67",
-            "124"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "76",
-            "124"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "86",
-            "124"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "72",
-            "69",
-            "76",
-            "68",
-            "124"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "75",
-            "124"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "49"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "124"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "77",
-            "124"
-          ]
-        ]
-      }
-    ]
+    "native_exit": 0
   },
   {
     "id": "generator-detached-unpack-retained-child-keeps-original-cache-after-tail",

@@ -146,6 +146,13 @@ adds no collector or GC source agreement during or after retention.
 The same parked-frame boundary covers one simple-CV input in that reference loop;
 the [buffered reference-foreach review](../../coverage/semantics/generator-pending-buffered-reference-foreach-throw-review.json)
 adds ownership and close observations, with no new collector or GC source credit.
+
+Explicit collection while an owning copied direct `yield from` result waits in
+its saved continuation is also refused: the pinned result slot precedes its live
+range. Close retention preserves the external count, while ordinary next consumes
+it; the [owning-return review](../../coverage/semantics/generator-owning-detached-return-review.json)
+grants no new GC agreement.
+
 Fiber force-close retains the tagged head and pending receipt in its genuine
 caller VM until ordinary release consumes it. Generator close consumes the head
 and updates progress before capturing its continuation; its new close jobs

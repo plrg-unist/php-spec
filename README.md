@@ -943,6 +943,12 @@ Direct detached roots also unpack when the copied child return owns no heap
 nodes. Their object, array and reference caches survive child retirement; key
 errors preserve the real return continuation for a later explicit next.
 See the [detached-child review](coverage/semantics/generator-call-unpack-detached-child-review.json).
+Direct parents now also admit an owning copied return at a simple-CV assigned
+`yield from`. A later `next()` consumes it normally; forced close preserves its
+count across finally and current-cache cleanup, with payload destructors in the
+request-store pass. Returned arrays retain their live embedded reference cells.
+The [owning-return review](coverage/semantics/generator-owning-detached-return-review.json)
+includes cache-cleanup replacement of the unpack Error and the promoted original control.
 Source Iterator `yield from` leaves also unpack through active Generator chains.
 The real raw cache is captured after key callbacks; snapshots preserve reference
 mutation, row COW and cache lifetime across next-callback errors.
@@ -961,7 +967,8 @@ heap nodes. Their null key raises the real unpack error before argument sending;
 retained caches, later next/return/tail execution and cleanup preserve initialization
 history. A direct middle next can consume pending initialization without advancing.
 See the [nested-detached review](coverage/semantics/generator-call-unpack-nested-detached-review.json).
-Aggregate ordinary-call unpack, owning copied returns, other pending-initialization
+Aggregate ordinary-call unpack, owning copied returns below active links or in
+wider continuations, other pending-initialization
 send/throw, Generator by-reference
 call targets and callback methods, nonnumeric raw valid changes, request/plain
 reference strings and handler replacements with

@@ -7,6 +7,35 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Direct Generator unpack now admits an owning child return copied into a
+simple-CV assigned `yield from`. Normal next consumes the copied result; forced
+close preserves its single count before finally and current-cache cleanup.
+Returned arrays keep live embedded reference cells, so later writes can retire
+old referents while new values remain retained. A temporary cache destructor can
+replace the null-key unpack Error before catch while the return stays late.
+Active-chain owning returns, wider continuations, pending APIs and waiting-result
+GC remain open. No general lifecycle or collector closure is claimed.
+[Owning-return review](coverage/semantics/generator-owning-detached-return-review.json).
+
+Four new originals and one promoted historical control agree at `0195cd721`/401;
+the latter reuses exact historical native bytes without PHP replay. Five new
+fronts pass 515 premises (263 author + 252 independent, including 25 generic
+checks), and the one affected historical group separately passes 95. Pre-close
+transfer, real next consumption, force-close finally, shared-cell mutation and
+cache-destructor CURRENT all reach their native endings with public/heap validity
+and zero/split budgets. Strict401 and the six-fixture elaboration retain `0195`;
+author263 uses `137ee15b7`, historical95 `2b7ea68d6`, peer252 `e85269870`, all with
+the same nine-file `5a0d51e91` runtime. Three fixture-observer failures remain zero;
+only affected groups repeat. Fresh native4 and the genuine unchanged Unsupported
+baseline retain `91af97f6c`/401 with zero credit; the elaboration grants none.
+
+Composed over `ada32a063`/403 after pointwise review of magic-property and
+LIST/array-literal task tags, arithmetic/constant and method-Closure selectors,
+and reference-return cleanup validation. None has a producer in these untyped
+by-value Generator sources. Incoming403 modules and task variants are preserved;
+the tested nine-file additions retain their private401 cuts. No joined actor,
+accepted replay or renewed execution credit is claimed.
+
 M108 admits normal single `REF_RETURN_CURSOR` cleanup through the existing
 same-scope release/storage view and full cursor validator. Only six module270
 lines change; the cursor remains root-free. Author 120/one raw step and independent

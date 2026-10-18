@@ -1123,6 +1123,71 @@ def $generator_from_complete_valid(S, n, porigin, n_child, pvalue) = true
   -- if $call_reference_operand_valid(S, KNOWN pvalue)
 def $generator_from_complete_valid(S, n, porigin, n_child, pvalue) = false -- otherwise
 
+;; update_current copies the used YIELD_FROM result before its live range.
+;; Close retains that single count; ordinary COMPLETE consumption is unchanged.
+def $generator_return_site(S, n, PORIGIN n_unit pcpath) = true
+  -- if $generator_object(S, n)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if $generator_from_code(S, pgenerator, PORIGIN n_unit pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprYieldFrom expression metadata_yield)
+  -- if $(|pcpath| > 0)
+  -- if n_parent = $nabs($(|pcpath| - 1))
+  -- if pcpath[n_parent] = PCFIELD 1
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath[0:n_parent]) = (NExprAssign (NExprVariable phpType32 metadata_name) (NExprYieldFrom expression metadata_yield) metadata_assign)
+  -- if $cv_name(phpType32) =/= eps
+def $generator_return_site(S, n, porigin) = false -- otherwise
+def $generator_return_receipt(S, n, porigin, n_child, pvalue) = true
+  -- if $generator_return_site(S, n, porigin)
+  -- if $generator_object(S, n_child)
+  -- if S.OBJECTS[n_child] = GENERATOR pgenerator_child
+  -- if pgenerator_child.PHASE = GENERATOR_CLOSED
+  -- if pgenerator_child.RETURN = (pvalue)
+  -- if $value_nodes(pvalue) =/= eps
+def $generator_return_receipt(S, n, porigin, n_child, pvalue) = false -- otherwise
+def $generator_return_waiting(S, n) = true
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if $generator_object(S, n)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_DELEGATING
+  -- if pgenerator.PARKED = eps
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.INPUT = eps /\ pgeneratorfrom.ACQUISITION = eps
+  -- if pgeneratorfrom.CURRENT =/= eps /\ pgeneratorfrom.POSITION = 1
+  -- if $generator_from_record_valid(S, n, pgenerator)
+  -- if pgenerator.FRAME = (pframe)
+  -- if pframe.TODO = (GENERATOR_FROM_COMPLETE n pgeneratorfrom.SITE n_child pvalue) :: ptask_tail*
+  -- if $generator_from_complete_valid(S, n, pgeneratorfrom.SITE, n_child, pvalue)
+  -- if $generator_return_receipt(S, n, pgeneratorfrom.SITE, n_child, pvalue)
+  -- if $generator_input_tail(S, pgeneratorfrom.SITE, ptask_tail*)
+  -- if pframe.HELD = eps /\ $tasks_nodes(ptask_tail*) = eps
+  -- if S.GC.ACTIVE = eps
+def $generator_return_waiting(S, n) = false -- otherwise
+def $generator_return_waiting_any(S, eps) = false
+def $generator_return_waiting_any(S, (HOBJECT n) :: pnode_tail*) = ($generator_return_waiting(S, n) \/ $generator_return_waiting_any(S, pnode_tail*))
+def $generator_return_waiting_any(S, pnode :: pnode_tail*) = $generator_return_waiting_any(S, pnode_tail*)
+  -- if ~$generator_from_object_node(pnode)
+def $generator_return_orphan(S, n) = $generator_set(S[.GENERATORRETURNRETAINED = S.GENERATORRETURNRETAINED ++ [ptask_complete]], n, pgenerator[.FRAME = (pframe[.TODO = ptask_tail*])])
+  -- if $generator_return_waiting(S, n)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.FRAME = (pframe)
+  -- if pframe.TODO = ptask_complete :: ptask_tail*
+def $generator_return_orphan(S, n) = S -- otherwise
+def $generator_return_retained_record(S, GENERATOR_FROM_COMPLETE n porigin n_child pvalue) = true
+  -- if $generator_return_receipt(S, n, porigin, n_child, pvalue)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.FRAME = eps /\ pgenerator.PARKED = eps
+  -- if pgenerator.PHASE <- [GENERATOR_CLOSING, GENERATOR_CLOSED] \/ (pgenerator.PHASE = GENERATOR_RUNNING /\ $generator_return_closing(S, n))
+def $generator_return_retained_record(S, ptask) = false -- otherwise
+def $generator_return_retained_seen(eps, n) = false
+def $generator_return_retained_seen((GENERATOR_FROM_COMPLETE n_other porigin n_child pvalue) :: ptask_tail*, n) = (n_other = n \/ $generator_return_retained_seen(ptask_tail*, n))
+def $generator_return_retained_seen(ptask*, n) = true -- otherwise
+def $generator_return_retained_valid(S, eps) = true
+def $generator_return_retained_valid(S, (GENERATOR_FROM_COMPLETE n porigin n_child pvalue) :: ptask_tail*) = true
+  -- if $generator_return_retained_record(S, GENERATOR_FROM_COMPLETE n porigin n_child pvalue)
+  -- if ~$generator_return_retained_seen(ptask_tail*, n)
+  -- if $generator_return_retained_valid(S, ptask_tail*)
+def $generator_return_retained_valid(S, ptask*) = false -- otherwise
+
 def $generator_from_pending(S, METHOD_TARGET n_object porigin_method, porigin) = true
   -- if S.ORIGIN = (porigin)
   -- if S.TODO = (CALL_ARGS (METHOD_TARGET n_object porigin_method) eps 0 eps (porigin) z) :: (GENERATOR_FROM_CALLBACK n porigin text) :: ptask*

@@ -54,6 +54,14 @@ dec $generator_foreach_retained_record(pstate, pgeneratorloopretained) : bool
 dec $generator_foreach_retained_seen(pgeneratorloopretained*, nat, nat) : bool
 dec $generator_parked_foreach(pstate, pnode) : bool
 dec $generator_parked_foreach_any(pstate, pnode*) : bool
+dec $generator_return_site(pstate, nat, porigin) : bool
+dec $generator_return_receipt(pstate, nat, porigin, nat, pvalue) : bool
+dec $generator_return_waiting(pstate, nat) : bool
+dec $generator_return_waiting_any(pstate, pnode*) : bool
+dec $generator_return_orphan(pstate, nat) : pstate
+dec $generator_return_closing(pstate, nat) : bool
+dec $generator_return_retained_record(pstate, ptask) : bool
+dec $generator_return_retained_seen(ptask*, nat) : bool
 dec $generator_pending_throw_carrier(pstate, pgeneratorpendingthrow, ptask, ptask*) : bool
 dec $generator_pending_throw_carried(pstate, pgeneratorpendingthrow, ptask*) : bool
 dec $generator_pending_throw_discard(pstate, ptask) : pgeneratorpendingthrow?
