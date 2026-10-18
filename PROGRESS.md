@@ -7,6 +7,31 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Retained propertyless Stringable `define` names now accept captured boolean true
+with primitive candidates and non-NUL global/class-like results. One module400
+raw-shape alternative preserves all source/carrier/saved-site, conversion, warning,
+trace and pending-registration code. Four originals agree at d731cddc8/runtime
+d4055de44: fresh1733, duplicate false/old1733, class-name ValueError before Warning,
+method-throw cancellation, strict raw-name TypeError and a Warning-handler throw
+that still registers the fresh captured value. All 974 premises pass there:
+383+179+99 author plus313 independent across six genuine DEFINE fronts, including
+actual raw/converted traces, callback effects/caller99 and full restored discards.
+Native throw observers avoid trace traversal; actual state checks cover it without
+name-carrier identity credit for the existing Warning name-byte projection.
+Nine reports all PASS/stable/reaped, no failure/retry/timeout; literal default has
+three expected PHP Warnings, other accepted PHP and all worker stderr quiet.
+Initial1d6 native/base and later d731 actors use CPU3; unchanged Unsupported/B|
+retains0. No old55/56/57 replay, V78 array flags remain disjoint, and wider candidate,
+flag/lifetime/forms and paused Source47/owned-NUL work remain partial.
+[Stringable true-flag review](coverage/semantics/define-stringable-true-flag-review.json).
+
+Pointwise composition over79e19a9f4 preserves incoming module414/ordered404 and
+retained-state fields. Module400 keeps V78's array-flag head and adds only the
+private raw-shape alternative; four tests are private-exact, every other runtime
+path parent-exact. Float reference-key, Generator, magic-call, arithmetic-Warning
+and ref-return cleanup producers are absent here. Private source4/974 retain their
+403-module cut with no joined actor or renewed execution credit.
+
 Array `define` now receives byte-only string flags from compiled-array element
 reads without adding a carrier identity. Empty/`"0"` are false; other nonempty
 bytes are true. Later flag-array COW and callback writes leave the raw API

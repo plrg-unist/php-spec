@@ -1242,6 +1242,15 @@ method effects; no class lookup or autoload runs.
 [Four source agreements and 844 state premises](coverage/semantics/define-stringable-class-name-review.json)
 cover malformed names, caller results and same-receiver global recovery.
 
+Retained propertyless Stringable `define()` names also admit a captured boolean
+true flag with primitive candidates and non-NUL global or class-like results.
+Conversion precedes the ignored-flag Warning; `::` results reject before it.
+A method throw cancels registration, while a supplied Warning-handler throw still
+registers a fresh captured value before propagating the same Exception.
+[Four source agreements and 974 state premises](coverage/semantics/define-stringable-true-flag-review.json)
+cover both throw phases, normal fresh/duplicate results and strict raw-name rejection.
+Wider values, flag conversions, lifetimes and call forms remain partial.
+
 Retained ordinary nonStringable instances and `stdClass` now fail positional
 `define()` name reception before primitive flag processing or registration.
 Later candidate/flag effects finish first, while strict code still reports the

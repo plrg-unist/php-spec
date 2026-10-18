@@ -710,7 +710,7 @@ state fronts. Earlier trace-observing native originals remain native-only: two
 CLI45 timeouts and one prior DSL binding failure retain zero credit. Only the
 changed source and affected/unrun checks repeat; Source53/54 evidence is unchanged.
 Sole-owner destruction, wider receivers/returns, NUL/HALT results, owning
-candidates, true/coerced flags and named/packed/owner forms remain partial.
+candidates, coerced flags and named/packed/owner forms remain partial.
 
 Retained propertyless Stringable `define` names returning non-NUL `::` text reach the
 existing class-name ValueError before registration, with primitive candidates and
@@ -728,6 +728,29 @@ Unsupported/B|S| retains 0 and later actors use CPU3. One obsolete Source55 `A::
 finish control now admits converted CONFIG/class shape; new reached fronts cover
 that extension without renewing Source55's 717 or Source56's 556 evidence. NUL/HALT
 results and wider lifetime/value/flag/call domains remain partial.
+
+Retained propertyless Stringable `define` names now admit captured boolean true
+with primitive candidates and non-NUL global or class-like results. One raw-call
+shape alternative reuses the existing conversion, ignored-Warning, duplicate and
+pending-exception rules. Conversion completes before the ignored-flag Warning;
+class-name ValueError and strict raw-object TypeError precede it. Normal fresh
+publication returns true, and normal duplicates warn again and return false.
+A method-created Exception cancels both conversion consumers without registration
+or an ignored Warning. A Warning-handler Exception instead registers a fresh
+captured primitive value before propagation; callback siblings/live writes and
+caller99 survive. The converted CONFIG keeps its authentic name carrier, while
+that Warning's API trace retains the existing name-byte projection and exact
+candidate/true captures. Native throw observers avoid trace traversal; state
+checks inspect both actual traces and entire restored discard states.
+The [Stringable true-flag review](../../coverage/semantics/define-stringable-true-flag-review.json)
+binds four exact source agreements and 974 premises (383+179+99 author,313 peer)
+at d731cddc8/runtime d4055de44 across six genuine DEFINE fronts. All nine reports
+pass on their first attempts: literal default delivery has exactly three PHP
+Warnings, other accepted cases are quiet, and all worker stderr is empty. Initial
+1d6ea057f native/base and later d731 actors use CPU3; Unsupported/B| retains zero
+credit. Source55/56/57 evidence stays at its earlier cuts without replay. Pending
+duplicates under a Stringable-derived Warning throw, owning candidates, coerced
+flags, wider lifetimes and call forms remain partial.
 
 Positional `define` now rejects retained ordinary nonStringable instances and
 `stdClass` names before primitive optional flag reception or registration, weak
