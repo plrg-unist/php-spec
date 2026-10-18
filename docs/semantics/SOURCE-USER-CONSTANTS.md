@@ -115,6 +115,25 @@ runtime rules unchanged.
 Arity-error handling of larger counts, owning arguments, owners and packed/named
 forms remains partial.
 
+Positional `define` calls with primitive arguments now reject every count outside
+two through three before receiving the name or optional flag. Too few arguments
+produce `at least 2 arguments`; excess arguments produce `at most 3 arguments`,
+with the actual count. This precedes weak NULL diagnostics, strict type rejection,
+the ignored-true Warning and registration, after the argument expressions finish.
+The API trace retains their raw captured values and selected builtin even after
+later arguments mutate the caller's CVs; the destination remains unassigned.
+
+Exactly 21 module400 insertions reuse the existing source/primitive/carrier and
+error helpers. The broad define receiver excludes only this new count shape;
+valid two/three-argument routes and query arity handling are unchanged.
+The [define-arity review](../../coverage/semantics/define-arity-review.json) binds
+four exact originals and 444 premises at 88f96c261 across five real CONFIG error
+fronts. Counts 0/1/4 and independent 5 cover raw NULL/request captures, a true-flag
+body bypass, canonical API/caller traces, caller99/no publication, source/carrier/
+immutable/count controls and budgets. No actor failed or repeated; the unchanged
+Unsupported baseline retains zero credit. Arity-error handling of owning values,
+owners and packed/named/FCC forms remains partial.
+
 Primitive duplicate `define` of an existing user constant emits the ordinary
 level2 Warning and returns false without publishing its candidate. A named handler
 may suppress default delivery or append another constant; the original binding

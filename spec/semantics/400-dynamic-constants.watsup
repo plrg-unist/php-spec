@@ -176,13 +176,34 @@ def $dynamic_query_arity_valid(S, pconfigcall) = true
   -- if $dynamic_scalar_define_arguments(S, pconfigcall, 0)
   -- if $dynamic_query_arity_arguments(S, pconfigcall.SENT)
 def $dynamic_query_arity_valid(S, pconfigcall) = false -- otherwise
+dec $dynamic_define_arity_call(pconfigcall) : bool
+def $dynamic_define_arity_call(pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_DEFINE
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps /\ ~pconfigcall.NAMED
+  -- if $(|pconfigcall.SENT| < 2 \/ |pconfigcall.SENT| > 3)
+def $dynamic_define_arity_call(pconfigcall) = false -- otherwise
+dec $dynamic_define_arity_valid(pstate, pconfigcall) : bool
+def $dynamic_define_arity_valid(S, pconfigcall) = true
+  -- if $dynamic_define_arity_call(pconfigcall) /\ $config_invoke_valid(S, pconfigcall)
+  -- if $dynamic_scalar_define_arguments(S, pconfigcall, 0)
+  -- if $dynamic_query_arity_arguments(S, pconfigcall.SENT)
+def $dynamic_define_arity_valid(S, pconfigcall) = false -- otherwise
+dec $dynamic_define_arity_message(pconfigcall) : preqbytes
+def $dynamic_define_arity_message(pconfigcall) = $ptascii("define() expects at least 2 arguments, ") ++ $decimal_integer(|pconfigcall.SENT|) ++ $ptascii(" given")
+  -- if $(|pconfigcall.SENT| < 2)
+def $dynamic_define_arity_message(pconfigcall) = $ptascii("define() expects at most 3 arguments, ") ++ $decimal_integer(|pconfigcall.SENT|) ++ $ptascii(" given")
+  -- if $(|pconfigcall.SENT| > 3)
 dec $dynamic_constant_receive(pstate, pconfigcall) : pstate
+def $dynamic_constant_receive(S, pconfigcall) = $config_error(S[.TODO = ptask_tail*], pconfigcall, "ArgumentCountError", $dynamic_define_arity_message(pconfigcall))
+  -- if $dynamic_define_arity_valid(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
 def $dynamic_constant_receive(S, pconfigcall) = $config_error(S[.TODO = ptask_tail*], pconfigcall, "ArgumentCountError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("() expects exactly 1 argument, ") ++ $decimal_integer(|pconfigcall.SENT|) ++ $ptascii(" given"))
   -- if $dynamic_query_arity_valid(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
 def $dynamic_constant_receive(S, pconfigcall) = $dynamic_define_finish(S, pconfigcall)
   -- if pconfigcall.KIND = INTRINSIC_DEFINE
   -- if ~$dynamic_constant_case_flag(pconfigcall)
+  -- if ~$dynamic_define_arity_call(pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
 def $dynamic_constant_receive(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL $dynamic_constant_exists(S, preqbytes))][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pconfigcall.KIND = INTRINSIC_DEFINED

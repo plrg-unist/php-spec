@@ -1084,6 +1084,13 @@ strict calls also check count before parameter type.
 cover actual error transitions, caller results and source/carrier/count controls.
 Arity-error handling of larger counts, owning values and packed/named forms
 remains partial.
+Positional `define()` calls with primitive arguments also reject counts below two
+or above three before name/flag reception or registration. Exact count messages
+and raw API arguments survive all argument effects, including a captured true
+flag whose body Warning never runs.
+[Four source agreements and 444 state premises](coverage/semantics/define-arity-review.json)
+cover too-few/excess counts, strict priority, live callee changes and caller results.
+Owning and packed/named arity-error handling remains partial.
 Scalar `define` names also follow caller strictness with primitive values and an
 omitted/already-false flag. Weak registration keeps its received key across later
 precision changes and duplicate handlers; strict errors retain raw arguments.

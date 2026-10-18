@@ -7,6 +7,28 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Positional `define` calls with primitive arguments now reject counts outside
+two through three before name/flag reception and registration, after all argument
+effects. Exact least2/most3 messages and raw NULL/request/true captures survive
+selected-callee and live CV changes; no conversion or ignored-flag Warning runs,
+no row is published and the caller result stays 99. Exactly 21 module400 insertions
+reuse existing source/carrier/error helpers and exclude only bad arity from the
+broad define receiver; valid 2/3 and Source48 query paths are unchanged. Four exact
+originals and all 444 public premises pass at 88f96c261/runtime 30b09a375: author 130+99+85
+and independent 130 across five actual CONFIG error fronts. Counts 0/1/4/5, actual
+raw API/caller traces, preserved stores/table/events, immutable literal NULL and
+carrier/source/selection/count refusals plus budgets pass. No actor failed or
+repeated. Initial native/baseline used CPU4 at c4b9906e8; later source/state used CPU2.
+PHP/worker stderr are empty; unchanged Unsupported dynamic-domain baseline after B|
+retains 0. Owning/packed/named arity errors and wider family closure remain partial.
+[Define-arity review](coverage/semantics/define-arity-review.json).
+
+Pointwise composition over f84ea2f98 preserves the incoming 401-module parent.
+Module400 and four tests are private-exact; every other runtime/manifest path
+retains the parent. Getter-capture equality, ref-return destructor and leading-string
+compound selectors are disjoint from these plain CONFIG errors. Source4/public444
+retain 88f96c261/runtime30b09a375 with no joined actor or renewed execution credit.
+
 Leading numeric strings now warn after the first callback in the both-fractional
 plain-CV modulo/shift/numeric-bitwise routes. Historical LEFT `12` and saved numeric `5`
 survive both callbacks, storing `2`/`384`/`0`/`4`/`13`/`9` and detaching alias `88`; real `"05tail"`
