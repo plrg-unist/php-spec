@@ -7,6 +7,21 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Quiet LEFT/right-only numeric-string Warnings now enter the existing `+`, `-`,
+`*`, `/`, `**` continuations for two selected reference cells. One shared snapshot and four plan
+arms preserve every old body; actual CONVERT steps capture both holders before
+the sole RHS Warning. Callback writes cannot change cached results or zero division;
+power still reaches its final Deprecated after RHS-name rebinding. Nine originals
+pass at 0f1b299d6/401; four focused fixtures pass 576 SL premises at cd4715302/401,
+covering all four arms, exact capture order, owners and budget resumption.
+Thirteen rows remain partial, earlier cuts receive no renewed credit, OP12 paused.
+[Right-warning ledger](coverage/semantics/right-arithmetic-warning-review.json).
+
+Composed over33fb9bef1/402 after review of magic property-write, LIST, DEFINE,
+reference-return destructor and numeric SensitiveParameterValue selectors, absent
+here. All incoming paths are retained; source9/state576 keep their private401
+cuts without a joined actor or renewed execution credit.
+
 M106 admits public resumption throughout one normal adjacent partial reference-return
 pair's destructor cleanup: VALUE release, physical instance storage, HANDLE release,
 and the remaining empty releases. The outer reference owner stays live; exact
@@ -117,22 +132,10 @@ scripts and all incoming runtime/module bytes preserved. Object-name reception,
 reference-return/destructor, Generator, Sensitive, power/SUBMUL and LIST paths
 have no producer here; source3/state549 retain their private cuts without replay.
 
-Binary `**` with a leading numeric LEFT string now selects both reference cells
-before converting LEFT and the delayed RHS. A first Warning may repair bad text; each
-number survives its Warning, then both are historical at the final zero-base/
-negative-exponent Deprecated even after RHS-name rebinding. Seven originals pass
-at 5a9096207/401 and five focused fixtures pass 951 SL premises at 7542c04dd/401:
-integer `8`, strict float `2.0`, signed infinities, live bool/string TypeError,
-supplied throws at the second Warning/final Deprecated, selected-old-RHS owners
-and budget resumption. Nine rows remain partial; old CV power/ADD/DIV/SUBMUL bodies
-and evidence are unchanged, OP12 paused.
-[Power-conversion ledger](coverage/semantics/power-conversion-review.json).
-
-Composed over 1c0f2a579/401 after four incoming runtime paths were reviewed.
-Sensitive wrapper comparisons, DEFINE-name conversion, reference-return destructor
-cursors and parked Generator/yield history have no producer in these named-handler
-scalar/reference sources. Incoming paths and old arithmetic bodies are preserved;
-source7 and state951 retain their private401 cuts without replay.
+Earlier leading-LEFT selected-reference SUB/MUL and power conversions retain
+their source7/state834 and source7/state951 cuts in the
+[SUB/MUL](coverage/semantics/submul-warning-review.json) and
+[power-conversion](coverage/semantics/power-conversion-review.json) ledgers.
 
 Pending Generator `throw` now preserves one buffered simple-CV used-yield input
 inside one active by-reference array `foreach`. The input captures a value while
@@ -213,22 +216,6 @@ selected-reference SUB/MUL Warning guards are absent from these originals;
 integer counter increments do not use those binary arithmetic tasks. Fresh SUBMUL
 task variants add no state fields. Only module379 changes; source3/state413/11
 retain tested84b3c1f20/401 without a joined actor or renewed execution credit.
-
-Ordinary binary SUB/MUL now resumes leading-numeric-string warnings for two
-preexisting untyped reference cells. Both referents are selected before conversion;
-LEFT's handler may repair an initially nonnumeric RHS, and a later name rebind
-cannot redirect that selected cell. Cached integers produce `7`/`60`; captured fractional
-numbers produce strict float `68.75` despite poisoned live values. Failed RHS conversion
-uses live bool/string labels; supplied throws cancel result delivery while callback
-writes survive. Seven originals pass at 57da6d40c/401 and five focused fixtures pass
-834 SL premises at dac9114e8/401. All nine affected rows remain partial, ADD/DIV evidence
-is unchanged, OP12 paused. [SUB/MUL ledger](coverage/semantics/submul-warning-review.json).
-
-Composed over a8fb81673/401 after ten incoming runtime paths were reviewed.
-Magic properties, Closure-bind traces, LIST staging, parked Generator retention
-and DEFINE conversion/pending-array selectors are absent from these scalar/reference
-sources. All incoming paths and existing ADD/DIV bodies are preserved; source7
-and state834 retain their private401 cuts without replay.
 
 A pending exception from the ignored-case Warning now survives cyclic-array
 validation without a new ValueError, copy or key lookup. Acyclic duplicates still

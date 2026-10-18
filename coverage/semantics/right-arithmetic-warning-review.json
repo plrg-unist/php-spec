@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "milestone": "OP46 quiet-LEFT right-only arithmetic Warning ingress",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/profile",
+  "scope": "Ordinary binary +,-,*,/,** with two defined direct CVs already selecting live untyped reference cells, quiet arithmetic LEFT conversion and a leading-number RHS string under an eligible named Warning handler. Both selected numeric holders are captured through existing CONVERT steps before the sole conversion Warning. Callback mutations or RHS-name rebinding cannot replace those holders. Existing Warning/final-power/error/throw bodies and all old plan clauses remain exact; other operand, conversion and lifecycle forms remain partial.",
+  "runtime_revision": "0f1b299d67a039f4cd20bef7f414506542b2961f",
+  "helper_revision": "cd47153021416a67d87b431b7f0e02ab9f2ec6e6",
+  "private_modules": 401,
+  "runtime_sha256": {
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "662eb867c2fb5a5cb5c75a5a83484cbfd7a8ef26d45a86992cc061457c430487"
+  },
+  "engine_basis": [
+    "Pinned Zend/zend_operators.c add_function_slow, sub_function, mul_function, div_function and pow_function dereference both operands before scalar numeric conversion. Each numeric holder is populated before its leading-number Warning. A quiet LEFT has no callback, so pure RHS Warning classification at ingress cannot race a LEFT diagnostic; actual holder capture still occurs in the unchanged CONVERT LEFT then RIGHT transitions.",
+    "Exactly36 appended module404 lines add arithmetic_right_warning_operation and four OP-filtered plan arms. The shared snapshot retains existing selected-cell allocation/nonconstrained/scalar and compiled-source authority, requiring LEFT conversion false and RHS conversion true. All old plan clauses and the entire prior404 prefix, schema, generic40 gates, numeric operations, Warning validators and finish rules stay exact; the new arms are disjoint from LEFT-warning ingress.",
+    "Selected pointers and scalar holders add no owners. Fresh RIGHT Warning dispatch authenticates its selected referent; returned holders are historical. Existing power final Deprecated dispatch also retains both historical numbers despite live writes/name rebinding. A supplied Warning throw cancels result delivery while callback effects survive; no new store, allocation, handler or final-power implementation is introduced."
+  ],
+  "contract": [
+    "Author quietLEFT12 and selected RHS5tail emit exactly one RHS Warning; its handler observes the untouched pair then writes99/7. Cached results are strict17/7/60/2.4/248832 across +,-,*,/,**. A supplied Exception20 from the RHS Warning retains identity/nullPrevious and destination100 with callback writes. SUB/DIV/POWER normal results and the supplied throw are source-tested; focused author ADD proves the new entry and real capture order.",
+    "Independent quiet complete numeric text12.5 times5.5tail returns strictfloat68.75 despite poisoned livefalse/bad and a default Warning. Division12/0tail raises the original-line DivisionByZeroError despite handler repair to7, preserving destination100. Quiet negativezero ** -3tail reaches the final Deprecated and strict negative infinity after RHS-name rebinding; a real alias retains the selected old cell with owner1 versus replacement2, then oldalias6/current replacement8 remain distinct.",
+    "Focused121/131/141/183 start from initialized machines and cover all four added plan arms. Exact quiet CONVERT LEFT to RIGHT state equality and calls0 prove no LEFT Warning; actual fresh/entered or returned RHS handler paths precede cached result-only/error transitions, cell/Throwable ownership and compact budget cuts. Pure source/class/ref/cache projections are guard checks, not executed forged states. Source peer stderr intentionally contains two default Warning originals and one final Deprecated original; standalone SL separately requires exact true newline and empty stderr."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-46/source-0f1b299d6-author-six/report.json",
+        "sha256": "eb1747bff852c686326281509d285752eaedbcb36f7b0564f81eadfa40cc1898",
+        "revision": "0f1b299d67a039f4cd20bef7f414506542b2961f",
+        "cases": [
+          "right-warning-add-cached",
+          "right-warning-sub-cached",
+          "right-warning-mul-cached",
+          "right-warning-div-cached",
+          "right-warning-power-cached",
+          "right-warning-mul-supplied-throw"
+        ],
+        "agreements": 6
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-46/review-model-0f1b299d6-three/report.json",
+        "sha256": "b79e4d4f4a35cfd9ad726b7f5422f2e50729eef09d7b4f436582f38a9a313991",
+        "revision": "0f1b299d67a039f4cd20bef7f414506542b2961f",
+        "cases": [
+          "right-warning-mul-fractional-default",
+          "right-warning-div-zero-default",
+          "right-warning-power-negative-zero-default"
+        ],
+        "agreements": 3
+      }
+    ],
+    "state": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-46/state-cd4715302-four/report.json",
+        "sha256": "f2fa2d826b749c85c91a42491d61598616c25289f80910d539b9820d3fa3f16f",
+        "revision": "cd47153021416a67d87b431b7f0e02ab9f2ec6e6",
+        "modules": 401,
+        "cases": [
+          "right-warning-add-cached",
+          "right-warning-mul-fractional-default",
+          "right-warning-div-zero-default",
+          "right-warning-power-negative-zero-default"
+        ],
+        "conditions": [
+          121,
+          131,
+          141,
+          183
+        ],
+        "total": 576
+      }
+    ],
+    "total_source_agreements": 9,
+    "total_focused_state_conditions": 576,
+    "compatibility": "The accepted0f1b299d6 runtime and all nine originals stay exact through two helper-only commits. Checked preparation authenticates full author6/peer3 source selections, then maps focused1+3 using retained original paths/native bytes. Existing ADD/DIV/SUBMUL/POWER helpers and production suffixes are reused without new search declarations; no source/native application or prior primitive evidence is replayed."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-46/baseline-7d359c0fc-add-cached/report.json",
+      "sha256": "09b92c18353c536d321ffbef951a66db593c84c5fef00daf7f8aca04a0e1e89c",
+      "result": "Accepted checked unsupported before any H1; empty semantic streams, error-handler ingress requires a producer continuation, model exit1/credit0; no override."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-46/native-7d359c0fc-author-six/report.json",
+        "sha256": "1e7dc2b179fd073cc1d26886b3d3267d11cc678d1b0f237de0bd5c8e7131b07f"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-46/native-7d359c0fc-review-three/report.json",
+        "sha256": "0c05de1b82feedf3bdb2ed4ad9ee0e67a9ca718fc159605cd47fbd711d7e0efa"
+      }
+    ],
+    "checked_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-46/state-prep-cd4715302-four/report.json",
+        "sha256": "c22e48ea54667bb869ae5f1078fdd2a5a934cd4083d32f2184513c75575f10eb",
+        "result": "Checked frontend/adapter only; workers exit0/reaped, original paths/native bytes retained, no application/native/numeric replay."
+      }
+    ],
+    "standalone_syntax": "Four standalone undefined-pstate diagnostics carry zero semantic credit."
+  },
+  "required_follow_on": [
+    "Plain/mixed CV and copied/reference-result operands, owning/constrained/expired referents, failed LEFT conversion, other warning orders, object conversions and wider callbacks/lifecycles remain partial. Selected-old-RHS rebinding requires a genuine surviving alias; no unheld-pointer claim is made.",
+    "All13 linked inventory rows remain partial. Earlier LEFT-warning, power, numeric and compound cuts receive zero renewed credit; OP12 remains paused. No engine bug or intentional divergence is claimed."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-46",
+    "environment": "LC_ALL=C,TZ=UTC,no PHP_SPEC_SCRIPT_ENCODING. Native/baseline, changed source and focused prep/SL use CPU5. Native30/modelCLI60-process90; checked workers30/full401 immutable SL120 per group. Exact native/model stdout+stderr agree, including peer defaults; accepted SL requires true newline/empty stderr/exits0/no interruption/reaped groups/PIDs.",
+    "commands": [
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 tests/semantics/right_warnings.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 tests/semantics/right_warning_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-46/state-prep-cd4715302-four/run-prepare.py",
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-46/state-cd4715302-four/run-state.py"
+    ],
+    "record": "Restore matching Git cuts/local tools and fresh output roots; records retain original paths/bytes/native streams, fixtures/hashes, exact commands/exits/reaping. Copied tools add no rebuild/portability claim; archive is not a runtime dependency.",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "composition": {
+    "parent": "33fb9bef147ec9c30558f967ced2a7c5dd06323d",
+    "private_publication": "6d991617b375fd0ceada1ee55f8a952f48777fee",
+    "modules": 402,
+    "runtime_sha256": {
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "662eb867c2fb5a5cb5c75a5a83484cbfd7a8ef26d45a86992cc061457c430487"
+    },
+    "other_incoming_paths_preserved": 54,
+    "gate": "No joined actor:404 and six tests retain private bytes; every other spec/402 manifest retains parent bytes and13 partial rows compose pointwise. Eleven incoming runtime paths add magic __set/property-write, LIST reference/null-key staging, DEFINE/Stringable class-name, by-reference-return destructor and NUMBER_SENSITIVEVALUE comparison selectors. These named untyped by-value h/scalar-reference/builtin-Throwable originals have no property assignment, magic method, LIST_FETCH, DEFINE CONFIG, declared by-reference return/destructor cursor or numeric SensitiveParameterValue comparison. Ordinary GLOBALS DIM/CV alias writes do not select magic property tasks; Throwable strict identity/instanceof does not select numeric object comparison. New30 variants add no state/init field and all common40/404/conversion/carrier/handler/heap interfaces remain unchanged. Source9@0f1b299d6 and state576@cd4715302 keep their private401 cuts without replay or renewed credit."
+  }
+}

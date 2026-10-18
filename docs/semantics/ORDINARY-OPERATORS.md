@@ -50,8 +50,8 @@ holders add no owners. A supplied handler throw discards the addition without
 delivering a result. Initial selection and pre-callback input snapshots are checked;
 post-callback holders remain historical. Three exact originals and 321 genuine SL
 premises retain their cuts in the [ADD ledger](../../coverage/semantics/arithmetic-warning-review.json).
-Plain CVs, unlike physical slot classes, copied operands, right-only warning
-ingress, owning/expired replacements, failed LEFT conversion and wider
+Plain CVs, unlike physical slot classes, copied operands, owning/expired
+replacements, failed LEFT conversion and wider
 arithmetic/exit paths remain required; existing integer-operator evidence is unchanged.
 
 Failed RIGHT conversion on this selected-cell route now raises TypeError using
@@ -219,9 +219,22 @@ types; supplied throws cancel outer result assignment while callback writes surv
 Seven exact originals and 951 focused premises cover real phases, default Warning/
 Deprecated bytes, atomic results/errors, owners and budgets in the
 [power-conversion ledger](../../coverage/semantics/power-conversion-review.json).
-Initially quiet LEFT/right-only warnings, plain/mixed/copied/owning/constrained or
-expired operands and wider callbacks/lifecycles remain partial. Old numeric-CV
-power and other arithmetic bodies and evidence are unchanged.
+Plain/mixed/copied/owning/constrained or expired operands and wider
+callbacks/lifecycles remain partial. Old numeric-CV power and other arithmetic
+bodies and evidence are unchanged.
+
+Quiet LEFT/right-only leading-number Warnings now use the same selected-reference
+`+`, `-`, `*`, `/`, `**` paths. A shared pure ingress check adds four plan arms;
+the unchanged CONVERT LEFT then RIGHT steps capture both numbers without a LEFT
+callback. The sole RHS Warning cannot replace those holders: cached results include
+`17`, `7`, `60`, float `2.4` and `248832`, while cached zero still raises DivisionByZeroError.
+Final power Deprecated retains both numbers after the current RHS name is rebound;
+a surviving alias keeps the old selected cell live. Nine originals and 576 focused
+premises cover all four plan arms, strict float `68.75`, signed infinity, default
+diagnostics and result/error ownership in the
+[right-warning ledger](../../coverage/semantics/right-arithmetic-warning-review.json).
+Plain/mixed/copied/owning/constrained or expired operands, other conversion orders
+and wider callbacks/lifecycles remain partial. Earlier evidence receives no renewed credit.
 
 Primitive plain-CV `**=` now retains both numbers and the original target binding
 through zero-base/negative-exponent deprecation. Normal return stores the captured
