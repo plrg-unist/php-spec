@@ -32,7 +32,7 @@ def $ds_stage(S,DS_CATCH) = true
 def $ds_stage(S,DS_CTOR n) = true
   -- if S.CURRENT = (pcallcontext)
   -- if $context_target(pcallcontext) = METHOD_TARGET n porigin
-  -- if pcallcontext.NAME = $ptascii("__construct")
+  -- if pcallcontext.NAME = $ptascii("Public103::__construct")
 def $ds_stage(S,pdsstage) = false -- otherwise
 dec $ds_seek(pstate,pdsstage,nat) : pstate
 def $ds_seek(S,pdsstage,n) = S
