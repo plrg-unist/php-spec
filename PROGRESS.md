@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Distinct direct-CV `!=` and `<=` now suspend through missing-value handlers in
+both orientations, retaining NULL and the current scalar counterpart. Two operator
+memberships and two source mappings reuse the existing shapes/guards. Aliases,
+no-init-right, false/default order and supplied-Exception cleanup remain exact.
+Eight source agreements plus two zero-credit refusals and four strict-SL groups /
+380 premises (182 author + 198 independent) pass first attempts at `b528438d4`/405.
+Fresh fixture adapters preserve checked programs while testing raw states, owners,
+forged source/operators/lines and zero/split budgets. Genuine `3eafcc7d7` baseline
+stays zero. Both-missing/same-CV, owning/removed counterparts and wider producers
+remain partial; reversed greater fetches and quarantined COMP88 stay excluded.
+[Not-equal/less-or-equal review](coverage/semantics/undefined-scalar-compare-ne-le-review.json).
+
 Missing-right `==` and `<` now retain the current defined scalar left CV while
 freezing the right as NULL, including late references and rebinding. The missing
 right name may remain undefined; positive sources and coherent resumed states
