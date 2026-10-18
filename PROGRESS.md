@@ -7,6 +7,34 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Authentic factory/getter/constructor, intrinsic and Fiber Closure captures now
+use standard numeric Notices and private 1/1.0. Only 29 module402 image lines
+change: ordinary intrinsic eligibility mirrors148, CURRENT/static BIND have
+exact arms, and the constructor base stays SensitiveParameterValue. Four exact
+originals and 594 Boolean premises (576 setup +18 pure)/17 actual transitions
+pass at `d6db2b131`/403: 15 numeric-result stages and two ingresses, distinct from
+the 24 native Notices. CV/COPY, typed SECOND targets despite live9 writes,
+whole states, owners and zero/split budgets remain precise.
+
+The independent first handlers retire a bound clone's current receiver/Map/private
+graph and a cold Fiber's callback/Map/private graph. The retired SOURCE index and copied ORIGINAL
+scope metadata remain nonowning history; saved class images stay valid while live admission
+fails. Later real getter/factory/constructor, GC-flag, CURRENT, bind and Fiber
+calls are source endings without new API/clone/free/collection transition credit.
+Both genuine unchanged Unsupported receipts retain zero. The combined peer timeout
+and three fixture failures remain zero; only affected packets were split/corrected.
+Exact predicate exclusions, unproduced INVOKE and wider producers/lifetimes remain
+partial. [Closure numeric review](coverage/semantics/closure-numeric-comparison-review.json).
+
+Composed over `7282cde8d`/405 after independent actual-parent review. Both
+GENERATORRETURNRETAINED and LITERALREFRETAINED stay empty, adding no roots or
+validation restriction; fixtures derive state and preserve every incoming field.
+Magic instance/static targets, Warning-only arithmetic, DEFINE/float-key and
+pending by-reference-return selectors are unselected. Only402 changes and matches
+its tested bytes; incoming414/415 and the 405-module manifest remain exact.
+Source4/state594/17 retain their private403 cut and all four failure records,
+without a joined actor, accepted replay or renewed execution credit.
+
 Pending `send` now admits an owning copied child return at a detached middle's
 simple-CV assigned `yield from`. It clears initialization without consuming the
 return, snapshots current before ignored-argument cleanup and retires the argument

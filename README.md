@@ -2601,7 +2601,14 @@ comparison effects and uninitialized wrappers remain partial.
 now include direct, array-method and fixed-string-method captures. Two originals
 and 381 Boolean premises/11 actual transitions preserve private numeric targets,
 scope/owner graphs and a capture's actual retirement inside its first handler.
-Other Closure bodies and broader lifetimes remain partial.
+At that cut, other Closure bodies and broader lifetimes remain partial.
+
+[Factory and API Closure numeric Notices](coverage/semantics/closure-numeric-comparison-review.json)
+now cover nine authentic body forms, preserving exact intrinsic eligibility and
+private 1/1.0. Four originals and 594 Boolean premises/17 actual transitions cover
+CV/COPY and SECOND targets, nonowning capture history and callback-side retirement
+of bound-receiver and cold-Fiber graphs. API invocation, cloning and collection
+rules are unchanged; wider producers and lifetimes remain partial.
 
 [Pending comparison remainders](coverage/semantics/pending-exception-comparison-review.json)
 now skip later registered callbacks and source string casts while preserving

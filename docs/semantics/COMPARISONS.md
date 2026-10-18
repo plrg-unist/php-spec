@@ -324,6 +324,22 @@ and private casters are not invoked by the comparison. Later explicit calls/cast
 and clone/seed retirement reuse existing rules; other representations and wider
 lifetimes remain partial. Producer/visibility/magic-callable admission is unchanged.
 
+[Factory and API Closure numeric leaves](../../coverage/semantics/closure-numeric-comparison-review.json)
+extend the same class image to normalized fromCallable, bound-fake, finite getter,
+exact SensitiveParameterValue constructor, fromCallable factory, ordinary eligible
+intrinsic, CURRENT/static BIND and Fiber API captures. Ordinary intrinsic eligibility
+is exactly148's predicate; the two Closure API kinds have separate exact arms.
+The synthetic FROM/BINDTO/FIBER_CURRENT exclusions are local predicate checks,
+without a blanket claim about every raw Fiber kind; unproduced INVOKE stays excluded.
+Four originals and 594 Boolean premises/17 actual transitions preserve CV/COPY,
+private typed SECOND targets and whole dispatch/result/budget states. Actual first
+handlers retire the bound capture/receiver/Map/private graph or cold Fiber/callback
+graph; retired SOURCE/copied ORIGINAL and WeakReference targets remain nonowning
+history. Documentary class images then remain valid while fresh live admission
+fails. Later real calls and explicit casts reuse existing routes, with GC evidence
+limited to the enabled flag and noninvocation. The 24 native Notices, source clone
+prerequisites and 18 pure controls remain separate from raw transition credit.
+
 Other internal/custom comparison handlers, legacy materialized callbacks without a
 retained cursor and wider handler/lifetime behavior remain open.
 
