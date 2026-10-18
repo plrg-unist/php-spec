@@ -347,7 +347,7 @@ def main():
                 reached += RELEASE + reach('S_child','S_disposing','PC_DTOR n_child') + CHILD
                 if name == 'owning':
                     reached += ['$heap_owners($heap_graph(S_child),HOBJECT n_payload) = 1']
-                reached += reach('S_delivery','S_child','PC_DELIVERY') + DELIVERY
+                reached += reach('S_delivery','S_child','PC_DELIVERY') + (DELIVERY[:-1] if name == 'owning' else DELIVERY)
                 if name == 'owning':
                     reached += ['$heap_owners($heap_graph(S_delivery),HOBJECT n_payload) = 1']
                     reached += reach('S_main','S_delivery','PC_MAIN ($ptascii("O:I|G|D|A|"))')
