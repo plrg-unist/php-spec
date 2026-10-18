@@ -21,6 +21,11 @@ cyclic/duplicate arrays after a first-warning throw and coerced flags remain
 partial; paused Source47 NaN/precision behavior is untouched.
 [True-flag array review](coverage/semantics/define-array-true-flag-review.json).
 
+Composed over a560dd4c/401 with the exact tested400 delta and all incoming paths
+preserved. Stringable-query, REF-return/unwind, Generator, FIRSTCLASS, compound,
+LIST and property-empty selectors are disjoint. Source3/state629 retain their
+private cuts; no new actor or Source47 work is added.
+
 `constant`/`defined` calls with one positional argument now reject retained ordinary
 nonStringable instances and `stdClass` before lookup, weak or strict. Exactly25
 module400 additions reuse positional/source admission and direct raw TypeError
