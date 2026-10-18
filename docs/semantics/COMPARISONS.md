@@ -297,6 +297,20 @@ callbacks, even after live9 writes. The authenticated pending remainder skips la
 eligible weak Notice handlers and string casts while preserving the same Throwable.
 Real ALIAS/COW cursors, private-value ownership and fresh guard cleanup retain the
 existing mechanisms. Wider producer, handler and lifetime forms remain partial.
+
+[Initialized SensitiveParameterValue numeric leaves](../../coverage/semantics/sensitive-numeric-comparison-review.json)
+use the same Notice route with a fixed builtin image/name. Live admission checks
+allocation and nonfreeing storage; documentary images use only bounds and the raw
+initialized tag. The numeric cast neither exports nor unwraps the private value.
+Private 1/1.0 retains the original scalar type across both callbacks, while captured
+CV/COPY/retained-cell selection and aggregate COW keep their existing behavior.
+Two originals and 373 Boolean premises/14 actual transitions cover both orientations,
+SECOND redispatch, supplied throw, skipped later callbacks and fresh guard cleanup.
+Wrapped Stringable/Map/scalar9 values remain untouched until explicit source use;
+creating the primary clone and retiring its seed are source prerequisites,
+without new clone-step credit.
+Uninitialized wrappers and private-payload comparison effects remain separate.
+
 Other internal/custom comparison handlers, legacy materialized callbacks without a
 retained cursor and wider handler/lifetime behavior remain open.
 

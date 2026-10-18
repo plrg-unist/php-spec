@@ -7,6 +7,32 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Initialized SensitiveParameterValue/int/float comparisons now emit the standard
+Notice and use private 1/1.0 without reading the wrapped value. Nine added
+module402 lines reuse existing numeric callbacks, captured CV/COPY/cell selection,
+SECOND dispatch and pending-exception cleanup. Two exact originals and 373 Boolean
+premises (363 setup + 10 pure)/14 actual transitions pass at 1405ea335/401: nine
+numeric results, two ingresses, two aggregate returns and one supplied throw.
+Both orientations preserve the original numeric type despite live9 writes;
+wrapped Stringable/Map/scalar9 values remain opaque. Real ALIAS/COW cursors retain
+old tails; a SECOND-handler throw skips later Notice/tail callbacks, preserves the
+original Throwable through finally and clears guards before a fresh comparison.
+Physical payload/Map/private-value/key owners and driver budgets pass. Existing
+clone/retirement prefixes and later explicit casts are separate source evidence.
+The unchanged checked program stops at genuine handler ingress with Unsupported
+and zero agreement. No actor failed or repeated. Uninitialized wrappers, wider
+numeric representations and private-payload comparison effects remain partial.
+[Sensitive numeric review](coverage/semantics/sensitive-numeric-comparison-review.json).
+
+Composed over 5a79065df/402 after independent actual-parent review. Incoming
+DEFINE, POWER conversion, NULL-key LIST, Generator/foreach, by-reference-return
+destructor and magic __set selectors are absent from both originals. Ordinary
+__toString value returns, integer ++, ADD copies, array/WeakMap writes and existing
+Notice callbacks remain on their prior routes. New task variants add no state
+fields; incoming module412 and the 402-module manifest stay exact. Only module402
+changes and is byte-identical tested1405ea335; source2/state373/14 retain their
+private401 cut without a joined actor or renewed execution credit.
+
 Retained propertyless Stringable `define` names returning non-NUL `::` text reach the existing
 class-name ValueError after conversion, with primitive candidates and
 omitted/bool-false flags. One module400 predicate extension preserves the global

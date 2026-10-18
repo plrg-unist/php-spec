@@ -2519,6 +2519,13 @@ now include WeakMap and WeakReference with fixed names and opaque private data,
 even after referent expiry. Saved 1/1.0, copied/retained operands, real COW and
 pending-Throwable cleanup pass two exact originals and 355 premises/14 raw steps.
 Other handler and weak-lifetime forms remain partial.
+
+[Sensitive-wrapper numeric Notices](coverage/semantics/sensitive-numeric-comparison-review.json)
+now use private 1/1.0 while leaving wrapped values opaque. Two exact originals and
+373 Boolean premises/14 actual transitions preserve copied/live operands, SECOND
+dispatch, retained array aliases/COW and supplied-Throwable cleanup. Private-payload
+comparison effects and uninitialized wrappers remain partial.
+
 [Pending comparison remainders](coverage/semantics/pending-exception-comparison-review.json)
 now skip later registered callbacks and source string casts while preserving
 default numeric Notices and the original thrown object. Three exact sources and
