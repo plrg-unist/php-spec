@@ -1,6 +1,7 @@
 ;; zend_object_handlers.c:zend_get_property_offset and zend_check_property_access.
 ;; Lookup uses raw names; storage/casts/captured locations use canonical keys.
 ;; The protected compatibility class is the original nonprivate prototype.
+dec $property_magic_set_needed(pstate, nat, ptbytes) : bool
 dec $property_declaring_class(pclassdesc*, ppropertyid) : porigin?
 def $property_declaring_class(pclassdesc*, INTERNAL_PROPERTY text ptbytes) = eps
 def $property_declaring_class(eps, porigin) = eps
@@ -144,10 +145,12 @@ def $property_quiet(S, POBJECT n, ptbytes, z) = $property_quiet_key(S, POBJECT n
 def $property_quiet(S, pvalue, ptbytes, z) = S[.RESULT = KNOWN PNULL] -- otherwise
 
 def $property_store_value(S, n, ptbytes, pvalue, z) = $property_store_key(S, n, ptbytes_key, pvalue, z)
+  -- if ~$property_magic_set_needed(S, n, ptbytes)
   -- if ~$instance_storage_freeing(S, n)
   -- if ~$throwable_object(S, n)
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes_key
 def $property_store_value(S, n, ptbytes, pvalue, z) = $property_access_error(S, n, ptbytes, z)
+  -- if ~$property_magic_set_needed(S, n, ptbytes)
   -- if ~$instance_storage_freeing(S, n)
   -- if ~$throwable_object(S, n)
   -- if ~$property_accessible(S, n, ptbytes)

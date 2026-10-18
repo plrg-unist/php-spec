@@ -214,7 +214,11 @@ def checks(program,path,name):
             *captured_throw(), *refusals('S'), *budget('S'), *budget('S_returned'),
             'pvalue_bad_candidate = PSTRING_CARRIER (REQUEST_STRING (|S.STRINGDATA|)) ' + text('captured-candidate55'),
             '~$dynamic_define_string_valid(S,pconfigcall_S[.SENT = $named_slot_set(pconfigcall_S.SENT,1,KNOWN pvalue_bad_candidate)])']
-        for value in ('PSTRING ' + text('A::B'), 'PSTRING (' + text('name55') + ' ++ [0])',
+        values += ['pconfigcall_class = pconfigcall_S[.SENT = $named_slot_set(pconfigcall_S.SENT,0,KNOWN (PSTRING ' + text('A::B') + '))]',
+            'S_class = $dynamic_define_string_finish(S_returned,pconfigcall_S,PSTRING ' + text('A::B') + ')',
+            'S_class.COMPLETION = NORMAL', 'S_class.TODO = (CONFIG_INVOKE pconfigcall_class) :: ptask_S*',
+            '$dynamic_class_define_call(pconfigcall_class)', '$dynamic_class_define_valid(S_class,pconfigcall_class)']
+        for value in ('PSTRING (' + text('name55') + ' ++ [0])',
                 'PSTRING ' + text('__COMPILER_HALT_OFFSET__'),
                 'PSTRING_CARRIER (REQUEST_STRING (|S_returned.STRINGDATA|)) ' + text('CAPTUREDEFINE55')):
             values += ['S_refused_' + str(len(values)) + ' = $dynamic_define_string_finish(S_returned,pconfigcall_S,' + value + ')',

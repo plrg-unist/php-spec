@@ -356,7 +356,7 @@ stderr each contain one conversion Warning; strict/peer are quiet. Previous mark
 domains are unchanged; NUL/coerced names, owning/wider values, wider NaN producers
 and full family closure remain partial.
 
-Fresh array definitions with an omitted or captured boolean third flag
+Fresh array definitions with an omitted, boolean or admitted quiet scalar third flag
 recursively dereference source cells into new DIRECT entries. Reinserting surviving
 keys rebuilds NEXT, positions and serial
 metadata; ordinary copies and later source/reference writes preserve the constant.
@@ -404,7 +404,7 @@ the live flag; the original API input and private snapshot keep their distinct
 owners. The existing fold also composes with primitive/carrier trees and fresh
 top-level empties; new exact sources focus certified object leaves. Stored-row
 source validation remains structural and does not reconstruct a past mutable
-flag. Coerced flags remain partial.
+flag. Other flag conversions remain partial.
 [False-flag review](../../coverage/semantics/define-stdclass-array-false-flag-review.json).
 
 A captured true flag emits its ignored-case Warning before recursive validation,
@@ -429,8 +429,22 @@ duplicate, canonical copying still precedes registration; the existing pending
 warning policy skips an eligible callback, and ordinary cleanup retires the
 unregistered containers. The old row, callback side rows and trace-owned input
 survive. Real trace-bucket references and a fresh false-flag retry distinguish
-shared source cells from copied recovery/query containers. Coerced array flags
+shared source cells from copied recovery/query containers. Other flag conversions
 remain partial. [Pending-array review](../../coverage/semantics/define-array-true-pending-review.json).
+
+Quiet nonboolean array flags admit integers, finite floats and existing string
+carriers. Weak reception computes a C boolean without replacing the captured
+argument. False values proceed directly; truthy values use the existing ignored
+Warning and only then validate/copy/register. A throwing Warning preserves the
+same pending cyclic/fresh/duplicate behavior under that original raw capture.
+Strict calls reject nonboolean flags before the Warning or recursive-array check,
+after all argument effects. Header/source/known-value and carrier guards run
+without folding the array; primitive duplicate markers remain separate from the
+private-array marker. Exact sources distinguish callback caller-CV COW, retained
+request-string flags, copied candidates and trace-only inputs, with real bucket
+references and query COW. NULL, nonfinite-float and identity-unknown byte-only
+string flags remain outside this extension.
+[Scalar array-flag review](../../coverage/semantics/define-array-scalar-flag-review.json).
 
 Top-level empty values use the existing source-pool or retained immutable flag.
 An authenticated immutable empty keeps its table and `PVARRAY true eps`; a mutable
@@ -652,8 +666,25 @@ its actual full trace/message/PreviousNULL and discard are checked at reached
 state fronts. Earlier trace-observing native originals remain native-only: two
 CLI45 timeouts and one prior DSL binding failure retain zero credit. Only the
 changed source and affected/unrun checks repeat; Source53/54 evidence is unchanged.
-Sole-owner destruction, wider receivers/returns, class/NUL/HALT results, owning
+Sole-owner destruction, wider receivers/returns, NUL/HALT results, owning
 candidates, true/coerced flags and named/packed/owner forms remain partial.
+
+Retained propertyless Stringable `define` names returning non-NUL `::` text reach the
+existing class-name ValueError before registration, with primitive candidates and
+omitted/bool-false flags. The sole change widens the finish predicate; source,
+carrier and saved-site guards, the global arm and the existing class receiver
+stay exact. Actual API traces keep the returned string carrier and earlier
+candidate/false, without a stale method frame or receiver edge. Method-created
+siblings and caller99 survive; autoload/classes/cache stay untouched.
+The [Stringable class-name review](../../coverage/semantics/define-stringable-class-name-review.json)
+binds four exact originals and 844 state premises (171+190+274 author,209 independent)
+at 309d70e25/runtime 96f871d40. Bare `::` then global publication with the same retained
+receiver proves recovery. All nine reports pass on their first attempts, with
+quiet PHP/worker stderr and all children reaped; initial d414/CPU2 baseline
+Unsupported/B|S| retains 0 and later actors use CPU3. One obsolete Source55 `A::B`
+finish control now admits converted CONFIG/class shape; new reached fronts cover
+that extension without renewing Source55's 717 or Source56's 556 evidence. NUL/HALT
+results and wider lifetime/value/flag/call domains remain partial.
 
 Positional `define` now rejects retained ordinary nonStringable instances and
 `stdClass` names before primitive optional flag reception or registration, weak
@@ -839,7 +870,7 @@ The matching engine routes are `ZEND_FUNCTION(define)`/`ZVAL_COPY`,
 and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`. `PHP_FUNCTION(constant)` uses
 exception-class lookup and `ZVAL_COPY_OR_DUP`; `zend_declare_typed_class_constant`
 interns direct string values before installation.
-Stored cyclic trees, other objects, coerced array flags,
+Stored cyclic trees, other objects, NULL/nonfinite/identity-unknown array flags,
 Stringable names beyond the bounded retained query/DEFINE domains,
 array names beyond the bounded flat query/DEFINE domains,
 array/object values with scalar or null names, true/NULL/NaN

@@ -1,0 +1,142 @@
+{
+  "version": 1,
+  "milestone": "COMP85",
+  "status": "independently reviewed within initialized-wrapper numeric Notice callbacks",
+  "behavior": "Initialized SensitiveParameterValue/int/float comparisons emit the standard Notice and use private 1/1.0 without unwrapping the payload.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "tested_revision": "1405ea335e207cf408c0143db0d23ea20bf0b36a",
+  "ordered_modules": 401,
+  "manifest_sha256": "dc7fc18c3f0bc9dbb832981af549a9bb36ce9e7eae56f1ad39938d09a4a44985",
+  "implementation": {
+    "spec/semantics/402-object-numeric-comparisons.watsup": "7d7144af31effb5a9dddd009d25991329e7dc8a3dca7840bedb0c3a6f2d1185b"
+  },
+  "engine_basis": [
+    "Zend/zend_attributes.c copies std_object_handlers for SensitiveParameterValue and overrides only get_properties_for. The final internal class therefore retains standard compare/cast behavior.",
+    "Zend/zend_object_handlers.c zend_std_compare_objects saves the opposing scalar type before the failed cast, emits the class/type Notice, installs private integer1 or float1.0, then calls zend_compare with the opposing operand. A newly read object can emit a second Notice against that saved numeric value."
+  ],
+  "contract": [
+    "Only module402 changes: one NUMBER_SENSITIVEVALUE alternative, an exact initialized raw SENSITIVEVALUE documentary image, allocated/nonfreeing admission and a fixed builtin class name. No payload, task, schema, pointer, pending-exception or owner rule changes.",
+    "CV and copied operands remain distinct; both orientations retain the numeric target chosen before the first handler. SECOND ignores late live9 writes and uses private1/1.0, not the wrapped Stringable, Map or scalar9.",
+    "Existing aggregate ALIAS/COW cursors retain old containers and real later casts. A supplied SECOND-handler Throwable cancels delivery, skips a later eligible Notice and tail callback, survives finally unchanged, and leaves fresh comparison guards clear."
+  ],
+  "source_catalogues": {
+    "tests/semantics/sensitive_numeric_comparison_cases.json": "26d6d9498291bcb08e4e621233a49ee853c2678d9e4ccf5999b44fc35d01ce7c",
+    "tests/semantics/sensitive_numeric_comparison_review_cases.json": "83f3fc75d5b6b102ff538a5b029b5a867f252f45cafb9a45f66e00e697bdc2de"
+  },
+  "unchanged_frontier": {
+    "revision": "7fa11a417ff102d444762e9874c24bc8560daec6",
+    "report": ".tools/sensitive85-support/run-baseline-v1/report.json",
+    "aggregate_passed": false,
+    "public_status": "unsupported",
+    "reason": "error-handler ingress requires a producer continuation",
+    "stdout_prefix": "producers|quiet|N|Y|N|wrapper-int|",
+    "host_exit": 1,
+    "seconds": 30.298246255144477,
+    "accepted": true,
+    "observation_recorded": true,
+    "agreement": false,
+    "preserved_inputs": ".tools/sensitive85-support/run-baseline-v1/failure-inputs",
+    "agreement_credit": 0
+  },
+  "validation": {
+    "original_sources": {
+      "normal_agreements": 2,
+      "author_seconds": 73.2716903258115,
+      "independent_seconds": 120.14498805999756,
+      "cli_and_host_caps_seconds": [
+        240,
+        250
+      ]
+    },
+    "author": {
+      "premises": 156,
+      "setup": 150,
+      "pure": 6,
+      "raw_php_steps": 7,
+      "seconds": 72.29965565353632,
+      "result": "Seven actual NUMBER_COMPARE_RESULT transitions: copied/live reads, numeric9 payload with float target, two exact SECOND dispatch records, late9 writes and complete Boolean result states. Payload/Map/private-value/key owners and checked-driver split budgets pass."
+    },
+    "independent": {
+      "premises": 217,
+      "setup": 213,
+      "pure": 4,
+      "raw_php_steps": 7,
+      "seconds": 116.45159337669611,
+      "result": "Two actual numeric ingresses, PRIMARY-to-SECOND and SECOND-to-next-leaf dispatches, normal/fresh aggregate returns and supplied throw. Captured cells, old/new COW tails, unchanged private payloads, original Throwable and actual catch cleanup pass."
+    },
+    "total": {
+      "premises": 373,
+      "setup": 363,
+      "pure": 10,
+      "raw_php_steps": 14,
+      "transition_types": {
+        "number_compare_results": 9,
+        "numeric_ingresses": 2,
+        "aggregate_compare_results": 2,
+        "supplied_throw": 1
+      }
+    },
+    "failures": [],
+    "separate_zero_credit": "Native, unchanged Unsupported, initializer, four parse/check operations and EL add no application/state credit. Ten pure projections are separate from raw transitions. The cloned-primary prefix, retired seed, later explicit casts and full-source endings reuse existing rules without new clone or lifecycle transition credit."
+  },
+  "limits": [
+    "Initialized raw SENSITIVEVALUE only; SENSITIVEUNSET and other unadmitted internal/Closure numeric representations remain partial.",
+    "Numeric conversion of the wrapper stays distinct from comparing two private payloads. COMP84 payload callbacks, Notices and other state-changing pair effects remain explicit Unsupported; no private-slot aggregate cursor is added.",
+    "Image/dead/bounds/wrong-tag/uninitialized and pending-discard controls are marked pure projections, not malformed-global admission claims. Physical object owners are distinct from alias-cell identity/storage.",
+    "No Switch, constructor, getter, clone, WeakMap, GC, task/schema or general handler rule changes. Paused owned-NUL and active lanes are untouched; copied local tools establish no fresh rebuild/portability, complete PHP or BOLA claim."
+  ],
+  "artifacts": {
+    ".tools/sensitive85-support/gates.py": "87d6b1290314b68e99efd1c2b71b31f0d511b606d9a74625bd7a40aab36fba8b",
+    ".tools/sensitive85-support/inputs.py": "4f0d57567aa3e07391146380e32dd8372d36ae97ca096f2f3b2fda2998238fd0",
+    ".tools/sensitive85-support/actor.py": "9505ffd93822ce6018116cf478ef5634f4375037ce797f93f45f314d378b4c1a",
+    ".tools/sensitive85-support/run-native-v1/report.json": "1aeaab40c8f9060ff056134fd67b62db115698eba8d14e5a7f3fc8a2c37569ec",
+    ".tools/sensitive85-support/run-baseline-v1/report.json": "6bf2d0b33943100bd8a72728e07e08b99daefc55e49fa1379f564768d36d1fbc",
+    ".tools/sensitive85-support/run-init-v1/report.json": "db88dc3367f506ae193b15c78ced56b13841da6a1cf46af4df2613bd8562661f",
+    ".tools/sensitive85-support/run-sources-v1/report.json": "f93d04bb0db9c4d5af5244b54c57985df650d00a3608c749cabe968398ade354",
+    ".tools/sensitive85-support/run-prepare-v1/report.json": "02474c4b4cbb01e65df57ba42c070cb5d6ca15aa5dec169bb599bef0e0c590ff",
+    ".tools/sensitive85-state/build.py": "6c5c4c9cc681c8ce7fe74109e5ab72b43b560c66ede19403026844fb6cc39f95",
+    ".tools/sensitive85-state/helpers.watsup": "53199eb7ba7b4e90e34b30f2d790ce90c59691b1bd9aec345661cc763c5cf9f3",
+    ".tools/sensitive85-state/run.py": "e0c79ea848f03da317c90c5f0e62dde5af6ab51c72621c8868037cd7ba879f13",
+    ".tools/sensitive85-state/plan.json": "b333bce9b24779ca45a9f3af24419d39d8ceb299c860a91b164c5df5c264f814",
+    ".tools/sensitive85-state/run-el-v1/report.json": "4891fe7b1abf16b1ee8aa2c0128486255a054f73ba35b43be81f3bdfb0f826e3",
+    ".tools/sensitive85-state/run-sl-v1/report.json": "d99c932f2d1d6ddbc81cd97642e61a9a3f22c89242d0f9f9cbe6333bfa301fb8",
+    ".tools/sensitive85-peer/run.py": "1c1681d3d5b97f066c0209727ccc00f820a9cf260a22ea81f86aec9181c441c6",
+    ".tools/sensitive85-peer/build.py": "179c8a46dee62158d6d7f68970cedddefdf7ddc351641707d6f87c82491f4e24",
+    ".tools/sensitive85-peer/helpers.watsup": "7be738236fd5eaea5b73a6a9f9adf8c19613908a4420c69e9a5bfa332ea025fb",
+    ".tools/sensitive85-peer/plan.json": "0a21efbb447b6d9fc42323c0bde58ae9d5e755953a65cc28646a38686a7548d6",
+    ".tools/sensitive85-peer/native-v1/report.json": "7af8bb5fa2e891ca0f6b4323a02395b58f81593c55aba917a1bad970216a3e77",
+    ".tools/sensitive85-peer/source-v1/report.json": "553d15aab14686b07dc9c8b6e00c1c7ea08299e3b82a3b62e8dedca267d64f7e",
+    ".tools/sensitive85-peer/prepare-v1/report.json": "e118404f2e07381f45577a55d960c2b83046dc0cc5999d5c6a2029cc28ce92a4",
+    ".tools/sensitive85-peer/state-v1/report.json": "59cf2c17823947c341aed54b739c8529197dc36d9e6f0084f6d118a347127c9d",
+    ".tools/sensitive85-peer/review.json": "1db9bc9eded806fbed2e299aa3fbade5ae0a77367fae4990640c06b56e2538e0"
+  },
+  "recovery": "Ignored originals, programmes, fixtures, START/closed environment records and raw streams remain under .tools/sensitive-numeric-comparison-85/.tools/sensitive85-{native,support,state,peer}; branch codex/sensitive-numeric-comparison-85 retains tested1405. START/closed records retain exact commands. No accepted evidence is replayed for publication.",
+  "independent_review": {
+    "reviewer": "/root/comp_review_67",
+    "semantic_verdict": "CLEAR",
+    "source_and_state_verdict": "CLEAR",
+    "publication_verdict": "CLEAR",
+    "record": ".tools/sensitive85-peer/review.json",
+    "record_sha256": "1db9bc9eded806fbed2e299aa3fbade5ae0a77367fae4990640c06b56e2538e0"
+  },
+  "composition": {
+    "parent": "5a79065df8f3a010adf2a96f098ac59b761b292e",
+    "ordered_modules": 402,
+    "method": "Independent pointwise actual-parent and exact FF review; no concrete joined-actor dependency.",
+    "runtime": "Only the reviewed module402 class image/live/name additions and enum alternative are incoming; resulting402 is byte-identical tested1405. Every other spec and the incoming 402-module manifest keep exact parent bytes.",
+    "parent_seams": [
+      "Module400 additions require DEFINE or dynamic constant API config kinds, absent. E_NOTICE is an unchanged ordinary constant fetch. The final Source57 class-shaped string-name guard is restricted to post-conversion DEFINE; ordinary explicit/aggregate casts cannot select it.",
+      "Module270 additions require saved by-reference-return pair/destructor cursors. Both sources have no by-reference return or destructor; their typed __toString methods are ordinary value returns. Module289 additions require Generator/yield/foreach and cannot arise here.",
+      "Modules30/40/404 add POWER conversion tasks/guards requiring BINARY_RIGHT POWER and selected cells. Neither original has POWER; the ADD copy, integer increments and comparison operators are disjoint. Fresh task variants add no pstate fields.",
+      "Modules30/63/410 add the NULL reference-key write task/guards requiring LIST_FETCH/destructuring and a Deprecated handler. Neither original has destructuring; ordinary array alias/COW writes use existing paths.",
+      "CLASS98 modules30/42/141/154/318/412 add __set declarations, a magic target/record/tasks and guarded missing/denied INSTANCE writes. Both sources have no __set or object-property assignments; static counters, array/WeakMap updates and raw SENSITIVEVALUE cannot select those guards. Existing __toString declaration handling is unchanged. No state-field/initializer change; the appended412 and manifest remain parent-exact."
+    ],
+    "execution_credit": 0,
+    "retained_cut": "Two exact source agreements/373=363setup+10pure/14 typed transitions retain1405/401. Native/baseline/initializer/parse-check/EL and pure controls add no renewed application credit; no failures or accepted replays."
+  }
+}

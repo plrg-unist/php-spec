@@ -608,8 +608,7 @@ deprecation handlers. Callback writes cannot change the captured infinity or its
 sign; a supplied throw preserves the pending destination. Three exact originals
 and 366 focused SL premises pass in the
 [power-warning ledger](coverage/semantics/power-warning-review.json).
-Other operand classes, right-only warnings and wider callbacks/lifecycles or `**=`
-forms remain partial.
+Other operand classes and wider callbacks/lifecycles or `**=` forms remain partial.
 
 For `**`, leading numeric strings now convert through named handlers for two
 preselected reference cells. A first Warning may repair bad RHS text;
@@ -617,6 +616,14 @@ both numeric holders then survive a final zero/negative-exponent Deprecated and
 RHS-name rebinding. Seven originals and 951 focused SL premises cover integer `8`,
 strict float `2.0`, signed infinities, live-type TypeError and supplied throws in the
 [power-conversion ledger](coverage/semantics/power-conversion-review.json).
+
+Quiet LEFT operands now reach these selected-reference `+`, `-`, `*`, `/`, `**`
+paths when only the RHS numeric string warns. Both numbers are captured before
+that Warning, so callback writes cannot replace `17`, `7`, `60`, strict `2.4` or
+`248832`. Nine originals and 576 focused SL premises also check float `68.75`,
+cached-zero division, final power deprecation after RHS-name rebinding and a
+supplied throw in the [right-warning ledger](coverage/semantics/right-arithmetic-warning-review.json).
+Other operand and lifecycle forms remain partial.
 
 Primitive plain-CV `**=` now commits its captured result even when the deprecation
 handler throws. A late alias detaches before the same exception continues; the
@@ -1203,6 +1210,13 @@ entry, while method throws preserve the raw object API trace and caller result.
 cover conversion, registration, duplicate warnings and unwind. Wider receivers,
 values, flags and call forms remain partial.
 
+Retained propertyless Stringable `define()` names returning non-NUL `::` text now reach the
+existing class-name ValueError after conversion, with primitive candidates and
+omitted/bool-false flags. Converted API arguments and earlier captures survive
+method effects; no class lookup or autoload runs.
+[Four source agreements and 844 state premises](coverage/semantics/define-stringable-class-name-review.json)
+cover malformed names, caller results and same-receiver global recovery.
+
 Retained ordinary nonStringable instances and `stdClass` now fail positional
 `define()` name reception before primitive flag processing or registration.
 Later candidate/flag effects finish first, while strict code still reports the
@@ -1394,11 +1408,11 @@ Completed user-instance donors also retain their exact construction receipt and
 pointer in direct definitions and copied array leaves. Typed property aliases
 stay shared; existing normal, throwing-handler and shutdown cleanup retain the
 ordinary owners. [Instance define review](coverage/semantics/define-certified-instance-review.json).
-Fresh definitions with an omitted or captured boolean third flag also copy nonempty
-array trees containing certified stdClass or user-instance leaves. Copied
-containers freeze source reference values while object pointers and property
-writes remain shared, including
-selected eval calls and nested query COW. [Array-object define review](coverage/semantics/define-stdclass-array-review.json).
+Fresh definitions also copy nonempty array trees containing certified stdClass
+or user-instance leaves under the admitted flags. Copied containers freeze source
+reference values while object pointers and property writes remain shared,
+including selected eval calls and nested query COW.
+[Array-object define review](coverage/semantics/define-stdclass-array-review.json).
 Duplicate nonempty array definitions retain a private canonical candidate through
 the Warning while callbacks and Exception traces keep the original API argument.
 Normal false delivery and throwing-handler cleanup retire the candidate, preserving
@@ -1417,6 +1431,12 @@ Exception and Previous chain without a new ValueError, copy or binding. Acyclic
 duplicates still copy, then retire the rejected containers while preserving the
 old row and original trace input; an eligible handler is not entered again.
 [Pending-array review](coverage/semantics/define-array-true-pending-review.json).
+Array definitions also receive integer, finite-float and authenticated string
+flags while retaining their raw API arguments. Weak false values skip the
+ignored-case Warning; truthy values warn before validation and copying. Strict
+nonboolean calls raise TypeError first, including cyclic captured inputs.
+Callback COW, pending duplicate cleanup and trace aliases retain the same owners.
+[Scalar array-flag review](coverage/semantics/define-array-scalar-flag-review.json).
 Ordinary uncertified objects, other owning leaves and wider
 flags/names remain partial.
 Class-qualified `defined` now checks inherited user constants with lexical visibility
@@ -2512,6 +2532,13 @@ now include WeakMap and WeakReference with fixed names and opaque private data,
 even after referent expiry. Saved 1/1.0, copied/retained operands, real COW and
 pending-Throwable cleanup pass two exact originals and 355 premises/14 raw steps.
 Other handler and weak-lifetime forms remain partial.
+
+[Sensitive-wrapper numeric Notices](coverage/semantics/sensitive-numeric-comparison-review.json)
+now use private 1/1.0 while leaving wrapped values opaque. Two exact originals and
+373 Boolean premises/14 actual transitions preserve copied/live operands, SECOND
+dispatch, retained array aliases/COW and supplied-Throwable cleanup. Private-payload
+comparison effects and uninitialized wrappers remain partial.
+
 [Pending comparison remainders](coverage/semantics/pending-exception-comparison-review.json)
 now skip later registered callbacks and source string casts while preserving
 default numeric Notices and the original thrown object. Three exact sources and
@@ -3097,6 +3124,17 @@ the same catch; [isset RV review](coverage/semantics/magic-empty-isset-rv-review
 Ordinary `isset` and no-Get `empty` keep their typed-bool callback requirement.
 Other signatures, receivers, other internal-object RVs and
 wider recursive/coalesce magic combinations remain unsupported.
+
+Inherited private writes now invoke a public `__set(string $name, $incoming): void`
+for selected external CV/literal assignments. The setter receives integer `7`,
+but a used CV RHS is read for the result after receiver release: callback `99`
+then destructor `123` yields `123`; a literal stays `7`, while a held receiver
+permits `99` before its later destructor. Setter throws preserve the destination
+and the same Exception. Four originals and 524 focused premises cover entry,
+receiver ownership, late delivery and cleanup;
+[setter review](coverage/semantics/magic-setter-review.json). Initial references,
+owning RHS values and wider magic-write forms remain unsupported.
+
 Hooked iteration, defaulted virtual hooks, other paired or virtual setters, wider trait
 setters, other explicit setter parameter forms, references, other inherited/trait
 and wider receiver, quiet or indirect-access families and wider `__unset` consumers remain required.
@@ -3922,6 +3960,12 @@ Scoped descriptor checks now require every registered destructor operation's exa
 exit marker in current or saved tasks, including parked Fibers. Focused source,
 carrier/caller and public refusal checks pass; physical cell collection and broader
 returns remain open. Details are in the local CV lifetime review above.
+Normal adjacent partial and final reference-return pairs also resume through
+ordinary release and instance-storage pauses. The partial pair retains its outer
+reference owner; the completed pair is root-free. Separate reached proofs pass
+296/7 at `dc0b93c9f` and 275/7 at `c1540ff96`, preserving original diagnostics,
+aliases and exact budget endings. Single-cursor and pending-Throwable cleanup
+prefixes, interposed lifecycle capture and broader histories remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

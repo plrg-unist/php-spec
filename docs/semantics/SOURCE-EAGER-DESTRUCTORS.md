@@ -28,6 +28,18 @@ binds its receiver, target, source site, line and saved caller context; its call
 origin remains separate from that site. Destructor eval/include bodies reuse the
 existing source service and histories.
 
+Normal adjacent `REF_RETURN_PAIR_PENDING` and final `REF_RETURN_PAIR` cleanup
+authenticate a finite same-caller/origin/constant-context prefix of release and
+instance-storage markers before the exact pending-free operation exit. Existing
+full queued-pair validators retain source/LINE checks; the partial form still
+requires its outer `FINALLY_REF_RETURN` owner, while the final pair owns no payload.
+Each public marker checks its live registry or storage receipt; later virtual
+queue traversal has consumed those borrowed registries. M106 partial 296/7 and
+M107 final 275/7 reached proofs cover each cleanup budget, original diagnostics,
+aliases and complete budget identity at their distinct tested cuts. Single-cursor
+and pending-Throwable cleanup prefixes, interposed capture, wider owners/reentry and GC remain
+open. [Review and recovery](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
 Pruning prepares the object store and fatal marks once, then selects the same
 unsupported, refused, pending-release or store-drop result. Unmatch in preparation,
 classification or selected results retains the original-state fallback. On the
