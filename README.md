@@ -1017,8 +1017,14 @@ heap nodes. Their null key raises the real unpack error before argument sending;
 retained caches, later next/return/tail execution and cleanup preserve initialization
 history. A direct middle next can consume pending initialization without advancing.
 See the [nested-detached review](coverage/semantics/generator-call-unpack-nested-detached-review.json).
-Aggregate ordinary-call unpack, owning copied returns below active links or in
-wider continuations, other pending-initialization
+Ordinary unpack follows finite native ancestor links while an owning simple-CV
+copied return waits in the middle. A null key errors before sending.
+Actual outer `next()` consumes the return normally. Close retains its one count;
+a middle with inherited pending initialization skips its finally. A sole outer
+receiver can lose its middle cache before outer finally, replacing the key Error.
+See the [owning-chain review](coverage/semantics/generator-owning-chain-unpack-review.json).
+Aggregate ordinary-call unpack, owning copied returns in wider continuations,
+other pending-initialization
 send/throw, Generator by-reference
 call targets and callback methods, nonnumeric raw valid changes, request/plain
 reference strings and handler replacements with

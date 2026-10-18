@@ -1,0 +1,113 @@
+{
+  "milestone": "Iterator30: native ancestor unpack with an owning copied Generator return",
+  "status": "Validated and integrated after independent private and actual-parent review",
+  "independent_reviewer": "iterator_review_15",
+  "base": "1549f127b57ec07c1aba77196f20ba46b34b44b6",
+  "native_baseline_cut": "5d1d48f1b9448ba362e2d110ac9755da30e54ea7",
+  "source_cut": "5bfe2b990cb35a2697bf53bcde353b912eca8078",
+  "state_cuts": {
+    "author145": "d4e2e8b57110675e444c475d34bd8889b1dcbe6a",
+    "author167_and_peer275": "5f6b4f7929ba4b73ef95c5bf97c6c2029a049691"
+  },
+  "tested_runtime": {
+    "405": "5449b8a4add6fd64bf882607410d6f00e29fb602",
+    "303-validation-view": "bd2d6d052baf5a894cbb1c351dee8477d7ecd0d0"
+  },
+  "modules": 405,
+  "scope": "Ordinary source-function call unpack through finite native Generator links ending in an authenticated owning simple-CV assigned yield-from COMPLETE. No acquisition/current copy at ancestors, no parked frame, no other owning tail/HELD and inactive GC. Root, physical middle and retired child remain distinct.",
+  "semantics": [
+    "A separate depth-bounded walk admits the owning endpoint through valid native links. Existing node-free chain/direct helpers, waiting proof, roots, close and ordinary consume transitions remain unchanged. Real iterator refresh can detach the completed child without a getter.",
+    "The ancestor borrows current; one physical COMPLETE owns the copied return. Its null key raises Error before argument sending/callee entry. Actual outer next consumes the value normally; close instead preserves that count. An inherited pending-init middle skips its finally; a normally advanced middle runs it.",
+    "Sole-root unlink retires the middle cache before outer finally. Its destructor may replace the key Error with Previous/line intact, independently of the retained return. Raw-cache/return array aliases preserve separate counts with one element-edge set; returned embedded cells remain mutable.",
+    "A genuine public-validity defect required a303 borrowed-view correction. After the public walker consumes a destructor result, its stale marker must not classify a different queued Generator context as that destructor. Only this completed prefix is omitted from the synthetic caller view; live markers,257 target validation and all actual state/roots/transitions stay unchanged."
+  ],
+  "source_authority": [
+    "Pinned Zend/zend_vm_def.h::ZEND_SEND_UNPACK validates the iterator key before copying/sending the current value. Zend/zend_generators.c::zend_generator_update_current and zend_generator_get_current follow native links, copy the child retval once into the physical YIELD_FROM result and detach the child.",
+    "zend_generator_resume DO_INIT and zend_generator_dtor_storage/cleanup_unfinished_execution distinguish inherited initialization, later real resume and unfinished copied-return cleanup. These are pinned implementation observations; no engine bug or intentional divergence was classified."
+  ],
+  "validation_identity": {
+    "php": "8.5.10 CLI NTS 64-bit; source 34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml 5.1.0; SL, caches off and encountered determinism checks",
+    "environment": "tests/semantics/profile.json; PHP -n; LC_ALL=C; TZ=UTC; PHP_SPEC_SCRIPT_ENCODING unset. Native/baseline serial CPU1; strict/source/state/diagnostic serial CPU2. Exact commands, selections, tool identities and raw bytes remain in reports; all actors fully reaped/released."
+  },
+  "runtime_sha256": {
+    "spec/semantics/303-generator-force-close.watsup": "aa7e3fa6b06aadda7aaa3703ad62fb273baa8deea9aae2a609f62264b3f50fcd",
+    "spec/semantics/405-call-generator-unpack.watsup": "d92cc77470e150e3ab0b782094977d0ad081b2328b8a626f127b0a7b4b64def8"
+  },
+  "raw_root": ".tools/generator-owning-chain-unpack-30",
+  "native_and_baseline": {
+    "reports": [
+      ".tools/generator-owning-chain-unpack-native-fwoftf33/report.json",
+      ".tools/generator-owning-chain-unpack-review-native-fstdnk3a/report.json",
+      ".tools/generator-owning-chain-unpack-baseline-7e6jyu62/report.json"
+    ],
+    "native_originals": 4,
+    "model_agreements": 0,
+    "baseline": "Exact290207b1/native fwoft row0 reused without PHP replay. Genuine public Unsupported Generator unpack delegated producer after six OUTPUT chunks P|O|M|C|L|H|; exit1/empty stderr/no timeout/diagnostic/exit_status, stable HEAD+inputs. No production edit before this gate."
+  },
+  "strict_and_elaboration": {
+    "reports": [
+      ".tools/generator-owning-chain-unpack-author-sl-s9al0n2d/report.json",
+      ".tools/generator-owning-chain-unpack-state-elab-uzq96rd1/report.json",
+      ".tools/generator-owning-chain-unpack-callback-elab-qhps6fi5/report.json",
+      ".tools/generator-owning-chain-unpack-author-sl-db6f9505/report.json"
+    ],
+    "contract": "Initial strict405/source use5bfe. Four-fixture gate usesd4e2. After303 view correction, one changed167 fixture gate and affected strict405 usebd2d; single known-constructor suffix correction5f6b preserves typing. Both gates are parse/check/elaboration only, unique EOF/all selected headers/exit0/empty stderr/stability under60s; strict exacttrue/SL/cacheoff/determinism under120s. Zero execution credit for preparation."
+  },
+  "normal_sources": {
+    "reports": [
+      ".tools/generator-owning-chain-unpack-source-ibqr6v2o/report.json",
+      ".tools/generator-owning-chain-unpack-review-source-sik8keg2/report.json"
+    ],
+    "normal_agreements": 4,
+    "contract": "Two author and two independent exact originals reuse captured native tuples at5bfe; normal/exit0/empty stderr/no timeout/stable HEAD+inputs, model100/process120s. No native or older source replay."
+  },
+  "reached_states": {
+    "reports": [
+      ".tools/fiber-state-review-_dtsp6st/report.json",
+      ".tools/fiber-state-review-g0f3o5ws/report.json",
+      ".tools/fiber-state-review-pxezeemb/report.json",
+      ".tools/fiber-state-review-8a069k3n/report.json"
+    ],
+    "premises": 587,
+    "author": 312,
+    "independent": 275,
+    "local_checks": 567,
+    "generic_reachability": 20,
+    "checks": [
+      "Actual ready front refreshes root to owning middle; depth0/short/adequate and malformed link/source/tail/HELD/duplicate/PARKED controls discriminate admission. One step creates real Errorline9/Search plus unchanged unpack marker and returnR1; actual outer next reaches the entire native consume/tail/finally ending.",
+      "Real cacheD CURRENT holds middle NEXT2 storage pin1, outer queued close claim1, D2/Error2 and retained return-array1. Exact original OP plus actual pending release authenticate Error owners. Old/normalized borrowed context, live-marker fallback and forged-target controls exercise the303 correction before full D-before-F/Previous Error11 ending.",
+      "Real queued middle close retains old array2 from held snapshot plus COMPLETE, with one old-object edge and live raw cache cell2. Inherited initialization skip clears the bit without finally or a return decrement; old payload stays request-late.",
+      "Actual post-close shared-cell WRITE retires oldR through its real job, retains newC through the same cell, and has null unused OP.VALUE. OldR precedes WRITE; newC stays request-late."
+    ],
+    "budgets": "SL120s each, seek4000/full ending4000; full public/heap validity, zero-budget identity and whole/split checks. All accepted groups true/exit0/empty stderr/no timeout/stable HEAD+inputs."
+  },
+  "failures_and_bridges": [
+    {
+      "report": ".tools/fiber-state-review-lpkmzedt/report.json",
+      "credit": 0,
+      "reason": "Original138 genuinely reached the callback but public queued-frame context validation failed. One authentic41-Boolean diagnostic zfqwbhl8 (also0 agreement) localized the false destructor-context classification;303 correction is validation-only."
+    },
+    {
+      "report": ".tools/fiber-state-review-9_7bu07f/report.json",
+      "credit": 0,
+      "reason": "New167 observer assumed queued ENTER immediately followed the storage claim release. Existing close_done also leaves the original input release. One-clause suffix correction5f6b fixes only that fixture; accepted strict/gates/source/145 retain cuts."
+    }
+  ],
+  "compatibility": "No previously accepted older campaign rerun. M113 ordinary typed reference-return156/270 and V79 DEFINE400 selectors are absent here. Initial source4 and145 stay at their cuts; exact405 bytes and the affected callback/peer full endings bridge the current pure303 validation fix.",
+  "remaining": [
+    "Pending owning-return APIs through ancestor receivers, broader owning continuations and Aggregate ordinary-call unpack.",
+    "Explicit collection while the owning copied result waits, later parked resume/global-opline behavior and wider callback/reentrant/Fiber interactions.",
+    "No complete Generator, call-unpack, core PHP, interaction-tree/Rocq or BOLA-verification closure is claimed."
+  ],
+  "evidence_recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/generator-owning-chain-unpack-30/private.tar.gz",
+    "bytes": 3352222,
+    "sha256": "9e9963dfdeef30dceb2004f8d8e5d1476709667a02cbda94f90e2f5ac378290d",
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/generator-owning-chain-unpack-30/manifest.json",
+    "contents": "Sixteen raw report roles with exact commands/inputs/bytes, including both failures and diagnostic; ten ignored capture/preparation/diagnostic scripts/catalogs and two tested runtime files. Restore the retained private branch at the original worktree path and extract relative members to recover local raw references; project tools rebuild from dependencies/README.md. Archive is evidence, never an operational dependency."
+  },
+  "composition": "Composed over eeb366114f1e35631de36cf1cf69add0904f69f2/405. Incoming ordinary typed reference-return156/270, dynamic instanceof126/127, comparison207, arithmetic40/404, DEFINE400, INI172 and float-key literal413 selectors are absent here. Only303/405 change, with exact tested bytes; every other runtime/field/default/pipeline/ordered405 manifest is parent-exact. Source4 and state587 retain their private cuts; no joined actor or renewed execution credit."
+}

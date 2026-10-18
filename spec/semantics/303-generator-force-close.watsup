@@ -45,6 +45,7 @@ dec $generator_close_enter_valid(pstate, pgenclose) : bool
 dec $generator_close_done_valid(pstate, pgenclose) : bool
 dec $generator_close_done_site(pstate, pgenerator, pgenclose) : bool
 dec $generator_close_frame_valid(pstate, pgenerator, pframe) : bool
+dec $generator_close_frame_scope(pstate, pframe) : pstate
 dec $generator_close_drop_claim(pstate, ptask*, nat, porigin) : ptask*
 dec $generator_close_claim(ptask) : nat*
 dec $generator_close_claims(ptask*) : nat*
@@ -723,13 +724,22 @@ def $generator_close_release_valid(S, pgenrelease) = ($generator_close_jobs_vali
 def $generator_close_drop_claim(S, (GENERATOR_FROM_NEXT n porigin) :: ptask*, n, porigin) = ptask*
 def $generator_close_drop_claim(S, (GENERATOR_FROM_COMPLETE n porigin n_child pvalue) :: ptask*, n, porigin) = ptask*
 def $generator_close_drop_claim(S, ptask*, n, porigin) = ptask* -- otherwise
+;; The public task walk has already consumed this destructor result. Do not
+;; attach it as the synthetic caller of a different queued Generator context.
+def $generator_close_frame_scope(S, pframe) = $generator_frame_scope(S, pframe)[.FRAMES = $save_frame(S[.TODO = ptask_tail*]).FRAMES]
+  -- if S.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
+  -- if ~(pdestructorcall <- S.DESTRUCTION.CALLS)
+  -- if pdestructorcall.CALLER = S.CURRENT /\ pdestructorcall.ORIGIN = S.ORIGIN /\ pdestructorcall.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if pframe.CONTEXT = (pcallcontext)
+  -- if $generator_close_context_tasks(pcallcontext, ptask_tail*)
+def $generator_close_frame_scope(S, pframe) = $generator_frame_scope(S, pframe)[.FRAMES = $save_frame(S).FRAMES] -- otherwise
 def $generator_close_frame_valid(S, pgenerator, pframe) = true
   -- if pframe.LOCALS = (psymboltable)
   -- if pframe.CONTEXT = (pcallcontext)
   -- if pcallcontext.FUNCTION = pgenerator.FUNCTION /\ pcallcontext.INSTANCE = pgenerator.CLOSURE
   -- if $function_at($all_functions(S), pgenerator.FUNCTION) = (pfunction)
   -- if psymboltable.CVS = pfunction.CVS
-  -- if S_scope = $generator_frame_scope(S, pframe)[.FRAMES = $save_frame(S).FRAMES]
+  -- if S_scope = $generator_close_frame_scope(S, pframe)
   -- if $call_saved_context_valid(S_scope, pframe)
   -- if $generator_close_captures_valid(S, $frames_roots([pframe]))
   -- if $generator_flat_tasks(pframe.TODO) /\ $generator_resume_ids(pframe.TODO) = eps
@@ -750,7 +760,7 @@ def $generator_close_enter_valid(S, pgenclose) = true
   -- if S.CURRENT = pgenclose.CALLER /\ S.ORIGIN = pgenclose.CALLSITE
   -- if $generator_close_frame_valid(S, pgenerator, pframe)
   -- if $generator_close_owner_valid(S, pgenclose)
-  -- if S_scope = $generator_frame_scope(S, pframe)[.FRAMES = $save_frame(S).FRAMES]
+  -- if S_scope = $generator_close_frame_scope(S, pframe)
   -- if $generator_close_plan_valid(S_scope, pgenclose.SITE, pframe.TODO, pgenclose.NEXT)
   -- if $generator_close_original_tasks_valid(S_scope, pgenclose.SITE, pframe.TODO)
   -- if $call_tasks_valid(S_scope, $generator_close_drop_claim(S_scope, pframe.TODO, pgenclose.OBJECT, pgenclose.SITE))

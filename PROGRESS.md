@@ -7,6 +7,34 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Ordinary call unpack now follows finite native Generator links while an owning
+simple-CV copied child return waits in the physical middle. Refresh can detach
+the child without a getter. The null key raises Error before sending; actual
+outer next consumes the return normally. Close retains its one count, and an
+inherited pending-init middle skips its finally. A sole outer can lose its middle
+cache before outer finally; replacement Previous Error and mutable returned cells
+retain their distinct lifetimes. Wider continuations, pending ancestor APIs,
+waiting-result GC and later parked resume remain open.
+[Owning-chain review](coverage/semantics/generator-owning-chain-unpack-review.json).
+
+Four originals pass at `5bfe2b990`/405 with module405 `5449b8a4a`. Four real fronts
+pass 587 premises (312 author +275 independent,567 local +20 generic):145 at
+`d4e2e8b57`,167+275 at `5f6b4f792`. A genuine public queued-frame validation failure
+led to a narrow303 borrowed-view fix: an already-consumed destructor result no
+longer masquerades as the queued outer context. Actual state/owners and live
+marker/target checks stay intact. Its41-Boolean diagnostic and a later one-clause
+fixture suffix failure retain zero; only affected work repeats. Initial strict405
+stays5bfe; changed-fixture elaboration/affected strict use `bd2d6d052`. Native4 and
+genuine unchanged delegated-producer Unsupported stay `5d1d48f1b`/405 with zero
+agreement; preparation grants no execution credit. Earlier campaigns are not renewed.
+
+Composed over `eeb366114`/405 after reviewing the actual ordinary reference-return,
+class/INI/DEFINE, arithmetic and literal-reference selectors; these producers are
+absent here. Only303/405 change and keep their tested validation/unpack bytes;
+every other runtime, parent field/default and the ordered405 manifest stay exact.
+Source4/587 keep their private cuts, including the one-clause fixture bridge,
+without a joined actor, accepted replay or renewed execution credit.
+
 Ordinary positional `ini_set(NULL, quiet primitive)` now suspends through the
 existing NULL-option marker for admitted deprecation handlers. Captured NULL and
 REQUEST values survive live callee/option/value writes. A returning handler's

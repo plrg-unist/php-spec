@@ -95,7 +95,14 @@ after caller output. Retained arrays follow mutable embedded cells rather than
 pinning their former referents. The
 [owning-return ledger](../../coverage/semantics/generator-owning-detached-return-review.json)
 also checks ordinary consumption and cache-cleanup replacement of the unpack Error.
-Owning returns below active links and wider continuation/GC paths remain open.
+Ordinary unpack also reaches that owning simple-CV continuation through finite
+native ancestor links. The middle holds one copied return; ancestors borrow its
+current. Null-key rejection precedes sends, and later outer next consumes the
+return normally. Close preserves the return count; an inherited pending-init
+middle skips finally, while an advanced middle keeps ordinary finally behavior.
+The [owning-chain review](../../coverage/semantics/generator-owning-chain-unpack-review.json)
+also covers cache destruction before outer finally and returned-cell mutation.
+Wider continuation/GC paths remain open.
 
 Module405 also admits detached leaves below finite active shared links when the
 copied return owns no heap nodes. The null key raises the real unpack Error before
