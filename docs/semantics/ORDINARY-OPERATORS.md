@@ -63,6 +63,20 @@ source/phase/expiry guards, sole Error ownership and budget resumption in the
 [ADD failure ledger](../../coverage/semantics/arithmetic-failure-review.json).
 
 
+Selected-reference ADD now admits valid nonnumeric RHS text before the LEFT
+Warning. A separate entry keeps the old plan exact and enters its existing phases;
+both selected cells must be live, untyped and nonowning. The LEFT number is captured
+before its handler repairs the selected old RHS. Fractional holders `12.5` and `5.5`
+yield strict float `18.0` despite later writes. Repair to complete text `5.5` gives
+`17.5` with one Warning after the current RHS name is rebound to `2tail`: the
+replacement neither converts nor warns. Unrepaired text uses the unchanged live
+bool + string TypeError route, without storing the outer result. A first supplied
+throw suppresses later conversion and is source-only. Four originals and 428
+focused premises check these routes in the
+[ADD repair ledger](../../coverage/semantics/add-repair-review.json).
+Other producers, owning/constrained/expired cells, failed LEFT conversion,
+indirect handlers and wider lifetimes remain partial.
+
 Binary `-` and `*` now have a separate named-handler continuation for the same
 bounded preexisting reference-cell class. Both cells are selected before LEFT
 conversion, but RHS conversion waits until LEFT's handler returns, so initially bad

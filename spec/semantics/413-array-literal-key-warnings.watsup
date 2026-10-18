@@ -53,6 +53,26 @@ def $array_float_key_value(S, KNOWN (PARRAY n)) = (PARRAY n)
   -- if ~$array_immutable(S, n)
 def $array_float_key_value(S, poperand) = eps -- otherwise
 
+;; Initial scalar/TMP admission stays separate from the live ordinary CV.
+dec $array_float_array_key_value(pstate, poperand) : nat?
+dec $literal_array_owe(pstate, nat) : pstate
+dec $array_float_key_live_value(pstate, poperand) : pvalue?
+def $array_float_key_live_value(S, VARIABLE n_name* z) = (pvalue)
+  -- if $array_float_key_value(S, VARIABLE n_name* z) = (pvalue)
+  -- if $lookup(S.ENV, n_name*) = (n_cell)
+  -- if $propref_at(S.PROPREFS, n_cell) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n_cell) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n_cell) = eps
+def $array_float_key_live_value(S, VARIABLE n_name* z) = (PARRAY n)
+  -- if $array_float_array_key_value(S, VARIABLE n_name* z) = (n)
+def $array_float_key_live_value(S, KNOWN (PARRAY n)) = $array_float_key_value(S, KNOWN (PARRAY n))
+def $array_float_key_live_value(S, poperand) = eps -- otherwise
+
+dec $array_float_key_retain(pstate, poperand) : pstate
+def $array_float_key_retain(S, VARIABLE n_name* z) = $literal_array_owe(S, n)
+  -- if $array_float_key_live_value(S, VARIABLE n_name* z) = (PARRAY n)
+def $array_float_key_retain(S, poperand) = S -- otherwise
+
 ;; A pending exception still inserts in Zend before its builder is discarded.
 ;; Without objects, retiring both graphs has the same observable cleanup.
 dec $array_float_key_plain_nodes(pnode*) : bool
@@ -61,7 +81,11 @@ def $array_float_key_plain_nodes((HCELL n) :: pnode*) = $array_float_key_plain_n
 def $array_float_key_plain_nodes((HARRAY n) :: pnode*) = $array_float_key_plain_nodes(pnode*)
 def $array_float_key_plain_nodes((HOBJECT n) :: pnode*) = false
 dec $array_float_key_ready(pstate, nat, poperand) : bool
-def $array_float_key_ready(S, n, poperand) = ($array_float_key_value(S, poperand) =/= eps /\ $array_float_key_plain_nodes($heap_reach([HARRAY n] ++ $operand_nodes(poperand), eps, $heap_graph(S).EDGES)))
+def $array_float_key_ready(S, n, poperand) = true
+  -- if $array_float_key_live_value(S, poperand) = (pvalue)
+  -- if pvalue =/= PARRAY n
+  -- if $array_float_key_plain_nodes($heap_reach([HARRAY n] ++ $operand_nodes(poperand), eps, $heap_graph(S).EDGES))
+def $array_float_key_ready(S, n, poperand) = false -- otherwise
 
 dec $array_float_key_source(pstate, nat, poperand, phpType13*, int, nat, int) : bool
 def $array_float_key_source(S, n, poperand, phpType13*, z, n_bits, i) = true
@@ -79,6 +103,7 @@ def $array_float_key_plan(S) = ((n, S.RESULT, phpType13*, z, n_bits, i))
   -- if S.TODO = (ARRAY_VALUE n (VARIABLE n_key* z_key) phpType13* z) :: ptask_tail*
   -- if S.BASE = BASE_VALUE (KNOWN PNULL)
   -- if $array_float_key_item(S, phpType13*, z) = ((expression, VARIABLE n_key* z_key))
+  -- if $array_float_key_value(S, S.RESULT) =/= eps
   -- if ~$environment_blocked(S, n_key*)
   -- if $lookup(S.ENV, n_key*) = (n_cell)
   -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
@@ -98,8 +123,8 @@ rule PhpStep/array-float-key-result: S ~> S_out[.TODO = (ARRAY_NEXT n phpType13*
   -- if S.TODO = (ARRAY_KEY_FLOAT_RESULT n poperand phpType13* z n_bits i) :: ptask_tail*
   -- if $array_float_key_source(S, n, poperand, phpType13*, z, n_bits, i)
   -- if $array_float_key_ready(S, n, poperand)
-  -- if $array_float_key_value(S, poperand) = (pvalue)
-  -- if S_out = $literal_insert(S, n, (KINT i), pvalue, z)
+  -- if $array_float_key_live_value(S, poperand) = (pvalue)
+  -- if S_out = $literal_insert($array_float_key_retain(S, poperand), n, (KINT i), pvalue, z)
 rule PhpStep/array-float-key-result-unsupported: S ~> S[.TODO = eps][.RESULT = KNOWN PNULL][.COMPLETION = UNSUPPORTED "array literal float-key element after callback"]
   -- if S.TODO = (ARRAY_KEY_FLOAT_RESULT n poperand phpType13* z n_bits i) :: ptask_tail*
   -- if $array_float_key_source(S, n, poperand, phpType13*, z, n_bits, i)
@@ -114,6 +139,8 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.MESSAGE = $list_float_key_message(n_bits)
   -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" $list_float_key_message(n_bits) z
 def $task_nodes(ARRAY_KEY_FLOAT_RESULT n poperand phpType13* z n_bits i) = [HARRAY n] ++ $operand_nodes(poperand)
+def $error_read_discard(S, ARRAY_KEY_FLOAT_RESULT n poperand phpType13* z n_bits i) = $array_float_key_retain(S, poperand)
+  -- if $array_float_key_ready(S, n, poperand)
 def $error_read_discard(S, ARRAY_KEY_FLOAT_RESULT n poperand phpType13* z n_bits i) = S[.COMPLETION = UNSUPPORTED "array literal float-key element during throw"]
   -- if ~$array_float_key_ready(S, n, poperand)
 
@@ -382,7 +409,6 @@ def $literal_array_retain(S, n) = S[.LITERALARRAYDEBTS = $literal_reference_dele
   -- if n <- S.LITERALARRAYDEBTS
 def $literal_array_retain(S, n) = S[.LITERALARRAYRETAINED = S.LITERALARRAYRETAINED ++ [n]]
   -- if ~(n <- S.LITERALARRAYDEBTS)
-dec $literal_array_owe(pstate, nat) : pstate
 def $literal_array_owe(S, n) = S[.LITERALARRAYRETAINED = $literal_reference_delete(S.LITERALARRAYRETAINED, n)]
   -- if n <- S.LITERALARRAYRETAINED
 def $literal_array_owe(S, n) = S[.LITERALARRAYDEBTS = S.LITERALARRAYDEBTS ++ [n]]
@@ -397,7 +423,6 @@ def $literal_array_debt_tables_safe(S, H, n :: n_tail*) = true
   -- if $literal_array_debt_tables_safe(S, H, n_tail*)
 def $literal_array_debt_tables_safe(S, H, n*) = false -- otherwise
 
-dec $array_float_array_key_value(pstate, poperand) : nat?
 def $array_float_array_key_value(S, VARIABLE n_name* z) = (n_array)
   -- if ~$environment_blocked(S, n_name*)
   -- if $lookup(S.ENV, n_name*) = (n_cell)
@@ -413,8 +438,9 @@ def $array_float_array_key_value(S, poperand) = eps -- otherwise
 
 dec $array_float_array_key_ready(pstate, nat, nat, poperand) : bool
 def $array_float_array_key_ready(S, n, n_old, poperand) = true
-  -- if $array_float_array_key_value(S, poperand) = (n_current)
-  -- if n_old =/= n /\ n_current =/= n
+  -- if poperand = VARIABLE n_name* z
+  -- if $array_float_key_live_value(S, poperand) = (pvalue)
+  -- if n_old =/= n /\ pvalue =/= PARRAY n
   -- if $literal_reference_flat_array(S, n_old, S.ALLOCATIONS)
   -- if $array_float_key_plain_nodes($heap_reach([HARRAY n], eps, $heap_graph(S).EDGES))
 def $array_float_array_key_ready(S, n, n_old, poperand) = false -- otherwise
@@ -455,6 +481,9 @@ def $array_float_array_key_retain(S, n_old, poperand) = S
 def $array_float_array_key_retain(S, n_old, poperand) = $literal_array_owe($literal_array_retain(S, n_old), n_current)
   -- if $array_float_array_key_value(S, poperand) = (n_current)
   -- if n_current =/= n_old
+def $array_float_array_key_retain(S, n_old, poperand) = $literal_array_retain(S, n_old)
+  -- if $array_float_key_live_value(S, poperand) = (pvalue)
+  -- if $array_float_key_scalar(S, pvalue)
 
 rule PhpStep/array-float-array-key-warning: S ~> $error_dispatch(S[.RESULT = KNOWN PNULL], 8192, $list_float_key_message(n_bits), z, DIAGNOSTIC "Deprecated" $list_float_key_message(n_bits) z, ARRAY_KEY_FLOAT_ARRAY_RESULT n n_old poperand phpType13* z n_bits i)
   -- if $array_float_array_key_pending(S)
@@ -463,8 +492,8 @@ rule PhpStep/array-float-array-key-result: S ~> S_out[.TODO = (ARRAY_NEXT n phpT
   -- if S.TODO = (ARRAY_KEY_FLOAT_ARRAY_RESULT n n_old poperand phpType13* z n_bits i) :: ptask_tail*
   -- if $array_float_array_key_source(S, n, n_old, poperand, phpType13*, z, n_bits, i)
   -- if $array_float_array_key_ready(S, n, n_old, poperand)
-  -- if $array_float_array_key_value(S, poperand) = (n_current)
-  -- if S_out = $literal_insert($array_float_array_key_retain(S, n_old, poperand), n, (KINT i), PARRAY n_current, z)
+  -- if $array_float_key_live_value(S, poperand) = (pvalue)
+  -- if S_out = $literal_insert($array_float_array_key_retain(S, n_old, poperand), n, (KINT i), pvalue, z)
 rule PhpStep/array-float-array-key-result-unsupported: S ~> S[.TODO = eps][.RESULT = KNOWN PNULL][.COMPLETION = UNSUPPORTED "array literal float-key array CV after callback"]
   -- if S.TODO = (ARRAY_KEY_FLOAT_ARRAY_RESULT n n_old poperand phpType13* z n_bits i) :: ptask_tail*
   -- if $array_float_array_key_source(S, n, n_old, poperand, phpType13*, z, n_bits, i)

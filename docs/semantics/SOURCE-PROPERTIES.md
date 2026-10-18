@@ -460,8 +460,8 @@ unchanged. A saved RESULT retains one receiver owner through return or abrupt
 frame discard. One original and state215 =164 reached +51 derived cover the
 selected behavior; abrupt cleanup is a task-local derived check. Other signatures,
 traits/owners, property families, receivers/names and recursive magic remain
-unsupported. Coalesce and wider magic combinations stop explicitly rather than
-silently use quiet NULL.
+unsupported. At that cut, selected getter-present coalesce combinations stopped
+explicitly; the paired coalesce consumer is described below.
 [Magic isset review](../../coverage/semantics/magic-isset-review.json).
 
 Terminal `empty` now also accepts that inherited bool `__isset` when `__get` is
@@ -486,7 +486,7 @@ source/flag/owning-operand/dynamic-slot refusals and budgets. A native GC diagno
 exposed an artificial BASE decrement; the focused clean-collection prefix now
 preserves the buffer and one receiver owner through private empty. The diagnostic
 stops before unsupported `gc_status` and has no full-source credit. Other quiet-CV
-GC paths and terminal isset/coalesce remain open.
+GC paths remain open; terminal isset/coalesce were also open at that cut.
 [Getter-only empty review](../../coverage/semantics/magic-empty-get-only-review.json).
 
 Terminal `empty` of that external CV/literal private property now composes the
@@ -652,6 +652,28 @@ failure, derived-fixture failure and prefix diagnostic retain zero credit.
 Only modules 407/408 change; no task/schema or generic destruction/GC rule changes.
 No-Get `empty` remains typed-bool; terminal typed-bool-with-Get, other untyped
 primitive/internal RVs, recursive and wider ownership/GC histories remain partial.
+
+Selected external CV/literal private-property `??` now pairs the inherited public
+nonstatic `__isset(string $name): bool` with a nonref, absent-return `__get($name)`
+from the same declaring class. One result marker retains the captured receiver
+after the caller CV becomes null. IN_ISSET ends after Isset and its compiled-local
+cleanup, before Get starts; IN_GET covers Get and its cleanup. Both are inactive
+when receiver destruction runs. Lexical Parent and called Child remain distinct.
+
+The known by-value getter result stays solely in RESULT as a node-free handoff
+selects ordinary `COALESCE_RESULT`; BASE never duplicates it. Receiver release
+completes before fallback evaluation. False Isset skips a throwing Get; Get zero
+suppresses a throwing fallback, null observes the destructor's fallback mutation,
+and an ordinary Payload survives receiver D and main output until its later release.
+A supplied Get Exception preserves the same catch and destination 42 without RHS
+evaluation. [Five originals and 604 focused premises](../../coverage/semantics/magic-coalesce-review.json)
+cover these transitions, actual frame-exit/full call validity, source/caller/tail
+refusals and budgets beginning before PREP. Separate source and state cuts retain
+the original binding failures, duplicate-discard failure and fixture binding failure
+at zero credit. No generic coalesce, ownership, destruction or GC rule changes.
+The transfer is generic for known BYVAL values; validated result histories are
+zero, null and ordinary Payload. Other values/lifetimes, untyped Isset, reference Get,
+broader local-destructor/reentry and no-Get coalesce combinations remain partial.
 
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.

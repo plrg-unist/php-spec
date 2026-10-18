@@ -1,0 +1,180 @@
+{
+  "scope": "Selected external CV/literal inherited-private property ?? with public nonstatic typed-bool __isset(string) and nonref absent-return __get; guard changes, receiver-before-fallback release and owning Get RV retention.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_object_handlers.c zend_std_read_property BP_VAR_IS: ADDREF receiver and IN_ISSET around call_issetter; clear IN_ISSET before truth; false releases receiver before tmp_result disposal, true transfers the receiver hold into Get. IN_GET ends after call_getter, then receiver release precedes return to the coalesce opcode.",
+      "Zend/zend_object_handlers.c zend_std_call_issetter/zend_std_call_getter and Zend/zend_vm_def.h zend_leave_helper: ordinary method argument/compiled-local cleanup precedes call completion. Zend/zend_vm_def.h ZEND_COALESCE selects every non-NULL/non-UNDEF value without Boolean conversion."
+    ]
+  },
+  "implementation": {
+    "files": [
+      "spec/semantics/416-magic-property-coalesce.watsup",
+      "spec/semantics/136-property-runtime.watsup",
+      "spec/semantics/30-storage.watsup",
+      "spec/semantics/modules.json"
+    ],
+    "basis": "An exact source/CV/name/line/parent/RHS/tail certificate defers ordinary PREP only when the paired plan succeeds. One owning result marker and borrowing custom call targets preserve selected receiver/caller/history through initial CV nulling. Isset/Get guards authenticate actual calls and compiled-local release/FRAME_EXIT prefixes; live guard membership is distinct from structural call-task projection. False becomes NULL; true invokes Get. Get transfers its known BYVAL value solely in RESULT to node-free ORIGIN_RETURN + ordinary COALESCE_RESULT, allowing eager receiver destruction before RHS. Generic Throwable discard invokes the task-specific cleanup once. No70/380/84/257/270, generic ownership/free/GC or declaration-compiler change."
+  },
+  "validation": {
+    "native": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-private-105/.tools/magic-coalesce-probes-105/native-first/report.json",
+      "sha256": "028fd3306cd11de8a2bd4fa63a8a1767b5b47793c43a609bbfae5ab85d0dfb87",
+      "revision": "98da5a300b377a5bea8156f2dbd1561018e865d0",
+      "result": "Five exact13/12/15/14/15 native streams, quiet stderr/CLI0; zero model credit."
+    },
+    "baseline": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-private-105/.tools/magic-coalesce-probes-105/accepted-current-baseline/report.json",
+      "sha256": "a6043cac47e0990ef6dbed61438f47e013811c65d4541eecff0356b5a8194922",
+      "revision": "98da5a300b377a5bea8156f2dbd1561018e865d0",
+      "result": "Five genuine frontend+adapter checked Unsupported/CLI1 before I, exact magic getter receiver, signature or recursive access reason and F:/Z:/N:/O:/X: prefix, zero agreements."
+    },
+    "source_four": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-private-105/.tools/magic-coalesce-probes-105/changed-model-tk768k6g/report.json",
+      "sha256": "2b1cf5ceea1bb4111c121e57bd8d4a0d4787014ca5b01ad2edfca731802f061b",
+      "revision": "67aac5274d7630496c00f9fe2762280739c8f4d6",
+      "result": "Accepted completed records false/zero/null/owning only: four exact checked normal native agreements. Enclosing report remains false because throwing has interpreter_failure; no blanket report PASS.",
+      "accepted_record_ids": [
+        "false",
+        "zero",
+        "null",
+        "owning"
+      ]
+    },
+    "source_throwing": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-private-105/.tools/magic-coalesce-probes-105/changed-model-9mspy4yd/report.json",
+      "sha256": "900736f5c4c479f1afe1e0bd0e2bc14eec2de36de298b38e6faf146aa62e5b29",
+      "revision": "25106708d7af2c7fda81b3e3fb92ddb3d92ac10b",
+      "result": "Affected throwing-only exact checked normal15/CLI0 agreement after deleting only redundant discard rule; first four not replayed."
+    },
+    "focused_first": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-private-105/.tools/magic-coalesce-protocol-649hfa7o/report.json",
+      "sha256": "32afd9853c6f0eaa63c57f06fec9ecfdfa639b3ba92acbf016ea3179ab1deacd",
+      "revision": "22d98f7af06a390dcca3296bf9e893c8f881129d",
+      "result": "Accepted false119/null174 exacttrue subset293 only; enclosing report remains false, owning171 false and throwing141 unrun.",
+      "accepted_case_ids": [
+        "false",
+        "null"
+      ]
+    },
+    "focused_affected": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-private-105/.tools/magic-coalesce-protocol-b4j6mnm7/report.json",
+      "sha256": "ba210e21d5e980f714e99fecf5c793a1135876e2aef3315e92197edc264f3d53",
+      "revision": "6d7c3b471da4c1213316dd56e0729a034356158c",
+      "result": "Affected owning170/previously-unrun throwing141 exacttrue,311 reached. Four quiet AL/SL exits0, no timeout/groups, all stability. Combined604=585 reached+19derived and4 applications across separate state cuts; zero source agreement credit."
+    }
+  },
+  "focused_scope": "Real PREP capture and typed Isset reception, caller-CV NULL with one retained receiver, lexical Parent/called Child. Actual Isset/Get compiled-local FRAME_EXIT guards are active until callback completion, inactive at result and receiver D; full call/declaration/property/heap/GC validity holds. False skips Get; null receiver D precedes fallback99. Owning Get RV remains one owner through cached operation VALUE/BASE/SOURCE, receiver retirement, mainA and later actual PayloadD, with BASE null. Supplied Get Exception reaches same CATCH_BIND and destination42 without RHS. PREP zero/resume budgets cover entire consumer. Derived source/mode/line/tail/caller/wrong-exit-function certificate rejections plus a post-retirement zero result bridge are distinct from source5.",
+  "nonpassing": [
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-private-105/.tools/magic-coalesce-probes-105/changed-model-_lcp3r5o/report.json",
+      "sha256": "eedceb6028f2cbfaa37e60deb67650a4d6dea482ac6af06a88fce0c8291d9610",
+      "revision": "b85bb24141e30ec59c8b368dc0acb5d84935d2d6",
+      "result": "First pre-execution runner_failure from fresh pvalue in a conjunction. Split completion/result premises only; other four cases unrun.",
+      "passing_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-private-105/.tools/magic-coalesce-probes-105/changed-model-adxg0cbl/report.json",
+      "sha256": "88fde2f19ce9804d867449e567f8f06211d5f69ce99391f2f2d7f0d99b9a5e13",
+      "revision": "a4b4f963d4a8c46e08d8e3759cebcf80981a9f1f",
+      "result": "Second pre-execution runner_failure from fresh porigin in plan conjunction. Split ORIGIN/BASE premises only; other four cases unrun.",
+      "passing_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-private-105/.tools/magic-coalesce-probes-105/changed-model-tk768k6g/report.json",
+      "sha256": "2b1cf5ceea1bb4111c121e57bd8d4a0d4787014ca5b01ad2edfca731802f061b",
+      "failed_record": "throwing",
+      "failed_record_credit": 0,
+      "result": "Custom discard overlapped generic152/throw-search-discard. Remove only redundant3-line step, retain return/error discard and validators; no diagnostic or first-four replay. Four completed source records retain their separate acceptance."
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-private-105/.tools/magic-coalesce-protocol-649hfa7o/report.json",
+      "sha256": "32afd9853c6f0eaa63c57f06fec9ecfdfa639b3ba92acbf016ea3179ab1deacd",
+      "failed_record": "owning",
+      "failed_record_credit": 0,
+      "result": "Original owning171 fixture bound immutable S_end to delivery and later required payload-D state. Omit only owning early binding; all ownership/guard checks retained. False/null293 remain accepted; corrected owning170 plus unrunthrow141 only repeat. No diagnostic/runtime change."
+    }
+  ],
+  "reproduction": {
+    "cwd": "/home/user/workspace/php-spec/.tools/magic-coalesce-private-105",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": "absent",
+      "jobs": 1
+    },
+    "profile": "tests/semantics/profile.json",
+    "native_baseline": "Ready watch-affinity.py native-first native 3; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 3 python3 -u .tools/magic-coalesce-probes-105/run.py native --revision 98da5a300b377a5bea8156f2dbd1561018e865d0; only exact PASS/reap permits fresh accepted-current-baseline model 3 observer and same actor baseline.",
+    "source_four": "Ready capture-candidate-affinity.py 3 changed-model- 5 changed-source-105-repair2; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 3 python3 -u .tools/magic-coalesce-probes-105/run.py changed --revision 67aac5274d7630496c00f9fe2762280739c8f4d6 (four completed agreements in enclosing false report).",
+    "source_throwing": "Ready capture-candidate-affinity.py 3 changed-model- 1 changed-source-105-repair3; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 3 python3 -u .tools/magic-coalesce-probes-105/run-repair3.py changed --case throwing --revision 25106708d7af2c7fda81b3e3fb92ddb3d92ac10b.",
+    "focused_first": "Ready watch-state-affinity.py 5; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 5 python3 -u tests/semantics/magic_coalesce_protocol.py --revision 22d98f7af06a390dcca3296bf9e893c8f881129d (only false/null accepted).",
+    "focused_affected": "Ready watch-state-affinity-repair1.py 1; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u tests/semantics/magic_coalesce_protocol.py --case owning --case throwing --revision 6d7c3b471da4c1213316dd56e0729a034356158c.",
+    "caps": "Native45/model60/outer75/100000 steps; serial fail-first. Each state group AL90 then strictSL90/cachefalse/dettrue. Checked prep has zero applications. State observers840seconds; every actor and observer fully reaped. No accepted source/state/native/base replay.",
+    "affinity": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-private-105/.tools/magic-coalesce-probes-105/affinity-native-first.json",
+        "sha256": "91ed9fcf55a8f2c3719e1f8547ea7604eecc59937abb21802d863417f55a1c03",
+        "result": "Partial1/5 CPU3 false-only mask/fullargv; fast children missed, observer stopped/reaped, parent taskset provenance retained."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-private-105/.tools/magic-coalesce-probes-105/affinity-accepted-current-baseline.json",
+        "sha256": "2963778cd6428f5270f9e695bd0fc5e5d77248c38c956b27f2d4aaa0334007db",
+        "result": "Complete5CPU3/fullargv."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-private-105/.tools/magic-coalesce-probes-105/affinity-changed-source-105.json",
+        "sha256": "62fad0fa1031e985b129ebeee81fc5a6dfa18b01b66b0475a4604ff28dd942ad",
+        "result": "Partial1/5 CPU3 on first pre-execution failure, stopped/reaped."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-private-105/.tools/magic-coalesce-probes-105/affinity-changed-source-105-repair1.json",
+        "sha256": "16ef85fb6762cbdc0fe1cbcc138c1cb6cfe2e63e7acc84398568d2b775469c77",
+        "result": "Partial1/5 CPU3 on second pre-execution failure, stopped/reaped."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-private-105/.tools/magic-coalesce-probes-105/affinity-changed-source-105-repair2.json",
+        "sha256": "5f15877f74b45cf02022439d346a788c03d64b54e67b21caff4f24f88cbfb7c2",
+        "result": "Complete5CPU3/fullargv, four accepted and throwing failure preserved."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-private-105/.tools/magic-coalesce-probes-105/affinity-changed-source-105-repair3.json",
+        "sha256": "42a69f3ccdc571d85697d4e0dc981680b3c50cda230472635df1d7fca14f6508",
+        "result": "Complete1CPU3/fullargv, affected throwing only."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-private-105/.tools/magic-coalesce-probes-105/affinity-state-105.json",
+        "sha256": "2d3fd63adb424f5219ec8ed44f9dbb144f119d8cd0f67ed3de04c0c42d5977e8",
+        "result": "Partial6/8CPU5/fullargv on first state report; later throw unrun, stopped/reaped."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-private-105/.tools/magic-coalesce-probes-105/affinity-state-105-repair1.json",
+        "sha256": "c62190b097928d0fef0718347a27e6e00eb5176dd9f87fc59c5db76a34b3d767",
+        "result": "Complete4CPU1/fullargv, affected owning/throwing only."
+      }
+    ],
+    "stability": "All input/head/status/fixture stability true, worker groups empty and PIDs absent. Accepted records have quiet stderr/exits0/no timeout/interruption. Partial observers are qualified and not replayed for sampling."
+  },
+  "limits": "Selected external CV/literal private-property receiver/source family. Generic known-BYVAL transfer performs nullness selection; validated result histories are0/NULL/ordinary Payload, not a claim that all other values are Unsupported. No-Get coalesce has preexisting unselected quiet paths, so no blanket refusal claim. Untyped Isset, reference Get, wider signatures/names/receivers, local-destructor/reentry, aliases/cycles/GC histories remain partial. No old terminal-isset/paired-empty execution credit, engine bug or intentional divergence claim.",
+  "artifacts": "Original ignored PHP sources/private drivers/reports/streams/process records and generated fixtures remain at original paths. Maintained sources/catalogue/harness recover from tested commits; generated fixtures are ignored raw artifacts. Existing tools were reused; no fresh-build or evidence-archive claim.",
+  "tools": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "source_driver_sha256": "a86613b475c519b2cd8873739aa6405bd6da1d3c596b7099e4294a8a33fd3696",
+    "affected_source_driver_sha256": "6eeb6876bf24f0e0fb67a75d98041f06cfba1d6a89cdc1374a47a5e133c3bc0a",
+    "focused_driver_sha256": "9c8317e8ffefa975311d081da3dbd47258089bb7dae5d3ec7153384e9087a602",
+    "focused_observer_sha256": "ed2e47f32cfec0d4b63caa5b63d28940e8020aa3c1b13db3ce713b02248ecf35"
+  },
+  "review": {
+    "independent": "class_review_84",
+    "status": "Native/genuine baseline/source5 and combined focused604 plus concise publication independently accepted. Original failures, separate cuts, partial affinity and wider lifetime limits remain explicit."
+  },
+  "composition": {
+    "parent": "da94669ce19e001968c6ed50a0c65340ca133d0a",
+    "publication": "3bb18597317ade06bf56fe149d3384f0e5608fb9",
+    "modules": 406,
+    "basis": "All 405 incoming manifest entries are retained in order and416 is appended. Only30 carries the exact own tag/record insertion union; incoming LITERALARRAYRETAINED/LITERALARRAYDEBTS and ARRAY_KEY_FLOAT_ARRAY_RESULT remain. New literal-array fields initialize eps, their nodes/debts/validity stay neutral, and no selected source creates a float-key array producer. Incoming270 requires reference-return retirement history, absent here;172/400 require INI/DEFINE,207 requires loose missing-CV comparisons,289 requires Generator and40/404 requires arithmetic ADD/DIV warning sources, all absent. Owned136/416 and runtime/test/family publication bytes remain exact; all unrelated incoming paths retained.",
+    "validation": "Independent actual-parent semantic and exact preservation review; source4@67aac +throw1@251067 and state293@22d98 +311@6d7 retain original cuts/failures. No joined actor or accepted replay."
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "scope": "Retained live intrinsic INI_SET Closure, ordinary or explicit __invoke, sole numeric two-item array unpack captured as DIRECT NULL plus quiet primitive. Numeric insertion keys need not be0/1. Keep-owner, quiet-value and source/carrier boundaries remain as before; no named/multiple-pack/Traversable/PIPE/owning-value/sole-owner widening.",
+  "status": "independently_accepted_private_integrated_on_join",
+  "reviewer": "/root/source_review_35",
+  "parent": "54238b7567f7fe03c67b5058f1b9adcdc52fa41c",
+  "semantic_revision": "bbde7c32cbe33f2f9bede00cfe55d11a91be5eb1",
+  "source_tested_revision": "35aa840bc773959779746612b80059202c4d8987",
+  "author_state_tested_revision": "35aa840bc773959779746612b80059202c4d8987",
+  "tested_revision": "dc8798c3b0c5fc4c817f72f630cad23db6a84bc7",
+  "modules": 405,
+  "semantic_files": {
+    "spec/semantics/172-file-context-intrinsics.watsup": "5eb462b8c0d25d41070c17ad75f308cfa0260a46c84196e962f29f2e22d21ba6",
+    "spec/semantics/400-dynamic-constants.watsup": "a64378ef29d6b93c16ecf8583637d8a64ad61648164b08eff9e47b2fa8d4f1f6"
+  },
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "primary": "Pinned zend_vm_def.h SEND_UNPACK iterates numeric entries in insertion order, ignores their key magnitudes and copies/dereferences by-value INI_SET arguments. zend_parse_arg_str_weak deprecates rawNULL before conversion; pending Exception cancels conversion/body. Intrinsic Closure ordinary/explicit strictness and nonvariadic normalized wrapper arguments remain existing behavior, observed natively before implementation.",
+  "semantics": "172 adds22 lines: config_ini_pack_known authenticates known literal snapshot contents against an allocated bounded compiled-pool array via existing dynamic_array_same_entries; unknown compiled facts remain structural. A disjoint owner-present INDEX1/non-NAMED/one INDEX0 numeric2 pack arm retains invoke/source replay, quiet-value, non-PIPE and weak gates. Completed PACKS are historical certificates, not array roots, and do not reread their current array. Existing ownerless/named/unary, dispatch/continuation/368 trace/root/discard/GC bodies remain exact. The existing same_entries declaration moves from400 before first use in172; its body is unchanged.",
+  "accepted": [
+    "Four checked normal source records exactly equal native stdout/PHPstderr/PHPexit0 at35aa/runtimebbde/405. Default literal plus explicit returning handler, helper-returned earlier REQUEST pack versus live replacement31/37 and callback-mutated retained pack, strict ordinary rawNULL2213 before handler versus same-owner explicit weak2221, and peer strict explicit keys3/7 preserve the original setter. Peer native has one minimal normalized wrapper-args observer, sameException99/precision10/sibling2197 and actual oldsetter10 to12. Default Deprecated lines7/20 are expected; strict/peer are quiet.",
+    "All914 actual SL premises pass:204+173+207 author at35aa and330 independent atdc8798, samebbde runtime/405. Actual unpack cursors0/1/2 retain owner+array until completion then only owner; rawNULL/REQUEST normalize into API/wrapper slots0/1. Genuine live pack mutation, literal-pool coherent forgery refusal, source replay/metadata, malformed carrier/count/owner/domain controls, full four-frame Exception/raw carrier identity, exact throw discard, returning false/default, precise existing owner-GC finish equality, final native output and zero/split budgets pass. Four accepted SL raw outputs are true LF/exit0/empty stderr.",
+    "Eleven input/HEAD-stable reports:10PASS plus one preserved peer pre-main failure0. The fixture destructured an unbound REQUEST before extracting the snapshot; only those two assertion lines reorder, preserving330 checks. Fresh peer-fixed prepare/check repeats only affected state work. All accepted source/native/author and old623/746/782/928 stay retained; no timeout/interruption/group survivor."
+  ],
+  "baseline_zero_credit": "At source-onlya3a17aa484568f0f0e0c561e4a85b52e340be2e5/unchanged54238b7567f7fe03c67b5058f1b9adcdc52fa41c onCPU3, sole captured-owned-unpack-null-before-live-pack-mutation produces Unsupported error-handler ingress requires a producer continuation afterB|P|, CLI1/nullPHPexit/quiet workerstderr0. Author native3 and peer native1, including numeric wrapper policy, precede all production edits. Baseline receives zero agreement.",
+  "compatibility": "Completed62-65 descriptors have INDEX2/PACKSeps; their partial INDEX1 states lack the sole completed numeric pack/raw2 shape. Forged source metadata remains invalid, so no old expectation repair/actor. Reused64 handling/seek and65 exact-GC wrapper are explicitly fingerprinted and imported before own sources. No new task/schema/trace/ownership policy, engine bug or intentional divergence. V83 ordinary string DEFINE certified Closure values is disjoint; paused Source47/owned-NUL/low-precision NaN remain untouched.",
+  "execution": "LC_ALL=C TZ=UTC INT+kill5 AS3221225472; taskset3 initial native4/baseline, taskset2 remaining source/public and peer-only correction. Serial fail-first/full reap, native15s/CLI45s-host60s/freshSL90s. Accepted worker stderr is empty; original failed peer retains diagnostic stderr.",
+  "command_prefix": "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s <cap>s prlimit --as=3221225472 -- taskset -c <cpu> python3 <step>",
+  "commands": [
+    {
+      "revision": "a3a17aa484568f0f0e0c561e4a85b52e340be2e5",
+      "cpu": 3,
+      "caps": [
+        90,
+        90,
+        90
+      ],
+      "steps": [
+        "tests/semantics/ini_set_owned_unpack_null_option_sources.py --phase native --output .tools/ini-set-owned-unpack-null-option-native-66",
+        "tests/semantics/ini_set_owned_unpack_null_option_review_sources.py --phase native --output .tools/ini-set-owned-unpack-null-option-review-66",
+        "tests/semantics/ini_set_owned_unpack_null_option_sources.py --phase baseline --case captured-owned-unpack-null-before-live-pack-mutation --output .tools/ini-set-owned-unpack-null-option-native-66"
+      ]
+    },
+    {
+      "revision": "35aa840bc773959779746612b80059202c4d8987",
+      "cpu": 2,
+      "caps": [
+        240,
+        90,
+        90,
+        360,
+        90,
+        120
+      ],
+      "steps": [
+        "tests/semantics/ini_set_owned_unpack_null_option_sources.py --phase model --output .tools/ini-set-owned-unpack-null-option-native-66",
+        "tests/semantics/ini_set_owned_unpack_null_option_review_sources.py --phase model --output .tools/ini-set-owned-unpack-null-option-review-66",
+        "tests/semantics/ini_set_owned_unpack_null_option_protocol.py --phase prepare --sources .tools/ini-set-owned-unpack-null-option-native-66 --output .tools/ini-set-owned-unpack-null-option-public-66",
+        "tests/semantics/ini_set_owned_unpack_null_option_protocol.py --phase check --sources .tools/ini-set-owned-unpack-null-option-native-66 --output .tools/ini-set-owned-unpack-null-option-public-66",
+        "tests/semantics/ini_set_owned_unpack_null_option_review_protocol.py --phase prepare --sources .tools/ini-set-owned-unpack-null-option-review-66 --output .tools/ini-set-owned-unpack-null-option-review-public-66",
+        "tests/semantics/ini_set_owned_unpack_null_option_review_protocol.py --phase check --sources .tools/ini-set-owned-unpack-null-option-review-66 --output .tools/ini-set-owned-unpack-null-option-review-public-66"
+      ]
+    },
+    {
+      "revision": "dc8798c3b0c5fc4c817f72f630cad23db6a84bc7",
+      "cpu": 2,
+      "caps": [
+        90,
+        120
+      ],
+      "steps": [
+        "tests/semantics/ini_set_owned_unpack_null_option_review_protocol.py --phase prepare --sources .tools/ini-set-owned-unpack-null-option-review-66 --output .tools/ini-set-owned-unpack-null-option-review-public-fixed-66",
+        "tests/semantics/ini_set_owned_unpack_null_option_review_protocol.py --phase check --sources .tools/ini-set-owned-unpack-null-option-review-66 --output .tools/ini-set-owned-unpack-null-option-review-public-fixed-66"
+      ]
+    }
+  ],
+  "raw_root": ".tools/ini-set-owned-unpack-null-option-evidence-66",
+  "report_sha256": {
+    "author/public/check-report.json": "434d10847dbce57dde31a19b8deec3c4b0b01faa886d1a118a9803ac0f16cd03",
+    "author/public/prepare-report.json": "a8c074d3700306b872954bec330bbc5d0d2b45f28c580ba0f4a10b4fbc7160ed",
+    "author/review/model-report.json": "a0a6a15ac515f03be74df8d1fe4d162537952a7355423aa5dde5827fe84fc063",
+    "author/review/native-report.json": "5757c3457f76a39072c78cd294992658e04b2a6d0e4c912993e69a8151ad0449",
+    "author/review-public/check-report.json": "d66cab80f3804fbebc42ec23ffff38d8b3dcbf961ab5726acc548b27e1772340",
+    "author/review-public/prepare-report.json": "0a1a441035abf2e9543cab2253778ec70b16e85fb8edb99f847ea5bdcc4f65bf",
+    "author/review-public-fixed/check-report.json": "e9b1b9f8719c46a8784e4c3fb5ce0e876977427ac1dea64619791196ea8ce782",
+    "author/review-public-fixed/prepare-report.json": "1c12ee5e00e8cd3c1621c74093aa5d43f7e4307fefb3c830758268dc4a959d83",
+    "author/sources/baseline-report.json": "7d4362d0666ff6b6bf81a98cd7516a7e3d5f5da83de84e0e2fb097173761e15f",
+    "author/sources/model-report.json": "036d72a52e74441d551ffeb0d93909edf1dadb30f91b3233f4dc802607f21c56",
+    "author/sources/native-report.json": "5b8eeaf038c2e288d79fd068c9c2fdd6e20e8d7223eed6f60e7e5d631f260980"
+  },
+  "recovery": "Five roots moved once after reviewer RAW STOP/focused users[] into author/{sources,review,public,review-public,review-public-fixed}; only eleven concise reports hashed once. Failed peer root remains untouched0. Restore recorded original private paths/cuts for exact source/cwd identity; reports retain full fingerprints/commands/exits. No old evidence renewal.",
+  "remaining": "Other unpack layouts/named keys/multiple packs/Traversable, ownerless packed continuation, PIPE, sole-owner retirement, owning/NaN/legacy-PSTRING values and full configuration remain partial. No full-core/equivalence/BOLA claim.",
+  "composition": {
+    "parent": "5a011788f88cbb5ae01cc9eaa58182f9610d9484",
+    "private_publication": "ed59eadc0a1d2bf60a9b4da0752b9287e5bced9d",
+    "modules": 406,
+    "method": "Module172 and four tests are private-exact; incoming400 is preserved except the sole moved dynamic_array_same_entries declaration, retaining V83 certifiedClosure VALUE classification. Every other runtime/schema/new416/ordered406 manifest path is parent-exact. Inventory only environment.config own2helper/2source/1ledger plus private suffix; incoming docs/checkpoints preserved.",
+    "runtime_sha256": {
+      "spec/semantics/172-file-context-intrinsics.watsup": "5eb462b8c0d25d41070c17ad75f308cfa0260a46c84196e962f29f2e22d21ba6",
+      "spec/semantics/400-dynamic-constants.watsup": "1e50f4d5cb22dd7a4391935037fdc771d55c2467ff4b17100f7892f0431c6c30"
+    },
+    "seams": "Independent actual-parent review CLEAR frombase54238 to5a011788f.172/368/301/39/84/source replay/Closure trace bodies are base-exact. Incoming400 only adds certifiedClosure DEFINE VALUE classification, absent from primitive sibling DEFINE. New416 requires private-property coalesce/__isset/__get source/targets, absent here; new tags add no state fields. Other deltas need Generator parked copied-return, destructor finally-reference chains, ADD repair or lossy float ARRAY_VALUE keys. All literal/pack keys here are integers; debt fields stay eps. No concrete interaction warrants a joined actor.",
+    "evidence": "Source4 and author584 retain35aa840bc/runtimebbde7c32c/405; peer330 retainsdc8798c3b/the same runtime/405. Initiala3a17 CPU3 native4/baseline0, laterCPU2 and original peer pre-main failure0 remain distinct. No accepted replay or joined execution credit."
+  }
+}

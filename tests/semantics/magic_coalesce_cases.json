@@ -1,0 +1,90 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "false",
+      "source_file": "magic-coalesce-false.php",
+      "source": "<?php\nclass CoalesceParent105 {\n    private int $value = 1;\n    public function __isset(string $name): bool {\n        global $child;\n        echo 'I|';\n        $child = null;\n        return false;\n    }\n    public function __get($name) {\n        global $error;\n        echo 'G|';\n        throw $error;\n    }\n    public function __destruct() {\n        global $fallback;\n        echo 'D|';\n        $fallback = 99;\n    }\n}\nclass CoalesceChild105 extends CoalesceParent105 {}\nfunction fallback105() {\n    global $fallback, $error;\n    echo 'R|';\n    return $fallback;\n}\n$error = new Exception('supplied');\n$fallback = 7;\n$child = new CoalesceChild105();\n$result = 42;\necho 'F:';\ntry {\n    $result = $child->value ?? fallback105();\n} catch (Exception $caught) {\n    echo $caught === $error ? 'C' : '!', '|';\n}\necho $result, '|';\n$child = null;\necho 'E|';\n",
+      "source_sha256": "578fc64ed3f1928a2ccaae237badfae34a43b74cebaa0e9b64242b858a85781a",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-coalesce-private-105/.tools/magic-coalesce-probes-105/false.php",
+      "stdout_base64": "RjpJfER8Unw5OXxFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/magic-coalesce-private-105/.tools/magic-coalesce-probes-105/native-first",
+      "native_raw_sha256": "ec4e2625fd1a5a76b5003e7833fbf93dd4445873e184b68e10f0728ae2ca33a3",
+      "coalesce_line": 33
+    },
+    {
+      "id": "zero",
+      "source_file": "magic-coalesce-zero.php",
+      "source": "<?php\nclass CoalesceParent105 {\n    private int $value = 1;\n    public function __isset(string $name): bool {\n        global $child;\n        echo 'I|';\n        $child = null;\n        return true;\n    }\n    public function __get($name) {\n        global $error;\n        echo 'G|';\n        return 0;\n    }\n    public function __destruct() {\n        global $fallback;\n        echo 'D|';\n        $fallback = 99;\n    }\n}\nclass CoalesceChild105 extends CoalesceParent105 {}\nfunction fallback105() {\n    global $fallback, $error;\n    echo 'R|';\n    throw $error;\n}\n$error = new Exception('supplied');\n$fallback = 7;\n$child = new CoalesceChild105();\n$result = 42;\necho 'Z:';\ntry {\n    $result = $child->value ?? fallback105();\n} catch (Exception $caught) {\n    echo $caught === $error ? 'C' : '!', '|';\n}\necho $result, '|';\n$child = null;\necho 'E|';\n",
+      "source_sha256": "f9eba144c16d63940f7ecfa88fb648a1aea61aaa833efb5dd52149d7afe07786",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-coalesce-private-105/.tools/magic-coalesce-probes-105/zero.php",
+      "stdout_base64": "WjpJfEd8RHwwfEV8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/magic-coalesce-private-105/.tools/magic-coalesce-probes-105/native-first",
+      "native_raw_sha256": "f2f2dfbe69107f9038602ebc63d2ba79f06dc640c7cda32aebc06d75fa9beda0",
+      "coalesce_line": 33
+    },
+    {
+      "id": "null",
+      "source_file": "magic-coalesce-null.php",
+      "source": "<?php\nclass CoalesceParent105 {\n    private int $value = 1;\n    public function __isset(string $name): bool {\n        global $child;\n        echo 'I|';\n        $child = null;\n        return true;\n    }\n    public function __get($name) {\n        global $error;\n        echo 'G|';\n        return null;\n    }\n    public function __destruct() {\n        global $fallback;\n        echo 'D|';\n        $fallback = 99;\n    }\n}\nclass CoalesceChild105 extends CoalesceParent105 {}\nfunction fallback105() {\n    global $fallback, $error;\n    echo 'R|';\n    return $fallback;\n}\n$error = new Exception('supplied');\n$fallback = 7;\n$child = new CoalesceChild105();\n$result = 42;\necho 'N:';\ntry {\n    $result = $child->value ?? fallback105();\n} catch (Exception $caught) {\n    echo $caught === $error ? 'C' : '!', '|';\n}\necho $result, '|';\n$child = null;\necho 'E|';\n",
+      "source_sha256": "799b624a98e721f36eed03335c3709de8671652cf721ccde93fd969d2084e1db",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-coalesce-private-105/.tools/magic-coalesce-probes-105/null.php",
+      "stdout_base64": "TjpJfEd8RHxSfDk5fEV8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/magic-coalesce-private-105/.tools/magic-coalesce-probes-105/native-first",
+      "native_raw_sha256": "358cadbc4deb9fd19a9e309558841b1a0f1f7eadd3969d55c7ce521f8f96872c",
+      "coalesce_line": 33
+    },
+    {
+      "id": "owning",
+      "source_file": "magic-coalesce-owning.php",
+      "source": "<?php\nclass CoalescePayload105 {\n    public function __destruct() { echo 'P|'; }\n}\nclass CoalesceParent105 {\n    private int $value = 1;\n    public function __isset(string $name): bool {\n        global $child;\n        echo 'I|';\n        $child = null;\n        return true;\n    }\n    public function __get($name) {\n        global $error;\n        echo 'G|';\n        return new CoalescePayload105();\n    }\n    public function __destruct() {\n        global $fallback;\n        echo 'D|';\n        $fallback = 99;\n    }\n}\nclass CoalesceChild105 extends CoalesceParent105 {}\nfunction fallback105() {\n    global $fallback, $error;\n    echo 'R|';\n    throw $error;\n}\n$error = new Exception('supplied');\n$fallback = 7;\n$child = new CoalesceChild105();\n$result = 42;\necho 'O:';\ntry {\n    $result = $child->value ?? fallback105();\n} catch (Exception $caught) {\n    echo $caught === $error ? 'C' : '!', '|';\n}\necho 'A|';\n$result = null;\n$child = null;\necho 'E|';\n",
+      "source_sha256": "3499e93a1a451ff10a76180806343f63f7d80e76741e5e8589150295bd105c8f",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-coalesce-private-105/.tools/magic-coalesce-probes-105/owning.php",
+      "stdout_base64": "TzpJfEd8RHxBfFB8RXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/magic-coalesce-private-105/.tools/magic-coalesce-probes-105/native-first",
+      "native_raw_sha256": "9409e5daeb6ac515e3819b684fb170e9a1b53c3261fb9e004d76add84a818fdf",
+      "coalesce_line": 36
+    },
+    {
+      "id": "throwing",
+      "source_file": "magic-coalesce-throwing.php",
+      "source": "<?php\nclass CoalesceParent105 {\n    private int $value = 1;\n    public function __isset(string $name): bool {\n        global $child;\n        echo 'I|';\n        $child = null;\n        return true;\n    }\n    public function __get($name) {\n        global $error;\n        echo 'G|';\n        throw $error;\n    }\n    public function __destruct() {\n        global $fallback;\n        echo 'D|';\n        $fallback = 99;\n    }\n}\nclass CoalesceChild105 extends CoalesceParent105 {}\nfunction fallback105() {\n    global $fallback, $error;\n    echo 'R|';\n    throw $error;\n}\n$error = new Exception('supplied');\n$fallback = 7;\n$child = new CoalesceChild105();\n$result = 42;\necho 'X:';\ntry {\n    $result = $child->value ?? fallback105();\n} catch (Exception $caught) {\n    echo $caught === $error ? 'C' : '!', '|';\n}\necho $result, '|';\n$child = null;\necho 'E|';\n",
+      "source_sha256": "e534c1bcdfe434d77d1c62b92b7231d8b495b8d5f30f9fa6c03a84cd73a3a3e6",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-coalesce-private-105/.tools/magic-coalesce-probes-105/throwing.php",
+      "stdout_base64": "WDpJfEd8RHxDfDQyfEV8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/magic-coalesce-private-105/.tools/magic-coalesce-probes-105/native-first",
+      "native_raw_sha256": "16d790f648e7ca6468f88df8eb07c8f7fd13374a4a6ea70396461819ca89b685",
+      "coalesce_line": 33
+    }
+  ]
+}

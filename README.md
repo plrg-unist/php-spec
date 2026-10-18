@@ -38,10 +38,11 @@ reference cells may also hold flat runtime arrays of direct null/bool/int/float 
 debt stays separate from child-table COW, including deletion and throw cleanup.
 Retargeting a flat-array wrapper to an ordinary scalar preserves its acquired
 count, cancelling debt first or retaining the old wrapper and its child.
-Ordinary unwrapped array CVs have a separate table-count continuation: a handler
-may retarget a flat primitive array, and inverse retargeting balances its missing
-owner before cleanup. Same-table transfer and restored COW keep ordinary values
-distinct from PHP reference wrappers.
+Ordinary unwrapped CVs may switch between null/bool/int/float and flat runtime
+arrays of those direct values during the handler. Separate table counts preserve
+old array owners and omitted new-array owners; inverse retargeting cancels them before cleanup. Initial scalar
+and array plans remain distinct, while same-table transfer and restored COW keep
+ordinary values distinct from PHP reference wrappers.
 Unsafe deficit retirement and wider domains remain Unsupported. Duplicate
 replacement and later items stay ordered.
 
@@ -257,7 +258,15 @@ now preserve the original Closure and early value across reversed named argument
 effects. Native `__invoke` arguments remain numeric and normalized. Four originals
 and 928 state premises cover true/false handlers, throwing cancellation, strict
 ordinary versus weak explicit calls, owner roots and reuse of the retained setter.
-Packed/PIPE forms, sole-owner lifetimes and wider values remain partial.
+Packed forms beyond the numeric follow-up below, PIPE, sole-owner lifetimes
+and wider values remain partial.
+
+[Numeric unpacked retained NULL INI calls](coverage/semantics/ini-set-owned-unpack-null-option-review.json)
+now preserve the original Closure and captured arguments from one numeric two-item
+pack across live callee and pack mutations. Explicit wrapper arguments remain
+normalized `[NULL, value]`; ordinary strict calls still reject NULL first.
+Four originals and 914 state premises cover return, throw, literal-source authority
+and reuse of the retained setter. Other packs, PIPE and wider values remain partial.
 
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
@@ -628,6 +637,14 @@ number despite later invalid writes. Two exact originals and 159 genuine state
 premises check the ordinary TypeError, unchanged destination and warning priority.
 [ADD failure evidence](coverage/semantics/arithmetic-failure-review.json) retains
 the original Unsupported baseline; wider operand and lifecycle forms remain partial.
+
+Selected-reference ADD now lets the LEFT Warning repair initially bad RHS
+text before conversion. Fractional holders yield strict float `18.0` after later
+writes. A repaired old RHS `5.5` yields `17.5` with one Warning even when its name
+is rebound to `2tail`; unrepaired text uses live bool/string TypeError labels.
+Four originals and 428 focused premises cover these routes; the supplied first
+throw is source-only. The [ADD repair ledger](coverage/semantics/add-repair-review.json)
+retains the baseline. Owning/constrained/expired cells and wider forms remain partial.
 
 Leading-numeric-string `-` and `*` now retain both selected reference cells and
 numeric holders through named Warning handlers. A first handler can repair an
@@ -1136,6 +1153,13 @@ clears initialization; the physical middle stays parked with its return intact.
 Close retains that return and skips the middle finally; cache copies, row COW
 and mutable returned cells keep separate lifetimes. See the
 [ancestor THROW review](coverage/semantics/generator-pending-owning-chain-throw-review.json).
+An already parked owning return also admits another pending `throw` when the
+selected receiver still needs initialization. That receiver clears its own bit
+without entering the body, even if the physical middle was already initialized.
+Distinct or reused exceptions, current snapshots and return cells keep their
+separate lifetimes; actual parked body entry remains Unsupported. See the
+[repeated THROW review](coverage/semantics/generator-repeated-pending-owning-throw-review.json).
+Parked next/send and wider repeated-THROW leaves remain open.
 With a buffered input, pending `throw` preserves its count; physical close retains
 it until request-store destruction, including receiver cleanup before caller
 catch. The independent current copy can still trigger a replacement exception. See the
@@ -1603,8 +1627,13 @@ until the trace and Closure owners are released.
 [Invalid flags](coverage/semantics/define-invalid-flag-review.json),
 [Closure flags](coverage/semantics/define-closure-flag-review.json).
 
-Fresh definitions also copy nonempty array trees containing certified stdClass
-or user-instance leaves under the admitted flags. Copied containers freeze source
+Certified Closure values can be defined directly, retaining pointer identity and
+shared static cells through duplicates, queries and a pending ignored-Warning
+exception. Ordinary unrecorded Closure values remain Unsupported.
+[Certified Closure define review](coverage/semantics/define-certified-closure-review.json).
+
+Fresh definitions also copy nonempty array trees containing certified Closure,
+stdClass or user-instance leaves under the admitted flags. Copied containers freeze source
 reference values while object pointers and property writes remain shared,
 including selected eval calls and nested query COW.
 [Array-object define review](coverage/semantics/define-stdclass-array-review.json).
@@ -3358,8 +3387,8 @@ Exception preserves the same catch and assignment destination.
 [Four originals and 416 focused premises](coverage/semantics/magic-empty-isset-array-rv-review.json)
 cover these paths without changing generic array/free/GC behavior.
 No-Get `empty` keeps its typed-bool callback requirement. Terminal typed-bool
-callbacks with `__get`, other signatures/receivers/internal-object RVs and wider
-recursive/coalesce magic combinations remain unsupported.
+callbacks with `__get` remain unsupported; other signatures/receivers/internal-object
+RVs and wider recursive/coalesce magic combinations remain partial.
 
 Terminal CV/literal private-property `isset` also accepts inherited
 `__isset(string $name)` without a return declaration. It caches ordinary
@@ -3369,6 +3398,14 @@ and IN_ISSET remain; held RVs dispose later. Mutable-empty false and a supplied
 destructor Exception preserve result and cleanup order.
 [Four originals and 457 focused premises](coverage/semantics/terminal-isset-rv-review.json)
 cover these paths and saved call validity without changing generic destruction/GC.
+
+Selected private-property `??` now pairs inherited `__isset(string): bool` with
+an untyped by-value `__get`. False skips Get, zero skips the fallback, and null
+evaluates the fallback after receiver release. An owning getter result survives
+that release; a supplied getter Exception preserves the same catch and destination.
+[Five originals and 604 focused premises](coverage/semantics/magic-coalesce-review.json)
+cover guard changes, actual local cleanup, sole result ownership and budgets.
+Wider receivers, no-Get combinations and reentrant lifetimes remain partial.
 
 Inherited private writes now invoke a public `__set(string $name, $incoming): void`
 for selected external CV/literal assignments. The setter receives integer `7`,
@@ -4248,7 +4285,13 @@ and selected-reference aliases. This requires no runtime change. A direct
 TypeError from the first computed object's destructor now preserves its local
 catch while the other two returns still own their objects. One fresh comparison
 and 514/12 checks at `9aa2136d9` prove cleared-NULL recovery, one Notice and detached
-caller aliases. Other throw forms, reentry, GC and broader consumers remain open.
+caller aliases. One nested destructor now follows the same path: C creates
+and releases D, whose TypeError reaches that local catch. A fresh comparison and
+454/9 checks at `bf107b70c` prove nested saved scopes, remaining owners and detached
+NULL recovery. Literal builtin Exception now follows that finite path too:
+source1 and 385/4 checks at `1c87142fd` bind its pending kind to the compiled
+constructor, reject a valid wrong-kind Throwable and preserve Notice17/detached
+NULL recovery. Other throw forms, deeper reentry, GC and broader consumers remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

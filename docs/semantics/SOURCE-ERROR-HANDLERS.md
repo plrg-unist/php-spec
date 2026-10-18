@@ -237,12 +237,19 @@ explicit Unsupported before pruning.
 Ordinary by-value array CVs have their own table continuation. It pins the old
 table across the handler, inserts the live unwrapped array CV, and separately
 tracks the old HARRAY owner and omitted new-table owner. Same-table transfer does
-not require the original CV cell to survive. Both tables must be mutable nonpool
+not require the original CV cell to survive. Array payloads must be mutable nonpool
 flat DIRECT null/bool/int/float arrays, distinct from the object-free builder.
 Deletion and supplied-throw cleanup preserve net table counts; an inverse retarget
 balances them before normal COW and teardown. The [ordinary array-CV ledger](../../coverage/semantics/array-literal-float-array-cv-review.json)
-keeps its source/state cuts separate. Wrapped CVs, mixed scalar/array retargets,
-wider tables and unsafe debt retirement remain explicit Unsupported.
+keeps its source/state cuts separate. Mixed null/bool/int/float and flat-array
+retargets also resume: initial scalar admission captures no table, while initial
+array admission pins its old table. Scalar-to-array insertion owes an owner or
+cancels a retained count; array-to-scalar insertion preserves the acquired count
+or cancels debt. The same updates apply to supplied-throw cleanup. These two
+initial plans remain disjoint, and captured runtime-array temporaries incur no
+debt. The [mixed-CV ledger](../../coverage/semantics/array-literal-float-mixed-cv-review.json)
+records balanced cycles and entry-independent deletion/throw deficits. Wrapped
+CVs, wider tables and unsafe debt retirement remain explicit Unsupported.
 
 Missing-key module409 retains a
 CV/literal array snapshot through real handlers, supplies null after insertion,

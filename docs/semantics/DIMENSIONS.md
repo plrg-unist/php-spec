@@ -113,9 +113,9 @@ sources, coercion/backing records, active collection and outstanding request-end
 debt remain explicit Unsupported before pruning. Ordinary by-value owning-CV
 insertion remains partial.
 
-A separate continuation stages ordinary unwrapped array-CV values. Both initial
-and resumed values must be mutable nonpool flat arrays of DIRECT null/bool/int/float
-entries; the builder stays object-free and distinct from both tables. The captured
+A separate continuation stages ordinary unwrapped array-CV values. Array values
+must be mutable nonpool flat arrays of DIRECT null/bool/int/float entries;
+the builder stays object-free and distinct from their tables. The captured
 old table gets one owner before conversion, while insertion uses the live CV's
 table without its own ADDREF. `LITERALARRAYRETAINED` and `LITERALARRAYDEBTS` track
 these HARRAY count biases separately from wrapper CELL biases. A same-table
@@ -126,8 +126,15 @@ cancel it before ordinary COW and teardown. The combined lifetime guard checks
 positive flat tables after logical pruning and refuses effective-zero, active
 collection or outstanding request-end debt before owner transitions.
 The [ordinary array-CV review](../../coverage/semantics/array-literal-float-array-cv-review.json)
-records these safe balanced cases. Initially wrapped CVs, primitive/array mixed
-retargets, pooled/immutable or nested/reference-bearing/string-leaf tables and
+records these safe balanced cases. Mixed ordinary scalar/array retargets use the
+same table counts: scalar-to-array completion owes one table owner or cancels a
+retained occurrence, while array-to-scalar completion preserves the acquired count
+or cancels debt. Initial scalar and array plans remain disjoint; captured runtime
+array temporaries remain owned and frozen. The
+[mixed-CV review](../../coverage/semantics/array-literal-float-mixed-cv-review.json)
+checks both inverse cycles, entry deletion and supplied-throw cleanup with positive
+physical counts. Initially wrapped CVs, pooled/immutable or
+nested/reference-bearing/string-leaf tables and
 other owning CV values remain Unsupported.
 The source basis is pinned `Zend/zend_vm_def.h::ZEND_ADD_ARRAY_ELEMENT`,
 `Zend/zend_hash.c::zend_array_dup_value`, and

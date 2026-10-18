@@ -1,0 +1,253 @@
+;; BP_VAR_IS clears IN_ISSET before Get. One marker retains the receiver;
+;; after either decision its release precedes ordinary coalesce delivery.
+dec $property_coalesce_source(pstate, ppropertycoalesce) : bool
+def $property_coalesce_source(S, ppropertycoalesce) = true
+  -- if ppropertycoalesce.SITE = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, ppropertycoalesce.SITE) = (expression_left)
+  -- if expression_left = NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata
+  -- if $base64(text_receiver) =/= $ptascii("this") /\ ppropertycoalesce.NAME = $base64(text_name)
+  -- if $(|pcpath| > 0)
+  -- if pcpath_parent = pcpath[0:$nabs($(|pcpath| - 1))]
+  -- if pcpath = pcpath_parent ++ [PCFIELD 0]
+  -- if porigin_parent = PORIGIN n pcpath_parent
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprBinaryOpCoalesce expression_left expression_right metadata_parent)
+  -- if ppropertycoalesce.TAIL = (ORIGIN_RETURN (porigin_parent)) :: (COALESCE_QUIET expression_right z_left z_right) :: ptask_tail*
+  -- if ppropertycoalesce.LINE = z_left
+  -- if $property_source_task(S[.ORIGIN = (ppropertycoalesce.SITE)], expression_left)
+  -- if ppropertycoalesce.LINE = $runtime_line(S[.ORIGIN = (ppropertycoalesce.SITE)], eps, expression_left)
+  -- if z_right = $runtime_line(S[.ORIGIN = (porigin_parent)], [PCFIELD 1], expression_right)
+  -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0], NExprVariable (BYTES text_receiver) metadata_receiver)
+  -- if ~$scope_global(S[.ORIGIN = (ppropertycoalesce.SITE)], [PCFIELD 0])
+  -- if $compiled_effects(S, ppropertycoalesce.SITE) = eps
+def $property_coalesce_source(S, ppropertycoalesce) = false -- otherwise
+
+dec $property_coalesce_method_origin(ppropertycoalesce, bool) : porigin
+def $property_coalesce_method_origin(ppropertycoalesce, false) = ppropertycoalesce.ISSET
+def $property_coalesce_method_origin(ppropertycoalesce, true) = ppropertycoalesce.GET
+dec $property_coalesce_method_source(pstate, pmethoddesc, bool) : bool
+def $property_coalesce_method_source(S, pmethoddesc, false) = $property_magic_method_source(S, pmethoddesc, "__isset")
+def $property_coalesce_method_source(S, pmethoddesc, true) = $property_empty_get_source(S, pmethoddesc)
+dec $property_coalesce_function(pstate, ppropertycoalesce, bool) : pfunction?
+def $property_coalesce_function(S, ppropertycoalesce, b_get) = (pfunction)
+  -- if $property_empty_method(S, ppropertycoalesce.OBJECT, b_get) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = $property_coalesce_method_origin(ppropertycoalesce, b_get)
+  -- if pfunction = pmethoddesc.FUNCTION
+  -- if $property_coalesce_method_source(S, pmethoddesc, b_get)
+  -- if $target_function(S, METHOD_TARGET ppropertycoalesce.OBJECT pfunction.ORIGIN) = (pfunction)
+def $property_coalesce_function(S, ppropertycoalesce, b_get) = eps -- otherwise
+
+dec $property_coalesce_descriptor(pstate, ppropertycoalesce) : bool
+def $property_coalesce_descriptor(S, ppropertycoalesce) = true
+  -- if $property_coalesce_source(S, ppropertycoalesce)
+  -- if $(ppropertycoalesce.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[ppropertycoalesce.OBJECT] = INSTANCE ppropertycoalesce.CLASS
+  -- if $property_coalesce_function(S, ppropertycoalesce, false) =/= eps /\ $property_coalesce_function(S, ppropertycoalesce, true) =/= eps
+  -- if $property_isset_method(S, ppropertycoalesce.OBJECT) = (pmethoddesc_isset)
+  -- if $property_get_method(S, ppropertycoalesce.OBJECT) = (pmethoddesc_get)
+  -- if pmethoddesc_get.OWNER = pmethoddesc_isset.OWNER
+  -- if $property_effective_desc(S, ppropertycoalesce.OBJECT, ppropertycoalesce.NAME) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertycoalesce.PROPERTY /\ ppropertydesc.NAME = ppropertycoalesce.NAME
+  -- if $property_declaring_class(S.CLASSES, ppropertycoalesce.PROPERTY) = (pmethoddesc_isset.OWNER)
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE /\ ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.SETVISIBILITY = eps
+  -- if $property_unset_access_valid(S, ppropertycoalesce.OBJECT, ppropertycoalesce.NAME, ppropertydesc, $property_resolve_scope(S, ppropertycoalesce.OBJECT, ppropertycoalesce.NAME, $closure_source_class(S, ppropertycoalesce.SITE)))
+  -- if ~$property_hook_declared(S, ppropertycoalesce.OBJECT, ppropertycoalesce.NAME)
+def $property_coalesce_descriptor(S, ppropertycoalesce) = false -- otherwise
+
+dec $property_coalesce_valid(pstate, ppropertycoalesce) : bool
+def $property_coalesce_valid(S, ppropertycoalesce) = true
+  -- if S.ORIGIN = (ppropertycoalesce.SITE)
+  -- if ppropertycoalesce.OWNER = |S.FRAMES| /\ ppropertycoalesce.CALLER = S.CURRENT
+  -- if $property_lookup_scope(S) = $closure_source_class(S, ppropertycoalesce.SITE)
+  -- if $source_operand_suffix(S.TODO, PROPERTY_COALESCE_RESULT ppropertycoalesce false, ppropertycoalesce.TAIL) \/ $source_operand_suffix(S.TODO, PROPERTY_COALESCE_RESULT ppropertycoalesce true, ppropertycoalesce.TAIL)
+  -- if $property_coalesce_descriptor(S, ppropertycoalesce)
+  -- if (HOBJECT ppropertycoalesce.OBJECT) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, ppropertycoalesce.OBJECT)
+def $property_coalesce_valid(S, ppropertycoalesce) = false -- otherwise
+
+dec $property_coalesce_capture(pstate, ppropertycoalesce) : bool
+def $property_coalesce_capture(S, ppropertycoalesce) = true
+  -- if $property_coalesce_valid(S, ppropertycoalesce)
+  -- if $origin_node(S.SOURCES, ppropertycoalesce.SITE) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) phpType20 metadata)
+  -- if S_read = $quiet_operand(S, VARIABLE $base64(text_receiver) $variable_line(BYTES text_receiver, metadata_receiver))
+  -- if S_read.COMPLETION = NORMAL /\ S_read.RESULT = KNOWN (POBJECT ppropertycoalesce.OBJECT)
+def $property_coalesce_capture(S, ppropertycoalesce) = false -- otherwise
+
+dec $property_coalesce_tail(pstate, ppropertycoalesce, bool, ptask*) : bool
+def $property_coalesce_tail(S, ppropertycoalesce, b_get, (PROPERTY_COALESCE_RESULT ppropertycoalesce b_get) :: ptask_tail*) = ($property_coalesce_valid(S, ppropertycoalesce) /\ ptask_tail* = ppropertycoalesce.TAIL)
+def $property_coalesce_tail(S, ppropertycoalesce, b_get, ptask*) = false -- otherwise
+
+dec $property_coalesce_pending_call(pstate, ppropertycoalesce, bool) : bool
+def $property_coalesce_pending_call(S, ppropertycoalesce, b_get) = true
+  -- if S.TODO = (CALL_ARGS (PROPERTY_COALESCE_TARGET ppropertycoalesce b_get) eps 1 ([KNOWN (PSTRING ppropertycoalesce.NAME)]) (ppropertycoalesce.SITE) ppropertycoalesce.LINE) :: (PROPERTY_COALESCE_RESULT ppropertycoalesce b_get) :: ptask_tail*
+  -- if ptask_tail* = ppropertycoalesce.TAIL
+  -- if $property_coalesce_valid(S, ppropertycoalesce)
+  -- if b_get \/ $property_coalesce_capture(S, ppropertycoalesce)
+def $property_coalesce_pending_call(S, ppropertycoalesce, b_get) = false -- otherwise
+
+dec $property_coalesce_frame(pstate, pcallcontext, pframe, pframe*, ppropertycoalesce, bool) : bool
+def $property_coalesce_frame(S, pcallcontext, pframe, pframe_tail*, ppropertycoalesce, b_get) = true
+  -- if pcallcontext.TARGET = PROPERTY_COALESCE_TARGET ppropertycoalesce b_get
+  -- if pcallcontext.FUNCTION = $property_coalesce_method_origin(ppropertycoalesce, b_get) /\ pcallcontext.RECEIVER = (ppropertycoalesce.OBJECT) /\ pcallcontext.CALLED_CLASS = (ppropertycoalesce.CLASS)
+  -- if pcallcontext.LEXICAL_CLASS = $target_lexical_class(S, METHOD_TARGET ppropertycoalesce.OBJECT pcallcontext.FUNCTION)
+  -- if pcallcontext.CALLSITE = (ppropertycoalesce.SITE) /\ pcallcontext.LINE = ppropertycoalesce.LINE
+  -- if pcallcontext.ARGC = 1 /\ pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.WRAPPER = eps /\ pcallcontext.HOLES = eps
+  -- if pframe.ORIGIN = (ppropertycoalesce.SITE)
+  -- if S_saved = $constant_frame_view(S, pframe, pframe_tail*)
+  -- if $property_coalesce_tail(S_saved, ppropertycoalesce, b_get, pframe.TODO)
+def $property_coalesce_frame(S, pcallcontext, pframe, pframe_tail*, ppropertycoalesce, b_get) = false -- otherwise
+
+dec $property_coalesce_entered(pstate, pcallcontext?, pframe*, ppropertycoalesce, bool) : bool
+def $property_coalesce_entered(S, (pcallcontext), pframe :: pframe_tail*, ppropertycoalesce, b_get) = $property_coalesce_frame(S, pcallcontext, pframe, pframe_tail*, ppropertycoalesce, b_get)
+  -- if pcallcontext.TARGET = PROPERTY_COALESCE_TARGET ppropertycoalesce b_get
+def $property_coalesce_entered(S, (pcallcontext), pframe :: pframe_tail*, ppropertycoalesce, b_get) = $property_coalesce_entered(S, pframe.CONTEXT, pframe_tail*, ppropertycoalesce, b_get)
+  -- if pcallcontext.TARGET =/= PROPERTY_COALESCE_TARGET ppropertycoalesce b_get
+def $property_coalesce_entered(S, eps, pframe :: pframe_tail*, ppropertycoalesce, b_get) = $property_coalesce_entered(S, pframe.CONTEXT, pframe_tail*, ppropertycoalesce, b_get)
+def $property_coalesce_entered(S, pcallcontext?, eps, ppropertycoalesce, b_get) = false
+
+;; Compiled-local release still belongs to the callback. Prefix validation is
+;; structural because call_tasks_valid projects past the destruction records.
+dec $property_coalesce_exit_call(ptask) : pdestructorcall?
+def $property_coalesce_exit_call(DESTRUCTOR_ENTER pdestructorcall) = (pdestructorcall)
+def $property_coalesce_exit_call(DESTRUCTOR_RESULT pdestructorcall) = (pdestructorcall)
+def $property_coalesce_exit_call(ptask) = eps -- otherwise
+dec $property_coalesce_exit(pstate, ptask*, ppropertycoalesce, bool) : pdestructionframe?
+def $property_coalesce_exit(S, (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: (PROPERTY_COALESCE_RESULT ppropertycoalesce b_get) :: ptask_tail*, ppropertycoalesce, b_get) = (pdestructionframe)
+  -- if ptask_tail* = ppropertycoalesce.TAIL /\ $property_coalesce_valid(S, ppropertycoalesce)
+  -- if pdestructionframe.FUNCTION = $property_coalesce_method_origin(ppropertycoalesce, b_get)
+  -- if pdestructionframe.CALLER = S.CURRENT /\ pdestructionframe.ORIGIN = S.ORIGIN /\ pdestructionframe.CONSTCONTEXT = S.CONSTCONTEXT
+def $property_coalesce_exit(S, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, ppropertycoalesce, b_get) = (pdestructionframe)
+  -- if $property_coalesce_exit(S, ptask_tail*, ppropertycoalesce, b_get) = (pdestructionframe)
+  -- if pdestructionrelease.CALLER = S.CURRENT /\ pdestructionrelease.ORIGIN = S.ORIGIN /\ pdestructionrelease.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if pdestructionrelease.USER = $destructor_user_source(S)
+def $property_coalesce_exit(S, ptask_call :: (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, ppropertycoalesce, b_get) = (pdestructionframe)
+  -- if $property_coalesce_exit_call(ptask_call) = (pdestructorcall)
+  -- if $property_coalesce_exit(S, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, ppropertycoalesce, b_get) = (pdestructionframe)
+  -- if pdestructorcall.FRAME = (pdestructionframe) /\ pdestructorcall.OPERATION = eps
+  -- if pdestructorcall.RELEASE = (pdestructionrelease_before)
+  -- if pdestructionrelease_before.JOBS = pdestructionjob_head :: pdestructionjob_tail*
+  -- if $destruction_job_node(pdestructionjob_head) = (HOBJECT pdestructorcall.OBJECT)
+  -- if pdestructionrelease = pdestructionrelease_before[.JOBS = pdestructionjob_tail*]
+  -- if ~pdestructorcall.STORE /\ pdestructorcall.USER = pdestructionrelease.USER
+  -- if pdestructorcall.CALLER = S.CURRENT /\ pdestructorcall.ORIGIN = S.ORIGIN /\ pdestructorcall.CONSTCONTEXT = S.CONSTCONTEXT
+def $property_coalesce_exit(S, ptask*, ppropertycoalesce, b_get) = eps -- otherwise
+dec $property_coalesce_exit_guard(pstate, ptask, nat, ptbytes, bool) : bool
+def $property_coalesce_exit_guard(S, PROPERTY_COALESCE_RESULT ppropertycoalesce b_get, n, ptbytes, b_get) = true
+  -- if ppropertycoalesce.OBJECT = n /\ ppropertycoalesce.NAME = ptbytes
+  -- if $property_coalesce_exit(S, S.TODO, ppropertycoalesce, b_get) = (pdestructionframe)
+  -- if pdestructionframe <- S.DESTRUCTION.FRAMES
+def $property_coalesce_exit_guard(S, ptask, n, ptbytes, b_get) = false -- otherwise
+dec $property_coalesce_exit_active(pstate, ptask*, nat, ptbytes, bool) : bool
+def $property_coalesce_exit_active(S, ptask :: ptask_tail*, n, ptbytes, b_get) = ($property_coalesce_exit_guard(S, ptask, n, ptbytes, b_get) \/ $property_coalesce_exit_active(S, ptask_tail*, n, ptbytes, b_get))
+def $property_coalesce_exit_active(S, eps, n, ptbytes, b_get) = false
+
+dec $property_coalesce_active_frame(pstate, pcallcontext, pframe, pframe*, nat, ptbytes, bool) : bool
+def $property_coalesce_active_frame(S, pcallcontext, pframe, pframe_tail*, n, ptbytes, b_get) = true
+  -- if pcallcontext.TARGET = PROPERTY_COALESCE_TARGET ppropertycoalesce b_get
+  -- if ppropertycoalesce.OBJECT = n /\ ppropertycoalesce.NAME = ptbytes
+  -- if $property_coalesce_frame(S, pcallcontext, pframe, pframe_tail*, ppropertycoalesce, b_get)
+def $property_coalesce_active_frame(S, pcallcontext, pframe, pframe_tail*, n, ptbytes, b_get) = false -- otherwise
+dec $property_coalesce_active(pstate, pcallcontext?, pframe*, nat, ptbytes, bool) : bool
+def $property_coalesce_active(S, (pcallcontext), pframe :: pframe_tail*, n, ptbytes, b_get) = ($property_coalesce_active_frame(S, pcallcontext, pframe, pframe_tail*, n, ptbytes, b_get) \/ $property_coalesce_exit_active($constant_frame_view(S, pframe, pframe_tail*), pframe.TODO, n, ptbytes, b_get) \/ $property_coalesce_active(S, pframe.CONTEXT, pframe_tail*, n, ptbytes, b_get))
+def $property_coalesce_active(S, eps, pframe :: pframe_tail*, n, ptbytes, b_get) = ($property_coalesce_exit_active($constant_frame_view(S, pframe, pframe_tail*), pframe.TODO, n, ptbytes, b_get) \/ $property_coalesce_active(S, pframe.CONTEXT, pframe_tail*, n, ptbytes, b_get))
+def $property_coalesce_active(S, pcallcontext?, eps, n, ptbytes, b_get) = $property_coalesce_exit_active(S, S.TODO, n, ptbytes, b_get)
+
+dec $property_coalesce_plan(pstate) : ppropertycoalesce?
+def $property_coalesce_plan(S) = (ppropertycoalesce)
+  -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: (ORIGIN_RETURN (porigin_parent)) :: (COALESCE_QUIET expression_right z_left z_right) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
+  -- if S.ORIGIN = (porigin)
+  -- if S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata)
+  -- if S.RESULT = VARIABLE $base64(text_receiver) $variable_line(BYTES text_receiver, metadata_receiver)
+  -- if S_read = $quiet_operand(S, S.RESULT)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $property_isset_needed(S, n, $base64(text_name)) /\ $property_get_needed(S, n, $base64(text_name))
+  -- if $property_isset_method(S, n) = (pmethoddesc_isset)
+  -- if $property_get_method(S, n) = (pmethoddesc_get)
+  -- if $property_effective_desc(S, n, $base64(text_name)) = (ppropertydesc)
+  -- if porigin_property = ppropertydesc.ORIGIN
+  -- if ppropertycoalesce = {SITE porigin, NAME $base64(text_name), LINE z, OBJECT n, CLASS porigin_class, ISSET pmethoddesc_isset.FUNCTION.ORIGIN, GET pmethoddesc_get.FUNCTION.ORIGIN, PROPERTY porigin_property, OWNER (|S.FRAMES|), CALLER S.CURRENT, TAIL ((ORIGIN_RETURN (porigin_parent)) :: (COALESCE_QUIET expression_right z_left z_right) :: ptask_tail*)}
+  -- if S_marker = S[.TODO = (PROPERTY_COALESCE_RESULT ppropertycoalesce false) :: ppropertycoalesce.TAIL]
+  -- if $property_coalesce_capture(S_marker, ppropertycoalesce)
+  -- if ~$property_isset_guard(S, S.CURRENT, S.FRAMES, n, $base64(text_name))
+  -- if ~$property_get_guard_tasks(S.TODO, n, $base64(text_name)) /\ ~$property_get_guard_frames(S.FRAMES, n, $base64(text_name))
+  -- if ~$property_empty_get_active(S, n, $base64(text_name))
+def $property_coalesce_plan(S) = eps -- otherwise
+
+def $property_coalesce_prepare(S) = ($property_coalesce_plan(S) =/= eps)
+def $property_empty_prepare(S) = true -- if $property_coalesce_prepare(S)
+rule PhpStep/property-coalesce-call: S ~> S[.TODO = [(CALL_ARGS (PROPERTY_COALESCE_TARGET ppropertycoalesce false) eps 1 ([KNOWN (PSTRING ppropertycoalesce.NAME)]) (ppropertycoalesce.SITE) ppropertycoalesce.LINE), PROPERTY_COALESCE_RESULT ppropertycoalesce false] ++ ppropertycoalesce.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $property_coalesce_plan(S) = (ppropertycoalesce)
+rule PhpStep/property-coalesce-get: S ~> S[.TODO = [(CALL_ARGS (PROPERTY_COALESCE_TARGET ppropertycoalesce true) eps 1 ([KNOWN (PSTRING ppropertycoalesce.NAME)]) (ppropertycoalesce.SITE) ppropertycoalesce.LINE), PROPERTY_COALESCE_RESULT ppropertycoalesce true] ++ ppropertycoalesce.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROPERTY_COALESCE_RESULT ppropertycoalesce false) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL /\ S.RESULT = KNOWN (PBOOL true)
+  -- if $property_coalesce_valid(S, ppropertycoalesce)
+rule PhpStep/property-coalesce-false: S ~> S[.TODO = (ORIGIN_RETURN (porigin_parent)) :: (COALESCE_RESULT expression_right z_left z_right) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROPERTY_COALESCE_RESULT ppropertycoalesce false) :: (ORIGIN_RETURN (porigin_parent)) :: (COALESCE_QUIET expression_right z_left z_right) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL /\ S.RESULT = KNOWN (PBOOL false)
+  -- if $property_coalesce_valid(S, ppropertycoalesce)
+rule PhpStep/property-coalesce-value: S ~> S[.TODO = (ORIGIN_RETURN (porigin_parent)) :: (COALESCE_RESULT expression_right z_left z_right) :: ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROPERTY_COALESCE_RESULT ppropertycoalesce true) :: (ORIGIN_RETURN (porigin_parent)) :: (COALESCE_QUIET expression_right z_left z_right) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN pvalue
+  -- if $property_coalesce_valid(S, ppropertycoalesce)
+
+;; Abrupt completion drops the same owner and never evaluates the quiet RHS.
+dec $property_coalesce_throw_tail(pstate, ppropertycoalesce, bool) : bool
+def $property_coalesce_throw_tail(S, ppropertycoalesce, b_get) = true
+  -- if S.TODO = (THROW_SEARCH n) :: (PROPERTY_COALESCE_RESULT ppropertycoalesce b_get) :: ptask_tail*
+  -- if $throwable_live(S, n)
+  -- if $property_coalesce_tail(S, ppropertycoalesce, b_get, (PROPERTY_COALESCE_RESULT ppropertycoalesce b_get) :: ptask_tail*)
+def $property_coalesce_throw_tail(S, ppropertycoalesce, b_get) = false -- otherwise
+def $return_discard(S, PROPERTY_COALESCE_RESULT ppropertycoalesce b_get) = S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $error_read_discard(S, PROPERTY_COALESCE_RESULT ppropertycoalesce b_get) = S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+
+;; Call targets borrow the receiver from the result marker in its caller.
+def $task_nodes(PROPERTY_COALESCE_RESULT ppropertycoalesce b_get) = [HOBJECT ppropertycoalesce.OBJECT]
+def $target_nodes(PROPERTY_COALESCE_TARGET ppropertycoalesce b_get) = eps
+def $target_instance(PROPERTY_COALESCE_TARGET ppropertycoalesce b_get) = eps
+def $target_receiver(S, PROPERTY_COALESCE_TARGET ppropertycoalesce b_get) = (ppropertycoalesce.OBJECT)
+def $target_lexical_class(S, PROPERTY_COALESCE_TARGET ppropertycoalesce b_get) = $target_lexical_class(S, METHOD_TARGET ppropertycoalesce.OBJECT $property_coalesce_method_origin(ppropertycoalesce, b_get))
+def $target_called_class(S, PROPERTY_COALESCE_TARGET ppropertycoalesce b_get) = (ppropertycoalesce.CLASS)
+def $target_function(S, PROPERTY_COALESCE_TARGET ppropertycoalesce b_get) = $property_coalesce_function(S, ppropertycoalesce, b_get)
+  -- if $property_coalesce_valid(S, ppropertycoalesce) \/ $property_coalesce_entered(S, S.CURRENT, S.FRAMES, ppropertycoalesce, b_get)
+def $call_receiver_roots(pcallcontext) = eps
+  -- if pcallcontext.TARGET = PROPERTY_COALESCE_TARGET ppropertycoalesce b_get
+def $call_selected_valid(S, PROPERTY_COALESCE_TARGET ppropertycoalesce b_get, (porigin)) = (porigin = ppropertycoalesce.SITE /\ ($property_coalesce_pending_call(S, ppropertycoalesce, b_get) \/ $property_coalesce_entered(S, S.CURRENT, S.FRAMES, ppropertycoalesce, b_get)))
+def $call_arguments_valid(S, (porigin), 1, eps, poperand :: eps, 0) = true
+  -- if S.TODO = (CALL_ARGS (PROPERTY_COALESCE_TARGET ppropertycoalesce b_get) eps 1 (poperand :: eps) (porigin) z) :: ptask_tail*
+  -- if poperand = KNOWN (PSTRING ppropertycoalesce.NAME)
+  -- if $property_coalesce_pending_call(S, ppropertycoalesce, b_get)
+dec $property_coalesce_context(pstate, pcallcontext) : bool
+def $property_coalesce_context(S, pcallcontext) = true
+  -- if pcallcontext.TARGET = PROPERTY_COALESCE_TARGET ppropertycoalesce b_get
+  -- if pcallcontext.FUNCTION = $property_coalesce_method_origin(ppropertycoalesce, b_get) /\ pcallcontext.RECEIVER = (ppropertycoalesce.OBJECT) /\ pcallcontext.CALLED_CLASS = (ppropertycoalesce.CLASS)
+  -- if pcallcontext.LEXICAL_CLASS = $target_lexical_class(S, METHOD_TARGET ppropertycoalesce.OBJECT pcallcontext.FUNCTION)
+  -- if pcallcontext.CALLSITE = (ppropertycoalesce.SITE) /\ pcallcontext.LINE = ppropertycoalesce.LINE
+  -- if pcallcontext.ARGC = 1 /\ pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.WRAPPER = eps /\ pcallcontext.HOLES = eps
+  -- if $property_coalesce_entered(S, S.CURRENT, S.FRAMES, ppropertycoalesce, b_get)
+def $property_coalesce_context(S, pcallcontext) = false -- otherwise
+def $call_arity_valid(S, pcallcontext) = $property_coalesce_context(S, pcallcontext)
+  -- if pcallcontext.TARGET = PROPERTY_COALESCE_TARGET ppropertycoalesce b_get
+def $call_extent_valid(S, pcallcontext) = $property_coalesce_context(S, pcallcontext)
+  -- if pcallcontext.TARGET = PROPERTY_COALESCE_TARGET ppropertycoalesce b_get
+def $named_context_valid(S, pcallcontext) = $property_coalesce_context(S, pcallcontext)
+  -- if pcallcontext.TARGET = PROPERTY_COALESCE_TARGET ppropertycoalesce b_get
+def $named_receives_ready(S, pfunction) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if $property_coalesce_context(S, pcallcontext)
+def $call_task_valid(S, PROPERTY_COALESCE_RESULT ppropertycoalesce b_get) = ($property_coalesce_pending_call(S, ppropertycoalesce, b_get) \/ $property_coalesce_tail(S, ppropertycoalesce, b_get, S.TODO) \/ $property_coalesce_throw_tail(S, ppropertycoalesce, b_get) \/ $property_coalesce_exit(S, S.TODO, ppropertycoalesce, b_get) =/= eps)
+
+;; These guards follow only the active call, not the queued result/receiver hold.
+def $property_isset_guard_frame(S, pcallcontext, pframe, n, ptbytes) = true
+  -- if pcallcontext.TARGET = PROPERTY_COALESCE_TARGET ppropertycoalesce false
+  -- if ppropertycoalesce.OBJECT = n /\ ppropertycoalesce.NAME = ptbytes
+  -- if $property_coalesce_entered(S, S.CURRENT, S.FRAMES, ppropertycoalesce, false)
+def $property_isset_guard_task(S, PROPERTY_COALESCE_RESULT ppropertycoalesce false, n, ptbytes) = true
+  -- if $property_coalesce_exit_guard(S, PROPERTY_COALESCE_RESULT ppropertycoalesce false, n, ptbytes, false)
+def $property_empty_get_active(S, n, ptbytes) = true
+  -- if $property_coalesce_active(S, S.CURRENT, S.FRAMES, n, ptbytes, true)
