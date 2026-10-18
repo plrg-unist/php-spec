@@ -151,6 +151,9 @@ def $array_float_ref_key_source(S, n, n_old, poperand, phpType13*, z, n_bits, i)
   -- if $array_float_ref_key_item(S, phpType13*, z) = ((poperand_key, poperand))
 def $array_float_ref_key_source(S, n, n_old, poperand, phpType13*, z, n_bits, i) = false -- otherwise
 
+dec $literal_reference_plain_cell(pstate, nat) : bool
+dec $literal_reference_retain(pstate, nat) : pstate
+dec $literal_reference_owe(pstate, nat) : pstate
 dec $array_float_ref_key_value(pstate, nat, poperand) : pitem?
 def $array_float_ref_key_value(S, n_old, VARIABLE n_name* z) = (ALIAS n_old)
   -- if ~$environment_blocked(S, n_name*)
@@ -245,12 +248,10 @@ def $literal_reference_delete(eps, n) = eps
 def $literal_reference_delete(n :: n_tail*, n) = n_tail*
 def $literal_reference_delete(n_other :: n_tail*, n) = n_other :: $literal_reference_delete(n_tail*, n)
   -- if n_other =/= n
-dec $literal_reference_retain(pstate, nat) : pstate
 def $literal_reference_retain(S, n) = S[.LITERALREFDEBTS = $literal_reference_delete(S.LITERALREFDEBTS, n)]
   -- if n <- S.LITERALREFDEBTS
 def $literal_reference_retain(S, n) = S[.LITERALREFRETAINED = S.LITERALREFRETAINED ++ [n]]
   -- if ~(n <- S.LITERALREFDEBTS)
-dec $literal_reference_owe(pstate, nat) : pstate
 def $literal_reference_owe(S, n) = S[.LITERALREFRETAINED = $literal_reference_delete(S.LITERALREFRETAINED, n)]
   -- if n <- S.LITERALREFRETAINED
 def $literal_reference_owe(S, n) = S[.LITERALREFDEBTS = S.LITERALREFDEBTS ++ [n]]
@@ -259,7 +260,6 @@ def $literal_reference_owe(S, n) = S[.LITERALREFDEBTS = S.LITERALREFDEBTS ++ [n]
 def $literal_reference_debts_valid(S, eps) = true
 def $literal_reference_debts_valid(S, n :: n_tail*) = ($call_reference_operand_valid(S, REFERENCE n) /\ ~(n <- S.LITERALREFRETAINED) /\ $literal_reference_debts_valid(S, n_tail*))
 
-dec $literal_reference_plain_cell(pstate, nat) : bool
 def $literal_reference_plain_cell(S, n) = true
   -- if $call_reference_operand_valid(S, REFERENCE n)
   -- if S.STORE[n] = DEFINED pvalue
