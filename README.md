@@ -976,6 +976,10 @@ pending throw and close. If both name one array, the two roles contribute separa
 counts without duplicating its element edges. Rebinding an embedded reference
 leaves the old buffered object alive.
 See the [joint lifecycle review](coverage/semantics/generator-pending-buffered-foreach-throw-review.json).
+A bare yield in one by-reference array loop retains the acquired reference wrapper
+on parked close. Later whole-wrapper or escaped-item writes update its real cells;
+the item CV and current-copy cleanup remain separate. See the
+[reference-foreach review](coverage/semantics/generator-pending-reference-foreach-throw-review.json).
 [Delegation](docs/semantics/GENERATOR-DELEGATION.md)
 adds arrays, source Iterators and shared Generator graphs with live raw caches
 and natural return/unwind. Aggregate yield-from now acquires nested real iterator

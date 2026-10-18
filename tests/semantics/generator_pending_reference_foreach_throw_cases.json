@@ -1,0 +1,22 @@
+[
+  {
+    "id": "generator-pending-reference-foreach-throw-temporary-wrapper",
+    "purpose": "A bare yield suspends one by-reference foreach over a temporary object array. Observe pending THROW, unchanged scalar getters and explicit close; distinguish the acquired array-reference wrapper from the visited item CV alias, without forecasting stdout.",
+    "source": "<?php\nclass ReferenceLoopA25 { function __destruct() { echo \"A|\"; } }\nclass ReferenceLoopB25 { function __destruct() { echo \"B|\"; } }\nfunction referenceLoopChild25() { echo \"C|\"; try { foreach ([new ReferenceLoopA25(), new ReferenceLoopB25()] as &$item) { echo \"V|\"; yield 7 => 5; echo \"BAD-BODY|\"; } } catch (Exception $caught) { echo \"BAD-CHILD|\"; } finally { echo \"F|\"; } }\nfunction referenceLoopMiddle25() { echo \"M|\"; try { yield from ($GLOBALS[\"child\"] = referenceLoopChild25()); } finally { echo \"J|\"; } }\nfunction referenceLoopOuter25() { echo \"O|\"; try { yield from ($GLOBALS[\"middle\"] = referenceLoopMiddle25()); } finally { echo \"Z|\"; } }\n$exception = new Exception(\"reference-loop25\"); echo \"P|\"; $outer = referenceLoopOuter25(); $outer->rewind(); echo \"H|\", $outer->valid() ? 1 : 0, \"|T|\";\ntry { $middle->throw($exception); echo \"BAD-RETURN|\"; } catch (Exception $caught) { echo \"CALLER|\", $caught === $exception ? \"SAME|\" : \"OTHER|\", $caught->getPrevious() === null ? \"NOPREV|\" : \"PREV|\"; }\necho \"GET|\", $middle->current(), \"|\", $middle->key(), \"|\", $middle->valid() ? 1 : 0, \"|\";\nunset($outer); echo \"OUT|\"; unset($middle); echo \"MID|\"; unset($child); echo \"CHILD|\";\nunset($caught, $exception); echo \"E\";\n",
+    "expected": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "source_sha256": "27fc7d96c601aef02b665b4548ea906fa32e9d86e36dd413420d8c6caf0c6bb7",
+    "native_stdout": "P|O|M|C|V|H|1|T|CALLER|SAME|NOPREV|GET|5|7|1|Z|OUT|J|MID|CHILD|EA|B|"
+  },
+  {
+    "id": "generator-pending-reference-foreach-throw-sole-receiver-cache-replacement",
+    "purpose": "A selected sole pending middle receiver survives argument-time removal of all Generator CVs. Observe temporary reference-foreach wrapper retention and current-copy destructor replacement of the supplied exception, including its actual previous chain and late array payload order; no stdout forecast.",
+    "source": "<?php\nclass ReferenceLoopVisited25b { function __destruct() { echo \"A|\"; } }\nclass ReferenceLoopUnvisited25b { function __destruct() { echo \"B|\"; } }\nclass ReferenceLoopCache25b { function __destruct() { echo \"D|\"; throw new Exception(\"reference-cache25\"); } }\nfunction referenceLoopChild25b() { echo \"C|\"; try { foreach ([new ReferenceLoopVisited25b(), new ReferenceLoopUnvisited25b()] as &$item) { yield new ReferenceLoopCache25b(); echo \"BAD-BODY|\"; } } catch (Exception $caught) { echo \"BAD-CHILD|\"; } finally { echo \"F|\"; } }\nfunction referenceLoopMiddle25b() { echo \"M|\"; try { yield from ($GLOBALS[\"child\"] = referenceLoopChild25b()); } finally { echo \"J|\"; } }\nfunction referenceLoopOuter25b() { echo \"O|\"; try { yield from ($GLOBALS[\"middle\"] = referenceLoopMiddle25b()); } finally { echo \"Z|\"; } }\nfunction referenceLoopDrop25b() { echo \"T|\"; unset($GLOBALS[\"outer\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"DROP|\"; return $GLOBALS[\"exception\"]; }\necho \"P|\"; $exception = new Exception(\"reference-pending25\"); $outer = referenceLoopOuter25b(); $outer->rewind(); echo \"H|\";\ntry { $result = $middle->throw(referenceLoopDrop25b()); echo \"BAD-RETURN|\"; } catch (Exception $caught) { echo \"CALLER|\", $caught === $exception ? \"SAME|\" : \"OTHER|\", $caught->getPrevious() === $exception ? \"PREV|\" : \"NOPREV|\"; }\nunset($result, $caught, $exception); echo \"E\";\n",
+    "expected": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "source_sha256": "50ab0353e3efe73750727342612f77c31625a55e97bedbdce579a94b79b7b006",
+    "native_stdout": "P|O|M|C|H|T|Z|DROP|J|D|CALLER|OTHER|PREV|EA|B|"
+  }
+]

@@ -114,6 +114,14 @@ A later shared-cell rebind drops that cell's old referent while the buffered old
 object remains retained. Cache snapshots and replacement exceptions keep their
 existing cleanup order. Other owning suspended values and later resume stay open.
 
+A bare yield inside one by-reference array loop retains its acquired
+reference wrapper across parked close. The item CV aliases an embedded cell and
+retires separately. Replacing the wrapper's value releases the old array while
+the new value stays retained; an escaped item write changes that entry. This
+bounded path has no buffered input. Used-yield reference loops, object loops and
+later resume remain open; see the
+[reference-foreach review](../../coverage/semantics/generator-pending-reference-foreach-throw-review.json).
+
 Literal `send` and `throw` validate and capture their single argument before
 initialization. Fresh calls first reach the initial yield, then deliver the
 value or Throwable at that suspension. `send` supplies the result of a used

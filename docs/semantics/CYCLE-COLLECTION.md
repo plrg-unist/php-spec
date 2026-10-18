@@ -139,6 +139,10 @@ result. Input and container counts add even for the same array, whose element
 edges stay unique. The
 [joint lifecycle review](../../coverage/semantics/generator-pending-buffered-foreach-throw-review.json)
 checks retention and rebinding without new collector behavior or GC source credit.
+One by-reference array loop at a bare yield retains the acquired wrapper;
+the same parked-frame collection boundary applies. The
+[reference-foreach review](../../coverage/semantics/generator-pending-reference-foreach-throw-review.json)
+adds no collector or GC source agreement during or after retention.
 Fiber force-close retains the tagged head and pending receipt in its genuine
 caller VM until ordinary release consumes it. Generator close consumes the head
 and updates progress before capturing its continuation; its new close jobs

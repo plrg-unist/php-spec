@@ -7,6 +7,33 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Pending Generator `throw` now admits a bare yield inside one active by-reference
+array `foreach`. Parked close retains the acquired reference wrapper and removes
+the iterator before ordinary item-CV and current-copy cleanup. Replacing the whole
+wrapper releases the old array, while an escaped-item write changes its actual
+entry cell. These remain mutable after the physical Generator retires. Cache
+cleanup can replace the supplied Throwable before caller catch with its previous
+chain intact. Used-yield reference loops, wider owning tails, later parked resume
+and GC remain open; ordinary iteration advance is unchanged.
+[Reference-foreach review](coverage/semantics/generator-pending-reference-foreach-throw-review.json).
+
+Four exact normal originals, strict401 and four genuine fronts pass at `dc90aaefb`:
+557 premises (261 author + 296 independent, including 20 generic reachability checks),
+with all native endings. Wrapper/item-cell multiplicities, exact close transfer,
+whole-wrapper replacement, escaped-entry writes, a real cache-destructor callback,
+malformed metadata refusals, public/heap validity and zero/split budgets pass.
+The derived parked-frame GC refusal grants no GC source agreement. Native4 and the
+genuine unchanged Unsupported baseline retain `b9f4af8cd`/401 with zero agreement.
+No actor failed or repeated; earlier Generator evidence is not replayed. Large raw
+artifacts stay external.
+
+Composed over `f63bef869`/401 after pointwise review of typed reference-return,
+constant-query, compound-warning, magic-property, Closure binding warning-trace
+and keyed LIST warning selectors, all disjoint here. Only modules280/289/303
+change and remain byte-exact tested `dc90aaefb`; every other runtime file, pipeline
+and the 401-module manifest retain the parent bytes. Source4/state557/strict401
+keep their private cuts without a joined actor, accepted replay or renewed credit.
+
 Fresh Exceptions in Closure binding warning handlers now retain the held API
 frame and original arguments after live CV/alias writes. Two existing-hook clauses
 in module253 also identify that internal C callback for weak parameter reception;

@@ -369,8 +369,8 @@ def $generator_parked_valid(S, pgenerator) = true
   -- if $generator_parked_frame(pgenerator.FRAME, porigin)
 def $generator_parked_valid(S, pgenerator) = false -- otherwise
 
-;; A parked exception opline can leave one value-foreach container outside
-;; unfinished cleanup. Retain the array itself so embedded references stay live.
+;; A parked exception opline can leave one array-foreach owner outside
+;; unfinished cleanup. Retain the captured array or acquired reference wrapper.
 ;; A used-yield input is a separate count and may already be orphaned at close.
 def $generator_foreach_site(S, pgenerator, PORIGIN n_unit pcpath_yield, PORIGIN n_unit pcpath_loop) = true
   -- if $generator_parked_site(S, pgenerator, PORIGIN n_unit pcpath_yield)
@@ -382,12 +382,39 @@ def $generator_foreach_site(S, pgenerator, PORIGIN n_unit pcpath_yield, PORIGIN 
   -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_yield) = (NExprYield phpType5_key phpType5_value metadata_yield)
 def $generator_foreach_site(S, pgenerator, porigin_yield, porigin_loop) = false -- otherwise
 
+def $generator_foreach_reference_site(S, pgenerator, PORIGIN n_unit pcpath_yield, PORIGIN n_unit pcpath_loop) = true
+  -- if $generator_parked_site(S, pgenerator, PORIGIN n_unit pcpath_yield)
+  -- if $function_at($all_functions(S), pgenerator.FUNCTION) = (pfunction)
+  -- if $effect_below(pfunction.BODY, pcpath_loop)
+  -- if $effect_below(pcpath_loop ++ [PCFIELD 4], pcpath_yield)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_loop) = (NStmtForeach expression_iterable phpType5 (BOOLEAN true) (NExprVariable phpType32 metadata_variable) phpType23 (BOOLEAN false) metadata_loop)
+  -- if $cv_name(phpType32) =/= eps
+  -- if $(|pcpath_yield| > 0)
+  -- if n_parent = $nabs($(|pcpath_yield| - 1))
+  -- if pcpath_yield[n_parent] = PCFIELD 0
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_yield[0:n_parent]) = (NStmtExpression (NExprYield phpType5_key phpType5_value metadata_yield) metadata_statement)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_yield) = (NExprYield phpType5_key phpType5_value metadata_yield)
+def $generator_foreach_reference_site(S, pgenerator, porigin_yield, porigin_loop) = false -- otherwise
+def $generator_foreach_reference_cell(S, n_cell) = true
+  -- if $(n_cell < |S.STORE|)
+  -- if (HCELL n_cell) <- S.ALLOCATIONS
+  -- if n_cell <- S.REFCELLS
+  -- if S.STORE[n_cell] = DEFINED pvalue
+def $generator_foreach_reference_cell(S, n_cell) = false -- otherwise
+
 def $generator_foreach_find(S, pgenerator, porigin_yield, ptask_foreach :: ptask_tail*) = (ptask_foreach)
   -- if ptask_foreach = FOREACH_NEXT n_iterator (HARRAY n_array) statement (porigin_loop) z
   -- if $generator_foreach_site(S, pgenerator, porigin_yield, porigin_loop)
   -- if $goto_marker_valid(S, ptask_foreach)
   -- if $iterator_lookup(S.ITERATORS, n_iterator) = (ITERATOR n_iterator n_array false pcursor*)
   -- if $(n_iterator < S.NEXTITER) /\ (HARRAY n_array) <- S.ALLOCATIONS
+def $generator_foreach_find(S, pgenerator, porigin_yield, ptask_foreach :: ptask_tail*) = (ptask_foreach)
+  -- if ptask_foreach = FOREACH_NEXT n_iterator (HCELL n_cell) statement (porigin_loop) z
+  -- if $generator_foreach_reference_site(S, pgenerator, porigin_yield, porigin_loop)
+  -- if $generator_foreach_reference_cell(S, n_cell)
+  -- if $goto_marker_valid(S, ptask_foreach)
+  -- if $iterator_lookup(S.ITERATORS, n_iterator) = (ITERATOR n_iterator n_array true pcursor*)
+  -- if $(n_iterator < S.NEXTITER) /\ $(n_array < |S.ARRAYS|)
 def $generator_foreach_find(S, pgenerator, porigin_yield, ptask_head :: ptask_tail*) = $generator_foreach_find(S, pgenerator, porigin_yield, ptask_tail*)
   -- if $task_nodes(ptask_head) = eps
 def $generator_foreach_find(S, pgenerator, porigin_yield, ptask_tail*) = eps -- otherwise
@@ -398,6 +425,13 @@ def $generator_foreach_saved(S, pgenerator, pframe) = (ptask_foreach)
   -- if $generator_foreach_find(S, pgenerator, porigin_yield, pframe.TODO) = (ptask_foreach)
   -- if ptask_foreach = FOREACH_NEXT n_iterator (HARRAY n_array) statement porigin_loop? z
   -- if $tasks_nodes(pframe.TODO) = [HARRAY n_array]
+def $generator_foreach_saved(S, pgenerator, pframe) = (ptask_foreach)
+  -- if pframe.ORIGIN = (porigin_yield)
+  -- if pframe.HELD = eps
+  -- if $generator_unused_send_tail(S, porigin_yield, pframe.TODO)
+  -- if $generator_foreach_find(S, pgenerator, porigin_yield, pframe.TODO) = (ptask_foreach)
+  -- if ptask_foreach = FOREACH_NEXT n_iterator (HCELL n_cell) statement porigin_loop? z
+  -- if $tasks_nodes(pframe.TODO) = [HCELL n_cell]
 def $generator_foreach_saved(S, pgenerator, pframe) = eps -- otherwise
 
 def $generator_foreach_drop(eps, ptask_foreach) = eps
@@ -417,6 +451,16 @@ def $generator_foreach_retained_record(S, pgeneratorloopretained) = true
   -- if $goto_foreach_line_valid(S, statement, porigin_loop, z)
   -- if $(n_iterator < S.NEXTITER) /\ $iterator_lookup(S.ITERATORS, n_iterator) = eps
   -- if $(n_array < |S.ARRAYS|) /\ (HARRAY n_array) <- S.ALLOCATIONS
+def $generator_foreach_retained_record(S, pgeneratorloopretained) = true
+  -- if $generator_object(S, pgeneratorloopretained.OBJECT)
+  -- if S.OBJECTS[pgeneratorloopretained.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_CLOSED /\ pgenerator.FRAME = eps /\ pgenerator.PARKED = eps
+  -- if pgeneratorloopretained.TASK = FOREACH_NEXT n_iterator (HCELL n_cell) statement (porigin_loop) z
+  -- if $generator_foreach_reference_site(S, pgenerator, pgeneratorloopretained.SITE, porigin_loop)
+  -- if $origin_node(S.SOURCES, porigin_loop) = (statement)
+  -- if $goto_foreach_line_valid(S, statement, porigin_loop, z)
+  -- if $(n_iterator < S.NEXTITER) /\ $iterator_lookup(S.ITERATORS, n_iterator) = eps
+  -- if $generator_foreach_reference_cell(S, n_cell)
 def $generator_foreach_retained_record(S, pgeneratorloopretained) = false -- otherwise
 def $generator_foreach_retained_seen(eps, n_object, n_iterator) = false
 def $generator_foreach_retained_seen(pgeneratorloopretained :: pgeneratorloopretained_tail*, n_object, n_iterator) = (pgeneratorloopretained.OBJECT = n_object \/ n_other = n_iterator \/ $generator_foreach_retained_seen(pgeneratorloopretained_tail*, n_object, n_iterator))

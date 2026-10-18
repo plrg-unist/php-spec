@@ -139,8 +139,12 @@ payload/Generator cleanup. The
 [joint lifecycle review](../../coverage/semantics/generator-pending-buffered-foreach-throw-review.json)
 adds one authenticated input at a simple-CV used yield in that loop. The input and
 container remain separate owners, including across COW, shared-cell rebinding and
-receiver cleanup before caller catch. Other input/loop shapes, foreach by reference
-or over objects, nested owning loops and later parked resumption remain open.
+receiver cleanup before caller catch. At a bare yield in one by-reference array
+loop, close retains the acquired wrapper itself, allowing whole-wrapper and
+escaped-item writes after close; see the
+[reference-foreach review](../../coverage/semantics/generator-pending-reference-foreach-throw-review.json).
+Other input/loop shapes, used-yield reference loops, object loops, nested owning
+loops and later parked resumption remain open.
 
 Callback admission binds the actual owner, source unit/path, stage, target, line
 and saved lexical/called scopes. Only the immediate authenticated implicit call
