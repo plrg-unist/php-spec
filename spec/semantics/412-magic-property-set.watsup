@@ -168,7 +168,7 @@ def $property_magic_set_frame(S, pcallcontext, pframe, pframe_tail*, ppropertyma
   -- if pframe.ORIGIN = (ppropertymagicset.SITE)
   -- if S_saved = $constant_frame_view(S, pframe, pframe_tail*)
   -- if $property_magic_set_valid(S_saved, ppropertymagicset)
-def $property_magic_set_frame(S, pcallcontext, pframe, pframe*, ppropertymagicset) = false -- otherwise
+def $property_magic_set_frame(S, pcallcontext, pframe, pframe_tail*, ppropertymagicset) = false -- otherwise
 
 dec $property_magic_set_entered(pstate, pcallcontext?, pframe*, ppropertymagicset) : bool
 def $property_magic_set_entered(S, (pcallcontext), pframe :: pframe_tail*, ppropertymagicset) = $property_magic_set_frame(S, pcallcontext, pframe, pframe_tail*, ppropertymagicset)
@@ -183,7 +183,7 @@ def $property_magic_set_guard_frame(S, pcallcontext, pframe, pframe_tail*, n, pt
   -- if pcallcontext.TARGET = PROPERTY_MAGIC_SET_TARGET ppropertymagicset
   -- if ppropertymagicset.OBJECT = n /\ ppropertymagicset.NAME = ptbytes
   -- if $property_magic_set_frame(S, pcallcontext, pframe, pframe_tail*, ppropertymagicset)
-def $property_magic_set_guard_frame(S, pcallcontext, pframe, pframe*, n, ptbytes) = false -- otherwise
+def $property_magic_set_guard_frame(S, pcallcontext, pframe, pframe_tail*, n, ptbytes) = false -- otherwise
 dec $property_magic_set_guard(pstate, pcallcontext?, pframe*, nat, ptbytes) : bool
 def $property_magic_set_guard(S, (pcallcontext), pframe :: pframe_tail*, n, ptbytes) = ($property_magic_set_guard_frame(S, pcallcontext, pframe, pframe_tail*, n, ptbytes) \/ $property_magic_set_guard(S, pframe.CONTEXT, pframe_tail*, n, ptbytes))
 def $property_magic_set_guard(S, eps, pframe :: pframe_tail*, n, ptbytes) = $property_magic_set_guard(S, pframe.CONTEXT, pframe_tail*, n, ptbytes)
