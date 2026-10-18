@@ -606,44 +606,34 @@ joined actor, accepted replay or renewed execution credit.
 The earlier mixed CV/selected-reference arithmetic route retains source9/state858
 in its [review ledger](coverage/semantics/mixed-arithmetic-warning-review.json).
 
-M115 preserves the first computed-C return when its destructor throws while
-two outer computed returns still own B/A. The source-local catch receives the
-same TypeError, then fallthrough resumes cleared C as NULL with one old-line16
-VALUE Notice. B/A retire normally; the caller receives a fresh NULL reference,
-detached from selected y and prior b7. A nonowning SOURCE history records the
-original false selected-return head and exact C/B/A source tasks; current/saved
-scope and live B/A identities authenticate replay. It cannot execute as TODO.
-The normal operation body, heap roots, collector and existing CV-chain rules
+M116 preserves computed-C return history when C's destructor creates and
+unsets a local D whose destructor throws. The same D TypeError reaches the
+source-local catch; cleared C resumes NULL with one old-line17 VALUE Notice,
+then B/A retire normally. The caller gets a fresh NULL reference, detached from
+selected y and prior b7. Only the finite throw-site classifier changes: C uses
+one non-this, non-superglobal local; D is a declared nonabstract class with the
+same propertyless/public/noarg direct-TypeError restrictions. The old direct
+case factors equivalently; SOURCE, saved-scope, pending/replay, roots and GC rules
 stay unchanged.
 
-One fresh native at `3c2e5056c` exposed a NORMAL wrong-ending baseline. The same
-source agrees after repair at `9aa2136d9`/405. Author 202/3 and independent
-312/9 pass there: callback/release/storage/auxiliary/selected exits, full public
-states, mirrored source/LINE/flag refusals, valid-heap owner deletions, same local
-exception, Notice/aliases and complete whole/split endings. The separate 73/2
-diagnosis keeps its original cut. An initial guessed recheck, pre-evaluation
-singleton-binding error and peer120s timeout retain zero; only affected work
-repeats. Peer passes with its unchanged fixture at 180s; author remains at 120s.
-Native/source are not replayed.
+One native observation and an unchanged wrong-ending baseline retain
+`72449a6d9`/405. A separate 100/2 diagnosis proves actual D→C→f frames and missing
+history. The repaired source and 454 Boolean/nine raw checks agree at
+`bf107b70c`/405 (author226/3, independent228/6). D has one owner before unset;
+active C/D each have receiver plus saved RESULT roots, while B/A each retain
+one owning return task. Public steps match whole
+driver states. Mirrored LINE receipts, deep owner-only deletions with valid heaps,
+and a wrong constructor origin with a live pending Throwable all refuse. Child
+UNSET and parent return exits preserve exception identity, Notice/aliases and
+exact whole/split endings.
 
-The domain is three sole-owning propertyless computed objects: public noarg A/B
-destructors echo literals, C echoes then directly throws resolved builtin
-TypeError with a literal message; output buffers are empty. M114's normal347/7
-remains separate. Its first leave installs true; recheck is conditional and absent
-for the selected own-finally sources. No B/A pair-capture claim is made. Other
-throw forms, properties/reentry, larger/mixed histories, GC and wider consumers
-remain open.
+Two fixture failures remain zero, both before state evaluation: a diagnostic
+type-prefix typo and a recursive otherwise fallback. Only those affected checks
+repeat; native, baseline, accepted source/author/diagnosis and M115 are not replayed.
+Both final state actors use strict45/state180 and are quiet/stable/reaped.
+Other destructor bodies/throw forms, deeper reentry, properties, larger/mixed
+histories, GC and wider consumers remain open.
 [Owning-return review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
-
-Composed over `0df235208`/405 after independent actual-tail review. Static builtin
-NEW TypeError produces no dynamic-NEW selector task; the source has no INI/DEFINE,
-array-debt, Generator or eligible arithmetic/comparison Warning producer.
-LITERALREFDEBTS stays empty. Module30 preserves incoming DYNAMIC_NEW_START and
-adds only the nonexecuting history tag;156/270 keep exact tested9aa bytes. Every
-other runtime file and the ordered405 manifest stay parent-exact. Native1/source1,
-diagnosis73/2 and state514/12 retain their distinct private cuts without replay.
-
-
 
 Retained propertyless Stringable `define` names now accept captured boolean true
 with primitive candidates and non-NUL global/class-like results. One module400
@@ -10972,9 +10962,11 @@ fresh control/treatment source agreements and separate463/8 state checks. M114
 validates one normal three-computed-owner chain with source1 and 347/7 at f305,
 including saved callers and source-region owner refusals, without a runtime fix.
 M115 adds first-C direct-TypeError history/replay with B/A still owning, source1
-and 514/12 at9aa, same local catch and cleared-C NULL/Notice16 recovery. Other
-interposed/pending histories, reentrant or larger/mixed owners, GC and wider typed
-consumers remain open core obligations for permanent lifecycle/control work.
+and 514/12 at9aa, same local catch and cleared-C NULL/Notice16 recovery. M116
+adds one nested C→D destructor path with source1 and454/9 atbf107, genuine deep
+saved scopes, live outer owners and the same D Throwable/NULL/Notice17 result.
+Other interposed/pending histories, deeper reentry or larger/mixed owners, GC and
+wider typed consumers remain open core obligations for permanent lifecycle/control work.
 Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is
 bounded physical-array owner recovery. Bounded single-active-finalizer CV replay and deferred VALUE/NULL Notice dispatch are
 integrated, as are bounded aliased-CV Stringable reference conversion 186 and sole-local-CV

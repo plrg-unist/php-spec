@@ -4246,7 +4246,11 @@ and selected-reference aliases. This requires no runtime change. A direct
 TypeError from the first computed object's destructor now preserves its local
 catch while the other two returns still own their objects. One fresh comparison
 and 514/12 checks at `9aa2136d9` prove cleared-NULL recovery, one Notice and detached
-caller aliases. Other throw forms, reentry, GC and broader consumers remain open.
+caller aliases. One nested destructor now follows the same path: C creates
+and releases D, whose TypeError reaches that local catch. A fresh comparison and
+454/9 checks at `bf107b70c` prove nested saved scopes, remaining owners and detached
+NULL recovery. Other bodies/throw forms, deeper reentry, GC and broader consumers
+remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;
