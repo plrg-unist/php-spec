@@ -1,7 +1,7 @@
 {
   "version": 1,
   "milestone": "A15 writable destructuring source initialization before lossy-key callbacks",
-  "status": "independently reviewed and validated; actual-parent composition pending",
+  "status": "independently reviewed and validated; pointwise actual-parent composition",
   "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle and tests/semantics/profile.json",
   "base": "411c20015afecdc4a70884c29dbd6b4af9b060a9",
   "scope": "Flat reference-bearing direct-CV RHS patterns with CV leaves and a selected by-reference fetch using an ordinary defined fitting lossy-float CV key. Reached NULL or reference-wrapped false initializes before the callback; an initially undefined source CV first acquires referenceNULL silently. The plan does not admit an UNDEFINED slot. Nested/literal roots and wider constrained sources remain separate.",
@@ -91,12 +91,13 @@
     "recovery": "Seven original relative .tools report/fixture/process/source roots plus list-float-write-autovivify-reuse-sources-15.py are preserved, including the original failed undefined row. Extract beneath a checkout of the recorded cut; absolute argv/cwd are historical provenance. The archive is not a build dependency."
   },
   "actual_parent_review": {
-    "parent": "4010faf05d90eeda74a51a00601ccc1ea547f744",
-    "seams": "Incoming30/280/289/303 add parked Generator foreach retention, with an initially empty registry in40, extra roots in39 and validity in84, plus explicit-collection guards in301. A15 has no Generator/yield/foreach, so the registry stays empty, new roots are empty and new validity is true. Incoming400 adds define array-name TypeError guards; no such call occurs. No37/62/63/410 or actual list/key preparation helper changed.",
+    "parent": "46e6bf7cf080e0e4ea9cadc12c1c88f83e2774f4",
+    "seams": "Incoming30/280/289/303 add parked Generator foreach retention, with an initially empty registry in40, extra roots in39 and validity in84, plus explicit-collection guards in301. A15 has no Generator/yield/foreach, so the registry stays empty, new roots are empty and new validity is true. Incoming400 adds define array-name TypeError guards; no such call occurs. No37/62/63/410 or actual list/key preparation helper changed. Final4010-to-46e tail changes253 fake Closure binding scope string-carrier matches,30/404 tagged compound string-precision continuations,400 certified-instance define values and408 WeakMap magic-empty RV. A15 uses none of these selectors; no list/key/preparation or ownership helper changed.",
     "joined_actor": "No concrete semantic interaction found; pointwise composition and exact FF review add no replay credit."
   },
   "remaining": [
     "Nested/literal lossy-key conversion; wider constrained sources/RHS/targets; other source diagnostics, range/nonfinite conversion, undefined/null-key diagnostics and computed current keys.",
     "Paused owned-NUL/current-CV NUL behavior, wider callbacks/lifecycle, full array/core closure and offline portability."
-  ]
+  ],
+  "composition": {"parent": "46e6bf7cf080e0e4ea9cadc12c1c88f83e2774f4", "runtime_files": ["spec/semantics/410-list-key-conversion-warnings.watsup"], "runtime_diff_sha256": "b903f6e76e166bcec010cbdffd948ce0a985045d5cfd2d2834aff2f417218e7e", "preserved": "All other incoming runtime and 401 unique modules stay exact; tested new six files and two affected A14 scalar controls stay exact5c1. Four partial inventory rows append only; unrelated checkpoints remain exact parent. No joined actor or renewed execution credit."}
 }

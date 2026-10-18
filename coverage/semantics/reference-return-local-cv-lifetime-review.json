@@ -2331,5 +2331,39 @@
     "native": {"raw": ".tools/returns-assignment-value-75/.tools/returns-verify96-fiber-destructor-suspend/native-fiber-destructor-suspend-6hfwveya/report.json", "report_sha256": "f6e53d07599fc97f9de1d99515f142eb0612ae6234182715889bbd68877eb540", "result": "At clean 7e275/401, PHP exits0 with START;F;I;D0;P:1;Q:1;D1;I;CT:1;A;S, rNULL/b7/ybad, T:1/END and no Notice. The token and status show a real suspension between D0 and D1."},
     "source": {"raw": ".tools/returns-assignment-value-75/.tools/returns-verify96-fiber-destructor-suspend/model-fiber-destructor-suspend-baseline-wh0luiy_/report.json", "report_sha256": "f614b91e0418133581ebc130bf052de4bf0b313b52965e1e8626d17a5092ef18", "result": "Unchanged model collection completes NORMAL with one exact original stdout/stderr/exit agreement, quiet closed workers and stable pins/401 module stats. No runtime rules changed and no additional strict or focused state actor was run; no new runtime, state or repair credit."},
     "limits": "The observation covers one named callback, one scalar suspension inside a destructor, normal public resume and later locally caught destructor TypeError. Exact output agreement alone does not establish all parked return owners, forged-descriptor refusal, reentry, force-close, or general suspended verification. Historical M93 and Fiber evidence was not replayed; broader returns_verify remains open."
+  },
+  "fiber_suspended_stringable_reference_control": {
+    "status": "reviewed_validation_only_original_source_agreement",
+    "revision": "411c20015afecdc4a70884c29dbd6b4af9b060a9",
+    "modules": 401,
+    "scope": "A named Fiber callback calls a used weak &f():string return from a global CV containing one Stringable object. Its __toString suspends; main changes that CV before resuming. The conversion then returns a literal, the simple f finalizer runs, and the callback writes through the returned reference. This validates one actual paused return-verification history on unchanged semantics; it changes no runtime rule.",
+    "native": {
+      "raw": ".tools/returns-assignment-value-75/.tools/returns-verify97-fiber-stringable-return/native-fiber-stringable-return-s1fgxel8/report.json",
+      "report_sha256": "ca6095cba7b3f3bf13643ebd440ef2a364c00bc7e15022f4b74debd165829a92",
+      "result": "At clean 411c/401, PHP exits0 with B;T0;P:1;Q:1;M:1;T1;F;R:1;V:1;C:0;W:1;Z;T:1;END; and no Notice. The token/status and M:1 before T1 show a real suspension and source-CV mutation; R:1/V:1/W:1 show conversion and returned-reference writeback."
+    },
+    "source": {
+      "raw": ".tools/returns-assignment-value-75/.tools/returns-verify97-fiber-stringable-return/model-fiber-stringable-return-baseline-j5qa4qxx/report.json",
+      "report_sha256": "748f88911b4e59aad6a5194835894f2f30429f521e59421a0f7a428890bf6116",
+      "result": "Unchanged model collection completes NORMAL with one exact original stdout/stderr/exit agreement, quiet closed workers and stable pins/401 module stats. No runtime rules changed and no additional strict or focused state actor was run; no new runtime, state or repair credit."
+    },
+    "limits": "The observation covers one weak string declaration, one Stringable conversion, one named callback, one main-CV mutation during suspension, normal resume and returned-reference writeback. Exact output agreement alone does not establish parked cell identity, forged-descriptor refusal, abrupt injected exceptions, force-close or wider paused verification. Historical M50/M93/M96 and Fiber evidence was not replayed; broader returns_verify remains open."
+  },
+  "fiber_injected_stringable_reference_control": {
+    "status": "reviewed_validation_only_original_source_agreement",
+    "revision": "6f6ee0bab5e8fefb9898b845db69b2e1b1290dad",
+    "modules": 401,
+    "scope": "A named Fiber callback calls a used weak &f():string return from a global CV holding one Stringable object. Its __toString suspends under a small finally; main injects one retained TypeError with Fiber::throw. The callback observes the caught object's identity and type, the prior r/b7 values and the original source object. This validates one abrupt paused verification history on unchanged semantics; it changes no runtime rule.",
+    "native": {
+      "raw": ".tools/returns-assignment-value-75/.tools/returns-verify98-fiber-stringable-throw/native-fiber-stringable-throw-ezd_p9ju/report.json",
+      "report_sha256": "6ff570ef23ced7a014aad23766252b95091a56f0053e0332e44bc6159af053fe",
+      "result": "At clean 6f6ee/401, PHP exits0 with B;T0;P:1;Q:1;TF;F;C:0:1;R7:1;B7:1;V:1;Z;TH;T:1;END; and no Notice. C:0:1 shows a TypeError distinct from the injected object; its message and producer were not observed. TF precedes F, the prior r/b7 and Stringable source remain, and the Fiber terminates."
+    },
+    "source": {
+      "raw": ".tools/returns-assignment-value-75/.tools/returns-verify98-fiber-stringable-throw/model-fiber-stringable-throw-baseline-s0q46ula/report.json",
+      "report_sha256": "465e9fe092d132dd4779c8699098b3d353867392d19a2087453ab962df1333e8",
+      "result": "Unchanged model collection completes NORMAL with one exact original stdout/stderr/exit agreement, quiet closed workers and stable pins/401 module stats. No runtime rules changed and no additional strict or focused state actor was run; no new runtime, state or repair credit."
+    },
+    "limits": "The observation covers one weak string declaration, one Stringable conversion, one retained injected TypeError and normal Fiber::throw completion. The callback's type and identity checks do not identify the distinct caught TypeError's message, origin or cause, or establish all parked owners and forged-descriptor refusal. No main-CV mutation, force-close or broader suspended-return case is covered. Historical M97 and Fiber evidence was not replayed; broader returns_verify remains open."
   }
 }

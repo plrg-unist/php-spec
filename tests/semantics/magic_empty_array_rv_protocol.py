@@ -174,7 +174,7 @@ S_retired = S[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS,HARRAY n_rv)
 $property_empty_truth(S_retired,PARRAY n_rv) = eps /\ ~$property_empty_rv_ready(S_retired,ppropertyempty)
 PhpStep: S_retired ~> S_retired_done
 S_retired_done.COMPLETION = UNSUPPORTED "magic empty getter result type" /\ S_retired_done.EVENTS = S.EVENTS
-S_internal = S[.OBJECTS[n_payload] = WEAKMAP eps][.RESULT = KNOWN (POBJECT n_payload)][.HELD = S.HELD ++ [HARRAY n_rv]]
+S_internal = S[.OBJECTS[n_payload] = WEAKREFERENCE eps][.RESULT = KNOWN (POBJECT n_payload)][.HELD = S.HELD ++ [HARRAY n_rv]]
 $property_empty_truth(S_internal,POBJECT n_payload) = eps /\ ~$property_empty_rv_ready(S_internal,ppropertyempty)
 PhpStep: S_internal ~> S_internal_done
 S_internal_done.COMPLETION = UNSUPPORTED "magic empty getter result type" /\ S_internal_done.EVENTS = S.EVENTS

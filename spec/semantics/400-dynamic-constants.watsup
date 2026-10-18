@@ -55,6 +55,9 @@ def $dynamic_constant_class(pvalue) = eps -- otherwise
 dec $dynamic_define_value_class(pstate, pvalue) : pvalueclass?
 def $dynamic_define_value_class(S, pvalue) = (pvalueclass)
   -- if $dynamic_constant_class(pvalue) = (pvalueclass)
+def $dynamic_define_value_class(S, POBJECT n_object) = (PVINSTANCE n_object pconstantobject.SITE)
+  -- if $global_new_record(S.CONSTANTOBJECTS, n_object) = (pconstantobject)
+  -- if $constant_value_class_valid(S, POBJECT n_object, PVINSTANCE n_object pconstantobject.SITE)
 def $dynamic_define_value_class(S, POBJECT n_object) = (PVSTDCLASS n_object pconstantstdobject.SITE)
   -- if $global_std_record(S.CONSTANTSTDOBJECTS, n_object) = (pconstantstdobject)
   -- if $constant_value_class_valid(S, POBJECT n_object, PVSTDCLASS n_object pconstantstdobject.SITE)
@@ -226,7 +229,30 @@ def $dynamic_query_array_valid(S, pconfigcall) = true
   -- if $dynamic_query_array_entries(S, S.ARRAYS[n_array].ITEMS)
 def $dynamic_query_array_valid(S, pconfigcall) = false -- otherwise
 
+;; The first string parameter rejects arrays before optional bool reception.
+dec $dynamic_define_array_name_call(pconfigcall) : bool
+def $dynamic_define_array_name_call(pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_DEFINE
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps /\ ~pconfigcall.NAMED
+  -- if pconfigcall.SENT = (NAMED_SENT (KNOWN (PARRAY n_array))) :: pnamedslot*
+  -- if $(|pnamedslot*| = 1 \/ |pnamedslot*| = 2)
+def $dynamic_define_array_name_call(pconfigcall) = false -- otherwise
+dec $dynamic_define_array_name_valid(pstate, pconfigcall) : bool
+def $dynamic_define_array_name_valid(S, pconfigcall) = true
+  -- if $dynamic_define_array_name_call(pconfigcall) /\ $config_invoke_valid(S, pconfigcall)
+  -- if $dynamic_define_source(S, pconfigcall.SITE)
+  -- if pconfigcall.SENT = (NAMED_SENT (KNOWN (PARRAY n_array))) :: pnamedslot*
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression, false, eps, porigin_argument, z_argument))
+  -- if $dynamic_array_known_matches(S, PARRAY n_array, $compiled_read(S, porigin_argument))
+  -- if $dynamic_query_array_entries(S, S.ARRAYS[n_array].ITEMS)
+  -- if $dynamic_scalar_define_arguments(S, pconfigcall, 1)
+  -- if $dynamic_query_arity_arguments(S, pnamedslot*)
+def $dynamic_define_array_name_valid(S, pconfigcall) = false -- otherwise
+
 dec $dynamic_constant_receive(pstate, pconfigcall) : pstate
+def $dynamic_constant_receive(S, pconfigcall) = $config_error(S[.TODO = ptask_tail*], pconfigcall, "TypeError", $ptascii("define(): Argument #1 ($constant_name) must be of type string, array given"))
+  -- if $dynamic_define_array_name_valid(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
 def $dynamic_constant_receive(S, pconfigcall) = $config_error(S[.TODO = ptask_tail*], pconfigcall, "TypeError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Argument #1 ($") ++ $config_parameter_name(pconfigcall.KIND, 0) ++ $ptascii(") must be of type string, array given"))
   -- if $dynamic_query_array_valid(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
@@ -240,6 +266,7 @@ def $dynamic_constant_receive(S, pconfigcall) = $dynamic_define_finish(S, pconfi
   -- if pconfigcall.KIND = INTRINSIC_DEFINE
   -- if ~$dynamic_constant_case_flag(pconfigcall)
   -- if ~$dynamic_define_arity_call(pconfigcall)
+  -- if ~$dynamic_define_array_name_call(pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
 def $dynamic_constant_receive(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL $dynamic_constant_exists(S, preqbytes))][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pconfigcall.KIND = INTRINSIC_DEFINED

@@ -1,0 +1,143 @@
+{
+  "version": 1,
+  "milestone": "OP41 protected fractional numeric-string diagnostics in compound operators",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP8.5.10 CLI NTS64; project-local pinned engine/profile",
+  "scope": "The unchanged initially both-fractional distinct plain-CV routes for %=, <<=, >>=, &=, |=, ^= now capture a numeric-string RHS after the first LEFT callback when string_long returns exactly STRINGPRECISIONLOSS or LEADINGNUMBER followed by STRINGPRECISIONLOSS. Complete text issues precision Deprecated; leading text issues Warning then protected precision Deprecated. The historical LEFT integer, saved original RHS string and converted integer survive callback writes, reference rebinding or unset after capture. Success detaches late aliases; negative shift/modulo zero or supplied callback throws cancel the store while retaining callback effects. Original RHS must be live allocated plain/nonreference and target safe at capture; final storage/error requires the safe original target.",
+  "runtime_revision": "d9544b4a04cab0ae2c54da7eff1b8e5e65c7c7f8",
+  "helper_revision": "3ce33d2485209cfd97ca6128c9e304d65253a416",
+  "private_modules": 401,
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "635d5c0fa98e602f4ea9de701e48bf99941ed6f8e544b603cb4a55ddbc97ca13",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "e170e5ddf244259308474bd009b6a9b752a7fd24e0157a03b27f43c7e0c262b9"
+  },
+  "engine_basis": [
+    "Pinned Zend/zend_operators.c zendi_try_get_long parses and caches dval before any RHS leading-number Warning. For floating text it copies op_str before that Warning, and complete text is copied before the string-precision diagnostic. Both subsequent message and long derive from protected original text/dval, never current RHS. A supplied exception cancels conversion and the compound store.",
+    "Pinned Zend/zend_operators.h zend_dval_to_lval_cap is silent: nonfinite converts to0, finite overflow saturates and fitting values truncate. zend_is_long_compatible compares the double roundtrip. The old c comment saying cap can warn is stale in this pin. Existing pure string_long/integer_conversion therefore computes the same saved number and exact notice list before callbacks; no numerical helper is changed and no fitting-only claim is made.",
+    "One new nonowning task carries the existing integer conversion and next-notice cursor. Cursor0 authenticates the current original RHS cell; later cursors preserve coherent conversion/history without live RHS lookup. Fresh first RHS EHI reauthenticates cursor0, later precision EHI checks saved notice/message/cursor/site/RHS line only. Existing initial/source/LEFT phase validators and final CV writer/integer_binary remain unchanged. Three old first-boundary exclusions admit only this exact notice domain."
+  ],
+  "contract": [
+    "Author nine original sources cover all six tags with complete, leading, exponent and real nonempty request-carrier text. Cached LEFT12 and RHS5 or2 produce2/384/3/4/13/9 despite later LEFT101 and RHS7/10/1; all wrong cache combinations differ. Supplied throws at complete precision, leading Warning and leading precision preserve the same global Exception20/null Previous/destination100 and later alias write-through.",
+    "Independent complete -1.5 XOR defaults precision at25 after binding RHS by reference to target88: result-13 detaches target owners3 to2 and later alias6 still reaches RHS. Leading -1.5tail right shift unsets RHS during Warning then receives the original precision message; ArithmeticError25 occurs without store/detachment. Leading0.5tail modulo keeps live7 yet cached0 raises DivisionByZeroError25. Both latter targets retain callback77 until later alias write-through7; modulo defaults Warning then precision Deprecated in exact order.",
+    "Focused states select author carrier normal, complete left normal and leading Warning throw plus the three peers. Genuine initialized machines reach actual new cursor/EHI/entered frames, preserving original string identity and immutable metadata. First fresh EHI rejects coordinated saved-string/cache/message forgery; later history controls test coherence/cursor/source/line rather than rereading changed RHS or historical LEFT. Atomic commit/error preserves exact STRINGDATA/events, stores append a new CELL/LOCATION and detach late aliases, errors keep exact STORE/ENV/REFCELLS and sole thrown owner, supplied throw preserves exact global identity and destination. Whole execution and resumed budgets agree. String metadata adds no HSTRING owner."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-41/source-d9544b4a0-author-nine/report.json",
+        "sha256": "0604460f7dd059d8fd82d75869d9b3aab29aa88c130c48cfdeab5980a75a0221",
+        "revision": "d9544b4a04cab0ae2c54da7eff1b8e5e65c7c7f8",
+        "cases": [
+          "precision-string-mod-carrier",
+          "precision-string-left-complete",
+          "precision-string-right-leading",
+          "precision-string-and-complete",
+          "precision-string-or-exponent",
+          "precision-string-xor-complete",
+          "precision-string-complete-throw",
+          "precision-string-leading-warning-throw",
+          "precision-string-leading-precision-throw"
+        ],
+        "agreements": 9
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-41/review-model-d9544b4a0-three/report.json",
+        "sha256": "a5831bd2e0742ec3583f375a99d288c252efc954b63b7b8dbb1d8e17a8a0a167",
+        "revision": "d9544b4a04cab0ae2c54da7eff1b8e5e65c7c7f8",
+        "cases": [
+          "precision-string-xor-complete-reference-default",
+          "precision-string-shift-leading-unset-default",
+          "precision-string-mod-leading-zero-default"
+        ],
+        "agreements": 3
+      }
+    ],
+    "state": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-41/state-3ce33d248-six/report.json",
+        "sha256": "c181a1382f9b4418f64ce0893000968d9e1d6794dd44fdc188e2ef2edb219f01",
+        "revision": "3ce33d2485209cfd97ca6128c9e304d65253a416",
+        "modules": 401,
+        "cases": [
+          "precision-string-mod-carrier",
+          "precision-string-left-complete",
+          "precision-string-leading-warning-throw",
+          "precision-string-xor-complete-reference-default",
+          "precision-string-shift-leading-unset-default",
+          "precision-string-mod-leading-zero-default"
+        ],
+        "conditions": [
+          204,
+          160,
+          130,
+          160,
+          216,
+          219
+        ],
+        "total": 1089
+      }
+    ],
+    "total_source_agreements": 12,
+    "total_focused_state_conditions": 1089,
+    "compatibility": "Runtime/source bytes remain exact through the two new helper commits. Focused three author and three peer cases reuse the accepted twelve-source original paths/native bytes without application/native/source replay."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-41/baseline-00d792a13-mod-carrier/report.json",
+      "sha256": "1547fa0d8097afaf9bee58ee052ecdce194fa9438de1e86ccb755f4bc4b01580",
+      "result": "Accepted checked Unsupported after exact H:1:8192:25:1; modulo after-first boundary; exit1/empty stderr/0 credit, no override."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-41/native-00d792a13-author-nine/report.json",
+        "sha256": "c100521f5d66c9d481992d7617a614c0afff0cb13a27d8e21902bd61d03997f0"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-41/native-00d792a13-review-three/report.json",
+        "sha256": "42613ceb3edc30fa68d7d28a38899bf9521c3db2ca23f6601b5b4dfd656f904d"
+      }
+    ],
+    "source_declaration_failure": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-41/source-f51ac44f0-author-nine/report.json",
+      "sha256": "011596252c7cd48558e60a70a0e9ee9bcc8f50331477af4a9e9738ff1036249f",
+      "result": "First model invocation failed before PHP evaluation because the new snapshot declaration followed its first boundary use. No source agreement; other11 unrun. Sole declaration move at d954 preserves helper bodies/contracts. Native/baseline retained without replay."
+    },
+    "checked_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-41/state-prep-3ce33d248-six/report.json",
+        "sha256": "73ab20636644d253cabc667098755d21f39bf64dcbfb76c6743276ef01581ec9",
+        "result": "Checked parse/adapter only, retained original paths/native bytes; zero application/native/numeric replay; workers exit0/reaped."
+      }
+    ],
+    "standalone_syntax": "Six standalone undefined-pstate diagnostics carry zero semantic credit."
+  },
+  "required_follow_on": [
+    "Initial forms outside these BOTH-fractional plain-CV routes, other conversion notice shapes, pre-snapshot RHS references/rebinding/expiry, owning or missing/rebound/expired/constrained targets and wider callbacks/exit/lifecycle behavior remain partial. Coherent historical caches are not reauthenticated against operands after their callbacks.",
+    "All15 affected inventory rows remain partial. OP39/40 and earlier cuts receive zero renewed credit; OP12 remains paused."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-41",
+    "environment": "LC_ALL=C,TZ=UTC,no PHP_SPEC_SCRIPT_ENCODING. Native/baseline and affected source CPU4; focused prep/SL CPU3. Native30/modelCLI60-process90; checked workers30 and full401 immutable SL120 per group, syntax separately0. Accept exact true newline/empty stderr/exits0/no interruption/reaped groups/PIDs.",
+    "commands": [
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 tests/semantics/precision_strings.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 tests/semantics/precision_string_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-41/state-prep-3ce33d248-six/run-prepare.py",
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-41/state-3ce33d248-six/run-state.py"
+    ],
+    "record": "Restore matching Git cuts/local tools and fresh output roots; archive retains original paths/bytes/raw streams, checked fixtures, commands/exits/reaping. Copied local tools are not a new rebuild/portability claim. External archives are not runtime dependencies.",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "composition": {
+    "parent": "4010faf05d90eeda74a51a00601ccc1ea547f744",
+    "private_publication": "7491efe89756d36eb68b01a75ae48df526175288",
+    "modules": 401,
+    "runtime_sha256": {
+      "spec/semantics/30-storage.watsup": "37cdbbce491d14a1319a3a1d41268c2b5edd977648a63a141bf9c3e4a0473883",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "e170e5ddf244259308474bd009b6a9b752a7fd24e0157a03b27f43c7e0c262b9"
+    },
+    "other_incoming_paths_preserved": 65,
+    "gate": "No joined actor:404 and six tests retain exact private bytes; shared30 retains all parent fields/tags plus the sole new precision-string task, and every other spec byte/401 manifest is parent-exact. Fourteen incoming runtime paths require typed CV/byref return cursors, LIST_FETCH reference destructuring, Closure API objects/WeakMap comparisons, magic property-empty RVs, constant/defined/define CONFIG calls, or parked Generator foreach/pending-throw/GC/close history. None occur in these twelve originals: h is untyped with literal returns, objects are builtin Throwables, isset(right) is an ordinary CV test, and there is no Generator/yield/foreach or explicit collection. Iterator23 GENERATORLOOPRETAINED initializes eps, retained_nodes(eps)=eps and retained_valid(S,eps)=true; only actual parked Generator close appends a retained task. It adds no owner or descriptor difference here. Shared404/04/35/54/55/parser/carrier/handler semantics and non-Generator ownership/control remain unchanged. Source12@d9544b4a0 and state1089@3ce33d248 retain private401 cuts and initial pre-evaluation declaration failure0 without replay or renewed credit."
+  }
+}

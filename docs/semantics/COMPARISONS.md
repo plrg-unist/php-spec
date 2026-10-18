@@ -141,9 +141,11 @@ and declared scans stop before real later casters. Explicit API postcalls prove
 CURRENT observes the executing real caller and errors outside, while BIND selects
 the new receiver/body. The original literal binding-scope carrier source returned
 interpreter_failure and stays zero; its sole ::class argument correction retains
-the nested witness without API repair. That carrier dependency and COMP71 stored-string
-capture conversion remain distinct; other special forms and wider lifetimes stay
-partial. Eight raw steps are comparisons, not invocation or binding transitions.
+the nested witness without API repair at that cut.
+[COMP81](../../coverage/semantics/closure-binding-scope-carrier-review.json) later
+extends binding-scope reception; COMP71 stored-string capture conversion remains
+separate. Other special forms and wider lifetimes stay partial. Eight raw steps
+are comparisons, not invocation or binding transitions.
 
 [Getter/factory WeakMap mismatches](../../coverage/semantics/weakmap-getter-factory-comparison-review.json)
 also admit normalized GETTERCLOSURE and FROMCALLABLEFACTORY through the same live

@@ -1,0 +1,130 @@
+{
+  "scope": "Terminal inherited external CV/literal private empty with public nonref bool __isset and untyped nonref __get: empty or singleton WeakMap RV truth/disposal, live stdClass leaf key, ordinary INSTANCE leaf value and a real held-map owner.",
+  "implementation": {
+    "base": "2c767696621aed5b5a75f405dd8a195e438f89e4",
+    "revision": "9af66505885a921fe0fdeac63ad8cf25b041ae0d",
+    "modules": 401,
+    "change": "408 adds only WEAKMAP optional-entry RV-kind admission. Existing receiver-only phase, pure truth, guards/roots/discard, storage/unregister/WeakReference and generic GC/destruction remain unchanged. Four active WEAKMAP-negative controls are superseded by WEAKREFERENCE exclusions, without earlier-suite replay."
+  },
+  "engine": {
+    "target": "PHP8.5.10 CLI NTS64",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_object_handlers.c zend_std_has_property: getter truth then RV dtor under IN_ISSET, clear guard and release receiver",
+      "Zend/zend_weakrefs.c zend_weakmap_handlers copies standard cast_object; zend_weakmap_free_obj unregisters entries before value destruction/std_dtor",
+      "Zend/zend_operators.h i_zend_is_true object truth uses cast handler, not WeakMap entry count"
+    ],
+    "intentional_divergences": []
+  },
+  "sources": {
+    "catalogue": "tests/semantics/magic_empty_weakmap_rv_cases.json",
+    "original_root": "/home/user/workspace/php-spec/.tools/magic-empty-weakmap-rv-private-95/.tools/magic-empty-weakmap-rv-probes-95",
+    "maintained_byte_identical": true,
+    "cases": "Empty Map false-empty result; singleton value destructor drops key, observes weak get() null, then nulls caller CV; real held Map delays disposal until after F; value destructor may throw. Wrapper exists before insertion and no value/key backedges are introduced."
+  },
+  "validation": {
+    "native": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-weakmap-rv-private-95/.tools/magic-empty-weakmap-rv-probes-95/native-first/report.json",
+      "sha256": "b7b0e27803bbae40f0d74b585415b46fcfe257688dba6320cca5a4c3b8087eb2",
+      "result": "Exact Z14/N18/H18/X18 stdout bytes, zero stderr/exits",
+      "revision": "2c767696621aed5b5a75f405dd8a195e438f89e4",
+      "source_agreements": 0
+    },
+    "baseline": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-weakmap-rv-private-95/.tools/magic-empty-weakmap-rv-probes-95/accepted-current-baseline/report.json",
+      "sha256": "3fe353aa3f2711b13a41b27737223d84aab939e2f3509e95e556f7467c431a7e",
+      "result": "Four genuine checked magic empty getter result type Unsupported/CLI1; zero agreement",
+      "revision": "2c767696621aed5b5a75f405dd8a195e438f89e4",
+      "source_agreements": 0
+    },
+    "changed_source": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-weakmap-rv-private-95/.tools/magic-empty-weakmap-rv-probes-95/changed-model-9l80g2qw/report.json",
+      "sha256": "6da80c634919da1e3702df7084ae387bfffbebe1b7172daca5491639ad116b72",
+      "result": "Four checked normal exact native tuples;12.035/18.658/18.733/19.812s",
+      "revision": "9af66505885a921fe0fdeac63ad8cf25b041ae0d",
+      "source_agreements": 4
+    },
+    "focused": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-weakmap-rv-private-95/.tools/magic-empty-weakmap-rv-protocol-7cfj6_ua/report.json",
+      "sha256": "48a39a565759e5f79613891d30b952fc2f63c41f0ec188ebaf1f1ec4f379af74",
+      "result": "Normal117/held104/throw112 each true;333=315 reached+18 derived. AL7.238/7.051/7.144s; strictSL29.541/27.173/29.149s",
+      "revision": "a81a0e78a88f0f2804310485eeb2965e97dd0560",
+      "source_agreements": 0
+    }
+  },
+  "focused_scope": "Actual five object identities and source owners; entry detached before value callback, empty allocated Map pin owner1; key retired and live wrapper logical get()==PNULL while raw target history persists; Isset active/Get inactive, callerCV null with saved receiver1; sole Map/value/key retire before receiver release; held Map delivers F first then receiver D nests before value callback ends; same Exception at CATCH_BIND and full budget equality. Derived live-wrapper refusal retains displaced Map in HELD; empty-map bridge retains displaced value and finishes false.",
+  "nonpassing": [
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-weakmap-rv-private-95/.tools/magic-empty-weakmap-rv-protocol-2d1_x_bb/report.json",
+      "sha256": "8b102599ad382675a87cb2e210c9bdeb72b4bfcc948559125b75532c495147de",
+      "result": "Original78e8 overallfalse: normal117 evaluatedfalse; held/throw unrun. One incorrect raw WEAKREFERENCEeps expectation, then one-line fixture-only correction.",
+      "passing_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-weakmap-rv-private-95/.tools/magic-empty-weakmap-rv-probes-95/diagnostic-95-a489oqpu/report.json",
+      "sha256": "6efcbe6c11e32d8346988050ff6287e29d410ca6c53041a98fbf54e870105195",
+      "result": "One strictSL prefix vector [true,false,false,false,false] isolated VALUE/key block38\u201359",
+      "passing_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-weakmap-rv-private-95/.tools/magic-empty-weakmap-rv-probes-95/diagnostic-value-95-rbb2yehu/report.json",
+      "sha256": "f191a3b0249a8e6e9182f06a46a456f02d626d9c5f01f91d2a4208d930efcbd8",
+      "result": "One single-pass strictSL30 flags: only raw-wrapper-clear false, all pin/current/owners/guards true.296 retains nonowning target ID; logical get is null after retirement.",
+      "passing_credit": 0
+    }
+  ],
+  "execution": {
+    "cwd": "/home/user/workspace/php-spec/.tools/magic-empty-weakmap-rv-private-95",
+    "environment": "LC_ALL=C TZ=UTC PHP_SPEC_SCRIPT_ENCODING absent, jobs1; catalogue/profile settings, cachefalse/dettrue. Native/baseline CPU4, source CPU3, focused CPU2; diagnostic CPUs3/4.",
+    "caps": "Per-case native45; model60/outer75/steps100000. Focused serial AL90 then strictSL90, stop-first. Diagnostics oneSL90 each, source/passingcredit0.",
+    "commands": [
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 4 python3 -u .tools/magic-empty-weakmap-rv-probes-95/run.py native --revision 2c767696621aed5b5a75f405dd8a195e438f89e4",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 4 python3 -u .tools/magic-empty-weakmap-rv-probes-95/run.py baseline --revision 2c767696621aed5b5a75f405dd8a195e438f89e4",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 3 python3 -u .tools/magic-empty-weakmap-rv-probes-95/run.py changed --revision 9af66505885a921fe0fdeac63ad8cf25b041ae0d",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 2 python3 -u tests/semantics/magic_empty_weakmap_rv_protocol.py --revision a81a0e78a88f0f2804310485eeb2965e97dd0560"
+    ],
+    "affinity": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-weakmap-rv-private-95/.tools/magic-empty-weakmap-rv-probes-95/affinity-native-first.json",
+        "sha256": "38e2d7402eff0cf993b853706aa6534ba8a62db5e4e40769f78e22f54c032cb5",
+        "result": "Partial2/4: empty fullCPU4argv, normalCPU4mask/emptyargv; held/throw missed. Incomplete observer stopped/reaped, no sampling replay."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-weakmap-rv-private-95/.tools/magic-empty-weakmap-rv-probes-95/affinity-accepted-current-baseline.json",
+        "sha256": "c901e1a19b03e33b556abeb82597cc7776996649209383e236bb9485656ecdcb",
+        "result": "Complete4CPU4/fullargv"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-weakmap-rv-private-95/.tools/magic-empty-weakmap-rv-probes-95/affinity-changed-source-95.json",
+        "sha256": "fba84ef0133082e6184b44231e7b2f475197c3e00caa107216b70f2cea08e52b",
+        "result": "Complete4CPU3/fullargv"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-weakmap-rv-private-95/.tools/magic-empty-weakmap-rv-probes-95/affinity-state-95-repair1.json",
+        "sha256": "4651abb0b8fc5ac42389f094eecf1f986972985ca9019ad9090b2f45669beee5",
+        "result": "Complete6CPU2/fullargv"
+      }
+    ],
+    "stability": "All accepted watched inputs/head/status/fixtures stable, process groups empty and actors/observers reaped. Diagnostic reports preserve raw output and argv; their vectors carry no passing credit."
+  },
+  "tools": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "private_source_driver_sha256": "327d77f5542d63c8dee77d574b7978e12e554f80e05154afaf9d7eb37d8780a9",
+    "focused_driver_sha256": "23ce57d1bf762f2b7f3073c83efc5a071973ea8c4e93eeaaeee02e5db2338e78"
+  },
+  "limits": "Existing same-owner/public/nonref signatures and external-CV/literal scope remain bounded. No key-notification/ephemeron collection expansion, Map resurrection, wider key/value graphs or generic GC change. Other internal RVs, sole-owner public-NaN retirement and wider quiet-CV GC remain open. No earlier class evidence is renewed.",
+  "artifacts": "Original ignored reports/streams/processes, diagnostic fixtures and private drivers remain at recorded paths. Maintained sources/catalogue/focused harness recover from tested commits. No bulky archive, backup worktree or receipt chain tracked.",
+  "review": {
+    "independent": "class_review_84",
+    "accepted": "Production, native/baseline/source4, corrected333 and concise publication independently accepted. Inventory169/306 and append-only/diff checks pass; no publication semantic rerun."
+  },
+  "composition": {
+    "parent": "1cd75a1bdb0dfb1520bf3763534cc98c2069c505",
+    "publication": "488f577511ca915f3564bc37c3d713001cfd0dc0",
+    "modules": 401,
+    "basis": "Incoming Generator foreach retention initializes eps, contributes no roots and satisfies the empty validator; no Generator/foreach producer occurs here. Typed REF-return cursors, LIST float-key writes, constant APIs, WeakMap Closure comparisons and compound precision-string warning tasks are absent. Incoming state fields and all generic WeakMap unregister/pin/weakref_get/GC rules are retained;408 keeps only the reviewed kind arm.",
+    "validation": "Independent pointwise preservation, no concrete declaration/order or selected-path interaction requiring joined execution. Source4 at9af and focused333 at a81a keep their original identities and credit."
+  }
+}

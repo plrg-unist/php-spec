@@ -717,16 +717,20 @@ def $fake_bind_receive(S, pconfigcall) = $fake_bind_select_scope(S, pconfigcall,
 
 def $fake_bind_scope_result(S, n_source, PNULL) = BIND_SCOPE BIND_UNSCOPED
 def $fake_bind_scope_result(S, n_source, POBJECT n) = BIND_SCOPE ($bind_object_scope(S, n))
-def $fake_bind_scope_result(S, n_source, PSTRING ptbytes) = BIND_SCOPE ($fake_bind_scope(S, n_source))
+def $fake_bind_scope_result(S, n_source, pvalue_scope) = BIND_SCOPE ($fake_bind_scope(S, n_source))
+  -- if $string_bytes(pvalue_scope) = (ptbytes)
   -- if ptbytes = $ptascii("static")
-def $fake_bind_scope_result(S, n_source, PSTRING ptbytes) = BIND_SCOPE (BIND_CLASS porigin)
+def $fake_bind_scope_result(S, n_source, pvalue_scope) = BIND_SCOPE (BIND_CLASS porigin)
+  -- if $string_bytes(pvalue_scope) = (ptbytes)
   -- if ptbytes =/= $ptascii("static")
   -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(ptbytes))) = (porigin)
-def $fake_bind_scope_result(S, n_source, PSTRING ptbytes) = BIND_SCOPE (BIND_INTERNAL ptbytes_display)
+def $fake_bind_scope_result(S, n_source, pvalue_scope) = BIND_SCOPE (BIND_INTERNAL ptbytes_display)
+  -- if $string_bytes(pvalue_scope) = (ptbytes)
   -- if ptbytes =/= $ptascii("static")
   -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(ptbytes))) = eps
   -- if $class_internal_at($class_internal_catalogue(), $ptlc($typed_callable_name(ptbytes))) = (INTERNAL ptbytes_lower ptbytes_display text_kind)
-def $fake_bind_scope_result(S, n_source, PSTRING ptbytes) = BIND_SCOPE_MISSING ptbytes
+def $fake_bind_scope_result(S, n_source, pvalue_scope) = BIND_SCOPE_MISSING ptbytes
+  -- if $string_bytes(pvalue_scope) = (ptbytes)
   -- if ptbytes =/= $ptascii("static")
   -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(ptbytes))) = eps
   -- if ~$class_internal($typed_callable_name(ptbytes))
@@ -773,13 +777,16 @@ def $fake_bind_scope_value(S, pconfigcall) = pvalue
   -- if $typed_conversion_at(S, ([(PTBRANCH ([PTBUILTIN "string"]))]), pvalue, $exit_strict(S, pconfigcall.SITE)) = TYPEREJECT
 def $fake_bind_scope_argument(S, n_source, PNULL, BIND_UNSCOPED) = true
 def $fake_bind_scope_argument(S, n_source, POBJECT n, pbindscope) = (pbindscope = $bind_object_scope(S, n))
-def $fake_bind_scope_argument(S, n_source, PSTRING ptbytes, pbindscope) = (pbindscope = $fake_bind_scope(S, n_source))
+def $fake_bind_scope_argument(S, n_source, pvalue_scope, pbindscope) = (pbindscope = $fake_bind_scope(S, n_source))
+  -- if $string_bytes(pvalue_scope) = (ptbytes)
   -- if ptbytes = $ptascii("static")
-def $fake_bind_scope_argument(S, n_source, PSTRING ptbytes, BIND_CLASS porigin) = true
+def $fake_bind_scope_argument(S, n_source, pvalue_scope, BIND_CLASS porigin) = true
+  -- if $string_bytes(pvalue_scope) = (ptbytes)
   -- if ptbytes =/= $ptascii("static")
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if $ptlc($typed_callable_name(ptbytes)) = $ptlc(pclassdesc.NAME)
-def $fake_bind_scope_argument(S, n_source, PSTRING ptbytes, BIND_INTERNAL ptbytes_scope) = true
+def $fake_bind_scope_argument(S, n_source, pvalue_scope, BIND_INTERNAL ptbytes_scope) = true
+  -- if $string_bytes(pvalue_scope) = (ptbytes)
   -- if ptbytes =/= $ptascii("static")
   -- if $ptlc($typed_callable_name(ptbytes)) = $ptlc(ptbytes_scope)
   -- if $class_internal(ptbytes_scope)
@@ -876,7 +883,7 @@ def $fake_bind_warning_valid(S, pbindwarning) = true
 def $fake_bind_warning_valid(S, pbindwarning) = true
   -- if $fake_bind_source(pbindwarning.CALL) = (n_source)
   -- if pbindwarning.SCOPE = BIND_SCOPE_MISSING ptbytes_class
-  -- if $fake_bind_scope_value(S, pbindwarning.CALL) = PSTRING ptbytes_class
+  -- if $string_bytes($fake_bind_scope_value(S, pbindwarning.CALL)) = (ptbytes_class)
   -- if ptbytes_class =/= $ptascii("static")
   -- if pbindwarning.MESSAGE = $ptascii("Class \"") ++ ptbytes_class ++ $ptascii("\" not found")
 def $fake_bind_warning_valid(S, pbindwarning) = false -- otherwise

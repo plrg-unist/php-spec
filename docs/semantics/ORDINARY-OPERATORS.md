@@ -425,8 +425,8 @@ fixtures) pass in the [leading string ledger](../../coverage/semantics/leading-s
 covering actual handlers, parse/carrier history, storage/owners and budgets.
 The pre-application notice-list failure and over-strong cross-callback metadata
 assertion retain zero credit. Only corrected checks and previously unrun peers
-execute; accepted author states and source cuts remain unchanged. Further-warning
-conversions, unsafe pre-snapshot RHS/targets and wider lifecycle remain partial.
+execute; accepted author states and source cuts remain unchanged. Other notice
+shapes, unsafe pre-snapshot RHS/targets and wider lifecycle remain partial.
 
 After the first LEFT callback in those initially both-fractional plain-CV routes,
 an authenticated nonnumeric-string or allocated-array RHS now fails integer
@@ -442,6 +442,24 @@ in the [delayed failure ledger](../../coverage/semantics/delayed-type-failure-re
 The shared live-pair predicate and three error rules add no task/schema/protocol;
 pre-snapshot RHS references, unsafe targets, other initial forms and wider
 conversions/lifetimes remain partial.
+
+Fractional numeric-string RHS values now capture the existing conversion when its
+notices are exactly precision Deprecated, or leading Warning followed by precision
+Deprecated. One cursor preserves the original string and number: its first RHS
+dispatch authenticates the live original CV, while later precision dispatch uses
+history even after RHS reference rebinding or unset. LEFT remains historical after
+its own callback. Dynamic `"05.5tail"`, complete text and exponent text use cached
+LEFT `12`, not callback `101`; all six operators and three new throw fronts agree.
+Independent complete `"-1.5"` XOR stores `-13` after RHS aliases target `88`, detaching
+owners 3 to 2; leading negative shift after RHS unset and cached-zero modulo despite
+live `7` instead raise ArithmeticError/DivisionByZeroError at RHS line 25 without storing. Default
+Warning and protected precision Deprecated retain their exact order and messages.
+Twelve originals and six focused fixtures (1089 SL premises) pass in the
+[precision string ledger](../../coverage/semantics/precision-string-review.json),
+including real callback frames, carrier identity, storage/owners, supplied Exception
+identity and resumed budgets. The original pre-evaluation declaration-order failure
+retains zero credit. Other notice shapes, initial forms, unsafe pre-snapshot RHS or
+targets and wider callback/lifecycle behavior remain partial.
 
 Arithmetic and bitwise conversion use the existing pure SpecTec numeric and byte
 helpers, including signed 64-bit boundaries, binary64 values, string operands,

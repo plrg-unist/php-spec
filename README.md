@@ -675,6 +675,12 @@ through a second Warning. The saved parse survives RHS writes, reference rebindi
 and unset; successful stores detach aliases, while Errors and supplied throws
 cancel the store. Eleven originals and 1211 focused SL premises pass in the
 [leading string ledger](coverage/semantics/leading-string-review.json).
+Fractional numeric strings now retain protected text through precision Deprecated,
+preceded by Warning for leading text, in those same six compound routes. Both
+saved numbers and later diagnostic messages survive RHS replacement, references
+or unset. Success detaches late aliases; errors and supplied throws cancel the
+store. Twelve originals and 1089 focused SL premises pass in the
+[precision string ledger](coverage/semantics/precision-string-review.json).
 
 In those both-fractional routes, a nonnumeric string or array RHS produced by the
 first callback now raises TypeError with the live operand types. Callback writes
@@ -947,6 +953,11 @@ With a buffered input, pending `throw` preserves its count; physical close retai
 it until request-store destruction, including receiver cleanup before caller
 catch. The independent current copy can still trigger a replacement exception. See the
 [pending-buffered review](coverage/semantics/generator-pending-buffered-throw-review.json).
+At a bare yield inside one by-value array `foreach`, parked close retains the
+iteration container while locals and current caches retire normally. Its payloads
+are destroyed in the request-store pass; embedded references remain mutable, and
+independently started Generators in that array close there. See the
+[parked-foreach review](coverage/semantics/generator-pending-foreach-throw-review.json).
 [Delegation](docs/semantics/GENERATOR-DELEGATION.md)
 adds arrays, source Iterators and shared Generator graphs with live raw caches
 and natural return/unwind. Aggregate yield-from now acquires nested real iterator
@@ -1111,7 +1122,13 @@ lookup, in weak and strict calls. Flat arrays admit primitive nonstring and
 authenticated string-carrier leaves, including live scalar reference cells.
 [Four source agreements and 533 state premises](coverage/semantics/constant-query-array-name-review.json)
 cover raw array traces, caller/trace COW and shared reference updates. Nested,
-object/legacy-string leaves, DEFINE array names and wider call forms remain open.
+object/legacy-string leaves and wider call forms remain open.
+The same flat array-name domain now raises TypeError in positional `define()`
+with primitive candidates and omitted/primitive flags, before flag reception or
+registration. Later arguments still run and can change ordinary fields or shared
+references after the name capture.
+[Four source agreements and 590 state premises](coverage/semantics/define-array-name-review.json)
+cover NULL/strict-flag/body-warning priority and raw array/candidate/flag traces.
 Positional `define()` calls with primitive arguments also reject counts below two
 or above three before name/flag reception or registration. Exact count messages
 and raw API arguments survive all argument effects, including a captured true
@@ -1291,9 +1308,14 @@ stdClass donors. Named/selected calls preserve the captured pointer through late
 CV changes, and duplicate handlers keep the old binding and property writes on
 normal return or throw. Existing call and Exception-trace cleanup release the
 temporary owners. [Certified define review](coverage/semantics/define-stdclass-review.json).
+Completed user-instance donors also retain their exact construction receipt and
+pointer in direct definitions and copied array leaves. Typed property aliases
+stay shared; existing normal, throwing-handler and shutdown cleanup retain the
+ordinary owners. [Instance define review](coverage/semantics/define-certified-instance-review.json).
 Fresh definitions with an omitted or captured false third flag also copy nonempty
-array trees containing certified stdClass leaves. Copied containers freeze source
-reference values while object pointers and property writes remain shared, including
+array trees containing certified stdClass or user-instance leaves. Copied
+containers freeze source reference values while object pointers and property
+writes remain shared, including
 selected eval calls and nested query COW. [Array-object define review](coverage/semantics/define-stdclass-array-review.json).
 Duplicate nonempty array definitions retain a private canonical candidate through
 the Warning while callbacks and Exception traces keep the original API argument.
@@ -1302,7 +1324,7 @@ the old row and callback writes. [Array-duplicate review](coverage/semantics/def
 Explicit false flags retain their captured value through callbacks and traces;
 copying observes reference changes from all argument expressions.
 [False-flag array review](coverage/semantics/define-stdclass-array-false-flag-review.json).
-Ordinary uncertified objects, other owning leaves, nested empties and wider
+Ordinary uncertified objects, other owning leaves and wider
 flags/names remain partial.
 Class-qualified `defined` now checks inherited user constants with lexical visibility
 and quiet misses. Named autoload resumes the same captured query once.
@@ -2315,8 +2337,8 @@ Fixed CURRENT and static BIND API Closures also compare with live WeakMap before
 invocation or private traversal. Two originals and 372 Boolean premises/eight actual
 comparisons preserve real frames, captures and bindings; later calls distinguish
 CURRENT caller identity/Error and BIND's selected receiver. The old literal binding-
-scope carrier failure stays zero; its supported class-name workaround leaves that
-dependency open. [Special API review](coverage/semantics/weakmap-special-api-comparison-review.json).
+scope carrier failure stays zero at its retained cut; scope reception is extended
+separately below. [Special API review](coverage/semantics/weakmap-special-api-comparison-review.json).
 
 Getter Closures and first-class `Closure::fromCallable` factory Closures also
 compare with live WeakMap before receiver or private-entry traversal. Two exact
@@ -2950,6 +2972,11 @@ Mutable empty RVs now cache true in that phase: a sole table retires before the
 receiver destructor, while a held table survives with one owner. Three originals
 and 265 focused premises across two cuts cover normal/throw cleanup and budgets;
 [mutable array RV review](coverage/semantics/magic-empty-mutable-array-rv-review.json).
+WeakMap RVs now use the same phase: even an empty map is truthy, and singleton
+map disposal unregisters its key before releasing the owned value. Four originals
+and 333 focused premises cover sole/held ownership, logical weak-reference expiry,
+receiver release and a value destructor's Exception;
+[WeakMap RV review](coverage/semantics/magic-empty-weakmap-rv-review.json).
 Other signatures, receivers, other internal-object RVs and
 wider recursive/coalesce magic combinations remain unsupported.
 Hooked iteration, defaulted virtual hooks, other paired or virtual setters, wider trait
@@ -3677,6 +3704,13 @@ retire. [REAL binding](docs/semantics/CLOSURE-BINDING.md) now stages ordered
 static/internal warnings and uses the function's compiled `$this` flag when
 removing a receiver. Valid unbinding copies REAL statics, preserves reference
 captures and resets called scope; explicit null scope removes class permission.
+Binding scope names now accept interned/request string carriers without replacing
+the raw captured arguments. Private parent/child access, lowercase `static`,
+case/slash lookup and normal/throwing warning callbacks pass three originals and
+324 Boolean premises/nine actual transitions; two pre-main fixture failures stay
+zero. ASCII names are covered; invalid/NUL formatting, autoload/scalar conversion
+and COMP71 stored-string capture remain separate.
+[Scope-carrier review](coverage/semantics/closure-binding-scope-carrier-review.json).
 Literal named-static `Closure::getCurrent(...)` capture now preserves the immediate
 ordinary caller; selected API and returned body retire independently. A named
 helper still errors under an outer Closure. Three native originals, one direct and

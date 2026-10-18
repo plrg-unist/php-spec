@@ -262,7 +262,8 @@ def $generator_pending_throw_leaf(S, n, n_left) = (n)
   -- if $generator_unused_send_leaf(S, n, 1) = (n)
   -- if $generator_input_count(S.GENERATORINPUTS, n) = 0
   -- if pgenerator.FRAME = (pframe)
-  -- if pframe.HELD = eps /\ $tasks_nodes(pframe.TODO) = eps
+  -- if pframe.HELD = eps
+  -- if $tasks_nodes(pframe.TODO) = eps \/ (S.GC.ACTIVE = eps /\ $generator_foreach_saved(S, pgenerator, pframe) =/= eps)
 ;; DO_INIT returns before HANDLE_EXCEPTION can decrement a used yield result.
 ;; Keep that input live; actual physical leaf close later orphans its count.
 def $generator_pending_throw_leaf(S, n, n_left) = (n)
@@ -366,6 +367,78 @@ def $generator_parked_valid(S, pgenerator) = true
   -- if $generator_parked_site(S, pgenerator, porigin)
   -- if $generator_parked_frame(pgenerator.FRAME, porigin)
 def $generator_parked_valid(S, pgenerator) = false -- otherwise
+
+;; A parked exception opline can leave one value-foreach container outside
+;; unfinished cleanup. Retain the array itself so embedded references stay live.
+def $generator_foreach_site(S, pgenerator, PORIGIN n_unit pcpath_yield, PORIGIN n_unit pcpath_loop) = true
+  -- if $generator_parked_site(S, pgenerator, PORIGIN n_unit pcpath_yield)
+  -- if $function_at($all_functions(S), pgenerator.FUNCTION) = (pfunction)
+  -- if $effect_below(pfunction.BODY, pcpath_loop)
+  -- if $effect_below(pcpath_loop ++ [PCFIELD 4], pcpath_yield)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_loop) = (NStmtForeach expression_iterable phpType5 (BOOLEAN false) (NExprVariable phpType32 metadata_variable) phpType23 (BOOLEAN false) metadata_loop)
+  -- if $cv_name(phpType32) =/= eps
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_yield) = (NExprYield phpType5_key phpType5_value metadata_yield)
+def $generator_foreach_site(S, pgenerator, porigin_yield, porigin_loop) = false -- otherwise
+
+def $generator_foreach_find(S, pgenerator, porigin_yield, ptask_foreach :: ptask_tail*) = (ptask_foreach)
+  -- if ptask_foreach = FOREACH_NEXT n_iterator (HARRAY n_array) statement (porigin_loop) z
+  -- if $generator_foreach_site(S, pgenerator, porigin_yield, porigin_loop)
+  -- if $goto_marker_valid(S, ptask_foreach)
+  -- if $iterator_lookup(S.ITERATORS, n_iterator) = (ITERATOR n_iterator n_array false pcursor*)
+  -- if $(n_iterator < S.NEXTITER) /\ (HARRAY n_array) <- S.ALLOCATIONS
+def $generator_foreach_find(S, pgenerator, porigin_yield, ptask_head :: ptask_tail*) = $generator_foreach_find(S, pgenerator, porigin_yield, ptask_tail*)
+  -- if $task_nodes(ptask_head) = eps
+def $generator_foreach_find(S, pgenerator, porigin_yield, ptask_tail*) = eps -- otherwise
+def $generator_foreach_saved(S, pgenerator, pframe) = (ptask_foreach)
+  -- if pframe.ORIGIN = (porigin_yield)
+  -- if pframe.HELD = eps
+  -- if $generator_unused_send_tail(S, porigin_yield, pframe.TODO)
+  -- if $generator_foreach_find(S, pgenerator, porigin_yield, pframe.TODO) = (ptask_foreach)
+  -- if ptask_foreach = FOREACH_NEXT n_iterator (HARRAY n_array) statement porigin_loop? z
+  -- if $tasks_nodes(pframe.TODO) = [HARRAY n_array]
+def $generator_foreach_saved(S, pgenerator, pframe) = eps -- otherwise
+
+def $generator_foreach_drop(eps, ptask_foreach) = eps
+def $generator_foreach_drop(ptask_foreach :: ptask_tail*, ptask_foreach) = ptask_tail*
+def $generator_foreach_drop(ptask_head :: ptask_tail*, ptask_foreach) = ptask_head :: $generator_foreach_drop(ptask_tail*, ptask_foreach)
+  -- if ptask_head =/= ptask_foreach
+
+def $generator_foreach_retained_nodes(eps) = eps
+def $generator_foreach_retained_nodes(pgeneratorloopretained :: pgeneratorloopretained_tail*) = $task_nodes(pgeneratorloopretained.TASK) ++ $generator_foreach_retained_nodes(pgeneratorloopretained_tail*)
+def $generator_foreach_retained_record(S, pgeneratorloopretained) = true
+  -- if $generator_object(S, pgeneratorloopretained.OBJECT)
+  -- if S.OBJECTS[pgeneratorloopretained.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_CLOSED /\ pgenerator.FRAME = eps /\ pgenerator.PARKED = eps
+  -- if pgeneratorloopretained.TASK = FOREACH_NEXT n_iterator (HARRAY n_array) statement (porigin_loop) z
+  -- if $generator_foreach_site(S, pgenerator, pgeneratorloopretained.SITE, porigin_loop)
+  -- if $origin_node(S.SOURCES, porigin_loop) = (statement)
+  -- if $goto_foreach_line_valid(S, statement, porigin_loop, z)
+  -- if $(n_iterator < S.NEXTITER) /\ $iterator_lookup(S.ITERATORS, n_iterator) = eps
+  -- if $(n_array < |S.ARRAYS|) /\ (HARRAY n_array) <- S.ALLOCATIONS
+def $generator_foreach_retained_record(S, pgeneratorloopretained) = false -- otherwise
+def $generator_foreach_retained_seen(eps, n_object, n_iterator) = false
+def $generator_foreach_retained_seen(pgeneratorloopretained :: pgeneratorloopretained_tail*, n_object, n_iterator) = (pgeneratorloopretained.OBJECT = n_object \/ n_other = n_iterator \/ $generator_foreach_retained_seen(pgeneratorloopretained_tail*, n_object, n_iterator))
+  -- if pgeneratorloopretained.TASK = FOREACH_NEXT n_other pnode statement porigin? z
+def $generator_foreach_retained_seen(pgeneratorloopretained*, n_object, n_iterator) = true -- otherwise
+def $generator_foreach_retained_valid(S, eps) = true
+def $generator_foreach_retained_valid(S, pgeneratorloopretained :: pgeneratorloopretained_tail*) = true
+  -- if $generator_foreach_retained_record(S, pgeneratorloopretained)
+  -- if pgeneratorloopretained.TASK = FOREACH_NEXT n_iterator pnode statement porigin? z
+  -- if ~$generator_foreach_retained_seen(pgeneratorloopretained_tail*, pgeneratorloopretained.OBJECT, n_iterator)
+  -- if $generator_foreach_retained_valid(S, pgeneratorloopretained_tail*)
+def $generator_foreach_retained_valid(S, pgeneratorloopretained*) = false -- otherwise
+
+;; Explicit collection while this physical frame is parked needs the wider
+;; global exception-opline history; ordinary empty-tail parked paths are unchanged.
+def $generator_parked_foreach(S, HOBJECT n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PARKED =/= eps
+  -- if pgenerator.FRAME = (pframe)
+  -- if $generator_foreach_saved(S, pgenerator, pframe) =/= eps
+def $generator_parked_foreach(S, pnode) = false -- otherwise
+def $generator_parked_foreach_any(S, eps) = false
+def $generator_parked_foreach_any(S, pnode_head :: pnode_tail*) = ($generator_parked_foreach(S, pnode_head) \/ $generator_parked_foreach_any(S, pnode_tail*))
 
 ;; The copied API result survives receiver retirement. Throw search then drops
 ;; precisely this value; SOURCE does not retain the receiver or Throwable.
