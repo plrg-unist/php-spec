@@ -1,0 +1,22 @@
+[
+  {
+    "id": "generator-pending-owning-chain-send-refresh-and-real-consumption",
+    "purpose": "An inherited-pending upper sends through a live native link after independent child completion, without a prior getter; observe ignored argument retirement, cached result, then actual outer.next consuming the owning return.",
+    "source": "<?php\nclass PendingChainReturn31 { function __destruct() { echo \"R|\"; } }\nclass PendingChainArgument31 { function __destruct() { echo \"ARG|\"; } }\nfunction pendingChainChild31() { echo \"C|\"; yield 9; echo \"L|\"; return new PendingChainReturn31(); }\nfunction pendingChainMiddle31() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"BODY|\", $reply instanceof PendingChainReturn31 ? 1 : 0, \"|\"; unset($reply); echo \"DROP|\"; yield 31; echo \"TAIL|\"; return 29; } finally { echo \"J|\"; } }\nfunction pendingChainUpper31() { try { echo \"U|\"; $reply = yield from $GLOBALS[\"middle\"]; echo \"UPPER|\", $reply, \"|\"; return $reply; } finally { echo \"K|\"; } }\nfunction pendingChainOuter31() { try { echo \"O|\"; $reply = yield from $GLOBALS[\"upper\"]; echo \"OUTER|\", $reply, \"|\"; return $reply; } finally { echo \"F|\"; } }\n$child = pendingChainChild31(); $middle = pendingChainMiddle31(); $upper = pendingChainUpper31(); $outer = pendingChainOuter31();\necho \"P|\"; $outer->rewind(); $child->next(); unset($child); echo \"H|\";\necho \"S|\"; $sent = $upper->send(new PendingChainArgument31()); echo \"RETURN|\", $sent, \"|\", $upper->valid() ? 1 : 0, \"|\", $upper->key() === null ? 1 : 0, \"|\";\necho \"N|\"; $outer->next(); echo \"CURRENT|\", $outer->current(), \"|\", $outer->valid() ? 1 : 0, \"|\";\necho \"N2|\"; $outer->next(); echo \"DONE|\", $outer->valid() ? 0 : 1, \"|\"; unset($outer, $upper, $middle); echo \"E\";\n",
+    "source_sha256": "9522447b4ad994078bcce500a37fe752f656827c8ee1ad0f32106acbc44aeb63",
+    "expected": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|U|M|C|L|H|S|ARG|RETURN|9|1|1|N|BODY|1|R|DROP|CURRENT|31|1|N2|TAIL|J|UPPER|29|K|OUTER|29|F|DONE|1|E"
+  },
+  {
+    "id": "generator-pending-owning-chain-send-argument-retires-chain-before-used-cache-drop",
+    "purpose": "A normal ignored-argument destructor drops every global Generator alias while the upper API receiver remains pinned; observe the used copied cache after receiver/middle retirement and separate request-late owning return.",
+    "source": "<?php\nclass PendingChainLate31 { function __destruct() { echo \"R|\"; } }\nclass PendingChainCache31 { function __destruct() { echo \"D|\"; } }\nclass PendingChainDropRoots31 { function __destruct() { echo \"ARG|\"; unset($GLOBALS[\"outer\"], $GLOBALS[\"upper\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"CLEARED|\"; } }\nfunction pendingChainDropChild31() { echo \"C|\"; yield new PendingChainCache31(); echo \"L|\"; return [new PendingChainLate31()]; }\nfunction pendingChainDropMiddle31() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; } finally { echo \"J|\"; } }\nfunction pendingChainDropUpper31() { try { echo \"U|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-UPPER|\"; } finally { echo \"K|\"; } }\nfunction pendingChainDropOuter31() { try { echo \"O|\"; yield from $GLOBALS[\"upper\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\n$child = pendingChainDropChild31(); $middle = pendingChainDropMiddle31(); $upper = pendingChainDropUpper31(); $outer = pendingChainDropOuter31();\necho \"P|\"; $outer->rewind(); $child->next(); echo \"H|\", $upper->current() instanceof PendingChainCache31 ? 1 : 0, \"|\"; unset($child); echo \"S|\";\n$copy = $upper->send(new PendingChainDropRoots31()); echo \"CALLER|\", $copy instanceof PendingChainCache31 ? 1 : 0, \"|\"; unset($copy); echo \"DROPPED|\"; echo \"E\";\n",
+    "source_sha256": "bb2927023d67941a9726068673664e5fd1e2f4972c49811f5ee28688eb91bd05",
+    "expected": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|U|M|C|L|H|1|S|ARG|F|CLEARED|K|CALLER|1|D|DROPPED|ER|"
+  }
+]

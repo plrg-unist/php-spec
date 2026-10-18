@@ -1,0 +1,86 @@
+{
+  "milestone": "COMP93 distinct direct-CV != and <= missing-value warning continuations",
+  "status": "bounded independent source/state review passed; comparison family remains partial",
+  "scope": "Both operand orientations for distinct direct CVs with exactly one missing and a defined scalar counterpart, still defined/scalar on a returning handler. Includes late references/rebinding, a missing right left undefined, false/default reporting and supplied-handler Exception cleanup.",
+  "target": "PHP 8.5.10 CLI NTS64; ordinary profile; LC_ALL=C TZ=UTC",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "runtime_revision": "13c2843c1",
+  "runtime_sha256": {
+    "spec/semantics/207-error-handler-runtime.watsup": "3165bf14ae6ef16ec75bff1076f4909eb461cd26b1c7747b21ed02b9492ccd72"
+  },
+  "modules": 405,
+  "engine_basis": "Zend/zend_vm_def.h::ZEND_IS_NOT_EQUAL/ZEND_IS_SMALLER_OR_EQUAL and their helpers fetch both raw CV pointers, warn/freeze the first UNDEF then inspect the current second, and apply zend_compare !=0 or <=0. No identity-style early dereference occurs. Native alias/noinit/removed-left probes distinguish pointer timing and the explicit boundary.",
+  "implementation": "Only two scalar-operator memberships and two source-AST mappings in module 207 extend the existing scalar continuation shapes/guards. Shapes, fields, tasks, roots, restore logic and refusal reasons stay unchanged; old ==/< paths retain the same results. Thin fixture adapters preserve the actual php_run program and replace only consumer atoms, result assertions and independently selected source data.",
+  "behavior": [
+    "All four !=/<= missing-CV orientations preserve NULL even when the handler initializes the missing name to 9. Current counterpart writes determine the predicate; left 0 rebound to string 0 makes missing-right <= false.",
+    "Missing-left != reads a newly referenced right string 0 and returns true; the full continuation also executes <=. Missing-right != follows a late left reference while right remains undefined. Old-cell/new-cell owners and later alias writes remain exact.",
+    "False/default Warning order and supplied Exception destination 41, catch identity and finally agree exactly. Four strict-SL groups check authentic dispatch/restore/compare, whole raw states, reference owners, coherent forged operators/lines, domain refusals and zero/split budgets."
+  ],
+  "baseline": {
+    "revision": "3eafcc7d7aa584fc0a0b1592393f48c533c5e597",
+    "report": "initial/initial-report.json",
+    "sha256": "c574af3302e6edc67a8256df620d59a6897fa63da5592d7c033e122126cf98b6",
+    "native": "Two exact originals normal H:1:10:1;R:1:1:1;END;, empty stderr.",
+    "model": "Genuine unchanged != Unsupported/error-handler ingress requires a producer continuation, empty output.",
+    "agreement_credit": 0
+  },
+  "accepted": [
+    {
+      "report": "author-source/model-report.json",
+      "sha256": "c03e8cc3e371b0b101336825e30a8a6623cc2c232c255b1e16c495facfe4d4c9",
+      "revision": "b528438d44d69ce55deef59e70977c8bc39199e3",
+      "agreements": 5,
+      "unsupported_controls": 1
+    },
+    {
+      "report": "peer-source/model.json",
+      "sha256": "b49a964c582b4b1915f8e730c3afbfe3239b93dbc35956345a729262b21954d6",
+      "revision": "b528438d44d69ce55deef59e70977c8bc39199e3",
+      "agreements": 3,
+      "unsupported_controls": 1
+    },
+    {
+      "report": "author-state/report.json",
+      "sha256": "08f253932c0770de21520e580fa0a24950b90740683b1d3cf4f8aa94bac34674",
+      "revision": "b528438d44d69ce55deef59e70977c8bc39199e3",
+      "premises": 182,
+      "groups": 2
+    },
+    {
+      "report": "peer-state/report.json",
+      "sha256": "54c7d6983ef1a03ab50023d72a400ec9b72f56af012e5c7d131d07636b3e0541",
+      "revision": "b528438d44d69ce55deef59e70977c8bc39199e3",
+      "premises": 198,
+      "groups": 2
+    }
+  ],
+  "totals": {
+    "source_agreements": 8,
+    "unsupported_source_controls": 2,
+    "state_groups": 4,
+    "state_premises": 380
+  },
+  "failures": [],
+  "remaining": [
+    "Both-missing/same-CV inputs, owning or callback-removed/owning counterparts and captured/computed producers remain partial. Array and native unset-left controls retain zero agreement.",
+    "Reversed >/>= warning paths remain partial. Prior COMP89/90/91/92 cuts are not replayed or renewed; OP51 and quarantined COMP88 remain excluded."
+  ],
+  "artifact_root": "../php-spec-evidence-archive/comparison-93",
+  "artifact_manifest_sha256": "176bd179357c01ee9f57a1e480e08c85ce2d8a4cb344406e70e6181f19cd5916",
+  "independent_reviewer": "/root/comp89_review",
+  "divergences": [],
+  "reproduction": [
+    "python3 tests/semantics/undefined_scalar_compare_ne_le_sources.py --phase native --output .tools/comp93-source-new",
+    "python3 tests/semantics/undefined_scalar_compare_ne_le_sources.py --phase model --output .tools/comp93-source-new",
+    "python3 tests/semantics/undefined_scalar_compare_ne_le_state.py --output .tools/comp93-state-new",
+    "python3 tests/semantics/undefined_scalar_compare_ne_le_review_state.py --output .tools/comp93-peer-state-new"
+  ],
+  "integration": {
+    "parent": "0dff04c2b3d24f726d26fac3840768c038a60a02",
+    "modules": 405,
+    "actual_tail": "Named NULL-option INI, owning dynamic-new/DYNAMIC_NEW_START, array-valued DEFINE flags and flat-array literal-reference debt producers are absent. The new binary_source_apply specialization matches only MULTIPLY; NOTEQUAL/LESSEQUAL and identity observers use the unchanged default binary_apply path. Literal-reference debts stay empty.",
+    "preservation": "Only module 207 differs from this parent, retaining tested 3165bf14 bytes. Every other runtime, schema, task variant, field/default and ordered module manifest is parent-exact; incoming docs, inventory and checkpoints are preserved.",
+    "validation": "Independent pointwise actual-tail review. Source8/state380 retain b528438d4 with no joined actor, accepted replay or renewed execution credit."
+  }
+}

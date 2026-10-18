@@ -1,0 +1,86 @@
+{
+  "milestone": "COMP94 distinct direct-CV > and >= missing-value warning continuations",
+  "status": "bounded independent source/state review passed; comparison family remains partial",
+  "scope": "Both operand orientations for distinct direct CVs with exactly one missing and a defined scalar counterpart, still defined/scalar on a returning handler. Includes late references/rebinding, a missing right left undefined, false/default reporting and supplied-handler Exception cleanup.",
+  "target": "PHP 8.5.10 CLI NTS64; ordinary profile; LC_ALL=C TZ=UTC",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "runtime_revision": "016027d7a",
+  "runtime_sha256": {
+    "spec/semantics/207-error-handler-runtime.watsup": "b2864f273276a284d591b94d82fdf8a6c6b2f5cbc46d426c585a6d2277a7dd7e"
+  },
+  "modules": 405,
+  "engine_basis": "Zend/zend_compile.c::zend_compile_greater evaluates source left then right, but emits SMALLER/SMALLER_OR_EQUAL with source right as physical OP1 and source left as OP2. zend_is_smaller_helper/zend_is_smaller_or_equal_helper check raw OP1 UNDEF, then current OP2, and compare. Single-missing/scalar-throughout records preserve NULL and the current wrapper in source orientation. The removed-right native control has one Warning; it does not generalize to removed-left or both-missing.",
+  "implementation": "Only two scalar-operator memberships, two Greater source-AST mappings and explanatory comments change in module207. Shapes, fields, tasks, roots, restore logic and refusal reasons stay unchanged. Thin fixture adapters retain actual checked php_run programs and adapt only consumer atoms, predicates and independent multiline source locations.",
+  "behavior": [
+    "All four >/>= missing-CV orientations freeze NULL even if handlers initialize the missing name to9. Missing-right > follows left0 becoming string0 and returns true; missing-left >= follows right0 becoming string0 and returns false.",
+    "Missing-left >= then > follow a newly referenced right string0 with Warning lines13 and16. Missing-right > follows old-left0 rebinding to a new string0 cell; old/new owners and later alias writes remain exact. Missing-right >= also succeeds while its missing name remains undefined.",
+    "False/default Warning order and supplied Exception destination41, catch identity and finally agree exactly. Four strict-SL groups check authentic dispatch/restore/compare, whole raw states, reference owners, coherent forged operators/lines, domain refusals and zero/split budgets."
+  ],
+  "baseline": {
+    "revision": "1bf5d39e8d244eeedc8a76df6f4b813fc4227fe6",
+    "report": "initial/initial-report.json",
+    "sha256": "058b97e1d3038d86a99b573f23d093509cfd930789eee706d5aa2d8d4cb4709e",
+    "native": "Two exact originals normal H:1:10:1;R:1:1:1;END;, empty stderr.",
+    "model": "Genuine unchanged > Unsupported/error-handler ingress requires a producer continuation, empty output.",
+    "agreement_credit": 0
+  },
+  "accepted": [
+    {
+      "report": "author-source/model-report.json",
+      "sha256": "bc2f41d224688d04e3e0ac43b9308a5d2bd01498299290beb803fc9425235b94",
+      "revision": "a2da3ece289867f24f6da518498e7e6b6f348bf6",
+      "agreements": 5,
+      "unsupported_controls": 1
+    },
+    {
+      "report": "peer-source/model.json",
+      "sha256": "a0d711cd61e34068089cce8bd26b5ad83c7b4d6f444708c2fe9653f8e129fb73",
+      "revision": "a2da3ece289867f24f6da518498e7e6b6f348bf6",
+      "agreements": 3,
+      "unsupported_controls": 1
+    },
+    {
+      "report": "author-state/report.json",
+      "sha256": "c76308dc3f853b9a71ee707faad0a89bad68fda5879a025702557f5a8f66570e",
+      "revision": "a2da3ece289867f24f6da518498e7e6b6f348bf6",
+      "premises": 182,
+      "groups": 2
+    },
+    {
+      "report": "peer-state/report.json",
+      "sha256": "b8c25387e9c0769d050b3218703415269f8f49276bfe208dcf3453c8f356505b",
+      "revision": "a2da3ece289867f24f6da518498e7e6b6f348bf6",
+      "premises": 198,
+      "groups": 2
+    }
+  ],
+  "totals": {
+    "source_agreements": 8,
+    "unsupported_source_controls": 2,
+    "state_groups": 4,
+    "state_premises": 380
+  },
+  "failures": [],
+  "remaining": [
+    "Both-missing/same-CV inputs, owning or callback-removed/owning counterparts and captured/computed producers remain partial. Array-left and native removed-right controls retain zero agreement.",
+    "Prior COMP89/90/91/92/93 cuts are not replayed or renewed; unrelated arithmetic and quarantined COMP88 remain excluded."
+  ],
+  "artifact_root": "../php-spec-evidence-archive/comparison-94",
+  "artifact_manifest_sha256": "74f1aae2c80752fc2dc25a310b51d6ceb3e65127c32f6ad5a692aee043a409f9",
+  "independent_reviewer": "/root/comp89_review",
+  "divergences": [],
+  "reproduction": [
+    "python3 tests/semantics/undefined_scalar_compare_gt_ge_sources.py --phase native --output .tools/comp94-source-new",
+    "python3 tests/semantics/undefined_scalar_compare_gt_ge_sources.py --phase model --output .tools/comp94-source-new",
+    "python3 tests/semantics/undefined_scalar_compare_gt_ge_state.py --output .tools/comp94-state-new",
+    "python3 tests/semantics/undefined_scalar_compare_gt_ge_review_state.py --output .tools/comp94-peer-state-new"
+  ],
+  "integration": {
+    "parent": "c2474dcffa559a9f7a7d1e8270d375deac0e2a10",
+    "modules": 405,
+    "actual_tail": "Detached Generator send/return-leaf traversal needs Generator/delegation/send producers, absent here. quiet_power_copy_plan matches only BINARY_RIGHT POWER with a ternary-copy left and scalar CV right; its new generic binary guards return eps on GREATER/GREATEREQUAL and identity/concat observers. No task variants, state fields or manifest entries change.",
+    "preservation": "Only module207 differs from this parent, retaining tested b2864f27 bytes. Every other runtime, schema, task, field/default and ordered module manifest stays parent-exact; incoming docs, inventory and checkpoints are preserved.",
+    "validation": "Independent pointwise actual-tail review. Source8/state380 retain a2da3ece2 without a joined actor, accepted replay or renewed execution credit."
+  }
+}

@@ -59,6 +59,16 @@ that exception before caller catch. The
 [owning SEND review](../../coverage/semantics/generator-pending-owning-return-send-review.json)
 records this path separately from pending `throw`.
 
+An inherited-pending ancestor can also `send` through finite native links to
+that owning simple-CV return, even when the call first detaches the completed
+child. Only the selected receiver's initialization clears; the physical middle
+still waits without buffering the argument. Normal argument destruction can
+change a raw reference cache or remove every Generator alias while the captured
+result survives. Actual outer next consumes the return; inherited-pending middle
+close instead retains it and skips finally. The
+[ancestor SEND review](../../coverage/semantics/generator-pending-owning-chain-send-review.json)
+checks separate receiver, middle and child identities, COW and mutable return cells.
+
 Pending `throw` on that actual detached receiver now also preserves the owning
 simple-CV return. It reaches the caller without advancing, leaves getters live,
 and parks the frame so close omits its finally. Close transfers the return count

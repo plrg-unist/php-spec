@@ -2964,3 +2964,28 @@ def $quiet_multiply_error(S, poperand_left, poperand_right, pvalue_left, pvalue_
 def $quiet_multiply_error(S, poperand_left, poperand_right, pvalue_left, pvalue_right, z) = false -- otherwise
 def $binary_source_apply(S, MULTIPLY, poperand_left, poperand_right, pvalue_left, pvalue_right, z) = $binary_apply(S, MULTIPLY, pvalue_right, pvalue_left, z)
   -- if $quiet_multiply_error(S, poperand_left, poperand_right, pvalue_left, pvalue_right, z)
+
+;; A quiet ternary copy and plain RHS CV need only final safe_pow dispatch.
+;; Their numbers are captured before the first and sole diagnostic callback.
+def $quiet_power_copy_plan(S) = ((pintegeroperation, pnumber_left, pnumber_right))
+  -- if S.TODO = (BINARY_RIGHT POWER (KNOWN pvalue_left) z) :: ptask_tail*
+  -- if S.RESULT = VARIABLE ptbytes_right z_right
+  -- if $error_handler_eligible(S, 8192)
+  -- if $arithmetic_add_named(S)
+  -- if $power_warning_plan(S) = eps
+  -- if ~$gc_retired_binary(S, POWER, KNOWN pvalue_left)
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_node(S.SOURCES, porigin_left) = (NExprTernary expression_condition phpType5 expression_false metadata)
+  -- if $arithmetic_cv_value(S, INTEGER_COPY pvalue_left) = (pvalue_left)
+  -- if $arithmetic_cv_value(S, INTEGER_CV ptbytes_right) = (pvalue_right)
+  -- if $arithmetic_add_conversion(pvalue_left) = ((pnumber_left, false))
+  -- if $arithmetic_add_conversion(pvalue_right) = ((pnumber_right, false))
+  -- if (pnumber_result, true) = $num_pow(pnumber_left, pnumber_right)
+  -- if pintegeroperation = {SITE porigin, OP POWER, LINE z, SWAPPED false, LEFT KNOWN pvalue_left, RIGHT VARIABLE ptbytes_right z_right, LEFTPOINTER INTEGER_COPY pvalue_left, RIGHTPOINTER INTEGER_CV ptbytes_right}
+  -- if $arithmetic_copy_valid(S, pintegeroperation)
+  -- if $arithmetic_cv_deprecated_valid(S, pintegeroperation, pnumber_left, pnumber_right, 0)
+def $quiet_power_copy_plan(S) = eps -- otherwise
+rule PhpStep/quiet-power-copy-begin: S ~> S[.TODO = (ARITHMETIC_CV_DEPRECATED pintegeroperation pnumber_left pnumber_right 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $quiet_power_copy_plan(S) = ((pintegeroperation, pnumber_left, pnumber_right))

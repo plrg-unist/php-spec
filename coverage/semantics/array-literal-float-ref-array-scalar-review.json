@@ -1,6 +1,6 @@
 {
   "milestone": "A24: flat-array reference element retargeted to an ordinary scalar",
-  "status": "independently reviewed private publication; awaiting exact-parent composition",
+  "status": "independently reviewed and validated; actual-parent composition",
   "target": {"php": "8.5.10 CLI NTS 64-bit", "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348", "profile": "tests/semantics/profile.json"},
   "scope": [
     "Finite fitting lossy-float ordinary CV keys in explicit reference elements of array literals. The acquired untyped CELL holds a mutable nonpool flat array of DIRECT null/bool/int/float; the callback retargets its value CV to an unwrapped null/bool/int/float.",
@@ -24,5 +24,6 @@
     {"role": "independent-state", "path": ".tools/array-literal-float-ref-array-scalar-review-state-24/report.json", "sha256": "b0fee41aa646182f8f32b537b65e00bb64a0c5658fdcd5a65fa4d23e641cdf28", "revision": "700ab34e03a03bed58a694d0d8bd3d6cfa29e76d"}
   ],
   "raw_archive": {"path": ".tools/array-literal-float-ref-array-scalar-24-raw.tar.gz", "bytes": 346916, "members": 123, "sha256": "041f589c4993b88ccac9a363d47b3678a9c1754668eaf8215736bd39a1d70050", "roots": 8, "scripts": 2, "recovery": "Archive is outside Git in canonical .tools. Restore the recorded private cut at the original worktree path, restore pinned tools recorded by the reports, then extract the archive into that worktree .tools; it contains eight basename report roots and both exact runners."},
-  "reviewed_parent": {"head": "dba71ba43d1648d086d0ed3a4330f0b900f80e6d", "seam": "Full base→1bf5 tail extends missing-CV loose comparisons in207; 1bf5→dba71 adds Generator detached-send/delegation reception in289. A24 uses defined reads, strict comparisons and no Generator paths. No 413/count/owner/COW interaction or concrete joined actor; final lease tail remains to review."}
+  "reviewed_parent": {"head": "dba71ba43d1648d086d0ed3a4330f0b900f80e6d", "seam": "Full base→1bf5 tail extends missing-CV loose comparisons in207; 1bf5→dba71 adds Generator detached-send/delegation reception in289. A24 uses defined reads, strict comparisons and no Generator paths. No 413/count/owner/COW interaction or concrete joined actor; final lease tail remains to review."},
+  "composition": {"parent": "00573848110e661bb2e70519be10622c2977298d", "modules": 405, "result": "Module413, six new tests and the inherited pure control retain accepted private bytes; all other runtime files and the ordered manifest are parent-exact. Six feature rows append only the reviewed additions, preserving incoming fields and statuses; prose keeps incoming checkpoints. Full incoming comparison, Generator and quiet-POWER selectors are absent from A24; no joined actor or renewed evidence credit."}
 }

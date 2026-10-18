@@ -1,0 +1,22 @@
+[
+  {
+    "id": "generator-pending-owning-chain-send-review-cache-return-array-cow",
+    "purpose": "An inherited-pending ancestor sends to an owning detached middle. The normal ignored-argument destructor mutates a raw reference row after the API snapshots it; the return and snapshot alias the old array while getters follow the COW row.",
+    "source": "<?php\nclass ReviewPendingChainOld31 { function __destruct() { echo \"A|\"; } }\nclass ReviewPendingChainNew31 { function __destruct() { echo \"B|\"; } }\nclass ReviewPendingChainArg31 { function __destruct() { echo \"D|\"; $GLOBALS[\"row\"][0] = new ReviewPendingChainNew31(); echo \"W|\"; } }\nfunction &reviewPendingChainChild31() { global $row; $row = [new ReviewPendingChainOld31()]; echo \"C|\"; yield $row; echo \"L|\"; return $row; }\nfunction reviewPendingChainMiddle31() { try { echo \"M|\"; $answer = yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; } finally { echo \"J|\"; } }\nfunction reviewPendingChainUpper31() { try { echo \"U|\"; $answer = yield from $GLOBALS[\"middle\"]; echo \"BAD-UPPER|\"; } finally { echo \"K|\"; } }\nfunction reviewPendingChainOuter31() { try { echo \"O|\"; yield from $GLOBALS[\"upper\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\n$child = reviewPendingChainChild31(); $middle = reviewPendingChainMiddle31(); $upper = reviewPendingChainUpper31(); $outer = reviewPendingChainOuter31();\necho \"P|\"; $outer->rewind(); $child->next(); echo \"H|\", $middle->current()[0] instanceof ReviewPendingChainOld31 ? 1 : 0, \"|\"; unset($child); echo \"T|\";\n$snapshot = $upper->send(new ReviewPendingChainArg31()); echo \"CALLER|\", $snapshot[0] instanceof ReviewPendingChainOld31 ? 1 : 0, \"|\", $upper->current()[0] instanceof ReviewPendingChainNew31 ? 1 : 0, \"|\", $upper->valid() ? 1 : 0, \"|\";\nunset($outer); echo \"OUT|\"; unset($upper); echo \"UP|\"; unset($middle); echo \"MID|\"; unset($row); echo \"ROW|\"; unset($snapshot); echo \"SNAP|\"; echo \"E\";\n",
+    "source_sha256": "ef7c0f21523e181c109513a8838e06a3732e4f1e5e3842e0f4bab916c407533b",
+    "expected": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|U|M|C|L|H|1|T|D|W|CALLER|1|1|1|F|OUT|K|UP|MID|B|ROW|SNAP|EA|"
+  },
+  {
+    "id": "generator-pending-owning-chain-send-review-null-cache-return-cell-rebind",
+    "purpose": "A present-null ancestor SEND leaves the owning returned array separate from the ignored argument. Physical close and a later global shared-cell write distinguish the retained container from its mutable old and new referents.",
+    "source": "<?php\nclass ReviewPendingChainCellOld31 { function __destruct() { echo \"R|\"; } }\nclass ReviewPendingChainCellNew31 { function __destruct() { echo \"CNEW|\"; } }\nclass ReviewPendingChainCellArg31 { function __destruct() { echo \"ARG|\"; } }\nfunction reviewPendingChainCellChild31() { global $slot; echo \"C|\"; yield null; echo \"L|\"; $slot = new ReviewPendingChainCellOld31(); return [&$slot]; }\nfunction reviewPendingChainCellMiddle31() { try { echo \"M|\"; $answer = yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; } finally { echo \"J|\"; } }\nfunction reviewPendingChainCellUpper31() { try { echo \"U|\"; $answer = yield from $GLOBALS[\"middle\"]; echo \"BAD-UPPER|\"; } finally { echo \"K|\"; } }\nfunction reviewPendingChainCellOuter31() { try { echo \"O|\"; yield from $GLOBALS[\"upper\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\n$child = reviewPendingChainCellChild31(); $middle = reviewPendingChainCellMiddle31(); $upper = reviewPendingChainCellUpper31(); $outer = reviewPendingChainCellOuter31();\necho \"P|\"; $outer->rewind(); $child->next(); echo \"H|\", $middle->current() === null ? 1 : 0, \"|\"; unset($child); echo \"T|\";\n$snapshot = $upper->send(new ReviewPendingChainCellArg31()); echo \"CALLER|\", $snapshot === null ? 1 : 0, \"|\", $upper->current() === null ? 1 : 0, \"|\", $upper->valid() ? 1 : 0, \"|\"; unset($snapshot); echo \"EX|\";\nunset($outer); echo \"OUT|\"; unset($upper); echo \"UP|\"; unset($middle); echo \"MID|\";\n$slot = new ReviewPendingChainCellNew31(); echo \"WRITE|\"; unset($slot); echo \"UNSET|\"; echo \"E\";\n",
+    "source_sha256": "776716acdad8ab2a139768b26a30bdc111f1c4f70a4171a58218f7fd283727ed",
+    "expected": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|U|M|C|L|H|1|T|ARG|CALLER|1|1|1|EX|F|OUT|K|UP|MID|R|WRITE|UNSET|ECNEW|"
+  }
+]
