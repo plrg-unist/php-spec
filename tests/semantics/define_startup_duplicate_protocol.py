@@ -93,7 +93,7 @@ def refusals(state):
     for field in ('.SITE = PORIGIN 0 eps', '.LINE = $(' + call + '.LINE + 1)',
             '.OWNER = (0)', '.KIND = INTRINSIC_CONSTANT', '.SELECTION = (|' + state + '.SELECTEDCALLS|)'):
         values += ['~$dynamic_startup_define_duplicate_valid(' + state + ',' + call + '[' + field + '],0)']
-    for name in ('PHP_VERSION_ID', 'php_int_size', '\\PHP_INT_SIZE', 'true', 'A::B'):
+    for name in ('PHP_VERSION_ID', 'php_int_size', '\\PHP_INT_SIZE', 'A::B'):
         values += ['$builtin_value_bytes(' + text(name) + ') = eps',
             '~$dynamic_startup_define_duplicate_valid(' + state + ',' + call + '[.SENT = $named_slot_set(' + call + '.SENT,0,KNOWN (PSTRING ' + text(name) + '))],0)']
     for candidate in ('PARRAY 0', 'POBJECT 0'):
@@ -144,6 +144,9 @@ def handler(state, name, candidate, returning):
         *common.step(after, pending, 'PBOOL false'), after + '.TODO = ptask_' + state + '*',
         after + '.USERCONSTANTS = ' + returned + '.USERCONSTANTS', after + '.STORE[n_result] = DEFINED (PINT 99)',
         '$source_constant_lookup(' + after + ',' + text(name) + ') = (VALUE (PINT 8))']
+    values += ['pconfigcall_special_' + state + ' = ' + call + '[.SENT = $named_slot_set(' + call + '.SENT,0,KNOWN (PSTRING ' + text('true') + '))]',
+        '$dynamic_startup_define_duplicate_valid(' + warning + ',pconfigcall_special_' + state + ',0)',
+        '~$error_call_valid(' + warning + ',perrorcall_' + state + '[.RESUME = DYNAMIC_CONSTANT_DUPLICATE pconfigcall_special_' + state + ' 0])']
     for field in ('.LEVEL = 8192', '.MESSAGE = ' + text('forged'), '.LINE = $(perrorcall_' + state + '.LINE + 1)',
             '.EVENT = DIAGNOSTIC "Notice" perrorcall_' + state + '.MESSAGE ' + call + '.LINE'):
         values += ['~$error_call_valid(' + warning + ',perrorcall_' + state + '[' + field + '])']
@@ -167,6 +170,7 @@ def checks(program, path, name):
             '$builtin_value_bytes(' + text('E_WARNING') + ') = (PINT 2)',
             '~$dynamic_startup_define_duplicate_valid(S,pconfigcall_other_builtin,0)',
             '~$dynamic_constant_duplicate_valid(S,pconfigcall_other_builtin,0)',
+            '~$dynamic_startup_define_duplicate_valid(S,pconfigcall_S[.SENT = $named_slot_set(pconfigcall_S.SENT,0,KNOWN (PSTRING ' + text('true') + '))],0)',
             '~$dynamic_startup_define_duplicate_valid(S,pconfigcall_S[.SENT = $named_slot_set(pconfigcall_S.SENT,1,KNOWN (PINT 999))],0)',
             *refusals('S'), *budget('S')]
         call = 'pconfigcall_S_warning'

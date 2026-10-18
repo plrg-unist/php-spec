@@ -1122,7 +1122,12 @@ primitive candidates and omitted/bool-false flags, preserving the builtin throug
 strict calls and returning or throwing handlers.
 [Four source agreements and 614 state premises](coverage/semantics/define-startup-duplicate-review.json)
 cover captured request strings, callback siblings and exact throwing discard;
-special names, unknown startup values and wider flag/value forms remain partial.
+unknown startup values and wider flag/value forms remain partial.
+Non-NUL special `true`/`false`/`null` names now use the same Warning/false path with
+primitive candidates and omitted/bool-false flags. Recognition ignores case;
+messages and raw API captures keep the supplied spelling through handlers.
+[Four source agreements and 645 state premises](coverage/semantics/define-special-duplicate-review.json)
+cover preserved special values, strict calls and exact throwing discard.
 Boolean `case_insensitive=true` now warns before registration while keeping case
 sensitivity. A handler-created binding wins the subsequent duplicate check;
 [two exact sources and 221 public premises](coverage/semantics/dynamic-constant-flag-review.json)

@@ -7,6 +7,26 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Duplicate `define` now recognizes non-NUL `true`/`false`/`null` string names without
+case sensitivity, warning and returning false with primitive candidates and
+omitted/bool-false flags. Messages and raw API traces retain the supplied spelling;
+returning or throwing handlers preserve all special values without publishing a
+user row. Four exact originals agree at 84817642f. All 645 public premises pass:
+author 199+162+134 and independent 150 across four source-derived groups, including
+actual dispatch/handler/resume/discard, captured false versus live true flags,
+strict argument effects, raw request strings, sibling/caller/Exception identity,
+case/source/carrier/bounds refusals and budgets. No actor failed or repeated;
+the unchanged Unsupported baseline retains zero credit. Runtime widens two name
+predicates; two old Source43 protocol files repair obsolete refusals with admission
+and stale-message rejection, with fresh equivalents here and no 614 replay. Unknown
+startup values, other flags/coercions and owning/wider candidates remain partial.
+[Special-name duplicate review](coverage/semantics/define-special-duplicate-review.json).
+
+Pointwise composition over 62c33de71 preserves the incoming 399-module parent.
+The array-leaf class delegate is exact for primitives and no source uses an array
+candidate; other incoming task/source selectors are disjoint. Source4/public645
+and the older 614 campaign retain their cuts, with no joined actor or renewed credit.
+
 Numeric bitwise assignments now quietly convert fitting integral float masks
 left by the first handler in the both-fractional plain-CV route. Cached LEFT 12
 with live `5.0` directly stores 4/13/9 and detaches alias 99; supplied throw keeps
@@ -70,7 +90,7 @@ source4 retains its earlier cut because observed string values are unchanged.
 That failed actor, the earlier pre-main syntax failure and unchanged Unsupported
 baseline retain zero credit. Only affected state checks repeated. Runtime adds
 30 module400 lines; old user-duplicate and ignored-flag domains stay exact.
-Special names, unknown startup values, other flags/coercions and owning/wider
+Unknown startup values, other flags/coercions and owning/wider
 candidates remain partial.
 [Startup duplicate review](coverage/semantics/define-startup-duplicate-review.json).
 

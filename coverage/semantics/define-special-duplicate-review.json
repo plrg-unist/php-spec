@@ -1,0 +1,64 @@
+{
+  "scope": "Non-NUL string true/false/null names in any ASCII letter case, primitive candidates and omitted or bool-false third flags. Duplicate Warning/false in ordinary/strict calls through returning/throwing handlers. Partial core.",
+  "status": "independently_accepted_actual_parent",
+  "reviewer": "/root/source_review_35",
+  "parent": "180baaf6653f58e3c9354cca6d11ab8cf2ae79d8",
+  "semantic_revision": "de32e06e8a80a21a121360329d4440b20d303ce4",
+  "tested_revision": "84817642f4fdbd17b0f2ba9ff8ab0d9c28131a6f",
+  "semantic_files": {
+    "spec/semantics/400-dynamic-constants.watsup": "a7c99c59f9e0fdd177b9331073fd3de59addca2ad2ee59c112533d30eaa75c10"
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "tools": {
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7"
+  },
+  "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+  "primary": "Pinned zend_register_constant checks zend_get_special_const before table insertion. _zend_get_special_const recognizes exact true/false/null bytes without ASCII case sensitivity. Rejected definitions warn with the supplied spelling and return false; the special values remain unchanged.",
+  "semantics": "Two pure known-name predicates in module400 now accept builtin_value_bytes or special_constant. This deliberately extends the existing startup duplicate marker and raw handler-scope trace projection to special names. Primitive/source/normalized-send/name/value carrier/omitted-bool-false/prefix guards remain exact, as do receive, warning metadata, return, discard and prior user/case domains. No new helper/task/schema, native evaluation or owning-value path.",
+  "accepted": [
+    "Four exact model/native originals agree at84817642f/runtime de32e06e8. Literal true/FaLsE/NULL duplicates retain true/false/null and three original-casing PHP-stderr Warning lines. A selected request tRuE name and false flag survive V/live name/value/flag/callee mutations; its false-return handler preserves the special value, sibling887 and caller effects, with one default Warning. Strict V|N effects still reach duplicate false while a true handler suppresses default reporting. Strict/peer PHP stderr are empty.",
+    "All645 public premises pass at84817642f: author199+162+134 and independent150 across four original-derived groups. Four raw SL checks are exactly true LF/exit0/empty worker stderr/stable/reaped. Actual CONFIG/handler/RESULT/duplicate-return/discard steps check all special values without a user row, raw request API captures and casing, source/carrier/metadata/bounds/domain refusals and budget equality.",
+    "The independent request nUlL/863/false original keeps the same supplied Exception/Previous NULL, caller99, sibling847 and all three special values. Actual three-frame Throwable trace retains the raw REQUEST name. Full discard equals the restored caller state, preserving callback effects with no registration."
+  ],
+  "compatibility": "Two Source43 protocol files repair obsolete special-name refusals. Its immutable PHP_INT_SIZE literal still refuses a true-name substitution through source authority; mutable/function-produced names now admit the new special domain, while stale PHP_INT_SIZE/NAN diagnostic messages reject forged resumes. Source44 reached literal TRUE-substitution and mutable null/True/NULL/case-only error-message controls exercise equivalents. No historical mutable-CV equality is invented. Source43 source4/public614 and its failures keep exact original cuts; no replay or renewed credit.",
+  "zero_credit": "The unchanged first-source baseline at clean411f33e04 remains accepted/checked Unsupported dynamic constant call domain after B|, CLI1/null PHP exit/empty stderr and zero agreement. Native/preparation adds no application agreement. No failed actor, retry or timeout occurred.",
+  "execution": "LC_ALL=C/TZ=UTC, AS3GiB, serial stop-first/reap, INT+kill5 wrappers on CPU3/SLOT5. Initial author native3/baseline at411f33e04; later peer native1/model4/fresh public prepare-check4 at84817642f. Native children15s, source CLI45s/host60s, full SL children90s. All9 reports PASS with stable inputs/HEAD, every group reaped. Accepted CLI/SL worker stderr is empty; expected PHP Warning output is retained separately.",
+  "raw_root": ".tools/define-special-duplicate-evidence-44",
+  "report_sha256": {
+    "author/sources/model-report.json": "3c39cf9f1a757ac92021d65fe6ba59651e8eb0a2726744b961ebc3ee0d9b0892",
+    "author/sources/baseline-report.json": "eb799262f3fa794790bfd4c5a4b7784f335403ee58851f2c7a5dbdcbaf4883ff",
+    "author/sources/native-report.json": "e74a87b2e4a376aa4c52765b993acdf29f62a897ddbae46c194fd94bc21dcce7",
+    "author/review/model-report.json": "131cb360abebf91b7190859e3b4da43e84138d9025873fc75ac7674a32cc18a1",
+    "author/review/native-report.json": "40443d2bf5050df27dcaee7b7d53cf5c436878fbf0fedb0a461d002cd29cdcc7",
+    "author/public/check-report.json": "61a33cb249fb39c80b802326050cb37a460dd417c77d48f62ea4d6f8d964e450",
+    "author/public/prepare-report.json": "8959c0d83803d0451ffc39afb9a195184d704e0d749fafb5f232cfd82713fead",
+    "author/review-public/check-report.json": "4196b271f5f3f5db4587ac525c5c80f00a1de4b4e1e1ca44e8ca87a86cddb375",
+    "author/review-public/prepare-report.json": "e07a950c1b343a8ef1baf8e72c460e82f47542fe9b9ef93d8ef2e515ed31a684"
+  },
+  "commands": [
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/define_special_duplicate_sources.py --phase native --output .tools/define-special-duplicate-native-44",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/define_special_duplicate_sources.py --phase baseline --output .tools/define-special-duplicate-native-44 --case literal-special-duplicates-preserve-true-false-null",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/define_special_duplicate_review_sources.py --phase native --output .tools/define-special-duplicate-review-44",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 240s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/define_special_duplicate_sources.py --phase model --output .tools/define-special-duplicate-native-44",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/define_special_duplicate_review_sources.py --phase model --output .tools/define-special-duplicate-review-44",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/define_special_duplicate_protocol.py --phase prepare --sources .tools/define-special-duplicate-native-44 --output .tools/define-special-duplicate-public-44",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 360s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/define_special_duplicate_protocol.py --phase check --sources .tools/define-special-duplicate-native-44 --output .tools/define-special-duplicate-public-44",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/define_special_duplicate_review_protocol.py --phase prepare --sources .tools/define-special-duplicate-review-44 --output .tools/define-special-duplicate-review-public-44",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 120s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/define_special_duplicate_review_protocol.py --phase check --sources .tools/define-special-duplicate-review-44 --output .tools/define-special-duplicate-review-public-44"
+  ],
+  "recovery": "Four owned roots moved once into canonical author/{sources,review,public,review-public} after reviewer STOP and focused cwd/cmdline/fd users[]. Nine report hashes are unchanged. Restore those directories as .tools/define-special-duplicate-{native,review,public,review-public}-44 at the recorded cuts to recover exact source/cwd identities.",
+  "remaining": "Unknown startup values, other true/nonbool flags, coerced/prefixed names, wider/owning candidates, packed/FCC/arity forms and complete define-family closure remain partial. No engine bug or intentional divergence.",
+  "composition": {
+    "parent": "62c33de716e41b64aadc4da7eeda217688b74455",
+    "private_publication": "13bed65fda5d013aefdbdcfc53daadcb5f734e64",
+    "modules": 399,
+    "method": "Pointwise two-OR/scope-comment patch over incoming400, private-exact four new and two repaired Source43 test files, every other runtime/schema/ordered manifest parent-exact. Inventory only own2+2+1/review suffix; incoming docs/checkpoints retained with directly stale special-name boundaries corrected.",
+    "runtime400_sha256": "116b0fd1dba41e0387c4692390f80b9c8f7629e88bc590f5812432e0f386cc6a",
+    "seams": "The only incoming400 runtime edit changes dynamic_array_value to dynamic_define_value_class for certified object leaves; its primitive delegate is exact, and these sources have no array candidate/copy path. New270 nullable-array/noarg returned-source heads require a union signature/destructor return cursor absent from ordinary primitive/string callbacks. New386 comparison heads require WeakMap/Closure operands;404 BIT_ASSIGN,408 PROPERTY_EMPTY and409 LIST_FETCH selectors do not match these calls/Exception or trace DIM reads. Generic source/config/error/storage helpers, schema and399 manifest are unchanged.",
+    "evidence": "Independent actual-parent review finds no concrete interaction. Source4/public645 retain84817642f/de32e06e8; older Source43 source4/public614/failures keep their original cuts. No joined actor, replay or renewed execution credit."
+  }
+}
