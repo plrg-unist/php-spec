@@ -257,6 +257,6 @@ def $call_arguments_valid(S, (porigin), 2, eps, poperand_name :: poperand_array 
   -- if $magic_method_pending(S, pmagicmethodcall, n, pvalue*)
 def $magic_method_target(MAGIC_METHOD_TARGET pmagicmethodcall n pvalue*) = true
 def $magic_method_target(pcalltarget) = false -- otherwise
-def $named_call_shape(S, MAGIC_METHOD_TARGET pmagicmethodcall n pvalue*, (porigin)) = {SLOTS [NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN PNULL)], NAMED eps}
+def $named_call_shape(S, MAGIC_METHOD_TARGET pmagicmethodcall n pvalue*, (porigin)) = {SLOTS ([NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN PNULL)]), NAMED eps}
   -- if porigin = pmagicmethodcall.SITE
   -- if $magic_method_pending(S, pmagicmethodcall, n, pvalue*) \/ $magic_method_entered(S, S.CURRENT, S.FRAMES, pmagicmethodcall, n, pvalue*)
