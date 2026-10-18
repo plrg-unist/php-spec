@@ -375,13 +375,14 @@ def $dynamic_array_known_matches(S, pvalue, eps) = true
 def $dynamic_array_known_matches(S, pvalue, (pvalue_known)) = $dynamic_array_same(S, pvalue, pvalue_known)
 
 dec $dynamic_array_source(pstate, porigin) : bool
-def $dynamic_array_source(S, porigin) = ($dynamic_define_source(S, porigin) /\ $intrinsic_count(S, porigin) = (2))
+def $dynamic_array_source(S, porigin) = $dynamic_define_source(S, porigin)
 def $dynamic_array_call_valid(S, pconfigcall) = true
   -- if pconfigcall.KIND = INTRINSIC_DEFINE
   -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps
   -- if $config_invoke_valid(S, pconfigcall)
   -- if $dynamic_array_source(S, pconfigcall.SITE)
   -- if $dynamic_define_values(pconfigcall) = ((preqbytes, PARRAY n_array))
+  -- if ~$dynamic_constant_case_flag(pconfigcall)
   -- if $dynamic_constant_global_name(preqbytes)
   -- if ~$dynamic_constant_initial(preqbytes)
   -- if $dynamic_define_name_matches($user_constant_key(preqbytes), $dynamic_define_known(S, pconfigcall.SITE, 0))
