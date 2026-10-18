@@ -70,7 +70,7 @@ def checks(initial, stdout):
         # Pure flag/domain controls are never driven.
         'pconfigcall_true = pconfigcall[.SENT = [NAMED_SENT (KNOWN pvalue_name),NAMED_SENT (KNOWN (PARRAY n_input)),NAMED_SENT (KNOWN (PBOOL true))]]',
         '$dynamic_constant_case_flag(pconfigcall_true)',
-        '~$dynamic_array_call_valid(S,pconfigcall_true)',
+        '$dynamic_array_call_valid(S,pconfigcall_true)',
         'pconfigcall_nonbool = pconfigcall[.SENT = [NAMED_SENT (KNOWN pvalue_name),NAMED_SENT (KNOWN (PARRAY n_input)),NAMED_SENT (KNOWN (PINT 0))]]',
         '$dynamic_define_values(pconfigcall_nonbool) = eps',
         '~$dynamic_array_call_valid(S,pconfigcall_nonbool)',
@@ -98,7 +98,7 @@ def checks(initial, stdout):
         'S_throw.STORE[n_cell] = DEFINED (POBJECT n_right)',
         '$dynamic_array_call_valid(S_throw,pconfigcall)',
         '$dynamic_array_duplicate_valid(S_throw,pconfigcall,n_copy,pvalueclass_copy,n_constants)',
-        '~$dynamic_array_duplicate_valid(S_throw,pconfigcall_true,n_copy,pvalueclass_copy,n_constants)',
+        '$dynamic_array_duplicate_valid(S_throw,pconfigcall_true,n_copy,pvalueclass_copy,n_constants)',
         '$user_constant_at(S_throw.USERCONSTANTS,$ptascii("V68_REVIEW_SIDE")) = (puserconstant_side)',
         'S_throw.USERCONSTANTS = S.USERCONSTANTS ++ [puserconstant_side]',
         'puserconstant_side.VALUE = PINT 31',

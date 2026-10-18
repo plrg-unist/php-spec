@@ -1336,7 +1336,7 @@ Completed user-instance donors also retain their exact construction receipt and
 pointer in direct definitions and copied array leaves. Typed property aliases
 stay shared; existing normal, throwing-handler and shutdown cleanup retain the
 ordinary owners. [Instance define review](coverage/semantics/define-certified-instance-review.json).
-Fresh definitions with an omitted or captured false third flag also copy nonempty
+Fresh definitions with an omitted or captured boolean third flag also copy nonempty
 array trees containing certified stdClass or user-instance leaves. Copied
 containers freeze source reference values while object pointers and property
 writes remain shared, including
@@ -1348,6 +1348,13 @@ the old row and callback writes. [Array-duplicate review](coverage/semantics/def
 Explicit false flags retain their captured value through callbacks and traces;
 copying observes reference changes from all argument expressions.
 [False-flag array review](coverage/semantics/define-stdclass-array-false-flag-review.json).
+Captured true runs the ignored-case Warning before validation, copying and key
+lookup. A callback can repair or create a cycle, change referenced leaves or
+install the target key. A throwing first callback still publishes a fresh
+acyclic snapshot while the same Exception continues; original trace arguments
+remain separate from copied containers. Pending cyclic/duplicate arrays after
+that first throw remain partial.
+[True-flag array review](coverage/semantics/define-array-true-flag-review.json).
 Ordinary uncertified objects, other owning leaves and wider
 flags/names remain partial.
 Class-qualified `defined` now checks inherited user constants with lexical visibility

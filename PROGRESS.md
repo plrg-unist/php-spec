@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Captured true array `define` now emits the ignored-case Warning before recursive
+validation, copying and target lookup. Callbacks may change shared leaves, repair
+or create cycles, or install the duplicate key. A throwing first callback still
+publishes a fresh acyclic snapshot while the original Throwable continues, with
+its result/destination and original trace input preserved. Later duplicate Warning
+cleanup retires only the private candidate. Source3 agrees at b007/401; all 629 focused
+premises pass at bcdb: main263, eval180 and independent186. Main reuses its
+original fixture after a timing-only retry (98.75s/SL150); eval and peer pass
+their first executions at SL90. The original SL90 timeout and
+recorder count preflight remain zero; no source/native/runtime replay. Pending
+cyclic/duplicate arrays after a first-warning throw and coerced flags remain
+partial; paused Source47 NaN/precision behavior is untouched.
+[True-flag array review](coverage/semantics/define-array-true-flag-review.json).
+
 `constant`/`defined` calls with one positional argument now reject retained ordinary
 nonStringable instances and `stdClass` before lookup, weak or strict. Exactly25
 module400 additions reuse positional/source admission and direct raw TypeError
