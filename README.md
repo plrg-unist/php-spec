@@ -1163,6 +1163,16 @@ and strict code. Raw receiver traces and selected callees survive later argument
 effects; an ordinary `toString()` method is never invoked as a cast.
 [Four source agreements and 508 state premises](coverage/semantics/constant-query-nonstringable-name-review.json)
 cover errors and normal recovery. Other internal objects and wider forms stay partial.
+
+Retained propertyless Stringable names with non-NUL global results now convert
+before positional `define()` registration with primitive candidates and
+omitted/bool-false flags. A callback can
+create the key before the outer duplicate check; strict calls reject before method
+entry, while method throws preserve the raw object API trace and caller result.
+[Four source agreements and 717 state premises](coverage/semantics/define-stringable-name-review.json)
+cover conversion, registration, duplicate warnings and unwind. Wider receivers,
+values, flags and call forms remain partial.
+
 Positional `define()` calls with primitive arguments also reject counts below two
 or above three before name/flag reception or registration. Exact count messages
 and raw API arguments survive all argument effects, including a captured true

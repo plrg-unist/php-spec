@@ -7,6 +7,37 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Positional `define` now converts retained propertyless Stringable names with
+primitive candidates and omitted/bool-false flags before registration. A callback
+can create the key before the outer duplicate Warning; strict calls reject raw
+objects before method entry, and method throws retain raw API/caller traces and
+callback effects. Exactly68 module400 additions reuse existing stringifier, trace
+and discard machinery with dedicated source/saved-site guards; no task/schema
+change. Source4 agrees: retained literal at83a7b816b, final captured/strict/peer at
+f13b5e451/runtime83a7. All717 state premises pass atf13 (233+200+89+195), including
+actual raw/converted CONFIG, fresh/default/callback-created duplicate, strict error,
+real Throwable traces, full discard, carrier/source/shape refusals and budgets.
+Later duplicate names use the existing byte projection, without carrier-identity
+credit; raw candidate carriers stay exact. Seventeen reports are stable/reaped:
+14PASS and3 failures0 (one pre-execution DSL tail binding, two captured CLI45
+observer timeouts). Final captured source keeps exact Warning metadata/Exception
+identity/caller99/effects without catch trace traversal; full trace assertions remain
+in its200 premises. Initial62cab native/base and peer-native dee953 useCPU4, corrected
+literal usesCPU3 and final packetCPU5. Baseline Unsupported/B| retains0; only literal
+has one expected PHPstderr Warning, other accepted cases are quiet. Retained
+receivers, primitive values and non-NUL global results bound this slice; wider
+lifetimes/forms/flags remain partial.
+[Stringable-define review](coverage/semantics/define-stringable-name-review.json).
+
+Pointwise composition over d43a696d7 preserves the incoming401-module parent.
+The exact68 additions retain incoming array/true-flag registration rules; all four
+tests are private-exact, and every other runtime/manifest path keeps parent bytes.
+Closure-binding trace guards, __isset signatures, Generator foreach retention,
+magic-empty cleanup, compound RHS conversion and LIST undefined-key selectors
+have no producer in these originals. Shared stringifier/source/trace/Throwable/
+ownership machinery is unchanged. Source4/717 keep their distinct83a/f13 cuts and
+three failures0 without a joined actor, accepted replay or renewed execution credit.
+
 Pending Generator `throw` now admits a bare yield inside one active by-reference
 array `foreach`. Parked close retains the acquired reference wrapper and removes
 the iterator before ordinary item-CV and current-copy cleanup. Replacing the whole

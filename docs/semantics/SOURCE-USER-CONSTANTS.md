@@ -625,6 +625,27 @@ Source53's conversion/trace/lifetime rules and accepted642 cuts stay unchanged.
 Propertyless retained receivers bound this validation; sole-owner destruction,
 other internal objects, `__call` declarations and wider forms remain partial.
 
+Retained propertyless Stringable names now convert before positional `define`
+registration with primitive candidates and an omitted/bool-false flag. Dedicated
+arg0/source and saved-site guards keep DEFINE outside the broad string-kind
+predicate. A successful method returns to a separate converted CONFIG before
+current-table registration, so a method-created key selects the real duplicate
+Warning. Strict calls reject the raw object before method entry. A method throw
+retains its raw receiver/earlier candidate API trace and discards both consumers.
+The converted CONFIG preserves its authenticated name carrier; later user-duplicate
+traces keep the existing name byte projection, without name-carrier identity credit.
+The original candidate carrier and false flag remain exact.
+The [Stringable-define review](../../coverage/semantics/define-stringable-name-review.json)
+binds literal agreement at83a7b816b and final captured/strict/peer agreements plus
+all717 state premises atf13b5e451/runtime83a7. The captured source observes exact
+Warning metadata, supplied Exception identity, caller99 and callback effects;
+its actual full trace/message/PreviousNULL and discard are checked at reached
+state fronts. Earlier trace-observing native originals remain native-only: two
+CLI45 timeouts and one prior DSL binding failure retain zero credit. Only the
+changed source and affected/unrun checks repeat; Source53/54 evidence is unchanged.
+Sole-owner destruction, wider receivers/returns, class/NUL/HALT results, owning
+candidates, true/coerced flags and named/packed/owner forms remain partial.
+
 `define` also receives int/bool/float names with nonowning primitive values and
 an omitted/already-false flag. Each source send maps to its normalized captured
 slot before available immutable facts are checked, including reordered named
@@ -793,7 +814,7 @@ exception-class lookup and `ZVAL_COPY_OR_DUP`; `zend_declare_typed_class_constan
 interns direct string values before installation.
 Stored cyclic trees, other objects, coerced array flags,
 cyclic/duplicate arrays after an ignored-flag handler throws,
-Stringable names beyond the bounded retained query domain,
+Stringable names beyond the bounded retained query/DEFINE domains,
 array names beyond the bounded flat query/DEFINE domains,
 array/object values with scalar or null names, true/NULL/NaN
 flags with scalar names, nonbool flags with nonfinite float names, true/NULL/NaN flags with
