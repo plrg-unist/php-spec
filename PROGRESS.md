@@ -7,6 +7,25 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Complete quiet numeric strings now convert after the first callback in the
+both-fractional plain-CV modulo/shift/numeric-bitwise routes. Cached LEFT `12` with
+numeric `5` stores `2`/`384`/`0`/`4`/`13`/`9`, preserving RHS string identity and
+detaching alias `99`. Real concat carrier `"05"` and whitespace/exponent text are
+covered. Supplied throw preserves its Exception/destination/alias; independent
+default-first `"-1"` XOR stores `-13`, but negative shift and `"0"` modulo raise
+ArithmeticError/DivisionByZeroError at RHS line 25 before store/detachment.
+Ten originals agree at 43865027d; 130/109/109 plus independent 153/153/153 SL premises pass 807 at
+668e39707/399, covering actual handlers, carrier metadata, cells/owners and budgets.
+One guarded string snapshot, five rules and three boundary exclusions; old helpers,
+source guards, tags/schema and other routes stay exact. All 15 rows remain partial;
+controls and earlier renewed credit zero, OP12 paused.
+[Quiet string ledger](coverage/semantics/quiet-string-review.json).
+
+Composed over b4661142f/399 after pointwise review of typed-return array
+cleanup, DEFINE flags/INF, SensitiveParameterValue/WeakMap comparison, literal-list
+and private-member empty/getter selectors. Source10/state807 retain private cuts
+without actor, replay or renewed credit.
+
 Terminal inherited private-property `empty` now skips an untyped public
 by-value `__get` when `__isset` is absent. It authenticates the external CV/literal
 site and completes true without manufacturing a receiver owner. Later ordinary

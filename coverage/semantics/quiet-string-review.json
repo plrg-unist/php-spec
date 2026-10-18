@@ -1,0 +1,126 @@
+{
+  "version": 1,
+  "milestone": "OP38 quiet numeric-string RHS after first compound LEFT warning",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP8.5.10 CLI NTS64; project-local pinned engine/profile",
+  "scope": "Initially distinct defined plain-CV finite in-range fractional floats, with an eligible named deprecation handler. At returned BOTH_LEFT1, the original allocated nonreference RHS cell may hold a plain or authenticated carrier string whose existing string_long result is STRINT with no notices. Numeric %=, <<=, >>=, &=, |=, ^= use historical LEFT and preserve RHS bytes/type/identity; target remains safe, allocated, nonowning and unconstrained, including a late target reference. No initial/source/phase admission widening.",
+  "runtime_revision": "43865027d1c089b5ee2c31e370b9cc75335c76bf",
+  "helper_revision": "668e397070d7a7fa9a360b6b820de6183b7e3726",
+  "private_modules": 399,
+  "runtime_sha256": {
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "a9cd850977de3631f2bcfa5cd7bc0606552b724a388ec453f4583ca2406028a2"
+  },
+  "engine_basis": [
+    "Pinned Zend/zend_operators.c convert_op1_op2_long captures LEFT before its precision diagnostic, then converts the live RHS. bitwise_and/or/xor inline the same ordering after initial dereference/two-string specialization, which initial floats bypass. zendi_try_get_long parses complete numeric text; no second callback occurs when trailing-data and compatibility notices are absent.",
+    "Zend/zend_operators.h zend_dval_to_lval_cap saturates finite overflow and zend_is_long_compatible compares (double)long with the parsed double. Existing string_long STRINT i eps matches this quiet domain, including fitting integer/exponent forms and compatible saturation boundaries; this milestone changes no pure numeric parser or conversion.",
+    "Successful integer operations destroy the result wrapper and detach late aliases. Modulo0 and negative shifts raise their fresh Errors before result destruction/storage; negative XOR masks remain signed operands. A supplied first-handler Exception cancels before RHS conversion/storage.",
+    "Module404 adds one string-bytes/plain-or-valid-carrier safe snapshot, three direct family commits, modulo-zero and negative-shift rules, plus three boundary exclusions (45 insertions/3 deletions). Existing integer/string helpers, carriers, source/phase/history validators, earlier routes, tags/schema and search protocols remain unchanged."
+  ],
+  "contract": [
+    "The first callback late-aliases LEFT12.5, writes99 and a string. Captured12 with numeric5 stores2/384/0/4/13/9 for modulo/leftshift/rightshift/AND/OR/XOR, each distinct from lost LEFT cache. Dynamic nonempty string concat '0' with global tail5 produces a genuine REQUEST_STRING05; OR uses the complete whitespace/exponent string +5e0. Both convert quietly, remain strings, keep exact identity/STRINGDATA and calls1, and success detaches alias99. Later target7 leaves alias99.",
+    "First supplied throw after constructing the dynamic carrier keeps the same Exception/no Previous, destination100 and alias write-through, with RHS05 preserved. All six operator tags and this cancellation are validated by exact originals.",
+    "Independent false first handlers leave interned -1 or0 and exactly one default LEFT12.5 Deprecated at RHS25. Cached12 XOR(-1) stores(-13), with fresh result CELL/LOCATION/store append and alias owners2 to1. Negative >>= raises ArithmeticError(Bit shift by negative number); modulo0 raises DivisionByZeroError(Modulo by zero), each fresh at line25/no Previous/sole Throwable owner, with exact STORE/ENV/REFCELLS/events/STRINGDATA and alias owners2 preserved before catch. Later alias99 versus alias7 distinguishes stores from errors.",
+    "Focused state selects three author successes (dynamic modulo, literal shift, exponent OR) plus independent signed XOR/negative shift/zero modulo. Maintained807 premises include actual first dispatch/entered/returned states, RHS guards, atomic store/error, original cells/owners, exact outputs and whole/budget equality. Pure guard controls include accepted plain-string/unrelated-data-growth projections and rejected warning/nonstring/invalid-carrier/ref/binding/owning/constrained projections; they are not wider executed programs. Carriers are immutable identity metadata with no HSTRING heap owner."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-38/source-43865027d-author-seven/report.json",
+        "sha256": "5074cc12e58f21eb576800e400a33c96976b031fe4d81c1c723be8346a09e1d0",
+        "revision": "43865027d1c089b5ee2c31e370b9cc75335c76bf",
+        "cases": [
+          "quiet-string-mod-carrier",
+          "quiet-string-left-literal",
+          "quiet-string-right-literal",
+          "quiet-string-and-literal",
+          "quiet-string-or-exponent",
+          "quiet-string-xor-literal",
+          "quiet-string-first-throw"
+        ],
+        "agreements": 7
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-38/review-model-43865027d-three/report.json",
+        "sha256": "83e78c428035ef97de4f96b42086d736e1a2de0a5da612455ebb4c6d4abbe2b8",
+        "revision": "43865027d1c089b5ee2c31e370b9cc75335c76bf",
+        "cases": [
+          "quiet-string-negative-xor-default",
+          "quiet-string-negative-shift-default",
+          "quiet-string-zero-modulo-default"
+        ],
+        "agreements": 3
+      }
+    ],
+    "state": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-38/state-668e39707-six/report.json",
+      "sha256": "27b5c4c45be9ccdb8dc3eea147efeddd5c453c9b17f15152f7f33aa4d2c03262",
+      "revision": "668e397070d7a7fa9a360b6b820de6183b7e3726",
+      "modules": 399,
+      "author_conditions": [
+        130,
+        109,
+        109
+      ],
+      "independent_conditions": [
+        153,
+        153,
+        153
+      ],
+      "total": 807
+    },
+    "total_source_agreements": 10,
+    "total_focused_state_conditions": 807,
+    "compatibility": "Only two helper scripts change43865027d..668e39707; runtime remains byte-identical. Retained checked preparation authenticates fullsource7+peer3 identities and maps only3+3 state fixtures using original paths/native bytes. Full399 SL uses the unchanged inherited quiet_scalar HELPERS (one arithmetic prefix plus three BOTH suffixes). Counts include setup/guard premises, not807 programs or renewed source agreement."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-38/baseline-79f27865d-mod-carrier/report.json",
+      "sha256": "b2da7d3655eeff78d989c14a8e7da0bdef4c4736ae79778e918aee308c2ca5c6",
+      "result": "Accepted checked Unsupported after genuine H:1:8192:25:1; at the modulo after-first live-RHS boundary, model exit1/empty stderr/0credit. Native converts dynamic05 and stores2. No override."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-38/native-79f27865d-author-seven/report.json",
+        "sha256": "860fca5d611f2b9df20a65b05cf10588f678b043e96e10a9260a3c1f885333f5"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-38/native-79f27865d-review-three/report.json",
+        "sha256": "27ad7f65c834db4de55ead51fc1a1c4d6e5d8926d610556472dac59c6f4f07d8"
+      }
+    ],
+    "checked_preparation": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-38/state-prep-668e39707-six/report.json",
+      "sha256": "65ec9b05a682db64b340b803bb03ed2a4c608649eaa214cb21e599fe89375d54",
+      "result": "Frontend parse/adapter check only, retained original paths/native bytes; zero native/application/numeric replay."
+    },
+    "standalone_syntax": "Six standalone syntax diagnostics separately carry zero semantic credit."
+  },
+  "required_follow_on": [
+    "Initial forms outside this both-fractional plain-CV route, leading/nonnumeric/lossy or otherwise warning RHS conversions, arrays/objects/resources, reference/rebound/expired RHS, unsafe/missing/rebound/expired/owning/constrained targets and wider callback/exit/lifecycle behavior remain partial. Earlier quiet integer/float/bool/null routes retain their original evidence identities.",
+    "All15 affected inventory rows remain partial. Prior OP37 and older accepted cuts receive zero renewed credit; OP12 remains paused."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-38",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "environment": "LC_ALL=C,TZ=UTC,no PHP_SPEC_SCRIPT_ENCODING. Native/baseline CPU2/SLOT4; source/prep/SL CPU1/SLOT1. Native30/modelCLI60-process90; checked workers30; standalone syntax30 and full399 SL120 per group. Accept only exact true newline/empty stderr/exits0/no interruption/reaped groups/PIDs.",
+    "commands": [
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 tests/semantics/quiet_strings.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 tests/semantics/quiet_string_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-38/state-prep-668e39707-six/run-prepare.py",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-38/state-668e39707-six/run-state.py"
+    ],
+    "record": "Restore matching Git cuts/local tools and fresh output roots; archive retains original bytes/paths/raw streams, immutable checked fixtures, commands/exits/reaping. No evidence archive is a runtime dependency."
+  },
+  "composition": {
+    "parent": "b4661142f8f7bf59bddbd4e141555be1d9e8b51b",
+    "private_publication": "0c861620651a90635a7dc115bec510dbe3c25848",
+    "modules": 399,
+    "runtime_sha256": {
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "a9cd850977de3631f2bcfa5cd7bc0606552b724a388ec453f4583ca2406028a2"
+    },
+    "other_incoming_paths_preserved": 42,
+    "gate": "No joined actor:404 retains exact private runtime; every other spec byte,30/04/54/55/modules and all other incoming paths retain the parent. Nullable-array assigned-return REF cursors, DEFINE array flags/INF duplicates, SensitiveParameterValue/WeakMap comparisons, recursive literal LIST_FETCH and private-member empty/getter selectors are absent from all10 OP38 originals. Named h is untyped and returns bool; only builtin Exception/ArithmeticError/DivisionByZeroError objects occur, with no object destructors, DEFINE, user constant publication, property empty or LIST sources. CLASS91 new generic PROPERTY_PREP exclusion first asks property_empty_get_skip, which requires its PROPERTY_PREP/ORIGIN_RETURN/ISSET_RESULT true shape and private-property source; OP38 tasks and builtin Throwable getter methods cannot select it. Shared handler/CV-writer/string_long/string_bytes/carrier/integer_binary/heap interfaces remain unchanged. Source10@43865027d/state807@668e39707 retain private399 cuts without replay or renewed credit"
+  }
+}

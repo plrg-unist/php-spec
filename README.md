@@ -658,6 +658,11 @@ In the both-fractional compound routes, a first handler may also leave a quiet
 captured LEFT and detaches late aliases; modulo zero preserves them and raises
 DivisionByZeroError. Ten exact originals and 688 focused SL premises pass in the
 [quiet scalar ledger](coverage/semantics/quiet-scalar-review.json).
+Complete quiet numeric strings after that callback also convert in all six
+operators, preserving RHS string identity while using the captured LEFT. Dynamic
+`"05"` and whitespace/exponent text succeed; `"-1"` is a valid XOR mask but an
+invalid shift count. Ten originals and 807 focused SL premises pass in the
+[quiet string ledger](coverage/semantics/quiet-string-review.json).
 Explicit array-to-string casts now suspend through named warning handlers for
 a bounded plain-CV array input. The borrowed array adds no saved owner: replacing
 or removing its CV still yields fixed `Array`, while a supplied throw preserves
