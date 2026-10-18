@@ -32,6 +32,8 @@ live instance-property type sources: singleton copies shed their
 constraint while the original stays typed; shared copies retain it. Untyped
 reference cells may also hold flat runtime arrays of direct null/bool/int/float values. Wrapper
 debt stays separate from child-table COW, including deletion and throw cleanup.
+Retargeting a flat-array wrapper to an ordinary scalar preserves its acquired
+count, cancelling debt first or retaining the old wrapper and its child.
 Unsafe deficit retirement and wider domains remain Unsupported. Duplicate
 replacement and later items stay ordered.
 

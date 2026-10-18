@@ -457,30 +457,32 @@ GENERATORRETURNRETAINED and LITERALREFRETAINED lift by empty fields with no root
 and valid empty receipts, preserving owners/budgets pointwise. Source3/state632
 retain private403 cuts and both zero-credit failures without replay.
 
-Lossy-float literal-key reference callbacks now admit untyped CELL payloads that
-are mutable nonpool flat arrays of DIRECT null/bool/int/float entries. The missing
-owner stays on the wrapper: its single child-table edge has ordinary ownership.
-Singleton outer copies unwrap before child COW; a still-indebted CELL can change
-child tables while a direct CV keeps the previous table. Same-cell insertion
-transfers the acquired owner without a ghost, and inverse retargeting balances
-both count biases through deletion and supplied-throw cleanup.
-Four originals and strict405 pass first attempt at `7aec957b6`; 847 state premises
-(837 Boolean +10 raw; author357/independent490) pass at `ecb5a26e8`, also first attempt.
-The genuine checked Unsupported ingress baseline retains zero agreement. Only413 changes runtime behavior; the source/handler,
-count/cancellation and prune algorithms stay exact. One old pure builder-negative
-control now names the builder guard; original PHP and historical cuts are unchanged.
-Old-array completion requires ALIAS and neither payload may be the builder.
-Array-old to ordinary-scalar DIRECT, owning-CV/table debt, pooled/immutable or
-nested/reference-bearing/string-leaf arrays, array-valued type sources and other
+Lossy-float literal-key reference callbacks now admit old flat-array wrappers
+when the handler replaces the element CV with an unwrapped null/bool/int/float.
+Insertion uses that live scalar directly and preserves the acquired old count:
+existing debt cancels first; otherwise a request owner retains the wrapper and
+its single child-table edge. After ordinary names disappear, unmatched owners
+keep probe copies aliased while child-table COW still separates a direct snapshot.
+Repeated retargets preserve owner multiplicity, including supplied-throw cleanup.
+The source/handler, count/cancellation and prune algorithms remain unchanged;
+only module413's old-payload guard broadens. One superseded A23 pure control now rejects
+an ordinary owning-array CV; original PHP and historical cuts stay exact.
+Four fresh natives and a genuine checked Unsupported after-callback baseline
+retain `605451811`; the baseline has zero agreement credit. Strict405 and four
+model-only source comparisons pass at `050b6b476`;
+722 focused premises (711 Boolean +11 raw; author338/independent384) pass at
+`700ab34e0`. All postimplementation actors pass first attempt, quiet and reaped;
+original native paths/bytes/streams are reused without replay.
+Untyped arrays remain mutable, nonpool and flat DIRECT null/bool/int/float, with
+neither payload equal to the builder. Owning-CV/table debt, array-valued type
+sources, nested/reference-bearing/string-leaf or pooled/immutable arrays and other
 owning payloads remain Unsupported. Effective-zero, active collection and
-outstanding request-end debt stay refused; held LIST/owned-NUL paths are untouched.
-[Flat-array review](coverage/semantics/array-literal-float-ref-arrays-review.json).
+outstanding request-end debt remain refused; held LIST/owned-NUL paths are untouched.
+[Array-to-scalar review](coverage/semantics/array-literal-float-ref-array-scalar-review.json).
 
-Composed over `0824bac1b`/405 after independent review of incoming comparison,
-INI/DEFINE, Generator and dynamic-NEW selectors, absent here. Module413, six new
-tests and the one pure-control edit retain accepted bytes; other runtime paths
-and the ordered manifest stay parent-exact. Source4/state847 keep their private
-cuts without a joined actor or replay.
+The earlier flat-array slice retains source4/strict405 at `7aec957b6` and state847
+at `ecb5a26e8`, composed over `0824bac1b` as `27718dbb1`.
+[Flat-array ledger](coverage/semantics/array-literal-float-ref-arrays-review.json).
 
 The earlier primitive typed-source slice retains source4/strict405 at `eb44824e1`
 and state864 at `96176f7c1`, composed over `f305be84b` as `d2f594f3a`.
