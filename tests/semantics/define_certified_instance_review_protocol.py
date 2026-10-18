@@ -24,6 +24,9 @@ def $test_certified_instance_peer_front(S,2) = true
   -- if expression* = (NExprVariable (BYTES text_slot) metadata_variable) :: expression_tail*
   -- if $base64(text_slot) = $ptascii("slot")
   -- if $lookup(S.ENV,$ptascii("slot")) = (n_slot)
+def $test_certified_instance_peer_front(S,3) = true
+  -- if S.TODO = (THROW_SEARCH n_error) :: ptask_tail*
+  -- if ~$test_certified_instance_peer_front(S,1)
 def $test_certified_instance_peer_front(S,n_phase) = false -- otherwise
 dec $test_certified_instance_peer_seek(pstate, nat, nat) : pstate
 def $test_certified_instance_peer_seek(S,n_phase,0) = S
@@ -145,7 +148,8 @@ def checks(initial, stdout):
         '$heap_owners($heap_graph(S_throw),HOBJECT n_left) = 2',
         '~(n_right <- S_throw.DESTRUCTION.CALLED)',
         '~(n_left <- S_throw.DESTRUCTION.CALLED)',
-        *common.step('S_after', 'S_throw'), *common.public('S_after'),
+        *common.step('S_drop', 'S_throw'),
+        *reach('S_after', 'S_drop', 3),
         'S_after.TODO = (THROW_SEARCH n_error) :: ptask_throw*',
         '~(HARRAY n_candidate <- S_after.ALLOCATIONS)',
         '~(HARRAY n_candidate_child <- S_after.ALLOCATIONS)',
