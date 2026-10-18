@@ -7,6 +7,30 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Initialized SensitiveParameterValue wrappers now compare their private payload
+and clone shallowly with fresh identity. Forty module379 lines reuse existing
+value comparison and owning snapshots; only closed results with unchanged state
+are admitted. Payload callbacks/diagnostic effects remain explicit Unsupported.
+Three exact originals and 413 Boolean premises (401 setup + 12 pure)/11 actual
+transitions pass at 84b3c1f20/401: eight comparisons and three clones. Same-Map
+wrappers are loosely equal but strictly distinct; scalar/array values determine
+signed order and outer scans. Raw clone steps preserve snapshots, allocation and
+owning edges. Real source prefixes/endings additionally check COW/shared aliases,
+readonly rejection, original retirement and Map/private-value/key owners. The later
+outer Stringable callback uses existing rules. The unchanged pair finishes
+normally with wrong rows; clone fails without a frontend/program/outcome receipt.
+Both retain zero agreement. One pre-main negative-literal fixture typo stays zero;
+only its EL repeats before the first SL. Uninitialized wrappers, export, property updates
+and payload effects remain partial.
+[Sensitive-value review](coverage/semantics/sensitive-value-review.json).
+
+Composed over 7be8de0d7/401 after independent review of nine incoming runtime
+paths. Generator/foreach, DEFINE, pending by-reference destructor replay and
+selected-reference SUB/MUL Warning guards are absent from these originals;
+integer counter increments do not use those binary arithmetic tasks. Fresh SUBMUL
+task variants add no state fields. Only module379 changes; source3/state413/11
+retain tested84b3c1f20/401 without a joined actor or renewed execution credit.
+
 Ordinary binary SUB/MUL now resumes leading-numeric-string warnings for two
 preexisting untyped reference cells. Both referents are selected before conversion;
 LEFT's handler may repair an initially nonnumeric RHS, and a later name rebind

@@ -60,9 +60,18 @@ The exit binder positively admits only EXIT/DIE identities after the enum grows.
 Protected/private properties reuse the lexical resolver and mangled slot keys described
 in [SOURCE-PROPERTY-VISIBILITY.md](SOURCE-PROPERTY-VISIBILITY.md).
 
-This is a bounded implementation for admitted ordinary objects and closures.
-Nonempty readonly `clone(..., withProperties)` updates now use a separate second
-window with [captured conversions and write revisions](READONLY-CLONE-UPDATES.md);
+Initialized `SensitiveParameterValue` wrappers also use a
+[bounded shallow clone](../../coverage/semantics/sensitive-value-review.json).
+A fresh wrapper retains the same owning private value snapshot: Map identities
+remain shared, arrays retain COW and embedded reference cells stay shared. The
+original can retire while its clone keeps the value alive; readonly constructor
+re-entry still fails. Three originals and 413 Boolean premises cover three clones
+and eight payload/aggregate comparisons. Uninitialized wrappers, hidden export,
+payload comparison effects and nonempty clone-with-properties updates remain open.
+
+These ordinary-object, Closure and initialized-wrapper rules remain bounded.
+For ordinary objects, nonempty readonly `clone(..., withProperties)` updates use
+a separate second window with [captured conversions and write revisions](READONLY-CLONE-UPDATES.md);
 an empty update array uses only the callback window. Generator `__clone`
 creation/discard, property hooks, lazy objects,
 destructors, uncloneable internal objects, Traversable argument unpacking and

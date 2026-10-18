@@ -2425,6 +2425,13 @@ ownership and quiet aggregate tails; later calls expose the existing readonly Er
 Uninitialized wrappers and wider protocols remain partial.
 [Sensitive wrapper/capture review](coverage/semantics/weakmap-sensitive-comparison-review.json).
 
+Initialized SensitiveParameterValue wrappers compare their private payload and
+clone shallowly with fresh identity. Three originals and 413 Boolean premises
+cover eight comparisons and three clones, retaining array COW/shared references,
+signed aggregate continuation and original retirement. Payload comparison effects
+and uninitialized wrappers remain partial.
+[Sensitive-value review](coverage/semantics/sensitive-value-review.json).
+
 Authenticated SensitiveParameterValue constructor Closures compare equal across
 fresh captures and clones of the same live receiver. Distinct receivers stay
 uncomparable even when wrapping the same Map. Two originals and 448 Boolean
