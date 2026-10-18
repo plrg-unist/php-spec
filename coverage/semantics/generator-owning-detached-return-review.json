@@ -1,0 +1,160 @@
+{
+  "milestone": "Iterator27: owning copied detached yield-from returns",
+  "status": "Implemented, validated and independently accepted; pointwise composed over ada32a063/403.",
+  "independent_reviewer": "iterator_review_15",
+  "base": "396feeccaefc3d57821a6917c45e9b286e0ba690",
+  "tested_runtime": "5a0d51e91425955ae4abf6ff865538767d484234",
+  "modules": 401,
+  "scope": "Direct-root ordinary Generator call-unpack after an independently completed child copies an owning object or array return into a simple-CV assigned yield from. The parent has no other owning suspended task or HELD value, no parked history and inactive GC. Real next consumption and forced close are separate paths; active-chain owning unpack and pending APIs remain excluded.",
+  "semantics": [
+    "Child completion copies its return into the parent result slot and detaches the child. Null-key unpack raises the real Error before target entry or argument sending, leaving that continuation available. Normal next transfers its single value owner into RESULT and executes the parent body.",
+    "Forced close moves the exact waiting COMPLETE value to request retention before collecting frame jobs, without decrement or duplicate return job. Parent finally and current-cache cleanup remain ordinary. The receipt owns only the value; parent/child indices and source metadata are borrowed, including after allocation retirement.",
+    "Retained arrays keep their live embedded reference cells. A later cell write retires the old referent while the new referent stays through the array. A temporary parent cache destructor can replace the unpack Error before caller catch with the original Error as Previous; the distinct copied return remains request-store-late."
+  ],
+  "source_authority": [
+    "vendor/php-src/Zend/zend_generators.c::zend_generator_update_current copies a completed child retval into the parent YIELD_FROM result.var while the parent opline remains at YIELD_FROM, then detaches/releases the child.",
+    "Zend/zend_compile.c::zend_compile_yield_from uses a temporary result; Zend/zend_opcode.c::emit_live_range starts its default TMPVAR range after that opcode. Zend/zend_execute.c::cleanup_live_vars and zend_generator_cleanup_unfinished_execution explain the unfinished-slot close boundary. The Generator storage destructor preserves ordinary finally/cache cleanup and request-store destructor order.",
+    "These are pinned implementation observations, not portable lifetime guarantees. No engine bug or intentional divergence is classified."
+  ],
+  "validation_identity": {
+    "php": "8.5.10 CLI NTS 64-bit; source 34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml 5.1.0; SL, caches off and encountered determinism checks",
+    "environment": "tests/semantics/profile.json; PHP -n; LC_ALL=C; TZ=UTC; PHP_SPEC_SCRIPT_ENCODING unset. Fresh native4/baseline ran serially on CPU4; preparation/strict/source/state on CPU5. Raw records preserve exact commands, caps, exits, outputs and stable inputs/HEAD."
+  },
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "ba86a5da3c1a821a4dfb73b9069dd7ac86e3d2a2fd3c5ccd87295bf0f5c0217e",
+    "spec/semantics/39-ownership.watsup": "779c14a1fb4149082e550df6d9b470364827d3efc3b909719d43eebd5fb1e22c",
+    "spec/semantics/40-control.watsup": "9a0a89915b2db5eccb0d7f0a59b407be8ae1e5001825ce3353c7415ba81caf72",
+    "spec/semantics/84-call-integrity.watsup": "741eaa49675c2c9a4fab33ee47a4478d35436e7597a65cb5ca1b2d9bdd9f012a",
+    "spec/semantics/280-generators.watsup": "4d39a212be3f10003333bb2aece998274305f299b5911b22f7a396c63ef9513d",
+    "spec/semantics/289-generator-delegation.watsup": "4a4ff8c969301ce7e1b175ede39718fbe4a20009940ab478870645430fb65ff6",
+    "spec/semantics/301-cycle-collection.watsup": "7e20a737d5bd67b4d46b71cf9a6a19472690e7072c9c8597bf8ee904610149fd",
+    "spec/semantics/303-generator-force-close.watsup": "8702806ab0b100627002bd1031108430292fa6d9fe5b8da2473e7d6462e2e207",
+    "spec/semantics/405-call-generator-unpack.watsup": "5300f314e08ff89eda2f0cb4483523d1ea629c02d06fec9db9b31dee43e2a941"
+  },
+  "raw_root": ".tools/generator-owning-detached-return-27/.tools/",
+  "native_and_baseline": {
+    "revision": "91af97f6c6b7d3e4403fd3f00f8a1829c4536e0b",
+    "native_reports": [
+      "generator-owning-detached-return-native-4thkldul/report.json",
+      "generator-owning-detached-return-review-native-sa7bsl8n/report.json"
+    ],
+    "result": "Four immutable originals captured before production with no forecast stdout: normal exit0, empty stderr, no timeout, independently reviewed raw tuples. Zero model credit.",
+    "baseline_report": "generator-owning-detached-return-baseline-7tt466t8/report.json",
+    "baseline_result": "Exact 8cb1eb4e original and retained 4thk native tuple reused without PHP replay. Genuine public Unsupported Generator unpack delegated producer after ten OUTPUT chunks joining P|G|C|L|V|HELD|K|1|M|. Model exit1, empty stderr, no timeout/diagnostic/exit_status; stable unchanged base runtime, zero agreement."
+  },
+  "strict_and_elaboration": {
+    "revision": "0195cd721cfec246a560dca9ea06008e05ef10f8",
+    "strict_report": "generator-owning-detached-return-author-sl-gf3i8dza/report.json",
+    "strict_result": "Strict401 returns exact true with stable inputs/HEAD, empty stderr, exit0 and no timeout.",
+    "elaboration_report": "generator-owning-detached-return-state-elab-e7rjxcl1/report.json",
+    "elaboration_result": "One ordered401-module parse/elab invocation includes five new fixtures and the one selected historical fixture, alpha-renaming only stage/seek/main. Unique EOF and all six main headers, stable inputs/HEAD, exit0/empty stderr/no timeout. Zero interpretation or semantic credit."
+  },
+  "normal_sources": {
+    "new_distinct_originals": 4,
+    "promoted_prior_originals": 1,
+    "revision": "0195cd721cfec246a560dca9ea06008e05ef10f8",
+    "reports": [
+      "generator-owning-detached-return-source-2h5nrc2h/report.json",
+      "generator-owning-detached-return-review-source-74k5evhf/report.json",
+      "generator-detached-unpack-source-sziebm0d/report.json"
+    ],
+    "result": "All five exact stdout/stderr/exit tuples agree with retained native originals without PHP replay. Four are new; fa821ebd is the existing required owning-return control, promoted from Unsupported without changing its source/hash/native bytes. No source failure or repeat."
+  },
+  "reached_states": {
+    "new_groups": 5,
+    "new_premises": 515,
+    "author": 263,
+    "independent": 252,
+    "local_checks": 490,
+    "generic_reachability": 25,
+    "reports": [
+      [
+        "fiber-state-review-2gfvky_f/report.json",
+        120
+      ],
+      [
+        "fiber-state-review-orz61khf/report.json",
+        80
+      ],
+      [
+        "fiber-state-review-dwvwwkq9/report.json",
+        63
+      ],
+      [
+        "fiber-state-review-f8e66vgj/report.json",
+        129
+      ],
+      [
+        "fiber-state-review-gjb9kewn/report.json",
+        123
+      ]
+    ],
+    "author_revision": "137ee15b749268059cf8ff457f46b2e7aa703408",
+    "independent_revision": "e852698700881c139b83fa337d8c4bba5f3b83b1",
+    "checks": "Together these cover genuine pre-close COMPLETE-to-retention transfer without a return job, ordinary COMPLETE-to-RESULT consumption, public validity in real force-close finally with a saved close claim, post-close shared-cell write and actual cache-destructor CURRENT. They check precise value/cache/cell/storage-pin/pending Error owners, source/tail/claim/duplicate refusals, public/heap validity, zero/split budgets and full native endings. The derived waiting-result GC refusal grants zero GC source agreement.",
+    "affected_prior": {
+      "group": "retired-child-receipt-keeps-only-parent-object-cache-owner",
+      "premises": 95,
+      "local_checks": 90,
+      "generic_reachability": 5,
+      "revision": "2b7ea68d6a666c81b96afda10e716d3effd2e17f",
+      "report": "fiber-state-review-2_go6_jf/report.json",
+      "result": "Only the directly affected old group is renewed. Its derived owning continuation now has positive waiting/delegate guards while the node-free detached predicate still refuses it. The shared scalar detached endpoint already admits finite chains since Iterator16."
+    },
+    "result": "All accepted groups return exact true, empty stderr, exit0/no timeout and stable HEAD/author or independent inputs. New515 and renewed historical95 are distinct; they total610 premises."
+  },
+  "fixture_failures_and_bridges": [
+    {
+      "report": "fiber-state-review-j4amhijs/report.json",
+      "revision": "0195cd721cfec246a560dca9ea06008e05ef10f8",
+      "credit": 0,
+      "cause": "The post-close expected release suffix retained an already consumed parent job. One observer clause now uses the real JOBS tail; only affected120 repeated at137ee before unrun groups."
+    },
+    {
+      "report": "fiber-state-review-uswamki_/report.json",
+      "revision": "137ee15b749268059cf8ff457f46b2e7aa703408",
+      "credit": 0,
+      "cause": "The selected old group still negated the common node-free chain endpoint despite its Iterator16 admission. One shared assertion polarity changed; only selected95 repeated at2b7."
+    },
+    {
+      "report": "fiber-state-review-uc3i07u4/report.json",
+      "revision": "2b7ea68d6a666c81b96afda10e716d3effd2e17f",
+      "credit": 0,
+      "cause": "Raw node_children reads retired Generator tombstone metadata. Two assertions now inspect actual allocation_edges/heap_children for the unallocated parent and child. Only affected129 repeated at e852; the still-unrun123 allocated storage-pin observation is unchanged."
+    }
+  ],
+  "compatibility": "All nine runtime files remain byte-exact tested5a0 across0195,137ee,2b7 and e852. The three fixture corrections use existing typed record updates/predicates and change no runtime, owner, source, driver or module order. Their original failures remain zero and affected checks pass; unchanged strict/elaboration/source cuts are retained through this explicit bridge. Old recursive unpack stays node-free; ordinary COMPLETE consumption and Aggregate retention are unchanged. No unrelated prior suite/native replay or new module/pipeline change.",
+  "historical_native_recovery": {
+    "case": "generator-detached-unpack-owning-return-required-control",
+    "source_sha256": "fa821ebdd043f44e0411f42b19eacd1d69284ac951bb42794dff9a14d057b07d",
+    "archive": "../php-spec-evidence-archive/generator-call-unpack-detached-child-12/private.tar.gz",
+    "archive_bytes": 433122,
+    "archive_sha256": "32f9741102070e5a10a7661e6afcdb2da4007d51d6a8e7ed0f58f7fb45e4f0c8",
+    "original_report": ".tools/generator-detached-unpack-native-followup-ngn6oifr/report.json",
+    "original_report_sha256": "70f4ce0c45a634b70044d2145e1fc3535d12247edce8907d5119fb3c876997a9",
+    "recovered_directory": "owning-return-control-native-recovered",
+    "result": "Exact successful followup raw bytes reused. The relocated report changes paths/recovery metadata only and keeps the original report. The earlier Iterator12 wrong native-order failure remains zero in its unchanged archive; no historical PHP rerun or renewed native agreement."
+  },
+  "remaining": [
+    "Owning returns below active Generator links, other assignment/expression continuations, acquisition/borrowed producers and pending SEND/THROW with owning detached returns remain required.",
+    "Explicit collection while this owning copied return waits is Unsupported; wider GC during or after retention, Fiber/reentry and broader lifecycle behavior remain open. Existing WeakMap refusal priority is preserved; no new GC source or collector agreement is claimed.",
+    "Later resume after parked THROW/global exception-opline history, wider owning TMP/HELD combinations and full Generator/core semantics remain open. No Rocq/BOLA/security proof is claimed."
+  ],
+  "evidence_recovery": {
+    "archive": "../php-spec-evidence-archive/generator-owning-detached-return-27/private.tar.gz",
+    "bytes": 2015911,
+    "sha256": "b2e94dbfb8bff14be91d2f4a345cba9f7af6f3ecbc386f165dfea63d77b5c105",
+    "manifest": "Sibling manifest.json maps17 report roles (14 accepted and three failures0), eight ignored recorder/catalog inputs, nine runtime digests and two historical auxiliary report files. Raw source/generated fixtures, commands, outputs and process records stay external.",
+    "restore": "Extract at private_root. Provision local references with scripts/private-semantics-references.py and use the retained private branch for tracked inputs. Reports identify the executed binaries, not archived operational prerequisites. Native/base, strict/source and each fixture correction retain their stated revisions; do not flatten cuts or rerun accepted families."
+  },
+  "composition": {
+    "parent": "ada32a063c93e671f9f410a17cd302be520609ef",
+    "parent_modules": 403,
+    "private_publication": "8dc0e61fb3f3f78724284a33b55d52e6c46a2e5c",
+    "review": "Independent actual-parent review: magic-set/private-property paths, LIST and float-keyed array-literal warning tasks, selected arithmetic warnings, constant APIs, method-Closure numeric classification and ordinary reference-return cleanup cursors have no producer in these untyped/by-value Generator sources/fronts. Existing destructor and builtin Throwable getters use their prior paths. All incoming task variants and the403-module manifest are preserved. Only the nine tested runtime additions change; shared30 composes pointwise over its parent variants, with no other runtime/pipeline delta.",
+    "validation": "Private strict401/source4+promoted1 retain0195; new author263 retain137ee, renewed historical95 retain2b7 and independent252 retaine852, all with runtime5a0. Native4/baseline0 retain91af; the recovered fa82 native retains its original archive identity. Actual-parent selectors are disjoint: no joined actor, accepted replay or renewed execution credit."
+  }
+}

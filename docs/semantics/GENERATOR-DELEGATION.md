@@ -87,8 +87,15 @@ Getters can detach an independently completed child without resuming the parent.
 The copied current remains available until advancement, while the key becomes
 null. A detached COMPLETE continuation owns its copied return value and adds no
 child root. Its child index checks a closed tombstone with a matching return;
-it does not certify unique historical child identity. Natural cleanup retires
-the input, cache and return owners through their actual source continuations.
+it does not certify unique historical child identity. Normal continuation transfers
+the copied return into RESULT. For an owning value at a direct simple-CV assignment,
+forced close preserves its count before dropping the saved continuation; finally
+and current-cache cleanup still run normally. Its object-store destructor may run
+after caller output. Retained arrays follow mutable embedded cells rather than
+pinning their former referents. The
+[owning-return ledger](../../coverage/semantics/generator-owning-detached-return-review.json)
+also checks ordinary consumption and cache-cleanup replacement of the unpack Error.
+Owning returns below active links and wider continuation/GC paths remain open.
 
 Module405 also admits detached leaves below finite active shared links when the
 copied return owns no heap nodes. The null key raises the real unpack Error before

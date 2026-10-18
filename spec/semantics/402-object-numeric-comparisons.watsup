@@ -47,6 +47,15 @@ def $number_compare_receiver_image(S, n, NUMBER_CLOSURE) = true
 def $number_compare_receiver_image(S, n, NUMBER_CLOSURE) = true
   -- if $(n < |S.OBJECTS|)
   -- if $object_body(S.OBJECTS[n]) = NAMEDCLOSURE porigin
+def $number_compare_receiver_image(S, n, NUMBER_CLOSURE) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[n]) = METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?
+def $number_compare_receiver_image(S, n, NUMBER_CLOSURE) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[n]) = ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture?
+def $number_compare_receiver_image(S, n, NUMBER_CLOSURE) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[n]) = STRINGMETHODCLOSURE pcalltarget pstringselection
 def $number_compare_receiver_image(S, n, NUMBER_GENERATOR) = true
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = GENERATOR pgenerator

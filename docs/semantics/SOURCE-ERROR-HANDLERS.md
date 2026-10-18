@@ -165,6 +165,15 @@ the callback; key writes cannot redirect that selection or its reference identit
 Writable missing slots are created silently, and throws cancel binding. Wider
 conversion producers remain partial.
 
+Array-literal module413 freezes a finite lossy-float CV key across deprecation,
+then reads a live unwrapped null/bool/int/float element CV or inserts its retained
+runtime array temporary. The builder stays owned through the callback and is
+released on throw; duplicate positions and later item evaluation stay ordered.
+Reachable objects, owning CV values and explicit reference elements remain outside
+this producer.
+The [array-literal ledger](../../coverage/semantics/array-literal-float-key-warning-review.json)
+records its separate source/state cuts and the deferred reference-ownership probe.
+
 Missing-key module409 retains a
 CV/literal array snapshot through real handlers, supplies null after insertion,
 then fetches later items with shared embedded references intact. Throws cancel

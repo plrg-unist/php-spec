@@ -356,8 +356,8 @@ stderr each contain one conversion Warning; strict/peer are quiet. Previous mark
 domains are unchanged; NUL/coerced names, owning/wider values, wider NaN producers
 and full family closure remain partial.
 
-Fresh array definitions with an omitted, boolean or admitted quiet scalar third flag
-recursively dereference source cells into new DIRECT entries. Reinserting surviving
+Fresh array definitions with an omitted, boolean, NULL or admitted quiet scalar
+third flag recursively dereference source cells into new DIRECT entries. Reinserting surviving
 keys rebuilds NEXT, positions and serial
 metadata; ordinary copies and later source/reference writes preserve the constant.
 Nonempty acyclic trees contain primitive/carrier leaves, byte-only strings and
@@ -442,9 +442,22 @@ after all argument effects. Header/source/known-value and carrier guards run
 without folding the array; primitive duplicate markers remain separate from the
 private-array marker. Exact sources distinguish callback caller-CV COW, retained
 request-string flags, copied candidates and trace-only inputs, with real bucket
-references and query COW. NULL, nonfinite-float and identity-unknown byte-only
+references and query COW. Nonfinite-float and identity-unknown byte-only
 string flags remain outside this extension.
 [Scalar array-flag review](../../coverage/semantics/define-array-scalar-flag-review.json).
+
+NULL array flags use the existing parameter-3 bool Deprecated diagnostic before
+the C body. Reception authenticates the raw capture without traversing the array.
+A normal callback may repair a cycle before canonical copying, create a cycle
+that raises ValueError before duplicate reporting, or install the key that the
+outer call subsequently finds. The private duplicate copy remains distinct from
+the original API input and is retired through ordinary cleanup. A throwing
+Deprecated callback cancels validation/copy/registration, retaining the same
+Exception, raw NULL trace, callback effects and unassigned caller destination.
+Strict calls instead raise TypeError before Deprecated or recursive validation,
+after argument effects. Trace-owned inputs retain original aliases and append
+history while queries use canonical copied tables.
+[NULL array-flag review](../../coverage/semantics/define-array-null-flag-review.json).
 
 Top-level empty values use the existing source-pool or retained immutable flag.
 An authenticated immutable empty keeps its table and `PVARRAY true eps`; a mutable
@@ -629,8 +642,27 @@ binds source4/author463 at bc3590e16 and independent179 at 9fa625b8b, all runtim
 931f6caac. The sole pre-main peer frame-field assertion failure retains zero credit;
 only its one-line fixture correction repeats. Retained propertyless receivers,
 ordinary typed-string returns and existing global values bound the validated slice;
-sole-owner destruction, wider receiver/return lifetimes, class/NUL/HALT names and
+sole-owner destruction, wider receiver/return lifetimes, NUL/HALT names and
 named/packed/owner forms remain partial. No task/schema or shared stringifier change.
+
+Retained propertyless Stringable query names returning non-NUL class-qualified
+text now reach the existing user-class lookup guards after conversion. One finish
+predicate and its comment change; source/carrier/saved-site checks, the global arm
+and class/autoload machinery stay exact. Actual loaded folded-member value,
+`defined` true/false and missing-member Error fronts preserve earlier selection
+and the returned string. A named loader receives the bare class only after that
+handoff; a supplied throw preserves caller99, callback siblings and live writes.
+The [Stringable class-query review](../../coverage/semantics/constant-query-stringable-class-name-review.json)
+binds four exact originals and 1,026 state premises (271+189+260 author, 306 independent)
+at 5f47101bd/runtime 4a7f0f801. The peer native observes loader output, saved Exception
+identity/message and effects without trace traversal. Its actual three-frame
+loader/converted API/caller trace, authentic request carrier, recursion-key cleanup
+and full-state discard are state assertions. Same-object global TRUE recovery
+exercises the unchanged arm. Nine stable reports pass on their first attempts;
+quiet PHP/worker stderr and all children reaped. Initial 8fd2/CPU2 baseline
+Unsupported/B|S| retains zero credit; later actors use CPU1. Only the old Source53
+`A::B` finish control changes, freshly covered here without renewing 642 or Source57's
+844. NUL/HALT results and wider lifetime/lookup/value/call domains remain partial.
 
 Retained ordinary nonStringable instances and `stdClass` names now fail the
 query's string parameter before lookup, in weak and strict calls.
@@ -870,7 +902,7 @@ The matching engine routes are `ZEND_FUNCTION(define)`/`ZVAL_COPY`,
 and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`. `PHP_FUNCTION(constant)` uses
 exception-class lookup and `ZVAL_COPY_OR_DUP`; `zend_declare_typed_class_constant`
 interns direct string values before installation.
-Stored cyclic trees, other objects, NULL/nonfinite/identity-unknown array flags,
+Stored cyclic trees, other objects, nonfinite/identity-unknown array flags,
 Stringable names beyond the bounded retained query/DEFINE domains,
 array names beyond the bounded flat query/DEFINE domains,
 array/object values with scalar or null names, true/NULL/NaN

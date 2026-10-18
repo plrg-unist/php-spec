@@ -1,0 +1,142 @@
+{
+  "version": 1,
+  "milestone": "OP47 initially plain-CV arithmetic conversion diagnostics",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/profile",
+  "scope": "Ordinary binary +,-,*,/,** with two initially defined direct plain CVs and nonowning scalar inputs under an eligible named Warning handler. Leading LEFT text may repair initially bad RHS text, or quiet LEFT may reach a right-only Warning. Each numeric holder survives its Warning; after RHS capture its variable may become a reference or disappear. Final power Deprecated uses both historical numbers. Mixed/reference-result/copied/owning operands and wrapping an input before its pending conversion remain partial.",
+  "runtime_revision": "9f1d477a8973182f89d8d83f44b5673cf723eef1",
+  "helper_revision": "f59178b78afa987a5709c5ffc412222f82cc3c4c",
+  "private_modules": 402,
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "4dcb38b8d6b572280ca38ebd6fffc3eebe9ceb5db09eb021fc2fb327b81d8e16",
+    "spec/semantics/40-control.watsup": "48a3f33cb32c538828bce5c69e24236e2e9105dd3e0e49fa07ce1c5e980c89ce",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "4404062e2dd37f4668741e5491827bfb496c4966e8369469621fa92861e5391c"
+  },
+  "engine_basis": [
+    "Pinned Zend/zend_operators.c arithmetic slow paths dereference both operands before zendi_try_convert_scalar_to_number. For an initially plain CV the selected pointer is its original CV slot, not a preselected reference referent. Numeric holders are populated before leading-number Warning callbacks. The scalar conversion switch has no IS_REFERENCE branch; a newly wrapped pending input must not be silently dereferenced by the model.",
+    "The dedicated ARITHMETIC_CV_CONVERT/WARNING/DEPRECATED path authenticates five compiled binary sources and INTEGER_CV names. Its own value getter requires a defined allocated nonreference unconstrained scalar cell. Fresh LEFT requires both CVs still plain; fresh RIGHT checks only that current input. Returned Warning holders and both numbers at final safe_pow Deprecated are historical, so late references or absent names do not invalidate captured numbers. Old pointer readers, all reference-based bodies and the entire prior404 prefix remain exact.",
+    "Three generic40 EPS exclusions select the new ingress without overlap; no state field or module is added. Existing scalar conversion, number_binary/num_pow/number_result and caller TypeError/throw machinery compute the result. Descriptors, strings and numeric holders add no owner. Failed RHS conversion reads live scalar labels; a supplied callback throw cancels outer result assignment while preserving callback effects."
+  ],
+  "contract": [
+    "Author quiet12/5tail yields strict17 after99/7. Leading12tail with initial request bad5 is repaired to5tail, then both live values become88/7 while cached subtraction7/multiplication60/division2.4 survive. Power0tail repaired to-2tail reaches Warning/Warning/Deprecated and positive infinity despite88/7 then77/9. Supplied Exception20 at RHS Warning2 or final Deprecated3 retains identity/nullPrevious/destination100 and callback writes. Author SUB/MUL/DIV and RHS Warning throw are source-only; quiet ADD and final-power success/throw have focused fixtures.",
+    "Independent leading12.5tail and repaired5.5tail return strictfloat68.75 after the RHS callback creates its first reference alias and poisons the live pair. The initial cell has owner1; the late right/rightAlias has owner2 and later assignment8 reaches both. Leading2tail with unchanged bad RHS instead reports live bool - string TypeError after the first default Warning, with no outer store. Quiet12/2tail still returns strictint6 after its Warning unsets the RHS: binding and strict getter are absent and the old cell has owner0, yet no saved cell root or reread is needed.",
+    "Setup-inclusive focused119/204/180/177/144/131 reach authentic initialized plans, quiet or leading captures, real fresh/entered handlers and final deprecation. They distinguish strict pending-input refusals from valid historical returned holders, exact result/error transitions, cell/Throwable owners and meaningful budget cuts. Pure source/class/cache projections are guard checks only. Each peer source intentionally emits one exact default Warning at original line25; standalone SL separately requires true newline and empty stderr."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-47/source-9f1d477a8-author-seven/report.json",
+        "sha256": "1c6ef92829e4e1c61026531bd209f4f25614d80a87ed888637cf2c9515625506",
+        "revision": "9f1d477a8973182f89d8d83f44b5673cf723eef1",
+        "cases": [
+          "plain-arithmetic-add-right-warning",
+          "plain-arithmetic-sub-cached",
+          "plain-arithmetic-mul-cached",
+          "plain-arithmetic-div-cached",
+          "plain-arithmetic-power-deprecated",
+          "plain-arithmetic-right-warning-throw",
+          "plain-arithmetic-power-deprecated-throw"
+        ],
+        "agreements": 7
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-47/review-model-9f1d477a8-three/report.json",
+        "sha256": "aa1f8e2ec752a9879690698bf1f54feeb83cf0baaa5a73f5d32cdbec03f9de1f",
+        "revision": "9f1d477a8973182f89d8d83f44b5673cf723eef1",
+        "cases": [
+          "plain-arithmetic-mul-late-reference-default",
+          "plain-arithmetic-live-types-default",
+          "plain-arithmetic-div-unset-after-capture"
+        ],
+        "agreements": 3
+      }
+    ],
+    "state": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-47/state-f59178b78-six/report.json",
+        "sha256": "35cc88908921ea547ae2eca5bbba7cf0de6973f6d10e1c9760a896aef5f5cba0",
+        "revision": "f59178b78afa987a5709c5ffc412222f82cc3c4c",
+        "modules": 402,
+        "cases": [
+          "plain-arithmetic-add-right-warning",
+          "plain-arithmetic-power-deprecated",
+          "plain-arithmetic-power-deprecated-throw",
+          "plain-arithmetic-mul-late-reference-default",
+          "plain-arithmetic-live-types-default",
+          "plain-arithmetic-div-unset-after-capture"
+        ],
+        "conditions": [
+          119,
+          204,
+          180,
+          177,
+          144,
+          131
+        ],
+        "total": 1055
+      }
+    ],
+    "total_source_agreements": 10,
+    "total_focused_state_conditions": 1055,
+    "compatibility": "The accepted9f1d477a8 runtime and all ten originals remain exact through two helper-only commits. Checked preparation authenticates full author7/peer3 selections, then maps focused3+3 with retained original paths/native bytes and exact30/40/404/manifest bridge. Old selected-reference plans reject the genuinely plain entries; new initial pointer selection rejects their reference-cell entries. No old operator/source/native/numeric evidence is replayed or receives renewed credit."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-47/baseline-45d1aa848-add-right/report.json",
+      "sha256": "05df01392847d52570f4052cfa89bcd7082775ae2f1d108d859c119417df4d3b",
+      "result": "Accepted checked unsupported before H1; empty semantic streams, error-handler ingress requires a producer continuation, model exit1/credit0; no override."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-47/native-45d1aa848-author-seven/report.json",
+        "sha256": "81c92077156ab0b727c98efac083fe99fec3020ee3e4d017776ebdff99466f10"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-47/native-45d1aa848-review-three/report.json",
+        "sha256": "c724c0ba53f2069ae50b04ba939af0fe6f1db3b4cc2dba3fa0f076e2d709e642"
+      }
+    ],
+    "checked_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-47/state-prep-f59178b78-six/report.json",
+        "sha256": "caac5f2589a9a1d657eb039b85d409ecb278c6de851082f06eefeab7e3d4f161",
+        "result": "Checked frontend/adapter only; workers0/reaped, original paths/native bytes retained, no application/native/numeric replay."
+      }
+    ],
+    "standalone_syntax": "Six standalone undefined-pstate diagnostics carry zero semantic credit."
+  },
+  "required_follow_on": [
+    "Mixed initial plain/reference, copied/reference-result operands, owning/constrained/expired inputs, object conversion and wider callbacks/lifecycles remain partial. A pending input wrapped before conversion is explicitly Unsupported, not modeled by silently following its new referent. No native claim is made for that excluded case.",
+    "All13 linked inventory rows remain partial. Existing selected-reference arithmetic, primitive numerics and prior compound cuts receive zero renewed credit; OP12 remains paused. No engine bug or intentional divergence is claimed."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-47",
+    "environment": "LC_ALL=C,TZ=UTC,no PHP_SPEC_SCRIPT_ENCODING. Native/baselineCPU4, changed source and focused prep/SL CPU3. Native30/modelCLI60-process90; checked workers30/full402 immutable SL120 per group. Exact native/model stdout+stderr agree including peer defaults; accepted SL requires true newline/empty stderr/exits0/no interruption/reaped groups/PIDs.",
+    "commands": [
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 tests/semantics/plain_arithmetic_warnings.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 tests/semantics/plain_arithmetic_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-47/state-prep-f59178b78-six/run-prepare.py",
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-47/state-f59178b78-six/run-state.py"
+    ],
+    "record": "Restore matching Git cuts/local tools and fresh output roots; records retain original paths/bytes/native streams, fixtures/hashes, exact commands/exits/reaping. Copied tools add no rebuild/portability claim; archive is not a runtime dependency.",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "composition": {
+    "parent": "8cace0a9da9954d5d4e7ef4a58eae3add9029356",
+    "private_publication": "082f989775a24ecf8065b4e4fdf26e0d640d4949",
+    "modules": 403,
+    "runtime_sha256": {
+      "spec/semantics/30-storage.watsup": "63f22ab80266fbf87bdb40998c105be25f23af20d8e90a3ce29c73a738e7b063",
+      "spec/semantics/40-control.watsup": "98c726528a8c3e737d354013c2770d95c4fbcc96cabd6a3f77c2e2fd27c76850",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "4404062e2dd37f4668741e5491827bfb496c4966e8369469621fa92861e5391c"
+    },
+    "other_incoming_paths_preserved": 56,
+    "gate": "No joined actor:404 plus five tests retain private bytes; the author helper trims one space outside a string with an identical Python AST and constructed conditions; complete parent30/40 fields and initialization are retained with only two task-tag lines and four plan declaration/gate lines added. Every other spec/403 manifest remains parent-exact and13 partial rows compose pointwise. Fourteen incoming runtime paths require by-reference-return/destructor cursors, DEFINE query/array APIs, method-Closure numeric receivers, ARRAY_VALUE float-key AST plans, or real waiting/parked Generator return, yield-from, GC, force-close or unpack contexts. All are absent from these named untyped h/plain-CV/scalar/builtin-Throwable originals; ordinary GLOBALS DIM writes and runtime Throwable trace arrays do not produce ARRAY_VALUE. GENERATORRETURNRETAINED initializes eps; its sole writer requires a Generator/YIELD_FROM receipt, tasks_nodes(eps)=eps and generator_return_retained_valid(S,eps)=true preserve ownership/integrity. Shared number conversion/readers and old reference bodies remain unchanged. Source10@9f1d477a8 and state1055@f59178b78 keep private402 cuts without replay or renewed credit.",
+    "formatting_only_helper": {
+      "path": "tests/semantics/plain_arithmetic_protocol.py",
+      "change": "One trailing source-line space outside a string removed; Python AST identical, accepted state cut remains f59178b78/402."
+    }
+  }
+}

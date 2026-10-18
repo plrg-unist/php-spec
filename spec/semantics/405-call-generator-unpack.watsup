@@ -108,7 +108,7 @@ def $generator_unpack_detached(S, n) = true
   -- if $value_nodes(pvalue) = eps
 def $generator_unpack_detached(S, n) = false -- otherwise
 ;; A shared Generator link borrows the leaf cache; it has no CURRENT copy.
-def $generator_unpack_delegate(S, n) = ($generator_unpack_chain(S, n, $(|S.OBJECTS| + 1)) \/ $generator_unpack_detached(S, n))
+def $generator_unpack_delegate(S, n) = ($generator_unpack_chain(S, n, $(|S.OBJECTS| + 1)) \/ $generator_unpack_detached(S, n) \/ $generator_return_waiting(S, n))
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_DELEGATING
 def $generator_unpack_delegate(S, n) = false -- otherwise

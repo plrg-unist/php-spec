@@ -13,6 +13,14 @@ after the finally bodies. Thus a temporary delegated child closes before its par
 child held only through an array's reference cache also closes afterwards
 (`OIZ`). Separately rooted children and waiting siblings remain live.
 
+An owning child return copied into a direct simple-CV `yield from` result has
+a separate unfinished-slot count. Close moves it out of the frame without a
+decrement, then follows the existing finally and cache-cleanup order. Payloads
+receive their normal request-store destructor calls; arrays and embedded reference
+cells remain shared and mutable. Actual next consumes the result normally.
+The [owning-return review](../../coverage/semantics/generator-owning-detached-return-review.json)
+checks both paths and a temporary cache destructor replacing the unpack Error.
+
 The pinned engine has an initialization-history exception. A middle first entered
 only through shared outer resumption can retain pending initialization. After
 input unlink, its own defined current makes forced resume clear that bit and

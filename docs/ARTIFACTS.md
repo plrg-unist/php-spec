@@ -31,6 +31,21 @@ Commit concise reports and manifests with hashes and locations. Preserve raw
 failures and interrupted runs externally; do not force-add their archives.
 The coverage compression patterns in `.gitignore` guard against reintroduction.
 
+M106's normal partial-pair cleanup evidence is in
+`../php-spec-evidence-archive/lifecycle-normal-partial-pair-106/manifest.json`.
+Its 410,489-byte archive has SHA-256
+`957fd480d8578832d6b4458094477b600b8ea4675c72a861b871f2086b6b1176`;
+it retains the source packets, successful proofs, original fixture failure and
+field diagnosis under `.tools/m106/`, without a checkout or build tree.
+The final-pair sibling is in
+`../php-spec-evidence-archive/lifecycle-normal-final-pair-107/manifest.json`:
+283,128 bytes under `.tools/m107/`, SHA-256
+`1fc094d0b1b79d90d4a63d79a4e19ee7878ac8a751af539695500eaa1a149e2c`.
+The single-cursor sibling is in
+`../php-spec-evidence-archive/lifecycle-normal-cursor-108/manifest.json`:
+271,278 bytes under `.tools/m108/`, SHA-256
+`bf8cb58209c01ac4e495337633ffc441ee51202229246ef511a0b3b2c529ad21`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the

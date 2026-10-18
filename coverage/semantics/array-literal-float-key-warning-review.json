@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "status": "independently reviewed and composed for fast-forward integration",
+  "target": "PHP8.5.10 CLI NTS64; vendored engine34308a6666b2d489c509541ea9befea9e2b42348; pinned project-local oracle/profile",
+  "scope": "Finite fitting lossy-float ordinary CV keys at by-value ADD_ARRAY_ELEMENT/INIT_ARRAY. Element operands are initially unwrapped null/bool/int/float CVs remaining in that domain on resume, or captured nonconstant runtime array temporaries. Builder and captured-array graphs exclude objects. Selected reference-element conversion remains outside this producer.",
+  "engine_basis": {
+    "routes": ["Zend/zend_compile.c::zend_compile_array", "Zend/zend_vm_def.h::ZEND_INIT_ARRAY/ZEND_ADD_ARRAY_ELEMENT", "Zend/zend_operators.h::zend_dval_to_lval_safe"],
+    "ordering": "The element is resolved before conversion. Float conversion fixes the integer before callback; an unwrapped scalar CV stays live, while a temporary array retains its old table and embedded references. Insertion follows the callback, replaces duplicates in place and precedes later item evaluation.",
+    "throw": "Zend inserts even with a pending exception. For the bounded object-free graphs, dropping builder and captured input has the same observable cleanup. The discard hook explicitly returns Unsupported if callback mutation leaves the admitted value/graph domain; ordinary callback validity stays independent of those later values."
+  },
+  "implementation": {
+    "runtime_cut": "f625e2c3c11fdde6c35fb99d7c5aa217a131cdd1",
+    "state_cut": "b3027bcd7dbe052a04f002cd96f28842bb8e12b3",
+    "private_module_count": 402,
+    "changes": "New413, one ARRAY_KEY_FLOAT_RESULT task in30, two keyed-value pending exclusions/declaration in41, manifest append. Reference/unkeyed rules, compiler and generic ownership/error-handler APIs are unchanged.",
+    "authentication": "Actual nonreference item, enclosing literal/tail slice, ordinary key/value CV names, compiled key/value ending lines and finite PRECISIONLOSS conversion authenticate the producer. Builder and captured temporary are distinct allocated nonpool tables; the temporary additionally requires its actual CODEEXPR(false). Saved validation never rereads the key or current scalar CV value.",
+    "roots": "The marker owns the builder plus a captured array exactly once, replacing RESULT ownership. A delayed scalar VARIABLE is borrowed. Normal resume checks its current supported value; a captured array transfers into the inserted entry. Object/value-domain exclusions have explicit normal and abrupt Unsupported branches.",
+    "sha256": {
+      "spec/semantics/30-storage.watsup": "46a0d186b51f3e1d4248ff294d5f67192fa1846eff8255b1910888888d7044ff",
+      "spec/semantics/41-array-control.watsup": "98cc5e67dbd9bead7eeb5b438045b130002fed7d0b121b27e74cb8fbf5208951",
+      "spec/semantics/413-array-literal-key-warnings.watsup": "8b043b9322e186594e97e09123093e17f17a2d0c75ed9d9735ee2a758c33d145",
+      "spec/semantics/modules.json": "0dfb887539d1b7bd6c67f88ba9a430af2da9c627322e81acd2eda3bb52b4e0ee"
+    }
+  },
+  "acceptance": {
+    "source_agreements": 4,
+    "source_cut": "f625e2c3c11fdde6c35fb99d7c5aa217a131cdd1",
+    "state_programs": 4,
+    "state_premises": 589,
+    "boolean_premises": 581,
+    "raw_steps": 8,
+    "author": "142/157/141 premises with2/2/1 raw steps:440 total",
+    "independent": "149 premises with3 raw steps: sole temporary inner array, old key-cell retirement and later fresh item",
+    "strict": "One SL402-module closure passes at the runtime cut; this adds no PHP agreement credit.",
+    "results": "All accepted executions exit0, without timeout/interruption, with empty reaped process groups and exact output. All post-change validations pass first attempt; no fixture retries or accepted-case replays. The authentic unchanged-runtime Unsupported baseline remains zero credit.",
+    "baseline": "At63d135ea95ffc01a7b32991b7ff4808952f18136, runtime remains51abb7683fddd11111009f0954e6ab3c84461cc3. The natural comparator fails on frontend-accepted/checked Unsupported error-handler ingress (model1/native0); retained zero credit."
+  },
+  "evidence": [
+    {"report": ".tools/array-literal-float-baseline-19/report.json", "revision": "63d135ea95ffc01a7b32991b7ff4808952f18136", "sha256": "71dd85b36efc3501bca28aa2bb158effe4c1b693208e0f2cb620f6989330f99e", "credit": "baseline0"},
+    {"report": ".tools/array-literal-float-native-rest-19/report.json", "revision": "63d135ea95ffc01a7b32991b7ff4808952f18136", "sha256": "09a3a84ca777962b98bc6d1d62ca0ec819c3d045d98a42b3bbf4ac3619c1294c", "credit": "native preparation0"},
+    {"report": ".tools/array-literal-float-review-native-19/report.json", "revision": "63d135ea95ffc01a7b32991b7ff4808952f18136", "sha256": "a73aaf7f6c30b188ab1e425eac2ee15aad70d83ef7b1dc597f00643faf3f230f", "credit": "native preparation0; explicit-reference row remains open"},
+    {"report": ".tools/array-literal-float-reference-probe-19/report.json", "revision": "7a197b1ddb338808b7e2511ff49955616c32a826", "sha256": "8437e8134e54be159ff870e0231c628eeefeae5b55e78cf55156ad81bf29c049", "credit": "deferred ownership discriminator0"},
+    {"report": ".tools/array-literal-float-strict-19/report.json", "revision": "f625e2c3c11fdde6c35fb99d7c5aa217a131cdd1", "sha256": "b481384a681b5654f3a51a9c9e9059b710256c9aa2194f269d820e9a0b991ed3", "credit": "strict closure; PHP0"},
+    {"report": ".tools/array-literal-float-author-source-19/report.json", "revision": "f625e2c3c11fdde6c35fb99d7c5aa217a131cdd1", "sha256": "b7717ca8f35767ba07863c691329d73e878abc55802a02f180f8916ca233d19c", "credit": "3 model-only agreements, original native paths/streams reused"},
+    {"report": ".tools/array-literal-float-review-source-19/report.json", "revision": "f625e2c3c11fdde6c35fb99d7c5aa217a131cdd1", "sha256": "20d8d1aaac03fbd200fcd9c671632805ab55f3c5f123be391b01eee9301c8f92", "credit": "1 model-only agreement, original native path/streams reused"},
+    {"report": ".tools/array-literal-float-author-state-19/report.json", "revision": "b3027bcd7dbe052a04f002cd96f28842bb8e12b3", "sha256": "149492a338c30a086342c3a9022f146e7b34357cd446e58a8206b9cd5133da26", "credit": "440 premises including5 raw steps"},
+    {"report": ".tools/array-literal-float-review-state-19/report.json", "revision": "b3027bcd7dbe052a04f002cd96f28842bb8e12b3", "sha256": "ce88a53d59edef142f9d0c88663629f5d509a6510d2fa9388bcd0dfc11beab51", "credit": "149 premises including3 raw steps"}
+  ],
+  "independent_review": "The negative frozen key remains-2 after key/alias cell retirement and name rebinding to9.5. A captured inner array alone retains old q33 while new q44 stays separate; insertion transfers that table into the builder, and later key4/value66 are fresh. Raw dispatch/insertion, actual callback frame, exact owners, source/compiler refusal controls, normalized driver transitions, final graph retirement and whole-state budget/resume equalities pass. Author controls additionally check live33/44, duplicate position and old-alias retirement, same-Throwable throw cancellation, and explicit object-domain discard refusal.",
+  "deferred_reference": {
+    "observation": "A selected literal &$q retargeting callback inserts rebound q44, while old outside stays33. The one extra native probe then wraps the old reference, removes outside and copies/mutates its array: both copies observe66, demonstrating retained old-wrapper sharing. This is consistent with the VM's pre-conversion ADDREF surviving CV replacement.",
+    "credit": "Both reference records are native-only zero credit; no model implementation or divergence is claimed. The maintained wrapper has an expected Unsupported classification for that original, without a renewed execution claim.",
+    "boundary": "Selected reference-element float conversion remains open; it is separate from the held undefined selected-reference LIST-key proposal, which received no actor or edit. Paused owned-NUL include/Stringable behavior was untouched."
+  },
+  "compatibility": "Source4/strict402 keep f625 and state589 keeps b302. Commit34a1dd361 adds only expected-Unsupported metadata for the deferred original plus its state script; all PHP case/probe bytes remain exact. No historical milestones, reference producer or paused producer were replayed. Five inventory rows append implementation/tests/evidence/review only and remain partial; unrelated statuses/fields are preserved.",
+  "reproduction": "Use pinned project-local binary/profile and raw recorded argv/cwd/file bytes. Native cap30s, source model60s with outer90s, strict/state SL180s per process and2000-step state frontiers/budgets. Reports bind original sources, stdout/stderr, compiler/runtime inputs and before/after hashes; state workers reuse those exact native files without oracle replay.",
+  "archive": {
+    "path": ".tools/array-literal-float-key-warning-19-raw.tar.gz",
+    "bytes": 356609,
+    "members": 138,
+    "sha256": "530ad84367d8b5a45bff9c84cb4571d9d0d017d0a5f1168a214ecd46a365acd9",
+    "contents": "Nine basename raw roots above plus exact ignored strict/reuse/reference-probe runners. All nine embedded report copies independently byte-matched originals.",
+    "recovery": "Recover the reviewed Git cut into an isolated checkout, provision local tools/private references, extract this archive into checkout/.tools, and use the retained original argv/cwd paths. Raw artifacts stay outside Git; no portability/rebuild credit."
+  },
+  "actual_parent_review": {
+    "parent": "85a9c6ec8d77c2db196fdb3b29dd2942419de9db",
+    "seams": "Incoming141/154/318/42/new412 and30 add private magic-setter guards/targets, absent ordinary globals/array writes and named callbacks.270 borrowed destructor-release projections require typed reference-return cursors, absent here.400 define/Stringable configuration paths,402 SensitiveParameterValue numeric comparisons and404 arithmetic BINARY_RIGHT warning admission have no selector in these programs; counters use the separate update route. No36/37/39/41 or relevant key/error-handler API changed. Final b1a-to85a adds only two saved ref-return-pair projections in270, still disjoint.",
+    "joined_actor": "No concrete interaction found; no joined actor or replay. Actual parent contains412, private manifest413; final composition must retain both."
+  },
+  "remaining": "String/owning or initially wrapped CV element values, pooled/other element producers, selected reference conversion/old-wrapper ownership, reachable objects and full array/core semantics remain partial. No complete-family, engine equivalence or BOLA claim.",
+  "composition": {
+    "parent": "85a9c6ec8d77c2db196fdb3b29dd2942419de9db",
+    "private_packet": "6721664c29c4ea1e5e314c08ce058415703ae8bc",
+    "module_count": 403,
+    "checks": "Parent30 plus the single ARRAY_KEY_FLOAT_RESULT tag;41/413 retain exact tested runtime bytes. All other parent runtime paths remain exact. Parent402 module order plus413 retains incoming412. Six tests are exact b302. Five inventory rows append only and remain partial; all other fields/checkpoints retain parent bytes. Accepted cuts/evidence are unchanged; no new execution credit."
+  }
+}

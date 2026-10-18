@@ -1,0 +1,22 @@
+[
+  {
+    "id": "generator-owning-detached-return-review-array-cell-rebind",
+    "purpose": "An independently completed child copies an owning array with an embedded global reference into a direct parent yield-from result. After real null-key unpack rejection and parent close, rebinding the shared cell must update that retained array rather than pin its original payload object.",
+    "source": "<?php\nclass ReviewDetachedCellCache27 { function __destruct() { echo \"A|\"; } }\nclass ReviewDetachedCellOld27 { function __destruct() { echo \"R|\"; } }\nclass ReviewDetachedCellNew27 { function __destruct() { echo \"CNEW|\"; } }\nfunction reviewDetachedCellChild27() { global $slot; echo \"C|\"; yield new ReviewDetachedCellCache27(); echo \"L|\"; $slot = new ReviewDetachedCellOld27(); return [&$slot]; }\nfunction reviewDetachedCellParent27() { try { echo \"G|\"; $result = yield from $GLOBALS[\"child\"]; echo \"BAD-TAIL|\"; } finally { echo \"F|\"; } }\nfunction reviewDetachedCellTarget27($value) { echo \"BAD-CALLEE|\"; }\n$child = reviewDetachedCellChild27(); $parent = reviewDetachedCellParent27(); echo \"P|\"; $parent->rewind(); $child->next();\necho \"V|\", $parent->current() instanceof ReviewDetachedCellCache27 ? \"HELD|\" : \"BAD|\", \"K|\", $parent->key() === null ? 1 : 0, \"|\";\nunset($child); echo \"M|\";\ntry { reviewDetachedCellTarget27(...$parent); echo \"BAD-RETURN|\"; }\ncatch (Error $caught) { echo \"T|\", $caught->getLine(), \"|\", $caught->getTrace() === [] ? \"NOFRAME|\" : \"FRAME|\"; }\nunset($parent); echo \"CLOSED|\";\n$slot = new ReviewDetachedCellNew27(); echo \"WRITE|\"; unset($slot); echo \"UNSET|\";\nunset($caught); echo \"E\";\n",
+    "source_sha256": "8d4341c3e59de20873cdf0c4796f9c76bdb09c1db393ef8e08d684cfeb1e0525",
+    "expected": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|G|C|L|V|HELD|K|1|M|T|11|NOFRAME|F|A|CLOSED|R|WRITE|UNSET|ECNEW|"
+  },
+  {
+    "id": "generator-owning-detached-return-review-temporary-cache-replacement",
+    "purpose": "A temporary sole direct parent has a distinct cached object and owning copied return. Null-key unpack cleanup may run the cache destructor before caller catch while the copied return has its own lifetime; capture replacement/previous identities and order without a stdout forecast.",
+    "source": "<?php\nclass ReviewDetachedTemporaryCache27 { function __destruct() { echo \"D|\"; throw new Exception(\"detached-cache27\"); } }\nclass ReviewDetachedTemporaryReturn27 { function __destruct() { echo \"R|\"; } }\nfunction reviewDetachedTemporaryChild27() { echo \"C|\"; yield new ReviewDetachedTemporaryCache27(); echo \"L|\"; return new ReviewDetachedTemporaryReturn27(); }\nfunction reviewDetachedTemporaryParent27() { try { echo \"G|\"; $result = yield from $GLOBALS[\"child\"]; echo \"BAD-TAIL|\"; } finally { echo \"F|\"; } }\nfunction reviewDetachedTemporaryTake27() { $selected = $GLOBALS[\"parent\"]; unset($GLOBALS[\"parent\"]); echo \"TAKE|\"; return $selected; }\nfunction reviewDetachedTemporaryTarget27($value) { echo \"BAD-CALLEE|\"; }\n$child = reviewDetachedTemporaryChild27(); $parent = reviewDetachedTemporaryParent27(); echo \"P|\"; $parent->rewind(); $child->next();\necho \"V|\", $parent->current() instanceof ReviewDetachedTemporaryCache27 ? \"HELD|\" : \"BAD|\", \"K|\", $parent->key() === null ? 1 : 0, \"|\";\nunset($child); echo \"M|\";\ntry { reviewDetachedTemporaryTarget27(...reviewDetachedTemporaryTake27()); echo \"BAD-RETURN|\"; }\ncatch (Throwable $caught) { echo \"CALLER|\", $caught instanceof Exception ? \"REPLACED|\" : \"KEY|\", $caught->getPrevious() instanceof Error ? \"PREV|\" : \"NOPREV|\"; if ($caught->getPrevious() instanceof Error) { echo \"LINE|\", $caught->getPrevious()->getLine(), \"|\"; } }\nunset($caught); echo \"E\";\n",
+    "source_sha256": "56578c3bfdca62502271dc9ef65251d3ca69ba01e6575873399cce326f9513cf",
+    "expected": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|G|C|L|V|HELD|K|1|M|TAKE|F|D|CALLER|REPLACED|PREV|LINE|11|ER|"
+  }
+]
