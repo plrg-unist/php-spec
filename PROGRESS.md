@@ -17,6 +17,12 @@ retains zero; only its affected main repeats, with no source/native/runtime
 or older campaign replay. Nonfinite object flags and wider owning domains
 remain partial. [Quiet object-flag review](coverage/semantics/define-object-scalar-flag-review.json).
 
+Composed over `3eafcc7d7`/405 with the exact tested400 patch, preserving the
+incoming INI_SET declaration move and all other runtime/manifest bytes.
+Comparison-warning, Generator and reference-return producers are unselected;
+existing empty debt fields preserve owners and budget identities. Source3/
+state631 retain their private405 cuts without a joined actor or replay.
+
 Missing-right `==` and `<` now retain the current defined scalar left CV while
 freezing the right as NULL, including late references and rebinding. The missing
 right name may remain undefined; positive sources and coherent resumed states
