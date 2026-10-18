@@ -635,6 +635,16 @@ Other destructor bodies/throw forms, deeper reentry, properties, larger/mixed
 histories, GC and wider consumers remain open.
 [Owning-return review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
+Composed over `826bdf0b3`/405 after independent actual-parent review. The source
+has no literal-array key, INI/DEFINE, Generator, isset/property-magic or eligible
+arithmetic/comparison Warning producer. New LITERALARRAYRETAINED/LITERALARRAYDEBTS
+stay empty, so added roots/debts/validation and the driver wrapper reduce to the
+original behavior. Only270 changes and keeps exact testedbf107 bytes; every
+other runtime file, parent field/default/task and ordered405 manifest stay exact.
+Native1/source1, diagnosis100/2 and state454/9 retain their private cuts without
+joined execution or renewed credit.
+
+
 Retained propertyless Stringable `define` names now accept captured boolean true
 with primitive candidates and non-NUL global/class-like results. One module400
 raw-shape alternative preserves all source/carrier/saved-site, conversion, warning,
