@@ -17,6 +17,12 @@ both first failures and the single bounded diagnostic retain zero. Other object
 flag kinds and wider names/lifetimes stay partial; no accepted source/native or
 older campaign repeats. [Invalid-flag review](coverage/semantics/define-invalid-flag-review.json).
 
+Composed over `0b775c686`/405 with the exact tested400+46 patch; all incoming
+runtime/manifest bytes and fields remain intact. INI_SET, loose missing-CV,
+owning dynamic-NEW, Generator, POWER and lossy-float literal-reference selectors
+are unselected. Source3/state492 retain their private405 cuts without a joined
+actor, accepted replay or renewed credit.
+
 Retained positional intrinsic `ini_set` Closures now resume NULL-option handlers
 with quiet primitive values. The selected original owner survives value effects
 that replace the live callee with an INI_GET Closure. Ordinary strict invocation
