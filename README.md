@@ -665,6 +665,11 @@ operators, preserving RHS string identity while using the captured LEFT. Dynamic
 `"05"` and whitespace/exponent text succeed; `"-1"` is a valid XOR mask but an
 invalid shift count. Ten originals and 807 focused SL premises pass in the
 [quiet string ledger](coverage/semantics/quiet-string-review.json).
+Leading numeric strings such as `"05tail"` after that first callback now suspend
+through a second Warning. The saved parse survives RHS writes, reference rebinding
+and unset; successful stores detach aliases, while Errors and supplied throws
+cancel the store. Eleven originals and 1211 focused SL premises pass in the
+[leading string ledger](coverage/semantics/leading-string-review.json).
 Explicit array-to-string casts now suspend through named warning handlers for
 a bounded plain-CV array input. The borrowed array adds no saved owner: replacing
 or removing its CV still yields fixed `Array`, while a supplied throw preserves

@@ -404,8 +404,29 @@ modulo raises DivisionByZeroError. Both errors occur at RHS line 25 before store
 Ten exact originals and 807 focused SL premises pass in the
 [quiet string ledger](../../coverage/semantics/quiet-string-review.json), covering
 actual handlers, direct stores/errors, carrier metadata, cell/Throwable owners and
-budgets. Warning/invalid conversions, unsafe bindings/targets and wider forms stay
+budgets. Other warning/invalid conversions, unsafe bindings/targets and wider forms stay
 partial; pure guard controls are distinct from executed cases.
+
+A leading numeric string in the original RHS cell now issues its own Warning after
+that first callback when `string_long` returns only `LEADINGNUMBER`, with no further
+precision-loss diagnostic. LEFT remains historical; the selected RHS parse is
+saved before the Warning, including exponent text with an exact integer value.
+A fresh second dispatch authenticates the current RHS, message, phase and original
+RHS line. After its callback only target readiness is required: current RHS writes,
+reference rebinding or unset cannot replace either saved number. Dynamic `"05tail"`
+and literal/exponent text store `2`/`384`/`0`/`4`/`13`/`9` from cached LEFT `12` and
+numeric `5`, detaching alias `88`; either supplied throw keeps the same Exception,
+destination and alias write-through. Independent default-second `"-1tail"` XOR
+stores `-13` even after RHS aliases target `88` (target owners 3 to 2 on detach);
+negative shift with RHS unset and `"0tail"` modulo despite live RHS `7` instead raise
+ArithmeticError/DivisionByZeroError at RHS line 25 before store/detachment.
+Eleven originals and 1211 focused SL premises (four author plus three independent
+fixtures) pass in the [leading string ledger](../../coverage/semantics/leading-string-review.json),
+covering actual handlers, parse/carrier history, storage/owners and budgets.
+The pre-application notice-list failure and over-strong cross-callback metadata
+assertion retain zero credit. Only corrected checks and previously unrun peers
+execute; accepted author states and source cuts remain unchanged. Further-warning
+conversions, unsafe pre-snapshot RHS/targets and wider lifecycle remain partial.
 
 Arithmetic and bitwise conversion use the existing pure SpecTec numeric and byte
 helpers, including signed 64-bit boundaries, binary64 values, string operands,

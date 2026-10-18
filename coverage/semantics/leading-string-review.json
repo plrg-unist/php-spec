@@ -1,0 +1,170 @@
+{
+  "version": 1,
+  "milestone": "OP39 leading numeric-string RHS warning in compound operators",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP8.5.10 CLI NTS64; project-local pinned engine/profile",
+  "scope": "Initially distinct defined plain-CV finite in-range fractional floats enter the unchanged both-fractional modulo/shift/numeric-bitwise route. After the first LEFT deprecation callback, the original allocated nonreference RHS cell may hold an authenticated plain/carrier string with string_long = STRINT i ([LEADINGNUMBER]). A second Warning executes with historical LEFT and saved RHS parse; result/error uses those caches after RHS value mutation, reference rebinding or unset, provided the original target remains safe, allocated, nonowning and unconstrained. No initial/source admission widening. Strings needing an additional precision-loss diagnostic remain partial.",
+  "runtime_revision": "ae2478d6890e4c488f8c0e6c647a9e461015564a",
+  "helper_revision": "5771266a86fc30bec159c3ebb1fbf3c974d652e0",
+  "private_modules": 399,
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "a852f0e60e89078a9dd6ac848e95bac9ad24ab82864a299f37435e3006b00515",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "85458a0eebf89bbc48e65f78285ba1d760eb6d3ae428a35bb45e51414dd6c570"
+  },
+  "engine_basis": [
+    "Pinned Zend/zend_operators.c convert_op1_op2_long captures LEFT before its precision diagnostic, then zendi_try_get_long parses the current RHS before E_WARNING(A non-numeric value encountered). The integer-text lval is saved directly; floating-text dval and protected op_str survive the callback. In the selected no-precision-loss domain, remaining cap/compatibility conversion is pure and quiet, so the specification caches its long together with the saved string before dispatch.",
+    "bitwise_and/or/xor inline the same conversion order after initial dereference/two-string specialization, which initial floats bypass. Existing string_long/STRINT/LEADINGNUMBER and numeric text/cap semantics remain unchanged; negative masks are ordinary signed operands.",
+    "Successful operations destroy the result wrapper and detach late references. Modulo0/negative shifts fail before result destruction/storage. A supplied first or second callback Exception cancels without result storage/default-warning emission or replacement of that Exception.",
+    "Module30 adds one nonowning task constructor;404 adds an original-cell/carrier/parse snapshot, exact-family capture from the three existing LEFT1 markers, one shared Warning/commit/error continuation and task/error-call validity. Only three existing first-boundary exclusions change; all prior snapshot/source/phase bodies, integer/string/carrier/handler/CV-writer helpers and399-module manifest stay unchanged."
+  ],
+  "contract": [
+    "Author six normal originals capture LEFT12 before first h writes99/string, then save numeric5 before second h writes88/right7 for modulo,1 for right shift,10 otherwise. Results2/384/0/4/13/9 distinguish stale/late numeric choices; dynamic nonempty concat produces request carrier05tail and OR uses +5e0 tail. Both warnings report original multiline RHS25. Successful storage detaches alias88; later target7 leaves88.",
+    "First supplied throw after producing the carrier and second supplied throw after the new Warning both retain the exact global Exception(message second,line21,no Previous), destination100, call count1/2 and alias write-through. The new second-throw marker cancellation receives focused state coverage; unchanged first cancellation is source-only.",
+    "Independent false second handlers emit exactly one Warning at25 and no default Deprecated. Cached12 XOR(-1) stores(-13) even though RHS was rebound by reference to live target88; target owners3 to2 after fresh-cell detachment, then target7 is independent while alias6 updates RHS6. A second handler unsets RHS but cached(-1) right shift still raises fresh ArithmeticError25/no Previous/no store/detachment. String0 remains cached despite live7 and raises fresh DivisionByZeroError25/no store/detachment. Both error cases preserve destination100 and later target7 reaches alias7.",
+    "Focused state selects author carrier-modulo/left-shift/exponent-OR/second-throw plus three independent peers. Premises include authentic first/second dispatch and entered frames, fresh second-RHS/saved-parse controls with explicitly historical LEFT, exact result/error cells and owners, immutable STRINGDATA/identity, output and budget equality. Pure guard controls include accepted projections and refusals; no malformed projection is driven. Carriers are immutable metadata, with no HSTRING owner."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-39/source-ae2478d68-author-eight/report.json",
+        "sha256": "8364512e17df3e33097a363a8cabca2da818b77513b825de142ecc63302c658f",
+        "revision": "ae2478d6890e4c488f8c0e6c647a9e461015564a",
+        "cases": [
+          "leading-string-mod-carrier",
+          "leading-string-left-literal",
+          "leading-string-right-literal",
+          "leading-string-and-literal",
+          "leading-string-or-exponent",
+          "leading-string-xor-literal",
+          "leading-string-first-throw",
+          "leading-string-second-throw"
+        ],
+        "agreements": 8
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-39/review-model-ae2478d68-three/report.json",
+        "sha256": "cc7c4e2dec365391d77b1cc3adce0a1de4c8e92b9c588ab7087ee3cb0a7616ef",
+        "revision": "ae2478d6890e4c488f8c0e6c647a9e461015564a",
+        "cases": [
+          "leading-string-xor-reference-default",
+          "leading-string-shift-unset-default",
+          "leading-string-mod-zero-default"
+        ],
+        "agreements": 3
+      }
+    ],
+    "state": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-39/state-c8e056a63-seven/report.json",
+        "sha256": "e5433ddf2ea2e0e8076a4aa29dbd30ac0aee7d2f4992e4f81ab9903bf7aabab3",
+        "revision": "c8e056a63b2653d84c20b09f1cea993be81f9934",
+        "modules": 399,
+        "cases": [
+          "leading-string-mod-carrier",
+          "leading-string-left-literal",
+          "leading-string-or-exponent",
+          "leading-string-second-throw"
+        ],
+        "conditions": [
+          181,
+          164,
+          164,
+          145
+        ],
+        "total": 654,
+        "scope": "Accepted first4 exacttrue groups of a partial packet; following peer metadata assertion failure0 preserved, other2 peers unrun."
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-39/state-5771266a8-affected-three/report.json",
+        "sha256": "a1a98e41ff190879d8c50b866df5f44ee93cb1db503e54f4665869a6876f67a8",
+        "revision": "5771266a86fc30bec159c3ebb1fbf3c974d652e0",
+        "modules": 399,
+        "cases": [
+          "leading-string-xor-reference-default",
+          "leading-string-shift-unset-default",
+          "leading-string-mod-zero-default"
+        ],
+        "conditions": [
+          182,
+          187,
+          188
+        ],
+        "total": 557
+      }
+    ],
+    "total_source_agreements": 11,
+    "total_focused_state_conditions": 1211,
+    "compatibility": "Only two maintained helpers change ae2478d68..5771266a8; runtime/source bytes remain exact. Author654 retains c8e056a63. The peer-only correction577 changes one cross-callback STRINGDATA assertion to immutable-prefix preservation because echoing integers appends request metadata; exact atomic-step metadata and saved string validity remain. Only corrected peer557 and its previously unrun cases execute; no author/source/native replay."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-39/baseline-36fcde58b-mod-carrier/report.json",
+      "sha256": "6a457ad79522c1a6165fe861b8d53e8abb3346deaed9c46ac1025b8bf0b73c46",
+      "result": "Accepted checked Unsupported after exact H:1:8192:25:1; at modulo after-first live-RHS boundary, model exit1/empty stderr/0credit. No boundary override."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-39/native-36fcde58b-author-eight/report.json",
+        "sha256": "7d4e2171bc3ca97d92cdedde9eebbbebfac93cca19a2216850fd7c61c9788d70"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-39/native-36fcde58b-review-three/report.json",
+        "sha256": "2059ae8d84770d13261d1cb36931047c8c86103c7119ffbf7e6216f4b6f3b723"
+      }
+    ],
+    "pre_application_source_failure": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-39/source-8710736ac-author-eight/report.json",
+      "sha256": "29493b5ef294a3b6db5bbc54c58eef98d733904d6b1840a96aff97fd1d67934b",
+      "result": "First case fails SpecTec elaboration before PHP evaluation because ungrouped STRINT i_right [LEADINGNUMBER] parses as indexing. Two list arguments grouped at ae2478d68; other10 were unrun, so only the affected source11 packet retries. No accepted source/native-only/baseline renewal."
+    },
+    "checked_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-39/state-prep-c8e056a63-seven/report.json",
+        "sha256": "a5eb636f280a8086339353e0908d72bd6320def2582273c54f8d3e8f0c8c3047",
+        "result": "Checked frontend parse/adapter only; retained original paths/native bytes, zero application/native/numeric replay; workers exit0/reaped."
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-39/state-prep-5771266a8-affected-three/report.json",
+        "sha256": "d6aee6e5a21a66723b36deacb6a0d12b33a44089a088dd8ae3906a1117e6b911",
+        "result": "Checked frontend parse/adapter only; retained original paths/native bytes, zero application/native/numeric replay; workers exit0/reaped."
+      }
+    ],
+    "standalone_syntax": "Original seven plus affected three standalone diagnostics separately carry zero semantic credit.",
+    "peer_metadata_fixture_failure": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-39/state-c8e056a63-seven/report.json",
+      "sha256": "e5433ddf2ea2e0e8076a4aa29dbd30ac0aee7d2f4992e4f81ab9903bf7aabab3",
+      "result": "After accepted author654, peer XOR fails whole STRINGDATA equality across a second handler echo; module35 stringify(PINT) legitimately appends immutable carrier metadata. Failed peer0 preserved; other2 peers were unrun. Sole peer helper assertion corrected to prefix preservation at577; atomic commit/error equality and saved value validity remain exact."
+    }
+  },
+  "required_follow_on": [
+    "Initial forms outside this both-fractional plain-CV route; nonnumeric/lossy or further-warning string conversions; arrays/objects/resources; RHS reference/rebind/expiry before its snapshot; unsafe/missing/rebound/expired/owning/constrained targets; and wider callback/exit/lifecycle behavior remain partial. The tested second-callback RHS reference/unset effects are supported without widening pre-snapshot admission.",
+    "All15 affected inventory rows remain partial. OP38 and earlier accepted cuts receive zero renewed credit; OP12 remains paused."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-39",
+    "environment": "LC_ALL=C,TZ=UTC,no PHP_SPEC_SCRIPT_ENCODING. Native/baseline CPU5; original failed and corrected source, checked prep and SL CPU2. Native30/modelCLI60-process90; checked workers30; standalone syntax30 and full399 immutable SL120 per group. Accept only exact true newline/empty stderr/exits0/no interruption/reaped groups/PIDs.",
+    "commands": [
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 tests/semantics/leading_strings.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 tests/semantics/leading_string_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-39/state-prep-c8e056a63-seven/run-prepare.py",
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-39/state-c8e056a63-seven/run-state.py",
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-39/state-prep-5771266a8-affected-three/run-prepare.py",
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-39/state-5771266a8-affected-three/run-state.py"
+    ],
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "record": "Restore matching Git cuts/local tools and fresh output roots; archive preserves original paths/bytes/raw streams, immutable checked fixtures, commands/exits/reaping. External archives are not runtime dependencies."
+  },
+  "composition": {
+    "parent": "df9c956e14818bbfd91cd696bd0f2c5228903ac3",
+    "private_publication": "8c878160ad37799fadadeb08a47d9dc7ca7b1e2d",
+    "modules": 401,
+    "runtime_sha256": {
+      "spec/semantics/30-storage.watsup": "7ec1fac75c75ebe9993b0f874033fb2525a6feca50c6a8ebd65ba3058fe3d65e",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "85458a0eebf89bbc48e65f78285ba1d760eb6d3ae428a35bb45e51414dd6c570"
+    },
+    "other_incoming_paths_preserved": 70,
+    "gate": "No joined actor:404 and six tests retain exact private bytes;30 is the entire401-module parent plus only the nonowning BOTH_ASSIGN_STRING_WARNING constructor. Every other spec byte/manifest and all other incoming paths retain the parent. New410 requires LIST_FETCH/flat destructuring and411 PROPERTY_PREP/empty/public float NaN; neither can match GLOBALS reads or plain-CV !isset(right). DEFINE/constant query/array publication, Sensitive GETTER/CTOR closure equality, Generator PARKED/pending-throw and GC receipts, and typed REF-return destructor cursors are absent from all11 originals. New same-frame throw adaptation first requires GENERATOR_ARGS/pending-throw tasks; the GC clauses require matching Generator context/receipt. No source creates Generator/Closure/SensitiveValue/custom-destructor objects; h is untyped by-value and returns bool, only builtin Throwables/getter method calls occur. GENERATORINPUTS stays eps, non-Generator object-valid fallback and shared404/54/55/207/35/39/40/string/carrier/heap interfaces remain exact. Source11@ae2478d68, author654@c8e056a63 and peer557@5771266a8 retain private399 cuts and both failures0 without replay or renewed credit."
+  }
+}

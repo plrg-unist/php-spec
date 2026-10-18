@@ -7,6 +7,28 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Leading numeric strings now warn after the first callback in the both-fractional
+plain-CV modulo/shift/numeric-bitwise routes. Historical LEFT `12` and saved numeric `5`
+survive both callbacks, storing `2`/`384`/`0`/`4`/`13`/`9` and detaching alias `88`; real `"05tail"`
+carriers and exact exponent text are covered. Either supplied throw keeps its
+Exception/destination/alias. Independent default-second Warning cases show XOR
+stores `-13` through RHS reference rebinding (target owners 3 to 2), negative shift
+fails after RHS unset, and cached `0` modulo fails despite live `7`. Both Errors
+occur at RHS line 25 before store/detachment. Eleven originals agree at ae2478d68.
+Author 654 SL premises pass at c8e056a63, independent 557 at 5771266a8/399 (1211 total),
+covering real dispatch/entered frames, parse history, storage/owners and budgets.
+One shared nonowning marker/snapshot/continuation plus three boundary exclusions;
+prior source/phase/conversion/handler/storage helpers remain exact. Original
+pre-application and metadata-fixture failures remain 0; only affected checks and
+previously unrun peers execute, with no accepted replay. All 15 rows remain partial; OP12 paused.
+[Leading string ledger](coverage/semantics/leading-string-review.json).
+
+Composed over df9c956e/401 after pointwise review of Generator parked/pending
+throw and GC, public-property NaN empty, float LIST keys, closure equality,
+constant APIs and typed REF-return cleanup. Their selectors are absent here;
+shared operator/handler/string/heap bodies remain exact. Source11/state654+557
+retain private399 cuts without actor, replay or renewed credit.
+
 Authentic internal-getter Closures now compare equal for the same receiver,
 method and C owner, independently of direct/factory creation site. Distinct
 receivers remain uncomparable even when their fields and held Map match; different
