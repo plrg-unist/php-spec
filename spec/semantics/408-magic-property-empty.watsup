@@ -28,6 +28,7 @@ def $property_isset_empty(S, ppropertyisset) = true
 def $property_isset_source(S, ppropertyisset) = true
   -- if $property_isset_empty(S, ppropertyisset)
 
+dec $property_empty_get_source(pstate, pmethoddesc) : bool
 ;; Only authenticated empty preparation defers the ordinary getter interception.
 def $property_empty_prepare(S) = true
   -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: (ORIGIN_RETURN (porigin)) :: (ISSET_RESULT true z) :: ptask_tail*
@@ -37,8 +38,28 @@ def $property_empty_prepare(S) = true
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $property_isset_needed(S, n, $base64(text_name))
 
+;; With no __isset, an inaccessible private member never invokes __get.
+;; Capture the source CV here; the ordinary visibility fallback returns null.
+def $property_empty_prepare(S) = true
+  -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: (ORIGIN_RETURN (porigin)) :: (ISSET_RESULT true z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $property_empty_source(S, porigin, $base64(text_name), z)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) phpType20 metadata)
+  -- if S.RESULT = VARIABLE $base64(text_receiver) $variable_line(BYTES text_receiver, metadata_receiver)
+  -- if $property_lookup_scope(S) = $closure_source_class(S, porigin)
+  -- if S_read = $quiet_operand(S, S.RESULT)
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, n)
+  -- if $property_isset_method(S, n) = eps
+  -- if $property_get_method(S, n) = (pmethoddesc)
+  -- if $property_empty_get_source(S, pmethoddesc)
+  -- if $property_resolve(S, n, $base64(text_name)) = PROPERTY_DENIED ppropertydesc
+  -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (pmethoddesc.OWNER)
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE /\ ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.SETVISIBILITY = eps
+  -- if ~$property_hook_declared(S, n, $base64(text_name))
+
 ;; The selected getter keeps the existing untyped name/return compiler family.
-dec $property_empty_get_source(pstate, pmethoddesc) : bool
 def $property_empty_get_source(S, pmethoddesc) = true
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
   -- if pfunction = pmethoddesc.FUNCTION
