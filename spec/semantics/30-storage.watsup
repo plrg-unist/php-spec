@@ -460,6 +460,7 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | PIPE_FORCE porigin int int int | PIPE_APPLY porigin poperand int int
   | SWITCH_START statement porigin | SWITCH_SCAN statement porigin poperand nat | SWITCH_COMPARE statement porigin poperand nat int | SWITCH_NEXT statement porigin poperand | SWITCH_REPLAY_END porigin | SWITCH_REPLAY_PHASE porigin | RETIRED_SWITCH_END pretiredowner | RETIRED_FOREACH_NEXT pretiredowner | RETIRED_OWNER_PHASE pretiredowner
   | INSTANCEOF_RESULT int
+  | INSTANCEOF_DYNAMIC_LEFT int | INSTANCEOF_DYNAMIC_CLASS poperand int | INSTANCEOF_DYNAMIC_RESULT poperand pvalue int
   | PROPERTY_PREP phpType20 int | PROPERTY_NAME pvalue int | PROPERTY_BASE_PREP phpType20 int | PROPERTY_BASE_NAME pbase int
   | STATIC_PROP_CLASS phpType19 phpType31 int | STATIC_PROP_NAME phpType19 poperand int | STATIC_PROP_CAPTURE porigin poperand int
   | PROPERTY_REF_PREP expression int | PROPERTY_REF_CAPTURE pbase int | PROPERTY_REF_BIND pbase nat int | PROPERTY_REF_BIND_CV pbase nat* int | PROPERTY_REF_FETCH int

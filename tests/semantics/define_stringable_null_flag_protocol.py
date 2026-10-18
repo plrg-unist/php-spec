@@ -181,7 +181,7 @@ def checks(program, path, name):
             *error('S','S',False,'strictNullCaller60'), 'S_error.STORE[n_result] = DEFINED (PINT 99)',
             *cast.refusals('S'), *cast.budget('S')]
     values += ['~$dynamic_define_string_call(pconfigcall_S[.SENT = pconfigcall_S.SENT ++ [NAMED_SENT (KNOWN PNULL)]])',
-        '~$dynamic_define_string_call(pconfigcall_S[.SENT = $named_slot_set(pconfigcall_S.SENT,2,KNOWN (PINT 0))])']
+        '$dynamic_define_string_call(pconfigcall_S[.SENT = $named_slot_set(pconfigcall_S.SENT,2,KNOWN (PINT 0))])']
     return values
 
 

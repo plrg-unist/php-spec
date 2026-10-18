@@ -20,6 +20,22 @@ from same-sign overflowed integer prefixes, and equal infinities, fall back to
 original byte comparison. This follows the pinned engine, including its unusual
 prefix behavior; the original draft disagreements remain in the ledger.
 
+Undefined CV reads at scalar `<=>` now suspend through the ordinary warning
+handler. The missing value stays null even if the callback initializes its name.
+A later direct-CV right operand follows the callback's live binding; a computed
+value remains captured. Known primitive left operands also survive a missing
+right read. Normal, false-returning and throwing handlers keep their ordinary
+reporting and unwind behavior. A defined scalar left CV also survives a missing
+right read: its current wrapper is read after the callback, including a newly
+created reference or rebinding to another scalar cell. The missing right stays
+null. Removing the left CV or replacing it with an owning value remains explicitly
+unsupported on return, without another warning. See the
+[live-left review](../../coverage/semantics/undefined-spaceship-right-review.json).
+Both-missing inputs, owning opposing values and removed or non-scalar right
+operands remain partial. `==`/`!=`/`<`/`<=` use different VM warning-fetch paths; `>`/`>=` also
+reverse operands and need separate continuations. See the
+[scalar warning review](../../coverage/semantics/undefined-spaceship-review.json).
+
 Array comparison first handles identical container identity, then recursion on
 the left operand, element counts, and exact normalized key lookup in left
 insertion order. Distinct insertion orders alone do not imply inequality.

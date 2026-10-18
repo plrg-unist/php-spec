@@ -16,6 +16,10 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
+[Scalar spaceship warnings](docs/semantics/COMPARISONS.md) now preserve a missing
+variable's null result through error handlers while reading current scalar variables
+after callback effects, including a rebound left reference. Other comparison warning paths remain partial.
+
 [Array-literal float keys](docs/semantics/DIMENSIONS.md) now retain their converted
 integer across deprecation handlers. Unwrapped null/bool/int/float element variables
 remain live, while runtime array temporaries retain their own tables. Reference
@@ -1287,7 +1291,18 @@ calls still reject the raw name first. A returning handler can create the target
 before duplicate lookup; a throwing deprecation handler cancels registration.
 [Four source agreements and 1,084 state premises](coverage/semantics/define-stringable-null-flag-review.json)
 cover both continuations and authentic converted API captures. Startup/special
-results, other flag conversions and wider values/lifetimes/forms remain partial.
+results, flags beyond the bounded follow-ups and wider values/lifetimes/forms remain partial.
+
+Retained propertyless Stringable `define()` names now receive quiet nonboolean
+integer, non-NaN float and authenticated string flags with primitive candidates
+in admitted non-NUL user-global/class-name domains.
+The captured flag survives conversion and live writes: false skips the ignored
+Warning, while truthy warns before duplicate lookup. Strict calls reject the raw
+name first; class-like results reject before the ignored Warning.
+[Four source agreements and 1,203 state premises](coverage/semantics/define-stringable-scalar-flag-review.json)
+cover fresh/duplicate results, returning handlers and duplicate cleanup preserving
+the same Exception and exact request captures. Startup/special/HALT results, NaN flags,
+owning candidates and wider receiver lifetimes/call forms remain partial.
 
 Retained ordinary nonStringable instances and `stdClass` now fail positional
 `define()` name reception before primitive flag processing or registration.
@@ -1480,6 +1495,12 @@ Completed user-instance donors also retain their exact construction receipt and
 pointer in direct definitions and copied array leaves. Typed property aliases
 stay shared; existing normal, throwing-handler and shutdown cleanup retain the
 ordinary owners. [Instance define review](coverage/semantics/define-certified-instance-review.json).
+Direct certified objects also receive true and NULL flags. An ignored-flag
+Warning keeps the captured pointer, including fresh registration after a supplied
+handler Exception; a throwing NULL deprecation cancels registration. Normal
+callbacks can install a later duplicate key, and strict NULL rejects before them.
+[Object-flag review](coverage/semantics/define-object-flag-review.json).
+
 Fresh definitions also copy nonempty array trees containing certified stdClass
 or user-instance leaves under the admitted flags. Copied containers freeze source
 reference values while object pointers and property writes remain shared,
@@ -2857,6 +2878,15 @@ links eligible source and `stdClass` parents at their required publication time;
 `instanceof` and class types follow transitive ancestry. Its [review](coverage/semantics/inheritance-review.json)
 binds source, compiler, syntax and paused-state checks. Other internal-class
 bodies and method callbacks remain open.
+
+Dynamic `instanceof` captures the RHS class from a CV or zero-argument producer
+before ordinary RHS cleanup. Its destructor can replace a delayed left CV; an owning
+left temporary instead survives until matching has cached the Boolean.
+Runtime class strings use case-insensitive fully qualified lookup without
+imports or autoload, and an invalid RHS errors before reading the left.
+Four originals and 335 focused premises are recorded in the
+[dynamic RHS review](coverage/semantics/dynamic-instanceof-review.json).
+
 A single builtin `#[AllowDynamicProperties]` permits dynamic slots on named
 classes and descendants while ordinary classes retain deprecation. Invalid
 trait/interface/readonly targets preserve diagnostic priority and keyword lines;
@@ -4096,8 +4126,12 @@ r/b aliases. A still-owning pending partial pair passes 684/18 at `3c90313b4`:
 the required outer task survives cleanup and local C, then one old-line9 VALUE
 Notice precedes fresh NULL recovery; later r writes preserve b/z/y. Owner-only
 deletions refuse despite a valid heap and live global z. Historical source/native
-credit is unchanged. Wider histories, interposed lifecycle capture, reentry, GC
-and broader consumers remain open.
+credit is unchanged. An unused destructor declaration now also preserves the
+no-instance, echo-only interposed scalar history. Fresh control/treatment sources
+agree with PHP; separate 463/8 state checks cover its shared-cell RELEASE/EXIT
+pauses, required literal history despite an unchanged heap, engine TypeError catch,
+one line7 Notice and detached aliases. Wider interposed/pending histories, reentry,
+GC and broader consumers remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

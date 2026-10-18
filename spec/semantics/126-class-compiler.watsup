@@ -271,3 +271,19 @@ def $ppnew_named(phpType28) = false -- otherwise
 def $ppdispatch(P, pcpath, NExprNew phpType28 (SEQUENCE phpType7*) metadata, PPR) = $ppunsupported(P, "dynamic class target")
   -- if P.FOLD.CONSTANT /\ phpType7* =/= eps /\ ~$ppnew_named(phpType28)
 def $ppdispatch(P, pcpath, NExprInstanceof expression name metadata, PPR) = $ppclass_name($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR), pcpath, $pnclassresolve(P.ENV, name))
+
+;; Dynamic class references are runtime values, not namespace/import names.
+;; This first slice keeps ordinary CVs and zero-argument named producers.
+dec $instanceof_dynamic_operand(expression) : bool
+def $instanceof_dynamic_operand(NExprVariable (BYTES text) metadata) = true
+def $instanceof_dynamic_operand(NExprFuncCall name (SEQUENCE eps) metadata) = true
+def $instanceof_dynamic_operand(expression) = false -- otherwise
+dec $ppdynamic_instanceof(ppstate, pcpath, expression, expression) : ppstate
+def $ppdispatch(P, pcpath, NExprInstanceof expression_left expression_right metadata, PPR) = $ppdynamic_instanceof(P, pcpath, expression_left, expression_right)
+  -- if ~P.FOLD.CONSTANT
+def $ppdynamic_instanceof(P, pcpath, expression_left, expression_right) = P[.FOLD = P.FOLD[.VALUE = (PBOOL false)]]
+  -- if $atomic_expression(expression_left) /\ $parser_literal(expression_left) =/= eps
+def $ppdynamic_instanceof(P, pcpath, expression_left, expression_right) = $ppclearvalue($ppexpr($ppexpr(P, pcpath ++ [PCFIELD 0], expression_left, PPR), pcpath ++ [PCFIELD 1], expression_right, PPR))
+  -- if $parser_literal(expression_left) = eps
+  -- if $instanceof_dynamic_operand(expression_left) /\ $instanceof_dynamic_operand(expression_right)
+def $ppdynamic_instanceof(P, pcpath, expression_left, expression_right) = $ppunsupported(P, "dynamic instanceof operands") -- otherwise

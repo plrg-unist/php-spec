@@ -265,3 +265,165 @@ def $class_expr_task_valid(S, NExprInstanceof expression name metadata) = true
 def $class_expr_task_valid(S, expression) = false -- otherwise
 def $call_task_valid(S, EVAL (NExprNew name (SEQUENCE eps) metadata)) = $class_expr_task_valid(S, NExprNew name (SEQUENCE eps) metadata)
 def $call_task_valid(S, EVAL (NExprInstanceof expression name metadata)) = $class_expr_task_valid(S, NExprInstanceof expression name metadata)
+
+;; FETCH_CLASS captures class history and releases its temporary before the
+;; delayed left CV is read. Only a known left temporary supplies a new owner.
+dec $instanceof_dynamic_site(pstate, int) : bool
+def $instanceof_dynamic_site(S, z) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprInstanceof expression_left expression_right metadata)
+  -- if $parser_literal(expression_left) = eps
+  -- if $instanceof_dynamic_operand(expression_left) /\ $instanceof_dynamic_operand(expression_right)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = eps
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_parent, false))
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0]) = ((z, b_left))
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 1]) = ((z_right, b_right))
+def $instanceof_dynamic_site(S, z) = false -- otherwise
+
+dec $instanceof_dynamic_left_valid(pstate, poperand) : bool
+def $instanceof_dynamic_left_valid(S, VARIABLE n_name* z) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprInstanceof (NExprVariable (BYTES text) metadata_left) expression_right metadata)
+  -- if n_name* = $base64(text)
+  -- if z = $runtime_line(S, [PCFIELD 0], NExprVariable (BYTES text) metadata_left)
+def $instanceof_dynamic_left_valid(S, KNOWN pvalue) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprInstanceof (NExprFuncCall name (SEQUENCE eps) metadata_left) expression_right metadata)
+def $instanceof_dynamic_left_valid(S, poperand) = false -- otherwise
+
+dec $instanceof_dynamic_rhs_valid(pstate, poperand) : bool
+def $instanceof_dynamic_rhs_valid(S, VARIABLE n_name* z) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprInstanceof expression_left (NExprVariable (BYTES text) metadata_right) metadata)
+  -- if n_name* = $base64(text)
+  -- if z = $runtime_line(S, [PCFIELD 1], NExprVariable (BYTES text) metadata_right)
+def $instanceof_dynamic_rhs_valid(S, KNOWN pvalue) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprInstanceof expression_left (NExprFuncCall name (SEQUENCE eps) metadata_right) metadata)
+def $instanceof_dynamic_rhs_valid(S, poperand) = false -- otherwise
+
+dec $instanceof_dynamic_name(ptbytes) : ptbytes
+def $instanceof_dynamic_name(92 :: ptbytes) = ptbytes
+def $instanceof_dynamic_name(ptbytes) = ptbytes -- otherwise
+;; This history remains usable after an RHS object is retired; it is not a root.
+dec $instanceof_dynamic_class(pstate, pvalue) : ptbytes?
+def $instanceof_dynamic_class(S, pvalue) = ($instanceof_dynamic_name(ptbytes))
+  -- if $string_bytes(pvalue) = (ptbytes)
+def $instanceof_dynamic_class(S, POBJECT n) = (pclassdesc.NAME)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin)
+def $instanceof_dynamic_class(S, POBJECT n) = ($ptascii("stdClass"))
+  -- if $(n < |S.OBJECTS|) /\ S.OBJECTS[n] = STDINSTANCE
+def $instanceof_dynamic_class(S, pvalue) = eps -- otherwise
+dec $instanceof_dynamic_object(pvalue) : bool
+def $instanceof_dynamic_object(POBJECT n) = true
+def $instanceof_dynamic_object(pvalue) = false -- otherwise
+dec $instanceof_dynamic_rhs_live(pstate, pvalue) : bool
+def $instanceof_dynamic_rhs_live(S, pvalue) = true -- if $string_bytes(pvalue) =/= eps
+def $instanceof_dynamic_rhs_live(S, POBJECT n) = true
+  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, n)
+  -- if $instanceof_dynamic_class(S, POBJECT n) =/= eps
+def $instanceof_dynamic_rhs_live(S, pvalue) = false -- otherwise
+
+dec $instanceof_dynamic_rhs_line(pstate) : int
+def $instanceof_dynamic_rhs_line(S) = $runtime_line(S, [PCFIELD 1], expression_right)
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprInstanceof expression_left expression_right metadata)
+def $instanceof_dynamic_rhs_line(S) = 0 -- otherwise
+
+rule PhpStep/instanceof-dynamic: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_left), INSTANCEOF_DYNAMIC_LEFT z] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (EVAL (NExprInstanceof expression_left expression_right metadata)) :: ptask_tail*
+  -- if z = $runtime_line(S, [PCFIELD 0], expression_left)
+  -- if $instanceof_dynamic_site(S, z)
+rule PhpStep/instanceof-dynamic-constant: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (EVAL (NExprInstanceof expression_left expression_right metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprInstanceof expression_left expression_right metadata)
+  -- if $atomic_expression(expression_left) /\ $parser_literal(expression_left) =/= eps
+  -- if $compiled_read(S, porigin) = (PBOOL false)
+rule PhpStep/instanceof-dynamic-left: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression_right), INSTANCEOF_DYNAMIC_CLASS S.RESULT z] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (INSTANCEOF_DYNAMIC_LEFT z) :: ptask_tail*
+  -- if $instanceof_dynamic_site(S, z)
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprInstanceof expression_left expression_right metadata)
+  -- if $instanceof_dynamic_left_valid(S, S.RESULT)
+rule PhpStep/instanceof-dynamic-left-unsupported: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "dynamic instanceof left operand"]
+  -- if S.TODO = (INSTANCEOF_DYNAMIC_LEFT z) :: ptask_tail*
+  -- if ~$instanceof_dynamic_site(S, z) \/ ~$instanceof_dynamic_left_valid(S, S.RESULT)
+
+rule PhpStep/instanceof-dynamic-capture: S ~> S_read[.TODO = (INSTANCEOF_DYNAMIC_RESULT poperand_left pvalue z) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (INSTANCEOF_DYNAMIC_CLASS poperand_left z) :: ptask_tail*
+  -- if $instanceof_dynamic_site(S, z) /\ $instanceof_dynamic_left_valid(S, poperand_left)
+  -- if $instanceof_dynamic_rhs_valid(S, S.RESULT)
+  -- if S_read = $resolve_at(S, S.RESULT, $instanceof_dynamic_rhs_line(S))
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if $instanceof_dynamic_rhs_live(S_read, pvalue)
+rule PhpStep/instanceof-dynamic-invalid: S ~> $throw_scalar(S_read[.TODO = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], "Error", $ptascii("Class name must be a valid object or a string"), $instanceof_dynamic_rhs_line(S))
+  -- if S.TODO = (INSTANCEOF_DYNAMIC_CLASS poperand_left z) :: ptask_tail*
+  -- if $instanceof_dynamic_site(S, z) /\ $instanceof_dynamic_left_valid(S, poperand_left)
+  -- if $instanceof_dynamic_rhs_valid(S, S.RESULT)
+  -- if S_read = $resolve_at(S, S.RESULT, $instanceof_dynamic_rhs_line(S))
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if $string_bytes(pvalue) = eps /\ ~$instanceof_dynamic_object(pvalue)
+  -- if $operand_nodes(S.RESULT) = eps \/ $value_nodes(pvalue) = eps
+rule PhpStep/instanceof-dynamic-class-unsupported: S ~> S_read[.TODO = eps][.COMPLETION = UNSUPPORTED "dynamic instanceof class operand"]
+  -- if S.TODO = (INSTANCEOF_DYNAMIC_CLASS poperand_left z) :: ptask_tail*
+  -- if $instanceof_dynamic_site(S, z) /\ $instanceof_dynamic_left_valid(S, poperand_left)
+  -- if $instanceof_dynamic_rhs_valid(S, S.RESULT)
+  -- if S_read = $resolve_at(S, S.RESULT, $instanceof_dynamic_rhs_line(S))
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if ~$instanceof_dynamic_rhs_live(S_read, pvalue)
+  -- if $instanceof_dynamic_object(pvalue) \/ ($operand_nodes(S.RESULT) =/= eps /\ $value_nodes(pvalue) =/= eps)
+rule PhpStep/instanceof-dynamic-class-abrupt: S ~> S_read[.TODO = eps]
+  -- if S.TODO = (INSTANCEOF_DYNAMIC_CLASS poperand_left z) :: ptask_tail*
+  -- if $instanceof_dynamic_site(S, z) /\ $instanceof_dynamic_left_valid(S, poperand_left)
+  -- if $instanceof_dynamic_rhs_valid(S, S.RESULT)
+  -- if S_read = $resolve_at(S, S.RESULT, $instanceof_dynamic_rhs_line(S))
+  -- if S_read.COMPLETION =/= NORMAL
+rule PhpStep/instanceof-dynamic-class-invalid-source: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid dynamic instanceof class source"]
+  -- if S.TODO = (INSTANCEOF_DYNAMIC_CLASS poperand_left z) :: ptask_tail*
+  -- if ~$instanceof_dynamic_site(S, z) \/ ~$instanceof_dynamic_left_valid(S, poperand_left) \/ ~$instanceof_dynamic_rhs_valid(S, S.RESULT)
+
+rule PhpStep/instanceof-dynamic-result: S ~> S_read[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL $class_instanceof(S_read, pvalue_left, ptbytes))][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (INSTANCEOF_DYNAMIC_RESULT poperand_left pvalue_right z) :: ptask_tail*
+  -- if $instanceof_dynamic_site(S, z) /\ $instanceof_dynamic_left_valid(S, poperand_left)
+  -- if $instanceof_dynamic_class(S, pvalue_right) = (ptbytes)
+  -- if S_read = $resolve_at(S, poperand_left, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue_left
+rule PhpStep/instanceof-dynamic-result-abrupt: S ~> S_read[.TODO = eps]
+  -- if S.TODO = (INSTANCEOF_DYNAMIC_RESULT poperand_left pvalue_right z) :: ptask_tail*
+  -- if $instanceof_dynamic_site(S, z) /\ $instanceof_dynamic_left_valid(S, poperand_left)
+  -- if $instanceof_dynamic_class(S, pvalue_right) =/= eps
+  -- if S_read = $resolve_at(S, poperand_left, z)
+  -- if S_read.COMPLETION =/= NORMAL
+rule PhpStep/instanceof-dynamic-result-invalid: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid dynamic instanceof result source"]
+  -- if S.TODO = (INSTANCEOF_DYNAMIC_RESULT poperand_left pvalue_right z) :: ptask_tail*
+  -- if ~$instanceof_dynamic_site(S, z) \/ ~$instanceof_dynamic_left_valid(S, poperand_left) \/ $instanceof_dynamic_class(S, pvalue_right) = eps
+
+def $task_nodes(INSTANCEOF_DYNAMIC_LEFT z) = eps
+def $task_nodes(INSTANCEOF_DYNAMIC_CLASS poperand z) = $operand_nodes(poperand)
+def $task_nodes(INSTANCEOF_DYNAMIC_RESULT poperand pvalue z) = $operand_nodes(poperand)
+dec $instanceof_dynamic_class_front(pstate, poperand, int) : bool
+def $instanceof_dynamic_class_front(S, poperand, z) = true
+  -- if S.TODO = (INSTANCEOF_DYNAMIC_CLASS poperand z) :: ptask_tail*
+def $instanceof_dynamic_class_front(S, poperand, z) = false -- otherwise
+def $call_task_valid(S, INSTANCEOF_DYNAMIC_LEFT z) = $instanceof_dynamic_site(S, z)
+def $call_task_valid(S, INSTANCEOF_DYNAMIC_CLASS poperand z) = ($instanceof_dynamic_site(S, z) /\ $instanceof_dynamic_left_valid(S, poperand) /\ (~$instanceof_dynamic_class_front(S, poperand, z) \/ S.COMPLETION =/= NORMAL \/ $instanceof_dynamic_rhs_valid(S, S.RESULT)))
+def $call_task_valid(S, INSTANCEOF_DYNAMIC_RESULT poperand pvalue z) = ($instanceof_dynamic_site(S, z) /\ $instanceof_dynamic_left_valid(S, poperand) /\ $instanceof_dynamic_class(S, pvalue) =/= eps)
+def $call_task_valid(S, EVAL (NExprInstanceof expression_left expression_right metadata)) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprInstanceof expression_left expression_right metadata)
+  -- if $atomic_expression(expression_left) /\ $parser_literal(expression_left) =/= eps
+  -- if $compiled_read(S, porigin) = (PBOOL false)
+def $call_task_valid(S, EVAL (NExprInstanceof expression_left expression_right metadata)) = $instanceof_dynamic_site(S, z)
+  -- if z = $runtime_line(S, [PCFIELD 0], expression_left)
+  -- if $parser_literal(expression_left) = eps

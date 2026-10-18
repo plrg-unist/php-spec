@@ -505,6 +505,8 @@ test-semantics: build
 	python3 tests/semantics/inheritance_compiler.py
 	python3 tests/semantics/inheritance.py
 	python3 tests/semantics/inheritance_protocol.py
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/instanceof_dynamic_cases.json
+	python3 tests/semantics/instanceof_dynamic_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/property_compiler.py
 	python3 tests/semantics/properties.py
 	python3 tests/semantics/properties_task_protocol.py

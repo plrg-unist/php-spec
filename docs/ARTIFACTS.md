@@ -62,6 +62,11 @@ The pending still-owning partial-pair interval is in
 317,000 bytes under `.tools/m112/`, SHA-256
 `c56ef7c478f526ccd2e0ed4b273e382b596a6cea563cf500fef9fa1866528190`.
 
+The fresh interposed scalar/dormant-destructor regression and public cleanup proof
+are in `../php-spec-evidence-archive/lifecycle-interposed-capture-113/manifest.json`:
+617,423 bytes under `.tools/m113/`, eight distinct actor reports and selected runtime
+patches, SHA-256 `6f291adecb3455f5140c3bf1d460f35155369dea3e1d69bb38b36af858d0c0db`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the

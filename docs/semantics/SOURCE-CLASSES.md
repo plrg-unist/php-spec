@@ -26,6 +26,19 @@ An empty instance is noncallable in direct, first-class and pipe calls and in
 array-cast behavior. Object key, offset and conversion errors use the source
 class name.
 
+Dynamic RHS `instanceof` accepts ordinary CVs and zero-argument named by-value
+producers. It captures the class of a live source object or `stdClass` without
+calling `__toString`, then releases an RHS temporary before reading a delayed left CV.
+An owned left temporary remains live until matching caches the Boolean, which
+survives its destructor. Runtime string names use case-insensitive fully qualified
+lookup, strip one leading backslash and do not expand imports or invoke autoload.
+An invalid nonowning RHS errors before even an undefined left is read. A scanner
+int/float/string literal left folds false and skips compiling/executing the RHS. The
+[dynamic review](../../coverage/semantics/dynamic-instanceof-review.json) separates
+four source agreements from 335 focused premises and the earlier fixture failures.
+Other operand expressions/object kinds, reference-return producers, owning invalid
+RHS cleanup and wider throwing-destructor histories remain partial.
+
 Source origins authenticate descriptors, active bindings, class/new/instanceof
 tasks and paused `instanceof` results. Owned objects remain live through arrays
 and are released after their final owner. The pinned engine routes are `zend_compile_class_decl`,
@@ -36,7 +49,7 @@ handlers in `Zend/zend_vm_def.h`.
 The rules are in `126-class-compiler.watsup` and `127-class-runtime.watsup`.
 [The review](../../coverage/semantics/object-classes-review.json) records the
 source and paused-state checks. Other internal-class construction, constructor
-arguments, inheritance, properties, methods, dynamic class names, late-bound
+arguments, inheritance, properties, methods, wider dynamic class-name forms, late-bound
 `self`/`parent`/`static`, array and class-method callback invocation, and
 lifecycle protocols remain separate obligations.
 
