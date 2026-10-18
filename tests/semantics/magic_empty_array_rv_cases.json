@@ -1,0 +1,68 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "empty",
+      "source": "<?php\nclass MagicArrayParent89 {\n    private int $value = 1;\n    public function __isset(string $name): bool {\n        echo 'I|';\n        return true;\n    }\n    public function __get($name) {\n        global $child;\n        echo 'G|';\n        $child = null;\n        echo 'g|';\n        return [];\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass MagicArrayChild89 extends MagicArrayParent89 {}\n$child = new MagicArrayChild89();\necho 'Z:', empty($child->value) ? 'T' : 'F', '|';\necho 'E|';\n",
+      "source_sha256": "a52fb63b91fe8aaec76ae895ec94e2808863ff1a145f05ab1d12ff64e0c0d8d9",
+      "source_file": "magic-empty-array-rv-empty.php",
+      "empty_line": 19,
+      "stdout_base64": "WjpJfEd8Z3xEfFR8RXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-empty-array-rv-private-89/.tools/magic-empty-array-rv-probes-89/empty.php",
+      "native_report_sha256": "074659b464e11fa71d5cff14ebb6ab273cfa2385bde18e086153599ddfea026b",
+      "native_group": "magic-empty89-array-rv-native-cdcf74227",
+      "native_raw_sha256": "dcaa2408ec11d12e10656ab06ecbc22b3f2ab9a2aab677566fac95c76f697b10",
+      "native_raw_hash_recipe": "stdout + NUL + stderr + NUL + ASCII exit"
+    },
+    {
+      "id": "normal",
+      "source": "<?php\nclass EmptyPayload89 {\n    public function __destruct() {\n        global $child;\n        echo 'V|';\n        $child = null;\n        echo 'v|';\n    }\n}\nclass MagicObjectParent89 {\n    private int $value = 1;\n    public function __isset(string $name): bool {\n        echo 'I|';\n        return true;\n    }\n    public function __get($name) {\n        echo 'G|';\n        return [new EmptyPayload89()];\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass MagicObjectChild89 extends MagicObjectParent89 {}\n$child = new MagicObjectChild89();\necho 'N:', empty($child->value) ? 'T' : 'F', '|';\necho 'E|';\n",
+      "source_sha256": "4a67a11fe493117ee8ff15da09fc94ffe05b0ad273b96a87e4a406adc653ebe7",
+      "source_file": "magic-empty-array-rv-normal.php",
+      "empty_line": 24,
+      "stdout_base64": "TjpJfEd8Vnx2fER8RnxFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-empty-array-rv-private-89/.tools/magic-empty-array-rv-probes-89/normal.php",
+      "native_report_sha256": "074659b464e11fa71d5cff14ebb6ab273cfa2385bde18e086153599ddfea026b",
+      "native_group": "magic-empty89-array-rv-native-cdcf74227",
+      "native_raw_sha256": "3d52fc8d22cf4c67d227e54f8fae865391e3c1503b04292979f284ca089eb042",
+      "native_raw_hash_recipe": "stdout + NUL + stderr + NUL + ASCII exit"
+    },
+    {
+      "id": "throwing",
+      "source": "<?php\nclass EmptyPayload89 {\n    public function __destruct() {\n        global $child;\n        echo 'V|';\n        $child = null;\n        echo 'v|';\n        throw new Exception('array-rv-stop');\n    }\n}\nclass MagicObjectParent89 {\n    private int $value = 1;\n    public function __isset(string $name): bool {\n        echo 'I|';\n        return true;\n    }\n    public function __get($name) {\n        echo 'G|';\n        return [new EmptyPayload89()];\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass MagicObjectChild89 extends MagicObjectParent89 {}\n$child = new MagicObjectChild89();\necho 'X:';\ntry { echo empty($child->value) ? 'T' : 'F', '|'; }\ncatch (Exception $caught) { echo 'C|'; }\necho 'E|';\n",
+      "source_sha256": "314de2d3256114262d07c7f2e20d31a1188001246bef0387861f4ecaafcfffd5",
+      "source_file": "magic-empty-array-rv-throwing.php",
+      "empty_line": 26,
+      "stdout_base64": "WDpJfEd8Vnx2fER8Q3xFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-empty-array-rv-private-89/.tools/magic-empty-array-rv-probes-89/throwing.php",
+      "native_report_sha256": "074659b464e11fa71d5cff14ebb6ab273cfa2385bde18e086153599ddfea026b",
+      "native_group": "magic-empty89-array-rv-native-cdcf74227",
+      "native_raw_sha256": "0e0aa839670494158066303d5777f9e06f63fcfb92770211ce5b0b5de663d283",
+      "native_raw_hash_recipe": "stdout + NUL + stderr + NUL + ASCII exit"
+    }
+  ]
+}
