@@ -9467,6 +9467,21 @@ caller `rNULL/b7/xNULL/ybad`, actual inside-D LINE-only public refusal and
 whole/split budget equality pass. Existing normal destructor, pending-Throwable
 and ownership/release rules stay unchanged; this is one normal child history.
 [M89 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M90 routes a pending child-destructor TypeError for that assigned `?array`
+source through the existing authenticated replay owners. New direct and assigned
+runtime `[new O]` originals make O throw `TypeError("child90")`. Native PHP
+reaches local `CT:1;A;S`, detached `rNULL/b7` and one old-line Notice in both;
+the unchanged `08ef06924`/399 model agrees only on direct and wrongly takes
+assigned to outer `OT:1` with r7/no Notice. The sole pending-source guard
+change at private `02023496d`/399 passes strict SL initialization and exact
+agreement on both originals. One assigned reached fixture passes 143 Boolean
+premises and two raw steps: preF x shares HARRAY→O, the destructor-produced
+child90 TypeError and same object reach local CT after both old nodes retire,
+and the nonowning consumed cursor restores NULL/new Notice. Real exit LINE-only
+public refusal and whole/split budget equality pass. M89 capture and D-frame,
+normal exit, ownership and release rules are unchanged; this is one throwing
+child history, with wider aggregate and reentrant returns still open.
+[M90 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, wider destructor throw/reentry, real suspension and wider typed

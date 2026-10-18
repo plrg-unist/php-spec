@@ -1033,3 +1033,20 @@ inside-D LINE-only public refusal and budget split pass. This covers one
 normal child-destructor history. Pending-Throwable routing and wider aggregate
 returns remain separate. See the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M90 extends only the pending-Throwable old-source guard to the assigned
+`?array` source admitted by M89. In a new direct/assigned pair, `old_value()`
+returns runtime `[new O]` and O's destructor throws `TypeError("child90")`
+when selected-reference replacement releases the old array. Native PHP and
+the repaired model both catch that exact error in local CT and return detached
+`rNULL/b7` with one old-line VALUE Notice; the unchanged model agrees on the
+direct control but routes the assigned error to outer OT/r7 without a Notice.
+An assigned reached proof binds x sharing the old HARRAY→O before finalization.
+At the pending exit both modeled old nodes are retired; the destructor's
+TypeError origin/message and the same local CT object are authenticated.
+Ordinary replay preserves the nonowning cursor, and consumed recovery creates
+NULL and a new Notice. A real exit LINE-only public refusal and budget split
+pass. Capture, D-frame, normal-exit, ownership and release rules are unchanged;
+the proof covers one runtime single-entry array with one throwing child, not
+physical Zend collection or arbitrary aggregate histories. See the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
