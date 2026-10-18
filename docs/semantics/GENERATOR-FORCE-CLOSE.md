@@ -50,7 +50,8 @@ API current snapshot keeps its separate cache owner during this cleanup.
 The [unused-target review](../../coverage/semantics/generator-pending-unused-send-review.json)
 distinguishes both paths and real local-alias close order.
 
-Pending `throw` has a separate exception-opline history. At a bare yield or
+Pending `throw` has a separate exception-opline history. At a bare yield,
+used simple-CV yield with one authenticated live input, or
 detached current with a node-free copied return, pending initialization returns
 before body entry but the physical frame remains parked at the native exception operation. Later
 explicit close skips that frame's finally even though initialization is cleared.
@@ -62,6 +63,12 @@ intact. No exception owner belongs to the parked Generator. The
 [pending-throw review](../../coverage/semantics/generator-pending-throw-review.json)
 checks reference-child and detached-middle histories; later resumption remains
 Unsupported because the global exception-opline history is not yet modeled.
+A live used-yield input stays in place at the pending THROW step. Physical leaf
+close retains its count before retiring the parked frame; the payload runs only
+in the request object-store pass. It is neither released before caller catch nor
+owned by the transient current copy. Cache/input aliases and a distinct throwing
+cache preserve their separate counts in the
+[pending-buffered review](../../coverage/semantics/generator-pending-buffered-throw-review.json).
 
 The release walk preserves physical owner order, including compiled local-slot
 order and key-before-value cleanup after a forbidden keyed yield. It can close

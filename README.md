@@ -926,11 +926,16 @@ when it throws. See the [unused-target review](coverage/semantics/generator-pend
 Non-pending `throw` into a buffered used yield releases that slot before child
 catch, preserving cache owners and a replacement destructor exception's previous
 chain. See the [buffered-throw review](coverage/semantics/generator-buffered-throw-review.json).
-Pending `throw` through native links to a bare yield or detached current with a
-nonowning copied return instead reaches the caller immediately. Its current copy survives receiver
-cleanup; getters remain available, but later resumption is Unsupported. Explicit
+Pending `throw` through native links to a bare or buffered simple-CV yield, or a
+detached current with a nonowning copied return, reaches the caller immediately.
+Its current copy survives receiver cleanup; getters remain available, but later
+resumption is Unsupported. Explicit
 close preserves the pinned parked-frame finally omission. See the
 [pending-throw review](coverage/semantics/generator-pending-throw-review.json).
+With a buffered input, pending `throw` preserves its count; physical close retains
+it until request-store destruction, including receiver cleanup before caller
+catch. The independent current copy can still trigger a replacement exception. See the
+[pending-buffered review](coverage/semantics/generator-pending-buffered-throw-review.json).
 [Delegation](docs/semantics/GENERATOR-DELEGATION.md)
 adds arrays, source Iterators and shared Generator graphs with live raw caches
 and natural return/unwind. Aggregate yield-from now acquires nested real iterator

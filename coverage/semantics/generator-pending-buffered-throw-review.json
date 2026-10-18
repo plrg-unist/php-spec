@@ -1,0 +1,126 @@
+{
+  "milestone": "Iterator22: pending Generator THROW preserves a buffered used-yield input",
+  "status": "Implemented, validated and independently accepted; pointwise composed over 02db78694/401.",
+  "independent_reviewer": "iterator_review_15",
+  "base": "a5bb4b155096da7f51721c5c478037e0155b67ed",
+  "tested_runtime": "0147148fd9f4721dec607797cf777a4cae91a31a",
+  "modules": 400,
+  "scope": "A one-Throwable literal method THROW on a pending DELEGATING actual root, through finite pure native Generator links to a paused simple-CV used yield with exactly one authenticated LIVE input. The physical frame has no other suspended task or HELD heap owners. Later resume stays Unsupported.",
+  "semantics": [
+    "A lower pending SEND can fill the physical child result while an upper delegator still has pending initialization. The upper THROW parks the child and returns before HANDLE_EXCEPTION, so it preserves the input count rather than taking the non-pending buffered-THROW decrement.",
+    "The current snapshot remains a separate owner through receiver retirement and no-GC caller cleanup. Reference-cache COW, cache/input aliases and a distinct cache-destructor replacement retain their independent counts and exact previous chain.",
+    "Physical child close, including receiver retirement before caller catch, atomically converts the LIVE input to its existing request-late retained count. Parked close omits that physical finally, while ordinary CV/context/cache cleanup continues. Object-store shutdown alone invokes the retained payload destructor.",
+    "A source-local borrowed receipt recognizes the real adjacent OP_EXIT/snapshot pair during public validation after the nonowning operation registry is projected away. It borrows the pending Throwable already owned by OP_EXIT; it adds no owner or primitive transition."
+  ],
+  "source_authority": [
+    "vendor/php-src/Zend/zend_generators.c::Generator::send, Generator::throw, zend_generator_resume and zend_generator_dtor_storage: send_target write before resume, actual-root DO_INIT, parked exception operation and forced close.",
+    "vendor/php-src/Zend/zend_vm_def.h::HANDLE_EXCEPTION performs the no-GC used-result decrement only on real body entry. Zend/zend_opcode.c live-range construction and Zend/zend_execute.c cleanup_live_vars explain why the unconsumed result count survives parked close.",
+    "Pinned implementation observations are not portable evaluation-order guarantees. No engine bug or intentional divergence is classified."
+  ],
+  "validation_identity": {
+    "php": "8.5.10 CLI NTS64; source34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml5.1.0; SL, caches off and encountered determinism checks",
+    "environment": "tests/semantics/profile.json; PHP -n; LC_ALL=C; TZ=UTC; PHP_SPEC_SCRIPT_ENCODING unset. Serial scoped taskset commands; raw reports retain exact commands/caps/bytes/exits/stable inputs/HEAD."
+  },
+  "runtime_sha256": {
+    "spec/semantics/280-generators.watsup": "a14db41c23ae047619642ecc6a6d3df3baab3aa88d819b42f7ea7d4ab3f602d5",
+    "spec/semantics/289-generator-delegation.watsup": "7c9944eb77aca400ded798c5eefcdaf570bdef6ab9f9348a831b7ff5e7bb6151"
+  },
+  "raw_root": ".tools/generator-pending-buffered-throw-22/.tools/",
+  "native_and_baseline": {
+    "revision": "a5bb4b155096da7f51721c5c478037e0155b67ed",
+    "native_reports": [
+      "generator-pending-buffered-throw-native-c_vr51hz/report.json",
+      "generator-pending-buffered-throw-review-native-t4i8i2tp/report.json"
+    ],
+    "native_result": "Four immutable originals captured before production: normal exit0/empty stderr, no preasserted stdout. Both authors independently reviewed raw tuples; all native captures grant zero model credit.",
+    "baseline_report": "generator-pending-buffered-throw-baseline-2pyw_77u/report.json",
+    "baseline_result": "Exact50e87695 original and retained c_vr native tuple reused without PHP replay. Genuine public Unsupported Generator force-close at request end after11 OUTPUT chunks joining P|O|U|L|C|H|1|S|5|T|. Exit1/empty stderr/no timeout/diagnostic/exit_status; stable unchanged a5bb/400, zero agreement."
+  },
+  "strict": {
+    "reports": [
+      "generator-pending-buffered-throw-author-sl-ox4hcoji/report.json",
+      "generator-pending-buffered-throw-author-sl-tj8hkops/report.json"
+    ],
+    "result": "Strict400 exacttrue at1cd856191 and after the validation-only correction at0147148fd; cacheoff/encountered determinism checks, stable inputs/HEAD. No compiler failure."
+  },
+  "fixture_elaboration": {
+    "initial_report": "generator-pending-buffered-throw-state-elab-rjkeewou/report.json",
+    "changed_invocation_report": "generator-pending-buffered-throw-author-elab-63vo5n0a/report.json",
+    "result": "Ordered400 combined4 parse/elab at1cd passed exact EOF/four headers, without interpretation. The changed invocation fixture alone was reparsed at014 after13 added validation controls; the other three formulas are unchanged. Both gates grant zero semantic credit."
+  },
+  "normal_sources": {
+    "new_distinct_originals": 4,
+    "reports": [
+      [
+        "generator-pending-buffered-throw-source-94afp58l/report.json",
+        "1cd856191674622ba2cd107a310bcbb32dfe0a72",
+        "author normal2"
+      ],
+      [
+        "generator-pending-buffered-throw-review-source-6ggufeej/report.json",
+        "0147148fd9f4721dec607797cf777a4cae91a31a",
+        "independent normal2"
+      ]
+    ],
+    "result": "Exact normal stdout/stderr/exit tuples agree with retained native4 without PHP replay. Author source2 retain their1cd cut: the later correction changes public validation only. Four final state groups execute all original endings under014, providing the affected bridge without renewed author wrapper credit."
+  },
+  "reached_states": {
+    "revision": "0147148fd9f4721dec607797cf777a4cae91a31a",
+    "groups": 4,
+    "premises": 510,
+    "author": 261,
+    "independent": 249,
+    "local_checks": 490,
+    "generic_reachability": 20,
+    "reports": [
+      [
+        "fiber-state-review-lqha3kwi/report.json",
+        158
+      ],
+      [
+        "fiber-state-review-nbunz5kk/report.json",
+        103
+      ],
+      [
+        "fiber-state-review-aree_qln/report.json",
+        154
+      ],
+      [
+        "fiber-state-review-usvy2gc2/report.json",
+        95
+      ]
+    ],
+    "checks": "Together these cover real pending invocation with unchanged LIVE input; old non-pending readiness refusal; exact source/line/argument/used-tail and malformed source/registry refusals; OP_EXIT borrowed provenance plus projected-state forgery rejection; a real replacement cache destructor with retired Generators and saved-frame public validity; last-owner physical close LIVE-to-orphan with payload-array1/raw HCELL3 unchanged; alias orphan1 to real store-destructor entry3 and terminal1; public/heap validity, zero/split budgets and all four native endings.",
+    "result": "All true/empty stderr/exit0/no timeout, stable HEAD and author/independent inputs. Only the original failed invocation state repeated after correction; all other source/state groups ran once."
+  },
+  "preserved_discrepancy": {
+    "report": "fiber-state-review-pufcflc5/report.json",
+    "revision": "1cd856191674622ba2cd107a310bcbb32dfe0a72",
+    "attempted_premises": 145,
+    "agreement_credit": 0,
+    "result": "The first invocation reached its authentic front, then failed public call_descriptors_valid after one real step. Call-task traversal projected away nonowning operation metadata before validating the snapshot, although the actual OP_EXIT still owned its pending Throwable. No source-output mismatch occurred. A bounded source-local task receipt fixes validation without altering owners, primitive transitions or outputs;13 focused controls include rejection of a forged projected whole state. Preserve the original generated fixture/raw failure."
+  },
+  "compatibility": "Both old pending-THROW terminals keep input_count0, preserving bare-yield and detached-current admission. Only the new exact used-yield terminal and its blocked-input carveout extend execution; non-pending buffered THROW, pending SEND, input registry ownership, close, GC, generic Throwable/eager algorithms, state layout and manifest/pipeline remain unchanged. Prior18-21 cuts require no replay.",
+  "remaining": [
+    "Later real resume after parked THROW still requires global exception-opline history and new native originals; direct and forwarded resume remain explicitly Unsupported.",
+    "Other used-expression shapes, owning suspended foreach/TMP/finally values, owning copied returns, acquired/borrowed producers and wider Fiber/reentry/GC lifecycle remain required.",
+    "Full Generator/core closure and later BOLA/security proofs remain open; no engine-bug classification or intentional divergence."
+  ],
+  "evidence_recovery": {
+    "archive": "../php-spec-evidence-archive/generator-pending-buffered-throw-22/private.tar.gz",
+    "bytes": 3160916,
+    "sha256": "cab415282a878825830bc3d7bdff39321e69c8962de8db02dee72f26497950a2",
+    "manifest": "Sibling manifest.json maps14 report roles, including original145-premise failure0, and9 ignored recorder/catalog inputs. Full raw originals/generated fixtures/commands/outputs and input identities remain external.",
+    "restore": "Extract at private_root. Native/baseline use untouched a5bb4b155/400; author source2 and initial preparation retain1cd856191, while corrected strict400/allfour state groups and independent source2 use0147148fd. The original145-premise public-validation failure stays zero credit. Retained private branch supplies tracked implementation/tests; provision read-only references with scripts/private-semantics-references.py. Raw commands/outputs identify executed binaries, not archived build prerequisites."
+  },
+  "composition": {
+    "parent": "02db78694c5575ba995688bc30622f5314c492f8",
+    "parent_modules": 401,
+    "private_publication": "2806b0dc97806d2dbdb2de98a639d34dfe28f684",
+    "review": "Independent actual-parent review: nullable typed/reference-return cursors, public-float NaN empty, mixed/reference LIST float keys, leading-string compound operations, constant API/recursive-array define and captured factory-Closure clone/comparison selectors are absent from these originals/fronts. Preserve every incoming runtime byte, task tag, pipeline and 401-module manifest; only 280/289 equal the exact tested 014 private files.",
+    "validation": "Private strict400, author source2 at 1cd, independent source2/state510 at 014 and native/baseline at a5bb retain their own cuts. Final401 manifest belongs composition. No joined runtime actor or renewed execution credit."
+  }
+}

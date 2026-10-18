@@ -44,6 +44,8 @@ dec $generator_parked_node(pcnode?) : bool
 dec $generator_parked_frame(pframe?, porigin) : bool
 dec $generator_parked_valid(pstate, pgenerator) : bool
 dec $generator_pending_throw_valid(pstate, pgeneratorpendingthrow) : bool
+dec $generator_pending_throw_carrier(pstate, pgeneratorpendingthrow, ptask, ptask*) : bool
+dec $generator_pending_throw_carried(pstate, pgeneratorpendingthrow, ptask*) : bool
 dec $generator_pending_throw_discard(pstate, ptask) : pgeneratorpendingthrow?
 dec $generator_pending_throw_here(pstate, pdestructionoperation) : bool
 dec $generator_pending_throw_frames(pstate, pdestructionoperation, pframe*) : bool

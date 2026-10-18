@@ -7,6 +7,33 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Pending Generator `throw` now preserves one live input at a simple-CV used yield.
+A lower pending `send` fills the slot while an upper pending `throw` still returns
+before body entry: the same Throwable reaches the caller, and getters preserve
+the cached value. Physical child close retains the unconsumed input until the
+request object-store pass, including when receiver cleanup closes it before catch.
+Current snapshots, reference-cache COW and cache/input aliases keep separate
+owners; a distinct cache destructor can replace the exception with its previous
+chain intact. Suspended task/held owners must otherwise be empty. Later parked
+resumption, other owning temporaries and wider GC/lifecycle behavior remain open.
+[Pending-buffered review](coverage/semantics/generator-pending-buffered-throw-review.json).
+
+Four exact normal originals agree: author2 retain `1cd856191`, independent2 use
+`0147148fd`/400. Four genuine fronts pass 510 premises (261 author +249 independent)
+and all original endings at `0147148fd`; strict400 passes. The first 145-premise
+invocation failed public validation after a real step and retains zero credit.
+A source-local borrowed OP_EXIT receipt fixes the lost pending provenance without
+changing owners or execution; 13 added controls reject forged projected states.
+Only that failed group repeated; the other groups ran once. Native4, unchanged
+Unsupported baseline and both parse/elab gates grant zero agreement. Earlier
+Iterator18–21 evidence stays at its own cuts without replay.
+
+Composed over `02db78694`/401 after pointwise review of incoming typed reference
+return cleanup, NaN-property empty, LIST float-key, numeric-warning, constant API
+and factory-Closure selectors, all absent here. Parent task tags, manifest and
+every other runtime byte are preserved; Modules 280/289 remain as tested at `0147148fd`.
+Source4/state510 retain their private cuts without a joined actor or renewed credit.
+
 Captured `Closure::fromCallable(...)` factories now clone into fresh Closures and
 compare equal across authentic creation sites. Clones retain the borrowed source
 occurrence, with no receiver or owning history edge. The unchanged pair completed
@@ -153,9 +180,9 @@ The original mixed source packet retains firstPASS1/secondFAIL0: sole-receiver
 cache destruction preceded middle finally because Throwable adaptation erased
 the current copy. Only the failed wrapper repeated; later state fronts expose
 that copy and the separately corrected detached route hidden by retained aliases.
-Native4/unchanged baseline remain0. Later real resume after parked throw,
-used-yield buffers, owning suspended temporaries and wider exception-opline
-history remain explicit open scope. See the
+Native4/unchanged baseline remain0. At that cut, later real resume after parked
+throw, used-yield buffers, owning suspended temporaries and wider exception-opline
+history remained explicit open scope. See the
 [pending-throw ledger](coverage/semantics/generator-pending-throw-review.json).
 
 Composed over `f42dcd6c5`/400 after pointwise review of the incoming

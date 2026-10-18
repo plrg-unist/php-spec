@@ -89,8 +89,15 @@ and preserve the previous chain. The physical frame keeps nonowning parked-sourc
 history, so getters preserve its cache while later real resumption stays
 Unsupported. Explicit close omits that frame's finally even after initialization
 was cleared. The [pending-throw review](../../coverage/semantics/generator-pending-throw-review.json)
-bounds this route to empty suspended task/held owners and no used-yield buffer.
-Owning unfinished temporaries and later exception-opline resumption remain open.
+bounds suspended task/held owners to empty. A simple-CV used yield can also carry
+one authenticated live input: pending `throw` and getters leave that count in
+place. Physical leaf close retains it until request-store destruction, including
+when receiver retirement closes the child before caller catch. It does not run
+the non-pending slot decrement above. Two pending
+ancestors let a lower `send` fill the slot while an upper `throw` still takes
+this no-advance path. The [pending-buffered review](../../coverage/semantics/generator-pending-buffered-throw-review.json)
+separates input, current-copy and raw reference-cache owners. Other owning
+unfinished temporaries and later exception-opline resumption remain open.
 
 Literal `send` and `throw` validate and capture their single argument before
 initialization. Fresh calls first reach the initial yield, then deliver the
