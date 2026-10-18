@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "milestone": "A15 writable destructuring source initialization before lossy-key callbacks",
+  "status": "independently reviewed and validated; actual-parent composition pending",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle and tests/semantics/profile.json",
+  "base": "411c20015afecdc4a70884c29dbd6b4af9b060a9",
+  "scope": "Flat reference-bearing direct-CV RHS patterns with CV leaves and a selected by-reference fetch using an ordinary defined fitting lossy-float CV key. Reached NULL or reference-wrapped false initializes before the callback; an initially undefined source CV first acquires referenceNULL silently. The plan does not admit an UNDEFINED slot. Nested/literal roots and wider constrained sources remain separate.",
+  "runtime_commit": "bc3d1b83c86de1babdcbc64b8df1800bc53933b6",
+  "runtime_sha256": {"spec/semantics/410-list-key-conversion-warnings.watsup": "39759d052c44dedbb1878e2b6786b0be7a6d2eebcce4bbf18edcc6bfa527135a"},
+  "private_modules": 401,
+  "engine_basis": [
+    "Vendored PHP8.5.10 commit34308a6666b2d489c509541ea9befea9e2b42348: MAKE_REF turns an undefined CV into referenceNULL without a read warning. FETCH_LIST_W calls zend_fetch_dimension_address_W; its reference-container branch initializes NULL/false to a fresh mutable array before converting the key.",
+    "That reference branch skips the automatic-false-to-array deprecation present in the nonreference branch. slow_index_convert_w then protects the actual selected table through the float deprecation and requires exactly one remaining owner after release. A missing permitted writable slot is created silently; zero or multiple owners produce a fresh detached NULL reference.",
+    "The callback can observe the newly created empty array even when it throws. Later fetches/results use the saved source CELL, independently of rebound source/key names. Existing fetch_location_array models the reference-path false distinction; generic location_array would emit an extra deprecation."
+  ],
+  "reviewed_behavior": [
+    "Module410 factors source occurrence/CELL/conversion authentication into origin, adds a plan-only allocated ARRAY-or-defined-NULL/false container guard, and uses reference-aware preparation. No task/signature/63/module inventory, key conversion, compiler, ownership API or shared harness change. Earlier ARRAY admission and A14 resume phases remain pointwise equivalent.",
+    "The initial plan authenticates source syntax and marked allocated CELL without inventing an array ID. Only actual preparation allocates the table; the unchanged full source guard then authenticates phase0/1 table bounds and phase0 allocation. Resume does not inspect the cell's current type/value or key name/value.",
+    "NULL with a pre-existing source alias exposes one fresh empty table through both names before the callback; frozen key0 creates its reference despite the changed key9.5, and the later fresh key0 reads presentNULL. Reference writes propagate to source/result while earlier by-value reads remain snapshots.",
+    "Initial false emits only the float deprecation. Callback insertion COW makes the new empty table protection-only; expiry binds detachedNULL, preserves outside88 and reads live33 later. Independent false handling instead leaves two ordinary table owners, cancels the first reference without mutating either empty table, then separates the saved source for the later quiet reference while the held old table stays empty.",
+    "Independent NULL handling retains the actual fresh table in a sole hold, replaces the saved CELL value and retires/rebinds source/key names. Frozen -2 is inserted into that detached table; later reference/result use saved22/44, independently of live88/66. Target55 updates the hold and later target77 updates the saved result.",
+    "Initially undefined source acquisition is reached before the earlier NULL target store. The writable fetch creates its array before the supplied-throw callback; catch preserves earlierNULL, target/alias99, later7 and destination100 with the same Throwable/previousNULL/finally, while source/key/array retire without binding.",
+    "All state fronts start from original sources and check actual acquisition/preparation, handler frames, physical owners, raw versus driven release/acquire/bind/prune, later reference COW, exact output and whole-state budgets. Edited projections are refusals only. Two inherited A14 NULL-plan refusals now use true-scalar refusals; no A14 actor or renewed prior credit."
+  ],
+  "accepted": {
+    "source": {
+      "report": ".tools/list-float-write-autovivify-source-15/report.json",
+      "sha256": "6f572cc4e2b50aa01fd10dd39b13fc199b8c1f8c0088825ed2e2d982ae3ccdff",
+      "revision": "bc3d1b83c86de1babdcbc64b8df1800bc53933b6", "agreements": 5,
+      "cases": ["list-float-write-autovivify-null-unique", "list-float-write-autovivify-false-expiry", "list-float-write-autovivify-undefined-throw", "list-float-autovivify-review-null-detached-hold", "list-float-autovivify-review-false-shared-cancel"],
+      "native_reuse": "Five fresh normal originals retain exact native source paths/argv/streams from three preparation reports. Model-only comparisons use those original paths; no native replay. Unsupported observer builtins were replaced with structural comparisons before any actor."
+    },
+    "states": [
+      {
+        "report": ".tools/list-float-write-autovivify-author-state-15/report.json",
+        "sha256": "47bf652bf95ddcf3268ab6f9055591226dac544dad73a4245557aba23962c4cd",
+        "revision": "2a08686e0e2510a21c953528b345adc39946cc1a",
+        "cases": ["list-float-write-autovivify-null-unique", "list-float-write-autovivify-false-expiry"],
+        "conditions": [161, 165], "raw_steps": [5, 5], "boolean_premises": 316,
+        "credit_note": "Only these first two rows count; the original failed undefined row is preserved separately below."
+      },
+      {
+        "report": ".tools/list-float-write-autovivify-author-state-16/report.json",
+        "sha256": "e8a55fdf027007c21a136efcc68a3f4c7324fcb725caca7a42c3af598a71bfcf",
+        "revision": "5c1d2e75a037da3cba8991ddc91a979f42a0b223",
+        "cases": ["list-float-write-autovivify-undefined-throw"],
+        "conditions": [146], "raw_steps": [2], "boolean_premises": 144
+      },
+      {
+        "report": ".tools/list-float-write-autovivify-review-state-15/report.json",
+        "sha256": "148eed7ff3728bdc5c142633fbb97cba53a434571c7764793fbeede06efa5380",
+        "revision": "5c1d2e75a037da3cba8991ddc91a979f42a0b223",
+        "cases": ["list-float-autovivify-review-null-detached-hold", "list-float-autovivify-review-false-shared-cancel"],
+        "conditions": [215, 200], "raw_steps": [6, 6], "boolean_premises": 403
+      }
+    ],
+    "source_agreements": 5, "normal_source_agreements": 5,
+    "state_fronts": 5, "total_conditions": 887, "boolean_premises": 863, "raw_steps": 24,
+    "credit_note": "Source5/bc3d, author326/2a086 plus146/5c1 and independent415/5c1 count. Conditions include setup/source/refusal/raw premises, not separate programs. Every accepted actor exits0 without timeout/interruption and with empty recorded groups. Original cuts remain separate; docs/composition add no execution credit."
+  },
+  "preserved_zero_credit": [
+    {
+      "report": ".tools/list-float-write-autovivify-baseline-15/report.json",
+      "sha256": "3f5774a12aea04d40de43a32371350da5b98766949038511863fc00afb300883",
+      "revision": "411c20015afecdc4a70884c29dbd6b4af9b060a9",
+      "result": "Unchanged source is frontend accepted/checked but explicitly Unsupported at error-handler ingress. Native exits0 with one float Deprecated line, model exits1 in11.09s; ordinary comparison fails naturally without timeout. Zero agreement credit."
+    },
+    {
+      "report": ".tools/list-float-write-autovivify-native-rest-15/report.json",
+      "sha256": "319ad98f11fe17c0aad40a691884663708076cf949027b34c758d8f11a93a9ab",
+      "revision": "411c20015afecdc4a70884c29dbd6b4af9b060a9", "result": "Fresh false-expiry and initially undefined supplied-throw native2 preparation only."
+    },
+    {
+      "report": ".tools/list-float-write-autovivify-review-native-15/report.json",
+      "sha256": "2f9f2205bb03727917ba05c75eba3a122cc848d85ef6e522446115a4556f6908",
+      "revision": "411c20015afecdc4a70884c29dbd6b4af9b060a9", "result": "Fresh independent NULL detached-hold and false shared-cancel native2 preparation only."
+    },
+    {
+      "report": ".tools/list-float-write-autovivify-author-state-15/report.json",
+      "sha256": "47bf652bf95ddcf3268ab6f9055591226dac544dad73a4245557aba23962c4cd",
+      "revision": "2a08686e0e2510a21c953528b345adc39946cc1a",
+      "case": "list-float-write-autovivify-undefined-throw", "conditions": 146, "raw_steps": 2,
+      "result": "The acquisition frontier omitted the actual ORIGIN_RETURN between ACQUIRE and LIST_CAPTURE, so seeking reached terminal and the first raw acquisition had no derivation. Only that selector line changed; all condition lists remained byte-equal. Only the undefined front retried in16; first326 remain accepted at their original cut. This failed row contributes zero credit."
+    }
+  ],
+  "shared_harness_change": "None. Existing exact-stderr checking authenticates the original default Deprecated0.5/path/line12 bytes; other state originals require empty stderr.",
+  "affected_historical_controls": ["tests/semantics/list_float_write_key_warning_protocol.py: one NULL-source plan refusal becomes true-scalar refusal", "tests/semantics/list_float_write_key_warning_state_review.py: the same one-line substitution; no A14 actor"],
+  "raw_evidence": {
+    "archive": "/home/user/workspace/php-spec/.tools/list-float-write-autovivify-15-raw.tar.gz",
+    "bytes": 381107, "members": 173, "sha256": "880428b43320a1dc5dda5619399407dbfe6ddb45a968c2a98ddf4331658001ef",
+    "recovery": "Seven original relative .tools report/fixture/process/source roots plus list-float-write-autovivify-reuse-sources-15.py are preserved, including the original failed undefined row. Extract beneath a checkout of the recorded cut; absolute argv/cwd are historical provenance. The archive is not a build dependency."
+  },
+  "actual_parent_review": {
+    "parent": "4010faf05d90eeda74a51a00601ccc1ea547f744",
+    "seams": "Incoming30/280/289/303 add parked Generator foreach retention, with an initially empty registry in40, extra roots in39 and validity in84, plus explicit-collection guards in301. A15 has no Generator/yield/foreach, so the registry stays empty, new roots are empty and new validity is true. Incoming400 adds define array-name TypeError guards; no such call occurs. No37/62/63/410 or actual list/key preparation helper changed.",
+    "joined_actor": "No concrete semantic interaction found; pointwise composition and exact FF review add no replay credit."
+  },
+  "remaining": [
+    "Nested/literal lossy-key conversion; wider constrained sources/RHS/targets; other source diagnostics, range/nonfinite conversion, undefined/null-key diagnostics and computed current keys.",
+    "Paused owned-NUL/current-CV NUL behavior, wider callbacks/lifecycle, full array/core closure and offline portability."
+  ]
+}
