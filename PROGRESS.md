@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Quiet scalar MUL TypeErrors now follow the pinned physical operand order.
+Seven originals pass at `cfbf2b96b`/405; two focused fixtures pass 217 premises at
+`361aef83e`/405, including saved TMP bad text after origin repair, raw THROWN and
+fresh TypeError at line 25 without assignment. Numeric products and staged Warnings
+retain their old paths; five linked rows stay partial. [Quiet-MUL ledger](coverage/semantics/quiet-multiply-order-review.json).
+OP12 paused; undefined/owning inputs and wider diagnostic orders remain open.
+
+Composed over `711e93577`/405, preserving incoming fields, task variants
+and manifest. Source7/state217 retain their private405 cuts; independently reviewed
+incoming selectors require no joined execution or renewed credit.
+
 Quiet scalar flags now admit already-certified object `define` payloads while
 retaining the raw argument and earlier pointer across callback CV/property
 changes. False flags publish quietly; truthy flags warn before current-key
@@ -115,18 +126,8 @@ arithmetic guard rejects comparison operators. Only module 207 changes and keeps
 tested bytes; every other runtime, parent task/field/default and ordered manifest
 stays exact. Source8/state369 retain their private cuts without replay or renewed credit.
 
-Arithmetic Warnings now retain each evaluated scalar reference-result owner,
-including two operands sharing one cell and cells whose source names disappear.
-Nine originals pass at `5c28a56c9`/405; five focused fixtures pass 853 premises at
-`d6bd1ae9c`/405: physical MUL repair, shared-cell `17`, live-type and cached-zero
-Errors, historical final power and supplied-throw retirement. Old entries/readers
-and numeric bodies remain exact; 15 linked rows stay partial. Scalar-throughout
-is a trace bound; late out-of-domain completion and wider lifetimes remain open.
-[Owned-arithmetic ledger](coverage/semantics/owned-arithmetic-warning-review.json). OP12 paused.
-
-Composed over `d2f594f3a`/405, preserving incoming fields, task variants and
-manifest. Independently reviewed incoming selectors are absent here; source9 and
-state853 retain their private405 cuts without joined execution or renewed credit.
+The earlier owned-reference arithmetic route retains source9/state853 in its
+[review ledger](coverage/semantics/owned-arithmetic-warning-review.json).
 
 Direct certified-object `define` receives true and NULL flags while retaining the
 earlier pointer across caller-CV rebinding and shared property writes. Normal

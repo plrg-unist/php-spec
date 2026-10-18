@@ -1,0 +1,117 @@
+{
+  "version": 1,
+  "milestone": "OP51 quiet scalar multiplication TypeError order",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/profile",
+  "scope": "Quiet scalar MULTIPLY failures whose authenticated operand-slot ranks require the COMMUTATIVE swap. Both evaluated operands have no owned nodes, both source selections are defined/readable and at least one raw scalar is BADNUMBER. Copies retain their saved values after originating variables change. Reverse/equal ranks, all-convertible numeric products and staged Warning continuations use the unchanged fallback. Undefined, owning, wider producer and diagnostic-order cases remain partial.",
+  "runtime_revision": "cfbf2b96b7bef8a73bc610c685a30cc627000630",
+  "helper_revision": "361aef83e521bc2de2d29bfcd99a738476e510b0",
+  "private_modules": 405,
+  "runtime_sha256": {
+    "spec/semantics/40-control.watsup": "5ff4cec288b5ae5529874e5f911ae6fe9cc1f877facce019fb1d855de8cf8898",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "31dddf8d3297d6c3f0947805c496f68fc5a25aa8103815e8ca257994b2f5b249"
+  },
+  "engine_basis": [
+    "Pinned zend_vm_def.h marks ZEND_MUL COMMUTATIVE; zend_vm_gen.php selects swapped physical operands when the left opcode slot rank is smaller (CONST1/TMP2/VAR4/CV8). zend_mul_helper/mul_function use that physical order, including zend_binop_error type labels.",
+    "Generic binary source application now receives original lexical operands explicitly after both resolves. quiet_multiply_error authenticates MULTIPLY AST, operands, line and ranks, defined selected reads, nonowning scalar values with no conversion Warning and at least one BADNUMBER. A guarded arm reverses only the two raw values passed to existing binary_apply; the default delegates unchanged.",
+    "The binary_apply body, conversion/getter/Warning/error allocation/numeric-result rules remain exact. Numeric success, reverse/equal rank and nonmatching/unsupported source domains keep their prior application. No new task/schema/state/module or ownership edge is introduced."
+  ],
+  "contract": [
+    "Author4 native and checked source cases distinguish CONST1/TMP2/VAR4 versus CV8 through bool/null/int * string errors at line25, zero Warning callbacks and preserved destination100. A strict float10.0 product checks unchanged numeric fallback. Independent peers cover reverse8>1 and equal2=2 lexical string*bool plus TMP2/VAR4 float*string after rhs() repairs the originating LEFT CV to12; the saved bad copy cannot be repaired and the by-value producer runs once.",
+    "Focused author112 and peer105 start actual initialized sources and reach generic BINARY_RIGHT. They separate raw PhpStep THROWN state from actual driven fresh TypeError allocation/line/Previous/sole owner, preserve STORE/ENV/REFCELLS/events/string metadata and prior ARRAY prefix, verify no outer assignment or Warning, and finish with native-exact observations/budget cuts. One refusal-only guard matrix checks source/line/current read/carrier/scalar/quiet/BADNUMBER bounds; projections are never driven."
+  ],
+  "required_follow_on": [
+    "Undefined reads, owning operands/payloads, wider producers/slot classes and other diagnostic/conversion order remain partial. This milestone fixes the bounded quiet TypeError order, not all quiet multiplication semantics.",
+    "Old staged conversion/operator controls receive zero renewed credit; OP12 remains paused. No engine bug or intentional divergence is claimed."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-51/source-cfbf2b96b-author-four/report.json",
+        "sha256": "e2de6c8a6f73d830dd8f88541c71ab6437fb535c993119eaf360a6b046cd479c",
+        "revision": "cfbf2b96b7bef8a73bc610c685a30cc627000630",
+        "agreements": 4
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-51/review-model-cfbf2b96b-three/report.json",
+        "sha256": "4e29440970791f36fb14abbe36575588e4ec6872a8c7e61e63eb36378e50ee6a",
+        "revision": "cfbf2b96b7bef8a73bc610c685a30cc627000630",
+        "agreements": 3
+      }
+    ],
+    "state": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-51/state-361aef83e-two/report.json",
+        "sha256": "893264e48c552858898ab8dd526da6573c5322d8ab21fb6ac87f06d637d70398",
+        "revision": "361aef83e521bc2de2d29bfcd99a738476e510b0",
+        "modules": 405,
+        "cases": [
+          "quiet-multiply-return-cv",
+          "quiet-multiply-tmp-var-copy"
+        ],
+        "conditions": [
+          112,
+          105
+        ],
+        "total": 217
+      }
+    ],
+    "total_source_agreements": 7,
+    "total_focused_state_conditions": 217
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-51/baseline-f2b0fbca3-constant-cv/report.json",
+      "sha256": "39b3bc2e0c06d1517b4dc71616607596536a937d44f2198e848f5f32aa9672f6",
+      "result": "Actual accepted checked NORMAL/model exit0/reasonnull, wrong lexical string * bool versus native bool * string. Wrapper false and agreement0 preserved; no Unsupported override."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-51/native-f2b0fbca3-author-four/report.json",
+        "sha256": "6a911763983f89406e7442a031f4f82e1f9f407addaf66f93a6a6c429b0247a3"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-51/native-f2b0fbca3-review-three/report.json",
+        "sha256": "53f853161be4123f46e05dc560a8ae2e83af1ac2a04a1d1959174195ad7fef02"
+      }
+    ],
+    "checked_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-51/state-prep-361aef83e-two/report.json",
+        "sha256": "668ae3ed3bdce879260bb913b8e0ec249ce64b08c6302c5d3d7b6eb833689580",
+        "result": "Retained original paths/native bytes; checked frontend/adapter only, zero application/native replay, workers0/reaped."
+      }
+    ],
+    "standalone_syntax": "Two standalone undefined-pstate diagnostics carry zero semantic credit."
+  },
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-51",
+    "environment": "LC_ALL=C,TZ=UTC,no PHP_SPEC_SCRIPT_ENCODING. Native/baseline CPU5; changed source CPU2. Native30/modelCLI60-process90; checked workers30/full405 SL120 per group. Accepted native/model stdout exact and stderr empty; accepted SL true newline/empty stderr/exits0/reaped. Actual focused checked prep/SL affinity: [5].",
+    "commands": [
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 tests/semantics/quiet_multiply_order.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 tests/semantics/quiet_multiply_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-51/state-prep-361aef83e-two/run-prepare.py",
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-51/state-361aef83e-two/run-state.py"
+    ],
+    "record": "Restore matching Git cuts and local tools into a fresh directory. Original-source paths/native streams remain in retained records. External evidence is not a runtime dependency and copied local tools add no portability/rebuild claim.",
+    "tool_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "composition": {
+    "parent": "711e93577e844134a962348842dc3770a1e519a9",
+    "private_publication": "fb875669cc02dd77dc2e025e2fcc5ccb3240096b",
+    "modules": 405,
+    "runtime_sha256": {
+      "spec/semantics/40-control.watsup": "5ff4cec288b5ae5529874e5f911ae6fe9cc1f877facce019fb1d855de8cf8898",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "31dddf8d3297d6c3f0947805c496f68fc5a25aa8103815e8ca257994b2f5b249"
+    },
+    "other_incoming_paths_preserved": 55,
+    "gate": "Five incoming runtime paths remain disjoint from OP51. Module172 requires ini_set reception;207's new missing-CV read/guard cases require EQUAL or LESS and an undefined operand, absent from these defined MULTIPLY sources and observers. Modules303/405 require Generator force-close/unpack history, absent here. Module400's changes require DEFINE/constant API captures, which no original or reached continuation produces. The new source-aware apply receives only the existing generic binary call; all parent state fields, task variants, readers, handlers, ownership and driver defaults remain intact. Shared40/404/numerics and the405-module manifest have no incoming changes. No concrete interaction warrants joined execution or renewal of the private405 source7/state217 evidence."
+  }
+}

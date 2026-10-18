@@ -280,7 +280,7 @@ are equivalent through the phase adapter. Ten originals and 767 focused premises
 check real phases, physical bool-string errors, copied raw-type labels, strict
 `68.75` after both origin names disappear and final power supplied-throw cancellation
 in the [copied-arithmetic ledger](../../coverage/semantics/copied-arithmetic-warning-review.json).
-Quiet/no-Warning MUL ordering, owning payloads and other reference-result producers,
+Other quiet/no-Warning MUL orders, owning payloads and other reference-result producers,
 pending-CV wrapping and wider lifetimes remain partial; OP12 stays paused.
 
 Staged arithmetic Warnings now also retain evaluated reference results from an
@@ -297,7 +297,19 @@ the [owned-arithmetic ledger](../../coverage/semantics/owned-arithmetic-warning-
 All selected reference cells must remain defined, live, scalar and unconstrained
 throughout this trace domain. Late owning/constrained replacements can invalidate
 an entered continuation; an explicit completion/lifecycle boundary remains open.
-Wider producers, typed returns and quiet/no-Warning orders remain partial; OP12 paused.
+Wider producers, typed returns and other quiet/no-Warning orders remain partial; OP12 paused.
+
+Quiet nonowning scalar MUL failures now use authenticated opcode slot order for
+TypeError labels. CONST1/TMP2/VAR4 before CV8, and TMP2 before VAR4, swap the two
+raw operands; equal/reverse ranks keep lexical order. A by-value RHS producer can
+repair the originating LEFT variable to 12 after its TMP copy was captured, yet
+the error remains float * string. Both selected reads must be defined, both
+conversions quiet, and at least one value nonnumeric. Numeric products and staged
+conversion Warnings use their unchanged rules. Seven originals and 217 focused
+premises separate raw `THROWN` from a fresh TypeError at line 25 with no previous
+exception. The destination stays unchanged and no Warning callback runs; see the
+[quiet-MUL ledger](../../coverage/semantics/quiet-multiply-order-review.json).
+Undefined/owning inputs, wider producers and other diagnostic orders remain partial.
 
 Primitive plain-CV `**=` now retains both numbers and the original target binding
 through zero-base/negative-exponent deprecation. Normal return stores the captured

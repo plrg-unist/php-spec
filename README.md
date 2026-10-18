@@ -666,7 +666,7 @@ vanish. Multiplication follows PHP's physical opcode order: a literal-left/CV-ri
 witness yields `60` after two Warnings. Ten originals and 767 focused premises also
 check strict float `68.75` and final power cancellation in the
 [copied-arithmetic ledger](coverage/semantics/copied-arithmetic-warning-review.json).
-Quiet/no-Warning orders and owning or wider copied inputs remain partial.
+Other quiet/no-Warning orders and owning or wider copied inputs remain partial.
 
 Arithmetic Warnings now retain evaluated scalar reference results after all
 source names disappear. Two operands may hold the same cell twice; those owners
@@ -674,6 +674,13 @@ retire on result, error or handler throw. Nine originals and 853 focused premise
 cover shared-cell arithmetic, cached-zero division and final power cancellation in
 the [owned-arithmetic ledger](coverage/semantics/owned-arithmetic-warning-review.json).
 Selected cells must stay scalar and unconstrained; wider traces remain partial.
+
+Quiet scalar multiplication TypeErrors now follow the pinned physical operand
+order, including saved copies whose source variables change. Seven originals and
+217 focused premises distinguish bool/int/float/string error labels, zero Warning
+callbacks and cancelled result assignment in the
+[quiet-MUL ledger](coverage/semantics/quiet-multiply-order-review.json).
+Numeric products and staged Warning rules retain their existing paths.
 
 Primitive plain-CV `**=` now commits its captured result even when the deprecation
 handler throws. A late alias detaches before the same exception continues; the
