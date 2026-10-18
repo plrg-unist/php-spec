@@ -108,7 +108,7 @@ S_key_found.COMPLETION = NORMAL \/ S_key_found.COMPLETION = BUDGET
 S_key = S_key_found[.COMPLETION = NORMAL]
 $wm_stage(S_key,WM_OUTPUT ptbytes_key)
 S_key.CURRENT = (pcallcontext_value)
-~(HOBJECT n_key <- S_key.ALLOCATIONS) /\ S_key.OBJECTS[n_weak] = WEAKREFERENCE eps
+~(HOBJECT n_key <- S_key.ALLOCATIONS) /\ S_key.OBJECTS[n_weak] = WEAKREFERENCE (n_key) /\ $weakref_get(S_key,n_weak) = PNULL
 HOBJECT n_weak <- S_key.ALLOCATIONS /\ HOBJECT n_map <- S_key.ALLOCATIONS
 $instance_storage_freeing(S_key,n_map) /\ $wm_guard(S_key)
 '''.strip().splitlines()
