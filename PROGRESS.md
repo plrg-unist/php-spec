@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Array `define` now receives NULL third flags through Deprecated before body
+validation/copy/key lookup. Normal handlers can repair/create cycles or install
+the duplicate key; a throwing handler cancels the body with raw NULL traces and
+caller destination intact. Strict NULL rejects before Deprecated/recursion.
+Four sources agree at 3b145/401; 701 focused premises pass: main276 retained at
+6ec, cycle127/strict100/independent198 at aa40. Two cycle fixture setup failures
+retain zero; only those checks were corrected, with no main/source/native replay.
+Canonical copies, original ALIAS traces, query COW and actual cancellation owners
+remain distinct. Wider domains and the constants obligation stay partial.
+[NULL array-flag review](coverage/semantics/define-array-null-flag-review.json).
+
 Array-literal finite lossy-float CV keys now keep their converted integer across
 deprecation callbacks. Unwrapped null/bool/int/float element CVs supply their live
 post-handler value; captured runtime array temporaries retain their table and old
@@ -145,7 +156,7 @@ Existing array markers and pending cleanup preserve callback COW, trace aliases
 and rejected-copy ownership. Three sources agree at a03fcfe86/401; all 549 focused
 premises pass at 4d585: 233 main, 96 strict eval and 220 independent, first attempts
 at SL90. The strict Error allocates only four trace tables; raw request flags and
-trace-only input remain distinct from retired duplicate copies. NULL/nonfinite/
+trace-only input remain distinct from retired duplicate copies. Nonfinite/
 identity-unknown flags and wider domains remain partial; Source47/56 are untouched.
 [Scalar array-flag review](coverage/semantics/define-array-scalar-flag-review.json).
 

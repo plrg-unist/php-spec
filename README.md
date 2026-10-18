@@ -1437,6 +1437,12 @@ ignored-case Warning; truthy values warn before validation and copying. Strict
 nonboolean calls raise TypeError first, including cyclic captured inputs.
 Callback COW, pending duplicate cleanup and trace aliases retain the same owners.
 [Scalar array-flag review](coverage/semantics/define-array-scalar-flag-review.json).
+NULL array flags emit a Deprecated diagnostic before validation, copying or key
+lookup. A returning callback may repair/create a cycle or install the same key;
+the body then uses the current graph and table. A throwing callback cancels that
+body, preserving the original NULL trace and caller destination. Strict calls
+raise TypeError before the deprecation.
+[NULL array-flag review](coverage/semantics/define-array-null-flag-review.json).
 Ordinary uncertified objects, other owning leaves and wider
 flags/names remain partial.
 Class-qualified `defined` now checks inherited user constants with lexical visibility

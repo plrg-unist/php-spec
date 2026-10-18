@@ -356,8 +356,8 @@ stderr each contain one conversion Warning; strict/peer are quiet. Previous mark
 domains are unchanged; NUL/coerced names, owning/wider values, wider NaN producers
 and full family closure remain partial.
 
-Fresh array definitions with an omitted, boolean or admitted quiet scalar third flag
-recursively dereference source cells into new DIRECT entries. Reinserting surviving
+Fresh array definitions with an omitted, boolean, NULL or admitted quiet scalar
+third flag recursively dereference source cells into new DIRECT entries. Reinserting surviving
 keys rebuilds NEXT, positions and serial
 metadata; ordinary copies and later source/reference writes preserve the constant.
 Nonempty acyclic trees contain primitive/carrier leaves, byte-only strings and
@@ -442,9 +442,22 @@ after all argument effects. Header/source/known-value and carrier guards run
 without folding the array; primitive duplicate markers remain separate from the
 private-array marker. Exact sources distinguish callback caller-CV COW, retained
 request-string flags, copied candidates and trace-only inputs, with real bucket
-references and query COW. NULL, nonfinite-float and identity-unknown byte-only
+references and query COW. Nonfinite-float and identity-unknown byte-only
 string flags remain outside this extension.
 [Scalar array-flag review](../../coverage/semantics/define-array-scalar-flag-review.json).
+
+NULL array flags use the existing parameter-3 bool Deprecated diagnostic before
+the C body. Reception authenticates the raw capture without traversing the array.
+A normal callback may repair a cycle before canonical copying, create a cycle
+that raises ValueError before duplicate reporting, or install the key that the
+outer call subsequently finds. The private duplicate copy remains distinct from
+the original API input and is retired through ordinary cleanup. A throwing
+Deprecated callback cancels validation/copy/registration, retaining the same
+Exception, raw NULL trace, callback effects and unassigned caller destination.
+Strict calls instead raise TypeError before Deprecated or recursive validation,
+after argument effects. Trace-owned inputs retain original aliases and append
+history while queries use canonical copied tables.
+[NULL array-flag review](../../coverage/semantics/define-array-null-flag-review.json).
 
 Top-level empty values use the existing source-pool or retained immutable flag.
 An authenticated immutable empty keeps its table and `PVARRAY true eps`; a mutable
@@ -870,7 +883,7 @@ The matching engine routes are `ZEND_FUNCTION(define)`/`ZVAL_COPY`,
 and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`. `PHP_FUNCTION(constant)` uses
 exception-class lookup and `ZVAL_COPY_OR_DUP`; `zend_declare_typed_class_constant`
 interns direct string values before installation.
-Stored cyclic trees, other objects, NULL/nonfinite/identity-unknown array flags,
+Stored cyclic trees, other objects, nonfinite/identity-unknown array flags,
 Stringable names beyond the bounded retained query/DEFINE domains,
 array names beyond the bounded flat query/DEFINE domains,
 array/object values with scalar or null names, true/NULL/NaN
