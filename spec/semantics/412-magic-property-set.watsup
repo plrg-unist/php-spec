@@ -178,12 +178,15 @@ def $property_magic_set_entered(S, (pcallcontext), pframe :: pframe_tail*, pprop
 def $property_magic_set_entered(S, eps, pframe :: pframe_tail*, ppropertymagicset) = $property_magic_set_entered(S, pframe.CONTEXT, pframe_tail*, ppropertymagicset)
 def $property_magic_set_entered(S, pcallcontext?, eps, ppropertymagicset) = false
 
-dec $property_magic_set_guard(pstate, pcallcontext?, pframe*, nat, ptbytes) : bool
-def $property_magic_set_guard(S, (pcallcontext), pframe :: pframe_tail*, n, ptbytes) = true
+dec $property_magic_set_guard_frame(pstate, pcallcontext, pframe, pframe*, nat, ptbytes) : bool
+def $property_magic_set_guard_frame(S, pcallcontext, pframe, pframe_tail*, n, ptbytes) = true
   -- if pcallcontext.TARGET = PROPERTY_MAGIC_SET_TARGET ppropertymagicset
   -- if ppropertymagicset.OBJECT = n /\ ppropertymagicset.NAME = ptbytes
   -- if $property_magic_set_frame(S, pcallcontext, pframe, pframe_tail*, ppropertymagicset)
-def $property_magic_set_guard(S, pcallcontext?, pframe :: pframe_tail*, n, ptbytes) = $property_magic_set_guard(S, pframe.CONTEXT, pframe_tail*, n, ptbytes) -- otherwise
+def $property_magic_set_guard_frame(S, pcallcontext, pframe, pframe*, n, ptbytes) = false -- otherwise
+dec $property_magic_set_guard(pstate, pcallcontext?, pframe*, nat, ptbytes) : bool
+def $property_magic_set_guard(S, (pcallcontext), pframe :: pframe_tail*, n, ptbytes) = ($property_magic_set_guard_frame(S, pcallcontext, pframe, pframe_tail*, n, ptbytes) \/ $property_magic_set_guard(S, pframe.CONTEXT, pframe_tail*, n, ptbytes))
+def $property_magic_set_guard(S, eps, pframe :: pframe_tail*, n, ptbytes) = $property_magic_set_guard(S, pframe.CONTEXT, pframe_tail*, n, ptbytes)
 def $property_magic_set_guard(S, pcallcontext?, eps, n, ptbytes) = false
 
 dec $property_magic_set_plan(pstate) : ppropertymagicset?
@@ -211,8 +214,11 @@ def $property_magic_set_plan(S) = (ppropertymagicset)
   -- if ~$property_magic_set_guard(S, S.CURRENT, S.FRAMES, n, ptbytes)
 def $property_magic_set_plan(S) = eps -- otherwise
 
-rule PhpStep/property-magic-set-call: S ~> S[.TODO = [(CALL_ARGS (PROPERTY_MAGIC_SET_TARGET ppropertymagicset) eps 2 ([KNOWN (PSTRING ppropertymagicset.NAME), KNOWN (PINT ppropertymagicset.INPUT)]) (ppropertymagicset.SITE) ppropertymagicset.LINE), PROPERTY_MAGIC_SET_RESULT ppropertymagicset] ++ ppropertymagicset.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/property-magic-set-call: S ~> S_rhs[.TODO = [(CALL_ARGS (PROPERTY_MAGIC_SET_TARGET ppropertymagicset) eps 2 ([KNOWN (PSTRING ppropertymagicset.NAME), KNOWN (PINT ppropertymagicset.INPUT)]) (ppropertymagicset.SITE) ppropertymagicset.LINE), PROPERTY_MAGIC_SET_RESULT ppropertymagicset] ++ ppropertymagicset.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $property_magic_set_plan(S) = (ppropertymagicset)
+  -- if S.TODO = (ASSIGN_ARRAY (BASE_PROPERTY_PENDING pbase poperand z_receiver) z false) :: ptask_tail*
+  -- if S_target = $property_pending_resolve(S, pbase, poperand, PPW, z_receiver, z)
+  -- if S_rhs = $resolve_at(S_target, S.RESULT, z)
 rule PhpStep/property-magic-set-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "magic setter source, RHS, or recursive write"]
   -- if $property_magic_set_pending(S)
   -- if $property_magic_set_plan(S) = eps
