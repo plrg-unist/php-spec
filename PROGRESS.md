@@ -9943,6 +9943,23 @@ without a Notice, and the Fiber terminates. This is one original source
 agreement, with no runtime repair or new state proof; parked return-owner
 histories and broader returns_verify remain OPEN.
 [M96 control](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M97 validates one weak `&f():string` return whose Stringable conversion
+suspends inside a named Fiber callback. At clean `411c20015`/401, native PHP
+and unchanged semantics agree exactly: main changes the source CV while the
+conversion is paused, resume completes the conversion and then `F`, and the
+returned reference writes back to that CV. The Fiber terminates without a
+Notice. This is one original source agreement, with no runtime repair or new
+state proof; abrupt paused verification and broader returns_verify remain OPEN.
+[M97 control](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M98 validates an injected `TypeError` through `Fiber::throw` while that weak
+Stringable return is paused. At clean `6f6ee0bab`/401, native PHP and unchanged
+semantics agree exactly: `__toString` runs its finally echo, then `f` runs its
+finally echo; the callback catches a TypeError distinct from the injected
+object, preserving prior `r/b7` and the original Stringable source. The Fiber
+terminates without a Notice. The caught error's message and producer were not
+observed. This is one original source agreement, with no runtime repair or new
+state proof; broader returns_verify remains OPEN.
+[M98 control](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, wider destructor throw/reentry, real suspension and wider typed
