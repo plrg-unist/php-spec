@@ -1289,6 +1289,9 @@ only fixture grouping changed. V71's original string-leaf failure remains
 historical zero without replay. Wider values, flags/names and identity-dependent
 consumers remain partial.
 [Literal-string array review](coverage/semantics/define-literal-string-array-review.json).
+Composed over 2c767696/401 with incoming query-arity, factory, Generator,
+ref-return, compound and magic-empty selectors disjoint. Source3/state439 retain
+private cuts without a joined actor or renewed execution credit.
 
 Selected inherited `__unset(string): void` now dispatches direct CV/literal-name
 access to a declared private property. Accessible public unset skips magic;
