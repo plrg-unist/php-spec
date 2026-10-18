@@ -956,35 +956,31 @@ private cut; independent seam review warrants no joined actor or renewed credit.
 
 Destructuring key warnings retain recursive by-value CV/literal and mixed CV
 patterns with quiet compiled/implicit or ordinary defined quiet CV keys. Module410
-resumes lossy float keys in flat direct-CV patterns. Value fetches preserve captured
-tables or a saved source CELL plus temporary table protection; after release, an
-expired mixed-source table supplies NULL, while a surviving table can enter module409's
-missing warning. Later references/results resolve the saved CELL despite name rebinding.
-Writable fetches first make the initially array-valued source writable, separating
-when needed and unwrapping singleton references in the copy. After callback and
-actual protection release, exactly one selected-table owner permits binding there,
-including a detached handler hold. Zero or multiple owners yield a fresh NULL
-reference even if the old table stays live with a present slot. Target rebinding
-preserves previous outside aliases; missing writable slots are created silently.
-Throws cancel acquisition/binding and retire the saved CELL/table roots.
-Five A14 exact originals agree at e3b08102a. Five SL fronts pass 900 premises
-(879 Boolean + 21 raw steps): author 356 at f05d125e3 plus 147 and independent 397 at
-793a965ef. The original throw fixture passed semantic assertions but failed final
-record equality after a raw COW step omitted driver bookkeeping; it retains zero
-credit. Only that front was retried after driver normalization. The
-[writable float-key review](coverage/semantics/list-float-write-key-warning-review.json)
-retains native/unchanged Unsupported baseline and separate cuts. Existing409,
-A12/A13 task rules, compiler and ownership APIs remain unchanged; A14 adds its own
-write-pending gate. The [A13 review](coverage/semantics/list-float-ref-key-warning-review.json)
-retains source5/state894, the [A12 review](coverage/semantics/list-float-key-warning-review.json)
-retains source6/state710 and its parser-only throw failure/affected retry, and earlier
-[family reviews](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md) retain original cuts
-without replay. Initial nonarray writable conversion, nested/literal lossy conversion,
-other key diagnostics, wider RHS/targets and callback/lifecycle coverage remain partial.
-
-Pointwise composition over 3451fa67b preserves all 401 incoming modules. Typed-return,
-constant-query, closure, Generator, compound and property guards are disjoint.
-Source5/state900 retain their cuts; no joined actor or renewed credit.
+resumes lossy CV keys in flat direct-CV patterns. Value fetches retain table
+snapshots or a source CELL plus temporary table protection. Writable fetches make
+the saved source writable before the callback, then bind into the selected table
+only if exactly one owner remains after protection release; zero or multiple
+owners yield a detached NULL reference. Later targets/results use the saved CELL.
+Null and reference-wrapped false now initialize a fresh mutable empty array before
+the key callback, without a false-to-array deprecation. Undefined source acquisition
+first produces referenceNULL silently; earlier by-value NULL stores precede the
+later writable initialization. Callback insertion/holds/rebinding preserve unique,
+expired and shared-table outcomes, target alias isolation, later reference COW and
+supplied-Throwable cleanup. The initial plan admits reached NULL/false, not UNDEFINED;
+origin authentication is separate from post-preparation table liveness.
+Five A15 originals agree at bc3d1b83c. Five SL fronts pass 887 premises
+(863 Boolean + 24 raw): author 326 at 2a08686e0, corrected 146 and independent 415 at
+5c1d2e75a. The original undefined fixture omitted ORIGIN_RETURN in its acquisition
+frontier and retains zero credit; only that front was retried. Two superseded A14
+NULL-source refusals now use true-scalar refusals without replay. The
+[initialization review](coverage/semantics/list-float-write-autovivify-review.json)
+retains native/unchanged Unsupported baseline, separate cuts and that failed row.
+The [A14 review](coverage/semantics/list-float-write-key-warning-review.json) retains
+source5/state900 and its raw-COW fixture failure/affected retry; earlier
+[family reviews](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md) retain original
+cuts and failures without replay. Nested/literal lossy conversion, other source/key
+diagnostics, wider constrained sources/RHS/targets and callback/lifecycle coverage
+remain partial.
 
 Plain-CV `%=` now keeps both converted longs through a fractional-RHS deprecation.
 Captured12/5 stores2 despite callback99/7 and detaches a late target alias; supplied

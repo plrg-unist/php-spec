@@ -26,6 +26,8 @@ Value fetches in mixed patterns release the old table's temporary protection fir
 expiry supplies null, while a surviving table can enter the following missing-key warning.
 Reference fetches make the array writable before the callback, then bind into the
 selected table only if one owner remains; zero or multiple owners yield a detached null reference.
+Null and reference-wrapped false sources initialize silently before that callback;
+an undefined source variable first becomes a null reference without a read warning.
 
 The [checked eval parser service](docs/semantics/DYNAMIC-SOURCE-SERVICE.md)
 accepts raw eval-source bytes, uses a native parse-only scanner for rejection

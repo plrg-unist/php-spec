@@ -33,9 +33,13 @@ assignment-result delivery use the saved cell's live value, independently of a
 rebound source CV. A saved null cell can create an array at the later reference
 fetch. Throws cancel both owners.
 
-A selected reference fetch first makes the initially array-valued saved cell's
-table writable, separating when needed and unwrapping singleton references in
-that copy, before the conversion callback.
+A selected reference fetch first makes the saved source cell writable. An undefined
+source CV acquires a null reference without a read warning; earlier by-value null
+fetches stay silent. Null and reference-wrapped false then create a fresh mutable
+empty array before key conversion. This reference path skips the false-to-array
+deprecation, and the callback can observe the new table even when it later throws.
+An existing array separates when needed, unwrapping singleton references in that
+copy, before the conversion callback.
 After releasing protection, it binds into that selected table only when exactly
 one owner remains. This owner may be a handler-created hold after source replacement
 and CV rebinding. Zero owners or multiple remaining owners instead supply a fresh
@@ -43,8 +47,10 @@ null reference, even when the old table remains live with a present slot. Bindin
 replaces the target alias without writing through its previous reference. A missing
 writable slot is silently created in the selected table; no missing-key warning is
 emitted. Later fetches and the assignment result still resolve the saved source
-cell. Throws cancel acquisition and binding. Initial nonarray writable sources,
-nested/literal conversion and other key diagnostics remain separate dependencies.
+cell. Throws cancel acquisition and binding. The initial plan accepts reached null
+and false slots, not an uninitialized slot; saved resumes remain independent of
+the cell's later value. Nested/literal conversion, wider constrained sources and
+other key diagnostics remain separate dependencies.
 
 For module409, the key stays a delayed variable operand until the missing fetch. The initial
 plan checks its exact name, operand/compiler lines and warning-free conversion,
@@ -151,6 +157,7 @@ paths/streams without an oracle replay. Separate ledgers retain the
 [recursive CV keys](../../coverage/semantics/list-recursive-cv-missing-warning-review.json),
 [literal-root CV keys](../../coverage/semantics/list-literal-cv-missing-warning-review.json),
 [lossy float CV keys](../../coverage/semantics/list-float-key-warning-review.json),
-[mixed float CV keys](../../coverage/semantics/list-float-ref-key-warning-review.json) and
-[writable float CV keys](../../coverage/semantics/list-float-write-key-warning-review.json)
+[mixed float CV keys](../../coverage/semantics/list-float-ref-key-warning-review.json),
+[writable float CV keys](../../coverage/semantics/list-float-write-key-warning-review.json) and
+[writable source initialization](../../coverage/semantics/list-float-write-autovivify-review.json)
 cuts and failures. No complete array, diagnostics or lifecycle-family claim follows.
