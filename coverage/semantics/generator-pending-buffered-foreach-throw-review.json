@@ -1,0 +1,108 @@
+{
+  "milestone": "Iterator24: pending THROW preserves buffered input and foreach container",
+  "status": "Implemented, validated and independently accepted; pointwise composed over f8794af8e/401.",
+  "independent_reviewer": "iterator_review_15",
+  "base": "847a307e4c7ff58b277a185d93d52f1eb86906b9",
+  "tested_runtime": "3c61f86fae01d595acd54a84ec21a4bdc85348f2",
+  "modules": 401,
+  "scope": "A one-Throwable literal throw method call on a pending actual upper Generator follows finite pure native links to a simple-CV used yield inside exactly one active by-value HARRAY foreach with a simple-CV item target. Exactly one valid LIVE input, no other owning suspended task/HELD value, inactive GC; getters and explicit close only, no later real resume.",
+  "semantics": [
+    "The lower pending SEND fills the physical yield-result slot and clears only its own initialization flag. Upper pending THROW parks the child without body entry, preserving the LIVE input, loop cursor, frame and current cache until close. The supplied Throwable reaches the caller with no new exception owner in the parked Generator.",
+    "Physical close first orphans the input, then transfers the FOREACH_NEXT array count into existing request retention. These remain independent counts even if both name the same HARRAY; each element edge occurs once. Ordinary CV and copied-current cleanup still runs, including a cache destructor replacing the injected exception with its previous chain intact.",
+    "COW keeps the old iterator array separate from the modified source array. Rebinding an embedded reference changes its real cell edge, while an input count can keep the old object alive. Payloads are destroyed by the request-store pass; input/container counts remain at terminal state. No new root, registry, close transition or collector algorithm is introduced."
+  ],
+  "source_authority": [
+    "vendor/php-src/Zend/zend_generators.c::Generator::send, Generator::throw, zend_generator_resume, zend_generator_dtor_storage and zend_generator_close: SEND installs the result before DO_INIT returns; pending THROW parks before HANDLE_EXCEPTION; close follows the parked unfinished-execution history.",
+    "Zend/zend_vm_def.h::FE_RESET_R and Zend/zend_execute.c::cleanup_live_vars account for the distinct result-slot and loop-container counts. The existing retained-array and untraced-input rules preserve mutable HCELL contents rather than frozen object pins.",
+    "Pinned implementation observations are not portable evaluation-order guarantees. No engine bug or intentional divergence is classified."
+  ],
+  "validation_identity": {
+    "php": "8.5.10 CLI NTS 64-bit; source 34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml 5.1.0; SL, caches off and encountered determinism checks",
+    "environment": "tests/semantics/profile.json; PHP -n; LC_ALL=C; TZ=UTC; PHP_SPEC_SCRIPT_ENCODING unset. Serial taskset: native/baseline CPU4; preparation/strict/source/state CPU3. Raw reports preserve commands, caps, bytes, exits and stable input/HEAD identities."
+  },
+  "runtime_sha256": {
+    "spec/semantics/289-generator-delegation.watsup": "6b0917f92000c670e7a6454c8c979cc1136ecd522d8636149485d933802679d8"
+  },
+  "raw_root": ".tools/generator-pending-buffered-foreach-throw-24/.tools/",
+  "native_and_baseline": {
+    "revision": "847a307e4c7ff58b277a185d93d52f1eb86906b9",
+    "native_reports": [
+      "generator-pending-buffered-foreach-throw-native-expy22kk/report.json",
+      "generator-pending-buffered-foreach-throw-review-native-edbdkb_n/report.json"
+    ],
+    "native_result": "Four immutable originals captured before production with no preasserted stdout; normal exit0/empty stderr/no timeout and independently reviewed raw tuples. Zero model credit.",
+    "baseline_report": "generator-pending-buffered-foreach-throw-baseline-23vpy9v0/report.json",
+    "baseline_result": "Exact df062e91 original and retained expy native tuple reused without PHP replay. Genuine public Unsupported Generator force-close at request end after 10 OUTPUT chunks joining P|O|U|L|C|H|1|S|DROP|T|. Exit1/empty stderr/no timeout/diagnostic/exit_status; stable unchanged 847a/401, zero agreement."
+  },
+  "strict": {
+    "report": "generator-pending-buffered-foreach-throw-author-sl-p2m1tqb5/report.json",
+    "revision": "3c61f86fae01d595acd54a84ec21a4bdc85348f2",
+    "result": "Strict 401 returns true with caches off and encountered determinism checks; stable inputs/HEAD. No failure or repeat."
+  },
+  "fixture_elaboration": {
+    "report": "generator-pending-buffered-foreach-throw-state-elab-ootql5bi/report.json",
+    "revision": "3c61f86fae01d595acd54a84ec21a4bdc85348f2",
+    "result": "One ordered 401-module parse/elab invocation includes the exact four generated fixtures, alpha-renaming only stage/seek/main. Unique EOF sentinel and all four main headers, exit0/empty stderr/no timeout/stable inputs/HEAD pass. Zero interpretation or semantic credit."
+  },
+  "normal_sources": {
+    "new_distinct_originals": 4,
+    "revision": "3c61f86fae01d595acd54a84ec21a4bdc85348f2",
+    "reports": [
+      "generator-pending-buffered-foreach-throw-source-pjdd1glu/report.json",
+      "generator-pending-buffered-foreach-throw-review-source-ytvyqj03/report.json"
+    ],
+    "result": "Four exact normal stdout/stderr/exit tuples agree with the retained native originals without PHP replay. Stable inputs/HEAD, no source failure or repeat."
+  },
+  "reached_states": {
+    "groups": 4,
+    "premises": 591,
+    "author": 295,
+    "independent": 296,
+    "local_checks": 571,
+    "generic_reachability": 20,
+    "revision": "3c61f86fae01d595acd54a84ec21a4bdc85348f2",
+    "reports": [
+      [
+        "fiber-state-review-e1t9ux2l/report.json",
+        165
+      ],
+      [
+        "fiber-state-review-7v8kj1on/report.json",
+        130
+      ],
+      [
+        "fiber-state-review-vi2kwrtb/report.json",
+        160
+      ],
+      [
+        "fiber-state-review-jeg485qs/report.json",
+        136
+      ]
+    ],
+    "checks": "Together these cover real pending invocation with LIVE input/loop/frame unchanged; two roots of one HARRAY but one element-edge set; source/line/argument/used-tail/HELD/duplicate registry and loop refusals; exact close transfer with only the item HCELL job; COW array/object-buffer counts; shared-cell replacement with an input-owned old object and quiet retirement; actual replacement-cache destructor CURRENT, saved-frame receipt/public validation and previous chain; heap/public validity, zero/split budgets and all native endings. A derived CONFIG/gc_begin refusal is helper-only and grants zero GC source agreement.",
+    "result": "All true/empty stderr/exit0/no timeout, stable HEAD and author/independent inputs. All four native endings pass. No failed or repeated actor."
+  },
+  "compatibility": "Only module289 changes: the existing foreach receipt accepts the exact simple-CV used-yield tail independently of LIVE status, and the existing pending used-input terminal admits that one GC-inactive loop shape. Input/retention roots, close, eager cleanup, normal SEND/consume and nonpending buffered THROW stay unchanged. Old empty-tail and bare-foreach guards preserve their previous domains; no Iterator18-23 actor replay or renewed credit. No manifest/pipeline change.",
+  "remaining": [
+    "Later direct or forwarded real resume after parked THROW still needs global exception-opline history and fresh native originals; it remains Unsupported.",
+    "Reference/object foreach, multiple or nested owning loops, other suspended owning TMP/HELD values, wider input/loop shapes, acquired/borrowed producers and owning copied returns remain required.",
+    "Explicit collection with the owning parked frame is Unsupported; wider collection during or after retention, Fiber/reentry lifecycle and full Generator/core closure remain open. No new GC source/collector agreement or BOLA/security proof is claimed."
+  ],
+  "evidence_recovery": {
+    "archive": "../php-spec-evidence-archive/generator-pending-buffered-foreach-throw-24/private.tar.gz",
+    "bytes": 1776451,
+    "sha256": "a3bf752038875f313ffbcd6eca7814fd8cdaa75ebca050afdc9f6703261b20d3",
+    "manifest": "Sibling manifest.json maps 11 report roles and 8 ignored recorder/catalog inputs. Full raw originals/generated fixtures/commands/outputs and identities remain external; no failures or retries.",
+    "restore": "Extract at private_root. Native/baseline use untouched 847a307e/401; strict401/source4/state591 use 3c61f86fa with the same one-file runtime. Retained private branch supplies tracked implementation/tests; provision references with scripts/private-semantics-references.py. Raw commands identify executed binaries, not archived build prerequisites."
+  },
+  "composition": {
+    "parent": "f8794af8e7f1adb166c50d513c06e3acf264e9bb",
+    "parent_modules": 401,
+    "private_publication": "58ee73843aa1ac3c269e35a754a8105fd1c2c86d",
+    "review": "Independent actual-parent review: typed reference-return cursors, Closure binding/stored first-class name reception, constant APIs, compound-warning continuations, magic-empty Closure receivers and float-key reference LIST selectors are absent from these originals/fronts. Only module289 changes and remains byte-exact tested 3c61. Every other runtime byte, pipeline and the 401-module manifest is preserved.",
+    "validation": "Private strict401/source4/state591 retain 3c61 with the one tested runtime digest; native4 and unchanged baseline0 retain 847a. No joined runtime actor, accepted replay or renewed execution credit."
+  }
+}

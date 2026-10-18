@@ -275,7 +275,8 @@ def $generator_pending_throw_leaf(S, n, n_left) = (n)
   -- if $generator_input_count(S.GENERATORINPUTS, n) = 1
   -- if $generator_inputs_valid(S, S.GENERATORINPUTS)
   -- if pgenerator.FRAME = (pframe)
-  -- if pframe.HELD = eps /\ $tasks_nodes(pframe.TODO) = eps
+  -- if pframe.HELD = eps
+  -- if $tasks_nodes(pframe.TODO) = eps \/ (S.GC.ACTIVE = eps /\ $generator_foreach_saved(S, pgenerator, pframe) =/= eps)
 def $generator_pending_throw_leaf(S, n, n_left) = (n)
   -- if $(n_left > 0)
   -- if $generator_object(S, n)
@@ -370,6 +371,7 @@ def $generator_parked_valid(S, pgenerator) = false -- otherwise
 
 ;; A parked exception opline can leave one value-foreach container outside
 ;; unfinished cleanup. Retain the array itself so embedded references stay live.
+;; A used-yield input is a separate count and may already be orphaned at close.
 def $generator_foreach_site(S, pgenerator, PORIGIN n_unit pcpath_yield, PORIGIN n_unit pcpath_loop) = true
   -- if $generator_parked_site(S, pgenerator, PORIGIN n_unit pcpath_yield)
   -- if $function_at($all_functions(S), pgenerator.FUNCTION) = (pfunction)
@@ -392,7 +394,7 @@ def $generator_foreach_find(S, pgenerator, porigin_yield, ptask_tail*) = eps -- 
 def $generator_foreach_saved(S, pgenerator, pframe) = (ptask_foreach)
   -- if pframe.ORIGIN = (porigin_yield)
   -- if pframe.HELD = eps
-  -- if $generator_unused_send_tail(S, porigin_yield, pframe.TODO)
+  -- if $generator_unused_send_tail(S, porigin_yield, pframe.TODO) \/ $generator_input_tail(S, porigin_yield, pframe.TODO)
   -- if $generator_foreach_find(S, pgenerator, porigin_yield, pframe.TODO) = (ptask_foreach)
   -- if ptask_foreach = FOREACH_NEXT n_iterator (HARRAY n_array) statement porigin_loop? z
   -- if $tasks_nodes(pframe.TODO) = [HARRAY n_array]

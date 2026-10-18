@@ -7,6 +7,34 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Pending Generator `throw` now preserves one buffered simple-CV yield result inside
+one active by-value array `foreach`. A lower pending `send` fills the physical slot;
+an upper pending `throw` parks before body entry. Close orphans the input and retains
+the iteration container separately. The same array has two counts but one set of
+element edges. COW preserves the old iterator array, and a shared-cell rebind leaves
+the old object alive through its separate input owner. Current-copy cleanup can
+still replace the exception before caller catch with its previous chain intact.
+Only module289 widens two existing guards; roots, close and collector steps stay
+unchanged. Later parked resume, wider loops/owning temporaries and GC remain open.
+[Joint lifecycle review](coverage/semantics/generator-pending-buffered-foreach-throw-review.json).
+
+Four exact normal originals, strict401 and four genuine fronts pass at `3c61f86fa`:
+591 premises (295 author + 296 independent, including 20 generic reachability checks),
+with all native endings. Same-array multiplicities, COW, exact close transfer,
+post-close shared-cell writes, a real cache-destructor callback, malformed metadata
+refusals, public/heap validity and zero/split budgets pass. The derived parked-frame
+GC refusal grants no GC source agreement. Native4 and the genuine unchanged
+Unsupported baseline retain `847a307e4`/401 with zero agreement. No actor failed or
+repeated; earlier Generator evidence is not replayed. Large raw artifacts stay
+external.
+
+Composed over `f8794af8e`/401 after pointwise review of typed reference-return,
+Closure binding/stored callable names, constant API, compound-warning, magic-empty
+and float-key reference LIST selectors, all disjoint here. Module289 remains
+byte-exact tested `3c61f86fa`; every other runtime file, pipeline and the 401-module
+manifest retain the parent bytes. Source4/state591/strict401 keep their private
+cuts without a joined actor, accepted replay or renewed execution credit.
+
 Stored callable names now receive raw, interned and request string bytes through
 module120's existing resolver. Named-function and public/inherited private-static
 captures freeze their selected target and lexical/called scope across alias writes;
@@ -156,9 +184,9 @@ array `foreach`. Parked close retains its one container count and removes the
 iterator before ordinary CV/context and current-cache cleanup. The array keeps
 its real COW and embedded reference cells: a later rebind releases the old object
 while the new referent stays retained. An array-owned Generator closes in the
-request-store pass; the container count itself remains. Buffered-input/loop
-combinations, reference/object foreach, nested owning temporaries and later
-parked resume remain open. Explicit collection while this owning frame is parked
+request-store pass; the container count itself remains. At that cut, combinations
+of buffered input and loops, reference/object foreach, nested owning temporaries
+and later parked resume remained open. Explicit collection while this frame is parked
 is Unsupported; no new GC source agreement is claimed.
 [Parked-foreach review](coverage/semantics/generator-pending-foreach-throw-review.json).
 

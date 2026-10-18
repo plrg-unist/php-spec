@@ -964,6 +964,11 @@ iteration container while locals and current caches retire normally. Its payload
 are destroyed in the request-store pass; embedded references remain mutable, and
 independently started Generators in that array close there. See the
 [parked-foreach review](coverage/semantics/generator-pending-foreach-throw-review.json).
+A simple-CV used yield in that loop can also retain one buffered input across
+pending throw and close. If both name one array, the two roles contribute separate
+counts without duplicating its element edges. Rebinding an embedded reference
+leaves the old buffered object alive.
+See the [joint lifecycle review](coverage/semantics/generator-pending-buffered-foreach-throw-review.json).
 [Delegation](docs/semantics/GENERATOR-DELEGATION.md)
 adds arrays, source Iterators and shared Generator graphs with live raw caches
 and natural return/unwind. Aggregate yield-from now acquires nested real iterator

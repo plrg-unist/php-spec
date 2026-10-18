@@ -75,6 +75,13 @@ owners. It removes that iterator without decrementing the array; visited-item
 CVs, locals and cached current copies still retire normally. Embedded cells keep
 their live referents, and an array-owned Generator closes in the object-store
 pass. See the [parked-foreach review](../../coverage/semantics/generator-pending-foreach-throw-review.json).
+At a simple-CV used yield in that loop, the input is already orphaned when queued
+frame close transfers the array count. Both remain owned, even if they name the
+same HARRAY; its element edges are not multiplied. Local and current-copy cleanup
+still proceed, including a replacement cache exception before caller catch. A
+shared-cell rebind after close can therefore retain both the old input object and
+the cell's new referent. See the
+[joint lifecycle review](../../coverage/semantics/generator-pending-buffered-foreach-throw-review.json).
 
 The release walk preserves physical owner order, including compiled local-slot
 order and key-before-value cleanup after a forbidden keyed yield. It can close
