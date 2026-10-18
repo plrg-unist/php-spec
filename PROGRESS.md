@@ -7,6 +7,33 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Pending `throw` now follows finite native ancestor links to an owning simple-CV
+copied return, including first child detachment inside the call. Only the selected
+receiver clears initialization; the distinct physical middle keeps its pending
+bit and parked source site. Getters and close preserve the return; middle close
+skips finally while upper finally remains live. Copied-cache replacement,
+held-return array COW and mutable returned cells retain separate lifetimes.
+Later parked resume, wider owning continuations and waiting-result GC remain open.
+[Ancestor THROW review](coverage/semantics/generator-pending-owning-chain-throw-review.json).
+
+Four originals and 601 new premises (313 author + 288 independent; 581 local +20
+generic) pass at `5eadf3743`/405 with only module289 runtime `63b07f1ab`. One affected
+Iterator29 group171 separately passes target-positive/initialized-receiver-ready-negative
+checks; other historical groups and sources are not renewed. Strict405 and five
+fixture elaboration pass at the same cut; elaboration has zero execution credit.
+Four natives and genuine unchanged public force-close Unsupported retain
+`485c5ca38`/405 with zero model agreement. No failures/retries or new GC agreement;
+all actors reaped and CPUs released.
+
+Composed over `d23e7bc03`/405 after independent actual-parent
+review. Incoming ordinary typed reference-return, named INI, scalar
+comparison, DEFINE, magic isset, DIVIDE and float-key array selectors are
+absent here; new array-retention/debt fields stay empty.
+Only module289 changes and retains its tested bytes; other parent runtime,
+fields/defaults, tasks, pipeline and ordered manifest remain exact. Source4,
+new601, separate affected171 and strict405 keep their private cuts without
+joined execution, accepted replay or renewed credit.
+
 Live Closure DEFINE flags now raise parameter-3 TypeError before body work or
 implicit invocation in weak and strict calls. Raw traces retain lexical aliases
 and bound receivers; explicit recovery calls work, and an unpinned method receiver
@@ -123,8 +150,8 @@ initialization; the physical middle keeps its waiting return and history. The
 captured cache precedes normal argument cleanup, row COW and Generator-alias
 retirement. Actual outer next consumes the return; inherited-pending middle close
 retains it and omits finally. Used snapshots and mutable returned cells keep their
-separate lifetimes. Ancestor owning THROW, exceptional argument cleanup, wider
-continuations, waiting-result GC and later parked resume remain open.
+separate lifetimes. At that cut, ancestor owning THROW, exceptional argument
+cleanup, wider continuations, waiting-result GC and later parked resume remained open.
 [Ancestor SEND review](coverage/semantics/generator-pending-owning-chain-send-review.json).
 
 Four originals and 653 focused premises (336 author + 317 independent;633 local + 20

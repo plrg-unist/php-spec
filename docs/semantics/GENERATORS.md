@@ -76,7 +76,15 @@ to request retention before dropping frame owners; its embedded cells remain
 mutable. The transient cache copy retires independently before catch and may
 replace the supplied exception with Previous intact. The
 [owning THROW review](../../coverage/semantics/generator-pending-owning-return-throw-review.json)
-does not admit owning returns through ancestor receivers or later parked resume.
+keeps the direct receiver distinct from an inherited-pending ancestor. The latter
+now follows finite native links, including first child detachment inside THROW.
+Only the receiver clears initialization; the physical middle retains both its
+pending bit and parked source site. Its copied return survives getters and close;
+the transient cache copy retires independently, including after sole-receiver
+cleanup and replacement exception chaining. The
+[ancestor THROW review](../../coverage/semantics/generator-pending-owning-chain-throw-review.json)
+checks those identities, same-array COW and mutable returned cells. Later parked
+resume, wider suspended owners and waiting-result GC remain open.
 
 A direct detached parent with an owning copied return now admits ordinary unpack
 at a simple-CV assigned `yield from`. Null-key rejection leaves its COMPLETE

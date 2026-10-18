@@ -1121,6 +1121,12 @@ pending `throw`: getters stay live, close omits finally and retains the return,
 and a separate cache snapshot can replace the exception before catch. Array/cache
 aliases and mutable returned cells preserve their separate owners. See the
 [owning THROW review](coverage/semantics/generator-pending-owning-return-throw-review.json).
+An inherited-pending ancestor can also `throw` through finite native links to
+that owning return, including first refresh inside the call. Only the receiver
+clears initialization; the physical middle stays parked with its return intact.
+Close retains that return and skips the middle finally; cache copies, row COW
+and mutable returned cells keep separate lifetimes. See the
+[ancestor THROW review](coverage/semantics/generator-pending-owning-chain-throw-review.json).
 With a buffered input, pending `throw` preserves its count; physical close retains
 it until request-store destruction, including receiver cleanup before caller
 catch. The independent current copy can still trigger a replacement exception. See the

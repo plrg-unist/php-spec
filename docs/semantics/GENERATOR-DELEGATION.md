@@ -136,7 +136,14 @@ close omits that frame's finally and retains the copied return independently of
 the transient cache snapshot. A return/cache array alias keeps separate container
 counts with one element-edge set; later raw-cache COW and embedded-cell writes
 remain live. See the [owning THROW review](../../coverage/semantics/generator-pending-owning-return-throw-review.json).
-Owning pending THROW through an ancestor and later parked resume remain open.
+Pending THROW also follows finite native links to that owning continuation.
+It may detach the completed child itself, then clears initialization only on the
+selected ancestor while parking the physical middle. Its copied return and cache
+snapshot retain independent counts; a real row write can COW the raw cache away
+from a held snapshot and the same copied return without duplicating element
+edges. The [ancestor THROW review](../../coverage/semantics/generator-pending-owning-chain-throw-review.json)
+also covers sole-receiver replacement cleanup and late returned-cell writes.
+Later parked resume and wider owning continuations remain open.
 Pending `send` through native shared links can now buffer a paused child's yield
 result when it is assigned directly to a simple CV. When a direct or forwarded
 `next` resumes the child, it consumes that value without adding another owner.

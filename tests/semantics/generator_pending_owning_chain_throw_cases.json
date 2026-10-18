@@ -1,0 +1,22 @@
+[
+  {
+    "id": "generator-pending-owning-chain-throw-no-getter-cache-held-close",
+    "purpose": "No getter before upper THROW: real refresh to the owning middle, supplied Throwable identity/getters and a held current snapshot across explicit close.",
+    "source": "<?php\nclass PendingChainThrowCache32 { function __destruct() { echo \"A|\"; } }\nclass PendingChainThrowReturn32 { function __destruct() { echo \"R|\"; } }\nfunction pendingChainThrowChild32() { echo \"C|\"; yield new PendingChainThrowCache32(); echo \"L|\"; return new PendingChainThrowReturn32(); }\nfunction pendingChainThrowMiddle32() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; } finally { echo \"J|\"; } }\nfunction pendingChainThrowUpper32() { try { echo \"U|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-UPPER|\"; } finally { echo \"K|\"; } }\nfunction pendingChainThrowOuter32() { try { echo \"O|\"; yield from $GLOBALS[\"upper\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\n$child = pendingChainThrowChild32(); $middle = pendingChainThrowMiddle32(); $upper = pendingChainThrowUpper32(); $outer = pendingChainThrowOuter32();\necho \"P|\"; $outer->rewind(); $child->next(); unset($child); echo \"H|\"; $injected = new Exception(\"supplied32\");\necho \"T|\"; try { $unused = $upper->throw($injected); echo \"BAD-RETURN|\"; } catch (Throwable $caught) { echo \"CALLER|\", $caught === $injected ? 1 : 0, \"|\", $caught->getPrevious() === null ? 1 : 0, \"|\"; }\necho \"GET|\", $upper->valid() ? 1 : 0, \"|\", $middle->valid() ? 1 : 0, \"|\", $upper->key() === null ? 1 : 0, \"|\"; $held = $upper->current(); echo \"HELD|\", $held instanceof PendingChainThrowCache32 ? 1 : 0, \"|\";\nunset($caught, $injected); echo \"EX|\"; unset($outer); echo \"OUT|\"; unset($upper); echo \"UP|\"; unset($middle); echo \"MID|\"; unset($held); echo \"HELD-DROP|\"; echo \"E\";\n",
+    "source_sha256": "386f1238870bacbfc93a8eff5b26b55fae7853fe8c60b24f885352ff732b316d",
+    "expected": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|U|M|C|L|H|T|CALLER|1|1|GET|1|1|1|HELD|1|EX|F|OUT|K|UP|MID|A|HELD-DROP|ER|"
+  },
+  {
+    "id": "generator-pending-owning-chain-throw-sole-receiver-cache-replacement",
+    "purpose": "Selected upper survives argument-helper alias removal; distinct cache destructor can replace the supplied Throwable while the owning copied return remains separate.",
+    "source": "<?php\nclass PendingChainThrowLate32 { function __destruct() { echo \"R|\"; } }\nclass PendingChainThrowReplaceCache32 { function __destruct() { echo \"D|\"; throw new RuntimeException(\"replacement32\"); } }\nfunction pendingChainThrowDropRoots32($exception) { echo \"DROP|\"; unset($GLOBALS[\"outer\"], $GLOBALS[\"upper\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"CLEARED|\"; return $exception; }\nfunction pendingChainThrowReplaceChild32() { echo \"C|\"; yield new PendingChainThrowReplaceCache32(); echo \"L|\"; return [new PendingChainThrowLate32()]; }\nfunction pendingChainThrowReplaceMiddle32() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; } finally { echo \"J|\"; } }\nfunction pendingChainThrowReplaceUpper32() { try { echo \"U|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-UPPER|\"; } finally { echo \"K|\"; } }\nfunction pendingChainThrowReplaceOuter32() { try { echo \"O|\"; yield from $GLOBALS[\"upper\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\n$child = pendingChainThrowReplaceChild32(); $middle = pendingChainThrowReplaceMiddle32(); $upper = pendingChainThrowReplaceUpper32(); $outer = pendingChainThrowReplaceOuter32();\necho \"P|\"; $outer->rewind(); $child->next(); echo \"H|\", $upper->current() instanceof PendingChainThrowReplaceCache32 ? 1 : 0, \"|\"; unset($child); $injected = new Exception(\"supplied32\"); echo \"T|\";\ntry { $unused = $upper->throw(pendingChainThrowDropRoots32($injected)); echo \"BAD-RETURN|\"; } catch (Throwable $caught) { echo \"CALLER|\", $caught instanceof RuntimeException ? 1 : 0, \"|\", $caught->getPrevious() === $injected ? 1 : 0, \"|\"; }\nunset($caught, $injected); echo \"E\";\n",
+    "source_sha256": "09274ae41ef25c252011217abdcc3190b69ba3b862473c165153b4babb9d2013",
+    "expected": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|U|M|C|L|H|1|T|DROP|F|CLEARED|K|D|CALLER|1|1|ER|"
+  }
+]

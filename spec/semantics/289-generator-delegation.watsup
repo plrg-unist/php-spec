@@ -337,11 +337,15 @@ def $generator_pending_throw_leaf(S, n, n_left) = $generator_pending_throw_leaf(
   -- if pgeneratorfrom.ACQUISITION = eps /\ pgeneratorfrom.CURRENT = eps
   -- if $generator_from_record_valid(S, n, pgenerator)
 def $generator_pending_throw_leaf(S, n, n_left) = eps -- otherwise
-;; Owning copied returns are admitted only on the actual detached receiver.
-;; Keep the existing finite ancestor search restricted to its previous domain.
+;; Owning copied returns stay in their authenticated physical middle, including
+;; below a native API receiver. Paused-yield recursion keeps its prior domain.
 def $generator_pending_throw_target(S, pgeneratorop) = (pgeneratorop.OBJECT)
   -- if $generator_return_waiting(S, pgeneratorop.OBJECT)
   -- if $generator_input_count(S.GENERATORINPUTS, pgeneratorop.OBJECT) = 0
+def $generator_pending_throw_target(S, pgeneratorop) = (n_leaf)
+  -- if $generator_pending_return_leaf(S, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1)) = (n_leaf)
+  -- if n_leaf =/= pgeneratorop.OBJECT
+  -- if $generator_input_count(S.GENERATORINPUTS, n_leaf) = 0
 def $generator_pending_throw_target(S, pgeneratorop) = $generator_pending_throw_leaf(S, pgeneratorop.OBJECT, |S.OBJECTS|) -- otherwise
 def $generator_pending_throw_ready(S, pgeneratorop) = true
   -- if $generator_pending_resume(S, pgeneratorop)
