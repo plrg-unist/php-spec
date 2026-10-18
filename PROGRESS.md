@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Selected-reference ADD now delays initially bad RHS text until the LEFT Warning
+returns. Four originals pass at `d87c533dc`/405; three focused fixtures pass 428
+premises at `8aceff008`/405, covering strict float `18.0`, live bool/string TypeError
+and quiet selected old `5.5` through name rebinding (`17.5`, one Warning).
+A first supplied throw is source-only. The old plan and phase/error/root bodies
+remain exact. [ADD repair ledger](coverage/semantics/add-repair-review.json).
+Owning/constrained/expired cells and wider forms remain partial; OP12 paused.
+
+Composed over `54238b756`/405, preserving incoming fields, task variants
+and manifest. Source4/state428 retain their private405 cuts; independently reviewed
+incoming selectors require no joined execution or renewed credit.
+
 Both-missing `>`/`>=` comparisons now warn for source right first, freeze its
 NULL and follow the scalar left initialized by the handler. A second ingress
 clause matches only the existing right-frozen record and reversed operators;
@@ -97,16 +109,8 @@ manifest paths and fields remain intact. Loose missing-CV comparison, magic
 property-isset and delayed DIV producers are absent. Source3/state459 retain
 their private405 cuts without a joined actor, accepted replay or renewed credit.
 
-Selected-reference DIV now delays initially bad RHS text until the LEFT Warning
-returns. Four originals pass at `70add9ed5`/405; three focused fixtures pass 468
-premises at `fd80a78f8`/405, covering strict `2.4`, live bool/string TypeError and
-cached zero through old-RHS/name rebinding. A first supplied throw is source-only.
-[DIV repair ledger](coverage/semantics/div-repair-review.json).
-Owning/constrained/expired cells and wider operands remain partial; OP12 paused.
-
-Composed over `98da5a300`/405, preserving incoming fields, task variants
-and manifest. Source4/state468 retain their private405 cuts; independently reviewed
-incoming selectors require no joined execution or renewed credit.
+Earlier selected-reference DIV repair retains source4/state468 in its
+[review ledger](coverage/semantics/div-repair-review.json).
 
 Forward `==`/`!=`/`<`/`<=` comparisons now admit two initially missing distinct
 CVs when the first Warning handler defines the right scalar. An ingress-only

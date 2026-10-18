@@ -627,6 +627,14 @@ premises check the ordinary TypeError, unchanged destination and warning priorit
 [ADD failure evidence](coverage/semantics/arithmetic-failure-review.json) retains
 the original Unsupported baseline; wider operand and lifecycle forms remain partial.
 
+Selected-reference ADD now lets the LEFT Warning repair initially bad RHS
+text before conversion. Fractional holders yield strict float `18.0` after later
+writes. A repaired old RHS `5.5` yields `17.5` with one Warning even when its name
+is rebound to `2tail`; unrepaired text uses live bool/string TypeError labels.
+Four originals and 428 focused premises cover these routes; the supplied first
+throw is source-only. The [ADD repair ledger](coverage/semantics/add-repair-review.json)
+retains the baseline. Owning/constrained/expired cells and wider forms remain partial.
+
 Leading-numeric-string `-` and `*` now retain both selected reference cells and
 numeric holders through named Warning handlers. A first handler can repair an
 initially nonnumeric RHS; rebinding its variable name cannot redirect the selected
