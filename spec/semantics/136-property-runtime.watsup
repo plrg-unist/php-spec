@@ -439,14 +439,11 @@ def $property_read_key(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "
 def $property_read_key(S, pvalue, ptbytes, z) = $diagnostic(S, "Warning", $ptascii("Attempt to read property \"") ++ $c_string(ptbytes) ++ $ptascii("\" on ") ++ $unpack_type_bytes(pvalue), z)[.RESULT = KNOWN PNULL]
   -- if $type_bytes(pvalue) =/= $ptascii("object")
 
-dec $property_empty_get_quiet(pstate, nat, ptbytes, int) : bool
-def $property_empty_get_quiet(S, n, ptbytes, z) = false -- otherwise
 dec $property_quiet_key(pstate, pvalue, ptbytes, int) : pstate
 def $property_quiet_key(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "quiet property hook read"]
   -- if $property_hook_read_needed(S, n, ptbytes)
 def $property_quiet_key(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "quiet magic getter read"]
   -- if $property_get_needed(S, n, ptbytes)
-  -- if ~$property_empty_get_quiet(S, n, ptbytes, z)
 def $property_quiet_key(S, POBJECT n, ptbytes, z) = S[.RESULT = KNOWN $entry_value(S, pitem)]
   -- if ~$instance_storage_freeing(S, n)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
@@ -725,10 +722,13 @@ dec $property_undefined_reference_receiver(pstate) : bool
 def $property_undefined_reference_receiver(S) = false -- otherwise
 dec $property_undefined_reference_plan(pstate) : ppropertywarning?
 def $property_undefined_reference_plan(S) = eps -- otherwise
+dec $property_empty_get_skip(pstate) : bool
+def $property_empty_get_skip(S) = false -- otherwise
 rule PhpStep/property-base-static: S ~> S_read[.TODO = ptask_tail*][.BASE = BASE_PROPERTY pvalue $base64(text)][.RESULT = KNOWN PNULL]
   -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text) metadata_name) z) :: ptask_tail*
   -- if ~$property_undefined_reference_receiver(S)
   -- if ~$property_get_pending(S)
+  -- if ~$property_empty_get_skip(S)
   -- if ~$property_hook_pending(S)
   -- if ~$property_hook_isset_pending(S)
   -- if $property_undefined_reference_plan(S) = eps
