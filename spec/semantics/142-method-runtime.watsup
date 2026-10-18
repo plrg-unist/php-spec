@@ -1,3 +1,4 @@
+dec $magic_static_method_needed(pstate, porigin) : bool
 dec $trait_class_link_pending(pstate, pclassdesc) : bool
 ;; Instance targets retain receivers; static targets retain class identities.
 dec $scoped_ctor_arm_at(pstate, porigin) : bool
@@ -897,6 +898,7 @@ def $scoped_select_access(S, phpType19, porigin_requested, pmethoddesc, porigin_
   -- if ~$method_accessible(S, pmethoddesc, $method_current_scope(S))
   -- if ~$scoped_ctor_private_denied(S, pmethoddesc, n_receiver?)
   -- if ~$magic_method_scoped(S, porigin_requested)
+  -- if ~$magic_static_method_needed(S, porigin_requested)
 def $scoped_select_access(S, phpType19, porigin_requested, pmethoddesc, porigin_called, n_receiver?, poperand_selector, ptbytes, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "scoped magic method fallback"]
   -- if ~$scoped_ctor_arm(S)
   -- if ~$method_accessible(S, pmethoddesc, $method_current_scope(S))
@@ -929,6 +931,7 @@ def $scoped_select_found_base(S, phpType19, porigin_requested, pmethoddesc, pope
   -- if ~$scoped_receiver_valid(S, porigin_requested, pmethoddesc, $scoped_current_receiver(S))
   -- if ~$scoped_ctor_arm(S)
   -- if ~$method_accessible(S, pmethoddesc, $method_current_scope(S))
+  -- if ~$magic_static_method_needed(S, porigin_requested)
 dec $scoped_select(pstate, phpType19, poperand, ptbytes, phpType7*, int) : pstate
 def $scoped_select(S, phpType19, KNOWN (PSTRING n_class*), ptbytes_method, phpType7*, z) = $ctor_method_start(S, n_receiver, z)
   -- if $ptlc(ptbytes_method) = $ptascii("__construct")
