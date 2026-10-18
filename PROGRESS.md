@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Missing-right `==` and `<` now retain the current defined scalar left CV while
+freezing the right as NULL, including late references and rebinding. The missing
+right name may remain undefined; positive sources and coherent resumed states
+cover that guard distinction. False/default order and supplied-Exception cleanup
+stay intact. Eight source agreements plus two zero-credit refusal controls and
+four strict-SL groups / 397 premises (186 author + 211 independent) pass on their
+first attempts at `d6a65e8dd`/405, with raw states, owners, source/line/operator
+refusals and zero/split budgets. The genuine `306f147a1` baseline stays zero.
+Both-missing/same-CV, removed/owning opposing values and wider operands/operators
+remain partial; prior cuts are not renewed and quarantined COMP88 stays excluded.
+[Missing-right review](coverage/semantics/undefined-scalar-compare-right-review.json).
+
 Missing-left `==` and `<` now suspend through handlers for distinct direct CVs
 with a defined scalar right. The missing left stays NULL while current right
 wrappers follow writes, late references and rebinding. Default Warning order and
