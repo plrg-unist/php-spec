@@ -87,7 +87,7 @@ def conditions(name, program, path, stdout):
         '~$array_float_array_key_ready(S_wrapped, n_builder, n_old, poperand)',
         '$error_read_discard(S_wrapped, ' + marker + ').COMPLETION = UNSUPPORTED "array literal float-key array CV during throw"',
         '~$array_float_array_key_ready(S_resume[.STORE[n_current_cell] = DEFINED (PARRAY n_builder)], n_builder, n_old, poperand)',
-        '~$array_float_array_key_ready(S_resume[.STORE[n_current_cell] = DEFINED (PINT 44)], n_builder, n_old, poperand)',
+        '~$array_float_array_key_ready(S_resume[.STORE[n_current_cell] = DEFINED (PSTRING eps)], n_builder, n_old, poperand)',
         'PhpStep: S_resume ~> S_insert',
         'S_insert.STORE = S_resume.STORE',
         'S_insert.TODO = (ARRAY_NEXT n_builder phpType13*) :: ptask_tail*',
