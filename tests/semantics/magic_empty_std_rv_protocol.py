@@ -185,8 +185,8 @@ $drive_steps(S_budget[.COMPLETION = NORMAL],10000) = S_final
 
 DERIVED = r'''
 $property_empty_rv_kind(S,STDINSTANCE) /\ $property_empty_rv_kind(S,S.OBJECTS[n_payload])
-~$property_empty_rv_kind(S,WEAKMAP eps)
-S_internal = S[.OBJECTS[n_rv] = WEAKMAP eps]
+~$property_empty_rv_kind(S,WEAKREFERENCE eps)
+S_internal = S[.OBJECTS[n_rv] = WEAKREFERENCE eps]
 ~$property_empty_rv_ready(S_internal,ppropertyempty)
 PhpStep: S_internal ~> S_internal_done
 S_internal_done.COMPLETION = UNSUPPORTED "magic empty getter result type" /\ S_internal_done.EVENTS = S.EVENTS
