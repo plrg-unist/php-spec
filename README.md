@@ -2212,6 +2212,13 @@ and skipped aggregate tails. Later explicit calls expose the flag change and VM
 execution. Special intrinsic kinds and wider protocols remain partial.
 [Intrinsic/API review](coverage/semantics/weakmap-api-comparison-review.json).
 
+Getter Closures and first-class `Closure::fromCallable` factory Closures also
+compare with live WeakMap before receiver or private-entry traversal. Two exact
+sources and 353 Boolean premises/10 actual steps preserve builtin/inherited getter
+fields, a cloned getter's sole receiver, factory metadata and quiet aggregate tails.
+The one fixture-type failure retains zero credit; wider producers and lifetimes
+remain partial. [Getter/factory review](coverage/semantics/weakmap-getter-factory-comparison-review.json).
+
 [Numeric object comparison Notices](coverage/semantics/object-numeric-comparison-review.json)
 now pause ordinary source-instance/int/float leaves through real error handlers.
 Live CV/cell reads remain distinct from copies; a second Notice uses saved 1/1.0,

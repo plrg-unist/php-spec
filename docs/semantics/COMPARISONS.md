@@ -127,6 +127,19 @@ casters. Explicit source endings call the APIs and real bodies. This extends
 comparison admission; it adds no INI, collection, ephemeron or producer protocol.
 Special intrinsic representations and wider weak lifetimes remain partial.
 
+[Getter/factory WeakMap mismatches](../../coverage/semantics/weakmap-getter-factory-comparison-review.json)
+also admit normalized GETTERCLOSURE and FROMCALLABLEFACTORY through the same live
+allocated nonfreeing guards. Native Closure fallback runs before getter receiver,
+method/source descriptors or factory site, returning +1 in either direction with
+unchanged state. Both producers precede the unchanged-baseline comparison. Two
+originals and 353 Boolean premises/10 actual steps cover builtin and inherited
+getters, cold caches, trace-array and receiver-to-Map edges, a cloned getter after
+seed/maker CV retirement and quiet zero-prefix aggregate tails. The receiver stays
+live through its sole capture owner; the factory has no receiver edge. Later source
+calls supply message/code values and a real factory-created body. One pre-main
+fixture-type failure stays zero. No getter/factory producer, clone or lifetime
+rule changes; constructor/special intrinsic captures and wider protocols remain partial.
+
 [Generator/Generator and Fiber/Fiber pairs](../../coverage/semantics/generator-fiber-comparison-review.json)
 return order zero through the standard zero-default-property shortcut. The pair
 predicate tests arena bounds and exact runtime tags, independently of saved VM

@@ -7,6 +7,23 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+WeakMap comparisons now admit normalized GETTERCLOSURE and FROMCALLABLEFACTORY
+objects as uncomparable +1 in either direction before receiver, method, source or
+private-entry traversal. Both producers precede the genuine unchanged baseline.
+Two exact originals and 353 Boolean premises (339 setup + 14 pure)/10 actual
+steps pass at edc6f81dd/399. All seven operators, builtin/inherited getters, cold
+caches, trace/Map edges, sole cloned-getter receiver ownership, quiet aggregate
+tails and budgets are covered. Source endings invoke real getters and the factory.
+One pre-main fixture-type failure remains zero; native/baseline/preparation/EL
+retain zero credit. Other producers, constructor/special intrinsic captures and
+wider weak lifetimes remain partial; stored-string carrier conversion is separate.
+[Getter/factory review](coverage/semantics/weakmap-getter-factory-comparison-review.json).
+
+Composed over 2e75ac2d1/399 after pointwise review of guarded array-constant,
+isset-only empty, nullable-array abrupt-return and nested-list selectors, all
+absent here. Source2/state353 retain their private cut; no joined actor or renewed
+execution credit.
+
 Terminal inherited `empty` now handles the existing typed bool `__isset` when
 `__get` is absent. False and true both deliver true before the saved receiver
 owner drops; caller-CV rebinding and callback throws preserve destructor ordering
