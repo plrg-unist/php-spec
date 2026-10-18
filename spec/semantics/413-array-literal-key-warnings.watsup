@@ -1,0 +1,118 @@
+;; ADD_ARRAY_ELEMENT freezes the converted float key, but an unwrapped scalar
+;; CV expression stays live across its callback. A TMP array is already owned.
+dec $array_float_key_item(pstate, phpType13*, int) : (expression, poperand)?
+def $array_float_key_item(S, phpType13*, z) = ((expression, VARIABLE n_key* z_key))
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NArrayItem (NExprVariable (BYTES text_key) metadata_key) expression (BOOLEAN false) (BOOLEAN false) metadata)
+  -- if n_key* = $base64(text_key)
+  -- if ~$this_name(n_key*) /\ ~$psautoglobal(n_key*)
+  -- if z_key = $variable_line(BYTES text_key, metadata_key)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 0]) = (z_key)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 1]) = (z)
+  -- if $(z > 0)
+  -- if $reference_origin_parent(porigin, 2) = ((porigin_array, [PCFIELD 0, PCINDEX n_index]))
+  -- if $origin_node(S.SOURCES, porigin_array) = (NExprArray (SEQUENCE phpType13_all*) metadata_array)
+  -- if $(n_index < |phpType13_all*|)
+  -- if n_after = $(n_index + 1)
+  -- if n_remaining = $(|phpType13_all*| - n_after)
+  -- if phpType13* = phpType13_all*[n_after:n_remaining]
+def $array_float_key_item(S, phpType13*, z) = eps -- otherwise
+
+dec $array_float_key_input_source(pstate, expression, poperand) : bool
+def $array_float_key_input_source(S, NExprVariable (BYTES text) metadata, VARIABLE n_name* z) = true
+  -- if n_name* = $base64(text)
+  -- if ~$this_name(n_name*) /\ ~$psautoglobal(n_name*)
+  -- if z = $variable_line(BYTES text, metadata)
+def $array_float_key_input_source(S, NExprArray (SEQUENCE phpType13*) metadata, KNOWN (PARRAY n)) = true
+  -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
+  -- if ~$array_immutable(S, n)
+  -- if $heap_count(HARRAY n, $pools_nodes(S.POOLS)) = 0
+  -- if S.ORIGIN = (PORIGIN n_unit pcpath)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 1]) = ((z, false))
+def $array_float_key_input_source(S, expression, poperand) = false -- otherwise
+
+dec $array_float_key_scalar(pstate, pvalue) : bool
+def $array_float_key_scalar(S, PNULL) = true
+def $array_float_key_scalar(S, PBOOL b) = true
+def $array_float_key_scalar(S, PINT i) = $(-9223372036854775808 <= i /\ i <= 9223372036854775807)
+def $array_float_key_scalar(S, PFLOAT n) = $(n < 18446744073709551616)
+def $array_float_key_scalar(S, pvalue) = false -- otherwise
+
+dec $array_float_key_value(pstate, poperand) : pvalue?
+def $array_float_key_value(S, VARIABLE n_name* z) = (pvalue)
+  -- if ~$environment_blocked(S, n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n)
+  -- if $(n < |S.STORE|) /\ (HCELL n) <- S.ALLOCATIONS
+  -- if ~(n <- S.REFCELLS)
+  -- if ~$foreach_released_container_cell(S, n) /\ ~$update_released_array_name(S, n_name*)
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if $array_float_key_scalar(S, pvalue)
+def $array_float_key_value(S, KNOWN (PARRAY n)) = (PARRAY n)
+  -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
+  -- if ~$array_immutable(S, n)
+def $array_float_key_value(S, poperand) = eps -- otherwise
+
+;; A pending exception still inserts in Zend before its builder is discarded.
+;; Without objects, retiring both graphs has the same observable cleanup.
+dec $array_float_key_plain_nodes(pnode*) : bool
+def $array_float_key_plain_nodes(eps) = true
+def $array_float_key_plain_nodes((HCELL n) :: pnode*) = $array_float_key_plain_nodes(pnode*)
+def $array_float_key_plain_nodes((HARRAY n) :: pnode*) = $array_float_key_plain_nodes(pnode*)
+def $array_float_key_plain_nodes((HOBJECT n) :: pnode*) = false
+dec $array_float_key_ready(pstate, nat, poperand) : bool
+def $array_float_key_ready(S, n, poperand) = ($array_float_key_value(S, poperand) =/= eps /\ $array_float_key_plain_nodes($heap_reach([HARRAY n] ++ $operand_nodes(poperand), eps, $heap_graph(S).EDGES)))
+
+dec $array_float_key_source(pstate, nat, poperand, phpType13*, int, nat, int) : bool
+def $array_float_key_source(S, n, poperand, phpType13*, z, n_bits, i) = true
+  -- if $(n_bits < 18446744073709551616 /\ n < |S.ARRAYS|)
+  -- if $float_long(n_bits, true) = (i, [PRECISIONLOSS])
+  -- if (HARRAY n) <- S.ALLOCATIONS /\ ~$array_immutable(S, n)
+  -- if $heap_count(HARRAY n, $pools_nodes(S.POOLS)) = 0
+  -- if poperand =/= KNOWN (PARRAY n)
+  -- if $array_float_key_item(S, phpType13*, z) = ((expression, poperand_key))
+  -- if $array_float_key_input_source(S, expression, poperand)
+def $array_float_key_source(S, n, poperand, phpType13*, z, n_bits, i) = false -- otherwise
+
+dec $array_float_key_plan(pstate) : (nat, poperand, phpType13*, int, nat, int)?
+def $array_float_key_plan(S) = ((n, S.RESULT, phpType13*, z, n_bits, i))
+  -- if S.TODO = (ARRAY_VALUE n (VARIABLE n_key* z_key) phpType13* z) :: ptask_tail*
+  -- if S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if $array_float_key_item(S, phpType13*, z) = ((expression, VARIABLE n_key* z_key))
+  -- if ~$environment_blocked(S, n_key*)
+  -- if $lookup(S.ENV, n_key*) = (n_cell)
+  -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
+  -- if S.STORE[n_cell] = DEFINED (PFLOAT n_bits)
+  -- if $(n_bits < 18446744073709551616)
+  -- if ~$foreach_released_container_cell(S, n_cell) /\ ~$update_released_array_name(S, n_key*)
+  -- if $float_long(n_bits, true) = (i, [PRECISIONLOSS])
+  -- if $array_float_key_source(S, n, S.RESULT, phpType13*, z, n_bits, i)
+  -- if $array_float_key_ready(S, n, S.RESULT)
+def $array_float_key_plan(S) = eps -- otherwise
+def $array_float_key_pending(S) = ($error_handler_eligible(S, 8192) /\ $array_float_key_plan(S) =/= eps)
+
+rule PhpStep/array-float-key-warning: S ~> $error_dispatch(S, 8192, $list_float_key_message(n_bits), z, DIAGNOSTIC "Deprecated" $list_float_key_message(n_bits) z, ARRAY_KEY_FLOAT_RESULT n poperand phpType13* z n_bits i)
+  -- if $array_float_key_pending(S)
+  -- if $array_float_key_plan(S) = ((n, poperand, phpType13*, z, n_bits, i))
+rule PhpStep/array-float-key-result: S ~> S_out[.TODO = (ARRAY_NEXT n phpType13*) :: ptask_tail*][.RESULT = KNOWN PNULL][.ORIGIN = $origin_next_item(S.ORIGIN, phpType13*)]
+  -- if S.TODO = (ARRAY_KEY_FLOAT_RESULT n poperand phpType13* z n_bits i) :: ptask_tail*
+  -- if $array_float_key_source(S, n, poperand, phpType13*, z, n_bits, i)
+  -- if $array_float_key_ready(S, n, poperand)
+  -- if $array_float_key_value(S, poperand) = (pvalue)
+  -- if S_out = $literal_insert(S, n, (KINT i), pvalue, z)
+rule PhpStep/array-float-key-result-unsupported: S ~> S[.TODO = eps][.RESULT = KNOWN PNULL][.COMPLETION = UNSUPPORTED "array literal float-key element after callback"]
+  -- if S.TODO = (ARRAY_KEY_FLOAT_RESULT n poperand phpType13* z n_bits i) :: ptask_tail*
+  -- if $array_float_key_source(S, n, poperand, phpType13*, z, n_bits, i)
+  -- if ~$array_float_key_ready(S, n, poperand)
+
+def $call_task_valid(S, ARRAY_KEY_FLOAT_RESULT n poperand phpType13* z n_bits i) = $array_float_key_source(S, n, poperand, phpType13*, z, n_bits, i)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = ARRAY_KEY_FLOAT_RESULT n poperand phpType13* z n_bits i
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if $array_float_key_source(S, n, poperand, phpType13*, z, n_bits, i)
+  -- if perrorcall.LEVEL = 8192 /\ perrorcall.LINE = z
+  -- if perrorcall.MESSAGE = $list_float_key_message(n_bits)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" $list_float_key_message(n_bits) z
+def $task_nodes(ARRAY_KEY_FLOAT_RESULT n poperand phpType13* z n_bits i) = [HARRAY n] ++ $operand_nodes(poperand)
+def $error_read_discard(S, ARRAY_KEY_FLOAT_RESULT n poperand phpType13* z n_bits i) = S[.COMPLETION = UNSUPPORTED "array literal float-key element during throw"]
+  -- if ~$array_float_key_ready(S, n, poperand)
