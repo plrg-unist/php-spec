@@ -7,6 +7,26 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Distinct authenticated SensitiveParameterValue constructor Closures now compare
+equal when they select the same live receiver, including clones and fresh capture
+sites. Distinct receivers remain uncomparable +1 both ways even when wrapping the
+same Map; getter/constructor mismatch and strict identity stay separate. The
+unchanged baseline completed normally with the wrong equality tuple. Two originals
+and 448 Boolean premises (434 setup + 14 pure)/10 actual comparison steps pass at
+27032c3bb/399. Arrays continue past equal captures to signed integer tails;
+declared-property scans stop before later casters for distinct receivers. Whole
+states preserve receiver/Map/private-value/key ownership, scopes and budgets. Later
+explicit calls expose the existing readonly Error. No actor failed; native/baseline/
+preparation/EL retain zero credit. Other Closure representations, constructor bases
+and wider lifetimes remain partial; carrier, factory-clone and uninitialized-wrapper
+gaps stay separate.
+[Constructor-pair review](coverage/semantics/constructor-closure-comparison-review.json).
+
+Composed over 694afed07/399 after pointwise review of guarded NaN/empty-array
+constant duplicates, magic-empty, nullable-array destructor-return, numeric-string
+compound and LIST selectors, all absent here. Source2/state448 retain their private
+cut; no joined actor or renewed execution credit.
+
 Weak NaN `define` names with primitive candidates and omitted/bool-false flags
 now preserve full `NAN` rendering/allocation before the first string-conversion
 Warning. Its callback/API trace sees raw NaN; normal return

@@ -2259,6 +2259,13 @@ ownership and quiet aggregate tails; later calls expose the existing readonly Er
 Uninitialized wrappers and wider protocols remain partial.
 [Sensitive wrapper/capture review](coverage/semantics/weakmap-sensitive-comparison-review.json).
 
+Authenticated SensitiveParameterValue constructor Closures compare equal across
+fresh captures and clones of the same live receiver. Distinct receivers stay
+uncomparable even when wrapping the same Map. Two originals and 448 Boolean
+premises/10 actual steps preserve signed aggregate continuation, ownership and
+quiet later casters. Other Closure representations and wider lifetimes remain
+partial. [Constructor-pair review](coverage/semantics/constructor-closure-comparison-review.json).
+
 [Numeric object comparison Notices](coverage/semantics/object-numeric-comparison-review.json)
 now pause ordinary source-instance/int/float leaves through real error handlers.
 Live CV/cell reads remain distinct from copies; a second Notice uses saved 1/1.0,
