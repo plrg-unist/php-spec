@@ -286,7 +286,19 @@ two DIRECT object edges, later cell rebinding leaves the snapshot intact, and
 real query bucket-reference COW changes caller containers while property writes
 still reach the stored objects. Queries add only a root owner and allocate
 nothing. The leaf classifier reuses completed/live birth guards; producer,
-two-argument fresh-only, canonical-table and cycle/empty boundaries are unchanged.
+two-argument, canonical-table and cycle/empty boundaries are unchanged.
+
+Duplicate user keys with nonempty array candidates copy before the Warning.
+A dedicated marker owns the private canonical root and the unchanged original
+CONFIG, so callback cell rebinding changes the API/Exception trace input while
+the copied candidate keeps its earlier values. Candidate validation checks its
+canonical tree, live leaf classes and the saved old-row prefix without re-copying
+mutable input aliases. A true handler suppresses reporting; false handlers retain
+the exact source-tagged Warning. Normal false delivery or abrupt handler cleanup
+retires the private copy while preserving the old row, callback writes and any
+real Exception trace owners of the original input. The established primitive and
+carrier fold is reused; new exact sources discriminate certified object leaves.
+[Array-duplicate review](../../coverage/semantics/define-stdclass-array-duplicate-review.json).
 
 Top-level empty values use the existing source-pool or retained immutable flag.
 An authenticated immutable empty keeps its table and `PVARRAY true eps`; a mutable
@@ -306,8 +318,9 @@ row and callback property writes; throwing handlers preserve the Exception trace
 owners until ordinary catch/unset cleanup. Historical rows validate their stored
 birth/value and source policy, without reconstructing a past mutable CV or flag.
 [Certified define review](../../coverage/semantics/define-stdclass-review.json).
-Ordinary uncertified objects, other owning array leaves, array duplicates,
-true/coerced flags, coerced names and wider owning define domains remain partial.
+Ordinary uncertified objects, other owning array leaves, empty-array duplicates,
+nested empties, array third flags, owning true/coerced flags, coerced names and
+wider owning define domains remain partial.
 
 Class-qualified `defined` queries reuse inherited lookup and the actual caller's
 lexical visibility. Missing or inaccessible members return false. The initial

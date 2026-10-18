@@ -831,8 +831,20 @@ sources agree. Author299 and independent 270 premises check fresh physical
 containers/leaf edges, literal and eval capture, no-allocation queries and real
 nested bucket-reference COW, with pure live-birth/table refusals. All accepted
 checks pass their first attempt; the unchanged Unsupported baseline retains0.
-Other owning leaves, nested empties, array duplicates and wider flags/names remain
+Other owning leaves, nested empties and wider flags/names remain
 partial. [Array-object define review](coverage/semantics/define-stdclass-array-review.json).
+
+User-key duplicate nonempty array `define` now keeps a canonical copied candidate
+separate from the original CONFIG/input through reporting. The new30 task tag and
+50 module400 lines reuse the existing primitive/carrier/certified stdClass fold
+and ordinary cleanup; no generic lifecycle rule changes. Three exact sources
+agree, including an eval false-handler Warning and a throwing handler whose trace
+observes the rebound original input. Author333 and independent 221 premises
+check private edges, live/prefix guards, normal and abrupt retirement, old rows,
+callback writes and trace owners. All accepted checks pass first attempts; the
+unchanged Unsupported baseline retains0. Empty-array duplicates, nested empties,
+other owning leaves, startup keys and wider flags remain partial.
+[Array-duplicate review](coverage/semantics/define-stdclass-array-duplicate-review.json).
 
 Selected inherited `__unset(string): void` now dispatches direct CV/literal-name
 access to a declared private property. Accessible public unset skips magic;

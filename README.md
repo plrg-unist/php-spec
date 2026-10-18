@@ -1188,8 +1188,8 @@ nested reference snapshots and literal constraints pass
 Top-level empty definitions retain an authenticated immutable table or create a
 fresh mutable copy. [Two exact sources and 162 public premises](coverage/semantics/dynamic-constant-empty-review.json)
 distinguish allocation classes and rebuilt append history, rejecting a mutable
-clone of a fixed literal. Nested empties, array warning/flag paths, other objects and
-cycles remain Unsupported.
+clone of a fixed literal. Nested empties, wider array warning/flag paths,
+uncertified objects and cycles remain Unsupported.
 String-name `define` with an omitted/false flag now shares already-certified
 stdClass donors. Named/selected calls preserve the captured pointer through later
 CV changes, and duplicate handlers keep the old binding and property writes on
@@ -1199,8 +1199,12 @@ Fresh two-argument definitions also copy nonempty array trees containing certifi
 stdClass leaves. Copied containers freeze source reference values while object
 pointers and property writes remain shared, including selected eval calls
 and nested query COW. [Array-object define review](coverage/semantics/define-stdclass-array-review.json).
-Ordinary uncertified objects, other owning leaves, nested empties, array duplicate
-warnings and wider flags/names remain partial.
+Duplicate nonempty array definitions retain a private canonical candidate through
+the Warning while callbacks and Exception traces keep the original API argument.
+Normal false delivery and throwing-handler cleanup retire the candidate, preserving
+the old row and callback writes. [Array-duplicate review](coverage/semantics/define-stdclass-array-duplicate-review.json).
+Ordinary uncertified objects, other owning leaves, empty-array duplicates, nested
+empties and wider flags/names remain partial.
 Class-qualified `defined` now checks inherited user constants with lexical visibility
 and quiet misses. Named autoload resumes the same captured query once.
 [Two exact sources and 288 public premises](coverage/semantics/class-qualified-defined-review.json)
