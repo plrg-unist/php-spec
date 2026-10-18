@@ -138,6 +138,13 @@ and [greater review](../../coverage/semantics/undefined-scalar-compare-gt-ge-rev
 record the scalar continuations and their separate validation cuts. Greater
 operators reverse physical VM operands; the same source shapes apply within the
 single-missing/scalar-throughout bound.
+Forward `==`/`!=`/`<`/`<=` also admit both initially missing direct CVs when
+the first handler defines the right scalar. An ingress-only predicate permits
+that first Warning; the existing resume guard still refuses an undefined right.
+A pending Exception suppresses the second Warning and follows ordinary discard.
+[Both-missing review](../../coverage/semantics/undefined-scalar-compare-both-review.json)
+records new-cell/reference owners and entry/resume separation; returning second-Warning
+chains and reversed greater/spaceship both-missing paths remain partial.
 Missing-left binaries retain the later right read; missing-right binaries admit
 known or temporary values and initially-reference CVs in strict identity comparisons.
 Module208 retains the borrowed old cell through the saved caller without adding

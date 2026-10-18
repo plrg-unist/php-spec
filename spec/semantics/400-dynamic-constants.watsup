@@ -420,7 +420,54 @@ def $dynamic_define_nonstring_valid(S, pconfigcall) = true
   -- if $dynamic_query_nonstring_object(S, n_object)
 def $dynamic_define_nonstring_valid(S, pconfigcall) = false -- otherwise
 
+;; Arrays and objects fail bool reception before the mixed value reaches the body.
+dec $dynamic_define_rejected_flag(pvalue) : bool
+def $dynamic_define_rejected_flag(PARRAY n) = true
+def $dynamic_define_rejected_flag(POBJECT n) = true
+def $dynamic_define_rejected_flag(pvalue) = false -- otherwise
+dec $dynamic_define_invalid_flag_kind(pstate, pvalue) : bool
+def $dynamic_define_invalid_flag_kind(S, PARRAY n) = true
+def $dynamic_define_invalid_flag_kind(S, POBJECT n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = STDINSTANCE
+def $dynamic_define_invalid_flag_kind(S, POBJECT n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+def $dynamic_define_invalid_flag_kind(S, POBJECT n) = true
+  -- if $typed_closure(S, n)
+def $dynamic_define_invalid_flag_kind(S, pvalue) = false -- otherwise
+dec $dynamic_define_invalid_flag_values(pconfigcall) : (preqbytes, pvalue, pvalue)?
+def $dynamic_define_invalid_flag_values(pconfigcall) = ((preqbytes, pvalue, pvalue_flag))
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_name), NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN pvalue_flag)]
+  -- if $string_bytes(pvalue_name) = (preqbytes)
+  -- if $dynamic_define_rejected_flag(pvalue_flag)
+def $dynamic_define_invalid_flag_values(pconfigcall) = eps -- otherwise
+dec $dynamic_define_invalid_flag_call(pconfigcall) : bool
+def $dynamic_define_invalid_flag_call(pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_DEFINE
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps
+  -- if $dynamic_define_invalid_flag_values(pconfigcall) = ((preqbytes, pvalue, pvalue_flag))
+def $dynamic_define_invalid_flag_call(pconfigcall) = false -- otherwise
+dec $dynamic_define_invalid_flag_valid(pstate, pconfigcall) : bool
+def $dynamic_define_invalid_flag_valid(S, pconfigcall) = true
+  -- if $dynamic_define_invalid_flag_call(pconfigcall) /\ $config_invoke_valid(S, pconfigcall)
+  -- if ~$pipe_site(S, pconfigcall.SITE) /\ $dynamic_define_source(S, pconfigcall.SITE)
+  -- if $dynamic_scalar_define_arguments(S, pconfigcall, 0)
+  -- if $dynamic_define_invalid_flag_values(pconfigcall) = ((preqbytes, pvalue, pvalue_flag))
+  -- if $dynamic_define_invalid_flag_kind(S, pvalue_flag)
+  -- if $startup_bytes(preqbytes) /\ $dynamic_constant_global_name(preqbytes) /\ ~$dynamic_constant_initial(preqbytes)
+  -- if $named_slot_at(pconfigcall.SENT, 0) = NAMED_SENT (KNOWN pvalue_name)
+  -- if $string_plain(pvalue_name) = pvalue_name \/ $string_carrier_valid(S, pvalue_name)
+  -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
+def $dynamic_define_invalid_flag_valid(S, pconfigcall) = false -- otherwise
+
 dec $dynamic_constant_receive(pstate, pconfigcall) : pstate
+def $dynamic_constant_receive(S, pconfigcall) = $config_error(S[.TODO = ptask_tail*], pconfigcall, "TypeError", $ptascii("define(): Argument #3 ($case_insensitive) must be of type bool, ") ++ $typed_given(S, pvalue_flag) ++ $ptascii(" given"))
+  -- if $dynamic_define_invalid_flag_valid(S, pconfigcall)
+  -- if $dynamic_define_invalid_flag_values(pconfigcall) = ((preqbytes, pvalue, pvalue_flag))
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
 def $dynamic_constant_receive(S, pconfigcall) = $config_error(S[.TODO = ptask_tail*], pconfigcall, "TypeError", $ptascii("define(): Argument #1 ($constant_name) must be of type string, ") ++ $typed_given(S, POBJECT n_object) ++ $ptascii(" given"))
   -- if $dynamic_define_nonstring_valid(S, pconfigcall)
   -- if pconfigcall.SENT = (NAMED_SENT (KNOWN (POBJECT n_object))) :: pnamedslot*
@@ -456,6 +503,7 @@ def $dynamic_constant_receive(S, pconfigcall) = $dynamic_define_finish(S, pconfi
   -- if ~$dynamic_constant_case_flag(pconfigcall)
   -- if ~$dynamic_define_arity_call(pconfigcall)
   -- if ~$dynamic_define_array_name_call(pconfigcall)
+  -- if ~$dynamic_define_invalid_flag_call(pconfigcall)
   -- if ~$dynamic_define_string_valid(S, pconfigcall)
   -- if ~$dynamic_define_nonstring_valid(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*

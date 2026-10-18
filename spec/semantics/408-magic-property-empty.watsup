@@ -101,8 +101,7 @@ def $property_empty_get_source(S, pmethoddesc) = true
   -- if ~$generator_statements(statement*)
 def $property_empty_get_source(S, pmethoddesc) = false -- otherwise
 
-;; Absent __isset return declarations are selected only by this paired route.
-dec $property_empty_isset_source(pstate, pmethoddesc) : bool
+;; Physical absent-return source proof shared by paired empty and terminal isset.
 def $property_empty_isset_source(S, pmethoddesc) = true
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
   -- if pfunction = pmethoddesc.FUNCTION
