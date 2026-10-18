@@ -1,0 +1,22 @@
+[
+  {
+    "id": "generator-owning-detached-return-object-close",
+    "purpose": "A detached direct parent keeps an owning object copied from its retired child. Real null-key call-unpack raises Error before target entry; explicit parent close discriminates current-cache cleanup from the copied return temporary lifetime. Observe raw destructor order without forecasting stdout.",
+    "source": "<?php\nclass DetachedCache27 { function __destruct() { echo \"A|\"; } }\nclass DetachedReturn27 { function __destruct() { echo \"R|\"; } }\nfunction detachedLeaf27() { echo \"C|\"; yield new DetachedCache27(); echo \"L|\"; return new DetachedReturn27(); }\nfunction detachedParent27() { try { echo \"G|\"; $result = yield from $GLOBALS[\"child\"]; echo \"BAD-BODY|\"; } finally { echo \"F|\"; } }\nfunction detachedTarget27($value) { echo \"BAD-TARGET|\"; }\n$child = detachedLeaf27(); $parent = detachedParent27(); echo \"P|\"; $parent->rewind(); $child->next();\necho \"V|\", $parent->current() instanceof DetachedCache27 ? \"HELD|\" : \"BAD|\", \"K|\", $parent->key() === null ? 1 : 0, \"|\";\nunset($child); echo \"M|\";\ntry { detachedTarget27(...$parent); } catch (Error $caught) { echo \"T|\", $caught->getLine(), \"|\", $caught->getTrace() === [] ? \"NOFRAME|\" : \"FRAME|\", $caught->getPrevious() === null ? \"NOPREV|\" : \"PREV|\"; }\nunset($caught, $parent); echo \"E\";\n",
+    "source_sha256": "8cb1eb4ebfbba6ccfa6d19a9ea44b9d2acb50a16721df011a767b962817d2771",
+    "expected": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|G|C|L|V|HELD|K|1|M|T|10|NOFRAME|NOPREV|F|A|ER|"
+  },
+  {
+    "id": "generator-owning-detached-return-array-next-consumption",
+    "purpose": "An owning array return waits in a direct detached parent through a real null-key unpack Error. A later ordinary next consumes the copied result, then the body releases its array and reaches a new yield and normal tail. This discriminates normal transfer from retaining every owning COMPLETE forever; observe raw stdout first.",
+    "source": "<?php\nclass DetachedArrayReturn27 { function __destruct() { echo \"R|\"; } }\nfunction detachedArrayLeaf27() { echo \"C|\"; yield 9; echo \"L|\"; return [new DetachedArrayReturn27()]; }\nfunction detachedArrayParent27() { try { echo \"G|\"; $result = yield from $GLOBALS[\"child\"]; echo \"BODY|\", $result[0] instanceof DetachedArrayReturn27 ? 1 : 0, \"|\"; unset($result); echo \"DROP|\"; yield 31; echo \"TAIL|\"; } finally { echo \"F|\"; } }\nfunction detachedArrayTarget27($value) { echo \"BAD-TARGET|\"; }\n$child = detachedArrayLeaf27(); $parent = detachedArrayParent27(); echo \"P|\"; $parent->rewind(); $child->next(); unset($child); echo \"M|\";\ntry { detachedArrayTarget27(...$parent); } catch (Error $caught) { echo \"T|\", $caught->getLine(), \"|\", $caught->getTrace() === [] ? \"NOFRAME|\" : \"FRAME|\"; }\nunset($caught); echo \"N|\"; $parent->next(); echo \"CURRENT|\", $parent->current(), \"|\", $parent->valid() ? 1 : 0, \"|\";\necho \"N2|\"; $parent->next(); echo \"DONE|\", $parent->valid() ? 1 : 0, \"|\", $parent->getReturn() === null ? 1 : 0, \"|\";\nunset($parent); echo \"E\";\n",
+    "source_sha256": "fba2351a6221fc0ba92af6197459d3823cddb82154948f393d8c71457d5d5cdf",
+    "expected": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|G|C|L|M|T|7|NOFRAME|N|BODY|1|R|DROP|CURRENT|31|1|N2|TAIL|F|DONE|0|1|E"
+  }
+]

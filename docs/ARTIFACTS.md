@@ -41,6 +41,14 @@ The final-pair sibling is in
 `../php-spec-evidence-archive/lifecycle-normal-final-pair-107/manifest.json`:
 283,128 bytes under `.tools/m107/`, SHA-256
 `1fc094d0b1b79d90d4a63d79a4e19ee7878ac8a751af539695500eaa1a149e2c`.
+The single-cursor sibling is in
+`../php-spec-evidence-archive/lifecycle-normal-cursor-108/manifest.json`:
+271,278 bytes under `.tools/m108/`, SHA-256
+`bf8cb58209c01ac4e495337633ffc441ee51202229246ef511a0b3b2c529ad21`.
+The pending single-cursor final-release evidence is in
+`../php-spec-evidence-archive/lifecycle-pending-cursor-109/manifest.json`:
+286,021 bytes under `.tools/m109/`, SHA-256
+`a8b5638d3fc6b6d1171226ab8d188b3ee4b54c36917324c36db91c1a6e5c52ff`.
 
 ## Commit provenance and recovery
 

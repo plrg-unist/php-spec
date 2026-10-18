@@ -627,6 +627,14 @@ cached-zero division, final power deprecation after RHS-name rebinding and a
 supplied throw in the [right-warning ledger](coverage/semantics/right-arithmetic-warning-review.json).
 Other operand and lifecycle forms remain partial.
 
+Initially plain variables now retain the same arithmetic holders for
+`+`, `-`, `*`, `/`, `**`. A first Warning can repair bad RHS text; after its own
+Warning the RHS may become an alias or be unset without replacing the captured
+number. Ten originals and 1,055 focused SL premises cover both warning orders,
+TypeError with current operand types, final power deprecation and supplied throws
+in the [plain-arithmetic ledger](coverage/semantics/plain-arithmetic-warning-review.json).
+An input must stay plain until its conversion; wider forms remain partial.
+
 Primitive plain-CV `**=` now commits its captured result even when the deprecation
 handler throws. A late alias detaches before the same exception continues; the
 outer assignment stays unchanged. Three exact originals and 407 focused SL
@@ -945,6 +953,12 @@ Direct detached roots also unpack when the copied child return owns no heap
 nodes. Their object, array and reference caches survive child retirement; key
 errors preserve the real return continuation for a later explicit next.
 See the [detached-child review](coverage/semantics/generator-call-unpack-detached-child-review.json).
+Direct parents now also admit an owning copied return at a simple-CV assigned
+`yield from`. A later `next()` consumes it normally; forced close preserves its
+count across finally and current-cache cleanup, with payload destructors in the
+request-store pass. Returned arrays retain their live embedded reference cells.
+The [owning-return review](coverage/semantics/generator-owning-detached-return-review.json)
+includes cache-cleanup replacement of the unpack Error and the promoted original control.
 Source Iterator `yield from` leaves also unpack through active Generator chains.
 The real raw cache is captured after key callbacks; snapshots preserve reference
 mutation, row COW and cache lifetime across next-callback errors.
@@ -963,7 +977,8 @@ heap nodes. Their null key raises the real unpack error before argument sending;
 retained caches, later next/return/tail execution and cleanup preserve initialization
 history. A direct middle next can consume pending initialization without advancing.
 See the [nested-detached review](coverage/semantics/generator-call-unpack-nested-detached-review.json).
-Aggregate ordinary-call unpack, owning copied returns, other pending-initialization
+Aggregate ordinary-call unpack, owning copied returns below active links or in
+wider continuations, other pending-initialization
 send/throw, Generator by-reference
 call targets and callback methods, nonnumeric raw valid changes, request/plain
 reference strings and handler replacements with
@@ -1196,6 +1211,14 @@ calls reject the raw object before entry, and a method throw cancels the query.
 [Four source agreements and 642 state premises](coverage/semantics/constant-query-stringable-name-review.json)
 cover raw versus converted traces, selected callees, callback effects and discard.
 Sole-owner destruction, wider receivers and named/packed forms remain partial.
+
+Retained propertyless Stringable query names returning non-NUL class-qualified
+text now hand the converted API slot to existing guarded user-class lookup.
+Loaded values, `defined()` true/false and missing-member errors follow conversion;
+autoload receives the bare class while its API context keeps the full query.
+[Four source agreements and 1,026 state premises](coverage/semantics/constant-query-stringable-class-name-review.json)
+cover selected captures, loader throw/unwind and same-receiver global recovery.
+
 Retained ordinary nonStringable instances and `stdClass` now raise TypeError in
 `constant()`/`defined()` calls with one positional argument, before lookup in weak
 and strict code. Raw receiver traces and selected callees survive later argument
@@ -3708,8 +3731,15 @@ keys, and preserves quiet probes and by-reference argument error ordering. Its
 compiler and paused-state controls. [Source methods and constructors](docs/semantics/SOURCE-METHODS.md)
 execute ordinary/nullsafe, inherited, nonpublic and static/scoped dispatch,
 bound closures and `Closure->__invoke` trampolines.
-Ordinary abstract scoped calls reject before arguments, and inaccessible concrete
-nonstatic methods report access errors before missing-receiver errors. Literal
+Selected missing literal instance methods also call inherited public
+`__call(string,array)` with the original spelling and a real packed argument
+array. Early sends survive argument mutation; array/payload cleanup precedes
+receiver release and cached result or supplied-exception delivery.
+[Four source agreements and 355 focused premises](coverage/semantics/magic-call-review.json)
+cover these paths and public-method bypass. Wider magic call forms remain partial.
+Ordinary abstract scoped calls reject before arguments. Without magic fallback,
+inaccessible concrete nonstatic methods report access errors before missing-receiver
+errors. Literal
 constructor calls retain separate opcode dispatch: private denial precedes
 receiver compatibility, and inherited private constructor errors name the requested
 class. A missing constructor reports `Cannot call constructor` for literal/folded method
@@ -3974,12 +4004,16 @@ Scoped descriptor checks now require every registered destructor operation's exa
 exit marker in current or saved tasks, including parked Fibers. Focused source,
 carrier/caller and public refusal checks pass; physical cell collection and broader
 returns remain open. Details are in the local CV lifetime review above.
-Normal adjacent partial and final reference-return pairs also resume through
-ordinary release and instance-storage pauses. The partial pair retains its outer
-reference owner; the completed pair is root-free. Separate reached proofs pass
-296/7 at `dc0b93c9f` and 275/7 at `c1540ff96`, preserving original diagnostics,
-aliases and exact budget endings. Single-cursor and pending-Throwable cleanup
-prefixes, interposed lifecycle capture and broader histories remain open.
+Normal single reference-return cursors and adjacent partial/final pairs resume
+through ordinary release and instance-storage pauses. The partial pair retains
+its outer reference owner; single cursors and completed pairs are root-free.
+Separate reached proofs pass 288/7 at `799f07366`, 296/7 at `dc0b93c9f` and
+275/7 at `c1540ff96`, preserving original diagnostics, aliases and exact budget
+endings. A final empty release before a pending single-cursor destructor exit also
+resumes through the existing finite-Throwable/source validator. Separate 325/6
+checks at `3256ba13e` preserve the same TypeError, a VALUE Notice at old source line5
+and detached rNULL/b7. Earlier auxiliary/storage intervals, pending-pair prefixes, interposed
+lifecycle capture and broader histories remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

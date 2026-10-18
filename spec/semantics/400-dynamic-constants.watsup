@@ -267,7 +267,7 @@ def $dynamic_define_array_name_valid(S, pconfigcall) = true
 def $dynamic_define_array_name_valid(S, pconfigcall) = false -- otherwise
 
 ;; Query Stringables keep the raw API slot through the method, then replace it
-;; in a separate CONFIG step before ordinary global lookup.
+;; in a separate CONFIG step before ordinary global or class lookup.
 dec $dynamic_query_string_call(pconfigcall) : bool
 def $dynamic_query_string_call(pconfigcall) = true
   -- if pconfigcall.KIND <- [INTRINSIC_CONSTANT, INTRINSIC_DEFINED]
@@ -302,7 +302,7 @@ dec $dynamic_query_string_finish(pstate, pconfigcall, pvalue) : pstate
 def $dynamic_query_string_finish(S, pconfigcall, pvalue) = S[.ORIGIN = (pconfigcall.SITE)][.TODO = (CONFIG_INVOKE pconfigcall[.SENT = [NAMED_SENT (KNOWN pvalue)]]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $string_bytes(pvalue) = (preqbytes)
   -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
-  -- if $dynamic_constant_global_name($dynamic_constant_query(preqbytes))
+  -- if $dynamic_constant_global_name($dynamic_constant_query(preqbytes)) \/ ($dynamic_constant_class_name(preqbytes) /\ ~(0 <- preqbytes))
   -- if S.TODO = ptask :: ptask_tail*
 def $dynamic_query_string_finish(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "Stringable query global name"] -- otherwise
 rule PhpStep/dynamic-query-string-result: S ~> $dynamic_query_string_finish(S, pconfigcall, pvalue)

@@ -26,6 +26,124 @@ new-cell owner deficit. That deficit is the next array follow-up, not covered by
 this positive-owner slice; the held undefined-reference LIST-key candidate stays
 untouched. [Reference-element review](coverage/semantics/array-literal-float-ref-key-warning-review.json).
 
+Composed over `0714bbadb`/404 after independent review of incoming Generator
+return roots, magic calls, typed-reference cleanup, plain-CV arithmetic and
+Stringable-query selectors, absent here. Both request-retention fields and
+parent414 remain intact. Source5/strict403/state830 retain their private cuts
+without a joined actor, native replay or renewed historical credit.
+
+M109 admits one final empty release directly before an authenticated pending
+single-cursor destructor exit. Six module270 lines strip that marker and delegate
+to the unchanged live finite-Throwable/source/full-cursor validator; the normal
+release/storage view stays pending-free. Author 144/three raw steps and independent
+181/three raw steps pass at `3256ba13e`/403: the same destructor TypeError reaches
+local CT, old C stays retired, the root-free consumed cursor produces one VALUE
+Notice at its old source line5, and the caller keeps detached rNULL/b7. Source,
+LINE, scope, registries, USER/CALLER, kind and valid nonempty-job refusals plus exact
+two-step/whole budget identity pass. No failure/retry or new native/source credit;
+authenticated M84 packets retain their historical cut. Normal M106–M108 cleanup
+proofs stay separate. Earlier auxiliary-operation/storage intervals, pending-pair
+prefixes, interposed capture, wider owners/reentry, GC and typed consumers remain
+open. [Cleanup review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+Composed over `b311c793a`/404 after independent actual-parent review. Incoming
+Generator-return retention stays eps with no M84 producer, so its added roots and
+validator are neutral; parent field/init bytes are preserved. New arithmetic plans
+need an absent named Warning handler, and magic-call guards exclude this C without
+__call and the builtin TypeError.getMessage route. Only270 changes and matches
+`3256ba13e`; every other runtime file and the 404-module manifest retain parent
+bytes. The 325/6 proof keeps its private403 state cut without a joined actor or
+renewed source credit.
+
+Missing literal instance calls now invoke inherited public `__call(string,array)`
+with original spelling and a real packed positional argument array. The selected
+receiver and early scalar sends survive argument callbacks that clear its CV and
+write the live RHS. Sole array/payload cleanup precedes receiver destruction and
+cached scalar result delivery; a supplied throw preserves destination42 and the
+same catch object. Declared public methods bypass magic. Four exact originals
+pass at `c3dd5f3d8`; 355 focused premises at `a2fb398ba` (334 reached +21 derived)
+cover saved raw calls, actual parameter reception, array/receiver owners, cleanup,
+catch and budgets. A parser failure and a pre-application fixture-binding failure
+remain zero; their corrections were grouping/binding only. Module414 reuses the
+ordinary call/free/GC protocols. Scoped/inaccessible positives, `__callStatic`,
+dynamic/named/unpacked/reference and wider ownership/lifetime paths remain open;
+needed unselected magic forms stay Unsupported. No earlier class suite is replayed.
+[Magic call review](coverage/semantics/magic-call-review.json).
+
+Composed over `2e4993c51`/403 with incoming runtime and schema fields preserved.
+Generator return-retention, reference-return cleanup, numeric Closure images,
+operator/DEFINE and array-key selectors are unselected. Source4/state355 retain
+their private cuts without a joined actor or renewed execution credit.
+
+Initially plain CVs now stage `+`, `-`, `*`, `/`, `**` numeric-string diagnostics.
+A first Warning can repair bad RHS text; each captured number survives its callback,
+including a later RHS reference or unset. Fresh conversion inputs must still be plain;
+returned holders and final power Deprecated use captured numbers. Ten originals pass at
+9f1d477a8/402 and six focused fixtures pass 1,055 SL premises at f59178b78/402:
+both warning orders, strict numeric types, live TypeError, supplied throws,
+one or two cell owners, an unowned old RHS after unset, and budget resumption.
+Thirteen rows remain partial; old reference-based bodies/readers and evidence
+are unchanged, OP12 paused.
+[Plain-arithmetic ledger](coverage/semantics/plain-arithmetic-warning-review.json).
+
+Composed over 8cace0a9/403 after review of Generator return retention, float-array
+keys, DEFINE, destructor and object-numeric selectors, absent here. Complete parent
+fields/defaults and incoming paths are retained; empty Generator retention is inert.
+Source10/state1055 keep their private402 cuts without a joined actor or renewed credit.
+
+Direct Generator unpack now admits an owning child return copied into a
+simple-CV assigned `yield from`. Normal next consumes the copied result; forced
+close preserves its single count before finally and current-cache cleanup.
+Returned arrays keep live embedded reference cells, so later writes can retire
+old referents while new values remain retained. A temporary cache destructor can
+replace the null-key unpack Error before catch while the return stays late.
+Active-chain owning returns, wider continuations, pending APIs and waiting-result
+GC remain open. No general lifecycle or collector closure is claimed.
+[Owning-return review](coverage/semantics/generator-owning-detached-return-review.json).
+
+Four new originals and one promoted historical control agree at `0195cd721`/401;
+the latter reuses exact historical native bytes without PHP replay. Five new
+fronts pass 515 premises (263 author + 252 independent, including 25 generic
+checks), and the one affected historical group separately passes 95. Pre-close
+transfer, real next consumption, force-close finally, shared-cell mutation and
+cache-destructor CURRENT all reach their native endings with public/heap validity
+and zero/split budgets. Strict401 and the six-fixture elaboration retain `0195`;
+author263 uses `137ee15b7`, historical95 `2b7ea68d6`, peer252 `e85269870`, all with
+the same nine-file `5a0d51e91` runtime. Three fixture-observer failures remain zero;
+only affected groups repeat. Fresh native4 and the genuine unchanged Unsupported
+baseline retain `91af97f6c`/401 with zero credit; the elaboration grants none.
+
+Composed over `ada32a063`/403 after pointwise review of magic-property and
+LIST/array-literal task tags, arithmetic/constant and method-Closure selectors,
+and reference-return cleanup validation. None has a producer in these untyped
+by-value Generator sources. Incoming403 modules and task variants are preserved;
+the tested nine-file additions retain their private401 cuts. No joined actor,
+accepted replay or renewed execution credit is claimed.
+
+Retained propertyless Stringable query names now hand non-NUL class-qualified
+results to existing guarded user-class lookup. One module 400 predicate/comment
+change preserves the global arm, source/carrier/saved-site guards, converted CONFIG
+boundary and class/autoload/trace/ownership machinery. Four originals agree at
+5f47101bd/runtime 4a7f0f801: loaded value 1693/defined true, captured missing-member Error,
+false-to-global recovery, and a named-loader throw after conversion. All 1,026
+premises pass there: author 271+189+260 plus independent 306 across five class queries
+and one global recovery. Actual converted API carriers, bare loader argument,
+three-frame Exception/caller result 99/sibling 1699, active-key cleanup and whole-state
+discard are checked; peer native observes effects/identity without trace traversal.
+Nine reports all PASS/stable/reaped, no failure/retry/timeout; PHP/worker stderr
+empty. Initial 8fd2 native/base uses CPU2, later actors CPU1; unchanged Unsupported
+B|S| retains zero credit. Only the obsolete Source53 `A::B` control changes; new reached
+fronts cover it without renewing older 642/844 cuts. NUL/HALT results, wider domains
+and paused Source47/owned-NUL work remain outside this milestone.
+[Stringable class-query review](coverage/semantics/constant-query-stringable-class-name-review.json).
+
+Pointwise composition over e831290ac preserves the incoming 403-module parent,
+including array-key module413. The query finish-predicate/comment transformation
+and five tests are private-exact; every other runtime/manifest path retains parent
+bytes. Array/NULL flags, source float keys, reference-return destructor pairs and
+internal-wrapper/operator warnings have no producer in these originals. Source4/1026
+keep their private 5f471/4a7f cuts without a joined actor or renewed execution credit.
+
 Direct, array-method and fixed-string-method Closure captures now use the standard
 numeric Notice and private 1/1.0. Nine module402 image lines preserve existing live
 guards, source/scope authentication, pointers and ownership. Two exact originals
@@ -72,38 +190,8 @@ and state589 at `b3027bcd7`, composed over `85a9c6ec8`/402 as `bd9e946b6`/403
 without replay. Its native reference-retarget originals/probe remain historical
 zero credit. [A19 ledger](coverage/semantics/array-literal-float-key-warning-review.json).
 
-M107 extends normal two-return cleanup admission to final `REF_RETURN_PAIR`.
-The existing same-scope release/storage view now feeds its full final validator;
-the pair is root-free after both older transfers retire. Only six module270 lines
-change. Author 117/one raw step and independent 158/six raw steps pass at
-`c1540ff96`/402, with every public cleanup pause, source/LINE/scope/registry/storage
-refusals, zero diagnostics, detached aliases and exact whole/split budget equality.
-No failure or retry occurred; native/source credit is zero for reused M66 packets.
-M106's still-owning partial pair retains separate 296/7 evidence at `dc0b93c9f`/401.
-Single-cursor and pending-Throwable cleanup prefixes, interposed lifecycle capture,
-wider owning/reentrant histories, GC and typed consumers remain open.
-[M106/M107 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
-
-Composed over `b1a9fd146`/402 after independent actual-parent review. Incoming
-module404 right-only arithmetic Warnings require a named handler and arithmetic
-conversion, absent from M66. Only270 changes and is byte-exact tested `c1540ff96`;
-every other runtime file and the 402-module manifest retain parent bytes.
-State275/raw7 keeps its private cut without a joined actor or renewed source credit.
-
-Quiet LEFT/right-only numeric-string Warnings now enter the existing `+`, `-`,
-`*`, `/`, `**` continuations for two selected reference cells. One shared snapshot and four plan
-arms preserve every old body; actual CONVERT steps capture both holders before
-the sole RHS Warning. Callback writes cannot change cached results or zero division;
-power still reaches its final Deprecated after RHS-name rebinding. Nine originals
-pass at 0f1b299d6/401; four focused fixtures pass 576 SL premises at cd4715302/401,
-covering all four arms, exact capture order, owners and budget resumption.
-Thirteen rows remain partial, earlier cuts receive no renewed credit, OP12 paused.
-[Right-warning ledger](coverage/semantics/right-arithmetic-warning-review.json).
-
-Composed over33fb9bef1/402 after review of magic property-write, LIST, DEFINE,
-reference-return destructor and numeric SensitiveParameterValue selectors, absent
-here. All incoming paths are retained; source9/state576 keep their private401
-cuts without a joined actor or renewed execution credit.
+The earlier selected-reference right-only Warning route retains source9/state576
+in its [review ledger](coverage/semantics/right-arithmetic-warning-review.json).
 
 Initialized SensitiveParameterValue/int/float comparisons now emit the standard
 Notice and use private 1/1.0 without reading the wrapped value. Nine added
@@ -154,29 +242,6 @@ five tests are exact; every other runtime/manifest path retains parent bytes.
 Array/coerced flags, magic setters, reference-return cleanup, Generator/POWER and
 LIST tasks have no producer in these originals. Source4/844 retain their private
 309d/96f cuts without a joined actor, accepted replay or renewed execution credit.
-
-Inherited private writes now call a public `__set(string $name, $incoming): void`
-for selected external CV/literal integer assignments. The callback receives `7`,
-but used CV results are read after receiver release: setter `99` then receiver
-destructor `123` yields `123`; literal `7` stays `7`, and a held receiver yields
-`99` before its later destructor. Lexical private and initialized public writes bypass
-magic. A supplied setter Exception leaves the outer destination `42` and reaches
-the same catch after receiver cleanup. A receiver-owning call marker and nonowning
-late-delivery marker preserve these orders without changing generic free or GC.
-Four originals agree at `a4e84a4b6`; 524 focused premises at `76b44693c`
-(506 reached +18 derived) cover actual parameter reception, IN_SET timing, saved
-receiver/delivery validity, pointer/input refusals and budgets. Two source failures
-remain zero (a DSL binder error, then entered-function lookup); the latter received
-a narrow authenticated lookup repair. The first focused failure and two diagnostics
-also stay zero; only its NORMAL/BUDGET plan detector needed correction. Wider
-setter signatures/RHSs, recursion, sole-owner public-NaN retirement and wider
-quiet-CV GC remain open. No earlier class suite is replayed.
-[Magic setter review](coverage/semantics/magic-setter-review.json).
-
-Composed over `08eafbb85`/401 after pointwise review of reference-return/finally,
-Generator, constant API, operator-warning, LIST and internal-wrapper changes, all
-unselected here. Incoming paths and task variants are retained; the manifest adds
-only412 for402 modules. Source4/state524 retain their tested cuts without replay.
 
 Array `define` now receives integer, finite-float and authenticated string third
 flags without replacing the raw API capture. Weak false values skip the ignored
@@ -10242,10 +10307,12 @@ failures and interrupted evidence.
 
 The temporary `returns_verify` audit has reached its finite paired-return
 handoff. Preserve the accepted evidence and do not retry the rejected engine
-experiment. M106/M107 cover normal adjacent partial/final-pair release/storage intervals.
-Single-cursor and pending-Throwable cleanup prefixes, normal interposed-catch
-partial pairs, larger or reentrant owning histories, GC and wider typed consumers
-remain open core obligations for permanent lifecycle/control work.
+experiment. M106–M108 cover normal single-cursor and adjacent partial/final-pair
+release/storage intervals; M109 adds the final empty release before a pending
+single-cursor exit. Earlier auxiliary/storage intervals, pending-pair prefixes,
+normal interposed-catch partial pairs, larger or reentrant owning histories, GC and
+wider typed consumers remain open core obligations for permanent lifecycle/control
+work.
 Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is
 bounded physical-array owner recovery. Bounded single-active-finalizer CV replay and deferred VALUE/NULL Notice dispatch are
 integrated, as are bounded aliased-CV Stringable reference conversion 186 and sole-local-CV

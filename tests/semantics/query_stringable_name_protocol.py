@@ -167,7 +167,11 @@ def checks(program, path, name):
         values += ['pvalue_string_S = PSTRING_CARRIER (REQUEST_STRING n_string) preqbytes_string',
             *error('S_error','S_ready','pconfigcall_converted_S','pvalue_string_S','Error','Undefined constant "MissingQueryString53"','constant','queryMissingCaller53'),
             'S_error.STORE[n_result] = DEFINED (PINT 99)', *refusals('S'), *budget('S'), *budget('S_returned')]
-        for value in ('PSTRING ' + text('A::B'), 'PSTRING (' + text('name53') + ' ++ [0])', 'PSTRING ' + text('__COMPILER_HALT_OFFSET__'),
+        values += ['pconfigcall_class = pconfigcall_S[.SENT = [NAMED_SENT (KNOWN (PSTRING ' + text('A::B') + '))]]',
+            'S_class = $dynamic_query_string_finish(S_returned,pconfigcall_S,PSTRING ' + text('A::B') + ')',
+            'S_class.COMPLETION = NORMAL', 'S_class.TODO = (CONFIG_INVOKE pconfigcall_class) :: ptask_S*',
+            '$dynamic_class_constant_valid(S_class,pconfigcall_class)']
+        for value in ('PSTRING (' + text('name53') + ' ++ [0])', 'PSTRING ' + text('__COMPILER_HALT_OFFSET__'),
                 'PSTRING_CARRIER (REQUEST_STRING (|S_returned.STRINGDATA|)) ' + text('MissingQueryString53')):
             values += ['S_refused_' + str(len(values)) + ' = $dynamic_query_string_finish(S_returned,pconfigcall_S,' + value + ')',
                 'S_refused_' + str(len(values)) + '.COMPLETION = UNSUPPORTED "Stringable query global name"']

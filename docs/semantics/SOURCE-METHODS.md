@@ -12,6 +12,24 @@ these are bounded observations, not complete class semantics.
 [Source trait composition](SOURCE-TRAITS.md) imports method bodies into distinct
 using-class and alias identities, preserving source provenance and inherited cells.
 
+Selected missing literal instance calls now invoke an inherited public
+`__call(string $name, array $arguments)` without a return declaration. The receiver
+is selected before one or two positional int/leaf-instance sends. Those sends are
+then moved into a real packed array; only the resulting name/array pair undergoes
+ordinary parameter reception. Original method spelling, lexical declaring class
+and runtime called class remain distinct. A saved raw target survives argument
+callbacks that clear the receiver CV and change the live RHS.
+
+For the sole argument-array cases, compiled-local cleanup retires the array and
+payload before releasing the selected receiver, then delivers the cached scalar
+result or the same supplied Throwable. Four original-source agreements and
+355 focused premises (334 reached + 21 derived) bind separate tested cuts in the
+[magic-call review](../../coverage/semantics/magic-call-review.json).
+`__callStatic`, inaccessible/scoped magic positives, dynamic/first-class forms,
+named/unpacked/reference sends, exported arrays and wider ownership remain open.
+Needed out-of-family calls are explicitly Unsupported; ordinary declared methods,
+constructor-special dispatch and existing callable API refusals keep their routes.
+
 ## Descriptors and dispatch
 
 Class-owned method descriptors retain their declaring origin, signature, body,
@@ -43,7 +61,7 @@ signature, finality or visibility requirement on child declarations. A final
 private method emits PHP's warning; a final private constructor still forbids
 an overriding constructor. A nonabstract parent constructor permits a child
 constructor to change visibility and signature, while abstract constructor
-prototypes retain both checks. Visibility denial occurs before argument
+prototypes retain both checks. Without magic fallback, visibility denial occurs before argument
 evaluation for ordinary and nullsafe calls and before constructor arguments.
 Selected call tasks and entered/saved contexts authenticate the declaring
 origin against the receiver, executed caller scope and source call site.
@@ -323,7 +341,7 @@ Ordinary real-Closure `bindTo` and static `bind` are in private review under
 the separate [binding contract](CLOSURE-BINDING.md); that evidence does not
 establish `Closure::call` or captured-callable rebinding.
 Trait property/constant composition, remaining static/readonly properties,
-hooks, user magic methods, destructors, remaining closure services and internal
+hooks, remaining user magic methods, destructors, remaining closure services and internal
 protocols are still open. Deferred `new` parameter defaults use the
 [source constructor-default rules](../../coverage/semantics/default-constructors-review.json); remaining
 keyword NEW and initializer consumers retain explicit boundaries.
