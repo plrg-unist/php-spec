@@ -479,6 +479,8 @@ def $method_args_task(pcalltarget, phpType7*, porigin?, z) = CALL_ARGS pcalltarg
   -- if ~$ppfirstclass(phpType7*) /\ ~$named_present(phpType7*)
 
 dec $getter_select(pstate, nat, ptbytes, phpType7*, int) : pstate
+dec $magic_method_needed(pstate, nat, ptbytes) : bool
+dec $magic_method_scoped(pstate, porigin) : bool
 dec $method_select(pstate, poperand, ptbytes, phpType7*, int) : pstate
 dec $method_object(pvalue) : bool
 def $method_object(POBJECT n) = true
@@ -526,6 +528,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = $method_denied(S_read, 
   -- if S_read.OBJECTS[n] = INSTANCE porigin_class
   -- if $method_selected_scope(S_read, n, ptbytes, $method_current_scope(S_read)) = (pmethoddesc)
   -- if ~$method_accessible(S_read, pmethoddesc, $method_current_scope(S_read))
+  -- if ~$magic_method_needed(S_read, n, ptbytes)
 def $method_select(S, poperand, ptbytes, phpType7*, z) = $throw_scalar(S_read, "Error", $ptascii("Call to undefined method ") ++ $object_name(S_read, n) ++ $ptascii("::") ++ $c_string(ptbytes) ++ $ptascii("()"), z)[.TODO = eps]
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
@@ -534,6 +537,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = $throw_scalar(S_read, "
   -- if S_read.OBJECTS[n] = INSTANCE porigin_class
   -- if $method_selected_scope(S_read, n, ptbytes, $method_current_scope(S_read)) = eps
   -- if ~$throwable_inherited_method(S_read, n, ptbytes)
+  -- if ~$magic_method_needed(S_read, n, ptbytes)
 def $method_select(S, poperand, ptbytes, phpType7*, z) = $throw_scalar(S_read, "Error", $ptascii("Call to undefined method ") ++ $object_name(S_read, n) ++ $ptascii("::") ++ $c_string(ptbytes) ++ $ptascii("()"), z)[.TODO = eps]
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
@@ -861,6 +865,9 @@ def $scoped_ctor_arm(S) = false -- otherwise
 def $scoped_missing(S, phpType19, ptbytes_class, ptbytes_method, z) = $throw_scalar(S, "Error", $ptascii("Cannot call constructor"), z)[.TODO = eps]
   -- if $ptlc(ptbytes_method) = $ptascii("__construct")
   -- if $scoped_ctor_arm(S)
+def $scoped_missing(S, phpType19, ptbytes_class, ptbytes_method, z) = S[.COMPLETION = UNSUPPORTED "scoped magic method fallback"]
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin_requested)
+  -- if $magic_method_scoped(S, porigin_requested)
 def $scoped_missing(S, phpType19, ptbytes_class, ptbytes_method, z) = $throw_scalar(S, "Error", $ptascii("Call to undefined method ") ++ ptbytes_class ++ $ptascii("::") ++ $c_string(ptbytes_method) ++ $ptascii("()"), z)[.TODO = eps] -- otherwise
 dec $scoped_current_receiver(pstate) : nat?
 def $scoped_current_receiver(S) = pcallcontext.RECEIVER -- if S.CURRENT = (pcallcontext)
@@ -889,6 +896,11 @@ def $scoped_select_access(S, phpType19, porigin_requested, pmethoddesc, porigin_
   -- if ~$scoped_ctor_arm(S)
   -- if ~$method_accessible(S, pmethoddesc, $method_current_scope(S))
   -- if ~$scoped_ctor_private_denied(S, pmethoddesc, n_receiver?)
+  -- if ~$magic_method_scoped(S, porigin_requested)
+def $scoped_select_access(S, phpType19, porigin_requested, pmethoddesc, porigin_called, n_receiver?, poperand_selector, ptbytes, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "scoped magic method fallback"]
+  -- if ~$scoped_ctor_arm(S)
+  -- if ~$method_accessible(S, pmethoddesc, $method_current_scope(S))
+  -- if $magic_method_scoped(S, porigin_requested)
 dec $scoped_select_found(pstate, phpType19, porigin, pmethoddesc, poperand, ptbytes, phpType7*, int) : pstate
 dec $scoped_select_found_base(pstate, phpType19, porigin, pmethoddesc, poperand, ptbytes, phpType7*, int) : pstate
 def $scoped_select_found_base(S, phpType19, porigin_requested, pmethoddesc, poperand_selector, ptbytes, phpType7*, z) = $scoped_select_access(S, phpType19, porigin_requested, pmethoddesc, porigin_called, eps, poperand_selector, ptbytes, phpType7*, z)

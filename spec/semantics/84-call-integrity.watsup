@@ -210,6 +210,7 @@ def $call_line_valid(S, (porigin_site), z) = true
 def $call_line_valid(S, porigin?, z) = false -- otherwise
 dec $property_get_pending_site(pstate, porigin) : bool
 def $property_get_pending_site(S, porigin) = false -- otherwise
+dec $magic_method_pending_site(pstate, porigin) : bool
 dec $call_arguments_valid(pstate, porigin?, nat, phpType7*, poperand*, nat) : bool
 dec $stringify_pending_site(pstate, porigin) : bool
 def $call_arguments_valid(S, (PORIGIN n_unit pcpath), n_index, phpType7_remaining*, poperand*, n_sent) = true
@@ -220,6 +221,7 @@ def $call_arguments_valid(S, (PORIGIN n_unit pcpath), n_index, phpType7_remainin
   -- if ~$foreach_aggregate_pending_site(S, PORIGIN n_unit pcpath)
   -- if ~$yield_from_aggregate_pending_site(S, PORIGIN n_unit pcpath)
   -- if ~$access_pending_site(S, PORIGIN n_unit pcpath)
+  -- if ~$magic_method_pending_site(S, PORIGIN n_unit pcpath)
   -- if $call_argument_source(S, PORIGIN n_unit pcpath) = PCALLARGUMENTS phpType7* n_field
   -- if ~$named_present(phpType7*)
   -- if n_index = |poperand*|
