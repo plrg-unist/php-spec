@@ -21,6 +21,14 @@ consumers and wider domains remain partial. Source47/owned-NUL pauses and
 Source58/59 are untouched.
 [Byte-only array-flag review](coverage/semantics/define-array-byte-flag-review.json).
 
+Composed over 9984783b2/404 with the exact tested400 arm/comment and all twenty other
+incoming runtime/manifest paths preserved. Stringable class-query, magic-call,
+Generator, numeric-CV Warning and reference-return selectors are absent; the
+ordinary literal ALIAS build fails A20's variable float-key/scalar-value plan.
+GENERATORRETURNRETAINED and LITERALREFRETAINED lift by empty fields with no roots
+and valid empty receipts, preserving owners/budgets pointwise. Source3/state632
+retain private403 cuts and both zero-credit failures without replay.
+
 Reference elements in array literals now preserve the pre-conversion acquired
 wrapper across finite lossy-float CV-key handlers. Stable or same-cell rebinding
 transfers the owner into an array alias; ordinary scalar retargeting inserts the
