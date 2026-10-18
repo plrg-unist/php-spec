@@ -7,6 +7,25 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+M108 admits normal single `REF_RETURN_CURSOR` cleanup through the existing
+same-scope release/storage view and full cursor validator. Only six module270
+lines change; the cursor remains root-free. Author 120/one raw step and independent
+168/six raw steps pass at `799f07366`/402: all six public cleanup pauses, exact
+empty-property-row pruning, source/LINE/scope/registry/storage refusals, one VALUE
+Notice at the old source line4, detached r/b aliases and whole/split budget equality.
+No failure or retry occurred; reused M79/M83 packets add no native/source credit.
+M106 partial 296/7 at `dc0b93c9f`/401 and M107 final 275/7 at `c1540ff96`/402
+retain separate evidence. Pending-Throwable cleanup prefixes, interposed lifecycle
+capture, wider owning/reentrant histories, GC and typed consumers remain open.
+[Cleanup review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+Composed over `f5c412d58`/403 after independent actual-parent review. Incoming
+array-float keys, NULL DEFINE flags, method-Closure numeric images and Stringable
+class-query selectors have no M79 producer. Only270 changes and matches tested
+`799f07366` bytes; every other runtime file and the 403-module manifest retain
+parent bytes. The 288/7 proof keeps its private402 cut without a joined actor or
+renewed source credit.
+
 Retained propertyless Stringable query names now hand non-NUL class-qualified
 results to existing guarded user-class lookup. One module 400 predicate/comment
 change preserves the global arm, source/carrier/saved-site guards, converted CONFIG
@@ -95,24 +114,6 @@ selectors, absent from these sources. Parent412 and all other incoming runtime
 paths stay exact; only30/41/new413 and the 403-module manifest carry A19.
 Source4/strict402 and state589 retain their private cuts without a joined actor,
 accepted replay or renewed execution credit.
-
-M107 extends normal two-return cleanup admission to final `REF_RETURN_PAIR`.
-The existing same-scope release/storage view now feeds its full final validator;
-the pair is root-free after both older transfers retire. Only six module270 lines
-change. Author 117/one raw step and independent 158/six raw steps pass at
-`c1540ff96`/402, with every public cleanup pause, source/LINE/scope/registry/storage
-refusals, zero diagnostics, detached aliases and exact whole/split budget equality.
-No failure or retry occurred; native/source credit is zero for reused M66 packets.
-M106's still-owning partial pair retains separate 296/7 evidence at `dc0b93c9f`/401.
-Single-cursor and pending-Throwable cleanup prefixes, interposed lifecycle capture,
-wider owning/reentrant histories, GC and typed consumers remain open.
-[M106/M107 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
-
-Composed over `b1a9fd146`/402 after independent actual-parent review. Incoming
-module404 right-only arithmetic Warnings require a named handler and arithmetic
-conversion, absent from M66. Only270 changes and is byte-exact tested `c1540ff96`;
-every other runtime file and the 402-module manifest retain parent bytes.
-State275/raw7 keeps its private cut without a joined actor or renewed source credit.
 
 Quiet LEFT/right-only numeric-string Warnings now enter the existing `+`, `-`,
 `*`, `/`, `**` continuations for two selected reference cells. One shared snapshot and four plan
@@ -10266,8 +10267,8 @@ failures and interrupted evidence.
 
 The temporary `returns_verify` audit has reached its finite paired-return
 handoff. Preserve the accepted evidence and do not retry the rejected engine
-experiment. M106/M107 cover normal adjacent partial/final-pair release/storage intervals.
-Single-cursor and pending-Throwable cleanup prefixes, normal interposed-catch
+experiment. M106–M108 cover normal single-cursor and adjacent partial/final-pair
+release/storage intervals. Pending-Throwable cleanup prefixes, normal interposed-catch
 partial pairs, larger or reentrant owning histories, GC and wider typed consumers
 remain open core obligations for permanent lifecycle/control work.
 Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is
