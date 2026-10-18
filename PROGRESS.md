@@ -9911,6 +9911,14 @@ used/unused CV materialization remains Boolean-identical to M93/M94. This is
 one local O/unset history, not general nonnullable or physical-GC coverage;
 broader returns_verify remains OPEN.
 [M95 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M96 validates one real Fiber pause inside the M93-style old object's
+destructor. At clean `7e2759ae5`/401, native PHP and unchanged semantics
+agree exactly: D0 suspends with the expected token/status, resume emits D1,
+the cv96 TypeError reaches local CT, the caller gets detached `rNULL/b7`
+without a Notice, and the Fiber terminates. This is one original source
+agreement, with no runtime repair or new state proof; parked return-owner
+histories and broader returns_verify remain OPEN.
+[M96 control](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, wider destructor throw/reentry, real suspension and wider typed
