@@ -120,6 +120,11 @@ kept separate from raw-step credit. Other producers/lifetimes remain partial.
 Missing-CV read continuations suspend the existing consumer and retain a null
 result even if the callback defines the variable. The admitted consumers are
 output, simple assignment, unary signs and six arithmetic/identity operators.
+Scalar `<=>` additionally admits a missing left CV with a captured primitive or
+defined direct-CV right operand, and a captured primitive left with a missing
+right CV. It freezes null while preserving the later right read; both-missing
+and owning opposing values remain unsupported, including callback-produced
+non-scalars. Its source certificate remains valid through those callback changes.
 Missing-left binaries retain the later right read; missing-right binaries admit
 known or temporary values and initially-reference CVs in strict identity comparisons.
 Module208 retains the borrowed old cell through the saved caller without adding
