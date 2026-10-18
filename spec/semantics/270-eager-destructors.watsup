@@ -474,6 +474,12 @@ def $ref_return_cursor_saved_descriptor_valid(S, prefreturncursor, porigin_selec
 def $ref_return_cursor_saved_descriptor_valid(S, prefreturncursor, porigin_selected, z_selected) = $ref_return_cursor_valid(S_queued, prefreturncursor, porigin_selected, z_selected)
   -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*
   -- if $ref_return_pair_release_view(S, porigin_selected, z_selected) = (S_queued)
+def $ref_return_cursor_saved_descriptor_valid(S, prefreturncursor, porigin_selected, z_selected) = $ref_return_cursor_saved_descriptor_valid(S[.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected) :: ptask_tail*], prefreturncursor, porigin_selected, z_selected)
+  -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected) :: ptask_tail*
+  -- if pdestructionrelease.JOBS = eps
+  -- if pdestructionrelease.CALLER = S.CURRENT /\ pdestructionrelease.ORIGIN = S.ORIGIN /\ pdestructionrelease.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if pdestructionrelease.USER = $destructor_user_source(S)
+  -- if pdestructionoperation.PENDING = (n_exception)
 def $ref_return_cursor_saved_descriptor_valid(S, prefreturncursor, porigin_selected, z_selected) = $ref_return_cursor_valid(S[.TODO = (RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected) :: ptask_tail*], prefreturncursor, porigin_selected, z_selected)
   -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected) :: ptask_tail*
   -- if pdestructionoperation.SOURCE = RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected
