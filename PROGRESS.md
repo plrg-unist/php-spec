@@ -7,6 +7,16 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Arrays, stdClass and ordinary class instances used as DEFINE flags now raise
+parameter-3 TypeError before body validation/copy/duplicate lookup, retaining raw
+arguments despite later CV/alias changes. An unpinned ordinary flag survives its
+Error trace, then has a real destructor before later caller output. Source3 pass
+at eb3f/405; 492 focused premises (144+98+250) pass at 1f650/6fb21. A short catch
+seek and an extra unchanged-property assertion required fixture-only corrections;
+both first failures and the single bounded diagnostic retain zero. Other object
+flag kinds and wider names/lifetimes stay partial; no accepted source/native or
+older campaign repeats. [Invalid-flag review](coverage/semantics/define-invalid-flag-review.json).
+
 Quiet scalar MUL TypeErrors now follow the pinned physical operand order.
 Seven originals pass at `cfbf2b96b`/405; two focused fixtures pass 217 premises at
 `361aef83e`/405, including saved TMP bad text after origin repair, raw THROWN and

@@ -550,7 +550,16 @@ rebinding leaves the captured pointer intact while property writes stay shared.
 Strict nonboolean flags raise TypeError first and retain the raw API arguments.
 Existing duplicate release and historical receipt validation are reused.
 [Quiet object-flag review](../../coverage/semantics/define-object-scalar-flag-review.json).
-Ordinary uncertified objects, other owning array leaves, nonfinite direct-object
+Arrays, stdClass and ordinary user class instances used as flags instead raise
+parameter-3 TypeError in weak and strict calls before the value reaches the body.
+A recursive value or existing key cannot cause validation, copying or a duplicate
+Warning first. The original flag and value remain in the API trace despite later
+CV rebinding, array COW and shared property writes. An ordinary unpinned flag
+object remains alive while the Error owns its trace, then uses normal destructor
+cleanup when the trace is released. This rejection needs live argument authority,
+not a new publication receipt; other object flag kinds remain Unsupported.
+[Invalid-flag review](../../coverage/semantics/define-invalid-flag-review.json).
+Uncertified object values, other owning array leaves, nonfinite direct-object
 flags, coerced names and wider owning define domains remain partial.
 
 Class-qualified `defined` queries reuse inherited lookup and the actual caller's
