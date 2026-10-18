@@ -7,6 +7,19 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Both-missing `>`/`>=` comparisons now warn for source right first, freeze its
+NULL and follow the scalar left initialized by the handler. A second ingress
+clause matches only the existing right-frozen record and reversed operators;
+old left/forward records stay excluded. Resume guards, source validity, roots
+and discard remain unchanged. The first right name can stay undefined; supplied
+throws suppress the second Warning. Eight source agreements plus two zero-credit
+controls and 453 strict-SL premises / four groups (216 author + 237 independent)
+pass first attempts at `b0b98c591`/405. Fresh alias/target owners, raw comparison,
+compiled lines, entry/resume separation and zero/split budgets pass; genuine
+`98da5a300` baseline stays zero. Returning second-Warning chains, same-CV/owning
+counterparts and spaceship both-missing remain partial; prior cuts are not renewed.
+[Reversed both-missing review](coverage/semantics/undefined-scalar-compare-both-reversed-review.json).
+
 Forward `==`/`!=`/`<`/`<=` comparisons now admit two initially missing distinct
 CVs when the first Warning handler defines the right scalar. An ingress-only
 predicate reuses the frozen-left/current-right shape; resume validity/domain,

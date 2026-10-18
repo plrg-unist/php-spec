@@ -127,9 +127,8 @@ wrapper after the callback, including reference rebinding; it adds no borrowed
 old-cell owner. Distinct direct-CV `==`/`!=`/`<`/`<=`/`>`/`>=` pairs also admit either missing
 operand with an initially defined scalar counterpart, following that counterpart's
 current wrapper after the callback. A missing right name need not be initialized.
-Both protocols freeze null while preserving the opposing read; both-missing and
-owning opposing values remain unsupported, including removed or callback-produced
-non-scalar opposing CVs. Source certificates stay valid through those changes;
+Both protocols freeze null while preserving the opposing read. Owning opposing
+values remain unsupported, including removed or callback-produced non-scalar CVs. Source certificates stay valid through those changes;
 entry/resume domain guards refuse unsupported values without another Warning.
 [The equality/less review](../../coverage/semantics/undefined-scalar-compare-review.json)
 and [missing-right review](../../coverage/semantics/undefined-scalar-compare-right-review.json)
@@ -138,13 +137,16 @@ and [greater review](../../coverage/semantics/undefined-scalar-compare-gt-ge-rev
 record the scalar continuations and their separate validation cuts. Greater
 operators reverse physical VM operands; the same source shapes apply within the
 single-missing/scalar-throughout bound.
-Forward `==`/`!=`/`<`/`<=` also admit both initially missing direct CVs when
-the first handler defines the right scalar. An ingress-only predicate permits
-that first Warning; the existing resume guard still refuses an undefined right.
-A pending Exception suppresses the second Warning and follows ordinary discard.
-[Both-missing review](../../coverage/semantics/undefined-scalar-compare-both-review.json)
-records new-cell/reference owners and entry/resume separation; returning second-Warning
-chains and reversed greater/spaceship both-missing paths remain partial.
+Both-missing distinct direct CVs may enter the first Warning: forward
+`==`/`!=`/`<`/`<=` freeze left NULL and require the handler to define right scalar;
+reversed `>`/`>=` freeze right NULL and require current left scalar. The first
+name may remain undefined. The shared ingress-only predicate distinguishes both
+shapes; existing resume guards still refuse an undefined opposing name. A pending
+Exception suppresses the second Warning and follows ordinary discard. The
+[forward review](../../coverage/semantics/undefined-scalar-compare-both-review.json)
+and [reversed review](../../coverage/semantics/undefined-scalar-compare-both-reversed-review.json)
+record fresh owners and entry/resume separation. Returning second-Warning chains,
+same-CV/owning counterparts and spaceship both-missing remain partial.
 Missing-left binaries retain the later right read; missing-right binaries admit
 known or temporary values and initially-reference CVs in strict identity comparisons.
 Module208 retains the borrowed old cell through the saved caller without adding
