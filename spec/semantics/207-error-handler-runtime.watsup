@@ -22,6 +22,7 @@ dec $error_simple_read(ptask) : bool
 dec $error_read_shape(ptask, poperand, pbase) : perrorread?
 dec $error_read_state_shape(pstate, ptask, poperand, pbase) : perrorread?
 dec $spaceship_right_read_shape(ptask, poperand, pbase) : perrorread?
+dec $scalar_compare_right_read_shape(ptask, poperand, pbase) : perrorread?
 dec $error_read_line(ptask, int) : int
 dec $error_read_operand(perrorread) : poperand
 dec $error_read_plan(pstate) : perrorread?
@@ -341,6 +342,10 @@ def $error_read_state_shape(S, ptask, poperand, pbase) = $error_read_shape(ptask
 def $spaceship_right_read_shape(BINARY_RIGHT SPACESHIP (VARIABLE n_left* z_left) z, VARIABLE n_right* z_right, pbase) = ({ORIGINAL BINARY_RIGHT SPACESHIP (VARIABLE n_left* z_left) z, INPUT VARIABLE n_right* z_right, BASE pbase, NAME n_right*, LINE z, TASK BINARY_RIGHT SPACESHIP (VARIABLE n_left* z_left) z, RESULT KNOWN PNULL})
   -- if n_left* =/= n_right*
 def $spaceship_right_read_shape(ptask, poperand, pbase) = eps -- otherwise
+def $scalar_compare_right_read_shape(BINARY_RIGHT pbin (VARIABLE n_left* z_left) z, VARIABLE n_right* z_right, pbase) = ({ORIGINAL BINARY_RIGHT pbin (VARIABLE n_left* z_left) z, INPUT VARIABLE n_right* z_right, BASE pbase, NAME n_right*, LINE z, TASK BINARY_RIGHT pbin (VARIABLE n_left* z_left) z, RESULT KNOWN PNULL})
+  -- if pbin = EQUAL \/ pbin = LESS
+  -- if n_left* =/= n_right*
+def $scalar_compare_right_read_shape(ptask, poperand, pbase) = eps -- otherwise
 def $error_read_line(EMIT z, z_origin) = z_origin
 def $error_read_line(PRINT_EMIT porigin z, z_origin) = z_origin
 def $error_read_line(WRITE_NAME n* z, z_origin) = z
@@ -359,6 +364,12 @@ def $error_read_plan(S) = (perrorread)
   -- if $error_missing_operand(S, $error_read_operand(perrorread))
   -- if $error_read_source(S, perrorread)
   -- if $spaceship_read_other(S, perrorread)
+def $error_read_plan(S) = (perrorread)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $scalar_compare_right_read_shape(ptask, S.RESULT, S.BASE) = (perrorread)
+  -- if $error_missing_operand(S, $error_read_operand(perrorread))
+  -- if $error_read_source(S, perrorread)
+  -- if $scalar_compare_read_other(S, perrorread)
 def $error_read_plan(S) = eps -- otherwise
 def $error_read_pending(S) = ($key_read_pending(S) \/ $property_undefined_reference_plan(S) =/= eps \/ (($error_handler_eligible(S, 2) \/ $eval_compile_recorded_error(S, 2)) /\ ($error_read_plan(S) =/= eps \/ $identity_read_plan(S) =/= eps \/ $global_read_plan(S) =/= eps \/ $computed_name_plan(S) =/= eps \/ $computed_cv_name_plan(S) =/= eps \/ $computed_array_name_plan(S) =/= eps \/ $property_null_read_plan(S) =/= eps \/ $property_undefined_read_plan(S) =/= eps)))
 def $error_read_begin(S) = $key_read_begin(S)
@@ -413,14 +424,22 @@ def $spaceship_read_other(S, perrorread) = $spaceship_read_scalar(pvalue)
   -- if perrorread.ORIGINAL = BINARY_RIGHT SPACESHIP (KNOWN pvalue) z
 def $spaceship_read_other(S, perrorread) = true -- otherwise
 ;; The ==/< helpers test the first raw CV for UNDEF, then the current second CV.
-;; This bounded left-missing path retains the live scalar right wrapper.
+;; The missing value freezes NULL; the defined opposing CV keeps its live wrapper.
+def $scalar_compare_read_other(S, perrorread) = $spaceship_read_operand(S, VARIABLE n_left* z_left)
+  -- if $scalar_compare_right_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread)
+  -- if perrorread.ORIGINAL = BINARY_RIGHT pbin (VARIABLE n_left* z_left) z
 def $scalar_compare_read_other(S, perrorread) = $spaceship_read_operand(S, perrorread.INPUT)
   -- if perrorread.ORIGINAL = BINARY_RIGHT pbin (VARIABLE n* z_origin) z
   -- if pbin = EQUAL \/ pbin = LESS
+  -- if $scalar_compare_right_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) =/= (perrorread)
 def $scalar_compare_read_other(S, perrorread) = true -- otherwise
 def $error_read_resume(S, perrorread, ptask_tail*) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "spaceship warning changed opposing scalar"]
   -- if ~$spaceship_read_other(S, perrorread)
 def $error_read_resume(S, perrorread, ptask_tail*) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "scalar comparison warning changed right operand"]
+  -- if ~$scalar_compare_read_other(S, perrorread)
+  -- if $scalar_compare_right_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) =/= (perrorread)
+def $error_read_resume(S, perrorread, ptask_tail*) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "scalar comparison warning changed left operand"]
+  -- if $scalar_compare_right_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread)
   -- if ~$scalar_compare_read_other(S, perrorread)
 def $error_read_resume(S, perrorread, ptask_tail*) = S[.TODO = perrorread.TASK :: ptask_tail*][.RESULT = perrorread.RESULT][.BASE = perrorread.BASE] -- otherwise
 rule PhpStep/error-read-resume: S ~> $error_read_resume(S, perrorread, ptask_tail*)
@@ -448,6 +467,17 @@ def $scalar_compare_read_source(pcnode) = eps -- otherwise
 def $spaceship_read_source_operand(S, porigin, KNOWN pvalue) = true
 def $spaceship_read_source_operand(S, porigin, VARIABLE n* z) = $error_variable_source(S, (porigin), [PCFIELD 1], n*)
 def $spaceship_read_source_operand(S, porigin, poperand) = false -- otherwise
+def $error_read_source(S, perrorread) = true
+  -- if $scalar_compare_right_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread)
+  -- if perrorread.ORIGINAL = BINARY_RIGHT pbin (VARIABLE n_left* z_left) z
+  -- if perrorread.INPUT = VARIABLE n_right* z_right
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (pcnode)
+  -- if $scalar_compare_read_source(pcnode) = (pbin)
+  -- if $error_variable_source(S, S.ORIGIN, [PCFIELD 0], n_left*)
+  -- if $error_variable_source(S, S.ORIGIN, [PCFIELD 1], n_right*)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 0]) = (z_left)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 1]) = (z)
 def $error_read_source(S, perrorread) = true
   -- if perrorread.ORIGINAL = BINARY_RIGHT pbin (VARIABLE n_left* z_left) z
   -- if perrorread.INPUT = VARIABLE n_right* z_right
@@ -543,7 +573,7 @@ def $code_expression_at_source(S, PORIGIN n pcpath_parent, pcpath) = (z)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath_parent ++ pcpath) = ((z, b))
 def $code_expression_at_source(S, porigin, pcpath) = eps -- otherwise
-def $error_read_valid(S, perrorread) = (($error_read_state_shape(S, perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread) \/ $spaceship_right_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread)) /\ $error_read_source(S, perrorread))
+def $error_read_valid(S, perrorread) = (($error_read_state_shape(S, perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread) \/ $spaceship_right_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread) \/ $scalar_compare_right_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread)) /\ $error_read_source(S, perrorread))
 def $call_task_valid(S, ERROR_READ_RESULT perrorread) = $error_read_valid(S, perrorread)
 
 ;; Source-derived continuation certificates distinguish these C callbacks from
