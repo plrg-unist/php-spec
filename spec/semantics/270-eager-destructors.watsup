@@ -468,6 +468,12 @@ def $ref_return_pair_pending_projected(S, prefreturncursor_inner, prefreturncurs
   -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected) :: ptask_tail*
   -- if S.ORIGIN = prefreturncursor_outer.OUTER
   -- if pdestructionoperation.ORIGIN = prefreturncursor_inner.OUTER
+def $ref_return_cursor_saved_descriptor_valid(S, prefreturncursor, porigin_selected, z_selected) = $ref_return_cursor_valid(S_queued, prefreturncursor, porigin_selected, z_selected)
+  -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
+  -- if $ref_return_pair_release_view(S, porigin_selected, z_selected) = (S_queued)
+def $ref_return_cursor_saved_descriptor_valid(S, prefreturncursor, porigin_selected, z_selected) = $ref_return_cursor_valid(S_queued, prefreturncursor, porigin_selected, z_selected)
+  -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*
+  -- if $ref_return_pair_release_view(S, porigin_selected, z_selected) = (S_queued)
 def $ref_return_cursor_saved_descriptor_valid(S, prefreturncursor, porigin_selected, z_selected) = $ref_return_cursor_valid(S[.TODO = (RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected) :: ptask_tail*], prefreturncursor, porigin_selected, z_selected)
   -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected) :: ptask_tail*
   -- if pdestructionoperation.SOURCE = RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected
