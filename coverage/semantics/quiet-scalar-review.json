@@ -1,0 +1,157 @@
+{
+  "version": 1,
+  "milestone": "OP37 quiet bool/null RHS after first both-fractional compound warning",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP 8.5.10 CLI NTS64; project-local pinned engine and ordinary profile",
+  "scope": "Initially distinct defined plain-CV finite in-range fractional floats with an eligible named deprecation handler. After LEFT conversion and its callback, the original allocated nonreference plain RHS may hold bool or null and convert quietly for %=, <<=, >>=, &=, |= or ^=. Original safe nonowning unconstrained target may be a late reference. Historical LEFT/source/compiled RHS line remain authenticated; no initial admission widening.",
+  "runtime_revision": "6cd72d0229b51294adff5c39061496655b51e147",
+  "helper_revision": "2db904217ed2b36a2eb2f61104deee5125955599",
+  "private_modules": 399,
+  "runtime_sha256": {
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "7f18a5146240937b558420cb92f24d5ed9ba3e741d361d7803139b2e1a753117"
+  },
+  "engine_basis": [
+    "Pinned Zend/zend_operators.c zendi_try_get_long maps IS_NULL/IS_FALSE to0 and IS_TRUE to1 with no callback or diagnostic. convert_op1_op2_long captures LEFT before its first warning, then converts current RHS; bitwise_and/or/xor inline the same order after the initial two-string fast-path choice, which initial floats bypass.",
+    "Successful numeric operations destroy the result wrapper before storage and detach a handler-created late alias. mod_function raises DivisionByZeroError for converted0 before destroying/storing the result. First supplied handler throws cancel before RHS conversion/storage; negative-shift errors cannot arise from converted0/1.",
+    "Module404 adds one shared bool/null-only safe snapshot, three family-specific direct LEFT1 commits and modulo-zero rule, plus three boundary exclusions (40 insertions/3 deletions). It uses unchanged integer_coerce/integer_binary/CVwriter and existing source/phase/history guards. No tags/schema/initial plans or other helper/body changes."
+  ],
+  "contract": [
+    "One actual first warning captures LEFT12 from12.5 before h late-aliases it and writes99. Current RHS true quietly converts1; modulo/leftshift/rightshift/AND/OR/XOR store0/24/6/0/13/13. The five non-modulo witnesses distinguish historical12 from live99. Calls remain1, RHS stays bool, new CELL/LOCATION detaches alias99 and later target7 leaves alias99.",
+    "False RHS quietly converts0; modulo raises fresh DivisionByZeroError with message Modulo by zero at RHS25/no Previous before store/detachment. Destination100 and alias99 owners2 survive, and later target7 reaches alias7. Supplied first-handler Exception keeps the same object/no Previous/destination100/alias write-through and skips conversion.",
+    "Independent false-returning first handlers leave PNULL and exactly one default LEFT12.5 Deprecated at25. XOR stores12 despite current99 in a fresh cell/aliasowner2 to1; modulo raises fresh zeroError25 with exact STORE/ENV/REFCELLS/events and sole Throwable owner. Later alias99 vs alias7 distinguishes commit from error; null and calls1 survive.",
+    "Focused state selects only author modtrue/lefttrue/xortrue/modfalse: one fixture per new rule, plus two independent null cases. It reaches actual fresh first dispatch/entered/returned states, direct commit/error, cells/owners and whole/budget equality. All six operator tags and suppliedthrow are source-validated. Constructed type/ref/missing/wrong/owning/constrained projections are refusal-only, not wider executed programs."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-37/source-6cd72d022-author-eight/report.json",
+        "sha256": "eba114e4880d4d2c85e47fad1ada3ec1e9184e518e68b8125b65e4eff77fd010",
+        "revision": "6cd72d0229b51294adff5c39061496655b51e147",
+        "cases": [
+          "quiet-scalar-mod-true",
+          "quiet-scalar-left-true",
+          "quiet-scalar-right-true",
+          "quiet-scalar-and-true",
+          "quiet-scalar-or-true",
+          "quiet-scalar-xor-true",
+          "quiet-scalar-mod-false",
+          "quiet-scalar-first-throw"
+        ],
+        "agreements": 8
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-37/review-model-6cd72d022-null-two/report.json",
+        "sha256": "67d63066e373fa2c0de677af0c2c4cc1e9fe4d3406dc68ec1c875fa9529dec9f",
+        "revision": "6cd72d0229b51294adff5c39061496655b51e147",
+        "cases": [
+          "quiet-scalar-null-xor-default",
+          "quiet-scalar-null-modulo-default"
+        ],
+        "agreements": 2
+      }
+    ],
+    "state": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-37/state-63738bb2f-six/report.json",
+        "sha256": "bc984252bbe986ba3a1f67db61755ac9a666a0d5063965ff087cd18a65c8d9fc",
+        "revision": "63738bb2ff3e6d7de43dbb777feea7356468fa85",
+        "modules": 399,
+        "selected_groups": [
+          "quiet-scalar-mod-true",
+          "quiet-scalar-left-true",
+          "quiet-scalar-xor-true"
+        ],
+        "conditions": [
+          112,
+          96,
+          96
+        ],
+        "total": 304,
+        "whole_packet_passed": false
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-37/state-2db904217-affected-three/report.json",
+        "sha256": "b520e3c2dbdb3d98b4be227fce7b61edd10e2e0cecb9156d74c35595472aeae2",
+        "revision": "2db904217ed2b36a2eb2f61104deee5125955599",
+        "modules": 399,
+        "selected_groups": [
+          "quiet-scalar-mod-false",
+          "quiet-scalar-null-xor-default",
+          "quiet-scalar-null-modulo-default"
+        ],
+        "conditions": [
+          98,
+          143,
+          143
+        ],
+        "total": 384,
+        "whole_packet_passed": true
+      }
+    ],
+    "total_source_agreements": 10,
+    "total_focused_state_conditions": 688,
+    "compatibility": "Runtime remains byte-identical to source10 at6cd72d022. Only two helper scripts were added by63738; subsequent2db904217 adds one object lookup solely in the failed zero branch. HELPERS and the three accepted condition lists112/96/96 are exact; those304 retain their original63738 cut without replay. Corrected98+previously unrun143/143 pass384 at2db904217. Both checked preparations reuse accepted original paths/native bytes. Full399 SL counts include setup/refusal premises, not688 programs or renewed source agreement."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-37/baseline-942cdf953-mod-true/report.json",
+      "sha256": "ef50573709088880c08f1a7ce5ac46bf2a5e836f30c9b5f90726b05a1678be89",
+      "result": "Accepted checked Unsupported after H:1:8192:25:1; with exact modulo after-first live-RHS boundary. Model exit1/empty stderr/0agreement, no override. Native remainder0 detaches alias99."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-37/native-942cdf953-author-eight/report.json",
+        "sha256": "8dfd92e5520a339e41eb9cdefce5f4bddb24d496f57d5f3d18fa18d90da236cb"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-37/native-942cdf953-review-two/report.json",
+        "sha256": "048f25d106461b21ad5ae1edab19b714cf777d4f7d988ad65a32b52dfcc2f681"
+      }
+    ],
+    "checked_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-37/state-prep-63738bb2f-six/report.json",
+        "sha256": "14f81fd90c9e801aa569ccb21d543c75d9919b89a399d827270c2541844b9c76",
+        "result": "Checked frontend parse and adapter check only, retained original paths/native bytes; no application/native/numeric replay."
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-37/state-prep-2db904217-affected-three/report.json",
+        "sha256": "1295b6901b4efe7d4a9b3052c937b12dd5f024b403fe7cc8c693968b8482663c",
+        "result": "Checked frontend parse and adapter check only, retained original paths/native bytes; no application/native/numeric replay."
+      }
+    ],
+    "standalone_syntax": "Six original and three affected standalone syntax rows separately carry zero semantic credit.",
+    "pre_execution_fixture_failure": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-37/state-63738bb2f-six/report.json",
+      "sha256": "bc984252bbe986ba3a1f67db61755ac9a666a0d5063965ff087cd18a65c8d9fc",
+      "result": "Fourth SL group stopped before PHP execution: pthrowable unbound in non-invertible OBJECTS concatenation. First three groups pass304 at their original cut; failed zero group0 and unrun peers0. One explicit indexed object lookup fixes only this test branch; only corrected98 and unrun143/143 execute afterward."
+    }
+  },
+  "required_follow_on": [
+    "Initial forms outside this both-fractional plain-CV route, strings/arrays/objects/coercing RHS after first callback, RHS reference/rebind/expiry, missing/rebound/expired/owning/constrained targets, wider handlers/exit/lifecycle remain partial. Existing integer and finite float routes retain their earlier evidence identities.",
+    "All14 affected inventory rows remain partial; prior OP34/35/36 and earlier accepted cuts receive zero renewed credit. OP12 remains paused."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-37",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "environment": "LC_ALL=C, TZ=UTC, no PHP_SPEC_SCRIPT_ENCODING; native/baseline/source CPU4/SLOT2. Native30/modelCLI60/process90; checked workers30; separate standalone syntax30/full399 SL120 groups. Exact true newline/empty stderr/exits0/no interruption/reaped groups/PIDs required. Checked prep/SL used CPU5/SLOT3.",
+    "commands": [
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 tests/semantics/quiet_scalars.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 tests/semantics/quiet_scalar_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-37/state-prep-2db904217-affected-three/run-prepare.py",
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-37/state-2db904217-affected-three/run-state.py"
+    ],
+    "record": "Restore matching Git cuts/local tools; external records retain raw original bytes/paths/native streams, immutable fixtures, commands/exits/reaping. No evidence archive is a runtime dependency."
+  },
+  "composition": {
+    "parent": "f64f2639dc2eafd0e515237c199ceaf72b1b1aac",
+    "private_publication": "1f7052d9868c65eb1ffb428e1fa0746dc90195ce",
+    "modules": 399,
+    "runtime_sha256": {
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "7f18a5146240937b558420cb92f24d5ed9ba3e741d361d7803139b2e1a753117"
+    },
+    "other_incoming_paths_preserved": 63,
+    "gate": "No joined actor:404 retains exact private runtime; every other spec byte,30/54/55/modules and all other incoming paths retain the parent. Typed/byref nullable-array method-return destructor cursors, DEFINE array/special-name duplicates, WeakMap/specialClosure comparisons, property isset/empty and recursive LIST_FETCH source/task selectors are absent from all10 OP37 originals. Named h is untyped and returns bool; only builtin Exception/DivisionByZeroError objects occur, no destructors or constant publication. Iterator20 adds generator throw-input ready/resume/receipt paths and GC temporary delegates that require GENERATOR_ARGS/GENERATOR_FROM_NEXT, a real Generator resumer or corresponding destructor receipt. OP37 has no Generator or destructor, and GENERATORINPUTS stays eps; those selectors cannot match arithmetic markers or handler frames. Common handler/CV-writer/integer_coerce/integer_binary/float_long/snapshot/heap interfaces are unchanged. Source10@6cd72d022/state304@63738+384@2db904217 retain private399 cuts; originalfixturebindingfailure0, no replay or renewed credit"
+  }
+}

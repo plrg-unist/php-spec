@@ -7,6 +7,25 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Bool/null RHS values now convert quietly after the first warning in the
+both-fractional plain-CV modulo/shift/numeric-bitwise routes. With cached LEFT `12`,
+`true` stores `0`/`24`/`6`/`0`/`13`/`13`; false/null modulo raises DivisionByZeroError
+at RHS line 25 before store/detachment. Success detaches alias `99`; supplied throw
+preserves its Exception, destination `100` and alias write-through. Independent
+default-first null XOR stores `12` despite current `99`, contrasting null modulo's
+preserved alias. Ten originals agree at 6cd72d022; 304 SL premises at 63738bb2f plus
+384 at 2db904217/399 cover actual handler frames, RHS guards, result cells/error
+owners, aliases and budgets. The original fixture binding failure stays zero;
+only the corrected branch and previously unrun peers then execute. One shared safe snapshot, four
+rules and three boundary exclusions; no initial/tag/schema change. All 14 rows
+stay partial; controls and earlier renewed credit zero, OP12 paused.
+[Quiet scalar ledger](coverage/semantics/quiet-scalar-review.json).
+
+Composed over f64f2639d/399 after pointwise review of typed-return cleanup,
+DEFINE array/special-name duplicates, property isset/empty, recursive list and
+WeakMap/Closure selectors, plus buffered Generator throw disposal. Source10 and state304+384
+retain private cuts without actor, replay or renewed credit.
+
 Non-pending Generator `throw` now releases a paused child's buffered simple-CV
 yield result before catch search, directly or through finite native links. The
 no-GC temporary decrement preserves independent cache/orphan owners; payload

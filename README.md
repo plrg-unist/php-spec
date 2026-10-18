@@ -653,6 +653,11 @@ LEFT `12` with `5.0` stores `4`/`13`/`9`; negative `-1.0` gives XOR `-13`.
 Success detaches late aliases; a supplied first throw preserves them. Five exact
 originals and 634 focused SL premises pass in the
 [quiet float bitwise ledger](coverage/semantics/bitassign-quiet-float-review.json).
+In the both-fractional compound routes, a first handler may also leave a quiet
+`bool` or `null` RHS: `true` converts to 1, `false`/`null` to 0. Success uses the
+captured LEFT and detaches late aliases; modulo zero preserves them and raises
+DivisionByZeroError. Ten exact originals and 688 focused SL premises pass in the
+[quiet scalar ledger](coverage/semantics/quiet-scalar-review.json).
 Explicit array-to-string casts now suspend through named warning handlers for
 a bounded plain-CV array input. The borrowed array adds no saved owner: replacing
 or removing its CV still yields fixed `Array`, while a supplied throw preserves
