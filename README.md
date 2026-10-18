@@ -3328,8 +3328,8 @@ Exception preserves the same catch and assignment destination.
 [Four originals and 416 focused premises](coverage/semantics/magic-empty-isset-array-rv-review.json)
 cover these paths without changing generic array/free/GC behavior.
 No-Get `empty` keeps its typed-bool callback requirement. Terminal typed-bool
-callbacks with `__get`, other signatures/receivers/internal-object RVs and wider
-recursive/coalesce magic combinations remain unsupported.
+callbacks with `__get` remain unsupported; other signatures/receivers/internal-object
+RVs and wider recursive/coalesce magic combinations remain partial.
 
 Terminal CV/literal private-property `isset` also accepts inherited
 `__isset(string $name)` without a return declaration. It caches ordinary
@@ -3339,6 +3339,14 @@ and IN_ISSET remain; held RVs dispose later. Mutable-empty false and a supplied
 destructor Exception preserve result and cleanup order.
 [Four originals and 457 focused premises](coverage/semantics/terminal-isset-rv-review.json)
 cover these paths and saved call validity without changing generic destruction/GC.
+
+Selected private-property `??` now pairs inherited `__isset(string): bool` with
+an untyped by-value `__get`. False skips Get, zero skips the fallback, and null
+evaluates the fallback after receiver release. An owning getter result survives
+that release; a supplied getter Exception preserves the same catch and destination.
+[Five originals and 604 focused premises](coverage/semantics/magic-coalesce-review.json)
+cover guard changes, actual local cleanup, sole result ownership and budgets.
+Wider receivers, no-Get combinations and reentrant lifetimes remain partial.
 
 Inherited private writes now invoke a public `__set(string $name, $incoming): void`
 for selected external CV/literal assignments. The setter receives integer `7`,
