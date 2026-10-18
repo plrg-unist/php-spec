@@ -19,6 +19,11 @@ trace-only input remain distinct from retired duplicate copies. NULL/nonfinite/
 identity-unknown flags and wider domains remain partial; Source47/56 are untouched.
 [Scalar array-flag review](coverage/semantics/define-array-scalar-flag-review.json).
 
+Composed over 51abb7683/401 with the exact tested400 delta, eight private-exact
+scripts and all incoming runtime/module bytes preserved. Object-name reception,
+reference-return/destructor, Generator, Sensitive, power/SUBMUL and LIST paths
+have no producer here; source3/state549 retain their private cuts without replay.
+
 Binary `**` with a leading numeric LEFT string now selects both reference cells
 before converting LEFT and the delayed RHS. A first Warning may repair bad text; each
 number survives its Warning, then both are historical at the final zero-base/
