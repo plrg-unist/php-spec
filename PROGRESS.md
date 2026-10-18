@@ -130,27 +130,31 @@ Composed over `46ad925ee`/405 with parent fields, array-key retention defaults a
 incoming paths preserved. Array/DEFINE, reference-return cleanup and static magic
 selectors are absent here; source9/state858 retain private404 cuts without replay.
 
-M111 admits pending final-pair cleanup through its final empty release and one
-normal auxiliary THROW_SEARCH operation. Fifteen lines in270 delegate to the
-existing full mixed-site/finite-Throwable pair gate and unchanged auxiliary view.
-Author232/nine raw steps and independent324/nine pass at `c0bc7a9b4`/404: all seven
-cleanup transitions and eight public pauses, exact one-empty-property-row pruning
-with GC unchanged, physical/virtual registries and valid malformed-operation
-controls. The same constructor-origin TypeError reaches local C. Consumed pair
-recovery allocates a fresh NULL reference without a Notice, retaining z's object
-and prior b7 while detaching r; complete whole/split states agree.
-No failure/retry or new native/source credit. The unchanged M103 packet keeps its
-historical cut, as do M110's pending single-cursor452/16 and normal M106–M108.
-Pending still-owning partial pairs, wider pending histories, interposed capture,
-larger owners/reentry, GC and typed consumers remain open.
+M112 admits pending still-owning partial-pair cleanup through its final empty
+release and one normal auxiliary THROW_SEARCH operation. Twenty lines in270 reuse
+the unchanged auxiliary view and full pending/reversed-mixed pair gate, with a
+separate virtual auxiliary-exit projection. Author315/nine raw steps and
+independent369/nine pass at `3c90313b4`/405: seven cleanup transitions and eight
+exact public pauses, one precise empty-property-row prune with GC unchanged,
+physical/virtual origins and registries, and valid malformed-operation refusals.
+The outer HCELL return task survives cleanup and same-constructor TypeError replay
+to local C. Removing only that task refuses despite unchanged stores, allocations,
+reference cells, live global z and valid heap. Consumed inner NULL queues one VALUE
+Notice at old line9; the caller gets a fresh NULL reference, then changing r leaves
+b7, z's object and bad y intact. Complete whole/split states agree.
+No semantic failure/retry or new native/source credit. One preparatory Python
+syntax typo was fixed before public fixture generation and is archived unexecuted.
+The unchanged M104 packet and M109–M111/normal proofs retain their separate cuts.
+Wider pending histories, normal interposed-catch capture/EXIT, larger owners or
+reentry, GC and typed consumers remain open.
 [Cleanup review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
-Composed over `af50cdb74`/405 after independent actual-parent review. Static magic
-calls, mixed-CV arithmetic-warning plans, detached Generator SEND and extra Closure
-numeric images have no M103 producer; builtin Throwable::getMessage is unchanged.
-Only270 changes and matches `c0bc7a9b4`; every other runtime file and the405-module
-manifest retain parent bytes. The 556/18 proof keeps its private404 cut without a
-joined actor or renewed source credit.
+Composed over `64e61f105`/405 after independent actual-parent review. Stringable
+DEFINE NULL flags and property-empty __isset PARRAY results have no M104 producer;
+builtin Throwable::getMessage is unchanged. Only270 changes and matches
+`3c90313b4`; every other runtime file and the405-module manifest retain parent
+bytes. The 684/18 proof keeps its private405 cut without a joined actor or renewed
+source credit.
 
 Retained propertyless Stringable `define` names now accept captured boolean true
 with primitive candidates and non-NUL global/class-like results. One module400
@@ -10444,11 +10448,11 @@ failures and interrupted evidence.
 The temporary `returns_verify` audit has reached its finite paired-return
 handoff. Preserve the accepted evidence and do not retry the rejected engine
 experiment. M106–M108 cover normal single-cursor and adjacent partial/final-pair
-release/storage intervals. M109/M110 cover one pending single-cursor cleanup, and
-M111 covers one pending final-pair cleanup, through final empty releases and one
-normal auxiliary THROW_SEARCH operation. Other pending histories, still-owning
-partial-pair prefixes, normal interposed-catch partial pairs, larger or reentrant
-owning histories, GC and wider typed consumers
+release/storage intervals. M109–M112 cover bounded pending single-cursor and
+adjacent final/owning partial-pair cleanup through final empty releases and one
+normal auxiliary THROW_SEARCH operation. Wider pending histories, normal
+interposed-catch capture/EXIT, larger or reentrant owning histories, GC and wider
+typed consumers
 remain open core obligations for permanent lifecycle/control work.
 Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is
 bounded physical-array owner recovery. Bounded single-active-finalizer CV replay and deferred VALUE/NULL Notice dispatch are

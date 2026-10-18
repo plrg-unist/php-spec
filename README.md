@@ -4075,9 +4075,12 @@ detached rNULL/b7, including operation metadata refusals and exact budgets. M109
 final-empty 325/6 keeps its separate cut. A pending final pair also resumes across
 the full cleanup interval: 556/18 at `c0bc7a9b4` preserves its destructor
 TypeError and fresh NULL reference recovery with zero Notices, live z and detached
-r/b aliases. Historical source/native credit is unchanged. Still-owning pending
-partial pairs, wider histories, interposed lifecycle capture and broader consumers
-remain open.
+r/b aliases. A still-owning pending partial pair passes 684/18 at `3c90313b4`:
+the required outer task survives cleanup and local C, then one old-line9 VALUE
+Notice precedes fresh NULL recovery; later r writes preserve b/z/y. Owner-only
+deletions refuse despite a valid heap and live global z. Historical source/native
+credit is unchanged. Wider histories, interposed lifecycle capture, reentry, GC
+and broader consumers remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;
