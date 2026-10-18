@@ -1289,14 +1289,14 @@ def $dynamic_scalar_define_received(S, pconfigcall, pvalue_name, z_precision) = 
   -- if $dynamic_scalar_define_values(pconfigcall) = ((pvalue_raw, pvalue))
   -- if $dynamic_scalar_name_at(pvalue_raw, z_precision) = (preqbytes)
   -- if $string_bytes(pvalue_name) = (preqbytes) /\ $string_carrier_valid(S, pvalue_name)
-  -- if $dynamic_constant_global_name(preqbytes) /\ ~$dynamic_constant_initial(preqbytes)
+  -- if $dynamic_constant_global_name(preqbytes) /\ (~$dynamic_constant_initial(preqbytes) \/ preqbytes = $ptascii("INF"))
 def $dynamic_scalar_define_received(S, pconfigcall, pvalue_name, z_precision) = false -- otherwise
 dec $dynamic_scalar_define_duplicate_valid(pstate, pconfigcall, pvalue, int, nat) : bool
 def $dynamic_scalar_define_duplicate_valid(S, pconfigcall, pvalue_name, z_precision, n_constants) = true
   -- if $dynamic_scalar_define_received(S, pconfigcall, pvalue_name, z_precision)
   -- if $string_bytes(pvalue_name) = (preqbytes)
   -- if $(n_constants <= |S.USERCONSTANTS|)
-  -- if $user_constant_at(S.USERCONSTANTS[0:n_constants], preqbytes) =/= eps
+  -- if $user_constant_at(S.USERCONSTANTS[0:n_constants], preqbytes) =/= eps \/ preqbytes = $ptascii("INF")
 def $dynamic_scalar_define_duplicate_valid(S, pconfigcall, pvalue_name, z_precision, n_constants) = false -- otherwise
 dec $dynamic_scalar_define_finish(pstate, pconfigcall) : pstate
 def $dynamic_scalar_define_finish(S, pconfigcall) = S -- if S.COMPLETION =/= NORMAL

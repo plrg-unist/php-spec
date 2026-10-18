@@ -1065,6 +1065,12 @@ precision changes and duplicate handlers; strict errors retain raw arguments.
 Named sends match their normalized slots without changing captured call authority.
 [Four source agreements and 351 state premises](coverage/semantics/define-scalar-name-review.json)
 cover registration, returning/throwing warnings and source/budget controls.
+When conversion yields full `INF`, positive infinite float names now use its
+protected duplicate path with primitive candidates and omitted/bool-false flags,
+preserving the builtin and converted API name through callbacks. Negative infinity keeps its fresh
+`"-INF"` key at profile precision 14. [Four source agreements and 529 state premises](coverage/semantics/define-nonfinite-name-review.json)
+cover captured arguments, historical precision, strict NaN rejection and throwing
+discard. Weak NaN name reception and nonbool infinite-name flags remain separate.
 Integer/boolean names also accept false scalar flags (`0`, empty/`"0"` strings and
 float zero). Weak calls convert the API name while preserving the raw flag;
 strict name errors precede flag rejection after argument effects.

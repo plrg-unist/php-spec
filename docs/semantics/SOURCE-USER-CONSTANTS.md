@@ -441,6 +441,24 @@ the received name in the API trace. The caller's scalar and assignment destinati
 stay intact. The [scalar-define review](../../coverage/semantics/define-scalar-name-review.json)
 binds four sources and351 public premises, with failed initial checks kept separate.
 
+Positive infinite float names now enter the existing protected duplicate path when
+conversion produces `"INF"`, with primitive candidates and omitted/bool-false
+flags. Two guard disjunctions admit that received name without a user-table row;
+all source, carrier, strictness and prefix checks remain unchanged. The raw float
+capture stays authoritative while duplicate API traces contain the received string.
+Returning handlers keep the builtin and return false; throws retain the same
+Exception, callback siblings and unassigned caller result. Negative infinity still
+publishes the fresh `"-INF"` key at precision14.
+The [infinite-name review](../../coverage/semantics/define-nonfinite-name-review.json)
+binds four source agreements and 529 public premises, including actual default,
+handler, resume and discard transitions. The peer changes live precision14 to1;
+the saved conversion still shows `"INF"`. Pinned `zend_gcvt` truncates a new
+precision1 conversion to `"I"`, so that alternate historical precision is refused,
+while 3 and -1 remain possible. The initial incorrect precision premise retains zero
+credit; only affected state fixtures repeated. Strict NaN names reject the raw
+float before conversion. Weak NaN string-conversion warnings, nonbool flags with
+nonfinite names and owning/wider candidates remain partial.
+
 Int/bool names accept nonbool false scalar flags: integer 0, empty/`"0"` strings and
 signed float zero. The existing scalar-name path converts the name before quiet
 bool reception, leaving the raw third argument in duplicate API traces. Strict

@@ -7,6 +7,29 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+At profile precision14, positive infinite float `define` names now reach the
+protected `INF` duplicate Warning/false path with primitive candidates and
+omitted/bool-false flags. Two module400 predicates reuse the existing received
+name/precision/prefix marker;
+source/capture/carrier guards, conversion, strict errors and trace/discard code
+stay exact. Four originals agree at83478a404. All529 public premises pass at33743f57f:
+author205+124+61 and independent139, covering two default duplicates, fresh `-INF`,
+captured raw false/request candidate through callback writes, converted API names,
+strict NaN priority, saved14/live1 precision, same Exception/caller99/sibling919,
+full restored discard, refusals and budgets. The first state fixture incorrectly
+assumed precision1 preserves `INF`; pinned `zend_gcvt` and existing numeric rules
+truncate it to `I`. That failure and the unchanged Unsupported baseline retain0;
+only affected state fixtures repeated, with source4 kept at its original cut.
+Initial native/baseline usedCPU4; later source/state usedCPU1. Expected PHP stderr
+has two literal duplicate Warnings and one false-handler Warning; strict/peer are
+quiet. Weak NaN reception, nonbool nonfinite flags and wider candidates remain open.
+[Infinite-name review](coverage/semantics/define-nonfinite-name-review.json).
+
+Pointwise composition over 464c0cf26 preserves the incoming 399-module parent.
+V67 string-name/array duplicates use a separate marker; new Generator, WeakMap,
+LIST and compound-operator selectors do not match these scalar calls. Source4 and
+public529 retain their private cuts, with no joined actor or renewed credit.
+
 Bool/null RHS values now convert quietly after the first warning in the
 both-fractional plain-CV modulo/shift/numeric-bitwise routes. With cached LEFT `12`,
 `true` stores `0`/`24`/`6`/`0`/`13`/`13`; false/null modulo raises DivisionByZeroError
