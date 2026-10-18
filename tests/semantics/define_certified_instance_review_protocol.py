@@ -27,6 +27,8 @@ def $test_certified_instance_peer_front(S,2) = true
 def $test_certified_instance_peer_front(S,3) = true
   -- if S.TODO = (THROW_SEARCH n_error) :: ptask_tail*
   -- if ~$test_certified_instance_peer_front(S,1)
+def $test_certified_instance_peer_front(S,4) = true
+  -- if S.RESULT = KNOWN (PBOOL true)
 def $test_certified_instance_peer_front(S,n_phase) = false -- otherwise
 dec $test_certified_instance_peer_seek(pstate, nat, nat) : pstate
 def $test_certified_instance_peer_seek(S,n_phase,0) = S
@@ -89,7 +91,9 @@ def checks(initial, stdout):
         '$dynamic_define_value_class(S_dead,POBJECT n_right) = eps',
         'n_fresh_before = |S_fresh.ARRAYS|',
         '$heap_owners($heap_graph(S_fresh),HOBJECT n_right) = 2',
-        *common.step('S_bound', 'S_fresh', 'PBOOL true'),
+        *common.step('S_registered', 'S_fresh'),
+        *reach('S_bound', 'S_registered', 4),
+        'S_bound.TODO = ptask_fresh*',
         '$user_constant_at(S_bound.USERCONSTANTS,' + text(TARGET) + ') = (puserconstant_tree)',
         'S_bound.USERCONSTANTS = S_fresh.USERCONSTANTS ++ [puserconstant_tree]',
         'puserconstant_tree.VALUE = PARRAY n_stored',
