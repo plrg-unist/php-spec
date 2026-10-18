@@ -19,6 +19,11 @@ its original CLI45 timeout retained0. All 527 state premises pass at e853:
 first runs at a local SL150 bound with unchanged assertions. Source47/55 are untouched.
 [Pending-array review](coverage/semantics/define-array-true-pending-review.json).
 
+Composed over 7ad32f88e/401 with the exact tested400 additions and incoming bytes
+preserved. Stringable DEFINE, magic property-empty, FAKE_BIND_WARNING, LIST and
+Generator/reference-foreach selectors are absent; retained Generator roots stay
+eps. Source3/state527 keep their private cuts and timeout0 without replay.
+
 Positional `define` now converts retained propertyless Stringable names with
 primitive candidates and omitted/bool-false flags before registration. A callback
 can create the key before the outer duplicate Warning; strict calls reject raw
