@@ -7,6 +7,27 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Single-LEFT deprecations with an initially quiet integer RHS now continue into the
+existing delayed conversion pipeline when their handler changes RHS. Exactly three
+rule headers hand returned MOD/SHIFT/BIT single1 tasks to corresponding BOTH_LEFT1;
+all initial/source/cache predicates, quiet commits and conversion bodies stay exact.
+The EPS/non-EPS ready guards prevent a cycle. Source cases cover all six operators,
+quiet/leading/precision strings, fractional/integral floats, bool/NULL, array rejection
+and a newly reached Warning throw. Ten originals pass at 67da1157c/401; six genuine
+handoff/storage/error fixtures pass 857 SL premises at 5504620b2/401. Actual PINT3
+single plans refuse BOTH stage0, then one handoff changes only TODO. Cached results,
+default phase/line25, alias detachment versus no-store errors, live labels, pool-plus-cell
+array owners2 and budgets pass. Unsafe/unknown forms still reach existing boundaries;
+no new tag/schema/converter or accepted replay. All 15 rows remain partial; earlier
+renewed credit 0, OP12 paused.
+[Single-LEFT ledger](coverage/semantics/single-left-bridge-review.json).
+
+Composed over e1b3acf35/401 after review of four incoming runtime paths.
+Closure binding, constant/Stringable queries, writable LIST destructuring and
+declared-return CV replay selectors are absent from these untyped literal-return
+handlers. Shared operator/conversion/handler/storage interfaces stay exact;
+source10 and state857 retain their private401 cuts without replay or renewed credit.
+
 One positional Stringable `constant`/`defined` name now executes `__toString()`
 before global lookup in weak calls; strict calls reject before method entry.
 Raw object API arguments survive method throws; normal returns create a separate

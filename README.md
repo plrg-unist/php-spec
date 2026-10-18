@@ -681,6 +681,12 @@ saved numbers and later diagnostic messages survive RHS replacement, references
 or unset. Success detaches late aliases; errors and supplied throws cancel the
 store. Twelve originals and 1089 focused SL premises pass in the
 [precision string ledger](coverage/semantics/precision-string-review.json).
+Fractional LEFT with an initially quiet integer RHS now also reaches that delayed
+conversion pipeline when its first handler changes RHS. Three marker handoffs reuse
+the post-LEFT conversions; cached LEFT survives, stores detach aliases, and errors
+or supplied throws cancel storage while retaining callback effects. Ten originals
+and 857 focused SL premises pass in the
+[single-LEFT ledger](coverage/semantics/single-left-bridge-review.json).
 
 In those both-fractional routes, a nonnumeric string or array RHS produced by the
 first callback now raises TypeError with the live operand types. Callback writes

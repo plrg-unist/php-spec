@@ -461,6 +461,25 @@ identity and resumed budgets. The original pre-evaluation declaration-order fail
 retains zero credit. Other notice shapes, initial forms, unsafe pre-snapshot RHS or
 targets and wider callback/lifecycle behavior remain partial.
 
+The existing fractional-LEFT/initial quiet-integer RHS routes now continue through
+that same post-LEFT conversion pipeline when the first callback changes RHS.
+Three returned single-marker boundaries become TODO-only handoffs to matching
+BOTH_LEFT1 tasks; all initial snapshots, source/cache validators, quiet commits
+and conversion bodies stay exact. Initial PINT `3` still refuses BOTH stage0;
+the actual first callback then supplies leading request text, quiet strings,
+fractional/integral floats, bool/NULL or an explicit rejected array. LEFT `12`
+remains cached rather than callback `99`/`88`, with all six normal results checked.
+Independent NULL modulo errors without detachment, negative-float XOR detaches
+owners 3 to 2 after RHS aliases target, and live `bool >> array` TypeError preserves
+the literal array's pool-plus-cell owners 2. Defaults retain their actual phase and
+RHS line 25. Ten originals and six focused fixtures (857 SL premises) pass in the
+[single-LEFT ledger](../../coverage/semantics/single-left-bridge-review.json),
+including exact whole-state handoff equality except TODO, real RHS callbacks,
+fresh CELL/LOCATION, storage/owners and full/resumed budgets. A newly reached
+Warning throw is source-tested with same Exception20 and destination100; unchanged
+cancellation and prior malformed-state matrices are not replayed. Other initial
+forms, unsafe targets/pre-snapshot RHS and wider lifecycle remain partial.
+
 Arithmetic and bitwise conversion use the existing pure SpecTec numeric and byte
 helpers, including signed 64-bit boundaries, binary64 values, string operands,
 pinned power behavior and conversion diagnostics. Explicit casts keep their
