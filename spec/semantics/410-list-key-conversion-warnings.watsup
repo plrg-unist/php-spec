@@ -419,6 +419,7 @@ def $list_null_write_key_plan(S) = ((n_source, n, expression, phpType13*, z))
   -- if $lookup(S.ENV, n_key*) = (n_cell)
   -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
   -- if S.STORE[n_cell] = DEFINED PNULL
+  -- if n_cell =/= n_source
   -- if ~$foreach_released_container_cell(S, n_cell) /\ ~$update_released_array_name(S, n_key*)
   -- if $list_null_write_key_origin(S, n_source, n, expression, phpType13*, z)
 def $list_null_write_key_plan(S) = eps -- otherwise
