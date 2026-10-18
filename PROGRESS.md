@@ -1059,9 +1059,21 @@ Three exact sources agree, including eval default reporting and a throwing
 handler after flag-expression COW. All 398 premises pass (276 author, 122
 independent), covering root multiplicity, canonical class/identity/history and
 actual normal/abrupt retirement. A moved nonempty-input guard rejects mixed-shape
-forged candidates; retained source cuts are pointwise unaffected. Nested empty
-descendants and wider flags/names remain partial.
+forged candidates; retained source cuts are pointwise unaffected. Wider flags/names
+remain partial.
 [Empty-duplicate review](coverage/semantics/define-empty-array-duplicate-review.json).
+
+Nested empty descendants now reuse the existing immutable provenance and mutable
+canonical-copy rules under recursive ancestor guards. Repeated source aliases
+produce distinct mutable empty children; immutable children retain their actual
+identity. Three exact sources and 451 premises (305 author, 146 independent) pass
+first attempts, covering fresh copy/query COW, normal eval cleanup and a throwing
+handler whose original API trace still writes through a real reference cell at
+the source append index. Source/state runtime bytes match. Two obsolete V43 helper
+refusal expectations change without replaying that campaign. The unchanged
+Unsupported baseline retains0; no engine divergence is claimed. Cycles, wider
+flags/names and owning domains stay partial.
+[Nested-empty review](coverage/semantics/define-nested-empty-array-review.json).
 
 Selected inherited `__unset(string): void` now dispatches direct CV/literal-name
 access to a declared private property. Accessible public unset skips magic;

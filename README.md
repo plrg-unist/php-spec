@@ -1225,8 +1225,11 @@ clone of a fixed literal. Empty-root duplicates retain the pooled argument or
 create a fresh canonical mutable candidate. Normal and throwing handlers keep
 the original API trace append history while cleanup releases temporary candidate owners.
 [Empty-duplicate review](coverage/semantics/define-empty-array-duplicate-review.json).
-Nested empties, wider array warning/flag paths, uncertified objects and cycles
-remain Unsupported.
+Nested empty children use the same provenance rules: immutable tables retain
+their identity, while each mutable occurrence gets a canonical copy. Query COW
+and duplicate reporting preserve the stored tree and original trace input.
+[Nested-empty review](coverage/semantics/define-nested-empty-array-review.json).
+Wider array warning/flag paths, uncertified objects and cycles remain Unsupported.
 String-name `define` with an omitted/false flag now shares already-certified
 stdClass donors. Named/selected calls preserve the captured pointer through later
 CV changes, and duplicate handlers keep the old binding and property writes on
