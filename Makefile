@@ -736,6 +736,8 @@ test-semantics: build
 	python3 tests/semantics/dynamic_new_protocol.py --group contexts
 	python3 tests/semantics/dynamic_new_protocol.py --group rebound
 	python3 tests/semantics/dynamic_new_protocol.py --group cached
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/dynamic_new_selector_cases.json
+	python3 tests/semantics/dynamic_new_selector_protocol.py --revision $$(git rev-parse HEAD)
 	python3 tests/semantics/named_keyword_new_sources.py
 	python3 tests/semantics/named_keyword_new_protocol.py --group cold
 	python3 tests/semantics/named_keyword_new_protocol.py --group recursive

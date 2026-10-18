@@ -244,7 +244,13 @@ def $dynamic_new_start(S, pdynamicnew, phpType7*) = $constructor_start(S, pdynam
   -- if $new_has_ctor(S, pdynamicnew.CLASS)
 def $dynamic_new_start(S, pdynamicnew, phpType7*) = $noctor_start(S, pdynamicnew.CLASS, phpType7*, pdynamicnew.LINE)
   -- if ~$new_has_ctor(S, pdynamicnew.CLASS)
-rule PhpStep/dynamic-new-selected: S ~> $dynamic_new_start(S_read[.TODO = (DYNAMIC_NEW_FINISH pdynamicnew) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pdynamicnew, phpType7*)
+;; An owning selector must finish FREE_OP2 before NEW can allocate or deny access.
+dec $dynamic_new_selected_start(pstate, poperand, pdynamicnew, phpType7*) : pstate
+def $dynamic_new_selected_start(S, poperand, pdynamicnew, phpType7*) = S[.TODO = (DYNAMIC_NEW_START pdynamicnew) :: S.TODO]
+  -- if $operand_nodes(poperand) =/= eps
+def $dynamic_new_selected_start(S, poperand, pdynamicnew, phpType7*) = $dynamic_new_start(S[.TODO = (DYNAMIC_NEW_FINISH pdynamicnew) :: S.TODO], pdynamicnew, phpType7*)
+  -- if $operand_nodes(poperand) = eps
+rule PhpStep/dynamic-new-selected: S ~> $dynamic_new_selected_start(S_read[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], S.RESULT, pdynamicnew, phpType7*)
   -- if S.TODO = (DYNAMIC_NEW_CLASS z z_fetch) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if $origin_node(S.SOURCES, porigin) = (NExprNew expression (SEQUENCE phpType7*) metadata)
@@ -255,6 +261,15 @@ rule PhpStep/dynamic-new-selected: S ~> $dynamic_new_start(S_read[.TODO = (DYNAM
   -- if $dynamic_new_value_name(S_read, porigin, pvalue) = (ptbytes)
   -- if $dynamic_new_known(S_read, ptbytes)
   -- if pdynamicnew = $dynamic_new_record(S_read, porigin, pvalue, ptbytes, z, z_fetch)
+dec $dynamic_new_start_valid(pstate, pdynamicnew) : bool
+def $dynamic_new_start_valid(S, pdynamicnew) = (S.ORIGIN = (pdynamicnew.SITE) /\ $dynamic_new_valid(S, pdynamicnew))
+rule PhpStep/dynamic-new-start: S ~> $dynamic_new_start(S[.TODO = (DYNAMIC_NEW_FINISH pdynamicnew) :: ptask_tail*], pdynamicnew, phpType7*)
+  -- if S.TODO = (DYNAMIC_NEW_START pdynamicnew) :: ptask_tail*
+  -- if $dynamic_new_start_valid(S, pdynamicnew)
+  -- if $origin_node(S.SOURCES, pdynamicnew.SITE) = (NExprNew expression (SEQUENCE phpType7*) metadata)
+rule PhpStep/dynamic-new-start-invalid: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid dynamic new start"]
+  -- if S.TODO = (DYNAMIC_NEW_START pdynamicnew) :: ptask_tail*
+  -- if ~$dynamic_new_start_valid(S, pdynamicnew)
 rule PhpStep/dynamic-new-unknown: S ~> $throw_scalar(S_read, "Error", $ptascii("Class \"") ++ $c_string(ptbytes_raw) ++ $ptascii("\" not found"), z_fetch)
   -- if S.TODO = (DYNAMIC_NEW_CLASS z z_fetch) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
@@ -310,6 +325,8 @@ def $dynamic_new_finish_result(S, pdynamicnew) = true
 def $dynamic_new_finish_result(S, pdynamicnew) = false -- otherwise
 def $call_task_valid(S, DYNAMIC_NEW_FINISH pdynamicnew) = ($dynamic_new_valid(S, pdynamicnew) /\ (~$dynamic_new_finish_head(S, pdynamicnew) \/ S.COMPLETION =/= NORMAL \/ $dynamic_new_finish_result(S, pdynamicnew)))
 def $task_nodes(DYNAMIC_NEW_FINISH pdynamicnew) = eps
+def $task_nodes(DYNAMIC_NEW_START pdynamicnew) = eps
+def $call_task_valid(S, DYNAMIC_NEW_START pdynamicnew) = $dynamic_new_start_valid(S, pdynamicnew)
 
 ;; Undefined direct CVs are captured null across the real warning handler.
 ;; Its throwing continuation keeps the original exception and aborts NEW.

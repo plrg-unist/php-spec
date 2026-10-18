@@ -2933,3 +2933,34 @@ def $arithmetic_owned_plan(S) = eps -- otherwise
 rule PhpStep/arithmetic-owned-begin: S ~> S[.TODO = (ARITHMETIC_CV_CONVERT pintegeroperation ARITHMETIC_LEFT) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if $arithmetic_owned_plan(S) = (pintegeroperation)
+
+;; Quiet scalar MUL failures still expose the COMMUTATIVE opcode slot order.
+;; Numeric products and conversion diagnostics retain their existing paths.
+dec $quiet_multiply_scalar(pstate, pvalue) : bool
+def $quiet_multiply_scalar(S, pvalue) = true
+  -- if $submul_initial_value(S, pvalue)
+  -- if $coerce_number(pvalue) = BADNUMBER
+def $quiet_multiply_scalar(S, pvalue) = true
+  -- if $submul_initial_value(S, pvalue)
+  -- if $coerce_number(pvalue) = COERCED pnumber false
+def $quiet_multiply_scalar(S, pvalue) = false -- otherwise
+dec $quiet_multiply_error(pstate, poperand, poperand, pvalue, pvalue, int) : bool
+def $quiet_multiply_error(S, poperand_left, poperand_right, pvalue_left, pvalue_right, z) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpMul expression_left expression_right metadata)
+  -- if $integer_operand_source(S, porigin, [PCFIELD 0], poperand_left)
+  -- if $integer_operand_source(S, porigin, [PCFIELD 1], poperand_right)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 1]) = (z)
+  -- if $integer_slot_rank(S, porigin, [PCFIELD 0], poperand_left) = (n_left)
+  -- if $integer_slot_rank(S, porigin, [PCFIELD 1], poperand_right) = (n_right)
+  -- if $(n_left < n_right)
+  -- if $operand_nodes(poperand_left) = eps /\ $operand_nodes(poperand_right) = eps
+  -- if $integer_pointer_select(S, poperand_left) = (pintegerpointer_left)
+  -- if $integer_pointer_select(S, poperand_right) = (pintegerpointer_right)
+  -- if $integer_pointer_value(S, pintegerpointer_left) = (pvalue_left)
+  -- if $integer_pointer_value(S, pintegerpointer_right) = (pvalue_right)
+  -- if $quiet_multiply_scalar(S, pvalue_left) /\ $quiet_multiply_scalar(S, pvalue_right)
+  -- if $coerce_number(pvalue_left) = BADNUMBER \/ $coerce_number(pvalue_right) = BADNUMBER
+def $quiet_multiply_error(S, poperand_left, poperand_right, pvalue_left, pvalue_right, z) = false -- otherwise
+def $binary_source_apply(S, MULTIPLY, poperand_left, poperand_right, pvalue_left, pvalue_right, z) = $binary_apply(S, MULTIPLY, pvalue_right, pvalue_left, z)
+  -- if $quiet_multiply_error(S, poperand_left, poperand_right, pvalue_left, pvalue_right, z)

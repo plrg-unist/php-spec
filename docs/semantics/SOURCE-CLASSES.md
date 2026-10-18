@@ -39,6 +39,18 @@ four source agreements from 335 focused premises and the earlier fixture failure
 Other operand expressions/object kinds, reference-return producers, owning invalid
 RHS cleanup and wider throwing-destructor histories remain partial.
 
+An owning dynamic `new` selector now finishes ordinary disposal before allocation,
+constructor access and argument evaluation. Captured class history owns no selector
+and remains valid after its retirement. A supplied selector-destructor Exception
+cancels construction without acquiring a premature private-access Error as `Previous`;
+a retained selector instead permits the access Error before its later destruction.
+Public construction reads argument 99 after the selector changes the live CV.
+The [selector review](../../coverage/semantics/dynamic-new-selector-review.json)
+separates four source agreements from 370 focused premises and earlier fixture
+failures. A derived nonowning-operand bridge preserves the existing route without
+renewing its source credit. Wider selector/constructor/autoload and reference-return
+lifetimes retain their separate partial boundaries.
+
 Source origins authenticate descriptors, active bindings, class/new/instanceof
 tasks and paused `instanceof` results. Owned objects remain live through arrays
 and are released after their final owner. The pinned engine routes are `zend_compile_class_decl`,
