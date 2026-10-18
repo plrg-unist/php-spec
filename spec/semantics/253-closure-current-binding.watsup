@@ -871,6 +871,14 @@ def $fake_bind_new_receiver(S, n_source, n_receiver?) = n_receiver?
 
 def $fake_bind_warning(S, pconfigcall, pbindscoperesult, ptbytes) = $error_dispatch(S, 2, ptbytes, pconfigcall.LINE, DIAGNOSTIC "Warning" ptbytes pconfigcall.LINE, FAKE_BIND_WARNING {CALL pconfigcall, SCOPE pbindscoperesult, MESSAGE ptbytes})
 def $task_nodes(FAKE_BIND_WARNING pbindwarning) = $config_nodes(pbindwarning.CALL)
+;; Binding warnings enter a C callback; fresh handler traces retain the held API.
+def $error_context_trigger(S, pcallcontext) = (pbindwarning.CALL)
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = FAKE_BIND_WARNING pbindwarning
+  -- if $closure_bind_kind(pbindwarning.CALL.KIND)
+def $error_handler_trace_values(S, pcallcontext, pconfigcall) = $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT))
+  -- if $closure_bind_kind(pconfigcall.KIND)
+
 def $call_task_valid(S, FAKE_BIND_WARNING pbindwarning) = ($config_invoke_valid(S, pbindwarning.CALL) /\ $closure_bind_kind(pbindwarning.CALL.KIND) /\ $fake_bind_warning_valid(S, pbindwarning))
 def $fake_bind_warning_valid(S, pbindwarning) = true
   -- if $fake_bind_source(pbindwarning.CALL) = (n_source)
