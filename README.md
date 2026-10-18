@@ -1109,7 +1109,13 @@ lookup, in weak and strict calls. Flat arrays admit primitive nonstring and
 authenticated string-carrier leaves, including live scalar reference cells.
 [Four source agreements and 533 state premises](coverage/semantics/constant-query-array-name-review.json)
 cover raw array traces, caller/trace COW and shared reference updates. Nested,
-object/legacy-string leaves, DEFINE array names and wider call forms remain open.
+object/legacy-string leaves and wider call forms remain open.
+The same flat array-name domain now raises TypeError in positional `define()`
+with primitive candidates and omitted/primitive flags, before flag reception or
+registration. Later arguments still run and can change ordinary fields or shared
+references after the name capture.
+[Four source agreements and 590 state premises](coverage/semantics/define-array-name-review.json)
+cover NULL/strict-flag/body-warning priority and raw array/candidate/flag traces.
 Positional `define()` calls with primitive arguments also reject counts below two
 or above three before name/flag reception or registration. Exact count messages
 and raw API arguments survive all argument effects, including a captured true

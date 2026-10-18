@@ -143,8 +143,27 @@ No copy fold, task/schema or shared trace/ownership rule changes. The
 binds four exact originals and 533 premises at 46a59b565/runtime38e5756d: five real
 CONFIG errors, actual caller/snapshot/trace COW endings and two reached reference
 updates. All checks pass on their first attempts; the unchanged Unsupported baseline
-retains zero credit. Nested arrays, objects, legacy PSTRING leaves, DEFINE array
-names and owner/named/packed/FCC forms remain partial.
+retains zero credit. Nested arrays, objects, legacy PSTRING leaves and
+owner/named/packed/FCC forms remain partial.
+
+Positional `define` with two/three arguments now rejects the same bounded flat
+array-name domain before optional flag reception or registration. Candidates and
+present flags are primitive nonstring or authenticated string-carrier values.
+The parameter-one TypeError precedes weak NULL flag deprecation, strict flag type
+rejection and the ignored-true Warning, after all argument effects. A captured
+array keeps earlier ordinary fields while embedded reference cells reflect later
+argument writes; the API trace retains the original candidate and flag.
+
+Exactly 24 module400 insertions reuse the flat-name/source/carrier guards and raw
+error allocator, with a disjoint broad-DEFINE exclusion. No task/schema/shared
+trace or ownership rule changes. The
+[define-array-name review](../../coverage/semantics/define-array-name-review.json)
+binds source4 at 1b9723050 and 590 premises at cb250bda2/runtimea6677ebfc: five real
+CONFIG errors and a normal `defined('Array')` recovery. The first state fixture
+reused one expression variable for two literal ASTs; that retained failure has
+zero credit. Only its binder changes before affected/unrun state checks, without
+source/model/baseline replay. Nested/legacy-string/object leaves, nonprimitive
+candidates/flags and owner/named/packed/FCC forms remain partial.
 
 Positional `define` calls with primitive arguments now reject every count outside
 two through three before receiving the name or optional flag. Too few arguments
@@ -714,7 +733,7 @@ and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`. `PHP_FUNCTION(constant)` us
 exception-class lookup and `ZVAL_COPY_OR_DUP`; `zend_declare_typed_class_constant`
 interns direct string values before installation.
 Stored cyclic trees, other objects, true/coerced array flags,
-Stringable/DEFINE array names and query arrays beyond the bounded flat domain,
+Stringable names and array names beyond the bounded flat query/DEFINE domains,
 array/object values with scalar or null names, true/NULL/NaN
 flags with scalar names, nonbool flags with nonfinite float names, true/NULL/NaN flags with
 null names, special/startup names with flags or values beyond the bounded follow-ups,

@@ -7,6 +7,30 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Positional two/three-argument `define` now rejects bounded flat array names before
+optional flag reception or registration, with primitive candidates/flags. Later
+argument effects preserve the captured ordinary fields and update shared scalar
+references; raw API traces keep array/candidate/flag and caller99. Exactly 24
+module400 insertions reuse existing guards/error allocation without new tasks,
+copying or shared ownership changes. Four originals agree at 1b9723050/runtime
+a6677ebfc; all 590 premises pass at cb250bda2: author 190+124+114 and independent162
+across five real errors and one normal no-publication query. Weak NULL/strict flag
+priority, ignored-true Warning bypass, late COW/reference writes, actual traces,
+unchanged stores/table/events and source/literal/carrier/domain/budget controls pass.
+The original literal-authority fixture reused one expression binder; its failure
+retains zero credit and only affected/unrun state checks follow the one-line fix.
+Native/baseline and source4/failed state used CPU1; corrected state used CPU5.
+Accepted PHP/worker stderr is empty; unchanged Unsupported after B| retains0.
+Nested/legacy-string/object leaves, nonprimitive candidates/flags and wider forms
+remain open. [Array-name review](coverage/semantics/define-array-name-review.json).
+
+Pointwise composition over 411c20015 preserves the incoming 401-module parent.
+Module400 and all four tests are private-exact; every other runtime/manifest path
+retains its parent bytes. The incoming LIST float write-key tag and LIST_FETCH
+guards require reference destructuring absent from these array/DIM/ordinary call
+sources. Source4 retains 1b9723050 and state590 cb250bda2/runtimea6677ebfc, with the
+original binder failure0 and no joined actor or renewed execution credit.
+
 One positional array name now raises TypeError before `constant`/`defined` lookup,
 in weak and strict calls. Empty/flat live arrays admit primitive nonstring and
 authenticated string-carrier leaves, direct or through live scalar reference cells.
@@ -19,7 +43,7 @@ Raw API/caller traces, caller99/effects, unchanged stores/autoload/class state,
 literal/carrier/source/cell/domain refusals and budgets pass. No actor failed or
 repeated; PHP/worker stderr is empty. Initial f4b06bac6 native/baseline and later
 source/state both use CPU3; unchanged Unsupported after B| retains zero credit.
-Legacy PSTRING/nested/object leaves, DEFINE array names and wider forms stay open.
+Legacy PSTRING/nested/object leaves and wider forms stay open.
 [Array-name review](coverage/semantics/constant-query-array-name-review.json).
 
 Pointwise composition over 7e2759ae5 preserves the incoming 401-module parent.
