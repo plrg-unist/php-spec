@@ -59,6 +59,9 @@ def $dynamic_constant_class(pvalue) = eps -- otherwise
 dec $dynamic_define_value_class(pstate, pvalue) : pvalueclass?
 def $dynamic_define_value_class(S, pvalue) = (pvalueclass)
   -- if $dynamic_constant_class(pvalue) = (pvalueclass)
+def $dynamic_define_value_class(S, POBJECT n_object) = (PVCLOSURE n_object pconstantclosure.SITE)
+  -- if $constant_callable_record(S.CONSTANTCLOSURES, n_object) = (pconstantclosure)
+  -- if $constant_value_class_valid(S, POBJECT n_object, PVCLOSURE n_object pconstantclosure.SITE)
 def $dynamic_define_value_class(S, POBJECT n_object) = (PVINSTANCE n_object pconstantobject.SITE)
   -- if $global_new_record(S.CONSTANTOBJECTS, n_object) = (pconstantobject)
   -- if $constant_value_class_valid(S, POBJECT n_object, PVINSTANCE n_object pconstantobject.SITE)
