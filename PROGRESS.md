@@ -7,6 +7,33 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Ordinary named and mixed `ini_set(NULL, quiet primitive)` now resume eligible
+deprecation handlers. Reversed `value:`/`option:` evaluation captures the REQUEST
+value at normalized destination1 before option0 is filled by later effects.
+Selected callee and both captures survive live writes. True handlers permit an
+outer false result; a false handler reports default Deprecated then reaches the
+same false result while preserving precision8.
+A supplied throw preserves Exception identity and caller result99, precision10 and
+sibling2053, and cancels the body.
+Strict rawNULL/2039 rejects after V→O with handler0 and normalized API arguments.
+
+Four originals agree exactly and 746 premises (238+159+96+253) pass at
+`13f605b1f`/`a46b790e0`/405. Nine reports pass on first attempts, stable/reaped with
+no failure/timeout/interruption/survivor. Initial `fb753d7fe` CPU3 native3/baseline0
+stays distinct from later CPU2; genuine Unsupported producer continuation after
+B|V|O| has zero agreement. One selected default PHP Deprecated is expected; other
+PHP stderr and accepted worker stderr are empty. The sole ~NAMED deletion retains
+source-prefix/value/carrier/owner/pack/PIPE/quiet guards and existing368 projection.
+Old623 forged-NAMED controls stay source-inconsistent without replay. Wider values,
+forms/configuration and paused work remain untouched.
+[Named NULL INI-option review](coverage/semantics/ini-set-named-null-option-review.json).
+
+Composed over `27718dbb1`/405 with module172/four tests private-exact and every
+other runtime/schema/ordered manifest path parent-exact. Incoming owning DEFINE,
+missing-CV comparisons, MULTIPLY, dynamic NEW, Generator and float-key/reference
+debt producers are absent. Private source4/state746 retain their cuts without a
+joined actor or accepted replay.
+
 Quiet scalar MUL TypeErrors now follow the pinned physical operand order.
 Seven originals pass at `cfbf2b96b`/405; two focused fixtures pass 217 premises at
 `361aef83e`/405, including saved TMP bad text after origin repair, raw THROWN and

@@ -489,8 +489,26 @@ CLI/SL worker stderr are empty. Ten stable/reaped reports include the preserved
 peer interpreter failure with zero credit: a redundant new trace head overlapped
 existing module368 INI_SET projection. Removing those three lines reuses the exact
 raw projection; accepted author models/native/baseline are not replayed. Owning,
-NaN/legacy-string values, named/packed/owner/PIPE forms and wider configuration
+NaN/legacy-string values, packed/owner/PIPE forms and wider configuration
 remain partial. Existing unary rules, source/service boundaries and paused work stay intact.
+
+The [named NULL-option increment](../../coverage/semantics/ini-set-named-null-option-review.json)
+removes only the NAMED exclusion from that quiet-value continuation. Existing source
+prefixes authenticate named layout and map written argument indexes to normalized
+parameter destinations. Actual partial CONFIG_ARGS after `value:` retains its REQUEST
+at destination1 while option0 is still a hole; later `option:` effects fill only option0.
+Literal reversed and mixed positional/named calls use true handlers. A selected
+false handler adds one default Deprecated before the empty-option false result,
+preserving precision8. A supplied throw preserves sameException99/precision10/sibling2053
+and cancels the body; strict NULL rejects after both effects with handler0.
+
+Four originals and 746 premises (238+159+96 author,253 independent) pass at
+`13f605b1f`/`a46b790e0`/405. All nine reports pass on first attempts, are stable/reaped
+and have no timeout/interruption/survivor; accepted worker stderr is empty. Only the
+selected false-handler source has default PHP Deprecated output. Initial `fb753d7fe`
+native/baseline CPU3 remains distinct from later CPU2; baseline Unsupported after
+B|V|O| has zero agreement. Old positional623 source-prefix refusals remain valid
+without replay. The quiet value and owner/pack/PIPE boundaries remain unchanged.
 
 The [unary CONFIG PIPE increment](../../coverage/semantics/include-config-pipe-review.json)
 replays the authenticated left child and `CODEPIPE_SEND`, rather than an ordinary

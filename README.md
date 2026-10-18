@@ -227,6 +227,13 @@ handler reaches the empty-option `false` result while preserving its precision
 changes, and a supplied throw cancels the body. Strict NULL rejects before the
 handler. Four originals and 623 state premises pass; wider values/forms remain partial.
 
+[Named NULL INI options](coverage/semantics/ini-set-named-null-option-review.json)
+extend that quiet-value domain to ordinary named and mixed arguments. Reversed
+`value:`/`option:` calls capture the earlier value before later option effects;
+handler and strict-error traces retain normalized `[NULL, value]` arguments.
+Four additional originals and 746 premises pass, including false/default delivery
+and throwing-handler cancellation. Packed/owned/PIPE forms remain partial.
+
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
 send/callback site. Ordinary Closure PIPE follows caller strictness; normal and
