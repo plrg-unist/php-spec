@@ -57,6 +57,10 @@ The pending final-pair interval is in
 `../php-spec-evidence-archive/lifecycle-pending-final-pair-111/manifest.json`:
 297,082 bytes under `.tools/m111/`, SHA-256
 `85de0f4debc4c3fc0d91018e99e9e2d46639edb0293a6081bc5071a84906a7cf`.
+The pending still-owning partial-pair interval is in
+`../php-spec-evidence-archive/lifecycle-pending-partial-pair-112/manifest.json`:
+317,000 bytes under `.tools/m112/`, SHA-256
+`c56ef7c478f526ccd2e0ed4b273e382b596a6cea563cf500fef9fa1866528190`.
 
 ## Commit provenance and recovery
 

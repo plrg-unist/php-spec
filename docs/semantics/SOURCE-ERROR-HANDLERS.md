@@ -123,8 +123,8 @@ output, simple assignment, unary signs and six arithmetic/identity operators.
 Scalar `<=>` additionally admits a missing left CV with a captured primitive or
 defined direct-CV right operand, and a captured primitive left with a missing
 right CV. It freezes null while preserving the later right read; both-missing
-and owning opposing values remain unsupported, including callback-produced
-non-scalars. Its source certificate remains valid through those callback changes.
+and owning opposing values remain unsupported, including removed or
+callback-produced non-scalar right operands. Its source certificate remains valid through those callback changes.
 Missing-left binaries retain the later right read; missing-right binaries admit
 known or temporary values and initially-reference CVs in strict identity comparisons.
 Module208 retains the borrowed old cell through the saved caller without adding
@@ -179,11 +179,18 @@ The [array-literal ledger](../../coverage/semantics/array-literal-float-key-warn
 records its separate source/state cuts. A reference-element continuation now
 transfers its acquired owner when the CV still names the same cell, including
 unset/rebind to that cell. Retargeting to an ordinary null/bool/int/float inserts
-the live scalar and retains the old wrapper for the request, also on throw.
+the live scalar and preserves the acquired count, cancelling old debt first or
+retaining an unmatched request owner, also on throw.
 Old values must remain null/bool/int/float and the builder object-free.
 The [reference-element ledger](../../coverage/semantics/array-literal-float-ref-key-warning-review.json)
 records repeated owners and singleton-copy observations. Different-reference
-retargeting remains Unsupported because it also creates a new-cell owner deficit.
+retargets now preserve both the old owner and a per-cell new-owner deficit through
+return and supplied throw. Both cells must be untyped null/bool/int/float; they
+may be shared or unwrapped according to their effective count. Inverse retargeting
+cancels the biases. The [deficit ledger](../../coverage/semantics/array-literal-float-ref-deficit-review.json)
+checks deletion, abrupt cleanup and balanced lifetime; effective-zero retirement,
+owning/typed debt cells, active collection and outstanding request-end debt remain
+explicit Unsupported before pruning.
 
 Missing-key module409 retains a
 CV/literal array snapshot through real handlers, supplies null after insertion,

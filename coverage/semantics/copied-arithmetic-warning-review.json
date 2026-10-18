@@ -1,0 +1,140 @@
+{
+  "version": 1,
+  "milestone": "OP49 nonowning copied arithmetic Warning continuations and physical multiplication order",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/profile",
+  "scope": "Ordinary +,-,*,/,** staged leading-number Warning ingress with at least one evaluated nonowning INTEGER_COPY and a COPY/CV/pre-existing CELL counterpart. Literal/unary/selected-ternary and by-value named-return sources are authenticated. Copied scalar inputs remain immutable after originating variables change or disappear; live CVs and selected referents keep their prior limits until capture. MUL follows pinned opcode slot-rank swapping; descriptors remain lexical and conversion/error pointers follow physical order. Quiet/no-diagnostic arithmetic, owning/reference-result payloads and wider producers/lifetimes remain partial.",
+  "runtime_revision": "2d6ca1eeb687af3379b2efde1fdb29a33baca0e3",
+  "helper_revision": "1ed6e0127bd5accd66ad3ad2b66474b4a5a17544",
+  "private_modules": 405,
+  "runtime_sha256": {
+    "spec/semantics/40-control.watsup": "2a2a332f62e0e876414443e71f6d7724adc63231ab71a1dbe5296f2880665f91",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "11b948b11daf167c412d62230e3e85c5c601c49339eb2777ed883cef71b1bdc7"
+  },
+  "engine_basis": [
+    "Pinned Zend numeric slow paths select/dereference operands before conversion; each leading-number numeric holder is populated before Warning. CONST/TMP/by-value VAR copies retain raw scalar values independently of originating CVs. Failed conversion labels the selected raw operands; final safe_pow Deprecated uses both historical numeric holders.",
+    "Pinned zend_vm_def.h gives MUL the COMMUTATIVE specialization, while zend_vm_set_opcode_handler swaps operands when the left slot rank is lower than the right. The existing ranks CONST1/TMP2/VAR4/CV8 authenticate copied-source SWAPPED for MUL only. A lexical CONST-left/CV-right multiplication therefore converts the CV first; VAR-left/TMP-right stays unswapped.",
+    "Separate arithmetic_copy_operation/plan/begin plus three generic40 exclusions preserve old plain/mixed/reference entry controls and shared readers. Both operand_nodes must be eps, at least one pointer is COPY, scalar getters are nonowning, and source/operand/rank/line authorities authenticate the descriptor. A guarded copy-valid arm and COPY getter reuse existing CV tasks without new schema/task/module.",
+    "arithmetic_cv_pointer maps lexical descriptor fields to physical phases. Eight targeted getter/raw-error lookups now use that adapter; on all old admitted SWAPPED=false plain/mixed plans it equals the prior pointer choice. Existing number conversion, dispatch, result and unwind behavior is retained. Fresh COPY validation reads the immutable saved value, not the originating CV; final holders are historical."
+  ],
+  "contract": [
+    "Author7 covers quiet unary COPY ADD17, literal-left SUB7 after live bad RHS repair, real swapped MUL60 with two Warnings rather than lexical84/one Warning, by-value lhs plus ternary DIV strict2.4, final power +INF, swapped live bool * string TypeError25, and the same supplied final-deprecation Exception20/nullPrevious/caller100. lhs executes once. Focus selects swapped MUL and final POWER throw; the other five author originals retain source checks.",
+    "Independent CELL/COPY subtraction cannot repair copied bad RHS by changing its origin: live selected LEFT becomes false and TypeError is bool - string. COPY/CV addition retains copied raw LEFT string despite its origin becoming false, so TypeError is string + string. By-value VAR4/TMP2 multiplication is unswapped and yields strict float68.75 after its sole RHS Warning unsets both source names; both obsolete CV cells have zero owners while scalar copies and numeric holders stay valid.",
+    "Focused157/192/148/141/129 starts from actual initialized copy plans, exact begin/capture and real fresh/entered Warning frames. It authenticates slot ranks/physical pointers, immutable COPY freshness after mutation/unset, cached numbers, indexed fresh TypeErrors/no outer result store, final historical power/supplied throw, exact atomic metadata and budget resumption. One bounded guard matrix is pure and never driven. Each peer source intentionally emits one default Warning at original source line25; SL instead requires true newline and empty stderr."
+  ],
+  "required_follow_on": [
+    "Quiet/no-Warning MUL physical TypeError ordering, other copied expression producers, owning/reference-result copies, object conversion and broader callbacks/lifetimes remain partial. No native reachability or safety claim is made for wrapping a still-pending plain CV or retiring an unheld selected referent before conversion.",
+    "All13 linked rows remain partial. Old plain/mixed/reference/primitive/compound controls and evidence receive0 renewed credit; OP12 remains paused. No engine bug or intentional divergence is claimed."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-49/source-2d6ca1eeb-author-seven/report.json",
+        "sha256": "fc3ae7bdbe00121a77e3bef8aa3691ab44c65b0a97bd14ae9b701e58d6f02c21",
+        "revision": "2d6ca1eeb687af3379b2efde1fdb29a33baca0e3",
+        "cases": [
+          "copied-arithmetic-add-unary-right-warning",
+          "copied-arithmetic-sub-literal-repair",
+          "copied-arithmetic-mul-swapped",
+          "copied-arithmetic-div-return-ternary",
+          "copied-arithmetic-power-deprecated",
+          "copied-arithmetic-mul-swapped-types",
+          "copied-arithmetic-power-deprecated-throw"
+        ],
+        "agreements": 7
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-49/review-model-2d6ca1eeb-three/report.json",
+        "sha256": "d49f9c8a37b37cf7ca2a9ab54837672e2bc007956ff9b5008475787373363b7a",
+        "revision": "2d6ca1eeb687af3379b2efde1fdb29a33baca0e3",
+        "cases": [
+          "copied-arithmetic-right-bad-default",
+          "copied-arithmetic-left-types-default",
+          "copied-arithmetic-both-float-unset-default"
+        ],
+        "agreements": 3
+      }
+    ],
+    "state": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-49/state-1ed6e0127-five/report.json",
+        "sha256": "47e1058e23812a9104b4eb300c9e6a8e16221f62ee0ca95b6440a99be6965d4e",
+        "revision": "1ed6e0127bd5accd66ad3ad2b66474b4a5a17544",
+        "modules": 405,
+        "cases": [
+          "copied-arithmetic-mul-swapped",
+          "copied-arithmetic-power-deprecated-throw",
+          "copied-arithmetic-right-bad-default",
+          "copied-arithmetic-left-types-default",
+          "copied-arithmetic-both-float-unset-default"
+        ],
+        "conditions": [
+          157,
+          192,
+          148,
+          141,
+          129
+        ],
+        "total": 767
+      }
+    ],
+    "total_source_agreements": 10,
+    "total_focused_state_conditions": 767,
+    "compatibility": "The accepted2d6 source/runtime stays exact through helper-only commits. Retained preparation authenticates full author7/peer3 selections before focused2+3, retaining original paths/native bytes and exact30/40/404/manifest bridge. Old entry refusals/shared readers remain exact; old SWAPPED=false lookup choices are equivalent through the physical adapter. Earlier evidence is retained without replay or renewed credit."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-49/baseline-29d1c23fc-mul-swapped/report.json",
+      "sha256": "5789a71fe71bed465b508ad275ffdc1b0f66f1472706258726cdb2e54fc5f05c",
+      "result": "Actual accepted checked unsupported before H1 with empty semantic streams, error-handler ingress requires a producer continuation, model exit1/credit0; ordinary wrapper false preserved, no override."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-49/native-29d1c23fc-author-seven/report.json",
+        "sha256": "c73d12dcdb0da2bf7b8ba6c40f768c5959d6ae57cf9b020ed02bd5d04430376e"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-49/native-29d1c23fc-review-three/report.json",
+        "sha256": "18c11ebabfe0a051bdffc9bddebeb1f8148260c5a0407c426a2710adafd555f8"
+      }
+    ],
+    "checked_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-49/state-prep-1ed6e0127-five/report.json",
+        "sha256": "7659aa9416974c8e79393d1e237f09ee3d1138660d6d294f174197542e1e4905",
+        "result": "Checked frontend/adapter only, original paths/native bytes retained; no application/native replay, workers0/reaped."
+      }
+    ],
+    "standalone_syntax": "Five standalone undefined-pstate diagnostics carry zero semantic credit."
+  },
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-49",
+    "environment": "LC_ALL=C,TZ=UTC,no PHP_SPEC_SCRIPT_ENCODING. Native/baseline CPU5; changed source CPU1; focused checked prep/SL CPU1. Native30/modelCLI60-process90; checked workers30/full405 immutable SL120 per group. Native/model streams agree including intentional peer Warning stderr; accepted SL requires true newline/empty stderr/exits0/no interruption/reaped groups/PIDs.",
+    "commands": [
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 tests/semantics/copied_arithmetic_warnings.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 tests/semantics/copied_arithmetic_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-49/state-prep-1ed6e0127-five/run-prepare.py",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-49/state-1ed6e0127-five/run-state.py"
+    ],
+    "record": "Restore matching Git cuts/local tools and fresh output roots. Records retain original paths/native streams, fixture hashes, commands/exits and reaping; archive is not a runtime dependency. Copied tools add no rebuild/portability claim.",
+    "tool_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "composition": {
+    "parent": "7bed41edf322c00ad26319dfc9cff579ffe7ae09",
+    "private_publication": "3751fc5ea4c1c76d37d1db7ba7602ae0f952428f",
+    "modules": 405,
+    "runtime_sha256": {
+      "spec/semantics/40-control.watsup": "48806c532e36e07c1ca1e8cf1afc687af0dd933bf35c0368b28780dba5407ca8",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "11b948b11daf167c412d62230e3e85c5c601c49339eb2777ed883cef71b1bdc7"
+    },
+    "other_incoming_paths_preserved": 48,
+    "gate": "No joined actor:404 and all six tests retain private bytes; complete parent40 initialization and debt-control wrapper are preserved with only the copy-plan declaration/three EPS gates added. Every other spec/405 manifest is parent-exact and13 partial rows compose pointwise. Ten incoming runtime paths select pending byref-return/destructor cleanup, DEFINE null flags, numeric Closure receivers, magic __isset array-result disposal, or array-literal explicit-reference float-key callbacks; none occurs in these copied scalar/named-handler/builtin-Throwable originals. The A21 LITERALREFDEBTS field initializes eps and its sole nonempty producer requires the absent array-key reference plan. Heap DEBTS is therefore eps: owner-count subtraction by0, prune/collect empty filtering and validity are pointwise prior behavior; debt_safe(S,H) is true and debt_check(S)=S. The new drive wrapper takes its empty-debt arm, exactly the prior output/GC/destruction transition, and debt-blocked is false throughout. Complete parent30/39/40/84/190/413 are retained; no arithmetic/numeric/shared-reader interface changed. Source10@2d6ca1eeb and state767@1ed6e0127 retain private405 cuts without actor/replay/renewed credit."
+  }
+}

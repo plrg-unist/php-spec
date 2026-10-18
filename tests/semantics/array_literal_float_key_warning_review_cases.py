@@ -55,7 +55,7 @@ echo "U:",isset($dest),":",isset($copy),":",isset($outside),";";
 }
 
 BOUNDARIES = {
-    'array-literal-float-review-reference-entry': 'array literal float-key reference after callback',
+    'array-literal-float-review-reference-entry': 'array literal reference deficit lifetime',
 }
 
 NATIVE_PROBES = {

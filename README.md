@@ -23,10 +23,12 @@ after callback effects. Other comparison warning paths remain partial.
 [Array-literal float keys](docs/semantics/DIMENSIONS.md) now retain their converted
 integer across deprecation handlers. Unwrapped null/bool/int/float element variables
 remain live, while runtime array temporaries retain their own tables. Reference
-elements transfer a stable cell normally; scalar retargeting retains the acquired
-old wrapper for the request, including on throw. Duplicate replacement and later
-items stay ordered. Retargeting to a different reference cell and wider domains
-remain partial.
+elements transfer a stable cell normally; retargeting preserves the acquired
+count, cancelling existing debt before retaining unmatched old owners for the
+request, including on throw. Different-reference retargeting between primitive
+untyped cells also tracks the new cell's missing owner until it is balanced.
+Copies distinguish shared and singleton references; unsafe deficit retirement and
+wider domains remain Unsupported. Duplicate replacement and later items stay ordered.
 
 [Destructuring key warnings](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md)
 now retain captured arrays or source reference cells through handlers, including
@@ -647,6 +649,14 @@ and cancellation by a final power-deprecation throw in the
 [mixed-arithmetic ledger](coverage/semantics/mixed-arithmetic-warning-review.json).
 A surviving alias keeps the selected reference live; wider forms remain partial.
 
+Evaluated scalar copies now join ordinary arithmetic Warning continuations.
+They keep their saved values and error types after source variables change or
+vanish. Multiplication follows PHP's physical opcode order: a literal-left/CV-right
+witness yields `60` after two Warnings. Ten originals and 767 focused premises also
+check strict float `68.75` and final power cancellation in the
+[copied-arithmetic ledger](coverage/semantics/copied-arithmetic-warning-review.json).
+Quiet/no-Warning orders and owning or wider copied inputs remain partial.
+
 Primitive plain-CV `**=` now commits its captured result even when the deprecation
 handler throws. A late alias detaches before the same exception continues; the
 outer assignment stays unchanged. Three exact originals and 407 focused SL
@@ -1029,6 +1039,11 @@ Its current copy survives receiver cleanup; getters remain available, but later
 resumption is Unsupported. Explicit
 close preserves the pinned parked-frame finally omission. See the
 [pending-throw review](coverage/semantics/generator-pending-throw-review.json).
+The actual detached middle also accepts an owning simple-CV copied return on
+pending `throw`: getters stay live, close omits finally and retains the return,
+and a separate cache snapshot can replace the exception before catch. Array/cache
+aliases and mutable returned cells preserve their separate owners. See the
+[owning THROW review](coverage/semantics/generator-pending-owning-return-throw-review.json).
 With a buffered input, pending `throw` preserves its count; physical close retains
 it until request-store destruction, including receiver cleanup before caller
 catch. The independent current copy can still trigger a replacement exception. See the
@@ -4079,9 +4094,12 @@ detached rNULL/b7, including operation metadata refusals and exact budgets. M109
 final-empty 325/6 keeps its separate cut. A pending final pair also resumes across
 the full cleanup interval: 556/18 at `c0bc7a9b4` preserves its destructor
 TypeError and fresh NULL reference recovery with zero Notices, live z and detached
-r/b aliases. Historical source/native credit is unchanged. Still-owning pending
-partial pairs, wider histories, interposed lifecycle capture and broader consumers
-remain open.
+r/b aliases. A still-owning pending partial pair passes 684/18 at `3c90313b4`:
+the required outer task survives cleanup and local C, then one old-line9 VALUE
+Notice precedes fresh NULL recovery; later r writes preserve b/z/y. Owner-only
+deletions refuse despite a valid heap and live global z. Historical source/native
+credit is unchanged. Wider histories, interposed lifecycle capture, reentry, GC
+and broader consumers remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

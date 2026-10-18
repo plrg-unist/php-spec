@@ -114,6 +114,13 @@ argument cleanup, including reference-row COW; the return keeps its independent
 owner through normal next or close and later embedded-cell writes. The
 [owning SEND review](../../coverage/semantics/generator-pending-owning-return-send-review.json)
 also checks a snapshot destructor after receiver retirement and its previous chain.
+Pending `throw` on the actual detached middle likewise leaves its owning simple-CV
+return intact, but parks the frame before caller escape. Getters preserve current;
+close omits that frame's finally and retains the copied return independently of
+the transient cache snapshot. A return/cache array alias keeps separate container
+counts with one element-edge set; later raw-cache COW and embedded-cell writes
+remain live. See the [owning THROW review](../../coverage/semantics/generator-pending-owning-return-throw-review.json).
+Owning pending THROW through an ancestor and later parked resume remain open.
 Pending `send` through native shared links can now buffer a paused child's yield
 result when it is assigned directly to a simple CV. When a direct or forwarded
 `next` resumes the child, it consumes that value without adding another owner.

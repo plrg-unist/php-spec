@@ -204,7 +204,7 @@ cancels delivery and preserves the destination. Three exact originals plus
 265 author and 101 independent SL premises pass in the
 [power-warning ledger](../../coverage/semantics/power-warning-review.json).
 Counterfeit source/cache/range/metadata states are validator negatives only.
-Copied and wider operand/callback/lifecycle forms remain partial.
+Other copied and wider operand/callback/lifecycle forms remain partial.
 
 Binary `**` also admits leading numeric LEFT strings on two preexisting untyped
 reference cells. Both referents are selected first; the LEFT Warning may repair initially
@@ -263,8 +263,25 @@ entry, cached float `68.75` after old-RHS rebinding, old bool-string TypeError,
 cached-zero division after RHS-name unset and final supplied-throw cancellation.
 Old and replacement cell owners, exact atomic effects and budgets are recorded in
 the [mixed-arithmetic ledger](../../coverage/semantics/mixed-arithmetic-warning-review.json).
-Copied/reference-result/owning operands, unheld referent lifetimes, wrapping a
+Other copied/reference-result/owning operands, unheld referent lifetimes, wrapping a
 pending plain input and wider callbacks remain partial; OP12 remains paused.
+
+Staged arithmetic Warnings also admit evaluated nonowning scalar copies from
+literals, unary/selected-ternary expressions and by-value named returns, paired
+with another copy, a plain CV or a selected live reference. Copies keep raw values
+independently of their originating variables: repairing a source cannot repair a
+copied bad RHS, and unsetting sources does not invalidate captured numbers.
+Descriptors retain lexical operands; MUL alone follows the pinned opcode slot-rank
+swap when choosing conversion and raw-error pointers. Thus literal-left/CV-right
+`12tail * 5tail` yields `60` with two Warnings, while by-value-VAR/TMP multiplication
+stays unswapped. Fresh COPY checks use saved values; returned/final holders remain
+historical. Old entry controls/readers stay exact and old unswapped pointer choices
+are equivalent through the phase adapter. Ten originals and 767 focused premises
+check real phases, physical bool-string errors, copied raw-type labels, strict
+`68.75` after both origin names disappear and final power supplied-throw cancellation
+in the [copied-arithmetic ledger](../../coverage/semantics/copied-arithmetic-warning-review.json).
+Quiet/no-Warning MUL ordering, owning/reference-result payloads, other producers,
+pending-CV wrapping and wider lifetimes remain partial; OP12 stays paused.
 
 Primitive plain-CV `**=` now retains both numbers and the original target binding
 through zero-base/negative-exponent deprecation. Normal return stores the captured

@@ -39,8 +39,8 @@ borrowed registries. M108 single 288/7, M106 partial 296/7 and M107 final 275/7
 reached proofs cover every cleanup budget, original diagnostics, aliases and
 complete budget identity at distinct tested cuts.
 
-Pending single-cursor and final-pair cleanup can project same-scope release/storage
-prefixes through one normal auxiliary THROW_SEARCH exit to the existing final-empty release
+Pending single-cursor and adjacent partial/final-pair cleanup can project same-scope
+release/storage prefixes through one normal auxiliary THROW_SEARCH exit to the existing final-empty release
 and pending-return validator. The auxiliary SOURCE must name the same pending
 Throwable and retain empty PENDING plus NORMAL completion; it cannot hide a future
 abrupt restoration. Full source/finite-Throwable/cursor or mixed-pair checks remain
@@ -54,8 +54,14 @@ same-TypeError replay and fresh NULL reference recovery with no Notice. The
 computed outer/CV inner pair is root-free; z's object and prior b7 stay live while
 r detaches. All eight public pauses match raw states, with the same precise row
 prune; source/LINE/scope/registry and physically valid malformed auxiliary records
-refuse. Other pending histories, still-owning partial pairs, interposed capture,
-wider owners/reentry and GC remain open. [Review and recovery](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+refuse. M112's 684/18 owning partial-pair proof reuses the same view while
+preserving the required outer HCELL task. Virtual auxiliary EXIT validation rebases
+only outer.OUTER to the actual inner.OUTER; the real outer-origin entry still
+refuses. Removing only the task refuses with unchanged stores/allocations/reference
+cells, valid heap and live global z. Same-TypeError C, inner KNOWN NULL/one line9
+VALUE Notice, fresh caller NULL and later r-only write agree with exact budgets.
+Other pending histories, interposed capture/EXIT, wider owners/reentry and GC remain
+open. [Review and recovery](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
 Pruning prepares the object store and fatal marks once, then selects the same
 unsupported, refused, pending-release or store-drop result. Unmatch in preparation,
