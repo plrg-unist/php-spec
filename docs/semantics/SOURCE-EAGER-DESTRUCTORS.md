@@ -39,11 +39,16 @@ borrowed registries. M108 single 288/7, M106 partial 296/7 and M107 final 275/7
 reached proofs cover every cleanup budget, original diagnostics, aliases and
 complete budget identity at distinct tested cuts.
 
-One empty release directly before a pending single-cursor exit delegates to the
-unchanged live finite-Throwable/source/full-cursor validator. M109's 325/6 proof
-preserves the destructor TypeError through local CT and consumed NULL, then one
-VALUE Notice at old source line5 and detached rNULL/b7. Earlier auxiliary-operation/
-storage intervals, pending-pair prefixes, interposed capture, wider owners/reentry and GC
+Pending single-cursor cleanup can project same-scope release/storage prefixes
+through one normal auxiliary THROW_SEARCH exit to the existing final-empty release
+and pending-return validator. The auxiliary SOURCE must name the same pending
+Throwable and retain empty PENDING plus NORMAL completion; it cannot hide a future
+abrupt restoration. Full source/finite-Throwable/cursor checks remain unchanged.
+M110's 452/16 proof covers all seven cleanup transitions and pending replay with
+one ordinary empty-property-row prune, unchanged GC and exact budgets. The same
+TypeError reaches CT, then consumed NULL gives one VALUE Notice at old source line5
+and detached rNULL/b7. M109's final-empty 325/6 retains its separate cut. Other
+pending histories, pending pairs, interposed capture, wider owners/reentry and GC
 remain open. [Review and recovery](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
 Pruning prepares the object store and fatal marks once, then selects the same
