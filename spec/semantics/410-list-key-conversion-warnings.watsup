@@ -1,0 +1,64 @@
+;; FETCH_LIST_R freezes the converted integer before slow_index_convert calls
+;; the handler, but looks up the saved table only after that handler returns.
+dec $list_float_key_source(pstate, nat, nat, expression, phpType13*, int, nat, int) : bool
+def $list_float_key_source(S, n_array, n, expression, phpType13*, z, n_bits, i) = true
+  -- if $(n_bits < 18446744073709551616)
+  -- if $float_long(n_bits, true) = (i, [PRECISIONLOSS])
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (expression_pattern)
+  -- if $list_pattern(expression_pattern) = (phpType13_all*)
+  -- if $list_missing_flat(phpType13_all*) /\ ~$list_references(phpType13_all*)
+  -- if $reference_origin_parent(porigin, 1) = ((porigin_assign, [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin_assign) = (NExprAssign expression_pattern expression_rhs metadata)
+  -- if $list_value_cv(expression_rhs) = (n_source*)
+  -- if $list_missing_integer_cv_item(S, n, expression, phpType13*, z) = (VARIABLE n_key* z_key)
+  -- if $list_missing_source(S, KNOWN (PARRAY n_array), n, expression, phpType13*, z, KINT i)
+def $list_float_key_source(S, n_array, n, expression, phpType13*, z, n_bits, i) = false -- otherwise
+
+dec $list_float_key_plan(pstate) : (nat, nat, expression, phpType13*, int, nat, int)?
+def $list_float_key_plan(S) = ((n_array, n, expression, phpType13*, z, n_bits, i))
+  -- if S.TODO = (LIST_FETCH (KNOWN (PARRAY n_array)) n expression false phpType13* z) :: ptask_tail*
+  -- if $list_missing_integer_cv_item(S, n, expression, phpType13*, z) = (VARIABLE n_key* z_key)
+  -- if S.RESULT = VARIABLE n_key* z_key
+  -- if ~$environment_blocked(S, n_key*)
+  -- if $lookup(S.ENV, n_key*) = (n_cell)
+  -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
+  -- if S.STORE[n_cell] = DEFINED (PFLOAT n_bits)
+  -- if $(n_bits < 18446744073709551616)
+  -- if ~$foreach_released_container_cell(S, n_cell) /\ ~$update_released_array_name(S, n_key*)
+  -- if $float_long(n_bits, true) = (i, [PRECISIONLOSS])
+  -- if $list_float_key_source(S, n_array, n, expression, phpType13*, z, n_bits, i)
+def $list_float_key_plan(S) = eps -- otherwise
+
+def $list_float_key_pending(S) = true
+  -- if $error_handler_eligible(S, 8192) \/ $error_handler_eligible(S, 2)
+  -- if $list_float_key_plan(S) =/= eps
+def $list_float_key_pending(S) = false -- otherwise
+
+dec $list_float_key_message(nat) : nat*
+def $list_float_key_message(n_bits) = n_message*
+  -- if $integer_float_notices([PRECISIONLOSS], n_bits) = [(8192, n_message*)]
+
+rule PhpStep/list-float-key-warning: S ~> $error_dispatch(S, 8192, $list_float_key_message(n_bits), z, DIAGNOSTIC "Deprecated" $list_float_key_message(n_bits) z, LIST_KEY_FLOAT_RESULT n_array n expression phpType13* z n_bits i)
+  -- if $list_float_key_pending(S)
+  -- if $list_float_key_plan(S) = ((n_array, n, expression, phpType13*, z, n_bits, i))
+rule PhpStep/list-float-key-result: S ~> S[.TODO = $list_fetched_tasks(S[.RESULT = KNOWN pvalue], KNOWN (PARRAY n_array), n, expression, false, phpType13*, z) ++ ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (LIST_KEY_FLOAT_RESULT n_array n expression phpType13* z n_bits i) :: ptask_tail*
+  -- if $list_float_key_source(S, n_array, n, expression, phpType13*, z, n_bits, i)
+  -- if $entry_lookup(S.ARRAYS[n_array].ITEMS, KINT i) = (pitem)
+  -- if pvalue = $entry_read_value(S, pitem)
+rule PhpStep/list-float-key-missing: S ~> $error_dispatch(S, 2, $list_missing_message(KINT i), z, DIAGNOSTIC "Warning" $list_missing_message(KINT i) z, LIST_MISSING_RESULT (KNOWN (PARRAY n_array)) n expression phpType13* z (KINT i))
+  -- if S.TODO = (LIST_KEY_FLOAT_RESULT n_array n expression phpType13* z n_bits i) :: ptask_tail*
+  -- if $list_float_key_source(S, n_array, n, expression, phpType13*, z, n_bits, i)
+  -- if $entry_lookup(S.ARRAYS[n_array].ITEMS, KINT i) = eps
+
+def $call_task_valid(S, LIST_KEY_FLOAT_RESULT n_array n expression phpType13* z n_bits i) = $list_float_key_source(S, n_array, n, expression, phpType13*, z, n_bits, i)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = LIST_KEY_FLOAT_RESULT n_array n expression phpType13* z n_bits i
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if $list_float_key_source(S, n_array, n, expression, phpType13*, z, n_bits, i)
+  -- if perrorcall.LEVEL = 8192
+  -- if perrorcall.LINE = z
+  -- if perrorcall.MESSAGE = $list_float_key_message(n_bits)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" $list_float_key_message(n_bits) z
+def $task_nodes(LIST_KEY_FLOAT_RESULT n_array n expression phpType13* z n_bits i) = [HARRAY n_array]
