@@ -148,7 +148,9 @@ S_left_found.COMPLETION = NORMAL \/ S_left_found.COMPLETION = BUDGET
 S_left = S_left_found[.COMPLETION = NORMAL]
 $di_stage(S_left,DI_DTOR n_left)
 $di_output(S_left.EVENTS) = ptbytes_initial ++ $ptascii("R|")
-$destructor_operation_for(S_left) = (pdestructionoperation_left)
+S_left.CURRENT = (pcallcontext_left)
+$destructor_context_call(pcallcontext_left,S_left.CURRENT,S_left.FRAMES) = (pdestructorcall_left)
+pdestructorcall_left.OPERATION = (pdestructionoperation_left)
 pdestructionoperation_left.VALUE = KNOWN (PBOOL true)
 pdestructionoperation_left.SOURCE = INSTANCEOF_DYNAMIC_RESULT poperand_left (POBJECT n_rhs) z_left
 ~(HOBJECT n_rhs <- S_left.ALLOCATIONS)
@@ -271,7 +273,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--revision', required=True)
     parser.add_argument('--prepare-only', action='store_true')
-    parser.add_argument('--case', choices=('borrowed', 'owning', 'strings', 'invalid'))
+    parser.add_argument('--case', action='append', choices=('borrowed', 'owning', 'strings', 'invalid'))
     args = parser.parse_args()
     recorder.ROOT = ROOT
     catalogue = HERE / 'instanceof_dynamic_cases.json'
@@ -283,7 +285,7 @@ def main():
     selected = list(data['cases'])
     assert len(selected) == 4
     if args.case:
-        selected = [case for case in selected if case['id'] == args.case]
+        selected = [case for case in selected if case['id'] in args.case]
     php, adapter, bridge, worker, runner, compiler = (ROOT / name for name in [
         '.tools/php/bin/php', '_build/default/adapter/main.exe', '.tools/php-file.so',
         'frontend/worker.php', 'tests/semantics/_build/default/numeric_runner.exe', '.tools/spectec/bin/p4spectec'])
