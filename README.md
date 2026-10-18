@@ -4124,8 +4124,12 @@ r/b aliases. A still-owning pending partial pair passes 684/18 at `3c90313b4`:
 the required outer task survives cleanup and local C, then one old-line9 VALUE
 Notice precedes fresh NULL recovery; later r writes preserve b/z/y. Owner-only
 deletions refuse despite a valid heap and live global z. Historical source/native
-credit is unchanged. Wider histories, interposed lifecycle capture, reentry, GC
-and broader consumers remain open.
+credit is unchanged. An unused destructor declaration now also preserves the
+no-instance, echo-only interposed scalar history. Fresh control/treatment sources
+agree with PHP; separate 463/8 state checks cover its shared-cell RELEASE/EXIT
+pauses, required literal history despite an unchanged heap, engine TypeError catch,
+one line7 Notice and detached aliases. Wider interposed/pending histories, reentry,
+GC and broader consumers remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;
