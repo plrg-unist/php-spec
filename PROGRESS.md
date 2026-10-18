@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Quiet ternary-copy/plain-CV POWER now reaches final deprecation with an
+`E_DEPRECATED`-only named handler. Three originals pass at `551d61055`/405;
+two focused fixtures pass 266 premises at `8deff7b83`/405, covering signed infinity
+after origin unsets and same-Exception cancellation before assignment.
+[Quiet-power-copy ledger](coverage/semantics/quiet-power-copy-review.json).
+Other quiet-power producers and wider operands/lifetimes remain partial; OP12 paused.
+
+Composed over `dba71ba43`/405, preserving incoming fields, task variants
+and manifest. Source3/state266 retain their private405 cuts; independently reviewed
+incoming selectors require no joined execution or renewed credit.
+
 Pending `send` now follows finite native ancestor links to an owning simple-CV
 copied return, including first refresh inside the call. Only the receiver clears
 initialization; the physical middle keeps its waiting return and history. The
@@ -79,16 +90,8 @@ missing-CV comparisons, MULTIPLY, dynamic NEW, Generator and float-key/reference
 debt producers are absent. Private source4/state746 retain their cuts without a
 joined actor or accepted replay.
 
-Quiet scalar MUL TypeErrors now follow the pinned physical operand order.
-Seven originals pass at `cfbf2b96b`/405; two focused fixtures pass 217 premises at
-`361aef83e`/405, including saved TMP bad text after origin repair, raw THROWN and
-fresh TypeError at line 25 without assignment. Numeric products and staged Warnings
-retain their old paths; five linked rows stay partial. [Quiet-MUL ledger](coverage/semantics/quiet-multiply-order-review.json).
-OP12 paused; undefined/owning inputs and wider diagnostic orders remain open.
-
-Composed over `711e93577`/405, preserving incoming fields, task variants
-and manifest. Source7/state217 retain their private405 cuts; independently reviewed
-incoming selectors require no joined execution or renewed credit.
+Earlier quiet scalar MUL ordering retains source7/state217 in its
+[review ledger](coverage/semantics/quiet-multiply-order-review.json).
 
 Quiet scalar flags now admit already-certified object `define` payloads while
 retaining the raw argument and earlier pointer across callback CV/property

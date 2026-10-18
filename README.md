@@ -691,6 +691,13 @@ callbacks and cancelled result assignment in the
 [quiet-MUL ledger](coverage/semantics/quiet-multiply-order-review.json).
 Numeric products and staged Warning rules retain their existing paths.
 
+Quiet `**` now admits a ternary scalar LEFT copy with a plain RHS variable
+when only final power deprecation occurs. An `E_DEPRECATED`-only handler may
+change or unset the source variables without changing captured signed infinity;
+a supplied throw cancels assignment. Three originals and 266 focused premises
+pass in the [quiet-power-copy ledger](coverage/semantics/quiet-power-copy-review.json).
+Other producer classes and operand/lifecycle forms remain partial.
+
 Primitive plain-CV `**=` now commits its captured result even when the deprecation
 handler throws. A late alias detaches before the same exception continues; the
 outer assignment stays unchanged. Three exact originals and 407 focused SL
