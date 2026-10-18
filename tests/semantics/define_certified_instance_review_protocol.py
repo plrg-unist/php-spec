@@ -82,7 +82,9 @@ def checks(initial, stdout):
         *define.property_value('S_fresh', 'n_right', 23, 'right_start'),
         # Pure receipt controls are never driven.
         'S_missing = S_fresh[.CONSTANTOBJECTS = eps]',
-        '$dynamic_define_value_class(S_missing,POBJECT n_right) = eps',
+        '$dynamic_define_value_class(S_missing,POBJECT n_right) = (PVOBJECT)',
+        '~$constant_value_class_valid(S_missing,POBJECT n_right,PVINSTANCE n_right pconstantobject_right.SITE)',
+        '~$user_constants_valid(S_missing,S_missing.USERCONSTANTS)',
         'S_incomplete = S_fresh[.CONSTANTOBJECTS = $global_new_record_put(S_fresh.CONSTANTOBJECTS,pconstantobject_right[.COMPLETE = false])]',
         '$dynamic_define_value_class(S_incomplete,POBJECT n_right) = eps',
         'S_bad_site = S_fresh[.CONSTANTOBJECTS = $global_new_record_put(S_fresh.CONSTANTOBJECTS,pconstantobject_right[.SITE = pconfigcall_fresh.SITE])]',

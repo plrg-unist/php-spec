@@ -57,8 +57,14 @@ def controls(obj, record):
         ('site', f'[.CONSTANTOBJECTS = $global_new_record_put(S.CONSTANTOBJECTS,{record}[.SITE = PORIGIN 0 eps])]'),
         ('prefix', f'[.CONSTANTOBJECTS = $global_new_record_put(S.CONSTANTOBJECTS,{record}[.PREFIX = 0])]'),
         ('dead', f'[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS,HOBJECT {obj})]')]:
-        values += ['S_' + suffix + ' = S' + change,
-            f'$dynamic_define_value_class(S_{suffix},POBJECT {obj}) = eps']
+        values += ['S_' + suffix + ' = S' + change]
+        if suffix == 'missing':
+            # Structural fallback does not validate the old certified donor rows.
+            values += [f'$dynamic_define_value_class(S_missing,POBJECT {obj}) = (PVOBJECT)',
+                f'~$constant_value_class_valid(S_missing,POBJECT {obj},PVINSTANCE {obj} {record}.SITE)',
+                '~$user_constants_valid(S_missing,S_missing.USERCONSTANTS)']
+        else:
+            values += [f'$dynamic_define_value_class(S_{suffix},POBJECT {obj}) = eps']
     return [*values, '$dynamic_define_value_class(S,POBJECT (|S.OBJECTS|)) = eps']
 
 

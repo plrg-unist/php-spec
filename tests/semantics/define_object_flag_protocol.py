@@ -125,7 +125,7 @@ def literal(initial, stdout):
         'pconfigcall_bad = pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT,0,KNOWN (PSTRING_CARRIER (REQUEST_STRING n_bad_string) ($ptascii("V79_TRUE"))))]',
         '$config_invoke_valid(S,pconfigcall_bad)',
         '~$dynamic_constant_case_valid(S,pconfigcall_bad)',
-        '~$dynamic_constant_case_valid(S[.CONSTANTOBJECTS = eps],pconfigcall)',
+        '$dynamic_constant_case_valid(S_missing,pconfigcall)',
         '~$dynamic_constant_case_valid(S,pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT,2,KNOWN (PINT 1))])',
         'S_pause = $drive_steps(S,0)', 'S_pause = S[.COMPLETION = BUDGET]',
         'S_resume = $test_running(S_pause)', 'S_resume = S',
