@@ -2101,6 +2101,7 @@ def $dynamic_array_duplicate_call_valid(S, pconfigcall, n_constants) = false -- 
 def $dynamic_array_duplicate_valid(S, pconfigcall, n_candidate, pvalueclass, n_constants) = true
   -- if $dynamic_array_duplicate_call_valid(S, pconfigcall, n_constants)
   -- if $dynamic_define_values(pconfigcall) = ((preqbytes, PARRAY n_input))
+  -- if $(n_input < |S.ARRAYS|) /\ S.ARRAYS[n_input].ITEMS =/= eps
   -- if n_candidate =/= n_input
   -- if $(n_candidate < |S.ARRAYS|) /\ S.ARRAYS[n_candidate].ITEMS =/= eps
   -- if $dynamic_array_value(S, PARRAY n_candidate, eps, false) = ((S, PARRAY n_candidate, pvalueclass))
