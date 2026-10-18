@@ -155,7 +155,8 @@ dec $property_coalesce_plan(pstate) : ppropertycoalesce?
 def $property_coalesce_plan(S) = (ppropertycoalesce)
   -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: (ORIGIN_RETURN (porigin_parent)) :: (COALESCE_QUIET expression_right z_left z_right) :: ptask_tail*
   -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
-  -- if S.ORIGIN = (porigin) /\ S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if S.ORIGIN = (porigin)
+  -- if S.BASE = BASE_VALUE (KNOWN PNULL)
   -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata)
   -- if S.RESULT = VARIABLE $base64(text_receiver) $variable_line(BYTES text_receiver, metadata_receiver)
   -- if S_read = $quiet_operand(S, S.RESULT)
