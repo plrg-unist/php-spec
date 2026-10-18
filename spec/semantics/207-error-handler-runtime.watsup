@@ -357,7 +357,7 @@ def $error_read_plan(S) = (perrorread)
   -- if $error_read_state_shape(S, ptask, S.RESULT, S.BASE) = (perrorread)
   -- if $error_missing_operand(S, $error_read_operand(perrorread))
   -- if $error_read_source(S, perrorread)
-  -- if $spaceship_read_other(S, perrorread)
+  -- if $spaceship_read_other(S, perrorread) \/ $scalar_compare_missing_pair(S, perrorread)
   -- if $scalar_compare_read_other(S, perrorread) \/ $scalar_compare_missing_pair(S, perrorread)
 def $error_read_plan(S) = (perrorread)
   -- if S.TODO = ptask :: ptask_tail*
@@ -439,7 +439,7 @@ def $scalar_compare_read_other(S, perrorread) = true -- otherwise
 ;; physical OP2 before its UNDEF check; a returning handler must leave it scalar.
 def $scalar_compare_missing_pair(S, perrorread) = true
   -- if perrorread.ORIGINAL = BINARY_RIGHT pbin (VARIABLE n_left* z_left) z
-  -- if pbin = EQUAL \/ pbin = NOTEQUAL \/ pbin = LESS \/ pbin = LESSEQUAL
+  -- if pbin = EQUAL \/ pbin = NOTEQUAL \/ pbin = LESS \/ pbin = LESSEQUAL \/ pbin = SPACESHIP
   -- if perrorread.INPUT = VARIABLE n_right* z_right
   -- if n_left* =/= n_right*
   -- if $error_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread)
