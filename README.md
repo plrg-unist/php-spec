@@ -2284,6 +2284,13 @@ premises/10 actual steps preserve signed aggregate continuation, ownership and
 quiet later casters. Other Closure representations and wider lifetimes remain
 partial. [Constructor-pair review](coverage/semantics/constructor-closure-comparison-review.json).
 
+Authentic internal-getter Closures compare equal across direct/factory sites and
+clones when receiver, method and C owner match. Distinct receivers stay unequal
+even with matching fields. Three originals and 617 Boolean premises/12 actual
+steps preserve caches, ownership and signed aggregate continuation. Other capture
+representations and wider lifetimes remain partial.
+[Getter-pair review](coverage/semantics/getter-closure-comparison-review.json).
+
 [Numeric object comparison Notices](coverage/semantics/object-numeric-comparison-review.json)
 now pause ordinary source-instance/int/float leaves through real error handlers.
 Live CV/cell reads remain distinct from copies; a second Notice uses saved 1/1.0,

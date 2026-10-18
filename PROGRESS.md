@@ -7,6 +7,27 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Authentic internal-getter Closures now compare equal for the same receiver,
+method and C owner, independently of direct/factory creation site. Distinct
+receivers remain uncomparable even when their fields and held Map match; different
+methods and strict identity stay separate. Both unchanged originals completed
+normally with wrong direct equality rows; the Throwable factory control stayed
+correct.
+Three originals and 617 Boolean premises (593 setup + 24 pure)/12 actual comparison
+steps pass at 3b113a3dd/399. Source Throwable/getValue and cold inherited formatter
+captures preserve receiver/Map/private-value/key/trace ownership, caches, scopes
+and budgets. Equal array leaves continue to integer tails; distinct receivers skip
+later casters. Later real getter/formatter calls and casts reuse existing protocols.
+No actor failed; native/baseline/preparation/EL retain zero credit. Other capture
+representations and wider lifetimes remain partial; carrier, factory-clone, special
+intrinsic and uninitialized-wrapper gaps stay separate.
+[Getter-pair review](coverage/semantics/getter-closure-comparison-review.json).
+
+Composed over 61dac8e85/401 after pointwise review of the new LIST-key and
+public-NaN modules, Generator parked/throw tasks, constant-query/array-copy rules
+and reference-return destructor selector, all inactive here. Source3/state617
+retain their private399 cut; no joined actor or renewed execution credit.
+
 Positional `constant`/`defined` calls with zero or two primitive arguments now
 raise ArgumentCountError before string reception and lookup, after every argument
 effect. Raw NULL remains unconverted in ordinary and strict API traces; captured
