@@ -691,6 +691,13 @@ callbacks and cancelled result assignment in the
 [quiet-MUL ledger](coverage/semantics/quiet-multiply-order-review.json).
 Numeric products and staged Warning rules retain their existing paths.
 
+Quiet `**` now admits a ternary scalar LEFT copy with a plain RHS variable
+when only final power deprecation occurs. An `E_DEPRECATED`-only handler may
+change or unset the source variables without changing captured signed infinity;
+a supplied throw cancels assignment. Three originals and 266 focused premises
+pass in the [quiet-power-copy ledger](coverage/semantics/quiet-power-copy-review.json).
+Other producer classes and operand/lifecycle forms remain partial.
+
 Primitive plain-CV `**=` now commits its captured result even when the deprecation
 handler throws. A late alias detaches before the same exception continues; the
 outer assignment stays unchanged. Three exact originals and 407 focused SL
@@ -1062,6 +1069,11 @@ An owning copied return at a simple-CV assigned `yield from` also supports that
 pending `send`: the return stays intact until actual next or close. The cache
 snapshot precedes argument cleanup and can outlive receiver retirement when an
 argument destructor throws. See the [owning SEND review](coverage/semantics/generator-pending-owning-return-send-review.json).
+Pending `send` also follows finite native ancestor links to that owning return,
+including refresh inside the call. It clears only the receiver's initialization;
+the physical middle keeps its return and pending history. Its cache snapshot
+survives normal argument cleanup, reference-row COW and receiver retirement.
+See the [ancestor SEND review](coverage/semantics/generator-pending-owning-chain-send-review.json).
 Pending `send` through native shared links also buffers a paused child's yield
 assigned directly to a simple CV. A direct or forwarded `next` that resumes the
 child consumes it; close and overwrite preserve its count until request-store destruction,

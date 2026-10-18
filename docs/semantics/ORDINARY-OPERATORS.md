@@ -311,6 +311,18 @@ exception. The destination stays unchanged and no Warning callback runs; see the
 [quiet-MUL ledger](../../coverage/semantics/quiet-multiply-order-review.json).
 Undefined/owning inputs, wider producers and other diagnostic orders remain partial.
 
+Quiet POWER now also admits an authenticated ternary LEFT scalar copy and a
+plain RHS CV. Both numeric conversions are quiet, so a single step captures the
+holders and enters the existing final Deprecated continuation; the named handler
+needs only `E_DEPRECATED`, with no conversion Warning. Final dispatch and finish
+retain historical numbers after source writes or unsets: captured holders
+`0.0`/`-2` yield `+INF`, and `-0.0`/`-3` yield `-INF`. A supplied Exception cancels
+outer result delivery while preserving callback writes and destination100. Three originals and 266
+focused premises cover direct ingress, real handler frames, default Deprecated,
+same-Exception cancellation and missing-source history in the
+[quiet-power-copy ledger](../../coverage/semantics/quiet-power-copy-review.json).
+Other quiet-power producers, reference/owning operands and wider lifetimes remain partial.
+
 Primitive plain-CV `**=` now retains both numbers and the original target binding
 through zero-base/negative-exponent deprecation. Normal return stores the captured
 signed result. A throwing handler also commits and detaches a late target alias

@@ -121,6 +121,15 @@ argument cleanup, including reference-row COW; the return keeps its independent
 owner through normal next or close and later embedded-cell writes. The
 [owning SEND review](../../coverage/semantics/generator-pending-owning-return-send-review.json)
 also checks a snapshot destructor after receiver retirement and its previous chain.
+That owning return may also wait below a finite native ancestor receiver. Pending
+`send` can refresh and detach the completed child itself, then clears only the
+receiver's initialization bit. The physical middle keeps its pending bit and
+owning COMPLETE. The cache is captured before argument cleanup. After COW, its
+snapshot and the copied return own two old-array counts with one element-edge
+set; the raw reference cache follows the new array. The
+[ancestor SEND review](../../coverage/semantics/generator-pending-owning-chain-send-review.json)
+also checks a used cache after all Generator aliases retire and ordinary next
+consumption versus inherited-pending close.
 Pending `throw` on the actual detached middle likewise leaves its owning simple-CV
 return intact, but parks the frame before caller escape. Getters preserve current;
 close omits that frame's finally and retains the copied return independently of
