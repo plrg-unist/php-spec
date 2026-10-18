@@ -566,6 +566,15 @@ number despite later invalid writes. Two exact originals and 159 genuine state
 premises check the ordinary TypeError, unchanged destination and warning priority.
 [ADD failure evidence](coverage/semantics/arithmetic-failure-review.json) retains
 the original Unsupported baseline; wider operand and lifecycle forms remain partial.
+
+Leading-numeric-string `-` and `*` now retain both selected reference cells and
+numeric holders through named Warning handlers. A first handler can repair an
+initially nonnumeric RHS; rebinding its variable name cannot redirect the selected
+referent. Seven originals and 834 focused SL premises cover cached integer results,
+strict float `68.75`, live-type TypeError, both supplied-throw fronts and default
+warnings. [SUB/MUL evidence](coverage/semantics/submul-warning-review.json) retains
+the baseline; wider operand and lifecycle forms remain partial.
+
 Leading-numeric-string `/` now retains selected reference cells and captured
 numbers through the same bounded named-handler route. A handler can make the
 next divisor zero; a second handler cannot replace an already-captured zero by

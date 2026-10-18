@@ -64,6 +64,20 @@ source/phase/expiry guards, sole Error ownership and budget resumption in the
 [ADD failure ledger](../../coverage/semantics/arithmetic-failure-review.json).
 
 
+Binary `-` and `*` now have a separate named-handler continuation for the same
+bounded preexisting reference-cell class. Both cells are selected before LEFT
+conversion, but RHS conversion waits until LEFT's handler returns, so initially bad
+text can be repaired. Each numeric holder survives its own Warning; later RHS
+name rebinding leaves the selected old referent in use while a real alias keeps
+it live. Cached `12` and `5` give `7`/`60`; fractional `12.5` and `5.5` give float `68.75` after live
+values become invalid. Failed RHS conversion instead reports the live selected
+types, and supplied throws cancel result delivery while preserving callback writes.
+Seven exact originals and 834 focused premises check real dispatch/entered phases,
+default Warning bytes, selected-cell owners and budget resumption in the
+[SUB/MUL ledger](../../coverage/semantics/submul-warning-review.json). Plain/mixed,
+owning/constrained/expired and wider arithmetic/lifecycle forms remain partial;
+old ADD/DIV rules and evidence are unchanged.
+
 Numeric compound `+=` now stages the same leading-left warning for direct CVs
 with preexisting untyped reference cells and a quiet numeric RHS. The saved left
 number and both selected addresses survive a named handler. On return, the live

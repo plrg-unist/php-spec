@@ -7,6 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Ordinary binary SUB/MUL now resumes leading-numeric-string warnings for two
+preexisting untyped reference cells. Both referents are selected before conversion;
+LEFT's handler may repair an initially nonnumeric RHS, and a later name rebind
+cannot redirect that selected cell. Cached integers produce `7`/`60`; captured fractional
+numbers produce strict float `68.75` despite poisoned live values. Failed RHS conversion
+uses live bool/string labels; supplied throws cancel result delivery while callback
+writes survive. Seven originals pass at 57da6d40c/401 and five focused fixtures pass
+834 SL premises at dac9114e8/401. All nine affected rows remain partial, ADD/DIV evidence
+is unchanged, OP12 paused. [SUB/MUL ledger](coverage/semantics/submul-warning-review.json).
+
+Composed over a8fb81673/401 after ten incoming runtime paths were reviewed.
+Magic properties, Closure-bind traces, LIST staging, parked Generator retention
+and DEFINE conversion/pending-array selectors are absent from these scalar/reference
+sources. All incoming paths and existing ADD/DIV bodies are preserved; source7
+and state834 retain their private401 cuts without replay.
+
 A pending exception from the ignored-case Warning now survives cyclic-array
 validation without a new ValueError, copy or key lookup. Acyclic duplicates still
 copy before registration; ordinary cleanup retires the rejected containers while
