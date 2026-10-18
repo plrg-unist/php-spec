@@ -121,6 +121,12 @@ no-GC decrement. Borrowed API/source and saved-frame receipts remain valid durin
 a cache destructor after the Generators retire; they add no exception or receiver
 owner. This is separate from buffered-slot cleanup and makes no wider collection
 claim; see the [pending-throw review](../../coverage/semantics/generator-pending-throw-review.json).
+If that pending path has a live buffered simple-CV input, it leaves the input
+count unchanged. Only the current copy uses the temporary decrement; actual
+leaf close retains the unconsumed input until object-store shutdown. The
+[pending-buffered review](../../coverage/semantics/generator-pending-buffered-throw-review.json)
+checks this separation, including a cache/input alias, without changing collector
+projection or claiming wider cyclic behavior.
 Fiber force-close retains the tagged head and pending receipt in its genuine
 caller VM until ordinary release consumes it. Generator close consumes the head
 and updates progress before capturing its continuation; its new close jobs

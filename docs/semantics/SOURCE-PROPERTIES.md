@@ -29,7 +29,7 @@ destructor follows result/catch after the alias is cleared. Four originals and
 469 focused premises (409 reached +60 derived) cover these paths, authenticity
 refusals and budgets. Changing an initially direct slot into a reference,
 unsetting/retyping it or retiring its receiver remains outside that direct-slot
-slice; wider quiet-CV GC and mutable-empty getter-array retirement stay open.
+slice; wider quiet-CV GC stays open.
 [Public NaN review](../../coverage/semantics/quiet-public-nan-review.json).
 
 An initially referenced public float slot now captures its original inner cell
@@ -486,7 +486,7 @@ source/flag/owning-operand/dynamic-slot refusals and budgets. A native GC diagno
 exposed an artificial BASE decrement; the focused clean-collection prefix now
 preserves the buffer and one receiver owner through private empty. The diagnostic
 stops before unsupported `gc_status` and has no full-source credit. Other quiet-CV
-GC paths, terminal isset/coalesce and mutable-empty array ordering remain open.
+GC paths and terminal isset/coalesce remain open.
 [Getter-only empty review](../../coverage/semantics/magic-empty-get-only-review.json).
 
 Terminal `empty` of that external CV/literal private property now composes the
@@ -547,12 +547,26 @@ its owned payload destructor runs with isset active and Get inactive; the saved
 receiver survives caller-CV rebinding and is released after payload disposal.
 Immutable empty literal RVs use direct true delivery: they have no children and
 are not GC candidates. Three originals and focused255 (222 reached +33 derived)
-cover these paths, the same Throwable at catch and budgets. Mutable-empty refusal
-and an extra array owner preventing premature payload destruction are derived.
+cover these paths, the same Throwable at catch and budgets. At that cut,
+mutable-empty refusal and an extra array owner preventing premature payload
+destruction are derived.
 The empty helper gains only the authenticated immutable-empty case; generic array,
-key, return and destruction rules are unchanged. Mutable-empty arrays, other
-internal-object RVs and wider signatures/receivers/lifecycles remain partial.
+key, return and destruction rules are unchanged. Other internal-object RVs and
+wider signatures/receivers/lifecycles remain partial.
 [Array RV review](../../coverage/semantics/magic-empty-array-rv-review.json).
+
+Mutable empty getter arrays now use the same receiver-only phase with cached
+true. Ordinary RV release retires a sole table and removes its GC-buffer entry
+before clearing isset and releasing the receiver; a held table remains allocated
+and buffered with one owner. Three originals cover sole/shared true and a receiver
+destructor's Exception. The 265 focused premises across normal171 and throw94 cuts
+(245 reached +20 derived) identify the actual table at receiver destruction,
+preserve cached results and catch identity, and check budgets. A native-only roots
+pair observes roots 1 versus 2 after prebuffering; its prefix bridge is static and gives
+no `gc_status` model/source agreement. The earlier mutable-empty negative is
+superseded without replay; generic array/GC/return/disposal rules stay unchanged.
+Sole-owner public-NaN lifetime and wider quiet-CV GC remain open.
+[Mutable array RV review](../../coverage/semantics/magic-empty-mutable-array-rv-review.json).
 
 Constructor promotion declares a property from its original parameter flags and
 source occurrence. A parameter default does not initialize the property, and

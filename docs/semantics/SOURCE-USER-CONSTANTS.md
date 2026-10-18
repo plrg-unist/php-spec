@@ -83,7 +83,9 @@ completed arguments. Registration stores the primitive value or copied array
 snapshot in `USERCONSTANTS`; later
 changes to the name or value CV do not change the row. The string class follows
 its actual carrier (`PVSTRING true` for interned, false for request strings).
-Identity-unknown legacy string values are explicitly Unsupported.
+Identity-unknown legacy scalar string payloads remain Unsupported. Array leaves
+also admit byte-only strings, including compiled literals, without manufacturing
+a carrier identity.
 
 Registration normalizes the namespace prefix without stripping a supplied leading
 separator; the final component stays case sensitive. `defined` removes a leading separator
@@ -112,8 +114,37 @@ fronts. Author 289 retain 6d62201c0; independent 103 pass at 027fc5877 after a o
 fixture type correction. The original pre-main failure and unchanged Unsupported
 baseline retain zero credit; the fixture correction leaves source execution and
 runtime rules unchanged.
-Arity-error handling of larger counts, owning arguments, owners and packed/named
-forms remains partial.
+The excess-count follow-up now rejects every positional primitive query count
+other than one through the same guarded path. A single count predicate widens;
+source/capture/carrier, message and raw-error construction stay exact. Zero/two
+admission and normal one-slot reception are unchanged. Count rejection also
+precedes class-name lookup, preserving autoload and class metadata.
+The [excess-query review](../../coverage/semantics/constant-query-excess-arity-review.json)
+binds four new originals and 487 premises at e29316a34: counts 3/4/5, raw NULL and
+request captures, strict priority, five actual errors and a genuine selected
+`defined('TRUE')` recovery. Two old Source48 shape controls now admit count3 while
+rejecting source-length-inconsistent records; fresh equivalent controls run here
+without replaying its 392 premises. No actor failed or repeated; the unchanged
+Unsupported baseline retains zero credit. Owning arguments, owners and
+packed/named/FCC arity-error handling remain partial.
+
+One positional array name now raises parameter-one TypeError in `constant` and
+`defined` before lookup, independently of caller strictness. The bounded domain
+is empty/flat live arrays with primitive nonstring or authenticated string-carrier
+leaves, stored directly or through live scalar reference cells. The raw API trace
+owns the captured array; ordinary COW separates plain fields while embedded
+references still share their backing cell. Argument effects and caller results
+survive the error.
+
+Thirty module400 insertions authenticate the query shape, source/literal array
+facts, live array/cells and leaf carriers before the existing error allocator.
+No copy fold, task/schema or shared trace/ownership rule changes. The
+[array-name review](../../coverage/semantics/constant-query-array-name-review.json)
+binds four exact originals and 533 premises at 46a59b565/runtime38e5756d: five real
+CONFIG errors, actual caller/snapshot/trace COW endings and two reached reference
+updates. All checks pass on their first attempts; the unchanged Unsupported baseline
+retains zero credit. Nested arrays, objects, legacy PSTRING leaves, DEFINE array
+names and owner/named/packed/FCC forms remain partial.
 
 Positional `define` calls with primitive arguments now reject every count outside
 two through three before receiving the name or optional flag. Too few arguments
@@ -309,10 +340,16 @@ Fresh array definitions with an omitted or captured boolean-false third flag
 recursively dereference source cells into new DIRECT entries. Reinserting surviving
 keys rebuilds NEXT, positions and serial
 metadata; ordinary copies and later source/reference writes preserve the constant.
-Nonempty acyclic trees contain primitive/carrier leaves and certified live
-stdClass donors. String classes and object birth classes are retained; copied
-containers share the exact object pointers. Repeated noncyclic children may copy
-independently.
+Nonempty acyclic trees contain primitive/carrier leaves, byte-only strings and
+certified live stdClass donors. Existing carrier classes and object
+birth classes are retained; copied containers share the exact object pointers.
+Repeated noncyclic children may copy independently.
+Byte-only strings keep their exact bytes in 0..255 and use conservative `PVSTRING false`
+without string-table allocation or recovered scanner/refcount provenance. This
+does not extend scalar string admission, default caching or INI pointer identity.
+The [literal-string review](../../coverage/semantics/define-literal-string-array-review.json)
+covers literal constraints, query bucket COW, real carrier composition and normal
+or abrupt duplicate retirement.
 Public checks require a canonical DIRECT tree and available literal-array facts,
 comparing ordered keys and leaf values rather than internal array IDs. Variable
 payloads keep structural authority without replaying past CVs. Two exact sources
@@ -378,6 +415,20 @@ Duplicate candidates keep these DIRECT children while callbacks and Exception
 traces retain the original ALIAS cells and append history. The ancestor guard
 also covers empty heads; canonical class/history, allocation and cycle refusals
 remain enforced. [Nested-empty review](../../coverage/semantics/define-nested-empty-array-review.json).
+
+For ordinary string user keys with omitted or captured false flags, recursive
+array arguments raise `define(): Argument #2 ($value) cannot be a recursive array`
+before copying or duplicate-key reporting. A partial live-edge walk dereferences
+current source cells and checks ancestor paths, so repeated acyclic children are
+allowed. Late flag effects can create or break a cycle after VALUE capture.
+The Error keeps the original CONFIG arguments in its ordinary trace without a
+canonical candidate, leaves old rows and caller destinations unchanged, and emits
+no duplicate Warning. Explicitly breaking edges allows a fresh retry or ordinary
+duplicate reporting. Invalid edges remain separate from genuine recursion, and
+known compiled literal payloads cannot be replaced by forged cyclic captures.
+[Recursive-input review](../../coverage/semantics/define-recursive-array-review.json).
+Plain strings inside compiled literal arrays remain a separate leaf-admission
+boundary; the accepted scalar/carrier fold is unchanged.
 
 String-name `define` also retains an already-certified live stdClass donor with
 an omitted or false flag. Registration stores the captured object pointer and
@@ -662,8 +713,9 @@ The matching engine routes are `ZEND_FUNCTION(define)`/`ZVAL_COPY`,
 and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`. `PHP_FUNCTION(constant)` uses
 exception-class lookup and `ZVAL_COPY_OR_DUP`; `zend_declare_typed_class_constant`
 interns direct string values before installation.
-Cycles, other objects, true/coerced array flags,
-Stringable/array names, array/object values with scalar or null names, true/NULL/NaN
+Stored cyclic trees, other objects, true/coerced array flags,
+Stringable/DEFINE array names and query arrays beyond the bounded flat domain,
+array/object values with scalar or null names, true/NULL/NaN
 flags with scalar names, nonbool flags with nonfinite float names, true/NULL/NaN flags with
 null names, special/startup names with flags or values beyond the bounded follow-ups,
 internal/trait/interface/enum class queries, deferred keyword initializers and

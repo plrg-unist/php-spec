@@ -341,6 +341,10 @@ test-semantics: build
 	python3 tests/semantics/generator_pending_throw_state.py
 	python3 tests/semantics/generator_pending_throw_review_sources.py
 	python3 tests/semantics/generator_pending_throw_review_state.py
+	python3 tests/semantics/generator_pending_buffered_throw_sources.py
+	python3 tests/semantics/generator_pending_buffered_throw_review_sources.py
+	python3 tests/semantics/generator_pending_buffered_throw_state.py
+	python3 tests/semantics/generator_pending_buffered_throw_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
@@ -977,6 +981,8 @@ test-semantics: build
 	python3 tests/semantics/magic_empty_std_rv_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_empty_array_rv_cases.json
 	python3 tests/semantics/magic_empty_array_rv_protocol.py --revision "$$(git rev-parse HEAD)"
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_empty_mutable_array_rv_cases.json
+	python3 tests/semantics/magic_empty_mutable_array_rv_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_empty_isset_only_cases.json
 	python3 tests/semantics/magic_empty_isset_only_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_empty_get_only_cases.json

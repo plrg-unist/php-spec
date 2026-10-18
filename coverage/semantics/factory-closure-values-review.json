@@ -1,0 +1,173 @@
+{
+  "version": 1,
+  "milestone": "COMP79",
+  "status": "independently reviewed within the stated authenticated raw factory Closure domain",
+  "behavior": "Authentic captured Closure::fromCallable factories clone into fresh receiver-free Closures and compare equal across independent creation sites.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "tested_revision": "2135ea70c2e580fbbe4b72bc4d5a77f4bbdb909f",
+  "ordered_modules": 401,
+  "manifest_sha256": "dc7fc18c3f0bc9dbb832981af549a9bb36ce9e7eae56f1ad39938d09a4a44985",
+  "implementation": {
+    "spec/semantics/234-from-callable.watsup": "747b7b42a651696159f052a2cfa97c9c6a03e93e9ad37bef3dfdbd404a2c038d"
+  },
+  "engine_basis": [
+    "Zend/zend_closures.c zend_closure_clone copies function, scope, called scope and receiver through zend_create_closure. zend_closure_compare compares fixed fake metadata, independently of source creation occurrence.",
+    "Module234 authenticates raw FROMCALLABLEFACTORY creation occurrences for the fixed static Closure::fromCallable API. The tag has no receiver, owning children, scope row or binding row; saved occurrence evidence remains valid after retirement."
+  ],
+  "contract": [
+    "Live nonfreeing authentic factory clones append exactly one copied raw tag/object allocation and return a distinct identity. clone_same_kind preserves the copied occurrence; both-live factory equality ignores independent creation sites. No generic clone, producer, getter, ownership or callback rule changes.",
+    "All seven loose operators and both orientations agree for fresh factories. Fresh factories keep distinct strict identities, self remains identical, and different intrinsic-method captures retain order+1 both ways. Equal factory leaves continue zero-prefix arrays to integer tails (-1/+1).",
+    "A real getter created by a cloned factory remains callable after seed, clone, fresh factory, callback array and receiver CV retirement. GETTER_FACTORY stores nonowning saved history; the getter owns the receiver. Actual getter task removal changes physical receiver owners2 to1."
+  ],
+  "source_catalogues": {
+    "tests/semantics/factory_closure_values_cases.json": "285b97c06149048daddd3058fbcd90a2c066df9489f0a1933e65456ffe2fa7f0",
+    "tests/semantics/factory_closure_values_review_cases.json": "edcddb87d373819f0de01f0dbda9f51a6ae623fac230fc94fd6955944ece7746"
+  },
+  "unchanged_counterexamples": {
+    "revision": "f84ea2f9824359644aa76dc507f1dc0bfbb4108d",
+    "report": ".tools/factory79-support/run-baseline-v1/report.json",
+    "aggregate_passed": false,
+    "pair": {
+      "status": "normal",
+      "reason": null,
+      "exit_status": 0,
+      "wrong_fresh_row": "0100001",
+      "native_fresh_row": "1001010",
+      "full_stdout_checked": true,
+      "seconds": 32.180008843541145
+    },
+    "clone": {
+      "status": "interpreter_failure",
+      "host_exit": 1,
+      "detail": "function php_run failed",
+      "returned_frontend_program_or_outcome": false,
+      "accepted": false,
+      "observation_recorded": false,
+      "passed": false,
+      "seconds": 9.02400310896337
+    },
+    "interpretation": "The pair independently proves authentic factory production and later calls. The separate clone failed derivation matches the statically missing clone case; it is not Unsupported or passing semantics.",
+    "agreement_credit": 0
+  },
+  "validation": {
+    "original_sources": {
+      "normal_agreements": 3,
+      "author_seconds": {
+        "pair": 32.95806538872421,
+        "clone": 10.095215002074838
+      },
+      "independent_seconds": 22.041787911206484,
+      "cli_and_host_caps_seconds": [
+        240,
+        250
+      ]
+    },
+    "author": {
+      "premises": 94,
+      "setup": 86,
+      "pure": 8,
+      "raw_php_steps": 3,
+      "seconds": 26.610965587198734,
+      "result": "Two genuine EQUAL frames preserve independent factory sites, Map/private-value/key ownership, quiet counters and scopes. One actual CLONE_RESULT checks the complete fresh object/allocation/result append, consumed task/base and restored HELD. Full driver budget-resumption equality retains ownership/GC transitions."
+    },
+    "independent": {
+      "premises": 177,
+      "setup": 173,
+      "pure": 4,
+      "raw_php_steps": 4,
+      "seconds": 20.01232870668173,
+      "result": "Actual clone, two signed aggregate comparisons and getter body after all factory roots retire. Exact full states, borrowed saved-factory history, receiver task/capture owners2 to1, separate trace/Map children, private-value/key owners1 and budgets pass."
+    },
+    "total": {
+      "premises": 271,
+      "setup": 259,
+      "pure": 12,
+      "raw_php_steps": 7,
+      "transition_types": {
+        "comparisons": 4,
+        "clones": 2,
+        "getter_body": 1
+      }
+    },
+    "separate_zero_credit": "Native, both unchanged counterexamples, initialization, six parse/check operations, EL and the original failed author fixture supply no extra application agreement/state credit.",
+    "failures": [
+      {
+        "report": ".tools/factory79-state/run-sl-v1/report.json",
+        "classification": "Fixture budget assertion conflated checked driver ownership/GC transitions with a bare clone PhpStep.",
+        "seconds": 26.056351454928517,
+        "preserved_inputs": ".tools/factory79-state/run-sl-v1/failure-inputs",
+        "credit": 0,
+        "correction": "Replace only that assertion with full driver zero-budget/resumed1=direct1 equality. Bare clone whole-state check unchanged; affected EL/SL retry passes without source/native/preparation replay."
+      }
+    ]
+  },
+  "limits": [
+    "Dead/bounds/different-kind and prior-guard projections are pure local controls, not malformed global-world execution claims.",
+    "Clone-with-properties, transformed factory representations, wider creation/invoke forms and lifetimes remain partial. Special current intrinsic captures, stored-string carriers and uninitialized wrappers stay separate.",
+    "Seven raw steps comprise four comparisons, two clone transitions and one getter body. Complete-source later named-body calls and private casts are additional observations, not extra raw steps.",
+    "Local binaries were copied at exact pins; no new build or portability claim."
+  ],
+  "artifacts": {
+    ".tools/factory79-support/gates.py": "2cd16ce3c8a0629a07081064ff9019d4b20711fe66ccbafe770be2e11f6ad9c3",
+    ".tools/factory79-support/inputs.py": "3f7c276025469cf4f13aff82720ecbdd3a68a26591386715fab81e9741b3a3ea",
+    ".tools/factory79-support/actor.py": "8cec34cd81a53872abdf5d982d03ec1999dad9bfe35f6be74623ab4770b9f5c6",
+    ".tools/factory79-support/run-native-v1/report.json": "915ab6fe826635f2610b82ce9156792d02e133d7f9ab314e4d113d36349df22d",
+    ".tools/factory79-support/run-baseline-v1/report.json": "a7cf017c82dc2c0801b9594fb53ec98e2d9b3bbddd93d88b2128ffdea1e798ae",
+    ".tools/factory79-support/run-init-v1/report.json": "33a51c023d1bda8d3543f321369d665974ad7f506002f683129bbe7834ebad54",
+    ".tools/factory79-support/run-sources-v1/report.json": "261e5608673a41c6b4028e8442b8e70d5f7186ee384342a52ff1d08ded790dde",
+    ".tools/factory79-support/run-prepare-v1/report.json": "dcd6191ce70e1eae297b5c6a2b624b28b8e5e14a514fc1e4a9cd3c9f70870a0a",
+    ".tools/factory79-state/build.py": "d20f4467fd51850e43c451aef0b8c0cb496e2e7965514afbc183e323b153f7b6",
+    ".tools/factory79-state/helpers.watsup": "b5faf542caee2c995db45d0bc5b2a35b2a0fba0fcc5eb7ad782b167d94e9529a",
+    ".tools/factory79-state/run.py": "7b62a5d0e779e3ee78405c90ecce169478ef9cf4b137cc0b26bf820d7b89fa1d",
+    ".tools/factory79-state/plan.json": "6dca03c8dde24fd120ec6a901522bac8e8d2d7dedca012d6080aec11d48914e9",
+    ".tools/factory79-state/run-el-v1/report.json": "e97e4a4be63d6c5af4423d7b5ba82b84912c705fb139e1869a947019af7d80be",
+    ".tools/factory79-state/run-sl-v1/report.json": "40c2fd498f4a610496c4465a1874293545dc6884d1fd02b4cbe3243de8c6be64",
+    ".tools/factory79-state/run-el-budget-retry1/report.json": "a12a274536c59961bd2af4f553a6063861325b16b59eee6c453c92a3be4f6c0c",
+    ".tools/factory79-state/run-sl-budget-retry1/report.json": "9b052c5c9ad0faf522f0f94082110c7763c0393807273cdd5f8c2b3a3820e51e",
+    ".tools/factory79-peer/run.py": "9f6cf27aa4d9af3b8952a21dc168d23c4a31a0683ea795110c37d66beaa6a540",
+    ".tools/factory79-peer/build.py": "4054785e33c609d249b8e437c32eee94525636e6347c0195851de50b99055f4f",
+    ".tools/factory79-peer/helpers.watsup": "8357c53084955a8ee232d2469cb652b179c8dbf9321bec4e6a768c33349ee089",
+    ".tools/factory79-peer/plan.json": "76c140ac4ba6ee5f12df415e014e96c56919b1a5981424bc486ff7e8d2741ee4",
+    ".tools/factory79-peer/native-v1/report.json": "22e593f536e43ff13579ec1f91768f46ab19481afb552dcab899163d7e49bdef",
+    ".tools/factory79-peer/source-v1/report.json": "12b4f67b7c32fb79ef38bd173c644452a683def6395489df004abcc4a090effb",
+    ".tools/factory79-peer/prepare-v1/report.json": "b66e3b1055fbf7c309fcf9b0400d211f13e50b34ebdf2d8d5b3ef25a643072d0",
+    ".tools/factory79-peer/state-v1/report.json": "764f7e27b687d0760a3656bcd66a706cb0d4cdded9350a15e7971f8ef4c8bc9f",
+    ".tools/factory79-peer/review.json": "d68edc68273412857c56792ad4a73747a5bcdc68dd151bf9688622b508ebed66"
+  },
+  "recovery": {
+    "ignored_archive": ".tools/factory-closure-values-79",
+    "note": "Original PHP, prepared programmes, fixtures, owned START/closed streams and reports remain in the ignored archive. Report before/after snapshots and raw command records bind the tested revision."
+  },
+  "independent_review": {
+    "agent": "/root/comp_review_67",
+    "artifact": ".tools/factory79-peer/review.json",
+    "artifact_sha256": "d68edc68273412857c56792ad4a73747a5bcdc68dd151bf9688622b508ebed66",
+    "semantic_verdict": "CLEAR",
+    "publication_verdict": "CLEAR"
+  },
+  "composition": {
+    "parent": "b11cdfd212bfbd6ae6775a96d8de0856133f865e",
+    "ordered_modules": 401,
+    "reviewer": "/root/comp_review_67",
+    "verdict": "CLEAR",
+    "method": "Pointwise source/dispatch compatibility; no concrete syntax or ordering interaction, so no joined actor.",
+    "findings": [
+      "Shared30 adds a task-local referenced public-NaN CELL and a unique LIST float-reference continuation; no pstate/initializer field changes. COMP79 uses no empty/isset/NaN or LIST destructuring and no hand-built affected records.",
+      "156/270 nullable reference-return/destructor selectors require source shapes and saved cleanup absent from all three originals; their functions return ordinary binary/int/string results.",
+      "400 DEFINE arity and recursive-array selectors require DEFINE configuration; factory CONFIG kind is distinct. No define/constant operations occur. The final V71 increment changes only400, not30.",
+      "234 is byte-identical to tested2135; every other spec and modules.json is exact incoming parent. Clone150, ownership39 and getter158 interfaces are unchanged."
+    ],
+    "retained_evidence": {
+      "tested_revision": "2135ea70c2e580fbbe4b72bc4d5a77f4bbdb909f",
+      "source_agreements": 3,
+      "premises": 271,
+      "raw_steps": 7
+    },
+    "new_execution_credit": 0
+  }
+}

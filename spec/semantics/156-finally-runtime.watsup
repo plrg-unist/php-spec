@@ -148,11 +148,10 @@ def $ref_return_cursor_cv_source(S, prefreturncursor) = true
   -- if S.CURRENT = (pcallcontext)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if pfunction.SIGNATURE.RETURNS =/= eps
-  -- if $typed_exact(pfunction.SIGNATURE.RETURNS, PNULL)
-  -- if $reference_return_used(S)
+  -- if $typed_exact(pfunction.SIGNATURE.RETURNS, PNULL) \/ pfunction.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN "object"]))]
 def $ref_return_cursor_cv_source(S, prefreturncursor) = false -- otherwise
 def $ref_return_cursor_slot_null_materialize(S, prefreturncursor) = true
-  -- if $ref_return_cursor_dim_source(S, prefreturncursor) \/ $ref_return_cursor_property_source(S, prefreturncursor)
+  -- if $ref_return_cursor_dim_source(S, prefreturncursor) \/ $ref_return_cursor_property_source(S, prefreturncursor) \/ $ref_return_cursor_cv_source(S, prefreturncursor)
   -- if S.CURRENT = (pcallcontext)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if $typed_exact(pfunction.SIGNATURE.RETURNS, PNULL)
@@ -1583,7 +1582,7 @@ rule PhpStep/finally-resume-ref-return: S ~> $finally_leave_ref_return(S, porigi
   -- if S.TODO = (FINALLY_REF_RETURN porigin porigin_source poperand z) :: ptask_tail*
 rule PhpStep/finally-resume-consumed-null-ref: S ~> S_fresh[.TODO = [RETURN_REF_UNWIND (REFERENCE n) prefreturncursor.LINE true prefreturncursor.SOURCE, REF_RECHECK prefreturncursor.SOURCE prefreturncursor.OWNER (REFERENCE n) prefreturncursor.LINE]]
   -- if S.TODO = (FINALLY_REF_CONSUMED prefreturncursor) :: ptask_tail*
-  -- if $ref_return_cursor_slot_null_materialize(S, prefreturncursor) \/ $ref_return_cursor_cv_source(S, prefreturncursor)
+  -- if $ref_return_cursor_slot_null_materialize(S, prefreturncursor)
   -- if S_left = $finally_leave_ref_return(S, prefreturncursor.OWNER, prefreturncursor.SOURCE, KNOWN PNULL, prefreturncursor.LINE, true, ptask_tail*)
   -- if S_left.TODO = (RETURN_REF_UNWIND (KNOWN PNULL) prefreturncursor.LINE true prefreturncursor.SOURCE) :: (REF_RECHECK prefreturncursor.SOURCE prefreturncursor.OWNER (KNOWN PNULL) prefreturncursor.LINE) :: eps
   -- if S_fresh = $call_fresh_reference(S_left, PNULL)
@@ -1596,7 +1595,6 @@ rule PhpStep/finally-resume-consumed-ref: S ~> $finally_leave_ref_return(S, pref
   -- if ~$ref_return_cursor_assigned_int_call(S, prefreturncursor)
   -- if ~$ref_return_cursor_assigned_folded_int(S, prefreturncursor)
   -- if ~$ref_return_cursor_slot_null_materialize(S, prefreturncursor)
-  -- if ~$ref_return_cursor_cv_source(S, prefreturncursor)
 ;; Both consumed markers are non-owning. Leave their exact restoration slots
 ;; atomically before the middle source's cleared operand is checked again.
 dec $finally_resume_consumed_pair(pstate, prefreturncursor, prefreturncursor, ptask*) : pstate

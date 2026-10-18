@@ -166,13 +166,6 @@ $drive_steps(S_budget[.COMPLETION = NORMAL],10000) = S_final
 '''.strip().splitlines()
 
 DERIVED = r'''
-parray_mutable = S.ARRAYS[n_rv][.ITEMS = eps]
-S_mutable = S[.ARRAYS[n_rv] = parray_mutable][.HELD = S.HELD ++ [HOBJECT n_payload]]
-S_mutable.ARRAYS[n_rv].ITEMS = eps /\ HARRAY n_rv <- S_mutable.ALLOCATIONS
-~$array_immutable(S_mutable,n_rv) /\ $property_empty_valid(S_mutable,ppropertyempty)
-$property_empty_truth(S_mutable,PARRAY n_rv) = eps /\ ~$property_empty_rv_ready(S_mutable,ppropertyempty)
-PhpStep: S_mutable ~> S_mutable_done
-S_mutable_done.COMPLETION = UNSUPPORTED "magic empty getter result type" /\ S_mutable_done.EVENTS = S.EVENTS
 S_outofrange = S[.RESULT = KNOWN (PARRAY (|S.ARRAYS|))]
 $property_empty_truth(S_outofrange,PARRAY (|S.ARRAYS|)) = eps /\ ~$property_empty_rv_ready(S_outofrange,ppropertyempty)
 PhpStep: S_outofrange ~> S_outofrange_done

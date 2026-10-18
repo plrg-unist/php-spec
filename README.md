@@ -673,6 +673,13 @@ through a second Warning. The saved parse survives RHS writes, reference rebindi
 and unset; successful stores detach aliases, while Errors and supplied throws
 cancel the store. Eleven originals and 1211 focused SL premises pass in the
 [leading string ledger](coverage/semantics/leading-string-review.json).
+
+In those both-fractional routes, a nonnumeric string or array RHS produced by the
+first callback now raises TypeError with the live operand types. Callback writes
+and late aliases survive without a compound store; two live strings cannot retry
+bitwise string specialization. Ten originals and 566 focused SL premises pass in the
+[delayed failure ledger](coverage/semantics/delayed-type-failure-review.json).
+
 Explicit array-to-string casts now suspend through named warning handlers for
 a bounded plain-CV array input. The borrowed array adds no saved owner: replacing
 or removing its CV still yields fixed `Array`, while a supplied throw preserves
@@ -928,11 +935,16 @@ when it throws. See the [unused-target review](coverage/semantics/generator-pend
 Non-pending `throw` into a buffered used yield releases that slot before child
 catch, preserving cache owners and a replacement destructor exception's previous
 chain. See the [buffered-throw review](coverage/semantics/generator-buffered-throw-review.json).
-Pending `throw` through native links to a bare yield or detached current with a
-nonowning copied return instead reaches the caller immediately. Its current copy survives receiver
-cleanup; getters remain available, but later resumption is Unsupported. Explicit
+Pending `throw` through native links to a bare or buffered simple-CV yield, or a
+detached current with a nonowning copied return, reaches the caller immediately.
+Its current copy survives receiver cleanup; getters remain available, but later
+resumption is Unsupported. Explicit
 close preserves the pinned parked-frame finally omission. See the
 [pending-throw review](coverage/semantics/generator-pending-throw-review.json).
+With a buffered input, pending `throw` preserves its count; physical close retains
+it until request-store destruction, including receiver cleanup before caller
+catch. The independent current copy can still trigger a replacement exception. See the
+[pending-buffered review](coverage/semantics/generator-pending-buffered-throw-review.json).
 [Delegation](docs/semantics/GENERATOR-DELEGATION.md)
 adds arrays, source Iterators and shared Generator graphs with live raw caches
 and natural return/unwind. Aggregate yield-from now acquires nested real iterator
@@ -1085,8 +1097,19 @@ effects. Captured callees and raw trace arguments survive live CV changes;
 strict calls also check count before parameter type.
 [Four source agreements and 392 state premises](coverage/semantics/constant-query-arity-review.json)
 cover actual error transitions, caller results and source/carrier/count controls.
-Arity-error handling of larger counts, owning values and packed/named forms
-remains partial.
+All excess counts now share that guarded path: positional primitive queries reject
+every count except one, before string reception or class lookup. Captured callees
+and raw arguments survive later argument effects; a real one-argument call still
+recovers normally after the caught error.
+[Four new source agreements and 487 state premises](coverage/semantics/constant-query-excess-arity-review.json)
+cover counts 3/4/5, strict priority, class-like request names and normal recovery.
+Owning and packed/named arity-error handling remains partial.
+One positional array name now raises TypeError in `constant()`/`defined()` before
+lookup, in weak and strict calls. Flat arrays admit primitive nonstring and
+authenticated string-carrier leaves, including live scalar reference cells.
+[Four source agreements and 533 state premises](coverage/semantics/constant-query-array-name-review.json)
+cover raw array traces, caller/trace COW and shared reference updates. Nested,
+object/legacy-string leaves, DEFINE array names and wider call forms remain open.
 Positional `define()` calls with primitive arguments also reject counts below two
 or above three before name/flag reception or registration. Exact count messages
 and raw API arguments survive all argument effects, including a captured true
@@ -1252,7 +1275,15 @@ Nested empty children use the same provenance rules: immutable tables retain
 their identity, while each mutable occurrence gets a canonical copy. Query COW
 and duplicate reporting preserve the stored tree and original trace input.
 [Nested-empty review](coverage/semantics/define-nested-empty-array-review.json).
-Wider array warning/flag paths, uncertified objects and cycles remain Unsupported.
+Recursive array arguments with ordinary string user keys and omitted/false flags
+raise parameter-2 `ValueError` before copying or duplicate reporting. Validation
+observes reference changes from every argument expression, while shared acyclic
+children still copy independently. [Recursive-input review](coverage/semantics/define-recursive-array-review.json).
+Byte-only string leaves, including compiled literals, preserve their exact bytes
+through array copying, query COW and duplicate cleanup, including empty, one-byte
+and binary values. Existing string carriers retain their own identity checks.
+[Literal-string array review](coverage/semantics/define-literal-string-array-review.json).
+Uncertified owning values and wider array warning/flag paths remain partial.
 String-name `define` with an omitted/false flag now shares already-certified
 stdClass donors. Named/selected calls preserve the captured pointer through later
 CV changes, and duplicate handlers keep the old binding and property writes on
@@ -2278,6 +2309,13 @@ and skipped aggregate tails. Later explicit calls expose the flag change and VM
 execution. Special intrinsic kinds and wider protocols remain partial.
 [Intrinsic/API review](coverage/semantics/weakmap-api-comparison-review.json).
 
+Fixed CURRENT and static BIND API Closures also compare with live WeakMap before
+invocation or private traversal. Two originals and 372 Boolean premises/eight actual
+comparisons preserve real frames, captures and bindings; later calls distinguish
+CURRENT caller identity/Error and BIND's selected receiver. The old literal binding-
+scope carrier failure stays zero; its supported class-name workaround leaves that
+dependency open. [Special API review](coverage/semantics/weakmap-special-api-comparison-review.json).
+
 Getter Closures and first-class `Closure::fromCallable` factory Closures also
 compare with live WeakMap before receiver or private-entry traversal. Two exact
 sources and 353 Boolean premises/10 actual steps preserve builtin/inherited getter
@@ -2305,6 +2343,13 @@ even with matching fields. Three originals and 617 Boolean premises/12 actual
 steps preserve caches, ownership and signed aggregate continuation. Other capture
 representations and wider lifetimes remain partial.
 [Getter-pair review](coverage/semantics/getter-closure-comparison-review.json).
+
+Captured `Closure::fromCallable(...)` factories now clone with fresh identity and
+compare equal across creation sites. Three originals and 271 Boolean premises cover
+four comparisons, two clones and a returned getter after all factories retire;
+borrowed history adds no owners. One fixture failure stays zero. Wider clone and
+factory protocols remain partial.
+[Factory Closure review](coverage/semantics/factory-closure-values-review.json).
 
 [Numeric object comparison Notices](coverage/semantics/object-numeric-comparison-review.json)
 now pause ordinary source-instance/int/float leaves through real error handlers.
@@ -2899,7 +2944,11 @@ receiver release and catch; [stdClass RV review](coverage/semantics/magic-empty-
 Nonempty array RVs now retain the phase through owned-element disposal; immutable
 empty literals yield true directly. Three originals and focused255 checks cover
 normal/throw cleanup, shared owners and budgets; [array RV review](coverage/semantics/magic-empty-array-rv-review.json).
-Other signatures, receivers, mutable-empty arrays/other internal-object RVs and
+Mutable empty RVs now cache true in that phase: a sole table retires before the
+receiver destructor, while a held table survives with one owner. Three originals
+and 265 focused premises across two cuts cover normal/throw cleanup and budgets;
+[mutable array RV review](coverage/semantics/magic-empty-mutable-array-rv-review.json).
+Other signatures, receivers, other internal-object RVs and
 wider recursive/coalesce magic combinations remain unsupported.
 Hooked iteration, defaulted virtual hooks, other paired or virtual setters, wider trait
 setters, other explicit setter parameter forms, references, other inherited/trait

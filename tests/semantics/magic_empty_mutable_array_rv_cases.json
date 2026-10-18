@@ -1,0 +1,99 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "sole",
+      "source": "<?php\nclass MutableArrayParent94 {\n    private int $value = 1;\n    public function __isset(string $name): bool {\n        echo 'I|';\n        return true;\n    }\n    public function __get($name) {\n        global $child;\n        echo 'G|';\n        $a = [new stdClass()];\n        $copy = $a;\n        unset($copy);\n        unset($a[0]);\n        $child = null;\n        echo 'g|';\n        return $a;\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass MutableArrayChild94 extends MutableArrayParent94 {}\n$held = null;\n$child = new MutableArrayChild94();\ngc_collect_cycles();\necho 'N:';\necho empty($child->value) ? 'T' : 'F', '|';\n$held = null;\necho 'E|';\n",
+      "source_file": "magic-empty-mutable-array-rv-sole.php",
+      "source_sha256": "031b2c07809691422333deab964bcf571a5befd36174f0e5240edc58f0584f01",
+      "empty_line": 26,
+      "stdout_base64": "TjpJfEd8Z3xEfFR8RXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-empty-mutable-array-rv-private-94/.tools/magic-empty-mutable-array-rv-probes-94/sole.php",
+      "native_report_sha256": "fe20ab49f3cc69a308710b9e13feb513f78062a8da30df5f43d3a5fbe13cf6af",
+      "native_group": "magic-empty-mutable-array-rv94-native-6b0762891",
+      "native_raw_sha256": "b9f0554a90c9578820bfc8409e9fc04dc0e5e340fea754b792c1f04fa990c056",
+      "native_raw_hash_recipe": "stdout + NUL + stderr + NUL + ASCII exit",
+      "array_owners_at_rv": 1
+    },
+    {
+      "id": "shared",
+      "source": "<?php\nclass MutableArrayParent94 {\n    private int $value = 1;\n    public function __isset(string $name): bool {\n        echo 'I|';\n        return true;\n    }\n    public function __get($name) {\n        global $child, $held;\n        echo 'G|';\n        $a = [new stdClass()];\n        $copy = $a;\n        unset($copy);\n        unset($a[0]);\n        $held = $a;\n        $child = null;\n        echo 'g|';\n        return $a;\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass MutableArrayChild94 extends MutableArrayParent94 {}\n$held = null;\n$child = new MutableArrayChild94();\ngc_collect_cycles();\necho 'H:';\necho empty($child->value) ? 'T' : 'F', '|';\n$held = null;\necho 'E|';\n",
+      "source_file": "magic-empty-mutable-array-rv-shared.php",
+      "source_sha256": "c3b1de226d966633308282cff18653a200c189e67e534517d72c2145a9e07f48",
+      "empty_line": 27,
+      "stdout_base64": "SDpJfEd8Z3xEfFR8RXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-empty-mutable-array-rv-private-94/.tools/magic-empty-mutable-array-rv-probes-94/shared.php",
+      "native_report_sha256": "fe20ab49f3cc69a308710b9e13feb513f78062a8da30df5f43d3a5fbe13cf6af",
+      "native_group": "magic-empty-mutable-array-rv94-native-6b0762891",
+      "native_raw_sha256": "7ac3bdc8e3a85170ebc03bfce05217cef59b8f5baf845873c1dd271f3c04c481",
+      "native_raw_hash_recipe": "stdout + NUL + stderr + NUL + ASCII exit",
+      "array_owners_at_rv": 2
+    },
+    {
+      "id": "throwing",
+      "source": "<?php\nclass MutableArrayParent94 {\n    private int $value = 1;\n    public function __isset(string $name): bool {\n        echo 'I|';\n        return true;\n    }\n    public function __get($name) {\n        global $child;\n        echo 'G|';\n        $a = [new stdClass()];\n        $copy = $a;\n        unset($copy);\n        unset($a[0]);\n        $child = null;\n        echo 'g|';\n        return $a;\n    }\n    public function __destruct() { echo 'D|'; throw new Exception('mutable-array-stop'); }\n}\nclass MutableArrayChild94 extends MutableArrayParent94 {}\n$held = null;\n$child = new MutableArrayChild94();\ngc_collect_cycles();\necho 'X:';\ntry { echo empty($child->value) ? 'T' : 'F', '|'; }\ncatch (Exception $caught) { echo 'C|'; }\n$held = null;\necho 'E|';\n",
+      "source_file": "magic-empty-mutable-array-rv-throwing.php",
+      "source_sha256": "ec76c91fd95b964aac241bf4e4611094702111467ce4b2ae9ca58dc9595df64f",
+      "empty_line": 26,
+      "stdout_base64": "WDpJfEd8Z3xEfEN8RXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-empty-mutable-array-rv-private-94/.tools/magic-empty-mutable-array-rv-probes-94/throwing.php",
+      "native_report_sha256": "fe20ab49f3cc69a308710b9e13feb513f78062a8da30df5f43d3a5fbe13cf6af",
+      "native_group": "magic-empty-mutable-array-rv94-native-6b0762891",
+      "native_raw_sha256": "08afbb156188dd0c8669be123f19f68e70e07eae2ab081e82e60831745b12f74",
+      "native_raw_hash_recipe": "stdout + NUL + stderr + NUL + ASCII exit",
+      "array_owners_at_rv": 1
+    }
+  ],
+  "native_gc_diagnostic": {
+    "source_agreements": 0,
+    "semantic_credit": 0,
+    "report_sha256": "a4a57a67c2fd48c34f80c00fd4b019e703a8ec4040b00528690cd62d94992a6a",
+    "static_prefix_bridge": "The diagnostic sources replace only the printed prefix and receiver-destructor output with the roots query; they add no table-changing operation before that query.",
+    "cases": [
+      {
+        "id": "gc-sole",
+        "source": "<?php\nclass MutableArrayParent94 {\n    private int $value = 1;\n    public function __isset(string $name): bool {\n        echo 'I|';\n        return true;\n    }\n    public function __get($name) {\n        global $child;\n        echo 'G|';\n        $a = [new stdClass()];\n        $copy = $a;\n        unset($copy);\n        unset($a[0]);\n        $child = null;\n        echo 'g|';\n        return $a;\n    }\n    public function __destruct() { echo 'D:', gc_status()['roots'], '|'; }\n}\nclass MutableArrayChild94 extends MutableArrayParent94 {}\n$held = null;\n$child = new MutableArrayChild94();\ngc_collect_cycles();\necho 'S:';\necho empty($child->value) ? 'T' : 'F', '|';\n$held = null;\necho 'E|';\n",
+        "source_sha256": "e120ae8b98cd3e17369841afa514dd2c427af16afa8742b4ee30d81b7fecd3df",
+        "original_source": "/home/user/workspace/php-spec/.tools/magic-empty-mutable-array-rv-private-94/.tools/magic-empty-mutable-array-rv-probes-94/gc-sole.php",
+        "stdout_base64": "UzpJfEd8Z3xEOjF8VHxFfA==",
+        "stderr_base64": "",
+        "exit_status": 0,
+        "receiver_destructor_roots": 1
+      },
+      {
+        "id": "gc-shared",
+        "source": "<?php\nclass MutableArrayParent94 {\n    private int $value = 1;\n    public function __isset(string $name): bool {\n        echo 'I|';\n        return true;\n    }\n    public function __get($name) {\n        global $child, $held;\n        echo 'G|';\n        $a = [new stdClass()];\n        $copy = $a;\n        unset($copy);\n        unset($a[0]);\n        $held = $a;\n        $child = null;\n        echo 'g|';\n        return $a;\n    }\n    public function __destruct() { echo 'D:', gc_status()['roots'], '|'; }\n}\nclass MutableArrayChild94 extends MutableArrayParent94 {}\n$held = null;\n$child = new MutableArrayChild94();\ngc_collect_cycles();\necho 'H:';\necho empty($child->value) ? 'T' : 'F', '|';\n$held = null;\necho 'E|';\n",
+        "source_sha256": "58a32d9f9cb1b8606b8a1f8d732f5fdd8e221b17a59807374e6410010281bb7b",
+        "original_source": "/home/user/workspace/php-spec/.tools/magic-empty-mutable-array-rv-private-94/.tools/magic-empty-mutable-array-rv-probes-94/gc-shared.php",
+        "stdout_base64": "SDpJfEd8Z3xEOjJ8VHxFfA==",
+        "stderr_base64": "",
+        "exit_status": 0,
+        "receiver_destructor_roots": 2
+      }
+    ]
+  }
+}
