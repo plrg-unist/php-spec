@@ -75,3 +75,25 @@ restore_error_handler();
 echo "U:",isset($a),":",isset($q),":",isset($key),";";
 ''',
 }
+
+SOURCE_ONLY = {
+    'list-undefined-key-deprecated-only-handler': b'''<?php
+function list_undefined_only_deprecated($n,$m,$f,$l) {
+    $GLOBALS["calls"]++;
+    echo "D:",$n,":",($m==="Using null as an array offset is deprecated, use an empty string instead"),":",$l,":",$GLOBALS["x"],";";
+    $GLOBALS["q"]=33;$GLOBALS["key"]=1.5;
+    $GLOBALS["a"]=[""=>88,1=>77];
+    return true;
+}
+error_reporting(E_ALL);unset($key);$q=2;$a=[""=>&$q,1=>6];
+$x=7;$tail=8;$dest=100;$calls=0;
+set_error_handler("list_undefined_only_deprecated",E_DEPRECATED);
+$dest=([
+$key=>$x,
+1=>$tail
+]=$a);
+restore_error_handler();
+echo "R:",$x,":",$tail,":",$dest[""],":",$dest[1],":",$a[""],":",$a[1],":",$key,":",$calls,";";
+unset($a,$dest,$q,$key);
+''',
+}
