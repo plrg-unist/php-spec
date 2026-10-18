@@ -213,7 +213,7 @@ syntax ptraceframe
 syntax ppropertygetstring = { GET ppropertyget, INPUT poperand, OBJECT nat, SOURCES pproptypesource*, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
 syntax ppropertyemptynan = { EMPTY ppropertyempty, FLOAT nat, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
 syntax ppropertyemptyrv = { EMPTY ppropertyempty, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
-syntax ppropertypublicnan = { READ pnameread, OBJECT nat, CLASS porigin, PROPERTY ppropertyid, FLOAT nat, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
+syntax ppropertypublicnan = { READ pnameread, OBJECT nat, CLASS porigin, PROPERTY ppropertyid, FLOAT nat, CELL nat?, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
 syntax pdestructionjob = DESTRUCTION_VALUE pnode | DESTRUCTION_TEMP pnode | DESTRUCTION_HANDLE nat | DESTRUCTION_PROP_SOURCE pproptypesource nat
 syntax pdestructionrelease = {JOBS pdestructionjob*, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, USER bool}
 syntax pdestructionframe = {PENDING nat?, VALUE poperand, CALLER pcallcontext?, FUNCTION porigin, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?}
