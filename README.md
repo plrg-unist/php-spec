@@ -16,6 +16,12 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
+[Array-literal float keys](docs/semantics/DIMENSIONS.md) now retain their converted
+integer across deprecation handlers. Unwrapped null/bool/int/float element variables
+remain live, while runtime array temporaries retain their own tables. Duplicate
+replacement, later items and object-free throw cleanup are covered; reference
+elements and wider lifetimes remain partial.
+
 [Destructuring key warnings](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md)
 now retain captured arrays or source reference cells through handlers, including
 recursive by-value CV/literal and mixed CV patterns, with ordered null delivery

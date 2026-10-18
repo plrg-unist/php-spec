@@ -49,6 +49,31 @@ implementation/binary fingerprints. This matrix is helper evidence. Source activ
 read/prepass conformance fixtures and 15 original compiler emission-line cases
 in `validate.py`; it does not establish complete dimension or callback behavior.
 
+Module413 stages finite fitting lossy-float CV keys in ordinary array literals.
+`ADD_ARRAY_ELEMENT` converts the key before its deprecation callback; its converted
+integer survives later key writes or rebinding. An initially unwrapped
+null/bool/int/float element CV supplies its live value if it remains unwrapped
+and within those types after the callback. A captured nonconstant array temporary
+instead retains its table and embedded
+reference cells independently of live names. The continuation owns the builder
+and captured temporary once, then transfers the temporary into the inserted entry.
+Duplicate replacement preserves insertion position, and following items read
+their keys and values afresh. Source, compiler ending lines, runtime/pool
+distinctions, roots, raw steps and resumption are checked in the
+[array-literal ledger](../../coverage/semantics/array-literal-float-key-warning-review.json).
+
+This slice excludes objects reachable from the builder or captured array, both
+before dispatch and on completion. Zend inserts even with a pending exception;
+without objects, abandoning both graphs has the same observable cleanup. A
+callback introducing objects enters explicit Unsupported on return or throw.
+Owning/string CV elements and initially wrapped CVs remain outside this producer.
+Selected reference elements requiring this float-key callback also remain
+Unsupported: a native retargeting case inserts the rebound reference but leaves
+the old wrapper observably shared.
+Its original and ownership probe retain zero agreement credit. The source basis
+is pinned `Zend/zend_vm_def.h::ZEND_ADD_ARRAY_ELEMENT` and
+`Zend/zend_operators.h::zend_dval_to_lval_safe`.
+
 
 `45-dimension-write.watsup` supplies separate callback-free write and reference
 fetch helpers registered in the source module catalog. `$string_dimension_write`

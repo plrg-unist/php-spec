@@ -7,6 +7,23 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Array-literal finite lossy-float CV keys now keep their converted integer across
+deprecation callbacks. Unwrapped null/bool/int/float element CVs supply their live
+post-handler value; captured runtime array temporaries retain their table and old
+embedded references. Duplicate replacement preserves position, following items
+stay fresh, and supplied throws retire the object-free builder/input graphs while
+preserving callback writes, destination and Throwable identity. Four normal
+originals and strict402 pass at `f625e2c3c`; all 589 focused state premises
+(440 author + 149 independent, including eight raw transitions) pass at
+`b3027bcd7`. All post-change actors passed on first attempt; the unchanged
+Unsupported baseline and native preparation retain zero credit.
+Only30/41/new413 and the manifest change runtime; five affected inventory rows
+remain partial. String/owning or wrapped CV elements, reachable objects and wider
+producers remain open. Explicit reference-element retargeting has separate native
+evidence of old-wrapper sharing and stays Unsupported/zero credit; its original
+and one fresh ownership probe are preserved.
+[Array-literal review](coverage/semantics/array-literal-float-key-warning-review.json).
+
 Binary `**` with a leading numeric LEFT string now selects both reference cells
 before converting LEFT and the delayed RHS. A first Warning may repair bad text; each
 number survives its Warning, then both are historical at the final zero-base/
