@@ -673,6 +673,12 @@ through a second Warning. The saved parse survives RHS writes, reference rebindi
 and unset; successful stores detach aliases, while Errors and supplied throws
 cancel the store. Eleven originals and 1211 focused SL premises pass in the
 [leading string ledger](coverage/semantics/leading-string-review.json).
+Fractional numeric strings now retain protected text through precision Deprecated,
+preceded by Warning for leading text, in those same six compound routes. Both
+saved numbers and later diagnostic messages survive RHS replacement, references
+or unset. Success detaches late aliases; errors and supplied throws cancel the
+store. Twelve originals and 1089 focused SL premises pass in the
+[precision string ledger](coverage/semantics/precision-string-review.json).
 
 In those both-fractional routes, a nonnumeric string or array RHS produced by the
 first callback now raises TypeError with the live operand types. Callback writes

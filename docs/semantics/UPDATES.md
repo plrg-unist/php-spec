@@ -310,7 +310,7 @@ supplied throw cancel the store. [Leading string evidence](../../coverage/semant
 retains 11 originals and 1211 focused SL premises, including a real request carrier,
 protected exponent parse, two actual callback frames, default Warning and owners.
 Original source-elaboration and state-fixture failures retain 0; earlier cuts
-receive no renewed credit. Further-warning conversions and wider forms remain partial.
+receive no renewed credit. Other notice shapes and wider forms remain partial.
 
 In the initially both-fractional modulo/shift/numeric-bitwise routes, nonnumeric
 string and array RHS values produced by the first callback now raise TypeError
@@ -318,6 +318,14 @@ using current operand types. The numeric bitwise path cannot retry string
 specialization. Callback effects, late aliases and RHS identities survive without
 a compound store. [Delayed failure evidence](../../coverage/semantics/delayed-type-failure-review.json)
 records ten originals and 566 focused SL premises; earlier cuts receive no renewed credit.
+
+In the initially both-fractional modulo/shift/numeric-bitwise routes, fractional
+numeric strings retain protected text and converted longs through precision
+Deprecated, with a preceding Warning for leading text. Later RHS writes, references
+and unset cannot replace the cached result or diagnostic message. Stores detach
+late aliases; errors and supplied throws cancel the store, preserving callback
+effects. [Precision string evidence](../../coverage/semantics/precision-string-review.json)
+records twelve originals and 1089 focused SL premises; earlier cuts receive no renewed credit.
 
 Stringable `.=` converts the left value before dereferencing the selected RHS
 slot. A defined direct RHS CV is borrowed and follows callback rebinding; an

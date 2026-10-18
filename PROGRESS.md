@@ -7,6 +7,29 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Protected fractional numeric-string RHS conversion now stages precision Deprecated,
+or leading Warning then precision Deprecated, after the first LEFT callback in the
+existing both-fractional plain-CV modulo/shift/numeric-bitwise routes. The first RHS
+dispatch authenticates its live original CV; later notices use saved text/cache despite
+RHS replacement, reference rebinding or unset. LEFT remains historical. All six
+operators store cached results and detach late aliases; negative shift/modulo zero
+and supplied throws cancel the store while retaining callback effects. Twelve
+originals pass at d9544b4a0/401 and six genuine handler/storage fixtures pass 1089 SL
+premises at 3ce33d248/401, including a real request carrier, both RHS notice frames,
+protected/default message order, new CELL/owner transitions, same Exception and budgets.
+One nonowning cursor task and three first-boundary exclusions; earlier helper bodies
+remain exact. The initial declaration-order pre-evaluation failure retains zero credit;
+no accepted replay. All 15 rows remain partial; earlier renewed credit 0, OP12 paused.
+[Precision string ledger](coverage/semantics/precision-string-review.json).
+
+Composed over 4010faf05/401 after pointwise review of 14 incoming runtime
+paths. Typed return cursors, LIST references, Closure comparisons, property-empty,
+constant APIs and parked Generator foreach/GC/close selectors are absent here.
+The new GENERATORLOOPRETAINED field stays empty, adding no roots or validation
+constraint. Shared operator/handler/carrier interfaces remain exact; source12
+and state1089 retain their private401 cuts and declaration failure0 without
+replay or renewed credit.
+
 Pending Generator `throw` now admits a bare yield inside one active by-value
 array `foreach`. Parked close retains its one container count and removes the
 iterator before ordinary CV/context and current-cache cleanup. The array keeps
