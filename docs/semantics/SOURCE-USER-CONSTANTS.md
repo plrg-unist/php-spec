@@ -96,6 +96,44 @@ positional literal facts constrain names and values. Variable-derived payloads k
 the existing structural value policy: the row is the runtime capture, not a full
 proof of past argument evaluation. Validators never reread mutable CVs.
 
+Positional `constant`/`defined` calls with zero or two primitive arguments check
+arity before string reception or lookup. All argument expressions run first;
+the selected callee and raw captured arguments determine the ArgumentCountError,
+even after an extra argument changes the caller's CVs. A raw NULL remains NULL in
+the API trace, without a deprecation or strict parameter-type error. The caller's
+unassigned destination and completed argument effects survive.
+
+Module400 authenticates the original CONFIG/source, immutable argument facts and
+string carriers before using the existing count-error/trace machinery. Its new
+shape is excluded from the broad class-query fallback; one-slot routes remain
+unchanged. The [query-arity review](../../coverage/semantics/constant-query-arity-review.json)
+binds four exact originals and 392 premises across five genuine CONFIG error
+fronts. Author 289 retain 6d62201c0; independent 103 pass at 027fc5877 after a one-line
+fixture type correction. The original pre-main failure and unchanged Unsupported
+baseline retain zero credit; the fixture correction leaves source execution and
+runtime rules unchanged.
+Arity-error handling of larger counts, owning arguments, owners and packed/named
+forms remains partial.
+
+Positional `define` calls with primitive arguments now reject every count outside
+two through three before receiving the name or optional flag. Too few arguments
+produce `at least 2 arguments`; excess arguments produce `at most 3 arguments`,
+with the actual count. This precedes weak NULL diagnostics, strict type rejection,
+the ignored-true Warning and registration, after the argument expressions finish.
+The API trace retains their raw captured values and selected builtin even after
+later arguments mutate the caller's CVs; the destination remains unassigned.
+
+Exactly 21 module400 insertions reuse the existing source/primitive/carrier and
+error helpers. The broad define receiver excludes only this new count shape;
+valid two/three-argument routes and query arity handling are unchanged.
+The [define-arity review](../../coverage/semantics/define-arity-review.json) binds
+four exact originals and 444 premises at 88f96c261 across five real CONFIG error
+fronts. Counts 0/1/4 and independent 5 cover raw NULL/request captures, a true-flag
+body bypass, canonical API/caller traces, caller99/no publication, source/carrier/
+immutable/count controls and budgets. No actor failed or repeated; the unchanged
+Unsupported baseline retains zero credit. Arity-error handling of owning values,
+owners and packed/named/FCC forms remains partial.
+
 Primitive duplicate `define` of an existing user constant emits the ordinary
 level2 Warning and returns false without publishing its candidate. A named handler
 may suppress default delivery or append another constant; the original binding
@@ -287,7 +325,7 @@ two DIRECT object edges, later cell rebinding leaves the snapshot intact, and
 real query bucket-reference COW changes caller containers while property writes
 still reach the stored objects. Queries add only a root owner and allocate
 nothing. The leaf classifier reuses completed/live birth guards; producer,
-canonical-table and cycle/empty boundaries are unchanged.
+canonical-table and cycle guards are retained.
 
 Duplicate user keys with nonempty array candidates copy before the Warning.
 A dedicated marker owns the private canonical root and the unchanged original
@@ -308,7 +346,7 @@ the live flag; the original API input and private snapshot keep their distinct
 owners. The existing fold also composes with primitive/carrier trees and fresh
 top-level empties; new exact sources focus certified object leaves. Stored-row
 source validation remains structural and does not reconstruct a past mutable
-flag. True/coerced flags and nested empties remain partial.
+flag. True/coerced flags remain partial.
 [False-flag review](../../coverage/semantics/define-stdclass-array-false-flag-review.json).
 
 Top-level empty values use the existing source-pool or retained immutable flag.
@@ -331,6 +369,16 @@ a trace can keep the latter alive while the immutable pooled table stays pinned.
 Root counts describe abstract owners, not Zend refcounts.
 [Empty-duplicate review](../../coverage/semantics/define-empty-array-duplicate-review.json).
 
+Empty descendants follow the same provenance policy at every recursive descent.
+Authenticated immutable children retain their table and class; each occurrence
+of a mutable emptied child becomes a distinct canonical empty table with NEXT0,
+even when source entries share one reference cell. Copying follows all argument
+effects. Stored queries return the existing tree; caller branch writes use COW.
+Duplicate candidates keep these DIRECT children while callbacks and Exception
+traces retain the original ALIAS cells and append history. The ancestor guard
+also covers empty heads; canonical class/history, allocation and cycle refusals
+remain enforced. [Nested-empty review](../../coverage/semantics/define-nested-empty-array-review.json).
+
 String-name `define` also retains an already-certified live stdClass donor with
 an omitted or false flag. Registration stores the captured object pointer and
 its completed-birth class, transferring the call owner to a constant-row owner
@@ -340,7 +388,7 @@ row and callback property writes; throwing handlers preserve the Exception trace
 owners until ordinary catch/unset cleanup. Historical rows validate their stored
 birth/value and source policy, without reconstructing a past mutable CV or flag.
 [Certified define review](../../coverage/semantics/define-stdclass-review.json).
-Ordinary uncertified objects, other owning array leaves, nested empties,
+Ordinary uncertified objects, other owning array leaves,
 owning true/coerced flags, coerced names and
 wider owning define domains remain partial.
 
@@ -614,7 +662,7 @@ The matching engine routes are `ZEND_FUNCTION(define)`/`ZVAL_COPY`,
 and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`. `PHP_FUNCTION(constant)` uses
 exception-class lookup and `ZVAL_COPY_OR_DUP`; `zend_declare_typed_class_constant`
 interns direct string values before installation.
-Nested empty values in `define`, cycles, other objects, true/coerced array flags,
+Cycles, other objects, true/coerced array flags,
 Stringable/array names, array/object values with scalar or null names, true/NULL/NaN
 flags with scalar names, nonbool flags with nonfinite float names, true/NULL/NaN flags with
 null names, special/startup names with flags or values beyond the bounded follow-ups,

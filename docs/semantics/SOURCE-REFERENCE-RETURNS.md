@@ -1068,3 +1068,21 @@ rules remain unchanged. This is one typed-property throwing-destructor history,
 separate from M63's accepted normal-destructor control and physical Zend
 collection. See the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M92 extends that pending-Throwable source guard to the existing used nullable
+DIM return category. A sole local `[new O]` array supplies `$a[0]` to
+`&f():?object`; the finalizer unsets `$a`, then selected-reference replacement
+releases the protected old bucket reference. O's destructor throws
+`TypeError("dim92")`. Native PHP catches it locally and returns a detached NULL
+reference with no Notice; the unchanged model instead takes the outer catch.
+The repaired original source agrees exactly. A reached proof binds local
+`a` owning a live HARRAY→ALIAS bucket HCELL→O chain before cleanup, while the
+protected old return separately roots HCELL→O. All three are retired by the
+pending exit, and the same destructor TypeError object reaches the local catch. The nonowning cursor then materializes a distinct fresh NULL HCELL with
+no Notice. An actual equal-heap LINE-only public refusal and exit budget split
+pass. The existing used nullable slot-materialization predicate authenticates
+both property and simple-variable/literal-integer DIM sources; property
+behavior and capture, cleanup, normal-exit and consumed-return rules remain
+unchanged. This is one throwing DIM history, separate from M62's accepted
+normal-destructor control and physical Zend collection. See the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).

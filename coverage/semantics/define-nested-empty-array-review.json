@@ -1,0 +1,102 @@
+{
+  "status": "independently reviewed bounded implementation and focused validation",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, sole pinned local PHP/profile, exact original bytes/filename/cwd, full399 SL modules",
+  "base": "cdb9702536da6f545f69ba1ae1b9ce6733b4b034",
+  "runtime": {
+    "source_revision": "3bec6a76d549a5b3b3c5994e3a96af8e6ec68446",
+    "state_revision": "ca7c1d0fa0fb4c44fa8e83308beea929fc998eb6",
+    "module400_sha256": "9e86e4f89a321d53d6ef2f6fcfb30c3e764a8bba59b6387ef6a0ea78d29fd003",
+    "delta": "Sole400+6/-4: both existing empty-array fold heads accept the recursive ancestor list and reject a repeated array id. Immutable provenance, mutable canonical rebuilding, nonempty fold, classes, queries, task roots, GC and cleanup remain unchanged.",
+    "expectation_updates": "Two V43 helper assertions now expect a real nested mutable-empty fold/canonical check instead of the former refusal. These unused expectations do not affect V70 actors; no old V43 campaign is replayed or credited."
+  },
+  "engine_route": "Zend/zend_builtin_functions.c::copy_constant_array dereferences each source entry, recursively copies refcounted array children into fresh tables and retains non-refcounted immutable children; ZEND_FUNCTION(define) performs this after parameter evaluation and before zend_register_constant reports duplicates. Recursive fresh tables rebuild append history. Existing query/COW and normal/abrupt cleanup rules compose without changes.",
+  "accepted": {
+    "source_agreements": 3,
+    "author_sources": 2,
+    "independent_sources": 1,
+    "author_literal_premises": 170,
+    "author_eval_premises": 135,
+    "independent_premises": 146,
+    "total_premises": 451,
+    "driven_forged_states": 0,
+    "zero_budget_restoration_checks": 1
+  },
+  "behavior": [
+    "Fresh CONFIG captures one authentic immutable empty child plus two ALIAS entries sharing a mutable empty NEXT91. Dispatch retains the immutable id and adds four containers: two distinct canonical empty children, a nested parent and a root. Exact ordered classes/physical edges and pool owner+1 are checked. A real constant query returns the stored root with owner+1 and no allocation. Later caller branch writes append at0 and COW the relevant root/children; stored tables stay empty and all caller copies retire.",
+    "Selected eval duplicate adds three canonical containers while keeping the immutable child. A real true handler appends through the original source cell at91; its API trace sees that original ALIAS input, while the copied leaf remains empty. Normal false delivery retires root/nested/mutable copied child and removes the copied immutable edge, preserving the old scalar17 and callback writes until final caller release.",
+    "Independent selected reversed-named call has two ALIAS leaves sharing one mutable empty. A late false-flag expression changes that cell from old NEXT91 to next NEXT41 before the four-container snapshot. Handler rebinds it back to old, adds SIDE31 and throws. Exception trace retains original ALIAS input/captured false. The actual ERROR_HANDLER_RESULT discard retires all four copied containers and reduces original input owners3 to2. A real nested bucket reference reuses the source cell and appends trace at91; saved old/next CVs remain empty through COW, then all input/trace/error roots retire.",
+    "Pure repeated-seen, cycle, dead immutable allocation, wrong immutable class and noncanonical nested append-history projections are never driven. The existing primitive/carrier/certified-object fold composes with these descendants; new originals focus empty array provenance and ownership, with no new stdClass producer/leaf evidence."
+  ],
+  "cuts": {
+    "native_and_baseline": "eebed804627dc063d2344429f28286b637de6fad/399",
+    "source3": "3bec6a76d549a5b3b3c5994e3a96af8e6ec68446/399",
+    "authority": "Runtime400 is byte-identical across accepted source/state cuts. Both protocols are tracked at state ca7c1d0fa. Every model uses its exact matching native main.php and original WT cwd; eval uses exact literal/source unit1. Old V43/V69 cuts remain historical without renewed execution credit.",
+    "state451": "ca7c1d0fa0fb4c44fa8e83308beea929fc998eb6/399"
+  },
+  "preserved_outcomes": {
+    "baseline": "Sole fresh unchanged baseline is genuine Unsupported dynamic constant call domain after B|, CLI1/empty stderr/stable/reaped; contributes0 agreement.",
+    "other": "All native/source and SL state actors pass first attempts; all source stderr is empty, including the suppressed eval duplicate Warning. One zero-budget restoration identity reuses ordinary fresh dispatch, with no separate driven-resume credit. No engine divergence."
+  },
+  "remaining": "Cycles, true/coerced array flags, other owning/uncertified leaves, startup array payloads, coerced names and wider callback/call/lifecycle domains remain partial. Constants obligation stays partial.",
+  "artifacts": {
+    "author_sources": {
+      "root": ".tools/dynamic-nested-empty-array-native-70",
+      "sha256": {
+        "native-report.json": "e854004cef45bec24e2deff5d64603b0cb59ae45fa984186c67509818c811977",
+        "baseline-report.json": "5e07502fda009eaf2da0d7296d85d264651445ed337b4f7193159361872db024",
+        "model-report.json": "5acc25042cf198a74fcb5835253dba6d71d21d68db80730ca55d516b5a05ca70"
+      }
+    },
+    "peer_source": {
+      "root": ".tools/dynamic-nested-empty-array-peer-70",
+      "sha256": {
+        "native-report.json": "ecfea05aa89fda242eb8a5f8ad3c60081929c859992995d7e0bb400920ab0a27",
+        "model-report.json": "f01b3476273951c5a7383faed8f7a1e81c5599b69657b5bae886b22e7fa07644"
+      }
+    },
+    "author_state": {
+      "root": ".tools/dynamic-nested-empty-array-state-70",
+      "sha256": {
+        "fixtures-report.json": "08de026f82fdff33dc66b76aadf807337a8c08b1b290fe466a76013376711513",
+        "check-report.json": "680ddd945b83cd4b13b03047d5ca44ecd80791b2b83f07ab26238ce26e2bfc9f"
+      }
+    },
+    "peer_state": {
+      "root": ".tools/dynamic-nested-empty-array-peer-state-70",
+      "sha256": {
+        "fixtures-report.json": "91954ad499ae4b362056686133613ba9f92170a908d05e9ceccb701fb32b7cb0",
+        "check-report.json": "c3069ab0d1ecfaed3276916004029a296516c281d2089eb64ea3a54894fa244d"
+      }
+    }
+  },
+  "recovery": "Native2host45/process15 then sole fresh unchanged baselinehost90/CLI45/process60 onCPU5. Author model2host150 serialCLI45/process60 and peer native45/model90 onCPU2. Author fixtures120/check240 serial2/perSL90 and peer fixtures120/check150/perSL90 onCPU1. Proof output is lowercase true plus LF/empty stderr. Raw reports/fixtures/logs stay ignored in canonical.tools. Restore tracked scripts from this publication or state ca7c1d0fa, recreate the original WT path and provision report-pinned local executables/references, preserving native source paths/cwd. All accepted process groups are reaped.",
+  "review": {
+    "reviewer": "/root/dynamic_review_59",
+    "decision": "cleared",
+    "scope": "Recursive authentic immutable identity versus distinct mutable canonical copies; repeated source aliases, late flag effects, query COW and exact normal/abrupt candidate cleanup with original API trace history."
+  },
+  "integration": {
+    "parent": "9ade0dc0f6f85d0393b422c690b96503b4eef5f4",
+    "private_publication": "9b017a0a3c88440f3e41475de4d170cf33bd465d",
+    "module_count": 401,
+    "runtime_bridge": "Sole400+6/-4 is exactly the tested3bec/ca7 empty-descendant change. Incoming400 is byte-identical to the private base and composed400 is byte-identical to tested runtime. Every incoming runtime/module file is preserved byte-for-byte. Whole inventory equals incoming plus exactly the one original private constants-row append delta; no stdClass row changes.",
+    "module400_sha256": {
+      "parent": "3b9c5def718ae446f40f290c0042ca312a0c9d324135318ff2e6f21b03068751",
+      "composed_and_tested": "9e86e4f89a321d53d6ef2f6fcfb30c3e764a8bba59b6387ef6a0ea78d29fd003"
+    },
+    "incoming_files_preserved": {
+      "spec/semantics/136-property-runtime.watsup": "02becf3728653ec2059ca78b6ecc753f6d32681f5925d837bfb7028eda362947",
+      "spec/semantics/270-eager-destructors.watsup": "f1fae45f97f88972c349978787402a525c7c58a58c646a363315fad16cd4e1ba",
+      "spec/semantics/280-generators.watsup": "802a586bfc0bca418ebf0d291299f67e7094a828627a417d77bf5d684950c321",
+      "spec/semantics/289-generator-delegation.watsup": "4db0fa1c24683e4543602c175cb9619e3af3f81c0ab9bd7ea8d23718903caaac",
+      "spec/semantics/30-storage.watsup": "aa6db82e05a3e0d805a4af6d27e994736c7d0168c6b1f26dfae7e6bf347e7005",
+      "spec/semantics/301-cycle-collection.watsup": "1dfc779f63c80e9f8a94dd4830b0dd7b466a63c08cfbc1544ff81b15a45736d6",
+      "spec/semantics/303-generator-force-close.watsup": "ce251b2a09ecaa21de841d764315b3165d83778ae410c690bd5fb0b0d9b670fa",
+      "spec/semantics/410-list-key-conversion-warnings.watsup": "1b8f0b60e659409ab657b58d98d06d32b979c125124c79150f82a08ea339dfe1",
+      "spec/semantics/411-public-property-empty-nan.watsup": "e30b91ff054a3530899ca4f6a350a98360f9504f534307c03bccdeaaab8b963e",
+      "spec/semantics/63-list-control.watsup": "87b8859eda4fa3122687fbcf0c507a933f945bdc9ac1d9ea4733101cc90b1ead",
+      "spec/semantics/modules.json": "dc7fc18c3f0bc9dbb832981af549a9bb36ce9e7eae56f1ad39938d09a4a44985"
+    },
+    "interaction": "CLASS92 module411 requires PROPERTY_PREP/ISSET_RESULTtrue with source empty(CV property), INSTANCE/public typed float NaN slot; V70 has no property/empty source. Module410 requires LIST_FETCH; Generator parked/pending-throw tasks/GC receipts require actual Generator state;270 saved property ref-return fallback requires typed user return/destructor cursor. All are absent in V70 ordinary DIM/strict array comparisons and Exception API calls. Source3/state451 retain private399-module cuts while composition preserves parent401. No joined actor or renewed execution credit."
+  }
+}

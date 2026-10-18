@@ -302,6 +302,16 @@ retains 10 originals and 807 focused SL premises, including actual handlers,
 request data, cells/owners, supplied throw, default diagnostics and budgets.
 Wider forms remain partial; earlier cuts receive no renewed credit.
 
+Leading numeric-string RHS values with one conversion Warning now suspend after
+the first callback in the both-fractional modulo/shift/numeric-bitwise routes.
+Historical LEFT and saved RHS parse survive the second callback's writes, reference
+rebinding or unset. Success detaches aliases; negative shifts/modulo zero and either
+supplied throw cancel the store. [Leading string evidence](../../coverage/semantics/leading-string-review.json)
+retains 11 originals and 1211 focused SL premises, including a real request carrier,
+protected exponent parse, two actual callback frames, default Warning and owners.
+Original source-elaboration and state-fixture failures retain 0; earlier cuts
+receive no renewed credit. Further-warning conversions and wider forms remain partial.
+
 Stringable `.=` converts the left value before dereferencing the selected RHS
 slot. A defined direct RHS CV is borrowed and follows callback rebinding; an
 initially undefined read keeps its warned null value, while a later unset is a

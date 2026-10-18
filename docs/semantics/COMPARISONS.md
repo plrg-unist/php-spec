@@ -167,6 +167,21 @@ receiver leaves stop declared-property scans before real later casters. Explicit
 readonly-Error calls and casts reuse existing protocols. Other representations,
 constructor bases and wider lifetimes remain partial.
 
+[Internal getter-Closure pairs](../../coverage/semantics/getter-closure-comparison-review.json)
+compare by authentic receiver, getter method and C owner. The module234 clause now
+admits two ordinary direct sources as well as factory selections, with both live
+guards preceding indexing. Source sites remain independently authenticated. The
+same receiver fixes called scope; the finite method/owner mapping fixes native
+function metadata. Different receivers return +1 both ways even when their fields
+and held Map match; different methods and strict identity remain separate. Three
+originals and 617 Boolean premises/12 actual steps cover getMessage/getValue and
+cold inherited __toString captures, preserving scopes, cache and receiver/trace/Map/
+private-value/key ownership. Equal arrays continue to signed integer tails, while
+distinct-receiver property scans skip real later casters. Later getter/formatter
+calls reuse existing bodies. Both unchanged originals were normal-result mismatches;
+the direct-to-factory route retained equality. Other representations and wider
+lifetimes remain partial.
+
 [Generator/Generator and Fiber/Fiber pairs](../../coverage/semantics/generator-fiber-comparison-review.json)
 return order zero through the standard zero-default-property shortcut. The pair
 predicate tests arena bounds and exact runtime tags, independently of saved VM

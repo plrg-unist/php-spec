@@ -1654,6 +1654,21 @@ def $bothassign_quiet_string_snapshot(S, pintegeroperation, n_target, n_right) =
   -- if $string_long(n_bytes*) = STRINT i_right eps
 def $bothassign_quiet_string_snapshot(S, pintegeroperation, n_target, n_right) = eps -- otherwise
 
+;; Parse leading numeric text before its warning can replace or unset the RHS.
+dec $bothassign_leading_string_snapshot(pstate, pintegeroperation, nat, nat) : (pvalue, int)?
+def $bothassign_leading_string_snapshot(S, pintegeroperation, n_target, n_right) = ((pvalue_right, i_right))
+  -- if $powerassign_warning_ready(S, pintegeroperation, n_target)
+  -- if pintegeroperation.RIGHTPOINTER = INTEGER_CV ptbytes_right
+  -- if $integer_pointer_select(S, pintegeroperation.RIGHT) = (pintegeroperation.RIGHTPOINTER)
+  -- if $lookup(S.ENV, ptbytes_right) = (n_right)
+  -- if (HCELL n_right) <- S.ALLOCATIONS
+  -- if ~$foreach_released_name(S, ptbytes_right) /\ ~(n_right <- S.REFCELLS)
+  -- if $integer_pointer_value(S, pintegeroperation.RIGHTPOINTER) = (pvalue_right)
+  -- if $string_bytes(pvalue_right) = (n_bytes*)
+  -- if $string_plain(pvalue_right) = pvalue_right \/ $string_carrier_valid(S, pvalue_right)
+  -- if $string_long(n_bytes*) = STRINT i_right ([LEADINGNUMBER])
+def $bothassign_leading_string_snapshot(S, pintegeroperation, n_target, n_right) = eps -- otherwise
+
 dec $modassign_both_right_valid(pstate, pintegeroperation, nat, nat, nat, int, nat, int, nat) : bool
 def $modassign_both_right_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, n_bits_right, i_right, n_stage) = true
   -- if $modassign_warning_source(S, pintegeroperation)
@@ -1718,7 +1733,7 @@ rule PhpStep/modassign-both-string-zero: S ~> $integer_result(S[.TODO = ptask_ta
 rule PhpStep/modassign-both-first-boundary: S ~> S[.COMPLETION = UNSUPPORTED "modulo assignment live RHS or expired, rebound, owning or constrained target after first deprecation"]
   -- if S.TODO = (MOD_ASSIGN_BOTH_LEFT pintegeroperation n_target n_right n_bits_left i_left 1) :: ptask_tail*
   -- if $modassign_both_left_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, 1)
-  -- if ~$powerassign_warning_ready(S, pintegeroperation, n_target) \/ ($modassign_warning_ready(S, pintegeroperation, n_target, n_right) = eps /\ $modassign_both_right_snapshot(S, pintegeroperation, n_target, n_right) = eps /\ $modassign_both_integral_snapshot(S, pintegeroperation, n_target, n_right) = eps /\ $bothassign_quiet_scalar_snapshot(S, pintegeroperation, n_target, n_right) = eps /\ $bothassign_quiet_string_snapshot(S, pintegeroperation, n_target, n_right) = eps)
+  -- if ~$powerassign_warning_ready(S, pintegeroperation, n_target) \/ ($modassign_warning_ready(S, pintegeroperation, n_target, n_right) = eps /\ $modassign_both_right_snapshot(S, pintegeroperation, n_target, n_right) = eps /\ $modassign_both_integral_snapshot(S, pintegeroperation, n_target, n_right) = eps /\ $bothassign_quiet_scalar_snapshot(S, pintegeroperation, n_target, n_right) = eps /\ $bothassign_quiet_string_snapshot(S, pintegeroperation, n_target, n_right) = eps /\ $bothassign_leading_string_snapshot(S, pintegeroperation, n_target, n_right) = eps)
 rule PhpStep/modassign-both-right-dispatch: S ~> $error_dispatch(S, 8192, n_message*, pintegeroperation.LINE, DIAGNOSTIC "Deprecated" n_message* pintegeroperation.LINE, MOD_ASSIGN_BOTH_RIGHT pintegeroperation n_target n_right n_bits_left i_left n_bits_right i_right 1)
   -- if S.TODO = (MOD_ASSIGN_BOTH_RIGHT pintegeroperation n_target n_right n_bits_left i_left n_bits_right i_right 0) :: ptask_tail*
   -- if $modassign_both_right_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, n_bits_right, i_right, 0)
@@ -1853,7 +1868,7 @@ rule PhpStep/shiftassign-both-string-negative: S ~> $integer_result(S[.TODO = pt
 rule PhpStep/shiftassign-both-first-boundary: S ~> S[.COMPLETION = UNSUPPORTED "shift assignment live RHS or expired, rebound, owning or constrained target after first deprecation"]
   -- if S.TODO = (SHIFT_ASSIGN_BOTH_LEFT pintegeroperation n_target n_right n_bits_left i_left 1) :: ptask_tail*
   -- if $shiftassign_both_left_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, 1)
-  -- if ~$powerassign_warning_ready(S, pintegeroperation, n_target) \/ ($modassign_warning_ready(S, pintegeroperation, n_target, n_right) = eps /\ $modassign_both_right_snapshot(S, pintegeroperation, n_target, n_right) = eps /\ $modassign_both_integral_snapshot(S, pintegeroperation, n_target, n_right) = eps /\ $bothassign_quiet_scalar_snapshot(S, pintegeroperation, n_target, n_right) = eps /\ $bothassign_quiet_string_snapshot(S, pintegeroperation, n_target, n_right) = eps)
+  -- if ~$powerassign_warning_ready(S, pintegeroperation, n_target) \/ ($modassign_warning_ready(S, pintegeroperation, n_target, n_right) = eps /\ $modassign_both_right_snapshot(S, pintegeroperation, n_target, n_right) = eps /\ $modassign_both_integral_snapshot(S, pintegeroperation, n_target, n_right) = eps /\ $bothassign_quiet_scalar_snapshot(S, pintegeroperation, n_target, n_right) = eps /\ $bothassign_quiet_string_snapshot(S, pintegeroperation, n_target, n_right) = eps /\ $bothassign_leading_string_snapshot(S, pintegeroperation, n_target, n_right) = eps)
 rule PhpStep/shiftassign-both-right-dispatch: S ~> $error_dispatch(S, 8192, n_message*, pintegeroperation.LINE, DIAGNOSTIC "Deprecated" n_message* pintegeroperation.LINE, SHIFT_ASSIGN_BOTH_RIGHT pintegeroperation n_target n_right n_bits_left i_left n_bits_right i_right 1)
   -- if S.TODO = (SHIFT_ASSIGN_BOTH_RIGHT pintegeroperation n_target n_right n_bits_left i_left n_bits_right i_right 0) :: ptask_tail*
   -- if $shiftassign_both_right_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, n_bits_right, i_right, 0)
@@ -1979,7 +1994,7 @@ rule PhpStep/bitassign-both-string-commit: S ~> $arithmetic_addassign_cv_write(S
 rule PhpStep/bitassign-both-first-boundary: S ~> S[.COMPLETION = UNSUPPORTED "bitwise assignment live RHS or expired, rebound, owning or constrained target after first deprecation"]
   -- if S.TODO = (BIT_ASSIGN_BOTH_LEFT pintegeroperation n_target n_right n_bits_left i_left 1) :: ptask_tail*
   -- if $bitassign_both_left_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, 1)
-  -- if ~$powerassign_warning_ready(S, pintegeroperation, n_target) \/ ($modassign_warning_ready(S, pintegeroperation, n_target, n_right) = eps /\ $modassign_both_right_snapshot(S, pintegeroperation, n_target, n_right) = eps /\ $modassign_both_integral_snapshot(S, pintegeroperation, n_target, n_right) = eps /\ $bothassign_quiet_scalar_snapshot(S, pintegeroperation, n_target, n_right) = eps /\ $bothassign_quiet_string_snapshot(S, pintegeroperation, n_target, n_right) = eps)
+  -- if ~$powerassign_warning_ready(S, pintegeroperation, n_target) \/ ($modassign_warning_ready(S, pintegeroperation, n_target, n_right) = eps /\ $modassign_both_right_snapshot(S, pintegeroperation, n_target, n_right) = eps /\ $modassign_both_integral_snapshot(S, pintegeroperation, n_target, n_right) = eps /\ $bothassign_quiet_scalar_snapshot(S, pintegeroperation, n_target, n_right) = eps /\ $bothassign_quiet_string_snapshot(S, pintegeroperation, n_target, n_right) = eps /\ $bothassign_leading_string_snapshot(S, pintegeroperation, n_target, n_right) = eps)
 rule PhpStep/bitassign-both-right-dispatch: S ~> $error_dispatch(S, 8192, n_message*, pintegeroperation.LINE, DIAGNOSTIC "Deprecated" n_message* pintegeroperation.LINE, BIT_ASSIGN_BOTH_RIGHT pintegeroperation n_target n_right n_bits_left i_left n_bits_right i_right 1)
   -- if S.TODO = (BIT_ASSIGN_BOTH_RIGHT pintegeroperation n_target n_right n_bits_left i_left n_bits_right i_right 0) :: ptask_tail*
   -- if $bitassign_both_right_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, n_bits_right, i_right, 0)
@@ -2020,3 +2035,64 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 8192
   -- if $integer_float_notices([PRECISIONLOSS], n_bits_right) = [(8192, perrorcall.MESSAGE)]
   -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE pintegeroperation.LINE
+
+;; LEFT is historical here. Authenticate the selected RHS only until dispatch;
+;; afterward the saved parse survives callback writes, rebinding and unset.
+dec $bothassign_leading_string_valid(pstate, pintegeroperation, nat, nat, nat, int, pvalue, int, nat) : bool
+def $bothassign_leading_string_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, pvalue_right, i_right, n_stage) = true
+  -- if $modassign_both_left_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, 1) \/ $shiftassign_both_left_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, 1) \/ $bitassign_both_left_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, 1)
+  -- if $(n_stage <= 1)
+  -- if $string_bytes(pvalue_right) = (n_bytes*)
+  -- if $string_plain(pvalue_right) = pvalue_right \/ $string_carrier_valid(S, pvalue_right)
+  -- if $string_long(n_bytes*) = STRINT i_right ([LEADINGNUMBER])
+  -- if n_stage = 1 \/ $bothassign_leading_string_snapshot(S, pintegeroperation, n_target, n_right) = ((pvalue_right, i_right))
+def $bothassign_leading_string_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, pvalue_right, i_right, n_stage) = false -- otherwise
+
+rule PhpStep/modassign-both-leading-string: S ~> S[.TODO = (BOTH_ASSIGN_STRING_WARNING pintegeroperation n_target n_right n_bits_left i_left pvalue_right i_right 0) :: ptask_tail*]
+  -- if S.TODO = (MOD_ASSIGN_BOTH_LEFT pintegeroperation n_target n_right n_bits_left i_left 1) :: ptask_tail*
+  -- if $modassign_both_left_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, 1)
+  -- if $bothassign_leading_string_snapshot(S, pintegeroperation, n_target, n_right) = ((pvalue_right, i_right))
+rule PhpStep/shiftassign-both-leading-string: S ~> S[.TODO = (BOTH_ASSIGN_STRING_WARNING pintegeroperation n_target n_right n_bits_left i_left pvalue_right i_right 0) :: ptask_tail*]
+  -- if S.TODO = (SHIFT_ASSIGN_BOTH_LEFT pintegeroperation n_target n_right n_bits_left i_left 1) :: ptask_tail*
+  -- if $shiftassign_both_left_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, 1)
+  -- if $bothassign_leading_string_snapshot(S, pintegeroperation, n_target, n_right) = ((pvalue_right, i_right))
+rule PhpStep/bitassign-both-leading-string: S ~> S[.TODO = (BOTH_ASSIGN_STRING_WARNING pintegeroperation n_target n_right n_bits_left i_left pvalue_right i_right 0) :: ptask_tail*]
+  -- if S.TODO = (BIT_ASSIGN_BOTH_LEFT pintegeroperation n_target n_right n_bits_left i_left 1) :: ptask_tail*
+  -- if $bitassign_both_left_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, 1)
+  -- if $bothassign_leading_string_snapshot(S, pintegeroperation, n_target, n_right) = ((pvalue_right, i_right))
+rule PhpStep/bothassign-leading-string-dispatch: S ~> $error_dispatch(S, 2, n_message*, pintegeroperation.LINE, DIAGNOSTIC "Warning" n_message* pintegeroperation.LINE, BOTH_ASSIGN_STRING_WARNING pintegeroperation n_target n_right n_bits_left i_left pvalue_right i_right 1)
+  -- if S.TODO = (BOTH_ASSIGN_STRING_WARNING pintegeroperation n_target n_right n_bits_left i_left pvalue_right i_right 0) :: ptask_tail*
+  -- if $bothassign_leading_string_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, pvalue_right, i_right, 0)
+  -- if $integer_string_notices([LEADINGNUMBER], eps) = [(2, n_message*)]
+  -- if ~$error_handler_eligible(S, 2) \/ $arithmetic_add_named(S)
+rule PhpStep/bothassign-leading-string-owning-handler: S ~> S[.COMPLETION = UNSUPPORTED "compound assignment owning leading-numeric string callback"]
+  -- if S.TODO = (BOTH_ASSIGN_STRING_WARNING pintegeroperation n_target n_right n_bits_left i_left pvalue_right i_right 0) :: ptask_tail*
+  -- if $bothassign_leading_string_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, pvalue_right, i_right, 0)
+  -- if $error_handler_eligible(S, 2) /\ ~$arithmetic_add_named(S)
+rule PhpStep/bothassign-leading-string-commit: S ~> $arithmetic_addassign_cv_write(S[.TODO = ptask_tail*][.RESULT = KNOWN (PINT i_result)], ptbytes_left, PINT i_result)
+  -- if S.TODO = (BOTH_ASSIGN_STRING_WARNING pintegeroperation n_target n_right n_bits_left i_left pvalue_right i_right 1) :: ptask_tail*
+  -- if $bothassign_leading_string_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, pvalue_right, i_right, 1)
+  -- if $powerassign_warning_ready(S, pintegeroperation, n_target)
+  -- if $integer_binary(pintegeroperation.OP, i_left, i_right) = IRESULT i_result
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CV ptbytes_left
+rule PhpStep/bothassign-leading-string-error: S ~> $integer_result(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL], pintresult, pintegeroperation.LINE)
+  -- if S.TODO = (BOTH_ASSIGN_STRING_WARNING pintegeroperation n_target n_right n_bits_left i_left pvalue_right i_right 1) :: ptask_tail*
+  -- if $bothassign_leading_string_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, pvalue_right, i_right, 1)
+  -- if $powerassign_warning_ready(S, pintegeroperation, n_target)
+  -- if pintresult = $integer_binary(pintegeroperation.OP, i_left, i_right)
+  -- if pintresult = INTZERO \/ pintresult = NEGSHIFT
+rule PhpStep/bothassign-leading-string-boundary: S ~> S[.COMPLETION = UNSUPPORTED "compound assignment expired, rebound, owning or constrained target after string warning"]
+  -- if S.TODO = (BOTH_ASSIGN_STRING_WARNING pintegeroperation n_target n_right n_bits_left i_left pvalue_right i_right 1) :: ptask_tail*
+  -- if $bothassign_leading_string_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, pvalue_right, i_right, 1)
+  -- if ~$powerassign_warning_ready(S, pintegeroperation, n_target)
+
+def $task_nodes(BOTH_ASSIGN_STRING_WARNING pintegeroperation n_target n_right n_bits_left i_left pvalue_right i_right n_stage) = eps
+def $call_task_valid(S, BOTH_ASSIGN_STRING_WARNING pintegeroperation n_target n_right n_bits_left i_left pvalue_right i_right n_stage) = $bothassign_leading_string_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, pvalue_right, i_right, n_stage)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = BOTH_ASSIGN_STRING_WARNING pintegeroperation n_target n_right n_bits_left i_left pvalue_right i_right 1
+  -- if $bothassign_leading_string_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, pvalue_right, i_right, 1)
+  -- if perrorcall.TARGET =/= eps \/ $bothassign_leading_string_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, pvalue_right, i_right, 0)
+  -- if perrorcall.SITE = pintegeroperation.SITE /\ perrorcall.LINE = pintegeroperation.LINE
+  -- if perrorcall.LEVEL = 2
+  -- if $integer_string_notices([LEADINGNUMBER], eps) = [(2, perrorcall.MESSAGE)]
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pintegeroperation.LINE
