@@ -392,6 +392,12 @@ def $ref_abrupt_destructor_cursor(ptask*) = eps -- otherwise
 def $ref_abrupt_destructor_pair((REF_RETURN_PAIR prefreturncursor_inner prefreturncursor_outer porigin z) :: ptask_tail*) = (REF_RETURN_PAIR prefreturncursor_inner prefreturncursor_outer porigin z)
 def $ref_abrupt_destructor_pair(ptask :: ptask_tail*) = $ref_abrupt_destructor_pair(ptask_tail*) -- if ~$ref_return_cursor_task(ptask)
 def $ref_abrupt_destructor_pair(ptask*) = eps -- otherwise
+;; A normal exit projects its queued pair after the completed destructor marker.
+def $ref_return_pair_saved_valid(S, prefreturncursor_inner, prefreturncursor_outer, porigin_selected, z_selected) = $ref_return_pair_valid(S[.TODO = (RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected) :: ptask_tail*], prefreturncursor_inner, prefreturncursor_outer, porigin_selected, z_selected)
+  -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected) :: ptask_tail*
+  -- if pdestructionoperation.SOURCE = RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected
+  -- if pdestructionoperation.PENDING = eps
+  -- if pdestructionoperation.CALLER = S.CURRENT /\ pdestructionoperation.ORIGIN = S.ORIGIN /\ pdestructionoperation.CONSTCONTEXT = S.CONSTCONTEXT
 def $ref_return_pair_saved_valid(S, prefreturncursor_inner, prefreturncursor_outer, porigin_selected, z_selected) = $ref_return_pair_valid(S[.TODO = (RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected) :: ptask_tail*], prefreturncursor_inner, prefreturncursor_outer, porigin_selected, z_selected)
   -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected) :: ptask_tail*
   -- if pdestructionoperation.SOURCE = RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected
@@ -402,6 +408,12 @@ def $ref_return_pair_saved_valid(S, prefreturncursor_inner, prefreturncursor_out
   -- if $throwable_kind(pthrowable.KIND)
   -- if $ref_abrupt_destructor_pair(ptask_tail*) = (REF_RETURN_PAIR prefreturncursor_inner prefreturncursor_outer porigin_selected z_selected)
   -- if $ref_return_pair_mixed_sites(S, prefreturncursor_inner, prefreturncursor_outer)
+def $ref_return_pair_pending_saved_valid(S, prefreturncursor_inner, prefreturncursor_outer, porigin_selected, z_selected) = $ref_return_pair_pending_valid(S[.TODO = (RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected) :: ptask_tail*], prefreturncursor_inner, prefreturncursor_outer, porigin_selected, z_selected)
+  -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected) :: ptask_tail*
+  -- if pdestructionoperation.SOURCE = RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected
+  -- if pdestructionoperation.PENDING = eps
+  -- if pdestructionoperation.CALLER = S.CURRENT /\ pdestructionoperation.ORIGIN = S.ORIGIN /\ pdestructionoperation.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if prefreturncursor_inner.OUTER = $origin_child((prefreturncursor_outer.OWNER), [PCFIELD 2])
 def $ref_return_pair_pending_saved_valid(S, prefreturncursor_inner, prefreturncursor_outer, porigin_selected, z_selected) = $ref_return_pair_pending_valid(S[.TODO = (RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected) :: ptask_tail*], prefreturncursor_inner, prefreturncursor_outer, porigin_selected, z_selected)
   -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected) :: ptask_tail*
   -- if pdestructionoperation.SOURCE = RETURN_REF_UNWIND (REFERENCE n_selected) z_selected true porigin_selected
