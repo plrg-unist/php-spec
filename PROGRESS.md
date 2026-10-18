@@ -7,6 +7,26 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Captured `Closure::fromCallable(...)` factories now clone into fresh Closures and
+compare equal across authentic creation sites. Clones retain the borrowed source
+occurrence, with no receiver or owning history edge. The unchanged pair completed
+normally with wrong equality rows; the separate clone returned interpreter_failure,
+not Unsupported or a passing frontend receipt. Three originals and 271 Boolean
+premises (259 setup + 12 pure)/seven actual transitions pass at 2135ea70c/401:
+four comparisons, two clones and one getter body. Equal array leaves continue to
+integer tails; a returned getter survives all factory/array/CV retirement with
+physical receiver owners 2 to 1 across invocation. Whole states, scopes, private-value/
+key owners and full driver budgets pass. One fixture budget assertion conflated a
+bare step with the checked driver; its preserved failure stays zero, and only affected
+EL/SL repeated. Wider factory/clone/creation protocols remain partial.
+[Factory Closure review](coverage/semantics/factory-closure-values-review.json).
+
+Composed over b11cdfd21/401 after pointwise review of referenced public-NaN
+records, LIST float-key release, typed REF-return cleanup and DEFINE arity/recursive
+array routes. Their guarded tasks and source shapes are absent here; factory,
+clone, getter and ownership interfaces remain exact. Source3/state271 retain the
+private2135/401 cut with zero new execution credit; no joined actor or replay.
+
 Referenced public float-property `empty` now captures the original inner cell
 before its NaN Warning. A handler can rebind the property to another reference:
 old0/new1 yields true, old1/new0 or oldNaN/new0 false, and supplied throw preserves
@@ -82,7 +102,7 @@ captures preserve receiver/Map/private-value/key/trace ownership, caches, scopes
 and budgets. Equal array leaves continue to integer tails; distinct receivers skip
 later casters. Later real getter/formatter calls and casts reuse existing protocols.
 No actor failed; native/baseline/preparation/EL retain zero credit. Other capture
-representations and wider lifetimes remain partial; carrier, factory-clone, special
+representations and wider lifetimes remain partial; carrier, special
 intrinsic and uninitialized-wrapper gaps stay separate.
 [Getter-pair review](coverage/semantics/getter-closure-comparison-review.json).
 

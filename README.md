@@ -2309,6 +2309,13 @@ steps preserve caches, ownership and signed aggregate continuation. Other captur
 representations and wider lifetimes remain partial.
 [Getter-pair review](coverage/semantics/getter-closure-comparison-review.json).
 
+Captured `Closure::fromCallable(...)` factories now clone with fresh identity and
+compare equal across creation sites. Three originals and 271 Boolean premises cover
+four comparisons, two clones and a returned getter after all factories retire;
+borrowed history adds no owners. One fixture failure stays zero. Wider clone and
+factory protocols remain partial.
+[Factory Closure review](coverage/semantics/factory-closure-values-review.json).
+
 [Numeric object comparison Notices](coverage/semantics/object-numeric-comparison-review.json)
 now pause ordinary source-instance/int/float leaves through real error handlers.
 Live CV/cell reads remain distinct from copies; a second Notice uses saved 1/1.0,

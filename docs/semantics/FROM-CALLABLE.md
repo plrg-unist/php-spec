@@ -80,6 +80,15 @@ factory object. Variable invocation owns that factory through argument evaluatio
 the returned method Closure owns its receiver independently after factory retirement.
 Callback selection uses the factory invocation's USER scope. The saved factory
 occurrence adds no receiver owner and remains valid after retirement.
+Authentic captured factories also clone with fresh identity and compare equal
+across creation sites. Their receiver-free raw tag copies only its authenticated
+source occurrence; that occurrence is borrowed, and no scope/binding row is added.
+The [factory value review](../../coverage/semantics/factory-closure-values-review.json)
+records three originals and 271 Boolean premises/seven actual transitions,
+including a returned getter after seed/clone/fresh factories and callback/receiver
+CVs retire. Its saved factory index authenticates history without retaining the
+factory. Four comparison steps, two clones and one getter body keep distinct credit;
+wider transformed factories and clone-with-properties remain partial.
 Named/unpacked argument errors precede callback resolution, and a Closure input
 retains its identity. Eight factory originals keep their separate 367-module cuts:
 the direct control at 6e709da7, then the captured receiver witness and six boundary
