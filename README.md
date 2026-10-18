@@ -1197,6 +1197,13 @@ entry, while method throws preserve the raw object API trace and caller result.
 cover conversion, registration, duplicate warnings and unwind. Wider receivers,
 values, flags and call forms remain partial.
 
+Retained propertyless Stringable `define()` names returning non-NUL `::` text now reach the
+existing class-name ValueError after conversion, with primitive candidates and
+omitted/bool-false flags. Converted API arguments and earlier captures survive
+method effects; no class lookup or autoload runs.
+[Four source agreements and 844 state premises](coverage/semantics/define-stringable-class-name-review.json)
+cover malformed names, caller results and same-receiver global recovery.
+
 Retained ordinary nonStringable instances and `stdClass` now fail positional
 `define()` name reception before primitive flag processing or registration.
 Later candidate/flag effects finish first, while strict code still reports the

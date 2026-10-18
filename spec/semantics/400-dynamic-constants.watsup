@@ -360,7 +360,7 @@ def $dynamic_define_string_finish(S, pconfigcall, pvalue) = S[.ORIGIN = (pconfig
   -- if pconfigcall.SENT = pnamedslot :: pnamedslot_tail*
   -- if $string_bytes(pvalue) = (preqbytes)
   -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
-  -- if $dynamic_constant_global_name(preqbytes)
+  -- if $dynamic_constant_global_name(preqbytes) \/ ($dynamic_constant_class_name(preqbytes) /\ ~(0 <- preqbytes))
   -- if S.TODO = ptask :: ptask_tail*
 def $dynamic_define_string_finish(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "Stringable define global name"] -- otherwise
 rule PhpStep/dynamic-define-string-result: S ~> $dynamic_define_string_finish(S, pconfigcall, pvalue)

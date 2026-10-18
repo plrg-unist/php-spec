@@ -666,8 +666,25 @@ its actual full trace/message/PreviousNULL and discard are checked at reached
 state fronts. Earlier trace-observing native originals remain native-only: two
 CLI45 timeouts and one prior DSL binding failure retain zero credit. Only the
 changed source and affected/unrun checks repeat; Source53/54 evidence is unchanged.
-Sole-owner destruction, wider receivers/returns, class/NUL/HALT results, owning
+Sole-owner destruction, wider receivers/returns, NUL/HALT results, owning
 candidates, true/coerced flags and named/packed/owner forms remain partial.
+
+Retained propertyless Stringable `define` names returning non-NUL `::` text reach the
+existing class-name ValueError before registration, with primitive candidates and
+omitted/bool-false flags. The sole change widens the finish predicate; source,
+carrier and saved-site guards, the global arm and the existing class receiver
+stay exact. Actual API traces keep the returned string carrier and earlier
+candidate/false, without a stale method frame or receiver edge. Method-created
+siblings and caller99 survive; autoload/classes/cache stay untouched.
+The [Stringable class-name review](../../coverage/semantics/define-stringable-class-name-review.json)
+binds four exact originals and 844 state premises (171+190+274 author,209 independent)
+at 309d70e25/runtime 96f871d40. Bare `::` then global publication with the same retained
+receiver proves recovery. All nine reports pass on their first attempts, with
+quiet PHP/worker stderr and all children reaped; initial d414/CPU2 baseline
+Unsupported/B|S| retains 0 and later actors use CPU3. One obsolete Source55 `A::B`
+finish control now admits converted CONFIG/class shape; new reached fronts cover
+that extension without renewing Source55's 717 or Source56's 556 evidence. NUL/HALT
+results and wider lifetime/value/flag/call domains remain partial.
 
 Positional `define` now rejects retained ordinary nonStringable instances and
 `stdClass` names before primitive optional flag reception or registration, weak

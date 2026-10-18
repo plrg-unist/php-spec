@@ -7,6 +7,30 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Retained propertyless Stringable `define` names returning non-NUL `::` text reach the existing
+class-name ValueError after conversion, with primitive candidates and
+omitted/bool-false flags. One module400 predicate extension preserves the global
+arm, source/carrier/saved-site guards and converted CONFIG boundary; no task or
+shared trace/ownership change. Four originals agree at 309d70e25/runtime 96f871d40,
+including earlier request/false captures versus live writes, malformed `A:::B`,
+method-created sibling1657/caller99 and same-receiver global recovery. All 844
+premises pass there: author 171+190+274 plus independent 209 across four actual
+errors and one publication, with exact converted API carrier/no stale receiver
+edge, original tails, preserved stores/table/events/autoload/classes and budgets.
+Nine reports all PASS/stable/reaped, no failure/retry/timeout; PHP/worker stderr
+empty. Initial d414 native/base uses CPU2, later actors CPU3; unchanged Unsupported
+B|S| retains 0. Only the old55 `A::B` finish refusal is repaired; new reached fronts
+exercise it without renewing older 717/556 cuts. NUL/HALT results, wider
+lifetimes/values/flags/forms and paused Source47 remain outside this milestone.
+[Stringable class-name review](coverage/semantics/define-stringable-class-name-review.json).
+
+Pointwise composition over 966dac55d preserves the incoming 402-module parent,
+including magic-setter module412. The sole private finish-predicate change and all
+five tests are exact; every other runtime/manifest path retains parent bytes.
+Array/coerced flags, magic setters, reference-return cleanup, Generator/POWER and
+LIST tasks have no producer in these originals. Source4/844 retain their private
+309d/96f cuts without a joined actor, accepted replay or renewed execution credit.
+
 Inherited private writes now call a public `__set(string $name, $incoming): void`
 for selected external CV/literal integer assignments. The callback receives `7`,
 but used CV results are read after receiver release: setter `99` then receiver
