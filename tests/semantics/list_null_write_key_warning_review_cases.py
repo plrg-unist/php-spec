@@ -53,3 +53,23 @@ unset($a,$dest,$hold,$q,$x,$outside,$key,$next);
 echo "U:",isset($a),":",isset($dest),":",isset($hold),";";
 ''',
 }
+
+SOURCE_ONLY = {
+    'list-null-write-review-key-source-alias': b'''<?php
+function list_null_write_alias_unexpected($n,$m,$f,$l) {echo "BAD:",$n,";";return true;}
+$a=null;$key=&$a;$outside=7;$x=&$outside;$dest=100;
+set_error_handler("list_null_write_alias_unexpected",E_ALL);
+try {
+    $dest=([
+    $key=>&$x
+    ]=$a);
+    echo "N;";
+} catch (TypeError $e) {
+    echo "C:",$e->getMessage(),":",($a===[]),":",($key===[]),":",$x,":",$outside,":",($dest===100),";";
+}
+restore_error_handler();
+echo "R:",($a===[]),":",($key===[]),":",$x,":",$outside,":",($dest===100),";";
+unset($a,$key,$x,$outside,$dest,$e);
+echo "U:",isset($a),":",isset($key),":",isset($x),";";
+''',
+}
