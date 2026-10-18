@@ -87,6 +87,18 @@ matches its unwrapped source; roots/GC/CV-chain rules are unchanged. The domain
 requires propertyless public noarg literal-echo A/B destructors and C echo plus
 direct resolved TypeError/literal message, with empty output buffers. Other throw
 forms, properties/reentry, call-before-echo capture, wider histories and GC remain open.
+M116 adds exactly one nested path: C echoes, creates a declared nonabstract D in
+one ordinary local CV and unsets that same CV; D echoes then directly throws
+builtin TypeError with a literal message. Both classes use the same finite
+propertyless/constant-free/public/noarg/single-method checks; this/autoglobal
+locals are excluded. Existing history and scope guards follow D→C→f without
+new roots or transitions. Source1 and 454/9 at `bf107b70c` prove sole D before
+unset, active C/D receiver+RESULT roots2 versus B/A owner1, complete public steps,
+mirrored deep receipts and valid-heap owner-removal refusals. A wrong constructor
+origin still leaves a live pending Throwable before history refusal. The same D
+exception traverses child UNSET and parent return exits into the local catch,
+then cleared C gives one Notice17 and a fresh detached NULL reference with exact
+whole/split ending. Other bodies/throw forms and deeper reentry remain open.
 [Review and recovery](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
 Pruning prepares the object store and fatal marks once, then selects the same

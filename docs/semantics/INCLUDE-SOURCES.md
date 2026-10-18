@@ -509,8 +509,8 @@ and have no timeout/interruption/survivor; accepted worker stderr is empty. Only
 selected false-handler source has default PHP Deprecated output. Initial `fb753d7fe`
 native/baseline CPU3 remains distinct from later CPU2; baseline Unsupported after
 B|V|O| has zero agreement. Old positional623 source-prefix refusals remain valid
-without replay. The quiet value boundary stays unchanged; owned named, packed
-and PIPE forms remain outside the retained positional increment below.
+without replay. The quiet value boundary stays unchanged. Packed/PIPE forms remain
+partial; retained positional and named owners have separate increments below.
 
 The [retained intrinsic NULL-option increment](../../coverage/semantics/ini-set-owned-null-option-review.json)
 adds a disjoint owner-present positional arm to the same validator. Existing source
@@ -531,9 +531,32 @@ no timeout/interruption/survivor. Default Deprecated lines8/18 are expected; oth
 PHP stderr and worker stderr are empty. Initial `9d082a173` CPU5 native/baseline
 stays distinct from later CPU2; producer-continuation Unsupported after B|V| stays
 zero credit. Only ten module172 lines are added; ownerless/unary/368 trace/root/
-discard helpers stay exact, with no old623/746 replay. Owned named/packed/PIPE,
+discard helpers stay exact, with no old623/746 replay. Packed/PIPE,
 sole-owner retirement, owning/NaN/legacy-string values and wider configuration
 remain partial; paused work is untouched.
+
+The [named retained-owner increment](../../coverage/semantics/ini-set-owned-named-null-option-review.json)
+removes only the owner-present arm's NAMED exclusion. Reversed `value:` then
+`option:` evaluation keeps the selected INI_SET owner and REQUEST value while live
+callee/option/value writes occur. Actual partial CONFIG_ARGS has destination0 empty
+and destination1 captured before later option effects; completing the call fills only
+option0. True handling reaches false, false handling adds default Deprecated, and
+a supplied throw preserves Exception identity/caller99/precision10/sibling2131 while
+cancelling the body. The retained original setter still works after the throw.
+
+Native confirms numeric normalized `__invoke` arguments before the change. Four
+source comparisons retain `3563cd099`/`4f7c217d5`; 928 premises (248+170+189 author,
+321 independent) pass at `64c24d775`/the same runtime/405. Full four-frame trace,
+carrier identity, exact throwing discard, strict ordinary versus weak explicit
+mixed calls, source/name/owner/count controls and zero/split budgets pass. Initial
+`cc6e09523` native4/baseline on CPU2 stay separate from final CPU3 state checks.
+Thirteen stable/reaped reports retain two failed author fixtures at zero: explicit
+optional-name bindings fix the first type constraint; the second whole-state finish
+expectation now includes the exact existing GC buffer update when the owner task
+root is consumed. Shared64 and runtime GC remain unchanged. No accepted source,
+native or old782 actor repeats. Only selected default Deprecated line24 is expected;
+other PHP stderr and accepted worker stderr are empty. Packed/PIPE, sole-owner
+retirement, owning/NaN/legacy-string values and wider configuration remain partial.
 
 The [unary CONFIG PIPE increment](../../coverage/semantics/include-config-pipe-review.json)
 replays the authenticated left child and `CODEPIPE_SEND`, rather than an ordinary
