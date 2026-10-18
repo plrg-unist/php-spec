@@ -7,6 +7,19 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Arithmetic Warnings now retain each evaluated scalar reference-result owner,
+including two operands sharing one cell and cells whose source names disappear.
+Nine originals pass at `5c28a56c9`/405; five focused fixtures pass 853 premises at
+`d6bd1ae9c`/405: physical MUL repair, shared-cell `17`, live-type and cached-zero
+Errors, historical final power and supplied-throw retirement. Old entries/readers
+and numeric bodies remain exact; 15 linked rows stay partial. Scalar-throughout
+is a trace bound; late out-of-domain completion and wider lifetimes remain open.
+[Owned-arithmetic ledger](coverage/semantics/owned-arithmetic-warning-review.json). OP12 paused.
+
+Composed over `d2f594f3a`/405, preserving incoming fields, task variants and
+manifest. Independently reviewed incoming selectors are absent here; source9 and
+state853 retain their private405 cuts without joined execution or renewed credit.
+
 Direct certified-object `define` receives true and NULL flags while retaining the
 earlier pointer across caller-CV rebinding and shared property writes. Normal
 Warning/Deprecated callbacks can install a later duplicate key; the old row and
@@ -120,19 +133,8 @@ all other runtime/control/root/default bytes and the405-module manifest stay
 parent-exact. Source4/state553/strict405 retain their private cuts without a
 joined actor, accepted replay or renewed execution credit.
 
-Nonowning copied operands now stage ordinary `+`, `-`, `*`, `/`, `**` Warnings.
-Saved copies survive origin mutation/unset and retain raw TypeError labels.
-MUL follows opcode slot-rank swapping: literal/CV order yields cached `60` with
-two Warnings. Ten originals pass at `2d6ca1eeb`/405; five focused fixtures pass
-767 premises at `1ed6e0127`/405, including copied bad-RHS priority, strict `68.75`
-after both source names disappear and final power supplied-throw cancellation.
-Old entry controls/readers are preserved; 13 rows stay partial. Quiet/no-Warning
-orders, owning/wider copies and lifetimes remain open; OP12 paused.
-[Copied-arithmetic ledger](coverage/semantics/copied-arithmetic-warning-review.json).
-
-Composed over `7bed41edf`/405, preserving incoming fields, task variants and
-manifest. Independently reviewed incoming selectors are absent here; source10 and
-state767 retain their private405 cuts without joined execution or renewed credit.
+The earlier nonowning-copy arithmetic route retains source10/state767 in its
+[review ledger](coverage/semantics/copied-arithmetic-warning-review.json).
 
 Dynamic-RHS `instanceof` now captures the class of a live source object or `stdClass`
 before ordinary RHS disposal. A returning RHS destructor can replace the delayed

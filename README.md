@@ -659,6 +659,13 @@ check strict float `68.75` and final power cancellation in the
 [copied-arithmetic ledger](coverage/semantics/copied-arithmetic-warning-review.json).
 Quiet/no-Warning orders and owning or wider copied inputs remain partial.
 
+Arithmetic Warnings now retain evaluated scalar reference results after all
+source names disappear. Two operands may hold the same cell twice; those owners
+retire on result, error or handler throw. Nine originals and 853 focused premises
+cover shared-cell arithmetic, cached-zero division and final power cancellation in
+the [owned-arithmetic ledger](coverage/semantics/owned-arithmetic-warning-review.json).
+Selected cells must stay scalar and unconstrained; wider traces remain partial.
+
 Primitive plain-CV `**=` now commits its captured result even when the deprecation
 handler throws. A late alias detaches before the same exception continues; the
 outer assignment stays unchanged. Three exact originals and 407 focused SL
