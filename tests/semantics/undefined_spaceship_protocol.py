@@ -19,9 +19,11 @@ def $us_seek(S, n_stage, n) = $us_seek($drive_steps(S[.COMPLETION = NORMAL], 1),
   -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
 def $us_seek(S, n_stage, n) = S -- otherwise
 dec $us_output(pevent*) : nat*
+dec $us_event_output(pevent) : nat*
+def $us_event_output(OUTPUT n*) = n*
+def $us_event_output(pevent) = eps -- otherwise
 def $us_output(eps) = eps
-def $us_output((OUTPUT n*) :: pevent*) = n* ++ $us_output(pevent*)
-def $us_output(pevent :: pevent_tail*) = $us_output(pevent_tail*) -- otherwise
+def $us_output(pevent :: pevent_tail*) = $us_event_output(pevent) ++ $us_output(pevent_tail*)
 dec $us_guard(pstate) : bool
 def $us_guard(S) = ($call_descriptors_valid(S) /\ $heap_valid($heap_prune($heap_graph(S))))
 '''
