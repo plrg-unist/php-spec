@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sha = lambda path: hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def run(cases, checks, prefix, output):
+def run(cases, checks, prefix, output, extra_inputs=()):
     recorder.ROOT = ROOT
     output = Path(output).resolve()
     output.mkdir(parents=True, exist_ok=False)
@@ -25,7 +25,7 @@ def run(cases, checks, prefix, output):
         ROOT / '.tools/php/bin/php', ROOT / '.tools/php-file.so', ROOT / '_build/default/adapter/main.exe',
         ROOT / 'tests/semantics/_build/default/numeric_runner.exe', ROOT / 'tests/semantics/profile.json',
         ROOT / 'tests/semantics/error_handler_run.py', ROOT / 'tests/semantics/recorded_worker.py',
-        *sorted((ROOT / 'tests/semantics').glob('undefined_spaceship*.py'))]
+        *sorted((ROOT / 'tests/semantics').glob('undefined_spaceship*.py')), *extra_inputs]
     before = {str(path.relative_to(ROOT)): sha(path) for path in watched}
     revision = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     report = {'revision': revision, 'inputs': before, 'profile': profile, 'mode': 'SL',
