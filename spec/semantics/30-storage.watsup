@@ -176,7 +176,6 @@ syntax ppropertyboolnan = { GET ppropertyget, INPUT poperand, FLOAT nat, SOURCES
 syntax ppropertylong = { GET ppropertyget, INPUT poperand, FLOAT nat, INTEGER int, SOURCES pproptypesource*, OWNER nat, TAIL ptask* }
 syntax ppropertystringlong = { GET ppropertyget, INPUT poperand, STRING pvalue, INTEGER int, SOURCES pproptypesource*, OWNER nat, TAIL ptask* }
 syntax ppropertywarning = { READ pnameread, OBJECT nat, KEY ptbytes, FREEING bool, BORROWED bool, CELL nat? }
-syntax ppropertypublicnan = { READ pnameread, OBJECT nat, CLASS porigin, PROPERTY ppropertyid, FLOAT nat, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
 syntax pnamestring = { READ pnameread, OBJECT nat, TAIL ptask* }
 syntax pechoresult = { TEMP poperand, OBJECT nat, SITE porigin, LINE int, TAIL ptask* }
 syntax pcompoundstring = { PLACE plocation, RIGHT poperand, SITE porigin, LINE int, CV bool, SELF bool, SELECTED nat? }
@@ -214,6 +213,7 @@ syntax ptraceframe
 syntax ppropertygetstring = { GET ppropertyget, INPUT poperand, OBJECT nat, SOURCES pproptypesource*, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
 syntax ppropertyemptynan = { EMPTY ppropertyempty, FLOAT nat, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
 syntax ppropertyemptyrv = { EMPTY ppropertyempty, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
+syntax ppropertypublicnan = { READ pnameread, OBJECT nat, CLASS porigin, PROPERTY ppropertyid, FLOAT nat, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
 syntax pdestructionjob = DESTRUCTION_VALUE pnode | DESTRUCTION_TEMP pnode | DESTRUCTION_HANDLE nat | DESTRUCTION_PROP_SOURCE pproptypesource nat
 syntax pdestructionrelease = {JOBS pdestructionjob*, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, USER bool}
 syntax pdestructionframe = {PENDING nat?, VALUE poperand, CALLER pcallcontext?, FUNCTION porigin, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?}
