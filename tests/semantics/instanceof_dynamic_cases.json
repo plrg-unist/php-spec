@@ -1,0 +1,79 @@
+{
+  "scope": "Finite dynamic RHS instanceof: class capture and RHS destruction before delayed borrowed left read, owned left retention, noalias/noautoload string lookup and invalid RHS priority.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_gate_completed": true,
+  "native_revision": "4ff5f52eff1a0d23e71be1ba2de17fcdbdc223b1",
+  "native_report_sha256": "1701b197f02da9741a250dc63ca819d857434540466fdefa9a3c953b97ad5869",
+  "cases": [
+    {
+      "id": "borrowed",
+      "source_file": "instanceof-dynamic-borrowed.php",
+      "source_sha256": "913ee23133558ee7d80088f8f23da142a1d36c930dcd1abcea0aba6ca32eb69b",
+      "original_source": "/home/user/workspace/php-spec/.tools/instanceof-dynamic-private-102/.tools/instanceof-dynamic-probes-102/borrowed.php",
+      "native_group": "native-first",
+      "stdout_base64": "QjpyfFJ8RnxPfEx8Q3xGfEV8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "instanceof_line": 23,
+      "native_raw_sha256": "2f4e20c026ed2bcc423be0b1e0bc70e02cc8b2ff766bc2eeca846a80b54a8b65",
+      "status": "normal",
+      "source": "<?php\nclass Base102 {}\nclass Other102 {}\nclass Child102 extends Base102 {\n    public int $role = 0;\n    public function __toString(): string { echo \"BAD|\"; return \"Other102\"; }\n    public function __destruct() {\n        global $left;\n        if ($this->role === 1) { echo \"R|\"; $left = new Other102; }\n        else { echo \"L|\"; }\n    }\n}\nfunction rhs102() {\n    echo \"r|\";\n    $object = new Child102;\n    $object->role = 1;\n    return $object;\n}\nfunction skipped102() { echo \"BAD|\"; return new Other102; }\n$left = new Child102;\n$saved = $left;\necho \"B:\";\n$result = $left instanceof (rhs102());\necho $result ? \"T|\" : \"F|\";\necho $left instanceof Other102 ? \"O|\" : \"BAD|\";\n$left = null;\n$saved = null;\necho \"C|\";\necho 7 instanceof (skipped102()) ? \"T|\" : \"F|\";\necho \"E|\";\n"
+    },
+    {
+      "id": "owning",
+      "source_file": "instanceof-dynamic-owning.php",
+      "source_sha256": "62405a3877a3bcd8af47615db0d24e0b69bc833269397ec982cb91b385019049",
+      "original_source": "/home/user/workspace/php-spec/.tools/instanceof-dynamic-private-102/.tools/instanceof-dynamic-probes-102/owning.php",
+      "native_group": "native-first",
+      "stdout_base64": "VDpsfHJ8UnxMfFR8T3xFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "instanceof_line": 22,
+      "native_raw_sha256": "b621164d25eedab057bc0164f0579e61319f95f50c3ef01ad55a0b358af28846",
+      "status": "normal",
+      "source": "<?php\nclass Base102 {}\nclass Other102 {}\nclass Child102 extends Base102 {\n    public int $role = 0;\n    public function __toString(): string { echo \"BAD|\"; return \"Other102\"; }\n    public function __destruct() {\n        global $left;\n        if ($this->role === 1) { echo \"R|\"; $left = new Other102; }\n        else { echo \"L|\"; }\n    }\n}\nfunction rhs102() {\n    echo \"r|\";\n    $object = new Child102;\n    $object->role = 1;\n    return $object;\n}\nfunction lhs102() { echo \"l|\"; return new Child102; }\n$left = null;\necho \"T:\";\n$result = (lhs102()) instanceof (rhs102());\necho $result ? \"T|\" : \"F|\";\necho $left instanceof Other102 ? \"O|\" : \"BAD|\";\n$left = null;\necho \"E|\";\n"
+    },
+    {
+      "id": "strings",
+      "source_file": "instanceof-dynamic-strings.php",
+      "source_sha256": "a82349b49682fb1edbc1e6272e7118bbc6ec15fb7b73d811950e0a6713192eb8",
+      "original_source": "/home/user/workspace/php-spec/.tools/instanceof-dynamic-private-102/.tools/instanceof-dynamic-probes-102/strings.php",
+      "native_group": "native-first",
+      "stdout_base64": "UzpUfEZ8RnxUfEV8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "instanceof_line": 11,
+      "native_raw_sha256": "aec14fdb27b1111dcac907ad93dfdb2518696cadb183b80391237e986488c792",
+      "status": "normal",
+      "source": "<?php\nnamespace ClassStrings102;\nclass Base102 {}\nclass Child102 extends Base102 {}\nuse ClassStrings102\\Base102 as Alias102;\nfunction forbiddenLoader102(string $name): void { echo \"BAD|\"; throw new \\Exception(\"autoload\"); }\n\\spl_autoload_register('ClassStrings102\\forbiddenLoader102');\n$subject = new Child102;\n$name = '\\cLaSsStRiNgS102\\bAsE102';\necho \"S:\";\necho $subject instanceof $name ? \"T|\" : \"F|\";\n$name = 'Alias102';\necho $subject instanceof $name ? \"T|\" : \"F|\";\n$name = 'Missing102';\necho $subject instanceof $name ? \"T|\" : \"F|\";\n$name = 'ClassStrings102\\Child102';\necho $subject instanceof $name ? \"T|\" : \"F|\";\n$subject = null;\necho \"E|\";\n"
+    },
+    {
+      "id": "invalid",
+      "source_file": "instanceof-dynamic-invalid.php",
+      "source_sha256": "fd8ff394f62991f36a5cfdf5f7fcdec997bade1c0c8168f106c53791daf09fc8",
+      "original_source": "/home/user/workspace/php-spec/.tools/instanceof-dynamic-private-102/.tools/instanceof-dynamic-probes-102/invalid.php",
+      "native_group": "native-first",
+      "stdout_base64": "WDpDfDQyfENsYXNzIG5hbWUgbXVzdCBiZSBhIHZhbGlkIG9iamVjdCBvciBhIHN0cmluZ3xDfDQyfEV8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "instanceof_line": 5,
+      "native_raw_sha256": "b9df66f293668c912788731a7ae0bac0bfa6ed5068256850ac40a3fb5d9a6da8",
+      "status": "normal",
+      "source": "<?php\n$invalid = [7];\n$answer = 42;\necho \"X:\";\ntry { $answer = $undefinedLeft instanceof $invalid; }\ncatch (Error $caught) {\n    echo \"C|\"; echo $answer; echo \"|\";\n    echo $caught->getMessage(); echo \"|\";\n}\n$left = 7;\ntry { $answer = $left instanceof $invalid; }\ncatch (Error $caught) { echo \"C|\"; echo $answer; echo \"|\"; }\necho \"E|\";\n"
+    }
+  ]
+}
