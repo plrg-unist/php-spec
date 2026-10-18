@@ -1,0 +1,158 @@
+{
+  "version": 1,
+  "milestone": "A12 lossy float CV-key conversion before destructuring lookup",
+  "status": "independently reviewed and validated privately; actual-parent pointwise composition pending",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle and tests/semantics/profile.json",
+  "base": "816e1c57d1f7b5779880785d4721b4969a28a418",
+  "scope": "Flat wholly by-value patterns, direct CV RHS and direct CV leaves. Selected ordinary defined CV keys hold finite fitting binary64 floats with exactly PRECISIONLOSS; mixed, nested, literal-root and other diagnostic producers remain separate.",
+  "runtime_commit": "f9fb2ad96792d993e13f5a7ef6e37500b99c84f3",
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "8c9b4de12488c94a335c68e57aabf9e54cc89598ccf593aea65329a4ab96a639",
+    "spec/semantics/63-list-control.watsup": "87b8859eda4fa3122687fbcf0c507a933f945bdc9ac1d9ea4733101cc90b1ead",
+    "spec/semantics/410-list-key-conversion-warnings.watsup": "1b8f0b60e659409ab657b58d98d06d32b979c125124c79150f82a08ea339dfe1",
+    "spec/semantics/modules.json": "54bd8651a93779dfa3d41d8a2a9d9198901a4ae573d8fb52e81f2a95d0dc8464"
+  },
+  "private_modules": 400,
+  "engine_basis": [
+    "Vendored PHP8.5.10 commit34308a6666b2d489c509541ea9befea9e2b42348: FETCH_LIST_R calls zend_fetch_dimension_address_LIST_r. slow_index_convert receives the selected HashTable, converts the original double before E_DEPRECATED, checks exceptions and then performs integer lookup in that same table.",
+    "The by-value list temporary already owns the table through lookup. Zend adds a nested protective ADDREF during conversion; within this scope it cannot become the sole old-table owner or change COW/retirement. The model retains one logical saved-task HARRAY owner. Mixed reference-source replacement has different observable ownership and remains excluded.",
+    "Converted-key lookup follows the conversion callback. Present aliases are dereferenced then; a missing warning returns NULL without a second lookup. Following key expressions run after the pending target store. Throwing conversion handlers cancel lookup and assignment-result delivery."
+  ],
+  "reviewed_behavior": [
+    "New65-line module410, one task constructor, two generic63 pending exclusions and module append implement the producer. Existing409/source item APIs, key conversion, compiler and heap helpers remain unchanged. Initial planning alone reads the current defined allocated key cell; the saved marker contains table, source tuple, original64-bit bits and converted integer, with no key-cell root.",
+    "Source validation authenticates flat by-value/direct-CV structure, exact selected item/compiler line and allocated captured table. The original bits must encode exactly PRECISIONLOSS and agree with the saved integer. Source compatibility after callbacks does not reconstruct historical live key values or source-name bindings.",
+    "Original default-first execution runs two conversions in order: first2.5 callback/default Deprecated precedes x22 store; later -1.5 callback sees x22, changes nextfalse and y88, but frozen -1 still reads old11. The returned old pooled array overwrites destination200. Exactly one default diagnostic remains.",
+    "Present NULL triggers no missing warning. A callback unsets source/q/key, but the captured runtime table and embedded q33 keep their sole task/entry owners, feed the later fresh true key, then retire after result unset. Supplied-throw preserves earlier9/callbackx99/later y8/destination100, same Throwable/previousNULL and finally while key/table/q retire before catch lookup.",
+    "Independent -2.75 conversion retires the old aliased key cell and rebinds its name to9.5. The callback mutates old q33, then rebinds q44 and source array22. Resumed lookup reads33 from the captured table after the callback; fresh next4 reads6. Returned alias55 remains detached from live q44/new array22.",
+    "Independent0.75 conversion installs a new Warning handler. The missing Warning runs before any target store and sees x77; it writes x99/q33 and inserts key0=77 through COW. Pending NULL still overwrites x99, the captured table stays missing0, and fresh next1 reads33. Raw410-to409 dispatch/frame/resume and shared-q owners3 are checked.",
+    "A sixth source with only an E_WARNING-eligible handler proves that default deprecation must still complete before a missing Warning. Pending eligibility therefore covers8192 or2. Its exact default stderr and native/model outputs agree; it adds no sixth state front.",
+    "All state executions begin at original sources and validate real handler frames, raw lookup/store scheduling, physical key-cell/array/reference retirement, driver-normalized continuations and whole-state budgets. Malformed source/state projections are refusal-only. No NUL source, historical A1-A11 actor replay or renewed prior credit was introduced."
+  ],
+  "accepted": {
+    "source": {
+      "report": ".tools/list-float-key-source-12/report.json",
+      "sha256": "33d5b61c8af5e50e5d672bd3a5a5d79b7c0c4961604e86712a87184cd5347898",
+      "revision": "f9fb2ad96792d993e13f5a7ef6e37500b99c84f3",
+      "agreements": 6,
+      "cases": [
+        "list-float-key-two-conversions-default",
+        "list-float-key-present-null-retire",
+        "list-float-key-supplied-throw",
+        "list-float-key-warning-only-handler",
+        "list-float-key-review-present-negative-retire",
+        "list-float-key-review-deprecated-then-missing"
+      ],
+      "native_reuse": "Six fresh normal originals retain exact native source paths/argv/streams from four preparation reports; model-only comparisons reuse those original paths. The Warning-only-mask source supplements the five state-front sources. No native replay."
+    },
+    "states": [
+      {
+        "report": ".tools/list-float-key-author-state-12/report.json",
+        "sha256": "445be80925af2d06bdd84a5a3904d360e2cf2b91be45c29e4a6c12c03ee81370",
+        "revision": "0920e58fbe0cad0f8b3560821374022fd7d77473",
+        "cases": [
+          "list-float-key-two-conversions-default",
+          "list-float-key-present-null-retire"
+        ],
+        "conditions": [
+          151,
+          135
+        ],
+        "raw_steps": [
+          4,
+          3
+        ],
+        "boolean_premises": 279
+      },
+      {
+        "report": ".tools/list-float-key-author-state-13/report.json",
+        "sha256": "a9e8d837a4eef556d7276e9373ae3354f5273c22919af913cd6e64931098be63",
+        "revision": "5a8d19d10ccef02850d03c815a1a70cc231db48a",
+        "cases": [
+          "list-float-key-supplied-throw"
+        ],
+        "conditions": [
+          116
+        ],
+        "raw_steps": [
+          1
+        ],
+        "boolean_premises": 115
+      },
+      {
+        "report": ".tools/list-float-key-review-state-12/report.json",
+        "sha256": "4f3ed235398371c6819da24cb01657c0c7d776745a6aa0add0cccaadb8689680",
+        "revision": "5a8d19d10ccef02850d03c815a1a70cc231db48a",
+        "cases": [
+          "list-float-key-review-present-negative-retire",
+          "list-float-key-review-deprecated-then-missing"
+        ],
+        "conditions": [
+          147,
+          161
+        ],
+        "raw_steps": [
+          3,
+          4
+        ],
+        "boolean_premises": 301
+      }
+    ],
+    "source_agreements": 6,
+    "normal_source_agreements": 6,
+    "state_fronts": 5,
+    "total_conditions": 710,
+    "boolean_premises": 695,
+    "raw_steps": 15,
+    "credit_note": "Only author151/135 at0920 and corrected throw116 plus peer147/161 at5a8 count. The failed pre-execution throw is zero. State conditions include setup/source/refusal/raw premises, not separate PHP programs. No accepted source/front/native was replayed; later docs/composition add no execution credit."
+  },
+  "preserved_zero_credit": [
+    {
+      "report": ".tools/list-float-key-baseline-12/report.json",
+      "sha256": "3b45841bf723d11c48a042eed5759ac776421e2ba1657e816a0c6604fb3f6c10",
+      "revision": "816e1c57d1f7b5779880785d4721b4969a28a418",
+      "result": "Unchanged A11 frontend accepted/checked the source, then explicitly Unsupported at handler ingress: error-handler ingress requires a producer continuation. Native completed normally with one default Deprecated line. Ordinary comparator failed naturally; no timeout or agreement credit."
+    },
+    {
+      "report": ".tools/list-float-key-native-rest-12/report.json",
+      "sha256": "eeacd592fae273ffb6aae5cdc41ffe92dd531ebb71559735a7ab80a039e9a7ea",
+      "revision": "816e1c57d1f7b5779880785d4721b4969a28a418",
+      "result": "Fresh present-NULL and supplied-throw native2 preparation only; no agreement credit."
+    },
+    {
+      "report": ".tools/list-float-key-review-native-12/report.json",
+      "sha256": "84face1ea93470bec8e9dc4ffcffe7fd2134eb15273c80238a0367cb1eaec101",
+      "revision": "816e1c57d1f7b5779880785d4721b4969a28a418",
+      "result": "Fresh independent negative-key/retired-key and deprecation-to-missing native2 preparation only."
+    },
+    {
+      "report": ".tools/list-float-key-warning-only-native-12/report.json",
+      "sha256": "edc4127b40134f77b41b2defeb4b1655edf1266e15a5be8c7b2aac21c4bc9e9f",
+      "revision": "d8049ec2458d66dd2cef66189f0239242605df93",
+      "result": "One new E_WARNING-only handler original confirms default deprecation followed by missing Warning. Source-only preparation at a test-input commit with unchanged runtime; no prior native repeated."
+    },
+    {
+      "report": ".tools/list-float-key-author-state-12/report.json",
+      "sha256": "445be80925af2d06bdd84a5a3904d360e2cf2b91be45c29e4a6c12c03ee81370",
+      "revision": "0920e58fbe0cad0f8b3560821374022fd7d77473",
+      "result": "Only supplied-throw116/raw1 failed before execution: unexpected minus in emitted KINT -2. Its runtime credit is zero; default151/NULL135 from this same report remain accepted above. One negative key atom was corrected to KINT $(-2), then only throw was retried. Peer negative atoms were corrected before their first actor."
+    }
+  ],
+  "shared_harness_change": "list_missing_warning_protocol.run adds optional expected_stderr(name,path); absent callback still requires exact empty native stderr. A12 author explicitly matches the original Deprecated2.5/path/line20 bytes and its state checks exactly one default diagnostic. Historical callers/fixtures are unchanged and not rerun.",
+  "affected_historical_controls": [],
+  "raw_evidence": {
+    "archive": "/home/user/workspace/php-spec/.tools/list-float-key-warning-12-raw.tar.gz",
+    "bytes": 402654,
+    "members": 189,
+    "sha256": "740f1cb084af6b4085c4cef7fbff65fda73bb3fd53acb23ff2ef5e3f18f1c91a",
+    "recovery": "Archive retains eight original relative .tools report/fixture/process/source roots plus list-float-key-reuse-sources-12.py, including the original parser failure and affected-only retry. Extract beneath a checkout of the recorded cut; absolute argv/cwd are historical provenance. No archive is a build dependency."
+  },
+  "actual_parent_review": {
+    "parent": "070236b5fe77b7afce5f9591be79b6d4e50c6a28",
+    "seams": "Incoming136/408 add private magic-empty getter skipping;270 adds typed-reference/property return destructor guards;379 adds SensitiveParameterValue constructor-closure equality;30/400 add NaN define reception/duplicate tasks and empty constant candidate handling;404 adds authenticated compound numeric-string RHS stages. None matches A12 list task tags, direct-CV leaves, normal named callbacks or supplied-Throwable path. No409/list/key/heap/source helper changed;30 task additions are in a separate hunk.",
+    "joined_actor": "No concrete semantic interaction found; pointwise composition and exact FF review add no replay credit."
+  },
+  "remaining": [
+    "Lossy conversion in recursive, literal-root or mixed reference-source patterns; range/nonfinite conversion, undefined/null-key diagnostics, computed current keys and wider RHS/targets.",
+    "Paused owned-NUL/current-CV NUL behavior, scalar/object destructuring diagnostics, wider callbacks/lifecycle, full array/core closure and offline portability."
+  ]
+}
