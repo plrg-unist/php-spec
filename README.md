@@ -1271,8 +1271,11 @@ Recursive array arguments with ordinary string user keys and omitted/false flags
 raise parameter-2 `ValueError` before copying or duplicate reporting. Validation
 observes reference changes from every argument expression, while shared acyclic
 children still copy independently. [Recursive-input review](coverage/semantics/define-recursive-array-review.json).
-Plain compiled literal-string leaves, uncertified owning values and wider array
-warning/flag paths remain partial.
+Byte-only string leaves, including compiled literals, preserve their exact bytes
+through array copying, query COW and duplicate cleanup, including empty, one-byte
+and binary values. Existing string carriers retain their own identity checks.
+[Literal-string array review](coverage/semantics/define-literal-string-array-review.json).
+Uncertified owning values and wider array warning/flag paths remain partial.
 String-name `define` with an omitted/false flag now shares already-certified
 stdClass donors. Named/selected calls preserve the captured pointer through later
 CV changes, and duplicate handlers keep the old binding and property writes on

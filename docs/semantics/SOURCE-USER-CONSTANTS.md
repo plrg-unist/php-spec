@@ -83,7 +83,9 @@ completed arguments. Registration stores the primitive value or copied array
 snapshot in `USERCONSTANTS`; later
 changes to the name or value CV do not change the row. The string class follows
 its actual carrier (`PVSTRING true` for interned, false for request strings).
-Identity-unknown legacy string values are explicitly Unsupported.
+Identity-unknown legacy scalar string payloads remain Unsupported. Array leaves
+also admit byte-only strings, including compiled literals, without manufacturing
+a carrier identity.
 
 Registration normalizes the namespace prefix without stripping a supplied leading
 separator; the final component stays case sensitive. `defined` removes a leading separator
@@ -320,10 +322,16 @@ Fresh array definitions with an omitted or captured boolean-false third flag
 recursively dereference source cells into new DIRECT entries. Reinserting surviving
 keys rebuilds NEXT, positions and serial
 metadata; ordinary copies and later source/reference writes preserve the constant.
-Nonempty acyclic trees contain primitive/carrier leaves and certified live
-stdClass donors. String classes and object birth classes are retained; copied
-containers share the exact object pointers. Repeated noncyclic children may copy
-independently.
+Nonempty acyclic trees contain primitive/carrier leaves, byte-only strings and
+certified live stdClass donors. Existing carrier classes and object
+birth classes are retained; copied containers share the exact object pointers.
+Repeated noncyclic children may copy independently.
+Byte-only strings keep their exact bytes in 0..255 and use conservative `PVSTRING false`
+without string-table allocation or recovered scanner/refcount provenance. This
+does not extend scalar string admission, default caching or INI pointer identity.
+The [literal-string review](../../coverage/semantics/define-literal-string-array-review.json)
+covers literal constraints, query bucket COW, real carrier composition and normal
+or abrupt duplicate retirement.
 Public checks require a canonical DIRECT tree and available literal-array facts,
 comparing ordered keys and leaf values rather than internal array IDs. Variable
 payloads keep structural authority without replaying past CVs. Two exact sources
@@ -687,8 +695,7 @@ The matching engine routes are `ZEND_FUNCTION(define)`/`ZVAL_COPY`,
 and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`. `PHP_FUNCTION(constant)` uses
 exception-class lookup and `ZVAL_COPY_OR_DUP`; `zend_declare_typed_class_constant`
 interns direct string values before installation.
-Stored cyclic trees, other objects, plain compiled literal-string array leaves,
-true/coerced array flags,
+Stored cyclic trees, other objects, true/coerced array flags,
 Stringable/array names, array/object values with scalar or null names, true/NULL/NaN
 flags with scalar names, nonbool flags with nonfinite float names, true/NULL/NaN flags with
 null names, special/startup names with flags or values beyond the bounded follow-ups,

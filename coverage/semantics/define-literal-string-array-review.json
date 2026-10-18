@@ -1,0 +1,86 @@
+{
+  "status": "independently reviewed bounded implementation and focused validation",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, sole pinned local PHP/profile, exact original bytes/filename/cwd, full401 SL modules",
+  "base": "b11cdfd212bfbd6ae6775a96d8de0856133f865e",
+  "runtime": {
+    "source_revision": "8b9adb4108cdb6d3d6ab863c3899c9a566d2598b",
+    "state_revision": "26d120aa81faa47e36545ae6c8ae59a80188d278",
+    "module400_sha256": "e98dbd774e8c5138cdb85bb1af7fdb6198d780f41d1d54175a18fd3e7ba95016",
+    "delta": "Sole400+3: an array-fold PSTRING head preserves valid bytes in 0..255 and state, using conservative PVSTRING false without manufacturing string identity. Shared dynamic_constant_class, scalar define, carrier checks, source/known-value policies, copying, query, tasks and cleanup rules are unchanged."
+  },
+  "engine_route": "Zend/zend_builtin_functions.c::copy_constant_array dereferences entries, recursively copies array containers and preserves nonarray string bytes. 46 folds literal array children to plain PSTRING;32 retains them in pools and33 wraps only a directly received literal string. The new head admits byte-only leaves under the existing array/source structural policy; it does not recover compiler/scanner/refcount provenance or introduce an origin certificate.",
+  "accepted": {
+    "source_agreements": 3,
+    "author_sources": 2,
+    "independent_sources": 1,
+    "author_main_premises": 142,
+    "author_eval_premises": 129,
+    "independent_premises": 168,
+    "total_premises": 439,
+    "driven_forged_states": 0,
+    "zero_budget_restoration_checks": 1
+  },
+  "behavior": [
+    "Direct literal source has empty, one-byte, multibyte and NUL/ff leaves. Actual CONFIG publication creates exactly the two canonical array containers, preserving raw bytes/STRINGDATA and conservative false classes. Source facts constrain bytes: a pure canonical changed-byte tree still folds but fails literal matching/row validity. Query returns the same root with one extra owner and no allocation; actual nested bucket ALIAS COW writes local without changing the stored tree. Caller clones/cell retire; original compiler pools and installed private tree remain.",
+    "Selected eval duplicate retains old scalar17 and a separate two-container plain-string candidate. Handler changes caller root/child, while its API trace observes original before/first/binary bytes. Normal true reporting returns false and releases candidate/API roots, with caller writes retained until ordinary unset. Source-pool input tables remain unchanged.",
+    "Independent named VALUE capture precedes a false-flag effect selecting a new pooled raw-string tree through two shared ALIAS buckets; the input also holds a genuine request carrier. Three canonical copied containers freeze next bytes without changing STRINGDATA. Throwing handler switches the source cell to old, adds SIDE31, and its Exception trace retains original input/false. Actual abrupt discard retires only private copies and removes one input owner3-to2. A later real bucket reference writes through the source cell while old/next CV pool tables remain intact; temporary input/alias/Error roots retire.",
+    "Pure byte256, wrong leaf class, malformed carrier, dead child, canonical history and source-mismatch refusals are never driven. Byte-only false is a conservative noncacheable identity-unknown class, not native allocation/refcount evidence. Existing interned/request carriers keep their own class and validity checks; scalar raw strings and identity-dependent consumers are not widened."
+  ],
+  "cuts": {
+    "native2_and_unchanged_baseline": "9670834e6c545afab74f9f946787753ea0ef9178/401",
+    "source3": "8b9adb4108cdb6d3d6ab863c3899c9a566d2598b/401",
+    "state439": "26d120aa81faa47e36545ae6c8ae59a80188d278/401",
+    "authority": "Runtime400 is byte-identical across all accepted source/state cuts. Both proofs are tracked before execution. Only fixture list grouping changes2454 to26d; original files/reports stay immutable. No V71/older source or state campaign is renewed."
+  },
+  "preserved_outcomes": {
+    "baseline": "Sole unchanged literal-array baseline is genuine Unsupported dynamic constant call domain after B|, CLI1/empty stderr/stable/reaped,0 agreement.",
+    "first_state": "Author main at2454 stopped before evaluating premises: PSTRING [256] could not elaborate as pvalue. Original state72 report/raw stdout/stderr remain0; eval was not attempted. Group only that list operand and three matching as-yet-unrun peer operands as PSTRING ([256]); fresh author-v2 passes142/129, peer first execution passes168. Runtime/source/native unchanged.",
+    "history": "V71 original post-break literal-string control remains historical0 with its own source/cut; this milestone validates three new exact originals only.",
+    "other": "All accepted native/model sources are normal0 with empty stderr; all accepted proof output is lowercase true plus LF/empty stderr. One zero-budget restoration reuses the ordinary fresh dispatch, with no extra driven-resume credit. No accepted engine divergence; all groups reaped."
+  },
+  "remaining": "Identity-unknown scalar define strings, string pointer/refcount/cache/INI consumers, cyclic stored/query trees, other owning publications, wider flags/names, default and callback/call/lifecycle domains remain partial. Constants obligation stays partial; no stdClass producer/leaf expansion is claimed.",
+  "artifacts": {
+    "author_sources": {
+      "root": ".tools/dynamic-literal-string-array-define-native-72",
+      "sha256": {
+        "native-report.json": "66fceb3544dc3e0df9d599182d7e21b41d0c86037fd00cb81e1f9f46453002c8",
+        "baseline-report.json": "b2c3fb5a4256c56cb812412229de3cf1057462f1cb8445cf85e3496849a0e8e0",
+        "model-report.json": "4d007cd45263950201d5f270ecbe5f43bedac0c895e7998daea998d3c93bdb4c"
+      }
+    },
+    "independent_source": {
+      "root": ".tools/dynamic-literal-string-array-define-peer-72",
+      "sha256": {
+        "native-report.json": "554177bd774acdebcda64023de1325d17243644abf8f43cf5de002b5f0bfe462",
+        "model-report.json": "bbf08275458f354faebbaa78e6cab0543ff8949ef54c35e45bcabe7cef567d1b"
+      }
+    },
+    "first_author_state": {
+      "root": ".tools/dynamic-literal-string-array-define-state-72",
+      "sha256": {
+        "fixtures-report.json": "f6f271151dba3f8bf2263c38f5e1d329302e276cf86b1b9fee9a4529bb389a66",
+        "check-report.json": "828570a5c41b84038ab2814d208f579f69557a26b8f97263cdf26a8597ed09af"
+      }
+    },
+    "author_state": {
+      "root": ".tools/dynamic-literal-string-array-define-state-72-v2",
+      "sha256": {
+        "fixtures-report.json": "db0fa3b17aa2b259fa06346a7343ae10d3437c4001552ea38e8127b785003237",
+        "check-report.json": "6923cf7b637b60733f352cd0aa093ee4919a07459c47cca4c15a607e8678b1fb"
+      }
+    },
+    "independent_state": {
+      "root": ".tools/dynamic-literal-string-array-define-peer-state-72",
+      "sha256": {
+        "fixtures-report.json": "db7c8ea3852cbdc5259cac8ef1ba3a31407c92c8c6cc518631209d4529ba90da",
+        "check-report.json": "ceeeb3709c6261391c64606d4aac1a7387da1b59950e4ff369e5587aa3c654ec"
+      }
+    }
+  },
+  "recovery": "From the publication history, restore967 source gate,8b9 source implementation 2454 failed wrappers and26d accepted state wrappers at the recorded original WT path. Provision report-pinned tools/references and preserve original native source paths/cwd. CPU4 native2host45/process15 then sole main baselinehost90/CLI45/process60; changed source2host150 serialCLI45/process60, then independent native45/model90. Author fixtures120/check240 serial2 perSL90 (first state72 elaboration0; accepted fresh-v2), then independent fixtures120/check150 perSL90. Raw fixtures/logs/reports stay ignored under the five canonical.tools roots above; all accepted processes are reaped.",
+  "review": {
+    "reviewer": "/root/dynamic_review_59",
+    "decision": "cleared",
+    "scope": "Byte-only value admission versus identity-bearing carriers, literal-known constraints versus structural array captures, actual copy/query/root transfer, callback source COW and normal/abrupt private-candidate retirement."
+  }
+}

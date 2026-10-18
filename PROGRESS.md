@@ -1277,6 +1277,19 @@ Composed over 6b076289/401 with incoming arity, LIST, property, Closure comparis
 and typed-return selectors disjoint. Source3/state497 retain private cuts without
 a joined actor or renewed execution credit.
 
+Byte-only string leaves, including compiled literals, now pass the existing
+array snapshot fold without creating a string carrier or inventing identity.
+Three module400 lines preserve exact bytes in 0..255 and use conservative noncacheable
+`PVSTRING false`; scalar string and existing carrier guards are unchanged.
+Three exact sources and 439 premises (271 author, 168 independent) pass, covering
+empty/one-byte/binary leaves, literal-source constraints, request-carrier
+composition, query bucket COW and normal/abrupt duplicate retirement. The first
+fixture stopped before evaluation on an ungrouped list operand and retains zero credit;
+only fixture grouping changed. V71's original string-leaf failure remains
+historical zero without replay. Wider values, flags/names and identity-dependent
+consumers remain partial.
+[Literal-string array review](coverage/semantics/define-literal-string-array-review.json).
+
 Selected inherited `__unset(string): void` now dispatches direct CV/literal-name
 access to a declared private property. Accessible public unset skips magic;
 the callback retains Parent lexical scope and Child called scope, removes the
