@@ -27,9 +27,11 @@ remain live, while runtime array temporaries retain their own tables. Reference
 elements transfer a stable cell normally; retargeting preserves the acquired
 count, cancelling existing debt before retaining unmatched old owners for the
 request, including on throw. Different-reference retargeting between primitive
-untyped cells also tracks the new cell's missing owner until it is balanced.
-Copies distinguish shared and singleton references; unsafe deficit retirement and
-wider domains remain Unsupported. Duplicate replacement and later items stay ordered.
+cells also tracks the new cell's missing owner until it is balanced. Ordinary
+live instance-property type sources are admitted: singleton copies shed their
+constraint while the original stays typed; shared copies retain it. Unsafe deficit
+retirement and wider domains remain Unsupported. Duplicate replacement and later
+items stay ordered.
 
 [Destructuring key warnings](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md)
 now retain captured arrays or source reference cells through handlers, including
@@ -657,6 +659,13 @@ witness yields `60` after two Warnings. Ten originals and 767 focused premises a
 check strict float `68.75` and final power cancellation in the
 [copied-arithmetic ledger](coverage/semantics/copied-arithmetic-warning-review.json).
 Quiet/no-Warning orders and owning or wider copied inputs remain partial.
+
+Arithmetic Warnings now retain evaluated scalar reference results after all
+source names disappear. Two operands may hold the same cell twice; those owners
+retire on result, error or handler throw. Nine originals and 853 focused premises
+cover shared-cell arithmetic, cached-zero division and final power cancellation in
+the [owned-arithmetic ledger](coverage/semantics/owned-arithmetic-warning-review.json).
+Selected cells must stay scalar and unconstrained; wider traces remain partial.
 
 Primitive plain-CV `**=` now commits its captured result even when the deprecation
 handler throws. A late alias detaches before the same exception continues; the
@@ -1494,6 +1503,12 @@ Completed user-instance donors also retain their exact construction receipt and
 pointer in direct definitions and copied array leaves. Typed property aliases
 stay shared; existing normal, throwing-handler and shutdown cleanup retain the
 ordinary owners. [Instance define review](coverage/semantics/define-certified-instance-review.json).
+Direct certified objects also receive true and NULL flags. An ignored-flag
+Warning keeps the captured pointer, including fresh registration after a supplied
+handler Exception; a throwing NULL deprecation cancels registration. Normal
+callbacks can install a later duplicate key, and strict NULL rejects before them.
+[Object-flag review](coverage/semantics/define-object-flag-review.json).
+
 Fresh definitions also copy nonempty array trees containing certified stdClass
 or user-instance leaves under the admitted flags. Copied containers freeze source
 reference values while object pointers and property writes remain shared,
@@ -2871,6 +2886,15 @@ links eligible source and `stdClass` parents at their required publication time;
 `instanceof` and class types follow transitive ancestry. Its [review](coverage/semantics/inheritance-review.json)
 binds source, compiler, syntax and paused-state checks. Other internal-class
 bodies and method callbacks remain open.
+
+Dynamic `instanceof` captures the RHS class from a CV or zero-argument producer
+before ordinary RHS cleanup. Its destructor can replace a delayed left CV; an owning
+left temporary instead survives until matching has cached the Boolean.
+Runtime class strings use case-insensitive fully qualified lookup without
+imports or autoload, and an invalid RHS errors before reading the left.
+Four originals and 335 focused premises are recorded in the
+[dynamic RHS review](coverage/semantics/dynamic-instanceof-review.json).
+
 A single builtin `#[AllowDynamicProperties]` permits dynamic slots on named
 classes and descendants while ordinary classes retain deprecation. Invalid
 trait/interface/readonly targets preserve diagnostic priority and keyword lines;
@@ -4110,8 +4134,12 @@ r/b aliases. A still-owning pending partial pair passes 684/18 at `3c90313b4`:
 the required outer task survives cleanup and local C, then one old-line9 VALUE
 Notice precedes fresh NULL recovery; later r writes preserve b/z/y. Owner-only
 deletions refuse despite a valid heap and live global z. Historical source/native
-credit is unchanged. Wider histories, interposed lifecycle capture, reentry, GC
-and broader consumers remain open.
+credit is unchanged. An unused destructor declaration now also preserves the
+no-instance, echo-only interposed scalar history. Fresh control/treatment sources
+agree with PHP; separate 463/8 state checks cover its shared-cell RELEASE/EXIT
+pauses, required literal history despite an unchanged heap, engine TypeError catch,
+one line7 Notice and detached aliases. Wider interposed/pending histories, reentry,
+GC and broader consumers remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

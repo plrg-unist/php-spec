@@ -192,11 +192,17 @@ Old values must remain null/bool/int/float and the builder object-free.
 The [reference-element ledger](../../coverage/semantics/array-literal-float-ref-key-warning-review.json)
 records repeated owners and singleton-copy observations. Different-reference
 retargets now preserve both the old owner and a per-cell new-owner deficit through
-return and supplied throw. Both cells must be untyped null/bool/int/float; they
+return and supplied throw. Both cells must hold null/bool/int/float; they
 may be shared or unwrapped according to their effective count. Inverse retargeting
 cancels the biases. The [deficit ledger](../../coverage/semantics/array-literal-float-ref-deficit-review.json)
-checks deletion, abrupt cleanup and balanced lifetime; effective-zero retirement,
-owning/typed debt cells, active collection and outstanding request-end debt remain
+checks deletion, abrupt cleanup and balanced lifetime. Validated ordinary live
+instance-property type sources now survive the same callbacks and cleanup.
+Physical singleton copies unwrap without the constraint; shared copies and the
+original property aliases still enforce/coerce typed writes. The
+[typed-source ledger](../../coverage/semantics/array-literal-float-ref-types-review.json)
+checks int-property singletons, two sources, typed old cells and supplied throws.
+Effective-zero retirement, owning values, static/hooked/queued or retired sources,
+coercion/backing records, active collection and outstanding request-end debt remain
 explicit Unsupported before pruning.
 
 Missing-key module409 retains a

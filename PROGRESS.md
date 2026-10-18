@@ -20,6 +20,48 @@ owning/removed right values and wider warning-fetch paths remain partial; prior
 COMP89/90 cuts are not renewed and quarantined COMP88 stays excluded.
 [Equality/less review](coverage/semantics/undefined-scalar-compare-review.json).
 
+Composed over `548f405ba`/405 after reviewing dynamic `instanceof`, object
+`define`, typed literal-reference debt, reference-return and owned-arithmetic
+selectors. These producers and ARITHMETIC_CV tasks are absent here; the new
+arithmetic guard rejects comparison operators. Only module 207 changes and keeps
+tested bytes; every other runtime, parent task/field/default and ordered manifest
+stays exact. Source8/state369 retain their private cuts without replay or renewed credit.
+
+Arithmetic Warnings now retain each evaluated scalar reference-result owner,
+including two operands sharing one cell and cells whose source names disappear.
+Nine originals pass at `5c28a56c9`/405; five focused fixtures pass 853 premises at
+`d6bd1ae9c`/405: physical MUL repair, shared-cell `17`, live-type and cached-zero
+Errors, historical final power and supplied-throw retirement. Old entries/readers
+and numeric bodies remain exact; 15 linked rows stay partial. Scalar-throughout
+is a trace bound; late out-of-domain completion and wider lifetimes remain open.
+[Owned-arithmetic ledger](coverage/semantics/owned-arithmetic-warning-review.json). OP12 paused.
+
+Composed over `d2f594f3a`/405, preserving incoming fields, task variants and
+manifest. Independently reviewed incoming selectors are absent here; source9 and
+state853 retain their private405 cuts without joined execution or renewed credit.
+
+Direct certified-object `define` receives true and NULL flags while retaining the
+earlier pointer across caller-CV rebinding and shared property writes. Normal
+Warning/Deprecated callbacks can install a later duplicate key; the old row and
+ordinary eager shared-owner release remain exact. A throwing true Warning still
+publishes a fresh row, while a throwing NULL Deprecated cancels reception/body;
+strict NULL raises TypeError before callbacks. Three originals agree at d294/404
+and 931 focused premises (504+100+327) pass at 1580. The original eval-strict setup
+and source/state timeouts retain zero; all bounded diagnostic probes also receive
+zero credit. Removing four identical validator trios
+preserves every distinct original premise; no semantic defect or runtime change
+is inferred from the timeouts. Shutdown values and abstract owners establish no
+new native refcount or early-destruction claim. Scalar-coerced direct-object flags,
+uncertified objects and wider name/lifetime domains remain partial.
+[Object-flag review](coverage/semantics/define-object-flag-review.json).
+
+Composed over `888c7b984`/405 with the exact tested400 patch and all other
+incoming runtime/manifest bytes preserved. Literal-reference debt fields lift
+empty in states, heap graphs and compiler memory; owners and budget identities
+are preserved. Incoming arithmetic COPY sees quiet PINT operands; Stringable
+name, spaceship, Generator and reference-return producers are unselected.
+Source3/state931 keep their private404 cuts without a joined actor or replay.
+
 Defined scalar left CVs now resume after a missing-right `<=>` warning using
 the current CV wrapper. Late reference creation and rebinding reach the new cell;
 the missing right remains NULL even after its name becomes 9. False/default Warning
@@ -111,42 +153,33 @@ all other runtime/control/root/default bytes and the405-module manifest stay
 parent-exact. Source4/state553/strict405 retain their private cuts without a
 joined actor, accepted replay or renewed execution credit.
 
-Nonowning copied operands now stage ordinary `+`, `-`, `*`, `/`, `**` Warnings.
-Saved copies survive origin mutation/unset and retain raw TypeError labels.
-MUL follows opcode slot-rank swapping: literal/CV order yields cached `60` with
-two Warnings. Ten originals pass at `2d6ca1eeb`/405; five focused fixtures pass
-767 premises at `1ed6e0127`/405, including copied bad-RHS priority, strict `68.75`
-after both source names disappear and final power supplied-throw cancellation.
-Old entry controls/readers are preserved; 13 rows stay partial. Quiet/no-Warning
-orders, owning/wider copies and lifetimes remain open; OP12 paused.
-[Copied-arithmetic ledger](coverage/semantics/copied-arithmetic-warning-review.json).
+The earlier nonowning-copy arithmetic route retains source10/state767 in its
+[review ledger](coverage/semantics/copied-arithmetic-warning-review.json).
 
-Composed over `7bed41edf`/405, preserving incoming fields, task variants and
-manifest. Independently reviewed incoming selectors are absent here; source10 and
-state767 retain their private405 cuts without joined execution or renewed credit.
+Dynamic-RHS `instanceof` now captures the class of a live source object or `stdClass`
+before ordinary RHS disposal. A returning RHS destructor can replace the delayed
+left CV; an owning left temporary instead survives matching and its destructor
+observes the cached Boolean. Runtime strings use case-insensitive fully qualified
+lookup without imports or autoload. Invalid RHS types error before reading an
+undefined/scalar left and preserve destination 42. A scanner int/float/string literal left
+folds false without compiling or executing the RHS.
+Four originals agree at `3b63d71c7`; 335 focused premises (314 reached +21 derived)
+combine borrowed 105 at `4597d7be4`, owning 101 at `669950865`, and strings 65/invalid 64
+at `44e95391e`. Full saved call validity, expired nonowning class history,
+source/name/line refusals, exact Error/catch and zero/split budgets are covered.
+Earlier owning/strings fixture failures stay zero in their false enclosing reports;
+only affected/unrun groups repeated. No runtime repair or diagnostic actor was needed.
+Only modules 126/127/30 add the staged consumer; name-RHS rules, manifest and generic
+ownership/destruction/GC remain unchanged. Wider expressions/object kinds,
+reference-return operands, owning invalid RHS and throwing-RHS lifetimes stay open.
+[Dynamic instanceof review](coverage/semantics/dynamic-instanceof-review.json).
 
-Paired `empty` now accepts live arrays returned by inherited untyped `__isset`.
-Array truth is cached before ordinary disposal. A sole table retires before its
-payload destructor, which can clear the caller CV and change the captured getter's
-value from 1 to 0; a held table instead preserves its payload through Get/result.
-A supplied payload-destructor Exception cancels Get and preserves destination 42
-and the same catch object. A mutable empty table with NEXT1/SERIAL1 caches false,
-retires before receiver destruction and skips a deliberately throwing Get.
-Four originals agree at `ee77488c6`; 416 focused premises at `25cda991d`
-(403 reached +13 derived) cover these owners, guards, saved call validity,
-retirement/catch and budget resumes. Bounds/retired-table refusals and a derived
-old-object truth bridge stay separate from source credit. All semantic actors
-passed on their first attempt. Only408 changes: live-array readiness and guarded
-pure truth caching; existing bool/object behavior, VALUEtrue cleanup certificate
-and generic array/destruction/GC code remain unchanged. Ordinary/no-Get407 still
-requires typed-bool `__isset`; other result kinds and wider lifetimes remain open.
-[Isset array RV review](coverage/semantics/magic-empty-isset-array-rv-review.json).
-
-Composed over `a14ba42f5`/405 after independent actual-parent review. Incoming
-reference-return, Generator, arithmetic, Closure-image and DEFINE selectors
-are unselected; module408 stays publication-exact, every other runtime path
-and the ordered405 manifest retain parent bytes. Source4/state416 keep their
-private cuts without a joined actor or renewed execution credit.
+Composed over `89740ccad`/405 after reviewing incoming literal-reference debt,
+Generator, arithmetic/spaceship-warning and DEFINE selectors, absent here.
+Incoming LITERALREFDEBTS stays empty; fields/defaults/roots/validators are retained.
+Modules 126/127 keep tested bytes; 30 retains the incoming field plus new task variants.
+Every other runtime and the ordered manifest remain parent-exact. Source4/focused335
+retain original cuts without joined execution or renewed credit.
 
 Retained propertyless Stringable `define` names now receive captured NULL flags
 with primitive candidates in admitted user-global/class-name domains. One module400
@@ -236,31 +269,36 @@ joined actor, accepted replay or renewed execution credit.
 The earlier mixed CV/selected-reference arithmetic route retains source9/state858
 in its [review ledger](coverage/semantics/mixed-arithmetic-warning-review.json).
 
-M112 admits pending still-owning partial-pair cleanup through its final empty
-release and one normal auxiliary THROW_SEARCH operation. Twenty lines in270 reuse
-the unchanged auxiliary view and full pending/reversed-mixed pair gate, with a
-separate virtual auxiliary-exit projection. Author315/nine raw steps and
-independent369/nine pass at `3c90313b4`/405: seven cleanup transitions and eight
-exact public pauses, one precise empty-property-row prune with GC unchanged,
-physical/virtual origins and registries, and valid malformed-operation refusals.
-The outer HCELL return task survives cleanup and same-constructor TypeError replay
-to local C. Removing only that task refuses despite unchanged stores, allocations,
-reference cells, live global z and valid heap. Consumed inner NULL queues one VALUE
-Notice at old line9; the caller gets a fresh NULL reference, then changing r leaves
-b7, z's object and bad y intact. Complete whole/split states agree.
-No semantic failure/retry or new native/source credit. One preparatory Python
-syntax typo was fixed before public fixture generation and is archived unexecuted.
-The unchanged M104 packet and M109–M111/normal proofs retain their separate cuts.
-Wider pending histories, normal interposed-catch capture/EXIT, larger owners or
-reentry, GC and typed consumers remain open.
+M113 fixes an unused-destructor declaration changing an interposed scalar
+reference return. Two fresh native observations agree: the counter replays once,
+the interposed catch runs, and the outer literal returns with one line7 VALUE
+Notice and detached caller aliases. At `4ff5f52ef`/405 the empty-class control
+agrees, but the unused-destructor treatment loses all cursor history and stops
+Unsupported after I;J1;. A genuine 37/2 diagnosis binds that capture loss with no
+object instances; the intentional bare-replay refusal remains correct.
+Module156's echo-only capture now also accepts an empty object table. Two legacy
+projection head guards remove a newly reached false-result rule overlap; its
+original failed probe is preserved with zero credit. The affected 38/1 probe then
+finds a real HCELL release with history intact. Treatment source agrees at
+`b63912d48`/405 without native/control replay. Two normal270 adjacency restrictions
+are removed for that source-valid RELEASE/empty/EXIT interval; full pair/source,
+required literal history, scope and physical registry checks remain.
+Author203/four raw and independent260/four pass at `75c78611b`/405. Four public
+pauses match the wrapped capture and three raw cleanup states without pruning.
+Deleting only the root-free outer task refuses with the heap graph unchanged. Actual engine TypeError identity
+through the catch, fresh outer-literal reference, one Notice7, detached writes and
+whole/split endings agree. Control/source cuts remain separate; no source renewal
+at the public-proof cut. Call-before-echo capture, storage/interposed variants,
+larger or reentrant histories, GC and wider typed consumers remain open.
 [Cleanup review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
-Composed over `64e61f105`/405 after independent actual-parent review. Stringable
-DEFINE NULL flags and property-empty __isset PARRAY results have no M104 producer;
-builtin Throwable::getMessage is unchanged. Only270 changes and matches
-`3c90313b4`; every other runtime file and the405-module manifest retain parent
-bytes. The 684/18 proof keeps its private405 cut without a joined actor or renewed
-source credit.
+Composed over `2f2407afa`/405 after independent actual-parent review. Incoming
+LITERALREFDEBTS stays empty, so debt-aware heap ownership and driver hooks preserve
+this source's old paths. Generator, spaceship/arithmetic Warning, DEFINE and
+dynamic instanceof selectors are absent; TypeError catch matching is unchanged.
+Only156/270 differ and match `75c78611b`; all other runtime files, new fields and
+the405 manifest retain parent bytes. Private source/state cuts are unchanged;
+there is no joined actor or renewed credit.
 
 Retained propertyless Stringable `define` names now accept captured boolean true
 with primitive candidates and non-NUL global/class-like results. One module400
@@ -309,29 +347,32 @@ GENERATORRETURNRETAINED and LITERALREFRETAINED lift by empty fields with no root
 and valid empty receipts, preserving owners/budgets pointwise. Source3/state632
 retain private403 cuts and both zero-credit failures without replay.
 
-Different-reference elements at finite lossy-float literal-key callbacks now
-preserve the old acquired owner and the omitted new-cell owner separately.
-Logical aliases remain present; per-cell debt changes both ownership queries and
-pruning counters. Same-cell insertion preserves existing debt, while scalar and
-inverse-reference retargets canonically cancel biases, including multiplicity2
-and a residual positive owner. Fresh balanced sources cover shared versus
-singleton COW, entry deletion and supplied-throw builder cleanup. Five original
-sources and strict404 pass at `cd8e16179`; 1159 state premises (1142 Boolean +17
-raw; author709/independent450) pass at `ff0410375` with no fixture failure.
-The unchanged Unsupported baseline, declaration-order strict failure and first
-multiplicity CLI60 timeout retain zero credit. Only helper declarations moved;
-only that unchanged source was retried at CLI120, with no native/source2 replay.
-Debt cells must remain untyped null/bool/int/float and keep positive effective
-counts. Effective-zero/owning/typed retirement, active collection and outstanding
-request-end debt are explicit Unsupported before pruning. Wider producers and the
-held undefined-reference LIST and owned-NUL paths remain untouched.
-[Deficit review](coverage/semantics/array-literal-float-ref-deficit-review.json).
+Finite lossy-float literal-key reference callbacks now admit ordinary live
+instance-property type sources on either acquired or rebound primitive cell.
+The existing owner deficit remains per cell: type metadata adds no edge, physical
+singleton copies unwrap, and shared copies retain typed rejection/coercion.
+For debt-bearing cells, every source object/property alias must survive logical
+pruning. Fresh int-property programs cover singleton copies, two source properties,
+typed old cells, supplied throws and balanced inverse cleanup. Four originals and strict405 pass at
+`eb44824e1`; 864 state premises (853 Boolean +11 raw; author433/independent431)
+pass at `96176f7c1`. Strict, source and state checks all pass first attempt; the
+genuine unchanged Unsupported baseline stays zero credit. Only413 changes;
+existing typed-write, source/handler, owner-count and prune algorithms remain
+unchanged. Effective-zero, owning payloads,
+static/hooked/queued or retired sources, coercion/backing records, active collection
+and outstanding request-end debt remain Unsupported. Held undefined-reference LIST
+and owned-NUL paths stay untouched.
+[Typed-source review](coverage/semantics/array-literal-float-ref-types-review.json).
 
-Composed over `4ff5f52ef`/405 after independent incoming-selector review.
-Parent magic static calls, typed-reference recovery, detached Generator send,
-DEFINE flags, mixed arithmetic and magic-empty array returns remain intact.
-The debt field lifts unrelated states by eps; accepted source5/strict404/state1159
-retain their private cuts and both failures without a joined actor or replay.
+Composed over `f305be84b`/405 after review of dynamic `instanceof`, reference-return,
+spaceship and DEFINE selectors, which are absent here. Module413 and six tests
+retain accepted bytes; other runtime paths and the ordered manifest stay parent-exact.
+Source4/state864 keep their private cuts without a joined actor or replay.
+
+The earlier untyped deficit slice retains source5/strict404 at `cd8e16179` and
+state1159 at `ff0410375`, composed over `4ff5f52ef`/405 as `7bed41edf`.
+Its original strict failure and source timeout retain zero credit in the
+[deficit ledger](coverage/semantics/array-literal-float-ref-deficit-review.json).
 
 The earlier positive-owner slice retains source5/strict403 at `61a8b26d9` and
 state830 at `5ca23fe19`, composed over `0714bbadb`/404 as `9984783b2`.
@@ -10560,10 +10601,11 @@ handoff. Preserve the accepted evidence and do not retry the rejected engine
 experiment. M106–M108 cover normal single-cursor and adjacent partial/final-pair
 release/storage intervals. M109–M112 cover bounded pending single-cursor and
 adjacent final/owning partial-pair cleanup through final empty releases and one
-normal auxiliary THROW_SEARCH operation. Wider pending histories, normal
-interposed-catch capture/EXIT, larger or reentrant owning histories, GC and wider
-typed consumers
-remain open core obligations for permanent lifecycle/control work.
+normal auxiliary THROW_SEARCH operation. M113 adds no-instance echo-only
+interposed scalar capture and its normal shared-HCELL RELEASE/EXIT pauses, with
+fresh control/treatment source agreements and separate463/8 state checks. Other
+interposed/pending histories, larger or reentrant owners, GC and wider typed
+consumers remain open core obligations for permanent lifecycle/control work.
 Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is
 bounded physical-array owner recovery. Bounded single-active-finalizer CV replay and deferred VALUE/NULL Notice dispatch are
 integrated, as are bounded aliased-CV Stringable reference conversion 186 and sole-local-CV

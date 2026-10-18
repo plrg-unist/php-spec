@@ -2550,6 +2550,7 @@ def $arithmetic_cv_source_operator(NExprBinaryOpPow expression_left expression_r
 def $arithmetic_cv_source_operator(pcnode) = eps -- otherwise
 dec $arithmetic_mixed_valid(pstate, pintegeroperation) : bool
 dec $arithmetic_copy_valid(pstate, pintegeroperation) : bool
+dec $arithmetic_owned_valid(pstate, pintegeroperation) : bool
 dec $arithmetic_cv_valid(pstate, pintegeroperation) : bool
 def $arithmetic_cv_valid(S, pintegeroperation) = true
   -- if S.ORIGIN = (pintegeroperation.SITE)
@@ -2567,6 +2568,8 @@ def $arithmetic_cv_valid(S, pintegeroperation) = true
   -- if $arithmetic_mixed_valid(S, pintegeroperation)
 def $arithmetic_cv_valid(S, pintegeroperation) = true
   -- if $arithmetic_copy_valid(S, pintegeroperation)
+def $arithmetic_cv_valid(S, pintegeroperation) = true
+  -- if $arithmetic_owned_valid(S, pintegeroperation)
 def $arithmetic_cv_valid(S, pintegeroperation) = false -- otherwise
 dec $arithmetic_cv_value(pstate, pintegerpointer) : pvalue?
 def $arithmetic_cv_value(S, INTEGER_CV ptbytes) = (pvalue)
@@ -2688,8 +2691,8 @@ rule PhpStep/arithmetic-cv-resume: S ~> $arithmetic_cv_converted(S, pintegeroper
   -- if S.TODO = (ARITHMETIC_CV_WARNING pintegeroperation parithmeticphase pvalue pnumber 1) :: ptask_tail*
   -- if $arithmetic_cv_warning_valid(S, pintegeroperation, parithmeticphase, pvalue, pnumber, 1)
 
-def $task_nodes(ARITHMETIC_CV_CONVERT pintegeroperation parithmeticphase) = eps
-def $task_nodes(ARITHMETIC_CV_WARNING pintegeroperation parithmeticphase pvalue pnumber n) = eps
+def $task_nodes(ARITHMETIC_CV_CONVERT pintegeroperation parithmeticphase) = $operand_nodes(pintegeroperation.LEFT) ++ $operand_nodes(pintegeroperation.RIGHT)
+def $task_nodes(ARITHMETIC_CV_WARNING pintegeroperation parithmeticphase pvalue pnumber n) = $operand_nodes(pintegeroperation.LEFT) ++ $operand_nodes(pintegeroperation.RIGHT)
 def $call_task_valid(S, ARITHMETIC_CV_CONVERT pintegeroperation parithmeticphase) = ($arithmetic_cv_valid(S, pintegeroperation) /\ $arithmetic_add_phase_valid(parithmeticphase) /\ (parithmeticphase =/= ARITHMETIC_LEFT \/ $arithmetic_add_selected(S, pintegeroperation)))
 def $call_task_valid(S, ARITHMETIC_CV_WARNING pintegeroperation parithmeticphase pvalue pnumber n) = $arithmetic_cv_warning_valid(S, pintegeroperation, parithmeticphase, pvalue, pnumber, n)
 def $error_call_valid(S, perrorcall) = true
@@ -2724,7 +2727,7 @@ rule PhpStep/arithmetic-cv-deprecated-resume: S ~> S[.TODO = ptask_tail*][.RESUL
   -- if S.TODO = (ARITHMETIC_CV_DEPRECATED pintegeroperation pnumber_left pnumber_right 1) :: ptask_tail*
   -- if $arithmetic_cv_deprecated_valid(S, pintegeroperation, pnumber_left, pnumber_right, 1)
   -- if (pnumber_result, true) = $num_pow(pnumber_left, pnumber_right)
-def $task_nodes(ARITHMETIC_CV_DEPRECATED pintegeroperation pnumber_left pnumber_right n) = eps
+def $task_nodes(ARITHMETIC_CV_DEPRECATED pintegeroperation pnumber_left pnumber_right n) = $operand_nodes(pintegeroperation.LEFT) ++ $operand_nodes(pintegeroperation.RIGHT)
 def $call_task_valid(S, ARITHMETIC_CV_DEPRECATED pintegeroperation pnumber_left pnumber_right n) = $arithmetic_cv_deprecated_valid(S, pintegeroperation, pnumber_left, pnumber_right, n)
 def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.RESUME = ARITHMETIC_CV_DEPRECATED pintegeroperation pnumber_left pnumber_right 1
@@ -2848,3 +2851,85 @@ def $arithmetic_copy_plan(S) = eps -- otherwise
 rule PhpStep/arithmetic-copy-begin: S ~> S[.TODO = (ARITHMETIC_CV_CONVERT pintegeroperation ARITHMETIC_LEFT) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if $arithmetic_copy_plan(S) = (pintegeroperation)
+
+
+;; Evaluated reference results keep each real owner until arithmetic ends.
+;; Selected scalar payloads and source pointers do not add another owner.
+dec $arithmetic_owned_reference_source(pstate, porigin) : bool
+def $arithmetic_owned_reference_source(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssignRef expression_left expression_right metadata)
+  -- if $reference_cv(expression_left) =/= eps
+  -- if $reference_cv(expression_right) =/= eps
+def $arithmetic_owned_reference_source(S, PORIGIN n pcpath) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprFuncCall name (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, preqbytes_fallback?))
+  -- if $call_target(S, preqbytes, preqbytes_fallback?) = (pfunction)
+  -- if pfunction.SIGNATURE.BYREF
+  -- if pfunction.SIGNATURE.RETURNS = eps
+def $arithmetic_owned_reference_source(S, porigin) = false -- otherwise
+dec $arithmetic_owned_cell_valid(pstate, nat) : bool
+def $arithmetic_owned_cell_valid(S, n) = true
+  -- if (HCELL n) <- S.ALLOCATIONS
+  -- if $propref_at(S.PROPREFS, n) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
+  -- if $integer_pointer_value(S, INTEGER_CELL n) = (pvalue)
+  -- if $submul_initial_value(S, pvalue)
+def $arithmetic_owned_cell_valid(S, n) = false -- otherwise
+dec $arithmetic_owned_pointer_valid(pstate, pintegerpointer) : bool
+def $arithmetic_owned_pointer_valid(S, INTEGER_CELL n) = $arithmetic_owned_cell_valid(S, n)
+def $arithmetic_owned_pointer_valid(S, INTEGER_CV ptbytes) = true
+def $arithmetic_owned_pointer_valid(S, INTEGER_COPY pvalue) = $submul_initial_value(S, pvalue)
+dec $arithmetic_owned_operand_valid(pstate, porigin, pcpath, poperand) : bool
+def $arithmetic_owned_operand_valid(S, porigin, pcpath, REFERENCE n) = true
+  -- if $origin_child((porigin), pcpath) = (porigin_operand)
+  -- if $arithmetic_owned_reference_source(S, porigin_operand)
+def $arithmetic_owned_operand_valid(S, porigin, pcpath, poperand) = ($operand_nodes(poperand) = eps) -- otherwise
+def $arithmetic_owned_valid(S, pintegeroperation) = true
+  -- if S.ORIGIN = (pintegeroperation.SITE)
+  -- if $origin_node(S.SOURCES, pintegeroperation.SITE) = (pcnode)
+  -- if $arithmetic_cv_source_operator(pcnode) = (pintegeroperation.OP)
+  -- if $operand_nodes(pintegeroperation.LEFT) =/= eps \/ $operand_nodes(pintegeroperation.RIGHT) =/= eps
+  -- if $integer_pointer_source(S, pintegeroperation.LEFTPOINTER, pintegeroperation.LEFT)
+  -- if $integer_pointer_source(S, pintegeroperation.RIGHTPOINTER, pintegeroperation.RIGHT)
+  -- if $arithmetic_owned_pointer_valid(S, pintegeroperation.LEFTPOINTER)
+  -- if $arithmetic_owned_pointer_valid(S, pintegeroperation.RIGHTPOINTER)
+  -- if $integer_operand_source(S, pintegeroperation.SITE, [PCFIELD 0], pintegeroperation.LEFT)
+  -- if $integer_operand_source(S, pintegeroperation.SITE, [PCFIELD 1], pintegeroperation.RIGHT)
+  -- if $arithmetic_owned_operand_valid(S, pintegeroperation.SITE, [PCFIELD 0], pintegeroperation.LEFT)
+  -- if $arithmetic_owned_operand_valid(S, pintegeroperation.SITE, [PCFIELD 1], pintegeroperation.RIGHT)
+  -- if $code_expression_at_source(S, pintegeroperation.SITE, [PCFIELD 1]) = (pintegeroperation.LINE)
+  -- if $arithmetic_copy_swap(S, pintegeroperation.SITE, pintegeroperation.OP, pintegeroperation.LEFT, pintegeroperation.RIGHT) = (pintegeroperation.SWAPPED)
+def $arithmetic_owned_valid(S, pintegeroperation) = false -- otherwise
+dec $arithmetic_owned_operation(pstate) : pintegeroperation?
+def $arithmetic_owned_operation(S) = (pintegeroperation)
+  -- if S.TODO = (BINARY_RIGHT pbin poperand_left z) :: ptask_tail*
+  -- if $error_handler_eligible(S, 2)
+  -- if $arithmetic_add_named(S)
+  -- if ~$gc_retired_binary(S, pbin, poperand_left)
+  -- if S.ORIGIN = (porigin)
+  -- if poperand_right = S.RESULT
+  -- if $integer_pointer_select(S, poperand_left) = (pintegerpointer_left)
+  -- if $integer_pointer_select(S, poperand_right) = (pintegerpointer_right)
+  -- if $arithmetic_cv_value(S, pintegerpointer_left) =/= eps
+  -- if $arithmetic_cv_value(S, pintegerpointer_right) =/= eps
+  -- if $arithmetic_copy_swap(S, porigin, pbin, poperand_left, poperand_right) = (b)
+  -- if pintegeroperation = {SITE porigin, OP pbin, LINE z, SWAPPED b, LEFT poperand_left, RIGHT poperand_right, LEFTPOINTER pintegerpointer_left, RIGHTPOINTER pintegerpointer_right}
+  -- if $arithmetic_owned_valid(S, pintegeroperation)
+def $arithmetic_owned_operation(S) = eps -- otherwise
+def $arithmetic_owned_plan(S) = (pintegeroperation)
+  -- if $arithmetic_owned_operation(S) = (pintegeroperation)
+  -- if $arithmetic_cv_value(S, $arithmetic_cv_pointer(pintegeroperation, ARITHMETIC_LEFT)) = (pvalue_first)
+  -- if $arithmetic_add_conversion(pvalue_first) = ((pnumber_first, true))
+def $arithmetic_owned_plan(S) = (pintegeroperation)
+  -- if $arithmetic_owned_operation(S) = (pintegeroperation)
+  -- if $arithmetic_cv_value(S, $arithmetic_cv_pointer(pintegeroperation, ARITHMETIC_LEFT)) = (pvalue_first)
+  -- if $arithmetic_add_conversion(pvalue_first) = ((pnumber_first, false))
+  -- if $arithmetic_cv_value(S, $arithmetic_cv_pointer(pintegeroperation, ARITHMETIC_RIGHT (NINT 0))) = (pvalue_second)
+  -- if $arithmetic_add_conversion(pvalue_second) = ((pnumber_second, true))
+def $arithmetic_owned_plan(S) = eps -- otherwise
+rule PhpStep/arithmetic-owned-begin: S ~> S[.TODO = (ARITHMETIC_CV_CONVERT pintegeroperation ARITHMETIC_LEFT) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $arithmetic_owned_plan(S) = (pintegeroperation)

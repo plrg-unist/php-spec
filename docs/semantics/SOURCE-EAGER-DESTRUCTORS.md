@@ -60,8 +60,17 @@ only outer.OUTER to the actual inner.OUTER; the real outer-origin entry still
 refuses. Removing only the task refuses with unchanged stores/allocations/reference
 cells, valid heap and live global z. Same-TypeError C, inner KNOWN NULL/one line9
 VALUE Notice, fresh caller NULL and later r-only write agree with exact budgets.
-Other pending histories, interposed capture/EXIT, wider owners/reentry and GC remain
-open. [Review and recovery](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M113 separately fixes an unused-destructor declaration losing echo-only
+interposed scalar history before any object exists. Fresh native2/control1 at
+`4ff5f52ef` and treatment1 at `b63912d48` retain distinct cuts. The full pending
+validator now admits its normal shared-HCELL RELEASE/empty/EXIT pauses; 463/8 at
+`75c78611b` proves exact public states, source/LINE/scope/registry refusals and
+heap-equal deletion of the required outer literal task. The same engine TypeError
+reaches the catch, then the outer literal returns through a fresh detached cell
+with one Notice7. The first projection-overlap failure remains zero; two equivalent
+return-head guards resolve it. Call-before-echo capture, storage/interposed
+variants, wider pending histories, owners/reentry and GC remain open.
+[Review and recovery](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
 Pruning prepares the object store and fatal marks once, then selects the same
 unsupported, refused, pending-release or store-drop result. Unmatch in preparation,

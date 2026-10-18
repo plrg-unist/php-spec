@@ -75,17 +75,27 @@ null/bool/int/float, insertion uses that live scalar directly and preserves the
 acquired count: an existing debt cancels first, otherwise the old wrapper gains a
 request owner. Supplied throws preserve that count while discarding the builder. Initial and resumed old values
 must remain null/bool/int/float, and the builder must remain object-free.
-Retargeting between different primitive untyped reference cells also records the
+Retargeting between different primitive reference cells also records the
 omitted new-cell owner. This debt survives deletion of the originating entry and
 abrupt builder cleanup. Copies at effective count1 unwrap the scalar; copies at
 larger counts retain the alias. Same-cell insertion preserves an existing debt;
 scalar and inverse-reference retargets cancel count biases per cell, including
 repeated debts and residual positive owners. Logical edges are never removed to
-represent the missing count. Effective-zero, owning/typed debt cells, active
-collection and outstanding request-end debt remain explicit Unsupported before
-pruning. The [deficit ledger](../../coverage/semantics/array-literal-float-ref-deficit-review.json)
+represent the missing count. The [deficit ledger](../../coverage/semantics/array-literal-float-ref-deficit-review.json)
 records fresh balanced source/state evidence; historical reference probes retain
 zero credit in the [positive-owner ledger](../../coverage/semantics/array-literal-float-ref-key-warning-review.json).
+Both acquired and new cells may also carry validated ordinary instance-property
+type sources while their values remain null/bool/int/float. For debt-bearing
+cells, every source object must survive logical pruning with its actual property
+alias; type metadata adds no owner. A physical singleton copy unwraps without
+carrying the constraint, while the original alias and shared copies still use
+existing typed writes.
+Fresh int-property witnesses check rejection, numeric-string coercion, multiple
+type sources, supplied throws and inverse cleanup in the
+[typed-source ledger](../../coverage/semantics/array-literal-float-ref-types-review.json).
+Effective-zero, owning payloads, static/hooked/queued or retired type sources,
+coercion/backing records, active collection and outstanding request-end debt
+remain explicit Unsupported before pruning.
 The source basis is pinned `Zend/zend_vm_def.h::ZEND_ADD_ARRAY_ELEMENT`,
 `Zend/zend_hash.c::zend_array_dup_value`, and
 `Zend/zend_operators.h::zend_dval_to_lval_safe`.

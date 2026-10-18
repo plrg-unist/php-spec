@@ -30,11 +30,18 @@ after that callback. Logical aliases remain intact; effective owner counts and
 pruning counters subtract the debt multiplicity. Retaining an indebted cell first
 cancels one debt, and owing a retained cell first cancels one positive owner.
 Thus inverse retargeting restores ordinary ownership without spurious GC roots.
-Both acquired and new cells must be untyped null/bool/int/float when retargeting
-between different reference cells. Debt cells must keep positive effective counts.
-Owning/typed cells, active collection, effective-zero retirement and outstanding
-debt at request end are explicit Unsupported before pruning. Isolated compiler
-images reject both runtime fields. The [deficit review](../../coverage/semantics/array-literal-float-ref-deficit-review.json)
+Both acquired and new cells must hold null/bool/int/float when retargeting
+between different reference cells. Ordinary live instance-property sources may
+constrain either cell; their metadata adds no owner. Singleton COW strips the
+copied entry's wrapper even when it has type sources, while original aliases and
+shared copies retain typed rejection/coercion. For debt-bearing cells, source
+objects and their actual property aliases must survive logical pruning. The
+[typed-source review](../../coverage/semantics/array-literal-float-ref-types-review.json)
+checks both typed sides and multiple live sources. Debt cells must keep positive
+effective counts. Owning values, static/hooked/queued or retired sources,
+coercion/backing records, active collection, effective-zero retirement and
+outstanding debt at request end are explicit Unsupported before pruning. Isolated
+compiler images reject both runtime fields. The [deficit review](../../coverage/semantics/array-literal-float-ref-deficit-review.json)
 keeps fresh balanced sources separate from the earlier
 [positive-owner slice](../../coverage/semantics/array-literal-float-ref-key-warning-review.json).
 

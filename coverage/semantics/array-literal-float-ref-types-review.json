@@ -1,0 +1,57 @@
+{
+  "status": "independently reviewed and validated; actual-parent composition accepted",
+  "scope": "Finite fitting lossy-float CV keys in array literals with direct-CV reference elements. Acquired and rebound cells may carry ordinary instance-property type sources while their payloads remain null/bool/int/float and the builder remains object-free.",
+  "target": "PHP 8.5.10 CLI NTS64; vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348; project-local oracle and tests/semantics/profile.json. Reports preserve binary/input hashes, environment, original paths, argv, streams, exits and reaped groups.",
+  "engine_basis": "Zend/zend_vm_def.h::ZEND_ADD_ARRAY_ELEMENT acquires the old reference before float-key diagnostics but inserts through the live CV afterward. Zend/zend_hash.c::zend_array_dup_value unwraps physical singleton references without a type-source exception. Zend/zend_execute.c::zend_assign_to_typed_ref_ex and existing module138 retain typed rejection/coercion on surviving aliases.",
+  "semantics": "Existing per-cell retained owners/debts and logical aliases are unchanged. Type metadata adds no owner. Singleton copies become independent scalar entries; original property aliases and shared copies retain their constraints. Inverse retargeting clears both count biases before the fresh programs release their source objects.",
+  "admission": "The unchanged plain-cell predicate remains a fast path. Typed admission requires nonempty unique valid OBJECT_PROP_SOURCE rows, actual allocated INSTANCE property aliases, no hooks or queued source cleanup, and no reference-coercion/parameter-backing association. Debt safety additionally validates every source object against the logically pruned graph before biased pruning; a positive cell count alone is insufficient.",
+  "change": "Only spec/semantics/413-array-literal-key-warnings.watsup changes runtime behavior: the different-reference value branch and debt-cell safety call the new bounded cell predicate. Source/error certificates, key conversion, count/cancellation algorithms, driver/prune algorithms, module inventory and all inherited tests remain unchanged.",
+  "cuts": {
+    "fresh_native_and_unchanged_baseline": "d856de81ca89e232e7b87109686b9b0861ff852a",
+    "runtime_strict_and_source4": "eb44824e14a14442dfcaed8a37102717a03d6ea5",
+    "focused_state": "96176f7c14f141ca08463dea4a2c62aadc41e9f9",
+    "base": "6821275c02b8eaaa443636b31550715351c3361e"
+  },
+  "validation": {
+    "strict_modules": 405,
+    "source_agreements": 4,
+    "state_premises": 864,
+    "boolean_premises": 853,
+    "raw_steps": 11,
+    "author": {"premises": [222, 211], "raw_steps": [3, 2]},
+    "independent": {"premises": [205, 226], "raw_steps": [3, 3]},
+    "results": "Strict, four model-only source comparisons and all four SL180 state fronts pass first attempt with quiet tool stderr, no timeout/interruption and empty reaped groups. No native/source/state replay or fixture correction occurred.",
+    "baseline": "The unchanged checked program naturally stops after its first handler with array literal float-key reference after callback; native succeeds and the ordinary comparator fails. This retained baseline has zero agreement credit."
+  },
+  "counterexamples": [
+    "A live int property plus one array alias has logical count2/debt1/physical count1: its copied entry accepts a free string while the original stays int-constrained; inverse cancellation restores shared typed writes.",
+    "Supplied throw preserves the same exception/destination/later-expression state, retires the builder and leaves the typed deficit observable through a safely retained probe before inverse cancellation.",
+    "A typed acquired old cell retains its property constraint after the inserted new alias is deleted; new-cell singleton copying and inverse typed coercion remain distinct.",
+    "Two rooted int properties share one target cell: copied entries retain ALIAS and reject an array before numeric-string coercion. A pure graph control removes one source object's roots; the target still has logical owners3, but typed debt safety refuses because that object is absent after logical pruning."
+  ],
+  "runtime_sha256": {"spec/semantics/413-array-literal-key-warnings.watsup": "0e5fedd3f209706fec73fb6ffebec4204ba4be7df14a66a6c72b2bd4c218885b"},
+  "reports": [
+    {"path": ".tools/array-literal-float-ref-types-baseline-22/report.json", "sha256": "03263585df6f11f7d8e9998bc3b79a027df869bf8f57a8fa01f7c2ee94c5116a", "cut": "fresh_native_and_unchanged_baseline", "credit": "0; genuine unchanged Unsupported"},
+    {"path": ".tools/array-literal-float-ref-types-native-rest-22/report.json", "sha256": "a3818f5e377307033202cfaf41552da97a5170d714af0d12e102e4866f12174c", "cut": "fresh_native_and_unchanged_baseline", "credit": "0; one native preparation"},
+    {"path": ".tools/array-literal-float-ref-types-review-native-22/report.json", "sha256": "b672fd412cc5ac4f315429db0540caf383fbf4daa1a6284665f2d9be8c490311", "cut": "fresh_native_and_unchanged_baseline", "credit": "0; two independent native preparations"},
+    {"path": ".tools/array-literal-float-ref-types-strict-22/report.json", "sha256": "90be845ed304e29f4c640ad452caefb1ed324754515101decd601eb7dbd457ee", "cut": "runtime_strict_and_source4", "credit": "strict 405-module pass"},
+    {"path": ".tools/array-literal-float-ref-types-author-source-22/report.json", "sha256": "69d6a2cf60eaf8b7b70a7c6bc24c2e6fbe3bfd55304e0d690d49f73a02633a33", "cut": "runtime_strict_and_source4", "credit": "2 original-source agreements; native reused"},
+    {"path": ".tools/array-literal-float-ref-types-review-source-22/report.json", "sha256": "1d78421382dfbcc67cff946e25139e414d35c10a43e432ea52524b6bf04f3cb1", "cut": "runtime_strict_and_source4", "credit": "2 independent original-source agreements; native reused"},
+    {"path": ".tools/array-literal-float-ref-types-author-state-22/report.json", "sha256": "3935d7d87e8dfdf64864708465c771874bce7f27f1d8c72d2d45cd800a829d8e", "cut": "focused_state", "credit": "433 premises, including 5 raw"},
+    {"path": ".tools/array-literal-float-ref-types-review-state-22/report.json", "sha256": "1fe953a306c4c1ff0c0913239cc5be1d85cb38cb7fa388f689a32d62117c1855", "cut": "focused_state", "credit": "431 premises, including 6 raw"}
+  ],
+  "archive": {
+    "path": ".tools/array-literal-float-ref-types-22-raw.tar.gz",
+    "bytes": 377011,
+    "members": 123,
+    "sha256": "87fa9776ec1ac086307d2e3d4c63dffac55b91f87b5eb6f4cf4218f3c0707deb",
+    "contents": "Eight basename report roots plus the exact strict/reuse scripts, stored outside Git in canonical .tools.",
+    "recovery": "Restore the recorded cut at .tools/array-literal-float-reference-types-22, provision pinned project-local tools, and extract the archive into that worktree's .tools directory to recover original paths and raw recipes. Raw evidence is not a build/runtime dependency."
+  },
+  "compatibility": "A21's untyped predicate is byte-identical and remains the first admission branch; its fake empty/static source refusals stay excluded. Historical evidence retains its original cuts with no renewed execution credit. Independent incoming review through 89740ccade8d858fe26fcd639e015d74a990a093 found only spaceship-specific missing-CV reads and object-define flag/value selectors, absent all four programs; no joined actor is indicated.",
+  "composition": {
+    "parent": "f305be84b590844fb0e595109170f560d47ad6b3", "modules": 405,
+    "result": "Module413 and the six new tests retain accepted private bytes. Every other runtime path and the ordered module manifest remain parent-exact; docs and six partial inventory rows preserve incoming changes. New CLASS102 dynamic-instanceof and M113 typed-reference cursor selectors, like prior spaceship/DEFINE selectors, are absent from the four sources. Source4/strict405/state864 retain their private cuts with no joined actor or renewed execution credit."
+  },
+  "remaining": "Effective-zero or owning debt payloads; static, hooked, queued or retired type sources; coercion/backing associations; active collection; and outstanding request-end debt remain Unsupported. Fresh witnesses use int properties; broader validated primitive type-source admission composes existing typed-write rules rather than claiming exhaustive type coverage. Held undefined-reference LIST and paused owned-NUL include paths are untouched."
+}
