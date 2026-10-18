@@ -1183,6 +1183,10 @@ unset history incorrectly; its failure remains0, with copied retry history still
 checked exactly. Wider flags/names, cyclic stored trees and owning domains remain
 partial. [Recursive-input review](coverage/semantics/define-recursive-array-review.json).
 
+Composed over 6b076289/401 with incoming arity, LIST, property, Closure comparison
+and typed-return selectors disjoint. Source3/state497 retain private cuts without
+a joined actor or renewed execution credit.
+
 Selected inherited `__unset(string): void` now dispatches direct CV/literal-name
 access to a declared private property. Accessible public unset skips magic;
 the callback retains Parent lexical scope and Child called scope, removes the
