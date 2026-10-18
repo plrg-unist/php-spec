@@ -1498,6 +1498,11 @@ Warning keeps the captured pointer, including fresh registration after a supplie
 handler Exception; a throwing NULL deprecation cancels registration. Normal
 callbacks can install a later duplicate key, and strict NULL rejects before them.
 [Object-flag review](coverage/semantics/define-object-flag-review.json).
+Certified objects also receive integers, finite floats and strings as flags.
+The call retains the raw flag and earlier pointer across callback changes;
+truthy flags warn before publication or duplicate lookup. Strict calls reject
+the raw nonboolean flag.
+[Quiet object-flag review](coverage/semantics/define-object-scalar-flag-review.json).
 
 Fresh definitions also copy nonempty array trees containing certified stdClass
 or user-instance leaves under the admitted flags. Copied containers freeze source

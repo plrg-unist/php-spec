@@ -542,8 +542,16 @@ published rows keep their own roots. The exact sources observe shutdown destruct
 not early destruction or native refcounts. The pending-existing-key object helper
 is covered by a pure, undriven composition control, not another executed callback.
 [Object-flag review](../../coverage/semantics/define-object-flag-review.json).
-Ordinary uncertified objects, other owning array leaves, scalar-coerced flags for
-direct object payloads, coerced names and wider owning define domains remain partial.
+Direct certified payloads also receive quiet integers, finite floats, byte-only
+strings and authenticated string carriers as flags without replacing the raw
+argument. Weak false flags publish quietly; truthy flags warn before current-key
+lookup and may publish with the same pending handler Exception. Callback CV
+rebinding leaves the captured pointer intact while property writes stay shared.
+Strict nonboolean flags raise TypeError first and retain the raw API arguments.
+Existing duplicate release and historical receipt validation are reused.
+[Quiet object-flag review](../../coverage/semantics/define-object-scalar-flag-review.json).
+Ordinary uncertified objects, other owning array leaves, nonfinite direct-object
+flags, coerced names and wider owning define domains remain partial.
 
 Class-qualified `defined` queries reuse inherited lookup and the actual caller's
 lexical visibility. Missing or inaccessible members return false. The initial

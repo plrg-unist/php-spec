@@ -7,6 +7,16 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Quiet scalar flags now admit already-certified object `define` payloads while
+retaining the raw argument and earlier pointer across callback CV/property
+changes. False flags publish quietly; truthy flags warn before current-key
+lookup, including fresh publication with a pending Exception. Strict nonbool
+flags reject before callbacks. Three originals pass at c56/405 and 631 focused
+premises (244+103+284) pass at b445. One callback-record fixture collision
+retains zero; only its affected main repeats, with no source/native/runtime
+or older campaign replay. Nonfinite object flags and wider owning domains
+remain partial. [Quiet object-flag review](coverage/semantics/define-object-scalar-flag-review.json).
+
 Direct certified-object `define` receives true and NULL flags while retaining the
 earlier pointer across caller-CV rebinding and shared property writes. Normal
 Warning/Deprecated callbacks can install a later duplicate key; the old row and
@@ -18,8 +28,8 @@ and source/state timeouts retain zero; all bounded diagnostic probes also receiv
 zero credit. Removing four identical validator trios
 preserves every distinct original premise; no semantic defect or runtime change
 is inferred from the timeouts. Shutdown values and abstract owners establish no
-new native refcount or early-destruction claim. Scalar-coerced direct-object flags,
-uncertified objects and wider name/lifetime domains remain partial.
+new native refcount or early-destruction claim. Uncertified objects and wider
+name/lifetime domains remain partial.
 [Object-flag review](coverage/semantics/define-object-flag-review.json).
 
 Composed over `888c7b984`/405 with the exact tested400 patch and all other
