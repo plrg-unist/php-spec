@@ -682,6 +682,12 @@ saved numbers and later diagnostic messages survive RHS replacement, references
 or unset. Success detaches late aliases; errors and supplied throws cancel the
 store. Twelve originals and 1089 focused SL premises pass in the
 [precision string ledger](coverage/semantics/precision-string-review.json).
+Fractional LEFT with an initially quiet integer RHS now also reaches that delayed
+conversion pipeline when its first handler changes RHS. Three marker handoffs reuse
+the post-LEFT conversions; cached LEFT survives, stores detach aliases, and errors
+or supplied throws cancel storage while retaining callback effects. Ten originals
+and 857 focused SL premises pass in the
+[single-LEFT ledger](coverage/semantics/single-left-bridge-review.json).
 
 In those both-fractional routes, a nonnumeric string or array RHS produced by the
 first callback now raises TypeError with the live operand types. Callback writes
@@ -959,6 +965,11 @@ iteration container while locals and current caches retire normally. Its payload
 are destroyed in the request-store pass; embedded references remain mutable, and
 independently started Generators in that array close there. See the
 [parked-foreach review](coverage/semantics/generator-pending-foreach-throw-review.json).
+A simple-CV used yield in that loop can also retain one buffered input across
+pending throw and close. If both name one array, the two roles contribute separate
+counts without duplicating its element edges. Rebinding an embedded reference
+leaves the old buffered object alive.
+See the [joint lifecycle review](coverage/semantics/generator-pending-buffered-foreach-throw-review.json).
 [Delegation](docs/semantics/GENERATOR-DELEGATION.md)
 adds arrays, source Iterators and shared Generator graphs with live raw caches
 and natural return/unwind. Aggregate yield-from now acquires nested real iterator
@@ -1130,6 +1141,12 @@ registration. Later arguments still run and can change ordinary fields or shared
 references after the name capture.
 [Four source agreements and 590 state premises](coverage/semantics/define-array-name-review.json)
 cover NULL/strict-flag/body-warning priority and raw array/candidate/flag traces.
+Retained, propertyless Stringable names now enter `__toString()` before positional
+`constant()`/`defined()` global lookup. Success replaces only the API slot; strict
+calls reject the raw object before entry, and a method throw cancels the query.
+[Four source agreements and 642 state premises](coverage/semantics/constant-query-stringable-name-review.json)
+cover raw versus converted traces, selected callees, callback effects and discard.
+Sole-owner destruction, wider receivers and named/packed forms remain partial.
 Positional `define()` calls with primitive arguments also reject counts below two
 or above three before name/flag reception or registration. Exact count messages
 and raw API arguments survive all argument effects, including a captured true
@@ -2217,6 +2234,13 @@ lifetime remain required.
 preserve named static roots and existing closure identity through conversion;
 [their review](coverage/semantics/first-class-review.json) binds 17 source outcomes
 and the separate reference and paused-state gates.
+[Stored callable-name reception](coverage/semantics/stored-callable-carrier-review.json)
+now accepts interned/request names through the existing resolver. Alias replacement
+preserves selected named/static targets; inherited private static capture retains
+lexical permission while fresh outside capture is denied. Three originals and
+291 premises/12 typed transitions cover allocations, selections and scalar errors.
+The unchanged interpreter failures retain zero credit. Nonstatic, autoload and
+invalid/NUL-name behavior remain partial.
 [Pipe arrow grouping](coverage/semantics/pipe-syntax-review.json) survives checked
 syntax and printing, so a bare arrow RHS receives the matching compile error
 before operand effects. [Pipe execution](docs/semantics/SOURCE-PIPE.md) forces the
@@ -2978,6 +3002,11 @@ map disposal unregisters its key before releasing the owned value. Four original
 and 333 focused premises cover sole/held ownership, logical weak-reference expiry,
 receiver release and a value destructor's Exception;
 [WeakMap RV review](coverage/semantics/magic-empty-weakmap-rv-review.json).
+Real static Closure RVs now use that phase for ordered release. A held Closure
+and a retained reference cell give different weak-reference lifetimes and delay
+capture disposal; four originals and 452 focused premises
+cover both, normal receiver release and a capture destructor's Exception;
+[Closure RV review](coverage/semantics/magic-empty-closure-rv-review.json).
 Other signatures, receivers, other internal-object RVs and
 wider recursive/coalesce magic combinations remain unsupported.
 Hooked iteration, defaulted virtual hooks, other paired or virtual setters, wider trait
@@ -3710,7 +3739,7 @@ the raw captured arguments. Private parent/child access, lowercase `static`,
 case/slash lookup and normal/throwing warning callbacks pass three originals and
 324 Boolean premises/nine actual transitions; two pre-main fixture failures stay
 zero. ASCII names are covered; invalid/NUL formatting, autoload/scalar conversion
-and COMP71 stored-string capture remain separate.
+remain separate; COMP82 covers bounded stored callable-name reception above.
 [Scope-carrier review](coverage/semantics/closure-binding-scope-carrier-review.json).
 Literal named-static `Closure::getCurrent(...)` capture now preserves the immediate
 ordinary caller; selected API and returned body retire independently. A named

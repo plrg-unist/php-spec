@@ -1,0 +1,137 @@
+{
+  "scope": "Terminal inherited external CV/literal private empty with public nonref bool __isset and untyped nonref __get: static real Closure RV, one ordinary leaf payload captured by value/reference, held Closure versus retained global CELL and payload destructor throw.",
+  "implementation": {
+    "base": "29f8313e981483f95f6de50609e505304b17ea30",
+    "revision": "9d9f857a30054388574a0f3c4967754502a7d921",
+    "modules": 401,
+    "change": "Exactly one408 raw REALCLOSURE kind arm. Existing receiver-only phase, pure truth, guards/roots/discard, Closure capture/scope/static/cell edges and generic free/GC rules remain unchanged. No old test or control maintenance/replay."
+  },
+  "engine": {
+    "target": "PHP8.5.10 CLI NTS64",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_object_handlers.c zend_std_has_property: getter truth/RV destruction under IN_ISSET, then clear guard and release receiver",
+      "Zend/zend_closures.c zend_closure_free_storage: std_dtor/weak notification before static-variable captures, then this_ptr; standard object Boolean cast",
+      "Zend/zend_vm_def.h BIND_GLOBAL/ASSIGN_REF and Zend/zend_execute.c zend_assign_to_variable_reference: replacing the local global-alias CV differs from writing through the retained global reference"
+    ],
+    "intentional_divergences": []
+  },
+  "sources": {
+    "catalogue": "tests/semantics/magic_empty_closure_rv_cases.json",
+    "original_root": "/home/user/workspace/php-spec/.tools/magic-empty-closure-rv-private-96/.tools/magic-empty-closure-rv-probes-96",
+    "maintained_byte_identical": true,
+    "cases": "Static empty Closure body captures one payload; no implicit this or cold statics. Sole capture destructor observes Closure weak get null, nulls caller CV and returns/throws. A held Closure gives F/L before later disposal; an exported shared capture cell gives F/Z after Closure retirement but before alias=NULL triggers payload/receiver destruction."
+  },
+  "validation": {
+    "native_first": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-closure-rv-private-96/.tools/magic-empty-closure-rv-probes-96/native-first/report.json",
+      "sha256": "038aea62bf5257d4d11f66fc17827f212d5fbb9ff8bf00b20d73fb096aa1b2d7",
+      "result": "Only normal/held completed rows are accepted exact20/0/0. Enclosing completed=false: original reference wrongly expected global export; throwing unrun.",
+      "revision": "29f8313e981483f95f6de50609e505304b17ea30",
+      "accepted_native_cases": [
+        "normal",
+        "held"
+      ],
+      "source_agreements": 0
+    },
+    "native_affected": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-closure-rv-private-96/.tools/magic-empty-closure-rv-probes-96/native-repair1/report.json",
+      "sha256": "df540d975f442cd529ac728c3de4e1488dc71dca09cb84de1ed53aea9fbd2180",
+      "result": "Only corrected reference and previously unrun throwing originals; exact20/0/0 each. Together with first2 gives four native cases across separate cuts.",
+      "revision": "29f8313e981483f95f6de50609e505304b17ea30",
+      "source_agreements": 0
+    },
+    "baseline": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-closure-rv-private-96/.tools/magic-empty-closure-rv-probes-96/accepted-current-baseline/report.json",
+      "sha256": "00a6f104d93d99cc8f6e2e570baecee5c9c6b87a98c794469390025cda6eae42",
+      "result": "Four genuine checked magic empty getter result type Unsupported/CLI1 after N/H/A/X:I|G|;14.320/15.175/15.212/15.042s",
+      "revision": "29f8313e981483f95f6de50609e505304b17ea30",
+      "source_agreements": 0
+    },
+    "changed_source": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-closure-rv-private-96/.tools/magic-empty-closure-rv-probes-96/changed-model-_oy4vibq/report.json",
+      "sha256": "ec455e5ffbbc1f25063443074070d4f67b36918f9f147631b854779b807832cc",
+      "result": "Four checked normal exact20/0/0 tuples;18.722/19.007/18.326/20.084s",
+      "revision": "9d9f857a30054388574a0f3c4967754502a7d921",
+      "source_agreements": 4
+    },
+    "focused": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-closure-rv-private-96/.tools/magic-empty-closure-rv-protocol-ntmro5v8/report.json",
+      "sha256": "7be933f932df075b3c14a2bc7ad0e6df02a29b48493ddfeb9112d92926c2fa9f",
+      "result": "Normal104/held114/reference122/throw112 each true;452=447 reached+5 derived. AL7.368/7.486/7.043/7.135s;SL28.525/29.760/28.590/30.693s",
+      "revision": "458d8942b3a2d0f315001229c93e22b815b102f6",
+      "source_agreements": 0
+    }
+  },
+  "focused_scope": "Real static scope with no receiver edge; DIRECT object and ALIAS cell capture; exact receiver/Closure/payload/wrapper identities, capture owners and cached false. Sole Closure retired and weak get null before payload destructor, retained receiver1 after callerCV=NULL, then receiver release before result/same Exception at actual CATCH_BIND. Held Closure stays live at F/L; shared CELL2\u21921 retains payload after Closure retirement at F/Z, and its later STORE=NULL precedes payload D. Later callbacks permit nested receiver D; full endings and budget equality. One derived valid WeakReference RV refusal retains displaced Closure in HELD; no broad certificate replay or callback-wide GC equality.",
+  "nonpassing": {
+    "original_reference": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-closure-rv-private-96/.tools/magic-empty-closure-rv-probes-96/reference.php",
+      "sha256": "8cbeff7bad091050ffc4d674f226a8292ae3a7795a4a07c2cbb28c6088e1e9b8",
+      "result": "Initial native source uses global alias; alias =& payload only replaces that function-local CV, leaving the global null. Actual A:I|G|V|K|v|D|F|Z|E| differs from intended F/Z-first order. Source-authoring error, not engine/model divergence; corrected fresh source uses payload =& alias before assigning new payload.",
+      "passing_credit": 0
+    },
+    "disposition": "Original source/cases/driver/native report retained unchanged. Normal/held native rows were not replayed; only corrected reference and unrun throw ran before unchanged baseline4. No state fixture/semantic failure or diagnostic actor occurred."
+  },
+  "execution": {
+    "cwd": "/home/user/workspace/php-spec/.tools/magic-empty-closure-rv-private-96",
+    "environment": "LC_ALL=C TZ=UTC PHP_SPEC_SCRIPT_ENCODING absent, jobs1; catalogue profile. Native/baseline CPU5, source/focused CPU1. SL/cachefalse/dettrue.",
+    "caps": "Per-case native45; model60/outer75/steps100000; each focused serial AL90 then strictSL90, stop-first/reap.",
+    "commands": [
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 5 python3 -u .tools/magic-empty-closure-rv-probes-96/run.py native --revision 29f8313e981483f95f6de50609e505304b17ea30",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 5 python3 -u .tools/magic-empty-closure-rv-probes-96/run-repair1.py native --revision 29f8313e981483f95f6de50609e505304b17ea30",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 5 python3 -u .tools/magic-empty-closure-rv-probes-96/run-repair1.py baseline --revision 29f8313e981483f95f6de50609e505304b17ea30",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/magic-empty-closure-rv-probes-96/run-repair1.py changed --revision 9d9f857a30054388574a0f3c4967754502a7d921",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u tests/semantics/magic_empty_closure_rv_protocol.py --revision 458d8942b3a2d0f315001229c93e22b815b102f6"
+    ],
+    "affinity": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-closure-rv-private-96/.tools/magic-empty-closure-rv-probes-96/affinity-native-first.json",
+        "sha256": "75fe6a5bd66ef08c618fb57244d00407381480e50790b78cafc5dab97ced30f7",
+        "result": "Partial3/4CPU5 masks/emptyargv, only first2 native cases accepted; observer stopped/reaped after reference mismatch."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-closure-rv-private-96/.tools/magic-empty-closure-rv-probes-96/affinity-native-repair1.json",
+        "sha256": "7b2f60e6fc8d83a02cda78992b950ba7f7b935608d98e15a3716bc658850e487",
+        "result": "Complete2CPU5 masks; reference argv empty, throwing fullargv. Qualify sampling, no replay."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-closure-rv-private-96/.tools/magic-empty-closure-rv-probes-96/affinity-accepted-current-baseline.json",
+        "sha256": "8cefabdb9ecd28cf300fca30749229fbb19a5990a8e3e034958b007891f4b506",
+        "result": "Complete4CPU5/fullargv"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-closure-rv-private-96/.tools/magic-empty-closure-rv-probes-96/affinity-changed-source-96.json",
+        "sha256": "01ec0d3121b33d21e7380733e1ba026956ddf29b43605d1df43ea805a937348c",
+        "result": "Complete4CPU1/fullargv"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-closure-rv-private-96/.tools/magic-empty-closure-rv-probes-96/affinity-state-96.json",
+        "sha256": "baf441b651f4c5fd98134b88bf4d49f556bb3e9dbefe1ebfb52d4b1633508662",
+        "result": "Complete8CPU1/fullargv"
+      }
+    ],
+    "stability": "All accepted watched inputs/head/status/fixtures stable, process groups empty and actors/observers reaped. Original native report remains overallfalse with failed reference credit0."
+  },
+  "tools": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "initial_source_driver_sha256": "30fd5989c11125f9306d9082cde3025dde2ea29b5be81aae84c73b28a3cba0ec",
+    "affected_source_driver_sha256": "9cfcf37445cbceece3afc123a71f907e1d18a897c71f808c99633ea2569ee5fb",
+    "focused_driver_sha256": "5032b1d0fad59db4cbe84a23cb7229ad337162a53765ee7694cce1c4da3ece24"
+  },
+  "limits": "Existing magic signature/owner/receiver/name restrictions stay bounded. Fake/internal/wrapped Closure RV kinds remain Unsupported. Wider raw Closure implicit-receiver, cold-static, multi-capture/reentry/cycle lifecycles are outside this validation. This validation does not invoke the Closure body or extend GC; sole-owner public-NaN retirement and wider quiet-CV GC stay open.",
+  "artifacts": "Original ignored raw reports/streams/processes, failed original and private drivers remain at recorded paths. Maintained sources/catalogue/focused harness recover from tested commits. No bulky archive, backup worktree or receipt chain tracked.",
+  "review": {
+    "independent": "class_review_84",
+    "accepted": "Production, split native observations, baseline4/source4, focused452 and concise publication independently accepted. Eight inventory rows append evidence with unchanged partial statuses; structural inventory and diff checks pass. No semantic rerun for publication."
+  },
+  "composition": {
+    "parent": "afbb45235f37c79bb4fa531c1854d2a3cdef16b9",
+    "publication": "b217d4781d1c29bbb3933b786e16d1955af8024d",
+    "modules": 401,
+    "basis": "Incoming156 reference-return/finally cursor,400 certified define/Stringable constant APIs,404 compound-warning continuations and410 LIST float-key/null-false selectors are absent from the four originals and focused states. Closure116/free257/eager270/weakref296/roots/GC and the incoming408 phase are base-exact; add only the reviewed raw REALCLOSURE kind arm. Preserve all other incoming paths.",
+    "credit": "Source4 at9d9f857a3 and focused452 at458d8942b retain their tested cuts. Split native observations and original producer failure retain their identities; no joined actor, replay or renewed execution credit."
+  }
+}

@@ -7,6 +7,107 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Pending Generator `throw` now preserves one buffered simple-CV yield result inside
+one active by-value array `foreach`. A lower pending `send` fills the physical slot;
+an upper pending `throw` parks before body entry. Close orphans the input and retains
+the iteration container separately. The same array has two counts but one set of
+element edges. COW preserves the old iterator array, and a shared-cell rebind leaves
+the old object alive through its separate input owner. Current-copy cleanup can
+still replace the exception before caller catch with its previous chain intact.
+Only module289 widens two existing guards; roots, close and collector steps stay
+unchanged. Later parked resume, wider loops/owning temporaries and GC remain open.
+[Joint lifecycle review](coverage/semantics/generator-pending-buffered-foreach-throw-review.json).
+
+Four exact normal originals, strict401 and four genuine fronts pass at `3c61f86fa`:
+591 premises (295 author + 296 independent, including 20 generic reachability checks),
+with all native endings. Same-array multiplicities, COW, exact close transfer,
+post-close shared-cell writes, a real cache-destructor callback, malformed metadata
+refusals, public/heap validity and zero/split budgets pass. The derived parked-frame
+GC refusal grants no GC source agreement. Native4 and the genuine unchanged
+Unsupported baseline retain `847a307e4`/401 with zero agreement. No actor failed or
+repeated; earlier Generator evidence is not replayed. Large raw artifacts stay
+external.
+
+Composed over `f8794af8e`/401 after pointwise review of typed reference-return,
+Closure binding/stored callable names, constant API, compound-warning, magic-empty
+and float-key reference LIST selectors, all disjoint here. Module289 remains
+byte-exact tested `3c61f86fa`; every other runtime file, pipeline and the 401-module
+manifest retain the parent bytes. Source4/state591/strict401 keep their private
+cuts without a joined actor, accepted replay or renewed execution credit.
+
+Stored callable names now receive raw, interned and request string bytes through
+module120's existing resolver. Named-function and public/inherited private-static
+captures freeze their selected target and lexical/called scope across alias writes;
+fresh same-byte private names outside the maker remain denied. Missing targets
+keep their callee-initialization lines. Three exact originals and 291 Boolean
+premises (283 setup + 8 pure)/12 actual transitions pass at 3b575dd74/401:
+two named allocations, four method selections, three method-capture allocations
+and three scalar Error fronts. Whole states, string tables, alias-cell storage,
+scopes and driver budgets pass. Later source calls, clone/seed retirement and
+allocated Error catches are prerequisites/endings, not extra raw-step credit.
+Both unchanged originals return interpreter_failure without frontend/program/
+outcome receipts and retain zero credit; their fixed controls are source ordering
+and native observations. No affected actor failed. This repairs the bounded
+COMP71 stored-name reception seam; its old failure and comparison cuts remain
+unchanged. Nonstatic expansion, autoload and invalid/NUL name behavior stay partial.
+[Stored callable-name review](coverage/semantics/stored-callable-carrier-review.json).
+
+Composed over a621305990/401 after independent pointwise review. Incoming global
+constant queries, reference LIST keys, typed by-reference return cleanup,
+compound-warning continuations and magic-empty selectors have no producer here.
+The raw ::class/carrier/compiler/callable interfaces stay exact. Only module120
+changes; every other runtime file and the manifest retain the parent bytes.
+Source3/state291/12 retain their private 3b575dd74 cut without a joined actor or
+renewed execution credit.
+
+Single-LEFT deprecations with an initially quiet integer RHS now continue into the
+existing delayed conversion pipeline when their handler changes RHS. Exactly three
+rule headers hand returned MOD/SHIFT/BIT single1 tasks to corresponding BOTH_LEFT1;
+all initial/source/cache predicates, quiet commits and conversion bodies stay exact.
+The EPS/non-EPS ready guards prevent a cycle. Source cases cover all six operators,
+quiet/leading/precision strings, fractional/integral floats, bool/NULL, array rejection
+and a newly reached Warning throw. Ten originals pass at 67da1157c/401; six genuine
+handoff/storage/error fixtures pass 857 SL premises at 5504620b2/401. Actual PINT3
+single plans refuse BOTH stage0, then one handoff changes only TODO. Cached results,
+default phase/line25, alias detachment versus no-store errors, live labels, pool-plus-cell
+array owners2 and budgets pass. Unsafe/unknown forms still reach existing boundaries;
+no new tag/schema/converter or accepted replay. All 15 rows remain partial; earlier
+renewed credit 0, OP12 paused.
+[Single-LEFT ledger](coverage/semantics/single-left-bridge-review.json).
+
+Composed over e1b3acf35/401 after review of four incoming runtime paths.
+Closure binding, constant/Stringable queries, writable LIST destructuring and
+declared-return CV replay selectors are absent from these untyped literal-return
+handlers. Shared operator/conversion/handler/storage interfaces stay exact;
+source10 and state857 retain their private401 cuts without replay or renewed credit.
+
+One positional Stringable `constant`/`defined` name now executes `__toString()`
+before global lookup in weak calls; strict calls reject before method entry.
+Raw object API arguments survive method throws; normal returns create a separate
+converted CONFIG step, so missing-name errors trace the string. Exactly 53 module400
+insertions reuse existing conversion/trace/unwind machinery with dedicated saved-site
+admission; query kinds stay outside the broad string-kind predicate. Four originals
+and author463 pass at bc3590e16/runtime931f6caac; independent179 passes at9fa625b8b,
+for 642 premises across actual call/method/result/query/error/discard fronts.
+Selected callees, live mutations, callback sibling, raw/converted API traces,
+Exception identity/caller99, complete discard equality and source/shape/carrier/budget
+controls pass. The original peer frame ENV assertion cannot elaborate and retains0;
+only that one-line fixture correction repeats. Initial22f611 native/baseline and all
+later actors use CPU1; PHP/worker stderr is empty on accepted runs. Unchanged baseline
+Unsupported class constant value query after B| retains0. Retained propertyless
+receivers/non-NUL global results bound the validated slice; sole-owner destruction,
+wider lifetimes and named/packed/owner/class-name forms remain partial.
+[Stringable-query review](coverage/semantics/constant-query-stringable-name-review.json).
+
+Pointwise composition over ef587edd3 preserves the incoming 401-module parent.
+The 53-line query patch is applied alongside certified-instance DEFINE-value
+classification; all four tests are private-exact. Generator retained-loop state
+starts empty and its roots/validity are vacuous here; Closure scope, property-empty,
+LIST and compound-warning selectors have no producer in these originals. Shared
+stringifier/trace/frame helpers are unchanged. Source4/author463 retain bc3590e16
+and peer179 9fa625b8b/runtime931f, with the original peer failure0 and no joined actor
+or renewed execution credit.
+
 Certified completed user-instance donors now retain their exact pointer and birth
 class in direct `define` rows and copied array leaves. Typed property aliases stay
 shared; normal and throwing duplicate handlers preserve the old row, callback
@@ -42,8 +143,8 @@ the separate carrier original returns interpreter_failure, not Unsupported, and
 stays zero. Two pre-main fixture syntax/binding failures also stay zero; only their
 affected state check repeats. Trace-frame projections are pure; no fresh handler
 Exception trace, invalid/NUL name formatting or new autoload/scalar conversion is
-claimed. COMP80's old failure keeps its cut; COMP71 stored-string capture
-conversion remains separate.
+claimed. COMP80's old failure keeps its cut; COMP82 separately extends the
+bounded stored-name reception identified at the retained COMP71 cut.
 [Binding scope-carrier review](coverage/semantics/closure-binding-scope-carrier-review.json).
 
 Composed over 847a307e4/401 after pointwise review of the incoming DEFINE,
@@ -83,9 +184,9 @@ array `foreach`. Parked close retains its one container count and removes the
 iterator before ordinary CV/context and current-cache cleanup. The array keeps
 its real COW and embedded reference cells: a later rebind releases the old object
 while the new referent stays retained. An array-owned Generator closes in the
-request-store pass; the container count itself remains. Buffered-input/loop
-combinations, reference/object foreach, nested owning temporaries and later
-parked resume remain open. Explicit collection while this owning frame is parked
+request-store pass; the container count itself remains. At that cut, combinations
+of buffered input and loops, reference/object foreach, nested owning temporaries
+and later parked resume remained open. Explicit collection while this frame is parked
 is Unsupported; no new GC source agreement is claimed.
 [Parked-foreach review](coverage/semantics/generator-pending-foreach-throw-review.json).
 
@@ -267,25 +368,27 @@ array routes. Their guarded tasks and source shapes are absent here; factory,
 clone, getter and ownership interfaces remain exact. Source3/state271 retain the
 private2135/401 cut with zero new execution credit; no joined actor or replay.
 
-Empty and singleton WeakMap getter RVs now use the receiver-only disposal phase;
-entry count does not change their truth. Map disposal unregisters the leaf key
-before the owned value's destructor, with a real empty-map storage pin through
-the callback. Dropping the key makes the retained weak wrapper read null without
-erasing its semantic target history. Sole and held ownership distinguish value
-disposal before receiver release from later nested receiver destruction.
-Four originals agree at `9af665058`; 333 focused premises at `a81a0e78a`
-(315 reached +18 derived) cover these states, the same Exception at catch,
-wrapper refusal, empty-map truth and budgets. The original raw-wrapper fixture
-failure and two narrow diagnostics retain zero credit. One408 kind arm and four
-superseded negative controls change; generic WeakMap/GC/disposal rules stay exact.
-Other map/key/value lifetimes, sole-owner public-NaN retirement and wider quiet-CV
-GC remain open. Earlier class cuts retain their original evidence without replay.
-[WeakMap RV review](coverage/semantics/magic-empty-weakmap-rv-review.json).
+Real static Closure getter RVs now use the receiver-only phase for ordered RV
+release. For a sole RV, its weak wrapper expires before the capture destructor;
+the saved receiver survives caller-CV nulling and is released before result/catch.
+A held Closure remains live after `empty`, while a shared reference cell retains
+the payload after Closure retirement. Later held/alias writes permit nested
+receiver destruction. Four originals agree at `9d9f857a3`; 452 focused premises
+at `458d8942b` (447 reached +5 derived) cover actual DIRECT/ALIAS edges, static scope,
+cell owners 2 to 1 and null replacement, logical weak reads, the same Exception
+at catch and budgets. One raw Closure-kind arm changes; capture/reference/free/GC
+machinery stays unchanged. Native evidence keeps accepted first-two and corrected
+second-two cuts; the original local-reference export mistake retains zero credit.
+Fake/internal/wrapped Closure RVs, wider implicit-receiver/cold-static/cyclic
+lifecycles, sole-owner public-NaN retirement and wider quiet-CV GC remain open.
+Earlier class evidence is not replayed.
+[Closure RV review](coverage/semantics/magic-empty-closure-rv-review.json).
 
-Composed over `1cd75a1bd`/401 after pointwise review of reference-return,
-Generator foreach retention, LIST float-key, constant API, comparison and
-compound-warning selectors. New Generator retention stays empty; source4/state333
-retain their cuts without joined execution or renewed credit.
+Composed over `afbb45235`/401 after pointwise review of reference-return/finally,
+constant API/Stringable, compound-warning and LIST float-key changes, all absent
+here. Closure capture/free/weak-reference, ownership/GC and the saved-RV phase
+remain exact; source4/state452 retain their tested cuts without joined execution,
+replay or renewed credit. The original producer mistake stays zero.
 
 Positional `define` calls with primitive arguments now reject counts outside
 two through three before name/flag reception and registration, after all argument
@@ -1107,6 +1210,10 @@ source5/state887 and its undefined acquisition-frontier correction; earlier
 cuts and failures without replay. Undefined current keys, NULL-key reference
 fetches, nested/literal conversion, wider constrained sources/RHS/targets and
 callback/lifecycle coverage remain partial.
+
+Pointwise composition over 9ee00d718 preserves all 401 incoming modules. Typed-return,
+Stringable query, first-class callable, Generator, compound and property selectors
+are disjoint. Source5/state892 retain their cuts without a joined actor.
 
 Plain-CV `%=` now keeps both converted longs through a fractional-RHS deprecation.
 Captured12/5 stores2 despite callback99/7 and detaches a late target alias; supplied
@@ -10058,6 +10165,32 @@ terminates without a Notice. The caught error's message and producer were not
 observed. This is one original source agreement, with no runtime repair or new
 state proof; broader returns_verify remains OPEN.
 [M98 control](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M99–M101 validate three finally-sensitive mixed ArrayAccess reference-Get
+VALUE Notice originals at separate unchanged 401-module cuts. An accepting
+handler observes value 41; a throwing handler leaves the prior assignment 7
+and reaches the access caller with the retained Exception; a temporary
+receiver/RV variant also observes destructor A before D. Each has one exact
+native/model source agreement, with no runtime repair or reached-state proof.
+Bare/fall-through NULL, other handler exits, non-mixed typed Get and wider
+owner histories remain open.
+[M99–M101 controls](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M102 removes an incidental declaration-type filter from plain-variable
+old-return source authentication. Native nominal `&f():Base102` and array
+`&f():array` originals catch their old-value destructor TypeError locally,
+then run a second finalizer and reach outer OT; the unchanged model instead
+routes the destructor directly to OT (zero agreements each). At private
+`2db8f45d3`/401, strict initialization and both unchanged original sources
+pass exactly. One array-original reached fixture passes 240 Boolean premises
+and two raw steps: the protected HCELL→HARRAY→O survives local unset, saved
+D and pending-exit descriptors authenticate the cursor, and the same arr102
+throwable reaches first CT. Generic consumed `KNOWN NULL` makes no allocation
+across its raw step; distinct modeled NULL/string return errors and prior r/b7
+follow the two later catches. Actual LINE-only public refusal and D-cut budget
+equality pass. Fresh-reference selection remains Boolean-identical to M93–M95
+because its typed-NULL gate already implied the removed filter. The nominal
+case has source-only credit; native CT:0/OT:0 output alone does not identify
+its error producers. Wider owner/reentry and physical collection remain open.
+[M102 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, wider destructor throw/reentry, real suspension and wider typed

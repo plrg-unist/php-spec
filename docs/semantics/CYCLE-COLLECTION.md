@@ -134,6 +134,11 @@ Explicit collection while that owning frame is parked remains Unsupported;
 ordinary empty-tail parked paths are unchanged. The
 [parked-foreach review](../../coverage/semantics/generator-pending-foreach-throw-review.json)
 grants no new GC agreement.
+The same boundary applies when that loop also has one buffered simple-CV yield
+result. Input and container counts add even for the same array, whose element
+edges stay unique. The
+[joint lifecycle review](../../coverage/semantics/generator-pending-buffered-foreach-throw-review.json)
+checks retention and rebinding without new collector behavior or GC source credit.
 Fiber force-close retains the tagged head and pending receipt in its genuine
 caller VM until ordinary release consumes it. Generator close consumes the head
 and updates progress before capturing its continuation; its new close jobs

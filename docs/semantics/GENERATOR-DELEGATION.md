@@ -135,8 +135,12 @@ see the [pending-buffered review](../../coverage/semantics/generator-pending-buf
 The [parked-foreach review](../../coverage/semantics/generator-pending-foreach-throw-review.json)
 adds exactly one by-value array loop at a bare yield. Physical child close retains
 the iteration container, preserving shared reference cells and late
-payload/Generator cleanup. Buffered-input combinations, reference/object foreach,
-nested owning loops and later parked resumption remain outside this slice.
+payload/Generator cleanup. The
+[joint lifecycle review](../../coverage/semantics/generator-pending-buffered-foreach-throw-review.json)
+adds one authenticated input at a simple-CV used yield in that loop. The input and
+container remain separate owners, including across COW, shared-cell rebinding and
+receiver cleanup before caller catch. Other input/loop shapes, foreach by reference
+or over objects, nested owning loops and later parked resumption remain open.
 
 Callback admission binds the actual owner, source unit/path, stage, target, line
 and saved lexical/called scopes. Only the immediate authenticated implicit call

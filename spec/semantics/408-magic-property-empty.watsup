@@ -329,6 +329,7 @@ def $return_discard(S, PROPERTY_EMPTY_NAN ppropertyemptynan) = $property_empty_n
 dec $property_empty_rv_kind(pstate, pobject) : bool
 def $property_empty_rv_kind(S, STDINSTANCE) = true
 def $property_empty_rv_kind(S, WEAKMAP pweakmapentry?) = true
+def $property_empty_rv_kind(S, REALCLOSURE porigin pitem* pstaticcell*) = true
 def $property_empty_rv_kind(S, INSTANCE porigin_class) = true
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
   -- if pclassdesc.KIND = "class"

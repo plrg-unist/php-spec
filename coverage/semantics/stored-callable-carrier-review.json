@@ -1,0 +1,181 @@
+{
+  "version": 1,
+  "milestone": "COMP82",
+  "status": "independently reviewed within stored callable-name string reception",
+  "behavior": "First-class callable conversion receives raw, interned and request string bytes through the existing named-function/static-method resolver while retaining source and lexical access checks.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "tested_revision": "3b575dd74d7ee68e60dda2d8d29c50fb8ec3633d",
+  "ordered_modules": 401,
+  "manifest_sha256": "dc7fc18c3f0bc9dbb832981af549a9bb36ce9e7eae56f1ad39938d09a4a44985",
+  "implementation": {
+    "spec/semantics/120-first-class-callables.watsup": "fea5a5c49af6b11ce2990fac20eee2a7c218218b723def859c7804c514793b8b"
+  },
+  "engine_basis": [
+    "Pinned Zend/zend_compile.c zend_compile_call_common emits dynamic call initialization. Zend/zend_vm_def.h ZEND_INIT_DYNAMIC_CALL and zend_init_dynamic_call_string resolve evaluated strings/references; ZEND_CALLABLE_CONVERT and zend_closure_from_frame freeze the selected call into a fake Closure without entering its body.",
+    "The old120 firstclass_value accepted only raw PSTRING although source literals and concatenations yield interned/request carriers. The same existing arm now reads string_bytes; firstclass_name and210/215 source/selection/access validators remain unchanged."
+  ],
+  "contract": [
+    "The single existing string-value clause receives KNOWN pvalue_string only when string_bytes yields bytes. Raw PSTRING remains accepted; object, array and nonstring arms remain disjoint. No compiler, source/task line, lookup, allocation or ownership rule changes.",
+    "Conversion preserves the original input carrier, alias storage and STRINGDATA. Named-function and public inherited-static captures freeze selected target metadata, which remains unchanged after later alias-cell replacement; captures do not retain the input string identity. Later calls observe the old target and called class; missing-function/method errors use the original callee-initialization lines z_init.",
+    "A request private-static capture is selected in the actual Parent lexical/Child called maker. Its clone remains callable after seed and alias CV removal; a fresh same-byte request outside that scope is denied. Clone and retirement are source prerequisites, not new clone rules or raw clone credit."
+  ],
+  "source_catalogues": {
+    "tests/semantics/stored_callable_carrier_cases.json": "bb0dd2aa7f383fcdaca3403ff27ffbad865b609d0f76d442b7885b0c11226103",
+    "tests/semantics/stored_callable_carrier_review_cases.json": "409e1087e1e967fb8140f7a52fc2a8212c0f84cb23528f7f66d90b03f32f6c5d"
+  },
+  "unchanged_frontier": {
+    "revision": "29f8313e981483f95f6de50609e505304b17ea30",
+    "report": ".tools/name82-support/run-baseline-v1/report.json",
+    "aggregate_passed": false,
+    "rows": [
+      {
+        "id": "function",
+        "status": "interpreter_failure",
+        "diagnostic": "function php_run failed",
+        "host_exit": 1,
+        "host_stderr_empty": true,
+        "returned_frontend_program_or_outcome": false,
+        "seconds": 10.305933063849807,
+        "passed": false,
+        "accepted": false,
+        "observation_recorded": false
+      },
+      {
+        "id": "method",
+        "status": "interpreter_failure",
+        "diagnostic": "function php_run failed",
+        "host_exit": 1,
+        "host_stderr_empty": true,
+        "returned_frontend_program_or_outcome": false,
+        "seconds": 11.608180604875088,
+        "passed": false,
+        "accepted": false,
+        "observation_recorded": false
+      }
+    ],
+    "agreement_credit": 0,
+    "preserved_inputs": ".tools/name82-support/run-baseline-v1/failure-inputs",
+    "classification": "Both reliable interpreter failures retain neutral false flags and no returned frontend/program/outcome receipt. Fixed controls are source ordering/native observations, not returned model prefix evidence; neither row is Unsupported."
+  },
+  "validation": {
+    "original_sources": {
+      "normal_agreements": 3,
+      "author_seconds": [
+        13.766311891376972,
+        15.87517699599266
+      ],
+      "independent_seconds": 15.154252253472805,
+      "cli_and_host_caps_seconds": [
+        240,
+        250
+      ]
+    },
+    "author": {
+      "premises": 177,
+      "setup": 173,
+      "pure": 4,
+      "raw_php_steps": 8,
+      "seconds": 20.95751453191042,
+      "result": "Two real initializers; two named Closure allocations, two public method-selection stages, two STRINGMETHOD allocations and two scalar Error fronts. Whole states preserve string tables, alias cells, exact selection/scope rows and full-driver budgets."
+    },
+    "independent": {
+      "premises": 114,
+      "setup": 110,
+      "pure": 4,
+      "raw_php_steps": 4,
+      "seconds": 14.750107331201434,
+      "result": "Private request reception and scope allocation, changed interned public selection and fresh outside private denial. Ordinary lexical CREATION eps, retired seed, sole child-free clone and exact alias storage are reached facts; whole states and budgets pass."
+    },
+    "total": {
+      "premises": 291,
+      "setup": 283,
+      "pure": 8,
+      "raw_php_steps": 12,
+      "transition_types": {
+        "named_capture_allocations": 2,
+        "method_selection_stages": 4,
+        "string_method_capture_allocations": 3,
+        "scalar_error_rejections": 3
+      }
+    },
+    "separate_zero_credit": "Native, both unchanged interpreter failures, initializer, six parse/check operations and author EL add no application/state credit. Pure source/scope/line/nonstring checks are projections only. Scalar THROWN fronts precede later Error allocation/catch established by complete sources.",
+    "affected_actor_failures": []
+  },
+  "limits": [
+    "No embedded-NUL/invalid-name formatting, autoload expansion, new nonstatic class-string capture or scalar/object conversion is validated. Existing resolver and permission boundaries remain partial.",
+    "The original COMP71 stored-string failure retains its tested cut and zero credit. These fresh named-function/static-method sources repair the bounded120 reception seam without rerunning old comparison evidence.",
+    "String carrier identities are nonowning metadata; explicit cell observations concern identity/storage, not new physical cell-owner counts. Clone/later invocation/creator retirement are source prerequisites, not additional raw transitions.",
+    "Project-local binaries were copied exactly; no new build or portability claim. Focused agreement is bounded evidence, not complete PHP equivalence or BOLA verification."
+  ],
+  "artifacts": {
+    ".tools/name82-support/gates.py": "44981d102f36c5a486b45ac0ae1f86e6ac640f3b425493d2649655f03fa8b292",
+    ".tools/name82-support/inputs.py": "adae0816b2463a6fb0832e74bbdf705f3d7639b1f33acebe3daef943ec06ef34",
+    ".tools/name82-support/actor.py": "4a494eb12303ce703dc3bc4512d6b33a38c94dbf40587f1fd3a47d183a6850f3",
+    ".tools/name82-support/run-native-v1/report.json": "9f6429c384d8801805cec86dfe3d204fc72deb6ace1be44d4e73abb070f64961",
+    ".tools/name82-support/run-baseline-v1/report.json": "a1ffc1ef77c2e2011f52d6c3cc66faa417bfc31089e4db7a3a4f3892fd191411",
+    ".tools/name82-support/run-init-v1/report.json": "ff579238044c13c1fcc221811edeee11b4617b34f952dd1f2bc156bd554bbe3a",
+    ".tools/name82-support/run-sources-v1/report.json": "530712fbda8b8c682359e56fb026c1de3173a126b5707f59beec5d441a334227",
+    ".tools/name82-support/run-prepare-v1/report.json": "60862400943f2a76777278005eb0bb70ece0ad97f7c14ae91346b4e7ee046f11",
+    ".tools/name82-state/helpers.watsup": "12de27b443c90bdb0d0a7b39b2a35bff90c7df551432a41acf735e89d77ac0b2",
+    ".tools/name82-state/build.py": "85131b77ee28ea24711ce6f7e55458702e71c3fe2bcdf6804903c2cd3bbb5b6c",
+    ".tools/name82-state/run.py": "f98588bc920ee68b9e6dd8f8afc3839b1cd53dd25addd2d313ac0669983abbe5",
+    ".tools/name82-state/direct.watsup": "03f387d2a300d2beba318f245c769c7695de4456ffe87a5e29db9dd97637e563",
+    ".tools/name82-state/plan.json": "a96bf308db35c4c964fc3b4c976449f2f04686290eb65ca2fb2bb1c5c76bf9f9",
+    ".tools/name82-state/run-el-v1/report.json": "0ed9a03bd8c11740b037a8f05670ea263ed4035172ed54ff8e4b590ed7784f7a",
+    ".tools/name82-state/run-sl-v1/report.json": "f30231b70ab6637ae277fa647fbf0da00c3464b887b0a2e3d2d44395445e126d",
+    ".tools/name82-peer/run.py": "21c7251c07f927b8bea9f008f587fcd19bb7109f82a20099d1a37c8718b0f48e",
+    ".tools/name82-peer/helpers.watsup": "053cac98f75285c4e907319f45c7d0edb661acb52478b7303057a9fa875fd412",
+    ".tools/name82-peer/build.py": "cf6e1811dec53c87c24115267e43274729afc2d08dd582bb76b1bb4a737a08b8",
+    ".tools/name82-peer/peer.watsup": "6c0fe365e992a395f680738c4c20620d55a4188695d5da71a048bdad225a3727",
+    ".tools/name82-peer/plan.json": "1e61d9719efda757c1fab6ee34cc2f601cb5095999533c9c6576a2d5695d93bf",
+    ".tools/name82-peer/native-v1/report.json": "da5e7315e0ee810f406566ce8ccfb474f1c1627bcbc60571381b690d17020c9f",
+    ".tools/name82-peer/source-v1/report.json": "df1e53f53118371540125edfd8d89c9830eba1498b6d86700195b258470c9ae0",
+    ".tools/name82-peer/prepare-v1/report.json": "f9282ef0adfb46a171556c9b4280504ac834a8700b771105f8f07ecc0d42c98a",
+    ".tools/name82-peer/state-v1/report.json": "f64630dc2a07d7c45175834eba9cf33ffa1ee133b30864a16f2663c6f980c6d8",
+    ".tools/name82-peer/review.json": "93846b0639d7158bdd74b39f65eb901b51a8c9177413097dd2211cbca8b902eb"
+  },
+  "commands": [
+    "python3 .tools/name82-support/gates.py native --cpu 3 --slot 5",
+    "python3 .tools/name82-support/gates.py baseline --cpu 3 --slot 5",
+    "python3 .tools/name82-support/gates.py init --cpu 3 --slot 5",
+    "python3 .tools/name82-support/gates.py sources --cpu 3 --slot 5",
+    "python3 .tools/name82-support/gates.py prepare --cpu 3 --slot 5",
+    "python3 .tools/name82-state/build.py",
+    "python3 .tools/name82-state/run.py el --cpu 2 --slot 4",
+    "python3 .tools/name82-state/run.py sl --cpu 2 --slot 4",
+    "Independent commands and raw report bindings are in .tools/name82-peer/review.json."
+  ],
+  "publication_verdict": "CLEAR",
+  "independent_review": {
+    "path": ".tools/name82-peer/review.json",
+    "sha256": "93846b0639d7158bdd74b39f65eb901b51a8c9177413097dd2211cbca8b902eb",
+    "verdict": "CLEAR"
+  },
+  "composition": {
+    "parent": "a6213059905ad023676ea84eefb23c1a9534b2e9",
+    "ordered_modules": 401,
+    "method": "Independent pointwise actual-parent review; no concrete syntax or dispatch dependency, so no joined actor.",
+    "incoming_runtime": [
+      "156-finally-runtime",
+      "400-dynamic-constants",
+      "404-arithmetic-warning-continuations",
+      "408-magic-property-empty",
+      "410-list-key-conversion-warnings"
+    ],
+    "bridge": [
+      "Global constant-query Stringable/certified-object selectors and reference LIST float-key warning planning have no define/constant/defined/destructuring producer in the three originals. Class-name self/static::class uses184, not400.",
+      "The156 changed typed by-reference CV-return cursor still requires a typed source function and reference-return cleanup. Every source function/method is untyped and returns by value; the lexical maker by-reference parameter does not create that cursor.",
+      "OP42 modulo/shift/bit assignment continuation branches cannot arise: originals only use CONCAT, comparisons and integer UPDATE_PREP counters. CLASS96 REALCLOSURE magic-empty RV admission likewise has no empty/isset/magic producer.",
+      "No new state/module fields or manifest changes. Compiler/carrier resolution120/210/215/173, raw class-name184, clone and ordinary reference-call interfaces remain parent-exact except the reviewed120 reception arm."
+    ],
+    "tested_runtime": "Module120 is byte-identical to tested3b575dd74/401; private source3/state291=283+8/12 typed transitions and unchanged interpreter failures0 retain their original cuts.",
+    "new_source_agreements": 0,
+    "new_premises": 0,
+    "new_raw_steps": 0
+  }
+}

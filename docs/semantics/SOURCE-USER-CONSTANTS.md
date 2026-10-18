@@ -561,7 +561,8 @@ call keeps its original value and selected callee. Available immutable argument
 facts must match that exact value. Conversion changes only the API slot: a weak
 missing-name Error shows the received string in its trace, while strict TypeErrors
 retain the original argument and actual parameter name. Caller CVs stay unchanged.
-Stringable/array reception and packed/owning forms remain separate.
+Stringable and bounded array query reception are covered below; packed/wider
+owning forms remain separate.
 The [scalar-name review](../../coverage/semantics/global-constant-scalar-name-review.json)
 records source-backed reception, trace values, source rejection and budgets.
 
@@ -574,6 +575,23 @@ the converted string; a throwing handler keeps null in the API trace and cancels
 the lookup. Strict null calls raise `TypeError` without dispatching a deprecation.
 The [null-name review](../../coverage/semantics/global-constant-null-name-review.json)
 records genuine warning/resume fronts, source refusals and budget continuation.
+
+One positional Stringable query name now uses the existing user-method conversion
+pipeline. Weak `constant`/`defined` calls retain the raw object through
+`__toString()`; a normal string return replaces the API slot in a separate CONFIG
+step before ordinary non-NUL global lookup. A missing-name Error therefore traces
+the received string. Strict calls reject the raw object without method entry.
+A method-created Exception keeps the real method/API/caller trace, raw receiver,
+identity and callback effects while both conversion consumers are discarded.
+Dedicated saved-site guards enforce one positional argument even in file-enabled
+states; query kinds stay outside the broad string-conversion kind predicate.
+The [Stringable-query review](../../coverage/semantics/constant-query-stringable-name-review.json)
+binds source4/author463 at bc3590e16 and independent179 at 9fa625b8b, all runtime
+931f6caac. The sole pre-main peer frame-field assertion failure retains zero credit;
+only its one-line fixture correction repeats. Retained propertyless receivers,
+ordinary typed-string returns and existing global values bound the validated slice;
+sole-owner destruction, wider receiver/return lifetimes, class/NUL/HALT names and
+named/packed/owner forms remain partial. No task/schema or shared stringifier change.
 
 `define` also receives int/bool/float names with nonowning primitive values and
 an omitted/already-false flag. Each source send maps to its normalized captured
@@ -742,7 +760,8 @@ and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`. `PHP_FUNCTION(constant)` us
 exception-class lookup and `ZVAL_COPY_OR_DUP`; `zend_declare_typed_class_constant`
 interns direct string values before installation.
 Stored cyclic trees, other objects, true/coerced array flags,
-Stringable names and array names beyond the bounded flat query/DEFINE domains,
+Stringable names beyond the bounded retained query domain,
+array names beyond the bounded flat query/DEFINE domains,
 array/object values with scalar or null names, true/NULL/NaN
 flags with scalar names, nonbool flags with nonfinite float names, true/NULL/NaN flags with
 null names, special/startup names with flags or values beyond the bounded follow-ups,
