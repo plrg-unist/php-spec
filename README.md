@@ -671,6 +671,13 @@ through a second Warning. The saved parse survives RHS writes, reference rebindi
 and unset; successful stores detach aliases, while Errors and supplied throws
 cancel the store. Eleven originals and 1211 focused SL premises pass in the
 [leading string ledger](coverage/semantics/leading-string-review.json).
+
+In those both-fractional routes, a nonnumeric string or array RHS produced by the
+first callback now raises TypeError with the live operand types. Callback writes
+and late aliases survive without a compound store; two live strings cannot retry
+bitwise string specialization. Ten originals and 566 focused SL premises pass in the
+[delayed failure ledger](coverage/semantics/delayed-type-failure-review.json).
+
 Explicit array-to-string casts now suspend through named warning handlers for
 a bounded plain-CV array input. The borrowed array adds no saved owner: replacing
 or removing its CV still yields fixed `Array`, while a supplied throw preserves

@@ -428,6 +428,21 @@ assertion retain zero credit. Only corrected checks and previously unrun peers
 execute; accepted author states and source cuts remain unchanged. Further-warning
 conversions, unsafe pre-snapshot RHS/targets and wider lifecycle remain partial.
 
+After the first LEFT callback in those initially both-fractional plain-CV routes,
+an authenticated nonnumeric-string or allocated-array RHS now fails integer
+conversion with TypeError before any compound store or alias detachment. Messages
+use the live dereferenced operand types: callback bool/NULL/float/string changes
+produce `bool % string`, `null << string`, `float >> string` and all three
+`string &/|/^ string` labels. The earlier bitwise specialization decision remains
+fixed; two live strings do not retry a bytewise operation. Default-first peers
+cover `string ^ string`, `null % array` and `bool >> array` at RHS line 25, preserving
+callback writes, destination 100, RHS identity/array ownership and later alias
+write-through. Ten originals and four focused state fixtures (566 premises) pass
+in the [delayed failure ledger](../../coverage/semantics/delayed-type-failure-review.json).
+The shared live-pair predicate and three error rules add no task/schema/protocol;
+pre-snapshot RHS references, unsafe targets, other initial forms and wider
+conversions/lifetimes remain partial.
+
 Arithmetic and bitwise conversion use the existing pure SpecTec numeric and byte
 helpers, including signed 64-bit boundaries, binary64 values, string operands,
 pinned power behavior and conversion diagnostics. Explicit casts keep their

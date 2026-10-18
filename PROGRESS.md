@@ -7,6 +7,29 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Delayed integer-conversion failure now raises TypeError after the first callback
+in the existing both-fractional plain-CV modulo/shift/numeric-bitwise routes.
+An authenticated nonnumeric-string or allocated-array RHS is rejected immediately;
+labels use current bool/NULL/float/string operands rather than cached LEFT `12`.
+Two live strings cannot retry bitwise string specialization. Callback writes,
+late aliases and RHS identity survive without store/detachment; fresh TypeError
+reports RHS line 25 with no Previous and destination 100 remains unchanged.
+Ten originals pass at d3b35b856/401; four real handler/error fixtures and 566 SL
+premises pass at e900a6674 (274) and 378be41d9 (292)/401, including carrier/array owners,
+default-first diagnostics, exact storage and budget equality. One shared predicate
+plus three error rules/boundary exclusions; no task/schema/protocol or earlier
+helper changes. The original pool-owner assertion failure retains zero credit;
+the 274 accepted conditions stay fixed while only corrected and previously unrun
+array checks execute. All 15 rows remain partial; earlier renewed credit 0, OP12 paused.
+[Delayed failure ledger](coverage/semantics/delayed-type-failure-review.json).
+
+Composed over e8cf11865/401 after pointwise review of nine incoming runtime
+paths. Typed nullable REF-return cursors, factory Closure clone/comparison,
+Generator pending throws, DEFINE/constant APIs, reference LIST keys and public
+property-empty NaN selectors are absent here. Shared operator/handler/heap/carrier
+interfaces stay exact; source10 and mixed state274+292 retain their private401
+cuts and original fixture failure0 without replay or renewed credit.
+
 Positional primitive `constant`/`defined` calls now reject every count other than
 one before reception or lookup, after all argument effects. One module400 count
 predicate widens; zero/two admission, normal one-slot and Source49 define routes
