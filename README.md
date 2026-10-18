@@ -1609,8 +1609,13 @@ until the trace and Closure owners are released.
 [Invalid flags](coverage/semantics/define-invalid-flag-review.json),
 [Closure flags](coverage/semantics/define-closure-flag-review.json).
 
-Fresh definitions also copy nonempty array trees containing certified stdClass
-or user-instance leaves under the admitted flags. Copied containers freeze source
+Certified Closure values can be defined directly, retaining pointer identity and
+shared static cells through duplicates, queries and a pending ignored-Warning
+exception. Ordinary unrecorded Closure values remain Unsupported.
+[Certified Closure define review](coverage/semantics/define-certified-closure-review.json).
+
+Fresh definitions also copy nonempty array trees containing certified Closure,
+stdClass or user-instance leaves under the admitted flags. Copied containers freeze source
 reference values while object pointers and property writes remain shared,
 including selected eval calls and nested query COW.
 [Array-object define review](coverage/semantics/define-stdclass-array-review.json).
