@@ -1,0 +1,130 @@
+{
+  "version": 1,
+  "milestone": "A13 mixed destructuring lossy-float key conversion and temporary-table release",
+  "status": "independently reviewed and validated privately; exact-parent composition pending",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle and tests/semantics/profile.json",
+  "base": "a5bb4b155096da7f51721c5c478037e0155b67ed",
+  "scope": "Flat mixed by-value/reference patterns, direct CV RHS and direct CV leaves. The selected by-value fetch uses an ordinary defined CV holding a finite fitting lossy binary64 float with exactly PRECISIONLOSS. Nested/literal roots and selected reference-fetch conversion remain separate.",
+  "runtime_commit": "6a234d91907c5c4038acf74519010a86387b7ddd",
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "eccbf920c6d8ffee64650124aee900453d5643323a73b0a199f1e6826b52d18f",
+    "spec/semantics/410-list-key-conversion-warnings.watsup": "4a2373cb2b389b209f0764a6a0f6aa4614d9d717808267af55588d8b2e040662"
+  },
+  "private_modules": 400,
+  "engine_basis": [
+    "Vendored PHP8.5.10 commit34308a6666b2d489c509541ea9befea9e2b42348: zend_compile_assign/zend_propagate_list_refs preserve the mixed-list RHS reference wrapper. FETCH_LIST_R calls zend_fetch_dimension_address_LIST_r, which selects the current table before slow_index_convert.",
+    "slow_index_convert protects a mutable old table with ADDREF before zend_dval_to_lval_safe freezes the integer and invokes E_DEPRECATED. After callback return it drops protection: zero owners destroys the old table and returns IS_NULL before lookup, even if the key existed. A surviving table is looked up with the frozen integer and aliases are read then.",
+    "Later reference fetches and assignment-result delivery use the saved source CELL live value, independently of source-name rebind. Supplied throws cancel the pending fetch and drop both retained roots. Relevant vendor helpers were rechecked directly; sibling development source is not the semantic authority."
+  ],
+  "reviewed_behavior": [
+    "Module410 adds a separate reference-source plan/source guard and phased LIST_KEY_FLOAT_REF_RESULT task;30 adds that constructor. The existing pending predicate gains a disjoint REFERENCE branch. A12 plan/source/task/lookup rules and63 hook,409/compiler/key/ownership helpers and module inventory remain unchanged.",
+    "Only initial planning reads current key and source-CELL-to-array selection. Phase0 retains marked source HCELL plus protected HARRAY; phase1 retains only HCELL and permits retired old-array identity. Source compatibility validates syntax/item/line/converted bits, not historical key/name/table equality.",
+    "Actual driver release precedes phase1 lookup. Insertion forces source COW and makes the old table protection-only: expiry supplies NULL with no missing Warning. The NULL-rebind original also expires an old present key9, retires otherwise unowned q/key cells, then silently creates a writable array through the saved NULL cell at the later reference fetch.",
+    "Independent prior-reference acquisition makes a selected COW table different from the initial copy. The handler holds that actual selected table, mutates q33 and replaces the saved source value. Dropping protection leaves the held old table alive; frozen lookup reads33, while later reference/result use replacement22/44. Subsequent early55 isolates the original copy9 and shared aliases correctly.",
+    "Independent negative conversion retires the old aliased key CELL and rebinds source/key names. The detached saved source CELL still owns its old table after protection release. Missing -2 enters real409 REFERENCE warning; the replacement handler sees x77 before the pending NULL store, writes old q55/fresh next1, and inserts77 only into the unrelated live source. Later reference/result remain detached from live q44/source44.",
+    "Supplied throw preserves earlier9/callback x99/later y8/destination100, same Throwable/previousNULL and finally; source CELL, protected table, key and q retire before catch continuation. No lookup or reference target binding follows that throw.",
+    "Every state fixture starts from an original source, checks genuine handler frames and task roots, raw release versus driver retirement, lookup/warning/store order, later reference acquisition/bind/pruning, exact output and whole-state budgets. Pure edited projections are refusals only. No NUL source, historical actor replay or prior credit renewal was introduced."
+  ],
+  "accepted": {
+    "source": {
+      "report": ".tools/list-float-ref-key-source-13/report.json",
+      "sha256": "517f656e90ad227c31e28eb27fac315f95d07e840082126bef6b7a17720a0a74",
+      "revision": "6a234d91907c5c4038acf74519010a86387b7ddd",
+      "agreements": 5,
+      "cases": [
+        "list-float-ref-key-insert-expiry",
+        "list-float-ref-key-null-rebind",
+        "list-float-ref-key-supplied-throw",
+        "list-float-ref-review-cow-copy-survives",
+        "list-float-ref-review-detached-missing-cell"
+      ],
+      "native_reuse": "Five fresh normal originals retain exact native paths/argv/streams from three preparation reports; model-only comparisons reuse those original paths. No native replay."
+    },
+    "states": [
+      {
+        "report": ".tools/list-float-ref-key-author-state-13/report.json",
+        "sha256": "b93c6632563a4ebde22b2b9229506353c55119b15bc173ede80e20f15e128a7b",
+        "revision": "3c9329c36ccf1522f34b968e6baa14ba0f37eae3",
+        "cases": [
+          "list-float-ref-key-insert-expiry",
+          "list-float-ref-key-null-rebind",
+          "list-float-ref-key-supplied-throw"
+        ],
+        "conditions": [
+          169,
+          171,
+          126
+        ],
+        "raw_steps": [
+          4,
+          4,
+          1
+        ],
+        "boolean_premises": 457
+      },
+      {
+        "report": ".tools/list-float-ref-key-review-state-13/report.json",
+        "sha256": "1de076589fda4d2c98e1fc2ca4c126891d70923c01ca429ecfc903c0d9e224c1",
+        "revision": "3c9329c36ccf1522f34b968e6baa14ba0f37eae3",
+        "cases": [
+          "list-float-ref-review-cow-copy-survives",
+          "list-float-ref-review-detached-missing-cell"
+        ],
+        "conditions": [
+          197,
+          231
+        ],
+        "raw_steps": [
+          5,
+          6
+        ],
+        "boolean_premises": 417
+      }
+    ],
+    "source_agreements": 5,
+    "normal_source_agreements": 5,
+    "state_fronts": 5,
+    "total_conditions": 894,
+    "boolean_premises": 874,
+    "raw_steps": 20,
+    "credit_note": "Only source5 at6a234 and author466 plus independent428 at3c932 count. Conditions include setup/source/refusal/raw premises, not separate PHP programs. All accepted actors exited0 without timeout/interruption, and recorded groups are empty. No fixture failed or required a retry; docs/composition add no execution credit."
+  },
+  "preserved_zero_credit": [
+    {
+      "report": ".tools/list-float-ref-key-baseline-13/report.json",
+      "sha256": "72b6bb989baafb12ae427afde80469ae3bd5773c9ab6320db76aa19255106290",
+      "revision": "a5bb4b155096da7f51721c5c478037e0155b67ed",
+      "result": "Unchanged source was frontend accepted/checked but explicitly Unsupported at handler ingress: error-handler ingress requires a producer continuation. Native completed normally with one default Deprecated line; ordinary comparison failed naturally without timeout. Zero agreement credit."
+    },
+    {
+      "report": ".tools/list-float-ref-key-native-rest-13/report.json",
+      "sha256": "b97afe1449321a7e608086409f34cc2be29f4a8493c5e73ba461d0190a71fbf0",
+      "revision": "a5bb4b155096da7f51721c5c478037e0155b67ed",
+      "result": "Fresh NULL-rebind and supplied-throw native2 preparation only; no agreement credit."
+    },
+    {
+      "report": ".tools/list-float-ref-key-review-native-13/report.json",
+      "sha256": "986c92bfd2705c0afb1a272e10314344f5d3357d36872ca226e79cbc0da0c50f",
+      "revision": "a5bb4b155096da7f51721c5c478037e0155b67ed",
+      "result": "Fresh independent COW/handler-hold and detached-source/missing-warning native2 preparation only; no agreement credit."
+    }
+  ],
+  "shared_harness_change": "None. The existing A12 exact-stderr callback checks the original default Deprecated0.5/path/line19 bytes; other state originals retain exact empty stderr.",
+  "affected_historical_controls": [],
+  "raw_evidence": {
+    "archive": "/home/user/workspace/php-spec/.tools/list-float-ref-key-warning-13-raw.tar.gz",
+    "bytes": 338298,
+    "members": 152,
+    "sha256": "43bf7d037bfa23ed57d320ce4b96c53fbe0c69e9d9b0dbf30240a0a00865dd67",
+    "recovery": "Archive retains six original relative .tools report/fixture/process/source roots plus list-float-ref-key-reuse-sources-13.py. Extract beneath a checkout of the recorded cut; absolute argv/cwd are historical provenance. No archive is a build dependency."
+  },
+  "actual_parent_review": {
+    "parent": "f84ea2f9824359644aa76dc507f1dc0bfbb4108d",
+    "seams": "Incoming30/136/411 add public NaN property-empty tasks/guards,234 changes authentic getter-capture equality,270 broadens typed-ref return slot materialization,400 adds query arity and empty-descendant constant handling,404 adds leading-numeric-string compound stages; modules add411. These selectors are absent from A13 LIST/normal named callbacks/supplied-Throwable paths. No409/410/key/39/40 helper changed;30 additions are separate task/descriptor hunks.",
+    "joined_actor": "No concrete semantic interaction found; pointwise composition and exact FF review add no replay credit."
+  },
+  "remaining": [
+    "Lossy conversion in nested or literal-root patterns and selected reference fetches; range/nonfinite conversion, undefined/null-key diagnostics, computed current keys and wider RHS/targets.",
+    "Paused owned-NUL/current-CV NUL behavior, scalar/object destructuring diagnostics, wider callbacks/lifecycle, full array/core closure and offline portability."
+  ]
+}
