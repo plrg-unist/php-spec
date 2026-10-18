@@ -1075,6 +1075,10 @@ Unsupported baseline retains0; no engine divergence is claimed. Cycles, wider
 flags/names and owning domains stay partial.
 [Nested-empty review](coverage/semantics/define-nested-empty-array-review.json).
 
+Composed over 9ade0dc0f/401 with incoming property-empty, Generator, typed-return
+and LIST selectors disjoint. Source3/state451 retain private399 cuts without a
+joined actor or renewed execution credit.
+
 Selected inherited `__unset(string): void` now dispatches direct CV/literal-name
 access to a declared private property. Accessible public unset skips magic;
 the callback retains Parent lexical scope and Child called scope, removes the
