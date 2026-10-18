@@ -257,7 +257,7 @@ def $target_receiver(S, PROPERTY_MAGIC_SET_TARGET ppropertymagicset) = (ppropert
 def $target_lexical_class(S, PROPERTY_MAGIC_SET_TARGET ppropertymagicset) = $target_lexical_class(S, METHOD_TARGET ppropertymagicset.OBJECT ppropertymagicset.METHOD)
 def $target_called_class(S, PROPERTY_MAGIC_SET_TARGET ppropertymagicset) = (ppropertymagicset.CLASS)
 def $target_function(S, PROPERTY_MAGIC_SET_TARGET ppropertymagicset) = (pfunction)
-  -- if $property_magic_set_valid(S, ppropertymagicset)
+  -- if $property_magic_set_valid(S, ppropertymagicset) \/ $property_magic_set_entered(S, S.CURRENT, S.FRAMES, ppropertymagicset)
   -- if $target_function(S, METHOD_TARGET ppropertymagicset.OBJECT ppropertymagicset.METHOD) = (pfunction)
 def $call_receiver_roots(pcallcontext) = eps
   -- if pcallcontext.TARGET = PROPERTY_MAGIC_SET_TARGET ppropertymagicset
