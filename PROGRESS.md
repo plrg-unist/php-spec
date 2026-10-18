@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Selected-reference DIV now delays initially bad RHS text until the LEFT Warning
+returns. Four originals pass at `70add9ed5`/405; three focused fixtures pass 468
+premises at `fd80a78f8`/405, covering strict `2.4`, live bool/string TypeError and
+cached zero through old-RHS/name rebinding. A first supplied throw is source-only.
+[DIV repair ledger](coverage/semantics/div-repair-review.json).
+Owning/constrained/expired cells and wider operands remain partial; OP12 paused.
+
+Composed over `98da5a300`/405, preserving incoming fields, task variants
+and manifest. Source4/state468 retain their private405 cuts; independently reviewed
+incoming selectors require no joined execution or renewed credit.
+
 Forward `==`/`!=`/`<`/`<=` comparisons now admit two initially missing distinct
 CVs when the first Warning handler defines the right scalar. An ingress-only
 predicate reuses the frozen-left/current-right shape; resume validity/domain,
@@ -88,16 +99,8 @@ Only module207 differs and retains tested bytes; every other parent runtime,
 task/field/default and ordered manifest stays exact. Source8/state380 retain
 their private cut without a joined actor, accepted replay or renewed credit.
 
-Quiet ternary-copy/plain-CV POWER now reaches final deprecation with an
-`E_DEPRECATED`-only named handler. Three originals pass at `551d61055`/405;
-two focused fixtures pass 266 premises at `8deff7b83`/405, covering signed infinity
-after origin unsets and same-Exception cancellation before assignment.
-[Quiet-power-copy ledger](coverage/semantics/quiet-power-copy-review.json).
-Other quiet-power producers and wider operands/lifetimes remain partial; OP12 paused.
-
-Composed over `dba71ba43`/405, preserving incoming fields, task variants
-and manifest. Source3/state266 retain their private405 cuts; independently reviewed
-incoming selectors require no joined execution or renewed credit.
+Earlier quiet ternary-copy POWER retains source3/state266 in its
+[review ledger](coverage/semantics/quiet-power-copy-review.json).
 
 Pending `send` now follows finite native ancestor links to an owning simple-CV
 copied return, including first refresh inside the call. Only the receiver clears

@@ -632,6 +632,15 @@ warning, original-line `DivisionByZeroError`, unchanged assignment destination a
 catch/finally continuation. [DIV evidence](coverage/semantics/division-warning-review.json)
 retains the original Unsupported baseline; wider operands and lifecycle paths
 remain partial.
+
+Selected-reference `/` now lets the first LEFT Warning repair initially bad
+RHS text before conversion. Rebinding the RHS name preserves the selected old
+referent; captured zero still errors after its handler writes `7`. Unrepaired
+text reports live bool/string types. Four originals and 468 focused premises
+cover strict `2.4`, Error priority, aliases and default Warning bytes in the
+[DIV repair ledger](coverage/semantics/div-repair-review.json).
+Owning/constrained/expired cells and wider operands remain partial.
+
 Unary `+` and `-` now capture leading-numeric strings from defined non-reference
 CVs before named warning handlers. Three exact originals and 323 genuine state
 premises check callback writes, supplied throws with unchanged destinations,

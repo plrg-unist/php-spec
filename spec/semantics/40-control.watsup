@@ -176,6 +176,7 @@ def $gc_retired_binary(S, pbin, poperand) = false -- otherwise
 dec $integer_operator_plan(pstate) : pintegeroperation?
 dec $arithmetic_add_plan(pstate) : pintegeroperation?
 dec $arithmetic_div_plan(pstate) : pintegeroperation?
+dec $arithmetic_div_repair_plan(pstate) : pintegeroperation?
 dec $submul_warning_plan(pstate) : pintegeroperation?
 dec $power_conversion_warning_plan(pstate) : pintegeroperation?
 dec $arithmetic_cv_plan(pstate) : pintegeroperation?
@@ -196,6 +197,7 @@ rule PhpStep/binary-right: S ~> S_out[.HELD = S.HELD]
   -- if $integer_operator_plan(S) = eps
   -- if $arithmetic_add_plan(S) = eps
   -- if $arithmetic_div_plan(S) = eps
+  -- if $arithmetic_div_repair_plan(S) = eps
   -- if $submul_warning_plan(S) = eps
   -- if $power_conversion_warning_plan(S) = eps
   -- if $arithmetic_cv_plan(S) = eps
@@ -219,6 +221,7 @@ rule PhpStep/binary-left-abrupt: S ~> S_left[.TODO = eps][.HELD = S.HELD]
   -- if $integer_operator_plan(S) = eps
   -- if $arithmetic_add_plan(S) = eps
   -- if $arithmetic_div_plan(S) = eps
+  -- if $arithmetic_div_repair_plan(S) = eps
   -- if $submul_warning_plan(S) = eps
   -- if $power_conversion_warning_plan(S) = eps
   -- if $arithmetic_cv_plan(S) = eps
@@ -235,6 +238,7 @@ rule PhpStep/binary-right-abrupt: S ~> S_right[.TODO = eps][.HELD = S.HELD]
   -- if $integer_operator_plan(S) = eps
   -- if $arithmetic_add_plan(S) = eps
   -- if $arithmetic_div_plan(S) = eps
+  -- if $arithmetic_div_repair_plan(S) = eps
   -- if $submul_warning_plan(S) = eps
   -- if $power_conversion_warning_plan(S) = eps
   -- if $arithmetic_cv_plan(S) = eps
