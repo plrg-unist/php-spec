@@ -1169,6 +1169,20 @@ Composed over 9ade0dc0f/401 with incoming property-empty, Generator, typed-retur
 and LIST selectors disjoint. Source3/state451 retain private399 cuts without a
 joined actor or renewed execution credit.
 
+Recursive array `define` inputs now raise parameter-2 ValueError before copying
+or duplicate reporting for ordinary string user keys and omitted/false flags.
+A partial live-edge ancestor walk observes current reference values after all
+arguments, allowing shared DAGs while separating malformed edges from cycles.
+The ordinary Error trace retains the input without a private copied candidate;
+old rows, caller destinations and warning counts remain unchanged. Three exact
+sources and 497 premises (316 author, 181 independent) pass, including late flag
+effects creating and breaking cycles, explicit edge-break retries and query COW.
+The original post-break control exposed a separate plain compiled literal-string
+leaf boundary and retains0; only its integer-tag correction was renewed. A fixture canonicalized the source
+unset history incorrectly; its failure remains0, with copied retry history still
+checked exactly. Wider flags/names, cyclic stored trees and owning domains remain
+partial. [Recursive-input review](coverage/semantics/define-recursive-array-review.json).
+
 Selected inherited `__unset(string): void` now dispatches direct CV/literal-name
 access to a declared private property. Accessible public unset skips magic;
 the callback retains Parent lexical scope and Child called scope, removes the

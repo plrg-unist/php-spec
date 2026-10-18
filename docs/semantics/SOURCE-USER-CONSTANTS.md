@@ -379,6 +379,20 @@ traces retain the original ALIAS cells and append history. The ancestor guard
 also covers empty heads; canonical class/history, allocation and cycle refusals
 remain enforced. [Nested-empty review](../../coverage/semantics/define-nested-empty-array-review.json).
 
+For ordinary string user keys with omitted or captured false flags, recursive
+array arguments raise `define(): Argument #2 ($value) cannot be a recursive array`
+before copying or duplicate-key reporting. A partial live-edge walk dereferences
+current source cells and checks ancestor paths, so repeated acyclic children are
+allowed. Late flag effects can create or break a cycle after VALUE capture.
+The Error keeps the original CONFIG arguments in its ordinary trace without a
+canonical candidate, leaves old rows and caller destinations unchanged, and emits
+no duplicate Warning. Explicitly breaking edges allows a fresh retry or ordinary
+duplicate reporting. Invalid edges remain separate from genuine recursion, and
+known compiled literal payloads cannot be replaced by forged cyclic captures.
+[Recursive-input review](../../coverage/semantics/define-recursive-array-review.json).
+Plain strings inside compiled literal arrays remain a separate leaf-admission
+boundary; the accepted scalar/carrier fold is unchanged.
+
 String-name `define` also retains an already-certified live stdClass donor with
 an omitted or false flag. Registration stores the captured object pointer and
 its completed-birth class, transferring the call owner to a constant-row owner
@@ -662,7 +676,8 @@ The matching engine routes are `ZEND_FUNCTION(define)`/`ZVAL_COPY`,
 and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`. `PHP_FUNCTION(constant)` uses
 exception-class lookup and `ZVAL_COPY_OR_DUP`; `zend_declare_typed_class_constant`
 interns direct string values before installation.
-Cycles, other objects, true/coerced array flags,
+Stored cyclic trees, other objects, plain compiled literal-string array leaves,
+true/coerced array flags,
 Stringable/array names, array/object values with scalar or null names, true/NULL/NaN
 flags with scalar names, nonbool flags with nonfinite float names, true/NULL/NaN flags with
 null names, special/startup names with flags or values beyond the bounded follow-ups,

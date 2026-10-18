@@ -1250,7 +1250,12 @@ Nested empty children use the same provenance rules: immutable tables retain
 their identity, while each mutable occurrence gets a canonical copy. Query COW
 and duplicate reporting preserve the stored tree and original trace input.
 [Nested-empty review](coverage/semantics/define-nested-empty-array-review.json).
-Wider array warning/flag paths, uncertified objects and cycles remain Unsupported.
+Recursive array arguments with ordinary string user keys and omitted/false flags
+raise parameter-2 `ValueError` before copying or duplicate reporting. Validation
+observes reference changes from every argument expression, while shared acyclic
+children still copy independently. [Recursive-input review](coverage/semantics/define-recursive-array-review.json).
+Plain compiled literal-string leaves, uncertified owning values and wider array
+warning/flag paths remain partial.
 String-name `define` with an omitted/false flag now shares already-certified
 stdClass donors. Named/selected calls preserve the captured pointer through later
 CV changes, and duplicate handlers keep the old binding and property writes on
