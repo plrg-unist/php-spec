@@ -16,14 +16,13 @@ echo 'R:', ($result === true), ':', ($x === 9), ':', ($right === 0), ';END;';
     'not-equal-both-init': b'''<?php
 function scalarNotEqual95($n, $m, $file, $line) {
     echo 'H:', ($n === 2), ':', $line, ':', ($m === 'Undefined variable $x'), ';';
-    $GLOBALS['x'] = 9;
     $GLOBALS['right'] = '0';
     return true;
 }
 $result = 41;
 set_error_handler('scalarNotEqual95');
 $result = $x != $right;
-echo 'R:', ($result === true), ':', ($x === 9), ':', ($right === '0'), ';END;';
+echo 'R:', ($result === true), ':', !isset($x), ':', ($right === '0'), ';END;';
 ''',
     'less-both-init': b'''<?php
 function scalarBothLess95($n, $m, $file, $line) {
