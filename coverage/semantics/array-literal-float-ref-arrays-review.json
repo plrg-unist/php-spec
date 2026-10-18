@@ -1,0 +1,49 @@
+{
+  "status": "independently reviewed and validated; private publication accepted",
+  "scope": "Finite fitting lossy-float CV keys in array literals with direct-CV reference elements. Untyped acquired/rebound CELL payloads may be mutable nonpool flat arrays containing only DIRECT null/bool/int/float values. Existing primitive and ordinary live primitive-property-source admission remains unchanged.",
+  "target": "PHP 8.5.10 CLI NTS64; vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348; project-local oracle and tests/semantics/profile.json. Reports preserve binary/input hashes, environment, original paths, argv, streams, exits and reaped groups.",
+  "engine_basis": "Zend/zend_vm_def.h::ZEND_ADD_ARRAY_ELEMENT acquires the old reference before float-key diagnostics but inserts through the live CV afterward. Zend/zend_hash.c::zend_array_dup_value unwraps a physical singleton wrapper, then increments its array payload. Wrapper ownership and child-table ownership must remain distinct.",
+  "semantics": "The missing owner remains an HCELL debt; no HARRAY debt is added. A singleton outer copy becomes DIRECT(PARRAY), and ordinary child COW separates subsequent writes. A still-indebted CELL can change its payload table while a direct CV keeps the previous table. Stable same-cell transfer adds no ghost; inverse retargeting cancels both biases before cleanup.",
+  "admission": "Array cells require no property-source, coercion or parameter-backing metadata. Their allocated mutable nonpool child table must occur in the supplied live-node set and contain only direct primitives. Debt safety supplies logically pruned nodes: a positive surviving CELL keeps its child edge, and the admitted child has no outgoing owners. Old-array completion requires ALIAS; neither old nor current array may be the active builder.",
+  "change": "Only spec/semantics/413-array-literal-key-warnings.watsup changes runtime behavior. Source/error certificates, key conversion, count/cancellation, owner/prune algorithms and the private 405-module list remain exact. One inherited A20 pure negative now names the builder-alias guard instead of assuming value admission refuses the builder; its final ready/discard refusals and all historical PHP bytes remain unchanged.",
+  "cuts": {
+    "fresh_native_and_unchanged_baseline": "7092df20e34a12d711a5112b590c262bbca0b293",
+    "runtime_strict_and_source4": "7aec957b63ef7d306599b50cf96166caaebfd243",
+    "focused_state": "ecb5a26e883a2c18bc0afb7b06dbb55f54081b5a",
+    "base": "548f405ba09376e4b64f13def74ec34072a41cf7"
+  },
+  "validation": {
+    "strict_modules": 405, "source_agreements": 4,
+    "state_premises": 847, "boolean_premises": 837, "raw_steps": 10,
+    "author": {"premises": [205, 152], "raw_steps": [3, 2]},
+    "independent": {"premises": [271, 219], "raw_steps": [3, 2]},
+    "results": "Strict, four model-only source comparisons and all four SL180 state fronts pass first attempt with quiet tool stderr, no timeout/interruption and empty reaped groups. No source/native replay, fixture correction or postimplementation actor failure occurred.",
+    "baseline": "The unchanged checked program naturally stops before its first handler with error-handler ingress requires a producer continuation; native succeeds and the ordinary comparator fails. This retained baseline has zero agreement credit."
+  },
+  "counterexamples": [
+    "Forward retargeting yields physical wrapper count1: copying the outer array unwraps to a direct array value, and an inner write produces child55 while the original/replacement stay44. Balanced inverse retargeting restores shared77.",
+    "Same-cell unset/rebind transfers the acquired owner without a retained ghost. After ordinary names are dropped, outer-copy unwrapping and child COW preserve the original33 and mixed null/bool/float leaves.",
+    "Deleting the originating alias leaves the deficit observable through a retained probe. A direct CV keeps table44 while a write through the still-indebted CELL switches its child to66; the debt stays on that CELL. Inverse cancellation restores shared77 while detached55 and direct44 remain unchanged.",
+    "A supplied throw after an earlier old alias preserves the same exception, destination99 and later7, retires the builder, and leaves the new physical wrapper count1. A safe probe distinguishes child COW before inverse cancellation and full graph retirement."
+  ],
+  "runtime_sha256": {"spec/semantics/413-array-literal-key-warnings.watsup": "f6d3929e69ab70c113bc79da5dc32e283c3f7e1992cb74c07acb0e531a1b128c"},
+  "reports": [
+    {"path": ".tools/array-literal-float-ref-arrays-baseline-23/report.json", "sha256": "719c07dce3e95214cb203900ef6539099d48e05472d28a1efb7c8002c6bd9af2", "cut": "fresh_native_and_unchanged_baseline", "credit": "0; genuine unchanged Unsupported"},
+    {"path": ".tools/array-literal-float-ref-arrays-native-rest-23/report.json", "sha256": "28cc98fabf8d98dc45e04af323612220f4c716bedf94f95b39538dbaf82aca53", "cut": "fresh_native_and_unchanged_baseline", "credit": "0; one native preparation"},
+    {"path": ".tools/array-literal-float-ref-arrays-review-native-23/report.json", "sha256": "b663c03d53a13cab1f433e637d201a74ae2e4cdc5bd6f15d49c95279d9952b0f", "cut": "fresh_native_and_unchanged_baseline", "credit": "0; two independent native preparations"},
+    {"path": ".tools/array-literal-float-ref-arrays-strict-23/report.json", "sha256": "651396b91fec469a28e48ded3fe6961eb7fdb72f58064c1323f35ff02c89e6ad", "cut": "runtime_strict_and_source4", "credit": "strict 405-module pass"},
+    {"path": ".tools/array-literal-float-ref-arrays-author-source-23/report.json", "sha256": "741b07937f5a56af0b1d1ba160b2931ca5d2099cc656914e53028a821c5d0f8d", "cut": "runtime_strict_and_source4", "credit": "2 original-source agreements; native reused"},
+    {"path": ".tools/array-literal-float-ref-arrays-review-source-23/report.json", "sha256": "bdc280a18580cfff1289032f4d548eb7d588505c03be2fb1afba73bfbc3260ad", "cut": "runtime_strict_and_source4", "credit": "2 independent original-source agreements; native reused"},
+    {"path": ".tools/array-literal-float-ref-arrays-author-state-23/report.json", "sha256": "3289f872c7f53c2e1da8355b5aa08eea261538ac72b19223d5b627815ed95be2", "cut": "focused_state", "credit": "357 premises, including 5 raw"},
+    {"path": ".tools/array-literal-float-ref-arrays-review-state-23/report.json", "sha256": "afa97f0493ddb096c9e4d2d4170902fa083ab57afe44027f737c4d0b46abb53c", "cut": "focused_state", "credit": "490 premises, including 5 raw"}
+  ],
+  "archive": {
+    "path": ".tools/array-literal-float-ref-arrays-23-raw.tar.gz",
+    "bytes": 366795, "members": 123,
+    "sha256": "0ed60115faa4e9149aedb7f2b5b2aed835cc13a41e65e4604e1a95cd9a45125a",
+    "contents": "Eight basename report roots plus exact strict/reuse scripts, stored outside Git in canonical .tools.",
+    "recovery": "Restore the recorded cut at .tools/array-literal-float-reference-arrays-23, provision pinned project-local tools, and extract the archive into that worktree's .tools directory to recover original paths and raw recipes. Raw evidence is not a build/runtime dependency."
+  },
+  "compatibility": "The plain-cell and A22 typed-primitive predicates retain their accepted bodies; historical evidence keeps its original cuts without renewed credit. Independent incoming review through 933817eae8b3611609123a691d4f1dc1ae540e1b found ini_set NULL-option, missing-CV EQUAL/LESS, Generator-close/unpack, DEFINE and quiet MULTIPLY selectors, absent from these ordinary callbacks/strict comparisons. The new binary-source hook defaults to the existing binary rule for their non-MULTIPLY operators. No literal/key/owner/COW helper changed and no joined actor is indicated.",
+  "remaining": "Old-array to ordinary-scalar DIRECT completion and ordinary by-value owning-CV insertion remain Unsupported. Array-valued type sources, pooled/immutable or nested/reference-bearing/string-leaf arrays, other owning payloads, effective-zero retirement, coercion/backing associations, active collection and outstanding request-end debt remain excluded. Held undefined-reference LIST and paused owned-NUL include paths are untouched."
+}

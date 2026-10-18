@@ -30,15 +30,23 @@ after that callback. Logical aliases remain intact; effective owner counts and
 pruning counters subtract the debt multiplicity. Retaining an indebted cell first
 cancels one debt, and owing a retained cell first cancels one positive owner.
 Thus inverse retargeting restores ordinary ownership without spurious GC roots.
-Both acquired and new cells must hold null/bool/int/float when retargeting
-between different reference cells. Ordinary live instance-property sources may
-constrain either cell; their metadata adds no owner. Singleton COW strips the
+Primitive acquired and new cells may carry ordinary live instance-property
+sources; their metadata adds no owner. Singleton COW strips the
 copied entry's wrapper even when it has type sources, while original aliases and
 shared copies retain typed rejection/coercion. For debt-bearing cells, source
 objects and their actual property aliases must survive logical pruning. The
 [typed-source review](../../coverage/semantics/array-literal-float-ref-types-review.json)
-checks both typed sides and multiple live sources. Debt cells must keep positive
-effective counts. Owning values, static/hooked/queued or retired sources,
+checks both typed sides and multiple live sources. Untyped CELL payloads may also
+be mutable nonpool flat arrays of DIRECT null/bool/int/float entries. The CELL
+keeps one child-table edge; its debt never subtracts from HARRAY owners. A singleton
+outer copy unwraps the wrapper, then ordinary child COW separates array values.
+Changing the child table leaves the same CELL debt in place. Old-array completion
+requires ALIAS, and the active builder cannot be either payload. The
+[flat-array review](../../coverage/semantics/array-literal-float-ref-arrays-review.json)
+checks these counts through stable insertion, deletion, throw and inverse cleanup.
+Debt cells must keep positive effective counts. Array-valued type sources,
+nested/reference-bearing/string-leaf or pooled/immutable arrays, other owning
+values, static/hooked/queued or retired sources,
 coercion/backing records, active collection, effective-zero retirement and
 outstanding debt at request end are explicit Unsupported before pruning. Isolated
 compiler images reject both runtime fields. The [deficit review](../../coverage/semantics/array-literal-float-ref-deficit-review.json)

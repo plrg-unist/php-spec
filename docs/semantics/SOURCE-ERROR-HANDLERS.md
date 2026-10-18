@@ -184,11 +184,11 @@ transfers its acquired owner when the CV still names the same cell, including
 unset/rebind to that cell. Retargeting to an ordinary null/bool/int/float inserts
 the live scalar and preserves the acquired count, cancelling old debt first or
 retaining an unmatched request owner, also on throw.
-Old values must remain null/bool/int/float and the builder object-free.
+Ordinary-scalar completion keeps primitive old values and the builder object-free.
 The [reference-element ledger](../../coverage/semantics/array-literal-float-ref-key-warning-review.json)
 records repeated owners and singleton-copy observations. Different-reference
 retargets now preserve both the old owner and a per-cell new-owner deficit through
-return and supplied throw. Both cells must hold null/bool/int/float; they
+return and supplied throw. Admitted primitive cells
 may be shared or unwrapped according to their effective count. Inverse retargeting
 cancels the biases. The [deficit ledger](../../coverage/semantics/array-literal-float-ref-deficit-review.json)
 checks deletion, abrupt cleanup and balanced lifetime. Validated ordinary live
@@ -197,7 +197,14 @@ Physical singleton copies unwrap without the constraint; shared copies and the
 original property aliases still enforce/coerce typed writes. The
 [typed-source ledger](../../coverage/semantics/array-literal-float-ref-types-review.json)
 checks int-property singletons, two sources, typed old cells and supplied throws.
-Effective-zero retirement, owning values, static/hooked/queued or retired sources,
+Untyped wrappers may also contain mutable nonpool flat arrays of DIRECT
+null/bool/int/float values. Wrapper debt and child-table owners remain distinct across singleton
+unwrapping, later child COW, entry deletion and supplied-throw builder cleanup.
+Old arrays require ALIAS completion, with both payloads distinct from the builder.
+The [flat-array ledger](../../coverage/semantics/array-literal-float-ref-arrays-review.json)
+checks stable/inverse transfer and safe final retirement. Effective-zero retirement,
+array-valued type sources, nested/reference-bearing/string-leaf or pooled/immutable
+arrays, other owning values, static/hooked/queued or retired sources,
 coercion/backing records, active collection and outstanding request-end debt remain
 explicit Unsupported before pruning.
 

@@ -25,12 +25,14 @@ integer across deprecation handlers. Unwrapped null/bool/int/float element varia
 remain live, while runtime array temporaries retain their own tables. Reference
 elements transfer a stable cell normally; retargeting preserves the acquired
 count, cancelling existing debt before retaining unmatched old owners for the
-request, including on throw. Different-reference retargeting between primitive
-cells also tracks the new cell's missing owner until it is balanced. Ordinary
-live instance-property type sources are admitted: singleton copies shed their
-constraint while the original stays typed; shared copies retain it. Unsafe deficit
-retirement and wider domains remain Unsupported. Duplicate replacement and later
-items stay ordered.
+request, including on throw. Different-reference retargeting also tracks the new
+cell's missing owner until it is balanced. Primitive cells may carry ordinary
+live instance-property type sources: singleton copies shed their
+constraint while the original stays typed; shared copies retain it. Untyped
+reference cells may also hold flat runtime arrays of direct null/bool/int/float values. Wrapper
+debt stays separate from child-table COW, including deletion and throw cleanup.
+Unsafe deficit retirement and wider domains remain Unsupported. Duplicate
+replacement and later items stay ordered.
 
 [Destructuring key warnings](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md)
 now retain captured arrays or source reference cells through handlers, including

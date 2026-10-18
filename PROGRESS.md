@@ -327,27 +327,28 @@ GENERATORRETURNRETAINED and LITERALREFRETAINED lift by empty fields with no root
 and valid empty receipts, preserving owners/budgets pointwise. Source3/state632
 retain private403 cuts and both zero-credit failures without replay.
 
-Finite lossy-float literal-key reference callbacks now admit ordinary live
-instance-property type sources on either acquired or rebound primitive cell.
-The existing owner deficit remains per cell: type metadata adds no edge, physical
-singleton copies unwrap, and shared copies retain typed rejection/coercion.
-For debt-bearing cells, every source object/property alias must survive logical
-pruning. Fresh int-property programs cover singleton copies, two source properties,
-typed old cells, supplied throws and balanced inverse cleanup. Four originals and strict405 pass at
-`eb44824e1`; 864 state premises (853 Boolean +11 raw; author433/independent431)
-pass at `96176f7c1`. Strict, source and state checks all pass first attempt; the
-genuine unchanged Unsupported baseline stays zero credit. Only413 changes;
-existing typed-write, source/handler, owner-count and prune algorithms remain
-unchanged. Effective-zero, owning payloads,
-static/hooked/queued or retired sources, coercion/backing records, active collection
-and outstanding request-end debt remain Unsupported. Held undefined-reference LIST
-and owned-NUL paths stay untouched.
-[Typed-source review](coverage/semantics/array-literal-float-ref-types-review.json).
+Lossy-float literal-key reference callbacks now admit untyped CELL payloads that
+are mutable nonpool flat arrays of DIRECT null/bool/int/float entries. The missing
+owner stays on the wrapper: its single child-table edge has ordinary ownership.
+Singleton outer copies unwrap before child COW; a still-indebted CELL can change
+child tables while a direct CV keeps the previous table. Same-cell insertion
+transfers the acquired owner without a ghost, and inverse retargeting balances
+both count biases through deletion and supplied-throw cleanup.
+Four originals and strict405 pass first attempt at `7aec957b6`; 847 state premises
+(837 Boolean +10 raw; author357/independent490) pass at `ecb5a26e8`, also first attempt.
+The genuine checked Unsupported ingress baseline retains zero agreement. Only413 changes runtime behavior; the source/handler,
+count/cancellation and prune algorithms stay exact. One old pure builder-negative
+control now names the builder guard; original PHP and historical cuts are unchanged.
+Old-array completion requires ALIAS and neither payload may be the builder.
+Array-old to ordinary-scalar DIRECT, owning-CV/table debt, pooled/immutable or
+nested/reference-bearing/string-leaf arrays, array-valued type sources and other
+owning payloads remain Unsupported. Effective-zero, active collection and
+outstanding request-end debt stay refused; held LIST/owned-NUL paths are untouched.
+[Flat-array review](coverage/semantics/array-literal-float-ref-arrays-review.json).
 
-Composed over `f305be84b`/405 after review of dynamic `instanceof`, reference-return,
-spaceship and DEFINE selectors, which are absent here. Module413 and six tests
-retain accepted bytes; other runtime paths and the ordered manifest stay parent-exact.
-Source4/state864 keep their private cuts without a joined actor or replay.
+The earlier primitive typed-source slice retains source4/strict405 at `eb44824e1`
+and state864 at `96176f7c1`, composed over `f305be84b` as `d2f594f3a`.
+[Typed-source ledger](coverage/semantics/array-literal-float-ref-types-review.json).
 
 The earlier untyped deficit slice retains source5/strict404 at `cd8e16179` and
 state1159 at `ff0410375`, composed over `4ff5f52ef`/405 as `7bed41edf`.

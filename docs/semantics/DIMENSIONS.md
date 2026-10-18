@@ -73,11 +73,11 @@ conversion. If the callback leaves or rebinds that CV to the same cell, insertio
 transfers the acquired owner to an alias. If it rebinds the CV to an unwrapped
 null/bool/int/float, insertion uses that live scalar directly and preserves the
 acquired count: an existing debt cancels first, otherwise the old wrapper gains a
-request owner. Supplied throws preserve that count while discarding the builder. Initial and resumed old values
-must remain null/bool/int/float, and the builder must remain object-free.
-Retargeting between different primitive reference cells also records the
+request owner. Supplied throws preserve that count while discarding the builder.
+This ordinary-scalar completion requires a primitive old value; the builder
+must remain object-free. Retargeting between different admitted reference cells also records the
 omitted new-cell owner. This debt survives deletion of the originating entry and
-abrupt builder cleanup. Copies at effective count1 unwrap the scalar; copies at
+abrupt builder cleanup. Copies at effective count1 unwrap the stored value; copies at
 larger counts retain the alias. Same-cell insertion preserves an existing debt;
 scalar and inverse-reference retargets cancel count biases per cell, including
 repeated debts and residual positive owners. Logical edges are never removed to
@@ -93,9 +93,20 @@ existing typed writes.
 Fresh int-property witnesses check rejection, numeric-string coercion, multiple
 type sources, supplied throws and inverse cleanup in the
 [typed-source ledger](../../coverage/semantics/array-literal-float-ref-types-review.json).
-Effective-zero, owning payloads, static/hooked/queued or retired type sources,
-coercion/backing records, active collection and outstanding request-end debt
-remain explicit Unsupported before pruning.
+Untyped reference cells may instead hold mutable nonpool flat arrays with only
+DIRECT null/bool/int/float entries. The debt remains on the CELL, which owns one child
+table independently of its wrapper count. Singleton copies unwrap to DIRECT
+array values; later child writes use ordinary COW. A still-indebted wrapper can
+switch child tables while a direct CV retains its previous table. Stable same-cell
+array insertion transfers the acquired owner without adding a request root.
+Old array payloads require ALIAS completion, and neither old nor current payload
+may be the active builder. The [flat-array ledger](../../coverage/semantics/array-literal-float-ref-arrays-review.json)
+records fresh singleton/shared, deletion, supplied-throw and inverse-cleanup cases.
+Array-valued type sources, pooled/immutable or nested/reference-bearing/string-leaf
+arrays, other owning payloads, effective-zero, static/hooked/queued or retired
+sources, coercion/backing records, active collection and outstanding request-end
+debt remain explicit Unsupported before pruning. Ordinary by-value owning-CV
+insertion remains Unsupported.
 The source basis is pinned `Zend/zend_vm_def.h::ZEND_ADD_ARRAY_ELEMENT`,
 `Zend/zend_hash.c::zend_array_dup_value`, and
 `Zend/zend_operators.h::zend_dval_to_lval_safe`.
