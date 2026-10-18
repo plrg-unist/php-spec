@@ -600,9 +600,11 @@ def $ref_return_pair_pending_actual(S, eps) = true
 def $ref_return_pair_pending_actual(S, ptask :: ptask_tail*) = ($ref_return_pair_pending_actual_task(S, ptask) /\ $ref_return_pair_pending_actual(S, ptask_tail*))
 dec $ref_return_pair_pending_projected(pstate, prefreturncursor, prefreturncursor, porigin, int) : bool
 def $ref_return_pair_pending_projected(S, prefreturncursor_inner, prefreturncursor_outer, porigin_source, z) = ($ref_return_pair_pending_valid(S[.ORIGIN = (porigin_catch)], prefreturncursor_inner, prefreturncursor_outer, porigin_source, z) \/ $ref_return_pair_pending_valid(S[.ORIGIN = porigin_final?], prefreturncursor_inner, prefreturncursor_outer, porigin_source, z))
+  -- if S.TODO = (RETURN_REF_UNWIND (REFERENCE n) z true porigin_source) :: ptask_tail*
   -- if S.ORIGIN = prefreturncursor_outer.OUTER
   -- if $ref_return_pair_catch_passage(S, prefreturncursor_inner, prefreturncursor_outer) = ([TRY_END porigin_catch, ORIGIN_RETURN porigin_final?, ptask_echo])
 def $ref_return_pair_pending_projected(S, prefreturncursor_inner, prefreturncursor_outer, porigin_source, z) = ($ref_return_pair_pending_valid(S[.ORIGIN = (porigin_catch)], prefreturncursor_inner, prefreturncursor_outer, porigin_source, z) \/ $ref_return_pair_pending_valid(S[.ORIGIN = porigin_final?], prefreturncursor_inner, prefreturncursor_outer, porigin_source, z))
+  -- if S.TODO = (RETURN_REF_UNWIND (REFERENCE n) z true porigin_source) :: ptask_tail*
   -- if S.ORIGIN = prefreturncursor_outer.OUTER
   -- if $ref_return_pair_catch_passage(S, prefreturncursor_inner, prefreturncursor_outer) = ([TRY_END porigin_catch, ORIGIN_RETURN porigin_final?, ptask_call, ptask_echo])
 def $ref_return_pair_pending_projected(S, prefreturncursor_inner, prefreturncursor_outer, porigin_source, z) = false -- otherwise
