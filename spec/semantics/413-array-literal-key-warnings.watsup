@@ -152,6 +152,8 @@ def $array_float_ref_key_source(S, n, n_old, poperand, phpType13*, z, n_bits, i)
 def $array_float_ref_key_source(S, n, n_old, poperand, phpType13*, z, n_bits, i) = false -- otherwise
 
 dec $literal_reference_plain_cell(pstate, nat) : bool
+dec $literal_reference_cell(pstate, nat, pnode*) : bool
+dec $literal_reference_property_sources(pstate, nat, pproptypesource*, pnode*) : bool
 dec $literal_reference_retain(pstate, nat) : pstate
 dec $literal_reference_owe(pstate, nat) : pstate
 dec $array_float_ref_key_value(pstate, nat, poperand) : pitem?
@@ -170,7 +172,7 @@ def $array_float_ref_key_value(S, n_old, VARIABLE n_name* z) = (ALIAS n_current)
   -- if $lookup(S.ENV, n_name*) = (n_current)
   -- if n_current =/= n_old
   -- if ~$foreach_released_container_cell(S, n_current) /\ ~$update_released_array_name(S, n_name*)
-  -- if $literal_reference_plain_cell(S, n_old) /\ $literal_reference_plain_cell(S, n_current)
+  -- if $literal_reference_cell(S, n_old, S.ALLOCATIONS) /\ $literal_reference_cell(S, n_current, S.ALLOCATIONS)
 def $array_float_ref_key_value(S, n_old, poperand) = eps -- otherwise
 
 dec $array_float_ref_key_ready(pstate, nat, nat, poperand) : bool
@@ -269,12 +271,38 @@ def $literal_reference_plain_cell(S, n) = true
   -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
 def $literal_reference_plain_cell(S, n) = false -- otherwise
 
+;; Property type sources add no owners. Keep ordinary source objects alive
+;; and leave typed writes/coercions to the existing reference rules.
+def $literal_reference_cell(S, n, pnode_live*) = true
+  -- if $literal_reference_plain_cell(S, n)
+def $literal_reference_cell(S, n, pnode_live*) = true
+  -- if $call_reference_operand_valid(S, REFERENCE n)
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if $array_float_key_scalar(S, pvalue)
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
+  -- if $propref_at(S.PROPREFS, n) = (ppropref)
+  -- if ppropref.SOURCES =/= eps
+  -- if $propref_unique_sources(ppropref.SOURCES)
+  -- if $literal_reference_property_sources(S, n, ppropref.SOURCES, pnode_live*)
+def $literal_reference_cell(S, n, pnode_live*) = false -- otherwise
+
+def $literal_reference_property_sources(S, n, eps, pnode_live*) = true
+def $literal_reference_property_sources(S, n, (OBJECT_PROP_SOURCE n_object ptbytes ppropertyid) :: pproptypesource*, pnode_live*) = true
+  -- if (HOBJECT n_object) <- pnode_live*
+  -- if $propref_source_valid(S, n, OBJECT_PROP_SOURCE n_object ptbytes ppropertyid)
+  -- if ~$propref_source_queued(S, n, OBJECT_PROP_SOURCE n_object ptbytes ppropertyid)
+  -- if $propref_descriptor(S, OBJECT_PROP_SOURCE n_object ptbytes ppropertyid) = (ppropertydesc)
+  -- if ~$property_hook_source_declared(S, ppropertydesc)
+  -- if $literal_reference_property_sources(S, n, pproptypesource*, pnode_live*)
+def $literal_reference_property_sources(S, n, pproptypesource*, pnode_live*) = false -- otherwise
+
 ;; Primitive debt targets have no outgoing owners. Logical pruning can thus
 ;; certify positive final counts before biased pruning starts any cascade.
 dec $literal_reference_debt_cells_safe(pstate, hgraph, nat*) : bool
 def $literal_reference_debt_cells_safe(S, H, eps) = true
 def $literal_reference_debt_cells_safe(S, H, n :: n_tail*) = true
-  -- if $literal_reference_plain_cell(S, n)
+  -- if $literal_reference_cell(S, n, H.NODES)
   -- if (HCELL n) <- H.NODES
   -- if $($heap_count(HCELL n, $literal_reference_retained_nodes(S.LITERALREFDEBTS)) < $heap_owners(H, HCELL n))
   -- if $literal_reference_debt_cells_safe(S, H, n_tail*)
