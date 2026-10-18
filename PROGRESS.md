@@ -1273,33 +1273,35 @@ private cut; independent seam review warrants no joined actor or renewed credit.
 
 Destructuring key warnings retain recursive by-value CV/literal and mixed CV
 patterns with quiet compiled/implicit or ordinary defined quiet CV keys. Module410
-also handles lossy float CV keys in flat direct-CV value/reference fetches, including
-silent writable initialization of null/reference-false sources and quiet undefined
-CV acquisition. At flat direct-CV by-value fetches with captured arrays, defined NULL CV keys
-now deprecate before empty-string lookup; undefined keys first emit their variable
-Warning without creating a key cell. Handler initialization or rebinding cannot
-redirect the later null conversion. Each diagnostic releases table protection:
-a mixed table's first expiry silently supplies NULL and skips deprecation/lookup;
-a surviving table is re-protected for deprecation, then reads post-handler aliases
-or enters module409 before target storage. Different handlers may handle all three
-steps; a deprecation-only handler follows the default variable Warning. Later
-references/results resolve the saved source CELL, and later keys remain fresh.
-Throws preserve earlier stores and supplied Throwable identity while retiring roots.
-Six A17 originals agree: five at b50bd8170 and the distinct deprecation-only mask
-at 69212ab27. Five SL fronts pass 973 premises (944 Boolean + 29 raw) at
-69de5863a: author 489 and independent 484. No fixture failed or required replay.
-Existing null-conversion rules, compiler and ownership APIs remain unchanged;
-no historical controls or shared harness changed. The
-[undefined-key review](coverage/semantics/list-undefined-key-warning-review.json)
-retains native/unchanged Unsupported baseline and separate source cuts. Earlier
-[family reviews](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md) retain their
-original cuts and failures without renewed credit. NULL/undefined-key reference
-conversion, nested/literal conversion, wider constrained sources/RHS/targets and
+also handles lossy float and defined NULL CV keys in flat direct-CV value/reference
+fetches, including silent writable initialization of null/reference-false sources
+and quiet undefined CV acquisition. At these by-value fetches, undefined keys warn
+before frozen null conversion; table expiry can skip later deprecation/lookup,
+while surviving reads can enter module409 before target storage. Reference fetches
+prepare the saved source before converting the key. If an initially null key shares
+that cell, initialization makes the key an array and raises TypeError before any
+deprecation or binding. A key still NULL after preparation fixes empty selection
+across its callback; after protection release, exactly one selected-table owner
+permits binding an existing alias or silently creating the slot. A detached handler
+hold can be that owner. Zero or multiple owners give a fresh NULL reference even
+for a live present slot. Target rebinding preserves its previous outside alias;
+later keys and saved source CELLs govern later fetches/results despite name rebinding.
+Supplied throws cancel binding while preserving earlier stores.
+Seven A18 originals agree: five at 8396f5161, unique existing-ALIAS at d24427458,
+and shared source/key at 8a9276002. Six SL fronts pass 977 premises (954 Boolean +
+23 raw): original 922 at 1f5e0b1ab and alias-only 55 at 8a9276002. The fresh alias
+counterexample at c9317e5f1 retains zero credit; its one-line plan correction uses
+the existing preparation-first TypeError path. Previous fronts already establish
+distinct source/key cells, retaining their cuts without replay. No fixture failed.
+Earlier module410 bodies, compiler and ownership APIs remain exact; no historical
+controls or shared harness changed. The
+[NULL writable-key review](coverage/semantics/list-null-write-key-warning-review.json)
+retains the native/unchanged Unsupported baseline, alias mismatch and separate cuts.
+The paused owned-NUL include/Stringable path remains untouched and independently
+disjoint. Earlier [family reviews](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md)
+retain original cuts and failures without renewed credit. Undefined selected-reference
+keys, nested/literal conversion, wider constrained sources/RHS/targets and
 callback/lifecycle coverage remain partial.
-
-Pointwise composition over a2b8470ba preserves all 401 incoming modules. Typed-return,
-define-array, compound-RHS and magic-empty selectors are disjoint. Source6/state973
-retain their accepted cuts without a joined actor.
 
 Plain-CV `%=` now keeps both converted longs through a fractional-RHS deprecation.
 Captured12/5 stores2 despite callback99/7 and detaches a late target alias; supplied

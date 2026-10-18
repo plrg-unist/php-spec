@@ -22,7 +22,8 @@ recursive by-value CV/literal and mixed CV patterns, with ordered null delivery
 and normal/throw cleanup. These patterns also freeze quiet converted variable keys
 across callbacks while later key variables are read afresh.
 Flat CV-source patterns also resume lossy float keys in value and reference fetches.
-Defined null variable keys deprecate before selecting the empty string in value fetches.
+A null variable key deprecates before empty-string selection when it remains null
+after source preparation.
 At these by-value fetches, undefined keys first warn; handler initialization cannot
 redirect the later null conversion.
 Value fetches in mixed patterns release the old table's temporary protection first:
@@ -31,6 +32,8 @@ Reference fetches make the array writable before the callback, then bind into th
 selected table only if one owner remains; zero or multiple owners yield a detached null reference.
 Null and reference-wrapped false sources initialize silently before that callback;
 an undefined source variable first becomes a null reference without a read warning.
+If a null source and selected reference key share a cell, initialization changes the
+key to an array and raises `TypeError` before deprecation or binding.
 
 The [checked eval parser service](docs/semantics/DYNAMIC-SOURCE-SERVICE.md)
 accepts raw eval-source bytes, uses a native parse-only scanner for rejection
