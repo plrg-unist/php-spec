@@ -17,6 +17,11 @@ old pure Closure projections change without renewing V81 credit. Other object
 flags, publication classes and wider names/lifetimes remain partial.
 [Closure-flag review](coverage/semantics/define-closure-flag-review.json).
 
+Composed over `37f07ed95`/405 with the exact tested400+2 patch; incoming runtime/
+manifest paths and fields remain intact. Loose missing-CV comparison, magic
+property-isset and delayed DIV producers are absent. Source3/state459 retain
+their private405 cuts without a joined actor, accepted replay or renewed credit.
+
 Selected-reference DIV now delays initially bad RHS text until the LEFT Warning
 returns. Four originals pass at `70add9ed5`/405; three focused fixtures pass 468
 premises at `fd80a78f8`/405, covering strict `2.4`, live bool/string TypeError and
