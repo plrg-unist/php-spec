@@ -54,6 +54,10 @@ echo "U:",isset($dest),":",isset($copy),":",isset($outside),";";
 ''',
 }
 
+BOUNDARIES = {
+    'array-literal-float-review-reference-entry': 'error-handler ingress requires a producer continuation',
+}
+
 NATIVE_PROBES = {
     'array-literal-float-review-reference-owner-probe': b'''<?php
 function literal_float_owner_probe($n,$m,$f,$l) {
