@@ -66,7 +66,8 @@ This slice excludes objects reachable from the builder or captured array, both
 before dispatch and on completion. Zend inserts even with a pending exception;
 without objects, abandoning both graphs has the same observable cleanup. A
 callback introducing objects enters explicit Unsupported on return or throw.
-Owning/string CV elements and initially wrapped CVs remain outside this producer.
+String CV elements, initially wrapped CVs and wider owning values remain outside
+this producer.
 
 The separate reference-element continuation acquires a direct CV's wrapper before
 conversion. If the callback leaves or rebinds that CV to the same cell, insertion
@@ -110,7 +111,24 @@ Array-valued type sources, pooled/immutable or nested/reference-bearing/string-l
 arrays, other owning payloads, effective-zero, static/hooked/queued or retired
 sources, coercion/backing records, active collection and outstanding request-end
 debt remain explicit Unsupported before pruning. Ordinary by-value owning-CV
-insertion remains Unsupported.
+insertion remains partial.
+
+A separate continuation stages ordinary unwrapped array-CV values. Both initial
+and resumed values must be mutable nonpool flat arrays of DIRECT null/bool/int/float
+entries; the builder stays object-free and distinct from both tables. The captured
+old table gets one owner before conversion, while insertion uses the live CV's
+table without its own ADDREF. `LITERALARRAYRETAINED` and `LITERALARRAYDEBTS` track
+these HARRAY count biases separately from wrapper CELL biases. A same-table
+retarget transfers its owner even if the original CV cell was retired. A different
+retarget can make ordinary CV and literal values share writes at physical count1.
+Deletion and supplied-throw cleanup preserve this table deficit; inverse retargets
+cancel it before ordinary COW and teardown. The combined lifetime guard checks
+positive flat tables after logical pruning and refuses effective-zero, active
+collection or outstanding request-end debt before owner transitions.
+The [ordinary array-CV review](../../coverage/semantics/array-literal-float-array-cv-review.json)
+records these safe balanced cases. Initially wrapped CVs, primitive/array mixed
+retargets, pooled/immutable or nested/reference-bearing/string-leaf tables and
+other owning CV values remain Unsupported.
 The source basis is pinned `Zend/zend_vm_def.h::ZEND_ADD_ARRAY_ELEMENT`,
 `Zend/zend_hash.c::zend_array_dup_value`, and
 `Zend/zend_operators.h::zend_dval_to_lval_safe`.

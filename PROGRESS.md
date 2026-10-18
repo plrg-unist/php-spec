@@ -549,33 +549,32 @@ GENERATORRETURNRETAINED and LITERALREFRETAINED lift by empty fields with no root
 and valid empty receipts, preserving owners/budgets pointwise. Source3/state632
 retain private403 cuts and both zero-credit failures without replay.
 
-Lossy-float literal-key reference callbacks now admit old flat-array wrappers
-when the handler replaces the element CV with an unwrapped null/bool/int/float.
-Insertion uses that live scalar directly and preserves the acquired old count:
-existing debt cancels first; otherwise a request owner retains the wrapper and
-its single child-table edge. After ordinary names disappear, unmatched owners
-keep probe copies aliased while child-table COW still separates a direct snapshot.
-Repeated retargets preserve owner multiplicity, including supplied-throw cleanup.
-The source/handler, count/cancellation and prune algorithms remain unchanged;
-only module413's old-payload guard broadens. One superseded A23 pure control now rejects
-an ordinary owning-array CV; original PHP and historical cuts stay exact.
-Four fresh natives and a genuine checked Unsupported after-callback baseline
-retain `605451811`; the baseline has zero agreement credit. Strict405 and four
-model-only source comparisons pass at `050b6b476`;
-722 focused premises (711 Boolean +11 raw; author338/independent384) pass at
-`700ab34e0`. All postimplementation actors pass first attempt, quiet and reaped;
+Lossy-float literal-key callbacks now admit ordinary unwrapped array-CV values
+holding mutable nonpool flat DIRECT null/bool/int/float tables. The continuation
+owns the pre-conversion table; insertion uses the live table without a new ADDREF.
+Separate HARRAY retained/debt fields preserve these counts. Same-table transfer
+adds no bias even after the original CV cell retires; different-table insertion
+can share writes between ordinary CV and literal values at physical count1.
+Entry deletion and supplied-throw builder cleanup preserve the deficit, while
+inverse retargeting restores ordinary COW and balances counts before teardown.
+Both debt families now share the existing pre-owner/direct-prune lifetime gate:
+logical pruning must retain positive flat table targets and existing valid CELL
+targets. Graph owner-count/prune algorithms and prior wrapper semantics are unchanged.
+Four fresh natives and the genuine checked Unsupported ingress baseline retain
+`016683a36`; the baseline stays zero agreement. Strict405 and four model-only source agreements pass at `e9382c39e`;
+808 focused premises (796 Boolean +12 raw; author347/independent461) pass at
+`a0730822b`. All postimplementation actors pass first attempt, quiet and reaped;
 original native paths/bytes/streams are reused without replay.
-Untyped arrays remain mutable, nonpool and flat DIRECT null/bool/int/float, with
-neither payload equal to the builder. Owning-CV/table debt, array-valued type
-sources, nested/reference-bearing/string-leaf or pooled/immutable arrays and other
-owning payloads remain Unsupported. Effective-zero, active collection and
-outstanding request-end debt remain refused; held LIST/owned-NUL paths are untouched.
-[Array-to-scalar review](coverage/semantics/array-literal-float-ref-array-scalar-review.json).
+Wrapped CVs, mixed scalar/array retargets, pooled/immutable or nested/reference-
+bearing/string-leaf arrays and other owning values remain Unsupported. Builders
+stay object-free and distinct from both tables. Effective-zero, active collection
+and outstanding request-end debt remain refused; held LIST/owned-NUL paths and
+active lifecycle/class scopes are untouched.
+[Ordinary array-CV review](coverage/semantics/array-literal-float-array-cv-review.json).
 
-Composed over `005738481`/405: incoming comparison, Generator and quiet-power
-selectors are absent. Module413, six new tests and the one pure-control edit keep
-accepted bytes; other runtime paths and the ordered manifest remain parent-exact.
-Source4/state722 retain their private cuts without a joined actor or replay.
+The earlier array-to-scalar wrapper slice retains source4/strict405 at `050b6b476`
+and state722 at `700ab34e0`, composed over `005738481` as `bbb986fb3`.
+[Array-to-scalar ledger](coverage/semantics/array-literal-float-ref-array-scalar-review.json).
 
 The earlier flat-array slice retains source4/strict405 at `7aec957b6` and state847
 at `ecb5a26e8`, composed over `0824bac1b` as `27718dbb1`.

@@ -187,7 +187,8 @@ Array-literal module413 freezes a finite lossy-float CV key across deprecation,
 then reads a live unwrapped null/bool/int/float element CV or inserts its retained
 runtime array temporary. The builder stays owned through the callback and is
 released on throw; duplicate positions and later item evaluation stay ordered.
-Reachable objects and owning CV values remain outside this by-value producer.
+Reachable objects and owning CV values remain outside the initial scalar/temporary
+producer.
 The [array-literal ledger](../../coverage/semantics/array-literal-float-key-warning-review.json)
 records its separate source/state cuts. A reference-element continuation now
 transfers its acquired owner when the CV still names the same cell, including
@@ -222,6 +223,16 @@ array-valued type sources, nested/reference-bearing/string-leaf or pooled/immuta
 arrays, other owning values, static/hooked/queued or retired sources,
 coercion/backing records, active collection and outstanding request-end debt remain
 explicit Unsupported before pruning.
+
+Ordinary by-value array CVs have their own table continuation. It pins the old
+table across the handler, inserts the live unwrapped array CV, and separately
+tracks the old HARRAY owner and omitted new-table owner. Same-table transfer does
+not require the original CV cell to survive. Both tables must be mutable nonpool
+flat DIRECT null/bool/int/float arrays, distinct from the object-free builder.
+Deletion and supplied-throw cleanup preserve net table counts; an inverse retarget
+balances them before normal COW and teardown. The [ordinary array-CV ledger](../../coverage/semantics/array-literal-float-array-cv-review.json)
+keeps its source/state cuts separate. Wrapped CVs, mixed scalar/array retargets,
+wider tables and unsafe debt retirement remain explicit Unsupported.
 
 Missing-key module409 retains a
 CV/literal array snapshot through real handlers, supplies null after insertion,
