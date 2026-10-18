@@ -7,6 +7,31 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Retained positional intrinsic `ini_set` Closures now resume NULL-option handlers
+with quiet primitive values. The selected original owner survives value effects
+that replace the live callee with an INI_GET Closure. Ordinary strict invocation
+rejects raw NULL before the handler; explicit `__invoke` uses weak reception.
+Returning handlers preserve precision/live writes before false; a supplied throw
+preserves Exception identity/caller99/precision10/sibling2099 and cancels the body.
+The retained original setter still recovers precision10→11 afterward.
+
+Four originals agree exactly and 782 premises (161+155+183+283) pass at
+`5b53c02b0`/`85d287934`/405. Actual state proves owner roots and the four-frame
+handler/ini_set/__invoke/caller trace; peer native avoids trace traversal. Nine
+reports pass first attempts, stable/reaped with no failure/timeout/interruption/
+survivor. Initial `9d082a173` CPU5 native3/baseline0 stays distinct from laterCPU2;
+genuine producer-continuation Unsupported after B|V| receives zero agreement.
+Only default Deprecated lines8/18 are expected; other PHP and worker stderr are
+empty. Ten additive module172 lines preserve ownerless/unary/source/368/root/
+discard bodies; no old623/746 actor is renewed. Owned named/packed/PIPE, sole-owner
+lifetime, owning/NaN/legacy-string values and wider configuration remain partial.
+[Retained NULL INI review](coverage/semantics/ini-set-owned-null-option-review.json).
+
+Composed over `bbb986fb3`/405 with module172/four tests private-exact; every
+other runtime/schema/ordered manifest path stays parent-exact. Incoming missing-CV
+comparison, quiet POWER, Generator and float-key/reference producers are absent
+here. Source4/state782 retain private cuts without a joined actor or accepted replay.
+
 Distinct direct-CV `>` and `>=` now suspend through single-missing warnings in
 both orientations, preserving NULL and current scalar wrappers. Zend reverses
 physical comparison operands after left-to-right source evaluation; the existing

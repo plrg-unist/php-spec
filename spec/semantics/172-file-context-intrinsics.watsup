@@ -476,6 +476,16 @@ def $config_ini_null_valid(S, pconfigcall) = true
   -- if $config_ini_quiet_value(S, pvalue)
   -- if $dynamic_scalar_define_arguments(S, pconfigcall, 0)
   -- if ~$config_strict(S, pconfigcall)
+def $config_ini_null_valid(S, pconfigcall) = true
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
+  -- if pconfigcall.OWNER = (n_owner)
+  -- if pconfigcall.PACKS = eps /\ ~pconfigcall.NAMED
+  -- if ~$pipe_site(S, pconfigcall.SITE)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN pvalue)]
+  -- if $config_ini_quiet_value(S, pvalue)
+  -- if $dynamic_scalar_define_arguments(S, pconfigcall, 0)
+  -- if ~$config_strict(S, pconfigcall)
 def $config_ini_null_valid(S, pconfigcall) = false -- otherwise
 dec $config_ini_unary_finish(pstate, pconfigcall, preqbytes) : pstate
 dec $config_ini_null_finish(pstate, pconfigcall) : pstate

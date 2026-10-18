@@ -489,8 +489,9 @@ CLI/SL worker stderr are empty. Ten stable/reaped reports include the preserved
 peer interpreter failure with zero credit: a redundant new trace head overlapped
 existing module368 INI_SET projection. Removing those three lines reuses the exact
 raw projection; accepted author models/native/baseline are not replayed. Owning,
-NaN/legacy-string values, packed/owner/PIPE forms and wider configuration
-remain partial. Existing unary rules, source/service boundaries and paused work stay intact.
+NaN/legacy-string values, packed/PIPE and wider configuration remain partial;
+named and retained positional owner forms have separate increments below.
+Existing unary rules, source/service boundaries and paused work stay intact.
 
 The [named NULL-option increment](../../coverage/semantics/ini-set-named-null-option-review.json)
 removes only the NAMED exclusion from that quiet-value continuation. Existing source
@@ -508,7 +509,31 @@ and have no timeout/interruption/survivor; accepted worker stderr is empty. Only
 selected false-handler source has default PHP Deprecated output. Initial `fb753d7fe`
 native/baseline CPU3 remains distinct from later CPU2; baseline Unsupported after
 B|V|O| has zero agreement. Old positional623 source-prefix refusals remain valid
-without replay. The quiet value and owner/pack/PIPE boundaries remain unchanged.
+without replay. The quiet value boundary stays unchanged; owned named, packed
+and PIPE forms remain outside the retained positional increment below.
+
+The [retained intrinsic NULL-option increment](../../coverage/semantics/ini-set-owned-null-option-review.json)
+adds a disjoint owner-present positional arm to the same validator. Existing source
+authentication requires a live `INTRINSICCLOSURE INTRINSIC_INI_SET`; a retained keep
+alias preserves it when value effects replace the live callee with an INI_GET Closure.
+Ordinary invocation follows caller strictness, while explicit `__invoke` is weak.
+Normal true/false handlers preserve captured NULL/value and precision changes before
+the false result. A thrown handler preserves Exception identity/caller99/precision10/
+sibling2099 and cancels the body. The original setter remains callable afterward.
+
+Four originals agree and 782 premises (161+155+183 author,283 independent) pass at
+`5b53c02b0`/`85d287934`/405. The actual peer Exception has handler/ini_set/__invoke/
+caller frames and identical raw REQUEST arguments in the API and wrapper frames;
+peer native deliberately avoids trace traversal. Owner roots, complete throwing
+discard, strict raw-option priority, source/carrier/owner-kind/count refusals and
+zero/split budgets pass. All nine reports pass first attempts, stable/reaped with
+no timeout/interruption/survivor. Default Deprecated lines8/18 are expected; other
+PHP stderr and worker stderr are empty. Initial `9d082a173` CPU5 native/baseline
+stays distinct from later CPU2; producer-continuation Unsupported after B|V| stays
+zero credit. Only ten module172 lines are added; ownerless/unary/368 trace/root/
+discard helpers stay exact, with no old623/746 replay. Owned named/packed/PIPE,
+sole-owner retirement, owning/NaN/legacy-string values and wider configuration
+remain partial; paused work is untouched.
 
 The [unary CONFIG PIPE increment](../../coverage/semantics/include-config-pipe-review.json)
 replays the authenticated left child and `CODEPIPE_SEND`, rather than an ordinary
