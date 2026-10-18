@@ -1,0 +1,100 @@
+{
+  "version": 1,
+  "milestone": "A17 undefined CV destructuring-key warning before NULL conversion",
+  "status": "independently reviewed and validated; actual-parent composition pending",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle and tests/semantics/profile.json",
+  "base": "8c155678edef5e534b35de9022e54af352bc5286",
+  "scope": "Selected by-value fetch in flat direct-CV RHS patterns with CV leaves, wholly by-value or reference-bearing, and an ordinary undefined CV key. The initial captured operand is array-valued. Undefined/NULL-key reference fetches, nested/literal producers and wider source/key diagnostics remain separate. No owned-NUL boundary is entered.",
+  "runtime_commit": "b50bd817007da1da2a4db93f60dce69dcea1a03f",
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "2d8915d00ab60f66be0d79e25d7628a1055fb97773c5a7bf03ad6f5556f5fbfb",
+    "spec/semantics/63-list-control.watsup": "4e529299958b31191fcbcc89254f119e98386c4e73363093ee82d223f72c2607",
+    "spec/semantics/410-list-key-conversion-warnings.watsup": "ab0494b70f53a96769a3f1237f3d818d5c9681302f9ee236f168a71b43be5fef"
+  },
+  "private_modules": 401,
+  "engine_basis": [
+    "Vendored PHP8.5.10 commit34308a6666b2d489c509541ea9befea9e2b42348: FETCH_LIST_R obtains its CV key without an eager read warning. slow_index_convert IS_UNDEF protects the selected table, calls ZVAL_UNDEFINED_OP2/zval_undefined_cv for E_WARNING, then releases protection and checks expiry/exception before falling through to IS_NULL.",
+    "A surviving table is re-protected for NULL-key E_DEPRECATED, released again, then looked up under the frozen empty string. Initializing the key during the first handler never re-enters the type switch. A mixed table can expire at the first release and silently supply NULL without deprecation or lookup; a by-value snapshot keeps its table. Surviving reads accept any positive owner count.",
+    "Default Undefined-variable reporting must still reach an E_DEPRECATED-only handler. Different callbacks may handle the initial variable Warning, NULL deprecation and missing-key Warning. Lookup and pending target storage remain separate; later keys and reference fetches use fresh state and the saved source CELL."
+  ],
+  "reviewed_behavior": [
+    "Module410 adds58 lines for a bounded absent-name/allocated-UNDEFINED plan, source-derived warning name/event and two-phase continuation. One30 tag and63 value-fetch pending guard are added. Existing NULL/lossy conversion rules, compiler/key/ownership APIs,401-module list, historical tests and shared harness remain unchanged.",
+    "The plan checks exact ordinary CV occurrence/line/selected slice, initially live array operand, blocked/released names and either absent ENV or a bounded allocated UNDEFINED slot. It creates no key cell. Resume reuses A16's source guard: KNOWN retains the same live table identity; REFERENCE retains the marked allocated saved CELL and permits a retired old table only after release. No live key or current reference-CELL/table lookup redirects the continuation.",
+    "After the first real handler, an actual driver step releases table protection. Expiry silently supplies NULL; survival dispatches the existing NULL phase0 task with the same historical table, independently of the initialized key or changed saved CELL. Error descriptors retain exact source name, WARNING event, level and line; table/CELL roots survive real callback frames and are cancelled on throw.",
+    "The default-first original sees key1/x77 in the replacement deprecation callback, then reads old shared33 and fresh key2/old7 despite live source88/77. Independent surviving mixed handling holds the old runtime table while replacing the saved CELL with pooled22/44 and rebinding live a to88/77. The second callback changes oldq55; frozen lookup reads55 from the hold, then the later reference separates the pooled replacement and acquires44. Old runtime owners retire while the compiled pool remains rooted.",
+    "Independent three-handler handling preserves two ordinary old-table owners through both release cycles. Missing-key handling then COW-inserts live empty66 and updates sharedq55/next1/x99. Pending NULL still overwrites x99; the later fresh reference reads55, and the old copy lacks empty while sharing q. Raw acquisition/binding and driver pruning preserve physical owner counts and exact budgets.",
+    "Mixed first-warning insertion expires an originally present old empty slot and skips the later diagnostic trap, then binds liveq33 while retaining outside88. A supplied throw after earlier target9 cancels deprecation/lookup/later targets/result and retires saved CELL/table/q, preserving x99/destination100 and the same Throwable/previousNULL/finally.",
+    "Five original source/state fronts preserve original bytes and native paths. One targeted source-only case was added because all five initially had a Warning handler: with only E_DEPRECATED eligible, the default variable Warning must still reach its callback, frozen33/old6 despite key1.5/source88/77. Only that new original ran; original five were not replayed. State selections remain the original3+2."
+  ],
+  "accepted": {
+    "source_batches": [
+      {
+        "report": ".tools/list-undefined-key-source-17/report.json",
+        "sha256": "94aac9a556ba16f88a50f7c435d022fda5efdb90bdb7653d2ed9e7d0d2203593",
+        "revision": "b50bd817007da1da2a4db93f60dce69dcea1a03f", "agreements": 5,
+        "cases": ["list-undefined-key-default-then-null", "list-undefined-key-mixed-warning-expiry", "list-undefined-key-mixed-supplied-throw", "list-undefined-key-review-detached-survivor", "list-undefined-key-review-three-handlers"],
+        "native_reuse": "Strict model-only comparisons retain the five original native paths, argv and streams from three preparation reports. No native replay."
+      },
+      {
+        "report": ".tools/list-undefined-key-deprecated-only-source-17/report.json",
+        "sha256": "6f557476f2f269c33008b493dc3ec879924e7551e9a7dbe8e0597fe5d5942f24",
+        "revision": "69212ab27af9b1f2deda019c4f85c54f3db3e516", "agreements": 1,
+        "cases": ["list-undefined-key-deprecated-only-handler"],
+        "credit_note": "One fresh native/model original. SOURCE_ONLY was added separately after CASES; the original five program bytes and state CASES3+2 remain unchanged. Runtime remains exact b50."
+      }
+    ],
+    "states": [
+      {
+        "report": ".tools/list-undefined-key-author-state-17/report.json",
+        "sha256": "6706caab4736bb4413a86311b6c695b686bbb4dcf26f3832738e09e15b01e459",
+        "revision": "69de5863a64750b21d1b40cb5e62f2933b7bf443",
+        "cases": ["list-undefined-key-default-then-null", "list-undefined-key-mixed-warning-expiry", "list-undefined-key-mixed-supplied-throw"],
+        "conditions": [189, 175, 125], "raw_steps": [6, 5, 1], "boolean_premises": 477
+      },
+      {
+        "report": ".tools/list-undefined-key-review-state-17/report.json",
+        "sha256": "25328b0881a67520076f3c1ebf7496e419ddde8e6228acae9c8adbc5a59534f4",
+        "revision": "69de5863a64750b21d1b40cb5e62f2933b7bf443",
+        "cases": ["list-undefined-key-review-detached-survivor", "list-undefined-key-review-three-handlers"],
+        "conditions": [232, 252], "raw_steps": [8, 9], "boolean_premises": 467
+      }
+    ],
+    "source_agreements": 6, "normal_source_agreements": 6,
+    "state_fronts": 5, "total_conditions": 973, "boolean_premises": 944, "raw_steps": 29,
+    "credit_note": "Source5/b50 plus new1/692 and author489+independent484/69de count. Premises include setup/source/refusal/raw checks, not separate programs. Every accepted actor exits0 without timeout/interruption and with empty recorded groups. No fixture failed or required retry; docs/composition add no execution credit."
+  },
+  "preserved_zero_credit": [
+    {
+      "report": ".tools/list-undefined-key-baseline-17/report.json",
+      "sha256": "dca6eb088a57337acfc56eae6f89189e20fccabe099bb7e689afb9d95fe1cc53",
+      "revision": "8c155678edef5e534b35de9022e54af352bc5286",
+      "result": "Unchanged source is frontend accepted/checked but explicitly Unsupported at error-handler ingress. Native exits0 with one default Undefined-variable Warning; model exits1 in12.95s. Ordinary comparison fails naturally without timeout or surviving groups. Zero agreement credit."
+    },
+    {
+      "report": ".tools/list-undefined-key-native-rest-17/report.json",
+      "sha256": "6dd5b22e74a9a8c40e2af7bc121649d3e993f23f68a53def9d470d9b57f64469",
+      "revision": "8c155678edef5e534b35de9022e54af352bc5286", "result": "Fresh mixed-expiry and supplied-throw native2 preparation only."
+    },
+    {
+      "report": ".tools/list-undefined-key-review-native-17/report.json",
+      "sha256": "71ccdd371484269a378ddfde228834ade5d689fee94d5859b84e32a31cd99ad5",
+      "revision": "8c155678edef5e534b35de9022e54af352bc5286", "result": "Fresh independent surviving historical-table and three-handler native2 preparation only."
+    }
+  ],
+  "shared_harness_change": "None. Existing optional exact-stderr checking authenticates the original default Undefined-variable Warning/path/line20 bytes; other state originals require empty stderr. The added source-only default/path/line13 Warning is checked by the ordinary strict source comparator.",
+  "affected_historical_controls": [],
+  "raw_evidence": {
+    "archive": "/home/user/workspace/php-spec/.tools/list-undefined-key-warning-17-raw.tar.gz",
+    "bytes": 370244, "members": 164, "sha256": "701176d698f29db06ba0ba9657e4d8770ce8b7a352fcf25a8c3ec9937ff897ba",
+    "recovery": "Extract into a recorded-cut checkout's .tools directory: the archive contains seven basename report/fixture/process/source roots and list-undefined-key-reuse-sources-17.py, without a leading .tools component. Absolute argv/cwd are historical provenance. The archive is not a build dependency."
+  },
+  "actual_parent_review": {
+    "parent": "41cc370dd13230a8059f331595a16522262358b9",
+    "seams": "Incoming270 changes only typed reference-return pair/destructor replay;400 adds define-array case-warning copy/pending branches;404 admits nonowning scalar initial RHS for delayed compound assignments. A17 uses untyped named callbacks, ordinary Throwable handling and global array writes, with none of those selectors. Increment counters use the separate update route. No30/63/409/410/key/ownership helper changed.",
+    "joined_actor": "No concrete semantic interaction found; pointwise composition and exact FF review add no replay credit."
+  },
+  "remaining": [
+    "Undefined/NULL-key reference-fetch conversion, nested/literal conversion, wider constrained sources/RHS/targets and other source/key diagnostics.",
+    "Paused owned-NUL/current-CV NUL behavior, wider callbacks/lifecycle, full array/core closure and offline portability."
+  ]
+}
