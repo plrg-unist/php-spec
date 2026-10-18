@@ -568,6 +568,22 @@ superseded without replay; generic array/GC/return/disposal rules stay unchanged
 Sole-owner public-NaN lifetime and wider quiet-CV GC remain open.
 [Mutable array RV review](../../coverage/semantics/magic-empty-mutable-array-rv-review.json).
 
+Empty and singleton WeakMap getter RVs now use the same receiver-only phase;
+both are truthy regardless of entry count. Singleton disposal unregisters the
+live leaf key before releasing an ordinary leaf value. During its destructor,
+the empty map's physical storage pin remains while dropping the key makes
+`WeakReference::get()` return null; the model retains its nonowning target history.
+The saved receiver survives caller-CV nulling and is released after value/map
+retirement, preserving a value destructor's Exception at catch. A held map delays
+value disposal until after the empty result, so receiver destruction can nest
+inside that later callback. Four original sources and 333 focused premises
+(315 reached +18 derived) cover these orders, the real pin, wrapper-result refusal,
+empty-map truth and budgets. One faulty raw-wrapper expectation and two narrow
+diagnostics retain zero credit. Only the RV-kind arm changes; generic WeakMap,
+GC and destruction machinery stays unchanged. Wider map/key/value lifetimes and
+sole-owner public-NaN retirement remain open.
+[WeakMap RV review](../../coverage/semantics/magic-empty-weakmap-rv-review.json).
+
 Constructor promotion declares a property from its original parameter flags and
 source occurrence. A parameter default does not initialize the property, and
 promoted nonnullable types do not acquire ordinary implicit nullable widening.

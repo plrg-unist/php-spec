@@ -99,23 +99,20 @@ array routes. Their guarded tasks and source shapes are absent here; factory,
 clone, getter and ownership interfaces remain exact. Source3/state271 retain the
 private2135/401 cut with zero new execution credit; no joined actor or replay.
 
-Mutable empty array getter RVs now cache true while the receiver-only phase
-orders table disposal before receiver release. A sole mutable table is absent and
-unbuffered at the receiver destructor; a held table remains buffered with one
-owner. Three originals agree at `471c0a3d7`. The 265 focused premises across normal171 at
-`9502cfd72` and corrected throw94 at `16e175dda` (245 reached +20 derived) cover
-actual table/owner/GC state, cached true/false, the same Exception at catch and
-budgets. One throwing-fixture binding diagnostic remains zero; accepted normal
-checks were not replayed. A separate native pair observes roots 1 versus 2 and
-retains zero source credit; no `gc_status` semantics is claimed. Only408's ready,
-cached-result and finish guards change; generic array, GC and destruction rules
-stay unchanged. Sole-owner public-NaN lifetime and wider quiet-CV GC remain open.
-[Mutable array RV review](coverage/semantics/magic-empty-mutable-array-rv-review.json).
-Earlier class cuts retain their original evidence without replay.
-
-Composed over `c75cb4a0a` after pointwise review of reference-return/finally,
-Closure, Generator, constant API and compound-warning selectors, all unselected.
-Source3/normal171/throw94 retain their original cuts; no joined actor or renewed credit.
+Empty and singleton WeakMap getter RVs now use the receiver-only disposal phase;
+entry count does not change their truth. Map disposal unregisters the leaf key
+before the owned value's destructor, with a real empty-map storage pin through
+the callback. Dropping the key makes the retained weak wrapper read null without
+erasing its semantic target history. Sole and held ownership distinguish value
+disposal before receiver release from later nested receiver destruction.
+Four originals agree at `9af665058`; 333 focused premises at `a81a0e78a`
+(315 reached +18 derived) cover these states, the same Exception at catch,
+wrapper refusal, empty-map truth and budgets. The original raw-wrapper fixture
+failure and two narrow diagnostics retain zero credit. One408 kind arm and four
+superseded negative controls change; generic WeakMap/GC/disposal rules stay exact.
+Other map/key/value lifetimes, sole-owner public-NaN retirement and wider quiet-CV
+GC remain open. Earlier class cuts retain their original evidence without replay.
+[WeakMap RV review](coverage/semantics/magic-empty-weakmap-rv-review.json).
 
 Positional `define` calls with primitive arguments now reject counts outside
 two through three before name/flag reception and registration, after all argument

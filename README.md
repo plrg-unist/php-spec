@@ -2930,6 +2930,11 @@ Mutable empty RVs now cache true in that phase: a sole table retires before the
 receiver destructor, while a held table survives with one owner. Three originals
 and 265 focused premises across two cuts cover normal/throw cleanup and budgets;
 [mutable array RV review](coverage/semantics/magic-empty-mutable-array-rv-review.json).
+WeakMap RVs now use the same phase: even an empty map is truthy, and singleton
+map disposal unregisters its key before releasing the owned value. Four originals
+and 333 focused premises cover sole/held ownership, logical weak-reference expiry,
+receiver release and a value destructor's Exception;
+[WeakMap RV review](coverage/semantics/magic-empty-weakmap-rv-review.json).
 Other signatures, receivers, other internal-object RVs and
 wider recursive/coalesce magic combinations remain unsupported.
 Hooked iteration, defaulted virtual hooks, other paired or virtual setters, wider trait
