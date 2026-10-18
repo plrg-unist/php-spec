@@ -635,6 +635,14 @@ TypeError with current operand types, final power deprecation and supplied throw
 in the [plain-arithmetic ledger](coverage/semantics/plain-arithmetic-warning-review.json).
 An input must stay plain until its conversion; wider forms remain partial.
 
+Arithmetic may now mix one initially plain variable and one pre-existing reference.
+The reference retains its selected cell after its name is rebound; the plain input
+stays plain until conversion. Nine originals and 858 focused premises cover old
+referent selection, strict float results, current error types, cached-zero division
+and cancellation by a final power-deprecation throw in the
+[mixed-arithmetic ledger](coverage/semantics/mixed-arithmetic-warning-review.json).
+A surviving alias keeps the selected reference live; wider forms remain partial.
+
 Primitive plain-CV `**=` now commits its captured result even when the deprecation
 handler throws. A late alias detaches before the same exception continues; the
 outer assignment stays unchanged. Three exact originals and 407 focused SL

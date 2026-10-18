@@ -7,6 +7,21 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Arithmetic now admits one initially plain CV and one pre-existing reference.
+The reference keeps its selected cell through name rebind/unset while an alias
+retains it; the plain input stays plain until conversion. Existing numeric holders
+preserve results and final power diagnostics, while conversion failure uses the
+live selected referents' types. Nine originals pass at `805d3225e`/404 and five focused
+fixtures pass 858 premises at `6d906edaf`/404: both mixed orientations, old-cell
+selection, strict float `68.75`, bool-string TypeError, cached-zero DIV and supplied
+final-deprecation throw. Old entry/readers/bodies are preserved; 13 linked rows
+remain partial, wider lifetime/operand forms open, OP12 paused.
+[Mixed-arithmetic ledger](coverage/semantics/mixed-arithmetic-warning-review.json).
+
+Composed over `46ad925ee`/405 with parent fields, array-key retention defaults and
+incoming paths preserved. Array/DEFINE, reference-return cleanup and static magic
+selectors are absent here; source9/state858 retain private404 cuts without replay.
+
 External literal missing static calls now invoke inherited public
 `__callStatic(string,array)` with original spelling and a real packed positional
 array. Early scalar sends survive later argument effects; lexical Parent and
@@ -126,21 +141,8 @@ Stringable-query selectors, absent here. Both request-retention fields and
 parent414 remain intact. Source5/strict403/state830 retain their private cuts
 without a joined actor, native replay or renewed historical credit.
 
-Initially plain CVs now stage `+`, `-`, `*`, `/`, `**` numeric-string diagnostics.
-A first Warning can repair bad RHS text; each captured number survives its callback,
-including a later RHS reference or unset. Fresh conversion inputs must still be plain;
-returned holders and final power Deprecated use captured numbers. Ten originals pass at
-9f1d477a8/402 and six focused fixtures pass 1,055 SL premises at f59178b78/402:
-both warning orders, strict numeric types, live TypeError, supplied throws,
-one or two cell owners, an unowned old RHS after unset, and budget resumption.
-Thirteen rows remain partial; old reference-based bodies/readers and evidence
-are unchanged, OP12 paused.
-[Plain-arithmetic ledger](coverage/semantics/plain-arithmetic-warning-review.json).
-
-Composed over 8cace0a9/403 after review of Generator return retention, float-array
-keys, DEFINE, destructor and object-numeric selectors, absent here. Complete parent
-fields/defaults and incoming paths are retained; empty Generator retention is inert.
-Source10/state1055 keep their private402 cuts without a joined actor or renewed credit.
+The earlier two-plain-CV arithmetic route retains source10/state1055 in its
+[review ledger](coverage/semantics/plain-arithmetic-warning-review.json).
 
 Direct Generator unpack now admits an owning child return copied into a
 simple-CV assigned `yield from`. Normal next consumes the copied result; forced
