@@ -1,0 +1,102 @@
+{
+  "status": "independently reviewed bounded implementation and focused validation",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, sole pinned local PHP/profile, exact original bytes/filename/cwd, full399 SL modules",
+  "base": "a555481f480040075ef45d45ac03c69acca5e435",
+  "runtime": {
+    "source_revision": "8970d3ebaaa68314b01dfffd6ab0b68062795552",
+    "source400_sha256": "ef163112e0e0ebc6575a9253a848664d419fde043676e18057ac4851d57d230f",
+    "state_revision": "b2c96c3049987a71e6562219284f86701b134616",
+    "state400_sha256": "36c045310d0e69f63fc687e3bb7bd11bad8e23c3cac5a3ec3ff97444a41c8f8d",
+    "delta": "Sole400+13/-1: move the input-nonempty conjunct from dispatch into the existing nonempty validator, and add a separate empty validator. Immutable captured input requires candidate=input plus authentic pooled class; mutable empty requires a distinct canonical false-class copy. The existing fold, marker tag/root order, GC and lifecycle rules remain unchanged.",
+    "source_to_state_bridge": "Removing the one added nonempty-input conjunct from the old validator reproduces source8970 module400 exactly. Every accepted empty candidate already fails that old arm through its candidate-nonempty premise, so the new conjunct is irrelevant to all three reached source deliveries. Old nonempty dispatch already required this input shape, protected by by-value capture/COW. State398 newly checks a canonical unrelated nonempty candidate is refused for actual empty CFG. No source/nonempty replay or renewed credit."
+  },
+  "engine_route": "Zend/zend_builtin_functions.c::ZEND_FUNCTION(define) bypasses copy_constant_array for the non-refcounted immutable empty; a refcounted mutable empty is copied to a fresh canonical array before zend_register_constant reports the duplicate. API/Exception trace retains the original argument. Existing abstract roots count retainers including duplicate mentions of a pooled ID; they are not native Zend refcounts.",
+  "accepted": {
+    "source_agreements": 3,
+    "author_sources": 2,
+    "independent_sources": 1,
+    "author_literal_premises": 133,
+    "author_eval_premises": 143,
+    "independent_premises": 122,
+    "total_premises": 398,
+    "driven_forged_states": 0,
+    "zero_budget_restoration_checks": 1
+  },
+  "behavior": [
+    "Literal immutable CONFIG argument is authenticated from its actual pool/value class, without assuming separate empty literal occurrences have the same abstract ID. Dispatch allocates nothing and candidate=input; marker roots mention the shared ID twice. Normal true handler sees empty API input and COW-appends the separate caller input at0. False delivery removes two abstract owners, preserving the pool pin/table and old scalar17.",
+    "Selected eval captures a mutable emptied root NEXT91. Dispatch allocates exactly one distinct canonical candidate NEXT0/classfalse. False handler COW-appends caller input at91; its real probe trace remains empty and appends at91, preserving original history. Actual default reporting adds exact sourced Warning/line1; normal false delivery retires both captured mutable input and candidate while old scalar23/caller writes remain.",
+    "Independent reversed-named call captures mutable empty before the false-flag expression appends caller input at91, forcing COW. Handler appends at92, adds SIDE31 and throws. Original empty CFG has one owner before copy; real Exception trace raises it to2. One actual ERROR_HANDLER_RESULT discard retires canonical candidate and leaves trace-only original owner1. Catch trace copy appends at91 rather than candidate NEXT0, still leaves stored trace empty/flagfalse and preserves old17/sentinel. Final input/caller/trace/error roots retire.",
+    "Pure canonicalized mutable self-candidate, wrong immutable flag, known-literal mutable clone, dead/prefix/selection/noncanonical-history and mixed empty-input/nonempty-candidate controls are never driven. This is array-root lifecycle coverage only; no stdClass producer/leaf rule changes."
+  ],
+  "cuts": {
+    "native_and_baseline": "2b23acf6a836f0c1ed5a7c92931e24b446689da1/399",
+    "source3": "8970d3ebaaa68314b01dfffd6ab0b68062795552/399",
+    "state398": "b2c96c3049987a71e6562219284f86701b134616/399",
+    "authority": "Each model uses its matching exact native main.php and WT cwd; eval uses exact literal/source unit1. Source cuts retain the byte-exact one-conjunct pointwise bridge above. Both protocols were tracked before state actors. V67/V68 accepted cuts are retained without replay."
+  },
+  "preserved_outcomes": {
+    "baseline": "Genuine Unsupported dynamic constant call domain after B| at clean2b23acf6a, CLI1/empty stderr/stable/reaped; contributes0 agreement.",
+    "other": "All native/model and SL actors pass first attempts. Main/peer source stderr is empty; eval has exactly one expected Warning at original main.php(21) eval code line1. Prelaunch static review corrected the fixture scalar class to PVSCALAR; no failed actor. One zero-budget restoration identity reuses the ordinary literal dispatch, with no separate driven-resume credit. No engine divergence."
+  },
+  "remaining": "Nested empty descendants, true/coerced array flags, other owning/uncertified leaves, startup array payloads, coerced names and wider callback/call/lifecycle domains remain partial. Constants obligation stays partial.",
+  "artifacts": {
+    "author_sources": {
+      "root": ".tools/dynamic-empty-array-duplicate-native-69",
+      "sha256": {
+        "native-report.json": "eb6aa0c19638968c62012e1c7a14b43e542bf5400871fead933aec07850017c7",
+        "baseline-report.json": "0ab28f86d8b0c44e5bb6e34d579458cc00aafb957f118c0140029361840fee0a",
+        "model-report.json": "97eafeb4da7f8fdfd71fdb05c125adcfdd779010f1f743d12d47e0759d05621a"
+      }
+    },
+    "peer_source": {
+      "root": ".tools/dynamic-empty-array-duplicate-peer-69",
+      "sha256": {
+        "native-report.json": "1dfb348365b49e809be860a7bd1c43f8e19a6cadf65cb86528b0a1a90854a704",
+        "model-report.json": "ba790dcdd142f8636d983ee1cbed0f5656897cd5e950ba4c497cb3f54aefa37a"
+      }
+    },
+    "author_state": {
+      "root": ".tools/dynamic-empty-array-duplicate-state-69",
+      "sha256": {
+        "fixtures-report.json": "0e9451fce8cf2ca173c7e9ffdb53213494c7188aac6a5f102480754db09d6db8",
+        "check-report.json": "341df7ae60c933390639ea732f24a0cee0a8259e49e84526a10b6b69e33f59f1"
+      }
+    },
+    "peer_state": {
+      "root": ".tools/dynamic-empty-array-duplicate-peer-state-69",
+      "sha256": {
+        "fixtures-report.json": "c997984f036ef704f1e2480870e6061443b7e50f9584818c7729cf87bf5bc2c7",
+        "check-report.json": "b07f6d932e8407e0d2480892ae88a902f05f48bfce15c61af5ff6bd3686f8e92"
+      }
+    }
+  },
+  "recovery": "Author native2host45/process15 then sole literal unchanged baselinehost90/CLI45/process60 onCPU3; author model2host150 serialCLI45/process60 and peer native45/model90 onCPU2. Author fixtures120/check240 serial2/perSL90 and peer fixtures120/check150/perSL90 onCPU2. Proof output is lowercase true plus LF/empty stderr. Raw reports/fixtures/logs stay ignored in canonical.tools. Restore tracked scripts from this publication or state b2c96c304, recreate original WT path and provision report-pinned local executables/references, preserving original native paths/cwd and the two runtime cuts. All accepted process groups are reaped.",
+  "review": {
+    "reviewer": "/root/dynamic_review_59",
+    "decision": "cleared",
+    "scope": "Authentic pooled empty retainers versus canonical mutable copy; stable captured input/history through caller COW, old-prefix and cross-shape authority, real normal/default/abrupt release with trace-only surviving input."
+  },
+  "integration": {
+    "parent": "cd776548f7f27b7cb569642914f4eeff491e8af2",
+    "private_publication": "771ec05ef330240d15b2f2b1be86ddce10b3255f",
+    "module_count": 399,
+    "runtime_bridge": "Sole400+13/-1 is the tested stateb2c empty head plus moved input-shape conjunct. Removing the exact added empty block and moving that conjunct back to dispatch reproduces incoming400 byte-for-byte; the same inverse reproduces private base400 from testedb2c. All other incoming runtime files/modules are exact. Features equal the whole incoming JSON plus only the one reviewed constants-row append delta.",
+    "shared400_sha256": {
+      "parent": "8194d16afa681d179a414e30b87654aabba3b29b730f2a40ea23c0489db91cc5",
+      "composed": "3b9c5def718ae446f40f290c0042ca312a0c9d324135318ff2e6f21b03068751",
+      "tested_state": "36c045310d0e69f63fc687e3bb7bd11bad8e23c3cac5a3ec3ff97444a41c8f8d"
+    },
+    "incoming_files_preserved": {
+      "spec/semantics/136-property-runtime.watsup": "99b8105044e2caefbb88727a42d1d046bf731adf04438814f5541fa6e9aec6e1",
+      "spec/semantics/156-finally-runtime.watsup": "94fc6e0fd518bced3fb2cd301748b92457d1a1651cb484df491534d5ddabbecf",
+      "spec/semantics/270-eager-destructors.watsup": "6dbc791b3a9a7d57f1c7faf9b359eba5b0779f284a6529d91ea2ac5e3f9fe2fa",
+      "spec/semantics/30-storage.watsup": "a993e0202d5cfa375863590634fe544ff33febe9adf055081b34a9db165ebf84",
+      "spec/semantics/386-weak-map-lifetime.watsup": "093f5362ab0456d04684a9ac87b0876976cc9b00f871bd0a41790ac13cca66c9",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "a9cd850977de3631f2bcfa5cd7bc0606552b724a388ec453f4583ca2406028a2",
+      "spec/semantics/408-magic-property-empty.watsup": "2a0535eb532e4f88740d43abdc8501b41038f3cb71bb53fdb6b774527577cae3",
+      "spec/semantics/409-list-missing-warnings.watsup": "d9b1fffac66a996bec0c18867fcaad3689be65605a4e054a7b243f42e144818f",
+      "spec/semantics/modules.json": "2e38df4b97a41f654a8c3f01ffb0c078c337ed17d1ce8816ff7429a23b031761"
+    },
+    "interaction": "Source46 NaN-name tags/reception require PFLOAT raw name and primitive payload, absent for string user names/PARRAY. M90 RETURN_REF_UNWIND requires assigned noarg ?array return cursor; callbacks return literal bool or throw with no user destructor/ref cursor. Incoming136/408 require authenticated private property/empty getter plans;386 WeakMap;409 LIST_FETCH;404 MOD/SHIFT/BIT warning tasks. All absent in V69. No joined actor or evidence renewal; source8970-to-stateb2c one-conjunct bridge remains independently reviewed."
+  }
+}

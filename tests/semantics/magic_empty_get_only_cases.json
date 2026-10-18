@@ -1,0 +1,64 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "normal",
+      "source": "<?php\nclass MagicGetOnlyParent91 {\n    private int $value = 1;\n    public int $ready = 1;\n    public function __get($name) {\n        echo 'G|';\n        return 42;\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass MagicGetOnlyChild91 extends MagicGetOnlyParent91 {}\n$child = new MagicGetOnlyChild91();\necho 'N:', empty($child->value) ? 'T' : 'F', '|';\necho empty($child->ready) ? 'T' : 'F', '|';\necho $child->value, '|';\n$child = null;\necho 'E|';\n",
+      "source_sha256": "0606c6fc5392456637cd4ec2ff7ac22fe6248bb97a7425040debd205bf0f3aab",
+      "source_file": "magic-empty-get-only-normal.php",
+      "empty_line": 13,
+      "stdout_base64": "TjpUfEZ8R3w0MnxEfEV8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-empty-get-only-private-91/.tools/magic-empty-get-only-probes-91/normal.php",
+      "native_report_sha256": "f7664b61ca04737c0eb696d274b1c94a2431ccbee04b34cad84f3c2e93dfe325",
+      "native_group": "magic-empty91-get-only-native-eb57aa4ff",
+      "native_raw_sha256": "bb84bc9028e7c23c752b14d1c44a9e8199bcc1a458390ab091f45486f382090b",
+      "native_raw_hash_recipe": "stdout + NUL + stderr + NUL + ASCII exit"
+    },
+    {
+      "id": "throwing",
+      "source": "<?php\nclass MagicGetOnlyParent91 {\n    private int $value = 1;\n    public int $ready = 1;\n    public function __get($name) {\n        echo 'G|';\n        throw new Exception('get-only-stop');\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass MagicGetOnlyChild91 extends MagicGetOnlyParent91 {}\n$child = new MagicGetOnlyChild91();\necho 'X:', empty($child->value) ? 'T' : 'F', '|';\necho empty($child->ready) ? 'T' : 'F', '|';\ntry { echo $child->value, '|'; }\ncatch (Exception $caught) { echo 'C|'; }\n$child = null;\necho 'E|';\n",
+      "source_sha256": "9e82cd2e084527253ca6e7254338cf92aced7d305abc960a20ff2b8ff39b7565",
+      "source_file": "magic-empty-get-only-throwing.php",
+      "empty_line": 13,
+      "stdout_base64": "WDpUfEZ8R3xDfER8RXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-empty-get-only-private-91/.tools/magic-empty-get-only-probes-91/throwing.php",
+      "native_report_sha256": "f7664b61ca04737c0eb696d274b1c94a2431ccbee04b34cad84f3c2e93dfe325",
+      "native_group": "magic-empty91-get-only-native-eb57aa4ff",
+      "native_raw_sha256": "30a6b08590ea0204a20a37ca9199a1f2ca4979a3daff2e9a95827a2bd2b22209",
+      "native_raw_hash_recipe": "stdout + NUL + stderr + NUL + ASCII exit"
+    }
+  ],
+  "gc_prefix": {
+    "source_file": "magic-empty-get-only-gc-diagnostic.php",
+    "source_sha256": "77c75dd1d3cb0a140a6338738cce426a2db9dc7a95c572e44d21764e74ffce21",
+    "original_source": "/home/user/workspace/php-spec/.tools/magic-empty-get-only-private-91/.tools/magic-empty-get-only-probes-91/gc-diagnostic.php",
+    "native_diagnostic_report_sha256": "2087c93e464d79b57b34948e30fe5f34f4f070d03d76d14acdb62838c3e94a46",
+    "stdout_base64": "TjpUfDB8RnxHfDQyfER8RXw=",
+    "stderr_template_base64": "",
+    "exit_status": 0,
+    "native_raw_sha256": "9e8a2aedc20623cb21befa3487bd0a8acb64ce4465b18c860fa79556d706c974",
+    "native_roots_after_private_empty": 0,
+    "scope": "Zero-credit native diagnostic; checked state tests stop before unsupported gc_status."
+  }
+}

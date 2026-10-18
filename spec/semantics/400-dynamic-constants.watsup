@@ -118,6 +118,7 @@ dec $dynamic_halt_call(pconfigcall) : bool
 dec $dynamic_halt_receive(pstate, pconfigcall) : pstate
 dec $dynamic_global_constant_finish(pstate, pconfigcall) : pstate
 dec $dynamic_scalar_define_call(pconfigcall) : bool
+dec $dynamic_nan_define_name_entry(pstate, pconfigcall) : bool
 dec $dynamic_define_finish(pstate, pconfigcall) : pstate
 def $dynamic_define_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME $user_constant_key(preqbytes), ORIGIN pconfigcall.SITE, VALUE pvalue, CLASS pvalueclass, READS eps, RECEIVES eps}]][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pconfigcall.KIND = INTRINSIC_DEFINE
@@ -148,7 +149,6 @@ def $dynamic_define_finish(S, pconfigcall) = $error_dispatch(S_copy[.TODO = (DYN
   -- if n_constants = |S.USERCONSTANTS|
   -- if $dynamic_array_duplicate_call_valid(S, pconfigcall, n_constants)
   -- if $dynamic_define_values(pconfigcall) = ((preqbytes, PARRAY n_input))
-  -- if $(n_input < |S.ARRAYS|) /\ S.ARRAYS[n_input].ITEMS =/= eps
   -- if $dynamic_array_value(S, PARRAY n_input, eps, true) = ((S_copy, PARRAY n_candidate, pvalueclass))
   -- if $dynamic_array_duplicate_valid(S_copy, pconfigcall, n_candidate, pvalueclass, n_constants)
   -- if ptbytes_message = $global_constant_duplicate_message(preqbytes)
@@ -1336,6 +1336,7 @@ def $dynamic_scalar_define_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED
 rule PhpStep/dynamic-scalar-define-invoke: S ~> $dynamic_scalar_define_receive(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $config_invoke_valid(S, pconfigcall) /\ $dynamic_scalar_define_call(pconfigcall)
+  -- if ~$dynamic_nan_define_name_entry(S, pconfigcall)
 def $task_nodes(DYNAMIC_SCALAR_DEFINE_DUPLICATE pconfigcall pvalue z n_constants) = $config_nodes(pconfigcall) ++ $value_nodes(pvalue)
 def $selected_task_nonce(DYNAMIC_SCALAR_DEFINE_DUPLICATE pconfigcall pvalue z n_constants) = pconfigcall.SELECTION
 def $call_task_valid(S, DYNAMIC_SCALAR_DEFINE_DUPLICATE pconfigcall pvalue z n_constants) = $dynamic_scalar_define_duplicate_valid(S, pconfigcall, pvalue, z, n_constants)
@@ -2100,8 +2101,21 @@ def $dynamic_array_duplicate_call_valid(S, pconfigcall, n_constants) = false -- 
 def $dynamic_array_duplicate_valid(S, pconfigcall, n_candidate, pvalueclass, n_constants) = true
   -- if $dynamic_array_duplicate_call_valid(S, pconfigcall, n_constants)
   -- if $dynamic_define_values(pconfigcall) = ((preqbytes, PARRAY n_input))
+  -- if $(n_input < |S.ARRAYS|) /\ S.ARRAYS[n_input].ITEMS =/= eps
   -- if n_candidate =/= n_input
   -- if $(n_candidate < |S.ARRAYS|) /\ S.ARRAYS[n_candidate].ITEMS =/= eps
+  -- if $dynamic_array_value(S, PARRAY n_candidate, eps, false) = ((S, PARRAY n_candidate, pvalueclass))
+  -- if $dynamic_array_known_matches(S, PARRAY n_candidate, $dynamic_define_known(S, pconfigcall.SITE, 1))
+;; Immutable empty arguments retain their pooled table; mutable empties have a
+;; distinct canonical copy even when their captured append history is nonzero.
+def $dynamic_array_duplicate_valid(S, pconfigcall, n_candidate, pvalueclass, n_constants) = true
+  -- if $dynamic_array_duplicate_call_valid(S, pconfigcall, n_constants)
+  -- if $dynamic_define_values(pconfigcall) = ((preqbytes, PARRAY n_input))
+  -- if $(n_input < |S.ARRAYS|) /\ S.ARRAYS[n_input].ITEMS = eps
+  -- if HARRAY n_input <- S.ALLOCATIONS
+  -- if pvalueclass = PVARRAY b_immutable eps
+  -- if b_immutable = $array_immutable(S, n_input)
+  -- if (b_immutable /\ n_candidate = n_input) \/ (~b_immutable /\ n_candidate =/= n_input)
   -- if $dynamic_array_value(S, PARRAY n_candidate, eps, false) = ((S, PARRAY n_candidate, pvalueclass))
   -- if $dynamic_array_known_matches(S, PARRAY n_candidate, $dynamic_define_known(S, pconfigcall.SITE, 1))
 def $dynamic_array_duplicate_valid(S, pconfigcall, n_candidate, pvalueclass, n_constants) = false -- otherwise
@@ -2127,3 +2141,84 @@ def $error_handler_trace_values(S, pcallcontext, pconfigcall_api) = $trace_extra
   -- if $error_context_call(S, pcallcontext) = (perrorcall)
   -- if perrorcall.RESUME = DYNAMIC_ARRAY_CONSTANT_DUPLICATE pconfigcall n_candidate pvalueclass n_constants
   -- if pconfigcall_api = pconfigcall
+
+;; NaN string rendering/allocation precedes its Warning; API replacement follows.
+;; Admit only full NAN conversion here; old strict/truncated paths stay separate.
+dec $dynamic_nan_define_name_call(pconfigcall) : bool
+def $dynamic_nan_define_name_call(pconfigcall) = true
+  -- if $dynamic_scalar_define_call(pconfigcall)
+  -- if $dynamic_scalar_define_values(pconfigcall) = ((PFLOAT n, pvalue))
+  -- if $float_decode(n) = NOTNUMBER n_payload
+def $dynamic_nan_define_name_call(pconfigcall) = false -- otherwise
+def $dynamic_nan_define_name_entry(S, pconfigcall) = true
+  -- if $dynamic_nan_define_name_call(pconfigcall) /\ ~$config_strict(S, pconfigcall)
+  -- if $dynamic_scalar_define_values(pconfigcall) = ((pvalue_raw, pvalue))
+  -- if $dynamic_scalar_name_at(pvalue_raw, $precision_value(S)) = ($ptascii("NAN"))
+def $dynamic_nan_define_name_entry(S, pconfigcall) = false -- otherwise
+dec $dynamic_nan_define_name_valid(pstate, pconfigcall) : bool
+def $dynamic_nan_define_name_valid(S, pconfigcall) = ($dynamic_nan_define_name_call(pconfigcall) /\ $dynamic_scalar_define_valid(S, pconfigcall))
+dec $dynamic_nan_define_name_received(pstate, pconfigcall, pvalue, int) : bool
+def $dynamic_nan_define_name_received(S, pconfigcall, PSTRING_CARRIER (REQUEST_STRING n_string) preqbytes, z_precision) = true
+  -- if $dynamic_nan_define_name_valid(S, pconfigcall) /\ ~$config_strict(S, pconfigcall)
+  -- if $(z_precision >= -1 /\ z_precision <= 9223372036854775807)
+  -- if preqbytes = $ptascii("NAN")
+  -- if $dynamic_scalar_define_values(pconfigcall) = ((pvalue_raw, pvalue))
+  -- if $dynamic_scalar_name_at(pvalue_raw, z_precision) = (preqbytes)
+  -- if $string_carrier_valid(S, PSTRING_CARRIER (REQUEST_STRING n_string) preqbytes)
+def $dynamic_nan_define_name_received(S, pconfigcall, pvalue_name, z_precision) = false -- otherwise
+dec $dynamic_nan_define_name_duplicate_valid(pstate, pconfigcall, pvalue, int, nat) : bool
+def $dynamic_nan_define_name_duplicate_valid(S, pconfigcall, pvalue_name, z_precision, n_constants) = ($dynamic_nan_define_name_received(S, pconfigcall, pvalue_name, z_precision) /\ $(n_constants <= |S.USERCONSTANTS|))
+dec $dynamic_nan_define_name_message() : preqbytes
+def $dynamic_nan_define_name_message() = $ptascii("unexpected NAN value was coerced to string")
+dec $dynamic_nan_define_name_receive(pstate, pconfigcall) : pstate
+def $dynamic_nan_define_name_receive(S, pconfigcall) = $error_dispatch(S_string, 2, $dynamic_nan_define_name_message(), pconfigcall.LINE, DIAGNOSTIC "Warning" $dynamic_nan_define_name_message() pconfigcall.LINE, DYNAMIC_NAN_DEFINE_NAME_RESULT pconfigcall pvalue_name z_precision)
+  -- if $dynamic_nan_define_name_entry(S, pconfigcall) /\ $dynamic_nan_define_name_valid(S, pconfigcall)
+  -- if z_precision = $precision_value(S)
+  -- if S_string = $string_request(S, $ptascii("NAN"))
+  -- if S_string.RESULT = KNOWN pvalue_name
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $dynamic_nan_define_name_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "NaN define name reception"] -- otherwise
+rule PhpStep/dynamic-nan-define-name-invoke: S ~> $dynamic_nan_define_name_receive(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $config_invoke_valid(S, pconfigcall) /\ $dynamic_nan_define_name_entry(S, pconfigcall)
+def $task_nodes(DYNAMIC_NAN_DEFINE_NAME_RESULT pconfigcall pvalue_name z_precision) = $config_nodes(pconfigcall) ++ $value_nodes(pvalue_name)
+def $selected_task_nonce(DYNAMIC_NAN_DEFINE_NAME_RESULT pconfigcall pvalue_name z_precision) = pconfigcall.SELECTION
+def $call_task_valid(S, DYNAMIC_NAN_DEFINE_NAME_RESULT pconfigcall pvalue_name z_precision) = $dynamic_nan_define_name_received(S, pconfigcall, pvalue_name, z_precision)
+rule PhpStep/dynamic-nan-define-name-result: S ~> $error_dispatch(S[.TODO = ptask_duplicate :: ptask_tail*][.RESULT = KNOWN pvalue_name], 2, ptbytes_message, pconfigcall.LINE, DIAGNOSTIC "Warning" ptbytes_message pconfigcall.LINE, ptask_duplicate)
+  -- if S.TODO = (DYNAMIC_NAN_DEFINE_NAME_RESULT pconfigcall pvalue_name z_precision) :: ptask_tail*
+  -- if $dynamic_nan_define_name_received(S, pconfigcall, pvalue_name, z_precision)
+  -- if n_constants = |S.USERCONSTANTS|
+  -- if ptbytes_message = $global_constant_duplicate_message($ptascii("NAN"))
+  -- if ptask_duplicate = DYNAMIC_NAN_DEFINE_NAME_DUPLICATE pconfigcall pvalue_name z_precision n_constants
+def $task_nodes(DYNAMIC_NAN_DEFINE_NAME_DUPLICATE pconfigcall pvalue_name z_precision n_constants) = $config_nodes(pconfigcall) ++ $value_nodes(pvalue_name)
+def $selected_task_nonce(DYNAMIC_NAN_DEFINE_NAME_DUPLICATE pconfigcall pvalue_name z_precision n_constants) = pconfigcall.SELECTION
+def $call_task_valid(S, DYNAMIC_NAN_DEFINE_NAME_DUPLICATE pconfigcall pvalue_name z_precision n_constants) = $dynamic_nan_define_name_duplicate_valid(S, pconfigcall, pvalue_name, z_precision, n_constants)
+rule PhpStep/dynamic-nan-define-name-duplicate: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (DYNAMIC_NAN_DEFINE_NAME_DUPLICATE pconfigcall pvalue_name z_precision n_constants) :: ptask_tail*
+  -- if $dynamic_nan_define_name_duplicate_valid(S, pconfigcall, pvalue_name, z_precision, n_constants)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = DYNAMIC_NAN_DEFINE_NAME_RESULT pconfigcall pvalue_name z_precision
+  -- if $dynamic_nan_define_name_received(S, pconfigcall, pvalue_name, z_precision)
+  -- if perrorcall.SITE = pconfigcall.SITE /\ perrorcall.LEVEL = 2 /\ perrorcall.LINE = pconfigcall.LINE
+  -- if perrorcall.MESSAGE = $dynamic_nan_define_name_message()
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pconfigcall.LINE
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = DYNAMIC_NAN_DEFINE_NAME_DUPLICATE pconfigcall pvalue_name z_precision n_constants
+  -- if $dynamic_nan_define_name_duplicate_valid(S, pconfigcall, pvalue_name, z_precision, n_constants)
+  -- if perrorcall.SITE = pconfigcall.SITE /\ perrorcall.LEVEL = 2 /\ perrorcall.LINE = pconfigcall.LINE
+  -- if perrorcall.MESSAGE = $global_constant_duplicate_message($ptascii("NAN"))
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pconfigcall.LINE
+def $error_context_trigger(S, pcallcontext) = (pconfigcall)
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = DYNAMIC_NAN_DEFINE_NAME_RESULT pconfigcall pvalue_name z_precision
+def $error_context_trigger(S, pcallcontext) = (pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT, 0, KNOWN pvalue_name)])
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = DYNAMIC_NAN_DEFINE_NAME_DUPLICATE pconfigcall pvalue_name z_precision n_constants
+def $error_handler_trace_values(S, pcallcontext, pconfigcall_api) = $trace_extra(S, $getclass_trace_operands(pconfigcall_api.SENT))
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = DYNAMIC_NAN_DEFINE_NAME_RESULT pconfigcall pvalue_name z_precision
+  -- if pconfigcall_api = pconfigcall
+def $error_handler_trace_values(S, pcallcontext, pconfigcall_api) = $trace_extra(S, $getclass_trace_operands(pconfigcall_api.SENT))
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = DYNAMIC_NAN_DEFINE_NAME_DUPLICATE pconfigcall pvalue_name z_precision n_constants
+  -- if pconfigcall_api = pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT, 0, KNOWN pvalue_name)]

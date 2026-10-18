@@ -1,7 +1,7 @@
 {
   "version": 1,
   "milestone": "A12 lossy float CV-key conversion before destructuring lookup",
-  "status": "independently reviewed and validated privately; actual-parent pointwise composition pending",
+  "status": "independently reviewed and validated; pointwise composition over exact parent complete",
   "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle and tests/semantics/profile.json",
   "base": "816e1c57d1f7b5779880785d4721b4969a28a418",
   "scope": "Flat wholly by-value patterns, direct CV RHS and direct CV leaves. Selected ordinary defined CV keys hold finite fitting binary64 floats with exactly PRECISIONLOSS; mixed, nested, literal-root and other diagnostic producers remain separate.",
@@ -19,7 +19,7 @@
     "Converted-key lookup follows the conversion callback. Present aliases are dereferenced then; a missing warning returns NULL without a second lookup. Following key expressions run after the pending target store. Throwing conversion handlers cancel lookup and assignment-result delivery."
   ],
   "reviewed_behavior": [
-    "New65-line module410, one task constructor, two generic63 pending exclusions and module append implement the producer. Existing409/source item APIs, key conversion, compiler and heap helpers remain unchanged. Initial planning alone reads the current defined allocated key cell; the saved marker contains table, source tuple, original64-bit bits and converted integer, with no key-cell root.",
+    "New module410, one task constructor, two generic63 pending exclusions and module append implement the producer. Existing409/source item APIs, key conversion, compiler and heap helpers remain unchanged. Initial planning alone reads the current defined allocated key cell; the saved marker contains table, source tuple, original64-bit bits and converted integer, with no key-cell root.",
     "Source validation authenticates flat by-value/direct-CV structure, exact selected item/compiler line and allocated captured table. The original bits must encode exactly PRECISIONLOSS and agree with the saved integer. Source compatibility after callbacks does not reconstruct historical live key values or source-name bindings.",
     "Original default-first execution runs two conversions in order: first2.5 callback/default Deprecated precedes x22 store; later -1.5 callback sees x22, changes nextfalse and y88, but frozen -1 still reads old11. The returned old pooled array overwrites destination200. Exactly one default diagnostic remains.",
     "Present NULL triggers no missing warning. A callback unsets source/q/key, but the captured runtime table and embedded q33 keep their sole task/entry owners, feed the later fresh true key, then retire after result unset. Supplied-throw preserves earlier9/callbackx99/later y8/destination100, same Throwable/previousNULL and finally while key/table/q retire before catch lookup.",
@@ -154,5 +154,18 @@
   "remaining": [
     "Lossy conversion in recursive, literal-root or mixed reference-source patterns; range/nonfinite conversion, undefined/null-key diagnostics, computed current keys and wider RHS/targets.",
     "Paused owned-NUL/current-CV NUL behavior, scalar/object destructuring diagnostics, wider callbacks/lifecycle, full array/core closure and offline portability."
-  ]
+  ],
+  "composition": {
+    "parent": "070236b5fe77b7afce5f9591be79b6d4e50c6a28",
+    "runtime_files": [
+      "spec/semantics/30-storage.watsup",
+      "spec/semantics/63-list-control.watsup",
+      "spec/semantics/410-list-key-conversion-warnings.watsup",
+      "spec/semantics/modules.json"
+    ],
+    "runtime_diff_sha256": "a5115cfc6b1d5b7176dc098ed9d952391569a00ca5c16c410b7f91a39afc67ee",
+    "parent_modules": 399,
+    "modules": 400,
+    "validation": "Exact tested410/63 and six new tests plus the shared exact-stderr helper are preserved.30 composes only the new list task tag and every other parent byte; modules append410 only. Four partial inventory rows append only; every other parent runtime file/field/checkpoint is preserved. First two author condition lists retain their original0920 cut. Exact candidate review adds no actor or renewed evidence credit."
+  }
 }

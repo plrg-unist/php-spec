@@ -269,6 +269,14 @@ def $clone_object(S, n_source) = S[.OBJECTS = S.OBJECTS ++ [CTORCLOSURE n_receiv
   -- if n = |S.OBJECTS|
 def $clone_same_kind(CTORCLOSURE n_receiver text_base porigin_site, CTORCLOSURE n_receiver text_base porigin_site) = true
 
+;; Fake constructor Closures compare by selected receiver, independently of
+;; their capture sites. Both sides must retain authentic live constructor tags.
+def $named_closure_same(S, n_left, n_right) = true
+  -- if $ctor_capture_live(S, n_left)
+  -- if $ctor_capture_live(S, n_right)
+  -- if S.OBJECTS[n_left] = CTORCLOSURE n_receiver "SensitiveParameterValue" porigin_left
+  -- if S.OBJECTS[n_right] = CTORCLOSURE n_receiver "SensitiveParameterValue" porigin_right
+
 dec $ctor_capture_site(pstate, porigin) : bool
 def $ctor_capture_site(S, porigin) = true
   -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)

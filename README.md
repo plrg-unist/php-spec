@@ -660,6 +660,11 @@ In the both-fractional compound routes, a first handler may also leave a quiet
 captured LEFT and detaches late aliases; modulo zero preserves them and raises
 DivisionByZeroError. Ten exact originals and 688 focused SL premises pass in the
 [quiet scalar ledger](coverage/semantics/quiet-scalar-review.json).
+Complete quiet numeric strings after that callback also convert in all six
+operators, preserving RHS string identity while using the captured LEFT. Dynamic
+`"05"` and whitespace/exponent text succeed; `"-1"` is a valid XOR mask but an
+invalid shift count. Ten originals and 807 focused SL premises pass in the
+[quiet string ledger](coverage/semantics/quiet-string-review.json).
 Explicit array-to-string casts now suspend through named warning handlers for
 a bounded plain-CV array input. The borrowed array adds no saved owner: replacing
 or removing its CV still yields fixed `Array`, while a supplied throw preserves
@@ -1072,7 +1077,14 @@ protected duplicate path with primitive candidates and omitted/bool-false flags,
 preserving the builtin and converted API name through callbacks. Negative infinity keeps its fresh
 `"-INF"` key at profile precision 14. [Four source agreements and 529 state premises](coverage/semantics/define-nonfinite-name-review.json)
 cover captured arguments, historical precision, strict NaN rejection and throwing
-discard. Weak NaN name reception and nonbool infinite-name flags remain separate.
+discard. Nonbool infinite-name flags remain separate.
+Weak NaN names whose rendered spelling is full `NAN`, with primitive candidates
+and omitted/bool-false flags, now warn before the protected duplicate check. The first callback sees raw NaN; normal return keeps the string
+rendered before that callback, and the duplicate API trace shows the converted name.
+A throw from either phase preserves the same Exception and unassigned caller result.
+[Four source agreements and 451 state premises](coverage/semantics/define-nan-name-review.json)
+cover preallocation, precision changes and both cancellation paths. Truncated
+initial `N`/`NA` conversions keep their earlier partial behavior.
 Integer/boolean names also accept false scalar flags (`0`, empty/`"0"` strings and
 float zero). Weak calls convert the API name while preserving the raw flag;
 strict name errors precede flag rejection after argument effects.
@@ -1204,8 +1216,12 @@ nested reference snapshots and literal constraints pass
 Top-level empty definitions retain an authenticated immutable table or create a
 fresh mutable copy. [Two exact sources and 162 public premises](coverage/semantics/dynamic-constant-empty-review.json)
 distinguish allocation classes and rebuilt append history, rejecting a mutable
-clone of a fixed literal. Nested empties, wider array warning/flag paths,
-uncertified objects and cycles remain Unsupported.
+clone of a fixed literal. Empty-root duplicates retain the pooled argument or
+create a fresh canonical mutable candidate. Normal and throwing handlers keep
+the original API trace append history while cleanup releases temporary candidate owners.
+[Empty-duplicate review](coverage/semantics/define-empty-array-duplicate-review.json).
+Nested empties, wider array warning/flag paths, uncertified objects and cycles
+remain Unsupported.
 String-name `define` with an omitted/false flag now shares already-certified
 stdClass donors. Named/selected calls preserve the captured pointer through later
 CV changes, and duplicate handlers keep the old binding and property writes on
@@ -1222,8 +1238,8 @@ the old row and callback writes. [Array-duplicate review](coverage/semantics/def
 Explicit false flags retain their captured value through callbacks and traces;
 copying observes reference changes from all argument expressions.
 [False-flag array review](coverage/semantics/define-stdclass-array-false-flag-review.json).
-Ordinary uncertified objects, other owning leaves, empty-array duplicates, nested
-empties and wider flags/names remain partial.
+Ordinary uncertified objects, other owning leaves, nested empties and wider
+flags/names remain partial.
 Class-qualified `defined` now checks inherited user constants with lexical visibility
 and quiet misses. Named autoload resumes the same captured query once.
 [Two exact sources and 288 public premises](coverage/semantics/class-qualified-defined-review.json)
@@ -2245,6 +2261,13 @@ ownership and quiet aggregate tails; later calls expose the existing readonly Er
 Uninitialized wrappers and wider protocols remain partial.
 [Sensitive wrapper/capture review](coverage/semantics/weakmap-sensitive-comparison-review.json).
 
+Authenticated SensitiveParameterValue constructor Closures compare equal across
+fresh captures and clones of the same live receiver. Distinct receivers stay
+uncomparable even when wrapping the same Map. Two originals and 448 Boolean
+premises/10 actual steps preserve signed aggregate continuation, ownership and
+quiet later casters. Other Closure representations and wider lifetimes remain
+partial. [Constructor-pair review](coverage/semantics/constructor-closure-comparison-review.json).
+
 [Numeric object comparison Notices](coverage/semantics/object-numeric-comparison-review.json)
 now pause ordinary source-instance/int/float leaves through real error handlers.
 Live CV/cell reads remain distinct from copies; a second Notice uses saved 1/1.0,
@@ -2800,6 +2823,11 @@ Without `__get`, terminal `empty` now returns true after either inherited
 `__isset` boolean, retaining the receiver through callback CV rebinding or throw.
 Three originals and focused242 checks cover delivery, cleanup and catch;
 [isset-only empty review](coverage/semantics/magic-empty-isset-only-review.json).
+With inherited `__get` and no `__isset`, terminal private-property `empty` now
+skips the getter and borrows its CV receiver without adding a GC root. Later
+ordinary reads still invoke the getter and preserve its return or Exception.
+Two originals and 235 focused checks cover this slice;
+[getter-only empty review](coverage/semantics/magic-empty-get-only-review.json).
 With an untyped by-value `__get`, terminal `empty` chains it after the inherited
 `__isset`: false skips the getter, while true tests its null, bool, int, float
 or byte-string result. Only empty bytes or exactly ASCII `0` make a string

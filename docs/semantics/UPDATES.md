@@ -292,6 +292,16 @@ current RHS guards, direct result cells/error owners, aliases and budgets. Defau
 first null XOR versus modulo supplies independent store/no-store contrasts. Wider
 forms stay partial; prior accepted cuts receive no renewed credit.
 
+Complete quiet numeric-string RHS values now convert after the first warning in
+the both-fractional modulo/shift/numeric-bitwise routes. Dynamic `"05"`, literal
+`"5"` and whitespace/exponent text preserve their RHS identity; historical LEFT
+drives direct stores and late-alias detachment. Negative XOR succeeds, while
+negative shift and modulo zero preserve the target and raise ArithmeticError
+and DivisionByZeroError at RHS line 25. [Quiet string evidence](../../coverage/semantics/quiet-string-review.json)
+retains 10 originals and 807 focused SL premises, including actual handlers,
+request data, cells/owners, supplied throw, default diagnostics and budgets.
+Wider forms remain partial; earlier cuts receive no renewed credit.
+
 Stringable `.=` converts the left value before dereferencing the selected RHS
 slot. A defined direct RHS CV is borrowed and follows callback rebinding; an
 initially undefined read keeps its warned null value, while a later unset is a

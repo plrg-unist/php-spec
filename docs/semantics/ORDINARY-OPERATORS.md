@@ -391,6 +391,22 @@ its Exception and skips conversion. Ten exact originals and 688 focused SL premi
 Other initial forms, conversions, unsafe targets and wider lifecycles remain partial;
 type/ref/binding/ownership projections are refusals only.
 
+The first callback may also leave a complete quiet numeric string in the original
+RHS cell of those both-fractional routes. Existing `string_long` must return an
+integer with no notices; plain strings or authenticated interned/request carriers
+retain their bytes/type/identity. Initial floats already selected numeric bitwise
+behavior. Cached LEFT `12` and numeric string `5` store `2`/`384`/`0`/`4`/`13`/`9`
+for `%=`/`<<=`/`>>=`/`&=`/`|=`/`^=` and detach alias `99`. Dynamic nonempty concat
+creates a genuine request carrier `"05"`; OR also covers `" +5e0 "`. Supplied first
+throw preserves its Exception, destination and alias write-through. Independent
+default-first `"-1"` yields XOR `-13` but ArithmeticError for right shift; `"0"`
+modulo raises DivisionByZeroError. Both errors occur at RHS line 25 before store/detachment.
+Ten exact originals and 807 focused SL premises pass in the
+[quiet string ledger](../../coverage/semantics/quiet-string-review.json), covering
+actual handlers, direct stores/errors, carrier metadata, cell/Throwable owners and
+budgets. Warning/invalid conversions, unsafe bindings/targets and wider forms stay
+partial; pure guard controls are distinct from executed cases.
+
 Arithmetic and bitwise conversion use the existing pure SpecTec numeric and byte
 helpers, including signed 64-bit boundaries, binary64 values, string operands,
 pinned power behavior and conversion diagnostics. Explicit casts keep their

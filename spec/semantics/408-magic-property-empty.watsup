@@ -28,6 +28,7 @@ def $property_isset_empty(S, ppropertyisset) = true
 def $property_isset_source(S, ppropertyisset) = true
   -- if $property_isset_empty(S, ppropertyisset)
 
+dec $property_empty_get_source(pstate, pmethoddesc) : bool
 ;; Only authenticated empty preparation defers the ordinary getter interception.
 def $property_empty_prepare(S) = true
   -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: (ORIGIN_RETURN (porigin)) :: (ISSET_RESULT true z) :: ptask_tail*
@@ -37,8 +38,42 @@ def $property_empty_prepare(S) = true
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $property_isset_needed(S, n, $base64(text_name))
 
+;; With no __isset, terminal empty skips __get for the captured private member.
+def $property_empty_get_skip(S) = true
+  -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: (ORIGIN_RETURN (porigin)) :: (ISSET_RESULT true z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if $operand_nodes(S.RESULT) = eps
+  -- if S_read = $quiet_operand(S, S.RESULT)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $property_empty_source(S, porigin, $base64(text_name), z)
+  -- if porigin = PORIGIN n_unit pcpath
+  -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) phpType20 metadata)
+  -- if $source_emission_cv(S, n_unit, pcpath ++ [PCFIELD 0], NExprVariable (BYTES text_receiver) metadata_receiver)
+  -- if ~$scope_global(S[.ORIGIN = (porigin)], [PCFIELD 0])
+  -- if $property_lookup_scope(S) = $closure_source_class(S, porigin)
+  -- if S_cv = $quiet_operand(S, VARIABLE $base64(text_receiver) $variable_line(BYTES text_receiver, metadata_receiver))
+  -- if S_cv.COMPLETION = NORMAL
+  -- if S_cv.RESULT = KNOWN (POBJECT n)
+  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, n)
+  -- if $property_isset_method(S, n) = eps
+  -- if $property_get_method(S, n) = (pmethoddesc)
+  -- if $property_empty_get_source(S, pmethoddesc)
+  -- if $property_effective_desc(S, n, $base64(text_name)) = (ppropertydesc)
+  -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (pmethoddesc.OWNER)
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE /\ ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.SETVISIBILITY = eps
+  -- if $property_unset_access_valid(S, n, $base64(text_name), ppropertydesc, $property_resolve(S, n, $base64(text_name)))
+  -- if $property_get_needed(S, n, $base64(text_name))
+  -- if ~$property_hook_declared(S, n, $base64(text_name))
+def $property_empty_prepare(S) = true -- if $property_empty_get_skip(S)
+;; The CV is borrowed: no temporary BASE owner or matching GC decrement exists.
+rule PhpStep/property-empty-get-only: S ~> S[.TODO = (ORIGIN_RETURN (porigin)) :: ptask_tail*][.RESULT = KNOWN (PBOOL true)]
+  -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: (ORIGIN_RETURN (porigin)) :: (ISSET_RESULT true z) :: ptask_tail*
+  -- if $property_empty_get_skip(S)
+
 ;; The selected getter keeps the existing untyped name/return compiler family.
-dec $property_empty_get_source(pstate, pmethoddesc) : bool
 def $property_empty_get_source(S, pmethoddesc) = true
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
   -- if pfunction = pmethoddesc.FUNCTION
