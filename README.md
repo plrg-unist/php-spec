@@ -3001,6 +3001,12 @@ and a retained reference cell give different weak-reference lifetimes and delay
 capture disposal; four originals and 452 focused premises
 cover both, normal receiver release and a capture destructor's Exception;
 [Closure RV review](coverage/semantics/magic-empty-closure-rv-review.json).
+Paired `empty` also accepts inherited `__isset(string $name)` without a return
+declaration. Its ordinary object result is truth-tested and disposed before the
+captured getter; a held result delays its destructor, while a throw cancels Get.
+Four originals and 313 focused premises cover mutations, receiver retention and
+the same catch; [isset RV review](coverage/semantics/magic-empty-isset-rv-review.json).
+Ordinary `isset` and no-Get `empty` keep their typed-bool callback requirement.
 Other signatures, receivers, other internal-object RVs and
 wider recursive/coalesce magic combinations remain unsupported.
 Hooked iteration, defaulted virtual hooks, other paired or virtual setters, wider trait

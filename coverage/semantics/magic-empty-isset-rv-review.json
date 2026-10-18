@@ -1,0 +1,129 @@
+{
+  "scope": "Paired inherited external CV/literal private empty with public nonref __isset(string) and absent return declaration plus same-owner untyped __get. Boolean decisions and ordinary live INSTANCE RV truth/disposal; sole/held RV, CV nulling, getter-visible mutation and destructor throw.",
+  "implementation": {
+    "base": "f8794af8e7f1adb166c50d513c06e3acf264e9bb",
+    "step_revision": "24d04e3b632649e0a4c5d3abbb39f99ec6da124c",
+    "validation_revision": "d2babf78e9b11cc381d31396b475f11e1440da46",
+    "modules": 401,
+    "change": "141 admits absent or bool returns with existing string/nonref parameters.408 adds its own absent-return source proof, INSTANCE truth cache in the existing false marker, saved Isset guard and narrowly authenticated eager-prefix call certificate.407 stays typed-bool; no new task/record/owner/GC/free rule."
+  },
+  "engine": {
+    "target": "PHP8.5.10 CLI NTS64",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_object_handlers.c zend_std_has_property: retain receiver/IN_ISSET, call issetter, zend_is_true then zval_ptr_dtor, conditional Get only without pending exception, clear guard/OBJ_RELEASE",
+      "Zend/zend_API.c zend_check_magic_method_implementation/zend_check_magic_method_return_type: an absent return declaration bypasses return-type enforcement; Zend/zend_compile.c invokes this check."
+    ],
+    "intentional_divergences": []
+  },
+  "sources": {
+    "catalogue": "tests/semantics/magic_empty_isset_rv_cases.json",
+    "maintained_byte_identical": true,
+    "cases": "Sole RV destructor sets child=NULL/next0 before captured Get; held RV lets Get see original1 before later disposal; throw cancels Get; false skips a deliberately throwing Get. Exact stdout16/16/14/10 bytes, all stderr empty/exit0."
+  },
+  "validation": {
+    "native": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-isset-rv-private-97/.tools/magic-empty-isset-rv-probes-97/native-first/report.json",
+      "sha256": "396da89cbb2424b49545b979f5c8b91a3a88eb5c862ca7083f6005034dce32d3",
+      "result": "Four exact native tuples, normal/held/throw/false; no source credit.",
+      "revision": "f8794af8e7f1adb166c50d513c06e3acf264e9bb"
+    },
+    "baseline": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-isset-rv-private-97/.tools/magic-empty-isset-rv-probes-97/accepted-current-baseline/report.json",
+      "sha256": "688c368d24f399e93ac1d45b28ce30fe400cc49b3e84c3049fec62d70cb08fab",
+      "result": "Four genuine checked compiler Unsupported magic isset signature/CLI1 before main;0agreements.8.588/8.587/8.614/8.406s.",
+      "revision": "f8794af8e7f1adb166c50d513c06e3acf264e9bb"
+    },
+    "changed_source": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-isset-rv-private-97/.tools/magic-empty-isset-rv-probes-97/changed-model-ix4dt5uf/report.json",
+      "sha256": "de35b086a89aa6274de539b387dd428cc74e43a7e1ad6c3b09c97cc56438b8f0",
+      "result": "Four checked normal exact tuples/4agreements;13.062/13.964/13.765/11.362s.",
+      "revision": "24d04e3b632649e0a4c5d3abbb39f99ec6da124c"
+    },
+    "focused": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-isset-rv-private-97/.tools/magic-empty-isset-rv-protocol-bdhb_aa3/report.json",
+      "sha256": "df5662ba28b64e03afda003acd0941ea5cb5391a2d991c9be279c802c6c19a5d",
+      "result": "Normal122/held90/throw101 all true;313=289 reached+24 derived/app3/source0. AL7.168/7.282/7.094;SL18.794/16.548/18.160s.",
+      "revision": "d2babf78e9b11cc381d31396b475f11e1440da46"
+    }
+  },
+  "focused_scope": "Actual false-marker raw object\u2192BOOLtrue cache, receiver2\u21921 after CV=NULL, RV release before Get observes0, authentic saved frame with recapturefalse/Issettrue/Getinactive, held RV2\u21921 and later nested receiver destruction, same live Exception at reached CATCH_BIND, final states and late budget equality. Derived Boolean/source/result controls plus consistently relinked wrong eager SOURCE and cached VALUE refuse the cleanup certificate.",
+  "source_bridge": "The d2bab repair changes only call-task certificate validation, preserving all steps/targets/roots and source bytes from24d04. Independent pointwise review accepts its retained source4 without replay; state313 checks the repaired actual invariant.",
+  "nonpassing": [
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-isset-rv-private-97/.tools/magic-empty-isset-rv-protocol-_rbmxxhv/report.json",
+      "sha256": "4b8b5a87c14bab1d0cb2c3861421a8e21fcfc9196fc2f8c7f040898cdc23be47",
+      "result": "Enclosing301 packet false: only normal110 evaluated false; held/throw unrun. Call descriptors failed behind the genuine eager prefix while owners/guard/frame facts were correct.",
+      "revision": "9ad8d137dc5925f0b21759805a559a37f3cc61ff",
+      "passing_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-isset-rv-private-97/.tools/magic-empty-isset-rv-probes-97/diagnostic-97-9bmt_2kn/report.json",
+      "sha256": "2845d527cac7666bb77430aa228c27f81ade76d1714d7eb77cb28cf3b414c7c0",
+      "result": "Prefix vector[true,false,false,false,false] isolates VALUE/saved block; oneSL22.601s.",
+      "revision": "9ad8d137dc5925f0b21759805a559a37f3cc61ff",
+      "passing_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-isset-rv-private-97/.tools/magic-empty-isset-rv-probes-97/diagnostic-value-97-houk3yar/report.json",
+      "sha256": "b3e5fc35d8a68473b0c5a9a444ac1c3633fa0f946ce208f81f2200b07134380e",
+      "result": "Pre-execution syntax failure: accidental blank line detached seek premises; no application. Original fixture/driver retained; a separate path deletes only that blank line.",
+      "revision": "9ad8d137dc5925f0b21759805a559a37f3cc61ff",
+      "passing_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-empty-isset-rv-private-97/.tools/magic-empty-isset-rv-probes-97/diagnostic-value-97-q373ejjq/report.json",
+      "sha256": "90ac9c1427d2745637fc42bad512b59c0e6df7372a7bacb7a4ef5e7be1ba85b2",
+      "result": "29 single-pass flags isolate only call_descriptors_valid at callback/rebound; owners, frames, source, Isset, GC and heap checks pass. OneSL14.382s, diagnostic only.",
+      "revision": "9ad8d137dc5925f0b21759805a559a37f3cc61ff",
+      "passing_credit": 0
+    }
+  ],
+  "execution": {
+    "cwd": "/home/user/workspace/php-spec/.tools/magic-empty-isset-rv-private-97",
+    "environment": "LC_ALL=C TZ=UTC PHP_SPEC_SCRIPT_ENCODING absent, jobs1/catalogue profile. Native/baseline/source CPU1; original state/diagnostics CPU2; affected313 CPU1. SL/cachefalse/dettrue.",
+    "caps": "Native45/model60/outer75/steps100000; each focused AL90\u2192strictSL90 serial/stop-first; each diagnostic oneSL90.",
+    "commands": [
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/magic-empty-isset-rv-probes-97/run.py native --revision f8794af8e7f1adb166c50d513c06e3acf264e9bb",
+      "Same run.py baseline --revision f8794af8e7f1adb166c50d513c06e3acf264e9bb",
+      "Same run.py changed --revision 24d04e3b632649e0a4c5d3abbb39f99ec6da124c",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u tests/semantics/magic_empty_isset_rv_protocol.py --revision d2babf78e9b11cc381d31396b475f11e1440da46"
+    ],
+    "affinity": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-isset-rv-private-97/.tools/magic-empty-isset-rv-probes-97/affinity-native-first.json",
+        "sha256": "1025b2845f66b2733679160b13da9c76b6a15eed1657ba0f498b79dcd8ba727d",
+        "result": "Partial1/4: normal CPU1 mask, argv empty. Exact taskset parent provenance remains recorded; no sampling-only replay."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-isset-rv-private-97/.tools/magic-empty-isset-rv-probes-97/affinity-accepted-current-baseline.json",
+        "sha256": "01dd4393ddb76d2fa5730eea65e795163f5b4799f00826f6af10f533851601fa",
+        "result": "Complete4 CPU1/full argv."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-isset-rv-private-97/.tools/magic-empty-isset-rv-probes-97/affinity-changed-source-97.json",
+        "sha256": "4a2e57fae86456816b3b4843e42b6a394ae335c96506aaa37eec0d1bc2736515",
+        "result": "Complete4 CPU1/full argv."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-empty-isset-rv-private-97/.tools/magic-empty-isset-rv-probes-97/affinity-state-97-repair1.json",
+        "sha256": "ecd73012f62ccee7b35dc435394b10ba1c0e351327de55b84af2d0eed7f72186",
+        "result": "Complete6 CPU1/full argv."
+      }
+    ],
+    "stability": "All accepted watched inputs/head/status/fixtures stable; no timeout/interruption, process groups empty, actors/observers reaped. Original failure and diagnostics retain0."
+  },
+  "tools": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "source_driver_sha256": "a6de2a7a8426cca1a2a234e7c67977c5195461f8cc3656776475c3d23c477130",
+    "focused_driver_sha256": "fd57903219883f310106b89e5bc1982b29cd5251a8c164575291d30ea1844099"
+  },
+  "limits": "Existing external-CV/literal/private/same-owner restrictions remain. Ordinary isset and no-Get empty407 require typed bool. Other untyped scalar/null/array/internal RVs, wider recursion/lifecycle combinations, sole-owner public-NaN retirement and wider quiet-CV GC remain open. No generic GC preservation claim or earlier class replay.",
+  "artifacts": "Ignored original reports/streams/processes/diagnostics and private source driver remain at recorded paths. Maintained sources/catalogue/focused harness recover from tested commits; original failed harness at9ad8. No bulky archive, backup worktree or receipt chain tracked.",
+  "review": {
+    "independent": "class_review_84",
+    "accepted": "Native/baseline/source4, affected313, validation-only compatibility and concise publication independently accepted."
+  }
+}

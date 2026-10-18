@@ -340,27 +340,21 @@ array routes. Their guarded tasks and source shapes are absent here; factory,
 clone, getter and ownership interfaces remain exact. Source3/state271 retain the
 private2135/401 cut with zero new execution credit; no joined actor or replay.
 
-Real static Closure getter RVs now use the receiver-only phase for ordered RV
-release. For a sole RV, its weak wrapper expires before the capture destructor;
-the saved receiver survives caller-CV nulling and is released before result/catch.
-A held Closure remains live after `empty`, while a shared reference cell retains
-the payload after Closure retirement. Later held/alias writes permit nested
-receiver destruction. Four originals agree at `9d9f857a3`; 452 focused premises
-at `458d8942b` (447 reached +5 derived) cover actual DIRECT/ALIAS edges, static scope,
-cell owners 2 to 1 and null replacement, logical weak reads, the same Exception
-at catch and budgets. One raw Closure-kind arm changes; capture/reference/free/GC
-machinery stays unchanged. Native evidence keeps accepted first-two and corrected
-second-two cuts; the original local-reference export mistake retains zero credit.
-Fake/internal/wrapped Closure RVs, wider implicit-receiver/cold-static/cyclic
-lifecycles, sole-owner public-NaN retirement and wider quiet-CV GC remain open.
-Earlier class evidence is not replayed.
-[Closure RV review](coverage/semantics/magic-empty-closure-rv-review.json).
-
-Composed over `afbb45235`/401 after pointwise review of reference-return/finally,
-constant API/Stringable, compound-warning and LIST float-key changes, all absent
-here. Closure capture/free/weak-reference, ownership/GC and the saved-RV phase
-remain exact; source4/state452 retain their tested cuts without joined execution,
-replay or renewed credit. The original producer mistake stays zero.
+Paired terminal `empty` now accepts inherited `__isset(string $name)` without a
+return declaration. Ordinary object results cache true in the existing saved
+receiver marker and are disposed before the captured Get. A destructor can null
+the caller CV and change Get's value; held RVs instead delay disposal until after
+the result. A destructor's Exception cancels Get and reaches the same catch, while
+an untyped false result skips a deliberately throwing Get. Four originals agree
+at `24d04e3b6`; 313 focused premises at `d2babf78e` (289 reached +24 derived) cover
+actual owners, saved Isset guard/Get inactivity, cached delivery, call certificates
+and budgets. The first normal110 failure exposed the eager-prefix validation
+seam; a local certificate repair preserves steps/roots. That failure and three
+diagnostic records keep zero credit, including one diagnostic preparse error.
+Module407 remains typed-bool only. Wider untyped results/recursion, sole-owner
+public-NaN retirement and wider quiet-CV GC remain open; no generic GC change or
+earlier class replay.
+[Isset RV review](coverage/semantics/magic-empty-isset-rv-review.json).
 
 Positional `define` calls with primitive arguments now reject counts outside
 two through three before name/flag reception and registration, after all argument
