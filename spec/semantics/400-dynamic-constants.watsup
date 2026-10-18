@@ -268,7 +268,7 @@ def $error_handler_trace_values(S, pcallcontext, pconfigcall_api) = $trace_extra
   -- if $error_context_call(S, pcallcontext) = (perrorcall)
   -- if perrorcall.RESUME = DYNAMIC_CONSTANT_DUPLICATE pconfigcall n_constants
   -- if $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
-  -- if $builtin_value_bytes(preqbytes) = (pvalue_old)
+  -- if $builtin_value_bytes(preqbytes) =/= eps \/ $special_constant(preqbytes) =/= eps
   -- if ~$dynamic_constant_case_flag(pconfigcall)
   -- if pconfigcall_api = pconfigcall
 
@@ -2058,8 +2058,8 @@ def $error_handler_trace_values(S, pcallcontext, pconfigcall_api) = $trace_extra
   -- if perrorcall.RESUME = DYNAMIC_CLASS_DEFINE_NAN_RESULT pconfigcall
   -- if pconfigcall_api = pconfigcall
 
-;; Fixed startup primitives predate every user-table prefix. The warning keeps
-;; the same captured arguments while a handler may append unrelated user rows.
+;; Startup primitives and special names predate every user-table prefix.
+;; The warning keeps captured arguments while a handler may append user rows.
 def $dynamic_startup_define_duplicate_valid(S, pconfigcall, n_constants) = true
   -- if pconfigcall.KIND = INTRINSIC_DEFINE
   -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps
@@ -2068,7 +2068,7 @@ def $dynamic_startup_define_duplicate_valid(S, pconfigcall, n_constants) = true
   -- if ~$dynamic_constant_case_flag(pconfigcall)
   -- if $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
   -- if $dynamic_constant_global_name(preqbytes)
-  -- if $builtin_value_bytes(preqbytes) = (pvalue_old)
+  -- if $builtin_value_bytes(preqbytes) =/= eps \/ $special_constant(preqbytes) =/= eps
   -- if $dynamic_scalar_define_arguments(S, pconfigcall, 0)
   -- if $named_slot_at(pconfigcall.SENT, 0) = NAMED_SENT (KNOWN pvalue_name)
   -- if $string_plain(pvalue_name) = pvalue_name \/ $string_carrier_valid(S, pvalue_name)

@@ -731,6 +731,12 @@ def $weakmap_standard_other(pobject) = true
   -- if $object_body(pobject) = FROMCALLABLECLOSURE pfrommethod
 def $weakmap_standard_other(pobject) = true
   -- if $object_body(pobject) = BOUNDFAKECLOSURE pboundfake
+def $weakmap_standard_other(pobject) = true
+  -- if $object_body(pobject) = INTRINSICCLOSURE pintrinsic
+  -- if ~$from_kind(pintrinsic)
+  -- if pintrinsic =/= INTRINSIC_CLOSURE_CURRENT /\ ~$closure_bind_kind(pintrinsic) /\ ~$fiber_kind(pintrinsic)
+def $weakmap_standard_other(pobject) = true
+  -- if $object_body(pobject) = FIBERAPICLOSURE pfibercapture
 def $weakmap_standard_other(pobject) = false -- otherwise
 def $weakmap_standard_mismatch(S, n_left, n_right) = true
   -- if $(n_left < |S.OBJECTS|) /\ $(n_right < |S.OBJECTS|)

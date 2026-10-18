@@ -119,8 +119,22 @@ retains four exact sources at b55e4edaf, literal199 at f9a7e2cb9 and callback/st
 throw415 at 7891c0df5. The projection correction preserves observed string values;
 fresh peer state checks the actual Throwable trace and full discard. The pre-main
 syntax failure, later trace-guard counterexample and unchanged Unsupported baseline
-retain zero credit. Special names, unknown startup values, coerced names, other
+retain zero credit. Unknown startup values, coerced names, other
 flags and owning/wider candidates remain partial.
+
+Non-NUL special names `true`, `false` and `null` also warn and return false with
+primitive candidates and omitted/bool-false flags. Their recognition ignores case,
+while the duplicate message and raw API trace retain the captured spelling. They
+never publish a user row. Ordinary/strict calls and handlers preserve the special
+values and callback effects; throws leave the caller result unchanged.
+The [special-name review](../../coverage/semantics/define-special-duplicate-review.json)
+binds four exact originals and 645 public premises at 84817642f, including actual
+dispatch/handler/resume/discard, raw request strings, immutable spelling versus
+mutable-name message authority and budgets. Two old Source43 protocol files repair
+obsolete refusals with admission plus stale-message rejection; fresh equivalents run
+here without renewing its 614 campaign. Only two name predicates widen; all other
+admission, trace-projection, return and discard code stays exact. Unknown startup values,
+other flags/coercions and owning/wider candidates remain partial.
 
 The boolean true `case_insensitive` flag emits its level2 ignored-flag Warning
 before registration and leaves name lookup case sensitive. Its authenticated
@@ -528,7 +542,7 @@ interns direct string values before installation.
 Nested empty values in `define`, cycles, other objects, array duplicate/third-argument paths,
 Stringable/array names, array/object values with scalar or null names, true/NULL/NaN
 flags with scalar names, nonbool flags with nonfinite float names, true/NULL/NaN flags with
-null names, special-name warnings and startup names/flags/values beyond the bounded follow-up,
+null names, special/startup names with flags or values beyond the bounded follow-ups,
 internal/trait/interface/enum class queries, deferred keyword initializers and
 keyword `constant` array values, other deferred initializers,
 owning/FCC call forms and wider conversion/arity paths remain Unsupported. The [dynamic ledger](../../coverage/semantics/dynamic-constants-review.json)

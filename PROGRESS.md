@@ -20,6 +20,64 @@ empty behavior remain pointwise unchanged. Wider signatures/receivers/lifecycles
 and mutable-empty array GC ordering stay open. [Isset-only empty review](coverage/semantics/magic-empty-isset-only-review.json).
 Earlier class cuts, including arrayRV255, retain their identities without replay.
 
+Pointwise composition overfcfec63d preserves the incoming399-module parent.
+Source3/state242 retain tested cuts; no joined actor or renewed execution credit.
+
+WeakMap comparisons now admit ordinary eligible INTRINSICCLOSURE and normalized
+FIBERAPICLOSURE objects as uncomparable +1 in either direction before callable,
+capture, VM or private-entry traversal. Two exact originals and 279 Boolean
+premises (266 setup + 13 pure)/8 actual steps pass at 8ce9bd0e2/399. All seven
+operators, unchanged GC-enabled observations, a sole cold Fiber owner, quiet
+aggregate tails and budgets are covered. Later explicit calls supply observable
+GC flag changes and Fiber execution. Native/baseline/preparation/EL retain zero
+credit; no actor failed. Special intrinsic kinds, other producers and wider weak
+lifetimes remain partial; no new INI, collection or ephemeron semantics is claimed.
+Stored-string carrier conversion stays separate.
+[Intrinsic/API review](coverage/semantics/weakmap-api-comparison-review.json).
+
+Composed over 7af29e2c6/399 after pointwise review of special-name/array constants,
+magic-empty array RV, quiet-CV list keys, bitwise assignment and abrupt-return
+selectors, all absent here. Source2/state279 retain their private cut; no joined
+actor or renewed execution credit.
+
+Duplicate `define` now recognizes non-NUL `true`/`false`/`null` string names without
+case sensitivity, warning and returning false with primitive candidates and
+omitted/bool-false flags. Messages and raw API traces retain the supplied spelling;
+returning or throwing handlers preserve all special values without publishing a
+user row. Four exact originals agree at 84817642f. All 645 public premises pass:
+author 199+162+134 and independent 150 across four source-derived groups, including
+actual dispatch/handler/resume/discard, captured false versus live true flags,
+strict argument effects, raw request strings, sibling/caller/Exception identity,
+case/source/carrier/bounds refusals and budgets. No actor failed or repeated;
+the unchanged Unsupported baseline retains zero credit. Runtime widens two name
+predicates; two old Source43 protocol files repair obsolete refusals with admission
+and stale-message rejection, with fresh equivalents here and no 614 replay. Unknown
+startup values, other flags/coercions and owning/wider candidates remain partial.
+[Special-name duplicate review](coverage/semantics/define-special-duplicate-review.json).
+
+Pointwise composition over 62c33de71 preserves the incoming 399-module parent.
+The array-leaf class delegate is exact for primitives and no source uses an array
+candidate; other incoming task/source selectors are disjoint. Source4/public645
+and the older 614 campaign retain their cuts, with no joined actor or renewed credit.
+
+Numeric bitwise assignments now quietly convert fitting integral float masks
+left by the first handler in the both-fractional plain-CV route. Cached LEFT 12
+with live `5.0` directly stores 4/13/9 and detaches alias 99; supplied throw keeps
+the same Exception, destination 100 and alias write-through. An independent handler
+returning false leaves `-1.0`: XOR stores (-13) despite live LEFT 99, with one default
+LEFT Deprecated at line 25, no second callback and alias detachment. Five exact originals pass at
+7724196ca; author 135/135/135/99 plus independent 130 SL premises pass 634 at
+1332b0f1c/399, covering actual first frames, original bindings, atomic storage,
+cells/owners and budgets. Runtime adds one direct commit and a boundary exclusion,
+reusing the exact integral snapshot; tasks/schema and other routes stay unchanged.
+Native/baseline/prep/syntax and earlier renewed credit stay 0. Wider forms remain
+partial; OP12 paused.
+[Quiet float bitwise ledger](coverage/semantics/bitassign-quiet-float-review.json).
+
+Composed over 73f140047/399 after pointwise review of startup/array constants,
+magic-empty array RV, quiet-CV list keys and WeakMap/Closure seams. Source5/state634
+retain private cuts without actor, replay or renewed credit.
+
 WeakMap comparisons now admit normalized FROMCALLABLECLOSURE and BOUNDFAKECLOSURE
 objects as uncomparable +1 in either direction before factory/binding metadata or
 private-entry traversal. Two exact originals and 361 Boolean premises
@@ -47,7 +105,7 @@ source4 retains its earlier cut because observed string values are unchanged.
 That failed actor, the earlier pre-main syntax failure and unchanged Unsupported
 baseline retain zero credit. Only affected state checks repeated. Runtime adds
 30 module400 lines; old user-duplicate and ignored-flag domains stay exact.
-Special names, unknown startup values, other flags/coercions and owning/wider
+Unknown startup values, other flags/coercions and owning/wider
 candidates remain partial.
 [Startup duplicate review](coverage/semantics/define-startup-duplicate-review.json).
 
@@ -9186,6 +9244,25 @@ equality. The historical M72 native/source agreements are separate; no old
 actor was replayed and the diagnostic has zero repair credit. Wider normal
 source histories and broad returns remain open.
 [M86 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M87 adds a direct named no-argument `?array` old-return source to the
+authenticated pending-Throwable destructor-exit guards. A new
+`&f():?array` original returns `[new O]`; O's destructor throws
+`TypeError("child87")` during selected-reference replacement. Native1 at
+clean `a43c7a30a`/399 reaches local `CT:1;A;S`, detached `rNULL/b7` and one
+old-line VALUE Notice; the unchanged model wrongly reaches outer OT with r7
+and no Notice. A diagnosis-only cut there proves the old table and child retire
+before pending exit, with a valid projected cursor but rejected public entry
+and premature THROW_SEARCH. Strict SL initialization passes, and the original
+source agrees exactly at private `67396fd4c`/399. One reached fixture passes
+136 Boolean premises and two raw steps: the old HARRAY→O edge, child87
+TypeError origin/message and same local-catch object, retired old nodes,
+consumed NULL/new Notice,
+caller state, actual LINE-only public refusal and exit budget equality. The
+first fixture run failed only a reused metadata binder and has zero state
+credit; the corrected fixture alone was rerun. Existing ownership and normal
+exit rules are unchanged. This proof covers one runtime single-entry array
+with one throwing child; M56's accepted normal-child control stays separate.
+[M87 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, wider destructor throw/reentry, real suspension and wider typed

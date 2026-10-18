@@ -364,6 +364,19 @@ quiet handoff, cells/owners and budgets are covered. LEFT stays historical at
 second capture; pure projections are refusals only. Initial references/copies,
 other RHS conversions, unsafe bindings/targets and wider callbacks/lifecycle remain partial.
 
+After the first callback in that both-fractional bitwise route, a fitting integral
+float RHS also converts quietly. Historical LEFT `12` and live `5.0` directly store
+`4`/`13`/`9` through fresh result cells, detaching alias `99`; the RHS remains a
+float and calls stay one. A supplied first-handler throw preserves its Exception,
+destination and alias write-through. If the first handler returns false with RHS
+`-1.0`, XOR still stores `-13` despite live LEFT `99`, with one default LEFT Deprecated
+at RHS line 25 and no second diagnostic. Five exact originals and author
+135/135/135/99 plus independent 130 SL premises pass in the
+[quiet float bitwise ledger](../../coverage/semantics/bitassign-quiet-float-review.json),
+covering actual first frames, original bindings, atomic storage, cells/owners and
+budgets. Wider initial forms, conversions, unsafe targets and lifecycle remain
+partial; pure projections establish refusals only.
+
 Arithmetic and bitwise conversion use the existing pure SpecTec numeric and byte
 helpers, including signed 64-bit boundaries, binary64 values, string operands,
 pinned power behavior and conversion diagnostics. Explicit casts keep their

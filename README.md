@@ -648,6 +648,11 @@ after the first callback skips the second diagnostic. Success detaches late alia
 either supplied throw preserves them. Negative masks still store signed integers.
 Seven exact originals and 1421 focused SL premises pass in the
 [ordered bitwise ledger](coverage/semantics/bitassign-both-warning-review.json).
+An integral float RHS after the first callback also converts quietly. Cached
+LEFT `12` with `5.0` stores `4`/`13`/`9`; negative `-1.0` gives XOR `-13`.
+Success detaches late aliases; a supplied first throw preserves them. Five exact
+originals and 634 focused SL premises pass in the
+[quiet float bitwise ledger](coverage/semantics/bitassign-quiet-float-review.json).
 Explicit array-to-string casts now suspend through named warning handlers for
 a bounded plain-CV array input. The borrowed array adds no saved owner: replacing
 or removing its CV still yields fixed `Array`, while a supplied throw preserves
@@ -1117,7 +1122,12 @@ primitive candidates and omitted/bool-false flags, preserving the builtin throug
 strict calls and returning or throwing handlers.
 [Four source agreements and 614 state premises](coverage/semantics/define-startup-duplicate-review.json)
 cover captured request strings, callback siblings and exact throwing discard;
-special names, unknown startup values and wider flag/value forms remain partial.
+unknown startup values and wider flag/value forms remain partial.
+Non-NUL special `true`/`false`/`null` names now use the same Warning/false path with
+primitive candidates and omitted/bool-false flags. Recognition ignores case;
+messages and raw API captures keep the supplied spelling through handlers.
+[Four source agreements and 645 state premises](coverage/semantics/define-special-duplicate-review.json)
+cover preserved special values, strict calls and exact throwing discard.
 Boolean `case_insensitive=true` now warns before registration while keeping case
 sensitivity. A handler-created binding wins the subsequent duplicate check;
 [two exact sources and 221 public premises](coverage/semantics/dynamic-constant-flag-review.json)
@@ -2190,6 +2200,13 @@ history nonowning, even after the seed Closure and old receiver retire. Two exac
 sources and 361 Boolean premises/8 actual steps cover all seven operators, cloned
 parent-body selection, quiet skipped tails and complete unchanged comparison states.
 [Factory/binding review](coverage/semantics/weakmap-factory-comparison-review.json).
+
+Ordinary eligible intrinsic and Fiber API Closures also compare with live WeakMap
+before capture, VM or private-entry traversal. Two exact sources and 279 Boolean
+premises/8 actual steps preserve GC-enabled observations, a sole cold Fiber owner
+and skipped aggregate tails. Later explicit calls expose the flag change and VM
+execution. Special intrinsic kinds and wider protocols remain partial.
+[Intrinsic/API review](coverage/semantics/weakmap-api-comparison-review.json).
 
 [Numeric object comparison Notices](coverage/semantics/object-numeric-comparison-review.json)
 now pause ordinary source-instance/int/float leaves through real error handlers.

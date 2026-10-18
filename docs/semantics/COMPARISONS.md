@@ -114,6 +114,19 @@ capture and quiet later aggregate casters. Full source endings verify selected
 receiver markers and Parent bodies. Other producers/representations and wider weak
 lifetimes remain partial; stored-string carrier conversion is not extended.
 
+[Intrinsic/API WeakMap mismatches](../../coverage/semantics/weakmap-api-comparison-review.json)
+also admit ordinary eligible INTRINSICCLOSURE and normalized FIBERAPICLOSURE bodies.
+Intrinsic admission mirrors the existing ordinary callable predicate, excluding
+factory, current-Closure, binding and Fiber special kinds in that representation.
+The existing live allocated nonfreeing mismatch guards and unchanged-state ORDER1
+effect remain authoritative. Unlike-handler fallback runs before callable/capture
+fields, so comparisons neither invoke GC APIs nor start a cold captured Fiber.
+Two originals and 279 Boolean premises/8 actual steps preserve the enabled flag,
+sole bound Fiber ownership, callback-to-Map edges and skipped later aggregate
+casters. Explicit source endings call the APIs and real bodies. This extends
+comparison admission; it adds no INI, collection, ephemeron or producer protocol.
+Special intrinsic representations and wider weak lifetimes remain partial.
+
 [Generator/Generator and Fiber/Fiber pairs](../../coverage/semantics/generator-fiber-comparison-review.json)
 return order zero through the standard zero-default-property shortcut. The pair
 predicate tests arena bounds and exact runtime tags, independently of saved VM
