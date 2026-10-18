@@ -1211,34 +1211,27 @@ Destructuring key warnings retain recursive by-value CV/literal and mixed CV
 patterns with quiet compiled/implicit or ordinary defined quiet CV keys. Module410
 also handles lossy float CV keys in flat direct-CV value/reference fetches, including
 silent writable initialization of null/reference-false sources and quiet undefined
-CV acquisition. Defined NULL CV keys now deprecate before selecting the empty
-string at by-value fetches in flat direct-CV patterns with captured array operands.
-Lookup follows the callback: shared references supply new values, and a miss
-enters module409 before the target's NULL store. Default deprecation still precedes
-an E_WARNING-only handler; following keys are read after earlier stores. A by-value
-snapshot keeps its table. A mixed source releases temporary table protection:
-expiry silently supplies NULL even for an old present key, while a surviving
-table can enter a replacement warning handler. Later references/results resolve
-the saved source CELL despite source/key rebinding. Throws cancel lookup and
-retire both roots without changing earlier stores or supplied Throwable identity.
-Five A16 originals agree at 264e00221. Five SL fronts pass 892 premises
-(868 Boolean + 24 raw): author 520 and independent 161 at 1aa78deef, corrected
-independent 211 at 3fe712b02. The original mixed fixture used invalid descriptor
-variable prefixes and failed elaboration before runtime; it retains zero credit.
-Only those names were corrected and that front retried. Earlier tasks/compiler/ownership
-APIs remain unchanged, with no historical control or shared-harness edits. The
-[NULL-key review](coverage/semantics/list-null-key-warning-review.json) retains
-native/unchanged Unsupported baseline, separate cuts and the failed row. The
-[A15 review](coverage/semantics/list-float-write-autovivify-review.json) retains
-source5/state887 and its undefined acquisition-frontier correction; earlier
-[family reviews](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md) retain original
-cuts and failures without replay. Undefined current keys, NULL-key reference
-fetches, nested/literal conversion, wider constrained sources/RHS/targets and
+CV acquisition. At flat direct-CV by-value fetches with captured arrays, defined NULL CV keys
+now deprecate before empty-string lookup; undefined keys first emit their variable
+Warning without creating a key cell. Handler initialization or rebinding cannot
+redirect the later null conversion. Each diagnostic releases table protection:
+a mixed table's first expiry silently supplies NULL and skips deprecation/lookup;
+a surviving table is re-protected for deprecation, then reads post-handler aliases
+or enters module409 before target storage. Different handlers may handle all three
+steps; a deprecation-only handler follows the default variable Warning. Later
+references/results resolve the saved source CELL, and later keys remain fresh.
+Throws preserve earlier stores and supplied Throwable identity while retiring roots.
+Six A17 originals agree: five at b50bd8170 and the distinct deprecation-only mask
+at 69212ab27. Five SL fronts pass 973 premises (944 Boolean + 29 raw) at
+69de5863a: author 489 and independent 484. No fixture failed or required replay.
+Existing null-conversion rules, compiler and ownership APIs remain unchanged;
+no historical controls or shared harness changed. The
+[undefined-key review](coverage/semantics/list-undefined-key-warning-review.json)
+retains native/unchanged Unsupported baseline and separate source cuts. Earlier
+[family reviews](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md) retain their
+original cuts and failures without renewed credit. NULL/undefined-key reference
+conversion, nested/literal conversion, wider constrained sources/RHS/targets and
 callback/lifecycle coverage remain partial.
-
-Pointwise composition over 9ee00d718 preserves all 401 incoming modules. Typed-return,
-Stringable query, first-class callable, Generator, compound and property selectors
-are disjoint. Source5/state892 retain their cuts without a joined actor.
 
 Plain-CV `%=` now keeps both converted longs through a fractional-RHS deprecation.
 Captured12/5 stores2 despite callback99/7 and detaches a late target alias; supplied

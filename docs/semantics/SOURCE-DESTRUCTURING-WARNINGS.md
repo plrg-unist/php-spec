@@ -6,7 +6,7 @@ recursive mixed value/reference patterns require a direct CV RHS. Implicit integ
 and warning-free compiled constant keys are admitted. Literal strings retain their
 authenticated interned-string carrier before key conversion. These patterns also
 admit ordinary defined integer, boolean, exact-float and non-NUL string CV keys.
-Computed key names, NUL CV strings and undefined key diagnostics remain
+Computed key names, NUL CV strings and wider key diagnostics remain
 separate dependencies, along with wider RHS producers and target forms.
 
 Module410 adds lossy float CV-key conversion for flat patterns with a direct CV RHS
@@ -28,8 +28,19 @@ continuation checks source compatibility without rereading the key cell. Lookup
 follows the callback, so a present shared reference supplies its new value and a
 missing empty key enters module409 before target storage. A warning-only handler
 still follows default deprecation. The same table protection and release rules
-below distinguish a by-value snapshot from a mixed source cell. Undefined keys,
-selected reference fetches and nested/literal null-key producers remain separate.
+below distinguish a by-value snapshot from a mixed source cell. Selected reference
+fetches and nested/literal null-key producers remain separate.
+
+Undefined CV keys at these by-value fetches first emit their variable Warning under
+separate table protection.
+The initial plan accepts an absent name or a live uninitialized slot without creating
+a key cell. Returning handlers may initialize or rebind the key, but a surviving table
+still proceeds to null-key deprecation and empty-string lookup. A mixed table that
+retires at the first release silently supplies null and skips both later steps.
+Survival re-protects the same old table for deprecation; handlers for each diagnostic
+may differ, and a deprecation-only handler still follows the default variable Warning.
+The eventual missing-key Warning precedes target storage, and later keys remain fresh.
+Throws at the first callback cancel conversion, lookup and result delivery.
 
 For a mixed pattern's by-value fetch, the saved task keeps the source reference
 cell and separately protects its current table. After the handler returns, it
@@ -168,6 +179,7 @@ paths/streams without an oracle replay. Separate ledgers retain the
 [lossy float CV keys](../../coverage/semantics/list-float-key-warning-review.json),
 [mixed float CV keys](../../coverage/semantics/list-float-ref-key-warning-review.json),
 [writable float CV keys](../../coverage/semantics/list-float-write-key-warning-review.json),
-[writable source initialization](../../coverage/semantics/list-float-write-autovivify-review.json) and
-[null CV keys](../../coverage/semantics/list-null-key-warning-review.json)
+[writable source initialization](../../coverage/semantics/list-float-write-autovivify-review.json),
+[null CV keys](../../coverage/semantics/list-null-key-warning-review.json) and
+[undefined CV keys](../../coverage/semantics/list-undefined-key-warning-review.json)
 cuts and failures. No complete array, diagnostics or lifecycle-family claim follows.

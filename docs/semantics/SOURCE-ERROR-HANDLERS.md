@@ -127,6 +127,11 @@ lossy float CV conversion at value and reference fetches in flat direct-CV sourc
 Defined null CV keys also deprecate before selecting the empty string at by-value
 fetches. Their captured array or source cell survives key retirement/rebinding;
 lookup follows the callback and a miss enters module409 before storing null.
+Undefined CV keys at these by-value fetches first warn under their own table
+protection. A surviving table then enters null conversion without rereading the initialized or rebound key;
+expiry at the first release skips deprecation and lookup. Separate callbacks can
+handle the variable Warning, null deprecation and missing-key Warning, with a
+deprecation-only handler still following default variable reporting.
 For lossy-float value fetches, it retains the converted integer and table before E_DEPRECATED,
 then looks up the table after return. A present embedded reference reads its new value; a miss enters the
 module409 warning before any target store, honoring handler replacement and
