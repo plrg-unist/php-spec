@@ -124,7 +124,7 @@ yield or detached current with a node-free copied return. It throws to the calle
 while retaining the copied current through receiver retirement. Only the physical leaf is parked;
 getters preserve it and later real resume through any ancestor is Unsupported.
 Explicit close omits the parked frame's finally, including a detached middle with
-cleared initialization. Suspended task/held owners stay outside this admission;
+cleared initialization. Other suspended task/held owners stay outside this admission;
 see the [pending-throw review](../../coverage/semantics/generator-pending-throw-review.json).
 A used simple-CV yield with one authenticated buffered input also takes this
 pending path. The input becomes request-late only when the physical child closes,
@@ -132,6 +132,11 @@ including during receiver retirement before catch, and remains separate from
 current snapshots and reference caches. A lower pending `send` can consume its
 initialization while an upper pending `throw` still returns without advancing;
 see the [pending-buffered review](../../coverage/semantics/generator-pending-buffered-throw-review.json).
+The [parked-foreach review](../../coverage/semantics/generator-pending-foreach-throw-review.json)
+adds exactly one by-value array loop at a bare yield. Physical child close retains
+the iteration container, preserving shared reference cells and late
+payload/Generator cleanup. Buffered-input combinations, reference/object foreach,
+nested owning loops and later parked resumption remain outside this slice.
 
 Callback admission binds the actual owner, source unit/path, stage, target, line
 and saved lexical/called scopes. Only the immediate authenticated implicit call

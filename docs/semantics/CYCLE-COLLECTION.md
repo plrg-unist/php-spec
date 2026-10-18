@@ -127,6 +127,13 @@ leaf close retains the unconsumed input until object-store shutdown. The
 [pending-buffered review](../../coverage/semantics/generator-pending-buffered-throw-review.json)
 checks this separation, including a cache/input alias, without changing collector
 projection or claiming wider cyclic behavior.
+For one suspended value-foreach array at a bare yield, parked close transfers the
+container count into request retention, preserving embedded references rather
+than freezing their former objects. The iterator is removed before local cleanup.
+Explicit collection while that owning frame is parked remains Unsupported;
+ordinary empty-tail parked paths are unchanged. The
+[parked-foreach review](../../coverage/semantics/generator-pending-foreach-throw-review.json)
+grants no new GC agreement.
 Fiber force-close retains the tagged head and pending receipt in its genuine
 caller VM until ordinary release consumes it. Generator close consumes the head
 and updates progress before capturing its continuation; its new close jobs

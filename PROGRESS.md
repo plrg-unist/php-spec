@@ -7,6 +7,34 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Pending Generator `throw` now admits a bare yield inside one active by-value
+array `foreach`. Parked close retains its one container count and removes the
+iterator before ordinary CV/context and current-cache cleanup. The array keeps
+its real COW and embedded reference cells: a later rebind releases the old object
+while the new referent stays retained. An array-owned Generator closes in the
+request-store pass; the container count itself remains. Buffered-input/loop
+combinations, reference/object foreach, nested owning temporaries and later
+parked resume remain open. Explicit collection while this owning frame is parked
+is Unsupported; no new GC source agreement is claimed.
+[Parked-foreach review](coverage/semantics/generator-pending-foreach-throw-review.json).
+
+Four exact normal originals and four real fronts pass 495 premises (245 author
+and 250 independent), including 20 generic reachability premises and all native
+endings. Runtime `40e90163b` is unchanged: strict401/source4/author245 retain
+`a926bf27d`; corrected peer133 uses `7e830e987` and peer117 uses `289d985c2`.
+The original pre-interpretation constructor error and pre-step CV-cell observer
+failure remain zero credit. Only failed preparation/peer133 repeated; unused
+assignment observers were corrected before peer117 first ran. Native4 and the
+genuine unchanged Unsupported baseline stay at `e8cf11865`/401 with zero agreement;
+earlier Generator evidence is not replayed.
+
+Composed over `8f11876b0`/401 after pointwise review of typed reference-return,
+WeakMap Closure, constant API, compound-warning, magic-empty array and float-key
+LIST selectors, plus metadata-only return controls, all disjoint here. Parent
+Module30 task tags and the 401-module manifest are preserved; the other seven
+runtime files remain as tested at `40e90163b`. Source4/state495 retain their private
+cuts with no joined actor, accepted replay or renewed execution credit.
+
 Positional two/three-argument `define` now rejects bounded flat array names before
 optional flag reception or registration, with primitive candidates/flags. Later
 argument effects preserve the captured ordinary fields and update shared scalar

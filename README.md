@@ -945,6 +945,11 @@ With a buffered input, pending `throw` preserves its count; physical close retai
 it until request-store destruction, including receiver cleanup before caller
 catch. The independent current copy can still trigger a replacement exception. See the
 [pending-buffered review](coverage/semantics/generator-pending-buffered-throw-review.json).
+At a bare yield inside one by-value array `foreach`, parked close retains the
+iteration container while locals and current caches retire normally. Its payloads
+are destroyed in the request-store pass; embedded references remain mutable, and
+independently started Generators in that array close there. See the
+[parked-foreach review](coverage/semantics/generator-pending-foreach-throw-review.json).
 [Delegation](docs/semantics/GENERATOR-DELEGATION.md)
 adds arrays, source Iterators and shared Generator graphs with live raw caches
 and natural return/unwind. Aggregate yield-from now acquires nested real iterator

@@ -89,7 +89,7 @@ and preserve the previous chain. The physical frame keeps nonowning parked-sourc
 history, so getters preserve its cache while later real resumption stays
 Unsupported. Explicit close omits that frame's finally even after initialization
 was cleared. The [pending-throw review](../../coverage/semantics/generator-pending-throw-review.json)
-bounds suspended task/held owners to empty. A simple-CV used yield can also carry
+initially bounded suspended task/held owners to empty. A simple-CV used yield can also carry
 one authenticated live input: pending `throw` and getters leave that count in
 place. Physical leaf close retains it until request-store destruction, including
 when receiver retirement closes the child before caller catch. It does not run
@@ -98,6 +98,13 @@ ancestors let a lower `send` fill the slot while an upper `throw` still takes
 this no-advance path. The [pending-buffered review](../../coverage/semantics/generator-pending-buffered-throw-review.json)
 separates input, current-copy and raw reference-cache owners. Other owning
 unfinished temporaries and later exception-opline resumption remain open.
+
+One by-value array `foreach` may also be suspended at a bare yield, without a
+buffered input or other owning task/held values. Parked close retains its one
+container count, removes the iterator and releases ordinary locals. COW arrays,
+mutable embedded references and a nested Generator keep their distinct owners.
+Explicit collection while that frame is parked is Unsupported; see the
+[parked-foreach review](../../coverage/semantics/generator-pending-foreach-throw-review.json).
 
 Literal `send` and `throw` validate and capture their single argument before
 initialization. Fresh calls first reach the initial yield, then deliver the

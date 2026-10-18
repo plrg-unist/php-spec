@@ -44,6 +44,14 @@ dec $generator_parked_node(pcnode?) : bool
 dec $generator_parked_frame(pframe?, porigin) : bool
 dec $generator_parked_valid(pstate, pgenerator) : bool
 dec $generator_pending_throw_valid(pstate, pgeneratorpendingthrow) : bool
+dec $generator_foreach_site(pstate, pgenerator, porigin, porigin) : bool
+dec $generator_foreach_find(pstate, pgenerator, porigin, ptask*) : ptask?
+dec $generator_foreach_saved(pstate, pgenerator, pframe) : ptask?
+dec $generator_foreach_drop(ptask*, ptask) : ptask*
+dec $generator_foreach_retained_record(pstate, pgeneratorloopretained) : bool
+dec $generator_foreach_retained_seen(pgeneratorloopretained*, nat, nat) : bool
+dec $generator_parked_foreach(pstate, pnode) : bool
+dec $generator_parked_foreach_any(pstate, pnode*) : bool
 dec $generator_pending_throw_carrier(pstate, pgeneratorpendingthrow, ptask, ptask*) : bool
 dec $generator_pending_throw_carried(pstate, pgeneratorpendingthrow, ptask*) : bool
 dec $generator_pending_throw_discard(pstate, ptask) : pgeneratorpendingthrow?

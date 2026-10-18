@@ -1,0 +1,126 @@
+{
+  "milestone": "Iterator23: parked pending THROW retains one by-value foreach array",
+  "status": "Implemented, validated and independently accepted; pointwise composed over 8f11876b0/401.",
+  "independent_reviewer": "iterator_review_15",
+  "base": "e8cf118655dfb48b9749e10d039bc637a2c7f55f",
+  "tested_runtime": "40e90163bd364fc76a98d60c07d08d54e365d2e2",
+  "modules": 401,
+  "scope": "The pending actual root receives a literal throw method call with one captured Throwable, through finite pure native Generator links to a bare statement yield inside exactly one active by-value HARRAY foreach with a simple CV item target. No buffered input or other owning suspended task/HELD value; getters and close only, no later real resume.",
+  "semantics": [
+    "The native exception operation parks the physical frame before body entry. Its later close skips that finally but still retires ordinary CV/context owners and the cached current through the existing jobs.",
+    "Close atomically transfers the single FOREACH_NEXT HARRAY count to request retention and removes the cursor before any local callback. There is no array retirement job or duplicate owner. The closed Generator/source/cursor receipt is nonowning.",
+    "The retained container preserves actual COW and embedded reference cells, whose referents may change after every Generator retires. A visited-item CV retires normally; rebinding the shared cell releases oldA before WRITE while newC remains in the retained array. An independently started Generator in that array closes during the request-store pass. The container count itself remains at terminal state.",
+    "Explicit collection while the allocated parked owning-foreach frame is saved is Unsupported. This guard does not change old empty-tail parked paths or establish new GC agreement."
+  ],
+  "source_authority": [
+    "vendor/php-src/Zend/zend_generators.c::Generator::throw, zend_generator_resume, zend_generator_dtor_storage, zend_generator_cleanup_unfinished_execution and zend_generator_close: DO_INIT/parked exception operation, unfinished cleanup and unconditional CV release.",
+    "vendor/php-src/Zend/zend_vm_def.h::FE_RESET_R transfers/adds one array container count. Zend/zend_execute.c::cleanup_live_vars uses the parked raw operation offset; zend_generator_get_gc uses zend_unfinished_execution_gc_ex for a distinct global exception-opline mapping, so wider collection is not inferred.",
+    "Pinned implementation observations are not portable evaluation-order guarantees. No engine bug or intentional divergence is classified."
+  ],
+  "validation_identity": {
+    "php": "8.5.10 CLI NTS 64-bit; source 34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml 5.1.0; SL, caches off and encountered determinism checks",
+    "environment": "tests/semantics/profile.json; PHP -n; LC_ALL=C; TZ=UTC; PHP_SPEC_SCRIPT_ENCODING unset. Serial taskset: native/baseline CPU1; preparation/strict/source CPU2; author states and original peer observer failure CPU4; corrected independent states CPU5. Raw reports preserve inner commands, caps, bytes, exits and stable input/HEAD identities."
+  },
+  "runtime_sha256": {
+    "spec/semantics/280-generators.watsup": "b4185886cdce4efe165fbb069fdc20c20e6fc8e1cd58da80cb3cb74f4550cae0",
+    "spec/semantics/289-generator-delegation.watsup": "564a03971d8ec82c673602496d18987adabd400c5bd3e8a82909a3f4f204a6e6",
+    "spec/semantics/30-storage.watsup": "87871ab522a3646a7b4820b96c0a2bb5e4b1f62b726d52b263d211983869195a",
+    "spec/semantics/301-cycle-collection.watsup": "32bff8df140235c1d7e34d17b6547e26472e0218c512434949c199f133a8c860",
+    "spec/semantics/303-generator-force-close.watsup": "e5e8b79d1add673dff7adef93a4859a14522a841eb131cf5fc30c137d30b42bc",
+    "spec/semantics/39-ownership.watsup": "61eec682534eae97a70c3261d5a47e5e24a095b2cb6c8c972235f42da4593899",
+    "spec/semantics/40-control.watsup": "e21719111f67b41447a6a16794969ce14e0a1679632854fe14d0ad7f3a051586",
+    "spec/semantics/84-call-integrity.watsup": "c965c2f2d7370ba4f34e070ecd1259ed68376e1728eea9f232eec89d14b3a505"
+  },
+  "raw_root": ".tools/generator-pending-foreach-throw-23/.tools/",
+  "native_and_baseline": {
+    "revision": "e8cf118655dfb48b9749e10d039bc637a2c7f55f",
+    "native_reports": [
+      "generator-pending-foreach-throw-native-i4uqfajy/report.json",
+      "generator-pending-foreach-throw-review-native-35euvvh6/report.json"
+    ],
+    "native_result": "Four immutable originals captured before production: normal exit0/empty stderr, no preasserted stdout, independently reviewed raw tuples; zero model credit.",
+    "baseline_report": "generator-pending-foreach-throw-baseline-pnudvqt6/report.json",
+    "baseline_result": "Exact b1cf407b original and retained i4uq native tuple reused without PHP replay. Genuine public Unsupported Generator force-close at request end after 7 OUTPUT chunks joining P|O|M|C|H|1|T|. Exit1/empty stderr/no timeout/diagnostic/exit_status; stable unchanged e8cf/401, zero agreement."
+  },
+  "strict": {
+    "report": "generator-pending-foreach-throw-author-sl-mocmb13b/report.json",
+    "revision": "a926bf27d56f25a1cad34c7434a94dfdda56c594",
+    "result": "Strict 401 returns true with caches off and encountered determinism checks; stable inputs/HEAD. No strict failure or repeat."
+  },
+  "fixture_elaboration": {
+    "original_failure_report": "generator-pending-foreach-throw-state-elab-9d6tuvja/report.json",
+    "corrected_report": "generator-pending-foreach-throw-state-elab-2u_pzfer/report.json",
+    "result": "The first combined four-fixture gate at 40e failed before interpretation: one peer pitem used REFERENCE instead of ALIAS. The one-token fixture correction leaves runtime/source/owners unchanged. Ordered 401-module parse/elab at a926 passes exact EOF/all four headers; both gates grant zero semantic credit. Later HCELL and unused-assignment observer changes stay within already declared pnode/poperand types and are compiled in their affected state runs."
+  },
+  "normal_sources": {
+    "new_distinct_originals": 4,
+    "revision": "a926bf27d56f25a1cad34c7434a94dfdda56c594",
+    "reports": [
+      "generator-pending-foreach-throw-source-qtig2b93/report.json",
+      "generator-pending-foreach-throw-review-source-8wat0t4s/report.json"
+    ],
+    "result": "Four exact normal stdout/stderr/exit tuples agree with the retained four native captures without PHP replay. All wrappers ran once; later fixture-only corrections do not renew these cuts."
+  },
+  "reached_states": {
+    "groups": 4,
+    "premises": 495,
+    "author": 245,
+    "independent": 250,
+    "local_checks": 475,
+    "generic_reachability": 20,
+    "reports": [
+      [
+        "fiber-state-review-uqc04e1s/report.json",
+        "a926bf27d56f25a1cad34c7434a94dfdda56c594",
+        149
+      ],
+      [
+        "fiber-state-review-_ovcnttc/report.json",
+        "a926bf27d56f25a1cad34c7434a94dfdda56c594",
+        96
+      ],
+      [
+        "fiber-state-review-ix2t3vix/report.json",
+        "7e830e987cbad8066258d7d23ee6d327a137193b",
+        133
+      ],
+      [
+        "fiber-state-review-c0uuwptz/report.json",
+        "289d985c2d6ae1d57fe2c2a4f68b2a7ba8ba95ba",
+        117
+      ]
+    ],
+    "checks": "Together these cover authentic pending invocation with live loop/cursor preserved until close; source/line/argument/owning-tail/HELD and malformed registry refusals; same-heap metadata controls; real close array1-to-retained1 with only the item HCELL job; mutable COW and shared-cell rebind with old-value retirement; late nested-Generator store entry with retained-array/close-pin counts; public/heap validity, zero/split budgets and all four native endings. A derived CONFIG/gc_begin refusal is helper-only and grants no GC source agreement.",
+    "result": "All true/empty stderr/exit0/no timeout, stable HEAD and author/independent inputs. Author 149+96 retain a926. Corrected independent 133 retains 7e830e987; reference-write 117 first runs at 289d985c2. Runtime remains byte-exact 40e throughout."
+  },
+  "preserved_state_failure": {
+    "report": "fiber-state-review-ejx3_9k5/report.json",
+    "revision": "a926bf27d56f25a1cad34c7434a94dfdda56c594",
+    "attempted_premises": 133,
+    "agreement_credit": 0,
+    "result": "The real parked close front was reached, then the pre-step frame-node observer expected a flattened object instead of the actual CV HCELL. Exactly three expected lists change to the authenticated item cell; object/array owner counts and the runtime remain unchanged. Only failed 133 repeats. Before its first run, unrun 117 also corrects two static unused-assignment observers: OP.VALUE is null and newC has only its live-cell owner. Preserve both original raw failures; no source/strict/native renewal."
+  },
+  "compatibility": "New retention defaults eps, adding no root or validity obligation to earlier states. Old empty-tail and used-input pending THROW, nonparked foreach close, ordinary loop execution, SEND behavior and generic eager/Throwable machinery remain unchanged. Narrow parked-foreach GC refusal is explicit; prior Iterator18-22 cuts require no replay. No manifest/pipeline change.",
+  "remaining": [
+    "Later direct or forwarded real resume after parked THROW still requires global exception-opline history and new native originals; it remains explicitly Unsupported.",
+    "Buffered-input-plus-loop, reference/object foreach, nested owning loops, other suspended owning TMP/finally values, owning copied returns, acquired/borrowed producers and wider GC/Fiber/reentry lifecycle remain required.",
+    "Full Generator/core closure and later BOLA/security proofs remain open; no engine-bug classification or intentional divergence."
+  ],
+  "evidence_recovery": {
+    "archive": "../php-spec-evidence-archive/generator-pending-foreach-throw-23/private.tar.gz",
+    "bytes": 1936267,
+    "sha256": "09a9b24c92515648b705cea3039b0deb9246d9279e89a255f2ddb29cac963ef1",
+    "manifest": "Sibling manifest.json maps 13 report roles, including original elaboration and 133 observer failures with zero credit, and 8 ignored recorder/catalog inputs. Full raw originals/generated fixtures/commands/outputs and identities remain external.",
+    "restore": "Extract at private_root. Native/baseline use untouched e8cf118655/401; strict401, source4 and author245 retain a926bf27d/runtime40e90163b. Corrected independent133 use fixture-only 7e830e987 and reference-write117 uses fixture-only 289d985c2, both with identical runtime. Both original failures remain zero credit. Retained private branch supplies tracked implementation/tests; provision references with scripts/private-semantics-references.py. Raw commands identify executed binaries, not archived build prerequisites."
+  },
+  "composition": {
+    "parent": "8f11876b0174c11bc546e5e9bef22506d307dc36",
+    "parent_modules": 401,
+    "private_publication": "cc152a2690069c595c1ceecb8a70a58a23f60b50",
+    "review": "Independent actual-parent review: typed nullable/object reference-return cursors, captured Closure comparisons, constant/defined array-name reception, DEFINE rejection, delayed compound errors, magic-empty arrays and float-key reference LIST selectors are absent from these originals/fronts. The final M97/M98 tail changes metadata only. Module30 preserves parent task tags plus the exact private type/state/declarations; the other seven runtime paths equal tested40e. Every other runtime byte, pipeline and 401-module manifest is preserved.",
+    "validation": "Private strict401/source4/author245 retain a926; independent133 retains7e and independent117 retains289d; all eight private runtime digests name40e. Original preparation and observer failures keep zero credit. No joined runtime actor or renewed execution credit."
+  }
+}
