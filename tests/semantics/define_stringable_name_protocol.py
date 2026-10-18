@@ -112,7 +112,8 @@ def refusals(state):
             '.SENT = ' + call + '.SENT ++ [NAMED_SENT (KNOWN PNULL)]',
             '.SENT = $named_slot_set(' + call + '.SENT,1,KNOWN (PARRAY 0))'):
         bad = call + '[' + field + ']'
-        values += ['~$dynamic_define_string_call(' + bad + ')',
+        refusal = '~$dynamic_define_string_valid(' + state + ',' + bad + ')' if field == '.SENT = ' + call + '.SENT ++ [NAMED_SENT (KNOWN PNULL)]' else '~$dynamic_define_string_call(' + bad + ')'
+        values += [refusal,
             '~$config_string_site_valid(' + state + ',' + bad + ',' + obj + ',' + child + ',' + line + ',' + call + '.LINE)',
             '~$config_string_launch(' + state + '[.FILEINCLUDEPATH = (eps)],' + bad + ')']
     values += ['~$config_string_site_valid(' + state + ',' + call + ',' + obj + ',' + child + ',$(' + line + ' + 1),' + call + '.LINE)',

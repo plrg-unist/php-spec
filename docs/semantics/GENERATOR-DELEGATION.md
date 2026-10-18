@@ -108,6 +108,12 @@ The [nested-detached ledger](../../coverage/semantics/generator-call-unpack-nest
 records the paired retained/temporary cases and their physical cache owners.
 Pending `send` on these detached roots now returns a cache snapshot without
 advancing; see the [API review](../../coverage/semantics/generator-pending-init-send-review.json).
+An owning simple-CV copied return can take the same pending `send` without
+consumption or buffering the argument. The copied cache is captured before
+argument cleanup, including reference-row COW; the return keeps its independent
+owner through normal next or close and later embedded-cell writes. The
+[owning SEND review](../../coverage/semantics/generator-pending-owning-return-send-review.json)
+also checks a snapshot destructor after receiver retirement and its previous chain.
 Pending `send` through native shared links can now buffer a paused child's yield
 result when it is assigned directly to a simple CV. When a direct or forwarded
 `next` resumes the child, it consumes that value without adding another owner.

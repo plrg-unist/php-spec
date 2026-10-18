@@ -2548,6 +2548,7 @@ def $arithmetic_cv_source_operator(NExprBinaryOpMul expression_left expression_r
 def $arithmetic_cv_source_operator(NExprBinaryOpDiv expression_left expression_right metadata) = (DIVIDE)
 def $arithmetic_cv_source_operator(NExprBinaryOpPow expression_left expression_right metadata) = (POWER)
 def $arithmetic_cv_source_operator(pcnode) = eps -- otherwise
+dec $arithmetic_mixed_valid(pstate, pintegeroperation) : bool
 dec $arithmetic_cv_valid(pstate, pintegeroperation) : bool
 def $arithmetic_cv_valid(S, pintegeroperation) = true
   -- if S.ORIGIN = (pintegeroperation.SITE)
@@ -2561,6 +2562,8 @@ def $arithmetic_cv_valid(S, pintegeroperation) = true
   -- if $integer_operand_source(S, pintegeroperation.SITE, [PCFIELD 0], pintegeroperation.LEFT)
   -- if $integer_operand_source(S, pintegeroperation.SITE, [PCFIELD 1], pintegeroperation.RIGHT)
   -- if $code_expression_at_source(S, pintegeroperation.SITE, [PCFIELD 1]) = (pintegeroperation.LINE)
+def $arithmetic_cv_valid(S, pintegeroperation) = true
+  -- if $arithmetic_mixed_valid(S, pintegeroperation)
 def $arithmetic_cv_valid(S, pintegeroperation) = false -- otherwise
 dec $arithmetic_cv_value(pstate, pintegerpointer) : pvalue?
 def $arithmetic_cv_value(S, INTEGER_CV ptbytes) = (pvalue)
@@ -2571,6 +2574,11 @@ def $arithmetic_cv_value(S, INTEGER_CV ptbytes) = (pvalue)
   -- if ~(n <- S.REFCELLS)
   -- if $propref_at(S.PROPREFS, n) = eps
   -- if S.STORE[n] = DEFINED pvalue
+  -- if $submul_initial_value(S, pvalue)
+def $arithmetic_cv_value(S, INTEGER_CELL n) = (pvalue)
+  -- if (HCELL n) <- S.ALLOCATIONS
+  -- if $propref_at(S.PROPREFS, n) = eps
+  -- if $integer_pointer_value(S, INTEGER_CELL n) = (pvalue)
   -- if $submul_initial_value(S, pvalue)
 def $arithmetic_cv_value(S, pintegerpointer) = eps -- otherwise
 dec $arithmetic_cv_operation(pstate) : pintegeroperation?
@@ -2716,3 +2724,55 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 8192
   -- if perrorcall.MESSAGE = $ptascii("Power of base 0 and negative exponent is deprecated")
   -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE pintegeroperation.LINE
+
+
+;; Mixed selection preserves the old reference referent while the other input
+;; remains a plain CV until capture. The selected cell must remain live.
+dec $arithmetic_mixed_pointers(pintegerpointer, pintegerpointer) : bool
+def $arithmetic_mixed_pointers(INTEGER_CV ptbytes, INTEGER_CELL n) = true
+def $arithmetic_mixed_pointers(INTEGER_CELL n, INTEGER_CV ptbytes) = true
+def $arithmetic_mixed_pointers(pintegerpointer_left, pintegerpointer_right) = false -- otherwise
+def $arithmetic_mixed_valid(S, pintegeroperation) = true
+  -- if S.ORIGIN = (pintegeroperation.SITE)
+  -- if ~pintegeroperation.SWAPPED
+  -- if $origin_node(S.SOURCES, pintegeroperation.SITE) = (pcnode)
+  -- if $arithmetic_cv_source_operator(pcnode) = (pintegeroperation.OP)
+  -- if pintegeroperation.LEFT = VARIABLE ptbytes_left z_left
+  -- if pintegeroperation.RIGHT = VARIABLE ptbytes_right z_right
+  -- if $arithmetic_mixed_pointers(pintegeroperation.LEFTPOINTER, pintegeroperation.RIGHTPOINTER)
+  -- if $integer_pointer_source(S, pintegeroperation.LEFTPOINTER, pintegeroperation.LEFT)
+  -- if $integer_pointer_source(S, pintegeroperation.RIGHTPOINTER, pintegeroperation.RIGHT)
+  -- if $integer_operand_source(S, pintegeroperation.SITE, [PCFIELD 0], pintegeroperation.LEFT)
+  -- if $integer_operand_source(S, pintegeroperation.SITE, [PCFIELD 1], pintegeroperation.RIGHT)
+  -- if $code_expression_at_source(S, pintegeroperation.SITE, [PCFIELD 1]) = (pintegeroperation.LINE)
+def $arithmetic_mixed_valid(S, pintegeroperation) = false -- otherwise
+dec $arithmetic_mixed_operation(pstate) : pintegeroperation?
+def $arithmetic_mixed_operation(S) = (pintegeroperation)
+  -- if S.TODO = (BINARY_RIGHT pbin poperand_left z) :: ptask_tail*
+  -- if $error_handler_eligible(S, 2)
+  -- if $arithmetic_add_named(S)
+  -- if ~$gc_retired_binary(S, pbin, poperand_left)
+  -- if S.ORIGIN = (porigin)
+  -- if poperand_right = S.RESULT
+  -- if $integer_pointer_select(S, poperand_left) = (pintegerpointer_left)
+  -- if $integer_pointer_select(S, poperand_right) = (pintegerpointer_right)
+  -- if $arithmetic_mixed_pointers(pintegerpointer_left, pintegerpointer_right)
+  -- if $arithmetic_cv_value(S, pintegerpointer_left) =/= eps
+  -- if $arithmetic_cv_value(S, pintegerpointer_right) =/= eps
+  -- if pintegeroperation = {SITE porigin, OP pbin, LINE z, SWAPPED false, LEFT poperand_left, RIGHT poperand_right, LEFTPOINTER pintegerpointer_left, RIGHTPOINTER pintegerpointer_right}
+  -- if $arithmetic_mixed_valid(S, pintegeroperation)
+def $arithmetic_mixed_operation(S) = eps -- otherwise
+def $arithmetic_mixed_plan(S) = (pintegeroperation)
+  -- if $arithmetic_mixed_operation(S) = (pintegeroperation)
+  -- if $arithmetic_cv_value(S, pintegeroperation.LEFTPOINTER) = (pvalue_left)
+  -- if $arithmetic_add_conversion(pvalue_left) = ((pnumber_left, true))
+def $arithmetic_mixed_plan(S) = (pintegeroperation)
+  -- if $arithmetic_mixed_operation(S) = (pintegeroperation)
+  -- if $arithmetic_cv_value(S, pintegeroperation.LEFTPOINTER) = (pvalue_left)
+  -- if $arithmetic_add_conversion(pvalue_left) = ((pnumber_left, false))
+  -- if $arithmetic_cv_value(S, pintegeroperation.RIGHTPOINTER) = (pvalue_right)
+  -- if $arithmetic_add_conversion(pvalue_right) = ((pnumber_right, true))
+def $arithmetic_mixed_plan(S) = eps -- otherwise
+rule PhpStep/arithmetic-mixed-begin: S ~> S[.TODO = (ARITHMETIC_CV_CONVERT pintegeroperation ARITHMETIC_LEFT) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $arithmetic_mixed_plan(S) = (pintegeroperation)

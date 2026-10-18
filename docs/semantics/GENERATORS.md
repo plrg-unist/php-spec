@@ -48,7 +48,16 @@ changed by that cleanup; an argument-destructor throw preserves the cleared bit.
 Synthetic shared-child resumes also preserve the first-yield flag: an inherited
 middle rejects rewind, while a previously initialized middle can still accept it
 after shared advancement. The [pending-send review](../../coverage/semantics/generator-pending-init-send-review.json)
-records both histories. Owning copied returns remain outside those pending API routes.
+records both histories.
+
+Pending `send` also admits an owning copied return at a simple-CV assigned
+`yield from`, with no other owning suspended tasks or held values. It preserves
+the waiting return while capturing the cache before ignored-argument cleanup.
+Actual next consumes that return; close retains its count. If an argument
+destructor throws, the cache snapshot survives receiver retirement and can replace
+that exception before caller catch. The
+[owning SEND review](../../coverage/semantics/generator-pending-owning-return-send-review.json)
+keeps this path separate from pending owning-return `throw`, which remains open.
 
 A direct detached parent with an owning copied return now admits ordinary unpack
 at a simple-CV assigned `yield from`. Null-key rejection leaves its COMPLETE

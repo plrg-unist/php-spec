@@ -53,6 +53,10 @@ Its auxiliary-operation interval sibling is in
 `../php-spec-evidence-archive/lifecycle-pending-cursor-110/manifest.json`:
 290,603 bytes under `.tools/m110/`, SHA-256
 `5904fbea170d1bf4c2e2f48386205656b2dd6218da742af02cf194c704aefb1b`.
+The pending final-pair interval is in
+`../php-spec-evidence-archive/lifecycle-pending-final-pair-111/manifest.json`:
+297,082 bytes under `.tools/m111/`, SHA-256
+`85de0f4debc4c3fc0d91018e99e9e2d46639edb0293a6081bc5071a84906a7cf`.
 
 ## Commit provenance and recovery
 

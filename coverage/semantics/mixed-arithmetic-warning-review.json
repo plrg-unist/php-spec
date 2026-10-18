@@ -1,0 +1,138 @@
+{
+  "version": 1,
+  "milestone": "OP48 mixed plain-CV and selected-reference arithmetic conversion diagnostics",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/profile",
+  "scope": "Ordinary +,-,*,/,** with exactly one initially plain variable and one pre-existing untyped live reference cell, defined nonowning scalar inputs, and an eligible named Warning handler. Both selections precede numeric conversion. A retained reference alias keeps the selected cell live after its variable name is rebound or unset; the other input remains a plain CV until captured. Leading LEFT may repair bad RHS text, quiet LEFT may reach right-only Warning, and final power Deprecated uses both historical holders. Copied/owning/reference-result operands, unheld referent lifetimes and newly wrapping a pending CV remain partial.",
+  "runtime_revision": "805d3225ec85ab45e03bd7f8ec78db3d8f2f74c9",
+  "helper_revision": "6d906edafeb7e5a31804ad132e7dd73aa93ac5bd",
+  "private_modules": 404,
+  "runtime_sha256": {
+    "spec/semantics/40-control.watsup": "60450d0f9a2049e0c382d0dfad306e8b26624276d206e503409fc2d80829153e",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "b0abca752fd66b6080faa007b367bd25a8b708da565472de2e4c70dd526fb495"
+  },
+  "engine_basis": [
+    "Pinned Zend/zend_operators.c add/sub/mul slow paths plus div_function and pow_function apply ZVAL_DEREF to both input pointers before either zendi_try_convert_scalar_to_number. The reference side therefore retains its selected referent through name rebinding while the plain side names its selected CV slot. Each numeric holder is populated before its leading-number Warning; final safe_pow diagnostic uses both holders. Failed scalar conversion reports the current types at those preselected pointers.",
+    "Separate arithmetic_mixed_operation/plan and three generic40 exclusions authenticate five binary VARIABLE sources, unchanged ending-RHS line and exactly one INTEGER_CV/one INTEGER_CELL. Existing arithmetic_cv_valid gains only a mixed source arm; its getter gains only an allocated, unconstrained, live reference/nonowning INTEGER_CELL arm using the unchanged shared reader. Old plain and selected-reference entry bodies/readers remain exact, preserving their refusal controls.",
+    "The new begin enters existing ARITHMETIC_CV_CONVERT/WARNING/DEPRECATED tasks. Fresh LEFT authenticates initial selections and both readable inputs; fresh RIGHT reads only its selected input, including an old reference cell after its variable name was rebound. Returned Warning and final power holders are historical. Existing conversion, number/error/dispatch/result bodies and root-free task descriptors are unchanged; no task tag/state field/module is added."
+  ],
+  "contract": [
+    "Author six originals alternate mixed orientations. Quiet selected-left12/right5tail yields strict17 after99/7; leading12tail with initial requestbad5 repaired to5tail yields cached7/60/2.4 after88/7. Leading selected-left0tail repaired to-2tail reaches final Deprecated and +INF despite later77/9. A supplied final-deprecation Exception20 cancels outer result assignment, preserves identity/nullPrevious/destination100 and callback writes. A selectedAlias keeps the reference owner2. Focus selects quiet ADD and final POWER throw; the other four normal author sources retain source checks.",
+    "Independent fractional multiplication keeps old rightAlias5.5tail when right is rebound to replacement2tail, then yields strict68.75 despite the second callback poisoning live operands. The old cell drops owner2 to1 while replacement has2. A selected old leftAlias becomesfalse while current left is rebound to99: TypeError must say bool - string, not use the new name. Quiet12/0tail still raises DivisionByZeroError25 after its Warning unsets right and alias writes7; cached zero survives, old alias owner1 remains. Both errors leave destination100. Later alias/name writes confirm topology.",
+    "Focused144/192/196/164/162 reach authentic mixed plans, exact begin and quiet capture, real fresh/entered Warning frames, old referent selection after name rebinding, cached result/error transitions, and historical final Deprecated/supplied throw. The one guard matrix separates old plain/ref entry controls from new mixed-source/getter guards; projections are pure, never driven. Each peer source intentionally emits exactly one default Warning at source line25; standalone SL instead requires true newline/empty stderr. No historical operator cut is replayed."
+  ],
+  "required_follow_on": [
+    "Initial copied/reference-result/owning/constrained operands, object conversion, unheld selected-reference lifetimes, broader reentrant callbacks and pending CV reference creation remain partial. No support or native safety claim is made for that excluded wrapping/lifetime behavior.",
+    "All13 linked rows remain partial. Existing plain/reference/primitive/compound evidence receives0 renewed credit; OP12 stays paused. No engine bug or intentional divergence is claimed."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-48/source-805d3225e-author-six/report.json",
+        "sha256": "b9e6cfd8fb530f68289575ce174fb37fea59f79d4c5ef5337701e42360b3c04d",
+        "revision": "805d3225ec85ab45e03bd7f8ec78db3d8f2f74c9",
+        "cases": [
+          "mixed-arithmetic-add-right-warning",
+          "mixed-arithmetic-sub-cached",
+          "mixed-arithmetic-mul-cached",
+          "mixed-arithmetic-div-cached",
+          "mixed-arithmetic-power-deprecated",
+          "mixed-arithmetic-power-deprecated-throw"
+        ],
+        "agreements": 6
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-48/review-model-805d3225e-three/report.json",
+        "sha256": "93bc29f3bbf34235400bee497ec32e61e367381e84b73ce22d24f5c041864e85",
+        "revision": "805d3225ec85ab45e03bd7f8ec78db3d8f2f74c9",
+        "cases": [
+          "mixed-arithmetic-selected-right-float-default",
+          "mixed-arithmetic-selected-left-types-default",
+          "mixed-arithmetic-selected-zero-unset-default"
+        ],
+        "agreements": 3
+      }
+    ],
+    "state": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-48/state-6d906edaf-five/report.json",
+        "sha256": "25dc6a3b1217c6fe1251953febc48afb966114caac9c6408ecef8045c1c687a9",
+        "revision": "6d906edafeb7e5a31804ad132e7dd73aa93ac5bd",
+        "modules": 404,
+        "cases": [
+          "mixed-arithmetic-add-right-warning",
+          "mixed-arithmetic-power-deprecated-throw",
+          "mixed-arithmetic-selected-right-float-default",
+          "mixed-arithmetic-selected-left-types-default",
+          "mixed-arithmetic-selected-zero-unset-default"
+        ],
+        "conditions": [
+          144,
+          192,
+          196,
+          164,
+          162
+        ],
+        "total": 858
+      }
+    ],
+    "total_source_agreements": 9,
+    "total_focused_state_conditions": 858,
+    "compatibility": "The accepted 805d3225e source/runtime remains exact through helper-only commits. Retained preparation authenticates full author6/peer3 selections before choosing focused2+3 with original paths/native bytes and exact30/40/404/manifest bridge. Existing plain operation/plan and shared pointer readers are exact; new mixed shape is disjoint from both old entry families. Earlier controls and operator cuts are retained without replay or renewed credit."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-48/baseline-f3cd66f25-add-right/report.json",
+      "sha256": "b9c486bc1d3d2d1573293fde27442538b8a3e85b91b5af1ba0b08c4d561d32a4",
+      "result": "Actual accepted checked unsupported before H1 with empty semantic streams, error-handler ingress requires a producer continuation, model exit1/credit0; ordinary wrapper false preserved, no override."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-48/native-f3cd66f25-author-six/report.json",
+        "sha256": "df52466a1f46274d385d5956ee77f362181330b9bcabaaa15274448930edc712"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-48/native-f3cd66f25-review-three/report.json",
+        "sha256": "73cb632c5691209e5ef3f772ce89cd1f4945aa056efe46596970916c22b1b2f4"
+      }
+    ],
+    "checked_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-48/state-prep-6d906edaf-five/report.json",
+        "sha256": "26e7e92bd2c0b080f37f3e0ef0d9cec307360bff4cf4e5cfb3ecc9f5de46c60c",
+        "result": "Checked frontend/adapter only; zero application/native replay, original source paths/native bytes retained; workers0/reaped."
+      }
+    ],
+    "standalone_syntax": "Five standalone undefined-pstate diagnostics carry zero semantic credit."
+  },
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-48",
+    "environment": "LC_ALL=C,TZ=UTC,no PHP_SPEC_SCRIPT_ENCODING. Native/baseline/source CPU2; focused checked prep/SL CPU2. Native30/modelCLI60-process90; checked workers30/full404 immutable SL120 per group. Exact native/model stdout+stderr agree including defaults; accepted SL requires true newline/empty stderr/exits0/no interruption/reaped groups/PIDs.",
+    "commands": [
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 tests/semantics/mixed_arithmetic_warnings.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 tests/semantics/mixed_arithmetic_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-48/state-prep-6d906edaf-five/run-prepare.py",
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-48/state-6d906edaf-five/run-state.py"
+    ],
+    "record": "Restore matching Git cuts/local tools and fresh output roots; records retain paths, raw originals/native streams, fixture hashes, commands/exits/reaping. Copied tools add no rebuild/portability claim; archive is not a runtime dependency.",
+    "tool_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "composition": {
+    "parent": "46ad925eec1397c76489463212a5292788abe9d2",
+    "private_publication": "a923640ca6af041593cc2614f8c3e188c1e276f2",
+    "modules": 405,
+    "runtime_sha256": {
+      "spec/semantics/40-control.watsup": "fc42ea46bbae919c05e478e10cfb4dbd6297150d6991629715f2176d84d61904",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "b0abca752fd66b6080faa007b367bd25a8b708da565472de2e4c70dd526fb495"
+    },
+    "other_incoming_paths_preserved": 48,
+    "gate": "No joined actor:404 and all six tests retain private bytes; complete parent40 initialization is retained with only the mixed-plan declaration/three EPS gates added. Every other spec/405 manifest is parent-exact and13 partial rows compose pointwise. Twelve incoming runtime paths select literal ARRAY_REF_VALUE float-key retention, DEFINE byte-array/true-flag/Stringable contexts, reference-return/destructor cleanup or missing literal static __callStatic; all are absent from these named untyped h/scalar/reference/builtin-Throwable originals. GLOBALS DIM writes and runtime Throwable trace arrays are not ARRAY_REF_VALUE plans. LITERALREFRETAINED initializes eps, its sole writer requires the absent array plan, retained_nodes(eps)=eps and retained_valid(S,eps)=true preserve roots/integrity; the empty image-memory invariant remains inert. No shared numeric/conversion/pointer reader body changes. Source9@805d3225e and state858@6d906edaf retain private404 cuts without actor/replay/renewed credit."
+  }
+}

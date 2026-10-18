@@ -34,6 +34,13 @@ on close. The
 [nested-detached review](../../coverage/semantics/generator-call-unpack-nested-detached-review.json)
 preserves both native close orders and the earlier omitted-finally observation.
 
+For a bounded owning copied return, pending `send` likewise clears initialization
+without consuming the result. Close retains that count before finally. If an ignored
+argument's destructor throws, the returned cache snapshot survives receiver storage
+retirement; its later destructor can replace the exception before catch. The
+[owning SEND review](../../coverage/semantics/generator-pending-owning-return-send-review.json)
+distinguishes that snapshot from the request-late return value.
+
 An unconsumed used-yield input installed by pending shared `send` has a separate
 lifetime. In the pinned engine its result slot precedes the live range used by
 unfinished-frame cleanup. Closing frees the frame and executes finally without

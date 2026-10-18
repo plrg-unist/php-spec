@@ -1,0 +1,22 @@
+[
+  {
+    "id": "generator-pending-owning-return-send-object-next-consumption",
+    "purpose": "An inherited pending detached middle ignores a temporary SEND payload while an owning copied object return remains in its assigned yield-from continuation. The caller receives its cache snapshot, then a real outer next consumes the return and reaches the middle body/new yield/tails. Capture raw order before asserting stdout.",
+    "source": "<?php\nclass PendingOwningCache28 { function __destruct() { echo \"A|\"; } }\nclass PendingOwningReturn28 { function __destruct() { echo \"R|\"; } }\nclass PendingOwningArgument28 { function __destruct() { echo \"S|\"; } }\nfunction pendingOwningLeaf28() { echo \"C|\"; yield new PendingOwningCache28(); echo \"L|\"; return new PendingOwningReturn28(); }\nfunction pendingOwningMiddle28() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"BODY|\", $reply instanceof PendingOwningReturn28 ? 1 : 0, \"|\"; unset($reply); echo \"DROP|\"; yield 31; echo \"TAIL|\"; return 29; } finally { echo \"J|\"; } }\nfunction pendingOwningOuter28() { try { echo \"O|\"; $reply = yield from $GLOBALS[\"middle\"]; echo \"OUTER|\", $reply, \"|\"; } finally { echo \"F|\"; } }\n$child = pendingOwningLeaf28(); $middle = pendingOwningMiddle28(); $outer = pendingOwningOuter28();\necho \"P|\"; $outer->rewind(); $child->next(); echo \"H|\", $middle->current() instanceof PendingOwningCache28 ? 1 : 0, \"|\"; unset($child); echo \"T|\";\n$snapshot = $middle->send(new PendingOwningArgument28()); echo \"V|\", $snapshot instanceof PendingOwningCache28 ? 1 : 0, \"|K|\", $middle->key() === null ? 1 : 0, \"|\";\n$outer->next(); echo \"N|\", $outer->current(), \"|\"; $outer->next(); echo \"DONE|\", $outer->valid() ? 0 : 1, \"|\";\nunset($outer, $middle); echo \"GONE|\"; unset($snapshot); echo \"E\";\n",
+    "source_sha256": "855cbfa5d901e728830d4d0c40053bb18c56d3fe6e070d3117359538b968ede4",
+    "expected": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|M|C|L|H|1|T|S|V|1|K|1|BODY|1|R|DROP|N|31|TAIL|J|OUTER|29|F|DONE|1|GONE|A|E"
+  },
+  {
+    "id": "generator-pending-owning-return-send-sole-receiver-replacement",
+    "purpose": "Argument evaluation leaves only the selected pending detached middle receiver. The ignored argument destructor throws a supplied Exception; distinct cache cleanup may replace it before caller catch while an owning copied array return follows the native unfinished-slot close lifetime. Observe raw previous-chain and destructor order.",
+    "source": "<?php\nclass PendingOwningLate28 { function __destruct() { echo \"R|\"; } }\nclass PendingOwningReplaceCache28 { function __destruct() { echo \"D|\"; throw new Exception(\"replacement28\"); } }\nclass PendingOwningThrowArgument28 { function __destruct() { echo \"S|\"; throw $GLOBALS[\"injected\"]; } }\nfunction pendingOwningReplaceLeaf28() { echo \"C|\"; yield new PendingOwningReplaceCache28(); echo \"L|\"; return [new PendingOwningLate28()]; }\nfunction pendingOwningReplaceMiddle28() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"BAD-BODY|\"; } finally { echo \"J|\"; } }\nfunction pendingOwningReplaceOuter28() { try { echo \"O|\"; yield from $GLOBALS[\"middle\"]; } finally { echo \"F|\"; } }\nfunction pendingOwningDrop28() { unset($GLOBALS[\"outer\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"DROP|\"; return new PendingOwningThrowArgument28(); }\n$injected = new Exception(\"argument28\"); $child = pendingOwningReplaceLeaf28(); $middle = pendingOwningReplaceMiddle28(); $outer = pendingOwningReplaceOuter28();\necho \"P|\"; $outer->rewind(); $child->next(); echo \"H|\", $middle->current() instanceof PendingOwningReplaceCache28 ? 1 : 0, \"|\"; unset($child); echo \"T|\";\ntry { $snapshot = $middle->send(pendingOwningDrop28()); echo \"BAD-RETURN|\"; }\ncatch (Exception $caught) { echo \"CALLER|\", $caught->getMessage() === \"replacement28\" ? 1 : 0, \"|\", $caught->getPrevious() === $injected ? 1 : 0, \"|\"; }\nunset($caught, $injected); echo \"E\";\n",
+    "source_sha256": "d0045ea8ebd50b570a2475b35ccd66a398e3d217811734d2e73a51d147c86584",
+    "expected": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|M|C|L|H|1|T|F|DROP|S|J|D|CALLER|1|1|ER|"
+  }
+]
