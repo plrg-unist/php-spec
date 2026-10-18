@@ -1,7 +1,7 @@
 {
   "version": 1,
   "milestone": "A17 undefined CV destructuring-key warning before NULL conversion",
-  "status": "independently reviewed and validated; actual-parent composition pending",
+  "status": "independently reviewed, validated and composed over the actual integration parent",
   "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle and tests/semantics/profile.json",
   "base": "8c155678edef5e534b35de9022e54af352bc5286",
   "scope": "Selected by-value fetch in flat direct-CV RHS patterns with CV leaves, wholly by-value or reference-bearing, and an ordinary undefined CV key. The initial captured operand is array-valued. Undefined/NULL-key reference fetches, nested/literal producers and wider source/key diagnostics remain separate. No owned-NUL boundary is entered.",
@@ -89,12 +89,19 @@
     "recovery": "Extract into a recorded-cut checkout's .tools directory: the archive contains seven basename report/fixture/process/source roots and list-undefined-key-reuse-sources-17.py, without a leading .tools component. Absolute argv/cwd are historical provenance. The archive is not a build dependency."
   },
   "actual_parent_review": {
-    "parent": "41cc370dd13230a8059f331595a16522262358b9",
-    "seams": "Incoming270 changes only typed reference-return pair/destructor replay;400 adds define-array case-warning copy/pending branches;404 admits nonowning scalar initial RHS for delayed compound assignments. A17 uses untyped named callbacks, ordinary Throwable handling and global array writes, with none of those selectors. Increment counters use the separate update route. No30/63/409/410/key/ownership helper changed.",
+    "parent": "a2b8470ba646dee6fb3b848ddb33444d2398c5ed",
+    "seams": "Incoming270 changes only typed reference-return pair/destructor replay;400 adds define-array case-warning copy/pending branches;404 admits nonowning scalar initial RHS for delayed compound assignments. A17 uses untyped named callbacks, ordinary Throwable handling and global array writes, with none of those selectors. Increment counters use the separate update route. Final CLASS97 changes141 only for untyped __isset return signatures and408 only for paired magic-empty object-result disposal/cleanup. A17 has no class/__isset/property-empty selector; its isset probes are CV/array paths. No30/63/409/410/key/ownership helper changed.",
     "joined_actor": "No concrete semantic interaction found; pointwise composition and exact FF review add no replay credit."
   },
   "remaining": [
     "Undefined/NULL-key reference-fetch conversion, nested/literal conversion, wider constrained sources/RHS/targets and other source/key diagnostics.",
     "Paused owned-NUL/current-CV NUL behavior, wider callbacks/lifecycle, full array/core closure and offline portability."
   ]
+,
+  "composition": {
+    "parent": "a2b8470ba646dee6fb3b848ddb33444d2398c5ed",
+    "reviewed_private": "50ac10aae45f4e143bc50747f0b99738776f98b8",
+    "runtime_diff_sha256": "210b3ed7b04ed86751128f5cab9d72a9c9a79e51c82b68031f4402bc533368f4",
+    "method": "Pointwise actual-parent composition preserves the accepted 30 task addition and exact 63/410 bodies, six test files and private execution cuts. All other parent runtime/modules, four partial append-only inventory rows and unrelated checkpoints are retained. Independent exact FF review is required; no execution is repeated or credited."
+  }
 }

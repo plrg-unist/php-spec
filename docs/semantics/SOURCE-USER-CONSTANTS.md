@@ -356,7 +356,7 @@ stderr each contain one conversion Warning; strict/peer are quiet. Previous mark
 domains are unchanged; NUL/coerced names, owning/wider values, wider NaN producers
 and full family closure remain partial.
 
-Fresh array definitions with an omitted or captured boolean-false third flag
+Fresh array definitions with an omitted or captured boolean third flag
 recursively dereference source cells into new DIRECT entries. Reinserting surviving
 keys rebuilds NEXT, positions and serial
 metadata; ordinary copies and later source/reference writes preserve the constant.
@@ -404,8 +404,24 @@ the live flag; the original API input and private snapshot keep their distinct
 owners. The existing fold also composes with primitive/carrier trees and fresh
 top-level empties; new exact sources focus certified object leaves. Stored-row
 source validation remains structural and does not reconstruct a past mutable
-flag. True/coerced flags remain partial.
+flag. Coerced flags remain partial.
 [False-flag review](../../coverage/semantics/define-stdclass-array-false-flag-review.json).
+
+A captured true flag emits its ignored-case Warning before recursive validation,
+copying and key lookup. A normal callback may repair or create a captured cycle,
+or install the target key before duplicate reporting. Current reference values
+determine the later snapshot; caller container writes still COW away from the
+original CONFIG input. The header checks source, name carriers, live input and
+available literal facts without folding the input before the Warning.
+
+If that first callback throws, a fresh acyclic array is still copied and
+registered while the same Throwable continues. The destination stays unassigned;
+the original API trace and copied row keep distinct owners. A later duplicate
+Warning uses the existing private-candidate cleanup and retains the old row.
+First-warning throws with cyclic or duplicate arrays remain explicitly Unsupported,
+as do coerced array flags. The established array fold and historical row policy
+are unchanged; new exact witnesses focus primitive and certified stdClass leaves.
+[True-flag review](../../coverage/semantics/define-array-true-flag-review.json).
 
 Top-level empty values use the existing source-pool or retained immutable flag.
 An authenticated immutable empty keeps its table and `PVARRAY true eps`; a mutable
@@ -468,7 +484,7 @@ property writes remain visible through donor rows and copied leaves. No construc
 is replayed, and existing destructor/trace cleanup keeps its ordinary owners.
 [Instance define review](../../coverage/semantics/define-certified-instance-review.json).
 Ordinary uncertified objects, other owning array leaves,
-owning true/coerced flags, coerced names and
+true/coerced flags for direct object payloads, coerced names and
 wider owning define domains remain partial.
 
 Class-qualified `defined` queries reuse inherited lookup and the actual caller's
@@ -775,7 +791,8 @@ The matching engine routes are `ZEND_FUNCTION(define)`/`ZVAL_COPY`,
 and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`. `PHP_FUNCTION(constant)` uses
 exception-class lookup and `ZVAL_COPY_OR_DUP`; `zend_declare_typed_class_constant`
 interns direct string values before installation.
-Stored cyclic trees, other objects, true/coerced array flags,
+Stored cyclic trees, other objects, coerced array flags,
+cyclic/duplicate arrays after an ignored-flag handler throws,
 Stringable names beyond the bounded retained query domain,
 array names beyond the bounded flat query/DEFINE domains,
 array/object values with scalar or null names, true/NULL/NaN

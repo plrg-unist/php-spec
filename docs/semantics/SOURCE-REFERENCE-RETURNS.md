@@ -1144,3 +1144,18 @@ select fresh materialization for nullable returns. This is one local O/unset
 history, separate from wider nonnullable signatures, reentry and physical
 Zend collection. See the
 [local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M103 extends pending-destructor replay to the existing final mixed return
+pair: an outer computed O, middle global `z` and inner `y` under
+`&f():?object`. O's destructor throws `TypeError("pair103")` while both
+nonowning return histories are queued. Native PHP catches that message locally
+and returns detached NULL without a Notice; the unchanged model takes outer
+T:1/r7. The repaired source agrees exactly. A reached proof authenticates the
+final pair at the pending operation exit, the same D-origin TypeError object
+in local C, and root-free consumed-pair recovery to a fresh NULL cell distinct
+from z, y and the prior b alias. An actual exit LINE-only public refusal and
+budget split pass. The new pending route uses the existing pair-site and
+finite modeled Throwable guards; normal pair and single/chain routes are
+unchanged. This is one nullable object TypeError witness, separate from M66's
+normal destructor control and wider multi-active histories. See the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).

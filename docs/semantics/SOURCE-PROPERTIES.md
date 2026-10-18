@@ -601,6 +601,22 @@ implicit-receiver, cold-static, reentry and cycle combinations are outside this
 validated slice.
 [Closure RV review](../../coverage/semantics/magic-empty-closure-rv-review.json).
 
+The paired route also admits a public nonref `__isset(string $name)` with no
+return declaration. Booleans keep the existing decision; an ordinary INSTANCE RV
+caches true in the existing receiver-owning result marker, then ordinary eager
+disposal finishes before Get can start. For a sole RV, its destructor can null the
+caller CV and change the getter-visible value without losing the captured receiver
+or IN_ISSET; Get is inactive during this disposal. A held RV survives the result and
+permits later nested receiver destruction. A destructor throw skips Get and keeps
+the same Exception through receiver release and catch.
+Four originals and 313 focused premises (289 reached +24 derived) cover these
+states, authenticated saved-prefix call certificates, Boolean/source/result
+refusals and budgets. The original normal certificate failure and three diagnostic
+records remain zero credit. Module407 still requires a typed-bool callback;
+other untyped scalar/null/array/internal-object results and wider recursive cases
+remain Unsupported. No new task, owner or generic destruction/GC rule is added.
+[Isset RV review](../../coverage/semantics/magic-empty-isset-rv-review.json).
+
 Constructor promotion declares a property from its original parameter flags and
 source occurrence. A parameter default does not initialize the property, and
 promoted nonnullable types do not acquire ordinary implicit nullable widening.

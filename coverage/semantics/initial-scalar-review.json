@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "milestone": "OP43 scalar RHS entry waits for the first LEFT callback",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/profile",
+  "scope": "In the existing named-handler continuation route, distinct plain CVs with fractional LEFT may initially have NULL, bool, a finite signed64-fitting float or authenticated byte string RHS. LEFT converts and its diagnostic runs before any RHS conversion. Existing PINT single-warning entry stays separate; the shared BOTH entry now admits these non-PINT scalars, including nonnumeric/leading/precision text without parsing it. All existing post-first conversions, notices, storage and error paths are reused; initial reference/undefined/array/object or nonfinite/range-float RHS and unsafe target/lifecycle forms remain partial.",
+  "runtime_revision": "b3fff559f831a419df1fbf877b51a8b8cb3e7f2c",
+  "helper_revision": "b91c970485a56d09c3052dff1dc6b0db0179ef6c",
+  "private_modules": 401,
+  "runtime_sha256": {
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "83390f4c7c97c62bda66dc0854857e390f5298e0132412c700021534b51f85d6"
+  },
+  "engine_basis": [
+    "Pinned Zend/zend_operators.c convert_op1_op2_long and inline bitwise helpers convert LEFT before reading/converting RHS. A first precision-loss handler can repair originally nonnumeric RHS text or replace leading text before its Warning. The initial bitwise two-string specialization is not retried after h changes LEFT to string.",
+    "One new pure bothassign_initial_right_valid predicate accepts NULL/bool, valid-bit finite fitting floats, and valid plain/carrier bytes without parsing text or saving an RHS number. The shared initial BOTH snapshot replaces only its fractional-float RHS test with this predicate; existing source/plan/LEFT-cache/stage1/diagnostic/conversion/storage/schema interfaces stay exact. PINT is excluded from the new predicate, preserving old single-plan disjointness; all prior fractional-RHS values still satisfy finite fitting classification.",
+    "New entry adds no roots or ownership. Strings retain immutable STRINGDATA identity metadata with no HSTRING owner. Later conversion reads current RHS, preserves historical LEFT and then captures any RHS number before its own diagnostics; first supplied throws cancel conversion/store while callback effects survive."
+  ],
+  "contract": [
+    "Author six originals cover initially dynamic bad5, NULL, false, integral10.0, quiet string2 and leading7tail across %=,<<=,>>=,&=,|=,^=. First h checks the exact original RHS, creates alias and writes LEFT99/new RHS. Results2/384/3/4/13/9 have strict result/RHS predicates; RHS callbacks write88 and7/1/10 without replacing saved numbers. Repaired leading7tail emits no original Warning; bad5 is repaired rather than rejected before h.",
+    "Peer initialbad5 unchanged plus liveLEFTabc raises TypeError string^string at25 after default LEFT Deprecated exactly once, without string-specialization retry/store/detachment; later7 reaches alias. InitialNULL repaired to-1.5 then second default/RHSref binding gives cached12^(-1)=-13, target owners3 to2 detach and later alias6 still reaches RHS while target7 stays independent. A source-only first supplied Exception20 beats the invalid RHS error and preserves destination100/nullPrevious/callback99 and alias write-through.",
+    "Focused author166/115 and peer143/169 select four initialized machines, actual new BOTH plan/marker0 with old single refusal, fresh LEFT EHI/entered frame, historical returnedLEFT1, real RHS callback when needed, then fresh CELL/LOCATION/store append or exact no-store TypeError/sole thrown owner. One pure guard matrix checks initial scalar/class/carrier/pointer/source boundaries; accepted scalar projections do not claim exact RHS identity authentication or an early cached conversion. Metadata prefixes across callbacks and atomic equality, alias owners and whole/resumed budgets are separate checks."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-43/source-b3fff559f-author-six/report.json",
+        "sha256": "a65cf92df5ccf5b19c4a9357fe0dcff546c1d46fd835f402b05afce18b51007d",
+        "revision": "b3fff559f831a419df1fbf877b51a8b8cb3e7f2c",
+        "cases": [
+          "initial-scalar-mod-repaired-carrier",
+          "initial-scalar-shift-null-entry",
+          "initial-scalar-right-bool-entry",
+          "initial-scalar-and-integral-entry",
+          "initial-scalar-or-text-entry",
+          "initial-scalar-xor-leading-entry"
+        ],
+        "agreements": 6
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-43/review-model-b3fff559f-three/report.json",
+        "sha256": "23f3f7e66f000a69b85cb3f39653e870b89d911288f5c806e5fffdca2aafba74",
+        "revision": "b3fff559f831a419df1fbf877b51a8b8cb3e7f2c",
+        "cases": [
+          "initial-scalar-bad-xor-default",
+          "initial-scalar-null-negative-reference-default",
+          "initial-scalar-bad-first-throw"
+        ],
+        "agreements": 3
+      }
+    ],
+    "state": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-43/state-b91c97048-four/report.json",
+        "sha256": "a774894bb970d45f424987956a05f9983c10ec002f99771c1906bca26fc4b449",
+        "revision": "b91c970485a56d09c3052dff1dc6b0db0179ef6c",
+        "modules": 401,
+        "cases": [
+          "initial-scalar-mod-repaired-carrier",
+          "initial-scalar-and-integral-entry",
+          "initial-scalar-bad-xor-default",
+          "initial-scalar-null-negative-reference-default"
+        ],
+        "conditions": [
+          166,
+          115,
+          143,
+          169
+        ],
+        "total": 593
+      }
+    ],
+    "total_source_agreements": 9,
+    "total_focused_state_conditions": 593,
+    "compatibility": "The new predicate/shared initial snapshot and all original sources remain exact through two helper-only commits; full author6/peer3 source selections authenticate focused2+2 using retained original paths/native bytes, with no source/native replay."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-43/baseline-5ffac6964-mod-repaired-carrier/report.json",
+      "sha256": "94716aa30e20a1861e3012b52c4c5285674782c21741748e92d0940c73098341",
+      "result": "Accepted checked Unsupported before any H1; empty semantic streams, reason error-handler ingress requires a producer continuation, model exit1/credit0; no boundary override."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-43/native-5ffac6964-author-six/report.json",
+        "sha256": "c41dddbe3b6f2e0b9a544123773fec81ec55353f52c71affa6576cb3ad2d9019"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-43/native-5ffac6964-review-three/report.json",
+        "sha256": "31210d2df3b4df947a479500f311e1d05815fcf893a076d894cdcb3ff2532e96"
+      }
+    ],
+    "checked_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-43/state-prep-b91c97048-four/report.json",
+        "sha256": "1bdc08c522f427e18e56a924ca7a47798a7e43882852343bdd14405c93a8a7b9",
+        "result": "Checked frontend/adapter only; original source paths/native bytes retained, zero application/native/numeric replay, workers exit0/reaped."
+      }
+    ],
+    "standalone_syntax": "Four standalone undefined-pstate diagnostics carry zero semantic credit."
+  },
+  "required_follow_on": [
+    "Initial forms outside the retained PINT route and admitted non-PINT scalar entry, pre-snapshot reference/expired/rebound RHS, initial owning arrays/objects, nonfinite/out-of-range floats, unsafe owning/constrained/missing targets and wider callback/lifecycle behavior remain partial. Admitting text at entry does not make an unsupported later conversion successful; unchanged post-first boundaries still apply.",
+    "All15 affected inventory rows remain partial. OP42 and earlier cuts receive zero renewed credit; OP12 remains paused."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-43",
+    "environment": "LC_ALL=C,TZ=UTC,no PHP_SPEC_SCRIPT_ENCODING. Native/baseline and changed sourceCPU3; focused prep/SL CPU3. Native30/modelCLI60-process90; checked workers30/full401 immutable SL120 per group; syntax separately0. Exact true newline/empty stderr/exits0/no interruption/reaped groups/PIDs.",
+    "commands": [
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 tests/semantics/initial_scalars.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 tests/semantics/initial_scalar_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-43/state-prep-b91c97048-four/run-prepare.py",
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-43/state-b91c97048-four/run-state.py"
+    ],
+    "record": "Restore matching Git cuts/local tools and fresh output roots; external records retain exact original paths/bytes/native streams/commands/exits/reaping. Copied tools add no rebuild/portability claim; archive is not a runtime dependency.",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "numeric_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "composition": {
+    "parent": "7b512c0bba71d84d33eb0f14cecfd16403d6f3be",
+    "private_publication": "29054cce954be2e570f4fcc78a1839f7152330fe",
+    "modules": 401,
+    "runtime_sha256": {
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "83390f4c7c97c62bda66dc0854857e390f5298e0132412c700021534b51f85d6"
+    },
+    "other_incoming_paths_preserved": 50,
+    "gate": "No joined actor:404 and six tests retain exact private bytes, and every other spec byte/401 manifest is parent-exact. Seven incoming runtime paths require first-class callable string-carrier production, pending reference-return destructor replay, Generator parked-input history, LIST_FETCH null-key warning/reference control, or DEFINE/constant object-query CONFIG sources. None occur in these nine originals: h is named and untyped with literal returns, objects are builtin Throwables, strings are ordinary scalar values, and there is no Generator/yield, first-class callable, define/constant/defined, LIST or explicit destructor API. The V74 tail changes only DEFINE array/case-flag warning validation, finish and pending-throw registration under CONFIG_INVOKE/DYNAMIC_CONSTANT_CASE_WARNING, absent here. Shared404/35/39/40/54/55/conversion/parser/carrier/handler/storage/ownership interfaces remain unchanged. Source9@b3fff559f and state593@b91c97048 retain private401 cuts without replay or renewed credit."
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "scope": "Paired inherited terminal empty with untyped-return nonref string-name __isset: ordinary INSTANCE RV disposal before Get; sole/held/throw and false skips Get.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_gate_completed": true,
+  "native_revision": "f8794af8e7f1adb166c50d513c06e3acf264e9bb",
+  "native_report_sha256": "396da89cbb2424b49545b979f5c8b91a3a88eb5c862ca7083f6005034dce32d3",
+  "cases": [
+    {
+      "id": "normal",
+      "source_file": "magic-empty-isset-rv-normal.php",
+      "source": "<?php\nclass IssetPayload97 {\n    public function __destruct() {\n        global $child, $next;\n        echo 'V|';\n        $child = null;\n        $next = 0;\n        echo 'v|';\n    }\n}\nclass IssetParent97 {\n    private int $value = 1;\n    public function __isset(string $name) {\n        echo 'I|';\n        return new IssetPayload97();\n    }\n    public function __get($name) {\n        global $next;\n        echo 'G|';\n        return $next;\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass IssetChild97 extends IssetParent97 {}\n$held = null;\n$next = 1;\n$child = new IssetChild97();\necho 'N:';\necho empty($child->value) ? 'T' : 'F', '|';\n$held = null;\n$child = null;\necho 'E|';\n",
+      "source_sha256": "cbe9e6eec66e78579dce135d1830fc6f9cc05281a951a211178591314ea22f81",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-empty-isset-rv-private-97/.tools/magic-empty-isset-rv-probes-97/normal.php",
+      "native_group": "native-first",
+      "stdout_base64": "TjpJfFZ8dnxHfER8VHxFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "empty_line": 29,
+      "native_raw_sha256": "561e4a2de92a45d40bb9c804f3fb4dbbf22e88ffd5347c5e3af38bbc2a9390ea",
+      "status": "normal"
+    },
+    {
+      "id": "held",
+      "source_file": "magic-empty-isset-rv-held.php",
+      "source": "<?php\nclass IssetPayload97 {\n    public function __destruct() {\n        global $child, $next;\n        echo 'V|';\n        $child = null;\n        $next = 0;\n        echo 'v|';\n    }\n}\nclass IssetParent97 {\n    private int $value = 1;\n    public function __isset(string $name) {\n        global $held;\n        echo 'I|';\n        $rv = new IssetPayload97();\n        $held = $rv;\n        return $rv;\n    }\n    public function __get($name) {\n        global $next;\n        echo 'G|';\n        return $next;\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass IssetChild97 extends IssetParent97 {}\n$held = null;\n$next = 1;\n$child = new IssetChild97();\necho 'H:';\necho empty($child->value) ? 'T' : 'F', '|';\n$held = null;\n$child = null;\necho 'E|';\n",
+      "source_sha256": "19e9816aabf08944604baee21c9e1573a54e357f285254b385476516ae86a31d",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-empty-isset-rv-private-97/.tools/magic-empty-isset-rv-probes-97/held.php",
+      "native_group": "native-first",
+      "stdout_base64": "SDpJfEd8RnxWfER8dnxFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "empty_line": 32,
+      "native_raw_sha256": "f506a860297da1546917b01327a38f278e9d4f8b4c99892b89729a4fdb7c6e33",
+      "status": "normal"
+    },
+    {
+      "id": "throwing",
+      "source_file": "magic-empty-isset-rv-throwing.php",
+      "source": "<?php\nclass IssetPayload97 {\n    public function __destruct() {\n        global $child, $next;\n        echo 'V|';\n        $child = null;\n        $next = 0;\n        echo 'v|';\n        throw new Exception('isset-rv-stop');\n    }\n}\nclass IssetParent97 {\n    private int $value = 1;\n    public function __isset(string $name) {\n        echo 'I|';\n        return new IssetPayload97();\n    }\n    public function __get($name) {\n        global $next;\n        echo 'G|';\n        return $next;\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass IssetChild97 extends IssetParent97 {}\n$held = null;\n$next = 1;\n$child = new IssetChild97();\necho 'X:';\ntry {\n    echo empty($child->value) ? 'T' : 'F', '|';\n} catch (Exception $caught) {\n    echo 'C|';\n}\n$held = null;\n$child = null;\necho 'E|';\n",
+      "source_sha256": "28ada15cd50a6406532159db6ded3a20b7df70f02eeb25bf1e951cf79afdaf3d",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-empty-isset-rv-private-97/.tools/magic-empty-isset-rv-probes-97/throwing.php",
+      "native_group": "native-first",
+      "stdout_base64": "WDpJfFZ8dnxEfEN8RXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "empty_line": 31,
+      "native_raw_sha256": "610ce1a0ce232646214a69c3a04a3a986f7ca2785808ebbf1718fb84bb2ba2dd",
+      "status": "normal"
+    },
+    {
+      "id": "false",
+      "source_file": "magic-empty-isset-rv-false.php",
+      "source": "<?php\nclass IssetParent97 {\n    private int $value = 1;\n    public function __isset(string $name) {\n        global $child;\n        echo 'I|';\n        $child = null;\n        return false;\n    }\n    public function __get($name) {\n        global $next;\n        echo 'G|';\n        throw new Exception('unexpected-get');\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass IssetChild97 extends IssetParent97 {}\n$held = null;\n$next = 1;\n$child = new IssetChild97();\necho 'F:';\necho empty($child->value) ? 'T' : 'F', '|';\n$held = null;\n$child = null;\necho 'E|';\n",
+      "source_sha256": "2c49969bf5e9696b431f6a67ef8c126d56db7bdb17fe72fdb0aabb6b6b28baa6",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-empty-isset-rv-private-97/.tools/magic-empty-isset-rv-probes-97/false.php",
+      "native_group": "native-first",
+      "stdout_base64": "RjpJfER8VHxFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "empty_line": 22,
+      "native_raw_sha256": "461403d6ad9dedbd245496ae5a07bea8e1cb81adcf87729f52bb4b8064f375b5",
+      "status": "normal"
+    }
+  ]
+}

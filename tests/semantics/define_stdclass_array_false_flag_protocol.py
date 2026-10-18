@@ -56,7 +56,7 @@ def flag_checks():
         '~$dynamic_constant_case_flag(pconfigcall)',
         'pconfigcall_true = pconfigcall[.SENT = pconfigcall_before.SENT ++ [NAMED_SENT (KNOWN (PBOOL true))]]',
         '$dynamic_constant_case_flag(pconfigcall_true)',
-        '~$dynamic_array_call_valid(S,pconfigcall_true)',
+        '$dynamic_array_call_valid(S,pconfigcall_true)',
         'pconfigcall_nonbool = pconfigcall[.SENT = pconfigcall_before.SENT ++ [NAMED_SENT (KNOWN (PINT 0))]]',
         '$dynamic_define_values(pconfigcall_nonbool) = eps',
         '~$dynamic_array_call_valid(S,pconfigcall_nonbool)']
@@ -85,7 +85,7 @@ def checks(initial,name,stdout):
         return values
     values += ['pconfigcall.SITE = PORIGIN 1 pcpath_call',
         'pconfigcall.SELECTION = (n_selection)',
-        '~$dynamic_array_duplicate_valid(S_dispatch,pconfigcall_true,n_candidate,pvalueclass,n_constants)',
+        '$dynamic_array_duplicate_valid(S_dispatch,pconfigcall_true,n_candidate,pvalueclass,n_constants)',
         '~$dynamic_array_duplicate_valid(S_dispatch[.SELECTEDCALLS = eps][.SELECTSEQ = 0],pconfigcall,n_candidate,pvalueclass,n_constants)',
         'puserconstant_old.VALUE = PARRAY n_old_root',
         *duplicate.reach('S_done','S_dispatch',0,target),
