@@ -2840,6 +2840,15 @@ links eligible source and `stdClass` parents at their required publication time;
 `instanceof` and class types follow transitive ancestry. Its [review](coverage/semantics/inheritance-review.json)
 binds source, compiler, syntax and paused-state checks. Other internal-class
 bodies and method callbacks remain open.
+
+Dynamic `instanceof` captures the RHS class from a CV or zero-argument producer
+before ordinary RHS cleanup. Its destructor can replace a delayed left CV; an owning
+left temporary instead survives until matching has cached the Boolean.
+Runtime class strings use case-insensitive fully qualified lookup without
+imports or autoload, and an invalid RHS errors before reading the left.
+Four originals and 335 focused premises are recorded in the
+[dynamic RHS review](coverage/semantics/dynamic-instanceof-review.json).
+
 A single builtin `#[AllowDynamicProperties]` permits dynamic slots on named
 classes and descendants while ordinary classes retain deprecation. Invalid
 trait/interface/readonly targets preserve diagnostic priority and keyword lines;

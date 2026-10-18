@@ -1,0 +1,143 @@
+{
+  "scope": "Selected dynamic RHS instanceof with ordinary CV or zero-argument named by-value producer operands; source INSTANCE/stdClass or runtime byte-string class capture, delayed borrowed left versus owned temporary, invalid-type priority and atomic numeric/string-literal left folding.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_compile.c zend_compile_instanceof compiles left first but folds a constant left to false without compiling RHS; otherwise zend_compile_class_ref uses NO_AUTOLOAD|EXCEPTION|SILENT. Runtime CV strings use DEFAULT/FQ lookup rather than namespace/import or constant-keyword expansion.",
+      "Zend/zend_vm_def.h ZEND_FETCH_CLASS captures an object class without __toString, fetches strings or throws invalid-type Error, then FREE_OP2 runs before INSTANCEOF. ZEND_INSTANCEOF reads the delayed left and caches its Boolean before FREE_OP1."
+    ]
+  },
+  "implementation": {
+    "revision": "3b63d71c7127b3a1bf728befc3a1c3a1a83f73ec",
+    "files": [
+      "spec/semantics/126-class-compiler.watsup",
+      "spec/semantics/127-class-runtime.watsup",
+      "spec/semantics/30-storage.watsup"
+    ],
+    "basis": "Three stages preserve the original left operand, capture RHS class history and resolve left after ordinary RHS disposal. Only a KNOWN left temporary contributes an owner; captured RHS metadata does not. Exact source/name/line certificates guard actual fronts, while queued RHS evaluation does not inspect transient RESULT. Initial object capture requires live/bounded class identity; result validation retains history after RHS retirement. Invalid nonowning RHS errors before left resolution. Scanner int/float/string literals alone use the false/skip shortcut. Existing name-RHS rules, manifest, generic calls/ownership/destruction/GC stay unchanged."
+  },
+  "validation": {
+    "native": {
+      "path": "/home/user/workspace/php-spec/.tools/instanceof-dynamic-private-102/.tools/instanceof-dynamic-probes-102/native-first/report.json",
+      "sha256": "1701b197f02da9741a250dc63ca819d857434540466fdefa9a3c953b97ad5869",
+      "revision": "4ff5f52eff1a0d23e71be1ba2de17fcdbdc223b1",
+      "result": "Four exact normal tuples18/16/12/60, quiet stderr/exit0; zero source credit."
+    },
+    "baseline": {
+      "path": "/home/user/workspace/php-spec/.tools/instanceof-dynamic-private-102/.tools/instanceof-dynamic-probes-102/accepted-current-baseline/report.json",
+      "sha256": "1fe2f7da99dc5b3b45e5ac28a9a89c06ec285f3f5bc8166d5cc16739817283f3",
+      "revision": "4ff5f52eff1a0d23e71be1ba2de17fcdbdc223b1",
+      "result": "Four genuine frontend-accepted/adapter-checked Unsupported ordinary expression or writable operand compilation, CLI1/empty stdout and stderr/zero agreements."
+    },
+    "source": {
+      "path": "/home/user/workspace/php-spec/.tools/instanceof-dynamic-private-102/.tools/instanceof-dynamic-probes-102/changed-model-sopy06br/report.json",
+      "sha256": "6b927dca645301900288ac8cee94f65612a4167d81ff49f39a7c6baa51c17500",
+      "revision": "3b63d71c7127b3a1bf728befc3a1c3a1a83f73ec",
+      "result": "Four exact checked normal agreements18/16/12/60, quiet stderr/exit0;13.049/11.988/10.675/9.737seconds."
+    },
+    "focused_borrowed": {
+      "path": "/home/user/workspace/php-spec/.tools/instanceof-dynamic-private-102/.tools/instanceof-dynamic-protocol-mcw77c_a/report.json",
+      "sha256": "cd1d17c1991e78963176c5c25e8e665e413dd78c4509a5fe0bf2608bedfcb377",
+      "revision": "4597d7be4eba014260248e7c53284589c032aa25",
+      "result": "Overall report is false. Only borrowed105=97reached+8derived independently accepted from its exact true, AL7.471/SL19.871seconds. Owning99 is false/zero; later cases unrun."
+    },
+    "focused_owning": {
+      "path": "/home/user/workspace/php-spec/.tools/instanceof-dynamic-private-102/.tools/instanceof-dynamic-protocol-u9i38nke/report.json",
+      "sha256": "dcb6e3c34e2058ec20a89a071d74068f6646c474db5c62c894e8a4409318f47d",
+      "revision": "6699508659876cb9ec8ac981fbc60539e1ed5aba",
+      "result": "Overall report is false. Only corrected owning101 reached independently accepted from its exact true, AL7.424/SL18.985seconds. Strings65 is false/zero; invalid unrun."
+    },
+    "focused_remaining": {
+      "path": "/home/user/workspace/php-spec/.tools/instanceof-dynamic-private-102/.tools/instanceof-dynamic-protocol-2yg04o2m/report.json",
+      "sha256": "88e67e250cb6ec1cefdb2b29502c8f7c8cf92ef613db777fb2e48b7274c9f800",
+      "revision": "44e95391ecfb95bc68f26936c43b3bdd212d50df",
+      "result": "Strings65 and invalid64=51reached+13derived both exact true,129=116+13/app2/source0. AL7.435/7.411 and SL14.028/10.911seconds."
+    }
+  },
+  "focused_scope": "Combined335=314reached+21derived in four independently accepted groups across three tested cuts, not either false enclosing report as a whole. Actual CLASS owner drop and full saved call validity during RHS destructor; expired nonowning class history remains valid. Borrowed left sees replacement, owned left retains original and its destructor sees cached true. Literal7 compiles false without RHS compilation/execution. Runtime string stages prove case/FQ/no import alias/no autoload with unchanged registry. Invalid RHS leaves left undefined without Warning, materializes the same Error caught with destination42. Zero/split budgets span real disposal/error boundaries. Retired/OOB RHS and wrong RHS name/line/source controls are derived refusals/Unsupported, not source credit.",
+  "nonpassing": [
+    {
+      "record": "validation.focused_borrowed",
+      "case": "owning99",
+      "credit": 0,
+      "cause": "Fixture selected destructor_operation_for in the active destructor callee although it requires caller CURRENT/ORIGIN. Correction binds actual destructor_context_call.OPERATION; cached true/SOURCE/full guard retained. Only owning plus previously unrun cases repeated."
+    },
+    {
+      "record": "validation.focused_owning",
+      "case": "strings65",
+      "credit": 0,
+      "cause": "DI_CLASS_STRING queried quiet_operand on a BUDGET pause then required NORMAL. Fixture helper now guards NORMAL or BUDGET and queries only the NORMAL view, excluding abrupt states. Only strings and unrun invalid repeated."
+    },
+    {
+      "case": "invalid64 preparation",
+      "credit": 0,
+      "cause": "Before its first execution, replaced premature THROW_SEARCH expectation by actual materialized THROWING n_error; the next ordinary driver entry calls throwable_begin. No failed invalid actor or diagnostic. No runtime repair or accepted-source renewal."
+    }
+  ],
+  "reproduction": {
+    "cwd": "/home/user/workspace/php-spec/.tools/instanceof-dynamic-private-102",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": "absent",
+      "jobs": 1
+    },
+    "profile": "tests/semantics/profile.json",
+    "native_baseline": "Ready watch-affinity.py native-first native 4; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 4 python3 -u .tools/instanceof-dynamic-probes-102/run.py native --revision 4ff5f52eff1a0d23e71be1ba2de17fcdbdc223b1; after PASS/reap fresh accepted-current-baseline model 4 watcher and same actor baseline.",
+    "source": "Ready capture-candidate-affinity.py 5 changed-model- 4 changed-source-102; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 5 python3 -u .tools/instanceof-dynamic-probes-102/run.py changed --revision 3b63d71c7127b3a1bf728befc3a1c3a1a83f73ec",
+    "focused": [
+      "Ready watch-state-affinity.py 5; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 5 python3 -u tests/semantics/instanceof_dynamic_protocol.py --revision 4597d7be4eba014260248e7c53284589c032aa25",
+      "Ready watch-state-affinity-repair1.py 5; same environment/taskset 5 and driver --case owning --case strings --case invalid --revision 6699508659876cb9ec8ac981fbc60539e1ed5aba",
+      "Ready watch-state-affinity-repair2.py 5; same environment/taskset 5 and driver --case strings --case invalid --revision 44e95391ecfb95bc68f26936c43b3bdd212d50df"
+    ],
+    "caps": "Native45/model60/outer75/100000steps. Each selected group serial AL90 then strictSL90/cachefalse/dettrue/fail-first. Checked --prepare-only has zero semantic applications. State observers cap840seconds.",
+    "affinity": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/instanceof-dynamic-private-102/.tools/instanceof-dynamic-probes-102/affinity-native-first.json",
+        "sha256": "4be6826ef4e17cb136e139b8237b51068eeca600d64a200e78393bd0193bd10a",
+        "result": "Partial2/4 CPU4: borrowed mask/emptyargv and strings fullargv. Other fast children missed; taskset-parent provenance retained, observer stopped/reaped without sampling-only replay."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/instanceof-dynamic-private-102/.tools/instanceof-dynamic-probes-102/affinity-accepted-current-baseline.json",
+        "sha256": "755ae386985888eef8c810126b3cdd10b4afcd67ef1b64324dfe5d19bd54b9d1",
+        "result": "Complete4CPU4/fullargv."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/instanceof-dynamic-private-102/.tools/instanceof-dynamic-probes-102/affinity-changed-source-102.json",
+        "sha256": "e3e9514099593db82caf3df38c22fdbf3f2f783626c8126a5dce33dd119d188f",
+        "result": "Complete4CPU5/fullargv."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/instanceof-dynamic-private-102/.tools/instanceof-dynamic-probes-102/affinity-state-102.json",
+        "sha256": "3345541207a012ec0e7fe3f7d7c307bd5528805d79735993a9d150189debf1b8",
+        "result": "Four CPU5/fullargv captures of expected8; stopped/reaped after first owning failure."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/instanceof-dynamic-private-102/.tools/instanceof-dynamic-probes-102/affinity-state-102-repair1.json",
+        "sha256": "871f482538bbce7b1ef94da0712add5e0ba858372ccc2142cc17a3f52ee60601",
+        "result": "Four CPU5/fullargv captures of expected6; stopped/reaped after first strings failure."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/instanceof-dynamic-private-102/.tools/instanceof-dynamic-probes-102/affinity-state-102-repair2.json",
+        "sha256": "99855bfeb4be65e6482b7d569d66c305ece0c0354e3df23e75b8ec2cb32cfb76",
+        "result": "Complete4CPU5/fullargv for strings/invalid."
+      }
+    ],
+    "stability": "All accepted inputs/head/status/fixtures stable; workers/observers reaped, PIDs absent and groups empty. No timeout/interruption. Earlier false groups remain zero; no unrelated replay or diagnostic actor."
+  },
+  "limits": "Other operand expressions, constant-expression forms, reference-return producers, other internal RHS object kinds, interfaces/autoload execution, owning invalid RHS and wider warning/unwind/throwing-RHS-destructor histories remain partial. Borrowed native example explicitly retains the old-left alias; no sole-old-object/GC-buffer preservation or broader lifetime claim. Name-RHS behavior remains its original cut. NaN/paused families untouched.",
+  "artifacts": "Maintained source/catalogue/harness recover from the tested commits. Ignored original PHP/private driver/reports/streams/process records and generated fixtures remain at their original paths; no bulky archive, backup or receipt chain tracked.",
+  "review": {
+    "independent": "class_review_84",
+    "status": "Native/genuine baseline/source4, all four focused subsets and concise publication independently accepted; separate tested cuts, both enclosing false reports and wider limits explicit."
+  },
+  "tools": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "source_driver_sha256": "6352ff088e75853aaf91083f6054a28e5a961b3b3ffca32d394c1f72cd94d183",
+    "focused_driver_sha256": "1f8f9b711377315dad3e39647b3cbec8d4ad55e75b844a0852a5314f6a8887a8",
+    "state_observer_sha256": "e54ebe8710f3c1fe622c09429f7b24fb79eb0ef19630015eaee3470bf4f183cc"
+  }
+}

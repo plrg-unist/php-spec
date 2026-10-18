@@ -7,28 +7,23 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Paired `empty` now accepts live arrays returned by inherited untyped `__isset`.
-Array truth is cached before ordinary disposal. A sole table retires before its
-payload destructor, which can clear the caller CV and change the captured getter's
-value from 1 to 0; a held table instead preserves its payload through Get/result.
-A supplied payload-destructor Exception cancels Get and preserves destination 42
-and the same catch object. A mutable empty table with NEXT1/SERIAL1 caches false,
-retires before receiver destruction and skips a deliberately throwing Get.
-Four originals agree at `ee77488c6`; 416 focused premises at `25cda991d`
-(403 reached +13 derived) cover these owners, guards, saved call validity,
-retirement/catch and budget resumes. Bounds/retired-table refusals and a derived
-old-object truth bridge stay separate from source credit. All semantic actors
-passed on their first attempt. Only408 changes: live-array readiness and guarded
-pure truth caching; existing bool/object behavior, VALUEtrue cleanup certificate
-and generic array/destruction/GC code remain unchanged. Ordinary/no-Get407 still
-requires typed-bool `__isset`; other result kinds and wider lifetimes remain open.
-[Isset array RV review](coverage/semantics/magic-empty-isset-array-rv-review.json).
-
-Composed over `a14ba42f5`/405 after independent actual-parent review. Incoming
-reference-return, Generator, arithmetic, Closure-image and DEFINE selectors
-are unselected; module408 stays publication-exact, every other runtime path
-and the ordered405 manifest retain parent bytes. Source4/state416 keep their
-private cuts without a joined actor or renewed execution credit.
+Dynamic-RHS `instanceof` now captures the class of a live source object or `stdClass`
+before ordinary RHS disposal. A returning RHS destructor can replace the delayed
+left CV; an owning left temporary instead survives matching and its destructor
+observes the cached Boolean. Runtime strings use case-insensitive fully qualified
+lookup without imports or autoload. Invalid RHS types error before reading an
+undefined/scalar left and preserve destination 42. A scanner int/float/string literal left
+folds false without compiling or executing the RHS.
+Four originals agree at `3b63d71c7`; 335 focused premises (314 reached +21 derived)
+combine borrowed 105 at `4597d7be4`, owning 101 at `669950865`, and strings 65/invalid 64
+at `44e95391e`. Full saved call validity, expired nonowning class history,
+source/name/line refusals, exact Error/catch and zero/split budgets are covered.
+Earlier owning/strings fixture failures stay zero in their false enclosing reports;
+only affected/unrun groups repeated. No runtime repair or diagnostic actor was needed.
+Only modules 126/127/30 add the staged consumer; name-RHS rules, manifest and generic
+ownership/destruction/GC remain unchanged. Wider expressions/object kinds,
+reference-return operands, owning invalid RHS and throwing-RHS lifetimes stay open.
+[Dynamic instanceof review](coverage/semantics/dynamic-instanceof-review.json).
 
 Retained propertyless Stringable `define` names now receive captured NULL flags
 with primitive candidates in admitted user-global/class-name domains. One module400
