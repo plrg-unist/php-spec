@@ -55,7 +55,7 @@ used simple-CV yield with one authenticated live input, or
 detached current with a node-free copied return, pending initialization returns
 before body entry but the physical frame remains parked at the native exception operation. Later
 explicit close skips that frame's finally even though initialization is cleared.
-Real CV/context owners still retire through the existing frame jobs; owning
+Real CV/context owners still retire through the existing frame jobs; other owning
 suspended task/held temporaries are excluded. The API's transient copied current
 keeps a cache alive through sole receiver close, then releases before caller catch.
 A cache destructor can replace the injected exception with its previous chain
@@ -69,6 +69,12 @@ in the request object-store pass. It is neither released before caller catch nor
 owned by the transient current copy. Cache/input aliases and a distinct throwing
 cache preserve their separate counts in the
 [pending-buffered review](../../coverage/semantics/generator-pending-buffered-throw-review.json).
+At a bare yield in one by-value array `foreach`, parked close instead transfers
+the iteration container count into request retention before releasing CV/context
+owners. It removes that iterator without decrementing the array; visited-item
+CVs, locals and cached current copies still retire normally. Embedded cells keep
+their live referents, and an array-owned Generator closes in the object-store
+pass. See the [parked-foreach review](../../coverage/semantics/generator-pending-foreach-throw-review.json).
 
 The release walk preserves physical owner order, including compiled local-slot
 order and key-before-value cleanup after a forbidden keyed yield. It can close

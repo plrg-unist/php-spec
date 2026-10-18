@@ -21,9 +21,11 @@ now retain captured arrays or source reference cells through handlers, including
 recursive by-value CV/literal and mixed CV patterns, with ordered null delivery
 and normal/throw cleanup. These patterns also freeze quiet converted variable keys
 across callbacks while later key variables are read afresh.
-Flat CV-source patterns also resume lossy float keys in by-value fetches.
-Mixed patterns release the old table's temporary protection first: expiry supplies
-null, while a surviving table can enter the following missing-key warning.
+Flat CV-source patterns also resume lossy float keys in value and reference fetches.
+Value fetches in mixed patterns release the old table's temporary protection first:
+expiry supplies null, while a surviving table can enter the following missing-key warning.
+Reference fetches make the array writable before the callback, then bind into the
+selected table only if one owner remains; zero or multiple owners yield a detached null reference.
 
 The [checked eval parser service](docs/semantics/DYNAMIC-SOURCE-SERVICE.md)
 accepts raw eval-source bytes, uses a native parse-only scanner for rejection
@@ -671,6 +673,12 @@ through a second Warning. The saved parse survives RHS writes, reference rebindi
 and unset; successful stores detach aliases, while Errors and supplied throws
 cancel the store. Eleven originals and 1211 focused SL premises pass in the
 [leading string ledger](coverage/semantics/leading-string-review.json).
+Fractional numeric strings now retain protected text through precision Deprecated,
+preceded by Warning for leading text, in those same six compound routes. Both
+saved numbers and later diagnostic messages survive RHS replacement, references
+or unset. Success detaches late aliases; errors and supplied throws cancel the
+store. Twelve originals and 1089 focused SL premises pass in the
+[precision string ledger](coverage/semantics/precision-string-review.json).
 
 In those both-fractional routes, a nonnumeric string or array RHS produced by the
 first callback now raises TypeError with the live operand types. Callback writes
@@ -943,6 +951,11 @@ With a buffered input, pending `throw` preserves its count; physical close retai
 it until request-store destruction, including receiver cleanup before caller
 catch. The independent current copy can still trigger a replacement exception. See the
 [pending-buffered review](coverage/semantics/generator-pending-buffered-throw-review.json).
+At a bare yield inside one by-value array `foreach`, parked close retains the
+iteration container while locals and current caches retire normally. Its payloads
+are destroyed in the request-store pass; embedded references remain mutable, and
+independently started Generators in that array close there. See the
+[parked-foreach review](coverage/semantics/generator-pending-foreach-throw-review.json).
 [Delegation](docs/semantics/GENERATOR-DELEGATION.md)
 adds arrays, source Iterators and shared Generator graphs with live raw caches
 and natural return/unwind. Aggregate yield-from now acquires nested real iterator
@@ -1102,6 +1115,18 @@ recovers normally after the caught error.
 [Four new source agreements and 487 state premises](coverage/semantics/constant-query-excess-arity-review.json)
 cover counts 3/4/5, strict priority, class-like request names and normal recovery.
 Owning and packed/named arity-error handling remains partial.
+One positional array name now raises TypeError in `constant()`/`defined()` before
+lookup, in weak and strict calls. Flat arrays admit primitive nonstring and
+authenticated string-carrier leaves, including live scalar reference cells.
+[Four source agreements and 533 state premises](coverage/semantics/constant-query-array-name-review.json)
+cover raw array traces, caller/trace COW and shared reference updates. Nested,
+object/legacy-string leaves and wider call forms remain open.
+The same flat array-name domain now raises TypeError in positional `define()`
+with primitive candidates and omitted/primitive flags, before flag reception or
+registration. Later arguments still run and can change ordinary fields or shared
+references after the name capture.
+[Four source agreements and 590 state premises](coverage/semantics/define-array-name-review.json)
+cover NULL/strict-flag/body-warning priority and raw array/candidate/flag traces.
 Positional `define()` calls with primitive arguments also reject counts below two
 or above three before name/flag reception or registration. Exact count messages
 and raw API arguments survive all argument effects, including a captured true
@@ -1271,8 +1296,11 @@ Recursive array arguments with ordinary string user keys and omitted/false flags
 raise parameter-2 `ValueError` before copying or duplicate reporting. Validation
 observes reference changes from every argument expression, while shared acyclic
 children still copy independently. [Recursive-input review](coverage/semantics/define-recursive-array-review.json).
-Plain compiled literal-string leaves, uncertified owning values and wider array
-warning/flag paths remain partial.
+Byte-only string leaves, including compiled literals, preserve their exact bytes
+through array copying, query COW and duplicate cleanup, including empty, one-byte
+and binary values. Existing string carriers retain their own identity checks.
+[Literal-string array review](coverage/semantics/define-literal-string-array-review.json).
+Uncertified owning values and wider array warning/flag paths remain partial.
 String-name `define` with an omitted/false flag now shares already-certified
 stdClass donors. Named/selected calls preserve the captured pointer through later
 CV changes, and duplicate handlers keep the old binding and property writes on
@@ -2297,6 +2325,13 @@ premises/8 actual steps preserve GC-enabled observations, a sole cold Fiber owne
 and skipped aggregate tails. Later explicit calls expose the flag change and VM
 execution. Special intrinsic kinds and wider protocols remain partial.
 [Intrinsic/API review](coverage/semantics/weakmap-api-comparison-review.json).
+
+Fixed CURRENT and static BIND API Closures also compare with live WeakMap before
+invocation or private traversal. Two originals and 372 Boolean premises/eight actual
+comparisons preserve real frames, captures and bindings; later calls distinguish
+CURRENT caller identity/Error and BIND's selected receiver. The old literal binding-
+scope carrier failure stays zero; its supported class-name workaround leaves that
+dependency open. [Special API review](coverage/semantics/weakmap-special-api-comparison-review.json).
 
 Getter Closures and first-class `Closure::fromCallable` factory Closures also
 compare with live WeakMap before receiver or private-entry traversal. Two exact

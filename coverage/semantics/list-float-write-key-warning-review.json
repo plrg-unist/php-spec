@@ -1,0 +1,120 @@
+{
+  "version": 1,
+  "milestone": "A14 writable destructuring lossy-float key conversion",
+  "status": "independently reviewed and validated; pointwise actual-parent composition recorded",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle and tests/semantics/profile.json",
+  "base": "6b07628917ec22779339978d8be5dd3b461d8d3a",
+  "scope": "Flat reference-bearing patterns with direct CV RHS and CV leaves, selected by-reference fetch, initially array-valued saved source CELL, and an ordinary defined CV key holding a finite fitting binary64 float with exactly PRECISIONLOSS. All-reference shapes are admitted; nested/literal roots and initial nonarray writable conversion remain separate.",
+  "runtime_commit": "e3b08102a4c323ba7be5fc7b854f3f105ead9826",
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "7684abcf4062e958329c1c4d34792f52377301821048942528cb80c02a7d316f",
+    "spec/semantics/63-list-control.watsup": "2f17036eba4799669e39d8e4c962101c0036c7859f46b72233e137232c416f15",
+    "spec/semantics/410-list-key-conversion-warnings.watsup": "dae5c0c5e004e8a43a63bb9b5333388defa16ba323003cf4cea1bf1887742c32"
+  },
+  "private_modules": 401,
+  "engine_basis": [
+    "Vendored PHP8.5.10 commit34308a6666b2d489c509541ea9befea9e2b42348: zend_compile_list_assign emits FETCH_LIST_W, MAKE_REF and ASSIGN_REF for the selected reference target. zend_fetch_dimension_address makes the source array writable before slow_index_convert_w invokes the conversion callback.",
+    "The writable slow conversion protects its selected mutable table while zend_dval_to_lval_safe freezes the integer and emits E_DEPRECATED. After dropping protection, exactly one remaining table owner permits lookup; zero destroys the table and multiple owners cancel lookup while leaving it live. Failed acquisition yields a fresh detached NULL reference. A permitted missing writable slot is created silently.",
+    "A detached handler-created hold can be the sole remaining owner, so lookup must use the selected historical table rather than the saved CELL's new value. Later list items and assignment-result delivery still use that saved CELL. Callback throws precede acquisition and target rebinding."
+  ],
+  "reviewed_behavior": [
+    "Module30 adds LIST_KEY_FLOAT_WRITE_RESULT;410 appends separate item/source/plan/pending and phased acquisition rules. Module63 excludes eligible writable fetches from its ordinary rules. Existing409, A12/A13 task/lookup rules, compiler, quiet-key and ownership APIs remain unchanged; no historical test or shared harness changed.",
+    "Only the initial plan reads the current key/source value. Exact ordinary CV occurrence, true-reference flag, flat source/target shape, actual assignment RHS child, compiler line and fitting lossy bits are authenticated. Resume validates compatible source and marked saved CELL without rereading live key/name/value identity.",
+    "Initial dispatch uses the existing location_array helper before protecting the actual post-COW table. Phase0 retains saved HCELL plus that HARRAY; phase1 retains only HCELL. Actual driver release precedes the exact-one-owner decision, and phase1 permits an expired table identity.",
+    "The pre-existing copy/singleton-reference original verifies conditional pre-warning COW and unwrapping in the new table: callback copy[1]=33 leaves selected value2, and the frozen reference binds selected value9. The expiry original forces COW in the callback, drops the last old-table protection and binds fresh NULL while preserving the target's previous outside alias88 and later shared value33.",
+    "Independent detached-hold conversion retires the old aliased key CELL and rebinds source/key names. The actual pre-separated selected table has exactly one handler hold after release, so missing frozen -2 is inserted there silently. Target55 updates that hold, separately from saved result22/44, rebound live source88/66 and the initial copy.",
+    "Independent live-shared conversion leaves two ordinary owners after protection release. The selected table and its present ALIAS33 remain live, but acquisition must cancel to fresh NULL. Target55 stays detached from q33 and the old outside alias99; the later fresh key reads6.",
+    "Supplied throw preserves earlier9, callback target/alias99, later7 and destination100 with the same Throwable, previousNULL and finally. Saved CELL, original/selected arrays, key and q retire without acquiring or binding the selected reference.",
+    "Source-reached fixtures check genuine handler frames, distinct task roots, raw pre-COW/release/acquisition/bind steps, driver pruning, exact output and whole-state budgets. Raw steps that copy reference edges are continued through the actual driver after raw-field equivalence checks. Edited projections are refusals only; no NUL source or historical actor replay was introduced."
+  ],
+  "accepted": {
+    "source": {
+      "report": ".tools/list-float-write-key-source-14/report.json",
+      "sha256": "3264960d95576dd7dda5a028aef7e0105d8efb84e356ee99715e643ef2252823",
+      "revision": "e3b08102a4c323ba7be5fc7b854f3f105ead9826",
+      "agreements": 5,
+      "cases": ["list-float-write-key-pre-cow-singleton", "list-float-write-key-expiry-detaches-target", "list-float-write-key-supplied-throw", "list-float-write-review-detached-sole-hold", "list-float-write-review-live-shared-cancel"],
+      "native_reuse": "Five fresh normal originals retain exact native source paths/argv/streams from the three preparation reports. Model-only comparisons use those original paths; no native replay."
+    },
+    "states": [
+      {
+        "report": ".tools/list-float-write-key-author-state-14/report.json",
+        "sha256": "860ae2abb85a6aa900cd97c038f727d626d75f96556c6b4e7efd44ee0e9a2d55",
+        "revision": "f05d125e3b9b8767cca672ce5fb60aa89b564268",
+        "cases": ["list-float-write-key-pre-cow-singleton", "list-float-write-key-expiry-detaches-target"],
+        "conditions": [178, 178], "raw_steps": [5, 5], "boolean_premises": 346,
+        "credit_note": "Only these first two rows count; the failed throw row in this report is preserved separately below."
+      },
+      {
+        "report": ".tools/list-float-write-key-author-state-15/report.json",
+        "sha256": "807a81c14da24a96d46fab2eb854f2b7ad204891150da808f6b7cc2e0b989264",
+        "revision": "793a965effdd7b2a09601c9cfd55bcabe141caae",
+        "cases": ["list-float-write-key-supplied-throw"],
+        "conditions": [147], "raw_steps": [1], "boolean_premises": 146
+      },
+      {
+        "report": ".tools/list-float-write-key-review-state-14/report.json",
+        "sha256": "cf631831a957e9407534eaef29eb0324610306c2360ce12a600453e0232d2372",
+        "revision": "793a965effdd7b2a09601c9cfd55bcabe141caae",
+        "cases": ["list-float-write-review-detached-sole-hold", "list-float-write-review-live-shared-cancel"],
+        "conditions": [212, 185], "raw_steps": [5, 5], "boolean_premises": 387
+      }
+    ],
+    "source_agreements": 5, "normal_source_agreements": 5,
+    "state_fronts": 5, "total_conditions": 900, "boolean_premises": 879, "raw_steps": 21,
+    "credit_note": "Source5/e3b081, author356/f05 plus147/793 and independent397/793 count. Conditions include setup/source/refusal/raw premises, not separate programs. Every accepted actor exits0 without timeout/interruption and with empty recorded groups. Original cuts remain separate; docs/composition add no execution credit."
+  },
+  "preserved_zero_credit": [
+    {
+      "report": ".tools/list-float-write-key-baseline-14/report.json",
+      "sha256": "859690afbc6970b8e278d0df5ab432598122cb7f12c0d71a029eb2cf20f92945",
+      "revision": "6b07628917ec22779339978d8be5dd3b461d8d3a",
+      "result": "Unchanged source is frontend accepted/checked, but explicitly Unsupported at error-handler ingress. Native exits0 with one default Deprecated line, model exits1 in12.03s; ordinary comparison fails naturally without timeout. Zero agreement credit."
+    },
+    {
+      "report": ".tools/list-float-write-key-native-rest-14/report.json",
+      "sha256": "6a87a25773c3fbca3a53c4122edf6671525bc632fcbf168f983c289d9a1eb09d",
+      "revision": "6b07628917ec22779339978d8be5dd3b461d8d3a",
+      "result": "Fresh expiry and supplied-throw native2 preparation only."
+    },
+    {
+      "report": ".tools/list-float-write-key-review-native-14/report.json",
+      "sha256": "82653c48abf9f61b55c83ffdd29487b198ec06684703f5110aa47b5867e34684",
+      "revision": "6b07628917ec22779339978d8be5dd3b461d8d3a",
+      "result": "Fresh independent detached-sole-hold and live-shared-cancel native2 preparation only."
+    },
+    {
+      "report": ".tools/list-float-write-key-author-state-14/report.json",
+      "sha256": "860ae2abb85a6aa900cd97c038f727d626d75f96556c6b4e7efd44ee0e9a2d55",
+      "revision": "f05d125e3b9b8767cca672ce5fb60aa89b564268",
+      "case": "list-float-write-key-supplied-throw", "conditions": 140, "raw_steps": 1,
+      "result": "All earlier semantic/output/retirement assertions passed, then the final whole-record entry continuation equality failed. Continuing raw pre-COW dispatch omitted the driver's GC owner transition. Only this front was retried after adding actual one-step driver dispatch and raw STORE/ARRAYS/TODO/RESULT equalities; first356 condition lists remain byte-equal. The matching held peer branch was corrected before its first actor. This failed row contributes zero credit."
+    }
+  ],
+  "shared_harness_change": "None. The existing exact-stderr callback authenticates the original default Deprecated0.5/path/line14 bytes; other state originals require empty stderr.",
+  "affected_historical_controls": [],
+  "raw_evidence": {
+    "archive": "/home/user/workspace/php-spec/.tools/list-float-write-key-warning-14-raw.tar.gz",
+    "bytes": 389826, "members": 173,
+    "sha256": "6bbc79c29b321add47df72dd4fa494bbb6878e302a9c2882ac635e1d4e7be815",
+    "recovery": "Seven original relative .tools report/fixture/process/source roots plus list-float-write-key-reuse-sources-14.py are preserved, including the failed throw row. Extract beneath a checkout of the recorded cut; absolute argv/cwd are historical provenance. The archive is not a build dependency."
+  },
+  "actual_parent_review": {
+    "parent": "3451fa67b233f99b68f45e1908bdde021f324cf5",
+    "seams": "Base-to-2c767 changes156 typed-reference-return cursor guards,234 callable-factory clone equality,280/289 Generator used-input throw carriers,400 recursive define/query arity,404 compound RHS type failures and408 mutable empty-property RV caching. The2c767-to-14ccb delta adds386 intrinsic Closure current/bind mismatch and400 byte-string define leaves. Those source/tag selectors are absent from A14 normal named callbacks and supplied-Throwable paths. No30/63/409/410 or key/COW/reference/39/40 helper changed. Final14ccb-to3451 adds156 typed CV consumed-null/object reference-return cursor/materialization and400 constant/defined array-argument TypeError reception. A14 normal untyped callbacks and supplied-Throwable path match neither selector; no LIST/key/COW helper changes.",
+    "joined_actor": "No concrete semantic interaction found; pointwise composition and exact FF review add no replay credit."
+  },
+  "remaining": [
+    "Initial nonarray writable source conversion/autovivification; nested/literal lossy conversion; range/nonfinite conversion, undefined/null-key diagnostics, computed current keys and wider RHS/targets.",
+    "Paused owned-NUL/current-CV NUL behavior, scalar/object destructuring diagnostics, wider callbacks/lifecycle, full array/core closure and offline portability."
+  ],
+  "composition": {
+    "parent": "3451fa67b233f99b68f45e1908bdde021f324cf5",
+    "runtime_delta": ["spec/semantics/30-storage.watsup", "spec/semantics/410-list-key-conversion-warnings.watsup", "spec/semantics/63-list-control.watsup"],
+    "runtime_diff_sha256": "260dd341fa682b90aeef561cbe4a1222632883618d9f7918a6b0a867d890dcd4",
+    "modules": 401,
+    "tested_runtime_revision": "e3b08102a4c323ba7be5fc7b854f3f105ead9826",
+    "accepted_state_revisions": ["f05d125e3b9b8767cca672ce5fb60aa89b564268", "793a965effdd7b2a09601c9cfd55bcabe141caae"],
+    "method": "Pointwise exact-parent merge:63/410 and six new tests retain tested bytes; removing only the new writable task recovers parent30. All other parent runtime, inventory fields and unrelated checkpoints are preserved. Metadata adds no semantic replay credit."
+  }
+}

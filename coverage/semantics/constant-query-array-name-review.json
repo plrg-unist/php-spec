@@ -1,0 +1,66 @@
+{
+  "scope": "Exactly one positional constant()/defined() array name, weak or strict. Empty/flat live arrays have primitive nonstring or authenticated INTERNED/REQUEST string-carrier leaves, DIRECT or live scalar ALIAS. Parameter-one TypeError precedes lookup; the raw trace owns the captured array without canonicalizing embedded references. No DEFINE/nested/object/legacy-PSTRING/owner/named/packed/FCC widening. Partial core.",
+  "status": "independently_accepted_private_integrated_on_join",
+  "reviewer": "/root/source_review_35",
+  "parent": "90b64f8fe72f702749e75800c65ad3a19fd6688f",
+  "semantic_revision": "38e5756dbdc254b44fd9aa813482f8488c1604fc",
+  "tested_revision": "46a59b5650b693a30e41184043e88069ab93f83f",
+  "semantic_files": {
+    "spec/semantics/400-dynamic-constants.watsup": "11b089cb2caf8b66633877d64136c5acfedbeacf9d91fd74a8dd32959fbb0ca9"
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "tools": {
+    "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+  "primary": "Pinned ext/standard/basic_functions.c PHP_FUNCTION(constant) and Zend/zend_builtin_functions.c ZEND_FUNCTION(defined) use ZEND_PARSE_PARAMETERS_START(1,1), then Z_PARAM_STR before lookup. Zend/zend_API.c zend_parse_arg_str_slow rejects arrays in strict mode; zend_parse_arg_str_weak also rejects IS_ARRAY without conversion. zend_exceptions.c delegates to zend_fetch_debug_backtrace; zend_builtin_functions.c debug_backtrace_get_args retains array argument values, so array COW and embedded reference sharing stay distinct.",
+  "semantics": "Exactly30 module400 insertions add a query-array shape, live flat-leaf/source validator and direct config_error TypeError receiver, excluding this shape from the broad class fallback. config_invoke_valid already supplies live array bounds/allocation; dynamic_array_known_matches authenticates immutable contents/provenance rather than internal IDs. ALIAS leaves require a live allocated REFCELL with an admitted primitive value. No task/schema/compiler/copy-fold/shared trace or ownership rule changes.",
+  "accepted": [
+    "Four exact originals agree at46a59b565/runtime38e5756d. Empty defined/constant names, selected mixed-case constant with request leaf and live callee mutation, strict flat nonstring literal and independent selected defined with scalar reference all produce exact TypeError messages/raw API captures. All native/model stdout/stderr/PHP exits match; PHPstderr is empty and caller99 survives.",
+    "All533 premises pass at46a59b565: author163+122+95=380 plus independent153, across five genuine CONFIG-to-error fronts and two reached alias-update snapshots. Four SL raws are exactly true LF/0/empty workerstderr; all9 reports stable/head-stable/PASS/reaped, no failure/retry/timeout/survivor. Actual raw array child/owner edge, source/file/line/PreviousNULL/API/caller traces, original tails, unchanged stores/table/carriers/events/autoload/class state and budgets pass.",
+    "Author selected call reaches distinct caller/snapshot/trace COW endings, keeping captured request bytes. Independent native and actual source-derived states preserve one scalar cell1237\u21921249\u21921277 across caller and trace arrays while ordinary plain fields separate. The TypeError allocator keeps the same captured array instead of a copied constant-value snapshot. Literal content/provenance, malformed carrier/cell/liveness/source/selection/shape and domain refusals pass."
+  ],
+  "compatibility": "Old bad-arity primitive routes, one-slot string/scalar/null reception and all DEFINE value/name paths remain exact and disjoint by kind or argument shape. Focused existing-control inspection found only DEFINE-array VALUE or class-result table negatives, which remain disjoint; no old protocol repair or actor renewal is needed. Mutable-CV inputs keep structural capture policy, not a historical-value equality claim.",
+  "zero_credit": "Unchanged first-source baseline atf4b06bac6 is checked Unsupported dynamic constant call domain afterB|, CLI1/null PHPexit/empty stderr and0agreement. Native/preparation alone grant no application agreement. No actor failed or repeated; previous Source48\u201350 cuts retain their original identities.",
+  "execution": "LC_ALL=C/TZ=UTC, CPU3/SLOT5, AS3GiB, serial stop-first/reap, INT+kill5 wrappers. Initial author native3/baseline1 atf4b06bac6; later peer native1/model4/public4 at46a59b565. Native children15s, source CLI45s/host60s and fresh SL children90s; all PHP/CLI/SL workerstderr empty and all groups reaped.",
+  "raw_root": ".tools/constant-query-array-name-evidence-51",
+  "report_sha256": {
+    "author/review-public/check-report.json": "461d8118473bb3a265e4eef7e471f2e6a3dd0a4803111c7c6e4cf9ad35a9af60",
+    "author/review-public/prepare-report.json": "e485c84608a38c1ab364a6151061fccb6cefd66dbcf332cd75d4cc41152e5055",
+    "author/public/check-report.json": "39a0daa30b57c280b86cd582dcca94bcbcf418733a724f3d5840c7789c90ae61",
+    "author/public/prepare-report.json": "0f28389627d2c56ad3764d74f71dc5344d64911c107bcb0b366b9bef64d73ce7",
+    "author/review/model-report.json": "ef0d050f22969139356ed709745dce5db590e2450e71286a91689327ec9bee5a",
+    "author/review/native-report.json": "2dd4c948f8da949793c6bf78c7eded5b6abf403795ba6d5e096fb231783f1b3f",
+    "author/sources/model-report.json": "809c2301a68f6f271229ac18e47e697d0a618e5840e50413424266f5f084058a",
+    "author/sources/baseline-report.json": "326a424cbdf6f319a8054d7d897e36e3a3761ffc42af61fcbfd49c48e917ed1f",
+    "author/sources/native-report.json": "282ee2b48b448734fa8e0ffe0491f2847e55d9098fff8911919b606f44c60ca7"
+  },
+  "commands": [
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/query_array_name_sources.py --phase native --output .tools/constant-query-array-name-native-51",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/query_array_name_sources.py --phase baseline --output .tools/constant-query-array-name-native-51 --case literal-empty-array-query-names",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/query_array_name_review_sources.py --phase native --output .tools/constant-query-array-name-review-51",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 240s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/query_array_name_sources.py --phase model --output .tools/constant-query-array-name-native-51",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/query_array_name_review_sources.py --phase model --output .tools/constant-query-array-name-review-51",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/query_array_name_protocol.py --phase prepare --sources .tools/constant-query-array-name-native-51 --output .tools/constant-query-array-name-public-51",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 360s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/query_array_name_protocol.py --phase check --sources .tools/constant-query-array-name-native-51 --output .tools/constant-query-array-name-public-51",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 90s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/query_array_name_review_protocol.py --phase prepare --sources .tools/constant-query-array-name-review-51 --output .tools/constant-query-array-name-review-public-51",
+    "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s 120s prlimit --as=3221225472 -- taskset -c 3 python3 tests/semantics/query_array_name_review_protocol.py --phase check --sources .tools/constant-query-array-name-review-51 --output .tools/constant-query-array-name-review-public-51"
+  ],
+  "recovery": "Four owned raw roots moved once into canonical author/{sources,review,public,review-public} after reviewer STOP and focused cwd/cmdline/fd users[]. Nine report hashes unchanged. Restore as .tools/constant-query-array-name-{native,review,public,review-public}-51 at recorded cuts for exact source/cwd identities.",
+  "remaining": "Legacy plain PSTRING leaves, nested/cyclic arrays and object leaves, DEFINE array names, owners and named/packed/FCC forms remain partial, as do owning bad-arity calls and wider family closure. No engine bug or intentional divergence.",
+  "composition": {
+    "parent": "7e2759ae541b3cb1b5c14f0e4120a36b0bf6b963",
+    "private_publication": "7c136e472f62d8e9a57dceb27bcc84f0565fc06e",
+    "modules": 401,
+    "method": "Exact private30 added400 lines atop incoming legacy PSTRING array-value support, with four new tests private-exact. Every other spec/schema/ordered401 manifest parent-exact; inventory only own2/2/1/review suffix and additive checkpoint. Incoming docs and directly qualified array-name boundary preserved.",
+    "runtime_sha256": {
+      "spec/semantics/400-dynamic-constants.watsup": "c7dbd205ae8909555d5c5637df732ee9f319aea3eb03e64fee85d1489e5c85c6"
+    },
+    "seams": "Incoming400 legacy PSTRING head belongs to dynamic_array_value; query_array_entries instead uses unchanged query_arity_arguments/dynamic_constant_class and retains legacy-string refusal. Source/literal matching and config/error/trace/COW/refcell machinery unchanged.156 typed ref-return/finally cursors,386 WeakMap intrinsic Closures,404 staged MOD/SHIFT/BIT_ASSIGN and408 PROPERTY_EMPTY_RV producers are absent from these ordinary query calls, array DIM writes, scalar ++ and Throwable observers.",
+    "evidence": "Independent actual-parent review finds no concrete interaction. Source4/public533 retain46a59b565/runtime38e5756d and initialf4b06bac6 native/baseline0, allCPU3. No joined actor, accepted replay or renewed execution credit."
+  }
+}

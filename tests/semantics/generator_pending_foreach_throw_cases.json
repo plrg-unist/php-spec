@@ -1,0 +1,22 @@
+[
+  {
+    "id": "generator-pending-foreach-throw-temporary-array-and-local-close",
+    "source": "<?php\nclass PendingForeachVisited23 { function __destruct() { echo \"A|\"; } }\nclass PendingForeachUnvisited23 { function __destruct() { echo \"B|\"; } }\nclass PendingForeachLocal23 { function __destruct() { echo \"D|\"; } }\nfunction pendingForeachChild23() { echo \"C|\"; $local = new PendingForeachLocal23(); try { foreach ([new PendingForeachVisited23(), new PendingForeachUnvisited23()] as $item) { yield 5; echo \"BODY|\"; } } catch (Exception $caught) { echo \"CHILD|\"; } finally { echo \"F|\"; } }\nfunction pendingForeachMiddle23() { echo \"M|\"; try { yield from ($GLOBALS[\"child\"] = pendingForeachChild23()); } finally { echo \"J|\"; } }\nfunction pendingForeachOuter23() { echo \"O|\"; try { yield from ($GLOBALS[\"middle\"] = pendingForeachMiddle23()); } finally { echo \"Z|\"; } }\necho \"P|\"; $exception = new Exception(\"pending-foreach23\"); $outer = pendingForeachOuter23(); $outer->rewind(); echo \"H|\", $outer->valid() ? 1 : 0, \"|T|\";\ntry { $result = $middle->throw($exception); echo \"RETURNED|\"; } catch (Exception $caught) { echo \"CALLER|\", $caught === $exception ? \"SAME|\" : \"OTHER|\"; echo $caught->getPrevious() === null ? \"NOPREV|\" : \"PREV|\"; }\necho \"GET|\", $middle->valid() ? 1 : 0, \"|\", $child->current(), \"|\", $child->key(), \"|\";\nunset($outer, $middle, $child); echo \"CLOSED|\"; unset($result, $caught, $exception); echo \"E\";\n",
+    "purpose": "Observe one temporary foreach array with visited/unvisited objects independently of an owning local CV, scalar cache, pending caller identity/getters and explicit parked close. Raw destructor order is not preasserted.",
+    "source_sha256": "b1cf407b3ed394ddc53ff82a5eb7a5f7462f17bf1419501172cce382aaa59034",
+    "expected": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|M|C|H|1|T|CALLER|SAME|NOPREV|GET|1|5|0|Z|J|D|CLOSED|EA|B|"
+  },
+  {
+    "id": "generator-pending-foreach-throw-sole-receiver-and-nested-generator",
+    "source": "<?php\nclass PendingForeachPayload23b { function __destruct() { echo \"B|\"; } }\nclass PendingForeachCache23b { function __destruct() { echo \"D|\"; } }\nfunction pendingForeachNested23b() { echo \"N|\"; try { yield 9; echo \"N_BODY|\"; } finally { echo \"I|\"; } }\nfunction pendingForeachChild23b() { echo \"C|\"; $nested = pendingForeachNested23b(); $nested->rewind(); try { foreach ([new PendingForeachPayload23b(), $nested] as $item) { yield new PendingForeachCache23b(); echo \"BODY|\"; } } catch (Exception $caught) { echo \"CHILD|\"; } finally { echo \"F|\"; } }\nfunction pendingForeachMiddle23b() { echo \"M|\"; try { yield from ($GLOBALS[\"child\"] = pendingForeachChild23b()); } finally { echo \"J|\"; } }\nfunction pendingForeachOuter23b() { echo \"O|\"; try { yield from ($GLOBALS[\"middle\"] = pendingForeachMiddle23b()); } finally { echo \"Z|\"; } }\nfunction pendingForeachDrop23b() { echo \"H|\"; unset($GLOBALS[\"outer\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"DROP|\"; return $GLOBALS[\"exception\"]; }\necho \"P|\"; $exception = new Exception(\"pending-foreach23b\"); $outer = pendingForeachOuter23b(); $outer->rewind(); echo \"T|\";\ntry { $result = $middle->throw(pendingForeachDrop23b()); echo \"RETURNED|\"; } catch (Exception $caught) { echo \"CALLER|\", $caught === $exception ? \"SAME|\" : \"OTHER|\"; echo $caught->getPrevious() === null ? \"NOPREV|\" : \"PREV|\"; }\nunset($result, $caught, $exception); echo \"E\";\n",
+    "purpose": "A selected sole middle receiver survives argument-time removal of all chain CVs. Observe cached-current cleanup independently of a foreach payload and an independently started nested Generator after the parked child retires; no output forecast.",
+    "source_sha256": "fbf144696a8d3c9de2bbb353bdae3a79b6db1ba0b3ceb914568b1af993e422f5",
+    "expected": "normal",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|M|C|N|T|H|Z|DROP|J|D|CALLER|SAME|NOPREV|EI|B|"
+  }
+]

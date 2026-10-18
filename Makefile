@@ -345,6 +345,10 @@ test-semantics: build
 	python3 tests/semantics/generator_pending_buffered_throw_review_sources.py
 	python3 tests/semantics/generator_pending_buffered_throw_state.py
 	python3 tests/semantics/generator_pending_buffered_throw_review_state.py
+	python3 tests/semantics/generator_pending_foreach_throw_sources.py
+	python3 tests/semantics/generator_pending_foreach_throw_review_sources.py
+	python3 tests/semantics/generator_pending_foreach_throw_state.py
+	python3 tests/semantics/generator_pending_foreach_throw_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py

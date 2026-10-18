@@ -373,11 +373,25 @@ def $generator_close_parked(S, pgenclose) = true
   -- if S.OBJECTS[pgenclose.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.PARKED =/= eps
 def $generator_close_parked(S, pgenclose) = false -- otherwise
+;; Transfer the parked foreach slot before dropping CV/context owners. The
+;; captured task is source history; its array count becomes a request-late root.
+def $generator_close_enter(S, pgenclose) = $generator_close_begin_pending(S_closed, $destruction_values($generator_close_frame_nodes(S, pframe_trimmed)), pgenclose.PENDING)
+  -- if S.TODO = (GENERATOR_CLOSE_ENTER pgenclose) :: ptask_tail*
+  -- if $generator_close_parked(S, pgenclose)
+  -- if pgenclose.FRAME = (pframe)
+  -- if S.OBJECTS[pgenclose.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PARKED = (porigin_yield)
+  -- if $generator_foreach_saved(S, pgenerator, pframe) = (ptask_foreach)
+  -- if ptask_foreach = FOREACH_NEXT n_iterator (HARRAY n_array) statement porigin_loop? z
+  -- if pframe_trimmed = pframe[.TODO = $generator_foreach_drop(pframe.TODO, ptask_foreach)]
+  -- if S_retained = S[.GENERATORLOOPRETAINED = S.GENERATORLOOPRETAINED ++ [{OBJECT pgenclose.OBJECT, SITE porigin_yield, TASK ptask_foreach}]][.ITERATORS = $iterator_remove(S.ITERATORS, n_iterator)]
+  -- if S_closed = $generator_set(S_retained[.TODO = (GENERATOR_CLOSE_DONE pgenclose[.FRAME = eps][.STAGE = CLOSE_FINISHED][.PENDING = eps]) :: ptask_tail*], pgenclose.OBJECT, pgenerator[.PHASE = GENERATOR_CLOSED][.PENDING_INIT = false][.PARKED = eps])
 def $generator_close_enter(S, pgenclose) = $generator_close_begin_pending($generator_set(S[.TODO = (GENERATOR_CLOSE_DONE pgenclose[.FRAME = eps][.STAGE = CLOSE_FINISHED][.PENDING = eps]) :: ptask*], pgenclose.OBJECT, pgenerator[.PHASE = GENERATOR_CLOSED][.PENDING_INIT = false][.PARKED = eps]), $destruction_values($generator_close_frame_nodes(S, pframe)), pgenclose.PENDING)
   -- if S.TODO = (GENERATOR_CLOSE_ENTER pgenclose) :: ptask*
   -- if pgenclose.FRAME = (pframe)
   -- if S.OBJECTS[pgenclose.OBJECT] = GENERATOR pgenerator
   -- if $generator_close_pending_init(S, pgenclose) \/ $generator_close_parked(S, pgenclose)
+  -- if ~$generator_close_parked(S, pgenclose) \/ $generator_foreach_saved(S, pgenerator, pframe) = eps
 def $generator_close_enter(S, pgenclose) = $generator_close_queued_skip(S, pgenclose, ptask, ptask_tail*)
   -- if pgenclose.FRAME = (pframe)
   -- if pframe.TODO = ptask :: ptask_tail*

@@ -83,7 +83,9 @@ completed arguments. Registration stores the primitive value or copied array
 snapshot in `USERCONSTANTS`; later
 changes to the name or value CV do not change the row. The string class follows
 its actual carrier (`PVSTRING true` for interned, false for request strings).
-Identity-unknown legacy string values are explicitly Unsupported.
+Identity-unknown legacy scalar string payloads remain Unsupported. Array leaves
+also admit byte-only strings, including compiled literals, without manufacturing
+a carrier identity.
 
 Registration normalizes the namespace prefix without stripping a supplied leading
 separator; the final component stays case sensitive. `defined` removes a leading separator
@@ -125,6 +127,43 @@ rejecting source-length-inconsistent records; fresh equivalent controls run here
 without replaying its 392 premises. No actor failed or repeated; the unchanged
 Unsupported baseline retains zero credit. Owning arguments, owners and
 packed/named/FCC arity-error handling remain partial.
+
+One positional array name now raises parameter-one TypeError in `constant` and
+`defined` before lookup, independently of caller strictness. The bounded domain
+is empty/flat live arrays with primitive nonstring or authenticated string-carrier
+leaves, stored directly or through live scalar reference cells. The raw API trace
+owns the captured array; ordinary COW separates plain fields while embedded
+references still share their backing cell. Argument effects and caller results
+survive the error.
+
+Thirty module400 insertions authenticate the query shape, source/literal array
+facts, live array/cells and leaf carriers before the existing error allocator.
+No copy fold, task/schema or shared trace/ownership rule changes. The
+[array-name review](../../coverage/semantics/constant-query-array-name-review.json)
+binds four exact originals and 533 premises at 46a59b565/runtime38e5756d: five real
+CONFIG errors, actual caller/snapshot/trace COW endings and two reached reference
+updates. All checks pass on their first attempts; the unchanged Unsupported baseline
+retains zero credit. Nested arrays, objects, legacy PSTRING leaves and
+owner/named/packed/FCC forms remain partial.
+
+Positional `define` with two/three arguments now rejects the same bounded flat
+array-name domain before optional flag reception or registration. Candidates and
+present flags are primitive nonstring or authenticated string-carrier values.
+The parameter-one TypeError precedes weak NULL flag deprecation, strict flag type
+rejection and the ignored-true Warning, after all argument effects. A captured
+array keeps earlier ordinary fields while embedded reference cells reflect later
+argument writes; the API trace retains the original candidate and flag.
+
+Exactly 24 module400 insertions reuse the flat-name/source/carrier guards and raw
+error allocator, with a disjoint broad-DEFINE exclusion. No task/schema/shared
+trace or ownership rule changes. The
+[define-array-name review](../../coverage/semantics/define-array-name-review.json)
+binds source4 at 1b9723050 and 590 premises at cb250bda2/runtimea6677ebfc: five real
+CONFIG errors and a normal `defined('Array')` recovery. The first state fixture
+reused one expression variable for two literal ASTs; that retained failure has
+zero credit. Only its binder changes before affected/unrun state checks, without
+source/model/baseline replay. Nested/legacy-string/object leaves, nonprimitive
+candidates/flags and owner/named/packed/FCC forms remain partial.
 
 Positional `define` calls with primitive arguments now reject every count outside
 two through three before receiving the name or optional flag. Too few arguments
@@ -320,10 +359,16 @@ Fresh array definitions with an omitted or captured boolean-false third flag
 recursively dereference source cells into new DIRECT entries. Reinserting surviving
 keys rebuilds NEXT, positions and serial
 metadata; ordinary copies and later source/reference writes preserve the constant.
-Nonempty acyclic trees contain primitive/carrier leaves and certified live
-stdClass donors. String classes and object birth classes are retained; copied
-containers share the exact object pointers. Repeated noncyclic children may copy
-independently.
+Nonempty acyclic trees contain primitive/carrier leaves, byte-only strings and
+certified live stdClass donors. Existing carrier classes and object
+birth classes are retained; copied containers share the exact object pointers.
+Repeated noncyclic children may copy independently.
+Byte-only strings keep their exact bytes in 0..255 and use conservative `PVSTRING false`
+without string-table allocation or recovered scanner/refcount provenance. This
+does not extend scalar string admission, default caching or INI pointer identity.
+The [literal-string review](../../coverage/semantics/define-literal-string-array-review.json)
+covers literal constraints, query bucket COW, real carrier composition and normal
+or abrupt duplicate retirement.
 Public checks require a canonical DIRECT tree and available literal-array facts,
 comparing ordered keys and leaf values rather than internal array IDs. Variable
 payloads keep structural authority without replaying past CVs. Two exact sources
@@ -687,9 +732,9 @@ The matching engine routes are `ZEND_FUNCTION(define)`/`ZVAL_COPY`,
 and `ZEND_FUNCTION(defined)`/`zend_get_constant_ex`. `PHP_FUNCTION(constant)` uses
 exception-class lookup and `ZVAL_COPY_OR_DUP`; `zend_declare_typed_class_constant`
 interns direct string values before installation.
-Stored cyclic trees, other objects, plain compiled literal-string array leaves,
-true/coerced array flags,
-Stringable/array names, array/object values with scalar or null names, true/NULL/NaN
+Stored cyclic trees, other objects, true/coerced array flags,
+Stringable names and array names beyond the bounded flat query/DEFINE domains,
+array/object values with scalar or null names, true/NULL/NaN
 flags with scalar names, nonbool flags with nonfinite float names, true/NULL/NaN flags with
 null names, special/startup names with flags or values beyond the bounded follow-ups,
 internal/trait/interface/enum class queries, deferred keyword initializers and

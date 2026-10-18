@@ -123,17 +123,21 @@ and other eligible warning producers remain
 explicitly `Unsupported`, rather than running a callback after a consumer.
 
 [Destructuring key warnings](SOURCE-DESTRUCTURING-WARNINGS.md) include module410's
-lossy float CV conversion at by-value fetches in flat direct-CV source patterns.
-It retains the converted integer and table before E_DEPRECATED, then looks up the table after
-return. A present embedded reference reads its new value; a miss enters the
+lossy float CV conversion at value and reference fetches in flat direct-CV source patterns.
+For value fetches, it retains the converted integer and table before E_DEPRECATED,
+then looks up the table after return. A present embedded reference reads its new value; a miss enters the
 module409 warning before any target store, honoring handler replacement and
 default deprecation before an E_WARNING-only handler. Throws cancel lookup and
 result delivery. In mixed patterns, a by-value fetch also protects the old table
 alongside its saved source cell. Releasing that protection precedes lookup:
 retirement silently supplies null, while a surviving table can enter the missing
 warning. Later reference fetches and result delivery resolve the saved cell,
-including after source-name rebinding or null replacement. Wider conversion
-producers remain partial.
+including after source-name rebinding or null replacement. A selected reference
+fetch first makes its initially array-valued source writable before dispatch. After
+protection is released, exactly one remaining table owner permits reference
+acquisition there; zero or multiple owners yield a fresh detached null reference.
+Writable missing slots are created silently, and throws cancel binding. Wider
+conversion producers remain partial.
 
 Missing-key module409 retains a
 CV/literal array snapshot through real handlers, supplies null after insertion,
