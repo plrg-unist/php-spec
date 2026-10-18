@@ -1,0 +1,100 @@
+{
+  "scope": "Selected external literal Child::missing calls, inherited public static __callStatic(string,array), absent nonreference return; one/two positional int or leaf ordinary-instance values, initial argument CV nonreference, real packed arguments and no receiver owner.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_API.c zend_check_magic_method_implementation checks __callStatic static/public/two-argument and parameter types.",
+      "Zend/zend_object_handlers.c zend_std_get_static_method/get_static_method_fallback and static trampoline selection",
+      "Zend/zend_vm_def.h ZEND_CALL_TRAMPOLINE moves original sends into packed name/array pair; zend_leave_helper calls Zend/zend_execute.c i_free_compiled_variables before receiver release (none here)."
+    ]
+  },
+  "implementation": {
+    "files": [
+      "spec/semantics/30-storage.watsup",
+      "spec/semantics/141-method-compiler.watsup",
+      "spec/semantics/142-method-runtime.watsup",
+      "spec/semantics/415-magic-static-method-calls.watsup",
+      "spec/semantics/modules.json"
+    ],
+    "basis": "Separate receiver-free static raw/final targets and source/class/caller history; reuse existing 414 pure argument/value/packed-array helpers without changing its bytes. Real call parameter/type reception and compiled-local cleanup stay ordinary. Pending packed-array identity is checked before entry; entered/saved proofs use immutable history. Static-needed excludes compatible current-This __call priority and constructor-special; unselected magic forms remain Unsupported."
+  },
+  "validation": {
+    "native": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-static-call-private-100/.tools/magic-static-call-probes-100/native-first/report.json",
+      "sha256": "7a0baafec050734ed1aaa3235baee2e898a57543119320c779fedb96eb8bae0f",
+      "revision": "b311c793abe584521bc10cae555e4fa4b1c4293f",
+      "result": "Four exact native tuples70/70/73/56; zero source agreement credit."
+    },
+    "baseline": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-static-call-private-100/.tools/magic-static-call-probes-100/accepted-current-baseline/report.json",
+      "sha256": "dde8ade9941687efa213f7c59085a41505c222d1a1d2bd9f0aafd1a509d65020",
+      "revision": "b311c793abe584521bc10cae555e4fa4b1c4293f",
+      "result": "Four checked compiler Unsupported: method visibility, static, or magic consumer; CLI1/0agreements, stable/empty groups."
+    },
+    "source": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-static-call-private-100/.tools/magic-static-call-probes-100/changed-model-i6svvcyn/report.json",
+      "sha256": "a24dbd9e9bb27e60edcfaea7ff93faf8a7bb35e4af916f9967ba84e7a89c6603",
+      "revision": "b445c70b642f4123afa6b72dd8ad90abb7896760",
+      "result": "Four exact checked normal agreements;12.249/12.895/14.520/9.803seconds."
+    },
+    "focused": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-static-call-private-100/.tools/magic-static-call-protocol-b3mkdggd/report.json",
+      "sha256": "726ad7674d168aadb668278f0acf40d1713bb03e83d009573f8976b303920464",
+      "revision": "c639b4d8be975dfd615db5d0e9ffeabd598fb284",
+      "result": "Three exact true:127/102/112,341=314reached+27derived/app3/source0; AL7.372/7.529/7.441, SL17.884/21.434/25.177seconds."
+    }
+  },
+  "focused_scope": "Actual saved raw target keeps early7 after RHS99; real packed table and TYPE_RECEIVE name/array pair, lexical Parent/called Child, no target/receiver nodes; owning array retires before payload destructor while frame caches return7, destructor changes live global99 before used result. Throw retains the same pending Throwable through cleanup and CATCH_BIND with destination42. Whole endings and zero-budget resumption. Source/signature/initial-reference/name/line/packed-array certificate refusals, actual malformed raw count/PNULL Unsupported. Compatible-This priority is a structural predicate-only mutant, without full-state/source-validity or __call execution credit. Public bypass has source agreement only.",
+  "nonpassing": [],
+  "reproduction": {
+    "cwd": "/home/user/workspace/php-spec/.tools/magic-static-call-private-100",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": "absent",
+      "jobs": 1
+    },
+    "profile": "tests/semantics/profile.json",
+    "native_baseline": "Ready watch-affinity.py native-first native 4; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 4 python3 -u .tools/magic-static-call-probes-100/run.py native --revision b311c793abe584521bc10cae555e4fa4b1c4293f; after PASS/reap fresh accepted-current-baseline model 4 watcher and same actor baseline.",
+    "source": "Ready capture-candidate-affinity.py 3 changed-model- 4 changed-source-100; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 3 python3 -u .tools/magic-static-call-probes-100/run.py changed --revision b445c70b642f4123afa6b72dd8ad90abb7896760",
+    "focused": "Ready watch-state-affinity.py 3; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 3 python3 -u tests/semantics/magic_static_call_protocol.py --revision c639b4d8be975dfd615db5d0e9ffeabd598fb284",
+    "caps": "Native45/model60/outer75/100000steps; focused serial AL90 then strictSL90/cachefalse/dettrue/fail-first. Checked --prepare-only has zero semantic applications.",
+    "affinity": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-static-call-private-100/.tools/magic-static-call-probes-100/affinity-native-first.json",
+        "sha256": "b09b052c059fd5e07327260d3b7cfca02352632dbd27ed7f1182b4556bb8a96d",
+        "result": "Partial1/4 CPU4: snapshot full argv; other three missed by fast-child sampling. Exact taskset-parent provenance retained; stopped/reaped observer, no sampling replay."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-static-call-private-100/.tools/magic-static-call-probes-100/affinity-accepted-current-baseline.json",
+        "sha256": "b7bbc6ed711b7780963c5eb5722d50431f70b0281e289d2fe58f2755f0733cd0",
+        "result": "Complete4 CPU4/fullargv."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-static-call-private-100/.tools/magic-static-call-probes-100/affinity-changed-source-100.json",
+        "sha256": "5004afb99962446c7a01481c0a2f04ccfd9f773b823dac6ad590e29235c08512",
+        "result": "Complete4 CPU3/fullargv."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-static-call-private-100/.tools/magic-static-call-probes-100/affinity-state-100.json",
+        "sha256": "4e0b7d09592c91bb373f05f76e687f98208ae646e607deb9195619e36c4202b0",
+        "result": "Complete6 CPU3/fullargv."
+      }
+    ],
+    "stability": "All accepted inputs/head/status/fixtures stable, workers/observers reaped, groups empty; no failure/retry/timeout/interruption. Native observer sampling remains qualified."
+  },
+  "limits": "Forwarding self/parent/static, compatible current-This, inaccessible/dynamic/first-class/API magic positives; named/unpacked/reference sends, exported arrays, held/owning returns and wider lifetimes remain open. Existing instance magic and callable classifiers remain unchanged. No generic GC-preservation, NaN callback or historical-class replay claim.",
+  "artifacts": "Ignored originals/private drivers/raw reports/streams/processes and generated fixtures stay in their original directories. Maintained sources/catalogue/harness recover from tested commits; no archive, backup or receipt chain tracked.",
+  "review": {
+    "independent": "class_review_84",
+    "status": "Native/genuine baseline/source4/state341 and concise publication independently accepted; structural-only priority and remaining lifetime scope explicit."
+  },
+  "tools": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "source_driver_sha256": "79aae0c8d02c573c40e8bd552200dcc218772f3646c4369af71aa7f7c19d6284",
+    "focused_driver_sha256": "fba79d41e286a4700222bbf73b47441974a9bcd744651112591db8e649e68177"
+  }
+}

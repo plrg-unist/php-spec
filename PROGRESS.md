@@ -7,25 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Missing literal instance calls now invoke inherited public `__call(string,array)`
-with original spelling and a real packed positional argument array. The selected
-receiver and early scalar sends survive argument callbacks that clear its CV and
-write the live RHS. Sole array/payload cleanup precedes receiver destruction and
-cached scalar result delivery; a supplied throw preserves destination42 and the
-same catch object. Declared public methods bypass magic. Four exact originals
-pass at `c3dd5f3d8`; 355 focused premises at `a2fb398ba` (334 reached +21 derived)
-cover saved raw calls, actual parameter reception, array/receiver owners, cleanup,
-catch and budgets. A parser failure and a pre-application fixture-binding failure
-remain zero; their corrections were grouping/binding only. Module414 reuses the
-ordinary call/free/GC protocols. Scoped/inaccessible positives, `__callStatic`,
-dynamic/named/unpacked/reference and wider ownership/lifetime paths remain open;
-needed unselected magic forms stay Unsupported. No earlier class suite is replayed.
-[Magic call review](coverage/semantics/magic-call-review.json).
-
-Composed over `2e4993c51`/403 with incoming runtime and schema fields preserved.
-Generator return-retention, reference-return cleanup, numeric Closure images,
-operator/DEFINE and array-key selectors are unselected. Source4/state355 retain
-their private cuts without a joined actor or renewed execution credit.
+External literal missing static calls now invoke inherited public
+`__callStatic(string,array)` with original spelling and a real packed positional
+array. Early scalar sends survive later argument effects; lexical Parent and
+called Child stay distinct without a receiver owner. Compiled-local cleanup
+retires the array before the payload destructor; return value 7 stays cached while that
+destructor changes the live global to 99. A supplied throw preserves destination42
+and the same catch object. Declared public static methods bypass magic.
+Four exact originals pass at `b445c70b6`; 341 focused premises at `c639b4d8b`
+(314 reached +27 derived) check real reception, saved raw sends, cached return,
+cleanup/catch and budget resumption. All actors passed on their first attempt.
+Module415 reuses414's pure packing helpers and ordinary call/free/GC paths;
+414 stays exact. Compatible-current-This `__call` priority and constructor-special
+selection are preserved, with a structural predicate-only priority control.
+Forwarding/inaccessible/dynamic/API magic positives, named/unpacked/reference
+sends and wider ownership remain open; needed unselected forms stay Unsupported.
+[Static magic call review](coverage/semantics/magic-static-call-review.json).
 
 Initially plain CVs now stage `+`, `-`, `*`, `/`, `**` numeric-string diagnostics.
 A first Warning can repair bad RHS text; each captured number survives its callback,

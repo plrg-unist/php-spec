@@ -1013,6 +1013,8 @@ test-semantics: build
 	python3 tests/semantics/magic_setter_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_call_cases.json
 	python3 tests/semantics/magic_call_protocol.py --revision "$$(git rev-parse HEAD)"
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_static_call_cases.json
+	python3 tests/semantics/magic_static_call_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_empty_isset_only_cases.json
 	python3 tests/semantics/magic_empty_isset_only_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_empty_get_only_cases.json

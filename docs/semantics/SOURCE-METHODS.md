@@ -25,10 +25,26 @@ payload before releasing the selected receiver, then delivers the cached scalar
 result or the same supplied Throwable. Four original-source agreements and
 355 focused premises (334 reached + 21 derived) bind separate tested cuts in the
 [magic-call review](../../coverage/semantics/magic-call-review.json).
-`__callStatic`, inaccessible/scoped magic positives, dynamic/first-class forms,
+Inaccessible/scoped instance magic positives, dynamic/first-class forms,
 named/unpacked/reference sends, exported arrays and wider ownership remain open.
 Needed out-of-family calls are explicitly Unsupported; ordinary declared methods,
 constructor-special dispatch and existing callable API refusals keep their routes.
+
+External literal `Child::missing(...)` now also invokes inherited public static
+`__callStatic(string,array)` without a return declaration. Module415 reuses the
+positional-send and packed-array helpers while keeping separate receiver-free
+history and targets. Original spelling, lexical Parent and called Child survive
+actual parameter reception. The scalar return is cached before compiled-local
+cleanup: an argument payload destructor can change the live global from 7 to 99
+while the caller receives 7. A supplied preconstructed Throwable survives that
+cleanup to the same catch; public static methods bypass magic.
+
+[Four source agreements and 341 focused premises](../../coverage/semantics/magic-static-call-review.json)
+bind separate tested cuts. The actual context has no receiver roots; the priority
+counterexample is a structural predicate control only. Constructor-special and
+compatible-current-This `__call` priority retain their routes. Forwarding
+`self`/`parent`/`static`, inaccessible/dynamic/first-class/API magic positives,
+reference/named/unpacked sends, exported arrays and wider lifetimes remain open.
 
 ## Descriptors and dispatch
 

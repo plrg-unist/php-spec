@@ -3735,6 +3735,15 @@ array. Early sends survive argument mutation; array/payload cleanup precedes
 receiver release and cached result or supplied-exception delivery.
 [Four source agreements and 355 focused premises](coverage/semantics/magic-call-review.json)
 cover these paths and public-method bypass. Wider magic call forms remain partial.
+
+External literal missing static calls also invoke inherited public
+`__callStatic(string,array)`, retaining lexical Parent/called Child and early sends
+with no receiver owner. Argument-array cleanup precedes cached scalar result or
+supplied-throw delivery; a payload destructor changes the live global while the
+used result keeps its earlier value.
+[Four source agreements and 341 focused premises](coverage/semantics/magic-static-call-review.json)
+cover these paths and public-static bypass. Forwarding, inaccessible/dynamic/API
+magic positives and wider argument/ownership modes remain partial.
 Ordinary abstract scoped calls reject before arguments. Without magic fallback,
 inaccessible concrete nonstatic methods report access errors before missing-receiver
 errors. Literal
