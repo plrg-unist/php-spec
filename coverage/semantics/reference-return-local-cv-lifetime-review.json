@@ -2180,5 +2180,40 @@
     "public": {"raw": ".tools/returns-assignment-value-75/.tools/returns-verify88-method-array-child-throw/method-array-child-throw-public-gumk8fap/report.json", "report_sha256": "f33ecc641f4c0be29b0d2b75c204e7ac2aa67a3ba284a153b3a3c2fbc8821fe8", "fixture_sha256": "55fbf8cd5cdec087656c155d016b6d0fdc4c1ec981a7d276c3de9847c1a06a72", "producer_sha256": "a6aeb6c8ceda233e85287bbba0d05ea799640ec3b2ad6933ba8bc54e24562eb9", "runner_sha256": "9aaccd58602e65ea8612b04fe977cde1c0d52360542915a06cdc6c4865ce3288", "result": "One reference-original reached fixture passes 195 Boolean premises and two raw PhpSteps. PreF binds BYREF old_ref and Factory.slot ALIAS HCELL→HARRAY→O with no initial reference Notice. Just after unset and before inner I, Factory is live with slot PROP_UNSET while the protected FINALLY_REF_RETURN still roots all three old nodes. At pending child88 TypeError exit the three nodes are retired; the destructor-origin exception and message reach the same local CT object. Replay retains a nonowning cursor; consumed recovery creates NULL/new VALUE Notice and caller rNULL/b7/ybad. Actual exit descriptor admission, equal-heap LINE-only public refusal and exit whole/split budget pass."},
     "limits": "The added method-source predicate checks a simple-variable receiver, literal method name, no arguments and an exact array-plus-null f declaration; it does not reread the receiver or property. Existing operation/source/context, live built-in Throwable and single-cursor projected-return checks still gate the handoff. The reached proof covers one reference-returning Factory slot holding a runtime single-entry array and one throwing O child; the value-returning source agrees separately without a reached ownership proof. Other array layouts, arguments, dynamic names, destructor reentry, physical Zend collection and wider returns remain open.",
     "recovery": "Keep ignored native/baseline raw at clean 62c33/399 and strict/source/public raw at clean 7966/399. Native/baseline and strict/source used SLOT1; public used SLOT3. Reports retain exact commands, exits, quiet closure and stable pins/module stats. No M56/M72/M85/M87 or other accepted actor was replayed; publication adds no execution credit. Broad returns_verify remains open."
+  },
+  "assigned_array_child_normal_destructor_replay": {
+    "status": "reviewed_bounded_assigned_array_child_normal_destructor_replay",
+    "revision": "a50272b80a16e35c2a1fb2775e45133d93f84d54",
+    "parent": "2e75ac2d15804b91de422ea3124e56206ce6270a",
+    "modules": 399,
+    "scope": "A used &f():?array returns the result of a named no-argument old_value() call assigned to x. The runtime array has one direct ordinary O child. Before the finalizer, x and the protected old return share the HARRAY\u2192O graph; after x becomes null, the protected return still roots it. Selected-reference replacement releases the old array, invokes O's normal echoing destructor, then the selected-y TypeError is caught locally. The new bounded old-operand clause admits the live one-child assigned array, and its source-only saved-descriptor clause authenticates the return cursor while the old table is already retired inside D. The nonowning consumed cursor then restores detached NULL and one new old-line VALUE Notice. Existing normal destructor, operation-exit, release and consumed-return rules are unchanged.",
+    "engine": "PHP 8.5.10 CLI NTS64 at 34308a6666b2d489c509541ea9befea9e2b42348; native pair establishes F0/F1, D/CT order, detached rNULL/b7 and one own-line5 Notice. Modeled allocation retirement does not establish physical Zend collection.",
+    "native": {
+      "raw": ".tools/returns-assignment-value-75/.tools/returns-verify89-assigned-array-child-normal/native-assigned-array-child-normal-zg9zp54o/report.json",
+      "report_sha256": "70bde7606cc49a69ce5e9e7b424710c7714f74d17334a6f7c2bf475a8dc34ada",
+      "result": "At clean 2e75/399 both originals exit0 with V;F:0/1;I;D;I;CT;A;S, rNULL/b7/xNULL/ybad and one own-line5 VALUE Notice. Output alone does not prove table/child ownership."
+    },
+    "baseline": {
+      "raw": ".tools/returns-assignment-value-75/.tools/returns-verify89-assigned-array-child-normal/model-assigned-array-child-normal-baseline-6y_58_bi/report.json",
+      "report_sha256": "608bcd746a47ddd46190e43315ed4c78e44021fa19e9aec74606a7fcdde39f92",
+      "result": "At unchanged clean 2e75/399 direct is NORMAL/exact; assigned becomes Unsupported after V;F:1;I;D; without Notice. One agreement, zero assigned repair credit; workers close quietly on stable inputs."
+    },
+    "source": {
+      "strict_raw": ".tools/returns-assignment-value-75/.tools/returns-verify89-assigned-array-child-normal/assigned-array-child-normal-strict-vwg0dlii/report.json",
+      "strict_sha256": "13f810ba1393a8a0e69d3a97caae641482ad3826530a55e373667c0d3fc0bafd",
+      "raw": ".tools/returns-assignment-value-75/.tools/returns-verify89-assigned-array-child-normal/model-assigned-array-child-normal-repaired-67weok83/report.json",
+      "report_sha256": "781dfa757580fd32946eed8d2573a3a60f4406d422bdd1b873cd525e7d3f1855",
+      "result": "At clean a502/399 strict SL initialization passes with zero application evaluations. Both original request/parsed/checked packets retain baseline identity; model stdout/stderr/exit exactly match native tuples (two agreements), with quiet closed workers and stable inputs."
+    },
+    "public": {
+      "raw": ".tools/returns-assignment-value-75/.tools/returns-verify89-assigned-array-child-normal/assigned-array-child-normal-public-bmbidlw9/report.json",
+      "report_sha256": "d0704461db85876b7eba97d5b732652c667b1ed455a7c5d0f19511055b3386e0",
+      "fixture_sha256": "c85ecd00706cc9f0634a94651b28f37164bebc2b4001897e785ecc329fa053e6",
+      "producer_sha256": "442c35d5b82f643b6603a24d7d990bb9244df223cdac8c184add4b4b181bd2e0",
+      "runner_sha256": "0eedfc73b6ac2fb10b0ee40e42624de0a6bc416b49a32ec583effbfa3185a2d8",
+      "result": "One assigned-original reached fixture passes 159 Boolean premises and one raw PhpStep. PreF x and protected old return share a live HARRAY\u2192O with an initial VALUE marker; after xNULL the protected carrier still roots the table and child. Inside D the table is retired but O remains live; the saved f-frame has the authenticated destructor prefix, assigned-array source helper true, old operand false and valid nonowning cursor. After D both old nodes are retired; the f-origin selected TypeError is caught, then consumed recovery creates NULL/new Notice and caller rNULL/b7/xNULL/ybad. Actual inside-D equal-heap LINE-only public refusal and whole/split budget pass."
+    },
+    "limits": "Admission is a simple-variable assignment of a named no-argument call under an exact array-plus-null f declaration. The old PARRAY must be live with exactly one integer-key-0 DIRECT child that is a live ordinary INSTANCE. The saved D-frame check uses source shape/signature and the existing exact release/operation/queued-cursor guards; it does not reread the retired table. The reached proof covers one runtime array and a normal echoing child destructor; the direct control has separate source agreement. Throwing child destructors, other layouts, reentry, physical Zend collection and wider returns remain open.",
+    "recovery": "Keep ignored native/baseline raw at clean 2e75/399 and strict/source/public raw at clean a502/399. Native used SLOT5; baseline, strict/source and public used SLOT3. Reports retain commands, exits, quiet closure and stable pins/module stats. No M56/M78/M87/M88 or other accepted actor was replayed; publication adds no execution credit. Broad returns_verify remains open."
   }
 }

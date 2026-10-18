@@ -282,6 +282,16 @@ retains five exact originals and 634 focused SL premises, including original
 bindings, direct stores, cells/owners and budgets. Wider initial forms, conversions,
 unsafe targets and lifecycle remain partial; earlier cuts receive no renewed credit.
 
+After the first warning in the both-fractional plain-CV modulo/shift/numeric-bitwise
+routes, the original RHS cell may hold bool/null and convert quietly to 1/0. Direct success uses
+historical LEFT and detaches late aliases; modulo 0 raises DivisionByZeroError before
+storage/detachment. Supplied throws preserve their Exception, destination and alias.
+[Quiet scalar evidence](../../coverage/semantics/quiet-scalar-review.json) retains
+10 exact originals and 688 focused SL premises, including actual handler frames,
+current RHS guards, direct result cells/error owners, aliases and budgets. Default-
+first null XOR versus modulo supplies independent store/no-store contrasts. Wider
+forms stay partial; prior accepted cuts receive no renewed credit.
+
 Stringable `.=` converts the left value before dereferencing the selected RHS
 slot. A defined direct RHS CV is borrowed and follows callback rebinding; an
 initially undefined read keeps its warned null value, while a later unset is a

@@ -274,6 +274,7 @@ def $generator_input_take(pgeneratorinput :: pgeneratorinput_tail*, n) = (pvalue
 
 ;; Installation has already selected the real paused leaf. NEXT consumes its
 ;; slot; SEND overwrites it without a decrement, retaining the old count.
+;; THROW releases the result temporary before its exception search.
 def $generator_input_resume(S, pgeneratorop) = $generator_input_orphan(S, pgeneratorop.OBJECT)
   -- if pgeneratorop.NAME = "send"
 def $generator_input_resume(S, pgeneratorop) = S[.GENERATORINPUTS = pgeneratorinput*][.RESULT = KNOWN pvalue]
@@ -283,12 +284,85 @@ def $generator_input_resume(S, pgeneratorop) = S[.GENERATORINPUTS = pgeneratorin
 def $generator_input_resume(S, pgeneratorop) = S
   -- if pgeneratorop.NAME = "next"
   -- if (eps, pgeneratorinput*) = $generator_input_take(S.GENERATORINPUTS, pgeneratorop.OBJECT)
-def $generator_input_resume(S, pgeneratorop) = S -- if ~(pgeneratorop.NAME <- ["send", "next"])
+def $generator_input_resume(S, pgeneratorop) = S[.GENERATORINPUTS = pgeneratorinput*]
+  -- if pgeneratorop.NAME = "throw"
+  -- if (pvalue_throw?, pgeneratorinput*) = $generator_input_take(S.GENERATORINPUTS, pgeneratorop.OBJECT)
+def $generator_input_resume(S, pgeneratorop) = S -- if ~(pgeneratorop.NAME <- ["send", "next", "throw"])
 def $generator_input_blocked(S, pgeneratorop) = true
   -- if pgeneratorop.NAME = "throw"
   -- if $generator_send_leaf(S, pgeneratorop.OBJECT, |S.OBJECTS|) = (n_leaf)
   -- if $($generator_input_count(S.GENERATORINPUTS, n_leaf) > 0)
+  -- if ~$generator_input_throw_ready(S, pgeneratorop)
 def $generator_input_blocked(S, pgeneratorop) = false -- otherwise
+
+def $generator_input_throw_ready(S, pgeneratorop) = true
+  -- if pgeneratorop.NAME = "throw" /\ ~pgeneratorop.ADVANCE
+  -- if pgeneratorop.LOOP = eps /\ ~pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED
+  -- if ~$generator_pending_resume(S, pgeneratorop)
+  -- if $generator_operation_valid(S, pgeneratorop) \/ $generator_input_throw_forward(S, pgeneratorop)
+  -- if pgeneratorop.ARGUMENTS = [POBJECT n_exception]
+  -- if $generator_send_leaf(S, pgeneratorop.OBJECT, |S.OBJECTS|) = (n_leaf)
+  -- if $generator_input_count(S.GENERATORINPUTS, n_leaf) = 1
+  -- if $generator_inputs_valid(S, S.GENERATORINPUTS)
+def $generator_input_throw_ready(S, pgeneratorop) = false -- otherwise
+
+;; Validate the exact imminent resumer without changing the live source state.
+def $generator_input_throw_forward(S, pgeneratorop) = $generator_input_throw_forward(S[.TODO = (GENERATOR_FROM_RESULT n porigin n_child) :: ptask*], pgeneratorop)
+  -- if S.TODO = (GENERATOR_FROM_NEXT n porigin) :: ptask*
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.INPUT = (POBJECT n_child)
+  -- if pgeneratorfrom.ACQUISITION = eps
+def $generator_input_throw_forward(S, pgeneratorop) = $generator_operation_valid(S[.TODO = (GENERATOR_RESUME pgeneratorop) :: S.TODO], pgeneratorop)
+  -- if S.TODO = (GENERATOR_FROM_RESULT n porigin n_child) :: ptask*
+  -- if pgeneratorop = $generator_from_operation(S, n, porigin, n_child)
+def $generator_input_throw_forward(S, pgeneratorop) = false -- otherwise
+
+;; Identify only the step that installs the physical leaf. Ancestor entry
+;; retains the input until its authentic forwarded operation reaches that leaf.
+def $generator_input_throw_operation(S, GENERATOR_ARGS pgeneratorop eps ([KNOWN (POBJECT n_exception)])) = (pgeneratorop[.ARGUMENTS = [POBJECT n_exception]])
+  -- if pgeneratorop.ARGUMENTS = eps
+def $generator_input_throw_operation(S, GENERATOR_FROM_NEXT n porigin) = ($generator_from_operation(S, n, porigin, n_child))
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.INPUT = (POBJECT n_child)
+  -- if pgeneratorfrom.ACQUISITION = eps
+def $generator_input_throw_operation(S, ptask) = eps -- otherwise
+def $generator_input_throw_value(S, ptask) = pvalue_taken?
+  -- if $generator_input_throw_operation(S, ptask) = (pgeneratorop)
+  -- if $generator_input_throw_ready(S, pgeneratorop)
+  -- if $generator_send_leaf(S, pgeneratorop.OBJECT, |S.OBJECTS|) = (pgeneratorop.OBJECT)
+  -- if (pvalue_taken?, pgeneratorinput*) = $generator_input_take(S.GENERATORINPUTS, pgeneratorop.OBJECT)
+def $generator_input_throw_value(S, ptask) = eps -- otherwise
+
+;; The saved real resumer authenticates the borrowed TMP receipt after the
+;; registry count moves to a release job, including during its destructor call.
+def $generator_input_throw_source(GENERATOR_ARGS pgeneratorop_source eps ([KNOWN (POBJECT n_exception)]), pgeneratorop, ptask*) = (pgeneratorop_source.ARGUMENTS = eps /\ pgeneratorop = pgeneratorop_source[.ARGUMENTS = [POBJECT n_exception]])
+def $generator_input_throw_source(GENERATOR_FROM_NEXT n porigin, pgeneratorop, (GENERATOR_RESUME pgeneratorop) :: (GENERATOR_FROM_RESULT n porigin n_child) :: ptask*) = (pgeneratorop.OBJECT = n_child /\ pgeneratorop.SITE = porigin)
+def $generator_input_throw_source(ptask, pgeneratorop, ptask_tail*) = false -- otherwise
+def $generator_input_throw_tail(S, pdestructionoperation, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask*) = $generator_input_tail(S, porigin, ptask*)
+  -- if pdestructionoperation.ORIGIN = (porigin)
+def $generator_input_throw_tail(S, pdestructionoperation, ptask :: ptask_tail*) = $generator_input_throw_tail(S, pdestructionoperation, ptask_tail*)
+  -- if ptask =/= DESTRUCTOR_OPERATION_EXIT pdestructionoperation
+def $generator_input_throw_tail(S, pdestructionoperation, ptask*) = false -- otherwise
+def $generator_input_throw_here(S, pdestructionoperation) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pdestructionoperation.CALLER = (pcallcontext)
+  -- if S.ORIGIN = (porigin)
+  -- if pdestructionoperation.ORIGIN = (porigin)
+  -- if $generator_context_operation(S, pcallcontext) = (pgeneratorop)
+  -- if pgeneratorop.NAME = "throw" /\ ~pgeneratorop.ADVANCE
+  -- if pgeneratorop.LOOP = eps /\ ~pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED
+  -- if pgeneratorop.ARGUMENTS = [POBJECT n_exception]
+  -- if $generator_operation_valid(S, pgeneratorop)
+  -- if $generator_input_site(S, pgeneratorop.OBJECT, porigin)
+  -- if $generator_input_throw_tail(S, pdestructionoperation, S.TODO)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if $generator_input_throw_source(pdestructionoperation.SOURCE, pgeneratorop, pframe.TODO)
+def $generator_input_throw_here(S, pdestructionoperation) = false -- otherwise
+def $generator_input_throw_frames(S, pdestructionoperation, eps) = false
+def $generator_input_throw_frames(S, pdestructionoperation, pframe :: pframe_tail*) = ($generator_input_throw_here($constant_frame_scope(S, pframe, pframe_tail*), pdestructionoperation) \/ $generator_input_throw_frames(S, pdestructionoperation, pframe_tail*))
+def $generator_input_throw_receipt(S, pdestructionoperation) = ($generator_input_throw_here(S, pdestructionoperation) \/ $generator_input_throw_frames(S, pdestructionoperation, S.FRAMES))
 
 def $generator_from_statements(eps) = false
 def $generator_from_statements(statement :: statement_tail*) = ($generator_from_syntax(statement) \/ $generator_from_statements(statement_tail*))

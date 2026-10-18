@@ -111,8 +111,13 @@ current snapshot, then retires its ignored argument before the receiver, without
 advancing or buffering it. Reference-cache writes and a supplied destructor
 exception preserve that ordering through later real next or forced close; see the
 [unused-target review](../../coverage/semantics/generator-pending-unused-send-review.json).
+Non-pending `throw` through native links instead releases a buffered simple-CV
+yield result before child catch search. Its one temporary owner stays separate
+from current/reference caches and earlier orphan counts; payload cleanup can
+replace the injected exception with its exact previous chain. See the
+[buffered-throw review](../../coverage/semantics/generator-buffered-throw-review.json).
 Aggregate/Iterator data is outside this route. Owning copied returns, other used
-yield shapes, active buffered `throw` and pending `throw` remain Unsupported.
+yield shapes and pending `throw` remain Unsupported.
 
 Callback admission binds the actual owner, source unit/path, stage, target, line
 and saved lexical/called scopes. Only the immediate authenticated implicit call

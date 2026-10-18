@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "milestone": "COMP76",
+  "status": "independently reviewed within the stated initialized sensitive wrapper/constructor and live WeakMap domain",
+  "behavior": "Live WeakMap versus initialized SENSITIVEVALUE or exact SensitiveParameterValue CTORCLOSURE returns uncomparable +1 both ways before wrapped-value or receiver traversal.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "tested_revision": "5207218f5c8131a8e7ac3e6c85d41dfb77dca6a6",
+  "ordered_modules": 399,
+  "manifest_sha256": "2e38df4b97a41f654a8c3f01ffb0c078c337ed17d1ce8816ff7429a23b031761",
+  "implementation": {
+    "spec/semantics/386-weak-map-lifetime.watsup": "093f5362ab0456d04684a9ac87b0876976cc9b00f871bd0a41790ac13cca66c9"
+  },
+  "engine_basis": [
+    "Zend/zend_attributes.c initializes SensitiveParameterValue handlers from std_object_handlers, overriding get_properties_for alone. zend_std_compare_objects rejects its distinct class from WeakMap before properties or wrapped-value export.",
+    "A first-class SensitiveParameterValue constructor is a native Closure. zend_compare selects the left handler; zend_closure_compare uses ZEND_COMPARE_OBJECTS_FALLBACK for unlike handlers before fake receiver/source fields.",
+    "zend_attributes_arginfo.h declares the private readonly value; repeated native construction updates it through zend_update_property_ex and throws the existing readonly Error, matching module379."
+  ],
+  "contract": [
+    "Three module386 lines add raw SENSITIVEVALUE and normalized CTORCLOSURE with the exact SensitiveParameterValue base. Existing bounds/allocation/nonfreeing guards, ORDER1 unchanged-state effect and refusal exclusion stay exact. SENSITIVEUNSET and other constructor bases remain outside this admission.",
+    "Both real producers and a getValue identity observation precede the unchanged-baseline comparison. Seven-operator rows yield 0100001 both ways, with strict identity separate. No constructor, wrapper, clone, property or lifecycle rule changes."
+  ],
+  "source_catalogues": {
+    "tests/semantics/weakmap_sensitive_comparison_cases.json": "de275faf80f41dc8e94cbc9bcf6a4d0dfed2ab384ef19a25315d0cd073ccb12a",
+    "tests/semantics/weakmap_sensitive_comparison_review_cases.json": "bc365bb6462eaaf716b3143901a44327d6500ec327f23c0c18e6527c28efeb17"
+  },
+  "unchanged_frontier": {
+    "revision": "f64f2639dc2eafd0e515237c199ceaf72b1b1aac",
+    "report": ".tools/sensitive76-support/run-baseline-v1/report.json",
+    "reason": "WeakMap comparison protocol",
+    "stdout_prefix": "producers|wrapper|",
+    "producer": "Initialized wrapper class/getValue-to-Map identity and actual constructor Closure nominal checks completed before comparison.",
+    "agreement_credit": 0
+  },
+  "validation": {
+    "original_sources": {
+      "normal_agreements": 2,
+      "author_seconds": 25.40536444634199,
+      "independent_seconds": 31.00966496951878,
+      "cli_and_host_caps_seconds": [
+        240,
+        250
+      ]
+    },
+    "author": {
+      "premises": 121,
+      "setup": 113,
+      "pure": 8,
+      "raw_php_steps": 4,
+      "seconds": 23.60237615928054,
+      "result": "Four genuine row76 EQUAL fronts preserve wrapper-to-Map snapshots, authenticated constructor-to-receiver edges, private/key owner1 and complete false-result states. After actual wrapper CV retirement, only the constructor owns its live initialized receiver. Scope/budget and pure bounds/dead/uninitialized/wrong-base controls pass."
+    },
+    "independent": {
+      "premises": 143,
+      "setup": 139,
+      "pure": 4,
+      "raw_php_steps": 4,
+      "seconds": 28.10737498663366,
+      "result": "Four genuine zero-prefix array/box spaceship fronts preserve an initialized Map wrapper and a cloned constructor after seed retirement. Actual getValue confirms identity; wrapper CV/array removal leaves sole constructor-to-receiver ownership before the late fronts. Complete ORDER1 states, private/key owner1, quiet real tails and budgets pass. Full source endings supply the existing readonly Error and explicit tail/private conversions."
+    },
+    "total": {
+      "premises": 264,
+      "setup": 252,
+      "pure": 12,
+      "raw_php_steps": 8
+    },
+    "separate_zero_credit": "Native observations and exact unchanged Unsupported baseline, initializer, author EL and four parse/check operations supply no application agreement or extra state credit.",
+    "failures": []
+  },
+  "limits": [
+    "Pure bounds/dead-allocation/uninitialized/wrong-constructor-base projections establish local helper admission only, not malformed-global execution.",
+    "Clone/seed retirement, wrapper array/CV removal, sole receiver ownership and later getValue/readonly Error are reached prerequisites or complete-source observations. Eight raw steps are comparisons; no new ownership, readonly, clone or lifetime protocol is claimed.",
+    "Uninitialized wrappers, other constructor bases, special intrinsic captures and wider weak lifetimes remain partial. Stored-string carrier conversion and factory cloning remain separate producer gaps."
+  ],
+  "artifacts": {
+    ".tools/sensitive76-support/gates.py": "37f78f19c21a601cc3278652ab0c404439f5e2773544c1957f7226c9d5167bea",
+    ".tools/sensitive76-support/inputs.py": "68c7ce9e6126074baffea66bfeaac3330842bb97a1315bf61d0f9a753586021a",
+    ".tools/sensitive76-support/actor.py": "c2efb4e6617da6d1110eabec4611db14caf7169c426c2fb6260c485c2ce50ca1",
+    ".tools/sensitive76-support/run-native-v1/report.json": "541a8b60516472afe04ab50a8c9bf12a707f1a16f253ab4a5ebb936d963b16ee",
+    ".tools/sensitive76-support/run-baseline-v1/report.json": "77b381fde41ae648f626c7b9b52562e03e349a7cec09e2b30d4d819f6d5bbb70",
+    ".tools/sensitive76-support/run-init-v1/report.json": "f53d8ce4afb8b56d9527059924addc79a36e6ed59347e8b81c45723d67d4eb87",
+    ".tools/sensitive76-support/run-sources-v1/report.json": "c9643b1e812c65157e462607337da3247ee4a025d92a793599107e73f4ce2c41",
+    ".tools/sensitive76-support/run-prepare-v1/report.json": "e4884e0d549f865ef5f55320ce7b3c960e769f7df3d7449dba4a438481ab386a",
+    ".tools/sensitive76-state/build.py": "2c8f3ea154a87e7a0aaadd98ffa2e88fd527ee5e01392bcc21f9ab90156b1100",
+    ".tools/sensitive76-state/helpers.watsup": "e382c6a4442aff26187affdffa663c178a37ef95288f3d218cbaba2b5407edfc",
+    ".tools/sensitive76-state/run.py": "742e29229809c71b81e608832b235cae4a6f748e087c2c5e7a86f88433658541",
+    ".tools/sensitive76-state/plan.json": "3aa08dd10092e34b86c8943b234853fa7726448be864049b18c77c7469f0efc4",
+    ".tools/sensitive76-state/run-el-v1/report.json": "9c6955ed32508043733d3f3dd36ca7a0ba0f1878b7d185f4788e5e9aa3fa9544",
+    ".tools/sensitive76-state/run-sl-v1/report.json": "8d6a736982c7341db7e6e630facac1f120979a6cb49981973dc2ffa7c7f460f3",
+    ".tools/sensitive76-peer/run.py": "989cfce00263ed839771b50fb3dbec1681dd39d8175925debbc8f9b74f94fb52",
+    ".tools/sensitive76-peer/build.py": "b5d8190277c79ee863e10126297d6505e99aa2967a610c89e50a3d9035421e44",
+    ".tools/sensitive76-peer/helpers.watsup": "c7e035b0f24f7271b733f8a8fdf8f308803e29b195e02801a361e598b0547783",
+    ".tools/sensitive76-peer/plan.json": "926201855a39f44b370c385d64476c41ddc0dd57ea952f98ee928082f22548bb",
+    ".tools/sensitive76-peer/native-v1/report.json": "a377095a4f4277313b2a75146ed7e2c9bb9aae122e18a8551674964644c48d52",
+    ".tools/sensitive76-peer/source-v1/report.json": "520c8256fc72b48c784060d8708c52ec25a13b4806ecad0a6526b378cdc4ae7e",
+    ".tools/sensitive76-peer/prepare-v1/report.json": "c4426d995d94b58e529321cf52a7c09f5fd9fd6896b09ffd08488ba14ff373de",
+    ".tools/sensitive76-peer/state-v1/report.json": "1136c4ebd2c960ba6734966590a61ef9f42a1bb178c4e5de3039a3164596411d",
+    ".tools/sensitive76-peer/review.json": "8b4620fab0604e5b1c531a27b8b4012c7e9313491a283dea7f62dc89143d4a8f"
+  },
+  "recovery": "Ignored originals, fixtures, START/commands/environment records and raw streams remain under .tools/weakmap-sensitive-comparison-76/.tools/sensitive76-{native,support,state,peer}; branch codex/weakmap-sensitive-comparison-76 retains the tested revision. No evidence archive is committed.",
+  "independent_review": {
+    "reviewer": "/root/comp_review_67",
+    "semantic_verdict": "CLEAR",
+    "source_and_state_verdict": "CLEAR",
+    "publication_verdict": "CLEAR",
+    "record": ".tools/sensitive76-peer/review.json",
+    "record_sha256": "8b4620fab0604e5b1c531a27b8b4012c7e9313491a283dea7f62dc89143d4a8f"
+  },
+  "composition": {
+    "parent": "08ef069249e79812e233cb9a51eb39a68c20b9fa",
+    "ordered_modules": 399,
+    "method": "Independent pointwise actual-parent source review; no concrete syntax or dispatch-order dependency warrants a joined actor.",
+    "runtime": "Only three tested-identical module386 lines differ from the parent; manifest and every other runtime file remain parent-exact.",
+    "parent_seams": "Module156 nullable-array noarg return-assignment extension requires an authenticated pending destructor cursor and singleton source-object child; neither source has such returns, signatures or destructors. Module400 infinite/array define-name branches require define, and404 quiet bool/null RHS requires compound-warning phases; neither occurs. Only ordinary integer counter increments/comparisons and mixed constructor arguments occur; shared30/pstate/manifest,379 and callable interfaces remain unchanged.",
+    "execution_credit": 0,
+    "retained_cut": "Two source agreements and 264 = 252 setup + 12 pure premises with eight actual comparison steps at5207218f5c8131a8e7ac3e6c85d41dfb77dca6a6/399."
+  }
+}

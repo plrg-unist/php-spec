@@ -375,13 +375,14 @@ def $dynamic_array_known_matches(S, pvalue, eps) = true
 def $dynamic_array_known_matches(S, pvalue, (pvalue_known)) = $dynamic_array_same(S, pvalue, pvalue_known)
 
 dec $dynamic_array_source(pstate, porigin) : bool
-def $dynamic_array_source(S, porigin) = ($dynamic_define_source(S, porigin) /\ $intrinsic_count(S, porigin) = (2))
+def $dynamic_array_source(S, porigin) = $dynamic_define_source(S, porigin)
 def $dynamic_array_call_valid(S, pconfigcall) = true
   -- if pconfigcall.KIND = INTRINSIC_DEFINE
   -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps
   -- if $config_invoke_valid(S, pconfigcall)
   -- if $dynamic_array_source(S, pconfigcall.SITE)
   -- if $dynamic_define_values(pconfigcall) = ((preqbytes, PARRAY n_array))
+  -- if ~$dynamic_constant_case_flag(pconfigcall)
   -- if $dynamic_constant_global_name(preqbytes)
   -- if ~$dynamic_constant_initial(preqbytes)
   -- if $dynamic_define_name_matches($user_constant_key(preqbytes), $dynamic_define_known(S, pconfigcall.SITE, 0))
@@ -1289,14 +1290,14 @@ def $dynamic_scalar_define_received(S, pconfigcall, pvalue_name, z_precision) = 
   -- if $dynamic_scalar_define_values(pconfigcall) = ((pvalue_raw, pvalue))
   -- if $dynamic_scalar_name_at(pvalue_raw, z_precision) = (preqbytes)
   -- if $string_bytes(pvalue_name) = (preqbytes) /\ $string_carrier_valid(S, pvalue_name)
-  -- if $dynamic_constant_global_name(preqbytes) /\ ~$dynamic_constant_initial(preqbytes)
+  -- if $dynamic_constant_global_name(preqbytes) /\ (~$dynamic_constant_initial(preqbytes) \/ preqbytes = $ptascii("INF"))
 def $dynamic_scalar_define_received(S, pconfigcall, pvalue_name, z_precision) = false -- otherwise
 dec $dynamic_scalar_define_duplicate_valid(pstate, pconfigcall, pvalue, int, nat) : bool
 def $dynamic_scalar_define_duplicate_valid(S, pconfigcall, pvalue_name, z_precision, n_constants) = true
   -- if $dynamic_scalar_define_received(S, pconfigcall, pvalue_name, z_precision)
   -- if $string_bytes(pvalue_name) = (preqbytes)
   -- if $(n_constants <= |S.USERCONSTANTS|)
-  -- if $user_constant_at(S.USERCONSTANTS[0:n_constants], preqbytes) =/= eps
+  -- if $user_constant_at(S.USERCONSTANTS[0:n_constants], preqbytes) =/= eps \/ preqbytes = $ptascii("INF")
 def $dynamic_scalar_define_duplicate_valid(S, pconfigcall, pvalue_name, z_precision, n_constants) = false -- otherwise
 dec $dynamic_scalar_define_finish(pstate, pconfigcall) : pstate
 def $dynamic_scalar_define_finish(S, pconfigcall) = S -- if S.COMPLETION =/= NORMAL

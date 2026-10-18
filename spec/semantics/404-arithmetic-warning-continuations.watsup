@@ -1624,6 +1624,21 @@ def $modassign_both_integral_snapshot(S, pintegeroperation, n_target, n_right) =
   -- if $float_long(n_bits_right, true) = (i_right, eps)
 def $modassign_both_integral_snapshot(S, pintegeroperation, n_target, n_right) = eps -- otherwise
 
+;; Bool and null convert quietly after LEFT has already been captured.
+dec $bothassign_quiet_scalar_snapshot(pstate, pintegeroperation, nat, nat) : int?
+def $bothassign_quiet_scalar_snapshot(S, pintegeroperation, n_target, n_right) = (i_right)
+  -- if $powerassign_warning_ready(S, pintegeroperation, n_target)
+  -- if pintegeroperation.RIGHTPOINTER = INTEGER_CV ptbytes_right
+  -- if $integer_pointer_select(S, pintegeroperation.RIGHT) = (pintegeroperation.RIGHTPOINTER)
+  -- if $lookup(S.ENV, ptbytes_right) = (n_right)
+  -- if (HCELL n_right) <- S.ALLOCATIONS
+  -- if ~$foreach_released_name(S, ptbytes_right) /\ ~(n_right <- S.REFCELLS)
+  -- if $integer_pointer_value(S, pintegeroperation.RIGHTPOINTER) = (pvalue)
+  -- if pvalue = PNULL \/ pvalue = PBOOL false \/ pvalue = PBOOL true
+  -- if S_converted = $integer_coerce(S, pvalue, pintegeroperation.LINE)
+  -- if S_converted.RESULT = KNOWN (PINT i_right)
+def $bothassign_quiet_scalar_snapshot(S, pintegeroperation, n_target, n_right) = eps -- otherwise
+
 dec $modassign_both_right_valid(pstate, pintegeroperation, nat, nat, nat, int, nat, int, nat) : bool
 def $modassign_both_right_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, n_bits_right, i_right, n_stage) = true
   -- if $modassign_warning_source(S, pintegeroperation)
@@ -1665,10 +1680,20 @@ rule PhpStep/modassign-both-integral-zero: S ~> $integer_result(S[.TODO = ptask_
   -- if S.TODO = (MOD_ASSIGN_BOTH_LEFT pintegeroperation n_target n_right n_bits_left i_left 1) :: ptask_tail*
   -- if $modassign_both_left_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, 1)
   -- if $modassign_both_integral_snapshot(S, pintegeroperation, n_target, n_right) = ((n_bits_right, 0))
+rule PhpStep/modassign-both-scalar-commit: S ~> $arithmetic_addassign_cv_write(S[.TODO = ptask_tail*][.RESULT = KNOWN (PINT i_result)], ptbytes_left, PINT i_result)
+  -- if S.TODO = (MOD_ASSIGN_BOTH_LEFT pintegeroperation n_target n_right n_bits_left i_left 1) :: ptask_tail*
+  -- if $modassign_both_left_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, 1)
+  -- if $bothassign_quiet_scalar_snapshot(S, pintegeroperation, n_target, n_right) = (i_right)
+  -- if $integer_binary(pintegeroperation.OP, i_left, i_right) = IRESULT i_result
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CV ptbytes_left
+rule PhpStep/modassign-both-scalar-zero: S ~> $integer_result(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL], INTZERO, pintegeroperation.LINE)
+  -- if S.TODO = (MOD_ASSIGN_BOTH_LEFT pintegeroperation n_target n_right n_bits_left i_left 1) :: ptask_tail*
+  -- if $modassign_both_left_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, 1)
+  -- if $bothassign_quiet_scalar_snapshot(S, pintegeroperation, n_target, n_right) = (0)
 rule PhpStep/modassign-both-first-boundary: S ~> S[.COMPLETION = UNSUPPORTED "modulo assignment live RHS or expired, rebound, owning or constrained target after first deprecation"]
   -- if S.TODO = (MOD_ASSIGN_BOTH_LEFT pintegeroperation n_target n_right n_bits_left i_left 1) :: ptask_tail*
   -- if $modassign_both_left_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, 1)
-  -- if ~$powerassign_warning_ready(S, pintegeroperation, n_target) \/ ($modassign_warning_ready(S, pintegeroperation, n_target, n_right) = eps /\ $modassign_both_right_snapshot(S, pintegeroperation, n_target, n_right) = eps /\ $modassign_both_integral_snapshot(S, pintegeroperation, n_target, n_right) = eps)
+  -- if ~$powerassign_warning_ready(S, pintegeroperation, n_target) \/ ($modassign_warning_ready(S, pintegeroperation, n_target, n_right) = eps /\ $modassign_both_right_snapshot(S, pintegeroperation, n_target, n_right) = eps /\ $modassign_both_integral_snapshot(S, pintegeroperation, n_target, n_right) = eps /\ $bothassign_quiet_scalar_snapshot(S, pintegeroperation, n_target, n_right) = eps)
 rule PhpStep/modassign-both-right-dispatch: S ~> $error_dispatch(S, 8192, n_message*, pintegeroperation.LINE, DIAGNOSTIC "Deprecated" n_message* pintegeroperation.LINE, MOD_ASSIGN_BOTH_RIGHT pintegeroperation n_target n_right n_bits_left i_left n_bits_right i_right 1)
   -- if S.TODO = (MOD_ASSIGN_BOTH_RIGHT pintegeroperation n_target n_right n_bits_left i_left n_bits_right i_right 0) :: ptask_tail*
   -- if $modassign_both_right_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, n_bits_right, i_right, 0)
@@ -1783,10 +1808,16 @@ rule PhpStep/shiftassign-both-integral-negative: S ~> $integer_result(S[.TODO = 
   -- if $shiftassign_both_left_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, 1)
   -- if $modassign_both_integral_snapshot(S, pintegeroperation, n_target, n_right) = ((n_bits_right, i_right))
   -- if $integer_binary(pintegeroperation.OP, i_left, i_right) = NEGSHIFT
+rule PhpStep/shiftassign-both-scalar-commit: S ~> $arithmetic_addassign_cv_write(S[.TODO = ptask_tail*][.RESULT = KNOWN (PINT i_result)], ptbytes_left, PINT i_result)
+  -- if S.TODO = (SHIFT_ASSIGN_BOTH_LEFT pintegeroperation n_target n_right n_bits_left i_left 1) :: ptask_tail*
+  -- if $shiftassign_both_left_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, 1)
+  -- if $bothassign_quiet_scalar_snapshot(S, pintegeroperation, n_target, n_right) = (i_right)
+  -- if $integer_binary(pintegeroperation.OP, i_left, i_right) = IRESULT i_result
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CV ptbytes_left
 rule PhpStep/shiftassign-both-first-boundary: S ~> S[.COMPLETION = UNSUPPORTED "shift assignment live RHS or expired, rebound, owning or constrained target after first deprecation"]
   -- if S.TODO = (SHIFT_ASSIGN_BOTH_LEFT pintegeroperation n_target n_right n_bits_left i_left 1) :: ptask_tail*
   -- if $shiftassign_both_left_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, 1)
-  -- if ~$powerassign_warning_ready(S, pintegeroperation, n_target) \/ ($modassign_warning_ready(S, pintegeroperation, n_target, n_right) = eps /\ $modassign_both_right_snapshot(S, pintegeroperation, n_target, n_right) = eps /\ $modassign_both_integral_snapshot(S, pintegeroperation, n_target, n_right) = eps)
+  -- if ~$powerassign_warning_ready(S, pintegeroperation, n_target) \/ ($modassign_warning_ready(S, pintegeroperation, n_target, n_right) = eps /\ $modassign_both_right_snapshot(S, pintegeroperation, n_target, n_right) = eps /\ $modassign_both_integral_snapshot(S, pintegeroperation, n_target, n_right) = eps /\ $bothassign_quiet_scalar_snapshot(S, pintegeroperation, n_target, n_right) = eps)
 rule PhpStep/shiftassign-both-right-dispatch: S ~> $error_dispatch(S, 8192, n_message*, pintegeroperation.LINE, DIAGNOSTIC "Deprecated" n_message* pintegeroperation.LINE, SHIFT_ASSIGN_BOTH_RIGHT pintegeroperation n_target n_right n_bits_left i_left n_bits_right i_right 1)
   -- if S.TODO = (SHIFT_ASSIGN_BOTH_RIGHT pintegeroperation n_target n_right n_bits_left i_left n_bits_right i_right 0) :: ptask_tail*
   -- if $shiftassign_both_right_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, n_bits_right, i_right, 0)
@@ -1897,10 +1928,16 @@ rule PhpStep/bitassign-both-integral-commit: S ~> $arithmetic_addassign_cv_write
   -- if $modassign_both_integral_snapshot(S, pintegeroperation, n_target, n_right) = ((n_bits_right, i_right))
   -- if $integer_binary(pintegeroperation.OP, i_left, i_right) = IRESULT i_result
   -- if pintegeroperation.LEFTPOINTER = INTEGER_CV ptbytes_left
+rule PhpStep/bitassign-both-scalar-commit: S ~> $arithmetic_addassign_cv_write(S[.TODO = ptask_tail*][.RESULT = KNOWN (PINT i_result)], ptbytes_left, PINT i_result)
+  -- if S.TODO = (BIT_ASSIGN_BOTH_LEFT pintegeroperation n_target n_right n_bits_left i_left 1) :: ptask_tail*
+  -- if $bitassign_both_left_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, 1)
+  -- if $bothassign_quiet_scalar_snapshot(S, pintegeroperation, n_target, n_right) = (i_right)
+  -- if $integer_binary(pintegeroperation.OP, i_left, i_right) = IRESULT i_result
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CV ptbytes_left
 rule PhpStep/bitassign-both-first-boundary: S ~> S[.COMPLETION = UNSUPPORTED "bitwise assignment live RHS or expired, rebound, owning or constrained target after first deprecation"]
   -- if S.TODO = (BIT_ASSIGN_BOTH_LEFT pintegeroperation n_target n_right n_bits_left i_left 1) :: ptask_tail*
   -- if $bitassign_both_left_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, 1)
-  -- if ~$powerassign_warning_ready(S, pintegeroperation, n_target) \/ ($modassign_warning_ready(S, pintegeroperation, n_target, n_right) = eps /\ $modassign_both_right_snapshot(S, pintegeroperation, n_target, n_right) = eps /\ $modassign_both_integral_snapshot(S, pintegeroperation, n_target, n_right) = eps)
+  -- if ~$powerassign_warning_ready(S, pintegeroperation, n_target) \/ ($modassign_warning_ready(S, pintegeroperation, n_target, n_right) = eps /\ $modassign_both_right_snapshot(S, pintegeroperation, n_target, n_right) = eps /\ $modassign_both_integral_snapshot(S, pintegeroperation, n_target, n_right) = eps /\ $bothassign_quiet_scalar_snapshot(S, pintegeroperation, n_target, n_right) = eps)
 rule PhpStep/bitassign-both-right-dispatch: S ~> $error_dispatch(S, 8192, n_message*, pintegeroperation.LINE, DIAGNOSTIC "Deprecated" n_message* pintegeroperation.LINE, BIT_ASSIGN_BOTH_RIGHT pintegeroperation n_target n_right n_bits_left i_left n_bits_right i_right 1)
   -- if S.TODO = (BIT_ASSIGN_BOTH_RIGHT pintegeroperation n_target n_right n_bits_left i_left n_bits_right i_right 0) :: ptask_tail*
   -- if $bitassign_both_right_valid(S, pintegeroperation, n_target, n_right, n_bits_left, i_left, n_bits_right, i_right, 0)

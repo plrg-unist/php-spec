@@ -1,0 +1,131 @@
+{
+  "version": 1,
+  "milestone": "COMP75",
+  "status": "independently reviewed within the stated live WeakMap/getter-and-factory Closure domain",
+  "behavior": "Live WeakMap versus normalized GETTERCLOSURE or FROMCALLABLEFACTORY returns uncomparable +1 both ways before receiver, method/source descriptor or private-entry traversal.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "tested_revision": "edc6f81ddcebb2afd1c93099cb5d180418402b61",
+  "ordered_modules": 399,
+  "manifest_sha256": "2e38df4b97a41f654a8c3f01ffb0c078c337ed17d1ce8816ff7429a23b031761",
+  "implementation": {
+    "spec/semantics/386-weak-map-lifetime.watsup": "5cbe30cf7db7f4821390814310d8cc6417bd543954ba1ca706e4ea0ac26dd493"
+  },
+  "engine_basis": [
+    "Zend/zend_closures.c creates native Closures for internal getter methods and first-class Closure::fromCallable. zend_compare in zend_operators.c selects the left object handler.",
+    "zend_closure_compare runs ZEND_COMPARE_OBJECTS_FALLBACK for unlike handlers before fake-Closure fields. Standard comparison rejects the distinct WeakMap/Closure classes before properties."
+  ],
+  "contract": [
+    "Four module386 lines add two exact $object_body patterns. Existing bounds/allocation/nonfreeing guards, ORDER1 unchanged-state effect and refusal exclusion stay exact. No producer, clone, getter/factory invocation or lifetime rules change.",
+    "Authenticated witnesses construct builtin/source Throwable getters and the real first-class factory before nominal checks and the first unchanged-baseline comparison. Seven-operator rows yield 0100001 both ways, with strict identity separate."
+  ],
+  "source_catalogues": {
+    "tests/semantics/weakmap_getter_factory_comparison_cases.json": "ece334e07392e9067561bbf039950f963be310283e7c6e9f7181048b2afa0042",
+    "tests/semantics/weakmap_getter_factory_comparison_review_cases.json": "d28ff9e65b4b162026a77d37999aa649f6eaa3b95fcc93f58a2e3966b0e44ba6"
+  },
+  "unchanged_frontier": {
+    "revision": "fcfec63d34c4c6649ec085e4ada51f3620b3e2ac",
+    "report": ".tools/getter75-support/run-baseline-v1/report.json",
+    "reason": "WeakMap comparison protocol",
+    "stdout_prefix": "producers|getter-builtin|",
+    "producer": "Builtin getMessage, source-descendant getCode and first-class factory all passed nominal Closure checks before the first comparison.",
+    "agreement_credit": 0
+  },
+  "validation": {
+    "original_sources": {
+      "normal_agreements": 2,
+      "author_seconds": 49.97897828929126,
+      "independent_seconds": 39.00456694327295,
+      "cli_and_host_caps_seconds": [
+        240,
+        250
+      ]
+    },
+    "author": {
+      "premises": 201,
+      "setup": 191,
+      "pure": 10,
+      "raw_php_steps": 6,
+      "seconds": 45.04892566986382,
+      "result": "Six genuine row75 EQUAL fronts preserve builtin getMessage/source getCode receivers, cold caches and message/code values, separate trace-array and public Map edges, sole receiver owners and private/key owner1. Authenticated receiver-free factory metadata, no scope/binding rows, whole false-result states and budgets pass."
+    },
+    "independent": {
+      "premises": 152,
+      "setup": 148,
+      "pure": 4,
+      "raw_php_steps": 4,
+      "seconds": 33.09370774962008,
+      "result": "Four genuine zero-prefix box/array spaceship fronts preserve a cloned source getter after seed/maker CV retirement, sole live receiver with public held Map and trace-array edges, authenticated direct factory, private/key owner1 and complete ORDER1 states. Full source endings return held, invoke the factory-created body17 and execute real tail/private casts."
+    },
+    "total": {
+      "premises": 353,
+      "setup": 339,
+      "pure": 14,
+      "raw_php_steps": 10
+    },
+    "separate_zero_credit": "Native observations and exact unchanged Unsupported baseline, initializer, author EL and four parse/check operations supply no application agreement or extra state credit.",
+    "failures": [
+      {
+        "report": ".tools/getter75-peer/state-v1/report.json",
+        "classification": "Pre-main fixture elaboration: optional object-property slot sequence passed to a required sequence.",
+        "correction": "Unwrap the optional sequence once, then reuse it for held/trace lookups; one additional setup premise. Original five fixture inputs remain under state-v1/failure-inputs. Only the corrected SL actor repeated; runtime, original source and programme were unchanged.",
+        "source_agreements": 0,
+        "premises": 0,
+        "raw_php_steps": 0
+      }
+    ]
+  },
+  "limits": [
+    "Pure helper projections, including a substituted CLOSURE_CURRENT tag, establish local admission/effects only, not malformed-global execution.",
+    "Getter clone/seed retirement, sole receiver owners, trace/Map edges and later getter/factory calls are genuine reached prerequisites or complete-source observations. Ten raw steps are comparisons; no producer, clone or lifecycle extension is claimed.",
+    "Constructor/special intrinsic captures, other producers and wider weak lifetimes remain partial. COMP71 stored-string carrier conversion stays separate."
+  ],
+  "artifacts": {
+    ".tools/getter75-support/gates.py": "8e4b8035b6acc38b919a1dc7b2b07fe4293279781e5500e08f01eb66b6320229",
+    ".tools/getter75-support/inputs.py": "46780628bac2bfa2930b155162fd926d3e2036cea10c30072ef3685739704717",
+    ".tools/getter75-support/actor.py": "7f145bb7161f400c88a554cb1f55842d7af37c4ee9be76ffc2d5ab16755b5667",
+    ".tools/getter75-support/run-native-v1/report.json": "de0cd09cc29863bdaf9764e5c786de0c4f1f526febe1145943e10e7639a90b43",
+    ".tools/getter75-support/run-baseline-v1/report.json": "28d40d4bc0248aa9b24c26fdcd13300a7cd660ab648e41790910e62e5f48cfc4",
+    ".tools/getter75-support/run-init-v1/report.json": "336ba417af1c5bd343e1a8affb26de2b2b8c254614d82b16a4a0872956d97736",
+    ".tools/getter75-support/run-sources-v1/report.json": "f9ad99f7f5b2be6e3000d3db1b8ee50815b3ee5bceb042cdb5d3e56d8b504022",
+    ".tools/getter75-support/run-prepare-v1/report.json": "c030c938e099886470c602291778473c367c1bdac5641f0a736d2cc27cfab3d8",
+    ".tools/getter75-state/build.py": "aff1255f4af6286bd765879a8e4612c9a79f5fc9161bbace9d41c2975802db47",
+    ".tools/getter75-state/helpers.watsup": "5f0ff5c7660f61cd48c627e5bcbfc0b3bdf8c6209f2d45eaadf0aea344fc9f54",
+    ".tools/getter75-state/run.py": "1034c140403c52484c4557c9c8e7d5588ef1ccfaa5adbe5a1f5b25bddc59975e",
+    ".tools/getter75-state/plan.json": "955e42c3afa50e4967d83a90907912a3cd58983e695f4468aacedf8efd418e61",
+    ".tools/getter75-state/run-el-v1/report.json": "dfb6f54adb50a68eaa1831baa598bf456a63f3bd3428b40b5218aeea59b92a88",
+    ".tools/getter75-state/run-sl-v1/report.json": "157d741ddcce96e05f2dd307dbbf7a5b40a118c44df68da389bcd28a63e8d060",
+    ".tools/getter75-peer/run.py": "87fe09d769e6ce24b1d9f38fd57c9e56f1c1a583f54745f37859e42ecdf2fd3b",
+    ".tools/getter75-peer/build.py": "a6fa80041c2e12adb451c94e97cc847085df5cfdb1183b4e2d8922a87d0dc282",
+    ".tools/getter75-peer/helpers.watsup": "00345b532f7686cd5f9df2dbce7eef4ea228b1a0994f6a37ea3fe70e7fbe1572",
+    ".tools/getter75-peer/plan.json": "36a3c9ab3ae85d5b7593d6af77402ec39b663ff747e2982ae301b0ec7cc2e197",
+    ".tools/getter75-peer/native-v1/report.json": "098c0464c097e25cdd21312998fa34eef150e1e8406d9f6fcae81fb7269fc4dc",
+    ".tools/getter75-peer/source-v1/report.json": "06bd45ca5aa0896f30a3a450fa027dd5cb315bd3726dec2ed3896b50a17ce25e",
+    ".tools/getter75-peer/prepare-v1/report.json": "88d64950e4c6f225d08ac53e91ac09e2c349fbbcbdadba6b678999e6839c9008",
+    ".tools/getter75-peer/state-v1/report.json": "5eb9203df645757417179f9219ce979dd647c59269fa9423ec1c81a857b387ec",
+    ".tools/getter75-peer/state-v2/report.json": "b0371488c8e0a6179fa261b9411fdaed97cf6e917ffd0150af3ee5176f02c8c5",
+    ".tools/getter75-peer/review.json": "a98a7381589bccd8201a48f5572e8f00734834845e94ec5fdba300134aa051b2"
+  },
+  "recovery": "Ignored originals, fixtures, START/commands/environment records, raw streams and preserved failed fixture inputs remain under .tools/weakmap-getter-factory-comparison-75/.tools/getter75-{native,support,state,peer}; branch codex/weakmap-getter-factory-comparison-75 retains the tested revision. No evidence archive is committed.",
+  "independent_review": {
+    "reviewer": "/root/comp_review_67",
+    "semantic_verdict": "CLEAR",
+    "source_and_state_verdict": "CLEAR",
+    "publication_verdict": "CLEAR",
+    "record": ".tools/getter75-peer/review.json",
+    "record_sha256": "a98a7381589bccd8201a48f5572e8f00734834845e94ec5fdba300134aa051b2"
+  },
+  "composition": {
+    "parent": "2e75ac2d15804b91de422ea3124e56206ce6270a",
+    "ordered_modules": 399,
+    "method": "Independent pointwise actual-parent source review; no concrete syntax or dispatch-order dependency warrants a joined actor.",
+    "runtime": "Only four tested-identical module386 lines differ from the parent; manifest and every other runtime file remain parent-exact.",
+    "parent_seams": "New DYNAMIC_ARRAY_CONSTANT_DUPLICATE task and module400 candidate branches require define/constant operations. Module270 nullable-array return requires authenticated pending-destructor unwind,407/408 missing-getter extensions require isset/empty and409 nested-key planning requires LIST_FETCH; all are absent in both originals. No pstate field/init change; getter/factory producers174/234 and comparison interfaces remain unchanged.",
+    "execution_credit": 0,
+    "retained_cut": "Two source agreements and 353 = 339 setup + 14 pure premises with ten actual comparison steps atedc6f81ddcebb2afd1c93099cb5d180418402b61/399."
+  }
+}

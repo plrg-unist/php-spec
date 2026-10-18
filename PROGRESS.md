@@ -7,6 +7,104 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+WeakMap comparisons now admit initialized SENSITIVEVALUE wrappers and exact
+SensitiveParameterValue CTORCLOSURE captures as uncomparable +1 both ways, before
+wrapped-value or receiver traversal. Both real producers precede the unchanged
+baseline. Two originals and 264 Boolean premises (252 setup + 12 pure)/8 actual
+comparison steps pass at 5207218f5/399. All seven operators, a wrapped Map snapshot,
+cloned constructor ownership after wrapper array/CV removal, private/key owners,
+quiet aggregate tails and budgets are covered. Later calls confirm getValue
+identity and the existing readonly constructor Error. No actor failed; native/
+baseline/preparation/EL retain zero credit. Uninitialized wrappers, other constructor
+bases, special intrinsic captures and wider lifetimes remain partial; carrier and
+factory-clone gaps stay separate.
+[Sensitive wrapper/capture review](coverage/semantics/weakmap-sensitive-comparison-review.json).
+
+Composed over 08ef06924/399 after pointwise review of nullable-array abrupt
+return, infinite/array define names and quiet compound RHS selectors, all absent
+here. Source2/state264 retain their private cut; no joined actor or renewed
+execution credit.
+
+At profile precision14, positive infinite float `define` names now reach the
+protected `INF` duplicate Warning/false path with primitive candidates and
+omitted/bool-false flags. Two module400 predicates reuse the existing received
+name/precision/prefix marker;
+source/capture/carrier guards, conversion, strict errors and trace/discard code
+stay exact. Four originals agree at83478a404. All529 public premises pass at33743f57f:
+author205+124+61 and independent139, covering two default duplicates, fresh `-INF`,
+captured raw false/request candidate through callback writes, converted API names,
+strict NaN priority, saved14/live1 precision, same Exception/caller99/sibling919,
+full restored discard, refusals and budgets. The first state fixture incorrectly
+assumed precision1 preserves `INF`; pinned `zend_gcvt` and existing numeric rules
+truncate it to `I`. That failure and the unchanged Unsupported baseline retain0;
+only affected state fixtures repeated, with source4 kept at its original cut.
+Initial native/baseline usedCPU4; later source/state usedCPU1. Expected PHP stderr
+has two literal duplicate Warnings and one false-handler Warning; strict/peer are
+quiet. Weak NaN reception, nonbool nonfinite flags and wider candidates remain open.
+[Infinite-name review](coverage/semantics/define-nonfinite-name-review.json).
+
+Pointwise composition over 464c0cf26 preserves the incoming 399-module parent.
+V67 string-name/array duplicates use a separate marker; new Generator, WeakMap,
+LIST and compound-operator selectors do not match these scalar calls. Source4 and
+public529 retain their private cuts, with no joined actor or renewed credit.
+
+Bool/null RHS values now convert quietly after the first warning in the
+both-fractional plain-CV modulo/shift/numeric-bitwise routes. With cached LEFT `12`,
+`true` stores `0`/`24`/`6`/`0`/`13`/`13`; false/null modulo raises DivisionByZeroError
+at RHS line 25 before store/detachment. Success detaches alias `99`; supplied throw
+preserves its Exception, destination `100` and alias write-through. Independent
+default-first null XOR stores `12` despite current `99`, contrasting null modulo's
+preserved alias. Ten originals agree at 6cd72d022; 304 SL premises at 63738bb2f plus
+384 at 2db904217/399 cover actual handler frames, RHS guards, result cells/error
+owners, aliases and budgets. The original fixture binding failure stays zero;
+only the corrected branch and previously unrun peers then execute. One shared safe snapshot, four
+rules and three boundary exclusions; no initial/tag/schema change. All 14 rows
+stay partial; controls and earlier renewed credit zero, OP12 paused.
+[Quiet scalar ledger](coverage/semantics/quiet-scalar-review.json).
+
+Composed over f64f2639d/399 after pointwise review of typed-return cleanup,
+DEFINE array/special-name duplicates, property isset/empty, recursive list and
+WeakMap/Closure selectors, plus buffered Generator throw disposal. Source10 and state304+384
+retain private cuts without actor, replay or renewed credit.
+
+Non-pending Generator `throw` now releases a paused child's buffered simple-CV
+yield result before catch search, directly or through finite native links. The
+no-GC temporary decrement preserves independent cache/orphan owners; payload
+destruction can replace the injected Exception with its previous chain intact.
+Four exact normal originals agree at `46f1d6208`/399. Five genuine fronts pass
+509 premises (267 author + 242 independent), including real slot/release/search
+steps, COW/cache aliases, pending/receipt refusals and public validity inside the
+payload destructor. Strict399 passes; fixture elaboration adds no semantic credit.
+The main435 retain `46f1`, and the separate callback74 uses test-only `d5a499c3e`.
+Two pre-application compiler failures remain zero credit; only affected checks
+were retried. Native4 and unchanged Unsupported retain `6d377` and zero agreement;
+no source/state actor failed or was replayed. Pending/global-opline `throw`, acquired
+producers, other result shapes and wider lifecycle remain partial. No engine bug
+or intentional divergence is claimed. See the [buffered-throw review](coverage/semantics/generator-buffered-throw-review.json).
+
+Composed over `fcf554d6b`/399 after pointwise review of nullable-array return
+cleanup, constant snapshots, magic-empty/list, bitwise and WeakMap/Closure
+selectors. Only modules280/289/301 change; every other parent runtime file,
+task layout, pipeline and manifest is preserved. Source4/state509/strict
+retain their private cuts; no joined actor or renewed execution credit.
+
+WeakMap comparisons now admit normalized GETTERCLOSURE and FROMCALLABLEFACTORY
+objects as uncomparable +1 in either direction before receiver, method, source or
+private-entry traversal. Both producers precede the genuine unchanged baseline.
+Two exact originals and 353 Boolean premises (339 setup + 14 pure)/10 actual
+steps pass at edc6f81dd/399. All seven operators, builtin/inherited getters, cold
+caches, trace/Map edges, sole cloned-getter receiver ownership, quiet aggregate
+tails and budgets are covered. Source endings invoke real getters and the factory.
+One pre-main fixture-type failure remains zero; native/baseline/preparation/EL
+retain zero credit. Other producers, constructor/special intrinsic captures and
+wider weak lifetimes remain partial; stored-string carrier conversion is separate.
+[Getter/factory review](coverage/semantics/weakmap-getter-factory-comparison-review.json).
+
+Composed over 2e75ac2d1/399 after pointwise review of guarded array-constant,
+isset-only empty, nullable-array abrupt-return and nested-list selectors, all
+absent here. Source2/state353 retain their private cut; no joined actor or renewed
+execution credit.
+
 Terminal inherited `empty` now handles the existing typed bool `__isset` when
 `__get` is absent. False and true both deliver true before the saved receiver
 owner drops; caller-CV rebinding and callback throws preserve destructor ordering
@@ -559,6 +657,9 @@ original source/state cuts and failures without replay. Computed key names,
 selected NUL CV strings, undefined/conversion diagnostics, wider RHS/targets and
 scalar/object destructuring callbacks and lifecycle remain partial.
 
+Pointwise composition over 242340c1 preserves the incoming 399-module parent,
+including Generator receipts, return cursors, constants, compound and WeakMap paths.
+Normal5/static1/state804 retain their private cuts; no joined actor or renewed credit.
 
 Plain-CV `%=` now keeps both converted longs through a fractional-RHS deprecation.
 Captured12/5 stores2 despite callback99/7 and detaches a late target alias; supplied
@@ -845,6 +946,17 @@ callback writes and trace owners. All accepted checks pass first attempts; the
 unchanged Unsupported baseline retains0. Empty-array duplicates, nested empties,
 other owning leaves, startup keys and wider flags remain partial.
 [Array-duplicate review](coverage/semantics/define-stdclass-array-duplicate-review.json).
+
+Array definitions now also admit a captured boolean-false third slot. Actual
+pre-flag and invoke fronts distinguish alias rebinding during flag evaluation
+from later callback writes; copies retain the values after all arguments.
+Three exact sources agree, including a throwing handler whose live flag becomes
+true while its API trace retains false. All 524 premises pass (377 author, 147
+independent), covering copied/original owners, normal/abrupt retirement and
+true/nonboolean refusals. The first fixture preflight missing-import failure
+remains0; only that fixture was corrected.
+True/coerced flags, empty duplicates and nested empties remain partial.
+[False-flag array review](coverage/semantics/define-stdclass-array-false-flag-review.json).
 
 Selected inherited `__unset(string): void` now dispatches direct CV/literal-name
 access to a declared private property. Accessible public unset skips magic;
@@ -9292,6 +9404,22 @@ The value source has separate source agreement, without a reached owner proof.
 Normal pending-free routing and ownership rules are unchanged; wider arrays,
 other owner histories and broad returns_verify remain OPEN.
 [M88 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+M89 adds bounded assigned `?array` capture for a runtime one-entry
+array holding an ordinary object child. Direct `return old_value()` and
+assigned `return ($x = old_value())` originals differ by F0/F1; native PHP
+runs D normally during selected-reference replacement, then catches the
+selected TypeError locally and returns detached NULL with one old-line Notice.
+On unchanged `2e75ac2d1`/399 the direct model agrees but assigned stops
+after D as Unsupported, without Notice. At private `a50272b80`/399 strict
+SL initialization passes and both original source packets agree exactly.
+One assigned fixture passes 159 Boolean premises and one raw step: xNULL
+leaves the protected HARRAY→O live; inside D the table is retired while O
+remains live and the saved descriptor admits a nonowning cursor despite the
+dead old operand. After D the f-origin TypeError, consumed NULL/new Notice,
+caller `rNULL/b7/xNULL/ybad`, actual inside-D LINE-only public refusal and
+whole/split budget equality pass. Existing normal destructor, pending-Throwable
+and ownership/release rules stay unchanged; this is one normal child history.
+[M89 review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 Wider owner domains, other VALUE signatures/layouts, general
 CONST/other NULL or multiple-active histories,
 genuinely released CV targets, wider destructor throw/reentry, real suspension and wider typed
