@@ -21,9 +21,11 @@ now retain captured arrays or source reference cells through handlers, including
 recursive by-value CV/literal and mixed CV patterns, with ordered null delivery
 and normal/throw cleanup. These patterns also freeze quiet converted variable keys
 across callbacks while later key variables are read afresh.
-Flat CV-source patterns also resume lossy float keys in by-value fetches.
-Mixed patterns release the old table's temporary protection first: expiry supplies
-null, while a surviving table can enter the following missing-key warning.
+Flat CV-source patterns also resume lossy float keys in value and reference fetches.
+Value fetches in mixed patterns release the old table's temporary protection first:
+expiry supplies null, while a surviving table can enter the following missing-key warning.
+Reference fetches make the array writable before the callback, then bind into the
+selected table only if one owner remains; zero or multiple owners yield a detached null reference.
 
 The [checked eval parser service](docs/semantics/DYNAMIC-SOURCE-SERVICE.md)
 accepts raw eval-source bytes, uses a native parse-only scanner for rejection

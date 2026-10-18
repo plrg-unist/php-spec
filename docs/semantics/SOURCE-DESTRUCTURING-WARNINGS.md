@@ -31,8 +31,20 @@ copy can keep that table alive after source replacement; insertion can instead
 force COW and leave only the temporary protection. Later reference fetches and
 assignment-result delivery use the saved cell's live value, independently of a
 rebound source CV. A saved null cell can create an array at the later reference
-fetch. Throws cancel both owners. Nested/literal conversion, selected reference
-fetch conversion and other key diagnostics remain separate dependencies.
+fetch. Throws cancel both owners.
+
+A selected reference fetch first makes the initially array-valued saved cell's
+table writable, separating when needed and unwrapping singleton references in
+that copy, before the conversion callback.
+After releasing protection, it binds into that selected table only when exactly
+one owner remains. This owner may be a handler-created hold after source replacement
+and CV rebinding. Zero owners or multiple remaining owners instead supply a fresh
+null reference, even when the old table remains live with a present slot. Binding
+replaces the target alias without writing through its previous reference. A missing
+writable slot is silently created in the selected table; no missing-key warning is
+emitted. Later fetches and the assignment result still resolve the saved source
+cell. Throws cancel acquisition and binding. Initial nonarray writable sources,
+nested/literal conversion and other key diagnostics remain separate dependencies.
 
 For module409, the key stays a delayed variable operand until the missing fetch. The initial
 plan checks its exact name, operand/compiler lines and warning-free conversion,
@@ -119,7 +131,8 @@ The pinned PHP8.5.10 source routes are `zend_compile_assign` and
 `zend_compile_list_assign` in `vendor/php-src/Zend/zend_compile.c`,
 `ZEND_MAKE_REF`, `ZEND_FETCH_LIST_R` / `ZEND_FETCH_LIST_W` in `Zend/zend_vm_def.h`, and
 `zend_fetch_dimension_address_LIST_r` / `zend_fetch_dimension_address_read` and
-`slow_index_convert` in
+`slow_index_convert` / `slow_index_convert_w` and
+`zend_fetch_dimension_address_W` in
 `Zend/zend_execute.c`. The VM checks a callback exception before executing the
 following target store.
 
@@ -137,6 +150,7 @@ paths/streams without an oracle replay. Separate ledgers retain the
 [quiet CV keys](../../coverage/semantics/list-quiet-cv-missing-warning-review.json),
 [recursive CV keys](../../coverage/semantics/list-recursive-cv-missing-warning-review.json),
 [literal-root CV keys](../../coverage/semantics/list-literal-cv-missing-warning-review.json),
-[lossy float CV keys](../../coverage/semantics/list-float-key-warning-review.json) and
-[mixed float CV keys](../../coverage/semantics/list-float-ref-key-warning-review.json)
+[lossy float CV keys](../../coverage/semantics/list-float-key-warning-review.json),
+[mixed float CV keys](../../coverage/semantics/list-float-ref-key-warning-review.json) and
+[writable float CV keys](../../coverage/semantics/list-float-write-key-warning-review.json)
 cuts and failures. No complete array, diagnostics or lifecycle-family claim follows.

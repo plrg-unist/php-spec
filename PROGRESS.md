@@ -821,29 +821,31 @@ private cut; independent seam review warrants no joined actor or renewed credit.
 
 Destructuring key warnings retain recursive by-value CV/literal and mixed CV
 patterns with quiet compiled/implicit or ordinary defined quiet CV keys. Module410
-also resumes lossy float by-value fetches in flat direct-CV patterns. Wholly
-by-value patterns retain a table snapshot; mixed patterns retain a source CELL
-and separately protect its old table through E_DEPRECATED. Actual owner release
-precedes frozen lookup: an expired table silently supplies NULL, while a surviving
-table reads post-handler aliases or enters module409's missing warning before
-the target store. A handler-created hold can preserve the actual table after an
-earlier reference forced COW. Source/key-name rebinding leaves the saved CELL
-and converted key authoritative; later reference targets and result delivery use
-that CELL's live value, including NULL autovivification. Throws cancel both roots.
-Five A13 exact originals agree at 6a234d919. Five SL fronts pass 894 premises
-(874 Boolean + 20 raw steps) at 3c9329c36: author 466 and independent 428, with no
-fixture failures or reruns. The [mixed float-key review](coverage/semantics/list-float-ref-key-warning-review.json)
-retains native/unchanged Unsupported baseline and source/state cuts. Existing module409
-and A12 task/lookup rules, compiler and ownership APIs remain unchanged. The [A12 review](coverage/semantics/list-float-key-warning-review.json)
-retains source6/state710 and its parser-only throw failure/affected retry; earlier
-[family reviews](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md) retain original
-cuts without replay. Nested/literal lossy conversion, selected reference-fetch
-conversion, other key diagnostics, wider RHS/targets and callback/lifecycle
-coverage remain partial.
-
-Pointwise composition over aa45aca25 preserves all 401 incoming modules.
-Property, constant, closure, compound and typed-return guards are disjoint.
-Five sources and 894 premises retain their cuts; no joined actor or renewed credit.
+resumes lossy float keys in flat direct-CV patterns. Value fetches preserve captured
+tables or a saved source CELL plus temporary table protection; after release, an
+expired mixed-source table supplies NULL, while a surviving table can enter module409's
+missing warning. Later references/results resolve the saved CELL despite name rebinding.
+Writable fetches first make the initially array-valued source writable, separating
+when needed and unwrapping singleton references in the copy. After callback and
+actual protection release, exactly one selected-table owner permits binding there,
+including a detached handler hold. Zero or multiple owners yield a fresh NULL
+reference even if the old table stays live with a present slot. Target rebinding
+preserves previous outside aliases; missing writable slots are created silently.
+Throws cancel acquisition/binding and retire the saved CELL/table roots.
+Five A14 exact originals agree at e3b08102a. Five SL fronts pass 900 premises
+(879 Boolean + 21 raw steps): author 356 at f05d125e3 plus 147 and independent 397 at
+793a965ef. The original throw fixture passed semantic assertions but failed final
+record equality after a raw COW step omitted driver bookkeeping; it retains zero
+credit. Only that front was retried after driver normalization. The
+[writable float-key review](coverage/semantics/list-float-write-key-warning-review.json)
+retains native/unchanged Unsupported baseline and separate cuts. Existing409,
+A12/A13 task rules, compiler and ownership APIs remain unchanged; A14 adds its own
+write-pending gate. The [A13 review](coverage/semantics/list-float-ref-key-warning-review.json)
+retains source5/state894, the [A12 review](coverage/semantics/list-float-key-warning-review.json)
+retains source6/state710 and its parser-only throw failure/affected retry, and earlier
+[family reviews](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md) retain original cuts
+without replay. Initial nonarray writable conversion, nested/literal lossy conversion,
+other key diagnostics, wider RHS/targets and callback/lifecycle coverage remain partial.
 
 Plain-CV `%=` now keeps both converted longs through a fractional-RHS deprecation.
 Captured12/5 stores2 despite callback99/7 and detaches a late target alias; supplied
