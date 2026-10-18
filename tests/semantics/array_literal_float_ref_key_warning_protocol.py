@@ -103,7 +103,7 @@ def conditions(name, program, path, stdout):
         '$call_descriptors_valid(S_dispatch)', '$heap_valid($heap_graph(S_dispatch))',
         'S_newref = S_dispatch[.ENV = (BIND ($ptascii("q")) n_key) :: $unbind(S_dispatch.ENV, $ptascii("q"))][.REFCELLS = S_dispatch.REFCELLS ++ [n_key]][.STORE[n_key] = DEFINED (PARRAY n_builder)]',
         '$call_task_valid(S_newref, ' + marker + ')',
-        '$array_float_ref_key_value(S_newref, n_old, poperand) = eps',
+        '$array_float_ref_key_builder_alias(S_newref, n_builder, ALIAS n_key)',
         '~$array_float_ref_key_ready(S_newref, n_builder, n_old, poperand)',
         '$error_read_discard(S_newref, ' + marker + ').COMPLETION = UNSUPPORTED "array literal float-key reference during throw"',
     ] + driven('S', 'S_dispatch', 'S_dispatch_driven') + seek('S_dispatch_driven', 3, 'S_entered') + [

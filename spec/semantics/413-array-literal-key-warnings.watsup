@@ -154,6 +154,8 @@ def $array_float_ref_key_source(S, n, n_old, poperand, phpType13*, z, n_bits, i)
 dec $literal_reference_plain_cell(pstate, nat) : bool
 dec $literal_reference_cell(pstate, nat, pnode*) : bool
 dec $literal_reference_property_sources(pstate, nat, pproptypesource*, pnode*) : bool
+dec $literal_reference_flat_array(pstate, nat, pnode*) : bool
+dec $literal_reference_flat_items(pstate, pentry*) : bool
 dec $literal_reference_retain(pstate, nat) : pstate
 dec $literal_reference_owe(pstate, nat) : pstate
 dec $array_float_ref_key_value(pstate, nat, poperand) : pitem?
@@ -175,12 +177,27 @@ def $array_float_ref_key_value(S, n_old, VARIABLE n_name* z) = (ALIAS n_current)
   -- if $literal_reference_cell(S, n_old, S.ALLOCATIONS) /\ $literal_reference_cell(S, n_current, S.ALLOCATIONS)
 def $array_float_ref_key_value(S, n_old, poperand) = eps -- otherwise
 
-dec $array_float_ref_key_ready(pstate, nat, nat, poperand) : bool
-def $array_float_ref_key_ready(S, n, n_old, poperand) = true
-  -- if $array_float_ref_key_value(S, n_old, poperand) =/= eps
-  -- if $(n_old < |S.STORE|)
+dec $array_float_ref_key_old_payload(pstate, nat, nat, pitem) : bool
+def $array_float_ref_key_old_payload(S, n, n_old, pitem) = true
   -- if S.STORE[n_old] = DEFINED pvalue
   -- if $array_float_key_scalar(S, pvalue)
+def $array_float_ref_key_old_payload(S, n, n_old, ALIAS n_current) = true
+  -- if S.STORE[n_old] = DEFINED (PARRAY n_payload)
+  -- if n_payload =/= n
+  -- if $literal_reference_cell(S, n_old, S.ALLOCATIONS)
+def $array_float_ref_key_old_payload(S, n, n_old, pitem) = false -- otherwise
+
+dec $array_float_ref_key_builder_alias(pstate, nat, pitem) : bool
+def $array_float_ref_key_builder_alias(S, n, ALIAS n_current) = true
+  -- if S.STORE[n_current] = DEFINED (PARRAY n)
+def $array_float_ref_key_builder_alias(S, n, pitem) = false -- otherwise
+
+dec $array_float_ref_key_ready(pstate, nat, nat, poperand) : bool
+def $array_float_ref_key_ready(S, n, n_old, poperand) = true
+  -- if $array_float_ref_key_value(S, n_old, poperand) = (pitem)
+  -- if $(n_old < |S.STORE|)
+  -- if $array_float_ref_key_old_payload(S, n, n_old, pitem)
+  -- if ~$array_float_ref_key_builder_alias(S, n, pitem)
   -- if $array_float_key_plain_nodes($heap_reach([HARRAY n, HCELL n_old], eps, $heap_graph(S).EDGES))
 def $array_float_ref_key_ready(S, n, n_old, poperand) = false -- otherwise
 
@@ -277,6 +294,13 @@ def $literal_reference_cell(S, n, pnode_live*) = true
   -- if $literal_reference_plain_cell(S, n)
 def $literal_reference_cell(S, n, pnode_live*) = true
   -- if $call_reference_operand_valid(S, REFERENCE n)
+  -- if S.STORE[n] = DEFINED (PARRAY n_payload)
+  -- if $propref_at(S.PROPREFS, n) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
+  -- if $literal_reference_flat_array(S, n_payload, pnode_live*)
+def $literal_reference_cell(S, n, pnode_live*) = true
+  -- if $call_reference_operand_valid(S, REFERENCE n)
   -- if S.STORE[n] = DEFINED pvalue
   -- if $array_float_key_scalar(S, pvalue)
   -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
@@ -297,8 +321,19 @@ def $literal_reference_property_sources(S, n, (OBJECT_PROP_SOURCE n_object ptbyt
   -- if $literal_reference_property_sources(S, n, pproptypesource*, pnode_live*)
 def $literal_reference_property_sources(S, n, pproptypesource*, pnode_live*) = false -- otherwise
 
-;; Primitive debt targets have no outgoing owners. Logical pruning can thus
-;; certify positive final counts before biased pruning starts any cascade.
+def $literal_reference_flat_array(S, n, pnode_live*) = true
+  -- if $(n < |S.ARRAYS|)
+  -- if (HARRAY n) <- S.ALLOCATIONS /\ (HARRAY n) <- pnode_live*
+  -- if ~$array_immutable(S, n)
+  -- if $heap_count(HARRAY n, $pools_nodes(S.POOLS)) = 0
+  -- if $literal_reference_flat_items(S, S.ARRAYS[n].ITEMS)
+def $literal_reference_flat_array(S, n, pnode_live*) = false -- otherwise
+def $literal_reference_flat_items(S, eps) = true
+def $literal_reference_flat_items(S, (ENTRY pkey (DIRECT pvalue)) :: pentry*) = ($array_float_key_scalar(S, pvalue) /\ $literal_reference_flat_items(S, pentry*))
+def $literal_reference_flat_items(S, pentry*) = false -- otherwise
+
+;; A positive debt CELL survives biased pruning and keeps its child-table edge.
+;; Admitted array children are leaves; primitive targets have no outgoing owners.
 dec $literal_reference_debt_cells_safe(pstate, hgraph, nat*) : bool
 def $literal_reference_debt_cells_safe(S, H, eps) = true
 def $literal_reference_debt_cells_safe(S, H, n :: n_tail*) = true
