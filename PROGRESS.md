@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Selected-reference `+=` now captures a newly leading RHS before its second
+Warning. Cached float `18.0` writes the old target alias despite current-name
+rebinding and post-capture RHS retirement; a supplied second throw preserves
+callback/alias writes and cancels storage. Two originals pass at `ddcef772a`/406
+and 330 focused premises at `a1f5cd969`/406.
+[Selected-RHS Warning ledger](coverage/semantics/addassign-selected-rhs-warning-review.json).
+Other producers/unsafe targets and wider lifetimes remain partial; OP12 paused.
+
+Composed over `06a0e4c7b`/406, preserving incoming fields, task variants
+and manifest. Source2/state330 retain their private406 cuts; independently reviewed
+incoming selectors require no joined execution or renewed credit.
+
 Pending literal zero-argument NEXT now returns before dispatch at an already
 parked owning simple-CV copied return, directly or through finite native links.
 Only the selected receiver clears initialization; the physical frame/site and
@@ -80,17 +92,8 @@ from the parent and retains tested bytes; other runtime/schema/task/default and
 ordered manifest paths stay exact. Source9+1/state642 and maintenance keep their
 private406 cut without a joined actor or renewed historical credit.
 
-Ordinary ADD now rejects delayed flat-array conversion using live selected
-reference-cell types, without retrying union or delivering an outer result.
-Two originals pass at `4fcde1782`/406 and 296 focused premises at `4aaf17817`/406.
-The old RHS array stays selected despite name rebinding; source/alias identities
-and literal-pool owners survive the error.
-[ADD array-failure ledger](coverage/semantics/add-array-failure-review.json).
-Other producers/values and wider lifetimes remain partial; OP12 paused.
-
-Composed over `054ec9cc5`/406, preserving every incoming runtime, task
-and manifest path. Source2/state296 retain their private406 cuts; independently
-reviewed absent incoming selectors require no joined execution or renewed credit.
+Earlier ordinary ADD array failure retains source2/state296 in its
+[review ledger](coverage/semantics/add-array-failure-review.json).
 
 Direct and selected `ini_set(NULL, quiet primitive)` now resume handlers through
 one numeric/named/mixed two-item unpack. Array V→O capture and normalized unpack

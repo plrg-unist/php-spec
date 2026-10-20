@@ -494,8 +494,17 @@ the current variable name does not redirect that store; a supplied throw cancels
 it. Three exact originals and 360 focused SL premises cover commit, selected-cell
 history, default Warning, throw cleanup and refusal checks in the
 [compound ADD warning ledger](coverage/semantics/addassign-warning-review.json).
-This direct-CV route requires a quiet numeric RHS at commit; typed/owning/expired
+That original quiet completion requires a numeric RHS; typed/owning/expired
 targets, wider operands and callbacks remain partial.
+
+Selected-reference `+=` now also captures a newly leading RHS and runs its
+second Warning. Cached float `18.0` writes the old target alias even after the
+current target name is rebound and the captured RHS is retired. A supplied
+second throw preserves callback writes without storing. Two originals and 330
+focused premises retain this in the
+[selected-RHS Warning ledger](coverage/semantics/addassign-selected-rhs-warning-review.json).
+Other producers, unsafe targets and wider lifetimes remain partial.
+
 Initially plain CV `+=` destinations now retain their selection through a named
 warning handler that creates a late alias. Successful replacement detaches that
 alias and writes a new non-reference CV cell; a supplied throw preserves the
