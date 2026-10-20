@@ -330,8 +330,8 @@ whose properties hold direct quiet primitives. Returning handlers reach paramete
 TypeError with an empty option and the same updated object; throwing handlers
 preserve raw NULL and cancel rejection. Four originals and 911 state premises
 cover shared property writes, strict priority, ownership and normal recovery.
-Owned forms beyond the bounded follow-up below, packed calls and wider object
-values remain partial.
+Owned/packed forms beyond the bounded follow-ups below and wider object values
+remain partial.
 
 [Named NULL INI options with retained stdClass values](coverage/semantics/ini-set-named-null-stdclass-value-review.json)
 now preserve the earlier object across reversed argument evaluation and shared
@@ -339,7 +339,8 @@ property writes. Returning handlers reach parameter2 TypeError with an empty
 option and the same updated object; a supplied throw preserves raw NULL and
 cancels rejection. Four source comparisons and 1,109 state premises cover named
 binding, strict option priority, owning trace edges and normal setter recovery.
-Packed/PIPE calls, materialized tables and wider properties/lifetimes remain partial.
+Packed forms beyond the bounded follow-up below, PIPE, materialized tables and
+wider properties/lifetimes remain partial.
 
 [Named retained INI calls with rejected array values](coverage/semantics/ini-set-owned-named-null-array-value-review.json)
 now retain the original Closure and earlier flat quiet array across reversed
@@ -379,6 +380,17 @@ converted-empty value TypeError, while supplied throw preserves raw NULL and
 cancels rejection. Four source comparisons and 1,182 state premises cover literal
 authority, selected-call metadata, owning trace edges, strict priority and recovery.
 Additional arguments/packs, wider value leaves and PIPE remain partial.
+
+[Direct and selected packed INI stdClass values](coverage/semantics/ini-set-unpack-null-stdclass-value-review.json)
+now retain one table-free object from a two-item numeric, named or mixed pack.
+The snapshot saves object identity; later shared property writes remain visible
+through the captured value after live-pack replacement or outer retirement.
+Returning handlers reach converted-empty value TypeError, while supplied throw
+preserves raw NULL and the updated object and cancels rejection. Four source
+comparisons and 1,253 state premises cover owning root transfer, shared identity,
+strict option priority, precise discard and original string-setter recovery.
+Retained-owner packed objects, additional arguments/packs, materialized tables,
+wider properties, PIPE and sole-owner lifetimes remain partial.
 
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled

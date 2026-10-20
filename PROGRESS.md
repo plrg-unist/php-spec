@@ -7,6 +7,30 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Direct and selected string `ini_set` calls now retain table-free STDINSTANCE
+values from one two-item numeric, named or mixed unpack pack. Historical snapshots
+save object identity while shared option/handler property writes stay visible.
+Active outer ownership transfers to the captured object; completed certificates
+keep no outer root. Live-pack COW, outer retirement and live callee/value replacement
+preserve that pointer. Returning handling reaches converted-empty parameter2
+TypeError; supplied Exception retains raw NULL/the updated object and cancels
+rejection. Strict option priority and original string-setter recovery survive.
+
+Four exact source comparisons and 1,253 state premises (306+290+155+502) pass
+first attempt at `eb31e651e`/`ec84a4ceb`/407. Initial `70f4cfc876` native4/baseline0
+and later model/state packets use CPU5. Nine stable/reaped reports PASS without
+failures/retries; only Deprecated12/16 is expected and workers are quiet. Only13
+additive172 lines change; existing helpers/finish/trace/root/discard/GC and old
+tests stay exact. Native E/I/updated-mark and oldpack identity observations differ
+from state-only root transfer/retirement/two-frame owning trace/full-discard proof.
+Retained-owner packed objects, additional arguments/packs, materialized tables,
+wider properties, PIPE and sole-owner lifetimes remain partial; paused paths untouched.
+[Direct/selected packed NULL stdClass INI review](coverage/semantics/ini-set-unpack-null-stdclass-value-review.json).
+
+Composed over `92b95086a`/407 with module172/four tests private-exact and every
+other runtime/schema/ordered-manifest byte parent-exact. Source4/state1,253 retain
+private407 cuts without joined execution or renewed evidence.
+
 Pending SEND now preserves separate ignored-argument and result owners when both
 are the same owning current. The fresh result masks the consumed argument slot,
 but both real owners release before the receiver. In the tested cases, counts rise
