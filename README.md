@@ -55,11 +55,13 @@ unset removes its constraint before singleton copying. Child-table copies preser
 shared leaf aliases and unwrap singleton leaves; string byte writes keep earlier
 snapshots independent
 of both leaf references and outer table/wrapper count corrections.
-Untyped reference leaves may also hold one mutable nonpool child table of DIRECT
-null/bool/int/float or validated byte strings. Its table must survive logical
-pruning and carry no HARRAY debt; leaf CELL debt and deeper owning edges remain
-excluded. Shared leaf references propagate nested writes, while singleton leaf
-copies unwrap before child-array COW and preserve independent snapshots.
+Reference leaves may also hold one mutable nonpool child table of DIRECT
+null/bool/int/float or validated byte strings, with optional validated ordinary
+instance-property type sources. For debt-bearing payloads, the child and every
+source object must survive logical pruning. Child HARRAY debt, leaf CELL debt
+and deeper owning edges remain excluded. Shared leaves preserve typed nested
+writes; removing the final property source permits singleton unwrapping before
+child-array COW, with independent snapshots.
 Direct string CV/cell payloads, unsafe deficit retirement and wider domains remain
 Unsupported. Duplicate replacement and later items stay ordered.
 
