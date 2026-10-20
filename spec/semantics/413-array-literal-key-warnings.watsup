@@ -413,7 +413,8 @@ def $literal_reference_flat_cell(S, n) = true
 def $literal_reference_flat_cell(S, n) = false -- otherwise
 def $literal_reference_flat_items(S, eps) = true
 def $literal_reference_flat_items(S, (ENTRY pkey (DIRECT (PARRAY n))) :: pentry*) = ($literal_reference_child_array(S, n, S.ALLOCATIONS) /\ $literal_reference_flat_items(S, pentry*))
-def $literal_reference_flat_items(S, (ENTRY pkey (DIRECT pvalue)) :: pentry*) = ($literal_reference_flat_leaf(S, pvalue) /\ $literal_reference_flat_items(S, pentry*)) -- otherwise
+def $literal_reference_flat_items(S, (ENTRY pkey (DIRECT pvalue)) :: pentry*) = ($literal_reference_flat_leaf(S, pvalue) /\ $literal_reference_flat_items(S, pentry*))
+  -- if $value_nodes(pvalue) = eps
 def $literal_reference_flat_items(S, (ENTRY pkey (ALIAS n)) :: pentry*) = ($literal_reference_flat_cell(S, n) /\ ~(n <- S.LITERALREFDEBTS) /\ $literal_reference_flat_items(S, pentry*))
 def $literal_reference_flat_items(S, pentry*) = false -- otherwise
 
