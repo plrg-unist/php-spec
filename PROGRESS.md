@@ -602,33 +602,26 @@ joined actor, accepted replay or renewed execution credit.
 The earlier nonowning-copy arithmetic route retains source10/state767 in its
 [review ledger](coverage/semantics/copied-arithmetic-warning-review.json).
 
-No-Get inherited-private property `??` now calls the selected typed-bool or
-absent-return `__isset(string)`. Ordinary object RV disposal retains the receiver
-while both magic guards are inactive. Sole RV destruction sees a live weak target;
-held RV destruction runs after receiver release/fallback and sees NULL. Supplied
-RV-D throws preserve catch identity and destination 42 without fallback.
+Compatible-current-This `self::missing(...)` now selects inherited instance
+`__call` before `__callStatic` within an ordinary instance method. Stored
+caller/site history preserves lexical Parent/called Child and the original
+receiver through argument callbacks that clear its global CV. The received
+scalar 7 remains separate from the mutated global 99. Outer `run()` retains This
+through its following statement; argument-array/payload cleanup preserves cached
+return 7 or sends the same supplied destructor Exception to catch/destination 42.
 
-Four originals agree at `2ad0660c1`/406. All 640 focused premises (615 reached +25
-derived; four groups) pass at `7218b430e` with the same runtime, including full saved
-call validity, exact cached NULL/SOURCE receipts, owner/guard/weak checks and PREP
-budget resumption. Typed true is a derived control. The genuine baseline stops at
-`magic isset quiet consumer`; the original recorder expected a normal mismatch
-and retains its false report/zero credit. Its first refusal and three separately
-completed refusals remain distinct. Native sampling missed all four tiny children;
-model/state CPU captures are complete for their selected workers. All actors reaped.
-
-Modules 416 and 30 now use optional GET and a receiver-only RV continuation; two
-prior fixture projections mechanically extract the already bound getter origin.
-Getter-present typed-bool behavior is statically preserved without renewing its
-source5/state604 cut. No generic destruction/GC change, false owning-RV claim or
-new WeakReference implementation. Wider results, receivers, aliases and reentry
-remain partial. [No-Get coalesce review](coverage/semantics/magic-coalesce-no-get-review.json).
-
-Composed over `0ff3218cd`/406, preserving the incoming += Warning task and
-all unrelated runtime/default/root/manifest bytes. INI/DEFINE, missing-CV spaceship,
-reference-return retirement, Generator and arithmetic selectors are absent here;
-identity/weak reads do not select them. Source4/state640 keep their separate
-private cuts and original baseline failure0, without joined execution or renewal.
+Four source agreements pass at `bdc12b0b8`/406 and 442 focused premises
+(430 reached + 12 derived, three applications) at `afe124892`/406. Native four and
+the genuine baseline retain `cdbf6fc9b`: three scoped Unsupported observations and
+one preexisting external-static agreement. The initial focused false result (157 premises) and two
+zero-credit diagnostics remain; only fixture stages changed to wait for real
+return fronts after assignment release bookkeeping. All actors are reaped and
+CPUs released; no accepted native/source/baseline or historical replay.
+[Scoped magic-call review](coverage/semantics/magic-scoped-call-review.json).
+Only modules 142/414 change; existing signatures, argument modes, packed ownership
+and generic cleanup remain. Self-only ordinary callers and parentless magic-owner
+source proofs bound this slice. Child overrides, other scoped forms, APIs,
+reference/named/unpacked sends and wider lifetimes remain partial.
 
 Retained propertyless Stringable `define` names now receive captured NULL flags
 with primitive candidates in admitted user-global/class-name domains. One module400

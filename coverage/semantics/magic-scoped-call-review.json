@@ -1,0 +1,131 @@
+{
+  "scope": "Literal self:: missing names in an ordinary METHOD_TARGET instance caller with compatible current This; inherited public __call(string,array), absent nonreference return and existing parentless magic-owner source proof. One/two existing positional int/leaf-instance sends; initial CV nonreference.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS64",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_object_handlers.c get_static_method_fallback selects compatible current This object __call before __callStatic.",
+      "Zend/zend_vm_def.h INIT_STATIC_METHOD_CALL preserves self forwarding and selected receiver; ZEND_CALL_TRAMPOLINE moves original sends into real packed name/array parameters.",
+      "Zend/zend_vm_def.h zend_leave_helper calls Zend/zend_execute.c i_free_compiled_variables before releasing This; packed payload cleanup precedes the cached return."
+    ]
+  },
+  "implementation": {
+    "files": [
+      "spec/semantics/142-method-runtime.watsup",
+      "spec/semantics/414-magic-method-calls.watsup"
+    ],
+    "basis": "Delegate the existing scoped-magic missing arm to a bounded self source selector with the same Unsupported fallback. Authenticate original SITE/enclosing ordinary method/stored CALLER and receiver once, resolving lexical Parent separately from runtime Child. Later callbacks use stored caller/site, never the global receiver CV. Reuse99 record/raw sends/real packed array/type reception/ordinary cleanup; direct99 source factoring is pointwise equivalent. Needed/static-priority predicates, constructor-special, other scoped barriers, callable classifiers, schemas/roots/free/GC stay unchanged."
+  },
+  "validation": {
+    "native": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-scoped-call-private-107/.tools/magic-scoped-call-probes-107/native-first/report.json",
+      "sha256": "eb57787dda32334e931ecfc569f1df5f743f8ec6173ed481dddc10afcfb66f1a",
+      "revision": "cdbf6fc9b41ff59a32011bdfcc9a38ff853ebecf",
+      "result": "Four exact quiet CLI0 tuples62/27/25/49; native-only observations."
+    },
+    "baseline": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-scoped-call-private-107/.tools/magic-scoped-call-probes-107/accepted-current-baseline/report.json",
+      "sha256": "79a2f308447dac59c9d4fd1ae783ce5ee62b1e64d9a2314782fb8aadb54e38a8",
+      "revision": "cdbf6fc9b41ff59a32011bdfcc9a38ff853ebecf",
+      "result": "Three checked Unsupported scoped magic method fallback/CLI1/prefixes N:B| O:B| X:B|, before argument effects; one exact normal external-static agreement/CLI0."
+    },
+    "source": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-scoped-call-private-107/.tools/magic-scoped-call-probes-107/changed-model-m474h91v/report.json",
+      "sha256": "8ef041c9ba2fac7d8b45e889905d951de321a5d62d64af6b403e6592c6ed06a6",
+      "revision": "bdc12b0b83d3f49c831465af8fad303348d0150d",
+      "result": "Four exact checked normal agreements/quiet CLI0/stable/empty groups."
+    },
+    "focused": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-scoped-call-private-107/.tools/magic-scoped-call-protocol-41uyt456/report.json",
+      "sha256": "e69209fd9284d1a38f48773cb2e3e9eba8bfb8f26a1ddd3bbb14d326a438717b",
+      "revision": "afe1248921c17d92cfe48e628076928dd0bf3c0c",
+      "result": "Three exacttrue157/144/141,442=430 reached+12 derived,3 applications/source0; AL7.507/7.601/7.603 and strictSL31.380/31.478/31.446 seconds, quiet0/stable/empty groups."
+    }
+  },
+  "focused_scope": "Actual SCOPED_CLASS front/capture and2 to 3 receiver owners; callback clears global CV and writes99 while live no-This priority is false but stored scoped source/caller capture stays authentic. Post-write RETURN_UNWIND2/7 stages retain exact owner2/full guards. Real name/array TYPE_RECEIVE keeps lexical Parent/called Child, while entered capture is false and projected original caller capture remains true. Payload-D sees retired array, real destruction frame.VALUE7 and receiver2; inner return leaves outer run receiver1 through A. Its actual receiver-D then delivers cached7 or pending same supplied Exception/catch42 without A. SCOPED_CLASS zero-budget/resumption and small wrong line/no-effects, source/name/caller/receiver/initial-reference certificate refusals. Received scalar/global mutation is not a delayed local-CV snapshot claim; external static has source-only control.",
+  "nonpassing": [
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-scoped-call-private-107/.tools/magic-scoped-call-protocol-te65de5v/report.json",
+      "sha256": "e46fc19fea09f65787d81baca4d77cdafd78aedc8a6344eccacb8bfaa1137963",
+      "revision": "e760356ebaad96683ebe97a01579f7921de38820",
+      "result": "Original focused selection157 false, owning/throwing unrun; AL passes/SL quietfalse. Zero credit. Stage stopped immediately after child=null while a release job still owned the removed value."
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-scoped-call-private-107/.tools/magic-scoped-call-probes-107/diagnostic-107-rwp2wcy0/report.json",
+      "sha256": "6fb9c772476701f85fe4226445fd00b3fc2545cce13acbedcde16ec4ca7a1c80",
+      "revision": "e760356ebaad96683ebe97a01579f7921de38820",
+      "result": "Exact shared-initial seven-prefix vector [true,false,false,false,false,false,false] localizes callback block; diagnostic-only zero credit."
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/magic-scoped-call-private-107/.tools/magic-scoped-call-probes-107/diagnostic-callback-107-ksb67xnl/report.json",
+      "sha256": "47bccd5281997b744bf582ba1fba363647d723eb128521247bc3cd2b46ae7d3e",
+      "revision": "e760356ebaad96683ebe97a01579f7921de38820",
+      "result": "Single-pass26flags show only unexpected owner2=false; current/saved source, capture and full guards pass. Diagnostic-only zero credit. RETURN_UNWIND2/7 stage guards pass assignment release before checking owners; runtime unchanged."
+    }
+  ],
+  "reproduction": {
+    "cwd": "/home/user/workspace/php-spec/.tools/magic-scoped-call-private-107",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": "absent",
+      "jobs": 1
+    },
+    "profile": "tests/semantics/profile.json",
+    "native_baseline": "Ready watch-affinity.py native-first native 1, then env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/magic-scoped-call-probes-107/run.py native --revision cdbf6fc9b41ff59a32011bdfcc9a38ff853ebecf; after PASS/reap fresh accepted-current-baseline model 1 observer and same actor baseline.",
+    "source": "Ready python3 -u .tools/magic-scoped-call-probes-107/capture-candidate-affinity.py 2 changed-model- 4 changed-source-107, then env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 2 python3 -u .tools/magic-scoped-call-probes-107/run.py changed --revision bdc12b0b83d3f49c831465af8fad303348d0150d.",
+    "focused": "Ready watch-state-affinity-repair1.py 2, then env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 2 python3 -u tests/semantics/magic_scoped_call_protocol.py --revision afe1248921c17d92cfe48e628076928dd0bf3c0c.",
+    "caps": "Native45/model60/outer75/100000steps; focused serial AL90 then strictSL90/cachefalse/dettrue/fail-first. Checked prepare-only has zero applications. Diagnostics each one strictSL90/zero credit.",
+    "affinity": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-scoped-call-private-107/.tools/magic-scoped-call-probes-107/affinity-native-first.json",
+        "sha256": "6c2b144c98c187816d13673c7d5f3c78ba69f315bc4b0b0bd3ff03651d6c6c5f",
+        "result": "Partial1/4 CPU1 mask, selection empty argv; qualified fast-child sampling, observer stopped/reaped without replay."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-scoped-call-private-107/.tools/magic-scoped-call-probes-107/affinity-accepted-current-baseline.json",
+        "sha256": "7860328f4ff25e7ca313a2037fb83332306d3f43c1e05b326c030327b4bf4135",
+        "result": "Complete4 CPU1/full argv."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-scoped-call-private-107/.tools/magic-scoped-call-probes-107/affinity-changed-source-107.json",
+        "sha256": "f65a82ed8c33f35fa805379a0dc34df4e5282279b07958497c4249f962813825",
+        "result": "Complete4 CPU2/full argv."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-scoped-call-private-107/.tools/magic-scoped-call-probes-107/affinity-state-107.json",
+        "sha256": "b9c40fce1e769490dc733f65487823c29241ad3fe3bb1bf8fecd81281e190fea",
+        "result": "Stopped after first failure; partial2/6 CPU5/full argv, observer reaped."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-scoped-call-private-107/.tools/magic-scoped-call-probes-107/affinity-selection-diagnostic-107.json",
+        "sha256": "36bd6fe4a4b6f21b0c2ebb9be5348a8ec6bd46ad53e3896a694343529d3ba56c",
+        "result": "Complete1 CPU5/full argv, zero-credit diagnostic."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-scoped-call-private-107/.tools/magic-scoped-call-probes-107/affinity-callback-diagnostic-107.json",
+        "sha256": "e8929b6a930afc18c02521faced7af13f4dd89686ff0c4daa2edbba168102dbe",
+        "result": "Complete1 CPU2/full argv, zero-credit diagnostic."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-scoped-call-private-107/.tools/magic-scoped-call-probes-107/affinity-state-107-repair1.json",
+        "sha256": "a5b0a7033a2885306ce23875fd227bc25ee92082373f98889f6e8b725586d661",
+        "result": "Complete6 CPU2/full argv; all actual worker start identities match, reaped."
+      }
+    ],
+    "stability": "All accepted inputs/head/status/fixtures stable, quiet worker streams/empty groups, workers/observers reaped; no accepted replay. Original focused false and both diagnostics retain zero."
+  },
+  "limits": "Only the described self/ordinary instance caller and parentless effective magic owner. Child-owned __call overrides, parent/static/explicit-class and dynamic/first-class/API positives, named/unpacked/reference sends, exported arrays, owning returns and broader lifetimes remain open. Existing declaration/inheritance/class-context channels are consumed, not broadly reimplemented. No generic GC or old99/100 evidence renewal.",
+  "artifacts": "Ignored originals, run.py, diagnostic drivers/fixtures, raw streams/process records and generated state fixtures remain at original paths. Maintained sources/catalogue/harness recover from tested commits; no generated evidence archive or backup is tracked.",
+  "review": {
+    "independent": "class_review_84",
+    "status": "Native/genuine mixed baseline/source4/state442 and concise publication independently accepted; original fixture false and both diagnostics retain zero."
+  },
+  "tools": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "source_driver_sha256": "43a385cd4833c583121d14fe43ef4b670cbf3331cf53a43006f56d476eeb1b48",
+    "focused_driver_sha256": "984655c92e47976f39a19be515fbf8ef8b2aec47c8ea62c90e07a4cae18e7f37"
+  }
+}

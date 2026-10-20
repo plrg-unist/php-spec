@@ -4005,8 +4005,21 @@ with no receiver owner. Argument-array cleanup precedes cached scalar result or
 supplied-throw delivery; a payload destructor changes the live global while the
 used result keeps its earlier value.
 [Four source agreements and 341 focused premises](coverage/semantics/magic-static-call-review.json)
-cover these paths and public-static bypass. Forwarding, inaccessible/dynamic/API
+cover these paths and public-static bypass. Other scoped, inaccessible/dynamic/API
 magic positives and wider argument/ownership modes remain partial.
+
+Selected literal `self::missing(...)` calls inside an ordinary instance method
+now choose the compatible runtime receiver's inherited `__call` before
+`__callStatic`. Lexical Parent and called Child remain distinct. A received
+scalar stays 7 while an argument callback changes a separate global to 99 and
+clears the global receiver CV. `run()` still owns This through the call and its
+following statement. Packed argument cleanup preserves cached return 7 despite
+a payload write of 99; a supplied payload-destructor throw cancels that statement
+and leaves the caller destination at 42.
+[Four source agreements and 442 focused premises](coverage/semantics/magic-scoped-call-review.json)
+cover three self histories plus the existing external-static control. Other scoped
+forms, overrides and wider argument/ownership modes remain partial.
+
 Ordinary abstract scoped calls reject before arguments. Without magic fallback,
 inaccessible concrete nonstatic methods report access errors before missing-receiver
 errors. Literal
