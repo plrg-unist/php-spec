@@ -60,7 +60,7 @@ def conditions(name, program, path, stdout):
         'S.LITERALREFRETAINED = eps', 'S.LITERALREFDEBTS = eps',
         '$literal_reference_flat_leaf(S, PSTRING ($ptascii("plain")))',
         '$literal_reference_flat_leaf(S, PSTRING_CARRIER INTERNED_STRING ($ptascii("literal")))',
-        '~$literal_reference_flat_leaf(S, PSTRING [256])',
+        '~$literal_reference_flat_leaf(S, PSTRING ([256]))',
         '~$literal_reference_flat_leaf(S, PSTRING_CARRIER (REQUEST_STRING (|S.STRINGDATA|)) ($ptascii("invalid")))',
         '~$literal_reference_flat_leaf(S, PARRAY n_old)',
         '~$array_float_key_scalar(S, PSTRING ($ptascii("cv")))',
