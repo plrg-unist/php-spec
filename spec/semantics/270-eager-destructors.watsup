@@ -1561,6 +1561,20 @@ dec $ref_return_retire_call(pstate, prefreturncursor) : bool
 def $ref_return_retire_call(S, prefreturncursor) = true
   -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprFuncCall (NName (BYTES text) metadata_name) (SEQUENCE eps) metadata_call) metadata_return)
 def $ref_return_retire_call(S, prefreturncursor) = false -- otherwise
+dec $ref_return_retire_property_cell(pstate, nat) : bool
+def $ref_return_retire_property_cell(S, n_cell) = true
+  -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
+  -- if ppropref.SOURCES = [OBJECT_PROP_SOURCE n_owner ptbytes_key porigin_decl]
+  -- if $propref_source_valid(S, n_cell, OBJECT_PROP_SOURCE n_owner ptbytes_key porigin_decl)
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n_value)
+  -- if $(n_value < |S.OBJECTS|) /\ (HOBJECT n_value) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_owner] = INSTANCE porigin_class
+  -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ptbytes_key) = (ppropertydesc)
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ~ppropertydesc.STATIC
+  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "object"]))]
+  -- if ppropertydesc.SETVISIBILITY = eps
+  -- if ~$property_hook_declared(S, n_owner, ptbytes_key)
+def $ref_return_retire_property_cell(S, n_cell) = false -- otherwise
 dec $ref_return_retire_global_operand(pstate, prefreturncursor, nat) : bool
 def $ref_return_retire_global_operand(S, prefreturncursor, n_cell) = true
   -- if prefreturncursor.SOURCE = PORIGIN n pcpath
@@ -1570,7 +1584,7 @@ def $ref_return_retire_global_operand(S, prefreturncursor, n_cell) = true
   -- if $ref_return_pair_operand(S, prefreturncursor.SOURCE, REFERENCE n_cell)
   -- if S.GLOBALTABLE = (psymboltable)
   -- if $lookup(psymboltable.ENV, $base64(text)) = (n_cell)
-  -- if $propref_at(S.PROPREFS, n_cell) = eps
+  -- if $propref_at(S.PROPREFS, n_cell) = eps \/ $ref_return_retire_property_cell(S, n_cell)
   -- if (HCELL n_cell) <- S.ALLOCATIONS /\ n_cell <- S.REFCELLS
 def $ref_return_retire_global_operand(S, prefreturncursor, n_cell) = false -- otherwise
 dec $ref_return_retire_operand(pstate, prefreturncursor, poperand) : pnode?

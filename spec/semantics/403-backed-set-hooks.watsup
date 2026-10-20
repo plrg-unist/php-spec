@@ -1,4 +1,15 @@
 ;; A backed class setter has either the implicit value or one actual source Param.
+dec $property_set_virtual_int(ppropertydesc, phpType39) : bool
+def $property_set_virtual_int(ppropertydesc, phpType39) = true
+  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "int"]))]
+  -- if ppropertydesc.DEFAULT = PROP_UNINITIALIZED
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = eps
+  -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ~ppropertydesc.FINAL
+  -- if ppropertydesc.KEY = ppropertydesc.NAME
+  -- if ~$hook_body_backed(phpType39, ppropertydesc.NAME)
+  -- if $hook_body_supported(phpType39)
+def $property_set_virtual_int(ppropertydesc, phpType39) = false -- otherwise
+
 dec $property_set_name(ptbytes) : ptbytes
 def $property_set_name(ptbytes) = [36] ++ ptbytes ++ $ptascii("::set")
 dec $property_set_signature(ppropertydesc) : pssignature
@@ -94,6 +105,19 @@ def $pphook_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) (INTE
   -- if pssignature = $property_set_signature(ppropertydesc)
   -- if P_hook = $ppfunction_start($pplocate(P[.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $property_set_name(ppropertydesc.NAME), z))], pcpath, z), ptbytes_name, pssignature)[.RETURNREF = false][.RETURNS = pssignature.RETURNS][.GOTOROOT = pcpath][.FOLD = P.FOLD[.FUNCTION = ptbytes_name][.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $property_set_name(ppropertydesc.NAME), z))][.CLOSURE = false][.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
 
+;; The inherited slice is a public virtual int setter with its implicit value.
+def $pphook_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_name) (SEQUENCE eps) (SEQUENCE statement*) metadata, pchheader) = $pphook_finish_named(P, $ppgoto_finish($ppstatements(P_hook, pcpath ++ [PCFIELD 5], 0, statement*)), pcpath, ptbytes_name, pssignature, metadata)
+  -- if $ptlc($base64(text_set)) = $ptascii("set")
+  -- if pchheader.KIND = "class" /\ pchheader.PARENT =/= eps
+  -- if $property_set_virtual_int(ppropertydesc, SEQUENCE statement*)
+  -- if ppropertydesc.TYPE =/= eps
+  -- if $hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME) \/ (pchheader.KIND = "class" /\ ppropertydesc.DEFAULT = PROP_UNINITIALIZED /\ $hook_body_supported(SEQUENCE statement*))
+  -- if z = $source_line(metadata)
+  -- if $(z > 0 /\ z <= $source_end_line(metadata))
+  -- if ptbytes_name = pchheader.NAME ++ $ptascii("::") ++ $property_set_name(ppropertydesc.NAME)
+  -- if pssignature = $property_set_signature(ppropertydesc)
+  -- if P_hook = $ppfunction_start($pplocate(P[.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $property_set_name(ppropertydesc.NAME), z))], pcpath, z), ptbytes_name, pssignature)[.RETURNREF = false][.RETURNS = pssignature.RETURNS][.GOTOROOT = pcpath][.FOLD = P.FOLD[.FUNCTION = ptbytes_name][.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $property_set_name(ppropertydesc.NAME), z))][.CLOSURE = false][.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
+
 ;; The declaring row and physical source hooks remain distinct from an inherited layout row.
 def $property_set_owner(S, pclassdesc, phpType16) = true -- if pclassdesc.KIND = "class"
 def $property_set_owner(S, pclassdesc, SEQUENCE eps) = true
@@ -122,13 +146,14 @@ def $property_set_origin(S, ppropertydesc) = (PORIGIN n (pcpath_group ++ [PCFIEL
   -- if ppropertydesc.ORIGIN = PORIGIN n pcpath
   -- if $property_declaring_class(S.CLASSES, PORIGIN n pcpath) = (porigin_owner)
   -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
-  -- if pclassdesc.PARENT = eps /\ ~pclassdesc.READONLY
+  -- if ~pclassdesc.READONLY
   -- if $hook_property_at(pclassdesc.PROPERTIES, PORIGIN n pcpath) = (ppropertydesc)
   -- if $(|pcpath| >= 2)
   -- if pcpath_group = pcpath[0:$nabs($( |pcpath| - 2))]
   -- if pcpath = pcpath_group ++ [PCFIELD 3, PCINDEX 0]
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath_group) = (NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text_name) metadata_name) phpType5 metadata_item])) (SEQUENCE ([NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_set) phpType16 (SEQUENCE statement*) metadata_hook])) metadata)
   -- if $property_set_parameters(phpType16)
+  -- if pclassdesc.PARENT = eps \/ (pclassdesc.KIND = "class" /\ phpType16 = SEQUENCE eps /\ $property_set_virtual_int(ppropertydesc, SEQUENCE statement*))
   -- if $property_set_owner(S, pclassdesc, phpType16)
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX 0])) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_set) phpType16 (SEQUENCE statement*) metadata_hook)
   -- if $property_set_parameter_source(S, pclassdesc, PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX 0]), phpType16)
@@ -139,7 +164,7 @@ def $property_set_origin(S, ppropertydesc) = (PORIGIN n (pcpath_group ++ [PCFIEL
   -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (statement_owner)
   -- if $pchlower(statement_owner) = PCHRAW pchraw_owner
   -- if flags <- [0,1] \/ (pclassdesc.KIND = "class" /\ pchraw_owner.KIND = "class" /\ pchraw_owner.PARENT = ABSENT /\ phpType16 = SEQUENCE eps /\ $hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME))
-  -- if $hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME) \/ (pclassdesc.KIND = "class" /\ pchraw_owner.KIND = "class" /\ pchraw_owner.PARENT = ABSENT /\ phpType16 = SEQUENCE eps /\ phpType5 = ABSENT /\ ppropertydesc.DEFAULT = PROP_UNINITIALIZED /\ $hook_body_supported(SEQUENCE statement*))
+  -- if $hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME) \/ (pclassdesc.KIND = "class" /\ pchraw_owner.KIND = "class" /\ pchraw_owner.PARENT = ABSENT /\ phpType16 = SEQUENCE eps /\ phpType5 = ABSENT /\ ppropertydesc.DEFAULT = PROP_UNINITIALIZED /\ $hook_body_supported(SEQUENCE statement*)) \/ (pclassdesc.KIND = "class" /\ pchraw_owner.KIND = "class" /\ pchraw_owner.PARENT =/= ABSENT /\ phpType16 = SEQUENCE eps /\ phpType5 = ABSENT /\ $property_set_virtual_int(ppropertydesc, SEQUENCE statement*))
 def $property_set_origin(S, ppropertydesc) = eps -- otherwise
 
 ;; A sole virtual SET has no backing slot and no callable GET.
@@ -607,3 +632,30 @@ def $property_hook_declared(S, n, ptbytes) = true
   -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
   -- if $property_hook_effective_origin(S, ppropertydesc) = eps
   -- if $property_set_origin(S, ppropertydesc) =/= eps
+
+;; Only the physical root/Child implicit virtual int setter edge is added.
+dec $property_set_virtual_source(pstate, ppropertydesc) : bool
+def $property_set_virtual_source(S, ppropertydesc) = true
+  -- if $property_set_origin(S, ppropertydesc) = (porigin_hook)
+  -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_name) (SEQUENCE eps) (SEQUENCE statement*) metadata)
+  -- if $ptlc($base64(text_set)) = $ptascii("set")
+  -- if $property_set_virtual_int(ppropertydesc, SEQUENCE statement*)
+  -- if ppropertydesc.ORIGIN = porigin_property
+  -- if $property_declaring_class(S.CLASSES, porigin_property) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ ~pclassdesc.READONLY
+  -- if $hook_property_at(pclassdesc.PROPERTIES, porigin_property) = (ppropertydesc)
+def $property_set_virtual_source(S, ppropertydesc) = false -- otherwise
+def $property_set_virtual_edge(S, ppropertydesc_parent, ppropertydesc_child) = true
+  -- if ppropertydesc_parent.NAME = ppropertydesc_child.NAME /\ ppropertydesc_parent.ORIGIN =/= ppropertydesc_child.ORIGIN
+  -- if $property_set_virtual_source(S, ppropertydesc_parent)
+  -- if $property_set_virtual_source(S, ppropertydesc_child)
+  -- if ppropertydesc_parent.ORIGIN = porigin_parent_property
+  -- if ppropertydesc_child.ORIGIN = porigin_child_property
+  -- if $property_declaring_class(S.CLASSES, porigin_parent_property) = (porigin_parent)
+  -- if $property_declaring_class(S.CLASSES, porigin_child_property) = (porigin_child)
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if $class_at(S.CLASSES, porigin_child) = (pclassdesc_child)
+  -- if pclassdesc_parent.PARENT = eps /\ pclassdesc_child.PARENT =/= eps
+  -- if $class_link_at(S.LINKEDPARENTS, porigin_child) = (SOURCE_PARENT porigin_parent)
+def $property_set_virtual_edge(S, ppropertydesc_parent, ppropertydesc_child) = false -- otherwise

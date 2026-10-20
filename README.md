@@ -20,10 +20,9 @@ remains later research.
 variable's null result through handlers while following current scalar CV bindings.
 This covers bounded spaceship operands and distinct direct-CV
 `==`/`!=`/`<`/`<=`/`>`/`>=` pairs with one missing operand, including rebinding.
-Both-missing pairs can resume if the first handler defines the later scalar,
-including the same missing name at `<=>` or `==`/`!=`/`<`/`<=`; `$x == $x` can
-then be false. Greater operators warn right first. `<=>`, forward
-`==`/`!=`/`<`/`<=` (including the same CV), and distinct `>`/`>=` pairs also stage
+Both-missing pairs, including one missing name twice, can resume if the first
+handler defines the later scalar. `$x == $x` can then be false and `$x > $x`
+true. Greater operators warn right first. All seven comparison operators also stage
 a second Warning if the later physical CV stays missing, freezing both NULLs
 despite writes from the second handler.
 Wider warning paths remain partial.
@@ -767,6 +766,13 @@ cover strict `2.4`, Error priority, aliases and default Warning bytes in the
 [DIV repair ledger](coverage/semantics/div-repair-review.json).
 Owning/constrained/expired cells and wider operands remain partial.
 
+Selected-reference `-=` now retains both converted numbers through their
+Warnings. Cached `12.5 - 5.5` writes strict float `7.0` through the old target alias
+after current-name rebinding and RHS retirement. A supplied second throw cancels
+compound and outer stores. Two originals and 382 focused premises pass in the
+[compound subtraction ledger](coverage/semantics/subassign-warning-review.json).
+Other operands, unsafe targets and wider lifetimes remain partial.
+
 Selected-reference `/=` now captures both numbers before their respective
 Warnings. Cached `12.5 / 5` writes strict float `2.5` through the old target alias
 despite current-name rebinding. A second supplied throw cancels storage; a captured
@@ -1287,6 +1293,12 @@ With one owning buffered simple-CV input at a parked child, pending `next()`
 likewise returns NULL without copying current or changing that input. Closing
 orphans its count; row COW and shared-cell writes preserve its separate lifetime.
 See the [buffered NEXT review](coverage/semantics/generator-parked-pending-buffered-next-review.json).
+A first pending `send` at that parked used yield can overwrite its sole owning
+LIVE input with another owning value. The old count becomes orphaned, the new
+count stays LIVE until close, and the captured current has an independent
+lifetime through COW and receiver retirement. Embedded old-input cells and new
+direct object copies remain distinct after rebinding; see the
+[buffered SEND review](coverage/semantics/generator-parked-pending-buffered-send-review.json).
 Nonpending body entry, wider parked API leaves and waiting-result GC remain open.
 With a buffered input, pending `throw` preserves its count; physical close retains
 it until request-store destruction, including receiver cleanup before caller
@@ -1774,6 +1786,12 @@ Canonical array/query copies share these objects;
 an unpinned method receiver retires only after the last Closure owner is released.
 [Runtime Closure define review](coverage/semantics/define-runtime-closure-review.json).
 [Scoped REAL define review](coverage/semantics/define-scoped-runtime-closure-review.json).
+
+Bare named-function Closure values also publish under live function authority.
+Distinct first-class objects and direct calls share request static cells without
+Closure child edges. Retiring all Closures leaves a function-static child alive
+until an explicit later direct-function clear releases it.
+[Named Closure define review](coverage/semantics/define-runtime-named-closure-review.json).
 
 Ordinary `stdClass` values also publish directly and in array snapshots under
 selected live property/table checks. Queries share the same object and owning
@@ -3381,6 +3399,14 @@ agreements and 377 focused checks retain separate tested cuts in the
 [parent get-hook review](coverage/semantics/parent-get-hook-review.json).
 Other parent-hook shapes remain partial.
 
+Public virtual implicit `int` setters also admit `parent::$value::set(f())`
+from the matching Child setter. The borrowed call retains lexical Parent/called
+Grand through argument effects, returns `NULL`, and leaves the outer assignment's
+literal value 20 intact. Parent throws and bad-argument TypeError cancel that
+assignment; real TypeError traces name the Parent setter. Four source agreements
+and 459 focused checks are recorded in the
+[parent set-hook review](coverage/semantics/parent-set-hook-review.json).
+
 A direct trait’s public body-backed `int` getter also imports into a parentless
 using class. Its code and `__METHOD__` spelling remain the trait’s; lexical/private
 scope follows the using class and called scope follows the receiver. Slot 100→300
@@ -4462,15 +4488,19 @@ pauses, required literal history despite an unchanged heap, engine TypeError cat
 one line7 Notice and detached aliases.
 Owning-return histories with at least three pending slots preserve finite
 first-retirement destructor throws, supplied-object identity, cleared NULL and
-detached caller references. Ordinary global references may now alias across
-pending slots; each still keeps its own source/owner/restore authority and cleanup
-count. Computed objects retain distinct sole owners. A fresh za/z-alias source
-and 430/10 checks at `638496fa6` prove each required slot, two successive shared
-releases, exact public pauses, same caught object, Notice13 and separate caller
-and global writes. Earlier evidence retains its original cuts in the
+detached caller references. Ordinary global references may alias across pending
+slots; each keeps its own source/owner/restore authority and cleanup count. A
+singleton plain public `object` property source is now admitted through its exact
+live ALIAS slot and declaration.
+Computed objects retain distinct sole owners. A fresh typed za/z source and 566
+Boolean/9 raw checks at `cbdb48da3` preserve the property constraint through both
+shared-cell releases, same supplied catch, Notice14 and detached caller NULL.
+A failed string write leaves the property unchanged; a valid object replacement
+updates holder/z/za while the old copy, detached r and prior b stay separate.
+Earlier evidence retains its original cuts in the
 [review ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
-Other reference producers, typed/property cells, fewer than two remaining slots,
-wider bodies/reentry, GC and consumers remain open.
+Other property types/sources, multiple sources, holder retirement, fewer than two
+remaining slots, wider bodies/reentry, GC and consumers remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

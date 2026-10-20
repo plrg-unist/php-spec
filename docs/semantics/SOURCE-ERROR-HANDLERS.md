@@ -163,7 +163,7 @@ records false/default and supplied-throw checks. The
 [shared second-read review](../../coverage/semantics/undefined-scalar-compare-second-same-review.json)
 also permits the first callback to leave or remove that name: the next Warning
 freezes its second NULL, independent of later writes or continued absence.
-A `<=>`, `==`/`!=`/`<`/`<=` or distinct `>`/`>=` now restores when
+All seven comparisons, with distinct or shared direct CVs, now restore when
 the later physical CV remains missing or was removed
 by the first handler. Existing ingress stages its second Warning and known-NULL
 record; later writes cannot change the NULL/NULL result or cause a third Warning.
@@ -177,7 +177,11 @@ direct CVs and the RHS read line. The
 adds an exact right-frozen restore and NULL-only right INPUT certificate,
 authenticating both compiled CVs before the source-left second Warning. Its
 default reports stay right then left; late reference creation cannot change the
-two captured NULLs. First-callback owning comparison values, reversed same-CV entry, already
+two captured NULLs. The
+[shared reversed review](../../coverage/semantics/undefined-scalar-compare-reversed-same-review.json)
+admits identical CV names only for the greater operators' right-frozen shape and
+inverse NULL-only certificate; ordinary forward right-frozen shapes stay distinct.
+First-callback owning comparison values, already
 checked defined counterparts removed during the later Warning and wider producers remain partial.
 Missing-left binaries retain the later right read; missing-right binaries admit
 known or temporary values and initially-reference CVs in strict identity comparisons.

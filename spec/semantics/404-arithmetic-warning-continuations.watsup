@@ -3512,3 +3512,115 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 8192
   -- if perrorcall.MESSAGE = $ptascii("Power of base 0 and negative exponent is deprecated")
   -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE pintegeroperation.LINE
+
+;; sub_function stores to the selected result==LEFT only after both scalar
+;; conversions succeed. A conversion callback throw leaves that cell untouched.
+dec $arithmetic_subassign_source(pstate, pintegeroperation) : bool
+def $arithmetic_subassign_source(S, pintegeroperation) = true
+  -- if S.ORIGIN = (pintegeroperation.SITE)
+  -- if pintegeroperation.OP = SUBTRACT /\ ~pintegeroperation.SWAPPED
+  -- if $origin_node(S.SOURCES, pintegeroperation.SITE) = (NExprAssignOpMinus expression_left expression_right metadata)
+  -- if pintegeroperation.LEFT = VARIABLE ptbytes_left z_left
+  -- if pintegeroperation.RIGHT = VARIABLE ptbytes_right z_right
+  -- if $integer_operand_source(S, pintegeroperation.SITE, [PCFIELD 0], pintegeroperation.LEFT)
+  -- if $integer_operand_source(S, pintegeroperation.SITE, [PCFIELD 1], pintegeroperation.RIGHT)
+  -- if $code_expression_at_source(S, pintegeroperation.SITE, [PCFIELD 1]) = (pintegeroperation.LINE)
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CELL n_left
+  -- if pintegeroperation.RIGHTPOINTER = INTEGER_CELL n_right
+  -- if $integer_pointer_source(S, pintegeroperation.LEFTPOINTER, pintegeroperation.LEFT)
+  -- if $integer_pointer_source(S, pintegeroperation.RIGHTPOINTER, pintegeroperation.RIGHT)
+def $arithmetic_subassign_source(S, pintegeroperation) = false -- otherwise
+
+dec $arithmetic_subassign_input(pstate, pintegeroperation, parithmeticphase) : pvalue?
+def $arithmetic_subassign_input(S, pintegeroperation, parithmeticphase) = (pvalue)
+  -- if $arithmetic_subassign_source(S, pintegeroperation)
+  -- if $arithmetic_add_pointer(pintegeroperation, parithmeticphase) = INTEGER_CELL n
+  -- if $arithmetic_owned_cell_valid(S, n)
+  -- if $integer_pointer_value(S, INTEGER_CELL n) = (pvalue)
+def $arithmetic_subassign_input(S, pintegeroperation, parithmeticphase) = eps -- otherwise
+
+def $arithmetic_subassign_plan(S) = (pintegeroperation)
+  -- if $error_handler_eligible(S, 2) /\ $arithmetic_add_named(S)
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (COMPOUND_APPLY SUBTRACT (BASE_VALUE poperand_left) false z) :: ptask_tail*
+  -- if poperand_right = S.RESULT
+  -- if $integer_pointer_select(S, poperand_left) = (pintegerpointer_left)
+  -- if $integer_pointer_select(S, poperand_right) = (pintegerpointer_right)
+  -- if pintegerpointer_left = INTEGER_CELL n_left
+  -- if pintegerpointer_right = INTEGER_CELL n_right
+  -- if pintegeroperation = {SITE porigin, OP SUBTRACT, LINE z, SWAPPED false, LEFT poperand_left, RIGHT poperand_right, LEFTPOINTER pintegerpointer_left, RIGHTPOINTER pintegerpointer_right}
+  -- if $arithmetic_subassign_input(S, pintegeroperation, ARITHMETIC_LEFT) = (pvalue_left)
+  -- if $arithmetic_add_conversion(pvalue_left) = ((pnumber_left, true))
+  -- if $arithmetic_subassign_input(S, pintegeroperation, ARITHMETIC_RIGHT pnumber_left) = (pvalue_right)
+  -- if $arithmetic_add_conversion(pvalue_right) = ((pnumber_right, false))
+def $arithmetic_subassign_plan(S) = eps -- otherwise
+
+dec $arithmetic_subassign_target(pstate, pintegeroperation) : bool
+def $arithmetic_subassign_target(S, pintegeroperation) = true
+  -- if $arithmetic_subassign_source(S, pintegeroperation)
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CELL n_target
+  -- if $arithmetic_owned_cell_valid(S, n_target)
+def $arithmetic_subassign_target(S, pintegeroperation) = false -- otherwise
+
+dec $arithmetic_subassign_converted(pstate, pintegeroperation, parithmeticphase, pnumber) : pstate
+def $arithmetic_subassign_converted(S, pintegeroperation, ARITHMETIC_LEFT, pnumber) = S[.TODO = (ARITHMETIC_SUBASSIGN_CONVERT pintegeroperation (ARITHMETIC_RIGHT pnumber)) :: ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = ptask :: ptask_tail*
+def $arithmetic_subassign_converted(S, pintegeroperation, ARITHMETIC_RIGHT pnumber_left, pnumber_right) = $write_cell_checked(S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue][.LOCATION = ROOT n_target], n_target, pvalue, pintegeroperation.LINE)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $arithmetic_subassign_target(S, pintegeroperation)
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CELL n_target
+  -- if pvalue = $number_value($num_sub(pnumber_left, pnumber_right))
+def $arithmetic_subassign_converted(S, pintegeroperation, ARITHMETIC_RIGHT pnumber_left, pnumber_right) = S[.COMPLETION = UNSUPPORTED "compound subtraction expired, owning or constrained target"]
+  -- if ~$arithmetic_subassign_target(S, pintegeroperation)
+
+dec $arithmetic_subassign_warning_valid(pstate, pintegeroperation, parithmeticphase, pvalue, pnumber, nat) : bool
+def $arithmetic_subassign_warning_valid(S, pintegeroperation, parithmeticphase, pvalue, pnumber, n) = ($arithmetic_subassign_source(S, pintegeroperation) /\ $arithmetic_add_phase_valid(parithmeticphase) /\ $arithmetic_add_conversion(pvalue) = ((pnumber, true)) /\ $(n <= 1) /\ (n = 1 \/ parithmeticphase =/= ARITHMETIC_LEFT \/ $arithmetic_add_selected(S, pintegeroperation)) /\ (n = 1 \/ $arithmetic_subassign_input(S, pintegeroperation, parithmeticphase) = (pvalue)))
+
+rule PhpStep/arithmetic-subassign-begin: S ~> S[.TODO = (ARITHMETIC_SUBASSIGN_CONVERT pintegeroperation ARITHMETIC_LEFT) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.LOCATION = ROOT n_left]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $arithmetic_subassign_plan(S) = (pintegeroperation)
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CELL n_left
+rule PhpStep/arithmetic-subassign-convert: S ~> $arithmetic_subassign_converted(S, pintegeroperation, parithmeticphase, pnumber)
+  -- if S.TODO = (ARITHMETIC_SUBASSIGN_CONVERT pintegeroperation parithmeticphase) :: ptask_tail*
+  -- if $call_task_valid(S, ARITHMETIC_SUBASSIGN_CONVERT pintegeroperation parithmeticphase)
+  -- if $arithmetic_subassign_input(S, pintegeroperation, parithmeticphase) = (pvalue)
+  -- if $arithmetic_add_conversion(pvalue) = ((pnumber, false))
+rule PhpStep/arithmetic-subassign-capture-warning: S ~> S[.TODO = (ARITHMETIC_SUBASSIGN_WARNING pintegeroperation parithmeticphase pvalue pnumber 0) :: ptask_tail*]
+  -- if S.TODO = (ARITHMETIC_SUBASSIGN_CONVERT pintegeroperation parithmeticphase) :: ptask_tail*
+  -- if $call_task_valid(S, ARITHMETIC_SUBASSIGN_CONVERT pintegeroperation parithmeticphase)
+  -- if $arithmetic_subassign_input(S, pintegeroperation, parithmeticphase) = (pvalue)
+  -- if $arithmetic_add_conversion(pvalue) = ((pnumber, true))
+rule PhpStep/arithmetic-subassign-unavailable: S ~> S[.COMPLETION = UNSUPPORTED "compound subtraction missing, constrained or owning selected input"]
+  -- if S.TODO = (ARITHMETIC_SUBASSIGN_CONVERT pintegeroperation parithmeticphase) :: ptask_tail*
+  -- if $call_task_valid(S, ARITHMETIC_SUBASSIGN_CONVERT pintegeroperation parithmeticphase)
+  -- if $arithmetic_subassign_input(S, pintegeroperation, parithmeticphase) = eps
+rule PhpStep/arithmetic-subassign-invalid-conversion: S ~> S[.COMPLETION = UNSUPPORTED "compound subtraction selected operand conversion"]
+  -- if S.TODO = (ARITHMETIC_SUBASSIGN_CONVERT pintegeroperation parithmeticphase) :: ptask_tail*
+  -- if $call_task_valid(S, ARITHMETIC_SUBASSIGN_CONVERT pintegeroperation parithmeticphase)
+  -- if $arithmetic_subassign_input(S, pintegeroperation, parithmeticphase) = (pvalue)
+  -- if $arithmetic_add_conversion(pvalue) = eps
+rule PhpStep/arithmetic-subassign-warning: S ~> $error_dispatch(S, 2, $ptascii("A non-numeric value encountered"), pintegeroperation.LINE, DIAGNOSTIC "Warning" ($ptascii("A non-numeric value encountered")) pintegeroperation.LINE, ARITHMETIC_SUBASSIGN_WARNING pintegeroperation parithmeticphase pvalue pnumber 1)
+  -- if S.TODO = (ARITHMETIC_SUBASSIGN_WARNING pintegeroperation parithmeticphase pvalue pnumber 0) :: ptask_tail*
+  -- if $arithmetic_subassign_warning_valid(S, pintegeroperation, parithmeticphase, pvalue, pnumber, 0)
+  -- if ~$error_handler_eligible(S, 2) \/ $arithmetic_add_named(S)
+rule PhpStep/arithmetic-subassign-owning-handler: S ~> S[.COMPLETION = UNSUPPORTED "compound subtraction owning warning callback"]
+  -- if S.TODO = (ARITHMETIC_SUBASSIGN_WARNING pintegeroperation parithmeticphase pvalue pnumber 0) :: ptask_tail*
+  -- if $arithmetic_subassign_warning_valid(S, pintegeroperation, parithmeticphase, pvalue, pnumber, 0)
+  -- if $error_handler_eligible(S, 2)
+  -- if ~$arithmetic_add_named(S)
+rule PhpStep/arithmetic-subassign-resume: S ~> $arithmetic_subassign_converted(S, pintegeroperation, parithmeticphase, pnumber)
+  -- if S.TODO = (ARITHMETIC_SUBASSIGN_WARNING pintegeroperation parithmeticphase pvalue pnumber 1) :: ptask_tail*
+  -- if $arithmetic_subassign_warning_valid(S, pintegeroperation, parithmeticphase, pvalue, pnumber, 1)
+
+def $task_nodes(ARITHMETIC_SUBASSIGN_CONVERT pintegeroperation parithmeticphase) = eps
+def $task_nodes(ARITHMETIC_SUBASSIGN_WARNING pintegeroperation parithmeticphase pvalue pnumber n) = eps
+def $call_task_valid(S, ARITHMETIC_SUBASSIGN_CONVERT pintegeroperation parithmeticphase) = ($arithmetic_subassign_source(S, pintegeroperation) /\ $arithmetic_add_phase_valid(parithmeticphase) /\ (parithmeticphase =/= ARITHMETIC_LEFT \/ $arithmetic_add_selected(S, pintegeroperation)))
+def $call_task_valid(S, ARITHMETIC_SUBASSIGN_WARNING pintegeroperation parithmeticphase pvalue pnumber n) = $arithmetic_subassign_warning_valid(S, pintegeroperation, parithmeticphase, pvalue, pnumber, n)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = ARITHMETIC_SUBASSIGN_WARNING pintegeroperation parithmeticphase pvalue pnumber 1
+  -- if $arithmetic_subassign_warning_valid(S, pintegeroperation, parithmeticphase, pvalue, pnumber, 1)
+  -- if perrorcall.TARGET =/= eps \/ $arithmetic_subassign_warning_valid(S, pintegeroperation, parithmeticphase, pvalue, pnumber, 0)
+  -- if perrorcall.SITE = pintegeroperation.SITE /\ perrorcall.LINE = pintegeroperation.LINE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $ptascii("A non-numeric value encountered")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pintegeroperation.LINE

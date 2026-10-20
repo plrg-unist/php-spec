@@ -23,6 +23,11 @@ def checks(program, path, name):
             ]
             continue
         condition = condition.replace(old, new)
+        if not left and condition.startswith('$scalar_compare_right_read_shape(BINARY_RIGHT '):
+            result += [condition.replace(' = eps', ' = (perrorread_same)'),
+                       '~$error_read_source(S,perrorread_same)',
+                       '~$error_read_valid(S,perrorread_same)']
+            continue
         if left and condition.startswith('S_removed_refused = S_removed['):
             result.append('~$scalar_compare_read_again(S_removed,perrorread)')
             condition = 'S_removed_refused = S_removed[.TODO = eps][.COMPLETION = UNSUPPORTED "scalar comparison warning changed right operand"]'

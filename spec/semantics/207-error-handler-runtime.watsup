@@ -347,7 +347,7 @@ def $spaceship_right_read_shape(BINARY_RIGHT SPACESHIP (VARIABLE n_left* z_left)
 def $spaceship_right_read_shape(ptask, poperand, pbase) = eps -- otherwise
 def $scalar_compare_right_read_shape(BINARY_RIGHT pbin (VARIABLE n_left* z_left) z, VARIABLE n_right* z_right, pbase) = ({ORIGINAL BINARY_RIGHT pbin (VARIABLE n_left* z_left) z, INPUT VARIABLE n_right* z_right, BASE pbase, NAME n_right*, LINE z, TASK BINARY_RIGHT pbin (VARIABLE n_left* z_left) z, RESULT KNOWN PNULL})
   -- if pbin = EQUAL \/ pbin = NOTEQUAL \/ pbin = LESS \/ pbin = LESSEQUAL \/ pbin = GREATER \/ pbin = GREATEREQUAL
-  -- if n_left* =/= n_right*
+  -- if n_left* =/= n_right* \/ pbin = GREATER \/ pbin = GREATEREQUAL
 def $scalar_compare_right_read_shape(ptask, poperand, pbase) = eps -- otherwise
 def $error_read_line(EMIT z, z_origin) = z_origin
 def $error_read_line(PRINT_EMIT porigin z, z_origin) = z_origin
@@ -549,7 +549,6 @@ def $error_read_source(S, perrorread) = true
   -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
   -- if $origin_node(S.SOURCES, porigin_right) = (NExprVariable (BYTES text_right) metadata_right)
   -- if $error_variable_source(S, S.ORIGIN, [PCFIELD 1], $base64(text_right))
-  -- if n_left* =/= $base64(text_right)
   -- if $code_expression_at_source(S, porigin, [PCFIELD 1]) = (z)
   -- if perrorread.NAME = n_left* /\ perrorread.LINE = z
 def $error_read_source(S, perrorread) = true

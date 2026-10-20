@@ -1,0 +1,118 @@
+{
+  "milestone": "COMP104 same-CV reversed comparison entry and second Warning",
+  "status": "bounded independent source/state review passed; comparison family remains partial",
+  "scope": "One initially missing ordinary direct CV twice at > or >=. Source right freezes NULL first; a handler-defined current scalar/reference is then read on source left. Continued or restored absence stages the second Warning and captures left NULL too.",
+  "target": "PHP 8.5.10 CLI NTS64; ordinary profile; LC_ALL=C TZ=UTC",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "runtime_revision": "adb85b460",
+  "runtime_sha256": {
+    "spec/semantics/207-error-handler-runtime.watsup": "ab34eb613129cac6846566482eba7504d8bbc518f1c9e556d6ebff9d6b908372"
+  },
+  "modules": 407,
+  "engine_basis": "zend_compile_greater reverses physical comparison operands after source evaluation. Zend helpers inspect physical OP1/source-right UNDEF before current OP2/source left. Each missing read yields language-level NULL after its Warning. A first callback setting string0 makes same-CV GT true; two missing reads yield GT false/GE true despite second-handler writes. Pending exceptions suppress further reporting.",
+  "implementation": "Permit identical names only for GT/GE in the existing right-frozen shape, and remove distinctness from its inverse known-NULL-right source certificate. Both ordinary compiled CVs, lines, operator/source match and NULL-only record remain authenticated. Forward same-CV right shapes stay excluded; no state/task/root/resume/discard rules change.",
+  "behavior": [
+    "Exact originals distinguish frozen right NULL/current shared string0 from the wrong left-frozen result; the second GT Warning then distinguishes two NULLs from a late target-reference/string0. Fresh aliases, one/two false-default reports, no-init counts and a second chosen Exception preserve results, caller41, identity and finally.",
+    "Four strict-SL source-reached groups execute right-frozen dispatch/resume and both Warning stages, whole raw restoration/comparison, fresh owners0 to2 and target1 to2, shared-name and multiline compiled descriptors, CODE/line/source/non-NULL/op refusals and zero/split budgets. Continued absence causes no third Warning.",
+    "Old94/96 pure same-name shapes now bind a record while their actual distinct-CV sources still refuse forged metadata. Only those entry fronts and one revised old101 source selector run; no historical agreement is renewed."
+  ],
+  "baseline": {
+    "revision": "788b01efd8fd77b81dbecdb084746af409c27aaa",
+    "report": "initial/initial-report.json",
+    "sha256": "c8b7936a164754cb289acbd98bb972761126a911e4dfb5676e3baa1f935255ed",
+    "native": "Two original GT-entry/GE-chain observations match at 788b; independent four originals retain separate native 5e6feda5b and exact paths/profile/oracle. GT one-Warning true versus two-Warning false distinguishes physical fetch order and two captured NULLs.",
+    "model": "Genuine unchanged GT is accepted/checked then Unsupported/error-handler ingress requires a producer continuation, with empty stdout/stderr.",
+    "agreement_credit": 0
+  },
+  "accepted": [
+    {
+      "report": "author-source/model-report.json",
+      "sha256": "2fb12dcd2113f267c5b52ff4348150b605acb5795355f0b081ef60cba85fe68d",
+      "revision": "7a1b5bcb9d958705f57461411e884c909bbbd663",
+      "agreements": 5,
+      "unsupported_controls": 1
+    },
+    {
+      "report": "peer-source/model.json",
+      "sha256": "63599156fbd42cc55c86da9e831d0ca1ce0b3eeb8668c853066be49ed18ee508",
+      "revision": "7a1b5bcb9d958705f57461411e884c909bbbd663",
+      "agreements": 4,
+      "unsupported_controls": 0
+    },
+    {
+      "report": "author-state/report.json",
+      "sha256": "b39a5cd664eef7b94712c0a9d0f27be76c1a466b37b7c242b0ad224b59936e0c",
+      "revision": "7a1b5bcb9d958705f57461411e884c909bbbd663",
+      "premises": 282,
+      "groups": 2
+    },
+    {
+      "report": "peer-state/report.json",
+      "sha256": "a3aaa17015768abbee64743900e39cea8d1535a849bd1f7b07d09b0f28799a42",
+      "revision": "7a1b5bcb9d958705f57461411e884c909bbbd663",
+      "premises": 307,
+      "groups": 2
+    }
+  ],
+  "totals": {
+    "source_agreements": 9,
+    "unsupported_source_controls": 1,
+    "state_premises": 589,
+    "state_groups": 4
+  },
+  "maintenance": {
+    "state": {
+      "report": "maintenance-state/report.json",
+      "sha256": "c0e328bd150816837ff9fb785f24d22844b9bc9bbbc66b416e31c13f1526dc6c",
+      "revision": "9e8d51becfc7288c30fd7731a134e5f9752861e5",
+      "premises": 46,
+      "groups": 2
+    },
+    "source_selectors": [
+      {
+        "report": "maintenance-source/model-second-reversed-same-name-boundary-report.json",
+        "sha256": "9eaffc6e69889c1f1bf76dbd2d0b4c9b583bc981ef8ff187f2c5fb439dfbc1c7",
+        "revision": "9e8d51becfc7288c30fd7731a134e5f9752861e5",
+        "selectors": 1
+      }
+    ],
+    "historical_agreement_renewal": 0,
+    "scope": "Old94 GE right-missing and old96 GE both-missing source fronts validate only pure same-name admission versus compiled-source refusal and forced-plan exclusion. The old101 same-name source now completes two Warnings normally."
+  },
+  "failures": [
+    {
+      "revision": "7a1b5bcb9d958705f57461411e884c909bbbd663",
+      "report": "key-failure/report.json",
+      "sha256": "1d68c1e70295720c1ec1bd8d478834f6aa2977c25eaa87cb07b26fd1a5ba7216",
+      "kind": "pre-worker maintenance selector KeyError",
+      "exit": 1,
+      "workers_started": 0,
+      "agreement_credit": 0,
+      "correction_revision": "9e8d51becfc7288c30fd7731a134e5f9752861e5",
+      "resolution": "Correct only nonexistent ge-missing-right selector/label to maintained ge-missing-right-false; unchanged 23+23 premises then pass in fresh output. Accepted source/state cuts were not replayed."
+    }
+  ],
+  "remaining": [
+    "First-callback owning comparison values, removal of already checked defined counterparts, ordinary literal/captured producers and wider lifetimes remain partial; paused COMP88 stays excluded.",
+    "New source/state pass first attempts at 7a1b5bcb9/407. Maintenance and the unrun selector retain 9e8d51bec; the pre-worker setup failure retains zero."
+  ],
+  "artifact_root": "../php-spec-evidence-archive/comparison-104",
+  "artifact_manifest_sha256": "4b88eda98da94f3ce5e68c35ed85b50d08945cf3b6d059c5dfcc68508b80b031",
+  "independent_reviewer": "/root/comp89_review",
+  "divergences": [],
+  "reproduction": [
+    "python3 tests/semantics/undefined_scalar_compare_reversed_same_sources.py --phase native --output .tools/comp104-source-new",
+    "python3 tests/semantics/undefined_scalar_compare_reversed_same_sources.py --phase model --output .tools/comp104-source-new",
+    "python3 tests/semantics/undefined_scalar_compare_reversed_same_state.py --output .tools/comp104-state-new",
+    "python3 tests/semantics/undefined_scalar_compare_reversed_same_review_state.py --output .tools/comp104-peer-state-new",
+    "python3 tests/semantics/undefined_scalar_compare_reversed_same_maintenance.py --output .tools/comp104-maint-state-new"
+  ],
+  "integration": {
+    "parent": "9b8e50d5abef545b2664496e29acf5913640197a",
+    "modules": 407,
+    "preservation": "Only tested207 changes under spec/pipeline; all other incoming schema/task/field/default/ordered-manifest paths are exact. All13 publication tests and the complete incoming checkpoint body are preserved.",
+    "interaction_review": "Compound SUBASSIGN/selected POWER, parent setter hooks, named INI/DEFINE, Generator buffered SEND and typed float-key PROPREF retention require absent producers. New task tags are unused; retained/debt lists remain empty, including the empty-array control.",
+    "evidence": "Source9+1/state589 retain7a1; affected46/2/one selector retain9e8 and pre-worker setup failure0. No joined execution, accepted replay or historical credit renewal."
+  }
+}
