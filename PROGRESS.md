@@ -2546,6 +2546,14 @@ two remaining slots; longer widths, fewer slots, broader throw forms, reentry an
 GC remain partial. This is structural source authority, not general reachability.
 [Owning-return review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
+M131 composes over actual `127946e6c`/409. Tested 156/270 remain byte-exact
+c464; removing only the new prefix-history tag from 30 reproduces its parent,
+including the NULL array-key task. Every other spec path and ordered manifest
+stay parent-exact. Incoming clone, INI/CONFIG_SEND, array spaceship, intrinsic
+Closure DEFINE, selected self += Warning, NULL-key returned-array and Generator
+CURRENT selectors have no producer. Private source1/343+6 stay at c464/409;
+composition adds no joined actor or renewed execution credit.
+
 M130's one-prefix source/291+4 retain their explicit 78e8/25e7 cuts and all three
 fixture failures; all earlier evidence remains separate.
 
