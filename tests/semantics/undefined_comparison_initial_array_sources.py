@@ -7,7 +7,6 @@ from undefined_comparison_initial_array_cases import CASES
 
 family.CASES = CASES
 family.UNSUPPORTED = {
-    'initial-array-captured-boundary': ('error-handler ingress requires a producer continuation', b'B|'),
     'initial-array-nested-boundary': ('error-handler ingress requires a producer continuation', b'B|'),
 }
 family.BASELINE = ('error-handler ingress requires a producer continuation', b'')
